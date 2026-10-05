@@ -19,7 +19,7 @@ import { bild } from '../components/anleitung-bilder';
   <h2>Checkliste</h2>
   <Checklist id="setup" items={[
     '<strong>GitHub-Account</strong> mit der NDU-Adresse angelegt (oder NDU-Adresse im bestehenden Konto ergänzt) – <a href="#github">Schritt 1</a>',
-    '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Upgrade → Pro; Kreditkarte) – <a href="#claude-pro">Schritt 2</a>',
+    '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Pro, <em>Monthly</em>; Kreditkarte) – <a href="#claude-pro">Schritt 2</a>',
     '<strong>Eigenes Repo</strong> aus dem Template erstellt („Use this template“) – <a href="#repo">Schritt 3</a>',
     '<strong>Codespace</strong> gestartet, Ordner als vertrauenswürdig bestätigt – <a href="#codespace">Schritt 4</a>',
     '<code>claude</code> im Terminal gestartet und angemeldet – <a href="#claude-code">Schritt 5</a>',
@@ -65,7 +65,19 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
 
   <h2 id="claude-pro">2 · Claude Pro</h2>
-  <p>Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> anmelden – auch hier geht „Mit Google fortfahren“ – und unter Einstellungen → Upgrade den Tarif <em>Pro</em> wählen. Claude Code ist in Pro enthalten. Pro ist monatlich kündbar; für den Kurs reicht ein Monat. Ohne Pro funktioniert die Anmeldung in Schritt 5 nicht.</p>
+  <p>Claude Code ist im Tarif <em>Pro</em> enthalten. Ohne Pro funktioniert die Anmeldung in <a href="#claude-code">Schritt 5</a> nicht. Pro kostet in Österreich <strong>21,60 € im Monat</strong> (18 € plus Umsatzsteuer) und ist monatlich kündbar. Wer schon Pro oder Max hat, überspringt diesen Schritt.</p>
+  <Schritte id="claude-pro" nummer="2" steps={[
+    { img: bild('setup/pro-1-login'), alt: 'Anmeldeseite von claude.ai mit „Continue with Google“, „Continue with Apple“ und E-Mail-Feld', text: 'Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> <em>Continue with Google</em> wählen und euer Google-Konto aussuchen; Google fragt noch einmal nach, <em>Continue</em>. Ohne Google-Konto geht es auch mit der E-Mail-Adresse.', marks: [{ x: 240, y: 351, w: 355, h: 36 }] },
+    { img: bild('setup/pro-2-konto'), alt: 'Seite „Let’s create your account“ mit zwei Häkchen und dem Button „Create account“', text: 'Das erste Häkchen (Nutzungsbedingungen) ist Pflicht (1), das zweite (Werbe-Mails) könnt ihr leer lassen. <em>Create account</em> (2).', marks: [{ x: 560, y: 366, w: 362, h: 40, n: 1 }, { x: 563, y: 469, w: 368, h: 36, n: 2 }] },
+    { img: bild('setup/pro-3-geburtstag'), alt: 'Seite „When is your birthday?“ mit Datumsfeld mm/dd/yyyy', text: 'Geburtsdatum <strong>im US-Format</strong>: erst Monat, dann Tag, dann Jahr (1). Der 24. März 2002 ist also <code>03/24/2002</code>. <em>Continue</em> (2).', marks: [{ x: 544, y: 403, w: 406, h: 37, n: 1 }, { x: 544, y: 451, w: 406, h: 36, n: 2 }] },
+    { img: bild('setup/pro-4-yearly'), alt: 'Tarifübersicht Free, Pro, Max; bei Pro ist „Yearly“ ausgewählt, 15 € pro Monat, jährlich 180 € abgerechnet', text: '<strong>Achtung, Falle:</strong> Bei Pro ist die <em>jährliche</em> Zahlung vorausgewählt – 180 € auf einmal (1). Klickt auf <em>Monthly</em> (2).', marks: [{ x: 603, y: 315, w: 185, h: 33, n: 1 }, { x: 722, y: 186, w: 60, h: 23, n: 2 }] },
+    { img: bild('setup/pro-5-monthly'), alt: 'Tarifübersicht, bei Pro ist jetzt „Monthly“ ausgewählt, 18 € pro Monat', text: 'Jetzt steht dort „billed monthly“ (1). <em>Get Pro plan</em> (2).', marks: [{ x: 603, y: 315, w: 160, h: 33, n: 1 }, { x: 605, y: 364, w: 287, h: 36, n: 2 }] },
+    { img: bild('setup/pro-6-checkout'), alt: 'Bezahlseite „Pro plan“: Rechnungsadresse, Kartendaten, Gesamtbetrag 21,60 €, Häkchen zur monatlichen Abbuchung, Button „Subscribe and Pay“', text: 'Oben muss <em>Pro · Monthly</em> stehen. Name und Adresse eintragen (1), dann die Kartendaten (2). Rechts seht ihr den echten Betrag mit Steuer und das Datum der automatischen Verlängerung. Häkchen setzen (3), <em>Subscribe and Pay</em> (4).', marks: [{ x: 297, y: 178, w: 431, h: 184, n: 1 }, { x: 297, y: 610, w: 431, h: 118, n: 2 }, { x: 795, y: 358, w: 378, h: 148, n: 3 }, { x: 800, y: 524, w: 369, h: 36, n: 4 }] },
+  ]} />
+  <Callout type="tip" title="Nach Tag 3 kündigen, fürs Innolab neu abschließen">
+    <p>Pro verlängert sich jeden Monat von selbst. Kündigt es <strong>direkt nach Tag 3 (15.10.)</strong>, dann zahlt ihr höchstens einen Monat. Nicht früher kündigen: Wer in den ersten 14 Tagen kündigt, bekommt anteilig Geld zurück, und Pro kann dann sofort enden – mitten im Kurs. Kündigen: unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>.</p>
+    <p>Im Innolab (28.11.–19.12.) braucht ihr Claude Pro wieder. Schließt es dann neu ab – mit demselben Konto, eure Chats und Einstellungen bleiben erhalten.</p>
+  </Callout>
 
   <h2 id="repo">3 · Eigenes Repo aus dem Template</h2>
   <p>Ein Repository (kurz Repo) ist der Ordner eures Projekts samt seiner Versionsgeschichte. Das Template ist eine Vorlage: Ihr bekommt eine eigene Kopie, in der ihr alles ändern dürft.</p>
