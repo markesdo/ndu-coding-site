@@ -18,10 +18,10 @@ import { bild } from '../components/anleitung-bilder';
     <Block time="09:00–09:30" type="plenum" title="Recap & Quiz" href="#quiz">Acht Fragen zu Tag 1. Offene Probleme aus den Codespaces sammeln.</Block>
     <Block time="09:30–10:15" type="konzept" title="Konzept 4 · Daten & Backend" href="/konzepte/daten-backend">Datenbank, CRUD, API-Routen, Supabase, Secrets & .env, Row Level Security.</Block>
     <Block time="10:15–10:30" type="pause" title="Pause" />
-    <Block time="10:30–12:00" type="uebung" title="Übung 3 · Echte Daten" href="#uebung-3">Supabase-Projekt, MCP verbinden, Story S4: Event anlegen und dauerhaft speichern.</Block>
+    <Block time="10:30–12:00" type="uebung" title="Übung 3 · Echte Daten" href="#uebung-3">Supabase-Projekt, MCP verbinden, Issue 4: Event anlegen und dauerhaft speichern.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
     <Block time="13:00–13:45" type="konzept" title="Konzept 5 · Verifizieren & Debuggen" href="/konzepte/verifizieren">Browser-Konsole vs. Terminal, Fehler übergeben, Definition of Done, der Agent prüft sich selbst.</Block>
-    <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & RSVP" href="#uebung-4">Stories S5–S7. Absichtlich kaputt machen, im Tandem reparieren. RLS prüfen.</Block>
+    <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & RSVP" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, im Tandem reparieren. RLS prüfen.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:00" type="konzept" title="Konzept 6 · Agenten steuern" href="/konzepte/agenten-steuern">Kontext-Hygiene, CLAUDE.md pflegen, Custom Commands, Subagents, MCP-Überblick, Kosten.</Block>
     <Block time="16:00–16:40" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel verbinden, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
@@ -34,9 +34,9 @@ import { bild } from '../components/anleitung-bilder';
     {[
       { q: 'Jemand klickt auf „Ich komme“ und nichts passiert. In der Browser-Konsole steht ein roter Fehler. In welcher Schicht sucht ihr zuerst?', o: ['Datenbank', 'Frontend', 'Hosting'], a: 1, w: 'Die Browser-Konsole zeigt Frontend-Fehler. Terminal-Fehler wären Backend.' },
       { q: 'Claude hat vor 40 Nachrichten eine Designentscheidung mit euch getroffen und hält sich jetzt nicht mehr daran. Wahrscheinlichste Ursache?', o: ['Claude wurde zwischendurch aktualisiert', 'Das Kontextfenster ist voll, die Entscheidung ist aus dem Blick', 'Ein Bug in Next.js'], a: 1, w: 'Dauerhaftes gehört in CLAUDE.md oder docs/ENTSCHEIDUNGEN.md – dann ist es in jeder Session da.' },
-      { q: 'Was ist ein gutes Akzeptanzkriterium?', o: ['„Die Seite soll schön sein.“', '„Gegeben: Der Titel ist leer. Wenn ich speichere, dann sehe ich eine Fehlermeldung und nichts wird gespeichert.“', '„Der Agent soll React benutzen.“'], a: 1, w: 'Konkret, durchklickbar, mit Negativfall – und kein Wort zum Wie.' },
-      { q: 'Ihr habt eine Stunde mit Claude gearbeitet, nichts committet, und jetzt ist alles kaputt. Was hilft?', o: ['Codespace löschen', 'Source Control → Discard: zurück zum letzten Commit', 'Weiter prompten, bis es geht'], a: 1, w: 'Deshalb: nach jeder funktionierenden Story committen – dann ist der Rückschritt klein.' },
-      { q: 'Wofür ist Plan Mode?', o: ['Claude denkt und fragt, ändert aber noch nichts', 'Claude arbeitet schneller', 'Claude plant den Kurs'], a: 0, w: 'Für Neues und Unklares – Claude fragt und schlägt vor, statt zu raten. Für eine klare Story mit Kriterien braucht ihr ihn nicht.' },
+      { q: 'Was ist ein gutes Akzeptanzkriterium?', o: ['„Die Seite soll schön sein.“', '„Gegeben der Titel ist leer, wenn ich speichere, dann sehe ich eine Fehlermeldung und nichts wird gespeichert.“', '„Der Agent soll React benutzen.“'], a: 1, w: 'Konkret, durchklickbar, mit Negativfall – und kein Wort zum Wie.' },
+      { q: 'Ihr habt eine Stunde mit Claude gearbeitet, nichts committet, und jetzt ist alles kaputt. Was hilft?', o: ['Codespace löschen', 'Source Control → Discard: zurück zum letzten Commit', 'Weiter prompten, bis es geht'], a: 1, w: 'Deshalb: nach jedem funktionierenden Issue committen – dann ist der Rückschritt klein.' },
+      { q: 'Wofür ist Plan Mode?', o: ['Claude denkt und fragt, ändert aber noch nichts', 'Claude arbeitet schneller', 'Claude plant den Kurs'], a: 0, w: 'Für Neues und Unklares – Claude fragt und schlägt vor, statt zu raten. Für ein klares Issue mit Kriterien braucht ihr ihn nicht.' },
       { q: 'Ein API-Key gehört …', o: ['in die Datei, die ihn braucht', 'in .env.local – und die ist in .gitignore', 'in die CLAUDE.md'], a: 1, w: 'Ein Key, der einmal auf GitHub war, gilt als verbrannt.' },
       { q: 'Was ist der Unterschied zwischen Website und Web-App?', o: ['Web-Apps sind größer', 'Web-Apps haben Login, speichern Daten und reagieren auf Nutzer*innen', 'Websites laufen nicht im Browser'], a: 1, w: 'Campus Events ist eine Web-App – sobald jemand zusagen kann, speichern wir Daten.' },
       { q: 'Claude sagt „Ich habe das getestet, es funktioniert.“ Was tut ihr?', o: ['Glauben', 'Selbst im Browser prüfen – ihr seid der letzte Prüfschritt', 'Nochmal fragen, ob es sicher ist'], a: 1, w: 'Claude sieht euren Browser nicht. Akzeptanzkriterien durchklicken.' },
@@ -113,11 +113,11 @@ import { bild } from '../components/anleitung-bilder';
   <p class="small muted">Der Token ist ein Schlüssel zu eurem Supabase-Konto: Er wird nur in eurem Codespace gespeichert, nicht im Repo. Fügt ihn nie in den Chat mit Claude oder in eine Datei im Projekt ein. Nach dem Kurs könnt ihr ihn unter Access Tokens wieder löschen.</p>
   <h3>c) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
-  <h3>d) Story S4 bauen lassen (45 min)</h3>
-  <Prompt>Setze Story S4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
+  <h3>d) Issue 4 bauen lassen (45 min)</h3>
+  <Prompt>Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
   <p>Prüfen: Event anlegen → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
   <h3>e) Sichern</h3>
-  <Prompt>/ndu-check – und wenn alles grün ist: S4 auf fertig setzen und /ndu-commit</Prompt>
+  <Prompt>/ndu-check – und wenn alles grün ist: Issue 4 auf fertig setzen und /ndu-commit</Prompt>
   <Checklist id="t2-u3" items={[
     'Supabase-Projekt in Frankfurt angelegt, Passwort gespeichert',
     'Supabase-MCP verbunden (<code>/mcp</code> zeigt „connected“)',
@@ -129,11 +129,11 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2 id="uebung-4">Übung 4 · Login & RSVP <span class="pill uebung">90 min</span></h2>
-  <h3>a) Story S5 – Anmelden (30 min)</h3>
-  <Prompt>Setze Story S5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-events, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
+  <h3>a) Issue 5 – Anmelden (30 min)</h3>
+  <Prompt>Setze Issue 5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-events, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
   <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, <code>/meine-events</code> aufrufen → Weiterleitung?</p>
-  <h3>b) Story S6 – Zusagen (30 min)</h3>
-  <Prompt>Setze Story S6 um: RSVP-Button pro Event mit Zähler, Zusage zurücknehmen, ohne Login zur Anmeldung führen. Tabelle rsvps mit RLS: jeder darf zählen, nur die eigene Zusage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle rsvps und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
+  <h3>b) Issue 6 – Zusagen (30 min)</h3>
+  <Prompt>Setze Issue 6 um: RSVP-Button pro Event mit Zähler, Zusage zurücknehmen, ohne Login zur Anmeldung führen. Tabelle rsvps mit RLS: jeder darf zählen, nur die eigene Zusage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle rsvps und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
   <h3>c) Absichtlich kaputt (20 min, Tandem)</h3>
   <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen: Die andere Person in eurem Tandem muss den Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurücktauschen und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
   <h3>d) RLS-Test (10 min)</h3>
@@ -145,7 +145,7 @@ import { bild } from '../components/anleitung-bilder';
     'Zusagen und zurücknehmen, Zähler stimmt',
     'Fehlerkarte eingebaut – die andere Person im Tandem hat ihn gefunden',
     'RLS getestet: fremde Zusagen sind geschützt',
-    'S5, S6 (und optional S7) auf „fertig“, committet',
+    'Issue 5, Issue 6 (und optional Issue 7) auf „fertig“, committet',
   ]} />
 
   <hr />
@@ -186,7 +186,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2>Aufgabe für die Zwischenwoche – Abgabe Do 15.10., 09:00</h2>
-  <p>Ein eigener Mini-Prototyp – Details unter <a href="/zwischenwoche">Zwischenwoche</a>. Kurzfassung: eigene Idee (oder Campus Events mit drei neuen Stories), 1-Seiten-PRD, 3–5 Stories umgesetzt, läuft auf Vercel, Repo mit Markus als Collaborator.</p>
+  <p>Ein eigener Mini-Prototyp – Details unter <a href="/zwischenwoche">Zwischenwoche</a>. Kurzfassung: eigene Idee (oder Campus Events mit drei neuen Issues), 1-Seiten-PRD, 3–5 Issues umgesetzt, läuft auf Vercel, Repo mit Markus als Collaborator.</p>
 
   <FooterNav prev={{ href: '/tag-1', t: 'Tag 1' }} next={{ href: '/zwischenwoche', t: 'Zwischenwoche' }} />
 </Layout>

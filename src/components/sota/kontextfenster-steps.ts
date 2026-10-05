@@ -93,7 +93,7 @@ export const STEPS: Schritt[] = [
   },
   {
     title: '`/clear` – neue Session.',
-    text: 'Nach einer abgeschlossenen Story ist ein leerer Kontext der beste Start: schnell, präzise, ohne Altlasten. Was nur im Chat stand, ist damit allerdings weg.',
+    text: 'Nach einem abgeschlossenen Issue ist ein leerer Kontext der beste Start: schnell, präzise, ohne Altlasten. Was nur im Chat stand, ist damit allerdings weg.',
   },
   {
     title: 'Dauerhaftes gehört in Dateien.',
