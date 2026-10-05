@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Kontextfenster from '../../components/sota/Kontextfenster.tsx';
 ---
 <Layout title="Wie ein Coding-Agent arbeitet">
   <span class="eyebrow">Konzept 2 · Tag 1</span>
@@ -13,62 +14,14 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Ein Large Language Model (LLM) hat aus einem großen Teil des Internets – und aus sehr viel Code – gelernt, <strong>wahrscheinliche Fortsetzungen</strong> von Text zu erzeugen. Anschließend wurde es trainiert, Anweisungen zu befolgen und Antworten zu geben, die Menschen als hilfreich und korrekt bewerten. Drei Folgen davon sind für Sie wichtig:</p>
   <div class="grid">
     <div class="card"><h3>Es rät plausibel</h3><p class="small muted">Das Modell weiß nicht, es schätzt. Meistens richtig, manchmal selbstbewusst falsch („Halluzination“). Code hat einen Vorteil: Er lässt sich ausführen – und dann sieht man, ob er stimmt.</p></div>
-    <div class="card"><h3>Es hat ein Gedächtnis mit Rand</h3><p class="small muted">Alles, was es gerade „im Kopf“ hat, ist das Kontextfenster. Ist es voll, fällt Älteres raus. Zwischen zwei Sessions erinnert es sich an nichts – außer, es steht in einer Datei.</p></div>
+    <div class="card"><h3>Es hat ein Gedächtnis mit Rand</h3><p class="small muted">Alles, was es gerade „im Kopf“ hat, ist das Kontextfenster. Wird es voll, fasst Claude Code den Verlauf zusammen – Details können dabei verloren gehen. Zwischen zwei Sessions erinnert es sich an nichts – außer, es steht in einer Datei.</p></div>
     <div class="card"><h3>Es kann nur, was es sieht</h3><p class="small muted">Was nicht im Kontext steht, existiert nicht: Ihre Entscheidung von gestern, der Fehler im Browser, das Design in Ihrem Kopf. Kontext geben ist Ihr Job.</p></div>
   </div>
 
   <h2>Das Kontextfenster</h2>
-  <div class="widget" id="ctx">
-    <p class="hint">Das Kontextfenster ist das Arbeitsgedächtnis einer Session. Füllen Sie es und sehen Sie, was passiert.</p>
-    <div class="ctx-bar" id="ctx-bar"></div>
-    <div class="ctx-controls">
-      <button class="btn sm" data-add="code">+ Claude liest 5 Dateien</button>
-      <button class="btn sm" data-add="chat">+ Sie diskutieren 10 Nachrichten</button>
-      <button class="btn sm" data-add="big">+ Riesige Fehlermeldung einfügen</button>
-      <button class="btn sm" data-act="compact">/compact</button>
-      <button class="btn sm" data-act="clear">/clear</button>
-    </div>
-    <div class="ctx-status" id="ctx-status"></div>
-    <script>
-      const bar = document.getElementById('ctx-bar')!;
-      const status = document.getElementById('ctx-status')!;
-      const MAX = 100;
-      let segs: { k: string; n: number; t: string }[] = [];
-      const base = () => [{ k: 'sys', n: 6, t: 'Regeln' }, { k: 'claude', n: 8, t: 'CLAUDE.md' }];
-      const render = () => {
-        const total = segs.reduce((a, s) => a + s.n, 0);
-        bar.innerHTML = '';
-        let acc = 0;
-        segs.forEach(s => {
-          const el = document.createElement('div');
-          const lost = total > MAX && acc < total - MAX;
-          el.className = 'ctx-seg ' + (lost ? 'lost' : s.k);
-          el.style.flex = String(s.n);
-          el.textContent = s.n >= 8 ? s.t : '';
-          el.title = s.t;
-          bar.appendChild(el);
-          acc += s.n;
-        });
-        const pct = Math.min(100, Math.round(100 * total / MAX));
-        if (total > MAX) status.innerHTML = `<strong>Voll (${total}%).</strong> Die ältesten Teile – inklusive Ihrer Entscheidungen von vorhin – sind aus dem Blick. Claude wird inkonsistent, vergisst Absprachen, wiederholt Fehler. Zeit für <code>/compact</code> oder <code>/clear</code>.`;
-        else if (pct > 70) status.innerHTML = `<strong>${pct}% voll.</strong> Noch okay, aber: Antworten werden ungenauer, je voller es wird. Gute Gewohnheit: nach einer fertigen Story <code>/clear</code>.`;
-        else status.innerHTML = `${pct}% belegt. Wenig Kontext = präzise, schnelle Antworten. Das ist der Normalzustand, den Sie anstreben.`;
-      };
-      segs = base(); render();
-      document.querySelectorAll<HTMLButtonElement>('#ctx [data-add]').forEach(b => b.addEventListener('click', () => {
-        const k = b.dataset.add!;
-        if (k === 'code') segs.push({ k: 'code', n: 18, t: '5 Dateien' });
-        if (k === 'chat') segs.push({ k: 'chat', n: 14, t: '10 Nachrichten' });
-        if (k === 'big') segs.push({ k: 'chat', n: 35, t: 'Fehler-Log' });
-        render();
-      }));
-      document.querySelectorAll<HTMLButtonElement>('#ctx [data-act]').forEach(b => b.addEventListener('click', () => {
-        if (b.dataset.act === 'clear') segs = base();
-        if (b.dataset.act === 'compact') segs = [...base(), { k: 'chat', n: 12, t: 'Zusammenfassung' }];
-        render();
-      }));
-    </script>
-  </div>
+  <p class="hint small muted">Klicken Sie auf die Animation und blättern Sie mit den Pfeiltasten – oder nutzen Sie die Buttons.</p>
+  <Kontextfenster client:visible />
+
   <p>Daraus folgen drei Regeln: <strong>Eine Session pro Story</strong> (danach <code>/clear</code>). <strong>Nur relevante Teile geben</strong> – die Fehlermeldung, nicht das ganze Log; die betroffene Seite, nicht „schau dir alles an“. <strong>Dauerhaftes in Dateien</strong> – was in <code>CLAUDE.md</code> oder <code>docs/ENTSCHEIDUNGEN.md</code> steht, ist in jeder Session wieder da.</p>
 
   <h2>Der Agent-Loop</h2>
