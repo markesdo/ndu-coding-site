@@ -73,7 +73,7 @@ const nav = [
       const sb = document.getElementById('sidebar');
       btn?.addEventListener('click', () => sb?.classList.toggle('open'));
       document.addEventListener('click', (e) => {
-        if (sb?.classList.contains('open') && !sb.contains(e.target as Node) && e.target !== btn) sb.classList.remove('open');
+        if (sb?.classList.contains('open') && !sb.contains(e.target as Node) && !btn?.contains(e.target as Node)) sb.classList.remove('open');
       });
     </script>
   </body>

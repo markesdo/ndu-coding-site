@@ -63,6 +63,7 @@ const layers = [
           b.classList.toggle('active', b.dataset.layer === id);
           if (b.dataset.layer === id) ico = b.querySelector('.ico').innerHTML;
         });
+        detail.dataset.layer = id;
         detail.innerHTML = `<h4><span class="ico">${ico}</span>${l.name}</h4><p>${l.text}</p><p class="q">${l.q}</p>`;
       };
       btns.forEach(b => b.addEventListener('click', () => show(b.dataset.layer)));

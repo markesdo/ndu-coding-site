@@ -208,15 +208,22 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .widget .hint { font-size: .85rem; color: var(--muted); margin: 0 0 .75rem; }
 .layers { display: grid; gap: .5rem; }
 .layer { display: grid; grid-template-columns: 44px 1fr auto; gap: .9rem; align-items: center; padding: .8rem 1rem; border-radius: 12px; border: 2px solid var(--border); cursor: pointer; background: var(--bg); transition: border-color .15s, background .15s; text-align: left; font: inherit; color: var(--fg); width: 100%; }
-.layer:hover { border-color: var(--muted); }
-.layer.active { border-color: var(--accent); background: var(--accent-soft); }
-.layer .ico { display: flex; color: var(--accent); }
+/* Farben wie in der Bestellweg-Animation (stage.css): Frontend blau, API gelb, Backend rot, Datenbank grün; Hosting lila. */
+[data-layer="frontend"] { --farbe: var(--blue); --farbe-soft: var(--blue-soft); }
+[data-layer="api"] { --farbe: var(--yellow); --farbe-soft: var(--yellow-soft); }
+[data-layer="backend"] { --farbe: var(--accent); --farbe-soft: var(--accent-soft); }
+[data-layer="db"] { --farbe: var(--green); --farbe-soft: var(--green-soft); }
+[data-layer="hosting"] { --farbe: var(--purple); --farbe-soft: var(--purple-soft); }
+.layer { border-left: 6px solid var(--farbe); }
+.layer:hover { border-color: var(--muted); border-left-color: var(--farbe); }
+.layer.active { border-color: var(--farbe); background: var(--farbe-soft); }
+.layer .ico { display: flex; color: var(--farbe); }
 .layer .name { font-weight: 700; }
 .layer .meta { font-size: .85rem; color: var(--muted); }
 .layer .files { font-family: var(--mono); font-size: .78rem; color: var(--muted); text-align: right; }
 .layer-detail { margin-top: 1rem; padding: 1rem 1.1rem; border-radius: 12px; background: var(--bg); border: 1px dashed var(--border); min-height: 5rem; }
 .layer-detail h4 { margin: 0 0 .3rem; display: flex; align-items: center; gap: .45rem; }
-.layer-detail h4 .ico { display: flex; color: var(--accent); }
+.layer-detail h4 .ico { display: flex; color: var(--farbe); }
 .layer-detail h4 svg { width: 20px; height: 20px; }
 .layer-detail p { margin: 0 0 .5rem; }
 .layer-detail .q { font-size: .9rem; color: var(--muted); }
