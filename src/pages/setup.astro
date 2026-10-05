@@ -33,13 +33,13 @@ const bild = (name: string) => {
     'App läuft und ist im eigenen Browser-Tab geöffnet',
     '<code>/ndu-explain</code> ausgeführt und die Antwort gelesen',
     'Markus als Collaborator eingeladen (<code>markesdo</code>)',
-    '<strong>GitHub Education</strong> beantragt (Schritt 9) – die Prüfung kann einige Tage dauern',
+    'Optional: <strong>GitHub Education</strong> beantragt (Schritt 9)',
   ]} />
 
   <p class="small muted">Die Screenshots stammen von einem Testdurchgang mit einem neuen Konto am 5.10.2026. Die Oberflächen der Anbieter ändern sich laufend; wenn ein Button anders heißt oder woanders sitzt, sucht nach dem Wort aus der Anleitung. Klick auf ein Bild vergrößert es.</p>
 
   <h2 id="github">1 · GitHub-Account mit eurer NDU-Adresse</h2>
-  <p>GitHub speichert euren Code und startet später euren Codespace. <strong>Registriert euch mit eurer NDU-E-Mail-Adresse.</strong> Mit ihr könnt ihr GitHub Education beantragen (<a href="#education">Schritt 9</a>): Studierende bekommen unter anderem mehr Codespaces-Kontingent – 180 statt 120 Core-Stunden pro Monat, auf der 2-Kern-Maschine also 90 statt 60 Stunden.</p>
+  <p>GitHub speichert euren Code und startet später euren Codespace. <strong>Registriert euch mit eurer NDU-E-Mail-Adresse.</strong> Mit ihr könnt ihr zusätzlich GitHub Education beantragen (<a href="#education">Schritt 9</a>, optional): Studierende bekommen unter anderem mehr Codespaces-Kontingent – 180 statt 120 Core-Stunden pro Monat, auf der 2-Kern-Maschine also 90 statt 60 Stunden.</p>
   <Schritte steps={[
     { img: bild('github-1-formular'), alt: 'GitHub-Registrierungsformular mit den Feldern Email, Password, Username und dem Button „Create account“', text: 'Auf <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> eure NDU-Adresse eintragen (1). Ein Passwort wählen (2) – mindestens 15 Zeichen, oder 8 mit Zahl und Kleinbuchstaben – und im Passwortmanager speichern. Benutzername (3): Er ist öffentlich und steht später in jeder Adresse eures Projekts, also etwas Professionelles. <em>Create account</em> (4), dann das Bilderrätsel lösen und den Code eingeben, den GitHub an eure NDU-Adresse schickt.', marks: [{ x: 916, y: 259, w: 412, h: 40, n: 1 }, { x: 916, y: 331, w: 412, h: 38, n: 2 }, { x: 916, y: 438, w: 412, h: 38, n: 3 }, { x: 916, y: 687, w: 412, h: 44, n: 4 }] },
     { img: bild('github-5-dashboard'), alt: 'GitHub-Startseite mit „Welcome to GitHub“', text: 'Geschafft: Die Startseite begrüßt euch mit eurem Benutzernamen. Zwei-Faktor-Anmeldung verlangt GitHub erst einige Wochen später – richtet sie dann mit der Handy-App ein.', marks: [{ x: 494, y: 92, w: 390, h: 36 }] },
@@ -113,14 +113,18 @@ const bild = (name: string) => {
     { img: bild('collab-3'), alt: 'markesdo steht mit „Pending Invite“ in der Liste', text: 'Die Einladung steht auf „Pending Invite“, bis Markus sie annimmt. Fertig.', marks: [{ x: 469, y: 492, w: 823, h: 56 }] },
   ]} />
 
-  <h2 id="education">9 · GitHub Education beantragen</h2>
-  <p>Am besten gleich am ersten Tag: GitHub prüft den Antrag, das kann von wenigen Minuten bis zu einigen Tagen dauern. Bis dahin reicht das normale Kontingent für den Kurs. Haltet eure <strong>Studienbestätigung</strong> bereit (als Datei oder am Handy) – GitHub will einen datierten Nachweis sehen.</p>
+  <h2 id="education">9 · GitHub Education beantragen (optional)</h2>
+  <p><strong>Für den Kurs braucht ihr Education nicht</strong> – das normale Kontingent reicht (siehe <a href="#kontingent">Wenn das Kontingent knapp wird</a>). Education ist ein Bonus: mehr Codespaces-Stunden und weitere Werkzeuge, auch nach dem Kurs. Beantragt es am ersten Tag <strong>auf dem Campus</strong> – GitHub vergleicht euren Standort mit der Hochschule. Haltet eure <strong>Studienbestätigung</strong> bereit (als Datei oder am Handy); GitHub will einen datierten Nachweis sehen. Die Prüfung dauert wenige Minuten bis einige Tage.</p>
   <Schritte steps={[
     { img: bild('edu-3-start'), alt: 'GitHub-Einstellungen, Seite „GitHub Education“ mit Button „Start an application“', text: 'Auf <a href="https://github.com/settings/education/benefits" target="_blank" rel="noopener">github.com/settings/education/benefits</a> (Settings → Billing and licensing → Education benefits) auf <em>Start an application</em>.', marks: [{ x: 1140, y: 489, w: 120, h: 30 }] },
     { img: bild('edu-4-schule'), alt: 'Antragsformular: Rolle Student, Schulsuche mit Eintrag „New Design University“', text: '<em>Student</em> wählen (1). Im Schulfeld „NDU“ oder „New Design“ tippen und <strong>New Design University</strong> auswählen (2) – nicht die „New Designs Charter School“ darüber.', marks: [{ x: 84, y: 327, w: 170, h: 42, n: 1 }, { x: 88, y: 588, w: 620, h: 68, n: 2 }] },
     { img: bild('edu-5-formular'), alt: 'Antragsformular mit Hochschul-E-Mail, „Location shared“ und Button „Continue“', text: 'Als E-Mail eure NDU-Adresse wählen (1) – nicht die private. Fehlt sie in der Liste, ist sie im Konto noch nicht bestätigt (Kasten in Schritt 1). <em>Share Location</em> und im Browser den Standort erlauben (2), dann <em>Continue</em> (3).', marks: [{ x: 63, y: 660, w: 863, h: 62, n: 1 }, { x: 63, y: 836, w: 310, h: 61, n: 2 }, { x: 757, y: 836, w: 169, h: 61, n: 3 }] },
     { img: bild('edu-6-nachweis'), alt: 'Auswahl der Nachweisart, u. a. „Dated enrollment letter on school letterhead“', text: 'Nachweis: <em>3. Dated enrollment letter on school letterhead</em> passt für die Studienbestätigung. Datum, Name und Hochschule müssen lesbar sein. Danach abschicken und auf die Mail von GitHub warten – das größere Codespaces-Kontingent gilt erst nach der Bestätigung.', marks: [{ x: 145, y: 523, w: 621, h: 38 }] },
+    { img: bild('edu-7-fehler'), alt: 'Fehlermeldung: „We require applicants to use a school-issued email address to apply.“', text: 'Kommt beim Abschicken diese Meldung („school-issued email address“), erkennt GitHub eure Adresse nicht als Hochschuladresse. Prüft, ob ihr wirklich die NDU-Adresse gewählt habt. Wenn ja: Sagt Markus Bescheid und arbeitet ohne Education weiter – am Kurs ändert das nichts.', marks: [{ x: 122, y: 220, w: 863, h: 227 }] },
   ]} />
+  <Callout type="info" title="Antrag abgelehnt?">
+    <p>Die häufigsten Gründe: Nachweis ohne Datum oder Namen, NDU-Adresse im Konto nicht bestätigt, Standort weit weg von der Hochschule. Ihr könnt einen neuen Antrag stellen – mit gut lesbarer, aktueller Studienbestätigung, vom Campus aus. Und bis dahin gilt: Das normale Kontingent reicht für den Kurs.</p>
+  </Callout>
 
   <h2>Orientierung im Codespace</h2>
   <div class="grid">
@@ -131,11 +135,19 @@ const bild = (name: string) => {
   </div>
 
   <h2 id="stoppen">Nach dem Kurstag: Codespace stoppen</h2>
-  <p>Ein laufender Codespace verbraucht euer Kontingent (60 Stunden pro Monat, mit Education 90), auch wenn der Tab zu ist. Auf <a href="https://github.com/codespaces" target="_blank" rel="noopener">github.com/codespaces</a> beim Codespace auf „…“:</p>
+  <p>Ein laufender Codespace verbraucht euer Kontingent (60 Stunden pro Monat, mit Education 90) – auch wenn der Tab zu ist, bis er nach 30 Minuten ohne Eingabe von selbst stoppt. Auf <a href="https://github.com/codespaces" target="_blank" rel="noopener">github.com/codespaces</a> beim Codespace auf „…“:</p>
   <Schritte steps={[
     { img: bild('stop-1'), alt: 'Menü eines Codespace mit „Stop codespace“ und angehaktem „Auto-delete codespace“', text: '<em>Stop codespace</em> (1). Beachtet den Haken bei <em>Auto-delete codespace</em> (2): Ein länger ungenutzter Codespace wird gelöscht. Was nicht committet und gepusht ist, ist dann weg.', marks: [{ x: 1283, y: 236, w: 126, h: 26, n: 1 }, { x: 1262, y: 280, w: 158, h: 26, n: 2 }] },
     { img: bild('stop-2'), alt: 'Meldung „Codespace stopped“, darunter der Hinweis „This codespace has uncommitted changes“', text: 'Gestoppt. Steht beim Codespace „This codespace has uncommitted changes“, habt ihr noch nicht alles gesichert – Codespace öffnen, committen, pushen.', marks: [{ x: 0, y: 58, w: 300, h: 52, n: 1 }, { x: 322, y: 600, w: 268, h: 18, n: 2 }] },
   ]} />
+
+  <h2 id="kontingent">Wenn das Kontingent knapp wird</h2>
+  <p>Ohne Education habt ihr 120 Core-Stunden pro Monat. Der Kurs-Codespace hat 2 Kerne, das sind <strong>60 Stunden Laufzeit</strong>. Die drei Kurstage und die Hausaufgabe brauchen voraussichtlich 30–45 Stunden – das passt, wenn ihr einen einzigen Codespace verwendet und ihn nach der Arbeit stoppt. Den Verbrauch seht ihr unter <em>Settings → Billing and licensing → Usage</em>.</p>
+  <p>Ist das Kontingent aufgebraucht, startet der Codespace nicht mehr. Kosten entstehen dabei keine: Neue Konten haben für Codespaces ein Budget von 0 $ mit „Stop usage: Yes“. Wer trotzdem weiterarbeiten muss, hebt dieses Budget an – eine Stunde auf 2 Kernen kostet laut GitHub-Preisliste etwa 0,18 $.</p>
+  <Schritte steps={[
+    { img: bild('budget-1-menue'), alt: 'Budgets and alerts: Zeile Codespaces mit Budget 0 $ und Stop usage Yes, geöffnetes Menü mit Edit und Delete', text: '<em>Settings → Billing and licensing → Budgets and alerts</em>. In der Zeile <em>Codespaces</em> (1) auf „…“ → <em>Edit</em> (2) und einen kleinen Betrag eintragen, z. B. 5 $. „Stop usage“ bleibt an. Das Budget gilt pro Monat; nach dem Kurs wieder auf 0 setzen. <strong>Nicht auf <em>Delete</em> klicken</strong> – ohne Budget ist die Nutzung unbegrenzt. Dafür muss eine Zahlungsmethode hinterlegt sein.', marks: [{ x: 463, y: 350, w: 808, h: 62, n: 1 }, { x: 1097, y: 404, w: 150, h: 26, n: 2 }] },
+  ]} />
+  <p class="small muted">Kein zweites GitHub-Konto anlegen, um neues Kontingent zu bekommen – die Nutzungsbedingungen von GitHub erlauben nur ein kostenloses Konto pro Person.</p>
 
   <h2>Wenn etwas hängt</h2>
   <p>Die häufigsten Stolpersteine mit Lösungen stehen unter <a href="/bekannte-probleme">Bekannte Probleme</a>. Ansonsten: Hand heben – an Tag 1 ist genau dafür Zeit eingeplant.</p>
