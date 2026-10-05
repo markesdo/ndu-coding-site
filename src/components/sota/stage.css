@@ -103,3 +103,160 @@
   .kf-fenster { height: 52px; }
   .kf-block { font-size: .68rem; }
 }
+
+/* Bestellweg. Größen in em: Im Vollbild wächst die Szene mit der Schriftgröße der Stage. */
+.bw { --bw-farbe: var(--muted); --bw-soft: var(--bg); font-size: .9em; }
+.bw-haus {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto 4.6em auto;
+  align-items: stretch;
+}
+.bw-server {
+  grid-column: 2 / 4;
+  grid-row: 1 / 4;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  margin: -.35em .1em;
+}
+.bw-station {
+  grid-row: 1;
+  position: relative;
+  margin: 0 .45em;
+  padding: .7em .75em .8em;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-top: .3em solid var(--bw-farbe);
+  border-radius: 10px;
+  transition: opacity .3s, transform .3s, border-color .3s;
+}
+.bw-frontend { grid-column: 1; --bw-farbe: var(--blue); --bw-soft: var(--blue-soft); }
+.bw-api { grid-column: 2; --bw-farbe: var(--yellow); --bw-soft: var(--yellow-soft); }
+.bw-backend { grid-column: 3; --bw-farbe: var(--accent); --bw-soft: var(--accent-soft); }
+.bw-db { grid-column: 4; --bw-farbe: var(--green); --bw-soft: var(--green-soft); }
+/* Pfeile zwischen den Stationen */
+.bw-station:not(.bw-db)::after {
+  content: '→';
+  position: absolute;
+  right: -.95em;
+  top: 1.1em;
+  color: var(--muted);
+  font-weight: 700;
+}
+.bw-aktiv { border-color: var(--bw-farbe); transform: scale(1.03); box-shadow: 0 0 0 3px var(--bw-soft); z-index: 1; }
+.bw-passiv { opacity: .6; }
+.bw-unberuehrt .bw-inhalt { filter: grayscale(1); opacity: .7; }
+
+.bw-kopf { display: flex; align-items: center; gap: .5em; }
+.bw-icon { width: 1.9em; height: 1.9em; flex: none; color: var(--bw-farbe); stroke-width: 1.75; }
+.bw-name { font-weight: 700; font-size: 1.1em; line-height: 1.15; }
+.bw-bild { font-size: .85em; color: var(--muted); }
+.bw-rolle { font-size: .8em; color: var(--muted); margin: .35em 0 .6em; }
+.bw-inhalt { font-size: .85em; }
+
+.bw-event { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: .55em .6em; }
+.bw-event-titel { font-weight: 600; }
+.bw-event-wer { font-size: .85em; color: var(--muted); }
+.bw-event-zahl { margin: .25em 0 .45em; }
+.bw-event-zahl strong { font-size: 1.6em; margin-right: .15em; }
+.bw-knopf {
+  position: relative;
+  display: inline-flex; align-items: center; gap: .3em;
+  padding: .3em .7em; border-radius: 999px;
+  font-weight: 600; font-size: .9em;
+  background: var(--blue); color: var(--block-ink);
+}
+.bw-knopf svg { width: 1.1em; height: 1.1em; }
+.bw-knopf-zugesagt { background: var(--green); }
+.bw-knopf-fehler { background: var(--accent); }
+.bw-klick { position: absolute; right: -1.1em; bottom: -.9em; color: var(--fg); display: flex; }
+.bw-klick svg { width: 1.5em; height: 1.5em; }
+
+.bw-endpoint { display: inline-block; font-size: .95em; }
+
+.bw-pruefungen { list-style: none; padding: 0; margin: 0; display: grid; gap: .3em; }
+.bw-pruefungen li { display: flex; align-items: center; gap: .4em; line-height: 1.25; }
+.bw-pruef-icon { display: inline-flex; flex: none; }
+.bw-pruef-icon svg { width: 1.25em; height: 1.25em; }
+.bw-pruefung-offen { color: var(--muted); }
+.bw-pruefung-ok .bw-pruef-icon { color: var(--green); }
+.bw-pruefung-fehler { color: var(--accent); font-weight: 600; }
+
+.bw-tabelle-name { font-weight: 600; margin-bottom: .2em; }
+.bw-tabelle table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .8em; margin: 0; }
+.bw-tabelle th, .bw-tabelle td { text-align: left; padding: .15em .25em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.bw-tabelle th { color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: 0; }
+.bw-neu td { background: var(--green-soft); font-weight: 700; }
+.bw-tabelle-summe { margin-top: .35em; }
+
+.bw-werkzeug {
+  display: flex; align-items: center; gap: .35em;
+  margin-top: .6em; padding-top: .5em; border-top: 1px dashed var(--border);
+  font-weight: 600; font-size: .85em;
+}
+.bw-werkzeug svg { width: 1.1em; height: 1.1em; flex: none; color: var(--bw-farbe); }
+
+/* Zettel */
+.bw-spur { grid-column: 1 / -1; grid-row: 2; position: relative; }
+.bw-spur-zettel { position: absolute; top: 50%; translate: -50% -50%; }
+.bw-zettel {
+  position: relative;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 .45em;
+  width: max-content;
+  padding: .4em .55em;
+  border-radius: 8px;
+  color: var(--block-ink);
+  box-shadow: 0 2px 8px rgb(0 0 0 / .18);
+  font-family: var(--mono);
+  font-size: .8em;
+  line-height: 1.25;
+}
+.bw-zettel-bestellung { background: var(--yellow); }
+.bw-zettel-antwort { background: var(--green); }
+.bw-zettel-fehler { background: var(--accent); }
+.bw-zettel-icon, .bw-zettel-pfeil { width: 1.3em; height: 1.3em; flex: none; }
+.bw-zettel-text { display: grid; flex: 1; min-width: 0; }
+.bw-zettel-text span { white-space: nowrap; }
+.bw-zettel-text span:first-child { font-weight: 700; }
+.bw-stempel {
+  flex-basis: 100%;
+  display: flex; align-items: center; gap: .3em;
+  margin-top: .3em; padding-top: .25em;
+  border-top: 1px dashed currentColor;
+  font-family: var(--font); font-size: .75em; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.bw-stempel svg { width: 1em; height: 1em; }
+.bw-chip { display: none; }
+
+.bw-ort {
+  grid-row: 3;
+  display: flex; align-items: center; justify-content: center; gap: .35em;
+  margin-top: .5em;
+  font-size: .8em; color: var(--muted);
+}
+.bw-ort svg { width: 1.2em; height: 1.2em; flex: none; }
+.bw-ort-frontend { grid-column: 1; }
+.bw-ort-server { grid-column: 2 / 4; }
+.bw-ort-db { grid-column: 4; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bw-station { transition: none; }
+}
+
+/* Handy: Stationen untereinander; nur die aktive zeigt ihren Inhalt, der Zettel sitzt an der Station. */
+@media (max-width: 600px) {
+  .bw-haus { display: flex; flex-direction: column; gap: .5em; }
+  .bw-server, .bw-spur, .bw-ort { display: none; }
+  .bw-station { margin: 0; padding: .5em .65em; }
+  .bw-station::after { display: none; }
+  .bw-aktiv { transform: none; }
+  .bw-rolle { display: none; }
+  .bw-station:not(.bw-aktiv) .bw-inhalt { display: none; }
+  /* Letzter Schritt: keine aktive Station – alle zeigen ihren Inhalt. */
+  .bw-alle .bw-station .bw-inhalt { display: block; }
+  .bw-aktiv .bw-inhalt { margin-top: .5em; }
+  .bw-chip { display: block; margin-top: .5em; }
+  .bw-chip .bw-zettel { width: auto; max-width: 16em; }
+}

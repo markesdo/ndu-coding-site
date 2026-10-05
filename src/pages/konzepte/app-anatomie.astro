@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Bestellweg from '../../components/sota/Bestellweg.tsx';
 const layers = [
   { id: 'frontend', ico: '🪑', name: 'Frontend', meta: 'Gastraum – was Gäste sehen und anfassen', files: 'src/app/page.tsx · src/components/',
     text: 'Alles, was im Browser sichtbar ist: Seiten, Buttons, Formulare, Farben. Läuft auf dem Gerät der Nutzer*innen. In Campus Events: die Startseite, die Eventkarten, der Header.',
@@ -62,13 +63,7 @@ const layers = [
 
   <h2>Eine Bestellung durchs Haus</h2>
   <p>Was passiert, wenn jemand bei einem Event auf „Ich komme“ klickt?</p>
-  <ol class="steps">
-    <li><strong>Frontend</strong> Der Button registriert den Klick und schickt eine Anfrage: <em>„POST /api/rsvp, Event 42, Nutzerin Lena“</em>.</li>
-    <li><strong>API</strong> Der Endpoint <code>/api/rsvp</code> nimmt die Anfrage an.</li>
-    <li><strong>Backend</strong> Prüft: Ist Lena angemeldet? Gibt es Event 42? Hat sie schon zugesagt?</li>
-    <li><strong>Datenbank</strong> Neue Zeile in der Tabelle <code>rsvps</code>: Event 42, Lena, jetzt.</li>
-    <li><strong>Zurück</strong> Antwort „ok, 13 Zusagen“ → API → Frontend zeigt „Zugesagt ✓ · 13“.</li>
-  </ol>
+  <Bestellweg client:visible />
   <Callout type="concept" title="Warum ihr das wissen müsst">
     <p>Wenn etwas nicht funktioniert, ist die erste Frage immer: <strong>in welcher Schicht?</strong> Sieht man den Fehler im Browser (Frontend) oder im Terminal (Backend)? Ist die Zeile in der Datenbank angekommen? Allein mit dieser Frage löst ihr die Hälfte aller Probleme – und gebt Claude die entscheidende Information mit.</p>
   </Callout>
