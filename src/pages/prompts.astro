@@ -14,17 +14,17 @@ import Prompt from '../components/Prompt.astro';
   <Prompt label="Morgen-Briefing">Lies docs/PRD.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welche Story als Nächstes dran ist und warum.</Prompt>
 
   <h2>Spezifizieren</h2>
-  <Prompt label="PRD erarbeiten (Plan Mode)">Lies docs/PRD-VORLAGE.md. Ich möchte [Idee in einem Satz]. Stell mir zu jedem Abschnitt der Vorlage 1–2 Rückfragen, eine nach der anderen. Schreib danach das fertige PRD nach docs/PRD.md – eine Seite, mit klarer Abgrenzung, was das Produkt NICHT macht.</Prompt>
+  <Prompt label="Neue Idee → PRD und Backlog" note="Claude fragt nach – eine Frage pro Nachricht –, schlägt 2–3 Varianten vor und schreibt PRD und Backlog erst nach eurem Okay.">/ndu-idee [Idee in einem Satz]</Prompt>
   <Prompt label="Backlog aus PRD">Leite aus docs/PRD.md 5–8 User Stories ab, geordnet so, dass nach jeder Story die App nützlicher ist als vorher. Jede Story mit 3–5 Akzeptanzkriterien im Format „Gegeben: … Wenn …, dann …“, davon mindestens ein Negativfall. Schreib sie nach docs/BACKLOG.md. Markiere, welche Stories du für das absolute Minimum hältst.</Prompt>
   <Prompt label="Story aus einem Satz">Formuliere aus „[Wunsch in einem Satz]“ eine User Story mit 3–5 Akzeptanzkriterien (Gegeben/Wenn/Dann, inkl. Negativfall) und häng sie ans Backlog. Frag mich, wo sie priorisiert werden soll.</Prompt>
   <Prompt label="MVP schneiden">Welche eine Story müsste funktionieren, damit eine echte Person das Produkt einmal sinnvoll benutzt? Begründe, und schlag vor, was auf „Später“ wandert.</Prompt>
 
   <h2>Bauen</h2>
-  <Prompt label="Story umsetzen">Setze Story [Nummer] aus docs/BACKLOG.md um. Zeig mir zuerst deinen Plan in 3–5 Punkten und warte auf mein Okay. Danach geh die Akzeptanzkriterien einzeln durch und sag mir, was ich im Browser prüfen soll.</Prompt>
+  <Prompt label="Story umsetzen">Setze Story [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <Prompt label="Kleine Änderung">Ändere [genau eine Sache] – sonst nichts. Sag mir danach, welche Datei du angefasst hast.</Prompt>
   <Prompt label="Screenshot-Feedback">[Screenshot einfügen] Auf diesem Screenshot ist [Beobachtung]. Mach [gewünschte Änderung], ohne das restliche Design zu verändern.</Prompt>
   <Prompt label="TDD (Test-Driven Development)" note="TDD heißt: erst Tests aus den Akzeptanzkriterien, dann die Funktion, bis alle Tests bestehen. Mehr dazu unter „Vom Prototyp zum Produkt“.">Setze Story [Nummer] nach TDD um: Schreib zuerst Playwright-Tests für alle Akzeptanzkriterien und führe sie aus – sie müssen rot sein. Dann baue die Funktion, bis alle Tests grün sind. Ändere die Tests dabei nicht, außer du erklärst mir warum.</Prompt>
-  <Prompt label="KI-Feature (Story S8)">Setze Story S8 um: Beim Anlegen eines Events gibt es einen Button „Beschreibung vorschlagen“, der aus Titel, Kategorie und Ort mit der Claude-API (Modell claude-sonnet, Key aus ANTHROPIC_API_KEY, nur im Backend) eine Beschreibung in 2–3 Sätzen generiert. Begrenze auf 5 Aufrufe pro Minute und Person. Plan zuerst.</Prompt>
+  <Prompt label="KI-Feature (Story S8)">Setze Story S8 um: Beim Anlegen eines Events gibt es einen Button „Beschreibung vorschlagen“, der aus Titel, Kategorie und Ort mit der Claude-API (Modell claude-sonnet, Key aus ANTHROPIC_API_KEY, nur im Backend) eine Beschreibung in 2–3 Sätzen generiert. Begrenze auf 5 Aufrufe pro Minute und Person. Frag zuerst, wenn etwas unklar ist.</Prompt>
 
   <h2>Prüfen & Debuggen</h2>
   <Prompt label="Qualitätsprüfung">/ndu-check</Prompt>

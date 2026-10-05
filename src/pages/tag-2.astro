@@ -36,7 +36,7 @@ import { bild } from '../components/anleitung-bilder';
       { q: 'Claude hat vor 40 Nachrichten eine Designentscheidung mit euch getroffen und hält sich jetzt nicht mehr daran. Wahrscheinlichste Ursache?', o: ['Claude wurde zwischendurch aktualisiert', 'Das Kontextfenster ist voll, die Entscheidung ist aus dem Blick', 'Ein Bug in Next.js'], a: 1, w: 'Dauerhaftes gehört in CLAUDE.md oder docs/ENTSCHEIDUNGEN.md – dann ist es in jeder Session da.' },
       { q: 'Was ist ein gutes Akzeptanzkriterium?', o: ['„Die Seite soll schön sein.“', '„Gegeben: Der Titel ist leer. Wenn ich speichere, dann sehe ich eine Fehlermeldung und nichts wird gespeichert.“', '„Der Agent soll React benutzen.“'], a: 1, w: 'Konkret, durchklickbar, mit Negativfall – und kein Wort zum Wie.' },
       { q: 'Ihr habt eine Stunde mit Claude gearbeitet, nichts committet, und jetzt ist alles kaputt. Was hilft?', o: ['Codespace löschen', 'Source Control → Discard: zurück zum letzten Commit', 'Weiter prompten, bis es geht'], a: 1, w: 'Deshalb: nach jeder funktionierenden Story committen – dann ist der Rückschritt klein.' },
-      { q: 'Wofür ist Plan Mode?', o: ['Claude denkt und fragt, ändert aber noch nichts', 'Claude arbeitet schneller', 'Claude plant den Kurs'], a: 0, w: 'Für alles, was mehr als eine Datei betrifft: erst Plan lesen, dann Okay geben.' },
+      { q: 'Wofür ist Plan Mode?', o: ['Claude denkt und fragt, ändert aber noch nichts', 'Claude arbeitet schneller', 'Claude plant den Kurs'], a: 0, w: 'Für Neues und Unklares – Claude fragt und schlägt vor, statt zu raten. Für eine klare Story mit Kriterien braucht ihr ihn nicht.' },
       { q: 'Ein API-Key gehört …', o: ['in die Datei, die ihn braucht', 'in .env.local – und die ist in .gitignore', 'in die CLAUDE.md'], a: 1, w: 'Ein Key, der einmal auf GitHub war, gilt als verbrannt.' },
       { q: 'Was ist der Unterschied zwischen Website und Web-App?', o: ['Web-Apps sind größer', 'Web-Apps haben Login, speichern Daten und reagieren auf Nutzer*innen', 'Websites laufen nicht im Browser'], a: 1, w: 'Campus Events ist eine Web-App – sobald jemand zusagen kann, speichern wir Daten.' },
       { q: 'Claude sagt „Ich habe das getestet, es funktioniert.“ Was tut ihr?', o: ['Glauben', 'Selbst im Browser prüfen – ihr seid der letzte Prüfschritt', 'Nochmal fragen, ob es sicher ist'], a: 1, w: 'Claude sieht euren Browser nicht. Akzeptanzkriterien durchklicken.' },
@@ -114,7 +114,7 @@ import { bild } from '../components/anleitung-bilder';
   <h3>c) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
   <h3>d) Story S4 bauen lassen (45 min)</h3>
-  <Prompt>Setze Story S4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Zeig mir zuerst deinen Plan und warte auf mein Okay.</Prompt>
+  <Prompt>Setze Story S4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst.</Prompt>
   <p>Prüfen: Event anlegen → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
   <h3>e) Sichern</h3>
   <Prompt>/ndu-check – und wenn alles grün ist: S4 auf fertig setzen und /ndu-commit</Prompt>
@@ -130,10 +130,10 @@ import { bild } from '../components/anleitung-bilder';
   <hr />
   <h2 id="uebung-4">Übung 4 · Login & RSVP <span class="pill uebung">90 min</span></h2>
   <h3>a) Story S5 – Anmelden (30 min)</h3>
-  <Prompt>Setze Story S5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-events, die ohne Login zur Anmeldung weiterleitet. Plan zuerst.</Prompt>
+  <Prompt>Setze Story S5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-events, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
   <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, <code>/meine-events</code> aufrufen → Weiterleitung?</p>
   <h3>b) Story S6 – Zusagen (30 min)</h3>
-  <Prompt>Setze Story S6 um: RSVP-Button pro Event mit Zähler, Zusage zurücknehmen, ohne Login zur Anmeldung führen. Tabelle rsvps mit RLS: jeder darf zählen, nur die eigene Zusage darf angelegt und gelöscht werden. Plan zuerst.</Prompt>
+  <Prompt>Setze Story S6 um: RSVP-Button pro Event mit Zähler, Zusage zurücknehmen, ohne Login zur Anmeldung führen. Tabelle rsvps mit RLS: jeder darf zählen, nur die eigene Zusage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist.</Prompt>
   <h3>c) Absichtlich kaputt (20 min, Tandem)</h3>
   <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen: Die andere Person in eurem Tandem muss den Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurücktauschen und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
   <h3>d) RLS-Test (10 min)</h3>
