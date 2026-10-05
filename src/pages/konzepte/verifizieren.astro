@@ -7,7 +7,7 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="Verifizieren & Debuggen">
   <span class="eyebrow">Konzept 5 · Tag 2</span>
   <h1>Verifizieren & Debuggen</h1>
-  <p class="lead">Der Agent schreibt den Code. Sie entscheiden, ob er fertig ist. Das ist kein Nebenjob – das ist die Rolle.</p>
+  <p class="lead">Der Agent schreibt den Code. Ihr entscheidet, ob er fertig ist. Das ist kein Nebenjob – das ist die Rolle.</p>
 
   <h2>Wo Fehler sichtbar werden</h2>
   <div class="grid">
@@ -19,23 +19,23 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Fehler richtig übergeben</h2>
   <ol class="steps">
-    <li><strong>Reproduzieren</strong> Was genau haben Sie getan, in welcher Reihenfolge? Passiert es jedes Mal?</li>
+    <li><strong>Reproduzieren</strong> Was genau habt ihr getan, in welcher Reihenfolge? Passiert es jedes Mal?</li>
     <li><strong>Schicht bestimmen</strong> Konsole oder Terminal? Kam die Anfrage an (Network)? Ist die Zeile in der Datenbank?</li>
     <li><strong>Meldung komplett kopieren</strong> – die ersten 10–20 Zeilen reichen meist, aber vollständig, nicht abgetippt.</li>
-    <li><strong>Erst erklären lassen, dann lösen</strong> Der Debug-Prompt. Verstehen Sie die Erklärung nicht, fragen Sie nach, bevor Sie „ja“ sagen.</li>
+    <li><strong>Erst erklären lassen, dann lösen</strong> Der Debug-Prompt. Versteht ihr die Erklärung nicht, fragt nach, bevor ihr „ja“ sagt.</li>
     <li><strong>Nach der Reparatur: Source Control</strong> Wurde nur der Fehler behoben – oder hat die Lösung Nebenwirkungen?</li>
   </ol>
   <Prompt label="Debug-Prompt">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [Schritte]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
   <Prompt label="Wenn Claude im Kreis läuft" note="Nach dem zweiten gescheiterten Versuch: /clear, dann dieser Prompt.">Wir haben Fehler X schon zweimal erfolglos behoben. Ändere jetzt nichts. Nenn mir drei verschiedene mögliche Ursachen, wie wir jede einzelne ausschließen können, und welche Information dir fehlt.</Prompt>
 
   <h2>Definition of Done</h2>
-  <p>Eine Story ist fertig, wenn <strong>alle</strong> Akzeptanzkriterien im Browser erfüllt sind – von Ihnen geprüft, nicht vom Agenten behauptet –, <code>/pruefe</code> grün ist, und der Stand committet ist. „Sieht gut aus“ ist kein Kriterium. „Beim Klick auf X passiert Y“ ist eines.</p>
-  <Callout type="concept" title="Der Agent sieht Ihren Browser nicht">
-    <p>Claude Code kann Lint und Build ausführen und sagt dann oft „funktioniert“. Es hat aber keinen Browser offen. Ob der Button an der richtigen Stelle ist, ob das Formular sich anfühlt wie ein Formular, ob nach dem Reload alles noch da ist – das sehen nur Sie. Außer, Sie geben ihm Augen:</p>
+  <p>Eine Story ist fertig, wenn <strong>alle</strong> Akzeptanzkriterien im Browser erfüllt sind – von euch geprüft, nicht vom Agenten behauptet –, <code>/pruefe</code> grün ist, und der Stand committet ist. „Sieht gut aus“ ist kein Kriterium. „Beim Klick auf X passiert Y“ ist eines.</p>
+  <Callout type="concept" title="Der Agent sieht euren Browser nicht">
+    <p>Claude Code kann Lint und Build ausführen und sagt dann oft „funktioniert“. Es hat aber keinen Browser offen. Ob der Button an der richtigen Stelle ist, ob das Formular sich anfühlt wie ein Formular, ob nach dem Reload alles noch da ist – das seht nur ihr. Außer, ihr gebt ihm Augen:</p>
   </Callout>
 
   <h2>Der Agent prüft sich selbst</h2>
-  <p>Zwei Wege, dem Agenten Augen zu geben. <strong>Tests:</strong> Ein Akzeptanzkriterium wird zu einem Skript, das die App im Browser bedient und prüft (Playwright). Einmal geschrieben, läuft es bei jeder Änderung wieder – Ihr Sicherheitsnetz. <strong>Browser-MCP:</strong> Claude steuert selbst einen Browser, klickt durch, macht Screenshots, liest die Konsole. Beides setzen wir an Tag 3 ein; heute reicht es zu wissen, dass es geht.</p>
+  <p>Zwei Wege, dem Agenten Augen zu geben. <strong>Tests:</strong> Ein Akzeptanzkriterium wird zu einem Skript, das die App im Browser bedient und prüft (Playwright). Einmal geschrieben, läuft es bei jeder Änderung wieder – euer Sicherheitsnetz. <strong>Browser-MCP:</strong> Claude steuert selbst einen Browser, klickt durch, macht Screenshots, liest die Konsole. Beides setzen wir an Tag 3 ein; heute reicht es zu wissen, dass es geht.</p>
   <Prompt label="Test aus Akzeptanzkriterium">Schreib einen Playwright-Test für dieses Akzeptanzkriterium von Story S6: „Gegeben: Ich bin angemeldet. Wenn ich ‚Ich komme‘ klicke, dann steht der Button auf ‚Zugesagt ✓‘ und der Zähler steigt um 1.“ Richte Playwright ein, falls nötig, führe den Test aus und zeig mir das Ergebnis.</Prompt>
 
   <h2>Die Klassiker</h2>
@@ -44,7 +44,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <tr><td><code>Module not found</code></td><td>Datei umbenannt/gelöscht oder Paket nicht installiert</td></tr>
     <tr><td><code>useState is not defined</code> / „only works in Client Components“</td><td>Interaktive Komponente ohne <code>"use client"</code></td></tr>
     <tr><td><code>401 Unauthorized</code></td><td>Nicht angemeldet, oder Key fehlt/falsch</td></tr>
-    <tr><td><code>new row violates row-level security policy</code></td><td>RLS verbietet die Operation – Policy fehlt oder Sie sind nicht angemeldet</td></tr>
+    <tr><td><code>new row violates row-level security policy</code></td><td>RLS verbietet die Operation – Policy fehlt oder ihr seid nicht angemeldet</td></tr>
     <tr><td><code>Hydration failed</code></td><td>Server und Browser haben Unterschiedliches gerendert (oft: Datum/Zufall). Claude kennt das.</td></tr>
     <tr><td><code>ECONNREFUSED</code> / <code>fetch failed</code></td><td>Die Gegenstelle ist nicht erreichbar – URL falsch, Dienst pausiert, Dev-Server nicht neu gestartet nach <code>.env</code>-Änderung</td></tr>
   </table>

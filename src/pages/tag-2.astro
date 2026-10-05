@@ -8,7 +8,7 @@ import FooterNav from '../components/FooterNav.astro';
 <Layout title="Tag 2 · Bauen wie ein Profi">
   <span class="eyebrow">Freitag, 9. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 2 · Bauen wie ein Profi</h1>
-  <p class="lead">Die App bekommt echte Daten, Login und eine öffentliche Adresse. Sie lernen, Fehler zu finden und richtig zu übergeben – und den Agenten über längere Arbeit hinweg zu steuern.</p>
+  <p class="lead">Die App bekommt echte Daten, Login und eine öffentliche Adresse. Ihr lernt, Fehler zu finden und richtig zu übergeben – und den Agenten über längere Arbeit hinweg zu steuern.</p>
 
   <h2>Ablauf</h2>
   <div class="schedule">
@@ -29,14 +29,14 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="quiz">Recap-Quiz</h2>
   <div class="quiz" id="quiz-t1">
     {[
-      { q: 'Jemand klickt auf „Ich komme“ und nichts passiert. In der Browser-Konsole steht ein roter Fehler. In welcher Schicht suchen Sie zuerst?', o: ['Datenbank', 'Frontend', 'Hosting'], a: 1, w: 'Die Browser-Konsole zeigt Frontend-Fehler. Terminal-Fehler wären Backend.' },
-      { q: 'Claude hat vor 40 Nachrichten eine Designentscheidung mit Ihnen getroffen und hält sich jetzt nicht mehr daran. Wahrscheinlichste Ursache?', o: ['Claude wurde zwischendurch aktualisiert', 'Das Kontextfenster ist voll, die Entscheidung ist aus dem Blick', 'Ein Bug in Next.js'], a: 1, w: 'Dauerhaftes gehört in CLAUDE.md oder docs/ENTSCHEIDUNGEN.md – dann ist es in jeder Session da.' },
+      { q: 'Jemand klickt auf „Ich komme“ und nichts passiert. In der Browser-Konsole steht ein roter Fehler. In welcher Schicht sucht ihr zuerst?', o: ['Datenbank', 'Frontend', 'Hosting'], a: 1, w: 'Die Browser-Konsole zeigt Frontend-Fehler. Terminal-Fehler wären Backend.' },
+      { q: 'Claude hat vor 40 Nachrichten eine Designentscheidung mit euch getroffen und hält sich jetzt nicht mehr daran. Wahrscheinlichste Ursache?', o: ['Claude wurde zwischendurch aktualisiert', 'Das Kontextfenster ist voll, die Entscheidung ist aus dem Blick', 'Ein Bug in Next.js'], a: 1, w: 'Dauerhaftes gehört in CLAUDE.md oder docs/ENTSCHEIDUNGEN.md – dann ist es in jeder Session da.' },
       { q: 'Was ist ein gutes Akzeptanzkriterium?', o: ['„Die Seite soll schön sein.“', '„Gegeben: Der Titel ist leer. Wenn ich speichere, dann sehe ich eine Fehlermeldung und nichts wird gespeichert.“', '„Der Agent soll React benutzen.“'], a: 1, w: 'Konkret, durchklickbar, mit Negativfall – und kein Wort zum Wie.' },
-      { q: 'Sie haben eine Stunde mit Claude gearbeitet, nichts committet, und jetzt ist alles kaputt. Was hilft?', o: ['Codespace löschen', 'Source Control → Discard: zurück zum letzten Commit', 'Weiter prompten, bis es geht'], a: 1, w: 'Deshalb: nach jeder funktionierenden Story committen – dann ist der Rückschritt klein.' },
+      { q: 'Ihr habt eine Stunde mit Claude gearbeitet, nichts committet, und jetzt ist alles kaputt. Was hilft?', o: ['Codespace löschen', 'Source Control → Discard: zurück zum letzten Commit', 'Weiter prompten, bis es geht'], a: 1, w: 'Deshalb: nach jeder funktionierenden Story committen – dann ist der Rückschritt klein.' },
       { q: 'Wofür ist Plan Mode?', o: ['Claude denkt und fragt, ändert aber noch nichts', 'Claude arbeitet schneller', 'Claude plant den Kurs'], a: 0, w: 'Für alles, was mehr als eine Datei betrifft: erst Plan lesen, dann Okay geben.' },
       { q: 'Ein API-Key gehört …', o: ['in die Datei, die ihn braucht', 'in .env.local – und die ist in .gitignore', 'in die CLAUDE.md'], a: 1, w: 'Ein Key, der einmal auf GitHub war, gilt als verbrannt.' },
       { q: 'Was ist der Unterschied zwischen Website und Web-App?', o: ['Web-Apps sind größer', 'Web-Apps haben Login, speichern Daten und reagieren auf Nutzer*innen', 'Websites laufen nicht im Browser'], a: 1, w: 'Campus Events ist eine Web-App – sobald jemand zusagen kann, speichern wir Daten.' },
-      { q: 'Claude sagt „Ich habe das getestet, es funktioniert.“ Was tun Sie?', o: ['Glauben', 'Selbst im Browser prüfen – Sie sind der letzte Prüfschritt', 'Nochmal fragen, ob es sicher ist'], a: 1, w: 'Claude sieht Ihren Browser nicht. Akzeptanzkriterien durchklicken.' },
+      { q: 'Claude sagt „Ich habe das getestet, es funktioniert.“ Was tut ihr?', o: ['Glauben', 'Selbst im Browser prüfen – ihr seid der letzte Prüfschritt', 'Nochmal fragen, ob es sicher ist'], a: 1, w: 'Claude sieht euren Browser nicht. Akzeptanzkriterien durchklicken.' },
     ].map((it, i) => (
       <div class="q" data-a={it.a}>
         <p>{i + 1}. {it.q}</p>
@@ -67,21 +67,21 @@ import FooterNav from '../components/FooterNav.astro';
   <ol class="steps">
     <li><strong>Account</strong> <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a> → Sign in with GitHub.</li>
     <li><strong>Projekt</strong> New project → Name <code>campus-events</code>, Region <em>Frankfurt (eu-central-1)</em>, Datenbank-Passwort generieren lassen und <strong>im Passwortmanager speichern</strong>.</li>
-    <li><strong>Keys</strong> Im Projekt oben auf <em>Connect</em> klicken, Framework <em>Next.js</em> wählen: Dort stehen <em>Project URL</em> und <em>Publishable Key</em> (beginnt mit <code>sb_publishable_</code>) – die kommen gleich in <code>.env.local</code>. Die „Legacy“-Keys (anon, service_role) brauchen Sie nicht.</li>
+    <li><strong>Keys</strong> Im Projekt oben auf <em>Connect</em> klicken, Framework <em>Next.js</em> wählen: Dort stehen <em>Project URL</em> und <em>Publishable Key</em> (beginnt mit <code>sb_publishable_</code>) – die kommen gleich in <code>.env.local</code>. Die „Legacy“-Keys (anon, service_role) braucht ihr nicht.</li>
     <li><strong>E-Mail-Bestätigung aus</strong> (für den Kurs): Authentication → Providers → Email → „Confirm email“ deaktivieren. Sonst braucht jede Test-Anmeldung eine echte E-Mail.</li>
   </ol>
   <h3>b) Supabase-MCP verbinden (10 min)</h3>
-  <p>MCP ist die Steckdose, über die Claude direkt mit Supabase sprechen kann: Tabellen anlegen, Daten ansehen, Fehler lesen – ohne dass Sie etwas kopieren.</p>
-  <Prompt label="Im Terminal (nicht in Claude) – PROJECT-REF durch Ihren Project Ref ersetzen">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF"</Prompt>
-  <p class="small muted">Den <em>Project Ref</em> finden Sie in der Supabase-URL (<code>https://<strong>abcdefgh</strong>.supabase.co</code>). Der Zusatz <code>project_ref</code> beschränkt Claude auf dieses eine Projekt. Danach <code>claude</code> starten, <code>/mcp</code> eingeben, „supabase“ wählen und „Authenticate“ – die Anmeldung läuft im Browser, ein Schlüssel muss nirgends eingetragen werden.</p>
-  <p><strong>Falls die Anmeldung im Browser nicht klappt</strong> (im Codespace kann der Rücksprung nach der Anmeldung scheitern): Verbinden Sie den MCP-Server stattdessen mit einem persönlichen Zugriffstoken.</p>
+  <p>MCP ist die Steckdose, über die Claude direkt mit Supabase sprechen kann: Tabellen anlegen, Daten ansehen, Fehler lesen – ohne dass ihr etwas kopiert.</p>
+  <Prompt label="Im Terminal (nicht in Claude) – PROJECT-REF durch euren Project Ref ersetzen">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF"</Prompt>
+  <p class="small muted">Den <em>Project Ref</em> findet ihr in der Supabase-URL (<code>https://<strong>abcdefgh</strong>.supabase.co</code>). Der Zusatz <code>project_ref</code> beschränkt Claude auf dieses eine Projekt. Danach <code>claude</code> starten, <code>/mcp</code> eingeben, „supabase“ wählen und „Authenticate“ – die Anmeldung läuft im Browser, ein Schlüssel muss nirgends eingetragen werden.</p>
+  <p><strong>Falls die Anmeldung im Browser nicht klappt</strong> (im Codespace kann der Rücksprung nach der Anmeldung scheitern): Verbindet den MCP-Server stattdessen mit einem persönlichen Zugriffstoken.</p>
   <ol class="small">
-    <li>Supabase → Account → <a href="https://supabase.com/dashboard/account/tokens" target="_blank" rel="noopener">Access Tokens</a> → neuen Token erzeugen, Name „Kurs-MCP“, auf Ihr Projekt <code>campus-events</code> beschränken. Token kopieren – er wird nur einmal angezeigt.</li>
+    <li>Supabase → Account → <a href="https://supabase.com/dashboard/account/tokens" target="_blank" rel="noopener">Access Tokens</a> → neuen Token erzeugen, Name „Kurs-MCP“, auf euer Projekt <code>campus-events</code> beschränken. Token kopieren – er wird nur einmal angezeigt.</li>
     <li>Im Terminal den bisherigen Eintrag entfernen: <code>claude mcp remove supabase</code></li>
     <li>Neu verbinden – <code>PROJECT-REF</code> und <code>TOKEN</code> ersetzen:</li>
   </ol>
   <Prompt label="Im Terminal (nicht in Claude) – Alternative mit Token">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF" --header "Authorization: Bearer TOKEN"</Prompt>
-  <p class="small muted">Der Token ist ein Schlüssel zu Ihrem Supabase-Konto: Er wird nur in Ihrem Codespace gespeichert, nicht im Repo. Fügen Sie ihn nie in den Chat mit Claude oder in eine Datei im Projekt ein. Nach dem Kurs können Sie ihn unter Access Tokens wieder löschen.</p>
+  <p class="small muted">Der Token ist ein Schlüssel zu eurem Supabase-Konto: Er wird nur in eurem Codespace gespeichert, nicht im Repo. Fügt ihn nie in den Chat mit Claude oder in eine Datei im Projekt ein. Nach dem Kurs könnt ihr ihn unter Access Tokens wieder löschen.</p>
   <h3>c) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
   <h3>d) Story S4 bauen lassen (45 min)</h3>
@@ -106,15 +106,15 @@ import FooterNav from '../components/FooterNav.astro';
   <h3>b) Story S6 – Zusagen (30 min)</h3>
   <Prompt>Setze Story S6 um: RSVP-Button pro Event mit Zähler, Zusage zurücknehmen, ohne Login zur Anmeldung führen. Tabelle rsvps mit RLS: jeder darf zählen, nur die eigene Zusage darf angelegt und gelöscht werden. Plan zuerst.</Prompt>
   <h3>c) Absichtlich kaputt (20 min, Tandem)</h3>
-  <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen: Ihr*e Tandempartner*in muss den Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurücktauschen und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
+  <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen: Die andere Person in eurem Tandem muss den Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurücktauschen und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
   <h3>d) RLS-Test (10 min)</h3>
-  <p>Zwei Browser (einer im Inkognito-Modus), zwei Accounts. Account A sagt zu. Kann Account B diese Zusage löschen? Fragen Sie Claude:</p>
+  <p>Zwei Browser (einer im Inkognito-Modus), zwei Accounts. Account A sagt zu. Kann Account B diese Zusage löschen? Fragt Claude:</p>
   <Prompt>Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle rsvps verhindern, dass jemand fremde Zusagen löscht oder ändert. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
   <Checklist id="t2-u4" items={[
     'Registrieren, anmelden, abmelden funktioniert; Konto in Supabase sichtbar',
     '<code>/meine-events</code> leitet ohne Login weiter',
     'Zusagen und zurücknehmen, Zähler stimmt',
-    'Fehlerkarte eingebaut – Ihr*e Tandempartner*in hat ihn gefunden',
+    'Fehlerkarte eingebaut – die andere Person im Tandem hat ihn gefunden',
     'RLS getestet: fremde Zusagen sind geschützt',
     'S5, S6 (und optional S7) auf ✅, committet',
   ]} />
@@ -123,11 +123,11 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="uebung-5">Übung 5 · Deploy <span class="pill uebung">40 min</span></h2>
   <ol class="steps">
     <li><strong>Vercel-Account</strong> <a href="https://vercel.com/signup" target="_blank" rel="noopener">vercel.com</a> → Continue with GitHub (Hobby, kostenlos).</li>
-    <li><strong>Projekt importieren</strong> Add New → Project → Ihr Repo <code>campus-events</code> → Import. Framework wird als Next.js erkannt.</li>
-    <li><strong>Environment Variables</strong> Vor dem Deploy: die beiden Werte aus Ihrer <code>.env.local</code> eintragen (Name und Wert). Das ist der Grund, warum die Datei nie ins Repo musste.</li>
-    <li><strong>Deploy</strong> ~1 Minute. Sie bekommen eine URL wie <code>campus-events-xyz.vercel.app</code>.</li>
-    <li><strong>Supabase-Redirect</strong> Authentication → URL Configuration → Site URL auf die Vercel-URL setzen, sonst landet der Login nach dem Deploy auf localhost. Fragen Sie Claude, wenn unklar.</li>
-    <li><strong>Am Handy öffnen.</strong> Registrieren, zusagen. Das ist Ihre App. Ab jetzt deployt jeder Push automatisch.</li>
+    <li><strong>Projekt importieren</strong> Add New → Project → euer Repo <code>campus-events</code> → Import. Framework wird als Next.js erkannt.</li>
+    <li><strong>Environment Variables</strong> Vor dem Deploy: die beiden Werte aus eurer <code>.env.local</code> eintragen (Name und Wert). Das ist der Grund, warum die Datei nie ins Repo musste.</li>
+    <li><strong>Deploy</strong> ~1 Minute. Ihr bekommt eine URL wie <code>campus-events-xyz.vercel.app</code>.</li>
+    <li><strong>Supabase-Redirect</strong> Authentication → URL Configuration → Site URL auf die Vercel-URL setzen, sonst landet der Login nach dem Deploy auf localhost. Fragt Claude, wenn unklar.</li>
+    <li><strong>Am Handy öffnen.</strong> Registrieren, zusagen. Das ist eure App. Ab jetzt deployt jeder Push automatisch.</li>
   </ol>
   <Prompt label="Wenn der Build auf Vercel fehlschlägt">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen einfügen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
   <Checklist id="t2-u5" items={[

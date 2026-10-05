@@ -13,7 +13,7 @@ Erfolgskriterien:
 - Aussage fachlich korrekt für Claude Code 2026: Auto-Compact statt „Älteres fällt still raus“; automatisch geladen wird nur `CLAUDE.md` samt `@`-Verweisen.
 - Funktioniert in Light/Dark, auf dem Handy (≤ 900 px, getestet bei 390 px) und im Vollbild; mit „Bewegung reduzieren“ ohne Bewegung.
 
-Zielgruppe der Texte: Master-Studierende ohne Programmiererfahrung – klar, präzise, nicht vereinfacht-kindlich. Anrede „Sie“.
+Zielgruppe der Texte: Master-Studierende ohne Programmiererfahrung – klar, präzise, nicht vereinfacht-kindlich. Anrede „ihr“ (Entscheidung 5.10., abends; die Beschriftungstexte unten wurden entsprechend umgestellt).
 
 ## Abhängigkeit (anderes Repo)
 
@@ -56,7 +56,7 @@ Ein querliegender Rahmen = das Fenster (Kapazität fest 100 Einheiten). Blöcke 
 | Art | Hintergrund (Token) | Beispiele |
 |---|---|---|
 | `fest` – wird bei jedem Start geladen | `--purple` | Systemregeln, `CLAUDE.md`, ab Schritt 9 `ENTSCHEIDUNGEN.md` |
-| `auftrag` | `--accent` | Ihr Prompt mit der Absprache |
+| `auftrag` | `--accent` | Euer Prompt mit der Absprache |
 | `datei` | `--green` | gelesene Dateien |
 | `werkzeug` | `--yellow` | Build-Ausgabe, Fehlerlog |
 | `verlauf` | `--blue` | Nachrichten hin und her |
@@ -76,20 +76,20 @@ Füllstände sind didaktisch gewählt, keine echten Token-Zahlen. Blockgrößen:
 
 | # | Bild | Füllstand | Beschriftung |
 |---|---|---|---|
-| 1 | Systemregeln und `CLAUDE.md` liegen im Rahmen (statisch, keine Eintrittsanimation) | 14 % | **Jede Session beginnt gleich.** Bevor Sie etwas schreiben, liegen schon die Systemregeln und Ihre `CLAUDE.md` im Kontextfenster – dem Arbeitsgedächtnis des Modells. |
-| 2 | Auftrag kommt hinzu | 18 % | **Ihr Auftrag.** „Füge auf der Event-Seite einen RSVP-Button hinzu – nur für angemeldete Nutzer*innen.“ Die Einschränkung am Ende ist eine Absprache, auf die es später ankommt. |
+| 1 | Systemregeln und `CLAUDE.md` liegen im Rahmen (statisch, keine Eintrittsanimation) | 14 % | **Jede Session beginnt gleich.** Bevor ihr etwas schreibt, liegen schon die Systemregeln und eure `CLAUDE.md` im Kontextfenster – dem Arbeitsgedächtnis des Modells. |
+| 2 | Auftrag kommt hinzu | 18 % | **Euer Auftrag.** „Füge auf der Event-Seite einen RSVP-Button hinzu – nur für angemeldete Nutzer*innen.“ Die Einschränkung am Ende ist eine Absprache, auf die es später ankommt. |
 | 3 | Vier Dateien fließen nacheinander hinein | 46 % | **Claude liest.** Um den Auftrag zu verstehen, öffnet der Agent die relevanten Dateien. Jede gelesene Datei belegt Platz – deshalb lohnt es sich, gezielt auf die betroffenen Stellen zu verweisen. |
 | 4 | Build-Ausgabe und ein großer Fehlerlog | 74 % | **Werkzeuge liefern Ergebnisse.** Build-Ausgaben und Fehlermeldungen landen ebenfalls im Kontext. Ein vollständiges Log mit 400 Zeilen verdrängt mehr, als es nützt; die entscheidenden fünf Zeilen genügen. |
-| 5 | Ein Verlaufsblock kommt hinzu; Auftrag und die ersten beiden Dateien verblassen | 82 % | **Je voller, desto unschärfer.** Das Modell gewichtet nicht alles gleich. Je mehr im Fenster liegt, desto leichter gehen frühe Details unter – etwa Ihre Einschränkung aus Schritt 2. Die Antworten werden ungenauer, lange bevor das Fenster voll ist. |
-| 6 | Auftakt: weiterer Verlaufsblock, 96 %. Dann schrumpfen Auftrag, Dateien, Werkzeug- und Verlaufsblöcke zu einem Block „Zusammenfassung“; der Auftrag ist nicht mehr da | 96 % → 30 % | **Auto-Compact.** Kurz vor der Grenze fasst Claude Code den Verlauf automatisch zusammen. Das schafft Platz, kostet aber Detail – was nicht in der Zusammenfassung steht, ist weg. Hier: Ihre Einschränkung aus Schritt 2. |
-| 7 | Gleicher Zustand wie 6, aber der Auftrag sitzt als eigener Block neben der Zusammenfassung, Etikett „bleibt“ | 34 % | **Besser: selbst verdichten.** Mit `/compact` lösen Sie die Zusammenfassung rechtzeitig selbst aus und sagen, was bleiben muss: `/compact Behalte: nur für angemeldete Nutzer*innen`. Dann übersteht die Absprache die Verdichtung. |
+| 5 | Ein Verlaufsblock kommt hinzu; Auftrag und die ersten beiden Dateien verblassen | 82 % | **Je voller, desto unschärfer.** Das Modell gewichtet nicht alles gleich. Je mehr im Fenster liegt, desto leichter gehen frühe Details unter – etwa eure Einschränkung aus Schritt 2. Die Antworten werden ungenauer, lange bevor das Fenster voll ist. |
+| 6 | Auftakt: weiterer Verlaufsblock, 96 %. Dann schrumpfen Auftrag, Dateien, Werkzeug- und Verlaufsblöcke zu einem Block „Zusammenfassung“; der Auftrag ist nicht mehr da | 96 % → 30 % | **Auto-Compact.** Kurz vor der Grenze fasst Claude Code den Verlauf automatisch zusammen. Das schafft Platz, kostet aber Detail – was nicht in der Zusammenfassung steht, ist weg. Hier: eure Einschränkung aus Schritt 2. |
+| 7 | Gleicher Zustand wie 6, aber der Auftrag sitzt als eigener Block neben der Zusammenfassung, Etikett „bleibt“ | 34 % | **Besser: selbst verdichten.** Mit `/compact` löst ihr die Zusammenfassung rechtzeitig selbst aus und sagt, was bleiben muss: `/compact Behalte: nur für angemeldete Nutzer*innen`. Dann übersteht die Absprache die Verdichtung. |
 | 8 | `/clear`: alles außer den festen Blöcken fliegt hinaus | 14 % | **`/clear` – neue Session.** Nach einer abgeschlossenen Story ist ein leerer Kontext der beste Start: schnell, präzise, ohne Altlasten. Was nur im Chat stand, ist damit allerdings weg. |
-| 9 | `ENTSCHEIDUNGEN.md` dockt rechts an `CLAUDE.md` an, Etikett „in CLAUDE.md verknüpft“ | 18 % | **Dauerhaftes gehört in Dateien.** Entscheidungen, die über eine Session hinaus gelten, halten Sie in `docs/ENTSCHEIDUNGEN.md` fest. Im Kursprojekt ist die Datei in `CLAUDE.md` verknüpft und wird deshalb bei jedem Start geladen. Was nur im Chat stand, ist in der nächsten Session weg. |
+| 9 | `ENTSCHEIDUNGEN.md` dockt rechts an `CLAUDE.md` an, Etikett „in CLAUDE.md verknüpft“ | 18 % | **Dauerhaftes gehört in Dateien.** Entscheidungen, die über eine Session hinaus gelten, haltet ihr in `docs/ENTSCHEIDUNGEN.md` fest. Im Kursprojekt ist die Datei in `CLAUDE.md` verknüpft und wird deshalb bei jedem Start geladen. Was nur im Chat stand, ist in der nächsten Session weg. |
 
 ### Anpassungen am umgebenden Text
 
 - Karte „Es hat ein Gedächtnis mit Rand“: „Ist es voll, fällt Älteres raus.“ → „Wird es voll, fasst Claude Code den Verlauf zusammen – Details können dabei verloren gehen.“
-- Hinweistext über der Animation: „Klicken Sie auf die Animation und blättern Sie mit den Pfeiltasten – oder nutzen Sie die Buttons.“
+- Hinweistext über der Animation: „Klickt auf die Animation und blättert mit den Pfeiltasten – oder nutzt die Buttons.“
 - Der Absatz mit den drei Regeln unter dem Widget bleibt (stimmt, sobald das Template `@docs/ENTSCHEIDUNGEN.md` verknüpft).
 
 ## Nicht im Umfang

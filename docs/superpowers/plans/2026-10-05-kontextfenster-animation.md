@@ -16,7 +16,7 @@
 - Node ≥ 22.12.0 (already in `package.json` engines).
 - New runtime deps exactly: `@astrojs/react@^7`, `react@^19`, `react-dom@^19`, `motion@^14`. New dev deps exactly: `@types/react`, `@types/react-dom`, `vitest@^5`. Nothing else.
 - Imports for animation come from `motion/react`. No Motion `layout` prop on blocks.
-- All visible text German, „Sie“-Anrede, „*innen“, „…“-Anführungszeichen, Halbgeviertstrich „ – “. Captions verbatim from the spec table.
+- All visible text German, „ihr“-Anrede (umgestellt 5.10.), „*innen“, „…“-Anführungszeichen, Halbgeviertstrich „ – “. Captions verbatim from the spec table.
 - Colours only via tokens from `global.css` (`--purple`, `--accent`, `--green`, `--yellow`, `--blue`, `--muted`, `--bg`, `--bg-2`, `--fg`, `--border`, `--radius`, `--mono`). Dark mode follows the existing pattern: `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) … }` plus `:root[data-theme="dark"] …`.
 - Mobile breakpoint 900 px; must work at 390 px width without horizontal scroll.
 - Commit messages in German; subject = result for users; end with `Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>`.
@@ -227,10 +227,10 @@ const PRELUDES: Partial<Record<number, Block[]>> = {
 export const STEPS: Schritt[] = [
   {
     title: 'Jede Session beginnt gleich.',
-    text: 'Bevor Sie etwas schreiben, liegen schon die Systemregeln und Ihre `CLAUDE.md` im Kontextfenster – dem Arbeitsgedächtnis des Modells.',
+    text: 'Bevor ihr etwas schreibt, liegen schon die Systemregeln und eure `CLAUDE.md` im Kontextfenster – dem Arbeitsgedächtnis des Modells.',
   },
   {
-    title: 'Ihr Auftrag.',
+    title: 'Euer Auftrag.',
     text: '„Füge auf der Event-Seite einen RSVP-Button hinzu – nur für angemeldete Nutzer*innen.“ Die Einschränkung am Ende ist eine Absprache, auf die es später ankommt.',
   },
   {
@@ -243,15 +243,15 @@ export const STEPS: Schritt[] = [
   },
   {
     title: 'Je voller, desto unschärfer.',
-    text: 'Das Modell gewichtet nicht alles gleich. Je mehr im Fenster liegt, desto leichter gehen frühe Details unter – etwa Ihre Einschränkung aus Schritt 2. Die Antworten werden ungenauer, lange bevor das Fenster voll ist.',
+    text: 'Das Modell gewichtet nicht alles gleich. Je mehr im Fenster liegt, desto leichter gehen frühe Details unter – etwa eure Einschränkung aus Schritt 2. Die Antworten werden ungenauer, lange bevor das Fenster voll ist.',
   },
   {
     title: 'Auto-Compact.',
-    text: 'Kurz vor der Grenze fasst Claude Code den Verlauf automatisch zusammen. Das schafft Platz, kostet aber Detail – was nicht in der Zusammenfassung steht, ist weg. Hier: Ihre Einschränkung aus Schritt 2.',
+    text: 'Kurz vor der Grenze fasst Claude Code den Verlauf automatisch zusammen. Das schafft Platz, kostet aber Detail – was nicht in der Zusammenfassung steht, ist weg. Hier: eure Einschränkung aus Schritt 2.',
   },
   {
     title: 'Besser: selbst verdichten.',
-    text: 'Mit `/compact` lösen Sie die Zusammenfassung rechtzeitig selbst aus und sagen, was bleiben muss: `/compact Behalte: nur für angemeldete Nutzer*innen`. Dann übersteht die Absprache die Verdichtung.',
+    text: 'Mit `/compact` löst ihr die Zusammenfassung rechtzeitig selbst aus und sagt, was bleiben muss: `/compact Behalte: nur für angemeldete Nutzer*innen`. Dann übersteht die Absprache die Verdichtung.',
   },
   {
     title: '`/clear` – neue Session.',
@@ -259,7 +259,7 @@ export const STEPS: Schritt[] = [
   },
   {
     title: 'Dauerhaftes gehört in Dateien.',
-    text: 'Entscheidungen, die über eine Session hinaus gelten, halten Sie in `docs/ENTSCHEIDUNGEN.md` fest. Im Kursprojekt ist die Datei in `CLAUDE.md` verknüpft und wird deshalb bei jedem Start geladen. Was nur im Chat stand, ist in der nächsten Session weg.',
+    text: 'Entscheidungen, die über eine Session hinaus gelten, haltet ihr in `docs/ENTSCHEIDUNGEN.md` fest. Im Kursprojekt ist die Datei in `CLAUDE.md` verknüpft und wird deshalb bei jedem Start geladen. Was nur im Chat stand, ist in der nächsten Session weg.',
   },
 ];
 
@@ -510,7 +510,7 @@ import './stage.css';
 
 const LEGENDE: { art: Art; text: string }[] = [
   { art: 'fest', text: 'Lädt bei jedem Start' },
-  { art: 'auftrag', text: 'Ihr Auftrag' },
+  { art: 'auftrag', text: 'Euer Auftrag' },
   { art: 'datei', text: 'Gelesene Dateien' },
   { art: 'werkzeug', text: 'Werkzeug-Ergebnisse' },
   { art: 'verlauf', text: 'Verlauf' },
@@ -741,7 +741,7 @@ b) In the card „Es hat ein Gedächtnis mit Rand“ replace exactly `Ist es vol
 
 c) Replace the whole block from `<div class="widget" id="ctx">` through its closing `</div>` (the one directly before `<p>Daraus folgen drei Regeln:`; it contains the `<script>` with `ctx-bar`) with:
 ```astro
-  <p class="hint small muted">Klicken Sie auf die Animation und blättern Sie mit den Pfeiltasten – oder nutzen Sie die Buttons.</p>
+  <p class="hint small muted">Klickt auf die Animation und blättert mit den Pfeiltasten – oder nutzt die Buttons.</p>
   <Kontextfenster client:visible />
 ```
 Keep `<h2>Das Kontextfenster</h2>` above and the `<p>Daraus folgen drei Regeln: …` paragraph below unchanged.

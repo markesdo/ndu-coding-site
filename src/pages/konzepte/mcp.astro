@@ -7,24 +7,24 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="MCP-Server">
   <span class="eyebrow">Ergänzung zu Konzept 4 · Tag 2</span>
   <h1>MCP-Server – Steckdosen für den Agenten</h1>
-  <p class="lead">Ohne MCP arbeitet Claude nur mit Dateien und dem Terminal. Mit MCP kann es Ihre Datenbank lesen, Ihr Figma-Design ansehen, Ihre App im Browser bedienen und aktuelle Dokumentation nachschlagen. 2026 ist das der Unterschied zwischen „Code-Generator“ und „Teammitglied mit Zugriff“.</p>
+  <p class="lead">Ohne MCP arbeitet Claude nur mit Dateien und dem Terminal. Mit MCP kann es eure Datenbank lesen, euer Figma-Design ansehen, eure App im Browser bedienen und aktuelle Dokumentation nachschlagen. 2026 ist das der Unterschied zwischen „Code-Generator“ und „Teammitglied mit Zugriff“.</p>
 
   <h2>Was MCP ist</h2>
-  <p><strong>Model Context Protocol</strong> – ein offener Standard (von Anthropic 2024 veröffentlicht, inzwischen von allen großen Anbietern unterstützt), der beschreibt, wie ein KI-Agent mit externen Systemen spricht. Ein <em>MCP-Server</em> ist ein kleines Programm, das dem Agenten für ein System – Supabase, Figma, GitHub, Ihren Browser – eine Liste von <strong>Werkzeugen</strong> bereitstellt: „Tabelle anlegen“, „Design-Frame lesen“, „Seite öffnen und Screenshot machen“. Claude sieht diese Werkzeuge und benutzt sie, wenn es sinnvoll ist – genau wie es Dateien liest oder <code>npm run build</code> ausführt.</p>
+  <p><strong>Model Context Protocol</strong> – ein offener Standard (von Anthropic 2024 veröffentlicht, inzwischen von allen großen Anbietern unterstützt), der beschreibt, wie ein KI-Agent mit externen Systemen spricht. Ein <em>MCP-Server</em> ist ein kleines Programm, das dem Agenten für ein System – Supabase, Figma, GitHub, euren Browser – eine Liste von <strong>Werkzeugen</strong> bereitstellt: „Tabelle anlegen“, „Design-Frame lesen“, „Seite öffnen und Screenshot machen“. Claude sieht diese Werkzeuge und benutzt sie, wenn es sinnvoll ist – genau wie es Dateien liest oder <code>npm run build</code> ausführt.</p>
   <div class="widget">
     <p class="hint">Ohne MCP vs. mit MCP – dieselbe Aufgabe.</p>
     <div class="compare">
-      <div class="card bad"><h3>Ohne</h3><p class="small">Sie: „Leg eine Tabelle events an.“ Claude: „Hier ist das SQL. Öffne Supabase, gehe zum SQL-Editor, füge es ein, führe es aus, sag mir, ob es einen Fehler gab.“ Sie kopieren, klicken, kopieren den Fehler zurück. Dreimal.</p></div>
-      <div class="card good"><h3>Mit Supabase-MCP</h3><p class="small">Sie: „Leg eine Tabelle events an.“ Claude legt sie an, liest die Antwort der Datenbank, korrigiert einen Tippfehler selbst, zeigt Ihnen die fertige Struktur und fragt, ob Beispieldaten rein sollen.</p></div>
+      <div class="card bad"><h3>Ohne</h3><p class="small">Ihr: „Leg eine Tabelle events an.“ Claude: „Hier ist das SQL. Öffne Supabase, gehe zum SQL-Editor, füge es ein, führe es aus, sag mir, ob es einen Fehler gab.“ Ihr kopiert, klickt, kopiert den Fehler zurück. Dreimal.</p></div>
+      <div class="card good"><h3>Mit Supabase-MCP</h3><p class="small">Ihr: „Leg eine Tabelle events an.“ Claude legt sie an, liest die Antwort der Datenbank, korrigiert einen Tippfehler selbst, zeigt euch die fertige Struktur und fragt, ob Beispieldaten rein sollen.</p></div>
     </div>
   </div>
 
-  <h2>Die Server, die für Sie zählen</h2>
+  <h2>Die Server, die für euch zählen</h2>
   <table>
     <tr><th>Server</th><th>Was Claude damit kann</th><th>Wann im Kurs</th></tr>
     <tr><td><strong>Supabase</strong></td><td>Tabellen, Policies, Migrationen anlegen; Daten lesen; Logs und Fehler sehen; Typen generieren</td><td>Tag 2, Übung 3</td></tr>
     <tr><td><strong>Playwright / Browser</strong></td><td>Die App selbst öffnen, klicken, Formulare ausfüllen, Screenshots machen, Konsole lesen – der Agent testet sich selbst</td><td>Tag 3</td></tr>
-    <tr><td><strong>Figma</strong></td><td>Frames, Komponenten, Farben, Abstände aus Ihrem Design lesen und in Code übersetzen</td><td>Tag 3 Demo, Innolab</td></tr>
+    <tr><td><strong>Figma</strong></td><td>Frames, Komponenten, Farben, Abstände aus eurem Design lesen und in Code übersetzen</td><td>Tag 3 Demo, Innolab</td></tr>
     <tr><td><strong>Context7</strong></td><td>Aktuelle Dokumentation von Bibliotheken nachschlagen statt aus veraltetem Trainingswissen raten</td><td>Bei Bedarf („use context7“)</td></tr>
     <tr><td><strong>Linear</strong></td><td>Issues lesen, anlegen, Status setzen – das Backlog eines Produktteams; im Innolab die Brücke Figma → Story → Code</td><td>Tag 3 Ausblick, Innolab</td></tr>
     <tr><td><strong>GitHub</strong></td><td>Issues lesen und anlegen, Pull Requests erstellen und kommentieren</td><td>Tag 3</td></tr>
@@ -33,15 +33,15 @@ import FooterNav from '../../components/FooterNav.astro';
   </table>
 
   <h2>Einen Server verbinden</h2>
-  <p>Drei Wege, vom einfachsten zum flexibelsten: <strong>Im Terminal</strong> mit <code>claude mcp add …</code> (einmalig, gilt für Sie). <strong>Im Projekt</strong> über eine Datei <code>.mcp.json</code> (gilt für alle, die das Repo nutzen – so könnte das Template Supabase vorkonfigurieren). <strong>Per Claude selbst:</strong></p>
+  <p>Drei Wege, vom einfachsten zum flexibelsten: <strong>Im Terminal</strong> mit <code>claude mcp add …</code> (einmalig, gilt für euch). <strong>Im Projekt</strong> über eine Datei <code>.mcp.json</code> (gilt für alle, die das Repo nutzen – so könnte das Template Supabase vorkonfigurieren). <strong>Per Claude selbst:</strong></p>
   <Prompt>Verbinde den Supabase-MCP-Server für dieses Projekt (Project Ref: abcdefgh). Erkläre mir vorher, welche Berechtigungen der Server bekommt und ob er nur lesen oder auch schreiben darf.</Prompt>
   <p><code>/mcp</code> zeigt, welche Server verbunden sind und welche Werkzeuge sie bieten. Beim ersten Einsatz fragt Claude pro Werkzeug um Erlaubnis.</p>
 
   <h2>Sicherheit – ein MCP-Server ist Zugriff</h2>
   <Callout type="warn" title="Drei Regeln">
-    <p><strong>1. Nur offizielle Server</strong> (vom Anbieter selbst oder aus der Claude-Code-Dokumentation). Ein MCP-Server sieht alles, was er darf. <strong>2. Minimale Rechte:</strong> Supabase-MCP hat einen <code>--read-only</code>-Modus; für Produktionsdaten immer. <strong>3. Nie gegen die Produktion</strong> entwickeln – ein „lösch alle Testdaten“ trifft sonst echte Nutzer*innen. Für Prototypen ist das Entwicklungsprojekt die Produktion; das ist okay, solange Sie es wissen.</p>
+    <p><strong>1. Nur offizielle Server</strong> (vom Anbieter selbst oder aus der Claude-Code-Dokumentation). Ein MCP-Server sieht alles, was er darf. <strong>2. Minimale Rechte:</strong> Supabase-MCP hat einen <code>--read-only</code>-Modus; für Produktionsdaten immer. <strong>3. Nie gegen die Produktion</strong> entwickeln – ein „lösch alle Testdaten“ trifft sonst echte Nutzer*innen. Für Prototypen ist das Entwicklungsprojekt die Produktion; das ist okay, solange ihr es wisst.</p>
   </Callout>
-  <p>Und eine Perspektive für später: Auch <em>Ihr</em> Produkt kann ein MCP-Server sein. Wenn Campus Events einen MCP-Server anbietet, kann jede*r mit einem KI-Assistenten sagen „trag mich für den Lauftreff ein“ – ohne Ihre App zu öffnen. Das ist 2026 eine echte Produktentscheidung.</p>
+  <p>Und eine Perspektive für später: Auch <em>euer</em> Produkt kann ein MCP-Server sein. Wenn Campus Events einen MCP-Server anbietet, kann jede*r mit einem KI-Assistenten sagen „trag mich für den Lauftreff ein“ – ohne eure App zu öffnen. Das ist 2026 eine echte Produktentscheidung.</p>
 
   <FooterNav prev={{ href: '/konzepte/daten-backend', t: 'Daten & Backend' }} next={{ href: '/tag-2#uebung-3', t: 'Übung 3 · Echte Daten' }} />
 </Layout>

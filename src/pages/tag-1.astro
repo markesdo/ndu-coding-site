@@ -9,7 +9,7 @@ import FooterNav from '../components/FooterNav.astro';
 <Layout title="Tag 1 · Verstehen & Starten">
   <span class="eyebrow">Donnerstag, 8. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 1 · Verstehen & Starten</h1>
-  <p class="lead">Am Ende des Tages haben Sie ein eigenes Repo mit laufender App, verstehen, wie eine Web-App und ein Coding-Agent aufgebaut sind, und haben Ihre erste User Story bauen lassen.</p>
+  <p class="lead">Am Ende des Tages habt ihr ein eigenes Repo mit laufender App, versteht, wie eine Web-App und ein Coding-Agent aufgebaut sind, und habt eure erste User Story bauen lassen.</p>
 
   <h2>Ablauf</h2>
   <div class="schedule">
@@ -33,7 +33,7 @@ import FooterNav from '../components/FooterNav.astro';
 
   <h3>a) Verstehen, was da ist (10 min)</h3>
   <Prompt>Erkläre mir dieses Projekt so, als käme ich aus dem Produktmanagement und hätte keine Programmierkenntnisse. Welche Seiten gibt es, wo liegen die Beispieldaten, und was passiert, wenn ich die Startseite öffne?</Prompt>
-  <p>Lesen Sie die Antwort vollständig. Fragen Sie nach, wenn ein Begriff unklar ist: <em>„Was meinst du mit Komponente?“</em> Claude kennt die Regel, Ihnen alles ohne Code zu erklären (steht in der <code>CLAUDE.md</code> – öffnen Sie die Datei ruhig einmal).</p>
+  <p>Lest die Antwort vollständig. Fragt nach, wenn ein Begriff unklar ist: <em>„Was meinst du mit Komponente?“</em> Claude kennt die Regel, euch alles ohne Code zu erklären (steht in der <code>CLAUDE.md</code> – öffnet die Datei ruhig einmal).</p>
 
   <h3>b) Drei kleine Änderungen – eine nach der anderen (20 min)</h3>
   <Prompt>Ändere die Überschrift auf der Startseite zu „Was geht am Campus?“ – sonst nichts.</Prompt>
@@ -44,22 +44,22 @@ import FooterNav from '../components/FooterNav.astro';
   <p>→ Vorschau ansehen, dann Vorschau schmal ziehen (oder Rechtsklick → Untersuchen → Handy-Symbol). Passt die vierte Karte?</p>
 
   <h3>c) Mit einem Screenshot Feedback geben (10 min)</h3>
-  <p>Machen Sie einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), ziehen Sie ihn ins Claude-Code-Terminal (oder fügen Sie ihn mit <kbd>Strg/Ctrl</kbd><kbd>V</kbd> ein) und schreiben Sie dazu:</p>
+  <p>Macht einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), zieht ihn ins Claude-Code-Terminal (oder fügt ihn mit <kbd>Strg/Ctrl</kbd><kbd>V</kbd> ein) und schreibt dazu:</p>
   <Prompt>Auf diesem Screenshot ist der Abstand zwischen Überschrift und Text zu klein und die Karten wirken zu eng. Mach es luftiger, ohne das Design zu ändern.</Prompt>
   <Callout type="concept" title="Warum das wichtig ist">
-    <p>Sie müssen nicht wissen, wie „Abstand“ im Code heißt. Sie müssen sehen können, dass er nicht stimmt, und das präzise sagen. <strong>Beobachten und benennen</strong> ist Ihre Kernkompetenz in diesem Kurs.</p>
+    <p>Ihr müsst nicht wissen, wie „Abstand“ im Code heißt. Ihr müsst sehen können, dass er nicht stimmt, und das präzise sagen. <strong>Beobachten und benennen</strong> ist eure Kernkompetenz in diesem Kurs.</p>
   </Callout>
 
   <h3>d) Etwas kaputt machen – und zurück (15 min)</h3>
   <Prompt>Lösche die Datei src/components/Header.tsx.</Prompt>
-  <p>Die Vorschau zeigt jetzt einen Fehler. Lesen Sie ihn – er sagt ziemlich genau, was fehlt. Und jetzt der Undo-Knopf: links das <strong>Source-Control-Symbol</strong> (Verzweigung) → bei <code>Header.tsx</code> auf den Zurück-Pfeil („Discard Changes“). Datei ist wieder da, Fehler weg.</p>
+  <p>Die Vorschau zeigt jetzt einen Fehler. Lest ihn – er sagt ziemlich genau, was fehlt. Und jetzt der Undo-Knopf: links das <strong>Source-Control-Symbol</strong> (Verzweigung) → bei <code>Header.tsx</code> auf den Zurück-Pfeil („Discard Changes“). Datei ist wieder da, Fehler weg.</p>
   <Callout type="tip" title="Merken">
     <p>Solange ein Stand committet ist, kann nichts verloren gehen. Deshalb: <strong>nach jeder funktionierenden Story committen.</strong> Mehr dazu in <a href="/konzepte/git">Git – der Undo-Knopf</a>.</p>
   </Callout>
 
   <h3>e) Sichern (10 min)</h3>
   <Prompt>/commit</Prompt>
-  <p>Claude zeigt, was sich geändert hat, schreibt eine verständliche Commit-Nachricht und pusht zu GitHub. Öffnen Sie danach Ihr Repo auf github.com und sehen Sie nach: Ihre Änderung ist dort, mit Nachricht und Zeitstempel.</p>
+  <p>Claude zeigt, was sich geändert hat, schreibt eine verständliche Commit-Nachricht und pusht zu GitHub. Öffnet danach euer Repo auf github.com und seht nach: Eure Änderung ist dort, mit Nachricht und Zeitstempel.</p>
 
   <h3>Checkliste Übung 1</h3>
   <Checklist id="t1-u1" items={[
@@ -75,20 +75,20 @@ import FooterNav from '../components/FooterNav.astro';
   <hr />
 
   <h2 id="uebung-2">Übung 2 · Campus Events v0 <span class="pill uebung">60 min</span></h2>
-  <p>Jetzt wird aus Herumprobieren Produktarbeit. Sie schreiben mit Claude ein PRD, schneiden das MVP und lassen die erste User Story bauen – die, deren Akzeptanzkriterien schon im Backlog stehen.</p>
+  <p>Jetzt wird aus Herumprobieren Produktarbeit. Ihr schreibt mit Claude ein PRD, schneidet das MVP und lasst die erste User Story bauen – die, deren Akzeptanzkriterien schon im Backlog stehen.</p>
 
   <h3>a) PRD im Plan Mode (20 min)</h3>
   <p>Plan Mode heißt: Claude darf nachdenken und fragen, aber noch nichts ändern. Umschalten mit <kbd>Shift</kbd><kbd>Tab</kbd> (zweimal), bis unten <code>plan mode</code> steht.</p>
-  <Prompt note="Claude stellt Rückfragen. Antworten Sie aus Sicht der Zielgruppe – Sie sind selbst Studierende, Sie kennen das Problem.">Lies docs/PRD-VORLAGE.md. Wir bauen „Campus Events“: Studierende und Gruppen legen Veranstaltungen an, andere sagen mit einem Klick zu. Stell mir zu jedem Abschnitt der Vorlage 1–2 Rückfragen, eine nach der anderen, und schreib dann das fertige PRD nach docs/PRD.md. Halte es auf einer Seite.</Prompt>
+  <Prompt note="Claude stellt Rückfragen. Antwortet aus Sicht der Zielgruppe – ihr seid selbst Studierende, ihr kennt das Problem.">Lies docs/PRD-VORLAGE.md. Wir bauen „Campus Events“: Studierende und Gruppen legen Veranstaltungen an, andere sagen mit einem Klick zu. Stell mir zu jedem Abschnitt der Vorlage 1–2 Rückfragen, eine nach der anderen, und schreib dann das fertige PRD nach docs/PRD.md. Halte es auf einer Seite.</Prompt>
 
   <h3>b) MVP schneiden & Backlog lesen (10 min)</h3>
-  <p>Öffnen Sie <code>docs/BACKLOG.md</code>. Dort stehen sieben Stories für zwei Tage, jede mit Akzeptanzkriterien. Fragen Sie Claude:</p>
+  <p>Öffnet <code>docs/BACKLOG.md</code>. Dort stehen sieben Stories für zwei Tage, jede mit Akzeptanzkriterien. Fragt Claude:</p>
   <Prompt>Vergleiche docs/BACKLOG.md mit unserem PRD. Fehlt eine Story, die für den ersten nützlichen Durchlauf zwingend ist? Ist eine drin, die wir für den Anfang streichen könnten? Begründe kurz, ändere aber noch nichts.</Prompt>
 
   <h3>c) Story S1 bauen lassen (20 min)</h3>
   <p>Plan Mode wieder verlassen (<kbd>Shift</kbd><kbd>Tab</kbd>). Dann:</p>
   <Prompt>Setze Story S1 aus docs/BACKLOG.md um: die Eventliste mit den Beispieldaten aus src/data/events.ts auf der Startseite. Zeig mir zuerst deinen Plan in 3–5 Punkten und warte auf mein Okay. Nach der Umsetzung geh die Akzeptanzkriterien einzeln durch und sag mir, was ich im Browser prüfen soll.</Prompt>
-  <p>Prüfen Sie <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Events? Fehlt das vergangene („Erstsemester-Frühstück“)? Sieht es am Handy gut aus? Erst wenn alles stimmt: Status im Backlog auf ✅ setzen lassen.</p>
+  <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Events? Fehlt das vergangene („Erstsemester-Frühstück“)? Sieht es am Handy gut aus? Erst wenn alles stimmt: Status im Backlog auf ✅ setzen lassen.</p>
 
   <h3>d) Sichern (5 min)</h3>
   <Prompt>Setze S1 in docs/BACKLOG.md auf ✅ fertig, dann /commit</Prompt>
@@ -105,7 +105,7 @@ import FooterNav from '../components/FooterNav.astro';
 
   <hr />
   <h2>Reflexion zum Abschluss</h2>
-  <p>Drei Sätze, in Teams oder auf Papier: <em>Was hat mich überrascht? Wo war ich unsicher, ob Claude das Richtige tut? Was würde ich morgen anders machen?</em> Und zum Mitnehmen bis morgen: <strong>Welches Produkt würden Sie bauen wollen?</strong> (<a href="/ideen">Inspiration</a>)</p>
+  <p>Drei Sätze, in Teams oder auf Papier: <em>Was hat mich überrascht? Wo war ich unsicher, ob Claude das Richtige tut? Was würde ich morgen anders machen?</em> Und zum Mitnehmen bis morgen: <strong>Welches Produkt würdet ihr bauen wollen?</strong> (<a href="/ideen">Inspiration</a>)</p>
 
   <FooterNav prev={{ href: '/setup', t: 'Setup & Accounts' }} next={{ href: '/tag-2', t: 'Tag 2 · Bauen wie ein Profi' }} />
 </Layout>

@@ -7,7 +7,7 @@ import './stage.css';
 
 const LEGENDE: { art: Art; text: string }[] = [
   { art: 'fest', text: 'Lädt bei jedem Start' },
-  { art: 'auftrag', text: 'Ihr Auftrag' },
+  { art: 'auftrag', text: 'Euer Auftrag' },
   { art: 'datei', text: 'Gelesene Dateien' },
   { art: 'werkzeug', text: 'Werkzeug-Ergebnisse' },
   { art: 'verlauf', text: 'Verlauf' },

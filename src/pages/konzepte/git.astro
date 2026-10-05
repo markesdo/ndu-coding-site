@@ -7,16 +7,16 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="Git – der Undo-Knopf">
   <span class="eyebrow">Ergänzung zu Konzept 1 · Tag 1</span>
   <h1>Git – der Undo-Knopf</h1>
-  <p class="lead">Git merkt sich jeden gesicherten Stand Ihres Projekts. Für Sie bedeutet das zwei Dinge: Sie können nichts kaputt machen, was Sie gesichert haben – und Sie können Hilfe bekommen, weil andere Ihren Stand sehen.</p>
+  <p class="lead">Git merkt sich jeden gesicherten Stand eures Projekts. Für euch bedeutet das zwei Dinge: Ihr könnt nichts kaputt machen, was ihr gesichert habt – und ihr könnt Hilfe bekommen, weil andere euren Stand sehen.</p>
 
-  <h2>Fünf Begriffe, mehr brauchen Sie nicht</h2>
+  <h2>Fünf Begriffe, mehr braucht ihr nicht</h2>
   <table>
     <tr><th>Begriff</th><th>Heißt</th><th>Im Alltag</th></tr>
-    <tr><td><strong>Repository (Repo)</strong></td><td>Ihr Projektordner samt gesamter Geschichte</td><td>„Schick mir den Repo-Link“</td></tr>
+    <tr><td><strong>Repository (Repo)</strong></td><td>Euer Projektordner samt gesamter Geschichte</td><td>„Schick mir den Repo-Link“</td></tr>
     <tr><td><strong>Commit</strong></td><td>Ein gesicherter Stand mit Nachricht und Zeitstempel</td><td>Nach jeder fertigen Story: <code>/commit</code></td></tr>
-    <tr><td><strong>Push</strong></td><td>Commits von Ihrem Codespace zu GitHub hochladen</td><td>Macht <code>/commit</code> automatisch mit</td></tr>
+    <tr><td><strong>Push</strong></td><td>Commits von eurem Codespace zu GitHub hochladen</td><td>Macht <code>/commit</code> automatisch mit</td></tr>
     <tr><td><strong>Discard / Restore</strong></td><td>Ungesicherte Änderungen verwerfen, zurück zum letzten Commit</td><td>Source-Control-Panel → Zurück-Pfeil</td></tr>
-    <tr><td><strong>Branch</strong></td><td>Ein paralleler Arbeitsstand zum Ausprobieren</td><td>Erst an Tag 3 relevant, Claude macht es für Sie</td></tr>
+    <tr><td><strong>Branch</strong></td><td>Ein paralleler Arbeitsstand zum Ausprobieren</td><td>Erst an Tag 3 relevant, Claude macht es für euch</td></tr>
   </table>
 
   <h2>Der Rhythmus</h2>
@@ -28,18 +28,18 @@ import FooterNav from '../../components/FooterNav.astro';
   </ol>
 
   <Callout type="tip" title="Faustregel">
-    <p>Committen Sie, sobald etwas funktioniert – nicht erst, wenn alles fertig ist. Kleine Commits sind kleine Rückschritte, wenn etwas schiefgeht.</p>
+    <p>Committet, sobald etwas funktioniert – nicht erst, wenn alles fertig ist. Kleine Commits sind kleine Rückschritte, wenn etwas schiefgeht.</p>
   </Callout>
 
   <h2>Zu einem alten Stand zurück</h2>
   <Prompt>Zeig mir die letzten 5 Commits mit Datum und Nachricht. Ich möchte zum Stand vor der Filter-Funktion zurück, aber nichts verlieren – leg den aktuellen Stand vorher sicher ab.</Prompt>
-  <p>Claude erledigt das, erklärt, was es tut, und Sie behalten beide Stände. Die Git-Befehle dahinter müssen Sie nicht kennen.</p>
+  <p>Claude erledigt das, erklärt, was es tut, und ihr behaltet beide Stände. Die Git-Befehle dahinter müsst ihr nicht kennen.</p>
 
   <h2>Was nicht ins Repo gehört</h2>
-  <p>Die Datei <code>.gitignore</code> listet, was Git ignorieren soll: <code>node_modules</code> (lässt sich jederzeit neu laden), Build-Ordner, und – am wichtigsten – <strong><code>.env.local</code> mit Ihren Geheimnissen</strong>. Ein API-Key, der einmal auf GitHub war, gilt als verbrannt, auch wenn Sie ihn löschen. <code>/pruefe</code> kontrolliert das für Sie.</p>
+  <p>Die Datei <code>.gitignore</code> listet, was Git ignorieren soll: <code>node_modules</code> (lässt sich jederzeit neu laden), Build-Ordner, und – am wichtigsten – <strong><code>.env.local</code> mit euren Geheimnissen</strong>. Ein API-Key, der einmal auf GitHub war, gilt als verbrannt, auch wenn ihr ihn löscht. <code>/pruefe</code> kontrolliert das für euch.</p>
 
   <h2>Warum Markus Collaborator sein soll</h2>
-  <p>Wenn Sie in Teams um Hilfe bitten, ist die erste Frage immer: „Zeig mir den Stand.“ Mit dem Repo-Link kann Markus Ihr Projekt in seinen eigenen Codespace laden, den Fehler nachstellen, eine Lösung committen – und Sie holen sie sich mit einem Klick (Sync). Das geht nur, wenn Sie gepusht haben und er Zugriff hat: Repo → Settings → Collaborators → Add people.</p>
+  <p>Wenn ihr in Teams um Hilfe bittet, ist die erste Frage immer: „Zeig mir den Stand.“ Mit dem Repo-Link kann Markus euer Projekt in seinen eigenen Codespace laden, den Fehler nachstellen, eine Lösung committen – und ihr holt sie euch mit einem Klick (Sync). Das geht nur, wenn ihr gepusht habt und er Zugriff hat: Repo → Settings → Collaborators → Add people.</p>
 
   <FooterNav prev={{ href: '/konzepte/coding-agent', t: 'Wie ein Coding-Agent arbeitet' }} next={{ href: '/konzepte/spezifikation', t: 'Von der Idee zur Spezifikation' }} />
 </Layout>
