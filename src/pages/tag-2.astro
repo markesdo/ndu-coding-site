@@ -74,6 +74,14 @@ import FooterNav from '../components/FooterNav.astro';
   <p>MCP ist die Steckdose, über die Claude direkt mit Supabase sprechen kann: Tabellen anlegen, Daten ansehen, Fehler lesen – ohne dass Sie etwas kopieren.</p>
   <Prompt label="Im Terminal (nicht in Claude) – PROJECT-REF durch Ihren Project Ref ersetzen">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF"</Prompt>
   <p class="small muted">Den <em>Project Ref</em> finden Sie in der Supabase-URL (<code>https://<strong>abcdefgh</strong>.supabase.co</code>). Der Zusatz <code>project_ref</code> beschränkt Claude auf dieses eine Projekt. Danach <code>claude</code> starten, <code>/mcp</code> eingeben, „supabase“ wählen und „Authenticate“ – die Anmeldung läuft im Browser, ein Schlüssel muss nirgends eingetragen werden.</p>
+  <p><strong>Falls die Anmeldung im Browser nicht klappt</strong> (im Codespace kann der Rücksprung nach der Anmeldung scheitern): Verbinden Sie den MCP-Server stattdessen mit einem persönlichen Zugriffstoken.</p>
+  <ol class="small">
+    <li>Supabase → Account → <a href="https://supabase.com/dashboard/account/tokens" target="_blank" rel="noopener">Access Tokens</a> → neuen Token erzeugen, Name „Kurs-MCP“, auf Ihr Projekt <code>campus-events</code> beschränken. Token kopieren – er wird nur einmal angezeigt.</li>
+    <li>Im Terminal den bisherigen Eintrag entfernen: <code>claude mcp remove supabase</code></li>
+    <li>Neu verbinden – <code>PROJECT-REF</code> und <code>TOKEN</code> ersetzen:</li>
+  </ol>
+  <Prompt label="Im Terminal (nicht in Claude) – Alternative mit Token">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF" --header "Authorization: Bearer TOKEN"</Prompt>
+  <p class="small muted">Der Token ist ein Schlüssel zu Ihrem Supabase-Konto: Er wird nur in Ihrem Codespace gespeichert, nicht im Repo. Fügen Sie ihn nie in den Chat mit Claude oder in eine Datei im Projekt ein. Nach dem Kurs können Sie ihn unter Access Tokens wieder löschen.</p>
   <h3>c) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
   <h3>d) Story S4 bauen lassen (45 min)</h3>
