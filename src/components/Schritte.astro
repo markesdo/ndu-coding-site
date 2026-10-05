@@ -50,17 +50,21 @@ const label = (n: number) => (nummer ? `${nummer}.${n}` : String(n));
   const dialog = document.createElement('dialog');
   dialog.className = 'shot-zoom';
   dialog.setAttribute('aria-label', 'Schritt-für-Schritt-Ansicht');
+  // Vollbild bekommt der innere Container: Ein <dialog> selbst darf laut Fullscreen-Spezifikation nicht ins Vollbild.
   dialog.innerHTML = `
-    <form method="dialog"><button class="shot-close" aria-label="Schließen">✕</button></form>
-    <div class="shot-zoom-body"></div>
-    <div class="shot-zoom-caption" aria-live="polite"></div>
-    <div class="shot-zoom-nav">
-      <button type="button" data-go="-1" aria-label="Vorheriger Schritt">‹ Zurück</button>
-      <span class="shot-zoom-count"></span>
-      <button type="button" data-go="1" aria-label="Nächster Schritt">Weiter ›</button>
-      <button type="button" data-fullscreen>Vollbild</button>
+    <div class="shot-zoom-inner">
+      <form method="dialog"><button class="shot-close" aria-label="Schließen">✕</button></form>
+      <div class="shot-zoom-body"></div>
+      <div class="shot-zoom-caption" aria-live="polite"></div>
+      <div class="shot-zoom-nav">
+        <button type="button" data-go="-1" aria-label="Vorheriger Schritt">‹ Zurück</button>
+        <span class="shot-zoom-count"></span>
+        <button type="button" data-go="1" aria-label="Nächster Schritt">Weiter ›</button>
+        <button type="button" data-fullscreen>Vollbild</button>
+      </div>
     </div>`;
   document.body.append(dialog);
+  const inner = dialog.querySelector<HTMLElement>('.shot-zoom-inner')!;
   const body = dialog.querySelector('.shot-zoom-body')!;
   const caption = dialog.querySelector('.shot-zoom-caption')!;
   const count = dialog.querySelector('.shot-zoom-count')!;
@@ -78,6 +82,9 @@ const label = (n: number) => (nummer ? `${nummer}.${n}` : String(n));
     body.replaceChildren(frame);
     caption.innerHTML = `<span class="shot-zoom-label">${li.dataset.label}</span>` + li.querySelector(':scope > p')!.innerHTML;
     count.textContent = `${current + 1} / ${items.length}`;
+    // Fokus vom Button wegnehmen, der gleich deaktiviert wird – sonst landet er auf <body> und die Pfeiltasten gehen ins Leere.
+    if (current === 0 && document.activeElement === prev) next.focus();
+    if (current === items.length - 1 && document.activeElement === next) prev.focus();
     prev.disabled = current === 0;
     next.disabled = current === items.length - 1;
     history.replaceState(null, '', `#${li.id}`);
@@ -93,9 +100,10 @@ const label = (n: number) => (nummer ? `${nummer}.${n}` : String(n));
   next.addEventListener('click', () => show(current + 1));
   dialog.querySelector('[data-fullscreen]')!.addEventListener('click', () => {
     if (document.fullscreenElement) document.exitFullscreen();
-    else dialog.requestFullscreen?.().catch(() => {});
+    else inner.requestFullscreen?.().catch((err) => console.warn('Vollbild nicht möglich:', err));
   });
-  dialog.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', (e) => {
+    if (!dialog.open) return;
     // Pfeiltasten und Presenter-Clicker (PageUp/PageDown).
     if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); show(current + 1); }
     if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(current - 1); }
