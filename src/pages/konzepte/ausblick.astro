@@ -15,6 +15,7 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Figma → Linear → Agent: die Produktkette im Innolab</h2>
   <p>Im Innolab wandert das Backlog aus der Markdown-Datei nach <strong>Linear</strong> – dem Werkzeug, in dem Produktteams Stories, Sprints (Cycles) und Status verwalten. Unser Format bleibt dasselbe (Story + Gegeben/Wenn/Dann), der Umzug ist eine Kopieraktion, die Claude per Linear-MCP erledigt. Dann schließt sich die Kette: Das Figma-Frame hängt am Linear-Issue, Claude Code liest über den <strong>Linear-MCP</strong> die Story und die Kriterien, über den <strong>Figma-MCP</strong> das Design, baut es in einem Branch, erstellt den Pull Request und setzt das Issue auf „In Review“. Linear kann Issues sogar direkt einem Agenten zuweisen, der autonom arbeitet und zurückmeldet. Ihre Rolle in dieser Kette: Stories schreiben, Designs abnehmen, PRs prüfen – Product Owner.</p>
+  <Prompt label="Linear-MCP verbinden (im Terminal, dann in Claude /mcp → Linear → Authentifizieren)">claude mcp add --transport http linear https://mcp.linear.app/mcp</Prompt>
   <Prompt>Lies Linear-Issue NDU-42 über den Linear-MCP. Hol dir das verlinkte Figma-Frame über den Figma-MCP. Setze die Story in einem neuen Branch um, erfülle alle Akzeptanzkriterien, erstelle einen Pull Request mit Beschreibung für Nicht-Programmierer und setze das Issue auf „In Review“.</Prompt>
 
   <h2>Agent-Teams & parallele Arbeit</h2>
