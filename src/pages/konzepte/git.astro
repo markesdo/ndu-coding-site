@@ -16,7 +16,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <tr><td><strong>Commit</strong></td><td>Ein gesicherter Stand mit Nachricht und Zeitstempel</td><td>Nach jeder fertigen Story: <code>/ndu-commit</code></td></tr>
     <tr><td><strong>Push</strong></td><td>Commits von eurem Codespace zu GitHub hochladen</td><td>Macht <code>/ndu-commit</code> automatisch mit</td></tr>
     <tr><td><strong>Discard / Restore</strong></td><td>Ungesicherte Änderungen verwerfen, zurück zum letzten Commit</td><td>Source-Control-Panel → Zurück-Pfeil</td></tr>
-    <tr><td><strong>Branch</strong></td><td>Ein paralleler Arbeitsstand zum Ausprobieren</td><td>Erst an Tag 3 relevant, Claude macht es für euch</td></tr>
+    <tr><td><strong>Branch</strong></td><td>Ein paralleler Arbeitsstand zum Ausprobieren</td><td>Optional an Tag 1 und 2, ab Tag 3 der Profi-Weg – <a href="#branch">siehe unten</a></td></tr>
   </table>
 
   <h2>Der Rhythmus</h2>
@@ -34,6 +34,15 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Zu einem alten Stand zurück</h2>
   <Prompt>Zeig mir die letzten 5 Commits mit Datum und Nachricht. Ich möchte zum Stand vor der Filter-Funktion zurück, aber nichts verlieren – leg den aktuellen Stand vorher sicher ab.</Prompt>
   <p>Claude erledigt das, erklärt, was es tut, und ihr behaltet beide Stände. Die Git-Befehle dahinter müsst ihr nicht kennen.</p>
+
+  <h2 id="branch">Branch – einen Versuch abzweigen</h2>
+  <p>Bisher landet jeder Commit direkt im Hauptstand <code>main</code> – und Vercel veröffentlicht genau diesen Stand. Für Tag 1 und 2 reicht das. Ein <strong>Branch</strong> lohnt sich, wenn ihr etwas ausprobieren wollt, ohne den laufenden Stand zu gefährden: eine riskante Story, zwei Design-Varianten, ein Umbau, bei dem ihr nicht wisst, ob er klappt. Gefällt das Ergebnis, wird der Branch zurück in <code>main</code> geführt (<strong>Merge</strong>); gefällt es nicht, lasst ihr ihn einfach liegen.</p>
+  <Prompt label="Branch anlegen">Leg für Story [Nummer] einen eigenen Branch an und arbeite dort. Sag mir, wie ich sehe, auf welchem Branch ich gerade bin.</Prompt>
+  <Prompt label="Branch zurückführen">Die Story auf diesem Branch ist fertig und geprüft. Führ den Branch zurück in main, push beides und sag mir, ob es Konflikte gab.</Prompt>
+  <p>Nebeneffekt: Vercel baut für jeden gepushten Branch eine eigene <strong>Vorschau-Adresse</strong> – ihr könnt die Variante zeigen, bevor sie live geht. Ab Tag 3 ist Branch + Pull Request pro Story der Weg, den Profis gehen: <a href="/konzepte/qualitaet">Qualität & Review</a>.</p>
+
+  <h3>Für Fortgeschrittene: mehrere Agenten parallel (Worktrees)</h3>
+  <p>Zwei Claude-Sessions im selben Ordner stören sich gegenseitig – beide ändern dieselben Dateien. Ein <strong>Worktree</strong> ist eine zweite Arbeitskopie desselben Repos mit eigenem Branch. <code>claude -w story-s5</code> (lang: <code>--worktree</code>) startet eine Session in so einer Kopie; in einem zweiten Terminal arbeitet eine andere Session an Story S6. Fertige Branches führt ihr wie oben zurück. Das lohnt sich nur bei gut geschnittenen Stories, die sich nicht überschneiden – sonst gibt es beim Zurückführen Konflikte. Mehr im <a href="/konzepte/ausblick">Ausblick</a>.</p>
 
   <h2>Was nicht ins Repo gehört</h2>
   <p>Die Datei <code>.gitignore</code> listet, was Git ignorieren soll: <code>node_modules</code> (lässt sich jederzeit neu laden), Build-Ordner, und – am wichtigsten – <strong><code>.env.local</code> mit euren Geheimnissen</strong>. Ein API-Key, der einmal auf GitHub war, gilt als verbrannt, auch wenn ihr ihn löscht. <code>/ndu-check</code> kontrolliert das für euch.</p>
