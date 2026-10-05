@@ -17,7 +17,7 @@ const bild = (name: string) => {
 <Layout title="Setup & Accounts">
   <span class="eyebrow">Tag 1 · 09:30–10:45 · gemeinsam</span>
   <h1>Setup & Accounts</h1>
-  <p class="lead">Acht Schritte, nichts zu installieren. Am Ende läuft eure App im Browser und Claude Code wartet auf den ersten Auftrag.</p>
+  <p class="lead">Neun Schritte, nichts zu installieren. Am Ende läuft eure App im Browser und Claude Code wartet auf den ersten Auftrag.</p>
 
   <Callout type="info" title="Wer fertig ist, hilft">
     <p>Dieser Block ist voraussichtlich der kritischste des Kurses. Wer mit einem Schritt fertig ist, schaut bei den Nachbar*innen – das ist ausdrücklich Teil des Kurses.</p>
@@ -25,7 +25,7 @@ const bild = (name: string) => {
 
   <h2>Checkliste</h2>
   <Checklist id="setup" items={[
-    '<strong>GitHub-Account</strong> angelegt (am einfachsten mit „Continue with Google“)',
+    '<strong>GitHub-Account</strong> mit der NDU-Adresse angelegt (oder NDU-Adresse im bestehenden Konto ergänzt)',
     '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Upgrade → Pro; Kreditkarte)',
     '<strong>Eigenes Repo</strong> aus dem Template erstellt („Use this template“)',
     '<strong>Codespace</strong> gestartet, Ordner als vertrauenswürdig bestätigt',
@@ -33,20 +33,20 @@ const bild = (name: string) => {
     'App läuft und ist im eigenen Browser-Tab geöffnet',
     '<code>/ndu-explain</code> ausgeführt und die Antwort gelesen',
     'Markus als Collaborator eingeladen (<code>markesdo</code>)',
-    'GitHub Education beantragt (education.github.com, mit NDU-Mail) – kann auch später sein',
+    '<strong>GitHub Education</strong> beantragt (Schritt 9) – die Prüfung kann einige Tage dauern',
   ]} />
 
   <p class="small muted">Die Screenshots stammen von einem Testdurchgang mit einem neuen Konto am 5.10.2026. Die Oberflächen der Anbieter ändern sich laufend; wenn ein Button anders heißt oder woanders sitzt, sucht nach dem Wort aus der Anleitung. Klick auf ein Bild vergrößert es.</p>
 
-  <h2 id="github">1 · GitHub-Account</h2>
-  <p>GitHub speichert euren Code und startet später euren Codespace. Mit „Continue with Google“ braucht ihr kein weiteres Passwort und keinen Bestätigungscode per E-Mail. Ohne Google-Konto: auf <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> E-Mail, Passwort und Benutzernamen eintragen und den Code aus der E-Mail eingeben.</p>
+  <h2 id="github">1 · GitHub-Account mit eurer NDU-Adresse</h2>
+  <p>GitHub speichert euren Code und startet später euren Codespace. <strong>Registriert euch mit eurer NDU-E-Mail-Adresse.</strong> Mit ihr könnt ihr GitHub Education beantragen (<a href="#education">Schritt 9</a>): Studierende bekommen unter anderem mehr Codespaces-Kontingent – 180 statt 120 Core-Stunden pro Monat, auf der 2-Kern-Maschine also 90 statt 60 Stunden.</p>
   <Schritte steps={[
-    { img: bild('github-1-formular'), alt: 'GitHub-Registrierung mit dem Button „Continue with Google“', text: 'Öffnet <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> und klickt auf <em>Continue with Google</em>.', marks: [{ x: 916, y: 131, w: 412, h: 35 }] },
-    { img: bild('github-2-konto'), alt: 'Google fragt, mit welchem Konto ihr fortfahren wollt', text: 'Wählt euer Google-Konto. (Die anderen Konten sind hier unkenntlich gemacht.)', marks: [{ x: 765, y: 390, w: 420, h: 40 }] },
-    { img: bild('github-3-bestaetigen'), alt: 'Google bestätigt, dass GitHub Name und E-Mail-Adresse erhält', text: 'Google zeigt, welche Daten GitHub bekommt: Name, Profilbild, E-Mail-Adresse. <em>Continue</em>.', marks: [{ x: 978, y: 552, w: 207, h: 42 }] },
-    { img: bild('github-4-username'), alt: 'GitHub-Formular mit vorgeschlagenem Benutzernamen und Button „Create account“', text: 'GitHub schlägt einen Benutzernamen vor, meist mit einem Zufallsanhang. <strong>Ersetzt ihn durch etwas Professionelles</strong> – der Name ist öffentlich und steht später in jeder Adresse eures Projekts. Dann <em>Create account</em> und das Bilderrätsel lösen.', marks: [{ x: 916, y: 352, w: 412, h: 39, n: 1 }, { x: 916, y: 565, w: 412, h: 44, n: 2 }] },
+    { img: bild('github-1-formular'), alt: 'GitHub-Registrierungsformular mit den Feldern Email, Password, Username und dem Button „Create account“', text: 'Auf <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> eure NDU-Adresse eintragen (1). Ein Passwort wählen (2) – mindestens 15 Zeichen, oder 8 mit Zahl und Kleinbuchstaben – und im Passwortmanager speichern. Benutzername (3): Er ist öffentlich und steht später in jeder Adresse eures Projekts, also etwas Professionelles. <em>Create account</em> (4), dann das Bilderrätsel lösen und den Code eingeben, den GitHub an eure NDU-Adresse schickt.', marks: [{ x: 916, y: 259, w: 412, h: 40, n: 1 }, { x: 916, y: 331, w: 412, h: 38, n: 2 }, { x: 916, y: 438, w: 412, h: 38, n: 3 }, { x: 916, y: 687, w: 412, h: 44, n: 4 }] },
     { img: bild('github-5-dashboard'), alt: 'GitHub-Startseite mit „Welcome to GitHub“', text: 'Geschafft: Die Startseite begrüßt euch mit eurem Benutzernamen. Zwei-Faktor-Anmeldung verlangt GitHub erst einige Wochen später – richtet sie dann mit der Handy-App ein.', marks: [{ x: 494, y: 92, w: 390, h: 36 }] },
   ]} />
+  <Callout type="tip" title="Ihr habt schon ein GitHub-Konto?">
+    <p>Dann legt kein zweites an. Tragt eure NDU-Adresse zusätzlich ein: Profilbild oben rechts → <em>Settings</em> → <em>Emails</em> → <em>Add email address</em>, dann den Link in der Bestätigungsmail anklicken. Danach könnt ihr Education mit diesem Konto beantragen.</p>
+  </Callout>
 
   <h2 id="claude-pro">2 · Claude Pro</h2>
   <p>Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> anmelden – auch hier geht „Mit Google fortfahren“ – und unter Einstellungen → Upgrade den Tarif <em>Pro</em> wählen. Claude Code ist in Pro enthalten. Pro ist monatlich kündbar; für den Kurs reicht ein Monat. Ohne Pro funktioniert die Anmeldung in Schritt 5 nicht.</p>
@@ -109,6 +109,15 @@ const bild = (name: string) => {
     { img: bild('collab-3'), alt: 'markesdo steht mit „Pending Invite“ in der Liste', text: 'Die Einladung steht auf „Pending Invite“, bis Markus sie annimmt. Fertig.', marks: [{ x: 469, y: 492, w: 823, h: 56 }] },
   ]} />
 
+  <h2 id="education">9 · GitHub Education beantragen</h2>
+  <p>Am besten gleich am ersten Tag, denn GitHub prüft den Antrag; das kann von wenigen Minuten bis zu einigen Tagen dauern. Bis dahin reicht das normale Kontingent für den Kurs.</p>
+  <ol class="steps">
+    <li><strong>Antrag starten</strong> Auf <a href="https://education.github.com/pack" target="_blank" rel="noopener">education.github.com/pack</a> den Antrag für Studierende starten und mit eurem GitHub-Konto anmelden.</li>
+    <li><strong>NDU-Adresse wählen</strong> Als E-Mail die NDU-Adresse auswählen und als Hochschule die New Design University angeben. Fehlt die Adresse in der Auswahl, ist sie im Konto noch nicht bestätigt (siehe Kasten in Schritt 1).</li>
+    <li><strong>Nachweis</strong> Verlangt GitHub einen Nachweis, ein Foto oder PDF eurer aktuellen Studienbestätigung hochladen, auf der Name, Hochschule und Datum zu sehen sind.</li>
+    <li><strong>Warten</strong> Die Entscheidung kommt per E-Mail. Das größere Codespaces-Kontingent gilt erst danach.</li>
+  </ol>
+
   <h2>Orientierung im Codespace</h2>
   <div class="grid">
     <div class="card"><h3>Explorer (links)</h3><p class="small muted">Alle Dateien des Projekts. Ihr müsst hier selten etwas tun – Claude liest und schreibt die Dateien. Aber: Dateien <em>ansehen</em> hilft beim Verstehen.</p></div>
@@ -118,7 +127,7 @@ const bild = (name: string) => {
   </div>
 
   <h2 id="stoppen">Nach dem Kurstag: Codespace stoppen</h2>
-  <p>Ein laufender Codespace verbraucht euer Freikontingent (60 Stunden pro Monat), auch wenn der Tab zu ist. Auf <a href="https://github.com/codespaces" target="_blank" rel="noopener">github.com/codespaces</a> beim Codespace auf „…“:</p>
+  <p>Ein laufender Codespace verbraucht euer Kontingent (60 Stunden pro Monat, mit Education 90), auch wenn der Tab zu ist. Auf <a href="https://github.com/codespaces" target="_blank" rel="noopener">github.com/codespaces</a> beim Codespace auf „…“:</p>
   <Schritte steps={[
     { img: bild('stop-1'), alt: 'Menü eines Codespace mit „Stop codespace“ und angehaktem „Auto-delete codespace“', text: '<em>Stop codespace</em> (1). Beachtet den Haken bei <em>Auto-delete codespace</em> (2): Ein länger ungenutzter Codespace wird gelöscht. Was nicht committet und gepusht ist, ist dann weg.', marks: [{ x: 1283, y: 236, w: 126, h: 26, n: 1 }, { x: 1262, y: 280, w: 158, h: 26, n: 2 }] },
     { img: bild('stop-2'), alt: 'Meldung „Codespace stopped“, darunter der Hinweis „This codespace has uncommitted changes“', text: 'Gestoppt. Steht beim Codespace „This codespace has uncommitted changes“, habt ihr noch nicht alles gesichert – Codespace öffnen, committen, pushen.', marks: [{ x: 0, y: 58, w: 300, h: 52, n: 1 }, { x: 322, y: 600, w: 268, h: 18, n: 2 }] },
