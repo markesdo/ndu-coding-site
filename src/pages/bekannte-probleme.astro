@@ -32,7 +32,7 @@ const karten = [
 <Layout title="Bekannte Probleme">
   <span class="eyebrow">Nachschlagen</span>
   <h1>Bekannte Probleme</h1>
-  <p class="lead">Die Stolpersteine aus vier Jahren Kurs – und was dagegen hilft. Wird während des Kurses ergänzt.</p>
+  <p class="lead">Die typischen Stolpersteine – und was dagegen hilft. Wird während des Kurses ergänzt.</p>
   {probleme.map(p => (
     <div class="card"><h3>{p.t}</h3><p class="small" set:html={p.l}></p></div>
   ))}
