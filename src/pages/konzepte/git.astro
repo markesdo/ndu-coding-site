@@ -13,8 +13,8 @@ import FooterNav from '../../components/FooterNav.astro';
   <table>
     <tr><th>Begriff</th><th>Heißt</th><th>Im Alltag</th></tr>
     <tr><td><strong>Repository (Repo)</strong></td><td>Euer Projektordner samt gesamter Geschichte</td><td>„Schick mir den Repo-Link“</td></tr>
-    <tr><td><strong>Commit</strong></td><td>Ein gesicherter Stand mit Nachricht und Zeitstempel</td><td>Nach jeder fertigen Story: <code>/commit</code></td></tr>
-    <tr><td><strong>Push</strong></td><td>Commits von eurem Codespace zu GitHub hochladen</td><td>Macht <code>/commit</code> automatisch mit</td></tr>
+    <tr><td><strong>Commit</strong></td><td>Ein gesicherter Stand mit Nachricht und Zeitstempel</td><td>Nach jeder fertigen Story: <code>/ndu-commit</code></td></tr>
+    <tr><td><strong>Push</strong></td><td>Commits von eurem Codespace zu GitHub hochladen</td><td>Macht <code>/ndu-commit</code> automatisch mit</td></tr>
     <tr><td><strong>Discard / Restore</strong></td><td>Ungesicherte Änderungen verwerfen, zurück zum letzten Commit</td><td>Source-Control-Panel → Zurück-Pfeil</td></tr>
     <tr><td><strong>Branch</strong></td><td>Ein paralleler Arbeitsstand zum Ausprobieren</td><td>Erst an Tag 3 relevant, Claude macht es für euch</td></tr>
   </table>
@@ -23,7 +23,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <ol class="steps">
     <li><strong>Story bauen lassen</strong> Claude ändert Dateien. Im Source-Control-Panel erscheinen sie als „geändert“.</li>
     <li><strong>Prüfen</strong> Akzeptanzkriterien durchklicken. Nicht okay? Weiter mit Claude – oder alles verwerfen (Discard) und neu anfangen. Das ist kein Scheitern, das ist der Sinn von Git.</li>
-    <li><strong>Sichern</strong> <code>/commit</code>. Claude schreibt eine Nachricht, die beschreibt, was Nutzer*innen jetzt können („Eventliste zeigt Datum und Ort“).</li>
+    <li><strong>Sichern</strong> <code>/ndu-commit</code>. Claude schreibt eine Nachricht, die beschreibt, was Nutzer*innen jetzt können („Eventliste zeigt Datum und Ort“).</li>
     <li><strong>Nächste Story</strong> <code>/clear</code>, weiter.</li>
   </ol>
 
@@ -36,7 +36,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Claude erledigt das, erklärt, was es tut, und ihr behaltet beide Stände. Die Git-Befehle dahinter müsst ihr nicht kennen.</p>
 
   <h2>Was nicht ins Repo gehört</h2>
-  <p>Die Datei <code>.gitignore</code> listet, was Git ignorieren soll: <code>node_modules</code> (lässt sich jederzeit neu laden), Build-Ordner, und – am wichtigsten – <strong><code>.env.local</code> mit euren Geheimnissen</strong>. Ein API-Key, der einmal auf GitHub war, gilt als verbrannt, auch wenn ihr ihn löscht. <code>/check</code> kontrolliert das für euch.</p>
+  <p>Die Datei <code>.gitignore</code> listet, was Git ignorieren soll: <code>node_modules</code> (lässt sich jederzeit neu laden), Build-Ordner, und – am wichtigsten – <strong><code>.env.local</code> mit euren Geheimnissen</strong>. Ein API-Key, der einmal auf GitHub war, gilt als verbrannt, auch wenn ihr ihn löscht. <code>/ndu-check</code> kontrolliert das für euch.</p>
 
   <h2>Warum Markus Collaborator sein soll</h2>
   <p>Wenn ihr in Teams um Hilfe bittet, ist die erste Frage immer: „Zeig mir den Stand.“ Mit dem Repo-Link kann Markus euer Projekt in seinen eigenen Codespace laden, den Fehler nachstellen, eine Lösung committen – und ihr holt sie euch mit einem Klick (Sync). Das geht nur, wenn ihr gepusht habt und er Zugriff hat: Repo → Settings → Collaborators → Add people.</p>

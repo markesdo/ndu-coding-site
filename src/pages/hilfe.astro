@@ -12,7 +12,7 @@ import Callout from '../components/Callout.astro';
   <ol class="steps">
     <li><strong>Fehlermeldung komplett kopieren</strong> – aus der Browser-Konsole (Rechtsklick → Untersuchen → Console) oder dem Terminal – und Claude mit dem Debug-Prompt geben.</li>
     <li><strong>Neue Session</strong> <code>/clear</code>, Problem in einem Satz, kleiner als vorher.</li>
-    <li><strong><code>/check</code></strong> ausführen – oft steht die Ursache im Bericht.</li>
+    <li><strong><code>/ndu-check</code></strong> ausführen – oft steht die Ursache im Bericht.</li>
     <li><strong>Zurück zum letzten funktionierenden Stand</strong> Source Control → Discard Changes. Dann in kleineren Schritten noch einmal.</li>
     <li><strong><a href="/bekannte-probleme">Bekannte Probleme</a></strong> durchsehen.</li>
   </ol>
@@ -27,7 +27,7 @@ import Callout from '../components/Callout.astro';
 📍 Wo: (Browser-Konsole / Terminal / Seite XY / Vercel-Build)</Prompt>
 
   <Callout type="warn" title="Vorher pushen">
-    <p>Ohne gepushten Stand kann niemand helfen. <code>/commit</code> – auch wenn es gerade kaputt ist. Eine kaputte, sichtbare Version ist tausendmal hilfreicher als eine Beschreibung. Und: Markus muss Collaborator sein (Repo → Settings → Collaborators).</p>
+    <p>Ohne gepushten Stand kann niemand helfen. <code>/ndu-commit</code> – auch wenn es gerade kaputt ist. Eine kaputte, sichtbare Version ist tausendmal hilfreicher als eine Beschreibung. Und: Markus muss Collaborator sein (Repo → Settings → Collaborators).</p>
   </Callout>
 
   <h2>Was eine gute Hilfeanfrage ausmacht</h2>
