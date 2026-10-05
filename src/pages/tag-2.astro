@@ -117,7 +117,7 @@ import { bild } from '../components/anleitung-bilder';
   <Prompt>Setze Story S4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Zeig mir zuerst deinen Plan und warte auf mein Okay.</Prompt>
   <p>Prüfen: Event anlegen → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
   <h3>e) Sichern</h3>
-  <Prompt>/ndu-check – und wenn alles grün ist: S4 auf ✅ setzen und /ndu-commit</Prompt>
+  <Prompt>/ndu-check – und wenn alles grün ist: S4 auf fertig setzen und /ndu-commit</Prompt>
   <Checklist id="t2-u3" items={[
     'Supabase-Projekt in Frankfurt angelegt, Passwort gespeichert',
     'Supabase-MCP verbunden (<code>/mcp</code> zeigt „connected“)',
@@ -145,7 +145,7 @@ import { bild } from '../components/anleitung-bilder';
     'Zusagen und zurücknehmen, Zähler stimmt',
     'Fehlerkarte eingebaut – die andere Person im Tandem hat ihn gefunden',
     'RLS getestet: fremde Zusagen sind geschützt',
-    'S5, S6 (und optional S7) auf ✅, committet',
+    'S5, S6 (und optional S7) auf „fertig“, committet',
   ]} />
 
   <hr />

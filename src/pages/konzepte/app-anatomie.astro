@@ -3,20 +3,22 @@ import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Bestellweg from '../../components/sota/Bestellweg.tsx';
+import { Armchair, Building2, ChefHat, ConciergeBell, Database } from '@lucide/astro';
+const icons = { frontend: Armchair, api: ConciergeBell, backend: ChefHat, db: Database, hosting: Building2 };
 const layers = [
-  { id: 'frontend', ico: '🪑', name: 'Frontend', meta: 'Gastraum – was Gäste sehen und anfassen', files: 'src/app/page.tsx · src/components/',
+  { id: 'frontend', name: 'Frontend', meta: 'Gastraum – was Gäste sehen und anfassen', files: 'src/app/page.tsx · src/components/',
     text: 'Alles, was im Browser sichtbar ist: Seiten, Buttons, Formulare, Farben. Läuft auf dem Gerät der Nutzer*innen. In Campus Events: die Startseite, die Eventkarten, der Header.',
     q: 'Frage an Claude: „Welche Dateien gehören zum Frontend und was passiert, wenn ich eine davon ändere?“' },
-  { id: 'api', ico: '🛎️', name: 'API', meta: 'Kellner – nimmt Bestellungen entgegen und bringt Ergebnisse', files: 'src/app/api/…/route.ts',
+  { id: 'api', name: 'API', meta: 'Kellner – nimmt Bestellungen entgegen und bringt Ergebnisse', files: 'src/app/api/…/route.ts',
     text: 'Die Schnittstelle zwischen Gastraum und Küche. Das Frontend sagt „gib mir alle Events“ oder „speichere diese Zusage“, die API nimmt es entgegen, lässt es im Backend erledigen und bringt die Antwort zurück. Jede Adresse (z. B. /api/events) ist ein „Endpoint“.',
     q: 'Frage an Claude: „Welche API-Endpoints gibt es in diesem Projekt und was tun sie?“' },
-  { id: 'backend', ico: '🔥', name: 'Backend', meta: 'Küche – wo gearbeitet wird, unsichtbar für Gäste', files: 'Server-Code in route.ts · Supabase-Funktionen',
+  { id: 'backend', name: 'Backend', meta: 'Küche – wo gearbeitet wird, unsichtbar für Gäste', files: 'Server-Code in route.ts · Supabase-Funktionen',
     text: 'Die Logik, die nicht im Browser laufen darf oder soll: Wer darf was? Ist die Eingabe gültig? Was wird gespeichert? Läuft auf einem Server, nicht auf dem Gerät der Nutzer*innen. Bei Next.js steckt sie im selben Projekt wie das Frontend.',
     q: 'Frage an Claude: „Welche Prüfungen passieren im Backend, bevor ein Event gespeichert wird?“' },
-  { id: 'db', ico: '🧊', name: 'Datenbank', meta: 'Vorratskammer – wo alles dauerhaft liegt', files: 'Supabase · Tabellen events, rsvps, profiles',
+  { id: 'db', name: 'Datenbank', meta: 'Vorratskammer – wo alles dauerhaft liegt', files: 'Supabase · Tabellen events, rsvps, profiles',
     text: 'Tabellen mit festen Spalten und Datentypen; jede Zeile ist ein Eintrag. Alles, was nach einem Reload noch da sein soll, steht hier. Wir mieten sie bei Supabase (Postgres) statt sie selbst zu betreiben.',
     q: 'Frage an Claude: „Zeig mir, welche Tabellen es gibt und wie sie zusammenhängen – als einfache Skizze in Worten.“' },
-  { id: 'hosting', ico: '🏢', name: 'Hosting', meta: 'Gebäude – damit andere reinkommen', files: 'Vercel · Environment-Variablen',
+  { id: 'hosting', name: 'Hosting', meta: 'Gebäude – damit andere reinkommen', files: 'Vercel · Environment-Variablen',
     text: 'Solange die App nur in eurem Codespace läuft, sieht sie niemand. Hosting (Vercel) stellt sie unter einer öffentlichen Adresse bereit und baut sie bei jedem Push neu. Die Geheimnisse (.env) werden dort separat hinterlegt.',
     q: 'Frage an Claude: „Was muss ich bei Vercel einstellen, damit die App dort genauso läuft wie hier?“' },
 ];
@@ -39,13 +41,16 @@ const layers = [
   <div class="widget" id="anatomie">
     <p class="hint">Klickt auf eine Schicht. Rechts stehen die Dateien, in denen sie in Campus Events steckt.</p>
     <div class="layers">
-      {layers.map(l => (
+      {layers.map(l => {
+        const Icon = icons[l.id as keyof typeof icons];
+        return (
         <button class="layer" type="button" data-layer={l.id}>
-          <span class="ico">{l.ico}</span>
+          <span class="ico"><Icon size={26} aria-hidden="true" /></span>
           <span><span class="name">{l.name}</span><br/><span class="meta">{l.meta}</span></span>
           <span class="files">{l.files}</span>
         </button>
-      ))}
+        );
+      })}
     </div>
     <div class="layer-detail" id="layer-detail"><p class="muted">Wählt eine Schicht …</p></div>
     <script define:vars={{ layers }}>
@@ -53,8 +58,12 @@ const layers = [
       const btns = document.querySelectorAll('#anatomie .layer');
       const show = (id) => {
         const l = layers.find(x => x.id === id);
-        btns.forEach(b => b.classList.toggle('active', b.dataset.layer === id));
-        detail.innerHTML = `<h4>${l.ico} ${l.name}</h4><p>${l.text}</p><p class="q">${l.q}</p>`;
+        let ico = '';
+        btns.forEach(b => {
+          b.classList.toggle('active', b.dataset.layer === id);
+          if (b.dataset.layer === id) ico = b.querySelector('.ico').innerHTML;
+        });
+        detail.innerHTML = `<h4><span class="ico">${ico}</span>${l.name}</h4><p>${l.text}</p><p class="q">${l.q}</p>`;
       };
       btns.forEach(b => b.addEventListener('click', () => show(b.dataset.layer)));
       show('frontend');
