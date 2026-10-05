@@ -16,7 +16,7 @@
 - Node ≥ 22.12.0 (already in `package.json` engines).
 - New runtime deps exactly: `@astrojs/react@^7`, `react@^19`, `react-dom@^19`, `motion@^14`. New dev deps exactly: `@types/react`, `@types/react-dom`, `vitest@^5`. Nothing else.
 - Imports for animation come from `motion/react`. No Motion `layout` prop on blocks.
-- All visible text German, „Sie“-Anrede, „*innen“, „…“-Anführungszeichen, Halbgeviertstrich „ – “. Captions verbatim from the spec table.
+- All visible text German, „ihr“-Anrede (umgestellt 5.10.), „*innen“, „…“-Anführungszeichen, Halbgeviertstrich „ – “. Captions verbatim from the spec table.
 - Colours only via tokens from `global.css` (`--purple`, `--accent`, `--green`, `--yellow`, `--blue`, `--muted`, `--bg`, `--bg-2`, `--fg`, `--border`, `--radius`, `--mono`). Dark mode follows the existing pattern: `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) … }` plus `:root[data-theme="dark"] …`.
 - Mobile breakpoint 900 px; must work at 390 px width without horizontal scroll.
 - Commit messages in German; subject = result for users; end with `Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>`.

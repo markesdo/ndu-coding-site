@@ -65,10 +65,10 @@ const PRELUDES: Partial<Record<number, Block[]>> = {
 export const STEPS: Schritt[] = [
   {
     title: 'Jede Session beginnt gleich.',
-    text: 'Bevor Sie etwas schreiben, liegen schon die Systemregeln und Ihre `CLAUDE.md` im Kontextfenster – dem Arbeitsgedächtnis des Modells.',
+    text: 'Bevor ihr etwas schreibt, liegen schon die Systemregeln und eure `CLAUDE.md` im Kontextfenster – dem Arbeitsgedächtnis des Modells.',
   },
   {
-    title: 'Ihr Auftrag.',
+    title: 'Euer Auftrag.',
     text: '„Füge auf der Event-Seite einen RSVP-Button hinzu – nur für angemeldete Nutzer*innen.“ Die Einschränkung am Ende ist eine Absprache, auf die es später ankommt.',
   },
   {
@@ -81,15 +81,15 @@ export const STEPS: Schritt[] = [
   },
   {
     title: 'Je voller, desto unschärfer.',
-    text: 'Das Modell gewichtet nicht alles gleich. Je mehr im Fenster liegt, desto leichter gehen frühe Details unter – etwa Ihre Einschränkung aus Schritt 2. Die Antworten werden ungenauer, lange bevor das Fenster voll ist.',
+    text: 'Das Modell gewichtet nicht alles gleich. Je mehr im Fenster liegt, desto leichter gehen frühe Details unter – etwa eure Einschränkung aus Schritt 2. Die Antworten werden ungenauer, lange bevor das Fenster voll ist.',
   },
   {
     title: 'Auto-Compact.',
-    text: 'Kurz vor der Grenze fasst Claude Code den Verlauf automatisch zusammen. Das schafft Platz, kostet aber Detail – was nicht in der Zusammenfassung steht, ist weg. Hier: Ihre Einschränkung aus Schritt 2.',
+    text: 'Kurz vor der Grenze fasst Claude Code den Verlauf automatisch zusammen. Das schafft Platz, kostet aber Detail – was nicht in der Zusammenfassung steht, ist weg. Hier: eure Einschränkung aus Schritt 2.',
   },
   {
     title: 'Besser: selbst verdichten.',
-    text: 'Mit `/compact` lösen Sie die Zusammenfassung rechtzeitig selbst aus und sagen, was bleiben muss: `/compact Behalte: nur für angemeldete Nutzer*innen`. Dann übersteht die Absprache die Verdichtung.',
+    text: 'Mit `/compact` löst ihr die Zusammenfassung rechtzeitig selbst aus und sagt, was bleiben muss: `/compact Behalte: nur für angemeldete Nutzer*innen`. Dann übersteht die Absprache die Verdichtung.',
   },
   {
     title: '`/clear` – neue Session.',
@@ -97,7 +97,7 @@ export const STEPS: Schritt[] = [
   },
   {
     title: 'Dauerhaftes gehört in Dateien.',
-    text: 'Entscheidungen, die über eine Session hinaus gelten, halten Sie in `docs/ENTSCHEIDUNGEN.md` fest. Im Kursprojekt ist die Datei in `CLAUDE.md` verknüpft und wird deshalb bei jedem Start geladen. Was nur im Chat stand, ist in der nächsten Session weg.',
+    text: 'Entscheidungen, die über eine Session hinaus gelten, haltet ihr in `docs/ENTSCHEIDUNGEN.md` fest. Im Kursprojekt ist die Datei in `CLAUDE.md` verknüpft und wird deshalb bei jedem Start geladen. Was nur im Chat stand, ist in der nächsten Session weg.',
   },
 ];
 

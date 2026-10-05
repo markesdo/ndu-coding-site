@@ -6,7 +6,7 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="Daten & Backend">
   <span class="eyebrow">Konzept 4 · Tag 2</span>
   <h1>Daten & Backend</h1>
-  <p class="lead">Solange Ihre App nichts speichert, ist sie eine Broschüre. Sobald sie speichert, braucht sie eine Datenbank, Regeln, wer was darf – und einen Ort für Geheimnisse.</p>
+  <p class="lead">Solange eure App nichts speichert, ist sie eine Broschüre. Sobald sie speichert, braucht sie eine Datenbank, Regeln, wer was darf – und einen Ort für Geheimnisse.</p>
 
   <h2>Datenbank in fünf Begriffen</h2>
   <table>
@@ -17,11 +17,11 @@ import FooterNav from '../../components/FooterNav.astro';
     <tr><td>ID</td><td>Eindeutige Nummer pro Zeile</td><td>Event 42</td></tr>
     <tr><td>Beziehung</td><td>Eine Zeile zeigt auf eine andere</td><td>RSVP → Event 42, → Nutzerin Lena</td></tr>
   </table>
-  <p>CRUD – Create, Read, Update, Delete – sind die vier Dinge, die man mit Zeilen tun kann. Fast jede App ist CRUD mit schöner Oberfläche. Wenn Sie eine Story schreiben, fragen Sie sich: Welche Tabelle, welche Operation?</p>
+  <p>CRUD – Create, Read, Update, Delete – sind die vier Dinge, die man mit Zeilen tun kann. Fast jede App ist CRUD mit schöner Oberfläche. Wenn ihr eine Story schreibt, fragt euch: Welche Tabelle, welche Operation?</p>
 
   <h2>Der Weg einer Anfrage</h2>
   <div class="widget" id="req">
-    <p class="hint">Klicken Sie sich durch, was passiert, wenn Lena ein Event anlegt.</p>
+    <p class="hint">Klickt euch durch, was passiert, wenn Lena ein Event anlegt.</p>
     <div class="loop">
       <button type="button" data-step="0" class="active">Frontend</button>
       <button type="button" data-step="1">API-Route</button>
@@ -34,7 +34,7 @@ import FooterNav from '../../components/FooterNav.astro';
         ['Frontend', 'Lena füllt das Formular aus und klickt „Speichern“. Der Browser prüft Pflichtfelder (schnelles Feedback) und schickt <code>POST /api/events</code> mit den Daten.', 'Was hier geprüft wird, kann jeder umgehen. Deshalb prüft das Backend noch einmal.'],
         ['API-Route', 'Die Datei <code>src/app/api/events/route.ts</code> nimmt die Anfrage an. Sie prüft: Ist Lena angemeldet? Ist das Datum in der Zukunft? Ist der Titel nicht leer? Erst dann geht es weiter.', 'Das ist das Backend – es läuft auf dem Server, Lena sieht den Code nie.'],
         ['Datenbank', 'Supabase bekommt <code>INSERT INTO events …</code>. Vorher prüft Row Level Security: Darf diese Nutzerin in diese Tabelle schreiben? Ja → neue Zeile mit ID 43.', 'RLS ist die letzte Verteidigungslinie – selbst wenn das Backend einen Fehler hat.'],
-        ['Antwort', 'Die Datenbank meldet „Zeile 43 angelegt“, die API antwortet mit <code>201 Created</code> und dem Event, das Frontend zeigt es in der Liste – ohne Reload.', 'Fehler auf dem Rückweg (<code>400</code>, <code>401</code>, <code>500</code>) sind die Zahlen, die Sie in Fehlermeldungen sehen werden.'],
+        ['Antwort', 'Die Datenbank meldet „Zeile 43 angelegt“, die API antwortet mit <code>201 Created</code> und dem Event, das Frontend zeigt es in der Liste – ohne Reload.', 'Fehler auf dem Rückweg (<code>400</code>, <code>401</code>, <code>500</code>) sind die Zahlen, die ihr in Fehlermeldungen sehen werdet.'],
       ];
       const d = document.getElementById('req-detail')!;
       const bs = document.querySelectorAll<HTMLButtonElement>('#req .loop button');
@@ -45,16 +45,16 @@ import FooterNav from '../../components/FooterNav.astro';
   </div>
 
   <h2>Supabase – die gemietete Küche</h2>
-  <p>Früher brauchte man für Datenbank, Login und Dateispeicher drei Systeme und jemanden, der Server wartet. Supabase liefert alles aus einem Guss: eine <strong>Postgres-Datenbank</strong> (der Industriestandard), <strong>Auth</strong> (Registrierung, Login, Passwort vergessen, Google-Login), <strong>Storage</strong> für Bilder, und ein Dashboard, in dem Sie Ihre Daten sehen. Kostenlos für Prototypen, Server in Frankfurt, und über <strong>MCP</strong> kann Claude direkt damit arbeiten.</p>
+  <p>Früher brauchte man für Datenbank, Login und Dateispeicher drei Systeme und jemanden, der Server wartet. Supabase liefert alles aus einem Guss: eine <strong>Postgres-Datenbank</strong> (der Industriestandard), <strong>Auth</strong> (Registrierung, Login, Passwort vergessen, Google-Login), <strong>Storage</strong> für Bilder, und ein Dashboard, in dem ihr eure Daten seht. Kostenlos für Prototypen, Server in Frankfurt, und über <strong>MCP</strong> kann Claude direkt damit arbeiten.</p>
   <Callout type="warn" title="Free-Tier-Falle">
     <p>Supabase pausiert kostenlose Projekte nach <strong>7 Tagen ohne Zugriff</strong>. In der Zwischenwoche einmal öffnen reicht. Pausiert? Dashboard → „Restore project“, dauert 2 Minuten.</p>
   </Callout>
 
   <h2>Authentifizierung vs. Autorisierung</h2>
-  <p><strong>Authentifizierung:</strong> Wer ist das? (Login.) <strong>Autorisierung:</strong> Was darf diese Person? (Eigene Zusage löschen: ja. Fremde: nein.) Die zweite Frage ist die, die Anfänger*innen – und Agenten – gern vergessen. <strong>Row Level Security (RLS)</strong> beantwortet sie direkt in der Datenbank: Pro Tabelle Regeln wie „lesen darf jeder, anlegen nur Angemeldete, löschen nur, wem die Zeile gehört“. Fragen Sie Claude bei jeder neuen Tabelle: <em>„Welche RLS-Policies hast du gesetzt, und was passiert, wenn eine fremde Person eine Zeile ändern will?“</em></p>
+  <p><strong>Authentifizierung:</strong> Wer ist das? (Login.) <strong>Autorisierung:</strong> Was darf diese Person? (Eigene Zusage löschen: ja. Fremde: nein.) Die zweite Frage ist die, die Anfänger*innen – und Agenten – gern vergessen. <strong>Row Level Security (RLS)</strong> beantwortet sie direkt in der Datenbank: Pro Tabelle Regeln wie „lesen darf jeder, anlegen nur Angemeldete, löschen nur, wem die Zeile gehört“. Fragt Claude bei jeder neuen Tabelle: <em>„Welche RLS-Policies hast du gesetzt, und was passiert, wenn eine fremde Person eine Zeile ändern will?“</em></p>
 
   <h2>Secrets & Umgebungsvariablen</h2>
-  <p>Ihre App braucht Zugangsdaten: die Supabase-URL, Keys, später vielleicht einen Claude-API-Key. Die stehen in <code>.env.local</code>, einer Datei, die <strong>nie ins Repo kommt</strong>. Auf Vercel tragen Sie dieselben Werte im Dashboard ein. So kann der Code öffentlich sein und die Schlüssel privat bleiben.</p>
+  <p>Eure App braucht Zugangsdaten: die Supabase-URL, Keys, später vielleicht einen Claude-API-Key. Die stehen in <code>.env.local</code>, einer Datei, die <strong>nie ins Repo kommt</strong>. Auf Vercel tragt ihr dieselben Werte im Dashboard ein. So kann der Code öffentlich sein und die Schlüssel privat bleiben.</p>
   <table>
     <tr><th>Variable</th><th>Darf der Browser sie sehen?</th></tr>
     <tr><td><code>NEXT_PUBLIC_SUPABASE_URL</code>, <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code></td><td>Ja – deshalb <code>NEXT_PUBLIC_</code>. Der Publishable Key ist durch RLS geschützt.</td></tr>
@@ -66,8 +66,8 @@ import FooterNav from '../../components/FooterNav.astro';
     <tr><th>Begriff</th><th>Bedeutet</th></tr>
     <tr><td>Migration</td><td>Eine protokollierte Änderung an der Datenbankstruktur („Tabelle rsvps anlegen“). Claude legt sie an; so ist nachvollziehbar, wie die Datenbank entstanden ist.</td></tr>
     <tr><td>Seed-Daten</td><td>Beispieldaten, mit denen die Datenbank gefüllt wird, damit die App nicht leer aussieht.</td></tr>
-    <tr><td>Schema</td><td>Die Gesamtheit aller Tabellen und Beziehungen – der Bauplan Ihrer Daten.</td></tr>
-    <tr><td>Server Component / Client Component</td><td>Next.js-Interna: Was auf dem Server gerendert wird (Daten holen) vs. im Browser (Klicks). Claude kümmert sich darum; der Fehler „useState in Server Component“ ist aber ein Klassiker, den Sie wiedererkennen werden.</td></tr>
+    <tr><td>Schema</td><td>Die Gesamtheit aller Tabellen und Beziehungen – der Bauplan eurer Daten.</td></tr>
+    <tr><td>Server Component / Client Component</td><td>Next.js-Interna: Was auf dem Server gerendert wird (Daten holen) vs. im Browser (Klicks). Claude kümmert sich darum; der Fehler „useState in Server Component“ ist aber ein Klassiker, den ihr wiedererkennen werdet.</td></tr>
     <tr><td>Realtime</td><td>Supabase kann Änderungen live an alle Browser pushen (Zähler steigt bei allen gleichzeitig). Nettes „Später“-Feature.</td></tr>
   </table>
 

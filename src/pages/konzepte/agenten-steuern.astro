@@ -7,41 +7,41 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="Agenten steuern">
   <span class="eyebrow">Konzept 6 · Tag 2</span>
   <h1>Agenten steuern</h1>
-  <p class="lead">Nach einem Tag funktioniert alles. Nach einer Woche vergisst der Agent Absprachen, wiederholt Fehler und baut Dinge doppelt – wenn Sie ihn nicht führen. Das hier ist die Führungsarbeit.</p>
+  <p class="lead">Nach einem Tag funktioniert alles. Nach einer Woche vergisst der Agent Absprachen, wiederholt Fehler und baut Dinge doppelt – wenn ihr ihn nicht führt. Das hier ist die Führungsarbeit.</p>
 
   <h2>Kontext-Hygiene</h2>
   <ul>
     <li><strong>Eine Session pro Story.</strong> Fertig → <code>/commit</code> → <code>/clear</code>. Der nächste Auftrag beginnt mit leerem Kopf und liest CLAUDE.md, PRD und Backlog neu.</li>
-    <li><strong><code>/compact</code></strong>, wenn Sie mitten in etwas stecken und die Antworten schlechter werden: Claude fasst den Verlauf zusammen und arbeitet mit der Zusammenfassung weiter.</li>
+    <li><strong><code>/compact</code></strong>, wenn ihr mitten in etwas steckt und die Antworten schlechter werden: Claude fasst den Verlauf zusammen und arbeitet mit der Zusammenfassung weiter.</li>
     <li><strong>Gezielt füttern.</strong> „Schau dir <code>src/app/events/page.tsx</code> an“ statt „schau dir das Projekt an“. Die eine Fehlermeldung statt des ganzen Logs.</li>
-    <li><strong><kbd>Esc</kbd> ist Ihr Freund.</strong> Wenn der Plan in die falsche Richtung läuft, sofort stoppen – nicht abwarten und dann alles verwerfen.</li>
+    <li><strong><kbd>Esc</kbd> ist euer Freund.</strong> Wenn der Plan in die falsche Richtung läuft, sofort stoppen – nicht abwarten und dann alles verwerfen.</li>
   </ul>
 
   <h2>CLAUDE.md – das Gedächtnis des Projekts</h2>
-  <p>Die Datei wird in jeder Session automatisch gelesen. Alles, was dauerhaft gelten soll, gehört hinein: Stack-Entscheidungen, Konventionen, Sprache, Verbote. Alles, was <em>entschieden</em> wurde, in <code>docs/ENTSCHEIDUNGEN.md</code>. Pflegen Sie beides wie ein Onboarding-Dokument für ein neues Teammitglied, das jeden Morgen zum ersten Mal da ist.</p>
+  <p>Die Datei wird in jeder Session automatisch gelesen. Alles, was dauerhaft gelten soll, gehört hinein: Stack-Entscheidungen, Konventionen, Sprache, Verbote. Alles, was <em>entschieden</em> wurde, in <code>docs/ENTSCHEIDUNGEN.md</code>. Pflegt beides wie ein Onboarding-Dokument für ein neues Teammitglied, das jeden Morgen zum ersten Mal da ist.</p>
   <Prompt>Wir haben gerade entschieden, dass alle Datumsangaben im Format „Mi, 21.10., 07:30“ angezeigt werden. Trag das in docs/ENTSCHEIDUNGEN.md ein und ergänze in CLAUDE.md eine Regel dazu, damit du es in zukünftigen Sessions beachtest.</Prompt>
   <Callout type="tip" title="Regel">
-    <p>Wenn Sie Claude zum zweiten Mal dasselbe korrigieren müssen, gehört die Korrektur in die CLAUDE.md.</p>
+    <p>Wenn ihr Claude zum zweiten Mal dasselbe korrigieren müsst, gehört die Korrektur in die CLAUDE.md.</p>
   </Callout>
 
   <h2>Eigene Befehle (Commands & Skills)</h2>
-  <p><code>/erklaer</code>, <code>/pruefe</code> und <code>/commit</code> sind Markdown-Dateien in <code>.claude/commands/</code> – wiederverwendbare Prompts mit festen Regeln. Sie können weitere anlegen lassen: <code>/story</code> (Story aus einem Satz mit Kriterien erzeugen), <code>/review</code> (strenge Prüfung), <code>/deploy-check</code> (vor dem Push Build + Secrets prüfen). Skills sind dasselbe in größer: ganze Arbeitsweisen, die Claude bei Bedarf lädt.</p>
+  <p><code>/erklaer</code>, <code>/pruefe</code> und <code>/commit</code> sind Markdown-Dateien in <code>.claude/commands/</code> – wiederverwendbare Prompts mit festen Regeln. Ihr könnt weitere anlegen lassen: <code>/story</code> (Story aus einem Satz mit Kriterien erzeugen), <code>/review</code> (strenge Prüfung), <code>/deploy-check</code> (vor dem Push Build + Secrets prüfen). Skills sind dasselbe in größer: ganze Arbeitsweisen, die Claude bei Bedarf lädt.</p>
   <Prompt>Leg einen neuen Command /story an: Ich gebe einen Satz („Organisator*innen sollen Events absagen können“), du formulierst daraus eine User Story mit 3–5 Akzeptanzkriterien im Format „Gegeben: … Wenn …, dann …“ inklusive Negativfall, hängst sie ans Backlog und fragst, ob sie priorisiert werden soll.</Prompt>
 
   <h2>Plan Mode, Permissions, Auto-Accept</h2>
   <table>
     <tr><th>Modus</th><th>Wann</th></tr>
     <tr><td><strong>Plan Mode</strong></td><td>Alles, was mehr als eine Datei betrifft, alles Neue. Claude liest, denkt, fragt, schlägt vor – ändert nichts.</td></tr>
-    <tr><td><strong>Normal</strong></td><td>Standard. Claude fragt vor jeder Datei-Änderung und jedem Befehl. Am Anfang richtig: Sie sehen, was passiert.</td></tr>
-    <tr><td><strong>Auto-Accept</strong></td><td>Für Routine, der Sie vertrauen (Lint-Fehler beheben, Tests laufen lassen). Nie für Datenbank-Änderungen, nie für Push.</td></tr>
+    <tr><td><strong>Normal</strong></td><td>Standard. Claude fragt vor jeder Datei-Änderung und jedem Befehl. Am Anfang richtig: Ihr seht, was passiert.</td></tr>
+    <tr><td><strong>Auto-Accept</strong></td><td>Für Routine, der ihr vertraut (Lint-Fehler beheben, Tests laufen lassen). Nie für Datenbank-Änderungen, nie für Push.</td></tr>
   </table>
   <p>Die Datei <code>.claude/settings.json</code> im Template erlaubt die harmlosen Befehle (Lint, Build, Git-Status) automatisch und verbietet die gefährlichen (<code>--force</code>, <code>rm -rf</code>).</p>
 
   <h2>MCP – Steckdosen für den Agenten</h2>
-  <p>Model Context Protocol: ein Standard, über den Claude mit anderen Systemen spricht. Heute Supabase (Tabellen, Daten, Logs). Weitere, die Sie kennen sollten: <strong>Figma</strong> (Design lesen → Code bauen; kommt im Innolab), <strong>Playwright/Browser</strong> (Claude bedient die App selbst), <strong>Context7</strong> (aktuelle Dokumentation von Bibliotheken), <strong>GitHub</strong> (Issues, Pull Requests), <strong>Vercel</strong> (Deployments, Logs). <code>/mcp</code> zeigt, was verbunden ist.</p>
+  <p>Model Context Protocol: ein Standard, über den Claude mit anderen Systemen spricht. Heute Supabase (Tabellen, Daten, Logs). Weitere, die ihr kennen solltet: <strong>Figma</strong> (Design lesen → Code bauen; kommt im Innolab), <strong>Playwright/Browser</strong> (Claude bedient die App selbst), <strong>Context7</strong> (aktuelle Dokumentation von Bibliotheken), <strong>GitHub</strong> (Issues, Pull Requests), <strong>Vercel</strong> (Deployments, Logs). <code>/mcp</code> zeigt, was verbunden ist.</p>
 
   <h2>Subagents & parallele Arbeit</h2>
-  <p>Claude kann Teilaufgaben an eigene Unter-Agenten mit frischem Kontext geben – z. B. „ein Agent recherchiert die Supabase-Doku, einer schreibt die Tests, der Hauptagent baut“. Für Sie zwei praktische Fälle: <strong>Review durch einen zweiten Agenten</strong> (frischer Blick, kein Eigeninteresse am eigenen Code) und <strong>große Recherchen</strong>, die den Hauptkontext nicht verstopfen sollen. Mehr dazu im <a href="/konzepte/ausblick">Ausblick</a>.</p>
+  <p>Claude kann Teilaufgaben an eigene Unter-Agenten mit frischem Kontext geben – z. B. „ein Agent recherchiert die Supabase-Doku, einer schreibt die Tests, der Hauptagent baut“. Für euch zwei praktische Fälle: <strong>Review durch einen zweiten Agenten</strong> (frischer Blick, kein Eigeninteresse am eigenen Code) und <strong>große Recherchen</strong>, die den Hauptkontext nicht verstopfen sollen. Mehr dazu im <a href="/konzepte/ausblick">Ausblick</a>.</p>
 
   <h2>Kosten & Limits</h2>
   <p>Claude Pro hat ein Nutzungskontingent pro 5-Stunden-Fenster und zusätzlich ein Wochenlimit; claude.ai und Claude Code teilen sich dieses Kontingent. Was es frisst: große Kontexte (ganze Projekte lesen lassen), lange Sessions ohne <code>/clear</code>, Opus statt Sonnet für Routine. Empfehlung: Sonnet für die Umsetzung, Opus für Plan und Review, <code>/clear</code> nach jeder Story. Wenn das Limit kommt: Pause machen und Kontext aufräumen – ein Ausweichen auf claude.ai hilft nicht, es zählt zum selben Kontingent.</p>

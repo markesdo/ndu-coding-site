@@ -13,7 +13,7 @@ Erfolgskriterien:
 - Aussage fachlich korrekt für Claude Code 2026: Auto-Compact statt „Älteres fällt still raus“; automatisch geladen wird nur `CLAUDE.md` samt `@`-Verweisen.
 - Funktioniert in Light/Dark, auf dem Handy (≤ 900 px, getestet bei 390 px) und im Vollbild; mit „Bewegung reduzieren“ ohne Bewegung.
 
-Zielgruppe der Texte: Master-Studierende ohne Programmiererfahrung – klar, präzise, nicht vereinfacht-kindlich. Anrede „Sie“.
+Zielgruppe der Texte: Master-Studierende ohne Programmiererfahrung – klar, präzise, nicht vereinfacht-kindlich. Anrede „ihr“ (Entscheidung 5.10., abends; die Beschriftungstexte unten wurden entsprechend umgestellt).
 
 ## Abhängigkeit (anderes Repo)
 

@@ -16,27 +16,27 @@ const layers = [
     text: 'Tabellen mit festen Spalten und Datentypen; jede Zeile ist ein Eintrag. Alles, was nach einem Reload noch da sein soll, steht hier. Wir mieten sie bei Supabase (Postgres) statt sie selbst zu betreiben.',
     q: 'Frage an Claude: „Zeig mir, welche Tabellen es gibt und wie sie zusammenhängen – als einfache Skizze in Worten.“' },
   { id: 'hosting', ico: '🏢', name: 'Hosting', meta: 'Gebäude – damit andere reinkommen', files: 'Vercel · Environment-Variablen',
-    text: 'Solange die App nur in Ihrem Codespace läuft, sieht sie niemand. Hosting (Vercel) stellt sie unter einer öffentlichen Adresse bereit und baut sie bei jedem Push neu. Die Geheimnisse (.env) werden dort separat hinterlegt.',
+    text: 'Solange die App nur in eurem Codespace läuft, sieht sie niemand. Hosting (Vercel) stellt sie unter einer öffentlichen Adresse bereit und baut sie bei jedem Push neu. Die Geheimnisse (.env) werden dort separat hinterlegt.',
     q: 'Frage an Claude: „Was muss ich bei Vercel einstellen, damit die App dort genauso läuft wie hier?“' },
 ];
 ---
 <Layout title="Anatomie einer App">
   <span class="eyebrow">Konzept 1 · Tag 1</span>
   <h1>Anatomie einer App</h1>
-  <p class="lead">Sie müssen keine Schicht selbst bauen können. Aber Sie müssen wissen, dass es sie gibt – sonst können Sie weder richtig bestellen noch beurteilen, ob richtig geliefert wurde.</p>
+  <p class="lead">Ihr müsst keine Schicht selbst bauen können. Aber ihr müsst wissen, dass es sie gibt – sonst könnt ihr weder richtig bestellen noch beurteilen, ob richtig geliefert wurde.</p>
 
   <h2>Website, Web-App oder App?</h2>
   <table>
-    <tr><th>Typ</th><th>Was es ist</th><th>Beispiel</th><th>Für Ihren Prototyp</th></tr>
+    <tr><th>Typ</th><th>Was es ist</th><th>Beispiel</th><th>Für euren Prototyp</th></tr>
     <tr><td><strong>Website</strong></td><td>Seiten zum Lesen, wenig Interaktion, keine Nutzerdaten</td><td>ndu.ac.at, ein Portfolio</td><td>Richtig für Landing Pages und Info-Angebote; in 1 Stunde fertig</td></tr>
     <tr><td><strong>Web-App</strong></td><td>Läuft im Browser, hat Login, speichert Daten, reagiert auf Nutzer*innen</td><td>Google Docs, Notion, Campus Events</td><td><strong>Unser Standard.</strong> Funktioniert auf jedem Gerät, ein Link reicht, keine App-Store-Hürde</td></tr>
-    <tr><td><strong>Native App</strong></td><td>Wird installiert (App Store), nutzt Kamera, Push, Offline</td><td>WhatsApp, Instagram</td><td>Erst, wenn Sie wirklich Push/Offline/Kamera brauchen – deutlich aufwändiger</td></tr>
+    <tr><td><strong>Native App</strong></td><td>Wird installiert (App Store), nutzt Kamera, Push, Offline</td><td>WhatsApp, Instagram</td><td>Erst, wenn ihr wirklich Push/Offline/Kamera braucht – deutlich aufwändiger</td></tr>
     <tr><td><strong>PWA</strong></td><td>Web-App, die sich wie eine App auf den Homescreen legt</td><td>viele Nachrichten-Apps</td><td>Guter Mittelweg: Web-App + „Zum Homescreen hinzufügen“</td></tr>
   </table>
 
   <h2>Die fünf Schichten – das Restaurant</h2>
   <div class="widget" id="anatomie">
-    <p class="hint">Klicken Sie auf eine Schicht. Rechts stehen die Dateien, in denen sie in Campus Events steckt.</p>
+    <p class="hint">Klickt auf eine Schicht. Rechts stehen die Dateien, in denen sie in Campus Events steckt.</p>
     <div class="layers">
       {layers.map(l => (
         <button class="layer" type="button" data-layer={l.id}>
@@ -46,7 +46,7 @@ const layers = [
         </button>
       ))}
     </div>
-    <div class="layer-detail" id="layer-detail"><p class="muted">Wählen Sie eine Schicht …</p></div>
+    <div class="layer-detail" id="layer-detail"><p class="muted">Wählt eine Schicht …</p></div>
     <script define:vars={{ layers }}>
       const detail = document.getElementById('layer-detail');
       const btns = document.querySelectorAll('#anatomie .layer');
@@ -69,8 +69,8 @@ const layers = [
     <li><strong>Datenbank</strong> Neue Zeile in der Tabelle <code>rsvps</code>: Event 42, Lena, jetzt.</li>
     <li><strong>Zurück</strong> Antwort „ok, 13 Zusagen“ → API → Frontend zeigt „Zugesagt ✓ · 13“.</li>
   </ol>
-  <Callout type="concept" title="Warum Sie das wissen müssen">
-    <p>Wenn etwas nicht funktioniert, ist die erste Frage immer: <strong>in welcher Schicht?</strong> Sieht man den Fehler im Browser (Frontend) oder im Terminal (Backend)? Ist die Zeile in der Datenbank angekommen? Allein mit dieser Frage lösen Sie die Hälfte aller Probleme – und geben Claude die entscheidende Information mit.</p>
+  <Callout type="concept" title="Warum ihr das wissen müsst">
+    <p>Wenn etwas nicht funktioniert, ist die erste Frage immer: <strong>in welcher Schicht?</strong> Sieht man den Fehler im Browser (Frontend) oder im Terminal (Backend)? Ist die Zeile in der Datenbank angekommen? Allein mit dieser Frage löst ihr die Hälfte aller Probleme – und geben Claude die entscheidende Information mit.</p>
   </Callout>
 
   <h2>Begriffe, die Claude benutzen wird</h2>
@@ -82,8 +82,8 @@ const layers = [
     <tr><td>Endpoint</td><td>Eine Adresse, an die das Frontend Anfragen schickt (<code>/api/events</code>). Verben: GET (holen), POST (anlegen), PATCH (ändern), DELETE (löschen).</td></tr>
     <tr><td>Dependency / Paket</td><td>Fremder Code, den das Projekt nutzt (Liste in <code>package.json</code>). <code>npm install</code> lädt sie herunter.</td></tr>
     <tr><td>Build</td><td>Das Projekt wird in die Form gebracht, die Browser und Server verstehen. Wenn der Build fehlschlägt, kann nicht veröffentlicht werden.</td></tr>
-    <tr><td>TypeScript</td><td>JavaScript mit Typangaben. Für Sie nur wichtig, weil der Agent dadurch mehr Fehler selbst findet.</td></tr>
-    <tr><td>Tailwind</td><td>Die Art, wie in unserem Projekt gestaltet wird (Klassen direkt am Element). Sie müssen es nicht lesen können.</td></tr>
+    <tr><td>TypeScript</td><td>JavaScript mit Typangaben. Für euch nur wichtig, weil der Agent dadurch mehr Fehler selbst findet.</td></tr>
+    <tr><td>Tailwind</td><td>Die Art, wie in unserem Projekt gestaltet wird (Klassen direkt am Element). Ihr müsst es nicht lesen können.</td></tr>
   </table>
 
   <FooterNav prev={{ href: '/tag-1', t: 'Tag 1' }} next={{ href: '/konzepte/coding-agent', t: 'Wie ein Coding-Agent arbeitet' }} />
