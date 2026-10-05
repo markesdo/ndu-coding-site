@@ -66,7 +66,7 @@ function Haus({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
                 className="bw-spur-zettel"
                 initial={{ left: pos(bewegt && z.zettel.von ? z.zettel.von : z.zettel.at), opacity: 0 }}
                 animate={{ left: pos(z.zettel.at), opacity: 1 }}
-                exit={{ opacity: 0 }}
+                exit={{ opacity: 0, transition: { duration: 0 } }}
                 transition={{ left: { duration: fahrt, ease: 'easeInOut' }, opacity: { duration: bewegt ? 0.2 : 0 } }}
               >
                 <ZettelKarte zettel={z.zettel} />
@@ -160,7 +160,7 @@ function Eventkarte({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: 
           className={`bw-knopf bw-knopf-${z.button}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, transition: { duration: 0 } }}
           // Der neue Zustand erscheint erst, wenn die Antwort angekommen ist.
           transition={{ duration: bewegt ? 0.2 : 0, delay: bewegt && z.button !== 'offen' ? fahrt : 0 }}
         >
@@ -199,7 +199,7 @@ function Pruefungen({ liste, bewegt, fahrt }: { liste: Zustand['pruefungen']; be
                 className="bw-pruef-icon"
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                exit={{ opacity: 0 }}
+                exit={{ opacity: 0, transition: { duration: 0 } }}
                 // Nacheinander abhaken, sobald der Zettel in der Küche liegt.
                 transition={{ duration: bewegt ? 0.25 : 0, delay: bewegt ? fahrt + i * 0.35 : 0 }}
               >
@@ -230,7 +230,7 @@ function Tabelle({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: num
                 className={r.id === z.neueZeile ? 'bw-neu' : undefined}
                 initial={{ opacity: 0, x: -16 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0 }}
+                exit={{ opacity: 0, transition: { duration: 0 } }}
                 transition={{ duration: bewegt ? 0.4 : 0, delay: bewegt ? fahrt : 0 }}
               >
                 <td>42</td><td>{r.user}</td><td>{r.zeit}</td>

@@ -254,6 +254,8 @@
   .bw-aktiv { transform: none; }
   .bw-rolle { display: none; }
   .bw-station:not(.bw-aktiv) .bw-inhalt { display: none; }
+  /* Letzter Schritt: keine aktive Station – alle zeigen ihren Inhalt. */
+  .bw-alle .bw-station .bw-inhalt { display: block; }
   .bw-aktiv .bw-inhalt { margin-top: .5em; }
   .bw-chip { display: block; margin-top: .5em; }
   .bw-chip .bw-zettel { width: auto; max-width: 16em; }
