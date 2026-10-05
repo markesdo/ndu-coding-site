@@ -1,46 +1,114 @@
 ---
 // Schritt-für-Schritt-Anleitung mit Screenshots. Markierungen liegen als HTML über dem Bild
-// (bleiben scharf und lassen sich ändern, ohne neu zu fotografieren). Klick vergrößert das Bild.
+// (bleiben scharf und lassen sich ändern, ohne neu zu fotografieren).
+// - Jeder Schritt hat eine Adresse (#id-n) und ein Label (z. B. „5.6“), damit Hilfe-Texte genau dorthin verlinken.
+// - In der Seite zeigt jedes Bild nur den Ausschnitt um die Markierungen; Klick zeigt den ganzen Bildschirm.
+// - Der Dialog ist zugleich der Präsentationsmodus für den Beamer: Text, Zähler, Pfeiltasten, Vollbild.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { markStyle, type Mark } from './screenshot-steps';
+import { cropRect, cropStyle, markStyle, type Crop, type Mark } from './screenshot-steps';
 
-type Step = { img: ImageMetadata; alt: string; text: string; marks?: Mark[] };
-const { steps } = Astro.props as { steps: Step[] };
+type Step = { img: ImageMetadata; alt: string; text: string; marks?: Mark[]; crop?: false | Crop };
+const { steps, id, nummer, start = 1 } = Astro.props as { steps: Step[]; id: string; nummer?: string; start?: number };
+const label = (n: number) => (nummer ? `${nummer}.${n}` : String(n));
 ---
-<ol class="shots">
-  {steps.map((s) => (
-    <li>
-      <p set:html={s.text} />
-      <button type="button" class="shot" aria-label={`Bild vergrößern: ${s.alt}`}>
-        <span class="shot-frame">
-          <Image src={s.img} alt={s.alt} widths={[640, 1280, s.img.width]} sizes="(max-width: 900px) 100vw, 820px" />
-          {(s.marks ?? []).map((m) => (
-            <span class="mark" style={markStyle(m, s.img.width, s.img.height)} aria-hidden="true">{m.n && <span class="mark-n">{m.n}</span>}</span>
-          ))}
-        </span>
-      </button>
-    </li>
-  ))}
+<button type="button" class="shots-present" data-present={`${id}-${start}`} hidden>▶ Als Präsentation zeigen</button>
+<ol class="shots" style={`counter-reset: shot ${start - 1}`} start={start}>
+  {steps.map((s, i) => {
+    const n = start + i;
+    const marks = s.marks ?? [];
+    const crop = s.crop === false ? null : (s.crop ?? cropRect(marks, s.img.width, s.img.height));
+    const scale = crop ? s.img.width / crop.w : 1;
+    const frame = (
+      <span class="shot-frame" style={crop ? cropStyle(crop, s.img.width, s.img.height) : undefined}>
+        <Image src={s.img} alt={s.alt} widths={[640, 1280, s.img.width]}
+          sizes={`(max-width: 900px) ${Math.round(100 * scale)}vw, ${Math.round(820 * scale)}px`} />
+        {marks.map((m) => (
+          <span class="mark" style={markStyle(m, s.img.width, s.img.height)} aria-hidden="true">{m.n && <span class="mark-n">{m.n}</span>}</span>
+        ))}
+      </span>
+    );
+    return (
+      <li id={`${id}-${n}`} data-label={label(n)}>
+        <p set:html={s.text} />
+        <button type="button" class="shot" aria-label={`Ganzen Bildschirm zeigen: ${s.alt}`}>
+          {crop ? (
+            <span class="shot-crop">
+              <span class="shot-crop-box" style={`aspect-ratio: ${crop.w} / ${crop.h}`}>{frame}</span>
+            </span>
+          ) : frame}
+        </button>
+        {crop && <p class="shot-hint small muted">Ausschnitt – Klick zeigt den ganzen Bildschirm.</p>}
+      </li>
+    );
+  })}
 </ol>
 
 <script>
-  // Ein gemeinsamer Vergrößerungs-Dialog pro Seite, auch wenn mehrere Schritt-Listen darauf stehen.
+  // Ein gemeinsamer Dialog pro Seite für alle Schritt-Listen: vergrößertes Bild + Präsentationsmodus.
+  const items = [...document.querySelectorAll<HTMLLIElement>('.shots > li')];
   const dialog = document.createElement('dialog');
   dialog.className = 'shot-zoom';
-  dialog.setAttribute('aria-label', 'Vergrößerter Screenshot');
-  dialog.innerHTML = '<form method="dialog"><button class="shot-close" aria-label="Schließen"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></form><div class="shot-zoom-body"></div>';
+  dialog.setAttribute('aria-label', 'Schritt-für-Schritt-Ansicht');
+  // Vollbild bekommt der innere Container: Ein <dialog> selbst darf laut Fullscreen-Spezifikation nicht ins Vollbild.
+  dialog.innerHTML = `
+    <div class="shot-zoom-inner">
+      <form method="dialog"><button class="shot-close" aria-label="Schließen"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></form>
+      <div class="shot-zoom-body"></div>
+      <div class="shot-zoom-caption" aria-live="polite"></div>
+      <div class="shot-zoom-nav">
+        <button type="button" data-go="-1" aria-label="Vorheriger Schritt">‹ Zurück</button>
+        <span class="shot-zoom-count"></span>
+        <button type="button" data-go="1" aria-label="Nächster Schritt">Weiter ›</button>
+        <button type="button" data-fullscreen>Vollbild</button>
+      </div>
+    </div>`;
   document.body.append(dialog);
+  const inner = dialog.querySelector<HTMLElement>('.shot-zoom-inner')!;
   const body = dialog.querySelector('.shot-zoom-body')!;
-  document.querySelectorAll<HTMLButtonElement>('.shots .shot').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const frame = btn.querySelector('.shot-frame')!.cloneNode(true) as HTMLElement;
-      // Im Dialog die größte Variante laden statt der für die Spalte gewählten.
-      frame.querySelector('img')?.removeAttribute('sizes');
-      body.replaceChildren(frame);
-      dialog.showModal();
-    });
+  const caption = dialog.querySelector('.shot-zoom-caption')!;
+  const count = dialog.querySelector('.shot-zoom-count')!;
+  const prev = dialog.querySelector<HTMLButtonElement>('[data-go="-1"]')!;
+  const next = dialog.querySelector<HTMLButtonElement>('[data-go="1"]')!;
+  let current = 0;
+
+  function show(i: number) {
+    current = Math.max(0, Math.min(items.length - 1, i));
+    const li = items[current];
+    // Ganzer Bildschirm im Dialog: Rahmen ohne Ausschnitt-Variablen, größte Bildvariante.
+    const frame = li.querySelector('.shot-frame')!.cloneNode(true) as HTMLElement;
+    frame.removeAttribute('style');
+    frame.querySelector('img')?.removeAttribute('sizes');
+    body.replaceChildren(frame);
+    caption.innerHTML = `<span class="shot-zoom-label">${li.dataset.label}</span>` + li.querySelector(':scope > p')!.innerHTML;
+    count.textContent = `${current + 1} / ${items.length}`;
+    // Fokus vom Button wegnehmen, der gleich deaktiviert wird – sonst landet er auf <body> und die Pfeiltasten gehen ins Leere.
+    if (current === 0 && document.activeElement === prev) next.focus();
+    if (current === items.length - 1 && document.activeElement === next) prev.focus();
+    prev.disabled = current === 0;
+    next.disabled = current === items.length - 1;
+    history.replaceState(null, '', `#${li.id}`);
+    if (!dialog.open) dialog.showModal();
+  }
+
+  items.forEach((li, i) => li.querySelector('.shot')!.addEventListener('click', () => show(i)));
+  document.querySelectorAll<HTMLButtonElement>('[data-present]').forEach((b) => {
+    b.hidden = false;
+    b.addEventListener('click', () => show(items.findIndex((li) => li.id === b.dataset.present)));
   });
-  // Klick neben das Bild schließt.
+  prev.addEventListener('click', () => show(current - 1));
+  next.addEventListener('click', () => show(current + 1));
+  dialog.querySelector('[data-fullscreen]')!.addEventListener('click', () => {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else inner.requestFullscreen?.().catch((err) => console.warn('Vollbild nicht möglich:', err));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!dialog.open) return;
+    // Pfeiltasten und Presenter-Clicker (PageUp/PageDown).
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(current - 1); }
+  });
+  // Klick neben das Bild schließt; beim Schließen Vollbild beenden.
   dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener('close', () => { if (document.fullscreenElement) document.exitFullscreen(); });
 </script>
