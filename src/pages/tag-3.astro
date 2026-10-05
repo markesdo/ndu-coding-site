@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Block from '../components/Block.astro';
-import Callout from '../components/Callout.astro';
 import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
 import FooterNav from '../components/FooterNav.astro';
@@ -10,12 +9,11 @@ import FooterNav from '../components/FooterNav.astro';
   <span class="eyebrow">Donnerstag, 15. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 3 · Shippen & selbständig werden</h1>
   <p class="lead">Prototypen fertigstellen und präsentieren, Qualität beurteilen lernen, ohne Code zu lesen – und sehen, was 2026 sonst noch geht.</p>
-  <Callout type="info" title="Stand der Ausarbeitung"><p>Der Ablauf steht; die Inhalte werden in der Zwischenwoche anhand der echten Probleme aus Tag 1 und 2 fertig ausgearbeitet.</p></Callout>
 
   <h2>Ablauf</h2>
   <div class="schedule">
     <Block time="09:00–09:40" type="plenum" title="Stand-up">Jede*r 2 Minuten: Was läuft, wo hängt es, was brauche ich heute? Blocker werden für die Werkstatt verteilt.</Block>
-    <Block time="09:40–10:20" type="konzept" title="Konzept 7 · Qualität ohne Code lesen" href="/konzepte/qualitaet">Code-Review durch den Agenten, Sicherheits-Checkliste, Tests als Sicherheitsnetz.</Block>
+    <Block time="09:40–10:20" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="/konzepte/qualitaet">Code-Review durch den Agenten, Sicherheits-Checkliste, Tests als Sicherheitsnetz.</Block>
     <Block time="10:20–10:35" type="pause" title="Pause" />
     <Block time="10:35–12:00" type="uebung" title="Werkstatt 1" href="#werkstatt">Blocker lösen, dann Peer-Review im Tandem mit der Checkliste.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
@@ -32,9 +30,9 @@ import FooterNav from '../components/FooterNav.astro';
   <p>Tauschen Sie Vercel-URLs. Gehen Sie die App der anderen Person als echte*r Nutzer*in durch – <strong>ohne Erklärung</strong> – und notieren Sie: Wo war ich verwirrt? Was hat nicht funktioniert? Was hätte ich erwartet? Dann die <a href="/konzepte/qualitaet">Qualitäts-Checkliste</a> gemeinsam durchgehen. Findings werden Stories:</p>
   <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus User Stories mit Akzeptanzkriterien und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
   <h3>Review durch den Agenten</h3>
-  <Prompt note="In einer frischen Session (/clear) – der Reviewer soll nicht derselbe Kontext sein, der den Code geschrieben hat.">Prüfe dieses Projekt wie eine strenge Senior-Entwicklerin vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz für Nicht-Programmierer. Ändere noch nichts.</Prompt>
+  <Prompt note="In einer frischen Session (/clear) – die Prüfung soll nicht aus demselben Kontext kommen, der den Code geschrieben hat.">Prüfe dieses Projekt so streng wie ein erfahrenes Entwicklungsteam vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
   <h3>Demo vorbereiten (Werkstatt 2)</h3>
-  <Prompt>Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshots-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
+  <Prompt>Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshot-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
   <p>Fallback für die Live-Demo: 2-Minuten-Screenrecording (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows: Xbox Game Bar <kbd>Win</kbd><kbd>G</kbd>) – falls das WLAN streikt.</p>
 
   <hr />

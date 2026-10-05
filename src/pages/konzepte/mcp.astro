@@ -5,12 +5,12 @@ import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="MCP-Server">
-  <span class="eyebrow">Konzept · Tag 2 (vor Übung 3)</span>
+  <span class="eyebrow">Ergänzung zu Konzept 4 · Tag 2</span>
   <h1>MCP-Server – Steckdosen für den Agenten</h1>
-  <p class="lead">Ohne MCP kann Claude nur Dateien und Terminal. Mit MCP kann es Ihre Datenbank lesen, Ihr Figma-Design ansehen, Ihre App im Browser bedienen und aktuelle Dokumentation nachschlagen. 2026 ist das der Unterschied zwischen „Code-Generator“ und „Kollege mit Zugriff“.</p>
+  <p class="lead">Ohne MCP arbeitet Claude nur mit Dateien und dem Terminal. Mit MCP kann es Ihre Datenbank lesen, Ihr Figma-Design ansehen, Ihre App im Browser bedienen und aktuelle Dokumentation nachschlagen. 2026 ist das der Unterschied zwischen „Code-Generator“ und „Teammitglied mit Zugriff“.</p>
 
   <h2>Was MCP ist</h2>
-  <p><strong>Model Context Protocol</strong> – ein offener Standard (von Anthropic 2024 veröffentlicht, inzwischen von allen großen Anbietern unterstützt), der beschreibt, wie ein KI-Agent mit externen Systemen spricht. Ein <em>MCP-Server</em> ist ein kleines Programm, das einem System – Supabase, Figma, GitHub, Ihrem Browser – eine Liste von <strong>Werkzeugen</strong> gibt: „Tabelle anlegen“, „Design-Frame lesen“, „Seite öffnen und Screenshot machen“. Claude sieht diese Werkzeuge und benutzt sie, wenn es sinnvoll ist – genau wie es Dateien liest oder <code>npm run build</code> ausführt.</p>
+  <p><strong>Model Context Protocol</strong> – ein offener Standard (von Anthropic 2024 veröffentlicht, inzwischen von allen großen Anbietern unterstützt), der beschreibt, wie ein KI-Agent mit externen Systemen spricht. Ein <em>MCP-Server</em> ist ein kleines Programm, das dem Agenten für ein System – Supabase, Figma, GitHub, Ihren Browser – eine Liste von <strong>Werkzeugen</strong> bereitstellt: „Tabelle anlegen“, „Design-Frame lesen“, „Seite öffnen und Screenshot machen“. Claude sieht diese Werkzeuge und benutzt sie, wenn es sinnvoll ist – genau wie es Dateien liest oder <code>npm run build</code> ausführt.</p>
   <div class="widget">
     <p class="hint">Ohne MCP vs. mit MCP – dieselbe Aufgabe.</p>
     <div class="compare">

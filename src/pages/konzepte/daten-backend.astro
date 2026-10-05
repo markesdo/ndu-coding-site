@@ -11,8 +11,8 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Datenbank in fünf Begriffen</h2>
   <table>
     <tr><th>Begriff</th><th>Heißt</th><th>In Campus Events</th></tr>
-    <tr><td>Tabelle</td><td>Eine Art von Ding</td><td><code>events</code>, <code>rsvps</code>, <code>profiles</code></td></tr>
-    <tr><td>Zeile</td><td>Ein konkretes Ding</td><td>„Lauftreff, 21.10., 07:30“</td></tr>
+    <tr><td>Tabelle</td><td>Ein Objekttyp, z. B. Events – mit festen Spalten und Datentypen</td><td><code>events</code>, <code>rsvps</code>, <code>profiles</code></td></tr>
+    <tr><td>Zeile</td><td>Ein einzelner Eintrag</td><td>„Lauftreff, 21.10., 07:30“</td></tr>
     <tr><td>Spalte</td><td>Eine Eigenschaft</td><td><code>titel</code>, <code>datum</code>, <code>ort</code></td></tr>
     <tr><td>ID</td><td>Eindeutige Nummer pro Zeile</td><td>Event 42</td></tr>
     <tr><td>Beziehung</td><td>Eine Zeile zeigt auf eine andere</td><td>RSVP → Event 42, → Nutzerin Lena</td></tr>
@@ -51,7 +51,7 @@ import FooterNav from '../../components/FooterNav.astro';
   </Callout>
 
   <h2>Authentifizierung vs. Autorisierung</h2>
-  <p><strong>Authentifizierung:</strong> Wer bist du? (Login.) <strong>Autorisierung:</strong> Was darfst du? (Eigene Zusage löschen: ja. Fremde: nein.) Die zweite Frage ist die, die Anfänger*innen – und Agenten – gern vergessen. <strong>Row Level Security (RLS)</strong> beantwortet sie direkt in der Datenbank: Pro Tabelle Regeln wie „lesen darf jeder, anlegen nur Angemeldete, löschen nur die Besitzerin“. Fragen Sie Claude bei jeder neuen Tabelle: <em>„Welche RLS-Policies hast du gesetzt, und was passiert, wenn ein fremder Nutzer eine Zeile ändern will?“</em></p>
+  <p><strong>Authentifizierung:</strong> Wer ist das? (Login.) <strong>Autorisierung:</strong> Was darf diese Person? (Eigene Zusage löschen: ja. Fremde: nein.) Die zweite Frage ist die, die Anfänger*innen – und Agenten – gern vergessen. <strong>Row Level Security (RLS)</strong> beantwortet sie direkt in der Datenbank: Pro Tabelle Regeln wie „lesen darf jeder, anlegen nur Angemeldete, löschen nur, wem die Zeile gehört“. Fragen Sie Claude bei jeder neuen Tabelle: <em>„Welche RLS-Policies hast du gesetzt, und was passiert, wenn eine fremde Person eine Zeile ändern will?“</em></p>
 
   <h2>Secrets & Umgebungsvariablen</h2>
   <p>Ihre App braucht Zugangsdaten: die Supabase-URL, Keys, später vielleicht einen Claude-API-Key. Die stehen in <code>.env.local</code>, einer Datei, die <strong>nie ins Repo kommt</strong>. Auf Vercel tragen Sie dieselben Werte im Dashboard ein. So kann der Code öffentlich sein und die Schlüssel privat bleiben.</p>

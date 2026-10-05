@@ -19,7 +19,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <ol class="steps">
     <li><strong>PRD – Product Requirements Document (eine Seite)</strong> Für wen, welches Problem, was ist es in einem Satz, was ist es <em>nicht</em>, die 3–5 Kernfunktionen, woran merkt man Erfolg. Vorlage: <code>docs/PRD-VORLAGE.md</code>. Das PRD ist das Gedächtnis des Projekts – Claude liest es in jeder Session.</li>
     <li><strong>User Story (ein Satz)</strong> <em>Als [Rolle] möchte ich [Ziel], damit [Nutzen].</em> Die Rolle ist eine echte Person, nicht „der Nutzer“. Der Nutzen erklärt, warum es sich lohnt – und erlaubt Claude, bessere Vorschläge zu machen als die wörtliche Umsetzung.</li>
-    <li><strong>Akzeptanzkriterien (3–5 pro Story)</strong> <em>Gegeben [Ausgangslage], wenn [Aktion], dann [erwartetes Ergebnis].</em> Konkret genug, dass man sie durchklicken kann. Immer mindestens einen Negativfall: Was passiert bei leerem Feld, falschem Datum, ohne Login?</li>
+    <li><strong>Akzeptanzkriterien (3–5 pro Story)</strong> <em>Gegeben: [Ausgangslage]. Wenn [Aktion], dann [erwartetes Ergebnis].</em> Konkret genug, dass man sie durchklicken kann. Immer mindestens einen Negativfall: Was passiert bei leerem Feld, falschem Datum, ohne Login?</li>
   </ol>
 
   <Callout type="concept" title="Der Satz, der beide Kurse verbindet">
@@ -28,12 +28,12 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Beispiel aus dem Backlog</h2>
   <div class="card">
-    <p><strong>S6 — Zusagen (RSVP)</strong><br/><strong>Als</strong> Studentin <strong>möchte ich</strong> einem Event zusagen und das wieder zurücknehmen, <strong>damit</strong> der Organisator weiß, wie viele kommen.</p>
+    <p><strong>S6 – Zusagen (RSVP)</strong><br/><strong>Als</strong> Studentin <strong>möchte ich</strong> einem Event zusagen und das wieder zurücknehmen, <strong>damit</strong> die Organisator*innen wissen, wie viele kommen.</p>
     <ul class="small">
-      <li>Gegeben ich bin angemeldet und klicke „Ich komme“, dann steht der Button auf „Zugesagt ✓“ und der Zähler steigt um 1.</li>
-      <li>Gegeben ich klicke erneut, dann ist die Zusage zurückgenommen und der Zähler sinkt um 1.</li>
-      <li>Gegeben ich bin nicht angemeldet, dann führt der Button zur Anmeldung.</li>
-      <li>Gegeben eine andere Person hat zugesagt, dann kann ich <em>ihre</em> Zusage nicht löschen.</li>
+      <li>Gegeben: Ich bin angemeldet. Wenn ich „Ich komme“ klicke, dann steht der Button auf „Zugesagt ✓“ und der Zähler steigt um 1.</li>
+      <li>Gegeben: Ich habe zugesagt. Wenn ich erneut klicke, dann ist die Zusage zurückgenommen und der Zähler sinkt um 1.</li>
+      <li>Gegeben: Ich bin nicht angemeldet. Wenn ich „Ich komme“ klicke, dann führt mich der Button zur Anmeldung.</li>
+      <li>Gegeben: Eine andere Person hat zugesagt. Wenn ich versuche, <em>ihre</em> Zusage zu löschen, dann wird das abgelehnt.</li>
     </ul>
     <p class="small muted">Beachten Sie: Kein Wort über Datenbanktabellen, Komponenten oder Farben. Das <em>Wie</em> ist Claudes Sache. Das <em>Was</em> und das <em>Woran-merke-ich-es</em> sind Ihre.</p>
   </div>
@@ -43,7 +43,7 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Prompts dafür</h2>
   <Prompt label="PRD erarbeiten (Plan Mode)">Lies docs/PRD-VORLAGE.md. Ich möchte [Idee in einem Satz]. Stell mir zu jedem Abschnitt der Vorlage 1–2 Rückfragen, eine nach der anderen. Schreib danach das fertige PRD nach docs/PRD.md – eine Seite, mit klarer Abgrenzung, was das Produkt NICHT macht.</Prompt>
-  <Prompt label="Backlog aus PRD">Leite aus docs/PRD.md 5–8 User Stories ab, geordnet so, dass nach jeder Story die App nützlicher ist als vorher. Jede Story mit 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“, davon mindestens ein Negativfall. Schreib sie nach docs/BACKLOG.md. Markiere, welche Stories du für das absolute Minimum hältst.</Prompt>
+  <Prompt label="Backlog aus PRD">Leite aus docs/PRD.md 5–8 User Stories ab, geordnet so, dass nach jeder Story die App nützlicher ist als vorher. Jede Story mit 3–5 Akzeptanzkriterien im Format „Gegeben: … Wenn …, dann …“, davon mindestens ein Negativfall. Schreib sie nach docs/BACKLOG.md. Markiere, welche Stories du für das absolute Minimum hältst.</Prompt>
   <Prompt label="Eine Story umsetzen">Setze Story [Nummer] aus docs/BACKLOG.md um. Zeig mir zuerst deinen Plan in 3–5 Punkten und warte auf mein Okay. Danach geh die Akzeptanzkriterien einzeln durch und sag mir, was ich im Browser prüfen soll.</Prompt>
 
   <FooterNav prev={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} next={{ href: '/tag-1#uebung-2', t: 'Übung 2 · Campus Events v0' }} />

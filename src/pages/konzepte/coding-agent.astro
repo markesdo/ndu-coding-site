@@ -100,11 +100,11 @@ import FooterNav from '../../components/FooterNav.astro';
   <table>
     <tr><th>Was</th><th>Wofür</th></tr>
     <tr><td><code>claude</code></td><td>Startet Claude Code im Terminal. Danach einfach schreiben – auf Deutsch, in ganzen Sätzen.</td></tr>
-    <tr><td><kbd>Shift</kbd><kbd>Tab</kbd></td><td>Wechselt den Modus: normal → auto-accept → <strong>plan mode</strong>. Plan Mode für alles, was mehr als eine Datei betrifft.</td></tr>
-    <tr><td>Bild einfügen</td><td>Screenshot ins Terminal ziehen oder <kbd>Ctrl</kbd><kbd>V</kbd>. Claude sieht, was Sie sehen.</td></tr>
+    <tr><td><kbd>Shift</kbd><kbd>Tab</kbd></td><td>Wechselt den Modus: Normal → Auto-Accept → <strong>Plan Mode</strong>. Plan Mode für alles, was mehr als eine Datei betrifft.</td></tr>
+    <tr><td>Bild einfügen</td><td>Screenshot ins Terminal ziehen oder <kbd>Strg/Ctrl</kbd><kbd>V</kbd>. Claude sieht, was Sie sehen.</td></tr>
     <tr><td><code>/clear</code></td><td>Neue Session, leerer Kontext. Nach jeder fertigen Story.</td></tr>
     <tr><td><code>/compact</code></td><td>Fasst den bisherigen Verlauf zusammen, wenn Sie mitten in etwas stecken und der Kontext voll wird.</td></tr>
-    <tr><td><code>CLAUDE.md</code></td><td>Projektgedächtnis. Regeln, Stack, Konventionen. Wird in jeder Session automatisch gelesen. <a href="/konzepte/agenten-steuern">Mehr am Tag 2.</a></td></tr>
+    <tr><td><code>CLAUDE.md</code></td><td>Projektgedächtnis. Regeln, Stack, Konventionen. Wird in jeder Session automatisch gelesen. <a href="/konzepte/agenten-steuern">Mehr an Tag 2.</a></td></tr>
     <tr><td><code>/erklaer</code> <code>/pruefe</code> <code>/commit</code></td><td>Eigene Befehle in diesem Projekt (liegen in <code>.claude/commands/</code>). Sie können weitere anlegen lassen.</td></tr>
     <tr><td><kbd>Esc</kbd></td><td>Stoppt Claude mitten in der Arbeit. Benutzen Sie das, wenn Sie sehen, dass es in die falsche Richtung läuft.</td></tr>
   </table>
@@ -118,7 +118,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <Prompt label="Der universelle Debug-Prompt" note="Zwei Schritte in einem: erst Verständnis, dann Lösung. Das verhindert, dass Claude blind herumprobiert.">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [was Sie getan haben]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht (Frontend, Backend, Datenbank) das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
 
   <Callout type="concept" title="Der eine Satz zum Mitnehmen">
-    <p>Ein Coding-Agent ist ein extrem schneller, extrem belesener Junior-Entwickler mit Kurzzeitgedächtnis und zu viel Selbstvertrauen. Sie sind der Product Owner, der ihm klare Aufträge gibt, den Plan liest und das Ergebnis abnimmt.</p>
+    <p>Ein Coding-Agent arbeitet wie eine extrem schnelle, extrem belesene Nachwuchskraft in der Softwareentwicklung mit Kurzzeitgedächtnis und zu viel Selbstvertrauen. Sie sind Product Owner: Sie geben klare Aufträge, lesen den Plan und nehmen das Ergebnis ab.</p>
   </Callout>
 
   <FooterNav prev={{ href: '/konzepte/app-anatomie', t: 'Anatomie einer App' }} next={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} />

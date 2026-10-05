@@ -7,7 +7,7 @@ import Prompt from '../components/Prompt.astro';
 import FooterNav from '../components/FooterNav.astro';
 ---
 <Layout title="Tag 1 · Verstehen & Starten">
-  <span class="eyebrow">Mittwoch, 8. Oktober 2026 · 09:00–17:00</span>
+  <span class="eyebrow">Donnerstag, 8. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 1 · Verstehen & Starten</h1>
   <p class="lead">Am Ende des Tages haben Sie ein eigenes Repo mit laufender App, verstehen, wie eine Web-App und ein Coding-Agent aufgebaut sind, und haben Ihre erste User Story bauen lassen.</p>
 
@@ -29,22 +29,22 @@ import FooterNav from '../components/FooterNav.astro';
   <hr />
 
   <h2 id="uebung-1">Übung 1 · Erste eigene Änderungen <span class="pill uebung">75 min</span></h2>
-  <p>Ziel: ein Gefühl dafür bekommen, wie sich Arbeiten mit Claude Code anfühlt – und die drei Gewohnheiten einüben, die den Unterschied machen: <strong>eine Sache pro Prompt</strong>, <strong>nach jeder Änderung im Browser prüfen</strong>, <strong>regelmäßig sichern</strong>.</p>
+  <p>Ziel: erleben, wie sich Arbeiten mit Claude Code anfühlt – und die drei Gewohnheiten einüben, die den Unterschied machen: <strong>eine Sache pro Prompt</strong>, <strong>nach jeder Änderung im Browser prüfen</strong>, <strong>regelmäßig sichern</strong>.</p>
 
   <h3>a) Verstehen, was da ist (10 min)</h3>
-  <Prompt>Erkläre mir dieses Projekt, als wäre ich Produktmanagerin ohne Programmierkenntnisse. Welche Seiten gibt es, wo liegen die Beispieldaten, und was passiert, wenn ich die Startseite öffne?</Prompt>
-  <p>Lesen Sie die Antwort wirklich. Fragen Sie nach, wenn ein Begriff unklar ist: <em>„Was meinst du mit Komponente?“</em> Claude kennt die Regel, Ihnen alles ohne Code zu erklären (steht in der <code>CLAUDE.md</code> – öffnen Sie die Datei ruhig einmal).</p>
+  <Prompt>Erkläre mir dieses Projekt so, als käme ich aus dem Produktmanagement und hätte keine Programmierkenntnisse. Welche Seiten gibt es, wo liegen die Beispieldaten, und was passiert, wenn ich die Startseite öffne?</Prompt>
+  <p>Lesen Sie die Antwort vollständig. Fragen Sie nach, wenn ein Begriff unklar ist: <em>„Was meinst du mit Komponente?“</em> Claude kennt die Regel, Ihnen alles ohne Code zu erklären (steht in der <code>CLAUDE.md</code> – öffnen Sie die Datei ruhig einmal).</p>
 
   <h3>b) Drei kleine Änderungen – eine nach der anderen (20 min)</h3>
   <Prompt>Ändere die Überschrift auf der Startseite zu „Was geht am Campus?“ – sonst nichts.</Prompt>
   <p>→ Vorschau ansehen. Hat sich genau das geändert, und nichts anderes?</p>
   <Prompt>Die Akzentfarbe der App soll ein dunkles Blau statt Rot sein. Ändere sie an der zentralen Stelle, nicht in jeder Datei einzeln, und sag mir, wo diese Stelle ist.</Prompt>
-  <p>→ Vorschau ansehen. Button, Punkt im Logo, Badge – alles blau? Das ist die Antwort auf „gibt es eine zentrale Stelle?“</p>
-  <Prompt>Füge zu den drei Feature-Karten eine vierte hinzu: Emoji 🗺️, Titel „Direkt zum Ort“, Text „Ein Tipp öffnet die Karte – nie wieder falscher Raum.“ Das Layout soll weiterhin auf dem Handy gut aussehen.</Prompt>
+  <p>→ Vorschau ansehen. Button, Punkt im Logo, Badge – alles blau? Das ist die Antwort auf „Gibt es eine zentrale Stelle?“</p>
+  <Prompt>Füge zu den drei Feature-Karten eine vierte hinzu: Emoji 🗺️, Titel „Direkt zum Ort“, Text „Ein Tippen öffnet die Karte – nie wieder falscher Raum.“ Das Layout soll weiterhin auf dem Handy gut aussehen.</Prompt>
   <p>→ Vorschau ansehen, dann Vorschau schmal ziehen (oder Rechtsklick → Untersuchen → Handy-Symbol). Passt die vierte Karte?</p>
 
   <h3>c) Mit einem Screenshot Feedback geben (10 min)</h3>
-  <p>Machen Sie einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), ziehen Sie ihn ins Claude-Code-Terminal (oder fügen Sie ihn mit <kbd>Ctrl</kbd><kbd>V</kbd> ein) und schreiben Sie dazu:</p>
+  <p>Machen Sie einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), ziehen Sie ihn ins Claude-Code-Terminal (oder fügen Sie ihn mit <kbd>Strg/Ctrl</kbd><kbd>V</kbd> ein) und schreiben Sie dazu:</p>
   <Prompt>Auf diesem Screenshot ist der Abstand zwischen Überschrift und Text zu klein und die Karten wirken zu eng. Mach es luftiger, ohne das Design zu ändern.</Prompt>
   <Callout type="concept" title="Warum das wichtig ist">
     <p>Sie müssen nicht wissen, wie „Abstand“ im Code heißt. Sie müssen sehen können, dass er nicht stimmt, und das präzise sagen. <strong>Beobachten und benennen</strong> ist Ihre Kernkompetenz in diesem Kurs.</p>
@@ -54,7 +54,7 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt>Lösche die Datei src/components/Header.tsx.</Prompt>
   <p>Die Vorschau zeigt jetzt einen Fehler. Lesen Sie ihn – er sagt ziemlich genau, was fehlt. Und jetzt der Undo-Knopf: links das <strong>Source-Control-Symbol</strong> (Verzweigung) → bei <code>Header.tsx</code> auf den Zurück-Pfeil („Discard Changes“). Datei ist wieder da, Fehler weg.</p>
   <Callout type="tip" title="Merken">
-    <p>Solange ein Stand committed ist, kann nichts verloren gehen. Deshalb: <strong>nach jeder funktionierenden Story committen.</strong> Mehr dazu in <a href="/konzepte/git">Git – der Undo-Knopf</a>.</p>
+    <p>Solange ein Stand committet ist, kann nichts verloren gehen. Deshalb: <strong>nach jeder funktionierenden Story committen.</strong> Mehr dazu in <a href="/konzepte/git">Git – der Undo-Knopf</a>.</p>
   </Callout>
 
   <h3>e) Sichern (10 min)</h3>
@@ -78,7 +78,7 @@ import FooterNav from '../components/FooterNav.astro';
   <p>Jetzt wird aus Herumprobieren Produktarbeit. Sie schreiben mit Claude ein PRD, schneiden das MVP und lassen die erste User Story bauen – die, deren Akzeptanzkriterien schon im Backlog stehen.</p>
 
   <h3>a) PRD im Plan Mode (20 min)</h3>
-  <p>Plan Mode heißt: Claude darf nachdenken und fragen, aber noch nichts ändern. Umschalten mit <kbd>Shift</kbd><kbd>Tab</kbd> (zweimal), bis unten „plan mode“ steht.</p>
+  <p>Plan Mode heißt: Claude darf nachdenken und fragen, aber noch nichts ändern. Umschalten mit <kbd>Shift</kbd><kbd>Tab</kbd> (zweimal), bis unten <code>plan mode</code> steht.</p>
   <Prompt note="Claude stellt Rückfragen. Antworten Sie aus Sicht der Zielgruppe – Sie sind selbst Studierende, Sie kennen das Problem.">Lies docs/PRD-VORLAGE.md. Wir bauen „Campus Events“: Studierende und Gruppen legen Veranstaltungen an, andere sagen mit einem Klick zu. Stell mir zu jedem Abschnitt der Vorlage 1–2 Rückfragen, eine nach der anderen, und schreib dann das fertige PRD nach docs/PRD.md. Halte es auf einer Seite.</Prompt>
 
   <h3>b) MVP schneiden & Backlog lesen (10 min)</h3>
@@ -99,7 +99,7 @@ import FooterNav from '../components/FooterNav.astro';
     'Backlog mit dem PRD abgeglichen',
     'Story S1: Plan gesehen, Okay gegeben, Umsetzung abgewartet',
     'Alle Akzeptanzkriterien von S1 selbst im Browser geprüft',
-    'Backlog aktualisiert und committed',
+    'Backlog aktualisiert und committet',
     'Optional: S2 (Detailseite) angefangen',
   ]} />
 
