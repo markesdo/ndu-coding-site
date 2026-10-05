@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import Stage, { type StageNav, type StageStep } from './Stage';
-import { PRELUDE_MS, STEPS, blocksAt, fillOf, preludeAt, type Art } from './kontextfenster-steps';
+import { NARROW, PRELUDE_MS, STEPS, blocksAt, chipsFor, fillOf, preludeAt, type Art } from './kontextfenster-steps';
 import './stage.css';
 
 const LEGENDE: { art: Art; text: string }[] = [
@@ -82,7 +82,7 @@ function Fenster({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
             return (
               <motion.div
                 key={b.id}
-                className={`kf-block kf-${b.art}${b.size < 8 ? ' kf-narrow' : ''}`}
+                className={`kf-block kf-${b.art}${b.size < NARROW ? ' kf-narrow' : ''}`}
                 title={b.tag ? `${b.label} – ${b.tag}` : b.label}
                 initial={{ width: 0, opacity: 0 }}
                 animate={{ width: `${b.size}%`, opacity: b.verblasst ? 0.35 : 1 }}
@@ -96,18 +96,15 @@ function Fenster({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
         </AnimatePresence>
       </div>
       <p className="kf-footnote">Gemessen in Tokens – etwa 3–4 Zeichen pro Token.</p>
-      {blocks.some((b) => b.tag) && (
-        <ul className="kf-notes">
-          {blocks
-            .filter((b) => b.tag)
-            .map((b) => (
-              <li key={b.id}>
-                <span className={`kf-dot kf-${b.art}`} aria-hidden="true" />
-                <code>{b.label}</code> – {b.tag}
-              </li>
-            ))}
-        </ul>
-      )}
+      <ul className="kf-notes" aria-label="Schmale Blöcke">
+        {chipsFor(blocks).map((b) => (
+          <li key={b.id} className={b.verblasst ? 'kf-faded' : undefined}>
+            <span className={`kf-dot kf-${b.art}`} aria-hidden="true" />
+            {b.label}
+            {b.tag && <span className="kf-tag"> – {b.tag}</span>}
+          </li>
+        ))}
+      </ul>
       <ul className="kf-legend" aria-label="Legende">
         {LEGENDE.map((l) => (
           <li key={l.art}>

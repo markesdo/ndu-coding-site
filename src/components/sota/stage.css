@@ -28,13 +28,15 @@
   border: 0;
   border-radius: 0;
   margin: 0;
-  padding: 5vh 6vw;
+  padding: 3vh 6vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  font-size: 1.5rem;
+  justify-content: safe center;
+  overflow-y: auto;
+  font-size: clamp(1rem, 3.2vh, 1.5rem);
 }
-.stage:fullscreen .kf-fenster { height: 18vh; }
+.stage:fullscreen .kf-fenster { height: clamp(64px, 16vh, 140px); }
+.stage:fullscreen .stage-count { font-size: 1.1rem; }
 .stage:fullscreen .stage-caption { max-width: 60ch; }
 .stage:fullscreen .kf-block,
 .stage:fullscreen .kf-gauge-text,
@@ -78,6 +80,7 @@
   font-weight: 600;
 }
 .kf-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 .25rem; }
+.kf-narrow .kf-label { display: none; }
 
 .kf-fest { background: var(--purple); }
 .kf-auftrag { background: var(--accent); }
@@ -89,11 +92,14 @@
 .kf-footnote { font-size: .8rem; color: var(--muted); margin: .4rem 0 0; }
 .kf-notes, .kf-legend { list-style: none; padding: 0; margin: .5rem 0 0; display: flex; flex-wrap: wrap; gap: .25rem 1rem; font-size: .85rem; }
 .kf-legend { color: var(--muted); }
+.kf-notes { color: var(--fg); font-weight: 600; }
+.kf-faded { opacity: .45; }
+.kf-tag { font-weight: 400; color: var(--muted); }
 .kf-dot { display: inline-block; width: .7em; height: .7em; border-radius: 2px; margin-right: .35em; vertical-align: -.05em; }
 
-@media (max-width: 900px) {
+/* Nur Handys – 600 px, damit ein Beamer mit 150 % Zoom (≈ 850 px) nicht die Handy-Regeln bekommt. */
+@media (max-width: 600px) {
   .stage { padding: 1rem; }
   .kf-fenster { height: 52px; }
   .kf-block { font-size: .68rem; }
-  .kf-narrow .kf-label { display: none; }
 }

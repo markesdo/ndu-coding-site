@@ -45,7 +45,8 @@ export default function Stage({ title, steps, children }: StageProps) {
       return index < 0 || index > last ? n : { index, direction: delta, seq: n.seq + 1 };
     });
   const restart = () => setNav((n) => (n.index === 0 ? n : { index: 0, direction: -1, seq: n.seq + 1 }));
-  const refocus = () => ref.current?.focus();
+  // preventScroll: sonst springt die Seite bei jedem Button-Klick, wenn die Stage nicht ganz sichtbar ist.
+  const refocus = () => ref.current?.focus({ preventScroll: true });
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     // Nur Tasten auf der Stage selbst – ein fokussierter Button behandelt Leertaste/Enter selbst.

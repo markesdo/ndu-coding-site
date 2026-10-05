@@ -20,6 +20,9 @@ export interface Schritt {
 
 export const PRELUDE_MS = 900;
 
+// Blöcke unter dieser Größe sind zu schmal für eine lesbare Beschriftung – ihr Name steht als Chip unter dem Fenster.
+export const NARROW = 10;
+
 const SYS: Block = { id: 'sys', art: 'fest', label: 'Systemregeln', size: 6 };
 const CLAUDE_MD: Block = { id: 'claude-md', art: 'fest', label: 'CLAUDE.md', size: 8 };
 const AUFTRAG: Block = { id: 'auftrag', art: 'auftrag', label: 'Auftrag', size: 4 };
@@ -110,4 +113,8 @@ export function preludeAt(step: number): Block[] | null {
 
 export function fillOf(blocks: Block[]): number {
   return blocks.reduce((sum, b) => sum + b.size, 0);
+}
+
+export function chipsFor(blocks: Block[]): Block[] {
+  return blocks.filter((b) => b.size < NARROW);
 }

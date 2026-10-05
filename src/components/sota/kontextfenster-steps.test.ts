@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { STEPS, blocksAt, fillOf, preludeAt, type Art } from './kontextfenster-steps';
+import { NARROW, STEPS, blocksAt, chipsFor, fillOf, preludeAt, type Art } from './kontextfenster-steps';
 
 const FILL = [14, 18, 46, 74, 82, 30, 34, 14, 18];
 const kinds = (step: number): Art[] => blocksAt(step).map((b) => b.art);
@@ -83,5 +83,27 @@ describe('kontextfenster-steps', () => {
     expect(() => blocksAt(0)).toThrow(RangeError);
     expect(() => blocksAt(10)).toThrow(RangeError);
     expect(() => blocksAt(1.5)).toThrow(RangeError);
+  });
+
+  describe('Chips unter dem Fenster (Namen schmaler Blöcke)', () => {
+    const labels = (step: number) => chipsFor(blocksAt(step)).map((c) => c.label);
+
+    it('Schritt 1 nennt Systemregeln und CLAUDE.md', () => {
+      expect(labels(1)).toStrictEqual(['Systemregeln', 'CLAUDE.md']);
+    });
+
+    it('jeder Block unter NARROW Einheiten bekommt einen Chip, breite Blöcke nicht', () => {
+      for (let step = 1; step <= 9; step++) {
+        const narrow = blocksAt(step).filter((b) => b.size < NARROW).map((b) => b.id);
+        expect(chipsFor(blocksAt(step)).map((c) => c.id)).toStrictEqual(narrow);
+      }
+      expect(labels(4)).not.toContain('Fehlerlog (400 Zeilen)');
+    });
+
+    it('Chips tragen Tag und Verblassen weiter', () => {
+      expect(chipsFor(blocksAt(7)).find((c) => c.id === 'auftrag')?.tag).toBe('bleibt');
+      expect(chipsFor(blocksAt(9)).find((c) => c.id === 'entscheidungen')?.tag).toBe('in CLAUDE.md verknüpft');
+      expect(chipsFor(blocksAt(5)).find((c) => c.id === 'auftrag')?.verblasst).toBe(true);
+    });
   });
 });
