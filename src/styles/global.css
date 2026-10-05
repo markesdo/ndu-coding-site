@@ -170,8 +170,9 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .shots > li > p { margin-bottom: .75rem; }
 .shot { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 /* Rahmen schmiegt sich ans Bild an (Markierungen beziehen sich darauf); Hochkant-Bilder höchstens 75 % der Fensterhöhe. */
-.shot-frame { position: relative; display: inline-block; max-width: 100%; vertical-align: top; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.shot-frame img { display: block; width: auto; max-width: 100%; height: auto; max-height: 75vh; }
+.shot-frame { position: relative; display: inline-block; max-width: 100%; vertical-align: top; border: 1px solid var(--border); border-radius: 8px; }
+/* Kein overflow: hidden am Rahmen – sonst werden Markierungen und Nummern am Bildrand abgeschnitten. Ecken rundet das Bild selbst. */
+.shot-frame img { display: block; width: auto; max-width: 100%; height: auto; max-height: 75vh; border-radius: 7px; }
 .shot-zoom .shot-frame img { max-height: none; }
 /* Rahmen als outline außerhalb der Fläche: Bei kleinen Bildern bleibt der markierte Text sichtbar. */
 .mark { position: absolute; outline: 3px solid #e5242b; outline-offset: 2px; border-radius: 4px; pointer-events: none; }
@@ -180,6 +181,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .shot-zoom { width: min(96vw, 1600px); max-height: 94vh; padding: 0; border: 0; border-radius: 10px; background: var(--bg-2); overflow: auto; }
 .shot-zoom::backdrop { background: rgba(0, 0, 0, .75); }
 .shot-zoom .shot-frame { border: 0; border-radius: 0; }
+.shot-zoom-body { padding: 1.5rem; }
 .shot-zoom form { position: sticky; top: 0; height: 0; z-index: 1; }
 .shot-close { position: absolute; top: .5rem; right: .5rem; width: 2.2rem; height: 2.2rem; border-radius: 50%; border: 0; background: rgba(0, 0, 0, .7); color: #fff; font-size: 1rem; cursor: pointer; }
 @media (max-width: 600px) {
