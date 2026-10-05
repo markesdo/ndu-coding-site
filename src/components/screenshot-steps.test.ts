@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { markStyle } from './screenshot-steps';
+import { cropRect, cropStyle, markStyle } from './screenshot-steps';
 
 describe('markStyle', () => {
   it('rechnet Pixel des Bildes in Prozent um', () => {
@@ -22,5 +22,49 @@ describe('markStyle', () => {
     { x: 10, y: 10, w: Number.NaN, h: 5 },
   ])('lehnt Rahmen außerhalb des Bildes ab: %o', (m) => {
     expect(() => markStyle(m, 1000, 500)).toThrow('außerhalb des Bildes');
+  });
+});
+
+describe('cropRect', () => {
+  const W = 1000, H = 500;
+
+  it('zeigt das ganze Bild ohne Markierungen', () => {
+    expect(cropRect([], W, H)).toBeNull();
+  });
+
+  it('schneidet um eine kleine Markierung herum mit Rand und Mindestgröße zu', () => {
+    const c = cropRect([{ x: 480, y: 240, w: 40, h: 20 }], W, H)!;
+    expect(c.w).toBe(470); // Mindestbreite 47 % schlägt Markierung + Rand
+    expect(c.h).toBe(234); // 20 + 2 × 107 Rand = 234 > Mindesthöhe 220
+    expect(c.x + c.w / 2).toBeCloseTo(500, 0); // um die Markierung zentriert
+    expect(c.y + c.h / 2).toBeCloseTo(250, 0);
+  });
+
+  it('schiebt den Ausschnitt am Rand ins Bild statt ihn abzuschneiden', () => {
+    const c = cropRect([{ x: 0, y: 0, w: 30, h: 20 }], W, H)!;
+    expect(c).toStrictEqual({ x: 0, y: 0, w: 470, h: 234 });
+  });
+
+  it('zeigt das ganze Bild, wenn der Ausschnitt fast alles abdecken würde', () => {
+    expect(cropRect([{ x: 10, y: 10, w: 900, h: 400 }], W, H)).toBeNull();
+  });
+
+  it('umfasst alle Markierungen', () => {
+    const marks = [{ x: 100, y: 50, w: 50, h: 20 }, { x: 700, y: 120, w: 60, h: 20 }];
+    const c = cropRect(marks, W, H)!;
+    for (const m of marks) {
+      expect(m.x).toBeGreaterThanOrEqual(c.x);
+      expect(m.y).toBeGreaterThanOrEqual(c.y);
+      expect(m.x + m.w).toBeLessThanOrEqual(c.x + c.w);
+      expect(m.y + m.h).toBeLessThanOrEqual(c.y + c.h);
+    }
+  });
+});
+
+describe('cropStyle', () => {
+  it('verschiebt und beschneidet das Bild auf den Ausschnitt', () => {
+    expect(cropStyle({ x: 250, y: 100, w: 500, h: 250 }, 1000, 500)).toBe(
+      '--w:200%;--x:-50%;--y:-40%;--clip:inset(20% 25% 30% 25% round 7px)',
+    );
   });
 });

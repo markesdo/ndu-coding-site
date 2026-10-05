@@ -68,7 +68,7 @@ import { bild } from '../components/anleitung-bilder';
   <p>Bisher stehen die Events in einer Datei. Jetzt kommen sie in eine Datenbank – damit ein angelegtes Event auch nach dem Reload und für alle anderen da ist.</p>
   <h3 id="supabase">a) Supabase-Projekt (gemeinsam, 15 min)</h3>
   <p class="small muted">Screenshots vom Testdurchgang mit einem neuen Konto am 5.10.2026. Klick auf ein Bild vergrößert es.</p>
-  <Schritte steps={[
+  <Schritte id="supabase" nummer="3a" steps={[
     { img: bild('tag2/sb-1-login'), alt: 'Supabase-Anmeldeseite mit „Continue with GitHub“', text: '<a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a> öffnen, <em>Continue with GitHub</em>. Den Cookie-Hinweis könnt ihr mit <em>Opt out</em> ablehnen.', marks: [{ x: 115, y: 230, w: 348, h: 42 }] },
     { img: bild('tag2/sb-2-authorize'), alt: 'GitHub fragt „Authorize Supabase“', text: 'GitHub fragt, ob Supabase eure E-Mail-Adresse lesen darf: <em>Authorize supabase</em>. Der Button wird erst nach einer Sekunde aktiv.', marks: [{ x: 748, y: 377, w: 204, h: 36 }] },
     { img: bild('tag2/sb-3-orgs'), alt: 'Leere Organisationsliste mit Button „New organization“', text: 'Neue Konten starten ohne Organisation. <em>New organization</em>.', marks: [{ x: 681, y: 269, w: 134, h: 30 }] },
@@ -82,7 +82,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <h3 id="mcp">b) Supabase-MCP verbinden (10 min)</h3>
   <p>MCP ist die Steckdose, über die Claude direkt mit Supabase sprechen kann: Tabellen anlegen, Daten ansehen, Fehler lesen – ohne dass ihr etwas kopiert. Den Befehl dafür liefert Supabase fertig mit.</p>
-  <Schritte steps={[
+  <Schritte id="mcp" nummer="3b" steps={[
     { img: bild('tag2/mcp-1-connect'), alt: 'Connect-Dialog, Tab MCP, Client Claude Code, Schritt 1 mit dem Befehl claude mcp add', text: 'Im Connect-Dialog den Tab <em>MCP</em> (1). Client <em>Claude Code</em> ist vorausgewählt. Bei Schritt 1 den Befehl mit dem Kopier-Symbol kopieren (2).', marks: [{ x: 1327, y: 109, w: 143, h: 102, n: 1 }, { x: 1083, y: 586, w: 388, h: 52, n: 2 }] },
     { img: bild('tag2/mcp-2-einfuegen'), alt: 'Neues Terminal im Codespace mit eingefügtem Befehl', text: 'Im Codespace über dem Terminal auf <kbd>+</kbd> – ein neues Terminal, nicht das mit Claude. Warten, bis die Eingabezeile mit eurem Benutzernamen erscheint, dann einfügen (<kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>V</kbd>) und <kbd>Enter</kbd>. Wer zu früh einfügt, bekommt den Befehl doppelt: <kbd>Strg</kbd>+<kbd>C</kbd> und nochmal.', marks: [{ x: 645, y: 556, w: 462, h: 36 }] },
     { img: bild('tag2/mcp-3-angelegt'), alt: 'Terminal meldet „Added HTTP MCP server supabase … to project config“, links erscheint .mcp.json', text: '„Added HTTP MCP server supabase“ (1). Links erscheint die Datei <code>.mcp.json</code> (2). Sie enthält nur die Adresse, keinen Schlüssel, und darf mit committet werden.', marks: [{ x: 333, y: 595, w: 560, h: 24, n: 1 }, { x: 70, y: 265, w: 240, h: 18, n: 2 }] },
@@ -151,7 +151,7 @@ import { bild } from '../components/anleitung-bilder';
   <hr />
   <h2 id="uebung-5">Übung 5 · Deploy <span class="pill uebung">40 min</span></h2>
   <p>Vercel baut eure App bei jedem Push neu und stellt sie unter einer öffentlichen Adresse ins Netz. Das Hobby-Konto ist kostenlos.</p>
-  <Schritte steps={[
+  <Schritte id="vercel" nummer="5" steps={[
     { img: bild('tag2/vc-1-signup'), alt: 'Vercel-Registrierung mit „Continue with GitHub“', text: '<a href="https://vercel.com/signup" target="_blank" rel="noopener">vercel.com/signup</a> → <em>Continue with GitHub</em>.', marks: [{ x: 569, y: 326, w: 357, h: 43 }] },
     { img: bild('tag2/vc-2-konto'), alt: 'GitHub fragt, mit welchem Konto ihr Vercel autorisieren wollt', text: 'Euer GitHub-Konto bestätigen: <em>Continue</em>.', marks: [{ x: 817, y: 367, w: 77, h: 33 }] },
     { img: bild('tag2/vc-3-authorize'), alt: 'GitHub-Seite „Vercel by Vercel wants access to your GitHub account“ mit Button „Authorize“', text: '<em>Authorize</em> (wird nach einer Sekunde aktiv).', marks: [{ x: 522, y: 599, w: 452, h: 34 }] },
@@ -170,7 +170,7 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
   <h3>Supabase auf die neue Adresse umstellen</h3>
   <p>Damit Login-Links nach dem Deploy nicht auf <code>localhost</code> zeigen: Supabase → Authentication → <em>URL Configuration</em>.</p>
-  <Schritte steps={[
+  <Schritte id="vercel" nummer="5" start={16} steps={[
     { img: bild('tag2/url-1'), alt: 'URL Configuration, Site URL steht auf http://localhost:3000', text: 'Bei <em>Site URL</em> steht noch <code>http://localhost:3000</code>.', marks: [{ x: 978, y: 253, w: 396, h: 38 }] },
     { img: bild('tag2/url-2'), alt: 'Site URL mit der Vercel-Adresse und Button „Save changes“', text: 'Eure Vercel-Adresse (die unter <em>Domains</em>) eintragen, <em>Save changes</em>.', marks: [{ x: 1278, y: 331, w: 96, h: 30 }] },
   ]} />

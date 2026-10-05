@@ -86,7 +86,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .sidebar .group a { display: block; padding: .3rem .55rem; border-radius: 8px; color: var(--fg); font-size: .95rem; }
 .sidebar .group a:hover { background: var(--bg); text-decoration: none; }
 .sidebar .group a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-.content { padding: 2.5rem 2rem 6rem; }
+.content { padding: 2.5rem 2rem 6rem; min-width: 0; } /* min-width: 0, sonst drückt breiter Inhalt (z. B. die einzeilige Schrittleiste) die Grid-Spalte auf */
 .content > .inner { max-width: var(--max); margin: 0 auto; }
 .topbar { display: none; }
 
@@ -170,27 +170,56 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 
 /* Screenshot-Schritte (Schritte.astro). Markierungsrot ist in beiden Themes gleich – es liegt auf dem Screenshot, nicht auf der Seite. */
 .shots { counter-reset: shot; list-style: none; padding: 0; margin: 1.25rem 0; }
-.shots > li { counter-increment: shot; position: relative; padding: 1rem 0 1.5rem 3rem; border-bottom: 1px solid var(--border); }
-.shots > li::before { content: counter(shot); position: absolute; left: 0; top: .95rem; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
+.shots > li { counter-increment: shot; position: relative; padding: 1rem 0 1.5rem 3.4rem; border-bottom: 1px solid var(--border); scroll-margin-top: 4.5rem; }
+/* Label „5.6“ aus data-label, damit Hilfe-Texte auf genau diesen Schritt verweisen können. */
+.shots > li::before { content: attr(data-label); position: absolute; left: 0; top: .95rem; min-width: 2rem; height: 2rem; padding: 0 .45rem; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
 .shots > li > p { margin-bottom: .75rem; }
 .shot { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 /* Rahmen schmiegt sich ans Bild an (Markierungen beziehen sich darauf); Hochkant-Bilder höchstens 75 % der Fensterhöhe. */
 .shot-frame { position: relative; display: inline-block; max-width: 100%; vertical-align: top; border: 1px solid var(--border); border-radius: 8px; }
 /* Kein overflow: hidden am Rahmen – sonst werden Markierungen und Nummern am Bildrand abgeschnitten. Ecken rundet das Bild selbst. */
 .shot-frame img { display: block; width: auto; max-width: 100%; height: auto; max-height: 75vh; border-radius: 7px; }
-.shot-zoom .shot-frame img { max-height: none; }
+.shot-zoom .shot-frame img { max-height: calc(94vh - 10rem); }
+/* Ausschnitt: das ganze Bild liegt verschoben im Ausschnitt, clip-path blendet den Rest aus.
+   Markierungen sitzen im selben Rahmen und wandern mit. Der Innenabstand lässt Nummern über den Rand ragen. */
+.shot-crop { display: block; overflow: hidden; padding: 1.1rem; margin: -1.1rem -1.1rem 0; }
+.shot-crop-box { position: relative; display: block; border-radius: 8px; box-shadow: 0 0 0 1px var(--border); }
+.shot-crop .shot-frame { position: absolute; width: var(--w); left: var(--x); top: var(--y); max-width: none; border: 0; border-radius: 0; }
+.shot-crop .shot-frame img { width: 100%; max-width: none; max-height: none; border-radius: 0; clip-path: var(--clip); }
+.shot-hint { margin: -.6rem 0 0; }
+.shot:focus-visible .shot-crop-box { outline: 3px solid var(--blue); outline-offset: 2px; }
+.shots > li:target { background: var(--accent-soft); border-radius: var(--radius); }
+/* Schrittleiste auf /setup: bleibt beim Scrollen oben, zeigt den aktuellen Abschnitt. */
+.stepbar { position: sticky; top: 0; z-index: 30; display: flex; flex-wrap: wrap; gap: .3rem; margin: 1.25rem -.5rem; padding: .5rem; background: var(--bg); border-bottom: 1px solid var(--border); }
+.stepbar a { min-width: 2rem; padding: .2rem .55rem; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-2); color: var(--fg); font-size: .85rem; font-weight: 600; text-align: center; text-decoration: none; }
+.stepbar a:hover { border-color: var(--accent); }
+.stepbar a[aria-current] { background: var(--accent); border-color: var(--accent); color: #fff; }
+h2[id] { scroll-margin-top: 3.5rem; }
+/* Unter 900 px steht die Topbar (sticky) über der Schrittleiste. */
+@media (max-width: 900px) { .stepbar { top: 4rem; flex-wrap: nowrap; overflow-x: auto; } .stepbar a { flex: none; } .shots > li, h2[id] { scroll-margin-top: 7.5rem; } }
+.shots-present { font: inherit; font-size: .9rem; margin: .5rem 0 0; padding: .35rem .8rem; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-2); color: var(--fg); cursor: pointer; }
+.shots-present:hover { border-color: var(--accent); }
 /* Rahmen als outline außerhalb der Fläche: Bei kleinen Bildern bleibt der markierte Text sichtbar. */
 .mark { position: absolute; outline: 3px solid #e5242b; outline-offset: 2px; border-radius: 4px; pointer-events: none; }
 .mark-n { position: absolute; top: -1.1rem; left: -1.1rem; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: #e5242b; color: #fff; font: 700 .85rem/1.6rem var(--font); text-align: center; }
 .shot:focus-visible .shot-frame { outline: 3px solid var(--blue); outline-offset: 2px; }
-.shot-zoom { width: min(96vw, 1600px); max-height: 94vh; padding: 0; border: 0; border-radius: 10px; background: var(--bg-2); overflow: auto; }
+.shot-zoom { width: min(96vw, 1600px); max-height: 94vh; padding: 0; border: 0; border-radius: 10px; background: var(--bg-2); color: var(--fg); overflow: auto; }
 .shot-zoom::backdrop { background: rgba(0, 0, 0, .75); }
 .shot-zoom .shot-frame { border: 0; border-radius: 0; }
-.shot-zoom-body { padding: 1.5rem; }
+.shot-zoom-body { padding: 1.5rem 1.5rem .5rem; text-align: center; }
+.shot-zoom-caption { padding: 0 1.5rem; max-width: 70rem; margin: 0 auto; font-size: 1.05rem; }
+.shot-zoom-label { display: inline-block; margin-right: .5rem; padding: 0 .5rem; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 700; }
+.shot-zoom-nav { display: flex; gap: .5rem; align-items: center; justify-content: center; padding: .75rem 1.5rem 1.25rem; }
+.shot-zoom-nav button { font: inherit; padding: .4rem .9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); cursor: pointer; }
+.shot-zoom-nav button:disabled { opacity: .4; cursor: default; }
+.shot-zoom-count { min-width: 5rem; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
+.shot-zoom-inner:fullscreen { background: var(--bg-2); color: var(--fg); overflow: auto; }
+.shot-zoom-inner:fullscreen .shot-frame img { max-height: calc(100vh - 11rem); }
 .shot-zoom form { position: sticky; top: 0; height: 0; z-index: 1; }
 .shot-close { position: absolute; top: .5rem; right: .5rem; width: 2.2rem; height: 2.2rem; border-radius: 50%; border: 0; background: rgba(0, 0, 0, .7); color: #fff; font-size: 1rem; cursor: pointer; display: grid; place-items: center; }
 @media (max-width: 600px) {
   .shots > li { padding-left: 0; padding-top: 3rem; }
+  .shot-crop { padding: .8rem; margin: -.8rem -.8rem 0; }
   .mark { outline-width: 2px; outline-offset: 1px; }
   .mark-n { width: 1.25rem; height: 1.25rem; font-size: .7rem; line-height: 1.25rem; top: -.8rem; left: -.8rem; }
 }
