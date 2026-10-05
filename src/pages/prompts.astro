@@ -11,11 +11,11 @@ import Prompt from '../components/Prompt.astro';
   <Prompt label="Projekt erklären">/ndu-explain</Prompt>
   <Prompt label="Eine Datei erklären">/ndu-explain src/app/page.tsx</Prompt>
   <Prompt label="Begriff klären">Was meinst du mit „[Begriff]“? Erkläre es in zwei Sätzen ohne Fachsprache und mit einem Beispiel aus unserer App.</Prompt>
-  <Prompt label="Morgen-Briefing">Lies docs/PRD.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welches Issue als Nächstes dran ist und warum.</Prompt>
+  <Prompt label="Morgen-Briefing">Lies docs/PRODUKT.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welches Issue als Nächstes dran ist und warum.</Prompt>
 
   <h2>Spezifizieren</h2>
-  <Prompt label="Neue Idee → PRD und Backlog" note="Claude fragt nach – eine Frage pro Nachricht –, schlägt 2–3 Varianten vor und schreibt PRD und Backlog erst nach eurem Okay.">/ndu-idee [Idee in einem Satz]</Prompt>
-  <Prompt label="Backlog aus PRD">Leite aus docs/PRD.md 5–8 Issues ab, geordnet so, dass nach jedem Issue die App nützlicher ist als vorher. Jedes Issue bekommt: Ziel (ein, zwei Sätze: was danach möglich ist, für wen, warum), Nicht im Umfang, 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“, davon mindestens ein Negativfall, und eine Zeile „Fertig, wenn“ mit dem Check, der es zeigt. Schreib sie nach docs/BACKLOG.md. Markiere, welche Issues du für das absolute Minimum hältst.</Prompt>
+  <Prompt label="Neue Idee → Produkt-Brief und Backlog" note="Claude fragt nach – eine Frage pro Nachricht –, schlägt 2–3 Varianten vor und schreibt Produkt-Brief und Backlog erst nach eurem Okay.">/ndu-idee [Idee in einem Satz]</Prompt>
+  <Prompt label="Backlog aus dem Produkt-Brief">Leite aus docs/PRODUKT.md 5–8 Issues ab, geordnet so, dass nach jedem Issue die App nützlicher ist als vorher. Jedes Issue bekommt: Ziel (ein, zwei Sätze: was danach möglich ist, für wen, warum), Nicht im Umfang, 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“, davon mindestens ein Negativfall, und eine Zeile „Fertig, wenn“ mit dem Check, der es zeigt. Schreib sie nach docs/BACKLOG.md. Markiere, welche Issues du für das absolute Minimum hältst.</Prompt>
   <Prompt label="Issue aus einem Satz">Formuliere aus „[Wunsch in einem Satz]“ ein Issue im Format von docs/BACKLOG.md: Ziel, Nicht im Umfang, 3–5 Akzeptanzkriterien (Gegeben/Wenn/Dann, inkl. Negativfall), Fertig, wenn. Häng es ans Backlog und frag mich, wo es priorisiert werden soll.</Prompt>
   <Prompt label="MVP schneiden">Welches einzelne Issue müsste funktionieren, damit eine echte Person das Produkt einmal sinnvoll benutzt? Begründe, und schlag vor, was auf „Später“ wandert.</Prompt>
 

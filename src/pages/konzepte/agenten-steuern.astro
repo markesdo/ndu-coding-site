@@ -11,7 +11,7 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Kontext-Hygiene</h2>
   <ul>
-    <li><strong>Eine Session pro Issue.</strong> Fertig → <code>/ndu-commit</code> → <code>/clear</code>. Der nächste Auftrag beginnt mit leerem Kopf und liest CLAUDE.md, PRD und Backlog neu.</li>
+    <li><strong>Eine Session pro Issue.</strong> Fertig → <code>/ndu-commit</code> → <code>/clear</code>. Der nächste Auftrag beginnt mit leerem Kopf und liest CLAUDE.md, Produkt-Brief und Backlog neu.</li>
     <li><strong><code>/compact</code></strong>, wenn ihr mitten in etwas steckt und die Antworten schlechter werden: Claude fasst den Verlauf zusammen und arbeitet mit der Zusammenfassung weiter.</li>
     <li><strong>Gezielt füttern.</strong> „Schau dir <code>src/app/events/page.tsx</code> an“ statt „schau dir das Projekt an“. Die eine Fehlermeldung statt des ganzen Logs.</li>
     <li><strong><kbd>Esc</kbd> ist euer Freund.</strong> Wenn Claude in die falsche Richtung läuft, sofort stoppen – nicht abwarten und dann alles verwerfen.</li>
@@ -32,7 +32,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <table>
     <tr><th>Modus</th><th>Wann</th></tr>
     <tr><td><strong>Auto Mode</strong></td><td>Standard seit August 2026. Claude arbeitet selbstständig und fragt bei riskanten Schritten nach. Richtig für klare Issues mit Akzeptanzkriterien. Ausnahme: Vor Änderungen an der Datenbank beschreibt Claude, was es vorhat, und wartet auf euer Okay – so steht es in der <code>CLAUDE.md</code> des Templates.</td></tr>
-    <tr><td><strong>Plan Mode</strong></td><td>Neue Idee, unklarer Ansatz, größere Umbauten. Claude liest, fragt, schlägt Varianten vor – ändert nichts. Für ein neues Produkt nehmt ihr <code>/ndu-idee</code>, das macht dasselbe und schreibt am Ende PRD und Backlog.</td></tr>
+    <tr><td><strong>Plan Mode</strong></td><td>Neue Idee, unklarer Ansatz, größere Umbauten. Claude liest, fragt, schlägt Varianten vor – ändert nichts. Für ein neues Produkt nehmt ihr <code>/ndu-idee</code>, das macht dasselbe und schreibt am Ende Produkt-Brief und Backlog.</td></tr>
     <tr><td><strong>Normal</strong></td><td>Claude fragt vor jeder Datei-Änderung und jedem Befehl. Wenn ihr jeden Schritt mitsehen wollt.</td></tr>
   </table>
   <Callout type="concept" title="Warum kein Plan pro Issue?">
