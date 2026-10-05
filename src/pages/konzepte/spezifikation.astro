@@ -12,7 +12,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Vibe Coding vs. Spec-driven</h2>
   <div class="compare">
     <div class="card bad"><h3>„Bau mir eine Event-App“</h3><p class="small">Claude baut <em>eine</em> Event-App – mit Kalenderansicht, Kategorien, Suche, Dark Mode und einer Datenstruktur, die eure eigentliche Idee nicht abbildet. Sieht beeindruckend aus, 40 Dateien, und nach einer Stunde Nachbessern versteht weder ihr noch Claude, was davon gewollt war.</p><p class="small muted">Gut für: Ausprobieren, Inspiration, Wegwerf-Prototypen.</p></div>
-    <div class="card good"><h3>„Setze Story S1 um“</h3><p class="small">Eine Story, drei Akzeptanzkriterien, ein Plan, zwanzig Minuten. Ihr prüft drei Dinge, es stimmt oder es stimmt nicht. Dann die nächste. Nach sieben Stories habt ihr eine App, die genau das tut, was euer PRD sagt – und ihr wisst bei jeder Funktion, warum sie da ist.</p><p class="small muted">Gut für: alles, was länger als einen Nachmittag leben soll.</p></div>
+    <div class="card good"><h3>„Setze Story S1 um“</h3><p class="small">Eine Story, drei Akzeptanzkriterien, zwanzig Minuten. Ihr prüft drei Dinge, es stimmt oder es stimmt nicht. Dann die nächste. Nach sieben Stories habt ihr eine App, die genau das tut, was euer PRD sagt – und ihr wisst bei jeder Funktion, warum sie da ist.</p><p class="small muted">Gut für: alles, was länger als einen Nachmittag leben soll.</p></div>
   </div>
 
   <h2>Die drei Ebenen</h2>
@@ -42,9 +42,9 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Die häufigste Fehlerquelle ist nicht zu wenig, sondern zu viel. Fragen zum Schneiden: <em>Welche eine Sache muss funktionieren, damit eine echte Person das Produkt einmal sinnvoll benutzt?</em> Alles andere kommt auf die Liste „Später“. Das Backlog von Campus Events ist so geschnitten: Liste → Detail → Anlegen → Login → Zusagen. Nach jedem Schritt ist die App nützlicher als vorher, und nach jedem Schritt könnte man aufhören.</p>
 
   <h2>Prompts dafür</h2>
-  <Prompt label="PRD erarbeiten (Plan Mode)">Lies docs/PRD-VORLAGE.md. Ich möchte [Idee in einem Satz]. Stell mir zu jedem Abschnitt der Vorlage 1–2 Rückfragen, eine nach der anderen. Schreib danach das fertige PRD nach docs/PRD.md – eine Seite, mit klarer Abgrenzung, was das Produkt NICHT macht.</Prompt>
+  <Prompt label="Neue Idee → PRD und Backlog" note="Claude fragt nach – eine Frage pro Nachricht –, schlägt 2–3 Varianten vor und schreibt PRD und Backlog erst nach eurem Okay.">/ndu-idee [Idee in einem Satz]</Prompt>
   <Prompt label="Backlog aus PRD">Leite aus docs/PRD.md 5–8 User Stories ab, geordnet so, dass nach jeder Story die App nützlicher ist als vorher. Jede Story mit 3–5 Akzeptanzkriterien im Format „Gegeben: … Wenn …, dann …“, davon mindestens ein Negativfall. Schreib sie nach docs/BACKLOG.md. Markiere, welche Stories du für das absolute Minimum hältst.</Prompt>
-  <Prompt label="Eine Story umsetzen">Setze Story [Nummer] aus docs/BACKLOG.md um. Zeig mir zuerst deinen Plan in 3–5 Punkten und warte auf mein Okay. Danach geh die Akzeptanzkriterien einzeln durch und sag mir, was ich im Browser prüfen soll.</Prompt>
+  <Prompt label="Eine Story umsetzen">Setze Story [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
 
   <FooterNav prev={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} next={{ href: '/tag-1#uebung-2', t: 'Übung 2 · Campus Events v0' }} />
 </Layout>

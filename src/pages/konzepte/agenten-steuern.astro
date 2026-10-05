@@ -14,7 +14,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <li><strong>Eine Session pro Story.</strong> Fertig → <code>/ndu-commit</code> → <code>/clear</code>. Der nächste Auftrag beginnt mit leerem Kopf und liest CLAUDE.md, PRD und Backlog neu.</li>
     <li><strong><code>/compact</code></strong>, wenn ihr mitten in etwas steckt und die Antworten schlechter werden: Claude fasst den Verlauf zusammen und arbeitet mit der Zusammenfassung weiter.</li>
     <li><strong>Gezielt füttern.</strong> „Schau dir <code>src/app/events/page.tsx</code> an“ statt „schau dir das Projekt an“. Die eine Fehlermeldung statt des ganzen Logs.</li>
-    <li><strong><kbd>Esc</kbd> ist euer Freund.</strong> Wenn der Plan in die falsche Richtung läuft, sofort stoppen – nicht abwarten und dann alles verwerfen.</li>
+    <li><strong><kbd>Esc</kbd> ist euer Freund.</strong> Wenn Claude in die falsche Richtung läuft, sofort stoppen – nicht abwarten und dann alles verwerfen.</li>
   </ul>
 
   <h2>CLAUDE.md – das Gedächtnis des Projekts</h2>
@@ -25,16 +25,19 @@ import FooterNav from '../../components/FooterNav.astro';
   </Callout>
 
   <h2>Eigene Befehle (Commands & Skills)</h2>
-  <p><code>/ndu-explain</code>, <code>/ndu-check</code> und <code>/ndu-commit</code> sind <strong>nicht in Claude Code eingebaut</strong>, sondern Markdown-Dateien aus unserem Kurs-Template in <code>.claude/commands/</code> – wiederverwendbare Prompts mit festen Regeln. Das Präfix <code>ndu-</code> macht sie erkennbar; eingebaute Befehle wie <code>/clear</code> oder <code>/compact</code> haben keins. Ihr könnt weitere anlegen lassen: <code>/ndu-story</code> (Story aus einem Satz mit Kriterien erzeugen), <code>/ndu-review</code> (strenge Prüfung), <code>/ndu-deploy-check</code> (vor dem Push Build + Secrets prüfen). Skills sind dasselbe in größer: ganze Arbeitsweisen, die Claude bei Bedarf lädt.</p>
+  <p><code>/ndu-idee</code>, <code>/ndu-explain</code>, <code>/ndu-check</code> und <code>/ndu-commit</code> sind <strong>nicht in Claude Code eingebaut</strong>, sondern Markdown-Dateien aus unserem Kurs-Template in <code>.claude/commands/</code> – wiederverwendbare Prompts mit festen Regeln. Das Präfix <code>ndu-</code> macht sie erkennbar; eingebaute Befehle wie <code>/clear</code> oder <code>/compact</code> haben keins. Ihr könnt weitere anlegen lassen: <code>/ndu-story</code> (Story aus einem Satz mit Kriterien erzeugen), <code>/ndu-review</code> (strenge Prüfung), <code>/ndu-deploy-check</code> (vor dem Push Build + Secrets prüfen). Skills sind dasselbe in größer: ganze Arbeitsweisen, die Claude bei Bedarf lädt.</p>
   <Prompt>Leg einen neuen Command /ndu-story an: Ich gebe einen Satz („Organisator*innen sollen Events absagen können“), du formulierst daraus eine User Story mit 3–5 Akzeptanzkriterien im Format „Gegeben: … Wenn …, dann …“ inklusive Negativfall, hängst sie ans Backlog und fragst, ob sie priorisiert werden soll.</Prompt>
 
-  <h2>Plan Mode, Permissions, Auto-Accept</h2>
+  <h2>Modi und Berechtigungen</h2>
   <table>
     <tr><th>Modus</th><th>Wann</th></tr>
-    <tr><td><strong>Plan Mode</strong></td><td>Alles, was mehr als eine Datei betrifft, alles Neue. Claude liest, denkt, fragt, schlägt vor – ändert nichts.</td></tr>
-    <tr><td><strong>Normal</strong></td><td>Standard. Claude fragt vor jeder Datei-Änderung und jedem Befehl. Am Anfang richtig: Ihr seht, was passiert.</td></tr>
-    <tr><td><strong>Auto-Accept</strong></td><td>Für Routine, der ihr vertraut (Lint-Fehler beheben, Tests laufen lassen). Nie für Datenbank-Änderungen, nie für Push.</td></tr>
+    <tr><td><strong>Auto Mode</strong></td><td>Standard seit August 2026. Claude arbeitet selbstständig und fragt bei riskanten Schritten nach. Richtig für klare Stories mit Akzeptanzkriterien. Ausnahme: Vor Änderungen an der Datenbank beschreibt Claude, was es vorhat, und wartet auf euer Okay – so steht es in der <code>CLAUDE.md</code> des Templates.</td></tr>
+    <tr><td><strong>Plan Mode</strong></td><td>Neue Idee, unklarer Ansatz, größere Umbauten. Claude liest, fragt, schlägt Varianten vor – ändert nichts. Für ein neues Produkt nehmt ihr <code>/ndu-idee</code>, das macht dasselbe und schreibt am Ende PRD und Backlog.</td></tr>
+    <tr><td><strong>Normal</strong></td><td>Claude fragt vor jeder Datei-Änderung und jedem Befehl. Wenn ihr jeden Schritt mitsehen wollt.</td></tr>
   </table>
+  <Callout type="concept" title="Warum kein Plan pro Story?">
+    <p>Früher hieß die Regel: erst Plan lesen, dann Okay geben. Mit den aktuellen Modellen empfiehlt Anthropic: Wenn sich die Änderung in einem Satz beschreiben lässt, den Plan weglassen. Wichtiger ist, dass Claude prüfen kann, ob es geklappt hat – und euch für jedes Kriterium einen Beleg zeigt. Brainstorming lohnt sich dort, wo noch nicht klar ist, was entstehen soll: am Anfang eines Produkts.</p>
+  </Callout>
   <p>Die Datei <code>.claude/settings.json</code> im Template erlaubt die harmlosen Befehle (Lint, Build, Git-Status) automatisch und verbietet die gefährlichen (<code>--force</code>, <code>rm -rf</code>).</p>
 
   <h2>MCP – Steckdosen für den Agenten</h2>

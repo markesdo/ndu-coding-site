@@ -22,7 +22,7 @@ import FooterNav from '../components/FooterNav.astro';
     <Block time="13:45–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
     <Block time="15:00–15:15" type="pause" title="Pause" />
     <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="/konzepte/spezifikation">PRD, User Story, Akzeptanzkriterium, MVP-Slice. Vibe Coding vs. Spec-driven.</Block>
-    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Campus Events v0" href="#uebung-2">PRD im Plan Mode, Backlog, erste Story bauen lassen, committen.</Block>
+    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Campus Events v0" href="#uebung-2">Idee → PRD mit <code>/ndu-idee</code>, Backlog, erste Story bauen lassen, committen.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss & Reflexion">Drei Erkenntnisse pro Person. Ausblick Tag 2.</Block>
   </div>
 
@@ -77,17 +77,17 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="uebung-2">Übung 2 · Campus Events v0 <span class="pill uebung">60 min</span></h2>
   <p>Jetzt wird aus Herumprobieren Produktarbeit. Ihr schreibt mit Claude ein PRD, schneidet das MVP und lasst die erste User Story bauen – die, deren Akzeptanzkriterien schon im Backlog stehen.</p>
 
-  <h3>a) PRD im Plan Mode (20 min)</h3>
-  <p>Plan Mode heißt: Claude darf nachdenken und fragen, aber noch nichts ändern. Umschalten mit <kbd>Shift</kbd><kbd>Tab</kbd> (zweimal), bis unten <code>plan mode</code> steht.</p>
-  <Prompt note="Claude stellt Rückfragen. Antwortet aus Sicht der Zielgruppe – ihr seid selbst Studierende, ihr kennt das Problem.">Lies docs/PRD-VORLAGE.md. Wir bauen „Campus Events“: Studierende und Gruppen legen Veranstaltungen an, andere sagen mit einem Klick zu. Stell mir zu jedem Abschnitt der Vorlage 1–2 Rückfragen, eine nach der anderen, und schreib dann das fertige PRD nach docs/PRD.md. Halte es auf einer Seite.</Prompt>
+  <h3>a) Von der Idee zum PRD (20 min)</h3>
+  <p>Ein neues Produkt beginnt mit Brainstorming: Claude stellt Rückfragen, eine nach der anderen, schlägt Varianten vor und fasst zusammen, was es verstanden hat. Geschrieben wird erst nach eurem Okay. Dafür gibt es im Template den Befehl <code>/ndu-idee</code>.</p>
+  <Prompt note="Claude stellt Rückfragen. Antwortet aus Sicht der Zielgruppe – ihr seid selbst Studierende, ihr kennt das Problem. Den Backlog gibt es schon; Claude schlägt höchstens Änderungen vor.">/ndu-idee Campus Events: Studierende und Gruppen legen Veranstaltungen an, andere sagen mit einem Klick zu.</Prompt>
 
   <h3>b) MVP schneiden & Backlog lesen (10 min)</h3>
   <p>Öffnet <code>docs/BACKLOG.md</code>. Dort stehen sieben Stories für zwei Tage, jede mit Akzeptanzkriterien. Fragt Claude:</p>
   <Prompt>Vergleiche docs/BACKLOG.md mit unserem PRD. Fehlt eine Story, die für den ersten nützlichen Durchlauf zwingend ist? Ist eine drin, die wir für den Anfang streichen könnten? Begründe kurz, ändere aber noch nichts.</Prompt>
 
   <h3>c) Story S1 bauen lassen (20 min)</h3>
-  <p>Plan Mode wieder verlassen (<kbd>Shift</kbd><kbd>Tab</kbd>). Dann:</p>
-  <Prompt>Setze Story S1 aus docs/BACKLOG.md um: die Eventliste mit den Beispieldaten aus src/data/events.ts auf der Startseite. Zeig mir zuerst deinen Plan in 3–5 Punkten und warte auf mein Okay. Nach der Umsetzung geh die Akzeptanzkriterien einzeln durch und sag mir, was ich im Browser prüfen soll.</Prompt>
+  <p>Für eine klare Story braucht es keinen eigenen Plan-Schritt: Claude fragt nach, wenn etwas unklar ist, und baut sonst direkt.</p>
+  <Prompt>Setze Story S1 aus docs/BACKLOG.md um: die Eventliste mit den Beispieldaten aus src/data/events.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Events? Fehlt das vergangene („Erstsemester-Frühstück“)? Sieht es am Handy gut aus? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
 
   <h3>d) Sichern (5 min)</h3>
@@ -97,7 +97,7 @@ import FooterNav from '../components/FooterNav.astro';
   <Checklist id="t1-u2" items={[
     'PRD in <code>docs/PRD.md</code> – eine Seite, mit Abgrenzung („macht NICHT“)',
     'Backlog mit dem PRD abgeglichen',
-    'Story S1: Plan gesehen, Okay gegeben, Umsetzung abgewartet',
+    'Story S1 umgesetzt, für jedes Kriterium den Beleg gelesen',
     'Alle Akzeptanzkriterien von S1 selbst im Browser geprüft',
     'Backlog aktualisiert und committet',
     'Optional: S2 (Detailseite) angefangen',
