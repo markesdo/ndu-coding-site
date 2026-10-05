@@ -9,7 +9,7 @@ import FooterNav from '../components/FooterNav.astro';
 <Layout title="Tag 1 · Verstehen & Starten">
   <span class="eyebrow">Donnerstag, 8. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 1 · Verstehen & Starten</h1>
-  <p class="lead">Am Ende des Tages habt ihr ein eigenes Repo mit laufender App, versteht, wie eine Web-App und ein Coding-Agent aufgebaut sind, und habt eure erste User Story bauen lassen.</p>
+  <p class="lead">Am Ende des Tages habt ihr ein eigenes Repo mit laufender App, versteht, wie eine Web-App und ein Coding-Agent aufgebaut sind, und habt euer erstes Issue bauen lassen.</p>
 
   <h2>Ablauf</h2>
   <div class="schedule">
@@ -21,8 +21,8 @@ import FooterNav from '../components/FooterNav.astro';
     <Block time="13:00–13:45" type="konzept" title="Konzept 2 · Wie ein Coding-Agent arbeitet" href="/konzepte/coding-agent">Kontextfenster, Tools, der Agent-Loop, Plan Mode, CLAUDE.md, Halluzination.</Block>
     <Block time="13:45–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
     <Block time="15:00–15:15" type="pause" title="Pause" />
-    <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="/konzepte/spezifikation">PRD, User Story, Akzeptanzkriterium, MVP-Slice. Vibe Coding vs. Spec-driven.</Block>
-    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Campus Events v0" href="#uebung-2">Idee → PRD mit <code>/ndu-idee</code>, Backlog, erste Story bauen lassen, committen.</Block>
+    <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="/konzepte/spezifikation">Produkt-Brief, Issue, Akzeptanzkriterium, MVP-Slice. Vibe Coding vs. Spec-driven.</Block>
+    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Campus Events v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Backlog, erstes Issue bauen lassen, committen.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss & Reflexion">Drei Erkenntnisse pro Person. Ausblick Tag 2.</Block>
   </div>
 
@@ -54,7 +54,7 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt>Lösche die Datei src/components/Header.tsx.</Prompt>
   <p>Die Vorschau zeigt jetzt einen Fehler. Lest ihn – er sagt ziemlich genau, was fehlt. Und jetzt der Undo-Knopf: links das <strong>Source-Control-Symbol</strong> (Verzweigung) → bei <code>Header.tsx</code> auf den Zurück-Pfeil („Discard Changes“). Datei ist wieder da, Fehler weg.</p>
   <Callout type="tip" title="Merken">
-    <p>Solange ein Stand committet ist, kann nichts verloren gehen. Deshalb: <strong>nach jeder funktionierenden Story committen.</strong> Mehr dazu in <a href="/konzepte/git">Git – der Undo-Knopf</a>.</p>
+    <p>Solange ein Stand committet ist, kann nichts verloren gehen. Deshalb: <strong>nach jedem funktionierenden Issue committen.</strong> Mehr dazu in <a href="/konzepte/git">Git – der Undo-Knopf</a>.</p>
   </Callout>
 
   <h3>e) Sichern (10 min)</h3>
@@ -75,32 +75,32 @@ import FooterNav from '../components/FooterNav.astro';
   <hr />
 
   <h2 id="uebung-2">Übung 2 · Campus Events v0 <span class="pill uebung">60 min</span></h2>
-  <p>Jetzt wird aus Herumprobieren Produktarbeit. Ihr schreibt mit Claude ein PRD, schneidet das MVP und lasst die erste User Story bauen – die, deren Akzeptanzkriterien schon im Backlog stehen.</p>
+  <p>Jetzt wird aus Herumprobieren Produktarbeit. Ihr schreibt mit Claude einen Produkt-Brief, schneidet das MVP und lasst das erste Issue bauen – das, dessen Akzeptanzkriterien schon im Backlog stehen.</p>
 
-  <h3>a) Von der Idee zum PRD (20 min)</h3>
+  <h3>a) Von der Idee zum Produkt-Brief (20 min)</h3>
   <p>Ein neues Produkt beginnt mit Brainstorming: Claude stellt Rückfragen, eine nach der anderen, schlägt Varianten vor und fasst zusammen, was es verstanden hat. Geschrieben wird erst nach eurem Okay. Dafür gibt es im Template den Befehl <code>/ndu-idee</code>.</p>
   <Prompt note="Claude stellt Rückfragen. Antwortet aus Sicht der Zielgruppe – ihr seid selbst Studierende, ihr kennt das Problem. Den Backlog gibt es schon; Claude schlägt höchstens Änderungen vor.">/ndu-idee Campus Events: Studierende und Gruppen legen Veranstaltungen an, andere sagen mit einem Klick zu.</Prompt>
 
   <h3>b) MVP schneiden & Backlog lesen (10 min)</h3>
-  <p>Öffnet <code>docs/BACKLOG.md</code>. Dort stehen sieben Stories für zwei Tage, jede mit Akzeptanzkriterien. Fragt Claude:</p>
-  <Prompt>Vergleiche docs/BACKLOG.md mit unserem PRD. Fehlt eine Story, die für den ersten nützlichen Durchlauf zwingend ist? Ist eine drin, die wir für den Anfang streichen könnten? Begründe kurz, ändere aber noch nichts.</Prompt>
+  <p>Öffnet <code>docs/BACKLOG.md</code>. Dort stehen sieben Issues für zwei Tage, jedes mit Ziel, Abgrenzung und Akzeptanzkriterien. Fragt Claude:</p>
+  <Prompt>Vergleiche docs/BACKLOG.md mit unserem Produkt-Brief. Fehlt ein Issue, das für den ersten nützlichen Durchlauf zwingend ist? Ist eines drin, das wir für den Anfang streichen könnten? Begründe kurz, ändere aber noch nichts.</Prompt>
 
-  <h3>c) Story S1 bauen lassen (20 min)</h3>
-  <p>Für eine klare Story braucht es keinen eigenen Plan-Schritt: Claude fragt nach, wenn etwas unklar ist, und baut sonst direkt.</p>
-  <Prompt>Setze Story S1 aus docs/BACKLOG.md um: die Eventliste mit den Beispieldaten aus src/data/events.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
+  <h3>c) Issue 1 bauen lassen (20 min)</h3>
+  <p>Für ein klares Issue braucht es keinen eigenen Plan-Schritt: Claude fragt nach, wenn etwas unklar ist, und baut sonst direkt.</p>
+  <Prompt>Setze Issue 1 aus docs/BACKLOG.md um: die Eventliste mit den Beispieldaten aus src/data/events.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Events? Fehlt das vergangene („Erstsemester-Frühstück“)? Sieht es am Handy gut aus? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
 
   <h3>d) Sichern (5 min)</h3>
-  <Prompt>Setze S1 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
+  <Prompt>Setze Issue 1 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
 
   <h3>Checkliste Übung 2</h3>
   <Checklist id="t1-u2" items={[
-    'PRD in <code>docs/PRD.md</code> – eine Seite, mit Abgrenzung („macht NICHT“)',
-    'Backlog mit dem PRD abgeglichen',
-    'Story S1 umgesetzt, für jedes Kriterium den Beleg gelesen',
-    'Alle Akzeptanzkriterien von S1 selbst im Browser geprüft',
+    'Produkt-Brief in <code>docs/PRODUKT.md</code> – eine Seite, mit Abgrenzung („macht NICHT“)',
+    'Backlog mit dem Produkt-Brief abgeglichen',
+    'Issue 1 umgesetzt, für jedes Kriterium den Beleg gelesen',
+    'Alle Akzeptanzkriterien von Issue 1 selbst im Browser geprüft',
     'Backlog aktualisiert und committet',
-    'Optional: S2 (Detailseite) angefangen',
+    'Optional: Issue 2 (Detailseite) angefangen',
   ]} />
 
   <hr />

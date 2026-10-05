@@ -29,14 +29,14 @@ import FooterNav from '../../components/FooterNav.astro';
   <Prompt label="Wenn Claude im Kreis läuft" note="Nach dem zweiten gescheiterten Versuch: /clear, dann dieser Prompt.">Wir haben Fehler X schon zweimal erfolglos behoben. Ändere jetzt nichts. Nenn mir drei verschiedene mögliche Ursachen, wie wir jede einzelne ausschließen können, und welche Information dir fehlt.</Prompt>
 
   <h2>Definition of Done</h2>
-  <p>Eine Story ist fertig, wenn <strong>alle</strong> Akzeptanzkriterien im Browser erfüllt sind – von euch geprüft, nicht vom Agenten behauptet –, <code>/ndu-check</code> grün ist, und der Stand committet ist. „Sieht gut aus“ ist kein Kriterium. „Beim Klick auf X passiert Y“ ist eines.</p>
+  <p>Ein Issue ist fertig, wenn <strong>alle</strong> Akzeptanzkriterien im Browser erfüllt sind – von euch geprüft, nicht vom Agenten behauptet –, <code>/ndu-check</code> grün ist, und der Stand committet ist. „Sieht gut aus“ ist kein Kriterium. „Beim Klick auf X passiert Y“ ist eines.</p>
   <Callout type="concept" title="Der Agent sieht euren Browser nicht">
     <p>Claude Code kann Lint und Build ausführen und sagt dann oft „funktioniert“. Es hat aber keinen Browser offen. Ob der Button an der richtigen Stelle ist, ob das Formular sich anfühlt wie ein Formular, ob nach dem Reload alles noch da ist – das seht nur ihr. Außer, ihr gebt ihm Augen:</p>
   </Callout>
 
   <h2>Der Agent prüft sich selbst</h2>
   <p>Zwei Wege, dem Agenten Augen zu geben. <strong>Tests:</strong> Ein Akzeptanzkriterium wird zu einem Skript, das die App im Browser bedient und prüft (Playwright). Einmal geschrieben, läuft es bei jeder Änderung wieder – euer Sicherheitsnetz. <strong>Browser-MCP:</strong> Claude steuert selbst einen Browser, klickt durch, macht Screenshots, liest die Konsole. Beides setzen wir an Tag 3 ein; heute reicht es zu wissen, dass es geht.</p>
-  <Prompt label="Test aus Akzeptanzkriterium">Schreib einen Playwright-Test für dieses Akzeptanzkriterium von Story S6: „Gegeben: Ich bin angemeldet. Wenn ich ‚Ich komme‘ klicke, dann steht der Button auf ‚Zugesagt ✓‘ und der Zähler steigt um 1.“ Richte Playwright ein, falls nötig, führe den Test aus und zeig mir das Ergebnis.</Prompt>
+  <Prompt label="Test aus Akzeptanzkriterium">Schreib einen Playwright-Test für dieses Akzeptanzkriterium von Issue 6: „Gegeben ich bin angemeldet, wenn ich ‚Ich komme‘ klicke, dann steht der Button auf ‚Zugesagt ✓‘ und der Zähler steigt um 1.“ Richte Playwright ein, falls nötig, führe den Test aus und zeig mir das Ergebnis.</Prompt>
 
   <h2>Die Klassiker</h2>
   <table>

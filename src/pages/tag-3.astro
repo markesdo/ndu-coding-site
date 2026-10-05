@@ -27,8 +27,8 @@ import FooterNav from '../components/FooterNav.astro';
   <hr />
   <h2 id="werkstatt">Werkstatt</h2>
   <h3>Peer-Review im Tandem (Werkstatt 1)</h3>
-  <p>Tauscht Vercel-URLs. Geht die App der anderen Person als echte*r Nutzer*in durch – <strong>ohne Erklärung</strong> – und notiert: Wo war ich verwirrt? Was hat nicht funktioniert? Was hätte ich erwartet? Dann die <a href="/konzepte/qualitaet">Qualitäts-Checkliste</a> gemeinsam durchgehen. Findings werden Stories:</p>
-  <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus User Stories mit Akzeptanzkriterien und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
+  <p>Tauscht Vercel-URLs. Geht die App der anderen Person als echte*r Nutzer*in durch – <strong>ohne Erklärung</strong> – und notiert: Wo war ich verwirrt? Was hat nicht funktioniert? Was hätte ich erwartet? Dann die <a href="/konzepte/qualitaet">Qualitäts-Checkliste</a> gemeinsam durchgehen. Findings werden Issues:</p>
+  <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus Issues im Format von docs/BACKLOG.md (Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn) und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
   <h3>Review durch den Agenten</h3>
   <Prompt note="In einer frischen Session (/clear) – die Prüfung soll nicht aus demselben Kontext kommen, der den Code geschrieben hat.">Prüfe dieses Projekt so streng wie ein erfahrenes Entwicklungsteam vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
   <h3>Demo vorbereiten (Werkstatt 2)</h3>
@@ -41,7 +41,7 @@ import FooterNav from '../components/FooterNav.astro';
     <li><strong>Problem</strong> (30 s) Für wen, welcher Schmerz. Eine Person, eine Situation.</li>
     <li><strong>Lösung live</strong> (2 min) Der eine Durchlauf, der den Kern zeigt – am besten vom Handy. Nicht alle Features.</li>
     <li><strong>Was der Agent nicht gut gemacht hat</strong> (45 s) Ehrlich. Was musstet ihr wie oft korrigieren, wo habt ihr aufgegeben? Das ist der interessanteste Teil.</li>
-    <li><strong>Nächster Schritt</strong> (15 s) Was wäre die eine Story, die ihr als Nächstes bauen würdet?</li>
+    <li><strong>Nächster Schritt</strong> (15 s) Was wäre das eine Issue, das ihr als Nächstes bauen würdet?</li>
   </ol>
   <Checklist id="t3-demo" items={[
     'Live-App funktioniert am Handy (vorher testen!)',

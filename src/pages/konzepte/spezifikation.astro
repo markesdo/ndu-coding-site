@@ -12,29 +12,37 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Vibe Coding vs. Spec-driven</h2>
   <div class="compare">
     <div class="card bad"><h3>„Bau mir eine Event-App“</h3><p class="small">Claude baut <em>eine</em> Event-App – mit Kalenderansicht, Kategorien, Suche, Dark Mode und einer Datenstruktur, die eure eigentliche Idee nicht abbildet. Sieht beeindruckend aus, 40 Dateien, und nach einer Stunde Nachbessern versteht weder ihr noch Claude, was davon gewollt war.</p><p class="small muted">Gut für: Ausprobieren, Inspiration, Wegwerf-Prototypen.</p></div>
-    <div class="card good"><h3>„Setze Story S1 um“</h3><p class="small">Eine Story, drei Akzeptanzkriterien, zwanzig Minuten. Ihr prüft drei Dinge, es stimmt oder es stimmt nicht. Dann die nächste. Nach sieben Stories habt ihr eine App, die genau das tut, was euer PRD sagt – und ihr wisst bei jeder Funktion, warum sie da ist.</p><p class="small muted">Gut für: alles, was länger als einen Nachmittag leben soll.</p></div>
+    <div class="card good"><h3>„Setze Issue 1 um“</h3><p class="small">Ein Issue, drei Akzeptanzkriterien, zwanzig Minuten. Ihr prüft drei Dinge, es stimmt oder es stimmt nicht. Dann das nächste. Nach sieben Issues habt ihr eine App, die genau das tut, was euer Produkt-Brief sagt – und ihr wisst bei jeder Funktion, warum sie da ist.</p><p class="small muted">Gut für: alles, was länger als einen Nachmittag leben soll.</p></div>
   </div>
 
   <h2>Die drei Ebenen</h2>
   <ol class="steps">
-    <li><strong>PRD – Product Requirements Document (eine Seite)</strong> Für wen, welches Problem, was ist es in einem Satz, was ist es <em>nicht</em>, die 3–5 Kernfunktionen, woran merkt man Erfolg. Vorlage: <code>docs/PRD-VORLAGE.md</code>. Das PRD ist das Gedächtnis des Projekts – Claude liest es in jeder Session.</li>
-    <li><strong>User Story (ein Satz)</strong> <em>Als [Rolle] möchte ich [Ziel], damit [Nutzen].</em> Die Rolle ist eine echte Person, nicht „der Nutzer“. Der Nutzen erklärt, warum es sich lohnt – und erlaubt Claude, bessere Vorschläge zu machen als die wörtliche Umsetzung.</li>
-    <li><strong>Akzeptanzkriterien (3–5 pro Story)</strong> <em>Gegeben: [Ausgangslage]. Wenn [Aktion], dann [erwartetes Ergebnis].</em> Konkret genug, dass man sie durchklicken kann. Immer mindestens einen Negativfall: Was passiert bei leerem Feld, falschem Datum, ohne Login?</li>
+    <li><strong>Produkt-Brief (eine Seite, lebt)</strong> Für wen, welches Problem, was ist es in einem Satz, was ist es <em>nicht</em>, was gehört ins MVP, woran merkt man Erfolg – als Annahme: „Wir glauben, dass … Wir merken es, wenn …“. Oben steht eine Stand-Zeile mit Datum und letzter Änderung. Vorlage: <code>docs/PRODUKT-VORLAGE.md</code>, euer Brief: <code>docs/PRODUKT.md</code>. Claude liest ihn, bevor es ein Issue umsetzt – er ist das Gedächtnis des Produkts. In Unternehmen heißt so ein Dokument oft <strong>PRD</strong> (Product Requirements Document) oder Spec. Überholt ist 2026 das lange PRD, das vorab fertig sein muss: Ihr schreibt eine Seite, baut etwas Klickbares, zeigt es Menschen – und passt den Brief danach an.</li>
+    <li><strong>Issue (Ziel und Abgrenzung)</strong> <em>Ziel:</em> ein, zwei Sätze – was danach möglich ist, für wen und warum. Der Grund erlaubt Claude, bessere Vorschläge zu machen als die wörtliche Umsetzung. <em>Nicht im Umfang:</em> was ausdrücklich nicht dazugehört. Diese Zeile verhindert, dass der Agent „hilfreich“ mehr baut, als ihr wolltet.</li>
+    <li><strong>Akzeptanzkriterien (3–5 pro Issue) und „Fertig, wenn“</strong> <em>Gegeben [Ausgangslage], wenn [Aktion], dann [erwartetes Ergebnis].</em> Konkret genug, dass man sie durchklicken kann. Immer mindestens ein Negativfall: Was passiert bei leerem Feld, falschem Datum, ohne Login? Dazu eine Zeile <em>Fertig, wenn:</em> welcher Check zeigt, dass das Issue erledigt ist – etwa „alle Kriterien im Browser durchgeklickt, Zähler stimmt auch nach einem Reload“.</li>
   </ol>
 
+  <Callout type="concept" title="Warum keine User Stories mehr?">
+    <p>Das klassische Format „Als [Rolle] möchte ich [Ziel], damit [Nutzen]“ verlangt 2026 keiner der großen Leitfäden für Coding-Agenten – weder Anthropic (<a href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Best Practices für Claude Code</a>) noch <a href="https://linear.app/method/write-issues-not-user-stories" target="_blank" rel="noopener">Linear</a>, GitHub für den Copilot Coding Agent oder OpenAI für Codex. Alle verlangen dasselbe: ein Ziel, den nötigen Kontext, eine Abgrenzung inklusive dessen, was nicht dazugehört, prüfbare Akzeptanzkriterien und einen Check, woran man „fertig“ erkennt. Gegeben/Wenn/Dann bleibt, weil jedes Kriterium ein Szenario ist, das Claude als Test oder Klickpfad ausführen kann. Und die Spezifikation wächst mit der Aufgabe: Für eine kleine Änderung reichen drei Zeilen – Birgitta Böckeler warnt auf martinfowler.com ausdrücklich davor, Agenten zu überspezifizieren.</p>
+  </Callout>
+
   <Callout type="concept" title="Der Satz, der beide Kurse verbindet">
-    <p><strong>Ein Akzeptanzkriterium ist ein Test, den der Agent ausführen kann.</strong> Was ihr im Innolab als Story Map und Definition of Done kennenlernt, ist hier die Arbeitsanweisung für Claude – und eure Prüfliste danach. Je besser das Kriterium, desto weniger Diskussion, ob „fertig“ fertig ist.</p>
+    <p><strong>Ein Akzeptanzkriterium ist ein Test, den der Agent ausführen kann.</strong> Was ihr im Innolab als Backlog und Definition of Done kennenlernt, ist hier die Arbeitsanweisung für Claude – und eure Prüfliste danach. Je besser das Kriterium, desto weniger Diskussion, ob „fertig“ fertig ist.</p>
   </Callout>
 
   <h2>Beispiel aus dem Backlog</h2>
   <div class="card">
-    <p><strong>S6 – Zusagen (RSVP)</strong><br/><strong>Als</strong> Studentin <strong>möchte ich</strong> einem Event zusagen und das wieder zurücknehmen, <strong>damit</strong> die Organisator*innen wissen, wie viele kommen.</p>
+    <p><strong>Issue 6 – Zusagen (RSVP)</strong></p>
+    <p class="small"><strong>Ziel:</strong> Studierende sagen einem Event zu und können das zurücknehmen – damit Organisator*innen wissen, wie viele kommen.</p>
+    <p class="small"><strong>Nicht im Umfang:</strong> Warteliste, Erinnerungs-Mails.</p>
+    <p class="small"><strong>Akzeptanzkriterien:</strong></p>
     <ul class="small">
-      <li>Gegeben: Ich bin angemeldet. Wenn ich „Ich komme“ klicke, dann steht der Button auf „Zugesagt ✓“ und der Zähler steigt um 1.</li>
-      <li>Gegeben: Ich habe zugesagt. Wenn ich erneut klicke, dann ist die Zusage zurückgenommen und der Zähler sinkt um 1.</li>
-      <li>Gegeben: Ich bin nicht angemeldet. Wenn ich „Ich komme“ klicke, dann führt mich der Button zur Anmeldung.</li>
-      <li>Gegeben: Eine andere Person hat zugesagt. Wenn ich versuche, <em>ihre</em> Zusage zu löschen, dann wird das abgelehnt.</li>
+      <li>Gegeben ich bin angemeldet, wenn ich „Ich komme“ klicke, dann steht der Button auf „Zugesagt ✓“ und der Zähler steigt um 1.</li>
+      <li>Gegeben ich habe zugesagt, wenn ich erneut klicke, dann ist die Zusage zurückgenommen und der Zähler sinkt um 1.</li>
+      <li>Gegeben ich bin nicht angemeldet, wenn ich klicke, dann führt mich der Button zur Anmeldung.</li>
+      <li>Gegeben eine andere Person hat zugesagt, dann kann ich <em>ihre</em> Zusage nicht löschen.</li>
     </ul>
+    <p class="small"><strong>Fertig, wenn:</strong> alle Kriterien im Browser durchgeklickt, Zähler stimmt auch nach einem Reload.</p>
     <p class="small muted">Beachtet: Kein Wort über Datenbanktabellen, Komponenten oder Farben. Das <em>Wie</em> ist Claudes Sache. Das <em>Was</em> und das <em>Woran-merke-ich-es</em> sind eure.</p>
   </div>
 
@@ -42,9 +50,9 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Die häufigste Fehlerquelle ist nicht zu wenig, sondern zu viel. Fragen zum Schneiden: <em>Welche eine Sache muss funktionieren, damit eine echte Person das Produkt einmal sinnvoll benutzt?</em> Alles andere kommt auf die Liste „Später“. Das Backlog von Campus Events ist so geschnitten: Liste → Detail → Anlegen → Login → Zusagen. Nach jedem Schritt ist die App nützlicher als vorher, und nach jedem Schritt könnte man aufhören.</p>
 
   <h2>Prompts dafür</h2>
-  <Prompt label="Neue Idee → PRD und Backlog" note="Claude fragt nach – eine Frage pro Nachricht –, schlägt 2–3 Varianten vor und schreibt PRD und Backlog erst nach eurem Okay.">/ndu-idee [Idee in einem Satz]</Prompt>
-  <Prompt label="Backlog aus PRD">Leite aus docs/PRD.md 5–8 User Stories ab, geordnet so, dass nach jeder Story die App nützlicher ist als vorher. Jede Story mit 3–5 Akzeptanzkriterien im Format „Gegeben: … Wenn …, dann …“, davon mindestens ein Negativfall. Schreib sie nach docs/BACKLOG.md. Markiere, welche Stories du für das absolute Minimum hältst.</Prompt>
-  <Prompt label="Eine Story umsetzen">Setze Story [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
+  <Prompt label="Neue Idee → Produkt-Brief und Backlog" note="Claude fragt nach – eine Frage pro Nachricht –, schlägt 2–3 Varianten vor und schreibt Produkt-Brief und Backlog erst nach eurem Okay.">/ndu-idee [Idee in einem Satz]</Prompt>
+  <Prompt label="Backlog aus dem Produkt-Brief">Leite aus docs/PRODUKT.md 5–8 Issues ab, geordnet so, dass nach jedem Issue die App nützlicher ist als vorher. Jedes Issue bekommt: Ziel (ein, zwei Sätze: was danach möglich ist, für wen, warum), Nicht im Umfang, 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“, davon mindestens ein Negativfall, und eine Zeile „Fertig, wenn“ mit dem Check, der es zeigt. Schreib sie nach docs/BACKLOG.md. Markiere, welche Issues du für das absolute Minimum hältst.</Prompt>
+  <Prompt label="Ein Issue umsetzen">Setze Issue [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
 
   <FooterNav prev={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} next={{ href: '/tag-1#uebung-2', t: 'Übung 2 · Campus Events v0' }} />
 </Layout>
