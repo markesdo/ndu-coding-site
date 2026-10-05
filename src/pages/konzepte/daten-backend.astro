@@ -57,8 +57,8 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Ihre App braucht Zugangsdaten: die Supabase-URL, Keys, später vielleicht einen Claude-API-Key. Die stehen in <code>.env.local</code>, einer Datei, die <strong>nie ins Repo kommt</strong>. Auf Vercel tragen Sie dieselben Werte im Dashboard ein. So kann der Code öffentlich sein und die Schlüssel privat bleiben.</p>
   <table>
     <tr><th>Variable</th><th>Darf der Browser sie sehen?</th></tr>
-    <tr><td><code>NEXT_PUBLIC_SUPABASE_URL</code>, <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code></td><td>Ja – deshalb <code>NEXT_PUBLIC_</code>. Der anon key ist durch RLS geschützt.</td></tr>
-    <tr><td><code>ANTHROPIC_API_KEY</code>, <code>SUPABASE_SERVICE_ROLE_KEY</code></td><td><strong>Niemals.</strong> Nur im Backend. Wenn Claude so einen Key in eine Frontend-Datei schreibt: stoppen.</td></tr>
+    <tr><td><code>NEXT_PUBLIC_SUPABASE_URL</code>, <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code></td><td>Ja – deshalb <code>NEXT_PUBLIC_</code>. Der Publishable Key ist durch RLS geschützt.</td></tr>
+    <tr><td><code>ANTHROPIC_API_KEY</code>, <code>SUPABASE_SECRET_KEY</code></td><td><strong>Niemals.</strong> Nur im Backend. Wenn Claude so einen Key in eine Frontend-Datei schreibt: stoppen.</td></tr>
   </table>
 
   <h2>Begriffe, die heute fallen</h2>
