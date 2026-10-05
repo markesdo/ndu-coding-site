@@ -67,7 +67,7 @@ import FooterNav from '../components/FooterNav.astro';
   <ol class="steps">
     <li><strong>Account</strong> <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a> → Sign in with GitHub.</li>
     <li><strong>Projekt</strong> New project → Name <code>campus-events</code>, Region <em>Frankfurt (eu-central-1)</em>, Datenbank-Passwort generieren lassen und <strong>im Passwortmanager speichern</strong>.</li>
-    <li><strong>Keys</strong> Project Settings → API: <em>Project URL</em> und <em>anon public key</em> kopieren – die kommen gleich in <code>.env.local</code>.</li>
+    <li><strong>Keys</strong> Im Projekt oben auf <em>Connect</em> klicken, Framework <em>Next.js</em> wählen: Dort stehen <em>Project URL</em> und <em>Publishable Key</em> (beginnt mit <code>sb_publishable_</code>) – die kommen gleich in <code>.env.local</code>. Die „Legacy“-Keys (anon, service_role) brauchen Sie nicht.</li>
     <li><strong>E-Mail-Bestätigung aus</strong> (für den Kurs): Authentication → Providers → Email → „Confirm email“ deaktivieren. Sonst braucht jede Test-Anmeldung eine echte E-Mail.</li>
   </ol>
   <h3>b) Supabase-MCP verbinden (10 min)</h3>
