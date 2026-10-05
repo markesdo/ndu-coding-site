@@ -107,7 +107,7 @@ import { bild } from '../components/anleitung-bilder';
   <ol class="small">
     <li>Supabase → Account → <a href="https://supabase.com/dashboard/account/tokens" target="_blank" rel="noopener">Access Tokens</a> → neuen Token erzeugen, Name „Kurs-MCP“, auf euer Projekt <code>campus-events</code> beschränken. Token kopieren – er wird nur einmal angezeigt.</li>
     <li>Im Terminal den bisherigen Eintrag entfernen: <code>claude mcp remove supabase</code></li>
-    <li>Neu verbinden – <code>PROJECT-REF</code> und <code>TOKEN</code> ersetzen:</li>
+    <li>Neu verbinden – <code>PROJECT-REF</code> und <code>TOKEN</code> ersetzen. Den <em>Project Ref</em> findet ihr in der Projekt-Adresse auf der Supabase-Übersicht (<code>https://<strong>abcdefgh</strong>.supabase.co</code> – das fett gedruckte Stück) oder in der Adresszeile des Dashboards nach <code>/project/</code>:</li>
   </ol>
   <Prompt label="Im Terminal (nicht in Claude) – Alternative mit Token">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF" --header "Authorization: Bearer TOKEN"</Prompt>
   <p class="small muted">Der Token ist ein Schlüssel zu eurem Supabase-Konto: Er wird nur in eurem Codespace gespeichert, nicht im Repo. Fügt ihn nie in den Chat mit Claude oder in eine Datei im Projekt ein. Nach dem Kurs könnt ihr ihn unter Access Tokens wieder löschen.</p>
