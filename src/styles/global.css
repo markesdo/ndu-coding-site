@@ -187,16 +187,6 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .layer-detail p { margin: 0 0 .5rem; }
 .layer-detail .q { font-size: .9rem; color: var(--muted); }
 
-.ctx-bar { display: flex; gap: 3px; height: 54px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); background: var(--bg); margin: .75rem 0; }
-.ctx-seg { display: grid; place-items: center; font-size: .72rem; font-weight: 600; color: #fff; min-width: 0; overflow: hidden; white-space: nowrap; transition: flex .3s, opacity .3s; }
-.ctx-seg.sys { background: var(--purple); }
-.ctx-seg.claude { background: var(--blue); }
-.ctx-seg.code { background: var(--green); }
-.ctx-seg.chat { background: var(--yellow); }
-.ctx-seg.lost { background: var(--muted); opacity: .4; }
-.ctx-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
-.ctx-status { font-size: .95rem; margin-top: .75rem; min-height: 3rem; }
-.ctx-status strong { color: var(--accent); }
 
 .loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; margin: .75rem 0; }
 .loop button { font: inherit; padding: .8rem .5rem; border-radius: 12px; border: 2px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; font-weight: 600; font-size: .95rem; }

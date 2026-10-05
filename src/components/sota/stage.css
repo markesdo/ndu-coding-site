@@ -1,0 +1,99 @@
+/* Animierte Szenen (Stage + Kontextfenster). Nur Tokens aus global.css. */
+.stage {
+  --block-ink: #fff;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  outline: none;
+}
+.stage:focus-visible { box-shadow: 0 0 0 3px var(--blue); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .stage { --block-ink: var(--bg); }
+}
+:root[data-theme="dark"] .stage { --block-ink: var(--bg); }
+
+.stage-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .75rem; }
+.stage-title { font-weight: 700; }
+.stage-count { font-family: var(--mono); font-size: .85rem; color: var(--muted); }
+.stage-caption { min-height: 6.5em; margin-top: 1rem; }
+.stage-caption code { font-size: .9em; }
+.stage-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.stage-controls .btn:disabled { opacity: .4; cursor: default; }
+
+.stage:fullscreen {
+  background: var(--bg);
+  color: var(--fg);
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding: 5vh 6vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.stage:fullscreen .kf-fenster { height: 18vh; }
+.stage:fullscreen .stage-caption { max-width: 60ch; }
+.stage:fullscreen .kf-block,
+.stage:fullscreen .kf-gauge-text,
+.stage:fullscreen .kf-legend,
+.stage:fullscreen .kf-notes,
+.stage:fullscreen .kf-footnote,
+.stage:fullscreen .btn { font-size: 1.1rem; }
+.stage:fullscreen .kf-gauge-track { height: 10px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Kontextfenster */
+.kf-gauge { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
+.kf-gauge-text { font-family: var(--mono); font-size: .9rem; min-width: 8.5em; }
+.kf-gauge-track { flex: 1; height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; }
+.kf-gauge-bar { height: 100%; background: var(--muted); }
+.kf-gauge.kf-warn .kf-gauge-bar { background: var(--yellow); }
+.kf-gauge.kf-warn .kf-gauge-text { color: var(--yellow); font-weight: 700; }
+.kf-gauge.kf-crit .kf-gauge-bar { background: var(--accent); }
+.kf-gauge.kf-crit .kf-gauge-text { color: var(--accent); font-weight: 700; }
+
+.kf-fenster {
+  display: flex;
+  height: 64px;
+  border: 2px solid var(--fg);
+  border-radius: 10px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.kf-block {
+  flex: none;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  box-shadow: inset -2px 0 0 var(--bg);
+  color: var(--block-ink);
+  font-size: .75rem;
+  font-weight: 600;
+}
+.kf-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 .25rem; }
+
+.kf-fest { background: var(--purple); }
+.kf-auftrag { background: var(--accent); }
+.kf-datei { background: var(--green); }
+.kf-werkzeug { background: var(--yellow); }
+.kf-verlauf { background: var(--blue); }
+.kf-zusammenfassung { background: var(--muted); }
+
+.kf-footnote { font-size: .8rem; color: var(--muted); margin: .4rem 0 0; }
+.kf-notes, .kf-legend { list-style: none; padding: 0; margin: .5rem 0 0; display: flex; flex-wrap: wrap; gap: .25rem 1rem; font-size: .85rem; }
+.kf-legend { color: var(--muted); }
+.kf-dot { display: inline-block; width: .7em; height: .7em; border-radius: 2px; margin-right: .35em; vertical-align: -.05em; }
+
+@media (max-width: 900px) {
+  .stage { padding: 1rem; }
+  .kf-fenster { height: 52px; }
+  .kf-block { font-size: .68rem; }
+  .kf-narrow .kf-label { display: none; }
+}
