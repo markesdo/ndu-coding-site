@@ -6,7 +6,7 @@ import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
 import Schritte from '../components/Schritte.astro';
 
-// Screenshots vom Durchgang mit einem frischen Konto (5.10.2026). Markierungen in Pixeln des Bildes (1496 × 812).
+// Screenshots vom Durchgang mit einem frischen Konto (5.10.2026). Markierungen in Pixeln des jeweiligen Bildes.
 const bilder = import.meta.glob<{ default: ImageMetadata }>('../assets/anleitung/setup/*.jpg', { eager: true });
 const bild = (name: string) => {
   const b = bilder[`../assets/anleitung/setup/${name}.jpg`];
@@ -47,6 +47,10 @@ const bild = (name: string) => {
   <Callout type="tip" title="Ihr habt schon ein GitHub-Konto?">
     <p>Dann legt kein zweites an. Tragt eure NDU-Adresse zusätzlich ein: Profilbild oben rechts → <em>Settings</em> → <em>Emails</em> → <em>Add email address</em>, dann den Link in der Bestätigungsmail anklicken. Danach könnt ihr Education mit diesem Konto beantragen.</p>
   </Callout>
+  <Schritte steps={[
+    { img: bild('edu-1-unverified'), alt: 'Settings → Emails: die neu eingetragene Hochschuladresse steht auf „Unverified“', text: 'Nach <em>Add</em> steht die NDU-Adresse auf „Unverified“ und GitHub schickt eine Mail mit dem Betreff „Please verify your email address“. (Adressen hier unkenntlich gemacht.)', marks: [{ x: 470, y: 374, w: 310, h: 34 }] },
+    { img: bild('edu-2-verified'), alt: 'Die Hochschuladresse steht auf „Verified“', text: 'Nach dem Klick auf den Link in der Mail: „Verified“.', marks: [{ x: 470, y: 322, w: 300, h: 34 }] },
+  ]} />
 
   <h2 id="claude-pro">2 · Claude Pro</h2>
   <p>Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> anmelden – auch hier geht „Mit Google fortfahren“ – und unter Einstellungen → Upgrade den Tarif <em>Pro</em> wählen. Claude Code ist in Pro enthalten. Pro ist monatlich kündbar; für den Kurs reicht ein Monat. Ohne Pro funktioniert die Anmeldung in Schritt 5 nicht.</p>
@@ -110,13 +114,13 @@ const bild = (name: string) => {
   ]} />
 
   <h2 id="education">9 · GitHub Education beantragen</h2>
-  <p>Am besten gleich am ersten Tag, denn GitHub prüft den Antrag; das kann von wenigen Minuten bis zu einigen Tagen dauern. Bis dahin reicht das normale Kontingent für den Kurs.</p>
-  <ol class="steps">
-    <li><strong>Antrag starten</strong> Auf <a href="https://education.github.com/pack" target="_blank" rel="noopener">education.github.com/pack</a> den Antrag für Studierende starten und mit eurem GitHub-Konto anmelden.</li>
-    <li><strong>NDU-Adresse wählen</strong> Als E-Mail die NDU-Adresse auswählen und als Hochschule die New Design University angeben. Fehlt die Adresse in der Auswahl, ist sie im Konto noch nicht bestätigt (siehe Kasten in Schritt 1).</li>
-    <li><strong>Nachweis</strong> Verlangt GitHub einen Nachweis, ein Foto oder PDF eurer aktuellen Studienbestätigung hochladen, auf der Name, Hochschule und Datum zu sehen sind.</li>
-    <li><strong>Warten</strong> Die Entscheidung kommt per E-Mail. Das größere Codespaces-Kontingent gilt erst danach.</li>
-  </ol>
+  <p>Am besten gleich am ersten Tag: GitHub prüft den Antrag, das kann von wenigen Minuten bis zu einigen Tagen dauern. Bis dahin reicht das normale Kontingent für den Kurs. Haltet eure <strong>Studienbestätigung</strong> bereit (als Datei oder am Handy) – GitHub will einen datierten Nachweis sehen.</p>
+  <Schritte steps={[
+    { img: bild('edu-3-start'), alt: 'GitHub-Einstellungen, Seite „GitHub Education“ mit Button „Start an application“', text: 'Auf <a href="https://github.com/settings/education/benefits" target="_blank" rel="noopener">github.com/settings/education/benefits</a> (Settings → Billing and licensing → Education benefits) auf <em>Start an application</em>.', marks: [{ x: 1140, y: 489, w: 120, h: 30 }] },
+    { img: bild('edu-4-schule'), alt: 'Antragsformular: Rolle Student, Schulsuche mit Eintrag „New Design University“', text: '<em>Student</em> wählen (1). Im Schulfeld „NDU“ oder „New Design“ tippen und <strong>New Design University</strong> auswählen (2) – nicht die „New Designs Charter School“ darüber.', marks: [{ x: 84, y: 327, w: 170, h: 42, n: 1 }, { x: 88, y: 588, w: 620, h: 68, n: 2 }] },
+    { img: bild('edu-5-formular'), alt: 'Antragsformular mit Hochschul-E-Mail, „Location shared“ und Button „Continue“', text: 'Als E-Mail eure NDU-Adresse wählen (1) – nicht die private. Fehlt sie in der Liste, ist sie im Konto noch nicht bestätigt (Kasten in Schritt 1). <em>Share Location</em> und im Browser den Standort erlauben (2), dann <em>Continue</em> (3).', marks: [{ x: 63, y: 660, w: 863, h: 62, n: 1 }, { x: 63, y: 836, w: 310, h: 61, n: 2 }, { x: 757, y: 836, w: 169, h: 61, n: 3 }] },
+    { img: bild('edu-6-nachweis'), alt: 'Auswahl der Nachweisart, u. a. „Dated enrollment letter on school letterhead“', text: 'Nachweis: <em>3. Dated enrollment letter on school letterhead</em> passt für die Studienbestätigung. Datum, Name und Hochschule müssen lesbar sein. Danach abschicken und auf die Mail von GitHub warten – das größere Codespaces-Kontingent gilt erst nach der Bestätigung.', marks: [{ x: 145, y: 523, w: 621, h: 38 }] },
+  ]} />
 
   <h2>Orientierung im Codespace</h2>
   <div class="grid">
