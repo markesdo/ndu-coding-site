@@ -1,0 +1,46 @@
+---
+// Schritt-für-Schritt-Anleitung mit Screenshots. Markierungen liegen als HTML über dem Bild
+// (bleiben scharf und lassen sich ändern, ohne neu zu fotografieren). Klick vergrößert das Bild.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { markStyle, type Mark } from './screenshot-steps';
+
+type Step = { img: ImageMetadata; alt: string; text: string; marks?: Mark[] };
+const { steps } = Astro.props as { steps: Step[] };
+---
+<ol class="shots">
+  {steps.map((s) => (
+    <li>
+      <p set:html={s.text} />
+      <button type="button" class="shot" aria-label={`Bild vergrößern: ${s.alt}`}>
+        <span class="shot-frame">
+          <Image src={s.img} alt={s.alt} widths={[640, 1280, s.img.width]} sizes="(max-width: 900px) 100vw, 820px" />
+          {(s.marks ?? []).map((m) => (
+            <span class="mark" style={markStyle(m, s.img.width, s.img.height)} aria-hidden="true">{m.n && <span class="mark-n">{m.n}</span>}</span>
+          ))}
+        </span>
+      </button>
+    </li>
+  ))}
+</ol>
+
+<script>
+  // Ein gemeinsamer Vergrößerungs-Dialog pro Seite, auch wenn mehrere Schritt-Listen darauf stehen.
+  const dialog = document.createElement('dialog');
+  dialog.className = 'shot-zoom';
+  dialog.setAttribute('aria-label', 'Vergrößerter Screenshot');
+  dialog.innerHTML = '<form method="dialog"><button class="shot-close" aria-label="Schließen">✕</button></form><div class="shot-zoom-body"></div>';
+  document.body.append(dialog);
+  const body = dialog.querySelector('.shot-zoom-body')!;
+  document.querySelectorAll<HTMLButtonElement>('.shots .shot').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const frame = btn.querySelector('.shot-frame')!.cloneNode(true) as HTMLElement;
+      // Im Dialog die größte Variante laden statt der für die Spalte gewählten.
+      frame.querySelector('img')?.removeAttribute('sizes');
+      body.replaceChildren(frame);
+      dialog.showModal();
+    });
+  });
+  // Klick neben das Bild schließt.
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+</script>

@@ -163,6 +163,33 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .steps li::before { content: counter(step); position: absolute; left: 0; top: .7rem; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
 .steps li strong { display: block; margin-bottom: .15rem; }
 
+/* Screenshot-Schritte (Schritte.astro). Markierungsrot ist in beiden Themes gleich – es liegt auf dem Screenshot, nicht auf der Seite. */
+.shots { counter-reset: shot; list-style: none; padding: 0; margin: 1.25rem 0; }
+.shots > li { counter-increment: shot; position: relative; padding: 1rem 0 1.5rem 3rem; border-bottom: 1px solid var(--border); }
+.shots > li::before { content: counter(shot); position: absolute; left: 0; top: .95rem; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
+.shots > li > p { margin-bottom: .75rem; }
+.shot { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+/* Rahmen schmiegt sich ans Bild an (Markierungen beziehen sich darauf); Hochkant-Bilder höchstens 75 % der Fensterhöhe. */
+.shot-frame { position: relative; display: inline-block; max-width: 100%; vertical-align: top; border: 1px solid var(--border); border-radius: 8px; }
+/* Kein overflow: hidden am Rahmen – sonst werden Markierungen und Nummern am Bildrand abgeschnitten. Ecken rundet das Bild selbst. */
+.shot-frame img { display: block; width: auto; max-width: 100%; height: auto; max-height: 75vh; border-radius: 7px; }
+.shot-zoom .shot-frame img { max-height: none; }
+/* Rahmen als outline außerhalb der Fläche: Bei kleinen Bildern bleibt der markierte Text sichtbar. */
+.mark { position: absolute; outline: 3px solid #e5242b; outline-offset: 2px; border-radius: 4px; pointer-events: none; }
+.mark-n { position: absolute; top: -1.1rem; left: -1.1rem; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: #e5242b; color: #fff; font: 700 .85rem/1.6rem var(--font); text-align: center; }
+.shot:focus-visible .shot-frame { outline: 3px solid var(--blue); outline-offset: 2px; }
+.shot-zoom { width: min(96vw, 1600px); max-height: 94vh; padding: 0; border: 0; border-radius: 10px; background: var(--bg-2); overflow: auto; }
+.shot-zoom::backdrop { background: rgba(0, 0, 0, .75); }
+.shot-zoom .shot-frame { border: 0; border-radius: 0; }
+.shot-zoom-body { padding: 1.5rem; }
+.shot-zoom form { position: sticky; top: 0; height: 0; z-index: 1; }
+.shot-close { position: absolute; top: .5rem; right: .5rem; width: 2.2rem; height: 2.2rem; border-radius: 50%; border: 0; background: rgba(0, 0, 0, .7); color: #fff; font-size: 1rem; cursor: pointer; }
+@media (max-width: 600px) {
+  .shots > li { padding-left: 0; padding-top: 3rem; }
+  .mark { outline-width: 2px; outline-offset: 1px; }
+  .mark-n { width: 1.25rem; height: 1.25rem; font-size: .7rem; line-height: 1.25rem; top: -.8rem; left: -.8rem; }
+}
+
 /* Day nav cards */
 .days { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin: 1.5rem 0; }
 .day { display: block; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.4rem; color: var(--fg); transition: border-color .15s, transform .15s; }
