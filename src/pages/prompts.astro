@@ -8,8 +8,8 @@ import Prompt from '../components/Prompt.astro';
   <p class="lead">Alle Prompts des Kurses an einem Ort. Kopieren, anpassen, verwenden. Die eckigen Klammern sind eure Lücken.</p>
 
   <h2>Verstehen</h2>
-  <Prompt label="Projekt erklären">/erklaer</Prompt>
-  <Prompt label="Eine Datei erklären">/erklaer src/app/page.tsx</Prompt>
+  <Prompt label="Projekt erklären">/ndu-explain</Prompt>
+  <Prompt label="Eine Datei erklären">/ndu-explain src/app/page.tsx</Prompt>
   <Prompt label="Begriff klären">Was meinst du mit „[Begriff]“? Erkläre es in zwei Sätzen ohne Fachsprache und mit einem Beispiel aus unserer App.</Prompt>
   <Prompt label="Morgen-Briefing">Lies docs/PRD.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welche Story als Nächstes dran ist und warum.</Prompt>
 
@@ -27,17 +27,17 @@ import Prompt from '../components/Prompt.astro';
   <Prompt label="KI-Feature (Story S8)">Setze Story S8 um: Beim Anlegen eines Events gibt es einen Button „Beschreibung vorschlagen“, der aus Titel, Kategorie und Ort mit der Claude-API (Modell claude-sonnet, Key aus ANTHROPIC_API_KEY, nur im Backend) eine Beschreibung in 2–3 Sätzen generiert. Begrenze auf 5 Aufrufe pro Minute und Person. Plan zuerst.</Prompt>
 
   <h2>Prüfen & Debuggen</h2>
-  <Prompt label="Qualitätsprüfung">/pruefe</Prompt>
+  <Prompt label="Qualitätsprüfung">/ndu-check</Prompt>
   <Prompt label="Debug">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [Schritte]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
   <Prompt label="Im Kreis">Wir haben Fehler X schon zweimal erfolglos behoben. Ändere jetzt nichts. Nenn mir drei verschiedene mögliche Ursachen, wie wir jede einzelne ausschließen können, und welche Information dir fehlt.</Prompt>
   <Prompt label="Senior-Review (frische Session)">Prüfe dieses Projekt so streng wie ein erfahrenes Entwicklungsteam vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
   <Prompt label="RLS prüfen">Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle [Name] verhindern, dass jemand fremde Zeilen liest, ändert oder löscht. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
 
   <h2>Sichern & Steuern</h2>
-  <Prompt label="Commit">/commit</Prompt>
+  <Prompt label="Commit">/ndu-commit</Prompt>
   <Prompt label="Entscheidung festhalten">Wir haben gerade entschieden: [Entscheidung]. Trag das in docs/ENTSCHEIDUNGEN.md ein und ergänze in CLAUDE.md eine Regel dazu, damit du es in zukünftigen Sessions beachtest.</Prompt>
   <Prompt label="Zurück zu altem Stand">Zeig mir die letzten 5 Commits mit Datum und Nachricht. Ich möchte zum Stand vor [X] zurück, aber nichts verlieren – leg den aktuellen Stand vorher sicher ab.</Prompt>
-  <Prompt label="Abend-Abschluss">Trag in docs/ENTSCHEIDUNGEN.md ein, was wir heute festgelegt haben. Aktualisiere den Status im Backlog. Dann /pruefe und /commit.</Prompt>
+  <Prompt label="Abend-Abschluss">Trag in docs/ENTSCHEIDUNGEN.md ein, was wir heute festgelegt haben. Aktualisiere den Status im Backlog. Dann /ndu-check und /ndu-commit.</Prompt>
 
   <h2>Shippen</h2>
   <Prompt label="Vercel-Build-Fehler">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
