@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Callout from '../components/Callout.astro';
+import Checklist from '../components/Checklist.astro';
+import Prompt from '../components/Prompt.astro';
+---
+<Layout title="Setup & Accounts">
+  <span class="eyebrow">Tag 1 · 09:30–10:45 · gemeinsam</span>
+  <h1>Setup & Accounts</h1>
+  <p class="lead">Fünf Schritte, kein Installieren. Am Ende läuft Ihre App im Browser und Claude Code wartet auf den ersten Auftrag.</p>
+
+  <Callout type="info" title="Wer fertig ist, hilft">
+    <p>Dieser Block ist erfahrungsgemäß der kritischste des Kurses. Wer mit einem Schritt fertig ist, schaut bei den Nachbar*innen – das ist ausdrücklich Teil des Kurses.</p>
+  </Callout>
+
+  <h2>Checkliste</h2>
+  <Checklist id="setup" items={[
+    '<strong>GitHub-Account</strong> angelegt (github.com → Sign up, mit privater E-Mail, Handy für 2FA bereit)',
+    '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Upgrade → Pro; Kreditkarte)',
+    '<strong>Eigenes Repo</strong> aus dem Template erstellt („Use this template“)',
+    '<strong>Codespace</strong> gestartet und VS Code im Browser geöffnet',
+    '<code>claude</code> im Terminal gestartet und angemeldet',
+    'App läuft: <code>npm run dev</code> → Vorschau zeigt „Campus Events“',
+    '<code>/erklaer</code> ausgeführt und die Antwort gelesen',
+    'Markus als Collaborator eingetragen (Repo → Settings → Collaborators)',
+    'GitHub Education beantragt (education.github.com, mit NDU-Mail) – kann auch später sein',
+  ]} />
+
+  <h2>Schritt für Schritt</h2>
+  <ol class="steps">
+    <li><strong>GitHub-Account</strong> Auf <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>. Benutzername wird öffentlich sichtbar – etwas Professionelles wählen. Zwei-Faktor-Authentifizierung mit der Handy-App einrichten, wenn GitHub danach fragt.</li>
+    <li><strong>Claude Pro</strong> Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> anmelden → Einstellungen → Upgrade → <em>Pro</em>. Claude Code ist in Pro enthalten. Monatlich kündbar; für den Kurs reicht ein Monat.</li>
+    <li><strong>Eigenes Repo</strong> Das Template-Repo öffnen (Link kommt in Teams) → grüner Button <em>„Use this template“</em> → <em>„Create a new repository“</em>. Name: <code>campus-events</code>. Public. → <em>Create repository</em>. Jetzt haben Sie eine eigene Kopie, in der Sie alles dürfen.</li>
+    <li><strong>Codespace</strong> In Ihrem neuen Repo: grüner Button <em>„Code“</em> → Tab <em>„Codespaces“</em> → <em>„Create codespace on main“</em>. Beim ersten Mal 2–4 Minuten warten. Es öffnet sich VS Code im Browser: links Dateien, unten Terminal, rechts später die Vorschau.</li>
+    <li><strong>Claude Code anmelden</strong> Unten ins Terminal klicken, eintippen: <code>claude</code>, Enter. Beim ersten Mal erscheint ein Link → anklicken → mit Ihrem Claude-Account bestätigen → den angezeigten Code zurück ins Terminal kopieren. Das passiert nur einmal pro Codespace.</li>
+    <li><strong>App starten</strong> Entweder Claude bitten (unten) oder in einem zweiten Terminal (<kbd>+</kbd> rechts oben im Terminal) <code>npm run dev</code> eintippen. Rechts öffnet sich die Vorschau – oder oben rechts auf das Globus-Symbol beim Port 3000 klicken.</li>
+  </ol>
+
+  <Prompt label="Erster Prompt in Claude Code">Starte die App und sag mir in einfachen Worten, wie ich sie im Browser öffne.</Prompt>
+  <Prompt label="Zweiter Prompt – Projekt verstehen">/erklaer</Prompt>
+
+  <h2>Orientierung im Codespace</h2>
+  <div class="grid">
+    <div class="card"><h3>Explorer (links)</h3><p class="small muted">Alle Dateien des Projekts. Sie müssen hier selten etwas tun – Claude liest und schreibt die Dateien. Aber: Dateien <em>ansehen</em> hilft beim Verstehen.</p></div>
+    <div class="card"><h3>Terminal (unten)</h3><p class="small muted">Hier läuft Claude Code und hier läuft Ihre App (<code>npm run dev</code>). Zwei Terminals nebeneinander sind normal. Fehlermeldungen des Backends erscheinen hier.</p></div>
+    <div class="card"><h3>Vorschau (rechts)</h3><p class="small muted">Ihre App, live. Jede Änderung von Claude erscheint hier nach ein, zwei Sekunden. Fehler des Frontends sehen Sie in der Browser-Konsole (Rechtsklick → Untersuchen → Console).</p></div>
+    <div class="card"><h3>Source Control (links, Verzweigungs-Symbol)</h3><p class="small muted">Was hat sich seit dem letzten Sichern geändert? Hier können Sie Änderungen rückgängig machen und committen – ohne Git-Befehle.</p></div>
+  </div>
+
+  <Callout type="warn" title="Nach dem Kurstag: Codespace stoppen">
+    <p>github.com → oben rechts Profil → <em>Your codespaces</em> → „…“ → <em>Stop codespace</em>. Sonst läuft Ihr Freikontingent (60 Stunden/Monat) im Hintergrund weiter. Ihre Arbeit ist sicher, solange Sie gepusht haben.</p>
+  </Callout>
+
+  <h2>Wenn etwas hängt</h2>
+  <p>Die häufigsten Stolpersteine mit Lösungen stehen unter <a href="/bekannte-probleme">Bekannte Probleme</a>. Ansonsten: Hand heben – an Tag 1 ist genau dafür Zeit eingeplant.</p>
+</Layout>

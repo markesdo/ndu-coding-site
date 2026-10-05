@@ -1,0 +1,8 @@
+---
+const { type = 'info', title } = Astro.props as { type?: 'tip' | 'warn' | 'info' | 'concept'; title?: string };
+const icons = { tip: '✅', warn: '⚠️', info: 'ℹ️', concept: '🧠' };
+---
+<div class={`callout ${type}`}>
+  {title && <div class="t"><span>{icons[type]}</span> {title}</div>}
+  <slot />
+</div>

@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Callout from '../../components/Callout.astro';
+import FooterNav from '../../components/FooterNav.astro';
+const layers = [
+  { id: 'frontend', ico: '🪑', name: 'Frontend', meta: 'Gastraum – was Gäste sehen und anfassen', files: 'src/app/page.tsx · src/components/',
+    text: 'Alles, was im Browser sichtbar ist: Seiten, Buttons, Formulare, Farben. Läuft auf dem Gerät der Nutzer*innen. In Campus Events: die Startseite, die Eventkarten, der Header.',
+    q: 'Frage an Claude: „Welche Dateien gehören zum Frontend und was passiert, wenn ich eine davon ändere?“' },
+  { id: 'api', ico: '🧑‍🍳', name: 'API', meta: 'Kellner – nimmt Bestellungen entgegen und bringt Ergebnisse', files: 'src/app/api/…/route.ts',
+    text: 'Die Schnittstelle zwischen Gastraum und Küche. Das Frontend sagt „gib mir alle Events“ oder „speichere diese Zusage“, die API nimmt es entgegen, lässt es im Backend erledigen und bringt die Antwort zurück. Jede Adresse (z. B. /api/events) ist ein „Endpoint“.',
+    q: 'Frage an Claude: „Welche API-Endpoints gibt es in diesem Projekt und was tun sie?“' },
+  { id: 'backend', ico: '🔥', name: 'Backend', meta: 'Küche – wo gearbeitet wird, unsichtbar für Gäste', files: 'Server-Code in route.ts · Supabase-Funktionen',
+    text: 'Die Logik, die nicht im Browser laufen darf oder soll: Wer darf was? Ist die Eingabe gültig? Was wird gespeichert? Läuft auf einem Server, nicht auf dem Gerät der Nutzer*innen. Bei Next.js steckt sie im selben Projekt wie das Frontend.',
+    q: 'Frage an Claude: „Welche Prüfungen passieren im Backend, bevor ein Event gespeichert wird?“' },
+  { id: 'db', ico: '🧊', name: 'Datenbank', meta: 'Vorratskammer – wo alles dauerhaft liegt', files: 'Supabase · Tabellen events, rsvps, profiles',
+    text: 'Tabellen mit Zeilen und Spalten, wie ein sehr strenges Excel. Alles, was nach einem Reload noch da sein soll, steht hier. Wir mieten sie bei Supabase (Postgres) statt sie selbst zu betreiben.',
+    q: 'Frage an Claude: „Zeig mir, welche Tabellen es gibt und wie sie zusammenhängen – als einfache Skizze in Worten.“' },
+  { id: 'hosting', ico: '🏢', name: 'Hosting', meta: 'Gebäude – damit andere reinkommen', files: 'Vercel · Environment-Variablen',
+    text: 'Solange die App nur in Ihrem Codespace läuft, sieht sie niemand. Hosting (Vercel) stellt sie unter einer öffentlichen Adresse bereit und baut sie bei jedem Push neu. Die Geheimnisse (.env) werden dort separat hinterlegt.',
+    q: 'Frage an Claude: „Was muss ich bei Vercel einstellen, damit die App dort genauso läuft wie hier?“' },
+];
+---
+<Layout title="Anatomie einer App">
+  <span class="eyebrow">Konzept 1 · Tag 1</span>
+  <h1>Anatomie einer App</h1>
+  <p class="lead">Sie müssen keine Schicht selbst bauen können. Aber Sie müssen wissen, dass es sie gibt – sonst können Sie weder richtig bestellen noch beurteilen, ob richtig geliefert wurde.</p>
+
+  <h2>Website, Web-App oder App?</h2>
+  <table>
+    <tr><th>Typ</th><th>Was es ist</th><th>Beispiel</th><th>Für Ihren Prototyp</th></tr>
+    <tr><td><strong>Website</strong></td><td>Seiten zum Lesen, wenig Interaktion, keine Nutzerdaten</td><td>ndu.ac.at, ein Portfolio</td><td>Richtig für Landing Pages und Info-Angebote; in 1 Stunde fertig</td></tr>
+    <tr><td><strong>Web-App</strong></td><td>Läuft im Browser, hat Login, speichert Daten, reagiert auf Nutzer*innen</td><td>Google Docs, Notion, Campus Events</td><td><strong>Unser Standard.</strong> Funktioniert auf jedem Gerät, ein Link reicht, keine App-Store-Hürde</td></tr>
+    <tr><td><strong>Native App</strong></td><td>Wird installiert (App Store), nutzt Kamera, Push, Offline</td><td>WhatsApp, Instagram</td><td>Erst, wenn Sie wirklich Push/Offline/Kamera brauchen – deutlich aufwändiger</td></tr>
+    <tr><td><strong>PWA</strong></td><td>Web-App, die sich wie eine App auf den Homescreen legt</td><td>viele Nachrichten-Apps</td><td>Guter Mittelweg: Web-App + „Zum Homescreen hinzufügen“</td></tr>
+  </table>
+
+  <h2>Die fünf Schichten – das Restaurant</h2>
+  <div class="widget" id="anatomie">
+    <p class="hint">Klicken Sie auf eine Schicht. Rechts stehen die Dateien, in denen sie in Campus Events steckt.</p>
+    <div class="layers">
+      {layers.map(l => (
+        <button class="layer" type="button" data-layer={l.id}>
+          <span class="ico">{l.ico}</span>
+          <span><span class="name">{l.name}</span><br/><span class="meta">{l.meta}</span></span>
+          <span class="files">{l.files}</span>
+        </button>
+      ))}
+    </div>
+    <div class="layer-detail" id="layer-detail"><p class="muted">Wählen Sie eine Schicht …</p></div>
+    <script define:vars={{ layers }}>
+      const detail = document.getElementById('layer-detail');
+      const btns = document.querySelectorAll('#anatomie .layer');
+      const show = (id) => {
+        const l = layers.find(x => x.id === id);
+        btns.forEach(b => b.classList.toggle('active', b.dataset.layer === id));
+        detail.innerHTML = `<h4>${l.ico} ${l.name}</h4><p>${l.text}</p><p class="q">${l.q}</p>`;
+      };
+      btns.forEach(b => b.addEventListener('click', () => show(b.dataset.layer)));
+      show('frontend');
+    </script>
+  </div>
+
+  <h2>Eine Bestellung durchs Haus</h2>
+  <p>Was passiert, wenn jemand bei einem Event auf „Ich komme“ klickt?</p>
+  <ol class="steps">
+    <li><strong>Frontend</strong> Der Button registriert den Klick und schickt eine Anfrage: <em>„POST /api/rsvp, Event 42, Nutzerin Lena“</em>.</li>
+    <li><strong>API</strong> Der Endpoint <code>/api/rsvp</code> nimmt die Anfrage an.</li>
+    <li><strong>Backend</strong> Prüft: Ist Lena angemeldet? Gibt es Event 42? Hat sie schon zugesagt?</li>
+    <li><strong>Datenbank</strong> Neue Zeile in der Tabelle <code>rsvps</code>: Event 42, Lena, jetzt.</li>
+    <li><strong>Zurück</strong> Antwort „ok, 13 Zusagen“ → API → Frontend zeigt „Zugesagt ✓ · 13“.</li>
+  </ol>
+  <Callout type="concept" title="Warum Sie das wissen müssen">
+    <p>Wenn etwas nicht funktioniert, ist die erste Frage immer: <strong>in welcher Schicht?</strong> Sieht man den Fehler im Browser (Frontend) oder im Terminal (Backend)? Ist die Zeile in der Datenbank angekommen? Allein mit dieser Frage lösen Sie die Hälfte aller Probleme – und geben Claude die entscheidende Information mit.</p>
+  </Callout>
+
+  <h2>Begriffe, die Claude benutzen wird</h2>
+  <table>
+    <tr><th>Begriff</th><th>Bedeutet</th></tr>
+    <tr><td>Framework</td><td>Vorgefertigtes Gerüst mit Regeln, damit man nicht bei null anfängt. Unseres: <strong>Next.js</strong> (Frontend + Backend in einem Projekt). LEGO-Platte statt loser Steine.</td></tr>
+    <tr><td>Komponente</td><td>Ein wiederverwendbarer Baustein der Oberfläche (Header, Eventkarte, Button). Einmal gebaut, überall benutzt.</td></tr>
+    <tr><td>Route / Seite</td><td>Eine URL. In Next.js: eine Mappe in <code>src/app/</code> = eine Adresse. <code>src/app/events/page.tsx</code> → <code>/events</code>.</td></tr>
+    <tr><td>Endpoint</td><td>Eine Adresse, an die das Frontend Anfragen schickt (<code>/api/events</code>). Verben: GET (holen), POST (anlegen), PATCH (ändern), DELETE (löschen).</td></tr>
+    <tr><td>Dependency / Paket</td><td>Fremder Code, den das Projekt nutzt (Liste in <code>package.json</code>). <code>npm install</code> lädt sie herunter.</td></tr>
+    <tr><td>Build</td><td>Das Projekt wird in die Form gebracht, die Browser und Server verstehen. Wenn der Build fehlschlägt, kann nicht veröffentlicht werden.</td></tr>
+    <tr><td>TypeScript</td><td>JavaScript mit Typangaben. Für Sie nur wichtig, weil der Agent dadurch mehr Fehler selbst findet.</td></tr>
+    <tr><td>Tailwind</td><td>Die Art, wie in unserem Projekt gestaltet wird (Klassen direkt am Element). Sie müssen es nicht lesen können.</td></tr>
+  </table>
+
+  <FooterNav prev={{ href: '/tag-1', t: 'Tag 1' }} next={{ href: '/konzepte/coding-agent', t: 'Wie ein Coding-Agent arbeitet' }} />
+</Layout>

@@ -1,0 +1,33 @@
+---
+// Checkliste mit Fortschritt (im Browser gespeichert, pro Gerät).
+const { id, items } = Astro.props as { id: string; items: string[] };
+---
+<div class="progress" data-progress-for={id}><div></div></div>
+<ul class="checklist" data-checklist={id}>
+  {items.map((it, i) => (
+    <li>
+      <input type="checkbox" id={`${id}-${i}`} data-i={i} />
+      <label for={`${id}-${i}`} set:html={it}></label>
+    </li>
+  ))}
+</ul>
+<script>
+  document.querySelectorAll<HTMLUListElement>('[data-checklist]').forEach(list => {
+    if (list.dataset.bound) return; list.dataset.bound = '1';
+    const key = 'ndu-check-' + list.dataset.checklist;
+    const bar = document.querySelector<HTMLElement>(`[data-progress-for="${list.dataset.checklist}"] > div`);
+    const boxes = [...list.querySelectorAll<HTMLInputElement>('input')];
+    let state: boolean[] = [];
+    try { state = JSON.parse(localStorage.getItem(key) || '[]'); } catch {}
+    const render = () => {
+      boxes.forEach((b, i) => { b.checked = !!state[i]; b.closest('li')?.classList.toggle('done', !!state[i]); });
+      if (bar) bar.style.width = (100 * state.filter(Boolean).length / boxes.length) + '%';
+    };
+    boxes.forEach((b, i) => b.addEventListener('change', () => {
+      state[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(state)); } catch {}
+      render();
+    }));
+    render();
+  });
+</script>

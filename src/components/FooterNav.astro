@@ -1,0 +1,7 @@
+---
+const { prev, next } = Astro.props as { prev?: { href: string; t: string }; next?: { href: string; t: string } };
+---
+<div class="footer-nav">
+  <span>{prev && <a href={prev.href}>← {prev.t}</a>}</span>
+  <span>{next && <a href={next.href}>{next.t} →</a>}</span>
+</div>

@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Prompt from '../components/Prompt.astro';
+---
+<Layout title="Prompt-Bibliothek">
+  <span class="eyebrow">Nachschlagen</span>
+  <h1>Prompt-Bibliothek</h1>
+  <p class="lead">Alle Prompts des Kurses an einem Ort. Kopieren, anpassen, verwenden. Die eckigen Klammern sind Ihre Lücken.</p>
+
+  <h2>Verstehen</h2>
+  <Prompt label="Projekt erklären">/erklaer</Prompt>
+  <Prompt label="Eine Datei erklären">/erklaer src/app/page.tsx</Prompt>
+  <Prompt label="Begriff klären">Was meinst du mit „[Begriff]“? Erkläre es in zwei Sätzen ohne Fachsprache und mit einem Beispiel aus unserer App.</Prompt>
+  <Prompt label="Morgen-Briefing">Lies docs/PRD.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welche Story als Nächstes dran ist und warum.</Prompt>
+
+  <h2>Spezifizieren</h2>
+  <Prompt label="PRD erarbeiten (Plan Mode)">Lies docs/PRD-VORLAGE.md. Ich möchte [Idee in einem Satz]. Stell mir zu jedem Abschnitt der Vorlage 1–2 Rückfragen, eine nach der anderen. Schreib danach das fertige PRD nach docs/PRD.md – eine Seite, mit klarer Abgrenzung, was das Produkt NICHT macht.</Prompt>
+  <Prompt label="Backlog aus PRD">Leite aus docs/PRD.md 5–8 User Stories ab, geordnet so, dass nach jeder Story die App nützlicher ist als vorher. Jede Story mit 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“, davon mindestens ein Negativfall. Schreib sie nach docs/BACKLOG.md. Markiere, welche Stories du für das absolute Minimum hältst.</Prompt>
+  <Prompt label="Story aus einem Satz">Formuliere aus „[Wunsch in einem Satz]“ eine User Story mit 3–5 Akzeptanzkriterien (Gegeben/Wenn/Dann, inkl. Negativfall) und häng sie ans Backlog. Frag mich, wo sie priorisiert werden soll.</Prompt>
+  <Prompt label="MVP schneiden">Welche eine Story müsste funktionieren, damit eine echte Person das Produkt einmal sinnvoll benutzt? Begründe, und schlag vor, was auf „Später“ wandert.</Prompt>
+
+  <h2>Bauen</h2>
+  <Prompt label="Story umsetzen">Setze Story [Nummer] aus docs/BACKLOG.md um. Zeig mir zuerst deinen Plan in 3–5 Punkten und warte auf mein Okay. Danach geh die Akzeptanzkriterien einzeln durch und sag mir, was ich im Browser prüfen soll.</Prompt>
+  <Prompt label="Kleine Änderung">Ändere [genau eine Sache] – sonst nichts. Sag mir danach, welche Datei du angefasst hast.</Prompt>
+  <Prompt label="Screenshot-Feedback">[Screenshot einfügen] Auf diesem Screenshot ist [Beobachtung]. Mach [gewünschte Änderung], ohne das restliche Design zu verändern.</Prompt>
+  <Prompt label="TDD">Setze Story [Nummer] nach TDD um: Schreib zuerst Playwright-Tests für alle Akzeptanzkriterien und führe sie aus – sie müssen rot sein. Dann baue die Funktion, bis alle Tests grün sind. Ändere die Tests dabei nicht, außer du erklärst mir warum.</Prompt>
+  <Prompt label="KI-Feature (Story S8)">Setze Story S8 um: Beim Anlegen eines Events gibt es einen Button „Beschreibung vorschlagen“, der aus Titel, Kategorie und Ort mit der Claude-API (Modell claude-sonnet, Key aus ANTHROPIC_API_KEY, nur im Backend) eine Beschreibung in 2–3 Sätzen generiert. Begrenze auf 5 Aufrufe pro Minute pro Nutzer. Plan zuerst.</Prompt>
+
+  <h2>Prüfen & Debuggen</h2>
+  <Prompt label="Qualitätsprüfung">/pruefe</Prompt>
+  <Prompt label="Debug">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [Schritte]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
+  <Prompt label="Im Kreis">Wir haben Fehler X schon zweimal erfolglos behoben. Ändere jetzt nichts. Nenn mir drei verschiedene mögliche Ursachen, wie wir jede einzelne ausschließen können, und welche Information dir fehlt.</Prompt>
+  <Prompt label="Senior-Review (frische Session)">Prüfe dieses Projekt wie eine strenge Senior-Entwicklerin vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz für Nicht-Programmierer. Ändere noch nichts.</Prompt>
+  <Prompt label="RLS prüfen">Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle [Name] verhindern, dass ein Nutzer fremde Zeilen liest, ändert oder löscht. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
+
+  <h2>Sichern & Steuern</h2>
+  <Prompt label="Commit">/commit</Prompt>
+  <Prompt label="Entscheidung festhalten">Wir haben gerade entschieden: [Entscheidung]. Trag das in docs/ENTSCHEIDUNGEN.md ein und ergänze in CLAUDE.md eine Regel dazu, damit du es in zukünftigen Sessions beachtest.</Prompt>
+  <Prompt label="Zurück zu altem Stand">Zeig mir die letzten 5 Commits mit Datum und Nachricht. Ich möchte zum Stand vor [X] zurück, aber nichts verlieren – leg den aktuellen Stand vorher sicher ab.</Prompt>
+  <Prompt label="Abend-Abschluss">Trag in docs/ENTSCHEIDUNGEN.md ein, was wir heute festgelegt haben. Aktualisiere den Status im Backlog. Dann /pruefe und /commit.</Prompt>
+
+  <h2>Shippen</h2>
+  <Prompt label="Vercel-Build-Fehler">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
+  <Prompt label="README für Außenstehende">Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshot-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
+  <Prompt label="CI einrichten">Richte GitHub Actions ein, sodass bei jedem Push und Pull Request Lint, Build und die Playwright-Tests laufen. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
+</Layout>

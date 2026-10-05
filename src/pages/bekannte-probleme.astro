@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Callout from '../components/Callout.astro';
+const probleme = [
+  { t: 'Codespace startet nicht / hängt bei „Setting up“', l: 'Browser-Tab schließen, github.com → Codespaces → den Codespace öffnen. Nach 5 Minuten: „…“ → Rebuild Container. Letzter Ausweg: löschen und neu anlegen (Ihre gepushten Commits bleiben).' },
+  { t: '„claude: command not found“', l: 'Der Container ist noch nicht fertig installiert. 1 Minute warten, Terminal neu öffnen (Mülleimer-Symbol, dann +). Bleibt es: <code>npm install -g @anthropic-ai/claude-code</code> im Terminal.' },
+  { t: 'Claude-Login: Link lässt sich nicht öffnen', l: 'Link mit Rechtsklick kopieren und in einem neuen Browser-Tab öffnen. Den Code dann ins Terminal einfügen (Rechtsklick → Paste oder <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>V</kbd>).' },
+  { t: 'Vorschau zeigt „Port 3000 nicht erreichbar“', l: 'Läuft <code>npm run dev</code> noch? Im Terminal nachsehen. Wenn nicht: neu starten. Oben rechts im Tab „Ports“ den Port 3000 mit dem Globus öffnen.' },
+  { t: 'Vorschau zeigt rote Fehlerseite', l: 'Das ist gut – der Fehler sagt, was fehlt. Komplett markieren, kopieren, Debug-Prompt. Meist: eine gelöschte oder umbenannte Datei, oder ein fehlendes <code>npm install</code>.' },
+  { t: '„Module not found“', l: 'Ein Paket fehlt. <code>npm install</code> im Terminal, Dev-Server neu starten. Oder Claude: „Installiere die fehlende Dependency und starte neu.“' },
+  { t: 'Claude macht etwas völlig anderes als gewünscht', l: '<kbd>Esc</kbd> drücken. Source Control → Discard Changes. <code>/clear</code>. Aufgabe halbieren, Plan Mode, Plan lesen, dann Okay.' },
+  { t: 'Claude dreht sich im Kreis (3. Versuch, gleicher Fehler)', l: 'Nicht weiterprompten. <code>/clear</code>, dann: „Hier ist Fehler X. Erkläre mir drei mögliche Ursachen, bevor du etwas änderst.“ Oft hilft: Claude bitten, die aktuelle Doku zu lesen („nutze die Dokumentation in node_modules/next/dist/docs“).' },
+  { t: '„Rate limit“ / „usage limit reached“', l: 'Ihr Claude-Pro-Kontingent für dieses Zeitfenster ist aufgebraucht. Pause machen, Kontext kleiner halten (<code>/clear</code> nach jeder Story), nicht das ganze Projekt auf einmal lesen lassen. Reset-Zeit wird angezeigt.' },
+  { t: 'Supabase: „Invalid API key“ / „fetch failed“', l: 'URL und anon key in <code>.env.local</code> prüfen (keine Leerzeichen, keine Anführungszeichen). Dev-Server neu starten – <code>.env</code> wird nur beim Start gelesen.' },
+  { t: 'Supabase: „new row violates row-level security policy“', l: 'Gut – RLS tut seinen Job. Entweder sind Sie nicht angemeldet oder die Policy fehlt. Claude mit Supabase-MCP: „Zeig mir die RLS-Policies der Tabelle X und erkläre, warum das Anlegen scheitert.“' },
+  { t: 'Login funktioniert lokal, aber nicht auf Vercel', l: 'Supabase → Authentication → URL Configuration: Site URL = Vercel-URL, und die Vercel-URL zusätzlich bei „Redirect URLs“ eintragen (mit <code>/**</code> am Ende).' },
+  { t: 'Vercel-Build schlägt fehl, lokal geht alles', l: 'Meist fehlen Environment-Variablen auf Vercel oder <code>npm run build</code> wurde lokal nie ausgeführt (dev ist toleranter). Lokal <code>npm run build</code>, Fehler mit Claude beheben, dann pushen.' },
+  { t: 'Git: „push rejected“ / „non-fast-forward“', l: 'Jemand (Markus?) hat im Repo etwas geändert. Claude: „git pull, Konflikte erklären, dann push.“ Oder Source Control → „…“ → Pull, dann Sync.' },
+  { t: 'Codespace-Kontingent aufgebraucht', l: 'Codespaces nach dem Arbeiten stoppen. GitHub Education beantragen (education.github.com, NDU-Mail) – verdoppelt das Kontingent. Notfall: 2-Kern-Maschine statt 4-Kern wählen.' },
+];
+const karten = [
+  'Benenne in der Datei mit den Beispieldaten die Spalte <code>titel</code> in <code>title</code> um – aber nur dort.',
+  'Entferne den Import der Header-Komponente auf der Startseite, lass die Verwendung stehen.',
+  'Ändere im Supabase-Client die Umgebungsvariable <code>NEXT_PUBLIC_SUPABASE_URL</code> zu <code>NEXT_PUBLIC_SUPABSE_URL</code>.',
+  'Lass den RSVP-Button beim Klick den Zähler um 2 statt um 1 erhöhen.',
+  'Entferne das Wort <code>"use client"</code> aus einer Komponente, die einen Button mit onClick hat.',
+  'Lass den Filter „Alle“ nur noch Sport-Events anzeigen.',
+  'Ändere die Weiterleitung von <code>/meine-events</code> so, dass sie auch angemeldete Nutzer zur Anmeldung schickt.',
+  'Vertausche Datum und Uhrzeit in der Anzeige der Eventkarte.',
+];
+---
+<Layout title="Bekannte Probleme">
+  <span class="eyebrow">Nachschlagen</span>
+  <h1>Bekannte Probleme</h1>
+  <p class="lead">Die Stolpersteine aus vier Jahren Kurs – und was dagegen hilft. Wird während des Kurses ergänzt.</p>
+  {probleme.map(p => (
+    <div class="card"><h3>{p.t}</h3><p class="small" set:html={p.l}></p></div>
+  ))}
+
+  <hr />
+  <h2 id="fehlerkarten">Fehlerkarten für Übung 4</h2>
+  <p>Eine ziehen, heimlich einbauen lassen („Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“), Plätze tauschen.</p>
+  <div class="grid">
+    {karten.map((k, i) => (
+      <div class="card"><span class="pill">Karte {i + 1}</span><p class="small" style="margin:.5rem 0 0" set:html={k}></p></div>
+    ))}
+  </div>
+  <Callout type="tip" title="Nach der Reparatur">
+    <p>Source Control öffnen: Hat die Reparatur <em>nur</em> den Fehler behoben – oder nebenbei drei andere Dateien angefasst? Das ist die zweite Lektion dieser Übung.</p>
+  </Callout>
+</Layout>

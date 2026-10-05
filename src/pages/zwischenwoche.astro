@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Callout from '../components/Callout.astro';
+import Checklist from '../components/Checklist.astro';
+import Prompt from '../components/Prompt.astro';
+import FooterNav from '../components/FooterNav.astro';
+---
+<Layout title="Zwischenwoche">
+  <span class="eyebrow">Fr 10.10. – Mi 14.10.</span>
+  <h1>Zwischenwoche · Ihr eigener Prototyp</h1>
+  <p class="lead">Fünf Tage, in denen Sie allein bauen. Das ist der eigentliche Test – nicht, ob Sie mit Anleitung eine Story umsetzen können, sondern ob Sie ohne Anleitung von einer Idee zu einer laufenden App kommen.</p>
+
+  <h2>Die Aufgabe</h2>
+  <ol class="steps">
+    <li><strong>Idee wählen</strong> Etwas, das Sie oder Menschen in Ihrer Nähe wirklich brauchen. Gern ein Vorgriff auf Ihr Innolab-Projekt. Keine Idee? <a href="/ideen">Zehn Vorschläge</a> – oder Campus Events mit drei neuen Stories aus „Später“.</li>
+    <li><strong>Neues Repo</strong> aus dem Template (wie am Tag 1), sprechender Name, Markus als Collaborator.</li>
+    <li><strong>PRD</strong> im Plan Mode, eine Seite, mit Abgrenzung.</li>
+    <li><strong>Backlog</strong> mit 5–8 Stories, davon 3–5 umgesetzt und mit ✅ markiert. Lieber 3 Stories, die sauber funktionieren, als 6 halbe.</li>
+    <li><strong>Deploy</strong> auf Vercel. URL in <code>README.md</code> eintragen, dazu ein Screenshot.</li>
+    <li><strong>Reflexion</strong> in <code>docs/REFLEXION.md</code>, zehn Sätze: Was hat der Agent gut gemacht, wo hat er versagt, was würden Sie beim nächsten Mal anders spezifizieren?</li>
+  </ol>
+
+  <Callout type="warn" title="Abgabe">
+    <p>Donnerstag, 15.10., 09:00: Repo-Link + Vercel-URL in Teams. Was bis dahin gepusht ist, zählt. Es ist in Ordnung, wenn nicht alles funktioniert – dafür ist der Tag 3 da. Es ist nicht in Ordnung, wenn nichts gepusht ist.</p>
+  </Callout>
+
+  <h2>So arbeiten Sie allein</h2>
+  <p>Der Rhythmus von Tag 1 und 2, jetzt ohne Anleitung: <strong>Story wählen → Plan Mode → Plan lesen → Okay → prüfen → committen → <code>/clear</code>.</strong> Wenn Sie merken, dass Sie seit 20 Minuten mit demselben Problem kämpfen: aufhören, <code>/clear</code>, Problem kleiner machen, oder Hilfe holen.</p>
+  <Prompt label="Morgens, zum Einstieg">Lies docs/PRD.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welche Story als Nächstes dran ist und warum.</Prompt>
+  <Prompt label="Abends, zum Abschluss">Trag in docs/ENTSCHEIDUNGEN.md ein, was wir heute festgelegt haben. Aktualisiere den Status im Backlog. Dann /pruefe und /commit.</Prompt>
+
+  <h2>Hilfe holen</h2>
+  <p>In der Reihenfolge: 1) Debug-Prompt mit kompletter Fehlermeldung. 2) <code>/clear</code>, kleiner formulieren. 3) <a href="/bekannte-probleme">Bekannte Probleme</a>. 4) Teams-Kanal <strong>#hilfe</strong> im <a href="/hilfe">Hilfe-Format</a> – immer mit Repo-Link, immer vorher gepusht.</p>
+  <div class="card">
+    <h3>Office Hours (online, Teams)</h3>
+    <p>Freitag, 10.10., 15:00–16:00 · Dienstag, 14.10., 17:00–18:00<br/><span class="small muted">Kommen Sie mit einem konkreten Problem und geteiltem Bildschirm. Zwischen den Terminen antworten wir in #hilfe meist innerhalb eines halben Tages.</span></p>
+  </div>
+
+  <h2>Checkliste Abgabe</h2>
+  <Checklist id="hausaufgabe" items={[
+    'Eigenes Repo aus dem Template, Markus ist Collaborator',
+    '<code>docs/PRD.md</code> – eine Seite, mit „macht NICHT“',
+    '<code>docs/BACKLOG.md</code> – 5–8 Stories, 3–5 mit ✅',
+    'Jede ✅-Story: Akzeptanzkriterien selbst durchgeklickt',
+    'App läuft auf Vercel, URL und Screenshot in <code>README.md</code>',
+    '<code>/pruefe</code> grün: keine Secrets im Repo',
+    '<code>docs/REFLEXION.md</code> geschrieben',
+    'Repo-Link + URL in Teams gepostet (bis 15.10., 09:00)',
+    'Codespace gestoppt',
+  ]} />
+
+  <FooterNav prev={{ href: '/tag-2', t: 'Tag 2' }} next={{ href: '/tag-3', t: 'Tag 3 · Shippen' }} />
+</Layout>

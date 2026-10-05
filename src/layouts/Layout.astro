@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+const { title, description = 'Programmieren mit AI — Kurs für den MSc Management by Innovation, NDU, Oktober 2026' } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const nav = [
+  { h: 'Start', items: [
+    { href: '/', t: 'Übersicht' },
+    { href: '/setup', t: 'Setup & Accounts' },
+    { href: '/hilfe', t: 'Hilfe holen' },
+  ]},
+  { h: 'Kurstage', items: [
+    { href: '/tag-1', t: 'Tag 1 · Verstehen & Starten' },
+    { href: '/tag-2', t: 'Tag 2 · Bauen wie ein Profi' },
+    { href: '/zwischenwoche', t: 'Zwischenwoche' },
+    { href: '/tag-3', t: 'Tag 3 · Shippen' },
+  ]},
+  { h: 'Konzepte', items: [
+    { href: '/konzepte/app-anatomie', t: 'Anatomie einer App' },
+    { href: '/konzepte/coding-agent', t: 'Wie ein Coding-Agent arbeitet' },
+    { href: '/konzepte/git', t: 'Git – der Undo-Knopf' },
+    { href: '/konzepte/spezifikation', t: 'Von der Idee zur Spezifikation' },
+    { href: '/konzepte/daten-backend', t: 'Daten & Backend' },
+    { href: '/konzepte/mcp', t: 'MCP-Server' },
+    { href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' },
+    { href: '/konzepte/agenten-steuern', t: 'Agenten steuern' },
+    { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' },
+    { href: '/konzepte/ausblick', t: 'Ausblick 2026' },
+  ]},
+  { h: 'Werkzeuge', items: [
+    { href: '/prompts', t: 'Prompt-Bibliothek' },
+    { href: '/ideen', t: 'Projektideen' },
+    { href: '/bekannte-probleme', t: 'Bekannte Probleme' },
+    { href: '/bewertung', t: 'Bewertung' },
+  ]},
+];
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · NDU Coding 2026</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e8472b'/></svg>" />
+  </head>
+  <body>
+    <div class="topbar">
+      <strong>NDU Coding 2026</strong>
+      <button id="menu-btn" aria-label="Menü öffnen">☰ Menü</button>
+    </div>
+    <div class="shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="/"><span class="dot"></span> Programmieren mit AI</a>
+        <nav>
+          {nav.map(g => (
+            <div class="group">
+              <h4>{g.h}</h4>
+              {g.items.map(i => <a href={i.href} class={path === i.href ? 'active' : ''}>{i.t}</a>)}
+            </div>
+          ))}
+        </nav>
+        <p class="small muted" style="margin-top:2rem">NDU · MSc Management by Innovation<br/>8. / 9. / 15. Oktober 2026</p>
+      </aside>
+      <main class="content">
+        <div class="inner">
+          <slot />
+        </div>
+      </main>
+    </div>
+    <script>
+      const btn = document.getElementById('menu-btn');
+      const sb = document.getElementById('sidebar');
+      btn?.addEventListener('click', () => sb?.classList.toggle('open'));
+      document.addEventListener('click', (e) => {
+        if (sb?.classList.contains('open') && !sb.contains(e.target as Node) && e.target !== btn) sb.classList.remove('open');
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Callout from '../../components/Callout.astro';
+import Prompt from '../../components/Prompt.astro';
+import FooterNav from '../../components/FooterNav.astro';
+---
+<Layout title="Ausblick 2026">
+  <span class="eyebrow">Konzept 8 · Tag 3</span>
+  <h1>Ausblick: Was 2026 sonst noch geht</h1>
+  <p class="lead">Drei Tage reichen für die Grundlagen. Hier ist, was dahinter liegt – damit Sie wissen, wonach Sie fragen, wenn Sie es brauchen.</p>
+
+  <h2>Design → Code: Figma-MCP</h2>
+  <p>Im Innolab bauen Sie einen klickbaren Figma-Prototyp. Mit dem Figma-MCP-Server liest Claude Ihre Frames – Layout, Abstände, Farben, Typografie, Komponenten – und baut sie als echte Komponenten nach. Das ersetzt nicht das Spezifizieren (Figma sagt nicht, was beim Klick passieren soll), aber es ersetzt das Beschreiben von Aussehen. Der Workflow: Design-System in Figma → Claude generiert die Basis-Komponenten → Stories bauen darauf auf.</p>
+  <Prompt>Hier ist der Figma-Link zum Frame „Event-Detail“: [Link]. Lies das Design über den Figma-MCP und baue die Seite /events/[id] so nach, dass sie dem Design in Layout, Abständen und Farben entspricht. Verwende die bestehenden Komponenten, wo es passt, und sag mir, wo das Design Fragen offenlässt (Zustände, Fehlerfälle, Mobile).</Prompt>
+
+  <h2>Figma → Linear → Agent: die Produktkette im Innolab</h2>
+  <p>Im Innolab wandert das Backlog aus der Markdown-Datei nach <strong>Linear</strong> – dem Werkzeug, in dem Produktteams Stories, Sprints (Cycles) und Status verwalten. Unser Format bleibt dasselbe (Story + Gegeben/Wenn/Dann), der Umzug ist eine Kopieraktion, die Claude per Linear-MCP erledigt. Dann schließt sich die Kette: Das Figma-Frame hängt am Linear-Issue, Claude Code liest über den <strong>Linear-MCP</strong> die Story und die Kriterien, über den <strong>Figma-MCP</strong> das Design, baut es in einem Branch, erstellt den Pull Request und setzt das Issue auf „In Review“. Linear kann Issues sogar direkt einem Agenten zuweisen, der autonom arbeitet und zurückmeldet. Ihre Rolle in dieser Kette: Stories schreiben, Designs abnehmen, PRs prüfen – Product Owner.</p>
+  <Prompt>Lies Linear-Issue NDU-42 über den Linear-MCP. Hol dir das verlinkte Figma-Frame über den Figma-MCP. Setze die Story in einem neuen Branch um, erfülle alle Akzeptanzkriterien, erstelle einen Pull Request mit Beschreibung für Nicht-Programmierer und setze das Issue auf „In Review“.</Prompt>
+
+  <h2>Agent-Teams & parallele Arbeit</h2>
+  <p>Mehrere Agenten gleichzeitig: einer baut das Frontend einer Story, einer das Backend, einer schreibt die Tests, ein vierter reviewt. Claude Code unterstützt das über <strong>Subagents</strong> und <strong>Git-Worktrees</strong> (parallele Arbeitskopien). Für kleine Projekte selten nötig; für „ich habe acht Stories und einen Nachmittag“ ein Vervielfacher – wenn die Stories gut geschnitten sind. Schlecht spezifizierte Arbeit wird durch Parallelisierung nur schneller schlecht.</p>
+
+  <h2>Claude Code überall</h2>
+  <p>Im Terminal (hier), als VS-Code-Panel, in der Desktop-App mit grafischer Oberfläche, <strong>im Browser</strong> (claude.ai/code – Aufgaben an ein Repo delegieren, ohne Codespace) und <strong>am Handy</strong>: Fehler in Teams gesehen, am Handy „fix das“ getippt, PR wartet, wenn Sie am Laptop sind. Dazu <strong>geplante Aufgaben</strong> („jeden Montag: Abhängigkeiten aktualisieren, Tests laufen lassen, PR erstellen“).</p>
+
+  <h2>Codex & die anderen</h2>
+  <p>OpenAI <strong>Codex</strong>, Google <strong>Gemini CLI</strong>, <strong>Cursor</strong> als IDE – die Konzepte sind identisch: Kontext, Tools, Agent-Loop, Spezifikation, Verifikation. Die Datei heißt <code>AGENTS.md</code> statt <code>CLAUDE.md</code> (unser Template hat beide). Was Sie hier gelernt haben, überträgt sich in einer Stunde. Wählen Sie nach Modellqualität für Ihre Aufgabe und nach dem, was Ihr Team nutzt – nicht nach Marke.</p>
+
+  <h2>Skills – Arbeitsweisen, die Sie weitergeben</h2>
+  <p>Ein Skill ist eine Anleitung, die Claude bei Bedarf lädt: „So schreiben wir PRDs“, „So sieht unser Design-System aus“, „So prüfen wir vor dem Launch“. Für Teams der Weg, Qualität zu standardisieren. Ihr <code>.claude/commands/</code>-Ordner ist der Anfang davon.</p>
+
+  <h2>AI als Feature im eigenen Produkt</h2>
+  <p>Die optionale Story S8 (KI schreibt die Eventbeschreibung) ist der kleinste Fall. Dahinter: Chat mit Ihren Daten, automatische Zusammenfassungen, Klassifizierung, Agenten, die für Nutzer*innen Aufgaben erledigen. Vier Dinge, die Produktleute dafür verstehen müssen: <strong>Kosten pro Aufruf</strong> (Tokens), <strong>Latenz</strong> (Sekunden, nicht Millisekunden – Streaming hilft), <strong>Qualitätssicherung</strong> (wie prüfen Sie, ob die KI-Antwort gut war? Evals), und <strong>Daten</strong> (was schicken Sie an den Anbieter, dürfen Sie das?).</p>
+
+  <h2>Grenzen & Risiken – ehrlich</h2>
+  <div class="grid">
+    <div class="card"><h3>Sicher aussehender Code</h3><p class="small muted">Der Agent produziert professionell aussehenden Code mit Anfängerfehlern. Ohne Tests, Review und Checkliste merken Sie es erst, wenn jemand anders es merkt.</p></div>
+    <div class="card"><h3>Wartung</h3><p class="small muted">Software altert. Pakete bekommen Sicherheitslücken, Dienste ändern APIs. Ein Prototyp ohne Pflege ist nach einem Jahr kaputt. Planen Sie das ein – oder schalten Sie ihn bewusst ab.</p></div>
+    <div class="card"><h3>Kosten & Lock-in</h3><p class="small muted">Abos (Claude, Vercel, Supabase) skalieren mit Nutzung. Was gratis anfängt, kostet mit 10.000 Nutzer*innen – rechnen Sie, bevor Sie wachsen. Und: Ihr Code gehört Ihnen, Ihre Daten liegen bei Dritten.</p></div>
+    <div class="card"><h3>Verstehen vs. bedienen</h3><p class="small muted">Sie können jetzt bauen lassen, was Sie nicht verstehen. Das ist mächtig und gefährlich. Die Regel bleibt: Lassen Sie sich alles erklären, was Sie nicht in einem Satz jemand anderem erklären könnten.</p></div>
+  </div>
+
+  <Callout type="concept" title="Was bleibt">
+    <p>Werkzeuge wechseln jedes Jahr. Was bleibt: ein Problem präzise beschreiben, es in prüfbare Schritte zerlegen, Ergebnisse kritisch abnehmen, und wissen, wann man Hilfe holt. Das haben Sie in drei Tagen geübt – an Software, aber es gilt für alles, was Sie bauen lassen werden.</p>
+  </Callout>
+
+  <FooterNav prev={{ href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' }} next={{ href: '/tag-3#werkstatt', t: 'Werkstatt' }} />
+</Layout>

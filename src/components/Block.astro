@@ -1,0 +1,15 @@
+---
+// Eine Zeile im Tagesablauf.
+const { time, type = 'konzept', title, href } = Astro.props as { time: string; type?: string; title: string; href?: string };
+const labels: Record<string, string> = { demo: 'Demo', konzept: 'Konzept', uebung: 'Übung', pause: 'Pause', plenum: 'Plenum' };
+---
+<div class={`block ${type}`}>
+  <div class="time">{time}</div>
+  <div>
+    <div class="title">
+      <span class={`pill ${type}`}>{labels[type] ?? type}</span>
+      {href ? <a href={href}>{title}</a> : <span>{title}</span>}
+    </div>
+    {Astro.slots.has('default') && <p class="desc"><slot /></p>}
+  </div>
+</div>

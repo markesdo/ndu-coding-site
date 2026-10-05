@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Block from '../components/Block.astro';
+import Callout from '../components/Callout.astro';
+import Checklist from '../components/Checklist.astro';
+import Prompt from '../components/Prompt.astro';
+import FooterNav from '../components/FooterNav.astro';
+---
+<Layout title="Tag 3 · Shippen & selbständig werden">
+  <span class="eyebrow">Donnerstag, 15. Oktober 2026 · 09:00–17:00</span>
+  <h1>Tag 3 · Shippen & selbständig werden</h1>
+  <p class="lead">Prototypen fertigstellen und präsentieren, Qualität beurteilen lernen, ohne Code zu lesen – und sehen, was 2026 sonst noch geht.</p>
+  <Callout type="info" title="Stand der Ausarbeitung"><p>Der Ablauf steht; die Inhalte werden in der Zwischenwoche anhand der echten Probleme aus Tag 1 und 2 fertig ausgearbeitet.</p></Callout>
+
+  <h2>Ablauf</h2>
+  <div class="schedule">
+    <Block time="09:00–09:40" type="plenum" title="Stand-up">Jede*r 2 Minuten: Was läuft, wo hängt es, was brauche ich heute? Blocker werden für die Werkstatt verteilt.</Block>
+    <Block time="09:40–10:20" type="konzept" title="Konzept 7 · Qualität ohne Code lesen" href="/konzepte/qualitaet">Code-Review durch den Agenten, Sicherheits-Checkliste, Tests als Sicherheitsnetz.</Block>
+    <Block time="10:20–10:35" type="pause" title="Pause" />
+    <Block time="10:35–12:00" type="uebung" title="Werkstatt 1" href="#werkstatt">Blocker lösen, dann Peer-Review im Tandem mit der Checkliste.</Block>
+    <Block time="12:00–13:00" type="pause" title="Mittagspause" />
+    <Block time="13:00–13:45" type="konzept" title="Konzept 8 · Ausblick 2026" href="/konzepte/ausblick">Figma-MCP → Code, Agent-Teams, Claude Code im Web, Codex, eigene Skills, Grenzen.</Block>
+    <Block time="13:45–15:15" type="uebung" title="Werkstatt 2" href="#werkstatt">Feinschliff, Demo vorbereiten, README.</Block>
+    <Block time="15:15–15:30" type="pause" title="Pause" />
+    <Block time="15:30–16:30" type="plenum" title="Demos" href="#demos">3–4 Minuten pro Person/Tandem.</Block>
+    <Block time="16:30–17:00" type="plenum" title="Abschluss">Wie es weitergeht, Bewertung, Feedback.</Block>
+  </div>
+
+  <hr />
+  <h2 id="werkstatt">Werkstatt</h2>
+  <h3>Peer-Review im Tandem (Werkstatt 1)</h3>
+  <p>Tauschen Sie Vercel-URLs. Gehen Sie die App der anderen Person als echte*r Nutzer*in durch – <strong>ohne Erklärung</strong> – und notieren Sie: Wo war ich verwirrt? Was hat nicht funktioniert? Was hätte ich erwartet? Dann die <a href="/konzepte/qualitaet">Qualitäts-Checkliste</a> gemeinsam durchgehen. Findings werden Stories:</p>
+  <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus User Stories mit Akzeptanzkriterien und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
+  <h3>Review durch den Agenten</h3>
+  <Prompt note="In einer frischen Session (/clear) – der Reviewer soll nicht derselbe Kontext sein, der den Code geschrieben hat.">Prüfe dieses Projekt wie eine strenge Senior-Entwicklerin vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz für Nicht-Programmierer. Ändere noch nichts.</Prompt>
+  <h3>Demo vorbereiten (Werkstatt 2)</h3>
+  <Prompt>Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshots-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
+  <p>Fallback für die Live-Demo: 2-Minuten-Screenrecording (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows: Xbox Game Bar <kbd>Win</kbd><kbd>G</kbd>) – falls das WLAN streikt.</p>
+
+  <hr />
+  <h2 id="demos">Demos · 3–4 Minuten</h2>
+  <ol class="steps">
+    <li><strong>Problem</strong> (30 s) Für wen, welcher Schmerz. Eine Person, eine Situation.</li>
+    <li><strong>Lösung live</strong> (2 min) Der eine Durchlauf, der den Kern zeigt – am besten vom Handy. Nicht alle Features.</li>
+    <li><strong>Was der Agent nicht gut gemacht hat</strong> (45 s) Ehrlich. Was mussten Sie wie oft korrigieren, wo haben Sie aufgegeben? Das ist der interessanteste Teil.</li>
+    <li><strong>Nächster Schritt</strong> (15 s) Was wäre die eine Story, die Sie als Nächstes bauen würden?</li>
+  </ol>
+  <Checklist id="t3-demo" items={[
+    'Live-App funktioniert am Handy (vorher testen!)',
+    'README für Außenstehende, mit URL',
+    'Ein Durchlauf geübt, unter 3 Minuten',
+    'Ein ehrlicher Satz zu den Grenzen des Agenten',
+    'Screenrecording als Fallback',
+  ]} />
+
+  <hr />
+  <h2>Wie es weitergeht</h2>
+  <p>Ihr Repo und Ihr Codespace bleiben. Claude Pro können Sie kündigen oder behalten – für das Innolab werden Sie es wieder brauchen: Dort kommt Ihr Figma-Prototyp dazu, und der Weg Design → Code läuft über denselben Agenten, denselben Rhythmus, dieselbe Spezifikationsarbeit. Siehe <a href="/konzepte/ausblick">Ausblick</a>.</p>
+
+  <FooterNav prev={{ href: '/zwischenwoche', t: 'Zwischenwoche' }} next={{ href: '/bewertung', t: 'Bewertung' }} />
+</Layout>

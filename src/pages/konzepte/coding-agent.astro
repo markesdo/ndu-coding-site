@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Callout from '../../components/Callout.astro';
+import Prompt from '../../components/Prompt.astro';
+import FooterNav from '../../components/FooterNav.astro';
+---
+<Layout title="Wie ein Coding-Agent arbeitet">
+  <span class="eyebrow">Konzept 2 · Tag 1</span>
+  <h1>Wie ein Coding-Agent arbeitet</h1>
+  <p class="lead">Claude Code ist kein Chat, der Code-Schnipsel ausspuckt. Es ist ein Agent, der Ihr Projekt liest, Dateien ändert, Befehle ausführt, Fehler sieht und nachbessert – in einer Schleife, bis die Aufgabe erledigt ist. Wer die Schleife versteht, kann sie steuern.</p>
+
+  <h2>Das Sprachmodell in drei Minuten</h2>
+  <p>Ein Large Language Model (LLM) hat aus einem großen Teil des Internets – und aus sehr viel Code – gelernt, <strong>wahrscheinliche Fortsetzungen</strong> von Text zu erzeugen. Anschließend wurde es trainiert, Anweisungen zu befolgen und Antworten zu geben, die Menschen als hilfreich und korrekt bewerten. Drei Folgen davon sind für Sie wichtig:</p>
+  <div class="grid">
+    <div class="card"><h3>Es rät plausibel</h3><p class="small muted">Das Modell weiß nicht, es schätzt. Meistens richtig, manchmal selbstbewusst falsch („Halluzination“). Code hat einen Vorteil: Er lässt sich ausführen – und dann sieht man, ob er stimmt.</p></div>
+    <div class="card"><h3>Es hat ein Gedächtnis mit Rand</h3><p class="small muted">Alles, was es gerade „im Kopf“ hat, ist das Kontextfenster. Ist es voll, fällt Älteres raus. Zwischen zwei Sessions erinnert es sich an nichts – außer, es steht in einer Datei.</p></div>
+    <div class="card"><h3>Es kann nur, was es sieht</h3><p class="small muted">Was nicht im Kontext steht, existiert nicht: Ihre Entscheidung von gestern, der Fehler im Browser, das Design in Ihrem Kopf. Kontext geben ist Ihr Job.</p></div>
+  </div>
+
+  <h2>Das Kontextfenster</h2>
+  <div class="widget" id="ctx">
+    <p class="hint">Das Kontextfenster ist das Arbeitsgedächtnis einer Session. Füllen Sie es und sehen Sie, was passiert.</p>
+    <div class="ctx-bar" id="ctx-bar"></div>
+    <div class="ctx-controls">
+      <button class="btn sm" data-add="code">+ Claude liest 5 Dateien</button>
+      <button class="btn sm" data-add="chat">+ Sie diskutieren 10 Nachrichten</button>
+      <button class="btn sm" data-add="big">+ Riesige Fehlermeldung einfügen</button>
+      <button class="btn sm" data-act="compact">/compact</button>
+      <button class="btn sm" data-act="clear">/clear</button>
+    </div>
+    <div class="ctx-status" id="ctx-status"></div>
+    <script>
+      const bar = document.getElementById('ctx-bar')!;
+      const status = document.getElementById('ctx-status')!;
+      const MAX = 100;
+      let segs: { k: string; n: number; t: string }[] = [];
+      const base = () => [{ k: 'sys', n: 6, t: 'Regeln' }, { k: 'claude', n: 8, t: 'CLAUDE.md' }];
+      const render = () => {
+        const total = segs.reduce((a, s) => a + s.n, 0);
+        bar.innerHTML = '';
+        let acc = 0;
+        segs.forEach(s => {
+          const el = document.createElement('div');
+          const lost = total > MAX && acc < total - MAX;
+          el.className = 'ctx-seg ' + (lost ? 'lost' : s.k);
+          el.style.flex = String(s.n);
+          el.textContent = s.n >= 8 ? s.t : '';
+          el.title = s.t;
+          bar.appendChild(el);
+          acc += s.n;
+        });
+        const pct = Math.min(100, Math.round(100 * total / MAX));
+        if (total > MAX) status.innerHTML = `<strong>Voll (${total}%).</strong> Die ältesten Teile – inklusive Ihrer Entscheidungen von vorhin – sind aus dem Blick. Claude wird inkonsistent, vergisst Absprachen, wiederholt Fehler. Zeit für <code>/compact</code> oder <code>/clear</code>.`;
+        else if (pct > 70) status.innerHTML = `<strong>${pct}% voll.</strong> Noch okay, aber: Antworten werden ungenauer, je voller es wird. Gute Gewohnheit: nach einer fertigen Story <code>/clear</code>.`;
+        else status.innerHTML = `${pct}% belegt. Wenig Kontext = präzise, schnelle Antworten. Das ist der Normalzustand, den Sie anstreben.`;
+      };
+      segs = base(); render();
+      document.querySelectorAll<HTMLButtonElement>('#ctx [data-add]').forEach(b => b.addEventListener('click', () => {
+        const k = b.dataset.add!;
+        if (k === 'code') segs.push({ k: 'code', n: 18, t: '5 Dateien' });
+        if (k === 'chat') segs.push({ k: 'chat', n: 14, t: '10 Nachrichten' });
+        if (k === 'big') segs.push({ k: 'chat', n: 35, t: 'Fehler-Log' });
+        render();
+      }));
+      document.querySelectorAll<HTMLButtonElement>('#ctx [data-act]').forEach(b => b.addEventListener('click', () => {
+        if (b.dataset.act === 'clear') segs = base();
+        if (b.dataset.act === 'compact') segs = [...base(), { k: 'chat', n: 12, t: 'Zusammenfassung' }];
+        render();
+      }));
+    </script>
+  </div>
+  <p>Daraus folgen drei Regeln: <strong>Eine Session pro Story</strong> (danach <code>/clear</code>). <strong>Nur relevante Teile geben</strong> – die Fehlermeldung, nicht das ganze Log; die betroffene Seite, nicht „schau dir alles an“. <strong>Dauerhaftes in Dateien</strong> – was in <code>CLAUDE.md</code> oder <code>docs/ENTSCHEIDUNGEN.md</code> steht, ist in jeder Session wieder da.</p>
+
+  <h2>Der Agent-Loop</h2>
+  <div class="widget" id="loop">
+    <p class="hint">Vier Schritte, die Claude Code für jede Aufgabe durchläuft – oft mehrmals. Klicken Sie sich durch.</p>
+    <div class="loop">
+      <button type="button" data-step="0" class="active">1 · Verstehen</button>
+      <button type="button" data-step="1">2 · Planen</button>
+      <button type="button" data-step="2">3 · Handeln</button>
+      <button type="button" data-step="3">4 · Prüfen</button>
+    </div>
+    <div class="loop-detail" id="loop-detail"></div>
+    <script>
+      const steps = [
+        { t: 'Verstehen', p: 'Claude liest Ihre Anweisung, die CLAUDE.md und die Dateien, die es für relevant hält. Hier passieren die meisten Missverständnisse: Ein vager Auftrag wird vage verstanden.', you: 'Ihr Hebel: präzise Aufträge. Eine Story, ein Ziel, Akzeptanzkriterien. Bei großen Aufgaben: Plan Mode (Shift+Tab), damit Claude nachfragt statt zu raten.' },
+        { t: 'Planen', p: 'Claude zerlegt die Aufgabe in Schritte: welche Dateien anlegen, welche ändern, in welcher Reihenfolge. Im Plan Mode sehen Sie diesen Plan, bevor etwas passiert.', you: 'Ihr Hebel: den Plan lesen. Steht etwas drin, das Sie nicht wollten („ich füge außerdem … hinzu“)? Jetzt eingreifen ist zehnmal billiger als nachher.' },
+        { t: 'Handeln', p: 'Claude benutzt Werkzeuge: Dateien lesen und schreiben, Befehle im Terminal ausführen (npm install, Lint, Build), bei Bedarf im Web nachschlagen oder per MCP mit Supabase, Figma, dem Browser sprechen. Vor riskanten Aktionen fragt es um Erlaubnis.', you: 'Ihr Hebel: Berechtigungen bewusst geben. „Ja“ zu „darf ich diese Datei ändern?“ ist meist okay. Bei „darf ich löschen / pushen / installieren?“ kurz nachdenken.' },
+        { t: 'Prüfen', p: 'Claude schaut, ob es geklappt hat: Läuft der Build? Gibt es Lint-Fehler? Falls nein, zurück zu Schritt 2 oder 3 – das ist die Schleife. Was Claude nicht kann: in Ihrem Browser sehen, ob es gut aussieht und sich richtig anfühlt.', you: 'Ihr Hebel: Sie sind der letzte Prüfschritt. Akzeptanzkriterien durchklicken, Screenshot machen, Fehler als Text zurückgeben. Nicht „geht nicht“, sondern „beim Klick auf X passiert Y statt Z, in der Konsole steht: …“.' },
+      ];
+      const d = document.getElementById('loop-detail')!;
+      const bs = document.querySelectorAll<HTMLButtonElement>('#loop .loop button');
+      const show = (i: number) => { bs.forEach((b, j) => b.classList.toggle('active', i === j)); d.innerHTML = `<p><strong>${steps[i].t}.</strong> ${steps[i].p}</p><p class="muted">${steps[i].you}</p>`; };
+      bs.forEach(b => b.addEventListener('click', () => show(Number(b.dataset.step))));
+      show(0);
+    </script>
+  </div>
+
+  <h2>Die Werkzeuge, die Sie heute brauchen</h2>
+  <table>
+    <tr><th>Was</th><th>Wofür</th></tr>
+    <tr><td><code>claude</code></td><td>Startet Claude Code im Terminal. Danach einfach schreiben – auf Deutsch, in ganzen Sätzen.</td></tr>
+    <tr><td><kbd>Shift</kbd><kbd>Tab</kbd></td><td>Wechselt den Modus: normal → auto-accept → <strong>plan mode</strong>. Plan Mode für alles, was mehr als eine Datei betrifft.</td></tr>
+    <tr><td>Bild einfügen</td><td>Screenshot ins Terminal ziehen oder <kbd>Ctrl</kbd><kbd>V</kbd>. Claude sieht, was Sie sehen.</td></tr>
+    <tr><td><code>/clear</code></td><td>Neue Session, leerer Kontext. Nach jeder fertigen Story.</td></tr>
+    <tr><td><code>/compact</code></td><td>Fasst den bisherigen Verlauf zusammen, wenn Sie mitten in etwas stecken und der Kontext voll wird.</td></tr>
+    <tr><td><code>CLAUDE.md</code></td><td>Projektgedächtnis. Regeln, Stack, Konventionen. Wird in jeder Session automatisch gelesen. <a href="/konzepte/agenten-steuern">Mehr am Tag 2.</a></td></tr>
+    <tr><td><code>/erklaer</code> <code>/pruefe</code> <code>/commit</code></td><td>Eigene Befehle in diesem Projekt (liegen in <code>.claude/commands/</code>). Sie können weitere anlegen lassen.</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>Stoppt Claude mitten in der Arbeit. Benutzen Sie das, wenn Sie sehen, dass es in die falsche Richtung läuft.</td></tr>
+  </table>
+
+  <h2>Halluzination – wenn es richtig klingt und falsch ist</h2>
+  <p>Beim Programmieren halluziniert ein Modell typischerweise so: Es nutzt eine Funktion, die es in dieser Bibliothek nicht gibt. Es ist sich sicher, dass ein Fehler behoben ist, der noch da ist. Es erfindet eine Einstellung bei Vercel oder Supabase, die so nicht existiert. Es behauptet, getestet zu haben, ohne es getan zu haben.</p>
+  <div class="compare">
+    <div class="card bad"><h3>Macht es schlimmer</h3><ul class="small"><li>„Geht nicht, fix es.“</li><li>Ganzes Log einfügen, 400 Zeilen</li><li>Nach dem fünften Versuch in derselben Session weitermachen</li><li>Große Aufgabe auf einmal: „Bau Login, RSVP und Dashboard.“</li><li>Dem Agenten glauben, dass es funktioniert</li></ul></div>
+    <div class="card good"><h3>Macht es besser</h3><ul class="small"><li>„Beim Klick auf ‚Ich komme‘ passiert nichts. In der Browser-Konsole steht: …“</li><li>Die relevanten 5 Zeilen der Fehlermeldung</li><li>Nach dem zweiten Fehlversuch: <code>/clear</code>, kleiner formulieren</li><li>Eine Story, klare Kriterien, Plan zuerst</li><li>Selbst prüfen; „schreib einen Test dafür“ sagen</li></ul></div>
+  </div>
+  <Prompt label="Der universelle Debug-Prompt" note="Zwei Schritte in einem: erst Verständnis, dann Lösung. Das verhindert, dass Claude blind herumprobiert.">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [was Sie getan haben]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht (Frontend, Backend, Datenbank) das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
+
+  <Callout type="concept" title="Der eine Satz zum Mitnehmen">
+    <p>Ein Coding-Agent ist ein extrem schneller, extrem belesener Junior-Entwickler mit Kurzzeitgedächtnis und zu viel Selbstvertrauen. Sie sind der Product Owner, der ihm klare Aufträge gibt, den Plan liest und das Ergebnis abnimmt.</p>
+  </Callout>
+
+  <FooterNav prev={{ href: '/konzepte/app-anatomie', t: 'Anatomie einer App' }} next={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} />
+</Layout>
