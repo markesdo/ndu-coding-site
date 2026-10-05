@@ -42,10 +42,10 @@ Einbindung: In `coding-agent.astro` ersetzt `<Kontextfenster client:visible />` 
 
 ### Stage – Verhalten
 
-- Props: `title`, `steps: { caption: ReactNode; plain: string }[]` (`plain` = Beschriftung als reiner Text für Screenreader), `children: (step: number, direction: 1 | -1) => ReactNode`.
+- Props: `title`, `steps: { caption: ReactNode; plain: string }[]` (`plain` = Beschriftung als reiner Text für Screenreader), `children: (nav: { index: number; direction: 1 | -1; seq: number }, reduced: boolean) => ReactNode` – `index` 0-basiert, `seq` zählt jede Navigation hoch. `Stage` importiert `stage.css` selbst.
 - Steuerung: Buttons „Zurück“, „Weiter“, „Von vorn“, „Vollbild“; Anzeige „3 / 9“. „Zurück“ ist auf Schritt 1, „Weiter“ auf dem letzten Schritt deaktiviert.
 - Tastatur: ← / → / Leertaste / Pos1 werden **nur** verarbeitet, wenn das Ereignis auf dem Stage-Element selbst ausgelöst wird (`e.target === e.currentTarget`). Ein Fokus auf einem Button bleibt Sache des Buttons – so löst Leertaste nach einem Klick auf „Weiter“ genau einen Schritt aus. Ein Klick auf die Bühne fokussiert die Stage (`tabIndex=0`), die Buttons geben nach dem Klick den Fokus an die Stage zurück. Außerhalb der Stage scrollt die Leertaste die Seite wie gewohnt.
-- Vollbild: Fullscreen-API auf das Stage-Element, danach `stage.focus()`, damit Pfeiltasten sofort wirken. Im Vollbild: `.stage:fullscreen { background: var(--bg); color: var(--fg); }`, Bühne skaliert auf die Bildschirmhöhe, Beschriftung größer. Ist `document.fullscreenEnabled` falsch (iPhone-Safari), wird der Button nach dem Mounten ausgeblendet.
+- Vollbild: Fullscreen-API auf das Stage-Element, danach `stage.focus()`, damit Pfeiltasten sofort wirken. Im Vollbild: `.stage:fullscreen { background: var(--bg); color: var(--fg); }`, Bühne skaliert auf die Bildschirmhöhe; Beschriftung, Blocklabels, Füllstand, Legende und Buttons werden größer. Ist `document.fullscreenEnabled` falsch (iPhone-Safari), wird der Button nach dem Mounten ausgeblendet.
 - Barrierefreiheit: Eine visuell versteckte `<p aria-live="polite">` enthält `plain` des aktuellen Schritts; die animierte, sichtbare Beschriftung ist `aria-hidden`. So wird beim Überblenden nicht doppelt vorgelesen. Buttons mit deutschen `aria-label`, sichtbarer Fokusring.
 - Bewegung reduzieren: `useReducedMotion()`; ist sie aktiv, sind alle Übergangsdauern 0 (auch Breiten, nicht nur Transformationen), Beschriftungen wechseln ohne Animation.
 

@@ -81,7 +81,7 @@ describe('kontextfenster-steps', () => {
     }
   });
 
-  it.each(FILL.map((fill, i) => [i + 1, fill]))('Schritt %i ist zu %i %% belegt', (step, fill) => {
+  it.each(FILL.map((fill, i) => [i + 1, fill]))('Schritt %i ist zu %i Prozent belegt', (step, fill) => {
     expect(fillOf(blocksAt(step))).toBe(fill);
   });
 
@@ -296,7 +296,7 @@ Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
 
 Temporarily change STATES index 5 (step 6) from `[SYS, CLAUDE_MD, ZUSAMMENFASSUNG]` to `[SYS, CLAUDE_MD, AUFTRAG, ZUSAMMENFASSUNG]`. Confirm the mutation applied: `git diff --stat` shows `kontextfenster-steps.ts | 2 +-`.
 Run: `npm test`
-Expected: FAIL on assertions (not a crash): `Schritt 6 ist zu 30 % belegt` (expected 30, received 34) and `Schritt 6: kein Auftrag mehr` (expected 0, received 1).
+Expected: FAIL on assertions (not a crash): `Schritt 6 ist zu 30 Prozent belegt` (expected 30, received 34) and `Schritt 6: kein Auftrag mehr` (expected 0, received 1).
 Restore: `git checkout -- src/components/sota/kontextfenster-steps.ts`, run `npm test` → PASS, `git status --short` → clean.
 
 ---
@@ -356,6 +356,7 @@ Run: `npm run build` → Expected: `21 page(s) built`, `Complete!`.
 // Wiederverwendbar für alle animierten Szenen der Kurs-Website.
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import './stage.css';
 
 export interface StageStep {
   caption: ReactNode;
@@ -664,6 +665,13 @@ function Fenster({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
 }
 .stage:fullscreen .kf-fenster { height: 18vh; }
 .stage:fullscreen .stage-caption { max-width: 60ch; }
+.stage:fullscreen .kf-block,
+.stage:fullscreen .kf-gauge-text,
+.stage:fullscreen .kf-legend,
+.stage:fullscreen .kf-notes,
+.stage:fullscreen .kf-footnote,
+.stage:fullscreen .btn { font-size: 1.1rem; }
+.stage:fullscreen .kf-gauge-track { height: 10px; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -770,16 +778,22 @@ Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
 - Consumes: the built page `/konzepte/coding-agent` from Task 2.
 - Produces: a verified page; screenshots for Markus.
 
-Tool: Chrome DevTools MCP (`new_page` with `isolatedContext`, `evaluate_script`, `press_key`, `click`, `emulate`, `resize_page`, `take_screenshot`, `list_console_messages`). Clicks and key presses must go through the MCP input tools (trusted events), not `element.click()` from a script, wherever focus or fullscreen matters.
+Tool: Chrome DevTools MCP (`new_page` with `isolatedContext`, `evaluate_script`, `press_key`, `click`, `emulate`, `resize_page`, `take_screenshot`, `list_console_messages`). Clicks and key presses must go through the MCP input tools (trusted events), not `element.click()` from a script, wherever focus or fullscreen matters. Consecutive MCP `press_key` calls land roughly 600 ms apart, so never assert sub-second timing by polling – record transient states with the gauge recorder below and assert end states.
+
+Gauge recorder (run via `evaluate_script` before the key presses whose intermediate states you want to check):
+```js
+() => { window.__g = []; const el = document.querySelector('.kf-gauge-text'); new MutationObserver(() => window.__g.push(el.textContent)).observe(el, { childList: true, characterData: true, subtree: true }); return el.textContent; }
+```
+Read it later with `() => window.__g`.
 
 - [ ] **Step 1: Serve the production build**
 
-Run: `npm run build && npx astro preview --port 4322` (Astro 7 starts it in the background; stop later with `npx astro preview stop`).
+Run: `npm run build && npx astro preview --port 4322 --background` (stop later with `npx astro preview stop`).
 Open `http://localhost:4322/konzepte/coding-agent` in a new isolated page.
 
 - [ ] **Step 2: Walk all steps by button and by keyboard**
 
-Click „Weiter“ 8 times, then read the counter after each: expect `1 / 9` … `9 / 9`, „Weiter“ disabled at 9. Read the gauge text per step; expect 14, 18, 46, 74, 82, (96 then) 30, 34, 14, 18 % belegt. Click „Von vorn“ → `1 / 9`. Click the stage background, press `ArrowRight` 5 times → `6 / 9`; within 300 ms the gauge reads `96 % belegt`, after 1 s `30 % belegt`. Press `ArrowLeft` → `5 / 9`, `82 % belegt`; press `ArrowRight` → prelude plays again. `list_console_messages` → no errors.
+Click „Weiter“ 8 times, then read the counter after each: expect `1 / 9` … `9 / 9`, „Weiter“ disabled at 9. Read the gauge text per step; expect 14, 18, 46, 74, 82, (96 then) 30, 34, 14, 18 % belegt. Click „Von vorn“ → `1 / 9`. Click the stage background, press `ArrowRight` 4 times → `5 / 9`. Install the gauge recorder, press `ArrowRight` once → `6 / 9`; after 1.5 s `window.__g` contains `96 % belegt` followed later by `30 % belegt`, and the gauge reads `30 % belegt`. Press `ArrowLeft` → `5 / 9`, `82 % belegt`; reinstall the recorder, press `ArrowRight` → `window.__g` again contains `96 % belegt` then `30 % belegt` (prelude plays again). `list_console_messages` → no errors.
 
 - [ ] **Step 3: Keyboard scope (Review Focus 2)**
 
@@ -788,11 +802,11 @@ Click on the page heading outside the stage, press `ArrowRight` → counter unch
 
 - [ ] **Step 4: Rapid input during the prelude (Review Focus 1)**
 
-Go to step 5. Press `ArrowRight` three times within ~200 ms (three `press_key` calls back to back). After 1.5 s: counter `8 / 9`, gauge `14 % belegt`, and the DOM contains exactly two `.kf-block` elements:
+Go to step 5. Press `ArrowRight` three times with back-to-back `press_key` calls (≈ 600 ms apart, so the second press lands inside the 900 ms prelude). After 1.5 s: counter `8 / 9`, gauge `14 % belegt`, and the DOM contains exactly two `.kf-block` elements:
 ```js
 () => document.querySelectorAll('.kf-fenster .kf-block').length
 ```
-Expected: `2`. Then go to step 5 and press `ArrowRight` once, then `ArrowLeft` within 300 ms → counter `5 / 9`, after 1.5 s gauge `82 % belegt`.
+Expected: `2`. Then go to step 5, press `ArrowRight` once and `ArrowLeft` immediately after (next `press_key` call, inside the prelude) → counter `5 / 9`, after 1.5 s gauge `82 % belegt`.
 
 - [ ] **Step 5: Themes, widths, zoom (Review Focus 4, 5)**
 
@@ -802,7 +816,7 @@ For `theme` in `dark`, `light`: run
 ```
 Expected: dark → label colour is the dark `--bg` (`rgb(18, 18, 22)`), light → `rgb(255, 255, 255)`. Take one screenshot per theme on step 4.
 Remove the attribute again (`delete document.documentElement.dataset.theme`).
-Resize to 390×844 and to 850×700; on each, run
+Check two widths: `emulate` with `viewport: "390x844x2,mobile,touch"` (do not use `resize_page` for this – macOS clamps the window to ~500 px), then reset the emulation and `resize_page` to 850×700. On each, run
 ```js
 () => ({ overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, stage: document.querySelector('.stage').getBoundingClientRect().width })
 ```
@@ -810,11 +824,15 @@ Expected: `overflow: 0`. Screenshot step 4 at 390 px.
 
 - [ ] **Step 6: Fullscreen and Escape (Review Focus 3)**
 
-Click „Vollbild“ (MCP click). Expect `document.fullscreenElement?.classList.contains('stage') === true`, button label „Vollbild beenden“, background equals `--bg`. Press `ArrowRight` without clicking → counter increases. Take a screenshot. Press `Escape` → `document.fullscreenElement === null`, button label „Vollbild“. Click the stage, press `ArrowRight` → counter increases.
+Click „Vollbild“ (MCP click). Expect `document.fullscreenElement?.classList.contains('stage') === true`, button label „Vollbild beenden“, background equals `--bg`. Press `ArrowRight` without clicking → counter increases. Take a screenshot. Leave fullscreen with `evaluate_script(async () => { await document.exitFullscreen(); })` (a CDP `Escape` press is handled by the browser UI and does not exit) → `document.fullscreenElement === null`, button label „Vollbild“. Real Esc is checked by Markus by hand during screenshot approval. Click the stage, press `ArrowRight` → counter increases.
 
 - [ ] **Step 7: Reduced motion**
 
-`emulate` with `prefers-reduced-motion: reduce`, reload. Go to step 5, press `ArrowRight` → gauge reads `30 % belegt` immediately (within 100 ms), never `96 %`. Reset emulation.
+The `emulate` tool has no reduced-motion option. Instead reload with `navigate_page` (`type: "reload"`) and this `initScript`, which makes Motion's `useReducedMotion()` see the preference:
+```js
+const orig = window.matchMedia.bind(window); window.matchMedia = (q) => q.includes('prefers-reduced-motion') ? { matches: true, media: q, onchange: null, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {}, dispatchEvent() { return false; } } : orig(q);
+```
+Go to step 5, install the gauge recorder, press `ArrowRight` → after 1.5 s `window.__g` does not contain `96 % belegt` and the gauge reads `30 % belegt`. Reload without the init script afterwards.
 
 - [ ] **Step 8: No JavaScript and hydration**
 
