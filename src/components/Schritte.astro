@@ -24,25 +24,23 @@ const { steps } = Astro.props as { steps: Step[] };
   ))}
 </ol>
 
-<dialog class="shot-zoom" aria-label="Vergrößerter Screenshot">
-  <form method="dialog"><button class="shot-close" aria-label="Schließen">✕</button></form>
-  <div class="shot-zoom-body"></div>
-</dialog>
-
 <script>
-  const dialog = document.querySelector<HTMLDialogElement>('dialog.shot-zoom');
-  const body = dialog?.querySelector('.shot-zoom-body');
+  // Ein gemeinsamer Vergrößerungs-Dialog pro Seite, auch wenn mehrere Schritt-Listen darauf stehen.
+  const dialog = document.createElement('dialog');
+  dialog.className = 'shot-zoom';
+  dialog.setAttribute('aria-label', 'Vergrößerter Screenshot');
+  dialog.innerHTML = '<form method="dialog"><button class="shot-close" aria-label="Schließen">✕</button></form><div class="shot-zoom-body"></div>';
+  document.body.append(dialog);
+  const body = dialog.querySelector('.shot-zoom-body')!;
   document.querySelectorAll<HTMLButtonElement>('.shots .shot').forEach((btn) => {
     btn.addEventListener('click', () => {
-      if (!dialog || !body) return;
       const frame = btn.querySelector('.shot-frame')!.cloneNode(true) as HTMLElement;
-      const img = frame.querySelector('img');
       // Im Dialog die größte Variante laden statt der für die Spalte gewählten.
-      img?.removeAttribute('sizes');
+      frame.querySelector('img')?.removeAttribute('sizes');
       body.replaceChildren(frame);
       dialog.showModal();
     });
   });
   // Klick neben das Bild schließt.
-  dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 </script>
