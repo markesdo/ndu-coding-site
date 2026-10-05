@@ -88,14 +88,14 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt>Setze Story S4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Zeig mir zuerst deinen Plan und warte auf mein Okay.</Prompt>
   <p>Prüfen: Event anlegen → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
   <h3>e) Sichern</h3>
-  <Prompt>/pruefe – und wenn alles grün ist: S4 auf ✅ setzen und /commit</Prompt>
+  <Prompt>/check – und wenn alles grün ist: S4 auf ✅ setzen und /commit</Prompt>
   <Checklist id="t2-u3" items={[
     'Supabase-Projekt in Frankfurt angelegt, Passwort gespeichert',
     'Supabase-MCP verbunden (<code>/mcp</code> zeigt „connected“)',
     '<code>.env.local</code> angelegt und <strong>nicht</strong> im Source Control sichtbar',
     'Tabelle <code>events</code> existiert, Beispieldaten sind drin',
     'Event angelegt, Reload überlebt, Negativfall geprüft',
-    '<code>/pruefe</code> grün, committet',
+    '<code>/check</code> grün, committet',
   ]} />
 
   <hr />
