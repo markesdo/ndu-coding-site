@@ -18,29 +18,48 @@ import { bild } from '../components/anleitung-bilder';
 
   <h2>Checkliste</h2>
   <Checklist id="setup" items={[
-    '<strong>GitHub-Account</strong> mit der NDU-Adresse angelegt (oder NDU-Adresse im bestehenden Konto ergänzt)',
-    '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Upgrade → Pro; Kreditkarte)',
-    '<strong>Eigenes Repo</strong> aus dem Template erstellt („Use this template“)',
-    '<strong>Codespace</strong> gestartet, Ordner als vertrauenswürdig bestätigt',
-    '<code>claude</code> im Terminal gestartet und angemeldet',
-    'App läuft und ist im eigenen Browser-Tab geöffnet',
-    '<code>/ndu-explain</code> ausgeführt und die Antwort gelesen',
-    'Markus als Collaborator eingeladen (<code>markesdo</code>)',
-    'Optional: <strong>GitHub Education</strong> beantragt (Schritt 9)',
+    '<strong>GitHub-Account</strong> mit der NDU-Adresse angelegt (oder NDU-Adresse im bestehenden Konto ergänzt) – <a href="#github">Schritt 1</a>',
+    '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Upgrade → Pro; Kreditkarte) – <a href="#claude-pro">Schritt 2</a>',
+    '<strong>Eigenes Repo</strong> aus dem Template erstellt („Use this template“) – <a href="#repo">Schritt 3</a>',
+    '<strong>Codespace</strong> gestartet, Ordner als vertrauenswürdig bestätigt – <a href="#codespace">Schritt 4</a>',
+    '<code>claude</code> im Terminal gestartet und angemeldet – <a href="#claude-code">Schritt 5</a>',
+    'App läuft und ist im eigenen Browser-Tab geöffnet – <a href="#app">Schritt 6</a>',
+    '<code>/ndu-explain</code> ausgeführt und die Antwort gelesen – <a href="#explain">Schritt 7</a>',
+    'Markus als Collaborator eingeladen (<code>markesdo</code>) – <a href="#collaborator">Schritt 8</a>',
+    'Optional: <strong>GitHub Education</strong> beantragt – <a href="#education">Schritt 9</a>',
   ]} />
 
-  <p class="small muted">Die Screenshots stammen von einem Testdurchgang mit einem neuen Konto am 5.10.2026. Die Oberflächen der Anbieter ändern sich laufend; wenn ein Button anders heißt oder woanders sitzt, sucht nach dem Wort aus der Anleitung. Klick auf ein Bild vergrößert es.</p>
+  <p class="small muted">Die Screenshots stammen von einem Testdurchgang mit einem neuen Konto am 5.10.2026. Die Oberflächen der Anbieter ändern sich laufend; wenn ein Button anders heißt oder woanders sitzt, sucht nach dem Wort aus der Anleitung. Klick auf ein Bild zeigt den ganzen Bildschirm; „Als Präsentation zeigen“ blättert mit den Pfeiltasten durch die Schritte.</p>
+
+  <nav class="stepbar" aria-label="Schritte des Setups">
+    {[['github', '1'], ['claude-pro', '2'], ['repo', '3'], ['codespace', '4'], ['claude-code', '5'], ['app', '6'], ['explain', '7'], ['collaborator', '8'], ['education', '9'], ['orientierung', 'Codespace'], ['stoppen', 'Stoppen']].map(([id, t]) => (
+      <a href={`#${id}`} data-step={id}>{t}</a>
+    ))}
+  </nav>
+  <script>
+    // Markiert in der Schrittleiste den Abschnitt, der gerade oben im Fenster steht. Ohne JS bleiben es einfache Links.
+    const links = new Map([...document.querySelectorAll<HTMLAnchorElement>('.stepbar a')].map((a) => [a.dataset.step!, a]));
+    const sections = [...links.keys()].map((id) => document.getElementById(id)).filter((h): h is HTMLElement => !!h);
+    const mark = () => {
+      const y = 140;
+      let current = sections[0];
+      for (const h of sections) if (h.getBoundingClientRect().top < y) current = h;
+      links.forEach((a, id) => (id === current.id ? a.setAttribute('aria-current', 'step') : a.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', mark, { passive: true });
+    mark();
+  </script>
 
   <h2 id="github">1 · GitHub-Account mit eurer NDU-Adresse</h2>
   <p>GitHub speichert euren Code und startet später euren Codespace. <strong>Registriert euch mit eurer NDU-E-Mail-Adresse.</strong> Mit ihr könnt ihr zusätzlich GitHub Education beantragen (<a href="#education">Schritt 9</a>, optional): Studierende bekommen unter anderem mehr Codespaces-Kontingent – 180 statt 120 Core-Stunden pro Monat, auf der 2-Kern-Maschine also 90 statt 60 Stunden.</p>
-  <Schritte steps={[
+  <Schritte id="github" nummer="1" steps={[
     { img: bild('setup/github-1-formular'), alt: 'GitHub-Registrierungsformular mit den Feldern Email, Password, Username und dem Button „Create account“', text: 'Auf <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> eure NDU-Adresse eintragen (1). Ein Passwort wählen (2) – mindestens 15 Zeichen, oder 8 mit Zahl und Kleinbuchstaben – und im Passwortmanager speichern. Benutzername (3): Er ist öffentlich und steht später in jeder Adresse eures Projekts, also etwas Professionelles. <em>Create account</em> (4), dann das Bilderrätsel lösen und den Code eingeben, den GitHub an eure NDU-Adresse schickt.', marks: [{ x: 916, y: 259, w: 412, h: 40, n: 1 }, { x: 916, y: 331, w: 412, h: 38, n: 2 }, { x: 916, y: 438, w: 412, h: 38, n: 3 }, { x: 916, y: 687, w: 412, h: 44, n: 4 }] },
     { img: bild('setup/github-5-dashboard'), alt: 'GitHub-Startseite mit „Welcome to GitHub“', text: 'Geschafft: Die Startseite begrüßt euch mit eurem Benutzernamen. Zwei-Faktor-Anmeldung verlangt GitHub erst einige Wochen später – richtet sie dann mit der Handy-App ein.', marks: [{ x: 494, y: 92, w: 390, h: 36 }] },
   ]} />
   <Callout type="tip" title="Ihr habt schon ein GitHub-Konto?">
     <p>Dann legt kein zweites an. Tragt eure NDU-Adresse zusätzlich ein: Profilbild oben rechts → <em>Settings</em> → <em>Emails</em> → <em>Add email address</em>, dann den Link in der Bestätigungsmail anklicken. Danach könnt ihr Education mit diesem Konto beantragen.</p>
   </Callout>
-  <Schritte steps={[
+  <Schritte id="github" nummer="1" start={3} steps={[
     { img: bild('setup/edu-1-unverified'), alt: 'Settings → Emails: die neu eingetragene Hochschuladresse steht auf „Unverified“', text: 'Nach <em>Add</em> steht die NDU-Adresse auf „Unverified“ und GitHub schickt eine Mail mit dem Betreff „Please verify your email address“. (Adressen hier unkenntlich gemacht.)', marks: [{ x: 470, y: 374, w: 310, h: 34 }] },
     { img: bild('setup/edu-2-verified'), alt: 'Die Hochschuladresse steht auf „Verified“', text: 'Nach dem Klick auf den Link in der Mail: „Verified“.', marks: [{ x: 470, y: 322, w: 300, h: 34 }] },
   ]} />
@@ -50,7 +69,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <h2 id="repo">3 · Eigenes Repo aus dem Template</h2>
   <p>Ein Repository (kurz Repo) ist der Ordner eures Projekts samt seiner Versionsgeschichte. Das Template ist eine Vorlage: Ihr bekommt eine eigene Kopie, in der ihr alles ändern dürft.</p>
-  <Schritte steps={[
+  <Schritte id="repo" nummer="3" steps={[
     { img: bild('setup/repo-1-template'), alt: 'Template-Repository ndu-coding-2026 mit grünem Button „Use this template“', text: 'Öffnet das Template <a href="https://github.com/markesdo/ndu-coding-2026" target="_blank" rel="noopener">markesdo/ndu-coding-2026</a> und klickt oben rechts auf <em>Use this template</em>.', marks: [{ x: 1168, y: 104, w: 128, h: 32 }] },
     { img: bild('setup/repo-2-menue'), alt: 'Menü mit „Create a new repository“ und „Open in a codespace“', text: '<em>Create a new repository</em> wählen – nicht „Open in a codespace“, sonst habt ihr kein eigenes Repo.', marks: [{ x: 1122, y: 143, w: 170, h: 30 }] },
     { img: bild('setup/repo-3-formular'), alt: 'Formular „Create a new repository“ mit Namensfeld, Sichtbarkeit Public und Button „Create repository“', text: 'Name <code>campus-events</code> eintragen (1). Sichtbarkeit <em>Public</em> lassen (2). <em>Create repository</em> (3). Nach ein paar Sekunden seht ihr euer eigenes Repo.', marks: [{ x: 598, y: 356, w: 468, h: 36, n: 1 }, { x: 946, y: 586, w: 105, h: 36, n: 2 }, { x: 934, y: 653, w: 133, h: 35, n: 3 }] },
@@ -58,7 +77,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <h2 id="codespace">4 · Codespace starten</h2>
   <p>Ein Codespace ist ein Rechner in der Cloud mit VS Code im Browser. Alles, was das Projekt braucht, ist dort schon installiert.</p>
-  <Schritte steps={[
+  <Schritte id="codespace" nummer="4" steps={[
     { img: bild('setup/cs-1-repo'), alt: 'Euer Repo campus-events mit grünem Button „Code“', text: 'In <strong>eurem</strong> Repo (oben links steht euer Benutzername) auf den grünen Button <em>Code</em> klicken.', marks: [{ x: 913, y: 170, w: 103, h: 35 }] },
     { img: bild('setup/cs-2-tab'), alt: 'Code-Menü mit Tab „Codespaces“ und Button „Create codespace on main“', text: 'Das Menü öffnet sich auf dem Tab <em>Local</em>. Wechselt auf <em>Codespaces</em> (1), dann <em>Create codespace on main</em> (2).', marks: [{ x: 715, y: 210, w: 92, h: 34, n: 1 }, { x: 740, y: 414, w: 188, h: 35, n: 2 }] },
     { img: bild('setup/cs-3-baut'), alt: 'VS Code im Browser, unten rechts „Building codespace…“', text: 'VS Code öffnet sich im Browser und baut die Umgebung. Beim ersten Mal dauert das 2–4 Minuten.', marks: [{ x: 1086, y: 750, w: 405, h: 32 }] },
@@ -70,14 +89,21 @@ import { bild } from '../components/anleitung-bilder';
   <Callout type="warn" title="Erst warten, dann tippen">
     <p>Direkt nach dem Start richtet der Codespace im Hintergrund noch Claude Code ein. Wartet, bis links in der Leiste das Claude-Symbol (✳) erscheint, bevor ihr <code>claude</code> eintippt. Sonst seht ihr ein Warnsymbol am Terminal und das Einrichtungsprotokoll schiebt sich davor.</p>
   </Callout>
-  <Schritte steps={[
+  <h3 id="claude-code-start">Im Terminal starten</h3>
+  <Schritte id="claude-code" nummer="5" steps={[
     { img: bild('setup/claude-1-eintippen'), alt: 'Terminal mit eingetipptem Befehl claude', text: 'Ins Terminal klicken, <code>claude</code> eintippen, <kbd>Enter</kbd>.', marks: [{ x: 330, y: 616, w: 366, h: 19 }] },
     { img: bild('setup/claude-2-theme'), alt: 'Claude Code fragt nach dem Farbschema, Dark mode ist ausgewählt', text: 'Claude fragt nach dem Farbschema. <kbd>Enter</kbd> übernimmt die Vorauswahl.', marks: [{ x: 336, y: 615, w: 200, h: 45 }] },
     { img: bild('setup/claude-3-methode'), alt: 'Auswahl der Login-Methode, Punkt 1 „Claude account with subscription“', text: 'Login-Methode: <em>1. Claude account with subscription</em> ist vorausgewählt – <kbd>Enter</kbd>.', marks: [{ x: 336, y: 629, w: 445, h: 17 }] },
+  ]} />
+  <h3 id="claude-code-browser">Im Browser anmelden</h3>
+  <Schritte id="claude-code" nummer="5" start={4} steps={[
     { img: bild('setup/claude-4-open'), alt: 'VS Code fragt „Do you want Code to open the external website?“ mit Button „Open“', text: 'VS Code fragt, ob es die Anmeldeseite öffnen darf: <em>Open</em>.', marks: [{ x: 1373, y: 447, w: 48, h: 32 }] },
     { img: bild('setup/claude-5-login'), alt: 'Anmeldeseite von Claude mit „Continue with Google“', text: 'Mit demselben Konto anmelden, mit dem ihr Claude Pro abgeschlossen habt.', marks: [{ x: 584, y: 362, w: 328, h: 42 }] },
     { img: bild('setup/claude-6-authorize'), alt: 'Seite „Claude Code would like to connect to your Claude chat account“ mit Button „Authorize“', text: '<em>Authorize</em>. Danach erscheint fast immer eine Fehlerseite „Diese Website ist nicht erreichbar“ (<code>localhost</code>). <strong>Das ist normal</strong> – die Anmeldung versucht, euren eigenen Rechner zu erreichen, Claude läuft aber im Codespace. Tab schließen und zurück zum Codespace.', marks: [{ x: 517, y: 599, w: 462, h: 40 }] },
     { img: bild('setup/claude-7-code'), alt: 'Seite „Authentication code“ mit Button „Copy code“ (Code unkenntlich gemacht)', text: 'Im Terminal steht jetzt „Browser didn’t open? Use the url below…“ und darunter <code>Paste code here if prompted &gt;</code>. Öffnet den langen Link mit <kbd>Cmd</kbd>-Klick (Mac) bzw. <kbd>Strg</kbd>-Klick (Windows) – oder drückt <kbd>c</kbd>, um ihn zu kopieren, und fügt ihn in einen neuen Tab ein. Nach <em>Authorize</em> zeigt diese Seite einen Code: <em>Copy code</em>, zurück ins Terminal, einfügen, <kbd>Enter</kbd>.', marks: [{ x: 694, y: 455, w: 109, h: 33 }] },
+  ]} />
+  <h3 id="claude-code-terminal">Zurück im Terminal: einrichten</h3>
+  <Schritte id="claude-code" nummer="5" start={8} steps={[
     { img: bild('setup/claude-8-hinweise'), alt: 'Claude Code zeigt Sicherheitshinweise und „Press Enter to continue“', text: 'Angemeldet. Claude zeigt zwei Sicherheitshinweise – lesen, <kbd>Enter</kbd>.', marks: [{ x: 336, y: 691, w: 160, h: 18 }] },
     { img: bild('setup/claude-9-terminal'), alt: 'Frage „Use Claude Code’s terminal setup?“ mit Vorauswahl „Yes, use recommended settings“', text: 'Empfohlene Terminal-Einstellungen: <kbd>Enter</kbd> übernimmt „Yes“.', marks: [{ x: 336, y: 641, w: 225, h: 18 }] },
     { img: bild('setup/claude-10-trust'), alt: 'Frage „Is this a project you created or one you trust?“, vorausgewählt ist „No, exit“', text: '<strong>Achtung, hier nicht einfach Enter drücken:</strong> Vorausgewählt ist <em>No, exit</em> – das beendet Claude. Erst mit <kbd>↓</kbd> auf <em>Yes, I trust this folder</em> gehen, dann <kbd>Enter</kbd>.', marks: [{ x: 336, y: 717, w: 180, h: 17 }] },
@@ -86,21 +112,21 @@ import { bild } from '../components/anleitung-bilder';
 
   <h2 id="app">6 · App starten und ansehen</h2>
   <Prompt label="Erster Prompt in Claude Code">Starte die App und sag mir in einfachen Worten, wie ich sie im Browser öffne.</Prompt>
-  <Schritte steps={[
+  <Schritte id="app" nummer="6" steps={[
     { img: bild('setup/app-1-vorschau'), alt: 'Leere Vorschau im Editor mit Symbol einer kaputten Seite, oben rechts das Symbol „In neuem Tab öffnen“', text: 'Claude startet die App und öffnet oft eine Vorschau im Editor („Simple Browser“). Bleibt sie leer wie hier, klickt oben rechts auf das Symbol <em>In neuem Tab öffnen</em>. Alternativ: unten der Reiter <em>Ports</em> → Zeile 3000 → Globus-Symbol.', marks: [{ x: 1186, y: 61, w: 32, h: 30 }] },
     { img: bild('setup/app-2-tab'), alt: 'Campus-Events-Startseite „Was ist los am Campus?“ in einem eigenen Browser-Tab', text: 'Eure App in einem eigenen Tab. Die Adresse endet auf <code>-3000.app.github.dev</code> und funktioniert nur, solange ihr bei GitHub angemeldet seid – zum Teilen kommt an Tag 2 Vercel.' },
   ]} />
 
   <h2 id="explain">7 · Projekt erklären lassen</h2>
   <Prompt label="Zweiter Prompt – Projekt verstehen">/ndu-explain</Prompt>
-  <Schritte steps={[
+  <Schritte id="explain" nummer="7" steps={[
     { img: bild('setup/explain-1'), alt: 'Eingabezeile mit /ndu-explain und Vorschlag „Erklärt das Projekt oder eine Datei für Nicht-Programmierer*innen“', text: 'Sobald ihr <code>/</code> tippt, schlägt Claude passende Befehle vor. <code>/ndu-explain</code> ist einer der drei Kurs-Befehle aus dem Template. <kbd>Enter</kbd>.', marks: [{ x: 331, y: 629, w: 686, h: 44 }] },
     { img: bild('setup/explain-2'), alt: 'Antwort von Claude: Campus Events als Gastraum, Vorratskammer, Küche, Kellner und Gebäude erklärt', text: 'Claude erklärt das Projekt mit den Begriffen aus Konzept 1. Lest die Antwort – sie ist eure Landkarte für den Nachmittag.' },
   ]} />
 
   <h2 id="collaborator">8 · Markus als Collaborator einladen</h2>
   <p>Damit Markus euer Repo sehen und bei Problemen helfen kann: In eurem Repo oben <em>Settings</em> → links <em>Collaborators</em>.</p>
-  <Schritte steps={[
+  <Schritte id="collaborator" nummer="8" steps={[
     { img: bild('setup/collab-1'), alt: 'Repo-Einstellungen, Seite „Collaborators and teams“ mit Button „Add people“', text: '<em>Add people</em>.', marks: [{ x: 829, y: 522, w: 97, h: 34 }] },
     { img: bild('setup/collab-2'), alt: 'Suche nach markesdo zeigt drei ähnliche Benutzernamen', text: '<code>markesdo</code> eintippen und <strong>genau diesen Namen</strong> wählen – darunter stehen ähnliche Konten. Dann <em>Add markesdo</em>.', marks: [{ x: 494, y: 362, w: 160, h: 36 }] },
     { img: bild('setup/collab-3'), alt: 'markesdo steht mit „Pending Invite“ in der Liste', text: 'Die Einladung steht auf „Pending Invite“, bis Markus sie annimmt. Fertig.', marks: [{ x: 469, y: 492, w: 823, h: 56 }] },
@@ -108,7 +134,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <h2 id="education">9 · GitHub Education beantragen (optional)</h2>
   <p><strong>Für den Kurs braucht ihr Education nicht</strong> – das normale Kontingent reicht (siehe <a href="#kontingent">Wenn das Kontingent knapp wird</a>). Education ist ein Bonus: mehr Codespaces-Stunden und weitere Werkzeuge, auch nach dem Kurs. Beantragt es am ersten Tag <strong>auf dem Campus</strong> – GitHub vergleicht euren Standort mit der Hochschule. Haltet eure <strong>Studienbestätigung</strong> bereit (als Datei oder am Handy); GitHub will einen datierten Nachweis sehen. Die Prüfung dauert wenige Minuten bis einige Tage.</p>
-  <Schritte steps={[
+  <Schritte id="education" nummer="9" steps={[
     { img: bild('setup/edu-3-start'), alt: 'GitHub-Einstellungen, Seite „GitHub Education“ mit Button „Start an application“', text: 'Auf <a href="https://github.com/settings/education/benefits" target="_blank" rel="noopener">github.com/settings/education/benefits</a> (Settings → Billing and licensing → Education benefits) auf <em>Start an application</em>.', marks: [{ x: 1140, y: 489, w: 120, h: 30 }] },
     { img: bild('setup/edu-4-schule'), alt: 'Antragsformular: Rolle Student, Schulsuche mit Eintrag „New Design University“', text: '<em>Student</em> wählen (1). Im Schulfeld „NDU“ oder „New Design“ tippen und <strong>New Design University</strong> auswählen (2) – nicht die „New Designs Charter School“ darüber.', marks: [{ x: 84, y: 327, w: 170, h: 42, n: 1 }, { x: 88, y: 588, w: 620, h: 68, n: 2 }] },
     { img: bild('setup/edu-5-formular'), alt: 'Antragsformular mit Hochschul-E-Mail, „Location shared“ und Button „Continue“', text: 'Als E-Mail eure NDU-Adresse wählen (1) – nicht die private. Fehlt sie in der Liste, ist sie im Konto noch nicht bestätigt (Kasten in Schritt 1). <em>Share Location</em> und im Browser den Standort erlauben (2), dann <em>Continue</em> (3).', marks: [{ x: 63, y: 660, w: 863, h: 62, n: 1 }, { x: 63, y: 836, w: 310, h: 61, n: 2 }, { x: 757, y: 836, w: 169, h: 61, n: 3 }] },
@@ -121,7 +147,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <h2 id="orientierung">Orientierung im Codespace</h2>
   <p>Der Codespace ist VS Code im Browser. Ihr müsst kaum etwas davon selbst bedienen – Claude liest und schreibt die Dateien. Aber ihr solltet wissen, wo was ist.</p>
-  <Schritte steps={[
+  <Schritte id="orientierung" steps={[
     { img: bild('setup/ui-1-uebersicht'), alt: 'Codespace mit nummerierten Bereichen: Seitenleiste, Explorer, Editor, Terminal, Reiter Terminal und Ports, Chat-Panel, Statusleiste', text: '<strong>Seitenleiste</strong> (1): Symbole für Explorer, Suche, Source Control und Erweiterungen; das ✳ ist Claude Code. <strong>Explorer</strong> (2): alle Dateien des Projekts – ansehen hilft beim Verstehen. <strong>Editor</strong> (3): eine geöffnete Datei. <strong>Terminal</strong> (4): hier laufen Claude und eure App; Fehlermeldungen des Backends erscheinen hier. Die <strong>Reiter</strong> darüber (5) wechseln zwischen Terminal und Ports. <strong>Chat-Panel</strong> (6): GitHub Copilot, nicht Claude – ihr könnt es schließen. <strong>Statusleiste</strong> (7): zeigt, dass ihr in eurem Codespace arbeitet.', marks: [{ x: 5, y: 38, w: 38, h: 742, n: 1 }, { x: 47, y: 38, w: 280, h: 700, n: 2 }, { x: 335, y: 38, w: 1006, h: 472, n: 3 }, { x: 335, y: 547, w: 1006, h: 233, n: 4 }, { x: 565, y: 521, w: 125, h: 22, n: 5 }, { x: 1347, y: 38, w: 145, h: 742, n: 6 }, { x: 3, y: 786, w: 193, h: 22, n: 7 }] },
     { img: bild('setup/ui-2-terminals'), alt: 'Terminal-Bereich mit Liste zweier Terminals: npm und Claude Code', text: '<strong>Mehrere Terminals</strong> sind normal: eines für die App (<code>npm run dev</code>), eines für Claude. Mit <kbd>+</kbd> (1) öffnet ihr ein weiteres; rechts in der Liste (2) wechselt ihr zwischen ihnen. Schließt ein Terminal nicht, in dem die App läuft – sonst ist sie weg.', marks: [{ x: 1237, y: 546, w: 102, h: 40, n: 2 }, { x: 1228, y: 521, w: 32, h: 22, n: 1 }] },
     { img: bild('setup/ui-3-ports'), alt: 'Reiter Ports mit der Zeile „Campus Events“ und dem Globus-Symbol', text: '<strong>Ports</strong>: Jede laufende App bekommt hier eine Zeile mit eigener Adresse (1). Das Globus-Symbol (2, erscheint beim Darüberfahren) öffnet sie in einem neuen Browser-Tab. „Private“ heißt: Nur ihr seht sie, solange ihr bei GitHub angemeldet seid.', marks: [{ x: 206, y: 567, w: 1120, h: 20, n: 1 }, { x: 531, y: 568, w: 20, h: 18, n: 2 }] },
@@ -131,7 +157,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <h2 id="stoppen">Nach dem Kurstag: Codespace stoppen</h2>
   <p>Ein laufender Codespace verbraucht euer Kontingent (60 Stunden pro Monat, mit Education 90) – auch wenn der Tab zu ist, bis er nach 30 Minuten ohne Eingabe von selbst stoppt. Auf <a href="https://github.com/codespaces" target="_blank" rel="noopener">github.com/codespaces</a> beim Codespace auf „…“:</p>
-  <Schritte steps={[
+  <Schritte id="stoppen" steps={[
     { img: bild('setup/stop-1'), alt: 'Menü eines Codespace mit „Stop codespace“ und angehaktem „Auto-delete codespace“', text: '<em>Stop codespace</em> (1). Beachtet den Haken bei <em>Auto-delete codespace</em> (2): Ein länger ungenutzter Codespace wird gelöscht. Was nicht committet und gepusht ist, ist dann weg.', marks: [{ x: 1283, y: 236, w: 126, h: 26, n: 1 }, { x: 1262, y: 280, w: 158, h: 26, n: 2 }] },
     { img: bild('setup/stop-2'), alt: 'Meldung „Codespace stopped“, darunter der Hinweis „This codespace has uncommitted changes“', text: 'Gestoppt. Steht beim Codespace „This codespace has uncommitted changes“, habt ihr noch nicht alles gesichert – Codespace öffnen, committen, pushen.', marks: [{ x: 0, y: 58, w: 300, h: 52, n: 1 }, { x: 322, y: 600, w: 268, h: 18, n: 2 }] },
   ]} />
@@ -139,7 +165,7 @@ import { bild } from '../components/anleitung-bilder';
   <h2 id="kontingent">Wenn das Kontingent knapp wird</h2>
   <p>Ohne Education habt ihr 120 Core-Stunden pro Monat. Der Kurs-Codespace hat 2 Kerne, das sind <strong>60 Stunden Laufzeit</strong>. Die drei Kurstage und die Hausaufgabe brauchen voraussichtlich 30–45 Stunden – das passt, wenn ihr einen einzigen Codespace verwendet und ihn nach der Arbeit stoppt. Den Verbrauch seht ihr unter <em>Settings → Billing and licensing → Usage</em>.</p>
   <p>Ist das Kontingent aufgebraucht, startet der Codespace nicht mehr. Kosten entstehen dabei keine: Neue Konten haben für Codespaces ein Budget von 0 $ mit „Stop usage: Yes“. Wer trotzdem weiterarbeiten muss, hebt dieses Budget an – eine Stunde auf 2 Kernen kostet laut GitHub-Preisliste etwa 0,18 $.</p>
-  <Schritte steps={[
+  <Schritte id="kontingent" steps={[
     { img: bild('setup/budget-1-menue'), alt: 'Budgets and alerts: Zeile Codespaces mit Budget 0 $ und Stop usage Yes, geöffnetes Menü mit Edit und Delete', text: '<em>Settings → Billing and licensing → Budgets and alerts</em>. In der Zeile <em>Codespaces</em> (1) auf „…“ → <em>Edit</em> (2) und einen kleinen Betrag eintragen, z. B. 5 $. „Stop usage“ bleibt an. Das Budget gilt pro Monat; nach dem Kurs wieder auf 0 setzen. <strong>Nicht auf <em>Delete</em> klicken</strong> – ohne Budget ist die Nutzung unbegrenzt. Dafür muss eine Zahlungsmethode hinterlegt sein.', marks: [{ x: 463, y: 350, w: 808, h: 62, n: 1 }, { x: 1097, y: 404, w: 150, h: 26, n: 2 }] },
   ]} />
   <p class="small muted">Kein zweites GitHub-Konto anlegen, um neues Kontingent zu bekommen – die Nutzungsbedingungen von GitHub erlauben nur ein kostenloses Konto pro Person.</p>
