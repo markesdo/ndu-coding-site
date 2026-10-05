@@ -4,7 +4,7 @@ import Callout from '../components/Callout.astro';
 const probleme = [
   { t: 'Codespace startet nicht / hängt bei „Setting up“', l: 'Browser-Tab schließen, github.com → Codespaces → den Codespace öffnen. Nach 5 Minuten: „…“ → Rebuild Container. Letzter Ausweg: löschen und neu anlegen (Ihre gepushten Commits bleiben).' },
   { t: '„claude: command not found“', l: 'Der Container ist noch nicht fertig installiert. 1 Minute warten, Terminal neu öffnen (Mülleimer-Symbol, dann +). Bleibt es: <code>npm install -g @anthropic-ai/claude-code</code> im Terminal.' },
-  { t: 'Claude-Login: Link lässt sich nicht öffnen', l: 'Link mit Rechtsklick kopieren und in einem neuen Browser-Tab öffnen. Den Code dann ins Terminal einfügen (Rechtsklick → Paste oder <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>V</kbd>).' },
+  { t: 'Claude-Login: Link lässt sich nicht öffnen', l: 'Link mit Rechtsklick kopieren und in einem neuen Browser-Tab öffnen. Den Code dann ins Terminal einfügen (Rechtsklick → Paste oder <kbd>Strg/Ctrl</kbd><kbd>Shift</kbd><kbd>V</kbd>).' },
   { t: 'Vorschau zeigt „Port 3000 nicht erreichbar“', l: 'Läuft <code>npm run dev</code> noch? Im Terminal nachsehen. Wenn nicht: neu starten. Oben rechts im Tab „Ports“ den Port 3000 mit dem Globus öffnen.' },
   { t: 'Vorschau zeigt rote Fehlerseite', l: 'Das ist gut – der Fehler sagt, was fehlt. Komplett markieren, kopieren, Debug-Prompt. Meist: eine gelöschte oder umbenannte Datei, oder ein fehlendes <code>npm install</code>.' },
   { t: '„Module not found“', l: 'Ein Paket fehlt. <code>npm install</code> im Terminal, Dev-Server neu starten. Oder Claude: „Installiere die fehlende Dependency und starte neu.“' },
@@ -16,7 +16,7 @@ const probleme = [
   { t: 'Login funktioniert lokal, aber nicht auf Vercel', l: 'Supabase → Authentication → URL Configuration: Site URL = Vercel-URL, und die Vercel-URL zusätzlich bei „Redirect URLs“ eintragen (mit <code>/**</code> am Ende).' },
   { t: 'Vercel-Build schlägt fehl, lokal geht alles', l: 'Meist fehlen Environment-Variablen auf Vercel oder <code>npm run build</code> wurde lokal nie ausgeführt (dev ist toleranter). Lokal <code>npm run build</code>, Fehler mit Claude beheben, dann pushen.' },
   { t: 'Git: „push rejected“ / „non-fast-forward“', l: 'Jemand (Markus?) hat im Repo etwas geändert. Claude: „git pull, Konflikte erklären, dann push.“ Oder Source Control → „…“ → Pull, dann Sync.' },
-  { t: 'Codespace-Kontingent aufgebraucht', l: 'Codespaces nach dem Arbeiten stoppen. GitHub Education beantragen (education.github.com, NDU-Mail) – verdoppelt das Kontingent. Notfall: 2-Kern-Maschine statt 4-Kern wählen.' },
+  { t: 'Codespace-Kontingent aufgebraucht', l: 'Codespaces nach dem Arbeiten stoppen. GitHub Education beantragen (education.github.com, NDU-Mail) – erhöht das Kontingent von 120 auf 180 Core-Stunden pro Monat (+50 %). Notfall: 2-Kern-Maschine statt 4-Kern wählen.' },
 ];
 const karten = [
   'Benenne in der Datei mit den Beispieldaten die Spalte <code>titel</code> in <code>title</code> um – aber nur dort.',
@@ -25,7 +25,7 @@ const karten = [
   'Lass den RSVP-Button beim Klick den Zähler um 2 statt um 1 erhöhen.',
   'Entferne das Wort <code>"use client"</code> aus einer Komponente, die einen Button mit onClick hat.',
   'Lass den Filter „Alle“ nur noch Sport-Events anzeigen.',
-  'Ändere die Weiterleitung von <code>/meine-events</code> so, dass sie auch angemeldete Nutzer zur Anmeldung schickt.',
+  'Ändere die Weiterleitung von <code>/meine-events</code> so, dass sie auch Angemeldete zur Anmeldung schickt.',
   'Vertausche Datum und Uhrzeit in der Anzeige der Eventkarte.',
 ];
 ---

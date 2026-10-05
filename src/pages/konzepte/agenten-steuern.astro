@@ -18,7 +18,7 @@ import FooterNav from '../../components/FooterNav.astro';
   </ul>
 
   <h2>CLAUDE.md – das Gedächtnis des Projekts</h2>
-  <p>Die Datei wird in jeder Session automatisch gelesen. Alles, was dauerhaft gelten soll, gehört hinein: Stack-Entscheidungen, Konventionen, Sprache, Verbote. Alles, was <em>entschieden</em> wurde, in <code>docs/ENTSCHEIDUNGEN.md</code>. Pflegen Sie beides wie ein Onboarding-Dokument für eine neue Kollegin, die jeden Morgen zum ersten Mal da ist.</p>
+  <p>Die Datei wird in jeder Session automatisch gelesen. Alles, was dauerhaft gelten soll, gehört hinein: Stack-Entscheidungen, Konventionen, Sprache, Verbote. Alles, was <em>entschieden</em> wurde, in <code>docs/ENTSCHEIDUNGEN.md</code>. Pflegen Sie beides wie ein Onboarding-Dokument für ein neues Teammitglied, das jeden Morgen zum ersten Mal da ist.</p>
   <Prompt>Wir haben gerade entschieden, dass alle Datumsangaben im Format „Mi, 21.10., 07:30“ angezeigt werden. Trag das in docs/ENTSCHEIDUNGEN.md ein und ergänze in CLAUDE.md eine Regel dazu, damit du es in zukünftigen Sessions beachtest.</Prompt>
   <Callout type="tip" title="Regel">
     <p>Wenn Sie Claude zum zweiten Mal dasselbe korrigieren müssen, gehört die Korrektur in die CLAUDE.md.</p>
@@ -26,7 +26,7 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Eigene Befehle (Commands & Skills)</h2>
   <p><code>/erklaer</code>, <code>/pruefe</code> und <code>/commit</code> sind Markdown-Dateien in <code>.claude/commands/</code> – wiederverwendbare Prompts mit festen Regeln. Sie können weitere anlegen lassen: <code>/story</code> (Story aus einem Satz mit Kriterien erzeugen), <code>/review</code> (strenge Prüfung), <code>/deploy-check</code> (vor dem Push Build + Secrets prüfen). Skills sind dasselbe in größer: ganze Arbeitsweisen, die Claude bei Bedarf lädt.</p>
-  <Prompt>Leg einen neuen Command /story an: Ich gebe einen Satz („Organisatoren sollen Events absagen können“), du formulierst daraus eine User Story mit 3–5 Akzeptanzkriterien im Format Gegeben/Wenn/Dann inklusive Negativfall, hängst sie ans Backlog und fragst, ob sie priorisiert werden soll.</Prompt>
+  <Prompt>Leg einen neuen Command /story an: Ich gebe einen Satz („Organisator*innen sollen Events absagen können“), du formulierst daraus eine User Story mit 3–5 Akzeptanzkriterien im Format „Gegeben: … Wenn …, dann …“ inklusive Negativfall, hängst sie ans Backlog und fragst, ob sie priorisiert werden soll.</Prompt>
 
   <h2>Plan Mode, Permissions, Auto-Accept</h2>
   <table>
@@ -44,7 +44,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Claude kann Teilaufgaben an eigene Unter-Agenten mit frischem Kontext geben – z. B. „ein Agent recherchiert die Supabase-Doku, einer schreibt die Tests, der Hauptagent baut“. Für Sie zwei praktische Fälle: <strong>Review durch einen zweiten Agenten</strong> (frischer Blick, kein Eigeninteresse am eigenen Code) und <strong>große Recherchen</strong>, die den Hauptkontext nicht verstopfen sollen. Mehr dazu im <a href="/konzepte/ausblick">Ausblick</a>.</p>
 
   <h2>Kosten & Limits</h2>
-  <p>Claude Pro hat ein Kontingent pro 5-Stunden-Fenster. Was es frisst: große Kontexte (ganze Projekte lesen lassen), lange Sessions ohne <code>/clear</code>, Opus statt Sonnet für Routine. Empfehlung: Sonnet für die Umsetzung, Opus für Plan und Review, <code>/clear</code> nach jeder Story. Wenn das Limit kommt: Pause, Kontext aufräumen – oder im Browser auf claude.ai weiterdenken, das zählt separat.</p>
+  <p>Claude Pro hat ein Nutzungskontingent pro 5-Stunden-Fenster und zusätzlich ein Wochenlimit; claude.ai und Claude Code teilen sich dieses Kontingent. Was es frisst: große Kontexte (ganze Projekte lesen lassen), lange Sessions ohne <code>/clear</code>, Opus statt Sonnet für Routine. Empfehlung: Sonnet für die Umsetzung, Opus für Plan und Review, <code>/clear</code> nach jeder Story. Wenn das Limit kommt: Pause machen und Kontext aufräumen – ein Ausweichen auf claude.ai hilft nicht, es zählt zum selben Kontingent.</p>
 
   <FooterNav prev={{ href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' }} next={{ href: '/tag-2#uebung-5', t: 'Übung 5 · Deploy' }} />
 </Layout>
