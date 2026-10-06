@@ -343,6 +343,7 @@
 .dt-status { width: 1.1em; height: 1.1em; }
 .dt-status-neu { color: var(--green); }
 .dt-status-verfehlt { color: var(--accent); }
+.dt-status-hinzu { color: var(--fg); }
 .dt-neu { background: var(--green-soft); }
 .dt-zeile-markiert { background: var(--yellow-soft); font-weight: 700; }
 

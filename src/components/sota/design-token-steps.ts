@@ -97,7 +97,7 @@ export function ersetzen(seite: Seite, von: string, nach: string): { seite: Seit
 export function kopieren(seite: Seite, vorlage: StelleId): Seite {
   const v = seite.stellen.find((s) => s.id === vorlage);
   if (!v) throw new Error(`Vorlage ${vorlage} fehlt.`);
-  return { ...seite, stellen: [...seite.stellen, { id: 'teilen', name: 'Button „Teilen“', datei: 'TeilenButton.tsx', code: v.code }] };
+  return { ...seite, stellen: [...seite.stellen, { id: 'teilen', name: 'Button „Teilen“', datei: 'Teilen.tsx', code: v.code }] };
 }
 
 const leer = (): Record<Art, StelleId[]> => ({ token: [], hex: [] });

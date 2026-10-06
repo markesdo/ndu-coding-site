@@ -1,6 +1,6 @@
 // Szene „Ein Wert, viele Stellen“ für /konzepte/design-system (Tag 3). Logik und Texte: design-token-steps.ts.
 import type { CSSProperties, ReactNode } from 'react';
-import { Check, X } from 'lucide-react';
+import { Check, Plus, X } from 'lucide-react';
 import Stage, { type StageNav, type StageStep } from './Stage';
 import { STEPS, farbe, farben, zustandAt, type Art, type Seite, type StelleId, type Zustand } from './design-token-steps';
 import './stage.css';
@@ -116,13 +116,13 @@ function Code({ z, seite, art, markiert }: { z: Zustand; seite: Seite; art: Art;
             <span className="dt-datei">{s.datei}</span>
             <code>{s.code}</code>
             <Swatch hex={farbe(seite, s)} />
-            <Status neu={neu} verfehlt={verfehlt} />
+            <Status neu={neu} verfehlt={verfehlt} hinzu={neu && s.id === 'teilen'} />
           </li>
         );
       })}
       {teilenFehlt && (
         <li className="dt-versteckt" aria-hidden="true">
-          <span className="dt-datei">TeilenButton.tsx</span>
+          <span className="dt-datei">Teilen.tsx</span>
           <code>bg-accent</code>
         </li>
       )}
@@ -134,7 +134,8 @@ function Swatch({ hex }: { hex: string }) {
   return <span className="dt-swatch" style={{ background: hex }} aria-hidden="true" />;
 }
 
-function Status({ neu = false, verfehlt = false }: { neu?: boolean; verfehlt?: boolean }) {
+function Status({ neu = false, verfehlt = false, hinzu = false }: { neu?: boolean; verfehlt?: boolean; hinzu?: boolean }) {
+  if (hinzu) return <Plus className="dt-status dt-status-hinzu" aria-label="neu hinzugekommen" />;
   if (verfehlt) return <X className="dt-status dt-status-verfehlt" aria-label="nicht ersetzt" />;
   if (neu) return <Check className="dt-status dt-status-neu" aria-label="geändert" />;
   return <span className="dt-status" aria-hidden="true" />;
