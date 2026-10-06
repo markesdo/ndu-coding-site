@@ -199,12 +199,16 @@ async function starten(buehne: HTMLElement) {
     else beenden();
   };
   const beiZeiger = () => beenden();
-  // Größenänderung nur, wenn sie die gemessenen Flugziele verschiebt: Handys feuern „resize“ auch, wenn die
-  // Adressleiste ein- oder ausfährt – das soll die Eröffnung nicht abbrechen.
+  // Jede Größenänderung verschiebt die gemessenen Flugziele (Größen hängen an vw und vh) → ans Ende springen.
+  // Ausnahme nur auf Touch-Geräten: Dort feuert „resize“ auch, wenn die Adressleiste ein- oder ausfährt
+  // (nur die Höhe, um wenige Dutzend Pixel) – das soll die Eröffnung nicht abbrechen. Am Laptop bricht auch F11 ab.
   const startBreite = innerWidth;
   const startHoehe = innerHeight;
+  const touch = matchMedia('(pointer: coarse)').matches;
   const beiGroesse = () => {
-    if (Math.abs(innerWidth - startBreite) > 2 || Math.abs(innerHeight - startHoehe) > 140) beenden();
+    const dB = Math.abs(innerWidth - startBreite);
+    const dH = Math.abs(innerHeight - startHoehe);
+    if (dB > 2 || dH > (touch ? 140 : 2)) beenden();
   };
   window.addEventListener('keydown', beiTaste, optionen);
   window.addEventListener('pointerdown', beiZeiger, optionen);
