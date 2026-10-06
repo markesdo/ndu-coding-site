@@ -46,12 +46,16 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Das optionale Issue 8 (KI schreibt die Eventbeschreibung) ist der kleinste Fall. Dahinter: Chat mit euren Daten, automatische Zusammenfassungen, Klassifizierung, Agenten, die für Nutzer*innen Aufgaben erledigen. Vier Dinge, die Produktverantwortliche dafür verstehen müssen: <strong>Kosten pro Aufruf</strong> (Tokens), <strong>Latenz</strong> (Sekunden, nicht Millisekunden – Streaming hilft), <strong>Qualitätssicherung</strong> (wie prüft ihr, ob die KI-Antwort gut war? Evals: automatisierte Testreihen, die KI-Antworten systematisch bewerten), und <strong>Daten</strong> (was schickt ihr an den Anbieter, dürft ihr das?).</p>
 
   <h2>Grenzen & Risiken – ehrlich</h2>
-  <div class="grid">
-    <div class="card"><h3>Sicher aussehender Code</h3><p class="small muted">Der Agent produziert professionell aussehenden Code mit Anfängerfehlern. Ohne Tests, Review und Checkliste merkt ihr es erst, wenn jemand anders es merkt.</p></div>
-    <div class="card"><h3>Wartung</h3><p class="small muted">Software altert. Pakete bekommen Sicherheitslücken, Dienste ändern APIs. Ein Prototyp ohne Pflege ist nach einem Jahr kaputt. Plant das ein – oder schaltet ihn bewusst ab.</p></div>
-    <div class="card"><h3>Kosten & Lock-in</h3><p class="small muted">Abos (Claude, Vercel, Supabase) skalieren mit Nutzung. Was gratis anfängt, kostet mit 10.000 Nutzer*innen – rechnet, bevor ihr wachst. Und: Euer Code gehört euch, eure Daten liegen bei Dritten.</p></div>
-    <div class="card"><h3>Verstehen vs. bedienen</h3><p class="small muted">Ihr könnt jetzt bauen lassen, was ihr nicht versteht. Das ist mächtig und gefährlich. Die Regel bleibt: Lasst euch alles erklären, was ihr nicht in einem Satz jemand anderem erklären könntet.</p></div>
-  </div>
+  <dl class="begriffe">
+    <dt>Sicher aussehender Code</dt>
+    <dd><p>Der Agent produziert professionell aussehenden Code mit Anfängerfehlern. Ohne Tests, Review und Checkliste merkt ihr es erst, wenn jemand anders es merkt.</p></dd>
+    <dt>Wartung</dt>
+    <dd><p>Software altert. Pakete bekommen Sicherheitslücken, Dienste ändern APIs. Ein Prototyp ohne Pflege ist nach einem Jahr kaputt. Plant das ein – oder schaltet ihn bewusst ab.</p></dd>
+    <dt>Kosten & Lock-in</dt>
+    <dd><p>Abos (Claude, Vercel, Supabase) skalieren mit Nutzung. Was gratis anfängt, kostet mit 10.000 Nutzer*innen – rechnet, bevor ihr wachst. Und: Euer Code gehört euch, eure Daten liegen bei Dritten.</p></dd>
+    <dt>Verstehen vs. bedienen</dt>
+    <dd><p>Ihr könnt jetzt bauen lassen, was ihr nicht versteht. Das ist mächtig und gefährlich. Die Regel bleibt: Lasst euch alles erklären, was ihr nicht in einem Satz jemand anderem erklären könntet.</p></dd>
+  </dl>
 
   <Callout type="concept" title="Was bleibt">
     <p>Werkzeuge wechseln jedes Jahr. Was bleibt: ein Problem präzise beschreiben, es in prüfbare Schritte zerlegen, Ergebnisse kritisch abnehmen, und wissen, wann man Hilfe holt. Das habt ihr in drei Tagen geübt – an Software, aber es gilt für alles, was ihr bauen lassen werdet.</p>

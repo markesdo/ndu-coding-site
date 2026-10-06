@@ -26,12 +26,12 @@ import Callout from '../components/Callout.astro';
   <p>Zwischen Tag 2 und 3 baut ihr <strong>euren eigenen Mini-Prototyp</strong> – eine Idee, die euch interessiert (gern ein Vorgriff auf das Innolab). An Tag 3 stellt ihr ihn vor.</p>
 
   <h2>Der rote Faden</h2>
-  <div class="grid faden">
-    <div class="card"><h3>1 · Spezifizieren</h3><p class="small muted">Produkt-Brief → Issue → Akzeptanzkriterium. Das Backlog ist hier die Arbeitsliste für den Agenten.</p></div>
-    <div class="card"><h3>2 · Bauen lassen</h3><p class="small muted">Ein Issue pro Durchgang. Claude fragt bei Unklarem nach, baut und belegt jedes Kriterium. Kleine Schritte schlagen große.</p></div>
-    <div class="card"><h3>3 · Verifizieren</h3><p class="small muted">Im Browser durchklicken, Akzeptanzkriterien abhaken, Fehler als Text zurückgeben. Ihr seid die Qualitätssicherung.</p></div>
-    <div class="card"><h3>4 · Sichern</h3><p class="small muted">Commit & Push nach jedem Issue. Git ist euer Undo-Knopf – und der Weg, wie ihr Hilfe bekommt.</p></div>
-  </div>
+  <ol class="faden" role="list">
+    <li><span class="nr" aria-hidden="true">1</span><h3>Spezifizieren</h3><p>Produkt-Brief → Issue → Akzeptanzkriterium. Das Backlog ist hier die Arbeitsliste für den Agenten.</p></li>
+    <li><span class="nr" aria-hidden="true">2</span><h3>Bauen lassen</h3><p>Ein Issue pro Durchgang. Claude fragt bei Unklarem nach, baut und belegt jedes Kriterium. Kleine Schritte schlagen große.</p></li>
+    <li><span class="nr" aria-hidden="true">3</span><h3>Verifizieren</h3><p>Im Browser durchklicken, Akzeptanzkriterien abhaken, Fehler als Text zurückgeben. Ihr seid die Qualitätssicherung.</p></li>
+    <li><span class="nr" aria-hidden="true">4</span><h3>Sichern</h3><p>Commit & Push nach jedem Issue. Git ist euer Undo-Knopf – und der Weg, wie ihr Hilfe bekommt.</p></li>
+  </ol>
 
   <h2>Bevor es losgeht</h2>
   <p>Mitbringen: Laptop mit Ladegerät, Handy (für die Zwei-Faktor-Bestätigung), eine <strong>Kreditkarte für Claude Pro</strong> (21,60 €/Monat, monatlich kündbar – nach der Demo an Tag 3 kündigen), Google Chrome installiert. Mehr nicht – Accounts legen wir an Tag 1 gemeinsam an. Siehe <a href="/setup">Setup & Accounts</a>.</p>

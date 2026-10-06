@@ -1,7 +1,7 @@
 ---
 const { prev, next } = Astro.props as { prev?: { href: string; t: string }; next?: { href: string; t: string } };
 ---
-<div class="footer-nav">
-  <span>{prev && <a href={prev.href}>← {prev.t}</a>}</span>
-  <span>{next && <a href={next.href}>{next.t} →</a>}</span>
-</div>
+<nav class="footer-nav" aria-label="Zurück und weiter">
+  {prev && <a class="prev" href={prev.href}><span class="fn-cap">Zurück</span><span>← {prev.t}</span></a>}
+  {next && <a class="next" href={next.href}><span class="fn-cap">Weiter</span><span>{next.t} →</span></a>}
+</nav>
