@@ -127,7 +127,7 @@ const ZUSTAENDE: Zustand[] = [
   },
   { token: T1, hex: H1, code: true, geaendert: leer(), verfehlt: ERSATZ.verfehlt, markiert: ERSATZ.verfehlt, zeilen: { token: 1, hex: ERSATZ.getroffen.length } },
   { token: T2, hex: H2, code: true, geaendert: { token: ['teilen'], hex: ['teilen'] }, verfehlt: ERSATZ.verfehlt, markiert: ['teilen'], zeilen: { token: 1, hex: ERSATZ.getroffen.length } },
-  { token: T2, hex: H2, code: true, geaendert: leer(), verfehlt: [], markiert: [], zeilen: { token: 1, hex: ERSATZ.getroffen.length } },
+  { token: T2, hex: H2, code: true, geaendert: leer(), verfehlt: ERSATZ.verfehlt, markiert: [], zeilen: { token: 1, hex: ERSATZ.getroffen.length } },
 ];
 
 export const STEPS: Schritt[] = [

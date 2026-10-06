@@ -49,6 +49,10 @@ describe('design-token-steps', () => {
     expect(z.zeilen.hex).toBe(3);
   });
 
+  it('Schritt 7: die verfehlten Stellen bleiben in der Bilanz markiert', () => {
+    expect(zustandAt(7).verfehlt).toStrictEqual(['badge', 'fokus']);
+  });
+
   it('Ersetzen unterscheidet Groß- und Kleinschreibung wie ein Editor', () => {
     const seite: Seite = { art: 'hex', stellen: [{ id: 'badge', name: '', datei: '', code: 'bg-[#E8472B]' }] };
     const r = ersetzen(seite, '#e8472b', BLAU);
