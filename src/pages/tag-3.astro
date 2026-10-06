@@ -17,8 +17,9 @@ import FooterNav from '../components/FooterNav.astro';
     <Block time="10:20–10:35" type="pause" title="Pause" />
     <Block time="10:35–12:00" type="uebung" title="Werkstatt 1" href="#werkstatt">Blocker lösen, dann Peer-Review im Tandem mit der Checkliste.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:45" type="konzept" title="Konzept 8 · Ausblick 2026" href="/konzepte/ausblick">Figma-MCP → Code, Agent-Teams, Claude Code im Web, Codex, eigene Skills, Grenzen.</Block>
-    <Block time="13:45–15:15" type="uebung" title="Werkstatt 2" href="#werkstatt">Feinschliff, Demo vorbereiten, README.</Block>
+    <Block time="13:00–13:30" type="konzept" title="Konzept 8 · Teil 1 · Design-System" href="/konzepte/design-system">Warum Tokens, drei Ebenen, in sechs Schritten zum eigenen System. Demo: Claude Design.</Block>
+    <Block time="13:30–13:45" type="konzept" title="Konzept 8 · Teil 2 · Ausblick 2026" href="/konzepte/ausblick">Figma-MCP → Code, Agent-Teams, Claude Code im Web, Codex, eigene Skills, Grenzen.</Block>
+    <Block time="13:45–15:15" type="uebung" title="Werkstatt 2" href="#werkstatt">Feinschliff, Demo vorbereiten, README. Optional: Design-System für die eigene App.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:30" type="plenum" title="Demos" href="#demos">3–4 Minuten pro Person/Tandem.</Block>
     <Block time="16:30–17:00" type="plenum" title="Abschluss">Wie es weitergeht, Bewertung, Feedback.</Block>
@@ -31,6 +32,8 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus Issues im Format von docs/BACKLOG.md (Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn) und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
   <h3>Review durch den Agenten</h3>
   <Prompt note="In einer frischen Session (/clear) – die Prüfung soll nicht aus demselben Kontext kommen, der den Code geschrieben hat.">Prüfe dieses Projekt so streng wie ein erfahrenes Entwicklungsteam vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
+  <h3 id="design-system">Optional: Design-System (Werkstatt 2)</h3>
+  <p>Wer mit der App fertig ist oder merkt, dass sie zusammengestückelt wirkt: Räumt die Oberfläche in sechs Schritten auf – Inventur, Tokens, Komponenten, Styleguide-Seite, Regeln, nächstes Issue damit bauen. Die Prompts stehen auf der Seite <a href="/konzepte/design-system#bauen">Design-System</a>. Committet nach jedem Schritt und prüft im Browser, dass die App danach noch genauso aussieht.</p>
   <h3>Demo vorbereiten (Werkstatt 2)</h3>
   <Prompt>Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshot-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
   <p>Fallback für die Live-Demo: 2-Minuten-Screenrecording (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows: Xbox Game Bar <kbd>Win</kbd><kbd>G</kbd>) – falls das WLAN streikt.</p>

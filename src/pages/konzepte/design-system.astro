@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Callout from '../../components/Callout.astro';
+import Prompt from '../../components/Prompt.astro';
+import FooterNav from '../../components/FooterNav.astro';
+import EinWertVieleStellen from '../../components/sota/EinWertVieleStellen.tsx';
+
+// Die Tokens aus src/app/globals.css des Kurs-Templates (ndu-coding-2026).
+const tokens = [
+  { name: 'background', wert: '#fafaf7', wofuer: 'Seitenhintergrund' },
+  { name: 'foreground', wert: '#16161a', wofuer: 'Text' },
+  { name: 'accent', wert: '#e8472b', wofuer: 'Hauptaktion, Links, Hervorhebung' },
+  { name: 'accent-soft', wert: '#fde8e3', wofuer: 'heller Hintergrund zur Akzentfarbe' },
+  { name: 'muted', wert: '#6b6b76', wofuer: 'Nebentext, Datum, Hinweise' },
+  { name: 'card', wert: '#ffffff', wofuer: 'Karten und Felder' },
+  { name: 'border', wert: '#e6e4de', wofuer: 'Linien und Rahmen' },
+];
+---
+<Layout title="Design-System – Entscheidungen einmal treffen">
+  <span class="eyebrow">Konzept 8 · Tag 3 · Teil 1</span>
+  <h1>Design-System – Entscheidungen einmal treffen</h1>
+  <p class="lead">Ohne System entscheidet jeder Prompt neu, wie ein Button aussieht. Ein Design-System trifft diese Entscheidungen einmal, gibt ihnen Namen und schreibt sie auf – für euch, für euer Team und für den Agenten.</p>
+
+  <h2>Warum</h2>
+  <p>Jedes Issue, das Claude umsetzt, erzeugt Oberfläche. Steht nirgends, wie sie aussehen soll, wählt Claude plausible Werte: ein etwas anderes Rot, mal 12, mal 16 Pixel Abstand, mal runde, mal eckige Ecken. Jede Entscheidung für sich ist vertretbar. Nach zwanzig Issues wirkt die App trotzdem zusammengestückelt – Designer*innen nennen das <strong>Drift</strong>.</p>
+  <p>Dazu kommt: Claude orientiert sich an dem, was im Code steht. Finden sich dort drei Rottöne, sind die Balken für die nächste Farbe flach, und ein vierter Ton ist so wahrscheinlich wie jeder andere (<a href="/konzepte/llm">Was ein Sprachmodell tut</a>). Steht dort ein Token <code>accent</code> und eine Regel, ihn zu verwenden, werden die Balken spitz. Ein Design-System ist also auch Kontext – derselbe Hebel wie ein gutes Issue.</p>
+  <p>Für euch als Produktverantwortliche hat es einen zweiten Nutzen: Designentscheidungen lassen sich an <em>einer</em> Stelle ändern. Neue Markenfarbe, besserer Kontrast, Dark Mode – eine Zeile statt einer Suche durch zwanzig Dateien.</p>
+
+  <h2>Drei Ebenen</h2>
+  <div class="grid">
+    <div class="card"><h3>1 · Tokens</h3><p class="small muted">Benannte Werte für Farben, Schrift, Abstände und Eckenradien. Benannt nach ihrer <strong>Rolle</strong>, nicht nach ihrem Aussehen: <code>accent</code> statt <code>rot</code> – sonst heißt das Token „rot“, wenn es längst blau ist.</p></div>
+    <div class="card"><h3>2 · Komponenten</h3><p class="small muted">Bausteine aus Tokens, mit allen Zuständen: ein Button ist normal, unter der Maus, fokussiert, deaktiviert oder lädt. Eine EventCard gibt es mit und ohne Bild, offen oder abgesagt.</p></div>
+    <div class="card"><h3>3 · Regeln</h3><p class="small muted">Was gilt, aufgeschrieben in <code>docs/DESIGN.md</code>: welche Tokens wofür, welche Komponenten es gibt, was ihr bewusst nicht tut. Dazu eine Zeile in der <code>CLAUDE.md</code>, damit Claude die Datei bei jeder Änderung an der Oberfläche liest.</p></div>
+  </div>
+
+  <p>Euer Template hat die erste Ebene schon. In <code>src/app/globals.css</code> stehen diese Tokens; Tailwind macht daraus Klassen wie <code>bg-accent</code> oder <code>text-muted</code>. In <a href="/tag-1#uebung-1">Übung 1 b)</a> habt ihr das erste davon geändert – an einer Stelle, und die ganze App hat sich angepasst.</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Tokens im Kurs-Template">
+    <table>
+      <tr><th>Token</th><th>Wert</th><th>Wofür</th></tr>
+      {tokens.map((t) => (
+        <tr>
+          <td><code>{t.name}</code></td>
+          <td><span class="token-swatch" style={`background:${t.wert}`} aria-hidden="true"></span> <code>{t.wert}</code></td>
+          <td>{t.wofuer}</td>
+        </tr>
+      ))}
+    </table>
+  </div>
+
+  <h2>Ein Wert, viele Stellen</h2>
+  <p>Dieselbe Mini-App zweimal: links mit Token, rechts mit festen Farbwerten im Code. Im Browser sehen beide gleich aus – bis sich die Farbe ändern soll.</p>
+  <p class="hint small muted">Klickt auf die Animation und blättert mit den Pfeiltasten – oder nutzt die Buttons.</p>
+  <EinWertVieleStellen client:visible />
+
+  <h2 id="bauen">So baut ihr eins – in sechs Schritten</h2>
+  <p>Ihr müsst kein Design-System entwerfen. Ihr räumt auf, was schon da ist, und gebt den Entscheidungen Namen. Jeder Schritt ist ein eigener Auftrag; committet nach jedem.</p>
+  <ol class="steps">
+    <li><strong>Inventur</strong> Was steckt im Code? Fast immer mehr Werte, als ihr denkt.
+      <Prompt label="Inventur">Liste alle Farben, Schriftgrößen, Abstände und Eckenradien auf, die in src/ vorkommen – mit Datei und Anzahl. Markiere Werte, die fast gleich sind, zum Beispiel zwei ähnliche Rottöne. Ändere noch nichts.</Prompt>
+    </li>
+    <li><strong>Tokens festlegen</strong> Aus vielen Werten werden wenige, nach Rolle benannt.
+      <Prompt label="Tokens">Fasse die Inventur zu wenigen Tokens in src/app/globals.css zusammen, im bestehenden @theme-Block: Farben nach ihrer Rolle benannt, höchstens fünf Abstände, zwei bis drei Eckenradien. Ersetze danach alle festen Werte im Code durch diese Tokens. Die App soll danach genauso aussehen wie vorher – sag mir, welche Seiten ich vergleichen soll.</Prompt>
+    </li>
+    <li><strong>Komponenten</strong> Ein Baustein pro Zweck, mit allen Zuständen.
+      <Prompt label="Komponenten">Bau aus den Tokens eine Button-Komponente mit den Varianten primär und sekundär und allen Zuständen: normal, Hover, Fokus, deaktiviert, lädt. Ersetze alle bestehenden Buttons dadurch und sag mir, wo sich etwas sichtbar verändert hat.</Prompt>
+    </li>
+    <li><strong>Styleguide-Seite</strong> Alles auf einer Seite – so seht ihr Lücken und Ausreißer sofort.
+      <Prompt label="Styleguide">Leg eine Seite /styleguide an, die alle Tokens zeigt (Farbfelder mit Name und Wert, Schriftgrößen, Abstände) und alle Komponenten in allen Zuständen. Die Seite ist nur für uns und kommt nicht in die Navigation.</Prompt>
+    </li>
+    <li><strong>Regeln aufschreiben</strong> Erst was aufgeschrieben ist, gilt auch in der nächsten Session.
+      <Prompt label="Regeln">Schreib docs/DESIGN.md: die Tokens mit ihrem Zweck, die Komponenten mit ihren Zuständen, drei Regeln (zum Beispiel: nur Tokens, keine festen Farbwerte; neue Oberfläche zuerst aus bestehenden Komponenten bauen) und eine kurze Liste, was wir bewusst nicht tun. Ergänze in CLAUDE.md eine Zeile: Bei Änderungen an der Oberfläche zuerst docs/DESIGN.md lesen.</Prompt>
+    </li>
+    <li><strong>Das nächste Issue damit bauen</strong> Wie gewohnt umsetzen lassen – und danach prüfen, ob sich etwas am System vorbei eingeschlichen hat.
+      <Prompt label="Prüfen">Prüfe die Änderungen seit dem letzten Commit: Sind feste Farbwerte, Abstände oder Button-Varianten dazugekommen, die nicht aus docs/DESIGN.md stammen? Liste sie auf und schlag vor, welches Token oder welche Komponente stattdessen passt.</Prompt>
+    </li>
+  </ol>
+
+  <Callout type="tip" title="Issue und Design-System teilen sich die Arbeit">
+    <p>Ein Issue sagt kein Wort über Farben (<a href="/konzepte/spezifikation">Von der Idee zur Spezifikation</a>) – nicht, weil das Aussehen egal wäre, sondern weil es hier geregelt ist. Im Issue steht das <em>Was</em>; wie es aussieht, sagt das Design-System. Reicht das nicht, genügt im Issue ein Satz: „gemäß docs/DESIGN.md“.</p>
+  </Callout>
+
+  <h2>Woher das Design kommt</h2>
+  <div class="grid">
+    <div class="card"><h3>Aus dem Code</h3><p class="small muted">Was ihr schon gebaut habt, ist der Startpunkt: Inventur, aufräumen, benennen – die sechs Schritte oben. Der übliche Weg für euren Kurs-Prototyp.</p></div>
+    <div class="card"><h3>Aus Figma</h3><p class="small muted">Im Innolab entsteht das Design in Figma. Über den Figma-MCP liest Claude Variablen und Komponenten und übernimmt sie als Tokens in <code>globals.css</code> (<a href="/konzepte/ausblick">Ausblick</a>). Dann ist Figma die Quelle und der Code folgt.</p></div>
+    <div class="card"><h3>Mit Claude Design</h3><p class="small muted">Anthropics Design-Werkzeug (Research Preview, im Pro-Plan enthalten). <code>/design-sync</code> in Claude Code liest eure Tokens und Komponenten, sodass Claude Design mit euren echten Bausteinen entwirft; über „Hand off to Claude Code“ kommt der Entwurf zurück ins Projekt. Optional – es gibt noch keine Versionsgeschichte und keine gemeinsame Bearbeitung. Im Kurs zeigen wir es als Demo.</p></div>
+  </div>
+
+  <p>Selbst ausprobieren: Der Werkstatt-Track <a href="/tag-3#design-system">Design-System</a> an Tag 3 führt durch die sechs Schritte an eurer eigenen App.</p>
+
+  <Callout type="concept" title="Der eine Satz zum Mitnehmen">
+    <p>Ein Design-System ist eine Entscheidung, die einmal getroffen, benannt und aufgeschrieben wird – damit weder ihr noch der Agent sie bei jedem Issue neu trifft.</p>
+  </Callout>
+
+  <FooterNav prev={{ href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' }} next={{ href: '/konzepte/ausblick', t: 'Ausblick 2026' }} />
+</Layout>
+
+<style>
+  .token-swatch { display: inline-block; width: .9em; height: .9em; border-radius: 3px; border: 1px solid var(--border); vertical-align: -.1em; }
+</style>
