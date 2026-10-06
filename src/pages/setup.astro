@@ -32,7 +32,7 @@ import { bild } from '../components/anleitung-bilder';
   <p class="small muted">Die Screenshots stammen von einem Testdurchgang mit einem neuen Konto am 5.10.2026. Die Oberflächen der Anbieter ändern sich laufend; wenn ein Button anders heißt oder woanders sitzt, sucht nach dem Wort aus der Anleitung. Klick auf ein Bild zeigt den ganzen Bildschirm; „Als Präsentation zeigen“ blättert mit den Pfeiltasten durch die Schritte.</p>
 
   <nav class="stepbar" aria-label="Schritte des Setups">
-    {[['github', '1'], ['claude-pro', '2'], ['repo', '3'], ['codespace', '4'], ['claude-code', '5'], ['app', '6'], ['explain', '7'], ['collaborator', '8'], ['education', '9'], ['orientierung', 'Codespace'], ['stoppen', 'Stoppen']].map(([id, t]) => (
+    {[['github', '1'], ['claude-pro', '2'], ['repo', '3'], ['codespace', '4'], ['claude-code', '5'], ['app', '6'], ['explain', '7'], ['collaborator', '8'], ['education', '9'], ['orientierung', 'Codespace'], ['stoppen', 'Stoppen'], ['lokal', 'Lokal']].map(([id, t]) => (
       <a href={`#${id}`} data-step={id}>{t}</a>
     ))}
   </nav>
@@ -181,6 +181,67 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('setup/budget-1-menue'), alt: 'Budgets and alerts: Zeile Codespaces mit Budget 0 $ und Stop usage Yes, geöffnetes Menü mit Edit und Delete', text: '<em>Settings → Billing and licensing → Budgets and alerts</em>. In der Zeile <em>Codespaces</em> (1) auf „…“ → <em>Edit</em> (2) und einen kleinen Betrag eintragen, z. B. 5 $. „Stop usage“ bleibt an. Das Budget gilt pro Monat; nach dem Kurs wieder auf 0 setzen. <strong>Nicht auf <em>Delete</em> klicken</strong> – ohne Budget ist die Nutzung unbegrenzt. Dafür muss eine Zahlungsmethode hinterlegt sein.', marks: [{ x: 463, y: 350, w: 808, h: 62, n: 1 }, { x: 1097, y: 404, w: 150, h: 26, n: 2 }] },
   ]} />
   <p class="small muted">Kein zweites GitHub-Konto anlegen, um neues Kontingent zu bekommen – die Nutzungsbedingungen von GitHub erlauben nur ein kostenloses Konto pro Person.</p>
+  <p>Oder ihr arbeitet ab Tag 2 auf dem eigenen Laptop weiter – das verbraucht kein Kontingent: <a href="#lokal">Alternative: lokal auf dem Laptop</a>.</p>
+
+  <!-- TODO Markus: Windows-Pfad von Markus testen (Installation, npm in PowerShell, Login, npm run dev). -->
+  <h2 id="lokal">Alternative: lokal auf dem Laptop (ab Tag 2)</h2>
+  <p>Der Codespace ist der Standard: Alle haben dieselbe Umgebung, und an Tag 1 arbeiten alle dort. Ab Tag 2 könnt ihr dasselbe Repo auch auf eurem eigenen Laptop öffnen – mit VS Code und Claude Code, beides installiert ihr einmal selbst.</p>
+  <div class="compare">
+    <div class="card good"><h3>Lohnt sich, wenn …</h3><ul class="small">
+      <li>euer Codespace-Kontingent knapp wird – lokal gibt es keine Stundengrenze</li>
+      <li>ihr Claude euren eigenen Chrome-Browser steuern lassen wollt (Claude in Chrome) – dafür müssen Claude Code und Chrome auf demselben Rechner laufen</li>
+      <li>ihr auf eurem eigenen Laptop arbeitet und Software installieren dürft</li>
+    </ul></div>
+    <div class="card bad"><h3>Bleibt beim Codespace, wenn …</h3><ul class="small">
+      <li>ihr unsicher seid – der Codespace funktioniert, und Hilfe ist dort einfacher</li>
+      <li>es ein Firmen- oder Uni-Laptop ohne Installationsrechte ist</li>
+      <li>die Abgabe kurz bevorsteht – nicht am Abend davor umziehen</li>
+    </ul></div>
+  </div>
+  <p>Rechnet für die Installation mit 30–60 Minuten. Euer Repo, euer Backlog und eure Commits bleiben dieselben – GitHub ist der gemeinsame Stand, Codespace und Laptop sind nur zwei Arbeitsplätze.</p>
+
+  <h3>1 · Programme installieren</h3>
+  <p>Vier Programme, jeweils von der offiziellen Seite. Wenn eines schon installiert ist, überspringt es.</p>
+  <h4>macOS</h4>
+  <ol class="steps">
+    <li><strong>Git</strong> Terminal öffnen (Programme → Dienstprogramme → Terminal) und <code>xcode-select --install</code> eintippen. Das installiert Git zusammen mit den Entwicklerwerkzeugen von Apple.</li>
+    <li><strong>Node.js</strong> Auf <a href="https://nodejs.org/de/download" target="_blank" rel="noopener">nodejs.org</a> die aktuelle LTS-Version als Installer (.pkg) herunterladen und installieren. Der Codespace nutzt Node 22; alles ab Version 22 passt.</li>
+    <li><strong>VS Code</strong> Von <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">code.visualstudio.com</a> herunterladen und in den Programme-Ordner ziehen.</li>
+    <li><strong>Claude Code</strong> Im Terminal:</li>
+  </ol>
+  <Prompt label="Terminal (macOS)">curl -fsSL https://claude.ai/install.sh | bash</Prompt>
+  <h4>Windows</h4>
+  <ol class="steps">
+    <li><strong>Git</strong> <a href="https://git-scm.com/downloads/win" target="_blank" rel="noopener">Git for Windows</a> installieren, alle Voreinstellungen übernehmen. Claude Code nutzt die mitgelieferte Git Bash, um Befehle auszuführen.</li>
+    <li><strong>Node.js</strong> Auf <a href="https://nodejs.org/de/download" target="_blank" rel="noopener">nodejs.org</a> die aktuelle LTS-Version als Installer (.msi) herunterladen und installieren.</li>
+    <li><strong>VS Code</strong> Von <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">code.visualstudio.com</a> herunterladen und installieren.</li>
+    <li><strong>Claude Code</strong> PowerShell öffnen (Startmenü → „PowerShell“, keine Administratorrechte nötig) und eintippen:</li>
+  </ol>
+  <Prompt label="PowerShell (Windows)">irm https://claude.ai/install.ps1 | iex</Prompt>
+  <p class="small">Meldet PowerShell später bei <code>npm</code> „Die Ausführung von Skripts ist auf diesem System deaktiviert“ (englisch: „running scripts is disabled“), erlaubt ihr Skripts einmalig für euer Benutzerkonto:</p>
+  <Prompt label="PowerShell (Windows, nur bei dieser Meldung)">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</Prompt>
+  <p>Danach ein <strong>neues</strong> Terminal öffnen und prüfen: <code>git --version</code>, <code>node --version</code> und <code>claude --version</code> zeigen je eine Versionsnummer. Heißt es „nicht gefunden“, das Terminal schließen und neu öffnen; hilft das nicht, steht die Lösung in der <a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank" rel="noopener">Claude-Code-Doku</a>.</p>
+
+  <p>Einmal Git sagen, wer ihr seid – im Codespace passiert das automatisch, auf dem Laptop nicht. Ohne diese Angaben scheitert der erste Commit. Die dritte Zeile legt fest, dass Git beim Holen zusammenführt, statt abzubrechen (wie im Codespace):</p>
+  <Prompt label="Terminal (macOS und Windows)">git config --global user.name "Vorname Nachname"
+git config --global user.email "EURE-GITHUB-E-MAIL"
+git config --global pull.rebase false</Prompt>
+  <p class="small muted">Statt <code>EURE-GITHUB-E-MAIL</code> die Adresse eures GitHub-Kontos eintragen, die Anführungszeichen bleiben stehen.</p>
+
+  <h3>2 · Repo auf den Laptop holen</h3>
+  <ol class="steps">
+    <li><strong>Vorher im Codespace pushen</strong> <code>/ndu-commit</code> – nur was auf GitHub ist, kommt auf den Laptop.</li>
+    <li><strong>Klonen</strong> In VS Code: Source Control (Verzweigungs-Symbol) → <em>Clone Repository</em> → <em>Clone from GitHub</em> → bei GitHub anmelden → euer Repo wählen → einen Ordner aussuchen, z. B. „Dokumente“. Danach <em>Open</em>.</li>
+    <li><strong>Ordner vertrauen</strong> VS Code fragt, ob ihr den Autor*innen des Ordners vertraut: <em>Yes, I trust the authors</em>. Unten rechts schlägt VS Code die empfohlenen Erweiterungen vor – installieren. Bietet VS Code <em>Reopen in Container</em> an: ablehnen. Das ist die Einstellung für den Codespace und bräuchte Docker.</li>
+    <li><strong>Pakete laden</strong> Terminal in VS Code öffnen (Menü <em>Terminal → New Terminal</em>) und <code>npm install</code> eintippen.</li>
+    <li><strong>Geheimnisse übertragen</strong> Im Codespace die Datei <code>.env.local</code> öffnen, den Inhalt kopieren, lokal eine Datei mit demselben Namen im Projektordner anlegen und einfügen. Alternativ holt ihr die Werte erneut aus dem Supabase-Dashboard (<a href="/tag-2#uebung-3">Übung 3</a>). Die Datei bleibt auf eurem Laptop – sie kommt nie ins Repo, <code>.gitignore</code> schließt sie aus.</li>
+    <li><strong>Claude starten</strong> Im Terminal <code>claude</code> eintippen und mit eurem Claude-Pro-Konto anmelden – wie in <a href="#claude-code">Schritt 5</a>, nur öffnet sich der Browser direkt.</li>
+    <li><strong>App starten</strong> In einem zweiten Terminal <code>npm run dev</code>, dann <a href="http://localhost:3000" target="_blank" rel="noopener">localhost:3000</a> im Browser öffnen.</li>
+  </ol>
+  <p class="small muted">Die Befehle aus dem Template (<code>/ndu-commit</code> usw.) und MCP-Server aus <code>.mcp.json</code> kommen mit dem Repo mit. Anmeldungen bei MCP-Servern wie Supabase macht ihr lokal einmal neu über <code>/mcp</code>. Wer Supabase an Tag 2 mit einem Token statt mit der Anmeldung verbunden hat, braucht lokal einen neuen Eintrag – der alte lag nur im Codespace, und der Token wurde nur einmal angezeigt. Am einfachsten verbindet ihr Supabase lokal mit der Anmeldung wie in <a href="/tag-2#uebung-3">Übung 3</a>. Sonst im Supabase-Dashboard einen neuen Token erzeugen, den alten dort löschen und den <code>claude mcp add</code>-Befehl mit dem neuen Token ausführen.</p>
+
+  <h3>3 · Zwischen Codespace und Laptop wechseln</h3>
+  <p>Beide Arbeitsplätze sind gleichwertig, solange GitHub dazwischen auf dem neuesten Stand ist. Die Regel: <strong>Bevor ihr aufhört, pushen. Bevor ihr anfangt, holen.</strong> Holen heißt in VS Code: Source Control → <em>Sync Changes</em>, oder ihr sagt Claude: „Hol den neuesten Stand von GitHub.“ Wer an beiden Orten ohne Push arbeitet, bekommt Konflikte. Den Codespace könnt ihr danach stoppen oder löschen – eure Arbeit liegt auf GitHub.</p>
 
   <h2>Wenn etwas hängt</h2>
   <p>Die häufigsten Stolpersteine mit Lösungen stehen unter <a href="/bekannte-probleme">Bekannte Probleme</a>. Ansonsten: Hand heben – an Tag 1 ist genau dafür Zeit eingeplant.</p>
