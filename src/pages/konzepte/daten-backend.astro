@@ -51,6 +51,26 @@ import FooterNav from '../../components/FooterNav.astro';
       const root = document.getElementById('db')!;
       const erklaerung = document.getElementById('db-erklaerung')!;
       const chips = root.querySelectorAll<HTMLButtonElement>('.db-chips button');
+      // Platz für den längsten Text reservieren, sonst springen die Tabellen darunter bei jedem Begriff.
+      function hoeheFestlegen() {
+        const aktuell = erklaerung.innerHTML;
+        erklaerung.style.minHeight = '';
+        let max = 0;
+        for (const t of Object.values(texte)) {
+          erklaerung.innerHTML = t;
+          max = Math.max(max, erklaerung.offsetHeight);
+        }
+        erklaerung.innerHTML = aktuell;
+        erklaerung.style.minHeight = `${max}px`;
+      }
+      hoeheFestlegen();
+      // Nur bei geänderter Breite neu messen – die eigene Höhenänderung soll keine Schleife auslösen.
+      let breite = root.clientWidth;
+      new ResizeObserver(() => {
+        if (root.clientWidth === breite) return;
+        breite = root.clientWidth;
+        hoeheFestlegen();
+      }).observe(root);
       chips.forEach((b) => b.addEventListener('click', () => {
         const begriff = b.dataset.begriff!;
         root.dataset.zeige = begriff;
@@ -136,8 +156,8 @@ import FooterNav from '../../components/FooterNav.astro';
   .db-tabellen th { font-family: var(--mono); text-transform: none; letter-spacing: 0; font-size: .8rem; }
   .db-tabellen th, .db-tabellen td { padding: .45rem .6rem; }
   .db-tabellen tr:last-child td { border-bottom: 0; }
-  /* Über den Tabellen, damit man am Handy nach dem Tippen nicht scrollen muss. Die Knöpfe stehen darüber und bleiben beim Wechsel an ihrem Platz. */
-  .db-erklaerung { margin: 0 0 1rem; min-height: 4.8em; }
+  /* Über den Tabellen, damit man am Handy nach dem Tippen nicht scrollen muss. Die Mindesthöhe setzt das Skript. */
+  .db-erklaerung { margin: 0 0 1rem; }
 
   /* Hervorhebung nie nur über Farbe: Hintergrund, Rahmen und fette Schrift. */
   #db[data-zeige="tabelle"] [data-t="events"],
