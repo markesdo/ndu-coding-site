@@ -67,6 +67,12 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.5rem; font-size: .95rem; }
 th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
 th { font-weight: 600; color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+/* Am Handy: Silbentrennung statt Seitenscrollen; ist eine Tabelle trotzdem zu breit, scrollt nur sie. */
+@media (max-width: 600px) {
+  table { display: block; overflow-x: auto; }
+  th, td { padding: .5rem .35rem; hyphens: auto; overflow-wrap: break-word; }
+  th { letter-spacing: 0; }
+}
 blockquote { margin: 1.25rem 0; padding: .75rem 1.1rem; border-left: 4px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; }
 blockquote p:last-child { margin: 0; }
 kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 0 .35em; background: var(--bg-2); }
@@ -250,6 +256,11 @@ h2[id] { scroll-margin-top: 3.5rem; }
 .layer .name { font-weight: 700; }
 .layer .meta { font-size: .85rem; color: var(--muted); }
 .layer .files { font-family: var(--mono); font-size: .78rem; color: var(--muted); text-align: right; }
+/* Am Handy wandern die Dateien unter den Namen, sonst wird der Button breiter als der Bildschirm. */
+@media (max-width: 600px) {
+  .layer { grid-template-columns: 36px minmax(0, 1fr); gap: .25rem .75rem; padding: .7rem .8rem; }
+  .layer .files { grid-column: 2; text-align: left; overflow-wrap: anywhere; }
+}
 .layer-detail { margin-top: 1rem; padding: 1rem 1.1rem; border-radius: 12px; background: var(--bg); border: 1px dashed var(--border); min-height: 5rem; }
 .layer-detail h4 { margin: 0 0 .3rem; display: flex; align-items: center; gap: .45rem; }
 .layer-detail h4 .ico { display: flex; color: var(--farbe); }
