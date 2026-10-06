@@ -2,13 +2,19 @@
 // Eine Zeile im Tagesablauf.
 const { time, type = 'konzept', title, href } = Astro.props as { time: string; type?: string; title: string; href?: string };
 const labels: Record<string, string> = { demo: 'Demo', konzept: 'Konzept', uebung: 'Übung', pause: 'Pause', plenum: 'Plenum' };
+const label = labels[type] ?? type;
+// „Konzept 2 · Teil 1 · Was …“: Die Nummer wandert in die Pille („Konzept 2“), der Titel wird kürzer –
+// sonst bricht er am Handy auf drei Zeilen um, und „Konzept“ stünde doppelt da.
+const m = title.match(new RegExp(`^${label} (\\d+) · (.+)$`));
+const pill = m ? `${label} ${m[1]}` : label;
+const text = m ? m[2] : title;
 ---
 <div class={`block ${type}`}>
   <div class="time">{time}</div>
   <div>
     <div class="title">
-      <span class={`pill ${type}`}>{labels[type] ?? type}</span>
-      {href ? <a href={href}>{title}</a> : <span>{title}</span>}
+      <span class={`pill ${type}`}>{pill}</span>
+      {href ? <a href={href}>{text}</a> : <span>{text}</span>}
     </div>
     {Astro.slots.has('default') && <p class="desc"><slot /></p>}
   </div>

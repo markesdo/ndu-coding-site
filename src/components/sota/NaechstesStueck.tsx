@@ -57,13 +57,8 @@ function Szene({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
           <Kette stuecke={z.kontext} reduced={reduced} cursor />
         </div>
       )}
-      {z.verteilung ? (
-        <Balken verteilung={z.verteilung} gewaehlt={z.gewaehlt} duration={duration} />
-      ) : z.vergleich ? null : (
-        // Platzhalter in Balkenhöhe – sonst springt die Stage und der Weiter-Button wandert unter der Maus weg.
-        // Eigener key: Sonst übernimmt Schritt 2 die schon vollen Platzhalter-Balken, und sie wachsen nicht ein.
-        <Balken key="platzhalter" verteilung={zustandAt(2).verteilung!} duration={0} platzhalter />
-      )}
+      {/* Ohne Balken kein Platzhalter: Die Stage reserviert die Höhe des höchsten Schritts selbst. */}
+      {z.verteilung && <Balken verteilung={z.verteilung} gewaehlt={z.gewaehlt} duration={duration} />}
       <p className="ns-fussnote">Zerlegung in Stücke (Tokens) und Prozentzahlen sind vereinfacht und zur Veranschaulichung gewählt.</p>
     </div>
   );
@@ -101,11 +96,10 @@ function Kette({ stuecke, reduced, cursor = false }: { stuecke: Stueck[]; reduce
   );
 }
 
-function Balken({ verteilung, gewaehlt, duration, platzhalter = false }: {
+function Balken({ verteilung, gewaehlt, duration }: {
   verteilung: Verteilung;
   gewaehlt?: string;
   duration: number;
-  platzhalter?: boolean;
 }) {
   const zeilen = [
     ...verteilung.kandidaten.map((k) => ({ key: k.text, label: k.text.trim(), p: k.p, gewaehlt: k.text === gewaehlt })),
@@ -116,10 +110,9 @@ function Balken({ verteilung, gewaehlt, duration, platzhalter = false }: {
 
   return (
     <div
-      className={`ns-balken${platzhalter ? ' ns-platzhalter' : ''}`}
-      {...(platzhalter
-        ? { 'aria-hidden': true }
-        : { role: 'img', 'aria-label': `Nächstes Stück: ${beschreibung}${wahl ? `. Gewählt: ${wahl.label}` : ''}` })}
+      className="ns-balken"
+      role="img"
+      aria-label={`Nächstes Stück: ${beschreibung}${wahl ? `. Gewählt: ${wahl.label}` : ''}`}
     >
       <div className="ns-kopf">
         <span className="ns-label">Nächstes Stück</span>
