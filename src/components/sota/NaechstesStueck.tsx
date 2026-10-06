@@ -61,7 +61,8 @@ function Szene({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
         <Balken verteilung={z.verteilung} gewaehlt={z.gewaehlt} duration={duration} />
       ) : z.vergleich ? null : (
         // Platzhalter in Balkenhöhe – sonst springt die Stage und der Weiter-Button wandert unter der Maus weg.
-        <Balken verteilung={zustandAt(2).verteilung!} duration={0} platzhalter />
+        // Eigener key: Sonst übernimmt Schritt 2 die schon vollen Platzhalter-Balken, und sie wachsen nicht ein.
+        <Balken key="platzhalter" verteilung={zustandAt(2).verteilung!} duration={0} platzhalter />
       )}
       <p className="ns-fussnote">Zerlegung in Stücke (Tokens) und Prozentzahlen sind vereinfacht und zur Veranschaulichung gewählt.</p>
     </div>

@@ -45,11 +45,13 @@ import FooterNav from '../components/FooterNav.astro';
   <p>→ Vorschau ansehen, dann Vorschau schmal ziehen (oder Rechtsklick → Untersuchen → Handy-Symbol). Passt die vierte Karte?</p>
 
   <h3>c) Mit einem Screenshot Feedback geben – zweimal (20 min)</h3>
+  <p>Sichert zuerst den Stand aus b), damit er gleich beim Verwerfen nicht mit verschwindet:</p>
+  <Prompt>/ndu-commit</Prompt>
   <p>Macht einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), zieht ihn ins Claude-Code-Terminal (oder fügt ihn mit <kbd>Strg/Ctrl</kbd><kbd>V</kbd> ein) und schreibt dazu:</p>
   <Prompt>Auf diesem Screenshot ist der Abstand zwischen Überschrift und Text zu klein und die Karten wirken zu eng. Mach es luftiger, ohne das Design zu ändern.</Prompt>
   <p>→ Vorschau ansehen und einen Screenshot vom Ergebnis machen. Jetzt derselbe Auftrag noch einmal, in einer frischen Session:</p>
   <ol>
-    <li>Links im <strong>Source-Control-Symbol</strong> alle Änderungen verwerfen („Discard All Changes“).</li>
+    <li>Links im <strong>Source-Control-Symbol</strong> alle Änderungen verwerfen („Discard All Changes“). Weil b) gesichert ist, verschwindet nur der erste Versuch.</li>
     <li>Im Terminal <code>/clear</code> eingeben.</li>
     <li>Denselben Screenshot und exakt denselben Prompt noch einmal schicken.</li>
   </ol>
