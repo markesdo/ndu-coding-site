@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Orientierung from '../components/Orientierung.astro';
 import Block from '../components/Block.astro';
 import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
@@ -12,9 +13,10 @@ import { bild } from '../components/anleitung-bilder';
   <span class="eyebrow">Freitag, 9. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 2 · Bauen wie ein Profi</h1>
   <p class="lead">Die App bekommt echte Daten, Login und eine öffentliche Adresse. Ihr lernt, Fehler zu finden und richtig zu übergeben – und den Agenten über längere Arbeit hinweg zu steuern.</p>
+  <Orientierung seite="tag-2" />
 
-  <h2>Ablauf</h2>
-  <div class="schedule">
+  <h2 id="ablauf">Ablauf</h2>
+  <div class="schedule" data-kurstag="2026-10-09">
     <Block time="09:00–09:30" type="plenum" title="Recap & Quiz" href="#quiz">Acht Fragen zu Tag 1. Offene Probleme aus den Codespaces sammeln.</Block>
     <Block time="09:30–10:15" type="konzept" title="Konzept 4 · Daten & Backend" href="/konzepte/daten-backend">Datenbank, CRUD, API-Routen, Supabase, Secrets & .env, Row Level Security.</Block>
     <Block time="10:15–10:30" type="pause" title="Pause" />
@@ -117,12 +119,12 @@ import { bild } from '../components/anleitung-bilder';
   <p>Dann <code>/clear</code> und dieselbe Frage mit Doku:</p>
   <Prompt>Wie lege ich mit @supabase/ssr in Next.js einen Supabase-Client für Server Components an? use context7, library /supabase/supabase. Nenn mir die Doku-Stelle, auf die du dich stützt.</Prompt>
   <p>→ Vergleicht: Heißen die Funktionen gleich? Was fehlt in der ersten Antwort? Warum das so ist, steht unter <a href="/konzepte/llm#training">Training und Session</a>; wie man Context7 gut einsetzt, unter <a href="/konzepte/mcp#context7">MCP-Server</a>.</p>
-  <h3>d) .env.local anlegen (5 min)</h3>
+  <h3 id="uebung-3-d">d) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
-  <h3>e) Issue 4 bauen lassen (45 min)</h3>
+  <h3 id="uebung-3-e">e) Issue 4 bauen lassen (45 min)</h3>
   <Prompt>Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
   <p>Prüfen: Event anlegen → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
-  <h3>f) Sichern</h3>
+  <h3 id="uebung-3-f">f) Sichern</h3>
   <Prompt>/ndu-check – und wenn alles grün ist: Issue 4 auf fertig setzen und /ndu-commit</Prompt>
   <Checklist id="t2-u3" items={[
     'Supabase-Projekt in Frankfurt angelegt, Passwort gespeichert',
@@ -136,14 +138,14 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2 id="uebung-4">Übung 4 · Login & RSVP <span class="pill uebung">90 min</span></h2>
-  <h3>a) Issue 5 – Anmelden (30 min)</h3>
+  <h3 id="uebung-4-a">a) Issue 5 – Anmelden (30 min)</h3>
   <Prompt>Setze Issue 5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-events, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
   <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, <code>/meine-events</code> aufrufen → Weiterleitung?</p>
-  <h3>b) Issue 6 – Zusagen (30 min)</h3>
+  <h3 id="uebung-4-b">b) Issue 6 – Zusagen (30 min)</h3>
   <Prompt>Setze Issue 6 um: RSVP-Button pro Event mit Zähler, Zusage zurücknehmen, ohne Login zur Anmeldung führen. Tabelle rsvps mit RLS: jeder darf zählen, nur die eigene Zusage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle rsvps und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
-  <h3>c) Absichtlich kaputt (20 min, Tandem)</h3>
+  <h3 id="uebung-4-c">c) Absichtlich kaputt (20 min, Tandem)</h3>
   <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen: Die andere Person in eurem Tandem muss den Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurücktauschen und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
-  <h3>d) RLS-Test (10 min)</h3>
+  <h3 id="uebung-4-d">d) RLS-Test (10 min)</h3>
   <p>Zwei Browser (einer im Inkognito-Modus), zwei Accounts. Account A sagt zu. Kann Account B diese Zusage löschen? Fragt Claude:</p>
   <Prompt>Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle rsvps verhindern, dass jemand fremde Zusagen löscht oder ändert. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
   <Checklist id="t2-u4" items={[
@@ -192,7 +194,7 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
 
   <hr />
-  <h2>Zwischenwoche – euer eigener Prototyp für die Demo am Do 15.10.</h2>
+  <h2 id="zwischenwoche-euer-eigener-prototyp">Zwischenwoche – euer eigener Prototyp für die Demo am Do 15.10.</h2>
   <p>Ein eigener Mini-Prototyp – Details unter <a href="/zwischenwoche">Zwischenwoche</a>. Kurzfassung: eigene Idee (oder Campus Events mit drei neuen Issues), 1-Seiten-Produkt-Brief, 3–5 Issues umgesetzt, läuft auf Vercel, Repo mit Markus als Collaborator.</p>
 
   <FooterNav prev={{ href: '/tag-1', t: 'Tag 1' }} next={{ href: '/zwischenwoche', t: 'Zwischenwoche' }} />

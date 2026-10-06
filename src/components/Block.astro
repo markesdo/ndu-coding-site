@@ -9,8 +9,8 @@ const m = title.match(new RegExp(`^${label} (\\d+) · (.+)$`));
 const pill = m ? `${label} ${m[1]}` : label;
 const text = m ? m[2] : title;
 ---
-<div class={`block ${type}`}>
-  <div class="time">{time}</div>
+<div class={`block ${type}`} data-zeit={time}>
+  <div class="time">{time}<span class="jetzt-marke" hidden>jetzt</span></div>
   <div>
     <div class="title">
       <span class={`pill ${type}`}>{pill}</span>

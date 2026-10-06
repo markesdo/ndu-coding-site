@@ -1,0 +1,129 @@
+---
+// Orientierung auf Tagesseiten: Inhaltsverzeichnis (ohne JS), „Wo bin ich“-Leiste und „jetzt“ im Ablauf (mit JS).
+// Die Gliederung kommt beim Bauen aus dem Quelltext der Seite (h2/h3 mit id) – nichts doppelt pflegen.
+import { ListTree, MapPin } from '@lucide/astro';
+import { gliederung } from './gliederung';
+import '../styles/orientierung.css';
+
+const { seite, leiste = true } = Astro.props as { seite: string; leiste?: boolean };
+const quellen = import.meta.glob('../pages/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const quelle = quellen[`../pages/${seite}.astro`];
+if (!quelle) throw new Error(`Orientierung: Seite „${seite}“ nicht gefunden`);
+const abschnitte = gliederung(quelle);
+const beschriftung = Object.fromEntries(abschnitte.flatMap((a) => [[a.id, a.leiste], ...a.schritte.map((s) => [s.id, s.leiste])]));
+---
+<details class="toc">
+  <summary><ListTree size={18} aria-hidden="true" /> Auf dieser Seite</summary>
+  <ol>
+    {abschnitte.map((a) => (
+      <li>
+        <a href={`#${a.id}`}>{a.text}</a>
+        {a.schritte.length > 0 && (
+          <ol>{a.schritte.map((s) => <li><a href={`#${s.id}`}>{s.text}</a></li>)}</ol>
+        )}
+      </li>
+    ))}
+  </ol>
+</details>
+{leiste && (
+  <div class="orient" data-orient={JSON.stringify(beschriftung)} aria-hidden="true">
+    <div class="orient-bar" hidden><MapPin size={16} aria-hidden="true" /> <span class="orient-text"></span></div>
+  </div>
+)}
+
+<script>
+  import { aktiveZeile } from './jetzt';
+
+  // „Wo bin ich“: die letzte Überschrift, die oben unter Kopfleiste und Leiste verschwunden ist.
+  const orient = document.querySelector<HTMLElement>('.orient');
+  if (orient) {
+    const bar = orient.querySelector<HTMLElement>('.orient-bar')!;
+    const text = orient.querySelector<HTMLElement>('.orient-text')!;
+    const labels: Record<string, string> = JSON.parse(orient.dataset.orient ?? '{}');
+    const heads = Object.keys(labels)
+      .map((id) => document.getElementById(id))
+      .filter((h): h is HTMLElement => h !== null);
+    const root = document.documentElement;
+
+    // Höhe der Kopfleiste: am Handy und im Beamer-Modus klebt sie oben, am Desktop gibt es keine.
+    const kopf = () => {
+      const tb = document.querySelector<HTMLElement>('.topbar');
+      const h = tb && getComputedStyle(tb).display !== 'none' ? tb.getBoundingClientRect().height : 0;
+      root.style.setProperty('--orient-top', `${Math.round(h)}px`);
+      // Leiste = 2.5rem; im Beamer-Modus ist rem größer. Sprungziele landen knapp über der Linie und gelten so als aktuell.
+      abstand = Math.round(parseFloat(getComputedStyle(root).fontSize) * 2.5 + 12);
+      root.style.setProperty('--orient-gap', `${abstand - 4}px`);
+      return h;
+    };
+    let abstand = 48;
+    let oben = kopf();
+
+    // Eine Linie für beides: Ab hier gilt eine Überschrift als „vorbei“, und hier löst der Observer aus.
+    const aktualisieren = () => {
+      const linie = oben + abstand;
+      let aktuell: HTMLElement | undefined;
+      for (const h of heads) {
+        if (h.getBoundingClientRect().top <= linie) aktuell = h;
+        else break;
+      }
+      // Ganz unten erreicht die letzte Überschrift die Linie nie – dann gilt die letzte sichtbare.
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) {
+        const sichtbar = heads.filter((h) => h.getBoundingClientRect().top < innerHeight);
+        aktuell = sichtbar.at(-1) ?? aktuell;
+      }
+      if (!aktuell) {
+        bar.hidden = true;
+        return;
+      }
+      text.textContent = labels[aktuell.id];
+      bar.hidden = false;
+    };
+
+    let io: IntersectionObserver | undefined;
+    const beobachten = () => {
+      io?.disconnect();
+      // Jede Überschrift, die die obere Linie kreuzt, löst eine Neuberechnung aus.
+      io = new IntersectionObserver(aktualisieren, { rootMargin: `-${Math.round(oben + abstand)}px 0px 0px 0px`, threshold: [0, 1] });
+      heads.forEach((h) => io!.observe(h));
+    };
+    beobachten();
+    aktualisieren();
+
+    const neu = () => {
+      oben = kopf();
+      beobachten();
+      aktualisieren();
+    };
+    addEventListener('resize', neu);
+    // Für das Seitenende: Dort kreuzt keine Überschrift mehr die Linie. scroll statt scrollend – das kann nicht jeder Browser.
+    let geplant = false;
+    addEventListener('scroll', () => {
+      if (geplant) return;
+      geplant = true;
+      requestAnimationFrame(() => { geplant = false; aktualisieren(); });
+    }, { passive: true });
+    // Beamer-Modus an/aus ändert die Kopfleiste.
+    new MutationObserver(neu).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
+  }
+
+  // „jetzt“ im Ablauf: nur am Kurstag (Wiener Zeit), jede halbe Minute neu.
+  const plan = document.querySelector<HTMLElement>('.schedule[data-kurstag]');
+  if (plan) {
+    const zeilen = [...plan.querySelectorAll<HTMLElement>('.block[data-zeit]')];
+    const markieren = () => {
+      const i = aktiveZeile(zeilen.map((z) => z.dataset.zeit ?? ''), plan.dataset.kurstag!, new Date());
+      zeilen.forEach((z, j) => {
+        const an = j === i;
+        if (an) z.setAttribute('aria-current', 'step');
+        else z.removeAttribute('aria-current');
+        const marke = z.querySelector<HTMLElement>('.jetzt-marke');
+        if (marke) marke.hidden = !an;
+      });
+    };
+    markieren();
+    setInterval(markieren, 30_000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) markieren();
+    });
+  }
+</script>

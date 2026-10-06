@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Orientierung from '../components/Orientierung.astro';
 import Block from '../components/Block.astro';
 import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
@@ -9,9 +10,10 @@ import FooterNav from '../components/FooterNav.astro';
   <span class="eyebrow">Donnerstag, 15. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 3 · Shippen & selbständig werden</h1>
   <p class="lead">Prototypen fertigstellen und präsentieren, Qualität beurteilen lernen, ohne Code zu lesen – und sehen, was 2026 sonst noch geht.</p>
+  <Orientierung seite="tag-3" />
 
-  <h2>Ablauf</h2>
-  <div class="schedule">
+  <h2 id="ablauf">Ablauf</h2>
+  <div class="schedule" data-kurstag="2026-10-15">
     <Block time="09:00–09:40" type="plenum" title="Stand-up">Jede*r 2 Minuten: Was läuft, wo hängt es, was brauche ich heute? Blocker werden für die Werkstatt verteilt.</Block>
     <Block time="09:40–10:20" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="/konzepte/qualitaet">Code-Review durch den Agenten, Sicherheits-Checkliste, Tests als Sicherheitsnetz.</Block>
     <Block time="10:20–10:35" type="pause" title="Pause" />
@@ -56,7 +58,7 @@ import FooterNav from '../components/FooterNav.astro';
   ]} />
 
   <hr />
-  <h2>Wie es weitergeht</h2>
+  <h2 id="wie-es-weitergeht">Wie es weitergeht</h2>
   <p>Euer Repo und euer Codespace bleiben. Claude Pro kündigt ihr nach eurer Demo (<a href="/setup#claude-pro">wie</a>) und schließt es fürs Innolab (28.11.–19.12.) neu ab: Dort kommt euer Figma-Prototyp dazu, und der Weg Design → Code läuft über denselben Agenten, denselben Rhythmus, dieselbe Spezifikationsarbeit. Siehe <a href="/konzepte/ausblick">Ausblick</a>.</p>
 
   <FooterNav prev={{ href: '/zwischenwoche', t: 'Zwischenwoche' }} next={{ href: '/bewertung', t: 'Bewertung' }} />

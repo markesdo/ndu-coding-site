@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Orientierung from '../components/Orientierung.astro';
 import Block from '../components/Block.astro';
 import Callout from '../components/Callout.astro';
 import Checklist from '../components/Checklist.astro';
@@ -10,9 +11,10 @@ import FooterNav from '../components/FooterNav.astro';
   <span class="eyebrow">Donnerstag, 8. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 1 · Verstehen & Starten</h1>
   <p class="lead">Am Ende des Tages habt ihr ein eigenes Repo mit laufender App, versteht, wie eine Web-App und ein Coding-Agent aufgebaut sind, und habt euer erstes Issue bauen lassen.</p>
+  <Orientierung seite="tag-1" />
 
-  <h2>Ablauf</h2>
-  <div class="schedule">
+  <h2 id="ablauf">Ablauf</h2>
+  <div class="schedule" data-kurstag="2026-10-08">
     <Block time="09:00–09:30" type="demo" title="Ankommen & NDU Live">QR-Code scannen, mitmachen: Umfragen und Ideen live auf der Leinwand. Danach Vorstellung, Ablauf, Bewertung.</Block>
     <Block time="09:30–10:45" type="uebung" title="Setup & Accounts" href="/setup">GitHub, Claude Pro, eigenes Repo, Codespace, Claude Code anmelden, App läuft.</Block>
     <Block time="10:45–11:00" type="pause" title="Pause" />
@@ -33,11 +35,11 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="uebung-1">Übung 1 · Erste eigene Änderungen <span class="pill uebung">60 min</span></h2>
   <p>Ziel: erleben, wie sich Arbeiten mit Claude Code anfühlt – und die drei Gewohnheiten einüben, die den Unterschied machen: <strong>eine Sache pro Prompt</strong>, <strong>nach jeder Änderung im Browser prüfen</strong>, <strong>regelmäßig sichern</strong>.</p>
 
-  <h3>a) Verstehen, was da ist (10 min)</h3>
+  <h3 id="uebung-1-a">a) Verstehen, was da ist (10 min)</h3>
   <Prompt>Erkläre mir dieses Projekt so, als käme ich aus dem Produktmanagement und hätte keine Programmierkenntnisse. Welche Seiten gibt es, wo liegen die Beispieldaten, und was passiert, wenn ich die Startseite öffne?</Prompt>
   <p>Lest die Antwort vollständig. Fragt nach, wenn ein Begriff unklar ist: <em>„Was meinst du mit Komponente?“</em> Claude kennt die Regel, euch alles ohne Code zu erklären (steht in der <code>CLAUDE.md</code> – öffnet die Datei ruhig einmal).</p>
 
-  <h3>b) Drei kleine Änderungen – eine nach der anderen (15 min)</h3>
+  <h3 id="uebung-1-b">b) Drei kleine Änderungen – eine nach der anderen (15 min)</h3>
   <Prompt>Ändere die Überschrift auf der Startseite zu „Was geht am Campus?“ – sonst nichts.</Prompt>
   <p>→ Vorschau ansehen. Hat sich genau das geändert, und nichts anderes?</p>
   <Prompt>Die Akzentfarbe der App soll ein dunkles Blau statt Rot sein – auch ihre helle Variante für Hintergründe. Ändere sie an der zentralen Stelle, nicht in jeder Datei einzeln, und sag mir, wo diese Stelle ist.</Prompt>
@@ -51,13 +53,13 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt>/ndu-commit</Prompt>
   <p>Claude zeigt, was sich geändert hat, schreibt eine verständliche Commit-Nachricht und pusht zu GitHub. Öffnet euer Repo auf github.com: Eure Änderung ist dort, mit Nachricht und Zeitstempel.</p>
 
-  <h3>c) Vage oder präzise – ein Raum-Experiment (10 min)</h3>
+  <h3 id="uebung-1-c">c) Vage oder präzise – ein Raum-Experiment (10 min)</h3>
   <p>Die linke Hälfte des Raums schickt den vagen Auftrag, die rechte den präzisen. Danach vergleichen wir über alle hinweg – so sieht man den Unterschied durch den Prompt, nicht nur die normale <a href="/konzepte/llm">Streuung</a>.</p>
   <Prompt label="Linke Hälfte">Mach die Feature-Karten schöner.</Prompt>
   <Prompt label="Rechte Hälfte">Auf den Feature-Karten (@src/components/FeatureCard.tsx) soll der Titel etwas größer und das Icon kleiner sein, weil man beim Überfliegen zuerst den Titel sucht. Ändere nur diese Datei. Sag mir danach, was ich im Browser sehen soll.</Prompt>
   <p>→ Auswertung per Handzeichen: Wie viele Dateien hat Claude geändert (Zahl am <strong>Source-Control-Symbol</strong>)? Ist herausgekommen, was ihr wolltet – und hättet ihr es vorher sagen können? Danach alle Änderungen verwerfen („Discard All Changes“). Welche Bausteine den Unterschied machen, steht in <a href="/konzepte/prompting">Prompt Engineering</a>.</p>
 
-  <h3>d) Mit einem Screenshot Feedback geben – zweimal (10 min)</h3>
+  <h3 id="uebung-1-d">d) Mit einem Screenshot Feedback geben – zweimal (10 min)</h3>
   <p>Macht einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), zieht ihn ins Claude-Code-Terminal (oder fügt ihn mit <kbd>Strg/Ctrl</kbd><kbd>V</kbd> ein) und schreibt dazu:</p>
   <Prompt>Auf diesem Screenshot ist der Abstand zwischen Überschrift und Text zu klein und die Karten wirken zu eng. Mach es luftiger, ohne das Design zu ändern.</Prompt>
   <p>→ Vorschau ansehen und einen Screenshot vom Ergebnis machen. Jetzt derselbe Auftrag noch einmal, in einer frischen Session:</p>
@@ -71,14 +73,14 @@ import FooterNav from '../components/FooterNav.astro';
     <p>Ihr müsst nicht wissen, wie „Abstand“ im Code heißt. Ihr müsst sehen können, dass er nicht stimmt, und das präzise sagen. <strong>Beobachten und benennen</strong> ist eure Kernkompetenz in diesem Kurs.</p>
   </Callout>
 
-  <h3>e) Etwas kaputt machen – und zurück (10 min)</h3>
+  <h3 id="uebung-1-e">e) Etwas kaputt machen – und zurück (10 min)</h3>
   <Prompt>Lösche die Datei src/components/Header.tsx.</Prompt>
   <p>Die Vorschau zeigt jetzt einen Fehler. Lest ihn – er sagt ziemlich genau, was fehlt. Und jetzt der Undo-Knopf: links das <strong>Source-Control-Symbol</strong> (Verzweigung) → bei <code>Header.tsx</code> auf den Zurück-Pfeil („Discard Changes“). Datei ist wieder da, Fehler weg.</p>
   <Callout type="tip" title="Merken">
     <p>Solange ein Stand committet ist, kann nichts verloren gehen. Deshalb: <strong>nach jedem funktionierenden Issue committen.</strong> Mehr dazu in <a href="/konzepte/git">Git – der Undo-Knopf</a>.</p>
   </Callout>
 
-  <h3>f) Sichern (5 min)</h3>
+  <h3 id="uebung-1-f">f) Sichern (5 min)</h3>
   <Prompt>/ndu-commit</Prompt>
   <p>Damit ist auch das Ergebnis aus d) auf GitHub.</p>
 
@@ -100,20 +102,20 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="uebung-2">Übung 2 · Campus Events v0 <span class="pill uebung">60 min</span></h2>
   <p>Jetzt wird aus Herumprobieren Produktarbeit. Ihr schreibt mit Claude einen Produkt-Brief, schneidet das MVP und lasst das erste Issue bauen – das, dessen Akzeptanzkriterien schon im Backlog stehen.</p>
 
-  <h3>a) Von der Idee zum Produkt-Brief (20 min)</h3>
+  <h3 id="uebung-2-a">a) Von der Idee zum Produkt-Brief (20 min)</h3>
   <p>Ein neues Produkt beginnt mit Brainstorming: Claude stellt Rückfragen, eine nach der anderen, schlägt Varianten vor und fasst zusammen, was es verstanden hat. Geschrieben wird erst nach eurem Okay. Dafür gibt es im Template den Befehl <code>/ndu-idee</code>.</p>
   <Prompt note="Claude stellt Rückfragen. Antwortet aus Sicht der Zielgruppe – ihr seid selbst Studierende, ihr kennt das Problem. Den Backlog gibt es schon; Claude schlägt höchstens Änderungen vor.">/ndu-idee Campus Events: Studierende und Gruppen legen Veranstaltungen an, andere sagen mit einem Klick zu.</Prompt>
 
-  <h3>b) MVP schneiden & Backlog lesen (10 min)</h3>
+  <h3 id="uebung-2-b">b) MVP schneiden & Backlog lesen (10 min)</h3>
   <p>Öffnet <code>docs/BACKLOG.md</code>. Dort stehen sieben Issues für zwei Tage, jedes mit Ziel, Abgrenzung und Akzeptanzkriterien. Fragt Claude:</p>
   <Prompt>Vergleiche docs/BACKLOG.md mit unserem Produkt-Brief. Fehlt ein Issue, das für den ersten nützlichen Durchlauf zwingend ist? Ist eines drin, das wir für den Anfang streichen könnten? Begründe kurz, ändere aber noch nichts.</Prompt>
 
-  <h3>c) Issue 1 bauen lassen (20 min)</h3>
+  <h3 id="uebung-2-c">c) Issue 1 bauen lassen (20 min)</h3>
   <p>Für ein klares Issue braucht es keinen eigenen Plan-Schritt: Claude fragt nach, wenn etwas unklar ist, und baut sonst direkt.</p>
   <Prompt>Setze Issue 1 aus docs/BACKLOG.md um: die Eventliste mit den Beispieldaten aus src/data/events.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Events? Fehlt das vergangene („Erstsemester-Frühstück“)? Sieht es am Handy gut aus? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
 
-  <h3>d) Sichern (5 min)</h3>
+  <h3 id="uebung-2-d">d) Sichern (5 min)</h3>
   <Prompt>Setze Issue 1 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
 
   <h3>Checkliste Übung 2</h3>
@@ -127,7 +129,7 @@ import FooterNav from '../components/FooterNav.astro';
   ]} />
 
   <hr />
-  <h2>Reflexion zum Abschluss</h2>
+  <h2 id="reflexion-zum-abschluss">Reflexion zum Abschluss</h2>
   <p>Drei Sätze, in Teams oder auf Papier: <em>Was hat mich überrascht? Wo war ich unsicher, ob Claude das Richtige tut? Was würde ich morgen anders machen?</em> Und zum Mitnehmen bis morgen: <strong>Welches Produkt würdet ihr bauen wollen?</strong> (<a href="/ideen">Inspiration</a>)</p>
 
   <FooterNav prev={{ href: '/setup', t: 'Setup & Accounts' }} next={{ href: '/tag-2', t: 'Tag 2 · Bauen wie ein Profi' }} />
