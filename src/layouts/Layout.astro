@@ -3,7 +3,6 @@ import { Menu, Presentation } from '@lucide/astro';
 // Schriften liegen auf unserem Server (fontsource), nicht bei Google: keine IP-Weitergabe an Dritte (DSGVO).
 // Die CSS-Dateien deklarieren mehrere Zeichensätze; der Browser lädt per unicode-range nur, was die Seite nutzt (hier latin, ggf. latin-ext).
 import '@fontsource-variable/instrument-sans';
-import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/jetbrains-mono';
 // Fließtext-Schrift vorladen, damit der erste Text nicht in der Ersatzschrift aufblitzt.
 import textSchrift from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
@@ -68,11 +67,11 @@ const nav = [
         if (an) document.documentElement.setAttribute('data-beamer', '');
       })();
     </script>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e8472b'/></svg>" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
     <div class="topbar">
-      <strong>NDU Coding 2026</strong>
+      <strong class="topbar-brand"><span class="brand-mark" aria-hidden="true">›<i></i></span><span>programmieren_mit_ai</span></strong>
       <div class="topbar-actions">
         <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
         <button id="menu-btn" aria-label="Menü öffnen"><Menu size={18} aria-hidden="true" /> Menü</button>
@@ -80,7 +79,7 @@ const nav = [
     </div>
     <div class="shell">
       <aside class="sidebar" id="sidebar">
-        <a class="brand" href="/">Programmieren mit AI</a>
+        <a class="brand" href="/" aria-label="Programmieren mit AI – Übersicht"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</a>
         <nav>
           {nav.map(g => (
             <div class="group">
