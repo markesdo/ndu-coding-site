@@ -260,3 +260,44 @@
   .bw-chip { display: block; margin-top: .5em; }
   .bw-chip .bw-zettel { width: auto; max-width: 16em; }
 }
+
+/* Ein Stück nach dem anderen (/konzepte/llm). Größen in em: Im Vollbild wächst die Szene mit. */
+.ns { display: grid; gap: 1em; }
+.ns-feld, .ns-balken { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: .7em .8em .8em; }
+.ns-kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 1em; margin-bottom: .5em; }
+.ns-label { font-size: .75em; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.ns-session { font-family: var(--mono); font-size: .8em; color: var(--muted); }
+
+/* Platz für zwei Zeilen, damit die Stage nicht springt, wenn der Kontext umbricht. */
+.ns-kette { display: flex; flex-wrap: wrap; align-content: flex-start; align-items: center; row-gap: .4em; min-height: 4.2em; font-family: var(--mono); font-size: .9em; }
+.ns-stueck { display: inline-block; padding: .1em .3em; border: 1px solid var(--border); border-radius: 5px; background: var(--bg-2); margin-left: 2px; line-height: 1.35; }
+.ns-luecke { margin-left: .45em; }
+.ns-stueck:first-child { margin-left: 0; }
+.ns-erzeugt { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+.ns-doku { background: var(--green-soft); border-color: var(--green); font-family: var(--font); font-size: .9em; }
+.ns-cursor { display: inline-block; width: 2px; height: 1.2em; margin-left: .3em; background: var(--fg); animation: ns-blinken 1s steps(1) infinite; }
+@keyframes ns-blinken { 50% { opacity: 0; } }
+
+.ns-zeile { display: grid; grid-template-columns: 9em 1fr 3.5em; align-items: center; gap: .6em; padding: .15em 0; }
+.ns-kandidat { font-family: var(--mono); font-size: .9em; display: flex; align-items: center; gap: .35em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ns-spur { height: .8em; border-radius: 4px; background: var(--bg-2); overflow: hidden; }
+.ns-balken-fuellung { display: block; height: 100%; border-radius: 4px; background: var(--blue); }
+.ns-prozent { font-family: var(--mono); font-size: .85em; text-align: right; white-space: nowrap; }
+.ns-andere .ns-kandidat { font-family: var(--font); font-style: italic; color: var(--muted); }
+.ns-andere .ns-balken-fuellung { background: var(--muted); opacity: .5; }
+/* Text in --fg statt Akzentfarbe: Rot auf Weiß reicht für kleine Schrift nicht (Kontrast < 4,5:1). */
+.ns-gewaehlt .ns-kandidat, .ns-gewaehlt .ns-prozent { font-weight: 700; color: var(--fg); }
+.ns-gewaehlt .ns-wuerfel { color: var(--accent); }
+.ns-gewaehlt .ns-balken-fuellung { background: var(--accent); }
+.ns-wuerfel { width: 1.1em; height: 1.1em; flex: none; }
+
+.ns-vergleich { display: grid; gap: 1em; }
+.ns-fussnote { font-size: .8em; color: var(--muted); margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ns-cursor { animation: none; }
+}
+@media (max-width: 600px) {
+  .ns-zeile { grid-template-columns: 6.5em 1fr 3.2em; gap: .45em; }
+}
+.ns-platzhalter { visibility: hidden; }

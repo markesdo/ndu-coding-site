@@ -1,0 +1,50 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Callout from '../../components/Callout.astro';
+import FooterNav from '../../components/FooterNav.astro';
+import NaechstesStueck from '../../components/sota/NaechstesStueck.tsx';
+---
+<Layout title="Was ein Sprachmodell tut">
+  <span class="eyebrow">Konzept 2 · Tag 1 · Teil 1</span>
+  <h1>Was ein Sprachmodell tut</h1>
+  <p class="lead">Im Kern von Claude Code steckt ein Sprachmodell. Es setzt Text fort – Stück für Stück, mit einem gewichteten Würfel. Fast alles, was euch an Claude überrascht, folgt aus diesem einen Mechanismus.</p>
+
+  <h2>Das Sprachmodell in drei Minuten</h2>
+  <p>Ein Large Language Model (LLM) hat aus einem großen Teil des Internets – und aus sehr viel Code – gelernt, <strong>wahrscheinliche Fortsetzungen</strong> von Text zu erzeugen. Anschließend wurde es trainiert, Anweisungen zu befolgen und Antworten zu geben, die Menschen als hilfreich und korrekt bewerten. Wie das konkret abläuft, zeigt die Animation.</p>
+
+  <p class="hint small muted">Klickt auf die Animation und blättert mit den Pfeiltasten – oder nutzt die Buttons.</p>
+  <NaechstesStueck client:visible />
+
+  <h2>Drei Folgen für eure Arbeit</h2>
+  <div class="grid">
+    <div class="card"><h3>Es rät plausibel</h3><p class="small muted">Das Modell schlägt nicht nach, es wählt wahrscheinliche Stücke. Meistens richtig, manchmal flüssig und falsch („Halluzination“). Code hat einen Vorteil: Er lässt sich ausführen – und dann sieht man, ob er stimmt.</p></div>
+    <div class="card"><h3>Es streut</h3><p class="small muted">Derselbe Auftrag kann zwei verschiedene, gleich plausible Ergebnisse liefern. Darum entscheiden eure Akzeptanzkriterien, welches stimmt – nicht das Modell.</p></div>
+    <div class="card"><h3>Es kann nur, was es sieht</h3><p class="small muted">Was nicht im Kontext steht, existiert für das Modell nicht: eure Entscheidung von gestern, der Fehler im Browser, das Design in eurem Kopf. Kontext geben ist euer Job.</p></div>
+  </div>
+
+  <h2 id="tokens">Tokens – die Maßeinheit</h2>
+  <p>Die Stücke aus der Animation heißen <strong>Tokens</strong>: oft ein Wortteil, im Schnitt etwa 3–4 Zeichen. In Tokens wird alles gemessen – wie viel ins <a href="/konzepte/coding-agent">Kontextfenster</a> passt, wie lange eine Antwort dauert und was ein Aufruf kostet. Deutscher Text braucht etwas mehr Tokens als englischer, ein langes Fehlerlog sehr viele.</p>
+
+  <h2 id="training">Training und Session</h2>
+  <p>Gelernt hat das Modell <strong>einmal</strong>, im Training. Danach ist es eingefroren: Sein Wissen hat einen Stichtag, und in euren Sessions lernt es nichts dazu. Was ihr Claude heute beibringt, weiß es morgen nicht mehr – es sei denn, es steht in einer Datei, die beim Start gelesen wird. Darum gibt es <code>CLAUDE.md</code>, und darum lohnt es sich, aktuelle Dokumentation in den Kontext zu holen (<a href="/konzepte/mcp">Context7 an Tag 2</a>).</p>
+
+  <h2 id="halluzination">Halluzination – wenn es richtig klingt und falsch ist</h2>
+  <p>Beim Programmieren halluziniert ein Modell typischerweise so: Es nutzt eine Funktion, die es in dieser Bibliothek nicht gibt. Es ist sich sicher, dass ein Fehler behoben ist, der noch da ist. Es erfindet eine Einstellung bei Vercel oder Supabase, die so nicht existiert. Es behauptet, getestet zu haben, ohne es getan zu haben.</p>
+  <div class="compare">
+    <div class="card bad"><h3>Macht es schlimmer</h3><ul class="small"><li>„Geht nicht, fix es.“</li><li>Ganzes Log einfügen, 400 Zeilen</li><li>Nach dem fünften Versuch in derselben Session weitermachen</li><li>Große Aufgabe auf einmal: „Bau Login, RSVP und Dashboard.“</li><li>Dem Agenten glauben, dass es funktioniert</li></ul></div>
+    <div class="card good"><h3>Macht es besser</h3><ul class="small"><li>„Beim Klick auf ‚Ich komme‘ passiert nichts. In der Browser-Konsole steht: …“</li><li>Die relevanten 5 Zeilen der Fehlermeldung</li><li>Nach dem zweiten Fehlversuch: <code>/clear</code>, kleiner formulieren</li><li>Ein Issue, klare Kriterien, Beleg für jedes Kriterium</li><li>Selbst prüfen; „schreib einen Test dafür“ sagen</li></ul></div>
+  </div>
+
+  <Callout type="info" title="Zwei Fragen, die oft kommen">
+    <p><strong>„Kann man den Zufall nicht abstellen?“</strong> In vielen Anleitungen steht etwas von „Temperatur“. Claude Code bietet diese Einstellung nicht an, und selbst wo es sie gibt, werden Antworten nicht verlässlich gleich. Rechnet mit Streuung und prüft.</p>
+    <p><strong>„Was ist das ‚Thinking‘ im Terminal?“</strong> Auch das sind erzeugte Tokens – ein Entwurf, den das Modell vor der Antwort schreibt. Er hilft bei schwierigen Aufgaben, kostet aber Zeit und Platz im Kontext. Ein Blick ins Innere des Modells ist es nicht.</p>
+  </Callout>
+
+  <p>Ausprobieren könnt ihr das gleich in <a href="/tag-1#uebung-1">Übung 1 c)</a>: derselbe Auftrag zweimal, in zwei Sessions.</p>
+
+  <Callout type="concept" title="Der eine Satz zum Mitnehmen">
+    <p>Ein Sprachmodell setzt Text fort: Stück für Stück, nach Wahrscheinlichkeit gewürfelt. Es schlägt nicht nach, lernt in eurer Session nichts dazu und klingt immer überzeugt – ob es stimmt, zeigt erst das Prüfen.</p>
+  </Callout>
+
+  <FooterNav prev={{ href: '/konzepte/app-anatomie', t: 'Anatomie einer App' }} next={{ href: '/konzepte/coding-agent', t: 'Wie ein Coding-Agent arbeitet' }} />
+</Layout>

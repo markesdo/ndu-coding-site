@@ -18,7 +18,8 @@ import FooterNav from '../components/FooterNav.astro';
     <Block time="10:45–11:00" type="pause" title="Pause" />
     <Block time="11:00–12:00" type="konzept" title="Konzept 1 · Anatomie einer App" href="/konzepte/app-anatomie">Website vs. Web-App vs. App. Frontend, Backend, Datenbank, API, Hosting. Tour durch den Codespace.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:45" type="konzept" title="Konzept 2 · Wie ein Coding-Agent arbeitet" href="/konzepte/coding-agent">Kontextfenster, Tools, der Agent-Loop, Plan Mode, CLAUDE.md, Halluzination.</Block>
+    <Block time="13:00–13:15" type="konzept" title="Konzept 2 · Teil 1 · Was ein Sprachmodell tut" href="/konzepte/llm">Stück für Stück, gewichtet gewürfelt: Tokens, Halluzination, warum derselbe Auftrag zwei Ergebnisse liefert.</Block>
+    <Block time="13:15–13:45" type="konzept" title="Konzept 2 · Teil 2 · Wie ein Coding-Agent arbeitet" href="/konzepte/coding-agent">Kontextfenster, Tools, der Agent-Loop, Plan Mode, CLAUDE.md.</Block>
     <Block time="13:45–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
     <Block time="15:00–15:15" type="pause" title="Pause" />
     <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="/konzepte/spezifikation">Produkt-Brief, Issue, Akzeptanzkriterium, MVP-Slice. Vibe Coding vs. Spec-driven.</Block>
@@ -43,9 +44,16 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt>Füge zu den drei Feature-Karten eine vierte hinzu: Emoji 🗺️, Titel „Direkt zum Ort“, Text „Ein Tippen öffnet die Karte – nie wieder falscher Raum.“ Das Layout soll weiterhin auf dem Handy gut aussehen.</Prompt>
   <p>→ Vorschau ansehen, dann Vorschau schmal ziehen (oder Rechtsklick → Untersuchen → Handy-Symbol). Passt die vierte Karte?</p>
 
-  <h3>c) Mit einem Screenshot Feedback geben (10 min)</h3>
+  <h3>c) Mit einem Screenshot Feedback geben – zweimal (20 min)</h3>
   <p>Macht einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), zieht ihn ins Claude-Code-Terminal (oder fügt ihn mit <kbd>Strg/Ctrl</kbd><kbd>V</kbd> ein) und schreibt dazu:</p>
   <Prompt>Auf diesem Screenshot ist der Abstand zwischen Überschrift und Text zu klein und die Karten wirken zu eng. Mach es luftiger, ohne das Design zu ändern.</Prompt>
+  <p>→ Vorschau ansehen und einen Screenshot vom Ergebnis machen. Jetzt derselbe Auftrag noch einmal, in einer frischen Session:</p>
+  <ol>
+    <li>Links im <strong>Source-Control-Symbol</strong> alle Änderungen verwerfen („Discard All Changes“).</li>
+    <li>Im Terminal <code>/clear</code> eingeben.</li>
+    <li>Denselben Screenshot und exakt denselben Prompt noch einmal schicken.</li>
+  </ol>
+  <p>→ Vergleicht die beiden Ergebnisse, gern auch mit dem Platz neben euch. Gleich? Warum nicht, erklärt <a href="/konzepte/llm">Was ein Sprachmodell tut</a>. Welches bleibt, entscheidet ihr – ihr seid Product Owner. Je genauer der Auftrag („Abstand unter der Überschrift verdoppeln“), desto kleiner die Streuung.</p>
   <Callout type="concept" title="Warum das wichtig ist">
     <p>Ihr müsst nicht wissen, wie „Abstand“ im Code heißt. Ihr müsst sehen können, dass er nicht stimmt, und das präzise sagen. <strong>Beobachten und benennen</strong> ist eure Kernkompetenz in diesem Kurs.</p>
   </Callout>
@@ -68,6 +76,7 @@ import FooterNav from '../components/FooterNav.astro';
     'Akzentfarbe zentral geändert – und ich weiß, wo die Stelle ist',
     'Vierte Karte eingebaut, auch am Handy geprüft',
     'Einmal Feedback per Screenshot gegeben',
+    'Denselben Auftrag zweimal gestellt und die Ergebnisse verglichen',
     'Datei gelöscht, Fehler gelesen, per Source Control wiederhergestellt',
     '<code>/ndu-commit</code> ausgeführt und den Commit auf github.com gesehen',
   ]} />
