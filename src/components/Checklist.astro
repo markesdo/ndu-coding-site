@@ -2,7 +2,10 @@
 // Checkliste mit Fortschritt (im Browser gespeichert, pro Gerät).
 const { id, items } = Astro.props as { id: string; items: string[] };
 ---
-<div class="progress" data-progress-for={id}><div></div></div>
+<div class="progress-row">
+  <div class="progress" data-progress-for={id}><div></div></div>
+  <span class="progress-count" data-count-for={id}>0/{items.length}</span>
+</div>
 <ul class="checklist" data-checklist={id}>
   {items.map((it, i) => (
     <li>
@@ -16,12 +19,15 @@ const { id, items } = Astro.props as { id: string; items: string[] };
     if (list.dataset.bound) return; list.dataset.bound = '1';
     const key = 'ndu-check-' + list.dataset.checklist;
     const bar = document.querySelector<HTMLElement>(`[data-progress-for="${list.dataset.checklist}"] > div`);
+    const count = document.querySelector<HTMLElement>(`[data-count-for="${list.dataset.checklist}"]`);
     const boxes = [...list.querySelectorAll<HTMLInputElement>('input')];
     let state: boolean[] = [];
     try { state = JSON.parse(localStorage.getItem(key) || '[]'); } catch {}
     const render = () => {
       boxes.forEach((b, i) => { b.checked = !!state[i]; b.closest('li')?.classList.toggle('done', !!state[i]); });
-      if (bar) bar.style.width = (100 * state.filter(Boolean).length / boxes.length) + '%';
+      const erledigt = boxes.filter((_, i) => state[i]).length;
+      if (bar) bar.style.width = (100 * erledigt / boxes.length) + '%';
+      if (count) count.textContent = `${erledigt}/${boxes.length}`;
     };
     boxes.forEach((b, i) => b.addEventListener('change', () => {
       state[i] = b.checked;

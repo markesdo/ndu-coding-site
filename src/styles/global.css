@@ -78,9 +78,9 @@ code { font-family: var(--mono); font-size: .9em; background: var(--code-bg); pa
 pre { background: var(--code-bg); padding: 1rem; border-radius: var(--radius); overflow-x: auto; }
 pre code { background: none; padding: 0; }
 hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
-table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.5rem; font-size: .95rem; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.5rem; font-size: .95rem; font-variant-numeric: tabular-nums; }
 th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-th { font-weight: 600; color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+th { font-family: var(--mono); font-weight: 600; color: var(--muted); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; }
 /* Breite Tabellen in .table-scroll: ist der Bildschirm trotz Silbentrennung zu schmal, scrollt nur die Tabelle. */
 .table-scroll { overflow-x: auto; margin: 1rem 0 1.5rem; }
 .table-scroll > table { margin: 0; }
@@ -125,18 +125,15 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 
 /* Cards & callouts */
 .card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.4rem; margin: 1.25rem 0; }
-.callout { border-radius: var(--radius); padding: 1rem 1.2rem; margin: 1.25rem 0; border: 1px solid transparent; }
-.callout .t { font-weight: 700; display: flex; gap: .5rem; align-items: center; margin-bottom: .3rem; }
+/* Callouts nach Rang: alle mit Linie links und Symbol; Fläche nur, wo es zählt – „concept“ ist Lernstoff,
+   „warn“ soll auffallen. „tip“ und „info“ bleiben ohne Fläche, damit nicht jeder Hinweis gleich laut ist. */
+.callout { --c: var(--blue); border-left: 3px solid var(--c); border-radius: 4px; padding: .85rem 1.1rem; margin: 1.25rem 0; }
+.callout .t { font-weight: 600; display: flex; gap: .5rem; align-items: center; margin-bottom: .3rem; }
 .callout p:last-child { margin: 0; }
-.callout.tip { background: var(--green-soft); border-color: color-mix(in srgb, var(--green) 35%, transparent); }
-.callout.warn { background: var(--yellow-soft); border-color: color-mix(in srgb, var(--yellow) 35%, transparent); }
-.callout.info { background: var(--blue-soft); border-color: color-mix(in srgb, var(--blue) 35%, transparent); }
-.callout-icon { flex: none; }
-.callout.tip .callout-icon { color: var(--green); }
-.callout.warn .callout-icon { color: var(--yellow); }
-.callout.info .callout-icon { color: var(--blue); }
-.callout.concept .callout-icon { color: var(--purple); }
-.callout.concept { background: var(--purple-soft); border-color: color-mix(in srgb, var(--purple) 35%, transparent); }
+.callout.tip { --c: var(--green); }
+.callout.warn { --c: var(--yellow); background: color-mix(in srgb, var(--yellow) 10%, var(--bg-2)); }
+.callout.concept { --c: var(--purple); background: color-mix(in srgb, var(--purple) 8%, var(--bg-2)); }
+.callout-icon { flex: none; color: var(--c); }
 
 .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 1.25rem 0; }
 .grid .card { margin: 0; }
@@ -153,15 +150,29 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .pill.pause { background: var(--code-bg); color: var(--muted); }
 .pill.plenum { background: var(--yellow-soft); color: var(--yellow-ink); }
 
-/* Schedule */
-.schedule { display: flex; flex-direction: column; gap: .5rem; margin: 1.5rem 0; }
-.block { display: grid; grid-template-columns: 110px 1fr; gap: 1rem; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
-.block.pause { background: transparent; border-style: dashed; }
-.block .time { font-family: var(--mono); font-size: .85rem; color: var(--muted); padding-top: .2rem; }
-.block .title { font-weight: 600; display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
-.block .desc { color: var(--muted); font-size: .95rem; margin: .25rem 0 0; }
+/* Schedule – eine Liste, keine Karten: Haarlinien trennen die Zeilen. Die Uhrzeit ist der Anker beim Überfliegen
+   (Monospace, volle Schriftfarbe), die Art steht als schmale Mono-Marke in eigener Spalte, Titel und Beschreibung fluchten. */
+.schedule { display: flex; flex-direction: column; margin: 1.5rem 0; border-bottom: 1px solid var(--border); }
+.block { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; padding: .85rem 0; border-top: 1px solid var(--border); }
+.block .time { font-family: var(--mono); font-size: .9rem; color: var(--fg); padding-top: .1rem; font-variant-numeric: tabular-nums; }
+.block > div:last-child { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: .75rem; align-items: baseline; }
+.block .title { display: contents; }
+.block .title > :not(.pill) { grid-column: 2; font-weight: 600; }
+.block .pill { grid-column: 1; background: none; padding: 0; border-radius: 0; font-family: var(--mono); font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.block .pill.demo { color: var(--purple); }
+.block .pill.konzept { color: var(--blue); }
+.block .pill.uebung { color: var(--green); }
+.block .pill.plenum { color: var(--yellow-ink); }
+.block .pill.pause { color: var(--muted); }
+.block .desc { grid-column: 2; color: var(--muted); font-size: .95rem; margin: .2rem 0 0; }
 .block .desc a { font-weight: 500; }
-@media (max-width: 600px) { .block { grid-template-columns: 1fr; gap: .25rem; } }
+/* Pausen: kompakte, gedämpfte Zeile ohne eigenes Gewicht. */
+.block.pause { padding: .45rem 0; font-size: .9rem; }
+.block.pause .time, .block.pause .title > :not(.pill) { color: var(--muted); font-weight: 400; }
+@media (max-width: 600px) {
+  .block { grid-template-columns: 1fr; gap: .2rem; }
+  .block > div:last-child { grid-template-columns: 5.5rem minmax(0, 1fr); column-gap: .5rem; }
+}
 
 /* Buttons */
 .btn { display: inline-block; font: inherit; font-weight: 600; padding: .6rem 1.1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-2); color: var(--fg); cursor: pointer; text-decoration: none; }
@@ -171,11 +182,17 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .btn.sm { padding: .3rem .7rem; font-size: .85rem; }
 
 /* Prompt card */
-.prompt { position: relative; background: var(--bg-2); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 1rem 1.1rem 1rem 1.1rem; margin: 1.25rem 0; }
-.prompt .label { font-size: .75rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: .4rem; display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
-.prompt pre { margin: 0; background: transparent; padding: 0; white-space: pre-wrap; font-family: var(--font); font-size: 1rem; line-height: 1.55; }
+/* Sieht aus wie das Terminal, in das der Text gehört: neutrale Fläche, kein Akzentrot (bei 30 Prompts pro Seite wäre
+   das die lauteste Farbe), Label in Mono. Der Text selbst bleibt proportional – er wird gelesen, nicht getippt. */
+.prompt { position: relative; background: var(--code-bg); border: 0; border-radius: 6px; padding: .8rem 1rem 1rem; margin: 1.25rem 0; }
+.prompt .label { font-family: var(--mono); font-size: .72rem; font-weight: 500; letter-spacing: .02em; color: var(--muted); margin-bottom: .5rem; display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+.prompt .label-text { display: inline-flex; align-items: center; gap: .4rem; }
+.prompt .label-text svg { flex: none; }
+.prompt pre { margin: 0; background: transparent; padding: 0; white-space: pre-wrap; font-family: var(--font); font-size: .95rem; line-height: 1.55; }
+/* [Lücken] zum Ersetzen hervorheben; kopiert wird weiter der reine Text mit Klammern. */
+.prompt mark.luecke { background: var(--yellow-soft); color: inherit; box-shadow: inset 0 -1px 0 var(--yellow); border-radius: 3px; padding: 0 .15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 /* Kopieren-Knopf neutral (Rot bleibt der Hauptaktion vorbehalten), feste Breite: „Kopiert“ verschiebt nichts. */
-.prompt .copy { font: inherit; font-size: .8rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-width: 7rem; flex: none; background: var(--bg-2); color: var(--fg); border: 1px solid var(--border); border-radius: 8px; padding: .3rem .7rem; cursor: pointer; text-transform: none; letter-spacing: 0; }
+.prompt .copy { font: inherit; font-family: var(--font); font-size: .8rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-width: 7rem; flex: none; background: var(--bg-2); color: var(--fg); border: 1px solid var(--border); border-radius: 8px; padding: .3rem .7rem; cursor: pointer; text-transform: none; letter-spacing: 0; }
 .prompt .copy:hover { border-color: var(--fg); }
 /* Langes Label darf umbrechen, damit der Knopf am Handy nicht über den Rand ragt. */
 .prompt .label > span { min-width: 0; overflow-wrap: anywhere; hyphens: auto; }
@@ -192,7 +209,9 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .checklist input { width: 20px; height: 20px; margin-top: .25rem; accent-color: var(--green); flex-shrink: 0; cursor: pointer; }
 .checklist label { cursor: pointer; }
 .checklist li.done label { text-decoration: line-through; color: var(--muted); }
-.progress { height: 8px; border-radius: 999px; background: var(--code-bg); overflow: hidden; margin: .5rem 0 1rem; }
+.progress-row { display: flex; align-items: center; gap: .75rem; margin: .5rem 0 1rem; }
+.progress { flex: 1; height: 4px; border-radius: 999px; background: var(--code-bg); overflow: hidden; }
+.progress-count { font-family: var(--mono); font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .progress > div { height: 100%; background: var(--green); width: 0; transition: width .25s; }
 
 /* Steps */
