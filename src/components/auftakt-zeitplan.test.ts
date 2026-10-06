@@ -111,9 +111,12 @@ describe('Tasten', () => {
     expect(tastenAktion('x', 4)).toBe('ueberspringen');
     expect(tastenAktion('Tab', 1)).toBe('ignorieren');
     expect(tastenAktion('Shift', 1)).toBe('ignorieren');
+    expect(tastenAktion('F5', 1)).toBe('ignorieren');
+    expect(tastenAktion('F11', 4)).toBe('ignorieren');
+    expect(tastenAktion('F', 4)).toBe('ueberspringen');
   });
-  it('„Weiter“: Enter, Leertaste, Pfeil rechts – sonst nichts', () => {
-    for (const t of ['Enter', ' ', 'ArrowRight']) expect(istWeiterTaste(t)).toBe(true);
+  it('„Weiter“: Enter, Leertaste, Pfeil rechts, Bild ab (Clicker) – sonst nichts', () => {
+    for (const t of ['Enter', ' ', 'ArrowRight', 'PageDown']) expect(istWeiterTaste(t)).toBe(true);
     for (const t of ['Escape', 'a', 'ArrowLeft', 'Tab']) expect(istWeiterTaste(t)).toBe(false);
   });
 });

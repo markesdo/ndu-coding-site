@@ -145,10 +145,11 @@ export function ohneFlug(zuordnung: (number | null)[], titel: string): number[] 
  * jede andere Taste (außer Tab und reinen Umschalttasten) springt ans Ende. Danach: nichts (Weiter regelt start.astro).
  */
 export function tastenAktion(taste: string, zeit: number): 'abschicken' | 'ueberspringen' | 'ignorieren' {
-  if (['Tab', 'Shift', 'Control', 'Alt', 'Meta', 'CapsLock'].includes(taste)) return 'ignorieren';
+  // Tab, Umschalttasten und Funktionstasten (F5 lädt neu, F11 Vollbild) bleiben beim Browser.
+  if (['Tab', 'Shift', 'Control', 'Alt', 'Meta', 'CapsLock'].includes(taste) || /^F\d{1,2}$/.test(taste)) return 'ignorieren';
   if (taste === 'Enter' && zeit < REGIE.enter) return 'abschicken';
   return 'ueberspringen';
 }
 
-/** Ist das Ereignis ein „Weiter“ (Enter, Leertaste, Pfeil rechts)? */
-export const istWeiterTaste = (taste: string) => taste === 'Enter' || taste === ' ' || taste === 'ArrowRight';
+/** Ist das Ereignis ein „Weiter“ (Enter, Leertaste, Pfeil rechts, Bild ab – das senden Präsentations-Clicker)? */
+export const istWeiterTaste = (taste: string) => ['Enter', ' ', 'ArrowRight', 'PageDown'].includes(taste);

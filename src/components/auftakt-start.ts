@@ -278,6 +278,8 @@ function weiterEinrichten() {
     los();
   });
   weiter.addEventListener('click', (e) => {
+    // Neuer Tab/neues Fenster (Strg/Cmd/Umschalt, mittlere Taste): dem Browser überlassen.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
     e.preventDefault();
     // Auch Klicks warten die Sperre ab: Ein Tippen, das die Animation überspringt, macht den Link sichtbar –
     // der Klick desselben Fingers darf ihn nicht gleich auslösen.

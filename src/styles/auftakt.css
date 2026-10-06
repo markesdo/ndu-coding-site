@@ -86,7 +86,8 @@ html[data-auftakt-laeuft] .hero .day { position: relative; border-top-color: tra
   position: absolute; left: 0; right: 0; top: calc(-1 * var(--linie-b, 2px)); height: var(--linie-b, 2px);
   background: var(--linie-c, var(--fg)); transform-origin: left center; pointer-events: none;
 }
-@media (max-width: 900px) { .hero .day:not(:first-child) { --linie-b: 1px; --linie-c: var(--border); } }
+/* Gleicher Umbruch wie die Tage in global.css (≤ 1100 px: Liste mit feinen Trennlinien) – sonst springt die Linie am Ende. */
+@media (max-width: 1100px) { .hero .day:not(:first-child) { --linie-b: 1px; --linie-c: var(--border); } }
 
 /* Der Druckkopf: eine Akzentlinie, die unter der Einleitung entlangläuft, während die Wörter erscheinen. */
 .auftakt-druckkopf {
