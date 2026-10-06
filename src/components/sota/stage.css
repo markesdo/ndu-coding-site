@@ -17,7 +17,11 @@
 .stage-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .75rem; }
 .stage-title { font-weight: 700; }
 .stage-count { font-family: var(--mono); font-size: .85rem; color: var(--muted); }
-.stage-caption { min-height: 6.5em; margin-top: 1rem; }
+/* Szene und Beschriftung reservieren die Höhe ihres höchsten Schritts (unsichtbare Kopien in derselben Rasterzelle). */
+.stage-scene, .stage-caption { display: grid; }
+.stage-scene > *, .stage-caption > * { grid-area: 1 / 1; min-width: 0; }
+.stage-mass { visibility: hidden; }
+.stage-caption { margin-top: 1rem; }
 .stage-caption code { font-size: .9em; }
 .stage-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
 .stage-controls .btn:disabled { opacity: .4; cursor: default; }
