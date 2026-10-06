@@ -35,7 +35,7 @@ import FooterNav from '../../components/FooterNav.astro';
   </Callout>
 
   <h2>Der Agent prüft sich selbst</h2>
-  <p>Zwei Wege, dem Agenten Augen zu geben. <strong>Tests:</strong> Ein Akzeptanzkriterium wird zu einem Skript, das die App im Browser bedient und prüft (Playwright). Einmal geschrieben, läuft es bei jeder Änderung wieder – euer Sicherheitsnetz. <strong>Browser-MCP:</strong> Claude steuert selbst einen Browser, klickt durch, macht Screenshots, liest die Konsole. Beides setzen wir an Tag 3 ein; heute reicht es zu wissen, dass es geht.</p>
+  <p>Zwei Wege, dem Agenten Augen zu geben. <strong>Tests:</strong> Ein Akzeptanzkriterium wird zu einem Skript, das die App im Browser bedient und prüft (Playwright). Einmal geschrieben, läuft es bei jeder Änderung wieder – euer Sicherheitsnetz. <strong>Screenshots:</strong> Claude lässt die Seite in mehreren Breiten fotografieren, sieht sich die Bilder selbst an und liest die Konsole – so prüft es auch, ob etwas richtig <em>aussieht</em>. Das ist die <a href="/konzepte/qualitaet#ui-schleife">UI-Schleife</a> an Tag 3; heute reicht es zu wissen, dass es geht.</p>
   <Prompt label="Test aus Akzeptanzkriterium">Schreib einen Playwright-Test für dieses Akzeptanzkriterium von Issue 6: „Gegeben ich bin angemeldet, wenn ich ‚Ich komme‘ klicke, dann steht der Button auf ‚Zugesagt ✓‘ und der Zähler steigt um 1.“ Richte Playwright ein, falls nötig, führe den Test aus und zeig mir das Ergebnis.</Prompt>
 
   <h2>Die Klassiker</h2>
