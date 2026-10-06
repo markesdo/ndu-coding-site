@@ -301,3 +301,52 @@
   .ns-zeile { grid-template-columns: 6.5em 1fr 3.2em; gap: .45em; }
 }
 .ns-platzhalter { visibility: hidden; }
+
+/* Ein Wert, viele Stellen (/konzepte/design-system). Die Mini-App ist ein „Screenshot“ der hellen Kurs-App
+   und bleibt auch im Dark Mode hell; die Farben der fünf Stellen kommen aus den Schritt-Daten. */
+.dt { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; }
+.dt-seite { display: grid; gap: .6em; align-content: start; min-width: 0; }
+.dt-kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 1em; }
+.dt-label { font-size: .75em; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.dt-zahl { font-family: var(--mono); font-size: .85em; font-weight: 700; }
+.dt-versteckt { visibility: hidden; }
+
+.dt-app {
+  --app-bg: #fafaf7; --app-card: #ffffff; --app-fg: #16161a; --app-muted: #6b6b76; --app-border: #e6e4de;
+  background: var(--app-bg); color: var(--app-fg); border: 1px solid var(--border); border-radius: 10px;
+  padding: .7em .8em .8em; display: grid; gap: .6em; font-size: .9em;
+}
+.dt-app-kopf { display: flex; justify-content: space-between; align-items: baseline; gap: .5em; }
+.dt-marke { font-weight: 700; }
+.dt-link { font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.dt-suche {
+  display: block; background: var(--app-card); border: 1px solid var(--app-border); border-radius: 6px;
+  padding: .3em .5em; color: var(--app-muted); outline: 2px solid; outline-offset: 1px;
+}
+.dt-karte { background: var(--app-card); border: 1px solid var(--app-border); border-left: 4px solid; border-radius: 8px; padding: .55em .65em; display: grid; gap: .35em; }
+.dt-karte-titel { font-weight: 700; display: flex; align-items: center; gap: .45em; }
+.dt-badge { font-size: .75em; font-weight: 700; color: #fff; border-radius: 999px; padding: .05em .55em; }
+.dt-meta { font-size: .85em; color: var(--app-muted); }
+.dt-knoepfe { display: flex; gap: .45em; flex-wrap: wrap; }
+.dt-knopf { color: #fff; font-weight: 700; font-size: .85em; border-radius: 6px; padding: .3em .7em; }
+.dt-link, .dt-suche, .dt-karte, .dt-badge, .dt-knopf, .dt-swatch { transition: color .5s, background-color .5s, border-color .5s, outline-color .5s; }
+.dt-ruhig * { transition: none !important; }
+/* Markierung nicht nur über Farbe: dunkler Ring um die gemeinte Stelle. */
+.dt-markiert { box-shadow: 0 0 0 2px var(--app-bg, var(--bg)), 0 0 0 4px var(--app-fg, var(--fg)); }
+
+.dt-code { list-style: none; margin: 0; padding: .55em .65em; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; font-size: .8em; display: grid; gap: .2em; }
+.dt-code li { display: grid; grid-template-columns: 8.5em 1fr auto 1.1em; align-items: center; gap: .45em; padding: .1em .25em; border-radius: 4px; margin: 0; }
+.dt-code code { background: none; padding: 0; font-size: 1em; overflow-wrap: anywhere; }
+.dt-datei { font-family: var(--mono); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dt-leer { font-style: italic; color: var(--muted); grid-column: 2 / -1; }
+.dt-swatch { width: .9em; height: .9em; border-radius: 3px; border: 1px solid var(--border); }
+.dt-status { width: 1.1em; height: 1.1em; }
+.dt-status-neu { color: var(--green); }
+.dt-status-verfehlt { color: var(--accent); }
+.dt-neu { background: var(--green-soft); }
+.dt-zeile-markiert { background: var(--yellow-soft); font-weight: 700; }
+
+@media (max-width: 640px) {
+  .dt { grid-template-columns: 1fr; }
+  .dt-code li { grid-template-columns: 7em 1fr auto 1.1em; }
+}
