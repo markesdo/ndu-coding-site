@@ -1,6 +1,7 @@
 ---
-import { Menu } from '@lucide/astro';
+import { Menu, Presentation } from '@lucide/astro';
 import '../styles/global.css';
+import '../styles/beamer.css';
 const { title, description = 'Programmieren mit AI – Kurs für den MSc Management by Innovation, NDU, Oktober 2026' } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
@@ -45,12 +46,29 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} · NDU Coding 2026</title>
     <meta name="description" content={description} />
+    <script is:inline>
+      // Beamer-Modus vor dem ersten Zeichnen setzen, sonst blitzt die normale Ansicht auf.
+      // ?beamer (oder ?beamer=1) schaltet ein, ?beamer=0 aus; die Wahl merkt sich der Browser.
+      (function () {
+        var q = new URLSearchParams(location.search).get('beamer');
+        var an = false;
+        try { an = localStorage.getItem('ndu-beamer') === '1'; } catch (e) {}
+        if (q !== null) {
+          an = q !== '0';
+          try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
+        }
+        if (an) document.documentElement.setAttribute('data-beamer', '');
+      })();
+    </script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e8472b'/></svg>" />
   </head>
   <body>
     <div class="topbar">
       <strong>NDU Coding 2026</strong>
-      <button id="menu-btn" aria-label="Menü öffnen"><Menu size={18} aria-hidden="true" /> Menü</button>
+      <div class="topbar-actions">
+        <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
+        <button id="menu-btn" aria-label="Menü öffnen"><Menu size={18} aria-hidden="true" /> Menü</button>
+      </div>
     </div>
     <div class="shell">
       <aside class="sidebar" id="sidebar">
@@ -63,6 +81,7 @@ const nav = [
             </div>
           ))}
         </nav>
+        <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer <kbd>B</kbd></button>
         <p class="small muted" style="margin-top:2rem">NDU · MSc Management by Innovation<br/>8. / 9. / 15. Oktober 2026</p>
       </aside>
       <main class="content">
@@ -77,6 +96,28 @@ const nav = [
       btn?.addEventListener('click', () => sb?.classList.toggle('open'));
       document.addEventListener('click', (e) => {
         if (sb?.classList.contains('open') && !sb.contains(e.target as Node) && !btn?.contains(e.target as Node)) sb.classList.remove('open');
+      });
+
+      // Beamer-Modus: Knöpfe und Taste B schalten html[data-beamer] um; den Anfangszustand setzt das Skript im <head>.
+      const root = document.documentElement;
+      const toggles = document.querySelectorAll<HTMLButtonElement>('[data-beamer-toggle]');
+      const sync = () => toggles.forEach((t) => t.setAttribute('aria-pressed', String(root.hasAttribute('data-beamer'))));
+      const setBeamer = (an: boolean) => {
+        root.toggleAttribute('data-beamer', an);
+        try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch {}
+        sb?.classList.remove('open');
+        sync();
+      };
+      sync();
+      toggles.forEach((t) => t.addEventListener('click', () => setBeamer(!root.hasAttribute('data-beamer'))));
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'b' && e.key !== 'B') return;
+        if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+        const t = e.target as HTMLElement | null;
+        // Nicht beim Tippen, und nicht solange ein Dialog (Screenshot-Präsentation) oder ein Vollbild die Tasten hat.
+        if (t && (t.isContentEditable || t.closest('input, textarea, select, [contenteditable]'))) return;
+        if (document.querySelector('dialog[open]') || document.fullscreenElement) return;
+        setBeamer(!root.hasAttribute('data-beamer'));
       });
     </script>
   </body>
