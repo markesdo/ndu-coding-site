@@ -8,8 +8,10 @@ import { LANDEN_MS, LINIE_MS, TAG_TEXT_MS, TAG_TEXT_VERSATZ, WECHSEL_MS, promptW
 const root = document.documentElement;
 const hero = document.querySelector<HTMLElement>('#auftakt-buehne');
 
-// Ohne Animation (reduzierte Bewegung): gleich Endzustand, „Weiter“ mit Fokus.
-if (hero && root.hasAttribute('data-auftakt')) starten(hero); else beenden();
+// Ohne Animation (reduzierte Bewegung) oder zu spät geladen (das CSS-Sicherheitsnetz hat nach 5 s schon alles
+// gezeigt – sonst verschwände es wieder und liefe von vorn): gleich Endzustand, „Weiter“ mit Fokus.
+const ZU_SPAET_MS = 4500;
+if (hero && root.hasAttribute('data-auftakt') && performance.now() < ZU_SPAET_MS) starten(hero); else beenden();
 
 function starten(hero: HTMLElement) {
   const h1 = hero.querySelector<HTMLElement>('h1');
@@ -79,9 +81,13 @@ function starten(hero: HTMLElement) {
   zeitgeber.push(window.setTimeout(beendenMitAufraeumen, plan.ende + 50));
   const abbrechen = (e: Event) => {
     (e as Event & { auftaktUebersprungen?: boolean }).auftaktUebersprungen = true;
+    // Enter/Leertaste beim Überspringen dürfen den danach fokussierten „Weiter“-Link nicht auslösen
+    // (Firefox aktiviert Links erst beim folgenden keypress – am dann fokussierten Element).
+    if (e instanceof KeyboardEvent && (e.key === 'Enter' || e.key === ' ')) e.preventDefault();
     beendenMitAufraeumen();
   };
-  const optionen: AddEventListenerOptions = { once: true, passive: true, capture: true };
+  // Nicht passiv: keydown muss preventDefault() können.
+  const optionen: AddEventListenerOptions = { once: true, passive: false, capture: true };
   const ereignisse = ['keydown', 'pointerdown', 'wheel', 'touchmove'] as const;
   ereignisse.forEach((e) => window.addEventListener(e, abbrechen, optionen));
 
@@ -103,7 +109,8 @@ function beenden() {
   root.removeAttribute('data-auftakt-laeuft');
   root.setAttribute('data-auftakt-fertig', '');
   // „Weiter“ bekommt den Fokus, damit Enter sofort geht – navigiert wird aber nie von selbst.
-  document.querySelector<HTMLElement>('[data-weiter]')?.focus({ preventScroll: true });
+  // Erst nach dem laufenden Ereignis fokussieren, damit eine Überspring-Taste nicht beim Link ankommt.
+  setTimeout(() => document.querySelector<HTMLElement>('[data-weiter]')?.focus({ preventScroll: true }), 0);
 }
 
 /**
