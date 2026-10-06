@@ -15,12 +15,16 @@ import Callout from '../components/Callout.astro';
   </ul>
 
   <h2>Woran ihr selbst merkt, dass es gut ist</h2>
-  <div class="grid">
-    <div class="card"><h3>Funktioniert es?</h3><p class="small muted">Die fertigen Issues tun, was ihre Akzeptanzkriterien sagen – geprüft auf der Live-URL, am Handy.</p></div>
-    <div class="card"><h3>Ist es spezifiziert?</h3><p class="small muted">Produkt-Brief mit Abgrenzung, Issues mit Ziel, „Nicht im Umfang“ und prüfbaren Kriterien inkl. Negativfällen. Man versteht, warum jede Funktion da ist.</p></div>
-    <div class="card"><h3>Ist es verifiziert?</h3><p class="small muted">Keine Secrets im Repo, RLS vorhanden, offensichtliche Fehlerfälle behandelt, <code>/ndu-check</code> grün.</p></div>
-    <div class="card"><h3>Könnt ihr es erklären?</h3><p class="small muted">Was gebaut wurde, wie es aufgebaut ist (Schichten), was der Agent gut und schlecht gemacht hat – ohne Code zu zeigen.</p></div>
-  </div>
+  <dl class="begriffe">
+    <dt>Funktioniert es?</dt>
+    <dd><p>Die fertigen Issues tun, was ihre Akzeptanzkriterien sagen – geprüft auf der Live-URL, am Handy.</p></dd>
+    <dt>Ist es spezifiziert?</dt>
+    <dd><p>Produkt-Brief mit Abgrenzung, Issues mit Ziel, „Nicht im Umfang“ und prüfbaren Kriterien inkl. Negativfällen. Man versteht, warum jede Funktion da ist.</p></dd>
+    <dt>Ist es verifiziert?</dt>
+    <dd><p>Keine Secrets im Repo, RLS vorhanden, offensichtliche Fehlerfälle behandelt, <code>/ndu-check</code> grün.</p></dd>
+    <dt>Könnt ihr es erklären?</dt>
+    <dd><p>Was gebaut wurde, wie es aufgebaut ist (Schichten), was der Agent gut und schlecht gemacht hat – ohne Code zu zeigen.</p></dd>
+  </dl>
   <Callout type="info" title="Was nicht zählt">
     <p>Anzahl der Features. Visuelle Opulenz. Ob der Code „schön“ ist. Drei saubere, verstandene Issues schlagen acht halbe.</p>
   </Callout>

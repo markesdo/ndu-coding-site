@@ -2,7 +2,8 @@
 .stage {
   --block-ink: #fff;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 0;
+  box-shadow: 0 0 0 1px var(--border);
   border-radius: var(--radius);
   padding: 1.25rem;
   margin: 1.5rem 0;
@@ -15,7 +16,7 @@
 :root[data-theme="dark"] .stage { --block-ink: var(--bg); }
 
 .stage-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .75rem; }
-.stage-title { font-weight: 700; }
+.stage-title { font-family: var(--mono); font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 .stage-count { font-family: var(--mono); font-size: .85rem; color: var(--muted); }
 /* Der Körper reserviert die Höhe des höchsten Schritts (Szene + Beschriftung, unsichtbare Kopien in derselben Rasterzelle). */
 .stage-body { display: grid; }

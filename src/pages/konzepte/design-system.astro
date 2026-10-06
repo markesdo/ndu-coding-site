@@ -27,11 +27,14 @@ const tokens = [
   <p>Für euch als Produktverantwortliche hat es einen zweiten Nutzen: Designentscheidungen lassen sich an <em>einer</em> Stelle ändern. Neue Markenfarbe, besserer Kontrast, Dark Mode – eine Zeile statt einer Suche durch zwanzig Dateien.</p>
 
   <h2>Drei Ebenen</h2>
-  <div class="grid">
-    <div class="card"><h3>1 · Tokens</h3><p class="small muted">Benannte Werte für Farben, Schrift, Abstände und Eckenradien. Benannt nach ihrer <strong>Rolle</strong>, nicht nach ihrem Aussehen: <code>accent</code> statt <code>rot</code> – sonst heißt das Token „rot“, wenn es längst blau ist.</p></div>
-    <div class="card"><h3>2 · Komponenten</h3><p class="small muted">Bausteine aus Tokens, mit allen Zuständen: ein Button ist normal, unter der Maus, fokussiert, deaktiviert oder lädt. Eine EventCard gibt es mit und ohne Bild, offen oder abgesagt.</p></div>
-    <div class="card"><h3>3 · Regeln</h3><p class="small muted">Was gilt, aufgeschrieben in <code>docs/DESIGN.md</code>: welche Tokens wofür, welche Komponenten es gibt, was ihr bewusst nicht tut. Dazu eine Zeile in der <code>CLAUDE.md</code>, damit Claude die Datei bei jeder Änderung an der Oberfläche liest.</p></div>
-  </div>
+  <dl class="begriffe">
+    <dt>1 · Tokens</dt>
+    <dd><p>Benannte Werte für Farben, Schrift, Abstände und Eckenradien. Benannt nach ihrer <strong>Rolle</strong>, nicht nach ihrem Aussehen: <code>accent</code> statt <code>rot</code> – sonst heißt das Token „rot“, wenn es längst blau ist.</p></dd>
+    <dt>2 · Komponenten</dt>
+    <dd><p>Bausteine aus Tokens, mit allen Zuständen: ein Button ist normal, unter der Maus, fokussiert, deaktiviert oder lädt. Eine EventCard gibt es mit und ohne Bild, offen oder abgesagt.</p></dd>
+    <dt>3 · Regeln</dt>
+    <dd><p>Was gilt, aufgeschrieben in <code>docs/DESIGN.md</code>: welche Tokens wofür, welche Komponenten es gibt, was ihr bewusst nicht tut. Dazu eine Zeile in der <code>CLAUDE.md</code>, damit Claude die Datei bei jeder Änderung an der Oberfläche liest.</p></dd>
+  </dl>
 
   <p>Euer Template hat die erste Ebene schon. In <code>src/app/globals.css</code> stehen diese Tokens; Tailwind macht daraus Klassen wie <code>bg-accent</code> oder <code>text-muted</code>. In <a href="/tag-1#uebung-1">Übung 1 b)</a> habt ihr das erste davon geändert – an einer Stelle, und die ganze App hat sich angepasst.</p>
   <div class="table-scroll" tabindex="0" role="region" aria-label="Tokens im Kurs-Template">
@@ -80,11 +83,14 @@ const tokens = [
   </Callout>
 
   <h2>Woher das Design kommt</h2>
-  <div class="grid">
-    <div class="card"><h3>Aus dem Code</h3><p class="small muted">Was ihr schon gebaut habt, ist der Startpunkt: Inventur, aufräumen, benennen – die sechs Schritte oben. Der übliche Weg für euren Kurs-Prototyp.</p></div>
-    <div class="card"><h3>Aus Figma</h3><p class="small muted">Im Innolab entsteht das Design in Figma. Über den Figma-MCP liest Claude Variablen und Komponenten und übernimmt sie als Tokens in <code>globals.css</code> (<a href="/konzepte/ausblick">Ausblick</a>). Dann ist Figma die Quelle und der Code folgt.</p></div>
-    <div class="card"><h3>Mit Claude Design</h3><p class="small muted">Anthropics Design-Werkzeug (Research Preview, im Pro-Plan enthalten). <code>/design-sync</code> in Claude Code liest eure Tokens und Komponenten, sodass Claude Design mit euren echten Bausteinen entwirft; über „Hand off to Claude Code“ kommt der Entwurf zurück ins Projekt. Optional – es gibt noch keine Versionsgeschichte und keine gemeinsame Bearbeitung. Im Kurs zeigen wir es als Demo.</p></div>
-  </div>
+  <dl class="begriffe">
+    <dt>Aus dem Code</dt>
+    <dd><p>Was ihr schon gebaut habt, ist der Startpunkt: Inventur, aufräumen, benennen – die sechs Schritte oben. Der übliche Weg für euren Kurs-Prototyp.</p></dd>
+    <dt>Aus Figma</dt>
+    <dd><p>Im Innolab entsteht das Design in Figma. Über den Figma-MCP liest Claude Variablen und Komponenten und übernimmt sie als Tokens in <code>globals.css</code> (<a href="/konzepte/ausblick">Ausblick</a>). Dann ist Figma die Quelle und der Code folgt.</p></dd>
+    <dt>Mit Claude Design</dt>
+    <dd><p>Anthropics Design-Werkzeug (Research Preview, im Pro-Plan enthalten). <code>/design-sync</code> in Claude Code liest eure Tokens und Komponenten, sodass Claude Design mit euren echten Bausteinen entwirft; über „Hand off to Claude Code“ kommt der Entwurf zurück ins Projekt. Optional – es gibt noch keine Versionsgeschichte und keine gemeinsame Bearbeitung. Im Kurs zeigen wir es als Demo.</p></dd>
+  </dl>
 
   <p>Selbst ausprobieren: Der Werkstatt-Track <a href="/tag-3#design-system">Design-System</a> an Tag 3 führt durch die sechs Schritte an eurer eigenen App.</p>
 

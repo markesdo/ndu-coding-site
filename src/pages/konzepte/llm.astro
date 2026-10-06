@@ -16,11 +16,14 @@ import NaechstesStueck from '../../components/sota/NaechstesStueck.tsx';
   <NaechstesStueck client:visible />
 
   <h2>Drei Folgen für eure Arbeit</h2>
-  <div class="grid">
-    <div class="card"><h3>Es rät plausibel</h3><p class="small muted">Das Modell schlägt nicht nach, es wählt wahrscheinliche Stücke. Meistens richtig, manchmal flüssig und falsch („Halluzination“). Code hat einen Vorteil: Er lässt sich ausführen – und dann sieht man, ob er stimmt.</p></div>
-    <div class="card"><h3>Es streut</h3><p class="small muted">Derselbe Auftrag kann zwei verschiedene, gleich plausible Ergebnisse liefern. Darum entscheiden eure Akzeptanzkriterien, welches stimmt – nicht das Modell.</p></div>
-    <div class="card"><h3>Es kann nur, was es sieht</h3><p class="small muted">Was nicht im Kontext steht, existiert für das Modell nicht: eure Entscheidung von gestern, der Fehler im Browser, das Design in eurem Kopf. Kontext geben ist euer Job.</p></div>
-  </div>
+  <dl class="begriffe">
+    <dt>Es rät plausibel</dt>
+    <dd><p>Das Modell schlägt nicht nach, es wählt wahrscheinliche Stücke. Meistens richtig, manchmal flüssig und falsch („Halluzination“). Code hat einen Vorteil: Er lässt sich ausführen – und dann sieht man, ob er stimmt.</p></dd>
+    <dt>Es streut</dt>
+    <dd><p>Derselbe Auftrag kann zwei verschiedene, gleich plausible Ergebnisse liefern. Darum entscheiden eure Akzeptanzkriterien, welches stimmt – nicht das Modell.</p></dd>
+    <dt>Es kann nur, was es sieht</dt>
+    <dd><p>Was nicht im Kontext steht, existiert für das Modell nicht: eure Entscheidung von gestern, der Fehler im Browser, das Design in eurem Kopf. Kontext geben ist euer Job.</p></dd>
+  </dl>
 
   <h2 id="tokens">Tokens – die Maßeinheit</h2>
   <p>Die Stücke aus der Animation heißen <strong>Tokens</strong>: oft ein Wortteil, im Schnitt etwa 3–4 Zeichen. In Tokens wird alles gemessen – wie viel ins <a href="/konzepte/coding-agent">Kontextfenster</a> passt, wie lange eine Antwort dauert und was ein Aufruf kostet. Deutscher Text braucht etwas mehr Tokens als englischer, ein langes Fehlerlog sehr viele.</p>
