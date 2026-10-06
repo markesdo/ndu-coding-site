@@ -9,16 +9,32 @@ export const PROMPT_LANG = 'Bau mir eine App, in der Studierende Events anlegen.
 export const PROMPT_KURZ = 'Bau mir eine App für Campus-Events.';
 export const promptFuer = (breite: number) => (breite < 480 ? PROMPT_KURZ : PROMPT_LANG);
 
+/** Mono-Schrift: ein Zeichen ist 0,6 em breit. Dazu kommen „› “ und der Cursor (≈ 3 Zeichen). */
+const ZEICHEN_EM = 0.6;
+const EXTRA_ZEICHEN = 3;
+/**
+ * Welcher Auftrag in welcher Größe, damit er sicher in eine Zeile passt: der lange, wenn er in der
+ * Wunschgröße passt, sonst der kurze – notfalls etwas kleiner (nie unter `minPx`).
+ */
+export function promptWahl(verfuegbarPx: number, wunschPx: number, minPx = 11) {
+  const breite = (t: string, px: number) => (t.length + EXTRA_ZEICHEN) * ZEICHEN_EM * px;
+  if (breite(PROMPT_LANG, wunschPx) <= verfuegbarPx) return { text: PROMPT_LANG, px: wunschPx };
+  const px = Math.min(wunschPx, verfuegbarPx / ((PROMPT_KURZ.length + EXTRA_ZEICHEN) * ZEICHEN_EM));
+  return { text: PROMPT_KURZ, px: Math.max(minPx, Math.floor(px * 10) / 10) };
+}
+
 /**
  * Soll der Auftakt laufen, und soll sich der Browser das merken?
  * ?intro erzwingt ihn (für den Beamer), merkt ihn aber nie. Reduzierte Bewegung hat immer Vorrang.
  * Spiegelbild des Inline-Skripts in index.astro – Änderungen an beiden Stellen.
  */
 export function auftaktStatus(o: { suche: string; gesehen: boolean; reduziert: boolean }) {
-  if (o.reduziert) return { spielen: false, merken: false };
-  if (new URLSearchParams(o.suche).has('intro')) return { spielen: true, merken: false };
-  if (o.gesehen) return { spielen: false, merken: false };
-  return { spielen: true, merken: true };
+  // folie: ?intro zeigt den Kopf als Eröffnungsfolie (im Beamer mittig) – auch ohne Animation.
+  const intro = new URLSearchParams(o.suche).has('intro');
+  if (o.reduziert) return { spielen: false, merken: false, folie: intro };
+  if (intro) return { spielen: true, merken: false, folie: true };
+  if (o.gesehen) return { spielen: false, merken: false, folie: false };
+  return { spielen: true, merken: true, folie: false };
 }
 
 /** Die Überschrift in Stücken, wie ein Modell sie ausgibt. Unbekannter Text: Wort für Wort. */

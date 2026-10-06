@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   AUFTAKT_MAX, HALTEN, PROMPT_KURZ, PROMPT_LANG, START, WECHSEL_MS,
-  auftaktStatus, promptFuer, tokens, woerter, zeitplan,
+  auftaktStatus, promptFuer, promptWahl, tokens, woerter, zeitplan,
 } from './auftakt-zeitplan';
 
 const LEAD = 'In drei Tagen von „Ich kann nicht programmieren“ zu einem eigenen, öffentlich erreichbaren Prototyp – ohne eine Zeile Code selbst zu schreiben.';
@@ -10,18 +10,18 @@ const plan = (prompt: string, zufall = () => 0.5) =>
 
 describe('auftaktStatus', () => {
   it('erster Besuch: spielen und merken', () => {
-    expect(auftaktStatus({ suche: '', gesehen: false, reduziert: false })).toStrictEqual({ spielen: true, merken: true });
+    expect(auftaktStatus({ suche: '', gesehen: false, reduziert: false })).toStrictEqual({ spielen: true, merken: true, folie: false });
   });
   it('zweiter Besuch: nicht spielen', () => {
-    expect(auftaktStatus({ suche: '', gesehen: true, reduziert: false })).toStrictEqual({ spielen: false, merken: false });
+    expect(auftaktStatus({ suche: '', gesehen: true, reduziert: false })).toStrictEqual({ spielen: false, merken: false, folie: false });
   });
   it('?intro spielt immer, merkt aber nie – auch beim ersten Besuch', () => {
-    expect(auftaktStatus({ suche: '?intro', gesehen: true, reduziert: false })).toStrictEqual({ spielen: true, merken: false });
-    expect(auftaktStatus({ suche: '?beamer&intro', gesehen: false, reduziert: false })).toStrictEqual({ spielen: true, merken: false });
+    expect(auftaktStatus({ suche: '?intro', gesehen: true, reduziert: false })).toStrictEqual({ spielen: true, merken: false, folie: true });
+    expect(auftaktStatus({ suche: '?beamer&intro', gesehen: false, reduziert: false })).toStrictEqual({ spielen: true, merken: false, folie: true });
   });
-  it('reduzierte Bewegung hat Vorrang, auch vor ?intro', () => {
-    expect(auftaktStatus({ suche: '?intro', gesehen: false, reduziert: true })).toStrictEqual({ spielen: false, merken: false });
-    expect(auftaktStatus({ suche: '', gesehen: false, reduziert: true })).toStrictEqual({ spielen: false, merken: false });
+  it('reduzierte Bewegung: keine Animation, aber ?intro bleibt Eröffnungsfolie', () => {
+    expect(auftaktStatus({ suche: '?intro', gesehen: false, reduziert: true })).toStrictEqual({ spielen: false, merken: false, folie: true });
+    expect(auftaktStatus({ suche: '', gesehen: false, reduziert: true })).toStrictEqual({ spielen: false, merken: false, folie: false });
   });
 });
 
@@ -31,6 +31,21 @@ describe('promptFuer', () => {
     expect(promptFuer(479)).toBe(PROMPT_KURZ);
     expect(promptFuer(480)).toBe(PROMPT_LANG);
     expect(promptFuer(1440)).toBe(PROMPT_LANG);
+  });
+});
+
+describe('promptWahl', () => {
+  const zeilenBreite = (text: string, px: number) => (text.length + 3) * 0.6 * px;
+  it('der gewählte Auftrag passt immer in eine Zeile – vom kleinen Handy bis zum Beamer', () => {
+    for (const verfuegbar of [288, 343, 358, 400, 488, 568, 700, 860, 1100]) {
+      const w = promptWahl(verfuegbar, 16.8);
+      expect(zeilenBreite(w.text, w.px)).toBeLessThanOrEqual(verfuegbar + 0.5);
+    }
+  });
+  it('lang, wo Platz ist; kurz am Handy, notfalls etwas kleiner', () => {
+    expect(promptWahl(860, 16.8)).toStrictEqual({ text: PROMPT_LANG, px: 16.8 });
+    expect(promptWahl(358, 16.38).text).toBe(PROMPT_KURZ);
+    expect(promptWahl(358, 16.38).px).toBeLessThan(16.38);
   });
 });
 

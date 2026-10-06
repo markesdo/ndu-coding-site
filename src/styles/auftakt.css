@@ -1,7 +1,8 @@
 /* Auftakt der Übersicht (index.astro, src/components/auftakt.ts).
    html[data-auftakt]          – gesetzt vom Inline-Skript vor dem ersten Zeichnen (erster Besuch oder ?intro)
    html[data-auftakt-laeuft]   – das Skript animiert; ab jetzt steuert die Web Animations API die Sichtbarkeit
-   html[data-auftakt-fertig]   – vorbei; nur für die Zentrierung im Beamer-Modus
+   html[data-auftakt-fertig]   – vorbei
+   html[data-auftakt-folie]    – ?intro: Kopf als Eröffnungsfolie (im Beamer mittig), auch bei reduzierter Bewegung
    Alles bleibt in seiner endgültigen Box (kein Layout-Sprung), versteckt wird nur über Deckkraft und Farbe. */
 
 /* Vor dem Start: unsichtbar, aber mit Platz. Sicherheitsnetz: Lädt das Skript nicht, ist nach 5 s alles da. */
@@ -16,7 +17,7 @@ html[data-auftakt]:not([data-auftakt-laeuft]) .hero h1 .cursor { opacity: 0; ani
 /* Der getippte Auftrag liegt über der Überschrift: Mono, gedämpft, ohne den Fluss zu verändern. */
 .hero h1 { position: relative; }
 .auftakt-prompt {
-  position: absolute; left: 0; right: 0; top: .1em;
+  position: absolute; left: 0; top: .1em; white-space: nowrap; /* immer eine Zeile; Größe setzt auftakt.ts passend */
   font-family: var(--mono); font-size: min(1.05rem, 4.2vw); font-weight: 400; letter-spacing: 0; line-height: 1.45;
   color: var(--muted); pointer-events: none;
 }
@@ -34,8 +35,8 @@ html[data-auftakt] .hero .day { position: relative; border-top-color: transparen
 }
 
 /* Beamer: Der Titel steht als Eröffnungsfolie in der Mitte der ersten Bildschirmhöhe. */
-html[data-beamer]:is([data-auftakt], [data-auftakt-fertig]) .hero {
+html[data-beamer][data-auftakt-folie] .hero {
   min-height: calc(100dvh - 3.75rem - 3.5rem);
   display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
 }
-html[data-beamer]:is([data-auftakt], [data-auftakt-fertig]) .hero .days { align-self: stretch; }
+html[data-beamer][data-auftakt-folie] .hero .days { align-self: stretch; }

@@ -10,8 +10,10 @@ import '../styles/auftakt.css';
     // src/components/auftakt-zeitplan.ts – Änderungen an beiden Stellen.
     (function () {
       try {
+        var intro = new URLSearchParams(location.search).has('intro');
+        if (intro) document.documentElement.setAttribute('data-auftakt-folie', '');
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        if (new URLSearchParams(location.search).has('intro')) { document.documentElement.setAttribute('data-auftakt', ''); return; }
+        if (intro) { document.documentElement.setAttribute('data-auftakt', ''); return; }
         if (localStorage.getItem('ndu-intro')) return;
         localStorage.setItem('ndu-intro', '1');
         document.documentElement.setAttribute('data-auftakt', '');

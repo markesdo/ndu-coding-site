@@ -1,7 +1,7 @@
 // Auftakt der Übersicht (index.astro): Ein Auftrag wird getippt, dann landet die Seite Stück für Stück.
 // Läuft nur, wenn das Inline-Skript in index.astro html[data-auftakt] gesetzt hat (erster Besuch oder ?intro).
 // Web Animations API, keine Bibliothek. Jede Taste, jeder Klick, jedes Scrollen beendet ihn sofort.
-import { LANDEN_MS, LINIE_MS, TAG_TEXT_MS, TAG_TEXT_VERSATZ, WECHSEL_MS, promptFuer, tokens, woerter, zeitplan } from './auftakt-zeitplan';
+import { LANDEN_MS, LINIE_MS, TAG_TEXT_MS, TAG_TEXT_VERSATZ, WECHSEL_MS, promptWahl, tokens, woerter, zeitplan } from './auftakt-zeitplan';
 
 const root = document.documentElement;
 const hero = document.querySelector<HTMLElement>('[data-hero]');
@@ -22,7 +22,10 @@ function starten(hero: HTMLElement) {
   const zeitgeber: number[] = [];
   let fertig = false;
 
-  const prompt = promptFuer(window.innerWidth);
+  // Breite des Kopfs (nicht der Überschrift: die ist im Beamer nur so breit wie ihr Text).
+  const wunschPx = Math.min(16.8, window.innerWidth * 0.042);
+  const wahl = promptWahl(hero.clientWidth, wunschPx);
+  const prompt = wahl.text;
   const h1Stuecke = wickeln(h1, tokens(h1.textContent ?? ''));
   const leadStuecke = wickeln(lead, woerter(lead.textContent ?? ''));
   const plan = zeitplan({ prompt, h1Tokens: h1Stuecke.length, leadWoerter: leadStuecke.length, tage: tage.length });
@@ -31,6 +34,7 @@ function starten(hero: HTMLElement) {
   const zeile = document.createElement('span');
   zeile.className = 'auftakt-prompt';
   zeile.setAttribute('aria-hidden', 'true');
+  zeile.style.fontSize = `${wahl.px}px`;
   const chevron = Object.assign(document.createElement('span'), { className: 'auftakt-chevron', textContent: '›' });
   const text = Object.assign(document.createElement('span'), { className: 'auftakt-text' });
   const tippCursor = Object.assign(document.createElement('span'), { className: 'cursor' });
@@ -52,10 +56,11 @@ function starten(hero: HTMLElement) {
     [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-6px)' }],
     { delay: plan.wechsel, duration: WECHSEL_MS, easing: 'ease-out', fill: 'both' },
   ));
-  h1Stuecke.forEach((teile, i) => teile.forEach((el) => ein(el, plan.h1[i])));
+  // Stücke und Wörter sind Inline-Spans: dort wirkt keine Verschiebung (inline-block würde die Umbrüche ändern) – nur einblenden.
+  h1Stuecke.forEach((teile, i) => teile.forEach((el) => ein(el, plan.h1[i], LANDEN_MS, 0)));
   if (h1Cursor) ein(h1Cursor, plan.h1.at(-1) ?? plan.wechsel, LANDEN_MS, 0);
   ein(eyebrow, plan.eyebrow);
-  leadStuecke.forEach((teile, i) => teile.forEach((el) => ein(el, plan.lead[i])));
+  leadStuecke.forEach((teile, i) => teile.forEach((el) => ein(el, plan.lead[i], LANDEN_MS, 0)));
   tage.forEach((tag, i) => {
     const linie = document.createElement('span');
     linie.className = 'auftakt-linie';
