@@ -2,29 +2,39 @@
 import Layout from '../layouts/Layout.astro';
 import Callout from '../components/Callout.astro';
 const probleme = [
-  { t: 'Codespace startet nicht / hängt bei „Setting up“', l: 'Browser-Tab schließen, github.com → Codespaces → den Codespace öffnen. Nach 5 Minuten: „…“ → Rebuild Container. Letzter Ausweg: löschen und neu anlegen (eure gepushten Commits bleiben).' },
-  { t: '„claude: command not found“', l: 'Der Container ist noch nicht fertig installiert. 1 Minute warten, Terminal neu öffnen (Mülleimer-Symbol, dann +). Bleibt es: <code>npm install -g @anthropic-ai/claude-code</code> im Terminal.' },
-  { t: 'Claude-Login: nach „Authorize“ kommt „Diese Website ist nicht erreichbar“ (localhost)', l: 'Normal im Codespace. Tab schließen, zurück ins Terminal: Dort steht „Paste code here if prompted“. Den langen Link darüber mit <kbd>Cmd</kbd>-/<kbd>Strg</kbd>-Klick öffnen (oder <kbd>c</kbd> drücken und in einen neuen Tab einfügen), <em>Authorize</em>, Code mit <em>Copy code</em> kopieren, im Terminal einfügen (Rechtsklick → Paste oder <kbd>Strg/Ctrl</kbd><kbd>Shift</kbd><kbd>V</kbd>), <kbd>Enter</kbd>. Bilder: <a href="/setup#claude-code-6">Setup, Schritt 5.6</a>.' },
-  { t: 'Claude beendet sich direkt nach dem Start', l: 'Bei der Frage „Is this a project you … trust?“ ist <em>No, exit</em> vorausgewählt. <code>claude</code> neu starten, mit <kbd>↓</kbd> auf <em>Yes, I trust this folder</em>, dann <kbd>Enter</kbd>.' },
-  { t: 'Vorschau im Editor bleibt leer (Symbol einer kaputten Seite)', l: 'Die eingebaute Vorschau („Simple Browser“) wird im Codespace oft blockiert. Oben rechts in der Vorschau auf „In neuem Tab öffnen“ – oder unten Reiter <em>Ports</em> → Zeile 3000 → Globus-Symbol.' },
-  { t: 'Vorschau zeigt „Port 3000 nicht erreichbar“', l: 'Läuft <code>npm run dev</code> noch? Im Terminal nachsehen. Wenn nicht: neu starten. Unten im Reiter „Ports“ den Port 3000 mit dem Globus öffnen.' },
-  { t: 'Vorschau zeigt rote Fehlerseite', l: 'Das ist gut – der Fehler sagt, was fehlt. Komplett markieren, kopieren, Debug-Prompt. Meist: eine gelöschte oder umbenannte Datei, oder ein fehlendes <code>npm install</code>.' },
-  { t: '„Module not found“', l: 'Ein Paket fehlt. <code>npm install</code> im Terminal, Dev-Server neu starten. Oder Claude: „Installiere die fehlende Dependency und starte neu.“' },
-  { t: 'Claude macht etwas völlig anderes als gewünscht', l: '<kbd>Esc</kbd> drücken. Source Control → Discard Changes. <code>/clear</code>. Aufgabe halbieren und genauer formulieren. Ist noch unklar, was genau entstehen soll: erst <code>/ndu-idee</code> oder Plan Mode, damit Claude nachfragt.' },
-  { t: 'Claude dreht sich im Kreis (3. Versuch, gleicher Fehler)', l: 'Nicht weiterprompten. <code>/clear</code>, dann: „Hier ist Fehler X. Erkläre mir drei mögliche Ursachen, bevor du etwas änderst.“ Oft hilft: Claude bitten, die aktuelle Doku zu lesen („nutze die Dokumentation in node_modules/next/dist/docs“).' },
-  { t: '„Rate limit“ / „usage limit reached“', l: 'Euer Claude-Pro-Kontingent für dieses Zeitfenster ist aufgebraucht; <code>/usage</code> zeigt, wofür. Pause machen, keine Usage Credits kaufen, Kontext kleiner halten (<code>/clear</code> nach jedem Issue), nicht das ganze Projekt auf einmal lesen lassen. Reset-Zeit wird angezeigt.' },
-  { t: 'Supabase: „Invalid API key“ / „fetch failed“', l: 'URL und Publishable Key in <code>.env.local</code> prüfen (keine Leerzeichen, keine Anführungszeichen). Dev-Server neu starten – <code>.env</code> wird nur beim Start gelesen.' },
-  { t: 'Supabase: „new row violates row-level security policy“', l: 'Gut – RLS tut seinen Job. Entweder seid ihr nicht angemeldet oder die Policy fehlt. Claude mit Supabase-MCP: „Zeig mir die RLS-Policies der Tabelle X und erkläre, warum das Anlegen scheitert.“' },
-  { t: 'Supabase-MCP: nach „Authorize“ kommt „Diese Website ist nicht erreichbar“ (localhost)', l: 'Die Adresse aus der Adressleiste der Fehlerseite kopieren. Im Codespace ein weiteres Terminal öffnen (<kbd>+</kbd>) und dort <code>curl "ADRESSE"</code> ausführen. Am Ende der Ausgabe steht „Authentication successful“; <code>/mcp</code> zeigt dann „connected“. Bilder: <a href="/tag-2#mcp-8">Tag 2, Schritt 3b.8</a>.' },
-  { t: 'Vercel-Adresse verlangt eine Anmeldung', l: 'Ihr habt die Deployment-Adresse erwischt (mit Zufallszeichen und eurem Benutzernamen). Öffentlich ist die Adresse unter <em>Domains</em> im Projekt-Dashboard.' },
-  { t: 'Login funktioniert lokal, aber nicht auf Vercel', l: 'Supabase → Authentication → URL Configuration: Site URL = Vercel-URL, und die Vercel-URL zusätzlich bei „Redirect URLs“ eintragen (mit <code>/**</code> am Ende).' },
-  { t: 'Vercel-Build schlägt fehl, lokal geht alles', l: 'Meist fehlen Environment-Variablen auf Vercel oder <code>npm run build</code> wurde lokal nie ausgeführt (dev ist toleranter). Lokal <code>npm run build</code>, Fehler mit Claude beheben, dann pushen.' },
-  { t: 'Git: „Author identity unknown – Please tell me who you are“', l: 'Git weiß nicht, wer committet. Codespaces aus dem aktuellen Kurs-Template setzen Name und E-Mail beim Start selbst; ältere Repos haben das noch nicht. Erscheint die Meldung trotzdem, sagt Claude: „Richte Git mit meinem GitHub-Namen und meiner noreply-Adresse von GitHub ein und versuch den Commit noch einmal.“ Die noreply-Adresse steht auf github.com unter Settings → Emails im Text bei „Keep my email addresses private“ und endet auf <code>@users.noreply.github.com</code>. Nehmt nicht eure echte Adresse, sonst lehnt GitHub den Push womöglich ab (GH007).' },
-  { t: 'Git: „GH007: Your push would publish a private email address“', l: 'Eure Commits tragen die echte E-Mail-Adresse, und in GitHub ist sie als privat markiert (Settings → Emails: „Keep my email addresses private“ und „Block command line pushes that expose my email“). Claude: „Stell Git auf meine noreply-Adresse von GitHub um, trag sie bei den noch nicht gepushten Commits als Autor ein und push noch einmal.“ Die noreply-Adresse steht unter Settings → Emails und endet auf <code>@users.noreply.github.com</code>. Alternativ dort das Häkchen bei „Block command line pushes …“ entfernen – dann wird eure Adresse in den Commits sichtbar.' },
-  { t: 'Git: „push rejected“ / „non-fast-forward“', l: 'Jemand (Markus?) hat im Repo etwas geändert. Claude: „git pull, Konflikte erklären, dann push.“ Oder Source Control → „…“ → Pull, dann Sync.' },
-  { t: 'Codespace startet nicht mehr: Kontingent aufgebraucht', l: 'Die 60 Stunden (2 Kerne) für diesen Monat sind verbraucht. Es entstehen keine Kosten, der Codespace startet nur nicht. Weiterarbeiten: Codespaces-Budget von 0 auf einige Dollar anheben (Settings → Billing and licensing → Budgets and alerts → Codespaces → Edit), „Stop usage“ an lassen – Anleitung: <a href="/setup#kontingent">Setup</a>. Vorbeugen: einen einzigen Codespace verwenden, nach der Arbeit stoppen, alte löschen.' },
-  { t: 'GitHub Education: „We require applicants to use a school-issued email address“', l: 'GitHub erkennt die gewählte Adresse nicht als Hochschuladresse. Prüfen, ob im Formular wirklich die NDU-Adresse ausgewählt ist und sie unter Settings → Emails als „Verified“ steht. Bleibt die Meldung: Markus Bescheid geben und ohne Education weiterarbeiten – das Kontingent reicht für den Kurs.' },
+  { g: 'setup', t: 'Codespace startet nicht / hängt bei „Setting up“', l: 'Browser-Tab schließen, github.com → Codespaces → den Codespace öffnen. Nach 5 Minuten: „…“ → Rebuild Container. Letzter Ausweg: löschen und neu anlegen (eure gepushten Commits bleiben).' },
+  { g: 'claude', t: '„claude: command not found“', l: 'Der Container ist noch nicht fertig installiert. 1 Minute warten, Terminal neu öffnen (Mülleimer-Symbol, dann +). Bleibt es: <code>npm install -g @anthropic-ai/claude-code</code> im Terminal.' },
+  { g: 'claude', t: 'Claude-Login: nach „Authorize“ kommt „Diese Website ist nicht erreichbar“ (localhost)', l: 'Normal im Codespace. Tab schließen, zurück ins Terminal: Dort steht „Paste code here if prompted“. Den langen Link darüber mit <kbd>Cmd</kbd>-/<kbd>Strg</kbd>-Klick öffnen (oder <kbd>c</kbd> drücken und in einen neuen Tab einfügen), <em>Authorize</em>, Code mit <em>Copy code</em> kopieren, im Terminal einfügen (Rechtsklick → Paste oder <kbd>Strg/Ctrl</kbd><kbd>Shift</kbd><kbd>V</kbd>), <kbd>Enter</kbd>. Bilder: <a href="/setup#claude-code-6">Setup, Schritt 5.6</a>.' },
+  { g: 'claude', t: 'Claude beendet sich direkt nach dem Start', l: 'Bei der Frage „Is this a project you … trust?“ ist <em>No, exit</em> vorausgewählt. <code>claude</code> neu starten, mit <kbd>↓</kbd> auf <em>Yes, I trust this folder</em>, dann <kbd>Enter</kbd>.' },
+  { g: 'vorschau', t: 'Vorschau im Editor bleibt leer (Symbol einer kaputten Seite)', l: 'Die eingebaute Vorschau („Simple Browser“) wird im Codespace oft blockiert. Oben rechts in der Vorschau auf „In neuem Tab öffnen“ – oder unten Reiter <em>Ports</em> → Zeile 3000 → Globus-Symbol.' },
+  { g: 'vorschau', t: 'Vorschau zeigt „Port 3000 nicht erreichbar“', l: 'Läuft <code>npm run dev</code> noch? Im Terminal nachsehen. Wenn nicht: neu starten. Unten im Reiter „Ports“ den Port 3000 mit dem Globus öffnen.' },
+  { g: 'vorschau', t: 'Vorschau zeigt rote Fehlerseite', l: 'Das ist gut – der Fehler sagt, was fehlt. Komplett markieren, kopieren, Debug-Prompt. Meist: eine gelöschte oder umbenannte Datei, oder ein fehlendes <code>npm install</code>.' },
+  { g: 'vorschau', t: '„Module not found“', l: 'Ein Paket fehlt. <code>npm install</code> im Terminal, Dev-Server neu starten. Oder Claude: „Installiere die fehlende Dependency und starte neu.“' },
+  { g: 'claude', t: 'Claude macht etwas völlig anderes als gewünscht', l: '<kbd>Esc</kbd> drücken. Source Control → Discard Changes. <code>/clear</code>. Aufgabe halbieren und genauer formulieren. Ist noch unklar, was genau entstehen soll: erst <code>/ndu-idee</code> oder Plan Mode, damit Claude nachfragt.' },
+  { g: 'claude', t: 'Claude dreht sich im Kreis (3. Versuch, gleicher Fehler)', l: 'Nicht weiterprompten. <code>/clear</code>, dann: „Hier ist Fehler X. Erkläre mir drei mögliche Ursachen, bevor du etwas änderst.“ Oft hilft: Claude bitten, die aktuelle Doku zu lesen („nutze die Dokumentation in node_modules/next/dist/docs“).' },
+  { g: 'claude', t: '„Rate limit“ / „usage limit reached“', l: 'Euer Claude-Pro-Kontingent für dieses Zeitfenster ist aufgebraucht; <code>/usage</code> zeigt, wofür. Pause machen, keine Usage Credits kaufen, Kontext kleiner halten (<code>/clear</code> nach jedem Issue), nicht das ganze Projekt auf einmal lesen lassen. Reset-Zeit wird angezeigt.' },
+  { g: 'supabase', t: 'Supabase: „Invalid API key“ / „fetch failed“', l: 'URL und Publishable Key in <code>.env.local</code> prüfen (keine Leerzeichen, keine Anführungszeichen). Dev-Server neu starten – <code>.env</code> wird nur beim Start gelesen.' },
+  { g: 'supabase', t: 'Supabase: „new row violates row-level security policy“', l: 'Gut – RLS tut seinen Job. Entweder seid ihr nicht angemeldet oder die Policy fehlt. Claude mit Supabase-MCP: „Zeig mir die RLS-Policies der Tabelle X und erkläre, warum das Anlegen scheitert.“' },
+  { g: 'supabase', t: 'Supabase-MCP: nach „Authorize“ kommt „Diese Website ist nicht erreichbar“ (localhost)', l: 'Die Adresse aus der Adressleiste der Fehlerseite kopieren. Im Codespace ein weiteres Terminal öffnen (<kbd>+</kbd>) und dort <code>curl "ADRESSE"</code> ausführen. Am Ende der Ausgabe steht „Authentication successful“; <code>/mcp</code> zeigt dann „connected“. Bilder: <a href="/tag-2#mcp-8">Tag 2, Schritt 3b.8</a>.' },
+  { g: 'vercel', t: 'Vercel-Adresse verlangt eine Anmeldung', l: 'Ihr habt die Deployment-Adresse erwischt (mit Zufallszeichen und eurem Benutzernamen). Öffentlich ist die Adresse unter <em>Domains</em> im Projekt-Dashboard.' },
+  { g: 'vercel', t: 'Login funktioniert lokal, aber nicht auf Vercel', l: 'Supabase → Authentication → URL Configuration: Site URL = Vercel-URL, und die Vercel-URL zusätzlich bei „Redirect URLs“ eintragen (mit <code>/**</code> am Ende).' },
+  { g: 'vercel', t: 'Vercel-Build schlägt fehl, lokal geht alles', l: 'Meist fehlen Environment-Variablen auf Vercel oder <code>npm run build</code> wurde lokal nie ausgeführt (dev ist toleranter). Lokal <code>npm run build</code>, Fehler mit Claude beheben, dann pushen.' },
+  { g: 'git', t: 'Git: „Author identity unknown – Please tell me who you are“', l: 'Git weiß nicht, wer committet. Codespaces aus dem aktuellen Kurs-Template setzen Name und E-Mail beim Start selbst; ältere Repos haben das noch nicht. Erscheint die Meldung trotzdem, sagt Claude: „Richte Git mit meinem GitHub-Namen und meiner noreply-Adresse von GitHub ein und versuch den Commit noch einmal.“ Die noreply-Adresse steht auf github.com unter Settings → Emails im Text bei „Keep my email addresses private“ und endet auf <code>@users.noreply.github.com</code>. Nehmt nicht eure echte Adresse, sonst lehnt GitHub den Push womöglich ab (GH007).' },
+  { g: 'git', t: 'Git: „GH007: Your push would publish a private email address“', l: 'Eure Commits tragen die echte E-Mail-Adresse, und in GitHub ist sie als privat markiert (Settings → Emails: „Keep my email addresses private“ und „Block command line pushes that expose my email“). Claude: „Stell Git auf meine noreply-Adresse von GitHub um, trag sie bei den noch nicht gepushten Commits als Autor ein und push noch einmal.“ Die noreply-Adresse steht unter Settings → Emails und endet auf <code>@users.noreply.github.com</code>. Alternativ dort das Häkchen bei „Block command line pushes …“ entfernen – dann wird eure Adresse in den Commits sichtbar.' },
+  { g: 'git', t: 'Git: „push rejected“ / „non-fast-forward“', l: 'Jemand (Markus?) hat im Repo etwas geändert. Claude: „git pull, Konflikte erklären, dann push.“ Oder Source Control → „…“ → Pull, dann Sync.' },
+  { g: 'setup', t: 'Codespace startet nicht mehr: Kontingent aufgebraucht', l: 'Die 60 Stunden (2 Kerne) für diesen Monat sind verbraucht. Es entstehen keine Kosten, der Codespace startet nur nicht. Weiterarbeiten: Codespaces-Budget von 0 auf einige Dollar anheben (Settings → Billing and licensing → Budgets and alerts → Codespaces → Edit), „Stop usage“ an lassen – Anleitung: <a href="/setup#kontingent">Setup</a>. Vorbeugen: einen einzigen Codespace verwenden, nach der Arbeit stoppen, alte löschen.' },
+  { g: 'setup', t: 'GitHub Education: „We require applicants to use a school-issued email address“', l: 'GitHub erkennt die gewählte Adresse nicht als Hochschuladresse. Prüfen, ob im Formular wirklich die NDU-Adresse ausgewählt ist und sie unter Settings → Emails als „Verified“ steht. Bleibt die Meldung: Markus Bescheid geben und ohne Education weiterarbeiten – das Kontingent reicht für den Kurs.' },
 ];
+const gruppen = [
+  { id: 'setup', t: 'Codespace & Konten' },
+  { id: 'claude', t: 'Claude Code' },
+  { id: 'vorschau', t: 'Vorschau & App' },
+  { id: 'supabase', t: 'Supabase' },
+  { id: 'vercel', t: 'Vercel' },
+  { id: 'git', t: 'Git & GitHub' },
+];
+// Jedes Problem gehört zu genau einer Gruppe – sonst würde es auf der Seite fehlen.
+for (const p of probleme) if (!gruppen.some((g) => g.id === p.g)) throw new Error(`Problem ohne Gruppe: ${p.t}`);
 const karten = [
   'Benenne in der Datei mit den Beispieldaten die Spalte <code>titel</code> in <code>title</code> um – aber nur dort.',
   'Entferne den Import der Header-Komponente auf der Startseite, lass die Verwendung stehen.',
@@ -40,8 +50,20 @@ const karten = [
   <span class="eyebrow">Nachschlagen</span>
   <h1>Bekannte Probleme</h1>
   <p class="lead">Die typischen Stolpersteine – und was dagegen hilft. Wird während des Kurses ergänzt.</p>
-  {probleme.map(p => (
-    <div class="card"><h3>{p.t}</h3><p class="small" set:html={p.l}></p></div>
+  <nav class="probleme-sprung" aria-label="Themen">
+    {gruppen.map((g) => <a href={`#${g.id}`}>{g.t}</a>)}
+  </nav>
+  <p class="small muted">Tippt auf ein Problem, um die Lösung zu sehen.</p>
+  {gruppen.map((g) => (
+    <section class="probleme-gruppe" aria-labelledby={g.id}>
+      <h2 id={g.id}>{g.t}</h2>
+      {probleme.filter((p) => p.g === g.id).map((p) => (
+        <details class="problem">
+          <summary>{p.t}</summary>
+          <p class="small" set:html={p.l}></p>
+        </details>
+      ))}
+    </section>
   ))}
 
   <hr />
@@ -56,3 +78,26 @@ const karten = [
     <p>Source Control öffnen: Hat die Reparatur <em>nur</em> den Fehler behoben – oder nebenbei drei andere Dateien angefasst? Das ist die zweite Lektion dieser Übung.</p>
   </Callout>
 </Layout>
+
+<style>
+  .probleme-sprung { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; margin: 1.25rem 0 .5rem; }
+  .probleme-sprung a { font-weight: 600; }
+  .probleme-gruppe h2 { margin-top: 2.5rem; }
+  .problem { border-top: 1px solid var(--border); }
+  .problem:last-child { border-bottom: 1px solid var(--border); }
+  .problem summary {
+    cursor: pointer; list-style: none; position: relative;
+    padding: .75rem 0 .75rem 1.5rem; font-weight: 600; line-height: 1.4;
+  }
+  .problem summary::-webkit-details-marker { display: none; }
+  /* Eigener Pfeil statt Browser-Dreieck: zeigt nach rechts, aufgeklappt nach unten. */
+  .problem summary::before {
+    content: ''; position: absolute; left: .2rem; top: 1.12rem; width: .45rem; height: .45rem;
+    border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+    transform: rotate(-45deg); transition: transform .15s;
+  }
+  .problem[open] summary::before { transform: rotate(45deg); top: 1rem; }
+  .problem summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+  .problem p { margin: 0 0 1rem 1.5rem; }
+  @media (prefers-reduced-motion: reduce) { .problem summary::before { transition: none; } }
+</style>
