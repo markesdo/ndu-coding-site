@@ -89,11 +89,28 @@ export default function Stage({ title, steps, children }: StageProps) {
           {nav.index + 1} / {steps.length}
         </span>
       </div>
-      <div className="stage-scene">{children(nav, reduced)}</div>
+      <div className="stage-scene">
+        {/* Wie bei der Beschriftung: jeder Schritt einmal unsichtbar in derselben Rasterzelle, damit die Szene
+            so hoch ist wie ihr höchster Schritt. Ohne Animation, aus dem Bedienbaum genommen (inert). */}
+        {steps.map((_, i) => (
+          <div key={i} className="stage-mass" aria-hidden="true" inert>
+            {children({ index: i, direction: 1, seq: 0 }, true)}
+          </div>
+        ))}
+        <div className="stage-scene-aktiv">{children(nav, reduced)}</div>
+      </div>
       <div className="stage-caption" aria-hidden="true">
+        {/* Alle Beschriftungen unsichtbar in derselben Rasterzelle: Die Zelle ist so hoch wie die längste,
+            bei jeder Breite – so bleiben die Knöpfe darunter beim Blättern an ihrem Platz. */}
+        {steps.map((s, i) => (
+          <div key={i} className="stage-mass">
+            {s.caption}
+          </div>
+        ))}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={nav.index}
+            className="stage-caption-aktiv"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
