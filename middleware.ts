@@ -3,7 +3,7 @@
 // Frei: /login, /_astro/* (Schriften, Skripte, Bilder), Favicon, robots.txt. Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
-import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang';
+import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js: Vercel lädt die Middleware als Node-ESM ohne Bundler
 
 export const config = {
   matcher: ['/((?!_astro/|favicon\\.svg$|favicon\\.ico$|robots\\.txt$).*)'],
