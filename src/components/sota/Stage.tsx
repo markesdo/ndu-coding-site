@@ -1,6 +1,6 @@
 // Rahmen für Schritt-Animationen: Steuerung, Tastatur, Vollbild, Beschriftung.
 // Wiederverwendbar für alle animierten Szenen der Kurs-Website.
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import './stage.css';
 
@@ -38,6 +38,14 @@ export default function Stage({ title, steps, children }: StageProps) {
     document.addEventListener('fullscreenchange', onChange);
     return () => document.removeEventListener('fullscreenchange', onChange);
   }, []);
+
+  // Unsichtbare Kopien aller Schritte nur einmal bauen, nicht bei jedem Blättern. Hängt bewusst nur an `steps`:
+  // Die Szenen leiten ihren Inhalt allein aus dem Schritt ab, nicht aus äußerem Zustand.
+  const platzhalter = useMemo(() => steps.map((_, i) => (
+    <div key={i} className="stage-mass" aria-hidden="true" inert>
+      {children({ index: i, direction: 1, seq: 0 }, true)}
+    </div>
+  )), [steps]);
 
   const move = (delta: 1 | -1) =>
     setNav((n) => {
@@ -92,11 +100,7 @@ export default function Stage({ title, steps, children }: StageProps) {
       <div className="stage-scene">
         {/* Wie bei der Beschriftung: jeder Schritt einmal unsichtbar in derselben Rasterzelle, damit die Szene
             so hoch ist wie ihr höchster Schritt. Ohne Animation, aus dem Bedienbaum genommen (inert). */}
-        {steps.map((_, i) => (
-          <div key={i} className="stage-mass" aria-hidden="true" inert>
-            {children({ index: i, direction: 1, seq: 0 }, true)}
-          </div>
-        ))}
+        {platzhalter}
         <div className="stage-scene-aktiv">{children(nav, reduced)}</div>
       </div>
       <div className="stage-caption" aria-hidden="true">
