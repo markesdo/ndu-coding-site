@@ -25,7 +25,8 @@
   --max: 860px;
   /* Selbst gehostete Schriften (fontsource, siehe Layout.astro); dahinter die Systemschriften als Ersatz. */
   --font: "Instrument Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --display: "Bricolage Grotesque Variable", var(--font);
+  /* Marke „Cursor“: Überschriften und alles Markenhafte in der Mono-Schrift, Fließtext bleibt Instrument Sans. */
+  --display: var(--mono);
   --mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
@@ -72,13 +73,13 @@ body {
 a { color: var(--blue); text-decoration: none; }
 a:hover { text-decoration: underline; }
 h1, h2, h3, h4 { line-height: 1.2; letter-spacing: -0.01em; }
-/* Überschriften in Bricolage Grotesque: eng gesetzt, damit sie als Anker wirken – auch auf dem Beamer. */
-h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -0.02em; }
-h1 { font-size: clamp(2rem, 1.2rem + 2.2vw, 2.75rem); line-height: 1.05; margin: 0 0 .6rem; }
-h2 { font-size: 1.5rem; line-height: 1.15; margin: 2.5rem 0 .75rem; }
+/* Überschriften in JetBrains Mono: eng gesetzt, damit sie als Anker wirken – auch auf dem Beamer. Mono läuft breiter, daher etwas kleiner. */
+h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -0.03em; }
+h1 { font-size: clamp(1.85rem, 1.2rem + 2vw, 2.5rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; margin: 0 0 .6rem; }
+h2 { font-size: 1.4rem; line-height: 1.2; margin: 2.5rem 0 .75rem; }
 /* Abschnitte gliedert eine Haarlinie über der Überschrift, nicht eine Karte. Nur in der Inhaltsspalte – in Karten, Callouts und Animationen nicht. */
 .content > .inner > h2 { margin-top: 3.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
-h3 { font-size: 1.125rem; line-height: 1.25; margin: 1.75rem 0 .5rem; }
+h3 { font-size: 1.05rem; line-height: 1.3; margin: 1.75rem 0 .5rem; }
 /* Zeilenlänge: Fließtext höchstens 68 Zeichen breit; Ablauf, Animationen, Tabellen und Prompts nutzen die volle Spalte. */
 .content > .inner > :is(p:not(.lead), h3, ul:not([class]), ol:not([class])) { max-width: 68ch; }
 p, ul, ol { margin: 0 0 1rem; }
@@ -109,7 +110,20 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 /* Layout */
 .shell { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
 .sidebar { border-right: 1px solid var(--border); background: var(--bg-2); padding: 1.5rem 1.25rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-.sidebar .brand { display: flex; align-items: center; gap: .6rem; font-family: var(--display); font-weight: 600; letter-spacing: -0.01em; font-size: 1.1rem; color: var(--fg); margin-bottom: 1.5rem; }
+.sidebar .brand { display: flex; align-items: center; gap: .6rem; font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: .95rem; color: var(--fg); margin-bottom: 1.5rem; }
+.sidebar .brand:hover { text-decoration: none; }
+/* Bildmarke: Prompt-Zeichen und Block-Cursor auf dunkler Kachel – in Hell und Dunkel gleich, im Dunklen mit Haarlinie, damit die Kante bleibt. */
+.brand-mark { display: inline-flex; align-items: center; justify-content: center; gap: .12em; flex: none; width: 1.75rem; height: 1.75rem; border-radius: 6px; background: #16161a; color: #ff6a4d; font-family: var(--mono); font-weight: 800; font-size: .95rem; line-height: 1; box-shadow: 0 0 0 1px var(--border); }
+.brand-mark i { display: block; width: .36em; height: .8em; background: currentColor; }
+.topbar .brand-mark { width: 1.5rem; height: 1.5rem; font-size: .8rem; }
+/* Am Handy teilt sich der Name die Kopfleiste mit „Beamer“ und „Menü“: er kürzt sich, die Knöpfe bleiben ganz. */
+.topbar-brand { display: inline-flex; align-items: center; gap: .5rem; min-width: 0; font-family: var(--mono); letter-spacing: -0.02em; }
+.topbar-brand > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topbar-actions { flex: none; }
+/* Blinkender Block-Cursor hinter dem Seitentitel der Übersicht; bei reduzierter Bewegung steht er still. */
+.cursor { display: inline-block; width: .5em; height: .9em; margin-left: .15em; vertical-align: -.08em; background: var(--accent); animation: cursor-blink 1.1s steps(1) infinite; }
+@keyframes cursor-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
 
 .sidebar nav { display: flex; flex-direction: column; gap: 1.25rem; }
 .sidebar .group h4 { margin: 0 0 .35rem; font-family: var(--mono); font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
