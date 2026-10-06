@@ -11,7 +11,8 @@ export const promptFuer = (breite: number) => (breite < 480 ? PROMPT_KURZ : PROM
 
 /** Mono-Schrift: ein Zeichen ist 0,6 em breit. Dazu kommen „› “ und der Cursor (≈ 3 Zeichen). */
 const ZEICHEN_EM = 0.6;
-const EXTRA_ZEICHEN = 3;
+// „›“ + Leerzeichen + Block-Cursor (0,55em) + dessen Abstand (0,15em) = 1,9em ≈ 3,2 Zeichen; mit Reserve 3,5.
+export const EXTRA_ZEICHEN = 3.5;
 /**
  * Welcher Auftrag in welcher Größe, damit er sicher in eine Zeile passt: der lange, wenn er in der
  * Wunschgröße passt, sonst der kurze – notfalls etwas kleiner (nie unter `minPx`).

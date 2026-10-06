@@ -35,7 +35,8 @@ describe('promptFuer', () => {
 });
 
 describe('promptWahl', () => {
-  const zeilenBreite = (text: string, px: number) => (text.length + 3) * 0.6 * px;
+  // Unabhängig gerechnet: „›“, Leerzeichen (je 0,6em), Cursor 0,55em + 0,15em Abstand – nicht EXTRA_ZEICHEN wiederverwenden.
+  const zeilenBreite = (text: string, px: number) => (text.length * 0.6 + 0.6 + 0.6 + 0.55 + 0.15) * px;
   it('der gewählte Auftrag passt immer in eine Zeile – vom kleinen Handy bis zum Beamer', () => {
     for (const verfuegbar of [288, 343, 358, 400, 488, 568, 700, 860, 1100]) {
       const w = promptWahl(verfuegbar, 16.8);

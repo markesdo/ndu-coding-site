@@ -23,7 +23,9 @@ function starten(hero: HTMLElement) {
   let fertig = false;
 
   // Breite des Kopfs (nicht der Überschrift: die ist im Beamer nur so breit wie ihr Text).
-  const wunschPx = Math.min(16.8, window.innerWidth * 0.042);
+  // 1,05rem wie in der CSS – mit der echten Wurzelgröße, damit der Beamer-Modus (125 %) mitwächst.
+  const root = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  const wunschPx = Math.min(1.05 * root, window.innerWidth * 0.042);
   const wahl = promptWahl(hero.clientWidth, wunschPx);
   const prompt = wahl.text;
   const h1Stuecke = wickeln(h1, tokens(h1.textContent ?? ''));
