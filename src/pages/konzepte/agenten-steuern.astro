@@ -25,7 +25,7 @@ import FooterNav from '../../components/FooterNav.astro';
   </Callout>
 
   <h2>Eigene Befehle (Commands & Skills)</h2>
-  <p><code>/ndu-idee</code>, <code>/ndu-explain</code>, <code>/ndu-check</code> und <code>/ndu-commit</code> sind <strong>nicht in Claude Code eingebaut</strong>, sondern Markdown-Dateien aus unserem Kurs-Template in <code>.claude/commands/</code> – wiederverwendbare Prompts mit festen Regeln. Das Präfix <code>ndu-</code> macht sie erkennbar; eingebaute Befehle wie <code>/clear</code> oder <code>/compact</code> haben keins. Ihr könnt weitere anlegen lassen: <code>/ndu-issue</code> (Issue aus einem Satz mit Kriterien erzeugen), <code>/ndu-review</code> (strenge Prüfung), <code>/ndu-deploy-check</code> (vor dem Push Build + Secrets prüfen). Skills sind dasselbe in größer: ganze Arbeitsweisen, die Claude bei Bedarf lädt.</p>
+  <p><code>/ndu-idee</code>, <code>/ndu-explain</code>, <code>/ndu-check</code>, <code>/ndu-commit</code> und <code>/ndu-beratung</code> sind <strong>nicht in Claude Code eingebaut</strong>, sondern Markdown-Dateien aus unserem Kurs-Template in <code>.claude/commands/</code> – wiederverwendbare Prompts mit festen Regeln. Das Präfix <code>ndu-</code> macht sie erkennbar; eingebaute Befehle wie <code>/clear</code> oder <code>/compact</code> haben keins. Ihr könnt weitere anlegen lassen: <code>/ndu-issue</code> (Issue aus einem Satz mit Kriterien erzeugen), <code>/ndu-review</code> (strenge Prüfung), <code>/ndu-deploy-check</code> (vor dem Push Build + Secrets prüfen). Skills sind dasselbe in größer: ganze Arbeitsweisen, die Claude bei Bedarf lädt.</p>
   <Prompt>Leg einen neuen Command /ndu-issue an: Ich gebe einen Satz („Organisator*innen sollen Events absagen können“), du formulierst daraus ein Issue im Format von docs/BACKLOG.md – Ziel (ein, zwei Sätze: was danach möglich ist, für wen, warum), Nicht im Umfang, 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“ inklusive Negativfall und eine Zeile „Fertig, wenn“ –, hängst es ans Backlog und fragst, ob es priorisiert werden soll.</Prompt>
 
   <h2>Modi und Berechtigungen</h2>
@@ -46,8 +46,21 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Subagents & parallele Arbeit</h2>
   <p>Claude kann Teilaufgaben an eigene Unter-Agenten mit frischem Kontext geben – z. B. „ein Agent recherchiert die Supabase-Doku, einer schreibt die Tests, der Hauptagent baut“. Für euch zwei praktische Fälle: <strong>Review durch einen zweiten Agenten</strong> (frischer Blick, kein Eigeninteresse am eigenen Code) und <strong>große Recherchen</strong>, die den Hauptkontext nicht verstopfen sollen. Mehr dazu im <a href="/konzepte/ausblick">Ausblick</a>.</p>
 
-  <h2>Kosten & Limits</h2>
-  <p>Claude Pro hat ein Nutzungskontingent pro 5-Stunden-Fenster und zusätzlich ein Wochenlimit; claude.ai und Claude Code teilen sich dieses Kontingent. Was es frisst: große Kontexte (ganze Projekte lesen lassen), lange Sessions ohne <code>/clear</code>, Opus statt Sonnet für Routine. Empfehlung: Sonnet für die Umsetzung, Opus für Plan und Review, <code>/clear</code> nach jedem Issue. Wenn das Limit kommt: Pause machen und Kontext aufräumen – ein Ausweichen auf claude.ai hilft nicht, es zählt zum selben Kontingent.</p>
+  <h2 id="modell">Modell & Kontingent</h2>
+  <p>Claude Pro hat ein Nutzungskontingent pro 5-Stunden-Fenster und zusätzlich ein Wochenlimit; claude.ai und Claude Code teilen es sich. Wie viel verbraucht ist und wofür, zeigt <code>/usage</code> – schaut mittags und nachmittags kurz hinein. Am meisten frisst nicht das Modell, sondern ein großer Kontext: lange Sessions ohne <code>/clear</code> und „lies das ganze Projekt“.</p>
+  <p>Im Template arbeitet Claude mit <strong>Sonnet</strong>. Ab Werk wäre im Pro-Plan Opus eingestellt – stärker, aber es verbraucht das Kontingent schneller. Für die meisten Issues mit klaren Akzeptanzkriterien reicht Sonnet. Für die schwierigen Fälle wechselt ihr nicht das Modell, sondern holt euch eine Zweitmeinung:</p>
+  <table>
+    <tr><th>Situation</th><th>Was ihr tut</th></tr>
+    <tr><td>Issue umsetzen, kleine Änderung, erklären, committen</td><td>Sonnet – nichts tun</td></tr>
+    <tr><td>Neues Produkt planen, größerer Umbau</td><td><code>/ndu-beratung</code> zum Plan</td></tr>
+    <tr><td>Claude dreht sich nach zwei Korrekturen im Kreis</td><td><code>/ndu-beratung</code>, dann <code>/clear</code> und neu mit präziserem Auftrag</td></tr>
+    <tr><td>Vor einem Pull Request</td><td><code>/code-review</code> (<a href="/konzepte/qualitaet">Tag 3</a>), bei Unsicherheit <code>/ndu-beratung</code></td></tr>
+  </table>
+  <p><code>/ndu-beratung</code> funktioniert wie eine Rücksprache mit einer erfahrenen Kollegin: Claude schreibt einen kurzen Auftrag mit allem Nötigen, ein <strong>Subagent mit Opus</strong> liest die Dateien in seinem eigenen Kontext und gibt eine Empfehlung zurück. Eure Session bleibt auf Sonnet und klein, Opus rechnet nur für diese eine Frage.</p>
+  <Prompt label="Ohne den Befehl – derselbe Gedanke als Prompt">Hol dir dazu eine Zweitmeinung von einem Subagenten mit Opus: Gib ihm Ziel, bisherige Versuche und die betroffenen Dateien, er soll nichts ändern und eine Empfehlung mit Begründung geben. Fass sie mir in fünf Sätzen zusammen.</Prompt>
+  <Callout type="warn" title="Kein Fable, keine Usage Credits">
+    <p>Im Modellwechsler (<code>/model</code>) steht auch <strong>Fable</strong> bzw. <code>best</code>. Im Pro-Plan wird das über Usage Credits abgerechnet – echtes Geld zusätzlich zum Abo. Wenn Claude Code fragt, ob es Usage Credits verwenden darf, oder euch beim Limit Usage Credits angeboten werden: ablehnen. Pause machen, <code>/clear</code>, weiter, wenn das Fenster zurückgesetzt ist. Auf claude.ai auszuweichen hilft nicht – es zählt zum selben Kontingent.</p>
+  </Callout>
 
   <FooterNav prev={{ href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' }} next={{ href: '/tag-2#uebung-5', t: 'Übung 5 · Deploy' }} />
 </Layout>
