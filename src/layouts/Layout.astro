@@ -1,7 +1,7 @@
 ---
 import { Menu, Presentation } from '@lucide/astro';
 // Schriften liegen auf unserem Server (fontsource), nicht bei Google: keine IP-Weitergabe an Dritte (DSGVO).
-// Die CSS-Dateien laden je Schrift nur die Teilmengen, die die Seite braucht (unicode-range: latin, latin-ext).
+// Die CSS-Dateien deklarieren mehrere Zeichensätze; der Browser lädt per unicode-range nur, was die Seite nutzt (hier latin, ggf. latin-ext).
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/jetbrains-mono';
