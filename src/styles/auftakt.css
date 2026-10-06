@@ -1,0 +1,41 @@
+/* Auftakt der Übersicht (index.astro, src/components/auftakt.ts).
+   html[data-auftakt]          – gesetzt vom Inline-Skript vor dem ersten Zeichnen (erster Besuch oder ?intro)
+   html[data-auftakt-laeuft]   – das Skript animiert; ab jetzt steuert die Web Animations API die Sichtbarkeit
+   html[data-auftakt-fertig]   – vorbei; nur für die Zentrierung im Beamer-Modus
+   Alles bleibt in seiner endgültigen Box (kein Layout-Sprung), versteckt wird nur über Deckkraft und Farbe. */
+
+/* Vor dem Start: unsichtbar, aber mit Platz. Sicherheitsnetz: Lädt das Skript nicht, ist nach 5 s alles da. */
+html[data-auftakt]:not([data-auftakt-laeuft]) .hero :is(.eyebrow, .lead, .day) {
+  opacity: 0; animation: auftakt-sicher 0s linear 5s forwards;
+}
+html[data-auftakt]:not([data-auftakt-laeuft]) .hero h1 { color: transparent; animation: auftakt-sicher-farbe 0s linear 5s forwards; }
+html[data-auftakt]:not([data-auftakt-laeuft]) .hero h1 .cursor { opacity: 0; animation: auftakt-sicher 0s linear 5s forwards; }
+@keyframes auftakt-sicher { to { opacity: 1; } }
+@keyframes auftakt-sicher-farbe { to { color: var(--fg); } }
+
+/* Der getippte Auftrag liegt über der Überschrift: Mono, gedämpft, ohne den Fluss zu verändern. */
+.hero h1 { position: relative; }
+.auftakt-prompt {
+  position: absolute; left: 0; right: 0; top: .1em;
+  font-family: var(--mono); font-size: min(1.05rem, 4.2vw); font-weight: 400; letter-spacing: 0; line-height: 1.45;
+  color: var(--muted); pointer-events: none;
+}
+.auftakt-chevron { color: var(--accent); font-weight: 700; }
+.auftakt-prompt .cursor { width: .55em; height: 1em; }
+
+/* Tage: Die Linie zeichnet sich von links nach rechts, statt der Rahmenlinie (die bleibt durchsichtig). */
+html[data-auftakt] .hero .day { position: relative; border-top-color: transparent; }
+.auftakt-linie {
+  position: absolute; left: 0; right: 0; top: calc(-1 * var(--linie-b, 2px)); height: var(--linie-b, 2px);
+  background: var(--linie-c, var(--fg)); transform-origin: left center; pointer-events: none;
+}
+@media (max-width: 1100px) {
+  .hero .day:not(:first-child) { --linie-b: 1px; --linie-c: var(--border); }
+}
+
+/* Beamer: Der Titel steht als Eröffnungsfolie in der Mitte der ersten Bildschirmhöhe. */
+html[data-beamer]:is([data-auftakt], [data-auftakt-fertig]) .hero {
+  min-height: calc(100dvh - 3.75rem - 3.5rem);
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+}
+html[data-beamer]:is([data-auftakt], [data-auftakt-fertig]) .hero .days { align-self: stretch; }

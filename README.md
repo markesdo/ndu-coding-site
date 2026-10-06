@@ -24,6 +24,12 @@ npm run build    # Ausgabe in dist/
 - `src/layouts/Layout.astro` — Navigation (dort neue Seiten eintragen)
 - `src/styles/global.css` — Design-Tokens, Light/Dark
 
+## Im Kurs am Beamer
+
+- `?beamer` (oder Taste `B`): größere Schrift, ohne Seitenleiste; `?beamer=0` schaltet aus.
+- `?intro`: spielt den Auftakt der Übersicht noch einmal ab (der getippte Auftrag, aus dem die Seite entsteht). Ohne `?intro` läuft er nur beim ersten Besuch.
+- Eröffnungsfolie nach NDU Live: `/?beamer&intro` – der Titel steht dann in der Mitte des Bildschirms.
+
 ## Inhalte ändern
 
 Alles ist HTML in `.astro`-Dateien – Claude Code kann sie direkt bearbeiten. Prompts für Studierende immer als `<Prompt>`-Komponente, damit der Copy-Button da ist.

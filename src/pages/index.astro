@@ -1,17 +1,37 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Callout from '../components/Callout.astro';
+import '../styles/auftakt.css';
 ---
 <Layout title="Übersicht">
-  <span class="eyebrow">NDU · MSc Management by Innovation · Oktober 2026</span>
-  <h1>Programmieren mit <span style="white-space:nowrap">AI<span class="cursor" aria-hidden="true"></span></span></h1>
-  <p class="lead">In drei Tagen von „Ich kann nicht programmieren“ zu einem eigenen, öffentlich erreichbaren Prototyp – ohne eine Zeile Code selbst zu schreiben.</p>
+  <script is:inline>
+    // Auftakt scharf schalten, bevor der Kopf gezeichnet wird (sonst blitzt er auf). Erster Besuch: spielen und merken;
+    // ?intro: immer spielen, nie merken (Beamer); reduzierte Bewegung: nie. Gleiche Regeln wie auftaktStatus() in
+    // src/components/auftakt-zeitplan.ts – Änderungen an beiden Stellen.
+    (function () {
+      try {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (new URLSearchParams(location.search).has('intro')) { document.documentElement.setAttribute('data-auftakt', ''); return; }
+        if (localStorage.getItem('ndu-intro')) return;
+        localStorage.setItem('ndu-intro', '1');
+        document.documentElement.setAttribute('data-auftakt', '');
+      } catch (e) {}
+    })();
+  </script>
+  <header class="hero" data-hero>
+    <span class="eyebrow">NDU · MSc Management by Innovation · Oktober 2026</span>
+    <h1>Programmieren mit <span style="white-space:nowrap">AI<span class="cursor" aria-hidden="true"></span></span></h1>
+    <p class="lead">In drei Tagen von „Ich kann nicht programmieren“ zu einem eigenen, öffentlich erreichbaren Prototyp – ohne eine Zeile Code selbst zu schreiben.</p>
 
-  <div class="days">
-    <a class="day" href="/tag-1"><div class="n">Tag 1 · Do 8.10.</div><h3>Verstehen & Starten</h3><p>Umgebung läuft, erste eigene Änderungen, von der Idee zur Spezifikation.</p></a>
-    <a class="day" href="/tag-2"><div class="n">Tag 2 · Fr 9.10.</div><h3>Bauen wie ein Profi</h3><p>Echte Daten, Login, Fehler finden, Agenten steuern, öffentliche URL.</p></a>
-    <a class="day" href="/tag-3"><div class="n">Tag 3 · Do 15.10.</div><h3>Shippen & selbständig werden</h3><p>Eigener Prototyp, Qualität beurteilen, Ausblick, Demos.</p></a>
-  </div>
+    <div class="days">
+      <a class="day" href="/tag-1"><div class="n">Tag 1 · Do 8.10.</div><h3>Verstehen & Starten</h3><p>Umgebung läuft, erste eigene Änderungen, von der Idee zur Spezifikation.</p></a>
+      <a class="day" href="/tag-2"><div class="n">Tag 2 · Fr 9.10.</div><h3>Bauen wie ein Profi</h3><p>Echte Daten, Login, Fehler finden, Agenten steuern, öffentliche URL.</p></a>
+      <a class="day" href="/tag-3"><div class="n">Tag 3 · Do 15.10.</div><h3>Shippen & selbständig werden</h3><p>Eigener Prototyp, Qualität beurteilen, Ausblick, Demos.</p></a>
+    </div>
+  </header>
+  <script>
+    import '../components/auftakt';
+  </script>
 
   <h2>Worum es geht</h2>
   <p>Ihr werdet in diesem Kurs nicht lernen, Code zu schreiben. Ihr lernt, <strong>Software bauen zu lassen</strong> – von einem KI-Agenten, der liest, schreibt, testet und Fehler behebt – und dabei die Rolle zu übernehmen, die 2026 den Unterschied macht: zu wissen, <em>was</em> gebaut werden soll, es so zu beschreiben, dass es gebaut werden kann, und zu beurteilen, ob das Ergebnis gut ist.</p>
