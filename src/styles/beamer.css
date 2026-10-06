@@ -35,8 +35,10 @@ html[data-beamer] .block .time { font-size: 1rem; color: var(--fg); }
 html[data-beamer] .prompt pre { font-size: 1.05rem; }
 html[data-beamer] table { font-size: 1rem; }
 
-/* Sticky-Elemente unter der Kopfleiste nicht verdecken. */
-html[data-beamer] h2[id] { scroll-margin-top: 5rem; }
+/* Die Kopfleiste ist im Beamer-Modus auch am Desktop sticky (≈ 3.65rem hoch): Schrittleiste darunter setzen,
+   und Anker (Überschriften, Screenshot-Schritte) so anspringen, dass weder Kopf- noch Schrittleiste sie verdecken. */
+html[data-beamer] .stepbar { top: 3.75rem; }
+html[data-beamer] h2[id], html[data-beamer] .shots > li { scroll-margin-top: 7.5rem; }
 
 @media (max-width: 900px) {
   html[data-beamer] .content { padding: 1.25rem 16px 4rem; }
