@@ -52,15 +52,15 @@ const bausteine = [
   <p>Einen guten Prompt schreibt man nicht dreimal. Was ihr wiederholt braucht, wird zu einem <strong>Befehl</strong> in <code>.claude/commands/</code> – so sind <code>/ndu-idee</code> und <code>/ndu-commit</code> entstanden: Hinter jedem steht ein ausführlicher Prompt, den ihr nicht mehr tippen müsst. Was in jeder Session gelten soll, gehört in die <code>CLAUDE.md</code> – kurz gehalten; Prüffrage pro Zeile: Würde etwas schiefgehen, wenn sie fehlt? Mehr dazu in <a href="/konzepte/agenten-steuern">Agenten steuern</a>.</p>
   <p class="small muted">Deshalb steht „Wenn etwas unklar ist, frag zuerst“ in vielen Prompts der Bibliothek, obwohl es auch in der <code>CLAUDE.md</code> steht: Die Verstärkung schadet nicht, und in Projekten ohne diese Regel ist sie nötig.</p>
 
-  <h2>Was kaum etwas verschiebt</h2>
+  <h2>Was die Balken bewegt – und was nicht</h2>
   <div class="compare">
-    <div class="card bad"><h3>Bringt wenig</h3><ul class="small">
+    <div class="card bad"><h3>Bewegt kaum</h3><ul class="small">
       <li><strong>„Du bist ein erfahrener Entwickler …“</strong> – Die Rolle steht bei Claude Code schon in der <code>CLAUDE.md</code>. Ein Maßstab („prüfe es, wie ein Team vor dem Launch prüft“) wirkt dagegen.</li>
       <li><strong>GROSSBUCHSTABEN, „CRITICAL“, Drohungen</strong> – Aktuelle Modelle reagieren darauf eher über und wenden die Regel auch dort an, wo sie nicht passt.</li>
       <li><strong>„Denk Schritt für Schritt“</strong> – Das Modell denkt ohnehin vor der Antwort nach.</li>
       <li><strong>„Bitte“</strong> – harmlos, aber ohne Wirkung.</li>
     </ul></div>
-    <div class="card good"><h3>Verschiebt viel</h3><ul class="small">
+    <div class="card good"><h3>Bewegt viel</h3><ul class="small">
       <li>Ein Grund: „damit …“, „weil …“</li>
       <li>Eine Datei, ein Screenshot, eine Fehlermeldung</li>
       <li>Eine positiv formulierte Grenze</li>
