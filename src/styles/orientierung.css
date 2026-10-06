@@ -43,7 +43,13 @@ html[data-beamer] { --orient-top: 4.75rem; }
 .inner:has(.orient) :is(h2[id], h3[id], .shots > li) { scroll-margin-top: calc(var(--orient-top) + var(--orient-gap)); }
 
 /* „jetzt“ im Ablauf. */
-.block[aria-current="step"] { box-shadow: inset 3px 0 0 var(--accent); border-color: var(--accent); }
+/* Seit dem Listen-Stil haben Ablaufzeilen keinen Innenabstand: Die Zeile ragt um den Abstand nach links,
+   damit der Balken nicht an der Uhrzeit klebt und der Text mit den anderen Zeilen fluchtet. */
+.block[aria-current="step"] {
+  box-shadow: inset 3px 0 0 var(--accent); border-color: var(--accent);
+  margin-left: -.85rem; padding-left: .85rem;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
 .jetzt-marke {
   display: inline-block; margin-left: .5rem; padding: 0 .4rem;
   font-family: var(--mono); font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
