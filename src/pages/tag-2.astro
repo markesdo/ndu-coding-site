@@ -85,7 +85,7 @@ import { bild } from '../components/anleitung-bilder';
   <Schritte id="mcp" nummer="3b" steps={[
     { img: bild('tag2/mcp-1-connect'), alt: 'Connect-Dialog, Tab MCP, Client Claude Code, Schritt 1 mit dem Befehl claude mcp add', text: 'Im Connect-Dialog den Tab <em>MCP</em> (1). Client <em>Claude Code</em> ist vorausgewählt. Bei Schritt 1 den Befehl mit dem Kopier-Symbol kopieren (2).', marks: [{ x: 1327, y: 109, w: 143, h: 102, n: 1 }, { x: 1083, y: 586, w: 388, h: 52, n: 2 }] },
     { img: bild('tag2/mcp-2-einfuegen'), alt: 'Neues Terminal im Codespace mit eingefügtem Befehl', text: 'Im Codespace über dem Terminal auf <kbd>+</kbd> – ein neues Terminal, nicht das mit Claude. Warten, bis die Eingabezeile mit eurem Benutzernamen erscheint, dann einfügen (<kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>V</kbd>) und <kbd>Enter</kbd>. Wer zu früh einfügt, bekommt den Befehl doppelt: <kbd>Strg</kbd>+<kbd>C</kbd> und nochmal.', marks: [{ x: 645, y: 556, w: 462, h: 36 }] },
-    { img: bild('tag2/mcp-3-angelegt'), alt: 'Terminal meldet „Added HTTP MCP server supabase … to project config“, links erscheint .mcp.json', text: '„Added HTTP MCP server supabase“ (1). Links erscheint die Datei <code>.mcp.json</code> (2). Sie enthält nur die Adresse, keinen Schlüssel, und darf mit committet werden.', marks: [{ x: 333, y: 595, w: 560, h: 24, n: 1 }, { x: 70, y: 265, w: 240, h: 18, n: 2 }] },
+    { img: bild('tag2/mcp-3-angelegt'), alt: 'Terminal meldet „Added HTTP MCP server supabase … to project config“, links erscheint .mcp.json', text: '„Added HTTP MCP server supabase“ (1). Links steht die Datei <code>.mcp.json</code> (2) – Context7 war schon drin, Supabase kommt dazu. Sie enthält nur Adressen, keine Schlüssel, und darf mit committet werden.', marks: [{ x: 333, y: 595, w: 560, h: 24, n: 1 }, { x: 70, y: 265, w: 240, h: 18, n: 2 }] },
     { img: bild('tag2/mcp-4-gefunden'), alt: 'Claude meldet „New MCP server found in this project: supabase“, vorausgewählt ist „Continue without using this MCP server“', text: 'Im selben Terminal <code>claude</code> starten. Claude meldet den neuen Server. <strong>Achtung:</strong> Vorausgewählt ist <em>Continue without using this MCP server</em>. Zweimal <kbd>↑</kbd> auf <em>Use this MCP server</em>, dann <kbd>Enter</kbd>.', marks: [{ x: 356, y: 693, w: 140, h: 17 }] },
     { img: bild('tag2/mcp-5-liste'), alt: 'Ausgabe von /mcp, supabase „needs authentication“', text: '<code>/mcp</code> eintippen, <kbd>Enter</kbd>. Bei <em>supabase</em> steht „needs authentication“ – <kbd>Enter</kbd>.', marks: [{ x: 352, y: 668, w: 320, h: 17 }] },
     { img: bild('tag2/mcp-6-authenticate'), alt: 'Menü des Supabase-MCP-Servers mit „1. Authenticate“', text: '<em>1. Authenticate</em>, <kbd>Enter</kbd>.', marks: [{ x: 352, y: 718, w: 120, h: 17 }] },
@@ -111,12 +111,18 @@ import { bild } from '../components/anleitung-bilder';
   </ol>
   <Prompt label="Im Terminal (nicht in Claude) – Alternative mit Token">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF" --header "Authorization: Bearer TOKEN"</Prompt>
   <p class="small muted">Der Token ist ein Schlüssel zu eurem Supabase-Konto: Er wird nur in eurem Codespace gespeichert, nicht im Repo. Fügt ihn nie in den Chat mit Claude oder in eine Datei im Projekt ein. Nach dem Kurs könnt ihr ihn unter Access Tokens wieder löschen.</p>
-  <h3>c) .env.local anlegen (5 min)</h3>
+  <h3 id="context7">c) Aktuelle Doku: mit und ohne Context7 (5 min)</h3>
+  <p>Context7 ist seit Tag 1 in eurem Projekt eingerichtet. Jetzt seht ihr, was es ändert. Erst ohne:</p>
+  <Prompt>Wie lege ich mit @supabase/ssr in Next.js einen Supabase-Client für Server Components an? Schlag diesmal nichts nach, antworte aus deinem Wissen und sag, wie sicher du bist.</Prompt>
+  <p>Dann <code>/clear</code> und dieselbe Frage mit Doku:</p>
+  <Prompt>Wie lege ich mit @supabase/ssr in Next.js einen Supabase-Client für Server Components an? use context7, library /supabase/supabase. Nenn mir die Doku-Stelle, auf die du dich stützt.</Prompt>
+  <p>→ Vergleicht: Heißen die Funktionen gleich? Was fehlt in der ersten Antwort? Warum das so ist, steht unter <a href="/konzepte/llm#training">Training und Session</a>; wie man Context7 gut einsetzt, unter <a href="/konzepte/mcp#context7">MCP-Server</a>.</p>
+  <h3>d) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
-  <h3>d) Issue 4 bauen lassen (45 min)</h3>
+  <h3>e) Issue 4 bauen lassen (45 min)</h3>
   <Prompt>Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
   <p>Prüfen: Event anlegen → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
-  <h3>e) Sichern</h3>
+  <h3>f) Sichern</h3>
   <Prompt>/ndu-check – und wenn alles grün ist: Issue 4 auf fertig setzen und /ndu-commit</Prompt>
   <Checklist id="t2-u3" items={[
     'Supabase-Projekt in Frankfurt angelegt, Passwort gespeichert',
@@ -125,6 +131,7 @@ import { bild } from '../components/anleitung-bilder';
     'Tabelle <code>events</code> existiert, Beispieldaten sind drin',
     'Event angelegt, Reload überlebt, Negativfall geprüft',
     '<code>/ndu-check</code> grün, committet',
+    'Einmal ohne und einmal mit Context7 gefragt und die Antworten verglichen',
   ]} />
 
   <hr />

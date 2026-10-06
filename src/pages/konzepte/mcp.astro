@@ -25,7 +25,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <tr><td><strong>Supabase</strong></td><td>Tabellen, Policies, Migrationen anlegen; Daten lesen; Logs und Fehler sehen; Typen generieren</td><td>Tag 2, Übung 3</td></tr>
     <tr><td><strong>Playwright / Browser</strong></td><td>Die App selbst öffnen, klicken, Formulare ausfüllen, Screenshots machen, Konsole lesen – der Agent testet sich selbst</td><td>Tag 3</td></tr>
     <tr><td><strong>Figma</strong></td><td>Frames, Komponenten, Farben, Abstände aus eurem Design lesen und in Code übersetzen</td><td>Tag 3 Demo, Innolab</td></tr>
-    <tr><td><strong>Context7</strong></td><td>Aktuelle Dokumentation von Bibliotheken nachschlagen statt aus veraltetem Trainingswissen raten</td><td>Bei Bedarf („use context7“)</td></tr>
+    <tr><td><strong>Context7</strong></td><td>Aktuelle Dokumentation von Bibliotheken nachschlagen statt aus veraltetem Trainingswissen raten</td><td>Ab Tag 1 eingerichtet, <a href="/tag-2#context7">Übung an Tag 2</a></td></tr>
     <tr><td><strong>Linear</strong></td><td>Issues lesen, anlegen, Status setzen – das Backlog eines Produktteams; im Innolab die Brücke Figma → Issue → Code</td><td>Tag 3 Ausblick, Innolab</td></tr>
     <tr><td><strong>GitHub</strong></td><td>Issues lesen und anlegen, Pull Requests erstellen und kommentieren</td><td>Tag 3</td></tr>
     <tr><td><strong>Vercel</strong></td><td>Deployments auslösen, Build- und Laufzeit-Logs lesen</td><td>Bei Deploy-Problemen</td></tr>
@@ -33,9 +33,22 @@ import FooterNav from '../../components/FooterNav.astro';
   </table>
 
   <h2>Einen Server verbinden</h2>
-  <p>Drei Wege, vom einfachsten zum flexibelsten: <strong>Im Terminal</strong> mit <code>claude mcp add …</code> (einmalig, gilt für euch). <strong>Im Projekt</strong> über eine Datei <code>.mcp.json</code> (gilt für alle, die das Repo nutzen – so könnte das Template Supabase vorkonfigurieren). <strong>Per Claude selbst:</strong></p>
+  <p>Drei Wege, vom einfachsten zum flexibelsten: <strong>Im Terminal</strong> mit <code>claude mcp add …</code> (einmalig, gilt für euch). <strong>Im Projekt</strong> über eine Datei <code>.mcp.json</code> (gilt für alle, die das Repo nutzen – so ist Context7 im Template schon eingerichtet). <strong>Per Claude selbst:</strong></p>
   <Prompt>Verbinde den Supabase-MCP-Server für dieses Projekt (Project Ref: abcdefgh). Erkläre mir vorher, welche Berechtigungen der Server bekommt und ob er nur lesen oder auch schreiben darf.</Prompt>
   <p><code>/mcp</code> zeigt, welche Server verbunden sind und welche Werkzeuge sie bieten. Beim ersten Einsatz fragt Claude pro Werkzeug um Erlaubnis.</p>
+
+  <h2 id="context7">Context7: aktuelle Doku statt Trainingswissen</h2>
+  <p>Das Modell ist <a href="/konzepte/llm#training">eingefroren</a>: Was eine Bibliothek nach seinem Stichtag geändert hat, kennt es nicht – und rät dann flüssig. Steht die passende Doku im Kontext, werden die Balken spitz (Schritt 9 der Animation „Ein Stück nach dem anderen“). <strong>Context7</strong> holt genau diese Doku: aktuell, passend zur Version, direkt ins Kontextfenster.</p>
+  <p>Im Kurs-Template ist Context7 schon eingerichtet (<code>.mcp.json</code>), ohne Konto. <code>/mcp</code> zeigt, ob es verbunden ist. In der <code>CLAUDE.md</code> steht die Regel, wann Claude es nutzen soll.</p>
+  <h3>Vier Regeln für den effizienten Einsatz</h3>
+  <ol>
+    <li><strong>Sagt, wann.</strong> Die Regel in der <code>CLAUDE.md</code> deckt Fragen zu Bibliotheken ab. Wollt ihr sichergehen, schreibt <code>use context7</code> in den Prompt.</li>
+    <li><strong>Nennt die Bibliothek.</strong> Mit der Library-ID (<code>/supabase/supabase</code>, <code>/tailwindlabs/tailwindcss.com</code>) spart Claude die Suche und landet nicht bei einer inoffiziellen Kopie.</li>
+    <li><strong>Eine Frage pro Abfrage, mit Version.</strong> Jede Abfrage lädt Doku ins <a href="/konzepte/coding-agent">Kontextfenster</a>. „Wie lege ich einen Server-Client mit <code>@supabase/ssr</code> an?“ ist gut, „Erklär mir Supabase“ füllt nur den Platz.</li>
+    <li><strong>Nicht für alles.</strong> Die Next.js-Doku liegt schon im Projekt (<code>node_modules/next/dist/docs/</code>, siehe <code>AGENTS.md</code>). Und für Fehler in eurem eigenen Code hilft keine Doku, sondern die Fehlermeldung.</li>
+  </ol>
+  <Prompt label="Beispiel">Wie lege ich mit @supabase/ssr einen Supabase-Client für Server Components an? use context7, library /supabase/supabase. Nenn mir die Doku-Stelle, auf die du dich stützt.</Prompt>
+  <p class="small muted"><strong>Limit erreicht?</strong> Ohne Konto teilen sich alle Nutzer*innen ein gemeinsames Kontingent. Mit einem kostenlosen Schlüssel aus dem <a href="https://context7.com/dashboard" target="_blank" rel="noopener">Context7-Dashboard</a> ist es größer. Eintragen im Terminal (nicht in Claude), <code>KEY</code> ersetzen: <code>claude mcp add --header "Authorization: Bearer KEY" --transport http context7 https://mcp.context7.com/mcp</code>. Das gilt nur für euch und überdeckt den Eintrag aus dem Template; der Schlüssel landet nicht im Repo. Wie jeder Schlüssel gehört er nie in den Chat.</p>
 
   <h2>Sicherheit – ein MCP-Server ist Zugriff</h2>
   <Callout type="warn" title="Drei Regeln">
