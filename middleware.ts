@@ -27,15 +27,16 @@ function weiter(ort: string, extra: Record<string, string> = {}): Response {
 const istLogin = (p: string) => p === '/login' || p === '/login/';
 
 export default async function middleware(request: Request): Promise<Response> {
+  const url = new URL(request.url);
+  // Startseite: für alle, auch ohne Anmeldung (sie zeigt nur Titel und Kurstage) – und unabhängig davon,
+  // ob das Kurspasswort gesetzt ist. Alles andere bleibt ohne SITE_PASSWORD/SITE_SESSION_SECRET gesperrt.
+  if (istOeffentlich(url.pathname)) return next({ headers: NOINDEX });
+
   const passwort = process.env.SITE_PASSWORD;
   const secret = process.env.SITE_SESSION_SECRET;
   if (!passwort || !secret) return gesperrt();
 
-  const url = new URL(request.url);
   const jetzt = Math.floor(Date.now() / 1000);
-
-  // Startseite: für alle, auch ohne Anmeldung (sie zeigt nur Titel und Kurstage).
-  if (istOeffentlich(url.pathname)) return next({ headers: NOINDEX });
 
   if (istLogin(url.pathname)) {
     if (request.method === 'POST') {
