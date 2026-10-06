@@ -9,6 +9,76 @@ import FooterNav from '../../components/FooterNav.astro';
   <p class="lead">Solange eure App nichts speichert, ist sie eine Broschüre. Sobald sie speichert, braucht sie eine Datenbank, Regeln, wer was darf – und einen Ort für Geheimnisse.</p>
 
   <h2>Datenbank in fünf Begriffen</h2>
+  <div class="widget" id="db" data-zeige="beziehung">
+    <p class="hint">Ein Ausschnitt aus der Datenbank von Campus Events. Klickt auf einen Begriff, um zu sehen, wo er steckt.</p>
+    <div class="db-chips" role="group" aria-label="Begriff zeigen">
+      <button type="button" data-begriff="tabelle" aria-pressed="false">Tabelle</button>
+      <button type="button" data-begriff="zeile" aria-pressed="false">Zeile</button>
+      <button type="button" data-begriff="spalte" aria-pressed="false">Spalte</button>
+      <button type="button" data-begriff="id" aria-pressed="false">ID</button>
+      <button type="button" data-begriff="beziehung" aria-pressed="true">Beziehung</button>
+    </div>
+    <p class="loop-detail db-erklaerung" id="db-erklaerung" aria-live="polite"><strong>Beziehung.</strong> Zeile 1 in <code>rsvps</code> zeigt auf Event 42 und auf Nutzerin 7: Lena kommt zum Lauftreff. Titel und Namen stehen nur einmal in der Datenbank – <code>rsvps</code> speichert bloß die IDs.</p>
+    <div class="db-tabellen">
+      <table data-t="events">
+        <caption><code>events</code></caption>
+        <tr><th scope="col" data-col="id">id</th><th scope="col">titel</th><th scope="col">datum</th><th scope="col" data-col="ort">ort</th></tr>
+        <tr><td data-col="id">41</td><td>Pub-Quiz</td><td>16.10. 19:00</td><td data-col="ort">Mensa-Keller</td></tr>
+        <tr data-row="lauftreff"><td data-col="id" data-rel>42</td><td>Lauftreff</td><td>21.10. 07:30</td><td data-col="ort">Sportplatz</td></tr>
+      </table>
+      <table data-t="profiles">
+        <caption><code>profiles</code></caption>
+        <tr><th scope="col" data-col="id">id</th><th scope="col">name</th></tr>
+        <tr><td data-col="id" data-rel>7</td><td>Lena</td></tr>
+        <tr><td data-col="id">8</td><td>Jonas</td></tr>
+      </table>
+      <table data-t="rsvps">
+        <caption><code>rsvps</code></caption>
+        <tr><th scope="col" data-col="id">id</th><th scope="col">event_id</th><th scope="col">user_id</th></tr>
+        <tr><td data-col="id">1</td><td data-rel>42</td><td data-rel>7</td></tr>
+        <tr><td data-col="id">2</td><td>42</td><td>8</td></tr>
+        <tr><td data-col="id">3</td><td>41</td><td>8</td></tr>
+      </table>
+    </div>
+    <script>
+      const texte: Record<string, string> = {
+        tabelle: '<strong>Tabelle.</strong> Eine Tabelle sammelt einen Objekttyp – hier alle Events. Jede Tabelle hat feste Spalten.',
+        zeile: '<strong>Zeile.</strong> Eine Zeile ist ein einzelner Eintrag: das Event „Lauftreff“ mit all seinen Werten.',
+        spalte: '<strong>Spalte.</strong> Eine Spalte ist eine Eigenschaft, die jede Zeile hat – hier der Ort. Alle Werte darin haben denselben Datentyp.',
+        id: '<strong>ID.</strong> Jede Zeile hat eine eindeutige Nummer. Sie wird beim Anlegen vergeben und ändert sich nie.',
+        beziehung: document.getElementById('db-erklaerung')!.innerHTML,
+      };
+      const root = document.getElementById('db')!;
+      const erklaerung = document.getElementById('db-erklaerung')!;
+      const chips = root.querySelectorAll<HTMLButtonElement>('.db-chips button');
+      // Platz für den längsten Text reservieren, sonst springen die Tabellen darunter bei jedem Begriff.
+      function hoeheFestlegen() {
+        const aktuell = erklaerung.innerHTML;
+        erklaerung.style.minHeight = '';
+        let max = 0;
+        for (const t of Object.values(texte)) {
+          erklaerung.innerHTML = t;
+          max = Math.max(max, erklaerung.offsetHeight);
+        }
+        erklaerung.innerHTML = aktuell;
+        erklaerung.style.minHeight = `${max}px`;
+      }
+      hoeheFestlegen();
+      // Nur bei geänderter Breite neu messen – die eigene Höhenänderung soll keine Schleife auslösen.
+      let breite = root.clientWidth;
+      new ResizeObserver(() => {
+        if (root.clientWidth === breite) return;
+        breite = root.clientWidth;
+        hoeheFestlegen();
+      }).observe(root);
+      chips.forEach((b) => b.addEventListener('click', () => {
+        const begriff = b.dataset.begriff!;
+        root.dataset.zeige = begriff;
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === b)));
+        erklaerung.innerHTML = texte[begriff];
+      }));
+    </script>
+  </div>
   <table>
     <tr><th>Begriff</th><th>Heißt</th><th>In Campus Events</th></tr>
     <tr><td>Tabelle</td><td>Ein Objekttyp, z. B. Events – mit festen Spalten und Datentypen</td><td><code>events</code>, <code>rsvps</code>, <code>profiles</code></td></tr>
@@ -73,3 +143,37 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <FooterNav prev={{ href: '/tag-2', t: 'Tag 2' }} next={{ href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' }} />
 </Layout>
+
+<style>
+  .db-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin: .75rem 0 1rem; }
+  .db-chips button { font: inherit; font-weight: 600; font-size: .95rem; padding: .5rem .9rem; border-radius: 999px; border: 2px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; }
+  .db-chips button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .db-tabellen { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .db-tabellen table { margin: 0; background: var(--bg); border: 2px solid var(--border); border-radius: 10px; border-collapse: separate; border-spacing: 0; overflow: hidden; font-size: .9rem; }
+  .db-tabellen [data-t="events"] { grid-column: 1 / -1; }
+  .db-tabellen table { align-self: start; }
+  .db-tabellen caption { text-align: left; padding: 0 0 .35rem; }
+  .db-tabellen th { font-family: var(--mono); text-transform: none; letter-spacing: 0; font-size: .8rem; }
+  .db-tabellen th, .db-tabellen td { padding: .45rem .6rem; }
+  .db-tabellen tr:last-child td { border-bottom: 0; }
+  /* Über den Tabellen, damit man am Handy nach dem Tippen nicht scrollen muss. Die Mindesthöhe setzt das Skript. */
+  .db-erklaerung { margin: 0 0 1rem; }
+
+  /* Hervorhebung nie nur über Farbe: Hintergrund, Rahmen und fette Schrift. */
+  #db[data-zeige="tabelle"] [data-t="events"],
+  #db[data-zeige="zeile"] [data-row="lauftreff"] td,
+  #db[data-zeige="spalte"] [data-col="ort"],
+  #db[data-zeige="id"] [data-col="id"],
+  #db[data-zeige="beziehung"] [data-rel] { background: var(--accent-soft); font-weight: 700; color: var(--fg); }
+  #db[data-zeige="tabelle"] [data-t="events"] { border-color: var(--accent); }
+  #db[data-zeige="zeile"] [data-row="lauftreff"] td { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
+  #db[data-zeige="spalte"] [data-col="ort"],
+  #db[data-zeige="id"] [data-col="id"],
+  #db[data-zeige="beziehung"] [data-rel] { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  @media (max-width: 600px) {
+    .db-tabellen { grid-template-columns: 1fr; }
+    .db-chips { gap: .4rem; }
+    .db-chips button { padding: .35rem .7rem; font-size: .9rem; }
+  }
+</style>
