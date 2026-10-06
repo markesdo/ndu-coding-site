@@ -3,7 +3,7 @@
 // Frei: /login, /_astro/* (Schriften, Skripte, Bilder), Favicon, robots.txt. Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
-import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js: Vercel lädt die Middleware als Node-ESM ohne Bundler
+import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
 
 export const config = {
   matcher: ['/((?!_astro/|favicon\\.svg$|favicon\\.ico$|robots\\.txt$).*)'],
@@ -44,7 +44,8 @@ export default async function middleware(request: Request): Promise<Response> {
           'Set-Cookie': `${COOKIE}=${token}; Path=/; Max-Age=${GUELTIG_SEKUNDEN}; HttpOnly; Secure; SameSite=Lax`,
         });
       }
-      // Kleine Verzögerung bremst Durchprobieren.
+      // Verzögerung bremst nur einzelnes Ausprobieren, nicht parallele Anfragen. Der eigentliche Schutz ist ein
+      // langes, zufälliges Kurspasswort; für mehr: Vercel-Firewall-Regel mit Rate Limit auf POST /login.
       await new Promise((r) => setTimeout(r, 800));
       return weiter(`/login?fehler=1&weiter=${encodeURIComponent(ziel)}`);
     }
