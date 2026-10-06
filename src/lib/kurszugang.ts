@@ -52,10 +52,16 @@ export async function tokenGueltig(token: string | undefined, secret: string, pa
 
 // Nur Pfade auf dieser Website als Rücksprung: muss mit genau einem "/" beginnen, kein "//", kein "\", keine Steuerzeichen.
 // Alles andere (externe Adressen, "//evil.com", "/\evil.com", "javascript:") wird zur Startseite.
+// Kodierte Varianten ("/%2F%2Fevil.com", "/%5Cevil.com") werden einmal dekodiert und genauso geprüft.
+function unsicher(p: string): boolean {
+  return !p.startsWith('/') || p.startsWith('//') || p.includes('\\') || /[\s\u0000-\u001f\u007f]/.test(p);
+}
+
 export function sichererPfad(roh: string | null | undefined): string {
-  if (!roh || roh.length > 512) return '/';
-  if (!roh.startsWith('/') || roh.startsWith('//') || roh.includes('\\')) return '/';
-  if (/[\u0000-\u001f\u007f]/.test(roh)) return '/';
+  if (!roh || roh.length > 512 || unsicher(roh)) return '/';
+  let dekodiert: string;
+  try { dekodiert = decodeURIComponent(roh); } catch { return '/'; }
+  if (unsicher(dekodiert)) return '/';
   try {
     const u = new URL(roh, 'https://kurs.invalid');
     if (u.origin !== 'https://kurs.invalid') return '/';

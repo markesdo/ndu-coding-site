@@ -74,6 +74,15 @@ describe('sichererPfad (Rücksprung nur auf diese Website)', () => {
     [null],
     ['/' + 'a'.repeat(600)],
     ['/tag-1\nSet-Cookie: x'],
+    ['http://evil.example'],
+    ['/%2F%2Fevil.example'],
+    ['/%2fevil.example'],
+    ['/%5Cevil.example'],
+    ['/tag-1%5C..'],
+    ['/ evil'],
+    ['/tag-1\t'],
+    ['/%0D%0ASet-Cookie:x'],
+    ['/%E0%A4%A'],
   ])('lenkt %j auf die Startseite', (roh) => {
     expect(sichererPfad(roh as string | null)).toBe('/');
   });
