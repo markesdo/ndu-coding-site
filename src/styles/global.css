@@ -62,10 +62,7 @@
 html { scroll-behavior: smooth; }
 /* Sichtbarer Tastaturfokus überall; Komponenten mit eigenem Fokusrahmen (Stage, Screenshots) überschreiben ihn. */
 :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .day, .day:hover { transition: none; transform: none; }
-}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font);
   line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased;
@@ -143,7 +140,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 
 .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 1.25rem 0; }
 .grid .card { margin: 0; }
-/* Vier Schritte ohne verwaiste vierte Karte: ab 900 px eine Reihe, darunter 2 × 2, am Handy untereinander. */
+/* Vier Schritte ohne verwaiste vierte Karte: ab 1100 px eine Reihe (mit Seitenleiste sonst zu schmal), darunter 2 × 2, am Handy untereinander. */
 .grid.faden { grid-template-columns: repeat(4, 1fr); }
 @media (max-width: 1100px) { .grid.faden { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px) { .grid.faden { grid-template-columns: 1fr; } }
@@ -268,6 +265,8 @@ h2[id] { scroll-margin-top: 3.5rem; }
 .day .n { font-size: .8rem; font-weight: 700; color: var(--accent-ink); text-transform: uppercase; letter-spacing: .05em; }
 .day h3 { margin: .25rem 0 .35rem; }
 .day p { margin: 0; color: var(--muted); font-size: .95rem; }
+/* Nach den .day-Regeln, sonst gewinnen sie bei gleicher Spezifität. */
+@media (prefers-reduced-motion: reduce) { .day, .day:hover { transition: none; transform: none; } }
 
 /* Interactive widgets */
 .widget { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin: 1.5rem 0; }
