@@ -20,7 +20,8 @@ import FooterNav from '../components/FooterNav.astro';
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
     <Block time="13:00–13:15" type="konzept" title="Konzept 2 · Teil 1 · Was ein Sprachmodell tut" href="/konzepte/llm">Stück für Stück, gewichtet gewürfelt: Tokens, Halluzination, warum derselbe Auftrag zwei Ergebnisse liefert.</Block>
     <Block time="13:15–13:45" type="konzept" title="Konzept 2 · Teil 2 · Wie ein Coding-Agent arbeitet" href="/konzepte/coding-agent">Kontextfenster, Tools, der Agent-Loop, Plan Mode, CLAUDE.md.</Block>
-    <Block time="13:45–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
+    <Block time="13:45–14:00" type="konzept" title="Konzept 2 · Teil 3 · Prompt Engineering" href="/konzepte/prompting">Ein Auftrag, vier Bausteine: Ziel mit Grund, Kontext, Grenze, Prüfkriterium. Was die Balken bewegt.</Block>
+    <Block time="14:00–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, vage gegen präzise, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
     <Block time="15:00–15:15" type="pause" title="Pause" />
     <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="/konzepte/spezifikation">Produkt-Brief, Issue, Akzeptanzkriterium, MVP-Slice. Vibe Coding vs. Spec-driven.</Block>
     <Block time="15:45–16:45" type="uebung" title="Übung 2 · Campus Events v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Backlog, erstes Issue bauen lassen, committen.</Block>
@@ -29,24 +30,31 @@ import FooterNav from '../components/FooterNav.astro';
 
   <hr />
 
-  <h2 id="uebung-1">Übung 1 · Erste eigene Änderungen <span class="pill uebung">75 min</span></h2>
+  <h2 id="uebung-1">Übung 1 · Erste eigene Änderungen <span class="pill uebung">60 min</span></h2>
   <p>Ziel: erleben, wie sich Arbeiten mit Claude Code anfühlt – und die drei Gewohnheiten einüben, die den Unterschied machen: <strong>eine Sache pro Prompt</strong>, <strong>nach jeder Änderung im Browser prüfen</strong>, <strong>regelmäßig sichern</strong>.</p>
 
   <h3>a) Verstehen, was da ist (10 min)</h3>
   <Prompt>Erkläre mir dieses Projekt so, als käme ich aus dem Produktmanagement und hätte keine Programmierkenntnisse. Welche Seiten gibt es, wo liegen die Beispieldaten, und was passiert, wenn ich die Startseite öffne?</Prompt>
   <p>Lest die Antwort vollständig. Fragt nach, wenn ein Begriff unklar ist: <em>„Was meinst du mit Komponente?“</em> Claude kennt die Regel, euch alles ohne Code zu erklären (steht in der <code>CLAUDE.md</code> – öffnet die Datei ruhig einmal).</p>
 
-  <h3>b) Drei kleine Änderungen – eine nach der anderen (20 min)</h3>
+  <h3>b) Drei kleine Änderungen – eine nach der anderen (15 min)</h3>
   <Prompt>Ändere die Überschrift auf der Startseite zu „Was geht am Campus?“ – sonst nichts.</Prompt>
   <p>→ Vorschau ansehen. Hat sich genau das geändert, und nichts anderes?</p>
   <Prompt>Die Akzentfarbe der App soll ein dunkles Blau statt Rot sein. Ändere sie an der zentralen Stelle, nicht in jeder Datei einzeln, und sag mir, wo diese Stelle ist.</Prompt>
   <p>→ Vorschau ansehen. Button, Punkt im Logo, Badge – alles blau? Das ist die Antwort auf „Gibt es eine zentrale Stelle?“</p>
   <Prompt>Füge zu den drei Feature-Karten eine vierte hinzu: Emoji 🗺️, Titel „Direkt zum Ort“, Text „Ein Tippen öffnet die Karte – nie wieder falscher Raum.“ Das Layout soll weiterhin auf dem Handy gut aussehen.</Prompt>
   <p>→ Vorschau ansehen, dann Vorschau schmal ziehen (oder Rechtsklick → Untersuchen → Handy-Symbol). Passt die vierte Karte?</p>
-
-  <h3>c) Mit einem Screenshot Feedback geben – zweimal (20 min)</h3>
-  <p>Sichert zuerst den Stand aus b), damit er gleich beim Verwerfen nicht mit verschwindet:</p>
+  <p>Jetzt sichern – in c) und d) verwerft ihr Änderungen wieder, und dabei soll b) nicht mit verschwinden:</p>
   <Prompt>/ndu-commit</Prompt>
+  <p>Claude zeigt, was sich geändert hat, schreibt eine verständliche Commit-Nachricht und pusht zu GitHub. Öffnet euer Repo auf github.com: Eure Änderung ist dort, mit Nachricht und Zeitstempel.</p>
+
+  <h3>c) Vage oder präzise – ein Raum-Experiment (10 min)</h3>
+  <p>Die linke Hälfte des Raums schickt den vagen Auftrag, die rechte den präzisen. Danach vergleichen wir über alle hinweg – so sieht man den Unterschied durch den Prompt, nicht nur die normale <a href="/konzepte/llm">Streuung</a>.</p>
+  <Prompt label="Linke Hälfte">Mach die Feature-Karten schöner.</Prompt>
+  <Prompt label="Rechte Hälfte">Auf den Feature-Karten (@src/components/FeatureCard.tsx) soll der Titel etwas größer und das Icon kleiner sein, weil man beim Überfliegen zuerst den Titel sucht. Ändere nur diese Datei. Sag mir danach, was ich im Browser sehen soll.</Prompt>
+  <p>→ Auswertung per Handzeichen: Wie viele Dateien hat Claude geändert (Zahl am <strong>Source-Control-Symbol</strong>)? Ist herausgekommen, was ihr wolltet – und hättet ihr es vorher sagen können? Danach alle Änderungen verwerfen („Discard All Changes“). Welche Bausteine den Unterschied machen, steht in <a href="/konzepte/prompting">Prompt Engineering</a>.</p>
+
+  <h3>d) Mit einem Screenshot Feedback geben – zweimal (10 min)</h3>
   <p>Macht einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), zieht ihn ins Claude-Code-Terminal (oder fügt ihn mit <kbd>Strg/Ctrl</kbd><kbd>V</kbd> ein) und schreibt dazu:</p>
   <Prompt>Auf diesem Screenshot ist der Abstand zwischen Überschrift und Text zu klein und die Karten wirken zu eng. Mach es luftiger, ohne das Design zu ändern.</Prompt>
   <p>→ Vorschau ansehen und einen Screenshot vom Ergebnis machen. Jetzt derselbe Auftrag noch einmal, in einer frischen Session:</p>
@@ -60,23 +68,24 @@ import FooterNav from '../components/FooterNav.astro';
     <p>Ihr müsst nicht wissen, wie „Abstand“ im Code heißt. Ihr müsst sehen können, dass er nicht stimmt, und das präzise sagen. <strong>Beobachten und benennen</strong> ist eure Kernkompetenz in diesem Kurs.</p>
   </Callout>
 
-  <h3>d) Etwas kaputt machen – und zurück (15 min)</h3>
+  <h3>e) Etwas kaputt machen – und zurück (10 min)</h3>
   <Prompt>Lösche die Datei src/components/Header.tsx.</Prompt>
   <p>Die Vorschau zeigt jetzt einen Fehler. Lest ihn – er sagt ziemlich genau, was fehlt. Und jetzt der Undo-Knopf: links das <strong>Source-Control-Symbol</strong> (Verzweigung) → bei <code>Header.tsx</code> auf den Zurück-Pfeil („Discard Changes“). Datei ist wieder da, Fehler weg.</p>
   <Callout type="tip" title="Merken">
     <p>Solange ein Stand committet ist, kann nichts verloren gehen. Deshalb: <strong>nach jedem funktionierenden Issue committen.</strong> Mehr dazu in <a href="/konzepte/git">Git – der Undo-Knopf</a>.</p>
   </Callout>
 
-  <h3>e) Sichern (10 min)</h3>
+  <h3>f) Sichern (5 min)</h3>
   <Prompt>/ndu-commit</Prompt>
-  <p>Claude zeigt, was sich geändert hat, schreibt eine verständliche Commit-Nachricht und pusht zu GitHub. Öffnet danach euer Repo auf github.com und seht nach: Eure Änderung ist dort, mit Nachricht und Zeitstempel.</p>
+  <p>Damit ist auch das Ergebnis aus d) auf GitHub.</p>
 
   <h3>Checkliste Übung 1</h3>
-  <Checklist id="t1-u1" items={[
+  <Checklist id="t1-u1-v2" items={[
     'Projekt erklären lassen und mindestens eine Nachfrage gestellt',
     'Überschrift geändert und in der Vorschau geprüft',
     'Akzentfarbe zentral geändert – und ich weiß, wo die Stelle ist',
     'Vierte Karte eingebaut, auch am Handy geprüft',
+    'Vagen und präzisen Auftrag im Raum verglichen',
     'Einmal Feedback per Screenshot gegeben',
     'Denselben Auftrag zweimal gestellt und die Ergebnisse verglichen',
     'Datei gelöscht, Fehler gelesen, per Source Control wiederhergestellt',

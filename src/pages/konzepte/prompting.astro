@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Callout from '../../components/Callout.astro';
+import FooterNav from '../../components/FooterNav.astro';
+
+const bausteine = [
+  { id: 'ziel', n: 1, name: 'Ziel + Grund', issue: 'Ziel' },
+  { id: 'kontext', n: 2, name: 'Kontext zeigen', issue: 'kommt beim Bauen dazu' },
+  { id: 'grenze', n: 3, name: 'Grenze', issue: 'Nicht im Umfang' },
+  { id: 'pruef', n: 4, name: 'Prüfkriterium', issue: 'Akzeptanzkriterien, Fertig wenn' },
+];
+---
+<Layout title="Prompt Engineering">
+  <span class="eyebrow">Konzept 2 · Tag 1 · Teil 3</span>
+  <h1>Prompt Engineering</h1>
+  <p class="lead">Der Begriff klingt nach Zauberformeln. Gemeint ist das Gegenteil: ein Auftrag, den auch ein Mensch ohne Vorwissen richtig ausführen würde. Jeder Baustein macht die Balken spitzer – das Prüfkriterium fängt den Rest.</p>
+
+  <p>Auf der Seite <a href="/konzepte/llm">Was ein Sprachmodell tut</a> habt ihr gesehen: Jede Formulierung verschiebt die Wahrscheinlichkeiten für alles, was danach kommt. Prompt Engineering heißt, diese Verschiebung bewusst zu nutzen. Dafür braucht ihr kein neues Vokabular – <strong>ein gutes Issue ist bereits ein gut geschriebener Prompt.</strong></p>
+
+  <h2>Ein Auftrag, vier Bausteine</h2>
+  <p>So könnte der Auftrag für Issue 6 aus dem <a href="/konzepte/spezifikation">Backlog</a> aussehen. Die Farben markieren die vier Bausteine:</p>
+  <figure class="pa">
+    <div class="pa-text">
+      <span class="pa-zone" data-baustein="ziel"><sup>1</sup>Setze Issue 6 um: Studierende sagen einem Event zu und können das zurücknehmen – damit Organisator*innen sehen, wie viele kommen.</span>
+      <span class="pa-zone" data-baustein="kontext"><sup>2</sup>Der Button gehört auf die Detailseite <code>@src/app/events/[id]/page.tsx</code> und sieht aus wie „Events ansehen“ auf der Startseite.</span>
+      <span class="pa-zone" data-baustein="grenze"><sup>3</sup>Bau nur Zusagen und Zurücknehmen; Warteliste und Erinnerungs-Mails kommen später.</span>
+      <span class="pa-zone" data-baustein="pruef"><sup>4</sup>Fertig ist es, wenn der Zähler auch nach einem Reload stimmt. Zeig mir für jedes Kriterium aus dem Backlog einen Beleg.</span>
+    </div>
+    <figcaption>
+      <ol class="pa-legende">
+        {bausteine.map((b) => (
+          <li data-baustein={b.id}><span class="pa-punkt" aria-hidden="true"></span><strong>{b.name}</strong> <span class="muted">– {b.id === 'kontext' ? b.issue : `im Issue: ${b.issue}`}</span></li>
+        ))}
+      </ol>
+    </figcaption>
+  </figure>
+
+  <div class="grid vier">
+    <div class="card" data-baustein="ziel"><h3>1 · Ziel + Grund</h3><p class="small muted">Was soll danach möglich sein, für wen – und <strong>warum</strong>. Aus dem Grund leitet Claude Details ab, die ihr nicht aufgeschrieben habt: „damit Organisator*innen sehen, wie viele kommen“ heißt, es braucht einen Zähler.</p></div>
+    <div class="card" data-baustein="kontext"><h3>2 · Kontext zeigen</h3><p class="small muted">Zeigen statt beschreiben: eine Datei mit <code>@</code> nennen, einen Screenshot einfügen, die Fehlermeldung als Text mitgeben, auf ein vorhandenes Muster verweisen („wie die Eventkarte“). Was Claude sieht, muss es nicht raten.</p></div>
+    <div class="card" data-baustein="grenze"><h3>3 · Grenze</h3><p class="small muted">Was dazugehört – und was nicht. Positiv formuliert wirkt sie besser: „Ändere nur die Detailseite“ statt „mach nichts anderes kaputt“. Ohne Grenze baut Claude gern mehr, als ihr bestellt habt.</p></div>
+    <div class="card" data-baustein="pruef"><h3>4 · Prüfkriterium</h3><p class="small muted">Woran erkennt man, dass es fertig ist? Und: einen Beleg verlangen. Das ist der wichtigste Baustein – der einzige, der auch die Reststreuung abfängt.</p></div>
+  </div>
+
+  <h2>Wie viel Auftrag?</h2>
+  <p>Nicht jeder Prompt braucht alle vier Bausteine. <em>„Ändere die Überschrift auf ‚Was geht am Campus?‘ – sonst nichts.“</em> hat Ziel und Grenze, und das reicht. Bei einem Feature braucht ihr alle vier. Faustregel: <strong>Würde eine neue Kollegin ohne Vorwissen den Auftrag richtig ausführen?</strong> Wenn ja, ist er vollständig. Mehr Text macht ihn nicht besser.</p>
+
+  <h2>Nach zwei Korrekturen: neu anfangen</h2>
+  <p>Wenn Claude nach zwei Korrekturen immer noch danebenliegt, hilft eine dritte selten. Die Fehlversuche stehen im Kontext und prägen die Fortsetzung – die Balken für den falschen Weg werden spitzer, nicht flacher. Besser: <code>/clear</code> und denselben Auftrag noch einmal, diesmal mit dem, was ihr inzwischen gelernt habt.</p>
+
+  <h2>Verfestigen: Befehle und CLAUDE.md</h2>
+  <p>Einen guten Prompt schreibt man nicht dreimal. Was ihr wiederholt braucht, wird zu einem <strong>Befehl</strong> in <code>.claude/commands/</code> – so sind <code>/ndu-idee</code> und <code>/ndu-commit</code> entstanden: Hinter jedem steht ein ausführlicher Prompt, den ihr nicht mehr tippen müsst. Was in jeder Session gelten soll, gehört in die <code>CLAUDE.md</code> – kurz gehalten; Prüffrage pro Zeile: Würde etwas schiefgehen, wenn sie fehlt? Mehr dazu in <a href="/konzepte/agenten-steuern">Agenten steuern</a>.</p>
+  <p class="small muted">Deshalb steht „Wenn etwas unklar ist, frag zuerst“ in vielen Prompts der Bibliothek, obwohl es auch in der <code>CLAUDE.md</code> steht: Die Verstärkung schadet nicht, und in Projekten ohne diese Regel ist sie nötig.</p>
+
+  <h2>Was die Balken bewegt – und was nicht</h2>
+  <div class="compare">
+    <div class="card bad"><h3>Bewegt kaum</h3><ul class="small">
+      <li><strong>„Du bist ein erfahrener Entwickler …“</strong> – Die Rolle steht bei Claude Code schon in der <code>CLAUDE.md</code>. Ein Maßstab („prüfe es, wie ein Team vor dem Launch prüft“) wirkt dagegen.</li>
+      <li><strong>GROSSBUCHSTABEN, „CRITICAL“, Drohungen</strong> – Aktuelle Modelle reagieren darauf eher über und wenden die Regel auch dort an, wo sie nicht passt.</li>
+      <li><strong>„Denk Schritt für Schritt“</strong> – Das Modell denkt ohnehin vor der Antwort nach.</li>
+      <li><strong>„Bitte“</strong> – harmlos, aber ohne Wirkung.</li>
+    </ul></div>
+    <div class="card good"><h3>Bewegt viel</h3><ul class="small">
+      <li>Ein Grund: „damit …“, „weil …“</li>
+      <li>Eine Datei, ein Screenshot, eine Fehlermeldung</li>
+      <li>Eine positiv formulierte Grenze</li>
+      <li>Ein Kriterium und die Bitte um einen Beleg</li>
+    </ul></div>
+  </div>
+
+  <p>Selbst ausprobieren: In <a href="/tag-1#uebung-1">Übung 1 c)</a> schickt die eine Hälfte des Raums einen vagen Auftrag, die andere einen präzisen – und ihr vergleicht.</p>
+
+  <Callout type="concept" title="Der eine Satz zum Mitnehmen">
+    <p>Ein guter Prompt ist ein gutes Issue: Ziel mit Grund, gezeigter Kontext, eine Grenze und ein Prüfkriterium. Alles andere ist Dekoration.</p>
+  </Callout>
+
+  <FooterNav prev={{ href: '/konzepte/coding-agent', t: 'Wie ein Coding-Agent arbeitet' }} next={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} />
+</Layout>
+
+<style>
+  /* Prompt-Anatomie: vier Bausteine, Farben aus den Tokens in global.css. */
+  [data-baustein="ziel"] { --farbe: var(--blue); --farbe-soft: var(--blue-soft); }
+  [data-baustein="kontext"] { --farbe: var(--green); --farbe-soft: var(--green-soft); }
+  [data-baustein="grenze"] { --farbe: var(--yellow); --farbe-soft: var(--yellow-soft); }
+  [data-baustein="pruef"] { --farbe: var(--purple); --farbe-soft: var(--purple-soft); }
+
+  .pa { margin: 1.25rem 0 1.5rem; padding: 1rem 1.1rem; background: var(--bg-2); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius); }
+  .pa-text { line-height: 1.9; }
+  .pa-zone { background: var(--farbe-soft); box-shadow: inset 0 -2px 0 var(--farbe); padding: .1em .2em; border-radius: 3px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .pa-zone sup { font-weight: 700; color: var(--fg); margin-right: .2em; }
+  .pa-zone code { overflow-wrap: anywhere; }
+  .pa-legende { list-style: none; padding: 0; margin: .9rem 0 0; display: flex; flex-wrap: wrap; gap: .3rem 1.25rem; font-size: .9rem; }
+  .pa-punkt { display: inline-block; width: .8em; height: .8em; border-radius: 2px; margin-right: .4em; background: var(--farbe); vertical-align: -.05em; }
+  .card[data-baustein] { border-top: 4px solid var(--farbe); }
+  .grid.vier { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 600px) { .grid.vier { grid-template-columns: 1fr; } }
+</style>
