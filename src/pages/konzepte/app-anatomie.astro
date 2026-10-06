@@ -28,7 +28,8 @@ const layers = [
   <h1>Anatomie einer App</h1>
   <p class="lead">Ihr müsst keine Schicht selbst bauen können. Aber ihr müsst wissen, dass es sie gibt – sonst könnt ihr weder richtig bestellen noch beurteilen, ob richtig geliefert wurde.</p>
 
-  <h2>Website, Web-App oder App?</h2>
+  <h2 id="app-typen">Website, Web-App oder App?</h2>
+  <div class="table-scroll" tabindex="0" role="region" aria-labelledby="app-typen">
   <table>
     <tr><th>Typ</th><th>Was es ist</th><th>Beispiel</th><th>Für euren Prototyp</th></tr>
     <tr><td><strong>Website</strong></td><td>Seiten zum Lesen, wenig Interaktion, keine Nutzerdaten</td><td>ndu.ac.at, ein Portfolio</td><td>Richtig für Landing Pages und Info-Angebote; in 1 Stunde fertig</td></tr>
@@ -36,6 +37,7 @@ const layers = [
     <tr><td><strong>Native App</strong></td><td>Wird installiert (App Store), nutzt Kamera, Push, Offline</td><td>WhatsApp, Instagram</td><td>Erst, wenn ihr wirklich Push/Offline/Kamera braucht – deutlich aufwändiger</td></tr>
     <tr><td><strong>PWA</strong></td><td>Web-App, die sich wie eine App auf den Homescreen legt</td><td>viele Nachrichten-Apps</td><td>Guter Mittelweg: Web-App + „Zum Homescreen hinzufügen“</td></tr>
   </table>
+  </div>
 
   <h2>Die fünf Schichten – das Restaurant</h2>
   <div class="widget" id="anatomie">

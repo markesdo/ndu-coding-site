@@ -67,9 +67,11 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.5rem; font-size: .95rem; }
 th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
 th { font-weight: 600; color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
-/* Am Handy: Silbentrennung statt Seitenscrollen; ist eine Tabelle trotzdem zu breit, scrollt nur sie. */
+/* Breite Tabellen in .table-scroll: ist der Bildschirm trotz Silbentrennung zu schmal, scrollt nur die Tabelle. */
+.table-scroll { overflow-x: auto; margin: 1rem 0 1.5rem; }
+.table-scroll > table { margin: 0; }
+/* Am Handy: Silbentrennung statt Seitenscrollen. */
 @media (max-width: 600px) {
-  table { display: block; overflow-x: auto; }
   th, td { padding: .5rem .35rem; hyphens: auto; overflow-wrap: break-word; }
   th { letter-spacing: 0; }
 }
