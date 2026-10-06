@@ -1,12 +1,15 @@
-// Auftakt der Übersicht (index.astro): Ein Auftrag wird getippt, dann landet die Seite Stück für Stück.
-// Läuft nur, wenn das Inline-Skript in index.astro html[data-auftakt] gesetzt hat (erster Besuch oder ?intro).
-// Web Animations API, keine Bibliothek. Jede Taste, jeder Klick, jedes Scrollen beendet ihn sofort.
+// Auftakt der Startseite (start.astro): Ein Auftrag wird getippt, dann landet die Bühne Stück für Stück.
+// Platzhalter-Animation, austauschbar: bespielt nur #auftakt-buehne und endet im statischen Endzustand.
+// Läuft nur, wenn das Inline-Skript html[data-auftakt] gesetzt hat (nicht bei reduzierter Bewegung).
+// Web Animations API, keine Bibliothek. Jede Taste, jeder Klick, jedes Scrollen beendet sie sofort –
+// diese erste Taste löst nicht zugleich „Weiter“ aus (das Ereignis wird markiert, siehe start.astro).
 import { LANDEN_MS, LINIE_MS, TAG_TEXT_MS, TAG_TEXT_VERSATZ, WECHSEL_MS, promptWahl, tokens, woerter, zeitplan } from './auftakt-zeitplan';
 
 const root = document.documentElement;
-const hero = document.querySelector<HTMLElement>('[data-hero]');
+const hero = document.querySelector<HTMLElement>('#auftakt-buehne');
 
-if (hero && root.hasAttribute('data-auftakt')) starten(hero);
+// Ohne Animation (reduzierte Bewegung): gleich Endzustand, „Weiter“ mit Fokus.
+if (hero && root.hasAttribute('data-auftakt')) starten(hero); else beenden();
 
 function starten(hero: HTMLElement) {
   const h1 = hero.querySelector<HTMLElement>('h1');
@@ -74,7 +77,10 @@ function starten(hero: HTMLElement) {
   });
 
   zeitgeber.push(window.setTimeout(beendenMitAufraeumen, plan.ende + 50));
-  const abbrechen = () => beendenMitAufraeumen();
+  const abbrechen = (e: Event) => {
+    (e as Event & { auftaktUebersprungen?: boolean }).auftaktUebersprungen = true;
+    beendenMitAufraeumen();
+  };
   const optionen: AddEventListenerOptions = { once: true, passive: true, capture: true };
   const ereignisse = ['keydown', 'pointerdown', 'wheel', 'touchmove'] as const;
   ereignisse.forEach((e) => window.addEventListener(e, abbrechen, optionen));
@@ -96,6 +102,8 @@ function beenden() {
   root.removeAttribute('data-auftakt');
   root.removeAttribute('data-auftakt-laeuft');
   root.setAttribute('data-auftakt-fertig', '');
+  // „Weiter“ bekommt den Fokus, damit Enter sofort geht – navigiert wird aber nie von selbst.
+  document.querySelector<HTMLElement>('[data-weiter]')?.focus({ preventScroll: true });
 }
 
 /**

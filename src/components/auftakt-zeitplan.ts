@@ -1,4 +1,4 @@
-// Auftakt der Übersicht: Zeitplan und Entscheidungen als reine Funktionen, ohne DOM – damit testbar.
+// Auftakt der Startseite (/start): Zeitplan und Entscheidungen als reine Funktionen, ohne DOM – damit testbar.
 // Die Idee: Der Mensch tippt (Zeichen für Zeichen, unregelmäßig), die Maschine setzt Stücke (Tokens, schnell und gleichmäßig).
 
 /** Gesamtdauer, die der Auftakt nie überschreitet (ms). */
@@ -25,17 +25,13 @@ export function promptWahl(verfuegbarPx: number, wunschPx: number, minPx = 11) {
 }
 
 /**
- * Soll der Auftakt laufen, und soll sich der Browser das merken?
- * ?intro erzwingt ihn (für den Beamer), merkt ihn aber nie. Reduzierte Bewegung hat immer Vorrang.
- * Spiegelbild des Inline-Skripts in index.astro – Änderungen an beiden Stellen.
+ * Wohin „Weiter“ führt: Tag 1. Wer im Beamer-Modus kommt (?beamer, nicht ?beamer=0), bleibt darin.
+ * Ohne Anmeldung leitet die Middleware von dort zum Kurspasswort weiter und kehrt danach zurück.
+ * Spiegelbild des Inline-Skripts in start.astro – Änderungen an beiden Stellen.
  */
-export function auftaktStatus(o: { suche: string; gesehen: boolean; reduziert: boolean }) {
-  // folie: ?intro zeigt den Kopf als Eröffnungsfolie (im Beamer mittig) – auch ohne Animation.
-  const intro = new URLSearchParams(o.suche).has('intro');
-  if (o.reduziert) return { spielen: false, merken: false, folie: intro };
-  if (intro) return { spielen: true, merken: false, folie: true };
-  if (o.gesehen) return { spielen: false, merken: false, folie: false };
-  return { spielen: true, merken: true, folie: false };
+export function weiterZiel(suche: string): string {
+  const beamer = new URLSearchParams(suche).get('beamer');
+  return beamer !== null && beamer !== '0' ? '/tag-1?beamer' : '/tag-1';
 }
 
 /** Die Überschrift in Stücken, wie ein Modell sie ausgibt. Unbekannter Text: Wort für Wort. */

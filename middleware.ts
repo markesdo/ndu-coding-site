@@ -1,9 +1,10 @@
 // Kurspasswort für die Website – Vercel Routing Middleware (plattformweit, nicht Astro-Middleware).
 // Läuft nur auf Vercel; lokal (`astro dev`) gibt es kein Passwort.
-// Frei: /login, /_astro/* (Schriften, Skripte, Bilder), Favicon, robots.txt. Alles andere braucht das Cookie.
+// Frei: /start (Startseite vor dem Login), /login, /_astro/* (Schriften, Skripte, Bilder), Favicon, robots.txt.
+// Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
-import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
+import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istOeffentlich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
 
 export const config = {
   matcher: ['/((?!_astro/|favicon\\.svg$|favicon\\.ico$|robots\\.txt$).*)'],
@@ -32,6 +33,9 @@ export default async function middleware(request: Request): Promise<Response> {
 
   const url = new URL(request.url);
   const jetzt = Math.floor(Date.now() / 1000);
+
+  // Startseite: für alle, auch ohne Anmeldung (sie zeigt nur Titel und Kurstage).
+  if (istOeffentlich(url.pathname)) return next({ headers: NOINDEX });
 
   if (istLogin(url.pathname)) {
     if (request.method === 'POST') {

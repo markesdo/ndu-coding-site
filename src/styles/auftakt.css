@@ -1,9 +1,42 @@
-/* Auftakt der Übersicht (index.astro, src/components/auftakt.ts).
-   html[data-auftakt]          – gesetzt vom Inline-Skript vor dem ersten Zeichnen (erster Besuch oder ?intro)
+/* Startseite /start (start.astro) und ihre austauschbare Animation (src/components/auftakt.ts).
+   html[data-auftakt]          – gesetzt vom Inline-Skript vor dem ersten Zeichnen (nicht bei reduzierter Bewegung)
    html[data-auftakt-laeuft]   – das Skript animiert; ab jetzt steuert die Web Animations API die Sichtbarkeit
-   html[data-auftakt-fertig]   – vorbei
-   html[data-auftakt-folie]    – ?intro: Kopf als Eröffnungsfolie (im Beamer mittig), auch bei reduzierter Bewegung
+   html[data-auftakt-fertig]   – vorbei: statischer Endzustand, „Weiter“ sichtbar und fokussiert
    Alles bleibt in seiner endgültigen Box (kein Layout-Sprung), versteckt wird nur über Deckkraft und Farbe. */
+
+/* Bühne: ein Bildschirm, Inhalt senkrecht in der Mitte, Marke oben links. Im Beamer wächst alles mit (125 %). */
+.start {
+  min-height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center;
+  max-width: 1100px; margin: 0 auto; padding: 5.5rem 1.5rem 3rem; position: relative;
+}
+.start-marke {
+  position: absolute; top: 1.5rem; left: 1.5rem; margin: 0; display: flex; align-items: center; gap: .6rem;
+  font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: .95rem; color: var(--fg);
+}
+.start .days { margin-bottom: 0; }
+.start .day:hover { border-top-color: var(--fg); }
+.start .day:hover h3 { color: inherit; }
+.start-aktion { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 0; }
+.start-weiter {
+  display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; font-size: 1.1rem;
+  padding: .85rem 1.6rem; border-radius: 6px; background: var(--accent); color: var(--on-accent, #fff); text-decoration: none;
+  transition: opacity .3s ease-out, transform .3s ease-out;
+}
+.start-weiter:hover { text-decoration: none; filter: brightness(1.05); }
+.start-weiter:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.start-hinweis { font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 600px) {
+  .start { padding: 5rem 1rem 2rem; justify-content: flex-start; }
+  .start-marke { top: 1.1rem; left: 1rem; }
+  .start-hinweis { display: none; }
+}
+
+/* Während der Animation: „Weiter“ unsichtbar und nicht klickbar; Sicherheitsnetz nach 5 s. */
+.start-aktion { transition: opacity .35s ease-out; }
+html[data-auftakt]:not([data-auftakt-fertig]) .start-aktion {
+  opacity: 0; visibility: hidden; animation: auftakt-sicher 0s linear 5s forwards, auftakt-sichtbar 0s linear 5s forwards;
+}
+@keyframes auftakt-sichtbar { to { visibility: visible; } }
 
 /* Vor dem Start: unsichtbar, aber mit Platz. Sicherheitsnetz: Lädt das Skript nicht, ist nach 5 s alles da. */
 html[data-auftakt]:not([data-auftakt-laeuft]) .hero :is(.eyebrow, .lead, .day) {
@@ -33,10 +66,3 @@ html[data-auftakt] .hero .day { position: relative; border-top-color: transparen
 @media (max-width: 1100px) {
   .hero .day:not(:first-child) { --linie-b: 1px; --linie-c: var(--border); }
 }
-
-/* Beamer: Der Titel steht als Eröffnungsfolie in der Mitte der ersten Bildschirmhöhe. */
-html[data-beamer][data-auftakt-folie] .hero {
-  min-height: calc(100dvh - 3.75rem - 3.5rem);
-  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
-}
-html[data-beamer][data-auftakt-folie] .hero .days { align-self: stretch; }

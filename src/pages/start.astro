@@ -1,0 +1,86 @@
+---
+// Startseite vor dem Login: öffentlich (Middleware lässt /start ohne Kurspasswort durch), ohne Navigation,
+// eine Bühne über den ganzen Bildschirm. Von NDU Live aus kommen Handys hierher, der Beamer mit ?beamer.
+// „Weiter“ führt zu Tag 1 – ohne Anmeldung leitet die Middleware von dort zum Kurspasswort.
+// Aufbau: Der Endzustand (Titel, Einleitung, Tage, „Weiter“) ist statisches HTML in #auftakt-buehne.
+// Die Animation ist austauschbar: ein Skript (src/components/auftakt.ts), das nur diese Bühne bespielt.
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import '../styles/beamer.css';
+import '../styles/auftakt.css';
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Programmieren mit AI · NDU Coding 2026</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      // Vor dem ersten Zeichnen: Beamer-Modus wie in Layout.astro (?beamer an, ?beamer=0 aus, sonst gemerkte Wahl)
+      // und die Animation scharf schalten – außer bei reduzierter Bewegung (dann sofort der Endzustand).
+      (function () {
+        var root = document.documentElement;
+        var q = new URLSearchParams(location.search).get('beamer');
+        var an = false;
+        try { an = localStorage.getItem('ndu-beamer') === '1'; } catch (e) {}
+        if (q !== null) {
+          an = q !== '0';
+          try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
+        }
+        if (an) root.setAttribute('data-beamer', '');
+        try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) root.setAttribute('data-auftakt', ''); } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <main class="start">
+      <p class="start-marke"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</p>
+
+      <section id="auftakt-buehne" class="hero" data-hero aria-labelledby="start-titel">
+        <span class="eyebrow">NDU · MSc Management by Innovation · Oktober 2026</span>
+        <h1 id="start-titel">Programmieren mit <span style="white-space:nowrap">AI<span class="cursor" aria-hidden="true"></span></span></h1>
+        <p class="lead">In drei Tagen von „Ich kann nicht programmieren“ zu einem eigenen, öffentlich erreichbaren Prototyp – ohne eine Zeile Code selbst zu schreiben.</p>
+        <div class="days">
+          <div class="day"><div class="n">Tag 1 · Do 8.10.</div><h3>Verstehen & Starten</h3><p>Umgebung läuft, erste eigene Änderungen, von der Idee zur Spezifikation.</p></div>
+          <div class="day"><div class="n">Tag 2 · Fr 9.10.</div><h3>Bauen wie ein Profi</h3><p>Echte Daten, Login, Fehler finden, Agenten steuern, öffentliche URL.</p></div>
+          <div class="day"><div class="n">Tag 3 · Do 15.10.</div><h3>Shippen & selbständig werden</h3><p>Eigener Prototyp, Qualität beurteilen, Ausblick, Demos.</p></div>
+        </div>
+      </section>
+
+      <p class="start-aktion">
+        <a class="start-weiter" href="/tag-1" data-weiter>Weiter <span aria-hidden="true">→</span></a>
+        <span class="start-hinweis">oder Enter</span>
+      </p>
+    </main>
+
+    <script is:inline>
+      // „Weiter“ behält den Beamer-Modus (Spiegelbild von weiterZiel() in src/components/auftakt-zeitplan.ts).
+      (function () {
+        var b = new URLSearchParams(location.search).get('beamer');
+        if (b !== null && b !== '0') document.querySelector('[data-weiter]').setAttribute('href', '/tag-1?beamer');
+      })();
+    </script>
+    <script>
+      // Nie automatisch weiter: nur Klick/Tippen auf „Weiter“ oder Enter, Leertaste, Pfeil rechts.
+      // Läuft die Animation noch, beendet die erste Taste nur sie (auftakt.ts markiert das Ereignis).
+      const weiter = document.querySelector<HTMLAnchorElement>('[data-weiter]');
+      window.addEventListener('keydown', (e) => {
+        if (!weiter || e.metaKey || e.ctrlKey || e.altKey) return;
+        if ((e as KeyboardEvent & { auftaktUebersprungen?: boolean }).auftaktUebersprungen) return;
+        if (document.documentElement.hasAttribute('data-auftakt-laeuft')) return;
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
+          if (e.target === weiter && e.key === 'Enter') return; // der Link folgt selbst
+          e.preventDefault();
+          weiter.click();
+        }
+      });
+    </script>
+    <script>
+      // Die Animation (austauschbar): bespielt nur #auftakt-buehne und endet im statischen Endzustand.
+      import '../components/auftakt';
+    </script>
+  </body>
+</html>

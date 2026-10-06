@@ -1,27 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import {
   AUFTAKT_MAX, HALTEN, PROMPT_KURZ, PROMPT_LANG, START, WECHSEL_MS,
-  auftaktStatus, promptFuer, promptWahl, tokens, woerter, zeitplan,
+  promptFuer, promptWahl, tokens, weiterZiel, woerter, zeitplan,
 } from './auftakt-zeitplan';
 
 const LEAD = 'In drei Tagen von „Ich kann nicht programmieren“ zu einem eigenen, öffentlich erreichbaren Prototyp – ohne eine Zeile Code selbst zu schreiben.';
 const plan = (prompt: string, zufall = () => 0.5) =>
   zeitplan({ prompt, h1Tokens: 5, leadWoerter: woerter(LEAD).length, tage: 3, zufall });
 
-describe('auftaktStatus', () => {
-  it('erster Besuch: spielen und merken', () => {
-    expect(auftaktStatus({ suche: '', gesehen: false, reduziert: false })).toStrictEqual({ spielen: true, merken: true, folie: false });
+describe('weiterZiel', () => {
+  it('„Weiter“ führt zu Tag 1', () => {
+    expect(weiterZiel('')).toBe('/tag-1');
+    expect(weiterZiel('?foo=1')).toBe('/tag-1');
   });
-  it('zweiter Besuch: nicht spielen', () => {
-    expect(auftaktStatus({ suche: '', gesehen: true, reduziert: false })).toStrictEqual({ spielen: false, merken: false, folie: false });
-  });
-  it('?intro spielt immer, merkt aber nie – auch beim ersten Besuch', () => {
-    expect(auftaktStatus({ suche: '?intro', gesehen: true, reduziert: false })).toStrictEqual({ spielen: true, merken: false, folie: true });
-    expect(auftaktStatus({ suche: '?beamer&intro', gesehen: false, reduziert: false })).toStrictEqual({ spielen: true, merken: false, folie: true });
-  });
-  it('reduzierte Bewegung: keine Animation, aber ?intro bleibt Eröffnungsfolie', () => {
-    expect(auftaktStatus({ suche: '?intro', gesehen: false, reduziert: true })).toStrictEqual({ spielen: false, merken: false, folie: true });
-    expect(auftaktStatus({ suche: '', gesehen: false, reduziert: true })).toStrictEqual({ spielen: false, merken: false, folie: false });
+  it('wer im Beamer-Modus kommt, bleibt darin – ?beamer=0 schaltet ihn ab', () => {
+    expect(weiterZiel('?beamer')).toBe('/tag-1?beamer');
+    expect(weiterZiel('?beamer=1')).toBe('/tag-1?beamer');
+    expect(weiterZiel('?x=1&beamer')).toBe('/tag-1?beamer');
+    expect(weiterZiel('?beamer=0')).toBe('/tag-1');
   });
 });
 

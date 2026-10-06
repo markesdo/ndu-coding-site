@@ -27,8 +27,9 @@ npm run build    # Ausgabe in dist/
 ## Im Kurs am Beamer
 
 - `?beamer` (oder Taste `B`): größere Schrift, ohne Seitenleiste; `?beamer=0` schaltet aus.
-- `?intro`: spielt den Auftakt der Übersicht noch einmal ab (der getippte Auftrag, aus dem die Seite entsteht). Ohne `?intro` läuft er nur beim ersten Besuch.
-- Eröffnungsfolie nach NDU Live: `/?beamer&intro` – der Titel steht dann in der Mitte des Bildschirms.
+- `/start`: Startseite vor dem Login, öffentlich (ohne Kurspasswort). Eine Animation baut den Titel auf, danach führt „Weiter“ (Klick, Enter, Leertaste oder →) zu Tag 1 – ohne Anmeldung über das Kurspasswort. Nie automatisch weiter.
+- Nach NDU Live am Beamer: `/start?beamer` – „Weiter“ bleibt im Beamer-Modus (`/tag-1?beamer`).
+- Die Animation ist austauschbar: Sie bespielt nur `#auftakt-buehne` in `src/pages/start.astro` (Skript `src/components/auftakt.ts`); der Endzustand ist statisches HTML.
 
 ## Inhalte ändern
 
