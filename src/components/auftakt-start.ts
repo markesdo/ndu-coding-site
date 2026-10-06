@@ -199,11 +199,18 @@ async function starten(buehne: HTMLElement) {
     else beenden();
   };
   const beiZeiger = () => beenden();
+  // Größenänderung nur, wenn sie die gemessenen Flugziele verschiebt: Handys feuern „resize“ auch, wenn die
+  // Adressleiste ein- oder ausfährt – das soll die Eröffnung nicht abbrechen.
+  const startBreite = innerWidth;
+  const startHoehe = innerHeight;
+  const beiGroesse = () => {
+    if (Math.abs(innerWidth - startBreite) > 2 || Math.abs(innerHeight - startHoehe) > 140) beenden();
+  };
   window.addEventListener('keydown', beiTaste, optionen);
   window.addEventListener('pointerdown', beiZeiger, optionen);
   window.addEventListener('wheel', beiZeiger, { capture: true, passive: true });
   window.addEventListener('touchmove', beiZeiger, { capture: true, passive: true });
-  window.addEventListener('resize', beiZeiger);
+  window.addEventListener('resize', beiGroesse);
   window.addEventListener('orientationchange', beiZeiger);
   // Wächter: Hängt die Zeitleiste (Tab im Hintergrund, Fehler), steht der Endzustand trotzdem.
   const waechter = window.setTimeout(beenden, (R.ende + 1.5) * 1000);
@@ -214,7 +221,7 @@ async function starten(buehne: HTMLElement) {
     window.removeEventListener('pointerdown', beiZeiger, optionen);
     window.removeEventListener('wheel', beiZeiger, { capture: true });
     window.removeEventListener('touchmove', beiZeiger, { capture: true });
-    window.removeEventListener('resize', beiZeiger);
+    window.removeEventListener('resize', beiGroesse);
     window.removeEventListener('orientationchange', beiZeiger);
     tl.kill();
     titelSplit.revert();
