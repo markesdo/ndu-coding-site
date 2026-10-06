@@ -95,8 +95,13 @@ const beschriftung = Object.fromEntries(abschnitte.flatMap((a) => [[a.id, a.leis
       aktualisieren();
     };
     addEventListener('resize', neu);
-    // Für das Seitenende: Dort kreuzt keine Überschrift mehr die Linie.
-    addEventListener('scrollend', aktualisieren);
+    // Für das Seitenende: Dort kreuzt keine Überschrift mehr die Linie. scroll statt scrollend – das kann nicht jeder Browser.
+    let geplant = false;
+    addEventListener('scroll', () => {
+      if (geplant) return;
+      geplant = true;
+      requestAnimationFrame(() => { geplant = false; aktualisieren(); });
+    }, { passive: true });
     // Beamer-Modus an/aus ändert die Kopfleiste.
     new MutationObserver(neu).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
   }
