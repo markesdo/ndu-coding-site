@@ -53,7 +53,7 @@ const karten = [
   <nav class="probleme-sprung" aria-label="Themen">
     {gruppen.map((g) => <a href={`#${g.id}`}>{g.t}</a>)}
   </nav>
-  <p class="small muted">Tippt auf ein Problem, um die Lösung zu sehen. Die Suche im Browser (<kbd>Strg/Cmd</kbd> <kbd>F</kbd>) findet auch eingeklappten Text.</p>
+  <p class="small muted">Tippt auf ein Problem, um die Lösung zu sehen.</p>
   {gruppen.map((g) => (
     <section class="probleme-gruppe" aria-labelledby={g.id}>
       <h2 id={g.id}>{g.t}</h2>
