@@ -18,6 +18,7 @@ import FooterNav from '../../components/FooterNav.astro';
       <button type="button" data-begriff="id" aria-pressed="false">ID</button>
       <button type="button" data-begriff="beziehung" aria-pressed="true">Beziehung</button>
     </div>
+    <p class="loop-detail db-erklaerung" id="db-erklaerung" aria-live="polite"><strong>Beziehung.</strong> Zeile 1 in <code>rsvps</code> zeigt auf Event 42 und auf Nutzerin 7: Lena kommt zum Lauftreff. Titel und Namen stehen nur einmal in der Datenbank – <code>rsvps</code> speichert bloß die IDs.</p>
     <div class="db-tabellen">
       <table data-t="events">
         <caption><code>events</code></caption>
@@ -39,7 +40,6 @@ import FooterNav from '../../components/FooterNav.astro';
         <tr><td data-col="id">3</td><td>41</td><td>8</td></tr>
       </table>
     </div>
-    <p class="loop-detail db-erklaerung" id="db-erklaerung" aria-live="polite"><strong>Beziehung.</strong> Zeile 1 in <code>rsvps</code> zeigt auf Event 42 und auf Nutzerin 7: Lena kommt zum Lauftreff. Titel und Namen stehen nur einmal in der Datenbank – <code>rsvps</code> speichert bloß die IDs.</p>
     <script>
       const texte: Record<string, string> = {
         tabelle: '<strong>Tabelle.</strong> Eine Tabelle sammelt einen Objekttyp – hier alle Events. Jede Tabelle hat feste Spalten.',
@@ -136,7 +136,8 @@ import FooterNav from '../../components/FooterNav.astro';
   .db-tabellen th { font-family: var(--mono); text-transform: none; letter-spacing: 0; font-size: .8rem; }
   .db-tabellen th, .db-tabellen td { padding: .45rem .6rem; }
   .db-tabellen tr:last-child td { border-bottom: 0; }
-  .db-erklaerung { margin: 0; }
+  /* Über den Tabellen, damit man am Handy nach dem Tippen nicht scrollen muss. Die Knöpfe stehen darüber und bleiben beim Wechsel an ihrem Platz. */
+  .db-erklaerung { margin: 0 0 1rem; min-height: 4.8em; }
 
   /* Hervorhebung nie nur über Farbe: Hintergrund, Rahmen und fette Schrift. */
   #db[data-zeige="tabelle"] [data-t="events"],
