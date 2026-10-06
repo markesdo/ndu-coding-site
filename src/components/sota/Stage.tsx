@@ -39,11 +39,12 @@ export default function Stage({ title, steps, children }: StageProps) {
     return () => document.removeEventListener('fullscreenchange', onChange);
   }, []);
 
-  // Unsichtbare Kopien aller Schritte nur einmal bauen, nicht bei jedem Blättern. Hängt bewusst nur an `steps`:
-  // Die Szenen leiten ihren Inhalt allein aus dem Schritt ab, nicht aus äußerem Zustand.
-  const platzhalter = useMemo(() => steps.map((_, i) => (
+  // Unsichtbare Kopien aller Schritte – Szene und Beschriftung zusammen – nur einmal bauen, nicht bei jedem Blättern.
+  // Hängt bewusst nur an `steps`: Die Szenen leiten ihren Inhalt allein aus dem Schritt ab, nicht aus äußerem Zustand.
+  const platzhalter = useMemo(() => steps.map((s, i) => (
     <div key={i} className="stage-mass" aria-hidden="true" inert>
-      {children({ index: i, direction: 1, seq: 0 }, true)}
+      <div className="stage-scene">{children({ index: i, direction: 1, seq: 0 }, true)}</div>
+      <div className="stage-caption">{s.caption}</div>
     </div>
   )), [steps]);
 
@@ -97,32 +98,27 @@ export default function Stage({ title, steps, children }: StageProps) {
           {nav.index + 1} / {steps.length}
         </span>
       </div>
-      <div className="stage-scene">
-        {/* Wie bei der Beschriftung: jeder Schritt einmal unsichtbar in derselben Rasterzelle, damit die Szene
-            so hoch ist wie ihr höchster Schritt. Ohne Animation, aus dem Bedienbaum genommen (inert). */}
+      {/* Jeder Schritt (Szene + Beschriftung) liegt einmal unsichtbar in derselben Rasterzelle: Die Zelle ist so hoch
+          wie der höchste Schritt, bei jeder Breite – so bleiben die Knöpfe darunter beim Blättern an ihrem Platz.
+          Szene und Beschriftung als ein Block, damit freier Platz unten landet und nicht als Loch zwischen beiden. */}
+      <div className="stage-body">
         {platzhalter}
-        <div className="stage-scene-aktiv">{children(nav, reduced)}</div>
-      </div>
-      <div className="stage-caption" aria-hidden="true">
-        {/* Alle Beschriftungen unsichtbar in derselben Rasterzelle: Die Zelle ist so hoch wie die längste,
-            bei jeder Breite – so bleiben die Knöpfe darunter beim Blättern an ihrem Platz. */}
-        {steps.map((s, i) => (
-          <div key={i} className="stage-mass">
-            {s.caption}
+        <div className="stage-aktiv">
+          <div className="stage-scene">{children(nav, reduced)}</div>
+          <div className="stage-caption" aria-hidden="true">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={nav.index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduced ? 0 : 0.2 }}
+              >
+                {steps[nav.index].caption}
+              </motion.div>
+            </AnimatePresence>
           </div>
-        ))}
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={nav.index}
-            className="stage-caption-aktiv"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduced ? 0 : 0.2 }}
-          >
-            {steps[nav.index].caption}
-          </motion.div>
-        </AnimatePresence>
+        </div>
       </div>
       <p className="sr-only" aria-live="polite">
         {steps[nav.index].plain}

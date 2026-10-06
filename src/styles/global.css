@@ -2,15 +2,21 @@
   --bg: #fafaf7;
   --bg-2: #ffffff;
   --fg: #16161a;
-  --muted: #6b6b76;
+  --muted: #5f5f6b;
   --border: #e6e4de;
-  --accent: #e8472b;
+  /* --accent für Flächen (weiße Schrift darauf: --on-accent), --accent-ink für kleine Schrift in Akzentfarbe. */
+  --accent: #d6401f;
+  --accent-ink: #b83a1e;
+  --on-accent: #ffffff;
   --accent-soft: #fde8e3;
+  --eyebrow-bg: var(--accent-soft);
   --blue: #2457d6;
   --blue-soft: #e4ebfc;
-  --green: #1f8a4c;
+  --green: #1b6f3f;
   --green-soft: #e1f5e9;
+  /* --yellow bleibt die Flächen-/Rahmenfarbe (API-Schicht), Schrift auf Gelb nimmt --yellow-ink. */
   --yellow: #b7791f;
+  --yellow-ink: #8a5a12;
   --yellow-soft: #fdf1d8;
   --purple: #6d3fc2;
   --purple-soft: #ede6fb;
@@ -25,15 +31,19 @@
     --bg: #121216;
     --bg-2: #1b1b21;
     --fg: #ececf1;
-    --muted: #9b9ba8;
+    --muted: #a2a2b0;
     --border: #2b2b34;
     --accent: #ff6a4d;
+    --accent-ink: #ff8266;
+    --on-accent: #16161a;
     --accent-soft: #3a1f19;
+    --eyebrow-bg: #2c1d1a;
     --blue: #7aa2ff;
     --blue-soft: #1c2740;
     --green: #5fcf8a;
     --green-soft: #15301f;
     --yellow: #e8b45a;
+    --yellow-ink: #e8b45a;
     --yellow-soft: #3a2d14;
     --purple: #b092f5;
     --purple-soft: #28203d;
@@ -41,14 +51,21 @@
   }
 }
 :root[data-theme="dark"] {
-  --bg: #121216; --bg-2: #1b1b21; --fg: #ececf1; --muted: #9b9ba8; --border: #2b2b34;
-  --accent: #ff6a4d; --accent-soft: #3a1f19; --blue: #7aa2ff; --blue-soft: #1c2740;
-  --green: #5fcf8a; --green-soft: #15301f; --yellow: #e8b45a; --yellow-soft: #3a2d14;
+  --bg: #121216; --bg-2: #1b1b21; --fg: #ececf1; --muted: #a2a2b0; --border: #2b2b34;
+  --accent: #ff6a4d; --accent-ink: #ff8266; --on-accent: #16161a; --accent-soft: #3a1f19; --eyebrow-bg: #2c1d1a;
+  --blue: #7aa2ff; --blue-soft: #1c2740;
+  --green: #5fcf8a; --green-soft: #15301f; --yellow: #e8b45a; --yellow-ink: #e8b45a; --yellow-soft: #3a2d14;
   --purple: #b092f5; --purple-soft: #28203d; --code-bg: #24242c;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* Sichtbarer Tastaturfokus überall; Komponenten mit eigenem Fokusrahmen (Stage, Screenshots) überschreiben ihn. */
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .day, .day:hover { transition: none; transform: none; }
+}
 body {
   margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font);
   line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased;
@@ -60,7 +77,7 @@ h1 { font-size: 2.4rem; margin: 0 0 .5rem; }
 h2 { font-size: 1.6rem; margin: 2.5rem 0 .75rem; }
 h3 { font-size: 1.2rem; margin: 1.75rem 0 .5rem; }
 p, ul, ol { margin: 0 0 1rem; }
-code { font-family: var(--mono); font-size: .9em; background: var(--code-bg); padding: .1em .35em; border-radius: 5px; }
+code { font-family: var(--mono); font-size: .9em; background: var(--code-bg); padding: .1em .35em; border-radius: 5px; overflow-wrap: anywhere; } /* lange IDs/Pfade brechen am Handy um statt die Seite zu verbreitern */
 pre { background: var(--code-bg); padding: 1rem; border-radius: var(--radius); overflow-x: auto; }
 pre code { background: none; padding: 0; }
 hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
@@ -80,7 +97,7 @@ blockquote p:last-child { margin: 0; }
 kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 0 .35em; background: var(--bg-2); }
 
 .lead { font-size: 1.2rem; color: var(--muted); max-width: 44ch; }
-.eyebrow { display: inline-block; font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: .2rem .65rem; border-radius: 999px; margin-bottom: .75rem; }
+.eyebrow { display: inline-block; font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-ink); background: var(--eyebrow-bg); padding: .2rem .65rem; border-radius: 999px; margin-bottom: .75rem; }
 .muted { color: var(--muted); }
 .small { font-size: .9rem; }
 
@@ -93,7 +110,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .sidebar .group h4 { margin: 0 0 .35rem; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .sidebar .group a { display: block; padding: .3rem .55rem; border-radius: 8px; color: var(--fg); font-size: .95rem; }
 .sidebar .group a:hover { background: var(--bg); text-decoration: none; }
-.sidebar .group a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.sidebar .group a.active { background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; }
 .content { padding: 2.5rem 2rem 6rem; min-width: 0; } /* min-width: 0, sonst drückt breiter Inhalt (z. B. die einzeilige Schrittleiste) die Grid-Spalte auf */
 .content > .inner { max-width: var(--max); margin: 0 auto; }
 .topbar { display: none; }
@@ -126,6 +143,10 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 
 .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 1.25rem 0; }
 .grid .card { margin: 0; }
+/* Vier Schritte ohne verwaiste vierte Karte: ab 900 px eine Reihe, darunter 2 × 2, am Handy untereinander. */
+.grid.faden { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1100px) { .grid.faden { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .grid.faden { grid-template-columns: 1fr; } }
 .card h3 { margin-top: 0; }
 
 .pill { display: inline-block; font-size: .78rem; font-weight: 600; padding: .15rem .6rem; border-radius: 999px; background: var(--code-bg); color: var(--muted); }
@@ -133,7 +154,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .pill.konzept { background: var(--blue-soft); color: var(--blue); }
 .pill.uebung { background: var(--green-soft); color: var(--green); }
 .pill.pause { background: var(--code-bg); color: var(--muted); }
-.pill.plenum { background: var(--yellow-soft); color: var(--yellow); }
+.pill.plenum { background: var(--yellow-soft); color: var(--yellow-ink); }
 
 /* Schedule */
 .schedule { display: flex; flex-direction: column; gap: .5rem; margin: 1.5rem 0; }
@@ -148,16 +169,23 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 /* Buttons */
 .btn { display: inline-block; font: inherit; font-weight: 600; padding: .6rem 1.1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-2); color: var(--fg); cursor: pointer; text-decoration: none; }
 .btn:hover { text-decoration: none; border-color: var(--fg); }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .btn.primary:hover { opacity: .92; }
 .btn.sm { padding: .3rem .7rem; font-size: .85rem; }
 
 /* Prompt card */
 .prompt { position: relative; background: var(--bg-2); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 1rem 1.1rem 1rem 1.1rem; margin: 1.25rem 0; }
-.prompt .label { font-size: .75rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; display: flex; justify-content: space-between; align-items: center; }
+.prompt .label { font-size: .75rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: .4rem; display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .prompt pre { margin: 0; background: transparent; padding: 0; white-space: pre-wrap; font-family: var(--font); font-size: 1rem; line-height: 1.55; }
-.prompt .copy { font: inherit; font-size: .8rem; font-weight: 600; background: var(--accent-soft); color: var(--accent); border: 0; border-radius: 8px; padding: .3rem .7rem; cursor: pointer; text-transform: none; letter-spacing: 0; }
-.prompt .copy.done { background: var(--green-soft); color: var(--green); display: inline-flex; align-items: center; gap: .3rem; }
+/* Kopieren-Knopf neutral (Rot bleibt der Hauptaktion vorbehalten), feste Breite: „Kopiert“ verschiebt nichts. */
+.prompt .copy { font: inherit; font-size: .8rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-width: 7rem; flex: none; background: var(--bg-2); color: var(--fg); border: 1px solid var(--border); border-radius: 8px; padding: .3rem .7rem; cursor: pointer; text-transform: none; letter-spacing: 0; }
+.prompt .copy:hover { border-color: var(--fg); }
+/* Langes Label darf umbrechen, damit der Knopf am Handy nicht über den Rand ragt. */
+.prompt .label > span { min-width: 0; overflow-wrap: anywhere; hyphens: auto; }
+.prompt .copy svg { flex: none; }
+.prompt .copy .ico-done, .prompt .copy.done .ico-copy { display: none; }
+.prompt .copy.done .ico-done { display: inline; }
+.prompt .copy.done { background: var(--green-soft); border-color: color-mix(in srgb, var(--green) 40%, transparent); color: var(--green); }
 .prompt .note { margin: .6rem 0 0; font-size: .88rem; color: var(--muted); }
 
 /* Checklist */
@@ -173,14 +201,14 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 /* Steps */
 .steps { counter-reset: step; list-style: none; padding: 0; margin: 1.25rem 0; }
 .steps li { counter-increment: step; position: relative; padding: .75rem 0 .75rem 3rem; border-bottom: 1px solid var(--border); }
-.steps li::before { content: counter(step); position: absolute; left: 0; top: .7rem; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
+.steps li::before { content: counter(step); position: absolute; left: 0; top: .7rem; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
 .steps li strong { display: block; margin-bottom: .15rem; }
 
 /* Screenshot-Schritte (Schritte.astro). Markierungsrot ist in beiden Themes gleich – es liegt auf dem Screenshot, nicht auf der Seite. */
 .shots { counter-reset: shot; list-style: none; padding: 0; margin: 1.25rem 0; }
 .shots > li { counter-increment: shot; position: relative; padding: 1rem 0 1.5rem 3.4rem; border-bottom: 1px solid var(--border); scroll-margin-top: 4.5rem; }
 /* Label „5.6“ aus data-label, damit Hilfe-Texte auf genau diesen Schritt verweisen können. */
-.shots > li::before { content: attr(data-label); position: absolute; left: 0; top: .95rem; min-width: 2rem; height: 2rem; padding: 0 .45rem; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
+.shots > li::before { content: attr(data-label); position: absolute; left: 0; top: .95rem; min-width: 2rem; height: 2rem; padding: 0 .45rem; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
 .shots > li > p { margin-bottom: .75rem; }
 .shot { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 /* Rahmen schmiegt sich ans Bild an (Markierungen beziehen sich darauf); Hochkant-Bilder höchstens 75 % der Fensterhöhe. */
@@ -195,13 +223,14 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .shot-crop .shot-frame { position: absolute; width: var(--w); left: var(--x); top: var(--y); max-width: none; border: 0; border-radius: 0; }
 .shot-crop .shot-frame img { width: 100%; max-width: none; max-height: none; border-radius: 0; clip-path: var(--clip); }
 .shot-hint { margin: -.6rem 0 0; }
+.shot:focus-visible { outline: none; }
 .shot:focus-visible .shot-crop-box { outline: 3px solid var(--blue); outline-offset: 2px; }
 .shots > li:target { background: var(--accent-soft); border-radius: var(--radius); }
 /* Schrittleiste auf /setup: bleibt beim Scrollen oben, zeigt den aktuellen Abschnitt. */
 .stepbar { position: sticky; top: 0; z-index: 30; display: flex; flex-wrap: wrap; gap: .3rem; margin: 1.25rem -.5rem; padding: .5rem; background: var(--bg); border-bottom: 1px solid var(--border); }
 .stepbar a { min-width: 2rem; padding: .2rem .55rem; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-2); color: var(--fg); font-size: .85rem; font-weight: 600; text-align: center; text-decoration: none; }
 .stepbar a:hover { border-color: var(--accent); }
-.stepbar a[aria-current] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.stepbar a[aria-current] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 h2[id] { scroll-margin-top: 3.5rem; }
 /* Unter 900 px steht die Topbar (sticky) über der Schrittleiste. */
 @media (max-width: 900px) { .stepbar { top: 4rem; flex-wrap: nowrap; overflow-x: auto; } .stepbar a { flex: none; } .shots > li, h2[id] { scroll-margin-top: 7.5rem; } }
@@ -216,7 +245,7 @@ h2[id] { scroll-margin-top: 3.5rem; }
 .shot-zoom .shot-frame { border: 0; border-radius: 0; }
 .shot-zoom-body { padding: 1.5rem 1.5rem .5rem; text-align: center; }
 .shot-zoom-caption { padding: 0 1.5rem; max-width: 70rem; margin: 0 auto; font-size: 1.05rem; }
-.shot-zoom-label { display: inline-block; margin-right: .5rem; padding: 0 .5rem; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 700; }
+.shot-zoom-label { display: inline-block; margin-right: .5rem; padding: 0 .5rem; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-weight: 700; }
 .shot-zoom-nav { display: flex; gap: .5rem; align-items: center; justify-content: center; padding: .75rem 1.5rem 1.25rem; }
 .shot-zoom-nav button { font: inherit; padding: .4rem .9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); cursor: pointer; }
 .shot-zoom-nav button:disabled { opacity: .4; cursor: default; }
@@ -236,7 +265,7 @@ h2[id] { scroll-margin-top: 3.5rem; }
 .days { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin: 1.5rem 0; }
 .day { display: block; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.4rem; color: var(--fg); transition: border-color .15s, transform .15s; }
 .day:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-2px); }
-.day .n { font-size: .8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+.day .n { font-size: .8rem; font-weight: 700; color: var(--accent-ink); text-transform: uppercase; letter-spacing: .05em; }
 .day h3 { margin: .25rem 0 .35rem; }
 .day p { margin: 0; color: var(--muted); font-size: .95rem; }
 
@@ -280,7 +309,7 @@ h2[id] { scroll-margin-top: 3.5rem; }
 
 .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
 .compare .card { margin: 0; }
-.compare .bad h3 { color: var(--accent); }
+.compare .bad h3 { color: var(--accent-ink); }
 .compare .good h3 { color: var(--green); }
 @media (max-width: 700px) { .compare { grid-template-columns: 1fr; } }
 

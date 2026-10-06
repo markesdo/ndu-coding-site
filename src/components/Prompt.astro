@@ -1,20 +1,29 @@
 ---
 // Prompt-Karte mit Copy-Button. Inhalt als Slot (Text wird 1:1 kopiert).
+import { Check, Copy } from '@lucide/astro';
 const { label = 'Prompt für Claude Code', note } = Astro.props;
 ---
 <div class="prompt">
-  <div class="label"><span>{label}</span><button class="copy" type="button">Kopieren</button></div>
+  <div class="label">
+    <span>{label}</span>
+    <button class="copy" type="button">
+      <Copy class="ico-copy" size={14} aria-hidden="true" />
+      <Check class="ico-done" size={14} stroke-width={2.5} aria-hidden="true" />
+      <span class="copy-text" aria-live="polite">Kopieren</span>
+    </button>
+  </div>
   <pre><slot /></pre>
   {note && <p class="note">{note}</p>}
 </div>
 <script>
   document.querySelectorAll<HTMLButtonElement>('.prompt .copy').forEach(btn => {
     if (btn.dataset.bound) return; btn.dataset.bound = '1';
+    const text = btn.querySelector('.copy-text')!;
     btn.addEventListener('click', async () => {
       const txt = btn.closest('.prompt')?.querySelector('pre')?.innerText ?? '';
       try { await navigator.clipboard.writeText(txt.trim()); } catch {}
-      btn.innerHTML = 'Kopiert <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'; btn.classList.add('done');
-      setTimeout(() => { btn.textContent = 'Kopieren'; btn.classList.remove('done'); }, 1800);
+      text.textContent = 'Kopiert'; btn.classList.add('done');
+      setTimeout(() => { text.textContent = 'Kopieren'; btn.classList.remove('done'); }, 1800);
     });
   });
 </script>

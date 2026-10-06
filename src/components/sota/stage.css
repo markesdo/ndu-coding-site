@@ -17,9 +17,9 @@
 .stage-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .75rem; }
 .stage-title { font-weight: 700; }
 .stage-count { font-family: var(--mono); font-size: .85rem; color: var(--muted); }
-/* Szene und Beschriftung reservieren die Höhe ihres höchsten Schritts (unsichtbare Kopien in derselben Rasterzelle). */
-.stage-scene, .stage-caption { display: grid; }
-.stage-scene > *, .stage-caption > * { grid-area: 1 / 1; min-width: 0; }
+/* Der Körper reserviert die Höhe des höchsten Schritts (Szene + Beschriftung, unsichtbare Kopien in derselben Rasterzelle). */
+.stage-body { display: grid; }
+.stage-body > * { grid-area: 1 / 1; min-width: 0; }
 .stage-mass { visibility: hidden; }
 .stage-caption { margin-top: 1rem; }
 .stage-caption code { font-size: .9em; }
@@ -63,7 +63,7 @@
 .kf-gauge.kf-warn .kf-gauge-bar { background: var(--yellow); }
 .kf-gauge.kf-warn .kf-gauge-text { color: var(--yellow); font-weight: 700; }
 .kf-gauge.kf-crit .kf-gauge-bar { background: var(--accent); }
-.kf-gauge.kf-crit .kf-gauge-text { color: var(--accent); font-weight: 700; }
+.kf-gauge.kf-crit .kf-gauge-text { color: var(--accent-ink); font-weight: 700; }
 
 .kf-fenster {
   display: flex;
@@ -185,7 +185,7 @@
 .bw-pruef-icon svg { width: 1.25em; height: 1.25em; }
 .bw-pruefung-offen { color: var(--muted); }
 .bw-pruefung-ok .bw-pruef-icon { color: var(--green); }
-.bw-pruefung-fehler { color: var(--accent); font-weight: 600; }
+.bw-pruefung-fehler { color: var(--accent-ink); font-weight: 600; }
 
 .bw-tabelle-name { font-weight: 600; margin-bottom: .2em; }
 .bw-tabelle table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .8em; margin: 0; }
@@ -304,7 +304,6 @@
 @media (max-width: 600px) {
   .ns-zeile { grid-template-columns: 6.5em 1fr 3.2em; gap: .45em; }
 }
-.ns-platzhalter { visibility: hidden; }
 
 /* Ein Wert, viele Stellen (/konzepte/design-system). Die Mini-App ist ein „Screenshot“ der hellen Kurs-App
    und bleibt auch im Dark Mode hell; die Farben der fünf Stellen kommen aus den Schritt-Daten. */
