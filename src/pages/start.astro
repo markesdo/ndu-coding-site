@@ -1,9 +1,10 @@
 ---
 // Startseite vor dem Login: öffentlich (Middleware lässt /start ohne Kurspasswort durch), ohne Navigation,
-// eine Bühne über den ganzen Bildschirm. Von NDU Live aus kommen Handys hierher, der Beamer mit ?beamer.
-// „Weiter“ führt zu Tag 1 – ohne Anmeldung leitet die Middleware von dort zum Kurspasswort.
-// Aufbau: Der Endzustand (Titel, Einleitung, Tage, „Weiter“) ist statisches HTML in #auftakt-buehne.
-// Die Animation ist austauschbar: ein Skript (src/components/auftakt.ts), das nur diese Bühne bespielt.
+// eine dunkle Bühne über den ganzen Bildschirm – die Fortsetzung der NDU-Live-Leinwand. Von NDU Live aus kommen
+// Handys hierher, der Beamer mit ?beamer. „› weiter“ führt zu Tag 1 – ohne Anmeldung leitet die Middleware von
+// dort zum Kurspasswort. Nie automatisch weiter: Wer hier ist, entscheidet selbst, wann es losgeht.
+// Aufbau: Der Endzustand (Titel, Einleitung, Tage, „› weiter“) ist statisches HTML. Die Animation
+// („Der Cursor läuft“, src/components/auftakt-start.ts, GSAP) bespielt nur diese Bühne und endet genau hier.
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
@@ -11,11 +12,12 @@ import '../styles/beamer.css';
 import '../styles/auftakt.css';
 ---
 <!doctype html>
-<html lang="de">
+<html lang="de" data-theme="dark">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#121216" />
     <title>Programmieren mit AI · NDU Coding 2026</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
@@ -35,7 +37,9 @@ import '../styles/auftakt.css';
       })();
     </script>
   </head>
-  <body>
+  <body class="start-body">
+    <div class="start-licht" aria-hidden="true"></div>
+    <div class="start-blitz" aria-hidden="true"></div>
     <main class="start">
       <p class="start-marke"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</p>
 
@@ -51,36 +55,22 @@ import '../styles/auftakt.css';
       </section>
 
       <p class="start-aktion">
-        <a class="start-weiter" href="/tag-1" data-weiter>Weiter <span aria-hidden="true">→</span></a>
-        <span class="start-hinweis">oder Enter</span>
+        <a class="start-weiter" href="/tag-1" data-weiter aria-label="Weiter zu Tag 1"><span class="start-weiter-chev" aria-hidden="true">›</span> weiter<span class="cursor" aria-hidden="true"></span></a>
+        <span class="start-hinweis">Enter oder Tippen · zu Tag 1</span>
       </p>
     </main>
 
     <script is:inline>
       // „Weiter“ behält den Beamer-Modus (Spiegelbild von weiterZiel() in src/components/auftakt-zeitplan.ts).
+      // Gilt auch ohne das Animationsskript: Der Link funktioniert immer.
       (function () {
         var b = new URLSearchParams(location.search).get('beamer');
         if (b !== null && b !== '0') document.querySelector('[data-weiter]').setAttribute('href', '/tag-1?beamer');
       })();
     </script>
     <script>
-      // Nie automatisch weiter: nur Klick/Tippen auf „Weiter“ oder Enter, Leertaste, Pfeil rechts.
-      // Läuft die Animation noch, beendet die erste Taste nur sie (auftakt.ts markiert das Ereignis).
-      const weiter = document.querySelector<HTMLAnchorElement>('[data-weiter]');
-      window.addEventListener('keydown', (e) => {
-        if (!weiter || e.metaKey || e.ctrlKey || e.altKey) return;
-        if ((e as KeyboardEvent & { auftaktUebersprungen?: boolean }).auftaktUebersprungen) return;
-        if (document.documentElement.hasAttribute('data-auftakt-laeuft')) return;
-        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
-          if (e.target === weiter && e.key === 'Enter') return; // der Link folgt selbst
-          e.preventDefault();
-          weiter.click();
-        }
-      });
-    </script>
-    <script>
-      // Die Animation (austauschbar): bespielt nur #auftakt-buehne und endet im statischen Endzustand.
-      import '../components/auftakt';
+      // Die Animation (austauschbar): bespielt nur die Bühne und endet im statischen Endzustand.
+      import '../components/auftakt-start';
     </script>
   </body>
 </html>

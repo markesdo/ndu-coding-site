@@ -1,12 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  AUFTAKT_MAX, HALTEN, PROMPT_KURZ, PROMPT_LANG, START, WECHSEL_MS,
-  promptFuer, promptWahl, tokens, weiterZiel, woerter, zeitplan,
+  PROMPT_KURZ, PROMPT_LANG, REGIE,
+  flugZuordnung, istWeiterTaste, ohneFlug, promptWahl, tastenAktion, tippZeiten, weiterZiel,
 } from './auftakt-zeitplan';
 
-const LEAD = 'In drei Tagen von „Ich kann nicht programmieren“ zu einem eigenen, öffentlich erreichbaren Prototyp – ohne eine Zeile Code selbst zu schreiben.';
-const plan = (prompt: string, zufall = () => 0.5) =>
-  zeitplan({ prompt, h1Tokens: 5, leadWoerter: woerter(LEAD).length, tage: 3, zufall });
+const TITEL = 'Programmieren mit AI';
 
 describe('weiterZiel', () => {
   it('„Weiter“ führt zu Tag 1', () => {
@@ -21,72 +19,109 @@ describe('weiterZiel', () => {
   });
 });
 
-describe('promptFuer', () => {
-  it('unter 480 px die kurze Fassung, ab 480 px die lange', () => {
-    expect(promptFuer(390)).toBe(PROMPT_KURZ);
-    expect(promptFuer(479)).toBe(PROMPT_KURZ);
-    expect(promptFuer(480)).toBe(PROMPT_LANG);
-    expect(promptFuer(1440)).toBe(PROMPT_LANG);
-  });
-});
-
 describe('promptWahl', () => {
   // Unabhängig gerechnet: „›“, Leerzeichen (je 0,6em), Cursor 0,55em + 0,15em Abstand – nicht EXTRA_ZEICHEN wiederverwenden.
   const zeilenBreite = (text: string, px: number) => (text.length * 0.6 + 0.6 + 0.6 + 0.55 + 0.15) * px;
   it('der gewählte Auftrag passt immer in eine Zeile – vom kleinen Handy bis zum Beamer', () => {
-    for (const verfuegbar of [288, 343, 358, 400, 488, 568, 700, 860, 1100]) {
-      const w = promptWahl(verfuegbar, 16.8);
-      expect(zeilenBreite(w.text, w.px)).toBeLessThanOrEqual(verfuegbar + 0.5);
+    for (const verfuegbar of [288, 343, 358, 400, 488, 568, 700, 860, 1100, 1700]) {
+      for (const wunsch of [16.8, 28, 44]) {
+        const w = promptWahl(verfuegbar, wunsch);
+        expect(zeilenBreite(w.text, w.px)).toBeLessThanOrEqual(verfuegbar + 0.5);
+      }
     }
   });
   it('lang, wo Platz ist; kurz am Handy, notfalls etwas kleiner', () => {
-    expect(promptWahl(860, 16.8)).toStrictEqual({ text: PROMPT_LANG, px: 16.8 });
-    expect(promptWahl(358, 16.38).text).toBe(PROMPT_KURZ);
-    expect(promptWahl(358, 16.38).px).toBeLessThan(16.38);
+    expect(promptWahl(1700, 44)).toStrictEqual({ text: PROMPT_LANG, px: 44 });
+    expect(promptWahl(358, 18).text).toBe(PROMPT_KURZ);
+    expect(promptWahl(358, 18).px).toBeLessThan(18);
   });
 });
 
-describe('tokens', () => {
-  it('die Überschrift landet in fünf Stücken, die zusammen den Text ergeben', () => {
-    const t = tokens('Programmieren mit AI');
-    expect(t).toHaveLength(5);
-    expect(t.join('')).toBe('Programmieren mit AI');
-  });
-  it('unbekannter Text: Wort für Wort, ohne Zeichen zu verlieren', () => {
-    expect(tokens('Hallo schöne Welt').join('')).toBe('Hallo schöne Welt');
-    expect(woerter(LEAD).join('')).toBe(LEAD);
-  });
-});
-
-describe('zeitplan', () => {
-  it('bleibt mit beiden Aufträgen und jeder Streuung unter 3,8 s', () => {
-    for (const p of [PROMPT_LANG, PROMPT_KURZ]) for (const z of [0, 0.5, 0.999]) {
-      expect(plan(p, () => z).ende).toBeLessThanOrEqual(AUFTAKT_MAX);
+describe('tippZeiten', () => {
+  it('liegt für beide Aufträge und jede Streuung im Tipp-Fenster, streng nacheinander', () => {
+    for (const p of [PROMPT_LANG, PROMPT_KURZ, 'x'.repeat(400)]) for (const z of [0, 0.5, 0.999]) {
+      const t = tippZeiten(p, () => z);
+      expect(t).toHaveLength(p.length);
+      expect(t[0]).toBeGreaterThan(REGIE.tippen);
+      expect(t.at(-1)!).toBeLessThanOrEqual(REGIE.tippenEnde + 0.001);
+      for (let i = 1; i < t.length; i++) expect(t[i]).toBeGreaterThan(t[i - 1]);
     }
   });
-  it('ein sehr langer Auftrag wird gestaucht statt das Limit zu sprengen', () => {
-    expect(plan('x'.repeat(400), () => 0.999).ende).toBeLessThanOrEqual(AUFTAKT_MAX);
-  });
-  it('nach dem Komma eine hörbare Pause, sonst gleichmäßiges Tippen', () => {
-    const p = plan(PROMPT_LANG);
+  it('nach dem Komma eine hörbare Pause', () => {
+    const t = tippZeiten(PROMPT_LANG, () => 0.5);
     const komma = PROMPT_LANG.indexOf(',');
-    const nachKomma = p.tipp[komma + 1] - p.tipp[komma];
-    const normal = p.tipp[3] - p.tipp[2];
-    expect(nachKomma).toBeGreaterThanOrEqual(normal + 150);
+    expect(t[komma + 1] - t[komma]).toBeGreaterThanOrEqual((t[3] - t[2]) + 0.1);
   });
-  it('erst tippen, dann halten, dann Überschrift, Einleitung, Tage – in dieser Reihenfolge', () => {
-    const p = plan(PROMPT_LANG);
-    expect(p.tipp[0]).toBeGreaterThan(START);
-    expect(p.wechsel).toBe(p.tipp.at(-1)! + HALTEN);
-    // Die Überschrift landet erst, wenn der Auftrag fast ausgeblendet ist.
-    expect(p.h1[0]).toBeGreaterThanOrEqual(p.wechsel + WECHSEL_MS * 0.7);
-    expect(p.lead[0]).toBeGreaterThan(p.h1[0]);
-    expect(p.tage[0]).toBeGreaterThan(p.lead.at(-1)!);
-    expect(p.h1).toHaveLength(5);
-    expect(p.tage).toHaveLength(3);
+  it('das Tippen endet vor dem „Enter“ – dazwischen blinkt der Cursor', () => {
+    expect(tippZeiten(PROMPT_LANG, () => 0.999).at(-1)!).toBeLessThan(REGIE.enter - 0.3);
   });
-  it('die Zeichen erscheinen streng nacheinander', () => {
-    const p = plan(PROMPT_LANG, () => 0);
-    for (let i = 1; i < p.tipp.length; i++) expect(p.tipp[i]).toBeGreaterThan(p.tipp[i - 1]);
+});
+
+describe('flugZuordnung', () => {
+  for (const prompt of [PROMPT_LANG, PROMPT_KURZ]) {
+    const z = flugZuordnung(prompt, TITEL);
+    it(`jedes Ziel höchstens einmal, nur Buchstaben auf Buchstaben (${prompt.length} Zeichen)`, () => {
+      expect(z).toHaveLength(prompt.length);
+      const ziele = z.filter((x): x is number => x !== null);
+      expect(new Set(ziele).size).toBe(ziele.length);
+      z.forEach((j, i) => {
+        if (j === null) return;
+        expect(prompt[i]).toMatch(/\p{L}/u);
+        expect(prompt[i].toLowerCase()).toBe(TITEL[j].toLowerCase());
+      });
+    });
+    it(`Leerzeichen und Satzzeichen fliegen nie (${prompt.length} Zeichen)`, () => {
+      z.forEach((j, i) => { if (!/\p{L}/u.test(prompt[i])) expect(j).toBeNull(); });
+    });
+    it(`deterministisch (${prompt.length} Zeichen)`, () => {
+      expect(flugZuordnung(prompt, TITEL)).toStrictEqual(z);
+    });
+  }
+  it('gleiche Schreibung vor anderer Schreibung: „A“ nimmt das große A aus „App“', () => {
+    const z = flugZuordnung(PROMPT_LANG, TITEL);
+    const a = TITEL.indexOf('A');
+    expect(PROMPT_LANG[z.indexOf(a)]).toBe('A');
+  });
+  it('ein exakter Treffer wird nicht von einem Ziel in anderer Schreibung verdrängt', () => {
+    // Nur ein „p“: Es gehört dem kleinen „p“ im Titel, nicht dem großen „P“, obwohl „P“ vorn steht.
+    expect(flugZuordnung('xp', 'Pp')).toStrictEqual([null, 1]);
+  });
+  it('unter mehreren Kandidaten der mit der nächsten relativen Position', () => {
+    // Titel „ab“: Das „a“ am Anfang des Auftrags passt zum „a“ am Anfang des Titels.
+    expect(flugZuordnung('a--a', 'ab')).toStrictEqual([0, null, null, null]);
+    expect(flugZuordnung('--aa', 'ba')).toStrictEqual([null, null, null, 1]);
+  });
+  it('die meisten Buchstaben der Überschrift kommen aus dem Auftrag', () => {
+    const lang = flugZuordnung(PROMPT_LANG, TITEL).filter((x) => x !== null).length;
+    expect(lang).toBeGreaterThanOrEqual(14);
+    expect(ohneFlug(flugZuordnung(PROMPT_LANG, TITEL), TITEL).length + lang).toBe(TITEL.replace(/ /g, '').length);
+  });
+});
+
+describe('Tasten', () => {
+  it('Enter vor dem „Enter“ der Regie schickt ab, danach springt es ans Ende', () => {
+    expect(tastenAktion('Enter', 1.5)).toBe('abschicken');
+    expect(tastenAktion('Enter', REGIE.enter + 0.1)).toBe('ueberspringen');
+  });
+  it('Esc und andere Tasten überspringen, Tab und Umschalttasten nicht', () => {
+    expect(tastenAktion('Escape', 1)).toBe('ueberspringen');
+    expect(tastenAktion('x', 4)).toBe('ueberspringen');
+    expect(tastenAktion('Tab', 1)).toBe('ignorieren');
+    expect(tastenAktion('Shift', 1)).toBe('ignorieren');
+  });
+  it('„Weiter“: Enter, Leertaste, Pfeil rechts – sonst nichts', () => {
+    for (const t of ['Enter', ' ', 'ArrowRight']) expect(istWeiterTaste(t)).toBe(true);
+    for (const t of ['Escape', 'a', 'ArrowLeft', 'Tab']) expect(istWeiterTaste(t)).toBe(false);
+  });
+});
+
+describe('Regie', () => {
+  it('die Reihenfolge stimmt und das Ende liegt nach allem anderen', () => {
+    expect(REGIE.chevron).toBeLessThan(REGIE.tippen);
+    expect(REGIE.tippenEnde).toBeLessThan(REGIE.enter);
+    expect(REGIE.flug + REGIE.flugDauer + REGIE.flugStreuung).toBeLessThanOrEqual(REGIE.landung + 0.06);
+    expect(REGIE.druckEnde).toBeLessThanOrEqual(REGIE.tage);
+    const letzterTag = REGIE.tage + 2 * REGIE.tageAbstand;
+    expect(Math.max(letzterTag + REGIE.linie, letzterTag + REGIE.tagTextVersatz + REGIE.tagTextDauer)).toBeLessThanOrEqual(REGIE.ende);
   });
 });
