@@ -20,12 +20,12 @@ import FooterNav from '../components/FooterNav.astro';
     <li><strong>Reflexion</strong> in <code>docs/REFLEXION.md</code>, zehn Sätze: Was hat der Agent gut gemacht, wo hat er versagt, was würdet ihr beim nächsten Mal anders spezifizieren?</li>
   </ol>
 
-  <Callout type="warn" title="Abgabe">
-    <p>Donnerstag, 15.10., 09:00: Repo-Link + Vercel-URL in Teams. Was bis dahin gepusht ist, zählt. Es ist in Ordnung, wenn nicht alles funktioniert – dafür ist der Tag 3 da. Es ist nicht in Ordnung, wenn nichts gepusht ist.</p>
+  <Callout type="tip" title="Ziel: etwas zum Zeigen an Tag 3">
+    <p>Es gibt keine Abgabe. Ihr baut, damit ihr am Donnerstag in der <a href="/tag-3#demos">Demo</a> etwas Laufendes zeigen und erklären könnt. Es ist in Ordnung, wenn nicht alles funktioniert – dafür ist der Tag 3 da, mit Werkstatt und Hilfe. Pusht regelmäßig: Nur was auf GitHub ist, können wir mit euch anschauen.</p>
   </Callout>
 
   <h2>So arbeitet ihr allein</h2>
-  <p>Der Rhythmus von Tag 1 und 2, jetzt ohne Anleitung: <strong>Issue wählen → umsetzen lassen (Claude fragt bei Unklarem nach) → Belege lesen → selbst im Browser prüfen → <code>/ndu-check</code> → <code>/ndu-commit</code> → <code>/clear</code>.</strong> Wer sicher unterwegs ist, arbeitet pro Issue in einem eigenen <a href="/konzepte/git#branch">Branch</a> – Pflicht ist das nicht. Dann vor der Abgabe alles in <code>main</code> zurückführen: Vercel veröffentlicht nur <code>main</code>. Wenn ihr merkt, dass ihr seit 20 Minuten mit demselben Problem kämpft: aufhören, <code>/clear</code>, Problem kleiner machen, oder Hilfe holen.</p>
+  <p>Der Rhythmus von Tag 1 und 2, jetzt ohne Anleitung: <strong>Issue wählen → umsetzen lassen (Claude fragt bei Unklarem nach) → Belege lesen → selbst im Browser prüfen → <code>/ndu-check</code> → <code>/ndu-commit</code> → <code>/clear</code>.</strong> Wer sicher unterwegs ist, arbeitet pro Issue in einem eigenen <a href="/konzepte/git#branch">Branch</a> – Pflicht ist das nicht. Dann vor der Demo alles in <code>main</code> zurückführen: Vercel veröffentlicht nur <code>main</code>. Wenn ihr merkt, dass ihr seit 20 Minuten mit demselben Problem kämpft: aufhören, <code>/clear</code>, Problem kleiner machen, oder Hilfe holen.</p>
   <Prompt label="Morgens, zum Einstieg">Lies docs/PRODUKT.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welches Issue als Nächstes dran ist und warum.</Prompt>
   <Prompt label="Abends, zum Abschluss">Trag in docs/ENTSCHEIDUNGEN.md ein, was wir heute festgelegt haben. Aktualisiere den Status im Backlog. Dann /ndu-check und /ndu-commit.</Prompt>
 
@@ -33,8 +33,8 @@ import FooterNav from '../components/FooterNav.astro';
   <p>In der Reihenfolge: 1) Debug-Prompt mit kompletter Fehlermeldung. 2) <code>/clear</code>, kleiner formulieren. 3) <a href="/bekannte-probleme">Bekannte Probleme</a>. 4) Teams-Kanal <strong>#hilfe</strong> im <a href="/hilfe">Hilfe-Format</a> – immer mit Repo-Link, immer vorher gepusht.</p>
   <p>Feste Sprechstunden gibt es nicht: Fragen könnt ihr jederzeit in Teams im Kanal <strong>#hilfe</strong> stellen – am besten im <a href="/hilfe">Hilfe-Format</a>, dann können wir schnell helfen.</p>
 
-  <h2>Checkliste Abgabe</h2>
-  <Checklist id="hausaufgabe" items={[
+  <h2>Checkliste für Donnerstag</h2>
+  <Checklist id="zwischenwoche-demo" items={[
     'Eigenes Repo aus dem Template, Markus ist Collaborator',
     '<code>docs/PRODUKT.md</code> – eine Seite, mit „macht NICHT“',
     'Nach Issue 2–3 zwei Leuten gezeigt, Produkt-Brief aktualisiert (Stand-Zeile)',
@@ -43,7 +43,7 @@ import FooterNav from '../components/FooterNav.astro';
     'App läuft auf Vercel, URL und Screenshot in <code>README.md</code>',
     '<code>/ndu-check</code> grün: keine Secrets im Repo',
     '<code>docs/REFLEXION.md</code> geschrieben',
-    'Repo-Link + URL in Teams gepostet (bis 15.10., 09:00)',
+    'Alles gepusht, App läuft auf der Vercel-URL',
     'Codespace gestoppt',
   ]} />
 

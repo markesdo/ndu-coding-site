@@ -5,14 +5,16 @@ import Callout from '../components/Callout.astro';
 <Layout title="Bewertung">
   <span class="eyebrow">Prüfungsmodalitäten</span>
   <h1>Bewertung</h1>
-  <p class="lead">Bewertet wird nicht Code – sondern ob ihr ein Produkt spezifizieren, bauen lassen, prüfen und erklären könnt.</p>
-  <table>
-    <tr><th>Anteil</th><th>Was</th><th>Nachweis</th><th>Bis</th></tr>
-    <tr><td><strong>40 %</strong></td><td>Übungen 1–5 (Campus Events)</td><td>Commits im eigenen Repo, Backlog mit fertigen Issues, öffentliche Vercel-URL</td><td>Fr 9.10., 17:00</td></tr>
-    <tr><td><strong>40 %</strong></td><td>Eigener Mini-Prototyp</td><td>Repo mit Produkt-Brief, Backlog (3–5 Issues fertig), Vercel-URL, Reflexion</td><td>Do 15.10., 09:00</td></tr>
-    <tr><td><strong>20 %</strong></td><td>Demo & Reflexion</td><td>Präsentation an Tag 3 inkl. „Was hat der Agent nicht gut gemacht?“</td><td>Do 15.10.</td></tr>
-  </table>
-  <h2>Kriterien</h2>
+  <p class="lead">Bewertet wird eure Mitarbeit an den drei Kurstagen – nichts sonst. Es gibt keine Abgaben mit Frist und keine Zwischenkontrollen eurer Repos.</p>
+
+  <h2>Was Mitarbeit heißt</h2>
+  <ul>
+    <li><strong>Dabei sein und mitmachen:</strong> Übungen an Tag 1 und 2, Werkstätten an Tag 3. Ausprobieren, nachfragen, im Tandem helfen.</li>
+    <li><strong>Den eigenen Prototyp weiterbringen:</strong> In der Zwischenwoche baut ihr an eurer Idee – so weit, dass ihr an Tag 3 etwas zeigen könnt.</li>
+    <li><strong>Zeigen und reflektieren:</strong> Die Demo an Tag 3, inklusive „Was hat der Agent nicht gut gemacht?“. Was nicht funktioniert, gehört dazu, wenn ihr erklären könnt, warum.</li>
+  </ul>
+
+  <h2>Woran ihr selbst merkt, dass es gut ist</h2>
   <div class="grid">
     <div class="card"><h3>Funktioniert es?</h3><p class="small muted">Die fertigen Issues tun, was ihre Akzeptanzkriterien sagen – geprüft auf der Live-URL, am Handy.</p></div>
     <div class="card"><h3>Ist es spezifiziert?</h3><p class="small muted">Produkt-Brief mit Abgrenzung, Issues mit Ziel, „Nicht im Umfang“ und prüfbaren Kriterien inkl. Negativfällen. Man versteht, warum jede Funktion da ist.</p></div>
@@ -22,6 +24,7 @@ import Callout from '../components/Callout.astro';
   <Callout type="info" title="Was nicht zählt">
     <p>Anzahl der Features. Visuelle Opulenz. Ob der Code „schön“ ist. Drei saubere, verstandene Issues schlagen acht halbe.</p>
   </Callout>
+
   <h2>Tandems</h2>
-  <p>Übungen dürfen in Tandems gemacht werden, der Mini-Prototyp auch – dann mit zwei Rollen (wer spezifiziert, wer verifiziert) und beide erklären in der Demo. Repo gehört einer Person, die andere ist Collaborator.</p>
+  <p>Übungen dürft ihr in Tandems machen, den Prototyp auch – dann mit zwei Rollen (wer spezifiziert, wer verifiziert), und beide erklären in der Demo. Das Repo gehört einer Person, die andere ist Collaborator.</p>
 </Layout>
