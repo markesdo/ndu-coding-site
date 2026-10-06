@@ -77,6 +77,9 @@ describe('flugZuordnung', () => {
       expect(flugZuordnung(prompt, TITEL)).toStrictEqual(z);
     });
   }
+  it('Satzzeichen fliegen nie, auch wenn der Titel dasselbe Zeichen hat', () => {
+    expect(flugZuordnung('a-b,', 'a-b,')).toStrictEqual([0, null, 2, null]);
+  });
   it('gleiche Schreibung vor anderer Schreibung: „A“ nimmt das große A aus „App“', () => {
     const z = flugZuordnung(PROMPT_LANG, TITEL);
     const a = TITEL.indexOf('A');
