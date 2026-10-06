@@ -1,0 +1,64 @@
+---
+// Anmeldeseite für das Kurspasswort. Das Formular schickt an /login; dort prüft die Vercel Routing Middleware
+// (middleware.ts im Projektordner) und setzt das Cookie. Diese Seite selbst ist öffentlich und verrät nichts vom Inhalt.
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import '../styles/beamer.css';
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Kurspasswort · NDU Coding 2026</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      // Beamer-Modus wie auf den anderen Seiten übernehmen (vor dem ersten Zeichnen).
+      try { if (localStorage.getItem('ndu-beamer') === '1') document.documentElement.setAttribute('data-beamer', ''); } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <main class="login">
+      <span class="eyebrow">NDU · Programmieren mit AI</span>
+      <h1>Kurspasswort</h1>
+      <p class="lead">Die Kursseiten sind nur für Teilnehmende. Das Passwort steht in der Nachricht in Teams.</p>
+      <form method="post" action="/login" class="login-form">
+        <label for="passwort">Passwort</label>
+        <input id="passwort" name="passwort" type="password" autocomplete="current-password" required autofocus />
+        <input type="hidden" name="weiter" id="weiter" value="/" />
+        <p class="login-fehler" id="fehler" role="alert" hidden>Das Passwort stimmt nicht. Bitte noch einmal versuchen.</p>
+        <button type="submit">Weiter</button>
+      </form>
+    </main>
+    <script is:inline>
+      // Rücksprung-Ziel und Fehlerhinweis aus der Adresse übernehmen; geprüft wird beides in der Middleware.
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var w = q.get('weiter');
+        if (w) document.getElementById('weiter').value = w;
+        if (q.get('fehler')) document.getElementById('fehler').hidden = false;
+      })();
+    </script>
+    <style>
+      .login { max-width: 26rem; margin: 0 auto; padding: 18vh 1rem 4rem; }
+      .login h1 { margin: .75rem 0 .5rem; }
+      .login .lead { margin-bottom: 2rem; }
+      .login-form { display: grid; gap: .6rem; }
+      .login-form label { font-family: var(--mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+      .login-form input[type="password"] {
+        font: inherit; font-size: 1.05rem; padding: .8rem .9rem; border-radius: 6px;
+        border: 1px solid var(--border); background: var(--bg-2); color: var(--fg); width: 100%;
+      }
+      .login-form input[type="password"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-color: var(--accent); }
+      .login-form button {
+        justify-self: start; margin-top: .4rem; font: inherit; font-weight: 600; font-size: 1rem;
+        padding: .75rem 1.4rem; border-radius: 6px; border: 0; background: var(--accent); color: var(--on-accent, #fff); cursor: pointer;
+      }
+      .login-form button:hover { filter: brightness(1.05); }
+      .login-fehler { margin: 0; color: var(--accent-ink); font-size: .95rem; }
+      @media (max-width: 600px) { .login { padding-top: 10vh; } }
+    </style>
+  </body>
+</html>

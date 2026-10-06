@@ -1,0 +1,88 @@
+import { describe, expect, it } from 'vitest';
+import { GUELTIG_SEKUNDEN, cookieLesen, gleich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './kurszugang';
+
+const SECRET = 'a'.repeat(64);
+const PW = 'kurs-passwort';
+const JETZT = 1_791_000_000;
+
+describe('Token', () => {
+  it('ein frisch erstelltes Token ist gültig', async () => {
+    const t = await tokenErstellen(SECRET, PW, JETZT);
+    expect(await tokenGueltig(t, SECRET, PW, JETZT)).toBe(true);
+  });
+
+  it('enthält das Passwort nicht', async () => {
+    const t = await tokenErstellen(SECRET, PW, JETZT);
+    expect(t).not.toContain(PW);
+    expect(t.startsWith('v1.')).toBe(true);
+  });
+
+  it('läuft nach 60 Tagen ab', async () => {
+    const t = await tokenErstellen(SECRET, PW, JETZT);
+    expect(await tokenGueltig(t, SECRET, PW, JETZT + GUELTIG_SEKUNDEN - 1)).toBe(true);
+    expect(await tokenGueltig(t, SECRET, PW, JETZT + GUELTIG_SEKUNDEN)).toBe(false);
+  });
+
+  it('ist ungültig mit anderem Geheimnis oder geändertem Passwort', async () => {
+    const t = await tokenErstellen(SECRET, PW, JETZT);
+    expect(await tokenGueltig(t, 'b'.repeat(64), PW, JETZT)).toBe(false);
+    expect(await tokenGueltig(t, SECRET, 'neues-passwort', JETZT)).toBe(false);
+  });
+
+  it('erkennt manipulierte Laufzeit und Signatur', async () => {
+    const t = await tokenErstellen(SECRET, PW, JETZT);
+    const [v, ablauf, sig] = t.split('.');
+    expect(await tokenGueltig(`${v}.${Number(ablauf) + 999999}.${sig}`, SECRET, PW, JETZT)).toBe(false);
+    expect(await tokenGueltig(`${v}.${ablauf}.${sig.slice(0, -1)}${sig.endsWith('A') ? 'B' : 'A'}`, SECRET, PW, JETZT)).toBe(false);
+    expect(await tokenGueltig(undefined, SECRET, PW, JETZT)).toBe(false);
+    expect(await tokenGueltig('quatsch', SECRET, PW, JETZT)).toBe(false);
+    expect(await tokenGueltig(`v2.${ablauf}.${sig}`, SECRET, PW, JETZT)).toBe(false);
+  });
+});
+
+describe('Passwortvergleich', () => {
+  it('nimmt nur das richtige Passwort', async () => {
+    expect(await passwortStimmt(PW, PW, SECRET)).toBe(true);
+    expect(await passwortStimmt('kurs-passworT', PW, SECRET)).toBe(false);
+    expect(await passwortStimmt('', PW, SECRET)).toBe(false);
+    expect(await passwortStimmt(PW + ' ', PW, SECRET)).toBe(false);
+  });
+
+  it('gleich() vergleicht exakt', () => {
+    expect(gleich('abc', 'abc')).toBe(true);
+    expect(gleich('abc', 'abd')).toBe(false);
+    expect(gleich('abc', 'abcd')).toBe(false);
+  });
+});
+
+describe('sichererPfad (Rücksprung nur auf diese Website)', () => {
+  it('behält Pfade dieser Website mit Suche und Anker', () => {
+    expect(sichererPfad('/konzepte/llm')).toBe('/konzepte/llm');
+    expect(sichererPfad('/tag-1?beamer#uebung-1')).toBe('/tag-1?beamer#uebung-1');
+  });
+
+  it.each([
+    ['https://evil.example/x'],
+    ['//evil.example/x'],
+    ['/\\evil.example'],
+    ['\\\\evil.example'],
+    ['javascript:alert(1)'],
+    ['evil.example'],
+    ['/login'],
+    ['/login/?weiter=/x'],
+    [''],
+    [null],
+    ['/' + 'a'.repeat(600)],
+    ['/tag-1\nSet-Cookie: x'],
+  ])('lenkt %j auf die Startseite', (roh) => {
+    expect(sichererPfad(roh as string | null)).toBe('/');
+  });
+});
+
+describe('cookieLesen', () => {
+  it('findet das Cookie zwischen anderen', () => {
+    expect(cookieLesen('a=1; ndu_zugang=v1.2.x; b=3')).toBe('v1.2.x');
+    expect(cookieLesen('xndu_zugang=nein')).toBeUndefined();
+    expect(cookieLesen(null)).toBeUndefined();
+  });
+});
