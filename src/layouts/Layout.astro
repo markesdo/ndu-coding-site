@@ -1,5 +1,12 @@
 ---
 import { Menu, Presentation } from '@lucide/astro';
+// Schriften liegen auf unserem Server (fontsource), nicht bei Google: keine IP-Weitergabe an Dritte (DSGVO).
+// Die CSS-Dateien deklarieren mehrere Zeichensätze; der Browser lädt per unicode-range nur, was die Seite nutzt (hier latin, ggf. latin-ext).
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/jetbrains-mono';
+// Fließtext-Schrift vorladen, damit der erste Text nicht in der Ersatzschrift aufblitzt.
+import textSchrift from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 import '../styles/beamer.css';
 const { title, description = 'Programmieren mit AI – Kurs für den MSc Management by Innovation, NDU, Oktober 2026' } = Astro.props;
@@ -46,6 +53,7 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} · NDU Coding 2026</title>
     <meta name="description" content={description} />
+    <link rel="preload" href={textSchrift} as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // Beamer-Modus vor dem ersten Zeichnen setzen, sonst blitzt die normale Ansicht auf.
       // ?beamer (oder ?beamer=1) schaltet ein, ?beamer=0 aus; die Wahl merkt sich der Browser.
