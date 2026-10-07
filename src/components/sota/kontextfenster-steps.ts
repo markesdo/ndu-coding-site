@@ -27,7 +27,7 @@ const SYS: Block = { id: 'sys', art: 'fest', label: 'Systemregeln', size: 6 };
 const CLAUDE_MD: Block = { id: 'claude-md', art: 'fest', label: 'CLAUDE.md', size: 8 };
 const AUFTRAG: Block = { id: 'auftrag', art: 'auftrag', label: 'Auftrag', size: 4 };
 const DATEI_1: Block = { id: 'datei-1', art: 'datei', label: 'page.tsx', size: 7 };
-const DATEI_2: Block = { id: 'datei-2', art: 'datei', label: 'GegenstandKarte.tsx', size: 7 };
+const DATEI_2: Block = { id: 'datei-2', art: 'datei', label: 'Karte.tsx', size: 7 };
 const DATEI_3: Block = { id: 'datei-3', art: 'datei', label: 'requests.ts', size: 7 };
 const DATEI_4: Block = { id: 'datei-4', art: 'datei', label: 'auth.ts', size: 7 };
 const BUILD: Block = { id: 'build', art: 'werkzeug', label: 'Build', size: 6 };
@@ -69,7 +69,7 @@ export const STEPS: Schritt[] = [
   },
   {
     title: 'Euer Auftrag.',
-    text: '„Füge auf der Detailseite einen Button „Ausleihen anfragen“ hinzu – nur für angemeldete Nutzer*innen.“ Die Einschränkung am Ende ist eine Absprache, auf die es später ankommt.',
+    text: '„Füge auf der Detailseite einen Button ‚Ausleihen anfragen‘ hinzu – nur für angemeldete Nutzer*innen.“ Die Einschränkung am Ende ist eine Absprache, auf die es später ankommt.',
   },
   {
     title: 'Claude liest.',

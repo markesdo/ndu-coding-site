@@ -45,11 +45,11 @@ export const ROT = '#e8472b';
 export const BLAU = '#2457d6';
 
 const STELLEN: { id: StelleId; name: string; datei: string; token: string; hex: string }[] = [
-  { id: 'button', name: 'Button „Ausleihen anfragen“', datei: 'AnfrageButton.tsx', token: 'bg-accent', hex: 'bg-[#e8472b]' },
+  { id: 'button', name: 'Button „Ausleihen anfragen“', datei: 'Anfragen.tsx', token: 'bg-accent', hex: 'bg-[#e8472b]' },
   { id: 'link', name: 'Link „Alle Gegenstände“', datei: 'Header.tsx', token: 'text-accent', hex: 'text-[#e8472b]' },
   // Großbuchstaben: gleiche Farbe, aber für Suchen und Ersetzen ein anderer Text.
   { id: 'badge', name: 'Badge „Neu“', datei: 'Badge.tsx', token: 'bg-accent', hex: 'bg-[#E8472B]' },
-  { id: 'rand', name: 'Kartenrand', datei: 'GegenstandKarte.tsx', token: 'border-accent', hex: 'border-[#e8472b]' },
+  { id: 'rand', name: 'Kartenrand', datei: 'Karte.tsx', token: 'border-accent', hex: 'border-[#e8472b]' },
   // Bei einem späteren Issue leicht abgewandelt – sieht fast gleich aus, ist aber ein anderer Wert.
   { id: 'fokus', name: 'Fokusrahmen im Suchfeld', datei: 'Suche.tsx', token: 'outline-accent', hex: 'outline-[#e8603f]' },
 ];

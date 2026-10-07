@@ -128,10 +128,10 @@ import FooterNav from '../components/FooterNav.astro';
   </Callout>
 
   <h3 id="uebung-2-e">e) Sichern (5 min)</h3>
-  <p>Gefällt euch das Ergebnis: <code>/ndu-commit</code>. Wenn nicht, sagt Claude: „Setz alles auf den letzten Commit zurück, auch neue Dateien und installierte Pakete.“ Issue 1 ist schon gesichert.</p>
+  <p>Gefällt euch das Ergebnis: <code>/ndu-commit</code>. Wenn nicht, sagt Claude: „Mach alle Änderungen seit dem letzten Commit rückgängig, auch neu angelegte Dateien. Lass .env.local und node_modules stehen und führ danach npm install aus.“ Issue 1 ist schon gesichert.</p>
 
   <h3>Checkliste Übung 2</h3>
-  <Checklist id="t1-u2" items={[
+  <Checklist id="t1-u2-v2" items={[
     'Produkt-Brief in <code>docs/PRODUKT.md</code> – eine Seite, mit Abgrenzung („macht NICHT“)',
     'Brainstorming: Ideen von Claude auf MVP, Später oder Nein sortiert',
     'Issue 1 umgesetzt, für jedes Kriterium den Beleg gelesen',

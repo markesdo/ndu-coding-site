@@ -149,7 +149,7 @@ function ZettelKarte({ zettel }: { zettel: Zettel }) {
 function Gegenstandkarte({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: number }) {
   return (
     <div className="bw-event">
-      <div className="bw-event-titel">Gegenstand 42 · Samtsessel</div>
+      <div className="bw-event-titel">Nr. 42 · Samtsessel</div>
       <div className="bw-event-wer">{z.angemeldet ? `angemeldet als ${z.nutzer}` : `${z.nutzer} · nicht angemeldet`}</div>
       <div className="bw-event-zahl">
         <strong>{z.angezeigt}</strong> Anfragen
@@ -164,7 +164,7 @@ function Gegenstandkarte({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fa
           // Der neue Zustand erscheint erst, wenn die Antwort angekommen ist.
           transition={{ duration: bewegt ? 0.2 : 0, delay: bewegt && z.button !== 'offen' ? fahrt : 0 }}
         >
-          {z.button === 'offen' && 'Ausleihen anfragen'}
+          {z.button === 'offen' && 'Anfragen'}
           {z.button === 'angefragt' && <><Check aria-hidden="true" /> Angefragt</>}
           {z.button === 'fehler' && <><CircleX aria-hidden="true" /> Bitte anmelden</>}
           {z.klick && z.button === 'offen' && (

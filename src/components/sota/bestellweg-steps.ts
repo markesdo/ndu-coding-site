@@ -67,7 +67,7 @@ const ALT: Zeile[] = [
 const MARA: Zeile = { id: 'mara', user: 'Mara', zeit: 'jetzt' };
 
 const BESTELLUNG = (at: StationId, stempel = false): Zettel => ({
-  key: 'bestellung', art: 'bestellung', at, zeilen: ['POST /api/requests', 'Gegenstand 42 · Mara'], stempel,
+  key: 'bestellung', art: 'bestellung', at, zeilen: ['POST /api/requests', 'Nr. 42 · Mara'], stempel,
 });
 const ANTWORT = (at: StationId): Zettel => ({
   key: 'antwort', art: 'antwort', at, von: 'backend', zeilen: ['200 · ok', '13 Anfragen'],
@@ -117,7 +117,7 @@ const ZUSTAENDE: Zustand[] = [
     ...JONAS,
     aktiv: 'backend',
     klick: true,
-    zettel: { key: 'bestellung-jonas', art: 'bestellung', at: 'backend', von: 'frontend', zeilen: ['POST /api/requests', 'Gegenstand 42 · ohne Login'], stempel: true },
+    zettel: { key: 'bestellung-jonas', art: 'bestellung', at: 'backend', von: 'frontend', zeilen: ['POST /api/requests', 'Nr. 42 · ohne Login'], stempel: true },
     pruefungen: ['fehler', 'offen', 'offen'],
   },
   {
@@ -140,7 +140,7 @@ const ZUSTAENDE: Zustand[] = [
 ];
 
 export const STEPS: Schritt[] = [
-  { title: 'Ausgangslage.', text: 'Mara sieht Gegenstand 42, den Samtsessel, im Browser: 12 Anfragen, daneben der Button „Ausleihen anfragen“. Die Zahl steht nirgends im Frontend fest – sie kommt aus der Datenbank.' },
+  { title: 'Ausgangslage.', text: 'Mara sieht Gegenstand 42, den Samtsessel, im Browser: 12 Anfragen, daneben der Button „Anfragen“. Die Zahl steht nirgends im Frontend fest – sie kommt aus der Datenbank.' },
   { title: 'Frontend.', text: 'Mara klickt. Der Button schreibt einen Bestellzettel: `POST /api/requests` – „lege eine Anfrage an“ –, dazu Gegenstand 42 und wer klickt.' },
   { title: 'API.', text: 'Der Endpoint `/api/requests` nimmt den Zettel an und trägt ihn in die Küche. Ob die Bestellung geht, prüft der Kellner nicht.' },
   { title: 'Backend.', text: 'Die Küche prüft nacheinander: Ist Mara angemeldet? Gibt es Gegenstand 42? Hat sie ihn schon angefragt? Erst wenn alles stimmt, geht es weiter.' },
