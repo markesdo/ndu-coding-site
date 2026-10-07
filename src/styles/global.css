@@ -229,7 +229,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .prompt .label { font-family: var(--mono); font-size: .72rem; font-weight: 500; letter-spacing: .02em; color: var(--muted); margin-bottom: .5rem; display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .prompt .label-text { display: inline-flex; align-items: center; gap: .4rem; }
 .prompt .label-text svg { flex: none; }
-.prompt pre { margin: 0; background: transparent; padding: 0; white-space: pre-wrap; font-family: var(--font); font-size: .95rem; line-height: 1.55; }
+.prompt pre { margin: 0; background: transparent; padding: 0 0 0 .75rem; border-left: 2px solid var(--border); white-space: pre-wrap; font-family: var(--font); font-size: .95rem; line-height: 1.55; }
 /* [Lücken] zum Ersetzen hervorheben; kopiert wird weiter der reine Text mit Klammern. */
 .prompt mark.luecke { background: var(--yellow-soft); color: inherit; box-shadow: inset 0 -1px 0 var(--yellow); border-radius: 3px; padding: 0 .15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 /* Kopieren-Knopf neutral (Rot bleibt der Hauptaktion vorbehalten), feste Breite: „Kopiert“ verschiebt nichts. */
@@ -241,7 +241,10 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .prompt .copy .ico-done, .prompt .copy.done .ico-copy { display: none; }
 .prompt .copy.done .ico-done { display: inline; }
 .prompt .copy.done { background: var(--green-soft); border-color: color-mix(in srgb, var(--green) 40%, transparent); color: var(--green); }
-.prompt .note { margin: .6rem 0 0; font-size: .88rem; color: var(--muted); }
+.prompt:has(+ .prompt-note) { margin-bottom: .45rem; }
+.prompt-note { display: flex; gap: .45rem; align-items: flex-start; margin: 0 0 1.25rem .25rem; font-size: .88rem; line-height: 1.5; color: var(--muted); }
+.prompt-note svg { flex: none; margin-top: .2em; }
+.prompt-note strong { font-family: var(--mono); font-size: .72rem; font-weight: 500; letter-spacing: .02em; text-transform: uppercase; margin-right: .3rem; }
 
 /* Checklist */
 .checklist { list-style: none; padding: 0; margin: 1rem 0 1.5rem; }
