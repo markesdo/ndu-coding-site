@@ -64,7 +64,8 @@ describe('sichererPfad (Rücksprung nur auf diese Website)', () => {
   it('„Weiter“ von /start: die Übersicht mit und ohne Beamer-Modus übersteht den Umweg über das Kurspasswort', () => {
     expect(sichererPfad('/')).toBe('/');
     expect(sichererPfad('/?beamer')).toBe('/?beamer');
-    expect(sichererPfad(decodeURIComponent(encodeURIComponent('/?beamer')))).toBe('/?beamer');
+    // So kommt es in der Middleware an: /login?weiter=%2F%3Fbeamer → searchParams dekodiert einmal.
+    expect(sichererPfad(new URL('https://kurs.invalid/login?weiter=%2F%3Fbeamer').searchParams.get('weiter'))).toBe('/?beamer');
   });
 
   it.each([
