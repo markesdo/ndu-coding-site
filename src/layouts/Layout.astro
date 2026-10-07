@@ -173,7 +173,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       const lies = (k: string) => { try { return JSON.parse(sessionStorage.getItem(k) || 'null'); } catch { return null; } };
       const weg = (k: string) => { try { sessionStorage.removeItem(k); } catch {} };
       // Abschnittsname kurz halten: an einer Wortgrenze kürzen, nicht mitten im Wort.
-      const kuerzen = (t: string, max = 34) => (t.length <= max ? t : `${t.slice(0, t.lastIndexOf(' ', max)).replace(/[\s–-]+$/, '')} …`);
+      const kuerzen = (t: string, max = 28) => (t.length <= max ? t : `${t.slice(0, t.lastIndexOf(' ', max)).replace(/[\s–-]+$/, '')} …`);
 
       document.addEventListener('click', (e) => {
         const a = (e.target as Element | null)?.closest<HTMLAnchorElement>('a[href]');
@@ -186,7 +186,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         k.querySelectorAll('.pill').forEach((p) => p.remove());
         const r: Ruecksprung = {
           to: a.pathname, from: location.pathname, y: Math.round(scrollY),
-          seite: document.title.split(' · ')[0], abschnitt: kuerzen((k.textContent ?? '').replace(/\s+/g, ' ').replace(/\s*\(\d+\s*min\)\s*$/, '').trim()),
+          seite: document.title.split(' · ')[0], abschnitt: kuerzen((k.textContent ?? '').replace(/\s+/g, ' ').replace(/\s*\(\d+\s*min\)\s*$/, '').replace(/^[a-z]\)\s*/, '').trim()),
           len: history.length + 1,
         };
         try { sessionStorage.setItem(KEY, JSON.stringify(r)); } catch {}
