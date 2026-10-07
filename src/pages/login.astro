@@ -36,9 +36,12 @@ import '../styles/beamer.css';
     </main>
     <script is:inline>
       // Rücksprung-Ziel und Fehlerhinweis aus der Adresse übernehmen; geprüft wird beides in der Middleware.
+      // Den Anker (#lokal, #devtools-2 …) sieht der Server nie: Der Browser hängt ihn nach der Umleitung an /login
+      // an, ins Formular kommt er nur von hier. Ohne ihn landet man nach dem Login oben auf der Seite.
       (function () {
         var q = new URLSearchParams(location.search);
         var w = q.get('weiter');
+        if (w && location.hash && w.indexOf('#') < 0) w += location.hash;
         if (w) document.getElementById('weiter').value = w;
         if (q.get('fehler')) document.getElementById('fehler').hidden = false;
       })();
