@@ -19,7 +19,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <ol class="steps">
     <li><strong>Produkt-Brief – eure Arbeit</strong> Für wen, welches Problem, was es <em>nicht</em> macht, woran ihr Erfolg merkt. Eine Seite. <code>/ndu-idee</code> führt euch mit ein paar Rückfragen hin; die Entscheidungen trefft ihr.</li>
     <li><strong>Brainstorming – Claude als Sparringspartner</strong> Claude schlägt Funktionen vor, auch solche, auf die ihr selbst nicht gekommen wärt. Ihr sortiert jede Idee: MVP, Später oder Nein. Mit <code>/ndu-brainstorm</code>.</li>
-    <li><strong>Backlog – schreibt Claude, ihr prüft</strong> Aus dem MVP werden Issues mit Akzeptanzkriterien. Ihr lest sie gegen den Brief: Passt jedes Issue zu Zielgruppe und Problem? Fehlt eines?</li>
+    <li><strong>Backlog – schreibt Claude, ihr prüft</strong> Aus dem MVP werden Issues mit Akzeptanzkriterien. Claude macht die Vorschläge, ihr entscheidet: Passt jedes Issue zu Zielgruppe und Problem? Stimmt jedes Kriterium? Ändert, streicht und ergänzt, bevor gebaut wird.</li>
   </ol>
   <p>Der Brief ist die Stelle, an der ihr am meisten bewirkt: Alles danach leitet Claude daraus ab. Ein unscharfer Brief ergibt viele saubere Issues für das falsche Produkt.</p>
 
@@ -60,7 +60,7 @@ import FooterNav from '../../components/FooterNav.astro';
   </Callout>
 
   <h2>Issues und Akzeptanzkriterien</h2>
-  <p>Die schreibt Claude aus dem MVP. Damit ihr sie prüfen könnt, müsst ihr wissen, wie ein gutes aussieht:</p>
+  <p>Die schlägt Claude aus dem MVP vor – Kriterien selbst zu formulieren ist schwer, sie zu beurteilen viel leichter. Eure Aufgabe: jedes Kriterium lesen und fragen „Würde ich genau das im Browser prüfen?“ Dann ändern, streichen oder ergänzen. Woran ihr gute erkennt:</p>
   <ol class="steps">
     <li><strong>Issue (Ziel und Abgrenzung)</strong> <em>Ziel:</em> ein, zwei Sätze – was danach möglich ist, für wen und warum. Der Grund erlaubt Claude, bessere Vorschläge zu machen als die wörtliche Umsetzung. <em>Nicht im Umfang:</em> was ausdrücklich nicht dazugehört. Diese Zeile verhindert, dass der Agent „hilfreich“ mehr baut, als ihr wolltet.</li>
     <li><strong>Akzeptanzkriterien (3–5 pro Issue) und „Fertig, wenn“</strong> <em>Gegeben [Ausgangslage], wenn [Aktion], dann [erwartetes Ergebnis].</em> Konkret genug, dass man sie durchklicken kann. Immer mindestens ein Negativfall: Was passiert bei leerem Feld, falschem Datum, ohne Login? Dazu eine Zeile <em>Fertig, wenn:</em> welcher Check zeigt, dass das Issue erledigt ist – etwa „alle Kriterien im Browser durchgeklickt, Zähler stimmt auch nach einem Reload“.</li>
@@ -96,6 +96,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Prompts dafür</h2>
   <Prompt label="1 · Idee → Produkt-Brief" note="Kurzes Interview – eine Frage pro Nachricht –, dann schreibt Claude nach eurem Okay den Brief.">/ndu-idee [Idee in einem Satz]</Prompt>
   <Prompt label="2 · Brief → Funktionen und Backlog" note="Claude schlägt Funktionen vor, ihr entscheidet je Idee: MVP, Später oder Nein. Danach schreibt Claude MVP und Backlog – nach eurem Okay.">/ndu-brainstorm</Prompt>
+  <Prompt label="Kriterien anpassen" note="Nach dem Lesen: in eigenen Worten sagen, was nicht passt. Claude formuliert es ins Gegeben/Wenn/Dann-Format um.">In Issue [Nummer]: Streich das Kriterium zu [Thema]. Ergänze: [was im Browser passieren soll, in euren Worten]. Zeig mir das Issue danach noch einmal.</Prompt>
   <Prompt label="3 · Ein Issue umsetzen">Setze Issue [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
 
   <FooterNav prev={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} next={{ href: '/tag-1#uebung-2', t: 'Übung 2 · Campus Events v0' }} />
