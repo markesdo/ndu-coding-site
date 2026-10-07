@@ -34,14 +34,14 @@ import '../styles/beamer.css';
         <button type="submit">Weiter</button>
       </form>
     </main>
-    <script is:inline>
-      // Rücksprung-Ziel und Fehlerhinweis aus der Adresse übernehmen; geprüft wird beides in der Middleware.
-      (function () {
-        var q = new URLSearchParams(location.search);
-        var w = q.get('weiter');
-        if (w) document.getElementById('weiter').value = w;
-        if (q.get('fehler')) document.getElementById('fehler').hidden = false;
-      })();
+    <script>
+      // Rücksprung-Ziel (mit Anker, siehe zielMitAnker) und Fehlerhinweis aus der Adresse übernehmen;
+      // geprüft wird beides in der Middleware.
+      import { zielMitAnker } from '../lib/kurszugang';
+      const q = new URLSearchParams(location.search);
+      const w = zielMitAnker(q.get('weiter'), location.hash);
+      if (w) (document.getElementById('weiter') as HTMLInputElement).value = w;
+      if (q.get('fehler')) document.getElementById('fehler')!.hidden = false;
     </script>
     <style>
       .login { max-width: 26rem; margin: 0 auto; padding: 18vh 1rem 4rem; }

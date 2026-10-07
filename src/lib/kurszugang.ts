@@ -78,6 +78,15 @@ export function istOeffentlich(pfad: string): boolean {
   return pfad === '/start' || pfad === '/start/';
 }
 
+// Login-Formular: Rücksprung-Ziel plus Anker. Den Anker (#lokal …) sieht der Server nie – der Browser hängt ihn
+// nach der Umleitung an /login an. Er kommt nur dazu, wenn das Ziel noch keinen hat und das Ganze die Prüfung in
+// sichererPfad besteht; sonst bliebe statt nur des Ankers das ganze Ziel auf der Strecke (Rücksprung auf /).
+export function zielMitAnker(weiter: string | null, anker: string): string | null {
+  if (!weiter || !anker || weiter.includes('#')) return weiter;
+  const mit = weiter + anker;
+  return sichererPfad(mit) === '/' && sichererPfad(weiter) !== '/' ? weiter : mit;
+}
+
 export function cookieLesen(header: string | null, name = COOKIE): string | undefined {
   if (!header) return undefined;
   for (const teil of header.split(';')) {
