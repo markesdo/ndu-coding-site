@@ -1,31 +1,54 @@
 ---
+import { Sparkles } from '@lucide/astro';
 import Layout from '../layouts/Layout.astro';
 import Callout from '../components/Callout.astro';
+// ki: ruft ein Sprachmodell über eine API auf – braucht einen eigenen, kostenpflichtigen API-Key (Hinweis oben auf der Seite).
 const ideen = [
-  { t: 'Lerngruppen-Finder', p: 'Wer lernt wann wofür? Gruppe anlegen, beitreten, Termin abstimmen.', s: 'Gruppen anlegen → beitreten → Terminvorschläge → Abstimmung' },
-  { t: 'Mensa- & Kaffee-Radar', p: 'Was gibt es heute, wie voll ist es, was sagen andere?', s: 'Tagesmenü anzeigen → Bewertung abgeben → „Wie voll?“-Meldung → Favoriten' },
-  { t: 'Skill-Tausch', p: 'Ich kann Figma, du kannst Excel. Angebote und Gesuche unter Studierenden.', s: 'Angebot/Gesuch anlegen → suchen → anfragen → Bewertung' },
-  { t: 'Semester-Budget', p: 'Einnahmen, Fixkosten, was bleibt pro Woche? Für Studierende, nicht für Buchhalter*innen.', s: 'Posten erfassen → Wochenbudget → Warnung → Monatsübersicht' },
-  { t: 'Praktikums-Tracker', p: 'Bewerbungen, Status, Fristen, Kontakte – statt Excel-Chaos.', s: 'Bewerbung anlegen → Status ändern → Fristen-Erinnerung → Notizen' },
-  { t: 'Feedback-Wand', p: 'Anonymes, moderiertes Feedback an Lehrende nach jeder Einheit.', s: 'Einheit anlegen → anonym posten → upvoten → Lehrende antworten' },
-  { t: 'Zweitbücher-Börse', p: 'Lehrbücher und Skripten weitergeben – pro Studiengang.', s: 'Inserat → suchen → anfragen → als vergeben markieren' },
-  { t: 'Thesis-Buddy', p: 'Schreibfortschritt tracken, Pomodoro-Sessions, Accountability-Partner*in.', s: 'Ziel setzen → Session loggen → Fortschritt → Partner*in einladen' },
-  { t: 'Raum-Finder', p: 'Welcher Raum ist jetzt frei zum Lernen? Crowd-gemeldet.', s: 'Räume → „frei/belegt“ melden → Karte → Favoriten' },
-  { t: 'Schichtplan fürs Lokal', p: 'Kleine Gastronomie: Wer arbeitet wann, wer kann tauschen – statt Zettel an der Kühlschranktür und Nachrichten um Mitternacht.', s: 'Woche planen → Schicht anbieten → Tausch annehmen → Plan aktuell für alle' },
+  { t: 'Tisch-Feedback', p: 'QR-Code am Tisch, der Gast gibt in zehn Sekunden Feedback, das Lokal sieht auf einen Blick, was auffällt.', s: 'Fragen anlegen → Feedback-Seite ohne Login → QR-Code pro Tisch → Dashboard mit Diagramm' },
+  { t: 'Beleg-Scanner', ki: true, p: 'Beleg fotografieren – Betrag, Datum und Händler stehen automatisch drin. Spesen ohne Abtippen.', s: 'Belege mit Foto erfassen → Monatsdiagramm → CSV-Export → Betrag, Datum und Händler per KI auslesen' },
+  { t: 'Digitaler Produktpass', p: 'Kleine Hersteller*innen zeigen Material, Herkunft und Reparatur auf einer öffentlichen Seite, erreichbar per QR-Code auf dem Etikett. Die EU führt solche Pässe ab 2027 schrittweise ein.', s: 'Produkt anlegen → öffentliche Pass-Seite → QR-Code als Druckansicht → Übersicht aller Produkte' },
+  { t: 'Schnell-Umfrage', p: 'Wie Mentimeter: Frage stellen, QR-Code zeigen, die Balken wachsen. Testbar mit dem Publikum eurer Demo.', s: 'Umfrage anlegen → Abstimmseite ohne Login → QR-Code → Ergebnis-Balken, die sich alle paar Sekunden aktualisieren' },
+  { t: 'Interview-Insights', ki: true, p: 'Kundeninterviews festhalten, Zitate als Pain oder Gain markieren, die KI fasst die wichtigsten Muster zusammen. Direkt nutzbar im Innolab.', s: 'Interview anlegen → Zitate markieren → Übersicht nach Pain und Gain → KI-Zusammenfassung über alle Interviews' },
+  { t: 'Event-Check-in', p: 'Anmeldung, Ticket mit QR-Code, Einlass per Handykamera – ohne Scanner-App.', s: 'Event mit Anmeldeformular → Ticket-Seite mit QR-Code → Check-in: Handykamera öffnet den Link, nur eingeloggt bestätigt ihr den Gast → Zähler und Gästeliste' },
+  { t: 'Visitenkarten-CRM', ki: true, p: 'Visitenkarte fotografieren, die KI legt den Kontakt an, und ihr seht, wem ihr noch schreiben wolltet. Für Messen und Networking-Abende.', s: 'Kontakte erfassen → Follow-up-Datum → Liste „fällig“ → Visitenkarte per KI auslesen' },
+  { t: 'Schichtplan fürs Lokal', p: 'Kleine Gastronomie: Wer das Lokal führt, plant die Woche, das Team sieht den Plan über einen Link – statt Zettel an der Kühlschranktür.', s: 'Team anlegen → Woche planen → Plan-Link fürs Team → Stunden pro Person' },
+  { t: 'Bewerbungs-Board', p: 'Bewerbungen als Board mit Spalten – beworben, Gespräch, Zusage, Absage – und Fristen im Blick, statt Excel-Chaos.', s: 'Bewerbung anlegen → Status-Spalten → Fristen-Hinweis → Trichter-Diagramm' },
+  { t: 'Semester-Budget', p: 'Einnahmen, Fixkosten, was bleibt pro Woche? Für Studierende, nicht für Buchhalter*innen.', s: 'Posten erfassen → Wochenbudget → Warnung → Monatsdiagramm' },
 ];
 ---
 <Layout title="Projektideen">
   <span class="eyebrow">Zwischenwoche</span>
   <h1>Projektideen</h1>
-  <p class="lead">Zehn Ideen in der Größe, die in fünf Tagen mit 3–5 Issues machbar ist. Alle mit echten Nutzer*innen in eurer Nähe – das macht das Testen leicht.</p>
+  <p class="lead">Zehn Ideen in der Größe, die in fünf Tagen mit 3–5 Issues machbar ist. Jede kommt mit einer Rolle aus: Nur ihr meldet euch an. Wo andere mitmachen, kommen sie über einen Link oder QR-Code dazu – so testet ihr mit echten Leuten, ohne dass erst hundert Nutzer*innen mitmachen müssen.</p>
   <Callout type="tip" title="Die beste Idee ist eure eigene">
     <p>Ein Problem, das ihr selbst habt, spezifiziert ihr besser als jedes fremde. Nehmt die Liste als Größenmaßstab, nicht als Vorgabe. Und: Leihbar mit drei neuen Issues aus „Später“ weiterzubauen ist ausdrücklich erlaubt.</p>
   </Callout>
-  <div class="grid">
+  <Callout type="warn" title="KI-Projekte brauchen einen eigenen API-Key">
+    <p>Ideen mit dem Label <strong>KI-Projekt</strong> schicken Fotos oder Texte an ein Sprachmodell. Dafür braucht ihr einen <strong>API-Key</strong>, zum Beispiel aus der Anthropic Console – mit Kreditkarte, getrennt von Claude Pro. Ihr ladet vorher Guthaben auf (ein paar Euro reichen) und zahlt nach Textmenge, pro Aufruf meist Cent-Beträge. Setzt beim Anbieter ein <strong>Ausgabenlimit</strong>, tragt den Key nur in <code>.env.local</code> und bei Vercel ein und baut die KI als <strong>letztes Issue</strong>: Die App muss vorher schon ohne KI funktionieren. Fotos vor dem Senden verkleinern lassen – Handyfotos sind oft zu groß für Vercel und das Sprachmodell.</p>
+  </Callout>
+  <ul class="grid ideen">
     {ideen.map(i => (
-      <div class="card"><h3>{i.t}</h3><p class="small">{i.p}</p><p class="small muted"><strong>Issues:</strong> {i.s}</p></div>
+      <li>
+        <article class="card idee">
+          <h3>{i.t}</h3>
+          {i.ki && <p class="pill ki"><Sparkles size="1em" aria-hidden="true" /> KI-Projekt · API-Key nötig</p>}
+          <p class="small">{i.p}</p>
+          <h4 class="small muted label">Issues</h4>
+          <ol class="small muted">{i.s.split(' → ').map(s => <li>{s}</li>)}</ol>
+        </article>
+      </li>
     ))}
-  </div>
+  </ul>
   <h2>Zu groß? Zu klein?</h2>
-  <p><strong>Zu groß</strong>, wenn ihr mehr als eine Nutzerrolle mit unterschiedlichen Oberflächen braucht, Zahlungen, Echtzeit-Chat oder eine native App. <strong>Zu klein</strong>, wenn nichts gespeichert wird – dann ist es eine Website, und ihr lernt Datenbank und Login nicht. <strong>Richtig</strong>: eine Rolle, eine Kernaktion, Daten, die nach dem Reload noch da sind, Login erst, wenn es die Kernaktion wirklich braucht.</p>
+  <p><strong>Zu groß</strong>, wenn ihr mehr als eine Nutzerrolle mit unterschiedlichen Oberflächen braucht, Zahlungen, Echtzeit-Chat oder eine native App. <strong>Zu klein</strong>, wenn nichts gespeichert wird – dann ist es eine Website, und ihr lernt Datenbank und Login nicht. <strong>Richtig</strong>: eine Rolle, eine Kernaktion, Daten, die nach dem Reload noch da sind, Login erst, wenn es die Kernaktion wirklich braucht. Eine öffentliche Seite ohne Login (Link, QR-Code) zählt nicht als zweite Rolle.</p>
+  <p><strong>Zwei Regeln für jedes Projekt:</strong> höchstens eine KI-Funktion, als letztes Issue und nur im Backend aufgerufen. Und Row Level Security an und geprüft – sonst kann jede*r mit dem öffentlichen Schlüssel eure Daten lesen. Schreibt eine Seite ohne Login in die Datenbank (Feedback, Abstimmung, Anmeldung), darf sie nur neue Zeilen anlegen, nie fremde lesen. Am besten als eigenes Issue.</p>
 </Layout>
+
+<style>
+  .ideen { list-style: none; padding: 0; }
+  .idee { height: 100%; }
+  .idee .pill.ki { display: inline-flex; align-items: center; gap: .3rem; margin: 0 0 .6rem; background: var(--yellow-soft); color: var(--yellow-ink); }
+  .idee .label { font-weight: 600; margin: .9rem 0 .25rem; }
+  .idee ol { margin: 0; padding-left: 1.3rem; }
+  .idee li + li { margin-top: .1rem; }
+</style>
