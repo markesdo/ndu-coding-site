@@ -5,6 +5,7 @@
 // von dort zum Kurspasswort. Nie automatisch weiter: Wer hier ist, entscheidet selbst, wann es losgeht.
 // Aufbau: Der Endzustand (Titel, Einleitung, Tage, „› weiter“) ist statisches HTML. Die Animation
 // („Der Cursor läuft“, src/components/auftakt-start.ts, GSAP) bespielt nur diese Bühne und endet genau hier.
+import LinkVorschau from '../components/LinkVorschau.astro';
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
@@ -19,6 +20,7 @@ import '../styles/auftakt.css';
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#121216" />
     <title>Programmieren mit AI · NDU Coding 2026</title>
+    <LinkVorschau mitUrl />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
       // Vor dem ersten Zeichnen: Beamer-Modus wie in Layout.astro (?beamer an, ?beamer=0 aus, sonst gemerkte Wahl)
