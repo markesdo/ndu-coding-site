@@ -5,8 +5,8 @@
 /** Der getippte Auftrag. Auf schmalen Handys die kurze Fassung, damit er nicht umbricht. */
 // Lang: enthält fast alle Buchstaben der Überschrift in gleicher Schreibung (o, g, a, r, e, n, t, A) – nur „P“ und „I“
 // kommen klein an und werden groß (eigener Moment), ein „m“ fehlt und tippt sich ein. Kurz (Handy): mehr Lücken, die sich eintippen.
-export const PROMPT_LANG = 'Bau mir eine App, mit der Studierende Events organisieren.';
-export const PROMPT_KURZ = 'Bau mir eine App für Campus-Events.';
+export const PROMPT_LANG = 'Bau mir eine App, mit der Studierende sich Dinge borgen.';
+export const PROMPT_KURZ = 'Bau mir eine App zum Dinge-Verleihen.';
 
 /** Mono-Schrift: ein Zeichen ist 0,6 em breit. */
 const ZEICHEN_EM = 0.6;

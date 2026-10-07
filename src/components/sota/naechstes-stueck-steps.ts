@@ -41,12 +41,12 @@ export interface Schritt {
 const stuecke = (prefix: string, art: Art, texte: string[]): Stueck[] =>
   texte.map((text, i) => ({ id: `${prefix}${i}`, text, art }));
 
-// Gleicher Anfang wie in der Kontextfenster-Animation: der RSVP-Button aus Campus Events.
-const AUFTRAG = stuecke('a', 'prompt', ['Füge', ' auf', ' der', ' Event', '-Seite', ' einen', ' Button', ' hinzu', ',', ' der']);
+// Gleicher Anfang wie in der Kontextfenster-Animation: der Anfrage-Button aus Leihbar.
+const AUFTRAG = stuecke('a', 'prompt', ['Füge', ' auf', ' der', ' Detail', 'seite', ' einen', ' Button', ' hinzu', ',', ' der']);
 const BEIM = stuecke('s1-', 'erzeugt', [' beim']);
-const REST_S1 = stuecke('s1-r', 'erzeugt', [' Klick', ' die', ' Zus', 'age', ' speichert', '.']);
+const REST_S1 = stuecke('s1-r', 'erzeugt', [' Klick', ' die', ' An', 'frage', ' speichert', '.']);
 const ANGEMELDETEN = stuecke('s2-', 'erzeugt', [' angemeldeten']);
-const REST_S2 = stuecke('s2-r', 'erzeugt', [' Nutzer', '*innen', ' das', ' Zus', 'agen', ' erlaubt', '.']);
+const REST_S2 = stuecke('s2-r', 'erzeugt', [' Nutzer', '*innen', ' das', ' An', 'fragen', ' erlaubt', '.']);
 
 const CODE = stuecke('c', 'prompt', ['const', ' [', 'count', ',', ' set', 'Count', ']', ' =', ' use']);
 const VERCEL = stuecke('v', 'prompt', ['In', ' Ver', 'cel', ' heißt', ' die', ' Einstellung', ',', ' mit', ' der', ' man', ' Builds', ' über', 'springt', ':']);

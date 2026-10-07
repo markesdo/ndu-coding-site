@@ -14,8 +14,8 @@ import FooterNav from '../../components/FooterNav.astro';
   <div class="widget">
     <p class="hint">Ohne MCP vs. mit MCP – dieselbe Aufgabe.</p>
     <div class="compare">
-      <div class="card bad"><h3>Ohne</h3><p class="small">Ihr: „Leg eine Tabelle events an.“ Claude: „Hier ist das SQL. Öffne Supabase, gehe zum SQL-Editor, füge es ein, führe es aus, sag mir, ob es einen Fehler gab.“ Ihr kopiert, klickt, kopiert den Fehler zurück. Dreimal.</p></div>
-      <div class="card good"><h3>Mit Supabase-MCP</h3><p class="small">Ihr: „Leg eine Tabelle events an.“ Claude legt sie an, liest die Antwort der Datenbank, korrigiert einen Tippfehler selbst, zeigt euch die fertige Struktur und fragt, ob Beispieldaten rein sollen.</p></div>
+      <div class="card bad"><h3>Ohne</h3><p class="small">Ihr: „Leg eine Tabelle items an.“ Claude: „Hier ist das SQL. Öffne Supabase, gehe zum SQL-Editor, füge es ein, führe es aus, sag mir, ob es einen Fehler gab.“ Ihr kopiert, klickt, kopiert den Fehler zurück. Dreimal.</p></div>
+      <div class="card good"><h3>Mit Supabase-MCP</h3><p class="small">Ihr: „Leg eine Tabelle items an.“ Claude legt sie an, liest die Antwort der Datenbank, korrigiert einen Tippfehler selbst, zeigt euch die fertige Struktur und fragt, ob Beispieldaten rein sollen.</p></div>
     </div>
   </div>
 
@@ -54,7 +54,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <Callout type="warn" title="Drei Regeln">
     <p><strong>1. Nur offizielle Server</strong> (vom Anbieter selbst oder aus der Claude-Code-Dokumentation). Ein MCP-Server sieht alles, was er darf. <strong>2. Minimale Rechte:</strong> Supabase-MCP hat einen <code>--read-only</code>-Modus; für Produktionsdaten immer. <strong>3. Nie gegen die Produktion</strong> entwickeln – ein „lösch alle Testdaten“ trifft sonst echte Nutzer*innen. Für Prototypen ist das Entwicklungsprojekt die Produktion; das ist okay, solange ihr es wisst.</p>
   </Callout>
-  <p>Und eine Perspektive für später: Auch <em>euer</em> Produkt kann ein MCP-Server sein. Wenn Campus Events einen MCP-Server anbietet, kann jede*r mit einem KI-Assistenten sagen „trag mich für den Lauftreff ein“ – ohne eure App zu öffnen. Das ist 2026 eine echte Produktentscheidung.</p>
+  <p>Und eine Perspektive für später: Auch <em>euer</em> Produkt kann ein MCP-Server sein. Wenn Leihbar einen MCP-Server anbietet, kann jede*r mit einem KI-Assistenten sagen „frag den Akkuschrauber für Samstag an“ – ohne eure App zu öffnen. Das ist 2026 eine echte Produktentscheidung.</p>
 
   <FooterNav prev={{ href: '/konzepte/daten-backend', t: 'Daten & Backend' }} next={{ href: '/tag-2#uebung-3', t: 'Übung 3 · Echte Daten' }} />
 </Layout>

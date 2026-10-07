@@ -7,15 +7,15 @@ import { Armchair, Building2, ChefHat, ConciergeBell, Database } from '@lucide/a
 const icons = { frontend: Armchair, api: ConciergeBell, backend: ChefHat, db: Database, hosting: Building2 };
 const layers = [
   { id: 'frontend', name: 'Frontend', meta: 'Gastraum – was Gäste sehen und anfassen', files: 'src/app/page.tsx · src/components/',
-    text: 'Alles, was im Browser sichtbar ist: Seiten, Buttons, Formulare, Farben. Läuft auf dem Gerät der Nutzer*innen. In Campus Events: die Startseite, die Eventkarten, der Header.',
+    text: 'Alles, was im Browser sichtbar ist: Seiten, Buttons, Formulare, Farben. Läuft auf dem Gerät der Nutzer*innen. In Leihbar: die Startseite, die Karten der Gegenstände, der Header.',
     q: 'Frage an Claude: „Welche Dateien gehören zum Frontend und was passiert, wenn ich eine davon ändere?“' },
   { id: 'api', name: 'API', meta: 'Kellner – nimmt Bestellungen entgegen und bringt Ergebnisse', files: 'src/app/api/…/route.ts',
-    text: 'Die Schnittstelle zwischen Gastraum und Küche. Das Frontend sagt „gib mir alle Events“ oder „speichere diese Zusage“, die API nimmt es entgegen, lässt es im Backend erledigen und bringt die Antwort zurück. Jede Adresse (z. B. /api/events) ist ein „Endpoint“.',
+    text: 'Die Schnittstelle zwischen Gastraum und Küche. Das Frontend sagt „gib mir alle Gegenstände“ oder „speichere diese Anfrage“, die API nimmt es entgegen, lässt es im Backend erledigen und bringt die Antwort zurück. Jede Adresse (z. B. /api/items) ist ein „Endpoint“.',
     q: 'Frage an Claude: „Welche API-Endpoints gibt es in diesem Projekt und was tun sie?“' },
   { id: 'backend', name: 'Backend', meta: 'Küche – wo gearbeitet wird, unsichtbar für Gäste', files: 'Server-Code in route.ts · Supabase-Funktionen',
     text: 'Die Logik, die nicht im Browser laufen darf oder soll: Wer darf was? Ist die Eingabe gültig? Was wird gespeichert? Läuft auf einem Server, nicht auf dem Gerät der Nutzer*innen. Bei Next.js steckt sie im selben Projekt wie das Frontend.',
-    q: 'Frage an Claude: „Welche Prüfungen passieren im Backend, bevor ein Event gespeichert wird?“' },
-  { id: 'db', name: 'Datenbank', meta: 'Vorratskammer – wo alles dauerhaft liegt', files: 'Supabase · Tabellen events, rsvps, profiles',
+    q: 'Frage an Claude: „Welche Prüfungen passieren im Backend, bevor ein Gegenstand gespeichert wird?“' },
+  { id: 'db', name: 'Datenbank', meta: 'Vorratskammer – wo alles dauerhaft liegt', files: 'Supabase · Tabellen items, requests, profiles',
     text: 'Tabellen mit festen Spalten und Datentypen; jede Zeile ist ein Eintrag. Alles, was nach einem Reload noch da sein soll, steht hier. Wir mieten sie bei Supabase (Postgres) statt sie selbst zu betreiben.',
     q: 'Frage an Claude: „Zeig mir, welche Tabellen es gibt und wie sie zusammenhängen – als einfache Skizze in Worten.“' },
   { id: 'hosting', name: 'Hosting', meta: 'Gebäude – damit andere reinkommen', files: 'Vercel · Environment-Variablen',
@@ -33,7 +33,7 @@ const layers = [
   <table>
     <tr><th>Typ</th><th>Was es ist</th><th>Beispiel</th><th>Für euren Prototyp</th></tr>
     <tr><td><strong>Website</strong></td><td>Seiten zum Lesen, wenig Interaktion, keine Nutzerdaten</td><td>ndu.ac.at, ein Portfolio</td><td>Richtig für Landing Pages und Info-Angebote; in 1 Stunde fertig</td></tr>
-    <tr><td><strong>Web-App</strong></td><td>Läuft im Browser, hat Login, speichert Daten, reagiert auf Nutzer*innen</td><td>Google Docs, Notion, Campus Events</td><td><strong>Unser Standard.</strong> Funktioniert auf jedem Gerät, ein Link reicht, keine App-Store-Hürde</td></tr>
+    <tr><td><strong>Web-App</strong></td><td>Läuft im Browser, hat Login, speichert Daten, reagiert auf Nutzer*innen</td><td>Google Docs, Notion, Leihbar</td><td><strong>Unser Standard.</strong> Funktioniert auf jedem Gerät, ein Link reicht, keine App-Store-Hürde</td></tr>
     <tr><td><strong>Native App</strong></td><td>Wird installiert (App Store), nutzt Kamera, Push, Offline</td><td>WhatsApp, Instagram</td><td>Erst, wenn ihr wirklich Push/Offline/Kamera braucht – deutlich aufwändiger</td></tr>
     <tr><td><strong>PWA</strong></td><td>Web-App, die sich wie eine App auf den Homescreen legt</td><td>viele Nachrichten-Apps</td><td>Guter Mittelweg: Web-App + „Zum Homescreen hinzufügen“</td></tr>
   </table>
@@ -41,7 +41,7 @@ const layers = [
 
   <h2>Die fünf Schichten – das Restaurant</h2>
   <div class="widget" id="anatomie">
-    <p class="hint">Klickt auf eine Schicht. Bei jeder steht, in welchen Dateien sie in Campus Events steckt.</p>
+    <p class="hint">Klickt auf eine Schicht. Bei jeder steht, in welchen Dateien sie in Leihbar steckt.</p>
     <div class="layers">
       {layers.map(l => {
         const Icon = icons[l.id as keyof typeof icons];
@@ -74,7 +74,7 @@ const layers = [
   </div>
 
   <h2>Eine Bestellung durchs Haus</h2>
-  <p>Was passiert, wenn jemand bei einem Event auf „Ich komme“ klickt?</p>
+  <p>Was passiert, wenn jemand bei einem Gegenstand auf „Ausleihen anfragen“ klickt?</p>
   <Bestellweg client:visible />
   <Callout type="concept" title="Warum ihr das wissen müsst">
     <p>Wenn etwas nicht funktioniert, ist die erste Frage immer: <strong>in welcher Schicht?</strong> Sieht man den Fehler im Browser (Frontend) oder im Terminal (Backend)? Ist die Zeile in der Datenbank angekommen? Allein mit dieser Frage löst ihr die Hälfte aller Probleme – und gebt Claude die entscheidende Information mit.</p>
@@ -84,9 +84,9 @@ const layers = [
   <table>
     <tr><th>Begriff</th><th>Bedeutet</th></tr>
     <tr><td>Framework</td><td>Vorgefertigtes Gerüst mit Regeln, damit man nicht bei null anfängt. Unseres: <strong>Next.js</strong> (Frontend + Backend in einem Projekt).</td></tr>
-    <tr><td>Komponente</td><td>Ein wiederverwendbarer Baustein der Oberfläche (Header, Eventkarte, Button). Einmal gebaut, überall benutzt.</td></tr>
-    <tr><td>Route / Seite</td><td>Eine URL. In Next.js: ein Ordner in <code>src/app/</code> = eine Adresse. <code>src/app/events/page.tsx</code> → <code>/events</code>.</td></tr>
-    <tr><td>Endpoint</td><td>Eine Adresse, an die das Frontend Anfragen schickt (<code>/api/events</code>). Verben: GET (holen), POST (anlegen), PATCH (ändern), DELETE (löschen).</td></tr>
+    <tr><td>Komponente</td><td>Ein wiederverwendbarer Baustein der Oberfläche (Header, Karte eines Gegenstands, Button). Einmal gebaut, überall benutzt.</td></tr>
+    <tr><td>Route / Seite</td><td>Eine URL. In Next.js: ein Ordner in <code>src/app/</code> = eine Adresse. <code>src/app/gegenstaende/page.tsx</code> → <code>/gegenstaende</code>.</td></tr>
+    <tr><td>Endpoint</td><td>Eine Adresse, an die das Frontend Anfragen schickt (<code>/api/items</code>). Verben: GET (holen), POST (anlegen), PATCH (ändern), DELETE (löschen).</td></tr>
     <tr><td>Dependency / Paket</td><td>Fremder Code, den das Projekt nutzt (Liste in <code>package.json</code>). <code>npm install</code> lädt sie herunter.</td></tr>
     <tr><td>Build</td><td>Das Projekt wird in die Form gebracht, die Browser und Server verstehen. Wenn der Build fehlschlägt, kann nicht veröffentlicht werden.</td></tr>
     <tr><td>TypeScript</td><td>JavaScript mit Typangaben. Für euch nur wichtig, weil der Agent dadurch mehr Fehler selbst findet.</td></tr>

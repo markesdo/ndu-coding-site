@@ -26,7 +26,7 @@ import FooterNav from '../components/FooterNav.astro';
     <Block time="14:00–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, vage gegen präzise, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
     <Block time="15:00–15:15" type="pause" title="Pause" />
     <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="/konzepte/spezifikation">Produkt-Brief, Brainstorming mit Claude, Issue, Akzeptanzkriterium, MVP. Vibe Coding vs. Spec-driven.</Block>
-    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Campus Events v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Funktionen brainstormen mit <code>/ndu-brainstorm</code>, erstes Issue bauen lassen, committen.</Block>
+    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Leihbar v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Funktionen brainstormen mit <code>/ndu-brainstorm</code>, erstes Issue bauen lassen, die Startseite im eigenen Stil gestalten.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss & Reflexion">Drei Erkenntnisse pro Person. Ausblick Tag 2.</Block>
   </div>
 
@@ -40,14 +40,14 @@ import FooterNav from '../components/FooterNav.astro';
   <p>Lest die Antwort vollständig. Fragt nach, wenn ein Begriff unklar ist: <em>„Was meinst du mit Komponente?“</em> Claude kennt die Regel, euch alles ohne Code zu erklären (steht in der <code>CLAUDE.md</code> – öffnet die Datei ruhig einmal).</p>
 
   <h3 id="uebung-1-b">b) Drei kleine Änderungen – eine nach der anderen (15 min)</h3>
-  <Prompt>Ändere die Überschrift auf der Startseite zu „Was geht am Campus?“ – sonst nichts.</Prompt>
+  <Prompt>Ändere die Überschrift auf der Startseite zu „Leih dir, was du brauchst.“ – sonst nichts.</Prompt>
   <p>→ Vorschau ansehen. Hat sich genau das geändert, und nichts anderes?</p>
   <Prompt>Die Akzentfarbe der App soll ein dunkles Blau statt Rot sein – auch ihre helle Variante für Hintergründe. Ändere sie an der zentralen Stelle, nicht in jeder Datei einzeln, und sag mir, wo diese Stelle ist.</Prompt>
   <p>→ Vorschau ansehen. Button, Punkt im Logo, Badge, Icons auf den Karten – alles blau? Das ist die Antwort auf „Gibt es eine zentrale Stelle?“</p>
   <Callout type="concept" title="Das war ein Design-Token">
     <p>Die zentrale Stelle heißt im Projekt <code>accent</code> – dazu gehört die helle Variante <code>accent-soft</code>, etwa für das Badge. Jede ist eine <strong>benannte Entscheidung</strong> statt eines Farbwerts, der an zwanzig Stellen steht. Ändert man sie, folgen alle Verwendungen; vergisst man eine, sieht man es sofort (blaue Schrift auf rosa Grund). Solche Tokens gibt es auch für Abstände, Radien und Schriften – zusammen mit wiederverwendbaren Komponenten sind sie ein <strong>Design-System</strong>. Wie ihr eines für euer Projekt anlegt und warum Claude damit konsistenter baut, kommt an Tag 3.</p>
   </Callout>
-  <Prompt>Füge zu den drei Feature-Karten eine vierte hinzu: Icon „MapPin“ aus Lucide wie bei den anderen Karten, Titel „Direkt zum Ort“, Text „Ein Tippen öffnet die Karte – nie wieder falscher Raum.“ Das Layout soll weiterhin auf dem Handy gut aussehen.</Prompt>
+  <Prompt>Füge zu den drei Feature-Karten eine vierte hinzu: Icon „MapPin“ aus Lucide wie bei den anderen Karten, Titel „Gleich ums Eck“, Text „Abholen am Campus oder in der Nähe – kein Versand, kein Warten.“ Das Layout soll weiterhin auf dem Handy gut aussehen.</Prompt>
   <p>→ Vorschau ansehen, dann Vorschau schmal ziehen (oder Rechtsklick → Untersuchen → <a href="/setup#devtools">Handy-Symbol</a>). Passt die vierte Karte?</p>
   <p>Jetzt sichern – in c) und d) verwerft ihr Änderungen wieder, und dabei soll b) nicht mit verschwinden:</p>
   <Prompt>/ndu-commit</Prompt>
@@ -100,34 +100,44 @@ import FooterNav from '../components/FooterNav.astro';
 
   <hr />
 
-  <h2 id="uebung-2">Übung 2 · Campus Events v0 <span class="pill uebung">60 min</span></h2>
-  <p>Jetzt wird aus Herumprobieren Produktarbeit. Ihr schreibt mit Claude einen Produkt-Brief, sammelt im Brainstorming Funktionen und lasst das erste Issue bauen – das, dessen Akzeptanzkriterien schon im Backlog stehen.</p>
+  <h2 id="uebung-2">Übung 2 · Leihbar v0 <span class="pill uebung">60 min</span></h2>
+  <p>Jetzt wird aus Herumprobieren Produktarbeit. Ihr schreibt mit Claude einen Produkt-Brief, sammelt im Brainstorming Funktionen, lasst das erste Issue bauen – das, dessen Akzeptanzkriterien schon im Backlog stehen – und gebt der Startseite zum Schluss euren eigenen Stil.</p>
 
-  <h3 id="uebung-2-a">a) Von der Idee zum Produkt-Brief (15 min)</h3>
+  <h3 id="uebung-2-a">a) Von der Idee zum Produkt-Brief (10 min)</h3>
   <p>Erst die Frage, für wen und wofür. Claude stellt ein paar Rückfragen, eine nach der anderen, und fasst zusammen, was es verstanden hat – getrennt nach dem, was ihr gesagt habt, und dem, was Claude annimmt. <strong>Lest die Annahmen und korrigiert mindestens eine:</strong> Der Brief soll eure Entscheidungen enthalten, nicht Claudes. Geschrieben wird erst nach eurem Okay.</p>
-  <Prompt note="Antwortet aus Sicht der Zielgruppe – ihr seid selbst Studierende, ihr kennt das Problem.">/ndu-idee Campus Events: Studierende und Gruppen legen Veranstaltungen an, andere sagen mit einem Klick zu.</Prompt>
+  <Prompt note="Antwortet aus Sicht der Zielgruppe – ihr seid selbst Studierende, ihr kennt das Problem.">/ndu-idee Leihbar: Studierende bieten Dinge zum Ausleihen an, andere fragen sie mit einem Klick an.</Prompt>
 
   <h3 id="uebung-2-b">b) Brainstorming: Funktionen mit Claude (15 min)</h3>
   <p>Jetzt geht ihr bewusst in die Breite. Claude schlägt Runde für Runde Funktionen vor – auch solche, auf die ihr selbst nicht gekommen wärt – und ihr entscheidet bei jeder: <strong>MVP, Später oder Nein</strong>. Am Ende steht das MVP im Brief, der Rest auf „Später“.</p>
-  <Prompt note="Den Backlog für Campus Events gibt es schon, und die Übungen von Tag 2 bauen darauf auf. Neue Ideen landen deshalb auf „Später“; Claude schlägt Ergänzungen höchstens vor.">/ndu-brainstorm</Prompt>
+  <Prompt note="Den Backlog für Leihbar gibt es schon, und die Übungen von Tag 2 bauen darauf auf. Neue Ideen landen deshalb auf „Später“; Claude schlägt Ergänzungen höchstens vor.">/ndu-brainstorm</Prompt>
   <p>→ Kurz in der Runde: Welche Idee von Claude hättet ihr selbst nicht gehabt – und wohin habt ihr sie sortiert?</p>
 
   <h3 id="uebung-2-c">c) Issue 1 bauen lassen (20 min)</h3>
   <p>Für ein klares Issue braucht es keinen eigenen Plan-Schritt: Claude fragt nach, wenn etwas unklar ist, und baut sonst direkt.</p>
-  <Prompt>Setze Issue 1 aus docs/BACKLOG.md um: die Eventliste mit den Beispieldaten aus src/data/events.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
-  <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Events? Fehlt das vergangene („Erstsemester-Frühstück“)? Sieht es am Handy gut aus? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
+  <Prompt>Setze Issue 1 aus docs/BACKLOG.md um: die Liste mit den Beispieldaten aus src/data/gegenstaende.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
+  <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Gegenstände, jeder mit Bild? Fehlt die verliehene „Systemkamera“? Sieht es am Handy gut aus? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
 
-  <h3 id="uebung-2-d">d) Sichern (5 min)</h3>
   <Prompt>Setze Issue 1 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
 
+  <h3 id="uebung-2-d">d) Mach es schön – euer eigener Stil (10 min)</h3>
+  <p>Zum Schluss bekommt eure Startseite ein Gesicht. Sucht euch eine Seite, deren Stil euch gefällt – ein Modeshop, ein Interior-Magazin, eine Designmarke, was zu eurer Welt passt – und macht einen Screenshot davon. Allgemeine Wünsche wie „modern und clean“ helfen wenig: Claude landet dann nur bei einer anderen Standard-Optik. Ein Vorbild und eure eigenen Worte wirken.</p>
+  <Prompt note="Screenshot ins Claude-Terminal ziehen oder einfügen, dann die Stimmung in euren Worten beschreiben: ruhig, edel, verspielt, kräftig …">Hier ist ein Screenshot einer Seite, deren Stil mir gefällt: [Screenshot]. Die Stimmung: [eure Worte]. Schlag mir zuerst drei unterschiedliche visuelle Richtungen für unsere Startseite vor – je ein Satz zu Farben, Schrift und Stimmung. Ich wähle eine, dann setzt du sie um. Ändere nur das Aussehen, nicht die Funktionen.</Prompt>
+  <p>→ Am Beamer nebeneinander: dieselbe App, drei völlig verschiedene Gesichter. Was hat den Unterschied gemacht – das Vorbild, eure Worte oder die Richtung, die ihr gewählt habt?</p>
+  <Callout type="tip" title="Profi-Tipp: das Plugin frontend-design">
+    <p>Anthropic bietet ein offizielles Plugin für eigenständigeres Design: <code>/plugin install frontend-design@claude-plugins-official</code>, danach Claude neu starten. Es bringt Claude bei, eine klare gestalterische Richtung zu wählen statt Standard-Optik. Für die Übung braucht ihr es nicht.</p>
+  </Callout>
+
+  <h3 id="uebung-2-e">e) Sichern (5 min)</h3>
+  <p>Gefällt euch das Ergebnis: <code>/ndu-commit</code>. Wenn nicht, sagt Claude: „Mach alle Änderungen seit dem letzten Commit rückgängig, auch neu angelegte Dateien. Lass .env.local und node_modules stehen und führ danach npm install aus.“ Issue 1 ist schon gesichert.</p>
+
   <h3>Checkliste Übung 2</h3>
-  <Checklist id="t1-u2" items={[
+  <Checklist id="t1-u2-v2" items={[
     'Produkt-Brief in <code>docs/PRODUKT.md</code> – eine Seite, mit Abgrenzung („macht NICHT“)',
     'Brainstorming: Ideen von Claude auf MVP, Später oder Nein sortiert',
     'Issue 1 umgesetzt, für jedes Kriterium den Beleg gelesen',
     'Alle Akzeptanzkriterien von Issue 1 selbst im Browser geprüft',
     'Backlog aktualisiert und committet',
-    'Optional: Issue 2 (Detailseite) angefangen',
+    'Startseite im eigenen Stil umgestaltet und gesichert (oder verworfen)',
   ]} />
 
   <hr />
