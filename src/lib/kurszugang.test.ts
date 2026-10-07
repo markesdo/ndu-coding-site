@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GUELTIG_SEKUNDEN, cookieLesen, gleich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './kurszugang';
+import { GUELTIG_SEKUNDEN, cookieLesen, gleich, istOeffentlich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './kurszugang';
 
 const SECRET = 'a'.repeat(64);
 const PW = 'kurs-passwort';
@@ -61,6 +61,13 @@ describe('sichererPfad (Rücksprung nur auf diese Website)', () => {
     expect(sichererPfad('/tag-1?beamer#uebung-1')).toBe('/tag-1?beamer#uebung-1');
   });
 
+  it('„Weiter“ von /start: die Übersicht mit und ohne Beamer-Modus übersteht den Umweg über das Kurspasswort', () => {
+    expect(sichererPfad('/')).toBe('/');
+    expect(sichererPfad('/?beamer')).toBe('/?beamer');
+    // So kommt es in der Middleware an: /login?weiter=%2F%3Fbeamer → searchParams dekodiert einmal.
+    expect(sichererPfad(new URL('https://kurs.invalid/login?weiter=%2F%3Fbeamer').searchParams.get('weiter'))).toBe('/?beamer');
+  });
+
   it.each([
     ['https://evil.example/x'],
     ['//evil.example/x'],
@@ -93,5 +100,17 @@ describe('cookieLesen', () => {
     expect(cookieLesen('a=1; ndu_zugang=v1.2.x; b=3')).toBe('v1.2.x');
     expect(cookieLesen('xndu_zugang=nein')).toBeUndefined();
     expect(cookieLesen(null)).toBeUndefined();
+  });
+});
+
+describe('istOeffentlich', () => {
+  it('die Startseite ist ohne Kurspasswort erreichbar – mit und ohne Schrägstrich', () => {
+    expect(istOeffentlich('/start')).toBe(true);
+    expect(istOeffentlich('/start/')).toBe(true);
+  });
+  it('kein Präfix-Leck: ähnliche Pfade und alle Kursseiten bleiben geschützt', () => {
+    for (const p of ['/', '/tag-1', '/konzepte/llm', '/startseite', '/start-x', '/start/geheim', '/START', '/start.html', '//start', '/prompts']) {
+      expect(istOeffentlich(p)).toBe(false);
+    }
   });
 });

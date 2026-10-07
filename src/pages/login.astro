@@ -21,8 +21,8 @@ import '../styles/beamer.css';
   </head>
   <body>
     <main class="login">
-      <span class="eyebrow">NDU · Programmieren mit AI</span>
-      <h1>Kurspasswort</h1>
+      <p class="login-marke"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</p>
+      <h1>Kurspasswort<span class="cursor" aria-hidden="true"></span></h1>
       <p class="lead">Die Kursseiten sind nur für Teilnehmende. Das Passwort steht in der Nachricht in Teams.</p>
       <form method="post" action="/login" class="login-form">
         <label for="passwort">Passwort</label>
@@ -44,6 +44,11 @@ import '../styles/beamer.css';
     <style>
       .login { max-width: 26rem; margin: 0 auto; padding: 18vh 1rem 4rem; }
       .login h1 { margin: .75rem 0 .5rem; }
+      /* Gleiche Bildmarke und gleicher Cursor wie auf der Übersicht; die Karte blendet kurz ein, sonst nichts. */
+      .login-marke { display: flex; align-items: center; gap: .6rem; margin: 0; font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: .95rem; color: var(--fg); }
+      .login { animation: login-ein 250ms ease-out both; }
+      @keyframes login-ein { from { opacity: 0; transform: translateY(6px); } }
+      @media (prefers-reduced-motion: reduce) { .login { animation: none; } }
       .login .lead { margin-bottom: 2rem; }
       .login-form { display: grid; gap: .6rem; }
       .login-form label { font-family: var(--mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }

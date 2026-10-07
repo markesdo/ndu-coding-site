@@ -72,6 +72,12 @@ export function sichererPfad(roh: string | null | undefined): string {
   }
 }
 
+// Öffentliche Seiten ohne Kurspasswort: nur die Startseite /start (exakt, mit oder ohne Schrägstrich).
+// Kein Präfix: /startseite, /start-x oder /start/geheim bleiben geschützt. /login prüft die Middleware gesondert.
+export function istOeffentlich(pfad: string): boolean {
+  return pfad === '/start' || pfad === '/start/';
+}
+
 export function cookieLesen(header: string | null, name = COOKIE): string | undefined {
   if (!header) return undefined;
   for (const teil of header.split(';')) {
