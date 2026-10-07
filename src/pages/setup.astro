@@ -189,6 +189,9 @@ import { bild } from '../components/anleitung-bilder';
   <Schritte id="devtools" steps={[
     { img: bild('setup/chrome-2-konsole'), alt: 'Die App, unten die geöffneten Entwicklertools mit dem Reiter Console und einer roten Fehlerzeile', text: 'Unten (oder rechts) öffnen sich die DevTools. Der Reiter <em>Console</em> (1, in deutschem Chrome <em>Konsole</em>) zeigt die Meldungen der Seite. <strong>Rote Zeilen</strong> (3) sind Fehler – genau die kopiert ihr für Claude (siehe <a href="/hilfe">Hilfe holen</a>). Das Handy-Symbol (2) schaltet die Handy-Ansicht ein; oben wählt ihr dann ein Gerät, z. B. ein iPhone. Nochmal klicken schaltet zurück, das <em>×</em> ganz rechts schließt die DevTools.', marks: [{ x: 139, y: 603, w: 66, h: 24, n: 1 }, { x: 33, y: 602, w: 24, h: 26, n: 2 }, { x: 5, y: 700, w: 1430, h: 32, n: 3 }], crop: false },
   ]} />
+  <Callout type="tip" title="Mehr Platz für die App: DevTools nach rechts">
+    <p>In den DevTools oben rechts auf die drei Punkte <em>⋮</em> → bei <em>Dock side</em> das dritte Symbol (rechts andocken). Oder per Tastenkürzel zwischen den letzten beiden Positionen wechseln: Mac <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>D</kbd>, Windows <kbd>Strg</kbd> <kbd>Umschalt</kbd> <kbd>D</kbd>. Chrome merkt sich die Position.</p>
+  </Callout>
 
   <h2 id="stoppen">Nach dem Kurstag: Codespace stoppen</h2>
   <p>Ein laufender Codespace verbraucht euer Kontingent (60 Stunden pro Monat, mit Education 90) – auch wenn der Tab zu ist, bis er nach 30 Minuten ohne Eingabe von selbst stoppt. Auf <a href="https://github.com/codespaces" target="_blank" rel="noopener">github.com/codespaces</a> beim Codespace auf „…“:</p>
