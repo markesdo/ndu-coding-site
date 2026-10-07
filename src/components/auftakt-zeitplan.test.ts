@@ -7,15 +7,15 @@ import {
 const TITEL = 'Programmieren mit AI';
 
 describe('weiterZiel', () => {
-  it('„Weiter“ führt zu Tag 1', () => {
-    expect(weiterZiel('')).toBe('/tag-1');
-    expect(weiterZiel('?foo=1')).toBe('/tag-1');
+  it('„Weiter“ führt zur Übersicht – für alle gleich', () => {
+    expect(weiterZiel('')).toBe('/');
+    expect(weiterZiel('?foo=1')).toBe('/');
   });
   it('wer im Beamer-Modus kommt, bleibt darin – ?beamer=0 schaltet ihn ab', () => {
-    expect(weiterZiel('?beamer')).toBe('/tag-1?beamer');
-    expect(weiterZiel('?beamer=1')).toBe('/tag-1?beamer');
-    expect(weiterZiel('?x=1&beamer')).toBe('/tag-1?beamer');
-    expect(weiterZiel('?beamer=0')).toBe('/tag-1');
+    expect(weiterZiel('?beamer')).toBe('/?beamer');
+    expect(weiterZiel('?beamer=1')).toBe('/?beamer');
+    expect(weiterZiel('?x=1&beamer')).toBe('/?beamer');
+    expect(weiterZiel('?beamer=0')).toBe('/');
   });
 });
 

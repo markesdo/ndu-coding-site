@@ -22,13 +22,13 @@ export function promptWahl(verfuegbarPx: number, wunschPx: number, minPx = 11) {
 }
 
 /**
- * Wohin „Weiter“ führt: Tag 1. Wer im Beamer-Modus kommt (?beamer, nicht ?beamer=0), bleibt darin.
- * Ohne Anmeldung leitet die Middleware von dort zum Kurspasswort weiter und kehrt danach zurück.
+ * Wohin „Weiter“ führt: zur Übersicht (für alle gleich). Wer im Beamer-Modus kommt (?beamer, nicht ?beamer=0), bleibt darin.
+ * Ohne Anmeldung leitet die Middleware von dort zum Kurspasswort weiter und kehrt danach zurück (/login?weiter=%2F…).
  * Spiegelbild des Inline-Skripts in start.astro – Änderungen an beiden Stellen.
  */
 export function weiterZiel(suche: string): string {
   const beamer = new URLSearchParams(suche).get('beamer');
-  return beamer !== null && beamer !== '0' ? '/tag-1?beamer' : '/tag-1';
+  return beamer !== null && beamer !== '0' ? '/?beamer' : '/';
 }
 
 /** Regie in Sekunden (Storyboard). Die Sprungmarken der Zeitleiste heißen wie die Schlüssel. */

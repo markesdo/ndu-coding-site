@@ -61,6 +61,12 @@ describe('sichererPfad (Rücksprung nur auf diese Website)', () => {
     expect(sichererPfad('/tag-1?beamer#uebung-1')).toBe('/tag-1?beamer#uebung-1');
   });
 
+  it('„Weiter“ von /start: die Übersicht mit und ohne Beamer-Modus übersteht den Umweg über das Kurspasswort', () => {
+    expect(sichererPfad('/')).toBe('/');
+    expect(sichererPfad('/?beamer')).toBe('/?beamer');
+    expect(sichererPfad(decodeURIComponent(encodeURIComponent('/?beamer')))).toBe('/?beamer');
+  });
+
   it.each([
     ['https://evil.example/x'],
     ['//evil.example/x'],
