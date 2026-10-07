@@ -35,20 +35,24 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="uebung-1">Übung 1 · Erste eigene Änderungen <span class="pill uebung">60 min</span></h2>
   <p>Ziel: erleben, wie sich Arbeiten mit Claude Code anfühlt – und die drei Gewohnheiten einüben, die den Unterschied machen: <strong>eine Sache pro Prompt</strong>, <strong>nach jeder Änderung im Browser prüfen</strong>, <strong>regelmäßig sichern</strong>.</p>
 
+  <Callout type="info" title="So seht ihr die Vorschau">
+    <p id="vorschau">Die <strong>Vorschau</strong> ist eure App im eigenen Browser-Tab aus <a href="/setup#app">Setup Schritt 6</a> (Adresse endet auf <code>-3000.app.github.dev</code>). Lasst den Tab offen: Claudes Änderungen erscheinen dort nach ein paar Sekunden von selbst. Passiert nichts, neu laden (<kbd>⌘</kbd> <kbd>R</kbd> / <kbd>Strg</kbd> <kbd>R</kbd>). Wie die Seite am Handy oder Tablet aussieht, zeigt die <a href="/setup#devtools-2">Geräte-Ansicht in Chrome</a>.</p>
+  </Callout>
+
   <h3 id="uebung-1-a">a) Verstehen, was da ist (10 min)</h3>
   <Prompt>Erkläre mir dieses Projekt so, als käme ich aus dem Produktmanagement und hätte keine Programmierkenntnisse. Welche Seiten gibt es, wo liegen die Beispieldaten, und was passiert, wenn ich die Startseite öffne?</Prompt>
   <p>Lest die Antwort vollständig. Fragt nach, wenn ein Begriff unklar ist: <em>„Was meinst du mit Komponente?“</em> Claude kennt die Regel, euch alles ohne Code zu erklären (steht in der <code>CLAUDE.md</code> – öffnet die Datei ruhig einmal).</p>
 
   <h3 id="uebung-1-b">b) Drei kleine Änderungen – eine nach der anderen (15 min)</h3>
   <Prompt>Ändere die Überschrift auf der Startseite zu „Leih dir, was du brauchst.“ – sonst nichts.</Prompt>
-  <p>→ Vorschau ansehen. Hat sich genau das geändert, und nichts anderes?</p>
+  <p>→ <a href="#vorschau">Vorschau</a> ansehen. Hat sich genau das geändert, und nichts anderes?</p>
   <Prompt>Die Akzentfarbe der App soll ein dunkles Blau statt Rot sein – auch ihre helle Variante für Hintergründe. Ändere sie an der zentralen Stelle, nicht in jeder Datei einzeln, und sag mir, wo diese Stelle ist.</Prompt>
   <p>→ Vorschau ansehen. Button, Punkt im Logo, Badge, Icons auf den Karten – alles blau? Das ist die Antwort auf „Gibt es eine zentrale Stelle?“</p>
   <Callout type="concept" title="Das war ein Design-Token">
     <p>Die zentrale Stelle heißt im Projekt <code>accent</code> – dazu gehört die helle Variante <code>accent-soft</code>, etwa für das Badge. Jede ist eine <strong>benannte Entscheidung</strong> statt eines Farbwerts, der an zwanzig Stellen steht. Ändert man sie, folgen alle Verwendungen; vergisst man eine, sieht man es sofort (blaue Schrift auf rosa Grund). Solche Tokens gibt es auch für Abstände, Radien und Schriften – zusammen mit wiederverwendbaren Komponenten sind sie ein <strong>Design-System</strong>. Wie ihr eines für euer Projekt anlegt und warum Claude damit konsistenter baut, kommt an Tag 3.</p>
   </Callout>
   <Prompt>Füge zu den drei Feature-Karten eine vierte hinzu: Icon „MapPin“ aus Lucide wie bei den anderen Karten, Titel „Gleich ums Eck“, Text „Abholen am Campus oder in der Nähe – kein Versand, kein Warten.“ Das Layout soll weiterhin auf dem Handy gut aussehen.</Prompt>
-  <p>→ Vorschau ansehen, dann Vorschau schmal ziehen (oder Rechtsklick → Untersuchen → <a href="/setup#devtools">Handy-Symbol</a>). Passt die vierte Karte?</p>
+  <p>→ Vorschau ansehen, dann Vorschau schmal ziehen (oder in der <a href="/setup#devtools-2">Geräte-Ansicht</a> 375 px wählen). Passt die vierte Karte?</p>
   <p>Jetzt sichern – in c) und d) verwerft ihr Änderungen wieder, und dabei soll b) nicht mit verschwinden:</p>
   <Prompt>/ndu-commit</Prompt>
   <p>Claude zeigt, was sich geändert hat, schreibt eine verständliche Commit-Nachricht und pusht zu GitHub. Öffnet euer Repo auf github.com: Eure Änderung ist dort, mit Nachricht und Zeitstempel.</p>
@@ -65,7 +69,7 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt>Auf diesem Screenshot ist der Abstand zwischen Überschrift und Text zu klein und die Karten wirken zu eng. Mach es luftiger, ohne das Design zu ändern.</Prompt>
   <p>→ Vorschau ansehen und einen Screenshot vom Ergebnis machen. Jetzt derselbe Auftrag noch einmal, in einer frischen Session:</p>
   <ol>
-    <li>Links im <strong>Source-Control-Symbol</strong> alle Änderungen verwerfen („Discard All Changes“). Weil b) gesichert ist, verschwindet nur der erste Versuch.</li>
+    <li>Links im <strong>Source-Control-Symbol</strong> alle Änderungen verwerfen („Discard All Changes“, <a href="/setup#orientierung-4">wo das ist</a>). Weil b) gesichert ist, verschwindet nur der erste Versuch.</li>
     <li>Im Terminal <code>/clear</code> eingeben.</li>
     <li>Denselben Screenshot und exakt denselben Prompt noch einmal schicken.</li>
   </ol>
@@ -115,7 +119,7 @@ import FooterNav from '../components/FooterNav.astro';
   <h3 id="uebung-2-c">c) Issue 1 bauen lassen (20 min)</h3>
   <p>Für ein klares Issue braucht es keinen eigenen Plan-Schritt: Claude fragt nach, wenn etwas unklar ist, und baut sonst direkt.</p>
   <Prompt>Setze Issue 1 aus docs/BACKLOG.md um: die Liste mit den Beispieldaten aus src/data/gegenstaende.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
-  <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Gegenstände, jeder mit Bild? Fehlt die verliehene „Systemkamera“? Sieht es am Handy gut aus? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
+  <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Gegenstände, jeder mit Bild? Fehlt die verliehene „Systemkamera“? Sieht es am Handy gut aus (<a href="/setup#devtools-2">Geräte-Ansicht</a>)? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
 
   <Prompt>Setze Issue 1 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
 
