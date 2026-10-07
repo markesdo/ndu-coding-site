@@ -23,7 +23,7 @@ import { bild } from '../components/anleitung-bilder';
     <Block time="10:30–12:00" type="uebung" title="Übung 3 · Echte Daten" href="#uebung-3">Supabase-Projekt, MCP verbinden, Issue 4: Event anlegen und dauerhaft speichern.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
     <Block time="13:00–13:45" type="konzept" title="Konzept 5 · Verifizieren & Debuggen" href="/konzepte/verifizieren">Browser-Konsole vs. Terminal, Fehler übergeben, Definition of Done, der Agent prüft sich selbst.</Block>
-    <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & RSVP" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, im Tandem reparieren. RLS prüfen.</Block>
+    <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & RSVP" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, in der Dreier-Runde reparieren. RLS prüfen.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:00" type="konzept" title="Konzept 6 · Agenten steuern" href="/konzepte/agenten-steuern">Kontext-Hygiene, CLAUDE.md pflegen, Custom Commands, Subagents, MCP-Überblick, Kosten.</Block>
     <Block time="16:00–16:40" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel verbinden, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
@@ -143,16 +143,16 @@ import { bild } from '../components/anleitung-bilder';
   <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, <code>/meine-events</code> aufrufen → Weiterleitung?</p>
   <h3 id="uebung-4-b">b) Issue 6 – Zusagen (30 min)</h3>
   <Prompt>Setze Issue 6 um: RSVP-Button pro Event mit Zähler, Zusage zurücknehmen, ohne Login zur Anmeldung führen. Tabelle rsvps mit RLS: jeder darf zählen, nur die eigene Zusage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle rsvps und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
-  <h3 id="uebung-4-c">c) Absichtlich kaputt (20 min, Tandem)</h3>
-  <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen: Die andere Person in eurem Tandem muss den Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurücktauschen und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
+  <h3 id="uebung-4-c">c) Absichtlich kaputt (20 min, Dreier-Runde)</h3>
+  <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen, reihum: Ihr setzt euch an den Laptop der nächsten Person in der Runde (A an B, B an C, C an A) und müsst ihren Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurück an den eigenen Platz und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
   <h3 id="uebung-4-d">d) RLS-Test (10 min)</h3>
   <p>Zwei Browser (einer im Inkognito-Modus), zwei Accounts. Account A sagt zu. Kann Account B diese Zusage löschen? Fragt Claude:</p>
   <Prompt>Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle rsvps verhindern, dass jemand fremde Zusagen löscht oder ändert. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
-  <Checklist id="t2-u4" items={[
+  <Checklist id="t2-u4-v2" items={[
     'Registrieren, anmelden, abmelden funktioniert; Konto in Supabase sichtbar',
     '<code>/meine-events</code> leitet ohne Login weiter',
     'Zusagen und zurücknehmen, Zähler stimmt',
-    'Fehlerkarte eingebaut – die andere Person im Tandem hat ihn gefunden',
+    'Fehlerkarte eingebaut – die nächste Person in der Runde hat ihn gefunden, und ich habe ihren gefunden',
     'RLS getestet: fremde Zusagen sind geschützt',
     'Issue 5, Issue 6 (und optional Issue 7) auf „fertig“, committet',
   ]} />
