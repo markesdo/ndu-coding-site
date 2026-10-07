@@ -14,23 +14,23 @@ import FooterNav from '../components/FooterNav.astro';
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-15">
-    <Block time="09:00–09:40" type="plenum" title="Stand-up">Jede*r 2 Minuten: Was läuft, wo hängt es, was brauche ich heute? Blocker werden für die Werkstatt verteilt.</Block>
+    <Block time="09:00–09:40" type="plenum" title="Stand-up">Jede*r rund 10 Minuten: Prototyp kurz zeigen, was läuft, wo hängt es, was brauche ich heute? Blocker lösen wir in der Werkstatt.</Block>
     <Block time="09:40–10:20" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="/konzepte/qualitaet">Code-Review durch den Agenten, Sicherheits-Checkliste, Tests als Sicherheitsnetz.</Block>
     <Block time="10:20–10:35" type="pause" title="Pause" />
-    <Block time="10:35–12:00" type="uebung" title="Werkstatt 1" href="#werkstatt">Blocker lösen, dann Peer-Review im Tandem mit der Checkliste.</Block>
+    <Block time="10:35–12:00" type="uebung" title="Werkstatt 1" href="#werkstatt">Blocker lösen, dann Peer-Review in der Dreier-Runde mit der Checkliste.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
     <Block time="13:00–13:30" type="konzept" title="Konzept 8 · Teil 1 · Design-System" href="/konzepte/design-system">Warum Tokens, drei Ebenen, in sechs Schritten zum eigenen System. Demo: Claude Design.</Block>
     <Block time="13:30–13:45" type="konzept" title="Konzept 8 · Teil 2 · Ausblick 2026" href="/konzepte/ausblick">Figma-MCP → Code, Agent-Teams, Claude Code im Web, Codex, eigene Skills, Grenzen.</Block>
     <Block time="13:45–15:15" type="uebung" title="Werkstatt 2" href="#werkstatt">Feinschliff, Demo vorbereiten, README. Optional: Design-System für die eigene App.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
-    <Block time="15:30–16:30" type="plenum" title="Demos" href="#demos">3–4 Minuten pro Person/Tandem.</Block>
+    <Block time="15:30–16:30" type="plenum" title="Demos" href="#demos">Rund 15 Minuten pro Person, mit Fragen und Reflexion.</Block>
     <Block time="16:30–17:00" type="plenum" title="Abschluss">Wie es weitergeht, Bewertung, Feedback.</Block>
   </div>
 
   <hr />
   <h2 id="werkstatt">Werkstatt</h2>
-  <h3>Peer-Review im Tandem (Werkstatt 1)</h3>
-  <p>Tauscht Vercel-URLs. Geht die App der anderen Person als echte*r Nutzer*in durch – <strong>ohne Erklärung</strong> – und notiert: Wo war ich verwirrt? Was hat nicht funktioniert? Was hätte ich erwartet? Dann die <a href="/konzepte/qualitaet">Qualitäts-Checkliste</a> gemeinsam durchgehen. Findings werden Issues:</p>
+  <h3>Peer-Review in der Dreier-Runde (Werkstatt 1)</h3>
+  <p>Reihum: A prüft die App von B, B die von C, C die von A – jede*r gibt und bekommt genau einmal Feedback. Schickt euch die Vercel-URLs. Geht die App der nächsten Person als echte*r Nutzer*in durch – <strong>ohne Erklärung</strong> – und notiert: Wo war ich verwirrt? Was hat nicht funktioniert? Was hätte ich erwartet? Dann die <a href="/konzepte/qualitaet">Qualitäts-Checkliste</a> mit der Person durchgehen, deren App ihr geprüft habt. Findings werden Issues:</p>
   <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus Issues im Format von docs/BACKLOG.md (Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn) und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
   <p>Sieht etwas am Handy schief aus? Lasst Claude es selbst sehen: <a href="/konzepte/qualitaet#ui-schleife">UI-Schleife</a> – Screenshots in drei Breiten, vergleichen, beheben.</p>
   <h3>Review durch den Agenten</h3>
@@ -42,17 +42,18 @@ import FooterNav from '../components/FooterNav.astro';
   <p>Fallback für die Live-Demo: 2-Minuten-Screenrecording (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows: Xbox Game Bar <kbd>Win</kbd><kbd>G</kbd>) – falls das WLAN streikt.</p>
 
   <hr />
-  <h2 id="demos">Demos · 3–4 Minuten</h2>
+  <h2 id="demos">Demos · rund 15 Minuten pro Person</h2>
   <ol class="steps">
-    <li><strong>Problem</strong> (30 s) Für wen, welcher Schmerz. Eine Person, eine Situation.</li>
-    <li><strong>Lösung live</strong> (2 min) Der eine Durchlauf, der den Kern zeigt – am besten vom Handy. Nicht alle Features.</li>
-    <li><strong>Was der Agent nicht gut gemacht hat</strong> (45 s) Ehrlich. Was musstet ihr wie oft korrigieren, wo habt ihr aufgegeben? Das ist der interessanteste Teil.</li>
-    <li><strong>Nächster Schritt</strong> (15 s) Was wäre das eine Issue, das ihr als Nächstes bauen würdet?</li>
+    <li><strong>Problem</strong> (1 min) Für wen, welcher Schmerz. Eine Person, eine Situation.</li>
+    <li><strong>Lösung live</strong> (5 min) Der eine Durchlauf, der den Kern zeigt – am besten vom Handy. Nicht alle Features.</li>
+    <li><strong>Was der Agent nicht gut gemacht hat</strong> (3 min) Ehrlich. Was musstet ihr wie oft korrigieren, wo habt ihr aufgegeben? Das ist der interessanteste Teil.</li>
+    <li><strong>Nächster Schritt</strong> (1 min) Was wäre das eine Issue, das ihr als Nächstes bauen würdet?</li>
+    <li><strong>Fragen und Reflexion</strong> (5 min) Die anderen beiden und Markus fragen nach: Was würdet ihr anders spezifizieren? Was nehmt ihr ins Innolab mit?</li>
   </ol>
-  <Checklist id="t3-demo" items={[
+  <Checklist id="t3-demo-v2" items={[
     'Live-App funktioniert am Handy (vorher testen!)',
     'README für Außenstehende, mit URL',
-    'Ein Durchlauf geübt, unter 3 Minuten',
+    'Einen Durchlauf geübt, rund 10 Minuten (ohne Fragen)',
     'Ein ehrlicher Satz zu den Grenzen des Agenten',
     'Screenrecording als Fallback',
   ]} />
