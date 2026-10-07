@@ -2,7 +2,6 @@
 import { ArrowRight, Menu, Presentation } from '@lucide/astro';
 // Schriften liegen auf unserem Server (fontsource), nicht bei Google: keine IP-Weitergabe an Dritte (DSGVO).
 // Die CSS-Dateien deklarieren mehrere Zeichensätze; der Browser lädt per unicode-range nur, was die Seite nutzt (hier latin, ggf. latin-ext).
-import LinkVorschau from '../components/LinkVorschau.astro';
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 // Fließtext-Schrift vorladen, damit der erste Text nicht in der Ersatzschrift aufblitzt.
@@ -59,7 +58,6 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
     <title>{title} · NDU Coding 2026</title>
     <meta name="description" content={description} />
     <meta name="robots" content="noindex, nofollow" />
-    <LinkVorschau title={`${title} · NDU Coding 2026`} description={description} />
     <link rel="preload" href={textSchrift} as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // Beamer-Modus vor dem ersten Zeichnen setzen, sonst blitzt die normale Ansicht auf.
