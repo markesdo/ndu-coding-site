@@ -54,11 +54,11 @@ import FooterNav from '../components/FooterNav.astro';
   <p>Claude zeigt, was sich geändert hat, schreibt eine verständliche Commit-Nachricht und pusht zu GitHub. Öffnet euer Repo auf github.com: Eure Änderung ist dort, mit Nachricht und Zeitstempel.</p>
 
   <h3 id="uebung-1-c">c) Vage oder präzise – Live-Demo am Beamer (10 min)</h3>
-  <p>Markus schickt vorne am Beamer denselben Wunsch zweimal, jeweils in einer frischen Session: erst vage, dann präzise. Bevor Claude loslegt, tippt ihr drei: Was wird herauskommen, wie viele Dateien ändert Claude? Danach vergleichen wir beide Ergebnisse gemeinsam. Ein Durchlauf je Prompt ist ein Beispiel, kein Beweis – wie stark derselbe Auftrag ohnehin <a href="/konzepte/llm">streut</a>, seht ihr in d).</p>
+  <p>Markus schickt vorne am Beamer denselben Wunsch zweimal, jeweils in einer frischen Session: erst vage, dann präzise. <strong>Bevor Claude loslegt, sagt jede*r in einem Satz: Wie sehen die Karten danach aus?</strong> Dann vergleichen wir mit dem Ergebnis.</p>
   <Prompt label="Erster Versuch – vage">Mach die Feature-Karten schöner.</Prompt>
-  <p class="small muted">Zwischen den Versuchen: Dateizahl am Source-Control-Symbol notieren, dann „Discard All Changes“ und <code>/clear</code> – sonst baut der zweite Versuch auf dem ersten auf und die Zahl zählt beide.</p>
-  <Prompt label="Zweiter Versuch – präzise">Auf den Feature-Karten (@src/components/FeatureCard.tsx) soll der Titel etwas größer und das Icon kleiner sein, weil man beim Überfliegen zuerst den Titel sucht. Ändere nur diese Datei. Sag mir danach, was ich im Browser sehen soll.</Prompt>
-  <p>→ Auswertung gemeinsam: Wie viele Dateien hat Claude jeweils geändert (die notierte Zahl und die Zahl am <strong>Source-Control-Symbol</strong> nach dem zweiten Versuch)? Lag euer Tipp richtig? Bei welchem Versuch hättet ihr vorher sagen können, was herauskommt? Wer mag, probiert den präzisen Auftrag danach selbst und verwirft die Änderung wieder („Discard All Changes“). Welche Bausteine den Unterschied machen, steht in <a href="/konzepte/prompting">Prompt Engineering</a>.</p>
+  <p class="small muted">Zwischen den Versuchen setzt Markus alles zurück („Discard All Changes“ und <code>/clear</code>), damit der zweite Versuch nicht auf dem ersten aufbaut. Nebenbei zeigt er die Zahl am Source-Control-Symbol: So viele Dateien hat Claude angefasst.</p>
+  <Prompt label="Zweiter Versuch – präzise">Auf den Feature-Karten der Startseite soll der Titel etwas größer und das Icon kleiner sein, weil man beim Überfliegen zuerst den Titel sucht. Ändere nur die Karten, sonst nichts. Sag mir danach, was ich im Browser sehen soll.</Prompt>
+  <p>→ Gemeinsam: <strong>Wessen Vorhersage hat gestimmt – beim vagen und beim präzisen Auftrag?</strong> Und: Was stand im präzisen Auftrag, das im vagen fehlte? Die Antwort sind die vier Bausteine aus <a href="/konzepte/prompting">Prompt Engineering</a>. Präzise heißt vorhersagbar – für euch und für Claude. (Ein Durchlauf ist ein Beispiel, kein Beweis; wie stark derselbe Auftrag ohnehin streut, seht ihr in d).)</p>
 
   <h3 id="uebung-1-d">d) Mit einem Screenshot Feedback geben – zweimal (10 min)</h3>
   <p>Macht einen Screenshot der Vorschau (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd>, Windows: <kbd>Win</kbd><kbd>⇧</kbd><kbd>S</kbd>), zieht ihn ins Claude-Code-Terminal (oder fügt ihn mit <kbd>Strg/Ctrl</kbd><kbd>V</kbd> ein) und schreibt dazu:</p>
@@ -91,7 +91,7 @@ import FooterNav from '../components/FooterNav.astro';
     'Überschrift geändert und in der Vorschau geprüft',
     'Akzentfarbe zentral geändert – und ich weiß, wo die Stelle ist',
     'Vierte Karte eingebaut, auch am Handy geprüft',
-    'Live-Demo vage gegen präzise: Ergebnis vorher getippt und verglichen',
+    'Live-Demo vage gegen präzise: vorher gesagt, wie es aussieht, und verglichen',
     'Einmal Feedback per Screenshot gegeben',
     'Denselben Auftrag zweimal gestellt und die Ergebnisse verglichen',
     'Datei gelöscht, Fehler gelesen, per Source Control wiederhergestellt',
