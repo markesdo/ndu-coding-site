@@ -14,9 +14,9 @@ const bausteine = [
 <Layout title="Prompt Engineering">
   <span class="eyebrow">Konzept 2 · Tag 1 · Teil 3</span>
   <h1>Prompt Engineering</h1>
-  <p class="lead">Der Begriff klingt nach Zauberformeln. Gemeint ist das Gegenteil: ein Auftrag, den auch ein Mensch ohne Vorwissen richtig ausführen würde. Jeder Baustein macht die Balken spitzer – das Prüfkriterium fängt den Rest.</p>
+  <p class="lead">Der Begriff klingt nach Zauberformeln. Gemeint ist das Gegenteil: ein Auftrag, den auch ein Mensch ohne Vorwissen richtig ausführen würde. Jeder Baustein macht das Ergebnis treffsicherer – das Prüfkriterium fängt den Rest.</p>
 
-  <p>Auf der Seite <a href="/konzepte/llm">Was ein Sprachmodell tut</a> habt ihr gesehen: Jede Formulierung verschiebt die Wahrscheinlichkeiten für alles, was danach kommt. Prompt Engineering heißt, diese Verschiebung bewusst zu nutzen. Dafür braucht ihr kein neues Vokabular – <strong>ein gutes Issue ist bereits ein gut geschriebener Prompt.</strong></p>
+  <p>Auf der Seite <a href="/konzepte/llm">Was ein Sprachmodell tut</a> habt ihr gesehen: Jede Formulierung verschiebt die Wahrscheinlichkeiten für alles, was danach kommt. In der Animation dort sind das die Balken: ein hoher Balken heißt, das Modell ist sich sicher; viele gleich hohe heißen, es rät. Prompt Engineering heißt, diese Verschiebung bewusst zu nutzen. Dafür braucht ihr kein neues Vokabular – <strong>ein gutes Issue ist bereits ein gut geschriebener Prompt.</strong></p>
 
   <h2>Ein Auftrag, vier Bausteine</h2>
   <p>Bei einem Feature stehen drei der vier Bausteine schon im Issue – <code>/ndu-idee</code> schreibt euren <a href="/konzepte/spezifikation">Backlog</a> genau so. Issue 6 aus dem Beispiel-Backlog, die Farben markieren die Bausteine:</p>
@@ -65,13 +65,13 @@ const bausteine = [
   <p>Und: Beim sichtbaren Ergebnis nehmen aktuelle Modelle euch beim Wort. Gestaltung und Extras gibt es nur, wenn ihr sie bestellt. Kurz: Im Code macht Claude ohne Grenze eher zu viel, beim Aussehen ohne Ansage eher zu wenig. Wollt ihr mehr als das Minimum, sagt es ausdrücklich – das gehört zum Ziel: <em>„Gestalte die Seite liebevoll, mit Hover-Effekten und einer leeren Ansicht, wenn es noch keine Events gibt.“</em></p>
 
   <h2>Nach zwei Korrekturen: neu anfangen</h2>
-  <p>Wenn Claude nach zwei Korrekturen immer noch danebenliegt, hilft eine dritte selten. Die Fehlversuche stehen im Kontext und prägen die Fortsetzung – die Balken für den falschen Weg werden spitzer, nicht flacher. Besser: <code>/clear</code> und denselben Auftrag noch einmal, diesmal mit dem, was ihr inzwischen gelernt habt.</p>
+  <p>Wenn Claude nach zwei Korrekturen immer noch danebenliegt, hilft eine dritte selten. Die Fehlversuche stehen im Kontext und prägen die Fortsetzung – der falsche Weg wird wahrscheinlicher, nicht unwahrscheinlicher. Besser: <code>/clear</code> und denselben Auftrag noch einmal, diesmal mit dem, was ihr inzwischen gelernt habt.</p>
 
   <h2>Verfestigen: Befehle und CLAUDE.md</h2>
   <p>Einen guten Prompt schreibt man nicht dreimal. Was ihr wiederholt braucht, wird zu einem <strong>Befehl</strong> in <code>.claude/commands/</code> – so sind <code>/ndu-idee</code> und <code>/ndu-commit</code> entstanden: Hinter jedem steht ein ausführlicher Prompt, den ihr nicht mehr tippen müsst. Was in jeder Session gelten soll, gehört in die <code>CLAUDE.md</code> – kurz gehalten; Prüffrage pro Zeile: Würde etwas schiefgehen, wenn sie fehlt? Mehr dazu in <a href="/konzepte/agenten-steuern">Agenten steuern</a>.</p>
   <p class="small muted">Deshalb steht „Wenn etwas unklar ist, frag zuerst“ in vielen Prompts der Bibliothek, obwohl es auch in der <code>CLAUDE.md</code> steht: Die Verstärkung schadet nicht, und in Projekten ohne diese Regel ist sie nötig.</p>
 
-  <h2>Was die Balken bewegt – und was nicht</h2>
+  <h2>Was das Ergebnis verändert – und was nicht</h2>
   <div class="compare">
     <div class="card bad"><h3>Bewegt kaum</h3><ul class="small">
       <li><strong>„Du bist ein erfahrener Entwickler …“</strong> – Eine Rolle hilft, wenn sie fehlt. Claude Code bringt aber schon eine mit. Mehr bewirkt ein Maßstab: „Prüfe es, wie ein Team vor dem Launch prüft.“</li>
