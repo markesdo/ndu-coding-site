@@ -157,8 +157,9 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .callout.concept { --c: var(--purple); background: color-mix(in srgb, var(--purple) 8%, var(--bg-2)); }
 .callout-icon { flex: none; color: var(--c); }
 
-.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 1.25rem 0; }
-.grid .card { margin: 0; }
+/* Mindestbreite in rem, damit die Spalten im Beamer-Modus (größere Schrift) mitwachsen statt Wörter über den Kartenrand zu schieben. */
+.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); margin: 1.25rem 0; }
+.grid .card { margin: 0; overflow-wrap: break-word; }
 /* Vier Schritte ohne verwaiste vierte Karte: ab 1100 px eine Reihe (mit Seitenleiste sonst zu schmal), darunter 2 × 2, am Handy untereinander. */
 /* Der rote Faden: vier Schritte als Leiste, Ziffern in Mono, verbunden durch eine Haarlinie. Unter 1100px 2×2, am Handy untereinander. */
 .faden { list-style: none; padding: 0; margin: 1.5rem 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
