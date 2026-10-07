@@ -17,11 +17,11 @@ import { bild } from '../components/anleitung-bilder';
   </Callout>
 
   <h2>Checkliste</h2>
-  {/* id „setup2“: Häkchen werden nach Position gespeichert; Schritt 0 kam vorne dazu, alte Häkchen würden verrutschen. */}
-  <Checklist id="setup2" items={[
+  {/* id „setup3“: Häkchen werden nach Position gespeichert – ändert sich, was ein Punkt verlangt (zuletzt: Pro gleich kündigen), neue id, sonst gelten alte Häkchen weiter. */}
+  <Checklist id="setup3" items={[
     '<strong>Google Chrome</strong> installiert und aktuell – <a href="#chrome">Schritt 0</a>',
     '<strong>GitHub-Account</strong> mit der NDU-Adresse angelegt (oder NDU-Adresse im bestehenden Konto ergänzt) – <a href="#github">Schritt 1</a>',
-    '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Pro, <em>Monthly</em>; Kredit- oder Debitkarte) und gleich wieder gekündigt – läuft trotzdem bis Monatsende – <a href="#claude-pro">Schritt 2</a>',
+    '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Pro, <em>Monthly</em>; Kredit- oder Debitkarte) und gleich wieder gekündigt – läuft trotzdem bis zum Ende des bezahlten Monats. Wer schon Pro oder Max hat: nichts tun – <a href="#claude-pro">Schritt 2</a>',
     '<strong>Eigenes Repo</strong> aus dem Template erstellt („Use this template“) – <a href="#repo">Schritt 3</a>',
     '<strong>Codespace</strong> gestartet, Ordner als vertrauenswürdig bestätigt – <a href="#codespace">Schritt 4</a>',
     '<code>claude</code> im Terminal gestartet und angemeldet – <a href="#claude-code">Schritt 5</a>',
@@ -89,8 +89,8 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('setup/pro-6-checkout'), alt: 'Bezahlseite „Pro plan“: Rechnungsadresse, Kartendaten, Gesamtbetrag 21,60 €, Häkchen zur monatlichen Abbuchung, Button „Subscribe and Pay“', text: 'Oben muss <em>Pro · Monthly</em> stehen. Name und Adresse eintragen (1), dann die Kartendaten (2). Rechts seht ihr den echten Betrag mit Steuer und das Datum der automatischen Verlängerung. Häkchen setzen (3), <em>Subscribe and Pay</em> (4). <strong>Das Geld bekommt ihr von der NDU zurück</strong> – für diesen Monat und den Monat fürs Innolab. Hebt die Rechnung auf, die Anthropic per E-Mail schickt.', marks: [{ x: 297, y: 178, w: 431, h: 184, n: 1 }, { x: 297, y: 610, w: 431, h: 118, n: 2 }, { x: 795, y: 358, w: 378, h: 148, n: 3 }, { x: 800, y: 524, w: 369, h: 36, n: 4 }] },
   ]} />
   <Callout type="tip" title="Gleich kündigen, fürs Innolab neu abschließen">
-    <p>Pro verlängert sich jeden Monat von selbst. Kündigt es <strong>gleich nach dem Bezahlen</strong>: unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Ihr verliert nichts: Pro läuft bis zum Ende des bezahlten Monats weiter, also über alle drei Kurstage und die Zwischenwoche, und verlängert sich nur nicht mehr. So kann es niemand vergessen.</p>
-    <p>Im Innolab (28.11.–19.12.) braucht ihr Claude Pro wieder. Schließt es dann neu ab – mit demselben Konto, eure Chats und Einstellungen bleiben erhalten – und kündigt wieder gleich. Auch diesen Monat erstattet euch die NDU.</p>
+    <p>Pro verlängert sich jeden Monat von selbst. Kündigt es <strong>gleich nach dem Bezahlen</strong>: unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Ihr verliert nichts: Pro läuft bis zum Ende des bezahlten Monats weiter, also über alle drei Kurstage und die Zwischenwoche, und verlängert sich nur nicht mehr. So kann es niemand vergessen. <strong>Nur kündigen, keine Erstattung anfordern</strong> – eine Erstattung beendet Pro sofort, und Claude Code meldet sich ab. Wer schon vorher Pro oder Max hatte, kündigt nichts.</p>
+    <p>Im Innolab (28.11.–19.12.) braucht ihr Claude Pro wieder. Schließt es dann neu ab – mit demselben Konto, eure Chats und Einstellungen bleiben erhalten – und kündigt wieder gleich. Auch diesen Monat erstattet euch die NDU; hebt wieder die Rechnung aus der E-Mail auf.</p>
   </Callout>
 
   <h2 id="repo">3 · Eigenes Repo aus dem Template</h2>
