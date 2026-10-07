@@ -411,3 +411,17 @@ h2[id] { scroll-margin-top: 3.5rem; }
   .content { padding: 0; }
   .print-only { display: block; }
 }
+
+/* Zurück-Knopf nach einem Querverweis (Skript in Layout.astro). Unten links, über Schritt- und Orientierungsleiste. */
+.zurueck { position: fixed; left: 16px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 35; display: flex; align-items: stretch; max-width: min(88vw, 440px); background: var(--accent); color: var(--on-accent); border-radius: 999px; box-shadow: 0 8px 28px rgba(0, 0, 0, .28), 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); font-size: 1rem; font-weight: 600; }
+.zurueck a { padding: .75rem 1.1rem; min-height: 48px; display: flex; align-items: center; color: inherit; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zurueck a:hover { text-decoration: underline; }
+.zurueck a:focus-visible, .zurueck button:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; border-radius: 999px; }
+.zurueck button { font: inherit; font-size: 1.2rem; background: none; border: 0; border-left: 1px solid color-mix(in srgb, var(--on-accent) 35%, transparent); padding: 0 1rem; min-width: 48px; color: inherit; cursor: pointer; opacity: .85; }
+.zurueck button:hover { opacity: 1; }
+html[data-beamer] .zurueck { display: none; }
+@keyframes zurueck-ein { from { opacity: 0; transform: translateY(16px) scale(.96); } }
+@keyframes zurueck-puls { 0%, 100% { box-shadow: 0 8px 28px rgba(0, 0, 0, .28), 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); } 50% { box-shadow: 0 8px 28px rgba(0, 0, 0, .28), 0 0 0 10px color-mix(in srgb, var(--accent) 22%, transparent); } }
+@media (prefers-reduced-motion: no-preference) { .zurueck { animation: zurueck-ein .25s ease-out, zurueck-puls 1.2s ease-in-out .3s 2; } }
+@media print { .zurueck { display: none !important; } }
+
