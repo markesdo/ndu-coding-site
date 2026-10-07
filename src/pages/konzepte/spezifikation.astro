@@ -15,9 +15,53 @@ import FooterNav from '../../components/FooterNav.astro';
     <div class="card good"><h3>„Setze Issue 1 um“</h3><p class="small">Ein Issue, drei Akzeptanzkriterien, zwanzig Minuten. Ihr prüft drei Dinge, es stimmt oder es stimmt nicht. Dann das nächste. Nach sieben Issues habt ihr eine App, die genau das tut, was euer Produkt-Brief sagt – und ihr wisst bei jeder Funktion, warum sie da ist.</p><p class="small muted">Gut für: alles, was länger als einen Nachmittag leben soll.</p></div>
   </div>
 
-  <h2>Die drei Ebenen</h2>
+  <h2>Der Ablauf: Brief → Brainstorming → Backlog</h2>
   <ol class="steps">
-    <li><strong>Produkt-Brief (eine Seite, lebt)</strong> Für wen, welches Problem, was ist es in einem Satz, was ist es <em>nicht</em>, was gehört ins MVP, woran merkt man Erfolg – als Annahme: „Wir glauben, dass … Wir merken es, wenn …“. Oben steht eine Stand-Zeile mit Datum und letzter Änderung. Vorlage: <code>docs/PRODUKT-VORLAGE.md</code>, euer Brief: <code>docs/PRODUKT.md</code>. Claude liest ihn, bevor es ein Issue umsetzt – er ist das Gedächtnis des Produkts. In Unternehmen heißt so ein Dokument oft <strong>PRD</strong> (Product Requirements Document) oder Spec. Überholt ist 2026 das lange PRD, das vorab fertig sein muss: Ihr schreibt eine Seite, baut etwas Klickbares, zeigt es Menschen – und passt den Brief danach an.</li>
+    <li><strong>Produkt-Brief – eure Arbeit</strong> Für wen, welches Problem, was es <em>nicht</em> macht, woran ihr Erfolg merkt. Eine Seite. <code>/ndu-idee</code> führt euch mit ein paar Rückfragen hin; die Entscheidungen trefft ihr.</li>
+    <li><strong>Brainstorming – Claude als Sparringspartner</strong> Claude schlägt Funktionen vor, auch solche, auf die ihr selbst nicht gekommen wärt. Ihr sortiert jede Idee: MVP, Später oder Nein. Mit <code>/ndu-brainstorm</code>.</li>
+    <li><strong>Backlog – schreibt Claude, ihr prüft</strong> Aus dem MVP werden Issues mit Akzeptanzkriterien. Ihr lest sie gegen den Brief: Passt jedes Issue zu Zielgruppe und Problem? Fehlt eines?</li>
+  </ol>
+  <p>Der Brief ist die Stelle, an der ihr am meisten bewirkt: Alles danach leitet Claude daraus ab. Ein unscharfer Brief ergibt viele saubere Issues für das falsche Produkt.</p>
+
+  <h2 id="brief">Der Produkt-Brief</h2>
+  <p>Eine Seite in <code>docs/PRODUKT.md</code>, nach der Vorlage <code>docs/PRODUKT-VORLAGE.md</code>. Oben eine Stand-Zeile mit Datum und letzter Änderung – der Brief lebt: Ihr baut etwas Klickbares, zeigt es Menschen und passt ihn an. Claude liest ihn, bevor es ein Issue umsetzt; er ist das Gedächtnis des Produkts. In Unternehmen heißt so ein Dokument oft <strong>PRD</strong> (Product Requirements Document). Überholt ist 2026 das lange PRD, das vorab fertig sein muss.</p>
+  <div class="card brief">
+    <p><strong>Produkt-Brief – Campus Events</strong> <span class="muted small">· Stand: 8.10.2026 – erste Fassung</span></p>
+    <dl>
+      <dt>Für wen?</dt><dd>Lena, 24, organisiert für ihre Studiengruppe wöchentliche Lernsessions und zwei Partys pro Semester.</dd>
+      <dt>Welches Problem?</dt><dd>Einladungen gehen in fünf WhatsApp-Gruppen unter. Wer kommt, weiß Lena erst, wenn alle da sind – oder nicht.</dd>
+      <dt>In einem Satz</dt><dd>Eine Web-App, in der Studierende Events anlegen und andere mit einem Klick zusagen.</dd>
+      <dt>Macht NICHT</dt><dd>Keine Tickets und Bezahlung. Kein Chat. Keine Synchronisation mit dem Kalender.</dd>
+      <dt>MVP</dt><dd>Eventliste, Detailseite, Event anlegen, Anmelden, Zusagen.<br /><span class="muted">Später: Filter nach Kategorie, „Meine Events“, Beschreibung per KI, Erinnerungen.</span></dd>
+      <dt>Woran merken wir es?</dt><dd>Wir glauben, dass Lena ihre Lernsessions damit schneller voll bekommt. Wir merken es, wenn 5 Kommiliton*innen ohne Erklärung ein Event anlegen und zusagen.</dd>
+      <dt>Offene Fragen</dt><dd>Sollen auch Leute ohne NDU-Adresse zusagen können?</dd>
+    </dl>
+  </div>
+
+  <h3>Woran ihr einen guten Brief erkennt</h3>
+  <table>
+    <tr><th>Abschnitt</th><th>Zu unscharf</th><th>Gut</th></tr>
+    <tr><td><strong>Für wen?</strong></td><td>„Alle Studierenden“</td><td>Eine konkrete Person mit einer Situation: „Lena, organisiert wöchentlich Lernsessions“</td></tr>
+    <tr><td><strong>Problem</strong></td><td>„Events sind unübersichtlich“</td><td>Was heute nervt und wie es heute gelöst wird: „Einladungen gehen in WhatsApp unter“</td></tr>
+    <tr><td><strong>Macht NICHT</strong></td><td>leer</td><td>Drei Dinge, die ihr bewusst weglasst – der wichtigste Abschnitt, denn er hält Claude und euch klein</td></tr>
+    <tr><td><strong>Woran merken wir es?</strong></td><td>„Die App ist erfolgreich“</td><td>Mit 3–5 echten Menschen prüfbar: „5 Leute legen ohne Erklärung ein Event an“</td></tr>
+  </table>
+  <Callout type="tip" title="Die Zusammenfassung von Claude lesen">
+    <p>Vor dem Schreiben fasst <code>/ndu-idee</code> zusammen und trennt, was ihr gesagt habt, von dem, was Claude annimmt. Genau dort entscheidet sich, wessen Produkt es wird. Lest die Annahmen und korrigiert, was nicht stimmt – sonst steht im Brief Claudes Idee statt eurer.</p>
+  </Callout>
+
+  <h2 id="brainstorming">Brainstorming: Ideen, auf die ihr selbst nicht kommt</h2>
+  <p>Mit dem Brief als Grundlage geht ihr bewusst in die Breite. <code>/ndu-brainstorm</code> schlägt Runde für Runde drei bis fünf Funktionen vor – Naheliegendes und Ideen aus ähnlichen Produkten oder aus dem Alltag eurer Zielgruppe – und fragt bei jeder: <strong>MVP, Später oder Nein?</strong> Rüttelt eine Idee an eurem Brief, sagt Claude es. Am Ende stehen das MVP (höchstens fünf Funktionen) und die „Später“-Liste im Brief, und Claude schreibt daraus den Backlog – erst nach eurem Okay.</p>
+  <p>Das Wertvolle sind die Ideen, an die ihr nicht gedacht habt. Die Entscheidung bleibt bei euch: Eine gute Idee auf „Später“ zu legen, ist Produktarbeit, kein Verlust.</p>
+  <Callout type="info" title="Profi-Tipp: das Superpowers-Plugin">
+    <p><code>/ndu-brainstorm</code> ist angelehnt an das Brainstorming aus <strong>Superpowers</strong>, einem Plugin für Claude Code mit Arbeitsweisen für Brainstorming, Planung, Tests und Debugging. Installieren in Claude Code (auch im Codespace):</p>
+    <p><code>/plugin install superpowers@claude-plugins-official</code></p>
+    <p>Danach Claude neu starten und zum Beispiel schreiben: „Nutze das Brainstorming-Skill, um mit mir Funktionen für docs/PRODUKT.md zu sammeln.“ Superpowers verändert, wie Claude insgesamt arbeitet – mehr Planung und Tests, dafür mehr Verbrauch; mit Claude Pro seid ihr schneller am Limit. Für den Kurs reicht <code>/ndu-brainstorm</code>. Wieder entfernen: <code>/plugin uninstall superpowers</code>.</p>
+  </Callout>
+
+  <h2>Issues und Akzeptanzkriterien</h2>
+  <p>Die schreibt Claude aus dem MVP. Damit ihr sie prüfen könnt, müsst ihr wissen, wie ein gutes aussieht:</p>
+  <ol class="steps">
     <li><strong>Issue (Ziel und Abgrenzung)</strong> <em>Ziel:</em> ein, zwei Sätze – was danach möglich ist, für wen und warum. Der Grund erlaubt Claude, bessere Vorschläge zu machen als die wörtliche Umsetzung. <em>Nicht im Umfang:</em> was ausdrücklich nicht dazugehört. Diese Zeile verhindert, dass der Agent „hilfreich“ mehr baut, als ihr wolltet.</li>
     <li><strong>Akzeptanzkriterien (3–5 pro Issue) und „Fertig, wenn“</strong> <em>Gegeben [Ausgangslage], wenn [Aktion], dann [erwartetes Ergebnis].</em> Konkret genug, dass man sie durchklicken kann. Immer mindestens ein Negativfall: Was passiert bei leerem Feld, falschem Datum, ohne Login? Dazu eine Zeile <em>Fertig, wenn:</em> welcher Check zeigt, dass das Issue erledigt ist – etwa „alle Kriterien im Browser durchgeklickt, Zähler stimmt auch nach einem Reload“.</li>
   </ol>
@@ -50,9 +94,16 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Die häufigste Fehlerquelle ist nicht zu wenig, sondern zu viel. Fragen zum Schneiden: <em>Welche eine Sache muss funktionieren, damit eine echte Person das Produkt einmal sinnvoll benutzt?</em> Alles andere kommt auf die Liste „Später“. Das Backlog von Campus Events ist so geschnitten: Liste → Detail → Anlegen → Login → Zusagen. Nach jedem Schritt ist die App nützlicher als vorher, und nach jedem Schritt könnte man aufhören.</p>
 
   <h2>Prompts dafür</h2>
-  <Prompt label="Neue Idee → Produkt-Brief und Backlog" note="Claude fragt nach – eine Frage pro Nachricht –, schlägt 2–3 Varianten vor und schreibt Produkt-Brief und Backlog erst nach eurem Okay.">/ndu-idee [Idee in einem Satz]</Prompt>
-  <Prompt label="Backlog aus dem Produkt-Brief">Leite aus docs/PRODUKT.md 5–8 Issues ab, geordnet so, dass nach jedem Issue die App nützlicher ist als vorher. Jedes Issue bekommt: Ziel (ein, zwei Sätze: was danach möglich ist, für wen, warum), Nicht im Umfang, 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“, davon mindestens ein Negativfall, und eine Zeile „Fertig, wenn“ mit dem Check, der es zeigt. Schreib sie nach docs/BACKLOG.md. Markiere, welche Issues du für das absolute Minimum hältst.</Prompt>
-  <Prompt label="Ein Issue umsetzen">Setze Issue [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
+  <Prompt label="1 · Idee → Produkt-Brief" note="Kurzes Interview – eine Frage pro Nachricht –, dann schreibt Claude nach eurem Okay den Brief.">/ndu-idee [Idee in einem Satz]</Prompt>
+  <Prompt label="2 · Brief → Funktionen und Backlog" note="Claude schlägt Funktionen vor, ihr entscheidet je Idee: MVP, Später oder Nein. Danach schreibt Claude MVP und Backlog – nach eurem Okay.">/ndu-brainstorm</Prompt>
+  <Prompt label="3 · Ein Issue umsetzen">Setze Issue [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
 
   <FooterNav prev={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} next={{ href: '/tag-1#uebung-2', t: 'Übung 2 · Campus Events v0' }} />
 </Layout>
+
+<style>
+  .brief dl { display: grid; grid-template-columns: 11rem 1fr; gap: .4rem 1rem; margin: .75rem 0 0; }
+  .brief dt { font-weight: 600; }
+  .brief dd { margin: 0; }
+  @media (max-width: 600px) { .brief dl { grid-template-columns: 1fr; } .brief dd { margin-bottom: .5rem; } }
+</style>
