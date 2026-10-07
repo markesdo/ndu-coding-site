@@ -96,3 +96,4 @@ html .topbar .beamer-toggle[aria-pressed="true"], .beamer-toggle[aria-pressed="t
 .beamer-toggle kbd { font-family: var(--mono); font-size: .75em; color: var(--muted); }
 .topbar-actions { display: flex; gap: .5rem; align-items: center; }
 .sidebar .beamer-toggle { margin-top: 1.5rem; }
+

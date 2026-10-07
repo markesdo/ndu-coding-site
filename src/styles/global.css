@@ -183,6 +183,8 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .card h3 { margin-top: 0; }
 
 .pill { display: inline-block; font-size: .78rem; font-weight: 600; padding: .15rem .5rem; border-radius: 4px; background: var(--code-bg); color: var(--muted); }
+.pill.empf { background: var(--blue-soft); color: var(--blue); }
+.pill.credits { background: var(--yellow-soft); color: var(--yellow-ink); }
 .pill.demo { background: var(--purple-soft); color: var(--purple); }
 .pill.konzept { background: var(--blue-soft); color: var(--blue); }
 .pill.uebung { background: var(--green-soft); color: var(--green); }
