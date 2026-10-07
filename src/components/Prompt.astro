@@ -1,6 +1,6 @@
 ---
 // Prompt-Karte mit Copy-Button. Inhalt als Slot (Text wird 1:1 kopiert).
-import { Check, Copy, SquareTerminal } from '@lucide/astro';
+import { Check, Copy, Info, SquareTerminal } from '@lucide/astro';
 import { lueckenMarkieren } from './luecken';
 const { label = 'Prompt für Claude Code', note } = Astro.props;
 // [Lücken] wie „[Nummer]“ farbig markieren, damit man sieht, was zu ersetzen ist. Kopiert wird weiter der Text
@@ -17,8 +17,9 @@ const html = lueckenMarkieren(await Astro.slots.render('default'));
     </button>
   </div>
   <pre set:html={html}></pre>
-  {note && <p class="note">{note}</p>}
 </div>
+{/* Hinweis außerhalb der grauen Karte: Die Karte ist genau das, was kopiert wird. */}
+{note && <p class="prompt-note"><Info size={14} aria-hidden="true" /><span><strong>Hinweis</strong> {note}</span></p>}
 <script>
   document.querySelectorAll<HTMLButtonElement>('.prompt .copy').forEach(btn => {
     if (btn.dataset.bound) return; btn.dataset.bound = '1';

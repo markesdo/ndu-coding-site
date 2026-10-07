@@ -15,7 +15,7 @@ html[data-beamer] .content > .inner > h2 { margin-top: 2.5rem; padding-top: .9re
 html[data-beamer] .content h3 { font-size: 1.15rem; }
 html[data-beamer] .content .lead { font-size: 1.15rem; max-width: 50ch; color: var(--fg); }
 html[data-beamer] .content .block .desc, html[data-beamer] .content .faden p, html[data-beamer] .content .small,
-html[data-beamer] .content .callout, html[data-beamer] .content .prompt .note, html[data-beamer] .content .quiz .why { font-size: 1rem; }
+html[data-beamer] .content .callout, html[data-beamer] .content .prompt-note, html[data-beamer] .content .quiz .why { font-size: 1rem; }
 html[data-beamer] .content th { font-size: .8rem; }
 html[data-beamer] .content .block .pill, html[data-beamer] .content .eyebrow, html[data-beamer] .content .prompt .label,
 html[data-beamer] .content .footer-nav .fn-cap { font-size: .85rem; font-weight: 700; }
