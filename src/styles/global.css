@@ -411,3 +411,14 @@ h2[id] { scroll-margin-top: 3.5rem; }
   .content { padding: 0; }
   .print-only { display: block; }
 }
+
+/* Zurück-Knopf nach einem Querverweis (Skript in Layout.astro). Unten links, über Schritt- und Orientierungsleiste. */
+.zurueck { position: fixed; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 35; display: flex; align-items: stretch; max-width: min(80vw, 380px); background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 4px 16px rgba(0, 0, 0, .15); font-size: .9rem; }
+.zurueck a { padding: .6rem .8rem; min-height: 44px; display: flex; align-items: center; color: var(--fg); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zurueck a:hover { text-decoration: underline; }
+.zurueck button { font: inherit; font-size: 1.1rem; background: none; border: 0; border-left: 1px solid var(--border); padding: 0 .8rem; min-width: 44px; color: var(--muted); cursor: pointer; }
+html[data-beamer] .zurueck { display: none; }
+@keyframes zurueck-ein { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: no-preference) { .zurueck { animation: zurueck-ein .18s ease-out; } }
+@media print { .zurueck { display: none !important; } }
+

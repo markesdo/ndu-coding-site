@@ -163,5 +163,69 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         location.href = ziel;
       });
     </script>
+    <script>
+      // Zurück-Knopf: Wer aus einem Abschnitt (z. B. Tag 1 · Übung 1 b) auf einen Link zu einer anderen Seite klickt,
+      // bekommt dort unten links „← Zurück zu …“ und landet damit wieder an genau der Scroll-Position.
+      // Nicht für Menü, Kopfleiste, Weiter/Zurück, Schrittleiste und Inhaltsverzeichnis.
+      const KEY = 'ndu-zurueck';
+      const POS = 'ndu-zurueck-pos';
+      type Ruecksprung = { to: string; from: string; y: number; seite: string; abschnitt: string; len: number };
+      const lies = (k: string) => { try { return JSON.parse(sessionStorage.getItem(k) || 'null'); } catch { return null; } };
+      const weg = (k: string) => { try { sessionStorage.removeItem(k); } catch {} };
+      // Abschnittsname kurz halten: an einer Wortgrenze kürzen, nicht mitten im Wort.
+      const kuerzen = (t: string, max = 34) => (t.length <= max ? t : `${t.slice(0, t.lastIndexOf(' ', max)).replace(/[\s–-]+$/, '')} …`);
+
+      document.addEventListener('click', (e) => {
+        const a = (e.target as Element | null)?.closest<HTMLAnchorElement>('a[href]');
+        if (!a || a.origin !== location.origin || a.pathname === location.pathname) return;
+        if (a.closest('.sidebar, .topbar, .footer-nav, .stepbar, .toc, .zurueck')) { weg(KEY); return; }
+        const hs = [...document.querySelectorAll<HTMLElement>('.inner :is(h2, h3)[id]')];
+        const h = hs.filter((x) => x.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_FOLLOWING).pop();
+        if (!h) { weg(KEY); return; }
+        const k = h.cloneNode(true) as HTMLElement;
+        k.querySelectorAll('.pill').forEach((p) => p.remove());
+        const r: Ruecksprung = {
+          to: a.pathname, from: location.pathname, y: Math.round(scrollY),
+          seite: document.title.split(' · ')[0], abschnitt: kuerzen((k.textContent ?? '').replace(/\s+/g, ' ').replace(/\s*\(\d+\s*min\)\s*$/, '').trim()),
+          len: history.length + 1,
+        };
+        try { sessionStorage.setItem(KEY, JSON.stringify(r)); } catch {}
+      }, true);
+
+      // Zurück auf der Ursprungsseite: an die gemerkte Stelle scrollen (Fallback, wenn history.back nicht passt).
+      const pos = lies(POS) as { path: string; y: number } | null;
+      if (pos && pos.path === location.pathname) {
+        weg(POS);
+        addEventListener('load', () => scrollTo({ top: pos.y, behavior: 'instant' as ScrollBehavior }), { once: true });
+      }
+
+      const zeigen = () => {
+        const r = lies(KEY) as Ruecksprung | null;
+        if (!r || document.querySelector('.zurueck')) return;
+        if (r.to !== location.pathname) { weg(KEY); return; }
+        const box = document.createElement('div');
+        box.className = 'zurueck';
+        const link = document.createElement('a');
+        link.href = r.from;
+        link.textContent = `← Zurück zu ${r.seite} · ${r.abschnitt}`;
+        link.setAttribute('aria-label', `Zurück zu ${r.seite}, Abschnitt ${r.abschnitt}`);
+        const zu = document.createElement('button');
+        zu.type = 'button';
+        zu.textContent = '×';
+        zu.setAttribute('aria-label', 'Zurück-Hinweis schließen');
+        link.addEventListener('click', (e) => {
+          weg(KEY);
+          // Ohne Umwege seit der Ankunft: echtes „Zurück“ – der Browser stellt die Scroll-Position selbst wieder her.
+          const direkt = document.referrer && new URL(document.referrer).pathname === r.from && history.length === r.len;
+          if (direkt) { e.preventDefault(); history.back(); return; }
+          try { sessionStorage.setItem(POS, JSON.stringify({ path: r.from, y: r.y })); } catch {}
+        });
+        zu.addEventListener('click', () => { weg(KEY); box.remove(); });
+        box.append(link, zu);
+        document.body.append(box);
+      };
+      zeigen();
+      addEventListener('pageshow', zeigen);
+    </script>
   </body>
 </html>
