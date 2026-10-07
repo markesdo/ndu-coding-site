@@ -96,3 +96,7 @@ html .topbar .beamer-toggle[aria-pressed="true"], .beamer-toggle[aria-pressed="t
 .beamer-toggle kbd { font-family: var(--mono); font-size: .75em; color: var(--muted); }
 .topbar-actions { display: flex; gap: .5rem; align-items: center; }
 .sidebar .beamer-toggle { margin-top: 1.5rem; }
+
+/* Modell-Karten (Agenten steuern): vier nebeneinander bleiben lesbar, wenn die Innenabstände schrumpfen. */
+html[data-beamer] .modelle { gap: .75rem; }
+html[data-beamer] .modelle .card { padding: .9rem 1rem; }

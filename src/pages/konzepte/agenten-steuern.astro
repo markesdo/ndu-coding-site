@@ -3,6 +3,14 @@ import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import { Brain, FlaskConical, Wrench, Zap } from '@lucide/astro';
+
+const modelle = [
+  { id: 'haiku', icon: Zap, name: 'Haiku', rolle: 'Der Schnelle', staerke: 'Kleine, klar umrissene Aufgaben in Sekunden.', kurs: 'Braucht ihr nicht.', verbrauch: 1, befehl: '/model haiku' },
+  { id: 'sonnet', icon: Wrench, name: 'Sonnet', rolle: 'Das Arbeitstier', badge: 'Kurs-Empfehlung', staerke: 'Issues mit Akzeptanzkriterien, Erklären, Committen – schnell und sparsam.', kurs: 'Steht im Template, ihr müsst nichts tun.', verbrauch: 2, befehl: '/model sonnet' },
+  { id: 'opus', icon: Brain, name: 'Opus', rolle: 'Die Zweitmeinung', staerke: 'Planen, größere Umbauten, Festhängen nach zwei Korrekturen.', kurs: 'Nicht die Session umstellen, sondern <code>/ndu-beratung</code> – Opus rechnet nur für die eine Frage.', verbrauch: 3, befehl: '/model opus', hinweis: 'Im Pro-Plan ab Werk eingestellt, verbraucht das Kontingent mehrfach schneller.' },
+  { id: 'fable', icon: FlaskConical, name: 'Fable', rolle: 'Der Teure', badge: 'Usage Credits', staerke: 'Lange, selbstständige Arbeit an den schwersten Aufgaben.', kurs: 'Nein. Im Pro-Plan nicht im Abo – echtes Geld, und nach dem ersten Ja fragt Claude Code nicht mehr.', verbrauch: 4, befehl: 'nicht auswählen' },
+];
 ---
 <Layout title="Agenten steuern">
   <span class="eyebrow">Konzept 6 · Tag 2</span>
@@ -49,19 +57,59 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2 id="modell">Modell & Kontingent</h2>
   <p>Claude Pro hat ein Nutzungskontingent pro 5-Stunden-Fenster und zusätzlich ein Wochenlimit; claude.ai und Claude Code teilen es sich. Wie viel verbraucht ist und wofür, zeigt <code>/usage</code> – schaut mittags und nachmittags kurz hinein. Am meisten frisst nicht das Modell, sondern ein großer Kontext: lange Sessions ohne <code>/clear</code> und „lies das ganze Projekt“.</p>
-  <p>Im Template arbeitet Claude mit <strong>Sonnet</strong>. Ab Werk wäre im Pro-Plan Opus eingestellt – stärker, aber es verbraucht das Kontingent schneller. Für die meisten Issues mit klaren Akzeptanzkriterien reicht Sonnet. Für die schwierigen Fälle wechselt ihr nicht das Modell, sondern holt euch eine Zweitmeinung:</p>
-  <table>
-    <tr><th>Situation</th><th>Was ihr tut</th></tr>
-    <tr><td>Issue umsetzen, kleine Änderung, erklären, committen</td><td>Sonnet – nichts tun</td></tr>
-    <tr><td>Neues Produkt planen, größerer Umbau</td><td><code>/ndu-beratung</code> zum Plan</td></tr>
-    <tr><td>Claude dreht sich nach zwei Korrekturen im Kreis</td><td><code>/ndu-beratung</code>, dann <code>/clear</code> und neu mit präziserem Auftrag</td></tr>
-    <tr><td>Vor einem Pull Request</td><td><code>/code-review</code> (<a href="/konzepte/qualitaet">Tag 3</a>), bei Unsicherheit <code>/ndu-beratung</code></td></tr>
-  </table>
+  <p>Im Template läuft <strong>Sonnet</strong>; Opus wäre der Standard im Pro-Plan. Die vier Modelle im Überblick:</p>
+  <ul class="modelle">
+    {modelle.map((m) => (
+      <li class="card" data-modell={m.id}>
+        <h3><m.icon size={20} aria-hidden="true" /> {m.name}</h3>
+        <p class="rolle">{m.rolle}</p>
+        {m.badge && <p><span class={`pill ${m.id === 'fable' ? 'credits' : 'empf'}`}>{m.badge}</span></p>}
+        <p>{m.staerke}</p>
+        <p><strong>Im Kurs:</strong> <Fragment set:html={m.kurs} /></p>
+        {m.hinweis && <p class="small muted">{m.hinweis}</p>}
+        <p class="meter" aria-label={`Verbrauch: ${m.verbrauch} von 4`}>
+          {[1, 2, 3, 4].map((i) => <i class={i <= m.verbrauch ? 'an' : ''} aria-hidden="true"></i>)}
+          <span aria-hidden="true">Verbrauch</span>
+        </p>
+        <code class={m.id === 'fable' ? 'nicht' : ''}>{m.befehl}</code>
+      </li>
+    ))}
+  </ul>
+
+  <h3>Wann welches?</h3>
+  <dl class="begriffe wann">
+    <dt>Issue umsetzen, erklären, committen</dt><dd><strong>Sonnet</strong> – nichts tun.</dd>
+    <dt>Neues Produkt, größerer Umbau, Claude dreht sich im Kreis</dt><dd><code>/ndu-beratung</code>, danach <code>/clear</code> und neu mit präziserem Auftrag.</dd>
+    <dt>Limit erreicht, Usage Credits angeboten</dt><dd><strong>Ablehnen</strong>, Pause, <code>/clear</code>, weiter, wenn das Fenster zurückgesetzt ist. Auf claude.ai auszuweichen hilft nicht – es zählt zum selben Kontingent.</dd>
+  </dl>
+  <p class="small muted">Wechseln: <code>/model sonnet</code> – im Auswahlmenü mit <kbd>s</kbd> nur für diese Session. Beim Start: <code>claude --model sonnet</code>. Dauerhaft: <code>"model": "sonnet"</code> in <code>.claude/settings.json</code>, so wie im Template.</p>
   <p><code>/ndu-beratung</code> funktioniert wie eine Rücksprache mit einer erfahrenen Kollegin: Claude schreibt einen kurzen Auftrag mit allem Nötigen, ein <strong>Subagent mit Opus</strong> liest die Dateien in seinem eigenen Kontext und gibt eine Empfehlung zurück. Eure Session bleibt auf Sonnet und klein, Opus rechnet nur für diese eine Frage. Eine Beratung kostet trotzdem spürbar mehr als eine normale Frage – setzt sie gezielt ein, nicht nach jedem Schritt.</p>
   <Prompt label="Ohne den Befehl – derselbe Gedanke als Prompt">Hol dir dazu eine Zweitmeinung von einem Subagenten mit Opus: Gib ihm Ziel, bisherige Versuche und die betroffenen Dateien, er soll nichts ändern und eine Empfehlung mit Begründung geben. Fass sie mir in fünf Sätzen zusammen.</Prompt>
-  <Callout type="warn" title="Kein Fable, keine Usage Credits">
-    <p>Im Modellwechsler (<code>/model</code>) steht auch <strong>Fable</strong> bzw. <code>best</code>. Im Pro-Plan wird das über Usage Credits abgerechnet – echtes Geld zusätzlich zum Abo. Wenn Claude Code fragt, ob es Usage Credits verwenden darf, oder euch beim Limit Usage Credits angeboten werden: ablehnen. Pause machen, <code>/clear</code>, weiter, wenn das Fenster zurückgesetzt ist. Auf claude.ai auszuweichen hilft nicht – es zählt zum selben Kontingent.</p>
-  </Callout>
 
   <FooterNav prev={{ href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' }} next={{ href: '/tag-2#uebung-5', t: 'Übung 5 · Deploy' }} />
 </Layout>
+
+<style>
+  .modelle { list-style: none; padding: 0; margin: 1.25rem 0 1.75rem; display: grid; gap: 1rem; grid-template-columns: repeat(4, 1fr); }
+  .modelle .card { margin: 0; padding: 1rem 1.1rem; border-top: 3px solid var(--farbe); display: flex; flex-direction: column; gap: .45rem; font-size: .95rem; }
+  .modelle p { margin: 0; }
+  [data-modell="haiku"] { --farbe: var(--green); }
+  [data-modell="sonnet"] { --farbe: var(--blue); }
+  [data-modell="opus"] { --farbe: var(--purple); }
+  [data-modell="fable"] { --farbe: var(--yellow); background: color-mix(in srgb, var(--yellow) 10%, var(--bg-2)); }
+  .modelle h3 { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: 0; font-size: 1.1rem; }
+  .modelle h3 :global(svg) { color: var(--farbe); flex: none; }
+  .modelle .rolle { color: var(--muted); font-family: var(--mono); font-size: .8rem; }
+  .pill.empf { background: var(--blue-soft); color: var(--blue); }
+  .pill.credits { background: var(--yellow-soft); color: var(--yellow-ink); }
+  .modelle .meter { margin-top: auto; padding-top: .35rem; display: flex; gap: .25rem; align-items: center; color: var(--farbe); }
+  .modelle .meter i { width: .75em; height: .75em; border-radius: 2px; border: 1.5px solid currentColor; }
+  .modelle .meter i.an { background: currentColor; }
+  .modelle .meter span { margin-left: .4rem; font-size: .78rem; color: var(--muted); }
+  .modelle code { align-self: flex-start; }
+  .modelle :global(code) { white-space: nowrap; }
+  .modelle code.nicht { color: var(--muted); }
+  .wann dt { font-size: 1rem; }
+  @media (max-width: 1100px) { .modelle { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .modelle { grid-template-columns: 1fr; } }
+</style>
