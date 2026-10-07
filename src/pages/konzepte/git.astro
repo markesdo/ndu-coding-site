@@ -38,7 +38,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2 id="branch">Branch – einen Versuch abzweigen</h2>
   <p>Bisher landet jeder Commit direkt im Hauptstand <code>main</code> – und Vercel veröffentlicht genau diesen Stand. Für Tag 1 und 2 reicht das. Ein <strong>Branch</strong> lohnt sich, wenn ihr etwas ausprobieren wollt, ohne den laufenden Stand zu gefährden: ein riskantes Issue, zwei Design-Varianten, ein Umbau, bei dem ihr nicht wisst, ob er klappt. Gefällt das Ergebnis, wird der Branch zurück in <code>main</code> geführt (<strong>Merge</strong>); gefällt es nicht, lasst ihr ihn einfach liegen.</p>
   <Prompt label="Branch anlegen">Leg für Issue [Nummer] einen eigenen Branch an und arbeite dort. Sag mir, wie ich sehe, auf welchem Branch ich gerade bin.</Prompt>
-  <Prompt label="Branch zurückführen (ohne Pull Request)">Führ diesen Branch zurück in main, push beides und sag mir, ob es Konflikte gab.</Prompt>
+  <Prompt label="Branch zurückführen (ohne Pull Request) – erst, wenn alles geprüft ist: main geht sofort live">Führ diesen Branch zurück in main, push beides und sag mir, ob es Konflikte gab.</Prompt>
   <p>Nebeneffekt: Vercel baut für jeden gepushten Branch eine eigene <strong>Vorschau-Adresse</strong> – ihr könnt die Variante zeigen, bevor sie live geht. Ab Tag 3 ist Branch + <a href="#pull-request">Pull Request</a> pro Issue der Weg, den Profis gehen: <a href="/konzepte/qualitaet">Qualität & Review</a>.</p>
 
   <h3 id="pull-request">Pull Request – den Branch zur Prüfung vorlegen</h3>
@@ -48,7 +48,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <li><strong>Ein PR lohnt sich</strong>, sobald jemand anderes draufschauen soll, die Änderung riskant ist oder ihr die Vorschau zeigen wollt, bevor sie live geht.</li>
     <li><strong>Ab Tag 3:</strong> ein Branch und ein PR pro Issue.</li>
   </ul>
-  <Prompt label="Pull Request erstellen">Erstell einen Pull Request für diesen Branch. Beschreib in einfachen Worten, was sich geändert hat und wie ich es in der Vorschau prüfe.</Prompt>
+  <Prompt label="Pull Request erstellen">Erstell einen Pull Request für diesen Branch. Beschreib in einfachen Worten, was sich geändert hat und wie ich es in der Vorschau prüfe. Gib mir den Link.</Prompt>
   <p>Auf der PR-Seite prüft ihr die Vorschau und die Kommentare. Passt alles, klickt ihr auf <strong>Merge pull request</strong> – oder sagt es Claude. In beiden Fällen arbeitet ihr danach auf dem neuen Stand von <code>main</code> weiter, sonst startet der nächste Branch vom alten Code:</p>
   <Prompt label="Pull Request zusammenführen">Führ den Pull Request zusammen (falls noch offen) und räum danach auf: zurück auf main, neuen Stand holen, alten Branch löschen.</Prompt>
 
