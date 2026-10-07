@@ -10,14 +10,16 @@ import { bild } from '../components/anleitung-bilder';
 <Layout title="Setup & Accounts">
   <span class="eyebrow">Tag 1 · 09:30–10:45 · gemeinsam</span>
   <h1>Setup & Accounts</h1>
-  <p class="lead">Neun Schritte, nichts zu installieren. Am Ende läuft eure App im Browser und Claude Code wartet auf den ersten Auftrag.</p>
+  <p class="lead">Chrome vorab, dann neun Schritte – sonst nichts zu installieren. Am Ende läuft eure App im Browser und Claude Code wartet auf den ersten Auftrag.</p>
 
   <Callout type="info" title="Wir machen das gemeinsam">
     <p>Wir gehen die Schritte zusammen durch, einen nach dem anderen am Beamer. Niemand muss vorauslaufen. Hängt etwas, meldet euch – wir warten, bis alle so weit sind, und gehen dann gemeinsam zum nächsten Schritt.</p>
   </Callout>
 
   <h2>Checkliste</h2>
-  <Checklist id="setup" items={[
+  {/* id „setup2“: Häkchen werden nach Position gespeichert; Schritt 0 kam vorne dazu, alte Häkchen würden verrutschen. */}
+  <Checklist id="setup2" items={[
+    '<strong>Google Chrome</strong> installiert und aktuell – <a href="#chrome">Schritt 0</a>',
     '<strong>GitHub-Account</strong> mit der NDU-Adresse angelegt (oder NDU-Adresse im bestehenden Konto ergänzt) – <a href="#github">Schritt 1</a>',
     '<strong>Claude Pro</strong> abgeschlossen (claude.ai → Pro, <em>Monthly</em>; Kredit- oder Debitkarte) – <a href="#claude-pro">Schritt 2</a>',
     '<strong>Eigenes Repo</strong> aus dem Template erstellt („Use this template“) – <a href="#repo">Schritt 3</a>',
@@ -32,7 +34,7 @@ import { bild } from '../components/anleitung-bilder';
   <p class="small muted">Die Screenshots stammen von einem Testdurchgang mit einem neuen Konto am 5.10.2026. Die Oberflächen der Anbieter ändern sich laufend; wenn ein Button anders heißt oder woanders sitzt, sucht nach dem Wort aus der Anleitung. Klick auf ein Bild zeigt den ganzen Bildschirm; „Als Präsentation zeigen“ blättert mit den Pfeiltasten durch die Schritte.</p>
 
   <nav class="stepbar" aria-label="Schritte des Setups">
-    {[['github', '1'], ['claude-pro', '2'], ['repo', '3'], ['codespace', '4'], ['claude-code', '5'], ['app', '6'], ['explain', '7'], ['collaborator', '8'], ['education', '9'], ['orientierung', 'Codespace'], ['stoppen', 'Stoppen'], ['lokal', 'Lokal']].map(([id, t]) => (
+    {[['chrome', '0'], ['github', '1'], ['claude-pro', '2'], ['repo', '3'], ['codespace', '4'], ['claude-code', '5'], ['app', '6'], ['explain', '7'], ['collaborator', '8'], ['education', '9'], ['orientierung', 'Codespace'], ['devtools', 'DevTools'], ['stoppen', 'Stoppen'], ['lokal', 'Lokal']].map(([id, t]) => (
       <a href={`#${id}`} data-step={id}>{t}</a>
     ))}
   </nav>
@@ -49,6 +51,18 @@ import { bild } from '../components/anleitung-bilder';
     addEventListener('scroll', mark, { passive: true });
     mark();
   </script>
+
+  <h2 id="chrome">0 · Google Chrome – am besten vor dem Kurs</h2>
+  <p>Wir arbeiten im Kurs mit <strong>Google Chrome</strong>. Die Anleitungen und Screenshots auf dieser Website zeigen Chrome, die Entwicklertools für die Fehlersuche sind dort eingebaut, und Claude in Chrome (ab Tag 2, optional) läuft nur dort. Andere Browser gehen oft auch – aber dann sieht manches anders aus als hier.</p>
+  <p><strong>Chrome schon installiert?</strong> Kurz aktualisieren: oben rechts <em>⋮</em> → <em>Hilfe</em> → <em>Über Google Chrome</em>. Dann weiter mit Schritt 1.</p>
+  <Schritte id="chrome" nummer="0" steps={[
+    { img: bild('setup/chrome-1-download'), alt: 'Download-Seite von Google Chrome mit dem Button „Chrome herunterladen“ und dem Cookie-Hinweis unten', text: 'Auf <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">google.com/chrome</a> auf <em>Chrome herunterladen</em> klicken (1). Die Seite erkennt selbst, ob ihr Mac oder Windows habt. Den Cookie-Hinweis unten schließt ihr mit <em>Ok</em> (2).', marks: [{ x: 606, y: 309, w: 244, h: 54, n: 1 }, { x: 1368, y: 790, w: 82, h: 42, n: 2 }] },
+  ]} />
+  <ul>
+    <li><strong>Mac:</strong> Die Datei <code>googlechrome.dmg</code> aus den Downloads öffnen, das Chrome-Symbol in den Ordner <em>Programme</em> ziehen, Chrome dort starten.</li>
+    <li><strong>Windows:</strong> Die Datei <code>ChromeSetup.exe</code> aus den Downloads öffnen und die Rückfrage mit <em>Ja</em> bestätigen. Chrome installiert sich und startet von selbst.</li>
+    <li>Beim ersten Start fragt Chrome, ob es Standardbrowser werden soll und ob ihr euch anmelden wollt. Beides ist für den Kurs egal.</li>
+  </ul>
 
   <h2 id="github">1 · GitHub-Account mit eurer NDU-Adresse</h2>
   <p>GitHub speichert euren Code und startet später euren Codespace. <strong>Registriert euch mit eurer NDU-E-Mail-Adresse.</strong> Mit ihr könnt ihr zusätzlich GitHub Education beantragen (<a href="#education">Schritt 9</a>, optional): Studierende bekommen unter anderem mehr Codespaces-Kontingent – 180 statt 120 Core-Stunden pro Monat, auf der 2-Kern-Maschine also 90 statt 60 Stunden.</p>
@@ -165,7 +179,16 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('setup/ui-3-ports'), alt: 'Reiter Ports mit der Zeile „Campus Events“ und dem Globus-Symbol', text: '<strong>Ports</strong>: Jede laufende App bekommt hier eine Zeile mit eigener Adresse (1). Das Globus-Symbol (2, erscheint beim Darüberfahren) öffnet sie in einem neuen Browser-Tab. „Private“ heißt: Nur ihr seht sie, solange ihr bei GitHub angemeldet seid.', marks: [{ x: 206, y: 567, w: 1120, h: 20, n: 1 }, { x: 531, y: 568, w: 20, h: 18, n: 2 }] },
     { img: bild('setup/ui-4-source-control'), alt: 'Source Control mit Nachrichtenfeld, Button Commit und einer geänderten Datei', text: '<strong>Source Control</strong> (1, Verzweigungs-Symbol; die Zahl zeigt offene Änderungen): Was hat sich seit dem letzten Sichern geändert? Nachricht eintippen und <em>Commit</em> (2) sichert den Stand – oder ihr lasst das <code>/ndu-commit</code> erledigen. Unter <em>Changes</em> stehen die geänderten Dateien (3); der gebogene Pfeil (4) macht die Änderung an einer Datei rückgängig. Das ist euer Undo-Knopf – mit einer Ausnahme: Steht rechts neben der Datei ein <strong>U</strong> (neu, wie hier <code>.mcp.json</code>), <strong>löscht</strong> der Pfeil die ganze Datei. VS Code fragt vorher nach.', marks: [{ x: 7, y: 150, w: 34, h: 34, n: 1 }, { x: 64, y: 90, w: 258, h: 56, n: 2 }, { x: 60, y: 172, w: 180, h: 20, n: 3 }, { x: 258, y: 172, w: 18, h: 18, n: 4 }] },
   ]} />
-  <p class="small muted">Fehler im Frontend seht ihr nicht im Terminal, sondern in der Browser-Konsole eurer App: im App-Tab Rechtsklick → Untersuchen → Console.</p>
+
+  <h2 id="devtools">Entwicklertools in Chrome</h2>
+  <p>Chrome hat Werkzeuge für Entwickler*innen eingebaut, die <strong>DevTools</strong>. Ihr braucht davon zwei Dinge: die <strong>Konsole</strong>, in der Fehler aus dem Frontend stehen – im Terminal seht ihr sie nicht –, und die <strong>Handy-Ansicht</strong>, um eure App schmal zu prüfen. Öffnen im Tab eurer App:</p>
+  <ul>
+    <li>Rechtsklick irgendwo auf die Seite → <em>Untersuchen</em></li>
+    <li>oder direkt die Konsole: Mac <kbd>⌘</kbd> <kbd>⌥</kbd> <kbd>J</kbd>, Windows <kbd>Strg</kbd> <kbd>Umschalt</kbd> <kbd>J</kbd> (oder <kbd>F12</kbd>)</li>
+  </ul>
+  <Schritte id="devtools" steps={[
+    { img: bild('setup/chrome-2-konsole'), alt: 'Campus-Events-App, unten die geöffneten Entwicklertools mit dem Reiter Console und einer roten Fehlerzeile', text: 'Unten (oder rechts) öffnen sich die DevTools. Der Reiter <em>Console</em> (1, in deutschem Chrome <em>Konsole</em>) zeigt die Meldungen der Seite. <strong>Rote Zeilen</strong> (3) sind Fehler – genau die kopiert ihr für Claude (siehe <a href="/hilfe">Hilfe holen</a>). Das Handy-Symbol (2) schaltet die Handy-Ansicht ein; oben wählt ihr dann ein Gerät, z. B. ein iPhone. Nochmal klicken schaltet zurück, das <em>×</em> ganz rechts schließt die DevTools.', marks: [{ x: 139, y: 603, w: 66, h: 24, n: 1 }, { x: 33, y: 602, w: 24, h: 26, n: 2 }, { x: 5, y: 700, w: 1430, h: 32, n: 3 }], crop: false },
+  ]} />
 
   <h2 id="stoppen">Nach dem Kurstag: Codespace stoppen</h2>
   <p>Ein laufender Codespace verbraucht euer Kontingent (60 Stunden pro Monat, mit Education 90) – auch wenn der Tab zu ist, bis er nach 30 Minuten ohne Eingabe von selbst stoppt. Auf <a href="https://github.com/codespaces" target="_blank" rel="noopener">github.com/codespaces</a> beim Codespace auf „…“:</p>
