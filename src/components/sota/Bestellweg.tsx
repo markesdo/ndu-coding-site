@@ -149,7 +149,7 @@ function ZettelKarte({ zettel }: { zettel: Zettel }) {
 function Gegenstandkarte({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: number }) {
   return (
     <div className="bw-event">
-      <div className="bw-event-titel">Gegenstand 42 · Beamer</div>
+      <div className="bw-event-titel">Gegenstand 42 · Samtsessel</div>
       <div className="bw-event-wer">{z.angemeldet ? `angemeldet als ${z.nutzer}` : `${z.nutzer} · nicht angemeldet`}</div>
       <div className="bw-event-zahl">
         <strong>{z.angezeigt}</strong> Anfragen

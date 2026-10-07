@@ -140,7 +140,7 @@ const ZUSTAENDE: Zustand[] = [
 ];
 
 export const STEPS: Schritt[] = [
-  { title: 'Ausgangslage.', text: 'Mara sieht Gegenstand 42, den Beamer, im Browser: 12 Anfragen, daneben der Button „Ausleihen anfragen“. Die Zahl steht nirgends im Frontend fest – sie kommt aus der Datenbank.' },
+  { title: 'Ausgangslage.', text: 'Mara sieht Gegenstand 42, den Samtsessel, im Browser: 12 Anfragen, daneben der Button „Ausleihen anfragen“. Die Zahl steht nirgends im Frontend fest – sie kommt aus der Datenbank.' },
   { title: 'Frontend.', text: 'Mara klickt. Der Button schreibt einen Bestellzettel: `POST /api/requests` – „lege eine Anfrage an“ –, dazu Gegenstand 42 und wer klickt.' },
   { title: 'API.', text: 'Der Endpoint `/api/requests` nimmt den Zettel an und trägt ihn in die Küche. Ob die Bestellung geht, prüft der Kellner nicht.' },
   { title: 'Backend.', text: 'Die Küche prüft nacheinander: Ist Mara angemeldet? Gibt es Gegenstand 42? Hat sie ihn schon angefragt? Erst wenn alles stimmt, geht es weiter.' },

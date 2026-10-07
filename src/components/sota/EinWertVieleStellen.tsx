@@ -77,11 +77,11 @@ function MiniApp({ seite, markiert }: { seite: Seite; markiert: StelleId[] }) {
       <span className={`dt-suche${m('fokus')}`} style={{ outlineColor: f('fokus') } as CSSProperties}>Suchen …</span>
       <div className={`dt-karte${m('rand')}`} style={{ borderLeftColor: f('rand') }}>
         <div className="dt-karte-titel">
-          Lauftreff <span className={`dt-badge${m('badge')}`} style={{ background: f('badge') }}>Neu</span>
+          Samtsessel <span className={`dt-badge${m('badge')}`} style={{ background: f('badge') }}>Neu</span>
         </div>
-        <div className="dt-meta">21.10. · 07:30 · Sportplatz</div>
+        <div className="dt-meta">8 € pro Tag · NDU, Foyer</div>
         <div className="dt-knoepfe">
-          <span className={`dt-knopf${m('button')}`} style={{ background: f('button') }}>Ich komme</span>
+          <span className={`dt-knopf${m('button')}`} style={{ background: f('button') }}>Ausleihen anfragen</span>
           {/* Platz für den späteren Button reservieren, damit die Szene nicht springt. */}
           <span className={`dt-knopf${m('teilen')}${teilen ? '' : ' dt-versteckt'}`} style={{ background: teilen ?? f('badge') }}>Teilen</span>
         </div>
