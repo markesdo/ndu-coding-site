@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GUELTIG_SEKUNDEN, cookieLesen, gleich, istOeffentlich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './kurszugang';
+import { GUELTIG_SEKUNDEN, cookieLesen, gleich, istOeffentlich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zielMitAnker } from './kurszugang';
 
 const SECRET = 'a'.repeat(64);
 const PW = 'kurs-passwort';
@@ -111,6 +111,25 @@ describe('istOeffentlich', () => {
   it('kein Präfix-Leck: ähnliche Pfade und alle Kursseiten bleiben geschützt', () => {
     for (const p of ['/', '/tag-1', '/konzepte/llm', '/startseite', '/start-x', '/start/geheim', '/START', '/start.html', '//start', '/prompts']) {
       expect(istOeffentlich(p)).toBe(false);
+    }
+  });
+});
+
+describe('zielMitAnker (Login behält den Anker, z. B. /setup#lokal)', () => {
+  it('hängt den Anker aus der Adresse an das Ziel', () => {
+    expect(zielMitAnker('/setup', '#lokal')).toBe('/setup#lokal');
+    expect(sichererPfad(zielMitAnker('/setup', '#lokal'))).toBe('/setup#lokal');
+  });
+  it('doppelt ihn nicht, wenn das Ziel schon einen hat (nach falschem Passwort)', () => {
+    expect(zielMitAnker('/tag-1#uebung-1', '#uebung-1')).toBe('/tag-1#uebung-1');
+  });
+  it('ohne Anker oder ohne Ziel bleibt alles, wie es ist', () => {
+    expect(zielMitAnker('/setup', '')).toBe('/setup');
+    expect(zielMitAnker(null, '#lokal')).toBe(null);
+  });
+  it('ein Anker, den die Prüfung ablehnt, kostet nur den Anker, nicht das Ziel', () => {
+    for (const anker of ['#100%', '#a%20b', '#a\\b']) {
+      expect(zielMitAnker('/setup', anker)).toBe('/setup');
     }
   });
 });
