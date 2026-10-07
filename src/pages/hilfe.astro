@@ -1,34 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Prompt from '../components/Prompt.astro';
-import Callout from '../components/Callout.astro';
 ---
 <Layout title="Hilfe holen">
   <span class="eyebrow">Teams · #hilfe</span>
   <h1>Hilfe holen</h1>
   <p class="lead">Richtig um Hilfe bitten ist eine Fähigkeit, die ihr in jedem Projekt braucht – mit Menschen wie mit Agenten. Die Zutaten sind dieselben.</p>
 
-  <h2>Erst selbst, in dieser Reihenfolge</h2>
+  <h2>Erst selbst – vier Schritte</h2>
   <ol class="steps">
-    <li><strong>Fehlermeldung komplett kopieren</strong> – aus der Browser-Konsole (Rechtsklick → Untersuchen → Console) oder dem Terminal – und Claude mit dem Debug-Prompt geben.</li>
-    <li><strong>Neue Session</strong> <code>/clear</code>, Problem in einem Satz, kleiner als vorher.</li>
-    <li><strong><code>/ndu-check</code></strong> ausführen – oft steht die Ursache im Bericht.</li>
-    <li><strong>Zurück zum letzten funktionierenden Stand</strong> Source Control → Discard Changes. Dann in kleineren Schritten noch einmal.</li>
-    <li><strong><a href="/bekannte-probleme">Bekannte Probleme</a></strong> durchsehen.</li>
+    <li><strong>Claude fragen</strong> Fehlermeldung komplett kopieren – aus dem Terminal oder aus der Browser-Konsole (Rechtsklick → Untersuchen → Console) – und mit dem Debug-Prompt unten an Claude geben.</li>
+    <li><strong>Frisch anfangen</strong> Dreht sich Claude im Kreis: <code>/clear</code> und das Problem neu beschreiben, in einem Satz und kleiner als vorher.</li>
+    <li><strong>Prüfen lassen</strong> <code>/ndu-check</code> ausführen – der Bericht nennt oft die Ursache. Und kurz in <a href="/bekannte-probleme">Bekannte Probleme</a> schauen.</li>
+    <li><strong>Zurück zum letzten funktionierenden Stand</strong> Source Control → Discard Changes verwirft alles seit dem letzten Commit. Dann in kleineren Schritten noch einmal.</li>
   </ol>
   <Prompt label="Der Debug-Prompt">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [was ich getan habe]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
 
-  <h2>Dann in Teams – genau so</h2>
-  <Prompt label="Vorlage für #hilfe (kopieren und ausfüllen)">Repo: https://github.com/&lt;name&gt;/&lt;repo&gt;
-Live: https://….vercel.app (falls vorhanden)
+  <h2>Hilft nichts davon? Fragt in Teams</h2>
+  <ol class="steps">
+    <li><strong>Stand pushen</strong> <code>/ndu-commit</code> – auch wenn es gerade kaputt ist. Was auf GitHub liegt, kann Markus sich ansehen; eine Beschreibung allein reicht selten. Dafür muss er Collaborator sein (Repo → Settings → Collaborators).</li>
+    <li><strong>Vorlage ausfüllen und in #hilfe posten</strong> Kopieren, die Klammern ersetzen, abschicken.</li>
+  </ol>
+  <Prompt label="Vorlage für #hilfe">Repo: https://github.com/&lt;name&gt;/&lt;repo&gt;
+Live-URL: https://….vercel.app (falls vorhanden)
 Ich wollte: (ein Satz, z. B. „RSVP-Button einbauen“)
-Was passiert ist: (was ihr seht – Fehlermeldung als TEXT, kein Foto vom Bildschirm)
-Schon probiert: (1–3 Punkte)
-Wo: (Browser-Konsole / Terminal / Seite XY / Vercel-Build)</Prompt>
-
-  <Callout type="warn" title="Vorher pushen">
-    <p>Ohne gepushten Stand kann niemand helfen. <code>/ndu-commit</code> – auch wenn es gerade kaputt ist. Eine kaputte, sichtbare Version ist tausendmal hilfreicher als eine Beschreibung. Und: Markus muss Collaborator sein (Repo → Settings → Collaborators).</p>
-  </Callout>
+Stattdessen passiert: (Fehlermeldung als Text, kein Handyfoto)
+Wo: (Terminal / Browser-Konsole / Vercel-Build / Seite …)
+Schon probiert: (1–3 Punkte)</Prompt>
 
   <h2>Was eine gute Hilfeanfrage ausmacht</h2>
   <div class="compare">
