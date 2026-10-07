@@ -22,10 +22,10 @@ const bausteine = [
   <p>Bei einem Feature stehen drei der vier Bausteine schon im Issue – <code>/ndu-brainstorm</code> schreibt euren <a href="/konzepte/spezifikation">Backlog</a> genau so. Issue 6 aus dem Beispiel-Backlog, die Farben markieren die Bausteine:</p>
   <figure class="pa">
     <div class="pa-text">
-      <strong>Issue 6 – Zusagen (RSVP)</strong><br />
-      <span class="pa-zone" data-baustein="ziel"><sup>1</sup><strong>Ziel:</strong> Studierende sagen einem Event zu und können das zurücknehmen – damit Organisator*innen wissen, wie viele kommen.</span><br />
-      <span class="pa-zone" data-baustein="grenze"><sup>3</sup><strong>Nicht im Umfang:</strong> Warteliste, Erinnerungs-Mails.</span><br />
-      <span class="pa-zone" data-baustein="pruef"><sup>4</sup><strong>Akzeptanzkriterien:</strong> Gegeben ich bin angemeldet, wenn ich „Ich komme“ klicke, dann steigt der Zähler um 1. (… drei weitere) <strong>Fertig, wenn:</strong> der Zähler auch nach einem Reload stimmt.</span>
+      <strong>Issue 6 – Ausleihen anfragen</strong><br />
+      <span class="pa-zone" data-baustein="ziel"><sup>1</sup><strong>Ziel:</strong> Studierende fragen einen Gegenstand zum Ausleihen an und können die Anfrage zurückziehen – damit Besitzer*innen sehen, wer ihn haben möchte.</span><br />
+      <span class="pa-zone" data-baustein="grenze"><sup>3</sup><strong>Nicht im Umfang:</strong> Anfrage annehmen oder ablehnen, Zeitraum wählen, Bezahlung.</span><br />
+      <span class="pa-zone" data-baustein="pruef"><sup>4</sup><strong>Akzeptanzkriterien:</strong> Gegeben ich bin angemeldet, wenn ich „Ausleihen anfragen“ klicke, dann steigt der Zähler „Anfragen“ um 1. (… drei weitere) <strong>Fertig, wenn:</strong> der Zähler auch nach einem Reload stimmt.</span>
     </div>
     <figcaption>
       <ol class="pa-legende">
@@ -48,21 +48,21 @@ const bausteine = [
   <ol class="steps" start="3" style="counter-reset: step 2">
     <li><strong>Wenn es auf Aussehen oder Ort ankommt</strong> Dann fügt ihr den vierten Baustein hinzu, den Kontext: wo es hingehört, wie es aussehen soll, ein Screenshot.</li>
   </ol>
-  <Prompt label="Mit Kontext">Setze Issue 6 um. Der Button gehört auf die Detailseite eines Events und sieht aus wie „Events ansehen“ auf der Startseite.</Prompt>
+  <Prompt label="Mit Kontext">Setze Issue 6 um. Der Button gehört auf die Detailseite eines Gegenstands und sieht aus wie „Gegenstände ansehen“ auf der Startseite.</Prompt>
   <p class="small muted">Dateinamen müsst ihr nicht kennen – Claude sucht selbst. Wollt ihr eine bestimmte Datei zeigen: <code>@</code> tippen, ein paar Buchstaben des Namens (z. B. <code>@FeatureCard</code>) und aus der Liste wählen.</p>
 
   <h3>Die vier Bausteine im Einzelnen</h3>
   <p>Für Aufträge ohne Issue – eine schnelle Änderung, ein Fehler – schreibt ihr sie direkt in den Prompt.</p>
   <div class="grid vier">
-    <div class="card" data-baustein="ziel"><h3>1 · Ziel + Grund</h3><p class="small muted">Was soll danach möglich sein, für wen – und <strong>warum</strong>. Aus dem Grund leitet Claude Details ab, die ihr nicht aufgeschrieben habt: „damit Organisator*innen wissen, wie viele kommen“ heißt, es braucht einen Zähler.</p></div>
+    <div class="card" data-baustein="ziel"><h3>1 · Ziel + Grund</h3><p class="small muted">Was soll danach möglich sein, für wen – und <strong>warum</strong>. Aus dem Grund leitet Claude Details ab, die ihr nicht aufgeschrieben habt: „damit Besitzer*innen sehen, wer ihn haben möchte“ heißt, es braucht einen Zähler.</p></div>
     <div class="card" data-baustein="kontext"><h3>2 · Kontext zeigen</h3><p class="small muted">Zeigen statt beschreiben: eine Datei mit <code>@</code> nennen, einen Screenshot einfügen, die Fehlermeldung als Text mitgeben, auf ein vorhandenes Muster verweisen („wie die Eventkarte“) oder ein Beispiel geben, wie das Ergebnis aussehen soll. Was Claude sieht, muss es nicht raten.</p></div>
     <div class="card" data-baustein="grenze"><h3>3 · Grenze</h3><p class="small muted">Was dazugehört – und was nicht. Positiv formuliert wirkt sie besser: „Ändere nur die Detailseite“ statt „mach nichts anderes kaputt“. Ohne Grenze baut Claude technisch gern mehr als nötig: zusätzliche Dateien, Umbauten, die niemand bestellt hat.</p></div>
     <div class="card" data-baustein="pruef"><h3>4 · Prüfkriterium</h3><p class="small muted">Woran erkennt man, dass es fertig ist? Und: einen Beleg verlangen. Das ist der wichtigste Baustein – der einzige, der auch die Reststreuung abfängt.</p></div>
   </div>
 
   <h2>Wie viel Auftrag?</h2>
-  <p>Nicht jeder Prompt braucht alle vier Bausteine. <em>„Ändere die Überschrift auf ‚Was geht am Campus?‘ – sonst nichts.“</em> hat Ziel und Grenze, und das reicht. Bei einem Feature braucht ihr alle vier – meist stehen drei davon schon im Issue. Faustregel: <strong>Würde eine neue Kollegin ohne Vorwissen den Auftrag richtig ausführen?</strong> Wenn ja, ist er vollständig. Mehr Text macht ihn nicht besser.</p>
-  <p>Und: Beim sichtbaren Ergebnis nehmen aktuelle Modelle euch beim Wort. Gestaltung und Extras gibt es nur, wenn ihr sie bestellt. Kurz: Im Code macht Claude ohne Grenze eher zu viel, beim Aussehen ohne Ansage eher zu wenig. Wollt ihr mehr als das Minimum, sagt es ausdrücklich – das gehört zum Ziel: <em>„Gestalte die Seite liebevoll, mit Hover-Effekten und einer leeren Ansicht, wenn es noch keine Events gibt.“</em></p>
+  <p>Nicht jeder Prompt braucht alle vier Bausteine. <em>„Ändere die Überschrift auf ‚Leih dir, was du brauchst.‘ – sonst nichts.“</em> hat Ziel und Grenze, und das reicht. Bei einem Feature braucht ihr alle vier – meist stehen drei davon schon im Issue. Faustregel: <strong>Würde eine neue Kollegin ohne Vorwissen den Auftrag richtig ausführen?</strong> Wenn ja, ist er vollständig. Mehr Text macht ihn nicht besser.</p>
+  <p>Und: Beim sichtbaren Ergebnis nehmen aktuelle Modelle euch beim Wort. Gestaltung und Extras gibt es nur, wenn ihr sie bestellt. Kurz: Im Code macht Claude ohne Grenze eher zu viel, beim Aussehen ohne Ansage eher zu wenig. Wollt ihr mehr als das Minimum, sagt es ausdrücklich – das gehört zum Ziel: <em>„Gestalte die Seite liebevoll, mit Hover-Effekten und einer leeren Ansicht, wenn es noch keine Gegenstände gibt.“</em></p>
 
   <h2>Nach zwei Korrekturen: neu anfangen</h2>
   <p>Wenn Claude nach zwei Korrekturen immer noch danebenliegt, hilft eine dritte selten. Die Fehlversuche stehen im Kontext und prägen die Fortsetzung – der falsche Weg wird wahrscheinlicher, nicht unwahrscheinlicher. Besser: <code>/clear</code> und denselben Auftrag noch einmal, diesmal mit dem, was ihr inzwischen gelernt habt.</p>

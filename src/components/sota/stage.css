@@ -173,7 +173,7 @@
   background: var(--blue); color: var(--block-ink);
 }
 .bw-knopf svg { width: 1.1em; height: 1.1em; }
-.bw-knopf-zugesagt { background: var(--green); }
+.bw-knopf-angefragt { background: var(--green); }
 .bw-knopf-fehler { background: var(--accent); }
 .bw-klick { position: absolute; right: -1.1em; bottom: -.9em; color: var(--fg); display: flex; }
 .bw-klick svg { width: 1.5em; height: 1.5em; }

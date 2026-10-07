@@ -41,8 +41,8 @@ export interface Schritt {
 const stuecke = (prefix: string, art: Art, texte: string[]): Stueck[] =>
   texte.map((text, i) => ({ id: `${prefix}${i}`, text, art }));
 
-// Gleicher Anfang wie in der Kontextfenster-Animation: der RSVP-Button aus Campus Events.
-const AUFTRAG = stuecke('a', 'prompt', ['Füge', ' auf', ' der', ' Event', '-Seite', ' einen', ' Button', ' hinzu', ',', ' der']);
+// Gleicher Anfang wie in der Kontextfenster-Animation: der Anfrage-Button aus Leihbar.
+const AUFTRAG = stuecke('a', 'prompt', ['Füge', ' auf', ' der', ' Detail', 'seite', ' einen', ' Button', ' hinzu', ',', ' der']);
 const BEIM = stuecke('s1-', 'erzeugt', [' beim']);
 const REST_S1 = stuecke('s1-r', 'erzeugt', [' Klick', ' die', ' Zus', 'age', ' speichert', '.']);
 const ANGEMELDETEN = stuecke('s2-', 'erzeugt', [' angemeldeten']);

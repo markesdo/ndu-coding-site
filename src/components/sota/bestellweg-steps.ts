@@ -31,14 +31,14 @@ export interface Zustand {
   nutzer: string;
   angemeldet: boolean;
   klick: boolean;
-  button: 'offen' | 'zugesagt' | 'fehler';
-  /** Zusagen, die das Frontend anzeigt. */
+  button: 'offen' | 'angefragt' | 'fehler';
+  /** Anfragen, die das Frontend anzeigt. */
   angezeigt: number;
   pruefungen: [Pruefung, Pruefung, Pruefung];
-  /** Letzte Zeilen der Tabelle rsvps für Event 42. */
+  /** Letzte Zeilen der Tabelle requests für Gegenstand 42. */
   zeilen: Zeile[];
   neueZeile: string | null;
-  /** Zeilen für Event 42 laut Datenbank. */
+  /** Zeilen für Gegenstand 42 laut Datenbank. */
   anzahl: number;
   /** Die Datenbank war an diesem Vorgang nicht beteiligt. */
   unberuehrt: boolean;
@@ -51,7 +51,7 @@ export interface Schritt {
   text: string;
 }
 
-export const PRUEFUNGEN = ['angemeldet', 'Event 42 gibt es', 'noch nicht zugesagt'] as const;
+export const PRUEFUNGEN = ['angemeldet', 'Gegenstand 42 gibt es', 'noch nicht angefragt'] as const;
 
 export const WERKZEUG: Record<StationId, string> = {
   frontend: 'Browser · Konsole',
@@ -64,19 +64,19 @@ const ALT: Zeile[] = [
   { id: 'max', user: 'Max', zeit: '09:12' },
   { id: 'aylin', user: 'Aylin', zeit: '09:40' },
 ];
-const LENA: Zeile = { id: 'lena', user: 'Lena', zeit: 'jetzt' };
+const MARA: Zeile = { id: 'mara', user: 'Mara', zeit: 'jetzt' };
 
 const BESTELLUNG = (at: StationId, stempel = false): Zettel => ({
-  key: 'bestellung', art: 'bestellung', at, zeilen: ['POST /api/rsvp', 'Event 42 · Lena'], stempel,
+  key: 'bestellung', art: 'bestellung', at, zeilen: ['POST /api/requests', 'Gegenstand 42 · Mara'], stempel,
 });
 const ANTWORT = (at: StationId): Zettel => ({
-  key: 'antwort', art: 'antwort', at, von: 'backend', zeilen: ['200 · ok', '13 Zusagen'],
+  key: 'antwort', art: 'antwort', at, von: 'backend', zeilen: ['200 · ok', '13 Anfragen'],
 });
 
 const START: Zustand = {
   aktiv: 'frontend',
   zettel: null,
-  nutzer: 'Lena',
+  nutzer: 'Mara',
   angemeldet: true,
   klick: false,
   button: 'offen',
@@ -89,15 +89,15 @@ const START: Zustand = {
   werkzeuge: false,
 };
 
-const NACH_ZUSAGE: Zustand = {
+const NACH_ANFRAGE: Zustand = {
   ...START,
   pruefungen: ['ok', 'ok', 'ok'],
-  zeilen: [...ALT, LENA],
+  zeilen: [...ALT, MARA],
   anzahl: 13,
 };
 
 const JONAS: Zustand = {
-  ...NACH_ZUSAGE,
+  ...NACH_ANFRAGE,
   nutzer: 'Jonas',
   angemeldet: false,
   button: 'offen',
@@ -110,14 +110,14 @@ const ZUSTAENDE: Zustand[] = [
   { ...START, klick: true, zettel: BESTELLUNG('frontend') },
   { ...START, aktiv: 'api', zettel: BESTELLUNG('api', true) },
   { ...START, aktiv: 'backend', zettel: BESTELLUNG('backend', true), pruefungen: ['ok', 'ok', 'ok'] },
-  { ...NACH_ZUSAGE, aktiv: 'db', zettel: BESTELLUNG('db', true), neueZeile: 'lena' },
-  { ...NACH_ZUSAGE, aktiv: 'api', zettel: ANTWORT('api') },
-  { ...NACH_ZUSAGE, aktiv: 'frontend', zettel: ANTWORT('frontend'), button: 'zugesagt', angezeigt: 13 },
+  { ...NACH_ANFRAGE, aktiv: 'db', zettel: BESTELLUNG('db', true), neueZeile: 'mara' },
+  { ...NACH_ANFRAGE, aktiv: 'api', zettel: ANTWORT('api') },
+  { ...NACH_ANFRAGE, aktiv: 'frontend', zettel: ANTWORT('frontend'), button: 'angefragt', angezeigt: 13 },
   {
     ...JONAS,
     aktiv: 'backend',
     klick: true,
-    zettel: { key: 'bestellung-jonas', art: 'bestellung', at: 'backend', von: 'frontend', zeilen: ['POST /api/rsvp', 'Event 42 · ohne Login'], stempel: true },
+    zettel: { key: 'bestellung-jonas', art: 'bestellung', at: 'backend', von: 'frontend', zeilen: ['POST /api/requests', 'Gegenstand 42 · ohne Login'], stempel: true },
     pruefungen: ['fehler', 'offen', 'offen'],
   },
   {
@@ -140,13 +140,13 @@ const ZUSTAENDE: Zustand[] = [
 ];
 
 export const STEPS: Schritt[] = [
-  { title: 'Ausgangslage.', text: 'Lena sieht Event 42 im Browser: 12 Zusagen, daneben der Button „Ich komme“. Die Zahl steht nirgends im Frontend fest – sie kommt aus der Datenbank.' },
-  { title: 'Frontend.', text: 'Lena klickt. Der Button schreibt einen Bestellzettel: `POST /api/rsvp` – „lege eine Zusage an“ –, dazu Event 42 und wer klickt.' },
-  { title: 'API.', text: 'Der Endpoint `/api/rsvp` nimmt den Zettel an und trägt ihn in die Küche. Ob die Bestellung geht, prüft der Kellner nicht.' },
-  { title: 'Backend.', text: 'Die Küche prüft nacheinander: Ist Lena angemeldet? Gibt es Event 42? Hat sie schon zugesagt? Erst wenn alles stimmt, geht es weiter.' },
-  { title: 'Datenbank.', text: 'Neue Zeile in der Tabelle `rsvps`: Event 42, Lena, jetzt. Die Küche zählt nach: 13 Zeilen für Event 42.' },
+  { title: 'Ausgangslage.', text: 'Mara sieht Gegenstand 42, den Beamer, im Browser: 12 Anfragen, daneben der Button „Ausleihen anfragen“. Die Zahl steht nirgends im Frontend fest – sie kommt aus der Datenbank.' },
+  { title: 'Frontend.', text: 'Mara klickt. Der Button schreibt einen Bestellzettel: `POST /api/requests` – „lege eine Anfrage an“ –, dazu Gegenstand 42 und wer klickt.' },
+  { title: 'API.', text: 'Der Endpoint `/api/requests` nimmt den Zettel an und trägt ihn in die Küche. Ob die Bestellung geht, prüft der Kellner nicht.' },
+  { title: 'Backend.', text: 'Die Küche prüft nacheinander: Ist Mara angemeldet? Gibt es Gegenstand 42? Hat sie ihn schon angefragt? Erst wenn alles stimmt, geht es weiter.' },
+  { title: 'Datenbank.', text: 'Neue Zeile in der Tabelle `requests`: Gegenstand 42, Mara, jetzt. Die Küche zählt nach: 13 Zeilen für Gegenstand 42.' },
   { title: 'Antwort.', text: 'Die Antwort nimmt denselben Weg zurück: `200` – hat geklappt –, dazu die neue Zahl.' },
-  { title: 'Angekommen.', text: 'Das Frontend zeigt „Zugesagt · 13“. Die 13 hat es nicht selbst hochgezählt – sie stammt aus der Datenbank.' },
+  { title: 'Angekommen.', text: 'Das Frontend zeigt „Angefragt · 13“. Die 13 hat es nicht selbst hochgezählt – sie stammt aus der Datenbank.' },
   { title: 'Zweiter Versuch.', text: 'Jonas ist nicht angemeldet und klickt ebenfalls. Sein Zettel kommt bis in die Küche – dort scheitert die erste Prüfung.' },
   { title: 'Fehler zurück.', text: 'Die Antwort lautet `401` – nicht angemeldet. Jonas sieht „Bitte anmelden“. Die Datenbank hat davon nichts mitbekommen: weiterhin 13 Zeilen.' },
   { title: 'In welcher Schicht?', text: 'Entstanden im Backend, sichtbar im Frontend, in der Datenbank nie angekommen. Darum fragt ihr bei jedem Fehler zuerst: in welcher Schicht? Jede hat ihren eigenen Ort zum Nachsehen.' },

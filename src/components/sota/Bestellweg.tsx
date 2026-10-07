@@ -107,8 +107,8 @@ function Station({ id, z, bewegt, fahrt }: { id: StationId; z: Zustand; bewegt: 
       </div>
       <div className="bw-rolle">{s.rolle}</div>
       <div className="bw-inhalt">
-        {id === 'frontend' && <Eventkarte z={z} bewegt={bewegt} fahrt={fahrt} />}
-        {id === 'api' && <code className="bw-endpoint">/api/rsvp</code>}
+        {id === 'frontend' && <Gegenstandkarte z={z} bewegt={bewegt} fahrt={fahrt} />}
+        {id === 'api' && <code className="bw-endpoint">/api/requests</code>}
         {id === 'backend' && <Pruefungen liste={z.pruefungen} bewegt={bewegt} fahrt={fahrt} />}
         {id === 'db' && <Tabelle z={z} bewegt={bewegt} fahrt={fahrt} />}
       </div>
@@ -146,13 +146,13 @@ function ZettelKarte({ zettel }: { zettel: Zettel }) {
   );
 }
 
-function Eventkarte({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: number }) {
+function Gegenstandkarte({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: number }) {
   return (
     <div className="bw-event">
-      <div className="bw-event-titel">Event 42 · Filmabend</div>
+      <div className="bw-event-titel">Gegenstand 42 · Beamer</div>
       <div className="bw-event-wer">{z.angemeldet ? `angemeldet als ${z.nutzer}` : `${z.nutzer} · nicht angemeldet`}</div>
       <div className="bw-event-zahl">
-        <strong>{z.angezeigt}</strong> Zusagen
+        <strong>{z.angezeigt}</strong> Anfragen
       </div>
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
@@ -164,8 +164,8 @@ function Eventkarte({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: 
           // Der neue Zustand erscheint erst, wenn die Antwort angekommen ist.
           transition={{ duration: bewegt ? 0.2 : 0, delay: bewegt && z.button !== 'offen' ? fahrt : 0 }}
         >
-          {z.button === 'offen' && 'Ich komme'}
-          {z.button === 'zugesagt' && <><Check aria-hidden="true" /> Zugesagt</>}
+          {z.button === 'offen' && 'Ausleihen anfragen'}
+          {z.button === 'angefragt' && <><Check aria-hidden="true" /> Angefragt</>}
           {z.button === 'fehler' && <><CircleX aria-hidden="true" /> Bitte anmelden</>}
           {z.klick && z.button === 'offen' && (
             <motion.span
@@ -217,10 +217,10 @@ function Pruefungen({ liste, bewegt, fahrt }: { liste: Zustand['pruefungen']; be
 function Tabelle({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: number }) {
   return (
     <div className="bw-tabelle">
-      <div className="bw-tabelle-name"><code>rsvps</code></div>
+      <div className="bw-tabelle-name"><code>requests</code></div>
       <table>
         <thead>
-          <tr><th>event_id</th><th>user</th><th>created_at</th></tr>
+          <tr><th>item_id</th><th>user</th><th>created_at</th></tr>
         </thead>
         <tbody>
           <AnimatePresence initial={false}>
@@ -240,7 +240,7 @@ function Tabelle({ z, bewegt, fahrt }: { z: Zustand; bewegt: boolean; fahrt: num
         </tbody>
       </table>
       <div className="bw-tabelle-summe">
-        <strong>{z.anzahl}</strong> Zeilen für Event 42
+        <strong>{z.anzahl}</strong> Zeilen für Gegenstand 42
       </div>
     </div>
   );

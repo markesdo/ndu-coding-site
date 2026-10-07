@@ -32,18 +32,18 @@ describe('bestellweg-steps', () => {
 
   it('die neue Zeile entsteht erst in der Datenbank', () => {
     for (const s of [1, 2, 3, 4]) {
-      expect(stateAt(s).zeilen.map((z) => z.id)).not.toContain('lena');
+      expect(stateAt(s).zeilen.map((z) => z.id)).not.toContain('mara');
       expect(stateAt(s).anzahl).toBe(12);
     }
-    expect(stateAt(5).neueZeile).toBe('lena');
-    expect(stateAt(5).zeilen.map((z) => z.id)).toContain('lena');
+    expect(stateAt(5).neueZeile).toBe('mara');
+    expect(stateAt(5).zeilen.map((z) => z.id)).toContain('mara');
   });
 
   it('die angezeigte Zahl stammt aus der Datenbank', () => {
     expect(stateAt(1).angezeigt).toBe(stateAt(1).anzahl);
     expect(stateAt(6).angezeigt).toBe(12);
     expect(stateAt(7).angezeigt).toBe(stateAt(5).anzahl);
-    expect(stateAt(7).button).toBe('zugesagt');
+    expect(stateAt(7).button).toBe('angefragt');
   });
 
   it('die Antwort läuft vom Backend zurück', () => {

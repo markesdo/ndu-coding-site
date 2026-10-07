@@ -45,8 +45,8 @@ export const ROT = '#e8472b';
 export const BLAU = '#2457d6';
 
 const STELLEN: { id: StelleId; name: string; datei: string; token: string; hex: string }[] = [
-  { id: 'button', name: 'Button „Ich komme“', datei: 'RsvpButton.tsx', token: 'bg-accent', hex: 'bg-[#e8472b]' },
-  { id: 'link', name: 'Link „Alle Events“', datei: 'Header.tsx', token: 'text-accent', hex: 'text-[#e8472b]' },
+  { id: 'button', name: 'Button „Ausleihen anfragen“', datei: 'AnfrageButton.tsx', token: 'bg-accent', hex: 'bg-[#e8472b]' },
+  { id: 'link', name: 'Link „Alle Gegenstände“', datei: 'Header.tsx', token: 'text-accent', hex: 'text-[#e8472b]' },
   // Großbuchstaben: gleiche Farbe, aber für Suchen und Ersetzen ein anderer Text.
   { id: 'badge', name: 'Badge „Neu“', datei: 'Badge.tsx', token: 'bg-accent', hex: 'bg-[#E8472B]' },
   { id: 'rand', name: 'Kartenrand', datei: 'EventCard.tsx', token: 'border-accent', hex: 'border-[#e8472b]' },
@@ -133,7 +133,7 @@ const ZUSTAENDE: Zustand[] = [
 export const STEPS: Schritt[] = [
   {
     title: 'Zwei Apps, die gleich aussehen.',
-    text: 'Beide Versionen von Campus Events zeigen dieselbe Akzentfarbe an fünf Stellen: Button, Link, Badge, Kartenrand und der Rahmen im Suchfeld, wenn es aktiv ist. Im Browser seht ihr keinen Unterschied.',
+    text: 'Beide Versionen von Leihbar zeigen dieselbe Akzentfarbe an fünf Stellen: Button, Link, Badge, Kartenrand und der Rahmen im Suchfeld, wenn es aktiv ist. Im Browser seht ihr keinen Unterschied.',
   },
   {
     title: 'Der Unterschied steht im Code.',
@@ -149,7 +149,7 @@ export const STEPS: Schritt[] = [
   },
   {
     title: 'Niemand merkt es sofort.',
-    text: 'Das Badge erscheint nur bei neuen Events, der Rahmen nur, wenn jemand ins Suchfeld klickt. Solche Reste fallen oft erst Wochen später auf – meist jemand anderem.',
+    text: 'Das Badge erscheint nur bei neuen Gegenständen, der Rahmen nur, wenn jemand ins Suchfeld klickt. Solche Reste fallen oft erst Wochen später auf – meist jemand anderem.',
   },
   {
     title: 'Der Agent kopiert, was er sieht.',

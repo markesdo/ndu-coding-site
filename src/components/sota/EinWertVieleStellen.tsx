@@ -69,10 +69,10 @@ function MiniApp({ seite, markiert }: { seite: Seite; markiert: StelleId[] }) {
   const beschreibung = seite.stellen.map((s) => `${s.name}: ${farbname(farbe(seite, s))}`).join(', ');
 
   return (
-    <div className="dt-app" role="img" aria-label={`Campus Events – ${beschreibung}`}>
+    <div className="dt-app" role="img" aria-label={`Leihbar – ${beschreibung}`}>
       <div className="dt-app-kopf">
-        <span className="dt-marke">Campus Events</span>
-        <span className={`dt-link${m('link')}`} style={{ color: f('link') }}>Alle Events</span>
+        <span className="dt-marke">Leihbar</span>
+        <span className={`dt-link${m('link')}`} style={{ color: f('link') }}>Alle Gegenstände</span>
       </div>
       <span className={`dt-suche${m('fokus')}`} style={{ outlineColor: f('fokus') } as CSSProperties}>Suchen …</span>
       <div className={`dt-karte${m('rand')}`} style={{ borderLeftColor: f('rand') }}>

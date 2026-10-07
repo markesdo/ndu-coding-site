@@ -13,7 +13,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <ul>
     <li><strong>Eine Session pro Issue.</strong> Fertig → <code>/ndu-commit</code> → <code>/clear</code>. Der nächste Auftrag beginnt mit leerem Kopf und liest CLAUDE.md, Produkt-Brief und Backlog neu.</li>
     <li><strong><code>/compact</code></strong>, wenn ihr mitten in etwas steckt und die Antworten schlechter werden: Claude fasst den Verlauf zusammen und arbeitet mit der Zusammenfassung weiter.</li>
-    <li><strong>Gezielt füttern.</strong> „Schau dir <code>src/app/events/page.tsx</code> an“ statt „schau dir das Projekt an“. Die eine Fehlermeldung statt des ganzen Logs.</li>
+    <li><strong>Gezielt füttern.</strong> „Schau dir <code>src/app/gegenstaende/page.tsx</code> an“ statt „schau dir das Projekt an“. Die eine Fehlermeldung statt des ganzen Logs.</li>
     <li><strong><kbd>Esc</kbd> ist euer Freund.</strong> Wenn Claude in die falsche Richtung läuft, sofort stoppen – nicht abwarten und dann alles verwerfen.</li>
   </ul>
 
@@ -27,7 +27,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Eigene Befehle (Commands & Skills)</h2>
   <p><code>/ndu-idee</code>, <code>/ndu-brainstorm</code>, <code>/ndu-explain</code>, <code>/ndu-check</code>, <code>/ndu-commit</code> und <code>/ndu-beratung</code> sind <strong>nicht in Claude Code eingebaut</strong>, sondern Markdown-Dateien aus unserem Kurs-Template in <code>.claude/commands/</code> – wiederverwendbare Prompts mit festen Regeln. Das Präfix <code>ndu-</code> macht sie erkennbar; eingebaute Befehle wie <code>/clear</code> oder <code>/compact</code> haben keins. Ihr könnt weitere anlegen lassen: <code>/ndu-issue</code> (Issue aus einem Satz mit Kriterien erzeugen), <code>/ndu-review</code> (strenge Prüfung), <code>/ndu-deploy-check</code> (vor dem Push Build + Secrets prüfen).</p>
   <p>Commands und Skills sind inzwischen dasselbe Konzept: <code>.claude/commands/ndu-commit.md</code> oder <code>.claude/skills/ndu-commit/SKILL.md</code> ergeben beide <code>/ndu-commit</code>. Skills können zusätzlich Dateien mitbringen (Skripte, Vorlagen), und Claude lädt sie auch ungefragt, wenn die Beschreibung zur Aufgabe passt. Für Neues: Skill.</p>
-  <Prompt>Leg einen neuen Skill /ndu-issue an (in .claude/skills/ndu-issue/SKILL.md): Ich gebe einen Satz („Organisator*innen sollen Events absagen können“), du formulierst daraus ein Issue im Format von docs/BACKLOG.md – Ziel (ein, zwei Sätze: was danach möglich ist, für wen, warum), Nicht im Umfang, 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“ inklusive Negativfall und eine Zeile „Fertig, wenn“ –, hängst es ans Backlog und fragst, ob es priorisiert werden soll.</Prompt>
+  <Prompt>Leg einen neuen Skill /ndu-issue an (in .claude/skills/ndu-issue/SKILL.md): Ich gebe einen Satz („Besitzer*innen sollen Anfragen ablehnen können“), du formulierst daraus ein Issue im Format von docs/BACKLOG.md – Ziel (ein, zwei Sätze: was danach möglich ist, für wen, warum), Nicht im Umfang, 3–5 Akzeptanzkriterien im Format „Gegeben … wenn … dann …“ inklusive Negativfall und eine Zeile „Fertig, wenn“ –, hängst es ans Backlog und fragst, ob es priorisiert werden soll.</Prompt>
 
   <h2>Modi und Berechtigungen</h2>
   <table>

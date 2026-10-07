@@ -20,10 +20,10 @@ import { bild } from '../components/anleitung-bilder';
     <Block time="09:00–09:30" type="plenum" title="Recap & Quiz" href="#quiz">Acht Fragen zu Tag 1. Offene Probleme aus den Codespaces sammeln.</Block>
     <Block time="09:30–10:15" type="konzept" title="Konzept 4 · Daten & Backend" href="/konzepte/daten-backend">Datenbank, CRUD, API-Routen, Supabase, Secrets & .env, Row Level Security.</Block>
     <Block time="10:15–10:30" type="pause" title="Pause" />
-    <Block time="10:30–12:00" type="uebung" title="Übung 3 · Echte Daten" href="#uebung-3">Supabase-Projekt, MCP verbinden, Issue 4: Event anlegen und dauerhaft speichern.</Block>
+    <Block time="10:30–12:00" type="uebung" title="Übung 3 · Echte Daten" href="#uebung-3">Supabase-Projekt, MCP verbinden, Issue 4: Gegenstand anbieten und dauerhaft speichern.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
     <Block time="13:00–13:45" type="konzept" title="Konzept 5 · Verifizieren & Debuggen" href="/konzepte/verifizieren">Browser-Konsole vs. Terminal, Fehler übergeben, Definition of Done, der Agent prüft sich selbst.</Block>
-    <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & RSVP" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, in der Dreier-Runde reparieren. RLS prüfen.</Block>
+    <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & Anfragen" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, in der Dreier-Runde reparieren. RLS prüfen.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:00" type="konzept" title="Konzept 6 · Agenten steuern" href="/konzepte/agenten-steuern">Kontext-Hygiene, CLAUDE.md pflegen, Custom Commands, Subagents, MCP-Überblick, Kosten.</Block>
     <Block time="16:00–16:40" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel verbinden, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
@@ -40,7 +40,7 @@ import { bild } from '../components/anleitung-bilder';
       { q: 'Ihr habt eine Stunde mit Claude gearbeitet, nichts committet, und jetzt ist alles kaputt. Was hilft?', o: ['Codespace löschen', 'Source Control → Discard: zurück zum letzten Commit', 'Weiter prompten, bis es geht'], a: 1, w: 'Deshalb: nach jedem funktionierenden Issue committen – dann ist der Rückschritt klein.' },
       { q: 'Wofür ist Plan Mode?', o: ['Claude denkt und fragt, ändert aber noch nichts', 'Claude arbeitet schneller', 'Claude plant den Kurs'], a: 0, w: 'Für Neues und Unklares – Claude fragt und schlägt vor, statt zu raten. Für ein klares Issue mit Kriterien braucht ihr ihn nicht.' },
       { q: 'Ein API-Key gehört …', o: ['in die Datei, die ihn braucht', 'in .env.local – und die ist in .gitignore', 'in die CLAUDE.md'], a: 1, w: 'Ein Key, der einmal auf GitHub war, gilt als verbrannt.' },
-      { q: 'Was ist der Unterschied zwischen Website und Web-App?', o: ['Web-Apps sind größer', 'Web-Apps haben Login, speichern Daten und reagieren auf Nutzer*innen', 'Websites laufen nicht im Browser'], a: 1, w: 'Campus Events ist eine Web-App – sobald jemand zusagen kann, speichern wir Daten.' },
+      { q: 'Was ist der Unterschied zwischen Website und Web-App?', o: ['Web-Apps sind größer', 'Web-Apps haben Login, speichern Daten und reagieren auf Nutzer*innen', 'Websites laufen nicht im Browser'], a: 1, w: 'Leihbar ist eine Web-App – sobald jemand etwas anfragen kann, speichern wir Daten.' },
       { q: 'Claude sagt „Ich habe das getestet, es funktioniert.“ Was tut ihr?', o: ['Glauben', 'Selbst im Browser prüfen – ihr seid der letzte Prüfschritt', 'Nochmal fragen, ob es sicher ist'], a: 1, w: 'Claude sieht euren Browser nicht. Akzeptanzkriterien durchklicken.' },
     ].map((it, i) => (
       <div class="q" data-a={it.a}>
@@ -67,7 +67,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2 id="uebung-3">Übung 3 · Echte Daten <span class="pill uebung">90 min</span></h2>
-  <p>Bisher stehen die Events in einer Datei. Jetzt kommen sie in eine Datenbank – damit ein angelegtes Event auch nach dem Reload und für alle anderen da ist.</p>
+  <p>Bisher stehen die Gegenstände in einer Datei. Jetzt kommen sie in eine Datenbank – damit ein angebotener Gegenstand auch nach dem Reload und für alle anderen da ist.</p>
   <h3 id="supabase">a) Supabase-Projekt (gemeinsam, 15 min)</h3>
   <p class="small muted">Screenshots vom Testdurchgang mit einem neuen Konto am 5.10.2026. Klick auf ein Bild vergrößert es.</p>
   <Schritte id="supabase" nummer="3a" steps={[
@@ -76,8 +76,8 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('tag2/sb-3-orgs'), alt: 'Leere Organisationsliste mit Button „New organization“', text: 'Neue Konten starten ohne Organisation. <em>New organization</em>.', marks: [{ x: 681, y: 269, w: 134, h: 30 }] },
     { img: bild('tag2/sb-4-org'), alt: 'Formular „Create a new organization“ mit Type Personal und Plan Free', text: 'Name übernehmen, <em>Personal</em> und <em>Free – $0/month</em> lassen, <em>Create organization</em>.', marks: [{ x: 911, y: 437, w: 126, h: 30 }] },
     { img: bild('tag2/sb-5-region'), alt: 'Regionsauswahl, Central EU (Frankfurt) unter Specific Regions', text: 'Im Formular „Create a new project“ die Region öffnen. Vorausgewählt ist „Europe“; scrollt unter <em>Specific Regions</em> zu <em>Central EU (Frankfurt)</em>.', marks: [{ x: 686, y: 290, w: 250, h: 26 }] },
-    { img: bild('tag2/sb-6-projekt'), alt: 'Ausgefülltes Projektformular mit Name, Passwort, Region Frankfurt und Security-Optionen', text: 'Name <code>campus-events</code> (1). <em>Generate a password</em>, dann <em>Copy</em> (2) und das Passwort im Passwortmanager speichern – Supabase zeigt es nie wieder. Region Frankfurt (3). Unter <em>Security</em> zusätzlich <em>Enable automatic RLS</em> anhaken (4): Jede neue Tabelle ist dann von Anfang an durch Row Level Security geschützt. <em>Create new project</em> (5).', marks: [{ x: 652, y: 242, w: 384, h: 36, n: 1 }, { x: 962, y: 306, w: 69, h: 28, n: 2 }, { x: 652, y: 398, w: 384, h: 36, n: 3 }, { x: 652, y: 603, w: 260, h: 26, n: 4 }, { x: 915, y: 738, w: 122, h: 31, n: 5 }] },
-    { img: bild('tag2/sb-7-uebersicht'), alt: 'Projektübersicht campus-events, Status Healthy, oben der grüne Button „Connect“', text: 'Nach etwa 10 Sekunden steht das Projekt auf „Healthy“. Oben auf <em>Connect</em>.', marks: [{ x: 569, y: 6, w: 88, h: 30 }] },
+    { img: bild('tag2/sb-6-projekt'), alt: 'Ausgefülltes Projektformular mit Name, Passwort, Region Frankfurt und Security-Optionen', text: 'Name <code>leihbar</code> (1; im Screenshot steht noch der Name aus dem Testdurchgang). <em>Generate a password</em>, dann <em>Copy</em> (2) und das Passwort im Passwortmanager speichern – Supabase zeigt es nie wieder. Region Frankfurt (3). Unter <em>Security</em> zusätzlich <em>Enable automatic RLS</em> anhaken (4): Jede neue Tabelle ist dann von Anfang an durch Row Level Security geschützt. <em>Create new project</em> (5).', marks: [{ x: 652, y: 242, w: 384, h: 36, n: 1 }, { x: 962, y: 306, w: 69, h: 28, n: 2 }, { x: 652, y: 398, w: 384, h: 36, n: 3 }, { x: 652, y: 603, w: 260, h: 26, n: 4 }, { x: 915, y: 738, w: 122, h: 31, n: 5 }] },
+    { img: bild('tag2/sb-7-uebersicht'), alt: 'Projektübersicht des neuen Projekts, Status Healthy, oben der grüne Button „Connect“', text: 'Nach etwa 10 Sekunden steht das Projekt auf „Healthy“. Oben auf <em>Connect</em>.', marks: [{ x: 569, y: 6, w: 88, h: 30 }] },
     { img: bild('tag2/sb-8-connect'), alt: 'Connect-Dialog, Framework Next.js, darunter der Inhalt für .env.local', text: '<em>Framework</em> → <em>Next.js</em> (1). Unter „Add files“ steht der fertige Inhalt für <code>.env.local</code> (2): Project URL und Publishable Key (<code>sb_publishable_…</code>). Den braucht ihr gleich in Schritt c). Die „Legacy“-Keys (anon, service_role) braucht ihr nicht.', marks: [{ x: 1007, y: 263, w: 463, h: 36, n: 1 }, { x: 1086, y: 585, w: 382, h: 110, n: 2 }] },
   ]} />
   <p><strong>E-Mail-Bestätigung aus</strong> (für den Kurs): Authentication → <em>Sign In / Providers</em> → „Confirm email“ deaktivieren. Sonst braucht jede Test-Anmeldung eine echte E-Mail – und der Link darin führt im Codespace ins Leere.</p>
@@ -107,7 +107,7 @@ import { bild } from '../components/anleitung-bilder';
   <Prompt label="Im zweiten Terminal (nicht in Claude) – Adresse aus der Fehlerseite einsetzen">curl "http://localhost:12345/callback?code=…"</Prompt>
   <p><strong>Falls auch das nicht klappt:</strong> Verbindet den MCP-Server stattdessen mit einem persönlichen Zugriffstoken.</p>
   <ol class="small">
-    <li>Supabase → Account → <a href="https://supabase.com/dashboard/account/tokens" target="_blank" rel="noopener">Access Tokens</a> → neuen Token erzeugen, Name „Kurs-MCP“, auf euer Projekt <code>campus-events</code> beschränken. Token kopieren – er wird nur einmal angezeigt.</li>
+    <li>Supabase → Account → <a href="https://supabase.com/dashboard/account/tokens" target="_blank" rel="noopener">Access Tokens</a> → neuen Token erzeugen, Name „Kurs-MCP“, auf euer Projekt <code>leihbar</code> beschränken. Token kopieren – er wird nur einmal angezeigt.</li>
     <li>Im Terminal den bisherigen Eintrag entfernen: <code>claude mcp remove supabase</code></li>
     <li>Neu verbinden – <code>PROJECT-REF</code> und <code>TOKEN</code> ersetzen. Den <em>Project Ref</em> findet ihr in der Projekt-Adresse auf der Supabase-Übersicht (<code>https://<strong>abcdefgh</strong>.supabase.co</code> – das fett gedruckte Stück) oder in der Adresszeile des Dashboards nach <code>/project/</code>:</li>
   </ol>
@@ -122,38 +122,38 @@ import { bild } from '../components/anleitung-bilder';
   <h3 id="uebung-3-d">d) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
   <h3 id="uebung-3-e">e) Issue 4 bauen lassen (45 min)</h3>
-  <Prompt>Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle events anzulegen (mit sinnvollen Spalten und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/events.ts als Startdaten in die Datenbank. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
-  <p>Prüfen: Event anlegen → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
+  <Prompt>Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle items anzulegen (mit sinnvollen Spalten, einer optionalen Spalte bild_url und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen, und jede*r darf nur die eigenen Gegenstände ändern). Übernimm die Beispieldaten aus src/data/gegenstaende.ts als Startdaten in die Datenbank, mit ihren Bildern. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
+  <p>Prüfen: Gegenstand anbieten → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
   <h3 id="uebung-3-f">f) Sichern</h3>
   <Prompt>/ndu-check – und wenn alles grün ist: Issue 4 auf fertig setzen und /ndu-commit</Prompt>
   <Checklist id="t2-u3" items={[
     'Supabase-Projekt in Frankfurt angelegt, Passwort gespeichert',
     'Supabase-MCP verbunden (<code>/mcp</code> zeigt „connected“)',
     '<code>.env.local</code> angelegt und <strong>nicht</strong> im Source Control sichtbar',
-    'Tabelle <code>events</code> existiert, Beispieldaten sind drin',
-    'Event angelegt, Reload überlebt, Negativfall geprüft',
+    'Tabelle <code>items</code> existiert, Beispieldaten sind drin',
+    'Gegenstand angeboten, Reload überlebt, Negativfall geprüft',
     '<code>/ndu-check</code> grün, committet',
     'Einmal ohne und einmal mit Context7 gefragt und die Antworten verglichen',
   ]} />
 
   <hr />
-  <h2 id="uebung-4">Übung 4 · Login & RSVP <span class="pill uebung">90 min</span></h2>
+  <h2 id="uebung-4">Übung 4 · Login & Anfragen <span class="pill uebung">90 min</span></h2>
   <h3 id="uebung-4-a">a) Issue 5 – Anmelden (30 min)</h3>
-  <Prompt>Setze Issue 5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-events, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
-  <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, <code>/meine-events</code> aufrufen → Weiterleitung?</p>
-  <h3 id="uebung-4-b">b) Issue 6 – Zusagen (30 min)</h3>
-  <Prompt>Setze Issue 6 um: RSVP-Button pro Event mit Zähler, Zusage zurücknehmen, ohne Login zur Anmeldung führen. Tabelle rsvps mit RLS: jeder darf zählen, nur die eigene Zusage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle rsvps und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
+  <Prompt>Setze Issue 5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-anfragen, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
+  <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, <code>/meine-anfragen</code> aufrufen → Weiterleitung?</p>
+  <h3 id="uebung-4-b">b) Issue 6 – Ausleihen anfragen (30 min)</h3>
+  <Prompt>Setze Issue 6 um: Button „Ausleihen anfragen“ pro Gegenstand mit Zähler, Anfrage zurückziehen, ohne Login zur Anmeldung führen. Tabelle requests mit RLS: jeder darf zählen, nur die eigene Anfrage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle requests und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
   <h3 id="uebung-4-c">c) Absichtlich kaputt (20 min, Dreier-Runde)</h3>
   <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen, reihum: Ihr setzt euch an den Laptop der nächsten Person in der Runde (A an B, B an C, C an A) und müsst ihren Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurück an den eigenen Platz und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
   <h3 id="uebung-4-d">d) RLS-Test (10 min)</h3>
-  <p>Zwei Browser (einer im Inkognito-Modus), zwei Accounts. Account A sagt zu. Kann Account B diese Zusage löschen? Fragt Claude:</p>
-  <Prompt>Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle rsvps verhindern, dass jemand fremde Zusagen löscht oder ändert. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
+  <p>Zwei Browser (einer im Inkognito-Modus), zwei Accounts. Account A fragt einen Gegenstand an. Kann Account B diese Anfrage löschen? Fragt Claude:</p>
+  <Prompt>Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle requests verhindern, dass jemand fremde Anfragen löscht oder ändert. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
   <Checklist id="t2-u4-v2" items={[
     'Registrieren, anmelden, abmelden funktioniert; Konto in Supabase sichtbar',
-    '<code>/meine-events</code> leitet ohne Login weiter',
-    'Zusagen und zurücknehmen, Zähler stimmt',
+    '<code>/meine-anfragen</code> leitet ohne Login weiter',
+    'Anfragen und zurückziehen, Zähler stimmt',
     'Fehlerkarte eingebaut – die nächste Person in der Runde hat ihn gefunden, und ich habe ihren gefunden',
-    'RLS getestet: fremde Zusagen sind geschützt',
+    'RLS getestet: fremde Anfragen sind geschützt',
     'Issue 5, Issue 6 (und optional Issue 7) auf „fertig“, committet',
   ]} />
 
@@ -169,13 +169,13 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('tag2/vc-6-git'), alt: '„Let’s build something new“, unter Import Git Repository der Button GitHub', text: 'Unter <em>Import Git Repository</em> auf <em>GitHub</em>.', marks: [{ x: 225, y: 471, w: 292, h: 38 }] },
     { img: bild('tag2/vc-7-install'), alt: 'Hinweis „Install the GitHub application…“ mit Button „Install“', text: 'Vercel braucht Zugriff auf eure Repos: <em>Install</em>. Es öffnet sich ein eigenes Fenster.', marks: [{ x: 323, y: 577, w: 96, h: 38 }] },
     { img: bild('tag2/vc-8-popup'), alt: 'GitHub-Fenster „Install Vercel“ mit „All repositories“ und Button „Install“', text: 'Im neuen Fenster <em>All repositories</em> lassen (1) und <em>Install</em> (2). Das Fenster schließt sich danach selbst.', marks: [{ x: 338, y: 536, w: 270, h: 44, n: 1 }, { x: 340, y: 1508, w: 188, h: 72, n: 2 }] },
-    { img: bild('tag2/vc-9-import'), alt: 'Liste mit dem Repo campus-events und Button „Import“', text: 'Neben <code>campus-events</code> auf <em>Import</em>.', marks: [{ x: 640, y: 437, w: 67, h: 36 }] },
+    { img: bild('tag2/vc-9-import'), alt: 'Liste mit dem Repo und Button „Import“', text: 'Neben eurem Repo (z. B. <code>leihbar</code>) auf <em>Import</em>.', marks: [{ x: 640, y: 437, w: 67, h: 36 }] },
     { img: bild('tag2/vc-10-2fa'), alt: 'Vercel bietet „Secure Your Account with 2FA“ an', text: 'Vercel bietet Zwei-Faktor-Anmeldung mit einer Authenticator-App an. Für den Kurs: <em>Skip securing my account</em>. Nach dem Kurs unter Account Settings nachholen.', marks: [{ x: 674, y: 634, w: 156, h: 24 }] },
-    { img: bild('tag2/vc-11-formular'), alt: 'Formular „New Project“: Team Hobby, Projektname campus-events, Preset Next.js, Environment Variables, Deploy', text: 'Vercel erkennt Next.js selbst. Vor dem Deploy <em>Environment Variables</em> aufklappen.', marks: [{ x: 466, y: 506, w: 564, h: 42 }] },
+    { img: bild('tag2/vc-11-formular'), alt: 'Formular „New Project“: Team Hobby, Projektname, Preset Next.js, Environment Variables, Deploy', text: 'Vercel erkennt Next.js selbst. Vor dem Deploy <em>Environment Variables</em> aufklappen.', marks: [{ x: 466, y: 506, w: 564, h: 42 }] },
     { img: bild('tag2/vc-12-env'), alt: 'Aufgeklappte Environment Variables mit Key, Value und dem Hinweis „or paste the .env contents“', text: 'Am schnellsten: den kompletten Inhalt eurer <code>.env.local</code> kopieren und ins Feld <em>Key</em> einfügen (1) – Vercel verteilt die Zeilen selbst auf Namen und Werte („or paste the .env contents“, 2). Das ist der Grund, warum die Datei nie ins Repo musste. Dann <em>Deploy</em>.', marks: [{ x: 477, y: 577, w: 506, h: 36, n: 1 }, { x: 571, y: 760, w: 240, h: 22, n: 2 }] },
     { img: bild('tag2/vc-13-fertig'), alt: '„Congratulations! You just deployed a new project“ mit Vorschau der App', text: 'Nach etwa einer Minute: „Congratulations!“ Unten auf <em>Continue to Project</em>.' },
-    { img: bild('tag2/vc-14-dashboard'), alt: 'Projekt-Dashboard mit Deployment-Adresse und Domain', text: 'Eure öffentliche Adresse steht unter <em>Domains</em> (1), z. B. <code>campus-events-…vercel.app</code>. <strong>Nehmt diese.</strong> Die längere Adresse unter <em>Deployment</em> (2) verlangt eine Vercel-Anmeldung und funktioniert am Handy anderer Leute nicht.', marks: [{ x: 641, y: 195, w: 250, h: 42, n: 1 }, { x: 641, y: 140, w: 310, h: 40, n: 2 }] },
-    { img: bild('tag2/vc-15-live'), alt: 'Campus Events unter der öffentlichen vercel.app-Adresse', text: 'Die App ist öffentlich erreichbar. Ab jetzt deployt jeder Push auf <code>main</code> automatisch.' },
+    { img: bild('tag2/vc-14-dashboard'), alt: 'Projekt-Dashboard mit Deployment-Adresse und Domain', text: 'Eure öffentliche Adresse steht unter <em>Domains</em> (1), z. B. <code>leihbar-…vercel.app</code>. <strong>Nehmt diese.</strong> Die längere Adresse unter <em>Deployment</em> (2) verlangt eine Vercel-Anmeldung und funktioniert am Handy anderer Leute nicht.', marks: [{ x: 641, y: 195, w: 250, h: 42, n: 1 }, { x: 641, y: 140, w: 310, h: 40, n: 2 }] },
+    { img: bild('tag2/vc-15-live'), alt: 'Die App unter der öffentlichen vercel.app-Adresse', text: 'Die App ist öffentlich erreichbar. Ab jetzt deployt jeder Push auf <code>main</code> automatisch.' },
   ]} />
   <h3>Supabase auf die neue Adresse umstellen</h3>
   <p>Damit Login-Links nach dem Deploy nicht auf <code>localhost</code> zeigen: Supabase → Authentication → <em>URL Configuration</em>.</p>
@@ -183,7 +183,7 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('tag2/url-1'), alt: 'URL Configuration, Site URL steht auf http://localhost:3000', text: 'Bei <em>Site URL</em> steht noch <code>http://localhost:3000</code>.', marks: [{ x: 978, y: 253, w: 396, h: 38 }] },
     { img: bild('tag2/url-2'), alt: 'Site URL mit der Vercel-Adresse und Button „Save changes“', text: 'Eure Vercel-Adresse (die unter <em>Domains</em>) eintragen, <em>Save changes</em>.', marks: [{ x: 1278, y: 331, w: 96, h: 30 }] },
   ]} />
-  <p><strong>Am Handy öffnen.</strong> Registrieren, zusagen. Das ist eure App.</p>
+  <p><strong>Am Handy öffnen.</strong> Registrieren, etwas anfragen. Das ist eure App.</p>
   <Prompt label="Wenn der Build auf Vercel fehlschlägt">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen einfügen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
   <Checklist id="t2-u5" items={[
     'Vercel-Projekt verbunden, Environment-Variablen gesetzt',
@@ -195,7 +195,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2 id="zwischenwoche-euer-eigener-prototyp">Zwischenwoche – euer eigener Prototyp für die Demo am Do 15.10.</h2>
-  <p>Ein eigener Mini-Prototyp – Details unter <a href="/zwischenwoche">Zwischenwoche</a>. Kurzfassung: eigene Idee (oder Campus Events mit drei neuen Issues), 1-Seiten-Produkt-Brief, 3–5 Issues umgesetzt, läuft auf Vercel, Repo mit Markus als Collaborator.</p>
+  <p>Ein eigener Mini-Prototyp – Details unter <a href="/zwischenwoche">Zwischenwoche</a>. Kurzfassung: eigene Idee (oder Leihbar mit drei neuen Issues), 1-Seiten-Produkt-Brief, 3–5 Issues umgesetzt, läuft auf Vercel, Repo mit Markus als Collaborator.</p>
 
   <FooterNav prev={{ href: '/tag-1', t: 'Tag 1' }} next={{ href: '/zwischenwoche', t: 'Zwischenwoche' }} />
 </Layout>

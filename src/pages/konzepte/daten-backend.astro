@@ -10,7 +10,7 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Datenbank in fünf Begriffen</h2>
   <div class="widget" id="db" data-zeige="beziehung">
-    <p class="hint">Ein Ausschnitt aus der Datenbank von Campus Events. Klickt auf einen Begriff, um zu sehen, wo er steckt.</p>
+    <p class="hint">Ein Ausschnitt aus der Datenbank von Leihbar. Klickt auf einen Begriff, um zu sehen, wo er steckt.</p>
     <div class="db-chips" role="group" aria-label="Begriff zeigen">
       <button type="button" data-begriff="tabelle" aria-pressed="false">Tabelle</button>
       <button type="button" data-begriff="zeile" aria-pressed="false">Zeile</button>
@@ -18,23 +18,23 @@ import FooterNav from '../../components/FooterNav.astro';
       <button type="button" data-begriff="id" aria-pressed="false">ID</button>
       <button type="button" data-begriff="beziehung" aria-pressed="true">Beziehung</button>
     </div>
-    <p class="loop-detail db-erklaerung" id="db-erklaerung" aria-live="polite"><strong>Beziehung.</strong> Zeile 1 in <code>rsvps</code> zeigt auf Event 42 und auf Nutzerin 7: Lena kommt zum Lauftreff. Titel und Namen stehen nur einmal in der Datenbank – <code>rsvps</code> speichert bloß die IDs.</p>
+    <p class="loop-detail db-erklaerung" id="db-erklaerung" aria-live="polite"><strong>Beziehung.</strong> Zeile 1 in <code>requests</code> zeigt auf Gegenstand 42 und auf Nutzerin 7: Mara möchte den Samtsessel ausleihen. Titel und Namen stehen nur einmal in der Datenbank – <code>requests</code> speichert bloß die IDs.</p>
     <div class="db-tabellen">
-      <table data-t="events">
-        <caption><code>events</code></caption>
-        <tr><th scope="col" data-col="id">id</th><th scope="col">titel</th><th scope="col">datum</th><th scope="col" data-col="ort">ort</th></tr>
-        <tr><td data-col="id">41</td><td>Pub-Quiz</td><td>16.10. 19:00</td><td data-col="ort">Mensa-Keller</td></tr>
-        <tr data-row="lauftreff"><td data-col="id" data-rel>42</td><td>Lauftreff</td><td>21.10. 07:30</td><td data-col="ort">Sportplatz</td></tr>
+      <table data-t="items">
+        <caption><code>items</code></caption>
+        <tr><th scope="col" data-col="id">id</th><th scope="col">titel</th><th scope="col">preis_pro_tag</th><th scope="col" data-col="ort">ort</th></tr>
+        <tr><td data-col="id">41</td><td>Akkuschrauber</td><td>3</td><td data-col="ort">Wiener Straße</td></tr>
+        <tr data-row="samtsessel"><td data-col="id" data-rel>42</td><td>Samtsessel</td><td>8</td><td data-col="ort">NDU, Foyer</td></tr>
       </table>
       <table data-t="profiles">
         <caption><code>profiles</code></caption>
         <tr><th scope="col" data-col="id">id</th><th scope="col">name</th></tr>
-        <tr><td data-col="id" data-rel>7</td><td>Lena</td></tr>
+        <tr><td data-col="id" data-rel>7</td><td>Mara</td></tr>
         <tr><td data-col="id">8</td><td>Jonas</td></tr>
       </table>
-      <table data-t="rsvps">
-        <caption><code>rsvps</code></caption>
-        <tr><th scope="col" data-col="id">id</th><th scope="col">event_id</th><th scope="col">user_id</th></tr>
+      <table data-t="requests">
+        <caption><code>requests</code></caption>
+        <tr><th scope="col" data-col="id">id</th><th scope="col">item_id</th><th scope="col">user_id</th></tr>
         <tr><td data-col="id">1</td><td data-rel>42</td><td data-rel>7</td></tr>
         <tr><td data-col="id">2</td><td>42</td><td>8</td></tr>
         <tr><td data-col="id">3</td><td>41</td><td>8</td></tr>
@@ -42,8 +42,8 @@ import FooterNav from '../../components/FooterNav.astro';
     </div>
     <script>
       const texte: Record<string, string> = {
-        tabelle: '<strong>Tabelle.</strong> Eine Tabelle sammelt einen Objekttyp – hier alle Events. Jede Tabelle hat feste Spalten.',
-        zeile: '<strong>Zeile.</strong> Eine Zeile ist ein einzelner Eintrag: das Event „Lauftreff“ mit all seinen Werten.',
+        tabelle: '<strong>Tabelle.</strong> Eine Tabelle sammelt einen Objekttyp – hier alle Gegenstände. Jede Tabelle hat feste Spalten.',
+        zeile: '<strong>Zeile.</strong> Eine Zeile ist ein einzelner Eintrag: der Gegenstand „Samtsessel“ mit all seinen Werten.',
         spalte: '<strong>Spalte.</strong> Eine Spalte ist eine Eigenschaft, die jede Zeile hat – hier der Ort. Alle Werte darin haben denselben Datentyp.',
         id: '<strong>ID.</strong> Jede Zeile hat eine eindeutige Nummer. Sie wird beim Anlegen vergeben und ändert sich nie.',
         beziehung: document.getElementById('db-erklaerung')!.innerHTML,
@@ -80,18 +80,18 @@ import FooterNav from '../../components/FooterNav.astro';
     </script>
   </div>
   <table>
-    <tr><th>Begriff</th><th>Heißt</th><th>In Campus Events</th></tr>
-    <tr><td>Tabelle</td><td>Ein Objekttyp, z. B. Events – mit festen Spalten und Datentypen</td><td><code>events</code>, <code>rsvps</code>, <code>profiles</code></td></tr>
-    <tr><td>Zeile</td><td>Ein einzelner Eintrag</td><td>„Lauftreff, 21.10., 07:30“</td></tr>
-    <tr><td>Spalte</td><td>Eine Eigenschaft</td><td><code>titel</code>, <code>datum</code>, <code>ort</code></td></tr>
-    <tr><td>ID</td><td>Eindeutige Nummer pro Zeile</td><td>Event 42</td></tr>
-    <tr><td>Beziehung</td><td>Eine Zeile zeigt auf eine andere</td><td>RSVP → Event 42, → Nutzerin Lena</td></tr>
+    <tr><th>Begriff</th><th>Heißt</th><th>In Leihbar</th></tr>
+    <tr><td>Tabelle</td><td>Ein Objekttyp, z. B. Gegenstände – mit festen Spalten und Datentypen</td><td><code>items</code>, <code>requests</code>, <code>profiles</code></td></tr>
+    <tr><td>Zeile</td><td>Ein einzelner Eintrag</td><td>„Samtsessel, 8 € pro Tag, NDU, Foyer“</td></tr>
+    <tr><td>Spalte</td><td>Eine Eigenschaft</td><td><code>titel</code>, <code>preis_pro_tag</code>, <code>ort</code></td></tr>
+    <tr><td>ID</td><td>Eindeutige Nummer pro Zeile</td><td>Gegenstand 42</td></tr>
+    <tr><td>Beziehung</td><td>Eine Zeile zeigt auf eine andere</td><td>Anfrage → Gegenstand 42, → Nutzerin Mara</td></tr>
   </table>
   <p>CRUD – Create, Read, Update, Delete – sind die vier Dinge, die man mit Zeilen tun kann. Fast jede App ist CRUD mit schöner Oberfläche. Wenn ihr ein Issue schreibt, fragt euch: Welche Tabelle, welche Operation?</p>
 
   <h2>Der Weg einer Anfrage</h2>
   <div class="widget" id="req">
-    <p class="hint">Klickt euch durch, was passiert, wenn Lena ein Event anlegt.</p>
+    <p class="hint">Klickt euch durch, was passiert, wenn Mara einen Gegenstand anbietet.</p>
     <div class="loop">
       <button type="button" data-step="0" class="active">Frontend</button>
       <button type="button" data-step="1">API-Route</button>
@@ -101,10 +101,10 @@ import FooterNav from '../../components/FooterNav.astro';
     <div class="loop-detail" id="req-detail"></div>
     <script>
       const s = [
-        ['Frontend', 'Lena füllt das Formular aus und klickt „Speichern“. Der Browser prüft Pflichtfelder (schnelles Feedback) und schickt <code>POST /api/events</code> mit den Daten.', 'Was hier geprüft wird, kann jeder umgehen. Deshalb prüft das Backend noch einmal.'],
-        ['API-Route', 'Die Datei <code>src/app/api/events/route.ts</code> nimmt die Anfrage an. Sie prüft: Ist Lena angemeldet? Ist das Datum in der Zukunft? Ist der Titel nicht leer? Erst dann geht es weiter.', 'Das ist das Backend – es läuft auf dem Server, Lena sieht den Code nie.'],
-        ['Datenbank', 'Supabase bekommt <code>INSERT INTO events …</code>. Vorher prüft Row Level Security: Darf diese Nutzerin in diese Tabelle schreiben? Ja → neue Zeile mit ID 43.', 'RLS ist die letzte Verteidigungslinie – selbst wenn das Backend einen Fehler hat.'],
-        ['Antwort', 'Die Datenbank meldet „Zeile 43 angelegt“, die API antwortet mit <code>201 Created</code> und dem Event, das Frontend zeigt es in der Liste – ohne Reload.', 'Fehler auf dem Rückweg (<code>400</code>, <code>401</code>, <code>500</code>) sind die Zahlen, die ihr in Fehlermeldungen sehen werdet.'],
+        ['Frontend', 'Mara füllt das Formular aus und klickt „Speichern“. Der Browser prüft Pflichtfelder (schnelles Feedback) und schickt <code>POST /api/items</code> mit den Daten.', 'Was hier geprüft wird, kann jeder umgehen. Deshalb prüft das Backend noch einmal.'],
+        ['API-Route', 'Die Datei <code>src/app/api/items/route.ts</code> nimmt die Anfrage an. Sie prüft: Ist Mara angemeldet? Ist der Preis nicht negativ? Ist der Titel nicht leer? Erst dann geht es weiter.', 'Das ist das Backend – es läuft auf dem Server, Mara sieht den Code nie.'],
+        ['Datenbank', 'Supabase bekommt <code>INSERT INTO items …</code>. Vorher prüft Row Level Security: Darf diese Nutzerin in diese Tabelle schreiben? Ja → neue Zeile mit ID 43.', 'RLS ist die letzte Verteidigungslinie – selbst wenn das Backend einen Fehler hat.'],
+        ['Antwort', 'Die Datenbank meldet „Zeile 43 angelegt“, die API antwortet mit <code>201 Created</code> und dem Gegenstand, das Frontend zeigt ihn in der Liste – ohne Reload.', 'Fehler auf dem Rückweg (<code>400</code>, <code>401</code>, <code>500</code>) sind die Zahlen, die ihr in Fehlermeldungen sehen werdet.'],
       ];
       const d = document.getElementById('req-detail')!;
       const bs = document.querySelectorAll<HTMLButtonElement>('#req .loop button');
@@ -121,7 +121,7 @@ import FooterNav from '../../components/FooterNav.astro';
   </Callout>
 
   <h2>Authentifizierung vs. Autorisierung</h2>
-  <p><strong>Authentifizierung:</strong> Wer ist das? (Login.) <strong>Autorisierung:</strong> Was darf diese Person? (Eigene Zusage löschen: ja. Fremde: nein.) Die zweite Frage ist die, die Anfänger*innen – und Agenten – gern vergessen. <strong>Row Level Security (RLS)</strong> beantwortet sie direkt in der Datenbank: Pro Tabelle Regeln wie „lesen darf jeder, anlegen nur Angemeldete, löschen nur, wem die Zeile gehört“. Fragt Claude bei jeder neuen Tabelle: <em>„Welche RLS-Policies hast du gesetzt, und was passiert, wenn eine fremde Person eine Zeile ändern will?“</em></p>
+  <p><strong>Authentifizierung:</strong> Wer ist das? (Login.) <strong>Autorisierung:</strong> Was darf diese Person? (Eigene Anfrage löschen: ja. Fremde: nein.) Die zweite Frage ist die, die Anfänger*innen – und Agenten – gern vergessen. <strong>Row Level Security (RLS)</strong> beantwortet sie direkt in der Datenbank: Pro Tabelle Regeln wie „lesen darf jeder, anlegen nur Angemeldete, löschen nur, wem die Zeile gehört“. Fragt Claude bei jeder neuen Tabelle: <em>„Welche RLS-Policies hast du gesetzt, und was passiert, wenn eine fremde Person eine Zeile ändern will?“</em></p>
 
   <h2>Secrets & Umgebungsvariablen</h2>
   <p>Eure App braucht Zugangsdaten: die Supabase-URL, Keys, später vielleicht einen Claude-API-Key. Die stehen in <code>.env.local</code>, einer Datei, die <strong>nie ins Repo kommt</strong>. Auf Vercel tragt ihr dieselben Werte im Dashboard ein. So kann der Code öffentlich sein und die Schlüssel privat bleiben.</p>
@@ -134,7 +134,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Begriffe, die heute fallen</h2>
   <table>
     <tr><th>Begriff</th><th>Bedeutet</th></tr>
-    <tr><td>Migration</td><td>Eine protokollierte Änderung an der Datenbankstruktur („Tabelle rsvps anlegen“). Claude legt sie an; so ist nachvollziehbar, wie die Datenbank entstanden ist.</td></tr>
+    <tr><td>Migration</td><td>Eine protokollierte Änderung an der Datenbankstruktur („Tabelle requests anlegen“). Claude legt sie an; so ist nachvollziehbar, wie die Datenbank entstanden ist.</td></tr>
     <tr><td>Seed-Daten</td><td>Beispieldaten, mit denen die Datenbank gefüllt wird, damit die App nicht leer aussieht.</td></tr>
     <tr><td>Schema</td><td>Die Gesamtheit aller Tabellen und Beziehungen – der Bauplan eurer Daten.</td></tr>
     <tr><td>Server Component / Client Component</td><td>Next.js-Interna: Was auf dem Server gerendert wird (Daten holen) vs. im Browser (Klicks). Claude kümmert sich darum; der Fehler „useState in Server Component“ ist aber ein Klassiker, den ihr wiedererkennen werdet.</td></tr>
@@ -150,7 +150,7 @@ import FooterNav from '../../components/FooterNav.astro';
   .db-chips button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
   .db-tabellen { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
   .db-tabellen table { margin: 0; background: var(--bg); border: 2px solid var(--border); border-radius: 10px; border-collapse: separate; border-spacing: 0; overflow: hidden; font-size: .9rem; }
-  .db-tabellen [data-t="events"] { grid-column: 1 / -1; }
+  .db-tabellen [data-t="items"] { grid-column: 1 / -1; }
   .db-tabellen table { align-self: start; }
   .db-tabellen caption { text-align: left; padding: 0 0 .35rem; }
   .db-tabellen th { font-family: var(--mono); text-transform: none; letter-spacing: 0; font-size: .8rem; }
@@ -160,13 +160,13 @@ import FooterNav from '../../components/FooterNav.astro';
   .db-erklaerung { margin: 0 0 1rem; }
 
   /* Hervorhebung nie nur über Farbe: Hintergrund, Rahmen und fette Schrift. */
-  #db[data-zeige="tabelle"] [data-t="events"],
-  #db[data-zeige="zeile"] [data-row="lauftreff"] td,
+  #db[data-zeige="tabelle"] [data-t="items"],
+  #db[data-zeige="zeile"] [data-row="samtsessel"] td,
   #db[data-zeige="spalte"] [data-col="ort"],
   #db[data-zeige="id"] [data-col="id"],
   #db[data-zeige="beziehung"] [data-rel] { background: var(--accent-soft); font-weight: 700; color: var(--fg); }
-  #db[data-zeige="tabelle"] [data-t="events"] { border-color: var(--accent); }
-  #db[data-zeige="zeile"] [data-row="lauftreff"] td { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
+  #db[data-zeige="tabelle"] [data-t="items"] { border-color: var(--accent); }
+  #db[data-zeige="zeile"] [data-row="samtsessel"] td { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
   #db[data-zeige="spalte"] [data-col="ort"],
   #db[data-zeige="id"] [data-col="id"],
   #db[data-zeige="beziehung"] [data-rel] { outline: 2px solid var(--accent); outline-offset: -2px; }

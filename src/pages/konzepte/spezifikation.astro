@@ -11,7 +11,7 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Vibe Coding vs. Spec-driven</h2>
   <div class="compare">
-    <div class="card bad"><h3>„Bau mir eine Event-App“</h3><p class="small">Claude baut <em>eine</em> Event-App – mit Kalenderansicht, Kategorien, Suche, Dark Mode und einer Datenstruktur, die eure eigentliche Idee nicht abbildet. Sieht beeindruckend aus, 40 Dateien, und nach einer Stunde Nachbessern versteht weder ihr noch Claude, was davon gewollt war.</p><p class="small muted">Gut für: Ausprobieren, Inspiration, Wegwerf-Prototypen.</p></div>
+    <div class="card bad"><h3>„Bau mir eine Verleih-App“</h3><p class="small">Claude baut <em>eine</em> Verleih-App – mit Kalender, Bezahlung, Chat, Dark Mode und einer Datenstruktur, die eure eigentliche Idee nicht abbildet. Sieht beeindruckend aus, 40 Dateien, und nach einer Stunde Nachbessern versteht weder ihr noch Claude, was davon gewollt war.</p><p class="small muted">Gut für: Ausprobieren, Inspiration, Wegwerf-Prototypen.</p></div>
     <div class="card good"><h3>„Setze Issue 1 um“</h3><p class="small">Ein Issue, drei Akzeptanzkriterien, zwanzig Minuten. Ihr prüft drei Dinge, es stimmt oder es stimmt nicht. Dann das nächste. Nach sieben Issues habt ihr eine App, die genau das tut, was euer Produkt-Brief sagt – und ihr wisst bei jeder Funktion, warum sie da ist.</p><p class="small muted">Gut für: alles, was länger als einen Nachmittag leben soll.</p></div>
   </div>
 
@@ -26,25 +26,25 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2 id="brief">Der Produkt-Brief</h2>
   <p>Eine Seite in <code>docs/PRODUKT.md</code>, nach der Vorlage <code>docs/PRODUKT-VORLAGE.md</code>. Oben eine Stand-Zeile mit Datum und letzter Änderung – der Brief lebt: Ihr baut etwas Klickbares, zeigt es Menschen und passt ihn an. Claude liest ihn, bevor es ein Issue umsetzt; er ist das Gedächtnis des Produkts. In Unternehmen heißt so ein Dokument oft <strong>PRD</strong> (Product Requirements Document). Überholt ist 2026 das lange PRD, das vorab fertig sein muss.</p>
   <div class="card brief">
-    <p><strong>Produkt-Brief – Campus Events</strong> <span class="muted small">· Stand: 8.10.2026 – erste Fassung</span></p>
+    <p><strong>Produkt-Brief – Leihbar</strong> <span class="muted small">· Stand: 8.10.2026 – erste Fassung</span></p>
     <dl>
-      <dt>Für wen?</dt><dd>Lena, 24, organisiert für ihre Studiengruppe wöchentliche Lernsessions und zwei Partys pro Semester.</dd>
-      <dt>Welches Problem?</dt><dd>Einladungen gehen in fünf WhatsApp-Gruppen unter. Wer kommt, weiß Lena erst, wenn alle da sind – oder nicht.</dd>
-      <dt>In einem Satz</dt><dd>Eine Web-App, in der Studierende Events anlegen und andere mit einem Klick zusagen.</dd>
+      <dt>Für wen?</dt><dd>Mara, 23, studiert in St. Pölten und braucht ab und zu Dinge, die sich nicht zu kaufen lohnen: ein Abendkleid für den Ball, einen Akkuschrauber fürs WG-Regal, ein Zelt fürs Festival.</dd>
+      <dt>Welches Problem?</dt><dd>Kaufen lohnt sich für einmal nicht. Fragen in WhatsApp-Gruppen gehen unter, und wer was hat, weiß niemand.</dd>
+      <dt>In einem Satz</dt><dd>Eine Web-App, in der Studierende Dinge zum Ausleihen anbieten und andere sie mit einem Klick anfragen.</dd>
       <dt>Macht NICHT</dt><dd>Keine Tickets und Bezahlung. Kein Chat. Keine Synchronisation mit dem Kalender.</dd>
       <dt>MVP</dt><dd>Events finden (Liste, Detailseite, Filter nach Kategorie), Event anlegen, Anmelden, Zusagen mit „Meine Events“.<br /><span class="muted">Später: Erinnerung am Vortag, Event bearbeiten und absagen, Teilnehmerliste, Bild pro Event.</span></dd>
-      <dt>Woran merken wir es?</dt><dd>Wir glauben, dass Lena ihre Lernsessions damit schneller voll bekommt. Wir merken es, wenn 5 Kommiliton*innen ohne Erklärung ein Event anlegen und zusagen.</dd>
-      <dt>Offene Fragen</dt><dd>Sollen auch Leute ohne NDU-Adresse zusagen können?</dd>
+      <dt>Woran merken wir es?</dt><dd>Wir glauben, dass Studierende lieber leihen als kaufen, wenn sie sehen, was es am Campus schon gibt. Wir merken es, wenn 5 Kommiliton*innen ohne Erklärung einen Gegenstand anbieten und einen anfragen.</dd>
+      <dt>Offene Fragen</dt><dd>Soll Leihen etwas kosten – oder ist es unter Studierenden gratis?</dd>
     </dl>
   </div>
 
   <h3>Woran ihr einen guten Brief erkennt</h3>
   <table>
     <tr><th>Abschnitt</th><th>Zu unscharf</th><th>Gut</th></tr>
-    <tr><td><strong>Für wen?</strong></td><td>„Alle Studierenden“</td><td>Eine konkrete Person mit einer Situation: „Lena, organisiert wöchentlich Lernsessions“</td></tr>
-    <tr><td><strong>Problem</strong></td><td>„Events sind unübersichtlich“</td><td>Was heute nervt und wie es heute gelöst wird: „Einladungen gehen in WhatsApp unter“</td></tr>
+    <tr><td><strong>Für wen?</strong></td><td>„Alle Studierenden“</td><td>Eine konkrete Person mit einer Situation: „Mara, braucht ab und zu Dinge, die sich nicht zu kaufen lohnen“</td></tr>
+    <tr><td><strong>Problem</strong></td><td>„Teilen ist schwierig“</td><td>Was heute nervt und wie es heute gelöst wird: „Fragen in WhatsApp-Gruppen gehen unter“</td></tr>
     <tr><td><strong>Macht NICHT</strong></td><td>leer</td><td>Drei Dinge, die ihr bewusst weglasst – der wichtigste Abschnitt, denn er hält Claude und euch klein</td></tr>
-    <tr><td><strong>Woran merken wir es?</strong></td><td>„Die App ist erfolgreich“</td><td>Mit 3–5 echten Menschen prüfbar: „5 Leute legen ohne Erklärung ein Event an“</td></tr>
+    <tr><td><strong>Woran merken wir es?</strong></td><td>„Die App ist erfolgreich“</td><td>Mit 3–5 echten Menschen prüfbar: „5 Leute bieten ohne Erklärung etwas an“</td></tr>
   </table>
   <Callout type="tip" title="Die Zusammenfassung von Claude lesen">
     <p>Vor dem Schreiben fasst <code>/ndu-idee</code> zusammen und trennt, was ihr gesagt habt, von dem, was Claude annimmt. Genau dort entscheidet sich, wessen Produkt es wird. Lest die Annahmen und korrigiert, was nicht stimmt – sonst steht im Brief Claudes Idee statt eurer.</p>
@@ -76,22 +76,22 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Beispiel aus dem Backlog</h2>
   <div class="card">
-    <p><strong>Issue 6 – Zusagen (RSVP)</strong></p>
-    <p class="small"><strong>Ziel:</strong> Studierende sagen einem Event zu und können das zurücknehmen – damit Organisator*innen wissen, wie viele kommen.</p>
-    <p class="small"><strong>Nicht im Umfang:</strong> Warteliste, Erinnerungs-Mails.</p>
+    <p><strong>Issue 6 – Ausleihen anfragen</strong></p>
+    <p class="small"><strong>Ziel:</strong> Studierende fragen einen Gegenstand zum Ausleihen an und können die Anfrage zurückziehen – damit Besitzer*innen sehen, wer ihn haben möchte.</p>
+    <p class="small"><strong>Nicht im Umfang:</strong> Anfrage annehmen oder ablehnen, Zeitraum wählen, Bezahlung.</p>
     <p class="small"><strong>Akzeptanzkriterien:</strong></p>
     <ul class="small">
-      <li>Gegeben ich bin angemeldet, wenn ich „Ich komme“ klicke, dann steht der Button auf „Zugesagt ✓“ und der Zähler steigt um 1.</li>
-      <li>Gegeben ich habe zugesagt, wenn ich erneut klicke, dann ist die Zusage zurückgenommen und der Zähler sinkt um 1.</li>
+      <li>Gegeben ich bin angemeldet, wenn ich „Ausleihen anfragen“ klicke, dann steht der Button auf „Angefragt ✓“ und der Zähler „Anfragen“ steigt um 1.</li>
+      <li>Gegeben ich habe angefragt, wenn ich erneut klicke, dann ist die Anfrage zurückgezogen und der Zähler sinkt um 1.</li>
       <li>Gegeben ich bin nicht angemeldet, wenn ich klicke, dann führt mich der Button zur Anmeldung.</li>
-      <li>Gegeben eine andere Person hat zugesagt, dann kann ich <em>ihre</em> Zusage nicht löschen.</li>
+      <li>Gegeben eine andere Person hat angefragt, dann kann ich <em>ihre</em> Anfrage nicht löschen.</li>
     </ul>
     <p class="small"><strong>Fertig, wenn:</strong> alle Kriterien im Browser durchgeklickt, Zähler stimmt auch nach einem Reload.</p>
     <p class="small muted">Beachtet: Kein Wort über Datenbanktabellen, Komponenten oder Farben. Das <em>Wie</em> ist Claudes Sache – und wie es aussieht, regelt später euer <a href="/konzepte/design-system">Design-System</a>; im Issue reicht dann „gemäß docs/DESIGN.md“. Das <em>Was</em> und das <em>Woran-merke-ich-es</em> sind eure.</p>
   </div>
 
   <h2>MVP schneiden</h2>
-  <p>Die häufigste Fehlerquelle ist nicht zu wenig, sondern zu viel. Fragen zum Schneiden: <em>Welche eine Sache muss funktionieren, damit eine echte Person das Produkt einmal sinnvoll benutzt?</em> Alles andere kommt auf die Liste „Später“. Das Backlog von Campus Events ist so geschnitten: Liste → Detail → Anlegen → Login → Zusagen. Nach jedem Schritt ist die App nützlicher als vorher, und nach jedem Schritt könnte man aufhören.</p>
+  <p>Die häufigste Fehlerquelle ist nicht zu wenig, sondern zu viel. Fragen zum Schneiden: <em>Welche eine Sache muss funktionieren, damit eine echte Person das Produkt einmal sinnvoll benutzt?</em> Alles andere kommt auf die Liste „Später“. Das Backlog von Leihbar ist so geschnitten: Liste → Detail → Anbieten → Login → Anfragen. Nach jedem Schritt ist die App nützlicher als vorher, und nach jedem Schritt könnte man aufhören.</p>
 
   <h2>Prompts dafür</h2>
   <Prompt label="1 · Idee → Produkt-Brief" note="Kurzes Interview – eine Frage pro Nachricht –, dann schreibt Claude nach eurem Okay den Brief.">/ndu-idee [Idee in einem Satz]</Prompt>
@@ -99,7 +99,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <Prompt label="Kriterien anpassen" note="Nach dem Lesen: in eigenen Worten sagen, was nicht passt. Claude formuliert es ins Gegeben/Wenn/Dann-Format um.">In Issue [Nummer]: Streich das Kriterium zu [Thema]. Ergänze: [was im Browser passieren soll, in euren Worten]. Zeig mir das Issue danach noch einmal.</Prompt>
   <Prompt label="3 · Ein Issue umsetzen">Setze Issue [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
 
-  <FooterNav prev={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} next={{ href: '/tag-1#uebung-2', t: 'Übung 2 · Campus Events v0' }} />
+  <FooterNav prev={{ href: '/konzepte/git', t: 'Git – der Undo-Knopf' }} next={{ href: '/tag-1#uebung-2', t: 'Übung 2 · Leihbar v0' }} />
 </Layout>
 
 <style>
