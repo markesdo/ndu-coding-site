@@ -149,7 +149,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         const blaettern = e.key === 'ArrowRight' || e.key === 'ArrowLeft';
         if (e.key !== 'b' && e.key !== 'B' && !blaettern) return;
         // defaultPrevented: Die SOTA-Bühne nimmt ←/→ selbst, solange sie den Fokus hat.
-        if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.repeat) return;
+        if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.repeat || (blaettern && e.shiftKey)) return;
         const t = e.target as HTMLElement | null;
         // Nicht beim Tippen, und nicht solange ein Dialog (Screenshot-Präsentation) oder ein Vollbild die Tasten hat.
         if (t && (t.isContentEditable || t.closest('input, textarea, select, [contenteditable]'))) return;

@@ -6,23 +6,24 @@
 html[data-beamer] { font-size: clamp(20px, 2.55vh, 30px); --max: 52rem; }
 html[data-beamer] body { font-size: 1rem; line-height: 1.45; }
 
-/* Typografie: Überschriften kleiner als am Desktop gerechnet (sonst frisst h1 bei 720p die halbe Höhe),
+/* Nur Kursseiten (.content/.shell): /start bindet beamer.css auch ein und hat eigene Größen.
+   Typografie: Überschriften kleiner als am Desktop gerechnet (sonst frisst h1 bei 720p die halbe Höhe),
    Nebentexte nicht kleiner als der Fließtext. */
-html[data-beamer] h1 { font-size: 2.1rem; }
-html[data-beamer] h2 { font-size: 1.5rem; }
+html[data-beamer] .content h1 { font-size: 2.1rem; }
+html[data-beamer] .content h2 { font-size: 1.5rem; }
 html[data-beamer] .content > .inner > h2 { margin-top: 2.5rem; padding-top: .9rem; }
-html[data-beamer] h3 { font-size: 1.15rem; }
-html[data-beamer] .lead { font-size: 1.15rem; max-width: 50ch; color: var(--fg); }
-html[data-beamer] .block .desc, html[data-beamer] .faden p, html[data-beamer] .small,
-html[data-beamer] .callout, html[data-beamer] .prompt .note, html[data-beamer] .quiz .why { font-size: 1rem; }
-html[data-beamer] th { font-size: .8rem; }
-html[data-beamer] .block .pill, html[data-beamer] .eyebrow, html[data-beamer] .prompt .label,
-html[data-beamer] .footer-nav .fn-cap { font-size: .85rem; font-weight: 700; }
-html[data-beamer] .pa-punkt { width: .9em; height: .9em; }
+html[data-beamer] .content h3 { font-size: 1.15rem; }
+html[data-beamer] .content .lead { font-size: 1.15rem; max-width: 50ch; color: var(--fg); }
+html[data-beamer] .content .block .desc, html[data-beamer] .content .faden p, html[data-beamer] .content .small,
+html[data-beamer] .content .callout, html[data-beamer] .content .prompt .note, html[data-beamer] .content .quiz .why { font-size: 1rem; }
+html[data-beamer] .content th { font-size: .8rem; }
+html[data-beamer] .content .block .pill, html[data-beamer] .content .eyebrow, html[data-beamer] .content .prompt .label,
+html[data-beamer] .content .footer-nav .fn-cap { font-size: .85rem; font-weight: 700; }
+html[data-beamer] .content .pa-punkt { width: .9em; height: .9em; }
 
 /* Kontrast: Projektoren waschen Farben aus. Gedämpfter Text und Linien kräftiger, Links unterstrichen
    (nur die Farbe reicht am Beamer nicht). */
-html[data-beamer] { --muted: color-mix(in srgb, var(--fg) 80%, var(--bg)); --border: color-mix(in srgb, var(--fg) 25%, var(--bg)); }
+html[data-beamer] .shell, html[data-beamer] .topbar { --muted: color-mix(in srgb, var(--fg) 80%, var(--bg)); --border: color-mix(in srgb, var(--fg) 25%, var(--bg)); }
 html[data-beamer] .content a:not(.btn, .day, .footer-nav a, .stepbar a) { text-decoration: underline; text-underline-offset: .15em; }
 
 /* Eine Spalte; die Navigation gibt es weiter, als Overlay hinter „Menü“ wie am Handy. */
@@ -43,7 +44,7 @@ html[data-beamer] .topbar {
   position: sticky; top: 0; z-index: 40; font-size: 15px;
 }
 
-html[data-beamer] .topbar button, html[data-beamer] .topbar .beamer-weiter {
+html[data-beamer] .topbar button, html[data-beamer] .topbar .beamer-weiter:not([hidden]) {
   display: inline-flex; align-items: center; gap: 6px; font: inherit; background: none;
   border: 1px solid var(--border); border-radius: 8px; padding: 5px 11px; color: var(--fg); cursor: pointer;
 }
