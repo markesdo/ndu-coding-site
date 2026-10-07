@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Prompt from '../components/Prompt.astro';
 ---
 <Layout title="Hilfe holen">
-  <span class="eyebrow">Teams · #hilfe</span>
+  <span class="eyebrow">Teams · Kanal 3-Coding</span>
   <h1>Hilfe holen</h1>
   <p class="lead">Richtig um Hilfe bitten ist eine Fähigkeit, die ihr in jedem Projekt braucht – mit Menschen wie mit Agenten. Die Zutaten sind dieselben.</p>
 
@@ -13,17 +13,17 @@ import Prompt from '../components/Prompt.astro';
     <li><strong>Zuerst: Claude fragen</strong> Fehlermeldung komplett kopieren – aus dem Terminal oder aus der <a href="/setup#devtools">Browser-Konsole</a> (Rechtsklick → Untersuchen → Console) – und mit dem Debug-Prompt unten an Claude geben.</li>
     <li><strong>Dreht sich Claude im Kreis? Frisch anfangen</strong> <code>/clear</code> und das Problem neu beschreiben, in einem Satz und kleiner als vorher.</li>
     <li><strong>Immer noch kaputt? Prüfen lassen</strong> <code>/ndu-check</code> ausführen – der Bericht nennt oft die Ursache. Und kurz in <a href="/bekannte-probleme">Bekannte Probleme</a> schauen.</li>
-    <li><strong>Gar nichts hilft? Fragen oder verwerfen</strong> Wollt ihr wissen, was schiefging: fragt in Teams (unten) und verwerft noch nichts – sonst ist der Fehler weg und niemand kann ihn sich ansehen. Wollt ihr einfach neu ansetzen: Source Control → Discard Changes verwirft alles seit dem letzten Commit. Dann in kleineren Schritten noch einmal.</li>
+    <li><strong>Gar nichts hilft? Fragen oder verwerfen</strong> Wollt ihr wissen, was schiefging: fragt in Teams (unten) und verwerft noch nichts – sonst ist der Fehler weg und niemand kann ihn sich ansehen. Wollt ihr einfach neu ansetzen: Source Control → Discard Changes verwirft alles seit dem letzten Commit – das führt nur zu einem funktionierenden Stand zurück, wenn ihr den kaputten noch nicht committet habt. Dann in kleineren Schritten noch einmal.</li>
   </ol>
   <Prompt label="Der Debug-Prompt">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [was ich getan habe]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
 
-  <h2>In Teams fragen</h2>
+  <h2>In Teams fragen – Kanal 3-Coding</h2>
   <p>Hier gilt: beide Schritte, in dieser Reihenfolge.</p>
   <ol class="steps">
     <li><strong>Stand pushen</strong> <code>/ndu-commit</code> – auch wenn es gerade kaputt ist. Was auf GitHub liegt, kann Markus sich ansehen; eine Beschreibung allein reicht selten. Dafür muss er Collaborator sein (Repo → Settings → Collaborators).</li>
-    <li><strong>Vorlage ausfüllen und in #hilfe posten</strong> Kopieren, die Klammern ersetzen, abschicken.</li>
+    <li><strong>Neuen Beitrag in 3-Coding schreiben</strong> Betreff beginnt mit <strong>„Hilfe:“</strong> und nennt das Problem in ein paar Worten. In den Text kommt die Vorlage: kopieren, die Klammern ersetzen, abschicken. Pro Problem ein eigener Beitrag – Antworten und Rückfragen laufen dann darunter, nichts geht unter.</li>
   </ol>
-  <Prompt label="Vorlage für #hilfe">Repo: https://github.com/&lt;name&gt;/&lt;repo&gt;
+  <Prompt label="Vorlage für den Hilfe-Beitrag">Repo: https://github.com/&lt;name&gt;/&lt;repo&gt;
 Live-URL: https://….vercel.app (falls vorhanden)
 Ich wollte: (ein Satz, z. B. „RSVP-Button einbauen“)
 Stattdessen passiert: (Fehlermeldung als Text, kein Handyfoto)
