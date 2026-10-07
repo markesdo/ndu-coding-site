@@ -1,9 +1,29 @@
 /* Beamer-Modus: html[data-beamer], gesetzt über ?beamer, die Taste B oder den Knopf „Beamer“ (Layout.astro).
-   Ziel: lesbar von der letzten Reihe bei 1280×720 und 1920×1080 – größere Schrift, keine Seitenleiste, breitere Spalte. */
+   Ziel: lesbar im Seminarraum bei 1280×720 und 1920×1080 – größere Schrift, helles Thema (Layout.astro setzt
+   data-theme="light": Dunkel wird am Beamer grau auf grau), keine Seitenleiste, breitere Spalte, ← / → blättert. */
 
-/* rem-Größen (Überschriften, Tabellen, Labels) wachsen mit der Wurzelschrift, Abstände ebenso. */
-html[data-beamer] { font-size: 125%; --max: 1100px; }
-html[data-beamer] body { font-size: 21px; }
+/* Schrift folgt der Bildschirmhöhe: 720p ≈ 20px, 1080p ≈ 27.5px. rem-Größen und Abstände wachsen mit. */
+html[data-beamer] { font-size: clamp(20px, 2.55vh, 30px); --max: 52rem; }
+html[data-beamer] body { font-size: 1rem; line-height: 1.45; }
+
+/* Typografie: Überschriften kleiner als am Desktop gerechnet (sonst frisst h1 bei 720p die halbe Höhe),
+   Nebentexte nicht kleiner als der Fließtext. */
+html[data-beamer] h1 { font-size: 2.1rem; }
+html[data-beamer] h2 { font-size: 1.5rem; }
+html[data-beamer] .content > .inner > h2 { margin-top: 2.5rem; padding-top: .9rem; }
+html[data-beamer] h3 { font-size: 1.15rem; }
+html[data-beamer] .lead { font-size: 1.15rem; max-width: 50ch; color: var(--fg); }
+html[data-beamer] .block .desc, html[data-beamer] .faden p, html[data-beamer] .small,
+html[data-beamer] .callout, html[data-beamer] .prompt .note, html[data-beamer] .quiz .why { font-size: 1rem; }
+html[data-beamer] th { font-size: .8rem; }
+html[data-beamer] .block .pill, html[data-beamer] .eyebrow, html[data-beamer] .prompt .label,
+html[data-beamer] .footer-nav .fn-cap { font-size: .85rem; font-weight: 700; }
+html[data-beamer] .pa-punkt { width: .9em; height: .9em; }
+
+/* Kontrast: Projektoren waschen Farben aus. Gedämpfter Text und Linien kräftiger, Links unterstrichen
+   (nur die Farbe reicht am Beamer nicht). */
+html[data-beamer] { --muted: color-mix(in srgb, var(--fg) 80%, var(--bg)); --border: color-mix(in srgb, var(--fg) 25%, var(--bg)); }
+html[data-beamer] .content a:not(.btn, .day, .footer-nav a, .stepbar a) { text-decoration: underline; text-underline-offset: .15em; }
 
 /* Eine Spalte; die Navigation gibt es weiter, als Overlay hinter „Menü“ wie am Handy. */
 html[data-beamer] .shell { grid-template-columns: 1fr; }
@@ -13,36 +33,44 @@ html[data-beamer] .sidebar {
   transform: translateX(-100%); visibility: hidden; transition: transform .2s, visibility 0s .2s;
 }
 html[data-beamer] .sidebar.open { transform: none; visibility: visible; transition: transform .2s; box-shadow: 0 0 40px rgba(0, 0, 0, .25); }
-html[data-beamer] .content { padding: 1.75rem 2.5rem 5rem; }
+html[data-beamer] .content { padding: 1.25rem 2.5rem 5rem; }
 
 /* Die Kopfleiste ist sonst nur am Handy sichtbar; im Beamer-Modus trägt sie „Menü“ und den Schalter zum Ausschalten. */
+/* Feste px: die klebende Leiste soll mit der Schrift nicht mitwachsen. */
 html[data-beamer] .topbar {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding: .6rem 2.5rem; border-bottom: 1px solid var(--border); background: var(--bg-2);
-  position: sticky; top: 0; z-index: 40; font-size: 1rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 6px 40px; border-bottom: 1px solid var(--border); background: var(--bg-2);
+  position: sticky; top: 0; z-index: 40; font-size: 15px;
 }
 
-html[data-beamer] .topbar button {
-  display: inline-flex; align-items: center; gap: .35rem; font: inherit; background: none;
-  border: 1px solid var(--border); border-radius: 8px; padding: .35rem .7rem; color: var(--fg); cursor: pointer;
+html[data-beamer] .topbar button, html[data-beamer] .topbar .beamer-weiter {
+  display: inline-flex; align-items: center; gap: 6px; font: inherit; background: none;
+  border: 1px solid var(--border); border-radius: 8px; padding: 5px 11px; color: var(--fg); cursor: pointer;
 }
+
+/* „Weiter: …  →“ – nächste Seite wie unten im FooterNav, auch per Pfeiltaste. Nur im Beamer-Modus. */
+.beamer-weiter { display: none; }
+html[data-beamer] .topbar .beamer-weiter:not([hidden]) { display: inline-flex; max-width: 34vw; text-decoration: none; }
+html[data-beamer] .beamer-weiter span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html[data-beamer] .beamer-weiter:hover { border-color: var(--accent); }
 
 /* Ablauf: die Uhrzeit ist der Anker beim Vorlesen – größer und nicht mehr gedämpft. */
 html[data-beamer] .block { grid-template-columns: 8.5rem 1fr; }
 html[data-beamer] .block .time { font-size: 1rem; color: var(--fg); }
 
-/* Prompts und Tabellen folgen der größeren Schrift; die Kopieren-Taste bleibt bedienbar. */
-html[data-beamer] .prompt pre { font-size: 1.05rem; }
+/* Prompts und Tabellen so groß wie der Fließtext – Prompts sind das, was alle mitlesen. */
+html[data-beamer] .prompt pre { font-size: 1rem; max-width: 68ch; }
 html[data-beamer] table { font-size: 1rem; }
 
-/* Die Kopfleiste ist im Beamer-Modus auch am Desktop sticky (≈ 3.65rem hoch): Schrittleiste darunter setzen,
-   und Anker (Überschriften, Screenshot-Schritte) so anspringen, dass weder Kopf- noch Schrittleiste sie verdecken. */
-html[data-beamer] .stepbar { top: 3.75rem; }
-html[data-beamer] h2[id], html[data-beamer] .shots > li { scroll-margin-top: 7.5rem; }
+/* Die Kopfleiste ist im Beamer-Modus auch am Desktop sticky; ihre Höhe misst Layout.astro (--topbar-h).
+   Schrittleiste darunter setzen, Anker so anspringen, dass weder Kopf- noch Schrittleiste sie verdecken. */
+html[data-beamer] .stepbar { top: var(--topbar-h, 48px); }
+html[data-beamer] h2[id], html[data-beamer] .shots > li { scroll-margin-top: calc(var(--topbar-h, 48px) + 3.5rem); }
 
 @media (max-width: 900px) {
   html[data-beamer] .content { padding: 1.25rem 16px 4rem; }
-  html[data-beamer] .topbar { padding: .6rem 16px; font-size: .8rem; }
+  html[data-beamer] .topbar { padding: 6px 16px; font-size: 13px; }
+  html[data-beamer] .topbar .beamer-weiter { display: none; }
   html[data-beamer] .topbar strong { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 }
 

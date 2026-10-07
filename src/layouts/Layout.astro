@@ -1,5 +1,5 @@
 ---
-import { Menu, Presentation } from '@lucide/astro';
+import { ArrowRight, Menu, Presentation } from '@lucide/astro';
 // Schriften liegen auf unserem Server (fontsource), nicht bei Google: keine IP-Weitergabe an Dritte (DSGVO).
 // Die CSS-Dateien deklarieren mehrere Zeichensätze; der Browser lädt per unicode-range nur, was die Seite nutzt (hier latin, ggf. latin-ext).
 import '@fontsource-variable/instrument-sans';
@@ -44,6 +44,11 @@ const nav = [
     { href: '/bewertung', t: 'Bewertung' },
   ]},
 ];
+// Ersatz-Reihenfolge fürs Blättern im Beamer-Modus, wenn eine Seite keinen FooterNav hat: die Menü-Reihenfolge.
+const flach = nav.flatMap((g) => g.items);
+const hier = flach.findIndex((i) => i.href === path);
+const vorher = hier > 0 ? flach[hier - 1] : undefined;
+const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefined;
 ---
 <!doctype html>
 <html lang="de">
@@ -65,7 +70,8 @@ const nav = [
           an = q !== '0';
           try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
         }
-        if (an) document.documentElement.setAttribute('data-beamer', '');
+        // Beamer heißt auch helles Thema: Dunkel wird am Projektor grau auf grau.
+        if (an) { document.documentElement.setAttribute('data-beamer', ''); document.documentElement.setAttribute('data-theme', 'light'); }
       })();
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -74,7 +80,8 @@ const nav = [
     <div class="topbar">
       <strong class="topbar-brand"><span class="brand-mark" aria-hidden="true">›<i></i></span><span>programmieren_mit_ai</span></strong>
       <div class="topbar-actions">
-        <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
+        <a class="beamer-weiter" hidden data-fallback-next={danach?.href} data-fallback-next-t={danach?.t} data-fallback-prev={vorher?.href} title="Nächste Seite (Taste →, zurück mit ←)"><span>Weiter: <b></b></span><ArrowRight size={16} aria-hidden="true" /></a>
+        <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
         <button id="menu-btn" aria-label="Menü öffnen"><Menu size={18} aria-hidden="true" /> Menü</button>
       </div>
     </div>
@@ -112,20 +119,48 @@ const nav = [
       const sync = () => toggles.forEach((t) => t.setAttribute('aria-pressed', String(root.hasAttribute('data-beamer'))));
       const setBeamer = (an: boolean) => {
         root.toggleAttribute('data-beamer', an);
+        if (an) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
         try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch {}
         sb?.classList.remove('open');
         sync();
+        hoeheMessen();
       };
+
+      // Klebende Kopfleiste: Höhe für Schrittleiste und Sprungziele (beamer.css, --topbar-h).
+      const topbar = document.querySelector<HTMLElement>('.topbar');
+      const hoeheMessen = () => { if (topbar) root.style.setProperty('--topbar-h', `${Math.round(topbar.getBoundingClientRect().height)}px`); };
+      if (topbar) new ResizeObserver(hoeheMessen).observe(topbar);
+
+      // Blättern: Ziel ist der FooterNav der Seite (Lernreihenfolge); ohne FooterNav die Menü-Reihenfolge.
+      const weiter = document.querySelector<HTMLAnchorElement>('.beamer-weiter');
+      const fnNext = document.querySelector<HTMLAnchorElement>('.footer-nav a.next');
+      const fnPrev = document.querySelector<HTMLAnchorElement>('.footer-nav a.prev');
+      const nextHref = fnNext?.getAttribute('href') ?? weiter?.dataset.fallbackNext;
+      const prevHref = fnPrev?.getAttribute('href') ?? weiter?.dataset.fallbackPrev;
+      const nextTitel = fnNext ? fnNext.querySelector('span:last-child')?.textContent?.replace(/\s*→\s*$/, '') : weiter?.dataset.fallbackNextT;
+      if (weiter && nextHref) {
+        weiter.href = nextHref;
+        weiter.querySelector('b')!.textContent = nextTitel ?? '';
+        weiter.hidden = false;
+      }
       sync();
       toggles.forEach((t) => t.addEventListener('click', () => setBeamer(!root.hasAttribute('data-beamer'))));
       document.addEventListener('keydown', (e) => {
-        if (e.key !== 'b' && e.key !== 'B') return;
-        if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+        const blaettern = e.key === 'ArrowRight' || e.key === 'ArrowLeft';
+        if (e.key !== 'b' && e.key !== 'B' && !blaettern) return;
+        // defaultPrevented: Die SOTA-Bühne nimmt ←/→ selbst, solange sie den Fokus hat.
+        if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.repeat) return;
         const t = e.target as HTMLElement | null;
         // Nicht beim Tippen, und nicht solange ein Dialog (Screenshot-Präsentation) oder ein Vollbild die Tasten hat.
         if (t && (t.isContentEditable || t.closest('input, textarea, select, [contenteditable]'))) return;
         if (document.querySelector('dialog[open]') || document.fullscreenElement) return;
-        setBeamer(!root.hasAttribute('data-beamer'));
+        if (!blaettern) { setBeamer(!root.hasAttribute('data-beamer')); return; }
+        // ← / → blättern nur im Beamer-Modus; sonst bleiben die Pfeile beim Browser (waagrecht scrollen).
+        if (!root.hasAttribute('data-beamer')) return;
+        const ziel = e.key === 'ArrowRight' ? nextHref : prevHref;
+        if (!ziel) return;
+        e.preventDefault();
+        location.href = ziel;
       });
     </script>
   </body>
