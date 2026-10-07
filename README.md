@@ -29,7 +29,7 @@ npm run build    # Ausgabe in dist/
 - `?beamer` (oder Taste `B`): größere Schrift, ohne Seitenleiste; `?beamer=0` schaltet aus.
 - `/start`: Startseite vor dem Login, öffentlich (ohne Kurspasswort). Eine Animation baut den Titel auf, danach führt „Weiter“ (Klick, Enter, Leertaste oder →) zur Übersicht – ohne Anmeldung über das Kurspasswort. Nie automatisch weiter.
 - Nach NDU Live am Beamer: `/start?beamer` – „Weiter“ bleibt im Beamer-Modus (`/?beamer`).
-- Die Animation „Der Cursor läuft“ (`src/components/auftakt-start.ts`, GSAP mit SplitText und ScrambleText – nur auf dieser Seite geladen): Ein Auftrag wird getippt, seine Buchstaben fliegen in den Titel, ein Druckkopf schreibt Einleitung und Tage, dann wartet „› weiter“. Jede Taste oder jeder Klick springt ans Ende. Zeiten und Regeln stehen als reine Funktionen in `src/components/auftakt-zeitplan.ts` (mit Tests); der Endzustand ist statisches HTML in `src/pages/start.astro`.
+- Die Animation „Der Cursor läuft“ (`src/components/auftakt-start.ts`, GSAP mit SplitText – nur auf dieser Seite geladen): Ein Auftrag wird getippt, seine Buchstaben fliegen in den Titel, ein Druckkopf schreibt Einleitung und Tage, dann wartet „› weiter“. Jede Taste oder jeder Klick springt ans Ende. Zeiten und Regeln stehen als reine Funktionen in `src/components/auftakt-zeitplan.ts` (mit Tests); der Endzustand ist statisches HTML in `src/pages/start.astro`.
 
 ## Inhalte ändern
 

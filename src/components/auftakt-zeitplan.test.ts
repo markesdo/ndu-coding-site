@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   PROMPT_KURZ, PROMPT_LANG, REGIE,
-  flugZuordnung, istWeiterTaste, ohneFlug, promptWahl, tastenAktion, tippZeiten, weiterZiel,
+  flugZuordnung, istWeiterTaste, ohneFlug, promptWahl, schreibungWechselt, tastenAktion, tippZeiten, weiterZiel,
 } from './auftakt-zeitplan';
 
 const TITEL = 'Programmieren mit AI';
@@ -32,6 +32,12 @@ describe('promptWahl', () => {
   });
   it('lang, wo Platz ist; kurz am Handy, notfalls etwas kleiner', () => {
     expect(promptWahl(1700, 44)).toStrictEqual({ text: PROMPT_LANG, px: 44 });
+    // Beamer 1280×720 und 1920×1080: der lange Auftrag, etwas kleiner als gewünscht, aber nicht unter 85 %.
+    for (const [verfuegbar, wunsch] of [[1169.6, 35.2], [1758.4, 52.8]]) {
+      const w = promptWahl(verfuegbar, wunsch);
+      expect(w.text).toBe(PROMPT_LANG);
+      expect(w.px).toBeGreaterThanOrEqual(wunsch * 0.85);
+    }
     expect(promptWahl(358, 18).text).toBe(PROMPT_KURZ);
     expect(promptWahl(358, 18).px).toBeLessThan(18);
   });
@@ -96,8 +102,18 @@ describe('flugZuordnung', () => {
   });
   it('die meisten Buchstaben der Überschrift kommen aus dem Auftrag', () => {
     const lang = flugZuordnung(PROMPT_LANG, TITEL).filter((x) => x !== null).length;
-    expect(lang).toBeGreaterThanOrEqual(14);
+    expect(lang).toBeGreaterThanOrEqual(16);
     expect(ohneFlug(flugZuordnung(PROMPT_LANG, TITEL), TITEL).length + lang).toBe(TITEL.replace(/ /g, '').length);
+  });
+  it('langer Auftrag: nur „P“ und „I“ wechseln die Schreibung, höchstens ein Buchstabe tippt sich ein', () => {
+    const z = flugZuordnung(PROMPT_LANG, TITEL);
+    expect(schreibungWechselt(PROMPT_LANG, z, TITEL).map((j) => TITEL[j])).toStrictEqual(['P', 'I']);
+    expect(ohneFlug(z, TITEL).length).toBeLessThanOrEqual(1);
+  });
+  it('schreibungWechselt nennt genau die Ziele mit anderer Schreibung, aufsteigend', () => {
+    expect(schreibungWechselt('pXa', [0, null, 2], 'Pba')).toStrictEqual([0]);
+    expect(schreibungWechselt('ab', [0, 1], 'ab')).toStrictEqual([]);
+    expect(schreibungWechselt('ip', [1, 0], 'PI')).toStrictEqual([0, 1]);
   });
 });
 

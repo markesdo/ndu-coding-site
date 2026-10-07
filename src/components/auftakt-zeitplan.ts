@@ -3,20 +3,25 @@
 // des Auftrags fliegen in die Überschrift. Was der Mensch beschreibt, wird zum Ergebnis.
 
 /** Der getippte Auftrag. Auf schmalen Handys die kurze Fassung, damit er nicht umbricht. */
-export const PROMPT_LANG = 'Bau mir eine App, in der Studierende Events anlegen.';
+// Lang: enthält fast alle Buchstaben der Überschrift in gleicher Schreibung (o, g, a, r, e, n, t, A) – nur „P“ und „I“
+// kommen klein an und werden groß (eigener Moment), ein „m“ fehlt und tippt sich ein. Kurz (Handy): mehr Lücken, die sich eintippen.
+export const PROMPT_LANG = 'Bau mir eine App, mit der Studierende Events organisieren.';
 export const PROMPT_KURZ = 'Bau mir eine App für Campus-Events.';
 
 /** Mono-Schrift: ein Zeichen ist 0,6 em breit. */
 const ZEICHEN_EM = 0.6;
 // „›“ + Leerzeichen + Block-Cursor (0,55em) + dessen Abstand (0,15em) = 1,9em ≈ 3,2 Zeichen; mit Reserve 3,5.
 export const EXTRA_ZEICHEN = 3.5;
+/** Der lange Auftrag darf bis auf diesen Anteil der Wunschgröße schrumpfen, bevor der kurze übernimmt. */
+export const LANG_MIN_ANTEIL = 0.85;
 /**
- * Welcher Auftrag in welcher Größe, damit er sicher in eine Zeile passt: der lange, wenn er in der
- * Wunschgröße passt, sonst der kurze – notfalls etwas kleiner (nie unter `minPx`).
+ * Welcher Auftrag in welcher Größe, damit er sicher in eine Zeile passt: der lange – in der Wunschgröße oder etwas
+ * kleiner (bis LANG_MIN_ANTEIL) –, sonst der kurze, notfalls ebenfalls kleiner (nie unter `minPx`).
  */
 export function promptWahl(verfuegbarPx: number, wunschPx: number, minPx = 11) {
   const breite = (t: string, px: number) => (t.length + EXTRA_ZEICHEN) * ZEICHEN_EM * px;
-  if (breite(PROMPT_LANG, wunschPx) <= verfuegbarPx) return { text: PROMPT_LANG, px: wunschPx };
+  const langPx = Math.min(wunschPx, Math.floor((verfuegbarPx / breite(PROMPT_LANG, 1)) * 10) / 10);
+  if (langPx >= Math.max(minPx, wunschPx * LANG_MIN_ANTEIL)) return { text: PROMPT_LANG, px: langPx };
   const px = Math.min(wunschPx, verfuegbarPx / ((PROMPT_KURZ.length + EXTRA_ZEICHEN) * ZEICHEN_EM));
   return { text: PROMPT_KURZ, px: Math.max(minPx, Math.floor(px * 10) / 10) };
 }
@@ -43,11 +48,18 @@ export const REGIE = {
   tippenEnde: 2.4,
   /** Das „Enter“: Licht flackert einmal auf, der Auftrag wird abgeschickt. */
   enter: 2.9,
-  /** Die Buchstaben fliegen in die Überschrift. */
-  flug: 3.0,
+  /** Die Buchstaben fliegen in die Überschrift – erst, wenn die abgeschickte Zeile oben ist (enter + 0,15 s). */
+  flug: 3.05,
   flugDauer: 0.7,
-  /** Größte zufällige Verzögerung einzelner Buchstaben beim Abflug. */
-  flugStreuung: 0.25,
+  /** Größte Verzögerung einzelner Buchstaben beim Abflug (klein: weniger Buchstaben hängen halb groß in der Luft). */
+  flugStreuung: 0.15,
+  /** Buchstaben ohne passenden Abflieger tippen sich nacheinander ein (Abstand). */
+  eintippenAbstand: 0.05,
+  /** Nach der Landung des Cursors: Klein angekommene Buchstaben („p“, „i“) werden gemeinsam groß. */
+  grossVersatz: 0.15,
+  grossDauer: 0.18,
+  /** Die Dachzeile erscheint erst nach dem Cursor (kein Wettbewerb mit der Landung). */
+  dachzeileVersatz: 0.25,
   /** Der Cursor landet hinter „AI“, die Dachzeile erscheint. */
   landung: 3.9,
   /** Der Druckkopf läuft: die Einleitung erscheint Wort für Wort. */
@@ -100,7 +112,7 @@ export function tippZeiten(prompt: string, zufall: () => number = Math.random): 
  * Leerzeichen und Satzzeichen fliegen nie; jedes Ziel bekommt höchstens einen Buchstaben; gleicher Buchstabe
  * (gleiche Schreibung) vor gleichem Buchstaben in anderer Schreibung; unter mehreren Kandidaten der, dessen relative
  * Position im Auftrag der Zielposition in der Überschrift am nächsten liegt (weniger Kreuzungen im Flug).
- * Deterministisch: gleiche Eingabe, gleiches Ergebnis. Ziele ohne Buchstaben erscheinen anders (Scramble).
+ * Deterministisch: gleiche Eingabe, gleiches Ergebnis. Ziele ohne Buchstaben tippen sich ein.
  */
 export function flugZuordnung(prompt: string, titel: string): (number | null)[] {
   const ergebnis: (number | null)[] = Array.from(prompt, () => null);
@@ -130,6 +142,16 @@ export function flugZuordnung(prompt: string, titel: string): (number | null)[] 
   for (const { c, j } of ziele) if (!waehle(j, (x) => x === c)) offen.push({ c, j });
   for (const { c, j } of offen) waehle(j, (x) => x.toLowerCase() === c.toLowerCase());
   return ergebnis;
+}
+
+/**
+ * Ziele, die einen Buchstaben in anderer Schreibung bekommen („p“ → „P“): Sie landen so, wie sie abfliegen,
+ * und werden nach der Landung gemeinsam groß – ein eigener Moment statt eines Wechsels mitten im Flug.
+ */
+export function schreibungWechselt(prompt: string, zuordnung: (number | null)[], titel: string): number[] {
+  const wechsel: number[] = [];
+  zuordnung.forEach((j, i) => { if (j !== null && prompt[i] !== titel[j]) wechsel.push(j); });
+  return wechsel.sort((a, b) => a - b);
 }
 
 /** Ziele der Überschrift, die keinen Buchstaben abbekommen haben (ohne Leerzeichen). */

@@ -28,47 +28,60 @@
 .start {
   position: relative; z-index: 1; box-sizing: border-box; min-height: 100dvh;
   display: flex; flex-direction: column; justify-content: center;
-  width: min(92vw, 1700px); margin: 0 auto; padding: max(4.5rem, 9vh) 0 max(2rem, 5vh);
+  width: min(92vw, 1800px); margin: 0 auto; padding: max(4rem, 7vh) 0;
 }
 .start-marke {
   position: absolute; top: max(1.25rem, 3vh); left: 0; margin: 0; display: flex; align-items: center; gap: .6rem;
   font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: clamp(13px, min(1vw, 1.8vh), 18px); color: var(--fg);
 }
-.start .eyebrow { font-size: clamp(10.5px, min(.95vw, 1.7vh), 17px); margin-bottom: min(1.6vh, 1.2rem); }
+.start .eyebrow { font-size: clamp(12px, min(1.1vw, 1.9vh), 19px); margin-bottom: min(1.6vh, 1.2rem); }
 .start h1 {
-  /* So groß wie möglich, eine Zeile: 20 Zeichen + Cursor ≈ 11,9em; 7,2vw passt in 92vw, 140px in 1700px. */
-  font-size: clamp(24px, min(7.2vw, 13vh), 140px); line-height: 1.02; letter-spacing: -0.04em; margin: 0 0 min(2.4vh, 1.4rem);
+  /* So groß wie möglich, eine Zeile: 20 Zeichen + Cursor ≈ 11,85em; 7,5vw ≈ 89vw passt in 92vw, 150px in 1800px.
+     720p ≈ 96 px, 1080p ≈ 144 px. */
+  font-size: clamp(24px, min(7.5vw, 13.5vh), 150px); line-height: 1.02; letter-spacing: -0.04em; margin: 0 0 min(2.4vh, 1.4rem);
 }
-.start .lead { font-size: clamp(16px, min(1.9vw, 3.2vh), 32px); line-height: 1.45; max-width: 44ch; margin: 0; position: relative; }
-.start .days { margin: min(5vh, 3rem) 0 0; gap: 0 min(2.4vw, 2.5rem); }
+.start .lead { font-size: clamp(18px, min(2.2vw, 3.7vh), 38px); line-height: 1.45; max-width: 40ch; margin: 0; position: relative; }
+.start .days { margin: min(6vh, 3.5rem) 0 0; gap: 0 min(2.4vw, 2.5rem); }
 .start .day { padding: min(1.6vh, 1rem) 0 0; }
-.start .day .n { font-size: clamp(10.5px, min(.85vw, 1.6vh), 16px); }
-.start .day h3 { font-size: clamp(16px, min(1.45vw, 2.6vh), 28px); }
-.start .day p { font-size: clamp(13px, min(1.05vw, 1.9vh), 20px); }
+.start .day .n { font-size: clamp(12px, min(1vw, 1.8vh), 18px); }
+.start .day h3 { font-size: clamp(18px, min(1.7vw, 3vh), 32px); }
+.start .day p { font-size: clamp(14px, min(1.2vw, 2.1vh), 22px); }
 .start .day:hover { border-top-color: var(--fg); }
 .start .day:hover h3 { color: inherit; }
 
 /* „› weiter▮“: eine Prompt-Zeile, die auf Eingabe wartet. Großes Ziel (≥ 56 px). */
 .start-aktion { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem 1.25rem; margin: min(5vh, 3rem) 0 0; }
 .start-weiter {
-  display: inline-flex; align-items: center; min-height: 56px; padding: 0 .4em; margin-left: -.4em;
-  font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: clamp(20px, min(2.2vw, 4vh), 40px);
+  display: inline-flex; align-items: center; min-height: 64px; padding: 0 .4em; margin-left: -.4em;
+  font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: clamp(26px, min(2.9vw, 5.2vh), 52px);
   color: var(--fg); text-decoration: none; border-radius: 6px;
 }
 .start-weiter:hover { text-decoration: none; color: var(--accent); }
 .start-weiter:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .start-weiter-chev { color: var(--accent); margin-right: .1em; }
 .start-weiter .cursor { width: .55em; height: 1em; margin-left: .2em; vertical-align: -.12em; }
-.start-hinweis { font-family: var(--mono); font-size: clamp(11px, min(1vw, 1.8vh), 17px); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.start-hinweis { font-family: var(--mono); font-size: clamp(14px, min(1.3vw, 2.3vh), 22px); letter-spacing: .06em; text-transform: uppercase; color: var(--fg); opacity: .7; }
 
 @media (max-width: 900px) {
   .start .days { grid-template-columns: 1fr; }
   .start .day { display: grid; grid-template-columns: 8.5rem 1fr; column-gap: 1rem; padding-top: .7rem; padding-bottom: .7rem; }
 }
 @media (max-width: 600px) {
-  .start { padding-top: 4.25rem; justify-content: flex-start; }
+  .start { padding: 4.25rem 0 1.25rem; justify-content: flex-start; }
+  .start .days { margin-top: min(3vh, 1.5rem); }
   .start .day { display: block; padding-top: .55rem; padding-bottom: .55rem; }
   .start .day p { display: none; }
+  .start-aktion { margin-top: min(3vh, 1.25rem); }
+  .start-weiter { min-height: 56px; }
+}
+/* Kleine Handys (iPhone SE): alles auf einen Bildschirm, ohne Scrollen. */
+@media (max-width: 600px) and (max-height: 700px) {
+  .start { padding-top: 3.5rem; }
+  .start .lead { font-size: 16px; }
+  .start .day { padding-top: .4rem; padding-bottom: .4rem; }
+  .start .day h3 { font-size: 16px; }
+  .start-weiter { font-size: 22px; min-height: 48px; }
+  .start-hinweis { font-size: 12px; }
 }
 
 /* Vor dem Start: unsichtbar, aber mit Platz. Sicherheitsnetz: Lädt das Skript nicht, ist nach 5 s alles da. */
@@ -78,6 +91,9 @@ html[data-auftakt]:not([data-auftakt-laeuft]):not([data-auftakt-fertig]) :is(.he
 @keyframes auftakt-sicher { to { opacity: 1; } }
 /* Während der Zeitleiste: „› weiter“ unsichtbar und nicht klickbar (das Skript hat einen eigenen Wächter). */
 html[data-auftakt-laeuft]:not([data-auftakt-fertig]) .start-aktion { opacity: 0; visibility: hidden; }
+/* Der Titel-Cursor steht still, solange die Zeitleiste läuft – er ist ab der Landung durchgehend sichtbar.
+   Am Ende kommt frisches Markup: Das Blinken beginnt dann sichtbar (Phase 0). */
+html[data-auftakt-laeuft] h1 .cursor { animation: none; }
 .start-aktion { transition: opacity .35s ease-out; }
 
 /* Tage: Die Linie zeichnet sich von links nach rechts, statt der Rahmenlinie (die bleibt durchsichtig). */
@@ -97,7 +113,10 @@ html[data-auftakt-laeuft] .hero .day { position: relative; border-top-color: tra
 
 /* Der getippte Auftrag: eine Zeile in der Bildmitte, über der Bühne. */
 .auftakt-overlay { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; pointer-events: none; }
-.auftakt-zeile { font-family: var(--mono); font-weight: 400; white-space: pre; line-height: 1.4; color: var(--muted); }
+/* line-height: normal – die Box eines Abfliegers ist dann genau so hoch wie die Glyphe (wie das Ziel im Titel):
+   gleiche Oberkante heißt gleiche Grundlinie. Mit 1,4 landeten die Buchstaben ~5 px zu tief und sprangen. */
+.auftakt-zeile { font-family: var(--mono); font-weight: 400; white-space: pre; line-height: normal; color: var(--muted); }
+.auftakt-flugschicht { position: fixed; inset: 0; pointer-events: none; }
 .auftakt-chev { display: inline-block; color: var(--accent); font-weight: 700; margin-right: .6em; }
 .auftakt-z { display: inline-block; }
 .auftakt-cursor {

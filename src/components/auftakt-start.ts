@@ -1,18 +1,18 @@
-// „Der Cursor läuft“ – die Eröffnung auf /start (start.astro). GSAP mit SplitText und ScrambleText, nur auf dieser Seite.
+// „Der Cursor läuft“ – die Eröffnung auf /start (start.astro). GSAP mit SplitText, nur auf dieser Seite.
 // Ablauf (Zeiten in REGIE, auftakt-zeitplan.ts): Ein großer Block-Cursor wartet → ein Auftrag wird getippt → „Enter“ →
 // die Buchstaben des Auftrags fliegen in die Überschrift „Programmieren mit AI“ → der Cursor landet dahinter →
+// klein angekommene Buchstaben („p“, „i“) werden gemeinsam groß →
 // ein Druckkopf läuft, die Einleitung erscheint Wort für Wort → die drei Tage werden gedruckt → „› weiter▮“ wartet.
 // Nie automatisch weiter. Jede Taste, jeder Klick, jedes Scrollen springt ans Ende (Enter vor dem „Enter“ schickt ab);
 // diese Geste löst nicht zugleich „Weiter“ aus (Sperre WEITER_SPERRE_MS). Endet immer im statischen HTML der Seite.
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import {
   AUSGANG_MS, REGIE, WEITER_SPERRE_MS,
-  flugZuordnung, istWeiterTaste, promptWahl, tastenAktion, tippZeiten, weiterZiel,
+  flugZuordnung, istWeiterTaste, promptWahl, schreibungWechselt, tastenAktion, tippZeiten, weiterZiel,
 } from './auftakt-zeitplan';
 
-gsap.registerPlugin(SplitText, ScrambleTextPlugin);
+gsap.registerPlugin(SplitText);
 
 const root = document.documentElement;
 const buehne = document.querySelector<HTMLElement>('#auftakt-buehne');
@@ -23,6 +23,18 @@ const start = document.querySelector<HTMLElement>('.start');
 /** Zu spät geladen: Das CSS-Sicherheitsnetz hat nach 5 s schon alles gezeigt – dann nicht noch einmal von vorn. */
 const ZU_SPAET_MS = 4500;
 const pause = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+/**
+ * Lage der Grundlinie eines Elements (Bildschirm-y): ein unsichtbarer 0-px-Messpunkt auf der Grundlinie.
+ * Genauer als die Oberkante der Box – die Box wird auf ganze Pixel gerundet, und der Flug vergrößert den Fehler.
+ */
+function grundlinie(el: HTMLElement): number {
+  const messpunkt = document.createElement('span');
+  messpunkt.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+  el.append(messpunkt);
+  const y = messpunkt.getBoundingClientRect().top;
+  messpunkt.remove();
+  return y;
+}
 
 let weiterFrei = false;
 let imAusgang = false;
@@ -70,9 +82,9 @@ async function starten(buehne: HTMLElement) {
   }
   const zeichenFuer = new Map<number, HTMLElement>(titelIndizes.map((j, k) => [j, titelZeichen[k]]));
 
-  // Der Auftrag: eine Zeile in der Bildmitte, so groß wie möglich, ohne umzubrechen.
-  const wunschPx = Math.min(44, Math.max(18, Math.min(innerWidth * 0.026, innerHeight * 0.045)));
-  const wahl = promptWahl(Math.min(innerWidth * 0.92, 1500) - 8, wunschPx);
+  // Der Auftrag: eine Zeile in der Bildmitte, so groß wie möglich, ohne umzubrechen (720p ≈ 35 px, 1080p ≈ 53 px).
+  const wunschPx = Math.min(56, Math.max(18, Math.min(innerWidth * 0.0275, innerHeight * 0.05)));
+  const wahl = promptWahl(Math.min(innerWidth * 0.92, 1800) - 8, wunschPx);
   const overlay = Object.assign(document.createElement('div'), { className: 'auftakt-overlay' });
   overlay.setAttribute('aria-hidden', 'true');
   const zeile = Object.assign(document.createElement('div'), { className: 'auftakt-zeile' });
@@ -82,7 +94,10 @@ async function starten(buehne: HTMLElement) {
   const promptZeichen = [...wahl.text].map((c) => Object.assign(document.createElement('span'), { className: 'auftakt-z', textContent: c }));
   const promptCursor = Object.assign(document.createElement('span'), { className: 'auftakt-cursor' });
   zeile.append(chevron, ...promptZeichen, promptCursor);
-  overlay.append(zeile);
+  // Flugschicht: ohne Transformation, deckungsgleich mit dem Bildschirm. Fliegende Buchstaben wechseln beim Abflug
+  // hierher – ihre Lage hängt dann nicht mehr an der zentrierten, angehobenen Zeile mit Bruchteil-Pixeln.
+  const flugschicht = Object.assign(document.createElement('div'), { className: 'auftakt-zeile auftakt-flugschicht' });
+  overlay.append(zeile, flugschicht);
   document.body.append(overlay);
 
   // Druckkopf unter der Einleitung, Linien über den Tagen.
@@ -123,14 +138,56 @@ async function starten(buehne: HTMLElement) {
   // 0,9–2,4 s: Tippen – unregelmäßig wie ein Mensch, mit Pause nach dem Komma.
   tippZeiten(wahl.text).forEach((t, i) => tl.set(promptZeichen[i], { display: 'inline-block' }, t));
 
-  // 2,9 s: „Enter“ – einmal Licht, die Zeile wird abgeschickt.
+  // 2,9 s: „Enter“ – einmal Licht, die Zeile wird abgeschickt. Ab hier steht der Cursor still (wie ein Terminal,
+  // das arbeitet) – er blinkt nicht mehr, auch nicht im Flug.
   if (blitz) tl.to(blitz, { opacity: 1, duration: 0.14, ease: 'power2.out' }, 'enter').to(blitz, { opacity: 0, duration: 0.6, ease: 'power2.inOut' }, 'enter+=0.14');
   tl.to(zeile, { y: () => -0.3 * wahl.px, duration: 0.15, ease: 'power2.out' }, 'enter');
+  tl.call(() => { promptCursor.style.animation = 'none'; }, [], 'enter');
 
-  // 3,0–3,95 s: Der große Moment – die Buchstaben fliegen an ihre Stellen in der Überschrift.
+  // 3,05–3,9 s: Der große Moment – die Buchstaben fliegen an ihre Stellen in der Überschrift.
+  // Ziel ist die Grundlinie, nicht die Oberkante: dy setzt die skalierte Grundlinie des Abfliegers genau auf die des
+  // Titelzeichens (transformOrigin 0 0). Dazu line-height: normal (auftakt.css), damit die Boxen nicht mit
+  // Durchschuss rechnen. Die Übergabe an der Landung passiert in einem einzigen Bild.
   const zuordnung = flugZuordnung(wahl.text, titelText);
   const ziele = new Set<number>();
   const versatz = (i: number) => (((i * 37) % 11) / 11) * R.flugStreuung; // deterministische Streuung
+  const titelFarbe = getComputedStyle(h1).color;
+  // Ziele, deren Buchstabe in anderer Schreibung ankommt („p“ → „P“): zeigen zuerst den ankommenden Buchstaben,
+  // damit die Übergabe pixelgleich ist; groß werden sie danach gemeinsam (siehe unten).
+  const grossWerden = schreibungWechselt(wahl.text, zuordnung, titelText)
+    .map((j) => ({ el: zeichenFuer.get(j)!, original: titelText[j] }))
+    .filter((g) => g.el);
+  zuordnung.forEach((j, i) => { if (j !== null && grossWerden.some((g) => g.el === zeichenFuer.get(j))) zeichenFuer.get(j)!.textContent = wahl.text[i]; });
+  // FLIP beim Abflug: Alle Zeichen und der Cursor werden an ihrer Stelle festgehalten (absolut in der Zeile), damit
+  // nichts nachrutscht. Die fliegenden bekommen sofort die Schriftgröße des Titels und werden auf Promptgröße
+  // herunterskaliert – bei der Landung ist der Maßstab genau 1. So rastert der Browser den fliegenden Buchstaben wie
+  // das Titelzeichen; klein gerastert und hochskaliert lag er wegen der Schrift-Hinting-Rundung 1 px daneben.
+  const titelPx = () => parseFloat(getComputedStyle(h1).fontSize);
+  const fliegt = new Set(promptZeichen.filter((_, i) => zuordnung[i] !== null && zeichenFuer.get(zuordnung[i]!)));
+  const raster = () => window.devicePixelRatio || 1;
+  const aufRaster = (v: number) => Math.round(v * raster()) / raster();
+  tl.call(() => {
+    const zr = zeile.getBoundingClientRect();
+    const fest = [...promptZeichen, promptCursor]
+      .filter((el) => getComputedStyle(el).display !== 'none')
+      .map((el) => ({ el, r: el.getBoundingClientRect(), farbe: getComputedStyle(el).color }));
+    zeile.style.position = 'relative';
+    for (const { el, r, farbe } of fest) {
+      if (fliegt.has(el)) {
+        // In die Flugschicht, auf das Gerätepixel-Raster gelegt (Versatz < ½ Gerätepixel, im Abflug unsichtbar).
+        // Titelgröße und Titelgewicht schon jetzt (nicht getweent): 699,99 statt 700 rendert eine andere Instanz
+        // der variablen Schrift – an der Landung sichtbar als Sprung. Der Wechsel geht im Abflug unter.
+        flugschicht.append(el);
+        Object.assign(el.style, {
+          position: 'absolute', left: `${aufRaster(r.left)}px`, top: `${aufRaster(r.top)}px`, margin: '0',
+          color: farbe, fontSize: `${titelPx()}px`, fontWeight: '700',
+        });
+        gsap.set(el, { scale: wahl.px / titelPx(), transformOrigin: '0 0' });
+      } else {
+        Object.assign(el.style, { position: 'absolute', left: `${r.left - zr.left}px`, top: `${r.top - zr.top}px`, margin: '0' });
+      }
+    }
+  }, [], 'flug');
   promptZeichen.forEach((el, i) => {
     const j = zuordnung[i];
     const ziel = j === null ? undefined : zeichenFuer.get(j);
@@ -141,20 +198,25 @@ async function starten(buehne: HTMLElement) {
     }
     ziele.add(j);
     const dx = () => ziel.getBoundingClientRect().left - el.getBoundingClientRect().left;
-    const dy = () => ziel.getBoundingClientRect().top - el.getBoundingClientRect().top;
-    const massstab = () => parseFloat(getComputedStyle(h1).fontSize) / wahl.px;
+    // Grundlinie nach dem Flug = Oberkante + Grundlinienabstand bei Maßstab 1 (jetzt: herunterskaliert, Ursprung oben links).
+    const dy = () => {
+      const oben = el.getBoundingClientRect().top;
+      const jetzt = Number(gsap.getProperty(el, 'scale')) || 1;
+      return grundlinie(ziel) - (oben + (grundlinie(el) - oben) / jetzt);
+    };
     const ab = R.flug + versatz(i);
-    tl.to(el, { x: dx, y: dy, scale: massstab, color: '#ececf1', fontWeight: 700, duration: R.flugDauer, ease: 'expo.inOut' }, ab);
-    tl.to(ziel, { opacity: 1, duration: 0.1, ease: 'none' }, ab + R.flugDauer - 0.06);
-    tl.set(el, { opacity: 0 }, ab + R.flugDauer + 0.04);
+    tl.to(el, { x: dx, y: dy, scale: 1, color: titelFarbe, force3D: false, duration: R.flugDauer, ease: 'expo.inOut' }, ab);
+    // Übergabe in einem Bild: gleiche Glyphe, gleiche Stelle – nichts zum Überblenden.
+    tl.set(ziel, { opacity: 1 }, ab + R.flugDauer);
+    tl.set(el, { opacity: 0 }, ab + R.flugDauer);
   });
   tl.to(chevron, { opacity: 0, duration: 0.3 }, 'flug');
-  // Stellen ohne passenden Buchstaben: kurz rauschen, dann stimmt der Buchstabe (nur Kleinbuchstaben, kein „Matrix“).
+  // Stellen ohne passenden Buchstaben tippen sich nacheinander ein (kein Rauschen mitten im Wort).
+  // Die Zeichen sind inline – bewegt wird über position/top, nicht transform.
   titelIndizes.filter((j) => !ziele.has(j)).forEach((j, k) => {
     const el = zeichenFuer.get(j)!;
-    const t = R.flug + 0.4 + k * 0.05;
-    tl.set(el, { opacity: 1 }, t);
-    tl.to(el, { duration: 0.4, ease: 'none', scrambleText: { text: el.textContent ?? '', chars: 'abcdefghijklmnopqrstuvwxyz', speed: 0.5 } }, t);
+    gsap.set(el, { position: 'relative' });
+    tl.fromTo(el, { opacity: 0, top: '0.12em' }, { opacity: 1, top: 0, duration: 0.16, ease: 'power2.out' }, R.flug + R.flugDauer + k * R.eintippenAbstand);
   });
 
   // 3,4–3,9 s: Der Cursor fliegt hinter „AI“ und wird zum Cursor der Seite. Die Dachzeile rastet ein.
@@ -168,7 +230,13 @@ async function starten(buehne: HTMLElement) {
   }, 'landung-=0.5');
   tl.set(titelCursor, { opacity: 1 }, 'landung');
   tl.set(overlay, { display: 'none' }, 'landung+=0.02');
-  tl.fromTo(eyebrow, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22 }, 'landung');
+  // Kurz nach dem Cursor: Die klein angekommenen Buchstaben werden gemeinsam groß – „das System korrigiert die Schreibung“.
+  grossWerden.forEach(({ el, original }) => {
+    gsap.set(el, { position: 'relative' });
+    tl.call(() => { el.textContent = original; }, [], `landung+=${R.grossVersatz}`);
+    tl.fromTo(el, { top: '0.08em' }, { top: 0, duration: R.grossDauer, ease: 'power2.out', immediateRender: false }, `landung+=${R.grossVersatz}`);
+  });
+  tl.fromTo(eyebrow, { opacity: 0, y: 4 }, { opacity: 1, y: 0, duration: 0.22, immediateRender: false }, `landung+=${R.dachzeileVersatz}`);
 
   // 4,0–5,0 s: Der Druckkopf läuft, die Einleitung erscheint Wort für Wort, wo er vorbeikommt.
   const woerter = leadSplit.words as HTMLElement[];
@@ -257,7 +325,7 @@ function beenden() {
   setTimeout(() => { weiterFrei = true; }, WEITER_SPERRE_MS);
 }
 
-/** „Weiter“: Enter, Leertaste, Pfeil rechts oder Klick/Tippen auf „› weiter“. Dann ein kurzer Ausgang, dann Tag 1. */
+/** „Weiter“: Enter, Leertaste, Pfeil rechts oder Klick/Tippen auf „› weiter“. Dann ein kurzer Ausgang, dann die Übersicht. */
 function weiterEinrichten() {
   if (!weiter) return;
   const los = () => {
