@@ -7,16 +7,18 @@ import Prompt from '../components/Prompt.astro';
   <h1>Hilfe holen</h1>
   <p class="lead">Richtig um Hilfe bitten ist eine Fähigkeit, die ihr in jedem Projekt braucht – mit Menschen wie mit Agenten. Die Zutaten sind dieselben.</p>
 
-  <h2>Erst selbst – vier Schritte</h2>
+  <h2>Erst selbst – eins nach dem anderen</h2>
+  <p>Fangt oben an. Läuft es wieder, seid ihr fertig – erst wenn ein Schritt nicht hilft, kommt der nächste.</p>
   <ol class="steps">
-    <li><strong>Claude fragen</strong> Fehlermeldung komplett kopieren – aus dem Terminal oder aus der Browser-Konsole (Rechtsklick → Untersuchen → Console) – und mit dem Debug-Prompt unten an Claude geben.</li>
-    <li><strong>Frisch anfangen</strong> Dreht sich Claude im Kreis: <code>/clear</code> und das Problem neu beschreiben, in einem Satz und kleiner als vorher.</li>
-    <li><strong>Prüfen lassen</strong> <code>/ndu-check</code> ausführen – der Bericht nennt oft die Ursache. Und kurz in <a href="/bekannte-probleme">Bekannte Probleme</a> schauen.</li>
-    <li><strong>Zurück zum letzten funktionierenden Stand</strong> Source Control → Discard Changes verwirft alles seit dem letzten Commit. Dann in kleineren Schritten noch einmal.</li>
+    <li><strong>Zuerst: Claude fragen</strong> Fehlermeldung komplett kopieren – aus dem Terminal oder aus der Browser-Konsole (Rechtsklick → Untersuchen → Console) – und mit dem Debug-Prompt unten an Claude geben.</li>
+    <li><strong>Dreht sich Claude im Kreis? Frisch anfangen</strong> <code>/clear</code> und das Problem neu beschreiben, in einem Satz und kleiner als vorher.</li>
+    <li><strong>Immer noch kaputt? Prüfen lassen</strong> <code>/ndu-check</code> ausführen – der Bericht nennt oft die Ursache. Und kurz in <a href="/bekannte-probleme">Bekannte Probleme</a> schauen.</li>
+    <li><strong>Gar nichts hilft? Zurück zum letzten funktionierenden Stand</strong> Source Control → Discard Changes verwirft alles seit dem letzten Commit. Dann in kleineren Schritten noch einmal.</li>
   </ol>
   <Prompt label="Der Debug-Prompt">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [was ich getan habe]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
 
-  <h2>Hilft nichts davon? Fragt in Teams</h2>
+  <h2>Kommt ihr allein nicht weiter? Fragt in Teams</h2>
+  <p>Hier gilt: beide Schritte, in dieser Reihenfolge.</p>
   <ol class="steps">
     <li><strong>Stand pushen</strong> <code>/ndu-commit</code> – auch wenn es gerade kaputt ist. Was auf GitHub liegt, kann Markus sich ansehen; eine Beschreibung allein reicht selten. Dafür muss er Collaborator sein (Repo → Settings → Collaborators).</li>
     <li><strong>Vorlage ausfüllen und in #hilfe posten</strong> Kopieren, die Klammern ersetzen, abschicken.</li>
