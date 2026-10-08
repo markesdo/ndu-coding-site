@@ -22,7 +22,7 @@ import FooterNav from '../components/FooterNav.astro';
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
     <Block time="13:00–13:30" type="konzept" title="Konzept 8 · Teil 1 · Design-System" href="/konzepte/design-system">Warum Tokens, drei Ebenen, in sechs Schritten zum eigenen System. Demo: Claude Design.</Block>
     <Block time="13:30–13:45" type="konzept" title="Konzept 8 · Teil 2 · Ausblick 2026" href="/konzepte/ausblick">Figma-MCP → Code, Agent-Teams, Claude Code im Web, Codex, eigene Skills, Grenzen.</Block>
-    <Block time="13:45–15:15" type="uebung" title="Werkstatt 2" href="#werkstatt">Feinschliff, Demo vorbereiten, README. Linear verbinden. Optional: Design-System für die eigene App.</Block>
+    <Block time="13:45–15:15" type="uebung" title="Werkstatt 2" href="#werkstatt">Feinschliff, Demo vorbereiten, README. Danach: Linear verbinden. Optional: Design-System für die eigene App.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:30" type="plenum" title="Demos" href="#demos">Rund 15 Minuten pro Person, mit Fragen und Reflexion.</Block>
     <Block time="16:30–17:00" type="plenum" title="Abschluss">Wie es weitergeht, Bewertung, Feedback.</Block>
@@ -38,21 +38,21 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt note="In einer frischen Session (/clear) – die Prüfung soll nicht aus demselben Kontext kommen, der den Code geschrieben hat.">Prüfe dieses Projekt so streng wie ein erfahrenes Entwicklungsteam vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
   <h3 id="design-system">Optional: Design-System (Werkstatt 2)</h3>
   <p>Wer mit der App fertig ist oder merkt, dass sie zusammengestückelt wirkt: Räumt die Oberfläche in sechs Schritten auf – Inventur, Tokens, Komponenten, Styleguide-Seite, Regeln, nächstes Issue damit bauen. Die Prompts stehen auf der Seite <a href="/konzepte/design-system#bauen">Design-System</a>. Committet nach jedem Schritt und prüft im Browser, dass die App danach noch genauso aussieht.</p>
-  <h3 id="linear">Linear verbinden (Werkstatt 2)</h3>
+  <h3 id="linear">Linear verbinden (Werkstatt 2, nach der Demo-Vorbereitung)</h3>
   {/* PLATZHALTER: Ablauf mit Testkonto durchgehen, Screenshots als <Schritte id="linear"> ergänzen, Zeit im Ablauf festlegen. */}
   <Callout type="info" title="Platzhalter – wird noch ausgearbeitet">
     <p>Diesen Abschnitt bauen wir vor Tag 3 mit Screenshots aus. Die Schritte unten stehen schon, damit ihr wisst, was kommt.</p>
   </Callout>
-  <p><strong>Was ist Linear?</strong> Das Werkzeug, in dem Produktteams ihre Issues, Sprints (bei Linear „Cycles“) und den Status jeder Aufgabe verwalten. Bisher lag euer Backlog in <code>docs/BACKLOG.md</code>; in Linear sieht das ganze Team dieselbe Liste, und Claude kann die Issues über den Linear-MCP direkt lesen, anlegen und auf „In Progress“ oder „Done“ setzen. Im Innolab ist Linear die Brücke von Figma über das Issue zum Code (<a href="/konzepte/ausblick">Ausblick</a>).</p>
+  <p><strong>Was ist Linear?</strong> Das Werkzeug, in dem Produktteams ihre Issues, Sprints (bei Linear „Cycles“) und den Status jeder Aufgabe verwalten. Bisher lag euer Backlog in <code>docs/BACKLOG.md</code>; in Linear arbeitet später das ganze Produktteam an derselben Liste, und Claude kann die Issues über den Linear-MCP direkt lesen, anlegen und auf „In Progress“ oder „Done“ setzen. Im Innolab ist Linear die Brücke von Figma über das Issue zum Code (<a href="/konzepte/ausblick">Ausblick</a>).</p>
   <ol class="steps">
     <li><strong>Linear-Konto</strong> Auf <a href="https://linear.app/signup" target="_blank" rel="noopener">linear.app</a> mit eurem Google- oder GitHub-Konto registrieren und einen Workspace anlegen. Der kostenlose Plan reicht.</li>
     <li><strong>Plugin prüfen</strong> Am Mac hat das Setup-Skript das Linear-Plugin schon installiert. Im Codespace oder unter Windows: <code>/plugin install linear@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
-    <li><strong>Claude verbinden</strong> In Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser den Zugriff erlauben – wie bei Supabase und Vercel an Tag 2.</li>
+    <li><strong>Claude verbinden</strong> In Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser den Zugriff erlauben – wie bei Supabase und Vercel an Tag 2.<span data-nur="codespace"> Im Codespace kommt danach wieder die Fehlerseite mit <code>localhost</code>: die Adresse in Claude bei <code>URL &gt;</code> einfügen, sonst der <a href="/tag-2#mcp">curl-Weg aus Tag 2</a>.</span></li>
     <li><strong>Backlog übertragen</strong> Claude legt die offenen Issues aus <code>docs/BACKLOG.md</code> in Linear an (Prompt unten).</li>
     <li><strong>Ein Issue aus Linear umsetzen</strong> Claude liest es, setzt es um und setzt den Status.</li>
   </ol>
-  <Prompt label="Backlog nach Linear">Lies docs/BACKLOG.md und leg die offenen Issues über den Linear-MCP in meinem Linear-Workspace an – mit Ziel, Nicht im Umfang und Akzeptanzkriterien in der Beschreibung, Priorität wie im Backlog. Zeig mir vorher die Liste und warte auf mein Okay.</Prompt>
-  <Prompt label="Issue aus Linear umsetzen">Hol dir über den Linear-MCP das Issue [Kennung, z. B. LEI-3]. Setz es auf In Progress, setz es um, erfülle alle Akzeptanzkriterien mit Beleg und setz es danach auf Done.</Prompt>
+  <Prompt label="Backlog nach Linear">Lies docs/BACKLOG.md und leg die Issues, die noch nicht fertig sind, über den Linear-MCP in meinem Linear-Workspace an – in derselben Reihenfolge, mit Ziel, Nicht im Umfang, Akzeptanzkriterien und „Fertig, wenn“ in der Beschreibung. Prüf vorher, ob es dort schon Issues mit demselben Titel gibt, und leg keine doppelt an. Zeig mir die Liste und warte auf mein Okay.</Prompt>
+  <Prompt label="Issue aus Linear umsetzen">Hol dir über den Linear-MCP das Issue [Kennung, z. B. LEI-3]. Wenn etwas unklar ist, frag zuerst. Setz es auf In Progress und setz es um. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Wenn ich zustimme: Status in Linear auf Done, docs/BACKLOG.md ebenfalls aktualisieren, dann /ndu-commit.</Prompt>
 
   <h3>Demo vorbereiten (Werkstatt 2)</h3>
   <Prompt>Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshot-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
