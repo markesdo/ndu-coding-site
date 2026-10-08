@@ -1,12 +1,8 @@
 ---
 // Fragen mit drei Antworten; ein Klick zeigt richtig/falsch und die Begründung. Für Recap-Quiz und Einstiegsfragen vor Übungen.
-import { quizProbleme } from './quiz-check';
+import { quizProbleme, type QuizFrage } from './quiz-check';
 
-export interface Frage {
-  q: string;
-  o: string[];
-  /** Index der richtigen Antwort in o. */
-  a: number;
+export interface Frage extends QuizFrage {
   /** Begründung, als Text. */
   w: string;
   /** Wo es nachzulesen ist; steht als Link hinter der Begründung. */
