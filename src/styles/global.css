@@ -393,6 +393,10 @@ html[data-umgebung="lokal"] [data-nur="codespace"], html[data-umgebung="codespac
 html[data-os="mac"] [data-nur="windows"], html[data-os="windows"] [data-nur="mac"] { display: none; }
 /* Markiert Inhalte, die nur in einer Umgebung gelten, aber nicht ausgeblendet werden (z. B. Bekannte Probleme). */
 .pill-umgebung { display: inline-block; font-size: .72rem; font-weight: 600; padding: .1rem .45rem; border-radius: 4px; background: var(--code-bg); color: var(--muted); white-space: nowrap; vertical-align: .1em; }
+/* Aufklappbarer Ausweichweg (z. B. Deploy übers Dashboard in Tag 2). */
+details.fallback { margin: 1.5rem 0; padding: .75rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+details.fallback > summary { cursor: pointer; font-weight: 600; }
+details.fallback[open] > summary { margin-bottom: .75rem; }
 .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
 .compare .card { margin: 0; border-top: 3px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); }
 .compare .good { border-top-color: var(--green); }

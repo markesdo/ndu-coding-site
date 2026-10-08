@@ -29,7 +29,7 @@ import { bild } from '../components/anleitung-bilder';
     <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & Anfragen" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, in der Dreier-Runde reparieren. RLS prüfen.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:00" type="konzept" title="Konzept 6 · Agenten steuern" href="/konzepte/agenten-steuern">Kontext-Hygiene, CLAUDE.md pflegen, Custom Commands, Subagents, MCP-Überblick, Kosten.</Block>
-    <Block time="16:00–16:40" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel verbinden, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
+    <Block time="16:00–16:40" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel-Plugin, Deploy durch Claude, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
     <Block time="16:40–17:00" type="plenum" title="Zwischenwoche & Abschluss" href="/zwischenwoche">Eigener Mini-Prototyp für die Demo am Do 15.10. Wie man Hilfe holt.</Block>
   </div>
 
@@ -79,9 +79,9 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('tag2/sb-3-orgs'), alt: 'Leere Organisationsliste mit Button „New organization“', text: 'Neue Konten starten ohne Organisation. <em>New organization</em>.', marks: [{ x: 681, y: 269, w: 134, h: 30 }] },
     { img: bild('tag2/sb-4-org'), alt: 'Formular „Create a new organization“ mit Type Personal und Plan Free', text: 'Name übernehmen, <em>Personal</em> und <em>Free – $0/month</em> lassen, <em>Create organization</em>.', marks: [{ x: 911, y: 437, w: 126, h: 30 }] },
     { img: bild('tag2/sb-5-region'), alt: 'Regionsauswahl, Central EU (Frankfurt) unter Specific Regions', text: 'Im Formular „Create a new project“ die Region öffnen. Vorausgewählt ist „Europe“; scrollt unter <em>Specific Regions</em> zu <em>Central EU (Frankfurt)</em>.', marks: [{ x: 686, y: 290, w: 250, h: 26 }] },
-    { img: bild('tag2/sb-6-projekt'), alt: 'Ausgefülltes Projektformular mit Name, Passwort, Region Frankfurt und Security-Optionen', text: 'Name <code>leihbar</code> (1; im Screenshot steht noch der Name aus dem Testdurchgang). <em>Generate a password</em>, dann <em>Copy</em> (2) und das Passwort im Passwortmanager speichern – Supabase zeigt es nie wieder. Region Frankfurt (3). Unter <em>Security</em> zusätzlich <em>Enable automatic RLS</em> anhaken (4): Jede neue Tabelle ist dann von Anfang an durch Row Level Security geschützt. <em>Create new project</em> (5).', marks: [{ x: 652, y: 242, w: 384, h: 36, n: 1 }, { x: 962, y: 306, w: 69, h: 28, n: 2 }, { x: 652, y: 398, w: 384, h: 36, n: 3 }, { x: 652, y: 603, w: 260, h: 26, n: 4 }, { x: 915, y: 738, w: 122, h: 31, n: 5 }] },
-    { img: bild('tag2/sb-7-uebersicht'), alt: 'Projektübersicht des neuen Projekts, Status Healthy, oben der grüne Button „Connect“', text: 'Nach etwa 10 Sekunden steht das Projekt auf „Healthy“. Oben auf <em>Connect</em>.', marks: [{ x: 569, y: 6, w: 88, h: 30 }] },
-    { img: bild('tag2/sb-8-connect'), alt: 'Connect-Dialog, Framework Next.js, darunter der Inhalt für .env.local', text: '<em>Framework</em> → <em>Next.js</em> (1). Unter „Add files“ steht der fertige Inhalt für <code>.env.local</code> (2): Project URL und Publishable Key (<code>sb_publishable_…</code>). Den braucht ihr gleich in Schritt c). Die „Legacy“-Keys (anon, service_role) braucht ihr nicht.', marks: [{ x: 1007, y: 263, w: 463, h: 36, n: 1 }, { x: 1086, y: 585, w: 382, h: 110, n: 2 }] },
+    { img: bild('tag2/sb-6-projekt'), alt: 'Ausgefülltes Projektformular mit Name, Passwort, Region Frankfurt und Security-Optionen', text: 'Name <code>leihbar</code> (1). <em>Generate a password</em>, dann <em>Copy</em> (2) und das Passwort im Passwortmanager speichern – Supabase zeigt es nie wieder. Region Frankfurt (3). Unter <em>Security</em> zusätzlich <em>Enable automatic RLS</em> anhaken (4): Jede neue Tabelle ist dann von Anfang an durch Row Level Security geschützt. <em>Create new project</em> (5).', marks: [{ x: 638, y: 310, w: 356, h: 30, n: 1 }, { x: 929, y: 371, w: 64, h: 22, n: 2 }, { x: 638, y: 457, w: 356, h: 30, n: 3 }, { x: 637, y: 651, w: 150, h: 20, n: 4 }, { x: 885, y: 778, w: 109, h: 22, n: 5 }] },
+    { img: bild('tag2/sb-7-uebersicht'), alt: 'Projektübersicht des neuen Projekts, Status Healthy, oben der grüne Button „Connect“', text: 'Nach etwa 10 Sekunden steht das Projekt auf „Healthy“. Oben auf <em>Connect</em>.', marks: [{ x: 492, y: 8, w: 78, h: 24 }] },
+    { img: bild('tag2/sb-8-connect'), alt: 'Connect-Dialog, Framework Next.js, darunter der Inhalt für .env.local', text: '<em>Framework</em> → <em>Next.js</em> (1). Unter „Add files“ steht der fertige Inhalt für <code>.env.local</code> (2): Project URL und Publishable Key (<code>sb_publishable_…</code>). Den braucht ihr gleich in Schritt c). Die „Legacy“-Keys (anon, service_role) braucht ihr nicht.', marks: [{ x: 979, y: 237, w: 445, h: 29, n: 1 }, { x: 1062, y: 592, w: 362, h: 34, n: 2 }] },
   ]} />
   <p><strong>E-Mail-Bestätigung aus</strong> (für den Kurs): Authentication → <em>Sign In / Providers</em> → „Confirm email“ deaktivieren. Sonst braucht jede Test-Anmeldung eine echte E-Mail.</p>
 
@@ -89,12 +89,12 @@ import { bild } from '../components/anleitung-bilder';
   <h3 id="mcp">b) Supabase-MCP verbinden (10 min)</h3>
   <p>MCP ist die Steckdose, über die Claude direkt mit Supabase sprechen kann: Tabellen anlegen, Daten ansehen, Fehler lesen – ohne dass ihr etwas kopiert. Den Befehl dafür liefert Supabase fertig mit.</p>
   <Schritte id="mcp" nummer="3b" steps={[
-    { img: bild('tag2/mcp-1-connect'), alt: 'Connect-Dialog, Tab MCP, Client Claude Code, Schritt 1 mit dem Befehl claude mcp add', text: 'Im Connect-Dialog den Tab <em>MCP</em> (1). Client <em>Claude Code</em> ist vorausgewählt. Bei Schritt 1 den Befehl mit dem Kopier-Symbol kopieren (2).', marks: [{ x: 1327, y: 109, w: 143, h: 102, n: 1 }, { x: 1083, y: 586, w: 388, h: 52, n: 2 }] },
-    { img: bild('tag2/mcp-2-einfuegen'), alt: 'Neues Terminal im Codespace mit eingefügtem Befehl', text: 'In VS Code über dem Terminal auf <kbd>+</kbd> – ein neues Terminal, nicht das mit Claude. Warten, bis die Eingabezeile mit eurem Benutzernamen erscheint, dann einfügen (<kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>V</kbd>) und <kbd>Enter</kbd>. Wer zu früh einfügt, bekommt den Befehl doppelt: <kbd>Strg</kbd>+<kbd>C</kbd> und nochmal.', marks: [{ x: 645, y: 556, w: 462, h: 36 }] },
-    { img: bild('tag2/mcp-3-angelegt'), alt: 'Terminal meldet „Added HTTP MCP server supabase … to project config“, links erscheint .mcp.json', text: '„Added HTTP MCP server supabase“ (1). Links steht die Datei <code>.mcp.json</code> (2) – Context7 war schon drin, Supabase kommt dazu. Sie enthält nur Adressen, keine Schlüssel, und darf mit committet werden.', marks: [{ x: 333, y: 595, w: 560, h: 24, n: 1 }, { x: 70, y: 265, w: 240, h: 18, n: 2 }] },
-    { img: bild('tag2/mcp-4-gefunden'), alt: 'Claude meldet „New MCP server found in this project: supabase“, vorausgewählt ist „Continue without using this MCP server“', text: 'Im selben Terminal <code>claude</code> starten. Claude meldet den neuen Server. <strong>Achtung:</strong> Vorausgewählt ist <em>Continue without using this MCP server</em>. Zweimal <kbd>↑</kbd> auf <em>Use this MCP server</em>, dann <kbd>Enter</kbd>.', marks: [{ x: 356, y: 693, w: 140, h: 17 }] },
-    { img: bild('tag2/mcp-5-liste'), alt: 'Ausgabe von /mcp, supabase „needs authentication“', text: '<code>/mcp</code> eintippen, <kbd>Enter</kbd>. Bei <em>supabase</em> steht „needs authentication“ – <kbd>Enter</kbd>.', marks: [{ x: 352, y: 668, w: 320, h: 17 }] },
-    { img: bild('tag2/mcp-6-authenticate'), alt: 'Menü des Supabase-MCP-Servers mit „1. Authenticate“', text: '<em>1. Authenticate</em>, <kbd>Enter</kbd>.', marks: [{ x: 352, y: 718, w: 120, h: 17 }] },
+    { img: bild('tag2/mcp-1-connect'), alt: 'Connect-Dialog, Tab MCP, Client Claude Code, Schritt 1 mit dem Befehl claude mcp add', text: 'Im Connect-Dialog den Tab <em>MCP</em> (1). Client <em>Claude Code</em> ist vorausgewählt. Bei Schritt 1 den ganzen Befehl kopieren (2) – er ist länger als der Kasten, deshalb nicht von Hand markieren, sondern den Kopier-Knopf rechts im Kasten nehmen. Schritt 3 (<em>Agent Skills</em>) ist optional – den überspringt ihr.', marks: [{ x: 1290, y: 105, w: 134, h: 78, n: 1 }, { x: 1052, y: 540, w: 372, h: 44, n: 2 }] },
+    { img: bild('tag2/mcp-2-einfuegen'), alt: 'Neues Terminal in VS Code mit eingefügtem Befehl claude mcp add', text: 'In VS Code über dem Terminal auf <kbd>+</kbd> – ein neues Terminal, nicht das mit Claude. Warten, bis die Eingabezeile mit eurem Benutzernamen erscheint, dann einfügen (<kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>V</kbd>) und <kbd>Enter</kbd>. Wer zu früh einfügt, bekommt den Befehl doppelt: <kbd>Strg</kbd>+<kbd>C</kbd> und nochmal.', marks: [{ x: 366, y: 566, w: 1000, h: 26 }] },
+    { img: bild('tag2/mcp-3-angelegt'), alt: 'Terminal meldet „Added HTTP MCP server supabase … to project config“, links erscheint .mcp.json', text: '„Added HTTP MCP server supabase“ (1). Links steht die Datei <code>.mcp.json</code> (2) – Context7 war schon drin, Supabase kommt dazu. Sie enthält nur Adressen, keine Schlüssel, und darf mit committet werden.', marks: [{ x: 366, y: 594, w: 615, h: 15, n: 1 }, { x: 60, y: 315, w: 270, h: 17, n: 2 }] },
+    { img: bild('tag2/mcp-4-gefunden'), alt: 'Claude meldet „New MCP server found in this project: supabase“, vorausgewählt ist „Continue without using this MCP server“', text: 'Im selben Terminal <code>claude</code> starten. Claude meldet den neuen Server. <strong>Achtung:</strong> Vorausgewählt ist <em>Continue without using this MCP server</em>. Zweimal <kbd>↑</kbd> auf <em>Use this MCP server</em>, dann <kbd>Enter</kbd>.', marks: [{ x: 392, y: 648, w: 145, h: 18 }] },
+    { img: bild('tag2/mcp-5-liste'), alt: 'Ausgabe von /mcp, supabase „needs authentication“', text: '<code>/mcp</code> eintippen, <kbd>Enter</kbd>. Bei <em>supabase</em> steht „needs authentication“: mit <kbd>↓</kbd> darauf gehen, <kbd>Enter</kbd>.', marks: [{ x: 398, y: 677, w: 340, h: 17 }] },
+    { img: bild('tag2/mcp-6-authenticate'), alt: 'Menü des Supabase-MCP-Servers mit „1. Authenticate“', text: '<em>1. Authenticate</em>, <kbd>Enter</kbd>.', marks: [{ x: 383, y: 747, w: 130, h: 17 }] },
   ]} />
   <div data-nur="codespace">
     <Schritte id="mcp" nummer="3b" start={7} steps={[
@@ -103,7 +103,7 @@ import { bild } from '../components/anleitung-bilder';
   </div>
   <Schritte id="mcp" nummer="3b" start={8} steps={[
     { img: bild('tag2/mcp-8-authorize'), alt: 'Supabase-Seite „Authorize Claude Code (supabase)“ mit vorausgewählter Organisation', text: 'Supabase zeigt, worauf Claude zugreifen darf. <em>Authorize Claude Code (supabase)</em>. <span data-nur="codespace">Danach erscheint – wie beim Claude-Login – die Fehlerseite „nicht erreichbar“ mit <code>localhost</code> in der Adresse. Weiter mit dem Kasten unter den Bildern.</span> <span data-nur="lokal">Danach springt der Browser von selbst zu Claude zurück.</span>', marks: [{ x: 588, y: 587, w: 320, h: 30 }] },
-    { img: bild('tag2/mcp-9-verbunden'), alt: 'Claude meldet „Authentication successful. Connected to supabase.“', text: 'Geschafft: „Authentication successful. Connected to supabase.“ Testet es mit einer Frage, z. B. „Welche Tabellen hat mein Supabase-Projekt?“', marks: [{ x: 345, y: 655, w: 340, h: 17 }] },
+    { img: bild('tag2/mcp-9-verbunden'), alt: 'Claude meldet „Authentication successful. Connected to supabase.“', text: 'Geschafft: „Authentication successful. Connected to supabase.“ Testet es mit einer Frage, z. B. „Welche Tabellen hat mein Supabase-Projekt?“', marks: [{ x: 398, y: 688, w: 395, h: 18 }] },
   ]} />
   <div data-nur="codespace">
     <Callout type="warn" title="Fehlerseite „localhost“ nach Authorize – so geht es weiter">
@@ -174,7 +174,9 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2 id="uebung-5">Übung 5 · Deploy <span class="pill uebung">40 min</span></h2>
-  <p>Vercel baut eure App bei jedem Push neu und stellt sie unter einer öffentlichen Adresse ins Netz. Das Hobby-Konto ist kostenlos.</p>
+  <p>Vercel baut eure App bei jedem Push auf <code>main</code> neu und stellt sie unter einer öffentlichen Adresse ins Netz. Das Hobby-Konto ist kostenlos. Das Konto legt ihr im Browser an, den Deploy übernimmt Claude – mit dem Vercel-Plugin. Damit kann Claude danach auch selbst nachsehen, ob ein Deploy geklappt hat, und Fehler aus den Logs lesen.</p>
+
+  <h3 id="vercel-konto">a) Vercel-Konto anlegen (Browser, 10 min)</h3>
   <Schritte id="vercel" nummer="5" steps={[
     { img: bild('tag2/vc-1-signup'), alt: 'Vercel-Registrierung mit „Continue with GitHub“', text: '<a href="https://vercel.com/signup" target="_blank" rel="noopener">vercel.com/signup</a> → <em>Continue with GitHub</em>.', marks: [{ x: 569, y: 326, w: 357, h: 43 }] },
     { img: bild('tag2/vc-2-konto'), alt: 'GitHub fragt, mit welchem Konto ihr Vercel autorisieren wollt', text: 'Euer GitHub-Konto bestätigen: <em>Continue</em>.', marks: [{ x: 817, y: 367, w: 77, h: 33 }] },
@@ -184,25 +186,85 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('tag2/vc-6-git'), alt: '„Let’s build something new“, unter Import Git Repository der Button GitHub', text: 'Unter <em>Import Git Repository</em> auf <em>GitHub</em>.', marks: [{ x: 225, y: 471, w: 292, h: 38 }] },
     { img: bild('tag2/vc-7-install'), alt: 'Hinweis „Install the GitHub application…“ mit Button „Install“', text: 'Vercel braucht Zugriff auf eure Repos: <em>Install</em>. Es öffnet sich ein eigenes Fenster.', marks: [{ x: 323, y: 577, w: 96, h: 38 }] },
     { img: bild('tag2/vc-8-popup'), alt: 'GitHub-Fenster „Install Vercel“ mit „All repositories“ und Button „Install“', text: 'Im neuen Fenster <em>All repositories</em> lassen (1) und <em>Install</em> (2). Das Fenster schließt sich danach selbst.', marks: [{ x: 338, y: 536, w: 270, h: 44, n: 1 }, { x: 340, y: 1508, w: 188, h: 72, n: 2 }] },
-    { img: bild('tag2/vc-9-import'), alt: 'Liste mit dem Repo und Button „Import“', text: 'Neben eurem Repo (z. B. <code>leihbar</code>) auf <em>Import</em>.', marks: [{ x: 640, y: 437, w: 67, h: 36 }] },
-    { img: bild('tag2/vc-10-2fa'), alt: 'Vercel bietet „Secure Your Account with 2FA“ an', text: 'Vercel bietet Zwei-Faktor-Anmeldung mit einer Authenticator-App an. Für den Kurs: <em>Skip securing my account</em>. Nach dem Kurs unter Account Settings nachholen.', marks: [{ x: 674, y: 634, w: 156, h: 24 }] },
-    { img: bild('tag2/vc-11-formular'), alt: 'Formular „New Project“: Team Hobby, Projektname, Preset Next.js, Environment Variables, Deploy', text: 'Vercel erkennt Next.js selbst. Vor dem Deploy <em>Environment Variables</em> aufklappen.', marks: [{ x: 466, y: 506, w: 564, h: 42 }] },
-    { img: bild('tag2/vc-12-env'), alt: 'Aufgeklappte Environment Variables mit Key, Value und dem Hinweis „or paste the .env contents“', text: 'Am schnellsten: den kompletten Inhalt eurer <code>.env.local</code> kopieren und ins Feld <em>Key</em> einfügen (1) – Vercel verteilt die Zeilen selbst auf Namen und Werte („or paste the .env contents“, 2). Das ist der Grund, warum die Datei nie ins Repo musste. Dann <em>Deploy</em>.', marks: [{ x: 477, y: 577, w: 506, h: 36, n: 1 }, { x: 571, y: 760, w: 240, h: 22, n: 2 }] },
-    { img: bild('tag2/vc-13-fertig'), alt: '„Congratulations! You just deployed a new project“ mit Vorschau der App', text: 'Nach etwa einer Minute: „Congratulations!“ Unten auf <em>Continue to Project</em>.' },
-    { img: bild('tag2/vc-14-dashboard'), alt: 'Projekt-Dashboard mit Deployment-Adresse und Domain', text: 'Eure öffentliche Adresse steht unter <em>Domains</em> (1), z. B. <code>leihbar-…vercel.app</code>. <strong>Nehmt diese.</strong> Die längere Adresse unter <em>Deployment</em> (2) verlangt eine Vercel-Anmeldung und funktioniert am Handy anderer Leute nicht.', marks: [{ x: 641, y: 195, w: 250, h: 42, n: 1 }, { x: 641, y: 140, w: 310, h: 40, n: 2 }] },
-    { img: bild('tag2/vc-15-live'), alt: 'Die App unter der öffentlichen vercel.app-Adresse', text: 'Die App ist öffentlich erreichbar. Ab jetzt deployt jeder Push auf <code>main</code> automatisch.' },
   ]} />
-  <h3>Supabase auf die neue Adresse umstellen</h3>
-  <p>Damit Login-Links nach dem Deploy nicht auf <code>localhost</code> zeigen: Supabase → Authentication → <em>URL Configuration</em>.</p>
+  <p>Danach zeigt Vercel die Liste eurer Repos mit <em>Import</em>. <strong>Hier aufhören</strong> – nicht importieren, das macht gleich Claude.</p>
+
+  <UmgebungWahl />
+  <h3 id="vercel-plugin">b) Vercel-Plugin für Claude (5 min)</h3>
+  <p>Das Plugin gibt Claude die Vercel-Werkzeuge. Zwei Anmeldungen braucht es: den <strong>Vercel-MCP</strong> – darüber liest Claude eure Projekte, Deployments und Logs, wie bei Supabase in <a href="#mcp">Übung 3b</a> – und die <strong>Vercel-CLI</strong>, mit der Claude das Projekt anlegt und deployt.</p>
+  <Prompt label="In Claude eintippen">/plugin install vercel@claude-plugins-official</Prompt>
+  <Schritte id="plugin" nummer="5b" steps={[
+    { img: bild('tag2/pl-1-installieren'), alt: 'Claude zeigt die Details des Vercel-Plugins: Skills, Hooks, MCP Servers: vercel, darunter die Auswahl Install for you (user scope)', text: 'Claude zeigt, was das Plugin mitbringt – darunter den MCP-Server <em>vercel</em> (1). <em>Install for you (user scope)</em> ist vorausgewählt (2): <kbd>Enter</kbd>. So gilt das Plugin für alle eure Projekte.', marks: [{ x: 400, y: 552, w: 150, h: 18, n: 1 }, { x: 385, y: 685, w: 222, h: 20, n: 2 }] },
+    { img: bild('tag2/pl-2-aktiv'), alt: 'Claude meldet „Installed vercel. Plugin is now active.“ und oben „1 MCP server needs authentication“', text: '„Installed vercel. Plugin is now active.“ (1) – ein Neustart ist nicht nötig. Oben steht jetzt „1 MCP server needs authentication“ (2): Claude muss sich noch bei Vercel anmelden.', marks: [{ x: 398, y: 224, w: 296, h: 18, n: 1 }, { x: 364, y: 140, w: 330, h: 18, n: 2 }] },
+    { img: bild('tag2/pl-3-mcp'), alt: 'Ausgabe von /mcp für plugin:vercel:vercel mit Status needs authentication und 1. Authenticate', text: '<code>/mcp</code> eintippen, <kbd>Enter</kbd>, mit <kbd>↓</kbd> ganz nach unten auf <em>plugin:vercel:vercel</em>, <kbd>Enter</kbd>. Dann <em>1. Authenticate</em>, <kbd>Enter</kbd>. Der Browser öffnet sich.<span data-nur="codespace"> Im Codespace fragt VS Code vorher, ob es die Seite öffnen darf: <em>Open</em> (wie in 3b.7).</span>', marks: [{ x: 383, y: 728, w: 132, h: 20 }] },
+    { img: bild('tag2/vc-mcp-1-team'), alt: 'Vercel: „An MCP client is requesting access to your Vercel account“, unten das eigene Team und ein noch grauer Button Allow Access', text: 'Vercel fragt nach dem Zugriff. <em>Allow Access</em> ist noch grau: erst unten auf euer Team klicken.', marks: [{ x: 98, y: 670, w: 466, h: 40 }] },
+    { img: bild('tag2/vc-mcp-2-authorize'), alt: 'Team-Ansicht mit dem Häkchen „Access to all current and future projects“ und dem Button Authorize', text: 'Häkchen bei <em>Access to all current and future projects</em> (1) – sonst sieht Claude das Projekt nicht, das es gleich anlegt. Dann <em>Authorize</em> (2).', marks: [{ x: 79, y: 622, w: 450, h: 48, n: 1 }, { x: 288, y: 758, w: 116, h: 46, n: 2 }] },
+    { img: bild('tag2/vc-mcp-3-allow'), alt: 'Das Team ist als Authorized markiert, der Button Allow Access ist jetzt aktiv', text: 'Beim Team steht jetzt „Authorized“ (1). <em>Allow Access</em> (2).', marks: [{ x: 69, y: 670, w: 452, h: 36, n: 1 }, { x: 274, y: 917, w: 143, h: 46, n: 2 }] },
+  ]} />
+  <div data-nur="lokal">
+    <Schritte id="plugin" nummer="5b" start={7} steps={[
+      { img: bild('tag2/vc-mcp-4-erfolg'), alt: 'Browserseite „Authentication successful – You can close this tab and return to Claude Code.“', text: '„Authentication successful“ – Tab schließen, zurück zu Claude.', crop: false },
+    ]} />
+  </div>
+  <div data-nur="codespace">
+    <Schritte id="plugin" nummer="5b" start={8} steps={[
+      { img: bild('tag2/vc-mcp-6-fehler'), alt: 'Chrome-Fehlerseite „This site can’t be reached – localhost refused to connect“', text: 'Im Codespace kommt statt der Erfolgsseite eine Fehlerseite. Die komplette Adresse oben in der Adressleiste kopieren (sie beginnt mit <code>http://localhost:</code>).', crop: false },
+      { img: bild('tag2/vc-mcp-5-url'), alt: 'Claude zeigt „If the redirect page shows a connection error, paste the URL from your browser’s address bar: URL >“', text: 'Zurück in Claude: Unten steht <code>URL &gt;</code>. Die Adresse dort einfügen, <kbd>Enter</kbd>. Fehlt die Zeile <code>URL &gt;</code>, hilft der <code>curl</code>-Weg aus Übung 3b.', marks: [{ x: 385, y: 718, w: 680, h: 34 }] },
+    ]} />
+  </div>
+  <Prompt label="Kurz prüfen">Welche Projekte habe ich bei Vercel? Nutze dafür den Vercel-MCP.</Prompt>
+  <p><strong>Zweite Anmeldung – die Vercel-CLI.</strong> In VS Code über dem Terminal auf <kbd>+</kbd> (ein zweites Terminal, nicht das mit Claude) und eintippen:</p>
+  <Prompt label="Im zweiten Terminal (nicht in Claude)">npx vercel login</Prompt>
+  <p>Beim ersten Mal fragt npm, ob es das Paket laden darf: <kbd>y</kbd>, <kbd>Enter</kbd>. Dann öffnet sich der Browser – mit demselben Vercel-Konto bestätigen. <span data-nur="codespace">Im Codespace öffnet sich nichts von selbst: Das Terminal zeigt eine Adresse (und einen Code). Adresse anklicken bzw. kopieren, im Browser bestätigen.</span> Prüfen mit <code>npx vercel whoami</code>: Dort steht euer Vercel-Name.</p>
+
+  <h3 id="vercel-deploy">c) Deploy durch Claude (10 min)</h3>
+  <Prompt label="Deploy durch Claude" note="Claude fragt unterwegs nach eurem Okay und meldet sich, wenn ihr euch im Browser bei Vercel anmelden müsst. Meldet Claude, dass der Zugriff auf euer GitHub-Repo fehlt: Schritte 5.6–5.8 oben wiederholen.">Deploye dieses Projekt auf Vercel – Projekt anlegen und deployen mit der Vercel-CLI (npx vercel), lesen und prüfen mit dem Vercel-MCP. Vorher: alles committen und auf main pushen, damit live genau der Stand von GitHub läuft. Prüf zuerst mit dem Vercel-MCP, ob es in meinem Konto schon ein Projekt für dieses Repo gibt – dann nimm das und leg kein zweites an. Sonst: neues Projekt mit dem Namen des Repos, Framework Next.js, verbunden mit dem GitHub-Repo, damit jeder Push auf main automatisch deployt. Meine .env.local bleibt, wie sie ist: lies die Variablen daraus, bevor du das Projekt verknüpfst, überschreib die Datei nicht und übertrag die Variablen als Environment Variables für Production und Preview, bevor du deployst – zeig mir keine Werte im Chat. Deploy dann nach Production, nicht als Preview. Bevor du etwas anlegst: sag mir in zwei Sätzen, was du vorhast, und warte auf mein Okay. Am Ende: die öffentliche Adresse unter Domains (…vercel.app), nicht die Deployment-Adresse.</Prompt>
+  <Schritte id="deploy" nummer="5c" steps={[
+    { img: bild('tag2/vc-plan'), alt: 'Claude: „Prüfung vor dem Deploy“ mit Vercel-Konto, Git und Variablen, darunter „Mein Plan“ und die Frage „Soll ich so loslegen?“', text: 'Claude prüft zuerst und schreibt seinen Plan: neues Projekt, mit GitHub verbunden, Production, am Ende die Adresse unter Domains. Passt der Plan, antwortet ihr „Ja, los“. Nach ein bis zwei Minuten meldet Claude die öffentliche Adresse.', crop: false },
+  ]} />
+  <Callout type="warn" title="Drei Dinge, auf die ihr achtet">
+    <ul>
+      <li><strong>Production, nicht Preview:</strong> Eine Preview-Adresse verlangt eine Vercel-Anmeldung – am Handy anderer Leute geht sie nicht.</li>
+      <li><strong>Mit GitHub verbunden:</strong> Nur dann geht jeder Push (und jeder Merge) auf <code>main</code> automatisch live.</li>
+      <li><strong>Die Adresse unter Domains:</strong> kurz, ohne Zufallszeichen, z. B. <code>leihbar-….vercel.app</code>. Die lange Deployment-Adresse verlangt eine Anmeldung.</li>
+    </ul>
+  </Callout>
+
+  <details class="fallback" id="vercel-dashboard">
+    <summary>Falls es hakt: Deploy über das Vercel-Dashboard (ohne Claude)</summary>
+    <p>Der Weg von Hand – zurück zur Repo-Liste nach Schritt 5.8 (<a href="https://vercel.com/new" target="_blank" rel="noopener">vercel.com/new</a>).</p>
+    <Schritte id="vercel" nummer="5" start={9} steps={[
+      { img: bild('tag2/vc-9-import'), alt: 'Liste mit dem Repo und Button „Import“', text: 'Neben eurem Repo (z. B. <code>leihbar</code>) auf <em>Import</em>.', marks: [{ x: 631, y: 557, w: 68, h: 32 }] },
+      { img: bild('tag2/vc-10-2fa'), alt: 'Vercel bietet „Secure Your Account with 2FA“ an', text: 'Vercel bietet Zwei-Faktor-Anmeldung mit einer Authenticator-App an. Für den Kurs: <em>Skip securing my account</em>. Nach dem Kurs unter Account Settings nachholen.', marks: [{ x: 674, y: 634, w: 156, h: 24 }] },
+      { img: bild('tag2/vc-11-formular'), alt: 'Formular „New Project“: Team Hobby, Projektname, Preset Next.js, Environment Variables, Deploy', text: 'Vercel erkennt Next.js selbst. Vor dem Deploy <em>Environment Variables</em> aufklappen.', marks: [{ x: 436, y: 568, w: 624, h: 42 }] },
+      { img: bild('tag2/vc-12-env'), alt: 'Aufgeklappte Environment Variables mit Key, Value und dem Hinweis „or paste the .env contents“', text: 'Am schnellsten: den kompletten Inhalt eurer <code>.env.local</code> kopieren und ins Feld <em>Key</em> einfügen (1) – Vercel verteilt die Zeilen selbst auf Namen und Werte („or paste the .env contents“, 2). Das ist der Grund, warum die Datei nie ins Repo musste. Dann <em>Deploy</em>.', marks: [{ x: 448, y: 449, w: 560, h: 32, n: 1 }, { x: 554, y: 650, w: 170, h: 22, n: 2 }] },
+      { img: bild('tag2/vc-13-fertig'), alt: '„Congratulations! You just deployed a new project“ mit Vorschau der App', text: 'Nach etwa einer Minute: „Congratulations!“ Unten auf <em>Continue to Project</em>.' },
+      { img: bild('tag2/vc-14-dashboard'), alt: 'Projekt-Dashboard mit Deployment-Adresse und Domain', text: 'Eure öffentliche Adresse steht unter <em>Domains</em> (1), z. B. <code>leihbar-…vercel.app</code>. <strong>Nehmt diese.</strong> Die längere Adresse unter <em>Deployment</em> (2) verlangt eine Vercel-Anmeldung und funktioniert am Handy anderer Leute nicht.', marks: [{ x: 712, y: 222, w: 200, h: 46, n: 1 }, { x: 712, y: 160, w: 300, h: 40, n: 2 }] },
+      { img: bild('tag2/vc-15-live'), alt: 'Die App unter der öffentlichen vercel.app-Adresse', text: 'Die App ist öffentlich erreichbar. Ab jetzt deployt jeder Push auf <code>main</code> automatisch.' },
+    ]} />
+    <Prompt label="Wenn der Build auf Vercel fehlschlägt (ohne MCP)">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen aus dem Vercel-Dashboard einfügen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
+    <p>Danach weiter mit <a href="#vercel-pruefen">d) Prüfen</a> und <a href="#vercel-supabase">e) Supabase auf die neue Adresse</a> – das gilt für beide Wege.</p>
+  </details>
+
+  <h3 id="vercel-pruefen">d) Prüfen und Logs lesen (5 min)</h3>
+  <Prompt label="Deploy prüfen">Prüfe mit dem Vercel-MCP den letzten Production-Deploy: Status, Build-Log (nur Fehler und Warnungen zusammenfassen) und Laufzeit-Logs der letzten 30 Minuten. Erkläre mir in einfachen Worten, ob alles in Ordnung ist. Wenn nicht: behebe es, prüf lokal mit npm run build und warte vor dem Push auf mein Okay.</Prompt>
+  <p class="small muted">Den Prompt braucht ihr immer, wenn etwas live anders aussieht als lokal – Claude liest die Logs selbst, ihr müsst nichts kopieren.</p>
+
+  <h3 id="vercel-supabase">e) Supabase auf die neue Adresse umstellen (5 min)</h3>
+  <p>Damit Login-Links nicht auf <code>localhost</code> zeigen. Diese Einstellung kann Claude nicht selbst ändern, aber den Weg zeigen:</p>
+  <Prompt label="Site URL">Hol dir mit dem Supabase-MCP die Project-Ref meines Projekts und gib mir den direkten Link zur Seite Authentication → URL Configuration. Sag mir genau, was ich bei Site URL eintrage (meine Vercel-Adresse unter Domains) und was bei Redirect URLs (dieselbe Adresse mit /** am Ende).</Prompt>
   <Schritte id="vercel" nummer="5" start={16} steps={[
-    { img: bild('tag2/url-1'), alt: 'URL Configuration, Site URL steht auf http://localhost:3000', text: 'Bei <em>Site URL</em> steht noch <code>http://localhost:3000</code>.', marks: [{ x: 978, y: 253, w: 396, h: 38 }] },
-    { img: bild('tag2/url-2'), alt: 'Site URL mit der Vercel-Adresse und Button „Save changes“', text: 'Eure Vercel-Adresse (die unter <em>Domains</em>) eintragen, <em>Save changes</em>.', marks: [{ x: 1278, y: 331, w: 96, h: 30 }] },
+    { img: bild('tag2/url-1'), alt: 'URL Configuration, Site URL steht auf http://localhost:3000', text: 'Bei <em>Site URL</em> steht noch <code>http://localhost:3000</code>.', marks: [{ x: 1008, y: 288, w: 431, h: 33 }] },
+    { img: bild('tag2/url-2'), alt: 'Site URL mit der Vercel-Adresse und Button „Save changes“', text: 'Eure Vercel-Adresse (die unter <em>Domains</em>) eintragen, <em>Save changes</em>.', marks: [{ x: 1339, y: 375, w: 100, h: 24 }] },
   ]} />
+  <p>Darunter bei <em>Redirect URLs</em> auf <em>Add URL</em> und dieselbe Adresse mit <code>/**</code> am Ende eintragen, z. B. <code>https://leihbar-….vercel.app/**</code> – so wie Claude es euch gesagt hat.</p>
   <p><strong>Am Handy öffnen.</strong> Registrieren, etwas anfragen. Das ist eure App.</p>
-  <Prompt label="Wenn der Build auf Vercel fehlschlägt">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen einfügen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
-  <Checklist id="t2-u5" items={[
-    'Vercel-Projekt verbunden, Environment-Variablen gesetzt',
-    'Öffentliche URL funktioniert am Handy',
+
+  {/* id „t2-u5b“ (vorher t2-u5): Punkte geändert, als der Deploy auf Claude umgestellt wurde – Häkchen werden nach Position gespeichert. */}
+  <Checklist id="t2-u5b" items={[
+    'Vercel-Plugin installiert, Vercel-MCP verbunden, <code>npx vercel login</code> erledigt',
+    'Deploy durch Claude: Production, mit GitHub verbunden, Environment-Variablen gesetzt',
+    'Öffentliche URL (Domains) funktioniert am Handy',
     'Login funktioniert auch auf der öffentlichen URL',
     'URL in Teams gepostet',
     'Codespace gestoppt (falls ihr dort arbeitet)',
