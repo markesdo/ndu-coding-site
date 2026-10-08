@@ -8,6 +8,7 @@ import FooterNav from '../components/FooterNav.astro';
 import Callout from '../components/Callout.astro';
 import IssueLesen from '../components/IssueLesen.astro';
 import Schritte from '../components/Schritte.astro';
+import UmgebungWahl from '../components/UmgebungWahl.astro';
 import { bild } from '../components/anleitung-bilder';
 ---
 <Layout title="Tag 2 · Bauen wie ein Profi">
@@ -15,6 +16,7 @@ import { bild } from '../components/anleitung-bilder';
   <h1>Tag 2 · Bauen wie ein Profi</h1>
   <p class="lead">Die App bekommt echte Daten, Login und eine öffentliche Adresse. Ihr lernt, Fehler zu finden und richtig zu übergeben – und den Agenten über längere Arbeit hinweg zu steuern.</p>
   <Orientierung seite="tag-2" />
+  <UmgebungWahl />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-09">
@@ -81,39 +83,48 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('tag2/sb-7-uebersicht'), alt: 'Projektübersicht des neuen Projekts, Status Healthy, oben der grüne Button „Connect“', text: 'Nach etwa 10 Sekunden steht das Projekt auf „Healthy“. Oben auf <em>Connect</em>.', marks: [{ x: 569, y: 6, w: 88, h: 30 }] },
     { img: bild('tag2/sb-8-connect'), alt: 'Connect-Dialog, Framework Next.js, darunter der Inhalt für .env.local', text: '<em>Framework</em> → <em>Next.js</em> (1). Unter „Add files“ steht der fertige Inhalt für <code>.env.local</code> (2): Project URL und Publishable Key (<code>sb_publishable_…</code>). Den braucht ihr gleich in Schritt c). Die „Legacy“-Keys (anon, service_role) braucht ihr nicht.', marks: [{ x: 1007, y: 263, w: 463, h: 36, n: 1 }, { x: 1086, y: 585, w: 382, h: 110, n: 2 }] },
   ]} />
-  <p><strong>E-Mail-Bestätigung aus</strong> (für den Kurs): Authentication → <em>Sign In / Providers</em> → „Confirm email“ deaktivieren. Sonst braucht jede Test-Anmeldung eine echte E-Mail – und der Link darin führt im Codespace ins Leere.</p>
+  <p><strong>E-Mail-Bestätigung aus</strong> (für den Kurs): Authentication → <em>Sign In / Providers</em> → „Confirm email“ deaktivieren. Sonst braucht jede Test-Anmeldung eine echte E-Mail.</p>
 
+  <UmgebungWahl />
   <h3 id="mcp">b) Supabase-MCP verbinden (10 min)</h3>
   <p>MCP ist die Steckdose, über die Claude direkt mit Supabase sprechen kann: Tabellen anlegen, Daten ansehen, Fehler lesen – ohne dass ihr etwas kopiert. Den Befehl dafür liefert Supabase fertig mit.</p>
   <Schritte id="mcp" nummer="3b" steps={[
     { img: bild('tag2/mcp-1-connect'), alt: 'Connect-Dialog, Tab MCP, Client Claude Code, Schritt 1 mit dem Befehl claude mcp add', text: 'Im Connect-Dialog den Tab <em>MCP</em> (1). Client <em>Claude Code</em> ist vorausgewählt. Bei Schritt 1 den Befehl mit dem Kopier-Symbol kopieren (2).', marks: [{ x: 1327, y: 109, w: 143, h: 102, n: 1 }, { x: 1083, y: 586, w: 388, h: 52, n: 2 }] },
-    { img: bild('tag2/mcp-2-einfuegen'), alt: 'Neues Terminal im Codespace mit eingefügtem Befehl', text: 'Im Codespace über dem Terminal auf <kbd>+</kbd> – ein neues Terminal, nicht das mit Claude. Warten, bis die Eingabezeile mit eurem Benutzernamen erscheint, dann einfügen (<kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>V</kbd>) und <kbd>Enter</kbd>. Wer zu früh einfügt, bekommt den Befehl doppelt: <kbd>Strg</kbd>+<kbd>C</kbd> und nochmal.', marks: [{ x: 645, y: 556, w: 462, h: 36 }] },
+    { img: bild('tag2/mcp-2-einfuegen'), alt: 'Neues Terminal im Codespace mit eingefügtem Befehl', text: 'In VS Code über dem Terminal auf <kbd>+</kbd> – ein neues Terminal, nicht das mit Claude. Warten, bis die Eingabezeile mit eurem Benutzernamen erscheint, dann einfügen (<kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>V</kbd>) und <kbd>Enter</kbd>. Wer zu früh einfügt, bekommt den Befehl doppelt: <kbd>Strg</kbd>+<kbd>C</kbd> und nochmal.', marks: [{ x: 645, y: 556, w: 462, h: 36 }] },
     { img: bild('tag2/mcp-3-angelegt'), alt: 'Terminal meldet „Added HTTP MCP server supabase … to project config“, links erscheint .mcp.json', text: '„Added HTTP MCP server supabase“ (1). Links steht die Datei <code>.mcp.json</code> (2) – Context7 war schon drin, Supabase kommt dazu. Sie enthält nur Adressen, keine Schlüssel, und darf mit committet werden.', marks: [{ x: 333, y: 595, w: 560, h: 24, n: 1 }, { x: 70, y: 265, w: 240, h: 18, n: 2 }] },
     { img: bild('tag2/mcp-4-gefunden'), alt: 'Claude meldet „New MCP server found in this project: supabase“, vorausgewählt ist „Continue without using this MCP server“', text: 'Im selben Terminal <code>claude</code> starten. Claude meldet den neuen Server. <strong>Achtung:</strong> Vorausgewählt ist <em>Continue without using this MCP server</em>. Zweimal <kbd>↑</kbd> auf <em>Use this MCP server</em>, dann <kbd>Enter</kbd>.', marks: [{ x: 356, y: 693, w: 140, h: 17 }] },
     { img: bild('tag2/mcp-5-liste'), alt: 'Ausgabe von /mcp, supabase „needs authentication“', text: '<code>/mcp</code> eintippen, <kbd>Enter</kbd>. Bei <em>supabase</em> steht „needs authentication“ – <kbd>Enter</kbd>.', marks: [{ x: 352, y: 668, w: 320, h: 17 }] },
     { img: bild('tag2/mcp-6-authenticate'), alt: 'Menü des Supabase-MCP-Servers mit „1. Authenticate“', text: '<em>1. Authenticate</em>, <kbd>Enter</kbd>.', marks: [{ x: 352, y: 718, w: 120, h: 17 }] },
-    { img: bild('tag2/mcp-7-open'), alt: 'VS Code fragt, ob die Supabase-Seite geöffnet werden soll', text: 'VS Code fragt nach: <em>Open</em>.', marks: [{ x: 1373, y: 465, w: 48, h: 32 }] },
-    { img: bild('tag2/mcp-8-authorize'), alt: 'Supabase-Seite „Authorize Claude Code (supabase)“ mit vorausgewählter Organisation', text: 'Supabase zeigt, worauf Claude zugreifen darf. <em>Authorize Claude Code (supabase)</em>. Danach erscheint – wie beim Claude-Login – die Fehlerseite „nicht erreichbar“ mit <code>localhost</code> in der Adresse. Weiter mit dem Kasten unter den Bildern.', marks: [{ x: 588, y: 587, w: 320, h: 30 }] },
+  ]} />
+  <div data-nur="codespace">
+    <Schritte id="mcp" nummer="3b" start={7} steps={[
+      { img: bild('tag2/mcp-7-open'), alt: 'VS Code fragt, ob die Supabase-Seite geöffnet werden soll', text: 'VS Code fragt nach: <em>Open</em>.', marks: [{ x: 1373, y: 465, w: 48, h: 32 }] },
+    ]} />
+  </div>
+  <Schritte id="mcp" nummer="3b" start={8} steps={[
+    { img: bild('tag2/mcp-8-authorize'), alt: 'Supabase-Seite „Authorize Claude Code (supabase)“ mit vorausgewählter Organisation', text: 'Supabase zeigt, worauf Claude zugreifen darf. <em>Authorize Claude Code (supabase)</em>. <span data-nur="codespace">Danach erscheint – wie beim Claude-Login – die Fehlerseite „nicht erreichbar“ mit <code>localhost</code> in der Adresse. Weiter mit dem Kasten unter den Bildern.</span><span data-nur="lokal">Danach springt der Browser von selbst zu Claude zurück.</span>', marks: [{ x: 588, y: 587, w: 320, h: 30 }] },
     { img: bild('tag2/mcp-9-verbunden'), alt: 'Claude meldet „Authentication successful. Connected to supabase.“', text: 'Geschafft: „Authentication successful. Connected to supabase.“ Testet es mit einer Frage, z. B. „Welche Tabellen hat mein Supabase-Projekt?“', marks: [{ x: 345, y: 655, w: 340, h: 17 }] },
   ]} />
-  <Callout type="warn" title="Fehlerseite „localhost“ nach Authorize – so geht es weiter">
-    <p>Die Anmeldung schickt euren Browser an <code>localhost</code>, also an euren eigenen Rechner. Claude wartet aber im Codespace. Ihr reicht die Adresse von Hand weiter:</p>
-    <ol>
-      <li>Auf der Fehlerseite die komplette Adresse oben in der Adressleiste kopieren (sie beginnt mit <code>http://localhost:</code>).</li>
-      <li>Im Codespace im Terminal mit <kbd>+</kbd> ein weiteres Terminal öffnen.</li>
-      <li>Dort <code>curl "</code>, die Adresse einfügen, <code>"</code> und <kbd>Enter</kbd> – also wie unten, nur mit eurer Adresse.</li>
-      <li>Ganz am Ende der Ausgabe steht „Authentication successful“. Zurück ins Claude-Terminal.</li>
-    </ol>
-  </Callout>
-  <Prompt label="Im zweiten Terminal (nicht in Claude) – Adresse aus der Fehlerseite einsetzen">curl "http://localhost:12345/callback?code=…"</Prompt>
-  <p><strong>Falls auch das nicht klappt:</strong> Verbindet den MCP-Server stattdessen mit einem persönlichen Zugriffstoken.</p>
+  <div data-nur="codespace">
+    <Callout type="warn" title="Fehlerseite „localhost“ nach Authorize – so geht es weiter">
+      <p>Die Anmeldung schickt euren Browser an <code>localhost</code>, also an euren eigenen Rechner. Claude wartet aber im Codespace. Ihr reicht die Adresse von Hand weiter:</p>
+      <ol>
+        <li>Auf der Fehlerseite die komplette Adresse oben in der Adressleiste kopieren (sie beginnt mit <code>http://localhost:</code>).</li>
+        <li>Im Codespace im Terminal mit <kbd>+</kbd> ein weiteres Terminal öffnen.</li>
+        <li>Dort <code>curl "</code>, die Adresse einfügen, <code>"</code> und <kbd>Enter</kbd> – also wie unten, nur mit eurer Adresse.</li>
+        <li>Ganz am Ende der Ausgabe steht „Authentication successful“. Zurück ins Claude-Terminal.</li>
+      </ol>
+    </Callout>
+    <Prompt label="Im zweiten Terminal (nicht in Claude) – Adresse aus der Fehlerseite einsetzen">curl "http://localhost:12345/callback?code=…"</Prompt>
+  </div>
+  <p><strong>Falls die Anmeldung trotzdem nicht klappt:</strong> Verbindet den MCP-Server stattdessen mit einem persönlichen Zugriffstoken.</p>
   <ol class="small">
     <li>Supabase → Account → <a href="https://supabase.com/dashboard/account/tokens" target="_blank" rel="noopener">Access Tokens</a> → neuen Token erzeugen, Name „Kurs-MCP“, auf euer Projekt <code>leihbar</code> beschränken. Token kopieren – er wird nur einmal angezeigt.</li>
     <li>Im Terminal den bisherigen Eintrag entfernen: <code>claude mcp remove supabase</code></li>
     <li>Neu verbinden – <code>PROJECT-REF</code> und <code>TOKEN</code> ersetzen. Den <em>Project Ref</em> findet ihr in der Projekt-Adresse auf der Supabase-Übersicht (<code>https://<strong>abcdefgh</strong>.supabase.co</code> – das fett gedruckte Stück) oder in der Adresszeile des Dashboards nach <code>/project/</code>:</li>
   </ol>
   <Prompt label="Im Terminal (nicht in Claude) – Alternative mit Token">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF" --header "Authorization: Bearer TOKEN"</Prompt>
-  <p class="small muted">Der Token ist ein Schlüssel zu eurem Supabase-Konto: Er wird nur in eurem Codespace gespeichert, nicht im Repo. Fügt ihn nie in den Chat mit Claude oder in eine Datei im Projekt ein. Nach dem Kurs könnt ihr ihn unter Access Tokens wieder löschen.</p>
+  <p class="small muted">Der Token ist ein Schlüssel zu eurem Supabase-Konto: Er liegt nur bei euch (im Codespace bzw. auf dem Laptop), nie im Repo. Fügt ihn nie in den Chat mit Claude oder in eine Datei im Projekt ein. Nach dem Kurs könnt ihr ihn unter Access Tokens wieder löschen.</p>
   <h3 id="context7">c) Aktuelle Doku: mit und ohne Context7 (5 min)</h3>
   <p>Context7 ist seit Tag 1 in eurem Projekt eingerichtet. Jetzt seht ihr, was es ändert. Erst ohne:</p>
   <Prompt>Wie lege ich mit @supabase/ssr in Next.js einen Supabase-Client für Server Components an? Schlag diesmal nichts nach, antworte aus deinem Wissen und sag, wie sicher du bist.</Prompt>
@@ -194,7 +205,7 @@ import { bild } from '../components/anleitung-bilder';
     'Öffentliche URL funktioniert am Handy',
     'Login funktioniert auch auf der öffentlichen URL',
     'URL in Teams gepostet',
-    'Codespace gestoppt',
+    'Codespace gestoppt (falls ihr dort arbeitet)',
   ]} />
 
   <hr />

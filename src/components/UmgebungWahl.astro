@@ -1,0 +1,72 @@
+---
+// Umschalter Codespace / Laptop macOS / Laptop Windows. Setzt auf <html> data-umgebung (codespace | lokal) und
+// data-os (mac | windows); Inhalte mit data-nur="codespace" | "lokal" | "mac" | "windows" werden danach ausgeblendet
+// (global.css). Die Wahl gilt für die ganze Seite, mehrere Umschalter bleiben synchron, sie bleibt im Browser gespeichert.
+// Ein Link mit ?umgebung=codespace|mac|windows setzt und speichert sie (z. B. aus Teams).
+// Ohne JavaScript bleiben die Attribute leer und der Umschalter versteckt – dann ist alles sichtbar.
+// Gesteuerte Inhalte gehören unter den ersten Umschalter der Seite, sonst blitzen sie beim Laden kurz auf.
+import { Apple, Cloud, Monitor } from '@lucide/astro';
+import logik from './umgebung.js?raw';
+// Die Logik (umgebung.js, getestet) als Text einbetten; ein klassisches Skript kennt kein export.
+const logikSkript = `window.nduUmgebung = window.nduUmgebung || (function () {
+${logik.replace(/^export /gm, '')}
+return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, gedrueckt: gedrueckt, zeigeBlock: zeigeBlock };
+})();`;
+---
+<div class="umgebung-wahl" role="group" aria-label="Arbeitsumgebung wählen" hidden>
+  <span class="small muted">Ihr arbeitet:</span>
+  <button type="button" data-umgebung-wahl="codespace" aria-pressed="false"><Cloud size={16} aria-hidden="true" /> Codespace im Browser</button>
+  <button type="button" data-umgebung-wahl="mac" aria-pressed="false"><Apple size={16} aria-hidden="true" /> Laptop · macOS</button>
+  <button type="button" data-umgebung-wahl="windows" aria-pressed="false"><Monitor size={16} aria-hidden="true" /> Laptop · Windows</button>
+</div>
+
+<script is:inline set:html={logikSkript}></script>
+<script is:inline>
+  // Läuft sofort (inline), damit beim Laden nicht kurz alle Varianten aufblitzen.
+  // Beim ersten Umschalter der Seite einrichten; jeder weitere zeigt sich nur und übernimmt den Zustand.
+  (function () {
+    var u = window.nduUmgebung;
+    if (!u.setze) {
+      var lesen = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+      var speichern = function (w) { try { localStorage.setItem('ndu-umgebung', w); } catch (e) {} };
+      var params = new URLSearchParams(location.search);
+      var query = params.get('umgebung');
+      u.zustand = u.startZustand({ query: query, gespeichert: lesen('ndu-umgebung'), alt: lesen('ndu-os'), userAgent: navigator.userAgent });
+      u.setze = function (z) {
+        u.zustand = z;
+        document.documentElement.dataset.umgebung = z.umgebung;
+        document.documentElement.dataset.os = z.os;
+        document.querySelectorAll('[data-umgebung-wahl]').forEach(function (b) { b.setAttribute('aria-pressed', String(u.gedrueckt(z, b.dataset.umgebungWahl))); });
+      };
+      // ?umgebung=… merken und aus der Adresse nehmen, damit ein Reload eine spätere Wahl nicht überschreibt.
+      if (u.istWahl(query)) {
+        speichern(query);
+        params.delete('umgebung');
+        var rest = params.toString();
+        history.replaceState(history.state, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+      }
+      document.addEventListener('click', function (e) {
+        var b = e.target.closest && e.target.closest('[data-umgebung-wahl]');
+        if (!b) return;
+        u.setze(u.waehle(u.zustand, b.dataset.umgebungWahl));
+        speichern(b.dataset.umgebungWahl);
+      });
+      // Zeigt ein Link (z. B. /setup#lokal-klonen-3) in einen ausgeblendeten Teil, dorthin umschalten (ohne zu speichern).
+      var folgeAnker = function () {
+        var ziel = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (!ziel) return;
+        var z = u.zustand;
+        for (var el = ziel.closest('[data-nur]'); el; el = el.parentElement && el.parentElement.closest('[data-nur]')) z = u.zeigeBlock(z, el.dataset.nur);
+        if (z.umgebung !== u.zustand.umgebung || z.os !== u.zustand.os) {
+          u.setze(z);
+          ziel.scrollIntoView();
+        }
+      };
+      // Der Anker-Block steht weiter unten als dieses Skript – erst prüfen, wenn die Seite geparst ist.
+      document.addEventListener('DOMContentLoaded', folgeAnker);
+      window.addEventListener('hashchange', folgeAnker);
+    }
+    u.setze(u.zustand);
+    document.querySelectorAll('.umgebung-wahl').forEach(function (w) { w.hidden = false; });
+  })();
+</script>
