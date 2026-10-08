@@ -60,6 +60,8 @@ return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, gedrueckt
         if (z.umgebung !== u.zustand.umgebung || z.os !== u.zustand.os) {
           u.setze(z);
           ziel.scrollIntoView();
+          // Beim ersten Laden verschieben Webfonts das Layout noch: danach ein zweites Mal hinspringen.
+          if (document.readyState !== 'complete') window.addEventListener('load', function () { ziel.scrollIntoView(); }, { once: true });
         }
       };
       // Der Anker-Block steht weiter unten als dieses Skript – erst prüfen, wenn die Seite geparst ist.
