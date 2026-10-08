@@ -200,8 +200,18 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('tag2/vc-mcp-1-team'), alt: 'Vercel: „An MCP client is requesting access to your Vercel account“, unten das eigene Team und ein noch grauer Button Allow Access', text: 'Vercel fragt nach dem Zugriff. <em>Allow Access</em> ist noch grau: erst unten auf euer Team klicken.', marks: [{ x: 98, y: 670, w: 466, h: 40 }] },
     { img: bild('tag2/vc-mcp-2-authorize'), alt: 'Team-Ansicht mit dem Häkchen „Access to all current and future projects“ und dem Button Authorize', text: 'Häkchen bei <em>Access to all current and future projects</em> (1) – sonst sieht Claude das Projekt nicht, das es gleich anlegt. Dann <em>Authorize</em> (2).', marks: [{ x: 79, y: 622, w: 450, h: 48, n: 1 }, { x: 288, y: 758, w: 116, h: 46, n: 2 }] },
     { img: bild('tag2/vc-mcp-3-allow'), alt: 'Das Team ist als Authorized markiert, der Button Allow Access ist jetzt aktiv', text: 'Beim Team steht jetzt „Authorized“ (1). <em>Allow Access</em> (2).', marks: [{ x: 69, y: 670, w: 452, h: 36, n: 1 }, { x: 274, y: 917, w: 143, h: 46, n: 2 }] },
-    { img: bild('tag2/vc-mcp-4-erfolg'), alt: 'Browserseite „Authentication successful – You can close this tab and return to Claude Code.“', text: '<span data-nur="lokal">„Authentication successful“ – Tab schließen, zurück zu Claude.</span> <span data-nur="codespace">Im Codespace kommt stattdessen oft eine Fehlerseite („nicht erreichbar“, <code>localhost</code> in der Adresse). Dann die komplette Adresse aus der Adressleiste kopieren und in Claude bei <code>URL &gt;</code> einfügen, <kbd>Enter</kbd>.</span>', crop: false },
   ]} />
+  <div data-nur="lokal">
+    <Schritte id="plugin" nummer="5b" start={7} steps={[
+      { img: bild('tag2/vc-mcp-4-erfolg'), alt: 'Browserseite „Authentication successful – You can close this tab and return to Claude Code.“', text: '„Authentication successful“ – Tab schließen, zurück zu Claude.', crop: false },
+    ]} />
+  </div>
+  <div data-nur="codespace">
+    <Schritte id="plugin" nummer="5b" start={8} steps={[
+      { img: bild('tag2/vc-mcp-6-fehler'), alt: 'Chrome-Fehlerseite „This site can’t be reached – localhost refused to connect“', text: 'Im Codespace kommt statt der Erfolgsseite eine Fehlerseite – wie bei Supabase in 3b. Die komplette Adresse oben in der Adressleiste kopieren (sie beginnt mit <code>http://localhost:</code>).', crop: false },
+      { img: bild('tag2/vc-mcp-5-url'), alt: 'Claude zeigt „If the redirect page shows a connection error, paste the URL from your browser’s address bar: URL >“', text: 'Zurück in Claude: Unten steht <code>URL &gt;</code>. Die Adresse dort einfügen, <kbd>Enter</kbd>. Ein zweites Terminal oder <code>curl</code> braucht ihr hier nicht.', marks: [{ x: 385, y: 718, w: 680, h: 34 }] },
+    ]} />
+  </div>
   <Prompt label="Kurz prüfen">Welche Projekte habe ich bei Vercel? Nutze dafür den Vercel-MCP.</Prompt>
 
   <h3 id="vercel-deploy">c) Deploy durch Claude (10 min)</h3>
@@ -242,19 +252,7 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
   <p><strong>Am Handy öffnen.</strong> Registrieren, etwas anfragen. Das ist eure App.</p>
 
-  <script>
-    // Zeigt ein Link (z. B. #vercel-12) in den zugeklappten Ausweichweg, aufklappen und hinspringen.
-    const oeffne = () => {
-      let ziel = null;
-      try { ziel = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null; } catch {}
-      const d = ziel?.closest('details');
-      if (d && !d.open) { d.open = true; ziel!.scrollIntoView(); }
-    };
-    oeffne();
-    window.addEventListener('hashchange', oeffne);
-    // Bilder und Schriften verschieben das Layout noch – nach dem Laden noch einmal hinspringen.
-    window.addEventListener('load', () => document.getElementById(location.hash.slice(1))?.closest('details')?.open && document.getElementById(location.hash.slice(1))?.scrollIntoView());
-  </script>
+  {/* id „t2-u5b“ (vorher t2-u5): Punkte geändert, als der Deploy auf Claude umgestellt wurde – Häkchen werden nach Position gespeichert. */}
   <Checklist id="t2-u5b" items={[
     'Vercel-Plugin installiert, Vercel-MCP verbunden',
     'Deploy durch Claude: Production, mit GitHub verbunden, Environment-Variablen gesetzt',

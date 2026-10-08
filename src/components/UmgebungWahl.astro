@@ -51,14 +51,17 @@ return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, gedrueckt
         u.setze(u.waehle(u.zustand, b.dataset.umgebungWahl));
         speichern(b.dataset.umgebungWahl);
       });
-      // Zeigt ein Link (z. B. /setup#lokal-klonen-3) in einen ausgeblendeten Teil, dorthin umschalten (ohne zu speichern).
+      // Zeigt ein Link (z. B. /setup#lokal-klonen-3) in einen ausgeblendeten oder zugeklappten Teil, dorthin umschalten bzw. aufklappen (ohne zu speichern).
       var folgeAnker = function () {
         var ziel = null;
         try { ziel = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (e) {}
         if (!ziel) return;
         var z = u.zustand;
         for (var el = ziel.closest('[data-nur]'); el; el = el.parentElement && el.parentElement.closest('[data-nur]')) z = u.zeigeBlock(z, el.dataset.nur);
-        if (z.umgebung !== u.zustand.umgebung || z.os !== u.zustand.os) {
+        // Liegt das Ziel in einem zugeklappten <details> (z. B. Ausweichweg in Tag 2), aufklappen.
+        var zu = false;
+        for (var d = ziel.closest('details'); d; d = d.parentElement && d.parentElement.closest('details')) if (!d.open) { d.open = true; zu = true; }
+        if (zu || z.umgebung !== u.zustand.umgebung || z.os !== u.zustand.os) {
           u.setze(z);
           ziel.scrollIntoView();
           // Beim ersten Laden verschieben Webfonts das Layout noch: danach ein zweites Mal hinspringen.
