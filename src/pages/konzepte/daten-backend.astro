@@ -114,6 +114,18 @@ import FooterNav from '../../components/FooterNav.astro';
     </script>
   </div>
 
+  <h2 id="rls">Warum das Formular nicht reicht</h2>
+  <p>Das Formular prüft, ob jemand angemeldet ist und ob der Titel ausgefüllt ist. Das ist Komfort: schnelle Rückmeldung, bevor etwas abgeschickt wird. Schutz ist es nicht. Die Adresse eurer Datenbank und der Publishable Key stehen im Browser – jede*r kann sie in den DevTools im Netzwerk-Tab ablesen und damit direkt mit eurer Datenbank sprechen, an eurem Formular vorbei.</p>
+  <table>
+    <tr><th>Weg</th><th>Was geprüft wird</th><th>Ergebnis</th></tr>
+    <tr><td>Mara füllt das Formular aus</td><td>Formular, dann <strong>RLS</strong> in der Datenbank</td><td>Angemeldet: Zeile wird angelegt</td></tr>
+    <tr><td>Jemand schickt mit dem Publishable Key selbst eine Anfrage, ohne Login</td><td>Kein Formular – nur <strong>RLS</strong></td><td>Mit Regel: abgelehnt. Ohne Regel: angelegt</td></tr>
+  </table>
+  <p>Deshalb sitzt die Regel, die wirklich schützt, in der Datenbank selbst: <strong>Row Level Security</strong>. Sie gilt für jeden Weg hinein – Formular, Skript oder einen Fehler im eigenen Code. RLS verschlüsselt nichts und ersetzt die Prüfung im Formular nicht: Das Formular bleibt für die schnelle Rückmeldung, RLS entscheidet, was gespeichert wird.</p>
+  <Callout type="tip" title="So prüft ihr, ob die Regel hält">
+    <p>Lasst Claude über den Supabase-MCP versuchen, ohne Login eine Zeile anzulegen oder eine fremde zu ändern. Meldet die Datenbank „violates row-level security policy“ oder ändert sich keine Zeile, hält die Regel.</p>
+  </Callout>
+
   <h2 id="supabase">Supabase – die gemietete Küche</h2>
   <p>Früher brauchte man für Datenbank, Login und Dateispeicher drei Systeme und jemanden, der Server wartet. Supabase liefert alles aus einem Guss: eine <strong>Postgres-Datenbank</strong> (der Industriestandard), <strong>Auth</strong> (Registrierung, Login, Passwort vergessen, Google-Login), <strong>Storage</strong> für Bilder, und ein Dashboard, in dem ihr eure Daten seht. Kostenlos für Prototypen, Server in Frankfurt, und über <strong>MCP</strong> kann Claude direkt damit arbeiten.</p>
   <Callout type="warn" title="Free-Tier-Falle">
