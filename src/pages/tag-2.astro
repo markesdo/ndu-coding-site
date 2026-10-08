@@ -68,8 +68,8 @@ import { bild } from '../components/anleitung-bilder';
   <KonzeptStation links={[{ href: '/konzepte/daten-backend', t: 'Konzept 4 lesen' }, { href: '/konzepte/mcp', t: 'Ergänzung: MCP' }]} danach={{ href: '#uebung-3', t: 'Übung 3 · Echte Daten' }}>
     <p>In Übung 3 legt Claude über den Supabase-MCP eure erste Tabelle an. Was es dabei anlegt und warum, versteht ihr mit diesen Grundlagen.</p>
     <ul>
-      <li>Eine Anfrage läuft Frontend → API-Route → Datenbank → Antwort. Was der Browser prüft, kann jede*r umgehen: Adresse und Key der Datenbank stehen im Browser, wer sie kopiert, kommt an eurem Formular vorbei.</li>
-      <li><strong>Row Level Security</strong> legt in der Datenbank fest, wer welche Zeile lesen, anlegen und löschen darf. Sie gilt für jeden Weg hinein – deshalb ist sie der eigentliche Schutz, das Formular nur die schnelle Rückmeldung (<a href="/konzepte/daten-backend#rls">Warum das Formular nicht reicht</a>).</li>
+      <li>Eine Anfrage läuft Frontend → API-Route → Datenbank → Antwort. Formular und API-Route prüfen – aber der Key der Datenbank steckt im Browser, und wer ihn kopiert, kommt an beiden vorbei.</li>
+      <li><strong>Row Level Security</strong> legt in der Datenbank fest, wer welche Zeile lesen, anlegen und löschen darf. Sie gilt für jeden Weg hinein, auch an Formular und API-Route vorbei (<a href="/konzepte/daten-backend#rls">Warum das Formular nicht reicht</a>). Ob die Werte stimmen, prüft sie nicht.</li>
       <li>Zugangsdaten stehen in <code>.env.local</code> und kommen nie ins Repo. Nur Variablen mit <code>NEXT_PUBLIC_</code> darf der Browser sehen.</li>
       <li>Über <strong>MCP</strong> spricht Claude direkt mit Supabase, statt euch SQL zum Kopieren zu geben.</li>
     </ul>
