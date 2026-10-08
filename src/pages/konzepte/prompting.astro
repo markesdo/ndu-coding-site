@@ -20,13 +20,13 @@ const baustein = Object.fromEntries(bausteine.map((b) => [b.id, b]));
   <p>Auf der Seite <a href="/konzepte/llm">Was ein Sprachmodell tut</a> habt ihr gesehen: Jede Formulierung verschiebt die Wahrscheinlichkeiten für alles, was danach kommt. In der Animation dort sind das die Balken: ein hoher Balken heißt, das Modell ist sich sicher; viele gleich hohe heißen, es rät. Prompt Engineering heißt, diese Verschiebung bewusst zu nutzen. Dafür braucht ihr kein neues Vokabular – <strong>ein gutes Issue ist bereits ein gut geschriebener Prompt.</strong></p>
 
   <h2>Ein Auftrag, vier Bausteine</h2>
-  <p>Bei einem Feature stehen drei der vier Bausteine schon im Issue – <code>/ndu-brainstorm</code> schreibt euren <a href="/konzepte/spezifikation">Backlog</a> genau so. Issue 6 aus dem Beispiel-Backlog, die Farben markieren die Bausteine:</p>
+  <p>Bei einem Feature stehen drei der vier Bausteine schon im Issue – <code>/ndu-brainstorm</code> schreibt euren <a href="/konzepte/spezifikation">Backlog</a> genau so. Issue 1 aus dem Beispiel-Backlog, die Farben markieren die Bausteine:</p>
   <figure class="pa">
     <div class="pa-text">
-      <strong>Issue 6 – Ausleihen anfragen</strong><br />
-      <span class="pa-zone" data-baustein="ziel"><sup>{baustein.ziel.n}</sup><strong>Ziel:</strong> Studierende fragen einen Gegenstand zum Ausleihen an und können die Anfrage zurückziehen – damit Besitzer*innen sehen, wer ihn haben möchte.</span><br />
-      <span class="pa-zone" data-baustein="grenze"><sup>{baustein.grenze.n}</sup><strong>Nicht im Umfang:</strong> Anfrage annehmen oder ablehnen, Zeitraum wählen, Bezahlung.</span><br />
-      <span class="pa-zone" data-baustein="pruef"><sup>{baustein.pruef.n}</sup><strong>Akzeptanzkriterien:</strong> Gegeben ich bin angemeldet, wenn ich „Ausleihen anfragen“ klicke, dann steigt der Zähler „Anfragen“ um 1. (… vier weitere) <strong>Fertig, wenn:</strong> der Zähler auch nach einem Reload stimmt.</span>
+      <strong>Issue 1 – Liste mit Beispieldaten</strong><br />
+      <span class="pa-zone" data-baustein="ziel"><sup>{baustein.ziel.n}</sup><strong>Ziel:</strong> Auf der Startseite sehen Studierende alle Gegenstände, die gerade ausleihbar sind – damit sie wissen, was es am Campus gibt.</span><br />
+      <span class="pa-zone" data-baustein="grenze"><sup>{baustein.grenze.n}</sup><strong>Nicht im Umfang:</strong> Suche, Filter, Detailseite, Datenbank.</span><br />
+      <span class="pa-zone" data-baustein="pruef"><sup>{baustein.pruef.n}</sup><strong>Akzeptanzkriterien:</strong> Gegeben ich öffne die Startseite, dann sehe ich mindestens 4 Gegenstände mit Bild, Titel, Kategorie, Preis pro Tag, Ort und Besitzer*in. (… zwei weitere) <strong>Fertig, wenn:</strong> Startseite im Browser und in Handybreite geprüft; die verliehene „Systemkamera“ fehlt.</span>
     </div>
     <figcaption>
       <ol class="pa-legende">
@@ -39,28 +39,28 @@ const baustein = Object.fromEntries(bausteine.map((b) => [b.id, b]));
 
   <h3>Was ihr dann in den Chat schreibt</h3>
   <Callout type="tip" title="Ausprobieren: in Übung 1 b) und 2 c)">
-    <p>Issue 6 braucht Datenbank und Login – die baut ihr erst an Tag 2. Lest die drei Prompts hier deshalb nur. Gleich in <a href="/tag-1#uebung-1-b">Übung 1 b)</a> übt ihr Ziel und Grenze an drei kleinen Änderungen. Ein ganzes Issue setzt ihr in <a href="/tag-1#uebung-2-c">Übung 2 c)</a> um: Issue 1, mit dem ausgeschriebenen Prompt und einem Satz Kontext.</p>
+    <p>Gleich in <a href="/tag-1#uebung-1-b">Übung 1 b)</a> übt ihr Ziel und Grenze an drei kleinen Änderungen. Issue 1 selbst setzt ihr in <a href="/tag-1#uebung-2-c">Übung 2 c)</a> um, mit dem ausgeschriebenen Prompt und einem Satz Kontext – bis dahin nur lesen.</p>
   </Callout>
   <ol class="steps">
     <li><strong>Reicht meistens</strong> Claude liest das Issue selbst. Und die <code>CLAUDE.md</code> eures Projekts sagt ihm schon, dass es bei Unklarem nachfragen und für jedes Kriterium einen Beleg zeigen soll.</li>
   </ol>
-  <Prompt label="Kurz">Setze Issue 6 um.</Prompt>
+  <Prompt label="Kurz">Setze Issue 1 um.</Prompt>
   <ol class="steps" start="2" style="counter-reset: step 1">
     <li><strong>Besser</strong> Dasselbe ausgeschrieben. So wisst ihr, was ihr erwarten dürft – und es wirkt auch in Projekten ohne diese <code>CLAUDE.md</code>. Das ist die Vorlage aus der <a href="/prompts">Prompt-Bibliothek</a>.</li>
   </ol>
-  <Prompt label="Ausgeschrieben">Setze Issue 6 aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
+  <Prompt label="Ausgeschrieben">Setze Issue 1 aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <ol class="steps" start="3" style="counter-reset: step 2">
     <li><strong>Wenn es auf Aussehen oder Ort ankommt</strong> Dann fügt ihr den vierten Baustein hinzu, den Kontext: wo es hingehört, wie es aussehen soll, ein Screenshot.</li>
   </ol>
-  <Prompt label="Mit Kontext">Setze Issue 6 um. Der Button gehört auf die Detailseite eines Gegenstands und sieht aus wie „Gegenstände ansehen“ auf der Startseite.</Prompt>
+  <Prompt label="Mit Kontext">Setze Issue 1 um. Die Liste kommt auf der Startseite unter die Feature-Karten, und jeder Gegenstand sieht aus wie eine Feature-Karte, nur mit Bild oben.</Prompt>
   <p class="small muted">Dateinamen müsst ihr nicht kennen – Claude sucht selbst. Wollt ihr eine bestimmte Datei zeigen: <code>@</code> tippen, ein paar Buchstaben des Namens (z. B. <code>@FeatureCard</code>) und aus der Liste wählen.</p>
 
   <h3>Die vier Bausteine im Einzelnen</h3>
   <p>Für Aufträge ohne Issue – eine schnelle Änderung, ein Fehler – schreibt ihr sie direkt in den Prompt.</p>
   <div class="grid vier">
-    <div class="card" data-baustein="ziel"><h3>{baustein.ziel.n} · {baustein.ziel.name}</h3><p class="small muted">Was soll danach möglich sein, für wen – und <strong>warum</strong>. Aus dem Grund leitet Claude Details ab, die ihr nicht aufgeschrieben habt: „damit Besitzer*innen sehen, wer ihn haben möchte“ heißt, es braucht einen Zähler.</p></div>
+    <div class="card" data-baustein="ziel"><h3>{baustein.ziel.n} · {baustein.ziel.name}</h3><p class="small muted">Was soll danach möglich sein, für wen – und <strong>warum</strong>. Aus dem Grund leitet Claude Details ab, die ihr nicht aufgeschrieben habt: „damit sie wissen, was es am Campus gibt“ heißt: Die Liste soll man schnell überfliegen können, also kurze Karten statt langer Beschreibungen.</p></div>
     <div class="card" data-baustein="kontext"><h3>{baustein.kontext.n} · {baustein.kontext.name}</h3><p class="small muted">Zeigen statt beschreiben: eine Datei mit <code>@</code> nennen, einen Screenshot einfügen, die Fehlermeldung als Text mitgeben, auf ein vorhandenes Muster verweisen („wie die Karten auf der Startseite“) oder ein Beispiel geben, wie das Ergebnis aussehen soll. Was Claude sieht, muss es nicht raten.</p></div>
-    <div class="card" data-baustein="grenze"><h3>{baustein.grenze.n} · {baustein.grenze.name}</h3><p class="small muted">Was dazugehört – und was nicht. Positiv formuliert wirkt sie besser: „Ändere nur die Detailseite“ statt „mach nichts anderes kaputt“. Ohne Grenze baut Claude technisch gern mehr als nötig: zusätzliche Dateien, Umbauten, die niemand bestellt hat.</p></div>
+    <div class="card" data-baustein="grenze"><h3>{baustein.grenze.n} · {baustein.grenze.name}</h3><p class="small muted">Was dazugehört – und was nicht. Positiv formuliert wirkt sie besser: „Ändere nur die Startseite“ statt „mach nichts anderes kaputt“. Ohne Grenze baut Claude technisch gern mehr als nötig: zusätzliche Dateien, Umbauten, die niemand bestellt hat.</p></div>
     <div class="card" data-baustein="pruef"><h3>{baustein.pruef.n} · {baustein.pruef.name}</h3><p class="small muted">Woran erkennt man, dass es fertig ist? Und: einen Beleg verlangen. Das ist der wichtigste Baustein – der einzige, der auch die Reststreuung abfängt.</p></div>
   </div>
 
