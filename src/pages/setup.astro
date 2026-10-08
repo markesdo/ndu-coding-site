@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Callout from '../components/Callout.astro';
+import Tasten from '../components/Tasten.astro';
 import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
 import Schritte from '../components/Schritte.astro';
@@ -386,24 +387,24 @@ claude plugin install linear@claude-plugins-official</Prompt>
   <p>Ein Screenshot sagt Claude mehr als eine Beschreibung – etwa bei Layoutfehlern oder Fehlermeldungen im Browser.</p>
   <div data-nur="mac">
     <ol class="steps">
-      <li><strong>Aufnehmen</strong> <span class="kurz"><kbd>⌘ cmd</kbd><span>+</span><kbd>⇧ shift</kbd><span>+</span><kbd>4</kbd></span>Gleichzeitig drücken und mit der Maus einen Bereich aufziehen. Unten rechts erscheint für ein paar Sekunden eine kleine Vorschau.</li>
-      <li><strong>In das Claude-Terminal ziehen</strong> Die Vorschau sofort packen und auf das Terminal mit Claude fallen lassen – genau auf das Terminal, nicht auf den Editor darüber. In der Eingabe erscheint das Bild (als <code>[Image #1]</code> oder als Pfad). Vorschau schon weg oder daneben gelandet? Das Bild liegt auf dem Schreibtisch (bzw. im gewählten Ordner) – von dort ins Terminal ziehen, oder einfach neu aufnehmen.</li>
+      <li><strong>Aufnehmen</strong> <Tasten keys={['⌘ cmd', '⇧ shift', '4']} />Gleichzeitig drücken und mit der Maus einen Bereich aufziehen. Unten rechts erscheint für ein paar Sekunden eine kleine Vorschau.</li>
+      <li><strong>In das Claude-Terminal ziehen</strong> Die Vorschau sofort packen und auf das Terminal mit Claude fallen lassen – genau auf das Terminal, nicht auf den Editor darüber. In der Eingabe erscheint das Bild (als <code>[Image #1]</code> oder als Pfad). Vorschau schon weg? Das Bild liegt auf dem Schreibtisch (bzw. im gewählten Ordner) – von dort ins Terminal ziehen. Auf dem Editor gelandet? Den Bild-Tab schließen und einfach neu aufnehmen.</li>
       <li><strong>Sagen, was Claude tun soll</strong> Dahinter tippen, worum es geht, <kbd>Enter</kbd>.</li>
     </ol>
     <Prompt label="Beispiel">Auf dem Screenshot ragt die Karte über den Rand – schau ihn dir an und behebe es. Prüf danach auch die Handy-Breite.</Prompt>
     <Callout type="tip" title="Ohne Zeitdruck: über die Zwischenablage">
-      <p>Praktisch, wenn der Browser VS Code verdeckt: Aufnehmen – kopiert den Ausschnitt, statt ihn zu speichern:</p>
-      <span class="kurz"><kbd>⌘ cmd</kbd><span>+</span><kbd>⌃ ctrl</kbd><span>+</span><kbd>⇧ shift</kbd><span>+</span><kbd>4</kbd></span>
+      <p>Praktisch, wenn der Browser VS Code verdeckt. Diese Kombination kopiert den Ausschnitt, statt ihn zu speichern:</p>
+      <Tasten keys={['⌘ cmd', '⌃ ctrl', '⇧ shift', '4']} />
       <p>Dann in Ruhe zu VS Code wechseln und im Claude-Terminal einfügen – wirklich ctrl, nicht cmd. Es erscheint <code>[Image #1]</code>:</p>
-      <span class="kurz"><kbd>⌃ ctrl</kbd><span>+</span><kbd>V</kbd></span>
+      <Tasten keys={['⌃ ctrl', 'V']} />
     </Callout>
-    <p class="small muted">Der Schreibtisch füllt sich mit Bildschirmfotos? Einmal <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>5</kbd> → <em>Optionen</em> → <em>Sichern in</em> → einen Ordner wählen.</p>
+    <p class="small muted">Der Schreibtisch füllt sich mit Bildschirmfotos? Einmal <kbd>⌘ cmd</kbd> + <kbd>⇧ shift</kbd> + <kbd>5</kbd> → <em>Optionen</em> → <em>Sichern in</em> → einen Ordner wählen.</p>
   </div>
   <div data-nur="windows">
     <ol class="steps">
-      <li><strong>Aufnehmen</strong> <span class="kurz"><kbd>⊞ Win</kbd><span>+</span><kbd>⇧ Shift</kbd><span>+</span><kbd>S</kbd></span>Bereich wählen – der Ausschnitt liegt in der Zwischenablage.</li>
-      <li><strong>Einfügen</strong> <span class="kurz"><kbd>Alt</kbd><span>+</span><kbd>V</kbd></span>Im Claude-Terminal (nicht Strg + V). Es erscheint <code>[Image #1]</code>.</li>
-      <li><strong>Sagen, was Claude tun soll</strong> Dahinter schreiben, worum es geht, <kbd>Enter</kbd>. Klappt <kbd>Alt</kbd> + <kbd>V</kbd> nicht: die gespeicherte Datei aus <em>Bilder → Screenshots</em> ins Terminal ziehen.</li>
+      <li><strong>Aufnehmen</strong> <Tasten keys={['⊞ win', '⇧ shift', 'S']} />Bereich wählen – der Ausschnitt liegt in der Zwischenablage.</li>
+      <li><strong>Einfügen</strong> <Tasten keys={['alt', 'V']} />Im Claude-Terminal – nicht <kbd>strg</kbd> + <kbd>V</kbd>. Es erscheint <code>[Image #1]</code>.</li>
+      <li><strong>Sagen, was Claude tun soll</strong> Dahinter schreiben, worum es geht, <kbd>Enter</kbd>. Klappt <kbd>Alt</kbd> + <kbd>V</kbd> nicht: auf die Benachrichtigung des Snipping Tools klicken, das Bild speichern und die Datei ins Terminal ziehen.</li>
     </ol>
   </div>
 

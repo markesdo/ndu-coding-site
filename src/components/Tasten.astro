@@ -1,0 +1,9 @@
+---
+// Tastenkürzel groß in eigener Zeile, z. B. <Tasten keys={['⌘ cmd', '⇧ shift', '4']} />.
+// Jede Taste zeigt Symbol und Namen; Screenreader hören nur die Namen (aria-label).
+const { keys } = Astro.props as { keys: string[] };
+const vorlesen = keys.map((k) => k.replace(/^[^\p{L}\p{N}]+\s*/u, '')).join(' + ');
+---
+<span class="kurz" role="img" aria-label={vorlesen}>
+  {keys.map((k, i) => (<>{i > 0 && <span aria-hidden="true">+</span>}<kbd aria-hidden="true">{k}</kbd></>))}
+</span>
