@@ -13,10 +13,10 @@ const { nurLaptop = false } = Astro.props as { nurLaptop?: boolean };
 // Die Logik (umgebung.js, getestet) als Text einbetten; ein klassisches Skript kennt kein export.
 const logikSkript = `window.nduUmgebung = window.nduUmgebung || (function () {
 ${logik.replace(/^export /gm, '')}
-return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, gedrueckt: gedrueckt, zeigeBlock: zeigeBlock };
+return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, waehleOs: waehleOs, speicherOs: speicherOs, gedrueckt: gedrueckt, zeigeBlock: zeigeBlock };
 })();`;
 ---
-<div class="umgebung-wahl" role="group" aria-label="Arbeitsumgebung wählen" hidden>
+<div class="umgebung-wahl" role="group" aria-label={nurLaptop ? 'Betriebssystem wählen' : 'Arbeitsumgebung wählen'} hidden>
   <span class="small muted">{nurLaptop ? 'Euer Laptop:' : 'Ihr arbeitet:'}</span>
   {!nurLaptop && <button type="button" data-umgebung-wahl="codespace" aria-pressed="false"><Cloud size={16} aria-hidden="true" /> Codespace im Browser</button>}
   <button type="button" data-umgebung-wahl="mac" data-nur-os={nurLaptop ? '' : undefined} aria-pressed="false"><Apple size={16} aria-hidden="true" /> {nurLaptop ? 'macOS' : 'Laptop · macOS'}</button>
@@ -54,6 +54,12 @@ return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, gedrueckt
       document.addEventListener('click', function (e) {
         var b = e.target.closest && e.target.closest('[data-umgebung-wahl]');
         if (!b) return;
+        if (b.hasAttribute('data-nur-os')) {
+          var s = u.speicherOs(u.zustand, b.dataset.umgebungWahl);
+          u.setze(u.waehleOs(u.zustand, b.dataset.umgebungWahl));
+          try { localStorage.setItem(s.schluessel, s.wert); } catch (e) {}
+          return;
+        }
         u.setze(u.waehle(u.zustand, b.dataset.umgebungWahl));
         speichern(b.dataset.umgebungWahl);
       });

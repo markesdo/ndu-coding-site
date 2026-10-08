@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { gedrueckt, startZustand, waehle, zeigeBlock } from './umgebung.js';
+import { gedrueckt, speicherOs, startZustand, waehle, waehleOs, zeigeBlock } from './umgebung.js';
 
 const MAC_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/141.0 Safari/537.36';
 const WIN_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/141.0 Safari/537.36';
@@ -45,6 +45,22 @@ describe('waehle und gedrueckt', () => {
     const knoepfe = ['codespace', 'mac', 'windows'] as const;
     expect(knoepfe.filter((w) => gedrueckt(lokalWin, w))).toStrictEqual(['windows']);
     expect(knoepfe.filter((w) => gedrueckt({ umgebung: 'codespace', os: 'windows' }, w))).toStrictEqual(['codespace']);
+  });
+});
+
+describe('Nur-OS-Umschalter (Setup, Abschnitt lokal)', () => {
+  it('ändert nur das OS – eine Codespace-Wahl bleibt', () => {
+    expect(waehleOs({ umgebung: 'codespace', os: 'mac' }, 'windows')).toStrictEqual({ umgebung: 'codespace', os: 'windows' });
+    expect(waehleOs({ umgebung: 'lokal', os: 'mac' }, 'windows')).toStrictEqual({ umgebung: 'lokal', os: 'windows' });
+  });
+
+  it('speichert im Codespace nur das OS, im Laptop-Modus die Wahl', () => {
+    expect(speicherOs({ umgebung: 'codespace', os: 'mac' }, 'windows')).toStrictEqual({ schluessel: 'ndu-os', wert: 'windows' });
+    expect(speicherOs({ umgebung: 'lokal', os: 'mac' }, 'windows')).toStrictEqual({ schluessel: 'ndu-umgebung', wert: 'windows' });
+  });
+
+  it('nach dem Neuladen gilt im Codespace das gespeicherte OS', () => {
+    expect(startZustand({ query: null, gespeichert: 'codespace', alt: 'windows', userAgent: 'Macintosh' })).toStrictEqual({ umgebung: 'codespace', os: 'windows' });
   });
 });
 

@@ -37,6 +37,19 @@ export function startZustand(quellen) {
   return waehle({ umgebung: 'codespace', os: osRaten(quellen.alt, quellen.userAgent) }, wahl);
 }
 
+// Nur-OS-Umschalter (nurLaptop, z. B. im Setup-Abschnitt „lokal“): ändert nur das System, nicht die Umgebung.
+/** @param {Zustand} zustand @param {'mac' | 'windows'} os @returns {Zustand} */
+export function waehleOs(zustand, os) {
+  return { umgebung: zustand.umgebung, os: os };
+}
+
+// Was ein Nur-OS-Knopf speichert: Im Laptop-Modus die Wahl selbst (ndu-umgebung), sonst nur das OS (ndu-os),
+// damit eine Codespace-Wahl erhalten bleibt.
+/** @param {Zustand} zustand @param {'mac' | 'windows'} os @returns {{ schluessel: string, wert: string }} */
+export function speicherOs(zustand, os) {
+  return zustand.umgebung === 'lokal' ? { schluessel: 'ndu-umgebung', wert: os } : { schluessel: 'ndu-os', wert: os };
+}
+
 /** @param {Zustand} zustand @param {Wahl} wahl */
 export function gedrueckt(zustand, wahl) {
   return wahl === 'codespace' ? zustand.umgebung === 'codespace' : zustand.umgebung === 'lokal' && zustand.os === wahl;
