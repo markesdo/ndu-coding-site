@@ -47,6 +47,17 @@ export default function Stage({ title, steps, children }: StageProps) {
       <div className="stage-caption">{s.caption}</div>
     </div>
   )), [steps]);
+  const captionPlatzhalter = useMemo(() => steps.map((s, i) => (
+    <div key={i} className="stage-caption-mass" inert>{s.caption}</div>
+  )), [steps]);
+
+  // Am Handy ändert sich die Höhe der Stage mit jedem Schritt (stage.css). Liegt ihr Anfang danach über dem Bildschirm –
+  // etwa beim Zurückblättern aus einem langen Schritt –, zurückscrollen, damit Beschriftung und Szene sichtbar sind.
+  useEffect(() => {
+    if (nav.seq === 0 || !ref.current || !window.matchMedia('(max-width: 600px)').matches || document.fullscreenElement) return;
+    const topbar = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar-h')) || 64;
+    if (ref.current.getBoundingClientRect().top < topbar) ref.current.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
+  }, [nav.seq]);
 
   const move = (delta: 1 | -1) =>
     setNav((n) => {
@@ -105,7 +116,8 @@ export default function Stage({ title, steps, children }: StageProps) {
         {platzhalter}
         <div className="stage-aktiv">
           <div className="stage-scene">{children(nav, reduced)}</div>
-          <div className="stage-caption" aria-hidden="true">
+          <div className="stage-caption stage-caption-stapel" aria-hidden="true">
+            {captionPlatzhalter}
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={nav.index}
