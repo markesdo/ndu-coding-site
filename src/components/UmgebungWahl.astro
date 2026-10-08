@@ -7,6 +7,9 @@
 // Gesteuerte Inhalte gehören unter den ersten Umschalter der Seite, sonst blitzen sie beim Laden kurz auf.
 import { Apple, Cloud, Monitor } from '@lucide/astro';
 import logik from './umgebung.js?raw';
+// nurLaptop: nur macOS/Windows (z. B. im Abschnitt „lokal auf dem Laptop“, wo „Codespace“ keinen Sinn ergibt).
+// Markiert ist dort das gewählte System, auch wenn sonst gerade „Codespace“ gilt.
+const { nurLaptop = false } = Astro.props as { nurLaptop?: boolean };
 // Die Logik (umgebung.js, getestet) als Text einbetten; ein klassisches Skript kennt kein export.
 const logikSkript = `window.nduUmgebung = window.nduUmgebung || (function () {
 ${logik.replace(/^export /gm, '')}
@@ -14,10 +17,10 @@ return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, gedrueckt
 })();`;
 ---
 <div class="umgebung-wahl" role="group" aria-label="Arbeitsumgebung wählen" hidden>
-  <span class="small muted">Ihr arbeitet:</span>
-  <button type="button" data-umgebung-wahl="codespace" aria-pressed="false"><Cloud size={16} aria-hidden="true" /> Codespace im Browser</button>
-  <button type="button" data-umgebung-wahl="mac" aria-pressed="false"><Apple size={16} aria-hidden="true" /> Laptop · macOS</button>
-  <button type="button" data-umgebung-wahl="windows" aria-pressed="false"><Monitor size={16} aria-hidden="true" /> Laptop · Windows</button>
+  <span class="small muted">{nurLaptop ? 'Euer Laptop:' : 'Ihr arbeitet:'}</span>
+  {!nurLaptop && <button type="button" data-umgebung-wahl="codespace" aria-pressed="false"><Cloud size={16} aria-hidden="true" /> Codespace im Browser</button>}
+  <button type="button" data-umgebung-wahl="mac" data-nur-os={nurLaptop ? '' : undefined} aria-pressed="false"><Apple size={16} aria-hidden="true" /> {nurLaptop ? 'macOS' : 'Laptop · macOS'}</button>
+  <button type="button" data-umgebung-wahl="windows" data-nur-os={nurLaptop ? '' : undefined} aria-pressed="false"><Monitor size={16} aria-hidden="true" /> {nurLaptop ? 'Windows' : 'Laptop · Windows'}</button>
 </div>
 
 <script is:inline set:html={logikSkript}></script>
@@ -36,7 +39,10 @@ return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, gedrueckt
         u.zustand = z;
         document.documentElement.dataset.umgebung = z.umgebung;
         document.documentElement.dataset.os = z.os;
-        document.querySelectorAll('[data-umgebung-wahl]').forEach(function (b) { b.setAttribute('aria-pressed', String(u.gedrueckt(z, b.dataset.umgebungWahl))); });
+        document.querySelectorAll('[data-umgebung-wahl]').forEach(function (b) {
+          var an = b.hasAttribute('data-nur-os') ? z.os === b.dataset.umgebungWahl : u.gedrueckt(z, b.dataset.umgebungWahl);
+          b.setAttribute('aria-pressed', String(an));
+        });
       };
       // ?umgebung=… merken und aus der Adresse nehmen, damit ein Reload eine spätere Wahl nicht überschreibt.
       if (u.istWahl(query)) {
