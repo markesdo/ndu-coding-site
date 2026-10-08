@@ -3,8 +3,33 @@ import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Bestellweg from '../../components/sota/Bestellweg.tsx';
-import { Armchair, Building2, ChefHat, ConciergeBell, Database } from '@lucide/astro';
+import Prompt from '../../components/Prompt.astro';
+import {
+  AppWindow, Armchair, Blocks, Building2, ChefHat, ConciergeBell, CreditCard, Database, Globe, Hammer, Image, KeyRound,
+  Laptop, LayoutTemplate, Mail, MapPin, MousePointerClick, Server, Smartphone, Sparkles, Store,
+} from '@lucide/astro';
 const icons = { frontend: Armchair, api: ConciergeBell, backend: ChefHat, db: Database, hosting: Building2 };
+const layerName = { frontend: 'Frontend', api: 'API', backend: 'Backend', db: 'Datenbank', hosting: 'Hosting' };
+type LayerId = keyof typeof icons;
+
+// Stack-Karte: Gruppen von Werkzeugen. `fit` sagt, bei welchem App-Typ die Gruppe hervorgehoben wird,
+// `deckt` zeigt mit den Schichtfarben, welche Schichten das Werkzeug abdeckt.
+const typen = [
+  { id: 'website', name: 'Website', text: '<strong>Website.</strong> Für Seiten zum Lesen reicht ein Baukasten wie Framer oder Webflow – ohne Code, Hosting inklusive. Mit Claude Code ist ein Website-Framework wie Astro genauso schnell und gehört euch ganz. Ein Backend braucht es nicht.' },
+  { id: 'web-app', name: 'Web-App', text: '<strong>Web-App.</strong> Ein Framework für Frontend und Backend in einem Projekt, dazu eine gemietete Datenbank und ein Hosting. Unser Stack: <strong>Next.js + Supabase + Vercel.</strong> Rails, Django und Laravel können dasselbe, sind älter und bringen Backend und Datenbank-Anbindung selbst mit.' },
+  { id: 'native', name: 'Native App', text: '<strong>Native App.</strong> Swift (iPhone) und Kotlin (Android) heißt: zwei Apps bauen. Flutter und React Native bauen eine für beide. Das Backend wird trotzdem gemietet, und dazu kommt die Prüfung durch den App Store.' },
+  { id: 'backend', name: 'Backend mieten', text: '<strong>Backend mieten.</strong> Supabase und Firebase liefern Datenbank, Login und Dateispeicher fertig. Jede Web-App und jede native App kann sie nutzen. Ihr baut nur, was eure App besonders macht.' },
+];
+const gruppen = [
+  { name: 'Baukasten ohne Code', icon: MousePointerClick, fit: 'website', deckt: ['frontend', 'hosting'], tools: ['Framer', 'Webflow', 'WordPress'] },
+  { name: 'Website-Framework', icon: LayoutTemplate, fit: 'website', deckt: ['frontend'], tools: ['Astro'] },
+  { name: 'Web-App-Framework', icon: AppWindow, fit: 'web-app', deckt: ['frontend', 'api', 'backend'], tools: ['Next.js', 'Nuxt', 'SvelteKit'] },
+  { name: 'All-in-one, älter', icon: Blocks, fit: 'web-app', deckt: ['frontend', 'api', 'backend'], tools: ['Rails', 'Django', 'Laravel'] },
+  { name: 'Native & Cross-Platform', icon: Smartphone, fit: 'native', deckt: ['frontend'], tools: ['Swift / Kotlin', 'Flutter', 'React Native'] },
+  { name: 'Backend mieten', icon: Server, fit: 'web-app native backend', deckt: ['api', 'backend', 'db'], tools: ['Supabase', 'Firebase'] },
+  { name: 'Hosting', icon: Building2, fit: 'website web-app', deckt: ['hosting'], tools: ['Vercel', 'Netlify'] },
+] satisfies { name: string; icon: unknown; fit: string; deckt: LayerId[]; tools: string[] }[];
+const unserStack = new Set(['Next.js', 'Supabase', 'Vercel']);
 const layers = [
   { id: 'frontend', name: 'Frontend', meta: 'Gastraum – was Gäste sehen und anfassen', files: 'src/app/page.tsx · src/components/',
     text: 'Alles, was im Browser sichtbar ist: Seiten, Buttons, Formulare, Farben. Läuft auf dem Gerät der Nutzer*innen. In Leihbar: die Startseite, die Karten der Gegenstände, der Header.',
@@ -80,6 +105,114 @@ const layers = [
     <p>Wenn etwas nicht funktioniert, ist die erste Frage immer: <strong>in welcher Schicht?</strong> Sieht man den Fehler im Browser (Frontend) oder im Terminal (Backend)? Ist die Zeile in der Datenbank angekommen? Allein mit dieser Frage löst ihr die Hälfte aller Probleme – und gebt Claude die entscheidende Information mit.</p>
   </Callout>
 
+  <h2 id="womit">Womit baut man was?</h2>
+  <p>Für jeden App-Typ gibt es eigene Werkzeuge. Ein Framework allein ist noch keine App: Die farbigen Symbole zeigen, welche der fünf Schichten ein Werkzeug abdeckt.</p>
+  <div class="widget" id="stack" data-typ="web-app">
+    <p class="hint">Wählt einen App-Typ. Hervorgehoben wird, womit man ihn baut.</p>
+    <div class="loop">
+      {typen.map(t => <button type="button" data-typ={t.id} aria-pressed={t.id === 'web-app' ? 'true' : 'false'} class={t.id === 'web-app' ? 'active' : undefined}>{t.name}</button>)}
+    </div>
+    <div class="loop-detail" aria-live="polite">
+      {typen.map(t => <p data-fuer={t.id} set:html={t.text} />)}
+    </div>
+    <div class="stack-karte">
+      {gruppen.map(g => (
+        <div class="gruppe" data-fit={g.fit}>
+          <div class="gruppe-kopf">
+            <g.icon size={18} aria-hidden="true" />
+            <span>{g.name}</span>
+          </div>
+          <div class="deckt" role="img" aria-label={`Deckt ab: ${g.deckt.map(d => layerName[d]).join(', ')}`}>
+            {g.deckt.map(d => { const I = icons[d]; return <span data-layer={d} title={layerName[d]}><I size={14} aria-hidden="true" /></span>; })}
+          </div>
+          <ul>
+            {g.tools.map(t => <li>{t}{unserStack.has(t) && <span class="pill empf">unser Stack</span>}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <script>
+      const stack = document.getElementById('stack')!;
+      const knoepfe = stack.querySelectorAll<HTMLButtonElement>('.loop button');
+      knoepfe.forEach(b => b.addEventListener('click', () => {
+        stack.dataset.typ = b.dataset.typ;
+        knoepfe.forEach(k => { k.classList.toggle('active', k === b); k.setAttribute('aria-pressed', String(k === b)); });
+      }));
+    </script>
+  </div>
+  <Callout type="concept" title="Warum Next.js + Supabase + Vercel?">
+    <p>Ein Coding-Agent ist dort am besten, wo er am meisten Beispiele gesehen hat. Diese Kombination ist für neue Web-Apps eine der häufigsten überhaupt – Claude kennt ihre Regeln, Fehlermeldungen und Lösungen. Bei einem seltenen Framework rät es öfter. Dazu kommt: Frontend und Backend liegen in einem Projekt, alle drei Dienste sind für Prototypen kostenlos, und Claude kann Supabase direkt bedienen.</p>
+    <p>Für euren eigenen Prototyp heißt das: Bleibt beim Kurs-Stack. Eine native App lohnt sich erst, wenn ihr wirklich Push-Nachrichten, Offline-Betrieb oder tiefen Kamera-Zugriff braucht.</p>
+  </Callout>
+
+  <h2 id="mieten">Mieten statt bauen</h2>
+  <p>Keine App baut alles selbst. Zahlung, Login, Karten oder E-Mail gibt es als fertige Dienste, die man über eine API anbindet. Vereinfacht am Beispiel Too Good To Go – so <em>könnte</em> die Aufteilung aussehen:</p>
+  <div class="compare mieten">
+    <div class="card">
+      <h3><Hammer size={20} aria-hidden="true" /> Selbst gebaut</h3>
+      <ul>
+        <li>Angebote der Betriebe: Überraschungstüte, Menge, Abholzeit</li>
+        <li>Reservieren und Abholung bestätigen</li>
+        <li>Verwaltung für die Betriebe</li>
+        <li>Die Oberfläche, Marke und Texte</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><Store size={20} aria-hidden="true" /> Gemietet</h3>
+      <ul class="dienste">
+        <li><CreditCard size={16} aria-hidden="true" /> Zahlung – z. B. Stripe</li>
+        <li><KeyRound size={16} aria-hidden="true" /> Login – „Mit Google/Apple anmelden“</li>
+        <li><MapPin size={16} aria-hidden="true" /> Karte – z. B. Google Maps, Mapbox</li>
+        <li><Mail size={16} aria-hidden="true" /> E-Mail und Push-Nachrichten</li>
+        <li><Image size={16} aria-hidden="true" /> Bilder speichern – z. B. Supabase Storage</li>
+        <li><Sparkles size={16} aria-hidden="true" /> KI – z. B. Claude API für Beschreibungen</li>
+      </ul>
+    </div>
+  </div>
+  <p>Die Faustregel: <strong>Baut selbst, was euer Produkt besonders macht. Mietet, was jede App braucht.</strong> Jeder gemietete Dienst bringt ein Konto, einen geheimen Schlüssel (dazu mehr an Tag 2) und ab einer gewissen Größe eine Rechnung mit. Leihbar mietet Datenbank, Login und Bildspeicher bei <a href="/konzepte/daten-backend#supabase">Supabase</a>. Bevor Claude etwas Aufwändiges selbst baut, fragt: <em>„Gibt es dafür einen Dienst, den wir anbinden können?“</em></p>
+
+  <h2 id="kosten">Was kostet das, wo läuft das?</h2>
+  <p>Eure App existiert in zwei Kopien: einmal in eurem Codespace, einmal live bei Vercel. Der Code ist derselbe, aber die beiden laufen getrennt.</p>
+  <div class="compare">
+    <div class="card">
+      <h3><Laptop size={20} aria-hidden="true" /> Lokal · Codespace</h3>
+      <ul>
+        <li>Nur ihr seht die App.</li>
+        <li>Jede Änderung ist sofort sichtbar.</li>
+        <li>Geheime Schlüssel liegen in <code>.env.local</code> und nie auf GitHub.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><Globe size={20} aria-hidden="true" /> Live · Vercel</h3>
+      <ul>
+        <li>Alle mit dem Link sehen die App.</li>
+        <li>Aktualisiert sich nach jedem Push auf <code>main</code>, der Build dauert ein bis zwei Minuten.</li>
+        <li>Geheime Schlüssel tragt ihr bei Vercel als Environment-Variablen ein.</li>
+      </ul>
+    </div>
+  </div>
+  <p>Läuft etwas lokal, aber nicht live, fehlt fast immer eine Environment-Variable bei Vercel oder der Build ist fehlgeschlagen.</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-labelledby="kosten">
+  <table>
+    <tr><th>Dienst</th><th>Kostenlos</th><th>Kostet, wenn …</th></tr>
+    <tr><td><strong>GitHub Codespaces</strong></td><td>60 Stunden pro Monat, mit GitHub Education 90</td><td>… ihr mehr braucht. Ist das Kontingent leer, stoppt der Codespace einfach – es entstehen keine Kosten (<a href="/setup#kontingent">Details</a>).</td></tr>
+    <tr><td><strong>Supabase Free</strong></td><td>2 Projekte, 500 MB Datenbank, 1 GB Dateien</td><td>… echte Nutzer*innen die App dauerhaft brauchen: Kostenlose Projekte <a href="/konzepte/daten-backend#supabase">pausieren nach 7 Tagen</a> ohne Zugriff. Pro ab 25 $ im Monat.</td></tr>
+    <tr><td><strong>Vercel Hobby</strong></td><td>Für persönliche, nicht kommerzielle Projekte – die Limits reichen für jeden Prototyp</td><td>… Geld im Spiel ist (Firma, Kund*innen, Verkauf). Dann Pro, 20 $ im Monat pro Person.</td></tr>
+  </table>
+  </div>
+  <p>Für den Kurs und euren Prototyp zahlt ihr also nur Claude Pro.</p>
+
+  <h2 id="sezieren">Eine App sezieren</h2>
+  <p>Nehmt eine App, die ihr alle kennt – willhaben, Airbnb oder Spotify – und zerlegt sie gemeinsam am Whiteboard, ohne Claude. Die Beispiele zeigen, wie eine Antwort für Airbnb aussehen kann.</p>
+  <ol class="steps">
+    <li><strong>Welche Schichten seht ihr?</strong> Was davon ist Frontend, API, Backend, Datenbank, Hosting?<span class="muted beispiel">Airbnb: Suche, Karte und Inseratsseite sind Frontend. Jeder Filter-Klick schickt eine Anfrage an die API. Das Backend berechnet Preise und prüft, ob die Unterkunft frei ist.</span></li>
+    <li><strong>Welche Tabellen braucht es, mit welchen Spalten?</strong><span class="muted beispiel">Airbnb: <code>inserate</code> (Titel, Ort, Preis pro Nacht, Gastgeber), <code>buchungen</code> (Inserat, Gast, von, bis), <code>bewertungen</code> (Buchung, Sterne, Text), <code>nutzer</code>.</span></li>
+    <li><strong>Was ist wahrscheinlich gemietet?</strong><span class="muted beispiel">Airbnb: Zahlung, Karten, SMS-Codes, Prüfung von Ausweisen.</span></li>
+    <li><strong>Was davon könntet ihr in drei Tagen bauen?</strong><span class="muted beispiel">Airbnb: Inserate ansehen und eine Anfrage schicken. Ohne Zahlung, ohne Karte, ohne Bewertungen – genau so ist Leihbar geschnitten.</span></li>
+  </ol>
+  <p>Danach vergleicht ihr eure Skizze mit der von Claude. Wo weicht sie ab, und wer hat recht?</p>
+  <Prompt label="Danach: Claude sezieren lassen">Zerlege die App [Name der App] in ihre Schichten: Was ist Frontend, API, Backend, Datenbank, Hosting? Welche Tabellen mit welchen Spalten würdest du anlegen? Welche Dienste sind wahrscheinlich gemietet statt selbst gebaut? Zum Schluss: Was wäre die kleinste Version, die man in drei Tagen bauen kann? Antworte in einfachen Worten, ohne Code.</Prompt>
+
   <h2>Begriffe, die Claude benutzen wird</h2>
   <table>
     <tr><th>Begriff</th><th>Bedeutet</th></tr>
@@ -95,3 +228,35 @@ const layers = [
 
   <FooterNav prev={{ href: '/tag-1', t: 'Tag 1' }} next={{ href: '/konzepte/llm', t: 'Was ein Sprachmodell tut' }} />
 </Layout>
+
+<style>
+  /* Stack-Karte: Gruppen, die zum gewählten App-Typ passen, werden hervorgehoben (Rahmen + Fett, nicht nur Farbe), der Rest tritt zurück. */
+  .stack-karte { display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); margin: .75rem 0 0; }
+  .gruppe { border: 2px solid var(--border); border-radius: var(--radius); background: var(--bg); padding: .6rem .75rem; opacity: .45; transition: opacity .15s, border-color .15s, background .15s; }
+  #stack[data-typ="website"] .gruppe[data-fit~="website"],
+  #stack[data-typ="web-app"] .gruppe[data-fit~="web-app"],
+  #stack[data-typ="native"] .gruppe[data-fit~="native"],
+  #stack[data-typ="backend"] .gruppe[data-fit~="backend"] { opacity: 1; border-color: var(--accent); background: var(--accent-soft); }
+  #stack[data-typ="website"] .gruppe[data-fit~="website"] li,
+  #stack[data-typ="web-app"] .gruppe[data-fit~="web-app"] li,
+  #stack[data-typ="native"] .gruppe[data-fit~="native"] li,
+  #stack[data-typ="backend"] .gruppe[data-fit~="backend"] li { font-weight: 700; }
+  .gruppe-kopf { display: flex; align-items: center; gap: .4rem; font-size: .8rem; color: var(--muted); font-weight: 600; }
+  .gruppe-kopf svg { flex: none; }
+  .deckt { display: flex; gap: .3rem; margin: .4rem 0; }
+  .deckt span { display: flex; color: var(--farbe); }
+  .gruppe ul { list-style: none; margin: 0; padding: 0; }
+  .gruppe li { display: flex; flex-wrap: wrap; align-items: center; gap: .1rem .4rem; padding: .1rem 0; }
+  #stack [data-fuer] { display: none; margin: 0; }
+  #stack[data-typ="website"] [data-fuer="website"],
+  #stack[data-typ="web-app"] [data-fuer="web-app"],
+  #stack[data-typ="native"] [data-fuer="native"],
+  #stack[data-typ="backend"] [data-fuer="backend"] { display: block; }
+  .beispiel { display: block; }
+  .compare h3 svg { vertical-align: -.2em; }
+  .mieten .card { border-top-color: var(--fg); }
+  .dienste { list-style: none; padding: 0; }
+  .dienste li { display: flex; align-items: center; gap: .5rem; padding: .15rem 0; }
+  .dienste svg { flex: none; color: var(--muted); }
+  @media (prefers-reduced-motion: reduce) { .gruppe { transition: none; } }
+</style>
