@@ -35,7 +35,7 @@ export function waehle(zustand, wahl) {
 export function startZustand(quellen) {
   var os = osRaten(quellen.alt, quellen.userAgent);
   var wahl = istWahl(quellen.query) ? quellen.query : istWahl(quellen.gespeichert) ? quellen.gespeichert : os;
-  return waehle({ umgebung: 'codespace', os: os }, wahl);
+  return wahl === 'codespace' ? { umgebung: 'codespace', os: os } : { umgebung: 'lokal', os: wahl };
 }
 
 // Nur-OS-Umschalter (nurLaptop, z. B. im Setup-Abschnitt „lokal“): ändert nur das System, nicht die Umgebung.
