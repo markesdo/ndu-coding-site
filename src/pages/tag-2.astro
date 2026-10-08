@@ -205,7 +205,7 @@ import { bild } from '../components/anleitung-bilder';
   <Prompt label="Kurz prüfen">Welche Projekte habe ich bei Vercel? Nutze dafür den Vercel-MCP.</Prompt>
 
   <h3 id="vercel-deploy">c) Deploy durch Claude (10 min)</h3>
-  <Prompt label="Deploy durch Claude" note="Claude fragt unterwegs nach eurem Okay und meldet sich, wenn ihr euch im Browser bei Vercel anmelden müsst. Meldet Claude, dass der Zugriff auf euer GitHub-Repo fehlt: Schritte 5.6–5.8 oben wiederholen.">Deploye dieses Projekt auf Vercel. Prüf zuerst mit dem Vercel-MCP, ob es in meinem Konto schon ein Projekt für dieses Repo gibt – dann nimm das und leg kein zweites an. Sonst: neues Projekt mit dem Namen des Repos, verbunden mit dem GitHub-Repo, damit jeder Push auf main automatisch deployt. Falls die Vercel-CLI fehlt, nutze npx vercel. Übertrage die Variablen aus .env.local als Environment Variables für Production – zeig mir keine Werte im Chat. Deploy nach Production, nicht als Preview. Bevor du etwas anlegst: sag mir in zwei Sätzen, was du vorhast, und warte auf mein Okay. Am Ende: die öffentliche Adresse unter Domains (…vercel.app), nicht die Deployment-Adresse.</Prompt>
+  <Prompt label="Deploy durch Claude" note="Claude fragt unterwegs nach eurem Okay und meldet sich, wenn ihr euch im Browser bei Vercel anmelden müsst. Meldet Claude, dass der Zugriff auf euer GitHub-Repo fehlt: Schritte 5.6–5.8 oben wiederholen.">Deploye dieses Projekt auf Vercel. Vorher: alles committen und auf main pushen, damit live genau der Stand von GitHub läuft. Prüf zuerst mit dem Vercel-MCP, ob es in meinem Konto schon ein Projekt für dieses Repo gibt – dann nimm das und leg kein zweites an. Sonst: neues Projekt mit dem Namen des Repos, verbunden mit dem GitHub-Repo, damit jeder Push auf main automatisch deployt. Falls die Vercel-CLI fehlt, nutze npx vercel. Übertrage die Variablen aus .env.local als Environment Variables für Production, bevor du deployst – zeig mir keine Werte im Chat. Deploy dann nach Production, nicht als Preview. Bevor du etwas anlegst: sag mir in zwei Sätzen, was du vorhast, und warte auf mein Okay. Am Ende: die öffentliche Adresse unter Domains (…vercel.app), nicht die Deployment-Adresse.</Prompt>
   <Callout type="warn" title="Drei Dinge, auf die ihr achtet">
     <ul>
       <li><strong>Production, nicht Preview:</strong> Eine Preview-Adresse verlangt eine Vercel-Anmeldung – am Handy anderer Leute geht sie nicht.</li>
@@ -213,6 +213,21 @@ import { bild } from '../components/anleitung-bilder';
       <li><strong>Die Adresse unter Domains:</strong> kurz, ohne Zufallszeichen, z. B. <code>leihbar-….vercel.app</code>. Die lange Deployment-Adresse verlangt eine Anmeldung.</li>
     </ul>
   </Callout>
+
+  <details class="fallback" id="vercel-dashboard">
+    <summary>Falls es hakt: Deploy über das Vercel-Dashboard (ohne Claude)</summary>
+    <p>Der Weg von Hand – zurück zur Repo-Liste nach Schritt 5.8 (<a href="https://vercel.com/new" target="_blank" rel="noopener">vercel.com/new</a>).</p>
+    <Schritte id="vercel" nummer="5" start={9} steps={[
+      { img: bild('tag2/vc-9-import'), alt: 'Liste mit dem Repo und Button „Import“', text: 'Neben eurem Repo (z. B. <code>leihbar</code>) auf <em>Import</em>.', marks: [{ x: 631, y: 557, w: 68, h: 32 }] },
+      { img: bild('tag2/vc-10-2fa'), alt: 'Vercel bietet „Secure Your Account with 2FA“ an', text: 'Vercel bietet Zwei-Faktor-Anmeldung mit einer Authenticator-App an. Für den Kurs: <em>Skip securing my account</em>. Nach dem Kurs unter Account Settings nachholen.', marks: [{ x: 674, y: 634, w: 156, h: 24 }] },
+      { img: bild('tag2/vc-11-formular'), alt: 'Formular „New Project“: Team Hobby, Projektname, Preset Next.js, Environment Variables, Deploy', text: 'Vercel erkennt Next.js selbst. Vor dem Deploy <em>Environment Variables</em> aufklappen.', marks: [{ x: 436, y: 568, w: 624, h: 42 }] },
+      { img: bild('tag2/vc-12-env'), alt: 'Aufgeklappte Environment Variables mit Key, Value und dem Hinweis „or paste the .env contents“', text: 'Am schnellsten: den kompletten Inhalt eurer <code>.env.local</code> kopieren und ins Feld <em>Key</em> einfügen (1) – Vercel verteilt die Zeilen selbst auf Namen und Werte („or paste the .env contents“, 2). Das ist der Grund, warum die Datei nie ins Repo musste. Dann <em>Deploy</em>.', marks: [{ x: 448, y: 449, w: 560, h: 32, n: 1 }, { x: 554, y: 650, w: 170, h: 22, n: 2 }] },
+      { img: bild('tag2/vc-13-fertig'), alt: '„Congratulations! You just deployed a new project“ mit Vorschau der App', text: 'Nach etwa einer Minute: „Congratulations!“ Unten auf <em>Continue to Project</em>.' },
+      { img: bild('tag2/vc-14-dashboard'), alt: 'Projekt-Dashboard mit Deployment-Adresse und Domain', text: 'Eure öffentliche Adresse steht unter <em>Domains</em> (1), z. B. <code>leihbar-…vercel.app</code>. <strong>Nehmt diese.</strong> Die längere Adresse unter <em>Deployment</em> (2) verlangt eine Vercel-Anmeldung und funktioniert am Handy anderer Leute nicht.', marks: [{ x: 712, y: 222, w: 200, h: 46, n: 1 }, { x: 712, y: 160, w: 300, h: 40, n: 2 }] },
+      { img: bild('tag2/vc-15-live'), alt: 'Die App unter der öffentlichen vercel.app-Adresse', text: 'Die App ist öffentlich erreichbar. Ab jetzt deployt jeder Push auf <code>main</code> automatisch.' },
+    ]} />
+    <p>Danach weiter mit <a href="#vercel-pruefen">d) Prüfen</a> und <a href="#vercel-supabase">e) Supabase auf die neue Adresse</a> – das gilt für beide Wege.</p>
+  </details>
 
   <h3 id="vercel-pruefen">d) Prüfen und Logs lesen (5 min)</h3>
   <Prompt label="Deploy prüfen">Prüfe mit dem Vercel-MCP den letzten Production-Deploy: Status, Build-Log (nur Fehler und Warnungen zusammenfassen) und Laufzeit-Logs der letzten 30 Minuten. Erkläre mir in einfachen Worten, ob alles in Ordnung ist. Wenn nicht: behebe es, prüf lokal mit npm run build und warte vor dem Push auf mein Okay.</Prompt>
@@ -227,19 +242,6 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
   <p><strong>Am Handy öffnen.</strong> Registrieren, etwas anfragen. Das ist eure App.</p>
 
-  <details class="fallback" id="vercel-dashboard">
-    <summary>Falls es hakt: Deploy über das Vercel-Dashboard (ohne Claude)</summary>
-    <p>Der Weg von Hand – zurück zur Repo-Liste nach Schritt 5.8 (<a href="https://vercel.com/new" target="_blank" rel="noopener">vercel.com/new</a>).</p>
-    <Schritte id="vercel" nummer="5" start={9} steps={[
-      { img: bild('tag2/vc-9-import'), alt: 'Liste mit dem Repo und Button „Import“', text: 'Neben eurem Repo (z. B. <code>leihbar</code>) auf <em>Import</em>.', marks: [{ x: 631, y: 557, w: 68, h: 32 }] },
-      { img: bild('tag2/vc-10-2fa'), alt: 'Vercel bietet „Secure Your Account with 2FA“ an', text: 'Vercel bietet Zwei-Faktor-Anmeldung mit einer Authenticator-App an. Für den Kurs: <em>Skip securing my account</em>. Nach dem Kurs unter Account Settings nachholen.', marks: [{ x: 674, y: 634, w: 156, h: 24 }] },
-      { img: bild('tag2/vc-11-formular'), alt: 'Formular „New Project“: Team Hobby, Projektname, Preset Next.js, Environment Variables, Deploy', text: 'Vercel erkennt Next.js selbst. Vor dem Deploy <em>Environment Variables</em> aufklappen.', marks: [{ x: 436, y: 568, w: 624, h: 42 }] },
-      { img: bild('tag2/vc-12-env'), alt: 'Aufgeklappte Environment Variables mit Key, Value und dem Hinweis „or paste the .env contents“', text: 'Am schnellsten: den kompletten Inhalt eurer <code>.env.local</code> kopieren und ins Feld <em>Key</em> einfügen (1) – Vercel verteilt die Zeilen selbst auf Namen und Werte („or paste the .env contents“, 2). Das ist der Grund, warum die Datei nie ins Repo musste. Dann <em>Deploy</em>.', marks: [{ x: 448, y: 449, w: 560, h: 32, n: 1 }, { x: 554, y: 650, w: 170, h: 22, n: 2 }] },
-      { img: bild('tag2/vc-13-fertig'), alt: '„Congratulations! You just deployed a new project“ mit Vorschau der App', text: 'Nach etwa einer Minute: „Congratulations!“ Unten auf <em>Continue to Project</em>.' },
-      { img: bild('tag2/vc-14-dashboard'), alt: 'Projekt-Dashboard mit Deployment-Adresse und Domain', text: 'Eure öffentliche Adresse steht unter <em>Domains</em> (1), z. B. <code>leihbar-…vercel.app</code>. <strong>Nehmt diese.</strong> Die längere Adresse unter <em>Deployment</em> (2) verlangt eine Vercel-Anmeldung und funktioniert am Handy anderer Leute nicht.', marks: [{ x: 712, y: 222, w: 200, h: 46, n: 1 }, { x: 712, y: 160, w: 300, h: 40, n: 2 }] },
-      { img: bild('tag2/vc-15-live'), alt: 'Die App unter der öffentlichen vercel.app-Adresse', text: 'Die App ist öffentlich erreichbar. Ab jetzt deployt jeder Push auf <code>main</code> automatisch.' },
-    ]} />
-  </details>
   <script>
     // Zeigt ein Link (z. B. #vercel-12) in den zugeklappten Ausweichweg, aufklappen und hinspringen.
     const oeffne = () => {
@@ -250,6 +252,8 @@ import { bild } from '../components/anleitung-bilder';
     };
     oeffne();
     window.addEventListener('hashchange', oeffne);
+    // Bilder und Schriften verschieben das Layout noch – nach dem Laden noch einmal hinspringen.
+    window.addEventListener('load', () => document.getElementById(location.hash.slice(1))?.closest('details')?.open && document.getElementById(location.hash.slice(1))?.scrollIntoView());
   </script>
   <Checklist id="t2-u5b" items={[
     'Vercel-Plugin installiert, Vercel-MCP verbunden',
