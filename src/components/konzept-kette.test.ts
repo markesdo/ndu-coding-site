@@ -7,12 +7,21 @@ const weiter = (seite: string) => {
   return quelle.match(/<FooterNav[^>]*\bnext=\{\{\s*href:\s*'([^']+)'/)?.[1];
 };
 
-describe('Konzeptseiten Tag 2: Weiter führt zur nächsten Station des Tages', () => {
+describe('Konzeptseiten: Weiter führt zur nächsten Station des Tages', () => {
   it.each([
+    ['app-anatomie', '/konzepte/git'],
+    ['git', '/konzepte/llm'],
+    ['llm', '/konzepte/coding-agent'],
+    ['coding-agent', '/konzepte/prompting'],
+    ['prompting', '/tag-1#uebung-1'],
+    ['spezifikation', '/tag-1#uebung-2'],
     ['daten-backend', '/konzepte/mcp'],
     ['mcp', '/tag-2#uebung-3'],
     ['verifizieren', '/tag-2#uebung-4'],
     ['agenten-steuern', '/tag-2#uebung-5'],
+    ['qualitaet', '/tag-3#werkstatt-1'],
+    ['design-system', '/konzepte/ausblick'],
+    ['ausblick', '/tag-3#werkstatt-2'],
   ])('%s → %s', (seite, ziel) => {
     expect(weiter(seite)).toBe(ziel);
   });
