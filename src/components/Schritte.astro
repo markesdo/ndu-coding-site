@@ -47,7 +47,7 @@ const label = (n: number) => (nummer ? `${nummer}.${n}` : String(n));
 <script>
   // Ein gemeinsamer Dialog pro Seite für alle Schritt-Listen: vergrößertes Bild + Präsentationsmodus.
   const alle = [...document.querySelectorAll<HTMLLIElement>('.shots > li')];
-  // Nur sichtbare Schritte durchblättern: Der OS-Umschalter (OsWahl) blendet z. B. die Mac-Schritte aus.
+  // Nur sichtbare Schritte durchblättern: Der Umschalter (UmgebungWahl) blendet z. B. die Mac-Schritte aus.
   const sichtbar = () => alle.filter((li) => li.getClientRects().length > 0);
   let items = alle;
   const dialog = document.createElement('dialog');
