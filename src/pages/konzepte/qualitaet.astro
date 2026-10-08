@@ -55,18 +55,49 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Ein echtes Sicherheits-Audit durch Menschen braucht man, sobald echtes Geld oder sensible Daten (Gesundheit, Zahlung, Minderjährige) im Spiel sind. Bis dahin: die Liste oben, bei jeder größeren Änderung. Claude findet damit die meisten Anfängerfehler – aber es übersieht manches, und es sagt es nicht.</p>
 
   <h2>4 · CI/CD – niemand pusht Kaputtes</h2>
-  <p><strong>Continuous Integration:</strong> Bei jedem Push lässt GitHub automatisch Lint, Build und Tests laufen (GitHub Actions). Rot = darf nicht gemergt werden. <strong>Continuous Deployment:</strong> Vercel baut für jeden Branch eine <strong>Preview-URL</strong> – ihr könnt eine Änderung anschauen, bevor sie live geht – und deployt <code>main</code> automatisch. Drei Umgebungen: <em>Development</em> (euer Codespace), <em>Preview</em> (pro Branch), <em>Production</em> (die echte URL).</p>
+  <ul>
+    <li><strong>Continuous Integration:</strong> Bei jedem Push lässt GitHub automatisch Lint, Build und Tests laufen (GitHub Actions). Rot = darf nicht gemergt werden.</li>
+    <li><strong>Continuous Deployment:</strong> Vercel baut für jeden Branch eine <strong>Preview-URL</strong> – ihr seht eine Änderung, bevor sie live geht – und deployt <code>main</code> automatisch.</li>
+  </ul>
+  <p>Drei Umgebungen: <em>Development</em> (euer Laptop oder Codespace) → <em>Preview</em> (pro Branch) → <em>Production</em> (die echte URL).</p>
   <Prompt>Richte GitHub Actions ein, sodass bei jedem Push und Pull Request Lint, Build und die Playwright-Tests laufen. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
 
   <h2>5 · Betrieb – wissen, was passiert</h2>
-  <p><strong>Fehler-Tracking</strong> (Sentry): Wenn um 23 Uhr bei jemandem ein Fehler auftritt, wisst ihr es am Morgen – mit Stacktrace, den ihr Claude geben könnt. <strong>Logs</strong> auf Vercel. <strong>Performance</strong>: Lighthouse-Score im Chrome (Rechtsklick → Untersuchen → Lighthouse) – unter 90 lasst ihr Claude optimieren. <strong>Barrierefreiheit</strong>: Tastaturbedienung, Kontraste, Alt-Texte – Lighthouse misst auch das, und es ist in der EU seit 2025 für viele Angebote Pflicht.</p>
+  <ul>
+    <li><strong>Fehler-Tracking</strong> (Sentry): Tritt um 23 Uhr bei jemandem ein Fehler auf, wisst ihr es am Morgen – mit Stacktrace, den ihr Claude geben könnt.</li>
+    <li><strong>Logs</strong> auf Vercel.</li>
+    <li><strong>Performance</strong>: Lighthouse-Score in Chrome (Rechtsklick → Untersuchen → Lighthouse). Unter 90 lasst ihr Claude optimieren.</li>
+    <li><strong>Barrierefreiheit</strong>: Tastaturbedienung, Kontraste, Alt-Texte. Lighthouse misst auch das – in der EU seit 2025 für viele Angebote Pflicht.</li>
+  </ul>
 
   <h2>6 · Recht & Daten</h2>
-  <p>Sobald echte Menschen sich registrieren: <strong>Impressum und Datenschutzerklärung</strong> (Pflicht in Österreich), <strong>DSGVO</strong> – Datenminimierung (nur speichern, was ihr braucht), Server in der EU (Supabase in Frankfurt, Vercel-Region auf <code>fra1</code> setzen), Löschkonzept (Nutzer*innen müssen ihr Konto löschen können), Auftragsverarbeitungsverträge mit Supabase/Vercel (gibt es als Klick). <strong>Lizenzen:</strong> Welche Pakete verwendet die App, unter welcher Lizenz? <strong>Rein KI-generierter Code</strong> ist in der EU nach derzeit herrschender Ansicht kaum urheberrechtlich geschützt – was für euer Geschäftsmodell relevant sein kann.</p>
+  <p>Sobald echte Menschen sich registrieren:</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Recht und Daten"><table>
+    <tr><th>Thema</th><th>Was ihr tut</th></tr>
+    <tr><td>Impressum, Datenschutzerklärung</td><td>Beides anlegen – Pflicht in Österreich</td></tr>
+    <tr><td>DSGVO: Datenminimierung</td><td>Nur speichern, was ihr braucht</td></tr>
+    <tr><td>DSGVO: Server in der EU</td><td>Supabase in Frankfurt, Vercel-Region auf <code>fra1</code> setzen</td></tr>
+    <tr><td>DSGVO: Löschkonzept</td><td>Nutzer*innen müssen ihr Konto löschen können</td></tr>
+    <tr><td>DSGVO: Auftragsverarbeitung</td><td>Verträge mit Supabase und Vercel – gibt es als Klick</td></tr>
+    <tr><td>Lizenzen</td><td>Prüfen, welche Pakete die App verwendet und unter welcher Lizenz</td></tr>
+  </table></div>
+  <Callout type="info" title="KI-generierter Code">
+    <p>Rein KI-generierter Code ist in der EU nach derzeit herrschender Ansicht kaum urheberrechtlich geschützt – das kann für euer Geschäftsmodell relevant sein.</p>
+  </Callout>
   <Prompt>Prüfe das Projekt auf DSGVO-Basics: Welche personenbezogenen Daten speichern wir, wo liegen die Server, gibt es eine Möglichkeit zur Kontolöschung, fehlen Impressum und Datenschutzseite? Liste Lücken auf und schlag für jede den kleinsten sinnvollen Schritt vor.</Prompt>
 
   <h2>7 · Übergabe – wann echte Entwickler*innen?</h2>
-  <p>Ein Agent kann einen Prototyp in ein kleines Produkt tragen. Spätestens bei zahlenden Kund*innen, komplexer Geschäftslogik, Integrationen in fremde Systeme oder Sicherheitsanforderungen holt ihr Menschen dazu – und die finden dann vor, was ihr hier gelernt habt: Produkt-Brief, Backlog mit Kriterien, Entscheidungsdokument, Tests, CI, saubere Git-Historie. Das ist der Unterschied zwischen „wir haben da was zusammengeklickt“ und einem Projekt, das jemand übernehmen will. <strong>Build vs. Buy:</strong> Fragt vor jedem großen Issue, ob es das als Dienst gibt (Zahlung: Stripe, E-Mail: Resend, Suche: Algolia). Agenten bauen gern alles selbst; Produktverantwortliche kaufen, was sie nicht differenziert.</p>
+  <p>Ein Agent kann einen Prototyp in ein kleines Produkt tragen. Menschen holt ihr spätestens dazu bei:</p>
+  <ul>
+    <li>zahlenden Kund*innen</li>
+    <li>komplexer Geschäftslogik</li>
+    <li>Integrationen in fremde Systeme</li>
+    <li>Sicherheitsanforderungen</li>
+  </ul>
+  <p>Die finden dann vor, was ihr hier gelernt habt: Produkt-Brief, Backlog mit Kriterien, Entscheidungsdokument, Tests, CI, saubere Git-Historie. Das ist der Unterschied zwischen „wir haben da was zusammengeklickt“ und einem Projekt, das jemand übernehmen will.</p>
+  <Callout type="tip" title="Build vs. Buy">
+    <p>Fragt vor jedem großen Issue, ob es das als Dienst gibt (Zahlung: Stripe, E-Mail: Resend, Suche: Algolia). Agenten bauen gern alles selbst; Produktverantwortliche kaufen, was sie nicht differenziert.</p>
+  </Callout>
 
   <Callout type="concept" title="Die eine Gewohnheit">
     <p>Fragt den Agenten nach jedem Issue: <em>„Was würde ein erfahrenes Entwicklungsteam an dieser Umsetzung kritisieren?“</em> Ihr bekommt die Lücke zwischen Prototyp und Produkt in drei Sätzen – und entscheidet, ob sie jetzt wichtig ist.</p>

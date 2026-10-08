@@ -91,8 +91,13 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('setup/pro-6-checkout'), alt: 'Bezahlseite „Pro plan“: Rechnungsadresse, Kartendaten, Gesamtbetrag 21,60 €, Häkchen zur monatlichen Abbuchung, Button „Subscribe and Pay“', text: 'Oben muss <em>Pro · Monthly</em> stehen. Name und Adresse eintragen (1), dann die Kartendaten (2). Rechts seht ihr den echten Betrag mit Steuer und das Datum der automatischen Verlängerung. Häkchen setzen (3), <em>Subscribe and Pay</em> (4). <strong>Das Geld bekommt ihr von der NDU zurück</strong> – für diesen Monat und den Monat fürs Innolab. Hebt die Rechnung auf, die Anthropic per E-Mail schickt.', marks: [{ x: 297, y: 178, w: 431, h: 184, n: 1 }, { x: 297, y: 610, w: 431, h: 118, n: 2 }, { x: 795, y: 358, w: 378, h: 148, n: 3 }, { x: 800, y: 524, w: 369, h: 36, n: 4 }] },
   ]} />
   <Callout type="tip" title="Gleich kündigen, fürs Innolab neu abschließen">
-    <p>Pro verlängert sich jeden Monat von selbst. Kündigt es <strong>gleich nach dem Bezahlen</strong>: unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Ihr verliert nichts: Pro läuft bis zum Ende des bezahlten Monats weiter, also über alle drei Kurstage und die Zwischenwoche, und verlängert sich nur nicht mehr. So kann es niemand vergessen. <strong>Nur kündigen, keine Erstattung anfordern</strong> – eine Erstattung beendet Pro sofort, und Claude Code meldet sich ab. Wer schon vorher Pro oder Max hatte, kündigt nichts.</p>
-    <p>Im Innolab (28.11.–19.12.) braucht ihr Claude Pro wieder. Schließt es dann neu ab – mit demselben Konto, eure Chats und Einstellungen bleiben erhalten – und kündigt wieder gleich. Auch diesen Monat erstattet euch die NDU; hebt wieder die Rechnung aus der E-Mail auf.</p>
+    <p>Wer schon vorher Pro oder Max hatte, kündigt nichts. Alle anderen:</p>
+    <ul>
+      <li><strong>Gleich nach dem Bezahlen kündigen:</strong> unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Pro verlängert sich sonst jeden Monat von selbst.</li>
+      <li><strong>Ihr verliert nichts:</strong> Pro läuft bis zum Ende des bezahlten Monats weiter – über alle drei Kurstage und die Zwischenwoche.</li>
+      <li><strong>Nur kündigen, keine Erstattung anfordern:</strong> Eine Erstattung beendet Pro sofort, und Claude Code meldet sich ab.</li>
+      <li><strong>Innolab (28.11.–19.12.):</strong> Pro mit demselben Konto neu abschließen – Chats und Einstellungen bleiben – und wieder gleich kündigen. Auch diesen Monat erstattet die NDU; Rechnung aus der E-Mail aufheben.</li>
+    </ul>
   </Callout>
 
   <h2 id="repo">3 · Eigenes Repo aus dem Template</h2>
@@ -205,8 +210,13 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
 
   <h2 id="kontingent">Wenn das Kontingent knapp wird</h2>
-  <p>Ohne Education habt ihr 120 Core-Stunden pro Monat. Der Kurs-Codespace hat 2 Kerne, das sind <strong>60 Stunden Laufzeit</strong>. Die drei Kurstage und die Zwischenwoche brauchen voraussichtlich 30–45 Stunden – das passt, wenn ihr einen einzigen Codespace verwendet und ihn nach der Arbeit stoppt. Den Verbrauch seht ihr unter <em>Settings → Billing and licensing → Usage</em>.</p>
-  <p>Ist das Kontingent aufgebraucht, startet der Codespace nicht mehr. Kosten entstehen dabei keine: Neue Konten haben für Codespaces ein Budget von 0 $ mit „Stop usage: Yes“. Wer trotzdem weiterarbeiten muss, hebt dieses Budget an – eine Stunde auf 2 Kernen kostet laut GitHub-Preisliste etwa 0,18 $.</p>
+  <ul>
+    <li><strong>Kontingent:</strong> Ohne Education 120 Core-Stunden pro Monat. Der Kurs-Codespace hat 2 Kerne – das sind <strong>60 Stunden Laufzeit</strong>.</li>
+    <li><strong>Bedarf:</strong> Kurstage und Zwischenwoche brauchen voraussichtlich 30–45 Stunden. Das passt mit einem einzigen Codespace, den ihr nach der Arbeit stoppt.</li>
+    <li><strong>Verbrauch</strong> unter <em>Settings → Billing and licensing → Usage</em>.</li>
+    <li><strong>Aufgebraucht:</strong> Der Codespace startet nicht mehr. Kosten entstehen keine – neue Konten haben für Codespaces ein Budget von 0 $ mit „Stop usage: Yes“.</li>
+  </ul>
+  <p>Wer trotzdem weiterarbeiten muss, hebt dieses Budget an – eine Stunde auf 2 Kernen kostet laut GitHub-Preisliste etwa 0,18 $.</p>
   <Schritte id="kontingent" steps={[
     { img: bild('setup/budget-1-menue'), alt: 'Budgets and alerts: Zeile Codespaces mit Budget 0 $ und Stop usage Yes, geöffnetes Menü mit Edit und Delete', text: '<em>Settings → Billing and licensing → Budgets and alerts</em>. In der Zeile <em>Codespaces</em> (1) auf „…“ → <em>Edit</em> (2) und einen kleinen Betrag eintragen, z. B. 5 $. „Stop usage“ bleibt an. Das Budget gilt pro Monat; nach dem Kurs wieder auf 0 setzen. <strong>Nicht auf <em>Delete</em> klicken</strong> – ohne Budget ist die Nutzung unbegrenzt. Dafür muss eine Zahlungsmethode hinterlegt sein.', marks: [{ x: 463, y: 350, w: 808, h: 62, n: 1 }, { x: 1097, y: 404, w: 150, h: 26, n: 2 }] },
   ]} />

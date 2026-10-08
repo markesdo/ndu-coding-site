@@ -308,7 +308,8 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .steps { counter-reset: step; list-style: none; padding: 0; margin: 1.25rem 0; }
 .steps li { counter-increment: step; position: relative; padding: .75rem 0 .75rem 3rem; border-bottom: 1px solid var(--border); }
 .steps li::before { content: counter(step); position: absolute; left: 0; top: .7rem; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-weight: 700; display: grid; place-items: center; font-size: .95rem; }
-.steps li strong { display: block; margin-bottom: .15rem; }
+/* Nur der Titel am Anfang des Schritts steht als eigene Zeile; Hervorhebungen im Satz bleiben im Fluss. */
+.steps li > strong:first-child { display: block; margin-bottom: .15rem; }
 
 /* Screenshot-Schritte (Schritte.astro). Markierungsrot ist in beiden Themes gleich – es liegt auf dem Screenshot, nicht auf der Seite. */
 .shots { counter-reset: shot; list-style: none; padding: 0; margin: 1.25rem 0; }
