@@ -30,7 +30,7 @@ const bausteine = [
     <figcaption>
       <ol class="pa-legende">
         {bausteine.map((b) => (
-          <li data-baustein={b.id}><span class="pa-punkt" aria-hidden="true"></span><strong>{b.name}</strong> <span class="muted">– {b.id === 'kontext' ? b.issue : `im Issue: ${b.issue}`}</span></li>
+          <li data-baustein={b.id}><span class="pa-punkt" aria-hidden="true"></span><strong>{b.n} · {b.name}</strong> <span class="muted">– {b.id === 'kontext' ? b.issue : `im Issue: ${b.issue}`}</span></li>
         ))}
       </ol>
     </figcaption>
