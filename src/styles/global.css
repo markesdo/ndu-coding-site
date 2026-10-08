@@ -160,6 +160,14 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .callout.warn { --c: var(--yellow); background: color-mix(in srgb, var(--yellow) 10%, var(--bg-2)); }
 .callout.concept { --c: var(--purple); background: color-mix(in srgb, var(--purple) 8%, var(--bg-2)); }
 .callout-icon { flex: none; color: var(--c); }
+/* Konzept auf der Tagesseite (KonzeptStation): Lernstoff wie .callout.concept, mit Knopf zum Konzept. */
+.station { border-left: 3px solid var(--purple); border-radius: 4px; padding: .85rem 1.1rem; margin: 1.25rem 0; background: color-mix(in srgb, var(--purple) 8%, var(--bg-2)); }
+.station ul { margin-bottom: 1rem; }
+.station-cta { display: flex; flex-wrap: wrap; gap: .6rem; }
+.station-cta .btn { display: inline-flex; align-items: center; gap: .4rem; }
+.station .station-danach { margin: .75rem 0 0; }
+/* „Bevor ihr startet“ vor einer Übung: die Fragen stehen direkt darunter. */
+.einstieg { margin-bottom: 0; }
 
 /* Mindestbreite in rem, damit die Spalten im Beamer-Modus (größere Schrift) mitwachsen statt Wörter über den Kartenrand zu schieben. */
 .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); margin: 1.25rem 0; }

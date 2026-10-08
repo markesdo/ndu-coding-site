@@ -56,6 +56,16 @@ describe('die echten Tagesseiten', () => {
     });
   }
 
+  it('tag-2: jedes Konzept steht direkt vor seiner Übung, wie im Ablauf', () => {
+    const quelle = readFileSync(new URL('../pages/tag-2.astro', import.meta.url), 'utf8');
+    const ids = gliederung(quelle).map((a) => a.id);
+    expect(ids.slice(ids.indexOf('quiz'), ids.indexOf('uebung-5') + 1)).toStrictEqual([
+      'quiz', 'konzept-4', 'uebung-3', 'konzept-5', 'uebung-4', 'konzept-6', 'uebung-5',
+    ]);
+    // Der Ablauf verlinkt die Konzepte auf ihren Platz auf der Seite, nicht direkt auf die Konzeptseite.
+    for (const n of [4, 5, 6]) expect(quelle).toMatch(new RegExp(`type="konzept" title="Konzept ${n} [^"]*" href="#konzept-${n}"`));
+  });
+
   it('tag-1: alle Übungsschritte a)–f) sind verlinkbar', () => {
     const g = gliederung(readFileSync(new URL('../pages/tag-1.astro', import.meta.url), 'utf8'));
     const u1 = g.find((a) => a.id === 'uebung-1')!;

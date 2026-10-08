@@ -1,0 +1,36 @@
+---
+// Fragen mit drei Antworten; ein Klick zeigt richtig/falsch und die Begründung. Für Recap-Quiz und Einstiegsfragen vor Übungen.
+export interface Frage {
+  q: string;
+  o: string[];
+  /** Index der richtigen Antwort in o. */
+  a: number;
+  /** Begründung, darf HTML enthalten (Link zum Konzept). */
+  w: string;
+}
+const { id, fragen } = Astro.props as { id: string; fragen: Frage[] };
+---
+<div class="quiz" id={id}>
+  {fragen.map((it, i) => (
+    <div class="q" data-a={it.a}>
+      <p>{i + 1}. {it.q}</p>
+      {it.o.map((o, j) => <button class="opt" type="button" data-j={j}>{o}</button>)}
+      <p class="why" set:html={it.w} />
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.quiz .q').forEach((q) => {
+    q.querySelectorAll<HTMLButtonElement>('.opt').forEach((b) => b.addEventListener('click', () => {
+      if (q.classList.contains('answered')) return;
+      q.classList.add('answered');
+      const a = Number(q.dataset.a);
+      q.querySelectorAll<HTMLButtonElement>('.opt').forEach((x) => {
+        const j = Number(x.dataset.j);
+        if (j === a) x.classList.add('right');
+        else if (x === b) x.classList.add('wrong');
+      });
+    }));
+  });
+</script>
