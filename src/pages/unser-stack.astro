@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Prompt from '../components/Prompt.astro';
+// Pro Werkzeug: wofür man dort landet, Dashboard und Doku, und – nur wo es sich lohnt – die Context7-ID für Claude.
+// Doku-Links zeigen auf den Anfang eines Abschnitts, nicht auf einzelne Unterseiten: Next.js und Vercel bauen ihre Doku oft um.
+type Link = { t: string; href: string };
+const werkzeuge: { name: string; wofuer: string; dashboard?: Link; doku: Link[]; context7?: string }[] = [
+  {
+    name: 'Supabase',
+    wofuer: 'Datenbank, Login und Bildspeicher. Ihr landet hier, wenn Daten fehlen oder ein Zugriff verweigert wird. Upload gibt 403 → Storage-Policies. Login landet auf localhost → Authentication → URL Configuration.',
+    dashboard: { t: 'Dashboard', href: 'https://supabase.com/dashboard' },
+    doku: [
+      { t: 'Storage (Bilder hochladen)', href: 'https://supabase.com/docs/guides/storage' },
+      { t: 'Auth (Login)', href: 'https://supabase.com/docs/guides/auth' },
+      { t: 'Redirect-URLs', href: 'https://supabase.com/docs/guides/auth/redirect-urls' },
+      { t: 'Row Level Security', href: 'https://supabase.com/docs/guides/database/postgres/row-level-security' },
+    ],
+    context7: '/supabase/supabase',
+  },
+  {
+    name: 'Vercel',
+    wofuer: 'Die öffentliche Adresse eurer App. Ihr landet hier, wenn der Build rot ist oder live etwas fehlt, das im Codespace geht – fast immer eine Environment-Variable. Build-Log kopieren und den Prompt „Vercel-Build-Fehler“ aus der Prompt-Bibliothek nehmen.',
+    dashboard: { t: 'Dashboard', href: 'https://vercel.com' },
+    doku: [
+      { t: 'Environment-Variablen', href: 'https://vercel.com/docs/environment-variables' },
+      { t: 'Deployments und Build-Logs', href: 'https://vercel.com/docs/deployments' },
+    ],
+  },
+  {
+    name: 'Next.js',
+    wofuer: 'Das Framework für Frontend und Backend. Selbst nachlesen müsst ihr hier fast nie – Claude kennt es gut. Hilfreich ist höchstens die Übersicht, welcher Ordner wofür da ist.',
+    doku: [
+      { t: 'Doku', href: 'https://nextjs.org/docs' },
+      { t: 'Projektstruktur', href: 'https://nextjs.org/docs/app/getting-started/project-structure' },
+    ],
+    context7: '/vercel/next.js',
+  },
+  {
+    name: 'GitHub Codespaces',
+    wofuer: 'Euer Arbeitsplatz in der Cloud. Ihr landet hier, um einen Codespace zu starten, zu stoppen oder den Verbrauch zu prüfen.',
+    dashboard: { t: 'Eure Codespaces', href: 'https://github.com/codespaces' },
+    doku: [{ t: 'Doku', href: 'https://docs.github.com/en/codespaces' }],
+  },
+  {
+    name: 'Claude Code',
+    wofuer: 'Euer Agent im Terminal. Die meisten Fragen beantwortet diese Website; die offizielle Doku braucht ihr vor allem, wenn sich Claude Code nicht starten oder anmelden lässt.',
+    doku: [
+      { t: 'Doku', href: 'https://code.claude.com/docs' },
+      { t: 'Fehlerbehebung', href: 'https://code.claude.com/docs/en/troubleshooting' },
+    ],
+  },
+  {
+    name: 'Claude API',
+    wofuer: 'Nur für KI-Funktionen in eurer eigenen App, etwa Issue 8 oder ein KI-Projekt. Dort holt ihr den API-Key und ladet Guthaben auf.',
+    dashboard: { t: 'Console', href: 'https://console.anthropic.com' },
+    doku: [{ t: 'Doku', href: 'https://platform.claude.com/docs' }],
+  },
+];
+---
+<Layout title="Unser Stack: Doku & Dashboards">
+  <span class="eyebrow">Nachschlagen</span>
+  <h1>Unser Stack: Doku & Dashboards</h1>
+  <p class="lead">Wo eure Sachen liegen und was Claude lesen soll. Die Dokumentationen sind englisch und für Entwickler*innen geschrieben – ihr müsst sie nicht lesen. Meist reicht es, Claude die richtige Stelle zu geben.</p>
+
+  <Prompt label="Doku in den Prompt holen">Lies die aktuelle Doku zu [Thema]: use context7, library [ID]. Nenn mir die Stelle, auf die du dich stützt, bevor du etwas änderst.</Prompt>
+  <p class="small muted">Wann das hilft und wie ihr es sparsam einsetzt: <a href="/konzepte/mcp#context7">Context7</a>. Die IDs stehen unten bei Supabase und Next.js – für die übrigen Werkzeuge braucht ihr keine.</p>
+
+  <dl class="begriffe">
+    {werkzeuge.map(w => (
+      <>
+        <dt id={w.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}>{w.name}</dt>
+        <dd>
+          <p>{w.wofuer}</p>
+          <p class="links">
+            {w.dashboard && <><strong>Dashboard:</strong> <a href={w.dashboard.href} target="_blank" rel="noopener">{w.dashboard.t}</a><br/></>}
+            <strong>Doku:</strong> {w.doku.map((l, i) => <>{i > 0 && ' · '}<a href={l.href} target="_blank" rel="noopener">{l.t}</a></>)}
+            {w.context7 && <><br/><strong>Für Claude:</strong> <code>{w.context7}</code></>}
+          </p>
+        </dd>
+      </>
+    ))}
+  </dl>
+
+  <p class="small muted"><strong>React, Tailwind und TypeScript</strong> stecken auch im Projekt – ihre Doku müsst ihr nicht lesen. Was Tailwind und TypeScript sind, steht in den Begriffen unter <a href="/konzepte/app-anatomie">Anatomie einer App</a>.</p>
+</Layout>
+
+<style>
+  .links { font-size: .92rem; }
+</style>
