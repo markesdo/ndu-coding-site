@@ -382,6 +382,12 @@ h2[id] { scroll-margin-top: 3.5rem; }
 .loop-detail p { margin: 0 0 .4rem; }
 @media (max-width: 600px) { .loop { grid-template-columns: repeat(2, 1fr); } }
 
+/* Umschalter macOS / Windows (OsWahl.astro). Ohne data-os (kein JavaScript) bleiben beide Varianten sichtbar. */
+.os-wahl { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 1.25rem 0; padding: .6rem .75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+.os-wahl button { display: inline-flex; align-items: center; gap: .4rem; font: inherit; font-size: .95rem; padding: .35rem .9rem; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--fg); cursor: pointer; }
+.os-wahl button:hover { border-color: var(--accent); }
+.os-wahl button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+html[data-os="mac"] [data-nur="windows"], html[data-os="windows"] [data-nur="mac"] { display: none; }
 .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
 .compare .card { margin: 0; border-top: 3px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); }
 .compare .good { border-top-color: var(--green); }
