@@ -6,6 +6,8 @@ import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
 import Callout from '../components/Callout.astro';
 import FooterNav from '../components/FooterNav.astro';
+import KonzeptStation from '../components/KonzeptStation.astro';
+import Quiz from '../components/Quiz.astro';
 ---
 <Layout title="Tag 3 · Shippen & selbständig werden">
   <span class="eyebrow">Donnerstag, 15. Oktober 2026 · 09:00–17:00</span>
@@ -16,29 +18,66 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-15">
     <Block time="09:00–09:40" type="plenum" title="Stand-up">Jede*r rund 10 Minuten: Prototyp kurz zeigen, was läuft, wo hängt es, was brauche ich heute? Blocker lösen wir in der Werkstatt.</Block>
-    <Block time="09:40–10:20" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="/konzepte/qualitaet">Code-Review durch den Agenten, Sicherheits-Checkliste, Tests als Sicherheitsnetz.</Block>
+    <Block time="09:40–10:20" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="#konzept-7">Code-Review durch den Agenten, Sicherheits-Checkliste, Tests als Sicherheitsnetz.</Block>
     <Block time="10:20–10:35" type="pause" title="Pause" />
-    <Block time="10:35–12:00" type="uebung" title="Werkstatt 1" href="#werkstatt">Blocker lösen, dann Peer-Review in der Dreier-Runde mit der Checkliste.</Block>
+    <Block time="10:35–12:00" type="uebung" title="Werkstatt 1" href="#werkstatt-1">Blocker lösen, dann Peer-Review in der Dreier-Runde mit der Checkliste.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:30" type="konzept" title="Konzept 8 · Teil 1 · Design-System" href="/konzepte/design-system">Warum Tokens, drei Ebenen, in sechs Schritten zum eigenen System. Demo: Claude Design.</Block>
-    <Block time="13:30–13:45" type="konzept" title="Konzept 8 · Teil 2 · Ausblick 2026" href="/konzepte/ausblick">Figma-MCP → Code, Agent-Teams, Claude Code im Web, Codex, eigene Skills, Grenzen.</Block>
-    <Block time="13:45–15:15" type="uebung" title="Werkstatt 2" href="#werkstatt">Feinschliff, Demo vorbereiten, README. Danach: Linear verbinden. Optional: Design-System für die eigene App.</Block>
+    <Block time="13:00–13:30" type="konzept" title="Konzept 8 · Teil 1 · Design-System" href="#konzept-8">Warum Tokens, drei Ebenen, in sechs Schritten zum eigenen System. Demo: Claude Design.</Block>
+    <Block time="13:30–13:45" type="konzept" title="Konzept 8 · Teil 2 · Ausblick 2026" href="#konzept-8">Figma-MCP → Code, Agent-Teams, Claude Code im Web, Codex, eigene Skills, Grenzen.</Block>
+    <Block time="13:45–15:15" type="uebung" title="Werkstatt 2" href="#werkstatt-2">Feinschliff, Demo vorbereiten, README. Danach: Linear verbinden. Optional: Design-System für die eigene App.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:30" type="plenum" title="Demos" href="#demos">Rund 15 Minuten pro Person, mit Fragen und Reflexion.</Block>
     <Block time="16:30–17:00" type="plenum" title="Abschluss">Wie es weitergeht, Bewertung, Feedback.</Block>
   </div>
 
   <hr />
-  <h2 id="werkstatt">Werkstatt</h2>
-  <h3>Peer-Review in der Dreier-Runde (Werkstatt 1)</h3>
+  <h2 id="konzept-7">Konzept 7 · Vom Prototyp zum Produkt <span class="pill konzept">40 min</span></h2>
+  <KonzeptStation links={[{ href: '/konzepte/qualitaet', t: 'Konzept 7 lesen' }]} danach={{ href: '#werkstatt-1', t: 'Werkstatt 1' }}>
+    <p>In Werkstatt 1 prüft ihr eine fremde App und lasst eure eigene prüfen. Was einen Prototyp von einem Produkt trennt, gibt euch die Fragen dafür.</p>
+    <ul>
+      <li>Ein Produkt funktioniert immer: auch bei falscher Bedienung, für Fremde, nach der zwanzigsten Änderung.</li>
+      <li>Aus Akzeptanzkriterien werden <strong>Tests</strong>, die bei jeder Änderung prüfen. Dann kann Claude nicht „fertig“ sagen, bevor es stimmt.</li>
+      <li><strong>Review</strong> mit frischem Kontext: Ein zweiter Agent hat den Code nicht geschrieben und verteidigt ihn nicht.</li>
+      <li>Die Sicherheits-Checkliste: kein Key im Repo oder Frontend, RLS auf jeder Tabelle, Eingaben im Backend geprüft.</li>
+    </ul>
+  </KonzeptStation>
+
+  {/* Alter Anker aus der Zeit vor der Teilung in Werkstatt 1 und 2 – geteilte Links führen weiter hierher. */}
+  <span id="werkstatt"></span>
+  <hr />
+  <h2 id="werkstatt-1">Werkstatt 1 <span class="pill uebung">85 min</span></h2>
+  <Quiz id="einstieg-w1" einstieg="Konzept 7" fragen={[
+    { q: 'Warum startet ihr den Review durch den Agenten in einer frischen Session (/clear)?', o: ['Ein Agent im Kontext, der den Code geschrieben hat, verteidigt ihn eher, als ihn zu prüfen', 'Damit es schneller geht', 'Weil /code-review sonst nicht startet'], a: 0, w: 'Vier Augen, auch wenn es zwei Agenten sind: Der frische Kontext hat kein Eigeninteresse am Code.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
+    { q: 'Das Formular prüft im Browser, dass der Titel nicht leer ist. Ist der Punkt „Eingaben“ der Sicherheits-Checkliste damit erledigt?', o: ['Ja, der Browser verhindert das Absenden', 'Nein – jedes Feld wird auch im Backend geprüft', 'Ja, sobald RLS aktiv ist'], a: 1, w: 'Was der Browser prüft, kann jede*r umgehen. RLS regelt, wer schreiben darf, nicht was drinsteht.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
+  ]} />
+  <h3>Peer-Review in der Dreier-Runde</h3>
   <p>Reihum: A prüft die App von B, B die von C, C die von A – jede*r gibt und bekommt genau einmal Feedback. Schickt euch die Vercel-URLs. Geht die App der nächsten Person als echte*r Nutzer*in durch – <strong>ohne Erklärung</strong> – und notiert: Wo war ich verwirrt? Was hat nicht funktioniert? Was hätte ich erwartet? Dann die <a href="/konzepte/qualitaet">Qualitäts-Checkliste</a> mit der Person durchgehen, deren App ihr geprüft habt. Findings werden Issues:</p>
   <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus Issues im Format von docs/BACKLOG.md (Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn) und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
   <p>Sieht etwas am Handy schief aus? Selbst prüfen in der <a href="/setup#devtools-2">Geräte-Ansicht</a> – oder Claude es selbst sehen lassen: <a href="/konzepte/qualitaet#ui-schleife">UI-Schleife</a> – Screenshots in drei Breiten, vergleichen, beheben.</p>
   <h3>Review durch den Agenten</h3>
   <Prompt note="In einer frischen Session (/clear) – die Prüfung soll nicht aus demselben Kontext kommen, der den Code geschrieben hat.">Prüfe dieses Projekt so streng wie ein erfahrenes Entwicklungsteam vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
-  <h3 id="design-system">Optional: Design-System (Werkstatt 2)</h3>
-  <p>Wer mit der App fertig ist oder merkt, dass sie zusammengestückelt wirkt: Räumt die Oberfläche in sechs Schritten auf – Inventur, Tokens, Komponenten, Styleguide-Seite, Regeln, nächstes Issue damit bauen. Die Prompts stehen auf der Seite <a href="/konzepte/design-system#bauen">Design-System</a>. Committet nach jedem Schritt und prüft im Browser, dass die App danach noch genauso aussieht.</p>
-  <h3 id="linear">Linear verbinden (Werkstatt 2, nach der Demo-Vorbereitung)</h3>
+
+  <hr />
+  <h2 id="konzept-8">Konzept 8 · Design-System & Ausblick <span class="pill konzept">45 min</span></h2>
+  <KonzeptStation links={[{ href: '/konzepte/design-system', t: 'Teil 1 · Design-System' }, { href: '/konzepte/ausblick', t: 'Teil 2 · Ausblick 2026' }]} danach={{ href: '#werkstatt-2', t: 'Werkstatt 2' }}>
+    <p>In Werkstatt 2 macht ihr den Prototyp demofertig, verbindet Linear und räumt – optional – die Oberfläche mit einem Design-System auf.</p>
+    <ul>
+      <li>Ohne System entscheidet jeder Prompt neu, wie ein Button aussieht. Nach zwanzig Issues wirkt die App zusammengestückelt (Drift).</li>
+      <li>Drei Ebenen: <strong>Tokens</strong>, nach ihrer Rolle benannt (<code>accent</code> statt <code>rot</code>), <strong>Komponenten</strong> mit allen Zuständen, <strong>Regeln</strong> in <code>docs/DESIGN.md</code>.</li>
+      <li>Im Innolab schließt sich die Kette Figma → Linear → Agent: Claude liest das Issue aus Linear und das Design aus Figma, ihr nehmt ab.</li>
+    </ul>
+  </KonzeptStation>
+
+  <hr />
+  <h2 id="werkstatt-2">Werkstatt 2 <span class="pill uebung">90 min</span></h2>
+  <Quiz id="einstieg-w2" einstieg="Konzept 8" fragen={[
+    { q: 'Ein Token heißt rot, die Farbe ist inzwischen blau. Was ist schiefgelaufen?', o: ['Nichts, Namen sind egal', 'Tailwind hat die Farbe überschrieben', 'Es ist nach Aussehen statt nach Rolle benannt – accent wäre richtig gewesen'], a: 2, w: 'Ein Token beschreibt, wofür ein Wert da ist. Dann bleibt der Name richtig, wenn sich der Wert ändert.', mehr: { href: '/konzepte/design-system', t: 'Design-System' } },
+    { q: 'Was übernimmt Linear im Innolab von docs/BACKLOG.md?', o: ['Das Backlog: Issues, Status und Sprints, an denen das ganze Team arbeitet', 'Das Design der App', 'Den Code'], a: 0, w: 'Das Format bleibt dasselbe (Ziel, Nicht im Umfang, Kriterien, Fertig, wenn). Claude liest und setzt die Issues über den Linear-MCP.', mehr: { href: '/konzepte/ausblick', t: 'Ausblick 2026' } },
+  ]} />
+  <h3>Demo vorbereiten</h3>
+  <Prompt>Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshot-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
+  <p>Fallback für die Live-Demo: rund 5-minütiges Screenrecording (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows: Xbox Game Bar <kbd>Win</kbd><kbd>G</kbd>) – falls das WLAN streikt.</p>
+  <h3 id="linear">Linear verbinden (nach der Demo-Vorbereitung)</h3>
   {/* PLATZHALTER: Ablauf mit Testkonto durchgehen, Screenshots als <Schritte id="linear"> ergänzen, Zeit im Ablauf festlegen. */}
   <Callout type="info" title="Platzhalter – wird noch ausgearbeitet">
     <p>Diesen Abschnitt bauen wir vor Tag 3 mit Screenshots aus. Die Schritte unten stehen schon, damit ihr wisst, was kommt.</p>
@@ -54,9 +93,8 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt label="Backlog nach Linear">Lies docs/BACKLOG.md und leg die Issues, die noch nicht fertig sind, über den Linear-MCP in meinem Linear-Workspace an – in derselben Reihenfolge, mit Ziel, Nicht im Umfang, Akzeptanzkriterien und „Fertig, wenn“ in der Beschreibung. Prüf vorher, ob es dort schon Issues mit demselben Titel gibt, und leg keine doppelt an. Zeig mir die Liste und warte auf mein Okay.</Prompt>
   <Prompt label="Issue aus Linear umsetzen">Hol dir über den Linear-MCP das Issue [Kennung, z. B. LEI-3]. Wenn etwas unklar ist, frag zuerst. Setz es auf In Progress und setz es um. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Wenn ich zustimme: Status in Linear auf Done, docs/BACKLOG.md ebenfalls aktualisieren, dann /ndu-commit.</Prompt>
 
-  <h3>Demo vorbereiten (Werkstatt 2)</h3>
-  <Prompt>Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshot-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
-  <p>Fallback für die Live-Demo: rund 5-minütiges Screenrecording (Mac: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows: Xbox Game Bar <kbd>Win</kbd><kbd>G</kbd>) – falls das WLAN streikt.</p>
+  <h3 id="design-system">Optional: Design-System</h3>
+  <p>Wer mit der App fertig ist oder merkt, dass sie zusammengestückelt wirkt: Räumt die Oberfläche in sechs Schritten auf – Inventur, Tokens, Komponenten, Styleguide-Seite, Regeln, nächstes Issue damit bauen. Die Prompts stehen auf der Seite <a href="/konzepte/design-system#bauen">Design-System</a>. Committet nach jedem Schritt und prüft im Browser, dass die App danach noch genauso aussieht.</p>
 
   <hr />
   <h2 id="demos">Demos · rund 15 Minuten pro Person</h2>

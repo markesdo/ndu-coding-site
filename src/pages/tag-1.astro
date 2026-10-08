@@ -7,6 +7,8 @@ import IssueLesen from '../components/IssueLesen.astro';
 import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
 import FooterNav from '../components/FooterNav.astro';
+import KonzeptStation from '../components/KonzeptStation.astro';
+import Quiz from '../components/Quiz.astro';
 ---
 <Layout title="Tag 1 · Verstehen & Starten">
   <span class="eyebrow">Donnerstag, 8. Oktober 2026 · 09:00–17:00</span>
@@ -19,22 +21,49 @@ import FooterNav from '../components/FooterNav.astro';
     <Block time="09:00–09:30" type="demo" title="Ankommen & NDU Live">QR-Code scannen, mitmachen: Umfragen und Ideen live auf der Leinwand. Danach Vorstellung, Ablauf, Bewertung.</Block>
     <Block time="09:30–10:45" type="uebung" title="Setup & Accounts" href="/setup">GitHub, Claude Pro, eigenes Repo, Codespace, Claude Code anmelden, App läuft.</Block>
     <Block time="10:45–11:00" type="pause" title="Pause" />
-    <Block time="11:00–12:00" type="konzept" title="Konzept 1 · Anatomie einer App" href="/konzepte/app-anatomie">Website vs. Web-App vs. App und womit man was baut. Frontend, Backend, Datenbank, API, Hosting. Mieten statt bauen, was es kostet, eine bekannte App sezieren.</Block>
+    <Block time="11:00–12:00" type="konzept" title="Konzept 1 · Anatomie einer App" href="#konzept-1">Website vs. Web-App vs. App und womit man was baut. Frontend, Backend, Datenbank, API, Hosting. Mieten statt bauen, was es kostet, eine bekannte App sezieren.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:15" type="konzept" title="Konzept 2 · Teil 1 · Was ein Sprachmodell tut" href="/konzepte/llm">Stück für Stück, gewichtet gewürfelt: Tokens, Halluzination, warum derselbe Auftrag zwei Ergebnisse liefert.</Block>
-    <Block time="13:15–13:45" type="konzept" title="Konzept 2 · Teil 2 · Wie ein Coding-Agent arbeitet" href="/konzepte/coding-agent">Kontextfenster, Tools, der Agent-Loop, CLAUDE.md.</Block>
-    <Block time="13:45–14:00" type="konzept" title="Konzept 2 · Teil 3 · Prompt Engineering" href="/konzepte/prompting">Ein Auftrag, vier Bausteine: Ziel mit Grund, Kontext, Grenze, Prüfkriterium. Was das Ergebnis wirklich verändert.</Block>
+    <Block time="13:00–13:15" type="konzept" title="Konzept 2 · Teil 1 · Was ein Sprachmodell tut" href="#konzept-2">Stück für Stück, gewichtet gewürfelt: Tokens, Halluzination, warum derselbe Auftrag zwei Ergebnisse liefert.</Block>
+    <Block time="13:15–13:45" type="konzept" title="Konzept 2 · Teil 2 · Wie ein Coding-Agent arbeitet" href="#konzept-2">Kontextfenster, Tools, der Agent-Loop, CLAUDE.md.</Block>
+    <Block time="13:45–14:00" type="konzept" title="Konzept 2 · Teil 3 · Prompt Engineering" href="#konzept-2">Ein Auftrag, vier Bausteine: Ziel mit Grund, Kontext, Grenze, Prüfkriterium. Was das Ergebnis wirklich verändert.</Block>
     <Block time="14:00–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, vage gegen präzise, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
     <Block time="15:00–15:15" type="pause" title="Pause" />
-    <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="/konzepte/spezifikation">Produkt-Brief, Brainstorming mit Claude, Issue, Akzeptanzkriterium, MVP. Vibe Coding vs. Spec-driven.</Block>
+    <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="#konzept-3">Produkt-Brief, Brainstorming mit Claude, Issue, Akzeptanzkriterium, MVP. Vibe Coding vs. Spec-driven.</Block>
     <Block time="15:45–16:45" type="uebung" title="Übung 2 · Leihbar v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Funktionen brainstormen mit <code>/ndu-brainstorm</code>, erstes Issue bauen lassen, die Startseite im eigenen Stil gestalten.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss & Reflexion">Drei Erkenntnisse pro Person. Ausblick Tag 2.</Block>
   </div>
 
   <hr />
+  <h2 id="konzept-1">Konzept 1 · Anatomie einer App <span class="pill konzept">60 min</span></h2>
+  <KonzeptStation links={[{ href: '/konzepte/app-anatomie', t: 'Konzept 1 lesen' }, { href: '/konzepte/git', t: 'Ergänzung: Git' }]} danach={{ href: '#konzept-2', t: 'Konzept 2 · Sprachmodell, Agent, Auftrag' }}>
+    <p>Ihr müsst keine Schicht selbst bauen können. Aber ihr müsst wissen, dass es sie gibt – sonst könnt ihr weder richtig bestellen noch beurteilen, ob richtig geliefert wurde.</p>
+    <ul>
+      <li>Eine <strong>Web-App</strong> läuft im Browser, hat Login, speichert Daten und reagiert auf Nutzer*innen. Das ist unser Standard.</li>
+      <li>Fünf Schichten: Frontend, Backend, Datenbank, API, Hosting. Bei jedem Fehler fragt ihr zuerst: in welcher Schicht?</li>
+      <li>Mieten statt bauen: Selbst gebaut wird, was euer Produkt besonders macht. Login, Zahlung oder Karten mietet man als Dienst.</li>
+      <li>Git merkt sich jeden gesicherten Stand. Was committet ist, könnt ihr nicht mehr kaputt machen.</li>
+    </ul>
+  </KonzeptStation>
+
+  <hr />
+  <h2 id="konzept-2">Konzept 2 · Sprachmodell, Agent, Auftrag <span class="pill konzept">60 min</span></h2>
+  <KonzeptStation links={[{ href: '/konzepte/llm', t: 'Teil 1 · Was ein Sprachmodell tut' }, { href: '/konzepte/coding-agent', t: 'Teil 2 · Wie ein Coding-Agent arbeitet' }, { href: '/konzepte/prompting', t: 'Teil 3 · Prompt Engineering' }]} danach={{ href: '#uebung-1', t: 'Übung 1 · Erste eigene Änderungen' }}>
+    <p>In Übung 1 gebt ihr Claude die ersten Aufträge. Warum derselbe Auftrag zweimal verschieden ausgeht und wie ein Auftrag treffsicher wird, folgt aus drei Dingen.</p>
+    <ul>
+      <li>Das Sprachmodell setzt Text fort, Stück für Stück, gewichtet gewürfelt: Es rät plausibel, streut und klingt immer überzeugt.</li>
+      <li>Der Agent kann nur, was in seinem <strong>Kontextfenster</strong> steht. Deshalb eine Session pro Issue, und Dauerhaftes gehört in die <code>CLAUDE.md</code>.</li>
+      <li>Ein Auftrag hat vier Bausteine: Ziel mit Grund, Kontext, Grenze, Prüfkriterium. Und ihr verlangt für jedes Kriterium einen Beleg.</li>
+    </ul>
+  </KonzeptStation>
+
+  <hr />
 
   <h2 id="uebung-1">Übung 1 · Erste eigene Änderungen <span class="pill uebung">60 min</span></h2>
   <p>Ziel: erleben, wie sich Arbeiten mit Claude Code anfühlt – und die drei Gewohnheiten einüben, die den Unterschied machen: <strong>eine Sache pro Prompt</strong>, <strong>nach jeder Änderung im Browser prüfen</strong>, <strong>regelmäßig sichern</strong>.</p>
+  <Quiz id="einstieg-u1" einstieg="Konzept 1 und 2" fragen={[
+    { q: 'Claude hat eine Änderung gebaut, die ihr nicht wolltet, und die App läuft nicht mehr. Was bringt euch sicher zurück?', o: ['Claude bitten, sich an den alten Stand zu erinnern', 'Der letzte Commit – zu ihm könnt ihr jederzeit zurück', 'Die Seite im Browser neu laden'], a: 1, w: 'Was committet ist, könnt ihr nicht mehr kaputt machen. Deshalb sichert ihr nach jeder funktionierenden Änderung.', mehr: { href: '/konzepte/git', t: 'Git – der Undo-Knopf' } },
+    { q: 'Welcher Auftrag enthält ein Prüfkriterium?', o: ['„Verdopple den Abstand unter der Überschrift. Fertig, wenn er im Browser sichtbar doppelt so groß ist wie vorher, auch in Handybreite.“', '„Mach die Überschrift schöner.“', '„Ändere nur die Überschrift, sonst nichts.“'], a: 0, w: 'Der dritte Auftrag hat eine Grenze – auch ein Baustein, aber kein Prüfkriterium. Das Kriterium sagt, woran ihr erkennt, dass es fertig ist.', mehr: { href: '/konzepte/prompting', t: 'Prompt Engineering' } },
+  ]} />
 
   <Callout type="info" title="So seht ihr die Vorschau">
     <p id="vorschau">Die <strong>Vorschau</strong> ist eure App im eigenen Browser-Tab aus <a href="/setup#app">Setup Schritt 6</a> (Adresse endet auf <code>-3000.app.github.dev</code>). Lasst den Tab offen: Claudes Änderungen erscheinen dort nach ein paar Sekunden von selbst. Passiert nichts, neu laden (<kbd>⌘</kbd> <kbd>R</kbd> / <kbd>Strg</kbd> <kbd>R</kbd>). Wie die Seite am Handy oder Tablet aussieht, zeigt die <a href="/setup#devtools-2">Geräte-Ansicht in Chrome</a>.</p>
@@ -104,9 +133,24 @@ import FooterNav from '../components/FooterNav.astro';
   ]} />
 
   <hr />
+  <h2 id="konzept-3">Konzept 3 · Von der Idee zur Spezifikation <span class="pill konzept">30 min</span></h2>
+  <KonzeptStation links={[{ href: '/konzepte/spezifikation', t: 'Konzept 3 lesen' }]} danach={{ href: '#uebung-2', t: 'Übung 2 · Leihbar v0' }}>
+    <p>In Übung 2 wird aus Herumprobieren Produktarbeit: Produkt-Brief, Brainstorming, das erste Issue. Dafür braucht ihr den Ablauf und das Vokabular.</p>
+    <ul>
+      <li>Spezifizieren ist die eigentliche Arbeit: „Setze Issue 1 um“ statt „Bau mir eine Verleih-App“.</li>
+      <li>Der Ablauf: Produkt-Brief (eure Entscheidungen) → Brainstorming (jede Idee: MVP, Später oder Nein) → Backlog mit Issues.</li>
+      <li>Ein Issue hat ein Ziel, „Nicht im Umfang“, Akzeptanzkriterien im Format „Gegeben … wenn … dann …“ mit Negativfall und eine Zeile „Fertig, wenn“.</li>
+    </ul>
+  </KonzeptStation>
+
+  <hr />
 
   <h2 id="uebung-2">Übung 2 · Leihbar v0 <span class="pill uebung">60 min</span></h2>
   <p>Jetzt wird aus Herumprobieren Produktarbeit. Ihr schreibt mit Claude einen Produkt-Brief, sammelt im Brainstorming Funktionen, lasst das erste Issue bauen – das, dessen Akzeptanzkriterien schon im Backlog stehen – und gebt der Startseite zum Schluss euren eigenen Stil.</p>
+  <Quiz id="einstieg-u2" einstieg="Konzept 3" fragen={[
+    { q: 'Im Produkt-Brief steht bei „Für wen?“: „alle Studierenden“. Was ist daran das Problem?', o: ['Nichts – je größer die Zielgruppe, desto besser', 'Zu unscharf: Claude leitet daraus saubere Issues für das falsche Produkt ab', 'Ein Brief darf keine Zielgruppe nennen'], a: 1, w: 'Besser eine konkrete Person in einer Situation, z. B. Mara, die ab und zu Dinge braucht, die sich nicht zu kaufen lohnen.', mehr: { href: '/konzepte/spezifikation#brief', t: 'Der Produkt-Brief' } },
+    { q: 'Im Brainstorming schlägt Claude einen Chat zwischen Verleiher*in und Ausleiher*in vor. Euer Brief sagt „Kein Chat“. Was tut ihr?', o: ['Übernehmen – Claude kennt viele Apps', 'Ins MVP, aber als Letztes bauen', 'Später oder Nein – der Brief entscheidet, nicht das Brainstorming'], a: 2, w: 'Claude ist Sparringspartner, ihr trefft die Entscheidungen. Ändert sich eure Meinung, ändert ihr zuerst den Brief.', mehr: { href: '/konzepte/spezifikation#brainstorming', t: 'Brainstorming' } },
+  ]} />
 
   <h3 id="uebung-2-a">a) Von der Idee zum Produkt-Brief (10 min)</h3>
   <p>Erst die Frage, für wen und wofür. Claude stellt ein paar Rückfragen, eine nach der anderen, und fasst zusammen, was es verstanden hat – getrennt nach dem, was ihr gesagt habt, und dem, was Claude annimmt. <strong>Lest die Annahmen und korrigiert mindestens eine:</strong> Der Brief soll eure Entscheidungen enthalten, nicht Claudes. Geschrieben wird erst nach eurem Okay.</p>

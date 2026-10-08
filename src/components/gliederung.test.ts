@@ -56,14 +56,21 @@ describe('die echten Tagesseiten', () => {
     });
   }
 
-  it('tag-2: jedes Konzept steht direkt vor seiner Übung, wie im Ablauf', () => {
-    const quelle = readFileSync(new URL('../pages/tag-2.astro', import.meta.url), 'utf8');
+  // Wer die Seite von oben nach unten liest, kommt an jedem Konzept vorbei, bevor die Übung dazu beginnt.
+  it.each([
+    ['tag-1', ['ablauf', 'konzept-1', 'konzept-2', 'uebung-1', 'konzept-3', 'uebung-2'], [1, 2, 3]],
+    ['tag-2', ['quiz', 'konzept-4', 'uebung-3', 'konzept-5', 'uebung-4', 'konzept-6', 'uebung-5'], [4, 5, 6]],
+    ['tag-3', ['ablauf', 'konzept-7', 'werkstatt-1', 'konzept-8', 'werkstatt-2', 'demos'], [7, 8]],
+  ] as const)('%s: jedes Konzept steht vor seiner Übung, wie im Ablauf', (seite, reihe, konzepte) => {
+    const quelle = readFileSync(new URL(`../pages/${seite}.astro`, import.meta.url), 'utf8');
     const ids = gliederung(quelle).map((a) => a.id);
-    expect(ids.slice(ids.indexOf('quiz'), ids.indexOf('uebung-5') + 1)).toStrictEqual([
-      'quiz', 'konzept-4', 'uebung-3', 'konzept-5', 'uebung-4', 'konzept-6', 'uebung-5',
-    ]);
+    expect(ids.slice(ids.indexOf(reihe[0]), ids.indexOf(reihe.at(-1)!) + 1)).toStrictEqual(reihe);
     // Der Ablauf verlinkt die Konzepte auf ihren Platz auf der Seite, nicht direkt auf die Konzeptseite.
-    for (const n of [4, 5, 6]) expect(quelle).toMatch(new RegExp(`type="konzept" title="Konzept ${n} [^"]*" href="#konzept-${n}"`));
+    for (const n of konzepte) {
+      const zeilen = quelle.match(new RegExp(`type="konzept" title="Konzept ${n} [^"]*" href="[^"]*"`, 'g')) ?? [];
+      expect(zeilen.length).toBeGreaterThan(0);
+      for (const z of zeilen) expect(z).toMatch(new RegExp(`href="#konzept-${n}"$`));
+    }
   });
 
   it('tag-1: alle Übungsschritte a)–f) sind verlinkbar', () => {
