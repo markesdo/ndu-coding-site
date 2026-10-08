@@ -18,16 +18,33 @@ import FooterNav from '../../components/FooterNav.astro';
   <p><strong>Claude Design</strong> ist Anthropics Werkzeug für Prototypen, Mockups und Präsentationen (Research Preview, ab dem Pro-Plan). In Claude Code liest <code>/design-sync</code> eure Tokens und Komponenten, sodass Claude Design mit euren echten Bausteinen entwirft. Ist der Entwurf fertig, übergibt <em>Hand off to Claude Code</em> Entwurf und Gespräch als Auftrag an Claude Code. Claude Design ist optional. Es gibt noch keine Versionsgeschichte und kein gemeinsames Bearbeiten im Team. Wie ihr das System dahinter aus eurem Code aufbaut, steht unter <a href="/konzepte/design-system#bauen">Design-System</a>.</p>
 
   <h2>Figma → Linear → Agent: die Produktkette im Innolab</h2>
-  <p>Im Innolab wandert das Backlog aus der Markdown-Datei nach <strong>Linear</strong> – dem Werkzeug, in dem Produktteams Issues, Sprints (Cycles) und Status verwalten. Unser Format bleibt dasselbe (Ziel, Nicht im Umfang, Gegeben/Wenn/Dann, Fertig, wenn), der Umzug ist eine Kopieraktion, die Claude per Linear-MCP erledigt. Dann schließt sich die Kette: Das Figma-Frame hängt am Linear-Issue, Claude Code liest über den <strong>Linear-MCP</strong> das Issue und die Kriterien, über den <strong>Figma-MCP</strong> das Design, baut es in einem Branch, erstellt den Pull Request und setzt das Issue auf „In Review“. Linear kann Issues sogar direkt einem Agenten zuweisen, der autonom arbeitet und zurückmeldet. Eure Rolle in dieser Kette: Issues schreiben, Designs abnehmen, PRs prüfen – Product Owner.</p>
+  <p>Im Innolab wandert das Backlog aus der Markdown-Datei nach <strong>Linear</strong> – dem Werkzeug, in dem Produktteams Issues, Sprints (Cycles) und Status verwalten. Das Format bleibt (Ziel, Nicht im Umfang, Gegeben/Wenn/Dann, Fertig, wenn); den Umzug erledigt Claude per Linear-MCP. Dann schließt sich die Kette:</p>
+  <ol class="steps">
+    <li><strong>Issue mit Design</strong> Das Figma-Frame hängt am Linear-Issue.</li>
+    <li><strong>Claude liest</strong> Issue und Kriterien über den <strong>Linear-MCP</strong>, das Design über den <strong>Figma-MCP</strong>.</li>
+    <li><strong>Claude baut</strong> in einem Branch, erstellt den Pull Request und setzt das Issue auf „In Review“.</li>
+    <li><strong>Ihr prüft</strong> Issues schreiben, Designs abnehmen, PRs prüfen – eure Rolle als Product Owner.</li>
+  </ol>
+  <p>Linear kann Issues sogar direkt einem Agenten zuweisen, der autonom arbeitet und zurückmeldet.</p>
   <p>Linear kommt als Plugin – am Mac hat es das Setup-Skript schon installiert. Verbinden: in Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser bei Linear anmelden. Ohne Skript (Codespace, Windows) vorher einmal installieren:</p>
   <Prompt label="Linear-Plugin installieren (nur ohne Setup-Skript)">/plugin install linear@claude-plugins-official</Prompt>
   <Prompt>Lies Linear-Issue NDU-42 über den Linear-MCP. Hol dir das verlinkte Figma-Frame über den Figma-MCP. Setze das Issue in einem neuen Branch um, erfülle alle Akzeptanzkriterien, erstelle einen Pull Request mit einer Beschreibung, die ohne Programmierkenntnisse verständlich ist, und setze das Issue auf „In Review“.</Prompt>
 
   <h2>Agent-Teams & parallele Arbeit</h2>
-  <p>Mehrere Agenten gleichzeitig: einer baut das Frontend eines Issues, einer das Backend, einer schreibt die Tests, ein vierter reviewt. Claude Code unterstützt das über <strong>Subagents</strong> (Unter-Agenten mit eigenem Kontext) und <strong>Worktrees</strong>: <code>claude -w &lt;name&gt;</code> (lang: <code>--worktree</code>) startet eine Session in einer eigenen Arbeitskopie des Projekts, sodass zwei Agenten parallel arbeiten können, ohne sich gegenseitig zu stören. Subagents lassen sich auf dieselbe Weise isolieren. Für kleine Projekte selten nötig; für „ich habe acht Issues und einen Nachmittag“ ein Vervielfacher – wenn die Issues gut geschnitten sind. Schlecht spezifizierte Arbeit wird durch Parallelisierung nur schneller schlecht.</p>
+  <p>Mehrere Agenten gleichzeitig: einer baut das Frontend eines Issues, einer das Backend, einer schreibt die Tests, ein vierter reviewt. Claude Code hat dafür zwei Bausteine:</p>
+  <ul>
+    <li><strong>Subagents</strong> – Unter-Agenten mit eigenem Kontext.</li>
+    <li><strong>Worktrees</strong> – <code>claude -w &lt;name&gt;</code> (lang: <code>--worktree</code>) startet eine Session in einer eigenen Arbeitskopie; zwei Agenten stören sich dann nicht. Subagents lassen sich genauso isolieren.</li>
+  </ul>
+  <p>Für kleine Projekte selten nötig; für „ich habe acht Issues und einen Nachmittag“ ein Vervielfacher – wenn die Issues gut geschnitten sind. <strong>Schlecht spezifizierte Arbeit wird durch Parallelisierung nur schneller schlecht.</strong></p>
 
   <h2>Claude Code überall</h2>
-  <p>Im Terminal (hier), als VS-Code-Panel, in der Desktop-App mit grafischer Oberfläche, <strong>im Browser</strong> (claude.ai/code – Aufgaben an ein Repo delegieren, ohne Codespace) und <strong>am Handy</strong>: Fehler in Teams gesehen, am Handy „fix das“ getippt, PR wartet, wenn ihr am Laptop seid. Dazu <strong>geplante Aufgaben</strong> („jeden Montag: Abhängigkeiten aktualisieren, Tests laufen lassen, PR erstellen“).</p>
+  <ul>
+    <li><strong>Terminal</strong> (hier), <strong>VS-Code-Panel</strong>, <strong>Desktop-App</strong> mit grafischer Oberfläche</li>
+    <li><strong>Browser</strong> – claude.ai/code: Aufgaben an ein Repo delegieren, ohne Codespace</li>
+    <li><strong>Handy</strong> – Fehler in Teams gesehen, „fix das“ getippt, der PR wartet, wenn ihr am Laptop seid</li>
+    <li><strong>Geplante Aufgaben</strong> – „jeden Montag: Abhängigkeiten aktualisieren, Tests laufen lassen, PR erstellen“</li>
+  </ul>
 
   <h2>Codex & die anderen</h2>
   <p>OpenAI <strong>Codex</strong>, Google <strong>Gemini CLI</strong>, <strong>Cursor</strong> als IDE – die Konzepte sind identisch: Kontext, Tools, Agent-Loop, Spezifikation, Verifikation. Die Projektdatei heißt dort statt <code>CLAUDE.md</code> meist <code>AGENTS.md</code> (bei Gemini CLI: <code>GEMINI.md</code>); unser Template hat <code>AGENTS.md</code> und <code>CLAUDE.md</code>. Was ihr hier gelernt habt, überträgt sich in einer Stunde. Wählt nach Modellqualität für eure Aufgabe und nach dem, was euer Team nutzt – nicht nach Marke.</p>
@@ -44,7 +61,13 @@ import FooterNav from '../../components/FooterNav.astro';
   </Callout>
 
   <h2>AI als Feature im eigenen Produkt</h2>
-  <p>Das optionale Issue 8 (KI schreibt die Beschreibung eines Gegenstands) ist der kleinste Fall. Dahinter: Chat mit euren Daten, automatische Zusammenfassungen, Klassifizierung, Agenten, die für Nutzer*innen Aufgaben erledigen. Vier Dinge, die Produktverantwortliche dafür verstehen müssen: <strong>Kosten pro Aufruf</strong> (Tokens), <strong>Latenz</strong> (Sekunden, nicht Millisekunden – Streaming hilft), <strong>Qualitätssicherung</strong> (wie prüft ihr, ob die KI-Antwort gut war? Evals: automatisierte Testreihen, die KI-Antworten systematisch bewerten), und <strong>Daten</strong> (was schickt ihr an den Anbieter, dürft ihr das?).</p>
+  <p>Das optionale Issue 8 (KI schreibt die Beschreibung eines Gegenstands) ist der kleinste Fall. Dahinter: Chat mit euren Daten, automatische Zusammenfassungen, Klassifizierung, Agenten, die für Nutzer*innen Aufgaben erledigen. Vier Dinge müssen Produktverantwortliche dafür verstehen:</p>
+  <ul>
+    <li><strong>Kosten pro Aufruf</strong> – abgerechnet in Tokens.</li>
+    <li><strong>Latenz</strong> – Sekunden, nicht Millisekunden. Streaming hilft.</li>
+    <li><strong>Qualitätssicherung</strong> – wie prüft ihr, ob die KI-Antwort gut war? Evals: automatisierte Testreihen, die KI-Antworten systematisch bewerten.</li>
+    <li><strong>Daten</strong> – was schickt ihr an den Anbieter, und dürft ihr das?</li>
+  </ul>
 
   <h2>Grenzen & Risiken – ehrlich</h2>
   <dl class="begriffe">

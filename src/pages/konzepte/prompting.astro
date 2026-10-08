@@ -65,8 +65,17 @@ const baustein = Object.fromEntries(bausteine.map((b) => [b.id, b]));
   </div>
 
   <h2>Wie viel Auftrag?</h2>
-  <p>Nicht jeder Prompt braucht alle vier Bausteine. <em>„Ändere die Überschrift auf ‚Leih dir, was du brauchst.‘ – sonst nichts.“</em> hat Ziel und Grenze, und das reicht. Bei einem Feature braucht ihr alle vier – meist stehen drei davon schon im Issue. Faustregel: <strong>Würde eine neue Kollegin ohne Vorwissen den Auftrag richtig ausführen?</strong> Wenn ja, ist er vollständig. Mehr Text macht ihn nicht besser.</p>
-  <p>Und: Beim sichtbaren Ergebnis nehmen aktuelle Modelle euch beim Wort. Gestaltung und Extras gibt es nur, wenn ihr sie bestellt. Kurz: Im Code macht Claude ohne Grenze eher zu viel, beim Aussehen ohne Ansage eher zu wenig. Wollt ihr mehr als das Minimum, sagt es ausdrücklich – das gehört zum Ziel: <em>„Gestalte die Seite liebevoll, mit Hover-Effekten und einer leeren Ansicht, wenn es noch keine Gegenstände gibt.“</em></p>
+  <p>Nicht jeder Prompt braucht alle vier Bausteine. Faustregel: <strong>Würde eine neue Kollegin ohne Vorwissen den Auftrag richtig ausführen?</strong> Wenn ja, ist er vollständig. Mehr Text macht ihn nicht besser.</p>
+  <div class="compare">
+    <div class="card"><h3>Kleine Änderung</h3><p><em>„Ändere die Überschrift auf ‚Leih dir, was du brauchst.‘ – sonst nichts.“</em></p><p class="small muted">Ziel und Grenze – das reicht.</p></div>
+    <div class="card"><h3>Feature</h3><p>Alle vier Bausteine.</p><p class="small muted">Meist stehen drei davon schon im Issue.</p></div>
+  </div>
+  <p>Beim sichtbaren Ergebnis nehmen aktuelle Modelle euch beim Wort:</p>
+  <ul>
+    <li><strong>Im Code</strong> macht Claude ohne Grenze eher zu viel.</li>
+    <li><strong>Beim Aussehen</strong> macht es ohne Ansage eher zu wenig – Gestaltung und Extras gibt es nur, wenn ihr sie bestellt.</li>
+  </ul>
+  <p>Wollt ihr mehr als das Minimum, sagt es ausdrücklich – das gehört zum Ziel: <em>„Gestalte die Seite liebevoll, mit Hover-Effekten und einer leeren Ansicht, wenn es noch keine Gegenstände gibt.“</em></p>
 
   <h2>Nach zwei Korrekturen: neu anfangen</h2>
   <p>Wenn Claude nach zwei Korrekturen immer noch danebenliegt, hilft eine dritte selten. Die Fehlversuche stehen im Kontext und prägen die Fortsetzung – der falsche Weg wird wahrscheinlicher, nicht unwahrscheinlicher. Besser: <code>/clear</code> und denselben Auftrag noch einmal, diesmal mit dem, was ihr inzwischen gelernt habt.</p>

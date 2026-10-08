@@ -51,7 +51,13 @@ import FooterNav from '../../components/FooterNav.astro';
   </Callout>
 
   <h2 id="brainstorming">Brainstorming: Ideen, auf die ihr selbst nicht kommt</h2>
-  <p>Mit dem Brief als Grundlage geht ihr bewusst in die Breite. <code>/ndu-brainstorm</code> schlägt Runde für Runde drei bis fünf Funktionen vor – Naheliegendes und Ideen aus ähnlichen Produkten oder aus dem Alltag eurer Zielgruppe – und fragt bei jeder: <strong>MVP, Später oder Nein?</strong> Rüttelt eine Idee an eurem Brief, sagt Claude es. Am Ende stehen das MVP (höchstens fünf Funktionen) und die „Später“-Liste im Brief, und Claude schreibt daraus den Backlog – erst nach eurem Okay.</p>
+  <p>Mit dem Brief als Grundlage geht ihr bewusst in die Breite:</p>
+  <ol class="steps">
+    <li><strong>Vorschläge</strong> <code>/ndu-brainstorm</code> schlägt Runde für Runde drei bis fünf Funktionen vor – Naheliegendes und Ideen aus ähnlichen Produkten oder aus dem Alltag eurer Zielgruppe.</li>
+    <li><strong>Entscheiden</strong> Bei jeder Funktion: <strong>MVP, Später oder Nein?</strong> Rüttelt eine Idee an eurem Brief, sagt Claude es.</li>
+    <li><strong>Festhalten</strong> Das MVP (höchstens fünf Funktionen) und die „Später“-Liste kommen in den Brief.</li>
+    <li><strong>Backlog</strong> Claude schreibt daraus den Backlog – erst nach eurem Okay.</li>
+  </ol>
   <p>Das Wertvolle sind die Ideen, an die ihr nicht gedacht habt. Die Entscheidung bleibt bei euch: Eine gute Idee auf „Später“ zu legen, ist Produktarbeit, kein Verlust.</p>
   <Callout type="info" title="Profi-Tipp: das Superpowers-Plugin">
     <p><code>/ndu-brainstorm</code> ist angelehnt an das Brainstorming aus <strong>Superpowers</strong>, einem Plugin für Claude Code mit Arbeitsweisen für Brainstorming, Planung, Tests und Debugging. Installieren in Claude Code (auch im Codespace):</p>
@@ -67,7 +73,14 @@ import FooterNav from '../../components/FooterNav.astro';
   </ol>
 
   <Callout type="concept" title="Warum keine User Stories mehr?">
-    <p>Das klassische Format „Als [Rolle] möchte ich [Ziel], damit [Nutzen]“ verlangt 2026 keiner der großen Leitfäden für Coding-Agenten – weder Anthropic (<a href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Best Practices für Claude Code</a>) noch <a href="https://linear.app/method/write-issues-not-user-stories" target="_blank" rel="noopener">Linear</a>, GitHub für den Copilot Coding Agent oder OpenAI für Codex. Alle verlangen dasselbe: ein Ziel, den nötigen Kontext, eine Abgrenzung inklusive dessen, was nicht dazugehört, prüfbare Akzeptanzkriterien und einen Check, woran man „fertig“ erkennt. Gegeben/Wenn/Dann bleibt, weil jedes Kriterium ein Szenario ist, das Claude als Test oder Klickpfad ausführen kann. Und die Spezifikation wächst mit der Aufgabe: Für eine kleine Änderung reichen drei Zeilen – Birgitta Böckeler warnt auf martinfowler.com ausdrücklich davor, Agenten zu überspezifizieren.</p>
+    <p>Das klassische Format „Als [Rolle] möchte ich [Ziel], damit [Nutzen]“ verlangt 2026 keiner der großen Leitfäden für Coding-Agenten – weder Anthropic (<a href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Best Practices für Claude Code</a>) noch <a href="https://linear.app/method/write-issues-not-user-stories" target="_blank" rel="noopener">Linear</a>, GitHub für den Copilot Coding Agent oder OpenAI für Codex. Alle verlangen dasselbe:</p>
+    <ul>
+      <li>ein Ziel und den nötigen Kontext</li>
+      <li>eine Abgrenzung, inklusive dessen, was nicht dazugehört</li>
+      <li>prüfbare Akzeptanzkriterien</li>
+      <li>einen Check, woran man „fertig“ erkennt</li>
+    </ul>
+    <p>Gegeben/Wenn/Dann bleibt, weil jedes Kriterium ein Szenario ist, das Claude als Test oder Klickpfad ausführen kann. Und die Spezifikation wächst mit der Aufgabe: Für eine kleine Änderung reichen drei Zeilen – Birgitta Böckeler warnt auf martinfowler.com ausdrücklich davor, Agenten zu überspezifizieren.</p>
   </Callout>
 
   <Callout type="concept" title="Der Satz, der beide Kurse verbindet">
