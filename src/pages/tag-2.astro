@@ -6,7 +6,7 @@ import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
 import FooterNav from '../components/FooterNav.astro';
 import Callout from '../components/Callout.astro';
-import IssueLesen from '../components/IssueLesen.astro';
+import IssueKarte from '../components/IssueKarte.astro';
 import Schritte from '../components/Schritte.astro';
 import UmgebungWahl from '../components/UmgebungWahl.astro';
 import KonzeptStation from '../components/KonzeptStation.astro';
@@ -14,25 +14,28 @@ import Quiz from '../components/Quiz.astro';
 import { bild } from '../components/anleitung-bilder';
 ---
 <Layout title="Tag 2 · Bauen wie ein Profi">
-  <span class="eyebrow">Freitag, 9. Oktober 2026 · 09:00–17:00</span>
+  <span class="eyebrow">Freitag, 9. Oktober 2026 · 09:00–18:00</span>
   <h1>Tag 2 · Bauen wie ein Profi</h1>
-  <p class="lead">Die App bekommt echte Daten, Login und eine öffentliche Adresse. Ihr lernt, Fehler zu finden und richtig zu übergeben – und den Agenten über längere Arbeit hinweg zu steuern.</p>
+  <p class="lead">Die App bekommt echte Daten, Login und eine öffentliche Adresse. Ihr lernt, Fehler zu finden und richtig zu übergeben und den Agenten über längere Arbeit hinweg zu steuern. Am Nachmittag testet ihr eure Apps gegenseitig mit euren Konten und bringt Bewegung hinein.</p>
   <Orientierung seite="tag-2" />
   <UmgebungWahl />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-09">
-    <Block time="09:00–09:30" type="plenum" title="Recap & Quiz" href="#quiz">Acht Fragen zu Tag 1. Offene Probleme aus den Codespaces sammeln.</Block>
-    <Block time="09:30–10:15" type="konzept" title="Konzept 4 · Daten & Backend" href="#konzept-4">Datenbank, CRUD, API-Routen, Supabase, Secrets & .env, Row Level Security.</Block>
-    <Block time="10:15–10:30" type="pause" title="Pause" />
-    <Block time="10:30–12:00" type="uebung" title="Übung 3 · Echte Daten" href="#uebung-3">Supabase-Projekt, MCP verbinden, Issue 4: Gegenstand anbieten und dauerhaft speichern.</Block>
-    <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:45" type="konzept" title="Konzept 5 · Verifizieren & Debuggen" href="#konzept-5">Browser-Konsole vs. Terminal, Fehler übergeben, Definition of Done, der Agent prüft sich selbst.</Block>
-    <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & Anfragen" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, in der Dreier-Runde reparieren. RLS prüfen.</Block>
-    <Block time="15:15–15:30" type="pause" title="Pause" />
-    <Block time="15:30–16:00" type="konzept" title="Konzept 6 · Agenten steuern" href="#konzept-6">Kontext-Hygiene, CLAUDE.md pflegen, Custom Commands, Subagents, MCP-Überblick, Kosten.</Block>
-    <Block time="16:00–16:40" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel-Plugin, Deploy durch Claude, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
-    <Block time="16:40–17:00" type="plenum" title="Zwischenwoche & Abschluss" href="/zwischenwoche">Eigener Mini-Prototyp für die Demo am Do 15.10. Wie man Hilfe holt.</Block>
+    <Block time="09:00–09:30" type="plenum" title="Recap, Quiz & neue Issues" href="#quiz">Acht Fragen zu Tag 1. Die neuen Issues für heute in euer Repo holen.</Block>
+    <Block time="09:30–10:00" type="konzept" title="Konzept 4 · Daten & Backend" href="#konzept-4">Datenbank, API-Routen, Supabase, Secrets & .env, Row Level Security.</Block>
+    <Block time="10:00–10:10" type="pause" title="Pause" />
+    <Block time="10:10–11:40" type="uebung" title="Übung 3 · Echte Daten" href="#uebung-3">Supabase-Projekt, MCP verbinden, Issue 4: Gegenstand anbieten und dauerhaft speichern.</Block>
+    <Block time="11:40–12:25" type="pause" title="Mittagspause" />
+    <Block time="12:25–12:45" type="konzept" title="Konzept 5 · Verifizieren & Debuggen" href="#konzept-5">Browser-Konsole vs. Terminal, Fehler übergeben, Definition of Done.</Block>
+    <Block time="12:45–14:15" type="uebung" title="Übung 4 · Login & Anfragen" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, in der Dreier-Runde reparieren. RLS prüfen.</Block>
+    <Block time="14:15–14:30" type="pause" title="Pause" />
+    <Block time="14:30–14:45" type="konzept" title="Konzept 6 · Agenten steuern" href="#konzept-6">Kontext-Hygiene, CLAUDE.md pflegen, Kosten.</Block>
+    <Block time="14:45–15:30" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel-Plugin, Deploy durch Claude, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
+    <Block time="15:30–16:45" type="uebung" title="Übung 6 · Gemeinsam" href="#uebung-6">Konten auf den Apps der anderen, Issue 9: Zähler live, Issue 10: Anfragen annehmen oder ablehnen.</Block>
+    <Block time="16:45–17:00" type="pause" title="Pause" />
+    <Block time="17:00–17:45" type="uebung" title="Übung 7 · Bewegung" href="#uebung-7">Motion einrichten, Issues 12–14: Filter, Anfragen ohne Warten, Erfolgsmoment.</Block>
+    <Block time="17:45–18:00" type="plenum" title="Zwischenwoche & Abschluss" href="/zwischenwoche">Eigener Mini-Prototyp für die Demo am Do 15.10. Wie man Hilfe holt.</Block>
   </div>
 
   <hr />
@@ -48,8 +51,20 @@ import { bild } from '../components/anleitung-bilder';
     { q: 'Claude sagt „Ich habe das getestet, es funktioniert.“ Was tut ihr?', o: ['Weitermachen – Lint und Build sind grün, das reicht als Prüfung', 'Selbst im Browser prüfen – ihr seid der letzte Prüfschritt', 'Claude fragen, ob es wirklich sicher ist, und der Antwort vertrauen'], a: 1, w: 'Claude sieht euren Browser nicht. Akzeptanzkriterien durchklicken.' },
   ]} />
 
+  <h3 id="neue-issues">Neue Issues in euer Repo holen (5 min)</h3>
+  <p>Euer Repo ist eine Kopie der Vorlage vom Mittwoch. Seitdem sind im Backlog der Vorlage die Issues 9–14 für den Nachmittag dazugekommen, und die <code>CLAUDE.md</code> hat zwei neue Regeln: Claude schlägt kein nächstes Issue mehr vor, und für Bewegung ist die Bibliothek Motion freigegeben.</p>
+  <Prompt>Lade mit curl die Dateien docs/BACKLOG.md und CLAUDE.md von https://raw.githubusercontent.com/markesdo/ndu-coding-2026/main/ in einen temporären Ordner außerhalb des Projekts. Übernimm alle Issues ab Issue 9 mit ihren Zwischenüberschriften in meine docs/BACKLOG.md, vor den Abschnitt „Später / Ideen“; meine bestehenden Issues und ihr Status bleiben, wie sie sind. Streich „Anfrage annehmen oder ablehnen“ aus meiner Später-Liste. Vergleich dann meine CLAUDE.md mit der neuen und übernimm die neuen Regeln; was ich selbst ergänzt habe, bleibt. Sag mir in drei Sätzen, was sich geändert hat, lösch den temporären Ordner, dann /ndu-commit</Prompt>
+  <Callout type="info" title="So läuft heute jedes Issue">
+    <ol>
+      <li><strong>Lesen:</strong> Die Issue-Karte auf dieser Seite zeigt dasselbe Issue wie euer Backlog. Zu dritt erklären, dann erst den Prompt kopieren.</li>
+      <li><strong>Bauen lassen:</strong> Der Prompt sagt nur noch, welches Issue und welche Technik. Was gebaut wird, steht im Issue.</li>
+      <li><strong>Prüfen:</strong> Claude zeigt für jedes Kriterium einen Beleg. Ihr hakt auf der Karte nur ab, was ihr selbst im Browser gesehen habt.</li>
+      <li><strong>Sichern:</strong> <code>/ndu-check</code>, Issue auf fertig, <code>/ndu-commit</code>, <code>/clear</code>. Welches Issue als Nächstes kommt, entscheidet ihr, nicht Claude.</li>
+    </ol>
+  </Callout>
+
   <hr />
-  <h2 id="konzept-4">Konzept 4 · Daten & Backend <span class="pill konzept">45 min</span></h2>
+  <h2 id="konzept-4">Konzept 4 · Daten & Backend <span class="pill konzept">30 min</span></h2>
   <KonzeptStation links={[{ href: '/konzepte/daten-backend', t: 'Konzept 4 lesen' }, { href: '/konzepte/mcp', t: 'Ergänzung: MCP' }]} danach={{ href: '#uebung-3', t: 'Übung 3 · Echte Daten' }}>
     <p>In Übung 3 legt Claude über den Supabase-MCP eure erste Tabelle an. Was es dabei anlegt und warum, versteht ihr mit diesen Grundlagen.</p>
     <ul>
@@ -130,9 +145,8 @@ import { bild } from '../components/anleitung-bilder';
   <h3 id="uebung-3-d">d) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
   <h3 id="uebung-3-e">e) Issue 4 lesen und bauen lassen (45 min)</h3>
-  <IssueLesen nr={4} />
-  <Prompt note="„Bilder hochladen“ bleibt draußen: Die Spalte bild_url trägt nur die Bilder der Beispieldaten, neue Gegenstände bekommen den Platzhalter.">Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle items anzulegen (mit sinnvollen Spalten, einer optionalen Spalte bild_url und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/gegenstaende.ts als Startdaten in die Datenbank, mit ihren Bildern. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
-  <p>Prüfen: Gegenstand anbieten → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel, negativer Preis → jeweils Fehlermeldung und keine neue Zeile?</p>
+  <IssueKarte nr={4} dauer="45 min" />
+  <Prompt note="„Bilder hochladen“ bleibt draußen: Die Spalte bild_url trägt nur die Bilder der Beispieldaten, neue Gegenstände bekommen den Platzhalter. Anlegen darf vorerst jede*r – einen Login gibt es erst in Issue 5, dort werden die Regeln verschärft.">Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle items anzulegen: mit sinnvollen Spalten, einer optionalen Spalte bild_url und einer optionalen Spalte owner_id für die Person, die anbietet (bleibt leer, bis es in Issue 5 einen Login gibt). Row Level Security: jeder darf lesen und anlegen. Übernimm die Beispieldaten aus src/data/gegenstaende.ts als Startdaten in die Datenbank, mit ihren Bildern. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
   <h3 id="uebung-3-f">f) Sichern</h3>
   <Prompt>/ndu-check – und wenn alles grün ist: Issue 4 auf fertig setzen und /ndu-commit</Prompt>
   <Checklist id="t2-u3" items={[
@@ -146,7 +160,7 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
 
   <hr />
-  <h2 id="konzept-5">Konzept 5 · Verifizieren & Debuggen <span class="pill konzept">45 min</span></h2>
+  <h2 id="konzept-5">Konzept 5 · Verifizieren & Debuggen <span class="pill konzept">20 min</span></h2>
   <KonzeptStation links={[{ href: '/konzepte/verifizieren', t: 'Konzept 5 lesen' }]} danach={{ href: '#uebung-4', t: 'Übung 4 · Login & Anfragen' }}>
     <p>In Übung 4 baut ihr absichtlich Fehler ein und sucht sie in der App der nächsten Person. Dafür müsst ihr wissen, wo ein Fehler sichtbar wird und wie ihr ihn Claude übergebt.</p>
     <ul>
@@ -162,29 +176,33 @@ import { bild } from '../components/anleitung-bilder';
     { q: 'Ihr klickt „Ausleihen anfragen“, die Browser-Konsole meldet „500 Internal Server Error“. Wo steht die Ursache?', o: ['Im Terminal, in dem npm run dev läuft', 'Weiter oben in der Browser-Konsole, über der roten Zeile', 'Im Supabase-Dashboard unter Authentication'], a: 0, w: '500 heißt: Fehler auf dem Server. Die Konsole zeigt nur, dass er passiert ist; die Ursache steht im Terminal.', mehr: { href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' } },
     { q: 'Claude hat denselben Fehler zweimal erfolglos behoben. Was tut ihr?', o: ['Den Fehler noch genauer beschreiben und Claude einen dritten Versuch geben', 'Auf ein stärkeres Modell wechseln und denselben Auftrag noch einmal schicken', '/clear, dann drei mögliche Ursachen nennen lassen, ohne etwas zu ändern'], a: 2, w: 'Wer im Kreis läuft, braucht einen frischen Kontext und Hypothesen statt eines weiteren Versuchs. Der Prompt dafür steht im Konzept.', mehr: { href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' } },
   ]} />
-  <h3 id="uebung-4-a">a) Issue 5 lesen und bauen lassen – Anmelden (30 min)</h3>
-  <IssueLesen nr={5} />
-  <Prompt>Setze Issue 5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-anfragen, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
-  <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, mit falschem Passwort anmelden → verständliche Fehlermeldung? <code>/meine-anfragen</code> ohne Login aufrufen → Weiterleitung?</p>
-  <h3 id="uebung-4-b">b) Issue 6 lesen und bauen lassen – Ausleihen anfragen (30 min)</h3>
-  <IssueLesen nr={6} />
-  <Prompt>Setze Issue 6 um: Button „Ausleihen anfragen“ pro Gegenstand mit Zähler, Anfrage zurückziehen, ohne Login zur Anmeldung führen. Tabelle requests mit RLS: jeder darf zählen, nur die eigene Anfrage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle requests und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
-  <h3 id="uebung-4-c">c) Absichtlich kaputt (20 min, Dreier-Runde)</h3>
+  <h3 id="uebung-4-a">a) Issue 5 lesen und bauen lassen – Anmelden (25 min)</h3>
+  <IssueKarte nr={5} dauer="25 min" />
+  <Prompt>Setze Issue 5 aus docs/BACKLOG.md um, mit Supabase Auth (E-Mail und Passwort). Danach die Regeln der Tabelle items schärfen: anlegen dürfen nur Angemeldete, und beim Anbieten wird die angemeldete Person als owner_id gespeichert. Frag zuerst, wenn etwas unklar ist. Bevor du die Regeln änderst: kurz beschreiben und auf mein Okay warten.</Prompt>
+  <p class="small muted">Testkonto zum Beispiel <code>test1@campus.at</code> – die E-Mail-Bestätigung ist aus, die Adresse muss nicht existieren. Ob das Konto angelegt ist, seht ihr in Supabase unter Authentication → Users.</p>
+  <h3 id="uebung-4-b">b) Issue 6 lesen und bauen lassen – Ausleihen anfragen (25 min)</h3>
+  <IssueKarte nr={6} dauer="25 min" braucht="Issue 2 und 5" />
+  <Prompt>Setze Issue 6 aus docs/BACKLOG.md um. Die Anfragen kommen in eine Tabelle requests mit Row Level Security: jeder darf zählen, anlegen und löschen nur die eigene Anfrage. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle requests und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
+  <h3 id="uebung-4-issue-7">c) Issue 7 lesen und bauen lassen – Meine Anfragen (15 min)</h3>
+  <IssueKarte nr={7} dauer="15 min" braucht="Issue 6" />
+  <Prompt>Setze Issue 7 aus docs/BACKLOG.md um. Frag zuerst, wenn etwas unklar ist.</Prompt>
+  <h3 id="uebung-4-c">d) Absichtlich kaputt (15 min, Dreier-Runde)</h3>
   <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen, reihum: Ihr setzt euch an den Laptop der nächsten Person in der Runde (A an B, B an C, C an A) und müsst ihren Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurück an den eigenen Platz und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
-  <h3 id="uebung-4-d">d) RLS-Test (10 min)</h3>
+  <h3 id="uebung-4-d">e) RLS-Test (10 min)</h3>
   <p>Zwei Browser (einer im Inkognito-Modus), zwei Accounts. Account A fragt einen Gegenstand an. Kann Account B diese Anfrage löschen? Fragt Claude:</p>
   <Prompt>Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle requests verhindern, dass jemand fremde Anfragen löscht oder ändert. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
   <Checklist id="t2-u4-v2" items={[
     'Registrieren, anmelden, abmelden funktioniert; Konto in Supabase sichtbar',
     '<code>/meine-anfragen</code> leitet ohne Login weiter',
+    'Anbieten geht nur noch angemeldet (einmal abgemeldet versucht)',
     'Anfragen und zurückziehen, Zähler stimmt',
     'Fehlerkarte eingebaut – die nächste Person in der Runde hat ihn gefunden, und ich habe ihren gefunden',
     'RLS getestet: fremde Anfragen sind geschützt',
-    'Issue 5, Issue 6 (und optional Issue 7) auf „fertig“, committet',
+    'Issue 5, Issue 6 und Issue 7 auf „fertig“, committet',
   ]} />
 
   <hr />
-  <h2 id="konzept-6">Konzept 6 · Agenten steuern <span class="pill konzept">30 min</span></h2>
+  <h2 id="konzept-6">Konzept 6 · Agenten steuern <span class="pill konzept">15 min</span></h2>
   <KonzeptStation links={[{ href: '/konzepte/agenten-steuern', t: 'Konzept 6 lesen' }]} danach={{ href: '#uebung-5', t: 'Übung 5 · Deploy' }}>
     <p>Ab der Zwischenwoche arbeitet ihr allein mit Claude, über mehrere Tage. Damit der Agent Absprachen nicht vergisst und euer Kontingent reicht, braucht er Führung.</p>
     <ul>
@@ -195,8 +213,8 @@ import { bild } from '../components/anleitung-bilder';
   </KonzeptStation>
 
   <hr />
-  <h2 id="uebung-5">Übung 5 · Deploy <span class="pill uebung">40 min</span></h2>
-  <p>Vercel baut eure App bei jedem Push auf <code>main</code> neu und stellt sie unter einer öffentlichen Adresse ins Netz. Das Hobby-Konto ist kostenlos. Das Konto legt ihr im Browser an, den Deploy übernimmt Claude – mit dem Vercel-Plugin. Damit kann Claude danach auch selbst nachsehen, ob ein Deploy geklappt hat, und Fehler aus den Logs lesen.</p>
+  <h2 id="uebung-5">Übung 5 · Deploy <span class="pill uebung">45 min</span></h2>
+  <p>Ab jetzt hat eure App eine öffentliche Adresse – die braucht ihr am Nachmittag, damit die anderen sich bei euch anmelden können. Vercel baut eure App bei jedem Push auf <code>main</code> neu und stellt sie unter einer öffentlichen Adresse ins Netz. Das Hobby-Konto ist kostenlos. Das Konto legt ihr im Browser an, den Deploy übernimmt Claude – mit dem Vercel-Plugin. Damit kann Claude danach auch selbst nachsehen, ob ein Deploy geklappt hat, und Fehler aus den Logs lesen.</p>
 
   <Quiz id="einstieg-u5" einstieg="Konzept 6 und 4" fragen={[
     { q: 'Übung 4 ist fertig und committet, als Nächstes kommt der Deploy. Was tut ihr in Claude zuerst?', o: ['Einfach weiterschreiben, Claude kennt ja schon alles', '/clear – der neue Auftrag beginnt mit leerem Kontext', '/compact – so bleibt das Wissen über Issue 6 erhalten'], a: 1, w: 'Eine Session pro Issue. Claude liest CLAUDE.md und Backlog neu; der alte Verlauf kostet nur Kontingent. /compact ist für mitten in einer Aufgabe.', mehr: { href: '/konzepte/agenten-steuern', t: 'Agenten steuern' } },
@@ -294,7 +312,71 @@ import { bild } from '../components/anleitung-bilder';
     'Öffentliche URL (Domains) funktioniert am Handy',
     'Login funktioniert auch auf der öffentlichen URL',
     'URL in Teams gepostet',
-    'Codespace gestoppt (falls ihr dort arbeitet)',
+  ]} />
+
+  <hr />
+  <h2 id="uebung-6">Übung 6 · Gemeinsam <span class="pill uebung">75 min</span></h2>
+  <p>Bisher wart ihr allein in eurer App. Jetzt wird es eine echte Verleih-App mit mehreren Menschen: Ihr meldet euch auf den Live-Adressen der anderen an, bietet dort an und fragt an. Die Runde ist dieselbe wie bei den Fehlerkarten: A testet bei B, B bei C, C bei A. Die Adressen stehen in Teams.</p>
+  <Callout type="warn" title="Jeder Push geht live">
+    <p>Eure App ist mit GitHub verbunden: Jedes <code>/ndu-commit</code> landet nach ein bis zwei Minuten auf eurer Live-Adresse – auch ein kaputter Stand. Deshalb erst die Kriterien lokal prüfen und <code>/ndu-check</code> grün, dann committen. Die anderen testen bei euch erst, wenn ihr sagt „ist live“.</p>
+  </Callout>
+
+  <h3 id="uebung-6-a">a) Konten bei den anderen (10 min)</h3>
+  <ol>
+    <li>Prüft in eurem Supabase-Projekt unter Authentication → <em>Sign In / Providers</em>, dass „Confirm email“ aus ist. Sonst bleibt die Anmeldung der anderen hängen.</li>
+    <li>Registriert euch auf den Live-Adressen der beiden anderen, mit einer erfundenen Adresse wie <code>vorname@campus.at</code> und einem Passwort nur für den Kurs.</li>
+    <li>Bietet in jeder fremden App einen Gegenstand an. Die Beispiel-Gegenstände gehören niemandem – für Issue 10 braucht ihr Gegenstände, die echte Konten angeboten haben.</li>
+  </ol>
+
+  <h3 id="uebung-6-b">b) Issue 9 lesen und bauen lassen – Zähler live (25 min)</h3>
+  <IssueKarte nr={9} dauer="25 min" braucht="Issue 6 und eure Live-Adresse" peer={[0, 1]} />
+  <Prompt note="Warum der Umweg über items: Ab Issue 10 stehen in requests E-Mail-Adressen, die nicht alle lesen dürfen. Realtime schickt Änderungen nur an die, die eine Zeile lesen dürfen – die Zahl in items darf jede*r sehen.">Setze Issue 9 aus docs/BACKLOG.md um, mit Supabase Realtime. Die Zahl der Anfragen steht dafür in einer Spalte anfragen_anzahl der Tabelle items, die ein Trigger in der Datenbank bei jeder neuen und jeder gelöschten Anfrage aktualisiert. Nimm items über den Supabase-MCP in die Publication supabase_realtime auf. Im Browser soll jede Änderung an items die Seite mit router.refresh() neu laden. Frag zuerst, wenn etwas unklar ist. Bevor du in Supabase etwas änderst: kurz beschreiben und auf mein Okay warten.</Prompt>
+  <p>Erst lokal mit zwei Browserfenstern prüfen (eines im Inkognito-Modus, anderes Konto), dann <code>/ndu-commit</code> und der nächsten Person sagen, dass es live ist.</p>
+
+  <h3 id="uebung-6-c">c) Issue 10 lesen und bauen lassen – Anfrage annehmen oder ablehnen (35 min)</h3>
+  <IssueKarte nr={10} dauer="35 min" braucht="Issue 5, 7 und 9" peer={[2]} />
+  <Prompt>Setze Issue 10 aus docs/BACKLOG.md um. Die Tabelle requests bekommt einen Status (offen, angenommen, abgelehnt) und die E-Mail der anfragenden Person – die setzt die Datenbank selbst aus dem Login (Standardwert aus auth.jwt()), nicht der Browser. Regeln: Lesen dürfen nur die Besitzer*in des Gegenstands und die anfragende Person selbst; ändern darf nur die Besitzer*in, und nur die Spalte status. Frag zuerst, wenn etwas unklar ist. Bevor du Tabelle oder Regeln änderst: kurz beschreiben und auf mein Okay warten.</Prompt>
+  <Prompt label="Danach: RLS prüfen">Prüfe mit dem Supabase-MCP die Regeln der Tabelle requests: Kann jemand, dem der Gegenstand nicht gehört und der nicht angefragt hat, Anfragen oder E-Mails lesen? Kann die Besitzer*in etwas anderes als den Status ändern? Kann sonst jemand etwas ändern? Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
+
+  <h3 id="uebung-6-d">d) Wer schnell ist: Issue 11 – Hinweis auf neue Anfragen</h3>
+  <IssueKarte nr={11} dauer="20 min" braucht="Issue 9 und 10" peer={[2]} />
+  <Prompt>Setze Issue 11 aus docs/BACKLOG.md um. Frag zuerst, wenn etwas unklar ist.</Prompt>
+
+  <h3 id="uebung-6-e">e) Demo-Runde (5 min)</h3>
+  <p>Eine App am Beamer, die anderen beiden fragen am Handy an. Der Zähler steigt, ohne dass jemand neu lädt. Dann einmal annehmen, einmal ablehnen.</p>
+  <Checklist id="t2-u6" items={[
+    '„Confirm email“ in meinem Supabase-Projekt ist aus',
+    'Auf beiden anderen Live-Adressen registriert und je einen Gegenstand angeboten',
+    'Issue 9: die nächste Person hat bei mir live angefragt und zurückgezogen, der Zähler hat mitgezogen',
+    'Issue 10: eine Anfrage angenommen, eine abgelehnt, die anfragende Person hat den Status gesehen',
+    'RLS geprüft: fremde Anfragen und E-Mails nicht lesbar, nur Besitzer*innen ändern den Status',
+    'Issues auf „fertig“, committet, live',
+  ]} />
+
+  <hr />
+  <h2 id="uebung-7">Übung 7 · Bewegung <span class="pill uebung">45 min</span></h2>
+  <p>Gute Bewegung erklärt, was passiert: was wegfällt, was dazukommt, ob ein Klick angekommen ist. Schlechte Bewegung hält auf. Ihr arbeitet mit <strong>Motion</strong>, einer Animations-Bibliothek für React: Ein- und Ausblenden und Karten, die an ihren neuen Platz gleiten, gehen damit mit wenigen Zeilen. Die Grenzen dafür stehen in eurer <code>CLAUDE.md</code>: höchstens 0,3 Sekunden für die Rückmeldung auf einen Klick, nichts in Dauerschleife, und wer „Bewegung reduzieren“ eingestellt hat, bekommt keine.</p>
+  <h3 id="uebung-7-a">a) Motion einrichten (5 min)</h3>
+  <Prompt>Installiere die Animations-Bibliothek motion. Leg in src/app/layout.tsx um den Inhalt ein MotionConfig mit reducedMotion="user", damit „Bewegung reduzieren“ auch für Motion gilt. Trag in docs/ENTSCHEIDUNGEN.md ein: Animationen mit Motion, weil Ein- und Ausblenden und gleitende Layouts damit ohne Umwege gehen. Prüf mit npm run build, dass alles läuft, dann /ndu-commit</Prompt>
+  <p><strong>„Bewegung reduzieren“ prüfen:</strong> In den DevTools <kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, „Rendering“ eintippen, <em>Show Rendering</em>. Dort bei <em>Emulate CSS media feature prefers-reduced-motion</em> auf <em>reduce</em> stellen. Danach wieder zurück, sonst seht ihr keine Bewegung mehr.</p>
+
+  <h3 id="uebung-7-b">b) Issue 12 lesen und bauen lassen – Filter mit Bewegung (20 min)</h3>
+  <IssueKarte nr={12} dauer="20 min" braucht="Issue 3 und Motion" />
+  <Prompt>Setze Issue 12 aus docs/BACKLOG.md um, mit Motion. Frag zuerst, wenn etwas unklar ist.</Prompt>
+
+  <h3 id="uebung-7-c">c) Issue 13 lesen und bauen lassen – Anfragen ohne Warten (20 min)</h3>
+  <IssueKarte nr={13} dauer="20 min" braucht="Issue 6, 9 und Motion" />
+  <Prompt>Setze Issue 13 aus docs/BACKLOG.md um, mit Motion und useOptimistic aus React. Frag zuerst, wenn etwas unklar ist.</Prompt>
+
+  <h3 id="uebung-7-d">d) Wer schnell ist: Issue 14 – Erfolgsmoment beim Anbieten</h3>
+  <IssueKarte nr={14} dauer="15 min" braucht="Issue 4 und Motion" />
+  <Prompt>Setze Issue 14 aus docs/BACKLOG.md um, mit Motion. Frag zuerst, wenn etwas unklar ist.</Prompt>
+  <p>Was heute nicht fertig wird, nehmt ihr in die Zwischenwoche mit – die Karten bleiben auf dieser Seite.</p>
+  <Checklist id="t2-u7" items={[
+    'Motion installiert, <code>MotionConfig</code> im Layout, Entscheidung eingetragen',
+    'Issue 12: Filter gleitet, auch mit „Bewegung reduzieren“ und in Handybreite geprüft',
+    'Issue 13: Zähler reagiert sofort, Fehlerfall einmal gesehen',
+    'Am Ende des Tages: Codespace gestoppt (falls ihr dort arbeitet)',
   ]} />
 
   <hr />

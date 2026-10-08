@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Orientierung from '../components/Orientierung.astro';
 import Block from '../components/Block.astro';
 import Callout from '../components/Callout.astro';
-import IssueLesen from '../components/IssueLesen.astro';
+import IssueKarte from '../components/IssueKarte.astro';
 import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
 import FooterNav from '../components/FooterNav.astro';
@@ -29,7 +29,7 @@ import Quiz from '../components/Quiz.astro';
     <Block time="14:00–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, vage gegen präzise, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
     <Block time="15:00–15:15" type="pause" title="Pause" />
     <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="#konzept-3">Produkt-Brief, Brainstorming mit Claude, Issue, Akzeptanzkriterium, MVP. Vibe Coding vs. Spec-driven.</Block>
-    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Leihbar v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Funktionen brainstormen mit <code>/ndu-brainstorm</code>, erstes Issue bauen lassen, die Startseite im eigenen Stil gestalten.</Block>
+    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Leihbar v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Funktionen brainstormen mit <code>/ndu-brainstorm</code>, erstes Issue bauen lassen, die Startseite im eigenen Stil gestalten. Dazu Issues 2 und 3.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss & Reflexion">Drei Erkenntnisse pro Person. Ausblick Tag 2.</Block>
   </div>
 
@@ -162,7 +162,7 @@ import Quiz from '../components/Quiz.astro';
   <p>→ Kurz in der Runde: Welche Idee von Claude hättet ihr selbst nicht gehabt – und wohin habt ihr sie sortiert?</p>
 
   <h3 id="uebung-2-c">c) Issue 1 lesen und bauen lassen (20 min)</h3>
-  <IssueLesen nr={1} />
+  <IssueKarte nr={1} dauer="20 min" />
   <p>Für ein klares Issue braucht es keinen eigenen Plan-Schritt: Claude fragt nach, wenn etwas unklar ist, und baut sonst direkt.</p>
   <Prompt>Setze Issue 1 aus docs/BACKLOG.md um: die Liste mit den Beispieldaten aus src/data/gegenstaende.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Gegenstände, jeder mit Bild? Fehlt die verliehene „Systemkamera“? Sieht es am Handy gut aus (<a href="/setup#devtools-2">Geräte-Ansicht</a>)? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
@@ -198,6 +198,18 @@ Am Ende npm run lint und drei Sätze, was ich im Browser sehen soll.</Prompt>
   <h3 id="uebung-2-e">e) Sichern (5 min)</h3>
   <p>Gefällt euch das Ergebnis: <code>/ndu-commit</code>. Wenn nicht, sagt Claude: „Mach alle Änderungen seit dem letzten Commit rückgängig, auch neu angelegte Dateien. Lass .env.local und node_modules stehen und führ danach npm install aus.“ Issue 1 ist schon gesichert.</p>
 
+  <h3 id="uebung-2-issue-2">f) Issue 2 lesen und bauen lassen – Detailseite (15 min)</h3>
+  <p>Vorher <code>/clear</code>: Ein neues Issue beginnt mit leerem Kontext.</p>
+  <IssueKarte nr={2} dauer="15 min" braucht="Issue 1" />
+  <Prompt>Setze Issue 2 aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
+  <Prompt>Setze Issue 2 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
+
+  <h3 id="uebung-2-issue-3">g) Issue 3 lesen und bauen lassen – Nach Kategorie filtern (15 min)</h3>
+  <p>Wieder <code>/clear</code>, dann:</p>
+  <IssueKarte nr={3} dauer="15 min" braucht="Issue 1" />
+  <Prompt>Setze Issue 3 aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
+  <Prompt>Setze Issue 3 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
+
   <h3>Checkliste Übung 2</h3>
   <Checklist id="t1-u2-v2" items={[
     'Produkt-Brief in <code>docs/PRODUKT.md</code> – eine Seite, mit Abgrenzung („macht NICHT“)',
@@ -206,6 +218,8 @@ Am Ende npm run lint und drei Sätze, was ich im Browser sehen soll.</Prompt>
     'Alle Akzeptanzkriterien von Issue 1 selbst im Browser geprüft',
     'Backlog aktualisiert und committet',
     'Startseite im eigenen Stil umgestaltet und gesichert (oder verworfen)',
+    'Issue 2 (Detailseite) umgesetzt, geprüft und committet',
+    'Issue 3 (Filter) umgesetzt, geprüft und committet',
   ]} />
 
   <hr />
