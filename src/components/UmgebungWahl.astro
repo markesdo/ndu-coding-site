@@ -1,5 +1,5 @@
 ---
-// Umschalter Codespace / Laptop macOS / Laptop Windows. Setzt auf <html> data-umgebung (codespace | lokal) und
+// Umschalter Laptop macOS / Laptop Windows / Codespace. Setzt auf <html> data-umgebung (codespace | lokal) und
 // data-os (mac | windows); Inhalte mit data-nur="codespace" | "lokal" | "mac" | "windows" werden danach ausgeblendet
 // (global.css). Die Wahl gilt für die ganze Seite, mehrere Umschalter bleiben synchron, sie bleibt im Browser gespeichert.
 // Ein Link mit ?umgebung=codespace|mac|windows setzt und speichert sie (z. B. aus Teams).
@@ -18,9 +18,9 @@ return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, waehleOs:
 ---
 <div class="umgebung-wahl" role="group" aria-label={nurLaptop ? 'Betriebssystem wählen' : 'Arbeitsumgebung wählen'} hidden>
   <span class="small muted">{nurLaptop ? 'Euer Laptop:' : 'Ihr arbeitet:'}</span>
-  {!nurLaptop && <button type="button" data-umgebung-wahl="codespace" aria-pressed="false"><Cloud size={16} aria-hidden="true" /> Codespace im Browser</button>}
   <button type="button" data-umgebung-wahl="mac" data-nur-os={nurLaptop ? '' : undefined} aria-pressed="false"><Apple size={16} aria-hidden="true" /> {nurLaptop ? 'macOS' : 'Laptop · macOS'}</button>
   <button type="button" data-umgebung-wahl="windows" data-nur-os={nurLaptop ? '' : undefined} aria-pressed="false"><Monitor size={16} aria-hidden="true" /> {nurLaptop ? 'Windows' : 'Laptop · Windows'}</button>
+  {!nurLaptop && <button type="button" data-umgebung-wahl="codespace" aria-pressed="false"><Cloud size={16} aria-hidden="true" /> Codespace im Browser</button>}
 </div>
 
 <script is:inline set:html={logikSkript}></script>
