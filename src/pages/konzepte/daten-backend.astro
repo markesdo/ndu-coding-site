@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="Daten & Backend">
@@ -103,7 +104,7 @@ import FooterNav from '../../components/FooterNav.astro';
       const s = [
         ['Frontend', 'Mara füllt das Formular aus und klickt „Speichern“. Der Browser prüft Pflichtfelder (schnelles Feedback) und schickt <code>POST /api/items</code> mit den Daten.', 'Was hier geprüft wird, kann jeder umgehen. Deshalb prüft das Backend noch einmal.'],
         ['API-Route', 'Die Datei <code>src/app/api/items/route.ts</code> nimmt die Anfrage an. Sie prüft: Ist Mara angemeldet? Ist der Preis nicht negativ? Ist der Titel nicht leer? Erst dann geht es weiter.', 'Das ist das Backend – es läuft auf dem Server, Mara sieht den Code nie.'],
-        ['Datenbank', 'Supabase bekommt <code>INSERT INTO items …</code>. Vorher prüft Row Level Security: Darf diese Nutzerin in diese Tabelle schreiben? Ja → neue Zeile mit ID 43.', 'RLS ist die letzte Verteidigungslinie – selbst wenn das Backend einen Fehler hat.'],
+        ['Datenbank', 'Supabase bekommt <code>INSERT INTO items …</code>. Vorher prüft Row Level Security: Darf diese Nutzerin in diese Tabelle schreiben? Ja → neue Zeile mit ID 43.', 'RLS gilt für jeden Weg mit dem Publishable Key – auch wenn jemand Formular und API-Route umgeht oder das Backend einen Fehler hat.'],
         ['Antwort', 'Die Datenbank meldet „Zeile 43 angelegt“, die API antwortet mit <code>201 Created</code> und dem Gegenstand, das Frontend zeigt ihn in der Liste – ohne Reload.', 'Fehler auf dem Rückweg (<code>400</code>, <code>401</code>, <code>500</code>) sind die Zahlen, die ihr in Fehlermeldungen sehen werdet.'],
       ];
       const d = document.getElementById('req-detail')!;
@@ -120,15 +121,53 @@ import FooterNav from '../../components/FooterNav.astro';
     <p>Supabase pausiert kostenlose Projekte nach <strong>7 Tagen ohne Zugriff</strong>. In der Zwischenwoche einmal öffnen reicht. Pausiert? Dashboard → „Restore project“, dauert 2 Minuten.</p>
   </Callout>
 
-  <h2>Authentifizierung vs. Autorisierung</h2>
-  <p><strong>Authentifizierung:</strong> Wer ist das? (Login.) <strong>Autorisierung:</strong> Was darf diese Person? (Eigene Anfrage löschen: ja. Fremde: nein.) Die zweite Frage ist die, die Anfänger*innen – und Agenten – gern vergessen. <strong>Row Level Security (RLS)</strong> beantwortet sie direkt in der Datenbank: Pro Tabelle Regeln wie „lesen darf jeder, anlegen nur Angemeldete, löschen nur, wem die Zeile gehört“. Fragt Claude bei jeder neuen Tabelle: <em>„Welche RLS-Policies hast du gesetzt, und was passiert, wenn eine fremde Person eine Zeile ändern will?“</em></p>
+  <h2 id="autorisierung">Authentifizierung vs. Autorisierung</h2>
+  <p>Sobald es einen Login gibt, stellt die App bei jeder Aktion zwei Fragen:</p>
+  <div class="grid">
+    <div class="card">
+      <p><strong>Authentifizierung</strong> – Wer ist das?</p>
+      <p class="small">Beantwortet der Login. Danach weiß die App: Das ist Mara.</p>
+    </div>
+    <div class="card">
+      <p><strong>Autorisierung</strong> – Was darf diese Person?</p>
+      <p class="small">Mara darf ihre eigene Anfrage löschen, eine fremde nicht. Diese Frage vergessen Anfänger*innen – und Agenten – gern.</p>
+    </div>
+  </div>
+  <p>Die zweite Frage beantwortet <strong>Row Level Security (RLS)</strong> direkt in der Datenbank: Pro Tabelle legt ihr fest, wer welche Zeilen lesen, anlegen, ändern und löschen darf. Für die Gegenstände in Leihbar (Tabelle <code>items</code>) zum Beispiel:</p>
+  <table>
+    <tr><th scope="col">Aktion</th><th scope="col">Wer darf das?</th></tr>
+    <tr><td>Lesen</td><td>jede*r, auch ohne Login</td></tr>
+    <tr><td>Anlegen</td><td>nur Angemeldete, und nur in eigenem Namen</td></tr>
+    <tr><td>Ändern und Löschen</td><td>nur, wem der Gegenstand gehört</td></tr>
+  </table>
+  <p>Fragt Claude bei jeder neuen Tabelle:</p>
+  <Prompt>Welche RLS-Policies hast du gesetzt, und was passiert, wenn eine fremde Person eine Zeile ändern will?</Prompt>
 
-  <h2>Secrets & Umgebungsvariablen</h2>
+  <h2 id="rls">Warum das Formular nicht reicht</h2>
+  <p>Das Formular prüft Pflichtfelder, die API-Route prüft Login und Werte. Beides lässt sich umgehen: Der Publishable Key (siehe <a href="#secrets">Secrets</a>) steckt im Code, den der Browser lädt – sonst könnte die App sich nicht anmelden. Wer ihn in den DevTools abliest, spricht direkt mit eurer Datenbank, an Formular und API-Route vorbei.</p>
+  <div class="table-scroll"><table>
+    <tr><th scope="col">Weg in die Datenbank</th><th scope="col">Was prüft</th><th scope="col">Ergebnis</th></tr>
+    <tr><td>Mara füllt das Formular aus</td><td>Formular, API-Route, RLS</td><td>angemeldet: Zeile wird angelegt</td></tr>
+    <tr><td>Jemand schickt mit dem Key selbst eine Anfrage, ohne Login</td><td>nur die Datenbank: RLS und ihre eigenen Prüfungen</td><td>abgelehnt – außer eine Regel erlaubt es oder RLS ist ausgeschaltet</td></tr>
+    <tr><td>Eine angemeldete Person schickt selbst eine Anfrage</td><td>nur die Datenbank: RLS und ihre eigenen Prüfungen</td><td>sie darf genau das, was die Regel ihr erlaubt – etwa nur eigene Zeilen löschen</td></tr>
+  </table></div>
+  <p>Was das für RLS heißt:</p>
+  <ul>
+    <li><strong>Sie gilt für jeden Weg mit dem Publishable Key.</strong> Ist RLS eingeschaltet (bei euch automatisch), ist ohne Regel alles gesperrt; jede Regel öffnet gezielt etwas.</li>
+    <li><strong>Sie ist für Zugriffe da, nicht für Eingaben.</strong> RLS regelt, wer welche Zeilen lesen und schreiben darf, etwa nur in eigenem Namen. Ob ein Titel leer oder ein Preis negativ ist, prüft ihr besser mit einer eigenen Prüfung in der Datenbank (Claude nennt das einen Check-Constraint).</li>
+    <li><strong>Sie verschlüsselt nichts.</strong> Wer eine Zeile lesen darf, sieht sie im Klartext.</li>
+  </ul>
+  <Callout type="tip" title="So prüft ihr, ob die Regel hält">
+    <p>Der Supabase-MCP hat volle Rechte und umgeht RLS (ist er auf read-only gestellt, klappt der Test gar nicht). Für einen echten Test muss Claude sich als fremde Person ausgeben – mit einem echten zweiten Testkonto:</p>
+    <Prompt>Prüfe mit dem Supabase-MCP die RLS-Regeln der Tabelle [Tabelle] – nicht mit den vollen Rechten des MCP, sondern als fremde Person: nicht angemeldet (Rolle anon) und angemeldet (Rolle authenticated mit Nutzer-ID und E-Mail eines echten zweiten Testkontos in request.jwt.claims), jeden Versuch in einer eigenen Transaktion, die du zurückrollst. Versuch jeweils zu lesen, anzulegen, zu ändern und zu löschen. Erkläre mir das Ergebnis in einfachen Worten.</Prompt>
+  </Callout>
+
+  <h2 id="secrets">Secrets & Umgebungsvariablen</h2>
   <p>Eure App braucht Zugangsdaten: die Supabase-URL, Keys, später vielleicht einen Claude-API-Key. Die stehen in <code>.env.local</code>, einer Datei, die <strong>nie ins Repo kommt</strong>. Auf Vercel tragt ihr dieselben Werte im Dashboard ein. So kann der Code öffentlich sein und die Schlüssel privat bleiben.</p>
   <table>
     <tr><th>Variable</th><th>Darf der Browser sie sehen?</th></tr>
     <tr><td><code>NEXT_PUBLIC_SUPABASE_URL</code>, <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code></td><td>Ja – deshalb <code>NEXT_PUBLIC_</code>. Der Publishable Key ist durch RLS geschützt.</td></tr>
-    <tr><td><code>ANTHROPIC_API_KEY</code>, <code>SUPABASE_SECRET_KEY</code></td><td><strong>Niemals.</strong> Nur im Backend. Wenn Claude so einen Key in eine Frontend-Datei schreibt: stoppen.</td></tr>
+    <tr><td><code>ANTHROPIC_API_KEY</code>, <code>SUPABASE_SECRET_KEY</code></td><td><strong>Niemals.</strong> Nur im Backend – der Secret Key umgeht RLS. Wenn Claude so einen Key in eine Frontend-Datei schreibt: stoppen.</td></tr>
   </table>
 
   <h2>Begriffe, die heute fallen</h2>
