@@ -12,6 +12,8 @@ html[data-beamer] body { font-size: 1rem; line-height: 1.45; }
 html[data-beamer] .content h1 { font-size: 2.1rem; }
 html[data-beamer] .content h2 { font-size: 1.5rem; }
 html[data-beamer] .content > .inner > h2 { margin-top: 2.5rem; padding-top: .9rem; }
+/* Am Beamer zählt jede Zeile: Absatz- und h3-Abstände wie vor der Lesbarkeits-Anpassung. */
+html[data-beamer] { --absatz: 1rem; --h3-oben: 1.75rem; }
 html[data-beamer] .content h3 { font-size: 1.15rem; }
 html[data-beamer] .content .lead { font-size: 1.15rem; max-width: 50ch; color: var(--fg); }
 html[data-beamer] .content .block .desc, html[data-beamer] .content .faden p, html[data-beamer] .content .small,
