@@ -1,4 +1,4 @@
-// Entscheidungslogik des Umschalters Codespace / Laptop macOS / Laptop Windows (UmgebungWahl.astro).
+// Entscheidungslogik des Umschalters Laptop macOS / Laptop Windows / Codespace (UmgebungWahl.astro).
 // Bewusst schlichtes JavaScript ohne Abhängigkeiten: UmgebungWahl.astro bettet diese Datei als Text in sein
 // Inline-Skript ein (ohne die Wörter „export“), damit die Wahl vor dem ersten Zeichnen feststeht. Die Tests
 // importieren dieselbe Datei – es gibt nur eine Fassung der Logik.

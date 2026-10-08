@@ -421,7 +421,7 @@ h2[id], h3[id], h4[id] { scroll-margin-top: 3.5rem; }
 .loop-detail p { margin: 0 0 .4rem; }
 @media (max-width: 600px) { .loop { grid-template-columns: repeat(2, 1fr); } }
 
-/* Umschalter Codespace / Laptop macOS / Laptop Windows (UmgebungWahl.astro). Ohne data-umgebung/data-os (kein JavaScript)
+/* Umschalter Laptop macOS / Laptop Windows / Codespace (UmgebungWahl.astro). Ohne data-umgebung/data-os (kein JavaScript)
    bleiben alle Varianten sichtbar. mac/windows hängen nur am OS: Wer im Codespace arbeitet, liest den Umzug trotzdem fürs eigene System. */
 .umgebung-wahl { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 1.25rem 0; padding: .6rem .75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
 .umgebung-wahl[hidden] { display: none; }
