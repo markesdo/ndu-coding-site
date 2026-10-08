@@ -1,0 +1,47 @@
+---
+// Ein Issue aus dem Backlog als Karte: Ziel, Grenze, Akzeptanzkriterien zum Abhaken (im Browser gespeichert).
+// Steht über dem Prompt, damit erst gelesen und dann kopiert wird. Keine h2/h3 – die Gliederung der Seite liest nur die Seite selbst.
+import { BookOpen, Users } from '@lucide/astro';
+import Checklist from './Checklist.astro';
+import Prompt from './Prompt.astro';
+import backlog from '../data/backlog.md?raw';
+import { inlineHtml, issuesLesen } from './backlog';
+
+type Props = {
+  nr: number;
+  /** z. B. „30 min“ */
+  dauer?: string;
+  /** z. B. „Issue 6 und eure Live-Adresse“ */
+  braucht?: string;
+  /** Kriterien (ab 0 gezählt), die die nächste Person in der Runde prüft. */
+  peer?: number[];
+};
+const { nr, dauer, braucht, peer = [] } = Astro.props as Props;
+const issue = issuesLesen(backlog).get(nr);
+if (!issue) throw new Error(`IssueKarte: Issue ${nr} steht nicht in src/data/backlog.md.`);
+for (const i of peer) if (!issue.kriterien[i]) throw new Error(`IssueKarte: Issue ${nr} hat kein Kriterium ${i}.`);
+
+const items = issue.kriterien.map((k, i) =>
+  inlineHtml(k) + (peer.includes(i) ? ' <span class="peer-tag">prüft die nächste Person</span>' : ''));
+---
+<div class="issue-karte">
+  <div class="issue-kopf">
+    <span class="pill uebung">Issue {nr}</span>
+    <span class="issue-titel">{issue.titel}</span>
+    {(dauer || braucht) && <span class="issue-meta">{[dauer, braucht && `braucht ${braucht}`].filter(Boolean).join(' · ')}</span>}
+  </div>
+  <p class="issue-ritual"><BookOpen size={16} aria-hidden="true" /><span><strong>Erst lesen, 3 min zu dritt:</strong> Eine Person erklärt das Ziel, eine die Grenze, eine die Kriterien – bei jedem Issue rückt ihr eine Rolle weiter. Was niemand erklären kann, klärt ihr, bevor ihr den Prompt abschickt.</span></p>
+  <dl class="issue-felder">
+    <dt>Ziel</dt><dd set:html={inlineHtml(issue.ziel)} />
+    <dt>Nicht im Umfang</dt><dd set:html={inlineHtml(issue.nichtImUmfang)} />
+  </dl>
+  <p class="issue-label">Akzeptanzkriterien – abhaken, wenn ihr es selbst im Browser gesehen habt</p>
+  <Checklist id={`issue-${nr}`} items={items} />
+  <p class="issue-fertig"><strong>Fertig, wenn:</strong> <span set:html={inlineHtml(issue.fertigWenn)} /></p>
+  {peer.length > 0 && <p class="issue-peer small"><Users size={16} aria-hidden="true" /><span>Markierte Kriterien prüft die nächste Person in der Runde (A bei B, B bei C, C bei A) auf eurer Live-Adresse.</span></p>}
+  <details class="issue-text">
+    <summary>Issue als Text für <code>docs/BACKLOG.md</code></summary>
+    <p class="small muted">Nur nötig, wenn das Issue in eurem Backlog fehlt. Euer Backlog ist die Arbeitsliste, die Claude liest.</p>
+    <Prompt label="docs/BACKLOG.md">{issue.markdown}</Prompt>
+  </details>
+</div>
