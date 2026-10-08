@@ -361,21 +361,26 @@ claude plugin install linear@claude-plugins-official</Prompt>
   </details>
 
   <h3 id="lokal-danach">Danach – für beide Wege</h3>
-  <h4 id="lokal-starten">Claude und App starten</h4>
-  <p>In VS Code ein Terminal öffnen, falls noch keins offen ist: Menü <em>Terminal → New Terminal</em>. (Nach dem Skript fragt VS Code zuerst: <em>Yes, I trust the authors</em>.)</p>
+  <h4 id="lokal-starten">VS Code, Claude und App starten</h4>
+  <p data-nur="mac"><strong>VS Code öffnen.</strong> Nach dem Skript ist es schon offen. Sonst: Programme → <em>Visual Studio Code</em>, dann <em>File → Open Recent</em> → euer Repo. Fragt VS Code: <em>Yes, I trust the authors</em>.</p>
+  <p data-nur="windows"><strong>VS Code öffnen.</strong> Startmenü → <em>Visual Studio Code</em>, dann <em>File → Open Recent</em> → euer Repo.</p>
+  <p><strong>Claude starten.</strong> Menü <em>Terminal → New Terminal</em>, dann:</p>
+  <Prompt label="Terminal in VS Code">claude</Prompt>
   <div data-nur="mac">
   <Schritte id="lokal-starten" steps={[
-      { img: bild('lokal/mac-claude-3-start'), alt: 'VS-Code-Terminal: Claude Code startet mit Let\'s get started und der Auswahl des Farbschemas', text: 'Im Terminal <code>claude</code> eintippen. Ab hier geht es weiter wie in <a href="#claude-code-start">Schritt 5</a>: Farbschema wählen, <em>Claude account with subscription</em>, im Browser anmelden. Der Unterschied: Der Browser springt nach der Anmeldung von selbst zurück – Code kopieren ist nicht nötig.', marks: [{ x: 366, y: 565, w: 1115, h: 217 }] },
-      { img: bild('lokal/mac-dev-1'), alt: 'Zweites Terminal mit npm run dev: Next.js, Local http://localhost:3000, Ready; rechts die Liste der Terminals', text: 'Für die App ein <strong>zweites</strong> Terminal öffnen (<em>Terminal → New Terminal</em>) und <code>npm run dev</code> eintippen. Mit <kbd>⌘</kbd> + Klick auf <code>http://localhost:3000</code> (1) öffnet sich die App im Browser. Rechts seht ihr beide Terminals und könnt zwischen Claude und App wechseln (2).', marks: [{ x: 366, y: 635, w: 270, h: 15, n: 1 }, { x: 1380, y: 561, w: 112, h: 41, n: 2 }] },
+      { img: bild('lokal/mac-claude-3-start'), alt: 'VS-Code-Terminal: Claude Code startet mit Let\'s get started und der Auswahl des Farbschemas', text: '<code>claude</code> eintippen. Ab hier geht es weiter wie in <a href="#claude-code-start">Schritt 5</a>: Farbschema wählen, <em>Claude account with subscription</em>, im Browser anmelden. Der Unterschied: Der Browser springt nach der Anmeldung von selbst zurück – Code kopieren ist nicht nötig.', marks: [{ x: 366, y: 565, w: 1115, h: 217 }] },
   ]} />
   </div>
-  <div data-nur="windows">
-    <ol class="steps">
-      <li><strong>Claude starten</strong> Im Terminal <strong>von VS Code</strong> <code>claude</code> eintippen und mit eurem Claude-Pro-Konto anmelden – wie in <a href="#claude-code">Schritt 5</a>, nur öffnet sich der Browser direkt. Bleibt bei diesem Terminal: Es nutzt die GitHub-Anmeldung vom Klonen.</li>
-      <li><strong>App starten</strong> In einem zweiten Terminal <code>npm run dev</code>, dann <a href="http://localhost:3000" target="_blank" rel="noopener">localhost:3000</a> im Browser öffnen.</li>
-    </ol>
+  <p data-nur="windows" class="small">Farbschema wählen, <em>Claude account with subscription</em>, im Browser anmelden – wie in <a href="#claude-code">Schritt 5</a>, nur öffnet sich der Browser direkt. Bleibt bei diesem Terminal in VS Code: Es nutzt die GitHub-Anmeldung vom Klonen.</p>
+  <p><strong>App starten.</strong> Ein <strong>zweites</strong> Terminal öffnen – wieder <em>Terminal → New Terminal</em>; Claude läuft im ersten weiter –, dann:</p>
+  <Prompt label="Zweites Terminal in VS Code">npm run dev</Prompt>
+  <div data-nur="mac">
+  <Schritte id="lokal-app" start={2} steps={[
+      { img: bild('lokal/mac-dev-1'), alt: 'Zweites Terminal mit npm run dev: Next.js, Local http://localhost:3000, Ready; rechts die Liste der Terminals', text: 'Mit <kbd>⌘</kbd> + Klick auf <code>http://localhost:3000</code> (1) öffnet sich die App im Browser. Rechts seht ihr beide Terminals und könnt zwischen Claude und App wechseln (2).', marks: [{ x: 366, y: 635, w: 270, h: 15, n: 1 }, { x: 1380, y: 561, w: 112, h: 41, n: 2 }] },
+  ]} />
   </div>
-  <p><strong>Geheimnisse übertragen</strong> (erst ab <a href="/tag-2#uebung-3">Übung 3 an Tag 2</a> nötig): Im Codespace die Datei <code>.env.local</code> öffnen, den Inhalt kopieren, lokal in VS Code eine Datei mit demselben Namen im Projektordner anlegen (Rechtsklick in die Dateiliste → <em>New File…</em>) und einfügen. Alternativ holt ihr die Werte erneut aus dem Supabase-Dashboard. Die Datei bleibt auf eurem Laptop – sie kommt nie ins Repo, <code>.gitignore</code> schließt sie aus.</p>
+  <p data-nur="windows" class="small">Mit <kbd>Strg</kbd> + Klick auf <code>http://localhost:3000</code> im Terminal öffnet sich die App – oder direkt <a href="http://localhost:3000" target="_blank" rel="noopener">localhost:3000</a>.</p>
+  <p class="small muted"><strong>Geheimnisse (<code>.env.local</code>):</strong> Bis Issue 3 braucht die App keine – nichts zu tun. Die Datei entsteht an Tag 2 mit Supabase (<a href="/tag-2#uebung-3-d">Übung 3d</a>); das klappt lokal genauso. Wer sie schon im Codespace hat: Inhalt kopieren, lokal in VS Code eine Datei <code>.env.local</code> im Projektordner anlegen (Rechtsklick in die Dateiliste → <em>New File…</em>) und einfügen – oder die Werte neu aus dem Supabase-Dashboard holen. <code>.gitignore</code> hält die Datei aus dem Repo.</p>
 
   <h4 id="lokal-screenshots">Screenshots an Claude geben</h4>
   <div data-nur="mac">
