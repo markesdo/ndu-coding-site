@@ -74,7 +74,11 @@ describe('UmgebungWahl.astro', () => {
     const roh = readFileSync(new URL('./umgebung.js', import.meta.url), 'utf8');
     const klassisch = roh.replace(/^export /gm, '');
     expect(klassisch).not.toMatch(/^\s*(export|import)\b/m);
-    const u = new Function(`${klassisch}; return { startZustand, zeigeBlock };`)();
+    // Die Rückgabezeile genau so aus UmgebungWahl.astro nehmen: Fehlt dort eine Funktion, wirft schon dieser Aufruf.
+    const rueckgabe = quelle.match(/^return \{.*\};$/m)?.[0];
+    expect(rueckgabe).toBeDefined();
+    const u = new Function(`${klassisch}\n${rueckgabe}`)();
+    expect(Object.values(u).every((f) => typeof f === 'function')).toBe(true);
     expect(u.startZustand({ ...leer, query: 'windows' })).toStrictEqual({ umgebung: 'lokal', os: 'windows' });
     expect(u.zeigeBlock({ umgebung: 'lokal', os: 'mac' }, 'codespace')).toStrictEqual({ umgebung: 'codespace', os: 'mac' });
   });

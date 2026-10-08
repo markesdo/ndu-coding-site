@@ -53,7 +53,8 @@ return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, gedrueckt
       });
       // Zeigt ein Link (z. B. /setup#lokal-klonen-3) in einen ausgeblendeten Teil, dorthin umschalten (ohne zu speichern).
       var folgeAnker = function () {
-        var ziel = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        var ziel = null;
+        try { ziel = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (e) {}
         if (!ziel) return;
         var z = u.zustand;
         for (var el = ziel.closest('[data-nur]'); el; el = el.parentElement && el.parentElement.closest('[data-nur]')) z = u.zeigeBlock(z, el.dataset.nur);
