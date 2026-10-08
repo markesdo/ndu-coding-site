@@ -23,22 +23,32 @@
 .stage-body > * { grid-area: 1 / 1; min-width: 0; }
 .stage-mass { visibility: hidden; }
 .stage-caption { margin-top: 1rem; }
+/* Unsichtbare Kopien aller Beschriftungen – nur am Handy aktiv (siehe unten). */
+.stage-caption-mass { display: none; visibility: hidden; }
 .stage-caption code { font-size: .9em; }
 .stage-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
 .stage-controls .btn:disabled { opacity: .4; cursor: default; }
 /* Am Handy: Der höchste Schritt ist dort oft doppelt so hoch wie die übrigen – Platz für ihn zu reservieren hinterließ
    bis zu 400 px Leere, und die Knöpfe lagen unter dem Bildschirmrand. Deshalb keine Reservierung; stattdessen stehen
-   die Knöpfe über der Szene und kleben unter der Topbar (4rem), damit sie beim Blättern nicht springen. Die Beschriftung
-   folgt direkt darunter: Das Ergebnis eines Tipps steht gleich unter dem Finger. */
+   die Knöpfe über der Szene und kleben unter der Topbar (--topbar-h, misst Layout.astro), damit sie beim Blättern nicht
+   springen. Die Beschriftung folgt direkt darunter und reserviert die Höhe der längsten Beschriftung, damit die Szene
+   beim Blättern nicht auf und ab rutscht. Liegt der Anfang der Stage nach einem Tipp über dem Bildschirm, scrollt
+   Stage.tsx zurück – das Ergebnis steht dann direkt unter den Knöpfen. */
 @media (max-width: 600px) {
   .stage { display: flex; flex-direction: column; }
-  .stage-controls { order: 1; position: sticky; top: 4rem; z-index: 5; margin: 0 -.25rem .75rem; padding: .5rem .25rem; background: var(--bg-2);
-    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: .35rem; }
-  .stage-controls .btn { justify-content: center; padding-inline: .3rem; font-size: .85rem; white-space: nowrap; }
+  .stage { scroll-margin-top: var(--topbar-h, 4rem); }
+  /* Vier Knöpfe in einer Zeile, wo sie passen; bei 320 px oder im Vollbild umbrechen statt überlaufen. */
+  .stage-controls { order: 1; position: sticky; top: var(--topbar-h, 4rem); z-index: 5; margin: 0 -.25rem .75rem; padding: .5rem .25rem; background: var(--bg-2);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(4.75rem, 1fr)); gap: .35rem; }
+  .stage-controls .btn { padding-inline: .3rem; font-size: .85rem; }
+  .stage:fullscreen .stage-controls .btn { font-size: 1rem; }
   .stage-body { order: 2; }
   .stage-mass { display: none; }
   .stage-aktiv { display: flex; flex-direction: column; }
   .stage-aktiv .stage-caption { order: -1; margin: 0 0 1rem; }
+  .stage-caption-stapel { display: grid; }
+  .stage-caption-stapel > * { grid-area: 1 / 1; min-width: 0; }
+  .stage-caption-mass { display: block; }
   .stage:fullscreen .stage-controls { top: 0; background: var(--bg); }
 }
 
