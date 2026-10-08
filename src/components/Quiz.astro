@@ -5,17 +5,30 @@ export interface Frage {
   o: string[];
   /** Index der richtigen Antwort in o. */
   a: number;
-  /** Begründung, darf HTML enthalten (Link zum Konzept). */
+  /** Begründung, als Text. */
   w: string;
+  /** Wo es nachzulesen ist; steht als Link hinter der Begründung. */
+  mehr?: { href: string; t: string };
 }
-const { id, fragen } = Astro.props as { id: string; fragen: Frage[] };
+const { id, fragen, einstieg } = Astro.props as {
+  id: string;
+  fragen: Frage[];
+  /** Vor einer Übung: worum es geht, z. B. „Konzept 5“. Ergibt die Zeile „Bevor ihr startet“. */
+  einstieg?: string;
+};
+for (const f of fragen) {
+  if (!Number.isInteger(f.a) || f.a < 0 || f.a >= f.o.length) throw new Error(`Quiz ${id}: a=${f.a} passt nicht zu ${f.o.length} Antworten bei „${f.q}“`);
+}
 ---
+{einstieg && (
+  <p class="einstieg"><strong>Bevor ihr startet:</strong> {fragen.length} Fragen zu {einstieg}. Wer danebenliegt, liest den Abschnitt dort noch einmal.</p>
+)}
 <div class="quiz" id={id}>
   {fragen.map((it, i) => (
     <div class="q" data-a={it.a}>
       <p>{i + 1}. {it.q}</p>
       {it.o.map((o, j) => <button class="opt" type="button" data-j={j}>{o}</button>)}
-      <p class="why" set:html={it.w} />
+      <p class="why" role="status"><span class="urteil"></span>{it.w}{it.mehr && <> <a href={it.mehr.href}>{it.mehr.t}</a></>}</p>
     </div>
   ))}
 </div>
@@ -26,6 +39,10 @@ const { id, fragen } = Astro.props as { id: string; fragen: Frage[] };
       if (q.classList.contains('answered')) return;
       q.classList.add('answered');
       const a = Number(q.dataset.a);
+      const richtig = Number(b.dataset.j) === a;
+      b.setAttribute('aria-pressed', 'true');
+      // Nicht nur Farbe: Das Urteil steht als Wort vor der Begründung (und wird vorgelesen).
+      q.querySelector('.urteil')!.textContent = richtig ? 'Richtig. ' : 'Nicht ganz. ';
       q.querySelectorAll<HTMLButtonElement>('.opt').forEach((x) => {
         const j = Number(x.dataset.j);
         if (j === a) x.classList.add('right');

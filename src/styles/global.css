@@ -160,12 +160,11 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .callout.warn { --c: var(--yellow); background: color-mix(in srgb, var(--yellow) 10%, var(--bg-2)); }
 .callout.concept { --c: var(--purple); background: color-mix(in srgb, var(--purple) 8%, var(--bg-2)); }
 .callout-icon { flex: none; color: var(--c); }
-/* Konzept auf der Tagesseite (KonzeptStation): Lernstoff wie .callout.concept, mit Knopf zum Konzept. */
-.station { border-left: 3px solid var(--purple); border-radius: 4px; padding: .85rem 1.1rem; margin: 1.25rem 0; background: color-mix(in srgb, var(--purple) 8%, var(--bg-2)); }
+/* Konzept auf der Tagesseite (KonzeptStation): ein .callout.concept, dazu Knopf zum Konzept. */
 .station ul { margin-bottom: 1rem; }
 .station-cta { display: flex; flex-wrap: wrap; gap: .6rem; }
 .station-cta .btn { display: inline-flex; align-items: center; gap: .4rem; }
-.station .station-danach { margin: .75rem 0 0; }
+.station p.station-danach { margin: .75rem 0 0; }
 /* „Bevor ihr startet“ vor einer Übung: die Fragen stehen direkt darunter. */
 .einstieg { margin-bottom: 0; }
 
@@ -430,6 +429,7 @@ html[data-os="windows"] .wege { grid-template-columns: 1fr; }
 .quiz .opt.wrong { border-color: var(--accent); background: var(--accent-soft); }
 .quiz .why { font-size: .9rem; color: var(--muted); margin: .5rem 0 0; display: none; }
 .quiz .q.answered .why { display: block; }
+.quiz .urteil { font-weight: 600; color: var(--fg); }
 
 /* Zurück/Weiter am Seitenende: deutlich stärker als Links im Text – zwei Spalten, Beschriftung in Mono, Titel halbfett. */
 .footer-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 4rem; padding: 1.25rem 0; border-top: 2px solid var(--fg); }

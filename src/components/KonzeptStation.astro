@@ -8,7 +8,7 @@ const { links, danach } = Astro.props as {
   danach: { href: string; t: string };
 };
 ---
-<div class="station">
+<div class="callout concept station">
   <slot />
   <div class="station-cta">
     {links.map((l, i) => (

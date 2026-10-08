@@ -63,10 +63,9 @@ import { bild } from '../components/anleitung-bilder';
   <hr />
   <h2 id="uebung-3">Übung 3 · Echte Daten <span class="pill uebung">90 min</span></h2>
   <p>Bisher stehen die Gegenstände in einer Datei. Jetzt kommen sie in eine Datenbank – damit ein angebotener Gegenstand auch nach dem Reload und für alle anderen da ist.</p>
-  <p class="einstieg"><strong>Bevor ihr startet:</strong> zwei Fragen zu Konzept 4. Wer danebenliegt, liest den Abschnitt im Konzept noch einmal.</p>
-  <Quiz id="einstieg-u3" fragen={[
-    { q: 'Anbieten dürfen nur Angemeldete, und das Formular kann das prüfen. Warum braucht die Tabelle items trotzdem Row Level Security?', o: ['Was der Browser prüft, kann jede*r umgehen – RLS prüft in der Datenbank selbst', 'Ohne RLS startet Supabase nicht', 'RLS macht die Abfragen schneller'], a: 0, w: 'RLS greift auch dann, wenn Frontend oder API-Route einen Fehler haben. Fragt Claude bei jeder neuen Tabelle nach den Policies. <a href="/konzepte/daten-backend">Daten & Backend</a>' },
-    { q: 'Ihr schreibt: „Leg eine Tabelle items an.“ Was ist mit Supabase-MCP anders als ohne?', o: ['Claude liefert das SQL, ihr fügt es im Dashboard ein', 'Nichts, MCP ist nur für Dokumentation', 'Claude legt die Tabelle selbst an, liest die Antwort der Datenbank und korrigiert Fehler'], a: 2, w: 'Ohne MCP seid ihr der Bote zwischen Claude und der Datenbank. Mit MCP sieht Claude selbst, was die Datenbank antwortet. <a href="/konzepte/mcp">MCP</a>' },
+  <Quiz id="einstieg-u3" einstieg="Konzept 4 und MCP" fragen={[
+    { q: 'Anbieten dürfen nur Angemeldete, und das Formular kann das prüfen. Warum braucht die Tabelle items trotzdem Row Level Security?', o: ['Was der Browser prüft, kann jede*r umgehen – RLS prüft in der Datenbank selbst', 'Ohne RLS startet Supabase nicht', 'RLS macht die Abfragen schneller'], a: 0, w: 'RLS greift auch dann, wenn Frontend oder API-Route einen Fehler haben. Fragt Claude bei jeder neuen Tabelle nach den Policies.', mehr: { href: '/konzepte/daten-backend', t: 'Daten & Backend' } },
+    { q: 'Ihr schreibt: „Leg eine Tabelle items an.“ Was ist mit Supabase-MCP anders als ohne?', o: ['Claude liefert das SQL, ihr fügt es im Dashboard ein', 'Nichts, MCP ist nur für Dokumentation', 'Claude legt die Tabelle selbst an, liest die Antwort der Datenbank und korrigiert Fehler'], a: 2, w: 'Ohne MCP seid ihr der Bote zwischen Claude und der Datenbank. Mit MCP sieht Claude selbst, was die Datenbank antwortet.', mehr: { href: '/konzepte/mcp', t: 'MCP' } },
   ]} />
   <h3 id="supabase">a) Supabase-Projekt (gemeinsam, 15 min)</h3>
   <p class="small muted">Screenshots vom Testdurchgang mit einem neuen Konto am 5.10.2026. Klick auf ein Bild vergrößert es.</p>
@@ -159,10 +158,9 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2 id="uebung-4">Übung 4 · Login & Anfragen <span class="pill uebung">90 min</span></h2>
-  <p class="einstieg"><strong>Bevor ihr startet:</strong> zwei Fragen zu Konzept 5. Wer danebenliegt, liest den Abschnitt im Konzept noch einmal.</p>
-  <Quiz id="einstieg-u4" fragen={[
-    { q: 'Ihr klickt „Ausleihen anfragen“, die Browser-Konsole meldet „500 Internal Server Error“. Wo steht die Ursache?', o: ['Im Terminal, in dem npm run dev läuft', 'Weiter oben in der Browser-Konsole', 'In der CLAUDE.md'], a: 0, w: '500 heißt: Fehler auf dem Server. Die Konsole zeigt nur, dass er passiert ist; die Ursache steht im Terminal. <a href="/konzepte/verifizieren">Verifizieren & Debuggen</a>' },
-    { q: 'Claude hat denselben Fehler zweimal erfolglos behoben. Was tut ihr?', o: ['Ein drittes Mal „bitte beheben“', 'Den Stand committen und weiterbauen', '/clear, dann drei mögliche Ursachen nennen lassen, ohne etwas zu ändern'], a: 2, w: 'Wer im Kreis läuft, braucht einen frischen Kontext und Hypothesen statt eines weiteren Versuchs. Der Prompt dafür steht im Konzept. <a href="/konzepte/verifizieren">Verifizieren & Debuggen</a>' },
+  <Quiz id="einstieg-u4" einstieg="Konzept 5" fragen={[
+    { q: 'Ihr klickt „Ausleihen anfragen“, die Browser-Konsole meldet „500 Internal Server Error“. Wo steht die Ursache?', o: ['Im Terminal, in dem npm run dev läuft', 'Weiter oben in der Browser-Konsole', 'In der CLAUDE.md'], a: 0, w: '500 heißt: Fehler auf dem Server. Die Konsole zeigt nur, dass er passiert ist; die Ursache steht im Terminal.', mehr: { href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' } },
+    { q: 'Claude hat denselben Fehler zweimal erfolglos behoben. Was tut ihr?', o: ['Ein drittes Mal „bitte beheben“', 'Den Stand committen und weiterbauen', '/clear, dann drei mögliche Ursachen nennen lassen, ohne etwas zu ändern'], a: 2, w: 'Wer im Kreis läuft, braucht einen frischen Kontext und Hypothesen statt eines weiteren Versuchs. Der Prompt dafür steht im Konzept.', mehr: { href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' } },
   ]} />
   <h3 id="uebung-4-a">a) Issue 5 lesen und bauen lassen – Anmelden (30 min)</h3>
   <IssueLesen nr={5} />
@@ -200,10 +198,9 @@ import { bild } from '../components/anleitung-bilder';
   <h2 id="uebung-5">Übung 5 · Deploy <span class="pill uebung">40 min</span></h2>
   <p>Vercel baut eure App bei jedem Push auf <code>main</code> neu und stellt sie unter einer öffentlichen Adresse ins Netz. Das Hobby-Konto ist kostenlos. Das Konto legt ihr im Browser an, den Deploy übernimmt Claude – mit dem Vercel-Plugin. Damit kann Claude danach auch selbst nachsehen, ob ein Deploy geklappt hat, und Fehler aus den Logs lesen.</p>
 
-  <p class="einstieg"><strong>Bevor ihr startet:</strong> zwei Fragen zu Konzept 6 und 4. Wer danebenliegt, liest den Abschnitt im Konzept noch einmal.</p>
-  <Quiz id="einstieg-u5" fragen={[
-    { q: 'Issue 6 ist fertig und committet, als Nächstes kommt der Deploy. Was tut ihr in Claude zuerst?', o: ['Einfach weiterschreiben, Claude kennt ja schon alles', '/clear – der neue Auftrag beginnt mit leerem Kontext', '/compact'], a: 1, w: 'Eine Session pro Issue. Claude liest CLAUDE.md und Backlog neu; der alte Verlauf kostet nur Kontingent. /compact ist für mitten in einer Aufgabe. <a href="/konzepte/agenten-steuern">Agenten steuern</a>' },
-    { q: 'Auf Vercel gibt es keine .env.local. Woher bekommt die Live-App Supabase-Adresse und Key?', o: ['Aus den Environment-Variablen des Vercel-Projekts', 'Aus dem Repo auf GitHub', 'Claude schreibt sie in den Code'], a: 0, w: 'Die Datei kommt nie ins Repo. Auf Vercel stehen dieselben Werte als Environment-Variablen – Claude setzt sie beim Deploy. <a href="/konzepte/daten-backend">Daten & Backend</a>' },
+  <Quiz id="einstieg-u5" einstieg="Konzept 6 und 4" fragen={[
+    { q: 'Übung 4 ist fertig und committet, als Nächstes kommt der Deploy. Was tut ihr in Claude zuerst?', o: ['Einfach weiterschreiben, Claude kennt ja schon alles', '/clear – der neue Auftrag beginnt mit leerem Kontext', '/compact'], a: 1, w: 'Eine Session pro Issue. Claude liest CLAUDE.md und Backlog neu; der alte Verlauf kostet nur Kontingent. /compact ist für mitten in einer Aufgabe.', mehr: { href: '/konzepte/agenten-steuern', t: 'Agenten steuern' } },
+    { q: 'Auf Vercel gibt es keine .env.local. Woher bekommt die Live-App Supabase-Adresse und Key?', o: ['Aus den Environment-Variablen des Vercel-Projekts', 'Aus dem Repo auf GitHub', 'Claude schreibt sie in den Code'], a: 0, w: 'Die Datei kommt nie ins Repo. Auf Vercel stehen dieselben Werte als Environment-Variablen – Claude setzt sie beim Deploy.', mehr: { href: '/konzepte/daten-backend', t: 'Daten & Backend' } },
   ]} />
 
   <h3 id="vercel-konto">a) Vercel-Konto anlegen (Browser, 10 min)</h3>
