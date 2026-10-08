@@ -26,6 +26,21 @@
 .stage-caption code { font-size: .9em; }
 .stage-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
 .stage-controls .btn:disabled { opacity: .4; cursor: default; }
+/* Am Handy: Der höchste Schritt ist dort oft doppelt so hoch wie die übrigen – Platz für ihn zu reservieren hinterließ
+   bis zu 400 px Leere, und die Knöpfe lagen unter dem Bildschirmrand. Deshalb keine Reservierung; stattdessen stehen
+   die Knöpfe über der Szene und kleben unter der Topbar (4rem), damit sie beim Blättern nicht springen. Die Beschriftung
+   folgt direkt darunter: Das Ergebnis eines Tipps steht gleich unter dem Finger. */
+@media (max-width: 600px) {
+  .stage { display: flex; flex-direction: column; }
+  .stage-controls { order: 1; position: sticky; top: 4rem; z-index: 5; margin: 0 -.25rem .75rem; padding: .5rem .25rem; background: var(--bg-2);
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: .35rem; }
+  .stage-controls .btn { justify-content: center; padding-inline: .3rem; font-size: .85rem; white-space: nowrap; }
+  .stage-body { order: 2; }
+  .stage-mass { display: none; }
+  .stage-aktiv { display: flex; flex-direction: column; }
+  .stage-aktiv .stage-caption { order: -1; margin: 0 0 1rem; }
+  .stage:fullscreen .stage-controls { top: 0; background: var(--bg); }
+}
 
 .stage:fullscreen {
   background: var(--bg);
