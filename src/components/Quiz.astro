@@ -1,5 +1,7 @@
 ---
 // Fragen mit drei Antworten; ein Klick zeigt richtig/falsch und die Begründung. Für Recap-Quiz und Einstiegsfragen vor Übungen.
+import { quizProbleme } from './quiz-check';
+
 export interface Frage {
   q: string;
   o: string[];
@@ -16,9 +18,8 @@ const { id, fragen, einstieg } = Astro.props as {
   /** Vor einer Übung: worum es geht, z. B. „Konzept 5“. Ergibt die Zeile „Bevor ihr startet“. */
   einstieg?: string;
 };
-for (const f of fragen) {
-  if (!Number.isInteger(f.a) || f.a < 0 || f.a >= f.o.length) throw new Error(`Quiz ${id}: a=${f.a} passt nicht zu ${f.o.length} Antworten bei „${f.q}“`);
-}
+const probleme = quizProbleme(fragen);
+if (probleme.length) throw new Error(`Quiz ${id}: ${probleme.join('; ')}`);
 const anzahl = fragen.length === 1 ? 'eine Frage' : `${['zwei', 'drei', 'vier', 'fünf'][fragen.length - 2] ?? fragen.length} Fragen`;
 ---
 {einstieg && (
