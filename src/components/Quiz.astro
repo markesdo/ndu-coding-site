@@ -19,9 +19,10 @@ const { id, fragen, einstieg } = Astro.props as {
 for (const f of fragen) {
   if (!Number.isInteger(f.a) || f.a < 0 || f.a >= f.o.length) throw new Error(`Quiz ${id}: a=${f.a} passt nicht zu ${f.o.length} Antworten bei „${f.q}“`);
 }
+const anzahl = fragen.length === 1 ? 'eine Frage' : `${['zwei', 'drei', 'vier', 'fünf'][fragen.length - 2] ?? fragen.length} Fragen`;
 ---
 {einstieg && (
-  <p class="einstieg"><strong>Bevor ihr startet:</strong> {fragen.length} Fragen zu {einstieg}. Wer danebenliegt, liest den Abschnitt dort noch einmal.</p>
+  <p class="einstieg"><strong>Bevor ihr startet:</strong> {anzahl} zu {einstieg}. Wer danebenliegt, liest den Abschnitt dort noch einmal.</p>
 )}
 <div class="quiz" id={id}>
   {fragen.map((it, i) => (
