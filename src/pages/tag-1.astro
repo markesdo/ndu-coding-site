@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Orientierung from '../components/Orientierung.astro';
 import Block from '../components/Block.astro';
 import Callout from '../components/Callout.astro';
+import IssueLesen from '../components/IssueLesen.astro';
 import Checklist from '../components/Checklist.astro';
 import Prompt from '../components/Prompt.astro';
 import FooterNav from '../components/FooterNav.astro';
@@ -116,7 +117,8 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt note="Den Backlog für Leihbar gibt es schon, und die Übungen von Tag 2 bauen darauf auf. Neue Ideen landen deshalb auf „Später“; Claude schlägt Ergänzungen höchstens vor.">/ndu-brainstorm</Prompt>
   <p>→ Kurz in der Runde: Welche Idee von Claude hättet ihr selbst nicht gehabt – und wohin habt ihr sie sortiert?</p>
 
-  <h3 id="uebung-2-c">c) Issue 1 bauen lassen (20 min)</h3>
+  <h3 id="uebung-2-c">c) Issue 1 lesen und bauen lassen (5 + 15 min)</h3>
+  <IssueLesen nr={1} />
   <p>Für ein klares Issue braucht es keinen eigenen Plan-Schritt: Claude fragt nach, wenn etwas unklar ist, und baut sonst direkt.</p>
   <Prompt>Setze Issue 1 aus docs/BACKLOG.md um: die Liste mit den Beispieldaten aus src/data/gegenstaende.ts auf der Startseite. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <p>Prüft <strong>jedes</strong> Kriterium selbst: Sind es mindestens 4 Gegenstände, jeder mit Bild? Fehlt die verliehene „Systemkamera“? Sieht es am Handy gut aus (<a href="/setup#devtools-2">Geräte-Ansicht</a>)? Erst wenn alles stimmt: Status im Backlog auf „fertig“ setzen lassen.</p>
