@@ -228,7 +228,7 @@ import { bild } from '../components/anleitung-bilder';
       <li>die Demo kurz bevorsteht – nicht am Abend davor umziehen</li>
     </ul></div>
   </div>
-  <p><strong>Egal welcher Weg:</strong> vorher im Codespace <code>/ndu-commit</code> – nur was auf GitHub ist, kommt auf den Laptop.</p>
+  <p><strong>Egal welcher Weg:</strong> vorher im Codespace <code>/ndu-commit</code> – nur was auf GitHub ist, kommt auf den Laptop. Repo, Backlog und Commits bleiben dieselben; GitHub ist der gemeinsame Stand.</p>
 
   <UmgebungWahl nurLaptop />
 
@@ -250,7 +250,7 @@ import { bild } from '../components/anleitung-bilder';
     <Schritte id="lokal-skript" steps={[
       { img: bild('lokal/mac-skript-fertig'), alt: 'Terminal mit den Schritten 7 bis 10 des Skripts: Git-Name, Repo geklont, Pakete geladen, vier VS-Code-Erweiterungen, die Claude-Plugins, Versionen von git, node, claude und gh, darunter Fertig', text: 'Fertig: lauter Häkchen und „Fertig.“, VS Code öffnet euer Repo (Ordner <code>code</code> in eurem Benutzerordner). Weiter bei <a href="#lokal-danach">Danach</a>.', crop: false },
     ]} />
-    <p class="small muted">Der Befehl führt ein Skript aus dem Internet aus – unseres liegt offen im Kurs-Repo (<a href="https://github.com/markesdo/ndu-coding-2026/blob/main/setup-mac.sh" target="_blank" rel="noopener">setup-mac.sh</a>), installiert in euren Benutzerordner (VS Code in den Programme-Ordner), fragt nie nach dem Mac-Passwort und lässt sich gefahrlos nochmal starten. Hängt es: Terminal offen lassen, Hand heben.</p>
+    <p class="small muted">Der Befehl führt ein Skript aus dem Internet aus – unseres liegt offen im Kurs-Repo (<a href="https://github.com/markesdo/ndu-coding-2026/blob/main/setup-mac.sh" target="_blank" rel="noopener">setup-mac.sh</a>), installiert in euren Benutzerordner (VS Code in den Programme-Ordner), fragt nie nach dem Mac-Passwort und lässt sich gefahrlos nochmal starten. Hängt es: Terminal offen lassen, Hand heben – oder die restlichen Schritte <a href="#lokal-hand">von Hand</a>. Meldet es ein Plugin als nicht installiert: <a href="#lokal-plugins">Befehle in Schritt 5</a>.</p>
   </div>
 
   <details class="fallback" id="lokal-hand">
@@ -343,7 +343,7 @@ git config --global pull.rebase false</Prompt>
     <p>Terminal in VS Code öffnen: Menü <em>Terminal → New Terminal</em>. Es öffnet sich unten, schon im Projektordner.</p>
     <Prompt label="Terminal in VS Code">npm install</Prompt>
     <div data-nur="mac">
-    <Schritte id="lokal-starten" steps={[
+    <Schritte id="lokal-pakete" steps={[
       { img: bild('lokal/mac-npm-1'), alt: 'VS-Code-Terminal nach npm install: 5 high severity vulnerabilities, npm warn install-scripts, npm notice New major version', text: '<code>npm install</code> lädt die Pakete (dauert ein bis zwei Minuten). Am Ende stehen Warnungen wie „vulnerabilities“ oder „New major version of npm“ – das ist normal. <strong>Nicht</strong> <code>npm audit fix --force</code> ausführen, das kann die App kaputt machen.', marks: [{ x: 366, y: 565, w: 801, h: 213 }] },
     ]} />
     </div>
@@ -357,14 +357,14 @@ claude plugin install superpowers@claude-plugins-official
 claude plugin install vercel@claude-plugins-official
 claude plugin install playwright@claude-plugins-official
 claude plugin install linear@claude-plugins-official</Prompt>
-    <p class="small muted">Bleibt beim Terminal <strong>in VS Code</strong>: Es nutzt die GitHub-Anmeldung vom Klonen. Im Terminal-Programm des Mac kann <code>git push</code> (und damit <code>/ndu-commit</code>) nach einer Anmeldung fragen oder scheitern.</p>
+    <p class="small muted" data-nur="mac">Bleibt beim Terminal <strong>in VS Code</strong>: Es nutzt die GitHub-Anmeldung vom Klonen. Im Terminal-Programm des Mac kann <code>git push</code> (und damit <code>/ndu-commit</code>) nach einer Anmeldung fragen oder scheitern.</p>
   </details>
 
   <h3 id="lokal-danach">Danach – für beide Wege</h3>
   <h4 id="lokal-starten">Claude und App starten</h4>
-  <p>In VS Code: <em>Yes, I trust the authors</em>, dann Menü <em>Terminal → New Terminal</em>.</p>
+  <p>In VS Code ein Terminal öffnen, falls noch keins offen ist: Menü <em>Terminal → New Terminal</em>. (Nach dem Skript fragt VS Code zuerst: <em>Yes, I trust the authors</em>.)</p>
   <div data-nur="mac">
-  <Schritte id="lokal-starten" start={2} steps={[
+  <Schritte id="lokal-starten" steps={[
       { img: bild('lokal/mac-claude-3-start'), alt: 'VS-Code-Terminal: Claude Code startet mit Let\'s get started und der Auswahl des Farbschemas', text: 'Im Terminal <code>claude</code> eintippen. Ab hier geht es weiter wie in <a href="#claude-code-start">Schritt 5</a>: Farbschema wählen, <em>Claude account with subscription</em>, im Browser anmelden. Der Unterschied: Der Browser springt nach der Anmeldung von selbst zurück – Code kopieren ist nicht nötig.', marks: [{ x: 366, y: 565, w: 1115, h: 217 }] },
       { img: bild('lokal/mac-dev-1'), alt: 'Zweites Terminal mit npm run dev: Next.js, Local http://localhost:3000, Ready; rechts die Liste der Terminals', text: 'Für die App ein <strong>zweites</strong> Terminal öffnen (<em>Terminal → New Terminal</em>) und <code>npm run dev</code> eintippen. Mit <kbd>⌘</kbd> + Klick auf <code>http://localhost:3000</code> (1) öffnet sich die App im Browser. Rechts seht ihr beide Terminals und könnt zwischen Claude und App wechseln (2).', marks: [{ x: 366, y: 635, w: 270, h: 15, n: 1 }, { x: 1380, y: 561, w: 112, h: 41, n: 2 }] },
   ]} />

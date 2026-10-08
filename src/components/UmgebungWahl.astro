@@ -83,6 +83,11 @@ return { istWahl: istWahl, startZustand: startZustand, waehle: waehle, waehleOs:
       // Der Anker-Block steht weiter unten als dieses Skript – erst prüfen, wenn die Seite geparst ist.
       document.addEventListener('DOMContentLoaded', folgeAnker);
       window.addEventListener('hashchange', folgeAnker);
+      // Ein Link auf den Anker, der schon in der Adresse steht, löst kein hashchange aus (z. B. zweiter Klick nach dem Zuklappen).
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href^="#"]');
+        if (a && a.getAttribute('href') === location.hash) setTimeout(folgeAnker, 0);
+      });
     }
     u.setze(u.zustand);
     document.querySelectorAll('.umgebung-wahl').forEach(function (w) { w.hidden = false; });
