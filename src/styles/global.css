@@ -292,9 +292,9 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .stepbar a { min-width: 2rem; padding: .2rem .55rem; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-2); color: var(--fg); font-size: .85rem; font-weight: 600; text-align: center; text-decoration: none; }
 .stepbar a:hover { border-color: var(--accent); }
 .stepbar a[aria-current] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-h2[id] { scroll-margin-top: 3.5rem; }
+h2[id], h3[id], h4[id] { scroll-margin-top: 3.5rem; }
 /* Unter 900 px steht die Topbar (sticky) über der Schrittleiste. */
-@media (max-width: 900px) { .stepbar { top: 4rem; flex-wrap: nowrap; overflow-x: auto; } .stepbar a { flex: none; } .shots > li, h2[id] { scroll-margin-top: 7.5rem; } }
+@media (max-width: 900px) { .stepbar { top: 4rem; flex-wrap: nowrap; overflow-x: auto; } .stepbar a { flex: none; } .shots > li, h2[id], h3[id], h4[id] { scroll-margin-top: 7.5rem; } }
 .shots-present { font: inherit; font-size: .9rem; margin: .5rem 0 0; padding: .35rem .8rem; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-2); color: var(--fg); cursor: pointer; }
 .shots-present:hover { border-color: var(--accent); }
 /* Rahmen als outline außerhalb der Fläche: Bei kleinen Bildern bleibt der markierte Text sichtbar. */
@@ -384,6 +384,7 @@ h2[id] { scroll-margin-top: 3.5rem; }
 
 /* Umschalter macOS / Windows (OsWahl.astro). Ohne data-os (kein JavaScript) bleiben beide Varianten sichtbar. */
 .os-wahl { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 1.25rem 0; padding: .6rem .75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+.os-wahl[hidden] { display: none; }
 .os-wahl button { display: inline-flex; align-items: center; gap: .4rem; font: inherit; font-size: .95rem; padding: .35rem .9rem; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--fg); cursor: pointer; }
 .os-wahl button:hover { border-color: var(--accent); }
 .os-wahl button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }

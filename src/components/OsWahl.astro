@@ -1,10 +1,10 @@
 ---
 // Umschalter macOS / Windows. Inhalte mit data-nur="mac" bzw. data-nur="windows" werden je nach Wahl ausgeblendet.
 // Die Wahl gilt für die ganze Seite (Attribut data-os auf <html>) und bleibt im Browser gespeichert.
-// Ohne JavaScript bleibt data-os leer – dann sind beide Varianten sichtbar.
+// Ohne JavaScript bleibt data-os leer und der Umschalter versteckt – dann sind beide Varianten sichtbar.
 import { Apple, Monitor } from '@lucide/astro';
 ---
-<div class="os-wahl" role="group" aria-label="Betriebssystem wählen">
+<div class="os-wahl" role="group" aria-label="Betriebssystem wählen" hidden>
   <span class="small muted">Anleitung für:</span>
   <button type="button" data-os-wahl="mac" aria-pressed="false"><Apple size={16} aria-hidden="true" /> macOS</button>
   <button type="button" data-os-wahl="windows" aria-pressed="false"><Monitor size={16} aria-hidden="true" /> Windows</button>
@@ -20,12 +20,25 @@ import { Apple, Monitor } from '@lucide/astro';
       document.documentElement.dataset.os = wert;
       document.querySelectorAll('[data-os-wahl]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.osWahl === wert)); });
     }
+    // Zeigt ein Link (z. B. /setup#lokal-klonen-3) in einen Teil nur für ein System, dorthin umschalten (ohne zu speichern).
+    function folgeAnker() {
+      var ziel = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      var block = ziel && ziel.closest('[data-nur]');
+      if (block && block.dataset.nur !== document.documentElement.dataset.os) {
+        setze(block.dataset.nur);
+        ziel.scrollIntoView();
+      }
+    }
     setze(os);
+    document.querySelectorAll('.os-wahl').forEach(function (w) { w.hidden = false; });
     document.querySelectorAll('[data-os-wahl]').forEach(function (b) {
       b.addEventListener('click', function () {
         setze(b.dataset.osWahl);
         try { localStorage.setItem('ndu-os', b.dataset.osWahl); } catch (e) {}
       });
     });
+    // Der Anker-Block steht weiter unten als dieses Skript – erst prüfen, wenn die Seite geparst ist.
+    document.addEventListener('DOMContentLoaded', folgeAnker);
+    window.addEventListener('hashchange', folgeAnker);
   })();
 </script>
