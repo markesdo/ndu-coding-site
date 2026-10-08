@@ -6,10 +6,9 @@ import Bestellweg from '../../components/sota/Bestellweg.tsx';
 import Prompt from '../../components/Prompt.astro';
 import {
   AppWindow, Armchair, Blocks, Building2, ChefHat, ConciergeBell, CreditCard, Database, Globe, Hammer, Image, KeyRound,
-  Laptop, LayoutTemplate, Mail, MapPin, MousePointerClick, Server, Smartphone, Sparkles, Store,
+  LayoutTemplate, Mail, MapPin, MousePointerClick, Server, Smartphone, Sparkles, SquareTerminal, Store,
 } from '@lucide/astro';
 const icons = { frontend: Armchair, api: ConciergeBell, backend: ChefHat, db: Database, hosting: Building2 };
-const layerName = { frontend: 'Frontend', api: 'API', backend: 'Backend', db: 'Datenbank', hosting: 'Hosting' };
 type LayerId = keyof typeof icons;
 
 // Stack-Karte: Gruppen von Werkzeugen. `fit` sagt, bei welchem App-Typ die Gruppe hervorgehoben wird,
@@ -47,6 +46,7 @@ const layers = [
     text: 'Solange die App nur in eurem Codespace läuft, sieht sie niemand. Hosting (Vercel) stellt sie unter einer öffentlichen Adresse bereit und baut sie bei jedem Push neu. Die Geheimnisse (.env) werden dort separat hinterlegt.',
     q: 'Frage an Claude: „Was muss ich bei Vercel einstellen, damit die App dort genauso läuft wie hier?“' },
 ];
+const layerName = Object.fromEntries(layers.map(l => [l.id, l.name])) as Record<LayerId, string>;
 ---
 <Layout title="Anatomie einer App">
   <span class="eyebrow">Konzept 1 · Tag 1</span>
@@ -107,17 +107,16 @@ const layers = [
 
   <h2 id="womit">Womit baut man was?</h2>
   <p>Für jeden App-Typ gibt es eigene Werkzeuge. Ein Framework allein ist noch keine App: Die farbigen Symbole zeigen, welche der fünf Schichten ein Werkzeug abdeckt.</p>
-  <div class="widget" id="stack" data-typ="web-app">
+  <div class="widget" id="stack">
     <p class="hint">Wählt einen App-Typ. Hervorgehoben wird, womit man ihn baut.</p>
     <div class="loop">
       {typen.map(t => <button type="button" data-typ={t.id} aria-pressed={t.id === 'web-app' ? 'true' : 'false'} class={t.id === 'web-app' ? 'active' : undefined}>{t.name}</button>)}
     </div>
-    <div class="loop-detail" aria-live="polite">
-      {typen.map(t => <p data-fuer={t.id} set:html={t.text} />)}
-    </div>
+    <div class="loop-detail" aria-live="polite"><p id="stack-text" set:html={typen.find(t => t.id === 'web-app')!.text} /></div>
+    {typen.map(t => <template data-fuer={t.id} set:html={t.text} />)}
     <div class="stack-karte">
       {gruppen.map(g => (
-        <div class="gruppe" data-fit={g.fit}>
+        <div class={g.fit.split(' ').includes('web-app') ? 'gruppe passt' : 'gruppe'} data-fit={g.fit}>
           <div class="gruppe-kopf">
             <g.icon size={18} aria-hidden="true" />
             <span>{g.name}</span>
@@ -134,9 +133,13 @@ const layers = [
     <script>
       const stack = document.getElementById('stack')!;
       const knoepfe = stack.querySelectorAll<HTMLButtonElement>('.loop button');
+      const text = document.getElementById('stack-text')!;
       knoepfe.forEach(b => b.addEventListener('click', () => {
-        stack.dataset.typ = b.dataset.typ;
+        const typ = b.dataset.typ!;
         knoepfe.forEach(k => { k.classList.toggle('active', k === b); k.setAttribute('aria-pressed', String(k === b)); });
+        stack.querySelectorAll<HTMLElement>('.gruppe').forEach(g => g.classList.toggle('passt', g.dataset.fit!.split(' ').includes(typ)));
+        // Text in der Live-Region austauschen, damit Screenreader die neue Beschreibung ansagen.
+        text.innerHTML = stack.querySelector<HTMLTemplateElement>(`template[data-fuer="${typ}"]`)!.innerHTML;
       }));
     </script>
   </div>
@@ -175,7 +178,7 @@ const layers = [
   <p>Eure App existiert in zwei Kopien: einmal in eurem Codespace, einmal live bei Vercel. Der Code ist derselbe, aber die beiden laufen getrennt.</p>
   <div class="compare">
     <div class="card">
-      <h3><Laptop size={20} aria-hidden="true" /> Lokal · Codespace</h3>
+      <h3><SquareTerminal size={20} aria-hidden="true" /> Entwicklung · Codespace</h3>
       <ul>
         <li>Nur ihr seht die App.</li>
         <li>Jede Änderung ist sofort sichtbar.</li>
@@ -195,12 +198,12 @@ const layers = [
   <div class="table-scroll" tabindex="0" role="region" aria-labelledby="kosten">
   <table>
     <tr><th>Dienst</th><th>Kostenlos</th><th>Kostet, wenn …</th></tr>
-    <tr><td><strong>GitHub Codespaces</strong></td><td>60 Stunden pro Monat, mit GitHub Education 90</td><td>… ihr mehr braucht. Ist das Kontingent leer, stoppt der Codespace einfach – es entstehen keine Kosten (<a href="/setup#kontingent">Details</a>).</td></tr>
+    <tr><td><strong>GitHub Codespaces</strong></td><td>60 Stunden pro Monat, mit GitHub Education 90</td><td>… ihr mehr braucht. Ist das Kontingent aufgebraucht, startet der Codespace nicht mehr – Kosten entstehen keine (<a href="/setup#kontingent">Details</a>).</td></tr>
     <tr><td><strong>Supabase Free</strong></td><td>2 Projekte, 500 MB Datenbank, 1 GB Dateien</td><td>… echte Nutzer*innen die App dauerhaft brauchen: Kostenlose Projekte <a href="/konzepte/daten-backend#supabase">pausieren nach 7 Tagen</a> ohne Zugriff. Pro ab 25 $ im Monat.</td></tr>
     <tr><td><strong>Vercel Hobby</strong></td><td>Für persönliche, nicht kommerzielle Projekte – die Limits reichen für jeden Prototyp</td><td>… Geld im Spiel ist (Firma, Kund*innen, Verkauf). Dann Pro, 20 $ im Monat pro Person.</td></tr>
   </table>
   </div>
-  <p>Für den Kurs und euren Prototyp zahlt ihr also nur Claude Pro.</p>
+  <p>Für den Kurs und euren Prototyp zahlt ihr also nur Claude Pro. Nutzt eure App selbst KI, kommt ein API-Key mit eigenem Guthaben dazu (siehe <a href="/ideen">Projektideen</a>).</p>
 
   <h2 id="sezieren">Eine App sezieren</h2>
   <p>Nehmt eine App, die ihr alle kennt – willhaben, Airbnb oder Spotify – und zerlegt sie gemeinsam am Whiteboard, ohne Claude. Die Beispiele zeigen, wie eine Antwort für Airbnb aussehen kann.</p>
@@ -230,28 +233,19 @@ const layers = [
 </Layout>
 
 <style>
-  /* Stack-Karte: Gruppen, die zum gewählten App-Typ passen, werden hervorgehoben (Rahmen + Fett, nicht nur Farbe), der Rest tritt zurück. */
+  /* Stack-Karte: Gruppen, die zum gewählten App-Typ passen (.passt, setzt das Skript), bekommen Akzent-Rahmen und fette Namen;
+     der Rest tritt mit gestricheltem Rahmen zurück, bleibt aber gut lesbar (keine Deckkraft, sonst sinkt der Kontrast). */
   .stack-karte { display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); margin: .75rem 0 0; }
-  .gruppe { border: 2px solid var(--border); border-radius: var(--radius); background: var(--bg); padding: .6rem .75rem; opacity: .45; transition: opacity .15s, border-color .15s, background .15s; }
-  #stack[data-typ="website"] .gruppe[data-fit~="website"],
-  #stack[data-typ="web-app"] .gruppe[data-fit~="web-app"],
-  #stack[data-typ="native"] .gruppe[data-fit~="native"],
-  #stack[data-typ="backend"] .gruppe[data-fit~="backend"] { opacity: 1; border-color: var(--accent); background: var(--accent-soft); }
-  #stack[data-typ="website"] .gruppe[data-fit~="website"] li,
-  #stack[data-typ="web-app"] .gruppe[data-fit~="web-app"] li,
-  #stack[data-typ="native"] .gruppe[data-fit~="native"] li,
-  #stack[data-typ="backend"] .gruppe[data-fit~="backend"] li { font-weight: 700; }
+  .gruppe { border: 2px dashed var(--border); border-radius: var(--radius); background: transparent; padding: .6rem .75rem; color: var(--muted); transition: border-color .15s, background .15s; }
+  .gruppe.passt { border-style: solid; border-color: var(--accent); background: var(--accent-soft); color: var(--fg); }
+  .gruppe.passt li { font-weight: 700; }
   .gruppe-kopf { display: flex; align-items: center; gap: .4rem; font-size: .8rem; color: var(--muted); font-weight: 600; }
   .gruppe-kopf svg { flex: none; }
   .deckt { display: flex; gap: .3rem; margin: .4rem 0; }
   .deckt span { display: flex; color: var(--farbe); }
   .gruppe ul { list-style: none; margin: 0; padding: 0; }
   .gruppe li { display: flex; flex-wrap: wrap; align-items: center; gap: .1rem .4rem; padding: .1rem 0; }
-  #stack [data-fuer] { display: none; margin: 0; }
-  #stack[data-typ="website"] [data-fuer="website"],
-  #stack[data-typ="web-app"] [data-fuer="web-app"],
-  #stack[data-typ="native"] [data-fuer="native"],
-  #stack[data-typ="backend"] [data-fuer="backend"] { display: block; }
+  #stack-text { margin: 0; }
   .beispiel { display: block; }
   .compare h3 svg { vertical-align: -.2em; }
   .mieten .card { border-top-color: var(--fg); }
