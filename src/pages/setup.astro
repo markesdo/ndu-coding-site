@@ -383,11 +383,25 @@ claude plugin install linear@claude-plugins-official</Prompt>
   <p class="small muted"><strong>Geheimnisse (<code>.env.local</code>):</strong> Bis Issue 3 braucht die App keine – nichts zu tun. Die Datei entsteht an Tag 2 mit Supabase (<a href="/tag-2#uebung-3-d">Übung 3d</a>); das klappt lokal genauso. Wer sie schon im Codespace hat: Inhalt kopieren, lokal in VS Code eine Datei <code>.env.local</code> im Projektordner anlegen (Rechtsklick in die Dateiliste → <em>New File…</em>) und einfügen – oder die Werte neu aus dem Supabase-Dashboard holen. <code>.gitignore</code> hält die Datei aus dem Repo.</p>
 
   <h4 id="lokal-screenshots">Screenshots an Claude geben</h4>
+  <p>Ein Screenshot sagt Claude mehr als eine Beschreibung – etwa bei Layoutfehlern oder Fehlermeldungen im Browser.</p>
   <div data-nur="mac">
-    <p><kbd>⌘</kbd> + <kbd>Ctrl</kbd> + <kbd>⇧</kbd> + <kbd>4</kbd> drücken und einen Bereich aufziehen – der Screenshot landet in der Zwischenablage. Im Claude-Terminal dann <kbd>Ctrl</kbd> + <kbd>V</kbd> (nicht <kbd>⌘</kbd> + <kbd>V</kbd>). In der Eingabe erscheint <code>[Image #1]</code>; dahinter schreibt ihr, was Claude damit tun soll. Ein gespeichertes Bild (z. B. vom Schreibtisch) könnt ihr auch einfach ins Terminal ziehen.</p>
+    <ol class="steps">
+      <li><strong>Aufnehmen</strong> <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>4</kbd> drücken und einen Bereich aufziehen. Unten rechts erscheint für ein paar Sekunden eine kleine Vorschau.</li>
+      <li><strong>In das Claude-Terminal ziehen</strong> Die Vorschau sofort packen und auf das Terminal mit Claude fallen lassen – genau auf das Terminal, nicht auf den Editor darüber (dort öffnet VS Code nur das Bild; Tab schließen, nochmal). Im Eingabefeld steht jetzt der Pfad zum Bild. Vorschau schon weg? Die Datei vom Schreibtisch ziehen.</li>
+      <li><strong>Sagen, was Claude tun soll</strong> Hinter den Pfad tippen, worum es geht, <kbd>Enter</kbd>. Claude öffnet das Bild beim Senden.</li>
+    </ol>
+    <Prompt label="Beispiel – hinter den Pfad">Auf meinem Handy ragt die Karte über den Rand – schau dir den Screenshot an und behebe es.</Prompt>
+    <Callout type="tip" title="Ohne Datei: über die Zwischenablage">
+      <p><kbd>⌘</kbd> + <kbd>Ctrl</kbd> + <kbd>⇧</kbd> + <kbd>4</kbd> kopiert den Ausschnitt, statt ihn zu speichern. Im Claude-Terminal dann <kbd>Ctrl</kbd> + <kbd>V</kbd> – wirklich Ctrl, nicht <kbd>⌘</kbd>. Es erscheint <code>[Image #1]</code>.</p>
+    </Callout>
+    <p class="small muted">Der Schreibtisch füllt sich mit Bildschirmfotos? Einmal <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>5</kbd> → <em>Optionen</em> → <em>Sichern in</em> → einen Ordner wählen.</p>
   </div>
   <div data-nur="windows">
-    <p><kbd>Win</kbd> + <kbd>⇧</kbd> + <kbd>S</kbd> drücken und einen Bereich wählen – der Screenshot landet in der Zwischenablage. Im Claude-Terminal dann <kbd>Alt</kbd> + <kbd>V</kbd>. In der Eingabe erscheint <code>[Image #1]</code>; dahinter schreibt ihr, was Claude damit tun soll.</p>
+    <ol class="steps">
+      <li><strong>Aufnehmen</strong> <kbd>Win</kbd> + <kbd>⇧</kbd> + <kbd>S</kbd>, Bereich wählen – der Ausschnitt liegt in der Zwischenablage.</li>
+      <li><strong>Einfügen</strong> Im Claude-Terminal <kbd>Alt</kbd> + <kbd>V</kbd> (nicht <kbd>Strg</kbd> + <kbd>V</kbd>). Es erscheint <code>[Image #1]</code>.</li>
+      <li><strong>Sagen, was Claude tun soll</strong> Dahinter schreiben, worum es geht, <kbd>Enter</kbd>.</li>
+    </ol>
   </div>
 
   <h4 id="claude-in-chrome">Claude in Chrome (optional)</h4>
