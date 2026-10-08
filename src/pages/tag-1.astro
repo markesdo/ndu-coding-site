@@ -29,7 +29,7 @@ import Quiz from '../components/Quiz.astro';
     <Block time="14:00–15:00" type="uebung" title="Übung 1 · Erste eigene Änderungen" href="#uebung-1">Kleine Schritte, vage gegen präzise, Screenshot-Feedback, etwas kaputt machen und mit Git zurück.</Block>
     <Block time="15:00–15:15" type="pause" title="Pause" />
     <Block time="15:15–15:45" type="konzept" title="Konzept 3 · Von der Idee zur Spezifikation" href="#konzept-3">Produkt-Brief, Brainstorming mit Claude, Issue, Akzeptanzkriterium, MVP. Vibe Coding vs. Spec-driven.</Block>
-    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Leihbar v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Funktionen brainstormen mit <code>/ndu-brainstorm</code>, erstes Issue bauen lassen, die Startseite im eigenen Stil gestalten. Wer schnell ist: Issues 2 und 3.</Block>
+    <Block time="15:45–16:45" type="uebung" title="Übung 2 · Leihbar v0" href="#uebung-2">Idee → Produkt-Brief mit <code>/ndu-idee</code>, Funktionen brainstormen mit <code>/ndu-brainstorm</code>, erstes Issue bauen lassen, die Startseite im eigenen Stil gestalten. Dazu Issues 2 und 3.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss & Reflexion">Drei Erkenntnisse pro Person. Ausblick Tag 2.</Block>
   </div>
 
@@ -198,13 +198,13 @@ Am Ende npm run lint und drei Sätze, was ich im Browser sehen soll.</Prompt>
   <h3 id="uebung-2-e">e) Sichern (5 min)</h3>
   <p>Gefällt euch das Ergebnis: <code>/ndu-commit</code>. Wenn nicht, sagt Claude: „Mach alle Änderungen seit dem letzten Commit rückgängig, auch neu angelegte Dateien. Lass .env.local und node_modules stehen und führ danach npm install aus.“ Issue 1 ist schon gesichert.</p>
 
-  <h3 id="uebung-2-issue-2">f) Issue 2 lesen und bauen lassen – Detailseite (wer schnell ist, 15 min)</h3>
+  <h3 id="uebung-2-issue-2">f) Issue 2 lesen und bauen lassen – Detailseite (15 min)</h3>
   <p>Vorher <code>/clear</code>: Ein neues Issue beginnt mit leerem Kontext.</p>
   <IssueKarte nr={2} dauer="15 min" braucht="Issue 1" />
   <Prompt>Setze Issue 2 aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <Prompt>Setze Issue 2 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
 
-  <h3 id="uebung-2-issue-3">g) Issue 3 lesen und bauen lassen – Nach Kategorie filtern (wer schnell ist, 15 min)</h3>
+  <h3 id="uebung-2-issue-3">g) Issue 3 lesen und bauen lassen – Nach Kategorie filtern (15 min)</h3>
   <p>Wieder <code>/clear</code>, dann:</p>
   <IssueKarte nr={3} dauer="15 min" braucht="Issue 1" />
   <Prompt>Setze Issue 3 aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
@@ -218,8 +218,8 @@ Am Ende npm run lint und drei Sätze, was ich im Browser sehen soll.</Prompt>
     'Alle Akzeptanzkriterien von Issue 1 selbst im Browser geprüft',
     'Backlog aktualisiert und committet',
     'Startseite im eigenen Stil umgestaltet und gesichert (oder verworfen)',
-    'Wer schnell war: Issue 2 (Detailseite) umgesetzt, geprüft und committet',
-    'Wer schnell war: Issue 3 (Filter) umgesetzt, geprüft und committet',
+    'Issue 2 (Detailseite) umgesetzt, geprüft und committet',
+    'Issue 3 (Filter) umgesetzt, geprüft und committet',
   ]} />
 
   <hr />

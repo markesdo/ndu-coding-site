@@ -172,6 +172,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .issue-meta { color: var(--muted); font-size: .85rem; }
 .issue-ritual, .issue-peer { display: flex; gap: .5rem; align-items: flex-start; font-size: .9rem; color: var(--muted); margin: 0 0 .9rem; }
 .issue-ritual svg, .issue-peer svg { flex: none; margin-top: .2rem; }
+.issue-ritual ol { margin: .3rem 0; padding-left: 1.2rem; }
 .issue-felder { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 0 0 1rem; }
 .issue-felder dt { font-weight: 600; }
 .issue-felder dd { margin: 0; }

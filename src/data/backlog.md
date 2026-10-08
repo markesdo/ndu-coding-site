@@ -111,10 +111,11 @@
 **Ziel:** Besitzer*innen nehmen eine Anfrage an oder lehnen sie ab, und die anfragende Person sieht die Antwort – damit aus einer Anfrage eine Ausleihe wird.
 **Nicht im Umfang:** Zeitraum, Übergabe, Nachrichten, E-Mails; Beispiel-Gegenstände ohne Besitzer*in-Konto.
 **Akzeptanzkriterien:**
-- Gegeben jemand hat einen Gegenstand angefragt, den ich anbiete, dann sehe ich auf dessen Detailseite die Anfrage mit der E-Mail der Person und den Buttons „Annehmen“ und „Ablehnen“.
+- Gegeben jemand hat einen Gegenstand angefragt, den ich anbiete, dann sehe ich auf dessen Detailseite die Anfrage mit der E-Mail, mit der die Person angemeldet ist, und den Buttons „Annehmen“ und „Ablehnen“.
 - Gegeben der Gegenstand gehört nicht mir, dann sehe ich dort keine fremden Anfragen und keine Buttons.
 - Gegeben ich nehme eine Anfrage an, dann steht bei der anfragenden Person unter `/meine-anfragen` „angenommen“; lehne ich ab, steht dort „abgelehnt“. Neue Anfragen stehen auf „offen“.
-- Gegeben ich bin nicht Besitzer*in, wenn ich versuche, den Status einer Anfrage zu ändern, dann lehnt die Datenbank das ab (Row Level Security, Tabelle `requests`).
+- Gegeben ich bin weder Besitzer*in noch die anfragende Person, dann kann ich die Anfrage samt E-Mail auch direkt in der Datenbank nicht lesen; der Zähler aus Issue 9 zählt trotzdem für alle (Row Level Security, Tabelle `requests`).
+- Gegeben ich bin Besitzer*in, dann kann ich an einer Anfrage nur den Status ändern; alle anderen können gar nichts ändern.
 
 **Fertig, wenn:** die nächste Person in der Runde auf meiner Live-Adresse einen Gegenstand angefragt hat, den ich angeboten habe; ich habe angenommen und sie hat „angenommen“ gesehen; eine zweite Anfrage abgelehnt; RLS-Prüfung mit dem Supabase-MCP ohne Lücke.
 
@@ -153,7 +154,7 @@
 - Gegeben ich lade die Seite neu, dann stimmt der Zähler – auch zusammen mit der Live-Aktualisierung aus Issue 9 wird nichts doppelt gezählt.
 - Gegeben „Bewegung reduzieren“ ist eingeschaltet, dann ändern sich Zahl und Button ohne Bewegung.
 
-**Fertig, wenn:** angefragt, zurückgezogen, neu geladen; der Fehlerfall einmal ausgelöst (Claude baut dafür vorübergehend einen Fehler ein und entfernt ihn danach wieder) und gesehen, dass der Zähler zurückspringt.
+**Fertig, wenn:** angefragt, zurückgezogen, neu geladen; den Fehlerfall einmal ausgelöst (DevTools → Network → „Offline“, dann klicken) und gesehen, dass der Zähler zurückspringt; danach wieder „No throttling“.
 
 ### ⬜ Issue 14 — Erfolgsmoment beim Anbieten
 **Ziel:** Nach dem Speichern eines neuen Gegenstands sieht man deutlich, dass es geklappt hat, und findet ihn sofort in der Liste – damit Anbietende sicher sind, dass ihr Angebot online ist.

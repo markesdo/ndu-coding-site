@@ -60,3 +60,10 @@ describe.runIf(existsSync(template))('Kopie des Template-Backlogs', () => {
     expect(kopie).toBe(readFileSync(template, 'utf8'));
   });
 });
+
+describe('issuesLesen bei umgebrochenen Zeilen', () => {
+  it('bricht ab statt still abzuschneiden', () => {
+    const md = '### ⬜ Issue 1 — X\n**Ziel:** z – damit\ny.\n**Nicht im Umfang:** n\n**Akzeptanzkriterien:**\n- Gegeben a\n\n**Fertig, wenn:** f';
+    expect(() => issuesLesen(md)).toThrow(/Issue 1: unerwartete Zeile/);
+  });
+});

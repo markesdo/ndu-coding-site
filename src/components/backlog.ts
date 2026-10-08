@@ -32,6 +32,12 @@ export function issuesLesen(md: string): Map<number, Issue> {
     let ende = i + 1;
     while (ende < zeilen.length && !zeilen[ende].startsWith('#')) ende++;
     const abschnitt = zeilen.slice(i, ende);
+    // Jede Zeile ist ein Feld, ein Kriterium oder leer – umgebrochene Zeilen würden sonst still abgeschnitten.
+    for (const z of abschnitt.slice(1)) {
+      if (z.trim() !== '' && !z.startsWith('**') && !z.startsWith('- ')) {
+        throw new Error(`Issue ${nr}: unerwartete Zeile im Backlog (umgebrochen?): „${z.slice(0, 60)}“`);
+      }
+    }
     const start = abschnitt.indexOf('**Akzeptanzkriterien:**');
     if (start < 0) throw new Error(`Issue ${nr}: „Akzeptanzkriterien“ fehlen im Backlog.`);
     const kriterien: string[] = [];
