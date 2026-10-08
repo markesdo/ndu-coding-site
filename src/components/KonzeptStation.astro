@@ -1,0 +1,19 @@
+---
+// Ein Konzept auf der Tagesseite, dort, wo es im Ablauf dran ist: wofür ihr es braucht, das Wichtigste, Link zum Konzept.
+// Die h2 dazu steht auf der Seite selbst (die Gliederung liest den Quelltext der Seite).
+import { ArrowRight } from '@lucide/astro';
+
+const { links, danach } = Astro.props as {
+  links: { href: string; t: string }[];
+  danach: { href: string; t: string };
+};
+---
+<div class="callout concept station">
+  <slot />
+  <div class="station-cta">
+    {links.map((l, i) => (
+      <a class={`btn${i === 0 ? ' primary' : ''}`} href={l.href}>{l.t} <ArrowRight size={16} aria-hidden="true" /></a>
+    ))}
+  </div>
+  <p class="small muted station-danach">Danach: <a href={danach.href}>{danach.t}</a></p>
+</div>

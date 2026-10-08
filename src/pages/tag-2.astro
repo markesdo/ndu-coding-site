@@ -9,6 +9,8 @@ import Callout from '../components/Callout.astro';
 import IssueLesen from '../components/IssueLesen.astro';
 import Schritte from '../components/Schritte.astro';
 import UmgebungWahl from '../components/UmgebungWahl.astro';
+import KonzeptStation from '../components/KonzeptStation.astro';
+import Quiz from '../components/Quiz.astro';
 import { bild } from '../components/anleitung-bilder';
 ---
 <Layout title="Tag 2 · Bauen wie ein Profi">
@@ -21,56 +23,50 @@ import { bild } from '../components/anleitung-bilder';
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-09">
     <Block time="09:00–09:30" type="plenum" title="Recap & Quiz" href="#quiz">Acht Fragen zu Tag 1. Offene Probleme aus den Codespaces sammeln.</Block>
-    <Block time="09:30–10:15" type="konzept" title="Konzept 4 · Daten & Backend" href="/konzepte/daten-backend">Datenbank, CRUD, API-Routen, Supabase, Secrets & .env, Row Level Security.</Block>
+    <Block time="09:30–10:15" type="konzept" title="Konzept 4 · Daten & Backend" href="#konzept-4">Datenbank, CRUD, API-Routen, Supabase, Secrets & .env, Row Level Security.</Block>
     <Block time="10:15–10:30" type="pause" title="Pause" />
     <Block time="10:30–12:00" type="uebung" title="Übung 3 · Echte Daten" href="#uebung-3">Supabase-Projekt, MCP verbinden, Issue 4: Gegenstand anbieten und dauerhaft speichern.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:45" type="konzept" title="Konzept 5 · Verifizieren & Debuggen" href="/konzepte/verifizieren">Browser-Konsole vs. Terminal, Fehler übergeben, Definition of Done, der Agent prüft sich selbst.</Block>
+    <Block time="13:00–13:45" type="konzept" title="Konzept 5 · Verifizieren & Debuggen" href="#konzept-5">Browser-Konsole vs. Terminal, Fehler übergeben, Definition of Done, der Agent prüft sich selbst.</Block>
     <Block time="13:45–15:15" type="uebung" title="Übung 4 · Login & Anfragen" href="#uebung-4">Issues 5–7. Absichtlich kaputt machen, in der Dreier-Runde reparieren. RLS prüfen.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
-    <Block time="15:30–16:00" type="konzept" title="Konzept 6 · Agenten steuern" href="/konzepte/agenten-steuern">Kontext-Hygiene, CLAUDE.md pflegen, Custom Commands, Subagents, MCP-Überblick, Kosten.</Block>
+    <Block time="15:30–16:00" type="konzept" title="Konzept 6 · Agenten steuern" href="#konzept-6">Kontext-Hygiene, CLAUDE.md pflegen, Custom Commands, Subagents, MCP-Überblick, Kosten.</Block>
     <Block time="16:00–16:40" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel-Plugin, Deploy durch Claude, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
     <Block time="16:40–17:00" type="plenum" title="Zwischenwoche & Abschluss" href="/zwischenwoche">Eigener Mini-Prototyp für die Demo am Do 15.10. Wie man Hilfe holt.</Block>
   </div>
 
   <hr />
   <h2 id="quiz">Recap-Quiz</h2>
-  <div class="quiz" id="quiz-t1">
-    {[
-      { q: 'Jemand klickt auf „Ausleihen anfragen“ und nichts passiert. In der Browser-Konsole steht ein roter Fehler. In welcher Schicht sucht ihr zuerst?', o: ['Datenbank', 'Frontend', 'Hosting'], a: 1, w: 'Die Browser-Konsole zeigt Frontend-Fehler. Terminal-Fehler wären Backend.' },
-      { q: 'Claude hat vor 40 Nachrichten eine Designentscheidung mit euch getroffen und hält sich jetzt nicht mehr daran. Wahrscheinlichste Ursache?', o: ['Claude wurde zwischendurch aktualisiert', 'Das Kontextfenster ist voll, die Entscheidung ist aus dem Blick', 'Ein Bug in Next.js'], a: 1, w: 'Dauerhaftes gehört in CLAUDE.md oder docs/ENTSCHEIDUNGEN.md – dann ist es in jeder Session da.' },
-      { q: 'Was ist ein gutes Akzeptanzkriterium?', o: ['„Die Seite soll schön sein.“', '„Gegeben der Titel ist leer, wenn ich speichere, dann sehe ich eine Fehlermeldung und nichts wird gespeichert.“', '„Der Agent soll React benutzen.“'], a: 1, w: 'Konkret, durchklickbar, mit Negativfall – und kein Wort zum Wie.' },
-      { q: 'Ihr habt eine Stunde mit Claude gearbeitet, nichts committet, und jetzt ist alles kaputt. Was hilft?', o: ['Codespace löschen', 'Source Control → Discard: zurück zum letzten Commit', 'Weiter prompten, bis es geht'], a: 1, w: 'Deshalb: nach jedem funktionierenden Issue committen – dann ist der Rückschritt klein.' },
-      { q: 'Ein Issue mit Ziel, Grenze und Akzeptanzkriterien liegt vor euch. Wie geht ihr vor?', o: ['Erst einen Plan schreiben lassen, ihn lesen und freigeben', 'Claude zuerst weitere Funktionen vorschlagen lassen', 'Direkt umsetzen lassen und für jedes Kriterium einen Beleg verlangen'], a: 2, w: 'Ein klares Issue ist schon der Plan. Ist etwas unklar, fragt Claude zuerst nach. Ist noch offen, was überhaupt entstehen soll: /ndu-idee und /ndu-brainstorm.' },
-      { q: 'Ein API-Key gehört …', o: ['in die Datei, die ihn braucht', 'in .env.local – und die ist in .gitignore', 'in die CLAUDE.md'], a: 1, w: 'Ein Key, der einmal auf GitHub war, gilt als verbrannt.' },
-      { q: 'Was ist der Unterschied zwischen Website und Web-App?', o: ['Web-Apps sind größer', 'Web-Apps haben Login, speichern Daten und reagieren auf Nutzer*innen', 'Websites laufen nicht im Browser'], a: 1, w: 'Leihbar ist eine Web-App – sobald jemand etwas anfragen kann, speichern wir Daten.' },
-      { q: 'Claude sagt „Ich habe das getestet, es funktioniert.“ Was tut ihr?', o: ['Glauben', 'Selbst im Browser prüfen – ihr seid der letzte Prüfschritt', 'Nochmal fragen, ob es sicher ist'], a: 1, w: 'Claude sieht euren Browser nicht. Akzeptanzkriterien durchklicken.' },
-    ].map((it, i) => (
-      <div class="q" data-a={it.a}>
-        <p>{i + 1}. {it.q}</p>
-        {it.o.map((o, j) => <button class="opt" type="button" data-j={j}>{o}</button>)}
-        <p class="why">{it.w}</p>
-      </div>
-    ))}
-  </div>
-  <script>
-    document.querySelectorAll<HTMLElement>('#quiz-t1 .q').forEach(q => {
-      q.querySelectorAll<HTMLButtonElement>('.opt').forEach(b => b.addEventListener('click', () => {
-        if (q.classList.contains('answered')) return;
-        q.classList.add('answered');
-        const a = Number(q.dataset.a);
-        q.querySelectorAll<HTMLButtonElement>('.opt').forEach(x => {
-          const j = Number(x.dataset.j);
-          if (j === a) x.classList.add('right');
-          else if (x === b) x.classList.add('wrong');
-        });
-      }));
-    });
-  </script>
+  <Quiz id="quiz-t1" fragen={[
+    { q: 'Jemand klickt auf „Ausleihen anfragen“ und nichts passiert. In der Browser-Konsole steht ein roter Fehler. In welcher Schicht sucht ihr zuerst?', o: ['Datenbank', 'Frontend', 'Hosting'], a: 1, w: 'Die Browser-Konsole zeigt Frontend-Fehler. Terminal-Fehler wären Backend.' },
+    { q: 'Claude hat vor 40 Nachrichten eine Designentscheidung mit euch getroffen und hält sich jetzt nicht mehr daran. Wahrscheinlichste Ursache?', o: ['Claude wurde zwischendurch aktualisiert', 'Das Kontextfenster ist voll, die Entscheidung ist aus dem Blick', 'Ein Bug in Next.js'], a: 1, w: 'Dauerhaftes gehört in CLAUDE.md oder docs/ENTSCHEIDUNGEN.md – dann ist es in jeder Session da.' },
+    { q: 'Was ist ein gutes Akzeptanzkriterium?', o: ['„Die Seite soll schön sein.“', '„Gegeben der Titel ist leer, wenn ich speichere, dann sehe ich eine Fehlermeldung und nichts wird gespeichert.“', '„Der Agent soll React benutzen.“'], a: 1, w: 'Konkret, durchklickbar, mit Negativfall – und kein Wort zum Wie.' },
+    { q: 'Ihr habt eine Stunde mit Claude gearbeitet, nichts committet, und jetzt ist alles kaputt. Was hilft?', o: ['Codespace löschen', 'Source Control → Discard: zurück zum letzten Commit', 'Weiter prompten, bis es geht'], a: 1, w: 'Deshalb: nach jedem funktionierenden Issue committen – dann ist der Rückschritt klein.' },
+    { q: 'Ein Issue mit Ziel, Grenze und Akzeptanzkriterien liegt vor euch. Wie geht ihr vor?', o: ['Erst einen Plan schreiben lassen, ihn lesen und freigeben', 'Claude zuerst weitere Funktionen vorschlagen lassen', 'Direkt umsetzen lassen und für jedes Kriterium einen Beleg verlangen'], a: 2, w: 'Ein klares Issue ist schon der Plan. Ist etwas unklar, fragt Claude zuerst nach. Ist noch offen, was überhaupt entstehen soll: /ndu-idee und /ndu-brainstorm.' },
+    { q: 'Ein API-Key gehört …', o: ['in die Datei, die ihn braucht', 'in .env.local – und die ist in .gitignore', 'in die CLAUDE.md'], a: 1, w: 'Ein Key, der einmal auf GitHub war, gilt als verbrannt.' },
+    { q: 'Was ist der Unterschied zwischen Website und Web-App?', o: ['Web-Apps sind größer', 'Web-Apps haben Login, speichern Daten und reagieren auf Nutzer*innen', 'Websites laufen nicht im Browser'], a: 1, w: 'Leihbar ist eine Web-App – sobald jemand etwas anfragen kann, speichern wir Daten.' },
+    { q: 'Claude sagt „Ich habe das getestet, es funktioniert.“ Was tut ihr?', o: ['Glauben', 'Selbst im Browser prüfen – ihr seid der letzte Prüfschritt', 'Nochmal fragen, ob es sicher ist'], a: 1, w: 'Claude sieht euren Browser nicht. Akzeptanzkriterien durchklicken.' },
+  ]} />
+
+  <hr />
+  <h2 id="konzept-4">Konzept 4 · Daten & Backend <span class="pill konzept">45 min</span></h2>
+  <KonzeptStation links={[{ href: '/konzepte/daten-backend', t: 'Konzept 4 lesen' }, { href: '/konzepte/mcp', t: 'Ergänzung: MCP' }]} danach={{ href: '#uebung-3', t: 'Übung 3 · Echte Daten' }}>
+    <p>In Übung 3 legt Claude über den Supabase-MCP eure erste Tabelle an. Was es dabei anlegt und warum, versteht ihr mit diesen Grundlagen.</p>
+    <ul>
+      <li>Eine Anfrage läuft Frontend → API-Route → Datenbank → Antwort. Was der Browser prüft, kann jede*r umgehen – deshalb prüft das Backend noch einmal.</li>
+      <li><strong>Row Level Security</strong> legt in der Datenbank fest, wer welche Zeile lesen, anlegen und löschen darf. Sie ist die letzte Verteidigungslinie.</li>
+      <li>Zugangsdaten stehen in <code>.env.local</code> und kommen nie ins Repo. Nur Variablen mit <code>NEXT_PUBLIC_</code> darf der Browser sehen.</li>
+      <li>Über <strong>MCP</strong> spricht Claude direkt mit Supabase, statt euch SQL zum Kopieren zu geben.</li>
+    </ul>
+  </KonzeptStation>
 
   <hr />
   <h2 id="uebung-3">Übung 3 · Echte Daten <span class="pill uebung">90 min</span></h2>
   <p>Bisher stehen die Gegenstände in einer Datei. Jetzt kommen sie in eine Datenbank – damit ein angebotener Gegenstand auch nach dem Reload und für alle anderen da ist.</p>
+  <Quiz id="einstieg-u3" einstieg="Konzept 4 und MCP" fragen={[
+    { q: 'Anbieten dürfen nur Angemeldete, und das Formular kann das prüfen. Warum braucht die Tabelle items trotzdem Row Level Security?', o: ['Was der Browser prüft, kann jede*r umgehen – RLS prüft in der Datenbank selbst', 'Ohne RLS startet Supabase nicht', 'RLS macht die Abfragen schneller'], a: 0, w: 'RLS greift auch dann, wenn Frontend oder API-Route einen Fehler haben. Fragt Claude bei jeder neuen Tabelle nach den Policies.', mehr: { href: '/konzepte/daten-backend', t: 'Daten & Backend' } },
+    { q: 'Ihr schreibt: „Leg eine Tabelle items an.“ Was ist mit Supabase-MCP anders als ohne?', o: ['Claude liefert das SQL, ihr fügt es im Dashboard ein', 'Nichts, MCP ist nur für Dokumentation', 'Claude legt die Tabelle selbst an, liest die Antwort der Datenbank und korrigiert Fehler'], a: 2, w: 'Ohne MCP seid ihr der Bote zwischen Claude und der Datenbank. Mit MCP sieht Claude selbst, was die Datenbank antwortet.', mehr: { href: '/konzepte/mcp', t: 'MCP' } },
+  ]} />
   <h3 id="supabase">a) Supabase-Projekt (gemeinsam, 15 min)</h3>
   <p class="small muted">Screenshots vom Testdurchgang mit einem neuen Konto am 5.10.2026. Klick auf ein Bild vergrößert es.</p>
   <Schritte id="supabase" nummer="3a" steps={[
@@ -150,7 +146,22 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
 
   <hr />
+  <h2 id="konzept-5">Konzept 5 · Verifizieren & Debuggen <span class="pill konzept">45 min</span></h2>
+  <KonzeptStation links={[{ href: '/konzepte/verifizieren', t: 'Konzept 5 lesen' }]} danach={{ href: '#uebung-4', t: 'Übung 4 · Login & Anfragen' }}>
+    <p>In Übung 4 baut ihr absichtlich Fehler ein und sucht sie in der App der nächsten Person. Dafür müsst ihr wissen, wo ein Fehler sichtbar wird und wie ihr ihn Claude übergebt.</p>
+    <ul>
+      <li>Die <strong>Browser-Konsole</strong> zeigt Frontend-Fehler, das <strong>Terminal</strong> mit <code>npm run dev</code> Backend-Fehler, das <strong>Supabase-Dashboard</strong>, was die Datenbank abgelehnt hat.</li>
+      <li>Fehler übergeben: reproduzieren, Schicht bestimmen, Meldung vollständig kopieren, erst erklären lassen, dann lösen.</li>
+      <li>Fertig ist ein Issue, wenn ihr alle Akzeptanzkriterien selbst im Browser geprüft habt, <code>/ndu-check</code> grün ist und der Stand committet ist.</li>
+    </ul>
+  </KonzeptStation>
+
+  <hr />
   <h2 id="uebung-4">Übung 4 · Login & Anfragen <span class="pill uebung">90 min</span></h2>
+  <Quiz id="einstieg-u4" einstieg="Konzept 5" fragen={[
+    { q: 'Ihr klickt „Ausleihen anfragen“, die Browser-Konsole meldet „500 Internal Server Error“. Wo steht die Ursache?', o: ['Im Terminal, in dem npm run dev läuft', 'Weiter oben in der Browser-Konsole', 'In der CLAUDE.md'], a: 0, w: '500 heißt: Fehler auf dem Server. Die Konsole zeigt nur, dass er passiert ist; die Ursache steht im Terminal.', mehr: { href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' } },
+    { q: 'Claude hat denselben Fehler zweimal erfolglos behoben. Was tut ihr?', o: ['Ein drittes Mal „bitte beheben“', 'Den Stand committen und weiterbauen', '/clear, dann drei mögliche Ursachen nennen lassen, ohne etwas zu ändern'], a: 2, w: 'Wer im Kreis läuft, braucht einen frischen Kontext und Hypothesen statt eines weiteren Versuchs. Der Prompt dafür steht im Konzept.', mehr: { href: '/konzepte/verifizieren', t: 'Verifizieren & Debuggen' } },
+  ]} />
   <h3 id="uebung-4-a">a) Issue 5 lesen und bauen lassen – Anmelden (30 min)</h3>
   <IssueLesen nr={5} />
   <Prompt>Setze Issue 5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-anfragen, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
@@ -173,8 +184,24 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
 
   <hr />
+  <h2 id="konzept-6">Konzept 6 · Agenten steuern <span class="pill konzept">30 min</span></h2>
+  <KonzeptStation links={[{ href: '/konzepte/agenten-steuern', t: 'Konzept 6 lesen' }]} danach={{ href: '#uebung-5', t: 'Übung 5 · Deploy' }}>
+    <p>Ab der Zwischenwoche arbeitet ihr allein mit Claude, über mehrere Tage. Damit der Agent Absprachen nicht vergisst und euer Kontingent reicht, braucht er Führung.</p>
+    <ul>
+      <li>Eine Session pro Issue: fertig → <code>/ndu-commit</code> → <code>/clear</code>.</li>
+      <li>Was dauerhaft gelten soll, gehört in die <code>CLAUDE.md</code> – spätestens, wenn ihr dasselbe zum zweiten Mal korrigiert.</li>
+      <li>Ein großer Kontext frisst das Kontingent. <code>/usage</code> zeigt, wie viel verbraucht ist.</li>
+    </ul>
+  </KonzeptStation>
+
+  <hr />
   <h2 id="uebung-5">Übung 5 · Deploy <span class="pill uebung">40 min</span></h2>
   <p>Vercel baut eure App bei jedem Push auf <code>main</code> neu und stellt sie unter einer öffentlichen Adresse ins Netz. Das Hobby-Konto ist kostenlos. Das Konto legt ihr im Browser an, den Deploy übernimmt Claude – mit dem Vercel-Plugin. Damit kann Claude danach auch selbst nachsehen, ob ein Deploy geklappt hat, und Fehler aus den Logs lesen.</p>
+
+  <Quiz id="einstieg-u5" einstieg="Konzept 6 und 4" fragen={[
+    { q: 'Übung 4 ist fertig und committet, als Nächstes kommt der Deploy. Was tut ihr in Claude zuerst?', o: ['Einfach weiterschreiben, Claude kennt ja schon alles', '/clear – der neue Auftrag beginnt mit leerem Kontext', '/compact'], a: 1, w: 'Eine Session pro Issue. Claude liest CLAUDE.md und Backlog neu; der alte Verlauf kostet nur Kontingent. /compact ist für mitten in einer Aufgabe.', mehr: { href: '/konzepte/agenten-steuern', t: 'Agenten steuern' } },
+    { q: 'Auf Vercel gibt es keine .env.local. Woher bekommt die Live-App Supabase-Adresse und Key?', o: ['Aus den Environment-Variablen des Vercel-Projekts', 'Aus dem Repo auf GitHub', 'Claude schreibt sie in den Code'], a: 0, w: 'Die Datei kommt nie ins Repo. Auf Vercel stehen dieselben Werte als Environment-Variablen – Claude setzt sie beim Deploy.', mehr: { href: '/konzepte/daten-backend', t: 'Daten & Backend' } },
+  ]} />
 
   <h3 id="vercel-konto">a) Vercel-Konto anlegen (Browser, 10 min)</h3>
   <Schritte id="vercel" nummer="5" steps={[
