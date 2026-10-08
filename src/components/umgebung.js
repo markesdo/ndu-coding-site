@@ -27,14 +27,15 @@ export function waehle(zustand, wahl) {
   return wahl === 'codespace' ? { umgebung: 'codespace', os: zustand.os } : { umgebung: 'lokal', os: wahl };
 }
 
-// Reihenfolge: ?umgebung= in der Adresse, dann gespeicherte Wahl, sonst Codespace (der Standard an Tag 1).
+// Reihenfolge: ?umgebung= in der Adresse, dann gespeicherte Wahl, sonst Laptop mit geratenem OS (ab Tag 2 der Standard).
 /**
  * @param {{ query: string | null, gespeichert: string | null, alt: string | null, userAgent: string }} quellen
  * @returns {Zustand}
  */
 export function startZustand(quellen) {
-  var wahl = istWahl(quellen.query) ? quellen.query : istWahl(quellen.gespeichert) ? quellen.gespeichert : 'codespace';
-  return waehle({ umgebung: 'codespace', os: osRaten(quellen.alt, quellen.userAgent) }, wahl);
+  var os = osRaten(quellen.alt, quellen.userAgent);
+  var wahl = istWahl(quellen.query) ? quellen.query : istWahl(quellen.gespeichert) ? quellen.gespeichert : os;
+  return waehle({ umgebung: 'codespace', os: os }, wahl);
 }
 
 // Nur-OS-Umschalter (nurLaptop, z. B. im Setup-Abschnitt „lokal“): ändert nur das System, nicht die Umgebung.

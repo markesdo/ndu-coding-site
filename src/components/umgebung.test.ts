@@ -7,9 +7,9 @@ const WIN_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chr
 const leer = { query: null, gespeichert: null, alt: null, userAgent: MAC_UA };
 
 describe('startZustand', () => {
-  it('ohne alles: Codespace, OS aus dem Browser', () => {
-    expect(startZustand(leer)).toStrictEqual({ umgebung: 'codespace', os: 'mac' });
-    expect(startZustand({ ...leer, userAgent: WIN_UA })).toStrictEqual({ umgebung: 'codespace', os: 'windows' });
+  it('ohne alles: Laptop, OS aus dem Browser', () => {
+    expect(startZustand(leer)).toStrictEqual({ umgebung: 'lokal', os: 'mac' });
+    expect(startZustand({ ...leer, userAgent: WIN_UA })).toStrictEqual({ umgebung: 'lokal', os: 'windows' });
   });
 
   it('gespeicherte Wahl gilt', () => {
@@ -18,9 +18,9 @@ describe('startZustand', () => {
     expect(startZustand({ ...leer, gespeichert: 'codespace', userAgent: WIN_UA })).toStrictEqual({ umgebung: 'codespace', os: 'windows' });
   });
 
-  it('alter Schlüssel ndu-os: nur das OS übernehmen, nicht auf Laptop umschalten', () => {
-    expect(startZustand({ ...leer, alt: 'windows' })).toStrictEqual({ umgebung: 'codespace', os: 'windows' });
-    expect(startZustand({ ...leer, alt: 'mac', userAgent: WIN_UA })).toStrictEqual({ umgebung: 'codespace', os: 'mac' });
+  it('alter Schlüssel ndu-os: das OS übernehmen', () => {
+    expect(startZustand({ ...leer, alt: 'windows' })).toStrictEqual({ umgebung: 'lokal', os: 'windows' });
+    expect(startZustand({ ...leer, alt: 'mac', userAgent: WIN_UA })).toStrictEqual({ umgebung: 'lokal', os: 'mac' });
   });
 
   it('?umgebung= schlägt die gespeicherte Wahl', () => {
@@ -29,7 +29,7 @@ describe('startZustand', () => {
   });
 
   it('ungültige Werte werden ignoriert', () => {
-    expect(startZustand({ ...leer, query: 'linux', gespeichert: 'lokal', alt: 'amiga' })).toStrictEqual({ umgebung: 'codespace', os: 'mac' });
+    expect(startZustand({ ...leer, query: 'linux', gespeichert: 'lokal', alt: 'amiga' })).toStrictEqual({ umgebung: 'lokal', os: 'mac' });
   });
 });
 
