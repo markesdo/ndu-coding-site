@@ -400,6 +400,12 @@ details.fallback[open] > summary { margin-bottom: .75rem; }
 .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
 .compare .card { margin: 0; border-top: 3px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); }
 .compare .good { border-top-color: var(--green); }
+/* Wegwahl im Setup (lokal): ganze Karte ist der Link. */
+/* Niedrige Spezifität, damit [data-nur] die Skript-Karte unter Windows weiter ausblenden kann. */
+.wege > a { display: block; color: inherit; text-decoration: none; }
+.wege > a:hover { border-left-color: var(--accent); border-right-color: var(--accent); border-bottom-color: var(--accent); }
+html[data-os="windows"] .wege { grid-template-columns: 1fr; }
+.wege > a p { margin: .25rem 0 0; }
 .compare .bad { border-top-color: var(--accent); }
 .compare .bad h3 { color: var(--accent-ink); }
 .compare .good h3 { color: var(--green); }

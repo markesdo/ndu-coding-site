@@ -228,38 +228,37 @@ import { bild } from '../components/anleitung-bilder';
       <li>die Demo kurz bevorsteht – nicht am Abend davor umziehen</li>
     </ul></div>
   </div>
-  <p>Am Mac erledigt das ein Skript in 15–25 Minuten, das meiste davon Warten auf Downloads; von Hand (und unter Windows) rechnet mit 30–45 Minuten. Euer Repo, euer Backlog und eure Commits bleiben dieselben – GitHub ist der gemeinsame Stand, Codespace und Laptop sind nur zwei Arbeitsplätze.</p>
+  <p><strong>Egal welcher Weg:</strong> vorher im Codespace <code>/ndu-commit</code> – nur was auf GitHub ist, kommt auf den Laptop. Repo, Backlog und Commits bleiben dieselben; GitHub ist der gemeinsame Stand.</p>
 
   <UmgebungWahl nurLaptop />
 
-  <div data-nur="mac">
-    <h3 id="lokal-schnellweg">Schnellweg am Mac: ein Befehl (15–25 Minuten)</h3>
-    <p><strong>Vorher im Codespace pushen:</strong> <code>/ndu-commit</code> – das Skript holt euer Repo von GitHub, nur was dort ist, kommt auf den Laptop.</p>
-    <p>Ein Skript installiert alles, was ihr braucht – Node.js, VS Code mit den Erweiterungen, Claude Code mit den Kurs-Plugins, Git –, meldet euch bei GitHub an, holt euer Repo und öffnet es in VS Code. Terminal öffnen (<kbd>⌘</kbd> + <kbd>Leertaste</kbd>, „Terminal“, <kbd>Enter</kbd>), die Zeile einfügen, <kbd>Enter</kbd>:</p>
-    <Prompt label="Terminal (macOS)">bash -c "$(curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-coding-2026/main/setup-mac.sh)"</Prompt>
-    <p>An diesen Stellen braucht das Skript euch:</p>
-    <ol class="steps">
-      <li><strong>Fenster von Apple</strong> Nur wenn Git noch fehlt: <em>Installieren</em>, dann <em>Akzeptieren</em>. Der Download dauert 5–15 Minuten – das Skript arbeitet inzwischen weiter.</li>
-      <li><strong>GitHub-Anmeldung</strong> Fragen im Terminal mit <kbd>Enter</kbd> bestätigen. Der Browser öffnet sich, der Code liegt schon in der Zwischenablage: mit <kbd>⌘</kbd> + <kbd>V</kbd> einfügen, <em>Continue</em>, <em>Authorize github</em>.</li>
-      <li><strong>Name des Repos</strong> Nur wenn euer Kurs-Repo nicht <code>leihbar</code> heißt: Das Skript zeigt eure Repos, ihr tippt den Namen ein, <kbd>Enter</kbd>.</li>
-      <li><strong>VS Code öffnet sich</strong> Mit eurem Repo, am Ende des Skripts: <em>Yes, I trust the authors</em>, dann Menü <em>Terminal → New Terminal</em>, <code>claude</code> eintippen und anmelden – wie in <a href="#claude-code">Schritt 5</a>, nur springt der Browser von selbst zurück.</li>
-    </ol>
-    <Schritte id="lokal-skript" steps={[
-      { img: bild('lokal/mac-skript-fertig'), alt: 'Terminal mit den Schritten 7 bis 10 des Skripts: Git-Name, Repo geklont, Pakete geladen, vier VS-Code-Erweiterungen, die Claude-Plugins, Versionen von git, node, claude und gh, darunter Fertig', text: 'So sieht das Ende aus: lauter Häkchen und „Fertig“. Euer Repo liegt jetzt im Ordner <code>code</code> in eurem Benutzerordner (nicht in „Dokumente“ – den synchronisiert iCloud oft, und das bremst). Danach die App wie in <a href="#lokal-starten-3">Schritt 3 unten</a> mit <code>npm run dev</code> starten – oder Claude bitten: „Starte die App.“', crop: false },
-    ]} />
-    <Callout type="info" title="Ein Skript aus dem Internet?">
-      <p>Der Befehl lädt ein Skript und führt es aus – das macht ihr nur bei Quellen, denen ihr vertraut. Unseres liegt offen im Kurs-Repo (<a href="https://github.com/markesdo/ndu-coding-2026/blob/main/setup-mac.sh" target="_blank" rel="noopener">setup-mac.sh</a>), installiert in euren Benutzerordner (VS Code in den Programme-Ordner), fragt nie nach dem Mac-Passwort und lässt sich gefahrlos nochmal starten, wenn etwas hängt.</p>
-    </Callout>
-    <p class="small muted">Plugins, die das Skript einrichtet: <em>frontend-design</em> (schönere Oberflächen), <em>superpowers</em> (Brainstorming und Planen), <em>vercel</em> (Deploy, ab Tag 2), <em>playwright</em> (Claude prüft die App selbst im Browser) und <em>linear</em> (Aufgaben in Linear, ab Tag 3 – <a href="/konzepte/ausblick">Ausblick</a>). Vercel und Linear melden sich in Claude als „needs authentication“ – das ist richtig, angemeldet wird erst am jeweiligen Tag über <code>/mcp</code>. Hängt das Skript oder meldet einen Fehler: Terminal offen lassen, Hand heben. Darunter steht jeder Schritt auch von Hand, die Plugins unter <a href="#lokal-plugins">Plugins ohne Skript</a>.</p>
+  <div class="compare wege">
+    <a class="card good" href="#lokal-schnellweg" data-nur="mac"><h3>Mit Skript · empfohlen</h3><p class="small">Mac · 15–25 Minuten · ein Befehl, fast alles läuft von selbst</p></a>
+    <a class="card" href="#lokal-hand"><h3>Von Hand</h3><p class="small">Mac ohne Skript oder Windows · 30–45 Minuten · jeder Schritt mit Anleitung</p></a>
   </div>
 
-  <h3 id="lokal-installieren">1 · Programme installieren</h3>
-  <p data-nur="mac" class="small"><strong>Mit dem Skript erledigt</strong> – die Schritte bis „Pakete laden, Claude und App starten“ braucht ihr nur, wenn ihr von Hand installiert.</p>
-  <p>Vier Programme: Git, Node.js, VS Code und Claude Code. Wenn eines schon installiert ist, überspringt es.</p>
-
   <div data-nur="mac">
-  <details class="fallback" id="lokal-manuell">
-    <summary>Von Hand installieren – nur falls das Skript hakt</summary>
+    <h3 id="lokal-schnellweg">Mit Skript (Mac, 15–25 Minuten)</h3>
+    <p>Terminal öffnen (<kbd>⌘</kbd> + <kbd>Leertaste</kbd>, „Terminal“, <kbd>Enter</kbd>), die Zeile einfügen, <kbd>Enter</kbd>:</p>
+    <Prompt label="Terminal (macOS)">bash -c "$(curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-coding-2026/main/setup-mac.sh)"</Prompt>
+    <p>Das Skript braucht euch nur hier:</p>
+    <ol class="steps">
+      <li><strong>Fenster von Apple</strong> Nur wenn Git fehlt: <em>Installieren</em>, <em>Akzeptieren</em>, offen lassen – das Skript wartet.</li>
+      <li><strong>GitHub-Anmeldung</strong> Fragen im Terminal mit <kbd>Enter</kbd> bestätigen. Im Browser <kbd>⌘</kbd> + <kbd>V</kbd> (der Code liegt schon in der Zwischenablage), <em>Continue</em>, <em>Authorize github</em>.</li>
+      <li><strong>Name des Repos</strong> Nur wenn eures nicht <code>leihbar</code> heißt: Namen aus der Liste eintippen, <kbd>Enter</kbd>.</li>
+    </ol>
+    <Schritte id="lokal-skript" steps={[
+      { img: bild('lokal/mac-skript-fertig'), alt: 'Terminal mit den Schritten 7 bis 10 des Skripts: Git-Name, Repo geklont, Pakete geladen, vier VS-Code-Erweiterungen, die Claude-Plugins, Versionen von git, node, claude und gh, darunter Fertig', text: 'Fertig: lauter Häkchen und „Fertig.“, VS Code öffnet euer Repo (Ordner <code>code</code> in eurem Benutzerordner). Weiter bei <a href="#lokal-danach">Danach</a>.', crop: false },
+    ]} />
+    <p class="small muted">Der Befehl führt ein Skript aus dem Internet aus – unseres liegt offen im Kurs-Repo (<a href="https://github.com/markesdo/ndu-coding-2026/blob/main/setup-mac.sh" target="_blank" rel="noopener">setup-mac.sh</a>), installiert in euren Benutzerordner (VS Code in den Programme-Ordner), fragt nie nach dem Mac-Passwort und lässt sich gefahrlos nochmal starten. Hängt es: Terminal offen lassen, Hand heben – oder die restlichen Schritte <a href="#lokal-hand">von Hand</a>. Meldet es ein Plugin als nicht installiert: <a href="#lokal-plugins">Befehle in Schritt 5</a>.</p>
+  </div>
+
+  <details class="fallback" id="lokal-hand">
+    <summary>Von Hand – Mac ohne Skript oder Windows (30–45 Minuten)</summary>
+
+    <h4 id="lokal-installieren">1 · Programme installieren</h4>
+    <p>Vier Programme: Git, Node.js, VS Code und Claude Code. Wenn eines schon installiert ist, überspringt es.</p>
+    <div data-nur="mac">
     <h4>Terminal öffnen</h4>
     <p><kbd>⌘</kbd> + <kbd>Leertaste</kbd> drücken, „Terminal“ tippen, <kbd>Enter</kbd>. Das Fenster bleibt die ganze Installation über offen. Befehle von dieser Seite kopiert ihr mit dem Knopf rechts oben am Kasten und fügt sie im Terminal mit <kbd>⌘</kbd> + <kbd>V</kbd> ein, dann <kbd>Enter</kbd>.</p>
 
@@ -296,9 +295,7 @@ claude --version</Prompt>
     <Schritte id="lokal-pruefen" steps={[
       { img: bild('lokal/mac-versionen'), alt: 'Terminal: git version 2.50.1, node v24.18.0, Claude Code 2.1.294', text: 'Jeder Befehl zeigt eine Versionsnummer. Sonst: Erscheint bei <code>git</code> ein Hinweis auf die Entwicklerwerkzeuge (oder wieder das Apple-Fenster), ist die Installation noch nicht fertig – abwarten oder <code>xcode-select --install</code> erneut starten. Heißt es bei <code>node</code> „command not found“, den Installer wiederholen. Heißt es das bei <code>claude</code>, alle Terminal-Fenster schließen (<kbd>⌘</kbd> + <kbd>Q</kbd>) und neu öffnen; erst wenn es dann noch fehlt, die <code>echo</code>-Zeile ein einziges Mal ausführen.', marks: [{ x: 12, y: 78, w: 590, h: 170 }] },
     ]} />
-  </details>
-  </div>
-
+    </div>
   <div data-nur="windows">
     <ol class="steps">
       <li><strong>Git</strong> <a href="https://git-scm.com/downloads/win" target="_blank" rel="noopener">Git for Windows</a> installieren, alle Voreinstellungen übernehmen. Claude Code nutzt die mitgelieferte Git Bash, um Befehle auszuführen.</li>
@@ -312,20 +309,15 @@ claude --version</Prompt>
     <p>Danach ein <strong>neues</strong> PowerShell-Fenster öffnen und prüfen: <code>git --version</code>, <code>node --version</code> und <code>claude --version</code> zeigen je eine Versionsnummer. Heißt es „nicht gefunden“, das Fenster schließen und neu öffnen; hilft das nicht, steht die Lösung in der <a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank" rel="noopener">Claude-Code-Doku</a>.</p>
   </div>
 
-  <h4 id="lokal-git-config">Git sagen, wer ihr seid</h4>
-  <p data-nur="mac" class="small"><strong>Mit dem Skript erledigt</strong> (euer GitHub-Name und die noreply-Adresse; eine schon vorhandene Angabe lässt das Skript stehen) – das hier nur, wenn ihr von Hand installiert.</p>
+    <h4 id="lokal-git-config">2 · Git sagen, wer ihr seid</h4>
   <p>Im Codespace passiert das automatisch, auf dem Laptop nicht. Ohne diese Angaben scheitert der erste Commit. Die dritte Zeile legt fest, dass Git beim Holen zusammenführt, statt abzubrechen (wie im Codespace):</p>
   <Prompt label="Terminal (macOS und Windows)">git config --global user.name "Vorname Nachname"
 git config --global user.email "EURE-GITHUB-E-MAIL"
 git config --global pull.rebase false</Prompt>
   <p class="small muted">Statt <code>EURE-GITHUB-E-MAIL</code> die noreply-Adresse von GitHub eintragen (github.com → Settings → Emails, im Text bei „Keep my email addresses private“; sie endet auf <code>@users.noreply.github.com</code>), die Anführungszeichen bleiben stehen. Mit der echten Adresse kann GitHub den Push ablehnen, wenn sie dort als privat markiert ist. Am einfachsten: alle drei Zeilen in einen Editor kopieren, Name und Adresse ersetzen, dann ins Terminal.</p>
 
-  <h3 id="lokal-repo">2 · Repo auf den Laptop holen</h3>
-  <p><strong>Vorher im Codespace pushen:</strong> <code>/ndu-commit</code> – nur was auf GitHub ist, kommt auf den Laptop.</p>
-
-  <div data-nur="mac">
-  <details class="fallback" id="lokal-klonen-manuell">
-    <summary>Von Hand klonen – nur falls das Skript hakt</summary>
+    <h4 id="lokal-repo">3 · Repo klonen</h4>
+    <div data-nur="mac">
     <Schritte id="lokal-klonen" steps={[
       { img: bild('lokal/mac-clone-1'), alt: 'VS Code ohne geöffneten Ordner: links Source Control mit den Knöpfen Open Folder und Clone Repository', text: 'VS Code öffnen. Links auf <strong>Source Control</strong> (Verzweigungs-Symbol, 1), dann <strong>Clone Repository</strong> (2). Das Chat-Fenster rechts braucht ihr nicht – es ist GitHub Copilot, nicht Claude.', marks: [{ x: 8, y: 135, w: 34, h: 40, n: 1 }, { x: 68, y: 190, w: 259, h: 26, n: 2 }] },
       { img: bild('lokal/mac-clone-2'), alt: 'Eingabefeld oben: Provide repository URL or pick a repository source, darunter Clone from GitHub', text: 'Oben erscheint ein Eingabefeld: <strong>Clone from GitHub</strong> wählen.', marks: [{ x: 455, y: 45, w: 588, h: 21 }] },
@@ -339,31 +331,51 @@ git config --global pull.rebase false</Prompt>
       { img: bild('lokal/mac-clone-9'), alt: 'Unten rechts: Do you want to install the recommended extensions from Tailwind Labs, Prettier and others for this repository? mit Install', text: 'Unten rechts schlägt VS Code die Erweiterungen fürs Projekt vor: <strong>Install</strong>.', marks: [{ x: 1259, y: 742, w: 53, h: 26 }] },
       { img: bild('lokal/mac-clone-10'), alt: 'Dialog: Do you trust the publisher Tailwind Labs and 2 others? mit Trust Publishers & Install', text: '<strong>Trust Publishers &amp; Install</strong>. Es öffnen sich ein paar Tabs mit Beschreibungen – einfach schließen. Bietet VS Code später <em>Reopen in Container</em> an: ablehnen. Das ist die Einstellung für den Codespace und bräuchte Docker.', marks: [{ x: 825, y: 551, w: 158, h: 26 }] },
     ]} />
-
-  </details>
-
-    <h4 id="lokal-starten">Pakete laden, Claude und App starten</h4>
-    <p>Terminal in VS Code öffnen: Menü <em>Terminal → New Terminal</em>. Es öffnet sich unten, schon im Projektordner.</p>
-    <Prompt label="Terminal in VS Code – nach dem Skript schon erledigt">npm install</Prompt>
-    <Schritte id="lokal-starten" steps={[
-      { img: bild('lokal/mac-npm-1'), alt: 'VS-Code-Terminal nach npm install: 5 high severity vulnerabilities, npm warn install-scripts, npm notice New major version', text: 'Mit dem Skript schon erledigt – weiter mit dem nächsten Schritt. Von Hand: <code>npm install</code> lädt die Pakete (dauert ein bis zwei Minuten). Am Ende stehen Warnungen wie „vulnerabilities“ oder „New major version of npm“ – das ist normal. <strong>Nicht</strong> <code>npm audit fix --force</code> ausführen, das kann die App kaputt machen.', marks: [{ x: 366, y: 565, w: 801, h: 213 }] },
-      { img: bild('lokal/mac-claude-3-start'), alt: 'VS-Code-Terminal: Claude Code startet mit Let\'s get started und der Auswahl des Farbschemas', text: 'Im selben Terminal <code>claude</code> eintippen. Ab hier geht es weiter wie in <a href="#claude-code-start">Schritt 5</a>: Farbschema wählen, <em>Claude account with subscription</em>, im Browser anmelden. Der Unterschied: Der Browser springt nach der Anmeldung von selbst zurück – Code kopieren ist nicht nötig.', marks: [{ x: 366, y: 565, w: 1115, h: 217 }] },
-      { img: bild('lokal/mac-dev-1'), alt: 'Zweites Terminal mit npm run dev: Next.js, Local http://localhost:3000, Ready; rechts die Liste der Terminals', text: 'Für die App ein <strong>zweites</strong> Terminal öffnen (<em>Terminal → New Terminal</em>) und <code>npm run dev</code> eintippen. Mit <kbd>⌘</kbd> + Klick auf <code>http://localhost:3000</code> (1) öffnet sich die App im Browser. Rechts seht ihr beide Terminals und könnt zwischen Claude und App wechseln (2).', marks: [{ x: 366, y: 635, w: 270, h: 15, n: 1 }, { x: 1380, y: 561, w: 112, h: 41, n: 2 }] },
-    ]} />
-    <p><strong>Geheimnisse übertragen</strong> (erst ab <a href="/tag-2#uebung-3">Übung 3 an Tag 2</a> nötig): Im Codespace die Datei <code>.env.local</code> öffnen, den Inhalt kopieren, lokal in VS Code eine Datei mit demselben Namen im Projektordner anlegen (Rechtsklick in die Dateiliste → <em>New File…</em>) und einfügen. Alternativ holt ihr die Werte erneut aus dem Supabase-Dashboard. Die Datei bleibt auf eurem Laptop – sie kommt nie ins Repo, <code>.gitignore</code> schließt sie aus.</p>
-    <p class="small muted">Nur wenn ihr von Hand installiert habt: Bleibt beim Terminal <strong>in VS Code</strong>: Es nutzt die GitHub-Anmeldung vom Klonen. Startet ihr Claude im Terminal-Programm des Mac, kann <code>git push</code> (und damit <code>/ndu-commit</code>) nach einer Anmeldung fragen oder scheitern.</p>
-  </div>
-
-  <div data-nur="windows">
-    <ol class="steps">
+    </div>
+    <div data-nur="windows">
+      <ol class="steps">
       <li><strong>Klonen</strong> In VS Code: Source Control (Verzweigungs-Symbol) → <em>Clone Repository</em> → <em>Clone from GitHub</em> → bei GitHub anmelden → euer Repo wählen → einen Ordner aussuchen, z. B. „Dokumente“. Danach <em>Open</em>.</li>
       <li><strong>Ordner vertrauen</strong> VS Code fragt, ob ihr den Autor*innen des Ordners vertraut: <em>Yes, I trust the authors</em>. Unten rechts schlägt VS Code die empfohlenen Erweiterungen vor – installieren. Bietet VS Code <em>Reopen in Container</em> an: ablehnen. Das ist die Einstellung für den Codespace und bräuchte Docker.</li>
-      <li><strong>Pakete laden</strong> Terminal in VS Code öffnen (Menü <em>Terminal → New Terminal</em>) und <code>npm install</code> eintippen. Warnungen am Ende sind normal.</li>
-      <li><strong>Geheimnisse übertragen</strong> Im Codespace die Datei <code>.env.local</code> öffnen, den Inhalt kopieren, lokal eine Datei mit demselben Namen im Projektordner anlegen und einfügen. Alternativ holt ihr die Werte erneut aus dem Supabase-Dashboard (<a href="/tag-2#uebung-3">Übung 3</a>). Die Datei bleibt auf eurem Laptop – sie kommt nie ins Repo, <code>.gitignore</code> schließt sie aus.</li>
+      </ol>
+    </div>
+
+    <h4 id="lokal-pakete">4 · Pakete laden</h4>
+    <p>Terminal in VS Code öffnen: Menü <em>Terminal → New Terminal</em>. Es öffnet sich unten, schon im Projektordner.</p>
+    <Prompt label="Terminal in VS Code">npm install</Prompt>
+    <div data-nur="mac">
+    <Schritte id="lokal-pakete" steps={[
+      { img: bild('lokal/mac-npm-1'), alt: 'VS-Code-Terminal nach npm install: 5 high severity vulnerabilities, npm warn install-scripts, npm notice New major version', text: '<code>npm install</code> lädt die Pakete (dauert ein bis zwei Minuten). Am Ende stehen Warnungen wie „vulnerabilities“ oder „New major version of npm“ – das ist normal. <strong>Nicht</strong> <code>npm audit fix --force</code> ausführen, das kann die App kaputt machen.', marks: [{ x: 366, y: 565, w: 801, h: 213 }] },
+    ]} />
+    </div>
+    <p data-nur="windows" class="small">Warnungen am Ende sind normal – nicht <code>npm audit fix --force</code> ausführen.</p>
+
+    <h4 id="lokal-plugins">5 · Kurs-Plugins</h4>
+    <p>Im Terminal (nicht in Claude), danach Claude neu starten. Im Codespace geht es genauso.</p>
+  <Prompt label="Terminal – Kurs-Plugins">claude plugin marketplace add anthropics/claude-plugins-official
+claude plugin install frontend-design@claude-plugins-official
+claude plugin install superpowers@claude-plugins-official
+claude plugin install vercel@claude-plugins-official
+claude plugin install playwright@claude-plugins-official
+claude plugin install linear@claude-plugins-official</Prompt>
+    <p class="small muted" data-nur="mac">Bleibt beim Terminal <strong>in VS Code</strong>: Es nutzt die GitHub-Anmeldung vom Klonen. Im Terminal-Programm des Mac kann <code>git push</code> (und damit <code>/ndu-commit</code>) nach einer Anmeldung fragen oder scheitern.</p>
+  </details>
+
+  <h3 id="lokal-danach">Danach – für beide Wege</h3>
+  <h4 id="lokal-starten">Claude und App starten</h4>
+  <p>In VS Code ein Terminal öffnen, falls noch keins offen ist: Menü <em>Terminal → New Terminal</em>. (Nach dem Skript fragt VS Code zuerst: <em>Yes, I trust the authors</em>.)</p>
+  <div data-nur="mac">
+  <Schritte id="lokal-starten" steps={[
+      { img: bild('lokal/mac-claude-3-start'), alt: 'VS-Code-Terminal: Claude Code startet mit Let\'s get started und der Auswahl des Farbschemas', text: 'Im Terminal <code>claude</code> eintippen. Ab hier geht es weiter wie in <a href="#claude-code-start">Schritt 5</a>: Farbschema wählen, <em>Claude account with subscription</em>, im Browser anmelden. Der Unterschied: Der Browser springt nach der Anmeldung von selbst zurück – Code kopieren ist nicht nötig.', marks: [{ x: 366, y: 565, w: 1115, h: 217 }] },
+      { img: bild('lokal/mac-dev-1'), alt: 'Zweites Terminal mit npm run dev: Next.js, Local http://localhost:3000, Ready; rechts die Liste der Terminals', text: 'Für die App ein <strong>zweites</strong> Terminal öffnen (<em>Terminal → New Terminal</em>) und <code>npm run dev</code> eintippen. Mit <kbd>⌘</kbd> + Klick auf <code>http://localhost:3000</code> (1) öffnet sich die App im Browser. Rechts seht ihr beide Terminals und könnt zwischen Claude und App wechseln (2).', marks: [{ x: 366, y: 635, w: 270, h: 15, n: 1 }, { x: 1380, y: 561, w: 112, h: 41, n: 2 }] },
+  ]} />
+  </div>
+  <div data-nur="windows">
+    <ol class="steps">
       <li><strong>Claude starten</strong> Im Terminal <strong>von VS Code</strong> <code>claude</code> eintippen und mit eurem Claude-Pro-Konto anmelden – wie in <a href="#claude-code">Schritt 5</a>, nur öffnet sich der Browser direkt. Bleibt bei diesem Terminal: Es nutzt die GitHub-Anmeldung vom Klonen.</li>
       <li><strong>App starten</strong> In einem zweiten Terminal <code>npm run dev</code>, dann <a href="http://localhost:3000" target="_blank" rel="noopener">localhost:3000</a> im Browser öffnen.</li>
     </ol>
   </div>
+  <p><strong>Geheimnisse übertragen</strong> (erst ab <a href="/tag-2#uebung-3">Übung 3 an Tag 2</a> nötig): Im Codespace die Datei <code>.env.local</code> öffnen, den Inhalt kopieren, lokal in VS Code eine Datei mit demselben Namen im Projektordner anlegen (Rechtsklick in die Dateiliste → <em>New File…</em>) und einfügen. Alternativ holt ihr die Werte erneut aus dem Supabase-Dashboard. Die Datei bleibt auf eurem Laptop – sie kommt nie ins Repo, <code>.gitignore</code> schließt sie aus.</p>
 
   <h4 id="lokal-screenshots">Screenshots an Claude geben</h4>
   <div data-nur="mac">
@@ -373,20 +385,15 @@ git config --global pull.rebase false</Prompt>
     <p><kbd>Win</kbd> + <kbd>⇧</kbd> + <kbd>S</kbd> drücken und einen Bereich wählen – der Screenshot landet in der Zwischenablage. Im Claude-Terminal dann <kbd>Alt</kbd> + <kbd>V</kbd>. In der Eingabe erscheint <code>[Image #1]</code>; dahinter schreibt ihr, was Claude damit tun soll.</p>
   </div>
 
-  <h4 id="lokal-plugins">Plugins ohne Skript</h4>
-  <p>Das Mac-Skript richtet die Kurs-Plugins selbst ein. Im Codespace, unter Windows oder wenn ihr von Hand installiert habt, holt ihr sie mit diesen Befehlen – im Terminal, nicht in Claude, danach Claude neu starten:</p>
-  <Prompt label="Terminal – Kurs-Plugins">claude plugin marketplace add anthropics/claude-plugins-official
-claude plugin install frontend-design@claude-plugins-official
-claude plugin install superpowers@claude-plugins-official
-claude plugin install vercel@claude-plugins-official
-claude plugin install playwright@claude-plugins-official
-claude plugin install linear@claude-plugins-official</Prompt>
-
   <h4 id="claude-in-chrome">Claude in Chrome (optional)</h4>
   <p>Damit Claude euren Chrome bedienen kann: die Erweiterung <a href="https://chromewebstore.google.com/detail/claude/fcoeoabgfenejglbffodgkkbkcdhcgfn" target="_blank" rel="noopener">Claude</a> aus dem Chrome Web Store installieren und dort mit demselben Claude-Konto anmelden. Dann in der laufenden Claude-Sitzung (VS-Code-Terminal) <code>/chrome</code> eintippen: Dort seht ihr, ob die Verbindung steht („Status: Enabled“), und schaltet sie mit <em>Enabled by default</em> dauerhaft ein. Alternativ Claude mit <code>/exit</code> beenden und im selben Terminal mit <code>claude --chrome</code> neu starten. Wird die Erweiterung beim ersten Mal nicht gefunden: Chrome einmal neu starten.</p>
+  <details class="fallback">
+    <summary>Kleingedrucktes: Plugins, MCP, Supabase</summary>
+  <p class="small">Plugins, die das Skript einrichtet: <em>frontend-design</em> (schönere Oberflächen), <em>superpowers</em> (Brainstorming und Planen), <em>vercel</em> (Deploy, ab Tag 2), <em>playwright</em> (Claude prüft die App selbst im Browser) und <em>linear</em> (Aufgaben in Linear, ab Tag 3 – <a href="/konzepte/ausblick">Ausblick</a>). Vercel und Linear melden sich in Claude als „needs authentication“ – das ist richtig, angemeldet wird erst am jeweiligen Tag über <code>/mcp</code>.</p>
   <p class="small muted">Die Befehle aus dem Template (<code>/ndu-commit</code> usw.) und MCP-Server aus <code>.mcp.json</code> kommen mit dem Repo mit. <strong>Plugins</strong> nicht: Wer im Codespace eines installiert hat (etwa <code>frontend-design</code> oder <code>superpowers</code>), installiert es lokal mit demselben <code>/plugin install</code>-Befehl noch einmal und startet Claude danach neu. (Ausnahme: Plugins, die mit <code>--scope project</code> fürs Projekt installiert wurden, stehen in <code>.claude/settings.json</code> und kommen mit.) Anmeldungen bei MCP-Servern wie Supabase macht ihr lokal einmal neu über <code>/mcp</code> – lokal springt der Browser danach von selbst zurück, der <code>curl</code>-Umweg aus dem Codespace entfällt. Wer Supabase an Tag 2 mit einem Token statt mit der Anmeldung verbunden hat, braucht lokal einen neuen Eintrag – der alte lag nur im Codespace, und der Token wurde nur einmal angezeigt. Am einfachsten verbindet ihr Supabase lokal mit der Anmeldung wie in <a href="/tag-2#uebung-3">Übung 3</a>. Sonst im Supabase-Dashboard einen neuen Token erzeugen, den alten dort löschen und den <code>claude mcp add</code>-Befehl mit dem neuen Token ausführen.</p>
+  </details>
 
-  <h3 id="lokal-wechseln">3 · Zwischen Codespace und Laptop wechseln</h3>
+  <h3 id="lokal-wechseln">Zwischen Codespace und Laptop wechseln</h3>
   <p>Beide Arbeitsplätze sind gleichwertig, solange GitHub dazwischen auf dem neuesten Stand ist. Die Regel: <strong>Bevor ihr aufhört, pushen. Bevor ihr anfangt, holen.</strong> Holen heißt in VS Code: Source Control → <em>Sync Changes</em>, oder ihr sagt Claude: „Hol den neuesten Stand von GitHub.“ Wer an beiden Orten ohne Push arbeitet, bekommt Konflikte. Den Codespace könnt ihr danach stoppen oder löschen – eure Arbeit liegt auf GitHub.</p>
   <h2>Wenn etwas hängt</h2>
   <p>Die häufigsten Stolpersteine mit Lösungen stehen unter <a href="/bekannte-probleme">Bekannte Probleme</a>. Ansonsten: Hand heben – an Tag 1 ist genau dafür Zeit eingeplant.</p>
