@@ -122,10 +122,10 @@ import { bild } from '../components/anleitung-bilder';
   <p>→ Vergleicht: Heißen die Funktionen gleich? Was fehlt in der ersten Antwort? Warum das so ist, steht unter <a href="/konzepte/llm#training">Training und Session</a>; wie man Context7 gut einsetzt, unter <a href="/konzepte/mcp#context7">MCP-Server</a>.</p>
   <h3 id="uebung-3-d">d) .env.local anlegen (5 min)</h3>
   <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
-  <h3 id="uebung-3-e">e) Issue 4 lesen und bauen lassen (5 + 40 min)</h3>
+  <h3 id="uebung-3-e">e) Issue 4 lesen und bauen lassen (45 min)</h3>
   <IssueLesen nr={4} />
-  <Prompt>Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle items anzulegen (mit sinnvollen Spalten, einer optionalen Spalte bild_url und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/gegenstaende.ts als Startdaten in die Datenbank, mit ihren Bildern. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
-  <p>Prüfen: Gegenstand anbieten → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel → Fehlermeldung?</p>
+  <Prompt note="„Bilder hochladen“ bleibt draußen: Die Spalte bild_url trägt nur die Bilder der Beispieldaten, neue Gegenstände bekommen den Platzhalter.">Setze Issue 4 aus docs/BACKLOG.md um. Nutze den Supabase-MCP, um die Tabelle items anzulegen (mit sinnvollen Spalten, einer optionalen Spalte bild_url und Row Level Security: jeder darf lesen, nur Angemeldete dürfen anlegen). Übernimm die Beispieldaten aus src/data/gegenstaende.ts als Startdaten in die Datenbank, mit ihren Bildern. Sag mir, bevor du die Tabelle anlegst, in zwei Sätzen, welche Spalten und Regeln du vorsiehst, und warte auf mein Okay.</Prompt>
+  <p>Prüfen: Gegenstand anbieten → in der Liste? Reload → noch da? Supabase-Dashboard → Table Editor → Zeile sichtbar? Leerer Titel, negativer Preis → jeweils Fehlermeldung und keine neue Zeile?</p>
   <h3 id="uebung-3-f">f) Sichern</h3>
   <Prompt>/ndu-check – und wenn alles grün ist: Issue 4 auf fertig setzen und /ndu-commit</Prompt>
   <Checklist id="t2-u3" items={[
@@ -140,11 +140,11 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2 id="uebung-4">Übung 4 · Login & Anfragen <span class="pill uebung">90 min</span></h2>
-  <h3 id="uebung-4-a">a) Issue 5 – Anmelden (5 + 25 min)</h3>
+  <h3 id="uebung-4-a">a) Issue 5 lesen und bauen lassen – Anmelden (30 min)</h3>
   <IssueLesen nr={5} />
   <Prompt>Setze Issue 5 um: Registrierung und Login mit E-Mail und Passwort über Supabase Auth, Logout, und eine geschützte Seite /meine-anfragen, die ohne Login zur Anmeldung weiterleitet. Frag zuerst, wenn etwas unklar ist.</Prompt>
-  <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, <code>/meine-anfragen</code> aufrufen → Weiterleitung?</p>
-  <h3 id="uebung-4-b">b) Issue 6 – Ausleihen anfragen (5 + 25 min)</h3>
+  <p>Prüfen: Registrieren mit <code>test1@campus.at</code> → Supabase → Authentication → Users: ist der Account da? Abmelden, mit falschem Passwort anmelden → verständliche Fehlermeldung? <code>/meine-anfragen</code> ohne Login aufrufen → Weiterleitung?</p>
+  <h3 id="uebung-4-b">b) Issue 6 lesen und bauen lassen – Ausleihen anfragen (30 min)</h3>
   <IssueLesen nr={6} />
   <Prompt>Setze Issue 6 um: Button „Ausleihen anfragen“ pro Gegenstand mit Zähler, Anfrage zurückziehen, ohne Login zur Anmeldung führen. Tabelle requests mit RLS: jeder darf zählen, nur die eigene Anfrage darf angelegt und gelöscht werden. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle requests und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten.</Prompt>
   <h3 id="uebung-4-c">c) Absichtlich kaputt (20 min, Dreier-Runde)</h3>
