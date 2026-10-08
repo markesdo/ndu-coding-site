@@ -10,6 +10,7 @@ const bausteine = [
   { id: 'grenze', n: 3, name: 'Grenze', issue: 'Nicht im Umfang' },
   { id: 'pruef', n: 4, name: 'Prüfkriterium', issue: 'Akzeptanzkriterien, Fertig wenn' },
 ];
+const baustein = Object.fromEntries(bausteine.map((b) => [b.id, b]));
 ---
 <Layout title="Prompt Engineering">
   <span class="eyebrow">Konzept 2 · Tag 1 · Teil 3</span>
@@ -23,9 +24,9 @@ const bausteine = [
   <figure class="pa">
     <div class="pa-text">
       <strong>Issue 6 – Ausleihen anfragen</strong><br />
-      <span class="pa-zone" data-baustein="ziel"><sup>1</sup><strong>Ziel:</strong> Studierende fragen einen Gegenstand zum Ausleihen an und können die Anfrage zurückziehen – damit Besitzer*innen sehen, wer ihn haben möchte.</span><br />
-      <span class="pa-zone" data-baustein="grenze"><sup>3</sup><strong>Nicht im Umfang:</strong> Anfrage annehmen oder ablehnen, Zeitraum wählen, Bezahlung.</span><br />
-      <span class="pa-zone" data-baustein="pruef"><sup>4</sup><strong>Akzeptanzkriterien:</strong> Gegeben ich bin angemeldet, wenn ich „Ausleihen anfragen“ klicke, dann steigt der Zähler „Anfragen“ um 1. (… vier weitere) <strong>Fertig, wenn:</strong> der Zähler auch nach einem Reload stimmt.</span>
+      <span class="pa-zone" data-baustein="ziel"><sup>{baustein.ziel.n}</sup><strong>Ziel:</strong> Studierende fragen einen Gegenstand zum Ausleihen an und können die Anfrage zurückziehen – damit Besitzer*innen sehen, wer ihn haben möchte.</span><br />
+      <span class="pa-zone" data-baustein="grenze"><sup>{baustein.grenze.n}</sup><strong>Nicht im Umfang:</strong> Anfrage annehmen oder ablehnen, Zeitraum wählen, Bezahlung.</span><br />
+      <span class="pa-zone" data-baustein="pruef"><sup>{baustein.pruef.n}</sup><strong>Akzeptanzkriterien:</strong> Gegeben ich bin angemeldet, wenn ich „Ausleihen anfragen“ klicke, dann steigt der Zähler „Anfragen“ um 1. (… vier weitere) <strong>Fertig, wenn:</strong> der Zähler auch nach einem Reload stimmt.</span>
     </div>
     <figcaption>
       <ol class="pa-legende">
@@ -54,10 +55,10 @@ const bausteine = [
   <h3>Die vier Bausteine im Einzelnen</h3>
   <p>Für Aufträge ohne Issue – eine schnelle Änderung, ein Fehler – schreibt ihr sie direkt in den Prompt.</p>
   <div class="grid vier">
-    <div class="card" data-baustein="ziel"><h3>1 · Ziel + Grund</h3><p class="small muted">Was soll danach möglich sein, für wen – und <strong>warum</strong>. Aus dem Grund leitet Claude Details ab, die ihr nicht aufgeschrieben habt: „damit Besitzer*innen sehen, wer ihn haben möchte“ heißt, es braucht einen Zähler.</p></div>
-    <div class="card" data-baustein="kontext"><h3>2 · Kontext zeigen</h3><p class="small muted">Zeigen statt beschreiben: eine Datei mit <code>@</code> nennen, einen Screenshot einfügen, die Fehlermeldung als Text mitgeben, auf ein vorhandenes Muster verweisen („wie die Karten auf der Startseite“) oder ein Beispiel geben, wie das Ergebnis aussehen soll. Was Claude sieht, muss es nicht raten.</p></div>
-    <div class="card" data-baustein="grenze"><h3>3 · Grenze</h3><p class="small muted">Was dazugehört – und was nicht. Positiv formuliert wirkt sie besser: „Ändere nur die Detailseite“ statt „mach nichts anderes kaputt“. Ohne Grenze baut Claude technisch gern mehr als nötig: zusätzliche Dateien, Umbauten, die niemand bestellt hat.</p></div>
-    <div class="card" data-baustein="pruef"><h3>4 · Prüfkriterium</h3><p class="small muted">Woran erkennt man, dass es fertig ist? Und: einen Beleg verlangen. Das ist der wichtigste Baustein – der einzige, der auch die Reststreuung abfängt.</p></div>
+    <div class="card" data-baustein="ziel"><h3>{baustein.ziel.n} · {baustein.ziel.name}</h3><p class="small muted">Was soll danach möglich sein, für wen – und <strong>warum</strong>. Aus dem Grund leitet Claude Details ab, die ihr nicht aufgeschrieben habt: „damit Besitzer*innen sehen, wer ihn haben möchte“ heißt, es braucht einen Zähler.</p></div>
+    <div class="card" data-baustein="kontext"><h3>{baustein.kontext.n} · {baustein.kontext.name}</h3><p class="small muted">Zeigen statt beschreiben: eine Datei mit <code>@</code> nennen, einen Screenshot einfügen, die Fehlermeldung als Text mitgeben, auf ein vorhandenes Muster verweisen („wie die Karten auf der Startseite“) oder ein Beispiel geben, wie das Ergebnis aussehen soll. Was Claude sieht, muss es nicht raten.</p></div>
+    <div class="card" data-baustein="grenze"><h3>{baustein.grenze.n} · {baustein.grenze.name}</h3><p class="small muted">Was dazugehört – und was nicht. Positiv formuliert wirkt sie besser: „Ändere nur die Detailseite“ statt „mach nichts anderes kaputt“. Ohne Grenze baut Claude technisch gern mehr als nötig: zusätzliche Dateien, Umbauten, die niemand bestellt hat.</p></div>
+    <div class="card" data-baustein="pruef"><h3>{baustein.pruef.n} · {baustein.pruef.name}</h3><p class="small muted">Woran erkennt man, dass es fertig ist? Und: einen Beleg verlangen. Das ist der wichtigste Baustein – der einzige, der auch die Reststreuung abfängt.</p></div>
   </div>
 
   <h2>Wie viel Auftrag?</h2>
