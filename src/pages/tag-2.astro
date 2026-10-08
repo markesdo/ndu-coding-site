@@ -68,7 +68,7 @@ import { bild } from '../components/anleitung-bilder';
   <KonzeptStation links={[{ href: '/konzepte/daten-backend', t: 'Konzept 4 lesen' }, { href: '/konzepte/mcp', t: 'Ergänzung: MCP' }]} danach={{ href: '#uebung-3', t: 'Übung 3 · Echte Daten' }}>
     <p>In Übung 3 legt Claude über den Supabase-MCP eure erste Tabelle an. Was es dabei anlegt und warum, versteht ihr mit diesen Grundlagen.</p>
     <ul>
-      <li>Eine Anfrage läuft Frontend → API-Route → Datenbank → Antwort. Formular und API-Route prüfen – aber der Key der Datenbank steckt im Browser, und wer ihn kopiert, kommt an beiden vorbei.</li>
+      <li>Eine Anfrage läuft Frontend → API-Route → Datenbank → Antwort. Formular und API-Route prüfen – aber der Publishable Key der Datenbank steckt im Browser, und wer ihn kopiert, kommt an beiden vorbei.</li>
       <li><strong>Row Level Security</strong> legt in der Datenbank fest, wer welche Zeile lesen, anlegen und löschen darf. Sie gilt für jeden Weg hinein, auch an Formular und API-Route vorbei (<a href="/konzepte/daten-backend#rls">Warum das Formular nicht reicht</a>). Ob die Werte stimmen, prüft sie nicht.</li>
       <li>Zugangsdaten stehen in <code>.env.local</code> und kommen nie ins Repo. Nur Variablen mit <code>NEXT_PUBLIC_</code> darf der Browser sehen.</li>
       <li>Über <strong>MCP</strong> spricht Claude direkt mit Supabase, statt euch SQL zum Kopieren zu geben.</li>
@@ -190,7 +190,7 @@ import { bild } from '../components/anleitung-bilder';
   <p>Jede*r zieht eine <a href="/bekannte-probleme#fehlerkarten">Fehlerkarte</a> und baut den Fehler <strong>heimlich</strong> in die eigene App ein (mit Claude: „Baue absichtlich folgenden Fehler ein, ohne ihn zu kommentieren oder zu committen: …“). Dann Plätze tauschen, reihum: Ihr setzt euch an den Laptop der nächsten Person in der Runde (A an B, B an C, C an A) und müsst ihren Fehler mit Claude finden und beheben – mit dem <a href="/konzepte/coding-agent">Debug-Prompt</a>. Danach zurück an den eigenen Platz und Source Control prüfen: Ist nur der Fehler weg, oder hat die Reparatur Nebenwirkungen?</p>
   <h3 id="uebung-4-d">e) RLS-Test (10 min)</h3>
   <p>Zwei Browser (einer im Inkognito-Modus), zwei Accounts. Account A fragt einen Gegenstand an. Kann Account B diese Anfrage löschen? Fragt Claude:</p>
-  <Prompt>Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle requests verhindern, dass jemand fremde Anfragen löscht oder ändert. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
+  <Prompt>Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle requests verhindern, dass jemand fremde Anfragen löscht oder ändert – nicht mit den vollen Rechten des MCP, sondern als angemeldete fremde Person (Rolle authenticated mit deren Nutzer-ID in request.jwt.claims), jeden Versuch in einer eigenen Transaktion, die du zurückrollst. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
   <Checklist id="t2-u4-v2" items={[
     'Registrieren, anmelden, abmelden funktioniert; Konto in Supabase sichtbar',
     '<code>/meine-anfragen</code> leitet ohne Login weiter',
@@ -336,7 +336,7 @@ import { bild } from '../components/anleitung-bilder';
   <h3 id="uebung-6-c">c) Issue 10 lesen und bauen lassen – Anfrage annehmen oder ablehnen (35 min)</h3>
   <IssueKarte nr={10} dauer="35 min" braucht="Issue 5, 7 und 9" peer={[2]} />
   <Prompt note="Hier ändert sich, wer Anfragen lesen darf. Lest Claudes Beschreibung der neuen Regeln genau, bevor ihr Okay sagt.">Setze Issue 10 aus docs/BACKLOG.md um. Die Tabelle requests bekommt einen Status (offen, angenommen, abgelehnt) und die E-Mail der anfragenden Person – die setzt die Datenbank selbst aus dem Login (Standardwert aus auth.jwt()), nicht der Browser. Regeln: Lesen dürfen nur die Besitzer*in des Gegenstands und die anfragende Person selbst; ändern darf nur die Besitzer*in, und nur die Spalte status. Frag zuerst, wenn etwas unklar ist. Bevor du Tabelle oder Regeln änderst: kurz beschreiben und auf mein Okay warten. Nach meinem Okay setzt du das ganze Issue um, nicht nur die Datenbank.</Prompt>
-  <Prompt label="Danach: RLS prüfen">Prüfe mit dem Supabase-MCP die Regeln der Tabelle requests: Kann jemand, dem der Gegenstand nicht gehört und der nicht angefragt hat, Anfragen oder E-Mails lesen? Kann die Besitzer*in etwas anderes als den Status ändern? Kann sonst jemand etwas ändern? Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
+  <Prompt label="Danach: RLS prüfen">Prüfe mit dem Supabase-MCP die Regeln der Tabelle requests – nicht mit den vollen Rechten des MCP, sondern als fremde Person (nicht angemeldet: Rolle anon; angemeldet: Rolle authenticated mit Nutzer-ID in request.jwt.claims), jeden Versuch in einer eigenen Transaktion, die du zurückrollst: Kann jemand, dem der Gegenstand nicht gehört und der nicht angefragt hat, Anfragen oder E-Mails lesen? Kann die Besitzer*in etwas anderes als den Status ändern? Kann sonst jemand etwas ändern? Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
 
   <h3 id="uebung-6-d">d) Wer schnell ist: Issue 11 – Hinweis auf neue Anfragen</h3>
   <IssueKarte nr={11} dauer="20 min" braucht="Issue 9 und 10" peer={[2]} />
