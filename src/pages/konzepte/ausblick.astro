@@ -19,7 +19,8 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Figma → Linear → Agent: die Produktkette im Innolab</h2>
   <p>Im Innolab wandert das Backlog aus der Markdown-Datei nach <strong>Linear</strong> – dem Werkzeug, in dem Produktteams Issues, Sprints (Cycles) und Status verwalten. Unser Format bleibt dasselbe (Ziel, Nicht im Umfang, Gegeben/Wenn/Dann, Fertig, wenn), der Umzug ist eine Kopieraktion, die Claude per Linear-MCP erledigt. Dann schließt sich die Kette: Das Figma-Frame hängt am Linear-Issue, Claude Code liest über den <strong>Linear-MCP</strong> das Issue und die Kriterien, über den <strong>Figma-MCP</strong> das Design, baut es in einem Branch, erstellt den Pull Request und setzt das Issue auf „In Review“. Linear kann Issues sogar direkt einem Agenten zuweisen, der autonom arbeitet und zurückmeldet. Eure Rolle in dieser Kette: Issues schreiben, Designs abnehmen, PRs prüfen – Product Owner.</p>
-  <Prompt label="Linear-MCP verbinden (im Terminal, dann in Claude /mcp → Linear → Authentifizieren)">claude mcp add --transport http linear https://mcp.linear.app/mcp</Prompt>
+  <p>Linear kommt als Plugin – am Mac hat es das Setup-Skript schon installiert. Verbinden: in Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser bei Linear anmelden. Ohne Skript (Codespace, Windows) vorher einmal installieren:</p>
+  <Prompt label="Linear-Plugin installieren (nur ohne Setup-Skript)">/plugin install linear@claude-plugins-official</Prompt>
   <Prompt>Lies Linear-Issue NDU-42 über den Linear-MCP. Hol dir das verlinkte Figma-Frame über den Figma-MCP. Setze das Issue in einem neuen Branch um, erfülle alle Akzeptanzkriterien, erstelle einen Pull Request mit einer Beschreibung, die ohne Programmierkenntnisse verständlich ist, und setze das Issue auf „In Review“.</Prompt>
 
   <h2>Agent-Teams & parallele Arbeit</h2>
