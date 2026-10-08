@@ -30,7 +30,7 @@ import Kontextfenster from '../../components/sota/Kontextfenster.tsx';
     <div class="loop-detail" id="loop-detail"></div>
     <script>
       const steps = [
-        { t: 'Verstehen', p: 'Claude liest eure Anweisung, die CLAUDE.md und die Dateien, die es für relevant hält. Hier passieren die meisten Missverständnisse: Ein vager Auftrag wird vage verstanden.', you: 'Euer Hebel: präzise Aufträge. Ein Issue, ein Ziel, Akzeptanzkriterien. Bei einer neuen Idee: /ndu-idee oder Plan Mode, damit Claude nachfragt statt zu raten.' },
+        { t: 'Verstehen', p: 'Claude liest eure Anweisung, die CLAUDE.md und die Dateien, die es für relevant hält. Hier passieren die meisten Missverständnisse: Ein vager Auftrag wird vage verstanden.', you: 'Euer Hebel: präzise Aufträge. Ein Issue, ein Ziel, Akzeptanzkriterien. Bei einer neuen Idee: /ndu-idee, damit Claude nachfragt statt zu raten.' },
         { t: 'Planen', p: 'Claude zerlegt die Aufgabe in Schritte: welche Dateien anlegen, welche ändern, in welcher Reihenfolge. Das macht es selbst – bei einem klaren Issue müsst ihr den Plan nicht absegnen.', you: 'Euer Hebel: ein klares Issue mit Akzeptanzkriterien, dann plant Claude richtig. Kündigt es etwas an, das ihr nicht wolltet („ich füge außerdem … hinzu“): sofort Esc – jetzt eingreifen ist zehnmal billiger als nachher.' },
         { t: 'Handeln', p: 'Claude benutzt Werkzeuge: Dateien lesen und schreiben, Befehle im Terminal ausführen (npm install, Lint, Build), bei Bedarf im Web nachschlagen oder per MCP mit Supabase, Figma, dem Browser sprechen. Vor riskanten Aktionen fragt es um Erlaubnis.', you: 'Euer Hebel: Berechtigungen bewusst geben. „Ja“ zu „darf ich diese Datei ändern?“ ist meist okay. Bei „darf ich löschen / pushen / installieren?“ kurz nachdenken.' },
         { t: 'Prüfen', p: 'Claude schaut, ob es geklappt hat: Läuft der Build? Gibt es Lint-Fehler? Falls nein, zurück zu Schritt 2 oder 3 – das ist die Schleife. Was Claude nicht kann: in eurem Browser sehen, ob es gut aussieht und sich richtig anfühlt.', you: 'Euer Hebel: Ihr seid der letzte Prüfschritt. Akzeptanzkriterien durchklicken, Screenshot machen, Fehler als Text zurückgeben. Nicht „geht nicht“, sondern „beim Klick auf X passiert Y statt Z, in der Konsole steht: …“.' },
@@ -47,7 +47,7 @@ import Kontextfenster from '../../components/sota/Kontextfenster.tsx';
   <table>
     <tr><th>Was</th><th>Wofür</th></tr>
     <tr><td><code>claude</code></td><td>Startet Claude Code im Terminal. Danach einfach schreiben – auf Deutsch, in ganzen Sätzen.</td></tr>
-    <tr><td><kbd>Shift</kbd><kbd>Tab</kbd></td><td>Wechselt den Modus; unten im Terminal steht, welcher aktiv ist. Standard ist <strong>Auto Mode</strong>. <strong>Plan Mode</strong> (Claude fragt und schlägt vor, ändert nichts) für neue Ideen und unklare Aufgaben.</td></tr>
+    <tr><td><kbd>Shift</kbd><kbd>Tab</kbd></td><td>Wechselt den Modus; unten im Terminal steht, welcher aktiv ist. Standard ist <strong>Auto Mode</strong> („auto mode on“). Steht dort „plan mode on“, habt ihr aus Versehen gewechselt: einmal <kbd>Shift</kbd><kbd>Tab</kbd>, dann steht wieder „auto mode on“ da.</td></tr>
     <tr><td>Bild einfügen</td><td>Screenshot ins Terminal ziehen oder <kbd>Strg/Ctrl</kbd><kbd>V</kbd>. Claude sieht, was ihr seht.</td></tr>
     <tr><td><code>/clear</code></td><td>Neue Session, leerer Kontext. Nach jedem fertigen Issue.</td></tr>
     <tr><td><code>/compact</code></td><td>Fasst den bisherigen Verlauf zusammen, wenn ihr mitten in etwas steckt und der Kontext voll wird.</td></tr>
