@@ -77,7 +77,8 @@ describe('UmgebungWahl.astro', () => {
     // Die Rückgabezeile genau so aus UmgebungWahl.astro nehmen: Fehlt dort eine Funktion, wirft schon dieser Aufruf.
     const rueckgabe = quelle.match(/^return \{.*\};$/m)?.[0];
     expect(rueckgabe).toBeDefined();
-    const u = new Function(`${klassisch}\n${rueckgabe}`)();
+    let u: Record<string, any> = {};
+    expect(() => { u = new Function(`${klassisch}\n${rueckgabe}`)(); }).not.toThrow();
     expect(Object.values(u).every((f) => typeof f === 'function')).toBe(true);
     expect(u.startZustand({ ...leer, query: 'windows' })).toStrictEqual({ umgebung: 'lokal', os: 'windows' });
     expect(u.zeigeBlock({ umgebung: 'lokal', os: 'mac' }, 'codespace')).toStrictEqual({ umgebung: 'codespace', os: 'mac' });
