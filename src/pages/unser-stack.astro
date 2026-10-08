@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Prompt from '../components/Prompt.astro';
 // Pro Werkzeug: wofür man dort landet, Dashboard und Doku, und – nur wo es sich lohnt – die Context7-ID für Claude.
-// Doku-Links zeigen auf den Anfang eines Abschnitts, nicht auf einzelne Unterseiten: Next.js und Vercel bauen ihre Doku oft um.
+// Wenige Doku-Links, möglichst Abschnittsanfänge: Next.js und Vercel bauen ihre Doku oft um. Tiefere Seiten nur dort, wo die
+// Studierenden konkret landen (Supabase-Guides, Next.js-Projektstruktur, Claude-Code-Fehlerbehebung) – bei Umbauten zuerst prüfen.
 type Link = { t: string; href: string };
 const werkzeuge: { name: string; wofuer: string; dashboard?: Link; doku: Link[]; context7?: string }[] = [
   {
@@ -28,7 +29,7 @@ const werkzeuge: { name: string; wofuer: string; dashboard?: Link; doku: Link[];
   },
   {
     name: 'Next.js',
-    wofuer: 'Das Framework für Frontend und Backend. Selbst nachlesen müsst ihr hier fast nie – Claude kennt es gut. Hilfreich ist höchstens die Übersicht, welcher Ordner wofür da ist.',
+    wofuer: 'Das Framework für Frontend und Backend. Selbst lesen müsst ihr hier kaum etwas – höchstens, welcher Ordner wofür da ist. Aber Next.js ändert sich schnell, und Claude kennt nicht immer die neueste Version: Nennt Claude etwas „veraltet“ oder passt eine Lösung nicht, gebt ihm die aktuelle Doku mit.',
     doku: [
       { t: 'Doku', href: 'https://nextjs.org/docs' },
       { t: 'Projektstruktur', href: 'https://nextjs.org/docs/app/getting-started/project-structure' },
@@ -52,7 +53,7 @@ const werkzeuge: { name: string; wofuer: string; dashboard?: Link; doku: Link[];
   {
     name: 'Claude API',
     wofuer: 'Nur für KI-Funktionen in eurer eigenen App, etwa Issue 8 oder ein KI-Projekt. Dort holt ihr den API-Key und ladet Guthaben auf.',
-    dashboard: { t: 'Console', href: 'https://console.anthropic.com' },
+    dashboard: { t: 'Console', href: 'https://platform.claude.com' },
     doku: [{ t: 'Doku', href: 'https://platform.claude.com/docs' }],
   },
 ];
@@ -68,7 +69,7 @@ const werkzeuge: { name: string; wofuer: string; dashboard?: Link; doku: Link[];
   <dl class="begriffe">
     {werkzeuge.map(w => (
       <>
-        <dt id={w.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}>{w.name}</dt>
+        <dt>{w.name}</dt>
         <dd>
           <p>{w.wofuer}</p>
           <p class="links">
