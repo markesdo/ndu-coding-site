@@ -46,7 +46,10 @@ const label = (n: number) => (nummer ? `${nummer}.${n}` : String(n));
 
 <script>
   // Ein gemeinsamer Dialog pro Seite für alle Schritt-Listen: vergrößertes Bild + Präsentationsmodus.
-  const items = [...document.querySelectorAll<HTMLLIElement>('.shots > li')];
+  const alle = [...document.querySelectorAll<HTMLLIElement>('.shots > li')];
+  // Nur sichtbare Schritte durchblättern: Der OS-Umschalter (OsWahl) blendet z. B. die Mac-Schritte aus.
+  const sichtbar = () => alle.filter((li) => li.getClientRects().length > 0);
+  let items = alle;
   const dialog = document.createElement('dialog');
   dialog.className = 'shot-zoom';
   dialog.setAttribute('aria-label', 'Schritt-für-Schritt-Ansicht');
@@ -91,10 +94,10 @@ const label = (n: number) => (nummer ? `${nummer}.${n}` : String(n));
     if (!dialog.open) dialog.showModal();
   }
 
-  items.forEach((li, i) => li.querySelector('.shot')!.addEventListener('click', () => show(i)));
+  alle.forEach((li) => li.querySelector('.shot')!.addEventListener('click', () => { items = sichtbar(); show(items.indexOf(li)); }));
   document.querySelectorAll<HTMLButtonElement>('[data-present]').forEach((b) => {
     b.hidden = false;
-    b.addEventListener('click', () => show(items.findIndex((li) => li.id === b.dataset.present)));
+    b.addEventListener('click', () => { items = sichtbar(); show(items.findIndex((li) => li.id === b.dataset.present)); });
   });
   prev.addEventListener('click', () => show(current - 1));
   next.addEventListener('click', () => show(current + 1));
