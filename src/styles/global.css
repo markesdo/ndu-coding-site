@@ -101,6 +101,10 @@ th { font-family: var(--mono); font-weight: 600; color: var(--muted); font-size:
 blockquote { margin: 1.25rem 0; padding: .75rem 1.1rem; border-left: 4px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; }
 blockquote p:last-child { margin: 0; }
 kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px; padding: 0 .35em; background: var(--bg-2); }
+/* Tastenkürzel groß in eigener Zeile (z. B. Screenshots an Claude): Symbol und Name auf jeder Taste. */
+.kurz { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: .55rem 0 .65rem; font-size: 1.2rem; line-height: 1; }
+.kurz kbd { font-size: 1em; font-weight: 600; padding: .4em .7em; min-width: 2.4em; text-align: center; border-bottom-width: 3px; border-radius: 7px; }
+.kurz > span { color: var(--muted); font-weight: 600; }
 
 .lead { font-size: 1.2rem; color: var(--muted); max-width: 44ch; }
 .eyebrow { display: inline-block; font-family: var(--mono); font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); background: var(--eyebrow-bg); padding: .2rem .55rem; border-radius: 4px; margin-bottom: .75rem; }
