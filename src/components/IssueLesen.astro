@@ -1,0 +1,14 @@
+---
+// Vor jedem „Issue bauen lassen“: Die Gruppe liest das Issue im Backlog und erklärt es sich gegenseitig.
+import Callout from './Callout.astro';
+const { nr } = Astro.props as { nr: number };
+---
+<Callout type="tip" title="Erst lesen (5 min, zu dritt)">
+  <p>Öffnet Issue {nr} in <code>docs/BACKLOG.md</code> – den Text dort, nicht den Prompt unten. Jede*r erklärt den anderen einen Teil in eigenen Worten. Reihenfolge nach Vornamen im Alphabet: Bei Issue 1 beginnt die erste Person mit dem Ziel, bei jedem weiteren Issue rückt ihr einen Teil weiter.</p>
+  <ol class="small">
+    <li><strong>Ziel:</strong> Was kann jemand danach, was vorher nicht ging – und warum?</li>
+    <li><strong>Nicht im Umfang:</strong> Was baut ihr ausdrücklich nicht? Was würde Claude ohne diese Grenze vermutlich dazubauen?</li>
+    <li><strong>Akzeptanzkriterien und Fertig, wenn:</strong> Welche Klicks im Browser beweisen es – auch der Fall, der schiefgehen soll?</li>
+  </ol>
+  <p class="small">Was niemand erklären kann, klärt ihr, bevor ihr den Prompt abschickt.</p>
+</Callout>
