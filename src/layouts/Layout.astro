@@ -168,18 +168,17 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       // Zurück-Knopf: Wer aus einem Abschnitt (z. B. Tag 1 · Übung 1 b) auf einen Link zu einer anderen Seite klickt,
       // bekommt dort unten links „← Zurück zu …“ und landet damit wieder an genau der Scroll-Position.
       // Nicht für Menü, Kopfleiste, Weiter/Zurück, Schrittleiste und Inhaltsverzeichnis.
+      import { kuerzen, ueberschriftText } from '../components/abschnitt';
       const KEY = 'ndu-zurueck';
       const POS = 'ndu-zurueck-pos';
       type Ruecksprung = { to: string; from: string; y: number; seite: string; abschnitt: string; len: number };
       const lies = (k: string) => { try { return JSON.parse(sessionStorage.getItem(k) || 'null'); } catch { return null; } };
       const weg = (k: string) => { try { sessionStorage.removeItem(k); } catch {} };
-      // Abschnittsname kurz halten: an einer Wortgrenze kürzen, nicht mitten im Wort.
-      const kuerzen = (t: string, max = 28) => (t.length <= max ? t : `${t.slice(0, t.lastIndexOf(' ', max)).replace(/[\s–-]+$/, '')} …`);
 
       document.addEventListener('click', (e) => {
         const a = (e.target as Element | null)?.closest<HTMLAnchorElement>('a[href]');
         if (!a || a.origin !== location.origin || a.pathname === location.pathname) return;
-        if (a.closest('.sidebar, .topbar, .footer-nav, .stepbar, .toc, .zurueck')) { weg(KEY); return; }
+        if (a.closest('.sidebar, .topbar, .footer-nav, .stepbar, .toc, .zurueck, .wo-ist')) { weg(KEY); return; }
         const hs = [...document.querySelectorAll<HTMLElement>('.inner :is(h2, h3)[id]')];
         const h = hs.filter((x) => x.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_FOLLOWING).pop();
         if (!h) { weg(KEY); return; }
@@ -187,7 +186,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         k.querySelectorAll('.pill').forEach((p) => p.remove());
         const r: Ruecksprung = {
           to: a.pathname, from: location.pathname, y: Math.round(scrollY),
-          seite: document.title.split(' · ')[0], abschnitt: kuerzen((k.textContent ?? '').replace(/\s+/g, ' ').replace(/\s*\(\d+\s*min\)\s*$/, '').replace(/^[a-z]\)\s*/, '').trim()),
+          seite: document.title.split(' · ')[0], abschnitt: kuerzen(ueberschriftText(k.textContent ?? '').replace(/^[a-z]\)\s*/, '')),
           len: history.length + 1,
         };
         try { sessionStorage.setItem(KEY, JSON.stringify(r)); } catch {}
@@ -227,6 +226,9 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       };
       zeigen();
       addEventListener('pageshow', zeigen);
+    </script>
+    <script>
+      import '../components/wo-ist';
     </script>
   </body>
 </html>

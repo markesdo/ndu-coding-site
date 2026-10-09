@@ -494,3 +494,18 @@ html[data-beamer] .zurueck { display: none; }
 @media (prefers-reduced-motion: no-preference) { .zurueck { animation: zurueck-ein .25s ease-out, zurueck-puls 1.2s ease-in-out .3s 2; } }
 @media print { .zurueck { display: none !important; } }
 
+
+/* „Wo ist Markus?“ (wo-ist.ts): unten rechts, dunkel statt Akzentfarbe – der Zurück-Knopf links bleibt der Hingucker. */
+.wo-ist { position: fixed; right: 16px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 35; display: flex; align-items: center; gap: .55rem; max-width: min(88vw, 420px); min-height: 48px; padding: .7rem 1.1rem; background: var(--fg); color: var(--bg); border-radius: 999px; box-shadow: 0 8px 28px rgba(0, 0, 0, .28); font-size: .95rem; text-decoration: none; }
+.wo-ist[hidden] { display: none; }
+.wo-ist svg { flex: none; color: var(--accent); }
+.wo-ist-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wo-ist-alt { opacity: .7; }
+.wo-ist:hover b { text-decoration: underline; }
+.wo-ist:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+/* Schmal: über den Zurück-Knopf stapeln statt daneben. */
+@media (max-width: 720px) { .wo-ist { bottom: calc(84px + env(safe-area-inset-bottom)); } }
+html[data-beamer] .wo-ist { display: none; }
+.wo-ist-hinweis { position: fixed; left: 50%; top: 16px; transform: translateX(-50%); z-index: 60; max-width: min(92vw, 520px); padding: .6rem 1rem; background: var(--fg); color: var(--bg); border-radius: 10px; box-shadow: 0 8px 28px rgba(0, 0, 0, .28); font-size: .95rem; }
+@media (prefers-reduced-motion: no-preference) { .wo-ist { animation: zurueck-ein .25s ease-out; } }
+@media print { .wo-ist, .wo-ist-hinweis { display: none !important; } }
