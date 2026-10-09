@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
-import Kurz from '../../components/Kurz.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Kontextfenster from '../../components/sota/Kontextfenster.tsx';
@@ -10,13 +10,13 @@ import Kontextfenster from '../../components/sota/Kontextfenster.tsx';
   <span class="eyebrow">Konzept 2 · Tag 1 · Teil 2</span>
   <h1>Wie ein Coding-Agent arbeitet</h1>
   <p class="lead">Claude Code ist kein Chat, der Code-Schnipsel ausspuckt. Es ist ein Agent, der euer Projekt liest, Dateien ändert, Befehle ausführt, Fehler sieht und nachbessert – in einer Schleife, bis die Aufgabe erledigt ist. Wer die Schleife versteht, kann sie steuern.</p>
-  <Kurz>
+  <Wichtigste>
     <ul>
-      <li>Claude Code ist ein <strong>Agent</strong>: Er liest das Projekt, ändert Dateien, führt Befehle aus, sieht Fehler und bessert nach – in einer Schleife.</li>
-      <li>Er kann nur, was in seinem <strong>Kontextfenster</strong> steht.</li>
+            <li>Der Agent kann nur, was in seinem <strong>Kontextfenster</strong> steht – eure Entscheidung von gestern nicht, den Fehler im Browser nicht.</li>
+      <li>Er arbeitet in einer Schleife: lesen, ändern, ausführen, Ergebnis prüfen, bis die Aufgabe erledigt ist.</li>
       <li>Drei Regeln: eine Session pro Issue (danach <code>/clear</code>), nur die relevanten Teile geben, Dauerhaftes in Dateien.</li>
     </ul>
-  </Kurz>
+  </Wichtigste>
 
   <p>Was das Sprachmodell darin selbst tut – Stück für Stück, gewichtet gewürfelt –, steht in <a href="/konzepte/llm">Teil 1</a>. Hier geht es um das, was Claude Code darum herum baut: das Kontextfenster, die Schleife und die Werkzeuge. Die wichtigste Folge vorweg: Das Modell kann nur, was in seinem Kontext steht.</p>
 

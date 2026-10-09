@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
-import Kurz from '../../components/Kurz.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import EinWertVieleStellen from '../../components/sota/EinWertVieleStellen.tsx';
@@ -21,13 +21,13 @@ const tokens = [
   <span class="eyebrow">Konzept 8 · Tag 3 · Teil 1</span>
   <h1>Design-System – Entscheidungen einmal treffen</h1>
   <p class="lead">Ohne System entscheidet jeder Prompt neu, wie ein Button aussieht. Ein Design-System trifft diese Entscheidungen einmal, gibt ihnen Namen und schreibt sie auf – für euch, für euer Team und für den Agenten.</p>
-  <Kurz>
+  <Wichtigste>
     <ul>
-      <li>Ohne System entscheidet jeder Prompt neu, wie ein Button aussieht. Nach zwanzig Issues wirkt die App zusammengestückelt (Drift).</li>
+      <li>Ohne System wirkt die App nach zwanzig Issues zusammengestückelt – Designer*innen nennen das <strong>Drift</strong>.</li>
       <li>Drei Ebenen: <strong>Tokens</strong>, nach ihrer Rolle benannt (<code>accent</code> statt <code>rot</code>), <strong>Komponenten</strong> mit allen Zuständen, <strong>Regeln</strong> in <code>docs/DESIGN.md</code>.</li>
       <li>Eine Designentscheidung ändert ihr dann an einer Stelle statt in zwanzig Dateien.</li>
     </ul>
-  </Kurz>
+  </Wichtigste>
 
   <h2>Warum</h2>
   <p>Jedes Issue, das Claude umsetzt, erzeugt Oberfläche. Steht nirgends, wie sie aussehen soll, wählt Claude plausible Werte – jede Entscheidung für sich vertretbar.</p>
