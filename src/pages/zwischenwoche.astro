@@ -41,6 +41,73 @@ import FooterNav from '../components/FooterNav.astro';
   <Prompt label="Morgens, zum Einstieg">Lies docs/PRODUKT.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welches Issue als Nächstes dran ist und warum.</Prompt>
   <Prompt label="Abends, zum Abschluss">Trag in docs/ENTSCHEIDUNGEN.md ein, was wir heute festgelegt haben. Aktualisiere den Status im Backlog. Dann /ndu-check und /ndu-commit.</Prompt>
 
+  <h2 id="redesign">Optional: Redesign mit frontend-design</h2>
+  <p>Wer die Issues im Kasten hat, kann der App ein Gesicht geben, das man mit keiner anderen verwechselt – die ganze App, nicht nur die Startseite. Das Plugin <em>frontend-design</em> bringt Claude bei, eine klare gestalterische Richtung zu wählen statt Standard-Optik.</p>
+  <p>Erst drei Richtungen, ohne etwas zu ändern, dann die Umsetzung auf einem eigenen <a href="/konzepte/git#branch">Branch</a>, dann eine Kritik-Runde. <code>main</code> bleibt dabei unberührt – gefällt euch das Ergebnis nicht, verwerft ihr den Branch einfach. Claude arbeitet an Teil 2 gut eine halbe Stunde und fragt zwischendurch nach Erlaubnis für Git-Befehle (neuer Branch, Push): Bleibt in der Nähe.</p>
+  <p>Das Plugin ist in einem neuen Codespace nicht dabei – <a href="/setup#lokal">lokal</a> hat es das Setup-Skript installiert. Prüfen bzw. einmal installieren, danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten:</p>
+  <Prompt label="Plugin installieren (im Claude-Terminal)">/plugin install frontend-design@claude-plugins-official</Prompt>
+  <Callout type="tip" title="Was den Unterschied macht">
+    <p>Eine Referenz aus der echten Welt statt einer Website: ein Ding, ein Ort, ein Material – Preisschilder am Flohmarkt, die Leihkarte einer alten Bibliothek, ein kopiertes Fanzine. Websites als Vorbild ergeben wieder Websites, die wie alle anderen aussehen.</p>
+  </Callout>
+
+  <h3 id="redesign-a">a) Drei Richtungen</h3>
+  <p>Vorher <code>/clear</code> und einen Screenshot der jetzigen Startseite machen – fürs Vorher-Nachher am Donnerstag.</p>
+  <Prompt label="Redesign · Teil 1: Richtungen" note="Die drei Lücken ausfüllen. Claude ändert noch nichts und wartet auf eure Wahl.">Nutze den Skill frontend-design. Unsere App soll ein Gesicht bekommen, das man mit keiner anderen App verwechselt – die ganze App, nicht nur die Startseite. Ändere noch nichts. Lies zuerst docs/PRODUKT.md, src/app/layout.tsx, src/app/globals.css, die Seiten in src/app/ und die Komponenten in src/components/, und schau dir die Bilder in public/ an.
+
+Unsere Welt, aber kein Website-Vorbild: [ein Ding, Ort oder Material, z. B. Preisschilder am Flohmarkt]. Stimmung in drei Wörtern: [z. B. laut, warm, direkt]. Das soll eine fremde Person nach fünf Sekunden sagen: [ein Satz, z. B. „Das sieht aus wie ein Flohmarkt.“].
+
+Was wir nicht wiedersehen wollen: So, wie die App gerade aussieht, ist sie der Standard – Pille über der Überschrift, zentrierter Hero, drei Feature-Kästen nebeneinander, Creme-Hintergrund mit Rot-Akzent. Außerdem keine lila Verläufe, kein Glas-Effekt, keine gleichförmigen Karten mit grauem Schatten.
+
+Schlag mir drei Richtungen vor, die sich gegenseitig ausschließen – wer A mag, findet C zu viel. Jede geht an einer anderen Stelle ans Äußerste: eine bei der Schriftgröße, eine bei der Farbe, eine beim Layout. Pro Richtung höchstens zehn Zeilen:
+- Name und die Welt-Referenz, aus der sie kommt
+- 5 Farben als Hex mit Rolle (Hintergrund, Text, Akzent …) und der Kontrastwert von Text auf Hintergrund
+- ein Schriftpaar von Google Fonts – oder eine Familie in zwei extremen Schnitten –, nicht Inter, Roboto, Arial, Space Grotesk oder die System-Schrift; und warum genau diese
+- die Größe der Startseiten-Überschrift am Handy (375 px) in px
+- welche gewohnte Regel das Layout bricht (z. B. Liste statt Karten, Fotos über den Rand, kein Raster)
+- das eine Signature-Element, das man einer fremden Person in einem Satz beschreibt
+- der eine Moment mit Bewegung – einer pro App, nicht pro Seite
+- Mut-Skala 1–5, ehrlich; mindestens eine Richtung ist eine 5
+- zwei Sätze: wie die Startseite bei 375 px von oben nach unten aussieht
+
+Danach: Welche der drei würdest du auch ohne diesen Prompt vorschlagen? Die ersetzt du durch eine, die du nicht vorschlagen würdest. Dann warte auf meine Wahl.</Prompt>
+
+  <h3 id="redesign-b">b) Umsetzen</h3>
+  <p>In derselben Session, sobald ihr euch für eine Richtung entschieden habt.</p>
+  <Prompt label="Redesign · Teil 2: Umsetzen" note="Statt [Name] den Namen der gewählten Richtung einsetzen.">Richtung [Name] – setz sie um, ganz, ohne Abschwächen und ohne Rückfragen. Für diesen Auftrag gilt ausdrücklich: mutig statt schlicht und die ganze Oberfläche in einem Durchgang; alle anderen Regeln aus CLAUDE.md bleiben. Wenn du beim Bauen zwischen zwei Varianten schwankst, nimm die mutigere; zurücknehmen kann ich später. Farben tauschen reicht nicht: Jemand, der die alte App kennt, soll die neue nicht wiedererkennen – außer an den Funktionen.
+
+Arbeite auf einem neuen Branch „redesign“ (main bleibt unberührt) und mach drei Commits; nach jedem sag mir in zwei Sätzen, was ich im Browser sehen soll:
+1. Fundament: Schriften über next/font/google in src/app/layout.tsx (mit display: swap), alle Farben als Tokens in src/app/globals.css (bestehende umbenennen oder ergänzen, keine Hex-Werte in Komponenten), Typo-Skala, Header und Footer. Keine Seite darf danach kaputt sein.
+2. Startseite: ihre wichtigsten Elemente mit unseren echten Inhalten – Bilder nur, wenn es welche gibt, nichts dazuerfinden –, das Signature-Element, der eine Moment mit Bewegung. Ist Motion schon installiert, nimm Motion, sonst nur CSS – nichts installieren. Nur transform und opacity, Einblenden höchstens 0,6 s, nichts in Dauerschleife. Vorhandene Animationen bleiben, wie sie sind.
+3. Alle übrigen Seiten auf dasselbe System ziehen, ohne neue Ideen – die Startseite führt, die anderen folgen.
+
+Entwirf zuerst für 375 px, dann für den Laptop – nicht umgekehrt. Es bleibt: jede Funktion, jeder Link, alle Daten und wie sie angezeigt werden, leere Zustände, Fokus-Rahmen (ersetzen ja, entfernen nein), 44 px für alles Antippbare, Header einzeilig am Handy, Bilder mit next/image. Lädt eine Google-Schrift beim Build nicht, nimm eine andere mit demselben Charakter – nicht die System-Schrift – und sag es mir.
+
+Bevor du „fertig“ sagst:
+- npm run lint und npm run build fehlerfrei.
+- Startseite und eine Unterseite bei 375, 768 und 1280 px ansehen – per Playwright, falls verfügbar; sonst sag mir genau, welche Ansichten ich in der Geräte-Ansicht prüfen soll. Ragt etwas über den Rand, liegt Text unlesbar auf einem Foto? Beheb es, höchstens drei Runden.
+- Alle Text-auf-Hintergrund-Paare rechnerisch auf Kontrast prüfen: mindestens 4,5:1, große Überschriften 3:1. Nenn mir die Werte.
+- Einmal mit „Bewegung reduzieren“: Die Seite ist ohne Animation vollständig.
+- Die Akzeptanzkriterien aller fertigen Issues in docs/BACKLOG.md noch einmal durchgehen, Beleg pro Kriterium.
+- Chanel-Regel: Nimm ein Element weg, das nur Dekoration ist, und sag mir, welches.
+Push den Branch und sag mir, wie ich die Vorschau sehe.</Prompt>
+  <p class="small muted">Die Vorschau-Adresse von Vercel öffnet nur, wer in eurem Vercel-Konto angemeldet ist – für andere erst nach dem Übernehmen in <code>main</code>.</p>
+  <h3 id="redesign-c">c) Kritik-Runde</h3>
+  <p>Ein frischer Blick findet, was beim Bauen untergeht. Vorher <code>/clear</code> – Claude kennt die App dann nicht mehr und urteilt wie jemand, der sie zum ersten Mal sieht. Claude ändert hier nichts; ihr wählt aus, was umgesetzt wird.</p>
+  <Prompt label="Redesign · Teil 3: Kritik" note="Statt [Name] den Namen der gewählten Richtung einsetzen.">Du siehst unsere App zum ersten Mal, als Design-Kritikerin. Schau dir die Startseite und eine Unterseite bei 375 und 1280 px an – per Playwright, falls verfügbar, sonst frag mich nach Screenshots – und beantworte, ohne etwas zu ändern:
+1. Welches eine Element merkt man sich morgen noch? Wenn du zögerst: Es gibt keins – sag das.
+2. Welche drei Stellen sehen aus wie jede andere KI-gebaute Seite? Konkret: Element und Seite.
+3. Wo wurde die Richtung [Name] zu zaghaft umgesetzt – wo wäre ein Schritt weiter besser?
+4. Was ist nur Dekoration und sollte weg?
+5. Wo ist Text schlecht lesbar, wo ragt etwas über den Rand, wo ist ein Antipp-Ziel zu klein?
+Höchstens 10 Punkte, je ein Satz, verständlich ohne Programmierkenntnisse. Ich wähle dann aus.</Prompt>
+  <Prompt label="Ausgewählte Punkte umsetzen">Setz Punkt [Nummern] um. Dann npm run lint und npm run build fehlerfrei, dieselben Ansichten und Kontraste wie in Teil 2 prüfen, auf dem Branch redesign committen und pushen.</Prompt>
+
+  <h3 id="redesign-d">d) Übernehmen oder verwerfen</h3>
+  <p>Im Browser durchklicken: Funktioniert alles wie vorher? Dann entscheidet ihr:</p>
+  <Prompt label="Gefällt mir – übernehmen (erst, wenn alles geprüft ist: main geht sofort live)">Führ den Branch redesign zurück in main, push beides und sag mir, ob es Konflikte gab.</Prompt>
+  <Prompt label="Gefällt mir nicht – verwerfen">Verwirf alle noch nicht gesicherten Änderungen, wechsel zurück auf main und lass den Branch redesign liegen. Zeig mir mit git status, dass main sauber ist.</Prompt>
+  <p>Am Donnerstag in der Demo: Vorher-Nachher. Der Test – jemand aus dem Kurs muss euer Signature-Element in fünf Sekunden benennen können.</p>
+
   <h2 id="hilfe-holen">Hilfe holen</h2>
   <p>In dieser Reihenfolge:</p>
   <ol class="steps">
