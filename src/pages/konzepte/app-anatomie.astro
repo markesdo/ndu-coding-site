@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import Kurz from '../../components/Kurz.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Bestellweg from '../../components/sota/Bestellweg.tsx';
 import Prompt from '../../components/Prompt.astro';
@@ -52,6 +53,13 @@ const layerName = Object.fromEntries(layers.map(l => [l.id, l.name])) as Record<
   <span class="eyebrow">Konzept 1 · Tag 1</span>
   <h1>Anatomie einer App</h1>
   <p class="lead">Ihr müsst keine Schicht selbst bauen können. Aber ihr müsst wissen, dass es sie gibt – sonst könnt ihr weder richtig bestellen noch beurteilen, ob richtig geliefert wurde.</p>
+  <Kurz>
+    <ul>
+      <li>Eine <strong>Web-App</strong> läuft im Browser, hat Login, speichert Daten und reagiert auf Nutzer*innen – unser Standard.</li>
+      <li>Fünf Schichten: Frontend, Backend, Datenbank, API, Hosting. Bei jedem Fehler fragt ihr zuerst: in welcher Schicht?</li>
+      <li>Mieten statt bauen: Selbst gebaut wird, was euer Produkt besonders macht. Login, Zahlung oder Karten mietet ihr als Dienst.</li>
+    </ul>
+  </Kurz>
 
   <h2 id="app-typen">Website, Web-App oder App?</h2>
   <div class="table-scroll" tabindex="0" role="region" aria-labelledby="app-typen">
