@@ -170,7 +170,7 @@ import Quiz from '../components/Quiz.astro';
   <Prompt>Setze Issue 1 in docs/BACKLOG.md auf fertig, dann /ndu-commit</Prompt>
 
   <h3 id="uebung-2-d">d) Mach es schön – euer eigener Stil (10 min)</h3>
-  <p>Zum Schluss bekommt eure Startseite ein Gesicht. Sucht euch eine Seite, deren Stil euch gefällt – ein Modeshop, ein Interior-Magazin, eine Designmarke, was zu eurer Welt passt – und macht einen Screenshot davon. Allgemeine Wünsche wie „modern und clean“ helfen wenig: Ohne genaue Vorgaben landet Claude bei einer Standard-Optik. Darum legt der Prompt die Dimensionen fest – Schrift, Farben, Hintergrund, eine Bewegung, ein Signature-Element – und lässt Claude erst drei Richtungen vorschlagen.</p>
+  <p>Zum Schluss bekommt eure Startseite ein Gesicht. Sucht euch eine Seite, deren Stil euch gefällt – ein Modeshop, ein Interior-Magazin, eine Designmarke, was zu eurer Welt passt – und macht einen Screenshot davon. Allgemeine Wünsche wie „modern und clean“ helfen wenig: Ohne genaue Vorgaben landet Claude bei einer Standard-Optik. Darum legt der Prompt die Dimensionen fest – Schrift, Farben, Hintergrund, eine Animation, ein Signature-Element – und lässt Claude erst drei Richtungen vorschlagen.</p>
   <p>Vorher: <code>/clear</code> eingeben und einen Screenshot eurer jetzigen Startseite machen – fürs Vorher-Nachher.</p>
   <Prompt label="Mach es schön" note="Screenshot ins Claude-Terminal ziehen oder einfügen, dann die Lücken ausfüllen. Lädt eine Google-Schrift nicht, macht einfach mit der System-Schrift weiter.">Unsere Startseite soll ein eigenes Gesicht bekommen. Vorbild: [Screenshot]. Stimmung in meinen Worten: [drei Adjektive, z. B. ruhig, edel, warm]. Unsere Welt: [z. B. Mode zwischen Taipeh und Wien].
 
@@ -180,7 +180,7 @@ Schritt 2 (nach meiner Wahl): Setz die Richtung mutig um, ohne Rückfragen.
 - Schriften über next/font/google in layout.tsx laden – nichts installieren. Große Überschrift, klare Größenstufen, extreme Gewichte.
 - Farben nur als Tokens in globals.css ändern oder ergänzen, nicht als Hex in den Komponenten.
 - Hero mit unseren Produktfotos (next/image), nicht nur Text. Hintergrund mit Tiefe (Verlauf, Muster, Fläche) passend zur Stimmung.
-- Genau eine Bewegung: Beim Laden erscheinen Hero und Karten gestaffelt, dazu ein Hover auf den Karten – nur CSS. Keine Animations-Bibliothek, kein npm install.
+- Genau eine Animation: Beim Laden erscheinen Hero und Karten gestaffelt, dazu ein Hover auf den Karten – nur CSS. Keine Animations-Bibliothek, kein npm install.
 - Alles andere bleibt: Liste, Daten, Preise, Kategorien, Links, Handy-Ansicht, Fokus-Rahmen. Keine neuen Funktionen.
 Am Ende npm run lint und drei Sätze, was ich im Browser sehen soll.</Prompt>
   <p><strong>Kein passender Screenshot?</strong> Dann beschreibt das Vorbild in Worten – Claude kennt Markenwelten. Statt „Vorbild: [Screenshot]“ zum Beispiel:</p>
