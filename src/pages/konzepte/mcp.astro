@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
-import Kurz from '../../components/Kurz.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
@@ -9,14 +9,14 @@ import FooterNav from '../../components/FooterNav.astro';
   <span class="eyebrow">Ergänzung zu Konzept 4 · Tag 2</span>
   <h1>MCP-Server – Steckdosen für den Agenten</h1>
   <p class="lead">Ohne MCP arbeitet Claude nur mit Dateien und dem Terminal. Mit MCP kann es eure Datenbank lesen, euer Figma-Design ansehen, eure App im Browser bedienen und aktuelle Dokumentation nachschlagen. 2026 ist das der Unterschied zwischen „Code-Generator“ und „Teammitglied mit Zugriff“.</p>
-  <Kurz>
+  <Wichtigste>
     <ul>
       <li>Ein <strong>MCP-Server</strong> gibt Claude Werkzeuge für ein fremdes System: Datenbank, Figma, Browser, aktuelle Dokumentation.</li>
       <li>Verbinden per <code>claude mcp add …</code> oder <code>.mcp.json</code>; <code>/mcp</code> zeigt, was verbunden ist.</li>
       <li><strong>Context7</strong> holt aktuelle Doku statt Trainingswissen – im Template schon eingerichtet.</li>
       <li>Ein MCP-Server ist Zugriff: nur offizielle Server, minimale Rechte, nie gegen die Produktion entwickeln.</li>
     </ul>
-  </Kurz>
+  </Wichtigste>
 
   <h2>Was MCP ist</h2>
   <p><strong>Model Context Protocol</strong> – ein offener Standard (von Anthropic 2024 veröffentlicht, inzwischen von allen großen Anbietern unterstützt), der beschreibt, wie ein KI-Agent mit externen Systemen spricht. Ein <em>MCP-Server</em> ist ein kleines Programm, das dem Agenten für ein System – Supabase, Figma, GitHub, euren Browser – eine Liste von <strong>Werkzeugen</strong> bereitstellt: „Tabelle anlegen“, „Design-Frame lesen“, „Seite öffnen und Screenshot machen“. Claude sieht diese Werkzeuge und benutzt sie, wenn es sinnvoll ist – genau wie es Dateien liest oder <code>npm run build</code> ausführt.</p>
