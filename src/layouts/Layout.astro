@@ -82,6 +82,8 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       <strong class="topbar-brand"><span class="brand-mark" aria-hidden="true">›<i></i></span><span>programmieren_mit_ai</span></strong>
       <div class="topbar-actions">
         <a class="beamer-weiter" hidden data-fallback-next={danach?.href} data-fallback-next-t={danach?.t} data-fallback-prev={vorher?.href} title="Nächste Seite (Taste →, zurück mit ←)"><span>Weiter: <b></b></span><ArrowRight size={16} aria-hidden="true" /></a>
+        <!-- „Wo ist Markus?“: nur sichtbar, wo der Präsentator-Schlüssel liegt (wo-ist.ts) -->
+        <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
         <button id="menu-btn" aria-label="Menü öffnen"><Menu size={18} aria-hidden="true" /> Menü</button>
       </div>
@@ -98,6 +100,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
           ))}
         </nav>
         <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer <kbd>B</kbd></button>
+        <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <p class="small muted" style="margin-top:2rem">NDU · MSc Management by Innovation<br/>8. / 9. / 15. Oktober 2026</p>
       </aside>
       <main class="content">

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { alterText, positionHref, positionPruefen } from './position';
+import { alterText, nochmalLoeschen, positionHref, positionPruefen } from './position';
 // Die Vercel-Funktion liegt in api/ – Tests dürfen dort nicht liegen, sonst würde Vercel sie als Funktion bauen.
 import { GET, POST } from '../../api/position';
 
@@ -32,6 +32,17 @@ describe('positionHref', () => {
   it('mit und ohne Anker', () => {
     expect(positionHref(gut)).toBe('/tag-1#uebung-1-b');
     expect(positionHref({ ...gut, anker: '' })).toBe('/tag-1');
+  });
+});
+
+describe('nochmalLoeschen (Pause/Abmelden während einer laufenden Meldung)', () => {
+  it('gespeichert, aber inzwischen pausiert oder abgemeldet → noch einmal löschen', () => {
+    expect(nochmalLoeschen(true, true, true)).toBe(true);
+    expect(nochmalLoeschen(true, false, false)).toBe(true);
+  });
+  it('normal weiter live, oder die Meldung ist gar nicht angekommen → nichts tun', () => {
+    expect(nochmalLoeschen(true, false, true)).toBe(false);
+    expect(nochmalLoeschen(false, true, false)).toBe(false);
   });
 });
 
@@ -81,6 +92,19 @@ describe('api/position', () => {
     expect(d.position).toStrictEqual(gut);
     expect(typeof d.zeit).toBe('number');
     expect(d.jetzt).toBeGreaterThanOrEqual(d.zeit);
+  });
+  it('Anmeldung ({ pruefen: true }) prüft nur den Schlüssel und speichert nichts', async () => {
+    await senden({ aus: true }, 'geheim-123'); // Speicher aus früheren Tests leeren
+    expect((await senden({ pruefen: true }, 'falsch')).status).toBe(403);
+    expect((await senden({ pruefen: true }, 'geheim-123')).status).toBe(200);
+    expect((await (await GET()).json()).position).toBeNull();
+  });
+  it('Pause ({ aus: true }) löscht die Position – nur mit Schlüssel', async () => {
+    expect((await senden(gut, 'geheim-123')).status).toBe(200);
+    expect((await senden({ aus: true }, 'falsch')).status).toBe(403);
+    expect((await (await GET()).json()).position).toStrictEqual(gut);
+    expect((await senden({ aus: true }, 'geheim-123')).status).toBe(200);
+    expect((await (await GET()).json()).position).toBeNull();
   });
   it('auf Vercel mit Runtime Cache im Anfrage-Kontext (so läuft es deployt): speichert dort', async () => {
     vi.stubEnv('VERCEL', '1');

@@ -34,6 +34,14 @@ export function positionHref(p: Position): string {
   return p.anker ? `${p.pfad}#${p.anker}` : p.pfad;
 }
 
+/**
+ * Kam eine Positionsmeldung an, während der Präsentator pausiert oder sich abgemeldet hat? Dann liegt sie evtl. nach dem
+ * Löschen auf dem Server und muss noch einmal gelöscht werden – sonst sähen die Studierenden sie bis zu 30 min.
+ */
+export function nochmalLoeschen(antwortOk: boolean, pausiert: boolean, schluesselNochDa: boolean): boolean {
+  return antwortOk && (pausiert || !schluesselNochDa);
+}
+
 /** „“ (frisch), „vor 7 min“; null = zu alt, Knopf ausblenden. */
 export function alterText(alterMs: number): string | null {
   if (alterMs >= AUSBLENDEN_MS) return null;

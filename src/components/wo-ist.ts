@@ -1,12 +1,13 @@
 // „Wo ist Markus?“ – im Browser, eingebunden in Layout.astro.
 // Präsentator (Beamer-Modus + Schlüssel): meldet Seite und Abschnitt an /api/position, sobald sie sich ändern, sonst jede Minute.
 // Studierende: fragen alle 5 s nach und zeigen unten rechts „Markus ist bei: …“ – ein Klick springt hin, nie automatisch.
-// Einschalten am Präsentator-Rechner einmalig mit …/#presenter=<PRESENTER_KEY>, ausschalten mit #presenter=0.
-// Der Schlüssel steht im Hash, nicht in der Query: Der Hash geht nie an den Server und landet so in keinem Log.
+// Anmelden am Präsentator-Rechner auf /praesentator (Schlüssel = PRESENTER_KEY, liegt dann im localStorage dieses Browsers).
+// Der Live-Schalter in Kopf- bzw. Seitenleiste zeigt den Zustand und pausiert (Position wird dann gelöscht).
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftVon } from './abschnitt';
-import { alterText, positionHref, type Position } from '../lib/position';
+import { alterText, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
 const KEY = 'ndu-presenter';
+const PAUSE = 'ndu-presenter-pause';
 const API = '/api/position';
 const root = document.documentElement;
 
@@ -14,6 +15,28 @@ const lies = (): string | null => { try { return localStorage.getItem(KEY); } ca
 const schreib = (wert: string | null) => {
   try { if (wert) localStorage.setItem(KEY, wert); else localStorage.removeItem(KEY); } catch {}
 };
+
+const pausiert = (): boolean => { try { return localStorage.getItem(PAUSE) === '1'; } catch { return false; } };
+const pausieren = (an: boolean) => { try { if (an) localStorage.setItem(PAUSE, '1'); else localStorage.removeItem(PAUSE); } catch {} };
+
+// Alle Schreibzugriffe gehen hierüber: Position, Prüfung ({ pruefen }), Löschen ({ aus }).
+const melden = (key: string, body: string) =>
+  fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body });
+
+// Pause bzw. Abmelden: Position auf dem Server löschen, damit der Knopf bei den Studierenden gleich verschwindet.
+function ausMelden(key: string) {
+  melden(key, '{"aus":true}').catch((e) => console.warn('[wo-ist] Pause nicht gemeldet:', e));
+}
+
+// Früherer Präsentator-Link (#presenter=…, evtl. Lesezeichen): Schlüssel sofort aus der Adresszeile, angemeldet wird auf /praesentator.
+if (location.hash.startsWith('#presenter=')) {
+  history.replaceState(null, '', location.pathname + location.search);
+  hinweisSpaeter('Der Präsentator-Link gilt nicht mehr – bitte auf /praesentator anmelden.');
+}
+
+function hinweisSpaeter(text: string) {
+  if (document.body) hinweis(text); else addEventListener('DOMContentLoaded', () => hinweis(text), { once: true });
+}
 
 function hinweis(text: string) {
   const el = document.createElement('div');
@@ -24,15 +47,29 @@ function hinweis(text: string) {
   setTimeout(() => el.remove(), 4000);
 }
 
-// Einmaliges Einschalten über den Hash; danach sofort aus der Adresszeile (die Leinwand zeigt sie).
-const treffer = location.hash.match(/^#presenter=(.+)$/);
-if (treffer) {
-  history.replaceState(null, '', location.pathname + location.search);
-  let wert = treffer[1];
-  try { wert = decodeURIComponent(wert); } catch {} // kaputtes %-Zeichen: so nehmen, wie es dasteht
-  schreib(wert === '0' ? null : wert);
-  hinweis(wert === '0' ? 'Präsentator-Modus aus' : 'Präsentator-Modus an – im Beamer-Modus sehen die Studierenden, wo du bist.');
+// Für /praesentator: Schlüssel beim Server prüfen (speichert nichts), dann merken.
+export async function anmelden(key: string): Promise<'ok' | 'falsch' | 'abgemeldet' | 'fehler'> {
+  try {
+    const r = await melden(key, '{"pruefen":true}');
+    if (r.status === 403) return 'falsch';
+    if (r.status === 401) return 'abgemeldet';
+    if (!r.ok || !r.headers.get('content-type')?.includes('application/json')) return 'fehler';
+  } catch {
+    return 'fehler';
+  }
+  schreib(key);
+  pausieren(false);
+  return 'ok';
 }
+
+export function abmelden() {
+  const key = lies();
+  if (key) ausMelden(key);
+  schreib(null);
+  pausieren(false);
+}
+
+export const angemeldet = (): boolean => Boolean(lies());
 
 const sichtbar = (el: Element) => el.getClientRects().length > 0;
 const ueberschriften = () => [...document.querySelectorAll<HTMLElement>('.inner :is(h2, h3)[id]')].filter(sichtbar);
@@ -74,10 +111,47 @@ function praesentator() {
   let kandidat = '';
   let kandidatSeit = 0;
   let sperreBis = 0;
+  let fehler = false;
+
+  // Live-Schalter: nur wo der Schlüssel liegt. live = sendet, wartet = nur im Beamer-Modus, fehler = letzte Meldung gescheitert.
+  const knoepfe = [...document.querySelectorAll<HTMLButtonElement>('[data-praesentator]')];
+  const TITEL = {
+    live: 'Live: Die Studierenden sehen, wo du bist. Klick pausiert.',
+    wartet: 'Live, aber gesendet wird nur im Beamer-Modus (Taste B). Klick pausiert.',
+    fehler: 'Live, aber die letzte Meldung ist gescheitert (Details in der Konsole). Klick pausiert.',
+    pause: 'Pausiert: Die Studierenden sehen nichts. Klick sendet wieder.',
+  };
+  const zeichnen = () => {
+    const key = lies();
+    const zustand = pausiert() ? 'pause' : !root.hasAttribute('data-beamer') ? 'wartet' : fehler ? 'fehler' : 'live';
+    for (const b of knoepfe) {
+      b.hidden = !key;
+      b.dataset.zustand = zustand;
+      b.setAttribute('aria-pressed', String(zustand !== 'pause'));
+      b.title = `${TITEL[zustand]} Abmelden: Seite /praesentator.`;
+      b.querySelector('[data-praesentator-text]')!.textContent = zustand === 'pause' ? 'Live aus' : 'Live';
+    }
+  };
+  knoepfe.forEach((b) => b.addEventListener('click', () => {
+    const key = lies();
+    if (!key) return;
+    if (pausiert()) {
+      pausieren(false);
+      gesendet = ''; sperreBis = 0; fehler = false; // sofort wieder senden, sobald die Position steht
+      hinweis('Live – die Studierenden sehen wieder, wo du bist.');
+    } else {
+      pausieren(true);
+      ausMelden(key);
+      hinweis('Pausiert – die Studierenden sehen deine Position nicht mehr.');
+    }
+    zeichnen();
+  }));
+  zeichnen();
 
   setInterval(async () => {
+    zeichnen();
     const key = lies();
-    if (!key || !root.hasAttribute('data-beamer') || document.visibilityState !== 'visible') return;
+    if (!key || pausiert() || !root.hasAttribute('data-beamer') || document.visibilityState !== 'visible') return;
     const jetzt = Date.now();
     const pos = jetzigePosition();
     const s = JSON.stringify(pos);
@@ -86,14 +160,19 @@ function praesentator() {
     if (s === gesendet && jetzt - gesendetUm < 60_000) return;
     sperreBis = jetzt + 10_000; // höchstens ein Versuch pro 10 s, falls etwas hängt
     try {
-      const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: s });
-      if (r.status === 403) { schreib(null); hinweis('Präsentator-Schlüssel stimmt nicht – Präsentator-Modus aus.'); return; }
+      const r = await melden(key, s);
+      // Während der Anfrage pausiert oder (in einem anderen Tab) abgemeldet? Die Position kam evtl. nach dem Löschen an.
+      if (pausiert() || lies() !== key) { if (nochmalLoeschen(r.ok, pausiert(), lies() === key)) ausMelden(key); return; }
+      if (r.status === 403) { schreib(null); pausieren(false); fehler = false; hinweis('Präsentator-Schlüssel stimmt nicht – Präsentator-Modus aus.'); return; }
+      fehler = !r.ok || !r.headers.get('content-type')?.includes('application/json');
       if (r.status === 401) { hinweis('Nicht mehr angemeldet – Seite neu laden und Kurspasswort eingeben.'); return; }
-      if (!r.ok || !r.headers.get('content-type')?.includes('application/json')) { console.warn('[wo-ist] Position nicht gespeichert:', r.status); return; }
+      if (fehler) { console.warn('[wo-ist] Position nicht gespeichert:', r.status); return; }
       gesendet = s; gesendetUm = Date.now(); sperreBis = 0;
     } catch (e) {
+      fehler = true;
       console.warn('[wo-ist] Position nicht gesendet:', e);
     }
+    zeichnen();
   }, 1000);
 }
 
