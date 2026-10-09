@@ -168,7 +168,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       // Zurück-Knopf: Wer aus einem Abschnitt (z. B. Tag 1 · Übung 1 b) auf einen Link zu einer anderen Seite klickt,
       // bekommt dort unten links „← Zurück zu …“ und landet damit wieder an genau der Scroll-Position.
       // Nicht für Menü, Kopfleiste, Weiter/Zurück, Schrittleiste und Inhaltsverzeichnis.
-      import { kuerzen, ueberschriftText } from '../components/abschnitt';
+      import { kuerzen, seitenName, ueberschriftVon } from '../components/abschnitt';
       const KEY = 'ndu-zurueck';
       const POS = 'ndu-zurueck-pos';
       type Ruecksprung = { to: string; from: string; y: number; seite: string; abschnitt: string; len: number };
@@ -182,11 +182,9 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         const hs = [...document.querySelectorAll<HTMLElement>('.inner :is(h2, h3)[id]')];
         const h = hs.filter((x) => x.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_FOLLOWING).pop();
         if (!h) { weg(KEY); return; }
-        const k = h.cloneNode(true) as HTMLElement;
-        k.querySelectorAll('.pill').forEach((p) => p.remove());
         const r: Ruecksprung = {
           to: a.pathname, from: location.pathname, y: Math.round(scrollY),
-          seite: document.title.split(' · ')[0], abschnitt: kuerzen(ueberschriftText(k.textContent ?? '').replace(/^[a-z]\)\s*/, '')),
+          seite: seitenName(document.title), abschnitt: kuerzen(ueberschriftVon(h).replace(/^[a-z]\)\s*/, '')),
           len: history.length + 1,
         };
         try { sessionStorage.setItem(KEY, JSON.stringify(r)); } catch {}

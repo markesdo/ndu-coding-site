@@ -34,7 +34,7 @@ export function positionHref(p: Position): string {
   return p.anker ? `${p.pfad}#${p.anker}` : p.pfad;
 }
 
-/** „“ (frisch), „vor 7 min“, „vor 1 h“; null = zu alt, Knopf ausblenden. */
+/** „“ (frisch), „vor 7 min“; null = zu alt, Knopf ausblenden. */
 export function alterText(alterMs: number): string | null {
   if (alterMs >= AUSBLENDEN_MS) return null;
   if (alterMs < ALT_MS) return '';

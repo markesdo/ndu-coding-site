@@ -65,5 +65,9 @@ export default async function middleware(request: Request): Promise<Response> {
   if (await tokenGueltig(cookieLesen(request.headers.get('cookie')), secret, passwort, jetzt)) {
     return next({ headers: { 'X-Robots-Tag': 'noindex, nofollow' } });
   }
+  // Schnittstellen bekommen eine klare Absage statt der Umleitung auf die Login-Seite (die sähe im fetch wie Erfolg aus).
+  if (url.pathname.startsWith('/api/')) {
+    return new Response(JSON.stringify({ fehler: 'Nicht angemeldet' }), { status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8', ...NOINDEX } });
+  }
   return weiter(`/login?weiter=${encodeURIComponent(sichererPfad(url.pathname + url.search))}`);
 }

@@ -1,5 +1,5 @@
-// Abschnittsnamen und „welcher Abschnitt ist gerade dran?“ – ohne DOM, damit testbar.
-// Genutzt vom Zurück-Knopf und von „Wo ist Markus?“ (wo-ist.ts).
+// Abschnittsnamen und „welcher Abschnitt ist gerade dran?“ – bis auf ueberschriftVon ohne DOM, damit testbar.
+// Genutzt vom Zurück-Knopf (Layout.astro) und von „Wo ist Markus?“ (wo-ist.ts).
 
 /** Kurz halten: an einer Wortgrenze kürzen, nicht mitten im Wort. */
 export function kuerzen(t: string, max = 28): string {
@@ -9,6 +9,18 @@ export function kuerzen(t: string, max = 28): string {
 /** Überschriftstext ohne Zeitangabe am Ende („… (10 min)“) und ohne Mehrfach-Leerraum. */
 export function ueberschriftText(roh: string): string {
   return roh.replace(/\s+/g, ' ').replace(/\s*\(\d+\s*min\)\s*$/, '').trim();
+}
+
+/** Text einer Überschrift im Browser, ohne Zeit-Pille. */
+export function ueberschriftVon(h: HTMLElement): string {
+  const k = h.cloneNode(true) as HTMLElement;
+  k.querySelectorAll('.pill').forEach((p) => p.remove());
+  return ueberschriftText(k.textContent ?? '');
+}
+
+/** Pfad ohne Schrägstrich am Ende – so meldet und vergleicht „Wo ist Markus?“ Seiten. */
+export function pfadOhneSchraegstrich(pfad: string): string {
+  return pfad.replace(/\/+$/, '') || '/';
 }
 
 /** Seitenname aus dem Dokumenttitel: „Tag 1 · Verstehen & Starten · NDU Coding 2026“ → „Tag 1“. */

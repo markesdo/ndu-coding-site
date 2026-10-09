@@ -1,5 +1,6 @@
 // „Wo ist Markus?“ – Vercel-Funktion neben der statischen Astro-Seite. Liegt hinter dem Kurspasswort (middleware.ts).
-// GET: letzte Position für alle Angemeldeten. POST: nur mit Präsentator-Schlüssel (Header x-presenter-key = PRESENTER_KEY).
+// GET: letzte Position für alle Angemeldeten. POST: nur mit Präsentator-Schlüssel (Header x-presenter-key = PRESENTER_KEY);
+// falscher Schlüssel → 403 (401 heißt: Kurspasswort fehlt, kommt aus der Middleware).
 // Speicher: Vercel Runtime Cache – flüchtig, reicht für „wo ist er gerade“; der Beamer-Tab sendet jede Minute neu.
 import { getCache } from '@vercel/functions';
 import { passwortStimmt } from '../src/lib/kurszugang.js'; // .js-Endung wie in middleware.ts
@@ -17,10 +18,13 @@ function json(daten: unknown, status = 200): Response {
   });
 }
 
-// Ohne Cache-Endpoint fällt @vercel/functions still auf einen Speicher pro Instanz zurück – auf Vercel hieße das:
-// Studierende sehen je nach Instanz etwas anderes. Dann lieber laut scheitern.
+// getCache() nimmt den echten Runtime Cache aus dem Anfrage-Kontext (in @vercel/functions: getContext().cache, nicht
+// exportiert – gleiches Symbol wie dort), sonst den Build-Cache über RUNTIME_CACHE_ENDPOINT, sonst still einen
+// Speicher pro Instanz. Auf Vercel hieße Letzteres: Studierende sehen je nach Instanz etwas anderes – lieber laut scheitern.
+const KONTEXT = Symbol.for('@vercel/request-context');
 function ohneRuntimeCache(): boolean {
-  return Boolean(process.env.VERCEL) && !process.env.RUNTIME_CACHE_ENDPOINT;
+  const kontext = (globalThis as Record<symbol, { get?: () => { cache?: unknown } } | undefined>)[KONTEXT]?.get?.();
+  return Boolean(process.env.VERCEL) && !kontext?.cache && !process.env.RUNTIME_CACHE_ENDPOINT;
 }
 
 export async function GET(): Promise<Response> {
@@ -35,7 +39,7 @@ export async function POST(request: Request): Promise<Response> {
   const key = process.env.PRESENTER_KEY;
   if (!key || ohneRuntimeCache()) return json({ fehler: 'Nicht eingerichtet' }, 503);
   const eingabe = request.headers.get('x-presenter-key') ?? '';
-  if (!eingabe || !(await passwortStimmt(eingabe, key, key))) return json({ fehler: 'Kein Zugriff' }, 401);
+  if (!eingabe || !(await passwortStimmt(eingabe, key, key))) return json({ fehler: 'Falscher Präsentator-Schlüssel' }, 403);
   const position = positionPruefen(await request.json().catch(() => null));
   if (!position) return json({ fehler: 'Ungültige Position' }, 400);
   const gespeichert: Gespeichert = { ...position, zeit: Date.now() };

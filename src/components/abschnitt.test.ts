@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { abschnittName, aktiverAbschnitt, kuerzen, seitenName, ueberschriftText } from './abschnitt';
+import { abschnittName, aktiverAbschnitt, kuerzen, pfadOhneSchraegstrich, seitenName, ueberschriftText } from './abschnitt';
+
+describe('pfadOhneSchraegstrich', () => {
+  it('/tag-1/ und /tag-1 sind dieselbe Seite, / bleibt /', () => {
+    expect(pfadOhneSchraegstrich('/tag-1/')).toBe('/tag-1');
+    expect(pfadOhneSchraegstrich('/tag-1')).toBe('/tag-1');
+    expect(pfadOhneSchraegstrich('/')).toBe('/');
+  });
+});
 
 describe('ueberschriftText', () => {
   it('entfernt die Zeitangabe am Ende und Mehrfach-Leerraum', () => {

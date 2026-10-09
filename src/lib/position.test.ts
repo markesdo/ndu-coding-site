@@ -65,9 +65,9 @@ describe('api/position', () => {
     vi.stubEnv('PRESENTER_KEY', '');
     expect((await senden(gut, 'irgendwas')).status).toBe(503);
   });
-  it('falscher oder fehlender Schlüssel → 401', async () => {
-    expect((await senden(gut, 'falsch')).status).toBe(401);
-    expect((await senden(gut)).status).toBe(401);
+  it('falscher oder fehlender Schlüssel → 403 (401 bleibt der Middleware: nicht angemeldet)', async () => {
+    expect((await senden(gut, 'falsch')).status).toBe(403);
+    expect((await senden(gut)).status).toBe(403);
   });
   it('kaputte Position → 400', async () => {
     expect((await senden({ ...gut, pfad: '//evil' }, 'geheim-123')).status).toBe(400);
@@ -81,6 +81,20 @@ describe('api/position', () => {
     expect(d.position).toStrictEqual(gut);
     expect(typeof d.zeit).toBe('number');
     expect(d.jetzt).toBeGreaterThanOrEqual(d.zeit);
+  });
+  it('auf Vercel mit Runtime Cache im Anfrage-Kontext (so läuft es deployt): speichert dort', async () => {
+    vi.stubEnv('VERCEL', '1');
+    const daten = new Map<string, unknown>();
+    const cache = { get: async (k: string) => daten.get(k), set: async (k: string, v: unknown) => { daten.set(k, v); }, delete: async () => {}, expireTag: async () => {} };
+    const KONTEXT = Symbol.for('@vercel/request-context');
+    (globalThis as Record<symbol, unknown>)[KONTEXT] = { get: () => ({ cache }) };
+    try {
+      expect((await senden(gut, 'geheim-123')).status).toBe(200);
+      expect(daten.size).toBe(1);
+      expect((await (await GET()).json()).position).toStrictEqual(gut);
+    } finally {
+      delete (globalThis as Record<symbol, unknown>)[KONTEXT];
+    }
   });
   it('auf Vercel ohne Runtime Cache lieber 503 als ein Speicher pro Instanz', async () => {
     vi.stubEnv('VERCEL', '1');

@@ -81,8 +81,9 @@ export function istOeffentlich(pfad: string): boolean {
 // Login-Formular: Rücksprung-Ziel plus Anker. Den Anker (#lokal …) sieht der Server nie – der Browser hängt ihn
 // nach der Umleitung an /login an. Er kommt nur dazu, wenn das Ziel noch keinen hat und das Ganze die Prüfung in
 // sichererPfad besteht; sonst bliebe statt nur des Ankers das ganze Ziel auf der Strecke (Rücksprung auf /).
+// Ausnahme: „#presenter=…“ (Präsentator-Schlüssel für „Wo ist Markus?“) geht nie mit – sonst landete er im Formular und beim Server.
 export function zielMitAnker(weiter: string | null, anker: string): string | null {
-  if (!weiter || !anker || weiter.includes('#')) return weiter;
+  if (!weiter || !anker || weiter.includes('#') || anker.startsWith('#presenter=')) return weiter;
   const mit = weiter + anker;
   return sichererPfad(mit) === '/' && sichererPfad(weiter) !== '/' ? weiter : mit;
 }
