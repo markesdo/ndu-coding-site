@@ -82,6 +82,19 @@ describe('api/position', () => {
     expect(typeof d.zeit).toBe('number');
     expect(d.jetzt).toBeGreaterThanOrEqual(d.zeit);
   });
+  it('Anmeldung ({ pruefen: true }) prüft nur den Schlüssel und speichert nichts', async () => {
+    await senden({ aus: true }, 'geheim-123'); // Speicher aus früheren Tests leeren
+    expect((await senden({ pruefen: true }, 'falsch')).status).toBe(403);
+    expect((await senden({ pruefen: true }, 'geheim-123')).status).toBe(200);
+    expect((await (await GET()).json()).position).toBeNull();
+  });
+  it('Pause ({ aus: true }) löscht die Position – nur mit Schlüssel', async () => {
+    expect((await senden(gut, 'geheim-123')).status).toBe(200);
+    expect((await senden({ aus: true }, 'falsch')).status).toBe(403);
+    expect((await (await GET()).json()).position).toStrictEqual(gut);
+    expect((await senden({ aus: true }, 'geheim-123')).status).toBe(200);
+    expect((await (await GET()).json()).position).toBeNull();
+  });
   it('auf Vercel mit Runtime Cache im Anfrage-Kontext (so läuft es deployt): speichert dort', async () => {
     vi.stubEnv('VERCEL', '1');
     const daten = new Map<string, unknown>();

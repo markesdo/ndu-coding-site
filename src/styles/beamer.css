@@ -97,5 +97,18 @@ html .topbar .beamer-toggle[aria-pressed="true"], .beamer-toggle[aria-pressed="t
 .beamer-toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .beamer-toggle kbd { font-family: var(--mono); font-size: .75em; color: var(--muted); }
 .topbar-actions { display: flex; gap: .5rem; align-items: center; }
-.sidebar .beamer-toggle { margin-top: 1.5rem; }
+.sidebar .beamer-toggle { margin-top: 1.5rem; vertical-align: top; }
 
+
+/* „Wo ist Markus?“ – Live-Schalter des Präsentators (wo-ist.ts setzt data-zustand). Punkt gefüllt = sendet. */
+.praesentator .live-punkt { width: .6rem; height: .6rem; border-radius: 50%; border: 2px solid currentColor; flex: none; }
+.praesentator[data-zustand="live"] .live-punkt { background: var(--accent); border-color: var(--accent); }
+.praesentator[data-zustand="wartet"] .live-punkt, .praesentator[data-zustand="pause"] .live-punkt { color: var(--muted); }
+.praesentator[data-zustand="pause"] { color: var(--muted); }
+.praesentator[data-zustand="fehler"] .live-punkt { background: var(--yellow); border-color: var(--yellow); }
+html .topbar .praesentator[aria-pressed="true"], .praesentator[aria-pressed="true"] { border-color: var(--border); background: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .praesentator[data-zustand="live"] .live-punkt { animation: live-puls 2s ease-in-out infinite; }
+}
+@keyframes live-puls { 50% { opacity: .35; } }
+@media print { .praesentator { display: none !important; } }

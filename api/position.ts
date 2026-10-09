@@ -1,6 +1,8 @@
 // „Wo ist Markus?“ – Vercel-Funktion neben der statischen Astro-Seite. Liegt hinter dem Kurspasswort (middleware.ts).
 // GET: letzte Position für alle Angemeldeten. POST: nur mit Präsentator-Schlüssel (Header x-presenter-key = PRESENTER_KEY);
-// falscher Schlüssel → 403 (401 heißt: Kurspasswort fehlt, kommt aus der Middleware).
+// falscher Schlüssel → 403 (401 heißt: Kurspasswort fehlt, kommt aus der Middleware). Body { aus: true } = Pause:
+// Position löschen, damit der Knopf bei den Studierenden gleich verschwindet. Body { pruefen: true } = Anmeldung auf
+// /praesentator: nur den Schlüssel prüfen, nichts speichern.
 // Speicher: Vercel Runtime Cache – flüchtig, reicht für „wo ist er gerade“; der Beamer-Tab sendet jede Minute neu.
 import { getCache } from '@vercel/functions';
 import { passwortStimmt } from '../src/lib/kurszugang.js'; // .js-Endung wie in middleware.ts
@@ -40,7 +42,13 @@ export async function POST(request: Request): Promise<Response> {
   if (!key || ohneRuntimeCache()) return json({ fehler: 'Nicht eingerichtet' }, 503);
   const eingabe = request.headers.get('x-presenter-key') ?? '';
   if (!eingabe || !(await passwortStimmt(eingabe, key, key))) return json({ fehler: 'Falscher Präsentator-Schlüssel' }, 403);
-  const position = positionPruefen(await request.json().catch(() => null));
+  const body: unknown = await request.json().catch(() => null);
+  if ((body as { pruefen?: unknown } | null)?.pruefen === true) return json({ ok: true });
+  if ((body as { aus?: unknown } | null)?.aus === true) {
+    await getCache().delete(SCHLUESSEL);
+    return json({ ok: true });
+  }
+  const position = positionPruefen(body);
   if (!position) return json({ fehler: 'Ungültige Position' }, 400);
   const gespeichert: Gespeichert = { ...position, zeit: Date.now() };
   await getCache().set(SCHLUESSEL, gespeichert, { ttl: TTL_SEKUNDEN, name: 'wo-ist-markus' });

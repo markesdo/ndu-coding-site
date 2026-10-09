@@ -123,10 +123,6 @@ describe('zielMitAnker (Login behält den Anker, z. B. /setup#lokal)', () => {
   it('doppelt ihn nicht, wenn das Ziel schon einen hat (nach falschem Passwort)', () => {
     expect(zielMitAnker('/tag-1#uebung-1', '#uebung-1')).toBe('/tag-1#uebung-1');
   });
-  it('nimmt den Präsentator-Schlüssel nie mit (sonst stünde er im Formular und ginge an den Server)', () => {
-    expect(zielMitAnker('/', '#presenter=geheim')).toBe('/');
-    expect(zielMitAnker('/tag-1', '#presenter=geheim')).toBe('/tag-1');
-  });
   it('ohne Anker oder ohne Ziel bleibt alles, wie es ist', () => {
     expect(zielMitAnker('/setup', '')).toBe('/setup');
     expect(zielMitAnker(null, '#lokal')).toBe(null);

@@ -1,0 +1,56 @@
+---
+// Anmeldung für „Wo ist Markus?“ (wo-ist.ts). Nicht im Menü; liegt wie alles hinter dem Kurspasswort.
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Präsentator">
+  <span class="eyebrow">Wo ist Markus?</span>
+  <h1>Präsentator</h1>
+  <p class="lead">Auf diesem Gerät anmelden: Im Beamer-Modus sehen die Studierenden dann unten rechts, wo du gerade bist, und springen per Klick dorthin.</p>
+
+  <form class="praes-form" data-praes-anmelden hidden>
+    <!-- Benutzername nur für den Passwort-Manager: So speichert der Browser den Schlüssel unter einem festen Namen. -->
+    <input type="text" name="username" value="praesentator" autocomplete="username" hidden />
+    <label for="praes-schluessel">Präsentator-Schlüssel</label>
+    <input id="praes-schluessel" name="password" type="password" autocomplete="current-password" required />
+    <p class="praes-fehler" data-praes-fehler role="alert" hidden></p>
+    <button type="submit" class="btn primary">Anmelden</button>
+  </form>
+
+  <div data-praes-angemeldet hidden>
+    <p><strong>Angemeldet auf diesem Gerät.</strong> Gesendet wird nur im Beamer-Modus (Taste <kbd>B</kbd>). Der Schalter „Live“ neben „Beamer“ zeigt, ob gerade gesendet wird; ein Klick darauf pausiert, die Studierenden sehen dann nichts mehr.</p>
+    <button type="button" class="btn" data-praes-abmelden>Abmelden</button>
+  </div>
+
+  <script>
+    import { abmelden, angemeldet, anmelden } from '../components/wo-ist';
+    const form = document.querySelector<HTMLFormElement>('[data-praes-anmelden]')!;
+    const drin = document.querySelector<HTMLElement>('[data-praes-angemeldet]')!;
+    const fehler = document.querySelector<HTMLElement>('[data-praes-fehler]')!;
+    const feld = document.querySelector<HTMLInputElement>('#praes-schluessel')!;
+    const zeigen = () => { const an = angemeldet(); form.hidden = an; drin.hidden = !an; };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const knopf = form.querySelector('button')!;
+      knopf.disabled = true;
+      fehler.hidden = true;
+      const ergebnis = await anmelden(feld.value.trim());
+      knopf.disabled = false;
+      if (ergebnis === 'ok') { feld.value = ''; zeigen(); return; }
+      fehler.textContent = ergebnis === 'falsch'
+        ? 'Der Schlüssel stimmt nicht.'
+        : 'Das hat nicht geklappt (Server nicht erreichbar oder nicht eingerichtet). Bitte später noch einmal versuchen.';
+      fehler.hidden = false;
+      feld.focus();
+    });
+    document.querySelector('[data-praes-abmelden]')!.addEventListener('click', () => { abmelden(); zeigen(); });
+    zeigen();
+  </script>
+  <style>
+    .praes-form { display: grid; gap: .6rem; max-width: 26rem; margin-top: 1.5rem; }
+    .praes-form input[type="password"] { font: inherit; padding: .6rem .75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); }
+    .praes-form .btn { justify-self: start; }
+    .praes-form[hidden] { display: none; }
+    .praes-fehler { color: var(--accent-ink); margin: 0; }
+  </style>
+</Layout>
