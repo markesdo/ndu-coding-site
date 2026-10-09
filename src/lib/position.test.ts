@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { alterText, nochmalLoeschen, positionHref, positionPruefen } from './position';
+import { ABFRAGE_MS, FEHLER_BIS_AUSBLENDEN, RUHIG_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, positionPruefen } from './position';
 // Die Vercel-Funktion liegt in api/ – Tests dürfen dort nicht liegen, sonst würde Vercel sie als Funktion bauen.
 import { GET, POST } from '../../api/position';
 
@@ -43,6 +43,22 @@ describe('nochmalLoeschen (Pause/Abmelden während einer laufenden Meldung)', ()
   it('normal weiter live, oder die Meldung ist gar nicht angekommen → nichts tun', () => {
     expect(nochmalLoeschen(true, false, true)).toBe(false);
     expect(nochmalLoeschen(false, true, false)).toBe(false);
+  });
+});
+
+describe('naechsteAbfrage', () => {
+  it('frische Position: alle 2 s, Knopf bleibt', () => {
+    expect(naechsteAbfrage('frisch', 0)).toStrictEqual({ ms: ABFRAGE_MS, ausblenden: false });
+    expect(ABFRAGE_MS).toBe(2000);
+  });
+  it('keine Position: Knopf weg, nur alle 15 s', () => {
+    expect(naechsteAbfrage('leer', 0)).toStrictEqual({ ms: RUHIG_MS, ausblenden: true });
+    expect(RUHIG_MS).toBe(15_000);
+  });
+  it('einzelne Fehler blenden nicht aus und bremsen nicht, erst drei in Folge', () => {
+    expect(naechsteAbfrage('fehler', FEHLER_BIS_AUSBLENDEN - 1)).toStrictEqual({ ms: ABFRAGE_MS, ausblenden: false });
+    expect(naechsteAbfrage('fehler', FEHLER_BIS_AUSBLENDEN)).toStrictEqual({ ms: RUHIG_MS, ausblenden: true });
+    expect(FEHLER_BIS_AUSBLENDEN).toBe(3);
   });
 });
 

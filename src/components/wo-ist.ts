@@ -1,10 +1,10 @@
 // „Wo ist Markus?“ – im Browser, eingebunden in Layout.astro.
 // Präsentator (Beamer-Modus + Schlüssel): meldet Seite und Abschnitt an /api/position, sobald sie sich ändern, sonst jede Minute.
-// Studierende: fragen alle 5 s nach und zeigen unten rechts „Markus ist bei: …“ – ein Klick springt hin, nie automatisch.
+// Studierende: fragen nach (Takt: ABFRAGE_MS / RUHIG_MS in lib/position.ts), immer nur eine Anfrage zugleich und zeigen unten rechts „Markus ist bei: …“ – ein Klick springt hin, nie automatisch.
 // Anmelden am Präsentator-Rechner auf /praesentator (Schlüssel = PRESENTER_KEY, liegt dann im localStorage dieses Browsers).
 // Der Live-Schalter in Kopf- bzw. Seitenleiste zeigt den Zustand und pausiert (Position wird dann gelöscht).
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftVon } from './abschnitt';
-import { alterText, nochmalLoeschen, positionHref, type Position } from '../lib/position';
+import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
 const KEY = 'ndu-presenter';
 const PAUSE = 'ndu-presenter-pause';
@@ -230,19 +230,29 @@ function studierende() {
     return r.bottom > 0 && r.top < innerHeight;
   }
 
-  // Ohne frische Position (kein Kurs gerade) seltener fragen.
-  let ruhigBis = 0;
+  // Eine Kette statt setInterval: Die nächste Abfrage wird erst nach der Antwort geplant. So überholt keine alte Antwort eine
+  // neue, und hängende Anfragen stauen sich nicht (Abbruch nach ABFRAGE_TIMEOUT_MS).
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let laeuft = false;
+  let fehlerInFolge = 0;
+  const planen = (ms: number) => { clearTimeout(timer); timer = setTimeout(holen, ms); };
 
-  async function holen(sofort = false) {
-    if (document.visibilityState !== 'visible' || root.hasAttribute('data-beamer') || lies()) { link.hidden = true; return; }
-    if (!sofort && Date.now() < ruhigBis) return;
+  async function holen() {
+    if (laeuft) return; // die laufende Abfrage plant die nächste selbst
+    if (document.visibilityState !== 'visible' || root.hasAttribute('data-beamer') || lies()) {
+      link.hidden = true;
+      planen(ABFRAGE_MS); // ohne Anfrage – nur nachsehen, ob sich das geändert hat
+      return;
+    }
+    laeuft = true;
+    let ergebnis: 'frisch' | 'leer' | 'fehler' = 'fehler';
     try {
-      const r = await fetch(API, { cache: 'no-store' });
+      const r = await fetch(API, { cache: 'no-store', signal: AbortSignal.timeout(ABFRAGE_TIMEOUT_MS) });
       if (!r.ok || !r.headers.get('content-type')?.includes('application/json')) throw new Error(String(r.status));
       const d = (await r.json()) as { position: Position | null; zeit?: number; jetzt?: number };
       const alter = d.position && d.zeit && d.jetzt ? alterText(d.jetzt - d.zeit) : null;
-      if (!d.position || alter === null) { aktuell = null; link.hidden = true; ruhigBis = Date.now() + 60_000; return; }
-      ruhigBis = 0;
+      if (!d.position || alter === null) { ergebnis = 'leer'; return; }
+      ergebnis = 'frisch';
       aktuell = d.position;
       link.href = positionHref(d.position);
       titel.textContent = d.position.titel;
@@ -250,15 +260,19 @@ function studierende() {
       link.setAttribute('aria-label', `Zu Markus springen: ${d.position.titel}${alter ? `, ${alter}` : ''}`);
       link.hidden = schonDa(d.position) || (positionHref(d.position) === erledigt && !zeigbar(d.position));
     } catch {
-      aktuell = null;
-      link.hidden = true;
-      ruhigBis = Date.now() + 60_000;
+      // ergebnis bleibt 'fehler'
+    } finally {
+      fehlerInFolge = ergebnis === 'fehler' ? fehlerInFolge + 1 : 0;
+      const { ms, ausblenden } = naechsteAbfrage(ergebnis, fehlerInFolge);
+      if (ausblenden) { aktuell = null; link.hidden = true; }
+      laeuft = false;
+      planen(ms);
     }
   }
 
-  holen(true);
-  setInterval(() => holen(), 5000);
-  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') holen(true); });
+  holen();
+  // Zurück im Tab: sofort fragen (läuft gerade eine Abfrage, plant sie die nächste ohnehin).
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') planen(0); });
   // Beim Scrollen sofort ausblenden, wenn man angekommen ist (ohne auf die nächste Abfrage zu warten).
   addEventListener('scroll', () => { if (aktuell && !link.hidden && schonDa(aktuell)) link.hidden = true; }, { passive: true });
 }
