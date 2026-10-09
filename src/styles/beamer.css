@@ -104,7 +104,9 @@ html .topbar .beamer-toggle[aria-pressed="true"], .beamer-toggle[aria-pressed="t
 .praesentator .live-punkt { width: .6rem; height: .6rem; border-radius: 50%; border: 2px solid currentColor; flex: none; }
 .praesentator[data-zustand="live"] .live-punkt { background: var(--accent); border-color: var(--accent); }
 .praesentator[data-zustand="wartet"] .live-punkt, .praesentator[data-zustand="pause"] .live-punkt { color: var(--muted); }
-.praesentator[data-zustand="pause"] { color: var(--muted); }
+/* html .topbar …: stärker als „html[data-beamer] .topbar button“ (Farbe, display) – sonst wirkten hidden und Pause im Beamer-Modus nicht. */
+html .topbar .praesentator[data-zustand="pause"], .praesentator[data-zustand="pause"] { color: var(--muted); }
+html .topbar .praesentator[hidden], .praesentator[hidden] { display: none; }
 .praesentator[data-zustand="fehler"] .live-punkt { background: var(--yellow); border-color: var(--yellow); }
 html .topbar .praesentator[aria-pressed="true"], .praesentator[aria-pressed="true"] { border-color: var(--border); background: none; }
 @media (prefers-reduced-motion: no-preference) {

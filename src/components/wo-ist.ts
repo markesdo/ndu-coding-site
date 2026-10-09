@@ -4,7 +4,7 @@
 // Anmelden am Präsentator-Rechner auf /praesentator (Schlüssel = PRESENTER_KEY, liegt dann im localStorage dieses Browsers).
 // Der Live-Schalter in Kopf- bzw. Seitenleiste zeigt den Zustand und pausiert (Position wird dann gelöscht).
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftVon } from './abschnitt';
-import { alterText, positionHref, type Position } from '../lib/position';
+import { alterText, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
 const KEY = 'ndu-presenter';
 const PAUSE = 'ndu-presenter-pause';
@@ -19,10 +19,23 @@ const schreib = (wert: string | null) => {
 const pausiert = (): boolean => { try { return localStorage.getItem(PAUSE) === '1'; } catch { return false; } };
 const pausieren = (an: boolean) => { try { if (an) localStorage.setItem(PAUSE, '1'); else localStorage.removeItem(PAUSE); } catch {} };
 
-// Pause bzw. Schlüssel entfernen: Position auf dem Server löschen, damit der Knopf bei den Studierenden gleich verschwindet.
+// Alle Schreibzugriffe gehen hierüber: Position, Prüfung ({ pruefen }), Löschen ({ aus }).
+const melden = (key: string, body: string) =>
+  fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body });
+
+// Pause bzw. Abmelden: Position auf dem Server löschen, damit der Knopf bei den Studierenden gleich verschwindet.
 function ausMelden(key: string) {
-  fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: '{"aus":true}' })
-    .catch((e) => console.warn('[wo-ist] Pause nicht gemeldet:', e));
+  melden(key, '{"aus":true}').catch((e) => console.warn('[wo-ist] Pause nicht gemeldet:', e));
+}
+
+// Früherer Präsentator-Link (#presenter=…, evtl. Lesezeichen): Schlüssel sofort aus der Adresszeile, angemeldet wird auf /praesentator.
+if (location.hash.startsWith('#presenter=')) {
+  history.replaceState(null, '', location.pathname + location.search);
+  hinweisSpaeter('Der Präsentator-Link gilt nicht mehr – bitte auf /praesentator anmelden.');
+}
+
+function hinweisSpaeter(text: string) {
+  if (document.body) hinweis(text); else addEventListener('DOMContentLoaded', () => hinweis(text), { once: true });
 }
 
 function hinweis(text: string) {
@@ -35,10 +48,11 @@ function hinweis(text: string) {
 }
 
 // Für /praesentator: Schlüssel beim Server prüfen (speichert nichts), dann merken.
-export async function anmelden(key: string): Promise<'ok' | 'falsch' | 'fehler'> {
+export async function anmelden(key: string): Promise<'ok' | 'falsch' | 'abgemeldet' | 'fehler'> {
   try {
-    const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: '{"pruefen":true}' });
+    const r = await melden(key, '{"pruefen":true}');
     if (r.status === 403) return 'falsch';
+    if (r.status === 401) return 'abgemeldet';
     if (!r.ok || !r.headers.get('content-type')?.includes('application/json')) return 'fehler';
   } catch {
     return 'fehler';
@@ -123,7 +137,7 @@ function praesentator() {
     if (!key) return;
     if (pausiert()) {
       pausieren(false);
-      gesendet = ''; sperreBis = 0; // sofort wieder senden, sobald die Position steht
+      gesendet = ''; sperreBis = 0; fehler = false; // sofort wieder senden, sobald die Position steht
       hinweis('Live – die Studierenden sehen wieder, wo du bist.');
     } else {
       pausieren(true);
@@ -146,10 +160,10 @@ function praesentator() {
     if (s === gesendet && jetzt - gesendetUm < 60_000) return;
     sperreBis = jetzt + 10_000; // höchstens ein Versuch pro 10 s, falls etwas hängt
     try {
-      const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: s });
-      // Während der Anfrage pausiert? Diese Position kam evtl. nach dem Löschen an – Pause noch einmal melden.
-      if (pausiert()) { if (r.ok) ausMelden(key); return; }
-      if (r.status === 403) { schreib(null); hinweis('Präsentator-Schlüssel stimmt nicht – Präsentator-Modus aus.'); return; }
+      const r = await melden(key, s);
+      // Während der Anfrage pausiert oder (in einem anderen Tab) abgemeldet? Die Position kam evtl. nach dem Löschen an.
+      if (pausiert() || lies() !== key) { if (nochmalLoeschen(r.ok, pausiert(), lies() === key)) ausMelden(key); return; }
+      if (r.status === 403) { schreib(null); pausieren(false); fehler = false; hinweis('Präsentator-Schlüssel stimmt nicht – Präsentator-Modus aus.'); return; }
       fehler = !r.ok || !r.headers.get('content-type')?.includes('application/json');
       if (r.status === 401) { hinweis('Nicht mehr angemeldet – Seite neu laden und Kurspasswort eingeben.'); return; }
       if (fehler) { console.warn('[wo-ist] Position nicht gespeichert:', r.status); return; }

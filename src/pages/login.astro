@@ -40,6 +40,8 @@ import '../styles/beamer.css';
       import { zielMitAnker } from '../lib/kurszugang';
       const q = new URLSearchParams(location.search);
       const w = zielMitAnker(q.get('weiter'), location.hash);
+      // Früherer Präsentator-Link (#presenter=…): Schlüssel nicht auf der Leinwand stehen lassen; angemeldet wird jetzt auf /praesentator.
+      if (location.hash.startsWith('#presenter=')) history.replaceState(null, '', location.pathname + location.search);
       if (w) (document.getElementById('weiter') as HTMLInputElement).value = w;
       if (q.get('fehler')) document.getElementById('fehler')!.hidden = false;
     </script>

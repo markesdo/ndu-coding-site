@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { alterText, positionHref, positionPruefen } from './position';
+import { alterText, nochmalLoeschen, positionHref, positionPruefen } from './position';
 // Die Vercel-Funktion liegt in api/ – Tests dürfen dort nicht liegen, sonst würde Vercel sie als Funktion bauen.
 import { GET, POST } from '../../api/position';
 
@@ -32,6 +32,17 @@ describe('positionHref', () => {
   it('mit und ohne Anker', () => {
     expect(positionHref(gut)).toBe('/tag-1#uebung-1-b');
     expect(positionHref({ ...gut, anker: '' })).toBe('/tag-1');
+  });
+});
+
+describe('nochmalLoeschen (Pause/Abmelden während einer laufenden Meldung)', () => {
+  it('gespeichert, aber inzwischen pausiert oder abgemeldet → noch einmal löschen', () => {
+    expect(nochmalLoeschen(true, true, true)).toBe(true);
+    expect(nochmalLoeschen(true, false, false)).toBe(true);
+  });
+  it('normal weiter live, oder die Meldung ist gar nicht angekommen → nichts tun', () => {
+    expect(nochmalLoeschen(true, false, true)).toBe(false);
+    expect(nochmalLoeschen(false, true, false)).toBe(false);
   });
 });
 

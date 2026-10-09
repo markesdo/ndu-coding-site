@@ -39,7 +39,9 @@ import Layout from '../layouts/Layout.astro';
       if (ergebnis === 'ok') { feld.value = ''; zeigen(); return; }
       fehler.textContent = ergebnis === 'falsch'
         ? 'Der Schlüssel stimmt nicht.'
-        : 'Das hat nicht geklappt (Server nicht erreichbar oder nicht eingerichtet). Bitte später noch einmal versuchen.';
+        : ergebnis === 'abgemeldet'
+          ? 'Die Anmeldung mit dem Kurspasswort ist abgelaufen – Seite neu laden und Kurspasswort eingeben.'
+          : 'Das hat nicht geklappt (Server nicht erreichbar oder nicht eingerichtet). Bitte später noch einmal versuchen.';
       fehler.hidden = false;
       feld.focus();
     });
