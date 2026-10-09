@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Fluss from '../../components/Fluss.astro';
-import { GitBranch, GitCommitHorizontal, GitMerge, GitPullRequest } from '@lucide/astro';
+import { Eye, GitBranch, GitCommitHorizontal, GitGraph, GitMerge } from '@lucide/astro';
 import Callout from '../../components/Callout.astro';
 import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
@@ -48,11 +48,11 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2 id="branch">Branch – einen Versuch abzweigen</h2>
   <p>Bisher landet jeder Commit direkt im Hauptstand <code>main</code> – und Vercel veröffentlicht genau diesen Stand. Für Tag 1 und 2 reicht das. Ein <strong>Branch</strong> lohnt sich, wenn ihr etwas ausprobieren wollt, ohne den laufenden Stand zu gefährden: ein riskantes Issue, zwei Design-Varianten, ein Umbau, bei dem ihr nicht wisst, ob er klappt. Gefällt das Ergebnis, wird der Branch zurück in <code>main</code> geführt (<strong>Merge</strong>); gefällt es nicht, lasst ihr ihn einfach liegen.</p>
-  <Fluss label="Ablauf mit Branch: von main abzweigen, auf dem Branch committen, per Pull Request prüfen, zurück in main" knoten={[
-    { t: 'main', sub: 'der Stand, den Vercel veröffentlicht', icon: GitCommitHorizontal },
+  <Fluss label="Ablauf mit Branch: von main abzweigen, auf dem Branch committen, in der Vorschau prüfen, zurück in main" knoten={[
+    { t: 'main', sub: 'der Stand, den Vercel veröffentlicht', icon: GitGraph },
     { t: 'Branch', sub: 'Versuch abzweigen', icon: GitBranch },
     { t: 'Commits', sub: 'auf dem Branch – main bleibt unberührt', icon: GitCommitHorizontal },
-    { t: 'Pull Request', sub: 'Vorschau-Adresse prüfen', icon: GitPullRequest },
+    { t: 'Prüfen', sub: 'eigene Vorschau-Adresse pro Branch; ab Tag 3 per Pull Request', icon: Eye },
     { t: 'Merge', sub: 'zurück in main – geht live', icon: GitMerge },
   ]} />
   <Prompt label="Branch anlegen">Leg für Issue [Nummer] einen eigenen Branch an und arbeite dort. Sag mir, wie ich sehe, auf welchem Branch ich gerade bin.</Prompt>

@@ -28,21 +28,22 @@ const { knoten, label, beide = false, hervor = [] } = Astro.props as {
 </figure>
 
 <style>
-  .fluss { margin: 1.5rem 0; }
-  .fluss-reihe { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem 2.25rem; }
-  .fluss-reihe li { position: relative; flex: 1 1 8.5rem; display: flex; flex-direction: column; align-items: center; gap: .3rem; text-align: center; padding: .9rem .75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
-  .fluss-reihe li.hervor { border-color: var(--accent); }
+  /* Eine Reihe ohne Umbruch; wird die Spalte zu schmal (Container-Query, nicht Fensterbreite – die Seitenleiste zählt mit), untereinander. */
+  .fluss { margin: 1.5rem 0; container: fluss / inline-size; }
+  .fluss-reihe { list-style: none; margin: 0; padding: 0; display: flex; gap: 2.25rem; }
+  .fluss-reihe li { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: .3rem; text-align: center; padding: .9rem .75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+  .fluss-reihe li.hervor { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg-2)); }
   .fluss-icon { color: var(--accent); flex: none; }
   .fluss-text { display: flex; flex-direction: column; gap: .3rem; }
   .fluss-reihe strong { font-size: .95rem; line-height: 1.25; }
   .fluss-sub { font-size: .85rem; line-height: 1.4; color: var(--muted); }
-  .fluss-reihe li + li::before { content: '→'; position: absolute; left: -1.7rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1.2rem; }
-  .fluss-reihe.beide li + li::before { content: '⇄'; }
-  @media (max-width: 600px) {
+  .fluss-reihe li + li::before { content: '→' / ''; position: absolute; left: -1.7rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1.2rem; }
+  .fluss-reihe.beide li + li::before { content: '⇄' / ''; }
+  @container fluss (max-width: 720px) {
     .fluss-reihe { flex-direction: column; gap: 1.6rem; }
     .fluss-reihe li { flex: none; flex-direction: row; align-items: center; gap: .75rem; text-align: left; padding: .6rem .8rem; }
     .fluss-text { gap: .1rem; }
-    .fluss-reihe li + li::before { left: 50%; top: -1.45rem; transform: translateX(-50%); content: '↓'; }
-    .fluss-reihe.beide li + li::before { content: '⇅'; }
+    .fluss-reihe li + li::before { left: 50%; top: -1.45rem; transform: translateX(-50%); content: '↓' / ''; }
+    .fluss-reihe.beide li + li::before { content: '⇅' / ''; }
   }
 </style>
