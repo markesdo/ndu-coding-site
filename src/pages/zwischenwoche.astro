@@ -75,7 +75,9 @@ Danach: Welche der drei würdest du auch ohne diesen Prompt vorschlagen? Die ers
   <p>In derselben Session, sobald ihr euch für eine Richtung entschieden habt.</p>
   <Prompt label="Redesign · Teil 2: Umsetzen" note="Statt [Name] den Namen der gewählten Richtung einsetzen.">Richtung [Name] – setz sie um, ganz, ohne Abschwächen und ohne Rückfragen. Für diesen Auftrag gilt ausdrücklich: mutig statt schlicht und die ganze Oberfläche in einem Durchgang; alle anderen Regeln aus CLAUDE.md bleiben. Wenn du beim Bauen zwischen zwei Varianten schwankst, nimm die mutigere; zurücknehmen kann ich später. Farben tauschen reicht nicht: Jemand, der die alte App kennt, soll die neue nicht wiedererkennen – außer an den Funktionen.
 
-Arbeite auf einem neuen Branch „redesign“ (main bleibt unberührt) und mach drei Commits; nach jedem sag mir in zwei Sätzen, was ich im Browser sehen soll:
+Bevor du irgendetwas änderst: Prüf mit git status, ob es ungesicherte Änderungen gibt – wenn ja, frag mich, ob du sie vorher auf main committen sollst. Dann leg einen neuen Branch „redesign“ an, wechsel darauf und bestätige mir, dass du dort bist. main bleibt unberührt.
+
+Mach auf dem Branch drei Commits; nach jedem sag mir in zwei Sätzen, was ich im Browser sehen soll:
 1. Fundament: Schriften über next/font/google in src/app/layout.tsx (mit display: swap), alle Farben als Tokens in src/app/globals.css (bestehende umbenennen oder ergänzen, keine Hex-Werte in Komponenten), Typo-Skala, Header und Footer. Keine Seite darf danach kaputt sein.
 2. Startseite: ihre wichtigsten Elemente mit unseren echten Inhalten – Bilder nur, wenn es welche gibt, nichts dazuerfinden –, das Signature-Element, der eine Moment mit Bewegung. Ist Motion schon installiert, nimm Motion, sonst nur CSS – nichts installieren. Nur transform und opacity, Einblenden höchstens 0,6 s, nichts in Dauerschleife. Vorhandene Animationen bleiben, wie sie sind.
 3. Alle übrigen Seiten auf dasselbe System ziehen, ohne neue Ideen – die Startseite führt, die anderen folgen.
@@ -89,7 +91,12 @@ Bevor du „fertig“ sagst:
 - Einmal mit „Bewegung reduzieren“: Die Seite ist ohne Animation vollständig.
 - Die Akzeptanzkriterien aller fertigen Issues in docs/BACKLOG.md noch einmal durchgehen, Beleg pro Kriterium.
 - Chanel-Regel: Nimm ein Element weg, das nur Dekoration ist, und sag mir, welches.
-Push den Branch und sag mir, wie ich die Vorschau sehe.</Prompt>
+Push den Branch und sag mir, wie ich die Vorschau sehe.
+
+Zum Schluss erklär mir in einfachen Worten meine zwei Möglichkeiten und welchen Satz ich dir jeweils sagen kann:
+- Gefällt es mir: Was passiert beim Übernehmen in main (main geht sofort live), und was ich vorher im Browser prüfen sollte.
+- Gefällt es mir nicht: Wie wir zurück auf main kommen, ohne dass etwas vom Redesign dort landet – der Branch bleibt liegen, falls ich es mir anders überlege.
+Mach nichts davon, bis ich mich entschieden habe.</Prompt>
   <p class="small muted">Die Vorschau-Adresse von Vercel öffnet nur, wer in eurem Vercel-Konto angemeldet ist – für andere erst nach dem Übernehmen in <code>main</code>.</p>
   <h3 id="redesign-c">c) Kritik-Runde</h3>
   <p>Ein frischer Blick findet, was beim Bauen untergeht. Vorher <code>/clear</code> – Claude kennt die App dann nicht mehr und urteilt wie jemand, der sie zum ersten Mal sieht. Claude ändert hier nichts; ihr wählt aus, was umgesetzt wird.</p>
@@ -100,10 +107,10 @@ Push den Branch und sag mir, wie ich die Vorschau sehe.</Prompt>
 4. Was ist nur Dekoration und sollte weg?
 5. Wo ist Text schlecht lesbar, wo ragt etwas über den Rand, wo ist ein Antipp-Ziel zu klein?
 Höchstens 10 Punkte, je ein Satz, verständlich ohne Programmierkenntnisse. Ich wähle dann aus.</Prompt>
-  <Prompt label="Ausgewählte Punkte umsetzen">Setz Punkt [Nummern] um. Dann npm run lint und npm run build fehlerfrei, dieselben Ansichten und Kontraste wie in Teil 2 prüfen, auf dem Branch redesign committen und pushen.</Prompt>
+  <Prompt label="Ausgewählte Punkte umsetzen">Setz Punkt [Nummern] um, auf dem Branch redesign (prüf mit git status, dass du dort bist). Dann npm run lint und npm run build fehlerfrei, dieselben Ansichten und Kontraste wie in Teil 2 prüfen, committen und pushen. Erklär mir danach wieder meine zwei Möglichkeiten – übernehmen oder verwerfen – und mach nichts davon, bis ich entscheide.</Prompt>
 
   <h3 id="redesign-d">d) Übernehmen oder verwerfen</h3>
-  <p>Im Browser durchklicken: Funktioniert alles wie vorher? Dann entscheidet ihr:</p>
+  <p>Claude hat euch am Ende von Teil 2 (und nach den Kritik-Punkten) erklärt, was Übernehmen und Verwerfen jeweils bedeuten. Im Browser durchklicken: Funktioniert alles wie vorher? Dann entscheidet ihr – mit Claudes Satz oder einem von diesen:</p>
   <Prompt label="Gefällt mir – übernehmen (erst, wenn alles geprüft ist: main geht sofort live)">Führ den Branch redesign zurück in main, push beides und sag mir, ob es Konflikte gab.</Prompt>
   <Prompt label="Gefällt mir nicht – verwerfen">Verwirf alle noch nicht gesicherten Änderungen, wechsel zurück auf main und lass den Branch redesign liegen. Zeig mir mit git status, dass main sauber ist.</Prompt>
   <p>Am Donnerstag in der Demo: Vorher-Nachher. Der Test – jemand aus dem Kurs muss euer Signature-Element in fünf Sekunden benennen können.</p>
