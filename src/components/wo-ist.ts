@@ -1,6 +1,6 @@
 // „Wo ist Markus?“ – im Browser, eingebunden in Layout.astro.
 // Präsentator (Beamer-Modus + Schlüssel): meldet Seite und Abschnitt an /api/position, sobald sie sich ändern, sonst jede Minute.
-// Studierende: fragen alle 5 s nach und zeigen unten rechts „Markus ist bei: …“ – ein Klick springt hin, nie automatisch.
+// Studierende: fragen alle 2 s nach (ohne frische Position alle 15 s) und zeigen unten rechts „Markus ist bei: …“ – ein Klick springt hin, nie automatisch.
 // Anmelden am Präsentator-Rechner auf /praesentator (Schlüssel = PRESENTER_KEY, liegt dann im localStorage dieses Browsers).
 // Der Live-Schalter in Kopf- bzw. Seitenleiste zeigt den Zustand und pausiert (Position wird dann gelöscht).
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftVon } from './abschnitt';
@@ -230,7 +230,9 @@ function studierende() {
     return r.bottom > 0 && r.top < innerHeight;
   }
 
-  // Ohne frische Position (kein Kurs gerade) seltener fragen.
+  // Ohne frische Position (kein Kurs gerade, Pause) seltener fragen.
+  const NORMAL_MS = 2000;
+  const RUHIG_MS = 15_000;
   let ruhigBis = 0;
 
   async function holen(sofort = false) {
@@ -241,7 +243,7 @@ function studierende() {
       if (!r.ok || !r.headers.get('content-type')?.includes('application/json')) throw new Error(String(r.status));
       const d = (await r.json()) as { position: Position | null; zeit?: number; jetzt?: number };
       const alter = d.position && d.zeit && d.jetzt ? alterText(d.jetzt - d.zeit) : null;
-      if (!d.position || alter === null) { aktuell = null; link.hidden = true; ruhigBis = Date.now() + 60_000; return; }
+      if (!d.position || alter === null) { aktuell = null; link.hidden = true; ruhigBis = Date.now() + RUHIG_MS; return; }
       ruhigBis = 0;
       aktuell = d.position;
       link.href = positionHref(d.position);
@@ -252,12 +254,12 @@ function studierende() {
     } catch {
       aktuell = null;
       link.hidden = true;
-      ruhigBis = Date.now() + 60_000;
+      ruhigBis = Date.now() + RUHIG_MS;
     }
   }
 
   holen(true);
-  setInterval(() => holen(), 5000);
+  setInterval(() => holen(), NORMAL_MS);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') holen(true); });
   // Beim Scrollen sofort ausblenden, wenn man angekommen ist (ohne auf die nächste Abfrage zu warten).
   addEventListener('scroll', () => { if (aktuell && !link.hidden && schonDa(aktuell)) link.hidden = true; }, { passive: true });
