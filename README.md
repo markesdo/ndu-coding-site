@@ -29,6 +29,9 @@ npm run build    # Ausgabe in dist/
 - `?beamer` (oder Taste `B`): größere Schrift, ohne Seitenleiste; `?beamer=0` schaltet aus.
 - `/start`: Startseite vor dem Login, öffentlich (ohne Kurspasswort). Eine Animation baut den Titel auf, danach führt „Weiter“ (Klick, Enter, Leertaste oder →) zur Übersicht – ohne Anmeldung über das Kurspasswort. Nie automatisch weiter.
 - Nach NDU Live am Beamer: `/start?beamer` – „Weiter“ bleibt im Beamer-Modus (`/?beamer`).
+- **„Wo ist Markus?“:** Studierende sehen unten rechts „Markus ist bei: Tag 1 · Übung 1 b“ und springen per Klick dorthin (nie automatisch). Gemeldet wird vom Beamer-Tab: Seite und Abschnitt unter der Lesezeile, bei offener Screenshot-Präsentation der Schritt; bei Änderung nach 1,5 s, sonst jede Minute. Nach 2 min ohne Signal „· vor N min“, nach 30 min weg.
+  - Einschalten am Präsentator-Rechner einmalig: `https://ndu.datamonkeys.ai/#presenter=<PRESENTER_KEY>` (der Hash geht nicht an den Server und verschwindet sofort aus der Adresszeile). Gemeldet wird nur im Beamer-Modus. Ausschalten: `#presenter=0`.
+  - Vercel-Variable `PRESENTER_KEY` (Sensitive). Ohne sie nimmt `/api/position` nichts an. Speicher: Vercel Runtime Cache (flüchtig, kein Datenbank-Setup). Code: `api/position.ts`, `src/components/wo-ist.ts`.
 - Die Animation „Der Cursor läuft“ (`src/components/auftakt-start.ts`, GSAP mit SplitText – nur auf dieser Seite geladen): Ein Auftrag wird getippt, seine Buchstaben fliegen in den Titel, ein Druckkopf schreibt Einleitung und Tage, dann wartet „› weiter“. Jede Taste oder jeder Klick springt ans Ende. Zeiten und Regeln stehen als reine Funktionen in `src/components/auftakt-zeitplan.ts` (mit Tests); der Endzustand ist statisches HTML in `src/pages/start.astro`.
 
 ## Inhalte ändern
