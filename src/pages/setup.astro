@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Fluss from '../components/Fluss.astro';
+import { Cloud, FolderGit2, Laptop } from '@lucide/astro';
 import Callout from '../components/Callout.astro';
 import Tasten from '../components/Tasten.astro';
 import Checklist from '../components/Checklist.astro';
@@ -428,6 +430,11 @@ claude plugin install linear@claude-plugins-official</Prompt>
 
   <h3 id="lokal-wechseln">Zwischen Codespace und Laptop wechseln</h3>
   <p>Beide Arbeitsplätze sind gleichwertig, solange GitHub dazwischen auf dem neuesten Stand ist. Die Regel: <strong>Bevor ihr aufhört, pushen. Bevor ihr anfangt, holen.</strong> Holen heißt in VS Code: Source Control → <em>Sync Changes</em>, oder ihr sagt Claude: „Hol den neuesten Stand von GitHub.“ Wer an beiden Orten ohne Push arbeitet, bekommt Konflikte. Den Codespace könnt ihr danach stoppen oder löschen – eure Arbeit liegt auf GitHub.</p>
+  <Fluss beide label="Laptop und Codespace tauschen den Stand über GitHub aus" hervor={[1]} knoten={[
+    { t: 'Laptop', icon: Laptop },
+    { t: 'GitHub', sub: 'der gemeinsame Stand: vor dem Aufhören pushen, vor dem Anfangen holen', icon: FolderGit2 },
+    { t: 'Codespace', icon: Cloud },
+  ]} />
   <h2>Wenn etwas hängt</h2>
   <p>Die häufigsten Stolpersteine mit Lösungen stehen unter <a href="/bekannte-probleme">Bekannte Probleme</a>. Ansonsten: Hand heben – an Tag 1 ist genau dafür Zeit eingeplant.</p>
 </Layout>
