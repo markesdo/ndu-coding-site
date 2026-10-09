@@ -38,7 +38,8 @@ html[data-beamer] .sidebar {
 html[data-beamer] .sidebar.open { transform: none; visibility: visible; transition: transform .2s; box-shadow: 0 0 40px rgba(0, 0, 0, .25); }
 html[data-beamer] .content { padding: 1.25rem 2.5rem 5rem; }
 
-/* Die Kopfleiste ist sonst nur am Handy sichtbar; im Beamer-Modus trägt sie „Menü“ und den Schalter zum Ausschalten. */
+/* Die Kopfleiste ist sonst nur am Handy sichtbar; im Beamer-Modus trägt sie „Menü“ und den Schalter zum Ausschalten
+   (Beamer gibt es nur beim Präsentator – BeamerStart.astro –, also ist der Schalter dann immer da). */
 /* Feste px: die klebende Leiste soll mit der Schrift nicht mitwachsen. */
 html[data-beamer] .topbar {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;

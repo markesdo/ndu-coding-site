@@ -1,10 +1,11 @@
 ---
 // Startseite vor dem Login: öffentlich (Middleware lässt /start ohne Kurspasswort durch), ohne Navigation,
 // eine dunkle Bühne über den ganzen Bildschirm – die Fortsetzung der NDU-Live-Leinwand. Von NDU Live aus kommen
-// Handys hierher, der Beamer mit ?beamer. „› weiter“ führt zur Übersicht (/) – ohne Anmeldung leitet die Middleware
+// Handys hierher, der Beamer mit ?beamer (wirkt nur beim Präsentator, siehe BeamerStart.astro). „› weiter“ führt zur Übersicht (/) – ohne Anmeldung leitet die Middleware
 // von dort zum Kurspasswort. Nie automatisch weiter: Wer hier ist, entscheidet selbst, wann es losgeht.
 // Aufbau: Der Endzustand (Titel, Einleitung, Tage, „› weiter“) ist statisches HTML. Die Animation
 // („Der Cursor läuft“, src/components/auftakt-start.ts, GSAP) bespielt nur diese Bühne und endet genau hier.
+import BeamerStart from '../components/BeamerStart.astro';
 import LinkVorschau from '../components/LinkVorschau.astro';
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
@@ -22,24 +23,10 @@ import '../styles/auftakt.css';
     <title>Programmieren mit AI · NDU Coding 2026</title>
     <LinkVorschau mitUrl />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <BeamerStart hell={false} />
     <script is:inline>
-      // Vor dem ersten Zeichnen: Beamer-Modus wie in Layout.astro (?beamer an, ?beamer=0 aus, sonst gemerkte Wahl)
-      // und die Animation scharf schalten – außer bei reduzierter Bewegung (dann sofort der Endzustand).
-      (function () {
-        var root = document.documentElement;
-        // Gemerkt nur beim Präsentator (Schlüssel im Browser), ?beamer gilt für alle – Regel wie in Layout.astro.
-        var praes = false;
-        try { praes = !!localStorage.getItem('ndu-presenter'); } catch (e) {}
-        var q = new URLSearchParams(location.search).get('beamer');
-        var an = false;
-        try { if (praes) an = localStorage.getItem('ndu-beamer') === '1'; else localStorage.removeItem('ndu-beamer'); } catch (e) {}
-        if (q !== null) {
-          an = q !== '0';
-          try { if (an && praes) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
-        }
-        if (an) root.setAttribute('data-beamer', '');
-        try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) root.setAttribute('data-auftakt', ''); } catch (e) {}
-      })();
+      // Vor dem ersten Zeichnen die Animation scharf schalten – außer bei reduzierter Bewegung (dann sofort der Endzustand).
+      try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.setAttribute('data-auftakt', ''); } catch (e) {}
     </script>
   </head>
   <body class="start-body">

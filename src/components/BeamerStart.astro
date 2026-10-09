@@ -1,0 +1,33 @@
+---
+// Beamer-Modus und Präsentator vor dem ersten Zeichnen setzen (sonst blitzt die normale Ansicht auf).
+// Eingebunden im <head> von Layout.astro, start.astro und login.astro – eine Regel für alle drei:
+// Beamer gibt es nur beim Präsentator (Schlüssel aus /praesentator im Browser, html[data-ist-praesentator]).
+// Dort merkt sich der Browser die Wahl; ?beamer (oder ?beamer=1) schaltet ein, ?beamer=0 aus. Ohne Schlüssel wird
+// ein gespeicherter Beamer-Modus gelöscht und ?beamer ignoriert – sonst säße man ohne Knopf zum Ausschalten fest.
+// hell: Beamer heißt auch helles Thema (dunkel wird am Projektor grau auf grau); /start hat ein eigenes Farbschema.
+const { hell = true } = Astro.props as { hell?: boolean };
+---
+<script is:inline define:vars={{ hell }}>
+  (function () {
+    var root = document.documentElement;
+    var praes = false;
+    var an = false;
+    try {
+      praes = !!localStorage.getItem('ndu-presenter');
+      if (!praes) localStorage.removeItem('ndu-beamer');
+      else {
+        an = localStorage.getItem('ndu-beamer') === '1';
+        var q = new URLSearchParams(location.search).get('beamer');
+        if (q !== null) {
+          an = q !== '0';
+          if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer');
+        }
+      }
+    } catch (e) {}
+    if (praes) root.setAttribute('data-ist-praesentator', '');
+    if (an) {
+      root.setAttribute('data-beamer', '');
+      if (hell) root.setAttribute('data-theme', 'light');
+    }
+  })();
+</script>

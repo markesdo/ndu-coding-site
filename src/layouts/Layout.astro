@@ -6,6 +6,7 @@ import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 // Fließtext-Schrift vorladen, damit der erste Text nicht in der Ersatzschrift aufblitzt.
 import textSchrift from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
+import BeamerStart from '../components/BeamerStart.astro';
 import '../styles/global.css';
 import '../styles/beamer.css';
 const { title, description = 'Programmieren mit AI – Kurs für den MSc Management by Innovation, NDU, Oktober 2026' } = Astro.props;
@@ -60,28 +61,10 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
     <meta name="description" content={description} />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="preload" href={textSchrift} as="font" type="font/woff2" crossorigin />
+    <BeamerStart />
     <script is:inline>
-      // Beamer-Modus vor dem ersten Zeichnen setzen, sonst blitzt die normale Ansicht auf.
-      // Beamer ist nur für den Präsentator (Schlüssel aus /praesentator im Browser): Nur dann gibt es die Knöpfe und die Taste B,
-      // und nur dann merkt sich der Browser die Wahl. ?beamer (oder ?beamer=1) schaltet für diesen Aufruf bei allen ein,
-      // ?beamer=0 aus. Gleiche Regel in start.astro und login.astro.
-      (function () {
-        var root = document.documentElement;
-        var praes = false;
-        try { praes = !!localStorage.getItem('ndu-presenter'); } catch (e) {}
-        if (praes) root.setAttribute('data-ist-praesentator', '');
-        var q = new URLSearchParams(location.search).get('beamer');
-        var an = false;
-        try { if (praes) an = localStorage.getItem('ndu-beamer') === '1'; else localStorage.removeItem('ndu-beamer'); } catch (e) {}
-        if (q !== null) {
-          an = q !== '0';
-          try { if (an && praes) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
-        }
-        // Beamer heißt auch helles Thema: Dunkel wird am Projektor grau auf grau.
-        if (an) { document.documentElement.setAttribute('data-beamer', ''); document.documentElement.setAttribute('data-theme', 'light'); }
-        // Eingeklappte Seitenleiste (Desktop) ebenfalls vor dem ersten Zeichnen.
-        try { if (localStorage.getItem('ndu-seitenleiste') === 'zu') document.documentElement.setAttribute('data-leiste-zu', ''); } catch (e) {}
-      })();
+      // Eingeklappte Seitenleiste (Desktop) vor dem ersten Zeichnen.
+      try { if (localStorage.getItem('ndu-seitenleiste') === 'zu') document.documentElement.setAttribute('data-leiste-zu', ''); } catch (e) {}
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
@@ -138,6 +121,8 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       const toggles = document.querySelectorAll<HTMLButtonElement>('[data-beamer-toggle]');
       const sync = () => toggles.forEach((t) => t.setAttribute('aria-pressed', String(root.hasAttribute('data-beamer'))));
       const setBeamer = (an: boolean) => {
+        // Nur der Präsentator schaltet ein (Regel in BeamerStart.astro); ausschalten geht immer.
+        if (an && !root.hasAttribute('data-ist-praesentator')) return;
         root.toggleAttribute('data-beamer', an);
         if (an) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
         try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch {}

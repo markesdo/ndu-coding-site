@@ -127,6 +127,13 @@ function praesentator() {
     // Beamer-Knöpfe u. Ä. (data-nur-praesentator) zeigt das CSS nur mit html[data-ist-praesentator]; den Anfangswert setzt
     // Layout.astro vor dem ersten Zeichnen, hier folgt er An- und Abmelden.
     root.toggleAttribute('data-ist-praesentator', Boolean(key));
+    // Abgemeldet (hier, in einem anderen Tab oder per 403), aber noch im Beamer-Modus: verlassen – ohne Schlüssel gibt es
+    // keinen Knopf und keine Taste mehr zum Ausschalten.
+    if (!key && root.hasAttribute('data-beamer')) {
+      root.removeAttribute('data-beamer');
+      root.removeAttribute('data-theme');
+      try { localStorage.removeItem('ndu-beamer'); } catch {}
+    }
     for (const b of knoepfe) {
       b.hidden = !key;
       b.dataset.zustand = zustand;
