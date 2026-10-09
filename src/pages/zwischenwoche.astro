@@ -73,9 +73,12 @@ Danach: Welche der drei würdest du auch ohne diesen Prompt vorschlagen? Die ers
 
   <h3 id="redesign-b">b) Umsetzen</h3>
   <p>In derselben Session, sobald ihr euch für eine Richtung entschieden habt.</p>
-  <Prompt label="Redesign · Teil 2: Umsetzen" note="Statt [Name] den Namen der gewählten Richtung einsetzen.">Richtung [Name] – setz sie um, ganz, ohne Abschwächen und ohne Rückfragen. Für diesen Auftrag gilt ausdrücklich: mutig statt schlicht und die ganze Oberfläche in einem Durchgang; alle anderen Regeln aus CLAUDE.md bleiben. Wenn du beim Bauen zwischen zwei Varianten schwankst, nimm die mutigere; zurücknehmen kann ich später. Farben tauschen reicht nicht: Jemand, der die alte App kennt, soll die neue nicht wiedererkennen – außer an den Funktionen.
+  <Prompt label="Redesign · Teil 2: Umsetzen" note="Statt [Name] den Namen der gewählten Richtung einsetzen.">Richtung [Name] – setz sie um, ganz, ohne Abschwächen und ohne Rückfragen zur Gestaltung. Für diesen Auftrag gilt ausdrücklich: mutig statt schlicht und die ganze Oberfläche in einem Durchgang; alle anderen Regeln aus CLAUDE.md bleiben. Wenn du beim Bauen zwischen zwei Varianten schwankst, nimm die mutigere; zurücknehmen kann ich später. Farben tauschen reicht nicht: Jemand, der die alte App kennt, soll die neue nicht wiedererkennen – außer an den Funktionen.
 
-Bevor du irgendetwas änderst: Prüf mit git status, ob es ungesicherte Änderungen gibt – wenn ja, frag mich, ob du sie vorher auf main committen sollst. Dann leg einen neuen Branch „redesign“ an, wechsel darauf und bestätige mir, dass du dort bist. main bleibt unberührt.
+Bevor du irgendetwas änderst:
+- Prüf mit git status, ob es ungesicherte Änderungen gibt. Wenn ja: Hör auf, sag mir, welche Dateien es sind, und warte – ich sichere sie selbst mit /ndu-commit. Commite nichts auf main.
+- Leg einen neuen Branch „redesign“ an und wechsel darauf. Gibt es den schon (von einem früheren Versuch), nimm den nächsten freien Namen – redesign-2, redesign-3 … – und lass den alten unberührt.
+- Sag mir, wie der Branch heißt und dass du dort bist. main bleibt unberührt.
 
 Mach auf dem Branch drei Commits; nach jedem sag mir in zwei Sätzen, was ich im Browser sehen soll:
 1. Fundament: Schriften über next/font/google in src/app/layout.tsx (mit display: swap), alle Farben als Tokens in src/app/globals.css (bestehende umbenennen oder ergänzen, keine Hex-Werte in Komponenten), Typo-Skala, Header und Footer. Keine Seite darf danach kaputt sein.
@@ -93,9 +96,9 @@ Bevor du „fertig“ sagst:
 - Chanel-Regel: Nimm ein Element weg, das nur Dekoration ist, und sag mir, welches.
 Push den Branch und sag mir, wie ich die Vorschau sehe.
 
-Zum Schluss erklär mir in einfachen Worten meine zwei Möglichkeiten und welchen Satz ich dir jeweils sagen kann:
-- Gefällt es mir: Was passiert beim Übernehmen in main (main geht sofort live), und was ich vorher im Browser prüfen sollte.
-- Gefällt es mir nicht: Wie wir zurück auf main kommen, ohne dass etwas vom Redesign dort landet – der Branch bleibt liegen, falls ich es mir anders überlege.
+Zum Schluss erklär mir in einfachen Worten meine zwei Möglichkeiten und nenn mir jeweils genau diesen Satz (statt [redesign] den echten Branch-Namen):
+- Gefällt es mir: Übernehmen heißt, main geht sofort live – sag mir, was ich vorher im Browser prüfen sollte. Satz: „Führ den Branch [redesign] zurück in main, push beides und sag mir, ob es Konflikte gab.“
+- Gefällt es mir nicht: Zurück auf main, nichts vom Redesign landet dort, der Branch bleibt liegen, falls ich es mir anders überlege. Satz: „Verwirf alle noch nicht gesicherten Änderungen, wechsel zurück auf main und lass den Branch [redesign] liegen. Zeig mir mit git status, dass main sauber ist.“
 Mach nichts davon, bis ich mich entschieden habe.</Prompt>
   <p class="small muted">Die Vorschau-Adresse von Vercel öffnet nur, wer in eurem Vercel-Konto angemeldet ist – für andere erst nach dem Übernehmen in <code>main</code>.</p>
   <h3 id="redesign-c">c) Kritik-Runde</h3>
@@ -107,12 +110,12 @@ Mach nichts davon, bis ich mich entschieden habe.</Prompt>
 4. Was ist nur Dekoration und sollte weg?
 5. Wo ist Text schlecht lesbar, wo ragt etwas über den Rand, wo ist ein Antipp-Ziel zu klein?
 Höchstens 10 Punkte, je ein Satz, verständlich ohne Programmierkenntnisse. Ich wähle dann aus.</Prompt>
-  <Prompt label="Ausgewählte Punkte umsetzen">Setz Punkt [Nummern] um, auf dem Branch redesign (prüf mit git status, dass du dort bist). Dann npm run lint und npm run build fehlerfrei, dieselben Ansichten und Kontraste wie in Teil 2 prüfen, committen und pushen. Erklär mir danach wieder meine zwei Möglichkeiten – übernehmen oder verwerfen – und mach nichts davon, bis ich entscheide.</Prompt>
+  <Prompt label="Ausgewählte Punkte umsetzen" note="Statt [redesign] den Namen des Branches, den Claude in Teil 2 genannt hat – meist redesign.">Setz Punkt [Nummern] um, nur auf dem Branch [redesign]. Prüf vorher mit git status: Bist du auf einem anderen Branch, wechsel auf [redesign]; gibt es ungesicherte Änderungen, hör auf und sag mir, welche. Danach npm run lint und npm run build fehlerfrei, Startseite und eine Unterseite bei 375 und 1280 px ansehen, Kontraste prüfen, committen und pushen. Übernehmen oder verwerfen entscheide ich danach selbst – tu nichts davon.</Prompt>
 
   <h3 id="redesign-d">d) Übernehmen oder verwerfen</h3>
-  <p>Claude hat euch am Ende von Teil 2 (und nach den Kritik-Punkten) erklärt, was Übernehmen und Verwerfen jeweils bedeuten. Im Browser durchklicken: Funktioniert alles wie vorher? Dann entscheidet ihr – mit Claudes Satz oder einem von diesen:</p>
-  <Prompt label="Gefällt mir – übernehmen (erst, wenn alles geprüft ist: main geht sofort live)">Führ den Branch redesign zurück in main, push beides und sag mir, ob es Konflikte gab.</Prompt>
-  <Prompt label="Gefällt mir nicht – verwerfen">Verwirf alle noch nicht gesicherten Änderungen, wechsel zurück auf main und lass den Branch redesign liegen. Zeig mir mit git status, dass main sauber ist.</Prompt>
+  <p>Am Ende von Teil 2 hat Claude erklärt, was Übernehmen und Verwerfen bedeuten, und den Branch-Namen genannt. Im Browser durchklicken: Funktioniert alles wie vorher? Dann entscheidet ihr mit einem dieser beiden Sätze:</p>
+  <Prompt label="Gefällt mir – übernehmen (erst, wenn alles geprüft ist: main geht sofort live)" note="Statt [redesign] den Branch-Namen aus Teil 2 – meist redesign.">Führ den Branch [redesign] zurück in main, push beides und sag mir, ob es Konflikte gab.</Prompt>
+  <Prompt label="Gefällt mir nicht – verwerfen">Verwirf alle noch nicht gesicherten Änderungen, wechsel zurück auf main und lass den Branch [redesign] liegen. Zeig mir mit git status, dass main sauber ist.</Prompt>
   <p>Am Donnerstag in der Demo: Vorher-Nachher. Der Test – jemand aus dem Kurs muss euer Signature-Element in fünf Sekunden benennen können.</p>
 
   <h2 id="hilfe-holen">Hilfe holen</h2>
