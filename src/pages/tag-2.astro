@@ -16,7 +16,7 @@ import { bild } from '../components/anleitung-bilder';
 <Layout title="Tag 2 · Bauen wie ein Profi">
   <span class="eyebrow">Freitag, 9. Oktober 2026 · 09:00–18:00</span>
   <h1>Tag 2 · Bauen wie ein Profi</h1>
-  <p class="lead">Die App bekommt echte Daten, Login und eine öffentliche Adresse. Ihr lernt, Fehler zu finden und richtig zu übergeben und den Agenten über längere Arbeit hinweg zu steuern. Am Nachmittag testet ihr eure Apps gegenseitig mit euren Konten und bringt Bewegung hinein.</p>
+  <p class="lead">Die App bekommt echte Daten, Login und eine öffentliche Adresse. Ihr lernt, Fehler zu finden und richtig zu übergeben und den Agenten über längere Arbeit hinweg zu steuern. Am Nachmittag testet ihr eure Apps gegenseitig mit euren Konten und bringt Animationen hinein.</p>
   <Orientierung seite="tag-2" />
 
   <h2 id="ablauf">Ablauf</h2>
@@ -33,7 +33,7 @@ import { bild } from '../components/anleitung-bilder';
     <Block time="14:45–15:30" type="uebung" title="Übung 5 · Deploy" href="#uebung-5">Vercel-Plugin, Deploy durch Claude, Environment-Variablen, öffentliche URL am Handy öffnen.</Block>
     <Block time="15:30–16:45" type="uebung" title="Übung 6 · Gemeinsam" href="#uebung-6">Konten auf den Apps der anderen, Issue 9: Zähler live, Issue 10: Anfragen annehmen oder ablehnen.</Block>
     <Block time="16:45–17:00" type="pause" title="Pause" />
-    <Block time="17:00–17:45" type="uebung" title="Übung 7 · Bewegung" href="#uebung-7">Motion einrichten, Issues 12–14: Filter, Anfragen ohne Warten, Erfolgsmoment.</Block>
+    <Block time="17:00–17:45" type="uebung" title="Übung 7 · Animation" href="#uebung-7">Motion einrichten, Issues 12–14: Filter, Anfragen ohne Warten, Erfolgsmoment.</Block>
     <Block time="17:45–18:00" type="plenum" title="Zwischenwoche & Abschluss" href="/zwischenwoche">Eigener Mini-Prototyp für die Demo am Do 15.10. Wie man Hilfe holt.</Block>
   </div>
 
@@ -51,7 +51,7 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
 
   <h3 id="neue-issues">Neue Issues in euer Repo holen (5 min)</h3>
-  <p>Euer Repo ist eine Kopie der Vorlage vom Mittwoch. Seitdem sind im Backlog der Vorlage die Issues 9–14 für den Nachmittag dazugekommen, und die <code>CLAUDE.md</code> hat zwei neue Regeln: Claude schlägt kein nächstes Issue mehr vor, und für Bewegung ist die Bibliothek Motion freigegeben.</p>
+  <p>Euer Repo ist eine Kopie der Vorlage vom Mittwoch. Seitdem sind im Backlog der Vorlage die Issues 9–14 für den Nachmittag dazugekommen, und die <code>CLAUDE.md</code> hat zwei neue Regeln: Claude schlägt kein nächstes Issue mehr vor, und für Animationen ist die Bibliothek Motion freigegeben.</p>
   <Prompt>Lade mit curl die Dateien docs/BACKLOG.md und CLAUDE.md von https://raw.githubusercontent.com/markesdo/ndu-coding-2026/main/ in einen temporären Ordner außerhalb des Projekts. Übernimm alle Issues ab Issue 9 mit ihren Zwischenüberschriften in meine docs/BACKLOG.md, vor den Abschnitt „Später / Ideen“; meine bestehenden Issues und ihr Status bleiben, wie sie sind. Streich „Anfrage annehmen oder ablehnen“ aus meiner Später-Liste. Vergleich dann meine CLAUDE.md mit der neuen und übernimm die neuen Regeln; was ich selbst ergänzt habe, bleibt. Sag mir in drei Sätzen, was sich geändert hat, lösch den temporären Ordner, dann /ndu-commit</Prompt>
   <Callout type="info" title="So läuft heute jedes Issue">
     <ol>
@@ -358,13 +358,13 @@ import { bild } from '../components/anleitung-bilder';
   ]} />
 
   <hr />
-  <h2 id="uebung-7">Übung 7 · Bewegung <span class="pill uebung">45 min</span></h2>
-  <p>Gute Bewegung erklärt, was passiert: was wegfällt, was dazukommt, ob ein Klick angekommen ist. Schlechte Bewegung hält auf. Ihr arbeitet mit <strong>Motion</strong>, einer Animations-Bibliothek für React: Ein- und Ausblenden und Karten, die an ihren neuen Platz gleiten, gehen damit mit wenigen Zeilen. Die Grenzen dafür stehen in eurer <code>CLAUDE.md</code>: höchstens 0,3 Sekunden für die Rückmeldung auf einen Klick, nichts in Dauerschleife, und wer „Bewegung reduzieren“ eingestellt hat, bekommt keine.</p>
+  <h2 id="uebung-7">Übung 7 · Animation <span class="pill uebung">45 min</span></h2>
+  <p>Gute Animation erklärt, was passiert: was wegfällt, was dazukommt, ob ein Klick angekommen ist. Schlechte Animation hält auf. Ihr arbeitet mit <strong>Motion</strong>, einer Animations-Bibliothek für React: Ein- und Ausblenden und Karten, die an ihren neuen Platz gleiten, gehen damit mit wenigen Zeilen. Die Grenzen dafür stehen in eurer <code>CLAUDE.md</code>: höchstens 0,3 Sekunden für die Rückmeldung auf einen Klick, nichts in Dauerschleife, und wer „Bewegung reduzieren“ eingestellt hat, bekommt keine.</p>
   <h3 id="uebung-7-a">a) Motion einrichten (5 min)</h3>
   <Prompt>Installiere die Animations-Bibliothek motion. Leg in src/app/layout.tsx um den Inhalt ein MotionConfig mit reducedMotion="user", damit „Bewegung reduzieren“ auch für Motion gilt. Trag in docs/ENTSCHEIDUNGEN.md ein: Animationen mit Motion, weil Ein- und Ausblenden und gleitende Layouts damit ohne Umwege gehen. Prüf mit npm run build, dass alles läuft, dann /ndu-commit</Prompt>
-  <p><strong>„Bewegung reduzieren“ prüfen:</strong> In den DevTools <kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, „Rendering“ eintippen, <em>Show Rendering</em>. Dort bei <em>Emulate CSS media feature prefers-reduced-motion</em> auf <em>reduce</em> stellen. Danach wieder zurück, sonst seht ihr keine Bewegung mehr.</p>
+  <p><strong>„Bewegung reduzieren“ prüfen:</strong> In den DevTools <kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, „Rendering“ eintippen, <em>Show Rendering</em>. Dort bei <em>Emulate CSS media feature prefers-reduced-motion</em> auf <em>reduce</em> stellen. Danach wieder zurück, sonst seht ihr keine Animationen mehr.</p>
 
-  <h3 id="uebung-7-b">b) Issue 12 lesen und bauen lassen – Filter mit Bewegung (20 min)</h3>
+  <h3 id="uebung-7-b">b) Issue 12 lesen und bauen lassen – Filter mit Animation (20 min)</h3>
   <IssueKarte nr={12} dauer="20 min" braucht="Issue 3 und Motion" />
   <Prompt>Setze Issue 12 aus docs/BACKLOG.md um, mit Motion. Frag zuerst, wenn etwas unklar ist.</Prompt>
 

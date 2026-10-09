@@ -131,28 +131,28 @@
 
 **Fertig, wenn:** die nächste Person in der Runde hat zweimal angefragt, die Zahl stieg live auf 2; eine angenommen, eine abgelehnt, die Zahl verschwand; einmal abgemeldet geprüft.
 
-## Tag 2 — Übung 7: Bewegung
+## Tag 2 — Übung 7: Animation
 
-### ⬜ Issue 12 — Filter mit Bewegung
+### ⬜ Issue 12 — Filter mit Animation
 **Ziel:** Beim Wechsel der Kategorie gleiten die Karten an ihren neuen Platz, statt zu springen – damit man sieht, was wegfällt und was bleibt.
-**Nicht im Umfang:** Bewegung beim ersten Laden der Seite, neue Filter, Sortierung.
+**Nicht im Umfang:** Animation beim ersten Laden der Seite, neue Filter, Sortierung.
 **Akzeptanzkriterien:**
 - Gegeben ich wechsle von „Alle“ zu „Mode“, dann blenden die übrigen Karten aus und die verbleibenden gleiten an ihren neuen Platz – in höchstens 0,4 Sekunden.
 - Gegeben ich wechsle die Kategorie, dann gleitet die Markierung des aktiven Filters zum neuen Filter.
 - Gegeben ich klicke schnell hintereinander mehrere Filter, dann zeigt die Liste am Ende genau die Gegenstände der zuletzt gewählten Kategorie (keine doppelten oder hängengebliebenen Karten).
-- Gegeben „Bewegung reduzieren“ ist eingeschaltet, dann wechselt die Liste ohne Bewegung.
-- Gegeben ich öffne die Seite am Handy (375 px), dann ragt auch während der Bewegung nichts über den Rand.
+- Gegeben „Bewegung reduzieren“ ist eingeschaltet, dann wechselt die Liste ohne Animation.
+- Gegeben ich öffne die Seite am Handy (375 px), dann ragt auch während der Animation nichts über den Rand.
 
 **Fertig, wenn:** jede Kategorie angeklickt, schnell hin und her gewechselt, einmal mit „Bewegung reduzieren“ (DevTools → Rendering → prefers-reduced-motion: reduce) und einmal in Handybreite.
 
 ### ⬜ Issue 13 — Anfragen ohne Warten
 **Ziel:** Button und Zähler reagieren sofort beim Klick, nicht erst nach der Antwort der Datenbank – damit sich die App schnell anfühlt; klappt das Speichern nicht, sieht man das.
-**Nicht im Umfang:** Töne, Vibration, Bewegung auf dem Rest der Seite.
+**Nicht im Umfang:** Töne, Vibration, Animationen auf dem Rest der Seite.
 **Akzeptanzkriterien:**
-- Gegeben ich bin angemeldet, wenn ich „Ausleihen anfragen“ klicke, dann ändern sich Button und Zähler sofort, und die Zahl wechselt mit einer kurzen Bewegung (höchstens 0,3 Sekunden).
+- Gegeben ich bin angemeldet, wenn ich „Ausleihen anfragen“ klicke, dann ändern sich Button und Zähler sofort, und die Zahl wechselt mit einer kurzen Animation (höchstens 0,3 Sekunden).
 - Gegeben das Speichern schlägt fehl, dann springen Button und Zähler auf den alten Stand zurück, der Button schüttelt kurz, und ich lese in einem ganzen deutschen Satz, was passiert ist.
 - Gegeben ich lade die Seite neu, dann stimmt der Zähler – auch zusammen mit der Live-Aktualisierung aus Issue 9 wird nichts doppelt gezählt.
-- Gegeben „Bewegung reduzieren“ ist eingeschaltet, dann ändern sich Zahl und Button ohne Bewegung.
+- Gegeben „Bewegung reduzieren“ ist eingeschaltet, dann ändern sich Zahl und Button ohne Animation.
 
 **Fertig, wenn:** angefragt, zurückgezogen, neu geladen; den Fehlerfall einmal ausgelöst (DevTools → Network → „Offline“, dann klicken) und gesehen, dass der Zähler zurückspringt; danach wieder „No throttling“.
 
@@ -164,7 +164,7 @@
 - Gegeben ich lande danach in der Liste, dann ist der neue Gegenstand kurz hervorgehoben.
 - Gegeben ich lade die Seite neu, dann sind Meldung und Hervorhebung weg.
 - Gegeben das Speichern scheitert (z. B. leerer Titel), dann gibt es keinen Erfolgsmoment, sondern die Fehlermeldung aus Issue 4.
-- Gegeben „Bewegung reduzieren“ ist eingeschaltet, dann erscheinen Meldung und Hervorhebung ohne Bewegung.
+- Gegeben „Bewegung reduzieren“ ist eingeschaltet, dann erscheinen Meldung und Hervorhebung ohne Animation.
 
 **Fertig, wenn:** ein Gegenstand angeboten und Meldung und Hervorhebung gesehen, neu geladen; einmal mit leerem Titel versucht; einmal mit „Bewegung reduzieren“.
 
