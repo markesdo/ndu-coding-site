@@ -14,6 +14,25 @@ export interface Position {
 export const AUSBLENDEN_MS = 30 * 60 * 1000;
 /** Ab diesem Alter zeigt der Knopf „· vor N min“. */
 export const ALT_MS = 2 * 60 * 1000;
+/** Studierende fragen so oft nach, solange es eine frische Position gibt … */
+export const ABFRAGE_MS = 2000;
+/** … sonst (kein Kurs gerade, Pause, wiederholte Fehler) so oft. */
+export const RUHIG_MS = 15_000;
+/** Eine Abfrage gibt nach so langer Zeit auf (sonst stauen sich hängende Anfragen). */
+export const ABFRAGE_TIMEOUT_MS = 3000;
+/** Erst so viele Fehler in Folge blenden den Knopf aus – ein einzelner Aussetzer nicht. */
+export const FEHLER_BIS_AUSBLENDEN = 3;
+
+/**
+ * Nach einer Abfrage: wann die nächste, und ob der Knopf weg muss.
+ * frisch = Position da und nicht zu alt; leer = keine bzw. zu alte Position; fehler = Netz/Server.
+ */
+export function naechsteAbfrage(ergebnis: 'frisch' | 'leer' | 'fehler', fehlerInFolge: number): { ms: number; ausblenden: boolean } {
+  if (ergebnis === 'frisch') return { ms: ABFRAGE_MS, ausblenden: false };
+  if (ergebnis === 'leer') return { ms: RUHIG_MS, ausblenden: true };
+  const genug = fehlerInFolge >= FEHLER_BIS_AUSBLENDEN;
+  return { ms: genug ? RUHIG_MS : ABFRAGE_MS, ausblenden: genug };
+}
 
 const PFAD = /^\/[a-z0-9/-]{0,80}$/;
 const ANKER = /^[a-z0-9-]{0,80}$/;
