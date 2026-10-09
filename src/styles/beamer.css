@@ -114,3 +114,6 @@ html .topbar .praesentator[aria-pressed="true"], .praesentator[aria-pressed="tru
 }
 @keyframes live-puls { 50% { opacity: .35; } }
 @media print { .praesentator { display: none !important; } }
+
+/* Beamer ist nur für den Präsentator: Knöpfe mit data-nur-praesentator nur mit html[data-ist-praesentator] (Layout.astro, wo-ist.ts). */
+html:not([data-ist-praesentator]) [data-nur-praesentator] { display: none !important; }

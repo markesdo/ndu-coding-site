@@ -27,12 +27,15 @@ import '../styles/auftakt.css';
       // und die Animation scharf schalten – außer bei reduzierter Bewegung (dann sofort der Endzustand).
       (function () {
         var root = document.documentElement;
+        // Gemerkt nur beim Präsentator (Schlüssel im Browser), ?beamer gilt für alle – Regel wie in Layout.astro.
+        var praes = false;
+        try { praes = !!localStorage.getItem('ndu-presenter'); } catch (e) {}
         var q = new URLSearchParams(location.search).get('beamer');
         var an = false;
-        try { an = localStorage.getItem('ndu-beamer') === '1'; } catch (e) {}
+        try { if (praes) an = localStorage.getItem('ndu-beamer') === '1'; else localStorage.removeItem('ndu-beamer'); } catch (e) {}
         if (q !== null) {
           an = q !== '0';
-          try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
+          try { if (an && praes) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
         }
         if (an) root.setAttribute('data-beamer', '');
         try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) root.setAttribute('data-auftakt', ''); } catch (e) {}

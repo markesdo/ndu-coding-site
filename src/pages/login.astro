@@ -18,7 +18,8 @@ import '../styles/beamer.css';
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
       // Beamer-Modus wie auf den anderen Seiten übernehmen (vor dem ersten Zeichnen).
-      try { if (localStorage.getItem('ndu-beamer') === '1') document.documentElement.setAttribute('data-beamer', ''); } catch (e) {}
+      // Nur beim Präsentator (Schlüssel im Browser) – Regel wie in Layout.astro.
+      try { if (localStorage.getItem('ndu-presenter') && localStorage.getItem('ndu-beamer') === '1') document.documentElement.setAttribute('data-beamer', ''); } catch (e) {}
     </script>
   </head>
   <body>

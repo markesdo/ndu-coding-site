@@ -62,14 +62,20 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
     <link rel="preload" href={textSchrift} as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // Beamer-Modus vor dem ersten Zeichnen setzen, sonst blitzt die normale Ansicht auf.
-      // ?beamer (oder ?beamer=1) schaltet ein, ?beamer=0 aus; die Wahl merkt sich der Browser.
+      // Beamer ist nur für den Präsentator (Schlüssel aus /praesentator im Browser): Nur dann gibt es die Knöpfe und die Taste B,
+      // und nur dann merkt sich der Browser die Wahl. ?beamer (oder ?beamer=1) schaltet für diesen Aufruf bei allen ein,
+      // ?beamer=0 aus. Gleiche Regel in start.astro und login.astro.
       (function () {
+        var root = document.documentElement;
+        var praes = false;
+        try { praes = !!localStorage.getItem('ndu-presenter'); } catch (e) {}
+        if (praes) root.setAttribute('data-ist-praesentator', '');
         var q = new URLSearchParams(location.search).get('beamer');
         var an = false;
-        try { an = localStorage.getItem('ndu-beamer') === '1'; } catch (e) {}
+        try { if (praes) an = localStorage.getItem('ndu-beamer') === '1'; else localStorage.removeItem('ndu-beamer'); } catch (e) {}
         if (q !== null) {
           an = q !== '0';
-          try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
+          try { if (an && praes) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
         }
         // Beamer heißt auch helles Thema: Dunkel wird am Projektor grau auf grau.
         if (an) { document.documentElement.setAttribute('data-beamer', ''); document.documentElement.setAttribute('data-theme', 'light'); }
@@ -86,7 +92,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         <a class="beamer-weiter" hidden data-fallback-next={danach?.href} data-fallback-next-t={danach?.t} data-fallback-prev={vorher?.href} title="Nächste Seite (Taste →, zurück mit ←)"><span>Weiter: <b></b></span><ArrowRight size={16} aria-hidden="true" /></a>
         <!-- „Wo ist Markus?“: nur sichtbar, wo der Präsentator-Schlüssel liegt (wo-ist.ts) -->
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
-        <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
+        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
         <button id="menu-btn" aria-label="Menü öffnen"><Menu size={18} aria-hidden="true" /> Menü</button>
       </div>
     </div>
@@ -97,7 +103,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       <div class="leiste-gruppe">
         <button type="button" class="leiste-auf" data-leiste aria-controls="sidebar" aria-expanded="false" aria-label="Seitenleiste ausklappen" title="Seitenleiste ausklappen (Taste [)"><PanelLeftOpen size={20} aria-hidden="true" /></button>
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
-        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator hidden aria-pressed="false" title="Beamer-Modus (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
+        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
       </div>
       <aside class="sidebar" id="sidebar">
         <a class="brand" href="/" aria-label="Programmieren mit AI – Übersicht"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</a>
@@ -109,7 +115,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
             </div>
           ))}
         </nav>
-        <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer <kbd>B</kbd></button>
+        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer <kbd>B</kbd></button>
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <p class="small muted" style="margin-top:2rem">NDU · MSc Management by Innovation<br/>8. / 9. / 15. Oktober 2026</p>
       </aside>
@@ -192,7 +198,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         const blaettern = e.key === 'ArrowRight' || e.key === 'ArrowLeft';
         if (e.key !== 'b' && e.key !== 'B' && !blaettern) return;
         if (e.ctrlKey || e.metaKey || e.altKey || (blaettern && e.shiftKey) || !tastenFrei(e)) return;
-        if (!blaettern) { setBeamer(!root.hasAttribute('data-beamer')); return; }
+        if (!blaettern) { if (root.hasAttribute('data-ist-praesentator')) setBeamer(!root.hasAttribute('data-beamer')); return; }
         // ← / → blättern nur im Beamer-Modus; sonst bleiben die Pfeile beim Browser (waagrecht scrollen).
         if (!root.hasAttribute('data-beamer')) return;
         const ziel = e.key === 'ArrowRight' ? nextHref : prevHref;

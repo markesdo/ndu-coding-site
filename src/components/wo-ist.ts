@@ -124,8 +124,9 @@ function praesentator() {
   const zeichnen = () => {
     const key = lies();
     const zustand = pausiert() ? 'pause' : !root.hasAttribute('data-beamer') ? 'wartet' : fehler ? 'fehler' : 'live';
-    // Beamer ist nur für den Präsentator: Knöpfe mit data-nur-praesentator (z. B. in der eingeklappten Leiste) nur mit Schlüssel.
-    document.querySelectorAll<HTMLElement>('[data-nur-praesentator]').forEach((el) => { el.hidden = !key; });
+    // Beamer-Knöpfe u. Ä. (data-nur-praesentator) zeigt das CSS nur mit html[data-ist-praesentator]; den Anfangswert setzt
+    // Layout.astro vor dem ersten Zeichnen, hier folgt er An- und Abmelden.
+    root.toggleAttribute('data-ist-praesentator', Boolean(key));
     for (const b of knoepfe) {
       b.hidden = !key;
       b.dataset.zustand = zustand;

@@ -26,7 +26,7 @@ npm run build    # Ausgabe in dist/
 
 ## Im Kurs am Beamer
 
-- `?beamer` (oder Taste `B`): größere Schrift, ohne Seitenleiste; `?beamer=0` schaltet aus.
+- `?beamer` (oder Taste `B`): größere Schrift, ohne Seitenleiste; `?beamer=0` schaltet aus. Knöpfe, Taste `B` und das Merken der Wahl gibt es nur beim Präsentator (angemeldet auf `/praesentator`); `?beamer` in der Adresse wirkt für diesen Aufruf bei allen. Studierende, die den Modus noch gespeichert hatten, kommen beim nächsten Laden wieder in die normale Ansicht.
 - `/start`: Startseite vor dem Login, öffentlich (ohne Kurspasswort). Eine Animation baut den Titel auf, danach führt „Weiter“ (Klick, Enter, Leertaste oder →) zur Übersicht – ohne Anmeldung über das Kurspasswort. Nie automatisch weiter.
 - Nach NDU Live am Beamer: `/start?beamer` – „Weiter“ bleibt im Beamer-Modus (`/?beamer`).
 - **„Wo ist Markus?“:** Studierende sehen unten rechts „Markus ist bei: Tag 1 · Übung 1 b“ und springen per Klick dorthin (nie automatisch). Gemeldet wird vom Beamer-Tab: Seite und Abschnitt unter der Lesezeile, bei offener Screenshot-Präsentation der Schritt; bei Änderung nach 1,5 s, sonst jede Minute. Studierende fragen alle 2 s (ohne frische Position alle 15 s). Nach 2 min ohne Signal „· vor N min“, nach 30 min weg.
