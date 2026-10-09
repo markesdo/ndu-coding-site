@@ -1,6 +1,7 @@
 ---
 // Anmeldeseite für das Kurspasswort. Das Formular schickt an /login; dort prüft die Vercel Routing Middleware
 // (middleware.ts im Projektordner) und setzt das Cookie. Diese Seite selbst ist öffentlich und verrät nichts vom Inhalt.
+import BeamerStart from '../components/BeamerStart.astro';
 import LinkVorschau from '../components/LinkVorschau.astro';
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
@@ -16,10 +17,7 @@ import '../styles/beamer.css';
     <title>Kurspasswort · NDU Coding 2026</title>
     <LinkVorschau />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <script is:inline>
-      // Beamer-Modus wie auf den anderen Seiten übernehmen (vor dem ersten Zeichnen).
-      try { if (localStorage.getItem('ndu-beamer') === '1') document.documentElement.setAttribute('data-beamer', ''); } catch (e) {}
-    </script>
+    <BeamerStart hell={false} />
   </head>
   <body>
     <main class="login">

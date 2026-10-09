@@ -26,9 +26,9 @@ npm run build    # Ausgabe in dist/
 
 ## Im Kurs am Beamer
 
-- `?beamer` (oder Taste `B`): größere Schrift, ohne Seitenleiste; `?beamer=0` schaltet aus.
+- `?beamer` (oder Taste `B`): größere Schrift, ohne Seitenleiste; `?beamer=0` schaltet aus. Den Beamer-Modus gibt es nur beim Präsentator (auf diesem Browser angemeldet auf `/praesentator`): Knöpfe, Taste `B`, `?beamer` und das Merken der Wahl. Bei allen anderen wird `?beamer` ignoriert und ein gespeicherter Beamer-Modus beim nächsten Laden gelöscht. Regel: `src/components/BeamerStart.astro`.
 - `/start`: Startseite vor dem Login, öffentlich (ohne Kurspasswort). Eine Animation baut den Titel auf, danach führt „Weiter“ (Klick, Enter, Leertaste oder →) zur Übersicht – ohne Anmeldung über das Kurspasswort. Nie automatisch weiter.
-- Nach NDU Live am Beamer: `/start?beamer` – „Weiter“ bleibt im Beamer-Modus (`/?beamer`).
+- Nach NDU Live am Beamer: `/start?beamer` – „Weiter“ bleibt im Beamer-Modus (`/?beamer`). Vorher einmal auf `/praesentator` anmelden.
 - **„Wo ist Markus?“:** Studierende sehen unten rechts „Markus ist bei: Tag 1 · Übung 1 b“ und springen per Klick dorthin (nie automatisch). Gemeldet wird vom Beamer-Tab: Seite und Abschnitt unter der Lesezeile, bei offener Screenshot-Präsentation der Schritt; bei Änderung nach 1,5 s, sonst jede Minute. Studierende fragen alle 2 s (ohne frische Position alle 15 s). Nach 2 min ohne Signal „· vor N min“, nach 30 min weg.
   - Anmelden am Präsentator-Rechner auf `/praesentator` (nicht im Menü) mit dem `PRESENTER_KEY`; der Browser merkt ihn sich, Abmelden auf derselben Seite. Gemeldet wird nur im Beamer-Modus. Der Schalter „Live“ neben „Beamer“ zeigt den Zustand (Punkt gefüllt = sendet, hohl = Pause oder kein Beamer-Modus, gelb = letzte Meldung gescheitert); Klick pausiert und löscht die Position, sodass der Knopf bei den Studierenden verschwindet.
   - Vercel-Variable `PRESENTER_KEY` (Sensitive). Ohne sie nimmt `/api/position` nichts an. Speicher: Vercel Runtime Cache (flüchtig, kein Datenbank-Setup). Code: `api/position.ts`, `src/components/wo-ist.ts`.

@@ -6,6 +6,7 @@ import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 // Fließtext-Schrift vorladen, damit der erste Text nicht in der Ersatzschrift aufblitzt.
 import textSchrift from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
+import BeamerStart from '../components/BeamerStart.astro';
 import '../styles/global.css';
 import '../styles/beamer.css';
 const { title, description = 'Programmieren mit AI – Kurs für den MSc Management by Innovation, NDU, Oktober 2026' } = Astro.props;
@@ -60,22 +61,10 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
     <meta name="description" content={description} />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="preload" href={textSchrift} as="font" type="font/woff2" crossorigin />
+    <BeamerStart />
     <script is:inline>
-      // Beamer-Modus vor dem ersten Zeichnen setzen, sonst blitzt die normale Ansicht auf.
-      // ?beamer (oder ?beamer=1) schaltet ein, ?beamer=0 aus; die Wahl merkt sich der Browser.
-      (function () {
-        var q = new URLSearchParams(location.search).get('beamer');
-        var an = false;
-        try { an = localStorage.getItem('ndu-beamer') === '1'; } catch (e) {}
-        if (q !== null) {
-          an = q !== '0';
-          try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch (e) {}
-        }
-        // Beamer heißt auch helles Thema: Dunkel wird am Projektor grau auf grau.
-        if (an) { document.documentElement.setAttribute('data-beamer', ''); document.documentElement.setAttribute('data-theme', 'light'); }
-        // Eingeklappte Seitenleiste (Desktop) ebenfalls vor dem ersten Zeichnen.
-        try { if (localStorage.getItem('ndu-seitenleiste') === 'zu') document.documentElement.setAttribute('data-leiste-zu', ''); } catch (e) {}
-      })();
+      // Eingeklappte Seitenleiste (Desktop) vor dem ersten Zeichnen.
+      try { if (localStorage.getItem('ndu-seitenleiste') === 'zu') document.documentElement.setAttribute('data-leiste-zu', ''); } catch (e) {}
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
@@ -86,7 +75,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         <a class="beamer-weiter" hidden data-fallback-next={danach?.href} data-fallback-next-t={danach?.t} data-fallback-prev={vorher?.href} title="Nächste Seite (Taste →, zurück mit ←)"><span>Weiter: <b></b></span><ArrowRight size={16} aria-hidden="true" /></a>
         <!-- „Wo ist Markus?“: nur sichtbar, wo der Präsentator-Schlüssel liegt (wo-ist.ts) -->
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
-        <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
+        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
         <button id="menu-btn" aria-label="Menü öffnen"><Menu size={18} aria-hidden="true" /> Menü</button>
       </div>
     </div>
@@ -97,7 +86,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       <div class="leiste-gruppe">
         <button type="button" class="leiste-auf" data-leiste aria-controls="sidebar" aria-expanded="false" aria-label="Seitenleiste ausklappen" title="Seitenleiste ausklappen (Taste [)"><PanelLeftOpen size={20} aria-hidden="true" /></button>
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
-        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator hidden aria-pressed="false" title="Beamer-Modus (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
+        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
       </div>
       <aside class="sidebar" id="sidebar">
         <a class="brand" href="/" aria-label="Programmieren mit AI – Übersicht"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</a>
@@ -109,7 +98,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
             </div>
           ))}
         </nav>
-        <button type="button" class="beamer-toggle" data-beamer-toggle aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer <kbd>B</kbd></button>
+        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer <kbd>B</kbd></button>
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <p class="small muted" style="margin-top:2rem">NDU · MSc Management by Innovation<br/>8. / 9. / 15. Oktober 2026</p>
       </aside>
@@ -132,6 +121,8 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       const toggles = document.querySelectorAll<HTMLButtonElement>('[data-beamer-toggle]');
       const sync = () => toggles.forEach((t) => t.setAttribute('aria-pressed', String(root.hasAttribute('data-beamer'))));
       const setBeamer = (an: boolean) => {
+        // Nur der Präsentator schaltet ein (Regel in BeamerStart.astro); ausschalten geht immer.
+        if (an && !root.hasAttribute('data-ist-praesentator')) return;
         root.toggleAttribute('data-beamer', an);
         if (an) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
         try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch {}
@@ -192,7 +183,7 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
         const blaettern = e.key === 'ArrowRight' || e.key === 'ArrowLeft';
         if (e.key !== 'b' && e.key !== 'B' && !blaettern) return;
         if (e.ctrlKey || e.metaKey || e.altKey || (blaettern && e.shiftKey) || !tastenFrei(e)) return;
-        if (!blaettern) { setBeamer(!root.hasAttribute('data-beamer')); return; }
+        if (!blaettern) { if (root.hasAttribute('data-ist-praesentator')) setBeamer(!root.hasAttribute('data-beamer')); return; }
         // ← / → blättern nur im Beamer-Modus; sonst bleiben die Pfeile beim Browser (waagrecht scrollen).
         if (!root.hasAttribute('data-beamer')) return;
         const ziel = e.key === 'ArrowRight' ? nextHref : prevHref;
