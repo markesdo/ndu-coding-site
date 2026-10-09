@@ -1,0 +1,7 @@
+---
+// „Das Wichtigste“ oben auf jeder Konzeptseite: drei, vier Punkte für alle, die nicht alles lesen.
+// Wo es eine KonzeptStation auf der Tagesseite gibt, sind die Punkte daran angelehnt – ändert sich dort der Inhalt, hier mitprüfen.
+import { ListChecks } from '@lucide/astro';
+import Callout from './Callout.astro';
+---
+<Callout type="concept" title="Das Wichtigste" icon={ListChecks} ueberschrift><slot /></Callout>

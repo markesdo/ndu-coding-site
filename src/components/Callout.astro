@@ -1,9 +1,10 @@
 ---
 import { Brain, Info, Lightbulb, TriangleAlert } from '@lucide/astro';
-const { type = 'info', title } = Astro.props as { type?: 'tip' | 'warn' | 'info' | 'concept'; title?: string };
-const Icon = { tip: Lightbulb, warn: TriangleAlert, info: Info, concept: Brain }[type];
+// icon: anderes Lucide-Symbol als das des Typs; ueberschrift: Titel zählt für Screenreader als Überschrift (Ebene 2).
+const { type = 'info', title, icon, ueberschrift = false } = Astro.props as { type?: 'tip' | 'warn' | 'info' | 'concept'; title?: string; icon?: any; ueberschrift?: boolean };
+const Icon = icon ?? { tip: Lightbulb, warn: TriangleAlert, info: Info, concept: Brain }[type];
 ---
 <div class={`callout ${type}`}>
-  {title && <div class="t"><Icon class="callout-icon" size={20} aria-hidden="true" /> {title}</div>}
+  {title && <div class="t" role={ueberschrift ? 'heading' : undefined} aria-level={ueberschrift ? 2 : undefined}><Icon class="callout-icon" size={20} aria-hidden="true" /> {title}</div>}
   <slot />
 </div>

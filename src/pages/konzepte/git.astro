@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
@@ -8,6 +9,14 @@ import FooterNav from '../../components/FooterNav.astro';
   <span class="eyebrow">Ergänzung zu Konzept 1 · Tag 1</span>
   <h1>Git – der Undo-Knopf</h1>
   <p class="lead">Git merkt sich jeden gesicherten Stand eures Projekts. Für euch bedeutet das zwei Dinge: Ihr könnt nichts kaputt machen, was ihr gesichert habt – und ihr könnt Hilfe bekommen, weil andere euren Stand sehen.</p>
+  <Wichtigste>
+    <ul>
+      <li>Was committet ist, könnt ihr nicht mehr kaputt machen – jeder Commit ist ein Stand, zu dem ihr zurückkönnt.</li>
+      <li>Der Rhythmus: Issue bauen lassen → im Browser prüfen → <code>/ndu-commit</code> → <code>/clear</code>.</li>
+      <li>Nicht okay? Verwerfen und neu anfangen ist kein Scheitern, sondern der Sinn von Git.</li>
+      <li>Ab Tag 3: ein Branch und ein Pull Request pro Issue.</li>
+    </ul>
+  </Wichtigste>
 
   <h2>Fünf Begriffe, mehr braucht ihr nicht</h2>
   <table>

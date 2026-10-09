@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Prompt from '../../components/Prompt.astro';
 
@@ -16,6 +17,14 @@ const baustein = Object.fromEntries(bausteine.map((b) => [b.id, b]));
   <span class="eyebrow">Konzept 2 · Tag 1 · Teil 3</span>
   <h1>Prompt Engineering</h1>
   <p class="lead">Der Begriff klingt nach Zauberformeln. Gemeint ist das Gegenteil: ein Auftrag, den auch ein Mensch ohne Vorwissen richtig ausführen würde. Jeder Baustein macht das Ergebnis treffsicherer – das Prüfkriterium fängt den Rest.</p>
+  <Wichtigste>
+    <ul>
+      <li>Ein Auftrag hat vier Bausteine: Ziel mit Grund, Kontext, Grenze, Prüfkriterium. Für jedes Kriterium verlangt ihr einen Beleg.</li>
+      <li>Prüffrage: Würde eine neue Kollegin ohne Vorwissen den Auftrag richtig ausführen? Mehr Text macht ihn nicht besser.</li>
+      <li>Nach zwei Korrekturen: <code>/clear</code> und neu, mit dem, was ihr inzwischen gelernt habt.</li>
+      <li>Was ihr wiederholt braucht, wird ein Befehl; was immer gilt, steht in der <code>CLAUDE.md</code>.</li>
+    </ul>
+  </Wichtigste>
 
   <p>Auf der Seite <a href="/konzepte/llm">Was ein Sprachmodell tut</a> habt ihr gesehen: Jede Formulierung verschiebt die Wahrscheinlichkeiten für alles, was danach kommt. In der Animation dort sind das die Balken: ein hoher Balken heißt, das Modell ist sich sicher; viele gleich hohe heißen, es rät. Prompt Engineering heißt, diese Verschiebung bewusst zu nutzen. Dafür braucht ihr kein neues Vokabular – <strong>ein gutes Issue ist bereits ein gut geschriebener Prompt.</strong></p>
 

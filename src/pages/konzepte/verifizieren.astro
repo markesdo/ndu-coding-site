@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
@@ -8,6 +9,13 @@ import FooterNav from '../../components/FooterNav.astro';
   <span class="eyebrow">Konzept 5 · Tag 2</span>
   <h1>Verifizieren & Debuggen</h1>
   <p class="lead">Der Agent schreibt den Code. Ihr entscheidet, ob er fertig ist. Das ist kein Nebenjob – das ist die Rolle.</p>
+  <Wichtigste>
+    <ul>
+      <li>Die <strong>Browser-Konsole</strong> zeigt Frontend-Fehler, das <strong>Terminal</strong> mit <code>npm run dev</code> Backend-Fehler, das <strong>Supabase-Dashboard</strong>, was die Datenbank abgelehnt hat.</li>
+      <li>Fehler übergeben: reproduzieren, Schicht bestimmen, Meldung vollständig kopieren, erst erklären lassen, dann lösen.</li>
+      <li>Fertig ist ein Issue, wenn ihr alle Akzeptanzkriterien selbst im Browser geprüft habt, <code>/ndu-check</code> grün ist und der Stand committet ist.</li>
+    </ul>
+  </Wichtigste>
 
   <h2>Wo Fehler sichtbar werden</h2>
   <dl class="begriffe">

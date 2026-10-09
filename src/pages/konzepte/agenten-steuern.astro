@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import { Brain, FlaskConical, Wrench, Zap } from '@lucide/astro';
@@ -16,6 +17,13 @@ const modelle = [
   <span class="eyebrow">Konzept 6 · Tag 2</span>
   <h1>Agenten steuern</h1>
   <p class="lead">Nach einem Tag funktioniert alles. Nach einer Woche vergisst der Agent Absprachen, wiederholt Fehler und baut Dinge doppelt – wenn ihr ihn nicht führt. Das hier ist die Führungsarbeit.</p>
+  <Wichtigste>
+    <ul>
+      <li>Eine Session pro Issue: fertig → <code>/ndu-commit</code> → <code>/clear</code>.</li>
+      <li>Was dauerhaft gelten soll, gehört in die <code>CLAUDE.md</code> – spätestens, wenn ihr dasselbe zum zweiten Mal korrigiert.</li>
+      <li>Ein großer Kontext frisst das Kontingent. <code>/usage</code> zeigt, wie viel verbraucht ist.</li>
+    </ul>
+  </Wichtigste>
 
   <h2>Kontext-Hygiene</h2>
   <ul>

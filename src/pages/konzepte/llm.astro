@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import NaechstesStueck from '../../components/sota/NaechstesStueck.tsx';
 ---
@@ -8,6 +9,13 @@ import NaechstesStueck from '../../components/sota/NaechstesStueck.tsx';
   <span class="eyebrow">Konzept 2 · Tag 1 · Teil 1</span>
   <h1>Was ein Sprachmodell tut</h1>
   <p class="lead">Im Kern von Claude Code steckt ein Sprachmodell. Es setzt Text fort – Stück für Stück, mit einem gewichteten Würfel. Fast alles, was euch an Claude überrascht, folgt aus diesem einen Mechanismus.</p>
+  <Wichtigste>
+    <ul>
+      <li>Das Modell setzt Text fort, Stück für Stück (<strong>Tokens</strong>), gewichtet gewürfelt.</li>
+      <li>Es rät plausibel, streut und klingt immer überzeugt. Welches Ergebnis stimmt, entscheiden eure Akzeptanzkriterien.</li>
+      <li>Es kann nur, was im Kontext steht, und lernt in euren Sessions nichts dazu. Dauerhaftes gehört in die <code>CLAUDE.md</code>.</li>
+    </ul>
+  </Wichtigste>
 
   <h2>Das Sprachmodell in drei Minuten</h2>
   <p>Ein Large Language Model (LLM) hat aus einem großen Teil des Internets – und aus sehr viel Code – gelernt, <strong>wahrscheinliche Fortsetzungen</strong> von Text zu erzeugen. Anschließend wurde es trainiert, Anweisungen zu befolgen und Antworten zu geben, die Menschen als hilfreich und korrekt bewerten. Wie das konkret abläuft, zeigt die Animation.</p>

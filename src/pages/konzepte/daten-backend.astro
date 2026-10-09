@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
@@ -8,6 +9,13 @@ import FooterNav from '../../components/FooterNav.astro';
   <span class="eyebrow">Konzept 4 · Tag 2</span>
   <h1>Daten & Backend</h1>
   <p class="lead">Solange eure App nichts speichert, ist sie eine Broschüre. Sobald sie speichert, braucht sie eine Datenbank, Regeln, wer was darf – und einen Ort für Geheimnisse.</p>
+  <Wichtigste>
+    <ul>
+      <li>Eine Anfrage läuft Frontend → API-Route → Datenbank → Antwort. Formular und API-Route prüfen – aber der Publishable Key steckt im Browser, und wer ihn kopiert, kommt an beiden vorbei.</li>
+      <li><strong>Row Level Security</strong> legt in der Datenbank fest, wer welche Zeile lesen, anlegen und löschen darf – für jeden Weg mit dem Publishable Key. Ob die Werte stimmen, prüft sie nicht.</li>
+      <li>Zugangsdaten stehen in <code>.env.local</code> und kommen nie ins Repo. Nur Variablen mit <code>NEXT_PUBLIC_</code> darf der Browser sehen.</li>
+    </ul>
+  </Wichtigste>
 
   <h2>Datenbank in fünf Begriffen</h2>
   <div class="widget" id="db" data-zeige="beziehung">
