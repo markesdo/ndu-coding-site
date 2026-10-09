@@ -29,33 +29,30 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="so-arbeitet-ihr-allein">So arbeitet ihr allein</h2>
   <p>Der Rhythmus von Tag 1 und 2 – jetzt ohne Anleitung, pro Issue:</p>
   <ol class="steps">
-    <li><strong>Issue wählen</strong> Aus dem Backlog – welches, entscheidet ihr.</li>
+    <li><strong>Issue wählen</strong> Aus dem Backlog – Claude kann vorschlagen, ihr entscheidet.</li>
     <li><strong>Umsetzen lassen</strong> Claude fragt bei Unklarem nach.</li>
     <li><strong>Belege lesen</strong> Was hat Claude für jedes Kriterium gezeigt?</li>
     <li><strong>Selbst im Browser prüfen</strong> Jedes Akzeptanzkriterium durchklicken.</li>
-    <li><strong>Sichern</strong> <code>/ndu-check</code> → <code>/ndu-commit</code> → <code>/clear</code>.</li>
+    <li><strong>Sichern</strong> <code>/ndu-check</code> → <code>/ndu-commit</code>.</li>
+    <li><strong>Neu anfangen</strong> <code>/clear</code> – das nächste Issue startet mit leerem Kontext.</li>
   </ol>
-  <Callout type="tip" title="Optional: ein Branch pro Issue">
-    <p>Wer sicher unterwegs ist, arbeitet pro Issue in einem eigenen <a href="/konzepte/git#branch">Branch</a> – Pflicht ist das nicht. Vor der Demo dann alles in <code>main</code> zurückführen: Vercel veröffentlicht nur <code>main</code>.</p>
-  </Callout>
-  <Callout type="warn" title="20 Minuten am selben Problem?">
-    <p>Aufhören. Dann <code>/clear</code> und das Problem kleiner machen – oder Hilfe holen.</p>
-  </Callout>
+  <p><strong>Optional:</strong> Wer sicher unterwegs ist, arbeitet pro Issue in einem eigenen <a href="/konzepte/git#branch">Branch</a>. Vor der Demo dann alles in <code>main</code> zurückführen – Vercel veröffentlicht nur <code>main</code>.</p>
+  <p><strong>20 Minuten am selben Problem?</strong> Aufhören und die Schritte unter <a href="#hilfe-holen">Hilfe holen</a> der Reihe nach gehen.</p>
   <Prompt label="Morgens, zum Einstieg">Lies docs/PRODUKT.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welches Issue als Nächstes dran ist und warum.</Prompt>
   <Prompt label="Abends, zum Abschluss">Trag in docs/ENTSCHEIDUNGEN.md ein, was wir heute festgelegt haben. Aktualisiere den Status im Backlog. Dann /ndu-check und /ndu-commit.</Prompt>
 
   <h2 id="hilfe-holen">Hilfe holen</h2>
   <p>In dieser Reihenfolge:</p>
   <ol class="steps">
-    <li><strong>Debug-Prompt</strong> Mit der kompletten Fehlermeldung – die Vorlage steht unter <a href="/konzepte/coding-agent">Wie ein Coding-Agent arbeitet</a>.</li>
+    <li><strong>Debug-Prompt</strong> Mit der kompletten Fehlermeldung – die Vorlage steht unter <a href="/hilfe">Hilfe holen</a>.</li>
     <li><strong>Neu anfangen</strong> <code>/clear</code> und kleiner formulieren.</li>
     <li><strong>Nachschlagen</strong> <a href="/bekannte-probleme">Bekannte Probleme</a>.</li>
-    <li><strong>Fragen</strong> Neuer Beitrag im Teams-Kanal <strong>3-Coding</strong>, Betreff „Hilfe: …“, im <a href="/hilfe">Hilfe-Format</a>.</li>
+    <li><strong>Fragen</strong> Neuer Beitrag im Teams-Kanal <strong>3-Coding</strong>, Betreff „Hilfe: …“, im <a href="/hilfe">Hilfe-Format</a> – vorher gepusht, mit Repo-Link.</li>
   </ol>
   <Callout type="warn" title="Vor jeder Frage in Teams">
     <p>Vorher pushen und den Repo-Link mitschicken – nur was auf GitHub ist, können wir anschauen.</p>
   </Callout>
-  <p class="small muted">Feste Sprechstunden gibt es nicht: Fragt jederzeit im Kanal, dann können wir schnell helfen.</p>
+  <p>Feste Sprechstunden gibt es nicht: Fragt jederzeit im Kanal, dann können wir schnell helfen.</p>
 
   <h2 id="checkliste-fuer-donnerstag">Checkliste für Donnerstag</h2>
   <Checklist id="zwischenwoche-demo" items={[
