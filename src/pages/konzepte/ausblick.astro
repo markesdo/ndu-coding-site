@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Fluss from '../../components/Fluss.astro';
+import { Bot, GitPullRequest, ListTodo, PenTool, UserCheck } from '@lucide/astro';
 import Callout from '../../components/Callout.astro';
 import Kurz from '../../components/Kurz.astro';
 import Prompt from '../../components/Prompt.astro';
@@ -28,11 +30,13 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2>Figma → Linear → Agent: die Produktkette im Innolab</h2>
   <p>Im Innolab wandert das Backlog aus der Markdown-Datei nach <strong>Linear</strong> – dem Werkzeug, in dem Produktteams Issues, Sprints (Cycles) und Status verwalten. Das Format bleibt (Ziel, Nicht im Umfang, Gegeben/Wenn/Dann, Fertig, wenn); den Umzug erledigt Claude per Linear-MCP. Dann schließt sich die Kette:</p>
-  <ol class="steps">
-    <li><strong>Issue mit Design</strong> Das Figma-Frame hängt am Linear-Issue.</li>
-    <li><strong>Claude liest</strong> Issue und Kriterien über den <strong>Linear-MCP</strong>, das Design über den <strong>Figma-MCP</strong>.</li>
-    <li><strong>Claude baut</strong> In einem eigenen Branch; dann erstellt es den Pull Request und setzt das Issue auf „In Review“.</li>
-  </ol>
+  <Fluss label="Produktkette im Innolab: Figma-Frame, Linear-Issue, Claude Code, Pull Request, ihr nehmt ab" hervor={[4]} knoten={[
+    { t: 'Figma-Frame', sub: 'hängt am Linear-Issue', icon: PenTool },
+    { t: 'Linear-Issue', sub: 'Ziel und Kriterien', icon: ListTodo },
+    { t: 'Claude Code', sub: 'liest beides per <strong>Linear-</strong> und <strong>Figma-MCP</strong>, baut im Branch', icon: Bot },
+    { t: 'Pull Request', sub: 'Issue steht auf „In Review“', icon: GitPullRequest },
+    { t: 'Ihr', sub: 'prüft und nehmt ab', icon: UserCheck },
+  ]} />
   <p>Eure Rolle in dieser Kette: Issues schreiben, Designs abnehmen, PRs prüfen – Product Owner. Linear kann Issues sogar direkt einem Agenten zuweisen, der autonom arbeitet und zurückmeldet.</p>
   <p>Linear kommt als Plugin – am Mac hat es das Setup-Skript schon installiert. Verbinden: in Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser bei Linear anmelden. Ohne Skript (Codespace, Windows) vorher einmal installieren:</p>
   <Prompt label="Linear-Plugin installieren (nur ohne Setup-Skript)">/plugin install linear@claude-plugins-official</Prompt>
