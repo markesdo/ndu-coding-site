@@ -91,8 +91,14 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       </div>
     </div>
     <div class="shell">
-      <!-- Ein Knopf für beide Richtungen: offen am Rand der Seitenleiste, eingeklappt links oben (global.css, .leiste-knopf). -->
-      <button type="button" class="leiste-knopf" data-leiste aria-controls="sidebar" aria-expanded="true" aria-label="Seitenleiste einklappen" title="Seitenleiste einklappen – mehr Platz für den Inhalt (Taste [)"><PanelLeftClose size={16} class="leiste-icon-zu" aria-hidden="true" /><PanelLeftOpen size={20} class="leiste-icon-auf" aria-hidden="true" /></button>
+      <!-- Seitenleiste einklappen (Desktop, global.css): offen ein Griff neben der Leiste; eingeklappt eine Gruppe links oben
+           mit Ausklappen – und nur beim Präsentator (wo-ist.ts) Live und Beamer, die sonst in der Leiste stehen. -->
+      <button type="button" class="leiste-griff" data-leiste aria-controls="sidebar" aria-expanded="true" aria-label="Seitenleiste einklappen" title="Seitenleiste einklappen – mehr Platz für den Inhalt (Taste [)"><PanelLeftClose size={16} aria-hidden="true" /></button>
+      <div class="leiste-gruppe">
+        <button type="button" class="leiste-auf" data-leiste aria-controls="sidebar" aria-expanded="false" aria-label="Seitenleiste ausklappen" title="Seitenleiste ausklappen (Taste [)"><PanelLeftOpen size={20} aria-hidden="true" /></button>
+        <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
+        <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator hidden aria-pressed="false" title="Beamer-Modus (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
+      </div>
       <aside class="sidebar" id="sidebar">
         <a class="brand" href="/" aria-label="Programmieren mit AI – Übersicht"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</a>
         <nav>
@@ -154,37 +160,38 @@ const danach = hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefine
       sync();
       toggles.forEach((t) => t.addEventListener('click', () => setBeamer(!root.hasAttribute('data-beamer'))));
 
-      // Seitenleiste einklappen (Desktop): Knopf oben in der Leiste bzw. links oben, Taste [. Die Wahl merkt sich der Browser.
-      const leisteKnopf = document.querySelector<HTMLButtonElement>('[data-leiste]');
-      const leisteBeschriften = () => {
-        const zu = root.hasAttribute('data-leiste-zu');
-        leisteKnopf?.setAttribute('aria-expanded', String(!zu));
-        leisteKnopf?.setAttribute('aria-label', zu ? 'Seitenleiste ausklappen' : 'Seitenleiste einklappen');
-        if (leisteKnopf) leisteKnopf.title = zu ? 'Seitenleiste ausklappen (Taste [)' : 'Seitenleiste einklappen – mehr Platz für den Inhalt (Taste [)';
-      };
-      const setLeiste = (zu: boolean) => {
+      // Seitenleiste einklappen (Desktop): Griff neben der Leiste bzw. Gruppe links oben, Taste [. Die Wahl merkt sich der Browser
+      // (auch für andere offene Tabs, über das storage-Ereignis).
+      const sidebarEl = document.getElementById('sidebar');
+      const setLeiste = (zu: boolean, speichern = true) => {
+        // Fokus nicht in der verschwindenden Leiste lassen (sonst landet er auf <body>).
+        const fokusInLeiste = zu && sidebarEl?.contains(document.activeElement);
         root.toggleAttribute('data-leiste-zu', zu);
-        try { if (zu) localStorage.setItem('ndu-seitenleiste', 'zu'); else localStorage.removeItem('ndu-seitenleiste'); } catch {}
-        leisteBeschriften();
+        document.querySelectorAll('[data-leiste]').forEach((b) => b.setAttribute('aria-expanded', String(!zu)));
+        if (speichern) try { if (zu) localStorage.setItem('ndu-seitenleiste', 'zu'); else localStorage.removeItem('ndu-seitenleiste'); } catch {}
+        if (fokusInLeiste) document.querySelector<HTMLButtonElement>('.leiste-auf')?.focus();
       };
-      leisteBeschriften();
-      leisteKnopf?.addEventListener('click', () => setLeiste(!root.hasAttribute('data-leiste-zu')));
-      document.addEventListener('keydown', (e) => {
-        if (e.key !== '[' || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+      setLeiste(root.hasAttribute('data-leiste-zu'), false);
+      document.querySelectorAll('[data-leiste]').forEach((b) => b.addEventListener('click', () => setLeiste(!root.hasAttribute('data-leiste-zu'))));
+      addEventListener('storage', (e) => { if (e.key === 'ndu-seitenleiste') setLeiste(e.newValue === 'zu', false); });
+      // Tastenkürzel nicht beim Tippen, nicht bei gehaltener Taste, und nicht solange ein Dialog (Screenshot-Präsentation)
+      // oder ein Vollbild die Tasten hat. defaultPrevented: Die SOTA-Bühne nimmt ←/→ selbst, solange sie den Fokus hat.
+      const tastenFrei = (e: KeyboardEvent) => {
+        if (e.defaultPrevented || e.repeat) return false;
         const t = e.target as HTMLElement | null;
-        if (t && (t.isContentEditable || t.closest('input, textarea, select, [contenteditable]'))) return;
-        if (document.querySelector('dialog[open]') || root.hasAttribute('data-beamer') || !matchMedia('(min-width: 901px)').matches) return;
+        if (t?.closest?.('input, textarea, select, [contenteditable]') || t?.isContentEditable) return false;
+        return !document.querySelector('dialog[open]') && !document.fullscreenElement;
+      };
+      document.addEventListener('keydown', (e) => {
+        // „[“ braucht auf deutscher Tastatur Wahl (Mac: ⌥5) bzw. AltGr (Windows: meldet Strg+Alt) – das zählt nicht als Kürzel.
+        if (e.key !== '[' || e.metaKey || (e.ctrlKey && !e.altKey) || !tastenFrei(e)) return;
+        if (root.hasAttribute('data-beamer') || !matchMedia('(min-width: 901px)').matches) return;
         setLeiste(!root.hasAttribute('data-leiste-zu'));
       });
       document.addEventListener('keydown', (e) => {
         const blaettern = e.key === 'ArrowRight' || e.key === 'ArrowLeft';
         if (e.key !== 'b' && e.key !== 'B' && !blaettern) return;
-        // defaultPrevented: Die SOTA-Bühne nimmt ←/→ selbst, solange sie den Fokus hat.
-        if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.repeat || (blaettern && e.shiftKey)) return;
-        const t = e.target as HTMLElement | null;
-        // Nicht beim Tippen, und nicht solange ein Dialog (Screenshot-Präsentation) oder ein Vollbild die Tasten hat.
-        if (t && (t.isContentEditable || t.closest('input, textarea, select, [contenteditable]'))) return;
-        if (document.querySelector('dialog[open]') || document.fullscreenElement) return;
+        if (e.ctrlKey || e.metaKey || e.altKey || (blaettern && e.shiftKey) || !tastenFrei(e)) return;
         if (!blaettern) { setBeamer(!root.hasAttribute('data-beamer')); return; }
         // ← / → blättern nur im Beamer-Modus; sonst bleiben die Pfeile beim Browser (waagrecht scrollen).
         if (!root.hasAttribute('data-beamer')) return;

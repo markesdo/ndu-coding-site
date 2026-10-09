@@ -124,6 +124,8 @@ function praesentator() {
   const zeichnen = () => {
     const key = lies();
     const zustand = pausiert() ? 'pause' : !root.hasAttribute('data-beamer') ? 'wartet' : fehler ? 'fehler' : 'live';
+    // Beamer ist nur für den Präsentator: Knöpfe mit data-nur-praesentator (z. B. in der eingeklappten Leiste) nur mit Schlüssel.
+    document.querySelectorAll<HTMLElement>('[data-nur-praesentator]').forEach((el) => { el.hidden = !key; });
     for (const b of knoepfe) {
       b.hidden = !key;
       b.dataset.zustand = zustand;

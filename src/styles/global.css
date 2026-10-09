@@ -126,7 +126,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .small { font-size: .92rem; }
 
 /* Layout */
-.shell { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+.shell { --sidebar-w: 260px; display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
 .sidebar { border-right: 1px solid var(--border); background: var(--bg-2); padding: 1.5rem 1.25rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
 .sidebar .brand { display: flex; align-items: center; gap: .6rem; font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: .95rem; color: var(--fg); margin-bottom: 1.5rem; }
 .sidebar .brand:hover { text-decoration: none; }
@@ -152,24 +152,26 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .content > .inner { max-width: var(--max); margin: 0 auto; }
 .topbar { display: none; }
 
-/* Seitenleiste einklappen (nur Desktop, nicht im Beamer-Modus – dort ist sie ohnehin hinter „Menü“). Ein Knopf: offen als runder
-   Griff auf der rechten Kante der Leiste, eingeklappt links oben. Eingeklappt bekommt der Inhalt mehr Breite: Bilder, Prompts,
-   Tabellen bis 1040 px; Fließtext bleibt bei 68ch. */
-.leiste-knopf { display: none; position: fixed; z-index: 36; align-items: center; justify-content: center; padding: 0; font: inherit; background: var(--bg); border: 1px solid var(--border); color: var(--muted); cursor: pointer; }
-.leiste-knopf:hover { color: var(--fg); border-color: var(--fg); }
-.leiste-knopf:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-.leiste-icon-auf { display: none; }
+/* Seitenleiste einklappen (nur Desktop, nicht im Beamer-Modus – dort ist sie ohnehin hinter „Menü“). Offen: runder Griff
+   knapp rechts neben der Leiste (nicht auf ihrer Scrollleiste). Eingeklappt: Gruppe links oben mit „Ausklappen“ und – nur
+   beim Präsentator – Live und Beamer, die sonst nur in der Leiste stehen. Eingeklappt bekommt der Inhalt mehr Breite:
+   Bilder, Prompts, Tabellen bis 1040 px; Fließtext bleibt bei 68ch. */
+.leiste-griff, .leiste-gruppe { display: none; }
+.leiste-griff, .leiste-auf { align-items: center; justify-content: center; padding: 0; font: inherit; border: 1px solid var(--border); color: var(--muted); cursor: pointer; }
+.leiste-griff:hover, .leiste-auf:hover { color: var(--fg); border-color: var(--fg); }
+.leiste-griff:focus-visible, .leiste-auf:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.leiste-gruppe [hidden] { display: none; }
 @media (min-width: 901px) {
-  html:not([data-beamer]) .leiste-knopf { display: inline-flex; top: 1.3rem; left: calc(260px - 14px); width: 28px; height: 28px; border-radius: 50%; }
-  html:not([data-beamer])[data-leiste-zu] .leiste-knopf { top: .9rem; left: .9rem; width: 2.25rem; height: 2.25rem; border-radius: 8px; background: var(--bg-2); }
-  html[data-leiste-zu] .leiste-icon-zu { display: none; }
-  html[data-leiste-zu] .leiste-icon-auf { display: inline; }
+  html:not([data-beamer]):not([data-leiste-zu]) .leiste-griff { display: inline-flex; position: fixed; z-index: 36; top: 1.3rem; left: calc(var(--sidebar-w) + .5rem); width: 28px; height: 28px; border-radius: 50%; background: var(--bg); }
+  html:not([data-beamer])[data-leiste-zu] .leiste-gruppe { display: flex; gap: .5rem; align-items: center; position: fixed; z-index: 36; top: .9rem; left: .9rem; }
+  .leiste-auf { display: inline-flex; width: 2.25rem; height: 2.25rem; border-radius: 8px; background: var(--bg-2); }
+  .leiste-gruppe .beamer-toggle { background: var(--bg-2); }
   html:not([data-beamer])[data-leiste-zu] .shell { grid-template-columns: 1fr; }
   html:not([data-beamer])[data-leiste-zu] .sidebar { display: none; }
   html:not([data-beamer])[data-leiste-zu] { --max: 1040px; }
-  html:not([data-beamer])[data-leiste-zu] .content { padding-left: 4rem; padding-right: 4rem; }
+  html:not([data-beamer])[data-leiste-zu] .content { padding: 4rem 4rem 6rem; }
 }
-@media print { .leiste-knopf { display: none !important; } }
+@media print { .leiste-griff, .leiste-gruppe { display: none !important; } }
 
 @media (max-width: 900px) {
   .shell { grid-template-columns: 1fr; }
