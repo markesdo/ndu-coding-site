@@ -22,11 +22,11 @@ import { bild } from '../components/anleitung-bilder';
   </ul>
 
   <h2 id="repo">1 · Neues Repo aus der Vorlage</h2>
-  <p>Wie an Tag 1 – nur mit einem neuen Namen. Der Name wird Teil eurer Adresse bei Vercel: kleine Buchstaben, Wörter mit Bindestrich, z. B. <code>tisch-feedback</code>.</p>
+  <p>Wie an Tag 1 – aber aus der <strong>Projekt-Vorlage</strong>: dieselben Regeln und Befehle wie bei Leihbar, nur ohne Leihbar. Ihr startet mit einer leeren Startseite „Mein Projekt“ und einem leeren Backlog. Der Name wird Teil eurer Adresse bei Vercel: kleine Buchstaben, mehrere Wörter mit Bindestrich, z. B. <code>tischfeedback</code> oder <code>mensa-board</code>.</p>
   <Schritte id="neu-repo" nummer="1" steps={[
-    { img: bild('setup/repo-1-template'), alt: 'Template-Repository ndu-coding-2026 mit grünem Button „Use this template“', text: 'Die Vorlage <a href="https://github.com/markesdo/ndu-coding-2026" target="_blank" rel="noopener">markesdo/ndu-coding-2026</a> öffnen, oben rechts <em>Use this template</em>.', marks: [{ x: 1168, y: 104, w: 128, h: 32 }] },
-    { img: bild('setup/repo-2-menue'), alt: 'Menü mit „Create a new repository“ und „Open in a codespace“', text: '<em>Create a new repository</em>.', marks: [{ x: 1122, y: 143, w: 170, h: 30 }] },
-    { img: bild('setup/repo-3-formular'), alt: 'Formular „Create a new repository“ mit Namensfeld, Sichtbarkeit Public und Button „Create repository“', text: 'Den Namen eures Projekts eintragen (1) – nicht <code>leihbar</code>, das gibt es schon. <em>Public</em> lassen (2), <em>Create repository</em> (3).', marks: [{ x: 598, y: 356, w: 468, h: 36, n: 1 }, { x: 946, y: 586, w: 105, h: 36, n: 2 }, { x: 934, y: 653, w: 133, h: 35, n: 3 }] },
+    { img: bild('setup/projekt-1-template'), alt: 'Template-Repository ndu-projekt mit grünem Button „Use this template“', text: 'Die Projekt-Vorlage <a href="https://github.com/markesdo/ndu-projekt" target="_blank" rel="noopener">markesdo/ndu-projekt</a> öffnen – nicht <code>ndu-coding-2026</code>, das ist die Leihbar-Vorlage. Oben rechts <em>Use this template</em>.', marks: [{ x: 1168, y: 104, w: 128, h: 32 }] },
+    { img: bild('setup/projekt-2-menue'), alt: 'Menü mit „Create a new repository“ und „Open in a codespace“', text: '<em>Create a new repository</em>.', marks: [{ x: 1122, y: 143, w: 166, h: 30 }] },
+    { img: bild('setup/projekt-3-formular'), alt: 'Formular „Create a new repository“ mit Vorlage markesdo/ndu-projekt, dem Namen mensa-board, darunter „mensa-board is available“, Sichtbarkeit Public und Button „Create repository“', text: 'Oben muss <code>markesdo/ndu-projekt</code> als Vorlage stehen. Den Namen eures Projekts eintragen (1); steht darunter grün „… is available“, ist er frei. <em>Public</em> lassen (2), <em>Create repository</em> (3).', marks: [{ x: 598, y: 357, w: 466, h: 34, n: 1 }, { x: 946, y: 588, w: 105, h: 34, n: 2 }, { x: 934, y: 653, w: 131, h: 34, n: 3 }] },
   ]} />
   <p>Dann Markus einladen wie in <a href="/setup#collaborator">Setup Schritt 8</a>: im neuen Repo <em>Settings</em> → <em>Collaborators</em> → <em>Add people</em> → <code>markesdo</code>.</p>
 
@@ -43,25 +43,33 @@ import { bild } from '../components/anleitung-bilder';
     <p>Im neuen Repo: grüner Knopf <em>Code</em> → Reiter <em>Codespaces</em> → <em>Create codespace on main</em> – wie in <a href="/setup#codespace">Setup Schritt 4</a>. Euer Leihbar-Codespace könnt ihr vorher stoppen: Ihr habt ein Stundenkontingent, und zwei laufende verbrauchen doppelt.</p>
   </div>
   <p><strong>Claude starten</strong> im Terminal von VS Code: <code>claude</code>. Ist es das erste Mal auf diesem Laptop oder in diesem Codespace, kommen erst Farbschema und Anmeldung wie in <a href="/setup#claude-code">Setup Schritt 5</a>. Fragt Claude, ob ihr dem Ordner vertraut: <kbd>↓</kbd> auf <em>Yes, I trust this folder</em>, <kbd>Enter</kbd>.</p>
+  <div data-nur="mac">
+  <Schritte id="neu-offen" nummer="2" steps={[
+    { img: bild('lokal/mac-neu-1'), alt: 'VS Code mit dem Projekt tischfeedback: Name oben in der Suchleiste und über der Dateiliste, unten im Terminal Claude Code mit dem Ordner ~/code/tischfeedback', text: 'So sieht es aus: oben in der Leiste in der Mitte (1) und über der Dateiliste (2) der Name des neuen Repos, im Terminal Claude mit dem Ordner des neuen Projekts (3).', marks: [{ x: 494, y: 4, w: 574, h: 31, n: 1 }, { x: 68, y: 148, w: 146, h: 28, n: 2 }, { x: 462, y: 506, w: 306, h: 66, n: 3 }], crop: false },
+  ]} />
+  </div>
   <Callout type="warn" title="Prüfen: Seid ihr im richtigen Projekt?">
-    <p>Oben im Fenstertitel von VS Code und ganz oben in der Dateiliste links steht der Name eures <strong>neuen</strong> Repos – nicht <code>leihbar</code>. Steht dort Leihbar, arbeitet ihr im falschen Fenster: <em>File → Open Recent</em> → das neue Projekt.</p>
+    <p>Oben in der Mitte von VS Code und ganz oben in der Dateiliste links steht der Name eures <strong>neuen</strong> Repos – nicht <code>leihbar</code>. Steht dort Leihbar, arbeitet ihr im falschen Fenster: <em>File → Open Recent</em> → das neue Projekt.</p>
   </Callout>
 
-  <h2 id="leihbar-raus">3 · Leihbar ausräumen</h2>
-  <p>Die Vorlage ist noch die Leihbar-App: Beispiel-Gegenstände, Fotos, Leihbar-Issues im Backlog, Leihbar-Regeln in <code>CLAUDE.md</code>. Ein Befehl räumt das weg und setzt euren Produktnamen ein. Claude prüft vorher, ob das Repo wirklich neu ist, zählt auf, was es ändert, und wartet auf euer Okay.</p>
-  <Prompt label="In Claude" note="Statt [Produktname] den Namen eurer App, wie er in der Kopfzeile stehen soll, z. B. Tischfeedback.">/ndu-neu [Produktname]</Prompt>
+  <h2 id="starten">3 · App starten</h2>
+  <p>In einem <strong>zweiten</strong> Terminal <code>npm run dev</code> und die App öffnen<span data-nur="lokal"> (<kbd>⌘</kbd>/<kbd>Strg</kbd> + Klick auf <code>http://localhost:3000</code>)</span><span data-nur="codespace"> (Reiter <em>Ports</em> → Globus-Symbol)</span>: eine leere Startseite „Mein Projekt“. Den richtigen Namen setzt gleich <code>/ndu-idee</code>.</p>
+  <Schritte id="neu-start" nummer="3" steps={[
+    { img: bild('lokal/neu-startseite'), alt: 'Leere Startseite im Browser: oben „Mein Projekt“, darunter groß „Mein Projekt“ und „Hier entsteht Mein Projekt.“', text: 'So sieht die App aus der Projekt-Vorlage aus: „Mein Projekt“ oben (1) und als Überschrift (2), sonst nichts.', marks: [{ x: 286, y: 16, w: 120, h: 34, n: 1 }, { x: 286, y: 108, w: 262, h: 54, n: 2 }] },
+  ]} />
+  <p>Steht im Terminal stattdessen <code>next: command not found</code> (Windows: <code>'next' is not recognized</code>), fehlen die Pakete: erst <code>npm install</code>, dann noch einmal <code>npm run dev</code>.</p>
   <details class="fallback" id="ndu-neu-fehlt">
-    <summary>Claude kennt <code>/ndu-neu</code> nicht?</summary>
-    <p>Dann habt ihr das Repo angelegt, bevor es den Befehl in der Vorlage gab. Claude holt ihn nach:</p>
+    <summary>Ihr seht Leihbar statt „Mein Projekt“?</summary>
+    <p>Dann habt ihr das Repo aus der Leihbar-Vorlage <code>ndu-coding-2026</code> angelegt. Neu anlegen müsst ihr es nicht – ein Befehl räumt Leihbar weg und setzt euren Produktnamen ein. Claude prüft vorher, ob das Repo wirklich neu ist, zählt auf, was es ändert, und wartet auf euer Okay.</p>
+    <Prompt label="In Claude" note="Statt [Produktname] den Namen eurer App, wie er in der Kopfzeile stehen soll, z. B. Mensa-Board.">/ndu-neu [Produktname]</Prompt>
+    <p>Kennt Claude <code>/ndu-neu</code> nicht, habt ihr das Repo angelegt, bevor es den Befehl gab. Claude holt ihn nach:</p>
     <Prompt>Führ im Terminal genau diesen Befehl aus: curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-coding-2026/main/.claude/commands/ndu-neu.md -o .claude/commands/ndu-neu.md – dann committe nur diese eine Datei mit der Nachricht „/ndu-neu aus der Vorlage geholt“ und push. Ändere sonst nichts.</Prompt>
-    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal), mit <code>claude</code> neu starten und <code>/ndu-neu</code> eingeben.</p>
+    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal), mit <code>claude</code> neu starten und <code>/ndu-neu</code> eingeben. Am Ende <code>/ndu-commit</code>.</p>
   </details>
-  <p>Zum Prüfen in einem <strong>zweiten</strong> Terminal <code>npm run dev</code> und die App öffnen<span data-nur="lokal"> (<kbd>⌘</kbd>/<kbd>Strg</kbd> + Klick auf <code>http://localhost:3000</code>)</span><span data-nur="codespace"> (Reiter <em>Ports</em> → Globus-Symbol)</span>: eine fast leere Startseite mit eurem Namen. Dann sichern:</p>
-  <Prompt label="In Claude">/ndu-commit</Prompt>
 
   <h2 id="brief">4 · Produkt-Brief und Backlog</h2>
   <p>Wie an Tag 1 in <a href="/tag-1#uebung-2">Übung 2</a>, jetzt mit eurer Idee. Vorher <code>/clear</code>.</p>
-  <Prompt label="In Claude" note="Claude stellt höchstens fünf Fragen, eine nach der anderen, und schreibt erst nach eurem Okay docs/PRODUKT.md.">/ndu-idee [eure Idee in einem Satz]</Prompt>
+  <Prompt label="In Claude" note="Claude stellt höchstens fünf Fragen, eine nach der anderen, schlägt einen Produktnamen vor und schreibt erst nach eurem Okay docs/PRODUKT.md. Im selben Schritt ersetzt es „Mein Projekt“ überall durch euren Namen.">/ndu-idee [eure Idee in einem Satz]</Prompt>
   <Prompt label="Danach in Claude" note="Claude schlägt Funktionen vor, ihr entscheidet: MVP, Später oder Nein. Am Ende schreibt Claude die Issues mit Akzeptanzkriterien in docs/BACKLOG.md: das MVP zuerst, die Ideen für Später darunter – zusammen 5–8.">/ndu-brainstorm</Prompt>
   <p>Lest die Akzeptanzkriterien jedes Issues. Jedes muss im Browser prüfbar sein – was ihr nicht prüfen könnt, lasst ihr umformulieren. Achtet auf die Reihenfolge: <strong>Issue 1 ist der kleinste Schritt, den man im Browser sieht.</strong> Dann <code>/ndu-commit</code>.</p>
 
@@ -108,7 +116,7 @@ import { bild } from '../components/anleitung-bilder';
   <h2 id="zwei-projekte">Zwei Projekte nebeneinander</h2>
   <p>Leihbar und euer Projekt liegen jetzt beide auf eurem Laptop bzw. bei GitHub, Supabase und Vercel. Die häufigsten Verwechslungen:</p>
   <ul>
-    <li><strong>Falsches Fenster.</strong> Vor jedem Auftrag auf den Fenstertitel von VS Code schauen. Ein Fenster pro Projekt, Claude immer im Terminal dieses Fensters starten.</li>
+    <li><strong>Falsches Fenster.</strong> Vor jedem Auftrag auf den Namen oben in der Mitte von VS Code schauen. Ein Fenster pro Projekt, Claude immer im Terminal dieses Fensters starten.</li>
     <li><strong>Claude mit der falschen Datenbank verbunden.</strong> Die Prüffrage aus 7b stellen.</li>
     <li><strong><code>.env.local</code> aus Leihbar kopiert.</strong> Neu anlegen, mit den Werten des neuen Projekts.</li>
     <li><strong>Vercel hat das falsche Repo.</strong> Im Vercel-Dashboard beim Projekt unter <em>Settings → Git</em> steht das verbundene Repo – es muss das neue sein.</li>
