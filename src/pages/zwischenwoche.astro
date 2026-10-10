@@ -17,7 +17,7 @@ import FooterNav from '../components/FooterNav.astro';
     <li><strong>Idee wählen</strong> Etwas, das ihr oder Menschen in eurer Nähe wirklich brauchen. Gern ein Vorgriff auf euer Innolab-Projekt. Keine Idee? <a href="/ideen">Zehn Vorschläge</a> – oder Leihbar mit drei neuen Issues aus „Später“.</li>
     <li><strong>Neues Repo</strong> aus der Projekt-Vorlage <code>ndu-projekt</code> (wie an Tag 1, nur ohne Leihbar), sprechender Name, Markus als Collaborator. Schritt für Schritt: <a href="/neues-projekt">Neues Projekt starten</a>.</li>
     <li><strong>Produkt-Brief und Backlog</strong> mit <code>/ndu-idee</code> (kurzes Interview, dann der Brief) und <code>/ndu-brainstorm</code> (Claude schlägt Funktionen vor, ihr entscheidet: MVP, Später oder Nein; dann schreibt Claude den Backlog). Der Brief bleibt eine Seite, mit Abgrenzung. Nach Issue 2 oder 3 zeigt ihr die App zwei Leuten und aktualisiert den Brief (Stand-Zeile, „macht NICHT“, offene Fragen).</li>
-    <li><strong>Backlog</strong> mit 3–5 Issues – das MVP aus <code>/ndu-brainstorm</code>; die Ideen für Später stehen im Produkt-Brief. Mindestens 3 davon umgesetzt und auf „fertig“ gesetzt. Lieber 3 Issues, die sauber funktionieren, als 5 halbe.</li>
+    <li><strong>Backlog</strong>: das MVP aus <code>/ndu-brainstorm</code>, meist 3–5 Issues; die Ideen für Später stehen im Produkt-Brief. Hat das MVP weniger als drei, nehmt ein Issue aus „Später“ dazu. Bei Leihbar: die drei neuen Issues. Mindestens 3 davon umgesetzt und auf „fertig“ gesetzt. Lieber 3 Issues, die sauber funktionieren, als 5 halbe.</li>
     <li><strong>Deploy</strong> auf Vercel. URL in <code>README.md</code> eintragen, dazu ein Screenshot.</li>
     <li><strong>Reflexion</strong> in <code>docs/REFLEXION.md</code>, zehn Sätze: Was hat der Agent gut gemacht, wo hat er versagt, was würdet ihr beim nächsten Mal anders spezifizieren?</li>
   </ol>
@@ -45,7 +45,7 @@ import FooterNav from '../components/FooterNav.astro';
   <h2 id="redesign">Optional: Redesign mit frontend-design</h2>
   <p>Wer die Issues im Kasten hat, kann der App ein Gesicht geben, das man mit keiner anderen verwechselt – die ganze App, nicht nur die Startseite. Das Plugin <em>frontend-design</em> bringt Claude bei, eine klare gestalterische Richtung zu wählen statt Standard-Optik.</p>
   <p>Erst drei Richtungen, ohne etwas zu ändern, dann die Umsetzung auf einem eigenen <a href="/konzepte/git#branch">Branch</a>, dann eine Kritik-Runde. <code>main</code> bleibt dabei unberührt – gefällt euch das Ergebnis nicht, verwerft ihr den Branch einfach. Claude arbeitet an Teil 2 gut eine halbe Stunde und fragt zwischendurch nach Erlaubnis für Git-Befehle (neuer Branch, Push): Bleibt in der Nähe.</p>
-  <p>Am Mac hat es das <a href="/setup#lokal">Setup-Skript</a> installiert, unter Windows die <a href="/setup#lokal-plugins">Befehle in Setup Schritt 5</a>. Fehlt es noch: einmal installieren, danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten:</p>
+  <p>Wer mit dem <a href="/setup#lokal">Setup-Skript</a> eingerichtet hat, hat es schon; wer von Hand eingerichtet hat, mit den Befehlen unter <a href="/setup#lokal-plugins">Kurs-Plugins</a>. Fehlt es noch: einmal installieren, danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten:</p>
   <Prompt label="Plugin installieren (im Claude-Terminal)">/plugin install frontend-design@claude-plugins-official</Prompt>
   <Callout type="tip" title="Was den Unterschied macht">
     <p>Eine Referenz aus der echten Welt statt einer Website: ein Ding, ein Ort, ein Material – Preisschilder am Flohmarkt, die Leihkarte einer alten Bibliothek, ein kopiertes Fanzine. Websites als Vorbild ergeben wieder Websites, die wie alle anderen aussehen.</p>
@@ -119,8 +119,8 @@ Höchstens 10 Punkte, je ein Satz, verständlich ohne Programmierkenntnisse. Ich
   <p>Am Ende von Teil 2 hat Claude erklärt, was Übernehmen und Verwerfen bedeuten, und den Branch-Namen genannt. Im Browser durchklicken: Funktioniert alles wie vorher? Dann entscheidet ihr mit einem dieser beiden Sätze:</p>
   <Prompt label="Gefällt mir – übernehmen (erst, wenn alles geprüft ist: main geht sofort live)" note="Statt [redesign] den Branch-Namen aus Teil 2 – meist redesign.">Führ den Branch [redesign] zurück in main, push beides und sag mir, ob es Konflikte gab.</Prompt>
   <Prompt label="Gefällt mir nicht – verwerfen">Verwirf alle noch nicht gesicherten Änderungen, wechsel zurück auf main und lass den Branch [redesign] liegen. Zeig mir mit git status, dass main sauber ist.</Prompt>
-  <p>Am Donnerstag in der Demo: Vorher-Nachher. Der Test – jemand aus dem Kurs muss euer Signature-Element in fünf Sekunden benennen können.</p>
   </details>
+  <p>Am Donnerstag in der Demo: Vorher-Nachher. Der Test – jemand aus dem Kurs muss euer Signature-Element in fünf Sekunden benennen können.</p>
 
   <h2 id="hilfe-holen">Hilfe holen</h2>
   <p>In dieser Reihenfolge:</p>
@@ -136,18 +136,32 @@ Höchstens 10 Punkte, je ein Satz, verständlich ohne Programmierkenntnisse. Ich
   <p>Feste Sprechstunden gibt es nicht: Fragt jederzeit im Kanal, dann können wir schnell helfen.</p>
 
   <h2 id="checkliste-fuer-donnerstag">Checkliste für Donnerstag</h2>
-  <Checklist id="zwischenwoche-demo" items={[
+  <Checklist id="zwischenwoche-demo-v2" items={[
     'Eigenes Repo aus dem Template, Markus ist Collaborator',
     '<code>docs/PRODUKT.md</code> – eine Seite, mit „macht NICHT“',
     'Nach Issue 2–3 zwei Leuten gezeigt, Produkt-Brief aktualisiert (Stand-Zeile)',
-    '<code>docs/BACKLOG.md</code> – 3–5 Issues, mindestens 3 davon „fertig“',
+    '<code>docs/BACKLOG.md</code> – das MVP als Issues, mindestens 3 davon „fertig“',
     'Jedes fertige Issue: Akzeptanzkriterien selbst durchgeklickt',
     'App läuft auf Vercel, URL und Screenshot in <code>README.md</code>',
     '<code>/ndu-check</code> grün: keine Secrets im Repo',
     '<code>docs/REFLEXION.md</code> geschrieben',
     'Alles gepusht, App läuft auf der Vercel-URL',
+    'Demo einmal laut durchgespielt, rund 10 Minuten (ohne Fragen)',
     'Screenrecording als Fallback für die Demo',
-      ]} />
+  ]} />
+
+  <script is:inline>
+    // Führt ein Link auf eine Stelle in der eingeklappten Redesign-Anleitung, klappt sie auf.
+    (function () {
+      var auf = function () {
+        var ziel = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        var d = ziel && ziel.closest('details');
+        if (d && !d.open) { d.open = true; ziel.scrollIntoView(); }
+      };
+      document.addEventListener('DOMContentLoaded', auf);
+      window.addEventListener('hashchange', auf);
+    })();
+  </script>
 
   <FooterNav prev={{ href: '/tag-2', t: 'Tag 2' }} next={{ href: '/neues-projekt', t: 'Neues Projekt starten' }} />
 </Layout>
