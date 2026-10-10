@@ -53,7 +53,11 @@ import { bild } from '../components/anleitung-bilder';
   </Callout>
 
   <h2 id="starten">3 · App starten</h2>
-  <p>In einem <strong>zweiten</strong> Terminal <code>npm run dev</code> und die App öffnen<span data-nur="lokal"> (<kbd>⌘</kbd>/<kbd>Strg</kbd> + Klick auf <code>http://localhost:3000</code>)</span><span data-nur="codespace"> (Reiter <em>Ports</em> → Globus-Symbol)</span>: eine leere Startseite „Mein Projekt“. Den richtigen Namen setzt gleich <code>/ndu-idee</code>. Steht im Terminal stattdessen <code>next: command not found</code> (Windows: <code>'next' is not recognized</code>), fehlen die Pakete: erst <code>npm install</code>, dann noch einmal <code>npm run dev</code>.</p>
+  <p>In einem <strong>zweiten</strong> Terminal <code>npm run dev</code> und die App öffnen<span data-nur="lokal"> (<kbd>⌘</kbd>/<kbd>Strg</kbd> + Klick auf <code>http://localhost:3000</code>)</span><span data-nur="codespace"> (Reiter <em>Ports</em> → Globus-Symbol)</span>: eine leere Startseite „Mein Projekt“. Den richtigen Namen setzt gleich <code>/ndu-idee</code>.</p>
+  <Schritte id="neu-start" nummer="3" steps={[
+    { img: bild('lokal/neu-startseite'), alt: 'Leere Startseite im Browser: oben „Mein Projekt“, darunter groß „Mein Projekt“ und „Hier entsteht Mein Projekt.“', text: 'So sieht die App aus der Projekt-Vorlage aus: „Mein Projekt“ oben (1) und als Überschrift (2), sonst nichts.', marks: [{ x: 286, y: 16, w: 120, h: 34, n: 1 }, { x: 286, y: 108, w: 262, h: 54, n: 2 }] },
+  ]} />
+  <p>Steht im Terminal stattdessen <code>next: command not found</code> (Windows: <code>'next' is not recognized</code>), fehlen die Pakete: erst <code>npm install</code>, dann noch einmal <code>npm run dev</code>.</p>
   <details class="fallback" id="ndu-neu-fehlt">
     <summary>Ihr seht Leihbar statt „Mein Projekt“?</summary>
     <p>Dann habt ihr das Repo aus der Leihbar-Vorlage <code>ndu-coding-2026</code> angelegt. Neu anlegen müsst ihr es nicht – ein Befehl räumt Leihbar weg und setzt euren Produktnamen ein. Claude prüft vorher, ob das Repo wirklich neu ist, zählt auf, was es ändert, und wartet auf euer Okay.</p>
