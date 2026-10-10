@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Callout from '../components/Callout.astro';
+import Prompt from '../components/Prompt.astro';
+import Schritte from '../components/Schritte.astro';
+import UmgebungWahl from '../components/UmgebungWahl.astro';
+import FooterNav from '../components/FooterNav.astro';
+import { bild } from '../components/anleitung-bilder';
+---
+<Layout title="Neues Projekt starten">
+  <span class="eyebrow">Zwischenwoche · Anleitung</span>
+  <h1>Neues Projekt starten</h1>
+  <p class="lead">Von der leeren Vorlage bis zum dritten fertigen Issue, Schritt für Schritt. Leihbar bleibt, wie es ist – euer Projekt bekommt ein eigenes Repo, eine eigene Datenbank und eine eigene Adresse.</p>
+  <UmgebungWahl />
+
+  <h2 id="bevor">Bevor ihr anfangt</h2>
+  <ul>
+    <li><strong>Leihbar sichern.</strong> Im Leihbar-Projekt <code>/ndu-commit</code> – alles, was dort noch offen ist, liegt danach auf GitHub.</li>
+    <li><strong>Idee gewählt.</strong> Ein Satz reicht: für wen, welches Problem. Keine Idee? <a href="/ideen">Projektideen</a>.</li>
+    <li data-nur="lokal"><strong>Laptop eingerichtet.</strong> VS Code, Node.js und Claude Code laufen – wer bisher nur im Codespace war: Am Mac erledigt das Skript in Schritt 2 alles mit; unter Windows erst <a href="/setup#lokal-hand">von Hand einrichten</a>.</li>
+    <li data-nur="codespace"><strong>Im Codespace bleiben geht auch.</strong> Alles hier gilt genauso – ihr startet in Schritt 2 nur einen neuen Codespace statt zu klonen.</li>
+  </ul>
+
+  <h2 id="repo">1 · Neues Repo aus der Vorlage</h2>
+  <p>Wie an Tag 1 – nur mit einem neuen Namen. Der Name wird Teil eurer Adresse bei Vercel: kleine Buchstaben, Wörter mit Bindestrich, z. B. <code>tisch-feedback</code>.</p>
+  <Schritte id="neu-repo" nummer="1" steps={[
+    { img: bild('setup/repo-1-template'), alt: 'Template-Repository ndu-coding-2026 mit grünem Button „Use this template“', text: 'Die Vorlage <a href="https://github.com/markesdo/ndu-coding-2026" target="_blank" rel="noopener">markesdo/ndu-coding-2026</a> öffnen, oben rechts <em>Use this template</em>.', marks: [{ x: 1168, y: 104, w: 128, h: 32 }] },
+    { img: bild('setup/repo-2-menue'), alt: 'Menü mit „Create a new repository“ und „Open in a codespace“', text: '<em>Create a new repository</em>.', marks: [{ x: 1122, y: 143, w: 170, h: 30 }] },
+    { img: bild('setup/repo-3-formular'), alt: 'Formular „Create a new repository“ mit Namensfeld, Sichtbarkeit Public und Button „Create repository“', text: 'Den Namen eures Projekts eintragen (1) – nicht <code>leihbar</code>, das gibt es schon. <em>Public</em> lassen (2), <em>Create repository</em> (3).', marks: [{ x: 598, y: 356, w: 468, h: 36, n: 1 }, { x: 946, y: 586, w: 105, h: 36, n: 2 }, { x: 934, y: 653, w: 133, h: 35, n: 3 }] },
+  ]} />
+  <p>Dann Markus einladen wie in <a href="/setup#collaborator">Setup Schritt 8</a>: im neuen Repo <em>Settings</em> → <em>Collaborators</em> → <em>Add people</em> → <code>markesdo</code>.</p>
+
+  <h2 id="holen">2 · Das Repo öffnen</h2>
+  <div data-nur="mac">
+    <p>Terminal öffnen (<kbd>⌘</kbd> + <kbd>Leertaste</kbd>, „Terminal“, <kbd>Enter</kbd>). Dieselbe Zeile wie beim Setup – aber am Ende ein Leerzeichen, <code>_</code>, ein Leerzeichen und der <strong>Name eures neuen Repos</strong>. Ohne den Namen holt das Skript wieder Leihbar.</p>
+    <Prompt label="Terminal (macOS)" note="Statt [name-eures-repos] den Namen aus Schritt 1, ohne Klammern. Das _ davor bleibt so stehen.">bash -c "$(curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-coding-2026/main/setup-mac.sh)" _ [name-eures-repos]</Prompt>
+    <p>Was schon installiert ist, überspringt das Skript. Es holt das neue Repo in den Ordner <code>code</code> in eurem Benutzerordner, lädt die Pakete und öffnet VS Code mit genau diesem Projekt. Fragt VS Code: <em>Yes, I trust the authors</em>.</p>
+  </div>
+  <div data-nur="windows">
+    <p>VS Code öffnen, <em>File → New Window</em>, links <em>Source Control</em> → <em>Clone Repository</em> → <em>Clone from GitHub</em> und aus der Liste das <strong>neue</strong> Repo wählen – wie in <a href="/setup#lokal-klonen-1">Setup, Repo klonen</a>. Danach im Terminal von VS Code <code>npm install</code>.</p>
+  </div>
+  <div data-nur="codespace">
+    <p>Im neuen Repo: grüner Knopf <em>Code</em> → Reiter <em>Codespaces</em> → <em>Create codespace on main</em> – wie in <a href="/setup#codespace">Setup Schritt 4</a>. Euer Leihbar-Codespace könnt ihr vorher stoppen: Ihr habt ein Stundenkontingent, und zwei laufende verbrauchen doppelt.</p>
+  </div>
+  <p><strong>Claude starten</strong> im Terminal von VS Code: <code>claude</code>. Fragt Claude, ob ihr dem Ordner vertraut: <kbd>↓</kbd> auf <em>Yes, I trust this folder</em>, <kbd>Enter</kbd>.</p>
+  <Callout type="warn" title="Prüfen: Seid ihr im richtigen Projekt?">
+    <p>Oben im Fenstertitel von VS Code und ganz oben in der Dateiliste links steht der Name eures <strong>neuen</strong> Repos – nicht <code>leihbar</code>. Steht dort Leihbar, arbeitet ihr im falschen Fenster: <em>File → Open Recent</em> → das neue Projekt.</p>
+  </Callout>
+
+  <h2 id="leihbar-raus">3 · Leihbar ausräumen</h2>
+  <p>Die Vorlage ist noch die Leihbar-App: Beispiel-Gegenstände, Fotos, Leihbar-Issues im Backlog, Leihbar-Regeln in <code>CLAUDE.md</code>. Ein Befehl räumt das weg und setzt euren Produktnamen ein. Claude prüft vorher, ob das Repo wirklich neu ist, zählt auf, was es ändert, und wartet auf euer Okay.</p>
+  <Prompt label="In Claude" note="Statt [Produktname] den Namen eurer App, wie er in der Kopfzeile stehen soll, z. B. Tischfeedback.">/ndu-neu [Produktname]</Prompt>
+  <details class="fallback" id="ndu-neu-fehlt">
+    <summary>Claude kennt <code>/ndu-neu</code> nicht?</summary>
+    <p>Dann habt ihr das Repo angelegt, bevor es den Befehl in der Vorlage gab. Claude holt ihn nach:</p>
+    <Prompt>Lade https://raw.githubusercontent.com/markesdo/ndu-coding-2026/main/.claude/commands/ndu-neu.md herunter und speichere die Datei unverändert unter .claude/commands/ndu-neu.md. Ändere sonst nichts.</Prompt>
+    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal), mit <code>claude</code> neu starten und <code>/ndu-neu</code> eingeben.</p>
+  </details>
+  <p>Zum Prüfen in einem <strong>zweiten</strong> Terminal <code>npm run dev</code> und die App öffnen<span data-nur="lokal"> (<kbd>⌘</kbd>/<kbd>Strg</kbd> + Klick auf <code>http://localhost:3000</code>)</span><span data-nur="codespace"> (Reiter <em>Ports</em> → Globus-Symbol)</span>: eine fast leere Startseite mit eurem Namen. Dann sichern:</p>
+  <Prompt label="In Claude">/ndu-commit</Prompt>
+
+  <h2 id="brief">4 · Produkt-Brief und Backlog</h2>
+  <p>Wie an Tag 1 in <a href="/tag-1#uebung-2">Übung 2</a>, jetzt mit eurer Idee. Vorher <code>/clear</code>.</p>
+  <Prompt label="In Claude" note="Claude stellt höchstens fünf Fragen, eine nach der anderen, und schreibt erst nach eurem Okay docs/PRODUKT.md.">/ndu-idee [eure Idee in einem Satz]</Prompt>
+  <Prompt label="Danach in Claude" note="Claude schlägt Funktionen vor, ihr entscheidet: MVP, Später oder Nein. Am Ende schreibt Claude 3–5 Issues mit Akzeptanzkriterien in docs/BACKLOG.md.">/ndu-brainstorm</Prompt>
+  <p>Lest die Akzeptanzkriterien jedes Issues. Jedes muss im Browser prüfbar sein – was ihr nicht prüfen könnt, lasst ihr umformulieren. Achtet auf die Reihenfolge: <strong>Issue 1 ist der kleinste Schritt, den man im Browser sieht.</strong> Dann <code>/ndu-commit</code>.</p>
+
+  <h2 id="deploy-frueh">5 · Die leere App ins Netz</h2>
+  <p>Gleich am ersten Tag, solange die App noch fast leer ist: Dann wisst ihr, dass der Weg ins Netz funktioniert, bevor etwas kaputt gehen kann. Ab jetzt geht jeder Push automatisch live. Vorher <code>/clear</code>.</p>
+  <p data-nur="codespace" class="small">Im neuen Codespace fehlen Vercel-Plugin und Anmeldungen: erst <a href="/tag-2#vercel-plugin">Tag 2, Übung 5b</a> wiederholen. Auf dem Laptop gilt die Anmeldung von Tag 2 für alle Projekte.</p>
+  <Prompt label="Deploy durch Claude" note="Claude nennt euch zuerst seinen Plan und wartet auf euer Okay. Klappt das Plugin nicht: Weg über das Dashboard wie an Tag 2, dort beim Import das neue Repo wählen.">Deploye dieses Projekt auf Vercel – Projekt anlegen und deployen mit der Vercel-CLI (npx vercel), lesen und prüfen mit dem Vercel-MCP. Vorher: alles committen und auf main pushen. Das ist ein neues Projekt, nicht Leihbar: Leg ein neues Vercel-Projekt mit dem Namen dieses Repos an, Framework Next.js, verbunden mit genau diesem GitHub-Repo, damit jeder Push auf main automatisch deployt. Ein bestehendes Projekt wie leihbar fasst du nicht an. Environment Variables gibt es noch keine. Deploy nach Production, nicht als Preview. Bevor du etwas anlegst: sag mir in zwei Sätzen, was du vorhast, und warte auf mein Okay. Am Ende: die öffentliche Adresse unter Domains (…vercel.app), nicht die Deployment-Adresse – und trag sie oben in README.md ein.</Prompt>
+  <p><strong>Prüfen:</strong> Die Adresse am Handy öffnen. Ihr seht euren Produktnamen, nicht Leihbar.</p>
+
+  <h2 id="issue-fuer-issue">6 · Issue für Issue</h2>
+  <p>Ab hier der Rhythmus aus <a href="/zwischenwoche#so-arbeitet-ihr-allein">So arbeitet ihr allein</a>: ein Issue pro Durchgang, Belege lesen, selbst im Browser prüfen, <code>/ndu-check</code>, <code>/ndu-commit</code>, <code>/clear</code>.</p>
+  <Prompt label="Ein Issue starten" note="Statt [Nummer] die Nummer aus eurem Backlog.">Setze Issue [Nummer] aus docs/BACKLOG.md um.</Prompt>
+  <p>Nach jedem <code>/ndu-commit</code> baut Vercel die App neu. Ein, zwei Minuten später läuft das Issue auch unter eurer Adresse – kurz am Handy nachsehen. Sieht es live anders aus als bei euch: der Prompt <a href="/tag-2#vercel-pruefen">Deploy prüfen</a> von Tag 2.</p>
+
+  <h2 id="datenbank">7 · Datenbank – sobald ein Issue etwas speichert</h2>
+  <p>Erst das Issue, das Daten über einen Reload hinweg behalten muss, braucht Supabase – meist Issue 1 oder 2. Dann, bevor ihr es startet, diese vier Schritte. Euer Projekt bekommt eine <strong>eigene</strong> Datenbank; Leihbar behält seine.</p>
+  <h3 id="datenbank-projekt">a) Neues Supabase-Projekt</h3>
+  <p><a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a> → eure Organisation → <em>New project</em>. Ab hier wie an Tag 2 ab <a href="/tag-2#supabase-5">Schritt 3a.5</a>: Name wie euer Repo, Passwort erzeugen und speichern, Frankfurt, <em>Enable automatic RLS</em>. Danach auch hier „Confirm email“ ausschalten, falls ihr einen Login baut.</p>
+  <Callout type="tip" title="Leihbar nicht löschen">
+    <p>Im kostenlosen Plan habt ihr zwei aktive Projekte – Leihbar und euer neues, das passt. Ein Projekt, das sieben Tage niemand benutzt, pausiert Supabase: Öffnet am Mittwoch einmal eure Leihbar-App, falls ihr sie am Donnerstag noch zeigen wollt.</p>
+  </Callout>
+  <h3 id="datenbank-mcp">b) Supabase-MCP für das neue Projekt</h3>
+  <p>Wie an Tag 2 in <a href="/tag-2#mcp">Übung 3b</a>: im <em>Connect</em>-Dialog des <strong>neuen</strong> Projekts den Befehl kopieren und in einem zweiten Terminal <strong>in diesem Projekt</strong> einfügen. Er gilt nur für diesen Ordner; Leihbar bleibt mit seiner Datenbank verbunden. Beim Neustart von Claude wieder <em>Use this MCP server</em> wählen – vorausgewählt ist das Gegenteil.</p>
+  <Prompt label="Prüfen in Claude" note="Die Antwort muss euer neues Projekt nennen und (noch) keine Tabellen zeigen. Nennt Claude „items“ oder „requests“, ist es mit Leihbar verbunden.">Mit welchem Supabase-Projekt bist du verbunden, und welche Tabellen hat es? Nutze den Supabase-MCP.</Prompt>
+  <h3 id="datenbank-env">c) Neue <code>.env.local</code></h3>
+  <p>Mit den Werten des neuen Projekts. Nicht die Datei aus Leihbar kopieren – dort stehen Adresse und Schlüssel der Leihbar-Datenbank.</p>
+  <Prompt>Leg eine .env.local nach dem Muster von .env.example an und sag mir, welche Werte ich wo eintragen soll – aus dem Connect-Dialog meines neuen Supabase-Projekts. Danach prüfe, dass .env.local in .gitignore steht.</Prompt>
+  <h3 id="datenbank-vercel">d) Dieselben Werte bei Vercel</h3>
+  <p>Die Live-App liest nicht eure <code>.env.local</code>, sondern die Environment Variables des Vercel-Projekts. An Tag 2 hat Claude das beim ersten Deploy erledigt; jetzt kommt die Datenbank nach dem Deploy, also einmal nachtragen:</p>
+  <Prompt>Übertrag die Variablen aus .env.local als Environment Variables für Production und Preview in das Vercel-Projekt dieses Repos – zeig mir keine Werte im Chat. Dann stoß einen neuen Production-Deploy an und sag mir, wann er fertig ist.</Prompt>
+  <p>Danach das Issue starten wie in Schritt 6. Kommt später ein Login dazu: Site URL und Redirect URLs im neuen Supabase-Projekt eintragen wie in <a href="/tag-2#vercel-supabase">Übung 5e</a>, und die Regeln mit dem <a href="/tag-2#uebung-4-d">RLS-Test</a> prüfen.</p>
+
+  <h2 id="tagesplan">Tagesplan bis Donnerstag</h2>
+  <p>Drei bis vier Stunden am Tag reichen. Am Ende jedes Tages steht, was ihr dann sehen solltet.</p>
+  <ol class="steps">
+    <li><strong>Samstag · Start</strong> Schritte 1–5. <em>Stand am Abend:</em> Die Vercel-Adresse zeigt euren Produktnamen; der Backlog hat 3–5 Issues, alle ⬜.</li>
+    <li><strong>Sonntag · Issue 1</strong> Falls es speichert: vorher Schritt 7. <em>Stand:</em> Issue 1 ✅, auch unter der Vercel-Adresse.</li>
+    <li><strong>Montag · Issue 2, zwei Leuten zeigen</strong> Die App zwei Menschen in die Hand geben, still zuschauen, dann den Produkt-Brief aktualisieren (Stand-Zeile, „macht NICHT“, offene Fragen). <em>Stand:</em> Issue 2 ✅, Brief mit heutigem Datum.</li>
+    <li><strong>Dienstag · Issue 3</strong> Mit Login: RLS-Test nicht vergessen. <em>Stand:</em> drei Issues ✅, jedes Kriterium selbst geklickt.</li>
+    <li><strong>Mittwoch · Puffer, kein neues Issue</strong> Was hakt, reparieren. Screenshot in <code>README.md</code>, <code>docs/REFLEXION.md</code>, <code>/ndu-check</code>, pushen. Die Demo einmal laut durchspielen (3–4 Minuten). <em>Stand:</em> <a href="/zwischenwoche#checkliste-fuer-donnerstag">Checkliste für Donnerstag</a> abgehakt.</li>
+  </ol>
+  <p>20 Minuten am selben Problem? <a href="/zwischenwoche#hilfe-holen">Hilfe holen</a> – in Teams, mit gepushtem Stand und dem Link zum <strong>neuen</strong> Repo.</p>
+
+  <h2 id="zwei-projekte">Zwei Projekte nebeneinander</h2>
+  <p>Leihbar und euer Projekt liegen jetzt beide auf eurem Laptop bzw. bei GitHub, Supabase und Vercel. Die häufigsten Verwechslungen:</p>
+  <ul>
+    <li><strong>Falsches Fenster.</strong> Vor jedem Auftrag auf den Fenstertitel von VS Code schauen. Ein Fenster pro Projekt, Claude immer im Terminal dieses Fensters starten.</li>
+    <li><strong>Claude mit der falschen Datenbank verbunden.</strong> Die Prüffrage aus 7b stellen.</li>
+    <li><strong><code>.env.local</code> aus Leihbar kopiert.</strong> Neu anlegen, mit den Werten des neuen Projekts.</li>
+    <li><strong>Vercel hat das falsche Repo.</strong> Im Vercel-Dashboard beim Projekt unter <em>Settings → Git</em> steht das verbundene Repo – es muss das neue sein.</li>
+    <li><strong>Skript ohne Namen gestartet</strong> (Mac). Dann hat es Leihbar geöffnet. Einfach nochmal mit dem Namen am Ende.</li>
+  </ul>
+
+  <FooterNav prev={{ href: '/zwischenwoche', t: 'Zwischenwoche' }} next={{ href: '/tag-3', t: 'Tag 3 · Shippen' }} />
+</Layout>
