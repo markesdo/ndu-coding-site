@@ -1,5 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { BUILD } from './build';
+import { GET } from '../pages/version.json';
 import { MAX_MS, PRUEF_MS, brauchtHinweis, naechstePruefung, versionAus, ziel } from './neu-laden';
 
 describe('versionAus', () => {
@@ -60,5 +62,8 @@ describe('dieselbe Kennung an beiden Enden', () => {
     expect(layout).toMatch(/from '\.\.\/lib\/build'/);
     expect(layout).toMatch(/<meta name="ndu-build" content=\{BUILD\}/);
     expect(endpunkt).toMatch(/from '\.\.\/lib\/build'/);
+  });
+  it('version.json liefert genau BUILD', async () => {
+    expect(await GET().json()).toStrictEqual({ build: BUILD });
   });
 });
