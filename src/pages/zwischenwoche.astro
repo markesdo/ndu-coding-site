@@ -33,10 +33,17 @@ import FooterNav from '../components/FooterNav.astro';
     <li><strong>Umsetzen lassen</strong> Claude fragt bei Unklarem nach.</li>
     <li><strong>Belege lesen</strong> Was hat Claude für jedes Kriterium gezeigt?</li>
     <li><strong>Selbst im Browser prüfen</strong> Jedes Akzeptanzkriterium durchklicken.</li>
+    <li><strong>Streng prüfen</strong> Hat das Issue Login, Datenbank oder ein Formular berührt: <code>/ndu-review</code>. Ein frischer Prüfer sucht Secrets, offene Zugriffsregeln und Stolpersteine für Fremde; ihr entscheidet, was behoben wird – „Muss“-Punkte vor dem nächsten Push.</li>
     <li><strong>Sichern</strong> <code>/ndu-check</code> → <code>/ndu-commit</code>.</li>
     <li><strong>Neu anfangen</strong> <code>/clear</code> – das nächste Issue startet mit leerem Kontext.</li>
   </ol>
   <p><strong>Optional:</strong> Wer sicher unterwegs ist, arbeitet pro Issue in einem eigenen <a href="/konzepte/git#branch">Branch</a>. Vor der Demo dann alles in <code>main</code> zurückführen – Vercel veröffentlicht nur <code>main</code>.</p>
+  <details class="fallback" id="ndu-review-fehlt">
+    <summary>Claude kennt <code>/ndu-review</code> nicht?</summary>
+    <p>Dann habt ihr euer Repo angelegt, bevor es den Befehl gab. Claude holt ihn nach:</p>
+    <Prompt>Führ im Terminal genau diesen Befehl aus: curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-projekt/main/.claude/commands/ndu-review.md -o .claude/commands/ndu-review.md – dann committe nur diese eine Datei mit der Nachricht „/ndu-review aus der Vorlage geholt“ und push. Ändere sonst nichts.</Prompt>
+    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten. Von selbst erinnert Claude in älteren Repos nicht an den Befehl – denkt nach Issues mit Login, Datenbank oder Formular selbst daran.</p>
+  </details>
   <p><strong>20 Minuten am selben Problem?</strong> Aufhören und die Schritte unter <a href="#hilfe-holen">Hilfe holen</a> der Reihe nach gehen.</p>
   <Prompt label="Morgens, zum Einstieg">Lies docs/PRODUKT.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welches Issue als Nächstes dran ist und warum.</Prompt>
   <Prompt label="Abends, zum Abschluss">Trag in docs/ENTSCHEIDUNGEN.md ein, was wir heute festgelegt haben. Aktualisiere den Status im Backlog.</Prompt>
@@ -148,6 +155,7 @@ Höchstens 10 Punkte, je ein Satz, verständlich ohne Programmierkenntnisse. Ich
     'Alles gepusht, App läuft auf der Vercel-URL',
     'Demo einmal laut durchgespielt, rund 10 Minuten (ohne Fragen)',
     'Screenrecording als Fallback für die Demo',
+    '<code>/ndu-review</code> gemacht, „Muss“-Punkte behoben, danach <code>/ndu-check</code> und erneut gepusht',
   ]} />
 
   <script is:inline>
