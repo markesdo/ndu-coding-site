@@ -83,7 +83,10 @@ import { bild } from '../components/anleitung-bilder';
   <h2 id="datenbank">7 · Datenbank – sobald ein Issue etwas speichert</h2>
   <p>Erst das Issue, das Daten über einen Reload hinweg behalten muss, braucht Supabase – meist Issue 1 oder 2. Dann, bevor ihr es startet, diese vier Schritte. Euer Projekt bekommt eine <strong>eigene</strong> Datenbank; Leihbar behält seine.</p>
   <h3 id="datenbank-projekt">a) Neues Supabase-Projekt</h3>
-  <p><a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a> → eure Organisation → <em>New project</em>. Ab hier wie an Tag 2 ab <a href="/tag-2#supabase-5">Schritt 3a.5</a>: Name wie euer Repo, Passwort erzeugen und speichern, Frankfurt, <em>Enable automatic RLS</em>. Danach auch hier „Confirm email“ ausschalten, falls ihr einen Login baut.</p>
+  <Schritte id="neu-supabase" nummer="7a" steps={[
+    { img: bild('neu/sb-1-org'), alt: 'Supabase-Organisation mit dem Projekt leihbar und dem grünen Button „New project“', text: '<a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a> → eure Organisation. Dort liegt schon <code>leihbar</code>. <em>New project</em>. Ab hier wie an Tag 2 ab <a href="/tag-2#supabase-5">Schritt 3a.5</a>: Name wie euer Repo, Passwort erzeugen und speichern, Frankfurt, <em>Enable automatic RLS</em>.', marks: [{ x: 823, y: 155, w: 100, h: 25 }], crop: { x: 160, y: 70, w: 1090, h: 300 } },
+    { img: bild('neu/sb-2-confirm-email'), alt: 'Authentication, Sign In / Providers: Schalter „Confirm email“ ausgeschaltet, darunter „Save changes“', text: 'Falls ihr einen Login baut: im neuen Projekt links <em>Authentication</em> → <em>Sign In / Providers</em>. „Confirm email“ ausschalten (1), <em>Save changes</em> (2). Sonst braucht jede Test-Anmeldung eine echte E-Mail.', marks: [{ x: 1274, y: 475, w: 44, h: 28, n: 1 }, { x: 1216, y: 533, w: 100, h: 28, n: 2 }], crop: { x: 44, y: 80, w: 1300, h: 500 } },
+  ]} />
   <Callout type="tip" title="Leihbar nicht löschen">
     <p>Im kostenlosen Plan habt ihr zwei aktive Projekte – Leihbar und euer neues, das passt. Ein Projekt, das sieben Tage niemand benutzt, pausiert Supabase: Öffnet am Mittwoch einmal eure Leihbar-App, falls ihr sie am Donnerstag noch zeigen wollt.</p>
   </Callout>
