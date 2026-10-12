@@ -18,7 +18,7 @@ const tokens = [
 ];
 ---
 <Layout title="Design-System – Entscheidungen einmal treffen">
-  <span class="eyebrow">Konzept 8 · Tag 3 · Teil 1</span>
+  <span class="eyebrow">Konzept 8 · Tag 3</span>
   <h1>Design-System – Entscheidungen einmal treffen</h1>
   <p class="lead">Ohne System entscheidet jeder Prompt neu, wie ein Button aussieht. Ein Design-System trifft diese Entscheidungen einmal, gibt ihnen Namen und schreibt sie auf – für euch, für euer Team und für den Agenten.</p>
   <Wichtigste>
@@ -26,6 +26,7 @@ const tokens = [
       <li>Ohne System wirkt die App nach zwanzig Issues zusammengestückelt – Designer*innen nennen das <strong>Drift</strong>.</li>
       <li>Drei Ebenen: <strong>Tokens</strong>, nach ihrer Rolle benannt (<code>accent</code> statt <code>rot</code>), <strong>Komponenten</strong> mit allen Zuständen, <strong>Regeln</strong> in <code>docs/DESIGN.md</code>.</li>
       <li>Eine Designentscheidung ändert ihr dann an einer Stelle statt in zwanzig Dateien.</li>
+      <li>Bei der Übergabe eines Entwurfs an Claude Code reist das Aussehen mit – was beim Klick, bei leeren Daten oder am Handy passiert, steht im Issue.</li>
     </ul>
   </Wichtigste>
 
@@ -107,16 +108,31 @@ const tokens = [
     <dt>Aus Figma</dt>
     <dd><p>Im Innolab entsteht das Design in Figma. Über den Figma-MCP liest Claude Variablen und Komponenten und übernimmt sie als Tokens in <code>globals.css</code> (<a href="/konzepte/ausblick">Ausblick</a>). Dann ist Figma die Quelle und der Code folgt.</p></dd>
     <dt>Mit Claude Design</dt>
-    <dd><p>Anthropics Design-Werkzeug (Research Preview, im Pro-Plan enthalten). <code>/design-sync</code> in Claude Code liest eure Tokens und Komponenten, sodass Claude Design mit euren echten Bausteinen entwirft; über „Hand off to Claude Code“ kommt der Entwurf zurück ins Projekt. Optional – es gibt noch keine Versionsgeschichte und keine gemeinsame Bearbeitung. Im Kurs zeigen wir es als Demo.</p></dd>
+    <dd><p>Anthropics Werkzeug für Entwürfe und klickbare Prototypen unter <a href="https://claude.ai/design" target="_blank" rel="noopener">claude.ai/design</a> (Research Preview, im Pro-Plan enthalten). Beim Einrichten liest es euer Repo und baut daraus ein Design-System – Farben, Schriften, Komponenten –, mit dem jeder weitere Entwurf arbeitet. Ihr korrigiert per Kommentar, direktem Bearbeiten oder Reglern für Abstände, Farbe und Layout. Ist der Entwurf fertig, packt <em>Hand off to Claude Code</em> ihn in ein Übergabe-Paket für Claude Code. Ihr probiert es in <a href="/tag-3#uebung-9">Übung 9</a> an eurer eigenen App aus.</p></dd>
   </dl>
 
-  <p>Selbst ausprobieren: Der Werkstatt-Track <a href="/tag-3#design-system">Design-System</a> an Tag 3 führt durch die sechs Schritte an eurer eigenen App.</p>
+  <h2 id="uebergabe">Die Übergabe – was mitreist und was nicht</h2>
+  <p>Egal, ob der Entwurf aus Figma oder Claude Design kommt: An der Übergabe an Claude Code entscheidet sich, ob die gebaute Seite aussieht und funktioniert wie gedacht. Ein Entwurf zeigt einen Zustand – alles dazwischen muss jemand beschreiben.</p>
+  <div class="compare">
+    <div class="card good"><h3>Was mitreist</h3><ul>
+      <li>Farben, Schriften, Abstände – als eure Tokens, wenn der Entwurf mit eurem System gemacht ist.</li>
+      <li>Welche Komponenten wo sitzen, das Layout.</li>
+      <li>Eure Kommentare und das Gespräch mit Claude Design.</li>
+    </ul></div>
+    <div class="card bad"><h3>Was nicht mitreist</h3><ul>
+      <li>Was beim Klick passiert und wohin es danach geht.</li>
+      <li>Leere Daten, Laden, Fehler – wenn ihr sie nicht mitentworfen habt.</li>
+      <li>Wer was sehen und ändern darf.</li>
+      <li>Was in den Akzeptanzkriterien steht. Darum gehört das Issue zur Übergabe dazu.</li>
+    </ul></div>
+  </div>
+  <p>Selbst ausprobieren: <a href="/tag-3#uebung-9">Übung 9</a> an Tag 3 – entwerfen, testen, übergeben, vergleichen. Wer das System lieber aus dem Code heraus aufräumt, geht die <a href="#bauen">sechs Schritte</a> oben durch.</p>
 
   <Callout type="concept" title="Der eine Satz zum Mitnehmen">
     <p>Ein Design-System ist eine Entscheidung, die einmal getroffen, benannt und aufgeschrieben wird – damit weder ihr noch der Agent sie bei jedem Issue neu trifft.</p>
   </Callout>
 
-  <FooterNav prev={{ href: '/tag-3#konzept-8', t: 'Tag 3' }} next={{ href: '/konzepte/ausblick', t: 'Ausblick 2026' }} />
+  <FooterNav prev={{ href: '/tag-3#konzept-8', t: 'Tag 3' }} next={{ href: '/tag-3#uebung-9', t: 'Übung 9' }} />
 </Layout>
 
 <style>
