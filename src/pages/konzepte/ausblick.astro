@@ -35,12 +35,6 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
   </dl>
   <p class="small muted">Quellen: <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener">METR 2025</a> · <a href="https://metr.org/blog/2026-05-19-frontier-risk-report/" target="_blank" rel="noopener">METR, Mai 2026</a> · <a href="https://www.anthropic.com/research/AI-assistance-coding-skills" target="_blank" rel="noopener">Anthropic, Januar 2026</a> · <a href="https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/" target="_blank" rel="noopener">Stack Overflow, Oktober 2026</a></p>
 
-  <Callout type="concept" title="Drei Sätze zum Mitnehmen">
-    <p class="mitnehmen">Ihr beschreibt, der Agent baut, ihr prüft.</p>
-    <p class="mitnehmen">Was wichtig ist, steht in einer Datei, nicht im Kopf.</p>
-    <p class="mitnehmen">Je weniger ihr zuschaut, desto genauer muss die Beschreibung sein.</p>
-  </Callout>
-
   <h2>Design → Code</h2>
   <p>Zwei Wege führen von einem Entwurf zu echtem Code. Beide ersetzen nicht das Spezifizieren – ein Entwurf sagt nicht, was beim Klick passieren soll –, aber sie ersetzen das Beschreiben von Aussehen.</p>
   <h3>Figma-MCP – der Weg im Innolab</h3>
@@ -78,7 +72,7 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
     <li><strong>Handy</strong> – Fehler in Teams gesehen, „fix das“ getippt, der PR wartet, wenn ihr am Laptop seid</li>
     <li><strong>Geplante Aufgaben</strong> – „jeden Montag: Abhängigkeiten aktualisieren, Tests laufen lassen, PR erstellen“</li>
   </ul>
-  <p>Im Kurs habt ihr es live gesehen: Markus gibt vom Handy eine Aufgabe an einen Agenten in der Cloud, der Pull Request ist da, bevor der Team-Sprint vorbei ist. Niemand schaut dem Agenten dabei zu – darum muss die Beschreibung umso genauer sein.</p>
+  <p>Im Kurs zeigt Markus es live: Er gibt vom Handy eine Aufgabe an einen Agenten in der Cloud, und während des Team-Sprints kommt der Pull Request. Niemand schaut dem Agenten dabei zu – darum muss die Beschreibung umso genauer sein.</p>
 
   <h2>Codex & die anderen</h2>
   <p>OpenAI <strong>Codex</strong>, Google <strong>Gemini CLI</strong>, <strong>Cursor</strong> als IDE – die Konzepte sind identisch: Kontext, Tools, Agent-Loop, Spezifikation, Verifikation. Die Projektdatei heißt dort statt <code>CLAUDE.md</code> meist <code>AGENTS.md</code> (bei Gemini CLI: <code>GEMINI.md</code>); unser Template hat <code>AGENTS.md</code> und <code>CLAUDE.md</code>. Was ihr hier gelernt habt, überträgt sich in einer Stunde. Wählt nach Modellqualität für eure Aufgabe und nach dem, was euer Team nutzt – nicht nach Marke.</p>
@@ -121,7 +115,3 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
 
   <FooterNav prev={{ href: '/tag-3#konzept-9', t: 'Tag 3' }} next={{ href: '/tag-3#uebung-10', t: 'Übung 10' }} />
 </Layout>
-
-<style>
-  .mitnehmen { font-size: 1.25rem; font-weight: 600; line-height: 1.35; margin: .4rem 0; }
-</style>

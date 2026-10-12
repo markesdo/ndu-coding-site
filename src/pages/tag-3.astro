@@ -21,7 +21,7 @@ import { Bot, GitMerge, GitPullRequest, ListTodo, Users } from '@lucide/astro';
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-15">
     <Block time="09:00–09:10" type="plenum" title="Stand-up">Reihum: eure App live am Handy, dazu ein Satz, wo es gerade hakt. Gelöst wird in den Übungen.</Block>
-    <Block time="09:10–09:35" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="#konzept-7">Ein Test prüft ein Kriterium automatisch, GitHub prüft bei jedem Push, ein frischer Blick prüft vor dem Zusammenführen.</Block>
+    <Block time="09:10–09:35" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="#konzept-7">Ein Test klickt ein Kriterium von selbst durch, GitHub prüft bei jedem Push, ein frischer Blick prüft vor dem Zusammenführen.</Block>
     <Block time="09:35–10:30" type="uebung" title="Übung 8 · Ein Test, der mich schützt" href="#uebung-8">Eigene App: ein Test, eine automatische Prüfung auf GitHub, ein Pull Request mit Review.</Block>
     <Block time="10:30–10:45" type="pause" title="Pause" />
     <Block time="10:45–11:05" type="konzept" title="Konzept 8 · Design → Code" href="#konzept-8">Warum ein Design-System Drift verhindert, drei Wege vom Entwurf zum Code, was bei der Übergabe verloren geht.</Block>
@@ -41,7 +41,7 @@ import { Bot, GitMerge, GitPullRequest, ListTodo, Users } from '@lucide/astro';
     <p>In Übung 8 baut ihr in eure eigene App, was einen Prototyp von einem Produkt trennt: Prüfungen, die nicht müde werden.</p>
     <ul>
       <li>Ein Produkt funktioniert immer: auch bei falscher Bedienung, für Fremde, nach der zwanzigsten Änderung.</li>
-      <li>Aus einem Akzeptanzkriterium wird ein <strong>Test</strong>, der bei jeder Änderung prüft. Dann kann Claude nicht „fertig“ sagen, bevor es stimmt.</li>
+      <li>Aus einem Akzeptanzkriterium wird ein <strong>Test</strong>, der es von selbst durchklickt, sooft ihr oder Claude ihn startet. Dann kann Claude nicht „fertig“ sagen, bevor es stimmt.</li>
       <li>Bei jedem Push prüft <strong>GitHub</strong> automatisch, ob die App noch baut. Rot heißt: noch nicht zusammenführen.</li>
       <li>Ein <strong>Pull Request</strong> ist die Übergabe: Jemand mit frischem Blick schaut drauf, bevor die Änderung live geht.</li>
     </ul>
@@ -53,7 +53,7 @@ import { Bot, GitMerge, GitPullRequest, ListTodo, Users } from '@lucide/astro';
   <hr />
   <h2 id="uebung-8">Übung 8 · Ein Test, der mich schützt <span class="pill uebung">55 min</span></h2>
   <Quiz id="einstieg-u8" einstieg="Konzept 7" fragen={[
-    { q: 'Claude schreibt aus einem eurer Akzeptanzkriterien einen Test. Was habt ihr danach?', o: ['Eine Prüfung, die das Kriterium bei jeder Änderung von selbst klickt', 'Den Beweis, dass die App jetzt keine Fehler mehr enthält', 'Eine technische Fassung des Kriteriums, die das Backlog ersetzt'], a: 0, w: 'Ein Test prüft genau das eine Kriterium, aber jedes Mal. Fehlerfrei macht er die App nicht – er merkt nur, wenn das Geprüfte kaputtgeht.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
+    { q: 'Claude schreibt aus einem eurer Akzeptanzkriterien einen Test. Was habt ihr danach?', o: ['Eine Prüfung, die das Kriterium auf Knopfdruck von selbst klickt', 'Den Beweis, dass die App jetzt keine Fehler mehr enthält', 'Eine technische Fassung des Kriteriums, die das Backlog ersetzt'], a: 0, w: 'Ein Test prüft genau das eine Kriterium, aber jedes Mal, wenn er läuft. Fehlerfrei macht er die App nicht – er merkt nur, wenn das Geprüfte kaputtgeht.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
     { q: 'Neben eurem Pull Request steht ein rotes X. Was heißt das?', o: ['Vercel hat die App mit dem Fehler schon veröffentlicht', 'Die Person im Review hat den Pull Request abgelehnt', 'Eine automatische Prüfung ist gescheitert, noch nicht mergen'], a: 2, w: 'Das X kommt von der Prüfung, die GitHub bei jedem Push startet. Live ist nur, was in main steht – und dahin kommt die Änderung erst nach dem Zusammenführen.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
   ]} />
   <p>Ihr arbeitet an eurer eigenen App aus der Zwischenwoche. Alles in dieser Übung passiert auf einem eigenen <a href="/konzepte/git#branch">Branch</a> – <code>main</code> und damit eure Live-App bleiben unberührt, bis ihr am Ende zusammenführt.</p>
@@ -67,13 +67,14 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
 
   <h3 id="uebung-8-b">b) Die Prüfung bei jedem Push (15 min)</h3>
   <p>Ab jetzt prüft GitHub bei jedem Push, ob eure App noch fehlerfrei baut – auch wenn ihr es vergesst, auch nachts um zwei.</p>
-  <Prompt label="Automatische Prüfung einrichten">Leg einen GitHub-Actions-Workflow .github/workflows/pruefung.yml an, der bei jedem Push und jedem Pull Request npm ci, npm run lint und npm run build ausführt. Prüf vorher, ob der Build Umgebungsvariablen braucht (z. B. NEXT_PUBLIC_SUPABASE_URL). Wenn ja: Nimm sie aus GitHub-Secrets und sag mir genau, welche Namen ich unter Settings → Secrets and variables → Actions anlegen muss – die Werte trage ich selbst ein, frag mich nicht im Chat danach. Den Playwright-Test nimmst du nicht in den Workflow auf. Commite auf dem Branch und push.</Prompt>
+  <Prompt label="Automatische Prüfung einrichten">Leg einen GitHub-Actions-Workflow .github/workflows/pruefung.yml an, der bei jedem Push und jedem Pull Request npm ci, npm run lint und npm run build ausführt. Prüf vorher, ob der Build Umgebungsvariablen braucht (z. B. NEXT_PUBLIC_SUPABASE_URL). Wenn ja: Nimm sie aus GitHub-Secrets und sag mir genau, welche Namen ich unter Settings → Secrets and variables → Actions anlegen muss – die Werte trage ich selbst ein, frag mich nicht im Chat danach. Den Playwright-Test nimmst du nicht in den Workflow auf – er braucht die echte Datenbank. Commite auf dem Branch und push.</Prompt>
+  <p class="small">Profis lassen auch die Tests bei jedem Push laufen; dafür braucht GitHub eine eigene Test-Datenbank. Heute prüft GitHub, ob die App baut – den Test startet ihr oder Claude vor jedem „fertig“.</p>
   <details class="fallback" id="workflow-abgelehnt">
     <summary>GitHub lehnt den Push ab, in der Meldung steht „workflow“?</summary>
     <p>Dann darf euer Zugang keine Workflow-Dateien schreiben. Legt die Datei auf github.com an: In eurem Repo oben den Branch <code>test-erster</code> wählen → <em>Add file</em> → <em>Create new file</em> → als Namen <code>.github/workflows/pruefung.yml</code> → den Inhalt, den Claude euch zeigt, einfügen → <em>Commit changes</em>. Danach in Claude: „Hol dir den neuesten Stand des Branches von GitHub.“</p>
   </details>
   <p>Jetzt einmal absichtlich rot – damit ihr wisst, wie es aussieht, bevor es ernst wird:</p>
-  <Prompt label="Einmal rot, einmal grün">Bau absichtlich einen kleinen Lint-Fehler ein (eine unbenutzte Variable), commite und push. Sag mir, wo ich auf GitHub sehe, dass die Prüfung scheitert. Wenn ich es gesehen habe, sage ich „weiter“: dann entfernst du den Fehler wieder, commitest und pushst.</Prompt>
+  <Prompt label="Einmal rot, einmal grün">Bau absichtlich einen Fehler ein, an dem der Build scheitert – einen Typfehler, z. B. const probe: number = "kein Text"; in einer Seite. Prüf mit npm run build, dass er wirklich scheitert, dann commite und push. Sag mir, wo ich auf GitHub sehe, dass die Prüfung scheitert. Wenn ich es gesehen habe, sage ich „weiter“: dann entfernst du den Fehler wieder, commitest und pushst.</Prompt>
 
   <h3 id="uebung-8-c">c) Pull Request und Review (20 min)</h3>
   <Prompt label="Pull Request erstellen">Erstelle einen Pull Request von diesem Branch nach main. Die Beschreibung ist ohne Programmierkenntnisse verständlich: was neu ist, wie man es prüft, was noch offen ist. Gib mir den Link.</Prompt>
@@ -190,7 +191,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   </dl>
   <Prompt label="Issue aus Linear umsetzen" note="Statt [Kennung] die Kennung aus Linear, z. B. LEI-3.">Hol dir über den Linear-MCP das Issue [Kennung]. Wenn etwas unklar ist, frag zuerst. Setz es in Linear auf In Progress. Leg einen neuen Branch an, der nach dem Issue heißt, und setz es dort um – main bleibt unberührt. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Wenn ich zustimme: npm run lint und npm run build fehlerfrei, push, Pull Request mit einer Beschreibung ohne Fachjargon und dem Link zum Linear-Issue, Issue in Linear auf In Review.</Prompt>
   <Callout type="info" title="Ihr arbeitet zu dritt im selben Repo">
-    <p>Die anderen ändern <code>main</code>, während ihr baut. Das ist gewollt: Jede*r bleibt auf dem eigenen Branch, zusammengeführt wird erst am Ende – von Markus, live am Beamer.</p>
+    <p>Jede*r bleibt auf dem eigenen Branch; zusammengeführt wird erst am Ende – von Markus, live am Beamer. Ändern zwei Branches dieselbe Datei, merkt ihr das erst dort. Das ist gewollt: So sieht Teamarbeit mit Agenten aus.</p>
   </Callout>
 
   <h3 id="uebung-10-c">c) Review und Angriff (15 min)</h3>
