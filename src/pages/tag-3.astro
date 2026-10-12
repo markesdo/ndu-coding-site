@@ -10,6 +10,8 @@ import KonzeptStation from '../components/KonzeptStation.astro';
 import Quiz from '../components/Quiz.astro';
 import UmgebungWahl from '../components/UmgebungWahl.astro';
 import Fluss from '../components/Fluss.astro';
+import Schritte from '../components/Schritte.astro';
+import { bild } from '../components/anleitung-bilder';
 import { Bot, GitMerge, GitPullRequest, ListTodo, Users } from '@lucide/astro';
 ---
 <Layout title="Tag 3 · Shippen & selbständig werden">
@@ -73,7 +75,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
     <summary>GitHub lehnt den Push ab, in der Meldung steht „workflow“?</summary>
     <p>Dann darf euer Zugang keine Workflow-Dateien schreiben. Legt die Datei auf github.com an: In eurem Repo oben den Branch <code>test-erster</code> wählen → <em>Add file</em> → <em>Create new file</em> → als Namen <code>.github/workflows/pruefung.yml</code> → den Inhalt, den Claude euch zeigt, einfügen → <em>Commit changes</em>. Danach in Claude: „Hol dir den neuesten Stand des Branches von GitHub.“</p>
   </details>
-  <p>Jetzt einmal absichtlich rot – damit ihr wisst, wie es aussieht, bevor es ernst wird:</p>
+  <p>Jetzt einmal absichtlich rot – damit ihr wisst, wie es aussieht, bevor es ernst wird (<a href="/konzepte/qualitaet#pruefung-1">so sieht rot und grün aus</a>):</p>
   <Prompt label="Einmal rot, einmal grün">Bau absichtlich einen Fehler ein, an dem der Build scheitert – einen Typfehler, z. B. const probe: number = "kein Text"; in einer Seite. Prüf mit npm run build, dass er wirklich scheitert, dann commite und push. Sag mir, wo ich auf GitHub sehe, dass die Prüfung scheitert. Wenn ich es gesehen habe, sage ich „weiter“: dann entfernst du den Fehler wieder, commitest und pushst.</Prompt>
 
   <h3 id="uebung-8-c">c) Pull Request und Review (20 min)</h3>
@@ -107,11 +109,16 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
     { q: 'Was kommt bei der Übergabe von Claude Design an Claude Code nicht von selbst mit?', o: ['Farben, Schriften und Abstände des Entwurfs', 'Was beim Klick passiert, leere Zustände, Fehler', 'Die Komponenten, aus denen der Entwurf gebaut ist'], a: 1, w: 'Ein Entwurf zeigt einen Zustand. Was dazwischen und daneben passiert, steht im Issue – oder Claude rät.', mehr: { href: '/konzepte/design-system#uebergabe', t: 'Was bei der Übergabe mitreist' } },
     { q: 'Warum liest Claude Design zuerst euer Design-System aus dem Repo?', o: ['Damit der Entwurf die Bausteine nutzt, die im Code schon da sind', 'Damit Claude Design euren Code beim Entwerfen gleich mit verbessert', 'Weil Claude Design ohne Repo gar keine Screens entwerfen kann'], a: 0, w: 'Entwirft Claude Design mit euren Tokens und Komponenten, lässt sich der Entwurf ohne Übersetzung bauen – und eure App driftet nicht.', mehr: { href: '/konzepte/design-system', t: 'Design-System' } },
   ]} />
-  <p><strong>Claude Design</strong> ist Anthropics Werkzeug für Entwürfe und klickbare Prototypen. Es ist in eurem Pro-Abo enthalten (Research Preview) und läuft im Browser unter <a href="https://claude.ai/design" target="_blank" rel="noopener">claude.ai/design</a>: links der Chat, rechts die Arbeitsfläche. Wie an Tag 1 beschreibt ihr, was ihr wollt – nur dass am Ende ein Entwurf steht statt Code.</p>
-  {/* PLATZHALTER: Screenshots Claude Design (Onboarding, Arbeitsfläche, Kommentare/Regler, Hand-off-Dialog, Ankunft in Claude Code) am Mi 14.10. abends aufnehmen und als <Schritte id="claude-design"> ergänzen. Ablauf der Übergabe im Codespace dabei prüfen. */}
+  <p><strong>Claude Design</strong> ist Anthropics Werkzeug für Entwürfe und klickbare Prototypen. Es ist in eurem Pro-Abo enthalten und steckt direkt in Claude: auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> in der Seitenleiste unter <em>Design</em> – links der Chat, rechts die Arbeitsfläche. (Die alte Einzelseite claude.ai/design schließt am 14. Dezember; ihr braucht sie nicht.) Wie an Tag 1 beschreibt ihr, was ihr wollt – nur dass am Ende ein Entwurf steht statt Code.</p>
+  {/* PLATZHALTER: Screenshots für b) bis e) (Arbeitsfläche, Kommentare/Regler, Übergabe, Ankunft in Claude Code) folgen. Ablauf der Übergabe im Codespace dabei prüfen. */}
 
   <h3 id="uebung-9-a">a) Euer System einlesen (15 min)</h3>
-  <p>Öffnet <a href="https://claude.ai/design" target="_blank" rel="noopener">claude.ai/design</a> und legt ein Design-System an. Beim Einrichten liest Claude Design euer Repo und baut daraus Farben, Schriften und Komponenten. Verbindet dafür euer GitHub-Repo, wenn Claude Design danach fragt.</p>
+  <p>Claude Design liest euer Repo und baut daraus Farben, Schriften, Komponenten und ein kurzes Markenbuch. Das dauert rund fünf Minuten – lasst es laufen.</p>
+  <Schritte id="claude-design" steps={[
+    { img: bild('tag3/cd-1-system'), alt: 'Claude mit geöffnetem Design-System: Auswahl „Sync from GitHub“, „Build from connectors“, „Upload brand files“', text: 'Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> links <em>Design</em> (1), dann <em>Design System</em>. Claude fragt, woraus das System entstehen soll: <em>Sync from GitHub</em> (2).', marks: [{ x: 8, y: 220, w: 272, h: 28, n: 1 }, { x: 316, y: 316, w: 377, h: 84, n: 2 }] },
+    { img: bild('tag3/cd-2-repo'), alt: 'Rückfrage „Which GitHub repository should I build the design system from?“ mit den Optionen Public repo und Private repo', text: 'Claude fragt nach dem Repo. Ist es öffentlich (<em>Public repo</em>, 1), schreibt ihr einfach die Adresse unten ins Feld (2), z. B. <code>https://github.com/euer-name/euer-repo</code>, und drückt Enter. Ist es privat, schlägt Claude vor, GitHub zu verbinden oder das Repo als ZIP hochzuladen – fragt Markus, wenn ihr unsicher seid.', marks: [{ x: 322, y: 440, w: 364, h: 84, n: 1 }, { x: 316, y: 670, w: 377, h: 46, n: 2 }] },
+    { img: bild('tag3/cd-3-ergebnis'), alt: 'Fertiges Design-System „Leihbar“: links die Zusammenfassung, rechts das Markenbuch mit Logo und Farben', text: 'Fertig: Links fasst Claude zusammen, was es aus dem Repo übernommen hat – Farben, Schriften, Komponenten, Fotos (1). Rechts steht das Markenbuch (2). Lest beides: Stimmt das mit eurer App überein?', marks: [{ x: 316, y: 300, w: 377, h: 350, n: 1 }, { x: 734, y: 122, w: 740, h: 610, n: 2 }] },
+  ]} />
   <p>Dann prüfen, wie bei jedem Ergebnis eines Agenten: Stimmen die Farben mit eurer App überein? Die Schrift? Sehen die Buttons aus wie eure? Was nicht stimmt, sagt ihr Claude Design im Chat – es ist eure App, nicht seine Vorstellung davon.</p>
 
   <h3 id="uebung-9-b">b) Den nächsten Screen entwerfen (25 min)</h3>
