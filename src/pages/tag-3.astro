@@ -124,7 +124,10 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   <h3 id="uebung-9-b">b) Den nächsten Screen entwerfen (25 min)</h3>
   <p>Nehmt das nächste offene Issue aus eurem Backlog, das eine Oberfläche hat – oder den Screen eurer App, mit dem ihr am wenigsten zufrieden seid.</p>
   <Prompt label="In Claude Design" note="Die Zustände am Ende sind der Teil, den ein Entwurf sonst vergisst – und den Claude Code später raten müsste.">Entwirf mit unserem Design-System den Screen für dieses Issue: [Issue aus docs/BACKLOG.md einfügen – Ziel und Akzeptanzkriterien]. Zuerst fürs Handy (375 px), dann für den Laptop. Verwende nur unsere Farben, Schriften und Komponenten; wenn dir eine Komponente fehlt, sag es, statt eine zu erfinden. Mach daraus einen klickbaren Prototyp. Zeig zusätzlich diese Zustände: keine Daten, Laden, Fehler.</Prompt>
-  <p>Gefällt euch etwas nicht, korrigiert direkt auf der Arbeitsfläche: Kommentar an die Stelle setzen, Text direkt ändern oder mit den Reglern Abstände, Farbe und Layout verschieben. Kleine Schritte, wie an Tag 1.</p>
+  <Schritte id="entwerfen" steps={[
+    { img: bild('tag3/cd-4-prompt'), alt: 'Neues Design in Claude: Auftrag im Eingabefeld, darunter „Claude Design“ und das gewählte Design-System „Leihbar“', text: 'In Claude links <em>Design</em>, dann die Kachel <em>Design</em> → <em>Start with a prompt</em>. Unter dem Eingabefeld euer Design-System wählen (1) – sonst entwirft Claude mit einer eigenen Optik. Auftrag einfügen, abschicken (2). Claude arbeitet fünf bis zehn Minuten.', marks: [{ x: 812, y: 611, w: 74, h: 26, n: 1 }, { x: 1170, y: 563, w: 36, h: 36, n: 2 }], crop: { x: 540, y: 300, w: 720, h: 360 } },
+    { img: bild('tag3/cd-5-canvas'), alt: 'Arbeitsfläche mit Reihen für Handy und Laptop in den Zuständen Daten, Keine Daten, Laden, Fehler; links Claudes Annahmen', text: 'Fertig: Auf der Arbeitsfläche liegen eure Screens nebeneinander, je Zustand einer (1). Links schreibt Claude, <em>was es angenommen hat</em> (2) – lest das genau, es sind die Stellen, an denen euer Issue nichts gesagt hat. Zeigt die Fläche nichts, lädt die Seite einmal neu.', marks: [{ x: 765, y: 205, w: 680, h: 445, n: 1 }, { x: 316, y: 155, w: 377, h: 340, n: 2 }] },
+  ]} />
 
   <h3 id="uebung-9-c">c) Nutzertest am Prototyp (15 min)</h3>
   <p>Reihum: Die nächste Person setzt sich an euren Laptop und bekommt nur einen Satz – die Aufgabe aus dem Issue, zum Beispiel „Biete deine Bohrmaschine an“. Ihr erklärt nichts, ihr schaut zu und schreibt mit:</p>
@@ -133,14 +136,27 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
     <li>Was hat sie erwartet, das nicht kam?</li>
     <li>Was hat sie laut gesagt?</li>
   </ul>
+  <Schritte id="prototyp" steps={[
+    { img: bild('tag3/cd-6-play'), alt: 'Menü des Abspielknopfs mit der Liste der Prototypen', text: 'Oben rechts auf das Dreieck (1) und den Prototyp wählen, z. B. <em>Handy · Daten</em> (2).', marks: [{ x: 1328, y: 62, w: 32, h: 32, n: 1 }, { x: 1208, y: 124, w: 142, h: 22, n: 2 }] },
+    { img: bild('tag3/cd-7-prototyp'), alt: 'Der Prototyp „Meine Gegenstände“ in Handy-Größe, mit drei Gegenständen und der Zahl offener Anfragen', text: 'Der Prototyp lässt sich anklicken wie eine echte App (1). Mit dem Pfeil oben links geht es zurück zur Arbeitsfläche.', marks: [{ x: 962, y: 112, w: 285, h: 612, n: 1 }] },
+  ]} />
   <p>Ein Prototyp kostet Minuten, gebauter Code eine Stunde. Was hier auffällt, ist billig zu ändern.</p>
 
   <h3 id="uebung-9-d">d) Überarbeiten (10 min)</h3>
-  <p>Nach der Mittagspause: Arbeitet die Funde aus dem Nutzertest ein – nur die, die das Problem lösen, keine neuen Funktionen.</p>
+  <p>Nach der Mittagspause: Arbeitet die Funde aus dem Nutzertest ein – nur die, die das Problem lösen, keine neuen Funktionen. Zwei Wege, je nachdem, wie groß die Änderung ist:</p>
+  <Schritte id="ueberarbeiten" steps={[
+    { img: bild('tag3/cd-9-kommentar'), alt: 'Kommentar an einem Button auf der Arbeitsfläche, mit „@Claude“ und „Send to Claude“', text: 'Kommentar: oben rechts die Sprechblase (1), dann an die Stelle klicken, die sich ändern soll. Der Kommentar geht mit <em>Send to Claude</em> direkt als Auftrag an Claude (2). Für alles, was eine Erklärung braucht.', marks: [{ x: 1324, y: 8, w: 30, h: 32, n: 1 }, { x: 1112, y: 407, w: 300, h: 123, n: 2 }] },
+    { img: bild('tag3/cd-8-regler'), alt: 'Ausgewählter Button und das Eigenschaften-Feld mit Größe, Layout und Abständen', text: 'Selbst schieben: ein Element anklicken, dann das Eigenschaften-Feld öffnen (1). Dort ändert ihr Größe, Abstände und Ausrichtung direkt (2) – ohne Claude, ohne Wartezeit. Unter <em>Tweaks</em> baut euch Claude auf Wunsch eigene Regler, etwa für die Akzentfarbe.', marks: [{ x: 1062, y: 62, w: 28, h: 30, n: 1 }, { x: 1186, y: 296, w: 308, h: 455, n: 2 }] },
+  ]} />
 
   <h3 id="uebung-9-e">e) Übergabe an Claude Code (30 min)</h3>
-  <p>Ist der Entwurf fertig, packt Claude Design ihn mit <em>Hand off to Claude Code</em> in ein Übergabe-Paket. Claude Design zeigt euch dann einen Auftrag, den ihr in Claude Code einfügt<span data-nur="codespace"> – im Codespace in das Claude-Terminal</span>. Hängt diesen Absatz an, bevor ihr Enter drückt:</p>
-  <Prompt label="Zusatz zur Übergabe" note="Statt [Issue] die Nummer und den Titel des Issues einsetzen.">Setz den Entwurf als [Issue] um, auf einem neuen Branch – main bleibt unberührt. Nutze die Tokens und Komponenten, die es im Projekt schon gibt; keine neuen Farbwerte in Komponenten. Der Entwurf zeigt das Aussehen, die Akzeptanzkriterien in docs/BACKLOG.md sagen, was passieren muss – bei einem Widerspruch frag mich. Bevor du „fertig“ sagst: npm run lint und npm run build fehlerfrei, den Screen bei 375 und 1280 px ansehen (per Playwright, sonst sag mir, was ich prüfen soll), Beleg pro Akzeptanzkriterium. Dann push und erstelle einen Pull Request mit einer Beschreibung ohne Fachjargon.</Prompt>
+  <p>Claude Code kann euren Entwurf direkt lesen – ihr gebt ihm nur den Link. Das klappt, weil ihr in Claude Code mit demselben Claude-Konto angemeldet seid.</p>
+  <Schritte id="uebergabe" steps={[
+    { img: bild('tag3/cd-10-link'), alt: 'Teilen-Feld des Entwurfs mit „Only you“ und „Copy private link“', text: 'Oben rechts <em>Share</em> (1), dann <em>Copy private link</em> (2). Der Link bleibt privat – nur ihr könnt ihn öffnen, auch Claude Code nur mit eurem Konto.', marks: [{ x: 1384, y: 8, w: 78, h: 32, n: 1 }, { x: 1304, y: 402, w: 158, h: 36, n: 2 }] },
+  ]} />
+  <p>Dann in Claude Code<span data-nur="codespace"> – im Codespace im Claude-Terminal</span> –, vorher <code>/clear</code>:</p>
+  <Prompt label="Übergabe an Claude Code" note="Statt [Link] den kopierten Link, statt [Issue] die Nummer und den Titel des Issues.">Hier ist mein Entwurf aus Claude Design: [Link]. Lies ihn mit deinem Artifact-Werkzeug und setz ihn als [Issue] um, auf einem neuen Branch – main bleibt unberührt. Nutze die Tokens und Komponenten, die es im Projekt schon gibt; keine neuen Farbwerte in Komponenten. Der Entwurf zeigt das Aussehen, die Akzeptanzkriterien in docs/BACKLOG.md sagen, was passieren muss – bei einem Widerspruch frag mich. Bevor du „fertig“ sagst: npm run lint und npm run build fehlerfrei, den Screen bei 375 und 1280 px ansehen (per Playwright, sonst sag mir, was ich prüfen soll), Beleg pro Akzeptanzkriterium. Dann push und erstelle einen Pull Request mit einer Beschreibung ohne Fachjargon.</Prompt>
+  <p class="small">Kann Claude Code den Link nicht lesen? Dann im Entwurf <em>Share</em> → <em>Export</em> → <em>HTML</em> herunterladen, die Datei in den Projektordner ziehen und im Auftrag statt des Links den Dateinamen nennen.</p>
   <p>Prüft selbst im Browser, dann wie in Übung 8: Pull Request, grüner Haken, zusammenführen.</p>
 
   <h3 id="uebung-9-f">f) Entwurf und Ergebnis vergleichen (10 min)</h3>
