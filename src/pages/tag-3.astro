@@ -56,7 +56,7 @@ import UmgebungWahl from '../components/UmgebungWahl.astro';
   <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus Issues im Format von docs/BACKLOG.md (Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn) und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
   <p>Sieht etwas am Handy schief aus? Selbst prüfen in der <a href="/setup#devtools-2">Geräte-Ansicht</a> – oder Claude es selbst sehen lassen: <a href="/konzepte/qualitaet#ui-schleife">UI-Schleife</a> – Screenshots in drei Breiten, vergleichen, beheben.</p>
   <h3>Review durch den Agenten</h3>
-  <Prompt note="In einer frischen Session (/clear) – die Prüfung soll nicht aus demselben Kontext kommen, der den Code geschrieben hat.">Prüfe dieses Projekt so streng wie ein erfahrenes Entwicklungsteam vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
+  <Prompt label="In Claude" note="Ein eigener Prüfer-Agent mit frischem Kontext – er hat den Code nicht geschrieben und verteidigt ihn nicht. Höchstens 5 Funde, je „Muss“ oder „Kann warten“; behoben wird nur, was ihr freigebt. Fehlt der Befehl: Zwischenwoche, „Claude kennt /ndu-review nicht?“.">/ndu-review</Prompt>
 
   <hr />
   <h2 id="konzept-8">Konzept 8 · Design-System & Ausblick <span class="pill konzept">45 min</span></h2>
