@@ -191,7 +191,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
     <li><strong>Linear</strong> Mit Linear verbinden (Schritte unten) und das eigene Issue auf euch zuweisen.</li>
   </ol>
   <h4 id="linear">Linear verbinden</h4>
-  <p><strong>Was ist Linear?</strong> Das Werkzeug, in dem Produktteams ihre Issues, Sprints (bei Linear „Cycles“) und den Status jeder Aufgabe verwalten. Bisher lag euer Backlog in <code>docs/BACKLOG.md</code>; in Linear arbeitet das ganze Team an derselben Liste, und Claude liest die Issues über den Linear-MCP, setzt sie auf „In Progress“ oder „In Review“. Im Innolab ist Linear die Brücke von Figma über das Issue zum Code (<a href="/konzepte/ausblick#innolab">Ausblick</a>).</p>
+  <p><strong>Was ist Linear?</strong> Das Werkzeug, in dem Produktteams ihre Issues, Sprints (bei Linear „Cycles“) und den Status jeder Aufgabe verwalten. Bisher lag euer Backlog in <code>docs/BACKLOG.md</code>; in Linear arbeitet das ganze Team an derselben Liste, und Claude liest die Issues über den Linear-MCP, setzt sie auf „In Progress“ oder „In Review“. Im Innolab ist Linear die Brücke von Figma über das Issue zum Code (<a href="/konzepte/ausblick#innolab">Ausblick</a>). Heute braucht ihr fünf Wörter: Workspace, Team, Issue, Kennung, Status. Alles Weitere – und wie ihr euren eigenen Backlog nach Linear umzieht – steht auf <a href="/konzepte/linear">Backlog im Team: Linear</a>.</p>
   <p>Markus lädt euch per E-Mail in den Workspace <strong>Leihbar Team</strong> ein. Öffnet die Einladung und meldet euch mit Google an:</p>
   <Schritte id="linear" steps={[
     { img: bild('tag3/lin-2-konto'), alt: 'Google-Kontoauswahl „Choose an account to continue to Linear“', text: 'Google fragt, mit welchem Konto: das, an das die Einladung ging (1).', marks: [{ x: 772, y: 436, w: 488, h: 64, n: 1 }] },
@@ -232,7 +232,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
     <dt>C · Meine Gegenstände <span class="small muted">(LEI-7)</span></dt>
     <dd><p>Eine Seite <code>/meine-gegenstaende</code>: alles, was ich anbiete, mit der Zahl offener Anfragen. Erst in Claude Design entworfen, dann übergeben – wie in Übung 9, nur mit dem Design-System von Leihbar, das alle drei teilen.</p></dd>
   </dl>
-  <Prompt label="Issue aus Linear umsetzen" note="Statt [Kennung] die Kennung eures Issues, z. B. LEI-5.">Hol dir über den Linear-MCP das Issue [Kennung]. Wenn etwas unklar ist, frag zuerst. Setz es in Linear auf In Progress. Leg einen neuen Branch an, der nach dem Issue heißt, und setz es dort um – main bleibt unberührt. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Wenn ich zustimme: npm run lint und npm run build fehlerfrei, push, Pull Request mit einer Beschreibung ohne Fachjargon und dem Link zum Linear-Issue, Issue in Linear auf In Review.</Prompt>
+  <Prompt label="Issue aus Linear umsetzen" note="Statt [Kennung] die Kennung eures Issues, z. B. LEI-5.">Hol dir über den Linear-MCP das Issue [Kennung]. Wenn etwas unklar ist, frag zuerst. Setz es in Linear auf In Progress. Leg einen neuen Branch an, der mit der Kennung beginnt (z. B. lei-5-beschreibung), und setz es dort um – main bleibt unberührt. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Wenn ich zustimme: npm run lint und npm run build fehlerfrei, push, Pull Request mit einer Beschreibung ohne Fachjargon und dem Link zum Linear-Issue, Issue in Linear auf In Review.</Prompt>
   <Callout type="info" title="Ihr arbeitet zu dritt im selben Repo">
     <p>Jede*r bleibt auf dem eigenen Branch; zusammengeführt wird erst am Ende – von Markus, live am Beamer. Ändern zwei Branches dieselbe Datei, merkt ihr das erst dort. Das ist gewollt: So sieht Teamarbeit mit Agenten aus.</p>
   </Callout>
@@ -268,7 +268,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   <h2 id="abschluss">Abschluss</h2>
   <dl class="begriffe">
     <dt>Innolab (28.11.–19.12.)</dt>
-    <dd><p>Dort kommt euer Figma-Prototyp dazu. Gleich bleibt, was ihr hier geübt habt: Produkt-Brief, Issues mit Kriterien, prüfen, bevor etwas live geht. Neu ist, dass das Design aus Figma kommt und das Backlog in Linear liegt – wie heute im Team-Sprint. Siehe <a href="/konzepte/ausblick#innolab">Ausblick</a>.</p></dd>
+    <dd><p>Dort kommt euer Figma-Prototyp dazu. Gleich bleibt, was ihr hier geübt habt: Produkt-Brief, Issues mit Kriterien, prüfen, bevor etwas live geht. Neu ist, dass das Design aus Figma kommt und das Backlog in Linear liegt – wie heute im Team-Sprint. Lest vorher <a href="/konzepte/linear">Backlog im Team: Linear</a> und den <a href="/konzepte/ausblick#innolab">Ausblick</a>.</p></dd>
     <dt>Organisatorisches</dt>
     <dd><p>Euer Repo bleibt. Claude Pro habt ihr an Tag 1 gleich gekündigt, es läuft bis Anfang November – falls noch nicht: jetzt kündigen (<a href="/setup#claude-pro">wie</a>). Fürs Innolab schließt ihr es neu ab. Bewertet wird eure Mitarbeit, es gibt nichts mehr abzugeben (<a href="/bewertung">Bewertung</a>).</p></dd>
   </dl>
