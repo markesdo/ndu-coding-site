@@ -1,0 +1,14 @@
+---
+// Logo und Name „programmieren_mit_ai“ – Seitenleiste, Kopfleiste (Layout.astro), Login und Startseite.
+// Der Name ist ein einziges Wort: Bei schmaler Spalte oder großer Grundschrift bricht er nach „programmieren_“ um,
+// notfalls auch mitten im Wort – nie über den Rand. Die Kopfleiste (einzeilig) kürzt stattdessen mit „…“; dort ohne <wbr>,
+// denn Chrome bricht an <wbr> auch bei white-space: nowrap um.
+const { einzeilig = false } = Astro.props as { einzeilig?: boolean };
+---
+<span class="brand-mark" aria-hidden="true">›<i></i></span>{einzeilig
+  ? <span class="brand-name">programmieren_mit_ai</span>
+  : <span class="brand-name">programmieren_<wbr />mit_ai</span>}
+
+<style is:global>
+  .brand-name { min-width: 0; overflow-wrap: anywhere; line-height: 1.25; }
+</style>

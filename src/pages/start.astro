@@ -6,6 +6,7 @@
 // Aufbau: Der Endzustand (Titel, Einleitung, Tage, „› weiter“) ist statisches HTML. Die Animation
 // („Der Cursor läuft“, src/components/auftakt-start.ts, GSAP) bespielt nur diese Bühne und endet genau hier.
 import BeamerStart from '../components/BeamerStart.astro';
+import Marke from '../components/Marke.astro';
 import LinkVorschau from '../components/LinkVorschau.astro';
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
@@ -33,7 +34,7 @@ import '../styles/auftakt.css';
     <div class="start-licht" aria-hidden="true"></div>
     <div class="start-blitz" aria-hidden="true"></div>
     <main class="start">
-      <p class="start-marke"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</p>
+      <p class="start-marke"><Marke /></p>
 
       <section id="auftakt-buehne" class="hero" data-hero aria-labelledby="start-titel">
         <span class="eyebrow">NDU · MSc Management by Innovation · Oktober 2026</span>
