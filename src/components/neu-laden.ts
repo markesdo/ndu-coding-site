@@ -1,8 +1,9 @@
 // „Neue Version – neu laden“ – im Browser, eingebunden über NeuLaden.astro. Logik und Takt: lib/neu-laden.ts.
-// Fragt nur, solange der Tab sichtbar ist und nicht im Beamer-Modus; immer nur eine Anfrage zugleich.
+// Fragt nur, solange der Tab sichtbar ist und nicht im Beamer-Modus; immer nur eine Anfrage zugleich (Kette: lib/kette.ts).
 // Lädt nie selbst neu und nimmt nie den Fokus.
 import { aktiverAbschnitt } from './abschnitt';
-import { MIN_ABSTAND_MS, TIMEOUT_MS, brauchtHinweis, naechstePruefung, versionAus, ziel } from '../lib/neu-laden';
+import { abfrageKette, jsonHolen } from '../lib/kette';
+import { MIN_ABSTAND_MS, PRUEF_MS, TIMEOUT_MS, brauchtHinweis, naechstePruefung, versionAus, ziel } from '../lib/neu-laden';
 
 const VERWORFEN = 'ndu-neu-laden-verworfen';
 const geladen = document.querySelector<HTMLMetaElement>('meta[name="ndu-build"]')?.content ?? '';
@@ -16,8 +17,6 @@ const verwerfen = (v: string) => { try { sessionStorage.setItem(VERWORFEN, v); }
 let neu: string | null = null;
 let fehler = 0;
 let zuletzt = 0;
-let laeuft = false;
-let timer: ReturnType<typeof setTimeout> | undefined;
 
 function zeigen() {
   if (!box || !box.hidden) return;
@@ -32,45 +31,28 @@ function verstecken() {
   if (text) text.textContent = '';
 }
 
-// AbortSignal.timeout fehlt in älterem Safari (< 16).
-function zeitlimit(ms: number): AbortSignal {
-  if ('timeout' in AbortSignal) return AbortSignal.timeout(ms);
-  const c = new AbortController();
-  setTimeout(() => c.abort(), ms);
-  return c.signal;
-}
-
-async function pruefen() {
-  if (laeuft || document.visibilityState !== 'visible' || document.documentElement.hasAttribute('data-beamer')) { planen(naechstePruefung(true, 0)); return; }
-  if (!navigator.onLine) { planen(naechstePruefung(true, 0)); return; }
-  laeuft = true;
-  zuletzt = Date.now();
-  let ok = false;
-  try {
-    const r = await fetch(`/version.json?t=${Date.now()}`, { cache: 'no-store', signal: zeitlimit(TIMEOUT_MS) });
-    const json = r.ok && r.headers.get('content-type')?.includes('application/json');
-    if (r.redirected) console.warn('[neu-laden] /version.json wurde umgeleitet – fehlt die Ausnahme im Kurspasswort-Matcher?');
-    else if (!json) console.warn(`[neu-laden] /version.json: Status ${r.status}, kein JSON`);
-    const v = json ? versionAus(await r.json()) : null;
-    if (v) { ok = true; neu = v; }
-  } catch (e) {
-    console.warn('[neu-laden] Abfrage fehlgeschlagen:', e);
-  }
-  laeuft = false;
-  fehler = ok ? 0 : fehler + 1;
-  // Auch zurück: Wurde auf den geladenen Stand zurückgerollt, verschwindet der Hinweis wieder.
-  if (brauchtHinweis(geladen, neu, verworfen())) zeigen(); else if (ok) verstecken();
-  planen(naechstePruefung(ok, fehler));
-}
-
-function planen(ms: number) {
-  clearTimeout(timer);
-  timer = setTimeout(pruefen, ms);
-}
+const kette = abfrageKette({
+  ruht: () => document.visibilityState !== 'visible' || document.documentElement.hasAttribute('data-beamer') || !navigator.onLine,
+  ruheMs: PRUEF_MS,
+  runde: async () => {
+    zuletzt = Date.now();
+    let ok = false;
+    try {
+      const v = versionAus(await jsonHolen(`/version.json?t=${Date.now()}`, TIMEOUT_MS));
+      if (v) { ok = true; neu = v; }
+    } catch (e) {
+      console.warn('[neu-laden]', e);
+    }
+    fehler = ok ? 0 : fehler + 1;
+    // Auch zurück: Wurde auf den geladenen Stand zurückgerollt, verschwindet der Hinweis wieder.
+    if (brauchtHinweis(geladen, neu, verworfen())) zeigen(); else if (ok) verstecken();
+    return naechstePruefung(ok, fehler);
+  },
+});
 
 // Tab kommt nach vorn, Fenster bekommt den Fokus, Netz ist zurück: gleich prüfen, aber nicht öfter als MIN_ABSTAND_MS.
 function baldPruefen() {
-  if (document.visibilityState === 'visible' && Date.now() - zuletzt >= MIN_ABSTAND_MS) pruefen();
+  if (document.visibilityState === 'visible' && Date.now() - zuletzt >= MIN_ABSTAND_MS) kette.sofort();
 }
 
 function neuLaden() {
@@ -96,5 +78,5 @@ if (box && geladen) {
   addEventListener('online', baldPruefen);
   // Nur aus dem Zurück-Cache: beim normalen Laden ist die Seite ohnehin aktuell.
   addEventListener('pageshow', (e) => { if (e.persisted) baldPruefen(); });
-  planen(naechstePruefung(true, 0));
+  kette.planen(PRUEF_MS);
 }
