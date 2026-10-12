@@ -8,7 +8,6 @@ import Callout from '../components/Callout.astro';
 import FooterNav from '../components/FooterNav.astro';
 import KonzeptStation from '../components/KonzeptStation.astro';
 import Quiz from '../components/Quiz.astro';
-import UmgebungWahl from '../components/UmgebungWahl.astro';
 import Fluss from '../components/Fluss.astro';
 import Schritte from '../components/Schritte.astro';
 import { bild } from '../components/anleitung-bilder';
@@ -65,7 +64,7 @@ import { Bot, GitMerge, GitPullRequest, ListTodo, Users } from '@lucide/astro';
   <Prompt label="Test schreiben" note="Der letzte Absatz ist der wichtigste: Ein Test, der nie rot wird, prüft nichts.">Leg einen neuen Branch „test-erster“ an und wechsel darauf. Richte Playwright ein, falls es noch fehlt (nur Chromium). Schreib einen End-to-End-Test für genau dieses Akzeptanzkriterium aus docs/BACKLOG.md: [Kriterium einfügen]. Führe ihn aus, er muss grün sein. Erklär mir in drei Sätzen ohne Fachbegriffe, was der Test im Browser tut.
 
 Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaputt, zeig mir, dass der Test rot wird, und stell den alten Stand wieder her. Commite danach den Test auf dem Branch.</Prompt>
-  <p class="small">Hängt die Einrichtung im Codespace länger als fünf Minuten? Sagt es Claude – oder nehmt für diese Übung einen Test ohne Browser (Claude schlägt einen vor) und macht mit b) weiter.</p>
+  <p class="small">Hängt die Einrichtung länger als fünf Minuten? Sagt es Claude – oder nehmt für diese Übung einen Test ohne Browser (Claude schlägt einen vor) und macht mit b) weiter.</p>
 
   <h3 id="uebung-8-b">b) Die Prüfung bei jedem Push (15 min)</h3>
   <p>Ab jetzt prüft GitHub bei jedem Push, ob eure App noch fehlerfrei baut – auch wenn ihr es vergesst, auch nachts um zwei.</p>
@@ -110,7 +109,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
     { q: 'Warum liest Claude Design zuerst euer Design-System aus dem Repo?', o: ['Damit der Entwurf die Bausteine nutzt, die im Code schon da sind', 'Damit Claude Design euren Code beim Entwerfen gleich mit verbessert', 'Weil Claude Design ohne Repo gar keine Screens entwerfen kann'], a: 0, w: 'Entwirft Claude Design mit euren Tokens und Komponenten, lässt sich der Entwurf ohne Übersetzung bauen – und eure App driftet nicht.', mehr: { href: '/konzepte/design-system', t: 'Design-System' } },
   ]} />
   <p><strong>Claude Design</strong> ist Anthropics Werkzeug für Entwürfe und klickbare Prototypen. Es ist in eurem Pro-Abo enthalten und steckt direkt in Claude: auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> in der Seitenleiste unter <em>Design</em> – links der Chat, rechts die Arbeitsfläche. (Die alte Einzelseite claude.ai/design schließt am 14. Dezember; ihr braucht sie nicht.) Wie an Tag 1 beschreibt ihr, was ihr wollt – nur dass am Ende ein Entwurf steht statt Code.</p>
-  {/* PLATZHALTER: Screenshots für b) bis e) (Arbeitsfläche, Kommentare/Regler, Übergabe, Ankunft in Claude Code) folgen. Ablauf der Übergabe im Codespace dabei prüfen. */}
+  {/* PLATZHALTER: Screenshots für b) bis e) (Arbeitsfläche, Kommentare/Regler, Übergabe, Ankunft in Claude Code) folgen.  */}
 
   <h3 id="uebung-9-a">a) Euer System einlesen (15 min)</h3>
   <p>Claude Design liest euer Repo und baut daraus Farben, Schriften, Komponenten und ein kurzes Markenbuch. Das dauert rund fünf Minuten – lasst es laufen.</p>
@@ -154,7 +153,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   <Schritte id="uebergabe" steps={[
     { img: bild('tag3/cd-10-link'), alt: 'Teilen-Feld des Entwurfs mit „Only you“ und „Copy private link“', text: 'Oben rechts <em>Share</em> (1), dann <em>Copy private link</em> (2). Der Link bleibt privat – nur ihr könnt ihn öffnen, auch Claude Code nur mit eurem Konto.', marks: [{ x: 1384, y: 8, w: 78, h: 32, n: 1 }, { x: 1304, y: 402, w: 158, h: 36, n: 2 }] },
   ]} />
-  <p>Dann in Claude Code<span data-nur="codespace"> – im Codespace im Claude-Terminal</span> –, vorher <code>/clear</code>:</p>
+  <p>Dann in Claude Code im Terminal, vorher <code>/clear</code>:</p>
   <Prompt label="Übergabe an Claude Code" note="Statt [Link] den kopierten Link, statt [Issue] die Nummer und den Titel des Issues.">Hier ist mein Entwurf aus Claude Design: [Link]. Lies ihn mit deinem Artifact-Werkzeug und setz ihn als [Issue] um, auf einem neuen Branch – main bleibt unberührt. Nutze die Tokens und Komponenten, die es im Projekt schon gibt; keine neuen Farbwerte in Komponenten. Der Entwurf zeigt das Aussehen, die Akzeptanzkriterien in docs/BACKLOG.md sagen, was passieren muss – bei einem Widerspruch frag mich. Bevor du „fertig“ sagst: npm run lint und npm run build fehlerfrei, den Screen bei 375 und 1280 px ansehen (per Playwright, sonst sag mir, was ich prüfen soll), Beleg pro Akzeptanzkriterium. Dann push und erstelle einen Pull Request mit einer Beschreibung ohne Fachjargon.</Prompt>
   <p class="small">Kann Claude Code den Link nicht lesen? Dann im Entwurf <em>Share</em> → <em>Export</em> → <em>HTML</em> herunterladen, die Datei in den Projektordner ziehen und im Auftrag statt des Links den Dateinamen nennen.</p>
   <p>Prüft selbst im Browser, dann wie in Übung 8: Pull Request, grüner Haken, zusammenführen.</p>
@@ -188,10 +187,9 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   <h3 id="uebung-10-a">a) Startklar (10 min)</h3>
   <ol class="steps">
     <li><strong>Einladung</strong> Die Einladung zu <code>leihbar-team</code> kommt per E-Mail von GitHub – annehmen.</li>
-    <li><strong>Codespace</strong> Auf dem Repo einen neuen Codespace starten, wie an Tag 1. Oder lokal klonen.</li>
+    <li><strong>Auf den Mac holen</strong> In VS Code das Repo klonen (wie unter <a href="/setup#lokal">Lokal</a>), im Terminal <code>npm install</code>, die Werte für <code>.env.local</code> bekommt ihr von Markus. Dann <code>claude</code> starten.</li>
     <li><strong>Linear</strong> Mit Linear verbinden (Schritte unten) und das eigene Issue auf euch zuweisen.</li>
   </ol>
-  <UmgebungWahl />
   <h4 id="linear">Linear verbinden</h4>
   <p><strong>Was ist Linear?</strong> Das Werkzeug, in dem Produktteams ihre Issues, Sprints (bei Linear „Cycles“) und den Status jeder Aufgabe verwalten. Bisher lag euer Backlog in <code>docs/BACKLOG.md</code>; in Linear arbeitet das ganze Team an derselben Liste, und Claude liest die Issues über den Linear-MCP, setzt sie auf „In Progress“ oder „In Review“. Im Innolab ist Linear die Brücke von Figma über das Issue zum Code (<a href="/konzepte/ausblick#innolab">Ausblick</a>).</p>
   <p>Markus lädt euch per E-Mail in den Workspace <strong>Leihbar Team</strong> ein. Öffnet die Einladung und meldet euch mit Google an:</p>
@@ -214,8 +212,8 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   </details>
   <p>Dann Claude mit Linear verbinden:</p>
   <ol class="steps">
-    <li><strong>Plugin prüfen</strong> Am Mac hat das Setup-Skript das Linear-Plugin schon installiert. Im Codespace oder unter Windows: <code>/plugin install linear@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
-    <li><strong>Claude verbinden</strong> In Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser den Zugriff erlauben – wie bei Supabase und Vercel an Tag 2.<span data-nur="codespace"> Im Codespace kommt danach wieder die Fehlerseite mit <code>localhost</code>: die Adresse in Claude bei <code>URL &gt;</code> einfügen, sonst der <a href="/tag-2#mcp">curl-Weg aus Tag 2</a>.</span></li>
+    <li><strong>Plugin prüfen</strong> Das Setup-Skript hat das Linear-Plugin schon installiert. Fehlt es: <code>/plugin install linear@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
+    <li><strong>Claude verbinden</strong> In Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser den Zugriff erlauben – wie bei Supabase und Vercel an Tag 2.</li>
   </ol>
   <p class="small">Klappt die Verbindung nicht in fünf Minuten: Die drei Issues stehen auch als GitHub-Issues im Repo. Dann nehmt ihr die – der Rest bleibt gleich.</p>
 
@@ -272,7 +270,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
     <dt>Innolab (28.11.–19.12.)</dt>
     <dd><p>Dort kommt euer Figma-Prototyp dazu. Gleich bleibt, was ihr hier geübt habt: Produkt-Brief, Issues mit Kriterien, prüfen, bevor etwas live geht. Neu ist, dass das Design aus Figma kommt und das Backlog in Linear liegt – wie heute im Team-Sprint. Siehe <a href="/konzepte/ausblick#innolab">Ausblick</a>.</p></dd>
     <dt>Organisatorisches</dt>
-    <dd><p>Euer Repo und euer Codespace bleiben. Claude Pro habt ihr an Tag 1 gleich gekündigt, es läuft bis Anfang November – falls noch nicht: jetzt kündigen (<a href="/setup#claude-pro">wie</a>). Fürs Innolab schließt ihr es neu ab. Bewertet wird eure Mitarbeit, es gibt nichts mehr abzugeben (<a href="/bewertung">Bewertung</a>).</p></dd>
+    <dd><p>Euer Repo bleibt. Claude Pro habt ihr an Tag 1 gleich gekündigt, es läuft bis Anfang November – falls noch nicht: jetzt kündigen (<a href="/setup#claude-pro">wie</a>). Fürs Innolab schließt ihr es neu ab. Bewertet wird eure Mitarbeit, es gibt nichts mehr abzugeben (<a href="/bewertung">Bewertung</a>).</p></dd>
   </dl>
   <Prompt label="Reflexion, in Claude">Häng an docs/REFLEXION.md einen Abschnitt „Tag 3“ an, mit genau diesen drei Sätzen: [eure drei Sätze].</Prompt>
   <p>Danach selbst <code>/ndu-commit</code> eingeben.</p>
