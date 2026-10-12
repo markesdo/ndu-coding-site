@@ -105,8 +105,9 @@ describe('jsonHolen', () => {
     await expect(jsonHolen('/version.json', 1000)).rejects.toThrow(/umgeleitet/);
   });
   it('eine hängende Anfrage bricht nach timeoutMs ab', async () => {
-    vi.stubGlobal('fetch', vi.fn((_u: string, o: RequestInit) => new Promise((_, nein) => {
-      o.signal!.addEventListener('abort', () => nein(o.signal!.reason));
+    // Hängt, bis das Signal abbricht – ohne Signal für immer.
+    vi.stubGlobal('fetch', vi.fn((_u: string, o?: RequestInit) => new Promise((_, nein) => {
+      o?.signal?.addEventListener('abort', () => nein(o.signal!.reason));
     })));
     const ausgang = await Promise.race([
       jsonHolen('/api/position', 50).then(() => 'antwort', () => 'abgebrochen'),
