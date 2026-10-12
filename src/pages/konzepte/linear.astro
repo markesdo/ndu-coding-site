@@ -8,7 +8,7 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="Backlog im Team: Linear">
   <span class="eyebrow">Ergänzung zu Konzept 9 · Tag 3</span>
   <h1>Backlog im Team: Linear</h1>
-  <p class="lead">Allein reicht eine Datei für den Backlog. Sobald ihr zu dritt an einem Produkt arbeitet, braucht ihr eine Liste, die alle gleichzeitig sehen – mit festen Nummern, klarem Status und der Info, wer gerade woran sitzt. Dafür gibt es Linear. Für den Team-Sprint an Tag 3 reichen fünf Wörter; der Rest dieser Seite ist für das Innolab.</p>
+  <p class="lead">Allein reicht eine Datei für den Backlog. Sobald ihr zu dritt an einem Produkt arbeitet, braucht ihr eine Liste, die alle gleichzeitig sehen – mit festen Nummern, klarem Status und der Info, wer gerade woran sitzt. Dafür gibt es Linear. Für den Team-Sprint an Tag 3 reichen sechs Wörter; der Rest dieser Seite ist für das Innolab.</p>
   <Wichtigste>
     <ul>
       <li>Ein Issue in Linear ist dasselbe Issue wie in <code>docs/BACKLOG.md</code> – nur mit fester Kennung (z. B. <code>LEI-5</code>), und alle im Team sehen es.</li>
@@ -86,10 +86,10 @@ import FooterNav from '../../components/FooterNav.astro';
     <li><strong>Anlegen:</strong> nur, nachdem Claude euch die Liste gezeigt hat und ihr Okay sagt. Vorher sucht es nach einem Issue mit gleichem Titel.</li>
     <li><strong>Nie:</strong> Issues löschen (stattdessen Canceled mit einem Satz, warum) oder Issues ändern, die jemand anderem zugewiesen sind.</li>
   </ul>
-  <Callout type="info" title="Claude fragt um Erlaubnis">
-    <p>Wenn Claude in Linear etwas ändern will, fragt Claude Code euch vorher – auch in Auto Mode. Lest kurz, was es tun will, dann Ja. Das ist euer Okay.</p>
+  <Callout type="warn" title="Euer Okay, auch in Auto Mode">
+    <p>Im normalen Modus fragt Claude Code, bevor es in Linear etwas ändert – lest kurz, was es tun will, dann Ja. In Auto Mode kann es ohne Nachfrage handeln. Darum steht in eurer <code>CLAUDE.md</code> die Regel, dass Claude vor dem Anlegen die Liste zeigt und auf euer Okay wartet. Gebt es erst, wenn die Liste stimmt.</p>
   </Callout>
-  <p><strong>Branch und Pull Request:</strong> Claude nennt den Branch nach der Kennung, z. B. <code>lei-5-beschreibung</code>. Ist Linear mit GitHub verbunden, springt das Issue dann von selbst auf In Review, sobald der Pull Request steht, und auf Done nach dem Zusammenführen. Ohne Verbindung schreibt Claude den Link als Kommentar ins Issue.</p>
+  <p><strong>Branch und Pull Request:</strong> Claude nennt den Branch nach der Kennung, z. B. <code>lei-5-beschreibung</code>. Ist Linear mit GitHub verbunden, erkennt Linear den Pull Request an der Kennung, hängt ihn ans Issue und setzt es nach dem Zusammenführen von selbst auf Done. In Review setzt Claude – oder ihr selbst. Ohne Verbindung schreibt Claude den Link als Kommentar ins Issue.</p>
 
   <h2 id="umzug">Euer eigener Backlog nach Linear</h2>
   <p>Für euer eigenes Produkt – im Innolab oder danach – zieht ihr den Backlog aus <code>docs/BACKLOG.md</code> mit einem Befehl um. Claude prüft die Verbindung, fragt nach Team und Projekt, zeigt euch die Liste und legt erst nach eurem Okay an. Danach steht in <code>docs/BACKLOG.md</code> nur noch der Verweis „Issues: Linear“, und alle Befehle des Kurses arbeiten mit Linear.</p>
@@ -97,13 +97,13 @@ import FooterNav from '../../components/FooterNav.astro';
   <details class="fallback" id="ndu-linear-fehlt">
     <summary>Claude kennt <code>/ndu-linear</code> nicht?</summary>
     <p>Dann ist euer Repo älter als der Befehl. Claude holt ihn nach, zusammen mit den Befehlen, die jetzt Linear lesen:</p>
-    <Prompt>Führ im Terminal genau diesen Befehl aus: for f in ndu-linear ndu-brainstorm ndu-check ndu-review; do curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-projekt/main/.claude/commands/$f.md -o .claude/commands/$f.md; done – dann committe nur diese vier Dateien mit der Nachricht „Linear-Befehle aus der Vorlage geholt“ und push. Ändere sonst nichts.</Prompt>
-    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten. Die Regeln für Linear trägt <code>/ndu-linear</code> beim ersten Lauf selbst in eure <code>CLAUDE.md</code> ein.</p>
+    <Prompt>Prüf zuerst mit git status und git diff, ob ich an .claude/commands/ndu-brainstorm.md, ndu-check.md oder ndu-review.md selbst etwas geändert habe – wenn ja, hör auf und sag es mir. Sonst führ im Terminal genau diesen Befehl aus: for f in ndu-linear ndu-brainstorm ndu-check ndu-review; do curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-projekt/main/.claude/commands/$f.md -o .claude/commands/$f.md; done – dann committe nur diese vier Dateien mit der Nachricht „Linear-Befehle aus der Vorlage geholt“ und push. Ändere sonst nichts.</Prompt>
+    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten. Beim ersten Lauf bringt <code>/ndu-linear</code> auch eure <code>CLAUDE.md</code> auf den neuen Stand: Es ergänzt die Regeln für Linear und passt die zwei alten Stellen an, die noch nur von <code>docs/BACKLOG.md</code> sprechen.</p>
   </details>
   <p>Neue Funktionen kommen danach wie gewohnt aus <code>/ndu-brainstorm</code> – nur legt Claude die Issues jetzt in Linear an.</p>
 
   <h2 id="prompts">Prompts für den Alltag</h2>
-  <Prompt label="Nächstes Issue wählen">Zeig mir aus Linear, Team [Kennung], alle Issues im Status Todo, die niemandem oder mir zugewiesen sind: Kennung, Titel, Priorität. Schlag eines vor und sag in einem Satz, warum. Ich entscheide.</Prompt>
+  <Prompt label="Nächstes Issue wählen">Zeig mir aus Linear, Team [Kürzel, z. B. LEI], alle Issues im Status Todo, die niemandem oder mir zugewiesen sind: Kennung, Titel, Priorität. Schlag eines vor und sag in einem Satz, warum. Ich entscheide.</Prompt>
   <Prompt label="Issue umsetzen" note="Statt [LEI-5] die Kennung eures Issues.">Hol dir über den Linear-MCP das Issue [LEI-5]. Wenn etwas unklar ist, frag zuerst. Setz es auf In Progress und weis es mir zu. Leg einen Branch an, der mit der Kennung beginnt, und setz das Issue dort um. Zeig mir für jedes Akzeptanzkriterium einen Beleg.</Prompt>
   <Prompt label="Pull Request ins Issue" note="Statt [URL] den Link zum Pull Request, statt [LEI-5] die Kennung.">Der Pull Request ist [URL]. Schreib in [LEI-5] einen Kommentar: der Link, je Akzeptanzkriterium ein Satz, was ich im Browser prüfen soll, und was nicht umgesetzt ist. Setz [LEI-5] auf In Review. Ändere kein anderes Issue.</Prompt>
   <Prompt label="Issues aus dem Brief">Lies docs/PRODUKT.md. Schlag für jedes MVP-Stichwort in Abschnitt 5, zu dem es in Linear noch kein Issue gibt, Titel, Ziel, Nicht im Umfang, 3–5 Akzeptanzkriterien (Gegeben … wenn … dann …, mindestens ein Negativfall) und Fertig, wenn vor. Leg nichts an, bis ich Okay sage. Dann: Status Todo, in unserem Projekt, niemandem zugewiesen.</Prompt>
@@ -117,7 +117,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <dt>Falsches Konto</dt>
     <dd><p>Im Browser mit einem anderen Google-Konto angemeldet als dem eingeladenen? Dann sieht Claude einen anderen Workspace oder gar keinen. In <code>/mcp</code> trennen und neu anmelden.</p></dd>
     <dt>Status fehlt</dt>
-    <dd><p>Neue Workspaces haben kein „In Review“. Anlegen unter <em>Settings → Teams → [Team] → Issue statuses</em>, bei <em>Started</em> mit +.</p></dd>
+    <dd><p>Fehlt in eurem Team der Status „In Review“ (bei manchen neuen Workspaces ist das so), legt ihn an unter <em>Settings → Teams → [Team] → Issue statuses</em>, bei <em>Started</em> mit +.</p></dd>
     <dt>Gast statt Mitglied</dt>
     <dd><p>Wer als Gast eingeladen ist, darf weniger. Im Team alle als Mitglied einladen.</p></dd>
   </dl>
