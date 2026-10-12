@@ -1,0 +1,10 @@
+---
+// Logo und Name „programmieren_mit_ai“ – Seitenleiste, Kopfleiste (Layout.astro), Login und Startseite.
+// Der Name ist ein einziges Wort: Bei schmaler Spalte oder großer Grundschrift bricht er nach „programmieren_“ um,
+// notfalls auch mitten im Wort – nie über den Rand. Die Kopfleiste kürzt stattdessen mit „…“ (white-space: nowrap dort).
+---
+<span class="brand-mark" aria-hidden="true">›<i></i></span><span class="brand-name">programmieren_<wbr />mit_ai</span>
+
+<style is:global>
+  .brand-name { min-width: 0; overflow-wrap: anywhere; line-height: 1.25; }
+</style>

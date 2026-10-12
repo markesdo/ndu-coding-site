@@ -2,6 +2,7 @@
 // Anmeldeseite für das Kurspasswort. Das Formular schickt an /login; dort prüft die Vercel Routing Middleware
 // (middleware.ts im Projektordner) und setzt das Cookie. Diese Seite selbst ist öffentlich und verrät nichts vom Inhalt.
 import BeamerStart from '../components/BeamerStart.astro';
+import Marke from '../components/Marke.astro';
 import LinkVorschau from '../components/LinkVorschau.astro';
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
@@ -21,7 +22,7 @@ import '../styles/beamer.css';
   </head>
   <body>
     <main class="login">
-      <p class="login-marke"><span class="brand-mark" aria-hidden="true">›<i></i></span>programmieren_mit_ai</p>
+      <p class="login-marke"><Marke /></p>
       <h1>Kurspasswort<span class="cursor" aria-hidden="true"></span></h1>
       <p class="lead">Die Kursseiten sind nur für Teilnehmende. Das Passwort steht in der Nachricht in Teams.</p>
       <form method="post" action="/login" class="login-form">
