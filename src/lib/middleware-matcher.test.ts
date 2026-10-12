@@ -9,10 +9,14 @@ describe('Kurspasswort-Matcher', () => {
   it('lässt das Bild der Link-Vorschau durch – WhatsApp & Co. sind nicht angemeldet', () => {
     expect(geschuetzt('/og.png')).toBe(false);
   });
+  it('lässt version.json durch – sonst bekäme der Hinweis „Seite aktualisiert“ die Login-Seite', () => {
+    expect(geschuetzt('/version.json')).toBe(false);
+  });
   it('schützt weiterhin die Kursseiten', () => {
     expect(geschuetzt('/tag-1')).toBe(true);
     expect(geschuetzt('/')).toBe(true);
     expect(geschuetzt('/og.png.html')).toBe(true);
+    expect(geschuetzt('/version.json.html')).toBe(true);
   });
 });
 

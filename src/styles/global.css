@@ -530,3 +530,14 @@ html[data-beamer] .wo-ist { display: none; }
 .wo-ist-hinweis { position: fixed; left: 50%; top: 16px; transform: translateX(-50%); z-index: 60; max-width: min(92vw, 520px); padding: .6rem 1rem; background: var(--fg); color: var(--bg); border-radius: 10px; box-shadow: 0 8px 28px rgba(0, 0, 0, .28); font-size: .95rem; }
 @media (prefers-reduced-motion: no-preference) { .wo-ist { animation: zurueck-ein .25s ease-out; } }
 @media print { .wo-ist, .wo-ist-hinweis { display: none !important; } }
+/* „Diese Seite wurde gerade aktualisiert“ (NeuLaden.astro): bleibt, bis man neu lädt oder schließt. */
+.neu-laden { position: fixed; left: 50%; top: 16px; transform: translateX(-50%); z-index: 60; width: max-content; max-width: min(calc(100vw - 32px), 560px); display: flex; align-items: center; gap: .6rem; padding: .5rem .5rem .5rem .9rem; background: var(--fg); color: var(--bg); border-radius: 10px; box-shadow: 0 8px 28px rgba(0, 0, 0, .28); font-size: .95rem; }
+.neu-laden[hidden] { display: none; }
+.neu-laden > svg { flex: none; }
+.neu-laden p { margin: 0; line-height: 1.35; }
+.neu-laden button { flex: none; min-height: 36px; border: 0; border-radius: 7px; font: inherit; cursor: pointer; }
+.neu-laden-los { padding: 0 .8rem; background: var(--bg); color: var(--fg); font-weight: 600; }
+.neu-laden-weg { display: grid; place-items: center; width: 36px; background: transparent; color: inherit; }
+.neu-laden button:focus-visible { outline: 2px solid var(--bg); outline-offset: 2px; }
+html[data-beamer] .neu-laden { display: none; }
+@media print { .neu-laden { display: none !important; } }

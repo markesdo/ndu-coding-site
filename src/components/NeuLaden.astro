@@ -1,0 +1,13 @@
+---
+// Hinweis „Diese Seite wurde gerade aktualisiert“ mit Knopf zum Neuladen. Steuerung: neu-laden.ts.
+import { RefreshCw, X } from '@lucide/astro';
+---
+<div class="neu-laden" data-neu-laden hidden>
+  <RefreshCw size={18} aria-hidden="true" />
+  <p role="status" aria-live="polite"></p>
+  <button type="button" class="neu-laden-los" data-neu-laden-los>Neu laden</button>
+  <button type="button" class="neu-laden-weg" data-neu-laden-weg aria-label="Hinweis schließen"><X size={16} aria-hidden="true" /></button>
+</div>
+<script>
+  import './neu-laden';
+</script>
