@@ -193,26 +193,48 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   </ol>
   <UmgebungWahl />
   <h4 id="linear">Linear verbinden</h4>
-  {/* PLATZHALTER: Screenshots Linear (Issue-Liste, sich selbst zuweisen, Status „In Review“) im Test-Workspace aufnehmen und als <Schritte id="linear"> ergänzen. Sonst live am Beamer zeigen. */}
   <p><strong>Was ist Linear?</strong> Das Werkzeug, in dem Produktteams ihre Issues, Sprints (bei Linear „Cycles“) und den Status jeder Aufgabe verwalten. Bisher lag euer Backlog in <code>docs/BACKLOG.md</code>; in Linear arbeitet das ganze Team an derselben Liste, und Claude liest die Issues über den Linear-MCP, setzt sie auf „In Progress“ oder „In Review“. Im Innolab ist Linear die Brücke von Figma über das Issue zum Code (<a href="/konzepte/ausblick#innolab">Ausblick</a>).</p>
+  <p>Markus lädt euch per E-Mail in den Workspace <strong>Leihbar Team</strong> ein. Öffnet die Einladung und meldet euch mit Google an:</p>
+  <Schritte id="linear" steps={[
+    { img: bild('tag3/lin-2-konto'), alt: 'Google-Kontoauswahl „Choose an account to continue to Linear“', text: 'Google fragt, mit welchem Konto: das, an das die Einladung ging (1).', marks: [{ x: 772, y: 436, w: 488, h: 64, n: 1 }] },
+    { img: bild('tag3/lin-3-google'), alt: 'Google-Hinweis: Linear darf Name, Profilbild und E-Mail-Adresse sehen', text: 'Linear bekommt euren Namen, das Profilbild und die E-Mail-Adresse: <em>Continue</em> (1).', marks: [{ x: 1022, y: 532, w: 238, h: 40, n: 1 }] },
+    { img: bild('tag3/lin-6-profil'), alt: 'Linear „Set up your profile“ mit Name und Titel', text: 'Name übernehmen, den Titel leer lassen (1), <em>Continue</em> (2). Was danach noch kommt – Slack, Neuigkeiten per E-Mail –, mit <em>Skip</em> überspringen.', marks: [{ x: 228, y: 285, w: 346, h: 44, n: 1 }, { x: 481, y: 465, w: 93, h: 42, n: 2 }] },
+    { img: bild('tag3/lin-10-issues'), alt: 'Issue-Liste des Teams „Leihbar Team“ mit LEI-5, LEI-6 und LEI-7 auf Todo', text: 'Ihr seid drin: links das Team <em>Leihbar Team</em>, rechts die drei Issues für heute (1). Jedes hat eine Kennung – <code>LEI-5</code>, <code>LEI-6</code>, <code>LEI-7</code> –, mit der Claude es findet.', marks: [{ x: 252, y: 138, w: 1228, h: 126, n: 1 }] },
+  ]} />
+  <details class="fallback" id="linear-eigener-workspace">
+    <summary>Fürs Innolab: einen eigenen Workspace anlegen</summary>
+    <p>Im Innolab legt euer Team selbst einen Workspace an. So geht das – wer eingeladen wurde, braucht es heute nicht.</p>
+    <Schritte id="linear-neu" steps={[
+      { img: bild('tag3/lin-1-signup'), alt: 'Linear „Create your workspace“ mit „Continue with Google“', text: '<a href="https://linear.app/signup" target="_blank" rel="noopener">linear.app/signup</a> öffnen, <em>Continue with Google</em> (1), Konto wählen, <em>Continue</em>.', marks: [{ x: 604, y: 313, w: 288, h: 44, n: 1 }] },
+      { img: bild('tag3/lin-5-workspace'), alt: 'Formular „Create a workspace“ mit Name, URL und Region European Union', text: 'Name des Teams (1), eine Adresse (2) und als Region <em>European Union</em> (3) – dann liegen eure Daten in der EU. <em>Create workspace</em> (4).', marks: [{ x: 548, y: 233, w: 400, h: 44, n: 1 }, { x: 548, y: 328, w: 400, h: 44, n: 2 }, { x: 548, y: 425, w: 400, h: 44, n: 3 }, { x: 548, y: 518, w: 400, h: 44, n: 4 }] },
+      { img: bild('tag3/lin-7-einladen'), alt: 'Linear „Invite teammates“ mit E-Mail-Feld und „Copy invite link“', text: 'Hier ladet ihr euer Team ein – per E-Mail-Adressen oder mit <em>Copy invite link</em> (1), einem Link für alle. Geht auch später.', marks: [{ x: 452, y: 284, w: 120, h: 22, n: 1 }] },
+      { img: bild('tag3/lin-8-github'), alt: 'Linear „Connect GitHub“', text: 'GitHub verbinden lohnt sich, sobald es das Repo gibt: Dann springt ein Issue von selbst auf „In Review“, wenn ein Pull Request es nennt. Jetzt <em>Skip</em> (1), später unter <em>Settings → Integrations</em>.', marks: [{ x: 300, y: 495, w: 44, h: 40, n: 1 }] },
+      { img: bild('tag3/lin-9-start'), alt: 'Leerer Workspace mit den vier Beispiel-Issues von Linear', text: 'Fertig. Linear legt vier Beispiel-Issues an (1) – lesen oder auf <em>Canceled</em> setzen. Fehlt euch der Status „In Review“: <em>Settings → Teams → Issue statuses</em>, unter <em>Started</em> mit + anlegen.', marks: [{ x: 252, y: 140, w: 1228, h: 168, n: 1 }] },
+    ]} />
+  </details>
+  <p>Dann Claude mit Linear verbinden:</p>
   <ol class="steps">
-    <li><strong>Einladung</strong> Markus lädt euch in den Linear-Workspace ein; mit Google oder GitHub anmelden.</li>
     <li><strong>Plugin prüfen</strong> Am Mac hat das Setup-Skript das Linear-Plugin schon installiert. Im Codespace oder unter Windows: <code>/plugin install linear@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
     <li><strong>Claude verbinden</strong> In Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser den Zugriff erlauben – wie bei Supabase und Vercel an Tag 2.<span data-nur="codespace"> Im Codespace kommt danach wieder die Fehlerseite mit <code>localhost</code>: die Adresse in Claude bei <code>URL &gt;</code> einfügen, sonst der <a href="/tag-2#mcp">curl-Weg aus Tag 2</a>.</span></li>
   </ol>
   <p class="small">Klappt die Verbindung nicht in fünf Minuten: Die drei Issues stehen auch als GitHub-Issues im Repo. Dann nehmt ihr die – der Rest bleibt gleich.</p>
 
   <h3 id="uebung-10-b">b) Bauen (50 min)</h3>
-  <p>Jede*r übernimmt eines der drei Issues. Jedes übt etwas, das ihr bisher nicht gebaut habt:</p>
+  <p>Jede*r übernimmt eines der drei Issues. Jedes übt etwas, das ihr bisher nicht gebaut habt. Zuerst in Linear das Issue öffnen, lesen und euch zuweisen:</p>
+  <Schritte id="linear-issue" steps={[
+    { img: bild('tag3/lin-11-issue'), alt: 'Issue LEI-5 in Linear mit Ziel, Nicht im Umfang, Akzeptanzkriterien und Fertig, wenn', text: 'Ein Issue in Linear sieht aus wie in eurem Backlog: Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn (1). Rechts Status und Zuständigkeit (2).', marks: [{ x: 300, y: 110, w: 690, h: 595, n: 1 }, { x: 1048, y: 125, w: 210, h: 120, n: 2 }] },
+    { img: bild('tag3/lin-12-zuweisen'), alt: 'Auswahl „Assign to…“ mit dem eigenen Namen', text: '<em>Assign</em> (1), dann euren Namen (2). So sehen die anderen, wer woran arbeitet.', marks: [{ x: 1050, y: 218, w: 80, h: 28, n: 1 }, { x: 1056, y: 326, w: 192, h: 28, n: 2 }] },
+    { img: bild('tag3/lin-13-status'), alt: 'Statusmenü mit Backlog, Todo, In Progress, In Review, Done', text: 'Den Status setzt Claude für euch: <em>In Progress</em> (1), sobald es anfängt, <em>In Review</em> (2), wenn der Pull Request steht. Ihr könnt ihn hier auch selbst ändern.', marks: [{ x: 1056, y: 294, w: 192, h: 28, n: 1 }, { x: 1056, y: 326, w: 192, h: 28, n: 2 }] },
+  ]} />
   <dl class="begriffe">
-    <dt>A · Beschreibung vorschlagen lassen</dt>
+    <dt>A · Beschreibung vorschlagen lassen <span class="small muted">(LEI-5)</span></dt>
     <dd><p>Issue 8 aus dem Leihbar-Backlog: Die KI schreibt aus Titel, Kategorie und Ort einen Vorschlag für die Beschreibung. Neu ist der Teil danach: fünf feste Beispiel-Eingaben, an denen ein Test prüft, ob die Antworten taugen – eine davon ein Angriff. KI im eigenen Produkt kostet pro Aufruf, braucht Sekunden und antwortet jedes Mal anders; darum braucht sie solche Testreihen (<a href="/konzepte/ausblick#ki-feature">Ausblick</a>).</p></dd>
-    <dt>B · Unbeantwortete Anfragen laufen ab</dt>
+    <dt>B · Unbeantwortete Anfragen laufen ab <span class="small muted">(LEI-6)</span></dt>
     <dd><p>Eine Anfrage, auf die sieben Tage niemand antwortet, wird automatisch „abgelaufen“. Das erledigt kein Mensch und kein Klick, sondern ein Zeitplan bei Vercel, der einmal am Tag läuft. Ihr lernt, wie Arbeit im Hintergrund passiert – und wo ihr nachseht, wenn sie scheitert (Logs bei Vercel).</p></dd>
-    <dt>C · Meine Gegenstände</dt>
+    <dt>C · Meine Gegenstände <span class="small muted">(LEI-7)</span></dt>
     <dd><p>Eine Seite <code>/meine-gegenstaende</code>: alles, was ich anbiete, mit der Zahl offener Anfragen. Erst in Claude Design entworfen, dann übergeben – wie in Übung 9, nur mit dem Design-System von Leihbar, das alle drei teilen.</p></dd>
   </dl>
-  <Prompt label="Issue aus Linear umsetzen" note="Statt [Kennung] die Kennung aus Linear, z. B. LEI-3.">Hol dir über den Linear-MCP das Issue [Kennung]. Wenn etwas unklar ist, frag zuerst. Setz es in Linear auf In Progress. Leg einen neuen Branch an, der nach dem Issue heißt, und setz es dort um – main bleibt unberührt. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Wenn ich zustimme: npm run lint und npm run build fehlerfrei, push, Pull Request mit einer Beschreibung ohne Fachjargon und dem Link zum Linear-Issue, Issue in Linear auf In Review.</Prompt>
+  <Prompt label="Issue aus Linear umsetzen" note="Statt [Kennung] die Kennung eures Issues, z. B. LEI-5.">Hol dir über den Linear-MCP das Issue [Kennung]. Wenn etwas unklar ist, frag zuerst. Setz es in Linear auf In Progress. Leg einen neuen Branch an, der nach dem Issue heißt, und setz es dort um – main bleibt unberührt. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Wenn ich zustimme: npm run lint und npm run build fehlerfrei, push, Pull Request mit einer Beschreibung ohne Fachjargon und dem Link zum Linear-Issue, Issue in Linear auf In Review.</Prompt>
   <Callout type="info" title="Ihr arbeitet zu dritt im selben Repo">
     <p>Jede*r bleibt auf dem eigenen Branch; zusammengeführt wird erst am Ende – von Markus, live am Beamer. Ändern zwei Branches dieselbe Datei, merkt ihr das erst dort. Das ist gewollt: So sieht Teamarbeit mit Agenten aus.</p>
   </Callout>
