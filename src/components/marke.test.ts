@@ -10,6 +10,12 @@ describe('Marke', () => {
     expect(html).toMatch(/\.brand-name\s*\{[^}]*overflow-wrap:\s*anywhere/);
   });
 
+  it('Kopfleiste einzeilig (kürzt mit „…“), überall sonst mit Umbruch', () => {
+    const layout = readFileSync(new URL('../layouts/Layout.astro', import.meta.url), 'utf8');
+    expect(layout).toMatch(/<strong class="topbar-brand"><Marke einzeilig \/><\/strong>/);
+    expect(layout).toMatch(/<a class="brand"[^>]*><Marke \/><\/a>/);
+  });
+
   it('kein Ort schreibt den Namen noch selbst – sonst fehlt dort der Umbruch', () => {
     const src = fileURLToPath(new URL('..', import.meta.url));
     const dateien = (d: string): string[] => readdirSync(d).flatMap((n) => {
