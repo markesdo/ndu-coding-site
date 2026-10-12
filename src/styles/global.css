@@ -534,8 +534,6 @@ html[data-beamer] .wo-ist { display: none; }
 @media print { .wo-ist, .wo-ist-hinweis { display: none !important; } }
 /* „Diese Seite wurde gerade aktualisiert“ (NeuLaden.astro): bleibt, bis man neu lädt oder schließt. */
 .neu-laden { width: max-content; max-width: min(calc(100vw - 32px), 560px); display: flex; align-items: center; gap: .6rem; padding: .5rem .5rem .5rem .9rem; }
-/* Beide zugleich (selten): die kurze Meldung rutscht unter den Hinweis. */
-.neu-laden:not([hidden]) ~ .wo-ist-hinweis { top: 96px; }
 .neu-laden[hidden] { display: none; }
 .neu-laden > svg { flex: none; }
 .neu-laden p { margin: 0; line-height: 1.35; }

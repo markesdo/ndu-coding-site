@@ -4,7 +4,7 @@
 // Anmelden am Präsentator-Rechner auf /praesentator (Schlüssel = PRESENTER_KEY, liegt dann im localStorage dieses Browsers).
 // Der Live-Schalter in Kopf- bzw. Seitenleiste zeigt den Zustand und pausiert (Position wird dann gelöscht).
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftVon } from './abschnitt';
-import { abfrageKette, jsonHolen } from '../lib/kette';
+import { abfrageKette, jsonHolen, zeitlimit } from '../lib/kette';
 import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
 const KEY = 'ndu-presenter';
@@ -22,7 +22,7 @@ const pausieren = (an: boolean) => { try { if (an) localStorage.setItem(PAUSE, '
 
 // Alle Schreibzugriffe gehen hierüber: Position, Prüfung ({ pruefen }), Löschen ({ aus }).
 const melden = (key: string, body: string) =>
-  fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body });
+  fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body, signal: zeitlimit(8000) });
 
 // Pause bzw. Abmelden: Position auf dem Server löschen, damit der Knopf bei den Studierenden gleich verschwindet.
 function ausMelden(key: string) {
@@ -44,6 +44,9 @@ function hinweis(text: string) {
   el.className = 'wo-ist-hinweis';
   el.setAttribute('role', 'status');
   el.textContent = text;
+  // Steht gerade der Hinweis „Seite aktualisiert“ oben (sichtbar, nicht im Beamer ausgeblendet), darunter einreihen.
+  const banner = document.querySelector('.neu-laden');
+  if (banner && banner.getClientRects().length > 0) el.style.top = `${Math.round(banner.getBoundingClientRect().bottom) + 8}px`;
   document.body.append(el);
   setTimeout(() => el.remove(), 4000);
 }

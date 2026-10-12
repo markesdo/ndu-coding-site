@@ -26,16 +26,17 @@ export function abfrageKette(o: KettenOptionen): Kette {
 
   async function tick() {
     if (laeuft) return; // die laufende Runde plant die nächste selbst
-    if (o.ruht()) { o.ruhend?.(); planen(o.ruheMs); return; }
     laeuft = true;
     let ms = o.ruheMs;
     try {
-      ms = await o.runde();
+      if (o.ruht()) o.ruhend?.();
+      else ms = await o.runde();
     } catch (e) {
       console.warn('[kette] Runde fehlgeschlagen:', e); // Sicherheitsnetz – die Kette darf nicht abreißen
     } finally {
       laeuft = false;
-      planen(ms);
+      // Keine brauchbare Wartezeit (vergessenes return, NaN …) → ruheMs statt Dauerfeuer mit 0 ms.
+      planen(Number.isFinite(ms) && ms > 0 ? ms : o.ruheMs);
     }
   }
 
