@@ -31,7 +31,8 @@ import Prompt from '../components/Prompt.astro';
   <Prompt label="Qualitätsprüfung">/ndu-check</Prompt>
   <Prompt label="Debug">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [Schritte]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
   <Prompt label="Im Kreis">Wir haben Fehler X schon zweimal erfolglos behoben. Ändere jetzt nichts. Nenn mir drei verschiedene mögliche Ursachen, wie wir jede einzelne ausschließen können, und welche Information dir fehlt.</Prompt>
-  <Prompt label="Senior-Review (frische Session)">Prüfe dieses Projekt so streng wie ein erfahrenes Entwicklungsteam vor dem Launch: Sicherheit (Secrets, RLS, Eingabeprüfung), offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, mobile Darstellung. Gib mir eine priorisierte Liste mit maximal 7 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
+  <Prompt label="Strenge Prüfung: Sicherheit" note="Eigener Prüfer-Agent mit frischem Kontext – Secrets, Zugriffsregeln, Eingaben, was Fremde sehen.">/ndu-review</Prompt>
+  <Prompt label="Bugs und Handy-Ansicht (frische Session: /clear)">Prüfe dieses Projekt wie ein erfahrenes Entwicklungsteam vor dem Launch – Sicherheit nicht, die prüft /ndu-review: offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, Darstellung am Handy (375 px). Gib mir eine priorisierte Liste mit maximal 5 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
   <Prompt label="RLS prüfen">Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle [Name] verhindern, dass jemand fremde Zeilen liest, ändert oder löscht. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
 
   <h2>Sichern & Steuern</h2>

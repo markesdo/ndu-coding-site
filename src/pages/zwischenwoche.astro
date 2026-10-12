@@ -42,7 +42,7 @@ import FooterNav from '../components/FooterNav.astro';
     <summary>Claude kennt <code>/ndu-review</code> nicht?</summary>
     <p>Dann habt ihr euer Repo angelegt, bevor es den Befehl gab. Claude holt ihn nach:</p>
     <Prompt>Führ im Terminal genau diesen Befehl aus: curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-projekt/main/.claude/commands/ndu-review.md -o .claude/commands/ndu-review.md – dann committe nur diese eine Datei mit der Nachricht „/ndu-review aus der Vorlage geholt“ und push. Ändere sonst nichts.</Prompt>
-    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten.</p>
+    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten. Von selbst erinnert Claude in älteren Repos nicht an den Befehl – denkt nach Issues mit Login, Datenbank oder Formular selbst daran.</p>
   </details>
   <p><strong>20 Minuten am selben Problem?</strong> Aufhören und die Schritte unter <a href="#hilfe-holen">Hilfe holen</a> der Reihe nach gehen.</p>
   <Prompt label="Morgens, zum Einstieg">Lies docs/PRODUKT.md, docs/BACKLOG.md und docs/ENTSCHEIDUNGEN.md. Fass mir in 5 Sätzen zusammen, wo das Projekt steht, und schlag vor, welches Issue als Nächstes dran ist und warum.</Prompt>
@@ -155,7 +155,7 @@ Höchstens 10 Punkte, je ein Satz, verständlich ohne Programmierkenntnisse. Ich
     'Alles gepusht, App läuft auf der Vercel-URL',
     'Demo einmal laut durchgespielt, rund 10 Minuten (ohne Fragen)',
     'Screenrecording als Fallback für die Demo',
-    '<code>/ndu-review</code> gemacht, keine „Muss“-Punkte offen',
+    '<code>/ndu-review</code> gemacht, „Muss“-Punkte behoben, danach <code>/ndu-check</code> und erneut gepusht',
   ]} />
 
   <script is:inline>

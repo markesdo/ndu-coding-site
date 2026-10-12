@@ -48,7 +48,7 @@ import UmgebungWahl from '../components/UmgebungWahl.astro';
   <hr />
   <h2 id="werkstatt-1">Werkstatt 1 <span class="pill uebung">85 min</span></h2>
   <Quiz id="einstieg-w1" einstieg="Konzept 7" fragen={[
-    { q: 'Warum startet ihr den Review durch den Agenten in einer frischen Session (/clear)?', o: ['Der Kontext, der den Code schrieb, verteidigt ihn eher, als ihn zu prüfen', 'Damit Claude die Projektdateien noch einmal frisch von der Festplatte liest', 'Weil /code-review nur in einer leeren Session alle Dateien sehen kann'], a: 0, w: 'Vier Augen, auch wenn es zwei Agenten sind: Der frische Kontext hat kein Eigeninteresse am Code.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
+    { q: 'Warum prüft bei /ndu-review ein eigener Agent mit frischem Kontext statt der Session, die den Code geschrieben hat?', o: ['Der Kontext, der den Code schrieb, verteidigt ihn eher, als ihn zu prüfen', 'Damit Claude die Projektdateien noch einmal frisch von der Festplatte liest', 'Weil /code-review nur in einer leeren Session alle Dateien sehen kann'], a: 0, w: 'Vier Augen, auch wenn es zwei Agenten sind: Der frische Kontext hat kein Eigeninteresse am Code.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
     { q: 'Das Formular prüft im Browser, dass der Titel nicht leer ist. Ist der Punkt „Eingaben“ der Sicherheits-Checkliste damit erledigt?', o: ['Ja – ohne Titel lässt der Browser das Formular gar nicht absenden', 'Nein – jedes Feld wird auch im Backend geprüft', 'Ja, sobald RLS auf der Tabelle aktiv ist, die das Formular beschreibt'], a: 1, w: 'Was der Browser prüft, kann jede*r umgehen. RLS regelt, wer schreiben darf, nicht was drinsteht.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
   ]} />
   <h3>Peer-Review in der Dreier-Runde</h3>
@@ -56,7 +56,9 @@ import UmgebungWahl from '../components/UmgebungWahl.astro';
   <Prompt>Hier ist Feedback aus einem Peer-Review: [einfügen]. Formuliere daraus Issues im Format von docs/BACKLOG.md (Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn) und häng sie ans Backlog. Schlag vor, welche zwei den größten Unterschied für Nutzer*innen machen.</Prompt>
   <p>Sieht etwas am Handy schief aus? Selbst prüfen in der <a href="/setup#devtools-2">Geräte-Ansicht</a> – oder Claude es selbst sehen lassen: <a href="/konzepte/qualitaet#ui-schleife">UI-Schleife</a> – Screenshots in drei Breiten, vergleichen, beheben.</p>
   <h3>Review durch den Agenten</h3>
-  <Prompt label="In Claude" note="Ein eigener Prüfer-Agent mit frischem Kontext – er hat den Code nicht geschrieben und verteidigt ihn nicht. Höchstens 5 Funde, je „Muss“ oder „Kann warten“; behoben wird nur, was ihr freigebt. Fehlt der Befehl: Zwischenwoche, „Claude kennt /ndu-review nicht?“.">/ndu-review</Prompt>
+  <Prompt label="In Claude" note="Ein eigener Prüfer-Agent mit frischem Kontext – er hat den Code nicht geschrieben und verteidigt ihn nicht. Höchstens 5 Funde, je „Muss“ oder „Kann warten“; behoben wird nur, was ihr freigebt.">/ndu-review</Prompt>
+  <p class="small">Kennt Claude den Befehl nicht? <a href="/zwischenwoche#ndu-review-fehlt">So holt ihr ihn nach.</a> <code>/ndu-review</code> prüft Sicherheit – Bugs und die Handy-Ansicht prüft dieser Auftrag, ebenfalls in einer frischen Session (<code>/clear</code>):</p>
+  <Prompt label="Bugs und Handy-Ansicht">Prüfe dieses Projekt wie ein erfahrenes Entwicklungsteam vor dem Launch – Sicherheit nicht, die prüft /ndu-review: offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, Darstellung am Handy (375 px). Gib mir eine priorisierte Liste mit maximal 5 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
 
   <hr />
   <h2 id="konzept-8">Konzept 8 · Design-System & Ausblick <span class="pill konzept">45 min</span></h2>
