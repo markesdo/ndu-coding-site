@@ -9,7 +9,7 @@ import { ideen } from '../components/ideen';
   <h1>Projektideen</h1>
   <p class="lead">Zehn Ideen in der Größe, die in drei Tagen mit 3–5 Issues machbar ist. Jede kommt mit einer Rolle aus: Nur ihr meldet euch an. Wo andere mitmachen, kommen sie über einen Link oder QR-Code dazu – so testet ihr mit echten Leuten, ohne dass erst hundert Nutzer*innen mitmachen müssen.</p>
   <Callout type="tip" title="Die beste Idee ist eure eigene">
-    <p>Ein Problem, das ihr selbst habt, spezifiziert ihr besser als jedes fremde. Nehmt die Liste als Größenmaßstab, nicht als Vorgabe. Und: Leihbar mit drei neuen Issues aus „Später“ weiterzubauen ist ausdrücklich erlaubt.</p>
+    <p>Ein Problem, das ihr selbst habt, spezifiziert ihr besser als jedes fremde. Nehmt die Liste als Größenmaßstab, nicht als Vorgabe.</p>
   </Callout>
   <Callout type="warn" title="KI-Projekte brauchen einen eigenen API-Key">
     <p>Ideen mit dem Label <strong>KI-Projekt</strong> schicken Fotos oder Texte an ein Sprachmodell. Dafür braucht ihr einen <strong>API-Key</strong>, zum Beispiel aus der Anthropic Console – mit Kreditkarte, getrennt von Claude Pro. Ihr ladet vorher Guthaben auf (ein paar Euro reichen) und zahlt nach Textmenge, pro Aufruf meist Cent-Beträge. Setzt beim Anbieter ein <strong>Ausgabenlimit</strong>, tragt den Key nur in <code>.env.local</code> und bei Vercel ein und baut die KI als <strong>letztes Issue</strong>: Die App muss vorher schon ohne KI funktionieren. Fotos vor dem Senden verkleinern lassen – Handyfotos sind oft zu groß für Vercel und das Sprachmodell.</p>
