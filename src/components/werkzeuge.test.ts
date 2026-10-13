@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EBENEN, ICON_NAMEN, REIHEN, VERBINDUNGEN, WERKZEUGE, verbindungenVon } from './werkzeuge';
+import { EBENEN, ICON_NAMEN, REIHEN, VERBINDUNGEN, WERKZEUGE, besteEbene, verbindungenVon } from './werkzeuge';
 
 const ids = WERKZEUGE.map((w) => w.id);
 
@@ -58,5 +58,21 @@ describe('werkzeuge', () => {
     const zuSupabase = VERBINDUNGEN.filter((v) => v.nach === 'supabase');
     expect(zuSupabase.filter((v) => v.ebene === 'app').map((v) => v.von).sort()).toStrictEqual(['localhost', 'vercel']);
     expect(zuSupabase.filter((v) => v.ebene === 'claude').map((v) => v.von)).toStrictEqual(['claude-code']);
+  });
+
+  it('beim Antippen wechselt die Karte zur Ebene mit den meisten Verbindungen', () => {
+    expect(besteEbene('localhost')).toBe('app');
+    expect(besteEbene('linear')).toBe('claude');
+    expect(besteEbene('github')).toBe('code');
+    expect(besteEbene('env')).toBe('app');
+  });
+
+  it('die beste Ebene hat wirklich die meisten Verbindungen des Werkzeugs', () => {
+    for (const w of WERKZEUGE) {
+      const zahl = (e: string) => verbindungenVon(w.id).filter((v) => v.ebene === e).length;
+      const beste = zahl(besteEbene(w.id));
+      expect(beste, w.id).toBeGreaterThan(0);
+      for (const e of EBENEN) expect(zahl(e.id), `${w.id}/${e.id}`).toBeLessThanOrEqual(beste);
+    }
   });
 });
