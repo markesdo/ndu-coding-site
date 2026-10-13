@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Fluss from '../../components/Fluss.astro';
+import PrWeg from '../../components/sota/PrWeg.tsx';
 import { Eye, GitBranch, GitCommitHorizontal, GitGraph, GitMerge } from '@lucide/astro';
 import Callout from '../../components/Callout.astro';
 import Wichtigste from '../../components/Wichtigste.astro';
@@ -25,7 +26,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <tr><th>Begriff</th><th>Heißt</th><th>Im Alltag</th></tr>
     <tr><td><strong>Repository (Repo)</strong></td><td>Euer Projektordner samt gesamter Geschichte</td><td>„Schick mir den Repo-Link“</td></tr>
     <tr><td><strong>Commit</strong></td><td>Ein gesicherter Stand mit Nachricht und Zeitstempel</td><td>Nach jedem fertigen Issue: <code>/ndu-commit</code></td></tr>
-    <tr><td><strong>Push</strong></td><td>Commits von eurem Codespace zu GitHub hochladen</td><td>Macht <code>/ndu-commit</code> automatisch mit</td></tr>
+    <tr><td><strong>Push</strong></td><td>Commits von eurem Mac zu GitHub hochladen</td><td>Macht <code>/ndu-commit</code> automatisch mit</td></tr>
     <tr><td><strong>Discard / Restore</strong></td><td>Ungesicherte Änderungen verwerfen, zurück zum letzten Commit</td><td>Source-Control-Panel → Zurück-Pfeil</td></tr>
     <tr><td><strong>Branch</strong></td><td>Ein paralleler Arbeitsstand zum Ausprobieren</td><td>Optional an Tag 1 und 2, ab Tag 3 der Profi-Weg – <a href="#branch">siehe unten</a></td></tr>
   </table>
@@ -61,6 +62,7 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h3 id="pull-request">Pull Request – den Branch zur Prüfung vorlegen</h3>
   <p>Ein <strong>Pull Request (PR)</strong> ist die Bitte, einen Branch in <code>main</code> zu übernehmen – und zugleich die Seite auf GitHub, auf der alles dazu steht: Beschreibung, geänderte Dateien, Kommentare, automatische Prüfungen und der Link zur Vercel-Vorschau. Erst wenn ihr den PR zusammenführt (Merge), landet die Änderung in <code>main</code> und geht live.</p>
+  <PrWeg client:visible />
   <ul>
     <li><strong>Tag 1 und 2:</strong> Ihr arbeitet allein an kleinen Issues – der Commit direkt auf <code>main</code> reicht.</li>
     <li><strong>Ein PR lohnt sich</strong>, sobald jemand anderes draufschauen soll, die Änderung riskant ist oder ihr die Vorschau zeigen wollt, bevor sie live geht.</li>
@@ -86,7 +88,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Die Datei <code>.gitignore</code> listet, was Git ignorieren soll: <code>node_modules</code> (lässt sich jederzeit neu laden), Build-Ordner, und – am wichtigsten – <strong><code>.env.local</code> mit euren Geheimnissen</strong>. Ein API-Key, der einmal auf GitHub war, gilt als verbrannt, auch wenn ihr ihn löscht. <code>/ndu-check</code> kontrolliert das für euch.</p>
 
   <h2>Warum Markus Collaborator sein soll</h2>
-  <p>Wenn ihr in Teams um Hilfe bittet, ist die erste Frage immer: „Zeig mir den Stand.“ Mit dem Repo-Link kann Markus euer Projekt in seinen eigenen Codespace laden, den Fehler nachstellen, eine Lösung committen – und ihr holt sie euch mit einem Klick (Sync). Das geht nur, wenn ihr gepusht habt und er Zugriff hat: Repo → Settings → Collaborators → Add people.</p>
+  <p>Wenn ihr in Teams um Hilfe bittet, ist die erste Frage immer: „Zeig mir den Stand.“ Mit dem Repo-Link kann Markus euer Projekt auf seinen eigenen Rechner holen, den Fehler nachstellen, eine Lösung committen – und ihr holt sie euch mit einem Klick (Sync). Das geht nur, wenn ihr gepusht habt und er Zugriff hat: Repo → Settings → Collaborators → Add people.</p>
 
   <FooterNav prev={{ href: '/konzepte/app-anatomie', t: 'Anatomie einer App' }} next={{ href: '/konzepte/llm', t: 'Was ein Sprachmodell tut' }} />
 </Layout>
