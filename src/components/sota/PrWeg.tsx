@@ -1,17 +1,12 @@
 // Szene „Ein Pull Request von Anfang bis Ende“ für Git & GitHub (#pull-request). Logik und Texte: pr-weg-steps.ts.
-import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
 import {
   Circle, CircleCheck, CircleX, GitMerge, GitPullRequest, Globe, ListTodo, LoaderCircle, Triangle, type LucideIcon,
 } from 'lucide-react';
 import Stage, { type StageNav, type StageStep } from './Stage';
+import { inline } from './inline';
 import { BRANCH, ISSUE, STEPS, mergeBereit, stateAt, type Bereich, type Pruefung, type Vorschau, type Zustand } from './pr-weg-steps';
 import './stage.css';
-
-// `Code` in Backticks → <code>.
-function inline(text: string): ReactNode[] {
-  return text.split('`').map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
-}
 
 const stageSteps: StageStep[] = STEPS.map((s) => ({
   caption: (

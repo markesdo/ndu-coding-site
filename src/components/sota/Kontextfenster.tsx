@@ -1,7 +1,8 @@
 // Szene „Kontextfenster“ für Konzept 2 (Tag 1). Logik und Texte: kontextfenster-steps.ts.
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import Stage, { type StageNav, type StageStep } from './Stage';
+import { inline } from './inline';
 import { NARROW, PRELUDE_MS, STEPS, blocksAt, chipsFor, fillOf, preludeAt, type Art } from './kontextfenster-steps';
 import './stage.css';
 
@@ -13,11 +14,6 @@ const LEGENDE: { art: Art; text: string }[] = [
   { art: 'verlauf', text: 'Verlauf' },
   { art: 'zusammenfassung', text: 'Zusammenfassung' },
 ];
-
-// `Code` in Backticks → <code>.
-function inline(text: string): ReactNode[] {
-  return text.split('`').map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
-}
 
 const stageSteps: StageStep[] = STEPS.map((s) => ({
   caption: (

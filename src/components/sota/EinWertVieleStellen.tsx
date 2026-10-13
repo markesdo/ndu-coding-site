@@ -1,14 +1,10 @@
 // Szene „Ein Wert, viele Stellen“ für /konzepte/design-system (Tag 3). Logik und Texte: design-token-steps.ts.
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties } from 'react';
 import { Check, Plus, X } from 'lucide-react';
 import Stage, { type StageNav, type StageStep } from './Stage';
+import { inline } from './inline';
 import { STEPS, farbe, farben, zustandAt, type Art, type Seite, type StelleId, type Zustand } from './design-token-steps';
 import './stage.css';
-
-// `Code` in Backticks → <code>.
-function inline(text: string): ReactNode[] {
-  return text.split('`').map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
-}
 
 const stageSteps: StageStep[] = STEPS.map((s) => ({
   caption: (
