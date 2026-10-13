@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EBENEN, REIHEN, VERBINDUNGEN, WERKZEUGE, verbindungenVon } from './werkzeuge';
+import { EBENEN, ICON_NAMEN, REIHEN, VERBINDUNGEN, WERKZEUGE, verbindungenVon } from './werkzeuge';
 
 const ids = WERKZEUGE.map((w) => w.id);
 
@@ -9,6 +9,10 @@ describe('werkzeuge', () => {
     for (const w of WERKZEUGE) {
       for (const feld of [w.name, w.rolle, w.wann, w.konto]) expect(feld.trim().length).toBeGreaterThan(0);
     }
+  });
+
+  it('jedes Werkzeug hat eine Ikone, die die Karte kennt', () => {
+    for (const w of WERKZEUGE) expect(ICON_NAMEN, w.id).toContain(w.icon);
   });
 
   it('jedes Werkzeug steht in einer bekannten Reihe', () => {

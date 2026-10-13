@@ -1,6 +1,12 @@
 // Daten der Werkzeug-Karte („Eure Werkzeuge auf einen Blick“, Unser Stack): was wo läuft und wer mit wem redet. Ohne Astro, damit testbar.
 
 export type Zone = 'mac' | 'netz';
+/** Lucide-Ikonen, die die Karte kennt – Werkzeugkarte.astro bildet genau diese Namen ab. */
+export const ICON_NAMEN = [
+  'Bot', 'Database', 'FileText', 'FolderGit2', 'GitPullRequest', 'KeyRound', 'ListTodo', 'Monitor', 'Palette', 'PenTool', 'Sparkles',
+  'SquareTerminal', 'Triangle',
+] as const;
+export type IconName = (typeof ICON_NAMEN)[number];
 export type Reihe = 'steuern' | 'code' | 'app' | 'daten' | 'aufgaben' | 'design';
 /** code = Weg des Codes · app = eure App redet mit · claude = Claude redet mit (MCP und Kommandozeile). */
 export type Ebene = 'code' | 'app' | 'claude';
@@ -8,8 +14,7 @@ export type Ebene = 'code' | 'app' | 'claude';
 export interface Werkzeug {
   id: string;
   name: string;
-  /** Name einer Lucide-Ikone (siehe ICONS in Werkzeugkarte.astro). */
-  icon: string;
+  icon: IconName;
   zone: Zone;
   reihe: Reihe;
   /** Ein Satz: was es für euch ist. */
@@ -89,7 +94,7 @@ export const WERKZEUGE: Werkzeug[] = [
   },
   {
     id: 'vercel', name: 'Vercel', icon: 'Triangle', zone: 'netz', reihe: 'app',
-    rolle: 'Baut aus main eure App und stellt sie unter einer öffentlichen Adresse ins Netz.',
+    rolle: 'Baut eure App bei jedem Push: main unter eurer öffentlichen Adresse, jeden anderen Branch als Vorschau.',
     wann: 'Build rot oder live fehlt etwas, das lokal geht – fast immer eine Environment-Variable.',
     konto: 'Mit GitHub angemeldet (Continue with GitHub).',
     link: { t: 'vercel.com', href: 'https://vercel.com' },

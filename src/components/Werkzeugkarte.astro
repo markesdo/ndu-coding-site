@@ -5,9 +5,10 @@ import {
   Bot, Cloud, Database, FileText, FolderGit2, GitPullRequest, KeyRound, Laptop, ListTodo, Monitor, Palette, PenTool,
   Sparkles, SquareTerminal, Triangle,
 } from '@lucide/astro';
-import { EBENEN, REIHEN, VERBINDUNGEN, WERKZEUGE, verbindungenVon } from './werkzeuge';
+import { EBENEN, REIHEN, VERBINDUNGEN, WERKZEUGE, verbindungenVon, type IconName } from './werkzeuge';
 
-const ICONS: Record<string, any> = {
+// Record<IconName, …>: Fehlt eine Ikone aus ICON_NAMEN, meldet es die Typprüfung.
+const ICONS: Record<IconName, any> = {
   Bot, Database, FileText, FolderGit2, GitPullRequest, KeyRound, ListTodo, Monitor, Palette, PenTool, Sparkles, SquareTerminal, Triangle,
 };
 const name = (id: string) => WERKZEUGE.find((w) => w.id === id)!.name;
@@ -45,6 +46,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
             <div class:list={['wk-zelle', `wk-${zone}`, { 'wk-letzte': ri === REIHEN.length - 1 }]}>
               {WERKZEUGE.filter((w) => w.reihe === r.id && w.zone === zone).map((w) => {
                 const Icon = ICONS[w.icon];
+                if (!Icon) throw new Error(`Werkzeugkarte: Ikone ${w.icon} fehlt in ICONS`);
                 return (
                   <button type="button" class="wk-knoten" data-id={w.id} data-zone={w.zone} data-reihe={ri} aria-pressed="false" aria-controls="wk-detail">
                     <Icon size={18} aria-hidden="true" /> <span>{w.name}</span>
@@ -98,7 +100,9 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
       svg.querySelectorAll('path.wk-linie').forEach((p) => p.remove());
       etiketten.replaceChildren();
       for (const k of knoten.values()) k.classList.remove('wk-ziel', 'wk-ziel-code', 'wk-ziel-app', 'wk-ziel-claude');
+      // Erst alle Positionen lesen, dann zeichnen – sonst rechnet der Browser das Layout pro Linie neu.
       const f = feld.getBoundingClientRect();
+      const rects = new Map([...knoten].map(([id, k]) => [id, k.getBoundingClientRect()]));
       svg.setAttribute('viewBox', `0 0 ${f.width} ${f.height}`);
       for (const v of daten.filter((d) => d.ebene === ebene)) {
         const ka = knoten.get(v.von)!;
@@ -110,8 +114,8 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
           if (auswahl && v.von !== auswahl && v.nach !== auswahl) kb.classList.remove('wk-ziel');
           continue;
         }
-        const a = ka.getBoundingClientRect();
-        const b = kb.getBoundingClientRect();
+        const a = rects.get(v.von)!;
+        const b = rects.get(v.nach)!;
         // Übereinander (überlappen waagrecht): oben/unten verbinden; sonst die einander zugewandten Seiten.
         const links = Math.max(a.left, b.left);
         const rechtsBis = Math.min(a.right, b.right);
@@ -160,7 +164,9 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
     };
 
     const markieren = () => {
-      const partner = new Set(daten.filter((d) => d.von === auswahl || d.nach === auswahl).flatMap((d) => [d.von, d.nach]));
+      // Partner nur auf der gezeigten Ebene – sonst leuchten Kästen ohne sichtbare Linie. Alle Verbindungen stehen im Text darunter.
+      const ebene = karte.dataset.ebene!;
+      const partner = new Set(daten.filter((d) => d.ebene === ebene && (d.von === auswahl || d.nach === auswahl)).flatMap((d) => [d.von, d.nach]));
       for (const [id, k] of knoten) {
         k.setAttribute('aria-pressed', String(id === auswahl));
         k.classList.toggle('wk-partner', !!auswahl && id !== auswahl && partner.has(id));
@@ -174,7 +180,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
       b.addEventListener('click', () => {
         karte.dataset.ebene = b.dataset.ebene;
         for (const o of karte.querySelectorAll('.wk-ebene')) o.setAttribute('aria-pressed', String(o === b));
-        zeichnen();
+        markieren();
       });
     }
     for (const [id, k] of knoten) {
