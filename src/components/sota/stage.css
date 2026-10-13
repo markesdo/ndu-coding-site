@@ -442,8 +442,12 @@
 @media (max-width: 420px) {
   .pw-karten { grid-template-columns: 1fr; }
 }
+/* Außerhalb des Handys die schmale Pille – als Grundregel, damit es zwischen 600 und 601 px keine Lücke gibt. */
+.pw-pille-breit { display: none; }
 /* Am Handy ist die Grafik nur gut halb so breit wie ihr viewBox – Beschriftungen größer, damit sie lesbar bleiben. */
 @media (max-width: 600px) {
   .pw-label { font-size: 18px; }
   .pw-graph g text { font-size: 16px; }
+  .pw-pille-schmal { display: none; }
+  .pw-pille-breit { display: inline; }
 }

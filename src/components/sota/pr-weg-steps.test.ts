@@ -60,16 +60,16 @@ describe('pr-weg-steps', () => {
   });
 
   it('hervorgehoben ist, wo sich im Schritt etwas ändert', () => {
-    expect(zustaende.map((z) => z.aktiv)).toStrictEqual(['git', 'git', 'git', 'git', 'github', 'github', 'github', 'vercel', 'github', 'vercel', null]);
+    expect(zustaende.map((z) => z.aktiv)).toStrictEqual([null, 'git', 'git', 'git', 'github', 'github', 'github', 'vercel', 'github', 'vercel', null]);
   });
 
   it('die Vorschau bleibt nach dem Aufräumen bestehen (Vercel löscht sie nicht mit dem Branch)', () => {
     expect(stateAt(11).vorschau).toBe('bereit');
   });
 
-  it('nur der letzte Schritt zeigt alles gleichzeitig, und dort ist der Branch gelöscht', () => {
+  it('nur der erste und der letzte Schritt zeigen alles gleichzeitig; gelöscht ist der Branch nur am Ende', () => {
     for (const s of ALLE) {
-      expect(stateAt(s).aktiv === null).toBe(s === STEPS.length);
+      expect(stateAt(s).aktiv === null).toBe(s === 1 || s === STEPS.length);
       expect(stateAt(s).geloescht).toBe(s === STEPS.length);
     }
   });

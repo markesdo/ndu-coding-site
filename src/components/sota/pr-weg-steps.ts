@@ -65,7 +65,8 @@ const GRUEN: Zustand = { ...PR_OFFEN, aktiv: 'github', commits: 3, gepusht: 3, l
 const GEMERGT: Zustand = { ...GRUEN, review: 'freigegeben', gemergt: true, pr: 'gemergt', live: 'neu', macAktuell: false };
 
 const ZUSTAENDE: Zustand[] = [
-  START,
+  // Ausgangslage: alles gleich hell – die Beschriftung spricht von main, Vercel und Linear zugleich.
+  { ...START, aktiv: null },
   BRANCH_DA,
   { ...BRANCH_DA, commits: 2 },
   // Hervorgehoben bleibt der Graph: Dass sich die Punkte füllen, ist die Lektion dieses Schritts.

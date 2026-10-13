@@ -112,7 +112,9 @@ function Graph({ z, bewegt }: { z: Zustand; bewegt: boolean }) {
 }
 
 function Marke({ x, y, text, klasse, bewegt }: { x: number; y: number; text: string; klasse: string; bewegt: boolean }) {
-  const breite = text.length * 10 + 18;
+  // Zwei Breiten: Am Handy ist die Schrift in der Grafik größer (stage.css), dort gilt die breite Pille.
+  const schmal = text.length * 7.5 + 16;
+  const breit = text.length * 10 + 18;
   return (
     <motion.g
       className={klasse}
@@ -120,7 +122,8 @@ function Marke({ x, y, text, klasse, bewegt }: { x: number; y: number; text: str
       animate={{ x }}
       transition={{ duration: bewegt ? 0.6 : 0, ease: 'easeInOut' }}
     >
-      <rect x={-breite / 2} y={y - 11} width={breite} height="20" rx="10" />
+      <rect className="pw-pille-schmal" x={-schmal / 2} y={y - 11} width={schmal} height="20" rx="10" />
+      <rect className="pw-pille-breit" x={-breit / 2} y={y - 11} width={breit} height="20" rx="10" />
       <text x="0" y={y + 3} textAnchor="middle">{text}</text>
     </motion.g>
   );
