@@ -6,19 +6,34 @@ import Callout from '../../components/Callout.astro';
 import Wichtigste from '../../components/Wichtigste.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Zahlen2026 from '../../components/Zahlen2026.astro';
 ---
-<Layout title="Ausblick 2026">
-  <span class="eyebrow">Konzept 8 · Tag 3 · Teil 2</span>
-  <h1>Ausblick: Was 2026 sonst noch geht</h1>
-  <p class="lead">Drei Tage reichen für die Grundlagen. Hier ist, was dahinter liegt – damit ihr wisst, wonach ihr fragt, wenn ihr es braucht.</p>
+<Layout title="So wird 2026 gearbeitet">
+  <span class="eyebrow">Konzept 9 · Tag 3</span>
+  <h1>So wird 2026 gearbeitet</h1>
+  <p class="lead">Drei Tage reichen für die Grundlagen. Hier steht, wo das Programmieren mit KI insgesamt steht, was dahinter liegt – und was davon bleibt, wenn die Werkzeuge nächstes Jahr anders heißen.</p>
   <Wichtigste>
     <ul>
-      <li>Im Innolab schließt sich die Kette Figma → Linear → Agent: Claude liest Issue und Design, ihr nehmt ab.</li>
-      <li>Mehrere Agenten parallel (Subagents, Worktrees) lohnen sich nur bei gut geschnittenen Issues.</li>
-      <li>Codex, Gemini CLI und Cursor funktionieren nach denselben Konzepten; die Projektdatei heißt dort meist <code>AGENTS.md</code>.</li>
-      <li>Skills und Plugins aus fremden Quellen: erst lesen, dann installieren.</li>
+      <li>Ihr beschreibt, der Agent baut, ihr prüft.</li>
+      <li>Was wichtig ist, steht in einer Datei, nicht im Kopf.</li>
+      <li>Je weniger ihr zuschaut, desto genauer muss die Beschreibung sein.</li>
     </ul>
   </Wichtigste>
+
+  <h2 id="2026">Wo wir 2026 stehen</h2>
+  <p>Zwei Zahlen erklären, warum der Kurs so viel Zeit aufs Beschreiben und Prüfen verwendet hat statt aufs Bauen:</p>
+  <Zahlen2026 />
+  <dl class="begriffe">
+    <dt>Die Modelle werden schnell besser</dt>
+    <dd><p>Die Länge der Aufgaben, die ein Modell schafft, verdoppelt sich etwa alle vier Monate. Aber: Was in der Hälfte der Fälle klappt, ist noch lange nicht verlässlich. Für Aufgaben, die 4 von 5 Mal klappen müssen, liegt die Grenze bei rund anderthalb Stunden Profi-Arbeit – kleine, gut beschriebene Issues sind kein Anfänger-Trick, sondern der Weg, der funktioniert.</p></dd>
+    <dt>Das Gefühl täuscht</dt>
+    <dd><p>In der Studie fühlten sich erfahrene Entwickler*innen mit KI schneller und waren langsamer. Messt, was ihr behauptet: Ein Akzeptanzkriterium, ein Test, ein Nutzertest sagen mehr als „fühlt sich fertig an“.</p></dd>
+    <dt>Fragen statt abgeben</dt>
+    <dd><p>In einer Studie von Anthropic (Januar 2026) lernten Menschen mit KI eine neue Programmbibliothek. Im Schnitt verstanden sie danach weniger als die Gruppe ohne KI (50 gegen 67 Punkte im Test). Entscheidend war, wie sie fragten: Wer sich Code nur liefern ließ, schnitt am schlechtesten ab; wer nach dem Warum fragte, kam fast an die Gruppe ohne KI heran. Das ist der Grund für <code>/ndu-explain</code>.</p></dd>
+    <dt>Alle nutzen es, wenige vertrauen blind</dt>
+    <dd><p>Zwei Drittel der Entwickler*innen, die KI nutzen, arbeiten 2026 mit Coding-Agenten (Stack Overflow, Oktober 2026). Als vertrauenswürdigste Grundlage für den Agenten nennen sie: Ziele und Anforderungen des Projekts – also das, was bei euch im Produkt-Brief und in den Issues steht.</p></dd>
+  </dl>
+  <p class="small muted">Quellen: <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener">METR 2025</a> · <a href="https://metr.org/blog/2026-05-19-frontier-risk-report/" target="_blank" rel="noopener">METR, Mai 2026</a> · <a href="https://www.anthropic.com/research/AI-assistance-coding-skills" target="_blank" rel="noopener">Anthropic, Januar 2026</a> · <a href="https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/" target="_blank" rel="noopener">Stack Overflow, Oktober 2026</a></p>
 
   <h2>Design → Code</h2>
   <p>Zwei Wege führen von einem Entwurf zu echtem Code. Beide ersetzen nicht das Spezifizieren – ein Entwurf sagt nicht, was beim Klick passieren soll –, aber sie ersetzen das Beschreiben von Aussehen.</p>
@@ -26,9 +41,9 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Im Innolab baut ihr einen klickbaren Figma-Prototyp. Mit dem Figma-MCP-Server liest Claude eure Frames – Layout, Abstände, Farben, Typografie, Komponenten – und baut sie als echte Komponenten nach. Der Workflow: Design-System in Figma → Claude generiert die Basis-Komponenten → Issues bauen darauf auf. Was ein <a href="/konzepte/design-system">Design-System</a> ist und wie ihr es aus eurem Code aufbaut, steht auf der eigenen Seite.</p>
   <Prompt>Hier ist der Figma-Link zum Frame „Detailseite“: [Link]. Lies das Design über den Figma-MCP und baue die Seite /gegenstaende/[id] so nach, dass sie dem Design in Layout, Abständen und Farben entspricht. Verwende die bestehenden Komponenten, wo es passt, und sag mir, wo das Design Fragen offenlässt (Zustände, Fehlerfälle, Mobile).</Prompt>
   <h3>Claude Design – Entwürfe direkt aus Claude</h3>
-  <p><strong>Claude Design</strong> ist Anthropics Werkzeug für Prototypen, Mockups und Präsentationen (Research Preview, ab dem Pro-Plan). In Claude Code liest <code>/design-sync</code> eure Tokens und Komponenten, sodass Claude Design mit euren echten Bausteinen entwirft. Ist der Entwurf fertig, übergibt <em>Hand off to Claude Code</em> Entwurf und Gespräch als Auftrag an Claude Code. Claude Design ist optional. Es gibt noch keine Versionsgeschichte und kein gemeinsames Bearbeiten im Team. Wie ihr das System dahinter aus eurem Code aufbaut, steht unter <a href="/konzepte/design-system#bauen">Design-System</a>.</p>
+  <p><strong>Claude Design</strong> ist Anthropics Werkzeug für Prototypen, Mockups und Präsentationen (ab dem Pro-Plan, in Claude unter <em>Design</em>). Es liest euer Repo und entwirft mit euren echten Bausteinen; ist der Entwurf fertig, liest Claude Code ihn über seinen Link. Ihr habt es in <a href="/tag-3#uebung-9">Übung 9</a> benutzt. Was bei der Übergabe mitreist und was nicht, steht unter <a href="/konzepte/design-system#uebergabe">Design-System</a>.</p>
 
-  <h2>Figma → Linear → Agent: die Produktkette im Innolab</h2>
+  <h2 id="innolab">Figma → Linear → Agent: die Produktkette im Innolab</h2>
   <p>Im Innolab wandert das Backlog aus der Markdown-Datei nach <strong>Linear</strong> – dem Werkzeug, in dem Produktteams Issues, Sprints (Cycles) und Status verwalten. Das Format bleibt (Ziel, Nicht im Umfang, Gegeben/Wenn/Dann, Fertig, wenn); den Umzug erledigt Claude per Linear-MCP. Dann schließt sich die Kette:</p>
   <Fluss label="Produktkette im Innolab: Figma-Frame, Linear-Issue, Claude Code, Pull Request, ihr nehmt ab" hervor={[4]} knoten={[
     { t: 'Figma-Frame', sub: 'hängt am Linear-Issue', icon: PenTool },
@@ -38,7 +53,7 @@ import FooterNav from '../../components/FooterNav.astro';
     { t: 'Ihr', sub: 'prüft und nehmt ab', icon: UserCheck },
   ]} />
   <p>Eure Rolle in dieser Kette: Issues schreiben, Designs abnehmen, PRs prüfen – Product Owner. Linear kann Issues sogar direkt einem Agenten zuweisen, der autonom arbeitet und zurückmeldet.</p>
-  <p>Linear kommt als Plugin – am Mac hat es das Setup-Skript schon installiert. Verbinden: in Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser bei Linear anmelden. Ohne Skript (Codespace, Windows) vorher einmal installieren:</p>
+  <p>Linear kommt als Plugin – am Mac hat es das Setup-Skript schon installiert. Verbinden: in Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser bei Linear anmelden. Fehlt es, einmal installieren:</p>
   <Prompt label="Linear-Plugin installieren (nur ohne Setup-Skript)">/plugin install linear@claude-plugins-official</Prompt>
   <Prompt>Lies Linear-Issue NDU-42 über den Linear-MCP. Hol dir das verlinkte Figma-Frame über den Figma-MCP. Setze das Issue in einem neuen Branch um, erfülle alle Akzeptanzkriterien, erstelle einen Pull Request mit einer Beschreibung, die ohne Programmierkenntnisse verständlich ist, und setze das Issue auf „In Review“.</Prompt>
 
@@ -53,10 +68,11 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2>Claude Code überall</h2>
   <ul>
     <li><strong>Terminal</strong> (hier), <strong>VS-Code-Panel</strong>, <strong>Desktop-App</strong> mit grafischer Oberfläche</li>
-    <li><strong>Browser</strong> – claude.ai/code: Aufgaben an ein Repo delegieren, ohne Codespace</li>
+    <li><strong>Browser</strong> – claude.ai/code: Aufgaben an ein Repo delegieren, ohne dass euer Laptop läuft</li>
     <li><strong>Handy</strong> – Fehler in Teams gesehen, „fix das“ getippt, der PR wartet, wenn ihr am Laptop seid</li>
     <li><strong>Geplante Aufgaben</strong> – „jeden Montag: Abhängigkeiten aktualisieren, Tests laufen lassen, PR erstellen“</li>
   </ul>
+  <p>Im Kurs zeigt Markus es live: Er gibt vom Handy eine Aufgabe an einen Agenten in der Cloud, und während des Team-Sprints kommt der Pull Request. Niemand schaut dem Agenten dabei zu – darum muss die Beschreibung umso genauer sein.</p>
 
   <h2>Codex & die anderen</h2>
   <p>OpenAI <strong>Codex</strong>, Google <strong>Gemini CLI</strong>, <strong>Cursor</strong> als IDE – die Konzepte sind identisch: Kontext, Tools, Agent-Loop, Spezifikation, Verifikation. Die Projektdatei heißt dort statt <code>CLAUDE.md</code> meist <code>AGENTS.md</code> (bei Gemini CLI: <code>GEMINI.md</code>); unser Template hat <code>AGENTS.md</code> und <code>CLAUDE.md</code>. Was ihr hier gelernt habt, überträgt sich in einer Stunde. Wählt nach Modellqualität für eure Aufgabe und nach dem, was euer Team nutzt – nicht nach Marke.</p>
@@ -66,13 +82,13 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Eine große, von der Community gepflegte Sammlung ist <a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank" rel="noopener">awesome-claude-code</a>: Anleitungen, Skills, Status-Zeilen, Werkzeuge.</p>
   <Callout type="warn" title="Bevor ihr etwas aus fremden Quellen installiert">
     <ol>
-      <li>Ein Skill ist ein Prompt und kann Skripte mitbringen, ein Hook ist ein Shell-Befehl – beides läuft in eurem Codespace. Lest alle Dateien im Ordner, nicht nur <code>SKILL.md</code>.</li>
+      <li>Ein Skill ist ein Prompt und kann Skripte mitbringen, ein Hook ist ein Shell-Befehl – beides läuft auf eurem Mac. Lest alle Dateien im Ordner, nicht nur <code>SKILL.md</code>.</li>
       <li>Lasst Claude sie vorher erklären: „Was tut diese Datei, welche Befehle führt sie aus?“</li>
       <li>Fangt bei „From Anthropic“ und „Start Here“ an; die Liste hat einen Betreuer und keine Prüfung.</li>
     </ol>
   </Callout>
 
-  <h2>AI als Feature im eigenen Produkt</h2>
+  <h2 id="ki-feature">AI als Feature im eigenen Produkt</h2>
   <p>Das optionale Issue 8 (KI schreibt die Beschreibung eines Gegenstands) ist der kleinste Fall. Dahinter: Chat mit euren Daten, automatische Zusammenfassungen, Klassifizierung, Agenten, die für Nutzer*innen Aufgaben erledigen. Vier Dinge müssen Produktverantwortliche dafür verstehen:</p>
   <ul>
     <li><strong>Kosten pro Aufruf</strong> – abgerechnet in Tokens.</li>
@@ -97,5 +113,5 @@ import FooterNav from '../../components/FooterNav.astro';
     <p>Werkzeuge wechseln jedes Jahr. Was bleibt: ein Problem präzise beschreiben, es in prüfbare Schritte zerlegen, Ergebnisse kritisch abnehmen, und wissen, wann man Hilfe holt. Das habt ihr in drei Tagen geübt – an Software, aber es gilt für alles, was ihr bauen lassen werdet.</p>
   </Callout>
 
-  <FooterNav prev={{ href: '/konzepte/design-system', t: 'Design-System' }} next={{ href: '/tag-3#werkstatt-2', t: 'Werkstatt 2' }} />
+  <FooterNav prev={{ href: '/tag-3#konzept-9', t: 'Tag 3' }} next={{ href: '/tag-3#uebung-10', t: 'Übung 10' }} />
 </Layout>

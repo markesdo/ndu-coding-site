@@ -19,9 +19,9 @@ describe('Konzeptseiten: Zurück zur Station davor, Weiter zur nächsten Station
     ['mcp', '/konzepte/daten-backend', '/tag-2#uebung-3'],
     ['verifizieren', '/tag-2#konzept-5', '/tag-2#uebung-4'],
     ['agenten-steuern', '/tag-2#konzept-6', '/tag-2#uebung-5'],
-    ['qualitaet', '/tag-3#konzept-7', '/tag-3#werkstatt-1'],
-    ['design-system', '/tag-3#konzept-8', '/konzepte/ausblick'],
-    ['ausblick', '/konzepte/design-system', '/tag-3#werkstatt-2'],
+    ['qualitaet', '/tag-3#konzept-7', '/tag-3#uebung-8'],
+    ['design-system', '/tag-3#konzept-8', '/tag-3#uebung-9'],
+    ['ausblick', '/tag-3#konzept-9', '/tag-3#uebung-10'],
   ])('%s: ← %s, → %s', (seite, zurueck, weiter) => {
     expect([ziel(seite, 'prev'), ziel(seite, 'next')]).toStrictEqual([zurueck, weiter]);
   });

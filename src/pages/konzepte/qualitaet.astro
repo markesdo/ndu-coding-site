@@ -1,12 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Fluss from '../../components/Fluss.astro';
-import { FlaskConical, PackageCheck } from '@lucide/astro';
+import { CircleCheck, ClipboardCheck, FlaskConical, Upload } from '@lucide/astro';
 import Callout from '../../components/Callout.astro';
 import Wichtigste from '../../components/Wichtigste.astro';
 import Checklist from '../../components/Checklist.astro';
 import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Schritte from '../../components/Schritte.astro';
+import { bild } from '../../components/anleitung-bilder';
 ---
 <Layout title="Vom Prototyp zum Produkt">
   <span class="eyebrow">Konzept 7 · Tag 3</span>
@@ -31,10 +33,17 @@ import FooterNav from '../../components/FooterNav.astro';
     <tr><td>Daten sind Testdaten</td><td>Daten sind echt – mit allen rechtlichen Pflichten</td></tr>
     <tr><td>Sicherheit: hoffentlich</td><td>Sicherheit: geprüft, dokumentiert, wiederholt geprüft</td></tr>
   </table>
-  <Fluss label="Vom Prototyp über sieben Schritte zum Produkt" hervor={[2]} knoten={[
-    { t: 'Prototyp', sub: 'funktioniert einmal, vor euch', icon: FlaskConical },
-    { t: 'Sieben Schritte', sub: 'Tests · Review · Sicherheit · CI/CD · Betrieb · Recht · Übergabe' },
-    { t: 'Produkt', sub: 'funktioniert immer, für Fremde', icon: PackageCheck },
+  <p>Sieben Schritte führen vom Prototyp zum Produkt; sie stehen unten der Reihe nach. Der Kern ist ein Weg, den eine Änderung ab jetzt jedes Mal geht – genau den baut ihr in Übung 8:</p>
+  <Fluss label="Vom Kriterium zur geprüften Änderung: Akzeptanzkriterium, Test, Push, Prüfung im Pull Request" hervor={[3]} knoten={[
+    { t: 'Akzeptanzkriterium', sub: 'was stimmen muss', icon: ClipboardCheck },
+    { t: 'Test', sub: 'klickt es von selbst durch', icon: FlaskConical },
+    { t: 'Push', sub: 'GitHub prüft Lint und Build', icon: Upload },
+    { t: 'Pull Request', sub: 'grün: darf rein · rot: noch nicht', icon: CircleCheck },
+  ]} />
+  <p>So sieht das auf GitHub aus – derselbe Pull Request, einmal mit Fehler, einmal repariert:</p>
+  <Schritte id="pruefung" steps={[
+    { img: bild('tag3/ci-1-rot'), alt: 'Pull Request mit rotem X am letzten Commit und dem Kasten „All checks have failed“', text: 'Rot: Am letzten Commit steht ein X (1), im Kasten darunter <em>All checks have failed</em> (2). GitHub hat versucht, die App zu bauen, und ist gescheitert. Noch nicht zusammenführen – erst den Fehler beheben lassen.', marks: [{ x: 938, y: 68, w: 80, h: 26, n: 1 }, { x: 203, y: 230, w: 802, h: 156, n: 2 }] },
+    { img: bild('tag3/ci-2-gruen'), alt: 'Derselbe Pull Request: Haken, X, Haken an den Commits und „All checks have passed“', text: 'Grün: Nach der Reparatur steht am neuesten Commit ein Haken (1) – die Geschichte bleibt sichtbar: Haken, X, Haken. <em>All checks have passed</em> (2), der Button <em>Merge pull request</em> ist jetzt grün (3).', marks: [{ x: 936, y: 96, w: 84, h: 112, n: 1 }, { x: 203, y: 346, w: 802, h: 56, n: 2 }, { x: 208, y: 508, w: 192, h: 40, n: 3 }] },
   ]} />
 
   <h2>1 · Tests – aus Akzeptanzkriterien werden Wächter</h2>
@@ -51,7 +60,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <li><strong>Wiederholen</strong> Höchstens drei Runden. Danach entscheidet ihr, nicht der Agent.</li>
   </ol>
   <Prompt label="UI-Schleife">Prüfe die Seite [z. B. /gegenstaende] so, wie sie im Browser aussieht. Starte dafür die App (npm run dev, http://localhost:3000), falls sie nicht läuft. Richte Playwright ein, falls es noch fehlt, und schreib ein kleines Skript, das die Seite bei 320, 768 und 1280 px Breite fotografiert, die Bilder im Ordner screenshots/ speichert (trag den Ordner in .gitignore ein) und Fehler aus der Browser-Konsole ausgibt. Ist die Seite nur angemeldet erreichbar, meldet sich das Skript zuerst mit einem Testkonto an und liest die Zugangsdaten aus .env.local: Lege dort die leeren Einträge TEST_EMAIL und TEST_PASSWORT an, ich trage die Werte selbst ein – frag mich nicht im Chat danach. Prüfe auf den Bildern, dass du die richtige Seite siehst und nicht die Anmeldung. Vergleiche sie dann mit dem Ziel: [Beschreibung, oder Screenshot einfügen]. Nenn mir die Abweichungen, behebe sie und wiederhole Screenshots und Konsole, bis nichts mehr abweicht – höchstens drei Runden. Zeig mir am Ende die drei Screenshots.</Prompt>
-  <p class="small muted">Wer <a href="/setup#lokal">lokal arbeitet</a>, kann stattdessen <strong>Claude in Chrome</strong> nutzen: Claude mit der Chrome-Erweiterung (<a href="/setup#claude-in-chrome">Einrichtung</a>) steuert euren echten Browser, klickt durch und sieht auch Seiten, auf denen ihr angemeldet seid. Im Codespace geht das nicht – die Erweiterung erreicht den Codespace nicht. Fortgeschrittene können Claude auch über einen Browser-MCP-Server (etwa Playwright MCP) einen eigenen Browser geben; das Skript oben braucht nichts davon.</p>
+  <p class="small muted">Statt des Skripts geht auch <strong>Claude in Chrome</strong>: Claude mit der Chrome-Erweiterung (<a href="/setup#claude-in-chrome">Einrichtung</a>) steuert euren echten Browser, klickt durch und sieht auch Seiten, auf denen ihr angemeldet seid. Fortgeschrittene können Claude auch über einen Browser-MCP-Server (etwa Playwright MCP) einen eigenen Browser geben; das Skript oben braucht nichts davon.</p>
 
   <h2>2 · Review – vier Augen, auch wenn es zwei Agenten sind</h2>
   <p>Profis ändern Code nie direkt im Hauptstand. Sie arbeiten in einem <strong>Branch</strong>, stellen einen <strong>Pull Request</strong> (PR) und lassen ihn prüfen. Claude Code hat dafür eingebaute Befehle: <code>/code-review</code> prüft eure Änderungen gegenüber <code>main</code> auf Fehler – in einem eigenen Agenten mit frischem Kontext –, <code>/security-review</code> speziell auf Sicherheitslücken. (<code>/review</code> ist heute nur ein anderer Name für <code>/code-review</code>.) Und der stärkste Trick: ein <strong>zweiter Agent mit frischem Kontext</strong> – der hat den Code nicht geschrieben und verteidigt ihn nicht. Im Kurs, ohne Branch und Pull Request: <code>/ndu-review</code>.</p>
@@ -75,7 +84,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <li><strong>Continuous Integration:</strong> Bei jedem Push lässt GitHub automatisch Lint, Build und Tests laufen (GitHub Actions). Rot = darf nicht gemergt werden.</li>
     <li><strong>Continuous Deployment:</strong> Vercel baut für jeden Branch eine <strong>Preview-URL</strong> – ihr seht eine Änderung, bevor sie live geht – und deployt <code>main</code> automatisch.</li>
   </ul>
-  <p>Drei Umgebungen: <em>Development</em> (euer Laptop oder Codespace) → <em>Preview</em> (pro Branch) → <em>Production</em> (die echte URL).</p>
+  <p>Drei Umgebungen: <em>Development</em> (euer Mac) → <em>Preview</em> (pro Branch) → <em>Production</em> (die echte URL).</p>
   <Prompt>Richte GitHub Actions ein, sodass bei jedem Push und Pull Request Lint, Build und die Playwright-Tests laufen. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
 
   <h2>5 · Betrieb – wissen, was passiert</h2>
@@ -119,5 +128,5 @@ import FooterNav from '../../components/FooterNav.astro';
     <p>Fragt den Agenten nach jedem Issue: <em>„Was würde ein erfahrenes Entwicklungsteam an dieser Umsetzung kritisieren?“</em> Ihr bekommt die Lücke zwischen Prototyp und Produkt in drei Sätzen – und entscheidet, ob sie jetzt wichtig ist.</p>
   </Callout>
 
-  <FooterNav prev={{ href: '/tag-3#konzept-7', t: 'Tag 3' }} next={{ href: '/tag-3#werkstatt-1', t: 'Werkstatt 1' }} />
+  <FooterNav prev={{ href: '/tag-3#konzept-7', t: 'Tag 3' }} next={{ href: '/tag-3#uebung-8', t: 'Übung 8' }} />
 </Layout>
