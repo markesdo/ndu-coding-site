@@ -3,23 +3,16 @@ import { motion } from 'motion/react';
 import {
   Circle, CircleCheck, CircleX, GitMerge, GitPullRequest, Globe, ListTodo, LoaderCircle, Triangle, type LucideIcon,
 } from 'lucide-react';
-import Stage, { type StageNav, type StageStep } from './Stage';
-import { inline } from './inline';
+import Stage, { type StageNav } from './Stage';
+import { stageSteps } from './inline';
 import { BRANCH, ISSUE, STEPS, mergeBereit, stateAt, type Bereich, type Pruefung, type Vorschau, type Zustand } from './pr-weg-steps';
 import './stage.css';
 
-const stageSteps: StageStep[] = STEPS.map((s) => ({
-  caption: (
-    <>
-      <strong>{inline(s.title)}</strong> {inline(s.text)}
-    </>
-  ),
-  plain: `${s.title} ${s.text}`.replaceAll('`', ''),
-}));
+const schritte = stageSteps(STEPS);
 
 export default function PrWeg() {
   return (
-    <Stage title="Ein Pull Request von Anfang bis Ende" steps={stageSteps}>
+    <Stage title="Ein Pull Request von Anfang bis Ende" steps={schritte}>
       {(nav, reduced) => <Szene nav={nav} reduced={reduced} />}
     </Stage>
   );

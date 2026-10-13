@@ -1,26 +1,19 @@
 // Szene „Ein Wert, viele Stellen“ für /konzepte/design-system (Tag 3). Logik und Texte: design-token-steps.ts.
 import type { CSSProperties } from 'react';
 import { Check, Plus, X } from 'lucide-react';
-import Stage, { type StageNav, type StageStep } from './Stage';
-import { inline } from './inline';
+import Stage, { type StageNav } from './Stage';
+import { stageSteps } from './inline';
 import { STEPS, farbe, farben, zustandAt, type Art, type Seite, type StelleId, type Zustand } from './design-token-steps';
 import './stage.css';
 
-const stageSteps: StageStep[] = STEPS.map((s) => ({
-  caption: (
-    <>
-      <strong>{inline(s.title)}</strong> {inline(s.text)}
-    </>
-  ),
-  plain: `${s.title} ${s.text}`.replaceAll('`', ''),
-}));
+const schritte = stageSteps(STEPS);
 
 const FARBNAMEN: Record<string, string> = { '#e8472b': 'Rot', '#e8603f': 'ein etwas anderes Rot', '#2457d6': 'Blau' };
 const farbname = (hex: string) => FARBNAMEN[hex] ?? hex;
 
 export default function EinWertVieleStellen() {
   return (
-    <Stage title="Ein Wert, viele Stellen" steps={stageSteps}>
+    <Stage title="Ein Wert, viele Stellen" steps={schritte}>
       {(nav, reduced) => <Szene nav={nav} reduced={reduced} />}
     </Stage>
   );

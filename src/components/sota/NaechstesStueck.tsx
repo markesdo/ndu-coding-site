@@ -2,25 +2,18 @@
 import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Dices } from 'lucide-react';
-import Stage, { type StageNav, type StageStep } from './Stage';
-import { inline } from './inline';
+import Stage, { type StageNav } from './Stage';
+import { stageSteps } from './inline';
 import { STEPS, zustandAt, type Stueck, type Verteilung } from './naechstes-stueck-steps';
 import './stage.css';
 
-const stageSteps: StageStep[] = STEPS.map((s) => ({
-  caption: (
-    <>
-      <strong>{inline(s.title)}</strong> {inline(s.text)}
-    </>
-  ),
-  plain: `${s.title} ${s.text}`.replaceAll('`', ''),
-}));
+const schritte = stageSteps(STEPS);
 
 const alsText = (stuecke: Stueck[]) => stuecke.map((s) => s.text).join('').trim();
 
 export default function NaechstesStueck() {
   return (
-    <Stage title="Ein Stück nach dem anderen" steps={stageSteps}>
+    <Stage title="Ein Stück nach dem anderen" steps={schritte}>
       {(nav, reduced) => <Szene nav={nav} reduced={reduced} />}
     </Stage>
   );

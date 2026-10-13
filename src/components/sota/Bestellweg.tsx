@@ -4,8 +4,8 @@ import {
   ArrowLeft, ArrowRight, Armchair, Check, ChefHat, Circle, CircleCheck, CircleX, ClipboardList, Cloud,
   ConciergeBell, Database, Globe, MousePointerClick, ReceiptText, Search, Stamp, type LucideIcon,
 } from 'lucide-react';
-import Stage, { type StageNav, type StageStep } from './Stage';
-import { inline } from './inline';
+import Stage, { type StageNav } from './Stage';
+import { stageSteps } from './inline';
 import {
   PRUEFUNGEN, STATIONEN, STEPS, WERKZEUG, spalte, stateAt, strecke, type Pruefung, type StationId, type Zettel, type Zustand,
 } from './bestellweg-steps';
@@ -23,18 +23,11 @@ const ZETTEL_ICON = { bestellung: ClipboardList, antwort: ReceiptText, fehler: C
 // Pro Station wandert der Zettel so lange (Sekunden).
 const FAHRT = 0.6;
 
-const stageSteps: StageStep[] = STEPS.map((s) => ({
-  caption: (
-    <>
-      <strong>{inline(s.title)}</strong> {inline(s.text)}
-    </>
-  ),
-  plain: `${s.title} ${s.text}`.replaceAll('`', ''),
-}));
+const schritte = stageSteps(STEPS);
 
 export default function Bestellweg() {
   return (
-    <Stage title="Eine Bestellung durchs Haus" steps={stageSteps}>
+    <Stage title="Eine Bestellung durchs Haus" steps={schritte}>
       {(nav, reduced) => <Haus nav={nav} reduced={reduced} />}
     </Stage>
   );
