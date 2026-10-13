@@ -68,6 +68,26 @@ export default function Stage({ title, steps, children }: StageProps) {
   // preventScroll: sonst springt die Seite bei jedem Button-Klick, wenn die Stage nicht ganz sichtbar ist.
   const refocus = () => ref.current?.focus({ preventScroll: true });
 
+  // Pfeiltasten auch ohne vorherigen Klick: Hat nichts den Fokus und liegt diese Stage in der Bildschirmmitte, blättert
+  // sie. So stimmt der Hinweis „← →“ neben dem Zähler. Die Mitte entscheidet, welche Stage gemeint ist, falls eine Seite
+  // mehrere hat; Leertaste bleibt beim Scrollen der Seite.
+  useEffect(() => {
+    const onDocKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      const aktiv = document.activeElement;
+      if (aktiv && aktiv !== document.body) return;
+      const r = ref.current?.getBoundingClientRect();
+      const mitte = window.innerHeight / 2;
+      if (!r || r.top > mitte || r.bottom < mitte) return;
+      e.preventDefault();
+      move(e.key === 'ArrowRight' ? 1 : -1);
+      refocus();
+    };
+    document.addEventListener('keydown', onDocKey);
+    return () => document.removeEventListener('keydown', onDocKey);
+  }, [last]);
+
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     // Nur Tasten auf der Stage selbst – ein fokussierter Button behandelt Leertaste/Enter selbst.
     if (e.target !== e.currentTarget) return;

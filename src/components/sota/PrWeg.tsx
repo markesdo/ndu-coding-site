@@ -173,10 +173,7 @@ function GitHubKarte({ z }: { z: Zustand }) {
             <Check name="Build" status={z.build} />
             <Check name="Vercel" status={VORSCHAU_PRUEF[z.vorschau]} />
             {/* Review als vierter Chip in derselben Zeile – spart eine Zeile Höhe. */}
-            <li className={`pw-check pw-check-${z.review === 'freigegeben' ? 'ok' : 'aus'}`}>
-              {z.review === 'freigegeben' ? <CircleCheck aria-hidden="true" /> : <Circle aria-hidden="true" />} Review{' '}
-              <span className="pw-check-text">{z.review === 'freigegeben' ? 'frei' : '–'}</span>
-            </li>
+            <Check name="Review" status={z.review === 'freigegeben' ? 'ok' : 'aus'} />
           </ul>
           <div className={`pw-merge ${z.pr === 'gemergt' ? 'pw-merge-fertig' : mergeBereit(z) ? 'pw-merge-bereit' : ''}`}>
             <GitMerge aria-hidden="true" /> {z.pr === 'gemergt' ? 'Merged' : 'Merge pull request'}
