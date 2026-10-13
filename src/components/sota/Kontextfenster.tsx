@@ -1,7 +1,8 @@
 // Szene „Kontextfenster“ für Konzept 2 (Tag 1). Logik und Texte: kontextfenster-steps.ts.
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import Stage, { type StageNav, type StageStep } from './Stage';
+import Stage, { type StageNav } from './Stage';
+import { stageSteps } from './inline';
 import { NARROW, PRELUDE_MS, STEPS, blocksAt, chipsFor, fillOf, preludeAt, type Art } from './kontextfenster-steps';
 import './stage.css';
 
@@ -14,23 +15,11 @@ const LEGENDE: { art: Art; text: string }[] = [
   { art: 'zusammenfassung', text: 'Zusammenfassung' },
 ];
 
-// `Code` in Backticks → <code>.
-function inline(text: string): ReactNode[] {
-  return text.split('`').map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
-}
-
-const stageSteps: StageStep[] = STEPS.map((s) => ({
-  caption: (
-    <>
-      <strong>{inline(s.title)}</strong> {inline(s.text)}
-    </>
-  ),
-  plain: `${s.title} ${s.text}`.replaceAll('`', ''),
-}));
+const schritte = stageSteps(STEPS);
 
 export default function Kontextfenster() {
   return (
-    <Stage title="Das Kontextfenster" steps={stageSteps}>
+    <Stage title="Das Kontextfenster" steps={schritte}>
       {(nav, reduced) => <Fenster nav={nav} reduced={reduced} />}
     </Stage>
   );

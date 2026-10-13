@@ -1,30 +1,19 @@
 // Szene „Ein Stück nach dem anderen“ für /konzepte/llm (Tag 1). Logik und Texte: naechstes-stueck-steps.ts.
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Dices } from 'lucide-react';
-import Stage, { type StageNav, type StageStep } from './Stage';
+import Stage, { type StageNav } from './Stage';
+import { stageSteps } from './inline';
 import { STEPS, zustandAt, type Stueck, type Verteilung } from './naechstes-stueck-steps';
 import './stage.css';
 
-// `Code` in Backticks → <code>.
-function inline(text: string): ReactNode[] {
-  return text.split('`').map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part));
-}
-
-const stageSteps: StageStep[] = STEPS.map((s) => ({
-  caption: (
-    <>
-      <strong>{inline(s.title)}</strong> {inline(s.text)}
-    </>
-  ),
-  plain: `${s.title} ${s.text}`.replaceAll('`', ''),
-}));
+const schritte = stageSteps(STEPS);
 
 const alsText = (stuecke: Stueck[]) => stuecke.map((s) => s.text).join('').trim();
 
 export default function NaechstesStueck() {
   return (
-    <Stage title="Ein Stück nach dem anderen" steps={stageSteps}>
+    <Stage title="Ein Stück nach dem anderen" steps={schritte}>
       {(nav, reduced) => <Szene nav={nav} reduced={reduced} />}
     </Stage>
   );
