@@ -1,0 +1,279 @@
+---
+// „Eure Werkzeuge auf einen Blick“: zwei Zonen (Mac, Internet) × sechs Aufgaben, Linien je Ebene, Erklärung per Antippen.
+// Daten: werkzeuge.ts. Die Linien zeichnet das Skript unten aus den echten Positionen – so passen sie bei jeder Breite.
+import {
+  Bot, Cloud, Database, FileText, FolderGit2, GitPullRequest, KeyRound, Laptop, ListTodo, Monitor, Palette, PenTool,
+  Sparkles, SquareTerminal, Triangle,
+} from '@lucide/astro';
+import { EBENEN, REIHEN, VERBINDUNGEN, WERKZEUGE, verbindungenVon, type IconName } from './werkzeuge';
+
+// Record<IconName, …>: Fehlt eine Ikone aus ICON_NAMEN, meldet es die Typprüfung.
+const ICONS: Record<IconName, any> = {
+  Bot, Database, FileText, FolderGit2, GitPullRequest, KeyRound, ListTodo, Monitor, Palette, PenTool, Sparkles, SquareTerminal, Triangle,
+};
+const name = (id: string) => WERKZEUGE.find((w) => w.id === id)!.name;
+const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
+---
+<figure class="wk" data-ebene="code" aria-label="Eure Werkzeuge: was auf eurem Mac läuft, was im Internet, und wie sie zusammenhängen">
+  <div class="wk-ebenen" role="group" aria-label="Welche Verbindungen zeigen">
+    {EBENEN.map((e, i) => (
+      <button type="button" class:list={['wk-ebene', `wk-ebene-${e.id}`]} data-ebene={e.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+        <span class="wk-strich" aria-hidden="true" />{e.t}
+      </button>
+    ))}
+  </div>
+  {EBENEN.map((e) => <p class="wk-ebene-text" data-fuer={e.id}>{e.erklaerung}</p>)}
+
+  <div class="wk-feld">
+    <svg class="wk-linien" aria-hidden="true">
+      <defs>
+        {EBENEN.map((e) => (
+          <marker id={`wk-pfeil-${e.id}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" class={`wk-pfeil-${e.id}`} />
+          </marker>
+        ))}
+      </defs>
+    </svg>
+    <div class="wk-etiketten" aria-hidden="true" />
+    <div class="wk-raster">
+      <div class="wk-ecke" />
+      <div class="wk-kopf wk-mac"><Laptop size={16} aria-hidden="true" /> Auf eurem Mac</div>
+      <div class="wk-kopf wk-netz"><Cloud size={16} aria-hidden="true" /> Im Internet – eure Konten</div>
+      {REIHEN.map((r, ri) => (
+        <>
+          <div class="wk-reihe">{r.t}</div>
+          {(['mac', 'netz'] as const).map((zone) => (
+            <div class:list={['wk-zelle', `wk-${zone}`, { 'wk-letzte': ri === REIHEN.length - 1 }]}>
+              {WERKZEUGE.filter((w) => w.reihe === r.id && w.zone === zone).map((w) => {
+                const Icon = ICONS[w.icon];
+                if (!Icon) throw new Error(`Werkzeugkarte: Ikone ${w.icon} fehlt in ICONS`);
+                return (
+                  <button type="button" class="wk-knoten" data-id={w.id} data-zone={w.zone} data-reihe={ri} aria-pressed="false" aria-controls="wk-detail">
+                    <Icon size={18} aria-hidden="true" /> <span>{w.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </>
+      ))}
+    </div>
+  </div>
+
+  <div class="wk-detail" id="wk-detail" aria-live="polite">
+    <p class="wk-hinweis" data-detail="">Tippt ein Werkzeug an: Ihr seht, was es tut, wann ihr dort seid und womit ihr angemeldet seid.</p>
+    {WERKZEUGE.map((w) => (
+      <section data-detail={w.id} hidden>
+        <h3>{w.name}</h3>
+        <p class="wk-rolle">{w.rolle}</p>
+        <dl>
+          <dt>Wann ihr dort seid</dt><dd>{w.wann}</dd>
+          <dt>Angemeldet mit</dt><dd>{w.konto}</dd>
+          <dt>Verbunden mit</dt>
+          <dd><ul>
+            {verbindungenVon(w.id).map((v) => (
+              <li><span class={`wk-tag wk-tag-${v.ebene}`}>{ebeneName(v.ebene)}</span> <strong>{name(v.von)} → {name(v.nach)}:</strong> {v.text}</li>
+            ))}
+          </ul></dd>
+        </dl>
+        {w.link && <p class="wk-mehr"><a href={w.link.href} target={w.link.href.startsWith('http') ? '_blank' : undefined} rel={w.link.href.startsWith('http') ? 'noopener' : undefined}>{w.link.t}</a></p>}
+      </section>
+    ))}
+  </div>
+  <script type="application/json" class="wk-daten" set:html={JSON.stringify(VERBINDUNGEN.map(({ von, nach, ebene, kurz }) => ({ von, nach, ebene, kurz })))} />
+</figure>
+
+<script>
+  type V = { von: string; nach: string; ebene: string; kurz: string };
+  const NS = 'http://www.w3.org/2000/svg';
+
+  for (const karte of document.querySelectorAll<HTMLElement>('.wk')) {
+    const daten: V[] = JSON.parse(karte.querySelector('.wk-daten')!.textContent || '[]');
+    const feld = karte.querySelector<HTMLElement>('.wk-feld')!;
+    const svg = karte.querySelector<SVGSVGElement>('.wk-linien')!;
+    const etiketten = karte.querySelector<HTMLElement>('.wk-etiketten')!;
+    const knoten = new Map([...karte.querySelectorAll<HTMLElement>('.wk-knoten')].map((k) => [k.dataset.id!, k]));
+    let auswahl = '';
+
+    const zeichnen = () => {
+      const ebene = karte.dataset.ebene!;
+      svg.querySelectorAll('path.wk-linie').forEach((p) => p.remove());
+      etiketten.replaceChildren();
+      for (const k of knoten.values()) k.classList.remove('wk-ziel', 'wk-ziel-code', 'wk-ziel-app', 'wk-ziel-claude');
+      // Erst alle Positionen lesen, dann zeichnen – sonst rechnet der Browser das Layout pro Linie neu.
+      const f = feld.getBoundingClientRect();
+      const rects = new Map([...knoten].map(([id, k]) => [id, k.getBoundingClientRect()]));
+      svg.setAttribute('viewBox', `0 0 ${f.width} ${f.height}`);
+      for (const v of daten.filter((d) => d.ebene === ebene)) {
+        const ka = knoten.get(v.von)!;
+        const kb = knoten.get(v.nach)!;
+        // Gleiche Zone und mehr als eine Reihe auseinander: Die Linie liefe hinter anderen Kästen entlang.
+        // Dann statt einer Linie das Ziel umranden – die Verbindung steht im Text zum Werkzeug.
+        if (ka.dataset.zone === kb.dataset.zone && Math.abs(Number(ka.dataset.reihe) - Number(kb.dataset.reihe)) > 1) {
+          kb.classList.add('wk-ziel', `wk-ziel-${ebene}`);
+          if (auswahl && v.von !== auswahl && v.nach !== auswahl) kb.classList.remove('wk-ziel');
+          continue;
+        }
+        const a = rects.get(v.von)!;
+        const b = rects.get(v.nach)!;
+        // Übereinander (überlappen waagrecht): oben/unten verbinden; sonst die einander zugewandten Seiten.
+        const links = Math.max(a.left, b.left);
+        const rechtsBis = Math.min(a.right, b.right);
+        const gleicheSpalte = links < rechtsBis;
+        let x1, y1, x2, y2, d;
+        if (gleicheSpalte) {
+          const runter = b.top > a.top;
+          const mitte = (links + rechtsBis) / 2 - f.left;
+          x1 = mitte; y1 = (runter ? a.bottom : a.top) - f.top;
+          x2 = mitte; y2 = (runter ? b.top : b.bottom) - f.top;
+          // Hin und zurück zwischen denselben beiden Kästen: leicht versetzt, damit die Linien nicht aufeinanderliegen.
+          if (daten.some((g) => g.ebene === ebene && g.von === v.nach && g.nach === v.von)) {
+            const versatz = runter ? 10 : -10;
+            x1 += versatz; x2 += versatz;
+          }
+          d = `M ${x1} ${y1} L ${x2} ${y2}`;
+        } else {
+          const rechts = b.left > a.left;
+          x1 = (rechts ? a.right : a.left) - f.left; y1 = a.top + a.height / 2 - f.top;
+          x2 = (rechts ? b.left : b.right) - f.left; y2 = b.top + b.height / 2 - f.top;
+          // Hin und zurück zwischen denselben beiden Knoten: leicht versetzt.
+          const gegen = daten.some((g) => g.ebene === ebene && g.von === v.nach && g.nach === v.von);
+          if (gegen) { const s = rechts ? -11 : 11; y1 += s; y2 += s; }
+          const mx = (x1 + x2) / 2;
+          d = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+        }
+        const p = document.createElementNS(NS, 'path');
+        p.setAttribute('d', d);
+        p.setAttribute('class', `wk-linie wk-linie-${ebene}`);
+        p.setAttribute('marker-end', `url(#wk-pfeil-${ebene})`);
+        const beteiligt = !auswahl || v.von === auswahl || v.nach === auswahl;
+        if (!beteiligt) p.classList.add('wk-blass');
+        svg.appendChild(p);
+        // Kurze Beschriftung nur, wo wenige Linien sind (Weg des Codes, App) – bei Claude stünden sie übereinander.
+        if (ebene !== 'claude') {
+          const e = document.createElement('span');
+          e.className = `wk-etikett wk-etikett-${ebene}${beteiligt ? '' : ' wk-blass'}`;
+          e.textContent = v.kurz;
+          // Senkrechte Linien sind kurz: Beschriftung daneben statt darauf.
+          e.style.left = `${(x1 + x2) / 2 + (gleicheSpalte ? 8 : 0)}px`;
+          e.style.top = `${(y1 + y2) / 2}px`;
+          if (gleicheSpalte) e.classList.add('wk-etikett-seite');
+          etiketten.appendChild(e);
+        }
+      }
+    };
+
+    const markieren = () => {
+      // Partner nur auf der gezeigten Ebene – sonst leuchten Kästen ohne sichtbare Linie. Alle Verbindungen stehen im Text darunter.
+      const ebene = karte.dataset.ebene!;
+      const partner = new Set(daten.filter((d) => d.ebene === ebene && (d.von === auswahl || d.nach === auswahl)).flatMap((d) => [d.von, d.nach]));
+      for (const [id, k] of knoten) {
+        k.setAttribute('aria-pressed', String(id === auswahl));
+        k.classList.toggle('wk-partner', !!auswahl && id !== auswahl && partner.has(id));
+        k.classList.toggle('wk-blass', !!auswahl && !partner.has(id) && id !== auswahl);
+      }
+      for (const s of karte.querySelectorAll<HTMLElement>('[data-detail]')) s.hidden = s.dataset.detail !== auswahl;
+      zeichnen();
+    };
+
+    for (const b of karte.querySelectorAll<HTMLButtonElement>('.wk-ebene')) {
+      b.addEventListener('click', () => {
+        karte.dataset.ebene = b.dataset.ebene;
+        for (const o of karte.querySelectorAll('.wk-ebene')) o.setAttribute('aria-pressed', String(o === b));
+        markieren();
+      });
+    }
+    for (const [id, k] of knoten) {
+      k.addEventListener('click', () => {
+        auswahl = auswahl === id ? '' : id;
+        markieren();
+      });
+    }
+    new ResizeObserver(zeichnen).observe(feld);
+    document.fonts?.ready.then(zeichnen);
+    zeichnen();
+  }
+</script>
+
+<style>
+  .wk { margin: 1.5rem 0 2rem; }
+  .wk-ebenen { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .5rem; }
+  .wk-ebene { display: inline-flex; align-items: center; gap: .45rem; font: inherit; font-size: .88rem; padding: .3rem .7rem; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--bg-2); color: var(--muted); cursor: pointer; }
+  .wk-ebene[aria-pressed="true"] { color: var(--fg); border-color: var(--fg); font-weight: 600; }
+  .wk-strich { width: 1.4em; height: 0; border-top: 3px solid; }
+  .wk-ebene-code .wk-strich { border-color: var(--blue); }
+  .wk-ebene-app .wk-strich { border-color: var(--green); }
+  .wk-ebene-claude .wk-strich { border-color: var(--accent); border-top-style: dashed; }
+  .wk-ebene-text { display: none; margin: 0 0 .75rem; font-size: .92rem; color: var(--muted); }
+  .wk[data-ebene="code"] .wk-ebene-text[data-fuer="code"],
+  .wk[data-ebene="app"] .wk-ebene-text[data-fuer="app"],
+  .wk[data-ebene="claude"] .wk-ebene-text[data-fuer="claude"] { display: block; }
+
+  .wk-feld { position: relative; }
+  .wk-linien, .wk-etiketten { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  /* Ebenen: Zonen-Flächen (ohne z-index) < Linien < Knoten < Beschriftungen. .wk-raster bildet bewusst keinen eigenen Stapel. */
+  .wk-linien { z-index: 2; }
+  .wk-etiketten { z-index: 4; }
+  .wk-raster { display: grid; grid-template-columns: 5.5rem 1fr 1fr; column-gap: 3.5rem; }
+  .wk-kopf { display: flex; align-items: center; gap: .4rem; font-family: var(--mono); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    padding: .6rem .8rem .3rem; border-radius: 10px 10px 0 0; }
+  .wk-mac { background: var(--blue-soft); }
+  .wk-netz { background: var(--purple-soft); }
+  .wk-reihe { font-family: var(--mono); font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; align-self: center; }
+  .wk-zelle { display: flex; flex-wrap: wrap; align-content: center; gap: .5rem; padding: .55rem .8rem; min-height: 3.6rem; }
+  .wk-zelle.wk-letzte { border-radius: 0 0 10px 10px; padding-bottom: .9rem; }
+  .wk-knoten { display: inline-flex; align-items: center; gap: .4rem; font: inherit; font-size: .9rem; font-weight: 600; text-align: left; line-height: 1.2;
+    padding: .45rem .65rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-2); color: var(--fg); cursor: pointer;
+    position: relative; z-index: 3; box-shadow: 0 1px 0 var(--border); transition: opacity .2s, box-shadow .2s, border-color .2s; }
+  .wk-knoten:hover { border-color: var(--fg); }
+  .wk-knoten :global(svg) { flex: none; color: var(--muted); }
+  .wk-knoten[aria-pressed="true"] { border-color: var(--fg); box-shadow: 0 0 0 3px var(--fg); }
+  .wk-knoten.wk-partner { border-color: var(--fg); }
+  .wk-knoten.wk-blass { opacity: .4; }
+  .wk-knoten.wk-ziel { outline: 2.5px dashed; outline-offset: 3px; }
+  .wk-knoten.wk-ziel-code { outline-color: var(--blue); }
+  .wk-knoten.wk-ziel-app { outline-color: var(--green); }
+  .wk-knoten.wk-ziel-claude { outline-color: var(--accent); }
+
+  .wk-linien :global(.wk-linie) { fill: none; stroke-width: 2.5; transition: opacity .2s; }
+  .wk-linien :global(.wk-linie-code) { stroke: var(--blue); }
+  .wk-linien :global(.wk-linie-app) { stroke: var(--green); }
+  .wk-linien :global(.wk-linie-claude) { stroke: var(--accent); stroke-dasharray: 5 4; }
+  .wk-linien :global(.wk-blass) { opacity: .15; }
+  .wk-pfeil-code { fill: var(--blue); }
+  .wk-pfeil-app { fill: var(--green); }
+  .wk-pfeil-claude { fill: var(--accent); }
+  .wk-etiketten :global(.wk-etikett) { position: absolute; transform: translate(-50%, -50%); font-family: var(--mono); font-size: .72rem; font-weight: 600;
+    padding: .05rem .4rem; border-radius: 999px; background: var(--bg-2); border: 1px solid; white-space: nowrap; }
+  .wk-etiketten :global(.wk-etikett-seite) { transform: translate(0, -50%); }
+  .wk-etiketten :global(.wk-etikett-code) { color: var(--blue); border-color: var(--blue); }
+  .wk-etiketten :global(.wk-etikett-app) { color: var(--green); border-color: var(--green); }
+  .wk-etiketten :global(.wk-blass) { opacity: .25; }
+
+  .wk-detail { margin-top: 1rem; padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); min-height: 4rem; }
+  .wk-hinweis { margin: 0; color: var(--muted); }
+  .wk-detail h3 { margin: 0 0 .25rem; }
+  .wk-rolle { margin: 0 0 .6rem; font-size: 1.02rem; }
+  .wk-detail dl { margin: 0; display: grid; grid-template-columns: 9.5rem 1fr; gap: .35rem 1rem; font-size: .92rem; }
+  .wk-detail dt { color: var(--muted); }
+  .wk-detail dd { margin: 0; }
+  .wk-detail ul { margin: 0; padding-left: 0; list-style: none; display: grid; gap: .3rem; }
+  .wk-tag { display: inline-block; font-size: .72rem; font-weight: 600; padding: 0 .45rem; border-radius: 999px; margin-right: .2rem; }
+  .wk-tag-code { background: var(--blue-soft); color: var(--blue); }
+  .wk-tag-app { background: var(--green-soft); color: var(--green); }
+  .wk-tag-claude { background: var(--accent-soft); color: var(--accent-ink); }
+  .wk-mehr { margin: .7rem 0 0; font-size: .92rem; }
+
+  /* Handy: Reihen-Namen als Zwischenzeile über beiden Spalten, Knoten kompakter. */
+  @media (max-width: 600px) {
+    .wk-raster { grid-template-columns: 1fr 1fr; column-gap: 1.6rem; }
+    .wk-ecke { display: none; }
+    .wk-reihe { grid-column: 1 / -1; padding: .5rem 0 .1rem; font-size: .66rem; }
+    .wk-kopf { font-size: .66rem; padding: .5rem .5rem .3rem; }
+    .wk-zelle { padding: .35rem .45rem; min-height: 0; }
+    .wk-knoten { font-size: .8rem; padding: .4rem .45rem; gap: .3rem; }
+    .wk-detail dl { grid-template-columns: 1fr; gap: .1rem; }
+    .wk-detail dd { margin-bottom: .45rem; }
+  }
+</style>
