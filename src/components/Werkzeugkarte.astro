@@ -36,6 +36,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
         ))}
       </defs>
     </svg>
+    <svg class="wk-schrift" aria-hidden="true" />
     <div class="wk-raster">
       <div class="wk-ecke" />
       <div class="wk-kopf wk-mac"><Laptop size={16} aria-hidden="true" /> Auf eurem Mac</div>
@@ -53,7 +54,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
                   if (!Icon) throw new Error(`Werkzeugkarte: Ikone ${w.icon} fehlt in ICONS`);
                   return (
                     <button type="button" class="wk-knoten" data-id={w.id} data-zone={w.zone} data-reihe={ri}
-                      aria-pressed="false" aria-expanded="false" aria-controls="wk-detail">
+                      aria-expanded="false" aria-controls="wk-detail">
                       <Icon size={18} aria-hidden="true" /> <span>{w.name}</span>
                     </button>
                   );
@@ -118,6 +119,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
     const daten: V[] = JSON.parse(karte.querySelector('.wk-daten')!.textContent || '[]');
     const feld = karte.querySelector<HTMLElement>('.wk-feld')!;
     const svg = karte.querySelector<SVGSVGElement>('.wk-linien')!;
+    const schrift = karte.querySelector<SVGSVGElement>('.wk-schrift')!;
     const panel = karte.querySelector<HTMLElement>('.wk-detail')!;
     const zu = karte.querySelector<HTMLButtonElement>('.wk-zu')!;
     const kopfMac = karte.querySelector<HTMLElement>('.wk-kopf.wk-mac')!;
@@ -128,39 +130,54 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
 
     const zeichnen = () => {
       const ebene = karte.dataset.ebene!;
-      svg.querySelectorAll('.wk-linie, .wk-etikett').forEach((e) => e.remove());
+      svg.querySelectorAll('.wk-linie').forEach((e) => e.remove());
+      schrift.replaceChildren();
       // Erst alle Positionen lesen, dann zeichnen – sonst rechnet der Browser das Layout pro Linie neu.
       const f = feld.getBoundingClientRect();
       const rects = new Map<string, R>([...knoten].map(([id, k]) => [id, k.getBoundingClientRect()]));
+      const zellen = new Map<string, R>([...knoten].map(([id, k]) => [id, k.parentElement!.getBoundingClientRect()]));
       const zonen = { mac: kopfMac.getBoundingClientRect(), netz: kopfNetz.getBoundingClientRect() };
-      svg.setAttribute('viewBox', `0 0 ${f.width} ${f.height}`);
+      for (const s of [svg, schrift]) s.setAttribute('viewBox', `0 0 ${f.width} ${f.height}`);
       const X = (x: number) => x - f.left;
       const Y = (y: number) => y - f.top;
       const linien = daten.filter((d) => d.ebene === ebene);
       const gegen = (v: V) => linien.some((g) => g.von === v.nach && g.nach === v.von);
+      // Innerhalb eines Kastens bleiben, mit etwas Abstand zum Rand (die Pfeilspitze ist ~12 px hoch).
+      const innen = (y: number, r: R) => Math.min(Math.max(y, r.top + 6), r.bottom - 6);
 
-      // Art jeder Linie: übereinander (senkrecht), nebeneinander (seitlich) oder – gleiche Zone, mehr als eine Reihe
-      // auseinander – am Rand der Zone entlang (Bus), damit sie nicht hinter anderen Kästen verschwindet.
-      const art = (v: V) => {
+      // Art jeder Linie, einmal bestimmt: übereinander (senkrecht), nebeneinander (seitlich) oder am Rand der Zone
+      // entlang (Bus) – wenn die Linie sonst hinter anderen Kästen verschwände.
+      const art = new Map<V, 'senkrecht' | 'seitlich' | 'bus'>();
+      for (const v of linien) {
         const ka = knoten.get(v.von)!, kb = knoten.get(v.nach)!;
-        if (ka.dataset.zone === kb.dataset.zone && Math.abs(Number(ka.dataset.reihe) - Number(kb.dataset.reihe)) > 1) return 'bus';
         const a = rects.get(v.von)!, b = rects.get(v.nach)!;
         const links = Math.max(a.left, b.left), rechts = Math.min(a.right, b.right);
-        if (links >= rechts) return 'seitlich';
-        // Senkrecht – außer ein dritter Kasten liegt dazwischen (am Handy brechen Kästen einer Reihe um): dann am Rand entlang.
-        const oben = Math.min(a.bottom, b.bottom), unten = Math.max(a.top, b.top);
-        const x = (links + rechts) / 2;
-        const verdeckt = [...rects].some(([id, r]) => id !== v.von && id !== v.nach && r.left < x && r.right > x && r.top < unten && r.bottom > oben);
-        return verdeckt ? 'bus' : 'senkrecht';
-      };
-      // Mehrere seitliche Linien aus derselben Seite eines Kastens: Startpunkte auffächern statt alle aus einem Punkt.
-      const faecher = new Map<string, V[]>();
-      for (const v of linien) {
-        if (art(v) !== 'seitlich') continue;
-        const schluessel = `${v.von}|${rects.get(v.nach)!.left > rects.get(v.von)!.left ? 'r' : 'l'}`;
-        faecher.set(schluessel, [...(faecher.get(schluessel) ?? []), v]);
+        if (ka.dataset.zone === kb.dataset.zone && Math.abs(Number(ka.dataset.reihe) - Number(kb.dataset.reihe)) > 1) art.set(v, 'bus');
+        else if (links >= rechts) art.set(v, 'seitlich');
+        else {
+          // Senkrecht – außer ein dritter Kasten liegt dazwischen (am Handy brechen Kästen einer Reihe um).
+          const oben = Math.min(a.bottom, b.bottom), unten = Math.max(a.top, b.top), x = (links + rechts) / 2;
+          const verdeckt = [...rects].some(([id, r]) => id !== v.von && id !== v.nach && r.left < x && r.right > x && r.top < unten && r.bottom > oben);
+          art.set(v, verdeckt ? 'bus' : 'senkrecht');
+        }
       }
-      for (const liste of faecher.values()) liste.sort((p, q) => rects.get(p.nach)!.top - rects.get(q.nach)!.top);
+      const istMac = (id: string) => knoten.get(id)!.dataset.zone === 'mac';
+      // Seite, an der eine Linie den Start- bzw. Zielkasten berührt.
+      const ausSeite = (v: V) => (art.get(v) === 'bus' ? 'bus' : rects.get(v.nach)!.left > rects.get(v.von)!.left ? 'r' : 'l');
+      const einSeite = (v: V) => (art.get(v) === 'bus' ? (istMac(v.von) ? 'l' : 'r') : rects.get(v.nach)!.left > rects.get(v.von)!.left ? 'l' : 'r');
+      // Gruppen zum Auffächern: mehrere Linien aus derselben Seite eines Kastens, mehrere Pfeile in dieselbe Seite.
+      const gruppe = (schluessel: (v: V) => string, sortiere: (v: V) => number) => {
+        const m = new Map<string, V[]>();
+        for (const v of linien) if (art.get(v) !== 'senkrecht') m.set(schluessel(v), [...(m.get(schluessel(v)) ?? []), v]);
+        for (const l of m.values()) l.sort((p, q) => sortiere(p) - sortiere(q));
+        return m;
+      };
+      const raus = gruppe((v) => `${v.von}|${ausSeite(v)}`, (v) => rects.get(v.nach)!.top);
+      const rein = gruppe((v) => `${v.nach}|${einSeite(v)}`, (v) => rects.get(v.von)!.top);
+      const platz = (m: Map<string, V[]>, k: string, v: V, r: R) => {
+        const l = m.get(k)!;
+        return r.top + (r.height * (l.indexOf(v) + 1)) / (l.length + 1);
+      };
 
       const halo = (x: number) => {
         const ax = x + f.left;
@@ -174,17 +191,29 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
         const beteiligt = !auswahl || v.von === auswahl || v.nach === auswahl;
         let d = '';
         let etikett: { x: number; y: number; seite: boolean } | null = null;
-        const was = art(v);
+        const was = art.get(v)!;
         if (was === 'bus') {
-          const mac = knoten.get(v.von)!.dataset.zone === 'mac';
+          const mac = istMac(v.von);
           const runter = b.top > a.top;
-          const busX = X(mac ? zonen.mac.left + 5 : zonen.netz.right - 5);
-          const ausX = X(mac ? a.left + 12 : a.right - 12);
-          const ausY = Y(runter ? a.bottom : a.top);
-          const zwischen = ausY + (runter ? 7 : -7);
+          const geschwister = raus.get(`${v.von}|bus`)!;
+          const i = geschwister.indexOf(v);
+          // Jede Linie eines Kastens bekommt ihre eigene Spur am Zonenrand (5 px, 10 px …).
+          const busX = X(mac ? zonen.mac.left + 5 + i * 5 : zonen.netz.right - 5 - i * 5);
           const zielX = X(mac ? b.left : b.right);
-          const zielY = Y(b.top + b.height / 2);
-          d = `M ${ausX} ${ausY} V ${zwischen} H ${busX} V ${zielY} H ${zielX}`;
+          const zielY = Y(innen(platz(rein, `${v.nach}|${einSeite(v)}`, v, b), b));
+          // Liegt zwischen Kasten und Zonenrand nichts, direkt zur Seite hinaus …
+          const frei = ![...rects].some(([id, r]) => id !== v.von && r.top < a.bottom && r.bottom > a.top && (mac ? r.right <= a.left : r.left >= a.right));
+          if (frei) {
+            const ausY = Y(innen(a.top + (a.height * (i + 1)) / (geschwister.length + 1), a));
+            d = `M ${X(mac ? a.left : a.right)} ${ausY} H ${busX} V ${zielY} H ${zielX}`;
+          } else {
+            // … sonst unten (oben) hinaus in den Rand der Zelle, unter den Nachbarn hindurch zum Zonenrand.
+            const zelle = zellen.get(v.von)!;
+            const ausX = X(mac ? a.left + 12 + i * 6 : a.right - 12 - i * 6);
+            const ausY = Y(runter ? a.bottom : a.top);
+            const zwischen = Y(runter ? zelle.bottom - 3 - i * 3 : zelle.top + 3 + i * 3);
+            d = `M ${ausX} ${ausY} V ${zwischen} H ${busX} V ${zielY} H ${zielX}`;
+          }
         } else if (was === 'senkrecht') {
           const runter = b.top > a.top;
           let x = X((Math.max(a.left, b.left) + Math.min(a.right, b.right)) / 2);
@@ -196,14 +225,13 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
           etikett = { x: x + 8, y: (y1 + y2) / 2, seite: true };
         } else {
           const rechts = b.left > a.left;
-          const liste = faecher.get(`${v.von}|${rechts ? 'r' : 'l'}`)!;
-          const i = liste.indexOf(v);
-          let y1 = Y(a.top + (a.height * (i + 1)) / (liste.length + 1));
-          let y2 = Y(b.top + b.height / 2);
+          let y1 = platz(raus, `${v.von}|${ausSeite(v)}`, v, a);
+          let y2 = platz(rein, `${v.nach}|${einSeite(v)}`, v, b);
           // Hin und zurück (push/pull): 26 px auseinander, Beschriftungen bei 35 % ihres eigenen Wegs –
           // so stehen „push“ und „pull“ an verschiedenen Stellen statt übereinander.
           const paar = gegen(v);
           if (paar) { const s = rechts ? -13 : 13; y1 += s; y2 += s; }
+          y1 = Y(innen(y1, a)); y2 = Y(innen(y2, b));
           const x1 = X(rechts ? a.right : a.left), x2 = X(rechts ? b.left : b.right);
           const mx = (x1 + x2) / 2;
           d = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
@@ -216,6 +244,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
         p.setAttribute('marker-end', `url(#wk-pfeil-${ebene})`);
         svg.appendChild(p);
         // Kurze Beschriftung nur, wo wenige Linien sind (Weg des Codes, App) – bei Claude stünden sie übereinander.
+        // Sie liegt in einer eigenen Ebene über den Kästen, damit sie nie darunter verschwindet.
         if (etikett && ebene !== 'claude') {
           const t = document.createElementNS(NS, 'text');
           t.textContent = v.kurz;
@@ -223,7 +252,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
           t.setAttribute('y', String(etikett.y));
           t.setAttribute('text-anchor', etikett.seite ? 'start' : 'middle');
           t.setAttribute('class', `wk-etikett wk-etikett-${ebene} wk-halo-${halo(etikett.x)}${beteiligt ? '' : ' wk-blass'}`);
-          svg.appendChild(t);
+          schrift.appendChild(t);
         }
       }
     };
@@ -233,7 +262,6 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
       const ebene = karte.dataset.ebene!;
       const partner = new Set(daten.filter((d) => d.ebene === ebene && (d.von === auswahl || d.nach === auswahl)).flatMap((d) => [d.von, d.nach]));
       for (const [id, k] of knoten) {
-        k.setAttribute('aria-pressed', String(id === auswahl));
         k.setAttribute('aria-expanded', String(id === auswahl));
         k.classList.toggle('wk-partner', !!auswahl && id !== auswahl && partner.has(id));
         k.classList.toggle('wk-blass', !!auswahl && !partner.has(id) && id !== auswahl);
@@ -294,7 +322,8 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
     });
     for (const [id, k] of knoten) k.addEventListener('click', () => waehlen(id));
     zu.addEventListener('click', schliessen);
-    karte.addEventListener('keydown', (e) => { if (e.key === 'Escape') schliessen(); });
+    // Escape auf der ganzen Seite, solange etwas gewählt ist – Safari fokussiert Knöpfe beim Klicken nicht.
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && auswahl) schliessen(); });
 
     new ResizeObserver(zeichnen).observe(feld);
     document.fonts?.ready.then(zeichnen);
@@ -320,8 +349,9 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
   .wk[data-ebene="claude"] .wk-ebene-text[data-fuer="claude"] { display: block; }
 
   .wk-feld { position: relative; }
-  /* Ebenen: Zonen-Flächen (ohne z-index) < Linien < Knoten. .wk-raster bildet bewusst keinen eigenen Stapel. */
-  .wk-linien { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 2; }
+  /* Ebenen: Zonen-Flächen (ohne z-index) < Linien < Knoten < Beschriftungen. .wk-raster bildet bewusst keinen eigenen Stapel. */
+  .wk-linien, .wk-schrift { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 2; }
+  .wk-schrift { z-index: 4; }
   .wk-raster { display: grid; grid-template-columns: 4.5rem 1fr 1fr; column-gap: 2.5rem; }
   .wk-kopf { display: flex; align-items: center; gap: .4rem; font-family: var(--mono); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
     padding: .45rem .7rem .2rem; border-radius: 10px 10px 0 0; }
@@ -336,7 +366,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
     position: relative; z-index: 3; box-shadow: 0 1px 0 var(--border); transition: opacity .2s, box-shadow .2s, border-color .2s; }
   .wk-knoten:hover { border-color: var(--fg); }
   .wk-knoten :global(svg) { flex: none; color: var(--muted); }
-  .wk-knoten[aria-pressed="true"] { border-color: var(--fg); box-shadow: 0 0 0 3px var(--fg); }
+  .wk-knoten[aria-expanded="true"] { border-color: var(--fg); box-shadow: 0 0 0 3px var(--fg); }
   /* Partner tragen die Farbe der Ebene – Hervorhebung und Linien lesen sich als ein System. */
   .wk-knoten.wk-partner { border-color: var(--lc); box-shadow: 0 0 0 2px var(--lc); }
   .wk-knoten.wk-blass { opacity: .4; }
@@ -345,18 +375,18 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
   .wk-linien :global(.wk-linie-code) { stroke: var(--blue); }
   .wk-linien :global(.wk-linie-app) { stroke: var(--green); }
   .wk-linien :global(.wk-linie-claude) { stroke: var(--accent); stroke-dasharray: 5 4; }
-  .wk-linien :global(.wk-blass) { opacity: .15; }
+  .wk-linien :global(.wk-blass), .wk-schrift :global(.wk-blass) { opacity: .15; }
   .wk-pfeil-code { fill: var(--blue); }
   .wk-pfeil-app { fill: var(--green); }
   .wk-pfeil-claude { fill: var(--accent); }
   /* Beschriftung als Text mit „Halo“ in der Farbe des Untergrunds: schneidet die Linie, braucht keinen Rahmen. */
-  .wk-linien :global(.wk-etikett) { font-family: var(--mono); font-size: .68rem; font-weight: 600; dominant-baseline: middle;
+  .wk-schrift :global(.wk-etikett) { font-family: var(--mono); font-size: .68rem; font-weight: 600; dominant-baseline: middle;
     paint-order: stroke; stroke-width: 4px; stroke-linejoin: round; }
-  .wk-linien :global(.wk-etikett-code) { fill: var(--blue); }
-  .wk-linien :global(.wk-etikett-app) { fill: var(--green); }
-  .wk-linien :global(.wk-halo-mac) { stroke: var(--blue-soft); }
-  .wk-linien :global(.wk-halo-netz) { stroke: var(--purple-soft); }
-  .wk-linien :global(.wk-halo-aussen) { stroke: var(--bg); }
+  .wk-schrift :global(.wk-etikett-code) { fill: var(--blue); }
+  .wk-schrift :global(.wk-etikett-app) { fill: var(--green); }
+  .wk-schrift :global(.wk-halo-mac) { stroke: var(--blue-soft); }
+  .wk-schrift :global(.wk-halo-netz) { stroke: var(--purple-soft); }
+  .wk-schrift :global(.wk-halo-aussen) { stroke: var(--bg); }
 
   /* Erklärung: ohne Auswahl eine leise Zeile; mit Auswahl klebt sie am unteren Bildschirmrand. */
   .wk-detail { position: relative; margin-top: .75rem; font-size: .92rem; }
@@ -395,7 +425,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
     .wk-kopf { font-size: .66rem; padding: .5rem .5rem .3rem; }
     .wk-zelle { padding: .35rem .45rem; }
     .wk-knoten { font-size: .8rem; padding: .35rem .45rem; gap: .3rem; }
-    .wk-linien :global(.wk-etikett) { display: none; }
+    .wk-schrift :global(.wk-etikett) { display: none; }
     .wk-detail[data-offen] { bottom: 0; max-height: 45vh; border-radius: var(--radius) var(--radius) 0 0; }
     .wk-detail dl { grid-template-columns: 1fr; gap: .05rem; }
     .wk-detail dd { margin-bottom: .35rem; }
