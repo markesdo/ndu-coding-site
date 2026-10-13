@@ -172,3 +172,14 @@ export const VERBINDUNGEN: Verbindung[] = [
 export function verbindungenVon(id: string): Verbindung[] {
   return VERBINDUNGEN.filter((v) => v.von === id || v.nach === id);
 }
+
+/** Ebene, auf der ein Werkzeug die meisten Verbindungen hat (bei Gleichstand die frühere in EBENEN). */
+export function besteEbene(id: string): Ebene {
+  const zahl = (e: Ebene) => VERBINDUNGEN.filter((v) => v.ebene === e && (v.von === id || v.nach === id)).length;
+  return EBENEN.map((e) => e.id).reduce((beste, e) => (zahl(e) > zahl(beste) ? e : beste));
+}
+
+/** Für jedes Werkzeug die Ebene mit den meisten Verbindungen – die Karte bekommt sie fertig mitgeliefert. */
+export function besteEbenen(): Record<string, Ebene> {
+  return Object.fromEntries(WERKZEUGE.map((w) => [w.id, besteEbene(w.id)]));
+}

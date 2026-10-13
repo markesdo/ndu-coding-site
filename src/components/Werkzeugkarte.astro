@@ -6,7 +6,7 @@ import {
   Bot, Cloud, Database, FileText, FolderGit2, GitPullRequest, KeyRound, Laptop, ListTodo, Monitor, Palette, PenTool,
   Sparkles, SquareTerminal, Triangle, X,
 } from '@lucide/astro';
-import { EBENEN, REIHEN, VERBINDUNGEN, WERKZEUGE, verbindungenVon, type IconName } from './werkzeuge';
+import { EBENEN, REIHEN, VERBINDUNGEN, WERKZEUGE, besteEbenen, verbindungenVon, type IconName } from './werkzeuge';
 
 // Record<IconName, …>: Fehlt eine Ikone aus ICON_NAMEN, meldet es die Typprüfung.
 const ICONS: Record<IconName, any> = {
@@ -14,6 +14,12 @@ const ICONS: Record<IconName, any> = {
 };
 const name = (id: string) => WERKZEUGE.find((w) => w.id === id)!.name;
 const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
+// Was das Skript zum Umschalten braucht – aus den Daten, nicht aus Knopftexten gelesen.
+const meta = {
+  beste: besteEbenen(),
+  ebenen: Object.fromEntries(EBENEN.map((e) => [e.id, e.t])),
+  namen: Object.fromEntries(WERKZEUGE.map((w) => [w.id, w.name])),
+};
 ---
 <figure class="wk" data-ebene="code" aria-label="Eure Werkzeuge: was auf eurem Mac läuft, was im Internet, und wie sie zusammenhängen">
   <div class="wk-ebenen" role="radiogroup" aria-label="Welche Verbindungen zeigen">
@@ -85,7 +91,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
           <ul class="wk-verbunden">
             {alle.map((v) => <li data-ebene={v.ebene}><strong>{name(v.von)} → {name(v.nach)}:</strong> {v.text}</li>)}
           </ul>
-          <p class="wk-keine" hidden>Auf dieser Ebene keine Verbindung.</p>
+          <p class="wk-keine" hidden>Auf dieser Ebene keine Verbindung. <button type="button" class="wk-zeigen"></button></p>
           <details class="wk-alle">
             <summary>Alle Verbindungen ({alle.length})</summary>
             <ul>
@@ -99,6 +105,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
       );
     })}
   </div>
+  <script type="application/json" class="wk-meta" set:html={JSON.stringify(meta)} />
   <script type="application/json" class="wk-daten" set:html={JSON.stringify(VERBINDUNGEN.map(({ von, nach, ebene, kurz }) => ({ von, nach, ebene, kurz })))} />
 </figure>
 
@@ -118,6 +125,8 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
 
   for (const karte of document.querySelectorAll<HTMLElement>('.wk')) {
     const daten: V[] = JSON.parse(karte.querySelector('.wk-daten')!.textContent || '[]');
+    const meta: { beste: Record<string, string>; ebenen: Record<string, string>; namen: Record<string, string> } =
+      JSON.parse(karte.querySelector('.wk-meta')!.textContent || '{}');
     const feld = karte.querySelector<HTMLElement>('.wk-feld')!;
     const svg = karte.querySelector<SVGSVGElement>('.wk-linien')!;
     const schrift = karte.querySelector<SVGSVGElement>('.wk-schrift')!;
@@ -129,6 +138,10 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
     const knoten = new Map([...karte.querySelectorAll<HTMLElement>('.wk-knoten')].map((k) => [k.dataset.id!, k]));
     const ebenenKnoepfe = [...karte.querySelectorAll<HTMLButtonElement>('.wk-ebene')];
     let auswahl = '';
+    // Hat jemand eine Ebene selbst gewählt, schaltet das Antippen nicht mehr um.
+    let bewusst = false;
+    // Ebene vor einem automatischen Wechsel – beim Schließen kehrt die Karte dorthin zurück.
+    let zurueck: HTMLButtonElement | null = null;
 
     const zeichnen = () => {
       const ebene = karte.dataset.ebene!;
@@ -277,6 +290,9 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
           if (!li.hidden) sichtbar++;
         }
         s.querySelector<HTMLElement>('.wk-keine')!.hidden = sichtbar > 0;
+        const zeigen = s.querySelector<HTMLButtonElement>('.wk-zeigen')!;
+        zeigen.dataset.ebene = meta.beste[auswahl];
+        zeigen.textContent = `Zeigen: „${meta.ebenen[meta.beste[auswahl]]}“`;
       }
       panel.toggleAttribute('data-offen', !!auswahl);
       panel.querySelector<HTMLElement>('.wk-hinweis')!.hidden = !!auswahl;
@@ -292,49 +308,54 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
         o.tabIndex = o === b ? 0 : -1;
       }
     };
-    const anzahl = (id: string, ebene: string) => daten.filter((d) => d.ebene === ebene && (d.von === id || d.nach === id)).length;
-
-    const waehlen = (id: string) => {
-      auswahl = auswahl === id ? '' : id;
-      wechsel.hidden = true;
-      if (auswahl) {
-        // Hat das Werkzeug auf der gezeigten Ebene keine Verbindung, zur Ebene mit den meisten wechseln –
-        // sonst bliebe die Grafik leer, obwohl es Verbindungen gibt.
-        if (anzahl(id, karte.dataset.ebene!) === 0) {
-          const beste = [...ebenenKnoepfe].sort((p, q) => anzahl(id, q.dataset.ebene!) - anzahl(id, p.dataset.ebene!))[0];
-          if (anzahl(id, beste.dataset.ebene!) > 0) {
-            ebeneAnzeigen(beste);
-            wechsel.textContent = `Gezeigt wird jetzt „${beste.textContent!.trim()}“ – dort liegen die Verbindungen von ${knoten.get(id)!.textContent!.trim()}.`;
-            wechsel.hidden = false;
-          }
-        }
-        // Neue Auswahl: Erklärung von oben, „Alle Verbindungen“ wieder zu.
-        const sektion = panel.querySelector<HTMLElement>(`section[data-detail="${id}"]`)!;
-        sektion.querySelector('details')?.removeAttribute('open');
-      }
-      markieren();
-      panel.scrollTop = 0;
-      if (!auswahl) return;
-      // Liegt der gewählte Kasten unter der Erklärung, ein Stück hochscrollen.
-      const r = knoten.get(id)!.getBoundingClientRect();
-      const frei = innerHeight - panel.offsetHeight - 16;
-      if (r.bottom > frei) window.scrollBy({ top: r.bottom - frei, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    };
+    const knopfFuer = (ebene: string) => ebenenKnoepfe.find((b) => b.dataset.ebene === ebene)!;
+    const hatVerbindung = (id: string, ebene: string) => daten.some((d) => d.ebene === ebene && (d.von === id || d.nach === id));
 
     const schliessen = () => {
       if (!auswahl) return;
       const vorher = knoten.get(auswahl)!;
       auswahl = '';
       wechsel.hidden = true;
+      // Automatisch gewechselt? Zurück zur Ebene davor.
+      if (zurueck) { ebeneAnzeigen(zurueck); zurueck = null; }
       markieren();
       vorher.focus();
     };
 
+    const waehlen = (id: string) => {
+      if (auswahl === id) return schliessen();
+      auswahl = id;
+      wechsel.hidden = true;
+      // Hat das Werkzeug auf der gezeigten Ebene keine Verbindung, zur Ebene mit den meisten wechseln – sonst bliebe
+      // die Grafik leer. Nicht, wenn jemand die Ebene selbst gewählt hat: Dann bietet die Erklärung den Wechsel an.
+      if (!bewusst && !hatVerbindung(id, karte.dataset.ebene!)) {
+        zurueck ??= knopfFuer(karte.dataset.ebene!);
+        ebeneAnzeigen(knopfFuer(meta.beste[id]));
+        wechsel.textContent = `Gezeigt wird jetzt „${meta.ebenen[meta.beste[id]]}“ – dort liegen die meisten Verbindungen von ${meta.namen[id]}.`;
+        wechsel.hidden = false;
+      }
+      // Neue Auswahl: Erklärung von oben, „Alle Verbindungen“ wieder zu.
+      panel.querySelector(`section[data-detail="${CSS.escape(id)}"] details`)?.removeAttribute('open');
+      markieren();
+      panel.scrollTop = 0;
+      // Liegt der gewählte Kasten unter der Erklärung, ein Stück hochscrollen.
+      const r = knoten.get(id)!.getBoundingClientRect();
+      const frei = innerHeight - panel.offsetHeight - 16;
+      if (r.bottom > frei) window.scrollBy({ top: r.bottom - frei, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    };
+
+    // Ebene, die jemand selbst wählt (Knopf oben oder „Zeigen: …“ in der Erklärung).
     const ebeneSetzen = (b: HTMLButtonElement) => {
+      bewusst = true;
+      zurueck = null;
       ebeneAnzeigen(b);
       wechsel.hidden = true;
       markieren();
     };
+    panel.addEventListener('click', (e) => {
+      const zeigen = (e.target as HTMLElement).closest<HTMLButtonElement>('.wk-zeigen');
+      if (zeigen) ebeneSetzen(knopfFuer(zeigen.dataset.ebene!));
+    });
     ebenenKnoepfe.forEach((b, i) => {
       b.addEventListener('click', () => ebeneSetzen(b));
       // Radiogruppe: Pfeiltasten wechseln die Ebene.
@@ -434,6 +455,9 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
   .wk-verbunden li { border-left: 3px solid var(--lc); padding-left: .5rem; }
   .wk-verbunden li[hidden] { display: none; }
   .wk-keine { margin: 0; color: var(--muted); }
+  .wk-zeigen { font: inherit; font-size: .88rem; margin-left: .3rem; padding: .1rem .55rem; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--bg-2); color: var(--fg); cursor: pointer; }
+  .wk-zeigen:hover { border-color: var(--fg); }
   .wk-wechsel { margin: 0 0 .4rem; font-size: .85rem; color: var(--lc); font-weight: 600; }
   .wk-alle { margin-top: .45rem; }
   .wk-alle summary { cursor: pointer; color: var(--muted); }
@@ -454,7 +478,7 @@ const ebeneName = (id: string) => EBENEN.find((e) => e.id === id)!.t;
     .wk-zelle { padding: .35rem .45rem; }
     .wk-knoten { font-size: .8rem; padding: .35rem .45rem; gap: .3rem; }
     .wk-schrift :global(.wk-etikett) { display: none; }
-    .wk-detail[data-offen] { bottom: 0; max-height: 40vh; border-radius: var(--radius) var(--radius) 0 0; }
+    .wk-detail[data-offen] { bottom: 0; max-height: max(40vh, 13rem); border-radius: var(--radius) var(--radius) 0 0; }
     .wk-detail dl { grid-template-columns: 1fr; gap: .05rem; }
     .wk-detail dd { margin-bottom: .35rem; }
     .wk-verbunden { grid-template-columns: 1fr; }
