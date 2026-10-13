@@ -36,10 +36,11 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
   <p class="small muted">Quellen: <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener">METR 2025</a> · <a href="https://metr.org/blog/2026-05-19-frontier-risk-report/" target="_blank" rel="noopener">METR, Mai 2026</a> · <a href="https://www.anthropic.com/research/AI-assistance-coding-skills" target="_blank" rel="noopener">Anthropic, Januar 2026</a> · <a href="https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/" target="_blank" rel="noopener">Stack Overflow, Oktober 2026</a></p>
 
   <h2>Design → Code</h2>
-  <p>Zwei Wege führen von einem Entwurf zu echtem Code. Beide ersetzen nicht das Spezifizieren – ein Entwurf sagt nicht, was beim Klick passieren soll –, aber sie ersetzen das Beschreiben von Aussehen.</p>
+  <p>Zwei Wege führen von einem Entwurf zu echtem Code: Claude Design, das ihr in Übung 9 benutzt habt, und Figma, der Weg im Innolab. Beide ersetzen nicht das Spezifizieren – ein Entwurf sagt nicht, was beim Klick passieren soll –, aber sie ersetzen das Beschreiben von Aussehen.</p>
   <h3>Claude Design – Entwürfe direkt aus Claude</h3>
   <p><strong>Claude Design</strong> ist Anthropics Werkzeug für Prototypen, Mockups und Präsentationen (ab dem Pro-Plan, in Claude unter <em>Design</em>). Es liest euer Repo und entwirft mit euren echten Bausteinen; ist der Entwurf fertig, liest Claude Code ihn über seinen Link. Ihr habt es in <a href="/tag-3#uebung-9">Übung 9</a> benutzt. Was bei der Übergabe mitreist und was nicht, steht unter <a href="/konzepte/design-system#uebergabe">Design-System</a>.</p>
-  <p>Im Innolab entsteht das Design dagegen in Figma, dem Werkzeug, das ihr schon könnt – der zweite Weg, und für euch der wichtigere.</p>
+  <h3>Figma – der Weg im Innolab</h3>
+  <p>Im Innolab entsteht das Design in Figma, dem Werkzeug, das ihr schon könnt. Für euch ist das der wichtigere Weg; darum hat er unten einen eigenen Abschnitt: <a href="#figma">Figma-MCP</a>.</p>
 
   <h2 id="figma">Figma-MCP – der Weg im Innolab</h2>
   <p>Über den <strong>Figma-MCP</strong> liest Claude einen Frame aus eurer Datei: den Aufbau, die Variablen (Farben, Abstände, Schriften), die Komponenten und einen Screenshot als Ziel. Daraus baut es die Seite mit euren Bausteinen nach. Seit 2026 geht es auch in die Gegenrichtung: Claude kann in Figma Frames und Komponenten anlegen und eure laufende App als bearbeitbare Ebenen nach Figma holen (unten).</p>
@@ -47,8 +48,8 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
 
   <h3 id="figma-einrichten">Einrichten</h3>
   <ol class="steps">
-    <li><strong>Figma-Konto</strong> Ihr habt den Education-Plan von Figma – damit sind 200 MCP-Abrufe am Tag drin. Meldet euch in Claude mit genau diesem Figma-Konto an. Mit einem privaten kostenlosen Konto erlaubt Figma nur eine Handvoll Abrufe im Monat, und eine einzige Seite nachzubauen braucht schon fünf bis zehn.</li>
-    <li><strong>Plugin</strong> Das Setup-Skript hat das offizielle Figma-Plugin installiert: den Server und Anleitungen (Skills), wie Claude Figma-Entwürfe umsetzt. Fehlt es: <code>/plugin install figma@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
+    <li><strong>Figma-Konto</strong> Ihr habt den Education-Plan von Figma. Wichtig ist der Platz (Seat) darin: Mit einem <em>Full</em>- oder <em>Dev</em>-Seat sind 200 MCP-Abrufe am Tag drin, mit einem <em>View</em>- oder <em>Collab</em>-Seat – wie mit einem privaten kostenlosen Konto – nur eine Handvoll im Monat. Eine einzige Seite nachzubauen braucht schon fünf bis zehn. Welchen Seat ihr habt, steht in Figma unter <em>Settings</em> bei eurem Team.</li>
+    <li><strong>Plugin</strong> In Claude <code>/plugin install figma@claude-plugins-official</code>, dann Claude neu starten. Wer das Setup-Skript ab dem 13.10. gestartet hat, hat es schon. Das offizielle Plugin von Figma bringt den Server und Anleitungen (Skills) mit, wie Claude Figma-Entwürfe umsetzt.</li>
     <li><strong>Anmelden</strong> In Claude <code>/mcp</code> → <em>plugin:figma:figma</em> → <em>Authenticate</em>, im Browser <em>Allow Access</em> – mit dem Konto, in dem eure Figma-Datei liegt.</li>
     <li><strong>Prüfen</strong> Mit dem Prompt unten.</li>
   </ol>
@@ -73,7 +74,7 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
     <li><strong>Einmal: Regeln in CLAUDE.md</strong> Damit Claude bei jedem Frame gleich vorgeht – auch in der nächsten Session.
       <Prompt label="Figma-Regeln festhalten">Schreib in CLAUDE.md einen kurzen Abschnitt „Figma“ mit diesen Regeln: Für jeden verlinkten Frame zuerst den Design-Kontext und einen Screenshot über den Figma-MCP holen. Ist die Antwort zu groß, nur die Teile des Frames holen, die gebraucht werden. Bestehende Komponenten aus src/components verwenden. Keine festen Farb-, Abstands- oder Schriftwerte, nur die Tokens aus globals.css und docs/DESIGN.md. Bilder und Icons aus Figma in public/ speichern; keine Figma-Bildadressen im Code, keine neuen Icon-Pakete. Am Ende die Seite im Browser öffnen und mit dem Screenshot vergleichen. Zeig mir den Abschnitt, bevor du ihn speicherst.</Prompt>
     </li>
-    <li><strong>Pro Issue: Frame verlinken</strong> In Figma Rechtsklick auf den Frame → <em>Copy link to selection</em>, den Link ins Linear-Issue. Klein schneiden: eine Karte oder ein Abschnitt pro Issue, nicht die ganze App.</li>
+    <li><strong>Pro Issue: Frame verlinken</strong> In Figma Rechtsklick auf den Frame → <em>Copy/Paste as</em> → <em>Copy link to selection</em>, den Link ins Linear-Issue. Klein schneiden: eine Karte oder ein Abschnitt pro Issue, nicht die ganze App.</li>
     <li><strong>Bauen lassen</strong>
       <Prompt label="Issue mit Figma-Frame" note="Statt [Kennung] die Kennung des Issues; der Figma-Link steht im Issue.">Lies das Issue [Kennung] über den Linear-MCP und hol dir den verlinkten Figma-Frame über den Figma-MCP – Design-Kontext und Screenshot. Bau ihn mit unseren Komponenten und den Tokens aus globals.css, nicht mit festen Werten. Was der Entwurf nicht zeigt – Klick, Laden, leer, Fehler, Handy –, fragst du mich, bevor du es erfindest. Öffne die Seite danach im Browser, vergleiche sie mit dem Screenshot aus Figma und liste die Abweichungen auf.</Prompt>
     </li>
@@ -84,7 +85,7 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
   <p>Seit 2026 kann Claude über denselben Server auch in Figma schreiben. Zwei Fälle sind für euch interessant:</p>
   <ul>
     <li><strong>Eure App nach Figma holen.</strong> Claude startet die App lokal und schickt eine Seite als bearbeitbare Ebenen in eine neue Figma-Datei. So startet ihr im Innolab nicht bei null, sondern mit eurem Kurs-Prototyp – und entwerft in Figma weiter.</li>
-    <li><strong>In Figma anlegen lassen.</strong> Frames, Komponenten oder Variablen aus einer Beschreibung oder aus eurem Code, z. B. „leg die Tokens aus globals.css als Variablen in unserer Figma-Datei an“.</li>
+    <li><strong>In Figma anlegen lassen.</strong> Frames, Komponenten oder Variablen aus einer Beschreibung oder aus eurem Code, z. B. „leg die Tokens aus globals.css als Variablen in einer neuen Figma-Datei an“.</li>
   </ul>
   <Prompt label="App nach Figma">Starte die App lokal und hol die Startseite über den Figma-MCP als bearbeitbare Ebenen in eine neue Figma-Datei. Sag mir danach den Link.</Prompt>
   <p class="small muted">Das Schreiben ist noch Beta: Figma will es später nach Nutzung abrechnen; bestehende Dateien bearbeiten geht nur mit einem Full-Seat, Bilder und eigene Schriften kommen noch nicht mit.</p>
@@ -95,7 +96,7 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
       <dt>„… exceeds maximum allowed tokens“</dt>
       <dd><p>Der Frame ist zu groß für eine Antwort. Wählt einen kleineren Teil – eine Karte statt der ganzen Seite – und verlinkt den.</p></dd>
       <dt>Nach ein paar Abrufen ist Schluss</dt>
-      <dd><p>Claude ist mit einem privaten Figma-Konto verbunden statt mit dem Education-Konto. In <code>/mcp</code> die Figma-Verbindung trennen und mit dem richtigen Konto neu anmelden.</p></dd>
+      <dd><p>Entweder ist Claude mit einem privaten Figma-Konto verbunden statt mit dem Education-Konto – dann in <code>/mcp</code> die Figma-Verbindung trennen und mit dem richtigen Konto neu anmelden. Oder ihr habt im Education-Team nur einen View- oder Collab-Seat – dann bittet die Person, die das Team verwaltet, um einen Full-Seat.</p></dd>
       <dt>Claude findet keine Figma-Werkzeuge</dt>
       <dd><p>In <code>/mcp</code> nachsehen, ob <em>plugin:figma:figma</em> verbunden ist; sonst neu anmelden und Claude neu starten.</p></dd>
       <dt>Bilder sind nach ein paar Tagen weg</dt>
