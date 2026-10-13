@@ -1,0 +1,130 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Callout from '../../components/Callout.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
+import Prompt from '../../components/Prompt.astro';
+import FooterNav from '../../components/FooterNav.astro';
+---
+<Layout title="Backlog im Team: Linear">
+  <span class="eyebrow">Ergänzung zu Konzept 9 · Tag 3</span>
+  <h1>Backlog im Team: Linear</h1>
+  <p class="lead">Allein reicht eine Datei für den Backlog. Sobald ihr zu dritt an einem Produkt arbeitet, braucht ihr eine Liste, die alle gleichzeitig sehen – mit festen Nummern, klarem Status und der Info, wer gerade woran sitzt. Dafür gibt es Linear. Für den Team-Sprint an Tag 3 reichen sechs Wörter; der Rest dieser Seite ist für das Innolab.</p>
+  <Wichtigste>
+    <ul>
+      <li>Ein Issue in Linear ist dasselbe Issue wie in <code>docs/BACKLOG.md</code> – nur mit fester Kennung (z. B. <code>LEI-5</code>), und alle im Team sehen es.</li>
+      <li>Issues liegen an genau einem Ort: in Linear <strong>oder</strong> in der Datei, nie an beiden.</li>
+      <li>Claude liest Issues, setzt den Status und schreibt Kommentare. Anlegen und Abschließen tut es nur nach eurem Okay.</li>
+    </ul>
+  </Wichtigste>
+
+  <h2 id="was-sich-aendert">Was sich ändert, was bleibt</h2>
+  <p>Das Format eurer Issues bleibt genau so, wie ihr es kennt: Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn. Es wechselt nur der Ort.</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Von docs/BACKLOG.md zu Linear">
+    <table>
+      <tr><th>Bisher in <code>docs/BACKLOG.md</code></th><th>In Linear</th></tr>
+      <tr><td>die Datei</td><td>das <strong>Team</strong>, z. B. „Leihbar Team“</td></tr>
+      <tr><td>„Issue 6“</td><td>die <strong>Kennung</strong> <code>LEI-6</code> – bleibt, auch wenn ihr umsortiert</td></tr>
+      <tr><td>die Überschrift eines Issues</td><td>der <strong>Titel</strong></td></tr>
+      <tr><td>Ziel, Nicht im Umfang, Akzeptanzkriterien, Fertig, wenn</td><td>die <strong>Beschreibung</strong>, mit denselben vier Überschriften</td></tr>
+      <tr><td>offen · in Arbeit · fertig</td><td>der <strong>Status</strong>: Todo · In Progress · In Review · Done (und Canceled für „doch nicht“)</td></tr>
+      <tr><td>das MVP aus dem Produkt-Brief</td><td>Issues im Status Todo, gesammelt in einem <strong>Project</strong> mit dem Namen eures Produkts</td></tr>
+      <tr><td>„ich“ – es gab nur euch</td><td>der <strong>Assignee</strong>: wer das Issue gerade umsetzt</td></tr>
+      <tr><td>Claudes Belege im Chat</td><td>ein <strong>Kommentar</strong> am Issue, mit dem Link zum Pull Request</td></tr>
+    </table>
+  </div>
+  <p><strong>Was im Repo bleibt:</strong> der Produkt-Brief (<code>docs/PRODUKT.md</code>) mit den Ideen für Später und eure Entscheidungen (<code>docs/ENTSCHEIDUNGEN.md</code>). Claude liest beide bei jeder Session; in Linear stehen nur die Issues, an denen ihr wirklich arbeitet.</p>
+
+  <h2 id="begriffe">Die Begriffe, die ihr jetzt braucht</h2>
+  <dl class="begriffe">
+    <dt>Workspace</dt>
+    <dd><p>Das Haus eures Teams in Linear, mit eigener Adresse (z. B. <code>linear.app/leihbar-team</code>). Wer eingeladen ist, sieht alles darin.</p></dd>
+    <dt>Team</dt>
+    <dd><p>Eine Gruppe von Menschen mit einer gemeinsamen Liste von Issues. Jedes Team hat ein Kürzel – bei Leihbar <code>LEI</code>.</p></dd>
+    <dt>Issue</dt>
+    <dd><p>Eine Aufgabe, so groß wie ein Durchgang mit Claude. Genau das, was ihr schon kennt.</p></dd>
+    <dt>Kennung</dt>
+    <dd><p>Kürzel plus Nummer, z. B. <code>LEI-5</code>. Damit findet Claude das Issue, und damit redet ihr im Team darüber.</p></dd>
+    <dt>Status</dt>
+    <dd><p>Wo das Issue steht: <em>Todo</em> (dran, aber noch niemand arbeitet), <em>In Progress</em> (jemand baut), <em>In Review</em> (der Pull Request wartet auf einen Blick), <em>Done</em> (fertig). <em>Backlog</em> heißt in Linear: noch nicht dran.</p></dd>
+    <dt>Assignee</dt>
+    <dd><p>Die Person, die das Issue gerade übernommen hat. So arbeiten nie zwei an derselben Sache.</p></dd>
+  </dl>
+  <details class="fallback" id="begriffe-spaeter">
+    <summary>Später, im Innolab: Project, Cycle und der Rest</summary>
+    <dl class="begriffe">
+      <dt>Project</dt>
+      <dd><p>Ein Vorhaben mit Ziel und Enddatum, z. B. „Leihbar MVP“. Ein Team hat viele Issues; ein Project bündelt die, die zusammen ein Ziel erreichen. Faustregel: Team = wer arbeitet, Project = woran.</p></dd>
+      <dt>Milestone</dt>
+      <dd><p>Eine Etappe innerhalb eines Projects, z. B. „Erster Nutzertest“.</p></dd>
+      <dt>Cycle</dt>
+      <dd><p>Linears Wort für einen Sprint: ein fester Zeitraum, meist ein oder zwei Wochen, für den ihr euch Issues vornehmt. Im Innolab passt ein Cycle pro Woche.</p></dd>
+      <dt>Priority</dt>
+      <dd><p>Dringend, hoch, mittel, niedrig – nur zum Sortieren, wenn mehr Issues auf Todo stehen, als ihr schafft.</p></dd>
+      <dt>Labels</dt>
+      <dd><p>Schlagworte wie „Bug“ oder „Design“, zum Filtern.</p></dd>
+      <dt>Sub-issue und Relations</dt>
+      <dd><p>Ein Issue kann Unter-Issues haben oder ein anderes „blockieren“. Meist besser: ein großes Issue in zwei normale teilen.</p></dd>
+      <dt>Views und Triage</dt>
+      <dd><p>Gespeicherte Filter („alles von mir, was offen ist“) und ein Eingangskorb für Wünsche von außen. Braucht ihr im Innolab noch nicht.</p></dd>
+    </dl>
+  </details>
+
+  <h2 id="verbinden">Claude mit Linear verbinden</h2>
+  <ol class="steps">
+    <li><strong>Plugin</strong> Das Setup-Skript hat das Linear-Plugin installiert. Fehlt es: <code>/plugin install linear@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
+    <li><strong>Anmelden</strong> In Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>. Im Browser mit genau dem Konto anmelden, mit dem ihr in Linear eingeladen seid.</li>
+    <li><strong>Prüfen</strong> Mit dem Prompt unten: Claude sagt euch, welchen Workspace und welche Teams es sieht.</li>
+  </ol>
+  <Prompt label="Verbindung prüfen">Prüf über den Linear-MCP, womit du verbunden bist: Workspace, Teams mit Kennung, mein Benutzername. Ändere nichts.</Prompt>
+  <p class="small">Sieht Claude den falschen Workspace, weil ihr im Browser mit einem anderen Google-Konto angemeldet wart: in <code>/mcp</code> die Verbindung trennen und mit dem richtigen Konto neu anmelden.</p>
+
+  <h2 id="was-claude-darf">Was Claude in Linear tut – und was nicht</h2>
+  <ul>
+    <li><strong>Lesen:</strong> Claude holt sich das Issue per Kennung, nie aus dem Gedächtnis.</li>
+    <li><strong>Status:</strong> zu Beginn In Progress, wenn der Pull Request steht In Review, Done erst nach eurem „fertig“.</li>
+    <li><strong>Kommentieren:</strong> die Belege je Akzeptanzkriterium und den Link zum Pull Request – so sieht das ganze Team, was geprüft wurde.</li>
+    <li><strong>Anlegen:</strong> nur, nachdem Claude euch die Liste gezeigt hat und ihr Okay sagt. Vorher sucht es nach einem Issue mit gleichem Titel.</li>
+    <li><strong>Nie:</strong> Issues löschen (stattdessen Canceled mit einem Satz, warum) oder Issues ändern, die jemand anderem zugewiesen sind.</li>
+  </ul>
+  <Callout type="warn" title="Euer Okay, auch in Auto Mode">
+    <p>Im normalen Modus fragt Claude Code, bevor es in Linear etwas ändert – lest kurz, was es tun will, dann Ja. In Auto Mode kann es ohne Nachfrage handeln. Darum steht in eurer <code>CLAUDE.md</code> die Regel, dass Claude vor dem Anlegen die Liste zeigt und auf euer Okay wartet. Gebt es erst, wenn die Liste stimmt.</p>
+  </Callout>
+  <p><strong>Branch und Pull Request:</strong> Claude nennt den Branch nach der Kennung, z. B. <code>lei-5-beschreibung</code>. Ist Linear mit GitHub verbunden, erkennt Linear den Pull Request an der Kennung, hängt ihn ans Issue und setzt es nach dem Zusammenführen von selbst auf Done. In Review setzt Claude – oder ihr selbst. Ohne Verbindung schreibt Claude den Link als Kommentar ins Issue.</p>
+
+  <h2 id="umzug">Euer eigener Backlog nach Linear</h2>
+  <p>Für euer eigenes Produkt – im Innolab oder danach – zieht ihr den Backlog aus <code>docs/BACKLOG.md</code> mit einem Befehl um. Claude prüft die Verbindung, fragt nach Team und Projekt, zeigt euch die Liste und legt erst nach eurem Okay an. Danach steht in <code>docs/BACKLOG.md</code> nur noch der Verweis „Issues: Linear“, und alle Befehle des Kurses arbeiten mit Linear.</p>
+  <Prompt label="In Claude">/ndu-linear</Prompt>
+  <details class="fallback" id="ndu-linear-fehlt">
+    <summary>Claude kennt <code>/ndu-linear</code> nicht?</summary>
+    <p>Dann ist euer Repo älter als der Befehl. Claude holt ihn nach, zusammen mit den Befehlen, die jetzt Linear lesen:</p>
+    <Prompt>Prüf zuerst mit git status und git diff, ob ich an .claude/commands/ndu-brainstorm.md, ndu-check.md oder ndu-review.md selbst etwas geändert habe – wenn ja, hör auf und sag es mir. Sonst führ im Terminal genau diesen Befehl aus: for f in ndu-linear ndu-brainstorm ndu-check ndu-review; do curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-projekt/main/.claude/commands/$f.md -o .claude/commands/$f.md; done; curl -fsSL https://raw.githubusercontent.com/markesdo/ndu-projekt/main/docs/LINEAR.md -o docs/LINEAR.md – dann committe nur diese fünf Dateien mit der Nachricht „Linear-Befehle aus der Vorlage geholt“ und push. Ändere sonst nichts.</Prompt>
+    <p>Danach Claude beenden (<kbd>Strg</kbd> <kbd>C</kbd> zweimal) und mit <code>claude</code> neu starten. Beim ersten Lauf bringt <code>/ndu-linear</code> auch eure <code>CLAUDE.md</code> auf den neuen Stand: Es bindet die Regeln aus <code>docs/LINEAR.md</code> ein und passt die zwei alten Stellen an, die noch nur von <code>docs/BACKLOG.md</code> sprechen.</p>
+  </details>
+  <p>Neue Funktionen kommen danach wie gewohnt aus <code>/ndu-brainstorm</code> – nur legt Claude die Issues jetzt in Linear an.</p>
+
+  <h2 id="prompts">Prompts für den Alltag</h2>
+  <Prompt label="Nächstes Issue wählen">Zeig mir aus Linear, Team [Kürzel, z. B. LEI], alle Issues im Status Todo, die niemandem oder mir zugewiesen sind: Kennung, Titel, Priorität. Schlag eines vor und sag in einem Satz, warum. Ich entscheide.</Prompt>
+  <Prompt label="Issue umsetzen" note="Statt [LEI-5] die Kennung eures Issues.">Hol dir über den Linear-MCP das Issue [LEI-5]. Wenn etwas unklar ist, frag zuerst. Setz es auf In Progress und weis es mir zu. Leg einen Branch an, der mit der Kennung beginnt, und setz das Issue dort um. Zeig mir für jedes Akzeptanzkriterium einen Beleg.</Prompt>
+  <Prompt label="Pull Request ins Issue" note="Statt [URL] den Link zum Pull Request, statt [LEI-5] die Kennung.">Der Pull Request ist [URL]. Schreib in [LEI-5] einen Kommentar: der Link, je Akzeptanzkriterium ein Satz, was ich im Browser prüfen soll, und was nicht umgesetzt ist. Setz [LEI-5] auf In Review. Ändere kein anderes Issue.</Prompt>
+  <Prompt label="Issues aus dem Brief">Lies docs/PRODUKT.md. Schlag für jedes MVP-Stichwort in Abschnitt 5, zu dem es in Linear noch kein Issue gibt, Titel, Ziel, Nicht im Umfang, 3–5 Akzeptanzkriterien (Gegeben … wenn … dann …, mindestens ein Negativfall) und Fertig, wenn vor. Leg nichts an, bis ich Okay sage. Dann: Status Todo, in unserem Projekt, niemandem zugewiesen.</Prompt>
+  <Prompt label="Aufräumen">Lies alle Issues in unserem Team, auch Backlog und Done. Nenn mir Paare, die dasselbe meinen, und Issues ohne Akzeptanzkriterien. Schlag je Paar vor, welches bleibt und welches auf Canceled geht, mit dem Kommentar „Duplikat von [Kennung]“. Ändere nichts, bis ich je Punkt Okay sage.</Prompt>
+  <Prompt label="Im Innolab: Issue mit Figma-Entwurf" note="Statt [Kennung] die Kennung des Issues; das Figma-Frame hängt im Issue als Link.">Lies das Issue [Kennung] über den Linear-MCP. Hol dir das verlinkte Figma-Frame über den Figma-MCP. Setz das Issue auf einem Branch um, der mit der Kennung beginnt, erfülle alle Akzeptanzkriterien, erstelle einen Pull Request mit einer Beschreibung, die ohne Programmierkenntnisse verständlich ist, und setz das Issue auf In Review.</Prompt>
+
+  <h2 id="stolpersteine">Stolpersteine</h2>
+  <dl class="begriffe">
+    <dt>Doppelte Issues</dt>
+    <dd><p>Bricht Claude beim Anlegen ab und versucht es noch einmal, gibt es das Issue manchmal zweimal. Darum sucht Claude vorher nach dem Titel. Passiert es trotzdem: eines auf Canceled, mit „Duplikat von …“.</p></dd>
+    <dt>Falsches Konto</dt>
+    <dd><p>Im Browser mit einem anderen Google-Konto angemeldet als dem eingeladenen? Dann sieht Claude einen anderen Workspace oder gar keinen. In <code>/mcp</code> trennen und neu anmelden.</p></dd>
+    <dt>Status fehlt</dt>
+    <dd><p>Fehlt in eurem Team der Status „In Review“ (bei manchen neuen Workspaces ist das so), legt ihn an unter <em>Settings → Teams → [Team] → Issue statuses</em>, bei <em>Started</em> mit +.</p></dd>
+    <dt>Gast statt Mitglied</dt>
+    <dd><p>Wer als Gast eingeladen ist, darf weniger. Im Team alle als Mitglied einladen.</p></dd>
+  </dl>
+
+  <Callout type="concept" title="Der eine Satz zum Mitnehmen">
+    <p>Linear ändert nicht, wie ihr Issues schreibt – nur, dass das ganze Team sie sieht und Claude den Stand selbst nachträgt.</p>
+  </Callout>
+
+  <FooterNav prev={{ href: '/tag-3#linear', t: 'Tag 3 · Linear verbinden' }} next={{ href: '/tag-3#uebung-10-b', t: 'Übung 10 · Bauen' }} />
+</Layout>

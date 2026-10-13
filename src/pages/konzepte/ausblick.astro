@@ -53,9 +53,7 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
     { t: 'Ihr', sub: 'prüft und nehmt ab', icon: UserCheck },
   ]} />
   <p>Eure Rolle in dieser Kette: Issues schreiben, Designs abnehmen, PRs prüfen – Product Owner. Linear kann Issues sogar direkt einem Agenten zuweisen, der autonom arbeitet und zurückmeldet.</p>
-  <p>Linear kommt als Plugin – am Mac hat es das Setup-Skript schon installiert. Verbinden: in Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser bei Linear anmelden. Fehlt es, einmal installieren:</p>
-  <Prompt label="Linear-Plugin installieren (nur ohne Setup-Skript)">/plugin install linear@claude-plugins-official</Prompt>
-  <Prompt>Lies Linear-Issue NDU-42 über den Linear-MCP. Hol dir das verlinkte Figma-Frame über den Figma-MCP. Setze das Issue in einem neuen Branch um, erfülle alle Akzeptanzkriterien, erstelle einen Pull Request mit einer Beschreibung, die ohne Programmierkenntnisse verständlich ist, und setze das Issue auf „In Review“.</Prompt>
+  <p>Wie ihr Claude mit Linear verbindet, was Project, Cycle und Co. bedeuten und wie ihr euren eigenen Backlog umzieht: <a href="/konzepte/linear">Backlog im Team: Linear</a>.</p>
 
   <h2>Agent-Teams & parallele Arbeit</h2>
   <p>Mehrere Agenten gleichzeitig: einer baut das Frontend eines Issues, einer das Backend, einer schreibt die Tests, ein vierter reviewt. Claude Code hat dafür zwei Bausteine:</p>

@@ -27,6 +27,15 @@ import Prompt from '../components/Prompt.astro';
   <Prompt label="TDD (Test-Driven Development)" note="TDD heißt: erst Tests aus den Akzeptanzkriterien, dann die Funktion, bis alle Tests bestehen. Mehr dazu unter „Vom Prototyp zum Produkt“.">Setze Issue [Nummer] nach TDD um: Schreib zuerst Playwright-Tests für alle Akzeptanzkriterien und führe sie aus – sie müssen rot sein. Dann baue die Funktion, bis alle Tests grün sind. Ändere die Tests dabei nicht, außer du erklärst mir warum.</Prompt>
   <Prompt label="KI-Feature (Issue 8)">Setze Issue 8 um: Beim Anbieten eines Gegenstands gibt es einen Button „Beschreibung vorschlagen“, der aus Titel, Kategorie und Ort mit der Claude-API (Modell claude-sonnet, Key aus ANTHROPIC_API_KEY, nur im Backend) eine Beschreibung in 2–3 Sätzen generiert. Begrenze auf 5 Aufrufe pro Minute und Person. Frag zuerst, wenn etwas unklar ist.</Prompt>
 
+  <h2>Im Team mit Linear</h2>
+  <p class="small">Erklärt auf <a href="/konzepte/linear">Backlog im Team: Linear</a>.</p>
+  <Prompt label="Verbindung prüfen">Prüf über den Linear-MCP, womit du verbunden bist: Workspace, Teams mit Kennung, mein Benutzername. Ändere nichts.</Prompt>
+  <Prompt label="Backlog nach Linear umziehen">/ndu-linear</Prompt>
+  <Prompt label="Nächstes Issue wählen">Zeig mir aus Linear, Team [Kürzel, z. B. LEI], alle Issues im Status Todo, die niemandem oder mir zugewiesen sind: Kennung, Titel, Priorität. Schlag eines vor und sag in einem Satz, warum. Ich entscheide.</Prompt>
+  <Prompt label="Issue aus Linear umsetzen">Hol dir über den Linear-MCP das Issue [LEI-5]. Wenn etwas unklar ist, frag zuerst. Setz es auf In Progress und weis es mir zu. Leg einen Branch an, der mit der Kennung beginnt, und setz das Issue dort um. Zeig mir für jedes Akzeptanzkriterium einen Beleg.</Prompt>
+  <Prompt label="Pull Request ins Issue">Der Pull Request ist [URL]. Schreib in [LEI-5] einen Kommentar: der Link, je Akzeptanzkriterium ein Satz, was ich im Browser prüfen soll, und was nicht umgesetzt ist. Setz [LEI-5] auf In Review. Ändere kein anderes Issue.</Prompt>
+  <Prompt label="Issue mit Figma-Entwurf (Innolab)">Lies das Issue [Kennung] über den Linear-MCP. Hol dir das verlinkte Figma-Frame über den Figma-MCP. Setz das Issue auf einem Branch um, der mit der Kennung beginnt, erfülle alle Akzeptanzkriterien, erstelle einen Pull Request mit einer Beschreibung, die ohne Programmierkenntnisse verständlich ist, und setz das Issue auf In Review.</Prompt>
+
   <h2>Prüfen & Debuggen</h2>
   <Prompt label="Qualitätsprüfung">/ndu-check</Prompt>
   <Prompt label="Debug">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [Schritte]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
