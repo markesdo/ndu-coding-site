@@ -47,8 +47,8 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
 
   <h3 id="figma-einrichten">Einrichten</h3>
   <ol class="steps">
-    <li><strong>Figma-Konto</strong> Beantragt den kostenlosen <a href="https://www.figma.com/education/" target="_blank" rel="noopener">Education-Plan</a> für Studierende. Mit dem kostenlosen Starter-Plan erlaubt Figma nur eine Handvoll MCP-Abrufe im Monat – eine einzige Seite nachzubauen braucht schon fünf bis zehn. Mit einem Dev- oder Full-Seat sind es 200 am Tag.</li>
-    <li><strong>Plugin</strong> In Claude <code>/plugin install figma@claude-plugins-official</code>, dann Claude neu starten. Das offizielle Plugin von Figma bringt den Server und Anleitungen (Skills) mit, wie Claude Figma-Entwürfe umsetzt.</li>
+    <li><strong>Figma-Konto</strong> Ihr habt den Education-Plan von Figma – damit sind 200 MCP-Abrufe am Tag drin. Meldet euch in Claude mit genau diesem Figma-Konto an. Mit einem privaten kostenlosen Konto erlaubt Figma nur eine Handvoll Abrufe im Monat, und eine einzige Seite nachzubauen braucht schon fünf bis zehn.</li>
+    <li><strong>Plugin</strong> Das Setup-Skript hat das offizielle Figma-Plugin installiert: den Server und Anleitungen (Skills), wie Claude Figma-Entwürfe umsetzt. Fehlt es: <code>/plugin install figma@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
     <li><strong>Anmelden</strong> In Claude <code>/mcp</code> → <em>plugin:figma:figma</em> → <em>Authenticate</em>, im Browser <em>Allow Access</em> – mit dem Konto, in dem eure Figma-Datei liegt.</li>
     <li><strong>Prüfen</strong> Mit dem Prompt unten.</li>
   </ol>
@@ -95,7 +95,7 @@ import Zahlen2026 from '../../components/Zahlen2026.astro';
       <dt>„… exceeds maximum allowed tokens“</dt>
       <dd><p>Der Frame ist zu groß für eine Antwort. Wählt einen kleineren Teil – eine Karte statt der ganzen Seite – und verlinkt den.</p></dd>
       <dt>Nach ein paar Abrufen ist Schluss</dt>
-      <dd><p>Ihr seid mit einem Starter-Konto angemeldet. Education-Plan beantragen, dann in <code>/mcp</code> neu anmelden.</p></dd>
+      <dd><p>Claude ist mit einem privaten Figma-Konto verbunden statt mit dem Education-Konto. In <code>/mcp</code> die Figma-Verbindung trennen und mit dem richtigen Konto neu anmelden.</p></dd>
       <dt>Claude findet keine Figma-Werkzeuge</dt>
       <dd><p>In <code>/mcp</code> nachsehen, ob <em>plugin:figma:figma</em> verbunden ist; sonst neu anmelden und Claude neu starten.</p></dd>
       <dt>Bilder sind nach ein paar Tagen weg</dt>
