@@ -32,8 +32,8 @@ describe('pr-weg-steps', () => {
   });
 
   it('der rote Build macht auch die Vorschau kaputt, der dritte Commit repariert beides', () => {
-    expect(stateAt(6)).toMatchObject({ pruefung: 'rot', vorschau: 'fehler', commits: 2 });
-    expect(stateAt(7)).toMatchObject({ pruefung: 'ok', vorschau: 'bereit', commits: 3, gepusht: 3 });
+    expect(stateAt(6)).toMatchObject({ lint: 'ok', build: 'rot', vorschau: 'fehler', commits: 2 });
+    expect(stateAt(7)).toMatchObject({ lint: 'ok', build: 'ok', vorschau: 'bereit', commits: 3, gepusht: 3 });
   });
 
   it('live ändert sich erst mit dem Merge', () => {
@@ -57,6 +57,14 @@ describe('pr-weg-steps', () => {
     expect(stateAt(10).macAktuell).toBe(false);
     expect(stateAt(11).macAktuell).toBe(true);
     for (const s of ALLE.slice(0, 9)) expect(stateAt(s).macAktuell).toBe(true);
+  });
+
+  it('hervorgehoben ist, wo sich im Schritt etwas ändert', () => {
+    expect(zustaende.map((z) => z.aktiv)).toStrictEqual(['git', 'git', 'git', 'git', 'github', 'github', 'github', 'vercel', 'github', 'vercel', null]);
+  });
+
+  it('die Vorschau bleibt nach dem Aufräumen bestehen (Vercel löscht sie nicht mit dem Branch)', () => {
+    expect(stateAt(11).vorschau).toBe('bereit');
   });
 
   it('nur der letzte Schritt zeigt alles gleichzeitig, und dort ist der Branch gelöscht', () => {

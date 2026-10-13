@@ -15,8 +15,9 @@ export interface Zustand {
   /** Davon schon auf GitHub (gepusht); die übrigen liegen nur auf eurem Mac. */
   gepusht: number;
   pr: 'keiner' | 'offen' | 'gemergt';
-  /** Prüfungen am Pull Request: Lint und Build (GitHub Actions). */
-  pruefung: Pruefung;
+  /** Prüfungen am Pull Request (GitHub Actions). Am Tippfehler scheitert nur der Build, nicht Lint. */
+  lint: Pruefung;
+  build: Pruefung;
   /** Vercel baut jeden gepushten Stand des Branches unter einer eigenen Adresse. */
   vorschau: Vorschau;
   review: 'keiner' | 'freigegeben';
@@ -46,7 +47,8 @@ const START: Zustand = {
   commits: 0,
   gepusht: 0,
   pr: 'keiner',
-  pruefung: 'aus',
+  lint: 'aus',
+  build: 'aus',
   vorschau: 'aus',
   review: 'keiner',
   gemergt: false,
@@ -59,21 +61,22 @@ const START: Zustand = {
 const BRANCH_DA: Zustand = { ...START, branch: true, issue: 'In Progress' };
 const GEPUSHT: Zustand = { ...BRANCH_DA, commits: 2, gepusht: 2, vorschau: 'baut' };
 const PR_OFFEN: Zustand = { ...GEPUSHT, pr: 'offen', issue: 'In Review' };
-const GRUEN: Zustand = { ...PR_OFFEN, commits: 3, gepusht: 3, pruefung: 'ok', vorschau: 'bereit' };
+const GRUEN: Zustand = { ...PR_OFFEN, aktiv: 'github', commits: 3, gepusht: 3, lint: 'ok', build: 'ok', vorschau: 'bereit' };
 const GEMERGT: Zustand = { ...GRUEN, review: 'freigegeben', gemergt: true, pr: 'gemergt', live: 'neu', macAktuell: false };
 
 const ZUSTAENDE: Zustand[] = [
   START,
   BRANCH_DA,
   { ...BRANCH_DA, commits: 2 },
+  // Hervorgehoben bleibt der Graph: Dass sich die Punkte füllen, ist die Lektion dieses Schritts.
   GEPUSHT,
-  { ...PR_OFFEN, aktiv: 'github', pruefung: 'laeuft' },
-  { ...PR_OFFEN, aktiv: 'github', pruefung: 'rot', vorschau: 'fehler' },
+  { ...PR_OFFEN, aktiv: 'github', lint: 'laeuft', build: 'laeuft' },
+  { ...PR_OFFEN, aktiv: 'github', lint: 'ok', build: 'rot', vorschau: 'fehler' },
   GRUEN,
   { ...GRUEN, aktiv: 'vercel' },
   { ...GRUEN, aktiv: 'github', review: 'freigegeben' },
   { ...GEMERGT, aktiv: 'vercel' },
-  { ...GEMERGT, aktiv: null, geloescht: true, vorschau: 'aus', macAktuell: true, issue: 'Done' },
+  { ...GEMERGT, aktiv: null, geloescht: true, macAktuell: true, issue: 'Done' },
 ];
 
 export const STEPS: Schritt[] = [
@@ -99,5 +102,5 @@ export function stateAt(step: number): Zustand {
 
 /** Kursregel: Zusammenführen erst, wenn die Prüfungen grün sind und jemand freigegeben hat. */
 export function mergeBereit(z: Zustand): boolean {
-  return z.pr === 'offen' && z.pruefung === 'ok' && z.vorschau === 'bereit' && z.review === 'freigegeben';
+  return z.pr === 'offen' && z.lint === 'ok' && z.build === 'ok' && z.vorschau === 'bereit' && z.review === 'freigegeben';
 }

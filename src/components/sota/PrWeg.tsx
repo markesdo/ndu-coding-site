@@ -165,8 +165,6 @@ function Check({ name, status }: { name: string; status: Pruefung }) {
 }
 
 function GitHubKarte({ z }: { z: Zustand }) {
-  // Lint ist am Tippfehler nicht gescheitert – nur der Build.
-  const lint: Pruefung = z.pruefung === 'rot' ? 'ok' : z.pruefung;
   return (
     <section className={klasse(z, 'github', 'pw-feld pw-karte')} aria-label="GitHub">
       <div className="pw-kopf"><GitPullRequest aria-hidden="true" /> GitHub</div>
@@ -179,9 +177,9 @@ function GitHubKarte({ z }: { z: Zustand }) {
           <div className="pw-pr-titel">PR #12 · {ISSUE} Beschreibung anzeigen</div>
           <div className="pw-klein">{z.commits} Commits · 3 Dateien geändert</div>
           <ul className="pw-checks">
-            <Check name="Lint" status={lint} />
-            <Check name="Build" status={z.pruefung} />
-            <Check name="Vercel" status={VORSCHAU_PRUEF[z.vorschau === 'aus' && z.gemergt ? 'bereit' : z.vorschau]} />
+            <Check name="Lint" status={z.lint} />
+            <Check name="Build" status={z.build} />
+            <Check name="Vercel" status={VORSCHAU_PRUEF[z.vorschau]} />
           </ul>
           <div className="pw-klein">Review: {z.review === 'freigegeben' ? <strong>freigegeben</strong> : '–'}</div>
           <div className={`pw-merge ${z.pr === 'gemergt' ? 'pw-merge-fertig' : mergeBereit(z) ? 'pw-merge-bereit' : ''}`}>
