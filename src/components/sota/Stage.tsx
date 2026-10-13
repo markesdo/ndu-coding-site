@@ -107,6 +107,7 @@ export default function Stage({ title, steps, children }: StageProps) {
         <span className="stage-title">{title}</span>
         <span className="stage-count">
           {nav.index + 1} / {steps.length}
+          <span className="stage-tasten" aria-hidden="true">· ← →</span>
         </span>
       </div>
       {/* Jeder Schritt (Szene + Beschriftung) liegt einmal unsichtbar in derselben Rasterzelle: Die Zelle ist so hoch

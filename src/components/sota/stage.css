@@ -22,12 +22,20 @@
 .stage-body { display: grid; }
 .stage-body > * { grid-area: 1 / 1; min-width: 0; }
 .stage-mass { visibility: hidden; }
-.stage-caption { margin-top: 1rem; }
+.stage-caption { margin-top: .75rem; }
 /* Unsichtbare Kopien aller Beschriftungen – nur am Handy aktiv (siehe unten). */
 .stage-caption-mass { display: none; visibility: hidden; }
 .stage-caption code { font-size: .9em; }
 .stage-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
 .stage-controls .btn:disabled { opacity: .4; cursor: default; }
+/* Desktop: Ragt die Stage unten aus dem Bildschirm (Zoom, hohe Szenen), kleben die Knöpfe am unteren Rand.
+   Passt sie, bleiben sie, wo sie sind. Am Handy gilt die eigene Regel weiter unten (oben klebend). */
+@media (min-width: 601px) {
+  .stage-controls { position: sticky; bottom: 0; z-index: 5; background: var(--bg-2); padding: .6rem 0 .25rem; margin-bottom: -.25rem; }
+  .stage:fullscreen .stage-controls { background: var(--bg); }
+}
+.stage-tasten { margin-left: .6em; }
+@media (max-width: 600px), (hover: none) { .stage-tasten { display: none; } }
 /* Am Handy: Der höchste Schritt ist dort oft doppelt so hoch wie die übrigen – Platz für ihn zu reservieren hinterließ
    bis zu 400 px Leere, und die Knöpfe lagen unter dem Bildschirmrand. Deshalb keine Reservierung; stattdessen stehen
    die Knöpfe über der Szene und kleben unter der Topbar (--topbar-h, misst Layout.astro), damit sie beim Blättern nicht
@@ -386,7 +394,7 @@
 .pw-feld { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); padding: .7em .8em; transition: opacity .25s, box-shadow .25s, border-color .25s; }
 .pw-aktiv { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
 .pw-passiv { opacity: .55; }
-.pw-graph { display: block; width: 100%; height: auto; max-height: 15em; overflow: visible; }
+.pw-graph { display: block; width: 100%; height: auto; max-height: 10em; overflow: visible; }
 .pw-linie-main { stroke: var(--fg); stroke-width: 3; }
 .pw-linie-branch { fill: none; stroke: var(--blue); stroke-width: 3; }
 .pw-commit-main { fill: var(--fg); }
@@ -404,20 +412,23 @@
 .pw-marke-alt rect { fill: var(--yellow-soft); stroke: var(--yellow); }
 .pw-marke-alt text { fill: var(--yellow-ink); }
 .pw-graph g text { font-family: var(--mono); font-size: 12px; font-weight: 600; }
-.pw-legende { display: flex; flex-wrap: wrap; gap: .25em 1.25em; margin: .4em 0 0; font-size: .85em; color: var(--muted); }
+.pw-git { position: relative; }
+/* Legende in die rechte obere Ecke – die ist in jedem Schritt leer. Am Handy wieder darunter (siehe unten). */
+.pw-legende { display: flex; flex-wrap: wrap; gap: .25em 1.25em; margin: 0; font-size: .85em; color: var(--muted); position: absolute; top: .6em; right: .8em; }
 .pw-punkt { display: inline-block; width: .8em; height: .8em; border-radius: 50%; background: var(--blue); border: 2px solid var(--blue); vertical-align: -.1em; margin-right: .3em; }
 .pw-punkt.pw-hohl { background: var(--bg); }
 
-.pw-karten { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: .75em; align-items: start; }
+.pw-karten { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: .75em; align-items: start; }
 .pw-kopf { display: flex; align-items: center; gap: .4em; font-family: var(--mono); font-size: .78em; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .5em; }
 .pw-kopf svg, .pw-zeile svg, .pw-check svg, .pw-merge svg { width: 1.05em; height: 1.05em; flex: none; }
 .pw-leer { margin: 0; color: var(--muted); font-size: .92em; }
 .pw-pr-titel { font-weight: 600; line-height: 1.3; }
 .pw-klein { font-size: .85em; color: var(--muted); margin-top: .25em; }
 .pw-klein strong { color: var(--green); }
-.pw-checks { list-style: none; padding: 0; margin: .45em 0 .2em; display: grid; gap: .2em; font-size: .9em; }
+/* Prüfungen als eine Zeile Chips statt einer Liste – hält die GitHub-Karte niedrig. */
+.pw-checks { list-style: none; padding: 0; margin: .45em 0 .2em; display: flex; flex-wrap: wrap; gap: .25em .75em; font-size: .9em; }
 .pw-check { display: flex; align-items: center; gap: .35em; }
-.pw-check-text { margin-left: auto; font-size: .85em; color: var(--muted); }
+.pw-check-text { font-size: .85em; color: var(--muted); }
 .pw-check-ok svg { color: var(--green); }
 .pw-check-rot svg, .pw-check-rot .pw-check-text { color: var(--accent-ink); }
 .pw-check-laeuft svg { color: var(--yellow); }
@@ -450,4 +461,5 @@
   .pw-graph g text { font-size: 16px; }
   .pw-pille-schmal { display: none; }
   .pw-pille-breit { display: inline; }
+  .pw-legende { position: static; margin-top: .4em; }
 }

@@ -44,9 +44,10 @@ function Szene({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
   );
 }
 
-// Koordinaten im viewBox 0 0 480 170: main unten, Branch oben.
-const MAIN_Y = 98;
-const BRANCH_Y = 40;
+// Koordinaten im viewBox 0 0 480 146: main unten, Branch oben – knapp gehalten, damit die ganze Szene samt Weiter-Knopf
+// auf einen Laptop-Bildschirm passt.
+const MAIN_Y = 84;
+const BRANCH_Y = 36;
 const ALT = [30, 80];
 const BRANCH_X = [150, 205, 260];
 const MERGE_X = 330;
@@ -56,7 +57,7 @@ function Graph({ z, bewegt }: { z: Zustand; bewegt: boolean }) {
   const liveX = z.live === 'neu' ? MERGE_X : ALT[1];
   const macX = z.gemergt && z.macAktuell ? MERGE_X : ALT[1];
   return (
-    <svg className="pw-graph" viewBox="0 0 480 172" role="img" aria-label={beschreibung(z)}>
+    <svg className="pw-graph" viewBox="0 0 480 146" role="img" aria-label={beschreibung(z)}>
       <line x1="10" y1={MAIN_Y} x2="470" y2={MAIN_Y} className="pw-linie-main" />
       <text x="470" y={MAIN_Y - 10} textAnchor="end" className="pw-label">main</text>
       {z.branch && (
@@ -106,7 +107,7 @@ function Graph({ z, bewegt }: { z: Zustand; bewegt: boolean }) {
         />
       )}
       <Marke x={liveX} y={MAIN_Y + 24} text="live" klasse="pw-marke-live" bewegt={bewegt} />
-      <Marke x={macX} y={MAIN_Y + 50} text="euer Mac" klasse={z.macAktuell ? 'pw-marke-mac' : 'pw-marke-mac pw-marke-alt'} bewegt={bewegt} />
+      <Marke x={macX} y={MAIN_Y + 48} text="euer Mac" klasse={z.macAktuell ? 'pw-marke-mac' : 'pw-marke-mac pw-marke-alt'} bewegt={bewegt} />
     </svg>
   );
 }
@@ -142,7 +143,7 @@ const PRUEF: Record<Pruefung, { icon: LucideIcon; text: string }> = {
   aus: { icon: Circle, text: 'wartet' },
   laeuft: { icon: LoaderCircle, text: 'läuft' },
   ok: { icon: CircleCheck, text: 'ok' },
-  rot: { icon: CircleX, text: 'fehlgeschlagen' },
+  rot: { icon: CircleX, text: 'Fehler' },
 };
 const VORSCHAU_PRUEF: Record<Vorschau, Pruefung> = { aus: 'aus', baut: 'laeuft', fehler: 'rot', bereit: 'ok' };
 
@@ -171,8 +172,12 @@ function GitHubKarte({ z }: { z: Zustand }) {
             <Check name="Lint" status={z.lint} />
             <Check name="Build" status={z.build} />
             <Check name="Vercel" status={VORSCHAU_PRUEF[z.vorschau]} />
+            {/* Review als vierter Chip in derselben Zeile – spart eine Zeile Höhe. */}
+            <li className={`pw-check pw-check-${z.review === 'freigegeben' ? 'ok' : 'aus'}`}>
+              {z.review === 'freigegeben' ? <CircleCheck aria-hidden="true" /> : <Circle aria-hidden="true" />} Review{' '}
+              <span className="pw-check-text">{z.review === 'freigegeben' ? 'frei' : '–'}</span>
+            </li>
           </ul>
-          <div className="pw-klein">Review: {z.review === 'freigegeben' ? <strong>freigegeben</strong> : '–'}</div>
           <div className={`pw-merge ${z.pr === 'gemergt' ? 'pw-merge-fertig' : mergeBereit(z) ? 'pw-merge-bereit' : ''}`}>
             <GitMerge aria-hidden="true" /> {z.pr === 'gemergt' ? 'Merged' : 'Merge pull request'}
           </div>
