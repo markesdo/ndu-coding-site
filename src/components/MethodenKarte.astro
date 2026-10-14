@@ -4,7 +4,8 @@
 import { Bot, Clock, Inbox, PackageCheck } from '@lucide/astro';
 import { METHODEN, ORTE, artefakt, erzeugtVon } from './methoden';
 
-const { slug } = Astro.props as { slug: string };
+// ohneTag: auf Seiten, die schon nach Tagen gegliedert sind (Toolbox), wäre die Tag-Marke doppelt.
+const { slug, ohneTag = false } = Astro.props as { slug: string; ohneTag?: boolean };
 const m = METHODEN.find((x) => x.slug === slug);
 if (!m) throw new Error(`MethodenKarte: Methode „${slug}“ unbekannt`);
 
@@ -14,7 +15,7 @@ const eigene = href(m.slug);
 ---
 <article class="card methode" id={m.slug}>
   <header>
-    <span class="methode-tag">Tag {m.tag}</span>
+    {!ohneTag && <span class="methode-tag">Tag {m.tag}</span>}
     <h3>{eigene ? <a href={eigene}>{m.name}</a> : m.name}</h3>
     <span class="methode-dauer"><Clock size={14} aria-hidden="true" /> {m.dauer} min</span>
   </header>

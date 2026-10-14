@@ -15,7 +15,7 @@ const tage = TAGE.map((t) => ({ ...t, methoden: methodenVonTag(t.n) })).filter((
   {tage.map((t) => (
     <section>
       <h2 id={`tag-${t.n}`}>Tag {t.n} · {t.titel}</h2>
-      {t.methoden.map((m) => <MethodenKarte slug={m.slug} />)}
+      {t.methoden.map((m) => <MethodenKarte slug={m.slug} ohneTag />)}
     </section>
   ))}
 </Layout>
