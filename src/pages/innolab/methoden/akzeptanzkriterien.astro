@@ -24,7 +24,7 @@ import FooterNav from '../../../components/FooterNav.astro';
   <p>Akzeptanzkriterien gelten für <strong>ein</strong> Issue. Die <strong>Definition of Done</strong> aus <code>docs/TEAM.md</code> gilt für <strong>alle</strong> – Belege, Review, live. Was in der DoD steht, wiederholt ihr nicht in jedem Issue.</p>
 
   <h2 id="beispiel">Am Beispiel: Issue 2 „Abfahrtszeit angeben“</h2>
-  <Prompt label="Beispiel · Akzeptanzkriterien Issue 2">- Gegeben es ist 7:27 und ich habe einen Cappuccino gewählt, wenn ich 7:38 als Abfahrt eingebe, dann sehe ich „Fertig 7:31. Dein Zug fährt 7:38.“
+  <Prompt label="Beispiel · Akzeptanzkriterien Issue 2">- Gegeben es ist 7:27, vor mir ist keine Bestellung offen, und ich habe einen Cappuccino gewählt, wenn ich 7:38 als Abfahrt eingebe, dann sehe ich „Fertig 7:31. Dein Zug fährt 7:38.“
 - Gegeben vor mir sind so viele Bestellungen, dass mein Getränk später als 3 Minuten vor der Abfahrt fertig wäre, wenn ich die Abfahrtszeit eingebe, dann sehe ich „Geht sich knapp nicht aus“ und kann abbrechen oder trotzdem bestellen.
 - Gegeben ich gebe eine Uhrzeit ein, die schon vorbei ist, wenn ich bestätige, dann erscheint ein Hinweis und nichts wird bestellt.
 - Regel: Die Abfahrtszeit akzeptiert nur Uhrzeiten wie 7:38 oder 07:38; alles andere zeigt einen Hinweis unter dem Feld.</Prompt>
@@ -65,7 +65,7 @@ Schwelle: mindestens 18 von 20 richtig; nie ein Getränk, das nicht auf der Kart
   </Callout>
 
   <h2 id="pruefen">Prüfen</h2>
-  <ClaudePruefung slug="akzeptanzkriterien" />
+  <ClaudePruefung slug="akzeptanzkriterien" pfad="über den Linear-MCP die Issues, die in Sprint 1 kommen könnten (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)" />
 
   <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
   <p>Was ist bei euch die „Uhrzeit, die schon vorbei ist“ – die Eingabe, an die beim Bauen niemand denkt, die echte Menschen aber sicher machen?</p>

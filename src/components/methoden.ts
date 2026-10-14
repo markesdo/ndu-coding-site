@@ -299,7 +299,7 @@ export const METHODEN: Methode[] = [
       'Es steht fest, wer im ersten Sprint Scrum Master ist – und dass die Rolle jeden Sprint wechselt.',
       'Sprintlänge, Zeiten der Events und das Daily zwischen den Kurstagen sind festgelegt.',
       'Die Definition of Done ist eine Liste prüfbarer Punkte und gilt für alle drei Produkte.',
-      'In der Tabelle steht für jedes Produkt sein Linear-Projekt – alle im selben Linear-Team.',
+      'Das Linear-Team ist genannt, und für jedes Produkt steht sein Linear-Projekt in der Tabelle.',
     ],
     ki: 'Keine Rolle – Scrum lernt ihr im Team und im Lego-Spiel.',
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020',
@@ -320,7 +320,7 @@ export const METHODEN: Methode[] = [
   {
     slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 4, dauer: 60,
     frage: 'Woran prüfen wir, dass ein Issue fertig ist?',
-    braucht: ['issues'], ergibt: ['kriterien'],
+    braucht: ['issues', 'brief', 'team'], ergibt: ['kriterien'],
     pruefliste: [
       'Jedes Kriterium hat die Form „Gegeben … wenn … dann …“ oder ist eine prüfbare Regel.',
       'Jedes Issue hat mindestens einen Fehler- oder Grenzfall.',
@@ -356,7 +356,7 @@ export const TAGE: { n: number; titel: string; text: string }[] = [
   { n: 2, titel: 'Kunde & Erlebnis', text: 'Interviews auswerten, Kundenprofil, Journey Map, Chancen und Ideen.' },
   { n: 3, titel: 'Lösung, Story, Prototyp', text: 'Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
   { n: 4, titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Rollen, Events, Backlog, Akzeptanzkriterien.' },
-  { n: 5, titel: 'Schätzen & Bauen', text: 'Planning Poker, Definition of Done, Sprint-Planning, Sprint 1.' },
+  { n: 5, titel: 'Schätzen & Bauen', text: 'Planning Poker, Definition of Done um die Messung ergänzen, Sprint-Planning, Sprint 1.' },
   { n: 6, titel: 'Bauen & Review', text: 'Usability-Tests über Kreuz, Review, Retro, Sprint 2, Pitch vorbereiten.' },
   { n: 7, titel: 'Präsentation', text: 'Finales Sprint-Review: Pitch, Live-Demo und Belege.' },
 ];
@@ -369,24 +369,28 @@ export const erzeugtVon = (id: string): Methode | undefined => METHODEN.find((m)
 /** Methoden eines Kurstags, in Kursreihenfolge. */
 export const methodenVonTag = (tag: number): Methode[] => METHODEN.filter((m) => m.tag === tag);
 
-/** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
- *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. den Leitfaden statt aller Interview-Dateien). */
-/** So findet Claude ein Artefakt: als Datei im Repo oder über den Linear-MCP (Regeln in docs/LINEAR.md des Projekts). */
+/** So findet Claude ein Artefakt: als Datei im Repo oder über den Linear-MCP – Team und Projekt stehen in docs/BACKLOG.md,
+ *  die Regeln für Linear in docs/LINEAR.md des Projekts. */
 export const LINEAR_QUELLE = 'die Issues über den Linear-MCP (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)';
 function quelle(id: string): string | undefined {
   const a = artefakt(id)!;
   return a.pfad ?? (a.lebtIn.includes('linear') ? LINEAR_QUELLE : undefined);
 }
 
+/** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
+ *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. den Leitfaden statt aller Interview-Dateien). */
 export function pruefPrompt(m: Methode, pfad?: string): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
   const pfade = pfad ? [pfad] : [...new Set(m.ergibt.map(quelle).filter((p): p is string => !!p))];
   // Viele Punkte lassen sich nur gegen die Vorarbeit prüfen (Zitate gegen Transkripte, IDs gegen das Kundenprofil).
-  const abgleich = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !pfade.includes(p)))];
+  if (pfade.length === 0) throw new Error(`pruefPrompt: Methode „${m.slug}“ ergibt nichts, was Claude lesen kann`);
+  // Ohne das, was Claude ohnehin liest – auch wenn pfad nur einen Teil davon nennt (z. B. ausgewählte Issues).
+  const schonGelesen = new Set([...pfade, ...m.ergibt.map(quelle)]);
+  const abgleich = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !schonGelesen.has(p)))];
   return [
     `Lies ${pfade.join(' und ')}.${abgleich.length ? ` Zum Abgleich lies auch ${abgleich.join(', ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
     ...m.pruefliste.map((p, i) => `${i + 1}. ${p}`),
     '',
-    'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um und ändere keine Datei – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
+    'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um, ändere keine Datei und kein Issue – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
   ].join('\n');
 }
