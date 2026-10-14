@@ -7,24 +7,26 @@ import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="Tag 4 · Scrum im Team">
-  <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:45</span>
+  <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:30</span>
   <h1>Tag 4 · Scrum im Team</h1>
-  <p class="lead">Ihr werdet ein Team mit drei Produkten: Scrum verstehen, mit Lego durchspielen, und aus euren Story Maps Backlogs bauen, die jede*r im Team abarbeiten kann.</p>
+  <p class="lead">Der letzte Input-Tag: Ihr werdet ein Team mit drei Produkten, baut Backlogs, die jede*r im Team abarbeiten kann, plant Sprint 1 und legt das Gerüst für euren Pitch. Danach wird gebaut.</p>
   <Orientierung seite="innolab/tag-4" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-28">
-    <Block time="09:00–09:30" type="plenum" title="Test-Debrief" href="#debrief">Was die Usability-Tests gezeigt haben – und was sich dadurch ändert.</Block>
-    <Block time="09:30–10:00" type="konzept" title="Warum agil" href="/innolab/methoden/scrum#agil">Wasserfall, Agiles Manifest.</Block>
-    <Block time="10:00–10:10" type="pause" title="Pause" />
-    <Block time="10:10–11:10" type="konzept" title="Scrum" href="/innolab/methoden/scrum#scrum">Rollen, Events, Artefakte; wenn es mehr Teams werden.</Block>
-    <Block time="11:10–12:00" type="uebung" title="Teamaufstellung" href="/innolab/methoden/scrum#team">Rollen, Sprints, Definition of Done, Linear.</Block>
-    <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–15:00" type="uebung" title="Lego4Scrum" href="/innolab/methoden/scrum#lego">Eine Stadt in drei Sprints.</Block>
-    <Block time="15:00–15:15" type="pause" title="Pause" />
-    <Block time="15:15–16:15" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, RICE, nach Linear.</Block>
-    <Block time="16:15–17:15" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Normalfall, Grenzfälle, über Kreuz lesen.</Block>
-    <Block time="17:15–17:45" type="plenum" title="Abschluss" href="#abschluss">Was bis Tag 5 fertig sein muss.</Block>
+    <Block time="09:00–09:20" type="plenum" title="Test-Debrief" href="#debrief">Was die Usability-Tests gezeigt haben – und was sich dadurch ändert.</Block>
+    <Block time="09:20–10:20" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#agil">Wasserfall, Agiles Manifest, Scrum auf einer Seite, mehr Teams.</Block>
+    <Block time="10:20–10:30" type="pause" title="Pause" />
+    <Block time="10:30–11:10" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Rollen, Sprints, Linear; „fertig“ mit Mess-Ereignis.</Block>
+    <Block time="11:10–12:30" type="uebung" title="Lego4Scrum" href="/innolab/methoden/scrum#lego">Eine Stadt in drei Sprints.</Block>
+    <Block time="12:30–13:30" type="pause" title="Mittagspause" />
+    <Block time="13:30–14:30" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, RICE, nach Linear.</Block>
+    <Block time="14:30–15:15" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Normalfall, Grenz- und Fehlerfälle.</Block>
+    <Block time="15:15–15:30" type="pause" title="Pause" />
+    <Block time="15:30–16:00" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Plan-Check mit Claude, quer lesen.</Block>
+    <Block time="16:00–16:30" type="uebung" title="Sprint-1-Planning" href="/innolab/methoden/sprint#planning">Sprint-Ziel, Auswahl, wer baut was.</Block>
+    <Block time="16:30–17:15" type="uebung" title="Pitch" href="/innolab/methoden/pitch">Aufbau, Demo, Belege; das Gerüst.</Block>
+    <Block time="17:15–17:30" type="plenum" title="Abschluss" href="#abschluss">Sprint 1 läuft – bis Tag 5.</Block>
   </div>
 
   <hr />
@@ -36,23 +38,34 @@ import FooterNav from '../../components/FooterNav.astro';
   <Callout type="tip" title="Ein Team, drei Produkte">
     <p>Jede*r ist Product Owner des eigenen Produkts und Developer in allen dreien. Ihr baut also auch Issues, die ihr nicht geschrieben habt. Deshalb müssen eure Issues und Kriterien ohne Rückfrage verständlich sein – das ist der Test für heute Nachmittag.</p>
   </Callout>
+  <p>Heute ist ein dichter Tag, weil danach keine neue Methode mehr kommt: Tag 5 und 6 sind Bautage, Tag 7 ist die Präsentation.</p>
 
   <h2 id="methoden">Die Methoden von heute</h2>
   <ul>
     <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Rahmenwerk, Lego4Scrum, Teamaufstellung</li>
     <li><a href="/innolab/methoden/backlog">Backlog aus Issues</a> – User Story und Issue, INVEST, RICE</li>
     <li><a href="/innolab/methoden/akzeptanzkriterien">Akzeptanzkriterien</a> – Szenarien, Regeln, Evals</li>
+    <li><a href="/innolab/methoden/schneiden">Schneiden statt Schätzen</a> – Plan-Check mit Claude, quer lesen</li>
+    <li><a href="/innolab/methoden/sprint">Sprint</a> – Definition of Done mit Messung, Issue als Spezifikation, Planning, Daily, Review, Retro</li>
+    <li><a href="/innolab/methoden/pitch">Pitch</a> – Geschichte, Demo, Belege</li>
   </ul>
 
-  <h2 id="abschluss">Abschluss & Hausaufgabe bis Tag 5</h2>
-  <Checklist id="il-tag4-hausaufgabe" items={[
-    '<code>docs/TEAM.md</code> in allen drei Repos, mit Rollen, Sprints und Definition of Done',
-    'Linear: ein Team, ein Projekt pro Produkt, Verweis in <code>docs/BACKLOG.md</code>',
-    'Alle Issues für Sprint 1 in Linear, geordnet, mit Akzeptanzkriterien',
-    'Die Issues der anderen beiden gelesen und offene Fragen als Kommentar hinterlassen',
-    'Was ihr nach den Tests geändert habt, im Entscheidungslog',
+  <h2 id="abschluss">Abschluss & Sprint 1 bis Tag 5</h2>
+  <p>Sprint 1 läuft zwei Wochen zu Hause. Jede*r baut Issues aus allen drei Produkten, so wie im Planning verteilt. Der Takt ist der aus dem Coding-Kurs – Issue holen, bauen lassen, Belege prüfen, Pull Request –, mit den Team-Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>.</p>
+  <Callout type="tip" title="Das Mess-Issue zuerst">
+    <p>Baut das Issue, das das Mess-Ereignis einführt, als eines der ersten. Jedes Issue danach prüft ihr gleich mit: Kommt das Ereignis nach dem Merge noch an?</p>
+  </Callout>
+  <Checklist id="il-tag4-sprint1" items={[
+    '<code>docs/TEAM.md</code> in allen drei Repos, mit Rollen, Sprints und Definition of Done samt Mess-Ereignis',
+    'Linear: ein Team, ein Projekt pro Produkt, Label <code>Sprint 1</code> an den gewählten Issues',
+    '<code>docs/SPRINTS.md</code> mit Sprint-Ziel und Auswahl',
+    'Die anderen beiden als Collaborator in eurem GitHub-Repo',
+    'Daily an jedem Arbeitstag als Kommentar in Linear',
+    'Jedes Issue nach der Definition of Done; Pull Requests der anderen geprüft',
+    '<code>docs/PITCH.md</code> mit Geschichte und Demo-Ablauf',
+    'Zwei Testpersonen für Tag 5 verabredet – vor Ort oder per Video',
   ]} />
-  <p><a href="/innolab/tag-5">Tag 5</a> beginnt mit dem Schätzen eurer Issues, danach plant ihr Sprint 1 und fangt an zu bauen.</p>
+  <p><a href="/innolab/tag-5">Tag 5</a> beginnt mit dem Daily und dem Bauen; am Nachmittag testet ihr und schließt Sprint 1 mit Review und Retro ab.</p>
 
   <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung, Story, Prototyp' }} next={{ href: '/innolab/methoden/scrum', t: 'Scrum im Team' }} />
 </Layout>

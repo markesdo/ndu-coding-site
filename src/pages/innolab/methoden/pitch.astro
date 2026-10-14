@@ -8,7 +8,7 @@ import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 ---
 <Layout title="Pitch">
-  <span class="eyebrow">Innolab · Tag 6 · Methode</span>
+  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Pitch</h1>
   <p class="lead">Das finale Sprint-Review: eine Geschichte, ein Produkt, das live läuft, und Belege für jede Behauptung.</p>
   <Orientierung seite="innolab/methoden/pitch" leiste={false} />
@@ -65,12 +65,12 @@ Alles hängt daran, ob die Bar 40 statt 25 Bestellungen in 30 Minuten schafft.
 Nächster Test: eine Woche mit echter Bar, gemessen an Abholungen pro Morgen – weil ohne diese Kapazität weder das Modell noch das Outcome trägt.</Prompt>
   <p>Die Zahlen bei „Gemessen“ sind ausgedacht – an der Form erkennt ihr, wie eure aussehen sollten.</p>
 
-  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+  <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
   <ol>
     <li><strong>Input (20 min):</strong> Aufbau, Regeln für die Demo, Belege.</li>
-    <li><strong>Gerüst (20 min, allein):</strong> <code>docs/PITCH.md</code> nach der Vorlage, Stichworte statt Fließtext. Jede Behauptung bekommt ihre ID.</li>
-    <li><strong>Erste Probe (20 min):</strong> Jede*r erzählt den Teil „Geschichte“ in zwei Minuten, die anderen beiden stoppen die Zeit und sagen, wo sie ausgestiegen sind.</li>
+    <li><strong>Gerüst (25 min, allein):</strong> <code>docs/PITCH.md</code> nach der Vorlage, Stichworte statt Fließtext. Geschichte und Demo-Ablauf habt ihr schon; bei den Belegen tragt ihr ein, was es aus Interviews und Tests gibt, und lasst Platz für Messung und Sprint-Ergebnisse. Jede Behauptung bekommt ihre ID.</li>
   </ol>
+  <p>Den Pitch tragt ihr ab jetzt mit: Nach jedem Review ergänzt ihr die Belege. Zum ersten Mal laut erzählt – zwei Minuten „Geschichte“ vor den anderen beiden – wird er nach der Retro an Tag 5.</p>
   <p>Bis Tag 7 probt ihr den ganzen Pitch mindestens zweimal laut, einmal mit Claude als skeptischem Gegenüber:</p>
   <Prompt label="Skeptischer Investor · Claude Code">Lies docs/PITCH.md und zum Hintergrund docs/PRODUKT.md, docs/STORYS.md, docs/GESCHAEFTSMODELL.md, docs/TESTS.md, docs/SPRINTS.md und docs/ENTSCHEIDUNGEN.md. Du bist eine skeptische Investorin, die schon viele Pitches gehört hat. Stell mir fünf Fragen, eine nach der anderen, und warte jeweils auf meine Antwort. Frag dort nach, wo eine Behauptung keinen Beleg hat, wo eine Zahl klein ist oder wo das Geschäftsmodell an einer ungeprüften Annahme hängt. Bewerte meine Antworten erst am Ende, in drei Sätzen. Ändere keine Datei.</Prompt>
   <Callout type="tip" title="Wer stellt die Fragen an Tag 7?">
@@ -102,5 +102,5 @@ Daten: [was vorbereitet sein muss] · Plan B: [Video]
   <p>Welche eurer Annahmen hat sich als falsch herausgestellt – und traut ihr euch, mit ihr den Teil „Belege“ zu beginnen?</p>
   <p class="small muted">Story-Bogen nach Donna Lichaw, <em>The User’s Journey</em> (2016).</p>
 
-  <FooterNav prev={{ href: '/innolab/tag-6', t: 'Tag 6 · Tests & Review' }} next={{ href: '/innolab/tag-6#abschluss', t: 'Tag 6 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/sprint', t: 'Sprint' }} next={{ href: '/innolab/tag-4#abschluss', t: 'Tag 4 · Abschluss' }} />
 </Layout>

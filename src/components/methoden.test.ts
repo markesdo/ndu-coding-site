@@ -45,11 +45,11 @@ describe('methoden', () => {
     }
   });
 
-  it('Kurstage laufen aufsteigend von 1 bis 6, Orte sind bekannt', () => {
+  it('Kurstage laufen aufsteigend von 1 bis 4 – ab Tag 5 wird nur gebaut –, Orte sind bekannt', () => {
     const tage = METHODEN.map((m) => m.tag);
     expect(tage).toEqual([...tage].sort((a, b) => a - b));
     expect(tage[0]).toBe(1);
-    for (const t of tage) expect(t).toBeLessThanOrEqual(6);
+    for (const t of tage) expect(t).toBeLessThanOrEqual(4);
     for (const a of ARTEFAKTE) {
       expect(a.lebtIn.length, a.id).toBeGreaterThan(0);
       for (const o of a.lebtIn) expect(Object.keys(ORTE)).toContain(o);
@@ -111,8 +111,8 @@ describe('methoden', () => {
   it('der Sprint wird am Sprint-Protokoll geprüft, mit Issues, Team und Brief zum Abgleich', () => {
     const sp = pruefPrompt(METHODEN.find((m) => m.slug === 'sprint')!);
     expect(sp).toMatch(/^Lies docs\/SPRINTS\.md\. Zum Abgleich lies auch die Issues über den Linear-MCP .*, docs\/TEAM\.md, docs\/PRODUKT\.md\./);
-    // Schätzung, Issues und Kriterien liegen alle in Linear: einmal lesen, nicht dreimal.
-    const sch = pruefPrompt(METHODEN.find((m) => m.slug === 'schaetzen')!);
+    // Geschnittene Issues, Issues und Kriterien liegen alle in Linear: einmal lesen, nicht dreimal.
+    const sch = pruefPrompt(METHODEN.find((m) => m.slug === 'schneiden')!);
     expect(sch.split('Linear-MCP').length - 1).toBe(1);
     expect(sch).not.toContain('Zum Abgleich');
   });
