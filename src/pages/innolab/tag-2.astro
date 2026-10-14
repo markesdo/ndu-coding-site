@@ -7,13 +7,13 @@ import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="Tag 2 · Kunde & Erlebnis">
-  <span class="eyebrow">Innolab · Tag 2 · Termin folgt · 09:00–17:00</span>
+  <span class="eyebrow">Innolab · Tag 2 · Donnerstag, 22. Oktober 2026 · 09:00–17:00</span>
   <h1>Tag 2 · Kunde & Erlebnis</h1>
   <p class="lead">Aus euren Interviews werden belegte Themen, ein Kundenprofil und eine Journey Map – und daraus Fragen und Ideen, die auf das Outcome zielen.</p>
   <Orientierung seite="innolab/tag-2" />
 
   <h2 id="ablauf">Ablauf</h2>
-  <div class="schedule">
+  <div class="schedule" data-kurstag="2026-10-22">
     <Block time="09:00–10:00" type="uebung" title="Interview-Synthese" href="/innolab/methoden/synthese">Markieren, clustern, Themen mit Zitat-IDs; zweiter Blick mit Claude.</Block>
     <Block time="10:00–10:10" type="pause" title="Pause" />
     <Block time="10:10–11:25" type="uebung" title="Kundenprofil" href="/innolab/methoden/kundenprofil">Jobs, Pains, Gains – konkret, belegt, nach Chancenwert sortiert.</Block>
@@ -28,8 +28,8 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
-  <p>Gestern habt ihr das <strong>Outcome</strong> festgelegt. Heute wachsen darunter die <strong>Chancen</strong> (HMW-Fragen) und die ersten <strong>Lösungen</strong> (Ideen). Jeder Schritt baut auf dem vorigen auf: Die Themen der Synthese belegen das Kundenprofil, die Journey Map verortet dessen Pains, die Momente der Wahrheit werden zu Fragen, die Fragen zu Ideen. Pains erarbeitet ihr dabei genau einmal – im Kundenprofil.</p>
-  <Callout type="tip" title="Gestern war eine Annahme, heute ist ein Beleg">
+  <p>An Tag 1 habt ihr das <strong>Outcome</strong> festgelegt. Heute wachsen darunter die <strong>Chancen</strong> (HMW-Fragen) und die ersten <strong>Lösungen</strong> (Ideen). Jeder Schritt baut auf dem vorigen auf: Die Themen der Synthese belegen das Kundenprofil, die Journey Map verortet dessen Pains, die Momente der Wahrheit werden zu Fragen, die Fragen zu Ideen. Pains erarbeitet ihr dabei genau einmal – im Kundenprofil.</p>
+  <Callout type="tip" title="An Tag 1 eine Annahme, heute ein Beleg">
     <p>Haltet die Annahmen-Map von Tag 1 offen. Wenn ein Thema aus den Interviews eine Annahme stützt oder widerlegt, tragt es sofort in die Spalte „Beleg“ ein. Eine widerlegte Annahme ist ein gutes Ergebnis: Sie hat euch gerade Wochen falscher Arbeit erspart.</p>
   </Callout>
 

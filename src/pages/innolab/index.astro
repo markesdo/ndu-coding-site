@@ -6,6 +6,7 @@ import { TAGE } from '../../components/methoden';
 // Tageskarten verlinken, sobald es die Tagesseite gibt.
 const tagSeiten = import.meta.glob('./tag-*.astro');
 const tagHref = (n: number) => (`./tag-${n}.astro` in tagSeiten ? `/innolab/tag-${n}` : undefined);
+const datumKurz = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('de-AT', { weekday: 'short', day: 'numeric', month: 'numeric', timeZone: 'Europe/Vienna' });
 ---
 <Layout title="Innolab-Übersicht">
   <span class="eyebrow">NDU · MSc Management by Innovation · Innolab 2026</span>
@@ -15,7 +16,7 @@ const tagHref = (n: number) => (`./tag-${n}.astro` in tagSeiten ? `/innolab/tag-
   <div class="days">
     {TAGE.map((t) => {
       const href = tagHref(t.n);
-      const inhalt = <><div class="n">Tag {t.n}</div><h3>{t.titel}</h3><p>{t.text}</p></>;
+      const inhalt = <><div class="n">Tag {t.n} · {datumKurz(t.datum)}</div><h3>{t.titel}</h3><p>{t.text}</p></>;
       return href ? <a class="day" href={href}>{inhalt}</a> : <div class="day">{inhalt}</div>;
     })}
   </div>
@@ -48,5 +49,5 @@ const tagHref = (n: number) => (`./tag-${n}.astro` in tagSeiten ? `/innolab/tag-
   <h2 id="bewertung">Bewertung</h2>
   <p>Prototyp 70 %, Präsentation 30 %. Details folgen.</p>
 
-  <p class="small muted" style="margin-top:3rem">Lehrende: Markus Doppelreiter · Louis Perner · Termine folgen</p>
+  <p class="small muted" style="margin-top:3rem">Lehrende: Markus Doppelreiter · Louis Perner</p>
 </Layout>
