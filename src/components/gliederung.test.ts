@@ -71,7 +71,7 @@ describe('die echten Tagesseiten', () => {
   it.each([
     ['tag-1', ['ablauf', 'konzept-1', 'konzept-2', 'uebung-1', 'konzept-3', 'uebung-2'], [1, 2, 3]],
     ['tag-2', ['quiz', 'konzept-4', 'uebung-3', 'konzept-5', 'uebung-4', 'konzept-6', 'uebung-5'], [4, 5, 6]],
-    ['tag-3', ['ablauf', 'stack-pr', 'konzept-7', 'uebung-8', 'konzept-8', 'uebung-9', 'konzept-9', 'uebung-10', 'demos', 'abschluss'], [7, 8, 9]],
+    ['tag-3', ['ablauf', 'stack', 'konzept-7', 'uebung-8', 'konzept-8', 'uebung-9', 'konzept-9', 'uebung-10', 'demos', 'abschluss'], [7, 8, 9]],
   ] as const)('%s: jedes Konzept steht vor seiner Übung, wie im Ablauf', (seite, reihe, konzepte) => {
     const quelle = readFileSync(new URL(`../pages/${seite}.astro`, import.meta.url), 'utf8');
     const ids = gliederung(quelle).map((a) => a.id);
