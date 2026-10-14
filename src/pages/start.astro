@@ -54,7 +54,7 @@ const offen = innolabOffen(new Date());
           <h2><span class="kurs-chev" aria-hidden="true">›</span> Programmieren mit AI</h2>
           <ol class="kurs-tage">{coding.map((t) => <li><span>Tag {t.n} · {t.d}</span> {t.t}</li>)}</ol>
         </a>
-        <a class:list={['kurs', { gesperrt: !offen }]} href={offen ? '/innolab' : undefined} data-kurs="/innolab" aria-disabled={offen ? undefined : 'true'}>
+        <a class:list={['kurs', { gesperrt: !offen }]} href={offen ? '/innolab' : undefined} data-kurs="/innolab" role={offen ? undefined : 'link'} aria-disabled={offen ? undefined : 'true'}>
           <span class="kurs-zeit">Oktober 2026 – Jänner 2027 · 7 Tage</span>
           <h2><span class="kurs-chev" aria-hidden="true">›</span> Innolab</h2>
           <ol class="kurs-tage">{innolab.map((t) => <li><span>Tag {t.n} · {t.d}</span> {t.t}</li>)}</ol>
@@ -70,6 +70,7 @@ const offen = innolabOffen(new Date());
       if (innolabOffen(new Date())) {
         innolab.classList.remove('gesperrt');
         innolab.removeAttribute('aria-disabled');
+        innolab.removeAttribute('role');
         innolab.querySelector<HTMLElement>('[data-hinweis]')!.hidden = true;
       }
       for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-kurs]')) {

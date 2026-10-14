@@ -119,6 +119,8 @@ describe('ohneAnmeldungZiel', () => {
   it('die Wurzel zeigt zuerst die Kurswahl, ?beamer bleibt', () => {
     expect(ohneAnmeldungZiel('/', '')).toBe('/start');
     expect(ohneAnmeldungZiel('/', '?beamer')).toBe('/start?beamer');
+    // Die Suche hängt an einem festen Pfad dieser Website – kein Sprung woandershin.
+    expect(ohneAnmeldungZiel('/', '?x=//evil.example')).toBe('/start?x=//evil.example');
   });
   it('jede andere Seite geht über das Kurspasswort und kehrt zurück', () => {
     expect(ohneAnmeldungZiel('/innolab', '')).toBe('/login?weiter=%2Finnolab');
