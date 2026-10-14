@@ -1,0 +1,37 @@
+---
+// Nachtrag 2026 zu Tag 2, Übung 5e (vorher stellte 5e die Site URL nur auf Vercel um). Für den nächsten Jahrgang
+// steht alles in 5e – diese Seite dann löschen, samt Eintrag in navigation.ts und Link in tag-3.astro.
+import Layout from '../layouts/Layout.astro';
+import Prompt from '../components/Prompt.astro';
+import Schritte from '../components/Schritte.astro';
+import FooterNav from '../components/FooterNav.astro';
+import { bild } from '../components/anleitung-bilder';
+import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
+---
+<Layout title="Login lokal & live">
+  <span class="eyebrow">Nachtrag zu Tag 2 · 5 min</span>
+  <h1>Login lokal & live</h1>
+  <p class="lead">Einmal eingestellt, funktioniert der Login gleichzeitig am Mac und auf Vercel – ihr stellt in Supabase nie wieder um.</p>
+
+  <h2 id="warum">Worum es geht</h2>
+  <p>An Tag 2 habt ihr in Supabase die <em>Site URL</em> auf eure Vercel-Adresse gestellt. Die Datenbank ist dieselbe, egal ob die App am Mac oder auf Vercel läuft. Aber sobald ein Login über einen Link zurückführt – Passwort vergessen, Magic Link, Anmelden mit Google –, schickt Supabase nur an Adressen, die auf seiner Liste stehen. Steht dort nur Vercel, landet der Login vom Mac auf der Live-App. Die Lösung ist kein Hin- und Herstellen, sondern eine zweite Adresse auf der Liste.</p>
+  <p class="small muted">Mit E-Mail und Passwort und ausgeschalteter E-Mail-Bestätigung (wie in Leihbar) merkt ihr davon heute noch nichts. Macht es trotzdem jetzt – spätestens bei „Passwort vergessen“ braucht ihr es.</p>
+
+  <h2 id="supabase">1 · In Supabase eintragen</h2>
+  <p>Auf <a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a> euer Leihbar-Projekt öffnen, links <em>Authentication</em> → <em>URL Configuration</em>.</p>
+  <Schritte id="login" steps={[
+    { img: bild('tag2/url-2'), alt: 'URL Configuration: Site URL mit der Vercel-Adresse, darunter Redirect URLs mit dem Button „Add URL“', text: 'Bei <em>Site URL</em> steht eure Vercel-Adresse (1) – so bleibt es. Steht dort noch <code>http://localhost:3000</code>: Vercel-Adresse eintragen, <em>Save changes</em>. Darunter bei <em>Redirect URLs</em> auf <em>Add URL</em> (2).', marks: [{ x: 1008, y: 288, w: 431, h: 33, n: 1 }, { x: 1361, y: 548, w: 70, h: 26, n: 2 }] },
+    { img: bild('tag3/login-add-url'), alt: 'Dialog „Add new redirect URLs“ mit dem Eintrag http://localhost:*/** und dem Button „Save URLs“', text: 'Ins Feld <code>http://localhost:*/**</code> (1) – der Stern steht für jeden Port. Steht eure Vercel-Adresse noch nicht in der Liste, mit <em>+ Add URL</em> eine zweite Zeile: <code>https://leihbar-….vercel.app/**</code>. Dann <em>Save URLs</em> (2).', marks: [{ x: 556, y: 417, w: 271, h: 32, n: 1 }, { x: 540, y: 511, w: 338, h: 28, n: 2 }] },
+  ]} />
+  <p>In der Liste stehen jetzt eure Vercel-Adresse und <code>http://localhost:*/**</code>, beide mit <code>/**</code> am Ende. Vorschau-Adressen tragt ihr bewusst nicht ein: Ein Muster für alle Vorschauen ließe auch fremde <code>vercel.app</code>-Adressen zu.</p>
+
+  <h2 id="claude">2 · Claude die Regel geben</h2>
+  <p>Die Liste hilft nur, wenn der Code die richtige Adresse mitschickt. In Claude, im Ordner eures Leihbar-Projekts:</p>
+  <Prompt label="Regel für Login-Weiterleitungen">{LOGIN_REGEL_PROMPT}</Prompt>
+  <p>Findet Claude eine feste Adresse, lasst sie ersetzen und prüft danach mit <code>/ndu-check</code>. Zum Schluss <code>/ndu-commit</code> – auch wenn nur <code>CLAUDE.md</code> dazugekommen ist.</p>
+
+  <h2 id="eigenes-projekt">3 · Dasselbe im eigenen Projekt</h2>
+  <p>Hat euer eigenes Projekt einen Login, wiederholt 1 und 2 dort: im Supabase-Projekt des eigenen Projekts und mit Claude im eigenen Ordner. Wer ein Projekt neu startet, macht es gleich mit, sobald der Login dazukommt (<a href="/neues-projekt#datenbank">Neues Projekt, Schritt 7</a>).</p>
+
+  <FooterNav prev={{ href: '/tag-3#stack', t: 'Tag 3 · Unser Stack' }} next={{ href: '/tag-3#konzept-7', t: 'Konzept 7' }} />
+</Layout>

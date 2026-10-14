@@ -75,6 +75,7 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
       { href: '/ideen', t: 'Projektideen' },
       { href: '/bekannte-probleme', t: 'Bekannte Probleme' },
       { href: '/unser-stack', t: 'Unser Stack' },
+      { href: '/login-lokal-und-live', t: 'Login lokal & live' },
       { href: '/bewertung', t: 'Bewertung' },
     ]},
   ],

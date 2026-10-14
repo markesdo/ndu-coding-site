@@ -12,6 +12,7 @@ import UmgebungWahl from '../components/UmgebungWahl.astro';
 import KonzeptStation from '../components/KonzeptStation.astro';
 import Quiz from '../components/Quiz.astro';
 import { bild } from '../components/anleitung-bilder';
+import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
 ---
 <Layout title="Tag 2 · Bauen wie ein Profi">
   <span class="eyebrow">Freitag, 9. Oktober 2026 · 09:00–18:00</span>
@@ -313,7 +314,7 @@ import { bild } from '../components/anleitung-bilder';
   </ul>
   <p class="small muted">Die Site URL ist nur die Vorgabe für Links ohne eigene Zieladresse. Vorschau-Adressen tragt ihr bewusst nicht ein: Ein Muster für alle Vorschauen ließe auch fremde <code>vercel.app</code>-Adressen zu, an die Login-Links gehen könnten. Mit E-Mail und Passwort klappt der Login in Vorschauen trotzdem.</p>
   <p>Damit das trägt, darf der Code keine feste Adresse mitschicken. Eine Regel für Claude, einmal pro Projekt:</p>
-  <Prompt label="Regel für Login-Weiterleitungen">Trag in CLAUDE.md im Abschnitt Tech-Stack diese Regel als eigenen Punkt „Login-Weiterleitungen“ ein, falls sie fehlt: Jeder Supabase-Aufruf mit Weiterleitung (signUp mit emailRedirectTo, Passwort-Reset, Magic Link, Google-/GitHub-Login) bekommt als Ziel die aktuelle Adresse der App plus eine Route, die den Code aus dem Link in eine Sitzung tauscht (z. B. /auth/confirm, nach der Supabase-Doku für Next.js) – nie eine feste URL wie localhost:3000 oder die Vercel-Adresse. Aktuelle Adresse: im Browser window.location.origin, auf dem Server aus den Request-Headern. Supabase akzeptiert nur Adressen, die unter Authentication → URL Configuration → Redirect URLs stehen, und nimmt sonst stillschweigend die Site URL. Landet ein Login auf der falschen Adresse, prüf zuerst diese Liste und sag mir, was dort fehlt. Prüf dann, ob der Code schon irgendwo eine feste Adresse für Weiterleitungen verwendet, und sag es mir, bevor du etwas änderst.</Prompt>
+  <Prompt label="Regel für Login-Weiterleitungen">{LOGIN_REGEL_PROMPT}</Prompt>
   <p><strong>Am Handy öffnen.</strong> Registrieren, etwas anfragen. Das ist eure App.</p>
 
   {/* id „t2-u5b“ (vorher t2-u5): Punkte geändert, als der Deploy auf Claude umgestellt wurde – Häkchen werden nach Position gespeichert. */}
