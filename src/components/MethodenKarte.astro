@@ -1,0 +1,63 @@
+---
+// Steckbrief einer Innolab-Methode: Frage, worauf sie aufbaut, was sie ergibt und wo das lebt (Daten: methoden.ts).
+// Auf der Toolbox-Seite für jede Methode, später als Kopf der Methodenseite. Verlinkt wird nur, wo es die Seite schon gibt.
+import { Bot, Clock, Inbox, PackageCheck } from '@lucide/astro';
+import { METHODEN, ORTE, artefakt, erzeugtVon } from './methoden';
+
+// ohneTag: auf Seiten, die schon nach Tagen gegliedert sind (Toolbox), wäre die Tag-Marke doppelt.
+const { slug, ohneTag = false } = Astro.props as { slug: string; ohneTag?: boolean };
+const m = METHODEN.find((x) => x.slug === slug);
+if (!m) throw new Error(`MethodenKarte: Methode „${slug}“ unbekannt`);
+
+const seiten = import.meta.glob('../pages/innolab/methoden/*.astro');
+const href = (s: string) => (`../pages/innolab/methoden/${s}.astro` in seiten ? `/innolab/methoden/${s}` : undefined);
+const eigene = href(m.slug);
+---
+<article class="card methode" id={m.slug}>
+  <header>
+    {!ohneTag && <span class="methode-tag">Tag {m.tag}</span>}
+    <h3>{eigene ? <a href={eigene}>{m.name}</a> : m.name}</h3>
+    <span class="methode-dauer"><Clock size={14} aria-hidden="true" /> {m.dauer} min</span>
+  </header>
+  <p class="methode-frage">{m.frage}</p>
+  <dl>
+    <dt><Inbox size={14} aria-hidden="true" /> Baut auf</dt>
+    <dd>
+      {m.braucht.length === 0 ? 'Startpunkt' : (
+        <ul>
+          {m.braucht.map((id) => {
+            const q = erzeugtVon(id)!;
+            const ziel = href(q.slug) ?? `/innolab/methoden#${q.slug}`;
+            return <li>{artefakt(id)!.name} <span class="muted">aus <a href={ziel}>{q.name}</a></span></li>;
+          })}
+        </ul>
+      )}
+    </dd>
+    <dt><PackageCheck size={14} aria-hidden="true" /> Ergibt</dt>
+    <dd>
+      <ul>
+        {m.ergibt.map((id) => {
+          const a = artefakt(id)!;
+          return <li>{a.name} <span class="muted">· {a.lebtIn.map((o) => ORTE[o]).join(' + ')}{a.pfad && <> · <code>{a.pfad}</code></>}</span></li>;
+        })}
+      </ul>
+    </dd>
+    <dt><Bot size={14} aria-hidden="true" /> Claude</dt>
+    <dd>{m.ki}</dd>
+  </dl>
+  {m.quelle && <p class="small muted methode-quelle">Quelle: {m.quelle}</p>}
+</article>
+
+<style>
+  .methode header { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .75rem; }
+  .methode h3 { margin: 0; flex: 1 1 14rem; }
+  .methode-tag, .methode-dauer { font-family: var(--mono); font-size: .75rem; font-weight: 600; color: var(--accent-ink); text-transform: uppercase; letter-spacing: .06em; }
+  .methode-dauer { color: var(--muted); display: inline-flex; align-items: center; gap: .25rem; }
+  .methode-frage { font-size: 1.05rem; margin: .6rem 0 .9rem; }
+  .methode dl { display: grid; grid-template-columns: max-content 1fr; gap: .4rem 1rem; margin: 0; }
+  .methode dt { display: inline-flex; align-items: center; gap: .35rem; font-family: var(--mono); font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); padding-top: .15rem; }
+  .methode dd { margin: 0; }
+  .methode dd ul { margin: 0; padding-left: 1.1rem; }
+  .methode-quelle { margin: .9rem 0 0; }
+  @media (max-width: 560px) { .methode dl { grid-template-columns: 1fr; } .methode dt { padding-top: .5rem; } }
+</style>

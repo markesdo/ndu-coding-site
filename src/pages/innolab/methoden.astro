@@ -1,0 +1,21 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MethodenKarte from '../../components/MethodenKarte.astro';
+import { TAGE, methodenVonTag } from '../../components/methoden';
+
+const tage = TAGE.map((t) => ({ ...t, methoden: methodenVonTag(t.n) })).filter((t) => t.methoden.length > 0);
+---
+<Layout title="Toolbox: alle Methoden">
+  <span class="eyebrow">Innolab · Toolbox</span>
+  <h1>Toolbox</h1>
+  <p class="lead">Jede Methode beantwortet eine Frage und ergibt ein Artefakt. Die nächste baut darauf auf, statt von vorn anzufangen.</p>
+
+  <p>Deshalb steht bei jeder Methode, <strong>worauf sie aufbaut</strong> und <strong>wo ihr Ergebnis lebt</strong>. Pains erarbeitet ihr zum Beispiel nur einmal, im Kundenprofil. Die Journey Map verortet sie über ihre IDs (P1, P2 …), der Fit prüft sie – niemand diskutiert sie ein drittes Mal.</p>
+
+  {tage.map((t) => (
+    <section>
+      <h2 id={`tag-${t.n}`}>Tag {t.n} · {t.titel}</h2>
+      {t.methoden.map((m) => <MethodenKarte slug={m.slug} ohneTag />)}
+    </section>
+  ))}
+</Layout>
