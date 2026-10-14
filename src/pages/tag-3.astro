@@ -19,6 +19,9 @@ const einladung = linearEinladung(LINEAR_INVITE_URL);
 // Team-Sprint (Übung 10): an einer Stelle, falls Repo oder Workspace fürs Innolab neu entstehen.
 const TEAM_REPO = 'https://github.com/markusd-ndu/leihbar-team';
 const TEAM_APP = 'https://leihbar-team.vercel.app';
+// Zahlen fürs Finale – aus den Repos der Studierenden (ohne die Vorlage), vor dem Finale neu zählen:
+// pro Repo `git rev-list --count HEAD`, ✅ in docs/BACKLOG.md, `git diff --shortstat <erster Commit> HEAD -- src` (insertions).
+const FINALE = { stand: '15.10., 1 Uhr', commits: '72', issues: '36', zeilen: '8.000+', apps: '3' };
 const TEAM_LINEAR_WS = 'https://linear.app/leihbar-team';
 const TEAM_LINEAR = `${TEAM_LINEAR_WS}/project/leihbar-b338831c32cd`;
 const teamIssue = (kennung: string) => `${TEAM_LINEAR_WS}/issue/${kennung}`;
@@ -46,8 +49,9 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
     <Block time="13:50–14:20" type="konzept" title="Konzept 9 · So wird 2026 gearbeitet" href="#konzept-9">Was die Modelle können, was die Studien sagen, drei Sätze zum Mitnehmen. Live: ein Agent arbeitet in der Cloud.</Block>
     <Block time="14:20–15:40" type="uebung" title="Übung 10 · Team-Sprint" href="#uebung-10">Zu dritt an einer Leihbar: Issue aus Linear, eigener Branch, Pull Request, gegenseitiges Review, zusammenführen.</Block>
     <Block time="15:40–15:50" type="pause" title="Pause" />
-    <Block time="15:50–16:40" type="plenum" title="Demos" href="#demos">Rund 15 Minuten pro Person, mit Vorher-Nachher aus Claude Design.</Block>
-    <Block time="16:40–17:00" type="plenum" title="Abschluss" href="#abschluss">Innolab, Organisatorisches, Reflexion, Feedback.</Block>
+    <Block time="15:50–16:00" type="plenum" title="Abschluss" href="#abschluss">Innolab, Organisatorisches, Reflexion, Feedback – jetzt schon, damit nach dem Finale nichts mehr kommt.</Block>
+    <Block time="16:00–16:40" type="plenum" title="Demos" href="#demos">Eure Geschichte in drei Akten: Tag 1, der Tiefpunkt, jetzt live.</Block>
+    <Block time="16:40–17:00" type="plenum" title="Finale" href="#finale">Der Kreis schließt sich: die Zahlen seit Tag 1 und der letzte Merge, live auf allen Handys.</Block>
   </div>
 
   <hr />
@@ -348,26 +352,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Klappt es, habt ihr eine echte Sicherheitslücke gefunden, die es nur bei KI-Funktionen gibt: Das Modell kann nicht sicher unterscheiden, was eure Anweisung ist und was Nutzer*innen eintippen. Schreibt den Fund als Kommentar in den Pull Request – die Autorin oder der Autor lässt Claude daraus einen weiteren Test machen.</p>
 
   <h3 id="uebung-10-d">d) Zusammenführen (5 min)</h3>
-  <p>Markus führt die drei Pull Requests am Beamer zusammen, einen nach dem anderen. Haben zwei dieselbe Datei geändert, meldet GitHub einen <strong>Konflikt</strong>: Zwei Änderungen an derselben Stelle, und GitHub weiß nicht, welche gilt. Claude löst ihn, ihr seht zu. Danach ist alles in <code>main</code> und live.</p>
-
-  <hr />
-  <h2 id="demos">Demos · rund 15 Minuten pro Person</h2>
-  <p class="small">Ohne eigenes Projekt zeigt ihr eure Leihbar. Statt „Problem“ erzählt ihr, was ihr heute dazugebaut habt: den Test aus Übung 8 und den neuen Screen aus Übung 9 im Vorher-Nachher.</p>
-  <ol class="steps">
-    <li><strong>Problem</strong> (1 min) Für wen, welcher Schmerz. Eine Person, eine Situation.</li>
-    <li><strong>Lösung live</strong> (5 min) Der eine Durchlauf, der den Kern zeigt – am besten vom Handy. Nicht alle Features.</li>
-    <li><strong>Vorher-Nachher</strong> (2 min) Der Entwurf aus Claude Design neben dem gebauten Screen. Was ist verloren gegangen?</li>
-    <li><strong>Was der Agent nicht gut gemacht hat</strong> (3 min) Ehrlich. Was musstet ihr wie oft korrigieren, wo habt ihr aufgegeben? Das ist der interessanteste Teil.</li>
-    <li><strong>Fragen</strong> (4 min) Die anderen beiden und Markus fragen nach.</li>
-  </ol>
-  <Checklist id="t3-demo-v3" items={[
-    'Live-App funktioniert am Handy (vorher testen!)',
-    'README für Außenstehende, mit URL',
-    'Entwurf aus Claude Design und gebauter Screen griffbereit',
-    'Ein ehrlicher Satz zu den Grenzen des Agenten',
-    'Screenrecording als Fallback',
-  ]} />
-  <p class="small">README noch nicht fertig? Der Prompt dazu: „Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.“ Fallback-Video: Mac <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows <kbd>Win</kbd><kbd>G</kbd>.</p>
+  <p>Markus führt die Pull Requests am Beamer zusammen, einen nach dem anderen – bis auf den letzten: Den heben wir fürs <a href="#finale">Finale</a> auf. Haben zwei dieselbe Datei geändert, meldet GitHub einen <strong>Konflikt</strong>: Zwei Änderungen an derselben Stelle, und GitHub weiß nicht, welche gilt. Claude löst ihn, ihr seht zu. Danach ist alles in <code>main</code> und live.</p>
 
   <hr />
   <span id="wie-es-weitergeht"></span>
@@ -380,7 +365,46 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   </dl>
   <Prompt label="Reflexion, in Claude">Häng an docs/REFLEXION.md einen Abschnitt „Tag 3“ an, mit genau diesen drei Sätzen: [eure drei Sätze].</Prompt>
   <p>Danach selbst <code>/ndu-commit</code> eingeben.</p>
-  <p>Zum Schluss: Feedback zum Kurs – über NDU Live oder das Formular, das Markus teilt.</p>
+  <p>Dann Feedback zum Kurs – über NDU Live oder das Formular, das Markus teilt. Danach kommen nur noch die Demos und das Finale.</p>
+
+  <hr />
+  <h2 id="demos">Demos · drei Akte <span class="pill plenum">rund 12 min pro Person</span></h2>
+  <p>Keine Feature-Liste, sondern eure Geschichte. Drei Akte, dann Fragen:</p>
+  <ol class="steps">
+    <li><strong>Akt 1 · Tag 1</strong> (1 min) Wo ihr am 8. Oktober standet: Wie viel hattet ihr schon programmiert? Wovor hattet ihr Respekt? Was wolltet ihr bauen?</li>
+    <li><strong>Akt 2 · Der Tiefpunkt</strong> (2 min) Der Moment, in dem der Agent euch im Stich gelassen hat oder ihr fast aufgegeben hättet. Was war los, wie seid ihr rausgekommen? Ehrlich – das ist der Teil, den alle behalten.</li>
+    <li><strong>Akt 3 · Jetzt</strong> (5 min) Die App live am Handy: der eine Durchlauf, der den Kern zeigt. Dazu Entwurf und Ergebnis aus Übung 9 nebeneinander.</li>
+    <li><strong>Fragen</strong> (3 min) Die anderen beiden und Markus fragen nach.</li>
+  </ol>
+  <p class="small">Ohne eigenes Projekt zeigt ihr in Akt 3 eure Leihbar: den Test aus Übung 8 und den neuen Screen aus Übung 9.</p>
+  <Checklist id="t3-demo-v4" items={[
+    'Live-App funktioniert am Handy (vorher testen!)',
+    'Mein Tiefpunkt in einem Satz',
+    'Entwurf und gebauter Screen griffbereit – oder beide Fenster offen',
+    'Screenrecording als Fallback',
+  ]} />
+  <p class="small">Fallback-Video: Mac <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows <kbd>Win</kbd><kbd>G</kbd>.</p>
+
+  <hr />
+  <h2 id="finale">Finale · Der Kreis schließt sich <span class="pill plenum">20 min</span></h2>
+  <p>Am 8. Oktober um 11:11 Uhr lagen eure Repos leer da – eine Vorlage, sonst nichts. Seitdem:</p>
+  <div class="finale-zahlen" role="list">
+    <div role="listitem"><strong>{FINALE.commits}</strong><span>Commits</span></div>
+    <div role="listitem"><strong>{FINALE.issues}</strong><span>Issues fertig, Kriterien geprüft</span></div>
+    <div role="listitem"><strong>{FINALE.zeilen}</strong><span>Zeilen Code – keine davon selbst getippt</span></div>
+    <div role="listitem"><strong>{FINALE.apps}</strong><span>Apps live im Internet – und eine zu dritt</span></div>
+  </div>
+  <p class="small muted">Stand {FINALE.stand}. Markus zählt kurz vor dem Finale neu.</p>
+  <ol class="steps">
+    <li><strong>Handys raus</strong> Alle öffnen die Team-App: <a href={TEAM_APP} target="_blank" rel="noopener noreferrer" data-kopieren data-label="Team-App-Adresse">{TEAM_APP}</a></li>
+    <li><strong>Der letzte Merge</strong> Markus führt den letzten Pull Request aus dem Team-Sprint am Beamer zusammen.</li>
+    <li><strong>Warten</strong> Rund eine Minute, bis Vercel fertig ist. Dann alle gleichzeitig neu laden.</li>
+    <li><strong>Da ist es</strong> Die Änderung ist auf allen Handys – gebaut von euch, geprüft von euch, live für alle.</li>
+  </ol>
+  <blockquote class="finale-satz">
+    <p>Vor einer Woche: eine Vorlage und viel Respekt vor dem Terminal. Heute: eure Apps live, eine davon zu dritt gebaut.</p>
+    <p>Ihr habt nicht programmieren gelernt. Ihr habt gelernt, eine Maschine zu führen, die es kann.</p>
+  </blockquote>
 
   <FooterNav prev={{ href: '/neues-projekt', t: 'Neues Projekt starten' }} next={{ href: '/bewertung', t: 'Bewertung' }} />
 </Layout>
