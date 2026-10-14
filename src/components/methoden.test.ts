@@ -84,4 +84,17 @@ describe('methoden', () => {
     const pr = pruefPrompt(METHODEN.find((m) => m.slug === 'problem-rahmen')!);
     expect(pr).toMatch(/^Lies docs\/PRODUKT\.md\. Prüf es/);
   });
+
+  it('wer in der Prüfliste ein früheres Artefakt nennt, hat es in „braucht“ – sonst liest Claude es beim Prüfen nicht', () => {
+    const namen: Record<string, string> = {
+      'Annahmen-Map': 'annahmen', Synthese: 'synthese', Kundenprofil: 'profil', 'Journey Map': 'journey',
+      'Value Map': 'valuemap', 'Story Map': 'storymap',
+    };
+    for (const m of METHODEN.filter((x) => x.pruefliste)) {
+      const text = m.pruefliste!.join(' ');
+      for (const [name, id] of Object.entries(namen)) {
+        if (text.includes(name)) expect([...m.braucht, ...m.ergibt], `${m.slug} nennt ${name}`).toContain(id);
+      }
+    }
+  });
 });

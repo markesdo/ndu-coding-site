@@ -229,8 +229,8 @@ export const METHODEN: Methode[] = [
       'Die Karte testet die riskanteste noch offene Annahme und nennt ihre ID.',
       'Messgröße und Erfolgsschwelle stehen fest, bevor der Test läuft.',
       'Es ist der billigste Test, der die Frage beantwortet.',
-      'Die Origin Story führt von „nie davon gehört“ bis zum ersten Schritt.',
-      'Der Landingpage-Text nennt den Pain vor dem Produkt.',
+      'Die Skizze der Origin Story unter der Karte führt von „nie davon gehört“ bis zum ersten Schritt.',
+      'Für Aufsteller oder Landingpage ist notiert: erst der Pain, dann das Produkt, dann die Antwort auf die Hürde.',
     ],
     ki: 'Pre-Mortem, billigere Testvarianten, Schwelle für Erfolg vor dem Test.',
   },
@@ -252,7 +252,7 @@ export const METHODEN: Methode[] = [
   {
     slug: 'usage-story', name: 'Usage Story', tag: 3, dauer: 30,
     frage: 'Wo ist im Kernablauf der Höhepunkt – und wie endet er?',
-    braucht: ['storymap'], ergibt: ['usage'],
+    braucht: ['storymap', 'journey', 'profil'], ergibt: ['usage'],
     pruefliste: [
       'Die Geschichte hat eine konkrete Person in einer konkreten Situation, mit Ziel.',
       'Der Auslöser hängt an einem Moment der Wahrheit aus der Journey Map.',
@@ -269,18 +269,18 @@ export const METHODEN: Methode[] = [
     frage: 'Erreichen echte Menschen mit dem Prototyp den Höhepunkt?',
     braucht: ['usage', 'storymap'], ergibt: ['spike'],
     pruefliste: [
-      'Vor dem Spike gab es für jeden Bildschirm eine Papierskizze.',
+      'In docs/TESTS.md ist das Foto der Papierskizzen verlinkt – für jeden Bildschirm eine.',
       'Der Spike liegt in einem eigenen Branch und ist als Wegwerf-Prototyp gekennzeichnet.',
       'Der Prototyp bildet genau den Ablauf der Usage Story ab, bis zum Höhepunkt.',
       'Die Testaufgaben beschreiben ein Ziel, keine Bedienschritte.',
-      'Für jeden Test steht fest, ob die Person den Höhepunkt erreicht hat und wo sie hängen blieb.',
+      'Nach den Tests (Hausaufgabe): Für jede Testperson steht fest, ob sie den Höhepunkt erreicht hat und wo sie hängen blieb.',
     ],
     ki: 'Baut den Wegwerf-Prototyp – erst nach der Papierskizze.',
   },
   {
     slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 3, dauer: 20,
     frage: 'Wie trägt sich das Produkt?',
-    braucht: ['valuemap'], ergibt: ['geschaeftsmodell'],
+    braucht: ['valuemap', 'annahmen', 'brief'], ergibt: ['geschaeftsmodell'],
     pruefliste: [
       'Es steht da, wer zahlt und wofür.',
       'Mindestens drei Muster wurden durchgespielt, eins ist gewählt – mit Grund.',
