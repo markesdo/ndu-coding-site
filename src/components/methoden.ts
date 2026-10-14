@@ -43,6 +43,7 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'kriterien', name: 'Akzeptanzkriterien', lebtIn: ['linear'] },
   { id: 'schaetzung', name: 'Schätzung', lebtIn: ['linear'] },
   { id: 'inkrement', name: 'Laufendes Inkrement', lebtIn: ['live', 'repo'] },
+  { id: 'sprintlog', name: 'Sprint-Protokoll: Ziele, Review, Retro', lebtIn: ['repo'], pfad: 'docs/SPRINTS.md' },
   { id: 'pitch', name: 'Pitch mit Demo und Belegen', lebtIn: ['vortrag'] },
 ];
 
@@ -334,18 +335,32 @@ export const METHODEN: Methode[] = [
     slug: 'schaetzen', name: 'Schätzen', tag: 5, dauer: 60,
     frage: 'Wie groß ist jedes Issue im Verhältnis zu den anderen?',
     braucht: ['issues', 'kriterien'], ergibt: ['schaetzung'],
+    pruefliste: [
+      'Jedes Issue, das in Sprint 1 kommen könnte, hat eine Schätzung auf der Skala 1, 2, 3, 5, 8.',
+      'Ein Referenz-Issue ist mit einem Kommentar markiert; die anderen sind an ihm gemessen.',
+      'Kein Issue ist mit 8 geschätzt – was so groß ist, ist geteilt.',
+      'Wo die Schätzungen weit auseinanderlagen, steht ein Kommentar mit beiden Runden und dem Geklärten, und die Akzeptanzkriterien sind angepasst.',
+    ],
     ki: 'Schätzt nicht mit (das würde ankern) – listet danach Risiken und Unbekanntes.',
   },
   {
-    slug: 'sprint', name: 'Sprint', tag: 5, dauer: 120,
+    slug: 'sprint', name: 'Sprint', tag: 5, dauer: 150,
     frage: 'Was liefern wir in diesem Sprint – und was lernen wir daraus?',
-    braucht: ['schaetzung', 'team', 'brief'], ergibt: ['inkrement'],
+    braucht: ['schaetzung', 'team', 'brief'], ergibt: ['inkrement', 'sprintlog'],
+    pruefliste: [
+      'Jedes Produkt hat ein Sprint-Ziel in einem Satz, der sagt, was danach jemand kann – keine Liste von Issues.',
+      'Die ausgewählten Issues und ihre Punkte stehen da; ab Sprint 2 liegt die Summe nicht über dem, was im Sprint davor fertig wurde.',
+      'Die Definition of Done enthält ein gespeichertes Ereignis, das die Outcome-Metrik aus dem Produkt-Brief misst.',
+      'Jedes erledigte Issue hat einen Beleg je Akzeptanzkriterium, den Link zum Pull Request und den Namen der Person, die ihn geprüft hat.',
+      'Das Review hält fest, was gezeigt wurde, was Tests und Messung ergeben haben und was sich deshalb am Backlog ändert.',
+      'Die Retro endet mit einer Maßnahme, einer verantwortlichen Person und dem Zeitpunkt, an dem ihr sie prüft.',
+    ],
     ki: 'Baut die Issues als Developer im Rahmen der Definition of Done; prüft das Sprint-Ziel.',
   },
   {
     slug: 'pitch', name: 'Pitch', tag: 6, dauer: 60,
     frage: 'Überzeugt das Produkt – mit Belegen?',
-    braucht: ['concept', 'usage', 'origin', 'geschaeftsmodell', 'inkrement', 'entscheidungen'], ergibt: ['pitch'],
+    braucht: ['concept', 'usage', 'origin', 'geschaeftsmodell', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
     ki: 'Spielt einen skeptischen Investor; prüft jede Behauptung gegen das Entscheidungslog.',
   },
 ];

@@ -107,4 +107,13 @@ describe('methoden', () => {
     expect(sprint).toMatch(/^Lies über den Linear-MCP die Issues für Sprint 1\. Zum Abgleich lies auch docs\/PRODUKT\.md, docs\/TEAM\.md\./);
     for (const m of METHODEN.filter((x) => x.pruefliste)) expect(pruefPrompt(m), m.slug).not.toMatch(/^Lies \./);
   });
+
+  it('der Sprint wird am Sprint-Protokoll geprüft, mit Issues, Team und Brief zum Abgleich', () => {
+    const sp = pruefPrompt(METHODEN.find((m) => m.slug === 'sprint')!);
+    expect(sp).toMatch(/^Lies docs\/SPRINTS\.md\. Zum Abgleich lies auch die Issues über den Linear-MCP .*, docs\/TEAM\.md, docs\/PRODUKT\.md\./);
+    // Schätzung, Issues und Kriterien liegen alle in Linear: einmal lesen, nicht dreimal.
+    const sch = pruefPrompt(METHODEN.find((m) => m.slug === 'schaetzen')!);
+    expect(sch.split('Linear-MCP').length - 1).toBe(1);
+    expect(sch).not.toContain('Zum Abgleich');
+  });
 });
