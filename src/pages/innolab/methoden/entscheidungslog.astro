@@ -1,0 +1,45 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Entscheidungslog">
+  <span class="eyebrow">Innolab · Tag 1 · Methode</span>
+  <h1>Entscheidungslog</h1>
+  <p class="lead">Was ihr geglaubt, wie ihr es geprüft und was ihr daraufhin geändert habt – eine Zeile pro Entscheidung.</p>
+  <Orientierung seite="innolab/methoden/entscheidungslog" leiste={false} />
+  <MethodenKarte slug="entscheidungslog" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Im Coding-Kurs hat Claude in <code>docs/ENTSCHEIDUNGEN.md</code> festgehalten, was im Projekt gilt: Stack, Sprache, Regeln. Im Innolab kommen <strong>Produktentscheidungen</strong> dazu – und die brauchen einen Beleg. Das Format bekommt dafür eine vierte Spalte:</p>
+  <p><strong>Datum — Entscheidung — Grund — Beleg</strong></p>
+  <p>Der Beleg ist ein Interview (I3), ein Test (T2), eine Zahl – oder ehrlich „noch keiner“. Das ist kein Makel: Eine Entscheidung ohne Beleg ist eine Annahme, und genau die testet ihr als Nächstes. Widerlegt ein Test etwas, löscht ihr die alte Zeile nicht, sondern schreibt eine neue darunter. So sieht man am Ende, was ihr gelernt habt – das ist der Kern eurer Präsentation.</p>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <Prompt label="Beispiel · docs/ENTSCHEIDUNGEN.md">- 2026-11-20 — Zielgruppe: Pendler*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner
+- 2026-11-20 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: Kassendaten Oktober
+- 2026-11-27 — Zielgruppe erweitert um Pendler*innen nach Linz — 3 von 5 Interviewten fahren Richtung Linz — Beleg: I1, I3, I4
+- 2026-12-04 — Bestellen am Vorabend verworfen — Niemand plant den Kaffee am Vorabend — Beleg: Test T1, 0 von 5</Prompt>
+  <p>Die dritte Zeile ersetzt die erste nicht, sie steht darunter. Wer das Log liest, sieht: Am Anfang war die Zielgruppe geraten, nach den Interviews war sie belegt.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (15 min heute, danach jeden Tag 5 min)</h2>
+  <ol>
+    <li>Heute: zwei bis drei Zeilen aus eurem Problem-Rahmen – Zielgruppe, was das Produkt nicht macht, das Outcome. Beleg meistens „noch keiner“.</li>
+    <li>Am Ende jedes Kurstags: Was habt ihr heute entschieden oder verworfen? Je eine Zeile.</li>
+    <li>Einmal pro Tag Claude prüfen lassen, welche Entscheidung ohne Beleg dasteht.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · Zeile in docs/ENTSCHEIDUNGEN.md">- [JJJJ-MM-TT] — [Entscheidung] — [Grund] — Beleg: [Interview/Test/Zahl oder „noch keiner“]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="entscheidungslog" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Welche Entscheidung in eurem Brief habt ihr heute getroffen, ohne sie belegen zu können? Genau die gehört morgen in die Interviews.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/problem-rahmen', t: 'Problem-Rahmen & Produkt-Brief' }} next={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} />
+</Layout>

@@ -63,6 +63,9 @@ export interface Methode {
   ki: string;
   /** Herkunft der Methode, damit die Quelle genannt ist. */
   quelle?: string;
+  /** Prüfliste: die häufigen Fehler als prüfbare Sätze. Die Studierenden haken sie ab, Claude prüft dagegen
+   *  (ClaudePruefung.astro). Pflicht, sobald die Methode eine eigene Seite hat. */
+  pruefliste?: string[];
 }
 
 /** In Kursreihenfolge – die Prüfung „braucht nur Früheres“ verlässt sich darauf. */
@@ -72,17 +75,38 @@ export const METHODEN: Methode[] = [
     frage: 'Welches Problem lösen wir für wen – und woran merken wir, dass es gelungen ist?',
     braucht: [], ergibt: ['brief'],
     ki: 'Findet versteckte Lösungen im Problemsatz und Ziele, die man nicht messen kann.',
+    pruefliste: [
+      'Die Zielgruppe ist eine konkrete Person in einer konkreten Situation – nicht „alle“.',
+      'Der Problemsatz enthält keine Lösung: kein „App“, keine „Plattform“, keine Funktion.',
+      'Es steht da, wie das Problem heute gelöst wird – auch „gar nicht“ ist eine Antwort.',
+      '„Was macht es NICHT?“ nennt drei Dinge, die naheliegen würden.',
+      'Die Outcome-Metrik beschreibt, was Menschen tun – nicht, was das Produkt kann – und ist mit 3–5 Menschen prüfbar.',
+    ],
   },
   {
     slug: 'entscheidungslog', name: 'Entscheidungslog', tag: 1, dauer: 15,
     frage: 'Was haben wir geglaubt, wie geprüft, was gelernt – und was haben wir darum geändert?',
     braucht: ['brief'], ergibt: ['entscheidungen'],
     ki: 'Prüft am Ende jedes Tages, welche Entscheidung ohne Beleg dasteht.',
+    pruefliste: [
+      'Jede Zeile nennt Datum, Entscheidung und Grund.',
+      'Jede Produktentscheidung nennt einen Beleg – oder ausdrücklich „noch keiner“.',
+      'Keine Annahme ist als Tatsache formuliert („Pendler*innen wollen …“ statt „Wir glauben, dass …“).',
+      'Wo ein Test etwas widerlegt hat, steht die Änderung als neue Zeile da – die alte bleibt stehen.',
+    ],
   },
   {
-    slug: 'interview', name: 'Jobs to be Done & Mom Test', tag: 1, dauer: 90,
+    slug: 'interview', name: 'Jobs to be Done & Mom Test', tag: 1, dauer: 120,
     frage: 'Was tun Menschen heute wirklich, um ihren Job zu erledigen?',
     braucht: ['brief'], ergibt: ['transkripte'],
+    pruefliste: [
+      'Keine Frage nach der Zukunft („Würdest du …?“, „Wie viel würdest du zahlen?“).',
+      'Keine Frage stellt eure Idee vor oder will sie bewertet haben.',
+      'Die Kernfragen fragen nach dem letzten konkreten Mal („Erzähl vom letzten Mal, als …“).',
+      'Mindestens eine Frage zielt darauf, was die Person heute schon tut, um das Problem zu lösen – und was sie das kostet.',
+      'Nachfragen sind vorbereitet („Warum?“, „Was ist dann passiert?“, „Wie oft kommt das vor?“).',
+      'Am Anfang stehen die Bitte um Einwilligung zur Aufnahme und die Zusage, dass nichts mit Namen ins Projekt kommt.',
+    ],
     ki: 'Markiert suggestive und hypothetische Fragen im Leitfaden und spielt zur Probe eine zurückhaltende Person aus der Zielgruppe.',
     quelle: 'Rob Fitzpatrick, The Mom Test; Clayton Christensen, Jobs to be Done',
   },
@@ -90,6 +114,13 @@ export const METHODEN: Methode[] = [
     slug: 'annahmen', name: 'Annahmen-Map', tag: 1, dauer: 45,
     frage: 'Welche Annahmen müssen stimmen – und welche ist am riskantesten?',
     braucht: ['brief'], ergibt: ['annahmen'],
+    pruefliste: [
+      'Jede Annahme ist ein prüfbarer Satz: „Wir glauben, dass …“.',
+      'Alle vier Arten kommen vor: wünschenswert, machbar, wirtschaftlich, bedienbar.',
+      'Bei jeder Annahme steht, wie wichtig sie ist und welchen Beleg es gibt.',
+      'Die riskanteste Annahme – sehr wichtig, kaum Beleg – ist markiert.',
+      'Keine Annahme ist eine Aufgabe („Logo gestalten“) oder eine Funktion („Es gibt einen Login“).',
+    ],
     ki: 'Red Team: sucht Annahmen, die ihr übersehen habt.',
     quelle: 'David J. Bland & Alex Osterwalder, Testing Business Ideas',
   },
