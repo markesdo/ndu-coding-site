@@ -16,18 +16,18 @@ import FooterNav from '../../components/FooterNav.astro';
   <div class="schedule" data-kurstag="2027-01-07">
     <Block time="09:00–09:30" type="uebung" title="Technikcheck" href="#technik">Handy spiegeln, Produktions-URL, Plan B.</Block>
     <Block time="09:30–09:40" type="plenum" title="Begrüßung" href="#praesentationen">Die Gäste kommen; worum es im Innolab ging.</Block>
-    <Block time="09:40–10:55" type="plenum" title="Präsentationen" href="#praesentationen">Drei Produkte, je 12 Minuten Pitch und 10 Minuten Fragen.</Block>
+    <Block time="09:40–10:55" type="plenum" title="Präsentationen" href="#praesentationen">Drei Produkte, je 12 Minuten Pitch, 10 Minuten Fragen, 3 Minuten Wechsel.</Block>
     <Block time="10:55–11:15" type="pause" title="Pause" />
     <Block time="11:15–12:15" type="uebung" title="Kurs-Retro" href="#retro">Welche Methode hat euch verändert, welche lasst ihr weg.</Block>
     <Block time="12:15–12:45" type="plenum" title="Eure Toolbox" href="#toolbox">Was ihr beim nächsten Produkt zuerst einsetzt.</Block>
-    <Block time="12:45–13:00" type="plenum" title="Abschluss" href="#abschluss">Bewertung, was mit Repo und App passiert.</Block>
+    <Block time="12:45–13:00" type="plenum" title="Abschluss" href="#abschluss">Was mit Repo und App passiert.</Block>
   </div>
 
   <hr />
   <h2 id="technik">Technikcheck</h2>
   <p>Eine Demo scheitert selten am Produkt, meist an der Technik im Raum. In der ersten halben Stunde spielt jede*r die Demo einmal komplett am Beamer durch, so wie sie im Pitch läuft.</p>
   <Checklist id="il-tag7-technik" items={[
-    'Am Vortag die App einmal geöffnet – Supabase pausiert kostenlose Projekte nach sieben Tagen ohne Zugriff',
+    'Spätestens am Vortag die App geöffnet – Supabase pausiert kostenlose Projekte nach sieben Tagen ohne Zugriff; ein pausiertes Projekt im Supabase-Dashboard wiederherstellen, das dauert ein paar Minuten',
     'Handy geladen, Bildschirm gespiegelt und lesbar, Benachrichtigungen aus',
     'Produktions-URL geöffnet, nicht localhost; Demo-Daten liegen in der Datenbank',
     'Plan B: Bildschirmaufnahme der Demo auf dem Laptop, ohne Internet abspielbar',
@@ -41,15 +41,15 @@ import FooterNav from '../../components/FooterNav.astro';
     <li><strong>10 Minuten Fragen:</strong> von Markus, Louis, den Gästen und den anderen beiden aus eurem Team. Wisst ihr eine Antwort nicht, sagt das und nennt, wie ihr es herausfinden würdet – das überzeugt mehr als eine geratene Zahl.</li>
     <li><strong>3 Minuten Wechsel.</strong></li>
   </ul>
-  <p>Während der anderen Präsentationen schreibt ihr auf, welche Frage ihr stellen wollt – vorbereitet habt ihr je eine pro Produkt. Die Gäste notieren pro Produkt, was sie überzeugt hat und wo sie gezweifelt haben; die Notizen bekommt ihr nach der Pause.</p>
+  <p>Während der anderen Präsentationen schreibt ihr auf, welche Frage ihr stellen wollt – vorbereitet habt ihr je eine pro Produkt. Die Gäste notieren pro Produkt, was sie überzeugt hat und wo sie gezweifelt haben; die Notizen bekommt ihr zum Abschluss.</p>
   <Callout type="info" title="Was nach dem Pitch mit den Fragen passiert">
-    <p>Schreibt die Fragen, auf die ihr keine gute Antwort hattet, gleich danach in <code>docs/PITCH.md</code> unter „Offene Fragen“. Es sind die ehrlichsten Hinweise darauf, was ihr als Nächstes prüfen würdet.</p>
+    <p>Schreibt die Fragen, auf die ihr keine gute Antwort hattet, gleich danach in <code>docs/PITCH.md</code>, als neuen Abschnitt „Offene Fragen“. Es sind die ehrlichsten Hinweise darauf, was ihr als Nächstes prüfen würdet.</p>
   </Callout>
 
   <h2 id="retro">Kurs-Retro</h2>
   <p>In den Sprint-Retros ging es um eure Zusammenarbeit. Jetzt geht es um die Methoden: Was davon nehmt ihr in euren Job mit? Die Antwort auf die Frage aus der Checkliste von <a href="/innolab/tag-6#abschluss">Tag 6</a> habt ihr vorbereitet.</p>
   <ol>
-    <li><strong>Abstimmen (15 min, still):</strong> Auf dem Miro-Board hängt jede Methode der <a href="/innolab/methoden">Toolbox</a> als Karte. Jede*r klebt drei grüne Punkte auf Methoden, die das eigene Produkt am meisten verändert haben, und drei rote auf Methoden, die ihr beim nächsten Produkt weglassen würdet.</li>
+    <li><strong>Abstimmen (15 min, still):</strong> Auf dem Miro-Board, das wir vorbereiten, hängt jede Methode der <a href="/innolab/methoden">Toolbox</a> als Karte. Jede*r klebt drei grüne Punkte auf Methoden, die das eigene Produkt am meisten verändert haben, und drei rote auf Methoden, die ihr beim nächsten Produkt weglassen würdet.</li>
     <li><strong>Runde (30 min):</strong> Jede*r erklärt eine grüne und eine rote Karte – mit einem Moment aus dem eigenen Produkt, an dem es sich gezeigt hat. Zum Beispiel: eine Entscheidung im Entscheidungslog, die ohne die Methode anders ausgefallen wäre.</li>
     <li><strong>Feedback an uns (15 min):</strong> Start, Stop, Continue für das Innolab im nächsten Jahr. Was fehlte, was war zu viel, was soll bleiben?</li>
   </ol>
@@ -57,13 +57,13 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2 id="toolbox">Eure Toolbox</h2>
   <p>Im Job habt ihr selten sieben Tage und nie einen Kursplan. Zum Abschluss baut jede*r eine eigene Kurzfassung: Welche drei bis fünf Methoden setzt ihr beim nächsten Produkt ein, in welcher Reihenfolge, und in welcher kleinsten Form? Drei Interviews statt fünf, eine Concept Story ohne Story Map, ein Sprint mit Definition of Done.</p>
-  <p>Schreibt sie in <code>docs/TOOLBOX.md</code> und stellt sie in zwei Minuten vor. Die <a href="/innolab/methoden">Toolbox-Seite</a> mit allen Methoden, Beispielen und Prüflisten bleibt online; die Prompts darauf funktionieren mit jedem Claude-Abo, wenn ihr sie im nächsten Projekt braucht.</p>
+  <p>Schreibt sie in <code>docs/TOOLBOX.md</code> und stellt sie in zwei Minuten vor. Die <a href="/innolab/methoden">Toolbox-Seite</a> mit allen Methoden, Beispielen und Prüflisten bleibt online; die Prompts darauf nutzt ihr mit Claude Code und einem eigenen Abo, wenn ihr sie im nächsten Projekt braucht.</p>
 
   <h2 id="abschluss">Abschluss</h2>
   <ul>
     <li><strong>Bewertung:</strong> Prototyp 70 %, Präsentation 30 %. Details folgen (<a href="/innolab#bewertung">Innolab-Übersicht</a>).</li>
-    <li><strong>Euer Repo und eure App bleiben.</strong> Vercel lässt die App online, Supabase pausiert die Datenbank nach sieben Tagen ohne Zugriff – im Supabase-Dashboard holt ihr sie mit <em>Restore</em> zurück.</li>
-    <li><strong>Weiterbauen</strong> könnt ihr jederzeit, mit einem eigenen Claude-Abo. Die Messung läuft weiter, solange die App Ereignisse speichert – ohne personenbezogene Daten, wie in eurer Definition of Done.</li>
+    <li><strong>Euer Repo und eure App bleiben.</strong> Vercel lässt die App online, Supabase pausiert die Datenbank nach sieben Tagen ohne Zugriff; zurückholen könnt ihr sie im Supabase-Dashboard, aber nicht unbegrenzt lange. Wollt ihr die App zeigen, öffnet sie regelmäßig.</li>
+    <li><strong>Weiterbauen</strong> könnt ihr jederzeit, mit einem eigenen Claude-Abo. Die Messung läuft weiter, solange die App Ereignisse speichert – ohne Namen und E-Mail-Adressen, wie in eurer Definition of Done.</li>
   </ul>
   <Checklist id="il-tag7-abschluss" items={[
     'Offene Fragen aus den Präsentationen in <code>docs/PITCH.md</code>',
