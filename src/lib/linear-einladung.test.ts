@@ -23,4 +23,12 @@ describe('linearEinladung', () => {
     expect(linearEinladung('javascript:alert(1)')).toBeNull();
     expect(linearEinladung('kein link')).toBeNull();
   });
+
+  it('nimmt nur Einladungslinks, nicht die Workspace-Adresse oder andere Seiten', () => {
+    expect(linearEinladung('https://linear.app/leihbar-team')).toBeNull();
+    expect(linearEinladung('https://linear.app/login')).toBeNull();
+    expect(linearEinladung('https://linear.app/leihbar-team/join')).toBeNull();
+    expect(linearEinladung('https://u:p@linear.app/leihbar-team/join/abc123')).toBeNull();
+    expect(linearEinladung('https://linear.app:8443/leihbar-team/join/abc123')).toBeNull();
+  });
 });
