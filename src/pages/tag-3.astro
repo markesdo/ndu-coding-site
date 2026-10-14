@@ -20,8 +20,8 @@ const einladung = linearEinladung(LINEAR_INVITE_URL);
 const TEAM_REPO = 'https://github.com/markusd-ndu/leihbar-team';
 const TEAM_APP = 'https://leihbar-team.vercel.app';
 // Zahlen fürs Finale – aus den Repos der Studierenden (ohne die Vorlage), vor dem Finale neu zählen:
-// pro Repo `git rev-list --count HEAD`, ✅ in docs/BACKLOG.md, `git diff --shortstat <erster Commit> HEAD -- src` (insertions).
-const FINALE = { stand: '15.10., 1 Uhr', commits: '72', issues: '36', zeilen: '8.000+', apps: '3' };
+// pro Repo `git rev-list --count HEAD` minus 1 (der Start-Commit aus der Vorlage), ✅ in docs/BACKLOG.md, `git diff --shortstat <erster Commit> HEAD -- src` (insertions).
+const FINALE = { stand: '15.10., 1 Uhr', commits: '68', issues: '36', zeilen: '8.000+', apps: '3' };
 const TEAM_LINEAR_WS = 'https://linear.app/leihbar-team';
 const TEAM_LINEAR = `${TEAM_LINEAR_WS}/project/leihbar-b338831c32cd`;
 const teamIssue = (kennung: string) => `${TEAM_LINEAR_WS}/issue/${kennung}`;
@@ -49,8 +49,8 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
     <Block time="13:50–14:20" type="konzept" title="Konzept 9 · So wird 2026 gearbeitet" href="#konzept-9">Was die Modelle können, was die Studien sagen, drei Sätze zum Mitnehmen. Live: ein Agent arbeitet in der Cloud.</Block>
     <Block time="14:20–15:40" type="uebung" title="Übung 10 · Team-Sprint" href="#uebung-10">Zu dritt an einer Leihbar: Issue aus Linear, eigener Branch, Pull Request, gegenseitiges Review, zusammenführen.</Block>
     <Block time="15:40–15:50" type="pause" title="Pause" />
-    <Block time="15:50–16:00" type="plenum" title="Abschluss" href="#abschluss">Innolab, Organisatorisches, Reflexion, Feedback – jetzt schon, damit nach dem Finale nichts mehr kommt.</Block>
-    <Block time="16:00–16:40" type="plenum" title="Demos" href="#demos">Eure Geschichte in drei Akten: Tag 1, der Tiefpunkt, jetzt live.</Block>
+    <Block time="15:50–16:05" type="plenum" title="Abschluss" href="#abschluss">Innolab, Organisatorisches, Reflexion, Feedback – jetzt schon, damit nach dem Finale nichts mehr kommt.</Block>
+    <Block time="16:05–16:40" type="plenum" title="Demos" href="#demos">Eure Geschichte in drei Akten: Tag 1, der Tiefpunkt, jetzt live.</Block>
     <Block time="16:40–17:00" type="plenum" title="Finale" href="#finale">Der Kreis schließt sich: die Zahlen seit Tag 1 und der letzte Merge, live auf allen Handys.</Block>
   </div>
 
@@ -197,7 +197,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <details class="fallback" id="uebung-9-f-optional">
     <summary>Optional: Vorher-Nachher-Bilder und ein Satz für die Reflexion</summary>
     <p><strong>Bilder:</strong> Macht von beiden Fenstern je einen Screenshot, Entwurf und Ergebnis am Handy (<a href="/setup#lokal-screenshots">so geht's</a>), und legt sie euch für die Demo bereit. Ohne Bilder geht es auch: dann in der Demo beide Fenster live nebeneinander zeigen.</p>
-    <p><strong>Reflexion:</strong> Merkt euch einen Satz: Was schreibt ihr beim nächsten Entwurf gleich ins Issue, damit Claude Code nichts erfinden muss? Er kommt in die <a href="#abschluss">Reflexion am Ende des Tages</a>.</p>
+    <p><strong>Reflexion:</strong> Merkt euch einen Satz: Was schreibt ihr beim nächsten Entwurf gleich ins Issue, damit Claude Code nichts erfinden muss? Er kommt in die <a href="#abschluss">Reflexion im Abschluss</a>.</p>
   </details>
 
   <hr />
@@ -323,7 +323,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
     <dd><p>Eine Anfrage, auf die sieben Tage niemand antwortet, wird automatisch „abgelaufen“. Das erledigt kein Mensch und kein Klick, sondern ein Zeitplan bei Vercel, der einmal am Tag läuft. Ihr lernt, wie Arbeit im Hintergrund passiert – und wo ihr nachseht, wenn sie scheitert (Logs bei Vercel). Auf das Vercel-Konto habt ihr keinen Zugriff; die Logs zeigt Markus am Beamer.</p>
       <p class="small">Nachschlagen: <a href={teamIssue('LEI-6')} target="_blank" rel="noopener noreferrer">LEI-6 in Linear</a> (nach dem Beitreten; ohne Linear: <a href={teamGithubIssue('LEI-6')} target="_blank" rel="noopener noreferrer">GitHub-Issue #{TEAM_GITHUB_ISSUE['LEI-6']}</a>) · <a href="/konzepte/daten-backend#secrets">Secrets &amp; Umgebungsvariablen (auch: warum der Secret Key die Regeln umgeht)</a> · <a href="#uebung-8-a">einen Test schreiben (Übung 8a)</a></p></dd>
     <dt id="issue-c">C · Meine Gegenstände neu gestalten <span class="small muted">(LEI-7)</span> <span class="pill stufe-mittel">★★☆ mittel</span></dt>
-    <dd><p>Die Seite <code>/meine-gegenstaende</code> gibt es schon und sie funktioniert – alle eigenen Gegenstände mit der Zahl offener Anfragen. Aber sie ist ein Rohbau: eine Textliste. Ihr gestaltet sie neu, so dass sie aussieht wie ein Teil von Leihbar – das ist, wofür ein Design-System da ist. Daten und Logik bleiben, wie sie sind. Erst in Claude Design entwerfen, dann übergeben – wie in Übung 9. Das Design-System dafür habt ihr in a) schon aus <code>leihbar-team</code> angelegt (<a href="#lei7-design-system">Schritte</a>). Beim Entwerfen wählt ihr unter dem Eingabefeld <em>Leihbar Team</em> (hat das Umbenennen nicht geklappt: den Namen, den ihr euch in a) gemerkt habt) – nicht euer eigenes, auch wenn Übung 9b „euer Design-System“ sagt; sonst sieht die Seite aus wie eure App. Macht vorher einen Screenshot der schlichten Seite – vorher und nachher gehören in die Demo.</p>
+    <dd><p>Die Seite <code>/meine-gegenstaende</code> gibt es schon und sie funktioniert – alle eigenen Gegenstände mit der Zahl offener Anfragen. Aber sie ist ein Rohbau: eine Textliste. Ihr gestaltet sie neu, so dass sie aussieht wie ein Teil von Leihbar – das ist, wofür ein Design-System da ist. Daten und Logik bleiben, wie sie sind. Erst in Claude Design entwerfen, dann übergeben – wie in Übung 9. Das Design-System dafür habt ihr in a) schon aus <code>leihbar-team</code> angelegt (<a href="#lei7-design-system">Schritte</a>). Beim Entwerfen wählt ihr unter dem Eingabefeld <em>Leihbar Team</em> (hat das Umbenennen nicht geklappt: den Namen, den ihr euch in a) gemerkt habt) – nicht euer eigenes, auch wenn Übung 9b „euer Design-System“ sagt; sonst sieht die Seite aus wie eure App. Macht vorher einen Screenshot der schlichten Seite – vorher und nachher gehören in den Pull Request.</p>
       <p>Den Entwurf bekommt Claude Code nur, wenn ihr ihn mitgebt. Hängt an den Prompt unten „Issue aus Linear umsetzen“ diesen Satz an:</p>
       <Prompt label="Zusatz für C: Entwurf mitgeben" note="Statt [Link] den Link zu eurem Entwurf aus Claude Design.">Hier ist mein Entwurf aus Claude Design: [Link]. Lies ihn mit deinem Artifact-Werkzeug. Der Entwurf zeigt das Aussehen, die Akzeptanzkriterien im Issue sagen, was passieren muss – bei einem Widerspruch frag mich. Nutze nur die Tokens aus src/app/globals.css und die vorhandenen Komponenten, keine neuen Farbwerte. Bevor du „fertig“ sagst: die Seite bei 375 und 1280 px ansehen (per Playwright, sonst sag mir, was ich prüfen soll).</Prompt>
       <p class="small">Kann Claude Code den Link nicht lesen: im Entwurf <em>Share</em> → <em>Export</em> → <em>HTML</em>, die Datei in den Ordner <code>leihbar-team</code> ziehen und im Satz statt des Links den Dateinamen nennen.</p>
@@ -352,7 +352,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Klappt es, habt ihr eine echte Sicherheitslücke gefunden, die es nur bei KI-Funktionen gibt: Das Modell kann nicht sicher unterscheiden, was eure Anweisung ist und was Nutzer*innen eintippen. Schreibt den Fund als Kommentar in den Pull Request – die Autorin oder der Autor lässt Claude daraus einen weiteren Test machen.</p>
 
   <h3 id="uebung-10-d">d) Zusammenführen (5 min)</h3>
-  <p>Markus führt die Pull Requests am Beamer zusammen, einen nach dem anderen – bis auf den letzten: Den heben wir fürs <a href="#finale">Finale</a> auf. Haben zwei dieselbe Datei geändert, meldet GitHub einen <strong>Konflikt</strong>: Zwei Änderungen an derselben Stelle, und GitHub weiß nicht, welche gilt. Claude löst ihn, ihr seht zu. Danach ist alles in <code>main</code> und live.</p>
+  <p>Markus führt die Pull Requests am Beamer zusammen, einen nach dem anderen – bis auf einen: Den heben wir fürs <a href="#finale">Finale</a> auf. Nehmt dafür einen, den man in der App sieht (C, D oder E, nicht B) und bei dem GitHub keinen Konflikt meldet. Haben zwei dieselbe Datei geändert, meldet GitHub einen <strong>Konflikt</strong>: Zwei Änderungen an derselben Stelle, und GitHub weiß nicht, welche gilt. Claude löst ihn, ihr seht zu. Danach ist alles außer dem aufgehobenen in <code>main</code> und live.</p>
 
   <hr />
   <span id="wie-es-weitergeht"></span>
@@ -368,7 +368,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Dann Feedback zum Kurs – über NDU Live oder das Formular, das Markus teilt. Danach kommen nur noch die Demos und das Finale.</p>
 
   <hr />
-  <h2 id="demos">Demos · drei Akte <span class="pill plenum">rund 12 min pro Person</span></h2>
+  <h2 id="demos">Demos · drei Akte <span class="pill plenum">rund 11 min pro Person</span></h2>
   <p>Keine Feature-Liste, sondern eure Geschichte. Drei Akte, dann Fragen:</p>
   <ol class="steps">
     <li><strong>Akt 1 · Tag 1</strong> (1 min) Wo ihr am 8. Oktober standet: Wie viel hattet ihr schon programmiert? Wovor hattet ihr Respekt? Was wolltet ihr bauen?</li>
@@ -387,7 +387,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
 
   <hr />
   <h2 id="finale">Finale · Der Kreis schließt sich <span class="pill plenum">20 min</span></h2>
-  <p>Am 8. Oktober um 11:11 Uhr lagen eure Repos leer da – eine Vorlage, sonst nichts. Seitdem:</p>
+  <p>Am 8. Oktober lagen eure Repos leer da – eine Vorlage, sonst nichts. Seitdem:</p>
   <div class="finale-zahlen" role="list">
     <div role="listitem"><strong>{FINALE.commits}</strong><span>Commits</span></div>
     <div role="listitem"><strong>{FINALE.issues}</strong><span>Issues fertig, Kriterien geprüft</span></div>
@@ -397,7 +397,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p class="small muted">Stand {FINALE.stand}. Markus zählt kurz vor dem Finale neu.</p>
   <ol class="steps">
     <li><strong>Handys raus</strong> Alle öffnen die Team-App: <a href={TEAM_APP} target="_blank" rel="noopener noreferrer" data-kopieren data-label="Team-App-Adresse">{TEAM_APP}</a></li>
-    <li><strong>Der letzte Merge</strong> Markus führt den letzten Pull Request aus dem Team-Sprint am Beamer zusammen.</li>
+    <li><strong>Der letzte Merge</strong> Markus führt den aufgehobenen Pull Request aus dem Team-Sprint am Beamer zusammen.</li>
     <li><strong>Warten</strong> Rund eine Minute, bis Vercel fertig ist. Dann alle gleichzeitig neu laden.</li>
     <li><strong>Da ist es</strong> Die Änderung ist auf allen Handys – gebaut von euch, geprüft von euch, live für alle.</li>
   </ol>
