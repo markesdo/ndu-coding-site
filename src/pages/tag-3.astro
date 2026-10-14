@@ -34,7 +34,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-15">
-    <Block time="09:00–09:10" type="plenum" title="Stand-up">Reihum: eure App live am Handy, dazu ein Satz, wo es gerade hakt. Gelöst wird in den Übungen.</Block>
+    <Block time="09:00–09:10" type="plenum" title="Stand-up">Reihum: eure App live am Handy, dazu ein Satz, wo es gerade hakt. Gelöst wird in den Übungen. Kein eigenes Projekt? <a href="#ohne-eigenes-projekt">So geht es mit der Leihbar.</a></Block>
     <Block time="09:10–09:20" type="plenum" title="Unser Stack" href="#stack">Gemeinsam am Beamer die Werkzeugkarte durchgehen: was wo läuft, wer mit wem redet und über welche Schlüssel. Danach: Login lokal und live einrichten.</Block>
     <Block time="09:20–09:35" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="#konzept-7">Ein Test klickt ein Kriterium von selbst durch, GitHub prüft bei jedem Push, im Pull Request schaut ein frischer Blick drauf, bevor es live geht.</Block>
     <Block time="09:35–10:30" type="uebung" title="Übung 8 · Ein Test, der mich schützt" href="#uebung-8">Eigene App: ein Test, eine automatische Prüfung auf GitHub, ein Pull Request mit Review.</Block>
@@ -78,7 +78,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
     { q: 'Neben eurem Pull Request steht ein rotes X. Was heißt das?', o: ['Vercel hat die App mit dem Fehler schon veröffentlicht', 'Die Person im Review hat den Pull Request abgelehnt', 'Eine automatische Prüfung ist gescheitert, noch nicht mergen'], a: 2, w: 'Das X kommt von der Prüfung, die GitHub bei jedem Push startet. Live ist nur, was in main steht – und dahin kommt die Änderung erst nach dem Zusammenführen.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
   ]} />
   <p>Ihr arbeitet an eurer eigenen App aus der Zwischenwoche. Alles in dieser Übung passiert auf einem eigenen <a href="/konzepte/git#branch">Branch</a> – <code>main</code> und damit eure Live-App bleiben unberührt, bis ihr am Ende zusammenführt.</p>
-  <p class="small" id="ohne-eigenes-projekt"><strong>Kein eigenes Projekt aus der Zwischenwoche?</strong> Dann nehmt eure Leihbar aus Tag 1 und 2 – sie hat fertige Issues mit Akzeptanzkriterien und eine Live-Adresse. Übung 8 und 9 und die Demo klappen damit genauso.</p>
+  <p class="small" id="ohne-eigenes-projekt"><strong>Kein eigenes Projekt aus der Zwischenwoche?</strong> Dann nehmt eure Leihbar aus Tag 1 und 2 – sie hat fertige Issues mit Akzeptanzkriterien und eine Live-Adresse. Übung 8 und 9 und die Demo klappen damit genauso. Zwei Dinge anders: Nennt euer Design-System in Übung 9a beim Anlegen „Leihbar – meins“, damit ihr es am Nachmittag nicht mit „Leihbar Team“ verwechselt. Und entwerft in 9b einen anderen Screen als „Meine Gegenstände“ – den gestaltet am Nachmittag Issue C neu.</p>
 
   <h3 id="uebung-8-a">a) Ein Test für ein fertiges Kriterium (20 min)</h3>
   <p>In zwei Schritten: Claude sucht sich ein passendes Kriterium aus eurem Backlog und schreibt den Test. Dann beweist es, dass der Test wirklich prüft. Ihr lest mit und gebt das Okay.</p>
@@ -352,7 +352,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
 
   <hr />
   <h2 id="demos">Demos · rund 15 Minuten pro Person</h2>
-  <p class="small">Ohne eigenes Projekt zeigt ihr eure Leihbar – mit dem Screen, den ihr in Übung 9 neu entworfen habt.</p>
+  <p class="small">Ohne eigenes Projekt zeigt ihr eure Leihbar. Statt „Problem“ erzählt ihr, was ihr heute dazugebaut habt: den Test aus Übung 8 und den neuen Screen aus Übung 9 im Vorher-Nachher.</p>
   <ol class="steps">
     <li><strong>Problem</strong> (1 min) Für wen, welcher Schmerz. Eine Person, eine Situation.</li>
     <li><strong>Lösung live</strong> (5 min) Der eine Durchlauf, der den Kern zeigt – am besten vom Handy. Nicht alle Features.</li>
