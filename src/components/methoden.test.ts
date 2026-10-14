@@ -124,7 +124,9 @@ describe('methoden', () => {
 
   it('jede Tagesseite trägt das Datum aus TAGE als data-kurstag – sonst springt die Jetzt-Markierung am falschen Tag', () => {
     const seiten = TAGE.map((t) => ({ t, url: new URL(`../pages/innolab/tag-${t.n}.astro`, import.meta.url) })).filter((x) => existsSync(x.url));
-    expect(seiten.length).toBeGreaterThan(0);
+    // Tagesseiten gibt es lückenlos ab Tag 1 – eine verschwundene Seite soll hier auffallen, nicht still übersprungen werden.
+    expect(seiten.map((x) => x.t.n)).toStrictEqual(TAGE.slice(0, seiten.length).map((t) => t.n));
+    expect(seiten.length).toBeGreaterThanOrEqual(6);
     for (const { t, url } of seiten) {
       const kurstage = [...readFileSync(url, 'utf8').matchAll(/data-kurstag="([^"]+)"/g)].map((m) => m[1]);
       expect(kurstage, `tag-${t.n}`).toStrictEqual([t.datum]);
