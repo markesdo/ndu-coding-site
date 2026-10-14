@@ -80,10 +80,9 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Ihr arbeitet an eurer eigenen App aus der Zwischenwoche. Alles in dieser Übung passiert auf einem eigenen <a href="/konzepte/git#branch">Branch</a> – <code>main</code> und damit eure Live-App bleiben unberührt, bis ihr am Ende zusammenführt.</p>
 
   <h3 id="uebung-8-a">a) Ein Test für ein fertiges Kriterium (20 min)</h3>
-  <p>Sucht euch in <code>docs/BACKLOG.md</code> ein fertiges Issue und darin ein Akzeptanzkriterium, das ohne Anmeldung prüfbar ist – zum Beispiel „Gegeben die Liste ist leer, dann sehe ich einen Hinweis“.</p>
-  <Prompt label="Test schreiben" note="Der letzte Absatz ist der wichtigste: Ein Test, der nie rot wird, prüft nichts.">Leg einen neuen Branch „test-erster“ an und wechsel darauf. Richte Playwright ein, falls es noch fehlt (nur Chromium). Schreib einen End-to-End-Test für genau dieses Akzeptanzkriterium aus docs/BACKLOG.md: [Kriterium einfügen]. Führe ihn aus, er muss grün sein. Erklär mir in drei Sätzen ohne Fachbegriffe, was der Test im Browser tut.
-
-Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaputt, zeig mir, dass der Test rot wird, und stell den alten Stand wieder her. Commite danach den Test auf dem Branch.</Prompt>
+  <p>Claude sucht sich selbst ein passendes Kriterium aus eurem Backlog, schreibt den Test und beweist, dass er prüft. Ihr lest mit und gebt das Okay.</p>
+  <Prompt label="Test schreiben">Leg einen Branch „test-erster“ an und wechsel darauf. Such in docs/BACKLOG.md ein fertiges Issue mit einem Akzeptanzkriterium, das ohne Anmeldung prüfbar ist, und sag mir, welches du nimmst. Richte Playwright ein, falls es fehlt (nur Chromium), schreib dafür einen Test und führ ihn aus – er muss grün sein. Erklär mir in drei Sätzen ohne Fachbegriffe, was der Test im Browser tut.</Prompt>
+  <Prompt label="Beweisen und sichern" note="Ein Test, der nie rot wird, prüft nichts.">Beweis mir, dass der Test wirklich prüft: Mach die Funktion kurz kaputt, zeig mir, dass er rot wird, und stell den alten Stand wieder her. Dann commite den Test auf dem Branch.</Prompt>
   <p class="small">Hängt die Einrichtung länger als fünf Minuten? Sagt es Claude – oder nehmt für diese Übung einen Test ohne Browser (Claude schlägt einen vor) und macht mit b) weiter.</p>
 
   <h3 id="uebung-8-b">b) Die Prüfung bei jedem Push (15 min)</h3>
