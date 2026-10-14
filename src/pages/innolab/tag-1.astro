@@ -1,0 +1,81 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Orientierung from '../../components/Orientierung.astro';
+import Block from '../../components/Block.astro';
+import Callout from '../../components/Callout.astro';
+import Checklist from '../../components/Checklist.astro';
+import FooterNav from '../../components/FooterNav.astro';
+---
+<Layout title="Tag 1 · Rahmen & Verstehen">
+  <span class="eyebrow">Innolab · Tag 1 · Termin folgt · 09:00–16:45</span>
+  <h1>Tag 1 · Rahmen & Verstehen</h1>
+  <p class="lead">Ihr legt fest, für wen ihr arbeitet und woran ihr Erfolg messt, bereitet Interviews vor und macht sichtbar, was ihr bisher nur annehmt.</p>
+  <Orientierung seite="innolab/tag-1" />
+
+  <h2 id="ablauf">Ablauf</h2>
+  <div class="schedule">
+    <Block time="09:00–09:40" type="plenum" title="Kick-off" href="#kickoff">Wie das Innolab läuft, Bewertung, die Toolbox als Landkarte.</Block>
+    <Block time="09:40–10:10" type="uebung" title="Warm-up · Wie macht man Toast?" href="#toast">Fünf Minuten zeichnen, dann vergleichen.</Block>
+    <Block time="10:10–10:50" type="konzept" title="Outcome statt Output" href="#outcome">Outcome, Output, MVP – und wie Design Thinking schiefgeht.</Block>
+    <Block time="10:50–11:00" type="pause" title="Pause" />
+    <Block time="11:00–12:00" type="uebung" title="Problem-Rahmen & Produkt-Brief" href="/innolab/methoden/problem-rahmen">Für wen, welches Problem, woran ihr es merkt.</Block>
+    <Block time="12:00–12:15" type="uebung" title="Entscheidungslog" href="/innolab/methoden/entscheidungslog">Die ersten Zeilen, mit Beleg oder „noch keiner“.</Block>
+    <Block time="12:15–13:15" type="pause" title="Mittagspause" />
+    <Block time="13:15–13:45" type="konzept" title="Jobs to be Done & Mom Test" href="/innolab/methoden/interview#jtbd">Was Menschen wirklich erledigen wollen, und wie man danach fragt.</Block>
+    <Block time="13:45–15:15" type="uebung" title="Interviewleitfaden" href="/innolab/methoden/interview#vorgehen">Leitfaden, Probe mit Claude, Live-Interview mit Markus.</Block>
+    <Block time="15:15–15:30" type="pause" title="Pause" />
+    <Block time="15:30–16:15" type="uebung" title="Annahmen-Map" href="/innolab/methoden/annahmen">Vier Arten von Annahmen, die riskanteste zuerst.</Block>
+    <Block time="16:15–16:45" type="plenum" title="Hausaufgabe & Abschluss" href="#hausaufgabe">Fünf echte Interviews bis Tag 2.</Block>
+  </div>
+
+  <hr />
+  <h2 id="kickoff">Kick-off</h2>
+  <p>Im Innolab entwickelt ihr ein eigenes digitales Produkt – neu oder als Weiterführung eures Projekts aus dem Coding-Kurs. Ihr arbeitet als <strong>ein Team mit drei Produkten</strong>: Jede*r ist Product Owner des eigenen Produkts und arbeitet in den anderen beiden mit. Die Methoden lernt ihr am Beispiel einer Kaffeebar am Bahnhof, die alle kennen, und wendet sie sofort auf euer Produkt an.</p>
+  <p>Die <a href="/innolab/methoden">Toolbox</a> zeigt alle Methoden mit der Frage, die sie beantworten, und dem Artefakt, das dabei entsteht. Bewertung: Prototyp 70 %, Präsentation 30 %.</p>
+
+  <h2 id="toast">Warm-up · Wie macht man Toast?</h2>
+  <ol>
+    <li><strong>5 min, allein, ohne Worte:</strong> Zeichnet auf ein Blatt, wie man Toast macht.</li>
+    <li><strong>Nebeneinanderlegen:</strong> Wer beginnt beim Brot, wer beim Toaster, wer beim Weizenfeld? Wer zeichnet zehn Schritte, wer drei? Wer endet mit Butter, wer mit dem Abwasch?</li>
+    <li><strong>Gemeinsam ein Bild:</strong> Aus allen Zeichnungen eine Abfolge legen, die alle unterschreiben.</li>
+  </ol>
+  <p>Jede*r hat ein anderes Bild im Kopf, und jedes ist richtig. Genau das passiert bei jedem Produkt: Bevor Bilder gemeinsam sichtbar sind, redet man aneinander vorbei. Deshalb arbeiten wir mit Karten, Canvas und Stickies – sie machen Denken sichtbar und vergleichbar.</p>
+  <p class="small muted">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (TED 2013).</p>
+
+  <h2 id="outcome">Outcome statt Output</h2>
+  <p><strong>Output</strong> ist, was ihr baut: Funktionen, Seiten, Releases. <strong>Outcome</strong> ist, was Menschen danach anders machen – die Pendlerin steigt mit Kaffee in den Zug. <strong>Impact</strong> ist, was das für das Unternehmen bedeutet – mehr Umsatz am Morgen. Gute Teams versuchen, mit möglichst wenig Output möglichst viel Outcome zu erreichen.</p>
+  <p>Daraus folgt, was ein <strong>MVP</strong> ist: nicht die schlechteste Version, die man gerade noch veröffentlichen kann, sondern das Kleinste, mit dem ihr lernt, ob eine Annahme stimmt – oder das Kleinste, das das gewünschte Outcome erreicht.</p>
+  <Callout type="concept" title="Wie Design Thinking schiefgeht">
+    <ul>
+      <li>Ohne klaren Rahmen starten – dann weiß niemand, für wen eine Lösung gut sein soll.</li>
+      <li>Nicht mit Menschen reden, weil die eigene Idee so überzeugend ist.</li>
+      <li>Viele Probleme für viele Menschen auf einmal lösen wollen.</li>
+      <li>Nur eine Lösung betrachten, weil die erste schon gut klingt.</li>
+      <li>Einen schönen Prototyp bauen, den niemand wirklich benutzen kann – „sieht toll aus“ ist kein Test.</li>
+    </ul>
+  </Callout>
+  <p class="small muted">Nach Jeff Patton, User Story Mapping (O’Reilly 2014).</p>
+
+  <h2 id="methoden">Die Methoden von heute</h2>
+  <ul>
+    <li><a href="/innolab/methoden/problem-rahmen">Problem-Rahmen & Produkt-Brief</a> – für wen, welches Problem, welches Outcome</li>
+    <li><a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a> – was ihr entscheidet, mit Beleg</li>
+    <li><a href="/innolab/methoden/interview">Jobs to be Done & Mom Test</a> – der Interviewleitfaden</li>
+    <li><a href="/innolab/methoden/annahmen">Annahmen-Map</a> – die riskanteste Annahme zuerst</li>
+  </ul>
+
+  <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
+  <p>Fünf Interviews mit Menschen aus eurer Zielgruppe, je 20–30 Minuten, nach eurem Leitfaden. Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett.</p>
+  <Checklist id="il-tag1-hausaufgabe" items={[
+    'Fünf Personen aus der Zielgruppe gefunden (Tipp: am Ende jedes Interviews fragen, wen ihr noch fragen solltet)',
+    'Einwilligung zur Aufnahme eingeholt',
+    'Transkripte ohne Namen als <code>docs/interviews/I1.md</code> bis <code>I5.md</code> im Repo',
+    'Eine Zeile pro Überraschung in <code>docs/ENTSCHEIDUNGEN.md</code>',
+    'Committet und gepusht',
+  ]} />
+  <Callout type="info" title="Nur drei geschafft?">
+    <p>Bringt mit, was ihr habt. Unter drei Interviews wird die Auswertung an Tag 2 dünn – dann ergänzt ihr am Morgen mit Gesprächen im Haus.</p>
+  </Callout>
+
+  <FooterNav prev={{ href: '/innolab/methoden', t: 'Toolbox' }} next={{ href: '/innolab/methoden/problem-rahmen', t: 'Problem-Rahmen & Produkt-Brief' }} />
+</Layout>

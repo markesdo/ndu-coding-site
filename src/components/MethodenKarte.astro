@@ -3,6 +3,7 @@
 // Auf der Toolbox-Seite für jede Methode, später als Kopf der Methodenseite. Verlinkt wird nur, wo es die Seite schon gibt.
 import { Bot, Clock, Inbox, PackageCheck } from '@lucide/astro';
 import { METHODEN, ORTE, artefakt, erzeugtVon } from './methoden';
+import { pfadOhneSchraegstrich } from './abschnitt';
 
 // ohneTag: auf Seiten, die schon nach Tagen gegliedert sind (Toolbox), wäre die Tag-Marke doppelt.
 const { slug, ohneTag = false } = Astro.props as { slug: string; ohneTag?: boolean };
@@ -11,7 +12,9 @@ if (!m) throw new Error(`MethodenKarte: Methode „${slug}“ unbekannt`);
 
 const seiten = import.meta.glob('../pages/innolab/methoden/*.astro');
 const href = (s: string) => (`../pages/innolab/methoden/${s}.astro` in seiten ? `/innolab/methoden/${s}` : undefined);
-const eigene = href(m.slug);
+// Auf der eigenen Methodenseite verlinkt der Titel nicht auf sich selbst.
+const hier = pfadOhneSchraegstrich(Astro.url.pathname);
+const eigene = href(m.slug) === hier ? undefined : href(m.slug);
 ---
 <article class="card methode" id={m.slug}>
   <header>

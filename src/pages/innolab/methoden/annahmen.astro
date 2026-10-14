@@ -1,0 +1,72 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Checklist from '../../../components/Checklist.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+import { METHODEN } from '../../../components/methoden';
+
+const m = METHODEN.find((x) => x.slug === 'annahmen')!;
+---
+<Layout title="Annahmen-Map">
+  <span class="eyebrow">Innolab · Tag 1 · Methode</span>
+  <h1>Annahmen-Map</h1>
+  <p class="lead">Was muss alles stimmen, damit euer Produkt funktioniert – und welche dieser Annahmen kann euch am schnellsten das Genick brechen?</p>
+  <Orientierung seite="innolab/methoden/annahmen" leiste={false} />
+  <MethodenKarte slug="annahmen" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach zwei Fragen: <strong>Wie wichtig ist sie?</strong> (Fällt das Produkt um, wenn sie falsch ist?) und <strong>Welchen Beleg habt ihr?</strong> Getestet wird zuerst, was sehr wichtig ist und kaum belegt – die riskanteste Annahme.</p>
+  <p>Damit ihr keine Art von Risiko übersieht, sammelt ihr in vier Kategorien:</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Art</th><th>Frage</th><th>Beispiel Kaffeebar</th></tr></thead>
+      <tbody>
+        <tr><th>Wünschenswert</th><td>Wollen die Menschen das?</td><td>Wir glauben, dass Pendler*innen lieber vor Ort Kaffee holen als den Automaten zu nehmen.</td></tr>
+        <tr><th>Machbar</th><td>Können wir es bauen und betreiben?</td><td>Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann.</td></tr>
+        <tr><th>Wirtschaftlich</th><td>Trägt es sich?</td><td>Wir glauben, dass sich die zusätzlichen Bestellungen ohne eine weitere Kraft am Morgen rechnen.</td></tr>
+        <tr><th>Bedienbar</th><td>Kommen die Menschen damit zurecht?</td><td>Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Die vier Arten gehen auf Marty Cagan zurück (Wert, Machbarkeit, Wirtschaftlichkeit, Bedienbarkeit), die Map auf David J. Bland.</p>
+
+  <h2 id="beispiel">Am Beispiel: die riskanteste Annahme</h2>
+  <p>In Miro legt ihr eine Matrix an: nach oben <em>wichtig</em>, nach rechts <em>belegt</em>. Bei der Kaffeebar landet links oben – sehr wichtig, gar nicht belegt – diese Annahme:</p>
+  <p><strong>A1 · Wir glauben, dass Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.</strong></p>
+  <p>Ist sie falsch, braucht es kein Vorbestellen, egal wie gut es gebaut ist. Sie ist damit wichtiger als die Frage, ob 20 Sekunden zum Bestellen reichen. Die Interviews in dieser Woche sollen genau dazu Geschichten liefern.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
+  <ol>
+    <li><strong>Allein sammeln (10 min):</strong> pro Art mindestens drei Sätze „Wir glauben, dass …“, je ein Sticky in Miro.</li>
+    <li><strong>Einordnen (10 min):</strong> jede Annahme in die Matrix – wie wichtig, wie belegt.</li>
+    <li><strong>Dreierrunde (10 min):</strong> Die anderen schieben Stickies, wo sie anderer Meinung sind, und ergänzen, was fehlt.</li>
+    <li><strong>Festhalten und prüfen (15 min):</strong> in <code>docs/ANNAHMEN.md</code>, die riskanteste markieren, Prüfliste, Claude.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/ANNAHMEN.md"># Annahmen — [Produkt]
+
+Stand: [Datum]
+Riskanteste Annahme: A[n]
+
+| ID | Wir glauben, dass … | Art | Wichtig (hoch/mittel/niedrig) | Beleg (keiner/schwach/stark) |
+|----|---------------------|-----|-------------------------------|------------------------------|
+| A1 | [...] | wünschenswert | [...] | [...] |
+| A2 | [...] | machbar | [...] | [...] |
+| A3 | [...] | wirtschaftlich | [...] | [...] |
+| A4 | [...] | bedienbar | [...] | [...] |</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <Checklist id="il-annahmen" items={m.pruefliste!} />
+  <ClaudePruefung slug="annahmen" />
+  <p>Danach ein zweiter Durchgang als Red Team:</p>
+  <Prompt label="Red Team · Claude Code">Lies docs/PRODUKT.md und docs/ANNAHMEN.md. Welche Annahmen stecken im Brief, die in der Liste fehlen? Nenn höchstens drei, jeweils mit der Stelle im Brief, aus der sie folgen. Trag nichts ein – ich entscheide, was in die Liste kommt.</Prompt>
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Was ist bei euch das „Kaffee schon vorher bestimmen“ – die Annahme, ohne die alles andere egal ist? Nehmt sie als Ziel in euren <a href="/innolab/methoden/interview">Interviewleitfaden</a> auf.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} next={{ href: '/innolab/tag-1#hausaufgabe', t: 'Tag 1 · Hausaufgabe' }} />
+</Layout>

@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE, METHODEN, ORTE, erzeugtVon, methodenVonTag } from './methoden';
 
@@ -59,5 +60,14 @@ describe('methoden', () => {
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
     expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'kundenprofil', 'journey-map', 'hmw', 'ideation']);
     expect(methodenVonTag(7)).toEqual([]);
+  });
+
+  it('jede Methode mit eigener Seite hat eine Prüfliste mit 3–8 Punkten', () => {
+    const mitSeite = METHODEN.filter((m) => existsSync(new URL(`../pages/innolab/methoden/${m.slug}.astro`, import.meta.url)));
+    expect(mitSeite.length).toBeGreaterThan(0);
+    for (const m of mitSeite) {
+      expect(m.pruefliste?.length ?? 0, m.slug).toBeGreaterThanOrEqual(3);
+      expect(m.pruefliste!.length, m.slug).toBeLessThanOrEqual(8);
+    }
   });
 });
