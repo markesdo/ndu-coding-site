@@ -56,6 +56,17 @@ describe('die echten Tagesseiten', () => {
     });
   }
 
+  // Jede Zeile im Ablauf, die auf die Seite selbst zeigt, landet auf einer vorhandenen Überschrift.
+  for (const seite of ['tag-1', 'tag-2', 'tag-3']) {
+    it(`${seite}: Ablauf-Links auf #… zeigen auf eine id der Seite`, () => {
+      const quelle = readFileSync(new URL(`../pages/${seite}.astro`, import.meta.url), 'utf8');
+      const ziele = [...quelle.matchAll(/<Block\b[^>]*\shref="#([^"]+)"/g)].map((m) => m[1]);
+      expect(ziele.length).toBeGreaterThan(0);
+      const ids = new Set([...quelle.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
+      expect(ziele.filter((z) => !ids.has(z))).toStrictEqual([]);
+    });
+  }
+
   // Wer die Seite von oben nach unten liest, kommt an jedem Konzept vorbei, bevor die Übung dazu beginnt.
   it.each([
     ['tag-1', ['ablauf', 'konzept-1', 'konzept-2', 'uebung-1', 'konzept-3', 'uebung-2'], [1, 2, 3]],
