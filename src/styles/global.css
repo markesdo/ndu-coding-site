@@ -288,6 +288,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .btn.primary:hover { opacity: .92; }
 .btn.sm { padding: .3rem .7rem; font-size: .85rem; }
+.btn.mit-icon { display: inline-flex; align-items: center; gap: .4rem; }
 
 /* Prompt card */
 /* Sieht aus wie das Terminal, in das der Text gehört: neutrale Fläche, kein Akzentrot (bei 30 Prompts pro Seite wäre

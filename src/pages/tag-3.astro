@@ -11,7 +11,10 @@ import Quiz from '../components/Quiz.astro';
 import Fluss from '../components/Fluss.astro';
 import Schritte from '../components/Schritte.astro';
 import { bild } from '../components/anleitung-bilder';
-import { Bot, GitMerge, GitPullRequest, ListTodo, Users } from '@lucide/astro';
+import { linearEinladung } from '../lib/linear-einladung';
+import { Bot, ExternalLink, GitMerge, GitPullRequest, ListTodo, Users } from '@lucide/astro';
+
+const einladung = linearEinladung(process.env.LINEAR_INVITE_URL ?? import.meta.env.LINEAR_INVITE_URL);
 ---
 <Layout title="Tag 3 · Shippen & selbständig werden">
   <span class="eyebrow">Donnerstag, 15. Oktober 2026 · 09:00–17:00</span>
@@ -192,9 +195,16 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   </ol>
   <h4 id="linear">Linear verbinden</h4>
   <p><strong>Was ist Linear?</strong> Das Werkzeug, in dem Produktteams ihre Issues, Sprints (bei Linear „Cycles“) und den Status jeder Aufgabe verwalten. Bisher lag euer Backlog in <code>docs/BACKLOG.md</code>; in Linear arbeitet das ganze Team an derselben Liste, und Claude liest die Issues über den Linear-MCP, setzt sie auf „In Progress“ oder „In Review“. Im Innolab ist Linear die Brücke von Figma über das Issue zum Code (<a href="/konzepte/ausblick#innolab">Ausblick</a>). Heute braucht ihr sechs Wörter: Workspace, Team, Issue, Kennung, Status, Assignee. Alles Weitere – und wie ihr euren eigenen Backlog nach Linear umzieht – steht auf <a href="/konzepte/linear">Backlog im Team: Linear</a>.</p>
-  <p>Markus lädt euch per E-Mail in den Workspace <strong>Leihbar Team</strong> ein. Öffnet die Einladung und meldet euch mit Google an:</p>
+  {einladung ? (
+    <>
+      <p>Tretet über den Einladungslink dem Workspace <strong>Leihbar Team</strong> bei und meldet euch mit Google an:</p>
+      <p><a class="btn primary mit-icon" href={einladung} target="_blank" rel="noopener">Linear beitreten <ExternalLink size={16} aria-hidden="true" /></a></p>
+    </>
+  ) : (
+    <p>Markus lädt euch per E-Mail in den Workspace <strong>Leihbar Team</strong> ein. Öffnet die Einladung und meldet euch mit Google an:</p>
+  )}
   <Schritte id="linear" steps={[
-    { img: bild('tag3/lin-2-konto'), alt: 'Google-Kontoauswahl „Choose an account to continue to Linear“', text: 'Google fragt, mit welchem Konto: das, an das die Einladung ging (1).', marks: [{ x: 772, y: 436, w: 488, h: 64, n: 1 }] },
+    { img: bild('tag3/lin-2-konto'), alt: 'Google-Kontoauswahl „Choose an account to continue to Linear“', text: einladung ? 'Google fragt, mit welchem Konto: euer eigenes (1). Merkt euch, welches – im Innolab braucht ihr es wieder.' : 'Google fragt, mit welchem Konto: das, an das die Einladung ging (1).', marks: [{ x: 772, y: 436, w: 488, h: 64, n: 1 }] },
     { img: bild('tag3/lin-3-google'), alt: 'Google-Hinweis: Linear darf Name, Profilbild und E-Mail-Adresse sehen', text: 'Linear bekommt euren Namen, das Profilbild und die E-Mail-Adresse: <em>Continue</em> (1).', marks: [{ x: 1022, y: 532, w: 238, h: 40, n: 1 }] },
     { img: bild('tag3/lin-6-profil'), alt: 'Linear „Set up your profile“ mit Name und Titel', text: 'Name übernehmen, den Titel leer lassen (1), <em>Continue</em> (2). Was danach noch kommt – Slack, Neuigkeiten per E-Mail –, mit <em>Skip</em> überspringen.', marks: [{ x: 228, y: 285, w: 346, h: 44, n: 1 }, { x: 481, y: 465, w: 93, h: 42, n: 2 }] },
     { img: bild('tag3/lin-10-issues'), alt: 'Issue-Liste des Teams „Leihbar Team“ mit LEI-5, LEI-6 und LEI-7 auf Todo', text: 'Ihr seid drin: links das Team <em>Leihbar Team</em>, rechts die drei Issues für heute (1). Jedes hat eine Kennung – <code>LEI-5</code>, <code>LEI-6</code>, <code>LEI-7</code> –, mit der Claude es findet.', marks: [{ x: 252, y: 138, w: 1228, h: 126, n: 1 }] },
