@@ -11,9 +11,10 @@ import Marke from '../components/Marke.astro';
 import NeuLaden from '../components/NeuLaden.astro';
 import { BUILD } from '../lib/build';
 import { BEREICHE, NAV, bereichVon, nachbarn } from '../lib/navigation';
+import { pfadOhneSchraegstrich } from '../components/abschnitt';
 import '../styles/global.css';
 import '../styles/beamer.css';
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const path = pfadOhneSchraegstrich(Astro.url.pathname);
 // Zwei Kurse auf einer Website: Menü, Logo, Titel und Blättern gelten nur für den Kurs dieser Seite (lib/navigation.ts).
 const bereich = bereichVon(path);
 const kurs = BEREICHE[bereich];

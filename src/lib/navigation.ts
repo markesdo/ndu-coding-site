@@ -1,5 +1,7 @@
 // Seitenleiste pro Kurs: Die Website trägt zwei Kurse – „Programmieren mit AI“ (Oktober) und das Innolab (November/Dezember).
-// Welcher Kurs gilt, folgt aus dem Pfad; Layout.astro zeigt nur dessen Menü und blättert im Beamer-Modus nur darin.
+// Welcher Kurs gilt, folgt aus dem Pfad (ohne Schrägstrich am Ende, wie bei „Wo ist Markus?“); Layout.astro zeigt nur dessen Menü und blättert im Beamer-Modus nur darin.
+
+import { pfadOhneSchraegstrich } from '../components/abschnitt';
 
 export type Bereich = 'coding' | 'innolab';
 
@@ -86,14 +88,15 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
 
 /** Welcher Kurs gehört zu diesem Pfad? Alles unter /innolab ist Innolab, der Rest der Coding-Kurs. */
 export function bereichVon(pfad: string): Bereich {
-  const p = pfad.replace(/\/+$/, '') || '/';
+  const p = pfadOhneSchraegstrich(pfad);
   return p === '/innolab' || p.startsWith('/innolab/') ? 'innolab' : 'coding';
 }
 
 /** Blätter-Reihenfolge im Beamer-Modus (wenn eine Seite keinen FooterNav hat): die Menü-Reihenfolge des eigenen Kurses. */
 export function nachbarn(pfad: string): { vorher?: NavEintrag; danach?: NavEintrag } {
-  const flach = NAV[bereichVon(pfad)].flatMap((g) => g.items);
-  const hier = flach.findIndex((i) => i.href === pfad);
+  const p = pfadOhneSchraegstrich(pfad);
+  const flach = NAV[bereichVon(p)].flatMap((g) => g.items);
+  const hier = flach.findIndex((i) => i.href === p);
   return {
     vorher: hier > 0 ? flach[hier - 1] : undefined,
     danach: hier >= 0 && hier < flach.length - 1 ? flach[hier + 1] : undefined,

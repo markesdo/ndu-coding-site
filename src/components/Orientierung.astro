@@ -6,7 +6,7 @@ import { gliederung } from './gliederung';
 import '../styles/orientierung.css';
 
 const { seite, leiste = true } = Astro.props as { seite: string; leiste?: boolean };
-const quellen = import.meta.glob('../pages/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const quellen = import.meta.glob('../pages/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 const quelle = quellen[`../pages/${seite}.astro`];
 if (!quelle) throw new Error(`Orientierung: Seite „${seite}“ nicht gefunden`);
 const abschnitte = gliederung(quelle);

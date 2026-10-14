@@ -18,6 +18,9 @@ describe('Marke', () => {
     const layout = readFileSync(new URL('../layouts/Layout.astro', import.meta.url), 'utf8');
     expect(layout).toMatch(/<strong class="topbar-brand"><Marke einzeilig[^>]*\/><\/strong>/);
     expect(layout).toMatch(/<a class="brand"[^>]*><Marke(?! einzeilig)[^>]*\/><\/a>/);
+    // Beide Stellen nehmen den Namen des Kurses – sonst stünde im Innolab der Name des Coding-Kurses.
+    expect(layout).toMatch(/<strong class="topbar-brand"><Marke einzeilig name=\{kurs\.marke\} \/><\/strong>/);
+    expect(layout).toMatch(/<a class="brand"[^>]*><Marke name=\{kurs\.marke\} \/><\/a>/);
   });
 
   it('kein Ort schreibt den Namen noch selbst – sonst fehlt dort der Umbruch', () => {

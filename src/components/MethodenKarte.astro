@@ -27,7 +27,7 @@ const eigene = href(m.slug);
         <ul>
           {m.braucht.map((id) => {
             const q = erzeugtVon(id)!;
-            const ziel = href(q.slug) ?? `#${q.slug}`;
+            const ziel = href(q.slug) ?? `/innolab/methoden#${q.slug}`;
             return <li>{artefakt(id)!.name} <span class="muted">aus <a href={ziel}>{q.name}</a></span></li>;
           })}
         </ul>

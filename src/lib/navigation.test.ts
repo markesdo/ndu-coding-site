@@ -52,6 +52,11 @@ describe('nachbarn', () => {
     expect(nachbarn('/setup')).toEqual({ vorher: { href: '/', t: 'Übersicht' }, danach: { href: '/hilfe', t: 'Hilfe holen' } });
   });
 
+  it('verträgt Schrägstriche am Ende wie bereichVon', () => {
+    expect(nachbarn('/setup/')).toEqual(nachbarn('/setup'));
+    expect(nachbarn('/innolab//').danach).toEqual({ href: '/innolab/methoden', t: 'Toolbox: alle Methoden' });
+  });
+
   it('gibt für Seiten außerhalb des Menüs nichts zurück', () => {
     expect(nachbarn('/praesentator')).toEqual({ vorher: undefined, danach: undefined });
   });

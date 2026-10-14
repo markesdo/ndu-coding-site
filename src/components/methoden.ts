@@ -49,7 +49,7 @@ export const ARTEFAKTE: Artefakt[] = [
 export interface Methode {
   slug: string;
   name: string;
-  /** Kurstag 1–7, an dem die Methode eingeführt wird. */
+  /** Kurstag, an dem die Methode eingeführt wird (1–6; Tag 7 ist die Präsentation, dort kommt nichts Neues dazu). */
   tag: number;
   /** Minuten für Input, Übung und Festhalten zusammen. */
   dauer: number;
@@ -210,7 +210,7 @@ export const METHODEN: Methode[] = [
   },
 ];
 
-/** Kurstage: 4½ Tage Input und Übung, 1½ Tage Bauen, ½ Tag Präsentation. */
+/** Sieben Termine: Tag 1–4 und der Vormittag von Tag 5 Input und Übung (4½), Tag 5 nachmittags und Tag 6 Bauen (1½), Tag 7 Präsentation (½). */
 export const TAGE: { n: number; titel: string; text: string }[] = [
   { n: 1, titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
   { n: 2, titel: 'Kunde & Erlebnis', text: 'Interviews auswerten, Kundenprofil, Journey Map, Chancen und Ideen.' },
