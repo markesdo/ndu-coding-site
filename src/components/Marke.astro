@@ -1,13 +1,16 @@
 ---
-// Logo und Name „programmieren_mit_ai“ – Seitenleiste, Kopfleiste (Layout.astro), Login und Startseite.
+// Logo und Kursname (marke-name.ts) – Seitenleiste, Kopfleiste (Layout.astro), Login und Startseite.
 // Der Name ist ein einziges Wort: Bei schmaler Spalte oder großer Grundschrift bricht er nach „programmieren_“ um,
 // notfalls auch mitten im Wort – nie über den Rand. Die Kopfleiste (einzeilig) kürzt stattdessen mit „…“; dort ohne <wbr>,
 // denn Chrome bricht an <wbr> auch bei white-space: nowrap um.
-const { einzeilig = false } = Astro.props as { einzeilig?: boolean };
+// name: pro Kurs (lib/navigation.ts) – „innolab_2026“ im Innolab; ohne Angabe der Name des Coding-Kurses.
+import { STANDARD_MARKE, markeTeilen } from './marke-name';
+const { einzeilig = false, name = STANDARD_MARKE } = Astro.props as { einzeilig?: boolean; name?: string };
+const [vorne, hinten] = markeTeilen(name);
 ---
-<span class="brand-mark" aria-hidden="true">›<i></i></span>{einzeilig
-  ? <span class="brand-name">programmieren_mit_ai</span>
-  : <span class="brand-name">programmieren_<wbr />mit_ai</span>}
+<span class="brand-mark" aria-hidden="true">›<i></i></span>{einzeilig || !hinten
+  ? <span class="brand-name">{name}</span>
+  : <span class="brand-name">{vorne}<wbr />{hinten}</span>}
 
 <style is:global>
   .brand-name { min-width: 0; overflow-wrap: anywhere; line-height: 1.25; }
