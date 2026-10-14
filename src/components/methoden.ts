@@ -374,15 +374,17 @@ export const METHODEN: Methode[] = [
   },
 ];
 
-/** Sieben Termine: Tag 1–4 und der Vormittag von Tag 5 Input und Übung (4½), Tag 5 nachmittags und Tag 6 Bauen (1½), Tag 7 Präsentation (½). */
-export const TAGE: { n: number; titel: string; text: string }[] = [
-  { n: 1, titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
-  { n: 2, titel: 'Kunde & Erlebnis', text: 'Interviews auswerten, Kundenprofil, Journey Map, Chancen und Ideen.' },
-  { n: 3, titel: 'Lösung, Story, Prototyp', text: 'Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
-  { n: 4, titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Rollen, Events, Backlog, Akzeptanzkriterien.' },
-  { n: 5, titel: 'Schätzen & Bauen', text: 'Planning Poker, Definition of Done um die Messung ergänzen, Sprint-Planning, Sprint 1.' },
-  { n: 6, titel: 'Bauen & Review', text: 'Usability-Tests über Kreuz, Review, Retro, Sprint 2, Pitch vorbereiten.' },
-  { n: 7, titel: 'Präsentation', text: 'Finales Sprint-Review: Pitch, Live-Demo und Belege.' },
+/** Sieben Termine: Tag 1–4 und der Vormittag von Tag 5 Input und Übung, Tag 5 nachmittags Bauen, Tag 6 (halber Tag) Tests,
+ *  Review und Planning, dazwischen und danach Bauen zu Hause, Tag 7 (halber Tag) Präsentation.
+ *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). */
+export const TAGE: { n: number; datum: string; titel: string; text: string }[] = [
+  { n: 1, datum: '2026-10-16', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
+  { n: 2, datum: '2026-10-22', titel: 'Kunde & Erlebnis', text: 'Interviews auswerten, Kundenprofil, Journey Map, Chancen und Ideen.' },
+  { n: 3, datum: '2026-11-21', titel: 'Lösung, Story, Prototyp', text: 'Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
+  { n: 4, datum: '2026-11-28', titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Rollen, Events, Backlog, Akzeptanzkriterien.' },
+  { n: 5, datum: '2026-12-12', titel: 'Schätzen & Bauen', text: 'Planning Poker, Definition of Done um die Messung ergänzen, Sprint-Planning, Sprint 1.' },
+  { n: 6, datum: '2026-12-19', titel: 'Tests & Review', text: 'Usability-Tests über Kreuz, Review, Retro, Sprint 2 planen, Pitch vorbereiten.' },
+  { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Finales Sprint-Review: Pitch, Live-Demo und Belege.' },
 ];
 
 export const artefakt = (id: string): Artefakt | undefined => ARTEFAKTE.find((a) => a.id === id);

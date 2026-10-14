@@ -6,26 +6,22 @@ import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
-<Layout title="Tag 6 · Bauen & Review">
-  <span class="eyebrow">Innolab · Tag 6 · Termin folgt · 09:00–17:15</span>
-  <h1>Tag 6 · Bauen & Review</h1>
-  <p class="lead">Sprint 1 endet mit echten Tests, einem Review und einer Retro. Sprint 2 beginnt mit einer Störung – und am Nachmittag baut ihr den Pitch.</p>
+<Layout title="Tag 6 · Tests & Review">
+  <span class="eyebrow">Innolab · Tag 6 · Samstag, 19. Dezember 2026 · 09:00–13:00</span>
+  <h1>Tag 6 · Tests & Review</h1>
+  <p class="lead">Ein Vormittag: Sprint 1 endet mit echten Tests, einem Review und einer Retro. Sprint 2 beginnt mit einer Störung – und zum Schluss baut ihr den Pitch. Gebaut wird zu Hause.</p>
   <Orientierung seite="innolab/tag-6" />
 
   <h2 id="ablauf">Ablauf</h2>
-  <div class="schedule">
+  <div class="schedule" data-kurstag="2026-12-19">
     <Block time="09:00–09:15" type="plenum" title="Daily" href="/innolab/methoden/sprint#daily">Am Sprint-Ziel entlang, je Produkt.</Block>
-    <Block time="09:15–10:15" type="uebung" title="Bauen · Sprint 1" href="/innolab/tag-5#bauen">Letzte Issues fertig, Belege, Abnahme.</Block>
-    <Block time="10:15–11:00" type="uebung" title="Usability-Tests über Kreuz" href="#tests">Drei Runden, ein Produkt pro Runde.</Block>
-    <Block time="11:00–11:30" type="plenum" title="Sprint-1-Review" href="/innolab/methoden/sprint#review">Ziel, Demo, Tests und Messung, Backlog.</Block>
-    <Block time="11:30–12:00" type="uebung" title="Retro: Lightning Decision Jam" href="/innolab/methoden/sprint#retro">Eine Maßnahme für Sprint 2.</Block>
-    <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:45" type="uebung" title="Sprint-2-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, eine Karte, die alles ändert.</Block>
-    <Block time="13:45–15:00" type="uebung" title="Bauen · Sprint 2" href="/innolab/tag-5#bauen">Mit der Maßnahme aus der Retro.</Block>
-    <Block time="15:00–15:15" type="pause" title="Pause" />
-    <Block time="15:15–16:00" type="uebung" title="Bauen · Sprint 2" href="/innolab/tag-5#bauen">Bis zum ersten fertigen Issue.</Block>
-    <Block time="16:00–17:00" type="uebung" title="Pitch" href="/innolab/methoden/pitch">Aufbau, Demo, Belege; erste Probe.</Block>
-    <Block time="17:00–17:15" type="plenum" title="Abschluss" href="#abschluss">Was bis zur Präsentation passiert.</Block>
+    <Block time="09:15–10:00" type="uebung" title="Usability-Tests über Kreuz" href="#tests">Drei Runden, ein Produkt pro Runde.</Block>
+    <Block time="10:00–10:30" type="plenum" title="Sprint-1-Review" href="/innolab/methoden/sprint#review">Ziel, Demo, Tests und Messung, Backlog.</Block>
+    <Block time="10:30–11:00" type="uebung" title="Retro: Lightning Decision Jam" href="/innolab/methoden/sprint#retro">Eine Maßnahme für Sprint 2.</Block>
+    <Block time="11:00–11:10" type="pause" title="Pause" />
+    <Block time="11:10–11:55" type="uebung" title="Sprint-2-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, eine Karte, die alles ändert.</Block>
+    <Block time="11:55–12:55" type="uebung" title="Pitch" href="/innolab/methoden/pitch">Aufbau, Demo, Belege; erste Probe.</Block>
+    <Block time="12:55–13:00" type="plenum" title="Abschluss" href="#abschluss">Was bis zur Präsentation passiert.</Block>
   </div>
 
   <hr />
@@ -33,7 +29,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Heute schließt sich der Kreis vom Entdecken zum Liefern: Was ihr gebaut habt, testet ihr mit Menschen, die es nicht kennen – mit derselben Methode wie den Prototyp an Tag 3. Was die Tests zeigen, ändert im Review euren Backlog. Das ist der Unterschied zwischen einem Team, das Issues abarbeitet, und einem, das ein Produkt entwickelt.</p>
 
   <h2 id="tests">Usability-Tests über Kreuz</h2>
-  <p>Ihr testet wie beim <a href="/innolab/methoden/prototyp-spike#usability-test">Prototyp-Spike</a> – Aufgabe als Ziel, laut denken, nicht helfen –, diesmal mit dem Inkrement, live am Handy. Testpersonen sind Menschen aus dem Haus, die euer Produkt nicht kennen; idealerweise passen sie zur Zielgruppe.</p>
+  <p>Ihr testet wie beim <a href="/innolab/methoden/prototyp-spike#usability-test">Prototyp-Spike</a> – Aufgabe als Ziel, laut denken, nicht helfen –, diesmal mit dem Inkrement, live am Handy. Testpersonen sind Menschen, die euer Produkt nicht kennen und möglichst zur Zielgruppe passen. An einem Samstag kommen sie nicht von selbst vorbei: Jede*r Product Owner bringt zwei mit oder verabredet sie für einen Videoanruf mit geteiltem Bildschirm.</p>
   <ul>
     <li><strong>Drei Runden à 15 Minuten,</strong> ein Produkt pro Runde, je zwei Testpersonen. Die übrigen drei bis zur Präsentation testet ihr selbst – dann seid ihr wie an Tag 3 bei fünf.</li>
     <li><strong>Über Kreuz:</strong> Der Product Owner moderiert nicht – wer das eigene Produkt erklärt, hilft zu schnell und verteidigt es. Eine andere Person aus dem Team moderiert, der Product Owner beobachtet und schreibt mit, die dritte notiert Zeiten und wo die Person hängen bleibt.</li>
@@ -60,7 +56,7 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Daily, Review und Retro kennt ihr von der Methode <a href="/innolab/methoden/sprint">Sprint</a>.</p>
 
   <h2 id="abschluss">Abschluss & bis zur Präsentation</h2>
-  <p>Sprint 2 läuft bis zur Präsentation weiter. Dazwischen gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
+  <p>Sprint 2 läuft bis zur Präsentation am 7. Jänner, über die Feiertage. Plant ihn danach: Wer zwischen 24. Dezember und 6. Jänner weniger Zeit hat, sagt das im Planning, und ihr nehmt weniger Punkte. Dazwischen gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
   <Checklist id="il-tag6-hausaufgabe" items={[
     'Review und Retro von Sprint 1 in <code>docs/SPRINTS.md</code>, Testbefunde in <code>docs/TESTS.md</code>',
     'Sprint 2 geplant, Störfall-Entscheidung im Entscheidungslog',

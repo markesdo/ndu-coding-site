@@ -1,4 +1,4 @@
-// Seitenleiste pro Kurs: Die Website trägt zwei Kurse – „Programmieren mit AI“ (Oktober) und das Innolab (November/Dezember).
+// Seitenleiste pro Kurs: Die Website trägt zwei Kurse – „Programmieren mit AI“ (Oktober) und das Innolab (Oktober bis Jänner).
 // Welcher Kurs gilt, folgt aus dem Pfad (ohne Schrägstrich am Ende, wie bei „Wo ist Markus?“); Layout.astro zeigt nur dessen Menü und blättert im Beamer-Modus nur darin.
 
 import { pfadOhneSchraegstrich } from '../components/abschnitt';
@@ -35,7 +35,7 @@ export const BEREICHE: Record<Bereich, BereichInfo> = {
     marke: 'innolab_2026',
     titel: 'NDU Innolab 2026',
     beschreibung: 'Innolab – ein digitales Produkt entwickeln und organisieren. MSc Management by Innovation, NDU, 2026',
-    termine: 'November / Dezember 2026',
+    termine: '16. Oktober 2026 – 7. Jänner 2027',
     kurz: 'Innolab',
   },
 };
@@ -89,7 +89,7 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
       { href: '/innolab/tag-3', t: 'Tag 3 · Lösung, Story, Prototyp' },
       { href: '/innolab/tag-4', t: 'Tag 4 · Scrum im Team' },
       { href: '/innolab/tag-5', t: 'Tag 5 · Schätzen & Bauen' },
-      { href: '/innolab/tag-6', t: 'Tag 6 · Bauen & Review' },
+      { href: '/innolab/tag-6', t: 'Tag 6 · Tests & Review' },
     ]},
   ],
 };

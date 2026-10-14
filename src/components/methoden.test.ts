@@ -1,6 +1,6 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { ARTEFAKTE, METHODEN, ORTE, erzeugtVon, methodenVonTag, pruefPrompt } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, erzeugtVon, methodenVonTag, pruefPrompt } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -120,5 +120,14 @@ describe('methoden', () => {
   it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
     expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/PRODUKT\.md, docs\/STORYS\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md, docs\/ENTSCHEIDUNGEN\.md\. /);
+  });
+
+  it('jede Tagesseite trägt das Datum aus TAGE als data-kurstag – sonst springt die Jetzt-Markierung am falschen Tag', () => {
+    const seiten = TAGE.map((t) => ({ t, url: new URL(`../pages/innolab/tag-${t.n}.astro`, import.meta.url) })).filter((x) => existsSync(x.url));
+    expect(seiten.length).toBeGreaterThan(0);
+    for (const { t, url } of seiten) {
+      const kurstage = [...readFileSync(url, 'utf8').matchAll(/data-kurstag="([^"]+)"/g)].map((m) => m[1]);
+      expect(kurstage, `tag-${t.n}`).toStrictEqual([t.datum]);
+    }
   });
 });

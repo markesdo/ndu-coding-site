@@ -7,13 +7,13 @@ import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="Tag 5 · Schätzen & Bauen">
-  <span class="eyebrow">Innolab · Tag 5 · Termin folgt · 09:00–17:00</span>
+  <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00</span>
   <h1>Tag 5 · Schätzen & Bauen</h1>
   <p class="lead">Der letzte Input-Vormittag: Issues schätzen, „fertig“ um die Messung ergänzen, Sprint 1 planen. Ab 13:00 baut ihr.</p>
   <Orientierung seite="innolab/tag-5" />
 
   <h2 id="ablauf">Ablauf</h2>
-  <div class="schedule">
+  <div class="schedule" data-kurstag="2026-12-12">
     <Block time="09:00–10:00" type="uebung" title="Planning Poker über Kreuz" href="/innolab/methoden/schaetzen">Referenz, Skala, Achter teilen.</Block>
     <Block time="10:00–10:15" type="pause" title="Pause" />
     <Block time="10:15–10:45" type="uebung" title="Definition of Done & Spezifikation" href="/innolab/methoden/sprint#dod">Das Mess-Ereignis, Regeln für fremde Issues.</Block>
@@ -50,11 +50,11 @@ import FooterNav from '../../components/FooterNav.astro';
   <Checklist id="il-tag5-hausaufgabe" items={[
     'Definition of Done in <code>docs/TEAM.md</code> um das Mess-Ereignis ergänzt',
     '<code>docs/SPRINTS.md</code> mit Sprint-Ziel und Auswahl für Sprint 1',
-    'Weiterbauen bis Tag 6, 12:00 – jedes Issue nach der Definition of Done',
+    'Weiterbauen bis zum 19. Dezember – jedes Issue nach der Definition of Done',
     'Daily an jedem Arbeitstag als Kommentar in Linear',
     'Offene Pull Requests der anderen geprüft',
   ]} />
-  <p><a href="/innolab/tag-6">Tag 6</a> beginnt mit dem Daily. Mittags endet Sprint 1 mit Review und Retro.</p>
+  <p><a href="/innolab/tag-6">Tag 6</a> beginnt mit dem Daily; danach testet ihr und schließt Sprint 1 mit Review und Retro ab.</p>
 
   <FooterNav prev={{ href: '/innolab/tag-4', t: 'Tag 4 · Scrum im Team' }} next={{ href: '/innolab/methoden/schaetzen', t: 'Schätzen' }} />
 </Layout>
