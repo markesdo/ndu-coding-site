@@ -189,9 +189,21 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   ]} />
 
   <h3 id="uebung-10-a">a) Startklar (10 min)</h3>
+  <p>Eure Links für heute:</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col">Was</th><th scope="col">Link</th></tr></thead>
+      <tbody>
+        <tr><td>Repo (zum Klonen)</td><td><a href="https://github.com/markusd-ndu/leihbar-team" target="_blank" rel="noopener">github.com/markusd-ndu/leihbar-team</a></td></tr>
+        <tr><td>Live-App</td><td><a href="https://leihbar-team.vercel.app" target="_blank" rel="noopener">leihbar-team.vercel.app</a></td></tr>
+        <tr><td>Issues in Linear</td><td><a href="https://linear.app/leihbar-team/project/leihbar-b338831c32cd" target="_blank" rel="noopener">Projekt „Leihbar“</a> (erst nach dem Beitreten, Schritte unten)</td></tr>
+        <tr><td>Dieselben Issues ohne Linear</td><td><a href="https://github.com/markusd-ndu/leihbar-team/issues" target="_blank" rel="noopener">GitHub-Issues im Repo</a></td></tr>
+      </tbody>
+    </table>
+  </div>
   <ol class="steps">
     <li><strong>Einladung</strong> Die Einladung zu <code>leihbar-team</code> kommt per E-Mail von GitHub – annehmen.</li>
-    <li><strong>Auf den Mac holen</strong> In VS Code das Repo klonen (wie unter <a href="/setup#lokal">Lokal</a>), im Terminal <code>npm install</code>, die Werte für <code>.env.local</code> bekommt ihr von Markus. Dann <code>claude</code> starten.</li>
+    <li><strong>Auf den Mac holen</strong> In VS Code das Repo klonen (wie unter <a href="/setup#lokal">Lokal</a>), im Terminal <code>npm install</code> und <code>cp .env.example .env.local</code> – die Supabase-Werte stehen schon drin, sie sind öffentlich. Geheime Werte bekommt nur, wer sie braucht: Wer LEI-5 oder LEI-6 übernimmt, bekommt sie von Markus über einen Link, der nach einem Aufruf verfällt. So läuft es auch in echten Teams. Dann <code>claude</code> starten.</li>
     <li><strong>Linear</strong> Mit Linear verbinden (Schritte unten) und das eigene Issue auf euch zuweisen.</li>
   </ol>
   <h4 id="linear">Linear verbinden</h4>
@@ -239,9 +251,9 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
     <dt>A · Beschreibung vorschlagen lassen <span class="small muted">(LEI-5)</span></dt>
     <dd><p>Issue 8 aus dem Leihbar-Backlog: Die KI schreibt aus Titel, Kategorie und Ort einen Vorschlag für die Beschreibung. Neu ist der Teil danach: fünf feste Beispiel-Eingaben, an denen ein Test prüft, ob die Antworten taugen – eine davon ein Angriff. KI im eigenen Produkt kostet pro Aufruf, braucht Sekunden und antwortet jedes Mal anders; darum braucht sie solche Testreihen (<a href="/konzepte/ausblick#ki-feature">Ausblick</a>).</p></dd>
     <dt>B · Unbeantwortete Anfragen laufen ab <span class="small muted">(LEI-6)</span></dt>
-    <dd><p>Eine Anfrage, auf die sieben Tage niemand antwortet, wird automatisch „abgelaufen“. Das erledigt kein Mensch und kein Klick, sondern ein Zeitplan bei Vercel, der einmal am Tag läuft. Ihr lernt, wie Arbeit im Hintergrund passiert – und wo ihr nachseht, wenn sie scheitert (Logs bei Vercel).</p></dd>
+    <dd><p>Eine Anfrage, auf die sieben Tage niemand antwortet, wird automatisch „abgelaufen“. Das erledigt kein Mensch und kein Klick, sondern ein Zeitplan bei Vercel, der einmal am Tag läuft. Ihr lernt, wie Arbeit im Hintergrund passiert – und wo ihr nachseht, wenn sie scheitert (Logs bei Vercel). Auf das Vercel-Konto habt ihr keinen Zugriff; die Logs zeigt Markus am Beamer.</p></dd>
     <dt>C · Meine Gegenstände <span class="small muted">(LEI-7)</span></dt>
-    <dd><p>Eine Seite <code>/meine-gegenstaende</code>: alles, was ich anbiete, mit der Zahl offener Anfragen. Erst in Claude Design entworfen, dann übergeben – wie in Übung 9, nur mit dem Design-System von Leihbar, das alle drei teilen.</p></dd>
+    <dd><p>Eine Seite <code>/meine-gegenstaende</code>: alles, was ich anbiete, mit der Zahl offener Anfragen. Erst in Claude Design entworfen, dann übergeben – wie in Übung 9. Das Design-System legt ihr dafür zuerst selbst aus <code>leihbar-team</code> an, wie in <a href="#uebung-9">Übung 9, Teil 1</a> mit eurem eigenen Repo; rechnet fünf bis zehn Minuten dafür.</p></dd>
   </dl>
   <Prompt label="Issue aus Linear umsetzen" note="Statt [Kennung] die Kennung eures Issues, z. B. LEI-5.">Hol dir über den Linear-MCP das Issue [Kennung]. Wenn etwas unklar ist, frag zuerst. Setz es in Linear auf In Progress. Leg einen neuen Branch an, der mit der Kennung beginnt (z. B. lei-5-beschreibung), und setz es dort um – main bleibt unberührt. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Wenn ich zustimme: npm run lint und npm run build fehlerfrei, push, Pull Request mit einer Beschreibung ohne Fachjargon und dem Link zum Linear-Issue, Issue in Linear auf In Review.</Prompt>
   <Callout type="info" title="Ihr arbeitet zu dritt im selben Repo">
