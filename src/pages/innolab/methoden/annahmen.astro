@@ -2,13 +2,9 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
-import Checklist from '../../../components/Checklist.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
-import { METHODEN } from '../../../components/methoden';
-
-const m = METHODEN.find((x) => x.slug === 'annahmen')!;
 ---
 <Layout title="Annahmen-Map">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -60,7 +56,6 @@ Riskanteste Annahme: A[n]
 | A4 | [...] | bedienbar | [...] | [...] |</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
-  <Checklist id="il-annahmen" items={m.pruefliste!} />
   <ClaudePruefung slug="annahmen" />
   <p>Danach ein zweiter Durchgang als Red Team:</p>
   <Prompt label="Red Team · Claude Code">Lies docs/PRODUKT.md und docs/ANNAHMEN.md. Welche Annahmen stecken im Brief, die in der Liste fehlen? Nenn höchstens drei, jeweils mit der Stelle im Brief, aus der sie folgen. Trag nichts ein – ich entscheide, was in die Liste kommt.</Prompt>

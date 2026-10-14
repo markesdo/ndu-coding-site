@@ -2,13 +2,9 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
-import Checklist from '../../../components/Checklist.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
-import { METHODEN } from '../../../components/methoden';
-
-const m = METHODEN.find((x) => x.slug === 'entscheidungslog')!;
 ---
 <Layout title="Entscheidungslog">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -40,7 +36,6 @@ const m = METHODEN.find((x) => x.slug === 'entscheidungslog')!;
   <Prompt label="Vorlage · Zeile in docs/ENTSCHEIDUNGEN.md">- [JJJJ-MM-TT] — [Entscheidung] — [Grund] — Beleg: [Interview/Test/Zahl oder „noch keiner“]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
-  <Checklist id="il-entscheidungslog" items={m.pruefliste!} />
   <ClaudePruefung slug="entscheidungslog" />
 
   <h2 id="uebertrag">Übertrag auf euer Produkt</h2>

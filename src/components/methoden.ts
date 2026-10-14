@@ -105,7 +105,7 @@ export const METHODEN: Methode[] = [
       'Die Kernfragen fragen nach dem letzten konkreten Mal („Erzähl vom letzten Mal, als …“).',
       'Mindestens eine Frage zielt darauf, was die Person heute schon tut, um das Problem zu lösen – und was sie das kostet.',
       'Nachfragen sind vorbereitet („Warum?“, „Was ist dann passiert?“, „Wie oft kommt das vor?“).',
-      'Am Anfang stehen Einwilligung und Anonymisierung in einem Satz.',
+      'Am Anfang stehen die Bitte um Einwilligung zur Aufnahme und die Zusage, dass nichts mit Namen ins Projekt kommt.',
     ],
     ki: 'Markiert suggestive und hypothetische Fragen im Leitfaden und spielt zur Probe eine zurückhaltende Person aus der Zielgruppe.',
     quelle: 'Rob Fitzpatrick, The Mom Test; Clayton Christensen, Jobs to be Done',

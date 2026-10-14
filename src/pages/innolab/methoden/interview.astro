@@ -2,14 +2,10 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
-import Checklist from '../../../components/Checklist.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
-import { METHODEN } from '../../../components/methoden';
-
-const m = METHODEN.find((x) => x.slug === 'interview')!;
 ---
 <Layout title="Jobs to be Done & Mom Test">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -45,13 +41,12 @@ const m = METHODEN.find((x) => x.slug === 'interview')!;
   </div>
   <p>Vorsicht bei Komplimenten („Coole Idee!“), Allgemeinplätzen („Ich trinke normalerweise …“) und Zukunftsversprechen („Das würde ich sicher nutzen“). Holt sie zurück in die Vergangenheit: „Wann war das zuletzt?“</p>
 
-  <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
+  <h2 id="vorgehen">So geht ihr vor (90 min nach 30 min Input)</h2>
   <ol>
     <li><strong>Leitfaden allein schreiben (20 min):</strong> 5–7 Fragen, Vorlage unten. Jede Frage gegen die drei Regeln halten.</li>
     <li><strong>Prüfliste und Claude (10 min).</strong></li>
-    <li><strong>Probe mit Claude (20 min):</strong> Claude spielt eine Person aus eurer Zielgruppe – absichtlich zurückhaltend. Danach Feedback auf eure Fragen.</li>
-    <li><strong>Live-Interview (30 min):</strong> Markus spielt eine schwierige Person aus eurer Zielgruppe. Die anderen beiden beobachten: Wo wurde gepitcht, wo fehlte eine Nachfrage?</li>
-    <li><strong>Leitfaden überarbeiten (10 min).</strong></li>
+    <li><strong>Probe mit Claude (15 min):</strong> Claude spielt eine Person aus eurer Zielgruppe – absichtlich zurückhaltend. Danach Feedback auf eure Fragen.</li>
+    <li><strong>Live-Interview (3 × 15 min):</strong> Reihum spielt Markus eine schwierige Person aus der Zielgruppe der jeweiligen Interviewer*in – 10 min Interview, 5 min Feedback. Die anderen beiden beobachten: Wo wurde gepitcht, wo fehlte eine Nachfrage? Was ihr dabei lernt, kommt danach in den Leitfaden.</li>
   </ol>
 
   <h2 id="vorlage">Vorlage</h2>
@@ -83,13 +78,12 @@ Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
     <p>Nehmt nur mit Einwilligung auf. Ins Repo kommt nie die Aufnahme, nur das Transkript – ohne Namen, Arbeitgeber oder andere Angaben, an denen man die Person erkennt. Nennt die Transkripte <code>docs/interviews/I1.md</code> bis <code>I5.md</code>; das sind später die Zitat-IDs. Bevor ihr ein Transkript Claude gebt, muss es anonymisiert sein.</p>
   </Callout>
 
-  <h3 id="probe">Probe mit Claude</h3>
+  <h2 id="probe">Probe mit Claude</h2>
   <p>Am besten in Claude Chat (dort geht auch der Sprachmodus), sonst in Claude Code:</p>
   <Prompt label="Probe-Interview · Claude Chat oder Claude Code">Spiel eine Person aus dieser Zielgruppe: [Abschnitt 1 aus eurem Brief]. Erfinde dir ein realistisches Leben mit Gewohnheiten, die nicht zu meiner Idee passen müssen. Sei zurückhaltend: Antworte kurz, bleib allgemein, wenn ich allgemein frage, und erzähl Konkretes nur, wenn ich nach dem letzten konkreten Mal frage. Frag ich nach der Zukunft oder stelle ich eine Idee vor, sei höflich und unverbindlich. Ich beginne das Interview, du wartest auf meine erste Frage. Wenn ich „Ende“ schreibe, gib mir Feedback nach dem Mom Test: Wo habe ich gepitcht, wo nach der Zukunft gefragt, wo eine Nachfrage verpasst? Höchstens drei Punkte, mit Zitat.</Prompt>
   <p>Die Probe ersetzt kein echtes Interview. Claude erfindet eine plausible Person – eure Zielgruppe kennt es nicht.</p>
 
   <h2 id="pruefen">Prüfen</h2>
-  <Checklist id="il-interview" items={m.pruefliste!} />
   <ClaudePruefung slug="interview" pfad="docs/interviews/LEITFADEN.md" />
 
   <h2 id="uebertrag">Übertrag auf euer Produkt</h2>

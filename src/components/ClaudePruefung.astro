@@ -1,6 +1,8 @@
 ---
-// „Claude prüfen lassen“ auf Methodenseiten: Prompt aus der Prüfliste der Methode (methoden.ts) – dieselbe Liste,
-// die die Studierenden selbst abhaken. Claude prüft nur, schreibt nichts um und ändert keine Datei.
+// Abschnitt „Prüfen“ auf Methodenseiten: erst die Prüfliste der Methode (methoden.ts) zum Abhaken, dann derselbe Text
+// als Prompt für Claude. Claude prüft nur, schreibt nichts um und ändert keine Datei. Die Punkte sind reiner Text –
+// die Checkliste würde HTML darstellen, der Prompt nicht (methoden.test.ts prüft das).
+import Checklist from './Checklist.astro';
 import Prompt from './Prompt.astro';
 import { METHODEN, artefakt } from './methoden';
 
@@ -16,4 +18,5 @@ const text = [
   'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um und ändere keine Datei – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
 ].join('\n');
 ---
+<Checklist id={`il-${m.slug}`} items={m.pruefliste} />
 <Prompt label="Prüfen lassen · Claude Code" note="Erst nachdem ihr die Prüfliste selbst durchgegangen seid. Claude findet, ihr entscheidet."><Fragment set:text={text} /></Prompt>

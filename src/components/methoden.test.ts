@@ -68,6 +68,8 @@ describe('methoden', () => {
     for (const m of mitSeite) {
       expect(m.pruefliste?.length ?? 0, m.slug).toBeGreaterThanOrEqual(3);
       expect(m.pruefliste!.length, m.slug).toBeLessThanOrEqual(8);
+      // Reiner Text: Die Checkliste rendert HTML, der Claude-Prompt kopiert Text – beides soll gleich aussehen.
+      for (const p of m.pruefliste!) expect(p, m.slug).not.toMatch(/[<>&]/);
     }
   });
 });

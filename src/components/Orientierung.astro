@@ -6,9 +6,11 @@ import { gliederung } from './gliederung';
 import '../styles/orientierung.css';
 
 const { seite, leiste = true } = Astro.props as { seite: string; leiste?: boolean };
-const quellen = import.meta.glob('../pages/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
-const quelle = quellen[`../pages/${seite}.astro`];
-if (!quelle) throw new Error(`Orientierung: Seite „${seite}“ nicht gefunden`);
+// Nur die eine Seite laden, nicht den Quelltext aller Seiten.
+const quellen = import.meta.glob('../pages/**/*.astro', { query: '?raw', import: 'default' }) as Record<string, () => Promise<string>>;
+const laden = quellen[`../pages/${seite}.astro`];
+if (!laden) throw new Error(`Orientierung: Seite „${seite}“ nicht gefunden`);
+const quelle = await laden();
 const abschnitte = gliederung(quelle);
 const beschriftung = Object.fromEntries(abschnitte.flatMap((a) => [[a.id, a.leiste], ...a.schritte.map((s) => [s.id, s.leiste])]));
 ---

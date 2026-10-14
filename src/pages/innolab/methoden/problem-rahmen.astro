@@ -2,14 +2,10 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
-import Checklist from '../../../components/Checklist.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
-import { METHODEN } from '../../../components/methoden';
-
-const m = METHODEN.find((x) => x.slug === 'problem-rahmen')!;
 ---
 <Layout title="Problem-Rahmen & Produkt-Brief">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -80,7 +76,6 @@ Wir merken es, wenn [beobachtbares Verhalten, mit 3–5 Menschen].
 - [was ihr in den Interviews herausfinden wollt]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
-  <Checklist id="il-problem-rahmen" items={m.pruefliste!} />
   <ClaudePruefung slug="problem-rahmen" />
 
   <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
