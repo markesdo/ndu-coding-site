@@ -9,6 +9,7 @@ import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Schritte from '../../components/Schritte.astro';
 import { bild } from '../../components/anleitung-bilder';
+import { HANDY_PROMPT } from '../../lib/handy-prompt';
 ---
 <Layout title="Vom Prototyp zum Produkt">
   <span class="eyebrow">Konzept 7 · Tag 3</span>
@@ -55,12 +56,12 @@ import { bild } from '../../components/anleitung-bilder';
   <p>Tests prüfen, ob etwas <em>funktioniert</em>. Ob es <em>richtig aussieht</em>, sieht Claude nicht: Es liest Code, nicht euren Bildschirm. Darum melden Agenten bei Layout-Fehlern so oft „fertig“, obwohl am Handy der Button aus dem Bild ragt. Die Lücke schließt ihr mit Screenshots: Claude lässt die Seite per Playwright fotografieren – als Handy (375&nbsp;px) und als Laptop (1280&nbsp;px) –, schaut sich die Bilder selbst an und repariert, was am Handy nicht passt.</p>
   <ol class="steps">
     <li><strong>Screenshots</strong> Handy (375&nbsp;px) und Laptop (1280&nbsp;px).</li>
-    <li><strong>Prüfen</strong> Gegen eine feste Liste: abgeschnittener Text, waagrechtes Scrollen, zu kleine Buttons, Überlappungen.</li>
+    <li><strong>Prüfen</strong> Gegen eine feste Liste: abgeschnittener oder zu kleiner Text, waagrechtes Scrollen, zu kleine Buttons, Überlappungen.</li>
     <li><strong>Ändern</strong> Nur, was auf der Liste steht.</li>
     <li><strong>Wiederholen</strong> Höchstens drei Runden. Danach entscheidet ihr, nicht der Agent.</li>
   </ol>
-  <Prompt label="Handy-Ansicht reparieren">Prüf die Seite [z. B. /gegenstaende] am Handy. Starte die App, falls sie nicht läuft. Richte Playwright ein, falls es fehlt (nur Chromium), und mach Screenshots bei 375 px und 1280 px Breite in den Ordner screenshots/ (trag ihn in .gitignore ein). Schau dir die Bilder selbst an und nenn mir, was am Handy nicht passt: abgeschnittener oder zu kleiner Text, waagrechtes Scrollen, Buttons kleiner als ein Finger, Elemente, die sich überlappen. Behebe nur das, ohne das Aussehen am Laptop zu ändern. Mach danach neue Screenshots und zeig mir das Handy-Bild vorher und nachher. Höchstens drei Runden.</Prompt>
-  <p class="small muted">Nehmt eine Seite, die ohne Anmeldung erreichbar ist. Braucht die Seite einen Login: am eigenen Handy öffnen, Screenshot machen und Claude geben – mit dem Prompt <a href="/prompts">Screenshot-Feedback</a>.</p>
+  <Prompt label="Handy-Ansicht reparieren">{HANDY_PROMPT}</Prompt>
+  <p class="small muted">Nehmt eine Seite, die ohne Anmeldung erreichbar ist. Braucht die Seite einen Login: am eigenen Handy öffnen, Screenshot machen und Claude geben – mit dem Prompt „Screenshot-Feedback“ aus der <a href="/prompts">Prompt-Bibliothek</a> (Abschnitt Bauen).</p>
   <details class="fallback" id="ui-schleife-ziel">
     <summary>Für Fortgeschrittene: mit Ziel, drei Breiten und Testkonto</summary>
     <p>Habt ihr ein Ziel – eine Beschreibung, einen Screenshot, einen Entwurf aus Claude Design oder Figma –, vergleicht Claude die Seite damit. Für Seiten hinter dem Login meldet sich das Skript mit einem Testkonto an.</p>
