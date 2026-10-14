@@ -64,7 +64,8 @@ export default async function middleware(request: Request): Promise<Response> {
   }
 
   if (await tokenGueltig(cookieLesen(request.headers.get('cookie')), secret, passwort, jetzt)) {
-    return next({ headers: { 'X-Robots-Tag': 'noindex, nofollow' } });
+    // private, no-store auch hier: Kursseiten (z. B. der Linear-Einladungslink auf Tag 3) gehören in keinen geteilten Cache.
+    return next({ headers: NOINDEX });
   }
   // Schnittstellen bekommen eine klare Absage statt der Umleitung auf die Login-Seite (die sähe im fetch wie Erfolg aus).
   if (url.pathname.startsWith('/api/')) {

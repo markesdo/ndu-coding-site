@@ -198,7 +198,6 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 /* Konzept auf der Tagesseite (KonzeptStation): ein .callout.concept, dazu Knopf zum Konzept. */
 .station ul { margin-bottom: 1rem; }
 .station-cta { display: flex; flex-wrap: wrap; gap: .6rem; }
-.station-cta .btn { display: inline-flex; align-items: center; gap: .4rem; }
 .station p.station-danach { margin: .75rem 0 0; }
 /* Issue-Karte (IssueKarte.astro): das Issue aus dem Backlog über dem Prompt, Kriterien zum Abhaken. */
 .issue-karte { border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: var(--radius); background: var(--bg-2); padding: 1rem 1.2rem .5rem; margin: 1.25rem 0; }
@@ -288,6 +287,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .btn.primary:hover { opacity: .92; }
 .btn.sm { padding: .3rem .7rem; font-size: .85rem; }
+.btn.mit-icon { display: inline-flex; align-items: center; gap: .4rem; }
 
 /* Prompt card */
 /* Sieht aus wie das Terminal, in das der Text gehört: neutrale Fläche, kein Akzentrot (bei 30 Prompts pro Seite wäre
