@@ -1,0 +1,83 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Prototyp-Spike & Usability-Test">
+  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
+  <h1>Prototyp-Spike & Usability-Test</h1>
+  <p class="lead">Ein Wegwerf-Prototyp, der genau die Usage Story abbildet – und ein Test mit fünf Menschen, ob sie den Höhepunkt erreichen.</p>
+  <Orientierung seite="innolab/methoden/prototyp-spike" leiste={false} />
+  <MethodenKarte slug="prototyp-spike" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Ein <strong>Spike</strong> ist Code zum Lernen, nicht zum Behalten. Seit Claude Code dauert ein klickbarer Prototyp eine Stunde statt einer Woche – darum ist der Spike heute ein Test, kein Projekt. Er bildet nur den Ablauf der Usage Story ab, mit Daten im Speicher, ohne Datenbank und Login. Was ihr lernt, kommt an Tag 4 in die Issues; der Spike-Code selbst wird nicht weiterverwendet.</p>
+  <p>Die Reihenfolge ist wichtig: <strong>erst Papier, dann Claude.</strong> Wer direkt bauen lässt, testet Claudes Vorstellung von eurem Produkt. Ein paar Papierskizzen in einer Viertelstunde zwingen euch, jeden Bildschirm selbst zu entscheiden.</p>
+
+  <h2 id="usability-test">Der Usability-Test</h2>
+  <p>Fünf Menschen aus der Zielgruppe finden die meisten großen Probleme eines Ablaufs (Jakob Nielsen). So läuft ein Test:</p>
+  <ol>
+    <li><strong>Aufgabe als Ziel</strong>, nicht als Bedienschritte: „Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“ – nicht „Scanne den Code und tippe auf Bestellen“.</li>
+    <li><strong>Laut denken lassen:</strong> „Sag einfach, was dir durch den Kopf geht.“</li>
+    <li><strong>Nicht helfen.</strong> Wenn jemand hängt, fragt: „Was würdest du jetzt tun?“ Das Hängen ist das Ergebnis.</li>
+    <li><strong>Notieren:</strong> Hat die Person den Höhepunkt erreicht? Wo hing sie, und wie lange? Was hat sie gesagt?</li>
+  </ol>
+
+  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+  <p>Papier: fünf Bildschirme – Getränk wählen · Zug wählen · „Fertig 7:31“ · Abholnummer · Bestellung für die Bar. Daraus mit Claude Code ein Spike in einer Stunde. Testbefunde nach fünf Pendler*innen:</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>ID</th><th>Befund</th><th>Wie oft</th></tr></thead>
+      <tbody>
+        <tr><th>U1</th><td>Höhepunkt „Fertig 7:31“ erreicht</td><td>4 von 5</td></tr>
+        <tr><th>U2</th><td>Zug eintippen dauert zu lang; alle suchten eine Liste der nächsten Abfahrten</td><td>5 von 5</td></tr>
+        <tr><th>U3</th><td>Unklar, wo die Express-Ausgabe ist</td><td>3 von 5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>U2 schiebt „Zug aus der Liste“ von Slice 2 in Slice 1 – eine Zeile im Entscheidungslog, Beleg U2.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
+  <ol>
+    <li><strong>Papier (15 min, allein):</strong> eine Skizze für jeden Bildschirm, den die Person in der Usage Story sieht – meist vier bis sechs. Foto machen.</li>
+    <li><strong>Spike bauen (55 min):</strong> neuer Branch, Prompt unten, Skizzen-Foto dazu. Ihr prüft im Browser, ob der Höhepunkt da ist – am Handy.</li>
+    <li><strong>Testplan (15 min):</strong> Aufgabe als Ziel, fünf Personen, wann und wo.</li>
+    <li><strong>Festhalten (5 min):</strong> <code>docs/TESTS.md</code> anlegen, committen.</li>
+  </ol>
+  <Prompt label="Spike · Claude Code">Leg einen neuen Branch spike/[name] an. Bau darin einen klickbaren Wegwerf-Prototyp für genau diesen Ablauf aus docs/STORYS.md, Abschnitt Usage Story. Halte dich an meine Skizzen im angehängten Foto. Nur Oberfläche: Daten im Speicher, keine Datenbank, kein Login, keine Bezahlung. Der Höhepunkt der Usage Story muss als eigener Bildschirm sichtbar sein. Schreib oben in die Startseite „Prototyp – nicht echt“. Zeig mir die Seite lokal; Issues und Backlog fasst du nicht an.</Prompt>
+  <Callout type="warn" title="Der Spike bleibt im Branch">
+    <p>Der Spike wird nicht in <code>main</code> gemergt. An Tag 4 schreibt ihr aus dem, was ihr gelernt habt, saubere Issues – und Claude baut sie richtig, mit Datenbank und Belegen. Wenn ihr den Spike für Tests am Handy braucht, deployt ihn als Vercel-Vorschau.</p>
+  </Callout>
+  <Callout type="info" title="Hausaufgabe bis Tag 4">
+    <p>Fünf Usability-Tests mit Menschen aus eurer Zielgruppe. Befunde mit IDs (U1, U2 …) in <code>docs/TESTS.md</code>, was ihr deshalb ändert ins Entscheidungslog.</p>
+  </Callout>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/TESTS.md"># Tests — [Produkt]
+
+Spike: Branch spike/[name] · Vorschau: [Link]
+Papierskizzen: [Link zum Foto]
+Aufgabe: „[Situation und Ziel, ohne Bedienschritte]“
+Höhepunkt: [aus der Usage Story]
+
+| Testperson | Höhepunkt erreicht? | Wo gehangen, wie lange | Zitat |
+|------------|---------------------|------------------------|-------|
+| 1 | [ja/nein] | [...] | „[...]“ |
+
+## Befunde
+| ID | Befund | Wie oft | Folge |
+|----|--------|---------|-------|
+| U1 | [...] | [n von 5] | [Änderung → Entscheidungslog] |</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="prototyp-spike" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Was wird euer U2 sein – der Befund, den alle fünf haben und den ihr vorher nicht gesehen hättet? Ihr findet ihn nur, wenn ihr beim Test den Mund haltet.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/usage-story', t: 'Usage Story' }} next={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell-Karten' }} />
+</Layout>

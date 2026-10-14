@@ -1,0 +1,78 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Value Map & Fit">
+  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
+  <h1>Value Map & Fit</h1>
+  <p class="lead">Wie eure gewählte Idee genau die Pains und Gains trifft, die im Kundenprofil oben stehen – und was sie bewusst offenlässt.</p>
+  <Orientierung seite="innolab/methoden/value-map" leiste={false} />
+  <MethodenKarte slug="value-map" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Die Value Map ist die linke Hälfte des Value Proposition Canvas, das Gegenstück zum Kundenprofil:</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Feld</th><th>Was hineingehört</th><th>Passt zu</th></tr></thead>
+      <tbody>
+        <tr><th>Produkte & Services</th><td>Was ihr anbietet – wie ein Schaufenster. Nur, was für dieses Segment gedacht ist.</td><td>Jobs</td></tr>
+        <tr><th>Schmerzlinderer</th><td>Wie das Angebot einen bestimmten Pain verringert oder beseitigt</td><td>Pains</td></tr>
+        <tr><th>Gewinnerzeuger</th><td>Wie das Angebot einen bestimmten Gain herstellt</td><td>Gains</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Den Unterschied zum Kundenprofil merkt euch so: <strong>Pains und Gains habt ihr nicht in der Hand</strong> – die hat eure Zielgruppe. <strong>Schmerzlinderer und Gewinnerzeuger entscheidet ihr.</strong> Deshalb nennt jeder Schmerzlinderer die ID des Pains, den er trifft.</p>
+  <p><strong>Fit</strong> heißt: Die wichtigsten Jobs, die stärksten Pains und die wichtigsten Gains sind adressiert. Nicht alle – kein Angebot löst alles, und die guten lösen wenige Dinge sehr gut. Was ihr heute auf Papier habt, ist <em>Problem-Solution Fit</em>. Ob Menschen das Angebot wirklich wollen (<em>Product-Market Fit</em>), zeigen erst Tests.</p>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <p>Idee aus Tag 2: „Im Gehen bestellen“.</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Feld</th><th>Eintrag</th><th>Trifft</th></tr></thead>
+      <tbody>
+        <tr><th>Produkt</th><td>QR-Code an der Hallentür, Bestellung im Browser, ohne App</td><td>J1</td></tr>
+        <tr><th>Produkt</th><td>Express-Ausgabe mit drei Standardgetränken</td><td>J1</td></tr>
+        <tr><th>Schmerzlinderer</th><td>Statt anzustehen, bestellt man in 20 Sekunden im Gehen</td><td>P1</td></tr>
+        <tr><th>Schmerzlinderer</th><td>Beim Bestellen steht da, ob der Kaffee vor der Abfahrt fertig ist</td><td>P2</td></tr>
+        <tr><th>Gewinnerzeuger</th><td>Der Kaffee steht bereit, wenn man an der Ausgabe ankommt</td><td>G1</td></tr>
+        <tr><th>Gewinnerzeuger</th><td>Eine Abholnummer am Bildschirm zeigt, wann es fertig ist</td><td>G3</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Fit:</strong> Die Top 3 aus dem Kundenprofil – P1, J1, P2 – sind adressiert. <strong>Bewusst offen:</strong> P3 (Automat als Niederlage) wird nur indirekt besser, G2 (Barista kennt die Bestellung) und J3 (nicht gehetzt im Büro ankommen) gar nicht. Das ist in Ordnung, solange es dasteht.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+  <ol>
+    <li><strong>Input (15 min):</strong> die drei Felder, der Unterschied zum Profil, Fit.</li>
+    <li><strong>Allein in Miro (20 min):</strong> Value Map neben das Kundenprofil legen. Zu jedem Schmerzlinderer und Gewinnerzeuger einen Pfeil auf seinen Pain oder Gain.</li>
+    <li><strong>Fit prüfen (10 min):</strong> Im Kundenprofil abhaken, was getroffen ist. Was bleibt offen, und ist das Absicht?</li>
+    <li><strong>Festhalten und prüfen (15 min):</strong> <code>docs/VALUE-MAP.md</code>, Prüfliste, Claude.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/VALUE-MAP.md"># Value Map — [Idee]
+
+Stand: [Datum] · Idee aus docs/IDEEN.md · Profil: docs/KUNDENPROFIL.md
+
+| Feld | Eintrag | Trifft (ID) |
+|------|---------|-------------|
+| Produkt/Service | [...] | [J…] |
+| Schmerzlinderer | [was es bewirkt] | [P…] |
+| Gewinnerzeuger | [was es bewirkt] | [G…] |
+
+## Fit
+Top 3 aus dem Profil: [ID] ✓ · [ID] ✓ · [ID] [✓ oder: warum nicht]
+Bewusst offen: [IDs, mit einem Satz]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="value-map" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Welcher eurer Schmerzlinderer trifft P1 – euren Pain mit dem höchsten Chancenwert? Wenn keiner: Ist eure Idee wirklich die Antwort auf eure wichtigste HMW-Frage?</p>
+
+  <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung, Story, Prototyp' }} next={{ href: '/innolab/methoden/concept-story', t: 'Concept Story' }} />
+</Layout>

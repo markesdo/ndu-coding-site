@@ -1,0 +1,99 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Concept Story">
+  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
+  <h1>Concept Story</h1>
+  <p class="lead">Euer Produkt als Geschichte mit einem echten Höhepunkt – und mit dem, was Menschen davon abhält.</p>
+  <Orientierung seite="innolab/methoden/concept-story" leiste={false} />
+  <MethodenKarte slug="concept-story" />
+
+  <h2 id="story-bogen">Der Story-Bogen</h2>
+  <p>Menschen verstehen die Welt in Geschichten: Sie suchen Ursache und Wirkung, Ziel und Hindernis. Das gilt auch für Produkte – ob ihr es plant oder nicht, erzählen sich eure Nutzer*innen eine Geschichte über euer Produkt. Der klassische Story-Bogen hat sieben Stationen:</p>
+  <ol>
+    <li><strong>Exposition</strong> – die Welt und die Hauptfigur mit ihrem Ziel</li>
+    <li><strong>Auslöser</strong> – etwas geht schief, ein Problem blockiert das Ziel</li>
+    <li><strong>Steigende Handlung</strong> – Versuche, das Problem zu lösen</li>
+    <li><strong>Krise</strong> – der Punkt, an dem nichts mehr zu gehen scheint</li>
+    <li><strong>Höhepunkt</strong> – die Auflösung</li>
+    <li><strong>Fallende Handlung</strong> – die Spannung löst sich</li>
+    <li><strong>Ende</strong> – die Figur hat sich verändert</li>
+  </ol>
+  <p><em>Zurück in die Zukunft</em> folgt genau diesem Bogen: Marty und sein Leben (Exposition), Doc wird angeschossen und Marty strandet 1955 (Auslöser), seine Eltern verlieben sich nicht (Krise), der Kuss beim Tanz und der Blitz am Uhrturm (Höhepunkt). Die einfache Formel dahinter: <strong>A × B = C</strong> – je stärker das Hindernis (B), das sich der Kraft der Figur (A) entgegenstellt, desto stärker der Höhepunkt (C). Bei Produkten ist A die Motivation der Nutzer*innen, B die Reibung, C der Moment, in dem sie den Wert spüren. Und die Hauptfigur sind immer die Nutzer*innen, nie das Produkt.</p>
+  <p>Ihr nutzt den Bogen heute zweimal: als <strong>Concept Story</strong> (warum es das Produkt gibt) und als <a href="/innolab/methoden/usage-story">Usage Story</a> (wie der Kernablauf sich anfühlt). Die <a href="/innolab/methoden/experiment">Origin Story</a> – wie jemand davon erfährt – kommt dazwischen.</p>
+
+  <h2 id="concept-story">Die Concept Story</h2>
+  <p>Die Concept Story erzählt, was das Produkt ist und warum es existiert. Sie ist kein Werbetext, sondern das gemeinsame Bild im Team – und später das Gerüst eures Pitches. Steve Jobs hat das iPhone 2007 genau so vorgestellt: Smartphones sind kompliziert (Auslöser), es gibt Geräte mit Tastatur und Stift (Krise) – dann ein Gerät, das man nur mit dem Finger bedient – kein Stift, keine Tastatur, das Internet so einfach wie der iPod (Höhepunkt). Nicht die Kombination aus drei Geräten war der Höhepunkt, sondern wie anders es sich anfühlte.</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Station</th><th>In der Concept Story</th></tr></thead>
+      <tbody>
+        <tr><th>Exposition</th><td>Die Welt der Zielgruppe heute, was darin schon gut ist, ihr großes Ziel</td></tr>
+        <tr><th>Auslöser</th><td>Der Pain, den das Produkt angeht</td></tr>
+        <tr><th>Steigende Handlung</th><td>Name und Art des Produkts</td></tr>
+        <tr><th>Krise</th><td>Die Alternativen und die inneren Hürden („noch eine App?“)</td></tr>
+        <tr><th>Höhepunkt</th><td>Der Wert, der die Krise auflöst</td></tr>
+        <tr><th>Fallende Handlung</th><td>Was Menschen danach denken, fühlen, sich vorstellen</td></tr>
+        <tr><th>Ende</th><td>Das Ziel der Nutzer*innen – und das des Geschäfts</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="errc">Die Krise schärfen: das ERRC-Raster</h3>
+  <p>Für die Krise legt ihr euer Angebot neben die Alternativen und fragt, was ihr <strong>eliminiert</strong>, <strong>reduziert</strong>, <strong>steigert</strong> und <strong>neu schafft</strong> (aus <em>Blue Ocean Strategy</em> von Kim und Mauborgne). Was ihr steigert oder schafft, wird euer Höhepunkt. Steht in „schaffen“ nichts, ist die Geschichte meistens flach.</p>
+
+  <Callout type="concept" title="Der Antiklimax-Test">
+    <p>Apples erste Patentskizze war ein iPod, mit dem man telefonieren kann. Als Geschichte: „Ich habe iPod und Handy. Zwei Geräte nerven. Neues iPhone! Jetzt habe ich beides in einem.“ Das hat Struktur, aber keinen Höhepunkt. Prüft eure Story: Ändert sich am Ende etwas Spürbares für die Person – oder habt ihr nur zwei Dinge zusammengelegt?</p>
+  </Callout>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <p>ERRC gegen Automat, Thermobecher und „einen Zug später“: <strong>eliminieren</strong> – das Anstehen · <strong>reduzieren</strong> – die Auswahl auf drei Getränke · <strong>steigern</strong> – die Gewissheit, dass es sich ausgeht · <strong>schaffen</strong> – eine Bestellung, die den eigenen Zug kennt.</p>
+  <ol>
+    <li><strong>Exposition:</strong> Pendler*innen nach Wien und Linz, 7:15–7:45. Kaffee gibt es, die Bar ist gut – nur nicht in sechs Minuten (J1).</li>
+    <li><strong>Auslöser:</strong> Die Schlange ist länger als die Zeit bis zur Abfahrt (P1, P2).</li>
+    <li><strong>Steigende Handlung:</strong> „Gleis-1-Express“ – bestellen im Gehen, per QR-Code an der Hallentür.</li>
+    <li><strong>Krise:</strong> Der Automat ist schneller, der Thermobecher gratis. Und: „QR-Codes scannen – im Gehen? Und wenn's doch nicht fertig ist?“</li>
+    <li><strong>Höhepunkt:</strong> Beim Bestellen gibt man die Abfahrtszeit ein – und sieht sofort: „Fertig 7:31. Dein Zug fährt 7:38.“ Die Bar kennt den Zug.</li>
+    <li><strong>Fallende Handlung:</strong> Man stellt sich vor, nie mehr auf die Uhr zu schauen, während man wartet.</li>
+    <li><strong>Ende:</strong> Kaffee in der Hand im Zug (J1); die Bar verkauft morgens mehr, ohne mehr Personal.</li>
+  </ol>
+
+  <h2 id="vorgehen">So geht ihr vor (30 min Input, 45 min Übung)</h2>
+  <ol>
+    <li><strong>ERRC (10 min, allein):</strong> euer Angebot gegen die zwei, drei Alternativen aus den Interviews.</li>
+    <li><strong>Sieben Stationen (15 min):</strong> je ein, zwei Sätze, mit IDs aus Profil und Value Map.</li>
+    <li><strong>Erzählen (15 min):</strong> Jede*r erzählt die Story in 90 Sekunden. Die anderen sagen, an welchem Satz sie abgeschaltet hätten und ob es einen Höhepunkt gab.</li>
+    <li><strong>Festhalten (5 min):</strong> <code>docs/STORYS.md</code>, Abschnitt „Concept Story“. Jetzt könnt ihr auch Abschnitt 3 im Brief füllen: das Produkt in einem Satz.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/STORYS.md"># Storys — [Produkt]
+
+## Concept Story
+ERRC gegen [Alternativen]: eliminieren [...] · reduzieren [...] · steigern [...] · schaffen [...]
+
+1. Exposition: [Welt der Zielgruppe, ihr Ziel] ([J…])
+2. Auslöser: [Pain] ([P…])
+3. Steigende Handlung: [Name] – [Art des Produkts]
+4. Krise: [Alternativen] · innere Hürde: „[...]“
+5. Höhepunkt: [Wert, der die Krise auflöst] ([Value Map])
+6. Fallende Handlung: [was man danach denkt oder fühlt]
+7. Ende: Nutzer*innen: [...] · Geschäft: [...]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="concept-story" />
+  <p>Danach als Publikum:</p>
+  <Prompt label="Publikum · Claude Chat">Hier ist die Concept Story unseres Produkts: [Story]. Sei ein gelangweiltes Publikum. Sag mir, bei welchem Satz du innerlich abgeschaltet hättest und warum. Gibt es einen echten Höhepunkt – ändert sich am Ende etwas Spürbares für die Person? Höchstens drei Punkte. Schreib die Story nicht um.</Prompt>
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Was ist eure „Bestellung, die den Zug kennt“ – das, was ihr neu schafft und kein*e Alternative bietet? Wenn eure Spalte „schaffen“ leer ist, geht zurück zu den Ideen von Tag 2: Vielleicht steckt es in der zweitplatzierten.</p>
+  <p class="small muted">Nach Donna Lichaw, <em>The User’s Journey: Storymapping Products That People Love</em> (Rosenfeld 2016); ERRC nach W. Chan Kim & Renée Mauborgne, <em>Blue Ocean Strategy</em> (2005).</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} next={{ href: '/innolab/methoden/experiment', t: 'Experiment-Karte & Origin Story' }} />
+</Layout>

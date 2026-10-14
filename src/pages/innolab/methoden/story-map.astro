@@ -1,0 +1,99 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Story Map">
+  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
+  <h1>Story Map</h1>
+  <p class="lead">Was Menschen mit eurem Produkt tun, als Geschichte von links nach rechts – und quer geschnitten in das, was ihr zuerst baut.</p>
+  <Orientierung seite="innolab/methoden/story-map" leiste={false} />
+  <MethodenKarte slug="story-map" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Eine Story Map ist eine Wand voller Stickies. <strong>Waagrecht</strong> steht der Ablauf, so wie man ihn erzählen würde: erst das, dann das. <strong>Senkrecht</strong> darunter stehen Details, Alternativen und Fehlerfälle. Ganz oben fassen <strong>Aktivitäten</strong> mehrere Schritte zusammen; sie bilden das <em>Backbone</em>. Dann zieht ihr waagrechte Linien – <strong>Slices</strong>: Alles über der ersten Linie ist die kleinste Version, mit der Menschen ihr Ziel von Anfang bis Ende erreichen.</p>
+  <p>Die Journey Map von Tag 2 zeigt, wie es heute ist. Die Story Map zeigt, wie es mit eurem Produkt sein soll – und in welcher Reihenfolge ihr es baut. Aus ihr entstehen an Tag 4 die Issues.</p>
+  <p class="small muted">Nicht zu verwechseln mit dem Story-Bogen (Concept, Origin, Usage Story): Die Story Map ordnet Arbeit, der Story-Bogen ordnet Erleben.</p>
+
+  <h2 id="warmup">Warm-up: euer Morgen</h2>
+  <ol>
+    <li>Schreibt jeden Schritt eures heutigen Morgens auf ein Sticky, vom Wecker bis zur Tür: „Wecker ausschalten“, „Snooze“, „ins Bad“ … Kurze Verben.</li>
+    <li>Legt sie von links nach rechts und erzählt: „Zuerst …, dann …“. Was fehlt?</li>
+    <li>Darunter: Was machst du an einem schlechten Morgen anders? Was, wenn das Warmwasser ausfällt?</li>
+    <li>Gruppiert zusammengehörige Schritte, gebt jeder Gruppe ein Verb – „Aufstehen“, „Fertig machen“, „Frühstücken“. Das ist euer Backbone.</li>
+    <li>Ihr habt verschlafen und müsst in fünf Minuten raus. Zieht eine Linie: Was bleibt über der Linie? Eine Aktivität ohne Schritt darüber heißt: das fällt heute weg.</li>
+  </ol>
+  <p>Genau so funktioniert der Schnitt bei eurem Produkt: Das Ziel bestimmt, was über die Linie kommt.</p>
+
+  <h2 id="kano">Was zuerst? Das Kano-Modell</h2>
+  <p>Beim Schneiden hilft eine Einteilung nach Noriaki Kano:</p>
+  <ul>
+    <li><strong>Basismerkmale</strong> – fehlen sie, sind Menschen unzufrieden; sind sie da, merkt es niemand.</li>
+    <li><strong>Leistungsmerkmale</strong> – je mehr, desto zufriedener.</li>
+    <li><strong>Begeisterungsmerkmale</strong> – erwartet niemand; sind sie da, begeistern sie.</li>
+  </ul>
+  <p>In den ersten Slice gehören alle Basismerkmale und <strong>ein</strong> Begeisterungsmerkmal. Das Begeisterungsmerkmal ist oft der Höhepunkt eurer Usage Story.</p>
+
+  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Aktivität</th><th>Bestellen anstoßen</th><th>Getränk wählen</th><th>Zug angeben</th><th>Bezahlen</th><th>Abholen</th></tr></thead>
+      <tbody>
+        <tr><th>Slice 1 · Bestellen im Gehen klappt</th><td>QR-Code scannen</td><td>eins aus drei</td><td>Uhrzeit eintippen · „Fertig 7:31“ (Begeisterung)</td><td>bar an der Ausgabe</td><td>Abholnummer am Bildschirm</td></tr>
+        <tr><th>Slice 2 · Abholen, ohne anzuhalten</th><td>Link in den Favoriten</td><td>Größe, Milch</td><td>Zug aus der Liste</td><td>online zahlen</td><td>Becher mit Zug beschriftet</td></tr>
+        <tr><th>Später · Stammgäste bleiben</th><td>Stammbestellung mit einem Tipp</td><td>Saisongetränke</td><td>Verspätung automatisch</td><td>Kaffee-Abo</td><td>Abholfach</td></tr>
+        <tr><th>Fehlerfälle</th><td>Code nicht lesbar</td><td>ausverkauft</td><td>Zug fährt zu früh</td><td>nicht abgeholt</td><td>falscher Becher</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Für die Bar gibt es eine zweite Reihe Aktivitäten: Bestellung sehen → zubereiten → bereitstellen. Auch sie gehört auf die Map – die Barista ist ebenfalls Nutzerin.</p>
+  <p>Slice 1 ist ein Lern-Slice: Er prüft, ob Bestellen im Gehen funktioniert, bevor ihr Online-Zahlung baut. Bezahlt wird bar an der Ausgabe – nicht schön, aber genug, um zu lernen. Basismerkmal: Die Bestellung kommt richtig an. Begeisterung: „Fertig 7:31. Dein Zug fährt 7:38.“</p>
+
+  <h2 id="vorgehen">So geht ihr vor (120 min)</h2>
+  <ol>
+    <li><strong>Input und Warm-up (30 min).</strong></li>
+    <li><strong>Ablauf (25 min, allein in Miro):</strong> Erzählt den Ablauf mit eurer Idee Schritt für Schritt, als Verben. Erst breit („einen Kilometer breit, einen Zentimeter tief“), dann Aktivitäten darüber.</li>
+    <li><strong>Erkunden (20 min):</strong> Unter jeden Schritt: Was genau? Welche Alternative? Was macht es besonders? Was kann schiefgehen? Gibt es eine zweite Nutzergruppe, die mitspielt?</li>
+    <li><strong>Kano und Schnitt (20 min):</strong> Stickies einordnen, dann die Linie für Slice 1 ziehen und benennen: Welches Outcome erreicht er?</li>
+    <li><strong>Dreierrunde (15 min):</strong> Die anderen gehen Slice 1 von links nach rechts durch. Kommt man ans Ziel?</li>
+    <li><strong>Festhalten (10 min):</strong> <code>docs/STORY-MAP.md</code> mit Link aufs Board; Slice 1 als Stichworte in Abschnitt 5 des Briefs.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/STORY-MAP.md"># Story Map — [Produkt]
+
+Stand: [Datum] · Miro: [Link zum Board]
+
+Backbone: [Aktivität] → [Aktivität] → [Aktivität] → [...]
+
+## Slice 1 · [Outcome, das er erreicht]
+- [Aktivität]: [Schritte über der Linie]
+- [...]
+Basismerkmale: [...] · Begeisterung: [...]
+
+## Slice 2 · [Outcome]
+- [...]
+
+## Später
+- [...]
+
+## Fehlerfälle und offene Fragen
+- [...]</Prompt>
+
+  <Callout type="tip" title="Claude als Prüfer der Fehlerwege">
+    <p>Claude findet gut, was in einer Map fehlt – vor allem Fehlerfälle. Aber erst, wenn eure Map steht: Sonst übernehmt ihr seine Struktur.</p>
+  </Callout>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="story-map" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Was ist euer „bar an der Ausgabe“ – die unschöne, aber ausreichende Abkürzung, mit der Slice 1 schon lernt, ohne alles zu bauen?</p>
+  <p class="small muted">Nach Jeff Patton, <em>User Story Mapping</em> (O’Reilly 2014); Kano-Modell nach Noriaki Kano (1984).</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/experiment', t: 'Experiment-Karte & Origin Story' }} next={{ href: '/innolab/methoden/usage-story', t: 'Usage Story' }} />
+</Layout>
