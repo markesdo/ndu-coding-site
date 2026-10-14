@@ -26,6 +26,7 @@ const zeigeWie = Astro.url.pathname.replace(/\/$/, '') !== '/prompts-ausfuellen'
 {note && <p class="prompt-note"><Info size={14} aria-hidden="true" /><span><strong>Hinweis</strong> {note}</span></p>}
 <script>
   import { lueckeNachEingabe } from './luecken-eingabe';
+  import { kopiereText, kopierMeldung } from '../lib/kopieren';
 
   // Lücken direkt in der Karte ausfüllen: Klick markiert den Platzhalter, Tippen ersetzt ihn.
   // Kopieren liest weiter innerText des <pre> – Eingaben sind damit automatisch dabei.
@@ -67,10 +68,12 @@ const zeigeWie = Astro.url.pathname.replace(/\/$/, '') !== '/prompts-ausfuellen'
       // Eine gerade bearbeitete Lücke erst abschließen (Safari fokussiert Buttons beim Klick nicht).
       const aktiv = document.activeElement as HTMLElement | null;
       if (aktiv?.matches('mark.luecke')) aktiv.blur();
-      const txt = btn.closest('.prompt')?.querySelector('pre')?.innerText ?? '';
-      try { await navigator.clipboard.writeText(txt.trim()); } catch {}
-      text.textContent = 'Kopiert'; btn.classList.add('done');
-      setTimeout(() => { text.textContent = 'Kopieren'; btn.classList.remove('done'); }, 1800);
+      const pre = btn.closest('.prompt')?.querySelector('pre');
+      const ergebnis = await kopiereText((pre?.innerText ?? '').trim(), pre);
+      text.textContent = kopierMeldung(ergebnis, navigator.platform);
+      btn.classList.toggle('done', ergebnis === 'kopiert');
+      clearTimeout(Number(btn.dataset.timer));
+      btn.dataset.timer = String(setTimeout(() => { text.textContent = 'Kopieren'; btn.classList.remove('done'); }, 1800));
     });
   });
 </script>

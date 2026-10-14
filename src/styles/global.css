@@ -100,6 +100,19 @@ code, kbd { hyphens: manual; }
 code { font-family: var(--mono); font-size: .9em; background: var(--code-bg); padding: .1em .35em; border-radius: 4px; overflow-wrap: anywhere; } /* lange IDs/Pfade brechen am Handy um statt die Seite zu verbreitern */
 pre { background: var(--code-bg); padding: 1rem; border-radius: var(--radius); overflow-x: auto; }
 pre code { background: none; padding: 0; }
+/* Kopierbare Inline-Werte: Klick auf den Wert markiert ihn ganz, der Knopf daneben kopiert. */
+[data-kopieren] { user-select: all; -webkit-user-select: all; }
+.kopierbar { white-space: nowrap; }
+.kopierbar > code, .kopierbar > a { white-space: normal; overflow-wrap: anywhere; }
+.kopieren-btn { display: inline-grid; place-items: center; vertical-align: middle; position: relative; width: 1.5rem; height: 1.5rem; margin-left: .15rem; padding: 0; border: 0; border-radius: 4px; background: none; color: var(--muted); cursor: pointer; }
+.kopieren-btn::after { content: ""; position: absolute; inset: -.25rem; } /* größere Trefferfläche, ohne die Zeile höher zu machen */
+.kopieren-btn:hover, .kopieren-btn:focus-visible { color: var(--accent-ink); background: var(--code-bg); }
+.kopieren-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.kopieren-btn .ico-done { display: none; }
+.kopieren-btn.done { color: var(--green); }
+.kopieren-btn.done .ico-copy { display: none; }
+.kopieren-btn.done .ico-done { display: block; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.5rem; font-size: .95rem; font-variant-numeric: tabular-nums; }
 th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }

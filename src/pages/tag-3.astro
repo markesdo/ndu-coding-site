@@ -224,7 +224,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
     <table>
       <thead><tr><th scope="col">Was</th><th scope="col">Link</th></tr></thead>
       <tbody>
-        <tr><td>Repo (zum Klonen)</td><td><a href={TEAM_REPO} target="_blank" rel="noopener noreferrer">{TEAM_REPO.replace('https://', '')}</a></td></tr>
+        <tr><td>Repo (zum Klonen)</td><td><a href={TEAM_REPO} target="_blank" rel="noopener noreferrer" data-kopieren data-label="Repo-Adresse">{TEAM_REPO}</a></td></tr>
         <tr><td>Live-App</td><td><a href={TEAM_APP} target="_blank" rel="noopener noreferrer">{TEAM_APP.replace('https://', '')}</a></td></tr>
         <tr><td>Issues in Linear</td><td><a href={TEAM_LINEAR} target="_blank" rel="noopener noreferrer">Projekt „Leihbar“</a> (erst nach dem Beitreten, Schritte unten)</td></tr>
         <tr><td>Dieselben Issues ohne Linear</td><td><a href={`${TEAM_REPO}/issues`} target="_blank" rel="noopener noreferrer">GitHub-Issues im Repo</a></td></tr>
@@ -234,7 +234,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <ol class="steps">
     <li><strong>Issues aussuchen</strong> Lest unten unter <a href="#uebung-10-b">b) Bauen</a> die fünf Issues A bis E – jedes mit Schwierigkeit – und sucht euch je eines aus. Zwei bleiben liegen, wie in jedem echten Backlog. Davon hängt ab, wer gleich geheime Werte braucht.</li>
     <li><strong>Einladung</strong> Die Einladung zu <code>leihbar-team</code> kommt per E-Mail von GitHub – annehmen.</li>
-    <li><strong>Auf den Mac holen – in einem neuen Fenster</strong> Das Team-Repo kommt in einen eigenen Ordner, getrennt von eurem eigenen Projekt. <a href="#team-klonen">Schritte mit Bildern</a> gleich nach dieser Liste. Danach im Terminal dieses neuen Fensters <code>npm install</code> und <code>cp .env.example .env.local</code> – die Supabase-Werte stehen schon drin, sie sind öffentlich. Geheime Werte bekommt nur, wer sie braucht: Wer LEI-5 oder LEI-6 übernimmt, bekommt sie von Markus über einen Link, der nach einem Aufruf verfällt. So läuft es auch in echten Teams. Öffnet den Link nur am Mac und kopiert die Werte gleich in <code>.env.local</code>; zeigt er „abgelaufen“, sagt Markus Bescheid. Dann <code>claude</code> starten – nur in diesem Fenster.</li>
+    <li><strong>Auf den Mac holen – in einem neuen Fenster</strong> Das Team-Repo kommt in einen eigenen Ordner, getrennt von eurem eigenen Projekt. <a href="#team-klonen">Schritte mit Bildern</a> gleich nach dieser Liste. Danach im Terminal dieses neuen Fensters <code data-kopieren>npm install</code> und <code data-kopieren>cp .env.example .env.local</code> – die Supabase-Werte stehen schon drin, sie sind öffentlich. Geheime Werte bekommt nur, wer sie braucht: Wer LEI-5 oder LEI-6 übernimmt, bekommt sie von Markus über einen Link, der nach einem Aufruf verfällt. So läuft es auch in echten Teams. Öffnet den Link nur am Mac und kopiert die Werte gleich in <code>.env.local</code>; zeigt er „abgelaufen“, sagt Markus Bescheid. Dann <code>claude</code> starten – nur in diesem Fenster.</li>
     <li><strong>Linear</strong> Mit Linear verbinden (Schritte unten) und das eigene Issue auf euch zuweisen.</li>
     <li><strong>Nur C (LEI-7): ein zweites Design-System</strong> Euer eigenes vom Vormittag bleibt, wie es ist – für das Team-Repo legt ihr ein neues an. Startet es gleich nach dem Klonen, noch vor Linear: Es liest rund fünf Minuten im Hintergrund, währenddessen verbindet ihr Linear. Schritte mit Bildern <a href="#lei7-design-system">am Ende von a)</a>.</li>
   </ol>
@@ -245,12 +245,12 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   </ol>
   <Schritte id="team-klonen" start={2} steps={[
     { img: bild('lokal/mac-clone-1'), alt: 'VS Code ohne geöffneten Ordner: links Source Control mit den Knöpfen Open Folder und Clone Repository', text: 'Im neuen, leeren Fenster links <strong>Source Control</strong> (1), dann <strong>Clone Repository</strong> (2).', marks: [{ x: 8, y: 135, w: 34, h: 40, n: 1 }, { x: 68, y: 190, w: 259, h: 26, n: 2 }] },
-    { img: bild('lokal/mac-clone-2'), alt: 'Eingabefeld oben: Provide repository URL or pick a repository source', text: `Ins Feld oben die Adresse einfügen und <kbd>Enter</kbd>: <code>${TEAM_REPO}</code>. Nicht <em>Clone from GitHub</em> wählen – dort steht oben euer eigenes Repo, und genau das wollt ihr heute nicht.`, marks: [{ x: 455, y: 45, w: 588, h: 21 }] },
+    { img: bild('lokal/mac-clone-2'), alt: 'Eingabefeld oben: Provide repository URL or pick a repository source', text: `Ins Feld oben die Adresse einfügen und <kbd>Enter</kbd>: <code data-kopieren>${TEAM_REPO}</code>. Nicht <em>Clone from GitHub</em> wählen – dort steht oben euer eigenes Repo, und genau das wollt ihr heute nicht.`, marks: [{ x: 455, y: 45, w: 588, h: 21 }] },
     { img: bild('lokal/mac-clone-6'), alt: 'Ordnerauswahl von macOS, links Documents ausgewählt, unten Select as Repository Destination', text: 'Wohin: denselben Ort wie beim eigenen Repo, also <strong>Documents</strong> oder euren Ordner <code>code</code> (1), dann <strong>Select as Repository Destination</strong> (2). Nicht in den Ordner eures Projekts hinein – VS Code legt selbst einen neuen Ordner <code>leihbar-team</code> an. Ist bei euch iCloud für „Schreibtisch und Dokumente“ an, nehmt euren Ordner <code>code</code> im Benutzerordner – wie beim eigenen Repo.', marks: [{ x: 280, y: 396, w: 115, h: 24, n: 1 }, { x: 988, y: 585, w: 232, h: 27, n: 2 }] },
     { img: bild('lokal/mac-clone-7'), alt: 'Dialog: Would you like to open the repository? mit Open, Open in New Window, Cancel', text: '<strong>Open</strong> – ihr seid ja schon im neuen Fenster. Danach <em>Yes, I trust the authors</em> und bei den empfohlenen Erweiterungen <em>Install</em>, wie beim eigenen Repo.', marks: [{ x: 634, y: 384, w: 228, h: 28 }] },
   ]} />
   <Callout type="info" title="Prüfen, bevor ihr weitermacht">
-    <p>Oben in der Titelleiste von VS Code steht <strong>leihbar-team</strong>. Im Terminal dieses Fensters (<kbd>⌃</kbd><kbd>`</kbd>) zeigt <code>git remote -v</code> die Adresse <code>markusd-ndu/leihbar-team</code>. Steht dort euer eigenes Repo, seid ihr im falschen Fenster – Claude würde sonst in eurem Projekt bauen.</p>
+    <p>Oben in der Titelleiste von VS Code steht <strong>leihbar-team</strong>. Im Terminal dieses Fensters (<kbd>⌃</kbd><kbd>`</kbd>) zeigt <code data-kopieren>git remote -v</code> die Adresse <code>markusd-ndu/leihbar-team</code>. Steht dort euer eigenes Repo, seid ihr im falschen Fenster – Claude würde sonst in eurem Projekt bauen.</p>
     <p>Fragt VS Code oder Claude später beim Push nach einer Anmeldung bei GitHub: mit dem Konto anmelden, an das die Einladung zu <code>leihbar-team</code> ging – wie beim eigenen Repo unter <a href="/setup#lokal-repo">Setup → Repo klonen</a>.</p>
   </Callout>
 
@@ -283,7 +283,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   </details>
   <p>Dann Claude mit Linear verbinden:</p>
   <ol class="steps">
-    <li><strong>Plugin prüfen</strong> Das Setup-Skript hat das Linear-Plugin schon installiert. Fehlt es: <code>/plugin install linear@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
+    <li><strong>Plugin prüfen</strong> Das Setup-Skript hat das Linear-Plugin schon installiert. Fehlt es: <code data-kopieren>/plugin install linear@claude-plugins-official</code> in Claude, dann Claude neu starten.</li>
     <li><strong>Claude verbinden</strong> In Claude <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>, im Browser den Zugriff erlauben – wie bei Supabase und Vercel an Tag 2.</li>
   </ol>
   <p class="small">Klappt die Verbindung nicht in fünf Minuten: Die Issues stehen auch als <a href={`${TEAM_REPO}/issues`} target="_blank" rel="noopener noreferrer">GitHub-Issues im Repo</a>. Dann nehmt ihr die – der Rest bleibt gleich.</p>
@@ -292,7 +292,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Alle außer C können das überspringen. Euer eigenes Design-System vom Vormittag bleibt, wie es ist – für das Team-Repo legt ihr ein zweites an.</p>
   <Schritte id="lei7-design" steps={[
     { img: bild('tag3/cd-1-system'), alt: 'Claude mit geöffnetem Design-System: Auswahl „Sync from GitHub“, „Build from connectors“, „Upload brand files“', text: 'Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> links <em>Design</em> (1), dann die Kachel <em>Design System</em>. Das legt jedes Mal ein neues, leeres System an („Untitled design system“) – euer System vom Vormittag bleibt unberührt. Dann <em>Sync from GitHub</em> (2).', marks: [{ x: 8, y: 220, w: 272, h: 28, n: 1 }, { x: 316, y: 316, w: 377, h: 84, n: 2 }] },
-    { img: bild('tag3/cd-2-repo'), alt: 'Rückfrage „Which GitHub repository should I build the design system from?“ mit den Optionen Public repo und Private repo', text: `<em>Public repo</em> (1), unten ins Feld (2) <code>${TEAM_REPO}</code> und Enter. Das dauert rund fünf Minuten – lasst es laufen.`, marks: [{ x: 322, y: 440, w: 364, h: 84, n: 1 }, { x: 316, y: 670, w: 377, h: 46, n: 2 }] },
+    { img: bild('tag3/cd-2-repo'), alt: 'Rückfrage „Which GitHub repository should I build the design system from?“ mit den Optionen Public repo und Private repo', text: `<em>Public repo</em> (1), unten ins Feld (2) <code data-kopieren>${TEAM_REPO}</code> und Enter. Das dauert rund fünf Minuten – lasst es laufen.`, marks: [{ x: 322, y: 440, w: 364, h: 84, n: 1 }, { x: 316, y: 670, w: 377, h: 46, n: 2 }] },
     { img: bild('tag3/cd-3-ergebnis'), alt: 'Fertiges Design-System „Leihbar“: links die Zusammenfassung, rechts das Markenbuch mit Logo und Farben', text: 'Fertig, wenn links die Zusammenfassung steht (1): Stimmt sie mit Leihbar überein – Farben, Schrift, Buttons? Dann im Chat: „Nenn dieses Design-System Leihbar Team.“ Ändert sich der Name oben links nicht, merkt euch den Namen, der dort steht – genau den wählt ihr in b).', marks: [{ x: 316, y: 300, w: 377, h: 350, n: 1 }] },
   ]} />
 
