@@ -2,7 +2,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { darfKopierbarSein, kopiereText, kopierKuerzel, wertAus } from './kopieren';
+import { darfKopierbarSein, kopiereText, kopierKuerzel, kopierMeldung, wertAus } from './kopieren';
 
 const el = (text: string | null, wert: string | null = null) => ({
   textContent: text,
@@ -37,6 +37,13 @@ describe('kopiereText', () => {
   });
 });
 
+describe('kopierMeldung', () => {
+  it('ehrlich bei Erfolg und Fehler', () => {
+    expect(kopierMeldung('kopiert', 'MacIntel')).toBe('Kopiert');
+    expect(kopierMeldung('markiert', 'Win32')).toBe('Markiert – mit Strg+C kopieren');
+  });
+});
+
 describe('kopierKuerzel', () => {
   it('Mac und Windows', () => {
     expect(kopierKuerzel('MacIntel')).toBe('⌘C');
@@ -56,9 +63,10 @@ describe('kopierbare Werte auf den Seiten', () => {
   };
   sammeln(fileURLToPath(new URL('../pages', import.meta.url)));
   const werte = seiten.flatMap((p) =>
-    [...readFileSync(p, 'utf8').matchAll(/<code data-kopieren(?: data-wert="([^"]*)")?>([^<]*)<\/code>/g)].map((m) => ({
+    // Jedes Element mit data-kopieren, egal in welcher Reihenfolge die Attribute stehen.
+    [...readFileSync(p, 'utf8').matchAll(/<(\w+)\b([^>]*\bdata-kopieren\b[^>]*)>([^<]*)<\/\1>/g)].map((m) => ({
       p,
-      w: (m[1] ?? m[2]).replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/\\'/g, "'"),
+      w: (m[2].match(/data-wert="([^"]*)"/)?.[1] ?? m[3]).replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/\\'/g, "'"),
     })),
   );
 

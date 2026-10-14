@@ -27,9 +27,16 @@ export async function kopiereText(text: string, zumMarkieren?: Node | null): Pro
       const sel = getSelection();
       sel?.removeAllRanges();
       sel?.addRange(r);
+      // Ältere Kopier-Funktion auf der Markierung – klappt oft auch ohne HTTPS oder Clipboard-Recht.
+      try { if (document.execCommand('copy')) return 'kopiert'; } catch {}
     }
     return 'markiert';
   }
+}
+
+/** Rückmeldung nach dem Kopieren – dieselbe für Prompt-Karten und Inline-Werte. */
+export function kopierMeldung(ergebnis: KopierErgebnis, plattform: string): string {
+  return ergebnis === 'kopiert' ? 'Kopiert' : `Markiert – mit ${kopierKuerzel(plattform)} kopieren`;
 }
 
 /** Tastenkürzel zum Kopieren, passend zum Gerät – für die Meldung, wenn nur markiert wurde. */

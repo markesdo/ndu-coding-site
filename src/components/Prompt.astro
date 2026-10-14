@@ -26,7 +26,7 @@ const zeigeWie = Astro.url.pathname.replace(/\/$/, '') !== '/prompts-ausfuellen'
 {note && <p class="prompt-note"><Info size={14} aria-hidden="true" /><span><strong>Hinweis</strong> {note}</span></p>}
 <script>
   import { lueckeNachEingabe } from './luecken-eingabe';
-  import { kopiereText, kopierKuerzel } from '../lib/kopieren';
+  import { kopiereText, kopierMeldung } from '../lib/kopieren';
 
   // Lücken direkt in der Karte ausfüllen: Klick markiert den Platzhalter, Tippen ersetzt ihn.
   // Kopieren liest weiter innerText des <pre> – Eingaben sind damit automatisch dabei.
@@ -70,9 +70,10 @@ const zeigeWie = Astro.url.pathname.replace(/\/$/, '') !== '/prompts-ausfuellen'
       if (aktiv?.matches('mark.luecke')) aktiv.blur();
       const pre = btn.closest('.prompt')?.querySelector('pre');
       const ergebnis = await kopiereText((pre?.innerText ?? '').trim(), pre);
-      text.textContent = ergebnis === 'kopiert' ? 'Kopiert' : `Markiert – ${kopierKuerzel(navigator.platform)}`;
+      text.textContent = kopierMeldung(ergebnis, navigator.platform);
       btn.classList.toggle('done', ergebnis === 'kopiert');
-      setTimeout(() => { text.textContent = 'Kopieren'; btn.classList.remove('done'); }, 1800);
+      clearTimeout(Number(btn.dataset.timer));
+      btn.dataset.timer = String(setTimeout(() => { text.textContent = 'Kopieren'; btn.classList.remove('done'); }, 1800));
     });
   });
 </script>

@@ -103,7 +103,7 @@ pre code { background: none; padding: 0; }
 /* Kopierbare Inline-Werte: Klick auf den Wert markiert ihn ganz, der Knopf daneben kopiert. */
 [data-kopieren] { user-select: all; -webkit-user-select: all; }
 .kopierbar { white-space: nowrap; }
-.kopierbar > code { white-space: normal; }
+.kopierbar > code, .kopierbar > a { white-space: normal; overflow-wrap: anywhere; }
 .kopieren-btn { display: inline-grid; place-items: center; vertical-align: middle; position: relative; width: 1.5rem; height: 1.5rem; margin-left: .15rem; padding: 0; border: 0; border-radius: 4px; background: none; color: var(--muted); cursor: pointer; }
 .kopieren-btn::after { content: ""; position: absolute; inset: -.25rem; } /* größere Trefferfläche, ohne die Zeile höher zu machen */
 .kopieren-btn:hover, .kopieren-btn:focus-visible { color: var(--accent-ink); background: var(--code-bg); }
