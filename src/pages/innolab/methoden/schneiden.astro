@@ -25,7 +25,7 @@ import FooterNav from '../../../components/FooterNav.astro';
   <p>In einem Unternehmen werdet ihr fast sicher auf <strong>Story Points</strong> und <strong>Planning Poker</strong> treffen: Die Developers schätzen die Größe eines Issues relativ zu einem Referenz-Issue, auf einer Skala wie 1, 2, 3, 5, 8, und decken ihre Zahl gleichzeitig auf. Liegen die Zahlen weit auseinander, reden sie darüber – und genau dieses Gespräch ist der eigentliche Wert: Es zeigt, wo ein Issue verschieden verstanden wird. Viele Teams zählen inzwischen nur noch Issues statt Punkte (<em>#NoEstimates</em>). Das funktioniert, wenn alle Issues ähnlich klein sind – und dahin bringt euch das Schneiden.</p>
 
   <h2 id="plan-check">Der Plan-Check mit Claude</h2>
-  <p>Claude Code hat einen <strong>Plan-Modus</strong>: Claude liest, überlegt und schlägt einen Plan vor, ändert aber nichts. Ihr schaltet ihn mit <kbd>Shift</kbd><kbd>Tab</kbd> ein, bis unten „plan mode on“ steht (<a href="/konzepte/coding-agent">Coding-Agent</a>). Für jedes Issue lasst ihr euch einen Plan machen und beurteilt nur drei Dinge:</p>
+  <p>Claude Code hat einen <strong>Plan-Modus</strong>: Claude liest, überlegt und schlägt einen Plan vor, ändert aber nichts. Ihr schaltet ihn mit <kbd>Shift</kbd><kbd>Tab</kbd> ein, bis unten „plan mode on“ steht, und danach genauso wieder aus, bis „auto mode on“ dasteht (<a href="/konzepte/coding-agent">Coding-Agent</a>). Für jedes Issue lasst ihr euch einen Plan machen und beurteilt nur drei Dinge:</p>
   <div style="overflow-x:auto">
     <table>
       <thead><tr><th>Ihr seht im Plan …</th><th>Dann …</th></tr></thead>
@@ -36,7 +36,7 @@ import FooterNav from '../../../components/FooterNav.astro';
       </tbody>
     </table>
   </div>
-  <Prompt label="Plan-Check · Claude Code im Plan-Modus">Lies Issue [Kennung] über den Linear-MCP und docs/PRODUKT.md. Mach einen Plan, wie du das Issue umsetzen würdest – baue nichts. Schreib den Plan so, dass ihn jemand ohne Programmierkenntnisse versteht: höchstens sieben Schritte. Sag danach in einem Satz, ob das in einen Durchgang passt, und nenn alles, was du annehmen müsstest, weil es im Issue nicht steht.</Prompt>
+  <Prompt label="Plan-Check · Claude Code im Plan-Modus">Lies Issue [Kennung] über den Linear-MCP und docs/PRODUKT.md. Mach einen Plan, wie du das Issue umsetzen würdest – baue nichts. Schreib den Plan so, dass ihn jemand ohne Programmierkenntnisse versteht: höchstens sieben Schritte. Sag danach in einem Satz, ob das in einen Durchgang passt, und nenn alles, was du annehmen müsstest, weil es im Issue nicht steht. Ändere das Issue nicht.</Prompt>
   <Callout type="info" title="Claude macht den Plan, ihr entscheidet">
     <p>Ob ein Issue zu groß ist, entscheidet ihr am Plan, nicht Claude mit einem Satz. Und was Claude annehmen müsste, ist eure Entscheidung als Product Owner – schreibt sie ins Issue, statt Claude raten zu lassen.</p>
   </Callout>
