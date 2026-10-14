@@ -179,7 +179,21 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Prüft selbst im Browser, dann wie in Übung 8: Pull Request, grüner Haken, zusammenführen.</p>
 
   <h3 id="uebung-9-f">f) Entwurf und Ergebnis vergleichen (10 min)</h3>
-  <p>Legt den Prototyp und die gebaute Seite nebeneinander, am Handy und am Laptop. Wo sieht das Ergebnis anders aus als der Entwurf? Was hat Claude Code dazuerfunden, weil der Entwurf es nicht gezeigt hat? Schreibt einen Satz dazu in <code>docs/REFLEXION.md</code>: Was würdet ihr beim nächsten Mal ins Issue schreiben? Und behaltet beide Bilder – sie sind euer Vorher-Nachher für die Demo.</p>
+  <p>Jetzt seht ihr, was zwischen Entwurf und Code verloren gegangen ist – oder dazugekommen. Ihr braucht zwei Fenster nebeneinander:</p>
+  <ol class="steps">
+    <li><strong>Entwurf öffnen</strong> In Claude Design oben rechts das Dreieck und den Handy-Prototyp wählen, wie im Nutzertest.</li>
+    <li><strong>Gebaute Seite öffnen</strong> Den Link zur Vercel-Vorschau aus eurem Pull Request – oder <code>http://localhost:3000</code>, falls ihr noch nicht gepusht habt. Auf Handy-Größe stellen mit der Geräte-Ansicht in Chrome: Mac <kbd>⌘</kbd> <kbd>⌥</kbd> <kbd>I</kbd>, dann <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>M</kbd>; Windows <kbd>F12</kbd>, dann <kbd>Strg</kbd> <kbd>Umschalt</kbd> <kbd>M</kbd> (<a href="/setup#devtools">so sieht das aus</a>).</li>
+    <li><strong>Nebeneinander legen</strong> Mac: Maus auf den grünen Knopf oben links im Fenster und „links“ bzw. „rechts“ anordnen wählen. Windows: <kbd>Win</kbd> + <kbd>←</kbd> und <kbd>Win</kbd> + <kbd>→</kbd>.</li>
+    <li><strong>Vergleichen</strong> Geht den Screen von oben nach unten durch: Was sieht anders aus – Farben, Abstände, Texte, Reihenfolge? Was hat Claude Code dazuerfunden, weil der Entwurf es nicht gezeigt hat – leere Liste, Laden, Fehler, was beim Klick passiert? Was fehlt? Danach dasselbe in Laptop-Breite (Geräte-Ansicht aus).</li>
+    <li><strong>Kleines reparieren lassen</strong> Stört euch ein Unterschied, macht von beiden Fenstern einen Screenshot (<a href="/setup#lokal-screenshots">so geht's</a>) und gebt sie Claude Code:</li>
+  </ol>
+  <Prompt label="Unterschiede beheben">Hier sind zwei Screenshots: zuerst mein Entwurf, dann die gebaute Seite. [Screenshots einfügen] Nenn mir die Unterschiede als Liste. Behebe dann nur diese: [welche], auf demselben Branch, mit den Farben und Komponenten, die es im Projekt schon gibt. Push danach, damit die Vorschau im Pull Request aktuell ist.</Prompt>
+  <details class="fallback" id="uebung-9-f-optional">
+    <summary>Optional: Reflexion und Vorher-Nachher-Bilder für die Demo</summary>
+    <p><strong>Bilder:</strong> Speichert die beiden Screenshots von oben – Entwurf und Ergebnis am Handy. In der Demo zeigt ihr sie nebeneinander. Ohne Bilder geht es auch: dann beide Fenster live nebeneinander zeigen.</p>
+    <p><strong>Reflexion:</strong> Ein Satz für euch selbst, was ihr beim nächsten Mal von Anfang an ins Issue schreibt:</p>
+    <Prompt label="Reflexion ergänzen">Häng an docs/REFLEXION.md einen Satz an: Beim nächsten Entwurf schreibe ich gleich ins Issue, [was Claude Code diesmal erfinden musste].</Prompt>
+  </details>
 
   <hr />
   <h2 id="konzept-9">Konzept 9 · So wird 2026 gearbeitet <span class="pill konzept">30 min</span></h2>
