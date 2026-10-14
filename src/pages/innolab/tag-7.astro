@@ -7,15 +7,15 @@ import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="Tag 7 · Präsentation">
-  <span class="eyebrow">Innolab · Tag 7 · Donnerstag, 7. Jänner 2027 · 09:00–13:00</span>
+  <span class="eyebrow">Innolab · Tag 7 · Donnerstag, 7. Jänner 2027 · 09:00–13:00 · online</span>
   <h1>Tag 7 · Präsentation</h1>
-  <p class="lead">Das finale Sprint-Review: Ihr zeigt euer Produkt Menschen, die es nicht kennen – mit Geschichte, Live-Demo und Belegen. Danach schaut ihr gemeinsam zurück, welche Methoden ihr mitnehmt.</p>
+  <p class="lead">Online, im Videocall. Das finale Sprint-Review: Ihr zeigt euer Produkt Menschen, die es nicht kennen – mit Geschichte, Live-Demo und Belegen. Danach schaut ihr gemeinsam zurück, welche Methoden ihr mitnehmt.</p>
   <Orientierung seite="innolab/tag-7" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2027-01-07">
-    <Block time="09:00–09:30" type="uebung" title="Technikcheck" href="#technik">Handy spiegeln, Produktions-URL, Plan B.</Block>
-    <Block time="09:30–09:40" type="plenum" title="Begrüßung" href="#praesentationen">Die Gäste kommen; worum es im Innolab ging.</Block>
+    <Block time="09:00–09:30" type="uebung" title="Technikcheck" href="#technik">Handy-Bildschirm teilen, Produktions-URL, Plan B.</Block>
+    <Block time="09:30–09:40" type="plenum" title="Begrüßung" href="#praesentationen">Die Gäste kommen in den Call; worum es im Innolab ging.</Block>
     <Block time="09:40–10:55" type="plenum" title="Präsentationen" href="#praesentationen">Drei Produkte, je 12 Minuten Pitch, 10 Minuten Fragen, 3 Minuten Wechsel.</Block>
     <Block time="10:55–11:15" type="pause" title="Pause" />
     <Block time="11:15–12:15" type="uebung" title="Kurs-Retro" href="#retro">Welche Methode hat euch verändert, welche lasst ihr weg.</Block>
@@ -25,20 +25,22 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <hr />
   <h2 id="technik">Technikcheck</h2>
-  <p>Eine Demo scheitert selten am Produkt, meist an der Technik im Raum. In der ersten halben Stunde spielt jede*r die Demo einmal komplett am Beamer durch, so wie sie im Pitch läuft.</p>
+  <p>Eine Demo scheitert selten am Produkt, meist an der Technik – und online gibt es mehr davon. In der ersten halben Stunde spielt jede*r die Demo einmal komplett im Call durch, so wie sie im Pitch läuft; die anderen sagen, ob sie alles lesen können.</p>
+  <p>So zeigt ihr das Handy: Tretet dem Call ein zweites Mal mit dem Handy bei, schaltet dort Mikrofon und Lautsprecher stumm – sonst pfeift es – und teilt den Bildschirm des Handys. Gesprochen wird über den Laptop.</p>
   <Checklist id="il-tag7-technik" items={[
     'Spätestens am Vortag die App geöffnet – Supabase pausiert kostenlose Projekte nach sieben Tagen ohne Zugriff; ein pausiertes Projekt im Supabase-Dashboard wiederherstellen, das dauert ein paar Minuten',
-    'Handy geladen, Bildschirm gespiegelt und lesbar, Benachrichtigungen aus',
+    'Handy geladen, im Call als zweites Gerät, Mikrofon und Lautsprecher dort stumm, Bildschirm geteilt und lesbar, Benachrichtigungen aus',
     'Produktions-URL geöffnet, nicht localhost; Demo-Daten liegen in der Datenbank',
-    'Plan B: Bildschirmaufnahme der Demo auf dem Laptop, ohne Internet abspielbar',
-    '<code>docs/PITCH.md</code> als Stichwortzettel, nicht als Folien zum Vorlesen',
+    'Plan B: Bildschirmaufnahme der Demo auf dem Laptop, im Call mit Ton teilbar – ausprobiert',
+    'Laptop am Strom, Kabel statt WLAN, wenn es geht; Kamera an',
+    '<code>docs/PITCH.md</code> als Stichwortzettel neben der Kamera, nicht als Folien zum Vorlesen',
   ]} />
 
   <h2 id="praesentationen">Präsentationen</h2>
   <p>Markus und Louis eröffnen kurz, dann präsentiert ihr in geloster Reihenfolge. Jede Präsentation ist das Review von Sprint 2: Ihr zeigt das Inkrement, die Stakeholder fragen nach. Der Aufbau ist der aus <a href="/innolab/methoden/pitch#aufbau">Pitch</a>:</p>
   <ul>
-    <li><strong>12 Minuten Pitch:</strong> Geschichte, Demo, Belege, Modell und nächster Schritt. Zwei Minuten vor Schluss gibt es ein Zeichen; nach 12 Minuten ist Schluss.</li>
-    <li><strong>10 Minuten Fragen:</strong> von Markus, Louis, den Gästen und den anderen beiden aus eurem Team. Wisst ihr eine Antwort nicht, sagt das und nennt, wie ihr es herausfinden würdet – das überzeugt mehr als eine geratene Zahl.</li>
+    <li><strong>12 Minuten Pitch:</strong> Geschichte, Demo, Belege, Modell und nächster Schritt. Zwei Minuten vor Schluss kommt ein Hinweis im Chat; nach 12 Minuten ist Schluss.</li>
+    <li><strong>10 Minuten Fragen:</strong> per Handzeichen im Call, von Markus, Louis, den Gästen und den anderen beiden aus eurem Team. Wisst ihr eine Antwort nicht, sagt das und nennt, wie ihr es herausfinden würdet – das überzeugt mehr als eine geratene Zahl.</li>
     <li><strong>3 Minuten Wechsel.</strong></li>
   </ul>
   <p>Während der anderen Präsentationen schreibt ihr auf, welche Frage ihr stellen wollt – vorbereitet habt ihr je eine pro Produkt. Die Gäste notieren pro Produkt, was sie überzeugt hat und wo sie gezweifelt haben; die Notizen bekommt ihr zum Abschluss.</p>
