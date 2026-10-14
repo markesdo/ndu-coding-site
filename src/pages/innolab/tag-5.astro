@@ -6,55 +6,69 @@ import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
-<Layout title="Tag 5 · Schätzen & Bauen">
+<Layout title="Tag 5 · Bauen & Review">
   <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00</span>
-  <h1>Tag 5 · Schätzen & Bauen</h1>
-  <p class="lead">Der letzte Input-Vormittag: Issues schätzen, „fertig“ um die Messung ergänzen, Sprint 1 planen. Ab 13:00 baut ihr.</p>
+  <h1>Tag 5 · Bauen & Review</h1>
+  <p class="lead">Ein Bautag: am Vormittag Sprint 1 fertig bauen, am Nachmittag mit Menschen testen, Review und Retro, dann Sprint 2 planen – mit einer Störung.</p>
   <Orientierung seite="innolab/tag-5" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-12-12">
-    <Block time="09:00–10:00" type="uebung" title="Planning Poker über Kreuz" href="/innolab/methoden/schaetzen">Referenz, Skala, Achter teilen.</Block>
-    <Block time="10:00–10:15" type="pause" title="Pause" />
-    <Block time="10:15–10:45" type="uebung" title="Definition of Done & Spezifikation" href="/innolab/methoden/sprint#dod">Das Mess-Ereignis, Regeln für fremde Issues.</Block>
-    <Block time="10:45–11:30" type="uebung" title="Sprint-1-Planning" href="/innolab/methoden/sprint#planning">Sprint-Ziel, Auswahl, wer baut was.</Block>
-    <Block time="11:30–12:00" type="plenum" title="Toolbox-Rückblick" href="#toolbox">Was ihr ab jetzt in der Hand habt.</Block>
+    <Block time="09:00–09:15" type="plenum" title="Daily" href="/innolab/methoden/sprint#daily">Am Sprint-Ziel entlang, je Produkt.</Block>
+    <Block time="09:15–10:30" type="uebung" title="Bauen · Sprint 1" href="#bauen">Letzte Issues fertig, Belege, Abnahme.</Block>
+    <Block time="10:30–10:45" type="pause" title="Pause" />
+    <Block time="10:45–12:00" type="uebung" title="Bauen · Sprint 1" href="#bauen">Live, am Handy, nach der Definition of Done.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–15:00" type="uebung" title="Bauen · Sprint 1" href="#bauen">Issues mit Claude Code, Belege, Pull Requests.</Block>
-    <Block time="15:00–15:15" type="pause" title="Pause" />
-    <Block time="15:15–16:45" type="uebung" title="Bauen · Sprint 1" href="#bauen">Reviews über Kreuz, Abnahme durch die Product Owner.</Block>
-    <Block time="16:45–17:00" type="plenum" title="Abschluss" href="#abschluss">Stand am Sprint-Ziel, was bis Tag 6 passiert.</Block>
+    <Block time="13:00–13:45" type="uebung" title="Usability-Tests über Kreuz" href="#tests">Drei Runden, ein Produkt pro Runde.</Block>
+    <Block time="13:45–14:15" type="plenum" title="Sprint-1-Review" href="/innolab/methoden/sprint#review">Ziel, Demo, Tests und Messung, Backlog.</Block>
+    <Block time="14:15–14:45" type="uebung" title="Retro: Lightning Decision Jam" href="/innolab/methoden/sprint#retro">Eine Maßnahme für Sprint 2.</Block>
+    <Block time="14:45–15:00" type="pause" title="Pause" />
+    <Block time="15:00–15:30" type="uebung" title="Sprint-2-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, eine Karte, die alles ändert.</Block>
+    <Block time="15:30–16:30" type="uebung" title="Bauen · Sprint 2" href="#bauen">Mit der Maßnahme aus der Retro.</Block>
+    <Block time="16:30–16:50" type="uebung" title="Pitch-Probe" href="#pitch-probe">Zwei Minuten Geschichte, vor den anderen beiden.</Block>
+    <Block time="16:50–17:00" type="plenum" title="Abschluss" href="#abschluss">Was bis Tag 6 passiert.</Block>
   </div>
 
   <hr />
-  <h2 id="faden">Vom Plan zum Inkrement</h2>
-  <p>An Tag 4 habt ihr Backlogs gebaut, die andere verstehen. Heute zeigt sich, ob das stimmt: Beim Schätzen merkt ihr, wo ein Issue verschieden verstanden wird, beim Bauen, wo es Lücken hat. Beides ist kein Fehler, sondern genau das, wofür das Team da ist.</p>
-
-  <h2 id="methoden">Die Methoden von heute</h2>
-  <ul>
-    <li><a href="/innolab/methoden/schaetzen">Schätzen</a> – relativ, über Kreuz, mit Planning Poker</li>
-    <li><a href="/innolab/methoden/sprint">Sprint</a> – Definition of Done mit Messung, Issue als Spezifikation, Planning, Daily, Review, Retro</li>
-  </ul>
-
-  <h2 id="toolbox">Toolbox-Rückblick</h2>
-  <p>Ab heute Mittag kommt nur noch eine Methode dazu: der Pitch an Tag 6. Geht gemeinsam die <a href="/innolab/methoden">Toolbox</a> durch: Welche Methode hat euch am meisten verändert, welche würdet ihr beim nächsten Produkt weglassen – und warum? Die Antworten braucht ihr an Tag 7 für die Kurs-Retro.</p>
+  <h2 id="faden">Liefern und wieder lernen</h2>
+  <p>Heute kommt keine neue Methode dazu. Was ihr gebaut habt, testet ihr mit Menschen, die es nicht kennen – mit derselben Methode wie den Prototyp an Tag 3. Was die Tests zeigen, ändert im Review euren Backlog. Das ist der Unterschied zwischen einem Team, das Issues abarbeitet, und einem, das ein Produkt entwickelt.</p>
 
   <h2 id="bauen">Bauen</h2>
-  <p>Jede*r arbeitet an Issues aus allen drei Produkten, so wie im Planning verteilt. Der Takt ist der aus dem Coding-Kurs – Issue holen, bauen lassen, Belege prüfen, Pull Request –, mit den Team-Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>.</p>
-  <Callout type="tip" title="Das Mess-Issue zuerst">
-    <p>Baut das Issue, das das Mess-Ereignis einführt, als eines der ersten. Jedes Issue danach prüft ihr gleich mit: Kommt das Ereignis nach dem Merge noch an?</p>
+  <p>Jede*r arbeitet an Issues aus allen drei Produkten, so wie im Planning verteilt, nach den Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>. Bis 12:00 ist fertig, was in Sprint 1 fertig wird: Was dann noch offen ist, geht zurück in den Backlog und ins Review.</p>
+
+  <h2 id="tests">Usability-Tests über Kreuz</h2>
+  <p>Ihr testet wie beim <a href="/innolab/methoden/prototyp-spike#usability-test">Prototyp-Spike</a> – Aufgabe als Ziel, laut denken, nicht helfen –, diesmal mit dem Inkrement, live am Handy. Testpersonen sind Menschen, die euer Produkt nicht kennen und möglichst zur Zielgruppe passen. An einem Samstag kommen sie nicht von selbst vorbei: Jede*r Product Owner bringt zwei mit oder verabredet sie für einen Videoanruf mit geteiltem Bildschirm.</p>
+  <ul>
+    <li><strong>Drei Runden à 15 Minuten,</strong> ein Produkt pro Runde, je zwei Testpersonen. Die übrigen drei bis zur Präsentation testet ihr selbst – dann seid ihr wie an Tag 3 bei fünf.</li>
+    <li><strong>Über Kreuz:</strong> Der Product Owner moderiert nicht – wer das eigene Produkt erklärt, hilft zu schnell und verteidigt es. Eine andere Person aus dem Team moderiert, der Product Owner beobachtet und schreibt mit, die dritte notiert Zeiten und wo die Person hängen bleibt.</li>
+    <li><strong>Befunde</strong> kommen mit fortlaufenden IDs in <code>docs/TESTS.md</code> (wer bei U3 aufgehört hat, macht mit U4 weiter) und gehen ins Review.</li>
+  </ul>
+
+  <h2 id="stoerfall">Sprint-2-Planning mit Störfall</h2>
+  <p>Ihr plant Sprint 2 wie Sprint 1 (<a href="/innolab/methoden/sprint#planning">Sprint Planning</a>), mit zwei Unterschieden: Ihr habt jetzt einen Erfahrungswert – nicht mehr Issues, als in Sprint 1 fertig wurden. Und nach dem ersten Entwurf zieht jeder Product Owner eine Störfall-Karte. Solche Karten gibt es in jedem echten Projekt:</p>
+  <ul>
+    <li>Ein Stakeholder will eine Funktion, die ihr im Entscheidungslog ausgeschlossen habt.</li>
+    <li>Eine Person aus dem Team fällt für die Hälfte des Sprints aus.</li>
+    <li>Vor dem ersten Speichern von Daten muss ein Datenschutzhinweis stehen – ab sofort.</li>
+    <li>Ein Testbefund von heute stellt euer Sprint-Ziel in Frage.</li>
+  </ul>
+  <p>Als Product Owner entscheidet ihr: annehmen und etwas anderes dafür herausnehmen, eine kleinere Variante, oder begründet ablehnen. Was nicht geht: alles zusätzlich machen. Die Entscheidung steht mit Begründung im Entscheidungslog, das Sprint-Ziel bleibt ein Satz.</p>
+  <Callout type="info" title="Wofür die Störung gut ist">
+    <p>Beim Lego hat der Bürgermeister mitten im Sprint etwas Neues gewollt. Heute kommt die Störung im Planning – dort, wo ein Product Owner sie abfangen kann. Genau das ist eure Rolle: Nein sagen können, mit einem Grund.</p>
   </Callout>
+  <p>Sprint 2 läuft bis zur Präsentation am 7. Jänner, über die Feiertage. Wer zwischen 24. Dezember und 6. Jänner weniger Zeit hat, sagt das im Planning, und ihr nehmt weniger Issues.</p>
+
+  <h2 id="pitch-probe">Pitch-Probe</h2>
+  <p>Jede*r erzählt den Teil „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten. Die anderen beiden stoppen die Zeit und sagen, an welcher Stelle sie ausgestiegen sind (<a href="/innolab/methoden/pitch#aufbau">Pitch</a>).</p>
 
   <h2 id="abschluss">Abschluss & bis Tag 6</h2>
-  <p>Jede*r sagt in einem Satz, wie nah das eigene Produkt am Sprint-Ziel ist.</p>
-  <Checklist id="il-tag5-hausaufgabe" items={[
-    'Definition of Done in <code>docs/TEAM.md</code> um das Mess-Ereignis ergänzt',
-    '<code>docs/SPRINTS.md</code> mit Sprint-Ziel und Auswahl für Sprint 1',
-    'Weiterbauen bis zum 19. Dezember – jedes Issue nach der Definition of Done',
+  <Checklist id="il-tag5-sprint2" items={[
+    'Review und Retro von Sprint 1 in <code>docs/SPRINTS.md</code>, Testbefunde in <code>docs/TESTS.md</code>',
+    'Sprint 2 geplant, Label <code>Sprint 2</code> in Linear, Störfall-Entscheidung im Entscheidungslog',
+    'Belege aus Review und Tests in <code>docs/PITCH.md</code> ergänzt',
     'Daily an jedem Arbeitstag als Kommentar in Linear',
-    'Offene Pull Requests der anderen geprüft',
   ]} />
-  <p><a href="/innolab/tag-6">Tag 6</a> beginnt mit dem Daily; danach testet ihr und schließt Sprint 1 mit Review und Retro ab.</p>
+  <p><a href="/innolab/tag-6">Tag 6</a> ist ein Bau-Vormittag.</p>
 
-  <FooterNav prev={{ href: '/innolab/tag-4', t: 'Tag 4 · Scrum im Team' }} next={{ href: '/innolab/methoden/schaetzen', t: 'Schätzen' }} />
+  <FooterNav prev={{ href: '/innolab/tag-4', t: 'Tag 4 · Scrum im Team' }} next={{ href: '/innolab/tag-6', t: 'Tag 6 · Bauen' }} />
 </Layout>

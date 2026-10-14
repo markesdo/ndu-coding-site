@@ -41,7 +41,7 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'team', name: 'Team-Vereinbarung mit Definition of Done', lebtIn: ['repo'], pfad: 'docs/TEAM.md' },
   { id: 'issues', name: 'Backlog aus Issues', lebtIn: ['linear'] },
   { id: 'kriterien', name: 'Akzeptanzkriterien', lebtIn: ['linear'] },
-  { id: 'schaetzung', name: 'Schätzung', lebtIn: ['linear'] },
+  { id: 'geschnitten', name: 'Issues geschnitten und quer gelesen', lebtIn: ['linear'] },
   { id: 'inkrement', name: 'Laufendes Inkrement', lebtIn: ['live', 'repo'] },
   { id: 'sprintlog', name: 'Sprint-Protokoll: Ziele, Review, Retro', lebtIn: ['repo'], pfad: 'docs/SPRINTS.md' },
   { id: 'pitch', name: 'Pitch mit Demo und Belegen', lebtIn: ['vortrag', 'repo'], pfad: 'docs/PITCH.md' },
@@ -50,7 +50,7 @@ export const ARTEFAKTE: Artefakt[] = [
 export interface Methode {
   slug: string;
   name: string;
-  /** Kurstag, an dem die Methode eingeführt wird (1–6; Tag 7 ist die Präsentation, dort kommt nichts Neues dazu). */
+  /** Kurstag, an dem die Methode eingeführt wird (1–4; Tag 5 und 6 sind Bautage, Tag 7 die Präsentation – dort kommt nichts Neues dazu). */
   tag: number;
   /** Minuten für Input, Übung und Festhalten zusammen. */
   dauer: number;
@@ -292,7 +292,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Gassmann, Frankenberger, Csik: St. Galler Business Model Navigator',
   },
   {
-    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 260,
+    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 160,
     frage: 'Wie arbeiten wir als ein Team an drei Produkten?',
     braucht: [], ergibt: ['team'],
     pruefliste: [
@@ -319,7 +319,7 @@ export const METHODEN: Methode[] = [
     ki: 'INVEST-Prüfung, Vorschläge zum Schneiden zu großer Issues.',
   },
   {
-    slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 4, dauer: 60,
+    slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 4, dauer: 45,
     frage: 'Woran prüfen wir, dass ein Issue fertig ist?',
     braucht: ['issues', 'brief', 'team'], ergibt: ['kriterien'],
     pruefliste: [
@@ -332,24 +332,24 @@ export const METHODEN: Methode[] = [
     ki: 'Ergänzt Negativ- und Grenzfälle – nachdem ihr den Normalfall geschrieben habt.',
   },
   {
-    slug: 'schaetzen', name: 'Schätzen', tag: 5, dauer: 60,
-    frage: 'Wie groß ist jedes Issue im Verhältnis zu den anderen?',
-    braucht: ['issues', 'kriterien'], ergibt: ['schaetzung'],
+    slug: 'schneiden', name: 'Schneiden statt Schätzen', tag: 4, dauer: 30,
+    frage: 'Passt jedes Issue in einen Durchgang mit Claude – und versteht es das ganze Team?',
+    braucht: ['issues', 'kriterien'], ergibt: ['geschnitten'],
     pruefliste: [
-      'Jedes Issue, das in Sprint 1 kommen könnte, hat eine Schätzung auf der Skala 1, 2, 3, 5, 8.',
-      'Ein Referenz-Issue ist mit einem Kommentar markiert; die anderen sind an ihm gemessen.',
-      'Kein Issue ist mit 8 geschätzt – was so groß ist, ist geteilt.',
-      'Wo die Schätzungen weit auseinanderlagen, steht ein Kommentar mit beiden Runden und dem Geklärten, und die Akzeptanzkriterien sind angepasst.',
+      'Zu jedem Issue für Sprint 1 steht als Kommentar, ob Claudes Plan in einen Durchgang passt.',
+      'Was zu groß war, ist geteilt; jedes Teil ist wieder ein senkrechter Schnitt mit eigenen Akzeptanzkriterien.',
+      'Was im Plan unklar war, steht jetzt in den Akzeptanzkriterien oder unter Nicht im Umfang.',
+      'Jedes Issue haben die beiden anderen gelesen; ihre Fragen sind im Issue beantwortet.',
     ],
-    ki: 'Schätzt nicht mit (das würde ankern) – listet danach Risiken und Unbekanntes.',
+    ki: 'Macht im Plan-Modus einen Plan pro Issue, ohne zu bauen – ihr beurteilt, ob er in einen Durchgang passt.',
   },
   {
-    slug: 'sprint', name: 'Sprint', tag: 5, dauer: 150,
+    slug: 'sprint', name: 'Sprint', tag: 4, dauer: 125,
     frage: 'Was liefern wir in diesem Sprint – und was lernen wir daraus?',
-    braucht: ['schaetzung', 'team', 'brief'], ergibt: ['inkrement', 'sprintlog'],
+    braucht: ['geschnitten', 'team', 'brief'], ergibt: ['inkrement', 'sprintlog'],
     pruefliste: [
       'Jedes Produkt hat ein Sprint-Ziel in einem Satz, der sagt, was danach jemand kann – keine Liste von Issues.',
-      'Die ausgewählten Issues und ihre Punkte stehen da; ab Sprint 2 liegt die Summe nicht über dem, was im Sprint davor fertig wurde.',
+      'Die ausgewählten Issues stehen da; ab Sprint 2 sind es nicht mehr, als im Sprint davor fertig wurden.',
       'Die Definition of Done enthält ein gespeichertes Ereignis, das die Outcome-Metrik aus dem Produkt-Brief misst.',
       'Jedes erledigte Issue hat einen Beleg je Akzeptanzkriterium, den Link zum Pull Request und den Namen der Person, die ihn geprüft hat.',
       'Das Review hält fest, was gezeigt wurde, was Tests und Messung ergeben haben und was sich deshalb am Backlog ändert.',
@@ -358,7 +358,7 @@ export const METHODEN: Methode[] = [
     ki: 'Baut die Issues als Developer im Rahmen der Definition of Done; prüft das Sprint-Ziel.',
   },
   {
-    slug: 'pitch', name: 'Pitch', tag: 6, dauer: 60,
+    slug: 'pitch', name: 'Pitch', tag: 4, dauer: 45,
     frage: 'Überzeugt das Produkt – mit Belegen?',
     braucht: ['brief', 'concept', 'usage', 'origin', 'geschaeftsmodell', 'spike', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
     pruefliste: [
@@ -374,16 +374,16 @@ export const METHODEN: Methode[] = [
   },
 ];
 
-/** Sieben Termine: Tag 1–4 und der Vormittag von Tag 5 Input und Übung, Tag 5 nachmittags Bauen, Tag 6 (halber Tag) Tests,
- *  Review und Planning, dazwischen und danach Bauen zu Hause, Tag 7 (halber Tag) Präsentation.
+/** Sieben Termine: Tag 1–4 Input und Übung, Tag 5 und 6 (halber Tag) nur Bauen – mit den Scrum-Events, aber ohne neue
+ *  Methode –, Tag 7 (halber Tag) Präsentation. Dazwischen arbeitet ihr zu Hause.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). */
 export const TAGE: { n: number; datum: string; titel: string; text: string }[] = [
   { n: 1, datum: '2026-10-16', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
   { n: 2, datum: '2026-10-22', titel: 'Kunde & Erlebnis', text: 'Interviews auswerten, Kundenprofil, Journey Map, Chancen und Ideen.' },
   { n: 3, datum: '2026-11-21', titel: 'Lösung, Story, Prototyp', text: 'Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
-  { n: 4, datum: '2026-11-28', titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Rollen, Events, Backlog, Akzeptanzkriterien.' },
-  { n: 5, datum: '2026-12-12', titel: 'Schätzen & Bauen', text: 'Planning Poker, Definition of Done um die Messung ergänzen, Sprint-Planning, Sprint 1.' },
-  { n: 6, datum: '2026-12-19', titel: 'Tests & Review', text: 'Usability-Tests über Kreuz, Review, Retro, Sprint 2 planen, Pitch vorbereiten.' },
+  { n: 4, datum: '2026-11-28', titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Scrum, Backlog, Akzeptanzkriterien, Sprint-1-Planning, Pitch.' },
+  { n: 5, datum: '2026-12-12', titel: 'Bauen & Review', text: 'Bauen, Usability-Tests über Kreuz, Sprint-1-Review, Retro, Sprint-2-Planning mit Störfall.' },
+  { n: 6, datum: '2026-12-19', titel: 'Bauen', text: 'Daily und Bauen an Sprint 2.' },
   { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Finales Sprint-Review: Pitch, Live-Demo und Belege.' },
 ];
 

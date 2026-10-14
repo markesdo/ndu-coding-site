@@ -51,17 +51,16 @@ import FooterNav from '../../../components/FooterNav.astro';
 Schwelle: mindestens 18 von 20 richtig; nie ein Getränk, das nicht auf der Karte steht.</Prompt>
   <p>Hat euer Produkt keine KI-Funktion, lasst diesen Teil weg.</p>
 
-  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+  <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
   <ol>
     <li><strong>Input (10 min).</strong></li>
     <li><strong>Normalfall (15 min, allein):</strong> für jedes Issue, das in Sprint 1 kommen könnte, ein „Gegeben … wenn … dann …“.</li>
     <li><strong>Fehler- und Grenzfälle (15 min):</strong> Was, wenn die Eingabe leer, falsch, zu spät, doppelt ist? Erst selbst, dann Claude (Prompt unten).</li>
-    <li><strong>Über Kreuz lesen (15 min):</strong> Jede*r liest die Kriterien eines anderen Produkts: Könnte ich das bauen und abnehmen, ohne nachzufragen?</li>
     <li><strong>In Linear (5 min).</strong></li>
   </ol>
   <Prompt label="Grenzfälle · Claude Code">Lies Issue [Kennung] über den Linear-MCP. Ich habe den Normalfall als Akzeptanzkriterium geschrieben. Nenn höchstens drei Fehler- oder Grenzfälle, die fehlen, jeweils als „Gegeben … wenn … dann …“, ohne technische Umsetzung. Ändere das Issue nicht – ich entscheide, was hineinkommt.</Prompt>
-  <Callout type="info" title="Hausaufgabe bis Tag 5">
-    <p>Alle Issues, die in Sprint 1 kommen könnten, haben Akzeptanzkriterien. An Tag 5 schätzt ihr sie – über Kreuz.</p>
+  <Callout type="info" title="Gleich danach">
+    <p>Ob die Kriterien ohne Rückfrage verständlich sind, prüfen die anderen beiden beim Querlesen in <a href="/innolab/methoden/schneiden#quer-lesen">Schneiden statt Schätzen</a>.</p>
   </Callout>
 
   <h2 id="pruefen">Prüfen</h2>
@@ -71,5 +70,5 @@ Schwelle: mindestens 18 von 20 richtig; nie ein Getränk, das nicht auf der Kart
   <p>Was ist bei euch die „Uhrzeit, die schon vorbei ist“ – die Eingabe, an die beim Bauen niemand denkt, die echte Menschen aber sicher machen?</p>
   <p class="small muted">Gegeben/Wenn/Dann nach Behaviour-Driven Development (Dan North).</p>
 
-  <FooterNav prev={{ href: '/innolab/methoden/backlog', t: 'Backlog aus Issues' }} next={{ href: '/innolab/tag-4#abschluss', t: 'Tag 4 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/backlog', t: 'Backlog aus Issues' }} next={{ href: '/innolab/methoden/schneiden', t: 'Schneiden statt Schätzen' }} />
 </Layout>

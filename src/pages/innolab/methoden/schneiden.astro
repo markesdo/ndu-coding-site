@@ -1,0 +1,77 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Schneiden statt Schätzen">
+  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
+  <h1>Schneiden statt Schätzen</h1>
+  <p class="lead">Ob ein Issue klein genug ist und ob alle dasselbe darunter verstehen – ohne dass ihr Aufwand in Stunden oder Punkten vorhersagen müsst.</p>
+  <Orientierung seite="innolab/methoden/schneiden" leiste={false} />
+  <MethodenKarte slug="schneiden" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Vor einem Sprint will ein Team zwei Dinge wissen: Wie viel passt hinein? Und verstehen alle die Issues gleich? Entwicklungsteams beantworten das meist mit <strong>Schätzen</strong>. Das setzt voraus, dass man ein Gefühl dafür hat, wie Software entsteht. Ihr habt dieses Gefühl nicht – und müsst es auch nicht haben, denn bei euch baut Claude. Ihr beantwortet beide Fragen deshalb anders:</p>
+  <ul>
+    <li><strong>Wie viel passt hinein?</strong> Jedes Issue wird so geschnitten, dass es in <em>einen Durchgang</em> mit Claude passt. Dann sind alle Issues ungefähr gleich groß, und ihr zählt einfach Issues.</li>
+    <li><strong>Verstehen alle dasselbe?</strong> Die anderen beiden lesen jedes Issue und fragen, was unklar ist – im Issue, nicht im Gespräch.</li>
+  </ul>
+
+  <h3 id="im-unternehmen">Wie Entwicklungsteams schätzen</h3>
+  <p>In einem Unternehmen werdet ihr fast sicher auf <strong>Story Points</strong> und <strong>Planning Poker</strong> treffen: Die Developers schätzen die Größe eines Issues relativ zu einem Referenz-Issue, auf einer Skala wie 1, 2, 3, 5, 8, und decken ihre Zahl gleichzeitig auf. Liegen die Zahlen weit auseinander, reden sie darüber – und genau dieses Gespräch ist der eigentliche Wert: Es zeigt, wo ein Issue verschieden verstanden wird. Viele Teams zählen inzwischen nur noch Issues statt Punkte (<em>#NoEstimates</em>). Das funktioniert, wenn alle Issues ähnlich klein sind – und dahin bringt euch das Schneiden.</p>
+
+  <h2 id="plan-check">Der Plan-Check mit Claude</h2>
+  <p>Claude Code hat einen <strong>Plan-Modus</strong>: Claude liest, überlegt und schlägt einen Plan vor, ändert aber nichts. Ihr schaltet ihn mit <kbd>Shift</kbd><kbd>Tab</kbd> ein, bis unten „plan mode on“ steht, und danach genauso wieder aus, bis „auto mode on“ dasteht (<a href="/konzepte/coding-agent">Coding-Agent</a>). Für jedes Issue lasst ihr euch einen Plan machen und beurteilt nur drei Dinge:</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Ihr seht im Plan …</th><th>Dann …</th></tr></thead>
+      <tbody>
+        <tr><th>wenige Schritte, alle verständlich</th><td>passt in einen Durchgang</td></tr>
+        <tr><th>viele Schritte, mehrere Seiten oder Tabellen, oder etwas „Externes“ (Schnittstelle, Zahlung, Login)</th><td>zu groß: teilen mit den Mustern aus <a href="/innolab/methoden/backlog#splitting">Backlog aus Issues</a></td></tr>
+        <tr><th>eine Frage von Claude oder eine Annahme, die ihr nicht getroffen habt</th><td>unklar: ins Issue schreiben, was ihr meint</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <Prompt label="Plan-Check · Claude Code im Plan-Modus">Lies Issue [Kennung] über den Linear-MCP und docs/PRODUKT.md. Mach einen Plan, wie du das Issue umsetzen würdest – baue nichts. Schreib den Plan so, dass ihn jemand ohne Programmierkenntnisse versteht: höchstens sieben Schritte. Sag danach in einem Satz, ob das in einen Durchgang passt, und nenn alles, was du annehmen müsstest, weil es im Issue nicht steht. Ändere das Issue nicht.</Prompt>
+  <Callout type="info" title="Claude macht den Plan, ihr entscheidet">
+    <p>Ob ein Issue zu groß ist, entscheidet ihr am Plan, nicht Claude mit einem Satz. Und was Claude annehmen müsste, ist eure Entscheidung als Product Owner – schreibt sie ins Issue, statt Claude raten zu lassen.</p>
+  </Callout>
+
+  <h2 id="quer-lesen">Quer lesen</h2>
+  <p>Danach liest jede*r die Issues der anderen beiden Produkte – ihr seid Developers in allen dreien. Die Frage ist: <em>Könnte ich das bauen lassen und abnehmen, ohne nachzufragen?</em> Was nicht klar ist, kommt als Kommentar ins Issue. Der Product Owner antwortet dort und passt das Issue an.</p>
+
+  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>#</th><th>Issue</th><th>Plan-Check</th><th>Ergebnis</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Getränk wählen und bestellen</td><td>vier Schritte, eine Seite, eine Tabelle</td><td>passt</td></tr>
+        <tr><td>2</td><td>Abfahrtszeit angeben und Fertig-Zeit sehen</td><td>Claude fragt, ob sich die Fertig-Zeit später noch ändern soll</td><td>unklar → „Nicht im Umfang: Fertig-Zeit wird nur beim Bestellen berechnet“</td></tr>
+        <tr><td>3</td><td>Bar sieht Bestellungen nach Abfahrt sortiert</td><td>fünf Schritte</td><td>passt</td></tr>
+        <tr><td>4</td><td>Zug aus einer Liste der nächsten Abfahrten wählen</td><td>Plan beginnt mit „eine Fahrplan-Schnittstelle suchen“</td><td>zu groß → 4a Liste aus einer Tabelle, in die die Bar die Abfahrten der Morgenstunde einträgt; 4b Spike „gibt es Fahrplandaten mit Gleis, die wir abfragen dürfen?“, nicht in Sprint 1</td></tr>
+        <tr><td>5</td><td>Abholnummer am Bildschirm der Ausgabe</td><td>drei Schritte</td><td>passt</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Beim Querlesen fragt ein Developer in Issue 3: „Und wenn zwei denselben Zug haben?“ Die Product Ownerin antwortet: dann zuerst, wer früher bestellt hat – und ergänzt das als Kriterium. Ohne die Frage hätte Claude die Reihenfolge erfunden.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
+  <ol>
+    <li><strong>Input (5 min):</strong> wie Entwicklungsteams schätzen, warum ihr schneidet.</li>
+    <li><strong>Plan-Check (15 min, allein):</strong> für jedes Issue, das in Sprint 1 kommen könnte. Ergebnis als Kommentar ins Issue: „passt“, „geteilt in …“ oder „ergänzt: …“.</li>
+    <li><strong>Quer lesen (10 min):</strong> die Issues der anderen beiden; Fragen als Kommentar. Antworten bis zum Sprint-Planning.</li>
+  </ol>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="schneiden" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Welches eurer Issues hat Claude anders verstanden als ihr – und hätte es ohne Plan-Check gebaut, bevor ihr es merkt?</p>
+  <p class="small muted">Planning Poker nach James Grenning (2002), verbreitet durch Mike Cohn, <em>Agile Estimating and Planning</em> (2005); #NoEstimates nach Woody Zuill und Vasco Duarte.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/akzeptanzkriterien', t: 'Akzeptanzkriterien' }} next={{ href: '/innolab/methoden/sprint', t: 'Sprint' }} />
+</Layout>
