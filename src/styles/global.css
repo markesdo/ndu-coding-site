@@ -256,6 +256,10 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .pill.uebung { background: var(--green-soft); color: var(--green); }
 .pill.pause { background: var(--code-bg); color: var(--muted); }
 .pill.plenum { background: var(--yellow-soft); color: var(--yellow-ink); }
+/* Schwierigkeit eines Issues (Tag 3, Team-Sprint) */
+.pill.stufe-leicht { background: var(--green-soft); color: var(--green); }
+.pill.stufe-mittel { background: var(--yellow-soft); color: var(--yellow-ink); }
+.pill.stufe-schwer { background: var(--purple-soft); color: var(--purple); }
 
 /* Schedule – eine Liste, keine Karten: Haarlinien trennen die Zeilen. Die Uhrzeit ist der Anker beim Überfliegen
    (Monospace, volle Schriftfarbe), die Art steht als schmale Mono-Marke in eigener Spalte, Titel und Beschreibung fluchten. */
