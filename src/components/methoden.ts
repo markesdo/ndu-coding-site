@@ -375,7 +375,7 @@ export const METHODEN: Methode[] = [
 ];
 
 /** Sieben Termine: Tag 1–4 Input und Übung, Tag 5 und 6 (halber Tag) nur Bauen – mit den Scrum-Events, aber ohne neue
- *  Methode –, Tag 7 (halber Tag) Präsentation. Dazwischen arbeitet ihr zu Hause.
+ *  Methode –, Tag 7 (halber Tag) Präsentation. Dazwischen arbeitet ihr zu Hause; gebaut wird bis Tag 6.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). */
 export const TAGE: { n: number; datum: string; titel: string; text: string }[] = [
   { n: 1, datum: '2026-10-16', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
@@ -383,7 +383,7 @@ export const TAGE: { n: number; datum: string; titel: string; text: string }[] =
   { n: 3, datum: '2026-11-21', titel: 'Lösung, Story, Prototyp', text: 'Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
   { n: 4, datum: '2026-11-28', titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Scrum, Backlog, Akzeptanzkriterien, Sprint-1-Planning, Pitch.' },
   { n: 5, datum: '2026-12-12', titel: 'Bauen & Review', text: 'Bauen, Usability-Tests über Kreuz, Sprint-1-Review, Retro, Sprint-2-Planning mit Störfall.' },
-  { n: 6, datum: '2026-12-19', titel: 'Bauen', text: 'Daily und Bauen an Sprint 2.' },
+  { n: 6, datum: '2026-12-19', titel: 'Bauen', text: 'Sprint 2 fertig bauen und abnehmen: Der Prototyp steht.' },
   { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Finales Sprint-Review: Pitch, Live-Demo und Belege.' },
 ];
 

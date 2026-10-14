@@ -15,7 +15,7 @@ import FooterNav from '../../../components/FooterNav.astro';
   <MethodenKarte slug="sprint" />
 
   <h2 id="worum">Worum es geht</h2>
-  <p>Die Events kennt ihr aus <a href="/innolab/methoden/scrum#scrum">Scrum im Team</a> und vom Lego. Hier geht es darum, sie mit echten Produkten zu füllen. Ihr habt zwei Sprints: Sprint 1 vom Planning am 28. November bis zum Review am 12. Dezember; Sprint 2 vom Planning am 12. Dezember bis zur Präsentation am 7. Jänner – über die Feiertage, mit dem Bau-Vormittag am 19. Dezember. Am Ende jedes Sprints steht ein <strong>Inkrement</strong> – live, am Handy nutzbar und nach der Definition of Done fertig.</p>
+  <p>Die Events kennt ihr aus <a href="/innolab/methoden/scrum#scrum">Scrum im Team</a> und vom Lego. Hier geht es darum, sie mit echten Produkten zu füllen. Ihr habt zwei Sprints: Sprint 1 vom Planning am 28. November bis zum Review am 12. Dezember; Sprint 2 vom Planning am 12. Dezember bis zum Ende von Tag 6 am 19. Dezember – eine Woche. Dann ist euer Prototyp fertig; das Review dazu ist die Präsentation am 7. Jänner. Am Ende jedes Sprints steht ein <strong>Inkrement</strong> – live, am Handy nutzbar und nach der Definition of Done fertig.</p>
   <p>Alles, was ihr dabei entscheidet, kommt in <code>docs/SPRINTS.md</code>: Sprint-Ziel, Auswahl, Review, Retro. Daraus holt ihr euch an Tag 7 die Belege für den Pitch.</p>
 
   <h2 id="dod">Definition of Done: Die Messung gehört dazu</h2>
@@ -45,9 +45,9 @@ import FooterNav from '../../../components/FooterNav.astro';
     <li><strong>Was schaffen wir?</strong> Die Issues, die das Ziel erreichen, von oben im Backlog. Weil jedes in einen Durchgang mit Claude passt, zählt ihr einfach Issues.</li>
     <li><strong>Wie?</strong> Wer nimmt was zuerst? Jede*r baut in mindestens einem fremden Produkt.</li>
   </ol>
-  <p>Für Sprint 1 habt ihr noch keine Erfahrungswerte, und er läuft zwei Wochen zu Hause. Plant knapp: Beim Lego habt ihr gesehen, dass Teams anfangs zu viel versprechen. Für Sprint 2 gilt dann die Faustregel <em>yesterday’s weather</em>: nicht mehr Issues als im Sprint davor wirklich fertig wurden – und über die Feiertage eher weniger.</p>
+  <p>Für Sprint 1 habt ihr noch keine Erfahrungswerte, und er läuft zwei Wochen zu Hause. Plant knapp: Beim Lego habt ihr gesehen, dass Teams anfangs zu viel versprechen. Für Sprint 2 gilt dann die Faustregel <em>yesterday’s weather</em>: nicht mehr Issues als im Sprint davor wirklich fertig wurden. Sprint 2 dauert nur eine Woche, also etwa die Hälfte.</p>
   <p><strong>Am Beispiel:</strong> Sprint-Ziel „Pendler*innen bestellen im Gehen und sehen, ob ihr Kaffee vor dem Zug fertig ist.“ Auswahl: Issue 1, 2, 3, 4a (Zugliste) und das Mess-Issue – fünf Issues. Die Zugliste kommt mit, weil im Test ohne sie kaum jemand den Höhepunkt erreicht hat (U2) – deshalb steht sie im Backlog vor der Abholnummer. Issue 5 (Abholnummer) wartet auf Sprint 2: Ohne sie ist das Ziel erreicht.</p>
-  <p>In Linear bekommen die gewählten Issues das Label <code>Sprint 1</code> (später <code>Sprint 2</code>). Linears <em>Cycles</em> laufen in ganzen Wochen und gelten für das ganze Team – für Sprints, die an euren Kurstagen beginnen und enden und über die Feiertage laufen, passt ein Label besser.</p>
+  <p>In Linear bekommen die gewählten Issues das Label <code>Sprint 1</code> (später <code>Sprint 2</code>). Linears <em>Cycles</em> laufen in ganzen Wochen und gelten für das ganze Team – für Sprints, die an euren Kurstagen beginnen und enden, passt ein Label besser.</p>
 
   <h2 id="daily">Daily Scrum</h2>
   <p>Fünfzehn Minuten, im Stehen, am Sprint-Ziel entlang: Was hat mich dem Ziel nähergebracht? Was mache ich als Nächstes? Was blockiert mich? Probleme werden hier genannt, nicht gelöst – das macht ihr danach, mit denen, die es betrifft. Zwischen den Kurstagen schriftlich in Linear, wie in <code>docs/TEAM.md</code> vereinbart.</p>
@@ -80,6 +80,7 @@ import FooterNav from '../../../components/FooterNav.astro';
     <li><strong>Daily (15 min, Tag 5 und 6;</strong> dazwischen schriftlich in Linear).</li>
     <li><strong>Review (30 min, Tag 5):</strong> zehn Minuten pro Produkt, Ergebnis in <code>docs/SPRINTS.md</code>.</li>
     <li><strong>Retro (30 min, Tag 5):</strong> eine für das ganze Team; die Maßnahme in alle drei <code>docs/SPRINTS.md</code>.</li>
+    <li><strong>Abnahme Sprint 2 (30 min, Tag 6):</strong> Der Product Owner nimmt ab; fertig und offen in <code>docs/SPRINTS.md</code>. Ob die Maßnahme aus der Retro gewirkt hat, sagt ihr in der Kurs-Retro an Tag 7. Das Review ist die Präsentation.</li>
   </ol>
   <Prompt label="Sprint-Ziel prüfen · Claude Code">Lies docs/SPRINTS.md, docs/PRODUKT.md und über den Linear-MCP die Issues unseres Projekts mit dem Label des aktuellen Sprints. Erreichen diese Issues zusammen das Sprint-Ziel? Nenn höchstens drei Lücken oder Issues, die für das Ziel nicht nötig sind. Ändere nichts.</Prompt>
 
@@ -99,8 +100,11 @@ Auswahl: [Kennung] · [...] — [Anzahl] Issues
 ### Retro
 - Maßnahme: [konkreter Schritt] · verantwortlich: [Name] · geprüft: [wann]
 
-## Sprint 2 · 12.12., Planning – 7.1., Präsentation
-[...]</Prompt>
+## Sprint 2 · 12.12., Planning – 19.12., Abnahme
+Sprint-Ziel: [ein Satz]
+- Fertig: [Kennungen, Anzahl] · Offen: [Kennungen – kommen in den Pitch als nächster Schritt]
+- Messung: [Zahl, wie viele Personen, seit wann]
+- Maßnahme aus Sprint 1: [hat gewirkt / nicht, woran man es sieht]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="sprint" />

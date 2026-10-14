@@ -8,32 +8,40 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="Tag 6 · Bauen">
   <span class="eyebrow">Innolab · Tag 6 · Samstag, 19. Dezember 2026 · 09:00–13:00</span>
   <h1>Tag 6 · Bauen</h1>
-  <p class="lead">Ein Vormittag an Sprint 2 – gemeinsam im Raum, damit Fragen zu fremden Issues sofort geklärt sind.</p>
+  <p class="lead">Der letzte Bautag: Sprint 2 fertig, abgenommen und live. Was heute um 13 Uhr läuft, ist euer Prototyp.</p>
   <Orientierung seite="innolab/tag-6" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-12-19">
-    <Block time="09:00–09:15" type="plenum" title="Daily" href="/innolab/methoden/sprint#daily">Am Sprint-Ziel entlang, je Produkt.</Block>
+    <Block time="09:00–09:15" type="plenum" title="Daily" href="/innolab/methoden/sprint#daily">Am Sprint-Ziel entlang, je Produkt: Was fehlt bis 12:15?</Block>
     <Block time="09:15–10:45" type="uebung" title="Bauen · Sprint 2" href="#bauen">Issues, Belege, Pull Requests.</Block>
     <Block time="10:45–11:00" type="pause" title="Pause" />
-    <Block time="11:00–12:45" type="uebung" title="Bauen · Sprint 2" href="#bauen">Reviews über Kreuz, Abnahme durch die Product Owner.</Block>
-    <Block time="12:45–13:00" type="plenum" title="Abschluss" href="#abschluss">Stand am Sprint-Ziel, was bis zur Präsentation passiert.</Block>
+    <Block time="11:00–12:15" type="uebung" title="Bauen · Sprint 2" href="#bauen">Letzte Issues, Reviews über Kreuz.</Block>
+    <Block time="12:15–12:45" type="uebung" title="Abnahme" href="#abnahme">Die Product Owner nehmen im Browser ab, am Handy.</Block>
+    <Block time="12:45–13:00" type="plenum" title="Abschluss" href="#abschluss">Was bis zur Präsentation passiert.</Block>
   </div>
 
   <hr />
   <h2 id="bauen">Bauen</h2>
-  <p>Nutzt den Vormittag für das, was zu Hause schwer geht: Issues aus fremden Produkten, bei denen ihr den Product Owner direkt fragen könnt, und Pull Requests, die jemand neben euch prüft. Die Regeln sind dieselben wie in Sprint 1 (<a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>), dazu die Maßnahme aus eurer Retro.</p>
+  <p>Nutzt den Vormittag für das, was zu Hause schwer geht: Issues aus fremden Produkten, bei denen ihr den Product Owner direkt fragen könnt, und Pull Requests, die jemand neben euch prüft. Die Regeln sind dieselben wie in Sprint 1 (<a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>), dazu die Maßnahme aus eurer Retro. Wird ein Issue bis 12:15 nicht fertig, nehmt es lieber zurück, als halb Gebautes live zu lassen.</p>
+
+  <h2 id="abnahme">Abnahme</h2>
+  <p>Jeder Product Owner geht die Issues von Sprint 2 auf der Produktions-URL am Handy durch, Kriterium für Kriterium, und setzt Done – oder nicht. In <code>docs/SPRINTS.md</code> kommt unter Sprint 2, was fertig ist und was offen bleibt. Was offen bleibt, gehört in den Pitch: als nächster Schritt.</p>
 
   <h2 id="abschluss">Abschluss & bis zur Präsentation</h2>
-  <p>Jede*r sagt in einem Satz, wie nah das eigene Produkt am Sprint-Ziel ist. Bis zur Präsentation gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
-  <Checklist id="il-tag6-praesentation" items={[
-    'Sprint 2 fertig, jedes Issue nach der Definition of Done',
-    'Daily an jedem Arbeitstag als Kommentar in Linear',
-    'Drei weitere Usability-Tests, Befunde in <code>docs/TESTS.md</code>',
+  <p>Jede*r sagt in einem Satz, wie nah das eigene Produkt am Sprint-Ziel ist. Damit ist der Prototyp fertig. Bis zur Präsentation baut ihr nichts mehr, ihr bereitet den Pitch vor. Euer Pro-Monat läuft noch bis etwa 21. Dezember – was ihr dafür mit Claude machen wollt, macht ihr in diesen Tagen. Wer danach weiterbauen will, braucht ein eigenes Abo; für den Kurs ist das nicht nötig. Bis zur Präsentation gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
+  <Checklist id="il-tag6-abnahme" items={[
+    'Sprint 2 abgenommen, jedes Issue nach der Definition of Done',
+    'Sprint 2 in <code>docs/SPRINTS.md</code>: fertig, offen, Messung',
+    'Committet und gepusht, Produktions-URL läuft am Handy',
+  ]} />
+  <p>Bis zur Präsentation:</p>
+  <Checklist id="il-tag6-pitch" items={[
+    'Bis 21. Dezember, solange Pro läuft: Pitch mit Claude als skeptischem Gegenüber geprobt und mit der Prüfliste geprüft (<a href="/innolab/methoden/pitch#pruefen">Pitch</a>); nach den letzten Tests geht ihr die Liste noch einmal selbst durch',
+    'Drei weitere Usability-Tests am fertigen Prototyp, Befunde in <code>docs/TESTS.md</code> – sie ändern nichts mehr am Produkt, sondern gehen als Belege und nächster Schritt in den Pitch',
     '<code>docs/PITCH.md</code> mit Geschichte, Demo, Belegen, Modell',
-    'Pitch zweimal laut geprobt, einmal mit Claude als skeptischem Gegenüber',
+    'Pitch noch einmal laut geprobt',
     'Demo-Daten vorbereitet, Bildschirmaufnahme als Plan B',
-    'Pitch mit der Prüfliste geprüft (<a href="/innolab/methoden/pitch#pruefen">Pitch</a>)',
     'Für die Kurs-Retro an Tag 7: Welche Methode hat euch am meisten verändert, welche würdet ihr beim nächsten Produkt weglassen – und warum?',
   ]} />
 
