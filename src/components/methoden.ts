@@ -44,7 +44,7 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'schaetzung', name: 'Schätzung', lebtIn: ['linear'] },
   { id: 'inkrement', name: 'Laufendes Inkrement', lebtIn: ['live', 'repo'] },
   { id: 'sprintlog', name: 'Sprint-Protokoll: Ziele, Review, Retro', lebtIn: ['repo'], pfad: 'docs/SPRINTS.md' },
-  { id: 'pitch', name: 'Pitch mit Demo und Belegen', lebtIn: ['vortrag'] },
+  { id: 'pitch', name: 'Pitch mit Demo und Belegen', lebtIn: ['vortrag', 'repo'], pfad: 'docs/PITCH.md' },
 ];
 
 export interface Methode {
@@ -360,7 +360,16 @@ export const METHODEN: Methode[] = [
   {
     slug: 'pitch', name: 'Pitch', tag: 6, dauer: 60,
     frage: 'Überzeugt das Produkt – mit Belegen?',
-    braucht: ['concept', 'usage', 'origin', 'geschaeftsmodell', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
+    braucht: ['brief', 'concept', 'usage', 'origin', 'geschaeftsmodell', 'spike', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
+    pruefliste: [
+      'Der Einstieg ist die Concept Story: Die Nutzer*innen und ihr Problem kommen vor dem Produkt.',
+      'Die Demo folgt der Usage Story, läuft live und endet am Höhepunkt; ein Video liegt als Plan B bereit.',
+      'Jede Behauptung über Nutzer*innen hat einen Beleg mit ID: Zitat, Testbefund oder Messung.',
+      'Mindestens eine widerlegte Annahme kommt vor – mit der Entscheidung, die daraus folgte.',
+      'Die Zahlen der Outcome-Metrik stehen da, mit der Zahl der Personen dahinter, auch wenn sie klein ist.',
+      'Es steht da, wer zahlt und wofür, und an welcher Annahme das Modell hängt.',
+      'Der Schluss sagt, was ihr als Nächstes prüfen würdet und warum.',
+    ],
     ki: 'Spielt einen skeptischen Investor; prüft jede Behauptung gegen das Entscheidungslog.',
   },
 ];
