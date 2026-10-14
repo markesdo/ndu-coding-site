@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Prompt from '../components/Prompt.astro';
 import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
+import { HANDY_PROMPT } from '../lib/handy-prompt';
 ---
 <Layout title="Prompt-Bibliothek">
   <span class="eyebrow">Nachschlagen</span>
@@ -42,6 +43,7 @@ import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
   <Prompt label="Debug">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [Schritte]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
   <Prompt label="Im Kreis">Wir haben Fehler X schon zweimal erfolglos behoben. Ändere jetzt nichts. Nenn mir drei verschiedene mögliche Ursachen, wie wir jede einzelne ausschließen können, und welche Information dir fehlt.</Prompt>
   <Prompt label="Strenge Prüfung: Sicherheit" note="Eigener Prüfer-Agent mit frischem Kontext – Secrets, Zugriffsregeln, Eingaben, was Fremde sehen.">/ndu-review</Prompt>
+  <Prompt label="Handy-Ansicht reparieren" note="Eine Seite, die ohne Anmeldung erreichbar ist; Claude repariert direkt. Für einen Überblick über das ganze Projekt ohne Änderungen: der nächste Prompt.">{HANDY_PROMPT}</Prompt>
   <Prompt label="Bugs und Handy-Ansicht (frische Session: /clear)">Prüfe dieses Projekt wie ein erfahrenes Entwicklungsteam vor dem Launch – Sicherheit nicht, die prüft /ndu-review: offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, Darstellung am Handy (375 px). Gib mir eine priorisierte Liste mit maximal 5 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
   <Prompt label="RLS prüfen">Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle [Name] verhindern, dass jemand fremde Zeilen liest, ändert oder löscht. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
 
