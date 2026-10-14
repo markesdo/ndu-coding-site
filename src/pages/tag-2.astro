@@ -12,6 +12,7 @@ import UmgebungWahl from '../components/UmgebungWahl.astro';
 import KonzeptStation from '../components/KonzeptStation.astro';
 import Quiz from '../components/Quiz.astro';
 import { bild } from '../components/anleitung-bilder';
+import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
 ---
 <Layout title="Tag 2 · Bauen wie ein Profi">
   <span class="eyebrow">Freitag, 9. Oktober 2026 · 09:00–18:00</span>
@@ -292,21 +293,28 @@ import { bild } from '../components/anleitung-bilder';
       { img: bild('tag2/vc-15-live'), alt: 'Die App unter der öffentlichen vercel.app-Adresse', text: 'Die App ist öffentlich erreichbar. Ab jetzt deployt jeder Push auf <code>main</code> automatisch.' },
     ]} />
     <Prompt label="Wenn der Build auf Vercel fehlschlägt (ohne MCP)">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen aus dem Vercel-Dashboard einfügen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
-    <p>Danach weiter mit <a href="#vercel-pruefen">d) Prüfen</a> und <a href="#vercel-supabase">e) Supabase auf die neue Adresse</a> – das gilt für beide Wege.</p>
+    <p>Danach weiter mit <a href="#vercel-pruefen">d) Prüfen</a> und <a href="#vercel-supabase">e) Supabase für lokal und live einrichten</a> – das gilt für beide Wege.</p>
   </details>
 
   <h3 id="vercel-pruefen">d) Prüfen und Logs lesen (5 min)</h3>
   <Prompt label="Deploy prüfen">Prüfe mit dem Vercel-MCP den letzten Production-Deploy: Status, Build-Log (nur Fehler und Warnungen zusammenfassen) und Laufzeit-Logs der letzten 30 Minuten. Erkläre mir in einfachen Worten, ob alles in Ordnung ist. Wenn nicht: behebe es, prüf lokal mit npm run build und warte vor dem Push auf mein Okay.</Prompt>
   <p class="small muted">Den Prompt braucht ihr immer, wenn etwas live anders aussieht als lokal – Claude liest die Logs selbst, ihr müsst nichts kopieren.</p>
 
-  <h3 id="vercel-supabase">e) Supabase auf die neue Adresse umstellen (5 min)</h3>
-  <p>Damit Login-Links nicht auf <code>localhost</code> zeigen. Diese Einstellung kann Claude nicht selbst ändern, aber den Weg zeigen:</p>
-  <Prompt label="Site URL">Hol dir mit dem Supabase-MCP die Project-Ref meines Projekts und gib mir den direkten Link zur Seite Authentication → URL Configuration. Sag mir genau, was ich bei Site URL eintrage (meine Vercel-Adresse unter Domains) und was bei Redirect URLs (dieselbe Adresse mit /** am Ende).</Prompt>
+  <h3 id="vercel-supabase">e) Supabase für lokal und live einrichten (5 min)</h3>
+  <p>Supabase muss wissen, wohin ein Login zurückführen darf. Tragt ihr hier beide Adressen eurer App ein, funktioniert der Login gleichzeitig am Mac und live – und ihr stellt danach nie wieder um. Die Einstellung kann Claude nicht selbst ändern, aber den Weg zeigen:</p>
+  <Prompt label="Site URL und Redirect URLs">Hol dir mit dem Supabase-MCP die Project-Ref meines Projekts und gib mir den direkten Link zur Seite Authentication → URL Configuration. Sag mir genau, was ich eintrage: bei Site URL meine Vercel-Adresse unter Domains; bei Redirect URLs zwei Einträge – dieselbe Adresse mit /** am Ende und http://localhost:*/** für die App auf meinem Mac.</Prompt>
   <Schritte id="vercel" nummer="5" start={16} steps={[
     { img: bild('tag2/url-1'), alt: 'URL Configuration, Site URL steht auf http://localhost:3000', text: 'Bei <em>Site URL</em> steht noch <code>http://localhost:3000</code>.', marks: [{ x: 1008, y: 288, w: 431, h: 33 }] },
     { img: bild('tag2/url-2'), alt: 'Site URL mit der Vercel-Adresse und Button „Save changes“', text: 'Eure Vercel-Adresse (die unter <em>Domains</em>) eintragen, <em>Save changes</em>.', marks: [{ x: 1339, y: 375, w: 100, h: 24 }] },
   ]} />
-  <p>Darunter bei <em>Redirect URLs</em> auf <em>Add URL</em> und dieselbe Adresse mit <code>/**</code> am Ende eintragen, z. B. <code>https://leihbar-….vercel.app/**</code> – so wie Claude es euch gesagt hat.</p>
+  <p>Darunter bei <em>Redirect URLs</em> zweimal <em>Add URL</em>, jeweils mit dem Eintrag, den Claude euch nennt:</p>
+  <ul>
+    <li><code>https://leihbar-….vercel.app/**</code> – eure Live-App</li>
+    <li><code>http://localhost:*/**</code> – eure App am Mac; der Stern steht für jeden Port, also auch 3001, wenn 3000 belegt ist</li>
+  </ul>
+  <p class="small muted">Die Site URL ist nur die Vorgabe für Links ohne eigene Zieladresse. Vorschau-Adressen tragt ihr bewusst nicht ein: Ein Muster für alle Vorschauen ließe auch fremde <code>vercel.app</code>-Adressen zu, an die Login-Links gehen könnten. Mit E-Mail und Passwort klappt der Login in Vorschauen trotzdem.</p>
+  <p>Damit das trägt, darf der Code keine feste Adresse mitschicken. Eine Regel für Claude, einmal pro Projekt:</p>
+  <Prompt label="Regel für Login-Weiterleitungen">{LOGIN_REGEL_PROMPT}</Prompt>
   <p><strong>Am Handy öffnen.</strong> Registrieren, etwas anfragen. Das ist eure App.</p>
 
   {/* id „t2-u5b“ (vorher t2-u5): Punkte geändert, als der Deploy auf Claude umgestellt wurde – Häkchen werden nach Position gespeichert. */}

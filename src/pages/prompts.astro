@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Prompt from '../components/Prompt.astro';
+import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
 ---
 <Layout title="Prompt-Bibliothek">
   <span class="eyebrow">Nachschlagen</span>
@@ -52,6 +53,7 @@ import Prompt from '../components/Prompt.astro';
 
   <h2>Shippen</h2>
   <Prompt label="Vercel-Build-Fehler">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
+  <Prompt label="Regel für Login-Weiterleitungen" note="Einmal pro Projekt; dazu die zwei Redirect URLs in Supabase, siehe Login lokal & live.">{LOGIN_REGEL_PROMPT}</Prompt>
   <Prompt label="README für Außenstehende">Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshot-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
   <Prompt label="CI einrichten">Richte GitHub Actions ein, sodass bei jedem Push und Pull Request Lint, Build und die Playwright-Tests laufen. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
 </Layout>

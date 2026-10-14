@@ -99,7 +99,7 @@ import { bild } from '../components/anleitung-bilder';
   <h3 id="datenbank-vercel">d) Dieselben Werte bei Vercel</h3>
   <p>Die Live-App liest nicht eure <code>.env.local</code>, sondern die Environment Variables des Vercel-Projekts. An Tag 2 hat Claude das beim ersten Deploy erledigt; jetzt kommt die Datenbank nach dem Deploy, also einmal nachtragen:</p>
   <Prompt>Übertrag die Variablen aus .env.local als Environment Variables für Production und Preview in das Vercel-Projekt dieses Repos – zeig mir keine Werte im Chat. Dann stoß einen neuen Production-Deploy an und sag mir, wann er fertig ist.</Prompt>
-  <p>Danach das Issue starten wie in Schritt 6. Kommt später ein Login dazu: Site URL und Redirect URLs im neuen Supabase-Projekt eintragen wie in <a href="/tag-2#vercel-supabase">Übung 5e</a>, und die Regeln mit dem <a href="/tag-2#uebung-4-d">RLS-Test</a> prüfen.</p>
+  <p>Danach das Issue starten wie in Schritt 6. Kommt später ein Login dazu: im neuen Supabase-Projekt Site URL und die zwei Redirect URLs (live und <code>localhost</code>) eintragen und die Regel für Claude übernehmen wie in <a href="/tag-2#vercel-supabase">Übung 5e</a> – einmal, danach nie wieder umstellen –, und die Regeln mit dem <a href="/tag-2#uebung-4-d">RLS-Test</a> prüfen.</p>
 
   <h2 id="tagesplan">Tagesplan bis Donnerstag</h2>
   <p>Ihr startet am Montag, die Demo ist am Donnerstag – drei Tage, je vier bis fünf Stunden. Am Ende jedes Tages steht, was ihr dann sehen solltet.</p>

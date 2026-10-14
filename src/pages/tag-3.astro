@@ -35,7 +35,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-15">
     <Block time="09:00–09:10" type="plenum" title="Stand-up">Reihum: eure App live am Handy, dazu ein Satz, wo es gerade hakt. Gelöst wird in den Übungen.</Block>
-    <Block time="09:10–09:20" type="plenum" title="Unser Stack" href="#stack">Gemeinsam am Beamer die Werkzeugkarte durchgehen: was wo läuft, wer mit wem redet und über welche Schlüssel.</Block>
+    <Block time="09:10–09:20" type="plenum" title="Unser Stack" href="#stack">Gemeinsam am Beamer die Werkzeugkarte durchgehen: was wo läuft, wer mit wem redet und über welche Schlüssel. Danach: Login lokal und live einrichten.</Block>
     <Block time="09:20–09:35" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="#konzept-7">Ein Test klickt ein Kriterium von selbst durch, GitHub prüft bei jedem Push, im Pull Request schaut ein frischer Blick drauf, bevor es live geht.</Block>
     <Block time="09:35–10:30" type="uebung" title="Übung 8 · Ein Test, der mich schützt" href="#uebung-8">Eigene App: ein Test, eine automatische Prüfung auf GitHub, ein Pull Request mit Review.</Block>
     <Block time="10:30–10:45" type="pause" title="Pause" />
@@ -53,6 +53,8 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <hr />
   <h2 id="stack">Unser Stack <span class="pill plenum">10 min</span></h2>
   <p>Gemeinsam am Beamer, bevor es ans Absichern geht: Links euer Mac mit VS Code, Claude Code und dem Projektordner, rechts eure Konten im Internet – GitHub, Vercel, Supabase, Linear und die Design-Werkzeuge. Wer redet mit wem – und über welche Schlüssel? Im Team-Sprint am Nachmittag arbeitet ihr in fremden Konten derselben Werkzeuge; die Karte bleibt gleich. <a href="/unser-stack#ueberblick">Unser Stack</a></p>
+  <h3 id="login-lokal-und-live">Danach: Login lokal und live</h3>
+  <p>Die letzten fünf Minuten des Blocks, ein Nachtrag zu Tag 2: Zwei Einträge in Supabase und eine Regel für Claude, dann funktioniert der Login am Mac und auf Vercel gleichzeitig – ohne dass ihr je wieder umstellt. Alle in ihrem eigenen Leihbar-Projekt, Schritt für Schritt mit Bildern: <a href="/login-lokal-und-live">Login lokal & live</a>.</p>
 
   <hr />
   <h2 id="konzept-7">Konzept 7 · Vom Prototyp zum Produkt <span class="pill konzept">15 min</span></h2>
