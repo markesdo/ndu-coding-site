@@ -1,0 +1,89 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Experiment-Karte & Origin Story">
+  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
+  <h1>Experiment-Karte & Origin Story</h1>
+  <p class="lead">Die riskanteste offene Annahme mit dem billigsten Test prüfen – und dafür die Geschichte schreiben, wie jemand zum ersten Mal von eurem Produkt erfährt.</p>
+  <Orientierung seite="innolab/methoden/experiment" leiste={false} />
+  <MethodenKarte slug="experiment" />
+
+  <h2 id="karte">Die Experiment-Karte</h2>
+  <p>Bevor ihr baut, testet ihr. Eine Experiment-Karte hat vier Zeilen, und alle stehen fest, <strong>bevor</strong> der Test läuft:</p>
+  <ol>
+    <li><strong>Wir glauben, dass …</strong> – die Annahme, mit ID aus der Annahmen-Map</li>
+    <li><strong>Um das zu prüfen, …</strong> – der Test</li>
+    <li><strong>Wir messen …</strong> – eine Zahl, die man beobachten kann</li>
+    <li><strong>Wir haben recht, wenn …</strong> – die Schwelle</li>
+  </ol>
+  <p>Wer die Schwelle erst nach dem Test festlegt, findet immer einen Grund, warum es doch geklappt hat.</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Test</th><th>So geht's</th><th>Prüft vor allem</th></tr></thead>
+      <tbody>
+        <tr><th>Fake Door</th><td>Ein Knopf oder Aushang für etwas, das es noch nicht gibt; wer klickt, erfährt „kommt bald“</td><td>Wollen sie es?</td></tr>
+        <tr><th>Landingpage</th><td>Eine Seite, die das Produkt verspricht, mit einem Eintrag als Ziel</td><td>Wollen sie es? Versteht man es?</td></tr>
+        <tr><th>Concierge</th><td>Ihr erbringt die Leistung von Hand, für wenige Menschen</td><td>Wollen sie es, wenn es funktioniert?</td></tr>
+        <tr><th>Wizard of Oz</th><td>Es sieht automatisch aus, dahinter macht ein Mensch die Arbeit</td><td>Bedienbarkeit, Ablauf</td></tr>
+        <tr><th>Prototyp-Test</th><td>Menschen versuchen eine Aufgabe mit einem Klick-Prototyp</td><td>Kommen sie damit zurecht?</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Nehmt den billigsten Test, der eure Frage beantwortet. Bauen ist fast nie der billigste.</p>
+
+  <h2 id="origin-story">Die Origin Story</h2>
+  <p>Die Origin Story erzählt mit demselben Story-Bogen wie die <a href="/innolab/methoden/concept-story">Concept Story</a>, wie jemand von „nie davon gehört“ zu „ich probier's“ kommt: Wo ist die Person gerade (Exposition)? Was macht sie offen für etwas Neues (Auslöser)? Wo hört sie davon (steigende Handlung)? Was hält sie zurück (Krise)? Was überzeugt sie (Höhepunkt)? Was ist der erste Schritt (fallende Handlung) – und wo steht sie danach (Ende)?</p>
+  <p>Ihr schreibt sie heute als <strong>Text für eine Landingpage oder einen Aushang</strong> – genau das, was euer Experiment braucht.</p>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <p>A1 ist durch die Interviews widerlegt. Die riskanteste offene Annahme ist jetzt eine neue:</p>
+  <Prompt label="Beispiel · Experiment-Karte E1">E1 · Stand: Tag 3
+Wir glauben, dass Pendler*innen im Gehen einen QR-Code scannen und dabei ihre Abfahrtszeit angeben. (A5, wünschenswert/bedienbar)
+Um das zu prüfen, stellen wir an drei Morgen einen Aufsteller mit QR-Code an die Hallentür. Er führt auf eine Seite „Im Gehen bestellen – bald. Trag deinen Zug ein, wir sagen dir, ob es sich ausgeht.“ Bestellen kann man noch nicht (Fake Door).
+Wir messen Scans und eingetragene Abfahrtszeiten zwischen 7:15 und 7:45.
+Wir haben recht, wenn an drei Morgen mindestens 30 Scans und 10 Einträge zusammenkommen.</Prompt>
+  <p>Der Text auf dem Aufsteller ist die Origin Story im Kleinen:</p>
+  <Prompt label="Beispiel · Origin Story als Aufstellertext">Zug in 8 Minuten, Schlange bis zur Tür?
+Bestell im Gehen. Scan den Code, tipp deinen Zug an –
+wir sagen dir sofort, ob dein Kaffee vor der Abfahrt fertig ist.
+Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
+  <p>Erst der Pain („Zug in 8 Minuten“), dann das Produkt, dann die Antwort auf die Hürde aus der Krise („ohne App“).</p>
+
+  <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
+  <ol>
+    <li><strong>Annahme wählen (5 min):</strong> die riskanteste <em>offene</em> Annahme – nach den Interviews oft eine neue.</li>
+    <li><strong>Karte schreiben (10 min):</strong> vier Zeilen, Schwelle zuerst festlegen.</li>
+    <li><strong>Origin Story skizzieren (10 min):</strong> der Weg zum ersten Schritt, als Stichpunkte.</li>
+    <li><strong>Festhalten (5 min):</strong> <code>docs/EXPERIMENTE.md</code>; der Landingpage-Text wird Hausaufgabe.</li>
+  </ol>
+  <Callout type="info" title="Hausaufgabe bis Tag 4">
+    <p>Schreibt die Origin Story als Landingpage-Text aus (<code>docs/STORYS.md</code>, Abschnitt „Origin Story“). Wenn euer Experiment eine Landingpage braucht, baut sie mit Claude Code und bringt die ersten Zahlen mit.</p>
+  </Callout>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/EXPERIMENTE.md"># Experimente — [Produkt]
+
+## E[n] · Stand: [Datum]
+Wir glauben, dass [...]. (A[n], [Art])
+Um das zu prüfen, [Test].
+Wir messen [Zahl].
+Wir haben recht, wenn [Schwelle].
+
+Ergebnis: [nach dem Test eintragen] → Entscheidungslog</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="experiment" />
+  <Prompt label="Pre-Mortem · Claude Code">Lies docs/EXPERIMENTE.md und docs/ANNAHMEN.md. Stell dir vor, das neueste Experiment ist gelaufen und hat uns in die Irre geführt. Nenn drei Gründe, warum das passiert sein könnte (zum Beispiel falsche Zeit, falsche Menschen, eine Schwelle, die zu leicht ist), und je einen billigeren oder genaueren Test. Ändere keine Datei.</Prompt>
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Was ist euer Aufsteller an der Hallentür – der Ort, an dem eure Zielgruppe ohnehin vorbeikommt? Dort läuft euer billigster Test.</p>
+  <p class="small muted">Experiment-Karte nach David J. Bland & Alex Osterwalder, <em>Testing Business Ideas</em> (Wiley 2019); Origin Story nach Donna Lichaw.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/concept-story', t: 'Concept Story' }} next={{ href: '/innolab/methoden/story-map', t: 'Story Map' }} />
+</Layout>

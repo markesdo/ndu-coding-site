@@ -1,0 +1,65 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Geschäftsmodell-Karten">
+  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
+  <h1>Geschäftsmodell-Karten</h1>
+  <p class="lead">Wer zahlt wofür? Drei Muster gezogen, gegen euer Produkt gespielt, eins gewählt – in zwanzig Minuten.</p>
+  <Orientierung seite="innolab/methoden/geschaeftsmodell" leiste={false} />
+  <MethodenKarte slug="geschaeftsmodell" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Ein Produkt, das Menschen lieben, kann trotzdem scheitern, wenn es sich nicht trägt. Das ist die dritte Art von Fit: Nach Problem-Solution Fit (Papier) und Product-Market Fit (Markt) kommt der <em>Business Model Fit</em> – es bringt mehr ein, als es kostet.</p>
+  <p>Die Universität St. Gallen hat 55 Muster gefunden, aus denen sich fast alle Geschäftsmodelle zusammensetzen – vom Abo (Spotify) über Freemium bis zum Add-on (Ryanair). Neue Geschäftsmodelle entstehen meist, indem man ein Muster in eine Branche überträgt, in der es noch niemand nutzt. Ein Geschäftsmodell beantwortet vier Fragen: <strong>Wer</strong> sind die Kund*innen? <strong>Was</strong> bekommen sie? <strong>Wie</strong> wird es hergestellt? Und wie entsteht <strong>Wert</strong> – wer zahlt wofür?</p>
+
+  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Muster</th><th>Übertragen</th><th>Einschätzung</th></tr></thead>
+      <tbody>
+        <tr><th>Add-on</th><td>Kaffee zum normalen Preis, 30 Cent Express-Zuschlag</td><td>Einfach, aber der Zuschlag könnte genau die Hürde aus der Krise sein</td></tr>
+        <tr><th>Abo</th><td>Fünf Morgen pro Woche, 12 € im Monat Rabatt gegen Vorauszahlung</td><td>Bindet Stammkundschaft, verlangt aber Planung – widerspricht T1</td></tr>
+        <tr><th>Cross-Selling</th><td>Kein Aufpreis; in der Bestellung wird ein Gebäck zum Kaffee angeboten</td><td>Gewählt: keine neue Hürde, mehr Umsatz pro Bestellung – hängt aber daran, dass die Bar mehr Bestellungen schafft</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Wer zahlt wofür:</strong> Pendler*innen zahlen den Kaffee wie bisher, manche ein Gebäck dazu; mehr Bestellungen pro Morgen ohne zusätzliche Kraft. <strong>Kosten:</strong> Aufsteller, Bildschirm an der Ausgabe, Betrieb der Bestellseite. <strong>Annahme, an der alles hängt:</strong> Wir glauben, dass die Bar morgens 40 statt 25 Bestellungen in 30 Minuten schafft – das ist die Machbarkeits-Annahme aus Tag 1.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (20 min)</h2>
+  <ol>
+    <li><strong>Ziehen (2 min):</strong> drei Karten aus dem Stapel – zufällig. Gerade die unpassenden bringen Ideen.</li>
+    <li><strong>Durchspielen (10 min):</strong> Jede Karte auf euer Produkt übertragen: Wer zahlt dann wofür?</li>
+    <li><strong>Wählen und festhalten (8 min):</strong> ein Muster, die wichtigsten Kosten, die Annahme, an der es hängt. Gehört sie noch nicht in die Annahmen-Map, kommt sie hinein.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/GESCHAEFTSMODELL.md"># Geschäftsmodell — [Produkt]
+
+Stand: [Datum]
+
+| Muster | Übertragen auf uns | Einschätzung |
+|--------|--------------------|--------------|
+| [...] | [...] | [...] |
+| [...] | [...] | [...] |
+| [...] | [...] | [...] |
+
+Gewählt: [Muster] – weil [...]
+Wer zahlt wofür: [...]
+Wichtigste Kosten: [...]
+Annahme, an der es hängt: Wir glauben, dass [...] (A[n])</Prompt>
+  <Prompt label="Muster durchspielen · Claude Code">Lies docs/PRODUKT.md und docs/VALUE-MAP.md. Ich habe diese drei Geschäftsmodell-Muster des St. Galler Business Model Navigator gezogen: [Muster 1], [Muster 2], [Muster 3]. Spiel jedes kurz auf unser Produkt durch: Wer zahlt dann wofür, und was ist das größte Risiko? Höchstens drei Sätze pro Muster. Wähle keins aus und schreib nichts in Dateien.</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="geschaeftsmodell" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Woran hängt euer Geschäftsmodell – an einer Zahl, die ihr heute noch nicht kennt? Dann ist das eure nächste Experiment-Karte.</p>
+  <p class="small muted">Nach Oliver Gassmann, Karolin Frankenberger & Michaela Csik, <em>Geschäftsmodelle entwickeln: 55 innovative Konzepte mit dem St. Galler Business Model Navigator</em> (Hanser).</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/prototyp-spike', t: 'Prototyp-Spike & Usability-Test' }} next={{ href: '/innolab/tag-3#abschluss', t: 'Tag 3 · Abschluss' }} />
+</Layout>
