@@ -307,11 +307,9 @@ import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
     { img: bild('tag2/url-1'), alt: 'URL Configuration, Site URL steht auf http://localhost:3000', text: 'Bei <em>Site URL</em> steht noch <code>http://localhost:3000</code>.', marks: [{ x: 1008, y: 288, w: 431, h: 33 }] },
     { img: bild('tag2/url-2'), alt: 'Site URL mit der Vercel-Adresse und Button „Save changes“', text: 'Eure Vercel-Adresse (die unter <em>Domains</em>) eintragen, <em>Save changes</em>.', marks: [{ x: 1339, y: 375, w: 100, h: 24 }] },
   ]} />
-  <p>Darunter bei <em>Redirect URLs</em> zweimal <em>Add URL</em>, jeweils mit dem Eintrag, den Claude euch nennt:</p>
-  <ul>
-    <li><code>https://leihbar-….vercel.app/**</code> – eure Live-App</li>
-    <li><code>http://localhost:*/**</code> – eure App am Mac; der Stern steht für jeden Port, also auch 3001, wenn 3000 belegt ist</li>
-  </ul>
+  <p>Darunter bei <em>Redirect URLs</em> auf <em>Add URL</em>, mit <em>+ Add URL</em> eine zweite Zeile, und diese zwei Einträge hineinkopieren:</p>
+  <Prompt label="Redirect URL · Live-App" note="Statt der Lücke eure Vercel-Adresse unter Domains, so wie Claude sie euch nennt.">https://[eure-adresse].vercel.app/**</Prompt>
+  <Prompt label="Redirect URL · App am Mac" note="Der Stern steht für jeden Port, also auch 3001, wenn 3000 belegt ist.">http://localhost:*/**</Prompt>
   <p class="small muted">Die Site URL ist nur die Vorgabe für Links ohne eigene Zieladresse. Vorschau-Adressen tragt ihr bewusst nicht ein: Ein Muster für alle Vorschauen ließe auch fremde <code>vercel.app</code>-Adressen zu, an die Login-Links gehen könnten. Mit E-Mail und Passwort klappt der Login in Vorschauen trotzdem.</p>
   <p>Damit das trägt, darf der Code keine feste Adresse mitschicken. Eine Regel für Claude, einmal pro Projekt:</p>
   <Prompt label="Regel für Login-Weiterleitungen">{LOGIN_REGEL_PROMPT}</Prompt>

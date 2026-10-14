@@ -21,7 +21,9 @@ const VORLAGE_PROJEKT = 'https://raw.githubusercontent.com/markesdo/ndu-projekt/
   <p class="small muted">Mit E-Mail und Passwort und ausgeschalteter E-Mail-Bestätigung (wie in Leihbar) merkt ihr davon heute noch nichts. Macht es trotzdem jetzt – spätestens bei „Passwort vergessen“ braucht ihr es.</p>
 
   <h2 id="supabase">1 · In Supabase eintragen</h2>
-  <p>Auf <a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a> euer Leihbar-Projekt öffnen, links <em>Authentication</em> → <em>URL Configuration</em>.</p>
+  <p>Auf <a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a> euer Leihbar-Projekt öffnen, links <em>Authentication</em> → <em>URL Configuration</em>. Die Einträge für Schritt 2 zum Kopieren:</p>
+  <Prompt label="Redirect URL · App am Mac">http://localhost:*/**</Prompt>
+  <Prompt label="Redirect URL · Live-App, falls sie noch fehlt" note="Statt der Lücke eure Vercel-Adresse – dieselbe wie bei Site URL.">https://[eure-adresse].vercel.app/**</Prompt>
   <Schritte id="login" steps={[
     { img: bild('tag2/url-2'), alt: 'URL Configuration: Site URL mit der Vercel-Adresse, darunter Redirect URLs mit dem Button „Add URL“', text: 'Bei <em>Site URL</em> steht eure Vercel-Adresse (1) – so bleibt es. Steht dort noch <code>http://localhost:3000</code>: Vercel-Adresse eintragen, <em>Save changes</em>. Darunter bei <em>Redirect URLs</em> auf <em>Add URL</em> (2).', marks: [{ x: 1008, y: 288, w: 431, h: 33, n: 1 }, { x: 1361, y: 548, w: 70, h: 26, n: 2 }] },
     { img: bild('tag3/login-add-url'), alt: 'Dialog „Add new redirect URLs“ mit dem Eintrag http://localhost:*/** und dem Button „Save URLs“', text: 'Ins Feld <code>http://localhost:*/**</code> (1) – der Stern steht für jeden Port. Steht eure Vercel-Adresse noch nicht in der Liste, mit <em>+ Add URL</em> eine zweite Zeile: <code>https://leihbar-….vercel.app/**</code>. Dann <em>Save URLs</em> (2).', marks: [{ x: 572, y: 405, w: 276, h: 30, n: 1 }, { x: 555, y: 500, w: 346, h: 30, n: 2 }] },
