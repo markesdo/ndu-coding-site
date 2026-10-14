@@ -1,0 +1,115 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Scrum im Team">
+  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
+  <h1>Scrum im Team</h1>
+  <p class="lead">Wie Produktteams in Unternehmen arbeiten – und wie ihr zu dritt an drei Produkten nach denselben Regeln arbeitet.</p>
+  <Orientierung seite="innolab/methoden/scrum" leiste={false} />
+  <MethodenKarte slug="scrum" />
+
+  <h2 id="agil">Warum agil</h2>
+  <p>Im klassischen <strong>Wasserfall</strong> folgen die Phasen aufeinander: Anforderungen, Entwurf, Umsetzung, Test, Betrieb. Jede beginnt erst, wenn die vorige fertig ist. Das funktioniert, wenn die Anforderungen am Anfang feststehen und sich nicht ändern. Bei neuen Produkten tun sie das nie – ihr habt es in drei Tagen selbst erlebt: Die Interviews haben eure riskanteste Annahme widerlegt.</p>
+  <p><strong>Agile</strong> Vorgehen liefern stattdessen in kurzen Zyklen etwas Nutzbares, holen Feedback und passen den Plan an. Das <em>Agile Manifest</em> (2001) stellt vier Werte voran:</p>
+  <ul>
+    <li><strong>Individuen und Interaktionen</strong> mehr als Prozesse und Werkzeuge</li>
+    <li><strong>Funktionierende Software</strong> mehr als umfassende Dokumentation</li>
+    <li><strong>Zusammenarbeit mit Kund*innen</strong> mehr als Vertragsverhandlung</li>
+    <li><strong>Reagieren auf Veränderung</strong> mehr als das Befolgen eines Plans</li>
+  </ul>
+  <p>Die Dinge rechts sind nicht wertlos – die links zählen mehr.</p>
+
+  <h2 id="scrum">Scrum auf einer Seite</h2>
+  <p>Scrum ist das verbreitetste agile Rahmenwerk. Es ist absichtlich unvollständig: Es legt nur fest, was nötig ist, damit ein Team aus Erfahrung lernt – <strong>Transparenz</strong>, <strong>Überprüfung</strong>, <strong>Anpassung</strong>.</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th></th><th>Was</th><th>Wofür</th></tr></thead>
+      <tbody>
+        <tr><th>Product Owner</th><td>Eine Person pro Produkt</td><td>Produktziel, Reihenfolge im Product Backlog, Abnahme</td></tr>
+        <tr><th>Developers</th><td>Alle, die das Inkrement bauen</td><td>Sprint Backlog, Qualität nach der Definition of Done</td></tr>
+        <tr><th>Scrum Master</th><td>Eine Person im Team</td><td>Dass Scrum funktioniert: Hindernisse weg, Events gut und kurz</td></tr>
+        <tr><th>Sprint</th><td>Feste Länge, höchstens ein Monat</td><td>Container für alles andere</td></tr>
+        <tr><th>Sprint Planning</th><td>Am Anfang</td><td>Warum ist der Sprint wertvoll? Was schaffen wir? Wie?</td></tr>
+        <tr><th>Daily Scrum</th><td>Täglich, 15 Minuten</td><td>Fortschritt zum Sprint-Ziel, Plan anpassen</td></tr>
+        <tr><th>Sprint Review</th><td>Am Ende</td><td>Ergebnis zeigen, mit Stakeholdern über das Weitere entscheiden</td></tr>
+        <tr><th>Retrospektive</th><td>Ganz am Ende</td><td>Wie arbeiten wir besser?</td></tr>
+        <tr><th>Product Backlog</th><td>Geordnete Liste</td><td>Verpflichtung: das Produktziel</td></tr>
+        <tr><th>Sprint Backlog</th><td>Ziel, Auswahl, Plan</td><td>Verpflichtung: das Sprint-Ziel</td></tr>
+        <tr><th>Inkrement</th><td>Nutzbares Ergebnis</td><td>Verpflichtung: die Definition of Done</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Die fünf Scrum-Werte: Commitment, Fokus, Offenheit, Respekt, Mut.</p>
+
+  <h3 id="skalierung">Wenn es mehr Teams werden</h3>
+  <p>Ein Scrum-Team hat meist zehn oder weniger Personen. Arbeiten mehrere Teams an einem Produkt, gibt es Rahmenwerke darüber: <strong>Nexus</strong> (3–9 Teams mit einem gemeinsamen Integrationsteam), <strong>LeSS</strong> (viele Teams, ein Product Owner, ein Backlog) und <strong>SAFe</strong> (ganze Bereiche, gemeinsame Planung alle paar Monate). Allen gemeinsam: ein Produktziel, ein gemeinsames Inkrement, regelmäßige Abstimmung zwischen den Teams. Wenn ihr in einem Unternehmen anfangt, fragt, welches davon gilt.</p>
+
+  <h2 id="lego">Lego4Scrum: eine Stadt in drei Sprints</h2>
+  <p>Bevor ihr Scrum auf eure Produkte anwendet, spielt ihr es einmal durch – mit Lego. Das Spiel geht auf Alexey Krivitsky zurück.</p>
+  <ul>
+    <li><strong>Product Owner:</strong> Markus. Er hat einen Backlog von Gebäuden für eine Stadt: Wohnhaus, Schule, Brücke, Park, Bahnhof …</li>
+    <li><strong>Stakeholder:</strong> Louis, Bürgermeister mit eigenen Wünschen – die sich ändern.</li>
+    <li><strong>Developers:</strong> ihr drei.</li>
+    <li><strong>Drei Sprints:</strong> je 5 min Planning, 7 min Bauen, 5 min Review, 5 min Retro. Vor jedem Sprint schätzt ihr, was ihr schafft; nach jedem vergleicht ihr Schätzung und Ergebnis.</li>
+  </ul>
+  <p>Achtet dabei auf: Was passiert, wenn das Sprint-Ziel unklar ist? Was macht der Product Owner, wenn der Bürgermeister mitten im Sprint etwas Neues will? Wird eure Schätzung von Sprint zu Sprint besser?</p>
+
+  <h2 id="team">Euer Team: drei Produkte, ein Team</h2>
+  <p>In Unternehmen hat ein Team meist ein Produkt. Ihr habt drei – deshalb diese Aufteilung:</p>
+  <ul>
+    <li>Jede*r ist <strong>Product Owner des eigenen Produkts</strong> und entscheidet dort über Backlog und Abnahme.</li>
+    <li>Alle drei sind <strong>Developers in allen drei Produkten</strong>: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente.</li>
+    <li><strong>Scrum Master</strong> wechselt mit jedem Sprint.</li>
+    <li><strong>Ein Sprint für alle</strong> mit einem Sprint-Ziel pro Produkt. Sprint 1: Tag 5 ab 13:00 bis Tag 6, 12:00. Sprint 2: Tag 6 ab 13:00 bis zur Präsentation.</li>
+    <li><strong>Linear:</strong> ein Team, ein Projekt pro Produkt, ein gemeinsamer Zyklus pro Sprint. Eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>).</li>
+  </ul>
+  <Callout type="info" title="Daily zwischen den Kurstagen">
+    <p>An Kurstagen um 9:00 im Raum. Dazwischen schriftlich in Linear: ein Kommentar pro Person an jedem Arbeitstag – was erledigt, was als Nächstes, was blockiert.</p>
+  </Callout>
+
+  <h2 id="vorgehen">So geht ihr vor (260 min)</h2>
+  <ol>
+    <li><strong>Input (90 min):</strong> agil, Scrum, Skalierung.</li>
+    <li><strong>Teamaufstellung (50 min):</strong> Rollen, Sprints, Events, erste Definition of Done; Linear einrichten; <code>docs/TEAM.md</code> in jedem der drei Repos.</li>
+    <li><strong>Lego4Scrum (120 min):</strong> drei Sprints, danach eine gemeinsame Retro: Was nehmt ihr für eure Produkte mit? Ergänzt <code>docs/TEAM.md</code>.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/TEAM.md"># Team — [Teamname]
+
+Stand: [Datum]
+
+## Produkte und Rollen
+| Produkt | Product Owner | Linear-Projekt |
+|---------|---------------|----------------|
+| [...] | [...] | [...] |
+Developers: alle drei · Scrum Master Sprint 1: [Name], Sprint 2: [Name]
+
+## Sprints
+- Sprint 1: [Tag 5, 13:00] – [Tag 6, 12:00] · Sprint 2: [Tag 6, 13:00] – [Präsentation]
+- Planning: [wann] · Daily: 9:00 an Kurstagen, sonst Kommentar in Linear · Review & Retro: [wann]
+
+## Definition of Done (gilt für alle drei Produkte)
+- Jedes Akzeptanzkriterium im Browser geprüft, Beleg im Issue
+- Pull Request von einer anderen Person aus dem Team geprüft
+- Auf Vercel live, am Handy geöffnet
+- [...]
+
+## Was wir aus Lego4Scrum mitnehmen
+- [...]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="scrum" />
+
+  <h2 id="uebertrag">Übertrag auf eure Produkte</h2>
+  <p>Was war beim Lego der Bürgermeister, der mitten im Sprint etwas Neues wollte? Wer ist das bei eurem Produkt – und was antwortet ihr als Product Owner?</p>
+  <p class="small muted">Nach Ken Schwaber & Jeff Sutherland, <em>The Scrum Guide</em> (2020); Manifest für Agile Softwareentwicklung (2001); Lego4Scrum nach Alexey Krivitsky.</p>
+
+  <FooterNav prev={{ href: '/innolab/tag-4', t: 'Tag 4 · Scrum im Team' }} next={{ href: '/innolab/methoden/backlog', t: 'Backlog aus Issues' }} />
+</Layout>
