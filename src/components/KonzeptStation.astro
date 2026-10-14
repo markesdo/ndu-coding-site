@@ -12,7 +12,7 @@ const { links, danach } = Astro.props as {
   <slot />
   <div class="station-cta">
     {links.map((l, i) => (
-      <a class={`btn${i === 0 ? ' primary' : ''}`} href={l.href}>{l.t} <ArrowRight size={16} aria-hidden="true" /></a>
+      <a class={`btn mit-icon${i === 0 ? ' primary' : ''}`} href={l.href}>{l.t} <ArrowRight size={16} aria-hidden="true" /></a>
     ))}
   </div>
   <p class="small muted station-danach">Danach: <a href={danach.href}>{danach.t}</a></p>

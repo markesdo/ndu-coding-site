@@ -11,10 +11,11 @@ import Quiz from '../components/Quiz.astro';
 import Fluss from '../components/Fluss.astro';
 import Schritte from '../components/Schritte.astro';
 import { bild } from '../components/anleitung-bilder';
+import { LINEAR_INVITE_URL } from 'astro:env/server';
 import { linearEinladung } from '../lib/linear-einladung';
 import { Bot, ExternalLink, GitMerge, GitPullRequest, ListTodo, Users } from '@lucide/astro';
 
-const einladung = linearEinladung(process.env.LINEAR_INVITE_URL ?? import.meta.env.LINEAR_INVITE_URL);
+const einladung = linearEinladung(LINEAR_INVITE_URL);
 ---
 <Layout title="Tag 3 · Shippen & selbständig werden">
   <span class="eyebrow">Donnerstag, 15. Oktober 2026 · 09:00–17:00</span>

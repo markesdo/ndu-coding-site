@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import react from '@astrojs/react';
 
 // Kurs-Website NDU Coding 2026 — statische Seite auf Vercel (Kurspasswort über middleware.ts, nur auf Vercel).
@@ -9,4 +9,10 @@ export default defineConfig({
   // Astro 7 entfernt Leerraum sonst nach JSX-Regeln – das kann Leerzeichen zwischen Inline-Elementen kosten.
   compressHTML: true,
   integrations: [react()],
+  // Nur beim Build gelesen und in die Seite geschrieben (statisch) – nach dem Setzen oder Ändern neu deployen.
+  env: {
+    schema: {
+      LINEAR_INVITE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+    },
+  },
 });
