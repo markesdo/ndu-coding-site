@@ -32,7 +32,7 @@ import FooterNav from '../../../components/FooterNav.astro';
   <ol>
     <li><strong>Zuweisen vor Anfangen.</strong> Wer ein Issue nimmt, weist es sich in Linear zu – auch bei fremden Produkten. So baut nie jemand dasselbe doppelt.</li>
     <li><strong>Fragen gehen ins Issue.</strong> Versteht ihr ein Kriterium nicht, kommt die Frage als Kommentar ins Issue, nicht in den Chat. Der Product Owner antwortet dort und passt das Issue an.</li>
-    <li><strong>Done setzt der Product Owner.</strong> Ihr setzt auf In Review, mit Beleg je Kriterium und Link zum Pull Request. Eine andere Person prüft den Pull Request, der Product Owner nimmt im Browser ab.</li>
+    <li><strong>Done setzt der Product Owner.</strong> Ihr setzt auf In Review, mit Beleg je Kriterium und Link zum Pull Request. Eine andere Person prüft den Pull Request und schreibt das als Kommentar ins Issue; der Product Owner nimmt im Browser ab.</li>
   </ol>
   <Callout type="warn" title="Zugang zu fremden Repos">
     <p>Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein. Die Schlüssel aus <code>.env.local</code> gebt ihr einander direkt – nie in ein Issue, einen Kommentar oder das Repo.</p>
@@ -46,8 +46,8 @@ import FooterNav from '../../../components/FooterNav.astro';
     <li><strong>Wie?</strong> Wer nimmt was zuerst? Jede*r baut in mindestens einem fremden Produkt.</li>
   </ol>
   <p>Für Sprint 1 habt ihr noch keine Erfahrungswerte. Plant knapp: Beim Lego habt ihr gesehen, dass Teams anfangs zu viel versprechen. Für Sprint 2 gilt dann die Faustregel <em>yesterday’s weather</em>: nicht mehr Punkte als im Sprint davor wirklich fertig wurden.</p>
-  <p><strong>Am Beispiel:</strong> Sprint-Ziel „Pendler*innen bestellen im Gehen und sehen, ob ihr Kaffee vor dem Zug fertig ist.“ Auswahl: Issue 1 (2), 2 (5), 3 (3) und das Mess-Issue (2) – 12 Punkte. Issue 5 (Abholnummer, 2) und 4a (Zugliste, 3) warten auf Sprint 2: Ohne sie ist das Ziel erreicht.</p>
-  <p>In Linear legt ihr einen Cycle pro Sprint an und zieht die gewählten Issues hinein.</p>
+  <p><strong>Am Beispiel:</strong> Sprint-Ziel „Pendler*innen bestellen im Gehen und sehen, ob ihr Kaffee vor dem Zug fertig ist.“ Auswahl: Issue 1 (2), 2 (5), 3 (3), 4a (Zugliste, 3) und das Mess-Issue (2) – 15 Punkte. Die Zugliste kommt mit, weil im Test ohne sie kaum jemand den Höhepunkt erreicht hat (U2) – deshalb steht sie im Backlog vor der Abholnummer. Issue 5 (Abholnummer, 2) wartet auf Sprint 2: Ohne sie ist das Ziel erreicht.</p>
+  <p>In Linear bekommen die gewählten Issues das Label <code>Sprint 1</code> (später <code>Sprint 2</code>). Linears <em>Cycles</em> laufen in ganzen Wochen und gelten für das ganze Team – für Sprints von einem Tag bis zur nächsten Woche passt ein Label besser.</p>
 
   <h2 id="daily">Daily Scrum</h2>
   <p>Fünfzehn Minuten, im Stehen, am Sprint-Ziel entlang: Was hat mich dem Ziel nähergebracht? Was mache ich als Nächstes? Was blockiert mich? Probleme werden hier genannt, nicht gelöst – das macht ihr danach, mit denen, die es betrifft. Zwischen den Kurstagen schriftlich in Linear, wie in <code>docs/TEAM.md</code> vereinbart.</p>
@@ -76,12 +76,12 @@ import FooterNav from '../../../components/FooterNav.astro';
   <h2 id="vorgehen">So geht ihr vor (150 min)</h2>
   <ol>
     <li><strong>Definition of Done und Spezifikation (30 min, Tag 5):</strong> Mess-Ereignis festlegen, DoD in <code>docs/TEAM.md</code> ergänzen, Mess-Issue anlegen und schätzen; Collaborator einladen.</li>
-    <li><strong>Sprint Planning (45 min, Tag 5):</strong> 15 Minuten pro Produkt. Cycle in Linear, <code>docs/SPRINTS.md</code> anlegen.</li>
+    <li><strong>Sprint Planning (45 min, Tag 5):</strong> 15 Minuten pro Produkt. Label in Linear, <code>docs/SPRINTS.md</code> anlegen.</li>
     <li><strong>Daily (15 min, Tag 6).</strong></li>
     <li><strong>Review (30 min, Tag 6):</strong> zehn Minuten pro Produkt, Ergebnis in <code>docs/SPRINTS.md</code>.</li>
     <li><strong>Retro (30 min, Tag 6):</strong> eine für das ganze Team; die Maßnahme in alle drei <code>docs/SPRINTS.md</code>.</li>
   </ol>
-  <Prompt label="Sprint-Ziel prüfen · Claude Code">Lies docs/SPRINTS.md, docs/PRODUKT.md und über den Linear-MCP die Issues im aktuellen Cycle unseres Projekts. Erreichen diese Issues zusammen das Sprint-Ziel? Nenn höchstens drei Lücken oder Issues, die für das Ziel nicht nötig sind. Ändere nichts.</Prompt>
+  <Prompt label="Sprint-Ziel prüfen · Claude Code">Lies docs/SPRINTS.md, docs/PRODUKT.md und über den Linear-MCP die Issues unseres Projekts mit dem Label des aktuellen Sprints. Erreichen diese Issues zusammen das Sprint-Ziel? Nenn höchstens drei Lücken oder Issues, die für das Ziel nicht nötig sind. Ändere nichts.</Prompt>
 
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/SPRINTS.md"># Sprints — [Produkt]
