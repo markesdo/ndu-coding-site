@@ -176,23 +176,23 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Dann in Claude Code im Terminal, vorher <code>/clear</code>:</p>
   <Prompt label="Übergabe an Claude Code" note="Statt [Link] den kopierten Link. Lest das Issue, bevor ihr Okay sagt – was passieren muss, entscheidet ihr, nicht Claude.">Hier ist mein Entwurf aus Claude Design: [Link]. Lies ihn mit deinem Artifact-Werkzeug und sag mir, zu welchem Issue in docs/BACKLOG.md er gehört. Gibt es keins, schreib eins im Format von docs/BACKLOG.md – mit Akzeptanzkriterien auch für keine Daten, Laden und Fehler – und trag es dort ein. Warte dann auf mein Okay. Bau den Entwurf auf einem neuen Branch, main bleibt unberührt. Nutze die Farben und Komponenten, die es im Projekt schon gibt, keine neuen Farbwerte in Komponenten. Widersprechen sich Entwurf und Issue, frag mich. Bevor du „fertig“ sagst: npm run lint und npm run build fehlerfrei, den Screen bei 375 und 1280 px ansehen (Screenshots nicht committen), ein Beleg pro Akzeptanzkriterium. Dann push und erstelle einen Pull Request mit einer Beschreibung ohne Fachjargon.</Prompt>
   <p class="small">Kann Claude Code den Link nicht lesen? Dann im Entwurf <em>Share</em> → <em>Export</em> → <em>HTML</em> herunterladen, die Datei in den Projektordner ziehen und im Auftrag statt des Links den Dateinamen nennen.</p>
-  <p>Prüft selbst im Browser, dann wie in Übung 8: Pull Request, grüner Haken, zusammenführen.</p>
+  <p>Prüft selbst im Browser. Zusammenführen erst nach f) – dort vergleicht ihr noch mit dem Entwurf.</p>
 
   <h3 id="uebung-9-f">f) Entwurf und Ergebnis vergleichen (10 min)</h3>
   <p>Jetzt seht ihr, was zwischen Entwurf und Code verloren gegangen ist – oder dazugekommen. Ihr braucht zwei Fenster nebeneinander:</p>
   <ol class="steps">
     <li><strong>Entwurf öffnen</strong> In Claude Design oben rechts das Dreieck und den Handy-Prototyp wählen, wie im Nutzertest.</li>
-    <li><strong>Gebaute Seite öffnen</strong> Den Link zur Vercel-Vorschau aus eurem Pull Request – oder <code>http://localhost:3000</code>, falls ihr noch nicht gepusht habt. Auf Handy-Größe stellen mit der Geräte-Ansicht in Chrome: Mac <kbd>⌘</kbd> <kbd>⌥</kbd> <kbd>I</kbd>, dann <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>M</kbd>; Windows <kbd>F12</kbd>, dann <kbd>Strg</kbd> <kbd>Umschalt</kbd> <kbd>M</kbd> (<a href="/setup#devtools">so sieht das aus</a>).</li>
+    <li><strong>Gebaute Seite öffnen</strong> Den Link zur Vercel-Vorschau aus eurem Pull Request. Auf Handy-Größe stellen mit der Geräte-Ansicht in Chrome: Mac <kbd>⌘</kbd> <kbd>⌥</kbd> <kbd>I</kbd>, dann <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>M</kbd>; Windows <kbd>F12</kbd>, dann <kbd>Strg</kbd> <kbd>Umschalt</kbd> <kbd>M</kbd> (<a href="/setup#devtools-2">so sieht das aus</a>).</li>
     <li><strong>Nebeneinander legen</strong> Mac: Maus auf den grünen Knopf oben links im Fenster und „links“ bzw. „rechts“ anordnen wählen. Windows: <kbd>Win</kbd> + <kbd>←</kbd> und <kbd>Win</kbd> + <kbd>→</kbd>.</li>
-    <li><strong>Vergleichen</strong> Geht den Screen von oben nach unten durch: Was sieht anders aus – Farben, Abstände, Texte, Reihenfolge? Was hat Claude Code dazuerfunden, weil der Entwurf es nicht gezeigt hat – leere Liste, Laden, Fehler, was beim Klick passiert? Was fehlt? Danach dasselbe in Laptop-Breite (Geräte-Ansicht aus).</li>
+    <li><strong>Vergleichen</strong> Geht den Screen von oben nach unten durch: Was sieht anders aus – Farben, Abstände, Texte, Reihenfolge? Was hat Claude Code dazuerfunden, weil der Entwurf es nicht gezeigt hat – leere Liste, Laden, Fehler, was beim Klick passiert? Was fehlt? Danach dasselbe am Laptop: im Entwurf den Laptop-Prototyp wählen, bei der gebauten Seite die Geräte-Ansicht ausschalten und das Fenster wieder groß machen.</li>
     <li><strong>Kleines reparieren lassen</strong> Stört euch ein Unterschied, macht von beiden Fenstern einen Screenshot (<a href="/setup#lokal-screenshots">so geht's</a>) und gebt sie Claude Code:</li>
   </ol>
-  <Prompt label="Unterschiede beheben">Hier sind zwei Screenshots: zuerst mein Entwurf, dann die gebaute Seite. [Screenshots einfügen] Nenn mir die Unterschiede als Liste. Behebe dann nur diese: [welche], auf demselben Branch, mit den Farben und Komponenten, die es im Projekt schon gibt. Push danach, damit die Vorschau im Pull Request aktuell ist.</Prompt>
+  <Prompt label="Unterschiede beheben" note="Claude listet erst auf und wartet. Dann sagt ihr, welche Nummern es beheben soll.">Hier sind zwei Screenshots: zuerst mein Entwurf, dann die gebaute Seite. [Screenshots einfügen] Nenn mir die Unterschiede als nummerierte Liste und warte – ich sage dir, welche du behebst. Bleib dafür auf dem Branch des Pull Requests, nimm die Farben und Komponenten, die es im Projekt schon gibt, und push danach, damit die Vorschau aktuell ist.</Prompt>
+  <p>Passt alles: wie in Übung 8 grüner Haken, zusammenführen.</p>
   <details class="fallback" id="uebung-9-f-optional">
-    <summary>Optional: Reflexion und Vorher-Nachher-Bilder für die Demo</summary>
-    <p><strong>Bilder:</strong> Speichert die beiden Screenshots von oben – Entwurf und Ergebnis am Handy. In der Demo zeigt ihr sie nebeneinander. Ohne Bilder geht es auch: dann beide Fenster live nebeneinander zeigen.</p>
-    <p><strong>Reflexion:</strong> Ein Satz für euch selbst, was ihr beim nächsten Mal von Anfang an ins Issue schreibt:</p>
-    <Prompt label="Reflexion ergänzen">Häng an docs/REFLEXION.md einen Satz an: Beim nächsten Entwurf schreibe ich gleich ins Issue, [was Claude Code diesmal erfinden musste].</Prompt>
+    <summary>Optional: Vorher-Nachher-Bilder und ein Satz für die Reflexion</summary>
+    <p><strong>Bilder:</strong> Macht von beiden Fenstern je einen Screenshot, Entwurf und Ergebnis am Handy (<a href="/setup#lokal-screenshots">so geht's</a>), und legt sie euch für die Demo bereit. Ohne Bilder geht es auch: dann in der Demo beide Fenster live nebeneinander zeigen.</p>
+    <p><strong>Reflexion:</strong> Merkt euch einen Satz: Was schreibt ihr beim nächsten Entwurf gleich ins Issue, damit Claude Code nichts erfinden muss? Er kommt in die <a href="#abschluss">Reflexion am Ende des Tages</a>.</p>
   </details>
 
   <hr />
