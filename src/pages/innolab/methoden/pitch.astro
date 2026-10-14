@@ -1,0 +1,106 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Pitch">
+  <span class="eyebrow">Innolab · Tag 6 · Methode</span>
+  <h1>Pitch</h1>
+  <p class="lead">Das finale Sprint-Review: eine Geschichte, ein Produkt, das live läuft, und Belege für jede Behauptung.</p>
+  <Orientierung seite="innolab/methoden/pitch" leiste={false} />
+  <MethodenKarte slug="pitch" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>An Tag 7 stellt ihr euer Produkt vor – Markus, Louis und Gäste sind die Stakeholder im letzten Review. Ihr müsst dafür nichts Neues erfinden. Alles liegt schon in eurem Repo: die Geschichte in der Concept Story, der Ablauf für die Demo in der Usage Story, die Belege im Entscheidungslog, in den Testbefunden und im Sprint-Protokoll.</p>
+  <p>Ein Pitch überzeugt nicht durch Begeisterung, sondern durch drei Dinge, die zusammenpassen: Die Geschichte macht das Problem spürbar, die Demo zeigt, dass die Lösung existiert, die Belege zeigen, dass beides stimmt. Fehlt eines, merkt man es sofort – eine Geschichte ohne Demo ist ein Versprechen, eine Demo ohne Geschichte eine Funktionsliste, beides ohne Belege eine Behauptung.</p>
+
+  <h2 id="aufbau">Der Aufbau: 12 Minuten</h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Teil</th><th>Dauer</th><th>Woraus</th></tr></thead>
+      <tbody>
+        <tr><th>Geschichte</th><td>2 min</td><td>Concept Story: Exposition bis Krise. Hört vor dem Höhepunkt auf – den zeigt die Demo.</td></tr>
+        <tr><th>Demo</th><td>4 min</td><td>Usage Story, live am Handy, endet am Höhepunkt</td></tr>
+        <tr><th>Belege</th><td>4 min</td><td>Was ihr geglaubt habt, was sich gezeigt hat, was ihr deshalb entschieden habt; die Messung</td></tr>
+        <tr><th>Modell und nächster Schritt</th><td>2 min</td><td>Wer zahlt wofür, an welcher Annahme alles hängt, was ihr als Nächstes prüft</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Danach 10 Minuten Fragen. Die Origin Story ist euer Einstieg, wenn ihr lieber mit einer Person anfangt als mit einer Situation.</p>
+
+  <h3 id="demo">Regeln für die Demo</h3>
+  <ul>
+    <li><strong>Live, auf dem Handy, gespiegelt.</strong> Die Produktions-URL, nicht localhost.</li>
+    <li><strong>Eine Geschichte, kein Rundgang.</strong> Ihr spielt die Usage Story durch und hört am Höhepunkt auf. Keine Einstellungen, kein „und hier gibt es noch …“.</li>
+    <li><strong>Daten vorbereitet.</strong> Was die Demo braucht, liegt schon in der Datenbank – ihr tippt nur, was die Hauptfigur tippen würde.</li>
+    <li><strong>Plan B.</strong> Eine Bildschirmaufnahme derselben Demo, am Vortag aufgenommen. Wenn das WLAN streikt, sagt ihr das und spielt das Video.</li>
+  </ul>
+
+  <h3 id="belege">Belege statt Adjektive</h3>
+  <p>„Die Nutzer*innen lieben es“ ist keine Aussage. „4 von 5 haben den Höhepunkt ohne Hilfe erreicht (U1)“ ist eine. Jede Behauptung über Menschen bekommt eine ID – ein Zitat, einen Testbefund, eine Zahl aus der Messung. Und zeigt mindestens eine Annahme, die sich als falsch herausgestellt hat: Sie beweist, dass ihr wirklich getestet habt, statt eure Idee zu bestätigen.</p>
+  <p>Kleine Zahlen sind kein Makel, wenn ihr sie als das nennt, was sie sind. „5 von 6 Abholungen vor der Abfahrt, drei Personen an zwei Morgen“ ist ehrlich und genau. „83 % Erfolgsquote“ verschweigt, dass es sechs Fälle waren.</p>
+
+  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+  <Prompt label="Beispiel · docs/PITCH.md">## Geschichte (2 min)
+Pendler*innen, 7:15–7:45, Zug nach Wien oder Linz. Die Bar ist gut, nur nicht in sechs Minuten.
+Die Schlange ist länger als die Zeit bis zur Abfahrt (P1, P2). Der Automat ist schneller, der Thermobecher gratis.
+→ Übergang: „Lena kommt um 7:27 in die Halle. Ihr Zug fährt 7:38.“
+
+## Demo (4 min)
+QR-Code an der Hallentür → Cappuccino → Zug 7:38 aus der Liste → „Fertig 7:31. Dein Zug fährt 7:38.“ Ende.
+Daten: drei offene Bestellungen vor Lena. Plan B: video-demo.mp4
+
+## Belege (4 min)
+- Geglaubt: Pendler*innen wollen schon vor der Ankunft bestellen (A1). Gezeigt: 3 von 5 entscheiden erst beim Ankommen (T1: I1-2, I3-1, I5-3). Entschieden: kein Vorbestellen, bestellen im Gehen.
+- Getestet: Zug eintippen dauert zu lang, 5 von 5 suchten eine Liste (U2). Entschieden: Zugliste in Sprint 1.
+- Gemessen: 5 von 6 Abholungen vor der Abfahrt – drei Personen an zwei Morgen. Das Outcome (4 von 5 an drei Tagen) ist damit noch nicht belegt.
+
+## Modell und nächster Schritt (2 min)
+Kaffee zum normalen Preis, Gebäck als Angebot in der Bestellung.
+Alles hängt daran, ob die Bar 40 statt 25 Bestellungen in 30 Minuten schafft.
+Nächster Test: eine Woche mit echter Bar, gemessen an Abholungen pro Morgen.</Prompt>
+  <p>Die Zahlen bei „Gemessen“ sind ausgedacht – an der Form erkennt ihr, wie eure aussehen sollten.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+  <ol>
+    <li><strong>Input (20 min):</strong> Aufbau, Regeln für die Demo, Belege.</li>
+    <li><strong>Gerüst (20 min, allein):</strong> <code>docs/PITCH.md</code> nach der Vorlage, Stichworte statt Fließtext. Jede Behauptung bekommt ihre ID.</li>
+    <li><strong>Erste Probe (20 min):</strong> Jede*r erzählt den Teil „Geschichte“ in zwei Minuten, die anderen beiden stoppen die Zeit und sagen, wo sie ausgestiegen sind.</li>
+  </ol>
+  <p>Bis Tag 7 probt ihr den ganzen Pitch mindestens zweimal laut, einmal mit Claude als skeptischem Gegenüber:</p>
+  <Prompt label="Skeptischer Investor · Claude Code">Lies docs/PITCH.md, docs/ENTSCHEIDUNGEN.md, docs/TESTS.md und docs/SPRINTS.md. Du bist eine skeptische Investorin, die schon viele Pitches gehört hat. Stell mir fünf Fragen, eine nach der anderen, und warte jeweils auf meine Antwort. Frag dort nach, wo eine Behauptung keinen Beleg hat, wo eine Zahl klein ist oder wo das Geschäftsmodell an einer ungeprüften Annahme hängt. Bewerte meine Antworten erst am Ende, in drei Sätzen. Ändere keine Datei.</Prompt>
+  <Callout type="tip" title="Wer stellt die Fragen an Tag 7?">
+    <p>Markus, Louis und die Gäste – und die anderen beiden aus eurem Team, die euer Produkt als Developers am besten kennen. Bereitet für jedes der anderen Produkte eine Frage vor, die ihr wirklich beantwortet haben wollt.</p>
+  </Callout>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/PITCH.md"># Pitch — [Produkt]
+
+## Geschichte (2 min)
+[Exposition, Auslöser, Krise – aus docs/STORYS.md; mit Pain-IDs]
+→ Übergang zur Demo: [ein Satz, der die Hauptfigur in die Situation bringt]
+
+## Demo (4 min)
+[Schritte der Usage Story bis zum Höhepunkt]
+Daten: [was vorbereitet sein muss] · Plan B: [Video]
+
+## Belege (4 min)
+- Geglaubt: [...] ([A…]). Gezeigt: [...] ([T…/U…/Zitat-ID]). Entschieden: [...]
+- Gemessen: [Zahl] – [wie viele Personen, wie lange]. Outcome: [belegt / noch nicht, warum]
+
+## Modell und nächster Schritt (2 min)
+[Wer zahlt wofür] · Hängt an: [Annahme] · Nächster Test: [...]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="pitch" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Welche eurer Annahmen hat sich als falsch herausgestellt – und traut ihr euch, mit ihr den Teil „Belege“ zu beginnen?</p>
+  <p class="small muted">Story-Bogen nach Donna Lichaw, <em>The User’s Journey</em> (2016).</p>
+
+  <FooterNav prev={{ href: '/innolab/tag-6', t: 'Tag 6 · Bauen & Review' }} next={{ href: '/innolab/tag-6#abschluss', t: 'Tag 6 · Abschluss' }} />
+</Layout>

@@ -116,4 +116,9 @@ describe('methoden', () => {
     expect(sch.split('Linear-MCP').length - 1).toBe(1);
     expect(sch).not.toContain('Zum Abgleich');
   });
+
+  it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
+    const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
+    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/PRODUKT\.md, docs\/STORYS\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md, docs\/ENTSCHEIDUNGEN\.md\. /);
+  });
 });
