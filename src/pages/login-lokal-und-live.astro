@@ -7,6 +7,9 @@ import Schritte from '../components/Schritte.astro';
 import FooterNav from '../components/FooterNav.astro';
 import { bild } from '../components/anleitung-bilder';
 import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
+// Öffentliche Rohfassung der CLAUDE.md beider Vorlagen (Leihbar bzw. neues Projekt).
+const VORLAGE_LEIHBAR = 'https://raw.githubusercontent.com/markesdo/ndu-coding-2026/main/CLAUDE.md';
+const VORLAGE_PROJEKT = 'https://raw.githubusercontent.com/markesdo/ndu-projekt/main/CLAUDE.md';
 ---
 <Layout title="Login lokal & live">
   <span class="eyebrow">Nachtrag zu Tag 2 · 5 min</span>
@@ -27,12 +30,17 @@ import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
   <p>Vorschau-Adressen tragt ihr bewusst nicht ein: Ein Muster für alle Vorschauen ließe auch fremde <code>vercel.app</code>-Adressen zu.</p>
 
   <h2 id="claude">2 · Claude die Regel geben</h2>
-  <p>Die Liste hilft nur, wenn der Code die richtige Adresse mitschickt. In Claude, im Ordner eures Leihbar-Projekts:</p>
-  <Prompt label="Regel für Login-Weiterleitungen">{LOGIN_REGEL_PROMPT}</Prompt>
+  <p>Die Liste hilft nur, wenn der Code die richtige Adresse mitschickt. Die Regel dafür steht inzwischen in der <code>CLAUDE.md</code> der Kursvorlage. Claude holt sie sich dort ab – nur diesen einen Punkt, damit eure eigenen Ergänzungen in <code>CLAUDE.md</code> bleiben. In Claude, im Ordner eures Leihbar-Projekts:</p>
+  <Prompt label="Regel aus der Kursvorlage holen">Hol dir mit curl -s {VORLAGE_LEIHBAR} die aktuelle CLAUDE.md der Kursvorlage. Übernimm daraus nur den Punkt „Login-Weiterleitungen“ aus dem Abschnitt Tech-Stack in meine CLAUDE.md, an dieselbe Stelle – sonst änderst du nichts. Nenn mir kurz, welche weiteren Unterschiede es gibt, ohne sie zu übernehmen. Prüf dann, ob der Code schon irgendwo eine feste Adresse für Weiterleitungen verwendet, und sag es mir, bevor du etwas änderst.</Prompt>
+  <details class="fallback">
+    <summary>curl klappt nicht?</summary>
+    <p>Dann gebt Claude die Regel direkt:</p>
+    <Prompt label="Regel für Login-Weiterleitungen">{LOGIN_REGEL_PROMPT}</Prompt>
+  </details>
   <p>Findet Claude eine feste Adresse, lasst sie ersetzen und prüft danach mit <code>/ndu-check</code>. Zum Schluss <code>/ndu-commit</code> – auch wenn nur <code>CLAUDE.md</code> dazugekommen ist.</p>
 
   <h2 id="eigenes-projekt">3 · Dasselbe im eigenen Projekt</h2>
-  <p>Hat euer eigenes Projekt einen Login, wiederholt 1 und 2 dort: im Supabase-Projekt des eigenen Projekts und mit Claude im eigenen Ordner. Wer ein Projekt neu startet, macht es gleich mit, sobald der Login dazukommt (<a href="/neues-projekt#datenbank">Neues Projekt, Schritt 7</a>).</p>
+  <p>Hat euer eigenes Projekt einen Login, wiederholt 1 und 2 dort: im Supabase-Projekt des eigenen Projekts und mit Claude im eigenen Ordner. Im Prompt steht dann die Vorlage für neue Projekte: <code>{VORLAGE_PROJEKT}</code>. Wer ein Projekt neu startet, macht es gleich mit, sobald der Login dazukommt (<a href="/neues-projekt#datenbank">Neues Projekt, Schritt 7</a>).</p>
 
   <FooterNav prev={{ href: '/tag-3#stack', t: 'Tag 3 · Unser Stack' }} next={{ href: '/tag-3#konzept-7', t: 'Konzept 7' }} />
 </Layout>
