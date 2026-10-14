@@ -6,7 +6,7 @@
 // Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
-import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istOeffentlich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
+import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
 
 export const config = {
   matcher: ['/((?!_astro/|favicon\\.svg$|favicon\\.ico$|robots\\.txt$|og\\.png$|version\\.json$).*)'],
@@ -70,5 +70,5 @@ export default async function middleware(request: Request): Promise<Response> {
   if (url.pathname.startsWith('/api/')) {
     return new Response(JSON.stringify({ fehler: 'Nicht angemeldet' }), { status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8', ...NOINDEX } });
   }
-  return weiter(`/login?weiter=${encodeURIComponent(sichererPfad(url.pathname + url.search))}`);
+  return weiter(ohneAnmeldungZiel(url.pathname, url.search));
 }

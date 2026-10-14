@@ -78,6 +78,13 @@ export function istOeffentlich(pfad: string): boolean {
   return pfad === '/start' || pfad === '/start/';
 }
 
+// Ohne Anmeldung: Wer die Wurzel / aufruft (etwa die Domain aus einer Nachricht), sieht zuerst die Kurswahl auf /start –
+// mit derselben Suche, damit ?beamer erhalten bleibt. Jede andere Kursseite führt zum Kurspasswort und danach zurück.
+export function ohneAnmeldungZiel(pfad: string, suche: string): string {
+  if (pfad === '/') return `/start${suche}`;
+  return `/login?weiter=${encodeURIComponent(sichererPfad(pfad + suche))}`;
+}
+
 // Login-Formular: Rücksprung-Ziel plus Anker. Den Anker (#lokal …) sieht der Server nie – der Browser hängt ihn
 // nach der Umleitung an /login an. Er kommt nur dazu, wenn das Ziel noch keinen hat und das Ganze die Prüfung in
 // sichererPfad besteht; sonst bliebe statt nur des Ankers das ganze Ziel auf der Strecke (Rücksprung auf /).
