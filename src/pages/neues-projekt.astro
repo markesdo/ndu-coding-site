@@ -27,7 +27,7 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('setup/projekt-2-menue'), alt: 'Menü mit „Create a new repository“ und „Open in a codespace“', text: '<em>Create a new repository</em>.', marks: [{ x: 1122, y: 143, w: 166, h: 30 }] },
     { img: bild('setup/projekt-3-formular'), alt: 'Formular „Create a new repository“ mit Vorlage markesdo/ndu-projekt, dem Namen mensa-board, darunter „mensa-board is available“, Sichtbarkeit Public und Button „Create repository“', text: 'Oben muss <code>markesdo/ndu-projekt</code> als Vorlage stehen. Den Namen eures Projekts eintragen (1); steht darunter grün „… is available“, ist er frei. <em>Public</em> lassen (2), <em>Create repository</em> (3).', marks: [{ x: 598, y: 357, w: 466, h: 34, n: 1 }, { x: 946, y: 588, w: 105, h: 34, n: 2 }, { x: 934, y: 653, w: 131, h: 34, n: 3 }] },
   ]} />
-  <p>Dann Markus einladen wie in <a href="/setup#collaborator">Setup Schritt 8</a>: im neuen Repo <em>Settings</em> → <em>Collaborators</em> → <em>Add people</em> → <code>markesdo</code>.</p>
+  <p>Dann Markus einladen wie in <a href="/setup#collaborator">Setup Schritt 8</a>: im neuen Repo <em>Settings</em> → <em>Collaborators</em> → <em>Add people</em> → <code data-kopieren>markesdo</code>.</p>
 
   <h2 id="holen">2 · Das Repo öffnen</h2>
   <div data-nur="mac">
@@ -36,7 +36,7 @@ import { bild } from '../components/anleitung-bilder';
     <p>Was schon installiert ist, überspringt das Skript. Es holt das neue Repo in den Ordner <code>code</code> in eurem Benutzerordner, lädt die Pakete und öffnet VS Code mit genau diesem Projekt. Fragt VS Code: <em>Yes, I trust the authors</em>.</p>
   </div>
   <div data-nur="windows">
-    <p>VS Code öffnen, <em>File → New Window</em>, links <em>Source Control</em> → <em>Clone Repository</em> → <em>Clone from GitHub</em> und aus der Liste das <strong>neue</strong> Repo wählen – wie in <a href="/setup#lokal-repo">Setup, Repo klonen</a>. Danach im Terminal von VS Code <code>npm install</code>.</p>
+    <p>VS Code öffnen, <em>File → New Window</em>, links <em>Source Control</em> → <em>Clone Repository</em> → <em>Clone from GitHub</em> und aus der Liste das <strong>neue</strong> Repo wählen – wie in <a href="/setup#lokal-repo">Setup, Repo klonen</a>. Danach im Terminal von VS Code <code data-kopieren>npm install</code>.</p>
   </div>
   <p><strong>Claude starten</strong> im Terminal von VS Code: <code>claude</code>. Ist es das erste Mal auf diesem Laptop, kommen erst Farbschema und Anmeldung wie in <a href="/setup#claude-code">Setup Schritt 5</a>. Fragt Claude, ob ihr dem Ordner vertraut: <kbd>↓</kbd> auf <em>Yes, I trust this folder</em>, <kbd>Enter</kbd>.</p>
   <div data-nur="mac">
@@ -49,11 +49,11 @@ import { bild } from '../components/anleitung-bilder';
   </Callout>
 
   <h2 id="starten">3 · App starten</h2>
-  <p>In einem <strong>zweiten</strong> Terminal <code>npm run dev</code> und die App öffnen (<kbd>⌘</kbd>/<kbd>Strg</kbd> + Klick auf <code>http://localhost:3000</code>): eine leere Startseite „Mein Projekt“. Den richtigen Namen setzt gleich <code>/ndu-idee</code>.</p>
+  <p>In einem <strong>zweiten</strong> Terminal <code data-kopieren>npm run dev</code> und die App öffnen (<kbd>⌘</kbd>/<kbd>Strg</kbd> + Klick auf <code>http://localhost:3000</code>): eine leere Startseite „Mein Projekt“. Den richtigen Namen setzt gleich <code>/ndu-idee</code>.</p>
   <Schritte id="neu-start" nummer="3" steps={[
     { img: bild('lokal/neu-startseite'), alt: 'Leere Startseite im Browser: oben „Mein Projekt“, darunter groß „Mein Projekt“ und „Hier entsteht Mein Projekt.“', text: 'So sieht die App aus der Projekt-Vorlage aus: „Mein Projekt“ oben (1) und als Überschrift (2), sonst nichts.', marks: [{ x: 286, y: 16, w: 120, h: 34, n: 1 }, { x: 286, y: 108, w: 262, h: 54, n: 2 }] },
   ]} />
-  <p>Steht im Terminal stattdessen <code>next: command not found</code> (Windows: <code>'next' is not recognized</code>), fehlen die Pakete: erst <code>npm install</code>, dann noch einmal <code>npm run dev</code>.</p>
+  <p>Steht im Terminal stattdessen <code>next: command not found</code> (Windows: <code>'next' is not recognized</code>), fehlen die Pakete: erst <code data-kopieren>npm install</code>, dann noch einmal <code data-kopieren>npm run dev</code>.</p>
   <details class="fallback" id="ndu-neu-fehlt">
     <summary>Ihr seht Leihbar statt „Mein Projekt“?</summary>
     <p>Dann habt ihr das Repo aus der Leihbar-Vorlage <code>ndu-coding-2026</code> angelegt. Neu anlegen müsst ihr es nicht – ein Befehl räumt Leihbar weg und setzt euren Produktnamen ein. Claude prüft vorher, ob das Repo wirklich neu ist, zählt auf, was es ändert, und wartet auf euer Okay.</p>
