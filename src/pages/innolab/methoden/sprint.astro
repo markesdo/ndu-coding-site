@@ -1,0 +1,113 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Sprint">
+  <span class="eyebrow">Innolab · Tag 5 · Methode</span>
+  <h1>Sprint</h1>
+  <p class="lead">Ein Sprint von innen: was „fertig“ heißt, wie ein Issue zu Claude kommt, wie ihr plant, prüft und besser werdet.</p>
+  <Orientierung seite="innolab/methoden/sprint" leiste={false} />
+  <MethodenKarte slug="sprint" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Die Events kennt ihr aus <a href="/innolab/methoden/scrum#scrum">Scrum im Team</a> und vom Lego. Hier geht es darum, sie mit echten Produkten zu füllen. Ihr habt zwei Sprints: Sprint 1 von Tag 5, 13:00 bis Tag 6, 12:00; Sprint 2 von Tag 6, 13:00 bis zur Präsentation. Am Ende jedes Sprints steht ein <strong>Inkrement</strong> – live, am Handy nutzbar und nach der Definition of Done fertig.</p>
+  <p>Alles, was ihr dabei entscheidet, kommt in <code>docs/SPRINTS.md</code>: Sprint-Ziel, Auswahl, Review, Retro. Daraus holt ihr euch an Tag 7 die Belege für den Pitch.</p>
+
+  <h2 id="dod">Definition of Done: Die Messung gehört dazu</h2>
+  <p>In <code>docs/TEAM.md</code> steht schon, was jedes Issue erfüllen muss. Heute kommt eine Zeile dazu: <strong>Das Ereignis, das eure Outcome-Metrik misst, wird gespeichert.</strong> Ohne diese Zeile könnt ihr nach dem Sprint nur sagen, dass etwas gebaut ist – nicht, ob es wirkt.</p>
+  <ul>
+    <li>Ein Ereignis ist eine Zeile in einer Tabelle <code>ereignisse</code> in Supabase: was passiert ist, wann, und eine zufällige Kennung pro Gerät. Kein Name, keine E-Mail – sagt euren Testpersonen, dass ihr das misst.</li>
+    <li>Das Ereignis einzuführen ist ein eigenes Issue in Sprint 1, mit Akzeptanzkriterien und Schätzung wie jedes andere.</li>
+    <li>Ab dann gilt für jedes Issue: Nach dem Merge kommt das Ereignis noch an.</li>
+  </ul>
+  <p><strong>Am Beispiel:</strong> Das Outcome der Kaffeebar lautet „4 von 5 Testpersonen steigen an drei Tagen hintereinander mit Kaffee in ihren Zug“. Das Ereignis ist <em>abgeholt</em>: Die Bar tippt bei der Übergabe darauf, gespeichert werden Abholzeit, Abfahrtszeit und die Kennung des Geräts. Liegt die Abholzeit vor der Abfahrt, zählt der Tag. Daraus wird das Issue „Bar markiert Bestellung als abgeholt, das Ereignis wird gespeichert“ – im Poker nachgeschätzt mit 2.</p>
+
+  <h2 id="spec">Das Issue ist die Spezifikation</h2>
+  <p>Claude baut aus dem Issue, nicht aus eurem Kopf. Was im Issue fehlt, ergänzt Claude nach eigenem Ermessen – oder fragt, wenn ihr es verlangt. Den Ablauf kennt ihr aus dem Coding-Kurs (<a href="/konzepte/linear#prompts">Prompts für den Alltag</a>); im Team kommen drei Regeln dazu:</p>
+  <ol>
+    <li><strong>Zuweisen vor Anfangen.</strong> Wer ein Issue nimmt, weist es sich in Linear zu – auch bei fremden Produkten. So baut nie jemand dasselbe doppelt.</li>
+    <li><strong>Fragen gehen ins Issue.</strong> Versteht ihr ein Kriterium nicht, kommt die Frage als Kommentar ins Issue, nicht in den Chat. Der Product Owner antwortet dort und passt das Issue an.</li>
+    <li><strong>Done setzt der Product Owner.</strong> Ihr setzt auf In Review, mit Beleg je Kriterium und Link zum Pull Request. Eine andere Person prüft den Pull Request, der Product Owner nimmt im Browser ab.</li>
+  </ol>
+  <Callout type="warn" title="Zugang zu fremden Repos">
+    <p>Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein. Die Schlüssel aus <code>.env.local</code> gebt ihr einander direkt – nie in ein Issue, einen Kommentar oder das Repo.</p>
+  </Callout>
+
+  <h2 id="planning">Sprint Planning</h2>
+  <p>Drei Fragen, in dieser Reihenfolge – für jedes Produkt:</p>
+  <ol>
+    <li><strong>Warum ist der Sprint wertvoll?</strong> Ein Sprint-Ziel in einem Satz: was danach jemand kann. Der Product Owner schlägt es vor, das Team stimmt zu.</li>
+    <li><strong>Was schaffen wir?</strong> Die Issues, die das Ziel erreichen, von oben im Backlog. Die Summe der Punkte muss zur Zeit passen.</li>
+    <li><strong>Wie?</strong> Wer nimmt was zuerst? Jede*r baut in mindestens einem fremden Produkt.</li>
+  </ol>
+  <p>Für Sprint 1 habt ihr noch keine Erfahrungswerte. Plant knapp: Beim Lego habt ihr gesehen, dass Teams anfangs zu viel versprechen. Für Sprint 2 gilt dann die Faustregel <em>yesterday’s weather</em>: nicht mehr Punkte als im Sprint davor wirklich fertig wurden.</p>
+  <p><strong>Am Beispiel:</strong> Sprint-Ziel „Pendler*innen bestellen im Gehen und sehen, ob ihr Kaffee vor dem Zug fertig ist.“ Auswahl: Issue 1 (2), 2 (5), 3 (3) und das Mess-Issue (2) – 12 Punkte. Issue 5 (Abholnummer, 2) und 4a (Zugliste, 3) warten auf Sprint 2: Ohne sie ist das Ziel erreicht.</p>
+  <p>In Linear legt ihr einen Cycle pro Sprint an und zieht die gewählten Issues hinein.</p>
+
+  <h2 id="daily">Daily Scrum</h2>
+  <p>Fünfzehn Minuten, im Stehen, am Sprint-Ziel entlang: Was hat mich dem Ziel nähergebracht? Was mache ich als Nächstes? Was blockiert mich? Probleme werden hier genannt, nicht gelöst – das macht ihr danach, mit denen, die es betrifft. Zwischen den Kurstagen schriftlich in Linear, wie in <code>docs/TEAM.md</code> vereinbart.</p>
+
+  <h2 id="review">Sprint Review</h2>
+  <p>Das Review ist keine Vorführung, sondern eine Arbeitssitzung mit Stakeholdern – im Kurs Markus und Louis. Pro Produkt:</p>
+  <ol>
+    <li>Der Product Owner sagt das Sprint-Ziel und ob es erreicht ist.</li>
+    <li>Jemand anderes zeigt das Inkrement live, am Handy, entlang der Usage Story.</li>
+    <li>Was haben die Tests gezeigt, was sagt die Messung? Auch wenn es erst wenige Zeilen sind.</li>
+    <li>Was ändert sich deshalb am Backlog? Neue Issues, andere Reihenfolge, Gestrichenes.</li>
+  </ol>
+
+  <h2 id="retro">Retrospektive: Lightning Decision Jam</h2>
+  <p>Die Retro fragt nicht nach dem Produkt, sondern nach eurer Zusammenarbeit. Sie endet mit <strong>einer</strong> Maßnahme, nicht mit einer Wunschliste. Der Lightning Decision Jam schafft das in 30 Minuten – fast alles still, damit nicht die lauteste Stimme entscheidet:</p>
+  <ol>
+    <li><strong>Was lief gut (3 min):</strong> still auf Zettel, kurz vorlesen.</li>
+    <li><strong>Was hat uns gebremst (5 min):</strong> still, ein Problem pro Zettel.</li>
+    <li><strong>Abstimmen (3 min):</strong> zwei Punkte pro Person, auf die Probleme, nicht auf die eigenen.</li>
+    <li><strong>Umformulieren (3 min):</strong> Das Problem mit den meisten Punkten wird eine HMW-Frage – wie an <a href="/innolab/methoden/hmw">Tag 2</a>.</li>
+    <li><strong>Lösungen (5 min):</strong> still, so viele wie möglich.</li>
+    <li><strong>Aufwand und Wirkung (5 min):</strong> die Lösungen in ein Raster mit zwei Achsen legen.</li>
+    <li><strong>Eine Maßnahme (6 min):</strong> die mit viel Wirkung und wenig Aufwand, als konkreter Schritt – wer, was, ab wann. In der nächsten Retro prüft ihr zuerst, ob sie gewirkt hat.</li>
+  </ol>
+
+  <h2 id="vorgehen">So geht ihr vor (150 min)</h2>
+  <ol>
+    <li><strong>Definition of Done und Spezifikation (30 min, Tag 5):</strong> Mess-Ereignis festlegen, DoD in <code>docs/TEAM.md</code> ergänzen, Mess-Issue anlegen und schätzen; Collaborator einladen.</li>
+    <li><strong>Sprint Planning (45 min, Tag 5):</strong> 15 Minuten pro Produkt. Cycle in Linear, <code>docs/SPRINTS.md</code> anlegen.</li>
+    <li><strong>Daily (15 min, Tag 6).</strong></li>
+    <li><strong>Review (30 min, Tag 6):</strong> zehn Minuten pro Produkt, Ergebnis in <code>docs/SPRINTS.md</code>.</li>
+    <li><strong>Retro (30 min, Tag 6):</strong> eine für das ganze Team; die Maßnahme in alle drei <code>docs/SPRINTS.md</code>.</li>
+  </ol>
+  <Prompt label="Sprint-Ziel prüfen · Claude Code">Lies docs/SPRINTS.md, docs/PRODUKT.md und über den Linear-MCP die Issues im aktuellen Cycle unseres Projekts. Erreichen diese Issues zusammen das Sprint-Ziel? Nenn höchstens drei Lücken oder Issues, die für das Ziel nicht nötig sind. Ändere nichts.</Prompt>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/SPRINTS.md"># Sprints — [Produkt]
+
+## Sprint 1 · [Tag 5, 13:00] – [Tag 6, 12:00]
+Sprint-Ziel: [ein Satz: was danach jemand kann]
+Auswahl: [Kennung] ([Punkte]) · [...] — Summe: [Punkte]
+
+### Review
+- Ziel erreicht: [ja / teilweise / nein, warum]
+- Fertig: [Kennungen, Summe der Punkte]
+- Tests und Messung: [was sich gezeigt hat, mit Befund-IDs oder Zahlen]
+- Änderungen am Backlog: [neu, verschoben, gestrichen]
+
+### Retro
+- Maßnahme: [konkreter Schritt] · verantwortlich: [Name] · geprüft: [wann]
+
+## Sprint 2 · [Tag 6, 13:00] – [Präsentation]
+[...]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="sprint" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Welches Ereignis zeigt bei euch, dass sich für Menschen etwas verbessert hat – nicht nur, dass jemand geklickt hat? Wenn ihr es nicht speichern könnt, ohne jemanden zu identifizieren: Was misst ihr stattdessen?</p>
+  <p class="small muted">Nach Ken Schwaber & Jeff Sutherland, <em>The Scrum Guide</em> (2020); Lightning Decision Jam nach AJ&amp;Smart.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/schaetzen', t: 'Schätzen' }} next={{ href: '/innolab/tag-5#bauen', t: 'Tag 5 · Bauen' }} />
+</Layout>
