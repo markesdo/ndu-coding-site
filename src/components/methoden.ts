@@ -127,7 +127,7 @@ export const METHODEN: Methode[] = [
   {
     slug: 'synthese', name: 'Interview-Synthese', tag: 2, dauer: 60,
     frage: 'Welche Muster zeigen sich über alle Interviews?',
-    braucht: ['transkripte'], ergibt: ['synthese'],
+    braucht: ['transkripte', 'annahmen'], ergibt: ['synthese'],
     pruefliste: [
       'Jedes Thema ist ein Satz über Verhalten oder Erleben – kein Stichwort wie „Wartezeit“.',
       'Jedes Thema nennt Zitat-IDs aus mindestens zwei Interviews, oder es ist als Einzelfall markiert.',
@@ -135,7 +135,7 @@ export const METHODEN: Methode[] = [
       'Mindestens ein Thema widerspricht einer Annahme oder hat euch überrascht.',
       'In der Annahmen-Map ist die Spalte „Beleg“ nachgetragen.',
     ],
-    ki: 'Clustert nach euch ein zweites Mal – jedes Thema nur mit Zitat-ID.',
+    ki: 'Clustert nach euch ein zweites Mal – jedes Thema nur mit wörtlichem Zitat und Datei.',
   },
   {
     slug: 'kundenprofil', name: 'Kundenprofil', tag: 2, dauer: 75,
@@ -190,7 +190,7 @@ export const METHODEN: Methode[] = [
       'Die Auswahl entstand durch stilles Abstimmen; die Begründung steht dabei.',
       'Die gewählte Idee beantwortet eine ausgewählte HMW-Frage und nennt deren ID.',
     ],
-    ki: 'Erst nach Crazy 8s und Brainwriting: Analogien aus anderen Branchen, sehr verschiedene Personas, naiver Mentee.',
+    ki: 'Erst nach den eigenen Runden: Analogien aus anderen Branchen, die Sicht sehr verschiedener Nutzer*innen, Fragen als neugierige*r Neue*r im Team.',
   },
   {
     slug: 'value-map', name: 'Value Map & Fit', tag: 3, dauer: 60,
@@ -296,3 +296,18 @@ export const erzeugtVon = (id: string): Methode | undefined => METHODEN.find((m)
 
 /** Methoden eines Kurstags, in Kursreihenfolge. */
 export const methodenVonTag = (tag: number): Methode[] => METHODEN.filter((m) => m.tag === tag);
+
+/** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
+ *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. den Leitfaden statt aller Interview-Dateien). */
+export function pruefPrompt(m: Methode, pfad?: string): string {
+  if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
+  const pfade = pfad ? [pfad] : m.ergibt.map((id) => artefakt(id)!.pfad).filter(Boolean);
+  // Viele Punkte lassen sich nur gegen die Vorarbeit prüfen (Zitate gegen Transkripte, IDs gegen das Kundenprofil).
+  const abgleich = [...new Set(m.braucht.map((id) => artefakt(id)!.pfad).filter((p): p is string => !!p && !pfade.includes(p)))];
+  return [
+    `Lies ${pfade.join(' und ')}.${abgleich.length ? ` Zum Abgleich lies auch ${abgleich.join(', ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
+    ...m.pruefliste.map((p, i) => `${i + 1}. ${p}`),
+    '',
+    'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um und ändere keine Datei – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
+  ].join('\n');
+}
