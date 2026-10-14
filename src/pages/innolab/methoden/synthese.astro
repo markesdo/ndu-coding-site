@@ -1,0 +1,75 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Interview-Synthese">
+  <span class="eyebrow">Innolab · Tag 2 · Methode</span>
+  <h1>Interview-Synthese</h1>
+  <p class="lead">Aus fünf Gesprächen werden wenige Aussagen, die jede*r im Team mit Zitaten belegen kann.</p>
+  <Orientierung seite="innolab/methoden/synthese" leiste={false} />
+  <MethodenKarte slug="synthese" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Nach fünf Interviews habt ihr viele Eindrücke und meistens schon eine Lieblingsgeschichte. Die Synthese schützt davor, nur diese eine weiterzuerzählen. Ihr zerlegt die Transkripte in einzelne Beobachtungen, gruppiert sie und formuliert für jede Gruppe ein <strong>Thema</strong>: einen Satz darüber, was Menschen tun oder erleben. Jedes Thema muss sich mit Zitaten aus mehreren Interviews belegen lassen.</p>
+  <p>Zitat-IDs machen das prüfbar: <strong>I3-4</strong> heißt Interview 3, vierte markierte Stelle. Wer später fragt „Woher wisst ihr das?“, bekommt eine ID statt eines Gefühls.</p>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <p>Fünf Pendler*innen, je 25 Minuten. Aus rund 40 Beobachtungen in Miro entstehen vier Themen:</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>ID</th><th>Thema</th><th>Belege</th></tr></thead>
+      <tbody>
+        <tr><th>T1</th><td>Pendler*innen entscheiden spontan beim Ankommen, ob sie Kaffee holen – nicht vorher.</td><td>I1-2 „Kommt drauf an, wie ich drauf bin.“ · I3-1 · I5-3</td></tr>
+        <tr><th>T2</th><td>Die Wartezeit wird erst knapp vor der Abfahrt schlimm; ab etwa fünf Minuten davor geben sie auf.</td><td>I2-4 „Wenn ich auf die Uhr schauen muss, geh ich.“ · I3-3 · I4-2</td></tr>
+        <tr><th>T3</th><td>Der Automat gilt als Notlösung, über die man sich ärgert.</td><td>I1-5 · I4-4 „Dann halt die Brühe.“</td></tr>
+        <tr><th>T4</th><td>Einzelfall: bestellt für Kolleg*innen per WhatsApp mit.</td><td>I5-6</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>T1 widerspricht A1</strong>, der riskantesten Annahme von Tag 1 („Pendler*innen wollen ihren Kaffee schon vor der Ankunft bestimmen“). Das ist kein Rückschlag, sondern das wertvollste Ergebnis des Tages: In der Annahmen-Map wandert A1 nach rechts unten – wichtig, aber widerlegt –, und im Entscheidungslog steht eine neue Zeile.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+  <ol>
+    <li><strong>Markieren (15 min, allein):</strong> In jedem Transkript Stellen markieren, an denen jemand etwas tut, fühlt oder umgeht. Jede Stelle bekommt eine ID (I1-1, I1-2 …) und kommt als Sticky nach Miro.</li>
+    <li><strong>Clustern (15 min, allein):</strong> Stickies verschieben, bis Gruppen entstehen. Gruppen nicht vorher festlegen.</li>
+    <li><strong>Themen formulieren (10 min):</strong> Pro Gruppe ein Satz. Gruppen mit nur einem Interview als Einzelfall markieren.</li>
+    <li><strong>Zweiter Blick mit Claude (10 min):</strong> Claude clustert unabhängig von euch. Was hat es gefunden, was ihr übersehen habt – und was erfindet es?</li>
+    <li><strong>Festhalten (10 min):</strong> <code>docs/interviews/SYNTHESE.md</code>, Belege in der Annahmen-Map nachtragen, Entscheidungslog.</li>
+  </ol>
+
+  <h2 id="claude">Zweiter Blick mit Claude</h2>
+  <p>Erst nachdem eure eigenen Themen stehen – sonst übernehmt ihr Claudes Sortierung und denkt nicht mehr selbst. Die Transkripte müssen anonymisiert sein.</p>
+  <Prompt label="Zweiter Blick · Claude Code">Lies die Transkripte in docs/interviews/ (I1.md bis I5.md), aber nicht SYNTHESE.md. Fass zusammen, welche Muster sich über die Interviews zeigen: höchstens fünf Themen, jedes als ein Satz über Verhalten oder Erleben. Belege jedes Thema mit wörtlichen Zitaten und nenn dazu die Datei. Ein Thema, das nur in einem Interview vorkommt, markierst du als Einzelfall. Erfinde keine Zitate; findest du für ein Thema kein wörtliches Zitat, lass es weg. Schreib nichts in Dateien.</Prompt>
+  <Callout type="warn" title="Zitate nachprüfen">
+    <p>Sprachmodelle glätten Zitate gern oder erfinden sie. Sucht jedes Zitat, das ihr übernehmt, im Transkript (⌘F). Findet ihr es nicht, gilt es nicht.</p>
+  </Callout>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/interviews/SYNTHESE.md"># Synthese — [Produkt]
+
+Stand: [Datum] · Interviews: I1–I[n]
+
+| ID | Thema (ein Satz über Verhalten oder Erleben) | Belege (Zitat-IDs) | Einzelfall? |
+|----|----------------------------------------------|--------------------|-------------|
+| T1 | [...] | [I1-2, I3-1] | nein |
+| T2 | [...] | [...] | [...] |
+
+## Überraschungen und Widersprüche
+- [Thema] widerspricht A[n]: [...]
+
+## Wichtige Zitate
+- I[n]-[m]: „[wörtlich]“</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="synthese" pfad="docs/interviews/SYNTHESE.md" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Welches eurer Themen ist euer T1 – das, was eine Annahme von Tag 1 umwirft? Wenn es keins gibt, fragt euch, ob eure Interviews zu nett waren oder ob ihr nach eurer Idee gefragt habt.</p>
+
+  <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} />
+</Layout>

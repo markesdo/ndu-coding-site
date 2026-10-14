@@ -85,6 +85,7 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
     ]},
     { h: 'Kurstage', items: [
       { href: '/innolab/tag-1', t: 'Tag 1 · Rahmen & Verstehen' },
+      { href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' },
     ]},
   ],
 };

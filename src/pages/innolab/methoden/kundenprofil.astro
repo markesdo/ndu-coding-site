@@ -1,0 +1,92 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Kundenprofil">
+  <span class="eyebrow">Innolab · Tag 2 · Methode</span>
+  <h1>Kundenprofil</h1>
+  <p class="lead">Was eure Zielgruppe erledigen will, was sie dabei stört und was sie sich erhofft – konkret, belegt und nach Wichtigkeit sortiert.</p>
+  <Orientierung seite="innolab/methoden/kundenprofil" leiste={false} />
+  <MethodenKarte slug="kundenprofil" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Das Kundenprofil ist die rechte Hälfte des Value Proposition Canvas. Es hat drei Felder:</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Feld</th><th>Was hineingehört</th><th>Arten</th></tr></thead>
+      <tbody>
+        <tr><th>Jobs</th><td>Was die Person erledigen will – Aufgaben, Probleme, Bedürfnisse</td><td>funktional · sozial (wie sie wirken will) · emotional (wie sie sich fühlen will)</td></tr>
+        <tr><th>Pains</th><td>Was sie vor, während oder nach dem Job stört oder hindert</td><td>unerwünschte Ergebnisse · Hindernisse · Risiken</td></tr>
+        <tr><th>Gains</th><td>Was sie sich als Ergebnis oder Nutzen wünscht</td><td>notwendig · erwartet · gewünscht · unerwartet</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Hier – und nur hier – erarbeitet ihr Pains.</strong> Jeder Eintrag bekommt eine ID (J1, P1, G1). Journey Map, Value Map und Story Map verweisen später auf diese IDs, statt Pains neu zu diskutieren.</p>
+  <p>Die Grundlage sind eure Themen aus der Synthese, nicht euer Bauchgefühl. Und das Profil beschreibt die Person, nicht euer Produkt: Wer beim Schreiben schon an die Lösung denkt, findet nur Pains, die sie zufällig löst.</p>
+
+  <h3 id="rangfolge">Rangfolge: der Chancenwert</h3>
+  <p>Nicht jeder Pain ist gleich viel wert. Gebt jedem Job und Pain zwei Werte von 1 bis 5: <strong>Wichtigkeit</strong> (wie sehr es der Person darauf ankommt) und <strong>Zufriedenheit</strong> mit dem, was sie heute tut. Daraus ergibt sich der Chancenwert:</p>
+  <p><strong>Chance = Wichtigkeit + (Wichtigkeit − Zufriedenheit)</strong>, wobei die Klammer nicht unter 0 fällt.</p>
+  <p>Hoch ist er, wenn etwas sehr wichtig ist und heute schlecht gelöst wird. Wichtig, aber schon gut gelöst, gibt wenig Chance. So arbeitet Tony Ulwicks Opportunity Scoring – bei euch geschätzt aus den Interviews, nicht aus einer Umfrage. Schreibt dazu, worauf die Schätzung beruht.</p>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>ID</th><th>Eintrag</th><th>Art</th><th>W</th><th>Z</th><th>Chance</th><th>Beleg</th></tr></thead>
+      <tbody>
+        <tr><th>P1</th><td>Steht zwischen 7:20 und 7:40 mehr als 6 Minuten an</td><td>Hindernis</td><td>5</td><td>1</td><td>9</td><td>T2</td></tr>
+        <tr><th>J1</th><td>Rechtzeitig mit Kaffee im Zug sitzen</td><td>funktional</td><td>5</td><td>2</td><td>8</td><td>T1, T2</td></tr>
+        <tr><th>P2</th><td>Weiß beim Anstellen nicht, ob es sich bis zur Abfahrt ausgeht</td><td>Risiko</td><td>4</td><td>1</td><td>7</td><td>T2</td></tr>
+        <tr><th>J2</th><td>Den Arbeitstag nicht gehetzt beginnen</td><td>emotional</td><td>4</td><td>2</td><td>6</td><td>T2, T3</td></tr>
+        <tr><th>P3</th><td>Automatenkaffee fühlt sich wie eine Niederlage an</td><td>unerwünschtes Ergebnis</td><td>3</td><td>1</td><td>5</td><td>T3</td></tr>
+        <tr><th>J3</th><td>Im Büro nicht als die*der Gehetzte ankommen</td><td>sozial</td><td>2</td><td>3</td><td>2</td><td>I4-5</td></tr>
+        <tr><th>G1</th><td>Kaffee in unter 3 Minuten ab Betreten der Halle</td><td>erwartet</td><td colspan="3">–</td><td>T2</td></tr>
+        <tr><th>G2</th><td>Die Barista kennt die übliche Bestellung</td><td>gewünscht</td><td colspan="3">–</td><td>I3-6</td></tr>
+        <tr><th>G3</th><td>Ohne Nachfragen wissen, wann der Kaffee fertig ist</td><td>unerwartet</td><td colspan="3">–</td><td>I2-5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Die drei wichtigsten: P1, J1, P2. Kein Eintrag spricht von Apps oder Vorbestellen – das wäre schon eine Lösung. Und P1 ist konkret: „mehr als 6 Minuten“ statt „Schlange zu lang“, weil die Interviewten genau dort aufgeben.</p>
+  <p class="small muted">Gains bekommen in diesem Beispiel keinen Chancenwert; ihr könnt sie genauso bewerten oder nur nach Relevanz ordnen.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (75 min)</h2>
+  <ol>
+    <li><strong>Input (15 min):</strong> die drei Felder, die Arten, der Chancenwert.</li>
+    <li><strong>Allein in Miro (25 min):</strong> Jobs, Pains, Gains aus euren Themen ableiten, je ein Sticky mit Beleg. Mindestens ein sozialer oder emotionaler Job.</li>
+    <li><strong>Konkret machen (10 min):</strong> Bei jedem Pain fragen „Ab wann genau?“, bei jedem Gain „Wie viel genau?“.</li>
+    <li><strong>Bewerten und sortieren (10 min):</strong> Wichtigkeit, Zufriedenheit, Chancenwert; Top 3 markieren.</li>
+    <li><strong>Festhalten und prüfen (15 min):</strong> <code>docs/KUNDENPROFIL.md</code>, Prüfliste, Claude.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/KUNDENPROFIL.md"># Kundenprofil — [Segment]
+
+Stand: [Datum] · Grundlage: docs/interviews/SYNTHESE.md
+Top 3: [ID], [ID], [ID]
+
+| ID | Eintrag | Art | Wichtigkeit 1–5 | Zufriedenheit 1–5 | Chance | Beleg |
+|----|---------|-----|-----------------|-------------------|--------|-------|
+| J1 | [Job der Person] | funktional | [...] | [...] | [...] | [T…] |
+| J2 | [...] | sozial/emotional | [...] | [...] | [...] | [...] |
+| P1 | [konkret, mit Zahl] | Hindernis/Risiko/unerwünschtes Ergebnis | [...] | [...] | [...] | [...] |
+| G1 | [konkret, mit Zahl] | notwendig/erwartet/gewünscht/unerwartet | | | | [...] |
+
+Chance = Wichtigkeit + max(0, Wichtigkeit − Zufriedenheit)</Prompt>
+
+  <Callout type="info" title="Wo ist die Persona?">
+    <p>Eine Persona-Karte machen wir bewusst nicht: Sie würde dieselben Pains und Gains noch einmal mit Namen und Foto erzählen. Wer für das Team ein Gesicht braucht, gibt dem Profil eine Zeile mit einem typischen Zitat aus den Interviews.</p>
+  </Callout>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="kundenprofil" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Was ist euer P1 – der Pain mit dem höchsten Chancenwert? Steht dort eine Zahl, an der eure Zielgruppe aufgibt? Wenn nicht: Welche Stelle in den Transkripten zeigt, ab wann es ihr reicht?</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/synthese', t: 'Interview-Synthese' }} next={{ href: '/innolab/methoden/journey-map', t: 'Journey Map' }} />
+</Layout>
