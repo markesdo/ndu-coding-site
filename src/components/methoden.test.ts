@@ -97,4 +97,14 @@ describe('methoden', () => {
       }
     }
   });
+
+  it('Artefakte in Linear liest Claude über den Linear-MCP – nie eine leere Dateiangabe', () => {
+    const ak = pruefPrompt(METHODEN.find((m) => m.slug === 'akzeptanzkriterien')!);
+    expect(ak).toMatch(/^Lies die Issues über den Linear-MCP/);
+    expect(ak).toContain('ändere keine Datei und kein Issue');
+    // Teilprüfung in Linear: die Issues nicht ein zweites Mal „zum Abgleich“, Brief und Team schon.
+    const sprint = pruefPrompt(METHODEN.find((m) => m.slug === 'akzeptanzkriterien')!, 'über den Linear-MCP die Issues für Sprint 1');
+    expect(sprint).toMatch(/^Lies über den Linear-MCP die Issues für Sprint 1\. Zum Abgleich lies auch docs\/PRODUKT\.md, docs\/TEAM\.md\./);
+    for (const m of METHODEN.filter((x) => x.pruefliste)) expect(pruefPrompt(m), m.slug).not.toMatch(/^Lies \./);
+  });
 });

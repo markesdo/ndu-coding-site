@@ -1,0 +1,115 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Backlog aus Issues">
+  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
+  <h1>Backlog aus Issues</h1>
+  <p class="lead">Aus Slice 1 der Story Map wird ein geordneter Backlog – in dem Format, das Claude Code abarbeiten kann und das jedes Produktteam versteht.</p>
+  <Orientierung seite="innolab/methoden/backlog" leiste={false} />
+  <MethodenKarte slug="backlog" />
+
+  <h2 id="user-story">User Story und Issue</h2>
+  <p>In vielen Teams heißen Backlog-Einträge <strong>User Storys</strong>, geschrieben als Satz: <em>„Als [Rolle] möchte ich [Ziel], damit [Nutzen].“</em> Dazu gehören die <strong>drei Cs</strong> (Ron Jeffries): die <em>Card</em> mit dem Satz, die <em>Conversation</em>, in der das Team klärt, was genau gemeint ist, und die <em>Confirmation</em> – die Akzeptanzkriterien. Der Satz allein ist nie die Anforderung; er ist eine Einladung zum Gespräch.</p>
+  <p>Im Coding-Kurs habt ihr Issues geschrieben – mit denselben Teilen, nur ausgeschrieben, damit auch ein Agent sie versteht. So bildet sich das eine aufs andere ab:</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>User Story</th><th>Issue im Kurs</th></tr></thead>
+      <tbody>
+        <tr><th>Als … möchte ich … damit …</th><td><strong>Ziel:</strong> was danach möglich ist, für wen und warum</td></tr>
+        <tr><th>Conversation</th><td><strong>Kontext</strong> und <strong>Nicht im Umfang</strong> – was ihr besprochen und bewusst ausgeschlossen habt</td></tr>
+        <tr><th>Confirmation</th><td><strong>Akzeptanzkriterien</strong> (Gegeben … wenn … dann …) und <strong>Fertig, wenn</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Wenn ihr in einem Team mit User Storys arbeitet: Ihr schreibt den Satz als Titel, den Rest wie gewohnt darunter. <strong>Sub-Issues</strong> sind keine Storys, sondern Aufgaben für die Umsetzung (Datenbank, Oberfläche, Fehlerbehandlung) – die übernimmt bei euch Claude.</p>
+
+  <h2 id="invest">Gute Issues: INVEST</h2>
+  <ul>
+    <li><strong>Independent</strong> – lässt sich ohne ein anderes Issue liefern</li>
+    <li><strong>Negotiable</strong> – beschreibt das Ziel, nicht jede Einzelheit</li>
+    <li><strong>Valuable</strong> – danach kann jemand etwas, das vorher nicht ging</li>
+    <li><strong>Estimable</strong> – das Team kann die Größe einschätzen</li>
+    <li><strong>Small</strong> – bei euch: ein Durchgang mit Claude</li>
+    <li><strong>Testable</strong> – hat prüfbare Akzeptanzkriterien</li>
+  </ul>
+  <p>Valuable heißt <strong>senkrecht schneiden</strong>: nicht „Datenbank für Bestellungen“, dann „Oberfläche für Bestellungen“, sondern „Getränk wählen und bestellen“ – durch alle Schichten, aber nur ein kleines Stück.</p>
+
+  <h3 id="splitting">Zu groß? So teilt ihr</h3>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Teilen nach</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><th>Ablaufschritten</th><td>„Bestellen“ → Getränk wählen · Abfahrtszeit angeben · Abholnummer sehen</td></tr>
+        <tr><th>Einfach vor raffiniert</th><td>Uhrzeit eintippen → später: Zug aus der Liste</td></tr>
+        <tr><th>Anlegen, Ansehen, Ändern, Löschen</th><td>Bestellung aufgeben → ansehen → stornieren</td></tr>
+        <tr><th>Eingabewegen</th><td>Tippen → später Sprachbestellung</td></tr>
+        <tr><th>Spike</th><td>Weiß niemand, wie es geht: erst ein Issue „herausfinden, ob …“, dann das eigentliche</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="reihenfolge">Reihenfolge: RICE oder Riskantestes zuerst</h3>
+  <p>Ein Product Owner muss die Reihenfolge begründen können. Zwei Wege:</p>
+  <ul>
+    <li><strong>RICE</strong> = Reach × Impact × Confidence ÷ Effort. Wie viele erreicht es, wie stark wirkt es (0,25–3), wie sicher seid ihr (0–100 %), wie viel Aufwand (in Durchgängen mit Claude)? Höher kommt früher.</li>
+    <li><strong>Riskantestes zuerst:</strong> Was eine offene Annahme prüft, kommt nach vorn – dann lernt ihr früh, ob sich der Rest lohnt.</li>
+  </ul>
+
+  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+  <p>Aus Slice 1 und Testbefund U2 entstehen fünf Issues im Projekt „Gleis-1-Express“:</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>#</th><th>Issue</th><th>Quelle</th><th>RICE</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Getränk wählen und bestellen</td><td>Slice 1</td><td>400 × 3 × 100 % ÷ 1 = 1200</td></tr>
+        <tr><td>2</td><td>Abfahrtszeit angeben und Fertig-Zeit sehen</td><td>Slice 1, Höhepunkt</td><td>400 × 3 × 80 % ÷ 1 = 960</td></tr>
+        <tr><td>3</td><td>Bar sieht Bestellungen nach Abfahrt sortiert</td><td>Slice 1</td><td>400 × 2 × 100 % ÷ 1 = 800</td></tr>
+        <tr><td>4</td><td>Zug aus einer Liste der nächsten Abfahrten wählen</td><td>U2</td><td>400 × 2 × 80 % ÷ 2 = 320</td></tr>
+        <tr><td>5</td><td>Abholnummer am Bildschirm der Ausgabe</td><td>Slice 1</td><td>400 × 1 × 100 % ÷ 1 = 400</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Reach = Bestellungen pro Woche. Nach RICE käme die Abholnummer vor der Zugliste. Die Product Ownerin zieht trotzdem die Zugliste (4) vor die Abholnummer (5): U2 hatten alle fünf Testpersonen, und ohne Liste erreicht der Höhepunkt kaum jemand – „Riskantestes zuerst“ schlägt hier die Rechnung. Das steht als Zeile im Entscheidungslog. Reihenfolge: 1, 2, 3, 4, 5.</p>
+  <Prompt label="Beispiel · Issue 2 (Akzeptanzkriterien folgen im nächsten Block)">## Ziel
+Pendler*innen geben beim Bestellen ihre Abfahrtszeit ein und sehen sofort, wann ihr Getränk fertig ist – damit sie ohne Sorge um den Zug bestellen (P2, Usage Story Höhepunkt).
+
+## Kontext
+Slice 1 der Story Map: Abfahrtszeit wird eingetippt, die Liste kommt in Issue 4. Ein Getränk ist derzeit 4 Minuten nach der Bestellung fertig, plus 3 Minuten für jede offene Bestellung davor.
+
+## Nicht im Umfang
+- Zugliste, Verspätungen
+- Online-Zahlung
+
+## Akzeptanzkriterien
+(folgt)
+
+## Fertig, wenn
+Mit leerer und mit voller Warteschlange am Handy durchgespielt.</Prompt>
+
+  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+  <ol>
+    <li><strong>Input (15 min):</strong> User Story und Issue, INVEST, teilen, RICE.</li>
+    <li><strong>Issues schreiben (25 min, allein):</strong> Slice 1 Karte für Karte; Testbefunde dazunehmen. Erst in Stichworten, dann im Format. „Fertig, wenn“ nennt nur, was für dieses Issue gilt – die Definition of Done gilt ohnehin.</li>
+    <li><strong>Ordnen (10 min):</strong> RICE oder Risiko; wo ihr von der Rechnung abweicht, eine Zeile ins Entscheidungslog.</li>
+    <li><strong>Nach Linear (10 min):</strong> mit Claude, nach eurer Freigabe.</li>
+  </ol>
+  <Prompt label="Issues nach Linear · Claude Code">Lies docs/LINEAR.md, docs/STORY-MAP.md und docs/TESTS.md. Hier sind meine Issues für Slice 1, in dieser Reihenfolge: [Liste]. Zeig mir zuerst, wie du sie anlegen würdest – Titel, Ziel, Kontext, Nicht im Umfang, Fertig wenn; Akzeptanzkriterien als „folgt“. Leg sie erst nach meinem Okay in Linear an, in genau dieser Reihenfolge.</Prompt>
+  <Callout type="tip" title="Ihr seid Developers in allen drei Produkten">
+    <p>Lest nach dem Anlegen die Issues der anderen beiden. Versteht ihr ohne Rückfrage, was zu tun ist? Wenn nicht, ist das ein Kommentar im Issue – genau das wäre die Conversation.</p>
+  </Callout>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="backlog" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Welches eurer Issues ist euer „Zug aus der Liste“ – das, was die Rechnung nach hinten schiebt, ein Test aber nach vorn? Wenn ihr keins findet, habt ihr eure Testbefunde noch nicht im Backlog.</p>
+  <p class="small muted">INVEST nach Bill Wake; drei Cs nach Ron Jeffries; RICE nach Intercom.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/scrum', t: 'Scrum im Team' }} next={{ href: '/innolab/methoden/akzeptanzkriterien', t: 'Akzeptanzkriterien' }} />
+</Layout>

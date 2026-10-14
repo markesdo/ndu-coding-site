@@ -1,0 +1,75 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Akzeptanzkriterien">
+  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
+  <h1>Akzeptanzkriterien</h1>
+  <p class="lead">Woran ihr – und Claude – erkennt, dass ein Issue fertig ist: konkret, mit Fehlerfall und ohne ein Wort zum Wie.</p>
+  <Orientierung seite="innolab/methoden/akzeptanzkriterien" leiste={false} />
+  <MethodenKarte slug="akzeptanzkriterien" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Akzeptanzkriterien kennt ihr aus dem Coding-Kurs: Sie sagen, was ein Issue können muss, damit es abgenommen wird. Im Team bekommen sie eine zweite Aufgabe: Sie sind die gemeinsame Sprache zwischen Product Owner, Developers und Claude. Wer ein fremdes Issue baut, hat nur sie.</p>
+  <p>Zwei Formen:</p>
+  <ul>
+    <li><strong>Szenario:</strong> <em>Gegeben</em> [Ausgangslage], <em>wenn</em> [Handlung], <em>dann</em> [Ergebnis]. Gut für Abläufe.</li>
+    <li><strong>Regel:</strong> eine prüfbare Aussage als Checkliste, z. B. „Die Abfahrtszeit akzeptiert nur Uhrzeiten im Format 7:38 oder 07:38.“ Gut für Darstellung und Grenzen.</li>
+  </ul>
+  <p>Akzeptanzkriterien gelten für <strong>ein</strong> Issue. Die <strong>Definition of Done</strong> aus <code>docs/TEAM.md</code> gilt für <strong>alle</strong> – Belege, Review, live. Was in der DoD steht, wiederholt ihr nicht in jedem Issue.</p>
+
+  <h2 id="beispiel">Am Beispiel: Issue 2 „Abfahrtszeit angeben“</h2>
+  <Prompt label="Beispiel · Akzeptanzkriterien Issue 2">- Gegeben es ist 7:27, vor mir ist keine Bestellung offen, und ich habe einen Cappuccino gewählt, wenn ich 7:38 als Abfahrt eingebe, dann sehe ich „Fertig 7:31. Dein Zug fährt 7:38.“
+- Gegeben vor mir sind so viele Bestellungen, dass mein Getränk später als 3 Minuten vor der Abfahrt fertig wäre, wenn ich die Abfahrtszeit eingebe, dann sehe ich „Geht sich knapp nicht aus“ und kann abbrechen oder trotzdem bestellen.
+- Gegeben ich gebe eine Uhrzeit ein, die schon vorbei ist, wenn ich bestätige, dann erscheint ein Hinweis und nichts wird bestellt.
+- Regel: Die Abfahrtszeit akzeptiert nur Uhrzeiten wie 7:38 oder 07:38; alles andere zeigt einen Hinweis unter dem Feld.</Prompt>
+  <p>Das erste Kriterium ist der Normalfall, die anderen sind Grenz- und Fehlerfälle. Keines sagt, wie die Fertig-Zeit berechnet oder gespeichert wird – das entscheidet, wer baut.</p>
+
+  <h3 id="gute-kriterien">Was gute Kriterien ausmacht</h3>
+  <ul>
+    <li>vor dem Bauen geschrieben, nicht danach</li>
+    <li>prüfbar und messbar, nicht „schnell“ oder „übersichtlich“</li>
+    <li>mindestens ein Fehler- oder Grenzfall</li>
+    <li>kein Wort zur Technik</li>
+    <li>vom ganzen Team verstanden – auch von denen, die das Produkt nicht verantworten</li>
+  </ul>
+
+  <h2 id="evals">Wenn euer Produkt eine KI-Funktion hat: Evals</h2>
+  <p>Bei einer KI-Funktion gibt es nicht <em>die</em> richtige Antwort, und dieselbe Eingabe kann zweimal verschieden ausgehen. Ein einzelnes „Gegeben … wenn … dann …“ reicht deshalb nicht. Stattdessen schreibt ihr <strong>Eval-Fälle</strong>: eine Liste von Eingaben mit erwartetem Verhalten, und eine Schwelle, ab der die Funktion als fertig gilt.</p>
+  <p><em>Angenommen</em>, die Kaffeebar ließe auch Freitext zu („großer Hafer-Cappu“):</p>
+  <Prompt label="Beispiel · Eval-Fälle">Eval: Freitext → Getränk
+- „großer Hafer-Cappu“ → Cappuccino, groß, Hafermilch
+- „Espresso“ → Espresso
+- „wie immer“ → Rückfrage, kein Getränk
+- „Bier“ → Hinweis „gibt es hier nicht“, kein Getränk
+- [... insgesamt 20 Fälle aus echten Bestellungen]
+Schwelle: mindestens 18 von 20 richtig; nie ein Getränk, das nicht auf der Karte steht.</Prompt>
+  <p>Hat euer Produkt keine KI-Funktion, lasst diesen Teil weg.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+  <ol>
+    <li><strong>Input (10 min).</strong></li>
+    <li><strong>Normalfall (15 min, allein):</strong> für jedes Issue, das in Sprint 1 kommen könnte, ein „Gegeben … wenn … dann …“.</li>
+    <li><strong>Fehler- und Grenzfälle (15 min):</strong> Was, wenn die Eingabe leer, falsch, zu spät, doppelt ist? Erst selbst, dann Claude (Prompt unten).</li>
+    <li><strong>Über Kreuz lesen (15 min):</strong> Jede*r liest die Kriterien eines anderen Produkts: Könnte ich das bauen und abnehmen, ohne nachzufragen?</li>
+    <li><strong>In Linear (5 min).</strong></li>
+  </ol>
+  <Prompt label="Grenzfälle · Claude Code">Lies Issue [Kennung] über den Linear-MCP. Ich habe den Normalfall als Akzeptanzkriterium geschrieben. Nenn höchstens drei Fehler- oder Grenzfälle, die fehlen, jeweils als „Gegeben … wenn … dann …“, ohne technische Umsetzung. Ändere das Issue nicht – ich entscheide, was hineinkommt.</Prompt>
+  <Callout type="info" title="Hausaufgabe bis Tag 5">
+    <p>Alle Issues, die in Sprint 1 kommen könnten, haben Akzeptanzkriterien. Morgen schätzt ihr sie – über Kreuz.</p>
+  </Callout>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="akzeptanzkriterien" pfad="über den Linear-MCP die Issues, die in Sprint 1 kommen könnten (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Was ist bei euch die „Uhrzeit, die schon vorbei ist“ – die Eingabe, an die beim Bauen niemand denkt, die echte Menschen aber sicher machen?</p>
+  <p class="small muted">Gegeben/Wenn/Dann nach Behaviour-Driven Development (Dan North).</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/backlog', t: 'Backlog aus Issues' }} next={{ href: '/innolab/tag-4#abschluss', t: 'Tag 4 · Abschluss' }} />
+</Layout>

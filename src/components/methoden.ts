@@ -291,9 +291,16 @@ export const METHODEN: Methode[] = [
     quelle: 'Gassmann, Frankenberger, Csik: St. Galler Business Model Navigator',
   },
   {
-    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 300,
+    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 260,
     frage: 'Wie arbeiten wir als ein Team an drei Produkten?',
     braucht: [], ergibt: ['team'],
+    pruefliste: [
+      'Für jedes Produkt steht fest, wer Product Owner ist; alle drei sind Developer in allen drei Produkten.',
+      'Es steht fest, wer im ersten Sprint Scrum Master ist – und dass die Rolle jeden Sprint wechselt.',
+      'Sprintlänge, Zeiten der Events und das Daily zwischen den Kurstagen sind festgelegt.',
+      'Die Definition of Done ist eine Liste prüfbarer Punkte und gilt für alle drei Produkte.',
+      'Das Linear-Team ist genannt, und für jedes Produkt steht sein Linear-Projekt in der Tabelle.',
+    ],
     ki: 'Keine Rolle – Scrum lernt ihr im Team und im Lego-Spiel.',
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020',
   },
@@ -301,12 +308,26 @@ export const METHODEN: Methode[] = [
     slug: 'backlog', name: 'Backlog aus Issues', tag: 4, dauer: 60,
     frage: 'Welche Issues ergeben sich aus dem ersten Slice – und in welcher Reihenfolge?',
     braucht: ['storymap', 'spike', 'experimente', 'team'], ergibt: ['issues'],
+    pruefliste: [
+      'Jedes Issue kommt aus Slice 1 der Story Map oder aus einem Testbefund und nennt seine Quelle.',
+      'Jedes Issue hat Ziel (für wen, was, damit), Nicht im Umfang und „Fertig, wenn“.',
+      'Jedes Issue ist ein senkrechter Schnitt: Danach kann jemand etwas, das vorher nicht ging.',
+      'Kein Issue braucht mehr als einen Durchgang mit Claude; zu große sind geteilt.',
+      'Die Reihenfolge ist begründet – mit RICE oder „Riskantestes zuerst“.',
+    ],
     ki: 'INVEST-Prüfung, Vorschläge zum Schneiden zu großer Issues.',
   },
   {
     slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 4, dauer: 60,
     frage: 'Woran prüfen wir, dass ein Issue fertig ist?',
-    braucht: ['issues'], ergibt: ['kriterien'],
+    braucht: ['issues', 'brief', 'team'], ergibt: ['kriterien'],
+    pruefliste: [
+      'Jedes Kriterium hat die Form „Gegeben … wenn … dann …“ oder ist eine prüfbare Regel.',
+      'Jedes Issue hat mindestens einen Fehler- oder Grenzfall.',
+      'Kein Kriterium sagt, wie es gebaut wird.',
+      'Jedes Kriterium lässt sich im Browser durchklicken.',
+      'Hat das Produkt eine KI-Funktion: Es gibt Eval-Fälle mit erwartetem Verhalten und einer Schwelle.',
+    ],
     ki: 'Ergänzt Negativ- und Grenzfälle – nachdem ihr den Normalfall geschrieben habt.',
   },
   {
@@ -335,7 +356,7 @@ export const TAGE: { n: number; titel: string; text: string }[] = [
   { n: 2, titel: 'Kunde & Erlebnis', text: 'Interviews auswerten, Kundenprofil, Journey Map, Chancen und Ideen.' },
   { n: 3, titel: 'Lösung, Story, Prototyp', text: 'Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
   { n: 4, titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Rollen, Events, Backlog, Akzeptanzkriterien.' },
-  { n: 5, titel: 'Schätzen & Bauen', text: 'Planning Poker, Definition of Done, Sprint-Planning, Sprint 1.' },
+  { n: 5, titel: 'Schätzen & Bauen', text: 'Planning Poker, Definition of Done um die Messung ergänzen, Sprint-Planning, Sprint 1.' },
   { n: 6, titel: 'Bauen & Review', text: 'Usability-Tests über Kreuz, Review, Retro, Sprint 2, Pitch vorbereiten.' },
   { n: 7, titel: 'Präsentation', text: 'Finales Sprint-Review: Pitch, Live-Demo und Belege.' },
 ];
@@ -348,17 +369,28 @@ export const erzeugtVon = (id: string): Methode | undefined => METHODEN.find((m)
 /** Methoden eines Kurstags, in Kursreihenfolge. */
 export const methodenVonTag = (tag: number): Methode[] => METHODEN.filter((m) => m.tag === tag);
 
+/** So findet Claude ein Artefakt: als Datei im Repo oder über den Linear-MCP – Team und Projekt stehen in docs/BACKLOG.md,
+ *  die Regeln für Linear in docs/LINEAR.md des Projekts. */
+export const LINEAR_QUELLE = 'die Issues über den Linear-MCP (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)';
+function quelle(id: string): string | undefined {
+  const a = artefakt(id)!;
+  return a.pfad ?? (a.lebtIn.includes('linear') ? LINEAR_QUELLE : undefined);
+}
+
 /** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
  *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. den Leitfaden statt aller Interview-Dateien). */
 export function pruefPrompt(m: Methode, pfad?: string): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
-  const pfade = pfad ? [pfad] : m.ergibt.map((id) => artefakt(id)!.pfad).filter(Boolean);
+  const pfade = pfad ? [pfad] : [...new Set(m.ergibt.map(quelle).filter((p): p is string => !!p))];
   // Viele Punkte lassen sich nur gegen die Vorarbeit prüfen (Zitate gegen Transkripte, IDs gegen das Kundenprofil).
-  const abgleich = [...new Set(m.braucht.map((id) => artefakt(id)!.pfad).filter((p): p is string => !!p && !pfade.includes(p)))];
+  if (pfade.length === 0) throw new Error(`pruefPrompt: Methode „${m.slug}“ ergibt nichts, was Claude lesen kann`);
+  // Ohne das, was Claude ohnehin liest – auch wenn pfad nur einen Teil davon nennt (z. B. ausgewählte Issues).
+  const schonGelesen = new Set([...pfade, ...m.ergibt.map(quelle)]);
+  const abgleich = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !schonGelesen.has(p)))];
   return [
     `Lies ${pfade.join(' und ')}.${abgleich.length ? ` Zum Abgleich lies auch ${abgleich.join(', ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
     ...m.pruefliste.map((p, i) => `${i + 1}. ${p}`),
     '',
-    'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um und ändere keine Datei – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
+    'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um, ändere keine Datei und kein Issue – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
   ].join('\n');
 }
