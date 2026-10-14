@@ -80,6 +80,7 @@ import FooterNav from '../../../components/FooterNav.astro';
     <li><strong>Daily (15 min, Tag 5 und 6;</strong> dazwischen schriftlich in Linear).</li>
     <li><strong>Review (30 min, Tag 5):</strong> zehn Minuten pro Produkt, Ergebnis in <code>docs/SPRINTS.md</code>.</li>
     <li><strong>Retro (30 min, Tag 5):</strong> eine für das ganze Team; die Maßnahme in alle drei <code>docs/SPRINTS.md</code>.</li>
+    <li><strong>Abnahme Sprint 2 (30 min, Tag 6):</strong> Der Product Owner nimmt ab; fertig und offen in <code>docs/SPRINTS.md</code>. Ob die Maßnahme aus der Retro gewirkt hat, sagt ihr in der Kurs-Retro an Tag 7. Das Review ist die Präsentation.</li>
   </ol>
   <Prompt label="Sprint-Ziel prüfen · Claude Code">Lies docs/SPRINTS.md, docs/PRODUKT.md und über den Linear-MCP die Issues unseres Projekts mit dem Label des aktuellen Sprints. Erreichen diese Issues zusammen das Sprint-Ziel? Nenn höchstens drei Lücken oder Issues, die für das Ziel nicht nötig sind. Ändere nichts.</Prompt>
 
@@ -100,7 +101,10 @@ Auswahl: [Kennung] · [...] — [Anzahl] Issues
 - Maßnahme: [konkreter Schritt] · verantwortlich: [Name] · geprüft: [wann]
 
 ## Sprint 2 · 12.12., Planning – 19.12., Abnahme
-[...]</Prompt>
+Sprint-Ziel: [ein Satz]
+- Fertig: [Kennungen, Anzahl] · Offen: [Kennungen – kommen in den Pitch als nächster Schritt]
+- Messung: [Zahl, wie viele Personen, seit wann]
+- Maßnahme aus Sprint 1: [hat gewirkt / nicht, woran man es sieht]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="sprint" />
