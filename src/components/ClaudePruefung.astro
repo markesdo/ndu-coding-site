@@ -4,19 +4,13 @@
 // die Checkliste würde HTML darstellen, der Prompt nicht (methoden.test.ts prüft das).
 import Checklist from './Checklist.astro';
 import Prompt from './Prompt.astro';
-import { METHODEN, artefakt } from './methoden';
+import { METHODEN, pruefPrompt } from './methoden';
 
 // pfad: wenn nur ein Teil des Artefakts geprüft wird (z. B. der Leitfaden, nicht die Transkripte).
 const { slug, pfad } = Astro.props as { slug: string; pfad?: string };
 const m = METHODEN.find((x) => x.slug === slug);
 if (!m?.pruefliste) throw new Error(`ClaudePruefung: Methode „${slug}“ hat keine Prüfliste`);
-const pfade = pfad ? [pfad] : m.ergibt.map((id) => artefakt(id)!.pfad).filter(Boolean);
-const text = [
-  `Lies ${pfade.join(' und ')}. Prüf es gegen diese Liste (${m.name}):`,
-  ...m.pruefliste.map((p, i) => `${i + 1}. ${p}`),
-  '',
-  'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um und ändere keine Datei – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
-].join('\n');
+const text = pruefPrompt(m, pfad);
 ---
 <Checklist id={`il-${m.slug}`} items={m.pruefliste} />
 <Prompt label="Prüfen lassen · Claude Code" note="Erst nachdem ihr die Prüfliste selbst durchgegangen seid. Claude findet, ihr entscheidet."><Fragment set:text={text} /></Prompt>

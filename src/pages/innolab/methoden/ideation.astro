@@ -1,0 +1,84 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Ideation">
+  <span class="eyebrow">Innolab · Tag 2 · Methode</span>
+  <h1>Ideation</h1>
+  <p class="lead">Viele Ideen für eine Frage – erst allein, dann im Kreis, dann mit Claude – und eine Auswahl, die nicht der lautesten Stimme folgt.</p>
+  <Orientierung seite="innolab/methoden/ideation" leiste={false} />
+  <MethodenKarte slug="ideation" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>Drei Befunde aus der Forschung bestimmen den Ablauf:</p>
+  <ul>
+    <li><strong>Allein zuerst.</strong> Gruppen, die frei durcheinander brainstormen, haben weniger verschiedene Ideen als dieselben Menschen, die erst allein nachdenken – vor allem, weil immer nur eine*r reden kann. Schriftliches Weitergeben (Brainwriting) ist mindestens so gut und regt mehr an.</li>
+    <li><strong>KI erst danach.</strong> Wer zuerst die Vorschläge eines Sprachmodells sieht, bleibt an ihnen hängen. Ideen mit KI ähneln öfter schon bekannten Produkten. Claude kommt deshalb erst, wenn eure eigenen Ideen auf dem Tisch liegen, und soll vor allem Richtungen öffnen, an die ihr nicht gedacht habt.</li>
+    <li><strong>Leise auswählen.</strong> Menschen bevorzugen machbare Ideen gegenüber originellen, und in offener Runde gewinnt oft, wer zuerst spricht. Deshalb erst still abstimmen, dann reden.</li>
+  </ul>
+
+  <h2 id="ablauf">Der Ablauf (90 min)</h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Min</th><th>Schritt</th><th>Wie</th></tr></thead>
+      <tbody>
+        <tr><td>10</td><td>Schlechteste Idee</td><td>Zu eurer HMW-Frage die schlechteste denkbare Lösung. Dann umdrehen: Was steckt Brauchbares im Gegenteil?</td></tr>
+        <tr><td>20</td><td>Allein</td><td><strong>Neues Produkt:</strong> Crazy 8s – ein A4-Blatt achtmal falten, acht Skizzen in acht Minuten, zweimal. <strong>Bestehendes Produkt:</strong> SCAMPER – was lässt sich ersetzen, kombinieren, anpassen, verändern, anders nutzen, weglassen, umkehren?</td></tr>
+        <tr><td>20</td><td>Brainwriting im Kreis</td><td>Jede*r legt die eigene HMW-Frage auf ein Blatt. Das Blatt wandert zweimal weiter; wer es bekommt, schreibt in fünf Minuten drei Ideen dazu, gern auf den vorherigen aufbauend.</td></tr>
+        <tr><td>10</td><td>Claude</td><td>Analogien aus anderen Branchen, sehr verschiedene Nutzer*innen, Claude als neugierige*r Neue*r im Team (Prompt unten).</td></tr>
+        <tr><td>15</td><td>Note-and-Vote</td><td>Alle Ideen an die Wand. Still lesen, jede*r drei Punkte für die anderen Boards. Dann reden: Was überzeugt, was überrascht? Wer das Produkt verantwortet (Product Owner), entscheidet.</td></tr>
+        <tr><td>15</td><td>Lösungsskizze</td><td>Die gewählte Idee in drei Bildern: vorher – die Idee in Aktion – nachher. Dazu ein Titel.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <p>Frage H1: <em>Wie könnten wir Pendler*innen beim Betreten der Halle zeigen, ob sich ein Kaffee bis zur Abfahrt ausgeht?</em></p>
+  <ul>
+    <li><strong>Schlechteste Idee:</strong> Kaffee nur noch auf dem Bahnsteig, per Drohne. Umgedreht: ein Kaffeewagen direkt am Bahnsteig 1.</li>
+    <li><strong>Crazy 8s (Auswahl):</strong> Anzeige der aktuellen Wartezeit an der Hallentür · Express-Theke nur für die drei häufigsten Getränke · QR-Code an der Tür: im Gehen bestellen, an der Express-Ausgabe abholen · Barista ruft „Wer muss in den nächsten 5 Minuten weg?“</li>
+    <li><strong>Brainwriting dazu:</strong> Abfahrtszeit beim Bestellen angeben, die Bar sortiert danach · Becher mit Deckel, der nicht verschüttet</li>
+    <li><strong>Claude, als Analogie:</strong> Boarding-Gruppen am Flughafen – Bestellungen nach Abfahrtszeit aufrufen.</li>
+  </ul>
+  <p><strong>Ausgewählt:</strong> „Im Gehen bestellen“ – QR-Code an der Hallentür, Bestellung mit Abfahrtszeit, Abholung an einer Express-Ausgabe. Sie beantwortet H1 und H2 zugleich und passt zu T1: Die Entscheidung fällt beim Ankommen, nicht vorher. Ab Tag 3 wird diese Idee das digitale Produkt im Beispiel.</p>
+
+  <h2 id="claude">Claude in der Ideation</h2>
+  <p>Erst wenn eure Ideen aus den ersten drei Schritten an der Wand hängen:</p>
+  <Prompt label="Ideation · Claude Chat oder Claude Code">Unsere Frage: [HMW-Frage]. Unsere bisherigen Ideen: [Liste]. Hilf uns, Richtungen zu finden, die darin fehlen – keine Varianten unserer Ideen.
+1. Nenn drei Branchen, die ein ähnliches Problem gelöst haben, und je den Kern ihrer Lösung in einem Satz.
+2. Stell dir drei sehr verschiedene Menschen aus unserer Zielgruppe vor (zum Beispiel ungeduldig, sparsam, gewohnheitstreu). Was würde jede*r von ihnen an unseren Ideen stören?
+3. Stell uns dann als neugierige*r Neue*r im Team drei Fragen zu unseren Ideen, die wir noch nicht beantworten können.
+Bewerte unsere Ideen nicht und wähle keine aus.</Prompt>
+
+  <Callout type="info" title="Was mit den anderen Ideen passiert">
+    <p>Nichts wird gelöscht. Alle Ideen bleiben in <code>docs/IDEEN.md</code>. Wenn die gewählte Idee in einem Test scheitert, ist die zweitplatzierte euer nächster Kandidat – und ihr müsst nicht von vorn anfangen.</p>
+  </Callout>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/IDEEN.md"># Ideen — [Produkt]
+
+Frage: H[n] – [Wie könnten wir …?]
+
+## Ausgewählt
+**[Titel der Idee]** – [ein Satz, was sie tut]
+Beantwortet: H[n] · Passt zu: [T…, P…]
+Warum: [Begründung aus der Abstimmung]
+Skizze: [Link zu Miro]
+
+## Alle Ideen
+- [Idee] (eigene / Brainwriting / Claude) – [Punkte]
+- [...]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="ideation" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Welche eurer Ideen ist euer „Im Gehen bestellen“ – die, die zu einem Thema aus den Interviews passt und nicht nur zu eurer ursprünglichen Vorstellung? Wenn die Siegeridee genau die ist, mit der ihr in Tag 1 gestartet seid: Prüft, ob die Interviews sie wirklich stützen.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} next={{ href: '/innolab/tag-2#abschluss', t: 'Tag 2 · Abschluss' }} />
+</Layout>

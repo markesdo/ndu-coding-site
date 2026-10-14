@@ -1,0 +1,56 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Orientierung from '../../components/Orientierung.astro';
+import Block from '../../components/Block.astro';
+import Callout from '../../components/Callout.astro';
+import Checklist from '../../components/Checklist.astro';
+import FooterNav from '../../components/FooterNav.astro';
+---
+<Layout title="Tag 2 · Kunde & Erlebnis">
+  <span class="eyebrow">Innolab · Tag 2 · Termin folgt · 09:00–17:00</span>
+  <h1>Tag 2 · Kunde & Erlebnis</h1>
+  <p class="lead">Aus euren Interviews werden belegte Themen, ein Kundenprofil und eine Journey Map – und daraus Fragen und Ideen, die auf das Outcome zielen.</p>
+  <Orientierung seite="innolab/tag-2" />
+
+  <h2 id="ablauf">Ablauf</h2>
+  <div class="schedule">
+    <Block time="09:00–10:00" type="uebung" title="Interview-Synthese" href="/innolab/methoden/synthese">Markieren, clustern, Themen mit Zitat-IDs; zweiter Blick mit Claude.</Block>
+    <Block time="10:00–10:10" type="pause" title="Pause" />
+    <Block time="10:10–11:25" type="uebung" title="Kundenprofil" href="/innolab/methoden/kundenprofil">Jobs, Pains, Gains – konkret, belegt, nach Chancenwert sortiert.</Block>
+    <Block time="11:25–12:00" type="konzept" title="Customer Experience & Journey Map" href="/innolab/methoden/journey-map#worum">Momente, Gefühlskurve, Momente der Wahrheit, Peak-End-Regel.</Block>
+    <Block time="12:00–13:00" type="pause" title="Mittagspause" />
+    <Block time="13:00–14:25" type="uebung" title="Journey Map" href="/innolab/methoden/journey-map#vorgehen">Ist-Zustand eurer Zielgruppe, Pains per ID, drei Momente der Wahrheit.</Block>
+    <Block time="14:25–14:55" type="uebung" title="How Might We" href="/innolab/methoden/hmw">Aus Momenten der Wahrheit werden Chancen.</Block>
+    <Block time="14:55–15:10" type="pause" title="Pause" />
+    <Block time="15:10–16:40" type="uebung" title="Ideation" href="/innolab/methoden/ideation">Schlechteste Idee, Crazy 8s oder SCAMPER, Brainwriting, Claude, Note-and-Vote.</Block>
+    <Block time="16:40–17:00" type="plenum" title="Abschluss" href="#abschluss">Entscheidungslog, Ausblick auf Tag 3.</Block>
+  </div>
+
+  <hr />
+  <h2 id="faden">Wo ihr im roten Faden steht</h2>
+  <p>Gestern habt ihr das <strong>Outcome</strong> festgelegt. Heute wachsen darunter die <strong>Chancen</strong> (HMW-Fragen) und die ersten <strong>Lösungen</strong> (Ideen). Jeder Schritt baut auf dem vorigen auf: Die Themen der Synthese belegen das Kundenprofil, die Journey Map verortet dessen Pains, die Momente der Wahrheit werden zu Fragen, die Fragen zu Ideen. Pains erarbeitet ihr dabei genau einmal – im Kundenprofil.</p>
+  <Callout type="tip" title="Gestern war eine Annahme, heute ist ein Beleg">
+    <p>Haltet die Annahmen-Map von Tag 1 offen. Wenn ein Thema aus den Interviews eine Annahme stützt oder widerlegt, tragt es sofort in die Spalte „Beleg“ ein. Eine widerlegte Annahme ist ein gutes Ergebnis: Sie hat euch gerade Wochen falscher Arbeit erspart.</p>
+  </Callout>
+
+  <h2 id="methoden">Die Methoden von heute</h2>
+  <ul>
+    <li><a href="/innolab/methoden/synthese">Interview-Synthese</a> – Themen mit Zitat-IDs</li>
+    <li><a href="/innolab/methoden/kundenprofil">Kundenprofil</a> – Jobs, Pains, Gains und ihr Chancenwert</li>
+    <li><a href="/innolab/methoden/journey-map">Journey Map</a> – Ist-Zustand und Momente der Wahrheit</li>
+    <li><a href="/innolab/methoden/hmw">How Might We</a> – Chancen</li>
+    <li><a href="/innolab/methoden/ideation">Ideation</a> – Ideen und eine begründete Auswahl</li>
+  </ul>
+
+  <h2 id="abschluss">Abschluss</h2>
+  <p>Bevor ihr geht:</p>
+  <Checklist id="il-tag2-abschluss" items={[
+    '<code>docs/interviews/SYNTHESE.md</code>, <code>KUNDENPROFIL.md</code>, <code>JOURNEY.md</code>, <code>CHANCEN.md</code> und <code>IDEEN.md</code> im Repo',
+    'Spalte „Beleg“ in <code>docs/ANNAHMEN.md</code> nachgetragen',
+    'Eine Zeile pro Entscheidung von heute in <code>docs/ENTSCHEIDUNGEN.md</code>',
+    'Committet und gepusht',
+  ]} />
+  <p>An Tag 3 wird aus der gewählten Idee ein Angebot (Value Map), eine Geschichte (Concept Story), ein Plan (Story Map) und ein erster Prototyp.</p>
+
+  <FooterNav prev={{ href: '/innolab/tag-1', t: 'Tag 1 · Rahmen & Verstehen' }} next={{ href: '/innolab/methoden/synthese', t: 'Interview-Synthese' }} />
+</Layout>

@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { ARTEFAKTE, METHODEN, ORTE, erzeugtVon, methodenVonTag } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, erzeugtVon, methodenVonTag, pruefPrompt } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -71,5 +71,17 @@ describe('methoden', () => {
       // Reiner Text: Die Checkliste rendert HTML, der Claude-Prompt kopiert Text – beides soll gleich aussehen.
       for (const p of m.pruefliste!) expect(p, m.slug).not.toMatch(/[<>&]/);
     }
+  });
+
+  it('der Prüf-Prompt nennt das Ergebnis und zum Abgleich die Vorarbeit, jede nur einmal', () => {
+    const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!);
+    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch docs\/interviews\/SYNTHESE\.md\./);
+    const jm = pruefPrompt(METHODEN.find((m) => m.slug === 'journey-map')!);
+    expect(jm).toContain('Zum Abgleich lies auch docs/KUNDENPROFIL.md, docs/interviews/SYNTHESE.md.');
+    // Teilprüfung: der Leitfaden statt aller Interview-Dateien, die Vorarbeit bleibt.
+    const iv = pruefPrompt(METHODEN.find((m) => m.slug === 'interview')!, 'docs/interviews/LEITFADEN.md');
+    expect(iv).toMatch(/^Lies docs\/interviews\/LEITFADEN\.md\. Zum Abgleich lies auch docs\/PRODUKT\.md\./);
+    const pr = pruefPrompt(METHODEN.find((m) => m.slug === 'problem-rahmen')!);
+    expect(pr).toMatch(/^Lies docs\/PRODUKT\.md\. Prüf es/);
   });
 });

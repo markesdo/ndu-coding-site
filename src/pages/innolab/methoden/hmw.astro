@@ -1,0 +1,61 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="How Might We">
+  <span class="eyebrow">Innolab · Tag 2 · Methode</span>
+  <h1>How Might We</h1>
+  <p class="lead">Aus den Momenten der Wahrheit werden Fragen, auf die es viele Antworten gibt.</p>
+  <Orientierung seite="innolab/methoden/hmw" leiste={false} />
+  <MethodenKarte slug="hmw" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p>„Wie könnten wir …?“ – auf Englisch <em>How might we</em> – verwandelt ein Problem in eine Einladung. <em>Wie</em> sagt, dass es eine Antwort gibt; <em>könnten</em>, dass es mehrere sein dürfen; <em>wir</em>, dass ihr sie gemeinsam sucht. Im Opportunity Solution Tree sind diese Fragen die <strong>Chancen</strong>: Sie hängen unter dem Outcome von Tag 1, und die Ideen hängen unter ihnen.</p>
+  <p>Die Kunst ist die Weite der Frage. Zu weit, und jede Idee passt. Zu eng, und die Lösung steckt schon drin.</p>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th></th><th>Frage zu W1 · Schlange und Abfahrtstafel</th></tr></thead>
+      <tbody>
+        <tr><th>Zu weit</th><td>Wie könnten wir den Morgen von Pendler*innen schöner machen?</td></tr>
+        <tr><th>Zu eng</th><td>Wie könnten wir eine Ampel mit der Wartezeit über die Theke hängen?</td></tr>
+        <tr><th>Passt · H1</th><td>Wie könnten wir Pendler*innen beim Betreten der Halle zeigen, ob sich ein Kaffee bis zur Abfahrt ausgeht?</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Zu W2 („Warten auf den Kaffee“) entsteht <strong>H2</strong>: <em>Wie könnten wir das Warten auf den Kaffee so kurz machen, dass niemand auf die Uhr schaut?</em> – und zu W3 <strong>H3</strong>: <em>Wie könnten wir den ersten Schluck im Zug zum besten Moment des Morgens machen?</em></p>
+  <p>Ausgewählt werden <strong>H1</strong> und <strong>H2</strong>: H2 hängt am Pain mit dem höchsten Chancenwert (P1), H1 am Risiko P2, dem dritten der Top 3. H3 bleibt im Board, für später.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
+  <ol>
+    <li><strong>Allein (10 min):</strong> Zu jedem Moment der Wahrheit zwei bis drei Fragen. Den Pain aus dem Moment hineinnehmen.</li>
+    <li><strong>Weite prüfen (5 min):</strong> Bei jeder Frage zwei Ideen ausdenken. Passt alles? Zu weit. Fällt euch nur eine ein? Zu eng.</li>
+    <li><strong>Auswählen (10 min):</strong> ein bis zwei Fragen, die am meisten auf das Outcome wirken – meist die am Pain mit dem höchsten Chancenwert.</li>
+    <li><strong>Festhalten (5 min):</strong> <code>docs/CHANCEN.md</code>.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/CHANCEN.md"># Chancen — [Produkt]
+
+Outcome (aus docs/PRODUKT.md, Abschnitt 6): [...]
+
+| ID | Wie könnten wir …? | Moment der Wahrheit | Pains | Ausgewählt |
+|----|--------------------|---------------------|-------|------------|
+| H1 | [...] | W1 | [P…] | ja |
+| H2 | [...] | W2 | [...] | [...] |
+
+Warum diese Auswahl: [ein Satz zur Wirkung auf das Outcome]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="hmw" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Probiert bei eurer ausgewählten Frage den Test aus dem Beispiel: Fallen euch in einer Minute fünf sehr verschiedene Ideen ein? Dann ist sie bereit für die Ideation.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/journey-map', t: 'Journey Map' }} next={{ href: '/innolab/methoden/ideation', t: 'Ideation' }} />
+</Layout>

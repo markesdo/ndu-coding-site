@@ -1,0 +1,94 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Journey Map">
+  <span class="eyebrow">Innolab · Tag 2 · Methode</span>
+  <h1>Journey Map</h1>
+  <p class="lead">Der heutige Ablauf aus Sicht eurer Zielgruppe, Moment für Moment – und die drei Momente, in denen sie entscheidet, ob sie bleibt.</p>
+  <Orientierung seite="innolab/methoden/journey-map" leiste={false} />
+  <MethodenKarte slug="journey-map" />
+
+  <h2 id="worum">Worum es geht</h2>
+  <p><strong>Customer Experience</strong> ist die Summe aller Höhen und Tiefen, die jemand mit einem Angebot erlebt – auch der Momente, auf die ihr keinen Einfluss habt. Die Journey Map legt diese Momente in eine Reihe. Ihr zeichnet heute den <strong>Ist-Zustand</strong>: wie es jetzt läuft, ohne euer Produkt. Den Soll-Zustand beschreibt an Tag 3 die Usage Story.</p>
+  <p>Vier Schritte, in dieser Reihenfolge:</p>
+  <ol>
+    <li><strong>Alle Momente:</strong> 12–20 Kästchen vom Moment vor dem ersten Kontakt bis nach dem letzten. Auch das Warten, auch den Weg dazwischen.</li>
+    <li><strong>Gefühl:</strong> Für jeden Moment von −2 (sehr schlecht) bis +2 (sehr gut). Daraus entsteht eine Kurve.</li>
+    <li><strong>Pains verorten:</strong> Die IDs aus dem Kundenprofil an die Momente hängen, an denen sie entstehen.</li>
+    <li><strong>Momente der Wahrheit:</strong> die drei Momente, in denen die Person entscheidet, ob sie weitermacht oder abspringt. Jeder mit Beleg.</li>
+  </ol>
+  <p>Für Momente der Wahrheit hilft die <strong>Peak-End-Regel</strong> (Daniel Kahneman): Menschen beurteilen ein Erlebnis vor allem nach dem intensivsten Moment und nach dem Ende – nicht nach der Dauer oder dem Durchschnitt.</p>
+
+  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>#</th><th>Moment</th><th>Gefühl</th><th>Pains</th><th>Wahrheit</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Zu Hause los, knapp dran</td><td>−1</td><td></td><td></td></tr>
+        <tr><td>2</td><td>Weg zum Bahnhof</td><td>0</td><td></td><td></td></tr>
+        <tr><td>3</td><td>Betritt die Halle, riecht Kaffee</td><td>+1</td><td></td><td></td></tr>
+        <tr><td>4</td><td>Sieht Schlange und Abfahrtstafel gleichzeitig</td><td>−1</td><td>P2</td><td>W1</td></tr>
+        <tr><td>5</td><td>Stellt sich an</td><td>0</td><td></td><td></td></tr>
+        <tr><td>6</td><td>Wartet, schaut auf die Uhr</td><td>−2</td><td>P1, P2</td><td></td></tr>
+        <tr><td>7</td><td>Bestellt und bezahlt</td><td>0</td><td></td><td></td></tr>
+        <tr><td>8</td><td>Wartet auf den Kaffee, weiß nicht wie lange</td><td>−2</td><td>P1, P2</td><td>W2</td></tr>
+        <tr><td>9</td><td>Bekommt den Kaffee</td><td>+1</td><td></td><td></td></tr>
+        <tr><td>10</td><td>Läuft zum Bahnsteig, verschüttet fast</td><td>−1</td><td></td><td></td></tr>
+        <tr><td>11</td><td>Steigt ein, findet einen Platz</td><td>+1</td><td></td><td></td></tr>
+        <tr><td>12</td><td>Erster Schluck im Zug</td><td>+2</td><td></td><td>W3</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul>
+    <li><strong>W1 · Schlange und Abfahrtstafel:</strong> Hier fällt die Entscheidung „anstellen oder Automat“ (T2, I2-4).</li>
+    <li><strong>W2 · Warten auf den Kaffee:</strong> der Tiefpunkt der Kurve; wer hier knapp wird, bereut, sich angestellt zu haben (T2, I3-3).</li>
+    <li><strong>W3 · Erster Schluck:</strong> das Ende der Geschichte. Ist es gut, wird der ganze Morgen besser erinnert (Peak-End, I1-4).</li>
+  </ul>
+  <p>Die Momente 6 und 8 sind <strong>Leerlauf</strong>: Es passiert nichts, und genau dort ist die Kurve am tiefsten. Leerlauf, in dem die Person nicht weiß, wie lange er dauert, ist oft ein Moment der Wahrheit. Hier hängen beide zusammen; markiert ist Moment 8, weil dort niemand mehr umkehren kann – bezahlt ist schon.</p>
+
+  <h3 id="hinter-den-kulissen">Hinter den Kulissen (optional)</h3>
+  <p>Unter die Momente könnt ihr eine Zeile „Backstage“ legen: Wer oder was sorgt intern für diesen Moment – Personen, Systeme, Abläufe, Regeln? Bei der Kaffeebar: Kasse und Siebträger stehen hintereinander, eine Person macht beides. Das erklärt Moment 8, gehört aber nicht in die Gefühlskurve.</p>
+
+  <h2 id="vorgehen">So geht ihr vor (35 min Input, 85 min Übung)</h2>
+  <ol>
+    <li><strong>Alle Momente (25 min, allein in Miro):</strong> Erst Start und Ende festlegen, dann die Geschichte Kästchen für Kästchen erzählen. Lücken suchen: Wo wartet die Person?</li>
+    <li><strong>Gefühlskurve (10 min).</strong></li>
+    <li><strong>Pains verorten (10 min):</strong> nur IDs aus dem Kundenprofil. Taucht ein neuer Pain auf, kommt er zuerst ins Profil.</li>
+    <li><strong>Dreierrunde (20 min):</strong> Jede*r erzählt die eigene Map in fünf Minuten. Die anderen fragen: „Was passiert davor?“, „Woher wisst ihr, dass das ein Tiefpunkt ist?“</li>
+    <li><strong>Momente der Wahrheit und Festhalten (20 min):</strong> drei markieren, mit Beleg; <code>docs/JOURNEY.md</code>; prüfen.</li>
+  </ol>
+
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/JOURNEY.md"># Journey Map (Ist) — [Segment]
+
+Stand: [Datum] · Miro: [Link zum Board]
+Start: [Moment vor dem ersten Kontakt] · Ende: [Moment nach dem letzten]
+
+| # | Moment (was die Person tut oder erlebt) | Gefühl −2…+2 | Pains (IDs) | Moment der Wahrheit |
+|---|------------------------------------------|--------------|-------------|---------------------|
+| 1 | [...] | [...] | | |
+| 2 | [...] | [...] | [P…] | [W1] |
+
+## Momente der Wahrheit
+- W1 · [Moment]: [warum hier entschieden wird] ([Beleg])
+- W2 · [...]
+- W3 · [...]</Prompt>
+
+  <Callout type="tip" title="Typische Phasen als Gedächtnisstütze">
+    <p>Bei digitalen Produkten hilft beim Sammeln eine grobe Folge: aufmerksam werden → vergleichen → ausprobieren → kaufen oder anmelden → einsteigen → nutzen → Hilfe brauchen → verlängern → weiterempfehlen. Nicht jede Phase gehört in eure Map – aber oft fehlt eine, die wichtig wäre.</p>
+  </Callout>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="journey-map" />
+
+  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+  <p>Wo ist bei euch der „Blick auf Schlange und Abfahrtstafel“ – der Moment, in dem eure Zielgruppe entscheidet, ob sie es heute überhaupt versucht? Und wo wartet sie, ohne zu wissen, wie lange?</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} next={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} />
+</Layout>

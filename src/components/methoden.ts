@@ -127,13 +127,29 @@ export const METHODEN: Methode[] = [
   {
     slug: 'synthese', name: 'Interview-Synthese', tag: 2, dauer: 60,
     frage: 'Welche Muster zeigen sich über alle Interviews?',
-    braucht: ['transkripte'], ergibt: ['synthese'],
-    ki: 'Clustert nach euch ein zweites Mal – jedes Thema nur mit Zitat-ID.',
+    braucht: ['transkripte', 'annahmen'], ergibt: ['synthese'],
+    pruefliste: [
+      'Jedes Thema ist ein Satz über Verhalten oder Erleben – kein Stichwort wie „Wartezeit“.',
+      'Jedes Thema nennt Zitat-IDs aus mindestens zwei Interviews, oder es ist als Einzelfall markiert.',
+      'Jedes Zitat steht wörtlich so im Transkript.',
+      'Mindestens ein Thema widerspricht einer Annahme oder hat euch überrascht.',
+      'In der Annahmen-Map ist die Spalte „Beleg“ nachgetragen.',
+    ],
+    ki: 'Clustert nach euch ein zweites Mal – jedes Thema nur mit wörtlichem Zitat und Datei.',
   },
   {
     slug: 'kundenprofil', name: 'Kundenprofil', tag: 2, dauer: 75,
     frage: 'Welche Jobs, Pains und Gains hat dieses Segment – und welche zählen am meisten?',
     braucht: ['synthese'], ergibt: ['profil'],
+    pruefliste: [
+      'Das Profil beschreibt genau ein Segment.',
+      'Jobs sind Aufgaben der Person – keine Ergebnisse und keine Funktionen eures Produkts.',
+      'Neben funktionalen Jobs steht mindestens ein sozialer oder emotionaler.',
+      'Pains und Gains sind konkret: „mehr als 6 Minuten anstehen“ statt „zu lange“.',
+      'Kein Eintrag beschreibt euer Produkt oder eure Lösung.',
+      'Jeder Eintrag verweist auf ein Thema oder Zitat aus der Synthese.',
+      'Die Einträge sind nach Chancenwert sortiert, die drei wichtigsten markiert.',
+    ],
     ki: 'Prüft gegen die häufigen Fehler: vermischte Segmente, vage Pains, nur funktionale Jobs.',
     quelle: 'Strategyzer, Value Proposition Design',
   },
@@ -141,19 +157,40 @@ export const METHODEN: Methode[] = [
     slug: 'journey-map', name: 'Journey Map', tag: 2, dauer: 120,
     frage: 'Wo im heutigen Ablauf entstehen die Pains – und wo entscheidet sich, ob jemand bleibt?',
     braucht: ['profil', 'synthese'], ergibt: ['journey'],
+    pruefliste: [
+      'Die Map beginnt vor dem ersten Kontakt und endet nach dem letzten.',
+      'Sie beschreibt, was die Person tut und erlebt – nicht eure internen Abläufe.',
+      'Wartezeiten und Leerlauf stehen als eigene Momente drin.',
+      'Pains stehen als ID aus dem Kundenprofil an ihrem Moment; ein neuer Pain kommt zuerst ins Profil.',
+      'Es gibt drei Momente der Wahrheit, jeder mit Beleg aus der Synthese.',
+      'Für jeden Moment ist das Gefühl eingetragen.',
+    ],
     ki: 'Findet Leerstellen und fragt nach dem Beleg für jeden Moment der Wahrheit.',
   },
   {
     slug: 'hmw', name: 'How Might We', tag: 2, dauer: 30,
     frage: 'Welche Chancen stecken in den Momenten der Wahrheit?',
     braucht: ['journey'], ergibt: ['chancen'],
+    pruefliste: [
+      'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an einem Moment der Wahrheit (W1–W3).',
+      'Keine Frage enthält schon eine Lösung.',
+      'Keine Frage ist so weit, dass jede Idee passt.',
+      'Ein bis zwei Fragen sind ausgewählt, mit einem Satz, warum sie am meisten auf das Outcome wirken.',
+    ],
     ki: 'Prüft, ob eine Frage schon eine Lösung vorgibt oder zu weit ist.',
   },
   {
     slug: 'ideation', name: 'Ideation', tag: 2, dauer: 90,
     frage: 'Welche Lösungen gibt es – und welche verfolgen wir?',
     braucht: ['chancen'], ergibt: ['ideen'],
-    ki: 'Erst nach Crazy 8s und Brainwriting: Analogien aus anderen Branchen, sehr verschiedene Personas, naiver Mentee.',
+    pruefliste: [
+      'Vor der KI-Runde stehen mindestens acht eigene Ideen.',
+      'Ideen der anderen beiden aus dem Brainwriting sind drin.',
+      'Ideen von Claude sind als solche markiert.',
+      'Die Auswahl entstand durch stilles Abstimmen; die Begründung steht dabei.',
+      'Die gewählte Idee beantwortet eine ausgewählte HMW-Frage und nennt deren ID.',
+    ],
+    ki: 'Erst nach den eigenen Runden: Analogien aus anderen Branchen, die Sicht sehr verschiedener Nutzer*innen, Fragen als neugierige*r Neue*r im Team.',
   },
   {
     slug: 'value-map', name: 'Value Map & Fit', tag: 3, dauer: 60,
@@ -259,3 +296,18 @@ export const erzeugtVon = (id: string): Methode | undefined => METHODEN.find((m)
 
 /** Methoden eines Kurstags, in Kursreihenfolge. */
 export const methodenVonTag = (tag: number): Methode[] => METHODEN.filter((m) => m.tag === tag);
+
+/** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
+ *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. den Leitfaden statt aller Interview-Dateien). */
+export function pruefPrompt(m: Methode, pfad?: string): string {
+  if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
+  const pfade = pfad ? [pfad] : m.ergibt.map((id) => artefakt(id)!.pfad).filter(Boolean);
+  // Viele Punkte lassen sich nur gegen die Vorarbeit prüfen (Zitate gegen Transkripte, IDs gegen das Kundenprofil).
+  const abgleich = [...new Set(m.braucht.map((id) => artefakt(id)!.pfad).filter((p): p is string => !!p && !pfade.includes(p)))];
+  return [
+    `Lies ${pfade.join(' und ')}.${abgleich.length ? ` Zum Abgleich lies auch ${abgleich.join(', ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
+    ...m.pruefliste.map((p, i) => `${i + 1}. ${p}`),
+    '',
+    'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um und ändere keine Datei – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
+  ].join('\n');
+}
