@@ -35,7 +35,8 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-15">
     <Block time="09:00–09:10" type="plenum" title="Stand-up">Reihum: eure App live am Handy, dazu ein Satz, wo es gerade hakt. Gelöst wird in den Übungen.</Block>
-    <Block time="09:10–09:35" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="#konzept-7">Ein Test klickt ein Kriterium von selbst durch, GitHub prüft bei jedem Push, ein frischer Blick prüft vor dem Zusammenführen.</Block>
+    <Block time="09:10–09:20" type="plenum" title="Unser Stack & der Pull Request" href="#stack-pr">Was auf eurem Mac läuft, was im Internet – und welchen Weg eine Änderung von dort bis live nimmt.</Block>
+    <Block time="09:20–09:35" type="konzept" title="Konzept 7 · Vom Prototyp zum Produkt" href="#konzept-7">Ein Test klickt ein Kriterium von selbst durch, GitHub prüft bei jedem Push, ein frischer Blick prüft vor dem Zusammenführen.</Block>
     <Block time="09:35–10:30" type="uebung" title="Übung 8 · Ein Test, der mich schützt" href="#uebung-8">Eigene App: ein Test, eine automatische Prüfung auf GitHub, ein Pull Request mit Review.</Block>
     <Block time="10:30–10:45" type="pause" title="Pause" />
     <Block time="10:45–11:05" type="konzept" title="Konzept 8 · Design → Code" href="#konzept-8">Warum ein Design-System Drift verhindert, drei Wege vom Entwurf zum Code, was bei der Übergabe verloren geht.</Block>
@@ -50,7 +51,15 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   </div>
 
   <hr />
-  <h2 id="konzept-7">Konzept 7 · Vom Prototyp zum Produkt <span class="pill konzept">25 min</span></h2>
+  <h2 id="stack-pr">Unser Stack & der Pull Request <span class="pill plenum">10 min</span></h2>
+  <p>Gemeinsam am Beamer, bevor es ans Absichern geht: Wo liegt was, und wie kommt eine Änderung live?</p>
+  <ul>
+    <li><strong>Der Stack</strong> Links euer Mac mit Claude Code und dem Repo, rechts GitHub, Vercel, Supabase und Linear. Wer redet mit wem – und über welche Schlüssel? <a href="/unser-stack#ueberblick">Unser Stack</a></li>
+    <li><strong>Der Pull Request</strong> Branch, Push, Vorschau, Prüfung, Review, Merge – der Weg, den ab heute jede Änderung nimmt. <a href="/konzepte/git#pull-request">So funktioniert ein Pull Request</a></li>
+  </ul>
+
+  <hr />
+  <h2 id="konzept-7">Konzept 7 · Vom Prototyp zum Produkt <span class="pill konzept">15 min</span></h2>
   <KonzeptStation links={[{ href: '/konzepte/qualitaet', t: 'Konzept 7 lesen' }]} danach={{ href: '#uebung-8', t: 'Übung 8' }}>
     <p>In Übung 8 baut ihr in eure eigene App, was einen Prototyp von einem Produkt trennt: Prüfungen, die nicht müde werden.</p>
     <ul>
@@ -91,6 +100,7 @@ Dann beweis mir, dass er wirklich prüft: Mach die Funktion vorübergehend kaput
   <Prompt label="Einmal rot, einmal grün">Bau absichtlich einen Fehler ein, an dem der Build scheitert – einen Typfehler, z. B. const probe: number = "kein Text"; in einer Seite. Prüf mit npm run build, dass er wirklich scheitert, dann commite und push. Sag mir, wo ich auf GitHub sehe, dass die Prüfung scheitert. Wenn ich es gesehen habe, sage ich „weiter“: dann entfernst du den Fehler wieder, commitest und pushst.</Prompt>
 
   <h3 id="uebung-8-c">c) Pull Request und Review (20 min)</h3>
+  <p class="small">Was ein Pull Request ist und welchen Weg er bis live nimmt: <a href="/konzepte/git#pull-request">So funktioniert ein Pull Request</a>.</p>
   <Prompt label="Pull Request erstellen">Erstelle einen Pull Request von diesem Branch nach main. Die Beschreibung ist ohne Programmierkenntnisse verständlich: was neu ist, wie man es prüft, was noch offen ist. Gib mir den Link.</Prompt>
   <p>Reihum wie in der Dreier-Runde: Schickt den Link an die nächste Person. Sie öffnet ihn und prüft, ohne Code zu lesen:</p>
   <ol class="steps">
