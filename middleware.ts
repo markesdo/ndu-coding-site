@@ -1,7 +1,7 @@
 // Kurspasswort für die Website – Vercel Routing Middleware (plattformweit, nicht Astro-Middleware).
 // Läuft nur auf Vercel; lokal (`astro dev`) gibt es kein Passwort.
-// Frei: /start (Startseite vor dem Login), /login, /_astro/* (Schriften, Skripte, Bilder), Favicon, robots.txt,
-// og.png (Bild der Link-Vorschau – WhatsApp & Co. sind nicht angemeldet), version.json (nur die Commit-Kennung, für
+// Frei: /start (Startseite vor dem Login), /login, /_astro/* (Schriften, Skripte, Bilder), Favicons, robots.txt,
+// og.png und og-innolab.png (Bilder der Link-Vorschau – WhatsApp & Co. sind nicht angemeldet), version.json (nur die Commit-Kennung, für
 // den Hinweis „Seite aktualisiert“ – sonst bekäme die Abfrage die Login-Seite zurück).
 // Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
@@ -9,7 +9,7 @@ import { next } from '@vercel/functions';
 import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istOeffentlich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
 
 export const config = {
-  matcher: ['/((?!_astro/|favicon\\.svg$|favicon\\.ico$|robots\\.txt$|og\\.png$|version\\.json$).*)'],
+  matcher: ['/((?!_astro/|favicon(?:-innolab)?\\.svg$|favicon\\.ico$|robots\\.txt$|og(?:-innolab)?\\.png$|version\\.json$).*)'],
 };
 
 const NOINDEX = { 'X-Robots-Tag': 'noindex, nofollow', 'Cache-Control': 'private, no-store' };

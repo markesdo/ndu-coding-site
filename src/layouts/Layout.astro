@@ -25,7 +25,7 @@ const { title, description = kurs.beschreibung } = Astro.props;
 const { vorher, danach } = nachbarn(path);
 ---
 <!doctype html>
-<html lang="de">
+<html lang="de" data-bereich={bereich}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -39,11 +39,11 @@ const { vorher, danach } = nachbarn(path);
       // Eingeklappte Seitenleiste (Desktop) vor dem ersten Zeichnen.
       try { if (localStorage.getItem('ndu-seitenleiste') === 'zu') document.documentElement.setAttribute('data-leiste-zu', ''); } catch (e) {}
     </script>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={kurs.favicon ?? '/favicon.svg'} type="image/svg+xml" />
   </head>
   <body>
     <div class="topbar">
-      <strong class="topbar-brand"><Marke einzeilig name={kurs.marke} /></strong>
+      <strong class="topbar-brand"><Marke einzeilig name={kurs.marke} zeichen={kurs.zeichen} /></strong>
       <div class="topbar-actions">
         <a class="beamer-weiter" hidden data-fallback-next={danach?.href} data-fallback-next-t={danach?.t} data-fallback-prev={vorher?.href} title="Nächste Seite (Taste →, zurück mit ←)"><span>Weiter: <b></b></span><ArrowRight size={16} aria-hidden="true" /></a>
         <!-- „Wo ist Markus?“: nur sichtbar, wo der Präsentator-Schlüssel liegt (wo-ist.ts) -->
@@ -62,7 +62,7 @@ const { vorher, danach } = nachbarn(path);
         <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer</button>
       </div>
       <aside class="sidebar" id="sidebar">
-        <a class="brand" href={kurs.start} aria-label={`${kurs.kurz} – Übersicht`}><Marke name={kurs.marke} /></a>
+        <a class="brand" href={kurs.start} aria-label={`${kurs.kurz} – Übersicht`}><Marke name={kurs.marke} zeichen={kurs.zeichen} /></a>
         <nav>
           {nav.map(g => (
             <div class="group">

@@ -10,6 +10,8 @@
   --on-accent: #ffffff;
   --accent-soft: #fde8e3;
   --eyebrow-bg: var(--accent-soft);
+  /* Farbe von Zeichen und Cursor in der Bildmarke (dunkle Kachel, in Hell und Dunkel gleich). */
+  --marke: #ff6a4d;
   --blue: #2457d6;
   --blue-soft: #e4ebfc;
   --green: #1b6f3f;
@@ -59,6 +61,21 @@
   --blue: #7aa2ff; --blue-soft: #1c2740;
   --green: #5fcf8a; --green-soft: #15301f; --yellow: #e8b45a; --yellow-ink: #e8b45a; --yellow-soft: #3a2d14;
   --purple: #b092f5; --purple-soft: #28203d; --code-bg: #24242c;
+}
+/* Innolab (html[data-bereich="innolab"], Layout.astro): Laborgrün statt Koralle, sonst alles gleich.
+   Auf Hell trägt das dunkle Grün auch --accent – Komponenten zeichnen damit Linien und Icons auf hellem Grund,
+   dort wäre das helle Grün unsichtbar. Das helle Grün bleibt der Bildmarke und dem dunklen Thema. */
+:root[data-bereich="innolab"] {
+  --marke: #c6f432;
+  --accent: #4a6a00; --accent-ink: #4a6a00; --on-accent: #ffffff; --accent-soft: #eef8cc; --eyebrow-bg: var(--accent-soft);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-bereich="innolab"]:not([data-theme="light"]) {
+    --accent: #c6f432; --accent-ink: #d4f75e; --on-accent: #16161a; --accent-soft: #232b10; --eyebrow-bg: #1f2610;
+  }
+}
+:root[data-bereich="innolab"][data-theme="dark"] {
+  --accent: #c6f432; --accent-ink: #d4f75e; --on-accent: #16161a; --accent-soft: #232b10; --eyebrow-bg: #1f2610;
 }
 
 * { box-sizing: border-box; }
@@ -131,7 +148,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .sidebar .brand { display: flex; align-items: center; gap: .6rem; font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: .95rem; color: var(--fg); margin-bottom: 1.5rem; }
 .sidebar .brand:hover { text-decoration: none; }
 /* Bildmarke: Prompt-Zeichen und Block-Cursor auf dunkler Kachel – in Hell und Dunkel gleich, im Dunklen mit Haarlinie, damit die Kante bleibt. */
-.brand-mark { display: inline-flex; align-items: center; justify-content: center; gap: .12em; flex: none; width: 1.75rem; height: 1.75rem; border-radius: 6px; background: #16161a; color: #ff6a4d; font-family: var(--mono); font-weight: 800; font-size: .95rem; line-height: 1; box-shadow: 0 0 0 1px var(--border); }
+.brand-mark { display: inline-flex; align-items: center; justify-content: center; gap: .12em; flex: none; width: 1.75rem; height: 1.75rem; border-radius: 6px; background: #16161a; color: var(--marke); font-family: var(--mono); font-weight: 800; font-size: .95rem; line-height: 1; box-shadow: 0 0 0 1px var(--border); }
 .brand-mark i { display: block; width: .36em; height: .8em; background: currentColor; }
 .topbar .brand-mark { width: 1.5rem; height: 1.5rem; font-size: .8rem; }
 /* Am Handy teilt sich der Name die Kopfleiste mit „Beamer“ und „Menü“: er kürzt sich, die Knöpfe bleiben ganz. */
