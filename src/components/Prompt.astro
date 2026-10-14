@@ -6,6 +6,9 @@ const { label = 'Prompt für Claude Code', note } = Astro.props;
 // [Lücken] wie „[Nummer]“ farbig markieren, damit man sieht, was zu ersetzen ist. Kopiert wird weiter der Text
 // (innerText) – die Klammern bleiben darin, <mark> ändert nur die Darstellung.
 const html = lueckenMarkieren(await Astro.slots.render('default'));
+const hatLuecken = html.includes('class="luecke"');
+// Auf der Anleitung selbst kein „Wie?“-Link – er würde die Seite neu laden und Eingaben verwerfen.
+const zeigeWie = Astro.url.pathname.replace(/\/$/, '') !== '/prompts-ausfuellen';
 ---
 <div class="prompt">
   <div class="label">
@@ -17,14 +20,53 @@ const html = lueckenMarkieren(await Astro.slots.render('default'));
     </button>
   </div>
   <pre set:html={html}></pre>
+  {hatLuecken && <p class="luecken-hinweis">Gelbe Lücken anklicken und ausfüllen – Kopieren nimmt eure Eingaben mit.{zeigeWie && <> <a href="/prompts-ausfuellen">Wie?</a></>}</p>}
 </div>
 {/* Hinweis außerhalb der grauen Karte: Die Karte ist genau das, was kopiert wird. */}
 {note && <p class="prompt-note"><Info size={14} aria-hidden="true" /><span><strong>Hinweis</strong> {note}</span></p>}
 <script>
+  import { lueckeNachEingabe } from './luecken-eingabe';
+
+  // Lücken direkt in der Karte ausfüllen: Klick markiert den Platzhalter, Tippen ersetzt ihn.
+  // Kopieren liest weiter innerText des <pre> – Eingaben sind damit automatisch dabei.
+  document.querySelectorAll<HTMLElement>('.prompt mark.luecke').forEach(m => {
+    // Lücken in Links oder Code bleiben Anzeige – ein Klick soll dort nicht editieren.
+    if (m.dataset.platzhalter || m.closest('a, code')) return;
+    const platzhalter = m.textContent ?? '';
+    m.dataset.platzhalter = platzhalter;
+    // Ältere Browser (Firefox vor 136) werfen bei unbekanntem Wert einen Fehler – dann normales contenteditable.
+    try { m.contentEditable = 'plaintext-only'; } catch {}
+    if (m.contentEditable !== 'plaintext-only') m.contentEditable = 'true';
+    m.spellcheck = false;
+    m.setAttribute('role', 'textbox');
+    m.setAttribute('aria-label', `Lücke ${platzhalter} ausfüllen`);
+    m.title = 'Anklicken und ausfüllen';
+    // Markieren erst nach dem Klick: Sonst setzt der Browser den Cursor danach an die Klickstelle.
+    m.addEventListener('focus', () => setTimeout(() => {
+      if (m.classList.contains('gefuellt') || document.activeElement !== m) return;
+      const r = document.createRange(); r.selectNodeContents(m);
+      const sel = getSelection(); sel?.removeAllRanges(); sel?.addRange(r);
+    }));
+    m.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); m.blur(); } });
+    m.addEventListener('paste', e => {
+      if (m.contentEditable === 'plaintext-only') return;
+      e.preventDefault();
+      document.execCommand('insertText', false, e.clipboardData?.getData('text/plain') ?? '');
+    });
+    m.addEventListener('blur', () => {
+      const { text, gefuellt } = lueckeNachEingabe(m.textContent ?? '', platzhalter);
+      if (m.textContent !== text) m.textContent = text;
+      m.classList.toggle('gefuellt', gefuellt);
+    });
+  });
+
   document.querySelectorAll<HTMLButtonElement>('.prompt .copy').forEach(btn => {
     if (btn.dataset.bound) return; btn.dataset.bound = '1';
     const text = btn.querySelector('.copy-text')!;
     btn.addEventListener('click', async () => {
+      // Eine gerade bearbeitete Lücke erst abschließen (Safari fokussiert Buttons beim Klick nicht).
+      const aktiv = document.activeElement as HTMLElement | null;
+      if (aktiv?.matches('mark.luecke')) aktiv.blur();
       const txt = btn.closest('.prompt')?.querySelector('pre')?.innerText ?? '';
       try { await navigator.clipboard.writeText(txt.trim()); } catch {}
       text.textContent = 'Kopiert'; btn.classList.add('done');
