@@ -299,14 +299,22 @@ import { bild } from '../components/anleitung-bilder';
   <Prompt label="Deploy prüfen">Prüfe mit dem Vercel-MCP den letzten Production-Deploy: Status, Build-Log (nur Fehler und Warnungen zusammenfassen) und Laufzeit-Logs der letzten 30 Minuten. Erkläre mir in einfachen Worten, ob alles in Ordnung ist. Wenn nicht: behebe es, prüf lokal mit npm run build und warte vor dem Push auf mein Okay.</Prompt>
   <p class="small muted">Den Prompt braucht ihr immer, wenn etwas live anders aussieht als lokal – Claude liest die Logs selbst, ihr müsst nichts kopieren.</p>
 
-  <h3 id="vercel-supabase">e) Supabase auf die neue Adresse umstellen (5 min)</h3>
-  <p>Damit Login-Links nicht auf <code>localhost</code> zeigen. Diese Einstellung kann Claude nicht selbst ändern, aber den Weg zeigen:</p>
-  <Prompt label="Site URL">Hol dir mit dem Supabase-MCP die Project-Ref meines Projekts und gib mir den direkten Link zur Seite Authentication → URL Configuration. Sag mir genau, was ich bei Site URL eintrage (meine Vercel-Adresse unter Domains) und was bei Redirect URLs (dieselbe Adresse mit /** am Ende).</Prompt>
+  <h3 id="vercel-supabase">e) Supabase für lokal und live einrichten (5 min)</h3>
+  <p>Supabase muss wissen, wohin ein Login zurückführen darf. Tragt ihr hier alle Adressen eurer App ein, funktioniert der Login gleichzeitig am Mac, in Vorschauen und live – und ihr stellt danach nie wieder um. Die Einstellung kann Claude nicht selbst ändern, aber den Weg zeigen:</p>
+  <Prompt label="Site URL und Redirect URLs">Hol dir mit dem Supabase-MCP die Project-Ref meines Projekts und gib mir den direkten Link zur Seite Authentication → URL Configuration. Sag mir genau, was ich eintrage: bei Site URL meine Vercel-Adresse unter Domains; bei Redirect URLs drei Einträge – dieselbe Adresse mit /** am Ende, http://localhost:3000/** und die Vorschau-Adressen https://*-[Kürzel].vercel.app/** mit dem Kürzel meines Vercel-Kontos, das du mit dem Vercel-MCP nachsiehst.</Prompt>
   <Schritte id="vercel" nummer="5" start={16} steps={[
     { img: bild('tag2/url-1'), alt: 'URL Configuration, Site URL steht auf http://localhost:3000', text: 'Bei <em>Site URL</em> steht noch <code>http://localhost:3000</code>.', marks: [{ x: 1008, y: 288, w: 431, h: 33 }] },
     { img: bild('tag2/url-2'), alt: 'Site URL mit der Vercel-Adresse und Button „Save changes“', text: 'Eure Vercel-Adresse (die unter <em>Domains</em>) eintragen, <em>Save changes</em>.', marks: [{ x: 1339, y: 375, w: 100, h: 24 }] },
   ]} />
-  <p>Darunter bei <em>Redirect URLs</em> auf <em>Add URL</em> und dieselbe Adresse mit <code>/**</code> am Ende eintragen, z. B. <code>https://leihbar-….vercel.app/**</code> – so wie Claude es euch gesagt hat.</p>
+  <p>Darunter bei <em>Redirect URLs</em> dreimal <em>Add URL</em>, jeweils mit dem Eintrag, den Claude euch nennt:</p>
+  <ul>
+    <li><code>https://leihbar-….vercel.app/**</code> – eure Live-App</li>
+    <li><code>http://localhost:3000/**</code> – eure App am Mac</li>
+    <li><code>https://*-….vercel.app/**</code> – die Vorschau-Adressen, die Vercel ab Tag 3 in jeden Pull Request schreibt</li>
+  </ul>
+  <p class="small muted">Die Site URL ist nur die Vorgabe für Links ohne eigene Zieladresse. Zeigt das Terminal bei <code>npm run dev</code> einen anderen Port als 3000, tragt diese Adresse zusätzlich ein.</p>
+  <p>Damit das trägt, darf der Code keine feste Adresse mitschicken. Eine Regel für Claude, einmal pro Projekt:</p>
+  <Prompt label="Regel für Login-Weiterleitungen">Trag in CLAUDE.md im Abschnitt zum Stack diese Regel ein, falls sie fehlt: Login-Weiterleitungen (emailRedirectTo, redirectTo – Passwort-Reset, Magic Link, Google-/GitHub-Login) nehmen immer die aktuelle Adresse der App (window.location.origin im Browser, im Server aus dem Request), nie eine feste URL wie localhost:3000 oder die Vercel-Adresse. Prüf dann, ob der Code schon irgendwo eine feste Adresse für Weiterleitungen verwendet, und sag es mir, bevor du etwas änderst.</Prompt>
   <p><strong>Am Handy öffnen.</strong> Registrieren, etwas anfragen. Das ist eure App.</p>
 
   {/* id „t2-u5b“ (vorher t2-u5): Punkte geändert, als der Deploy auf Claude umgestellt wurde – Häkchen werden nach Position gespeichert. */}
