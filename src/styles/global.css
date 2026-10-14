@@ -565,3 +565,12 @@ html[data-beamer] .wo-ist { display: none; }
 .neu-laden button:focus-visible { outline: 2px solid var(--bg); outline-offset: 2px; }
 html[data-beamer] .neu-laden { display: none; }
 @media print { .neu-laden { display: none !important; } }
+
+/* Finale an Tag 3: große Zahlen und der Schlusssatz – auch am Beamer lesbar. */
+.finale-zahlen { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1rem; margin: 1.5rem 0 .5rem; }
+.finale-zahlen > div { background: var(--code-bg); border-radius: var(--radius); padding: 1rem 1.1rem; }
+.finale-zahlen strong { display: block; font-family: var(--display); font-size: clamp(2rem, 1.4rem + 2.5vw, 3rem); line-height: 1.05; letter-spacing: -0.04em; color: var(--accent-ink); }
+.finale-zahlen span { display: block; margin-top: .35rem; color: var(--muted); font-size: .92rem; }
+.finale-satz { hyphens: manual; text-wrap: balance; margin: 2rem 0 1rem; padding: 1.25rem 1.4rem; border-left: 3px solid var(--accent); background: var(--code-bg); border-radius: 0 var(--radius) var(--radius) 0; }
+.finale-satz p { margin: 0 0 .6rem; font-size: 1.15rem; }
+.finale-satz p:last-child { margin: 0; font-family: var(--display); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.02em; }
