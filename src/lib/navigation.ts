@@ -72,6 +72,7 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
     ]},
     { h: 'Werkzeuge', items: [
       { href: '/prompts', t: 'Prompt-Bibliothek' },
+      { href: '/prompts-ausfuellen', t: 'Prompts ausfüllen' },
       { href: '/ideen', t: 'Projektideen' },
       { href: '/bekannte-probleme', t: 'Bekannte Probleme' },
       { href: '/unser-stack', t: 'Unser Stack' },
