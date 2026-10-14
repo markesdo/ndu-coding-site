@@ -1,4 +1,4 @@
-// Prompt „Regel für Login-Weiterleitungen“ – steht in Tag 2 (Übung 5e) und auf /login-lokal-und-live.
+// Prompt „Regel für Login-Weiterleitungen“ – steht in Tag 2 (Übung 5e), in der Prompt-Bibliothek und auf /login-lokal-und-live.
 // Dieselbe Regel steht in CLAUDE.md der Templates ndu-coding-2026 und ndu-projekt; bei Änderungen dort mitziehen.
 export const LOGIN_REGEL_PROMPT =
   'Trag in CLAUDE.md im Abschnitt Tech-Stack diese Regel als eigenen Punkt „Login-Weiterleitungen“ ein, falls sie fehlt: ' +
