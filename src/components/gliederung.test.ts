@@ -56,11 +56,22 @@ describe('die echten Tagesseiten', () => {
     });
   }
 
+  // Jede Zeile im Ablauf, die auf die Seite selbst zeigt, landet auf einer vorhandenen Überschrift.
+  for (const seite of ['tag-1', 'tag-2', 'tag-3']) {
+    it(`${seite}: Ablauf-Links auf #… zeigen auf eine id der Seite`, () => {
+      const quelle = readFileSync(new URL(`../pages/${seite}.astro`, import.meta.url), 'utf8');
+      const ziele = [...quelle.matchAll(/<Block\b[^>]*\shref="#([^"]+)"/g)].map((m) => m[1]);
+      expect(ziele.length).toBeGreaterThan(0);
+      const ids = new Set([...quelle.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
+      expect(ziele.filter((z) => !ids.has(z))).toStrictEqual([]);
+    });
+  }
+
   // Wer die Seite von oben nach unten liest, kommt an jedem Konzept vorbei, bevor die Übung dazu beginnt.
   it.each([
     ['tag-1', ['ablauf', 'konzept-1', 'konzept-2', 'uebung-1', 'konzept-3', 'uebung-2'], [1, 2, 3]],
     ['tag-2', ['quiz', 'konzept-4', 'uebung-3', 'konzept-5', 'uebung-4', 'konzept-6', 'uebung-5'], [4, 5, 6]],
-    ['tag-3', ['ablauf', 'konzept-7', 'uebung-8', 'konzept-8', 'uebung-9', 'konzept-9', 'uebung-10', 'demos', 'abschluss'], [7, 8, 9]],
+    ['tag-3', ['ablauf', 'stack-pr', 'konzept-7', 'uebung-8', 'konzept-8', 'uebung-9', 'konzept-9', 'uebung-10', 'demos', 'abschluss'], [7, 8, 9]],
   ] as const)('%s: jedes Konzept steht vor seiner Übung, wie im Ablauf', (seite, reihe, konzepte) => {
     const quelle = readFileSync(new URL(`../pages/${seite}.astro`, import.meta.url), 'utf8');
     const ids = gliederung(quelle).map((a) => a.id);
