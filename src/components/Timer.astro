@@ -1,0 +1,41 @@
+---
+// Zeitbox einer Übung. Studierende sehen „5 min“; der Präsentator startet und pausiert den Countdown
+// per Klick oder Taste T (aktuelle Folie, Layout.astro). Nach Ablauf setzt ein Klick zurück.
+import { Timer as Uhr } from '@lucide/astro';
+const { minuten } = Astro.props as { minuten: number };
+---
+<span class="timer" data-timer={minuten * 60_000}>
+  <span class="timer-fest"><Uhr size={18} aria-hidden="true" /> {minuten} min</span>
+  <button type="button" class="timer-knopf" data-timer-knopf data-nur-praesentator aria-label={`Timer ${minuten} Minuten starten oder pausieren`}><Uhr size={18} aria-hidden="true" /> <span data-timer-rest>{minuten}:00</span></button>
+</span>
+<script>
+  import { restText } from './folien';
+  document.querySelectorAll<HTMLElement>('[data-timer]').forEach(box => {
+    const knopf = box.querySelector<HTMLButtonElement>('[data-timer-knopf]');
+    const anzeige = box.querySelector<HTMLElement>('[data-timer-rest]');
+    if (!knopf || !anzeige) return;
+    const dauer = Number(box.dataset.timer);
+    let rest = dauer, ende = 0, uhr = 0;
+    const zeigen = () => {
+      anzeige.textContent = rest > 0 ? restText(rest) : 'Zeit';
+      box.classList.toggle('laeuft', uhr !== 0);
+      box.classList.toggle('abgelaufen', rest <= 0);
+    };
+    const anhalten = () => { clearInterval(uhr); uhr = 0; };
+    knopf.addEventListener('click', () => {
+      if (rest <= 0) { rest = dauer; zeigen(); return; }
+      if (uhr) { rest = ende - Date.now(); anhalten(); zeigen(); return; }
+      ende = Date.now() + rest;
+      uhr = window.setInterval(() => { rest = ende - Date.now(); if (rest <= 0) anhalten(); zeigen(); }, 250);
+      zeigen();
+    });
+  });
+</script>
+<style>
+  .timer { display: inline-flex; align-items: center; gap: .4rem; font-variant-numeric: tabular-nums; }
+  .timer-fest { display: inline-flex; align-items: center; gap: .35rem; color: var(--muted); }
+  :global(html[data-ist-praesentator]) .timer-fest { display: none; }
+  .timer-knopf { display: inline-flex; align-items: center; gap: .4rem; font: inherit; font-weight: 700; padding: .3rem .8rem; border: 1px solid var(--border); border-radius: 8px; background: none; color: inherit; cursor: pointer; }
+  .timer.laeuft .timer-knopf { border-color: var(--accent); background: var(--accent-soft); }
+  .timer.abgelaufen .timer-knopf { border-color: var(--yellow); background: color-mix(in srgb, var(--yellow) 20%, transparent); }
+</style>

@@ -43,6 +43,13 @@ describe('gliederung', () => {
   });
 });
 
+describe('Folien', () => {
+  it('findet Überschriften im Slot von <Folie> wie jede andere h2', () => {
+    const g = gliederung('<Folie>\n  <h2 id="toast">Wie macht man Toast?</h2>\n  <p>…</p>\n</Folie>\n<Folie><h2 id="outcome">Outcome statt Output</h2></Folie>');
+    expect(g.map((a) => a.id)).toStrictEqual(['toast', 'outcome']);
+  });
+});
+
 describe('die echten Tagesseiten', () => {
   for (const seite of ['tag-1', 'tag-2', 'tag-3', 'zwischenwoche']) {
     it(`${seite}: jede h2 hat eine id und kommt ins Inhaltsverzeichnis`, () => {

@@ -1,0 +1,7 @@
+---
+// Eine Folie: ein Gedanke pro Bildschirm. Im Beamer füllt sie die Höhe unter der Kopfleiste, ← / → blättern
+// Folie für Folie (folien.ts, Handler in Layout.astro); sonst ist sie ein normaler Abschnitt des Handouts.
+// Überschriften gehören in den Slot (<h2 id> im Seitenquelltext), sonst findet gliederung.ts sie nicht.
+// Innerhalb: data-schritt deckt Elemente im Beamer nacheinander auf; .nur-handout fehlt im Beamer.
+---
+<section class="folie" data-folie><slot /></section>
