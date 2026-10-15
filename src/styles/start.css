@@ -1,0 +1,62 @@
+/* Startseite /start (start.astro): Kurswahl auf einer dunklen Bühne, die Fortsetzung der NDU-Live-Leinwand.
+   Größen hängen an Breite UND Höhe (min(vw, vh)): Beamer mit 1280×720 und 1920×1080, Handys hochkant. */
+
+.start-body { background: #121216; color: var(--fg); min-height: 100dvh; overflow-x: hidden; }
+
+/* Zwei Lichtflecken wie auf der NDU-Live-Leinwand; bewegt wird nur per transform. */
+.start-licht {
+  position: fixed; inset: -20%; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(45% 40% at 15% 10%, rgba(255, 106, 77, .18), transparent 70%),
+    radial-gradient(40% 40% at 90% 95%, rgba(107, 140, 255, .14), transparent 70%);
+  animation: start-drift 24s ease-in-out infinite alternate;
+}
+@keyframes start-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(3%, -2%, 0); } }
+@media (prefers-reduced-motion: reduce) { .start-licht { animation: none; } }
+
+/* Bühne: ein Bildschirm, Inhalt senkrecht in der Mitte, Marke oben links. */
+.start {
+  position: relative; z-index: 1; box-sizing: border-box; min-height: 100dvh;
+  display: flex; flex-direction: column; justify-content: center;
+  width: min(92vw, 1800px); margin: 0 auto; padding: max(4.5rem, 8vh) 0 max(2rem, 5vh);
+}
+.start-marke {
+  position: absolute; top: max(1.25rem, 3vh); left: 0; margin: 0; display: flex; align-items: center; gap: .6rem;
+  font-family: var(--mono); font-weight: 700; letter-spacing: -0.02em; font-size: clamp(13px, min(1vw, 1.8vh), 18px); color: var(--fg);
+}
+.start .eyebrow { font-size: clamp(12px, min(1.1vw, 1.9vh), 19px); margin-bottom: min(1.6vh, 1.2rem); }
+.start h1 { font-size: clamp(36px, min(6.5vw, 11vh), 120px); line-height: 1.02; letter-spacing: -0.04em; margin: 0 0 min(2.4vh, 1.4rem); }
+.start .lead { font-size: clamp(17px, min(1.8vw, 3vh), 32px); line-height: 1.45; max-width: 46ch; margin: 0; }
+
+/* Zwei Kurse nebeneinander, auf schmalen Bildschirmen untereinander. */
+.kurse { display: grid; grid-template-columns: 1fr 1fr; gap: min(2.4vw, 2.5rem); margin-top: min(6vh, 3.5rem); }
+.kurs {
+  display: flex; flex-direction: column; gap: min(1.2vh, .7rem); padding: min(2.4vh, 1.5rem) min(1.8vw, 1.75rem);
+  border: 1px solid var(--border); border-top: 2px solid var(--fg); border-radius: var(--radius);
+  background: rgba(255, 255, 255, .02); color: var(--fg); text-decoration: none; transition: border-color .15s, background .15s;
+}
+.kurs:hover { text-decoration: none; border-top-color: var(--accent); background: rgba(255, 255, 255, .04); }
+.kurs:hover h2 { color: var(--accent); }
+.kurs:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.kurs-zeit { font-family: var(--mono); font-size: clamp(12px, min(1vw, 1.8vh), 18px); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); }
+.kurs h2 { margin: 0; font-family: var(--mono); font-size: clamp(22px, min(2.4vw, 4.2vh), 44px); letter-spacing: -0.02em; border: 0; padding: 0; }
+.kurs-chev { color: var(--accent); }
+.kurs-tage { list-style: none; margin: 0; padding: 0; display: grid; gap: .15rem; font-size: clamp(14px, min(1.2vw, 2.1vh), 22px); color: var(--muted); }
+.kurs-tage span { display: inline-block; min-width: 9.5em; font-family: var(--mono); font-size: .85em; color: var(--fg); }
+.kurs-hinweis { font-size: clamp(14px, min(1.2vw, 2.1vh), 22px); color: var(--fg); }
+
+/* Ausgegraut, bis der Kurs beginnt: kein Link (kein href), keine Hover-Wirkung. */
+.kurs.gesperrt { opacity: .45; cursor: default; border-top-color: var(--border); }
+.kurs.gesperrt:hover { background: rgba(255, 255, 255, .02); }
+.kurs.gesperrt:hover h2 { color: inherit; }
+.kurs.gesperrt .kurs-chev { color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) { .kurs { transition: none; } }
+@media (max-width: 900px) {
+  .kurse { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .start { padding: 4.25rem 0 1.25rem; justify-content: flex-start; }
+  .kurs { padding: 1rem; }
+  .kurs-tage span { min-width: 8.5em; }
+}
