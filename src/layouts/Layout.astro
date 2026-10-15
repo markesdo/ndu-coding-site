@@ -167,23 +167,27 @@ const { vorher, danach } = nachbarn(path);
         const { folien, i, oben } = folieJetzt();
         if (i < 0) return false;
         const folie = folien[i];
-        const oberkante = folie.getBoundingClientRect().top;
-        // Noch vor der Folie (Seitenkopf, Ablauf): → springt zu ihr; vor der ersten Folie führt ← erst an den Seitenanfang.
-        if (vor && oberkante > oben + 4) { springe(folie); return true; }
-        if (!vor && i === 0 && oberkante >= oben - 4 && scrollY > 0) { scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); return true; }
-        const schritte = [...folie.querySelectorAll<HTMLElement>('[data-schritt]')];
+        const rand = folie.getBoundingClientRect();
+        // Schritte in einer noch verborgenen Auflösung zählen erst, wenn sie offen ist.
+        const schritte = [...folie.querySelectorAll<HTMLElement>('[data-schritt]')].filter((s) => !s.closest('[hidden]'));
         const gezeigt = schritte.filter((s) => s.classList.contains('gezeigt'));
         if (vor) {
           const knopf = folie.querySelector<HTMLButtonElement>('[data-aufloesung-zeigen]');
-          const tun = folieWeiter({ versteckteSchritte: schritte.length - gezeigt.length, offeneAufloesung: !!knopf, naechsteFolie: i < folien.length - 1 });
-          if (tun === 'schritt') schritte.find((s) => !s.classList.contains('gezeigt'))?.classList.add('gezeigt');
+          const tun = folieWeiter({
+            vorDerFolie: rand.top > oben + 4, restUnten: rand.bottom > innerHeight + 4,
+            versteckteSchritte: schritte.length - gezeigt.length, offeneAufloesung: !!knopf, naechsteFolie: i < folien.length - 1,
+          });
+          if (tun === 'hierhin') springe(folie);
+          else if (tun === 'runter') scrollBy({ top: innerHeight - oben - 48, behavior: 'instant' as ScrollBehavior });
+          else if (tun === 'schritt') schritte.find((s) => !s.classList.contains('gezeigt'))?.classList.add('gezeigt');
           else if (tun === 'aufloesung') knopf?.click();
           else if (tun === 'folie') springe(folien[i + 1]);
           return tun !== 'seite';
         }
-        const tun = folieZurueck({ gezeigteSchritte: gezeigt.length, vorherigeFolie: i > 0 });
+        const tun = folieZurueck({ gezeigteSchritte: gezeigt.length, vorherigeFolie: i > 0, kopfDarueber: scrollY > 0 });
         if (tun === 'schritt') gezeigt.at(-1)?.classList.remove('gezeigt');
         else if (tun === 'folie') springe(folien[i - 1]);
+        else if (tun === 'anfang') scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
         return tun !== 'seite';
       };
       // T startet/pausiert den Timer der aktuellen Folie (Timer.astro), nur im Beamer.

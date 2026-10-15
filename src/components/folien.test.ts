@@ -4,12 +4,20 @@ import { aktuelleFolie, restText, weiter, zurueck } from './folien';
 describe('weiter (→ im Beamer)', () => {
   const folie = { versteckteSchritte: 0, offeneAufloesung: false, naechsteFolie: true };
 
-  it('deckt zuerst den nächsten Schritt der Folie auf', () => {
+  it('springt erst zur Folie, wenn man noch im Seitenkopf darüber steht', () => {
+    expect(weiter({ ...folie, vorDerFolie: true, versteckteSchritte: 2 })).toBe('hierhin');
+  });
+
+  it('deckt dann den nächsten Schritt der Folie auf', () => {
     expect(weiter({ ...folie, versteckteSchritte: 2, offeneAufloesung: true })).toBe('schritt');
   });
 
   it('dann die Auflösung, bevor es zur nächsten Folie geht', () => {
     expect(weiter({ ...folie, offeneAufloesung: true })).toBe('aufloesung');
+  });
+
+  it('eine zu lange Folie erst zu Ende scrollen', () => {
+    expect(weiter({ ...folie, restUnten: true })).toBe('runter');
   });
 
   it('dann die nächste Folie', () => {
@@ -22,24 +30,33 @@ describe('weiter (→ im Beamer)', () => {
 });
 
 describe('zurueck (← im Beamer)', () => {
-  it('verdeckt zuerst den zuletzt gezeigten Schritt', () => {
-    expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: true })).toBe('schritt');
+  it('verdeckt zuerst den zuletzt gezeigten Schritt – auch auf der ersten Folie unter dem Seitenkopf', () => {
+    expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: false, kopfDarueber: true })).toBe('schritt');
   });
 
-  it('dann die vorige Folie, vor der ersten die vorige Seite', () => {
-    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true })).toBe('folie');
+  it('dann die vorige Folie', () => {
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true })).toBe('folie');
+  });
+
+  it('vor der ersten Folie an den Seitenanfang, danach die vorige Seite', () => {
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, kopfDarueber: true })).toBe('anfang');
     expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false })).toBe('seite');
   });
 });
 
 describe('aktuelleFolie', () => {
-  it('ist die Folie, deren Oberkante der Kopfleiste am nächsten liegt', () => {
+  it('ist die letzte Folie, die die Kopfleiste erreicht hat', () => {
     expect(aktuelleFolie([48, 768, 1488], 48)).toBe(0);
-    expect(aktuelleFolie([-672, 52, 772], 48)).toBe(1);
-    expect(aktuelleFolie([-1300, -580, 140], 48)).toBe(2);
+    expect(aktuelleFolie([-672, 48, 768], 48)).toBe(1);
+    expect(aktuelleFolie([-1300, -580, 48], 48)).toBe(2);
   });
 
-  it('ohne Folien -1', () => {
+  it('bleibt bei einer überlangen Folie, auch wenn die nächste schon näher an der Kopfleiste liegt', () => {
+    expect(aktuelleFolie([-1152, 848], 48)).toBe(0);
+  });
+
+  it('im Seitenkopf über allen Folien die erste; ohne Folien -1', () => {
+    expect(aktuelleFolie([300, 1000], 48)).toBe(0);
     expect(aktuelleFolie([], 48)).toBe(-1);
   });
 });

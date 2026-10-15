@@ -77,6 +77,8 @@ html[data-beamer] h2[id], html[data-beamer] .shots > li { scroll-margin-top: cal
 html[data-beamer]:has(.folie) { scroll-snap-type: y proximity; scroll-padding-top: var(--topbar-h, 48px); }
 /* Seitenkopf (Titel, Ablauf) ist auch ein Rastpunkt – sonst springt die Seite beim Laden auf die erste Folie. */
 html[data-beamer]:has(.folie) .content { scroll-snap-align: start; }
+/* scroll-padding deckt die Kopfleiste schon ab: Überschriften nicht ein zweites Mal um ihre Höhe versetzen. */
+html[data-beamer]:has(.folie) h2[id] { scroll-margin-top: 0; }
 html[data-beamer] .folie {
   min-height: calc(100vh - var(--topbar-h, 48px)); scroll-snap-align: start;
   display: flex; flex-direction: column; justify-content: center; padding: 1.5rem 0; box-sizing: border-box;
