@@ -50,8 +50,8 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
     <Block time="14:20–15:40" type="uebung" title="Übung 10 · Team-Sprint" href="#uebung-10">Zu dritt an einer Leihbar: Issue aus Linear, eigener Branch, Pull Request, gegenseitiges Review, zusammenführen.</Block>
     <Block time="15:40–15:50" type="pause" title="Pause" />
     <Block time="15:50–16:05" type="plenum" title="Abschluss" href="#abschluss">Innolab, Organisatorisches, Reflexion – jetzt schon, damit nach dem Finale nichts mehr kommt.</Block>
-    <Block time="16:05–16:40" type="plenum" title="Demos" href="#demos">Eure Geschichte in drei Akten: Tag 1, der Tiefpunkt, jetzt live.</Block>
-    <Block time="16:40–17:00" type="plenum" title="Finale" href="#finale">Der Kreis schließt sich: die Zahlen seit Tag 1 und der letzte Merge, live auf allen Handys.</Block>
+    <Block time="16:05–16:45" type="plenum" title="Demos" href="#demos">Euer Issue aus dem Team-Sprint: was es sollte, wie es live aussieht, wo Claude danebenlag.</Block>
+    <Block time="16:45–17:00" type="plenum" title="Finale" href="#finale">Der Kreis schließt sich: die Zahlen seit Tag 1.</Block>
   </div>
 
   <hr />
@@ -82,7 +82,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
     { q: 'Neben eurem Pull Request steht ein rotes X. Was heißt das?', o: ['Vercel hat die App mit dem Fehler schon veröffentlicht', 'Die Person im Review hat den Pull Request abgelehnt', 'Eine automatische Prüfung ist gescheitert, noch nicht mergen'], a: 2, w: 'Das X kommt von der Prüfung, die GitHub bei jedem Push startet. Live ist nur, was in main steht – und dahin kommt die Änderung erst nach dem Zusammenführen.', mehr: { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' } },
   ]} />
   <p>Ihr arbeitet an eurer eigenen App aus der Zwischenwoche. Alles in dieser Übung passiert auf einem eigenen <a href="/konzepte/git#branch">Branch</a> – <code>main</code> und damit eure Live-App bleiben unberührt, bis ihr am Ende zusammenführt.</p>
-  <p class="small" id="ohne-eigenes-projekt"><strong>Kein eigenes Projekt aus der Zwischenwoche?</strong> Dann nehmt eure Leihbar aus Tag 1 und 2 – sie hat fertige Issues mit Akzeptanzkriterien und eine Live-Adresse. Übung 8 und 9 und die Demo klappen damit genauso. Zwei Dinge anders: Nennt euer Design-System in Übung 9a beim Anlegen „Leihbar – meins“, damit ihr es am Nachmittag nicht mit „Leihbar Team“ verwechselt. Und entwerft in 9b einen anderen Screen als „Meine Gegenstände“ – den gestaltet am Nachmittag Issue C neu.</p>
+  <p class="small" id="ohne-eigenes-projekt"><strong>Kein eigenes Projekt aus der Zwischenwoche?</strong> Dann nehmt eure Leihbar aus Tag 1 und 2 – sie hat fertige Issues mit Akzeptanzkriterien und eine Live-Adresse. Übung 8 und 9 klappen damit genauso. Zwei Dinge anders: Nennt euer Design-System in Übung 9a beim Anlegen „Leihbar – meins“, damit ihr es am Nachmittag nicht mit „Leihbar Team“ verwechselt. Und entwerft in 9b einen anderen Screen als „Meine Gegenstände“ – den gestaltet am Nachmittag Issue C neu.</p>
 
   <h3 id="uebung-8-a">a) Ein Test für ein fertiges Kriterium (20 min)</h3>
   <p>In zwei Schritten: Claude sucht sich ein passendes Kriterium aus eurem Backlog und schreibt den Test. Dann beweist es, dass der Test wirklich prüft. Ihr lest mit und gebt das Okay.</p>
@@ -196,7 +196,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Passt alles: wie in Übung 8 grüner Haken, zusammenführen.</p>
   <details class="fallback" id="uebung-9-f-optional">
     <summary>Optional: Vorher-Nachher-Bilder und ein Satz für die Reflexion</summary>
-    <p><strong>Bilder:</strong> Macht von beiden Fenstern je einen Screenshot, Entwurf und Ergebnis am Handy (<a href="/setup#lokal-screenshots">so geht's</a>), und legt sie euch für die Demo bereit. Ohne Bilder geht es auch: dann in der Demo beide Fenster live nebeneinander zeigen.</p>
+    <p><strong>Bilder:</strong> Macht von beiden Fenstern je einen Screenshot, Entwurf und Ergebnis am Handy (<a href="/setup#lokal-screenshots">so geht's</a>), und legt sie euch bereit. Ohne Bilder geht es auch: dann in der Demo beide Fenster live nebeneinander zeigen.</p>
     <p><strong>Reflexion:</strong> Merkt euch einen Satz: Was schreibt ihr beim nächsten Entwurf gleich ins Issue, damit Claude Code nichts erfinden muss? Er kommt in die <a href="#abschluss">Reflexion im Abschluss</a>.</p>
   </details>
 
@@ -353,7 +353,7 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Klappt es, habt ihr eine echte Sicherheitslücke gefunden, die es nur bei KI-Funktionen gibt: Das Modell kann nicht sicher unterscheiden, was eure Anweisung ist und was Nutzer*innen eintippen. Schreibt den Fund als Kommentar in den Pull Request – Markus lässt Claude daraus einen weiteren Test machen.</p>
 
   <h3 id="uebung-10-d">d) Zusammenführen (5 min)</h3>
-  <p>Markus führt die Pull Requests am Beamer zusammen, einen nach dem anderen – bis auf einen: Den heben wir fürs <a href="#finale">Finale</a> auf. Nehmt dafür einen, den man in der App sieht (A, C, D oder E, nicht B) und bei dem GitHub keinen Konflikt meldet. Haben zwei dieselbe Datei geändert, meldet GitHub einen <strong>Konflikt</strong>: Zwei Änderungen an derselben Stelle, und GitHub weiß nicht, welche gilt. Claude löst ihn, ihr seht zu. Danach ist alles außer dem aufgehobenen in <code>main</code> und live.</p>
+  <p>Markus führt die Pull Requests am Beamer zusammen, einen nach dem anderen. Haben zwei dieselbe Datei geändert, meldet GitHub einen <strong>Konflikt</strong>: Zwei Änderungen an derselben Stelle, und GitHub weiß nicht, welche gilt. Claude löst ihn, ihr seht zu. Danach ist alles in <code>main</code> und live – das zeigt ihr gleich in den <a href="#demos">Demos</a>.</p>
 
   <hr />
   <span id="wie-es-weitergeht"></span>
@@ -368,25 +368,23 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
   <p>Danach selbst <code>/ndu-commit</code> eingeben.</p>
 
   <hr />
-  <h2 id="demos">Demos · drei Akte <span class="pill plenum">rund 11 min pro Person</span></h2>
-  <p>Keine Feature-Liste, sondern eure Geschichte. Drei Akte, dann Fragen:</p>
+  <h2 id="demos">Demos · euer Issue aus dem Team-Sprint <span class="pill plenum">rund 10 min pro Person</span></h2>
+  <p>Jede*r zeigt das Issue, das sie oder er heute Nachmittag gebaut hat – drei verschiedene Aufgaben, also drei verschiedene Demos. Keine Feature-Liste, sondern was passiert ist:</p>
   <ol class="steps">
-    <li><strong>Akt 1 · Tag 1</strong> (1 min) Wo ihr am 8. Oktober standet: Wie viel hattet ihr schon programmiert? Wovor hattet ihr Respekt? Was wolltet ihr bauen?</li>
-    <li><strong>Akt 2 · Der Tiefpunkt</strong> (2 min) Der Moment, in dem der Agent euch im Stich gelassen hat oder ihr fast aufgegeben hättet. Was war los, wie seid ihr rausgekommen?</li>
-    <li><strong>Akt 3 · Jetzt</strong> (5 min) Die App live am Handy: der eine Durchlauf, der den Kern zeigt. Dazu Entwurf und Ergebnis aus Übung 9 nebeneinander.</li>
+    <li><strong>Das Issue</strong> (1 min) Was sollte passieren, in einem Satz – so, dass es jemand ohne Linear versteht.</li>
+    <li><strong>Das Ergebnis</strong> (4 min) Live in der Team-App: <a href={TEAM_APP} target="_blank" rel="noopener noreferrer">{TEAM_APP.replace('https://', '')}</a> – nach d) ist alles zusammengeführt. Hat das nicht geklappt: die Vorschau-Adresse eures Pull Requests. Bei B, das im Hintergrund läuft: die abgelaufene Anfrage und das Log bei Vercel, das Markus am Beamer zeigt.</li>
+    <li><strong>Wo Claude danebenlag</strong> (2 min) Eine Stelle, an der Claude etwas falsch verstanden oder zu früh „fertig“ gesagt hat – und woran ihr es gemerkt habt.</li>
     <li><strong>Fragen</strong> (3 min) Die anderen beiden und Markus fragen nach.</li>
   </ol>
-  <p class="small">Ohne eigenes Projekt zeigt ihr in Akt 3 eure Leihbar: den Test aus Übung 8 und den neuen Screen aus Übung 9.</p>
-  <Checklist id="t3-demo-v4" items={[
-    'Live-App funktioniert am Handy (vorher testen!)',
-    'Mein Tiefpunkt in einem Satz',
-    'Entwurf und gebauter Screen griffbereit – oder beide Fenster offen',
+  <Checklist id="t3-demo-v5" items={[
+    'Team-App mit meiner Änderung offen (oder die Vorschau-Adresse meines Pull Requests)',
+    'Die Stelle, an der Claude danebenlag, in einem Satz',
     'Screenrecording als Fallback',
   ]} />
   <p class="small">Fallback-Video: Mac <kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd>, Windows <kbd>Win</kbd><kbd>G</kbd>.</p>
 
   <hr />
-  <h2 id="finale">Finale · Der Kreis schließt sich <span class="pill plenum">20 min</span></h2>
+  <h2 id="finale">Finale · Der Kreis schließt sich <span class="pill plenum">15 min</span></h2>
   <p>Am 8. Oktober lagen eure Repos leer da – eine Vorlage, sonst nichts. Seitdem:</p>
   <div class="finale-zahlen" role="list">
     <div role="listitem"><strong>{FINALE.commits}</strong><span>Commits</span></div>
@@ -395,16 +393,6 @@ const teamGithubIssue = (kennung: keyof typeof TEAM_GITHUB_ISSUE) => `${TEAM_REP
     <div role="listitem"><strong>{FINALE.apps}</strong><span>Apps live im Internet – und eine zu dritt</span></div>
   </div>
   <p class="small muted">Stand {FINALE.stand}. Markus zählt kurz vor dem Finale neu.</p>
-  <ol class="steps">
-    <li><strong>Handys raus</strong> Alle öffnen die Team-App: <a href={TEAM_APP} target="_blank" rel="noopener noreferrer" data-kopieren data-label="Team-App-Adresse">{TEAM_APP}</a></li>
-    <li><strong>Der letzte Merge</strong> Markus führt den aufgehobenen Pull Request aus dem Team-Sprint am Beamer zusammen.</li>
-    <li><strong>Warten</strong> Rund eine Minute, bis Vercel fertig ist. Dann alle gleichzeitig neu laden.</li>
-    <li><strong>Da ist es</strong> Die Änderung ist auf allen Handys – gebaut von euch, geprüft von euch, live für alle.</li>
-  </ol>
-  <blockquote class="finale-satz">
-    <p>Vor einer Woche: eine Vorlage und viel Respekt vor dem Terminal. Heute: eure Apps live, eine davon zu dritt gebaut.</p>
-    <p>Ihr habt nicht programmieren gelernt. Ihr habt gelernt, eine Maschine zu führen, die es kann.</p>
-  </blockquote>
 
   <FooterNav prev={{ href: '/neues-projekt', t: 'Neues Projekt starten' }} next={{ href: '/bewertung', t: 'Bewertung' }} />
 </Layout>
