@@ -1,0 +1,51 @@
+---
+// 2×2-Matrix mit beschrifteten Achsen, Feldnamen und Stickies (z. B. Annahmen-Map: wichtig × belegt).
+// felder: [oben links, oben rechts, unten links, unten rechts]; hervor: dieses Feld farbig („hier zuerst testen“).
+// punkte: x und y von 0 bis 1 (y nach oben); hervor: Sticky farbig.
+type Feld = 'ol' | 'or' | 'ul' | 'ur';
+const { label, x, y, felder = ['', '', '', ''], hervor, punkte = [] } = Astro.props as {
+  label: string;
+  x: { label: string; links: string; rechts: string };
+  y: { label: string; unten: string; oben: string };
+  felder?: [string, string, string, string];
+  hervor?: Feld;
+  punkte?: { t: string; x: number; y: number; hervor?: boolean }[];
+};
+const namen: Feld[] = ['ol', 'or', 'ul', 'ur'];
+const klemme = (v: number) => Math.min(1, Math.max(0, v));
+const prozent = (v: number) => `${Math.round(klemme(v) * 1000) / 10}%`;
+---
+<figure class="matrix" aria-label={label}>
+  <div class="matrix-y" aria-hidden="true"><span>{y.oben}</span><strong>{y.label}</strong><span>{y.unten}</span></div>
+  <div class="matrix-flaeche">
+    {namen.map((n, i) => <div class:list={['matrix-feld', n, { hervor: hervor === n }]}>{felder[i] && <span>{felder[i]}</span>}</div>)}
+    {punkte.map((p) => <span class:list={['matrix-punkt', { hervor: p.hervor }]} style={`left:${prozent(p.x)};bottom:${prozent(p.y)};--x:${klemme(p.x)};--y:${klemme(p.y)}`}>{p.t}</span>)}
+  </div>
+  <div class="matrix-x" aria-hidden="true"><span>{x.links}</span><strong>{x.label}</strong><span>{x.rechts}</span></div>
+  {punkte.length > 0 && (
+    <ul class="sr-only">{punkte.map((p) => <li>{p.t}: {x.label} {p.x >= .5 ? x.rechts : x.links}, {y.label} {p.y >= .5 ? y.oben : y.unten}</li>)}</ul>
+  )}
+</figure>
+
+<style>
+  .matrix { margin: 1.5rem 0; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; gap: .5rem .75rem; max-width: 44rem; }
+  /* y-Achse: „sehr“ oben, „weniger“ unten waagrecht; nur der Achsenname steht senkrecht (von unten nach oben lesbar). */
+  .matrix-y { grid-row: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; max-width: 5.5rem; font-size: .85rem; color: var(--muted); }
+  .matrix-y strong { writing-mode: vertical-rl; transform: rotate(180deg); }
+  .matrix-y strong, .matrix-x strong { color: var(--fg); font-size: .95rem; }
+  .matrix-x { grid-column: 2; display: flex; justify-content: space-between; align-items: baseline; font-size: .85rem; color: var(--muted); }
+  /* Achsenrichtung als Pfeil: Leserichtung von „wenig“ nach „viel“. */
+  .matrix-x strong::after { content: ' →' / ''; }
+  .matrix-y strong::after { content: ' →' / ''; }
+  .matrix-flaeche { position: relative; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; aspect-ratio: 4 / 3; border: 2px solid var(--fg); border-radius: var(--radius); overflow: hidden; }
+  .matrix-feld { padding: .6rem .75rem; font-size: .85rem; font-weight: 600; color: var(--muted); background: var(--bg-2); }
+  .matrix-feld.ol, .matrix-feld.or { border-bottom: 1px dashed var(--border); }
+  .matrix-feld.ol, .matrix-feld.ul { border-right: 1px dashed var(--border); }
+  .matrix-feld.or, .matrix-feld.ur { text-align: right; }
+  .matrix-feld.ul span, .matrix-feld.ur span { display: block; margin-top: auto; }
+  .matrix-feld.ul, .matrix-feld.ur { display: flex; flex-direction: column; justify-content: flex-end; }
+  .matrix-feld.hervor { background: color-mix(in srgb, var(--accent) 12%, var(--bg-2)); color: var(--accent-ink); }
+  /* Verankerung wandert mit der Lage: links am Rand hängt der Sticky rechts vom Punkt, rechts links davon – so bleibt er im Feld. */
+  .matrix-punkt { position: absolute; transform: translate(calc(var(--x) * -100%), calc(var(--y) * 100%)); max-width: min(11rem, 45%); padding: .3rem .5rem; font-size: .8rem; line-height: 1.25; background: var(--yellow-soft); border: 1px solid var(--yellow); border-radius: 3px; box-shadow: 0 1px 2px rgba(0, 0, 0, .12); }
+  .matrix-punkt.hervor { background: var(--accent-soft); border-color: var(--accent); font-weight: 700; }
+</style>
