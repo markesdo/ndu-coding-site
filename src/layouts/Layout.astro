@@ -190,12 +190,14 @@ const { vorher, danach } = nachbarn(path);
         else if (tun === 'anfang') scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
         return tun !== 'seite';
       };
-      // T startet/pausiert den Timer der aktuellen Folie (Timer.astro), nur im Beamer.
+      // T startet/pausiert den Timer der aktuellen Folie (Timer.astro), nur im Beamer. Mehrere Timer auf einer Folie
+      // (Übung, dann Übertrag in der Auflösung): der letzte sichtbare – das ist der, der gerade dran ist.
       document.addEventListener('keydown', (e) => {
         if ((e.key !== 't' && e.key !== 'T') || e.ctrlKey || e.metaKey || e.altKey || !tastenFrei(e)) return;
         if (!root.hasAttribute('data-beamer')) return;
         const { folien, i } = folieJetzt();
-        folien[i]?.querySelector<HTMLButtonElement>('[data-timer-knopf]')?.click();
+        const knoepfe = [...(folien[i]?.querySelectorAll<HTMLButtonElement>('[data-timer-knopf]') ?? [])].filter((k) => k.offsetParent !== null);
+        knoepfe.at(-1)?.click();
       });
       document.addEventListener('keydown', (e) => {
         const blaettern = e.key === 'ArrowRight' || e.key === 'ArrowLeft';
