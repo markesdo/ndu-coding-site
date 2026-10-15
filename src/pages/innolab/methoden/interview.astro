@@ -11,6 +11,7 @@ import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
+import Skala from '../../../components/bild/Skala.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
 
 // Ende des Blocks „Jobs to be Done & Mom Test“ an Tag 1 (tag-1.astro): ab dann sehen alle die Auflösungen.
@@ -83,6 +84,27 @@ const NACH_MOM_TEST = '2026-10-22T13:45';
       </div>
       <p class="nur-handout">Vorsicht bei Komplimenten („Coole Idee!“), Allgemeinplätzen („Ich trinke normalerweise …“) und Zukunftsversprechen („Das würde ich sicher nutzen“). Holt sie zurück in die Vergangenheit: „Wann war das zuletzt?“</p>
       <p data-schritt><strong>Und jetzt eure drei Fragen:</strong> Welche würde Markus wieder mit „Ja, total!“ beantworten? Umschreiben. <Timer minuten={5} /></p>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="antworten">Welche Antwort zählt?</h2>
+    <p class="folie-satz">Welche Antwort ist der stärkste Beleg?</p>
+    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Skala zeigen (nach der Übung)">
+      <Skala label="Antworten von sagen bis tun: Kompliment, Zukunftsversprechen, erzählte Vergangenheit, Commitment" links="sagen" rechts="tun"
+        stufen={[
+          { t: 'Kompliment', sub: 'lobt die Idee' },
+          { t: 'Zukunft', sub: 'verspricht etwas' },
+          { t: 'Vergangenheit', sub: 'erzählt, was war' },
+          { t: 'Commitment', sub: 'gibt Zeit, Geld oder Ruf' },
+        ]}
+        punkte={[
+          { t: '„Coole Idee!“', stufe: 0, schritt: true },
+          { t: '„Würde ich sicher nutzen.“', stufe: 1, schritt: true },
+          { t: '„Letzte Woche zweimal den Zug verpasst.“', stufe: 2, schritt: true },
+          { t: 'Bestellt vor und zahlt im Voraus.', stufe: 3, schritt: true },
+        ]} />
+      <p class="nur-handout">Komplimente und Zukunftsversprechen kosten nichts und beweisen nichts. Erzählte Vergangenheit ist eine Tatsache – das ist, was eure Interviews liefern sollen. Am stärksten ist Commitment: Jemand gibt etwas her, Zeit, Geld oder seinen Namen. Das seht ihr erst in Experimenten. Nach Rob Fitzpatrick, „The Mom Test“ (2013), und Christian Rohrer, <a href="https://www.nngroup.com/articles/which-ux-research-methods/">„When to Use Which User-Experience Research Methods“</a> (Nielsen Norman Group): was Menschen sagen und was sie tun.</p>
     </Aufloesung>
   </Folie>
 

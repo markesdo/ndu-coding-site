@@ -1,0 +1,60 @@
+---
+// Skala von schwach nach stark (z. B. „sagen → tun“: Kompliment, Zukunft, Vergangenheit, Commitment), Stufen
+// nebeneinander unter einem Pfeil, Stickies unter ihrer Stufe. Am Handy untereinander.
+// stufen[].sub: kurze Zeile darunter; hervor: Index der Stufe, die farbig bleibt.
+// punkte: stufe = Index in stufen; hervor: Sticky farbig; schritt: Sticky wird im Beamer per → aufgedeckt.
+import { proStufe, type SkalaPunkt } from './skala';
+const { label, links, rechts, stufen, hervor, punkte = [] } = Astro.props as {
+  label: string;
+  links: string;
+  rechts: string;
+  stufen: { t: string; sub?: string }[];
+  hervor?: number;
+  punkte?: SkalaPunkt[];
+};
+const verteilt = proStufe(punkte, stufen.length);
+---
+<figure class="skala" aria-label={label} style={`--stufen:${stufen.length}`}>
+  <div class="skala-pfeil" aria-hidden="true"><span>{links}</span><span>{rechts}</span></div>
+  <ol class="skala-stufen">
+    {stufen.map((s, i) => (
+      <li class:list={{ hervor: hervor === i }}>
+        <strong>{s.t}</strong>
+        {s.sub && <span class="skala-sub">{s.sub}</span>}
+        {verteilt[i].length > 0 && (
+          <ul class="skala-punkte">
+            {verteilt[i].map((p) => <li class:list={{ hervor: p.hervor }} data-schritt={p.schritt ? '' : undefined}>{p.t}</li>)}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .skala { margin: 1.5rem 0; container: skala / inline-size; }
+  /* Der Pfeil zeigt die Richtung schwach → stark; die Enden sind beschriftet (z. B. „sagen“, „tun“). */
+  .skala-pfeil { position: relative; display: flex; justify-content: space-between; padding: 0 1.4rem .55rem 0; font-size: .85rem; font-weight: 600; color: var(--muted); border-bottom: 3px solid; border-image: linear-gradient(to right, var(--border), var(--accent)) 1; }
+  .skala-pfeil::after { content: ''; position: absolute; right: -2px; bottom: -9px; border: 7.5px solid transparent; border-left: 12px solid var(--accent); }
+  .skala-stufen { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--stufen), 1fr); gap: .75rem; }
+  /* Je Stufe ein Strich vom Pfeil herunter, darunter Titel, Unterzeile und Stickies. */
+  .skala-stufen > li { position: relative; display: flex; flex-direction: column; align-items: center; gap: .3rem; padding-top: 1rem; text-align: center; }
+  .skala-stufen > li::before { content: ''; position: absolute; top: 0; left: 50%; height: .7rem; border-left: 2px solid var(--border); }
+  .skala-stufen > li > strong { font-size: .95rem; line-height: 1.25; }
+  .skala-sub { font-size: .85rem; line-height: 1.4; color: var(--muted); }
+  .skala-stufen > li.hervor > strong { color: var(--accent-ink); }
+  .skala-stufen > li.hervor::before { border-color: var(--accent); }
+  .skala-punkte { list-style: none; margin: .35rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .4rem; align-items: center; }
+  .skala-punkte li { max-width: 12rem; padding: .3rem .5rem; font-size: .8rem; line-height: 1.25; background: var(--yellow-soft); border: 1px solid var(--yellow); border-radius: 3px; box-shadow: 0 1px 2px rgba(0, 0, 0, .12); }
+  .skala-punkte li.hervor { background: var(--accent-soft); border-color: var(--accent); font-weight: 700; }
+  /* Zu schmal für alle Stufen nebeneinander: untereinander, der Pfeil zeigt dann nach unten (links = oben). */
+  @container skala (max-width: 34rem) {
+    .skala-pfeil { border: 0; padding: 0 0 .4rem; justify-content: flex-start; gap: .4rem; }
+    .skala-pfeil::after { display: none; }
+    .skala-pfeil span:first-child::after { content: ' →' / ''; }
+    .skala-stufen { grid-template-columns: 1fr; gap: .5rem; border-left: 3px solid; border-image: linear-gradient(to bottom, var(--border), var(--accent)) 1; padding-left: .9rem; }
+    .skala-stufen > li { align-items: flex-start; text-align: left; padding-top: 0; }
+    .skala-stufen > li::before { display: none; }
+    .skala-punkte { align-items: flex-start; }
+  }
+</style>
