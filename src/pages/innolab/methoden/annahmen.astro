@@ -8,6 +8,7 @@ import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
+import VierArten from '../../../components/bild/VierArten.astro';
 
 // Achsen und Felder der Annahmen-Map: leer auf „Worum es geht“, gefüllt auf „Am Beispiel“.
 const karte = {
@@ -35,12 +36,12 @@ const karte = {
   <Folie>
     <h2 id="arten">Vier Arten von Annahmen</h2>
     <p class="folie-satz">Sammelt in allen vier – sonst übersieht ihr eine Art von Risiko.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Wünschenswert:</strong> Wollen die Menschen das?</li>
-      <li data-schritt><strong>Machbar:</strong> Können wir es bauen und betreiben?</li>
-      <li data-schritt><strong>Wirtschaftlich:</strong> Trägt es sich?</li>
-      <li data-schritt><strong>Bedienbar:</strong> Kommen die Menschen damit zurecht?</li>
-    </ul>
+    <VierArten label="Vier Arten von Annahmen" mitte="Vorbestellen" schritt arten={[
+      { t: 'Wünschenswert', frage: 'Wollen die Menschen das?', beispiel: 'lieber vor Ort als am Automaten', farbe: 'yellow' },
+      { t: 'Machbar', frage: 'Können wir es bauen und betreiben?', beispiel: '40 Bestellungen in 30 min', farbe: 'blue' },
+      { t: 'Wirtschaftlich', frage: 'Trägt es sich?', beispiel: 'rechnet sich ohne weitere Kraft', farbe: 'green' },
+      { t: 'Bedienbar', frage: 'Kommen die Menschen damit zurecht?', beispiel: 'bestellen in 20 s im Gehen', farbe: 'purple' },
+    ]} />
     <div class="nur-handout" style="overflow-x:auto">
       <table>
         <thead><tr><th>Art</th><th>Beispiel Kaffeebar</th></tr></thead>
