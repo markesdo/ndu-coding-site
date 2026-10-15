@@ -17,14 +17,16 @@ const prozent = (v: number) => `${Math.round(klemme(v) * 1000) / 10}%`;
 ---
 <figure class="matrix" aria-label={label}>
   <div class="matrix-y" aria-hidden="true"><span>{y.oben}</span><strong>{y.label}</strong><span>{y.unten}</span></div>
-  <div class="matrix-flaeche">
+  <div class="matrix-flaeche" aria-hidden="true">
     {namen.map((n, i) => <div class:list={['matrix-feld', n, { hervor: hervor === n }]}>{felder[i] && <span>{felder[i]}</span>}</div>)}
     {punkte.map((p) => <span class:list={['matrix-punkt', { hervor: p.hervor }]} style={`left:${prozent(p.x)};bottom:${prozent(p.y)};--x:${klemme(p.x)};--y:${klemme(p.y)}`}>{p.t}</span>)}
   </div>
   <div class="matrix-x" aria-hidden="true"><span>{x.links}</span><strong>{x.label}</strong><span>{x.rechts}</span></div>
-  {punkte.length > 0 && (
-    <ul class="sr-only">{punkte.map((p) => <li>{p.t}: {x.label} {p.x >= .5 ? x.rechts : x.links}, {y.label} {p.y >= .5 ? y.oben : y.unten}</li>)}</ul>
-  )}
+  {/* Für Screenreader: die Fläche ist aria-hidden, hier steht dasselbe als Liste – Felder (mit Hervorhebung) und Stickies mit Lage. */}
+  <ul class="sr-only">
+    {namen.map((n, i) => felder[i] && <li>Feld {y.label} {n[0] === 'o' ? y.oben : y.unten}, {x.label} {n[1] === 'r' ? x.rechts : x.links}: {felder[i]}{hervor === n ? ' (hervorgehoben)' : ''}</li>)}
+    {punkte.map((p) => <li>{p.t}: {x.label} {klemme(p.x) >= .5 ? x.rechts : x.links}, {y.label} {klemme(p.y) >= .5 ? y.oben : y.unten}{p.hervor ? ' (hervorgehoben)' : ''}</li>)}
+  </ul>
 </figure>
 
 <style>
@@ -42,7 +44,6 @@ const prozent = (v: number) => `${Math.round(klemme(v) * 1000) / 10}%`;
   .matrix-feld.ol, .matrix-feld.or { border-bottom: 1px dashed var(--border); }
   .matrix-feld.ol, .matrix-feld.ul { border-right: 1px dashed var(--border); }
   .matrix-feld.or, .matrix-feld.ur { text-align: right; }
-  .matrix-feld.ul span, .matrix-feld.ur span { display: block; margin-top: auto; }
   .matrix-feld.ul, .matrix-feld.ur { display: flex; flex-direction: column; justify-content: flex-end; }
   .matrix-feld.hervor { background: color-mix(in srgb, var(--accent) 12%, var(--bg-2)); color: var(--accent-ink); }
   /* Verankerung wandert mit der Lage: links am Rand hängt der Sticky rechts vom Punkt, rechts links davon – so bleibt er im Feld. */

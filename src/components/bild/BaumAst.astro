@@ -12,3 +12,29 @@ const leise = hervor !== undefined && hervor !== e;
     <ul class="baum-kinder">{knoten.kinder.map((k) => <Astro.self knoten={k} hervor={hervor} ebene={ebene + 1} />)}</ul>
   ) : null}
 </li>
+
+<style>
+  /* Klassischer CSS-Baum: jede Ebene eine Reihe, Linien über ::before/::after. Astro.self teilt den Scope, die Stile gelten in jeder Tiefe. */
+  .baum-kinder { list-style: none; margin: 0; padding: 1.2rem 0 0; display: flex; justify-content: center; position: relative; }
+  .baum-ast { position: relative; display: flex; flex-direction: column; align-items: center; padding: 1.2rem .35rem 0; }
+  /* Waagrechte Linie über den Geschwistern, senkrechte zum Knoten. */
+  .baum-kinder > .baum-ast::before, .baum-kinder > .baum-ast::after { content: ''; position: absolute; top: 0; height: 1.2rem; border-top: 2px solid var(--border); width: 50%; }
+  .baum-kinder > .baum-ast::before { right: 50%; }
+  .baum-kinder > .baum-ast::after { left: 50%; border-left: 2px solid var(--border); }
+  .baum-kinder > .baum-ast:first-child::before, .baum-kinder > .baum-ast:last-child::after { border-top: 0; }
+  .baum-kinder > .baum-ast:last-child::before { border-right: 2px solid var(--border); }
+  .baum-kinder > .baum-ast:last-child::after { border-left: 0; }
+  /* Einziges Kind: keine Waagrechte, aber die Senkrechte muss bleiben (steht nach :last-child, sonst gewinnt dessen border-left: 0). */
+  .baum-kinder > .baum-ast:only-child::before { display: none; }
+  .baum-kinder > .baum-ast:only-child::after { border-top: 0; border-left: 2px solid var(--border); }
+  /* Senkrechte vom Elternknoten nach unten. */
+  .baum-kinder::before { content: ''; position: absolute; top: 0; left: 50%; height: 1.2rem; border-left: 2px solid var(--border); }
+  .baum-knoten { display: flex; flex-direction: column; gap: .15rem; min-width: 7rem; max-width: 12rem; padding: .45rem .65rem; font-size: .85rem; line-height: 1.3; text-align: center; border: 2px solid var(--farbe); border-radius: var(--radius); background: color-mix(in srgb, var(--farbe) 10%, var(--bg-2)); }
+  .baum-knoten small { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--farbe); }
+  .baum-ast.e0 { --farbe: var(--accent); }
+  .baum-ast.e1 { --farbe: var(--blue); }
+  .baum-ast.e2 { --farbe: var(--green); }
+  .baum-ast.e3 { --farbe: var(--purple); }
+  .baum-ast.leise > .baum-knoten { --farbe: var(--border); color: var(--muted); }
+  .baum-ast.leise > .baum-knoten small { color: var(--muted); }
+</style>
