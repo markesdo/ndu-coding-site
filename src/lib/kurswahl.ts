@@ -19,3 +19,9 @@ export function kursZiel(pfad: string, suche: string): string {
   const beamer = new URLSearchParams(suche).get('beamer');
   return beamer !== null && beamer !== '0' ? `${pfad}?beamer` : pfad;
 }
+
+/** Link einer Kurskarte: immer über /login. Direkt auf / schickte die Middleware Abgemeldete zurück auf /start
+ *  (Schleife); wer schon angemeldet ist, leitet /login sofort zum Ziel weiter. */
+export function kursLink(pfad: string, suche: string): string {
+  return `/login?weiter=${encodeURIComponent(kursZiel(pfad, suche))}`;
+}

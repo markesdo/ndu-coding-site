@@ -1,14 +1,14 @@
 ---
 // Startseite vor dem Login: öffentlich (Middleware lässt /start ohne Kurspasswort durch; wer ohne Anmeldung / aufruft,
 // landet hier), ohne Navigation, eine dunkle Bühne über den ganzen Bildschirm. Zwei Kurse zur Wahl; das Innolab ist
-// ausgegraut, bis der Coding-Kurs vorbei ist (lib/kurswahl.ts). Ohne Anmeldung leitet die Middleware vom gewählten Kurs
-// zum Kurspasswort und kehrt danach dorthin zurück. Von NDU Live kommt der Beamer mit ?beamer (wirkt nur beim Präsentator,
+// ausgegraut, bis der Coding-Kurs vorbei ist (lib/kurswahl.ts). Die Karten führen über /login zum Kurs (kursLink): ohne
+// Anmeldung erst das Kurspasswort, mit Anmeldung direkt weiter. Von NDU Live kommt der Beamer mit ?beamer (wirkt nur beim Präsentator,
 // siehe BeamerStart.astro); die Kurs-Links behalten ihn.
 import BeamerStart from '../components/BeamerStart.astro';
 import Marke from '../components/Marke.astro';
 import LinkVorschau from '../components/LinkVorschau.astro';
 import { TAGE } from '../components/methoden';
-import { innolabOffen } from '../lib/kurswahl';
+import { innolabOffen, kursLink } from '../lib/kurswahl';
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
@@ -49,12 +49,12 @@ const offen = innolabOffen(new Date());
       </section>
 
       <div class="kurse">
-        <a class="kurs" href="/" data-kurs="/">
+        <a class="kurs" href={kursLink('/', '')} data-kurs="/">
           <span class="kurs-zeit">Oktober 2026 · 3 Tage</span>
           <h2><span class="kurs-chev" aria-hidden="true">›</span> Programmieren mit AI</h2>
           <ol class="kurs-tage">{coding.map((t) => <li><span>Tag {t.n} · {t.d}</span> {t.t}</li>)}</ol>
         </a>
-        <a class:list={['kurs', { gesperrt: !offen }]} href={offen ? '/innolab' : undefined} data-kurs="/innolab" role={offen ? undefined : 'link'} aria-disabled={offen ? undefined : 'true'}>
+        <a class:list={['kurs', { gesperrt: !offen }]} href={offen ? kursLink('/innolab', '') : undefined} data-kurs="/innolab" role={offen ? undefined : 'link'} aria-disabled={offen ? undefined : 'true'}>
           <span class="kurs-zeit">Oktober 2026 – Jänner 2027 · 7 Tage</span>
           <h2><span class="kurs-chev" aria-hidden="true">›</span> Innolab</h2>
           <ol class="kurs-tage">{innolab.map((t) => <li><span>Tag {t.n} · {t.d}</span> {t.t}</li>)}</ol>
@@ -64,7 +64,7 @@ const offen = innolabOffen(new Date());
     </main>
 
     <script>
-      import { innolabOffen, kursZiel } from '../lib/kurswahl';
+      import { innolabOffen, kursLink } from '../lib/kurswahl';
       // Innolab freischalten, sobald der Stichtag erreicht ist; alle Ziele behalten den Beamer-Modus.
       const innolab = document.querySelector<HTMLAnchorElement>('[data-kurs="/innolab"]')!;
       if (innolabOffen(new Date())) {
@@ -74,7 +74,7 @@ const offen = innolabOffen(new Date());
         innolab.querySelector<HTMLElement>('[data-hinweis]')!.hidden = true;
       }
       for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-kurs]')) {
-        if (!a.classList.contains('gesperrt')) a.href = kursZiel(a.dataset.kurs!, location.search);
+        if (!a.classList.contains('gesperrt')) a.href = kursLink(a.dataset.kurs!, location.search);
       }
     </script>
   </body>

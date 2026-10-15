@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { INNOLAB_AB, innolabOffen, kursZiel, tagInWien } from './kurswahl';
+import { INNOLAB_AB, innolabOffen, kursLink, kursZiel, tagInWien } from './kurswahl';
+import { sichererPfad } from './kurszugang';
 import { TAGE } from '../components/methoden';
 
 describe('kurswahl', () => {
@@ -24,5 +25,13 @@ describe('kurswahl', () => {
     expect(kursZiel('/innolab', '?beamer=1')).toBe('/innolab?beamer');
     expect(kursZiel('/', '?beamer=0')).toBe('/');
     expect(kursZiel('/', '')).toBe('/');
+  });
+
+  it('Kurskarten führen über /login zum Kurs, nie zurück auf /start', () => {
+    for (const [pfad, suche, ziel] of [['/', '', '/'], ['/', '?beamer', '/?beamer'], ['/innolab', '', '/innolab'], ['/innolab', '?beamer', '/innolab?beamer']]) {
+      const link = new URL(kursLink(pfad, suche), 'https://kurs.invalid');
+      expect(link.pathname).toBe('/login');
+      expect(sichererPfad(link.searchParams.get('weiter'))).toBe(ziel);
+    }
   });
 });
