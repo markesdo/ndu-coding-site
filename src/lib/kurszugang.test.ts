@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GUELTIG_SEKUNDEN, cookieLesen, gleich, istOeffentlich, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zielMitAnker } from './kurszugang';
+import { GUELTIG_SEKUNDEN, cookieLesen, gleich, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zielMitAnker } from './kurszugang';
 
 const SECRET = 'a'.repeat(64);
 const PW = 'kurs-passwort';
@@ -112,6 +112,19 @@ describe('istOeffentlich', () => {
     for (const p of ['/', '/tag-1', '/konzepte/llm', '/startseite', '/start-x', '/start/geheim', '/START', '/start.html', '//start', '/prompts']) {
       expect(istOeffentlich(p)).toBe(false);
     }
+  });
+});
+
+describe('ohneAnmeldungZiel', () => {
+  it('die Wurzel zeigt zuerst die Kurswahl, ?beamer bleibt', () => {
+    expect(ohneAnmeldungZiel('/', '')).toBe('/start');
+    expect(ohneAnmeldungZiel('/', '?beamer')).toBe('/start?beamer');
+    // Die Suche hängt an einem festen Pfad dieser Website – kein Sprung woandershin.
+    expect(ohneAnmeldungZiel('/', '?x=//evil.example')).toBe('/start?x=//evil.example');
+  });
+  it('jede andere Seite geht über das Kurspasswort und kehrt zurück', () => {
+    expect(ohneAnmeldungZiel('/innolab', '')).toBe('/login?weiter=%2Finnolab');
+    expect(ohneAnmeldungZiel('/tag-1', '?beamer')).toBe('/login?weiter=%2Ftag-1%3Fbeamer');
   });
 });
 
