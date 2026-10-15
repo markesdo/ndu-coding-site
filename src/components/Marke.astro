@@ -3,12 +3,13 @@
 // Der Name ist ein einziges Wort: Bei schmaler Spalte oder großer Grundschrift bricht er nach „programmieren_“ um,
 // notfalls auch mitten im Wort – nie über den Rand. Die Kopfleiste (einzeilig) kürzt stattdessen mit „…“; dort ohne <wbr>,
 // denn Chrome bricht an <wbr> auch bei white-space: nowrap um.
-// name: pro Kurs (lib/navigation.ts) – „innolab_2026“ im Innolab; ohne Angabe der Name des Coding-Kurses.
+// name und zeichen: pro Kurs (lib/navigation.ts) – im Innolab „innolab_2026“ mit „?“; ohne Angabe die des Coding-Kurses („›“).
+// Die Farbe der Bildmarke kommt aus --marke (global.css, je Kurs über html[data-bereich]).
 import { STANDARD_MARKE, markeTeilen } from './marke-name';
-const { einzeilig = false, name = STANDARD_MARKE } = Astro.props as { einzeilig?: boolean; name?: string };
+const { einzeilig = false, name = STANDARD_MARKE, zeichen = '›' } = Astro.props as { einzeilig?: boolean; name?: string; zeichen?: string };
 const [vorne, hinten] = markeTeilen(name);
 ---
-<span class="brand-mark" aria-hidden="true">›<i></i></span>{einzeilig || !hinten
+<span class="brand-mark" aria-hidden="true">{zeichen}<i></i></span>{einzeilig || !hinten
   ? <span class="brand-name">{name}</span>
   : <span class="brand-name">{vorne}<wbr />{hinten}</span>}
 

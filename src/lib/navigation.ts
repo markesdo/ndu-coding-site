@@ -13,6 +13,10 @@ export interface BereichInfo {
   start: string;
   /** Name im Logo; ohne Angabe der des Coding-Kurses (Marke.astro). Umgebrochen wird nach dem ersten Unterstrich. */
   marke?: string;
+  /** Zeichen vor dem Cursor in der Bildmarke; ohne Angabe „›“ (Marke.astro). Das Innolab fragt: „?“. */
+  zeichen?: string;
+  /** Favicon des Kurses; ohne Angabe /favicon.svg. */
+  favicon?: string;
   /** Anhang am Seitentitel: „Tag 1 · … · NDU Coding 2026“. */
   titel: string;
   beschreibung: string;
@@ -33,6 +37,8 @@ export const BEREICHE: Record<Bereich, BereichInfo> = {
   innolab: {
     start: '/innolab',
     marke: 'innolab_2026',
+    zeichen: '?',
+    favicon: '/favicon-innolab.svg',
     titel: 'NDU Innolab 2026',
     beschreibung: 'Innolab – ein digitales Produkt entwickeln und organisieren. MSc Management by Innovation, NDU, 2026',
     termine: '16. Oktober 2026 – 7. Jänner 2027',

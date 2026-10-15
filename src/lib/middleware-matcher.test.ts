@@ -9,6 +9,10 @@ const geschuetzt = (pfad: string) => config.matcher.some((m) => new RegExp(`^${m
 describe('Kurspasswort-Matcher', () => {
   it('lässt das Bild der Link-Vorschau durch – WhatsApp & Co. sind nicht angemeldet', () => {
     expect(geschuetzt('/og.png')).toBe(false);
+    expect(geschuetzt('/og-innolab.png')).toBe(false);
+  });
+  it('lässt das Innolab-Favicon durch – wie das des Coding-Kurses', () => {
+    expect(geschuetzt('/favicon-innolab.svg')).toBe(false);
   });
   it('lässt version.json durch – sonst bekäme der Hinweis „Seite aktualisiert“ die Login-Seite', () => {
     expect(geschuetzt('/version.json')).toBe(false);
@@ -17,6 +21,8 @@ describe('Kurspasswort-Matcher', () => {
     expect(geschuetzt('/tag-1')).toBe(true);
     expect(geschuetzt('/')).toBe(true);
     expect(geschuetzt('/og.png.html')).toBe(true);
+    expect(geschuetzt('/og-innolab.png.html')).toBe(true);
+    expect(geschuetzt('/og-andere.png')).toBe(true);
     expect(geschuetzt('/version.json.html')).toBe(true);
   });
 });
