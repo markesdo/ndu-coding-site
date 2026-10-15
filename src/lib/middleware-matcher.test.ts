@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { afterEach, vi } from 'vitest';
 import middleware, { config } from '../../middleware';
+import { COOKIE, tokenErstellen } from './kurszugang';
 
 // Vercel wendet den Matcher wie einen Pfad-Ausdruck an; für unsere Muster genügt ein verankerter RegExp.
 const geschuetzt = (pfad: string) => config.matcher.some((m) => new RegExp(`^${m}$`).test(pfad));
@@ -42,5 +43,18 @@ describe('Middleware ohne Anmeldung', () => {
     const r = await ohneCookie('/tag-1');
     expect(r.status).toBe(303);
     expect(r.headers.get('location')).toBe('/login?weiter=%2Ftag-1');
+  });
+});
+
+describe('Middleware mit Anmeldung', () => {
+  afterEach(() => vi.unstubAllEnvs());
+  it('Kursseiten kommen mit private, no-store – sie gehören in keinen geteilten Cache', async () => {
+    vi.stubEnv('SITE_PASSWORD', 'pw');
+    vi.stubEnv('SITE_SESSION_SECRET', 's'.repeat(32));
+    const token = await tokenErstellen('s'.repeat(32), 'pw', Math.floor(Date.now() / 1000));
+    const r = await middleware(new Request('https://kurs.invalid/tag-3', { headers: { cookie: `${COOKIE}=${token}` } }));
+    expect(r.headers.get('x-middleware-next')).toBe('1');
+    expect(r.headers.get('cache-control')).toBe('private, no-store');
+    expect(r.headers.get('x-robots-tag')).toBe('noindex, nofollow');
   });
 });

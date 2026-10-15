@@ -4,6 +4,7 @@ import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
+import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="Tag 4 · Scrum im Team">
@@ -55,6 +56,20 @@ import FooterNav from '../../components/FooterNav.astro';
   <Callout type="tip" title="Das Mess-Issue zuerst">
     <p>Baut das Issue, das das Mess-Ereignis einführt, als eines der ersten. Jedes Issue danach prüft ihr gleich mit: Kommt das Ereignis nach dem Merge noch an?</p>
   </Callout>
+  <h3 id="branding">Ein Gesicht für euer Produkt</h3>
+  <p>Bevor das erste Issue mit Oberfläche gebaut wird, wählt jede*r als Product Owner ein Branding für das eigene Produkt. In Claude Design legt ihr dafür ein Design-System aus eurem Repo an, wie in <a href="/tag-3#uebung-9-a">Coding-Tag 3, Übung 9a</a>, und schickt im Chat dieses System diesen Prompt:</p>
+  <Prompt label="Branding in drei Richtungen" note="Statt der Klammer euer Produkt in einem Satz aus docs/PRODUKT.md, die Zielgruppe aus dem Kundenprofil und das Gefühl am Höhepunkt eurer Usage Story.">Entwickle für unsere App ein Branding in drei Richtungen, die sich deutlich voneinander unterscheiden. Ausgangspunkt: [Produkt in einem Satz, für wen, und welches Gefühl es auslösen soll]. Der Name der App bleibt.
+
+Jede Richtung bekommt:
+– eine Idee in einem Satz und drei Stichworte zur Haltung
+– ein einfaches Logo, das auch klein als App-Symbol funktioniert
+– eine Farbpalette mit Haupt-, Akzent- und Statusfarben; Text mit mindestens 4,5:1 Kontrast
+– eine Schriftpaarung aus frei nutzbaren Schriften (Google Fonts)
+– den Ton der Texte, gezeigt an drei Beispielen: ein Button, eine leere Liste, eine Fehlermeldung
+– denselben wichtigsten Screen unserer App im neuen Look, auf dem Handy
+
+Stell die drei nebeneinander und sag zu jeder in einem Satz, zu wem sie passt und was sie riskiert. Wenn ich eine gewählt habe, bau unser Design-System danach um – mit Farben nach Zweck, allen Zuständen jeder Komponente und sichtbarem Tastatur-Fokus.</Prompt>
+  <p class="small">Zeigt die drei Richtungen eurem Team, bevor ihr wählt – die anderen bauen eure Issues mit. Die Wahl kommt als Zeile in <code>docs/ENTSCHEIDUNGEN.md</code>.</p>
   <Checklist id="il-tag4-sprint1" items={[
     '<code>docs/TEAM.md</code> in allen drei Repos, mit Rollen, Sprints und Definition of Done samt Mess-Ereignis',
     'Linear: ein Team, ein Projekt pro Produkt, Verweis in <code>docs/BACKLOG.md</code>, Label <code>Sprint 1</code> an den gewählten Issues',

@@ -117,6 +117,19 @@ code, kbd { hyphens: manual; }
 code { font-family: var(--mono); font-size: .9em; background: var(--code-bg); padding: .1em .35em; border-radius: 4px; overflow-wrap: anywhere; } /* lange IDs/Pfade brechen am Handy um statt die Seite zu verbreitern */
 pre { background: var(--code-bg); padding: 1rem; border-radius: var(--radius); overflow-x: auto; }
 pre code { background: none; padding: 0; }
+/* Kopierbare Inline-Werte: Klick auf den Wert markiert ihn ganz, der Knopf daneben kopiert. */
+[data-kopieren] { user-select: all; -webkit-user-select: all; }
+.kopierbar { white-space: nowrap; }
+.kopierbar > code, .kopierbar > a { white-space: normal; overflow-wrap: anywhere; }
+.kopieren-btn { display: inline-grid; place-items: center; vertical-align: middle; position: relative; width: 1.5rem; height: 1.5rem; margin-left: .15rem; padding: 0; border: 0; border-radius: 4px; background: none; color: var(--muted); cursor: pointer; }
+.kopieren-btn::after { content: ""; position: absolute; inset: -.25rem; } /* größere Trefferfläche, ohne die Zeile höher zu machen */
+.kopieren-btn:hover, .kopieren-btn:focus-visible { color: var(--accent-ink); background: var(--code-bg); }
+.kopieren-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.kopieren-btn .ico-done { display: none; }
+.kopieren-btn.done { color: var(--green); }
+.kopieren-btn.done .ico-copy { display: none; }
+.kopieren-btn.done .ico-done { display: block; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.5rem; font-size: .95rem; font-variant-numeric: tabular-nums; }
 th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
@@ -215,7 +228,6 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 /* Konzept auf der Tagesseite (KonzeptStation): ein .callout.concept, dazu Knopf zum Konzept. */
 .station ul { margin-bottom: 1rem; }
 .station-cta { display: flex; flex-wrap: wrap; gap: .6rem; }
-.station-cta .btn { display: inline-flex; align-items: center; gap: .4rem; }
 .station p.station-danach { margin: .75rem 0 0; }
 /* Issue-Karte (IssueKarte.astro): das Issue aus dem Backlog über dem Prompt, Kriterien zum Abhaken. */
 .issue-karte { border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: var(--radius); background: var(--bg-2); padding: 1rem 1.2rem .5rem; margin: 1.25rem 0; }
@@ -274,6 +286,10 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .pill.uebung { background: var(--green-soft); color: var(--green); }
 .pill.pause { background: var(--code-bg); color: var(--muted); }
 .pill.plenum { background: var(--yellow-soft); color: var(--yellow-ink); }
+/* Schwierigkeit eines Issues (Tag 3, Team-Sprint) */
+.pill.stufe-leicht { background: var(--green-soft); color: var(--green); }
+.pill.stufe-mittel { background: var(--yellow-soft); color: var(--yellow-ink); }
+.pill.stufe-schwer { background: var(--purple-soft); color: var(--purple); }
 
 /* Schedule – eine Liste, keine Karten: Haarlinien trennen die Zeilen. Die Uhrzeit ist der Anker beim Überfliegen
    (Monospace, volle Schriftfarbe), die Art steht als schmale Mono-Marke in eigener Spalte, Titel und Beschreibung fluchten. */
@@ -305,6 +321,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .btn.primary:hover { opacity: .92; }
 .btn.sm { padding: .3rem .7rem; font-size: .85rem; }
+.btn.mit-icon { display: inline-flex; align-items: center; gap: .4rem; }
 
 /* Prompt card */
 /* Sieht aus wie das Terminal, in das der Text gehört: neutrale Fläche, kein Akzentrot (bei 30 Prompts pro Seite wäre
@@ -315,7 +332,12 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .prompt .label-text svg { flex: none; }
 .prompt pre { margin: 0; background: transparent; padding: 0 0 0 .75rem; border-left: 2px solid var(--border); white-space: pre-wrap; font-family: var(--font); font-size: .95rem; line-height: 1.55; }
 /* [Lücken] zum Ersetzen hervorheben; kopiert wird weiter der reine Text mit Klammern. */
-.prompt mark.luecke { background: var(--yellow-soft); color: inherit; box-shadow: inset 0 -1px 0 var(--yellow); border-radius: 3px; padding: 0 .15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.prompt mark.luecke, mark.luecke-beispiel { background: var(--yellow-soft); color: inherit; box-shadow: inset 0 -1px 0 var(--yellow); border-radius: 3px; padding: 0 .15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.prompt mark.luecke[contenteditable] { cursor: text; outline: none; }
+.prompt mark.luecke[contenteditable]:hover { box-shadow: inset 0 -2px 0 var(--yellow); }
+.prompt mark.luecke[contenteditable]:focus { box-shadow: 0 0 0 2px var(--yellow); }
+.prompt mark.luecke.gefuellt { background: transparent; box-shadow: inset 0 -1px 0 var(--yellow); }
+.prompt .luecken-hinweis { margin: .5rem 0 0; font-size: .78rem; color: var(--muted); }
 /* Kopieren-Knopf neutral (Rot bleibt der Hauptaktion vorbehalten), feste Breite: „Kopiert“ verschiebt nichts. */
 .prompt .copy { font: inherit; font-family: var(--font); font-size: .8rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-width: 7rem; flex: none; background: var(--bg-2); color: var(--fg); border: 1px solid var(--border); border-radius: var(--radius); padding: .3rem .7rem; cursor: pointer; text-transform: none; letter-spacing: 0; }
 .prompt .copy:hover { border-color: var(--fg); }
@@ -560,3 +582,9 @@ html[data-beamer] .wo-ist { display: none; }
 .neu-laden button:focus-visible { outline: 2px solid var(--bg); outline-offset: 2px; }
 html[data-beamer] .neu-laden { display: none; }
 @media print { .neu-laden { display: none !important; } }
+
+/* Finale an Tag 3: große Zahlen – auch am Beamer lesbar. */
+.finale-zahlen { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1rem; margin: 1.5rem 0 .5rem; }
+.finale-zahlen > div { background: var(--code-bg); border-radius: var(--radius); padding: 1rem 1.1rem; }
+.finale-zahlen strong { display: block; font-family: var(--display); font-size: clamp(2rem, 1.4rem + 2.5vw, 3rem); line-height: 1.05; letter-spacing: -0.04em; color: var(--accent-ink); }
+.finale-zahlen span { display: block; margin-top: .35rem; color: var(--muted); font-size: .92rem; }

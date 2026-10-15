@@ -1,0 +1,71 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Callout from '../../components/Callout.astro';
+import Wichtigste from '../../components/Wichtigste.astro';
+import Prompt from '../../components/Prompt.astro';
+import FooterNav from '../../components/FooterNav.astro';
+import Bruchstellen from '../../components/Bruchstellen.astro';
+import EineAppJedeBreite from '../../components/sota/EineAppJedeBreite.tsx';
+import { BREITEN_KRITERIEN_PROMPT, MOBILE_FIRST_PROMPT } from '../../lib/responsive-prompts';
+---
+<Layout title="Responsive Design – eine App, jede Breite">
+  <span class="eyebrow">Ergänzung zu Konzept 7 · zum Nachschlagen</span>
+  <h1>Responsive Design – eine App, jede Breite</h1>
+  <p class="lead">Eure App läuft auf einem Handy, einem Laptop und allem dazwischen – mit demselben Code. Wie sie sich bei jeder Breite verhält, entscheidet jemand. Steht es nirgends, entscheidet Claude, und zwar für einen Bildschirm, den es nie gesehen hat.</p>
+  <Wichtigste>
+    <ul>
+      <li>Claude sieht keinen Bildschirm. Was am Handy kaputt ist, meldet es trotzdem als „fertig“ – prüft bei 375&nbsp;px.</li>
+      <li>Zuerst das Handy, dann breiter: <strong>mobile first</strong>. An wenigen Breiten, den <strong>Breakpoints</strong>, ändert sich der Aufbau; dazwischen fließt er.</li>
+      <li>Am Handy steht alles untereinander. Was oben steht, ist eure Priorisierung – schreibt sie ins Issue.</li>
+    </ul>
+  </Wichtigste>
+
+  <h2 id="warum">Warum</h2>
+  <p>Claude liest und schreibt Code, keinen Bildschirm. Fragt ihr nach einer Seite, baut es sie für einen ausgedachten Laptop – dort sieht fast alles ordentlich aus. Am Handy ragt dann ein Button aus dem Bild oder die Seite lässt sich seitlich verschieben, und niemand merkt es, bis jemand die App unterwegs öffnet. Das ist der häufigste stille Fehler in Apps, die mit Agenten gebaut werden (<a href="/konzepte/qualitaet#ui-schleife">Qualität 1b</a>).</p>
+  <p>Für euch als Produktverantwortliche steckt darin mehr als Technik. Am Laptop passen Suche, Filter und drei Karten nebeneinander. Am Handy steht alles untereinander, und auf den ersten Bildschirm passt eines davon. Welches, ist eine Entscheidung über euer Produkt.</p>
+  <p class="small muted">Warum gerade 375&nbsp;px? Gemeint sind CSS-Pixel, nicht die Pixel des Displays. Handys sind heute 360 bis 440 CSS-Pixel breit – viele Android-Geräte 360, iPhones meist 390 und mehr. 375 ist der Prüfwert im Kurs; wer sichergehen will, schaut zusätzlich bei 360.</p>
+
+  <h2 id="jede-breite">Eine App, jede Breite</h2>
+  <p>Leihbar als Drahtgitter, oben ein Lineal von 0 bis 1440&nbsp;px mit den Breakpoints. Die Animation beginnt am Handy und wird breiter.</p>
+  <p class="hint small muted">Klickt auf die Animation und blättert mit den Pfeiltasten – oder nutzt die Buttons.</p>
+  <EineAppJedeBreite client:visible />
+
+  <h2 id="woerter">Die Wörter für den Prompt</h2>
+  <p>Mit diesen Wörtern sagt ihr Claude genau, was an welcher Breite passieren soll – und versteht, was es zurückschreibt.</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Wörter für Responsive Design">
+    <table>
+      <tr><th>Wort</th><th>heißt</th><th>so sagt ihr es Claude</th></tr>
+      <tr><td><strong>Viewport</strong></td><td>der sichtbare Teil der Seite – so breit wie das Browserfenster, nicht wie das Gerät</td><td>„bei einem Viewport von 375 px“</td></tr>
+      <tr><td><strong>Breakpoint</strong></td><td>eine Breite, ab der sich der Aufbau ändert. Tailwind kennt <code>sm</code> 640, <code>md</code> 768, <code>lg</code> 1024, <code>xl</code> 1280</td><td>„ab <code>md</code> zwei Spalten“</td></tr>
+      <tr><td><strong>„ab 768 px“</strong></td><td>768 und breiter. Eine Klasse ohne Präfix gilt überall, eine mit <code>md:</code> erst ab 768</td><td>„ab 768 px nebeneinander, darunter untereinander“</td></tr>
+      <tr><td><strong>mobile first</strong></td><td>zuerst das Handy bauen, dann für breitere Bildschirme ergänzen</td><td>„bau mobile first, zuerst für 375 px“</td></tr>
+      <tr><td><strong>maximale Breite</strong></td><td>der Inhalt wächst nur bis zu einer Grenze, danach wächst der Rand</td><td>„Inhalt höchstens 1024 px breit, zentriert“</td></tr>
+      <tr><td><strong>Tap-Ziel</strong></td><td>alles, was man mit dem Finger antippt. Kursregel: mindestens 44 px hoch</td><td>„alle Buttons und Links mindestens 44 px hoch“</td></tr>
+      <tr><td><strong>waagrechtes Scrollen</strong></td><td>die Seite lässt sich seitlich verschieben – fast immer ein Fehler</td><td>„nichts darf waagrecht scrollen“</td></tr>
+    </table>
+  </div>
+  <Prompt label="Seite mobile first bauen" note="Statt der Teile in [Klammern] eure Seite und eure Reihenfolge.">{MOBILE_FIRST_PROMPT}</Prompt>
+
+  <h2 id="bruchstellen">Vier typische Bruchstellen</h2>
+  <p>Was am Handy am häufigsten kaputtgeht – jeweils mit dem Satz, der es behebt.</p>
+  <Bruchstellen />
+  <p>Außerdem, je ein Satz fürs Issue:</p>
+  <ul>
+    <li><strong>Bilder</strong> bekommen ein festes Seitenverhältnis, zum Beispiel 4:3 – sonst springt die Seite, sobald sie geladen sind, und hohe Fotos sprengen die Karte.</li>
+    <li><strong>Formulare:</strong> Am Handy verdeckt die Tastatur die halbe Seite. Der Button zum Absenden muss trotzdem erreichbar sein, und Felder bekommen den passenden Typ (E-Mail, Zahl), damit die richtige Tastatur erscheint.</li>
+    <li><strong>Tabellen:</strong> Spalten weglassen oder Karten statt Zeilen – das entscheidet ihr, nicht Claude.</li>
+  </ul>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <p>Zwei Wege, beide kennt ihr schon. Selbst: Chrome-Entwicklertools, Geräte-Ansicht, 375&nbsp;px (<a href="/setup#devtools">Setup → Entwicklertools</a>). Mit Claude: Screenshots per Playwright bei 375 und 1280&nbsp;px und eine feste Liste, was nicht passen darf – der Prompt „Handy-Ansicht reparieren“ in <a href="/konzepte/qualitaet#ui-schleife">Qualität 1b</a>.</p>
+
+  <h2 id="innolab">Im Innolab: Figma-Frames sind Stichproben</h2>
+  <p>Ein Figma-Entwurf hat meist zwei Rahmen, einen fürs Handy und einen für den Laptop. Gebaut wird aber jede Breite dazwischen. Was bei 900&nbsp;px passiert, steht in keinem der beiden – also muss es ins Issue, zusammen mit der Reihenfolge am Handy (<a href="/konzepte/design-system#uebergabe">was bei der Übergabe mitreist</a>).</p>
+  <Prompt label="Akzeptanzkriterien für die Breiten" note="Statt [Issue] die Kennung oder Nummer eures Issues.">{BREITEN_KRITERIEN_PROMPT}</Prompt>
+
+  <Callout type="concept" title="Der eine Satz zum Mitnehmen">
+    <p>Die App hat nicht zwei Größen, sondern jede – sagt Claude, was an welcher Breite passiert, und prüft es bei 375&nbsp;px, denn sehen kann es das nicht.</p>
+  </Callout>
+
+  <FooterNav prev={{ href: '/konzepte/qualitaet#ui-schleife', t: 'Qualität 1b · UI-Schleife' }} next={{ href: '/konzepte/design-system', t: 'Design-System' }} />
+</Layout>

@@ -9,7 +9,7 @@ type Link = { t: string; href: string };
 const werkzeuge: { name: string; wofuer: string; dashboard?: Link; doku: Link[]; context7?: string }[] = [
   {
     name: 'Supabase',
-    wofuer: 'Datenbank, Login und Bildspeicher. Ihr landet hier, wenn Daten fehlen oder ein Zugriff verweigert wird. Upload gibt 403 → Storage-Policies. Login landet auf localhost → Authentication → URL Configuration.',
+    wofuer: 'Datenbank, Login und Bildspeicher. Ihr landet hier, wenn Daten fehlen oder ein Zugriff verweigert wird. Upload gibt 403 → Storage-Policies. Login landet auf der falschen Adresse → Authentication → URL Configuration, dort beide Redirect URLs (Tag 2, Übung 5e).',
     dashboard: { t: 'Dashboard', href: 'https://supabase.com/dashboard' },
     doku: [
       { t: 'Storage (Bilder hochladen)', href: 'https://supabase.com/docs/guides/storage' },

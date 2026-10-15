@@ -23,6 +23,7 @@ describe('Konzeptseiten: Zurück zur Station davor, Weiter zur nächsten Station
     ['design-system', '/tag-3#konzept-8', '/tag-3#uebung-9'],
     ['ausblick', '/tag-3#konzept-9', '/tag-3#uebung-10'],
     ['linear', '/tag-3#linear', '/tag-3#uebung-10-b'],
+    ['responsive', '/konzepte/qualitaet#ui-schleife', '/konzepte/design-system'],
   ])('%s: ← %s, → %s', (seite, zurueck, weiter) => {
     expect([ziel(seite, 'prev'), ziel(seite, 'next')]).toStrictEqual([zurueck, weiter]);
   });

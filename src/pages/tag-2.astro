@@ -12,6 +12,7 @@ import UmgebungWahl from '../components/UmgebungWahl.astro';
 import KonzeptStation from '../components/KonzeptStation.astro';
 import Quiz from '../components/Quiz.astro';
 import { bild } from '../components/anleitung-bilder';
+import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
 ---
 <Layout title="Tag 2 · Bauen wie ein Profi">
   <span class="eyebrow">Freitag, 9. Oktober 2026 · 09:00–18:00</span>
@@ -89,7 +90,7 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('tag2/sb-3-orgs'), alt: 'Leere Organisationsliste mit Button „New organization“', text: 'Neue Konten starten ohne Organisation. <em>New organization</em>.', marks: [{ x: 681, y: 269, w: 134, h: 30 }] },
     { img: bild('tag2/sb-4-org'), alt: 'Formular „Create a new organization“ mit Type Personal und Plan Free', text: 'Name übernehmen, <em>Personal</em> und <em>Free – $0/month</em> lassen, <em>Create organization</em>.', marks: [{ x: 911, y: 437, w: 126, h: 30 }] },
     { img: bild('tag2/sb-5-region'), alt: 'Regionsauswahl, Central EU (Frankfurt) unter Specific Regions', text: 'Im Formular „Create a new project“ die Region öffnen. Vorausgewählt ist „Europe“; scrollt unter <em>Specific Regions</em> zu <em>Central EU (Frankfurt)</em>.', marks: [{ x: 686, y: 290, w: 250, h: 26 }] },
-    { img: bild('tag2/sb-6-projekt'), alt: 'Ausgefülltes Projektformular mit Name, Passwort, Region Frankfurt und Security-Optionen', text: 'Name <code>leihbar</code> (1). <em>Generate a password</em>, dann <em>Copy</em> (2) und das Passwort im Passwortmanager speichern – Supabase zeigt es nie wieder. Region Frankfurt (3). Unter <em>Security</em> zusätzlich <em>Enable automatic RLS</em> anhaken (4): Jede neue Tabelle ist dann von Anfang an durch Row Level Security geschützt. <em>Create new project</em> (5).', marks: [{ x: 638, y: 310, w: 356, h: 30, n: 1 }, { x: 929, y: 371, w: 64, h: 22, n: 2 }, { x: 638, y: 457, w: 356, h: 30, n: 3 }, { x: 637, y: 651, w: 150, h: 20, n: 4 }, { x: 885, y: 778, w: 109, h: 22, n: 5 }] },
+    { img: bild('tag2/sb-6-projekt'), alt: 'Ausgefülltes Projektformular mit Name, Passwort, Region Frankfurt und Security-Optionen', text: 'Name <code data-kopieren>leihbar</code> (1). <em>Generate a password</em>, dann <em>Copy</em> (2) und das Passwort im Passwortmanager speichern – Supabase zeigt es nie wieder. Region Frankfurt (3). Unter <em>Security</em> zusätzlich <em>Enable automatic RLS</em> anhaken (4): Jede neue Tabelle ist dann von Anfang an durch Row Level Security geschützt. <em>Create new project</em> (5).', marks: [{ x: 638, y: 310, w: 356, h: 30, n: 1 }, { x: 929, y: 371, w: 64, h: 22, n: 2 }, { x: 638, y: 457, w: 356, h: 30, n: 3 }, { x: 637, y: 651, w: 150, h: 20, n: 4 }, { x: 885, y: 778, w: 109, h: 22, n: 5 }] },
     { img: bild('tag2/sb-7-uebersicht'), alt: 'Projektübersicht des neuen Projekts, Status Healthy, oben der grüne Button „Connect“', text: 'Nach etwa 10 Sekunden steht das Projekt auf „Healthy“. Oben auf <em>Connect</em>.', marks: [{ x: 492, y: 8, w: 78, h: 24 }] },
     { img: bild('tag2/sb-8-connect'), alt: 'Connect-Dialog, Framework Next.js, darunter der Inhalt für .env.local', text: '<em>Framework</em> → <em>Next.js</em> (1). Unter „Add files“ steht der fertige Inhalt für <code>.env.local</code> (2): Project URL und Publishable Key (<code>sb_publishable_…</code>). Den braucht ihr gleich in Schritt c). Die „Legacy“-Keys (anon, service_role) braucht ihr nicht.', marks: [{ x: 979, y: 237, w: 445, h: 29, n: 1 }, { x: 1062, y: 592, w: 362, h: 34, n: 2 }] },
   ]} />
@@ -130,7 +131,7 @@ import { bild } from '../components/anleitung-bilder';
   <p><strong>Falls die Anmeldung trotzdem nicht klappt:</strong> Verbindet den MCP-Server stattdessen mit einem persönlichen Zugriffstoken.</p>
   <ol class="small">
     <li>Supabase → Account → <a href="https://supabase.com/dashboard/account/tokens" target="_blank" rel="noopener">Access Tokens</a> → neuen Token erzeugen, Name „Kurs-MCP“, auf euer Projekt <code>leihbar</code> beschränken. Token kopieren – er wird nur einmal angezeigt.</li>
-    <li>Im Terminal den bisherigen Eintrag entfernen: <code>claude mcp remove supabase</code></li>
+    <li>Im Terminal den bisherigen Eintrag entfernen: <code data-kopieren>claude mcp remove supabase</code></li>
     <li>Neu verbinden – <code>PROJECT-REF</code> und <code>TOKEN</code> ersetzen. Den <em>Project Ref</em> findet ihr in der Projekt-Adresse auf der Supabase-Übersicht (<code>https://<strong>abcdefgh</strong>.supabase.co</code> – das fett gedruckte Stück) oder in der Adresszeile des Dashboards nach <code>/project/</code>:</li>
   </ol>
   <Prompt label="Im Terminal (nicht in Claude) – Alternative mit Token">claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=PROJECT-REF" --header "Authorization: Bearer TOKEN"</Prompt>
@@ -178,7 +179,7 @@ import { bild } from '../components/anleitung-bilder';
   <h3 id="uebung-4-a">a) Issue 5 lesen und bauen lassen – Anmelden (25 min)</h3>
   <IssueKarte nr={5} dauer="25 min" />
   <Prompt note="Bevor Claude Tabellen oder Regeln ändert, beschreibt es, was es vorhat – lest das, bevor ihr Okay sagt. Ohne Auto Mode fragt Claude Code zusätzlich vor jedem Supabase-Aufruf um Erlaubnis, beim Löschen einer Regel manchmal auch Supabase selbst.">Setze Issue 5 aus docs/BACKLOG.md um, mit Supabase Auth (E-Mail und Passwort). Die E-Mail-Bestätigung sollte in Supabase aus sein; klappt die Anmeldung nach dem Registrieren nicht, schau zuerst mit mir nach dieser Einstellung. Die Seite /meine-anfragen kommt erst mit Issue 7 – leg sie jetzt als geschützte Seite mit einem Platzhaltersatz an. Danach die Regeln der Tabelle items schärfen: anlegen dürfen nur Angemeldete, und beim Anbieten wird die angemeldete Person als owner_id gespeichert. Frag zuerst, wenn etwas unklar ist. Bevor du die Regeln änderst: kurz beschreiben und auf mein Okay warten.</Prompt>
-  <p class="small muted">Testkonto zum Beispiel <code>test1@campus.at</code> – die E-Mail-Bestätigung ist aus, die Adresse muss nicht existieren. Ob das Konto angelegt ist, seht ihr in Supabase unter Authentication → Users.</p>
+  <p class="small muted">Testkonto zum Beispiel <code data-kopieren>test1@campus.at</code> – die E-Mail-Bestätigung ist aus, die Adresse muss nicht existieren. Ob das Konto angelegt ist, seht ihr in Supabase unter Authentication → Users.</p>
   <h3 id="uebung-4-b">b) Issue 6 lesen und bauen lassen – Ausleihen anfragen (25 min)</h3>
   <IssueKarte nr={6} dauer="25 min" braucht="Issue 2 und 5" />
   <Prompt>Setze Issue 6 aus docs/BACKLOG.md um. Die Anfragen kommen in eine Tabelle requests mit Row Level Security: jeder darf zählen, anlegen und löschen nur die eigene Anfrage. Frag zuerst, wenn etwas unklar ist. Bevor du die Tabelle requests und ihre Regeln anlegst: kurz beschreiben und auf mein Okay warten. Nach meinem Okay setzt du das ganze Issue um, nicht nur die Datenbank.</Prompt>
@@ -264,7 +265,7 @@ import { bild } from '../components/anleitung-bilder';
   <Prompt label="Kurz prüfen">Welche Projekte habe ich bei Vercel? Nutze dafür den Vercel-MCP.</Prompt>
   <p><strong>Zweite Anmeldung – die Vercel-CLI.</strong> In VS Code über dem Terminal auf <kbd>+</kbd> (ein zweites Terminal, nicht das mit Claude) und eintippen:</p>
   <Prompt label="Im zweiten Terminal (nicht in Claude)">npx vercel login</Prompt>
-  <p>Beim ersten Mal fragt npm, ob es das Paket laden darf: <kbd>y</kbd>, <kbd>Enter</kbd>. Dann öffnet sich der Browser – mit demselben Vercel-Konto bestätigen. <span data-nur="codespace">Im Codespace öffnet sich nichts von selbst: Das Terminal zeigt eine Adresse (und einen Code). Adresse anklicken bzw. kopieren, im Browser bestätigen.</span> Prüfen mit <code>npx vercel whoami</code>: Dort steht euer Vercel-Name.</p>
+  <p>Beim ersten Mal fragt npm, ob es das Paket laden darf: <kbd>y</kbd>, <kbd>Enter</kbd>. Dann öffnet sich der Browser – mit demselben Vercel-Konto bestätigen. <span data-nur="codespace">Im Codespace öffnet sich nichts von selbst: Das Terminal zeigt eine Adresse (und einen Code). Adresse anklicken bzw. kopieren, im Browser bestätigen.</span> Prüfen mit <code data-kopieren>npx vercel whoami</code>: Dort steht euer Vercel-Name.</p>
 
   <h3 id="vercel-deploy">c) Deploy durch Claude (10 min)</h3>
   <Prompt label="Deploy durch Claude" note="Claude fragt unterwegs nach eurem Okay und meldet sich, wenn ihr euch im Browser bei Vercel anmelden müsst. Meldet Claude, dass der Zugriff auf euer GitHub-Repo fehlt: Schritte 5.6–5.8 oben wiederholen.">Deploye dieses Projekt auf Vercel – Projekt anlegen und deployen mit der Vercel-CLI (npx vercel), lesen und prüfen mit dem Vercel-MCP. Vorher: alles committen und auf main pushen, damit live genau der Stand von GitHub läuft. Prüf zuerst mit dem Vercel-MCP, ob es in meinem Konto schon ein Projekt für dieses Repo gibt – dann nimm das und leg kein zweites an. Sonst: neues Projekt mit dem Namen des Repos, Framework Next.js, verbunden mit dem GitHub-Repo, damit jeder Push auf main automatisch deployt. Meine .env.local bleibt, wie sie ist: lies die Variablen daraus, bevor du das Projekt verknüpfst, überschreib die Datei nicht und übertrag die Variablen als Environment Variables für Production und Preview, bevor du deployst – zeig mir keine Werte im Chat. Deploy dann nach Production, nicht als Preview. Bevor du etwas anlegst: sag mir in zwei Sätzen, was du vorhast, und warte auf mein Okay. Am Ende: die öffentliche Adresse unter Domains (…vercel.app), nicht die Deployment-Adresse.</Prompt>
@@ -292,21 +293,25 @@ import { bild } from '../components/anleitung-bilder';
       { img: bild('tag2/vc-15-live'), alt: 'Die App unter der öffentlichen vercel.app-Adresse', text: 'Die App ist öffentlich erreichbar. Ab jetzt deployt jeder Push auf <code>main</code> automatisch.' },
     ]} />
     <Prompt label="Wenn der Build auf Vercel fehlschlägt (ohne MCP)">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen aus dem Vercel-Dashboard einfügen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
-    <p>Danach weiter mit <a href="#vercel-pruefen">d) Prüfen</a> und <a href="#vercel-supabase">e) Supabase auf die neue Adresse</a> – das gilt für beide Wege.</p>
+    <p>Danach weiter mit <a href="#vercel-pruefen">d) Prüfen</a> und <a href="#vercel-supabase">e) Supabase für lokal und live einrichten</a> – das gilt für beide Wege.</p>
   </details>
 
   <h3 id="vercel-pruefen">d) Prüfen und Logs lesen (5 min)</h3>
   <Prompt label="Deploy prüfen">Prüfe mit dem Vercel-MCP den letzten Production-Deploy: Status, Build-Log (nur Fehler und Warnungen zusammenfassen) und Laufzeit-Logs der letzten 30 Minuten. Erkläre mir in einfachen Worten, ob alles in Ordnung ist. Wenn nicht: behebe es, prüf lokal mit npm run build und warte vor dem Push auf mein Okay.</Prompt>
   <p class="small muted">Den Prompt braucht ihr immer, wenn etwas live anders aussieht als lokal – Claude liest die Logs selbst, ihr müsst nichts kopieren.</p>
 
-  <h3 id="vercel-supabase">e) Supabase auf die neue Adresse umstellen (5 min)</h3>
-  <p>Damit Login-Links nicht auf <code>localhost</code> zeigen. Diese Einstellung kann Claude nicht selbst ändern, aber den Weg zeigen:</p>
-  <Prompt label="Site URL">Hol dir mit dem Supabase-MCP die Project-Ref meines Projekts und gib mir den direkten Link zur Seite Authentication → URL Configuration. Sag mir genau, was ich bei Site URL eintrage (meine Vercel-Adresse unter Domains) und was bei Redirect URLs (dieselbe Adresse mit /** am Ende).</Prompt>
+  <h3 id="vercel-supabase">e) Supabase für lokal und live einrichten (5 min)</h3>
+  <p>Supabase muss wissen, wohin ein Login zurückführen darf. Tragt ihr hier beide Adressen eurer App ein, funktioniert der Login gleichzeitig am Mac und live – und ihr stellt danach nie wieder um. Die Einstellung kann Claude nicht selbst ändern, aber den Weg zeigen:</p>
+  <Prompt label="Site URL und Redirect URLs">Hol dir mit dem Supabase-MCP die Project-Ref meines Projekts und gib mir den direkten Link zur Seite Authentication → URL Configuration. Sag mir genau, was ich eintrage: bei Site URL meine Vercel-Adresse unter Domains; bei Redirect URLs zwei Einträge – dieselbe Adresse mit /** am Ende und http://localhost:*/** für die App auf meinem Mac.</Prompt>
   <Schritte id="vercel" nummer="5" start={16} steps={[
     { img: bild('tag2/url-1'), alt: 'URL Configuration, Site URL steht auf http://localhost:3000', text: 'Bei <em>Site URL</em> steht noch <code>http://localhost:3000</code>.', marks: [{ x: 1008, y: 288, w: 431, h: 33 }] },
     { img: bild('tag2/url-2'), alt: 'Site URL mit der Vercel-Adresse und Button „Save changes“', text: 'Eure Vercel-Adresse (die unter <em>Domains</em>) eintragen, <em>Save changes</em>.', marks: [{ x: 1339, y: 375, w: 100, h: 24 }] },
   ]} />
-  <p>Darunter bei <em>Redirect URLs</em> auf <em>Add URL</em> und dieselbe Adresse mit <code>/**</code> am Ende eintragen, z. B. <code>https://leihbar-….vercel.app/**</code> – so wie Claude es euch gesagt hat.</p>
+  <p>Darunter bei <em>Redirect URLs</em> auf <em>Add URL</em>. In die erste Zeile kommt eure Live-App, genau so, wie Claude sie euch nennt (<code>https://leihbar-….vercel.app/**</code>). Mit <em>+ Add URL</em> eine zweite Zeile für eure App am Mac:</p>
+  <Prompt label="In Supabase einfügen (nicht in Claude) · Redirect URL für die App am Mac" note="Der Stern steht für jeden Port, also auch 3001, wenn 3000 belegt ist.">http://localhost:*/**</Prompt>
+  <p class="small muted">Die Site URL ist nur die Vorgabe für Links ohne eigene Zieladresse. Vorschau-Adressen tragt ihr bewusst nicht ein: Ein Muster für alle Vorschauen ließe auch fremde <code>vercel.app</code>-Adressen zu, an die Login-Links gehen könnten. Mit E-Mail und Passwort klappt der Login in Vorschauen trotzdem.</p>
+  <p>Damit das trägt, darf der Code keine feste Adresse mitschicken. Eine Regel für Claude, einmal pro Projekt:</p>
+  <Prompt label="Regel für Login-Weiterleitungen">{LOGIN_REGEL_PROMPT}</Prompt>
   <p><strong>Am Handy öffnen.</strong> Registrieren, etwas anfragen. Das ist eure App.</p>
 
   {/* id „t2-u5b“ (vorher t2-u5): Punkte geändert, als der Deploy auf Claude umgestellt wurde – Häkchen werden nach Position gespeichert. */}
@@ -359,7 +364,7 @@ import { bild } from '../components/anleitung-bilder';
 
   <hr />
   <h2 id="uebung-7">Übung 7 · Animation <span class="pill uebung">45 min</span></h2>
-  <p>Gute Animation erklärt, was passiert: was wegfällt, was dazukommt, ob ein Klick angekommen ist. Schlechte Animation hält auf. Ihr arbeitet mit <strong>Motion</strong>, einer Animations-Bibliothek für React: Ein- und Ausblenden und Karten, die an ihren neuen Platz gleiten, gehen damit mit wenigen Zeilen. Die Grenzen dafür stehen in eurer <code>CLAUDE.md</code>: höchstens 0,3 Sekunden für die Rückmeldung auf einen Klick, nichts in Dauerschleife, und wer „Bewegung reduzieren“ eingestellt hat, bekommt keine.</p>
+  <p>Gute Animation erklärt, was passiert: was wegfällt, was dazukommt, ob ein Klick angekommen ist. Schlechte Animation hält auf. Ihr arbeitet mit <a href="https://motion.dev" target="_blank" rel="noopener noreferrer"><strong>Motion</strong></a>, einer Animations-Bibliothek für React: Ein- und Ausblenden und Karten, die an ihren neuen Platz gleiten, gehen damit mit wenigen Zeilen. Auf der Website zeigen viele kurze Beispiele, was möglich ist – gut, um Claude zu beschreiben, was ihr wollt. Die Grenzen dafür stehen in eurer <code>CLAUDE.md</code>: höchstens 0,3 Sekunden für die Rückmeldung auf einen Klick, nichts in Dauerschleife, und wer „Bewegung reduzieren“ eingestellt hat, bekommt keine.</p>
   <h3 id="uebung-7-a">a) Motion einrichten (5 min)</h3>
   <Prompt>Installiere die Animations-Bibliothek motion. Leg in src/app/layout.tsx um den Inhalt ein MotionConfig mit reducedMotion="user", damit „Bewegung reduzieren“ auch für Motion gilt. Trag in docs/ENTSCHEIDUNGEN.md ein: Animationen mit Motion, weil Ein- und Ausblenden und gleitende Layouts damit ohne Umwege gehen. Prüf mit npm run build, dass alles läuft, dann /ndu-commit</Prompt>
   <p><strong>„Bewegung reduzieren“ prüfen:</strong> In den DevTools <kbd>Cmd</kbd>/<kbd>Strg</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, „Rendering“ eintippen, <em>Show Rendering</em>. Dort bei <em>Emulate CSS media feature prefers-reduced-motion</em> auf <em>reduce</em> stellen. Danach wieder zurück, sonst seht ihr keine Animationen mehr.</p>
