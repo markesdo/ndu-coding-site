@@ -2,14 +2,21 @@
 // Auflösung einer Übung („erst machen, dann erklären“): verborgen bis `ab` (Wiener Zeit, „2026-10-16T10:10“),
 // der Präsentator deckt sie vorher per Knopf auf seinem Bildschirm (Beamer) auf. Steht trotzdem im HTML –
 // schützt vor versehentlichem Vorauslesen, nicht vor Absicht. Überschriften darin ohne id, sonst landen sie in Orientierung und „Wo ist Markus“.
+// fuer="alle": Den Knopf haben alle – für Arbeitsmaterial mit Pointe (Vorlage, Prompt, Prüfliste), das niemanden
+// aussperren darf, wenn der Ablauf früher dran ist oder der Termin wandert. hinweis/knopf: eigene Texte dafür.
 import { Eye } from '@lucide/astro';
 import { aufloesungAb } from './aufloesung';
-const { ab } = Astro.props as { ab: string };
+const { ab, fuer = 'praesentator', hinweis = 'Die Auflösung erscheint nach der Übung.', knopf = 'Auflösung zeigen' } = Astro.props as {
+  ab: string;
+  fuer?: 'praesentator' | 'alle';
+  hinweis?: string;
+  knopf?: string;
+};
 if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwartet JJJJ-MM-TTTHH:MM`);
 ---
 <div class="aufloesung" data-aufloesung-ab={ab}>
-  <p class="small muted" data-aufloesung-hinweis>Die Auflösung erscheint nach der Übung.</p>
-  <button type="button" class="aufloesung-knopf" data-aufloesung-zeigen data-nur-praesentator><Eye size={18} aria-hidden="true" /> Auflösung zeigen</button>
+  <p class="small muted" data-aufloesung-hinweis>{hinweis}</p>
+  <button type="button" class="aufloesung-knopf" data-aufloesung-zeigen data-nur-praesentator={fuer === 'praesentator' ? '' : undefined}><Eye size={18} aria-hidden="true" /> {knopf}</button>
   <div data-aufloesung-inhalt hidden><slot /></div>
 </div>
 <script>

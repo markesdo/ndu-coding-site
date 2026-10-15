@@ -6,6 +6,14 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import Fluss from '../../../components/Fluss.astro';
+import Aufloesung from '../../../components/Aufloesung.astro';
+import { Flag, MapPin, Sparkles } from '@lucide/astro';
+
+// Ende des Blocks „Jobs to be Done & Mom Test“ an Tag 1 (tag-1.astro): ab dann sehen alle die Auflösungen.
+const NACH_MOM_TEST = '2026-10-22T13:45';
 ---
 <Layout title="Jobs to be Done & Mom Test">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -14,42 +22,67 @@ import FooterNav from '../../../components/FooterNav.astro';
   <Orientierung seite="innolab/methoden/interview" leiste={false} />
   <MethodenKarte slug="interview" />
 
-  <h2 id="jtbd">Jobs to be Done</h2>
-  <p>Menschen kaufen keine Produkte, sie „heuern“ sie an, um eine Aufgabe in ihrem Leben zu erledigen – den <strong>Job</strong>. Die Pendlerin an der Kaffeebar will nicht „einen Kaffee“. Sie will wach und halbwegs gut gelaunt in Wien ankommen, ohne ihren Zug zu riskieren. Mit diesem Job konkurriert die Kaffeebar nicht nur mit anderen Cafés, sondern auch mit dem Automaten, dem Thermobecher und dem Schlaf im Zug.</p>
-  <p>Ein Job lässt sich in einem Satz festhalten:</p>
-  <p><strong>Wenn</strong> [Situation], <strong>will ich</strong> [Ziel], <strong>damit</strong> [was sich dadurch ändert].</p>
-  <p><em>Wenn ich um 7:30 am Bahnhof ankomme, will ich einen Kaffee in der Hand haben, bevor der Zug kommt, damit ich die Fahrt zum Aufwachen nutzen kann.</em></p>
-  <p>Jobs findet ihr nicht, indem ihr danach fragt. Ihr findet sie in Geschichten über das, was Menschen zuletzt getan haben. Dafür gibt es den Mom Test.</p>
+  <Folie>
+    <h2 id="jtbd">Jobs to be Done</h2>
+    <p class="folie-satz">Menschen kaufen keine Produkte – sie heuern sie für einen Job an.</p>
+    <Fluss label="Ein Job in einem Satz: Wenn, will ich, damit – am Beispiel der Pendlerin an der Kaffeebar" hervor={[1]} knoten={[
+      { t: 'Wenn …', sub: 'ich um 7:30 am Bahnhof ankomme,', icon: MapPin },
+      { t: 'will ich …', sub: 'einen Kaffee in der Hand haben, bevor der Zug kommt,', icon: Flag },
+      { t: 'damit …', sub: 'ich die Fahrt zum Aufwachen nutzen kann.', icon: Sparkles },
+    ]} />
+    <p class="small muted">Konkurrenz für diesen Job: andere Cafés, der Automat, der Thermobecher, der Schlaf im Zug.</p>
+    <p class="nur-handout">Die Form: <strong>Wenn</strong> [Situation], <strong>will ich</strong> [Ziel], <strong>damit</strong> [was sich dadurch ändert]. Die Pendlerin an der Kaffeebar will nicht „einen Kaffee“. Sie will wach und halbwegs gut gelaunt in Wien ankommen, ohne ihren Zug zu riskieren. Jobs findet ihr nicht, indem ihr danach fragt. Ihr findet sie in Geschichten über das, was Menschen zuletzt getan haben. Dafür gibt es den Mom Test.</p>
+  </Folie>
 
-  <h2 id="mom-test">Der Mom Test</h2>
-  <p>Benannt nach der Idee, dass selbst eure Mutter euch nicht anlügen kann, wenn ihr die richtigen Fragen stellt. Drei Regeln:</p>
-  <ol>
-    <li><strong>Redet über ihr Leben, nicht über eure Idee.</strong> Sobald ihr die Idee erzählt, wird das Gespräch höflich.</li>
-    <li><strong>Fragt nach dem letzten konkreten Mal, nicht nach Meinungen oder der Zukunft.</strong> „Würdest du …?“ beantworten alle mit Ja. Was jemand letzten Dienstag getan hat, ist eine Tatsache.</li>
-    <li><strong>Redet weniger, hört mehr.</strong> Wenn ihr mehr als ein Drittel der Zeit sprecht, lernt ihr nichts.</li>
-  </ol>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Statt</th><th>Besser</th></tr></thead>
-      <tbody>
-        <tr><td>Würdest du Kaffee vorbestellen, wenn es eine App gäbe?</td><td>Erzähl mir vom letzten Morgen, an dem du am Bahnhof Kaffee wolltest.</td></tr>
-        <tr><td>Wie viel würdest du dafür zahlen?</td><td>Was hast du diese Woche für Kaffee unterwegs ausgegeben?</td></tr>
-        <tr><td>Findest du die Schlange nervig?</td><td>Was hast du gemacht, als die Schlange zu lang war?</td></tr>
-        <tr><td>Wäre es nicht praktisch, wenn …?</td><td>Hast du schon mal etwas ausprobiert, um das zu umgehen? Was war das?</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Vorsicht bei Komplimenten („Coole Idee!“), Allgemeinplätzen („Ich trinke normalerweise …“) und Zukunftsversprechen („Das würde ich sicher nutzen“). Holt sie zurück in die Vergangenheit: „Wann war das zuletzt?“</p>
+  <Folie>
+    <h2 id="mom-test">Der Mom Test</h2>
+    <p class="folie-satz">Schreibt drei Fragen an eure Zielgruppe.</p>
+    <p>Allein, eine Frage pro Sticky. Markus antwortet danach als Person aus eurer Zielgruppe. <Timer minuten={5} /></p>
+    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Die Auflösung kommt nach der Übung – erst eure Fragen schreiben." knopf="Auflösung zeigen (nach der Übung)">
+      <h3>Auflösung</h3>
+      <p class="folie-satz">Auf „Würdest du …?“ sagen alle Ja – selbst eure Mutter.</p>
+      <ol class="gross">
+        <li data-schritt><strong>Redet über ihr Leben, nicht über eure Idee.</strong> Sobald ihr die Idee erzählt, wird das Gespräch höflich.</li>
+        <li data-schritt><strong>Fragt nach dem letzten konkreten Mal.</strong> Was jemand letzten Dienstag getan hat, ist eine Tatsache.</li>
+        <li data-schritt><strong>Redet weniger, hört mehr.</strong> Mehr als ein Drittel der Zeit gesprochen – nichts gelernt.</li>
+      </ol>
+      <p class="small muted">Nach Rob Fitzpatrick, „The Mom Test“ (2013).</p>
+    </Aufloesung>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (90 min nach 30 min Input)</h2>
-  <ol>
-    <li><strong>Leitfaden allein schreiben (20 min):</strong> 5–7 Fragen, Vorlage unten. Jede Frage gegen die drei Regeln halten.</li>
-    <li><strong>Prüfliste und Claude (10 min).</strong></li>
-    <li><strong>Probe mit Claude (15 min):</strong> Claude spielt eine Person aus eurer Zielgruppe – absichtlich zurückhaltend. Danach Feedback auf eure Fragen.</li>
-    <li><strong>Live-Interview (3 × 15 min):</strong> Reihum spielt Markus eine schwierige Person aus der Zielgruppe der jeweiligen Interviewer*in – 10 min Interview, 5 min Feedback. Die anderen beiden beobachten: Wo wurde gepitcht, wo fehlte eine Nachfrage? Was ihr dabei lernt, kommt danach in den Leitfaden.</li>
-  </ol>
+  <Folie>
+    <h2 id="statt-besser">Eure Fragen umschreiben</h2>
+    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Beispiele zeigen (nach der Übung)">
+      <p class="folie-satz">Von der Zukunft in die Vergangenheit.</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Statt</th><th>Besser</th></tr></thead>
+          <tbody>
+            <tr data-schritt><td>Würdest du Kaffee vorbestellen, wenn es eine App gäbe?</td><td>Erzähl mir vom letzten Morgen, an dem du am Bahnhof Kaffee wolltest.</td></tr>
+            <tr data-schritt><td>Wie viel würdest du dafür zahlen?</td><td>Was hast du diese Woche für Kaffee unterwegs ausgegeben?</td></tr>
+            <tr data-schritt><td>Findest du die Schlange nervig?</td><td>Was hast du gemacht, als die Schlange zu lang war?</td></tr>
+            <tr data-schritt><td>Wäre es nicht praktisch, wenn …?</td><td>Hast du schon mal etwas ausprobiert, um das zu umgehen? Was war das?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nur-handout">Vorsicht bei Komplimenten („Coole Idee!“), Allgemeinplätzen („Ich trinke normalerweise …“) und Zukunftsversprechen („Das würde ich sicher nutzen“). Holt sie zurück in die Vergangenheit: „Wann war das zuletzt?“</p>
+      <p data-schritt><strong>Und jetzt eure drei Fragen:</strong> Welche würde Markus wieder mit „Ja, total!“ beantworten? Umschreiben. <Timer minuten={5} /></p>
+    </Aufloesung>
+  </Folie>
 
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
+    <ol class="gross">
+      <li data-schritt><strong>Leitfaden allein schreiben:</strong> 5–7 Fragen, Vorlage im Handout auf euren Laptops, jede gegen die drei Regeln halten. <Timer minuten={20} /></li>
+      <li data-schritt><strong>Prüfliste und Claude.</strong> <Timer minuten={10} /></li>
+      <li data-schritt><strong>Probe mit Claude:</strong> Claude spielt eine zurückhaltende Person aus eurer Zielgruppe, danach Feedback. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Live-Interview, reihum 3 × 15 min:</strong> Markus spielt eine schwierige Person, 10 min Interview, 5 min Feedback. Die anderen beobachten: Wo wurde gepitcht, wo fehlte eine Nachfrage? Was ihr lernt, kommt danach in den Leitfaden. <Timer minuten={15} /></li>
+    </ol>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
+  <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Die Vorlage enthält die Lösung des Mom Test – öffnet sie erst danach." knopf="Vorlage öffnen">
   <Prompt label="Vorlage · docs/interviews/LEITFADEN.md"># Interviewleitfaden — [Produkt]
 
 Ziel: [Welche offene Frage aus dem Brief soll das Interview klären?]
@@ -73,21 +106,31 @@ Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
 
 ## Abschluss
 „Wen sollte ich noch fragen?“</Prompt>
+  </Aufloesung>
 
   <Callout type="warn" title="Einwilligung und Anonymisierung">
     <p>Nehmt nur mit Einwilligung auf. Ins Repo kommt nie die Aufnahme, nur das Transkript – ohne Namen, Arbeitgeber oder andere Angaben, an denen man die Person erkennt. Nennt die Transkripte <code>docs/interviews/I1.md</code> bis <code>I5.md</code>; das sind später die Zitat-IDs. Bevor ihr ein Transkript Claude gebt, muss es anonymisiert sein.</p>
   </Callout>
 
   <h2 id="probe">Probe mit Claude</h2>
+  <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Der Prompt verrät die Regeln des Mom Test – öffnet ihn erst danach." knopf="Prompt öffnen">
   <p>Am besten in Claude Chat (dort geht auch der Sprachmodus), sonst in Claude Code:</p>
   <Prompt label="Probe-Interview · Claude Chat oder Claude Code">Spiel eine Person aus dieser Zielgruppe: [Abschnitt 1 aus eurem Brief]. Erfinde dir ein realistisches Leben mit Gewohnheiten, die nicht zu meiner Idee passen müssen. Sei zurückhaltend: Antworte kurz, bleib allgemein, wenn ich allgemein frage, und erzähl Konkretes nur, wenn ich nach dem letzten konkreten Mal frage. Frag ich nach der Zukunft oder stelle ich eine Idee vor, sei höflich und unverbindlich. Ich beginne das Interview, du wartest auf meine erste Frage. Wenn ich „Ende“ schreibe, gib mir Feedback nach dem Mom Test: Wo habe ich gepitcht, wo nach der Zukunft gefragt, wo eine Nachfrage verpasst? Höchstens drei Punkte, mit Zitat.</Prompt>
   <p>Die Probe ersetzt kein echtes Interview. Claude erfindet eine plausible Person – eure Zielgruppe kennt es nicht.</p>
+  </Aufloesung>
 
   <h2 id="pruefen">Prüfen</h2>
-  <ClaudePruefung slug="interview" pfad="docs/interviews/LEITFADEN.md" />
+  <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Die Prüfliste verrät die Regeln des Mom Test – öffnet sie erst danach." knopf="Prüfliste öffnen">
+    <ClaudePruefung slug="interview" pfad="docs/interviews/LEITFADEN.md" />
+  </Aufloesung>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Was ist bei eurer Zielgruppe „der letzte Morgen am Bahnhof“ – die konkrete Situation, nach der ihr fragt? Wenn euch keine einfällt, ist eure Zielgruppe noch zu allgemein. Zurück zum <a href="/innolab/methoden/problem-rahmen">Problem-Rahmen</a>.</p>
+  </div>
+
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Was ist bei euch „der letzte Morgen am Bahnhof“?</p>
+    <p>Die konkrete Situation, nach der ihr fragt. Fällt euch keine ein, ist eure Zielgruppe noch zu allgemein – zurück zum <a href="/innolab/methoden/problem-rahmen">Problem-Rahmen</a>.</p>
+  </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/entscheidungslog', t: 'Entscheidungslog' }} next={{ href: '/innolab/methoden/annahmen', t: 'Annahmen-Map' }} />
 </Layout>

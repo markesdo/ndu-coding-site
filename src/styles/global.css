@@ -115,7 +115,8 @@ h2 + h3 { margin-top: .75rem; }
 /* Zeilenlänge: Fließtext höchstens 68 Zeichen breit, auch in Callouts, Karten, Begriffslisten und Widgets;
    Ablauf, Animationen, Tabellen und Prompts nutzen die volle Spalte. */
 .content > .inner > :is(p:not(.lead), h3, ul:not([class]), ol:not([class])),
-.content > .inner > :is(.folie, .nur-handout) > :is(p:not(.lead, .folie-satz), h3, ul:not([class]), ol:not([class])) { max-width: 68ch; }
+.content > .inner > :is(.folie, .nur-handout) > :is(p:not(.lead, .folie-satz), h3, ul:not([class]), ol:not([class])),
+[data-aufloesung-inhalt] > :is(p:not(.folie-satz), h3, ul:not([class]), ol:not([class])) { max-width: 68ch; }
 /* In Kästen ohne Spezifität (:where), damit Komponenten-Regeln wie .lead oder .toc gewinnen; das Inhaltsverzeichnis bleibt voll breit. */
 :where(.callout, .card, .begriffe dd, details:not(.toc), .widget, .station) > :where(p, ul:not([class]), ol:not([class])) { max-width: 68ch; }
 /* --absatz und --h3-oben setzt beamer.css enger. */
