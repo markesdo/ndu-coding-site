@@ -65,7 +65,7 @@ export interface CodeZeile {
 
 export const CODE: CodeZeile[] = [
   { id: 'nav', tag: 'nav', klassen: ['hidden', 'lg:flex'], was: 'Navigation' },
-  { id: 'menue', tag: 'button', klassen: ['lg:hidden'], was: 'Menü-Knopf' },
+  { id: 'menue', tag: 'button', klassen: ['flex', 'lg:hidden'], was: 'Menü-Knopf' },
   { id: 'inhalt', tag: 'main', klassen: ['mx-auto', 'max-w-5xl', 'px-4'], was: 'Inhalt' },
   { id: 'raster', tag: 'ul', klassen: ['grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3'], was: 'Gegenstände' },
 ];
@@ -76,9 +76,9 @@ export function aktiveKlassen(breite: number): string[] {
   const l = layoutBei(breite);
   const aktiv = [
     l.navigation === 'voll' ? 'lg:flex' : 'hidden',
+    l.navigation === 'voll' ? 'lg:hidden' : 'flex',
     l.spalten === 3 ? 'lg:grid-cols-3' : l.spalten === 2 ? 'md:grid-cols-2' : 'grid-cols-1',
   ];
-  if (l.navigation === 'voll') aktiv.push('lg:hidden');
   if (breite > INHALT_MAX) aktiv.push('max-w-5xl');
   return aktiv;
 }

@@ -6,6 +6,7 @@ import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Bruchstellen from '../../components/Bruchstellen.astro';
 import EineAppJedeBreite from '../../components/sota/EineAppJedeBreite.tsx';
+import { BREITEN_KRITERIEN_PROMPT, MOBILE_FIRST_PROMPT } from '../../lib/responsive-prompts';
 ---
 <Layout title="Responsive Design – eine App, jede Breite">
   <span class="eyebrow">Ergänzung zu Konzept 7 · zum Nachschlagen</span>
@@ -22,7 +23,7 @@ import EineAppJedeBreite from '../../components/sota/EineAppJedeBreite.tsx';
   <h2 id="warum">Warum</h2>
   <p>Claude liest und schreibt Code, keinen Bildschirm. Fragt ihr nach einer Seite, baut es sie für einen ausgedachten Laptop – dort sieht fast alles ordentlich aus. Am Handy ragt dann ein Button aus dem Bild oder die Seite lässt sich seitlich verschieben, und niemand merkt es, bis jemand die App unterwegs öffnet. Das ist der häufigste stille Fehler in Apps, die mit Agenten gebaut werden (<a href="/konzepte/qualitaet#ui-schleife">Qualität 1b</a>).</p>
   <p>Für euch als Produktverantwortliche steckt darin mehr als Technik. Am Laptop passen Suche, Filter und drei Karten nebeneinander. Am Handy steht alles untereinander, und auf den ersten Bildschirm passt eines davon. Welches, ist eine Entscheidung über euer Produkt.</p>
-  <p class="small muted">Warum gerade 375&nbsp;px? Gemeint sind CSS-Pixel, nicht die Pixel des Displays. Aktuelle Handys sind 390 bis 430 CSS-Pixel breit; 375 ist die strenge Probe – passt es dort, passt es fast überall.</p>
+  <p class="small muted">Warum gerade 375&nbsp;px? Gemeint sind CSS-Pixel, nicht die Pixel des Displays. Handys sind heute 360 bis 440 CSS-Pixel breit – viele Android-Geräte 360, iPhones meist 390 und mehr. 375 ist der Prüfwert im Kurs; wer sichergehen will, schaut zusätzlich bei 360.</p>
 
   <h2 id="jede-breite">Eine App, jede Breite</h2>
   <p>Leihbar als Drahtgitter, oben ein Lineal von 0 bis 1440&nbsp;px mit den Breakpoints. Die Animation beginnt am Handy und wird breiter.</p>
@@ -43,7 +44,7 @@ import EineAppJedeBreite from '../../components/sota/EineAppJedeBreite.tsx';
       <tr><td><strong>waagrechtes Scrollen</strong></td><td>die Seite lässt sich seitlich verschieben – fast immer ein Fehler</td><td>„nichts darf waagrecht scrollen“</td></tr>
     </table>
   </div>
-  <Prompt label="Seite mobile first bauen" note="Statt der Teile in [Klammern] eure Seite und eure Reihenfolge.">Bau die Seite [z. B. die Startseite] mobile first. Am Handy (375 px) steht alles untereinander, in dieser Reihenfolge: [z. B. Suche, neueste Gegenstände, Button „Gegenstand anbieten“]. Ab 768 px zwei Spalten für die Gegenstände, ab 1024 px drei. Der Inhalt wird höchstens 1024 px breit und steht in der Mitte. Alle Buttons und Links sind mindestens 44 px hoch, nichts darf waagrecht scrollen, lange Wörter dürfen umbrechen. Prüf die Seite danach bei 375, 768 und 1280 px und zeig mir, was du gesehen hast.</Prompt>
+  <Prompt label="Seite mobile first bauen" note="Statt der Teile in [Klammern] eure Seite und eure Reihenfolge.">{MOBILE_FIRST_PROMPT}</Prompt>
 
   <h2 id="bruchstellen">Vier typische Bruchstellen</h2>
   <p>Was am Handy am häufigsten kaputtgeht – jeweils mit dem Satz, der es behebt.</p>
@@ -60,7 +61,7 @@ import EineAppJedeBreite from '../../components/sota/EineAppJedeBreite.tsx';
 
   <h2 id="innolab">Im Innolab: Figma-Frames sind Stichproben</h2>
   <p>Ein Figma-Entwurf hat meist zwei Rahmen, einen fürs Handy und einen für den Laptop. Gebaut wird aber jede Breite dazwischen. Was bei 900&nbsp;px passiert, steht in keinem der beiden – also muss es ins Issue, zusammen mit der Reihenfolge am Handy (<a href="/konzepte/design-system#uebergabe">was bei der Übergabe mitreist</a>).</p>
-  <Prompt label="Akzeptanzkriterien für die Breiten" note="Statt [Issue] die Kennung oder Nummer eures Issues.">Ergänze in [Issue] Akzeptanzkriterien für die Breiten: was bei 375 px untereinander steht und in welcher Reihenfolge, ab welcher Breite sich der Aufbau ändert und wie, und dass bei keiner Breite zwischen 320 und 1440 px etwas waagrecht scrollt. Frag mich bei der Reihenfolge, statt sie selbst festzulegen.</Prompt>
+  <Prompt label="Akzeptanzkriterien für die Breiten" note="Statt [Issue] die Kennung oder Nummer eures Issues.">{BREITEN_KRITERIEN_PROMPT}</Prompt>
 
   <Callout type="concept" title="Der eine Satz zum Mitnehmen">
     <p>Die App hat nicht zwei Größen, sondern jede – sagt Claude, was an welcher Breite passiert, und prüft es bei 375&nbsp;px, denn sehen kann es das nicht.</p>

@@ -43,10 +43,10 @@ describe('breite-steps', () => {
   });
 
   it('der Code markiert die Klasse, die gerade entscheidet', () => {
-    expect(aktiveKlassen(375)).toStrictEqual(['hidden', 'grid-cols-1']);
-    expect(aktiveKlassen(768)).toStrictEqual(['hidden', 'md:grid-cols-2']);
-    expect(aktiveKlassen(1024)).toStrictEqual(['lg:flex', 'lg:grid-cols-3', 'lg:hidden']);
-    expect(aktiveKlassen(1440)).toStrictEqual(['lg:flex', 'lg:grid-cols-3', 'lg:hidden', 'max-w-5xl']);
+    expect(aktiveKlassen(375)).toStrictEqual(['hidden', 'flex', 'grid-cols-1']);
+    expect(aktiveKlassen(768)).toStrictEqual(['hidden', 'flex', 'md:grid-cols-2']);
+    expect(aktiveKlassen(1024)).toStrictEqual(['lg:flex', 'lg:hidden', 'lg:grid-cols-3']);
+    expect(aktiveKlassen(1440)).toStrictEqual(['lg:flex', 'lg:hidden', 'lg:grid-cols-3', 'max-w-5xl']);
   });
 
   it('die Schritte gehen von 375 aus breiter – mobile first –, dann Fehler, Figma, freies Spiel', () => {

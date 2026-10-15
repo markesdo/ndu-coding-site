@@ -1,7 +1,7 @@
 // Szene „Eine App, jede Breite“ für /konzepte/responsive. Logik und Texte: breite-steps.ts.
 // Lineal und Rahmen rechnen in „simulierten Pixeln“: 1 px der App = 1/1440 der Szenenbreite (Container-Einheit cqw),
 // so passen 375 und 1440 px maßstabsgetreu nebeneinander. Schrift bleibt lesbar groß und wird nicht mitskaliert.
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { Menu, Search, TriangleAlert } from 'lucide-react';
 import Stage, { type StageNav } from './Stage';
 import { stageSteps } from './inline';
@@ -24,9 +24,10 @@ export default function EineAppJedeBreite() {
 
 function Szene({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
   const z = zustandAt(nav.index + 1);
-  const [frei, setFrei] = useState(z.breite);
-  // Wer den Schritt neu betritt, beginnt wieder bei der Breite des Schritts.
-  useEffect(() => setFrei(z.breite), [nav.seq]);
+  // Der Reglerwert gilt nur für den Besuch, in dem er gesetzt wurde: Wer den Schritt neu betritt, beginnt bei der
+  // Breite des Schritts – schon im ersten Rendern, sonst springt die Szene kurz auf die Breite des Schritts davor.
+  const [regler, setRegler] = useState({ seq: nav.seq, wert: z.breite });
+  const frei = regler.seq === nav.seq ? regler.wert : z.breite;
   const breite = z.frei ? frei : z.breite;
   const l = layoutBei(breite, { fehler: z.fehler });
   const aktiv = aktiveKlassen(breite);
@@ -48,7 +49,7 @@ function Szene({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
             max={MAX_BREITE}
             step={1}
             value={frei}
-            onChange={(e) => setFrei(Number(e.currentTarget.value))}
+            onChange={(e) => setRegler({ seq: nav.seq, wert: Number(e.currentTarget.value) })}
             aria-valuetext={`${frei} px, ${l.spalten} ${l.spalten === 1 ? 'Spalte' : 'Spalten'}`}
           />
         </label>
@@ -61,7 +62,7 @@ function Szene({ nav, reduced }: { nav: StageNav; reduced: boolean }) {
 function Lineal({ breite, figma }: { breite: number; figma: boolean }) {
   return (
     <div className="rb-lineal" aria-hidden="true">
-      <span className="rb-ohne" style={{ width: `${aufLineal(BREAKPOINTS[0].px)}%` }}>ohne Präfix: gilt überall</span>
+      <span className="rb-ohne" style={{ width: `${aufLineal(BREAKPOINTS[0].px)}%` }}>nur Klassen ohne Präfix</span>
       {BREAKPOINTS.map((b) => (
         <span key={b.name} className={`rb-marke${breite >= b.px ? ' rb-marke-aktiv' : ''}`} style={{ left: `${aufLineal(b.px)}%` }}>
           <b>{b.name}</b> <span className="rb-px">{b.px}</span>
@@ -149,8 +150,6 @@ function Code({ sichtbar, fehler, aktiv }: { sichtbar: boolean; fehler: boolean;
           </code>
         </li>
       ))}
-      {/* Platz für die Fehler-Zeile reservieren, damit die Szene beim Blättern nicht springt. */}
-      {!fehler && <li className="rb-versteckt" aria-hidden="true"><span className="rb-was">Hinweis</span><code>w-[600px]</code></li>}
     </ul>
   );
 }

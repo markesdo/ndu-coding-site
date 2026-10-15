@@ -500,7 +500,7 @@
   overflow-x: visible; overflow-y: clip; position: relative; font-size: .8em;
   transition: width .6s ease;
 }
-.rb-app-kopf, .rb-inhalt { margin-inline: calc(var(--rand) * var(--u)); padding-inline: max(.4em, calc(var(--innen) * var(--u))); transition: margin .6s ease; }
+.rb-app-kopf, .rb-inhalt { margin-inline: calc(var(--rand) * var(--u)); padding-inline: calc(var(--innen) * var(--u)); transition: margin .6s ease; }
 .rb-app-kopf { display: flex; justify-content: space-between; align-items: center; gap: .5em; height: 2.4em; border-bottom: 1px solid var(--app-border); }
 .rb-marke-app { font-weight: 700; }
 .rb-nav { display: flex; gap: 1em; font-size: .9em; white-space: nowrap; }
