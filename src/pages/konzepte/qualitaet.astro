@@ -92,7 +92,8 @@ import { HANDY_PROMPT } from '../../lib/handy-prompt';
     <li><strong>Continuous Deployment:</strong> Vercel baut für jeden Branch eine <strong>Preview-URL</strong> – ihr seht eine Änderung, bevor sie live geht – und deployt <code>main</code> automatisch.</li>
   </ul>
   <p>Drei Umgebungen: <em>Development</em> (euer Mac) → <em>Preview</em> (pro Branch) → <em>Production</em> (die echte URL).</p>
-  <Prompt>Richte GitHub Actions ein, sodass bei jedem Push und Pull Request Lint, Build und die Playwright-Tests laufen. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
+  <Prompt>Richte GitHub Actions ein, sodass bei jedem Push und Pull Request npm ci, npm run lint und npm run build laufen. Welche Umgebungsvariablen der Build braucht, liest du aus .env.example – .env.local liest du dafür nicht. Setz sie im Workflow auf harmlose Platzhalter, keine echten Werte, keine GitHub-Secrets. Die Playwright-Tests nimmst du nicht auf – sie brauchen die echte Datenbank. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
+  <p class="small">Die Tests laufen bei jedem Push erst, wenn GitHub eine eigene Test-Datenbank hat. Bis dahin startet ihr oder Claude sie vor jedem „fertig“.</p>
 
   <h2>5 · Betrieb – wissen, was passiert</h2>
   <ul>
