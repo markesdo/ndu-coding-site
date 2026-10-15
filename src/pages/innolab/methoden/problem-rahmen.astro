@@ -9,7 +9,16 @@ import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
-import { CircleAlert, Target, Users } from '@lucide/astro';
+import Baum from '../../../components/bild/Baum.astro';
+import { CircleAlert, Footprints, Hammer, Target, TrendingUp, Users } from '@lucide/astro';
+
+// Ein Problem ohne Lösung lässt mehrere Lösungen zu (Fehler 1).
+// Wurzel und Chance wie im roten Faden auf tag-1.astro.
+const loesungsraum = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder: [
+  { t: 'Die Schlange ist zu lang für den Zug', kinder: [
+    { t: 'Vorbestellen per App' }, { t: 'Zweite Kasse von 7 bis 8' }, { t: 'Kaffeewagen am Bahnsteig' },
+  ] },
+] };
 ---
 <Layout title="Problem-Rahmen & Produkt-Brief">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -46,11 +55,25 @@ import { CircleAlert, Target, Users } from '@lucide/astro';
   </Folie>
 
   <Folie>
+    <h2 id="loesungsraum">Ein Problem, mehrere Lösungen</h2>
+    <p class="folie-satz">Die starke Fassung lässt drei Lösungen zu – die schwache nur eine.</p>
+    <Baum knoten={loesungsraum} label="Ein Problem, drei mögliche Lösungen: App, zweite Kasse, Kaffeewagen" />
+    <p class="nur-handout">Die schwache Fassung lässt nur eine Lösung zu, die App. Die starke beschreibt das Problem und lässt Platz für drei – und für bessere, die erst in den Interviews auftauchen. Ein bekanntes Beispiel: Mieter*innen beschweren sich über einen langsamen Aufzug. Statt eines schnelleren Motors hängt man Spiegel auf – die Wartezeit fühlt sich kürzer an (Thomas Wedell-Wedellsborg, <a href="https://hbr.org/2017/01/are-you-solving-the-right-problems">„Are You Solving the Right Problems?“</a>, HBR 2017).</p>
+  </Folie>
+
+  <Folie>
     <h2 id="fehler-2">Fehler 2: Das Outcome zählt Output</h2>
     <p class="folie-satz">Gemessen wird, was Menschen tun – nicht, was ihr baut.</p>
     <div class="gegenueber">
       <Callout type="warn" title="Schwach – was ist daran schwach?"><p>„Die App hat 500 Downloads.“</p></Callout>
       <div data-schritt><Callout type="tip" title="Stark"><p>„Wir glauben, dass Pendler*innen morgens Kaffee bekommen, ohne ihren Zug zu riskieren. Wir merken es, wenn 4 von 5 Testpersonen an drei Tagen hintereinander mit Kaffee in ihren Zug steigen.“</p></Callout></div>
+    </div>
+    <div data-schritt>
+      <Fluss label="Wo schwach und stark liegen: Downloads sind Output, Kaffee im Zug ist Outcome" hervor={[1]} knoten={[
+        { t: 'Output', sub: '500 Downloads', icon: Hammer },
+        { t: 'Outcome', sub: '4 von 5 steigen mit Kaffee in den Zug', icon: Footprints },
+        { t: 'Impact', sub: 'mehr Umsatz am Morgen', icon: TrendingUp },
+      ]} />
     </div>
     <div class="nur-handout">
       <p>500 Downloads sagen nichts darüber, ob jemand seinen Zug erwischt. Der ganze Rahmen der Kaffeebar, schwach und stark:</p>
