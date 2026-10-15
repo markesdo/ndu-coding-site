@@ -1,0 +1,51 @@
+---
+// Vier Arten von Annahmen (Cagan: Wert, Bedienbarkeit, Machbarkeit, Wirtschaftlichkeit) als vier Kacheln um eine
+// Idee in der Mitte. Jede Art hat eine feste Farbe – dieselbe wie die Stickies auf dem Miro-Board.
+// arten[].beispiel: kurze Annahme der Kaffeebar; schritt: Kacheln werden im Beamer per → aufgedeckt.
+type Farbe = 'yellow' | 'blue' | 'green' | 'purple';
+const { label, mitte, arten, schritt = false } = Astro.props as {
+  label: string;
+  mitte: string;
+  arten: { t: string; frage: string; beispiel?: string; farbe: Farbe }[];
+  schritt?: boolean;
+};
+---
+<figure class="arten" aria-label={label}>
+  <ul class="arten-kacheln">
+    {arten.map((a) => (
+      <li class={`arten-kachel ${a.farbe}`} data-schritt={schritt ? '' : undefined}>
+        <strong>{a.t}</strong>
+        <span class="arten-frage">{a.frage}</span>
+        {a.beispiel && <span class="arten-beispiel">{a.beispiel}</span>}
+      </li>
+    ))}
+  </ul>
+  <span class="arten-mitte"><span class="sr-only">Idee: </span>{mitte}</span>
+</figure>
+
+<style>
+  .arten { position: relative; margin: 1.5rem 0; container: arten / inline-size; }
+  .arten-kacheln { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+  .arten-kachel { display: flex; flex-direction: column; gap: .3rem; padding: .8rem 1rem; border-radius: var(--radius); border-top: 5px solid var(--c); background: var(--c-soft); }
+  .arten-kachel.yellow { --c: var(--yellow); --c-soft: var(--yellow-soft); }
+  .arten-kachel.blue { --c: var(--blue); --c-soft: var(--blue-soft); }
+  .arten-kachel.green { --c: var(--green); --c-soft: var(--green-soft); }
+  .arten-kachel.purple { --c: var(--purple); --c-soft: var(--purple-soft); }
+  /* Die Kacheln rechts lehnen sich an die Mitte: rechtsbündig, damit die Idee frei in der Mitte steht. */
+  .arten-kachel:nth-child(even) { text-align: right; align-items: flex-end; }
+  .arten-kachel strong { font-size: 1rem; }
+  .arten-frage { font-size: .9rem; line-height: 1.35; }
+  .arten-beispiel { font-size: .85rem; line-height: 1.35; color: var(--muted); }
+  .arten-beispiel::before { content: 'Kaffeebar: '; font-weight: 600; }
+  .arten-mitte { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: .45rem .9rem; font-size: .9rem; font-weight: 700; background: var(--bg); border: 2px solid var(--fg); border-radius: 999px; white-space: nowrap; }
+  :global(html[data-beamer]) .arten-kachel strong { font-size: 1.25rem; }
+  :global(html[data-beamer]) .arten-frage { font-size: 1.1rem; }
+  :global(html[data-beamer]) .arten-beispiel { font-size: 1rem; }
+  /* Schmal: Kacheln untereinander, die Idee steht oben links darüber statt in der Mitte. Eine Container-Query wirkt
+     nur auf Nachfahren, nicht auf .arten selbst – darum Platz über den Kacheln und die Idee dorthin. */
+  @container arten (max-width: 30rem) {
+    .arten-kacheln { grid-template-columns: 1fr; gap: .6rem; margin-top: 3rem; }
+    .arten-kachel:nth-child(even) { text-align: left; align-items: flex-start; }
+    .arten-mitte { top: 0; left: 0; transform: none; }
+  }
+</style>
