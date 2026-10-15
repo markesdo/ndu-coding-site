@@ -20,7 +20,7 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
   <Folie>
     <h2 id="worum">Worum es geht</h2>
     <p class="folie-satz">Jede Entscheidung braucht einen Beleg – oder ein ehrliches „noch keiner“.</p>
-    <Fluss label="Entscheidungslog: geglaubt, geprüft, geändert" hervor={[2]} knoten={[
+    <Fluss label="Entscheidungslog: geglaubt, geprüft, geändert" hervor={[1]} knoten={[
       { t: 'Geglaubt', sub: 'Entscheidung und Grund, Beleg „noch keiner“', icon: Lightbulb },
       { t: 'Geprüft', sub: 'Interview, Synthese, Experiment oder Zahl', icon: SearchCheck },
       { t: 'Geändert', sub: 'eine neue Zeile, die alte bleibt stehen', icon: ListPlus },
@@ -35,14 +35,14 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
     <p class="folie-satz">Die alte Zeile bleibt stehen – so sieht man, was ihr gelernt habt.</p>
-    <div style="overflow-x:auto">
+    <div class="table-scroll">
       <table>
         <thead><tr><th>Datum</th><th>Entscheidung</th><th>Grund</th><th>Beleg</th></tr></thead>
         <tbody>
           <tr><td>22.10.</td><td>Zielgruppe: Pendler*innen nach Wien, 7:15–7:45</td><td>Inhaberin sieht morgens die längste Schlange</td><td><strong>noch keiner</strong></td></tr>
           <tr><td>22.10.</td><td>Kein Mittagsgeschäft</td><td>Mittags ist die Bar halb leer</td><td>Kassendaten September</td></tr>
           <tr data-schritt><td>05.11.</td><td>Zielgruppe erweitert um Pendler*innen nach Linz</td><td>3 von 5 Interviewten fahren Richtung Linz</td><td>I1, I3, I4</td></tr>
-          <tr data-schritt><td>05.11.</td><td>Vorbestellen vor der Ankunft verworfen</td><td>3 von 5 entscheiden erst beim Ankommen</td><td>T1</td></tr>
+          <tr data-schritt><td>05.11.</td><td>Vorbestellen vor der Ankunft verworfen</td><td>3 von 5 entscheiden erst beim Ankommen</td><td>T1 (I1-2, I3-1, I5-3)</td></tr>
         </tbody>
       </table>
     </div>
@@ -59,8 +59,8 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
     <h2 id="vorgehen">So geht ihr vor (15 min)</h2>
     <p class="folie-satz">Heute zwei bis drei Zeilen, danach jeden Kurstag fünf Minuten.</p>
     <ol class="gross">
-      <li data-schritt><strong>Zeilen schreiben:</strong> aus eurem Problem-Rahmen – Zielgruppe, was das Produkt nicht macht, das Outcome. Beleg meistens „noch keiner“. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Prüfen:</strong> erst die Prüfliste selbst, dann Claude – Vorlage und Prüfliste im Handout auf euren Laptops. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Zeilen schreiben</strong> in <code>docs/ENTSCHEIDUNGEN.md</code>: Datum — Entscheidung — Grund — Beleg. Aus eurem Problem-Rahmen: Zielgruppe, was das Produkt nicht macht, das Outcome. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Prüfen:</strong> erst die Prüfliste selbst, dann Claude – beides im Handout auf euren Laptops. <Timer minuten={5} /></li>
       <li data-schritt><strong>Ab jetzt am Ende jedes Kurstags:</strong> Was habt ihr entschieden oder verworfen? Je eine Zeile, dann prüft Claude, was ohne Beleg dasteht.</li>
     </ol>
   </Folie>
@@ -75,8 +75,8 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
 
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-    <p class="folie-satz">Was habt ihr heute entschieden, ohne es belegen zu können?</p>
-    <p>Genau das gehört in die Interviews bis Tag 2.</p>
+    <p class="folie-satz">Was steht in eurem Brief, das ihr noch nicht belegen könnt?</p>
+    <p>Genau das gehört in eure <a href="/innolab/methoden/interview">Interviews</a> bis Tag 2.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/problem-rahmen', t: 'Problem-Rahmen & Produkt-Brief' }} next={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} />
