@@ -75,6 +75,9 @@ html[data-beamer] h2[id], html[data-beamer] .shots > li { scroll-margin-top: cal
    proximity statt mandatory: Folien, die doch länger sind, bleiben erreichbar. */
 /* scroll-padding: Rastpunkte und scrollIntoView liegen unter der klebenden Kopfleiste, nicht dahinter. */
 html[data-beamer]:has(.folie) { scroll-snap-type: y proximity; scroll-padding-top: var(--topbar-h, 48px); }
+/* Kein Scroll-Anchoring: Deckt eine Folie etwas auf, rückt ihr mittiger Inhalt – der Browser würde mitscrollen,
+   und die Folie stünde nicht mehr unter der Kopfleiste (→ / T träfen dann die vorige Folie). */
+html[data-beamer]:has(.folie) { overflow-anchor: none; }
 /* Seitenkopf (Titel, Ablauf) ist auch ein Rastpunkt – sonst springt die Seite beim Laden auf die erste Folie. */
 html[data-beamer]:has(.folie) .content { scroll-snap-align: start; }
 /* scroll-padding deckt die Kopfleiste schon ab: Überschriften nicht ein zweites Mal um ihre Höhe versetzen. */
@@ -91,9 +94,6 @@ html[data-beamer] .timer { font-size: 1.2rem; }
 html[data-beamer] .folie-satz { font-size: 1.6rem; }
 /* Auf Folienseiten trägt die Folie ihren Titel selbst; die klebende „Wo bin ich“-Leiste würde ihn verdecken. */
 html[data-beamer]:has(.folie) .orient { display: none; }
-/* Baum am Beamer kompakter: breitere Knoten (weniger Zeilen), engere Abstände – vier Ebenen passen in 720p. */
-html[data-beamer] .baum-knoten { max-width: 17rem; padding: .3rem .6rem; font-size: .8rem; }
-html[data-beamer] .baum-knoten small { font-size: .65rem; }
 html[data-beamer] .content ul.gross > li { font-size: 1.25rem; }
 
 @media (max-width: 900px) {
