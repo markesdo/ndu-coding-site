@@ -5,6 +5,10 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import Fluss from '../../../components/Fluss.astro';
+import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
 ---
 <Layout title="Entscheidungslog">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -13,33 +17,67 @@ import FooterNav from '../../../components/FooterNav.astro';
   <Orientierung seite="innolab/methoden/entscheidungslog" leiste={false} />
   <MethodenKarte slug="entscheidungslog" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Im Coding-Kurs hat Claude in <code>docs/ENTSCHEIDUNGEN.md</code> festgehalten, was im Projekt gilt: Stack, Sprache, Regeln. Im Innolab kommen <strong>Produktentscheidungen</strong> dazu – und die brauchen einen Beleg. Das Format bekommt dafür eine vierte Spalte:</p>
-  <p><strong>Datum — Entscheidung — Grund — Beleg</strong></p>
-  <p>Der Beleg ist ein Interview (I3), ein Thema aus der Synthese (T2), ein Experiment (E1), eine Zahl – oder ehrlich „noch keiner“. Das ist kein Makel: Eine Entscheidung ohne Beleg ist eine Annahme, und genau die testet ihr als Nächstes. Widerlegt ein Test etwas, löscht ihr die alte Zeile nicht, sondern schreibt eine neue darunter. So sieht man am Ende, was ihr gelernt habt – das ist der Kern eurer Präsentation.</p>
+  <Folie>
+    <h2 id="worum">Worum es geht</h2>
+    <p class="folie-satz">Jede Entscheidung braucht einen Beleg – oder ein ehrliches „noch keiner“.</p>
+    <Fluss label="Entscheidungslog: geglaubt, geprüft, geändert" hervor={[2]} knoten={[
+      { t: 'Geglaubt', sub: 'Entscheidung und Grund, Beleg „noch keiner“', icon: Lightbulb },
+      { t: 'Geprüft', sub: 'Interview, Synthese, Experiment oder Zahl', icon: SearchCheck },
+      { t: 'Geändert', sub: 'eine neue Zeile, die alte bleibt stehen', icon: ListPlus },
+    ]} />
+    <p>Eine Zeile: <strong>Datum — Entscheidung — Grund — Beleg</strong></p>
+    <div class="nur-handout">
+      <p>Im Coding-Kurs hat Claude in <code>docs/ENTSCHEIDUNGEN.md</code> festgehalten, was im Projekt gilt: Stack, Sprache, Regeln. Im Innolab kommen <strong>Produktentscheidungen</strong> dazu, und die brauchen einen Beleg. Deshalb bekommt das Format eine vierte Spalte.</p>
+      <p>Der Beleg ist ein Interview (I3), ein Thema aus der Synthese (T2), ein Experiment (E1) oder eine Zahl. „Noch keiner“ ist kein Makel: Eine Entscheidung ohne Beleg ist eine Annahme, und genau die testet ihr als Nächstes. Widerlegt ein Test etwas, löscht ihr die alte Zeile nicht, sondern schreibt eine neue darunter. So sieht man am Ende, was ihr gelernt habt. Das ist der Kern eurer Präsentation.</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <Prompt label="Beispiel · docs/ENTSCHEIDUNGEN.md">- 2026-10-22 — Zielgruppe: Pendler*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
+    <p class="folie-satz">Die alte Zeile bleibt stehen – so sieht man, was ihr gelernt habt.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Datum</th><th>Entscheidung</th><th>Grund</th><th>Beleg</th></tr></thead>
+        <tbody>
+          <tr><td>22.10.</td><td>Zielgruppe: Pendler*innen nach Wien, 7:15–7:45</td><td>Inhaberin sieht morgens die längste Schlange</td><td><strong>noch keiner</strong></td></tr>
+          <tr><td>22.10.</td><td>Kein Mittagsgeschäft</td><td>Mittags ist die Bar halb leer</td><td>Kassendaten September</td></tr>
+          <tr data-schritt><td>05.11.</td><td>Zielgruppe erweitert um Pendler*innen nach Linz</td><td>3 von 5 Interviewten fahren Richtung Linz</td><td>I1, I3, I4</td></tr>
+          <tr data-schritt><td>05.11.</td><td>Vorbestellen vor der Ankunft verworfen</td><td>3 von 5 entscheiden erst beim Ankommen</td><td>T1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nur-handout">
+      <p>Die dritte Zeile ersetzt die erste nicht, sie steht darunter. Wer das Log liest, sieht: Am Anfang war die Zielgruppe geraten, nach den Interviews war sie belegt. In der Datei sieht das so aus:</p>
+      <Prompt label="Beispiel · docs/ENTSCHEIDUNGEN.md">- 2026-10-22 — Zielgruppe: Pendler*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner
 - 2026-10-22 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: Kassendaten September
 - 2026-11-05 — Zielgruppe erweitert um Pendler*innen nach Linz — 3 von 5 Interviewten fahren Richtung Linz — Beleg: I1, I3, I4
 - 2026-11-05 — Vorbestellen vor der Ankunft verworfen — 3 von 5 entscheiden erst beim Ankommen — Beleg: T1 (I1-2, I3-1, I5-3)</Prompt>
-  <p>Die dritte Zeile ersetzt die erste nicht, sie steht darunter. Wer das Log liest, sieht: Am Anfang war die Zielgruppe geraten, nach den Interviews war sie belegt.</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (15 min heute, danach jeden Tag 5 min)</h2>
-  <ol>
-    <li>Heute: zwei bis drei Zeilen aus eurem Problem-Rahmen – Zielgruppe, was das Produkt nicht macht, das Outcome. Beleg meistens „noch keiner“.</li>
-    <li>Am Ende jedes Kurstags: Was habt ihr heute entschieden oder verworfen? Je eine Zeile.</li>
-    <li>Einmal pro Tag Claude prüfen lassen, welche Entscheidung ohne Beleg dasteht.</li>
-  </ol>
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (15 min)</h2>
+    <p class="folie-satz">Heute zwei bis drei Zeilen, danach jeden Kurstag fünf Minuten.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Zeilen schreiben:</strong> aus eurem Problem-Rahmen – Zielgruppe, was das Produkt nicht macht, das Outcome. Beleg meistens „noch keiner“. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Prüfen:</strong> erst die Prüfliste selbst, dann Claude – Vorlage und Prüfliste im Handout auf euren Laptops. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Ab jetzt am Ende jedes Kurstags:</strong> Was habt ihr entschieden oder verworfen? Je eine Zeile, dann prüft Claude, was ohne Beleg dasteht.</li>
+    </ol>
+  </Folie>
 
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · Zeile in docs/ENTSCHEIDUNGEN.md">- [JJJJ-MM-TT] — [Entscheidung] — [Grund] — Beleg: [Interview/Test/Zahl oder „noch keiner“]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="entscheidungslog" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Welche Entscheidung in eurem Brief habt ihr heute getroffen, ohne sie belegen zu können? Genau die gehört in die Interviews bis Tag 2.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Was habt ihr heute entschieden, ohne es belegen zu können?</p>
+    <p>Genau das gehört in die Interviews bis Tag 2.</p>
+  </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/problem-rahmen', t: 'Problem-Rahmen & Produkt-Brief' }} next={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} />
 </Layout>
