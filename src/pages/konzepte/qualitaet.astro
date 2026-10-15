@@ -112,9 +112,11 @@ import { HANDY_PROMPT } from '../../lib/handy-prompt';
   <ul>
     <li><strong>Fehler-Tracking</strong> (Sentry): Tritt um 23 Uhr bei jemandem ein Fehler auf, wisst ihr es am Morgen – mit Stacktrace, den ihr Claude geben könnt.</li>
     <li><strong>Logs</strong> auf Vercel.</li>
-    <li><strong>Performance</strong>: Lighthouse-Score in Chrome (Rechtsklick → Untersuchen → Lighthouse). Unter 90 lasst ihr Claude optimieren.</li>
+    <li><strong>Performance</strong>: Lighthouse-Score in Chrome (Rechtsklick → Untersuchen → Lighthouse). Unter 90 lasst ihr Claude optimieren – mit dem Prompt unten.</li>
     <li><strong>Barrierefreiheit</strong>: Tastaturbedienung, Kontraste, Alt-Texte. Lighthouse misst auch das – in der EU seit 2025 für viele Angebote Pflicht.</li>
   </ul>
+  <Prompt label="Lighthouse: messen und verbessern" note="Statt der Klammer eure Live-Adresse.">Miss meine Live-App mit Lighthouse: Führ npx lighthouse [Live-Adresse] dreimal im Mobil-Modus aus, nur Performance und Barrierefreiheit. Speichere die Berichte im Ordner lighthouse/ (trag ihn in .gitignore ein). Nenn mir den mittleren Wert pro Kategorie und, falls einer unter 90 liegt, die drei Punkte, die am meisten bringen – in einfachen Worten. Warte auf mein Okay. Dann behebe sie auf einem eigenen Branch, push und miss die Vorschau-Adresse von Vercel genauso. Höchstens drei Runden.</Prompt>
+  <p class="small">Gemessen wird die Live-Adresse, weil nur dort alles so ausgeliefert wird wie für eure Nutzer*innen; der Wert schwankt pro Lauf um einige Punkte, deshalb dreimal. Seiten hinter der Anmeldung misst der Prompt nicht, und Lighthouse findet nur einen Teil der Barrieren – ob alles mit der Tab-Taste bedienbar ist, prüft ihr selbst.</p>
 
   <h2>6 · Recht & Daten</h2>
   <p>Sobald echte Menschen sich registrieren:</p>
