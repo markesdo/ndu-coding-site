@@ -21,7 +21,7 @@ const coding = [
   { n: 2, datum: '2026-10-09', t: 'Bauen wie ein Profi' },
   { n: 3, datum: '2026-10-15', t: 'Shippen & selbständig werden' },
 ].map((t) => ({ ...t, d: datumKurz(t.datum) }));
-const innolab = TAGE.map((t) => ({ n: t.n, d: datumKurz(t.datum), t: t.titel }));
+const innolab = TAGE.map((t) => ({ n: t.n, d: t.datum ? datumKurz(t.datum) : 'Termin folgt', t: t.titel }));
 // Zur Bauzeit entschieden; das Skript unten schaltet zur Laufzeit frei, falls die Seite vor dem Stichtag gebaut wurde.
 const offen = innolabOffen(new Date());
 ---
