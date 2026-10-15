@@ -1,0 +1,21 @@
+---
+// Opportunity Solution Tree (Torres): Outcome → Chancen → Lösungen → Experimente, als Baum mit Linien.
+// knoten: Wurzel mit kinder (beliebig tief, die Ebene ergibt sich aus der Tiefe). hervor: Ebene (0 = Outcome),
+// die farbig bleibt – die übrigen treten zurück („heute arbeitet ihr hier“).
+// Die Äste baut BaumAst.astro (rekursiv, mit ihren Stilen). Tiefer als vier Ebenen bleibt Label und Farbe „Experiment“.
+import BaumAst from './BaumAst.astro';
+export interface Knoten { t: string; kinder?: Knoten[] }
+const { knoten, label, hervor } = Astro.props as { knoten: Knoten; label: string; hervor?: number };
+if (hervor !== undefined && ![0, 1, 2, 3].includes(hervor)) throw new Error(`Baum: hervor muss 0–3 sein (0 = Outcome), war ${hervor}`);
+---
+<figure class="baum" aria-label={label}>
+  <ul class="baum-wurzel"><BaumAst knoten={knoten} hervor={hervor} /></ul>
+</figure>
+
+<style>
+  /* Breite Bäume scrollen waagrecht. max-content + min-width: schmal mittig, breit ab dem linken Rand – zentriert ragte
+     ein überbreiter Baum links aus dem Scrollbereich und wäre dort nicht erreichbar. */
+  .baum { margin: 1.5rem 0; overflow-x: auto; padding-bottom: .5rem; }
+  .baum-wurzel { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; width: max-content; min-width: 100%; }
+  .baum-wurzel > :global(.baum-ast) { padding-top: 0; }
+</style>
