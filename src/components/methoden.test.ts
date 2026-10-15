@@ -129,7 +129,7 @@ describe('methoden', () => {
     expect(seiten.length).toBeGreaterThanOrEqual(6);
     for (const { t, url } of seiten) {
       const kurstage = [...readFileSync(url, 'utf8').matchAll(/data-kurstag="([^"]+)"/g)].map((m) => m[1]);
-      expect(kurstage, `tag-${t.n}`).toStrictEqual([t.datum]);
+      expect(kurstage, `tag-${t.n}`).toStrictEqual(t.datum ? [t.datum] : []);
     }
   });
 });

@@ -16,7 +16,7 @@ const datumKurz = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateStri
   <div class="days">
     {TAGE.map((t) => {
       const href = tagHref(t.n);
-      const inhalt = <><div class="n">Tag {t.n} · {datumKurz(t.datum)}</div><h3>{t.titel}</h3><p>{t.text}</p></>;
+      const inhalt = <><div class="n">Tag {t.n} · {t.datum ? datumKurz(t.datum) : 'Termin folgt'}</div><h3>{t.titel}</h3><p>{t.text}</p></>;
       return href ? <a class="day" href={href}>{inhalt}</a> : <div class="day">{inhalt}</div>;
     })}
   </div>
