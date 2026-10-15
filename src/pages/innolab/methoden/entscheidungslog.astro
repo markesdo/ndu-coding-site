@@ -8,6 +8,7 @@ import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
+import Skala from '../../../components/bild/Skala.astro';
 import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
 ---
 <Layout title="Entscheidungslog">
@@ -53,6 +54,25 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
 - 2026-11-05 — Zielgruppe erweitert um Pendler*innen nach Linz — 3 von 5 Interviewten fahren Richtung Linz — Beleg: I1, I3, I4
 - 2026-11-05 — Vorbestellen vor der Ankunft verworfen — 3 von 5 entscheiden erst beim Ankommen — Beleg: T1 (I1-2, I3-1, I5-3)</Prompt>
     </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beleg-staerke">Wie stark ist euer Beleg?</h2>
+    <p class="folie-satz">Was Menschen tun, wiegt mehr als was sie sagen.</p>
+    <Skala label="Belege der Kaffeebar von sagen bis tun: noch keiner, gesagt, erzählt, getan" links="sagen" rechts="tun"
+      stufen={[
+        { t: 'noch keiner', sub: 'eine Annahme' },
+        { t: 'gesagt', sub: 'Meinung, Versprechen' },
+        { t: 'erzählt', sub: 'das letzte konkrete Mal' },
+        { t: 'getan', sub: 'Zahl, Experiment' },
+      ]}
+      punkte={[
+        { t: 'Zielgruppe Wien', stufe: 0 },
+        { t: 'Linz: I1, I3, I4', stufe: 2 },
+        { t: 'Vorbestellen verworfen: T1', stufe: 2 },
+        { t: 'Kein Mittagsgeschäft: Kassendaten', stufe: 3, hervor: true },
+      ]} />
+    <p class="nur-handout">Dieselbe Richtung wie die <a href="/innolab/methoden/interview#antworten">Skala der Antworten im Interview</a>, mit „noch keiner“ davor. „Gesagt“ ist kaum besser als „noch keiner“: „Würde ich nutzen“ hört ihr von fast allen. Nach Itamar Gilad, <a href="https://itamargilad.com/the-tool-that-will-help-you-choose-better-product-ideas/">Confidence Meter</a>, und David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019).</p>
   </Folie>
 
   <Folie>
