@@ -81,13 +81,20 @@ html[data-beamer]:has(.folie) .content { scroll-snap-align: start; }
 html[data-beamer]:has(.folie) h2[id] { scroll-margin-top: 0; }
 html[data-beamer] .folie {
   min-height: calc(100vh - var(--topbar-h, 48px)); scroll-snap-align: start;
-  display: flex; flex-direction: column; justify-content: center; padding: 1.5rem 0; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: center; padding: .75rem 0; box-sizing: border-box;
 }
 html[data-beamer] .content > .inner > .folie > h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
 html[data-beamer] .folie + .folie { border-top: 1px solid var(--border); }
 html[data-beamer] .nur-handout { display: none; }
 html[data-beamer] [data-schritt]:not(.gezeigt) { visibility: hidden; }
 html[data-beamer] .timer { font-size: 1.2rem; }
+html[data-beamer] .folie-satz { font-size: 1.6rem; }
+/* Auf Folienseiten trägt die Folie ihren Titel selbst; die klebende „Wo bin ich“-Leiste würde ihn verdecken. */
+html[data-beamer]:has(.folie) .orient { display: none; }
+/* Baum am Beamer kompakter: breitere Knoten (weniger Zeilen), engere Abstände – vier Ebenen passen in 720p. */
+html[data-beamer] .baum-knoten { max-width: 17rem; padding: .3rem .6rem; font-size: .8rem; }
+html[data-beamer] .baum-knoten small { font-size: .65rem; }
+html[data-beamer] .content ul.gross > li { font-size: 1.25rem; }
 
 @media (max-width: 900px) {
   html[data-beamer] .content { padding: 1.25rem 16px 4rem; }

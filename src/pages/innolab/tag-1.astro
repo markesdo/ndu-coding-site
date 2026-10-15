@@ -4,8 +4,19 @@ import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
 import Aufloesung from '../../components/Aufloesung.astro';
+import Folie from '../../components/Folie.astro';
+import Timer from '../../components/Timer.astro';
+import Fluss from '../../components/Fluss.astro';
+import Baum from '../../components/bild/Baum.astro';
+import { Hammer, Footprints, TrendingUp } from '@lucide/astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
+
+// Roter Faden des Innolab am Beispiel der Kaffeebar: heute entsteht die oberste Ebene.
+const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder: [
+  { t: 'Die Schlange ist zu lang für den Zug', kinder: [{ t: 'Vorbestellen per App', kinder: [{ t: 'Fake-Door auf der Landingpage' }] }] },
+  { t: 'Unklar, ob der Kaffee rechtzeitig fertig ist', kinder: [{ t: 'Abholzeit live anzeigen' }] },
+] };
 ---
 <Layout title="Tag 1 · Rahmen & Verstehen">
   <span class="eyebrow">Innolab · Tag 1 · Freitag, 16. Oktober 2026 · 09:00–16:45</span>
@@ -30,53 +41,98 @@ import FooterNav from '../../components/FooterNav.astro';
   </div>
 
   <hr />
-  <h2 id="kickoff">Kick-off</h2>
-  <p>Im Innolab entwickelt ihr ein eigenes digitales Produkt – neu oder als Weiterführung eures Projekts aus dem Coding-Kurs. Ihr arbeitet als <strong>ein Team mit drei Produkten</strong>: Jede*r ist Product Owner des eigenen Produkts und arbeitet in den anderen beiden mit. Die Methoden lernt ihr am Beispiel einer Kaffeebar am Bahnhof, die alle kennen, und wendet sie sofort auf euer Produkt an.</p>
-  <p>Die <a href="/innolab/methoden">Toolbox</a> zeigt alle Methoden mit der Frage, die sie beantworten, und dem Artefakt, das dabei entsteht. Bewertung: Prototyp 70 %, Präsentation 30 %.</p>
+  <Folie>
+    <h2 id="kickoff">Kick-off</h2>
+    <p class="folie-satz">Ihr seid ein Team mit drei Produkten.</p>
+    <p>Jede*r ist Product Owner des eigenen Produkts und arbeitet in den anderen beiden mit. Bewertung: Prototyp 70 %, Präsentation 30 %.</p>
+    <p class="nur-handout">Im Innolab entwickelt ihr ein eigenes digitales Produkt – neu oder als Weiterführung eures Projekts aus dem Coding-Kurs. Die Methoden lernt ihr am Beispiel einer Kaffeebar am Bahnhof, die alle kennen, und wendet sie sofort auf euer Produkt an. Die <a href="/innolab/methoden">Toolbox</a> zeigt alle Methoden mit der Frage, die sie beantworten, und dem Artefakt, das dabei entsteht.</p>
+  </Folie>
 
-  <h2 id="toast">Warm-up · Wie macht man Toast?</h2>
-  <p>Ein Blatt, ein dicker Stift, drei Minuten. Zeichnet, wie man Toast macht – allein, ohne zu reden, möglichst ohne Wörter. Es gibt kein Richtig oder Falsch; zeichnet es so, wie ihr es versteht.</p>
-  <Aufloesung ab="2026-10-22T10:10">
-    <h3>Auflösung</h3>
-    <p>Jede Zeichnung besteht aus <strong>Knoten</strong> – Dinge, Schritte, Personen – und <strong>Verbindungen</strong>, die zeigen, was wohin führt. Keine eurer Zeichnungen ist falsch, aber keine gleicht der anderen: Jede*r trägt ein eigenes Modell im Kopf. Solange diese Modelle unsichtbar bleiben, redet ein Team aneinander vorbei. Werden sie sichtbar und lassen sich Knoten verschieben, ergänzen und streichen, entsteht ein gemeinsames Bild, das alle verstehen. Deshalb arbeiten wir in diesem Kurs mit Karten, Canvas und Stickies: ein Knoten pro Sticky.</p>
-    <p><strong>Übertrag:</strong> Zeichnet jetzt genauso, wie eure Zielgruppe ihr Problem heute löst – allein, ohne zu reden, ein Knoten pro Sticky. Dieses Bild nehmt ihr um 11:00 in den Problem-Rahmen mit. Jede Verbindung mit „?“ ist ein Kandidat für die Annahmen-Map am Nachmittag.</p>
-    <p class="small muted">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (<a href="https://www.ted.com/talks/tom_wujec_got_a_wicked_problem_first_tell_me_how_you_make_toast">TED 2013</a>), <a href="https://www.drawtoast.com/">drawtoast.com</a>.</p>
-  </Aufloesung>
+  <Folie>
+    <h2 id="faden">Der rote Faden</h2>
+    <p class="folie-satz">Heute legt ihr das Ziel fest – alles andere hängt daran.</p>
+    <Baum knoten={faden} hervor={0} label="Opportunity Solution Tree der Kaffeebar: Outcome, Chancen, Lösungen, Experimente; heute das Outcome" />
+    <p class="small muted">Opportunity Solution Tree nach Teresa Torres, „Continuous Discovery Habits“ (2021).</p>
+  </Folie>
 
-  <h2 id="outcome">Outcome statt Output</h2>
-  <p><strong>Output</strong> ist, was ihr baut: Funktionen, Seiten, Releases. <strong>Outcome</strong> ist, was Menschen danach anders machen – die Pendlerin steigt mit Kaffee in den Zug. <strong>Impact</strong> ist, was das für das Unternehmen bedeutet – mehr Umsatz am Morgen. Gute Teams versuchen, mit möglichst wenig Output möglichst viel Outcome zu erreichen.</p>
-  <p>Daraus folgt, was ein <strong>MVP</strong> ist: nicht die schlechteste Version, die man gerade noch veröffentlichen kann, sondern das Kleinste, mit dem ihr lernt, ob eine Annahme stimmt – oder das Kleinste, das das gewünschte Outcome erreicht.</p>
-  <Callout type="concept" title="Wie Design Thinking schiefgeht">
-    <ul>
-      <li>Ohne klaren Rahmen starten – dann weiß niemand, für wen eine Lösung gut sein soll.</li>
-      <li>Nicht mit Menschen reden, weil die eigene Idee so überzeugend ist.</li>
-      <li>Viele Probleme für viele Menschen auf einmal lösen wollen.</li>
-      <li>Nur eine Lösung betrachten, weil die erste schon gut klingt.</li>
-      <li>Einen schönen Prototyp bauen, den niemand wirklich benutzen kann – „sieht toll aus“ ist kein Test.</li>
+  <Folie>
+    <h2 id="toast">Warm-up · Wie macht man Toast?</h2>
+    <p class="folie-satz">Zeichnet, wie man Toast macht.</p>
+    <p>Ein Blatt, ein dicker Stift. Allein, ohne zu reden, möglichst ohne Wörter. <Timer minuten={3} /></p>
+    <Aufloesung ab="2026-10-22T10:10">
+      <h3>Auflösung</h3>
+      <p class="folie-satz">Jede*r hat ein anderes Modell im Kopf.</p>
+      <p>Jede Zeichnung besteht aus <strong>Knoten</strong> (Dinge, Schritte, Personen) und <strong>Verbindungen</strong>. Erst wenn Modelle sichtbar sind, wird daraus ein gemeinsames Bild – deshalb arbeiten wir mit Stickies: ein Knoten pro Sticky.</p>
+      <p><strong>Übertrag:</strong> Zeichnet jetzt genauso, wie eure Zielgruppe ihr Problem heute löst – allein, ohne zu reden, ein Knoten pro Sticky. <Timer minuten={6} /></p>
+      <p class="nur-handout">Dieses Bild nehmt ihr in den Problem-Rahmen mit. Jede Verbindung, bei der ihr unsicher seid, bekommt ein „?“ – das sind Kandidaten für die Annahmen-Map am Nachmittag.</p>
+      <p class="small muted">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (<a href="https://www.ted.com/talks/tom_wujec_got_a_wicked_problem_first_tell_me_how_you_make_toast">TED 2013</a>), <a href="https://www.drawtoast.com/">drawtoast.com</a>.</p>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="outcome">Outcome statt Output</h2>
+    <p class="folie-satz">Gute Teams erreichen mit wenig Output viel Outcome.</p>
+    <Fluss label="Output, Outcome, Impact am Beispiel der Kaffeebar" hervor={[1]} knoten={[
+      { t: 'Output', sub: 'Was ihr baut:<br>Vorbestellen per App', icon: Hammer },
+      { t: 'Outcome', sub: 'Was Menschen anders machen:<br>Die Pendlerin steigt mit Kaffee in den Zug', icon: Footprints },
+      { t: 'Impact', sub: 'Was es dem Unternehmen bringt:<br>mehr Umsatz am Morgen', icon: TrendingUp },
+    ]} />
+    <p class="nur-handout"><strong>Output</strong> ist, was ihr baut: Funktionen, Seiten, Releases. <strong>Outcome</strong> ist, was Menschen danach anders machen. <strong>Impact</strong> ist, was das für das Unternehmen bedeutet. Gemessen wird am Outcome – eine fertige Funktion, die niemand anders benutzt, ist kein Erfolg.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="mvp">Was ein MVP ist</h2>
+    <p class="folie-satz">Ein MVP ist das Kleinste, mit dem ihr etwas lernt.</p>
+    <div class="gegenueber">
+      <Callout type="warn" title="Nicht">
+        <p>Die schlechteste Version, die man gerade noch veröffentlichen kann.</p>
+      </Callout>
+      <Callout type="tip" title="Sondern">
+        <p>Das Kleinste, mit dem ihr prüft, ob eine Annahme stimmt – oder das das gewünschte Outcome erreicht.</p>
+      </Callout>
+    </div>
+    <p class="small muted">Kaffeebar: Statt einer App zuerst ein Schild „Per WhatsApp vorbestellen“ an der Theke – kommt in einer Woche keine Bestellung, braucht es die App nicht.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="schiefgehen">Wie Design Thinking schiefgeht</h2>
+    <ul class="gross">
+      <li data-schritt>Ohne Rahmen starten – niemand weiß, für wen die Lösung gut sein soll.</li>
+      <li data-schritt>Nicht mit Menschen reden, weil die eigene Idee überzeugt.</li>
+      <li data-schritt>Viele Probleme für viele Menschen auf einmal lösen wollen.</li>
+      <li data-schritt>Nur eine Lösung betrachten, weil die erste gut klingt.</li>
+      <li data-schritt>„Sieht toll aus“ für einen Test halten.</li>
     </ul>
-  </Callout>
-  <p class="small muted">Nach Jeff Patton, User Story Mapping (O’Reilly 2014).</p>
+    <p class="small muted">Nach Jeff Patton, User Story Mapping (O’Reilly 2014).</p>
+  </Folie>
 
-  <h2 id="methoden">Die Methoden von heute</h2>
-  <ul>
-    <li><a href="/innolab/methoden/problem-rahmen">Problem-Rahmen & Produkt-Brief</a> – für wen, welches Problem, welches Outcome</li>
-    <li><a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a> – was ihr entscheidet, mit Beleg</li>
-    <li><a href="/innolab/methoden/interview">Jobs to be Done & Mom Test</a> – der Interviewleitfaden</li>
-    <li><a href="/innolab/methoden/annahmen">Annahmen-Map</a> – die riskanteste Annahme zuerst</li>
-  </ul>
+  <Folie>
+    <h2 id="methoden">Die Methoden von heute</h2>
+    <ul class="gross">
+      <li><a href="/innolab/methoden/problem-rahmen">Problem-Rahmen & Produkt-Brief</a> – für wen, welches Problem, welches Outcome</li>
+      <li><a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a> – was ihr entscheidet, mit Beleg</li>
+      <li><a href="/innolab/methoden/interview">Jobs to be Done & Mom Test</a> – der Interviewleitfaden</li>
+      <li><a href="/innolab/methoden/annahmen">Annahmen-Map</a> – die riskanteste Annahme zuerst</li>
+    </ul>
+  </Folie>
 
-  <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
-  <p>Fünf Interviews mit Menschen aus eurer Zielgruppe, je 20–30 Minuten, nach eurem Leitfaden. Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett.</p>
-  <Checklist id="il-tag1-hausaufgabe" items={[
-    'Fünf Personen aus der Zielgruppe gefunden (Tipp: am Ende jedes Interviews fragen, wen ihr noch fragen solltet)',
-    'Einwilligung zur Aufnahme eingeholt',
-    'Transkripte ohne Namen als <code>docs/interviews/I1.md</code> bis <code>I5.md</code> im Repo',
-    'Eine Zeile pro Überraschung in <code>docs/ENTSCHEIDUNGEN.md</code>',
-    'Committet und gepusht',
-  ]} />
-  <Callout type="info" title="Nur drei geschafft?">
-    <p>Bringt mit, was ihr habt. Unter drei Interviews wird die Auswertung an Tag 2 dünn – dann ergänzt ihr am Morgen mit Gesprächen im Haus.</p>
-  </Callout>
+  <Folie>
+    <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
+    <p class="folie-satz">Fünf echte Interviews mit eurer Zielgruppe.</p>
+    <p>Je 20–30 Minuten, nach eurem Leitfaden. Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett.</p>
+    <Checklist id="il-tag1-hausaufgabe" items={[
+      'Fünf Personen aus der Zielgruppe gefunden (Tipp: am Ende jedes Interviews fragen, wen ihr noch fragen solltet)',
+      'Einwilligung zur Aufnahme eingeholt',
+      'Transkripte ohne Namen als <code>docs/interviews/I1.md</code> bis <code>I5.md</code> im Repo',
+      'Eine Zeile pro Überraschung in <code>docs/ENTSCHEIDUNGEN.md</code>',
+      'Committet und gepusht',
+    ]} />
+    <div class="nur-handout">
+      <Callout type="info" title="Nur drei geschafft?">
+        <p>Bringt mit, was ihr habt. Unter drei Interviews wird die Auswertung an Tag 2 dünn – dann ergänzt ihr am Morgen mit Gesprächen im Haus.</p>
+      </Callout>
+    </div>
+  </Folie>
 
   <p>Weiter geht es mit den Transkripten an <a href="/innolab/tag-2">Tag 2</a>.</p>
 
