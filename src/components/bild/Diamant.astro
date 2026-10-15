@@ -4,6 +4,7 @@
 // phasen: genau vier, von links nach rechts; eintraege[]: kurze Sätze unter der Phase.
 // schritt: Einträge werden im Beamer per → aufgedeckt, von links nach rechts.
 // hervor: Index einer Phase, die farbig bleibt.
+import { phasenFlaeche, pruefeDiamant, RAUTEN } from './diamant';
 const { label, rauten = ['Das richtige Problem', 'Die richtige Lösung'], phasen, schritt = false, hervor } = Astro.props as {
   label: string;
   rauten?: [string, string];
@@ -11,29 +12,26 @@ const { label, rauten = ['Das richtige Problem', 'Die richtige Lösung'], phasen
   schritt?: boolean;
   hervor?: number;
 };
-if (phasen.length !== 4) throw new Error(`Diamant: genau vier Phasen, waren ${phasen.length}`);
-if (hervor !== undefined && ![0, 1, 2, 3].includes(hervor)) throw new Error(`Diamant: hervor muss 0–3 sein, war ${hervor}`);
+pruefeDiamant(phasen.length, hervor);
 ---
 <figure class="diamant" aria-label={label}>
   <div class="diamant-bild" aria-hidden="true">
     <svg viewBox="0 0 800 200" preserveAspectRatio="none">
-      <polygon class="raute" points="2,100 200,4 398,100 200,196" />
-      <polygon class="raute" points="402,100 600,4 798,100 600,196" />
-      {hervor !== undefined && (
-        <polygon class="raute-hervor" points={[
-          '2,100 200,4 200,196', '200,4 398,100 200,196', '402,100 600,4 600,196', '600,4 798,100 600,196',
-        ][hervor]} />
-      )}
+      {/* Erst die Flächen, dann die Hervorhebung, zuletzt die Umrisse – sonst färbt die Hervorhebung die Linie. */}
+      {RAUTEN.map((p) => <polygon class="raute-flaeche" points={p} />)}
+      {hervor !== undefined && <polygon class="raute-hervor" points={phasenFlaeche(hervor)} />}
+      {RAUTEN.map((p) => <polygon class="raute-linie" points={p} />)}
     </svg>
     <span class="diamant-raute">{rauten[0]}</span>
     <span class="diamant-raute">{rauten[1]}</span>
   </div>
+  <p class="sr-only">Erste Raute, {rauten[0]}: {phasen[0].t} und {phasen[1].t}. Zweite Raute, {rauten[1]}: {phasen[2].t} und {phasen[3].t}.</p>
   <ol class="diamant-phasen">
     {phasen.map((p, i) => (
       <li class:list={{ hervor: hervor === i }}>
         <strong>{p.t}</strong>
         {p.eintraege?.length ? (
-          <ul>{p.eintraege.map((e) => <li data-schritt={schritt ? '' : undefined}>{e}</li>)}</ul>
+          <ul class="diamant-eintraege">{p.eintraege.map((e) => <li data-schritt={schritt ? '' : undefined}>{e}</li>)}</ul>
         ) : null}
       </li>
     ))}
@@ -44,17 +42,21 @@ if (hervor !== undefined && ![0, 1, 2, 3].includes(hervor)) throw new Error(`Dia
   .diamant { margin: 1.5rem 0; container: diamant / inline-size; }
   .diamant-bild { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; height: 6.5rem; }
   .diamant-bild svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-  .raute { fill: var(--bg-2); stroke: var(--fg); stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .raute-flaeche { fill: var(--bg-2); }
+  .raute-linie { fill: none; stroke: var(--fg); stroke-width: 2; vector-effect: non-scaling-stroke; }
   .raute-hervor { fill: color-mix(in srgb, var(--accent) 18%, transparent); }
   .diamant-raute { position: relative; text-align: center; font-size: .85rem; font-weight: 600; color: var(--muted); padding: 0 18%; }
   .diamant-phasen { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; }
   .diamant-phasen > li { display: flex; flex-direction: column; gap: .4rem; text-align: center; }
   .diamant-phasen > li > strong { font-size: .95rem; }
   .diamant-phasen > li.hervor > strong { color: var(--accent-ink); }
-  .diamant-phasen ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .4rem; }
-  .diamant-phasen ul li { padding: .4rem .55rem; font-size: .85rem; line-height: 1.3; text-align: left; border-left: 3px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; }
+  .diamant-eintraege { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .4rem; }
+  .diamant-eintraege li { padding: .4rem .55rem; font-size: .85rem; line-height: 1.3; text-align: left; border-left: 3px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; }
   /* Am Beamer etwas größer: die Einträge sind die Aussage der Folie. */
-  :global(html[data-beamer]) .diamant-phasen ul li { font-size: 1rem; }
+  :global(html[data-beamer]) .diamant-eintraege li { font-size: 1.2rem; }
+  /* Dafür flachere Rauten, damit die Folie samt Quelle in 720p passt. */
+  :global(html[data-beamer]) .diamant { margin: 1rem 0; }
+  :global(html[data-beamer]) .diamant-bild { height: 5rem; }
   /* Zu schmal für vier Spalten: Phasen untereinander, die Rauten bleiben als Bild darüber. */
   @container diamant (max-width: 34rem) {
     .diamant-bild { height: 5rem; }
