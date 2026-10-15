@@ -6,6 +6,10 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import Fluss from '../../../components/Fluss.astro';
+import { CircleAlert, Target, Users } from '@lucide/astro';
 ---
 <Layout title="Problem-Rahmen & Produkt-Brief">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -14,38 +18,69 @@ import FooterNav from '../../../components/FooterNav.astro';
   <Orientierung seite="innolab/methoden/problem-rahmen" leiste={false} />
   <MethodenKarte slug="problem-rahmen" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Bevor ihr irgendetwas löst, legt ihr drei Dinge fest: <strong>wen</strong> ihr im Blick habt, <strong>welches Problem</strong> ihr seht und <strong>woran ihr merkt</strong>, dass sich für diese Menschen etwas verbessert hat. Das Letzte ist das <em>Outcome</em> – die Wurzel des Opportunity Solution Tree, an der alle weiteren Methoden hängen.</p>
-  <p>Der Brief ist derselbe wie im Coding-Kurs: <code>docs/PRODUKT.md</code>. Neu ist der Blick darauf. Alles darin ist eine <strong>Annahme</strong>, bis Interviews und Tests sie stützen. Deshalb bleibt Abschnitt 3 („das Produkt in einem Satz“) heute offen, und Abschnitt 5 (MVP) kommt erst an Tag 3 aus der Story Map. Wer heute schon die Lösung festschreibt, hört in den Interviews nur noch, was dazu passt.</p>
-  <Callout type="info" title="Ihr habt schon ein Produkt?">
-    <p>Dann überarbeitet ihr euren Brief, statt neu anzufangen: Abschnitte 1, 2, 4 und 6 schärfen, die Stand-Zeile aktualisieren. Was ihr dabei ändert, kommt als Zeile ins <a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>.</p>
-  </Callout>
+  <Folie>
+    <h2 id="worum">Worum es geht</h2>
+    <p class="folie-satz">Erst der Rahmen, dann die Lösung.</p>
+    <Fluss label="Problem-Rahmen in drei Fragen: für wen, welches Problem, woran ihr es merkt" hervor={[2]} knoten={[
+      { t: 'Für wen?', sub: 'eine konkrete Person in einer konkreten Situation', icon: Users },
+      { t: 'Welches Problem?', sub: 'was heute schiefgeht – ohne Lösung', icon: CircleAlert },
+      { t: 'Woran merkt ihr es?', sub: 'das Outcome: was Menschen danach anders tun', icon: Target },
+    ]} />
+    <p>Dazu zwei Fragen, die den Rahmen schärfen: <strong>Wie wird das Problem heute gelöst?</strong> Und <strong>was macht euer Produkt bewusst nicht?</strong></p>
+    <div class="nur-handout">
+      <p>Das Outcome ist die Wurzel des Opportunity Solution Tree, an der alle weiteren Methoden hängen. Der Brief ist derselbe wie im Coding-Kurs: <code>docs/PRODUKT.md</code>. Neu ist der Blick darauf. Alles darin ist eine <strong>Annahme</strong>, bis Interviews und Tests sie stützen. Deshalb bleibt Abschnitt 3 („das Produkt in einem Satz“) heute offen, und Abschnitt 5 (MVP) kommt erst an Tag 3 aus der Story Map. Wer heute schon die Lösung festschreibt, hört in den Interviews nur noch, was dazu passt.</p>
+      <Callout type="info" title="Ihr habt schon ein Produkt?">
+        <p>Dann überarbeitet ihr euren Brief, statt neu anzufangen: Abschnitte 1, 2, 4 und 6 schärfen, die Stand-Zeile aktualisieren. Was ihr dabei ändert, kommt als Zeile ins <a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>.</p>
+      </Callout>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <p>Eine (erfundene) Kaffeebar in der Halle des Hauptbahnhofs St. Pölten. Morgens ist sie voll, und die Inhaberin hat das Gefühl, Kundschaft zu verlieren. So sieht ihr Problem-Rahmen schwach und stark aus:</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th></th><th>Schwach</th><th>Stark</th></tr></thead>
-      <tbody>
-        <tr><th>Für wen?</th><td>Kaffeetrinker*innen</td><td>Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten</td></tr>
-        <tr><th>Problem</th><td>Pendler*innen brauchen eine App zum Vorbestellen.</td><td>Die Schlange ist morgens länger als die Zeit bis zur Abfahrt. Wer den Zug erreichen will, verzichtet auf Kaffee oder nimmt den Automaten.</td></tr>
-        <tr><th>Heute gelöst durch</th><td>–</td><td>Automat, Thermobecher von zu Hause, ganz verzichten, einen Zug später nehmen</td></tr>
-        <tr><th>Macht es NICHT</th><td>Alles, was mit Kaffee zu tun hat</td><td>Keine Lieferung an den Bahnsteig · kein Mittagsgeschäft · keine anderen Bahnhöfe</td></tr>
-        <tr><th>Outcome</th><td>Die App hat 500 Downloads.</td><td>Wir glauben, dass Pendler*innen morgens Kaffee bekommen, ohne ihren Zug zu riskieren. Wir merken es, wenn 4 von 5 Testpersonen an drei Tagen hintereinander mit Kaffee in ihren Zug steigen.</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Die schwache Spalte hat zwei typische Fehler: Im Problem steckt schon die Lösung („App zum Vorbestellen“), und das Outcome zählt einen <em>Output</em> (Downloads) statt einer Veränderung bei Menschen. 500 Downloads sagen nichts darüber, ob jemand seinen Zug erwischt.</p>
+  <Folie>
+    <h2 id="fehler-1">Fehler 1: Die Lösung steckt im Problem</h2>
+    <p class="folie-satz">Ein Problem ohne Lösung lässt Platz für bessere Ideen.</p>
+    <p class="small muted">Eine (erfundene) Kaffeebar in der Halle des Hauptbahnhofs St. Pölten: Morgens ist sie voll, die Inhaberin hat das Gefühl, Kundschaft zu verlieren.</p>
+    <div class="gegenueber">
+      <Callout type="warn" title="Schwach – was ist daran schwach?"><p>„Pendler*innen brauchen eine App zum Vorbestellen.“</p></Callout>
+      <div data-schritt><Callout type="tip" title="Stark"><p>„Die Schlange ist morgens länger als die Zeit bis zur Abfahrt. Wer den Zug erreichen will, verzichtet auf Kaffee oder nimmt den Automaten.“</p></Callout></div>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
-  <ol>
-    <li><strong>Allein, auf Papier (15 min):</strong> Für wen? Welches Problem? Wie wird es heute gelöst? Keine Lösung, kein Produktname.</li>
-    <li><strong>Outcome (10 min):</strong> „Wir glauben, dass … Wir merken es, wenn …“ – etwas, das Menschen tun und das ihr mit 3–5 Personen beobachten könnt.</li>
-    <li><strong>Dreierrunde (15 min):</strong> Jede*r liest vor. Die anderen fragen nur: „Woran würdest du das merken?“ und „Ist das schon eine Lösung?“</li>
-    <li><strong>Festhalten (10 min):</strong> In <code>docs/PRODUKT.md</code> eintragen, Vorlage unten.</li>
-    <li><strong>Prüfen (10 min):</strong> erst die Prüfliste selbst, dann Claude.</li>
-  </ol>
+  <Folie>
+    <h2 id="fehler-2">Fehler 2: Das Outcome zählt Output</h2>
+    <p class="folie-satz">Gemessen wird, was Menschen tun – nicht, was ihr baut.</p>
+    <div class="gegenueber">
+      <Callout type="warn" title="Schwach – was ist daran schwach?"><p>„Die App hat 500 Downloads.“</p></Callout>
+      <div data-schritt><Callout type="tip" title="Stark"><p>„Wir glauben, dass Pendler*innen morgens Kaffee bekommen, ohne ihren Zug zu riskieren. Wir merken es, wenn 4 von 5 Testpersonen an drei Tagen hintereinander mit Kaffee in ihren Zug steigen.“</p></Callout></div>
+    </div>
+    <div class="nur-handout">
+      <p>500 Downloads sagen nichts darüber, ob jemand seinen Zug erwischt. Der ganze Rahmen der Kaffeebar, schwach und stark:</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th></th><th>Schwach</th><th>Stark</th></tr></thead>
+          <tbody>
+            <tr><th>Für wen?</th><td>Kaffeetrinker*innen</td><td>Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten</td></tr>
+            <tr><th>Problem</th><td>Pendler*innen brauchen eine App zum Vorbestellen.</td><td>Die Schlange ist morgens länger als die Zeit bis zur Abfahrt. Wer den Zug erreichen will, verzichtet auf Kaffee oder nimmt den Automaten.</td></tr>
+            <tr><th>Heute gelöst durch</th><td>–</td><td>Automat, Thermobecher von zu Hause, ganz verzichten, einen Zug später nehmen</td></tr>
+            <tr><th>Macht es NICHT</th><td>Alles, was mit Kaffee zu tun hat</td><td>Keine Lieferung an den Bahnsteig · kein Mittagsgeschäft · keine anderen Bahnhöfe</td></tr>
+            <tr><th>Outcome</th><td>Die App hat 500 Downloads.</td><td>Wir glauben, dass Pendler*innen morgens Kaffee bekommen, ohne ihren Zug zu riskieren. Wir merken es, wenn 4 von 5 Testpersonen an drei Tagen hintereinander mit Kaffee in ihren Zug steigen.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+    <ol class="gross">
+      <li data-schritt><strong>Allein, auf Papier:</strong> Für wen? Welches Problem? Wie wird es heute gelöst? Was macht es nicht (drei Dinge)? Keine Lösung, kein Produktname. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Outcome:</strong> „Wir glauben, dass … Wir merken es, wenn …“ – etwas, das Menschen tun und das ihr mit 3–5 Personen beobachten könnt. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Dreierrunde:</strong> Jede*r liest vor. Die anderen fragen nur: „Woran würdest du das merken?“ und „Ist das schon eine Lösung?“ <Timer minuten={15} /></li>
+      <li data-schritt><strong>Festhalten:</strong> in <code>docs/PRODUKT.md</code> – Vorlage im Handout auf euren Laptops. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Prüfen:</strong> erst die Prüfliste selbst (Handout), dann Claude. <Timer minuten={10} /></li>
+    </ol>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <p>Die Abschnitte entsprechen eurem Brief aus dem Coding-Kurs. Kopiert die Vorlage in Claude Code mit dem Satz „Übernimm das in docs/PRODUKT.md, ohne Inhalte zu erfinden“ – oder tragt sie selbst ein.</p>
   <Prompt label="Vorlage · docs/PRODUKT.md">**Stand:** [Datum] — Problem-Rahmen, Innolab Tag 1
@@ -78,8 +113,13 @@ Wir merken es, wenn [beobachtbares Verhalten, mit 3–5 Menschen].
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="problem-rahmen" />
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Was ist bei euch die Schlange vor der Kaffeebar – der Moment, in dem für eure Zielgruppe heute etwas schiefgeht? Wenn ihr ihn nicht in einem Satz beschreiben könnt, ist das eine offene Frage für die Interviews. Schreibt sie in Abschnitt 7.</p>
+  </div>
+
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Was ist bei euch die Schlange vor der Kaffeebar?</p>
+    <p>Der Moment, in dem für eure Zielgruppe heute etwas schiefgeht. Geht er nicht in einen Satz, ist er eine offene Frage für die Interviews – Abschnitt 7.</p>
+  </Folie>
 
   <FooterNav prev={{ href: '/innolab/tag-1', t: 'Tag 1 · Rahmen & Verstehen' }} next={{ href: '/innolab/methoden/entscheidungslog', t: 'Entscheidungslog' }} />
 </Layout>

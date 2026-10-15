@@ -105,7 +105,10 @@ h2 { font-size: 1.4rem; line-height: 1.2; margin: 2.5rem 0 .75rem; }
 /* Nicht .compare: deren „schlecht“ nutzt --accent, im Innolab grün wie „gut“. Umbruch nach verfügbarer Breite statt
    Fensterbreite (die Seitenleiste zählt mit), wie bei Fluss. */
 .gegenueber { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 1.25rem; }
-.gegenueber > .callout { margin: 0; flex: 1 1 18rem; }
+.gegenueber > * { flex: 1 1 18rem; }
+/* Eine Seite darf in einem Wrapper stecken (z. B. data-schritt: erst „schwach“, dann „stark“ aufdecken). */
+.gegenueber .callout { margin: 0; }
+.gegenueber > :not(.callout) > .callout { height: 100%; box-sizing: border-box; }
 /* h3 deutlich über dem Fließtext, damit die Gliederung der Übungen trägt. */
 h3 { font-size: 1.2rem; line-height: 1.3; margin: var(--h3-oben, 2.25rem) 0 .6rem; }
 h2 + h3 { margin-top: .75rem; }
