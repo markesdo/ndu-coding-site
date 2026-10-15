@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
+import Aufloesung from '../../components/Aufloesung.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
@@ -14,8 +15,8 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-16">
-    <Block time="09:00–09:40" type="plenum" title="Kick-off" href="#kickoff">Wie das Innolab läuft, Bewertung, die Toolbox als Landkarte.</Block>
-    <Block time="09:40–10:10" type="uebung" title="Warm-up · Wie macht man Toast?" href="#toast">Fünf Minuten zeichnen, dann vergleichen.</Block>
+    <Block time="09:00–09:35" type="plenum" title="Kick-off" href="#kickoff">Wie das Innolab läuft, Bewertung, die Toolbox als Landkarte.</Block>
+    <Block time="09:35–10:10" type="uebung" title="Warm-up · Wie macht man Toast?" href="#toast">Zeichnen, vergleichen, übertragen.</Block>
     <Block time="10:10–10:50" type="konzept" title="Outcome statt Output" href="#outcome">Outcome, Output, MVP – und wie Design Thinking schiefgeht.</Block>
     <Block time="10:50–11:00" type="pause" title="Pause" />
     <Block time="11:00–12:00" type="uebung" title="Problem-Rahmen & Produkt-Brief" href="/innolab/methoden/problem-rahmen">Für wen, welches Problem, woran ihr es merkt.</Block>
@@ -34,13 +35,13 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Die <a href="/innolab/methoden">Toolbox</a> zeigt alle Methoden mit der Frage, die sie beantworten, und dem Artefakt, das dabei entsteht. Bewertung: Prototyp 70 %, Präsentation 30 %.</p>
 
   <h2 id="toast">Warm-up · Wie macht man Toast?</h2>
-  <ol>
-    <li><strong>5 min, allein, ohne Worte:</strong> Zeichnet auf ein Blatt, wie man Toast macht.</li>
-    <li><strong>Nebeneinanderlegen:</strong> Wer beginnt beim Brot, wer beim Toaster, wer beim Weizenfeld? Wer zeichnet zehn Schritte, wer drei? Wer endet mit Butter, wer mit dem Abwasch?</li>
-    <li><strong>Gemeinsam ein Bild:</strong> Aus allen Zeichnungen eine Abfolge legen, die alle unterschreiben.</li>
-  </ol>
-  <p>Jede*r hat ein anderes Bild im Kopf, und jedes ist richtig. Genau das passiert bei jedem Produkt: Bevor Bilder gemeinsam sichtbar sind, redet man aneinander vorbei. Deshalb arbeiten wir mit Karten, Canvas und Stickies – sie machen Denken sichtbar und vergleichbar.</p>
-  <p class="small muted">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (TED 2013).</p>
+  <p>Ein Blatt, ein dicker Stift, drei Minuten. Zeichnet, wie man Toast macht – allein, ohne zu reden, möglichst ohne Wörter. Es gibt kein Richtig oder Falsch; zeichnet es so, wie ihr es versteht.</p>
+  <Aufloesung ab="2026-10-16T10:10">
+    <h3>Auflösung</h3>
+    <p>Jede Zeichnung besteht aus <strong>Knoten</strong> – Dinge, Schritte, Personen – und <strong>Verbindungen</strong>, die zeigen, was wohin führt. Keine eurer Zeichnungen ist falsch, aber keine gleicht der anderen: Jede*r trägt ein eigenes Modell im Kopf. Solange diese Modelle unsichtbar bleiben, redet ein Team aneinander vorbei. Werden sie sichtbar und lassen sich Knoten verschieben, ergänzen und streichen, entsteht ein gemeinsames Bild, das alle verstehen. Deshalb arbeiten wir in diesem Kurs mit Karten, Canvas und Stickies: ein Knoten pro Sticky.</p>
+    <p><strong>Übertrag:</strong> Zeichnet jetzt genauso, wie eure Zielgruppe ihr Problem heute löst – allein, ohne zu reden, ein Knoten pro Sticky. Dieses Bild nehmt ihr um 11:00 in den Problem-Rahmen mit. Jede Verbindung mit „?“ ist ein Kandidat für die Annahmen-Map am Nachmittag.</p>
+    <p class="small muted">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (<a href="https://www.ted.com/talks/tom_wujec_got_a_wicked_problem_first_tell_me_how_you_make_toast">TED 2013</a>), <a href="https://www.drawtoast.com/">drawtoast.com</a>.</p>
+  </Aufloesung>
 
   <h2 id="outcome">Outcome statt Output</h2>
   <p><strong>Output</strong> ist, was ihr baut: Funktionen, Seiten, Releases. <strong>Outcome</strong> ist, was Menschen danach anders machen – die Pendlerin steigt mit Kaffee in den Zug. <strong>Impact</strong> ist, was das für das Unternehmen bedeutet – mehr Umsatz am Morgen. Gute Teams versuchen, mit möglichst wenig Output möglichst viel Outcome zu erreichen.</p>

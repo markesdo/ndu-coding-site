@@ -1,0 +1,36 @@
+---
+// Auflösung einer Übung („erst machen, dann erklären“): verborgen bis `ab` (Wiener Zeit, „2026-10-16T10:10“),
+// der Präsentator deckt sie vorher per Knopf auf seinem Bildschirm (Beamer) auf. Steht trotzdem im HTML –
+// schützt vor versehentlichem Vorauslesen, nicht vor Absicht. Überschriften darin ohne id, sonst landen sie in Orientierung und „Wo ist Markus“.
+import { Eye } from '@lucide/astro';
+import { aufloesungAb } from './aufloesung';
+const { ab } = Astro.props as { ab: string };
+if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwartet JJJJ-MM-TTTHH:MM`);
+---
+<div class="aufloesung" data-aufloesung-ab={ab}>
+  <p class="small muted" data-aufloesung-hinweis>Die Auflösung erscheint nach der Übung.</p>
+  <button type="button" class="aufloesung-knopf" data-aufloesung-zeigen data-nur-praesentator><Eye size={18} aria-hidden="true" /> Auflösung zeigen</button>
+  <div data-aufloesung-inhalt hidden><slot /></div>
+</div>
+<script>
+  import { aufgeloest } from './aufloesung';
+  document.querySelectorAll<HTMLElement>('[data-aufloesung-ab]').forEach(box => {
+    if (box.dataset.bound) return; box.dataset.bound = '1';
+    const inhalt = box.querySelector<HTMLElement>('[data-aufloesung-inhalt]');
+    const zeigen = () => {
+      if (inhalt) inhalt.hidden = false;
+      // Der Knopf verschwindet gleich; ohne neuen Fokus spränge die Tastatur an den Seitenanfang.
+      if (inhalt && box.contains(document.activeElement)) { inhalt.tabIndex = -1; inhalt.focus({ preventScroll: true }); }
+      box.querySelectorAll<HTMLElement>('[data-aufloesung-hinweis], [data-aufloesung-zeigen]').forEach(el => el.remove());
+    };
+    box.querySelector('[data-aufloesung-zeigen]')?.addEventListener('click', zeigen);
+    const ab = box.dataset.aufloesungAb ?? '';
+    if (aufgeloest(ab, new Date())) { zeigen(); return; }
+    // Seite bleibt im Kurs offen: jede Minute nachsehen, bis es so weit ist.
+    const uhr = setInterval(() => { if (aufgeloest(ab, new Date())) { clearInterval(uhr); zeigen(); } }, 60_000);
+  });
+</script>
+<style>
+  .aufloesung-knopf { display: inline-flex; align-items: center; gap: .4rem; font: inherit; padding: .35rem .8rem; border: 1px solid var(--border); border-radius: 6px; background: none; color: inherit; cursor: pointer; }
+  .aufloesung-knopf:hover { border-color: var(--accent); }
+</style>
