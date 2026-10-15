@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Orientierung from '../../../components/Orientierung.astro';
 import Callout from '../../../components/Callout.astro';
 import Checklist from '../../../components/Checklist.astro';
 import Folie from '../../../components/Folie.astro';
@@ -9,10 +8,9 @@ import FooterNav from '../../../components/FooterNav.astro';
 import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
 ---
 <Layout title="Tag 1 · Abschluss">
-  <span class="eyebrow">Innolab · Tag 1 · 16:15–16:45</span>
+  <span class="eyebrow">Innolab · Tag 1 · Abschluss</span>
   <h1>Tag 1 · Abschluss</h1>
   <p class="lead">Was bis Tag 2 passiert: fünf echte Interviews, die Transkripte im Repo, die Überraschungen im Entscheidungslog.</p>
-  <Orientierung seite="innolab/tag-1/abschluss" leiste={false} />
 
   <Folie>
     <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
@@ -36,8 +34,6 @@ import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
       </Callout>
     </div>
   </Folie>
-
-  <p>Weiter geht es mit den Transkripten an <a href="/innolab/tag-2">Tag 2</a>.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/annahmen', t: 'Annahmen-Map' }} next={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} />
 </Layout>
