@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Prompt from '../components/Prompt.astro';
+import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
+import { HANDY_PROMPT } from '../lib/handy-prompt';
+import { BREITEN_KRITERIEN_PROMPT, MOBILE_FIRST_PROMPT } from '../lib/responsive-prompts';
 ---
 <Layout title="Prompt-Bibliothek">
   <span class="eyebrow">Nachschlagen</span>
@@ -23,6 +26,8 @@ import Prompt from '../components/Prompt.astro';
   <h2>Bauen</h2>
   <Prompt label="Issue umsetzen">Setze Issue [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <Prompt label="Kleine Änderung">Ändere [genau eine Sache] – sonst nichts. Sag mir danach, welche Datei du angefasst hast.</Prompt>
+  <Prompt label="Seite mobile first bauen" note="Mehr dazu: Responsive Design.">{MOBILE_FIRST_PROMPT}</Prompt>
+  <Prompt label="Akzeptanzkriterien für die Breiten">{BREITEN_KRITERIEN_PROMPT}</Prompt>
   <Prompt label="Screenshot-Feedback">[Screenshot einfügen] Auf diesem Screenshot ist [Beobachtung]. Mach [gewünschte Änderung], ohne das restliche Design zu verändern.</Prompt>
   <Prompt label="TDD (Test-Driven Development)" note="TDD heißt: erst Tests aus den Akzeptanzkriterien, dann die Funktion, bis alle Tests bestehen. Mehr dazu unter „Vom Prototyp zum Produkt“.">Setze Issue [Nummer] nach TDD um: Schreib zuerst Playwright-Tests für alle Akzeptanzkriterien und führe sie aus – sie müssen rot sein. Dann baue die Funktion, bis alle Tests grün sind. Ändere die Tests dabei nicht, außer du erklärst mir warum.</Prompt>
   <Prompt label="KI-Feature (Issue 8)">Setze Issue 8 um: Beim Anbieten eines Gegenstands gibt es einen Button „Beschreibung vorschlagen“, der aus Titel, Kategorie und Ort mit der Claude-API (Modell claude-sonnet, Key aus ANTHROPIC_API_KEY, nur im Backend) eine Beschreibung in 2–3 Sätzen generiert. Begrenze auf 5 Aufrufe pro Minute und Person. Frag zuerst, wenn etwas unklar ist.</Prompt>
@@ -41,6 +46,7 @@ import Prompt from '../components/Prompt.astro';
   <Prompt label="Debug">Hier ist die Fehlermeldung: [einfügen]. Sie erscheint, wenn ich [Schritte]. Erkläre mir zuerst in einfachen Worten, was passiert ist und in welcher Schicht das Problem liegt. Dann schlag eine Lösung vor und warte auf mein Okay.</Prompt>
   <Prompt label="Im Kreis">Wir haben Fehler X schon zweimal erfolglos behoben. Ändere jetzt nichts. Nenn mir drei verschiedene mögliche Ursachen, wie wir jede einzelne ausschließen können, und welche Information dir fehlt.</Prompt>
   <Prompt label="Strenge Prüfung: Sicherheit" note="Eigener Prüfer-Agent mit frischem Kontext – Secrets, Zugriffsregeln, Eingaben, was Fremde sehen.">/ndu-review</Prompt>
+  <Prompt label="Handy-Ansicht reparieren" note="Eine Seite, die ohne Anmeldung erreichbar ist; Claude repariert direkt. Für einen Überblick über das ganze Projekt ohne Änderungen: der nächste Prompt.">{HANDY_PROMPT}</Prompt>
   <Prompt label="Bugs und Handy-Ansicht (frische Session: /clear)">Prüfe dieses Projekt wie ein erfahrenes Entwicklungsteam vor dem Launch – Sicherheit nicht, die prüft /ndu-review: offensichtliche Bugs, Verhalten bei leeren Daten und Fehlern, Darstellung am Handy (375 px). Gib mir eine priorisierte Liste mit maximal 5 Punkten, jeder in einem Satz, verständlich ohne Programmierkenntnisse. Ändere noch nichts.</Prompt>
   <Prompt label="RLS prüfen">Prüfe mit dem Supabase-MCP, ob die RLS-Policies der Tabelle [Name] verhindern, dass jemand fremde Zeilen liest, ändert oder löscht. Erkläre mir das Ergebnis in einfachen Worten. Wenn es eine Lücke gibt, schließ sie.</Prompt>
 
@@ -52,6 +58,7 @@ import Prompt from '../components/Prompt.astro';
 
   <h2>Shippen</h2>
   <Prompt label="Vercel-Build-Fehler">Der Deploy auf Vercel schlägt fehl. Hier ist das Build-Log: [die letzten 30 Zeilen]. Erkläre mir in einfachen Worten, was fehlt, und behebe es. Prüfe danach lokal mit npm run build, dass es durchläuft, bevor wir pushen.</Prompt>
+  <Prompt label="Regel für Login-Weiterleitungen" note="Einmal pro Projekt; dazu die zwei Redirect URLs in Supabase, siehe Login lokal & live.">{LOGIN_REGEL_PROMPT}</Prompt>
   <Prompt label="README für Außenstehende">Schreib die README.md neu für Außenstehende: Was ist das Produkt (2 Sätze), für wen, Link zur Live-App, 3 Screenshot-Platzhalter, wie man es lokal startet, was noch nicht funktioniert. Deutsch, ohne Fachjargon.</Prompt>
   <Prompt label="CI einrichten">Richte GitHub Actions ein, sodass bei jedem Push und Pull Request Lint, Build und die Playwright-Tests laufen. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
 </Layout>

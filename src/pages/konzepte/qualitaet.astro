@@ -9,6 +9,7 @@ import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Schritte from '../../components/Schritte.astro';
 import { bild } from '../../components/anleitung-bilder';
+import { HANDY_PROMPT } from '../../lib/handy-prompt';
 ---
 <Layout title="Vom Prototyp zum Produkt">
   <span class="eyebrow">Konzept 7 · Tag 3</span>
@@ -52,21 +53,40 @@ import { bild } from '../../components/anleitung-bilder';
   <Prompt label="TDD-Prompt">Setze Issue 8 nach TDD um: Schreib zuerst Playwright-Tests für alle Akzeptanzkriterien und führe sie aus – sie müssen rot sein. Zeig mir die Tests in einfachen Worten. Dann baue die Funktion, bis alle Tests grün sind. Ändere die Tests dabei nicht, außer du erklärst mir warum.</Prompt>
 
   <h2 id="ui-schleife">1b · Der Agent sieht die App – die UI-Schleife</h2>
-  <p>Tests prüfen, ob etwas <em>funktioniert</em>. Ob es <em>richtig aussieht</em>, sieht Claude nicht: Es liest Code, nicht euren Bildschirm. Darum melden Agenten bei Layout-Fehlern so oft „fertig“, obwohl am Handy der Button aus dem Bild ragt. Die Lücke schließt ihr mit Screenshots: Claude lässt die Seite per Playwright in drei Breiten fotografieren – Handy (320&nbsp;px), Tablet (768&nbsp;px), Laptop (1280&nbsp;px) –, schaut sich die Bilder selbst an und liest dabei die Fehler aus der Browser-Konsole.</p>
+  <p>Tests prüfen, ob etwas <em>funktioniert</em>. Ob es <em>richtig aussieht</em>, sieht Claude nicht: Es liest Code, nicht euren Bildschirm. Darum melden Agenten bei Layout-Fehlern so oft „fertig“, obwohl am Handy der Button aus dem Bild ragt. Die Lücke schließt ihr mit Screenshots: Claude lässt die Seite per Playwright fotografieren – als Handy (375&nbsp;px) und als Laptop (1280&nbsp;px) –, schaut sich die Bilder selbst an und repariert, was am Handy nicht passt. Warum gerade diese Breiten und mit welchen Wörtern ihr Claude sagt, was am Handy passieren soll: <a href="/konzepte/responsive">Responsive Design</a>.</p>
   <ol class="steps">
-    <li><strong>Screenshots</strong> Drei Breiten, dazu die Fehler aus der Konsole.</li>
-    <li><strong>Vergleichen</strong> Mit dem Ziel: eure Beschreibung, ein Screenshot, ein Figma-Frame.</li>
-    <li><strong>Ändern</strong> Nur, was abweicht.</li>
+    <li><strong>Screenshots</strong> Handy (375&nbsp;px) und Laptop (1280&nbsp;px).</li>
+    <li><strong>Prüfen</strong> Gegen eine feste Liste: abgeschnittener oder zu kleiner Text, waagrechtes Scrollen, zu kleine Buttons, Überlappungen.</li>
+    <li><strong>Ändern</strong> Nur, was auf der Liste steht.</li>
     <li><strong>Wiederholen</strong> Höchstens drei Runden. Danach entscheidet ihr, nicht der Agent.</li>
   </ol>
-  <Prompt label="UI-Schleife">Prüfe die Seite [z. B. /gegenstaende] so, wie sie im Browser aussieht. Starte dafür die App (npm run dev, http://localhost:3000), falls sie nicht läuft. Richte Playwright ein, falls es noch fehlt, und schreib ein kleines Skript, das die Seite bei 320, 768 und 1280 px Breite fotografiert, die Bilder im Ordner screenshots/ speichert (trag den Ordner in .gitignore ein) und Fehler aus der Browser-Konsole ausgibt. Ist die Seite nur angemeldet erreichbar, meldet sich das Skript zuerst mit einem Testkonto an und liest die Zugangsdaten aus .env.local: Lege dort die leeren Einträge TEST_EMAIL und TEST_PASSWORT an, ich trage die Werte selbst ein – frag mich nicht im Chat danach. Prüfe auf den Bildern, dass du die richtige Seite siehst und nicht die Anmeldung. Vergleiche sie dann mit dem Ziel: [Beschreibung, oder Screenshot einfügen]. Nenn mir die Abweichungen, behebe sie und wiederhole Screenshots und Konsole, bis nichts mehr abweicht – höchstens drei Runden. Zeig mir am Ende die drei Screenshots.</Prompt>
-  <p class="small muted">Statt des Skripts geht auch <strong>Claude in Chrome</strong>: Claude mit der Chrome-Erweiterung (<a href="/setup#claude-in-chrome">Einrichtung</a>) steuert euren echten Browser, klickt durch und sieht auch Seiten, auf denen ihr angemeldet seid. Fortgeschrittene können Claude auch über einen Browser-MCP-Server (etwa Playwright MCP) einen eigenen Browser geben; das Skript oben braucht nichts davon.</p>
+  <Prompt label="Handy-Ansicht reparieren">{HANDY_PROMPT}</Prompt>
+  <p class="small muted">Nehmt eine Seite, die ohne Anmeldung erreichbar ist. Braucht die Seite einen Login: am eigenen Handy öffnen, Screenshot machen und Claude geben – mit dem Prompt „Screenshot-Feedback“ aus der <a href="/prompts">Prompt-Bibliothek</a> (Abschnitt Bauen).</p>
+  <details class="fallback" id="ui-schleife-ziel">
+    <summary>Für Fortgeschrittene: mit Ziel, drei Breiten und Testkonto</summary>
+    <p>Habt ihr ein Ziel – eine Beschreibung, einen Screenshot, einen Entwurf aus Claude Design oder Figma –, vergleicht Claude die Seite damit. Für Seiten hinter dem Login meldet sich das Skript mit einem Testkonto an.</p>
+    <Prompt label="UI-Schleife mit Ziel">Prüfe die Seite [z. B. /gegenstaende] so, wie sie im Browser aussieht. Starte dafür die App (npm run dev, http://localhost:3000), falls sie nicht läuft. Richte Playwright ein, falls es noch fehlt, und schreib ein kleines Skript, das die Seite bei 320, 768 und 1280 px Breite fotografiert, die Bilder im Ordner screenshots/ speichert (trag den Ordner in .gitignore ein) und Fehler aus der Browser-Konsole ausgibt. Ist die Seite nur angemeldet erreichbar, meldet sich das Skript zuerst mit einem Testkonto an und liest die Zugangsdaten aus .env.local: Lege dort die leeren Einträge TEST_EMAIL und TEST_PASSWORT an, ich trage die Werte selbst ein – frag mich nicht im Chat danach. Prüfe auf den Bildern, dass du die richtige Seite siehst und nicht die Anmeldung. Vergleiche sie dann mit dem Ziel: [Beschreibung, oder Screenshot einfügen]. Nenn mir die Abweichungen, behebe sie und wiederhole Screenshots und Konsole, bis nichts mehr abweicht – höchstens drei Runden. Zeig mir am Ende die drei Screenshots.</Prompt>
+    <p class="small muted">Statt des Skripts geht auch <strong>Claude in Chrome</strong>: Claude mit der Chrome-Erweiterung (<a href="/setup#claude-in-chrome">Einrichtung</a>) steuert euren echten Browser, klickt durch und sieht auch Seiten, auf denen ihr angemeldet seid. Fortgeschrittene können Claude auch über einen Browser-MCP-Server (etwa Playwright MCP) einen eigenen Browser geben; das Skript oben braucht nichts davon.</p>
+  </details>
 
   <h2>2 · Review – vier Augen, auch wenn es zwei Agenten sind</h2>
-  <p>Profis ändern Code nie direkt im Hauptstand. Sie arbeiten in einem <strong>Branch</strong>, stellen einen <strong>Pull Request</strong> (PR) und lassen ihn prüfen. Claude Code hat dafür eingebaute Befehle: <code>/code-review</code> prüft eure Änderungen gegenüber <code>main</code> auf Fehler – in einem eigenen Agenten mit frischem Kontext –, <code>/security-review</code> speziell auf Sicherheitslücken. (<code>/review</code> ist heute nur ein anderer Name für <code>/code-review</code>.) Und der stärkste Trick: ein <strong>zweiter Agent mit frischem Kontext</strong> – der hat den Code nicht geschrieben und verteidigt ihn nicht. Im Kurs, ohne Branch und Pull Request: <code>/ndu-review</code>.</p>
-  <Prompt label="Review-Workflow">Arbeite ab jetzt für jedes Issue in einem eigenen Branch und erstelle am Ende einen Pull Request mit einer Beschreibung, die ohne Programmierkenntnisse verständlich ist: Was wurde geändert, wie prüfe ich es, welche Risiken gibt es. Führe vor dem PR /code-review und /security-review aus, zeig mir die Funde in einfachen Worten und behebe, was ich freigebe.</Prompt>
+  <p>Profis ändern Code nie direkt im Hauptstand. Sie arbeiten in einem <strong>Branch</strong>, stellen einen <strong><a href="/konzepte/git#pull-request">Pull Request</a></strong> (PR) und lassen ihn prüfen. Claude Code hat dafür eingebaute Befehle: <code>/code-review</code> prüft eure Änderungen gegenüber <code>main</code> auf Fehler – in einem eigenen Agenten mit frischem Kontext –, <code>/security-review</code> speziell auf Sicherheitslücken – den braucht ihr nicht bei jedem Pull Request, sondern bei größeren Änderungen (siehe Sicherheit unten). (<code>/review</code> ist heute nur ein anderer Name für <code>/code-review</code>.) Und der stärkste Trick: ein <strong>zweiter Agent mit frischem Kontext</strong> – der hat den Code nicht geschrieben und verteidigt ihn nicht. Im Kurs, ohne Branch und Pull Request: <code>/ndu-review</code>.</p>
+  <Prompt label="Review-Regeln festhalten" note="Einmal pro Projekt. Danach gelten die Regeln in jeder Session.">Schreib in CLAUDE.md einen kurzen Abschnitt „Arbeitsweise“ mit diesen Regeln, damit sie in jeder Session gelten: Jedes Issue bekommt einen eigenen Branch. Vor dem Pull Request führst du /code-review aus, zeigst mir die Funde in einfachen Worten und behebst nur, was ich freigebe. Die PR-Beschreibung ist ohne Programmierkenntnisse verständlich: Was wurde geändert, wie prüfe ich es, welche Risiken gibt es. Zeig mir den Abschnitt, bevor du ihn speicherst.</Prompt>
 
-  <h2>3 · Sicherheit – was ein Audit prüft</h2>
+  <h2>3 · Sicherheit – was ihr selbst prüfen könnt</h2>
+  <p>Den Code prüft Claude für euch. Vier Dinge prüft ihr selbst im Browser – die finden die häufigsten Lücken.</p>
+  <Prompt label="Sicherheits-Check" note="Claude behebt erst, wenn ihr freigebt.">Prüfe meine App auf Sicherheitslücken und antworte pro Punkt mit „in Ordnung“, „Problem“ oder „unklar“, in einfachen Worten: 1. Steht ein geheimer Schlüssel im Repo oder im Code, der im Browser landet? Die .env.local liest du dafür nicht, und du gibst keine Werte aus. 2. Hat jede Tabelle Row Level Security, und kann jemand fremde Einträge ändern oder löschen? 3. Werden Eingaben im Backend geprüft (leer, zu lang, HTML)? 4. Meldet npm audit kritische Funde? 5. Kann jemand eine KI-Funktion beliebig oft aufrufen und so Guthaben verbrauchen? 6. Zeigen Fehlerseiten technische Details? Behebe nichts, bevor ich es freigebe.</Prompt>
+  <h3 id="selbst-pruefen">Selbst prüfen</h3>
+  <Checklist id="sicherheit-selbst" items={[
+    '<strong>Zwei Konten:</strong> Mit Konto A etwas anlegen. Dann ein privates Fenster öffnen, mit Konto B anmelden und versuchen, den Eintrag zu ändern oder zu löschen. Geht nicht = gut.',
+    '<strong>Abgemeldet:</strong> Die Adresse einer Seite, die nur Angemeldete sehen sollen, kopieren und im privaten Fenster ohne Anmeldung öffnen. Ihr landet bei der Anmeldung = gut.',
+    '<strong>Unsinn eingeben:</strong> ein leeres Feld, ein sehr langer Text, <code>&lt;b&gt;fett&lt;/b&gt;</code>. Die App stürzt nicht ab und zeigt den Text als Text, nicht fett = gut.',
+    '<strong>Schlüssel auf GitHub:</strong> Im Repo oben im Suchfeld nach <code>sb_secret</code> und <code>sk-ant</code> suchen. Keine Treffer = gut.',
+  ]} />
+  <p class="small"><code>/security-review</code> prüft nur eure Änderungen gegenüber <code>main</code> – sinnvoll vor einem größeren Pull Request, etwa wenn sich an Anmeldung oder Zugriffsrechten etwas ändert.</p>
+
+  <h3 id="audit">Für Profis: was ein Audit prüft</h3>
+  <p class="small">Zur Einordnung: So sieht die Liste aus, mit der Entwickler*innen eine App vor dem Start prüfen. Den Großteil deckt der Sicherheits-Check oben ab.</p>
   <Checklist id="security" items={[
     '<strong>Secrets:</strong> kein Key im Repo, keiner im Frontend-Code, alle in .env/Vercel',
     '<strong>Autorisierung:</strong> RLS auf jeder Tabelle; getestet mit zwei Accounts',
@@ -85,15 +105,18 @@ import { bild } from '../../components/anleitung-bilder';
     <li><strong>Continuous Deployment:</strong> Vercel baut für jeden Branch eine <strong>Preview-URL</strong> – ihr seht eine Änderung, bevor sie live geht – und deployt <code>main</code> automatisch.</li>
   </ul>
   <p>Drei Umgebungen: <em>Development</em> (euer Mac) → <em>Preview</em> (pro Branch) → <em>Production</em> (die echte URL).</p>
-  <Prompt>Richte GitHub Actions ein, sodass bei jedem Push und Pull Request Lint, Build und die Playwright-Tests laufen. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
+  <Prompt>Richte GitHub Actions ein, sodass bei jedem Push und Pull Request npm ci, npm run lint und npm run build laufen. Welche Umgebungsvariablen der Build braucht, liest du aus .env.example – .env.local liest du dafür nicht. Setz sie im Workflow auf harmlose Platzhalter, keine echten Werte, keine GitHub-Secrets. Die Playwright-Tests nimmst du nicht auf – sie brauchen die echte Datenbank. Erkläre mir, wo ich das Ergebnis auf GitHub sehe und was ich tue, wenn es rot ist.</Prompt>
+  <p class="small">Habt ihr <a href="/tag-3#uebung-8-b">Übung 8b an Tag 3</a> gemacht, läuft die Prüfung schon – dann braucht ihr diesen Prompt nicht. Die Tests laufen bei jedem Push erst, wenn GitHub eine eigene Test-Datenbank hat. Bis dahin startet ihr oder Claude sie vor jedem „fertig“.</p>
 
   <h2>5 · Betrieb – wissen, was passiert</h2>
   <ul>
     <li><strong>Fehler-Tracking</strong> (Sentry): Tritt um 23 Uhr bei jemandem ein Fehler auf, wisst ihr es am Morgen – mit Stacktrace, den ihr Claude geben könnt.</li>
     <li><strong>Logs</strong> auf Vercel.</li>
-    <li><strong>Performance</strong>: Lighthouse-Score in Chrome (Rechtsklick → Untersuchen → Lighthouse). Unter 90 lasst ihr Claude optimieren.</li>
+    <li><strong>Performance</strong>: Lighthouse-Score in Chrome (Rechtsklick → Untersuchen → Lighthouse). Unter 90 lasst ihr Claude optimieren – mit dem Prompt unten.</li>
     <li><strong>Barrierefreiheit</strong>: Tastaturbedienung, Kontraste, Alt-Texte. Lighthouse misst auch das – in der EU seit 2025 für viele Angebote Pflicht.</li>
   </ul>
+  <Prompt label="Lighthouse: messen und verbessern" note="Statt der Klammer eure Live-Adresse.">Miss meine Live-App mit Lighthouse: Führ npx lighthouse [Live-Adresse] dreimal im Mobil-Modus aus, nur Performance und Barrierefreiheit. Speichere die Berichte im Ordner lighthouse/ (trag ihn in .gitignore ein). Nenn mir den mittleren Wert pro Kategorie und, falls einer unter 90 liegt, die drei Punkte, die am meisten bringen – in einfachen Worten. Warte auf mein Okay. Dann behebe sie auf einem eigenen Branch, push und miss die Vorschau-Adresse von Vercel genauso. Höchstens drei Runden.</Prompt>
+  <p class="small">Gemessen wird die Live-Adresse, weil nur dort alles so ausgeliefert wird wie für eure Nutzer*innen; der Wert schwankt pro Lauf um einige Punkte, deshalb dreimal. Seiten hinter der Anmeldung misst der Prompt nicht, und Lighthouse findet nur einen Teil der Barrieren – ob alles mit der Tab-Taste bedienbar ist, prüft ihr selbst.</p>
 
   <h2>6 · Recht & Daten</h2>
   <p>Sobald echte Menschen sich registrieren:</p>
@@ -126,6 +149,10 @@ import { bild } from '../../components/anleitung-bilder';
 
   <Callout type="concept" title="Die eine Gewohnheit">
     <p>Fragt den Agenten nach jedem Issue: <em>„Was würde ein erfahrenes Entwicklungsteam an dieser Umsetzung kritisieren?“</em> Ihr bekommt die Lücke zwischen Prototyp und Produkt in drei Sätzen – und entscheidet, ob sie jetzt wichtig ist.</p>
+  </Callout>
+
+  <Callout type="info" title="Vor Übung 8: der Pull Request">
+    <p>In Übung 8c stellt ihr euren ersten Pull Request und prüft den einer anderen Person. Schaut euch vorher an, welchen Weg eine Änderung dabei nimmt – Branch, Push, Pull Request, Prüfung und Vorschau, Review, Merge: <a href="/konzepte/git#pull-request">So funktioniert ein Pull Request</a>.</p>
   </Callout>
 
   <FooterNav prev={{ href: '/tag-3#konzept-7', t: 'Tag 3' }} next={{ href: '/tag-3#uebung-8', t: 'Übung 8' }} />

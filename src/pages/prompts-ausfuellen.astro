@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Prompt from '../components/Prompt.astro';
+import FooterNav from '../components/FooterNav.astro';
+// Tastenkürzel nach der Claude-Code-Doku „Interactive mode“ (code.claude.com/docs/en/interactive-mode), Stand 10/2026.
+// Nur Kürzel, die im VS-Code-Terminal ohne Zusatz-Einstellung gehen – Wortsprünge per Option brauchen am Mac „Option as Meta“.
+---
+<Layout title="Prompts ausfüllen">
+  <span class="eyebrow">Nachschlagen</span>
+  <h1>Prompts ausfüllen</h1>
+  <p class="lead">Viele Prompts auf dieser Website haben gelbe Lücken wie <mark class="luecke-beispiel">[Link]</mark> oder <mark class="luecke-beispiel">[Issue]</mark>. So füllt ihr sie am schnellsten – am Mac und unter Windows.</p>
+
+  <h2 id="website">1 · Direkt hier auf der Website</h2>
+  <p>Der schnellste Weg: Ihr füllt die Lücken aus, bevor ihr kopiert. Dann müsst ihr in Claude nichts mehr ändern.</p>
+  <ol class="steps">
+    <li><strong>Lücke anklicken</strong> Der Platzhalter wird markiert.</li>
+    <li><strong>Tippen oder einfügen</strong> Euer Text ersetzt den Platzhalter. Einfügen mit <kbd>⌘ cmd</kbd> + <kbd>V</kbd> (Mac) oder <kbd>Strg</kbd> + <kbd>V</kbd> (Windows).</li>
+    <li><strong>Weiter</strong> <kbd>Enter</kbd> oder daneben klicken, dann die nächste Lücke.</li>
+    <li><strong>Kopieren</strong> und in Claude einfügen – eure Eingaben sind dabei.</li>
+  </ol>
+  <p>Probiert es hier aus:</p>
+  <Prompt label="Zum Ausprobieren">Setze Issue [Nummer] aus docs/BACKLOG.md um. Der Entwurf liegt hier: [Link].</Prompt>
+  <p class="small muted">Lasst ihr eine Lücke leer, kommt der Platzhalter zurück. Nach dem Neuladen der Seite sind eure Eingaben weg.</p>
+
+  <h2 id="luecken-zeile">2 · Lücken-Zeile in Claude</h2>
+  <p>Habt ihr den Prompt schon unverändert eingefügt? Dann nichts darin suchen – schreibt die Werte einfach ans Ende, in dieselbe Zeile:</p>
+  <Prompt label="Beispiel zum Anhängen">Lücken: Link = https://claude.ai/…, Issue = LEI-7</Prompt>
+  <p>Claude ordnet die Werte den Lücken selbst zu. Das klappt immer, auch bei sehr langen Prompts.</p>
+
+  <h2 id="terminal">3 · Im Terminal bearbeiten</h2>
+  <p>In der Eingabezeile von Claude Code könnt ihr nicht mit der Maus an eine Stelle klicken. Diese Tasten gehen im Terminal von VS Code ohne weitere Einstellung:</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Tastenkürzel in Claude Code">
+    <table>
+      <tr><th>Was</th><th>Mac</th><th>Windows</th></tr>
+      <tr><td>Zeichen für Zeichen</td><td><kbd>←</kbd> <kbd>→</kbd></td><td><kbd>←</kbd> <kbd>→</kbd></td></tr>
+      <tr><td>An den Anfang der Zeile</td><td><kbd>⌃ ctrl</kbd> + <kbd>A</kbd></td><td><kbd>Strg</kbd> + <kbd>A</kbd></td></tr>
+      <tr><td>Ans Ende der Zeile</td><td><kbd>⌃ ctrl</kbd> + <kbd>E</kbd></td><td><kbd>Strg</kbd> + <kbd>E</kbd></td></tr>
+      <tr><td>Wort vor dem Cursor löschen</td><td><kbd>⌥ option</kbd> + <kbd>⌫</kbd></td><td><kbd>Strg</kbd> + <kbd>⌫</kbd></td></tr>
+      <tr><td>Bis zum Zeilenanfang löschen</td><td><kbd>⌃ ctrl</kbd> + <kbd>U</kbd></td><td><kbd>Strg</kbd> + <kbd>U</kbd></td></tr>
+      <tr><td>Screenshot an der Cursor-Stelle einfügen</td><td><kbd>⌃ ctrl</kbd> + <kbd>V</kbd></td><td><kbd>Alt</kbd> + <kbd>V</kbd></td></tr>
+      <tr><td>Datei aus dem Projekt nennen</td><td colspan="2"><kbd>@</kbd> tippen, dann Namen anfangen und aus der Liste wählen</td></tr>
+    </table>
+  </div>
+  <p class="small muted">Unter Windows fängt VS Code einzelne Kürzel manchmal selbst ab – <kbd>Strg</kbd> + <kbd>E</kbd> öffnet dann etwa die Dateisuche. Nehmt in dem Fall die Pfeiltasten oder gleich Weg 1 oder 2.</p>
+  <p class="small muted">Am Mac ist es wirklich <kbd>⌃ ctrl</kbd>, nicht <kbd>⌘ cmd</kbd>. Bei Lücken wie <mark class="luecke-beispiel">[Screenshot einfügen]</mark> erst mit <kbd>⌃ ctrl</kbd> + <kbd>A</kbd> / <kbd>E</kbd> und den Pfeiltasten an die Stelle, dann das Bild einfügen.</p>
+
+  <FooterNav prev={{ href: '/prompts', t: 'Prompt-Bibliothek' }} next={{ href: '/ideen', t: 'Projektideen' }} />
+</Layout>
