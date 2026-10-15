@@ -83,6 +83,7 @@ const { vorher, danach } = nachbarn(path);
       </main>
     </div>
     <script>
+      import { aktuelleFolie, weiter as folieWeiter, zurueck as folieZurueck } from '../components/folien';
       const btn = document.getElementById('menu-btn');
       const sb = document.getElementById('sidebar');
       btn?.addEventListener('click', () => sb?.classList.toggle('open'));
@@ -153,6 +154,49 @@ const { vorher, danach } = nachbarn(path);
         if (root.hasAttribute('data-beamer') || !matchMedia('(min-width: 901px)').matches) return;
         setLeiste(!root.hasAttribute('data-leiste-zu'));
       });
+      // Folien (Folie.astro): Was ← / → tut, entscheidet folien.ts; hier nur das DOM. false = zur Nachbarseite.
+      const folieJetzt = () => {
+        const folien = [...document.querySelectorAll<HTMLElement>('[data-folie]')];
+        const oben = topbar?.getBoundingClientRect().height ?? 0;
+        const i = aktuelleFolie(folien.map((f) => f.getBoundingClientRect().top), oben);
+        return { folien, i, oben };
+      };
+      // Sofort statt weich scrollen: Beim schnellen Weiterdrücken soll die aktuelle Folie nicht mitten im Scrollen gemessen werden.
+      const springe = (f: HTMLElement) => f.scrollIntoView({ behavior: 'instant' as ScrollBehavior });
+      const folienBlaettern = (vor: boolean): boolean => {
+        const { folien, i, oben } = folieJetzt();
+        if (i < 0) return false;
+        const folie = folien[i];
+        const rand = folie.getBoundingClientRect();
+        // Schritte in einer noch verborgenen Auflösung zählen erst, wenn sie offen ist.
+        const schritte = [...folie.querySelectorAll<HTMLElement>('[data-schritt]')].filter((s) => !s.closest('[hidden]'));
+        const gezeigt = schritte.filter((s) => s.classList.contains('gezeigt'));
+        if (vor) {
+          const knopf = folie.querySelector<HTMLButtonElement>('[data-aufloesung-zeigen]');
+          const tun = folieWeiter({
+            vorDerFolie: rand.top > oben + 4, restUnten: rand.bottom > innerHeight + 4,
+            versteckteSchritte: schritte.length - gezeigt.length, offeneAufloesung: !!knopf, naechsteFolie: i < folien.length - 1,
+          });
+          if (tun === 'hierhin') springe(folie);
+          else if (tun === 'runter') scrollBy({ top: innerHeight - oben - 48, behavior: 'instant' as ScrollBehavior });
+          else if (tun === 'schritt') schritte.find((s) => !s.classList.contains('gezeigt'))?.classList.add('gezeigt');
+          else if (tun === 'aufloesung') knopf?.click();
+          else if (tun === 'folie') springe(folien[i + 1]);
+          return tun !== 'seite';
+        }
+        const tun = folieZurueck({ gezeigteSchritte: gezeigt.length, vorherigeFolie: i > 0, kopfDarueber: scrollY > 0 });
+        if (tun === 'schritt') gezeigt.at(-1)?.classList.remove('gezeigt');
+        else if (tun === 'folie') springe(folien[i - 1]);
+        else if (tun === 'anfang') scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+        return tun !== 'seite';
+      };
+      // T startet/pausiert den Timer der aktuellen Folie (Timer.astro), nur im Beamer.
+      document.addEventListener('keydown', (e) => {
+        if ((e.key !== 't' && e.key !== 'T') || e.ctrlKey || e.metaKey || e.altKey || !tastenFrei(e)) return;
+        if (!root.hasAttribute('data-beamer')) return;
+        const { folien, i } = folieJetzt();
+        folien[i]?.querySelector<HTMLButtonElement>('[data-timer-knopf]')?.click();
+      });
       document.addEventListener('keydown', (e) => {
         const blaettern = e.key === 'ArrowRight' || e.key === 'ArrowLeft';
         if (e.key !== 'b' && e.key !== 'B' && !blaettern) return;
@@ -160,6 +204,8 @@ const { vorher, danach } = nachbarn(path);
         if (!blaettern) { if (root.hasAttribute('data-ist-praesentator')) setBeamer(!root.hasAttribute('data-beamer')); return; }
         // ← / → blättern nur im Beamer-Modus; sonst bleiben die Pfeile beim Browser (waagrecht scrollen).
         if (!root.hasAttribute('data-beamer')) return;
+        // Seiten mit Folien: erst innerhalb der Seite blättern (Schritte, Auflösung, Folien), dann zur nächsten Seite.
+        if (folienBlaettern(e.key === 'ArrowRight')) { e.preventDefault(); return; }
         const ziel = e.key === 'ArrowRight' ? nextHref : prevHref;
         if (!ziel) return;
         e.preventDefault();

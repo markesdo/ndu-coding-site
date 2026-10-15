@@ -1,0 +1,74 @@
+import { describe, expect, it } from 'vitest';
+import { aktuelleFolie, restText, weiter, zurueck } from './folien';
+
+describe('weiter (→ im Beamer)', () => {
+  const folie = { versteckteSchritte: 0, offeneAufloesung: false, naechsteFolie: true };
+
+  it('springt erst zur Folie, wenn man noch im Seitenkopf darüber steht', () => {
+    expect(weiter({ ...folie, vorDerFolie: true, versteckteSchritte: 2 })).toBe('hierhin');
+  });
+
+  it('deckt dann den nächsten Schritt der Folie auf', () => {
+    expect(weiter({ ...folie, versteckteSchritte: 2, offeneAufloesung: true })).toBe('schritt');
+  });
+
+  it('dann die Auflösung, bevor es zur nächsten Folie geht', () => {
+    expect(weiter({ ...folie, offeneAufloesung: true })).toBe('aufloesung');
+  });
+
+  it('eine zu lange Folie erst zu Ende scrollen', () => {
+    expect(weiter({ ...folie, restUnten: true })).toBe('runter');
+  });
+
+  it('dann die nächste Folie', () => {
+    expect(weiter(folie)).toBe('folie');
+  });
+
+  it('nach der letzten Folie die nächste Seite', () => {
+    expect(weiter({ ...folie, naechsteFolie: false })).toBe('seite');
+  });
+});
+
+describe('zurueck (← im Beamer)', () => {
+  it('verdeckt zuerst den zuletzt gezeigten Schritt – auch auf der ersten Folie unter dem Seitenkopf', () => {
+    expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: false, kopfDarueber: true })).toBe('schritt');
+  });
+
+  it('dann die vorige Folie', () => {
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true })).toBe('folie');
+  });
+
+  it('vor der ersten Folie an den Seitenanfang, danach die vorige Seite', () => {
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, kopfDarueber: true })).toBe('anfang');
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false })).toBe('seite');
+  });
+});
+
+describe('aktuelleFolie', () => {
+  it('ist die letzte Folie, die die Kopfleiste erreicht hat', () => {
+    expect(aktuelleFolie([48, 768, 1488], 48)).toBe(0);
+    expect(aktuelleFolie([-672, 48, 768], 48)).toBe(1);
+    expect(aktuelleFolie([-1300, -580, 48], 48)).toBe(2);
+  });
+
+  it('bleibt bei einer überlangen Folie, auch wenn die nächste schon näher an der Kopfleiste liegt', () => {
+    expect(aktuelleFolie([-1152, 848], 48)).toBe(0);
+  });
+
+  it('im Seitenkopf über allen Folien die erste; ohne Folien -1', () => {
+    expect(aktuelleFolie([300, 1000], 48)).toBe(0);
+    expect(aktuelleFolie([], 48)).toBe(-1);
+  });
+});
+
+describe('restText', () => {
+  it('zeigt Minuten und Sekunden, aufgerundet', () => {
+    expect(restText(180_000)).toBe('3:00');
+    expect(restText(61_001)).toBe('1:02');
+    expect(restText(9_000)).toBe('0:09');
+  });
+
+  it('wird nie negativ', () => {
+    expect(restText(-5_000)).toBe('0:00');
+  });
+});

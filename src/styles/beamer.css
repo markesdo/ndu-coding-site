@@ -71,6 +71,24 @@ html[data-beamer] table { font-size: 1rem; }
 html[data-beamer] .stepbar { top: var(--topbar-h, 48px); }
 html[data-beamer] h2[id], html[data-beamer] .shots > li { scroll-margin-top: calc(var(--topbar-h, 48px) + 3.5rem); }
 
+/* Folien (Folie.astro, folien.ts): eine Folie füllt die Höhe unter der Kopfleiste, Inhalt senkrecht mittig.
+   proximity statt mandatory: Folien, die doch länger sind, bleiben erreichbar. */
+/* scroll-padding: Rastpunkte und scrollIntoView liegen unter der klebenden Kopfleiste, nicht dahinter. */
+html[data-beamer]:has(.folie) { scroll-snap-type: y proximity; scroll-padding-top: var(--topbar-h, 48px); }
+/* Seitenkopf (Titel, Ablauf) ist auch ein Rastpunkt – sonst springt die Seite beim Laden auf die erste Folie. */
+html[data-beamer]:has(.folie) .content { scroll-snap-align: start; }
+/* scroll-padding deckt die Kopfleiste schon ab: Überschriften nicht ein zweites Mal um ihre Höhe versetzen. */
+html[data-beamer]:has(.folie) h2[id] { scroll-margin-top: 0; }
+html[data-beamer] .folie {
+  min-height: calc(100vh - var(--topbar-h, 48px)); scroll-snap-align: start;
+  display: flex; flex-direction: column; justify-content: center; padding: 1.5rem 0; box-sizing: border-box;
+}
+html[data-beamer] .content > .inner > .folie > h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+html[data-beamer] .folie + .folie { border-top: 1px solid var(--border); }
+html[data-beamer] .nur-handout { display: none; }
+html[data-beamer] [data-schritt]:not(.gezeigt) { visibility: hidden; }
+html[data-beamer] .timer { font-size: 1.2rem; }
+
 @media (max-width: 900px) {
   html[data-beamer] .content { padding: 1.25rem 16px 4rem; }
   html[data-beamer] .topbar { padding: 6px 16px; font-size: 13px; }
