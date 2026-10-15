@@ -13,6 +13,9 @@ describe('aufloesungAb', () => {
     expect(aufloesungAb('16.10.2026 10:10')).toBeUndefined();
     expect(aufloesungAb('2026-10-16T24:00')).toBeUndefined();
     expect(aufloesungAb('2026-10-16')).toBeUndefined();
+    expect(aufloesungAb('2026-10-61T10:10')).toBeUndefined();
+    expect(aufloesungAb('2026-16-10T10:10')).toBeUndefined();
+    expect(aufloesungAb('2026-02-30T10:10')).toBeUndefined();
   });
 });
 

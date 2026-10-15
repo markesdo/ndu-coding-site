@@ -7,6 +7,10 @@ export function aufloesungAb(text: string): { datum: string; minuten: number } |
   if (!m) return undefined;
   const [h, min] = [Number(m[2]), Number(m[3])];
   if (h > 23 || min > 59) return undefined;
+  // Kalendertag prüfen: 2026-10-61 oder 2026-02-30 gibt es nicht (Date würde sie still weiterrechnen).
+  const [jahr, monat, tag] = m[1].split('-').map(Number);
+  const d = new Date(Date.UTC(jahr, monat - 1, tag));
+  if (d.getUTCFullYear() !== jahr || d.getUTCMonth() !== monat - 1 || d.getUTCDate() !== tag) return undefined;
   return { datum: m[1], minuten: h * 60 + min };
 }
 

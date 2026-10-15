@@ -19,6 +19,8 @@ if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwa
     const inhalt = box.querySelector<HTMLElement>('[data-aufloesung-inhalt]');
     const zeigen = () => {
       if (inhalt) inhalt.hidden = false;
+      // Der Knopf verschwindet gleich; ohne neuen Fokus spränge die Tastatur an den Seitenanfang.
+      if (inhalt && box.contains(document.activeElement)) { inhalt.tabIndex = -1; inhalt.focus({ preventScroll: true }); }
       box.querySelectorAll<HTMLElement>('[data-aufloesung-hinweis], [data-aufloesung-zeigen]').forEach(el => el.remove());
     };
     box.querySelector('[data-aufloesung-zeigen]')?.addEventListener('click', zeigen);
