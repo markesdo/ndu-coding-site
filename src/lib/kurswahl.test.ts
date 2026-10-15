@@ -4,8 +4,11 @@ import { sichererPfad } from './kurszugang';
 import { TAGE } from '../components/methoden';
 
 describe('kurswahl', () => {
-  it('Stichtag liegt spätestens am ersten Innolab-Tag (Tag 1 ist seit der Absage am 16.10. erst am 22.10.)', () => {
-    expect(INNOLAB_AB <= TAGE[0].datum).toBe(true);
+  it('Stichtag liegt nach dem letzten Coding-Tag (15.10.) und spätestens am ersten Innolab-Tag (seit der Absage am 16.10. der 22.10.)', () => {
+    const ersterTag = TAGE[0].datum;
+    expect(ersterTag, 'Tag 1 braucht ein Datum').toBeDefined();
+    expect(INNOLAB_AB > '2026-10-15').toBe(true);
+    expect(INNOLAB_AB <= ersterTag!).toBe(true);
   });
 
   it('rechnet den Kalendertag in Wien, nicht in UTC', () => {
