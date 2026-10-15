@@ -2,8 +2,9 @@
 // Skala von schwach nach stark (z. B. „sagen → tun“: Kompliment, Zukunft, Vergangenheit, Commitment), Stufen
 // nebeneinander unter einem Pfeil, Stickies unter ihrer Stufe. Am Handy untereinander.
 // stufen[].sub: kurze Zeile darunter; hervor: Index der Stufe, die farbig bleibt.
-// punkte: stufe = Index in stufen; hervor: Sticky farbig; schritt: Sticky wird im Beamer per → aufgedeckt.
-import { proStufe, type SkalaPunkt } from './skala';
+// punkte: stufe = Index in stufen; hervor: Sticky farbig; schritt: Sticky wird im Beamer per → aufgedeckt –
+// in der Reihenfolge der Stufen (links nach rechts), innerhalb einer Stufe in der Reihenfolge der Eingabe.
+import { proStufe, pruefeSkala, type SkalaPunkt } from './skala';
 const { label, links, rechts, stufen, hervor, punkte = [] } = Astro.props as {
   label: string;
   links: string;
@@ -12,6 +13,7 @@ const { label, links, rechts, stufen, hervor, punkte = [] } = Astro.props as {
   hervor?: number;
   punkte?: SkalaPunkt[];
 };
+pruefeSkala(stufen.length, hervor);
 const verteilt = proStufe(punkte, stufen.length);
 ---
 <figure class="skala" aria-label={label} style={`--stufen:${stufen.length}`}>
@@ -19,11 +21,11 @@ const verteilt = proStufe(punkte, stufen.length);
   <ol class="skala-stufen">
     {stufen.map((s, i) => (
       <li class:list={{ hervor: hervor === i }}>
-        <strong>{s.t}</strong>
+        <strong>{s.t}{hervor === i && <span class="sr-only"> (hervorgehoben)</span>}</strong>
         {s.sub && <span class="skala-sub">{s.sub}</span>}
         {verteilt[i].length > 0 && (
           <ul class="skala-punkte">
-            {verteilt[i].map((p) => <li class:list={{ hervor: p.hervor }} data-schritt={p.schritt ? '' : undefined}>{p.t}</li>)}
+            {verteilt[i].map((p) => <li class:list={{ hervor: p.hervor }} data-schritt={p.schritt ? '' : undefined}>{p.t}{p.hervor && <span class="sr-only"> (hervorgehoben)</span>}</li>)}
           </ul>
         )}
       </li>
@@ -51,7 +53,7 @@ const verteilt = proStufe(punkte, stufen.length);
   @container skala (max-width: 34rem) {
     .skala-pfeil { border: 0; padding: 0 0 .4rem; justify-content: flex-start; gap: .4rem; }
     .skala-pfeil::after { display: none; }
-    .skala-pfeil span:first-child::after { content: ' →' / ''; }
+    .skala-pfeil span:first-child::after { content: ' →'; content: ' →' / ''; }
     .skala-stufen { grid-template-columns: 1fr; gap: .5rem; border-left: 3px solid; border-image: linear-gradient(to bottom, var(--border), var(--accent)) 1; padding-left: .9rem; }
     .skala-stufen > li { align-items: flex-start; text-align: left; padding-top: 0; }
     .skala-stufen > li::before { display: none; }
