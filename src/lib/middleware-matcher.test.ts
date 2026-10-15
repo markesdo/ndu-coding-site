@@ -44,6 +44,25 @@ describe('Middleware ohne Anmeldung', () => {
     expect(r.status).toBe(303);
     expect(r.headers.get('location')).toBe('/login?weiter=%2Ftag-1');
   });
+  it('Innolab-Seiten leiten zur Innolab-Anmeldung, und die ist ohne Cookie erreichbar', async () => {
+    const r = await ohneCookie('/innolab/tag-1');
+    expect(r.status).toBe(303);
+    expect(r.headers.get('location')).toBe('/login/innolab?weiter=%2Finnolab%2Ftag-1');
+    const login = await ohneCookie('/login/innolab?weiter=%2Finnolab%2Ftag-1');
+    expect(login.headers.get('x-middleware-next')).toBe('1');
+  });
+});
+
+describe('Innolab-Anmeldung mit Cookie', () => {
+  afterEach(() => vi.unstubAllEnvs());
+  it('leitet sofort zum Ziel weiter, wie /login', async () => {
+    vi.stubEnv('SITE_PASSWORD', 'pw');
+    vi.stubEnv('SITE_SESSION_SECRET', 's'.repeat(32));
+    const token = await tokenErstellen('s'.repeat(32), 'pw', Math.floor(Date.now() / 1000));
+    const r = await middleware(new Request('https://kurs.invalid/login/innolab?weiter=%2Finnolab', { headers: { cookie: `${COOKIE}=${token}` } }));
+    expect(r.status).toBe(303);
+    expect(r.headers.get('location')).toBe('/innolab');
+  });
 });
 
 describe('Middleware mit Anmeldung', () => {

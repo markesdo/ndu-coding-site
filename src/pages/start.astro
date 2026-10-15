@@ -1,7 +1,7 @@
 ---
 // Startseite vor dem Login: öffentlich (Middleware lässt /start ohne Kurspasswort durch; wer ohne Anmeldung / aufruft,
 // landet hier), ohne Navigation, eine dunkle Bühne über den ganzen Bildschirm. Zwei Kurse zur Wahl; das Innolab ist
-// ausgegraut, bis der Coding-Kurs vorbei ist (lib/kurswahl.ts). Die Karten führen über /login zum Kurs (kursLink): ohne
+// ausgegraut, bis der Coding-Kurs vorbei ist (lib/kurswahl.ts). Die Karten führen über die Login-Seite des Kurses (kursLink): ohne
 // Anmeldung erst das Kurspasswort, mit Anmeldung direkt weiter. Von NDU Live kommt der Beamer mit ?beamer (wirkt nur beim Präsentator,
 // siehe BeamerStart.astro); die Kurs-Links behalten ihn.
 import BeamerStart from '../components/BeamerStart.astro';

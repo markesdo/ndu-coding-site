@@ -6,7 +6,7 @@
 // Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
-import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
+import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istLoginSeite, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
 
 export const config = {
   matcher: ['/((?!_astro/|favicon(?:-innolab)?\\.svg$|favicon\\.ico$|robots\\.txt$|og(?:-innolab)?\\.png$|version\\.json$).*)'],
@@ -26,8 +26,6 @@ function weiter(ort: string, extra: Record<string, string> = {}): Response {
   return new Response(null, { status: 303, headers: { Location: ort, ...NOINDEX, ...extra } });
 }
 
-const istLogin = (p: string) => p === '/login' || p === '/login/';
-
 export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url);
   // Startseite: für alle, auch ohne Anmeldung (sie zeigt nur Titel und Kurstage) – und unabhängig davon,
@@ -40,7 +38,7 @@ export default async function middleware(request: Request): Promise<Response> {
 
   const jetzt = Math.floor(Date.now() / 1000);
 
-  if (istLogin(url.pathname)) {
+  if (istLoginSeite(url.pathname)) {
     if (request.method === 'POST') {
       const form = await request.formData().catch(() => null);
       const eingabe = typeof form?.get('passwort') === 'string' ? (form!.get('passwort') as string) : '';
