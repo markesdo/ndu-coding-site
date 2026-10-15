@@ -8,6 +8,14 @@ import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
+
+// Achsen und Felder der Annahmen-Map: leer auf „Worum es geht“, gefüllt auf „Am Beispiel“.
+const karte = {
+  y: { label: 'wichtig', unten: 'weniger', oben: 'sehr' },
+  x: { label: 'belegt', links: 'kein Beleg', rechts: 'starker Beleg' },
+  felder: ['Zuerst testen', 'Darauf bauen', 'Später prüfen', 'Abhaken'] as [string, string, string, string],
+  hervor: 'ol' as const,
+};
 ---
 <Layout title="Annahmen-Map">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -20,10 +28,7 @@ import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
     <h2 id="worum">Worum es geht</h2>
     <p class="folie-satz">Getestet wird zuerst, was sehr wichtig ist und kaum belegt.</p>
     <p class="nur-handout">Zwei Fragen pro Annahme: <strong>Wie wichtig ist sie?</strong> Fällt das Produkt um, wenn sie falsch ist? <strong>Welchen Beleg habt ihr?</strong></p>
-    <Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts belegt; oben links zuerst testen"
-      y={{ label: 'wichtig', unten: 'weniger', oben: 'sehr' }}
-      x={{ label: 'belegt', links: 'kein Beleg', rechts: 'starker Beleg' }}
-      felder={['Zuerst testen', 'Darauf bauen', 'Später prüfen', 'Abhaken']} hervor="ol" />
+    <Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts belegt; oben links zuerst testen" {...karte} />
     <p class="nur-handout">Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach diesen zwei Fragen. Die riskanteste Annahme – sehr wichtig, kaum belegt – kommt zuerst dran.</p>
   </Folie>
 
@@ -53,10 +58,7 @@ import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
   <Folie>
     <h2 id="beispiel">Am Beispiel: die riskanteste Annahme</h2>
     <p class="folie-satz">A1 ist sehr wichtig und gar nicht belegt – sie wird zuerst getestet.</p>
-    <Matrix2x2 label="Annahmen-Map der Kaffeebar: nach oben wichtig, nach rechts belegt"
-      y={{ label: 'wichtig', unten: 'weniger', oben: 'sehr' }}
-      x={{ label: 'belegt', links: 'kein Beleg', rechts: 'starker Beleg' }}
-      felder={['Zuerst testen', 'Darauf bauen', 'Später prüfen', 'Abhaken']} hervor="ol"
+    <Matrix2x2 label="Annahmen-Map der Kaffeebar: nach oben wichtig, nach rechts belegt" {...karte}
       punkte={[
         { t: 'A1 · Kaffee schon vor der Ankunft bestimmen', x: .08, y: .86, hervor: true },
         { t: 'A2 · 40 Bestellungen in 30 min', x: .9, y: .72 },
