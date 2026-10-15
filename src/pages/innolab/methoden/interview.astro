@@ -10,6 +10,7 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
+import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
 
 // Ende des Blocks „Jobs to be Done & Mom Test“ an Tag 1 (tag-1.astro): ab dann sehen alle die Auflösungen.
@@ -46,6 +47,23 @@ const NACH_MOM_TEST = '2026-10-22T13:45';
         <li data-schritt><strong>Redet weniger, hört mehr.</strong> Mehr als ein Drittel der Zeit gesprochen – nichts gelernt.</li>
       </ol>
       <p class="small muted">Nach Rob Fitzpatrick, „The Mom Test“ (2013).</p>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="fragen-matrix">Wo liegen eure Fragen?</h2>
+    <p class="folie-satz">Legt eure drei Fragen in die Matrix.</p>
+    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Matrix zeigen (nach der Übung)">
+      <Matrix2x2 label="Mom Test als Matrix: nach oben über ihr Leben statt über eure Idee, nach rechts Vergangenheit statt Zukunft"
+        y={{ label: 'Thema', unten: 'eure Idee', oben: 'ihr Leben' }}
+        x={{ label: 'Zeit', links: 'Zukunft', rechts: 'Vergangenheit' }}
+        felder={['', 'Hier fragen', 'Höfliches Ja', '']} hervor="or"
+        punkte={[
+          { t: 'Würdest du eine App zum Vorbestellen nutzen?', x: .06, y: .1 },
+          { t: 'Findest du die Schlange nervig?', x: .45, y: .55 },
+          { t: 'Erzähl mir vom letzten Morgen am Bahnhof.', x: .94, y: .9, hervor: true },
+        ]} />
+      <p class="nur-handout">Rechts oben liegen Fragen nach dem, was jemand zuletzt getan hat (Regeln 1 und 2). Links unten bekommt ihr Höflichkeit statt Tatsachen. Eigene Darstellung nach den Regeln von Rob Fitzpatrick.</p>
     </Aufloesung>
   </Folie>
 

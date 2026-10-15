@@ -8,7 +8,7 @@ import Folie from '../../components/Folie.astro';
 import Timer from '../../components/Timer.astro';
 import Fluss from '../../components/Fluss.astro';
 import Baum from '../../components/bild/Baum.astro';
-import { Hammer, Footprints, TrendingUp } from '@lucide/astro';
+import { ClipboardList, FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, Mic, ScrollText, TrendingUp } from '@lucide/astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 
@@ -61,11 +61,19 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
     <p>Ein Blatt, ein dicker Stift. Allein, ohne zu reden, möglichst ohne Wörter. Es gibt kein Richtig oder Falsch. <Timer minuten={3} /></p>
     <Aufloesung ab="2026-10-22T10:10">
       <p class="folie-satz">Keine Zeichnung ist falsch – jede*r hat ein anderes Modell im Kopf.</p>
-      <p>Jede Zeichnung besteht aus <strong>Knoten</strong> (Dinge, Schritte, Personen) und <strong>Verbindungen</strong>. Erst wenn Modelle sichtbar sind, wird daraus ein gemeinsames Bild – deshalb arbeiten wir mit Stickies: ein Knoten pro Sticky.</p>
-      <p><strong>Übertrag:</strong> Zeichnet jetzt genauso, wie eure Zielgruppe ihr Problem heute löst – allein, ohne zu reden, ein Knoten pro Sticky. <Timer minuten={6} /></p>
-      <p class="nur-handout">Dieses Bild nehmt ihr in den Problem-Rahmen mit. Jede Verbindung, bei der ihr unsicher seid, bekommt ein „?“ – das sind Kandidaten für die Annahmen-Map am Nachmittag.</p>
-      <p class="small muted">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (<a href="https://www.ted.com/talks/tom_wujec_got_a_wicked_problem_first_tell_me_how_you_make_toast">TED 2013</a>), <a href="https://www.drawtoast.com/">drawtoast.com</a>.</p>
+      <p>Jede Zeichnung besteht aus <strong>Knoten</strong> (Dinge, Schritte, Personen) und <strong>Verbindungen</strong>. Zwei Modelle derselben Aufgabe:</p>
+      <Fluss label="Toast-Modell 1, in der Küche: Brot, Toaster, Butter, essen" knoten={[{ t: 'Brot' }, { t: 'Toaster' }, { t: 'Butter' }, { t: 'essen' }]} />
+      <Fluss label="Toast-Modell 2, von der Herkunft her: Feld, Bäckerei, Supermarkt, Toaster" knoten={[{ t: 'Feld' }, { t: 'Bäckerei' }, { t: 'Supermarkt' }, { t: 'Toaster' }]} />
+      <p class="nur-handout">Erst wenn Modelle sichtbar sind, wird daraus ein gemeinsames Bild – deshalb arbeiten wir mit Stickies: ein Knoten pro Sticky.</p>
+      <p class="small muted nur-handout">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (<a href="https://www.ted.com/talks/tom_wujec_got_a_wicked_problem_first_tell_me_how_you_make_toast">TED 2013</a>), <a href="https://www.drawtoast.com/">drawtoast.com</a>.</p>
     </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="toast-uebertrag">Übertrag: euer Problem als Modell</h2>
+    <p class="folie-satz">Zeichnet, wie eure Zielgruppe ihr Problem heute löst.</p>
+    <p>Genauso wie beim Toast: allein, ohne zu reden, ein Knoten pro Sticky. <Timer minuten={6} /></p>
+    <p class="nur-handout">Dieses Bild nehmt ihr in den Problem-Rahmen mit. Jede Verbindung, bei der ihr unsicher seid, bekommt ein „?“ – das sind Kandidaten für die Annahmen-Map am Nachmittag.</p>
   </Folie>
 
   <Folie>
@@ -82,15 +90,22 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
   <Folie>
     <h2 id="mvp">Was ein MVP ist</h2>
     <p class="folie-satz">Ein MVP ist das Kleinste, mit dem ihr etwas lernt.</p>
-    <div class="gegenueber">
-      <Callout type="warn" title="Nicht">
-        <p>Die schlechteste Version, die man gerade noch veröffentlichen kann.</p>
-      </Callout>
-      <Callout type="tip" title="Sondern">
-        <p>Das Kleinste, mit dem ihr prüft, ob eine Annahme stimmt – oder das das gewünschte Outcome erreicht.</p>
-      </Callout>
+    <p><strong>Nicht so:</strong> Erst am Ende kann jemand bestellen.</p>
+    <Fluss label="MVP, nicht so: Login, Menü, fertige App – erst am Ende nutzbar" knoten={[
+      { t: 'Login', sub: 'nichts gelernt' },
+      { t: 'Menü', sub: 'nichts gelernt' },
+      { t: 'Fertige App', sub: 'erst jetzt: will das jemand?' },
+    ]} />
+    <div data-schritt>
+      <p><strong>Sondern:</strong> Jede Stufe kann jemand benutzen.</p>
+      <Fluss label="MVP, sondern: Schild an der Theke, Bestellformular, App – jede Stufe nutzbar" hervor={[0]} knoten={[
+        { t: 'Schild „Per WhatsApp vorbestellen“', sub: 'will jemand vorbestellen?' },
+        { t: 'Bestellformular', sub: 'was und wann?' },
+        { t: 'App', sub: 'wie oft?' },
+      ]} />
     </div>
-    <p class="small muted">Kaffeebar: Statt einer App zuerst ein Schild „Per WhatsApp vorbestellen“ an der Theke – kommt in einer Woche keine Bestellung, braucht es die App nicht.</p>
+    <p class="small muted">Nach Henrik Kniberg, <a href="https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp">„Making sense of MVP“</a> (2016): Skateboard, Fahrrad, Auto statt Rad, Achse, Auto.</p>
+    <p class="nur-handout">Ein MVP ist nicht die schlechteste Version, die man gerade noch veröffentlichen kann, sondern das Kleinste, mit dem ihr prüft, ob eine Annahme stimmt – oder das das gewünschte Outcome erreicht. Kommt in einer Woche keine WhatsApp-Bestellung, braucht es die App nicht.</p>
   </Folie>
 
   <Folie>
@@ -109,25 +124,30 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
   <Folie>
     <h2 id="methoden">Die Methoden von heute</h2>
     <p class="folie-satz">Am Abend habt ihr Brief, Leitfaden und eure riskanteste Annahme.</p>
-    <ul class="gross">
-      <li><a href="/innolab/methoden/problem-rahmen">Problem-Rahmen & Produkt-Brief</a> – für wen, welches Problem, welches Outcome</li>
-      <li><a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a> – was ihr entscheidet, mit Beleg</li>
-      <li><a href="/innolab/methoden/interview">Jobs to be Done & Mom Test</a> – der Interviewleitfaden</li>
-      <li><a href="/innolab/methoden/annahmen">Annahmen-Map</a> – die riskanteste Annahme zuerst</li>
-    </ul>
+    <Fluss label="Die Methoden von Tag 1 und was dabei entsteht" knoten={[
+      { t: 'Problem-Rahmen', sub: '<a href="/innolab/methoden/problem-rahmen">Brief</a>', icon: FileText },
+      { t: 'Entscheidungslog', sub: '<a href="/innolab/methoden/entscheidungslog">erste Zeilen</a>', icon: ListPlus },
+      { t: 'Jobs to be Done & Mom Test', sub: '<a href="/innolab/methoden/interview">Leitfaden</a>', icon: MessagesSquare },
+      { t: 'Annahmen-Map', sub: '<a href="/innolab/methoden/annahmen">riskanteste Annahme</a>', icon: Grid2x2 },
+    ]} />
   </Folie>
 
   <Folie>
     <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
     <p class="folie-satz">Fünf echte Interviews mit eurer Zielgruppe.</p>
-    <p>Je 20–30 Minuten, nach eurem Leitfaden. Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett.</p>
-    <Checklist id="il-tag1-hausaufgabe" items={[
+    <Fluss label="Hausaufgabe: Interview, Transkript, Zeile im Entscheidungslog" knoten={[
+      { t: '5 Interviews', sub: 'je 20–30 min, nach dem Leitfaden', icon: Mic },
+      { t: 'Transkripte', sub: '<code>docs/interviews/I1.md</code> bis <code>I5.md</code>', icon: ScrollText },
+      { t: 'Überraschungen', sub: 'je eine Zeile in <code>ENTSCHEIDUNGEN.md</code>', icon: ClipboardList },
+    ]} />
+    <p>Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett.</p>
+    <div class="nur-handout"><Checklist id="il-tag1-hausaufgabe" items={[
       'Fünf Personen aus der Zielgruppe gefunden (Tipp: am Ende jedes Interviews fragen, wen ihr noch fragen solltet)',
       'Einwilligung zur Aufnahme eingeholt',
       'Transkripte ohne Namen als <code>docs/interviews/I1.md</code> bis <code>I5.md</code> im Repo',
       'Eine Zeile pro Überraschung in <code>docs/ENTSCHEIDUNGEN.md</code>',
       'Committet und gepusht',
-    ]} />
+    ]} /></div>
     <div class="nur-handout">
       <Callout type="info" title="Nur drei geschafft?">
         <p>Bringt mit, was ihr habt. Unter drei Interviews wird die Auswertung an Tag 2 dünn – dann ergänzt ihr am Morgen mit Gesprächen im Haus.</p>
