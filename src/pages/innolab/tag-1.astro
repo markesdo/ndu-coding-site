@@ -7,6 +7,7 @@ import Folie from '../../components/Folie.astro';
 import Timer from '../../components/Timer.astro';
 import Fluss from '../../components/Fluss.astro';
 import Baum from '../../components/bild/Baum.astro';
+import Diamant from '../../components/bild/Diamant.astro';
 import { FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
 import FooterNav from '../../components/FooterNav.astro';
 
@@ -109,14 +110,14 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
   <Folie>
     <h2 id="schiefgehen">Wie Design Thinking schiefgeht</h2>
     <p class="folie-satz">Design Thinking scheitert selten an Ideen, meist am Vorgehen.</p>
-    <ul class="gross">
-      <li data-schritt>Ohne Rahmen starten – niemand weiß, für wen die Lösung gut sein soll.</li>
-      <li data-schritt>Nicht mit Menschen reden, weil die eigene Idee überzeugt.</li>
-      <li data-schritt>Viele Probleme für viele Menschen auf einmal lösen wollen.</li>
-      <li data-schritt>Nur eine Lösung betrachten, weil die erste gut klingt.</li>
-      <li data-schritt>„Sieht toll aus“ für einen Test halten.</li>
-    </ul>
-    <p class="small muted">Nach Jeff Patton, User Story Mapping (O’Reilly 2014).</p>
+    <Diamant label="Double Diamond mit fünf typischen Fehlern: zwei beim Entdecken, je einer beim Definieren, Entwickeln und Ausliefern" schritt phasen={[
+      { t: 'Entdecken', eintraege: ['Ohne Rahmen starten – für wen eigentlich?', 'Nicht mit Menschen reden, weil die Idee überzeugt.'] },
+      { t: 'Definieren', eintraege: ['Viele Probleme für viele Menschen auf einmal lösen wollen.'] },
+      { t: 'Entwickeln', eintraege: ['Nur eine Lösung betrachten, weil die erste gut klingt.'] },
+      { t: 'Ausliefern', eintraege: ['„Sieht toll aus“ für einen Test halten.'] },
+    ]} />
+    <p class="small muted">Fehler nach Jeff Patton, „User Story Mapping“ (2014), Double Diamond: <a href="https://www.designcouncil.org.uk/our-resources/framework-for-innovation/">Design Council</a> (CC BY 4.0).</p>
+    <p class="nur-handout">Zum ersten Fehler: Ohne Rahmen weiß niemand, für wen die Lösung gut sein soll.</p>
   </Folie>
 
   <Folie>
