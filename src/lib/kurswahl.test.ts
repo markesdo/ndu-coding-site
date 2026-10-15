@@ -4,8 +4,8 @@ import { sichererPfad } from './kurszugang';
 import { TAGE } from '../components/methoden';
 
 describe('kurswahl', () => {
-  it('Stichtag ist der erste Innolab-Tag', () => {
-    expect(INNOLAB_AB).toBe(TAGE[0].datum);
+  it('Stichtag liegt spätestens am ersten Innolab-Tag (Tag 1 ist seit der Absage am 16.10. erst am 22.10.)', () => {
+    expect(INNOLAB_AB <= TAGE[0].datum).toBe(true);
   });
 
   it('rechnet den Kalendertag in Wien, nicht in UTC', () => {

@@ -41,7 +41,7 @@ export const BEREICHE: Record<Bereich, BereichInfo> = {
     favicon: '/favicon-innolab.svg',
     titel: 'NDU Innolab 2026',
     beschreibung: 'Innolab – ein digitales Produkt entwickeln und organisieren. MSc Management by Innovation, NDU, 2026',
-    termine: '16. Oktober 2026 – 7. Jänner 2027',
+    termine: '22. Oktober 2026 – 7. Jänner 2027',
     kurz: 'Innolab',
   },
 };

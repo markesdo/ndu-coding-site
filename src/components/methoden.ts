@@ -378,7 +378,7 @@ export const METHODEN: Methode[] = [
  *  Methode –, Tag 7 (halber Tag) Präsentation. Dazwischen arbeitet ihr zu Hause; gebaut wird bis Tag 6.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). */
 export const TAGE: { n: number; datum: string; titel: string; text: string }[] = [
-  { n: 1, datum: '2026-10-16', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
+  { n: 1, datum: '2026-10-22', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
   { n: 2, datum: '2026-10-22', titel: 'Kunde & Erlebnis', text: 'Interviews auswerten, Kundenprofil, Journey Map, Chancen und Ideen.' },
   { n: 3, datum: '2026-11-21', titel: 'Lösung, Story, Prototyp', text: 'Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
   { n: 4, datum: '2026-11-28', titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Scrum, Backlog, Akzeptanzkriterien, Sprint-1-Planning, Pitch.' },
