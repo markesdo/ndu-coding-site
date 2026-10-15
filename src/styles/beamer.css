@@ -94,7 +94,7 @@ html[data-beamer] .timer { font-size: 1.2rem; }
 html[data-beamer] .folie-satz { font-size: 1.6rem; }
 /* Auf Folienseiten trägt die Folie ihren Titel selbst; die klebende „Wo bin ich“-Leiste würde ihn verdecken. */
 html[data-beamer]:has(.folie) .orient { display: none; }
-html[data-beamer] .content ul.gross > li { font-size: 1.25rem; }
+html[data-beamer] .content :is(ul, ol).gross > li { font-size: 1.25rem; }
 
 @media (max-width: 900px) {
   html[data-beamer] .content { padding: 1.25rem 16px 4rem; }

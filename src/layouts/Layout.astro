@@ -196,7 +196,9 @@ const { vorher, danach } = nachbarn(path);
         if ((e.key !== 't' && e.key !== 'T') || e.ctrlKey || e.metaKey || e.altKey || !tastenFrei(e)) return;
         if (!root.hasAttribute('data-beamer')) return;
         const { folien, i } = folieJetzt();
-        const knoepfe = [...(folien[i]?.querySelectorAll<HTMLButtonElement>('[data-timer-knopf]') ?? [])].filter((k) => k.offsetParent !== null);
+        // Sichtbar heißt: angezeigt und nicht in einem noch verdeckten Schritt (visibility: hidden zählt für offsetParent nicht).
+        const knoepfe = [...(folien[i]?.querySelectorAll<HTMLButtonElement>('[data-timer-knopf]') ?? [])]
+          .filter((k) => k.offsetParent !== null && !k.closest('[data-schritt]:not(.gezeigt)'));
         knoepfe.at(-1)?.click();
       });
       document.addEventListener('keydown', (e) => {

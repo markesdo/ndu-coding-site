@@ -101,7 +101,7 @@ h2 { font-size: 1.4rem; line-height: 1.2; margin: 2.5rem 0 .75rem; }
 /* Kernsatz einer Folie: die Aussage als ganzer Satz (Assertion-Evidence), darunter das Bild. */
 .folie-satz { font-size: 1.25rem; font-weight: 600; line-height: 1.35; max-width: 40ch; }
 /* Kurze Liste in Folienschrift; Gut/Schlecht nebeneinander, am Handy untereinander. */
-.content ul.gross > li { font-size: 1.1rem; margin-bottom: .5rem; }
+.content :is(ul, ol).gross > li { font-size: 1.1rem; margin-bottom: .5rem; }
 /* Nicht .compare: deren „schlecht“ nutzt --accent, im Innolab grün wie „gut“. Umbruch nach verfügbarer Breite statt
    Fensterbreite (die Seitenleiste zählt mit), wie bei Fluss. */
 .gegenueber { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 1.25rem; }
