@@ -2,14 +2,12 @@
 import Layout from '../../layouts/Layout.astro';
 import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
-import Callout from '../../components/Callout.astro';
 import Aufloesung from '../../components/Aufloesung.astro';
 import Folie from '../../components/Folie.astro';
 import Timer from '../../components/Timer.astro';
 import Fluss from '../../components/Fluss.astro';
 import Baum from '../../components/bild/Baum.astro';
-import { ClipboardList, FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, Mic, ScrollText, TrendingUp } from '@lucide/astro';
-import Checklist from '../../components/Checklist.astro';
+import { FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
 import FooterNav from '../../components/FooterNav.astro';
 
 // Roter Faden des Innolab am Beispiel der Kaffeebar: heute entsteht die oberste Ebene.
@@ -37,7 +35,7 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
     <Block time="13:45–15:15" type="uebung" title="Interviewleitfaden" href="/innolab/methoden/interview#vorgehen">Leitfaden, Probe mit Claude, Live-Interview mit Markus.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:15" type="uebung" title="Annahmen-Map" href="/innolab/methoden/annahmen">Vier Arten von Annahmen, die riskanteste zuerst.</Block>
-    <Block time="16:15–16:45" type="plenum" title="Hausaufgabe & Abschluss" href="#hausaufgabe">Fünf echte Interviews bis Tag 2.</Block>
+    <Block time="16:15–16:45" type="plenum" title="Hausaufgabe & Abschluss" href="/innolab/tag-1/abschluss">Fünf echte Interviews bis Tag 2.</Block>
   </div>
 
   <hr />
@@ -130,32 +128,8 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
       { t: 'Jobs to be Done & Mom Test', sub: '<a href="/innolab/methoden/interview">Leitfaden</a>', icon: MessagesSquare },
       { t: 'Annahmen-Map', sub: '<a href="/innolab/methoden/annahmen">riskanteste Annahme</a>', icon: Grid2x2 },
     ]} />
+    <p class="nur-handout">Die Hausaufgabe bis Tag 2 – fünf Interviews, Transkripte, Entscheidungslog – steht auf der Seite <a href="/innolab/tag-1/abschluss">Abschluss & Hausaufgabe</a>.</p>
   </Folie>
-
-  <Folie>
-    <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
-    <p class="folie-satz">Fünf echte Interviews mit eurer Zielgruppe.</p>
-    <Fluss label="Hausaufgabe: Interview, Transkript, Zeile im Entscheidungslog" knoten={[
-      { t: '5 Interviews', sub: 'je 20–30 min, Aufnahme nur mit Einwilligung', icon: Mic },
-      { t: 'Transkripte', sub: 'ohne Namen, <code>docs/interviews/I1.md</code> bis <code>I5.md</code>', icon: ScrollText },
-      { t: 'Überraschungen', sub: 'je eine Zeile in <code>docs/ENTSCHEIDUNGEN.md</code>', icon: ClipboardList },
-    ]} />
-    <p>Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett.</p>
-    <div class="nur-handout"><Checklist id="il-tag1-hausaufgabe" items={[
-      'Fünf Personen aus der Zielgruppe gefunden (Tipp: am Ende jedes Interviews fragen, wen ihr noch fragen solltet)',
-      'Einwilligung zur Aufnahme eingeholt',
-      'Transkripte ohne Namen als <code>docs/interviews/I1.md</code> bis <code>I5.md</code> im Repo',
-      'Eine Zeile pro Überraschung in <code>docs/ENTSCHEIDUNGEN.md</code>',
-      'Committet und gepusht',
-    ]} /></div>
-    <div class="nur-handout">
-      <Callout type="info" title="Nur drei geschafft?">
-        <p>Bringt mit, was ihr habt. Unter drei Interviews wird die Auswertung an Tag 2 dünn – dann ergänzt ihr am Morgen mit Gesprächen im Haus.</p>
-      </Callout>
-    </div>
-  </Folie>
-
-  <p>Weiter geht es mit den Transkripten an <a href="/innolab/tag-2">Tag 2</a>.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden', t: 'Toolbox' }} next={{ href: '/innolab/methoden/problem-rahmen', t: 'Problem-Rahmen & Produkt-Brief' }} />
 </Layout>
