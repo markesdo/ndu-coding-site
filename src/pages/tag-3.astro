@@ -145,7 +145,7 @@ Prüfen: [ein Satz – was anklicken, was soll passieren]</Prompt>
   <p><strong>Claude Design</strong> ist Anthropics Werkzeug für Entwürfe und klickbare Prototypen. Es ist in eurem Pro-Abo enthalten und steckt direkt in Claude: auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> in der Seitenleiste unter <em>Design</em> – links der Chat, rechts die Arbeitsfläche. (Die alte Einzelseite claude.ai/design schließt am 14. Dezember; ihr braucht sie nicht.) Wie an Tag 1 beschreibt ihr, was ihr wollt – nur dass am Ende ein Entwurf steht statt Code.</p>
   {/* PLATZHALTER: Screenshots für b) bis e) (Arbeitsfläche, Kommentare/Regler, Übergabe, Ankunft in Claude Code) folgen.  */}
 
-  <h3 id="uebung-9-a">a) Euer System einlesen (15 min)</h3>
+  <h3 id="uebung-9-a">a) Euer System einlesen und verbessern (25 min)</h3>
   <p>Claude Design liest euer Repo und baut daraus Farben, Schriften, Komponenten und ein kurzes Markenbuch. Das dauert rund fünf Minuten – lasst es laufen.</p>
   <Schritte id="claude-design" steps={[
     { img: bild('tag3/cd-1-system'), alt: 'Claude mit geöffnetem Design-System: Auswahl „Sync from GitHub“, „Build from connectors“, „Upload brand files“', text: 'Auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> links <em>Design</em> (1), dann <em>Design System</em>. Claude fragt, woraus das System entstehen soll: <em>Sync from GitHub</em> (2).', marks: [{ x: 8, y: 220, w: 272, h: 28, n: 1 }, { x: 316, y: 316, w: 377, h: 84, n: 2 }] },
@@ -153,10 +153,29 @@ Prüfen: [ein Satz – was anklicken, was soll passieren]</Prompt>
     { img: bild('tag3/cd-3-ergebnis'), alt: 'Fertiges Design-System „Leihbar“: links die Zusammenfassung, rechts das Markenbuch mit Logo und Farben', text: 'Fertig: Links fasst Claude zusammen, was es aus dem Repo übernommen hat – Farben, Schriften, Komponenten, Fotos (1). Rechts steht das Markenbuch (2). Lest beides: Stimmt das mit eurer App überein?', marks: [{ x: 316, y: 300, w: 377, h: 350, n: 1 }, { x: 734, y: 122, w: 740, h: 610, n: 2 }] },
   ]} />
   <p>Dann prüfen, wie bei jedem Ergebnis eines Agenten: Stimmen die Farben mit eurer App überein? Die Schrift? Sehen die Buttons aus wie eure? Was nicht stimmt, sagt ihr Claude Design im Chat – es ist eure App, nicht seine Vorstellung davon.</p>
+  <p>Dann bringt ihr das System auf den Stand von 2026: lesbar für alle, mit Tastatur bedienbar, mit allen Zuständen jeder Komponente. Euer Charakter bleibt – Claude Design soll verbessern, nicht neu erfinden.</p>
+  <Prompt label="Design-System auf Stand 2026" note="Lest die Liste am Ende: Sie ist das, was Claude Code in Teil e umsetzt.">Bring unser Design-System auf den Stand von 2026, ohne dass die App ihren Charakter verliert – Hauptfarbe, Schrift und Ton bleiben erkennbar. Prüf und verbessere:
+1. Farben: Tokens nach Zweck benannt (Hintergrund, Text, Rand, Aktion, Erfolg, Warnung, Fehler), jede Textfarbe mit mindestens 4,5:1 Kontrast nach WCAG 2.2 AA, dazu ein dunkler Modus.
+2. Schrift: eine klare Größenskala, die vom Handy bis zum Laptop mitwächst; Fließtext mindestens 16 px.
+3. Abstände, Radien, Schatten: feste Stufen in 4-px-Schritten statt Einzelwerte.
+4. Komponenten: jeder Button, jedes Feld, jede Karte mit allen Zuständen – normal, Hover, Fokus (für die Tastatur deutlich sichtbar), gedrückt, deaktiviert, Laden, Fehler. Tippflächen mindestens 44 px.
+5. Bewegung: kurze, ruhige Übergänge als Tokens; wer reduzierte Bewegung eingestellt hat, bekommt keine.
 
-  <h3 id="uebung-9-b">b) Den nächsten Screen entwerfen (25 min)</h3>
-  <p>Nehmt das nächste offene Issue aus eurem Backlog, das eine Oberfläche hat – oder den Screen eurer App, mit dem ihr am wenigsten zufrieden seid.</p>
-  <Prompt label="In Claude Design" note="Die Zustände am Ende sind der Teil, den ein Entwurf sonst vergisst – und den Claude Code später raten müsste.">Entwirf mit unserem Design-System den Screen für diesen Auftrag: [Issue aus docs/BACKLOG.md einfügen – oder in zwei Sätzen: welcher Screen, und was daran nicht passt]. Zuerst fürs Handy (375 px), dann für den Laptop. Verwende nur unsere Farben, Schriften und Komponenten; wenn dir eine Komponente fehlt, sag es, statt eine zu erfinden. Mach daraus einen klickbaren Prototyp. Zeig zusätzlich diese Zustände: keine Daten, Laden, Fehler.</Prompt>
+Zeig mir Vorher und Nachher nebeneinander und erklär jede Änderung in einem Satz ohne Fachbegriffe. Erfinde keine neue Marke – alles muss sich in unserer App umsetzen lassen. Liste am Ende auf, was sich dafür im Code ändern müsste.</Prompt>
+
+  <h3 id="uebung-9-b">b) Den nächsten Screen entwerfen (15 min)</h3>
+  <p>Nehmt den Screen eurer App, mit dem ihr am wenigsten zufrieden seid – jetzt mit dem verbesserten System.</p>
+  <Prompt label="In Claude Design" note="Habt ihr ein offenes Issue mit Oberfläche, kopiert es samt Akzeptanzkriterien statt der Klammer hinein. Die Zustände am Ende sind der Teil, den ein Entwurf sonst vergisst – und den Claude Code später raten müsste.">Entwirf mit unserem Design-System einen Screen für diesen Auftrag:
+[welcher Screen eurer App, für wen, und was daran heute nicht passt – zwei Sätze]
+
+Fehlt dir etwas Wichtiges, stell mir zuerst höchstens drei Fragen.
+Die wichtigste Handlung auf dem Screen muss man auf den ersten Blick finden.
+Zuerst fürs Handy (375 px), dann für den Laptop (1280 px).
+Verwende nur Farben, Schriften, Abstände und Komponenten aus dem Design-System. Fehlt dir eine Komponente, schlag sie vor und markier sie im Entwurf als neu, statt still eine zu erfinden.
+Nimm echte, glaubwürdige Inhalte auf Deutsch statt Platzhaltertext – auch einen sehr langen Titel.
+Mach den Hauptweg aus dem Auftrag als Prototyp durchklickbar.
+Zeig zusätzlich: keine Daten, Laden, Fehler – und bei Formularen eine falsche Eingabe.
+Schreib am Ende auf, was du angenommen hast, weil der Auftrag es nicht sagt.</Prompt>
   <Schritte id="entwerfen" steps={[
     { img: bild('tag3/cd-4-prompt'), alt: 'Neues Design in Claude: Auftrag im Eingabefeld, darunter „Claude Design“ und das gewählte Design-System „Leihbar“', text: 'In Claude links <em>Design</em>, dann die Kachel <em>Design</em> → <em>Start with a prompt</em>. Unter dem Eingabefeld euer Design-System wählen (1) – sonst entwirft Claude mit einer eigenen Optik. Auftrag einfügen, abschicken (2). Claude arbeitet fünf bis zehn Minuten.', marks: [{ x: 812, y: 611, w: 74, h: 26, n: 1 }, { x: 1170, y: 563, w: 36, h: 36, n: 2 }], crop: { x: 540, y: 300, w: 720, h: 360 } },
     { img: bild('tag3/cd-5-canvas'), alt: 'Arbeitsfläche mit Reihen für Handy und Laptop in den Zuständen Daten, Keine Daten, Laden, Fehler; links Claudes Annahmen', text: 'Fertig: Auf der Arbeitsfläche liegen eure Screens nebeneinander, je Zustand einer (1). Links schreibt Claude, <em>was es angenommen hat</em> (2) – lest das genau, es sind die Stellen, an denen euer Issue nichts gesagt hat. Zeigt die Fläche nichts, lädt die Seite einmal neu.', marks: [{ x: 765, y: 205, w: 680, h: 445, n: 1 }, { x: 316, y: 155, w: 377, h: 340, n: 2 }] },
@@ -191,7 +210,7 @@ Entwurf: [Share-Link aus Claude Design]</Prompt>
     { img: bild('tag3/cd-10-link'), alt: 'Teilen-Feld des Entwurfs mit „Only you“ und „Copy private link“', text: 'Oben rechts <em>Share</em> (1), dann <em>Copy private link</em> (2). Der Link bleibt privat – nur ihr könnt ihn öffnen, auch Claude Code nur mit eurem Konto.', marks: [{ x: 1384, y: 8, w: 78, h: 32, n: 1 }, { x: 1304, y: 402, w: 158, h: 36, n: 2 }] },
   ]} />
   <p>Dann in Claude Code im Terminal, vorher <code>/clear</code>:</p>
-  <Prompt label="Übergabe an Claude Code" note="Statt [Link] den kopierten Link. Lest das Issue, bevor ihr Okay sagt – was passieren muss, entscheidet ihr, nicht Claude.">Hier ist mein Entwurf aus Claude Design: [Link]. Lies ihn mit deinem Artifact-Werkzeug und sag mir, zu welchem Issue in docs/BACKLOG.md er gehört. Gibt es keins, schreib eins im Format von docs/BACKLOG.md – mit Akzeptanzkriterien auch für keine Daten, Laden und Fehler – und trag es dort ein. Warte dann auf mein Okay. Bau den Entwurf auf einem neuen Branch, main bleibt unberührt. Nutze die Farben und Komponenten, die es im Projekt schon gibt, keine neuen Farbwerte in Komponenten. Widersprechen sich Entwurf und Issue, frag mich. Bevor du „fertig“ sagst: npm run lint und npm run build fehlerfrei, den Screen bei 375 und 1280 px ansehen (Screenshots nicht committen), ein Beleg pro Akzeptanzkriterium. Dann push und erstelle einen Pull Request mit einer Beschreibung ohne Fachjargon.</Prompt>
+  <Prompt label="Übergabe an Claude Code" note="Statt [Link] den kopierten Link. Lest das Issue, bevor ihr Okay sagt – was passieren muss, entscheidet ihr, nicht Claude.">Hier ist mein Entwurf aus Claude Design: [Link]. Lies ihn mit deinem Artifact-Werkzeug und sag mir, zu welchem Issue in docs/BACKLOG.md er gehört. Gibt es keins, schreib eins im Format von docs/BACKLOG.md – mit Akzeptanzkriterien auch für keine Daten, Laden und Fehler – und trag es dort ein. Warte dann auf mein Okay. Bau den Entwurf auf einem neuen Branch, main bleibt unberührt. Übernimm zuerst die Tokens aus dem überarbeiteten Design-System (Farben, Schriften, Abstände) an die Stelle im Projekt, an der heute die Farben stehen, und nutze dann nur diese und die vorhandenen Komponenten – keine Farbwerte direkt in Komponenten. Den dunklen Modus baust du jetzt noch nicht: Trag ihn als eigenes Issue in docs/BACKLOG.md ein. Widersprechen sich Entwurf und Issue, frag mich. Bevor du „fertig“ sagst: npm run lint und npm run build fehlerfrei, den Screen bei 375 und 1280 px ansehen (Screenshots nicht committen), ein Beleg pro Akzeptanzkriterium. Dann push und erstelle einen Pull Request mit einer Beschreibung ohne Fachjargon.</Prompt>
   <p class="small">Kann Claude Code den Link nicht lesen? Dann im Entwurf <em>Share</em> → <em>Export</em> → <em>HTML</em> herunterladen, die Datei in den Projektordner ziehen und im Auftrag statt des Links den Dateinamen nennen.</p>
   <p>Prüft selbst im Browser. Zusammenführen erst nach f) – dort vergleicht ihr noch mit dem Entwurf.</p>
 
