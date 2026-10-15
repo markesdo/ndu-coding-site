@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Prompt from '../components/Prompt.astro';
 import { LOGIN_REGEL_PROMPT } from '../lib/login-regel';
 import { HANDY_PROMPT } from '../lib/handy-prompt';
+import { BREITEN_KRITERIEN_PROMPT, MOBILE_FIRST_PROMPT } from '../lib/responsive-prompts';
 ---
 <Layout title="Prompt-Bibliothek">
   <span class="eyebrow">Nachschlagen</span>
@@ -25,6 +26,8 @@ import { HANDY_PROMPT } from '../lib/handy-prompt';
   <h2>Bauen</h2>
   <Prompt label="Issue umsetzen">Setze Issue [Nummer] aus docs/BACKLOG.md um. Wenn etwas unklar ist, frag zuerst. Geh danach die Akzeptanzkriterien einzeln durch und zeig mir für jedes einen Beleg: was du geprüft hast und was ich im Browser sehen soll.</Prompt>
   <Prompt label="Kleine Änderung">Ändere [genau eine Sache] – sonst nichts. Sag mir danach, welche Datei du angefasst hast.</Prompt>
+  <Prompt label="Seite mobile first bauen" note="Mehr dazu: Responsive Design.">{MOBILE_FIRST_PROMPT}</Prompt>
+  <Prompt label="Akzeptanzkriterien für die Breiten">{BREITEN_KRITERIEN_PROMPT}</Prompt>
   <Prompt label="Screenshot-Feedback">[Screenshot einfügen] Auf diesem Screenshot ist [Beobachtung]. Mach [gewünschte Änderung], ohne das restliche Design zu verändern.</Prompt>
   <Prompt label="TDD (Test-Driven Development)" note="TDD heißt: erst Tests aus den Akzeptanzkriterien, dann die Funktion, bis alle Tests bestehen. Mehr dazu unter „Vom Prototyp zum Produkt“.">Setze Issue [Nummer] nach TDD um: Schreib zuerst Playwright-Tests für alle Akzeptanzkriterien und führe sie aus – sie müssen rot sein. Dann baue die Funktion, bis alle Tests grün sind. Ändere die Tests dabei nicht, außer du erklärst mir warum.</Prompt>
   <Prompt label="KI-Feature (Issue 8)">Setze Issue 8 um: Beim Anbieten eines Gegenstands gibt es einen Button „Beschreibung vorschlagen“, der aus Titel, Kategorie und Ort mit der Claude-API (Modell claude-sonnet, Key aus ANTHROPIC_API_KEY, nur im Backend) eine Beschreibung in 2–3 Sätzen generiert. Begrenze auf 5 Aufrufe pro Minute und Person. Frag zuerst, wenn etwas unklar ist.</Prompt>

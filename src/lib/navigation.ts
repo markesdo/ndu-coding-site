@@ -67,6 +67,7 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
       { href: '/konzepte/agenten-steuern', t: 'Agenten steuern' },
       { href: '/konzepte/qualitaet', t: 'Vom Prototyp zum Produkt' },
       { href: '/konzepte/design-system', t: 'Design-System' },
+      { href: '/konzepte/responsive', t: 'Responsive Design' },
       { href: '/konzepte/ausblick', t: 'So wird 2026 gearbeitet' },
       { href: '/konzepte/linear', t: 'Backlog im Team: Linear' },
     ]},
