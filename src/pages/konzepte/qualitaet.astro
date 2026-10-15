@@ -73,7 +73,20 @@ import { HANDY_PROMPT } from '../../lib/handy-prompt';
   <p>Profis ändern Code nie direkt im Hauptstand. Sie arbeiten in einem <strong>Branch</strong>, stellen einen <strong><a href="/konzepte/git#pull-request">Pull Request</a></strong> (PR) und lassen ihn prüfen. Claude Code hat dafür eingebaute Befehle: <code>/code-review</code> prüft eure Änderungen gegenüber <code>main</code> auf Fehler – in einem eigenen Agenten mit frischem Kontext –, <code>/security-review</code> speziell auf Sicherheitslücken – den braucht ihr nicht bei jedem Pull Request, sondern bei größeren Änderungen (siehe Sicherheit unten). (<code>/review</code> ist heute nur ein anderer Name für <code>/code-review</code>.) Und der stärkste Trick: ein <strong>zweiter Agent mit frischem Kontext</strong> – der hat den Code nicht geschrieben und verteidigt ihn nicht. Im Kurs, ohne Branch und Pull Request: <code>/ndu-review</code>.</p>
   <Prompt label="Review-Regeln festhalten" note="Einmal pro Projekt. Danach gelten die Regeln in jeder Session.">Schreib in CLAUDE.md einen kurzen Abschnitt „Arbeitsweise“ mit diesen Regeln, damit sie in jeder Session gelten: Jedes Issue bekommt einen eigenen Branch. Vor dem Pull Request führst du /code-review aus, zeigst mir die Funde in einfachen Worten und behebst nur, was ich freigebe. Die PR-Beschreibung ist ohne Programmierkenntnisse verständlich: Was wurde geändert, wie prüfe ich es, welche Risiken gibt es. Zeig mir den Abschnitt, bevor du ihn speicherst.</Prompt>
 
-  <h2>3 · Sicherheit – was ein Audit prüft</h2>
+  <h2>3 · Sicherheit – was ihr selbst prüfen könnt</h2>
+  <p>Den Code prüft Claude für euch. Vier Dinge prüft ihr selbst im Browser – die finden die häufigsten Lücken.</p>
+  <Prompt label="Sicherheits-Check" note="Claude behebt erst, wenn ihr freigebt.">Prüfe meine App auf Sicherheitslücken und antworte pro Punkt mit „in Ordnung“, „Problem“ oder „unklar“, in einfachen Worten: 1. Steht ein geheimer Schlüssel im Repo oder im Code, der im Browser landet? Die .env.local liest du dafür nicht, und du gibst keine Werte aus. 2. Hat jede Tabelle Row Level Security, und kann jemand fremde Einträge ändern oder löschen? 3. Werden Eingaben im Backend geprüft (leer, zu lang, HTML)? 4. Meldet npm audit kritische Funde? 5. Kann jemand eine KI-Funktion beliebig oft aufrufen und so Guthaben verbrauchen? 6. Zeigen Fehlerseiten technische Details? Behebe nichts, bevor ich es freigebe.</Prompt>
+  <h3 id="selbst-pruefen">Selbst prüfen</h3>
+  <Checklist id="sicherheit-selbst" items={[
+    '<strong>Zwei Konten:</strong> Mit Konto A etwas anlegen. Dann ein privates Fenster öffnen, mit Konto B anmelden und versuchen, den Eintrag zu ändern oder zu löschen. Geht nicht = gut.',
+    '<strong>Abgemeldet:</strong> Die Adresse einer Seite, die nur Angemeldete sehen sollen, kopieren und im privaten Fenster ohne Anmeldung öffnen. Ihr landet bei der Anmeldung = gut.',
+    '<strong>Unsinn eingeben:</strong> ein leeres Feld, ein sehr langer Text, <code>&lt;b&gt;fett&lt;/b&gt;</code>. Die App stürzt nicht ab und zeigt den Text als Text, nicht fett = gut.',
+    '<strong>Schlüssel auf GitHub:</strong> Im Repo oben im Suchfeld nach <code>sb_secret</code> und <code>sk-ant</code> suchen. Keine Treffer = gut.',
+  ]} />
+  <p class="small"><code>/security-review</code> prüft nur eure Änderungen gegenüber <code>main</code> – sinnvoll vor einem größeren Pull Request, etwa wenn sich an Anmeldung oder Zugriffsrechten etwas ändert.</p>
+
+  <h3 id="audit">Für Profis: was ein Audit prüft</h3>
+  <p class="small">Zur Einordnung: So sieht die Liste aus, mit der Entwickler*innen eine App vor dem Start prüfen. Den Großteil deckt der Sicherheits-Check oben ab.</p>
   <Checklist id="security" items={[
     '<strong>Secrets:</strong> kein Key im Repo, keiner im Frontend-Code, alle in .env/Vercel',
     '<strong>Autorisierung:</strong> RLS auf jeder Tabelle; getestet mit zwei Accounts',
