@@ -82,7 +82,21 @@ export function istOeffentlich(pfad: string): boolean {
 // mit derselben Suche, damit ?beamer erhalten bleibt. Jede andere Kursseite führt zum Kurspasswort und danach zurück.
 export function ohneAnmeldungZiel(pfad: string, suche: string): string {
   if (pfad === '/') return `/start${suche}`;
-  return `/login?weiter=${encodeURIComponent(sichererPfad(pfad + suche))}`;
+  return zumLogin(pfad + suche);
+}
+
+// Login-Seite je Kurs: Innolab-Ziele führen zu /login/innolab (Innolab-Marke, eigene Link-Vorschau), alles andere zu
+// /login. Die Middleware behandelt beide gleich; das Formular schickt immer an /login.
+export function istLoginSeite(pfad: string): boolean {
+  const p = pfad.length > 1 && pfad.endsWith('/') ? pfad.slice(0, -1) : pfad;
+  return p === '/login' || p === '/login/innolab';
+}
+
+export function zumLogin(ziel: string): string {
+  const sicher = sichererPfad(ziel);
+  const pfad = new URL(sicher, 'https://kurs.invalid').pathname;
+  const seite = pfad === '/innolab' || pfad.startsWith('/innolab/') ? '/login/innolab' : '/login';
+  return `${seite}?weiter=${encodeURIComponent(sicher)}`;
 }
 
 // Login-Formular: Rücksprung-Ziel plus Anker. Den Anker (#lokal …) sieht der Server nie – der Browser hängt ihn

@@ -27,10 +27,10 @@ describe('kurswahl', () => {
     expect(kursZiel('/', '')).toBe('/');
   });
 
-  it('Kurskarten führen über /login zum Kurs, nie zurück auf /start', () => {
-    for (const [pfad, suche, ziel] of [['/', '', '/'], ['/', '?beamer', '/?beamer'], ['/innolab', '', '/innolab'], ['/innolab', '?beamer', '/innolab?beamer']]) {
+  it('Kurskarten führen über die Login-Seite des Kurses zum Kurs, nie zurück auf /start', () => {
+    for (const [pfad, suche, ziel, login] of [['/', '', '/', '/login'], ['/', '?beamer', '/?beamer', '/login'], ['/innolab', '', '/innolab', '/login/innolab'], ['/innolab', '?beamer', '/innolab?beamer', '/login/innolab']]) {
       const link = new URL(kursLink(pfad, suche), 'https://kurs.invalid');
-      expect(link.pathname).toBe('/login');
+      expect(link.pathname).toBe(login);
       expect(sichererPfad(link.searchParams.get('weiter'))).toBe(ziel);
     }
   });

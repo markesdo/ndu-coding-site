@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GUELTIG_SEKUNDEN, cookieLesen, gleich, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zielMitAnker } from './kurszugang';
+import { GUELTIG_SEKUNDEN, cookieLesen, gleich, istLoginSeite, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zielMitAnker, zumLogin } from './kurszugang';
 
 const SECRET = 'a'.repeat(64);
 const PW = 'kurs-passwort';
@@ -123,8 +123,26 @@ describe('ohneAnmeldungZiel', () => {
     expect(ohneAnmeldungZiel('/', '?x=//evil.example')).toBe('/start?x=//evil.example');
   });
   it('jede andere Seite geht über das Kurspasswort und kehrt zurück', () => {
-    expect(ohneAnmeldungZiel('/innolab', '')).toBe('/login?weiter=%2Finnolab');
+    expect(ohneAnmeldungZiel('/innolab', '')).toBe('/login/innolab?weiter=%2Finnolab');
     expect(ohneAnmeldungZiel('/tag-1', '?beamer')).toBe('/login?weiter=%2Ftag-1%3Fbeamer');
+  });
+});
+
+describe('zumLogin (Login-Seite je Kurs)', () => {
+  it('Innolab-Ziele führen zur Innolab-Anmeldung', () => {
+    expect(zumLogin('/innolab')).toBe('/login/innolab?weiter=%2Finnolab');
+    expect(zumLogin('/innolab/tag-1?beamer')).toBe('/login/innolab?weiter=%2Finnolab%2Ftag-1%3Fbeamer');
+  });
+  it('alles andere zur Anmeldung des Coding-Kurses – auch Pfade, die nur mit „innolab“ beginnen', () => {
+    expect(zumLogin('/')).toBe('/login?weiter=%2F');
+    expect(zumLogin('/tag-1')).toBe('/login?weiter=%2Ftag-1');
+    expect(zumLogin('/innolabx')).toBe('/login?weiter=%2Finnolabx');
+    // Unsichere Ziele fallen auf / zurück (sichererPfad) – und damit auf die Coding-Anmeldung.
+    expect(zumLogin('//evil.example/innolab')).toBe('/login?weiter=%2F');
+  });
+  it('beide Login-Seiten gelten als Login, sonst nichts', () => {
+    for (const p of ['/login', '/login/', '/login/innolab', '/login/innolab/']) expect(istLoginSeite(p)).toBe(true);
+    for (const p of ['/login/x', '/login/innolab/x', '/innolab', '/loginx']) expect(istLoginSeite(p)).toBe(false);
   });
 });
 

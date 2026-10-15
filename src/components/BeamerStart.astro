@@ -1,6 +1,6 @@
 ---
 // Beamer-Modus und Präsentator vor dem ersten Zeichnen setzen (sonst blitzt die normale Ansicht auf).
-// Eingebunden im <head> von Layout.astro, start.astro und login.astro – eine Regel für alle drei:
+// Eingebunden im <head> von Layout.astro, start.astro und KursLogin.astro (/login, /login/innolab) – eine Regel für alle:
 // Beamer gibt es nur beim Präsentator (Schlüssel aus /praesentator im Browser, html[data-ist-praesentator]).
 // Dort merkt sich der Browser die Wahl; ?beamer (oder ?beamer=1) schaltet ein, ?beamer=0 aus. Ohne Schlüssel wird
 // ein gespeicherter Beamer-Modus gelöscht und ?beamer ignoriert – sonst säße man ohne Knopf zum Ausschalten fest.

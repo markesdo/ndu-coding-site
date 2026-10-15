@@ -1,12 +1,12 @@
 // Kurspasswort für die Website – Vercel Routing Middleware (plattformweit, nicht Astro-Middleware).
 // Läuft nur auf Vercel; lokal (`astro dev`) gibt es kein Passwort.
-// Frei: /start (Startseite vor dem Login), /login, /_astro/* (Schriften, Skripte, Bilder), Favicons, robots.txt,
+// Frei: /start (Startseite vor dem Login), /login und /login/innolab (istLoginSeite), /_astro/* (Schriften, Skripte, Bilder), Favicons, robots.txt,
 // og.png und og-innolab.png (Bilder der Link-Vorschau – WhatsApp & Co. sind nicht angemeldet), version.json (nur die Commit-Kennung, für
 // den Hinweis „Seite aktualisiert“ – sonst bekäme die Abfrage die Login-Seite zurück).
 // Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
-import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
+import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istLoginSeite, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zumLogin } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
 
 export const config = {
   matcher: ['/((?!_astro/|favicon(?:-innolab)?\\.svg$|favicon\\.ico$|robots\\.txt$|og(?:-innolab)?\\.png$|version\\.json$).*)'],
@@ -26,8 +26,6 @@ function weiter(ort: string, extra: Record<string, string> = {}): Response {
   return new Response(null, { status: 303, headers: { Location: ort, ...NOINDEX, ...extra } });
 }
 
-const istLogin = (p: string) => p === '/login' || p === '/login/';
-
 export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url);
   // Startseite: für alle, auch ohne Anmeldung (sie zeigt nur Titel und Kurstage) – und unabhängig davon,
@@ -40,7 +38,7 @@ export default async function middleware(request: Request): Promise<Response> {
 
   const jetzt = Math.floor(Date.now() / 1000);
 
-  if (istLogin(url.pathname)) {
+  if (istLoginSeite(url.pathname)) {
     if (request.method === 'POST') {
       const form = await request.formData().catch(() => null);
       const eingabe = typeof form?.get('passwort') === 'string' ? (form!.get('passwort') as string) : '';
@@ -54,11 +52,14 @@ export default async function middleware(request: Request): Promise<Response> {
       // Verzögerung bremst nur einzelnes Ausprobieren, nicht parallele Anfragen. Der eigentliche Schutz ist ein
       // langes, zufälliges Kurspasswort; für mehr: Vercel-Firewall-Regel mit Rate Limit auf POST /login.
       await new Promise((r) => setTimeout(r, 800));
-      return weiter(`/login?fehler=1&weiter=${encodeURIComponent(ziel)}`);
+      // Zurück auf die Login-Seite des Kurses, zu dem das Ziel gehört (das Formular schickt immer an /login).
+      return weiter(`${zumLogin(ziel)}&fehler=1`);
     }
     // Schon angemeldet? Dann direkt zum Ziel statt nochmal das Formular.
     if (await tokenGueltig(cookieLesen(request.headers.get('cookie')), secret, passwort, jetzt)) {
-      return weiter(sichererPfad(url.searchParams.get('weiter')));
+      // Ohne weiter: Startseite des Kurses dieser Login-Seite (/login/innolab → /innolab).
+      const standard = url.pathname.startsWith('/login/innolab') ? '/innolab' : '/';
+      return weiter(sichererPfad(url.searchParams.get('weiter') ?? standard));
     }
     return next({ headers: NOINDEX });
   }

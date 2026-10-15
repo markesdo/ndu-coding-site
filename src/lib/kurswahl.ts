@@ -1,5 +1,6 @@
 // Kurswahl auf der Startseite (/start): Das Innolab ist ausgegraut, bis der Coding-Kurs vorbei ist.
 // Stichtag als Kalendertag in Wien – nicht in UTC, sonst öffnet es am Vorabend um 1 bzw. 2 Uhr Wiener Zeit zu spät oder zu früh.
+import { zumLogin } from './kurszugang';
 
 /** Erster Innolab-Tag (= TAGE[0].datum in components/methoden.ts; kurswahl.test.ts prüft das). */
 export const INNOLAB_AB = '2026-10-16';
@@ -20,8 +21,8 @@ export function kursZiel(pfad: string, suche: string): string {
   return beamer !== null && beamer !== '0' ? `${pfad}?beamer` : pfad;
 }
 
-/** Link einer Kurskarte: immer über /login. Direkt auf / schickte die Middleware Abgemeldete zurück auf /start
- *  (Schleife); wer schon angemeldet ist, leitet /login sofort zum Ziel weiter. */
+/** Link einer Kurskarte: immer über die Login-Seite des Kurses (zumLogin). Direkt auf / schickte die Middleware
+ *  Abgemeldete zurück auf /start (Schleife); wer schon angemeldet ist, leitet die Login-Seite sofort zum Ziel weiter. */
 export function kursLink(pfad: string, suche: string): string {
-  return `/login?weiter=${encodeURIComponent(kursZiel(pfad, suche))}`;
+  return zumLogin(kursZiel(pfad, suche));
 }
