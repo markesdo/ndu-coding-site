@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { aktuelleFolie, restText, weiter, zurueck } from './folien';
+import { aktuelleFolie, restText, timerFuerT, weiter, zurueck } from './folien';
 
 describe('weiter (→ im Beamer)', () => {
   const folie = { versteckteSchritte: 0, offeneAufloesung: false, naechsteFolie: true };
@@ -58,6 +58,28 @@ describe('aktuelleFolie', () => {
   it('im Seitenkopf über allen Folien die erste; ohne Folien -1', () => {
     expect(aktuelleFolie([300, 1000], 48)).toBe(0);
     expect(aktuelleFolie([], 48)).toBe(-1);
+  });
+});
+
+describe('timerFuerT (Taste T)', () => {
+  const aus = { sichtbar: true, laeuft: false };
+  const verdeckt = { sichtbar: false, laeuft: false };
+
+  it('nimmt den letzten sichtbaren Timer – Timer in noch verdeckten Schritten zählen nicht', () => {
+    expect(timerFuerT([aus, aus, verdeckt, verdeckt])).toStrictEqual({ klick: 1, pausieren: [] });
+  });
+
+  it('pausiert den Timer des vorigen Schritts, wenn der nächste startet', () => {
+    expect(timerFuerT([{ sichtbar: true, laeuft: true }, aus])).toStrictEqual({ klick: 1, pausieren: [0] });
+  });
+
+  it('pausiert den laufenden letzten Timer selbst, ohne andere anzufassen', () => {
+    expect(timerFuerT([{ sichtbar: true, laeuft: true }, { sichtbar: true, laeuft: true }])).toStrictEqual({ klick: 1, pausieren: [] });
+  });
+
+  it('ohne sichtbaren Timer nichts', () => {
+    expect(timerFuerT([verdeckt])).toBeUndefined();
+    expect(timerFuerT([])).toBeUndefined();
   });
 });
 
