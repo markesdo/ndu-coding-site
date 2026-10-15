@@ -83,7 +83,7 @@ const { vorher, danach } = nachbarn(path);
       </main>
     </div>
     <script>
-      import { aktuelleFolie, weiter as folieWeiter, zurueck as folieZurueck } from '../components/folien';
+      import { aktuelleFolie, timerFuerT, weiter as folieWeiter, zurueck as folieZurueck } from '../components/folien';
       const btn = document.getElementById('menu-btn');
       const sb = document.getElementById('sidebar');
       btn?.addEventListener('click', () => sb?.classList.toggle('open'));
@@ -190,14 +190,19 @@ const { vorher, danach } = nachbarn(path);
         else if (tun === 'anfang') scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
         return tun !== 'seite';
       };
-      // T startet/pausiert den Timer der aktuellen Folie (Timer.astro), nur im Beamer. Mehrere Timer auf einer Folie
-      // (Übung, dann Übertrag in der Auflösung): der letzte sichtbare – das ist der, der gerade dran ist.
+      // T startet/pausiert den Timer der aktuellen Folie (Timer.astro), nur im Beamer. Welcher, entscheidet timerFuerT
+      // (folien.ts): der letzte sichtbare. Sichtbar über checkVisibility – verdeckte Schritte sind visibility: hidden.
+      const sichtbar = (el: HTMLElement) =>
+        typeof el.checkVisibility === 'function' ? el.checkVisibility({ visibilityProperty: true }) : el.offsetParent !== null && !el.closest('[data-schritt]:not(.gezeigt)');
       document.addEventListener('keydown', (e) => {
         if ((e.key !== 't' && e.key !== 'T') || e.ctrlKey || e.metaKey || e.altKey || !tastenFrei(e)) return;
         if (!root.hasAttribute('data-beamer')) return;
         const { folien, i } = folieJetzt();
-        const knoepfe = [...(folien[i]?.querySelectorAll<HTMLButtonElement>('[data-timer-knopf]') ?? [])].filter((k) => k.offsetParent !== null);
-        knoepfe.at(-1)?.click();
+        const knoepfe = [...(folien[i]?.querySelectorAll<HTMLButtonElement>('[data-timer-knopf]') ?? [])];
+        const tun = timerFuerT(knoepfe.map((k) => ({ sichtbar: sichtbar(k), laeuft: !!k.closest('.laeuft') })));
+        if (!tun) return;
+        tun.pausieren.forEach((j) => knoepfe[j].click());
+        knoepfe[tun.klick].click();
       });
       document.addEventListener('keydown', (e) => {
         const blaettern = e.key === 'ArrowRight' || e.key === 'ArrowLeft';

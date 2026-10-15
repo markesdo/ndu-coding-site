@@ -5,6 +5,9 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 ---
 <Layout title="Annahmen-Map">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -13,35 +16,63 @@ import FooterNav from '../../../components/FooterNav.astro';
   <Orientierung seite="innolab/methoden/annahmen" leiste={false} />
   <MethodenKarte slug="annahmen" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach zwei Fragen: <strong>Wie wichtig ist sie?</strong> (Fällt das Produkt um, wenn sie falsch ist?) und <strong>Welchen Beleg habt ihr?</strong> Getestet wird zuerst, was sehr wichtig ist und kaum belegt – die riskanteste Annahme.</p>
-  <p>Damit ihr keine Art von Risiko übersieht, sammelt ihr in vier Kategorien:</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Art</th><th>Frage</th><th>Beispiel Kaffeebar</th></tr></thead>
-      <tbody>
-        <tr><th>Wünschenswert</th><td>Wollen die Menschen das?</td><td>Wir glauben, dass Pendler*innen lieber vor Ort Kaffee holen als den Automaten zu nehmen.</td></tr>
-        <tr><th>Machbar</th><td>Können wir es bauen und betreiben?</td><td>Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann.</td></tr>
-        <tr><th>Wirtschaftlich</th><td>Trägt es sich?</td><td>Wir glauben, dass sich die zusätzlichen Bestellungen ohne eine weitere Kraft am Morgen rechnen.</td></tr>
-        <tr><th>Bedienbar</th><td>Kommen die Menschen damit zurecht?</td><td>Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können.</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="small muted">Die vier Arten gehen auf Marty Cagan zurück (Wert, Machbarkeit, Wirtschaftlichkeit, Bedienbarkeit), die Map auf David J. Bland.</p>
+  <Folie>
+    <h2 id="worum">Worum es geht</h2>
+    <p class="folie-satz">Getestet wird zuerst, was sehr wichtig ist und kaum belegt.</p>
+    <p>Zwei Fragen pro Annahme: <strong>Wie wichtig ist sie?</strong> Fällt das Produkt um, wenn sie falsch ist? <strong>Welchen Beleg habt ihr?</strong></p>
+    <p class="nur-handout">Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach diesen zwei Fragen. Die riskanteste Annahme – sehr wichtig, kaum belegt – kommt zuerst dran.</p>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die riskanteste Annahme</h2>
-  <p>In Miro legt ihr eine Matrix an: nach oben <em>wichtig</em>, nach rechts <em>belegt</em>. Bei der Kaffeebar landet links oben – sehr wichtig, gar nicht belegt – diese Annahme:</p>
-  <p><strong>A1 · Wir glauben, dass Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.</strong></p>
-  <p>Ist sie falsch, braucht es kein Vorbestellen, egal wie gut es gebaut ist. Sie ist damit wichtiger als die Frage, ob 20 Sekunden zum Bestellen reichen. Die Interviews bis Tag 2 sollen genau dazu Geschichten liefern.</p>
+  <Folie>
+    <h2 id="arten">Vier Arten von Annahmen</h2>
+    <p class="folie-satz">Sammelt in allen vier – sonst übersieht ihr eine Art von Risiko.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Wünschenswert:</strong> Wollen die Menschen das?</li>
+      <li data-schritt><strong>Machbar:</strong> Können wir es bauen und betreiben?</li>
+      <li data-schritt><strong>Wirtschaftlich:</strong> Trägt es sich?</li>
+      <li data-schritt><strong>Bedienbar:</strong> Kommen die Menschen damit zurecht?</li>
+    </ul>
+    <div class="nur-handout" style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Art</th><th>Beispiel Kaffeebar</th></tr></thead>
+        <tbody>
+          <tr><th>Wünschenswert</th><td>Wir glauben, dass Pendler*innen lieber vor Ort Kaffee holen als den Automaten zu nehmen.</td></tr>
+          <tr><th>Machbar</th><td>Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann.</td></tr>
+          <tr><th>Wirtschaftlich</th><td>Wir glauben, dass sich die zusätzlichen Bestellungen ohne eine weitere Kraft am Morgen rechnen.</td></tr>
+          <tr><th>Bedienbar</th><td>Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted">Die vier Arten gehen auf Marty Cagan zurück (Wert, Machbarkeit, Wirtschaftlichkeit, Bedienbarkeit), die Map auf David J. Bland.</p>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
-  <ol>
-    <li><strong>Allein sammeln (10 min):</strong> pro Art mindestens drei Sätze „Wir glauben, dass …“, je ein Sticky in Miro.</li>
-    <li><strong>Einordnen (10 min):</strong> jede Annahme in die Matrix – wie wichtig, wie belegt.</li>
-    <li><strong>Dreierrunde (10 min):</strong> Die anderen schieben Stickies, wo sie anderer Meinung sind, und ergänzen, was fehlt.</li>
-    <li><strong>Festhalten und prüfen (15 min):</strong> in <code>docs/ANNAHMEN.md</code>, die riskanteste markieren, Prüfliste, Claude.</li>
-  </ol>
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die riskanteste Annahme</h2>
+    <p class="folie-satz">A1 ist sehr wichtig und gar nicht belegt – sie wird zuerst getestet.</p>
+    <Matrix2x2 label="Annahmen-Map der Kaffeebar: nach oben wichtig, nach rechts belegt"
+      y={{ label: 'wichtig', unten: 'weniger', oben: 'sehr' }}
+      x={{ label: 'belegt', links: 'kein Beleg', rechts: 'starker Beleg' }}
+      felder={['Zuerst testen', 'Darauf bauen', 'Später prüfen', 'Abhaken']} hervor="ol"
+      punkte={[
+        { t: 'A1 · Kaffee schon vor der Ankunft bestimmen', x: .08, y: .86, hervor: true },
+        { t: 'A2 · 40 Bestellungen in 30 min', x: .9, y: .72 },
+        { t: 'A3 · Bestellen in 20 s im Gehen', x: .1, y: .3 },
+        { t: 'A4 · Rechnet sich ohne weitere Kraft', x: .9, y: .26 },
+      ]} />
+    <p class="nur-handout"><strong>A1 · Wir glauben, dass Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.</strong> Ist sie falsch, braucht es kein Vorbestellen, egal wie gut es gebaut ist. Sie ist damit wichtiger als die Frage, ob 20 Sekunden zum Bestellen reichen. Die Interviews bis Tag 2 sollen genau dazu Geschichten liefern.</p>
+  </Folie>
 
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
+    <ol class="gross">
+      <li data-schritt><strong>Allein sammeln:</strong> pro Art mindestens drei Sätze „Wir glauben, dass …“, je ein Sticky in Miro. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Einordnen:</strong> jede Annahme in die Matrix – wie wichtig, wie belegt. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Dreierrunde:</strong> Die anderen schieben Stickies, wo sie anderer Meinung sind, und ergänzen, was fehlt. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Festhalten und prüfen:</strong> in <code>docs/ANNAHMEN.md</code>, die riskanteste markieren, Prüfliste, Claude. <Timer minuten={15} /></li>
+    </ol>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/ANNAHMEN.md"># Annahmen — [Produkt]
 
@@ -60,8 +91,13 @@ Riskanteste Annahme: A[n]
   <p>Danach ein zweiter Durchgang als Red Team:</p>
   <Prompt label="Red Team · Claude Code">Lies docs/PRODUKT.md und docs/ANNAHMEN.md. Welche Annahmen stecken im Brief, die in der Liste fehlen? Nenn höchstens drei, jeweils mit der Stelle im Brief, aus der sie folgen. Trag nichts ein – ich entscheide, was in die Liste kommt.</Prompt>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Was ist bei euch das „Kaffee schon vorher bestimmen“ – die Annahme, ohne die alles andere egal ist? Nehmt sie als Ziel in euren <a href="/innolab/methoden/interview">Interviewleitfaden</a> auf.</p>
+  </div>
+
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Welche Annahme ist bei euch das „Kaffee schon vorher bestimmen“?</p>
+    <p>Die Annahme, ohne die alles andere egal ist, wird Ziel eures <a href="/innolab/methoden/interview">Interviewleitfadens</a>.</p>
+  </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} next={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} />
 </Layout>

@@ -1,4 +1,4 @@
-// Folien im Beamer: Was ← / → als Nächstes tun. Ohne DOM, damit testbar (Handler in Layout.astro).
+// Folien im Beamer: Was ← / → (und T) als Nächstes tun. Ohne DOM, damit testbar (Handler in Layout.astro).
 // Reihenfolge vorwärts: zur Folie, falls noch davor → Rest einer zu langen Folie → Schritte aufdecken →
 // Auflösung zeigen → nächste Folie → nächste Seite. Rückwärts: Schritte verdecken → vorige Folie →
 // Seitenanfang (Titel, Ablauf) → vorige Seite.
@@ -38,6 +38,18 @@ export function aktuelleFolie(oberkanten: number[], kopfleiste: number): number 
   let i = 0;
   oberkanten.forEach((o, j) => { if (o <= kopfleiste + 4) i = j; });
   return i;
+}
+
+/**
+ * Taste T auf einer Folie: Gemeint ist der letzte sichtbare Timer (der Schritt, der gerade dran ist). Startet T ihn,
+ * werden andere laufende Timer der Folie pausiert – sonst liefe der vorige Schritt unbemerkt weiter. Ohne sichtbaren
+ * Timer nichts.
+ */
+export function timerFuerT(timer: { sichtbar: boolean; laeuft: boolean }[]): { klick: number; pausieren: number[] } | undefined {
+  const klick = timer.map((t) => t.sichtbar).lastIndexOf(true);
+  if (klick < 0) return undefined;
+  const pausieren = timer[klick].laeuft ? [] : timer.flatMap((t, i) => (i !== klick && t.laeuft ? [i] : []));
+  return { klick, pausieren };
 }
 
 /** Restzeit des Timers als „m:ss“, auf volle Sekunden aufgerundet, nie negativ. */
