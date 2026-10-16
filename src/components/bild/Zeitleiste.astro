@@ -4,14 +4,19 @@
 // Architecture Decision Records). schritt: Zeile wird im Beamer per → aufgedeckt; die frühere wird erst grau, wenn
 // die ersetzende sichtbar ist.
 import { CornerLeftUp } from '@lucide/astro';
-import { ersetzungen, type Eintrag } from './zeitleiste';
+import { ersetzungen, pruefeId, type Eintrag } from './zeitleiste';
 const { id, label, eintraege } = Astro.props as { id: string; label: string; eintraege: Eintrag[] };
-const { ersetztDurch } = ersetzungen(eintraege);
-// Im Beamer wird die frühere Zeile erst grau, wenn genau ihre ersetzende sichtbar ist – je Paar eine Regel.
+pruefeId(id);
+const ersetztDurch = ersetzungen(eintraege);
+const kurz = (i: number) => eintraege[i].kurz ?? eintraege[i].t;
+// Das Aussehen einer ersetzten Zeile steht nur hier. Es gilt im Handout immer, im Beamer erst, wenn genau ihre
+// ersetzende Zeile sichtbar ist (per → aufgedeckt oder ohne Schritt) – je Paar ein Selektor.
+const ALT = 'background: transparent; border: 1px dashed var(--border); color: var(--muted);';
 const sichtbar = (i: number) => `li[data-nr="${i}"]:is(.gezeigt, :not([data-schritt]))`;
-const paarRegeln = Object.entries(ersetztDurch).map(([alt, neu]) =>
-  `#${id}:has(${sichtbar(neu)}) li[data-nr="${alt}"] { opacity: .5; } #${id}:has(${sichtbar(neu)}) li[data-nr="${alt}"] .zl-ersetzt { display: inline-flex; }`,
-).join('\n');
+const paarRegeln = Object.entries(ersetztDurch).map(([alt, neu]) => {
+  const zeile = [`html:not([data-beamer]) #${id} li[data-nr="${alt}"]`, `#${id}:has(${sichtbar(Number(neu))}) li[data-nr="${alt}"]`];
+  return `${zeile.join(', ')} { ${ALT} } ${zeile.map((z) => `${z} strong`).join(', ')} { color: var(--muted); } ${zeile.map((z) => `${z} .zl-ersetzt`).join(', ')} { display: inline-flex; }`;
+}).join('\n');
 ---
 <figure class="zeitleiste" id={id} aria-label={label}>
   {paarRegeln && <style is:inline set:html={paarRegeln} />}
@@ -25,9 +30,9 @@ const paarRegeln = Object.entries(ersetztDurch).map(([alt, neu]) =>
           <div class="zl-inhalt">
             <strong>{e.t}</strong>
             <span class="zl-grund">{e.grund}</span>
-            <span class="zl-beleg">Beleg: {e.beleg}</span>
+            <span class:list={['zl-beleg', { fehlt: e.beleg.startsWith('noch keiner') }]}>Beleg: {e.beleg}</span>
             {e.ersetzt !== undefined && (
-              <span class="zl-verweis"><CornerLeftUp size={16} aria-hidden="true" /> ersetzt die Zeile vom {eintraege[e.ersetzt].datum}</span>
+              <span class="zl-verweis"><CornerLeftUp size={16} aria-hidden="true" /> ersetzt {kurz(e.ersetzt)} vom {eintraege[e.ersetzt].datum}</span>
             )}
             {nachfolger !== undefined && <span class="zl-verweis zl-ersetzt">ersetzt am {eintraege[nachfolger].datum}</span>}
           </div>
@@ -52,11 +57,10 @@ const paarRegeln = Object.entries(ersetztDurch).map(([alt, neu]) =>
   .zl-beleg { font-weight: 600; }
   .zl-verweis { display: inline-flex; align-items: center; gap: .25rem; font-size: .8rem; font-weight: 700; color: var(--accent-ink); }
   .zl-ersetzt { color: var(--muted); }
-  /* Die frühere Zeile wird grau und bekommt „ersetzt am …“, sobald ihre ersetzende zu sehen ist: im Handout immer,
-     im Beamer über die Paar-Regeln oben (erst nach dem Schritt). */
+  /* „ersetzt am …“ erst zeigen, wenn die ersetzende Zeile sichtbar ist – die Regeln dafür stehen oben (paarRegeln). */
   .zl-zeile.alt .zl-ersetzt { display: none; }
-  :global(html:not([data-beamer])) .zl-zeile.alt { opacity: .5; }
-  :global(html:not([data-beamer])) .zl-zeile.alt .zl-ersetzt { display: inline-flex; }
+  /* Fehlender Beleg ist die Pointe des Beispiels: hervorgehoben. */
+  .zl-beleg.fehlt { color: var(--accent-ink); }
   :global(html[data-beamer]) .zl-inhalt strong { font-size: 1.1rem; }
   :global(html[data-beamer]) .zl-grund, :global(html[data-beamer]) .zl-beleg { font-size: 1rem; }
 </style>
