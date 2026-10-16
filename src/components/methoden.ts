@@ -93,7 +93,7 @@ export const METHODEN: Methode[] = [
       'Jede Zeile nennt Datum, Entscheidung und Grund.',
       'Jede Produktentscheidung nennt einen Beleg – oder ausdrücklich „noch keiner“.',
       'Keine Annahme ist als Tatsache formuliert („Pendler*innen wollen …“ statt „Wir glauben, dass …“).',
-      'Wo ein Test etwas widerlegt hat, steht die Änderung als neue Zeile da – die alte bleibt stehen.',
+      'Wo ein Test etwas widerlegt hat, steht die Änderung als neue Zeile da („ersetzt [Stichwort] vom …“) – die alte bleibt stehen und trägt „ersetzt am …“.',
     ],
   },
   {

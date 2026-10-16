@@ -1,0 +1,66 @@
+---
+// Entscheidungslog als Zeitleiste: eine Zeile pro Entscheidung, nichts wird gelöscht. Ersetzt eine Zeile eine frühere
+// (ersetzt = Index der früheren), bleibt die frühere stehen – ausgegraut, mit „ersetzt am …“ (wie „superseded“ bei
+// Architecture Decision Records). schritt: Zeile wird im Beamer per → aufgedeckt; die frühere wird erst grau, wenn
+// die ersetzende sichtbar ist.
+import { CornerLeftUp } from '@lucide/astro';
+import { ersetzungen, pruefeId, type Eintrag } from './zeitleiste';
+const { id, label, eintraege } = Astro.props as { id: string; label: string; eintraege: Eintrag[] };
+pruefeId(id);
+const ersetztDurch = ersetzungen(eintraege);
+const kurz = (i: number) => eintraege[i].kurz ?? eintraege[i].t;
+// Das Aussehen einer ersetzten Zeile steht nur hier. Es gilt im Handout immer, im Beamer erst, wenn genau ihre
+// ersetzende Zeile sichtbar ist (per → aufgedeckt oder ohne Schritt) – je Paar ein Selektor.
+const ALT = 'background: transparent; border: 1px dashed var(--border); color: var(--muted);';
+const sichtbar = (i: number) => `li[data-nr="${i}"]:is(.gezeigt, :not([data-schritt]))`;
+const paarRegeln = Object.entries(ersetztDurch).map(([alt, neu]) => {
+  const zeile = [`html:not([data-beamer]) #${id} li[data-nr="${alt}"]`, `#${id}:has(${sichtbar(Number(neu))}) li[data-nr="${alt}"]`];
+  return `${zeile.join(', ')} { ${ALT} } ${zeile.map((z) => `${z} strong`).join(', ')} { color: var(--muted); } ${zeile.map((z) => `${z} .zl-ersetzt`).join(', ')} { display: inline-flex; }`;
+}).join('\n');
+---
+<figure class="zeitleiste" id={id} aria-label={label}>
+  {paarRegeln && <style is:inline set:html={paarRegeln} />}
+  <ol>
+    {eintraege.map((e, i) => {
+      const nachfolger = ersetztDurch[i];
+      return (
+        <li class:list={['zl-zeile', { alt: nachfolger !== undefined, neu: e.ersetzt !== undefined }]}
+          data-nr={i} data-schritt={e.schritt ? '' : undefined}>
+          <span class="zl-datum">{e.datum}</span>
+          <div class="zl-inhalt">
+            <strong>{e.t}</strong>
+            <span class="zl-grund">{e.grund}</span>
+            <span class:list={['zl-beleg', { fehlt: e.beleg.startsWith('noch keiner') }]}>Beleg: {e.beleg}</span>
+            {e.ersetzt !== undefined && (
+              <span class="zl-verweis"><CornerLeftUp size={16} aria-hidden="true" /> ersetzt {kurz(e.ersetzt)} vom {eintraege[e.ersetzt].datum}</span>
+            )}
+            {nachfolger !== undefined && <span class="zl-verweis zl-ersetzt">ersetzt am {eintraege[nachfolger].datum}</span>}
+          </div>
+        </li>
+      );
+    })}
+  </ol>
+</figure>
+
+<style>
+  .zeitleiste { margin: 1.5rem 0; }
+  .zeitleiste ol { list-style: none; margin: 0; padding: 0 0 0 1.1rem; border-left: 3px solid var(--border); display: flex; flex-direction: column; gap: .55rem; }
+  .zl-zeile { position: relative; display: grid; grid-template-columns: 4.2rem 1fr; gap: .75rem; align-items: baseline; padding: .5rem .75rem; background: var(--bg-2); border-radius: var(--radius); transition: opacity .2s; }
+  /* Punkt auf der Zeitachse. */
+  .zl-zeile::before { content: ''; position: absolute; left: calc(-1.1rem - 8px); top: .95rem; width: 13px; height: 13px; border-radius: 50%; background: var(--bg); border: 3px solid var(--fg); }
+  .zl-zeile.neu { box-shadow: inset 3px 0 0 var(--accent); }
+  .zl-zeile.neu::before { border-color: var(--accent); }
+  .zl-datum { font-family: var(--mono); font-size: .85rem; color: var(--muted); }
+  .zl-inhalt { display: flex; flex-wrap: wrap; gap: .15rem .9rem; align-items: baseline; }
+  .zl-inhalt strong { flex-basis: 100%; font-size: .95rem; }
+  .zl-grund, .zl-beleg { font-size: .85rem; color: var(--muted); }
+  .zl-beleg { font-weight: 600; }
+  .zl-verweis { display: inline-flex; align-items: center; gap: .25rem; font-size: .8rem; font-weight: 700; color: var(--accent-ink); }
+  .zl-ersetzt { color: var(--muted); }
+  /* „ersetzt am …“ erst zeigen, wenn die ersetzende Zeile sichtbar ist – die Regeln dafür stehen oben (paarRegeln). */
+  .zl-zeile.alt .zl-ersetzt { display: none; }
+  /* Fehlender Beleg ist die Pointe des Beispiels: hervorgehoben. */
+  .zl-beleg.fehlt { color: var(--accent-ink); }
+  :global(html[data-beamer]) .zl-inhalt strong { font-size: 1.1rem; }
+  :global(html[data-beamer]) .zl-grund, :global(html[data-beamer]) .zl-beleg { font-size: 1rem; }
+</style>
