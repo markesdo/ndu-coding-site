@@ -72,10 +72,21 @@ export function sichererPfad(roh: string | null | undefined): string {
   }
 }
 
-// Öffentliche Seiten ohne Kurspasswort: nur die Startseite /start (exakt, mit oder ohne Schrägstrich).
-// Kein Präfix: /startseite, /start-x oder /start/geheim bleiben geschützt. /login prüft die Middleware gesondert.
+// Ohne Kurspasswort erreichbar:
+// - die Startseite /start (exakt, mit oder ohne Schrägstrich). Kein Präfix: /startseite, /start-x oder /start/geheim
+//   bleiben geschützt. /login prüft die Middleware gesondert.
+// - die Werkstatt: genau /api/werkstatt und alles darunter (/api/werkstattx nicht) sowie die zwei OAuth-Metadatenpfade,
+//   die Claude unter /.well-known sucht. Die Werkstatt hat ihre eigene Anmeldung (GitHub, Sitzung, Bearer-Token).
+const WERKSTATT = '/api/werkstatt';
+const WERKSTATT_WELL_KNOWN = [
+  '/.well-known/oauth-authorization-server/api/werkstatt/oauth',
+  '/.well-known/oauth-protected-resource/api/werkstatt/mcp',
+];
+
 export function istOeffentlich(pfad: string): boolean {
-  return pfad === '/start' || pfad === '/start/';
+  if (pfad === '/start' || pfad === '/start/') return true;
+  if (pfad === WERKSTATT || pfad.startsWith(`${WERKSTATT}/`)) return true;
+  return WERKSTATT_WELL_KNOWN.includes(pfad);
 }
 
 // Ohne Anmeldung: Wer die Wurzel / aufruft (etwa die Domain aus einer Nachricht), sieht zuerst die Kurswahl auf /start –

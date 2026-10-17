@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "regions": ["fra1"],
+  "functions": { "api/werkstatt.ts": { "maxDuration": 30 } },
+  "rewrites": [
+    { "source": "/api/werkstatt/:pfad*", "destination": "/api/werkstatt" },
+    { "source": "/.well-known/oauth-authorization-server/api/werkstatt/oauth", "destination": "/api/werkstatt" },
+    { "source": "/.well-known/oauth-protected-resource/api/werkstatt/mcp", "destination": "/api/werkstatt" }
+  ],
   "headers": [
     { "source": "/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }
   ]

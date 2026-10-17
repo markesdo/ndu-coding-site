@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { afterEach, vi } from 'vitest';
 import middleware, { config } from '../../middleware';
-import { COOKIE, tokenErstellen } from './kurszugang';
+import { COOKIE, istOeffentlich, tokenErstellen } from './kurszugang';
 
 // Vercel wendet den Matcher wie einen Pfad-Ausdruck an; für unsere Muster genügt ein verankerter RegExp.
 const geschuetzt = (pfad: string) => config.matcher.some((m) => new RegExp(`^${m}$`).test(pfad));
@@ -103,5 +103,48 @@ describe('Middleware mit Anmeldung', () => {
     expect(r.headers.get('x-middleware-next')).toBe('1');
     expect(r.headers.get('cache-control')).toBe('private, no-store');
     expect(r.headers.get('x-robots-tag')).toBe('noindex, nofollow');
+  });
+});
+
+describe('Werkstatt ohne Kurspasswort', () => {
+  afterEach(() => vi.unstubAllEnvs());
+  it('nimmt genau /api/werkstatt und die zwei OAuth-Metadatenpfade aus', () => {
+    for (const p of [
+      '/api/werkstatt',
+      '/api/werkstatt/',
+      '/api/werkstatt/mcp',
+      '/api/werkstatt/oauth/token',
+      '/api/werkstatt/mappe/brief',
+      '/.well-known/oauth-authorization-server/api/werkstatt/oauth',
+      '/.well-known/oauth-protected-resource/api/werkstatt/mcp',
+    ]) expect(istOeffentlich(p), p).toBe(true);
+  });
+  it('alles andere bleibt hinter dem Kurspasswort', () => {
+    for (const p of [
+      '/api/werkstattx',
+      '/api/werkstatt-x/mcp',
+      '/api/position',
+      '/innolab/mappe',
+      '/.well-known/anderes',
+      '/.well-known/oauth-authorization-server',
+      '/.well-known/oauth-authorization-server/api/werkstatt/oauth/x',
+      '/.well-known/oauth-protected-resource/api/werkstatt/mcpx',
+      '/x/api/werkstatt',
+    ]) expect(istOeffentlich(p), p).toBe(false);
+  });
+  it('/start bleibt öffentlich, /start/geheim nicht', () => {
+    expect(istOeffentlich('/start')).toBe(true);
+    expect(istOeffentlich('/start/')).toBe(true);
+    expect(istOeffentlich('/start/geheim')).toBe(false);
+  });
+  it('Middleware lässt /api/werkstatt/mcp ohne Cookie zur Funktion durch, /api/werkstattx nicht', async () => {
+    vi.stubEnv('SITE_PASSWORD', 'pw');
+    vi.stubEnv('SITE_SESSION_SECRET', 's'.repeat(32));
+    const frei = await middleware(new Request('https://kurs.invalid/api/werkstatt/mcp', { method: 'POST' }));
+    expect(frei.headers.get('x-middleware-next')).toBe('1');
+    const metadaten = await middleware(new Request('https://kurs.invalid/.well-known/oauth-authorization-server/api/werkstatt/oauth'));
+    expect(metadaten.headers.get('x-middleware-next')).toBe('1');
+    const gesperrt = await middleware(new Request('https://kurs.invalid/api/werkstattx'));
+    expect(gesperrt.status).toBe(401);
   });
 });
