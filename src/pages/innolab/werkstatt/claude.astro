@@ -15,7 +15,7 @@ const seite = Astro.site!;
   Geprüft am 17.10. in claude.ai (englische Oberfläche): Link → „Add custom connector“ ausgefüllt → Continue →
   Authentication/OAuth client schon auf „Detected“ → Add → „Connect“ → GitHub „Authorize NDU Werkstatt“ → Erlauben →
   verbunden, Werkzeuge auf „Needs approval“. Screenshots ohne persönliche Konten (GitHub- und Zustimmungsseite nur als Text).
-  Ungeprüft bleiben nur die Datenschutz-Beschriftungen in Schritt 2 (Modelltraining).
+  Schritt 2 (Settings → Privacy → „Help improve our AI models“) ebenfalls am 17.10. geprüft, nur englische Oberfläche.
 */}
 <Layout title="Werkstatt · Claude verbinden">
   <span class="eyebrow">Innolab · Werkstatt</span>
@@ -41,7 +41,10 @@ const seite = Astro.site!;
   <Folie>
     <h2 id="datenschutz">2. Modelltraining ausschalten</h2>
     <p class="folie-satz">Eure Mappe soll nicht zum Training von Modellen dienen.</p>
-    <p>Über den Connector fließen eure Artefakte zu Anthropic. Schaltet deshalb in Claude unter <strong>Einstellungen → Datenschutz</strong> das <strong>Modelltraining</strong> aus.</p>
+    <p>Über den Connector fließen eure Artefakte zu Anthropic. Schaltet deshalb in Claude unter <strong>Settings → Privacy</strong> den Schalter <strong>Help improve our AI models</strong> aus. In der deutschen Oberfläche liegt er an derselben Stelle unter dem Schild-Symbol.</p>
+    <Schritte id="datenschutz" steps={[
+      { img: bild('werkstatt/datenschutz-training'), alt: 'Claude-Einstellungen, Bereich Privacy: unter Preferences der Schalter „Help improve our AI models“, hier noch eingeschaltet', text: 'Links <em>Privacy</em> (1), dann unter <em>Preferences</em> den Schalter <em>Help improve our AI models</em> ausschalten (2). Im Bild ist er noch an (blau); ausgeschaltet ist er grau.', marks: [{ x: 38, y: 333, w: 375, h: 64, n: 1 }, { x: 1932, y: 783, w: 82, h: 52, n: 2 }], crop: false },
+    ]} />
   </Folie>
 
   <Folie>
