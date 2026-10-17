@@ -2,6 +2,8 @@
 // den Fake dieselben Antworten sehen wie Prod.
 import { ApiAusnahme } from './antwort.js';
 
+// GitHub-Logins: alphanumerisch und Bindestrich, höchstens 39 Zeichen, nie am Anfang ein Bindestrich.
+export const LOGIN_MUSTER = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/;
 export const unbekanntesRepo = () => new ApiAusnahme(404, 'unbekannt', 'Diese Mappe gibt es nicht.');
 export const wirdEingerichtet = () =>
   new ApiAusnahme(503, 'wird-eingerichtet', 'Deine Mappe wird eingerichtet. Lade die Seite in ein paar Sekunden neu.');

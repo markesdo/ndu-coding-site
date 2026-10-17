@@ -21,14 +21,15 @@ export type FakeSpeicher = Speicher & {
   // Wie eine Änderung direkt auf GitHub: ändert mappe/<name>.json, damit ein vorher gelesener basisSha veraltet.
   aendernVonAussen(repo: string, name: ArtefaktName): void;
   // Die Person nimmt die Einladung an: lesezugriff meldet danach 'aktiv'.
-  einladungAnnehmen(repo: string, login: string): void;
+  // Wirft ohne vorherige Einladung (wie fakeGithub).
+  einladungAnnehmen(repo: string, githubId: number): void;
 };
 
 const jsonPfad = (name: ArtefaktName) => `mappe/${name}.json`;
 
 export function fakeSpeicher(): FakeSpeicher {
   if (!istLokal(process.env)) throw new Error('fakeSpeicher nur bei NODE_ENV development oder test');
-  // Schlüssel `${repo}:${login in Kleinschreibung}`.
+  // Schlüssel `${repo}:${githubId}`.
   const lesende = new Map<string, 'aktiv' | 'eingeladen'>();
   const repos = new Map<string, { dateien: Map<string, string>; commits: FakeCommit[] }>();
 
@@ -82,17 +83,19 @@ export function fakeSpeicher(): FakeSpeicher {
       return ARTEFAKT_NAMEN.map((name) => ({ name, vorhanden: r.dateien.has(jsonPfad(name)) }));
     },
 
-    async lesezugriff(repo, login) {
-      if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/.test(login)) throw internerFehler('lesezugriff: ungültiger GitHub-Login');
+    async lesezugriff(repo, githubId) {
+      if (!Number.isSafeInteger(githubId) || githubId <= 0) throw internerFehler('lesezugriff: ungültige GitHub-ID');
       repoHolen(repo);
-      const schluessel = `${repo}:${login.toLowerCase()}`;
+      const schluessel = `${repo}:${githubId}`;
       const stand = lesende.get(schluessel) ?? 'eingeladen';
       lesende.set(schluessel, stand);
       return stand;
     },
 
-    einladungAnnehmen(repo, login) {
-      lesende.set(`${repo}:${login.toLowerCase()}`, 'aktiv');
+    einladungAnnehmen(repo, githubId) {
+      const schluessel = `${repo}:${githubId}`;
+      if (!lesende.has(schluessel)) throw new Error(`einladung-fehlt: ${repo} ${githubId}`);
+      lesende.set(schluessel, 'aktiv');
     },
 
     async werkstattJson(repo) {

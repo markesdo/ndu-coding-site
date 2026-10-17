@@ -62,6 +62,8 @@ export interface FakeGithubZustand {
   // Wie eine Änderung direkt auf GitHub: ein Commit auf main, der `pfad` setzt.
   aendernVonAussen(repo: string, pfad: string, inhalt: string): void;
   aufrufeVon(methode: string, pfadEnde: string): FakeAufruf[];
+  // GitHub-ID -> aktueller Login (GET /user/{id}).
+  nutzer: Map<number, string>;
   // Die Person nimmt die Einladung an: aus „eingeladen“ wird „aktiv“.
   einladungAnnehmen(repo: string, login: string): void;
   // Eingeladene und aktive Collaborators mit ihrer Berechtigung.
@@ -155,6 +157,7 @@ export function fakeGithub(opts: { org?: string; installationId?: number } = {})
       if (!r) throw new Error(`repo-fehlt: ${repo}`);
       direktCommit(r, { [pfad]: inhalt }, `Von außen: ${pfad}`);
     },
+    nutzer: new Map(),
     aufrufeVon(methode, pfadEnde) {
       return zustand.aufrufe.filter((a) => a.methode === methode && a.pfad.endsWith(pfadEnde));
     },
@@ -202,6 +205,12 @@ export function fakeGithub(opts: { org?: string; installationId?: number } = {})
       if (!token || !zustand.tokens.has(token)) return antwort(401, { message: 'Bad credentials' });
       const login = decodeURIComponent(m[1]);
       return login === `${zustand.bot.slug}[bot]` ? antwort(200, { id: zustand.bot.id, login }) : nichtGefunden();
+    }
+
+    if (methode === 'GET' && (m = pfad.match(/^\/user\/(\d+)$/))) {
+      if (!token || !zustand.tokens.has(token)) return antwort(401, { message: 'Bad credentials' });
+      const login = zustand.nutzer.get(Number(m[1]));
+      return login ? antwort(200, { id: Number(m[1]), login }) : nichtGefunden();
     }
 
     m = pfad.match(/^\/repos\/([^/]+)\/([^/]+)(\/.*)?$/);

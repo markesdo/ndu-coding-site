@@ -8,7 +8,7 @@ import { kohorte as kohorteNachId, type Kohorte } from '../../kohorten/index.js'
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme } from '../antwort.js';
 import { blobSha } from '../git-sha.js';
-import { fremdesRepo, internerFehler as intern, unbekanntesRepo, wirdEingerichtet } from '../speicher-fehler.js';
+import { LOGIN_MUSTER, fremdesRepo, internerFehler as intern, unbekanntesRepo, wirdEingerichtet } from '../speicher-fehler.js';
 import type { Cache, Speicher } from '../typen.js';
 import { GithubAusnahme, ORG_RECHTE, githubAnfrage, githubFehler, jsonAusRepo, type InstallationToken } from './app-token.js';
 
@@ -36,8 +36,8 @@ const SPEICHER_VERSUCHE = 3;
 const REPO_RECHTE = { contents: 'write' } as const;
 // Collaborators einladen und prüfen: nur dafür, nur für dieses Repo.
 const EINLADEN_RECHTE = { administration: 'write' } as const;
-// GitHub-Logins: alphanumerisch und Bindestrich, höchstens 39 Zeichen, nie am Anfang ein Bindestrich.
-const LOGIN_MUSTER = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/;
+// „eingeladen“ nur kurz merken: kein erneutes PUT bei jedem Neuladen, aber die Annahme zeigt sich bald.
+const EINGELADEN_SEK = 10 * 60;
 
 const jsonPfad = (name: string) => `mappe/${name}.json`;
 const pfadKodieren = (pfad: string) => pfad.split('/').map(encodeURIComponent).join('/');
@@ -146,16 +146,24 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
     return { kohorte: wj.kohorte, githubId: wj.githubId };
   }
 
-  const lesenSchluessel = (org: string, repo: string, login: string) => `gh-lesezugriff:${org}/${repo}:${login.toLowerCase()}`;
+  const lesenSchluessel = (org: string, repo: string, githubId: number, stand: 'aktiv' | 'eingeladen') =>
+    `gh-lesezugriff-${stand}:${org}/${repo}:${githubId}`;
 
   return {
-    async lesezugriff(repo, login) {
-      if (!LOGIN_MUSTER.test(login)) throw intern('lesezugriff: ungültiger GitHub-Login');
+    async lesezugriff(repo, githubId) {
+      if (!Number.isSafeInteger(githubId) || githubId <= 0) throw intern('lesezugriff: ungültige GitHub-ID');
       const { org } = kohorteDesRepos(repo);
-      const schluessel = lesenSchluessel(org, repo, login);
-      if ((await abh.cache.get(schluessel)) === 'aktiv') return 'aktiv';
+      for (const stand of ['aktiv', 'eingeladen'] as const) {
+        if ((await abh.cache.get(lesenSchluessel(org, repo, githubId, stand))) === stand) return stand;
+      }
       const z = await zugriff(repo, EINLADEN_RECHTE);
       if (!z) throw unbekanntesRepo();
+      // Der Login ist umbenennbar, die ID nicht: den aktuellen Namen bei GitHub erfragen.
+      const nutzerPfad = `/user/${githubId}`;
+      const nutzer = await anfrage(z.token, 'GET', nutzerPfad);
+      if (nutzer.status !== 200) throw githubFehler('GET', '/user/{id}', nutzer.status);
+      const login = nutzer.daten?.login;
+      if (typeof login !== 'string' || !LOGIN_MUSTER.test(login)) throw intern('lesezugriff: ungültiger GitHub-Login von GitHub');
       const pfad = `/collaborators/${encodeURIComponent(login)}`;
       const geprueft = await anfrage(z, 'GET', pfad);
       let stand: 'aktiv' | 'eingeladen';
@@ -170,7 +178,7 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
       } else {
         throw githubFehler('GET', 'collaborators', geprueft.status);
       }
-      if (stand === 'aktiv') await abh.cache.set(schluessel, 'aktiv', TAG_SEK);
+      await abh.cache.set(lesenSchluessel(org, repo, githubId, stand), stand, stand === 'aktiv' ? TAG_SEK : EINGELADEN_SEK);
       return stand;
     },
 

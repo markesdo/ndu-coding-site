@@ -43,7 +43,8 @@ export interface Speicher {
   ): Promise<{ basisSha: string; commitUrl: string } | { konflikt: true }>;
   uebersicht(repo: string): Promise<{ name: ArtefaktName; vorhanden: boolean }[]>;
   // Idempotent; lädt die Person ein, falls nötig; nie Schreibrechte (nur `pull`). 'eingeladen' = Einladung offen.
-  lesezugriff(repo: string, login: string): Promise<'aktiv' | 'eingeladen'>;
+  // Der aktuelle Login kommt aus der unveränderlichen GitHub-ID, nie aus der Sitzung.
+  lesezugriff(repo: string, githubId: number): Promise<'aktiv' | 'eingeladen'>;
   // null = Repo oder Datei fehlt.
   werkstattJson(repo: string): Promise<{ kohorte: string; githubId: number } | null>;
 }

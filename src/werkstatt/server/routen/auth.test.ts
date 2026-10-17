@@ -162,11 +162,21 @@ describe('auth/callback', () => {
     const t = aufbau();
     const { state, stateCookie } = await login(t.app);
     await callback(t.app, state, stateCookie);
-    expect(t.lesezugriff).toHaveBeenCalledWith('test-sofie', 'sofie-x');
+    expect(t.lesezugriff).toHaveBeenCalledWith('test-sofie', 1001);
     const l = aufbau({ person: { githubId: 1000, login: 'lehrer' } });
     const z = await login(l.app);
     await callback(l.app, z.state, z.stateCookie);
     expect(l.lesezugriff).not.toHaveBeenCalled();
+  });
+
+  it('anlegen wirft (z. B. fremdes Repo): kein lesezugriff, Login klappt', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = aufbau({ anlegenWirft: true });
+    const { state, stateCookie } = await login(t.app);
+    const r = await callback(t.app, state, stateCookie);
+    expect(r.status).toBe(302);
+    expect(wert(r, COOKIE_WERKSTATT)).toBeDefined();
+    expect(t.lesezugriff).not.toHaveBeenCalled();
   });
 
   it('lesezugriff wirft: Login klappt trotzdem', async () => {

@@ -120,13 +120,14 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     if (m.rolle !== 'studierende') return json(c, { kohorte: m.kohorte, repo: '', lesezugriff: 'unbekannt', artefakte: [] } satisfies MappeStand);
     const repo = await eigenesRepo(c, true);
     // Best effort: die Mappe lädt auch, wenn GitHub die Einladung nicht beantwortet.
-    let lesezugriff: MappeStand['lesezugriff'] = 'unbekannt';
-    try {
-      lesezugriff = await abh.speicher.lesezugriff(repo, c.get('sitzung').login);
-    } catch (e) {
-      console.error('werkstatt: Lesezugriff nicht prüfbar –', ursache(e));
-    }
-    const stand: MappeStand = { kohorte: m.kohorte, repo, lesezugriff, artefakte: await abh.speicher.uebersicht(repo) };
+    const [lesezugriff, artefakte] = await Promise.all([
+      abh.speicher.lesezugriff(repo, c.get('sitzung').githubId).catch((e): MappeStand['lesezugriff'] => {
+        console.error('werkstatt: Lesezugriff nicht prüfbar –', ursache(e));
+        return 'unbekannt';
+      }),
+      abh.speicher.uebersicht(repo),
+    ]);
+    const stand: MappeStand = { kohorte: m.kohorte, repo, lesezugriff, artefakte };
     return json(c, stand);
   });
 

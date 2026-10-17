@@ -95,8 +95,8 @@ describe('GET /api/werkstatt/mappe', () => {
     const t = await mitMappe();
     const lesezugriff = vi.spyOn(t.speicher, 'lesezugriff');
     expect((await (await t.holen('')).json()).lesezugriff).toBe('eingeladen');
-    expect(lesezugriff).toHaveBeenCalledWith(REPO, 'sofie-x');
-    t.fake.einladungAnnehmen(REPO, 'sofie-x');
+    expect(lesezugriff).toHaveBeenCalledWith(REPO, 1001);
+    t.fake.einladungAnnehmen(REPO, 1001);
     expect((await (await t.holen('')).json()).lesezugriff).toBe('aktiv');
   });
 
@@ -108,6 +108,26 @@ describe('GET /api/werkstatt/mappe', () => {
     expect(r.status).toBe(200);
     expect(await r.json()).toMatchObject({ repo: REPO, lesezugriff: 'unbekannt' });
     expect(fehler.mock.calls.flat().join(' ')).toContain('Lesezugriff');
+  });
+
+  it('Lesezugriff und Übersicht laufen parallel; Übersicht-Fehler bleibt Fehler', async () => {
+    const t = await mitMappe();
+    let offen = 0;
+    let gleichzeitig = 0;
+    const warte = async <T,>(wert: T): Promise<T> => {
+      offen++;
+      gleichzeitig = Math.max(gleichzeitig, offen);
+      await new Promise((f) => setTimeout(f, 5));
+      offen--;
+      return wert;
+    };
+    t.speicher.lesezugriff = () => warte('aktiv' as const);
+    const echt = t.speicher.uebersicht;
+    t.speicher.uebersicht = async (r) => warte(await echt(r));
+    expect((await t.holen('')).status).toBe(200);
+    expect(gleichzeitig).toBe(2);
+    t.speicher.uebersicht = async () => { throw wirdEingerichtet(); };
+    expect((await t.holen('')).status).toBe(503);
   });
 
   it('Lehrende: unbekannt, ohne Aufruf', async () => {

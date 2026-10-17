@@ -59,7 +59,7 @@ describe('leitfadenFrei', () => {
 
 describe('mappeZeilen', () => {
   it('listet alle Artefakte der Mappe in fester Reihenfolge mit Titel, Methodenseite und Stand', () => {
-    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }] };
+    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }] };
     const z = mappeZeilen(stand);
     expect(z.map((x) => x.name)).toStrictEqual([...ARTEFAKT_NAMEN]);
     expect(z.find((x) => x.name === 'annahmen')).toStrictEqual({ name: 'annahmen', titel: 'Annahmen-Map', href: '/innolab/methoden/annahmen', vorhanden: true });
@@ -72,7 +72,7 @@ describe('api.mappe', () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it('liest den Stand der Mappe', async () => {
-    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', artefakte: [] };
+    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [] };
     const f = vi.fn(async () => new Response(JSON.stringify(stand), { status: 200 }));
     vi.stubGlobal('fetch', f);
     await expect(api.mappe()).resolves.toStrictEqual(stand);

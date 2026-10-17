@@ -41,6 +41,7 @@ const UEBERSICHT = {
   outputSchema: {
     kohorte: z.string(),
     repo: z.string(),
+    lesezugriff: z.enum(['aktiv', 'eingeladen', 'unbekannt']),
     artefakte: z.array(z.object({ name: ARTEFAKT_ENUM, vorhanden: z.boolean() })),
   },
   annotations: LESEN,
