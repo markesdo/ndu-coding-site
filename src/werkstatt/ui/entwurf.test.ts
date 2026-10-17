@@ -1,5 +1,6 @@
+import { ARTEFAKT_NAMEN, ARTEFAKTE, artefaktParsen, type ArtefaktName } from '../schemas/index';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { entwuerfeLoeschen, entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfSichern, startStand } from './entwurf';
+import { entwuerfeLoeschen, entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf';
 
 function speicher(): Storage {
   const m = new Map<string, string>();
@@ -88,21 +89,74 @@ describe('unvollständige Entwürfe', () => {
 });
 
 describe('Entwurf nach einem späten Commit', () => {
-  it('löscht den Entwurf, dessen Stand zum gespeicherten Stand gehört', () => {
-    entwurfSichern('brief', ICH, 'test', 'sha-1', { x: 1 });
-    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', 'sha-1')).toBe(true);
+  const daten = { x: 1 };
+
+  it('löscht den Entwurf nur, wenn Stand und Inhalt dem Gesendeten entsprechen', () => {
+    entwurfSichern('brief', ICH, 'test', 'sha-1', daten);
+    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', 'sha-1', { x: 1 })).toBe(true);
     expect(entwurfLaden('brief', ICH, 'test')).toBeNull();
   });
 
+  it('lässt einen Entwurf stehen, der inzwischen weitergeschrieben wurde (anderer Inhalt)', () => {
+    entwurfSichern('brief', ICH, 'test', 'sha-1', { x: 2 });
+    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', 'sha-1', { x: 1 })).toBe(false);
+    expect(entwurfLaden('brief', ICH, 'test')?.daten).toStrictEqual({ x: 2 });
+  });
+
   it('lässt einen Entwurf auf anderem Stand stehen', () => {
-    entwurfSichern('brief', ICH, 'test', 'sha-2', { x: 1 });
-    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', 'sha-1')).toBe(false);
+    entwurfSichern('brief', ICH, 'test', 'sha-2', daten);
+    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', 'sha-1', daten)).toBe(false);
     expect(entwurfLaden('brief', ICH, 'test')).not.toBeNull();
   });
 
   it('Datei neu (null) passt zu null', () => {
-    entwurfSichern('brief', ICH, 'test', null, { x: 1 });
-    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', null)).toBe(true);
+    entwurfSichern('brief', ICH, 'test', null, daten);
+    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', null, daten)).toBe(true);
+  });
+});
+
+describe('entwurfNormalisieren: falsch geformte Entwürfe lassen die Anzeige nicht abstürzen', () => {
+  const leer = (name: ArtefaktName) => ARTEFAKTE[name].leer('2026-10-22');
+  const annahmen = () => leer('annahmen') as { annahmen: Record<string, unknown>[]; stand: string };
+
+  it('{} ergibt den leeren Stand', () => {
+    expect(entwurfNormalisieren('annahmen', annahmen(), {})).toStrictEqual(annahmen());
+  });
+
+  it('eine Liste, die keine ist, wird zur leeren Liste', () => {
+    expect((entwurfNormalisieren('annahmen', annahmen(), { annahmen: 'x' }) as { annahmen: unknown }).annahmen).toStrictEqual([]);
+  });
+
+  it('Zeilen {} bekommen alle Felder, Listenfelder bleiben Listen', () => {
+    const r = entwurfNormalisieren('annahmen', annahmen(), { annahmen: [{}, 7, null, { id: 'A2', belegIds: 'x' }] }) as { annahmen: Record<string, unknown>[] };
+    expect(r.annahmen).toHaveLength(2);
+    for (const z of r.annahmen) expect(Object.keys(z).sort()).toStrictEqual(['art', 'beleg', 'belegIds', 'id', 'text', 'wichtig']);
+    expect(r.annahmen[1]).toMatchObject({ id: 'A2', belegIds: [] });
+  });
+
+  it('gültige Felder des Entwurfs bleiben, falsche Typen fallen auf die Vorlage zurück', () => {
+    const r = entwurfNormalisieren('annahmen', annahmen(), {
+      stand: 5, riskanteste: 'A1', annahmen: [{ id: 'A1', text: 'T', belegIds: ['I1', 3, 'I2'], art: 'machbar' }],
+    }) as Record<string, unknown> & { annahmen: Record<string, unknown>[] };
+    expect(r.stand).toBe('2026-10-22');
+    expect(r.riskanteste).toBe('A1');
+    expect(r.annahmen[0]).toMatchObject({ id: 'A1', text: 'T', art: 'machbar', belegIds: ['I1', 'I2'] });
+  });
+
+  it('verschachtelte Objekte und Stringlisten (Brief)', () => {
+    const r = entwurfNormalisieren('brief', ARTEFAKTE.brief.leer('2026-10-22'), { outcome: 'x', nicht: ['a', 1, 'b'], offeneFragen: {} }) as Record<string, unknown>;
+    expect(r.outcome).toStrictEqual({ wirGlauben: '', wirMerkenEs: '' });
+    expect(r.nicht).toStrictEqual(['a', 'b']);
+    expect(r.offeneFragen).toStrictEqual([]);
+  });
+
+  it('für alle Artefakte: Müll-Entwürfe lassen sich prüfen, ohne zu werfen', () => {
+    for (const name of ARTEFAKT_NAMEN) {
+      for (const roh of [{}, { [name]: 'x' }, { fragen: [{}], entscheidungen: [{}], annahmen: [{}] }, { outcome: null }]) {
+        const n = entwurfNormalisieren(name, ARTEFAKTE[name].leer('2026-10-22'), roh);
+        expect(() => artefaktParsen(name, n), name).not.toThrow();
+      }
+    }
   });
 });
 

@@ -39,12 +39,13 @@ export function entwurfSichern(name: ArtefaktName, githubId: number, kohorte: st
 }
 
 /**
- * Ein Commit kam erst nach dem Schließen oder Neu-Öffnen an: Der Entwurf, der auf dem gespeicherten Stand beruht, ist
- * jetzt veröffentlicht und kann weg; ein Entwurf auf anderem Stand bleibt. true = gelöscht.
+ * Ein Commit kam erst nach dem Schließen oder Neu-Öffnen an: Der Entwurf, der genau das Gesendete enthält und auf dem
+ * gespeicherten Stand beruht, ist jetzt veröffentlicht und kann weg. Ein Entwurf auf anderem Stand oder mit weiterem
+ * Text bleibt. true = gelöscht.
  */
-export function entwurfNachCommitLoeschen(name: ArtefaktName, githubId: number, kohorte: string, gesendeterStand: string | null): boolean {
+export function entwurfNachCommitLoeschen(name: ArtefaktName, githubId: number, kohorte: string, gesendeterStand: string | null, gesendeteDaten: unknown): boolean {
   const e = entwurfLaden(name, githubId, kohorte);
-  if (e === null || e.basisSha !== gesendeterStand) return false;
+  if (e === null || e.basisSha !== gesendeterStand || JSON.stringify(e.daten) !== JSON.stringify(gesendeteDaten)) return false;
   entwurfLoeschen(name, githubId, kohorte);
   return true;
 }
@@ -87,4 +88,39 @@ export function startStand<D>(server: { daten: D; basisSha: string | null }, ent
   if (entwurf === null) return { daten: server.daten, basisSha: server.basisSha, alsEntwurf: false, aelterEntwurf: null };
   if (entwurf.basisSha === server.basisSha) return { daten: entwurf.daten, basisSha: server.basisSha, alsEntwurf: true, aelterEntwurf: null };
   return { daten: server.daten, basisSha: server.basisSha, alsEntwurf: false, aelterEntwurf: entwurf.daten };
+}
+
+// Zeilenvorlagen der Listen, damit auch eine Zeile `{}` alle Felder hat. Das Schema-Modul bietet keine; Schlüssel: <artefakt>.<liste>.
+const ZEILEN: Record<string, Record<string, unknown>> = {
+  'annahmen.annahmen': { id: '', text: '', art: 'wuenschenswert', wichtig: 'mittel', beleg: 'keiner', belegIds: [] },
+  'entscheidungen.entscheidungen': { id: '', datum: '', entscheidung: '', grund: '', beleg: 'keiner', belegIds: [] },
+  'leitfaden.fragen': { id: '', text: '', art: 'kern' },
+};
+
+const istObjekt = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
+
+function mische(vorlage: unknown, roh: unknown, pfad: string): unknown {
+  if (Array.isArray(vorlage)) {
+    if (!Array.isArray(roh)) return [...vorlage];
+    const zeile = ZEILEN[pfad];
+    return zeile ? roh.filter(istObjekt).map((r) => mische(zeile, r, pfad)) : roh.filter((x) => typeof x === 'string');
+  }
+  if (istObjekt(vorlage)) {
+    const r = istObjekt(roh) ? roh : {};
+    const aus: Record<string, unknown> = {};
+    for (const k of Object.keys(vorlage)) aus[k] = mische(vorlage[k], r[k], `${pfad}.${k}`);
+    // Weitere Felder (optionale wie „riskanteste“) bleiben, wenn sie Text sind.
+    for (const k of Object.keys(r)) if (!(k in vorlage) && typeof r[k] === 'string') aus[k] = r[k];
+    return aus;
+  }
+  return typeof roh === typeof vorlage ? roh : vorlage;
+}
+
+/**
+ * Legt einen gespeicherten Entwurf über den leeren Stand: fehlende Felder kommen aus der Vorlage, Falschtypisiertes fällt
+ * auf sie zurück, Listen bleiben Listen. So stürzen Formular, Vorschau und Markdown auch bei einem kaputten Entwurf nicht ab;
+ * was inhaltlich nicht stimmt, melden die Feldfehler des Schemas.
+ */
+export function entwurfNormalisieren(name: ArtefaktName, leer: unknown, roh: unknown): unknown {
+  return mische(leer, roh, name);
 }

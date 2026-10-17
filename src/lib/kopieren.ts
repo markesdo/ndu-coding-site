@@ -22,11 +22,18 @@ export async function kopiereText(text: string, zumMarkieren?: Node | null): Pro
     return 'kopiert';
   } catch {
     if (zumMarkieren && typeof document !== 'undefined') {
-      const r = document.createRange();
-      r.selectNodeContents(zumMarkieren);
-      const sel = getSelection();
-      sel?.removeAllRanges();
-      sel?.addRange(r);
+      const feld = zumMarkieren as Partial<HTMLTextAreaElement | HTMLInputElement>;
+      if (typeof feld.select === 'function') {
+        // Textarea und Input: ein Range über den Inhalt markiert dort nichts; Formularfelder markieren sich selbst.
+        feld.select();
+        feld.setSelectionRange?.(0, feld.value?.length ?? 0);
+      } else {
+        const r = document.createRange();
+        r.selectNodeContents(zumMarkieren);
+        const sel = getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(r);
+      }
       // Ältere Kopier-Funktion auf der Markierung – klappt oft auch ohne HTTPS oder Clipboard-Recht.
       try { if (document.execCommand('copy')) return 'kopiert'; } catch {}
     }

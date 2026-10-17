@@ -1,5 +1,6 @@
 // Editor-Hülle: eine Komponente für alle Artefakte. Laden, Entwurf, Speichern, Konflikt, Fehler, Anmelden.
 // Die Zustandsmaschine steht in huelle.ts (rein, getestet); hier laufen nur die Effekte und die Anzeige.
+import { flushSync } from 'react-dom';
 import { Copy, LogIn, Pencil, RefreshCw, Save, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { kopiereText, kopierMeldung } from '../../lib/kopieren.js';
@@ -7,7 +8,8 @@ import { METHODEN } from '../../components/methoden.js';
 import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldfehler } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
-import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfSichern, startStand } from './entwurf.js';
+import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
+import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
 import { darfSpeichern, huelle, leererStand, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
 import '../../styles/werkstatt.css';
 
@@ -53,7 +55,11 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const [fehlerCode, setFehlerCode] = useState<string | null>(null);
   const [serverFelder, setServerFelder] = useState<Feldfehler[]>([]);
   const [kopieStatus, setKopieStatus] = useState('');
-  const [kopierText, setKopierText] = useState<string | null>(null);
+  // Text für „Für Claude kopieren“: sichtbar nur, wenn die Zwischenablage nicht ging; zum Kopieren kurz verborgen im DOM.
+  const [kopierFeld, setKopierFeld] = useState<{ text: string; sichtbar: boolean } | null>(null);
+  // Formular oder Vorschau sind abgestürzt (falsch geformter Entwurf): Speichern bleibt gesperrt.
+  const [anzeigeKaputt, setAnzeigeKaputt] = useState(false);
+  const [grenzeNr, setGrenzeNr] = useState(0);
   const [versuche, setVersuche] = useState(0);
   // Entwurf auf einem anderen Stand als dem des Servers: wartet auf die ausdrückliche Wahl.
   const [aelterEntwurf, setAelterEntwurf] = useState<DatenVon<N> | null>(null);
@@ -108,7 +114,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       const roh = entwurfLaden(name, ich.githubId, ich.kohorte);
       const start = startStand(
         { daten: vomServer.daten as DatenVon<N>, basisSha: antwort.basisSha },
-        roh === null ? null : { basisSha: roh.basisSha, daten: roh.daten as DatenVon<N> },
+        roh === null ? null : { basisSha: roh.basisSha, daten: entwurfNormalisieren(name, ARTEFAKTE[name].leer(heute()), roh.daten) as DatenVon<N> },
       );
       basisSha.current = start.basisSha;
       datenRef.current = start.daten;
@@ -140,7 +146,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     setVersuche(0);
     setAbgelaufen(false);
     setKopieStatus('');
-    setKopierText(null);
+    setKopierFeld(null);
+    setAnzeigeKaputt(false);
     setOffen(true);
     void laden();
   }
@@ -176,11 +183,11 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   }, []);
 
   useEffect(() => {
-    if (kopierText !== null) {
+    if (kopierFeld?.sichtbar) {
       kopierRef.current?.focus();
       kopierRef.current?.select();
     }
-  }, [kopierText]);
+  }, [kopierFeld]);
 
   const setze = (neu: DatenVon<N>) => {
     datenRef.current = neu;
@@ -201,13 +208,14 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     setVersuche(0);
     const mein = lauf.current;
     const gesendeterStand = basisSha.current;
+    const gesendeteDaten = datenRef.current;
     const wer = person.current;
     try {
-      const antwort = await api.speichern(name, { daten: datenRef.current, basisSha: gesendeterStand });
+      const antwort = await api.speichern(name, { daten: gesendeteDaten, basisSha: gesendeterStand });
       if (mein !== lauf.current) {
         // Antwort aus einer früheren Öffnung: Zustand und Stand nicht anfassen. Ein geglückter Commit macht aber den
         // zugehörigen Entwurf überflüssig.
-        if (!('konflikt' in antwort) && wer !== null) entwurfNachCommitLoeschen(name, wer.githubId, wer.kohorte, gesendeterStand);
+        if (!('konflikt' in antwort) && wer !== null) entwurfNachCommitLoeschen(name, wer.githubId, wer.kohorte, gesendeterStand, gesendeteDaten);
         return;
       }
       if ('konflikt' in antwort) return void senden({ typ: 'speichernFehlgeschlagen', status: 409, code: 'konflikt' });
@@ -227,15 +235,19 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     if (daten === null) return;
     const slug = ARTEFAKTE[name].slug;
     const pruefliste = METHODEN.find((m) => m.slug === slug)?.pruefliste ?? [];
-    const text =
-      alsMarkdown(daten).trimEnd() +
-      (pruefliste.length ? `\n\n## Prüfliste\n\n${pruefliste.map((p) => `- [ ] ${p}`).join('\n')}\n` : '\n');
-    // Der Text liegt in der (meist verborgenen) Textarea: Scheitert die Zwischenablage, markiert kopiereText dort.
-    const feld = kopierRef.current;
-    if (feld) feld.value = text;
-    const ergebnis = await kopiereText(text, feld);
+    let text: string;
+    try {
+      text =
+        alsMarkdown(daten).trimEnd() +
+        (pruefliste.length ? `\n\n## Prüfliste\n\n${pruefliste.map((p) => `- [ ] ${p}`).join('\n')}\n` : '\n');
+    } catch {
+      return setKopieStatus('Dieser Entwurf lässt sich nicht kopieren.');
+    }
+    // Die Textarea wird nur fürs Kopieren eingehängt: Scheitert die Zwischenablage, markiert kopiereText dort den Text.
+    flushSync(() => setKopierFeld({ text, sichtbar: false }));
+    const ergebnis = await kopiereText(text, kopierRef.current);
     setKopieStatus(kopierMeldung(ergebnis, navigator.platform));
-    setKopierText(ergebnis === 'kopiert' ? null : text); // nicht kopiert: Feld sichtbar machen, damit man selbst kopieren kann
+    setKopierFeld(ergebnis === 'kopiert' ? null : { text, sichtbar: true }); // nicht kopiert: sichtbar, damit man selbst kopieren kann
   }
 
   const zurueck = typeof location === 'undefined' ? '/' : location.pathname + location.search + location.hash;
@@ -251,8 +263,17 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     if (person.current !== null) entwurfLoeschen(name, person.current.githubId, person.current.kohorte);
     setAelterEntwurf(null);
   }
+
+  // Kaputter Entwurf: weg damit und frisch vom Server laden.
+  function kaputtenEntwurfVerwerfen(): void {
+    entwurfVerwerfen();
+    setAnzeigeKaputt(false);
+    setGrenzeNr((n) => n + 1);
+    senden({ typ: 'oeffnen' });
+    void laden();
+  }
   const status = statusText(zustand, dirty);
-  const kannSpeichern = daten !== null && pruefung.erlaubt && aelterEntwurf === null && darfSpeichern(zustand);
+  const kannSpeichern = daten !== null && !anzeigeKaputt && pruefung.erlaubt && aelterEntwurf === null && darfSpeichern(zustand);
   const ersteMeldung = pruefung.fehler[0];
 
   function hinweis(): ReactNode {
@@ -344,16 +365,24 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
               <div className="wk-inhalt">
                 <fieldset className="wk-formular" disabled={zustand === 'speichert' || aelterEntwurf !== null}>
                   <legend className="wk-nur-leser">{titel} bearbeiten</legend>
-                  {formular(daten, setze, fehlerAm)}
+                  <Fehlergrenze key={`f${grenzeNr}`} onFehler={() => setAnzeigeKaputt(true)} onVerwerfen={kaputtenEntwurfVerwerfen}>
+                    <Ausfuehren was={() => formular(daten, setze, fehlerAm)} />
+                  </Fehlergrenze>
                 </fieldset>
-                <section className="wk-bild" aria-label="Vorschau">{bild(daten)}</section>
+                <section className="wk-bild" aria-label="Vorschau">
+                  <Fehlergrenze key={`b${grenzeNr}`} onFehler={() => setAnzeigeKaputt(true)} onVerwerfen={kaputtenEntwurfVerwerfen}>
+                    <Ausfuehren was={() => bild(daten)} />
+                  </Fehlergrenze>
+                </section>
               </div>
             )}
 
-            <div className={kopierText !== null ? 'wk-kopiertext' : 'wk-nur-leser'}>
-              <label htmlFor={`wk-kopie-${name}`}>Text für Claude</label>
-              <textarea id={`wk-kopie-${name}`} ref={kopierRef} readOnly rows={6} value={kopierText ?? ''} tabIndex={kopierText !== null ? 0 : -1} />
-            </div>
+            {kopierFeld !== null && (
+              <div className={kopierFeld.sichtbar ? 'wk-kopiertext' : 'wk-nur-leser'}>
+                <label htmlFor={`wk-kopie-${name}`}>Text für Claude</label>
+                <textarea id={`wk-kopie-${name}`} ref={kopierRef} readOnly rows={6} value={kopierFeld.text} tabIndex={kopierFeld.sichtbar ? 0 : -1} />
+              </div>
+            )}
 
             <footer className="wk-fuss">
               <p className="wk-status" aria-live="polite">

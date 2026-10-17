@@ -26,11 +26,15 @@ export default function TestEditor() {
       name="annahmen"
       titel="Annahmen-Map"
       alsMarkdown={(d) => `# Annahmen\n\n${d.annahmen.map((a) => `- ${a.id}: ${a.text}`).join('\n')}`}
-      bild={(d) => (
+      bild={(d) => {
+        // Von Hand in der Konsole: window.__bildKaputt = true → Vorschau wirft (Fehlergrenze prüfen).
+        if ((window as unknown as { __bildKaputt?: boolean }).__bildKaputt) throw new Error('Test: Vorschau kaputt');
+        return (
         <ul>
           {d.annahmen.map((a) => <li key={a.id}><strong>{a.id}</strong> {a.text} ({a.wichtig}, {BELEGSTUFE_TEXT[a.beleg]})</li>)}
         </ul>
-      )}
+        );
+      }}
       formular={(d: Annahmen, setze, fehler) => (
         <>
           <Textfeld label="Stand" wert={d.stand} onChange={(stand) => setze({ ...d, stand })} fehler={fehler('stand')} hilfe="JJJJ-MM-TT" />
