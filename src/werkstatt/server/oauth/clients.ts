@@ -8,7 +8,8 @@ export interface ErlaubterClient {
 }
 
 // claude.ai (Web, Desktop, Mobil) – Anthropic-Doku „Authentication for connectors“, gelesen 17.10.2026.
-// Die genaue client_id loggt die Probe (T15); danach kann sie hier festgepinnt werden.
+// Probe 17.10.2026: claude.ai meldet sich als `https://claude.ai/oauth/mcp-oauth-client-metadata`. Bewusst nicht auf
+// genau diese ID verengt: redirect_uri ist ohnehin fest, und ein neuer Pfad bei Anthropic soll den Kurs nicht stoppen.
 const CLAUDE_HOST = 'claude.ai';
 const CLAUDE_REDIRECT = 'https://claude.ai/api/mcp/auth_callback';
 
