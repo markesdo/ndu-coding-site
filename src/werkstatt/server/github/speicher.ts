@@ -38,6 +38,8 @@ const REPO_RECHTE = { contents: 'write' } as const;
 const EINLADEN_RECHTE = { administration: 'write' } as const;
 // Marker „eingeladen“ (und der aufgelöste Login) nur kurz: drosselt das erneute PUT; der Status wird trotzdem jedes Mal geprüft.
 const EINGELADEN_SEK = 10 * 60;
+// Aufgelöster Login, nur für die Statusabfrage (lesend). Eingeladen wird immer mit frisch aufgelöstem Login.
+const LOGIN_SEK = 10 * 60;
 
 const jsonPfad = (name: string) => `mappe/${name}.json`;
 const pfadKodieren = (pfad: string) => pfad.split('/').map(encodeURIComponent).join('/');
@@ -157,16 +159,19 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
       if ((await abh.cache.get(aktivKey)) === 'aktiv') return 'aktiv';
       const z = await zugriff(repo, EINLADEN_RECHTE);
       if (!z) throw unbekanntesRepo();
-      // Der Login ist umbenennbar, die ID nicht: den aktuellen Namen bei GitHub erfragen (kurz gemerkt, spart einen Aufruf).
+      // Der Login ist umbenennbar, die ID nicht: den aktuellen Namen bei GitHub erfragen.
       const loginKey = lesenSchluessel(org, repo, githubId, 'login');
-      let login = await abh.cache.get(loginKey);
-      if (typeof login !== 'string' || !LOGIN_MUSTER.test(login)) {
+      const aufloesen = async (): Promise<string> => {
         const nutzer = await anfrage(z.token, 'GET', `/user/${githubId}`);
         if (nutzer.status !== 200) throw githubFehler('GET', '/user/{id}', nutzer.status);
-        login = nutzer.daten?.login;
-        if (typeof login !== 'string' || !LOGIN_MUSTER.test(login)) throw intern('lesezugriff: ungültiger GitHub-Login von GitHub');
-        await abh.cache.set(loginKey, login, EINGELADEN_SEK);
-      }
+        const l = nutzer.daten?.login;
+        if (typeof l !== 'string' || !LOGIN_MUSTER.test(l)) throw intern('lesezugriff: ungültiger GitHub-Login von GitHub');
+        await abh.cache.set(loginKey, l, LOGIN_SEK);
+        return l;
+      };
+      const gemerkt = await abh.cache.get(loginKey);
+      // Für die Statusabfrage darf der gemerkte Name gelten (sie gibt nichts frei).
+      const login = typeof gemerkt === 'string' && LOGIN_MUSTER.test(gemerkt) ? gemerkt : await aufloesen();
       const pfad = `/collaborators/${encodeURIComponent(login)}`;
       // Der Status wird immer geprüft (die Annahme soll sofort zählen); gedrosselt wird nur das erneute Einladen.
       const geprueft = await anfrage(z, 'GET', pfad);
@@ -177,8 +182,10 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
       if (geprueft.status !== 404) throw githubFehler('GET', 'collaborators', geprueft.status);
       const markeKey = lesenSchluessel(org, repo, githubId, 'eingeladen');
       if ((await abh.cache.get(markeKey)) === 'eingeladen') return 'eingeladen';
+      // Einladen gibt Zugriff frei: Login frisch auflösen, nie den gemerkten nehmen (Umbenennung, Name neu vergeben).
+      const frisch = login === gemerkt ? await aufloesen() : login;
       // Nie Schreibrechte: Lesende, die Werkstatt bleibt die einzige Schreiberin.
-      const r = await anfrage(z, 'PUT', pfad, { permission: 'pull' });
+      const r = await anfrage(z, 'PUT', `/collaborators/${encodeURIComponent(frisch)}`, { permission: 'pull' });
       if (r.status === 204) {
         await abh.cache.set(aktivKey, 'aktiv', TAG_SEK);
         return 'aktiv';

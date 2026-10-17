@@ -54,7 +54,7 @@ function aufbau(opts: { zeitlimitMs?: number } = {}) {
     jetzt: () => uhr.ms,
     zeitlimitMs: opts.zeitlimitMs,
   });
-  return { gh, s, schlafen, uhr };
+  return { gh, s, schlafen, uhr, cache };
 }
 
 async function mitRepo() {
@@ -591,6 +591,16 @@ describe('githubSpeicher.lesezugriff', () => {
     gh.zustand.nutzer.set(ID, 'neuer-name');
     await s.lesezugriff(repo, ID);
     expect(gh.zustand.aufrufeVon('GET', `/user/${ID}`)).toHaveLength(1);
+    expect(Object.keys(gh.zustand.kollaboration(repo))).toStrictEqual(['neuer-name']);
+  });
+
+  it('eingeladen wird nur mit frisch aufgelöstem Login, nie mit dem gemerkten', async () => {
+    const { gh, s, repo, cache } = await bereit();
+    // Gemerkter Name von vorhin, inzwischen umbenannt (und der alte Name womöglich neu vergeben).
+    await cache.set(`gh-lesezugriff-login:ndu-innolab/${repo}:${ID}`, 'alter-name', 600);
+    gh.zustand.nutzer.set(ID, 'neuer-name');
+    expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
+    expect(gh.zustand.aufrufeVon('PUT', '/collaborators/alter-name')).toHaveLength(0);
     expect(Object.keys(gh.zustand.kollaboration(repo))).toStrictEqual(['neuer-name']);
   });
 
