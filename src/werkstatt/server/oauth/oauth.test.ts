@@ -422,6 +422,7 @@ describe('oauth/token', () => {
     const paar = await tokenPaar(h);
     const angreifer = await (await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).json();
     expect(await bearerPruefen(h.abh, `Bearer ${angreifer.access_token}`, ISSUER)).not.toBeNull();
+    h.uhr.ms += 31_000; // nach dem Gnadenfenster
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: angreifer.refresh_token }));
     expect(await bearerPruefen(h.abh, `Bearer ${angreifer.access_token}`, ISSUER)).toBeNull();
@@ -430,6 +431,32 @@ describe('oauth/token', () => {
     const andere = await tokenPaar(h);
     expect(await bearerPruefen(h.abh, `Bearer ${andere.access_token}`, ISSUER)).not.toBeNull();
     expect((await token(h, { grant_type: 'refresh_token', refresh_token: andere.refresh_token })).status).toBe(200);
+  });
+
+  it('Refresh-Neuversuch innerhalb von 30 s: dieselbe Antwort noch einmal, kein zweiter Zweig', async () => {
+    const h = aufbau();
+    const paar = await tokenPaar(h);
+    const erst = await (await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).json();
+    h.uhr.ms += 20_000;
+    for (let i = 0; i < 2; i++) {
+      const nochmal = await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token });
+      expect(nochmal.status).toBe(200);
+      // Gleiches Paar; expires_in zählt die Zeit seit der ersten Rotation ab.
+      expect(await nochmal.json()).toStrictEqual({ ...erst, expires_in: erst.expires_in - 20 });
+    }
+    expect(await bearerPruefen(h.abh, `Bearer ${erst.access_token}`, ISSUER)).not.toBeNull();
+    // Die Kette geht mit dem Token aus der ersten Antwort weiter.
+    expect((await token(h, { grant_type: 'refresh_token', refresh_token: erst.refresh_token })).status).toBe(200);
+  });
+
+  it('Refresh-Neuversuch nach 30 s: Familie widerrufen, auch das Paar aus der ersten Rotation', async () => {
+    const h = aufbau();
+    const paar = await tokenPaar(h);
+    const erst = await (await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).json();
+    h.uhr.ms += 31_000;
+    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
+    expect(await bearerPruefen(h.abh, `Bearer ${erst.access_token}`, ISSUER)).toBeNull();
+    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: erst.refresh_token }));
   });
 
   it('Body über 16 KB: 413 invalid_request, mit und ohne Content-Length', async () => {
@@ -463,6 +490,7 @@ describe('oauth/token', () => {
     expect(dritt.status).toBe(200);
     const drittes = await dritt.json();
     expect(drittes.refresh_token).not.toBe(neu.refresh_token);
+    h.uhr.ms += 31_000;
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
     // Wiederverwendung widerruft die ganze Familie, also auch das jüngste (siehe „Refresh-Familie“).
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: drittes.refresh_token }));

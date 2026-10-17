@@ -198,7 +198,7 @@ Zu jedem Schema gibt es eine **Kaffeebar-Beispieldatei** (gültig, aus den Beisp
 - **Autorisierungsserver** (neu, mit Bausteinen aus capitelize):
   - Autorisieren = GitHub-Login der Werkstatt (gleiche Zugangsliste) plus Zustimmungsseite, die den Ziel-Host (`claude.ai`) deutlich zeigt.
   - Codes als versiegelte Umschläge (`typ: 'code'`, 60 s, gebunden an client_id, redirect_uri, code_challenge, githubId, kohorte). Einmaligkeit nach bestem Bemühen über Runtime Cache; PKCE macht ein abgefangenes Wiederverwenden durch Dritte nutzlos.
-  - Access-Token 1 h, Refresh-Token 30 Tage, **bei jedem Refresh rotiert**; ungültiges Refresh-Token → `invalid_grant`. Token-Endpunkt nimmt `application/x-www-form-urlencoded`.
+  - Access-Token 1 h, Refresh-Token 30 Tage, **bei jedem Refresh rotiert**; ungültiges Refresh-Token → `invalid_grant`. Ein schon rotiertes Refresh-Token bekommt 30 s lang dieselbe Antwort noch einmal (Neuversuch nach verlorener Antwort), danach widerruft es die ganze Familie. Token-Endpunkt nimmt `application/x-www-form-urlencoded`.
   - **claude.ai** als öffentlicher CIMD-Client: redirect_uri exakt `https://claude.ai/api/mcp/auth_callback`, client_id eine https-URL auf `claude.ai`. Die genaue client_id loggt die Probe am Mo 19.10.; danach festgepinnt.
   - **ChatGPT** (Phase 1b): gepinnter CIMD-Client `https://chatgpt.com/oauth/client.json` mit `private_key_jwt` (aus capitelize).
   - Ohne Token antwortet `/mcp` mit 401 und `resource_metadata`-Verweis.
@@ -276,7 +276,7 @@ Plan B für den 22.10.: Fällt Login, GitHub oder Connector aus, arbeiten die St
 - **Kohorten:** Person in zwei Kohorten → neueste aktive; archivierte Kohorte → kein Zugang, `invalid_grant`.
 - **Speicher** gegen einen Fake der Git-Data-API: ein Commit pro Speichern; veralteter `basisSha` → 409 und nichts geschrieben; Anlegen idempotent (422 „exists“ mit passender `werkstatt.json` = Erfolg, mit fremder = Fehler); Autor*in = Person.
 - **Auth:** Zugang per ID (umbenannter Login bleibt zugelassen, fremde ID → keine Freigabe, kein Repo), Cookie-Signatur und Ablauf, CSRF-Prüfung.
-- **OAuth/MCP:** Harness nach dem Vorbild von capitelize (`http-harness.ts`): 401 mit `resource_metadata`; Issuer-Metadaten mit CIMD-Werten und `none`; PKCE S256 Pflicht; Code-Umschlag läuft nach 60 s ab und ist an redirect_uri gebunden; Refresh rotiert, altes Refresh → `invalid_grant`; jedes Werkzeug; `readOnlyHint`; Token einer anderen Kohorte liest keine fremde Mappe.
+- **OAuth/MCP:** Harness nach dem Vorbild von capitelize (`http-harness.ts`): 401 mit `resource_metadata`; Issuer-Metadaten mit CIMD-Werten und `none`; PKCE S256 Pflicht; Code-Umschlag läuft nach 60 s ab und ist an redirect_uri gebunden; Refresh rotiert, altes Refresh innerhalb von 30 s → dieselbe Antwort, danach → `invalid_grant` und Familie widerrufen; jedes Werkzeug; `readOnlyHint`; Token einer anderen Kohorte liest keine fremde Mappe.
 - **Middleware:** `/api/werkstatt/*` ohne Kurs-Cookie erreichbar, alles andere weiter gesperrt.
 - **Browser:** Editor-Ablauf per DevTools-MCP gegen den Build mit Fake-Speicher; Tastatur-only-Durchlauf; Beamer blendet die Werkstatt aus.
 - **Ende-zu-Ende vor dem Go/No-Go:** frisches GitHub-Konto in einer Test-Kohorte → Login → Repo entsteht → vier Artefakte → Commits mit Person als Autor*in → Connector in claude.ai → `artefakt_pruefen`.
