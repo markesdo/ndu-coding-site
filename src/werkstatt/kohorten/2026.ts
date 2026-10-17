@@ -1,3 +1,4 @@
+import { TAGE } from '../../components/methoden.js';
 import type { Kohorte } from './typen.js';
 
 export const kohorte2026: Kohorte = {
@@ -9,13 +10,6 @@ export const kohorte2026: Kohorte = {
   status: 'aktiv',
   beginn: '2026-10-22',
   artefakte: ['brief@1', 'entscheidungen@1', 'leitfaden@1', 'annahmen@1'],
-  termine: {
-    tag1: '2026-10-22',
-    tag2: null,
-    tag3: '2026-11-21',
-    tag4: '2026-11-28',
-    tag5: '2026-12-12',
-    tag6: '2026-12-19',
-    tag7: '2027-01-07',
-  },
+  // Aus dem Kursplan (TAGE), keine zweite Liste: tag<n> -> Datum oder null, solange der Termin offen ist.
+  termine: Object.fromEntries(TAGE.map((t) => [`tag${t.n}`, t.datum ?? null])),
 };
