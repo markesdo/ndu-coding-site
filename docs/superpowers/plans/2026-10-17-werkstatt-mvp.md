@@ -1,12 +1,14 @@
 # Werkstatt MVP – Implementierungsplan (Phase 0 + 1)
 
+> Rev. 2 nach Fable-Review (17.10.): Einstieg `api/werkstatt.ts` + Rewrites, Router-Stubs gegen Merge-Konflikte, Konflikt pro Artefakt (Blob-SHA), lokaler Dev-Server, PEM-Format, Sonntags-Probe.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Bis Mi 21.10.2026, 12:00 bearbeiten Studierende die vier Tag-1-Artefakte im Browser auf der Innolab-Seite, gespeichert als Commits in ihrem privaten Mappe-Repo, und prüfen sie in Claude Chat über den Werkstatt-Connector.
 
-**Architecture:** Astro bleibt statisch. Eine Hono-App in `api/werkstatt/[...pfad].ts` (Vercel-Funktion, fra1) liefert Login, Mappe-API, OAuth-Autorisierungsserver und MCP-Endpunkt, alles unter `/api/werkstatt/`. Gespeichert wird über eine GitHub App in `ndu-innolab/<kohorte>-<kuerzel>`; keine Datenbank, Zustand steckt in signierten Cookies und verschlüsselten Umschlägen. Editoren sind React-Islands, die geteilte Zod-Schemas nutzen.
+**Architecture:** Astro bleibt statisch. Eine Hono-App in `api/werkstatt.ts` (eine Vercel-Funktion, fra1; `vercel.json` schreibt `/api/werkstatt/*` und die zwei `/.well-known/oauth-*`-Pfade darauf um) liefert Login, Mappe-API, OAuth-Autorisierungsserver und MCP-Endpunkt, alles unter `/api/werkstatt/`. Gespeichert wird über eine GitHub App in `ndu-innolab/<kohorte>-<kuerzel>`; keine Datenbank, Zustand steckt in signierten Cookies und verschlüsselten Umschlägen. Editoren sind React-Islands, die geteilte Zod-Schemas nutzen.
 
-**Tech Stack:** Astro 7, React 19, Vercel Functions + Routing Middleware, `hono@4.13.13`, `zod@4.6.7`, `jose@6.2.12`, `@modelcontextprotocol/sdk@1.31.0` (`WebStandardStreamableHTTPServerTransport`), Vitest 5.
+**Tech Stack:** Astro 7, React 19, Vercel Functions + Routing Middleware, `hono@4.13.13` (ohne den veralteten Adapter `hono/vercel`; Export `export default { fetch: (req: Request) => app.fetch(req) }`), `zod@4.6.7`, `jose@6.2.12` (Schlüssel über `node:crypto` `createPrivateKey`), `@modelcontextprotocol/sdk@1.31.0` (`WebStandardStreamableHTTPServerTransport` aus `@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js`), Vitest 5; dev: `@hono/node-server@2.1.5`, `tsx@4.23.15`.
 
 **Spec:** `docs/superpowers/specs/2026-10-17-werkstatt-design.md` (Rev. 2). Executors lesen Spec und Plan.
 
@@ -14,7 +16,11 @@
 
 - Versionen exakt gepinnt wie oben (kein `^`), Node `>=22.12.0`.
 - Gate je Task: `npm test` und `npm run build` grün, keine CI.
-- Alle Werkstatt-Routen unter `/api/werkstatt/`; die Middleware nimmt genau `/api/werkstatt` und `/api/werkstatt/…` aus, nichts sonst.
+- Alle Werkstatt-Routen unter `/api/werkstatt/`; die Middleware nimmt genau `/api/werkstatt`, `/api/werkstatt/…` und die zwei Pfade `/.well-known/oauth-authorization-server/api/werkstatt/oauth` und `/.well-known/oauth-protected-resource/api/werkstatt/mcp` aus, nichts sonst.
+- Öffentliche Origin aus `WERKSTATT_ORIGIN` (Prod), sonst `new URL(request.url).origin` (Preview, lokal).
+- UI-Module (`src/werkstatt/ui/**`) importieren nie aus `src/werkstatt/server/**` (dort ist `node:crypto`).
+- Imports in `api/` und `middleware.ts` mit `.js`-Endung (wie `api/position.ts`).
+- `src/werkstatt/server/app.ts` wird nach Task 3 von keinem Task mehr geändert; jeder Task ersetzt nur seinen eigenen Router-Stub.
 - Fehlerantworten der API: JSON `{ "fehler": "<deutscher Satz>", "code": "<kebab-code>" }`.
 - Zugang über numerische GitHub-ID, nie über den Login.
 - Repo-Name `<kohorte>-<kuerzel>`, Org aus der Kohorte; nie hart `ndu-innolab` im Code außerhalb von `src/werkstatt/kohorten/2026.ts`.
@@ -28,9 +34,9 @@
 
 ## Review Focus
 
-1. **Zwei Geräte, eine Mappe:** Laptop speichert, Handy hat noch den alten Stand → Speichern vom Handy muss 409 liefern, nicht still überschreiben. Test in Task 5 (`speichern mit veraltetem basisSha`) und Task 11.
+1. **Zwei Geräte, eine Mappe:** Laptop speichert die Annahmen, Handy hat noch den alten Stand der Annahmen → Speichern vom Handy muss 409 liefern, nicht still überschreiben. **Zwei Tabs mit verschiedenen Artefakten** (Brief und Annahmen) dürfen sich dagegen nie blockieren. Tests in Task 5 (`speichern mit veraltetem basisSha`, `anderes artefakt blockiert nicht`) und Task 11.
 2. **Erster Login in zwei Tabs:** zweites Anlegen bekommt 422 „exists“ → Erfolg, kein Fehlerbildschirm. Test in Task 5 (`anlegen ist idempotent`).
-3. **Umbenannter GitHub-Login:** gleiche ID, neuer Login → Zugang bleibt, Repo-Name bleibt (Kürzel). Test in Task 1 und Task 4 (`umbenannter login behält zugang`).
+3. **Umbenannter GitHub-Login:** gleiche ID, neuer Login → Zugang bleibt, Repo-Name bleibt (Kürzel). Test in Task 4 (`umbenannter login behält zugang`).
 4. **Entwurf überlebt Ablauf der Sitzung oder GitHub-Ausfall:** Editor verliert nie Eingaben. Test in Task 8 (`entwurf bleibt bei 401 und 502`).
 5. **Connector-Token einer anderen Kohorte** liest nie eine fremde Mappe. Test in Task 12 (`token liest nur eigene mappe`).
 
@@ -40,12 +46,12 @@
 
 | Welle | Tasks | Start | Wer |
 |---|---|---|---|
-| 0 | T0 (Markus), T1, T2, T3 | Sa–Mo 10:00 | T1–T3 seriell, ein Agent: das sind die Verträge |
-| 1 | T4, T5, T6, T7, T8, T9, T10 | Mo 10:00, parallel | je ein Agent im eigenen Worktree |
+| 0 | T0 + Sonntags-Probe (Markus), T1, T2, T3, T10 | Sa–Mo 10:00 | T1–T3 seriell, ein Agent: das sind die Verträge; T10 parallel (keine Code-Abhängigkeit) |
+| 1 | T4, T5, T6, T7, T8, T9 | Mo 10:00, parallel | je ein Agent im eigenen Worktree |
 | 2 | T11, T12, T13 | sobald Abhängigkeiten gemergt | parallel |
 | 3 | T14, T15 | Di | seriell, Go/No-Go Di 18:00 |
 
-Abhängigkeiten: T4–T10 brauchen T1–T3. T11 (Mappe-Routen) braucht T4, T5, T6. T12 (MCP) braucht T5, T6, T7. T13 (Editoren) braucht T8, T9. T14 (Seitenintegration) braucht T11, T13. T15 (Probe/E2E) braucht alles.
+Kritischer Pfad: T1→T2→T3 → T5 (nur gegen echtes GitHub prüfbar) → T11 → T14 → E2E, parallel T7 → T12 → claude.ai-Probe. Abhängigkeiten: T4–T9 brauchen T1–T3. T11 (Mappe-Routen) braucht T4, T5, T6. T12 (MCP) braucht T5, T6, T7. T13 (Editoren) braucht T8, T9. T14 (Seitenintegration) braucht T11, T13. T15 (Probe/E2E) braucht alles.
 
 Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site-<slug> origin/main && ln -s ../ndu-coding-site/node_modules node_modules` (nach `npm install` im Haupt-Checkout der neuen Abhängigkeiten aus T1; danach im Worktree `npm install` statt Symlink, falls `package.json` abweicht). Haupt-Checkout nie umschalten.
 
@@ -57,22 +63,24 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 
 - [ ] **Schritt 1: App registrieren** unter https://github.com/organizations/ndu-innolab/settings/apps/new
   - Name `NDU Werkstatt`, Homepage `https://ndu.datamonkeys.ai/innolab`
-  - Callback URL: `https://ndu.datamonkeys.ai/api/werkstatt/auth/callback` (zweite Zeile für Previews später), „Request user authorization (OAuth) during installation“ aus, „Expire user authorization tokens“ an
+  - Callback URLs (bis zu 10, exakter Abgleich): `https://ndu.datamonkeys.ai/api/werkstatt/auth/callback`, der feste Branch-Alias der Previews `https://ndu-coding-site-git-<branch>-<team>.vercel.app/api/werkstatt/auth/callback` für den Werkstatt-Integrationsbranch, `http://localhost:4321/api/werkstatt/auth/callback`. „Request user authorization (OAuth) during installation“ aus, „Expire user authorization tokens“ an (egal: das User-Token wird nur einmal für `/user` benutzt)
   - Webhook: aus
   - Repository permissions: **Administration: Read and write**, **Contents: Read and write**, Metadata: Read-only (Pflicht)
   - Account permissions: keine; „Only on this account“
-- [ ] **Schritt 2:** Private Key erzeugen (.pem), Client Secret erzeugen. App-ID und Client-ID notieren.
+- [ ] **Schritt 2:** Private Key erzeugen (.pem; GitHub liefert PKCS#1 `BEGIN RSA PRIVATE KEY` – so lassen, der Code liest es), Client Secret erzeugen. App-ID und Client-ID notieren.
 - [ ] **Schritt 3:** App auf `ndu-innolab` installieren, **All repositories**.
 - [ ] **Schritt 4:** Leeres privates Repo `ndu-innolab/mappe-vorlage-2026` anlegen, in Settings „Template repository“ anhaken (Inhalt kommt aus Task 10).
-- [ ] **Schritt 5 (nach Okay, Werte nie im Chat):** Vercel-Projekt `ndu-coding-site`, Umgebung Production + Preview: `GITHUB_APP_ID`, `GITHUB_APP_PRIVATE_KEY` (PEM, Zeilenumbrüche erhalten), `GITHUB_APP_CLIENT_ID`, `GITHUB_APP_CLIENT_SECRET`, `WERKSTATT_SESSION_SECRET` (`openssl rand -hex 32`), `MCP_TOKEN_KEYS` (`openssl rand -hex 32`, Format wie capitelize `REMOTE.md`), `WERKSTATT_ZUGANG` (JSON nach Spec §3.2, IDs aus dem Chat vom 17.10., Kürzel `joachim`, `sofie`, `chen`). Zusätzlich eine Test-Kohorte `test` mit Markus' Zweitkonto für das E2E.
-- [ ] **Schritt 6:** Vercel-Firewall: Rate-Limit-Regel 30 Anfragen/min pro IP auf Pfade mit Präfix `/api/werkstatt/auth/` und `/api/werkstatt/oauth/`.
+- [ ] **Schritt 5 (nach Okay, Werte nie im Chat):** Vercel-Projekt `ndu-coding-site`, Umgebung Production + Preview: `GITHUB_APP_ID`, `GITHUB_APP_PRIVATE_KEY` (PEM, Zeilenumbrüche erhalten), `GITHUB_APP_CLIENT_ID`, `GITHUB_APP_CLIENT_SECRET`, `WERKSTATT_SESSION_SECRET` (`openssl rand -hex 32`), `MCP_TOKEN_KEYS` (`k1:` + `openssl rand -base64 32`, Format wie capitelize `REMOTE.md`), `WERKSTATT_ORIGIN=https://ndu.datamonkeys.ai` (nur Production), `WERKSTATT_ZUGANG` (JSON nach Spec §3.2, IDs aus dem Chat vom 17.10., Kürzel `joachim`, `sofie`, `chen`). Zusätzlich eine Test-Kohorte `test` mit Markus' Zweitkonto für das E2E.
+- [ ] **Schritt 6:** Vercel-Firewall: **eine** Rate-Limit-Regel (Hobby erlaubt eine), Bedingung Pfad beginnt mit `/api/werkstatt/auth/` ODER `/api/werkstatt/oauth/`, 30 Anfragen pro 60 s pro IP.
+- [ ] **Schritt 7:** Deployment Protection für Previews ausschalten oder ein Protection-Bypass-Secret anlegen – sonst erreicht claude.ai die Preview-URL am Montag nicht.
+- [ ] **Schritt 8 (So, Sonntags-Probe, ein Agent mit Markus' Okay):** kleines Skript mit dem echten Installations-Token: Repo aus `mappe-vorlage-2026` erzeugen → warten, bis `git/ref/heads/main` existiert (Dauer notieren) → Blob/Tree/Commit/Ref mit `force: false` → zweites PATCH auf veralteter Basis liefert 422. Ergebnis als Kommentar an Task 5. Test-Repo danach löschen (Markus).
 
 ---
 
 ### Task 1: Abhängigkeiten, Kohorten, Zugang, IDs (Vertrag)
 
 **Files:**
-- Modify: `package.json` (deps `hono@4.13.13`, `zod@4.6.7`, `jose@6.2.12`, `@modelcontextprotocol/sdk@1.31.0`)
+- Modify: `package.json` (deps `hono@4.13.13`, `zod@4.6.7`, `jose@6.2.12`, `@modelcontextprotocol/sdk@1.31.0`; devDeps `@hono/node-server@2.1.5`, `tsx@4.23.15`; Skript `"werkstatt:dev": "NODE_ENV=development tsx scripts/werkstatt-dev.ts"`)
 - Create: `src/werkstatt/kohorten/typen.ts`, `src/werkstatt/kohorten/2026.ts`, `src/werkstatt/kohorten/test.ts`, `src/werkstatt/kohorten/index.ts`
 - Create: `src/werkstatt/zugang.ts`, `src/werkstatt/ids.ts`
 - Test: `src/werkstatt/zugang.test.ts`, `src/werkstatt/ids.test.ts`
@@ -94,7 +102,6 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 
 - [ ] **Schritt 1: Tests schreiben**
   - `mitgliedschaften`: Person in `2026` und `2027` (beide aktiv) → `[2027, 2026]`; `2026` archiviert → nur `2027`; unbekannte ID → `[]`; Lehrende-ID → `{ rolle: 'lehrende', kuerzel: null }`.
-  - `umbenannter login behält zugang`: Zugang kennt nur IDs, `mitgliedschaften(z, 339529141, …)` liefert `kuerzel: 'sofie'` unabhängig von irgendeinem Login (der Login kommt in der Signatur gar nicht vor).
   - `zugangLesen`: `undefined` wirft; doppeltes Kürzel wirft; `"Sofie"` wirft.
   - `naechsteId('A', ['A1','A3'])` → `'A4'`; `naechsteId('D', [])` → `'D1'`.
   - `istId`: wie oben.
@@ -118,19 +125,19 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 - Produces:
   - `type ArtefaktName = 'brief' | 'entscheidungen' | 'leitfaden' | 'annahmen'`
   - `type Belegstufe = 'keiner' | 'gesagt' | 'beobachtet' | 'getestet'`, `BELEGSTUFEN` (Reihenfolge so)
-  - Typen `Brief`, `Entscheidungen`, `Leitfaden`, `Annahmen` exakt nach Spec §3.4; jede Datei zusätzlich `schema: '<name>@1'` und `stand: string` (ISO-Datum `YYYY-MM-DD`)
+  - Typen `Brief`, `Entscheidungen` (Zeilentyp `Entscheidung`), `Leitfaden` (Zeilentyp `Frage`), `Annahmen` (Zeilentyp `Annahme`) exakt nach Spec §3.4; jede Datei zusätzlich `schema: '<name>@1'` und `stand: string` (ISO-Datum `YYYY-MM-DD`); `type ArtefaktDaten = Brief | Entscheidungen | Leitfaden | Annahmen`
   - `interface Feldfehler { pfad: string; meldung: string }` – `pfad` wie `annahmen.3.art`, `meldung` deutsch
   - `ARTEFAKTE: Record<ArtefaktName, { titel: string; slug: string; version: 1; leer(heute: string): unknown }>` – `slug` = Methodenseite (`problem-rahmen`, `entscheidungslog`, `interview`, `annahmen`)
   - `artefaktParsen(name: ArtefaktName, roh: unknown): { ok: true; daten: ArtefaktDaten } | { ok: false; fehler: Feldfehler[] }` – liest auch künftig ältere Versionen über eine (jetzt leere) Migrationstabelle `MIGRATIONEN: Record<string, (alt: unknown) => unknown>`
   - `quadrant(a: Annahme): 'ol' | 'or' | 'ul' | 'ur'` – oben = `wichtig === 'hoch'`, rechts = `beleg` ∈ {`beobachtet`, `getestet`}; `ol` = zuerst testen (passt zu `annahmen.astro`: nach oben wichtig, nach rechts belegt)
   - `punkt(a: Annahme, nachbarn: readonly Annahme[]): { x: number; y: number }` – y: hoch .85 / mittel .5 / niedrig .15; x: keiner .1 / gesagt .35 / beobachtet .65 / getestet .9; gleiche Zelle → um 0,06 pro Nachbar nach rechts unten versetzt, geklemmt auf [0,1]
   - In `vertrag.ts`:
-    - `interface ApiFehler { fehler: string; code: 'nicht-angemeldet' | 'nicht-freigeschaltet' | 'ungueltig' | 'konflikt' | 'github-fehler' | 'csrf' | 'unbekannt' }`
-    - `interface MappeStand { kohorte: string; repo: string; artefakte: { name: ArtefaktName; vorhanden: boolean; stand: string | null; geaendert: string | null }[] }`
-    - `interface ArtefaktAntwort { name: ArtefaktName; daten: unknown | null; basisSha: string }` (`daten: null` = noch nicht angelegt)
-    - `interface SpeichernAnfrage { daten: unknown; basisSha: string; nachricht?: string }`, `interface SpeichernAntwort { basisSha: string; commitUrl: string }`
-    - `interface Ich { githubId: number; login: string; kohorte: string; rolle: Rolle; repo: string | null }`
-    - Routen als Konstanten: `GET /api/werkstatt/ich`, `GET /api/werkstatt/auth/login?weiter=`, `GET /api/werkstatt/auth/callback`, `POST /api/werkstatt/auth/abmelden`, `GET /api/werkstatt/mappe`, `GET /api/werkstatt/mappe/:artefakt`, `PUT /api/werkstatt/mappe/:artefakt` (409 bei Konflikt), `ALL /api/werkstatt/mcp`
+    - `interface ApiFehler { fehler: string; code: 'nicht-angemeldet' | 'nicht-freigeschaltet' | 'wird-eingerichtet' | 'ungueltig' | 'konflikt' | 'github-fehler' | 'csrf' | 'unbekannt'; felder?: Feldfehler[] }`
+    - `interface MappeStand { kohorte: string; repo: string; artefakte: { name: ArtefaktName; vorhanden: boolean }[] }`
+    - `interface ArtefaktAntwort { name: ArtefaktName; daten: unknown | null; basisSha: string | null }` – **`basisSha` ist der Blob-SHA von `mappe/<name>.json`**, `null` = Datei gibt es noch nicht; so blockieren sich verschiedene Artefakte nie
+    - `interface SpeichernAnfrage { daten: unknown; basisSha: string | null; nachricht?: string }`, `interface SpeichernAntwort { basisSha: string; commitUrl: string }`
+    - `interface Ich { githubId: number; login: string; kohorte: string; rolle: Rolle; repo: string | null }` – `repo: null` heißt „wird noch eingerichtet“
+    - Routen als Konstanten: `GET /api/werkstatt/auth/ich`, `GET /api/werkstatt/auth/login?weiter=`, `GET /api/werkstatt/auth/callback`, `POST /api/werkstatt/auth/abmelden`, `GET /api/werkstatt/mappe`, `GET /api/werkstatt/mappe/:artefakt`, `PUT /api/werkstatt/mappe/:artefakt` (409 bei Konflikt), `ALL /api/werkstatt/mcp`
     - MCP-Werkzeugnamen: `mappe_uebersicht`, `artefakt_lesen`, `methode_erklaeren`, `artefakt_pruefen`
 
 - [ ] **Schritt 1: Tests schreiben**
@@ -151,30 +158,37 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 ### Task 3: Hono-Gerüst, Middleware-Ausnahme, Vercel-Konfiguration
 
 **Files:**
-- Create: `api/werkstatt/[...pfad].ts` (nur `export const GET/POST/PUT/DELETE/OPTIONS = handle(app)` aus `hono/vercel`)
-- Create: `src/werkstatt/server/app.ts`, `src/werkstatt/server/umgebung.ts`, `src/werkstatt/server/antwort.ts`
-- Modify: `src/lib/kurszugang.ts` (`istOeffentlich`), `vercel.json` (`regions`, `functions`)
+- Create: `api/werkstatt.ts` (nur `export default { fetch: (req: Request) => app.fetch(req) }` mit `app = appErstellen(produktionsAbhaengigkeiten())`)
+- Create: `src/werkstatt/server/app.ts`, `umgebung.ts`, `antwort.ts`, `typen.ts`, `cache.ts`
+- Create (Stubs, je `export function xRouten(abh: Abhaengigkeiten): Hono`, jede Route 501 `unbekannt`): `src/werkstatt/server/routen/auth.ts` (`authRouten`), `routen/mappe.ts` (`mappeRouten`), `oauth/routen.ts` (`oauthRouten`), `mcp/server.ts` (`mcpRouten`) – T4, T11, T7, T12 ersetzen nur ihre Datei
+- Create: `scripts/werkstatt-dev.ts` (`@hono/node-server`, Port 8787, `fakeSpeicher` und Fake-Identität mit Auswahl einer Testperson; verweigert ohne `istLokal`)
+- Modify: `astro.config.mjs` (`vite.server.proxy['/api/werkstatt'] = 'http://localhost:8787'`), `src/lib/kurszugang.ts` (`istOeffentlich`), `vercel.json` (`regions`, `functions`, `rewrites`)
 - Test: `src/lib/middleware-matcher.test.ts` (erweitern), `src/werkstatt/server/app.test.ts`
 
 **Interfaces:**
 - Consumes: `ApiFehler` (Task 2)
 - Produces:
-  - `interface Abhaengigkeiten { umgebung: Umgebung; speicher: Speicher; github: GithubIdentitaet; jetzt(): number }` – `Speicher` und `GithubIdentitaet` werden hier in `server/typen.ts` festgelegt (unten) und in Task 5 bzw. Task 4 implementiert
-  - `appErstellen(abh: Abhaengigkeiten): Hono` – mountet `/api/werkstatt/auth`, `/api/werkstatt/mappe`, `/api/werkstatt/oauth`, `/api/werkstatt/mcp`; Fallback 404 als `ApiFehler`
-  - `umgebungLesen(env: NodeJS.ProcessEnv): Umgebung` – wirft bei fehlenden Secrets; `istLokal(env)` = `NODE_ENV` ∈ {development, test}
+  - `interface Abhaengigkeiten { umgebung: Umgebung; speicher: Speicher; github: GithubIdentitaet; cache: Cache; jetzt(): number }` – alles in `server/typen.ts`, implementiert in T4 (Identität) und T5 (Speicher)
+  - `interface Umgebung { githubAppId: string; githubPrivateKey: string; githubClientId: string; githubClientSecret: string; sessionSecret: string; tokenKeys: Schluessel[]; zugang: Zugang; origin: string | null; lokal: boolean }`
+  - `interface Schluessel { kid: string; key: Uint8Array }` – geparst aus `MCP_TOKEN_KEYS` (`<kid>:<base64 32 B>`, kommagetrennt, erster = aktuell)
+  - `interface Cache { get(k: string): Promise<unknown>; set(k: string, v: unknown, ttlSek: number): Promise<void> }` – `vercelCache()` über `getCache()` (wie `api/position.ts`), `mapCache()` für Tests und Dev
+  - `origin(c): string` = `umgebung.origin ?? new URL(c.req.url).origin`
+  - `appErstellen(abh: Abhaengigkeiten): Hono` – mountet `authRouten` unter `/api/werkstatt/auth`, `mappeRouten` unter `/api/werkstatt/mappe`, `oauthRouten` unter `/api/werkstatt/oauth` und zusätzlich für `/api/werkstatt/mcp/resource` und die zwei `/.well-known/…`-Pfade (vor `mcpRouten` registriert), `mcpRouten` unter `/api/werkstatt/mcp`; Fallback 404 als `ApiFehler`
+  - `umgebungLesen(env: NodeJS.ProcessEnv): Umgebung` – wirft bei fehlenden Secrets, normalisiert wörtliches `\n` im PEM; `istLokal(env)` = `NODE_ENV` ∈ {development, test}
   - `fehler(c, status, code, satz)` und `json(c, daten, status?)` mit `Cache-Control: no-store`
-  - CSRF-Middleware für `POST/PUT/DELETE` unter `/api/werkstatt/mappe/*` und `/api/werkstatt/auth/abmelden`: `Content-Type` beginnt mit `application/json` (außer Abmelden) und `Origin` = eigene Origin → sonst 403 `csrf`
+  - CSRF-Middleware für `POST/PUT/DELETE` unter `/api/werkstatt/mappe/*`, `/api/werkstatt/auth/abmelden` und die Zustimmung `POST /api/werkstatt/oauth/authorize` (dort nur Origin-Prüfung, Formular erlaubt): `Content-Type` beginnt mit `application/json` (außer Abmelden) und `Origin` = eigene Origin → sonst 403 `csrf`
 - `server/typen.ts` legt fest:
-  - `interface Speicher { anlegen(m: Mitgliedschaft, githubId: number): Promise<{ repo: string }>; lesen(repo: string, name: ArtefaktName): Promise<{ daten: unknown | null; basisSha: string }>; speichern(repo: string, name: ArtefaktName, dateien: Record<string, string>, basisSha: string, autor: { name: string; email: string }, nachricht: string): Promise<{ basisSha: string; commitUrl: string } | { konflikt: true }>; uebersicht(repo: string): Promise<{ name: ArtefaktName; geaendert: string | null }[]>; werkstattJson(repo: string): Promise<{ kohorte: string; githubId: number } | null> }`
+  - `interface Speicher { anlegen(m: Mitgliedschaft, githubId: number): Promise<{ repo: string }>; lesen(repo: string, name: ArtefaktName): Promise<{ daten: unknown | null; basisSha: string | null }>; speichern(repo: string, name: ArtefaktName, dateien: Record<string, string>, basisSha: string | null, autor: { name: string; email: string }, nachricht: string): Promise<{ basisSha: string; commitUrl: string } | { konflikt: true }>; uebersicht(repo: string): Promise<{ name: ArtefaktName; vorhanden: boolean }[]>; werkstattJson(repo: string): Promise<{ kohorte: string; githubId: number } | null> }` – `basisSha` ist immer der Blob-SHA von `mappe/<name>.json`
   - `interface GithubIdentitaet { loginUrl(state: string, redirectUri: string): string; codeEinloesen(code: string, redirectUri: string): Promise<{ githubId: number; login: string }> }`
 
 - [ ] **Schritt 1: Tests**
-  - Middleware: `/api/werkstatt`, `/api/werkstatt/mcp`, `/api/werkstatt/oauth/token` öffentlich; `/api/werkstattx`, `/api/position`, `/innolab/mappe` nicht.
+  - Middleware: `/api/werkstatt`, `/api/werkstatt/mcp`, `/api/werkstatt/oauth/token`, `/.well-known/oauth-authorization-server/api/werkstatt/oauth` öffentlich; `/api/werkstattx`, `/api/position`, `/innolab/mappe`, `/.well-known/anderes` nicht.
+  - `app.test.ts`: `GET /.well-known/oauth-protected-resource/api/werkstatt/mcp` und `GET /api/werkstatt/mcp/resource` erreichen beide `oauthRouten` (Stub 501), nicht `mcpRouten`.
   - `app.test.ts`: `GET /api/werkstatt/gibtsnicht` → 404 mit `{ code: 'unbekannt' }`; `PUT /api/werkstatt/mappe/brief` mit `Origin: https://boese.example` → 403 `csrf`; ohne `Content-Type: application/json` → 403 `csrf`.
   - `umgebungLesen({})` wirft; `istLokal({ NODE_ENV: undefined })` → false; `istLokal({ NODE_ENV: 'production' })` → false.
 - [ ] **Schritt 2:** FAIL.
-- [ ] **Schritt 3:** Implementieren. `vercel.json` ergänzen: `"regions": ["fra1"]`, `"functions": { "api/werkstatt/[...pfad].ts": { "maxDuration": 30 } }`. Kommentarblock in `middleware.ts` um die Ausnahme ergänzen.
-- [ ] **Schritt 4:** Grün; `npm run build`; lokal `npx vercel dev` nicht nötig.
+- [ ] **Schritt 3:** Implementieren. `vercel.json` ergänzen: `"regions": ["fra1"]`, `"functions": { "api/werkstatt.ts": { "maxDuration": 30 } }`, `"rewrites"`: `/api/werkstatt/:pfad*` → `/api/werkstatt`, `/.well-known/oauth-authorization-server/api/werkstatt/oauth` → `/api/werkstatt`, `/.well-known/oauth-protected-resource/api/werkstatt/mcp` → `/api/werkstatt`. Kommentarblock in `middleware.ts` um die Ausnahme ergänzen.
+- [ ] **Schritt 4:** Grün; `npm run build`; `npm run werkstatt:dev` + `npm run dev`: `curl localhost:4321/api/werkstatt/gibtsnicht` → 404-JSON über den Proxy. **Preview-Probe:** Branch deployen; `curl <preview>/api/werkstatt/mcp` und `curl <preview>/.well-known/oauth-authorization-server/api/werkstatt/oauth` landen beide in der Funktion (Stub-JSON, nicht Login-Seite), und `request.url` enthält den ursprünglichen Pfad; Ergebnis im PR notieren.
 - [ ] **Schritt 5:** Commit `Werkstatt: Hono-App unter /api/werkstatt, vom Kurspasswort ausgenommen`. PR mit T1–T3 öffnen, `/code-review`, nach Markus' Okay mergen – Startsignal für Welle 1.
 
 ---
@@ -192,7 +206,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
   - `interface Sitzung { githubId: number; login: string; kohorte: string; rolle: Rolle; exp: number }`
   - `sitzungErstellen(s: Sitzung, secret: string): Promise<string>` / `sitzungLesen(cookie: string | undefined, secret: string, jetztSek: number): Promise<Sitzung | null>` – HMAC-SHA256 über base64url-JSON, Vergleich zeitkonstant (wie `kurszugang.ts`)
   - Hono-Middleware `mitSitzung` setzt `c.var.sitzung` oder antwortet 401 `nicht-angemeldet`
-  - Routen: `GET auth/login?weiter=` (state-Cookie `__Host-werkstatt_state`, 10 min, plus `weiter` über `sichererPfad`) → 302 zu GitHub; `GET auth/callback` → state prüfen → `codeEinloesen` → `mitgliedschaften` → keine: 302 auf `/innolab/mappe?fehler=nicht-freigeschaltet`; sonst Studierende: `speicher.anlegen` → Cookie setzen → 302 auf `weiter`; `POST auth/abmelden` löscht Cookie; `GET ich` → `Ich`
+  - Routen: `GET auth/ich` → `Ich`; `GET auth/login?weiter=` (state-Cookie `__Host-werkstatt_state`, 10 min, plus `weiter` über `sichererPfad`) → 302 zu GitHub; `GET auth/callback` → state prüfen → `codeEinloesen` → `mitgliedschaften` → keine: 302 auf `/innolab/mappe?fehler=nicht-freigeschaltet`; sonst Studierende: `speicher.anlegen` (scheitert es, trotzdem Cookie setzen; `/innolab/mappe` zeigt „Deine Mappe wird eingerichtet …“, T11 versucht erneut) → Cookie setzen → 302 auf `weiter`; `POST auth/abmelden` löscht Cookie
   - `githubIdentitaet(env)`: GitHub-App-User-Autorisierung (`https://github.com/login/oauth/authorize?client_id=…&state=…&redirect_uri=…`, Token-Tausch gegen `https://github.com/login/oauth/access_token`, dann `GET https://api.github.com/user` → `id`, `login`). Das User-Token wird nicht gespeichert.
 
 - [ ] **Schritt 1: Tests** (mit Fake-`GithubIdentitaet` und Fake-`Speicher`)
@@ -216,18 +230,22 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 **Interfaces:**
 - Consumes: `Speicher` (T3), `Kohorte`, `repoName` (T1), `getCache` aus `@vercel/functions` (wie `api/position.ts`)
 - Produces:
-  - `appJwt(appId: string, privateKeyPem: string, jetztSek: number): Promise<string>` – RS256, `iat = jetzt - 60`, `exp = jetzt + 540` (jose)
-  - `installationToken(opts: { org: string; repoId?: number; rechte: Record<string, 'read' | 'write'> }): Promise<string>` – Installation über `GET /orgs/{org}/installation`; mit `repoId` → `repository_ids: [repoId]`; Cache-Schlüssel `gh-token:<org>:<repoId|org>:<rechte>`, TTL 50 min
+  - `appJwt(appId: string, privateKeyPem: string, jetztSek: number): Promise<string>` – RS256, `iat = jetzt - 60`, `exp = jetzt + 540`; Schlüssel per `createPrivateKey(pem)` aus `node:crypto` (GitHub liefert PKCS#1, `jose.importPKCS8` lehnt das ab), signiert mit jose `SignJWT`
+  - `installationToken(opts: { org: string; repoId?: number; rechte: Record<string, 'read' | 'write'> }): Promise<string>` – Installation über `GET /orgs/{org}/installation`; mit `repoId` → `repository_ids: [repoId]`; Cache (`abh.cache`) mit Schlüssel `gh-token:<org>:<repoId|org>:<rechte>`, TTL 50 min; Repo-Name → numerische ID einmal über `GET /repos/{org}/{name}` mit dem Org-Token auflösen und cachen
   - `githubSpeicher(abh: { fetch: typeof fetch; token: typeof installationToken; kohorte: Kohorte }): Speicher`
-    - `anlegen`: `POST /repos/{org}/{vorlage}/generate` `{ owner: org, name, private: true }`; 422 mit „already exists“ → `werkstattJson` lesen: passt oder fehlt → Erfolg, fremde ID → `Error('repo-gehoert-anderer-person')`; danach `werkstatt.json` schreiben, falls es fehlt
-    - `speichern`: Blobs → `POST git/trees` mit `base_tree` = Tree von `basisSha` → `POST git/commits` `{ parents: [basisSha], author, committer: Bot }` → `PATCH git/refs/heads/main` `{ sha, force: false }`; 422 „not a fast forward“ → `{ konflikt: true }`
-    - `lesen`: Ref `main` → `basisSha`; Datei `mappe/<name>.json` über Contents-API; 404 → `daten: null`
-    - `uebersicht`: je Artefakt letzter Commit über `GET commits?path=mappe/<name>.json&per_page=1`
-  - `fakeSpeicher(): Speicher & { commits(repo): FakeCommit[]; aendernVonAussen(repo): void }` – nur in Tests und bei `istLokal`
+    - `anlegen`: `POST /repos/{org}/{vorlage}/generate` `{ owner: org, name, private: true }`; 422 mit „already exists“ → `werkstattJson` lesen: passt oder fehlt → Erfolg, fremde ID → `Error('repo-gehoert-anderer-person')`; danach warten, bis `GET git/ref/heads/main` existiert (alle 1 s, höchstens 8 s; GitHub kopiert die Vorlage nicht garantiert synchron), dann `werkstatt.json` schreiben, falls es fehlt
+    - `speichern`: Kopf `main` lesen → Blob-SHA von `mappe/<name>.json` im Kopf-Tree mit `basisSha` vergleichen (beide `null` = neu) → ungleich: `{ konflikt: true }` → Blobs → `POST git/trees` mit `base_tree` = Kopf-Tree → `POST git/commits` `{ parents: [kopf], author, committer: Bot }` → `PATCH git/refs/heads/main` `{ sha, force: false }`; 422 „not a fast forward“ (anderes Artefakt gleichzeitig gespeichert) → einmal von vorn; zweites 422 → `{ konflikt: true }`. Rückgabe `basisSha` = neuer Blob-SHA der JSON-Datei
+    - `lesen`: Datei `mappe/<name>.json` über Contents-API → `basisSha` = deren `sha`; 404 → `daten: null`, `basisSha: null`
+    - `uebersicht`: eine Tree-Abfrage `GET git/trees/main?recursive=1` → welche `mappe/*.json` existieren
+  - `fakeSpeicher(): Speicher & { commits(repo): FakeCommit[]; aendernVonAussen(repo, name): void }` mit `interface FakeCommit { dateien: Record<string, string>; autor: { name: string; email: string }; nachricht: string }` – nur in Tests und bei `istLokal`
+  - `fakeGithub(): { fetch: typeof fetch; zustand }` – Attrappe der REST-Endpunkte; `PATCH git/refs` antwortet 422 genau dann, wenn `parents[0]` des neuen Commits nicht der aktuelle Kopf ist (echtes Fast-Forward-Modell, kein Schalter)
 
 - [ ] **Schritt 1: Tests** (Fake-GitHub als `fetch`-Attrappe, nicht nur `fakeSpeicher`, damit die echte Implementierung läuft)
   - `speichern schreibt einen commit mit drei dateien`: JSON, MD, README in genau einem `git/commits`-Aufruf; `author.email` = `339529141+sofiethon@users.noreply.github.com`.
-  - `speichern mit veraltetem basisSha`: Fake-Ref steht woanders, PATCH antwortet 422 → `{ konflikt: true }`, Ref unverändert.
+  - `speichern mit veraltetem basisSha`: Annahmen wurden zwischendurch von außen geändert → `{ konflikt: true }`, Kopf unverändert.
+  - `anderes artefakt blockiert nicht`: Brief und Annahmen mit je eigenem `basisSha` nacheinander gespeichert → beide erfolgreich, zwei Commits.
+  - `wettlauf beim ref-update`: zwischen Commit und PATCH bewegt sich der Kopf (Fake-Hook) → ein Neuversuch, dann Erfolg.
+  - `anlegen wartet auf main`: Fake liefert `main` erst beim dritten Abruf → `werkstatt.json` wird danach geschrieben.
   - `anlegen ist idempotent`: erster Aufruf 201, zweiter 422 „exists“ mit passender `werkstatt.json` → Erfolg; mit fremder ID → wirft.
   - Token-Cache: zweiter Aufruf innerhalb 50 min ruft `access_tokens` nicht erneut.
   - `appJwt`: Header `alg: RS256`, `iss` = App-ID (Test-Schlüssel per `generateKeyPair`).
@@ -246,10 +264,10 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 - Consumes: Schemas und Beispiele (T2)
 - Produces:
   - `rendern(name: ArtefaktName, daten: ArtefaktDaten): string` – Markdown in der Struktur der bisherigen Vorlagen (Überschriften wie auf den Methodenseiten), Datum österreichisch, IDs fett, Belegstufe ausgeschrieben
-  - `readmeRendern(k: Kohorte, uebersicht: { name: ArtefaktName; daten: ArtefaktDaten | null; geaendert: string | null }[], produkt: string | null): string` – Titel, Kohorte, Tabelle aller Artefakte mit Link auf `mappe/<name>.md`
+  - `readmeRendern(k: Kohorte, vorhanden: { name: ArtefaktName; vorhanden: boolean }[]): string` – Titel, Kohorte, Tabelle aller Artefakte der Kohorte mit Link auf `mappe/<name>.md` (vorhanden) oder „noch offen“; braucht keine Daten der anderen Artefakte
   - `dateienFuerSpeichern(name, daten, readme): Record<string, string>` – genau `mappe/<name>.json` (2 Leerzeichen, abschließender Zeilenumbruch), `mappe/<name>.md`, `README.md`
 
-- [ ] **Schritt 1:** Snapshot-Tests der vier Beispiele; Test: ersetzte Entscheidung zeigt „ersetzt am 05.11.2026“; riskanteste Annahme markiert „(riskanteste)“.
+- [ ] **Schritt 1:** Snapshot-Tests der vier Beispiele, dazu je Renderer eine ausdrückliche Prüfung (z. B. `22.10.2026` statt ISO-Datum), damit Snapshot-Änderungen nichts verdecken; Test: ersetzte Entscheidung zeigt „ersetzt am 05.11.2026“; riskanteste Annahme markiert „(riskanteste)“.
 - [ ] **Schritt 2:** FAIL. **Schritt 3:** Implementieren. **Schritt 4:** Snapshots durchsehen (Deutsch, keine Platzhalter), grün.
 - [ ] **Schritt 5:** Commit `Werkstatt: Artefakte als lesbares Markdown`.
 
@@ -269,14 +287,14 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
   - `versiegeln(typ: UmschlagTyp, inhalt: object, ttlSek: number, schluessel: Schluessel[]): Promise<string>` / `oeffnen(typ, token, schluessel, jetztSek): Promise<object | null>` – AES-256-GCM, Schlüsselrotation wie capitelize (`MCP_TOKEN_KEYS`)
   - `interface TokenClaims { githubId: number; kohorte: string; rolle: Rolle; clientId: string; exp: number }`
   - Routen:
-    - `GET oauth/metadata` und `GET /api/werkstatt/oauth/.well-known/oauth-authorization-server` (gleiches JSON): `issuer`, `authorization_endpoint`, `token_endpoint`, `response_types_supported: ['code']`, `grant_types_supported: ['authorization_code','refresh_token']`, `code_challenge_methods_supported: ['S256']`, `token_endpoint_auth_methods_supported: ['none']`, `client_id_metadata_document_supported: true`, `authorization_response_iss_parameter_supported: true`, `scopes_supported: ['mappe', 'offline_access']`
-    - `GET mcp/resource`: `resource: RESOURCE`, `authorization_servers: [ISSUER]`, `scopes_supported: ['mappe']`
+    - `GET oauth/metadata` und `GET /.well-known/oauth-authorization-server/api/werkstatt/oauth` (gleiches JSON; `ISSUER` und Endpunkte aus `origin(c)`): `issuer`, `authorization_endpoint`, `token_endpoint`, `response_types_supported: ['code']`, `grant_types_supported: ['authorization_code','refresh_token']`, `code_challenge_methods_supported: ['S256']`, `token_endpoint_auth_methods_supported: ['none']`, `client_id_metadata_document_supported: true`, `authorization_response_iss_parameter_supported: true`, `scopes_supported: ['mappe', 'offline_access']`
+    - `GET /api/werkstatt/mcp/resource` und `GET /.well-known/oauth-protected-resource/api/werkstatt/mcp`: `resource: RESOURCE`, `authorization_servers: [ISSUER]`, `scopes_supported: ['mappe']`
     - `GET oauth/authorize`: prüft `client_id` per `clientErlaubt`, `redirect_uri` exakt aus `clients.ts`, `code_challenge_method=S256` Pflicht; ohne Sitzung → Weiterleitung zu `auth/login?weiter=<diese URL>`; mit Sitzung → Zustimmungsseite („Claude (claude.ai) möchte deine Mappe lesen“, Host deutlich); POST Zustimmung → Code-Umschlag 60 s mit `{ clientId, redirectUri, codeChallenge, githubId, kohorte, rolle }` → 302 mit `code`, `state`, `iss`
     - `POST oauth/token` (`application/x-www-form-urlencoded`): `authorization_code` mit PKCE-Prüfung → `access` (1 h) + `refresh` (30 Tage); `refresh_token` → neues Paar, altes Refresh im Runtime Cache als verbraucht markiert (TTL 30 Tage); verbraucht/abgelaufen/archivierte Kohorte → 400 `invalid_grant`
   - `clients.ts`: `clientErlaubt(clientId: string): { redirectUris: string[] } | null` – erlaubt https-URLs mit Host `claude.ai` (redirect `https://claude.ai/api/mcp/auth_callback`); Liste ergänzbar für ChatGPT in Phase 1b. Jede neue client_id wird einmal pro Tag geloggt (für die Probe in T15).
   - `bearerPruefen(header: string | null): Promise<TokenClaims | null>` für T12
 
-- [ ] **Schritt 1: Tests** (Harness nach capitelize `test/http-harness.ts`, gegen `appErstellen` mit Fakes)
+- [ ] **Schritt 1: Tests** (über Honos `app.request()` gegen `appErstellen` mit Fakes; aus capitelize nur die Hilfen `pkce()` und `form()` übernehmen)
   - Metadaten enthalten `none` und `client_id_metadata_document_supported: true`.
   - Authorize ohne `code_challenge` → 400; fremde `redirect_uri` → 400 ohne Weiterleitung.
   - Ganzer Ablauf: Sitzung → Zustimmung → Code → Token → `bearerPruefen` liefert Claims.
@@ -299,16 +317,16 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 - Produces:
   - `api.ich(): Promise<Ich | null>`, `api.lesen(name): Promise<ArtefaktAntwort>`, `api.speichern(name, anfrage): Promise<SpeichernAntwort | { konflikt: true }>` – wirft `ApiError` mit `status` und `code`
   - `entwurfLaden(name, kohorte) / entwurfSichern(name, kohorte, daten) / entwurfLoeschen(...)` – `localStorage`-Schlüssel `ndu-werkstatt-<kohorte>-<name>`, alle Zugriffe in try/catch
-  - `type HuellenZustand = 'laden' | 'abgemeldet' | 'bereit' | 'speichert' | 'gespeichert' | 'konflikt' | 'fehler'` und reiner Reducer `huelle(zustand, ereignis)` (testbar ohne React)
-  - `<EditorHuelle name={ArtefaktName} titel bild={(daten) => ReactNode} formular={(daten, setze, fehler) => ReactNode} />` – `dialog`-Element mit Fokusfalle und Escape, Statuszeile `aria-live="polite"` mit `Entwurf` / `Gespeichert` / `Inzwischen geändert`, Knöpfe „Speichern“, „Für Claude kopieren“ (Markdown aus `rendern` plus Prüfliste aus `methoden.ts` über `kopieren.ts`), „Schließen“; Wurzel trägt `data-werkstatt`
+  - `type HuellenZustand = 'laden' | 'abgemeldet' | 'wird-eingerichtet' | 'bereit' | 'speichert' | 'gespeichert' | 'konflikt' | 'fehler'` und reiner Reducer `huelle(zustand, ereignis): { zustand: HuellenZustand; effekte: Effekt[] }` mit `type Effekt = 'entwurfSichern' | 'entwurfLoeschen' | 'neuLaden'` (testbar ohne React; die Komponente führt die Effekte aus)
+  - `<EditorHuelle name={ArtefaktName} titel bild={(daten) => ReactNode} formular={(daten, setze, fehler) => ReactNode} />` – `dialog`-Element mit Fokusfalle und Escape, Statuszeile `aria-live="polite"` mit `Entwurf` / `Gespeichert` / `Inzwischen geändert`, Knöpfe „Speichern“, „Für Claude kopieren“ (Markdown aus `rendern` plus Prüfliste aus `methoden.ts`, kopiert mit `kopiereText` aus `src/lib/kopieren.ts`), „Schließen“; Wurzel trägt `data-werkstatt`
   - Fehlertexte exakt aus Spec §5
 
 - [ ] **Schritt 1: Tests**
-  - `entwurf bleibt bei 401 und 502`: Reducer nach `speichernFehlgeschlagen(401)` → `abgemeldet`, nach `502` → `fehler`; in beiden Fällen ist `entwurfSichern` vorher aufgerufen und `entwurfLoeschen` nicht.
+  - `entwurf bleibt bei 401 und 502`: `huelle(bereit, speichern)` liefert `effekte` mit `entwurfSichern`; danach `speichernFehlgeschlagen(401)` → `abgemeldet`, `502` → `fehler`, und keiner der Schritte liefert `entwurfLoeschen`; nur `gespeichert` liefert `entwurfLoeschen`.
   - Konflikt → Zustand `konflikt`, Entwurf bleibt; „Neu laden“ lädt Server-Stand, Entwurf bleibt abrufbar.
   - `localStorage` wirft → Editor funktioniert weiter (kein Absturz).
   - Speichern bei Schemafehler gesperrt, bei reinen Prüflisten-Hinweisen erlaubt.
-- [ ] **Schritt 2:** FAIL. **Schritt 3:** Implementieren (gegen Fake-API in einer Storybook-freien Testseite `src/pages/innolab/werkstatt/test.astro`, nur bei `import.meta.env.DEV` gebaut). **Schritt 4:** Grün + Build; im Browser Tastatur-Durchlauf.
+- [ ] **Schritt 2:** FAIL. **Schritt 3:** Implementieren (gegen `npm run werkstatt:dev` auf der Testseite `src/pages/innolab/werkstatt/[seite].astro` mit `getStaticPaths = () => import.meta.env.DEV ? [{ params: { seite: 'test' } }] : []` – im Build entsteht sie nicht). **Schritt 4:** Grün + Build; im Browser Tastatur-Durchlauf.
 - [ ] **Schritt 5:** Commit `Werkstatt: Editor-Hülle mit Entwurf, Konflikt und Kopieren für Claude`.
 
 ---
@@ -316,8 +334,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 ### Task 9: Matrix2x2 als React-Bild
 
 **Files:**
-- Create: `src/styles/matrix.css` (Stile aus `Matrix2x2.astro` herausgelöst, global), `src/werkstatt/ui/bild/Matrix2x2.tsx`, `src/werkstatt/ui/bild/AnnahmenMatrix.tsx`
-- Modify: `src/components/bild/Matrix2x2.astro` (importiert `matrix.css` statt scoped `<style>`)
+- Create: `src/werkstatt/ui/bild/matrix.css` (Stile aus `Matrix2x2.astro` kopiert, nur für React; die Astro-Komponente bleibt unverändert), `src/werkstatt/ui/bild/Matrix2x2.tsx`, `src/werkstatt/ui/bild/AnnahmenMatrix.tsx`
 - Test: `src/werkstatt/ui/bild/annahmen-matrix.test.ts`
 
 **Interfaces:**
@@ -328,7 +345,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
   - `annahmenPunkte(annahmen, riskanteste): { t: string; x: number; y: number; hervor: boolean; farbe: string }[]` (rein, getestet)
 
 - [ ] **Schritt 1: Tests:** Kaffeebar-Beispiel ergibt vier Punkte, A1 `hervor`; Text über 40 Zeichen gekürzt mit „…“.
-- [ ] **Schritt 2:** FAIL. **Schritt 3:** Implementieren; Folien `annahmen.astro` visuell unverändert (Screenshot vorher/nachher bei 1280×720 im Beamer).
+- [ ] **Schritt 2:** FAIL. **Schritt 3:** Implementieren; im Browser neben die Astro-Folie legen: gleiche Achsen, Farben, Beschriftung.
 - [ ] **Schritt 4:** Grün + Build.
 - [ ] **Schritt 5:** Commit `Matrix2x2 als React-Bild für den Annahmen-Editor`.
 
@@ -339,7 +356,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 **Files:**
 - Create: `werkstatt-vorlage/README.md`, `werkstatt-vorlage/AGENTS.md`, `werkstatt-vorlage/mappe/.gitkeep` (Inhalt für `ndu-innolab/mappe-vorlage-2026`, kohortenneutral)
 - Create: `src/pages/innolab/werkstatt/claude.astro`
-- Test: `src/lib/navigation.test.ts` falls neue Seite in die Navigation kommt (sonst nur Build)
+- Test: nur Build (Navigationseinträge macht Task 14)
 
 **Interfaces:**
 - Produces:
@@ -362,7 +379,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 **Interfaces:**
 - Consumes: `mitSitzung` (T4), `Speicher` + `fakeSpeicher` (T5), `rendern`, `readmeRendern`, `dateienFuerSpeichern` (T6), `artefaktParsen` (T2), `repoName` (T1)
 - Produces: Routen nach `vertrag.ts`:
-  - `GET mappe` → `MappeStand` (Lehrende ohne Repo: 200 mit `artefakte: []` und `repo: ''` – Lehrende-Ansicht folgt Phase 2)
+  - `GET mappe` → `MappeStand` (Lehrende ohne Repo: 200 mit `artefakte: []` und `repo: ''` – Lehrende-Ansicht folgt Phase 2); fehlt das Repo noch, ruft die Route `speicher.anlegen` erneut auf (idempotent) und antwortet bei Misserfolg 503 `wird-eingerichtet`
   - `GET mappe/:artefakt` → `ArtefaktAntwort`; unbekannter Name → 404 `unbekannt`
   - `PUT mappe/:artefakt` → validiert (`422 ungueltig` mit `Feldfehler[]` unter `felder`), setzt `stand` auf heute (Wien), rendert, speichert; Konflikt → 409 `konflikt`; GitHub-Fehler → 502 `github-fehler`
   - Beim ersten Zugriff prüft die Route `werkstattJson(repo)` gegen die Sitzung; Abweichung → 403 `nicht-freigeschaltet`
@@ -371,6 +388,8 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
   - PUT gültig → 200, Fake hat einen Commit mit drei Dateien; `stand` = heutiges Datum in `Europe/Vienna`.
   - PUT ungültig → 422, `felder[0].pfad` gesetzt, kein Commit.
   - PUT mit veraltetem `basisSha` → 409, kein Commit.
+  - Brief und Annahmen nacheinander mit ihrem jeweils geladenen `basisSha` → beide 200.
+  - Erstes `anlegen` beim Login gescheitert → `GET mappe` legt an und liefert 200.
   - Ohne Cookie → 401 `nicht-angemeldet`.
   - Repo mit fremder `werkstatt.json` → 403.
 - [ ] **Schritt 2:** FAIL. **Schritt 3:** Implementieren. **Schritt 4:** Grün + Build.
@@ -390,6 +409,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
   - `ALL /api/werkstatt/mcp`: ohne gültiges Bearer → 401 mit `WWW-Authenticate: Bearer resource_metadata="<origin>/api/werkstatt/mcp/resource", scope="mappe"`; sonst neuer `McpServer` pro Anfrage mit `WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true })`
   - Server-Anweisung (`anweisung.ts`, deutsch, „du“): Tutor-Rolle, erst eigene Arbeit, nie Artefakttext formulieren, höchstens drei Befunde mit wörtlichem Zitat, zurückfragen, auf die Werkstatt zum Ändern verweisen
   - Werkzeuge (alle `annotations: { readOnlyHint: true }`, deutsche Beschreibungen, die ohne Prompts verständlich sind; optionale Argumente tolerieren `""`/`null` wegen ChatGPT):
+    - Wo `outputSchema` gesetzt ist, muss der Handler `structuredContent` liefern (das SDK prüft es)
     - `mappe_uebersicht()` → Text + `structuredContent` = `MappeStand`
     - `artefakt_lesen({ artefakt })` → Markdown aus `rendern` + `structuredContent` = Daten
     - `methode_erklaeren({ slug })` → aus `METHODEN`: `name`, `frage`, `pruefliste`, `ki`, `quelle`, Link `https://ndu.datamonkeys.ai/innolab/methoden/<slug>`; nichts aus Seiten-Markup
@@ -433,8 +453,8 @@ Ein Agent pro Editor möglich (13a–13d), gleiche Struktur.
 
 **Files:**
 - Create: `src/components/Bearbeiten.astro` (Knopf + `client:only="react"`-Island, `data-werkstatt`), `src/pages/innolab/mappe.astro`, `src/werkstatt/ui/MappeUebersicht.tsx`
-- Modify: `src/pages/innolab/methoden/{problem-rahmen,entscheidungslog,interview,annahmen}.astro` (Knopf; Texte „in `docs/…` festhalten“ → „in der Werkstatt speichern“), `src/pages/innolab/tag-1/abschluss.astro` (Hausaufgabe), `src/components/methoden.ts` (`Ort` + `werkstatt`, `pfad` → `mappe/<artefakt>.json` für die vier), `src/styles/beamer.css` (`html[data-beamer] [data-werkstatt] { display: none }`), Navigation (Eintrag „Meine Mappe“)
-- Test: `src/components/methoden.test.ts` (bestehend, anpassen), neuer Test `src/werkstatt/seiten.test.ts`
+- Modify: `src/pages/innolab/methoden/{problem-rahmen,entscheidungslog,interview,annahmen}.astro` (Knopf; Texte „in `docs/…` festhalten“ → „in der Werkstatt speichern“), `src/pages/innolab/tag-1/abschluss.astro` (Hausaufgabe), `src/components/methoden.ts` (`Ort` + `werkstatt`, `pfad` → `mappe/<artefakt>.json` für die vier; `pruefPrompt` für Werkstatt-Artefakte: „Prüf meine <Artefakt> mit der Werkstatt (artefakt_pruefen) gegen diese Prüfliste: …“ statt „Lies docs/…“), `src/components/ClaudePruefung.astro`, `src/styles/beamer.css` (`html[data-beamer] [data-werkstatt] { display: none }`), Navigation (Eintrag „Meine Mappe“)
+- Test: `src/components/methoden.test.ts` (bestehende Erwartungen zu `docs/…` für die vier Tag-1-Artefakte auf die Werkstatt umstellen, die übrigen unverändert lassen), neuer Test `src/werkstatt/seiten.test.ts`
 
 **Interfaces:**
 - Consumes: `EDITOREN` (T13), `api` (T8), Routen (T11)
@@ -450,7 +470,7 @@ Ein Agent pro Editor möglich (13a–13d), gleiche Struktur.
 
 ### Task 15: Preview-Probe, Ende-zu-Ende, Go/No-Go (Mo–Di)
 
-- [ ] **Schritt 1 (Mo, sobald T3+T7 gemergt sind):** Preview-Deploy. Prüfen mit `curl`: `/api/werkstatt/mcp` → 401 mit `resource_metadata`; Metadaten erreichbar ohne Kurs-Cookie. In claude.ai (Markus' Konto) Connector mit der Preview-URL hinzufügen; im Log die gesendete `client_id` ablesen; findet claude.ai den Pfad-Issuer nicht, Rewrite `/.well-known/oauth-authorization-server/api/werkstatt/oauth` → `/api/werkstatt/oauth/metadata` plus Middleware-Ausnahme ergänzen (eigener kleiner PR mit Test).
+- [ ] **Schritt 1 (Mo, sobald T3+T7 gemergt sind):** Preview-Deploy (Deployment Protection aus, siehe T0). Prüfen mit `curl`: `/api/werkstatt/mcp` → 401 mit `resource_metadata`; beide Metadaten-Pfade (unter `/api/werkstatt/…` und `/.well-known/…`) erreichbar ohne Kurs-Cookie. In claude.ai (Markus' Konto) Connector mit der Preview-URL hinzufügen; im Log die gesendete `client_id` ablesen.
 - [ ] **Schritt 2:** `clients.ts` auf die beobachtete client_id festziehen; Setup-Seite (T10) mit den echten Beschriftungen und Screenshots ergänzen.
 - [ ] **Schritt 3 (Di):** E2E auf Prod mit Markus' Zweitkonto in Kohorte `test`: Login → Repo `test-<kuerzel>` entsteht → vier Artefakte speichern → Commits mit Person als Autor*in → zweiter Tab mit altem Stand → 409 → Connector in claude.ai verbinden → „Prüf meine Annahmen-Map mit der Werkstatt“ → Befunde mit Zitaten, keine Änderung im Repo.
 - [ ] **Schritt 4 (Di 18:00):** Go/No-Go mit Markus. Go → Tag 1 mit Connector. No-Go → Setup-Seite zeigt nur Plan B, Connector zur Hausaufgabe.

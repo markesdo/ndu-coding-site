@@ -39,7 +39,7 @@ Die **Werkstatt** ersetzt das: Auf jeder Methodenseite klicken die Studierenden 
 | Wo liegen die Daten? | Ein **privates Repo pro Person und Kohorte** in der Org `ndu-innolab`: `ndu-innolab/<kohorte>-<kuerzel>`, z. B. `2026-sofie` | Markus: eigenes privates Repo; Kürzel statt Login, weil Logins umbenennbar sind |
 | Wer legt das Repo an? | Die Werkstatt, beim ersten Login, aus dem Vorlagen-Repo der Kohorte | Studierende fassen Git nicht an |
 | Wer committet? | Die GitHub App; **Autor*in = Studierende*r** (`<id>+<login>@users.noreply.github.com`), Committer = Bot | GitHub zeigt die Person als Autor*in |
-| Architektur | Astro bleibt statisch; dazu eine **Hono-App** in `api/werkstatt/[...pfad].ts` desselben Vercel-Projekts (`hono/vercel`); Editoren als React-Islands | Ein Deploy, Schemas/Prüflisten/Bilder ohne Paket geteilt |
+| Architektur | Astro bleibt statisch; dazu eine **Hono-App** in `api/werkstatt.ts` desselben Vercel-Projekts (Rewrites in `vercel.json`); Editoren als React-Islands | Ein Deploy, Schemas/Prüflisten/Bilder ohne Paket geteilt |
 | Anmeldung | **GitHub-Login** (GitHub-App-User-Autorisierung) nur zur Identität; Zugang per **numerischer GitHub-ID** | Logins sind umbenennbar und neu registrierbar |
 | Sitzung und Tokens | **Ohne Datenbank**: signiertes Cookie für die Website; OAuth-Codes, Access- und Refresh-Tokens als **verschlüsselte Umschläge** (AES-256-GCM) | Serverless: Anfragen landen auf verschiedenen Instanzen, kein gemeinsamer Speicher |
 | Übernahme aus capitelize | Portiert werden `token-codec.ts`, `client-assertion.ts`, `pinned-clients.ts`, Tests und Runbook-Wissen; **HTTP-Schicht und Provider werden neu** (capitelize ist Express mit In-Memory-Zuständen) | Ehrliche Aufwandsschätzung |
@@ -59,7 +59,7 @@ Browser (Studierende)                         Claude Chat / ChatGPT
   ▼                                              ▼
 Vercel-Projekt ndu-coding-site (Funktionen in fra1) ─────────────────────
   middleware.ts                    Kurspasswort (wie bisher) – nimmt /api/werkstatt/* aus
-  api/werkstatt/[...pfad].ts       Hono-App
+  api/werkstatt.ts                 Hono-App (Rewrites aus vercel.json)
      /api/werkstatt/auth/*            GitHub-Login, Sitzungs-Cookie, Abmelden
      /api/werkstatt/mappe/*           Artefakte lesen/speichern, Verlauf, Vorschläge
      /api/werkstatt/mcp               MCP-Endpunkt (Connector-URL)
@@ -78,7 +78,7 @@ GitHub (Org ndu-innolab)
 ### 3.1 Pfade und Kurspasswort
 
 - Website-Seiten bleiben hinter dem Kurspasswort.
-- **Alles der Werkstatt liegt unter `/api/werkstatt/`**, auch MCP und OAuth. Die Kurspasswort-Middleware nimmt genau dieses Präfix aus; die Werkstatt hat ihre eigene Anmeldung. Keine Rewrites, keine `/.well-known/*` an der Wurzel nötig: Der 401 des MCP-Endpunkts trägt `WWW-Authenticate: Bearer resource_metadata="https://ndu.datamonkeys.ai/api/werkstatt/mcp/resource"`; Claude folgt diesem Verweis (Anthropic-Doku: zuverlässigster Weg auf Serverless). Die Issuer-Metadaten liegen unter dem Issuer `https://ndu.datamonkeys.ai/api/werkstatt/oauth` gemäß RFC 8414 (Pfad-Issuer). **Probe am Mo 19.10. im Preview-Deploy**, ob claude.ai den Pfad-Issuer findet; sonst zusätzlich `/.well-known/oauth-authorization-server/api/werkstatt/oauth` per Rewrite und Middleware-Ausnahme.
+- **Alles der Werkstatt liegt unter `/api/werkstatt/`**, auch MCP und OAuth. Die Kurspasswort-Middleware nimmt genau dieses Präfix aus; die Werkstatt hat ihre eigene Anmeldung. Der 401 des MCP-Endpunkts trägt `WWW-Authenticate: Bearer resource_metadata="https://ndu.datamonkeys.ai/api/werkstatt/mcp/resource"`; Claude folgt diesem Verweis (Anthropic-Doku: zuverlässigster Weg auf Serverless). Die Issuer-Metadaten liegen unter dem Issuer `https://ndu.datamonkeys.ai/api/werkstatt/oauth` gemäß RFC 8414 (Pfad-Issuer). Zur Sicherheit von Anfang an zusätzlich `/.well-known/oauth-authorization-server/api/werkstatt/oauth` und `/.well-known/oauth-protected-resource/api/werkstatt/mcp` per Rewrite auf dieselbe Funktion, beide von der Middleware ausgenommen.
 - `middleware-matcher.test.ts` bekommt Fälle: `/api/werkstatt/*` ohne Kurs-Cookie erreichbar; `/api/werkstattx`, `/api/position` und alle Seiten weiter gesperrt.
 - `vercel.json`: `"regions": ["fra1"]`, `maxDuration` für die Werkstatt-Funktion 30 s. Token-Endpunkt muss unter 10 s antworten (Anthropic-Grenze), Speichern ist Git-Data mit 4–5 Aufrufen und braucht ein Budget von ~5 s.
 
@@ -116,8 +116,8 @@ Regeln:
 
 - **Anlegen** beim ersten Login: `POST /repos/{org}/{vorlage}/generate` mit Namen `<kohorte>-<kuerzel>`, privat, mit dem org-weiten Installations-Token (Administration). Antwortet GitHub mit 422 „name already exists“ (zweiter Tab, Wiederholung), gilt das als Erfolg, sobald `werkstatt.json` zur Person passt (oder noch fehlt und das Repo leer aus der Vorlage stammt). Danach `werkstatt.json` schreiben.
 - **Speichern** mit einem pro Repo eingeschränkten Installations-Token (`repository_ids: [repo]`, `permissions: { contents: 'write' }`), gecacht pro Repo ~50 min (Vercel Runtime Cache, wie `position.ts`).
-- **Ein Speichern = ein Commit**, atomar über die Git-Data-API: Blobs → Tree → Commit mit `parents: [basisSha]` (der Stand, den der Editor geladen hat) → `PATCH /git/refs/heads/main` mit `force: false`. Hat sich `main` inzwischen bewegt, lehnt GitHub mit 422 „not a fast forward“ ab → API antwortet **409**; der Editor zeigt „Inzwischen geändert – neu laden“ und behält den Entwurf. Kein Prüfen-dann-Schreiben-Wettlauf.
-- Ein Commit enthält `mappe/<artefakt>.json`, `mappe/<artefakt>.md` (gerendert) und `README.md` (Übersicht, neu gerendert).
+- **Ein Speichern = ein Commit**, atomar über die Git-Data-API. **Konflikte gelten pro Artefakt:** Der Editor schickt den Blob-SHA der geladenen `mappe/<artefakt>.json` mit (`null` = neu). Die API liest den Kopf von `main`; weicht der Blob-SHA dieser Datei ab → **409**, der Editor zeigt „Inzwischen geändert – neu laden“ und behält den Entwurf. Sonst Blobs → Tree auf dem Kopf → Commit → `PATCH /git/refs/heads/main` mit `force: false`; hat jemand inzwischen ein *anderes* Artefakt gespeichert (422 „not a fast forward“), einmal von vorn. So blockieren sich zwei Tabs mit verschiedenen Artefakten nie, und nichts wird still überschrieben.
+- Ein Commit enthält `mappe/<artefakt>.json`, `mappe/<artefakt>.md` (gerendert) und `README.md` (Übersicht aus der Dateiliste, neu gerendert).
 - Commit-Nachricht: `<Artefakt>: <kurze Änderung>`; Autor*in die Person, Committer der Bot.
 - Kein Autospeichern auf Tastendruck: Knopf „Speichern“, Entwurf in `localStorage` (try/catch), Status „Entwurf / Gespeichert / Inzwischen geändert“.
 
@@ -184,7 +184,7 @@ Zu jedem Schema gibt es eine **Kaffeebar-Beispieldatei** (gültig, aus den Beisp
 
 - Jede Methodenseite mit Artefakt bekommt einen Knopf **„Bearbeiten“**. Er öffnet ein Seitenpanel (breit) bzw. Vollbild (schmal) mit Formular links und **Live-Bild** rechts. MVP-Bilder: Annahmen → React-Gegenstück von `Matrix2x2` mit den vier Farben (gleiche CSS-Klassen wie die Folie); Entscheidungslog → Tabelle (React-`Zeitleiste` in Phase 2); Brief und Leitfaden → Karten.
 - **Editor-Hülle** (eine Komponente für alle Artefakte): laden, Entwurf, speichern, Konflikt, Fehler, „nicht angemeldet“ → „Mit GitHub anmelden“ (Rücksprung auf dieselbe Seite). Formulare entstehen aus den Schemas plus wenigen Spezialfeldern (Liste mit IDs, Auswahl, Verweisauswahl).
-- Neue Seite **`/innolab/mappe`**: alle Artefakte der Person, Stand, letzte Änderung, Link zum Connector-Setup. Für Lehrende (Phase 2): Auswahl der Studierenden und Kohorte.
+- Neue Seite **`/innolab/mappe`**: alle Artefakte der Person (vorhanden oder offen; Verlauf ab Phase 2), Link zum Connector-Setup. Für Lehrende (Phase 2): Auswahl der Studierenden und Kohorte.
 - Neue Seite **`/innolab/werkstatt/claude`**: Connector einrichten in claude.ai (Schritte mit Screenshots), Modelltraining ausschalten, Prüfen-Prompt.
 - **Plan B** pro Artefakt: Das bisherige `ClaudePruefung` mit Kopier-Prompt bleibt; zusätzlich „Für Claude kopieren“ (Artefakt als Markdown plus Prüfliste) im Editor.
 - **Beamer:** Knopf und Panel tragen `data-werkstatt`; `html[data-beamer] [data-werkstatt] { display: none }` – kein neuer Mechanismus. Die Kaffeebar-Beispiele auf den Folien bleiben statisch.
@@ -207,7 +207,7 @@ Zu jedem Schema gibt es eine **Kaffeebar-Beispieldatei** (gültig, aus den Beisp
 
 | Werkzeug | Phase | Art | Liefert |
 |---|---|---|---|
-| `mappe_uebersicht` | 1 | lesen | Artefakte, Stand, letzte Änderung |
+| `mappe_uebersicht` | 1 | lesen | welche Artefakte vorhanden sind (Verlauf ab Phase 2) |
 | `artefakt_lesen(artefakt)` | 1 | lesen | gerendertes Markdown plus strukturierte Daten |
 | `methode_erklaeren(slug)` | 1 | lesen | aus `methoden.ts`: Frage, Prüfliste, Rolle der KI, Quelle, Link zur Seite – keine Inhalte aus Auflösungen |
 | `artefakt_pruefen(artefakt)` | 1 | lesen | Artefakt plus Prüfpunkte mit IDs plus Ausgabeformat (`outputSchema`); Claude urteilt |
@@ -245,7 +245,7 @@ Zu jedem Schema gibt es eine **Kaffeebar-Beispieldatei** (gültig, aus den Beisp
 | Phase | Bis | Inhalt |
 |---|---|---|
 | **0 Grundlage** | **Sa 17.10.** (Markus) | Org, GitHub App (Rechte wie in §3, „All repositories“, Callback-URLs für Website-Login und Connector-Login), Vorlagen-Repo `mappe-vorlage-2026` |
-| **0 Verträge** | **Mo 19.10., 10:00**, vor allen parallelen Agenten | Zod-Schemas + Kaffeebar-Beispiele der vier Artefakte; Kohorte/Zugang; Cookie- und Token-Claims; API-Routen, Fehlerform `{ fehler, code }`, 409-Semantik; Repo-Layout und Commit-Konvention; Middleware-Ausnahme; Hono-Gerüst in `api/werkstatt/[...pfad].ts`; MCP-Werkzeugnamen mit Ein-/Ausgabeschemas; Textregeln. Probe im Preview-Deploy: Pfad-Issuer und claude.ai-client_id |
+| **0 Verträge** | **Mo 19.10., 10:00**, vor allen parallelen Agenten | Zod-Schemas + Kaffeebar-Beispiele der vier Artefakte; Kohorte/Zugang; Cookie- und Token-Claims; API-Routen, Fehlerform `{ fehler, code }`, 409-Semantik; Repo-Layout und Commit-Konvention; Middleware-Ausnahme; Hono-Gerüst in `api/werkstatt.ts` mit Router-Stubs und lokalem Dev-Server; MCP-Werkzeugnamen mit Ein-/Ausgabeschemas; Textregeln. Probe im Preview-Deploy: Rewrites und claude.ai-client_id; Sonntags-Probe gegen echtes GitHub (Vorlage erzeugen, atomarer Commit) |
 | **1 MVP** | **Mi 21.10., 12:00 Freeze** | Login + Zugang, Repo anlegen, atomares Speichern, Editor-Hülle, vier Editoren (Brief, Entscheidungen als Tabelle, Leitfaden, Annahmen mit 2×2), „Bearbeiten“ auf den vier Seiten, `/innolab/mappe`, Connector mit den vier Phase-1-Werkzeugen, Setup-Seite, Tag-1-Texte angepasst |
 | **Go/No-Go Connector** | **Di 20.10., 18:00** | Ende-zu-Ende in claude.ai mit frischem GitHub-Konto bestanden → Connector am Tag 1; sonst Tag 1 mit „Für Claude kopieren“, Connector zur Hausaufgabe |
 | **1b Hausaufgabe** | vor Tag 2 | Interview-Editor I1–I5, `verknuepfungen_pruefen`, `vorschlag_hinterlegen` + Vorschläge im Editor, Datenschutzhinweis, ChatGPT |
