@@ -163,8 +163,8 @@ describe('githubSpeicher.speichern', () => {
     gh.zustand.vorRefUpdate = (r) => {
       if (n < 2) gh.zustand.aendernVonAussen(r, 'mappe/brief.json', `{"n":${n++}}\n`);
     };
-    const erg = await s.speichern(repo, 'annahmen', dateien('annahmen', { annahmen: [] }), null, autor, 'Annahmen: neu');
-    expect('basisSha' in erg).toBe(true);
+    const erg = await s.speichern(repo, 'annahmen', dateien('annahmen', { annahmen: [] }), null, autor, 'Annahmen: neu').catch((e: unknown) => e);
+    expect(erg).toHaveProperty('basisSha');
     expect(gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main')).toHaveLength(3);
     expect(JSON.parse(gh.zustand.dateien(repo)['mappe/annahmen.json'])).toStrictEqual({ annahmen: [] });
   });
