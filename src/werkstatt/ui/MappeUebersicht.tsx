@@ -70,6 +70,8 @@ export default function MappeUebersicht() {
       if (a.code === 'nicht-angemeldet') return setZustand({ typ: 'abgemeldet' });
       if (a.code === 'wird-eingerichtet') return setZustand({ typ: 'einrichten' });
       if (a.code === 'nicht-freigeschaltet') return setZustand({ typ: 'fehler', text: a.message || TEXT.nichtFreigeschaltet, nochmal: false });
+      // Name belegt: Neu versuchen legt nur noch einmal vergeblich an.
+      if (a.code === 'konflikt') return setZustand({ typ: 'fehler', text: a.message || TEXT.ladenFehlt, nochmal: false });
       setZustand({ typ: 'fehler', text: a.message || TEXT.ladenFehlt, nochmal: true });
     }
   }, []);

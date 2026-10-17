@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { darfSpeichern, huelle, leererStand, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
+import { darfSpeichern, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
 import annahmen from '../beispiele/annahmen.json';
 
 function lauf(start: HuellenZustand, ...ereignisse: Ereignis[]) {
@@ -149,5 +149,92 @@ describe('Stand des Servers für das Formular', () => {
   it('bei Konflikt: unverändert', () => {
     expect(serverStandNachSpeichern(annahmen, { konflikt: true }, { ...annahmen, stand: '2026-12-01' })).toBe(annahmen);
     expect(serverStandNachSpeichern(null, { konflikt: true }, { ...annahmen, stand: '2026-12-01' })).toBeNull();
+  });
+});
+
+const ICH = { githubId: 1001, login: 'sofie', kohorte: '2026', rolle: 'studierende' as const, repo: 'ndu-innolab/2026-sofie' };
+const NUR_STUDIERENDE = 'Als Lehrende*r hast du hier noch keine eigene Mappe.';
+function apiFehler(status: number, code: string, message: string) {
+  return Object.assign(new Error(message), { status, code });
+}
+function quelle(o: { ich?: unknown; lesen?: () => Promise<unknown> }) {
+  const aufrufe: string[] = [];
+  return {
+    aufrufe,
+    q: {
+      ich: async () => (aufrufe.push('ich'), o.ich === undefined ? ICH : (o.ich as typeof ICH | null)),
+      lesen: async () => (aufrufe.push('lesen'), o.lesen ? o.lesen() : { daten: null, basisSha: null }),
+    },
+  };
+}
+
+describe('Laden der Hülle (mappeLaden)', () => {
+  it('Studierende: ich, dann lesen – auch ohne Repo in /auth/ich (GET artefakt legt an)', async () => {
+    for (const repo of [ICH.repo, null]) {
+      const { q, aufrufe } = quelle({ ich: { ...ICH, repo } });
+      expect((await mappeLaden(q)).typ).toBe('geladen');
+      expect(aufrufe).toStrictEqual(['ich', 'lesen']);
+    }
+  });
+  it('Anlegen dauert: „wird eingerichtet“ mit Person', async () => {
+    const { q } = quelle({ ich: { ...ICH, repo: null }, lesen: () => Promise.reject(apiFehler(503, 'wird-eingerichtet', 'Deine Mappe wird eingerichtet.')) });
+    const r = await mappeLaden(q);
+    expect(r).toMatchObject({ typ: 'fehler', status: 503, code: 'wird-eingerichtet', ich: { githubId: 1001 } });
+    if (r.typ !== 'fehler') throw new Error('unerreichbar');
+    expect(huelle('laden', { typ: 'ladenFehlgeschlagen', status: r.status, code: r.code }).zustand).toBe('wird-eingerichtet');
+  });
+  it('Studierende ohne Repo, Mappe gehört jemand anderem: Meldung des Servers, kein Neuversuch', async () => {
+    const fremd = 'Diese Mappe gehört nicht zu deiner Anmeldung. Schreib Markus.';
+    const { q } = quelle({ ich: { ...ICH, repo: null }, lesen: () => Promise.reject(apiFehler(403, 'nicht-freigeschaltet', fremd)) });
+    const r = await mappeLaden(q);
+    if (r.typ !== 'fehler') throw new Error('unerreichbar');
+    expect(huelle('laden', { typ: 'ladenFehlgeschlagen', status: r.status, code: r.code }).zustand).toBe('ladefehler');
+    expect(ladefehlerHinweis(r.code, r.meldung)).toStrictEqual({ text: fremd, nochmal: false });
+  });
+  it('Lehrende: lesen liefert die Meldung des Servers; Ladefehler statt „wird eingerichtet“', async () => {
+    const { q, aufrufe } = quelle({ ich: { ...ICH, rolle: 'lehrende', repo: null }, lesen: () => Promise.reject(apiFehler(403, 'nicht-freigeschaltet', NUR_STUDIERENDE)) });
+    const r = await mappeLaden(q);
+    expect(aufrufe).toStrictEqual(['ich', 'lesen']);
+    if (r.typ !== 'fehler') throw new Error('unerreichbar');
+    expect(huelle('laden', { typ: 'ladenFehlgeschlagen', status: r.status, code: r.code }).zustand).toBe('ladefehler');
+    expect(ladefehlerHinweis(r.code, r.meldung)).toStrictEqual({ text: NUR_STUDIERENDE, nochmal: false });
+  });
+  it('nicht angemeldet: abgemeldet, auch bei 401 mitten im Laden', async () => {
+    expect(await mappeLaden(quelle({ ich: null }).q)).toStrictEqual({ typ: 'abgemeldet' });
+    expect(await mappeLaden(quelle({ lesen: () => Promise.reject(apiFehler(401, 'nicht-angemeldet', '')) }).q)).toStrictEqual({ typ: 'abgemeldet' });
+  });
+  it('unlesbare Datei: Meldung des Servers, Neu versuchen bleibt', async () => {
+    const unlesbar = 'Die gespeicherte Datei lässt sich nicht lesen. Stell sie auf GitHub wieder her oder schreib Markus.';
+    const r = await mappeLaden(quelle({ lesen: () => Promise.reject(apiFehler(502, 'github-fehler', unlesbar)) }).q);
+    if (r.typ !== 'fehler') throw new Error('unerreichbar');
+    expect(ladefehlerHinweis(r.code, r.meldung)).toStrictEqual({ text: unlesbar, nochmal: true });
+  });
+  it('kein Netz (leere Meldung) und Fremdfehler: eigener Text mit Neuversuch', async () => {
+    const r = await mappeLaden(quelle({ lesen: () => Promise.reject(apiFehler(0, 'github-fehler', '')) }).q);
+    if (r.typ !== 'fehler') throw new Error('unerreichbar');
+    expect(ladefehlerHinweis(r.code, r.meldung)).toStrictEqual({ text: 'Deine Mappe lässt sich gerade nicht laden.', nochmal: true });
+    const x = await mappeLaden(quelle({ lesen: () => Promise.reject(new TypeError('kaputt')) }).q);
+    expect(x).toMatchObject({ typ: 'fehler', status: 0, code: 'unbekannt', meldung: null });
+    expect(ladefehlerHinweis('datei', null).nochmal).toBe(false);
+  });
+});
+
+describe('Hinweis nach gescheitertem Speichern', () => {
+  const felder = [
+    { pfad: 'entscheidungen.2', meldung: 'D3: Gespeicherte Entscheidungen lassen sich nicht ändern – ersetze sie stattdessen.' },
+    { pfad: 'entscheidungen.2', meldung: 'D3: Gespeicherte Entscheidungen lassen sich nicht ändern – ersetze sie stattdessen.' },
+  ];
+  it('abgelehnt (422): Meldung des Servers und jede Feldmeldung, auch ohne passendes Formularfeld', () => {
+    expect(speicherfehlerHinweis('Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder.', felder, true)).toStrictEqual({
+      text: 'Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder. Dein Entwurf ist auf diesem Gerät gesichert.',
+      details: ['D3: Gespeicherte Entscheidungen lassen sich nicht ändern – ersetze sie stattdessen.'],
+    });
+  });
+  it('unlesbare Datei (502): Meldung des Servers, Entwurf ungesichert', () => {
+    const unlesbar = 'Entscheidungslog: Die gespeicherte Datei lässt sich nicht lesen. Stell sie auf GitHub wieder her oder schreib Markus.';
+    expect(speicherfehlerHinweis(unlesbar, [], false).text).toBe(`${unlesbar} Dein Entwurf konnte auf diesem Gerät nicht gesichert werden – lass diesen Tab offen.`);
+  });
+  it('ohne Meldung (kein Netz): „gerade nicht möglich“', () => {
+    expect(speicherfehlerHinweis(null, [], true)).toStrictEqual({ text: 'Speichern gerade nicht möglich. Dein Entwurf ist auf diesem Gerät gesichert.', details: [] });
   });
 });

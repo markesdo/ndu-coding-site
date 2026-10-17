@@ -15,7 +15,8 @@ export class ApiError extends Error {
   }
 }
 
-const NETZ_FEHLER = 'Speichern gerade nicht möglich.';
+// Ohne Meldung des Servers (kein Netz, keine JSON-Antwort) bleibt der Text leer; die Anzeige wählt dann ihren eigenen.
+const OHNE_MELDUNG = '';
 
 async function anfrage(methode: string, pfad: string, body?: unknown): Promise<Response> {
   try {
@@ -27,7 +28,7 @@ async function anfrage(methode: string, pfad: string, body?: unknown): Promise<R
     });
   } catch {
     // Kein Netz, Server aus, Zeitüberschreitung: wie „GitHub nicht erreichbar“ behandeln (Entwurf bleibt).
-    throw new ApiError(0, 'github-fehler', NETZ_FEHLER);
+    throw new ApiError(0, 'github-fehler', OHNE_MELDUNG);
   }
 }
 
@@ -36,10 +37,10 @@ async function fehlerAus(antwort: Response): Promise<ApiError> {
   try {
     k = (await antwort.json()) as Partial<ApiFehler>;
   } catch {
-    // kein JSON: Standardtext unten
+    // kein JSON: ohne Meldung (die Anzeige wählt ihren Text)
   }
   const code = k.code ?? (antwort.status === 401 ? 'nicht-angemeldet' : 'unbekannt');
-  return new ApiError(antwort.status, code, typeof k.fehler === 'string' ? k.fehler : NETZ_FEHLER, k.felder);
+  return new ApiError(antwort.status, code, typeof k.fehler === 'string' ? k.fehler : OHNE_MELDUNG, k.felder);
 }
 
 const artefaktPfad = (name: ArtefaktName) => ROUTEN.artefaktLesen.pfad.replace(':artefakt', encodeURIComponent(name));
