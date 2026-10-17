@@ -140,6 +140,7 @@ describe('Mappe verlinkt direkt zum Editor', () => {
       expect(knopf, name).toBeGreaterThan(-1);
       const davor = [...seite.slice(0, knopf).matchAll(/<h2 id="([^"]+)"/g)].at(-1)?.[1];
       expect(davor, name).toBe(EDITOR_ANKER[name]);
+      expect(seite.split(`id="${EDITOR_ANKER[name]}"`).length - 1, `${name}: Anker eindeutig`).toBe(1);
     }
   });
 });
