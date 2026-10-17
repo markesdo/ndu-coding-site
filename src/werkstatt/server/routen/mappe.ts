@@ -61,14 +61,13 @@ function entscheidungenBleiben(alt: unknown, neu: Record<string, unknown>[]): Fe
 // nach Graphemen. Der Joiner in Emoji-Folgen (Join_Control) bleibt, sonst zerfiele eine Familie in Einzelpersonen.
 function kurzeNachricht(roh: string): string {
   const sauber = roh.replace(/(?!\p{Join_Control})[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/g, ' ').trim();
-  const zeichen = Array.from(new Intl.Segmenter('de', { granularity: 'grapheme' }).segment(sauber), (g) => g.segment);
   let laenge = 0;
   const behalten: string[] = [];
-  // Nur ganze Grapheme, damit nichts mitten in einem Zeichen abbricht.
-  for (const g of zeichen.slice(0, NACHRICHT_HOECHSTENS)) {
-    if (laenge + g.length > NACHRICHT_EINHEITEN) break;
-    behalten.push(g);
-    laenge += g.length;
+  // Lazy über die Grapheme und früh aufhören: lange Eingaben werden nie ganz zerlegt. Nur ganze Grapheme.
+  for (const { segment } of new Intl.Segmenter('de', { granularity: 'grapheme' }).segment(sauber)) {
+    if (behalten.length === NACHRICHT_HOECHSTENS || laenge + segment.length > NACHRICHT_EINHEITEN) break;
+    behalten.push(segment);
+    laenge += segment.length;
   }
   return behalten.join('').trim();
 }
@@ -101,8 +100,9 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
         if (e instanceof ApiAusnahme && e.status === 403) throw e;
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', ursache(e));
         // GitHub 4xx (Rechte, Vorlage fehlt …) geht nicht von selbst weg, darum nicht „wird eingerichtet“.
-        const voruebergehend = (e instanceof GithubAusnahme && (e.githubStatus === 0 || e.githubStatus >= 500))
-          || (e instanceof ApiAusnahme && e.status === 503);
+        // Jede GitHub-Antwort zählt als vorübergehend, auch 4xx (Rate-Limit 403/429, Verzögerung direkt nach
+        // /generate, Wettlauf um werkstatt.json); der Editor hört nach drei Versuchen von selbst auf.
+        const voruebergehend = e instanceof GithubAusnahme || (e instanceof ApiAusnahme && e.status === 503);
         throw voruebergehend ? wirdEingerichtet() : new ApiAusnahme(500, 'unbekannt', SCHIEF);
       }
       wj = await abh.speicher.werkstattJson(repo);
