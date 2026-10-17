@@ -8,6 +8,7 @@ import { kohorte as kohorteNachId, type Kohorte } from '../../kohorten/index.js'
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme } from '../antwort.js';
 import { blobSha } from '../git-sha.js';
+import { fremdesRepo, internerFehler as intern, unbekanntesRepo, wirdEingerichtet } from '../speicher-fehler.js';
 import type { Cache, Speicher } from '../typen.js';
 import { GithubAusnahme, ORG_RECHTE, githubAnfrage, githubFehler, jsonAusRepo, type InstallationToken } from './app-token.js';
 
@@ -37,15 +38,8 @@ const REPO_RECHTE = { contents: 'write' } as const;
 const jsonPfad = (name: string) => `mappe/${name}.json`;
 const pfadKodieren = (pfad: string) => pfad.split('/').map(encodeURIComponent).join('/');
 
-const unbekanntesRepo = () => new ApiAusnahme(404, 'unbekannt', 'Diese Mappe gibt es nicht.');
-const wirdEingerichtet = () => new ApiAusnahme(503, 'wird-eingerichtet', 'Deine Mappe wird eingerichtet. Lade die Seite in ein paar Sekunden neu.');
-const fremdesRepo = () => new ApiAusnahme(403, 'nicht-freigeschaltet', 'Diese Mappe gehört zu einer anderen Person. Schreib Markus.');
 const nameBelegt = () => new ApiAusnahme(409, 'konflikt', 'Für dich existiert schon ein anderes Repo mit diesem Namen. Schreib Markus.');
 const vieleGleichzeitig = () => new ApiAusnahme(503, 'github-fehler', 'Gerade speichern viele gleichzeitig. Bitte gleich noch einmal.');
-function intern(log: string): ApiAusnahme {
-  console.error(`werkstatt: ${log}`);
-  return new ApiAusnahme(500, 'unbekannt', 'In der Werkstatt ist etwas schiefgegangen. Bitte später noch einmal versuchen.');
-}
 
 interface Zugriff {
   org: string;
