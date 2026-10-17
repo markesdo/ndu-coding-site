@@ -6,7 +6,7 @@ export const GUELTIG_SEKUNDEN = 60 * 24 * 60 * 60; // 60 Tage
 
 const enc = new TextEncoder();
 
-function b64url(bytes: ArrayBuffer): string {
+export function b64url(bytes: ArrayBuffer | Uint8Array): string {
   let s = '';
   for (const b of new Uint8Array(bytes)) s += String.fromCharCode(b);
   return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');

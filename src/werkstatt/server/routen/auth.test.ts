@@ -4,19 +4,19 @@ import { appErstellen } from '../app';
 import { githubIdentitaet } from '../github/identitaet';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { fakeSpeicher } from '../fake-speicher';
-import { COOKIE_WERKSTATT, sitzungLesen } from '../sitzung';
+import { COOKIE_WERKSTATT, cookieName, sitzungLesen } from '../sitzung';
 import type { GithubIdentitaet, Speicher, Umgebung } from '../typen';
 
 const BASIS = 'http://localhost:4321';
 
-function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean } = {}) {
+function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean; werkstattJson?: Speicher['werkstattJson'] } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: opts.zugang ?? { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] } } };
   const basis = fakeSpeicher();
   const anlegen = vi.fn(async (...a: Parameters<Speicher['anlegen']>) => {
     if (opts.anlegenWirft) throw new Error('GitHub kaputt');
     return basis.anlegen(...a);
   });
-  const speicher: Speicher = { ...basis, anlegen };
+  const speicher: Speicher = { ...basis, anlegen, ...(opts.werkstattJson ? { werkstattJson: opts.werkstattJson } : {}) };
   const person = opts.person ?? { githubId: 1001, login: 'sofie-x' };
   const github: GithubIdentitaet = {
     loginUrl: (state, uri) => `https://github.test/auth?state=${state}&redirect_uri=${encodeURIComponent(uri)}`,
@@ -68,8 +68,19 @@ describe('Cookies in Produktion (lokal: false)', () => {
     expect(sc).toMatch(/Path=\//);
     const state = new URL(l.headers.get('location')!).searchParams.get('state')!;
     const r = await app.request(`${BASIS}/api/werkstatt/auth/callback?code=x&state=${state}`, { headers: { Cookie: `__Host-werkstatt_state=${sc.split(';')[0].split('=').slice(1).join('=')}` } });
-    const sitz = setCookies(r).find((c) => c.startsWith(`${COOKIE_WERKSTATT}=`))!;
+    expect(cookieName(false)).toBe('__Host-ndu_werkstatt');
+    expect(cookieName(true)).toBe('ndu_werkstatt');
+    const sitz = setCookies(r).find((c) => c.startsWith('__Host-ndu_werkstatt='))!;
     expect(sitz).toMatch(/Secure/i);
+    expect(sitz).toMatch(/Path=\//);
+    expect(sitz).not.toMatch(/Domain/i);
+    expect(setCookies(r).some((c) => c.startsWith(`${COOKIE_WERKSTATT}=`))).toBe(false);
+    // Das Cookie mit dem alten, einfachen Namen gilt in Produktion nicht.
+    const wert2 = sitz.split(';')[0].split('=').slice(1).join('=');
+    const mit = await app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: `__Host-ndu_werkstatt=${wert2}` } });
+    expect(mit.status).toBe(200);
+    const ohne = await app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: `${COOKIE_WERKSTATT}=${wert2}` } });
+    expect(ohne.status).toBe(401);
   });
 });
 
@@ -192,6 +203,16 @@ describe('auth/ich und abmelden', () => {
     expect(await r.json()).toStrictEqual({ githubId: 1001, login: 'neuer-name', kohorte: 'test', rolle: 'studierende', repo: 'test-sofie' });
   });
 
+  it('fremde werkstatt.json (andere githubId oder Kohorte): repo null', async () => {
+    for (const fremd of [{ kohorte: 'test', githubId: 1002 }, { kohorte: 'andere', githubId: 1001 }]) {
+      const t = aufbau({ person: { githubId: 1001, login: 'x' }, werkstattJson: async () => fremd });
+      const { state, stateCookie } = await login(t.app);
+      const cookie = `${COOKIE_WERKSTATT}=${wert(await callback(t.app, state, stateCookie), COOKIE_WERKSTATT)}`;
+      const r = await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: cookie } });
+      expect(await r.json()).toMatchObject({ repo: null });
+    }
+  });
+
   it('Lehrende: repo null', async () => {
     const { app, cookie } = await angemeldet({ githubId: 1000, login: 'lehrer' });
     const r = await app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: cookie } });
@@ -269,6 +290,25 @@ describe('githubIdentitaet (Fake-fetch)', () => {
     expect((aufrufe[0].init!.headers as Record<string, string>).Accept).toBe('application/json');
     expect(JSON.parse(aufrufe[0].init!.body as string)).toStrictEqual({ client_id: 'cid', client_secret: 'geheim', code: 'code1', redirect_uri: 'https://x.test/cb' });
     expect((aufrufe[1].init!.headers as Record<string, string>).Authorization).toBe('Bearer tok');
+  });
+
+  it('hängender GitHub-Aufruf: bricht nach dem Zeitlimit ab, beide Aufrufe haben ein Signal', async () => {
+    const signale: (AbortSignal | null | undefined)[] = [];
+    const haengt = ((_url: string, init?: RequestInit) => {
+      signale.push(init?.signal);
+      return new Promise((_, reject) => init?.signal?.addEventListener('abort', () => reject(init.signal!.reason)));
+    }) as unknown as typeof fetch;
+    await expect(githubIdentitaet(env, haengt, 20).codeEinloesen('c', 'u')).rejects.toBeDefined();
+    expect(signale[0]).toBeInstanceOf(AbortSignal);
+
+    let n = 0;
+    const zweiterHaengt = ((url: string, init?: RequestInit) => {
+      signale.push(init?.signal);
+      if (n++ === 0) return Promise.resolve(Response.json({ access_token: 't' }));
+      return new Promise((_, reject) => init?.signal?.addEventListener('abort', () => reject(init.signal!.reason)));
+    }) as unknown as typeof fetch;
+    await expect(githubIdentitaet(env, zweiterHaengt, 20).codeEinloesen('c', 'u')).rejects.toBeDefined();
+    expect(signale[2]).toBeInstanceOf(AbortSignal);
   });
 
   it('abgelehnter Code (200 mit error) wirft', async () => {

@@ -3,13 +3,18 @@
 // mit eigenem Zusatz, damit das Secret nirgends sonst als roher HMAC-Schlüssel dient.
 import type { Context, MiddlewareHandler } from 'hono';
 import { deleteCookie } from 'hono/cookie';
-import { cookieLesen, gleich } from '../../lib/kurszugang.js';
+import { b64url, cookieLesen, gleich } from '../../lib/kurszugang.js';
 import { KOHORTEN } from '../kohorten/index.js';
-import { mitgliedschaften, type Rolle } from '../zugang.js';
+import { mitgliedschaften, type Mitgliedschaft, type Rolle } from '../zugang.js';
 import { fehler } from './antwort.js';
 import type { Abhaengigkeiten } from './typen.js';
 
 export const COOKIE_WERKSTATT = 'ndu_werkstatt';
+// Außerhalb des lokalen Modus mit __Host-: nur Secure, Path=/, ohne Domain – kein Nachbar-Subdomain kann es setzen.
+// Lokal (http://localhost, Safari) geht __Host- nicht, dort bleibt der einfache Name.
+export function cookieName(lokal: boolean): string {
+  return lokal ? COOKIE_WERKSTATT : `__Host-${COOKIE_WERKSTATT}`;
+}
 export const GUELTIG_SEKUNDEN = 30 * 24 * 60 * 60; // 30 Tage
 
 export interface Sitzung {
@@ -22,17 +27,11 @@ export interface Sitzung {
 }
 
 export interface SitzungEnv {
-  Variables: { abh: Abhaengigkeiten; sitzung: Sitzung };
+  Variables: { abh: Abhaengigkeiten; sitzung: Sitzung; mitgliedschaft: Mitgliedschaft };
 }
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();
-
-function b64url(bytes: ArrayBuffer | Uint8Array): string {
-  let s = '';
-  for (const b of bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes)) s += String.fromCharCode(b);
-  return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
 
 function ausB64url(text: string): Uint8Array {
   const b = atob(text.replace(/-/g, '+').replace(/_/g, '/'));
@@ -70,23 +69,31 @@ export async function sitzungLesen(cookie: string | undefined, secret: string, j
   }
 }
 
-// Sitzung der Anfrage oder null (ohne Antwort zu schreiben). Gilt nur, solange die Person laut aktueller
-// Zugangsliste noch in dieser Kohorte (aktiv) und Rolle steht: entfernte Personen und archivierte Kohorten fallen raus.
-export async function sitzungDerAnfrage(c: Context, abh: Abhaengigkeiten): Promise<Sitzung | null> {
-  const s = await sitzungLesen(cookieLesen(c.req.header('cookie') ?? null, COOKIE_WERKSTATT), abh.umgebung.sessionSecret, Math.floor(abh.jetzt() / 1000));
+// Sitzung der Anfrage samt der passenden aktuellen Mitgliedschaft oder null (ohne Antwort zu schreiben). Gilt nur,
+// solange die Person laut aktueller Zugangsliste noch in dieser Kohorte (aktiv) und Rolle steht: entfernte Personen
+// und archivierte Kohorten fallen raus.
+export async function sitzungMitMitgliedschaft(c: Context, abh: Abhaengigkeiten): Promise<{ sitzung: Sitzung; mitgliedschaft: Mitgliedschaft } | null> {
+  const cookie = cookieLesen(c.req.header('cookie') ?? null, cookieName(abh.umgebung.lokal));
+  const s = await sitzungLesen(cookie, abh.umgebung.sessionSecret, Math.floor(abh.jetzt() / 1000));
   if (!s) return null;
-  const noch = mitgliedschaften(abh.umgebung.zugang, s.githubId, KOHORTEN).some((m) => m.kohorte === s.kohorte && m.rolle === s.rolle);
-  return noch ? s : null;
+  const m = mitgliedschaften(abh.umgebung.zugang, s.githubId, KOHORTEN).find((x) => x.kohorte === s.kohorte && x.rolle === s.rolle);
+  return m ? { sitzung: s, mitgliedschaft: m } : null;
 }
 
-// Setzt c.var.sitzung oder antwortet 401 nicht-angemeldet (und räumt ein ungültiges Cookie ab).
+export async function sitzungDerAnfrage(c: Context, abh: Abhaengigkeiten): Promise<Sitzung | null> {
+  return (await sitzungMitMitgliedschaft(c, abh))?.sitzung ?? null;
+}
+
+// Setzt c.var.sitzung (und mitgliedschaft) oder antwortet 401 nicht-angemeldet (und räumt ein ungültiges Cookie ab).
 export const mitSitzung: MiddlewareHandler<SitzungEnv> = async (c, weiter) => {
   const abh = c.get('abh');
-  const s = await sitzungDerAnfrage(c, abh);
-  if (!s) {
-    if (cookieLesen(c.req.header('cookie') ?? null, COOKIE_WERKSTATT)) deleteCookie(c, COOKIE_WERKSTATT, { path: '/', secure: !abh.umgebung.lokal });
+  const name = cookieName(abh.umgebung.lokal);
+  const t = await sitzungMitMitgliedschaft(c, abh);
+  if (!t) {
+    if (cookieLesen(c.req.header('cookie') ?? null, name)) deleteCookie(c, name, { path: '/', secure: !abh.umgebung.lokal });
     return fehler(c, 401, 'nicht-angemeldet', 'Bitte melde dich mit GitHub an.');
   }
-  c.set('sitzung', s);
+  c.set('sitzung', t.sitzung);
+  c.set('mitgliedschaft', t.mitgliedschaft);
   return weiter();
 };

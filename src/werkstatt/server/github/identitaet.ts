@@ -8,6 +8,7 @@ type Zugangsdaten = Pick<Umgebung, 'githubClientId' | 'githubClientSecret'>;
 export function githubIdentitaet(
   env: Zugangsdaten | (() => Zugangsdaten),
   fetchFn: typeof fetch = fetch,
+  zeitlimitMs = 8000,
 ): GithubIdentitaet {
   const daten = () => (typeof env === 'function' ? env() : env);
   return {
@@ -23,6 +24,7 @@ export function githubIdentitaet(
       const tausch = await fetchFn('https://github.com/login/oauth/access_token', {
         method: 'POST',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(zeitlimitMs),
         body: JSON.stringify({ client_id: githubClientId, client_secret: githubClientSecret, code, redirect_uri: redirectUri }),
       });
       if (!tausch.ok) throw new Error(`GitHub-Tokentausch: HTTP ${tausch.status}`);
@@ -33,6 +35,7 @@ export function githubIdentitaet(
       }
       const antwort = await fetchFn('https://api.github.com/user', {
         headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${t.access_token}`, 'User-Agent': 'ndu-werkstatt' },
+        signal: AbortSignal.timeout(zeitlimitMs),
       });
       if (!antwort.ok) throw new Error(`GitHub /user: HTTP ${antwort.status}`);
       const u = (await antwort.json()) as { id?: unknown; login?: unknown };

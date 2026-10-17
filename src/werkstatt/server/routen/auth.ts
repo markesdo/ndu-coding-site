@@ -2,20 +2,19 @@
 // CSRF für POST /abmelden prüft appErstellen.
 import { Hono } from 'hono';
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
-import { gleich, sichererPfad } from '../../../lib/kurszugang.js';
+import { b64url, gleich, sichererPfad } from '../../../lib/kurszugang.js';
 import { KOHORTEN } from '../../kohorten/index.js';
 import type { Ich } from '../../vertrag.js';
 import { mitgliedschaften, repoName } from '../../zugang.js';
 import { json, origin } from '../antwort.js';
-import { COOKIE_WERKSTATT, GUELTIG_SEKUNDEN, mitSitzung, sitzungErstellen, type SitzungEnv } from '../sitzung.js';
+import { GUELTIG_SEKUNDEN, cookieName, mitSitzung, sitzungErstellen, type SitzungEnv } from '../sitzung.js';
 import type { Abhaengigkeiten } from '../typen.js';
 
 const STATE_SEKUNDEN = 10 * 60;
 const MAPPE = '/innolab/mappe';
 
 function zufall(): string {
-  const b = crypto.getRandomValues(new Uint8Array(24));
-  return btoa(String.fromCharCode(...b)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return b64url(crypto.getRandomValues(new Uint8Array(24)));
 }
 
 export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
@@ -29,17 +28,17 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
 
   r.get('/ich', mitSitzung, async (c) => {
     const s = c.get('sitzung');
+    const m = c.get('mitgliedschaft');
     let repo: string | null = null;
-    if (s.rolle === 'studierende') {
-      const m = mitgliedschaften(abh.umgebung.zugang, s.githubId, KOHORTEN).find((x) => x.kohorte === s.kohorte && x.rolle === 'studierende');
-      if (m) {
-        try {
-          const name = repoName(m);
-          repo = (await abh.speicher.werkstattJson(name)) ? name : null;
-        } catch (e) {
-          console.error('werkstatt: Mappe nicht lesbar –', e instanceof Error ? e.message : 'Fehler');
-          repo = null; // Mappe wird noch eingerichtet
-        }
+    if (m.rolle === 'studierende') {
+      try {
+        const name = repoName(m);
+        const wj = await abh.speicher.werkstattJson(name);
+        if (wj && wj.githubId === s.githubId && wj.kohorte === s.kohorte) repo = name;
+        else if (wj) console.error('werkstatt: werkstatt.json passt nicht zur Sitzung, Mappe wird nicht gemeldet');
+      } catch (e) {
+        console.error('werkstatt: Mappe nicht lesbar –', e instanceof Error ? e.message : 'Fehler');
+        repo = null; // Mappe wird noch eingerichtet
       }
     }
     const ich: Ich = { githubId: s.githubId, login: s.login, kohorte: s.kohorte, rolle: s.rolle, repo };
@@ -81,7 +80,7 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       try {
         await abh.speicher.anlegen(m, person.githubId);
       } catch (e) {
-        // Cookie trotzdem: /innolab/mappe zeigt „wird eingerichtet“, die Oberfläche versucht es erneut.
+        // Cookie trotzdem: /innolab/mappe zeigt „wird eingerichtet“, GET /api/werkstatt/mappe (Task 11) legt ein fehlendes Repo erneut an.
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', e instanceof Error ? e.message : 'Fehler');
       }
     }
@@ -90,12 +89,12 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       { githubId: person.githubId, login: person.login, kohorte: m.kohorte, rolle: m.rolle, exp: Math.floor(abh.jetzt() / 1000) + GUELTIG_SEKUNDEN },
       abh.umgebung.sessionSecret,
     );
-    setCookie(c, COOKIE_WERKSTATT, cookie, { ...cookieOpt(), maxAge: GUELTIG_SEKUNDEN });
+    setCookie(c, cookieName(abh.umgebung.lokal), cookie, { ...cookieOpt(), maxAge: GUELTIG_SEKUNDEN });
     return c.redirect(weiter, 302);
   });
 
   r.post('/abmelden', (c) => {
-    deleteCookie(c, COOKIE_WERKSTATT, { path: '/', secure: sicher() });
+    deleteCookie(c, cookieName(abh.umgebung.lokal), { path: '/', secure: sicher() });
     return json(c, { ok: true });
   });
 
