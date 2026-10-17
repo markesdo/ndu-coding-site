@@ -158,7 +158,7 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
     const t = rendern('brief', { ...b, fuerWen: 'x\n<!--\n    Pendler\n___\n1. Anstellen\n:--|--' });
     expect(t).toContain('## 1. Für wen?\nx  \n\\<!--  \nPendler  \n\\_\\_\\_  \n1\\. Anstellen  \n\\:--|--\n');
   });
-  it('Felder mitten in der Zeile bleiben unmaskiert', () => {
+  it('Felder mitten in der Zeile: Satzzeichen am Anfang ohne Backslash', () => {
     const l = laden('leitfaden');
     const ls = rendern('leitfaden', { ...l, ziel: '(Pilot) x', fragen: [{ id: 'F1', art: 'kern', text: '# x' }, { id: 'F2', art: 'nachfrage', text: '"Was 1. y' }] });
     expect(zeilen(ls)).toContain('1. **F1** # x');
@@ -183,6 +183,13 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
       ['snake_case und _betont_', 'snake_case und \\_betont\\_'],
       ['https://x.at/?a=1&b=2', 'https://x.at/?a=1&b=2'],
       ['~~weg~~', '\\~\\~weg\\~\\~'],
+      ['<div>', '\\<div>'],
+      ['~~~', '\\~\\~\\~'],
+      ['_ _ _', '\\_ \\_ \\_'],
+      ['[Interview I2](https://x.at) zeigt', '\\[Interview I2\\](https://x.at) zeigt'],
+      ['`Kasse` hängt', '\\`Kasse\\` hängt'],
+      ['Quelle: https://de.wikipedia.org/wiki/Mom_Test_(Buch) und https://x.at/~user/a_', 'Quelle: https://de.wikipedia.org/wiki/Mom_Test_(Buch) und https://x.at/~user/a_'],
+      ['Quelle: <https://x.at> und www.x.at/a*b', 'Quelle: <https://x.at> und www.x.at/a*b'],
     ];
     const s = rendern('brief', { ...b, nicht: faelle.map(([ein]) => ein) });
     for (const [, aus] of faelle) expect(zeilen(s)).toContain(`- ${aus}`);

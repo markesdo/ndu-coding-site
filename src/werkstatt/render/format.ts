@@ -16,8 +16,21 @@ function zeilenende(s: string): string {
 
 // Zeichen, die mitten im Text Markdown auslösen (Betonung, Code, Link, HTML, Durchstreichen), werden wörtlich
 // gemacht: aus „Pendler*innen und Mitarbeiter*innen“ wird keine Kursivschrift, „<Situation>“ verschwindet nicht.
-// _ nur am Wortrand (im Wort wirkt es nie), & nur vor einer Entity (so bleibt ?a=1&b=2 in Links ganz).
+// _ nur am Wortrand (im Wort wirkt es nie), & nur vor einer Entity. Adressen (https://…, www.…, auch in <…>) bleiben
+// unberührt: GitHub verlinkt sie aus dem Rohtext, ein Backslash darin landete im Link.
+const ADRESSE = /<(?:https?:\/\/|www\.)[^\s<>]*>|(?:https?:\/\/|www\.)[^\s<]*/g;
+
 function zeichen(t: string): string {
+  let aus = '';
+  let ab = 0;
+  for (const m of t.matchAll(ADRESSE)) {
+    aus += textZeichen(t.slice(ab, m.index)) + m[0];
+    ab = m.index + m[0].length;
+  }
+  return aus + textZeichen(t.slice(ab));
+}
+
+function textZeichen(t: string): string {
   return t
     .replace(/[\\`*<[\]~]/g, '\\$&')
     .replace(/(?<![\p{L}\p{N}])_|_(?![\p{L}\p{N}])/gu, '\\_')
@@ -39,9 +52,15 @@ function flach(s: string): string {
   return zeilenende(s).replace(/\s*\n\s*/g, ' ').trim();
 }
 
-/** Nur Einträge mit Text (ein leerer Entwurfs-Eintrag mitten in einer Liste erscheint nicht). */
-export function gefuellt(xs: readonly string[]): string[] {
+// Nur Einträge mit Text (ein leerer Entwurfs-Eintrag mitten in einer Liste erscheint nicht).
+function gefuellt(xs: readonly string[]): string[] {
   return xs.filter((x) => flach(x) !== '');
+}
+
+/** Aufzählung aus Freitext-Einträgen; ohne Eintrag ein Punkt „Noch nichts eingetragen.“ */
+export function liste(xs: readonly string[]): string {
+  const g = gefuellt(xs);
+  return g.length > 0 ? g.map((x) => `- ${listenpunkt(x)}`).join('\n') : `- ${LEER}`;
 }
 
 // Einzeilige Felder mitten in einer Zeile (nach „Ziel: “, „— “, „**F1** “). Leer -> „Noch nichts eingetragen.“
@@ -77,7 +96,8 @@ export function zitat(s: string): string {
 
 // IDs und Notiz teilen sich eine Klammer; leere IDs und eine leere Notiz (Entwurf) zählen wie keine.
 export function belegText(stufe: Belegstufe, ids: readonly string[], notiz?: string): string {
-  const teile = [gefuellt(ids).map(zelle).join(', '), gefuellt([notiz ?? '']).map(zelle).join('')];
-  const zusatz = teile.filter(Boolean).join('; ');
+  const idText = gefuellt(ids).map(zelle).join(', ');
+  const notizText = notiz !== undefined && flach(notiz) !== '' ? zelle(notiz) : '';
+  const zusatz = [idText, notizText].filter(Boolean).join('; ');
   return zusatz ? `${BELEGSTUFE_TEXT[stufe]} (${zusatz})` : BELEGSTUFE_TEXT[stufe];
 }
