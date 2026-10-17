@@ -1,0 +1,101 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`README > Titel, Kohorte, Link nur bei vorhandenen Dateien 1`] = `
+"# Projektmappe
+
+**Kohorte:** Innolab 26/27
+
+| Artefakt | Datei |
+|----------|-------|
+| Produkt-Brief | [mappe/brief.md](mappe/brief.md) |
+| Entscheidungslog | noch offen |
+| Interviewleitfaden | noch offen |
+| Annahmen-Map | [mappe/annahmen.md](mappe/annahmen.md) |
+"
+`;
+
+exports[`Snapshots der Kaffeebar-Beispiele > annahmen 1`] = `
+"# Annahmen
+
+**Stand:** 22.10.2026
+Riskanteste Annahme: A1
+
+| ID | Wir glauben, dass … | Art | Wichtig | Beleg |
+|----|---------------------|-----|---------|-------|
+| **A1** (riskanteste) | Wir glauben, dass Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen. | wünschenswert | hoch | noch keiner |
+| **A2** | Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann. | machbar | hoch | getan |
+| **A3** | Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können. | bedienbar | mittel | noch keiner |
+| **A4** | Wir glauben, dass sich die zusätzlichen Bestellungen ohne eine weitere Kraft am Morgen rechnen. | wirtschaftlich | niedrig | getan |
+"
+`;
+
+exports[`Snapshots der Kaffeebar-Beispiele > brief 1`] = `
+"**Stand:** 22.10.2026 — Problem-Rahmen, Innolab Tag 1
+
+## 1. Für wen?
+Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten
+
+## 2. Welches Problem?
+Die Schlange ist morgens länger als die Zeit bis zur Abfahrt. Wer den Zug erreichen will, verzichtet auf Kaffee oder nimmt den Automaten.
+Heute gelöst durch: Automat, Thermobecher von zu Hause, ganz verzichten, einen Zug später nehmen
+
+## 3. Was ist das Produkt in einem Satz?
+Offen – steht nach Tag 3 fest.
+
+## 4. Was macht es NICHT?
+- Keine Lieferung an den Bahnsteig
+- Kein Mittagsgeschäft
+- Keine anderen Bahnhöfe
+
+## 5. Was gehört ins MVP?
+Kommt aus der Story Map (Tag 3).
+
+## 6. Woran merken wir, dass es funktioniert?
+Wir glauben: Pendler*innen bekommen morgens Kaffee, ohne ihren Zug zu riskieren.
+Wir merken es: Wenn 4 von 5 Testpersonen an drei Tagen hintereinander mit Kaffee in ihren Zug steigen.
+
+## 7. Offene Fragen
+- Wollen Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen?
+"
+`;
+
+exports[`Snapshots der Kaffeebar-Beispiele > entscheidungen 1`] = `
+"# Entscheidungslog
+
+**Stand:** 05.11.2026
+
+- **D1** 22.10.2026 — Zielgruppe: Pendler*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner — ersetzt am 05.11.2026
+- **D2** 22.10.2026 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: getan
+- **D3** 05.11.2026 — Zielgruppe: Pendler*innen nach Wien und Linz, 7:15–7:45 — 3 von 5 Interviewten fahren Richtung Linz — Beleg: erzählt (I1, I3, I4) — ersetzt **D1**
+- **D4** 05.11.2026 — Vorbestellen vor der Ankunft verworfen — 3 von 5 entscheiden erst beim Ankommen — Beleg: erzählt (T1, I1-2, I3-1, I5-3)
+"
+`;
+
+exports[`Snapshots der Kaffeebar-Beispiele > leitfaden 1`] = `
+"# Interviewleitfaden
+
+**Stand:** 22.10.2026
+
+Ziel: Herausfinden, ob Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.
+Wen: Pendler*innen, die werktags zwischen 7:15 und 7:45 am Bahnhof auf den Zug nach Wien warten
+
+## Einstieg
+„Danke, dass du dir Zeit nimmst. Ich will verstehen, wie du Kaffee am Bahnhof heute erlebst – es gibt keine falschen Antworten. Darf ich das Gespräch aufnehmen? Die Aufnahme bleibt bei mir, im Projekt steht nur ein Transkript ohne Namen.“
+
+## Kernfragen
+1. **F1** Erzähl mir vom letzten Morgen, an dem du am Bahnhof Kaffee wolltest.
+2. **F2** Was hast du da genau gemacht? Was ist dann passiert?
+3. **F3** Was war daran mühsam?
+4. **F4** Was hast du schon ausprobiert, um das zu umgehen? Was hat es dich gekostet (Zeit, Geld, Nerven)?
+5. **F5** Was hast du diese Woche für Kaffee unterwegs ausgegeben?
+
+## Nachfragen
+- **F6** Warum?
+- **F7** Wann war das zuletzt?
+- **F8** Wie oft kommt das vor?
+- **F9** Kannst du mir das zeigen?
+
+## Abschluss
+„Wen sollte ich noch fragen?“
+"
+`;
