@@ -24,12 +24,16 @@ export const leitfadenSchema = z.object({
 export type Leitfaden = z.infer<typeof leitfadenSchema>;
 export type Frage = Leitfaden['fragen'][number];
 
+// Einstieg der Vorlage auf „Interview“. Fragen werden nie vorbefüllt (Mom-Test-Pointe).
+export const EINSTIEG_VORLAGE =
+  'Danke, dass du dir Zeit nimmst. Ich will verstehen, wie du [Situation] heute erlebst – es gibt keine falschen Antworten. Darf ich das Gespräch aufnehmen? Die Aufnahme bleibt bei mir, im Projekt steht nur ein Transkript ohne Namen.';
+
 export const leitfadenLeer = (heute: string): Leitfaden => ({
   schema: 'leitfaden@1',
   stand: heute,
   ziel: '',
   wen: '',
-  einstieg: '',
+  einstieg: EINSTIEG_VORLAGE,
   fragen: [],
   abschluss: '',
 });

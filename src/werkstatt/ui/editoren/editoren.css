@@ -1,0 +1,9 @@
+/* Vorschau-Karten der Editoren Brief und Leitfaden. Farben nur über die Variablen der Seite. */
+.wk-wurzel .wk-karten { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
+.wk-wurzel .wk-karte { padding: .75rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+.wk-wurzel .wk-karte h3 { margin: 0 0 .35rem; font-size: .95rem; }
+.wk-wurzel .wk-karte p, .wk-wurzel .wk-karte ul { margin: .25rem 0; overflow-wrap: anywhere; }
+.wk-wurzel .wk-karte ul { padding-left: 1.2rem; }
+.wk-wurzel .wk-karte .wk-offen { color: var(--muted); font-style: italic; }
+.wk-wurzel .wk-karte-nr { font-family: var(--mono); color: var(--muted); font-size: .85rem; margin-right: .4rem; }
+.wk-wurzel .wk-art { font-size: .8rem; padding: .05rem .5rem; border: 1px solid var(--border); border-radius: 999px; background: var(--code-bg); margin-left: .4rem; }

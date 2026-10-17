@@ -12,7 +12,7 @@ export { ARTEFAKT_NAMEN } from './namen.js';
 export { BELEGSTUFEN, BELEGSTUFE_TEXT, type Belegstufe, type Feldfehler } from './gemeinsam.js';
 export type { Brief } from './brief.js';
 export type { Entscheidungen, Entscheidung } from './entscheidungen.js';
-export { FRAGE_ARTEN, type Leitfaden, type Frage } from './leitfaden.js';
+export { EINSTIEG_VORLAGE, FRAGE_ARTEN, type Leitfaden, type Frage } from './leitfaden.js';
 export { ANNAHME_ARTEN, WICHTIGKEITEN, quadrant, punkt, type Annahmen, type Annahme, type Quadrant } from './annahmen.js';
 
 export type ArtefaktDaten = Brief | Entscheidungen | Leitfaden | Annahmen;
