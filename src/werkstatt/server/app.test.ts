@@ -11,13 +11,6 @@ function anfrage(pfad: string, init: RequestInit = {}) {
   return app.request(`${BASIS}${pfad}`, init);
 }
 
-// Stubs markieren sich mit x-werkstatt-stub, damit sichtbar ist, welcher Router geantwortet hat.
-async function stub(r: Response): Promise<string | null> {
-  expect(r.status).toBe(501);
-  expect(await r.json()).toMatchObject({ code: 'unbekannt' });
-  return r.headers.get('x-werkstatt-stub');
-}
-
 // Antworten des OAuth-Routers (T7): Metadaten bzw. OAuth-Fehler im Format von RFC 6749.
 async function issuerMeta(r: Response): Promise<string> {
   expect(r.status).toBe(200);
@@ -30,6 +23,11 @@ async function resourceMeta(r: Response): Promise<string> {
 async function oauthFehler(r: Response): Promise<string> {
   expect(r.status).toBe(400);
   return (await r.json()).error;
+}
+// Der Mappe-Router (T11) antwortet ohne Sitzung mit 401 nicht-angemeldet – hinter der CSRF-Prüfung (die gäbe 403).
+async function mappe(r: Response): Promise<string> {
+  expect(r.status).toBe(401);
+  return (await r.json()).code;
 }
 
 const JSON_KOPF = { 'Content-Type': 'application/json', Origin: BASIS };
@@ -64,8 +62,9 @@ describe('Routing', () => {
     expect(mcp.headers.get('www-authenticate')).toContain('resource_metadata=');
     // auth ist gebaut (T4): ohne Sitzung 401 statt Stub.
     expect((await anfrage('/api/werkstatt/auth/ich')).status).toBe(401);
-    expect(await stub(await anfrage('/api/werkstatt/mappe'))).toBe('mappe');
-    expect(await stub(await anfrage('/api/werkstatt/mappe/brief'))).toBe('mappe');
+    // mappe ist gebaut (T11): ohne Sitzung 401 statt Stub.
+    expect(await mappe(await anfrage('/api/werkstatt/mappe'))).toBe('nicht-angemeldet');
+    expect(await mappe(await anfrage('/api/werkstatt/mappe/brief'))).toBe('nicht-angemeldet');
   });
 
   it('Metadaten ohne Suffix an der Wurzel: 404 als ApiFehler (Issuer mit Pfad, RFC 8414 §3.3)', async () => {
@@ -104,14 +103,14 @@ describe('CSRF', () => {
 
   it('PUT mit JSON und eigener Origin kommt beim Router an', async () => {
     const r = await anfrage('/api/werkstatt/mappe/brief', { method: 'PUT', headers: { ...JSON_KOPF, 'Content-Type': 'application/json; charset=utf-8' }, body: '{}' });
-    expect(await stub(r)).toBe('mappe');
+    expect(await mappe(r)).toBe('nicht-angemeldet');
   });
 
   it('POST und DELETE unter mappe sind ebenso geschützt, GET nicht', async () => {
     expect((await anfrage('/api/werkstatt/mappe/brief', { method: 'POST', headers: { Origin: 'https://boese.example' } })).status).toBe(403);
     expect((await anfrage('/api/werkstatt/mappe/brief', { method: 'DELETE', headers: { Origin: 'https://boese.example' } })).status).toBe(403);
     expect((await anfrage('/api/werkstatt/mappe', { method: 'POST', headers: { Origin: 'https://boese.example' } })).status).toBe(403);
-    expect(await stub(await anfrage('/api/werkstatt/mappe/brief', { headers: { Origin: 'https://boese.example' } }))).toBe('mappe');
+    expect(await mappe(await anfrage('/api/werkstatt/mappe/brief', { headers: { Origin: 'https://boese.example' } }))).toBe('nicht-angemeldet');
   });
 
   it('kodierter Pfad umgeht die Prüfung nicht', async () => {
@@ -144,7 +143,7 @@ describe('CSRF', () => {
     const prod = appErstellen(lokaleAbhaengigkeiten({ umgebung: { ...lokaleUmgebung(), origin: 'https://ndu.datamonkeys.ai' } }));
     const put = (origin: string) => prod.request(`${BASIS}/api/werkstatt/mappe/brief`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Origin: origin }, body: '{}' });
     expect((await put(BASIS)).status).toBe(403);
-    expect(await stub(await put('https://ndu.datamonkeys.ai'))).toBe('mappe');
+    expect(await mappe(await put('https://ndu.datamonkeys.ai'))).toBe('nicht-angemeldet');
   });
 });
 
