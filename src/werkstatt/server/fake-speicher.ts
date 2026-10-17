@@ -4,7 +4,7 @@
 import { ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { repoName } from '../zugang.js';
 import { blobSha } from './git-sha.js';
-import { fremdesRepo, internerFehler, unbekanntesRepo } from './speicher-fehler.js';
+import { fremdesRepo, internerFehler, jsonAusRepo, unbekanntesRepo } from './speicher-fehler.js';
 import type { Speicher } from './typen.js';
 import { istLokal } from './umgebung.js';
 
@@ -54,7 +54,7 @@ export function fakeSpeicher(): FakeSpeicher {
     async lesen(repo, name) {
       const inhalt = repos.get(repo)?.dateien.get(jsonPfad(name));
       if (inhalt === undefined) return { daten: null, basisSha: null };
-      return { daten: JSON.parse(inhalt) as unknown, basisSha: blobSha(inhalt) };
+      return { daten: jsonAusRepo(jsonPfad(name), inhalt), basisSha: blobSha(inhalt) };
     },
 
     async speichern(repo, name, dateien, basisSha, autor, nachricht) {

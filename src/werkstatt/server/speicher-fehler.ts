@@ -5,6 +5,22 @@ import { ApiAusnahme } from './antwort.js';
 export const unbekanntesRepo = () => new ApiAusnahme(404, 'unbekannt', 'Diese Mappe gibt es nicht.');
 export const wirdEingerichtet = () =>
   new ApiAusnahme(503, 'wird-eingerichtet', 'Deine Mappe wird eingerichtet. Lade die Seite in ein paar Sekunden neu.');
+// Kein gültiges JSON im Repo (z. B. von Hand auf GitHub kaputt bearbeitet). Für die Web-API wie ein GitHub-Fehler (502);
+// eigene Klasse, damit der Connector sagen kann, dass die Datei in der Werkstatt neu gespeichert werden muss.
+export const GITHUB_SATZ = 'GitHub ist gerade nicht erreichbar. Bitte gleich noch einmal versuchen.';
+export class DateiUnlesbar extends ApiAusnahme {
+  constructor(readonly pfad: string) {
+    super(502, 'github-fehler', GITHUB_SATZ);
+  }
+}
+export function jsonAusRepo(pfad: string, inhalt: string): unknown {
+  try {
+    return JSON.parse(inhalt) as unknown;
+  } catch {
+    console.error(`werkstatt: kaputtes JSON in ${pfad}`);
+    throw new DateiUnlesbar(pfad);
+  }
+}
 export const fremdesRepo = () => new ApiAusnahme(403, 'nicht-freigeschaltet', 'Diese Mappe gehört zu einer anderen Person. Schreib Markus.');
 
 // Programmier- oder Konfigurationsfehler: Einzelheiten nur ins Log.
