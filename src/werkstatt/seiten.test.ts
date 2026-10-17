@@ -121,3 +121,13 @@ describe('EDITOREN', () => {
     for (const a of ARTEFAKTE.filter((x) => x.werkstatt)) expect(EDITOREN[a.werkstatt!], a.id).toBeDefined();
   });
 });
+
+describe('Claude verbinden', () => {
+  const seite = seiten['../pages/innolab/werkstatt/claude.astro'];
+
+  it('Knopf nutzt den geprüften Link, Fallback nennt die URL aus derselben Quelle', () => {
+    expect(seite).toContain('href={connectorLink(seite)}');
+    expect(seite).toContain('{connectorUrl(seite)}');
+    expect(seite).not.toContain('https://ndu.datamonkeys.ai/api/werkstatt/mcp</code>');
+  });
+});

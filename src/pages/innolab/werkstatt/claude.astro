@@ -4,11 +4,17 @@ import Callout from '../../../components/Callout.astro';
 import Folie from '../../../components/Folie.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Prompt from '../../../components/Prompt.astro';
+import { CONNECTOR_NAME, connectorLink, connectorUrl } from '../../../werkstatt/connector.js';
+
+// site steht in astro.config.mjs; ohne site soll der Build scheitern statt still eine falsche Domain zu nennen.
+const seite = Astro.site!;
 ---
 {/*
   VORLÄUFIG: Die genauen Beschriftungen in claude.ai („Einstellungen“, „Connectors“, „Benutzerdefinierten Connector hinzufügen“,
   „Verbinden“, „Erlauben“, „Datenschutz“, „Modelltraining“) sind noch nicht am echten Bildschirm geprüft.
   Task 15 prüft sie mit Screenshots und ergänzt sie; erst dann gilt der Text als final.
+  Ausnahme, schon geprüft (17.10.): Der Link aus connectorLink() öffnet den Dialog mit Name und URL ausgefüllt.
+  Ungeprüft bleiben die Beschriftungen ab Schritt 2.
   Der Hinweis „erweiterte OAuth-Felder leer lassen“ stützt sich auf die Anthropic-Dokumentation: Eine leere Client-ID heißt, dass
   claude.ai seine veröffentlichte Identität (CIMD) nutzt. Wird in T15 ebenfalls geprüft.
 */}
@@ -19,14 +25,14 @@ import Prompt from '../../../components/Prompt.astro';
 
   <Folie>
     <h2 id="connector-anlegen">1. Connector anlegen</h2>
-    <p class="folie-satz">In claude.ai legt ihr einen eigenen Connector an.</p>
+    <p class="folie-satz">Ein Klick öffnet claude.ai mit dem fertig ausgefüllten Dialog.</p>
+    <p><a class="btn primary" href={connectorLink(seite)} target="_blank" rel="noopener">Werkstatt mit Claude verbinden</a></p>
     <ol>
-      <li>Öffnet <strong>claude.ai</strong> und geht auf <strong>Einstellungen → Connectors</strong>.</li>
-      <li>Klickt auf <strong>Benutzerdefinierten Connector hinzufügen</strong>.</li>
-      <li>Name: <code>NDU Werkstatt</code></li>
-      <li>URL: <code>https://ndu.datamonkeys.ai/api/werkstatt/mcp</code></li>
+      <li>Meldet euch in claude.ai an, falls ihr es noch nicht seid. Der Dialog „Add custom connector“ (deutsch: „Benutzerdefinierten Connector hinzufügen“) öffnet sich, Name und URL stehen schon drin.</li>
+      <li>Klickt auf <strong>Add</strong> (<strong>Hinzufügen</strong>). Sonst nichts ändern: Client-ID, Client-Secret und die erweiterten Einstellungen bleiben leer.</li>
     </ol>
-    <p>Client-ID und Client-Secret braucht ihr nicht. Lasst die erweiterten OAuth-Felder leer.</p>
+    <p>Kein Dialog, leere Felder oder eine Fehlerseite? Dann geht in claude.ai auf <strong>Customize → Connectors</strong>, klickt <strong>Add custom connector</strong> und tragt Name <code>{CONNECTOR_NAME}</code> und diese URL ein:</p>
+    <Prompt label="Connector-URL">{connectorUrl(seite)}</Prompt>
   </Folie>
 
   <Folie>
