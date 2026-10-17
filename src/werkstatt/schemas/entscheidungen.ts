@@ -21,13 +21,13 @@ export const entscheidungenSchema = z
       .superRefine((zeilen, ctx) => doppelteIds(zeilen, ctx, 'Diese ID gibt es schon. Jede Entscheidung braucht eine eigene ID.')),
   })
   .superRefine((d, ctx) => {
-    const bekannt = new Set(d.entscheidungen.map((z) => z.id));
-    d.entscheidungen.forEach((z, i) => {
-      if (z.ersetzt === undefined) return;
-      if (z.ersetzt === z.id) {
+    const bekannt = new Set(d.entscheidungen.map((e) => e.id));
+    d.entscheidungen.forEach((e, i) => {
+      if (e.ersetzt === undefined) return;
+      if (e.ersetzt === e.id) {
         ctx.addIssue({ code: 'custom', path: ['entscheidungen', i, 'ersetzt'], message: 'Eine Entscheidung kann sich nicht selbst ersetzen.' });
-      } else if (!bekannt.has(z.ersetzt)) {
-        ctx.addIssue({ code: 'custom', path: ['entscheidungen', i, 'ersetzt'], message: `Die Entscheidung ${z.ersetzt} gibt es nicht.` });
+      } else if (!bekannt.has(e.ersetzt)) {
+        ctx.addIssue({ code: 'custom', path: ['entscheidungen', i, 'ersetzt'], message: `Die Entscheidung ${e.ersetzt} gibt es nicht.` });
       }
     });
   });

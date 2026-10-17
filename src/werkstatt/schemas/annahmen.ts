@@ -7,7 +7,7 @@ export const WICHTIGKEITEN = ['hoch', 'mittel', 'niedrig'] as const;
 const annahmeSchema = z.object({
   id: zeilenId('A', 'ID der Annahme'),
   text: text('Annahme'),
-  art: z.enum(ANNAHME_ARTEN, { error: 'Die Art der Annahme fehlt: wünschenswert, machbar, wirtschaftlich oder bedienbar.' }),
+  art: z.enum(ANNAHME_ARTEN, { error: 'Die Art der Annahme muss wünschenswert, machbar, wirtschaftlich oder bedienbar sein.' }),
   wichtig: z.enum(WICHTIGKEITEN, { error: 'Die Wichtigkeit muss „hoch“, „mittel“ oder „niedrig“ sein.' }),
   beleg: belegstufe,
   belegIds,
@@ -46,7 +46,7 @@ export function quadrant(a: Pick<Annahme, 'wichtig' | 'beleg'>): Quadrant {
   return `${oben ? 'o' : 'u'}${rechts ? 'r' : 'l'}` as Quadrant;
 }
 
-const Y: Record<Annahme['wichtig'], number> = { hoch: 0.85, mittel: 0.5, niedrig: 0.15 };
+const Y: Record<Annahme['wichtig'], number> = { hoch: 0.85, mittel: 0.35, niedrig: 0.15 };
 const X: Record<Belegstufe, number> = { keiner: 0.1, gesagt: 0.35, erzaehlt: 0.65, getan: 0.9 };
 const VERSATZ = 0.06;
 

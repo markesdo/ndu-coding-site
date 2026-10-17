@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam';
 
+export const FRAGE_ARTEN = ['kern', 'nachfrage'] as const;
+
 const frageSchema = z.object({
   id: zeilenId('F', 'ID der Frage'),
   text: text('Frage'),
-  art: z.enum(['kern', 'nachfrage'], { error: 'Die Art der Frage muss „kern“ oder „nachfrage“ sein.' }),
+  art: z.enum(FRAGE_ARTEN, { error: 'Die Art der Frage muss „kern“ oder „nachfrage“ sein.' }),
 });
 
 export const leitfadenSchema = z.object({

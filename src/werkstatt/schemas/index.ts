@@ -12,10 +12,17 @@ export { ARTEFAKT_NAMEN } from './namen';
 export { BELEGSTUFEN, BELEGSTUFE_TEXT, type Belegstufe, type Feldfehler } from './gemeinsam';
 export type { Brief } from './brief';
 export type { Entscheidungen, Entscheidung } from './entscheidungen';
-export type { Leitfaden, Frage } from './leitfaden';
-export { quadrant, punkt, type Annahmen, type Annahme, type Quadrant } from './annahmen';
+export { FRAGE_ARTEN, type Leitfaden, type Frage } from './leitfaden';
+export { ANNAHME_ARTEN, WICHTIGKEITEN, quadrant, punkt, type Annahmen, type Annahme, type Quadrant } from './annahmen';
 
 export type ArtefaktDaten = Brief | Entscheidungen | Leitfaden | Annahmen;
+
+export type DatenVon<N extends ArtefaktName> = {
+  brief: Brief;
+  entscheidungen: Entscheidungen;
+  leitfaden: Leitfaden;
+  annahmen: Annahmen;
+}[N];
 
 const SCHEMAS: Record<ArtefaktName, ZodType<ArtefaktDaten>> = {
   brief: briefSchema,
@@ -52,12 +59,12 @@ function migrieren(name: ArtefaktName, roh: unknown): unknown {
   return aktuell;
 }
 
-export function artefaktParsen(
-  name: ArtefaktName,
+export function artefaktParsen<N extends ArtefaktName>(
+  name: N,
   roh: unknown,
-): { ok: true; daten: ArtefaktDaten } | { ok: false; fehler: Feldfehler[] } {
+): { ok: true; daten: DatenVon<N> } | { ok: false; fehler: Feldfehler[] } {
   const r = SCHEMAS[name].safeParse(migrieren(name, roh));
-  if (r.success) return { ok: true, daten: r.data };
+  if (r.success) return { ok: true, daten: r.data as DatenVon<N> };
   return {
     ok: false,
     fehler: r.error.issues.map((i) => ({ pfad: i.path.map(String).join('.'), meldung: i.message })),

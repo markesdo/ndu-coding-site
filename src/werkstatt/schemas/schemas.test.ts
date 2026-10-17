@@ -25,8 +25,8 @@ describe('Kaffeebar-Beispiele', () => {
   }
   it('Entscheidungen: D3 ersetzt D1 (Beispiel übt ersetzt)', () => {
     const r = artefaktParsen('entscheidungen', entscheidungen);
-    if (!r.ok || !('entscheidungen' in r.daten)) throw new Error('unerwartet');
-    expect((r.daten.entscheidungen as { id: string; ersetzt?: string }[]).find((z) => z.id === 'D3')?.ersetzt).toBe('D1');
+    if (!r.ok) throw new Error('unerwartet');
+    expect(r.daten.entscheidungen.find((e) => e.id === 'D3')?.ersetzt).toBe('D1');
   });
 });
 
@@ -193,7 +193,7 @@ describe('quadrant', () => {
 describe('punkt', () => {
   it('Grundwerte einer allein stehenden Annahme', () => {
     expect(punkt(a('hoch', 'keiner'), [])).toEqual({ x: 0.1, y: 0.85 });
-    expect(punkt(a('mittel', 'gesagt'), [])).toEqual({ x: 0.35, y: 0.5 });
+    expect(punkt(a('mittel', 'gesagt'), [])).toEqual({ x: 0.35, y: 0.35 });
     expect(punkt(a('niedrig', 'getan'), [])).toEqual({ x: 0.9, y: 0.15 });
     expect(punkt(a('hoch', 'erzaehlt'), [])).toEqual({ x: 0.65, y: 0.85 });
   });

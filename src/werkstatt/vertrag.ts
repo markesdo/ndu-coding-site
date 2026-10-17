@@ -1,6 +1,5 @@
 // Vertrag zwischen Browser, API und MCP-Connector: nur Typen und Konstanten, keine Logik.
-import type { ArtefaktName } from './schemas/namen';
-import type { Feldfehler } from './schemas/gemeinsam';
+import type { ArtefaktName, Feldfehler } from './schemas';
 import type { Rolle } from './zugang';
 
 export interface ApiFehler {
