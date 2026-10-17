@@ -15,7 +15,7 @@ function Vorschau({ daten }: { daten: Brief }) {
         return (
           <li key={k.nr} className="wk-karte">
             <h3><span className="wk-karte-nr">{k.nr}</span>{k.titel}</h3>
-            {leer && <p className="wk-offen">{k.leerText}</p>}
+            {leer && <p className="wk-offen">{k.leerText ?? ''}</p>}
             {k.absaetze.map((a, i) => <p key={i}>{a}</p>)}
             {k.punkte && k.punkte.length > 0 && <ul>{k.punkte.map((p, i) => <li key={i}>{p}</li>)}</ul>}
           </li>

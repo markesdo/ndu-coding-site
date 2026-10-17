@@ -12,7 +12,7 @@ export interface BriefKarte {
   /** Aufzählung statt Absätzen. */
   punkte?: string[];
   /** Platzhalter, solange nichts da ist (zum Beispiel „Offen – steht nach Tag 3 fest.“). */
-  leerText: string;
+  leerText?: string;
 }
 
 const nichtLeer = (s: string | undefined): string[] => (s !== undefined && s.trim() !== '' ? [s.trim()] : []);
@@ -26,7 +26,7 @@ export function briefKarten(d: Brief): BriefKarte[] {
     { nr: 2, titel: 'Welches Problem?', absaetze: problem, leerText: 'Noch nichts eingetragen.' },
     { nr: 3, titel: 'Was ist das Produkt in einem Satz?', absaetze: nichtLeer(d.produktSatz), leerText: PRODUKTSATZ_OFFEN },
     { nr: 4, titel: 'Was macht es NICHT?', absaetze: [], punkte: punkte(d.nicht), leerText: 'Noch nichts eingetragen.' },
-    { nr: 5, titel: 'Was gehört ins MVP?', absaetze: [MVP_HINWEIS], leerText: MVP_HINWEIS },
+    { nr: 5, titel: 'Was gehört ins MVP?', absaetze: [MVP_HINWEIS] },
     {
       nr: 6,
       titel: 'Woran merken wir, dass es funktioniert?',
@@ -43,5 +43,5 @@ export function briefKarten(d: Brief): BriefKarte[] {
 /** Leerer Text im Feld „Produkt in einem Satz“ heißt: nicht gesetzt (Schlüssel fällt weg). */
 export function produktSatzSetzen(d: Brief, wert: string): Brief {
   const { produktSatz: _alt, ...rest } = d;
-  return wert === '' ? rest : { ...rest, produktSatz: wert };
+  return wert.trim() === '' ? rest : { ...rest, produktSatz: wert };
 }

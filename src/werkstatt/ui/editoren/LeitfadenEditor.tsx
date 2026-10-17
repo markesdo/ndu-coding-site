@@ -1,4 +1,5 @@
 // Editor für den Interview-Leitfaden. Der Einstieg kommt aus der Vorlage; Fragen beginnen immer leer.
+import { useEffect } from 'react';
 import type { Frage, Leitfaden } from '../../schemas/index.js';
 import { FRAGE_ARTEN } from '../../schemas/index.js';
 import { rendern } from '../../render/index.js';
@@ -6,13 +7,20 @@ import EditorHuelle from '../EditorHuelle.js';
 import Auswahl from '../felder/Auswahl.js';
 import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
-import { hatPlatzhalter, neueFrage, PLATZHALTER_HINWEIS } from './leitfaden-hilfen.js';
+import { fragenIdsReparieren, hatPlatzhalter, neueFrage, PLATZHALTER_HINWEIS } from './leitfaden-hilfen.js';
 import './editoren.css';
 
 const ARTEN = FRAGE_ARTEN.map((a) => ({ wert: a, text: a === 'kern' ? 'Kernfrage' : 'Nachfrage' }));
-const ART_TEXT = Object.fromEntries(ARTEN.map((a) => [a.wert, a.text]));
 
 function Vorschau({ daten }: { daten: Leitfaden }) {
+  const kern = daten.fragen.filter((f) => f.art === 'kern');
+  const nach = daten.fragen.filter((f) => f.art === 'nachfrage');
+  const zeile = (f: Frage, i: number) => (
+    <li key={`${f.id}-${i}`}>
+      <span className="wk-karte-nr">{f.id}</span>
+      {f.text.trim() === '' ? <span className="wk-offen">noch leer</span> : f.text}
+    </li>
+  );
   const leer = <p className="wk-offen">Noch nichts eingetragen.</p>;
   const karte = (titel: string, text: string) => (
     <li className="wk-karte">
@@ -21,25 +29,36 @@ function Vorschau({ daten }: { daten: Leitfaden }) {
     </li>
   );
   return (
+    <>
+    {hatPlatzhalter(daten.einstieg) && <p className="wk-offen" role="note">{PLATZHALTER_HINWEIS}</p>}
     <ul className="wk-karten">
       {karte('Ziel', daten.ziel)}
       {karte('Wen', daten.wen)}
       {karte('Einstieg', daten.einstieg)}
-      {hatPlatzhalter(daten.einstieg) && <li className="wk-karte"><p className="wk-offen" role="status">{PLATZHALTER_HINWEIS}</p></li>}
       <li className="wk-karte">
-        <h3>Fragen</h3>
-        {daten.fragen.length === 0 && leer}
-        {daten.fragen.map((f) => (
-          <p key={f.id}>
-            <span className="wk-karte-nr">{f.id}</span>
-            {f.text.trim() === '' ? <span className="wk-offen">noch leer</span> : f.text}
-            <span className="wk-art">{ART_TEXT[f.art]}</span>
-          </p>
-        ))}
+        <h3>Kernfragen</h3>
+        {kern.length === 0 && leer}
+        <ol>{kern.map(zeile)}</ol>
+      </li>
+      <li className="wk-karte">
+        <h3>Nachfragen</h3>
+        {nach.length === 0 && leer}
+        <ul>{nach.map(zeile)}</ul>
       </li>
       {karte('Abschluss', daten.abschluss)}
     </ul>
+    </>
   );
+}
+
+// Defekte Fragen-IDs (leer, doppelt, falsche Form) bekommen beim Öffnen eine neue; nur dann wird der Entwurf geändert.
+function IdReparatur({ daten, setze }: { daten: Leitfaden; setze: (neu: Leitfaden) => void }) {
+  useEffect(() => {
+    const fragen = fragenIdsReparieren(daten.fragen);
+    if (fragen !== daten.fragen) setze({ ...daten, fragen: [...fragen] });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [daten.fragen]);
+  return null;
 }
 
 export default function LeitfadenEditor() {
@@ -51,6 +70,7 @@ export default function LeitfadenEditor() {
       bild={(d) => <Vorschau daten={d} />}
       formular={(d, setze, fehler) => (
         <>
+          <IdReparatur daten={d} setze={setze} />
           <Textfeld label="Stand" wert={d.stand} onChange={(stand) => setze({ ...d, stand })} fehler={fehler('stand')} hilfe="Datum als JJJJ-MM-TT, zum Beispiel 2026-10-22." />
           <Textfeld label="Ziel" mehrzeilig wert={d.ziel} onChange={(ziel) => setze({ ...d, ziel })} fehler={fehler('ziel')} hilfe="Welche offene Frage aus dem Brief soll das Interview klären?" />
           <Textfeld label="Wen" mehrzeilig zeilen={2} wert={d.wen} onChange={(wen) => setze({ ...d, wen })} fehler={fehler('wen')} hilfe="Die Zielgruppe aus Abschnitt 1 des Briefs und wie du sie findest." />

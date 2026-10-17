@@ -50,6 +50,10 @@ describe('produktSatzSetzen', () => {
     expect('produktSatz' in r).toBe(false);
   });
 
+  it('nur Leerzeichen zählt als leer (Schlüssel fällt weg)', () => {
+    expect('produktSatz' in produktSatzSetzen({ ...leer, produktSatz: 'x' }, '  \n ')).toBe(false);
+  });
+
   it('setzt den Satz und bleibt ein gültiger Brief', () => {
     const r = produktSatzSetzen(leer, 'Kaffee vorbestellen.');
     expect(r.produktSatz).toBe('Kaffee vorbestellen.');
