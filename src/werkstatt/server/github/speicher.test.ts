@@ -618,17 +618,27 @@ describe('githubSpeicher.lesezugriff', () => {
     expect(gh.zustand.aufrufe).toHaveLength(0);
   });
 
-  it('eingeladen wird 10 Minuten gemerkt: kein Request, danach wird wieder geprüft', async () => {
+  it('offene Einladung: innerhalb von 10 Minuten nur GET, kein neues PUT; danach wieder PUT', async () => {
     const { gh, s, repo, uhr } = await bereit();
     expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
-    const bisher = gh.zustand.aufrufe.length;
     uhr.ms += 9 * 60 * 1000;
     expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
-    expect(gh.zustand.aufrufe).toHaveLength(bisher);
-    gh.zustand.einladungAnnehmen(repo, LOGIN);
-    uhr.ms += 61 * 1000;
-    expect(await s.lesezugriff(repo, ID)).toBe('aktiv');
+    expect(gh.zustand.aufrufeVon('GET', `/collaborators/${LOGIN}`)).toHaveLength(2);
     expect(gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`)).toHaveLength(1);
+    uhr.ms += 61 * 1000;
+    expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
+    expect(gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`)).toHaveLength(2);
+  });
+
+  it('Annahme innerhalb der 10 Minuten: der nächste Aufruf meldet sofort aktiv (ein GET, kein PUT)', async () => {
+    const { gh, s, repo, uhr } = await bereit();
+    await s.lesezugriff(repo, ID);
+    gh.zustand.einladungAnnehmen(repo, LOGIN);
+    uhr.ms += 60 * 1000;
+    gh.zustand.aufrufe.length = 0;
+    expect(await s.lesezugriff(repo, ID)).toBe('aktiv');
+    expect(gh.zustand.aufrufeVon('GET', `/collaborators/${LOGIN}`)).toHaveLength(1);
+    expect(gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`)).toHaveLength(0);
   });
 
   it('PUT 204 (schon Collaborator, GET gab 404): aktiv', async () => {

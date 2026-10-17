@@ -36,7 +36,7 @@ const SPEICHER_VERSUCHE = 3;
 const REPO_RECHTE = { contents: 'write' } as const;
 // Collaborators einladen und prüfen: nur dafür, nur für dieses Repo.
 const EINLADEN_RECHTE = { administration: 'write' } as const;
-// „eingeladen“ nur kurz merken: kein erneutes PUT bei jedem Neuladen, aber die Annahme zeigt sich bald.
+// Marker „eingeladen“ (und der aufgelöste Login) nur kurz: drosselt das erneute PUT; der Status wird trotzdem jedes Mal geprüft.
 const EINGELADEN_SEK = 10 * 60;
 
 const jsonPfad = (name: string) => `mappe/${name}.json`;
@@ -146,40 +146,46 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
     return { kohorte: wj.kohorte, githubId: wj.githubId };
   }
 
-  const lesenSchluessel = (org: string, repo: string, githubId: number, stand: 'aktiv' | 'eingeladen') =>
-    `gh-lesezugriff-${stand}:${org}/${repo}:${githubId}`;
+  const lesenSchluessel = (org: string, repo: string, githubId: number, art: 'aktiv' | 'eingeladen' | 'login') =>
+    `gh-lesezugriff-${art}:${org}/${repo}:${githubId}`;
 
   return {
     async lesezugriff(repo, githubId) {
       if (!Number.isSafeInteger(githubId) || githubId <= 0) throw intern('lesezugriff: ungültige GitHub-ID');
       const { org } = kohorteDesRepos(repo);
-      for (const stand of ['aktiv', 'eingeladen'] as const) {
-        if ((await abh.cache.get(lesenSchluessel(org, repo, githubId, stand))) === stand) return stand;
-      }
+      const aktivKey = lesenSchluessel(org, repo, githubId, 'aktiv');
+      if ((await abh.cache.get(aktivKey)) === 'aktiv') return 'aktiv';
       const z = await zugriff(repo, EINLADEN_RECHTE);
       if (!z) throw unbekanntesRepo();
-      // Der Login ist umbenennbar, die ID nicht: den aktuellen Namen bei GitHub erfragen.
-      const nutzerPfad = `/user/${githubId}`;
-      const nutzer = await anfrage(z.token, 'GET', nutzerPfad);
-      if (nutzer.status !== 200) throw githubFehler('GET', '/user/{id}', nutzer.status);
-      const login = nutzer.daten?.login;
-      if (typeof login !== 'string' || !LOGIN_MUSTER.test(login)) throw intern('lesezugriff: ungültiger GitHub-Login von GitHub');
-      const pfad = `/collaborators/${encodeURIComponent(login)}`;
-      const geprueft = await anfrage(z, 'GET', pfad);
-      let stand: 'aktiv' | 'eingeladen';
-      if (geprueft.status === 204) {
-        stand = 'aktiv';
-      } else if (geprueft.status === 404) {
-        // Nie Schreibrechte: Lesende, die Werkstatt bleibt die einzige Schreiberin.
-        const r = await anfrage(z, 'PUT', pfad, { permission: 'pull' });
-        if (r.status === 204) stand = 'aktiv';
-        else if (r.status === 201) stand = 'eingeladen';
-        else throw githubFehler('PUT', 'collaborators', r.status);
-      } else {
-        throw githubFehler('GET', 'collaborators', geprueft.status);
+      // Der Login ist umbenennbar, die ID nicht: den aktuellen Namen bei GitHub erfragen (kurz gemerkt, spart einen Aufruf).
+      const loginKey = lesenSchluessel(org, repo, githubId, 'login');
+      let login = await abh.cache.get(loginKey);
+      if (typeof login !== 'string' || !LOGIN_MUSTER.test(login)) {
+        const nutzer = await anfrage(z.token, 'GET', `/user/${githubId}`);
+        if (nutzer.status !== 200) throw githubFehler('GET', '/user/{id}', nutzer.status);
+        login = nutzer.daten?.login;
+        if (typeof login !== 'string' || !LOGIN_MUSTER.test(login)) throw intern('lesezugriff: ungültiger GitHub-Login von GitHub');
+        await abh.cache.set(loginKey, login, EINGELADEN_SEK);
       }
-      await abh.cache.set(lesenSchluessel(org, repo, githubId, stand), stand, stand === 'aktiv' ? TAG_SEK : EINGELADEN_SEK);
-      return stand;
+      const pfad = `/collaborators/${encodeURIComponent(login)}`;
+      // Der Status wird immer geprüft (die Annahme soll sofort zählen); gedrosselt wird nur das erneute Einladen.
+      const geprueft = await anfrage(z, 'GET', pfad);
+      if (geprueft.status === 204) {
+        await abh.cache.set(aktivKey, 'aktiv', TAG_SEK);
+        return 'aktiv';
+      }
+      if (geprueft.status !== 404) throw githubFehler('GET', 'collaborators', geprueft.status);
+      const markeKey = lesenSchluessel(org, repo, githubId, 'eingeladen');
+      if ((await abh.cache.get(markeKey)) === 'eingeladen') return 'eingeladen';
+      // Nie Schreibrechte: Lesende, die Werkstatt bleibt die einzige Schreiberin.
+      const r = await anfrage(z, 'PUT', pfad, { permission: 'pull' });
+      if (r.status === 204) {
+        await abh.cache.set(aktivKey, 'aktiv', TAG_SEK);
+        return 'aktiv';
+      }
+      if (r.status !== 201) throw githubFehler('PUT', 'collaborators', r.status);
+      await abh.cache.set(markeKey, 'eingeladen', EINGELADEN_SEK);
+      return 'eingeladen';
     },
 
     async anlegen(m, githubId) {
