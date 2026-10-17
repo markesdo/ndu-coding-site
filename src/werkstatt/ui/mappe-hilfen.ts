@@ -42,9 +42,18 @@ export function beimOeffnenLaden(rueckmeldung: { neuAnmelden: boolean } | null):
 }
 
 export const LEITFADEN_SPAETER = 'Öffnet ihr nach dem Mom Test auf der Interview-Seite.';
+
+/** Anker der Überschrift „In der Werkstatt speichern“ direkt vor dem Editor (seiten.test.ts prüft, dass er dort steht). */
+export const EDITOR_ANKER: Readonly<Record<ArtefaktName, string>> = {
+  brief: 'werkstatt',
+  entscheidungen: 'werkstatt',
+  leitfaden: 'vorlage',
+  annahmen: 'werkstatt',
+};
+
 /** Überschrift direkt vor der Auflösung mit dem Leitfaden-Editor (seiten.test.ts prüft den Anker). Wer dort schon
  *  freigeschaltet ist (Knopf „Editor und Vorlage öffnen“), kommt so trotzdem an den Editor. */
-export const LEITFADEN_LINK = '/innolab/methoden/interview#vorlage';
+export const LEITFADEN_LINK = `/innolab/methoden/${ARTEFAKTE.leitfaden.slug}#${EDITOR_ANKER.leitfaden}`;
 
 /** Anmelden mit Rücksprung auf /innolab/mappe – ohne ?fehler, damit ein späteres Neuladen die alte Meldung nicht zeigt. */
 export const LOGIN_HREF = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent('/innolab/mappe')}`;
@@ -56,12 +65,13 @@ export interface MappeZeile {
   vorhanden: boolean;
 }
 
+
 /** Alle Artefakte der Mappe in fester Reihenfolge; was in der Antwort fehlt, gilt als offen. */
 export function mappeZeilen(stand: MappeStand): MappeZeile[] {
   return ARTEFAKT_NAMEN.map((name) => ({
     name,
     titel: ARTEFAKTE[name].titel,
-    href: `/innolab/methoden/${ARTEFAKTE[name].slug}`,
+    href: `/innolab/methoden/${ARTEFAKTE[name].slug}#${EDITOR_ANKER[name]}`,
     vorhanden: stand.artefakte.some((a) => a.name === name && a.vorhanden),
   }));
 }
