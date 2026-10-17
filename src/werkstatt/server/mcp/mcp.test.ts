@@ -26,7 +26,8 @@ const AUTOR = { name: 'Test', email: 'test@example.invalid' };
 
 // Zwei Studierende (A = 1001 sofie, B = 1002 jonas) und eine Lehrende (1000) in der Kohorte test.
 // Beide Mappen sind angelegt und tragen eine Annahmen-Map mit erkennbar verschiedenem Text.
-const TEXT_A = 'Wir glauben, dass Sofies Pendler*innen vorbestellen wollen.';
+// Ohne Markdown-Zeichen: So steht der Satz im Markdown wörtlich, und die Negativ-Prüfungen auf text() greifen.
+const TEXT_A = 'Wir glauben, dass Sofies Pendlerinnen vorbestellen wollen.';
 const TEXT_B = 'Wir glauben, dass Jonas’ Studierende nie vorbestellen.';
 
 function mitText(text: string) {

@@ -14,15 +14,24 @@ function zeilenende(s: string): string {
   return s.replace(/\r\n?/g, '\n');
 }
 
-// Regel für den Anfang jeder Freitext-Zeile, die einen Markdown-Block beginnen könnte: Einrückung entfernen
-// (kein Codeblock), dann jedes ASCII-Satzzeichen am Anfang mit Backslash wörtlich machen. Bewusst ohne Ausnahmen:
-// Ein Link oder Code ganz am Zeilenanfang erscheint dann als Text, dafür öffnet kein Eintrag je einen Block
-// (Überschrift, Liste, HTML, Verweisdefinition …). Eine geordnete Liste (1. oder 2)) wird vor dem Satzzeichen
-// maskiert (1\.), die Ziffer bleibt.
+// Zeichen, die mitten im Text Markdown auslösen (Betonung, Code, Link, HTML, Durchstreichen), werden wörtlich
+// gemacht: aus „Pendler*innen und Mitarbeiter*innen“ wird keine Kursivschrift, „<Situation>“ verschwindet nicht.
+// _ nur am Wortrand (im Wort wirkt es nie), & nur vor einer Entity (so bleibt ?a=1&b=2 in Links ganz).
+function zeichen(t: string): string {
+  return t
+    .replace(/[\\`*<[\]~]/g, '\\$&')
+    .replace(/(?<![\p{L}\p{N}])_|_(?![\p{L}\p{N}])/gu, '\\_')
+    .replace(/&(?=#\d+;|#[xX][0-9a-fA-F]+;|[A-Za-z][A-Za-z0-9]*;)/g, '\\&');
+}
+
+// Anfang einer Zeile, die einen Block beginnen könnte: Einrückung entfernen (kein Codeblock), dann ein
+// ASCII-Satzzeichen am Anfang wörtlich machen (Überschrift, Liste, Zitat, Trennlinie, Tabelle …). Beginnt die Zeile
+// schon mit einem Backslash, hat zeichen() das erste Zeichen bereits maskiert. Eine geordnete Liste (1. oder 2))
+// wird vor dem Satzzeichen maskiert (1\.), die Ziffer bleibt.
 function zeilenanfang(z: string): string {
   const ohne = z.replace(/^[ \t]+/, '');
   if (/^\d{1,9}[.)]/.test(ohne)) return ohne.replace(/^(\d{1,9})([.)])/, '$1\\$2');
-  return /^[!-/:-@[-`{-~]/.test(ohne) ? `\\${ohne}` : ohne;
+  return /^[!-/:-@[\]-`{-~]/.test(ohne) ? `\\${ohne}` : ohne;
 }
 
 // Zeilenumbrüche werden zu Leerzeichen, so kann kein Text eine neue Zeile beginnen.
@@ -30,50 +39,45 @@ function flach(s: string): string {
   return zeilenende(s).replace(/\s*\n\s*/g, ' ').trim();
 }
 
+/** Nur Einträge mit Text (ein leerer Entwurfs-Eintrag mitten in einer Liste erscheint nicht). */
+export function gefuellt(xs: readonly string[]): string[] {
+  return xs.filter((x) => flach(x) !== '');
+}
+
 // Einzeilige Felder mitten in einer Zeile (nach „Ziel: “, „— “, „**F1** “). Leer -> „Noch nichts eingetragen.“
 export function einzeilig(s: string): string {
   const t = flach(s);
-  return t === '' ? LEER : t;
+  return t === '' ? LEER : zeichen(t);
 }
 
 // Einzeilige Felder, die einen Listenpunkt füllen und darum einen Block beginnen könnten.
 export function listenpunkt(s: string): string {
   const t = flach(s);
-  return t === '' ? LEER : zeilenanfang(t);
+  return t === '' ? LEER : zeilenanfang(zeichen(t));
 }
 
-// Mehrzeilige Felder: Absätze bleiben, Umbrüche innerhalb eines Absatzes werden harte Umbrüche (Backslash am
-// Zeilenende), jede Zeile folgt der Zeilenanfangs-Regel.
+// Mehrzeilige Felder: Absätze bleiben, Umbrüche innerhalb eines Absatzes werden harte Umbrüche (zwei Leerzeichen
+// am Zeilenende; ein Backslash dort hinge an einer URL am Zeilenende mit dran), jede Zeile folgt der Zeilenanfangs-Regel.
 export function mehrzeilig(s: string): string {
-  const zeilen = zeilenende(s).trim().split('\n').map((z) => zeilenanfang(z.trimEnd()));
+  const zeilen = zeilenende(s).trim().split('\n').map((z) => zeilenanfang(zeichen(z.trimEnd())));
   if (zeilen.length === 1 && zeilen[0] === '') return LEER;
-  return zeilen
-    .map((z, i) => {
-      if (z === '' || zeilen[i + 1] === undefined || zeilen[i + 1] === '') return z;
-      // Endet die Zeile auf eine ungerade Zahl Backslashs, ist der letzte unmaskiert: ein weiterer macht ihn wörtlich,
-      // zwei Leerzeichen tragen den Umbruch. Bei gerader Zahl (oder keinem) trägt ein Backslash den Umbruch.
-      const rest = /\\*$/.exec(z)![0].length;
-      return rest % 2 === 1 ? `${z}\\  ` : `${z}\\`;
-    })
-    .join('\n');
+  return zeilen.map((z, i) => (z === '' || zeilen[i + 1] === undefined || zeilen[i + 1] === '' ? z : `${z}  `)).join('\n');
 }
 
-// Für Tabellenzellen: einzeilig, Backslash und senkrechter Strich maskiert.
+// Für Tabellenzellen: einzeilig, dazu der senkrechte Strich maskiert.
 export function zelle(s: string): string {
-  return einzeilig(s).replace(/\\/g, '\\\\').replace(/\|/g, '\\|');
+  return einzeilig(s).replace(/\|/g, '\\|');
 }
 
 // Anführungszeichen nur um echten Text.
 export function zitat(s: string): string {
   const t = flach(s);
-  return t === '' ? LEER : `„${t}“`;
+  return t === '' ? LEER : `„${zeichen(t)}“`;
 }
 
 // IDs und Notiz teilen sich eine Klammer; leere IDs und eine leere Notiz (Entwurf) zählen wie keine.
 export function belegText(stufe: Belegstufe, ids: readonly string[], notiz?: string): string {
-  const maskiert = (t: string) => t.replace(/\\/g, '\\\\').replace(/\|/g, '\\|');
-  const idText = ids.map(flach).filter(Boolean).map(maskiert).join(', ');
-  const notizText = maskiert(flach(notiz ?? ''));
-  const zusatz = [idText, notizText].filter(Boolean).join('; ');
+  const teile = [gefuellt(ids).map(zelle).join(', '), gefuellt([notiz ?? '']).map(zelle).join('')];
+  const zusatz = teile.filter(Boolean).join('; ');
   return zusatz ? `${BELEGSTUFE_TEXT[stufe]} (${zusatz})` : BELEGSTUFE_TEXT[stufe];
 }

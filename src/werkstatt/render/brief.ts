@@ -1,10 +1,10 @@
 import type { Brief } from '../schemas/index.js';
-import { datumAt, LEER, mehrzeilig, listenpunkt } from './format.js';
+import { datumAt, gefuellt, LEER, listenpunkt, mehrzeilig } from './format.js';
 
 // Überschriften wie in der Vorlage auf der Methodenseite „Problem-Rahmen“.
 export function briefRendern(d: Brief): string {
-  const nicht = d.nicht.length > 0 ? d.nicht.map((n) => `- ${listenpunkt(n)}`).join('\n') : `- ${LEER}`;
-  const offen = d.offeneFragen.length > 0 ? d.offeneFragen.map((f) => `- ${listenpunkt(f)}`).join('\n') : `- ${LEER}`;
+  const nicht = gefuellt(d.nicht).length > 0 ? gefuellt(d.nicht).map((n) => `- ${listenpunkt(n)}`).join('\n') : `- ${LEER}`;
+  const offen = gefuellt(d.offeneFragen).length > 0 ? gefuellt(d.offeneFragen).map((f) => `- ${listenpunkt(f)}`).join('\n') : `- ${LEER}`;
   return `**Stand:** ${datumAt(d.stand)} — Problem-Rahmen, Innolab Tag 1
 
 ## 1. Für wen?

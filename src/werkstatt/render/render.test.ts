@@ -34,7 +34,7 @@ describe('Brief', () => {
     }
     expect(s).toContain('## 3. Was ist das Produkt in einem Satz?\nOffen – steht nach Tag 3 fest.');
     expect(s).toContain('Heute gelöst durch: Automat');
-    expect(s).toContain('Wir glauben: Pendler*innen bekommen morgens Kaffee');
+    expect(s).toContain('Wir glauben: Pendler\\*innen bekommen morgens Kaffee');
     expect(s).toContain('Wir merken es: Wenn 4 von 5');
     expect(s).toContain('- Kein Mittagsgeschäft');
   });
@@ -144,9 +144,9 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
   const s = rendern('brief', { ...b, nicht });
   it('Listeneinträge: Satzzeichen am Anfang wird maskiert, Einrückung entfernt', () => {
     expect(zeilen(s)).toContain('- \\## x');
-    expect(zeilen(s)).toContain('- \\___');
+    expect(zeilen(s)).toContain('- \\_\\_\\_');
     expect(zeilen(s)).toContain('- Pendler');
-    expect(zeilen(s)).toContain('- x <!--');
+    expect(zeilen(s)).toContain('- x \\<!--');
     expect(zeilen(s)).toContain('- 1\\. Anstellen');
     expect(zeilen(s)).toContain('- 2\\) Zahlen');
     expect(zeilen(s)).toContain('- \\:--|--');
@@ -156,12 +156,7 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
   });
   it('mehrzeilige Felder: jede Zeile folgt der Regel', () => {
     const t = rendern('brief', { ...b, fuerWen: 'x\n<!--\n    Pendler\n___\n1. Anstellen\n:--|--' });
-    expect(zeilen(t)).toContain('\\<!--\\');
-    expect(zeilen(t)).toContain('Pendler\\');
-    expect(zeilen(t)).toContain('\\___\\');
-    expect(zeilen(t)).toContain('1\\. Anstellen\\');
-    expect(zeilen(t)).toContain('\\:--|--');
-    expect(t).not.toContain('\\1');
+    expect(t).toContain('## 1. Für wen?\nx  \n\\<!--  \nPendler  \n\\_\\_\\_  \n1\\. Anstellen  \n\\:--|--\n');
   });
   it('Felder mitten in der Zeile bleiben unmaskiert', () => {
     const l = laden('leitfaden');
@@ -175,11 +170,33 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
     const a = laden('annahmen');
     expect(rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[0], text: '# x' }] })).toContain('| # x |');
   });
-  it('jedes Satzzeichen am Zeilenanfang wird maskiert, ohne Ausnahme', () => {
+  it('Zeichen, die Markdown auslösen, bleiben wörtlich – am Zeilenanfang wie mitten im Text', () => {
     const b = laden('brief');
-    const nicht = ['[a]: https://x.at', '[a\\]b]: /url', '[ ] Bezahlfunktion', '```js', '~~~', '_ _ _', '<div>', '<!-- x', '<!--a@b>', '<?a@b>', '[Interview I2](https://x.at) zeigt', '<https://x.at>', '`Kasse` hängt', '!Achtung'];
-    const s = rendern('brief', { ...b, nicht });
-    for (const n of nicht) expect(zeilen(s)).toContain(`- \\${n}`);
+    const faelle: [string, string][] = [
+      ['[a]: https://x.at', '\\[a\\]: https://x.at'],
+      ['<!--a@b>', '\\<!--a@b>'],
+      ['```js', '\\`\\`\\`js'],
+      ['!Achtung', '\\!Achtung'],
+      ['Pendler*innen und Mitarbeiter*innen', 'Pendler\\*innen und Mitarbeiter\\*innen'],
+      ['Erzähl von <Situation> am Morgen', 'Erzähl von \\<Situation> am Morgen'],
+      ['Kosten 5 &euro; &amp; mehr', 'Kosten 5 \\&euro; \\&amp; mehr'],
+      ['snake_case und _betont_', 'snake_case und \\_betont\\_'],
+      ['https://x.at/?a=1&b=2', 'https://x.at/?a=1&b=2'],
+      ['~~weg~~', '\\~\\~weg\\~\\~'],
+    ];
+    const s = rendern('brief', { ...b, nicht: faelle.map(([ein]) => ein) });
+    for (const [, aus] of faelle) expect(zeilen(s)).toContain(`- ${aus}`);
+  });
+  it('Felder mitten in der Zeile: auch dort keine Kursivschrift und kein HTML', () => {
+    const e = laden('entscheidungen');
+    const s = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: 'Pilot <!-- startet', grund: 'weil --> Montag' }] });
+    expect(s).toContain(' — Pilot \\<!-- startet — weil --> Montag — ');
+    const l = rendern('leitfaden', { ...laden('leitfaden'), ziel: 'Erzähl mir von <Situation>' });
+    expect(zeilen(l)).toContain('Ziel: Erzähl mir von \\<Situation>');
+  });
+  it('leere Einträge mitten in einer Liste erscheinen nicht', () => {
+    const s = rendern('brief', { ...b, offeneFragen: ['Wie oft?', ' ', 'Was kostet es?'] });
+    expect(s).toContain('## 7. Offene Fragen\n- Wie oft?\n- Was kostet es?\n');
   });
 });
 
@@ -187,27 +204,22 @@ describe('Sichtbare Zeilenumbrüche', () => {
   it('Beschriftungszeilen sind eigene Absätze, Umbrüche im Feld sind harte Umbrüche', () => {
     const b = laden('brief');
     const s = rendern('brief', { ...b, problem: 'a\nb', heuteGeloestDurch: 'c' });
-    expect(s).toContain('## 2. Welches Problem?\na\\\nb\n\nHeute gelöst durch: c\n');
+    expect(s).toContain('## 2. Welches Problem?\na  \nb\n\nHeute gelöst durch: c\n');
     expect(s).toContain('\n\nWir merken es: ');
     expect(rendern('leitfaden', laden('leitfaden'))).toContain('\n\nWen: ');
     expect(rendern('annahmen', laden('annahmen'))).toContain('\n\nRiskanteste Annahme: A1\n');
   });
-  it('Zeile, die mit Backslash endet, bleibt ein harter Umbruch', () => {
-    const s = rendern('brief', { ...laden('brief'), problem: 'a\\\nb' });
-    expect(s).toContain('a\\\\  \nb');
-  });
-  it('Zeile, die mit maskiertem Backslash endet, bekommt keinen zusätzlichen', () => {
-    // Eine Zeile nur aus einem Backslash: maskiert \\, der Umbruch braucht genau einen weiteren.
-    const s = rendern('brief', { ...laden('brief'), problem: '\\\nb' });
-    expect(s).toContain('Problem?\n\\\\\\\nb');
+  it('harter Umbruch mit zwei Leerzeichen: ein Backslash im Text bleibt wörtlich, eine URL am Zeilenende ganz', () => {
+    const s = rendern('brief', { ...laden('brief'), problem: 'a\\\nb\nStudie: https://x.at/studie\nc' });
+    expect(s).toContain('Problem?\na\\\\  \nb  \nStudie: https://x.at/studie  \nc\n');
   });
 });
 
 describe('Verweisdefinition über zwei Zeilen', () => {
   it('die erste Zeile wird maskiert, nichts verschwindet', () => {
     const s = rendern('brief', { ...laden('brief'), fuerWen: '[Interview\nI2]: siehe unten' });
-    expect(zeilen(s)).toContain('\\[Interview\\');
-    expect(zeilen(s)).toContain('I2]: siehe unten');
+    expect(zeilen(s)).toContain('\\[Interview  ');
+    expect(zeilen(s)).toContain('I2\\]: siehe unten');
   });
 });
 
