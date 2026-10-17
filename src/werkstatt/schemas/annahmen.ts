@@ -46,17 +46,37 @@ export function quadrant(a: Pick<Annahme, 'wichtig' | 'beleg'>): Quadrant {
   return `${oben ? 'o' : 'u'}${rechts ? 'r' : 'l'}` as Quadrant;
 }
 
-const Y: Record<Annahme['wichtig'], number> = { hoch: 0.85, mittel: 0.35, niedrig: 0.15 };
-const X: Record<Belegstufe, number> = { keiner: 0.1, gesagt: 0.35, erzaehlt: 0.65, getan: 0.9 };
-const VERSATZ = 0.06;
+// Jede der 12 Zellen (Belegstufe × Wichtigkeit) hat ein eigenes Rechteck im Bild; die Rechtecke überschneiden
+// sich nicht und liegen je ganz in einem Quadranten (Grenze bei 0,5), passend zu quadrant().
+const X_BAND: Record<Belegstufe, readonly [number, number]> = {
+  keiner: [0, 0.25], gesagt: [0.25, 0.5], erzaehlt: [0.5, 0.75], getan: [0.75, 1],
+};
+const Y_BAND: Record<Annahme['wichtig'], readonly [number, number]> = {
+  niedrig: [0, 0.25], mittel: [0.25, 0.5], hoch: [0.5, 1],
+};
+const INNEN = 0.03;
+const SPALTEN = 2;
 
-const klemmen = (n: number) => Math.min(1, Math.max(0, n));
-
-// Position im Bild (0 bis 1, y nach oben). Teilen sich Annahmen dieselbe Zelle (gleiche Wichtigkeit
-// und Belegstufe), rückt jede weitere in Listenreihenfolge um 0,06 nach rechts unten.
+// Position im Bild (0 bis 1, y nach oben). Eine einzelne Annahme liegt in der Mitte des Zellrechtecks. Teilen sich
+// mehrere Annahmen dieselbe Zelle (gleiche Wichtigkeit und Belegstufe), liegen sie in Listenreihenfolge in einem
+// Raster mit 2 Spalten (zeilenweise von oben links), gleichmäßig verteilt, mit 0,03 Abstand zum Rechteckrand.
 export function punkt(a: Annahme, nachbarn: readonly Annahme[]): { x: number; y: number } {
   const zelle = nachbarn.filter((n) => n.wichtig === a.wichtig && n.beleg === a.beleg);
   const eigene = zelle.findIndex((n) => n.id === a.id);
   const k = eigene === -1 ? zelle.length : eigene;
-  return { x: klemmen(X[a.beleg] + k * VERSATZ), y: klemmen(Y[a.wichtig] - k * VERSATZ) };
+  const anzahl = Math.max(zelle.length, k + 1);
+  const [x0, x1] = X_BAND[a.beleg];
+  const [y0, y1] = Y_BAND[a.wichtig];
+  const links = x0 + INNEN;
+  const rechts = x1 - INNEN;
+  const unten = y0 + INNEN;
+  const oben = y1 - INNEN;
+  const zeilen = Math.ceil(anzahl / SPALTEN);
+  const spalte = anzahl === 1 ? 0.5 : k % SPALTEN;
+  const zeile = Math.floor(k / SPALTEN);
+  const rund = (v: number) => Math.round(v * 1e6) / 1e6;
+  return {
+    x: rund(links + (rechts - links) * spalte),
+    y: rund(zeilen === 1 ? (oben + unten) / 2 : oben - ((oben - unten) * zeile) / (zeilen - 1)),
+  };
 }

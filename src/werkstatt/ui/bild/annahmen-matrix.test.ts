@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import beispiel from '../../beispiele/annahmen.json';
 import { annahmenPunkte } from './annahmen-punkte.js';
-import { quadrant, type Annahme } from '../../schemas/index.js';
+import { punkt, quadrant, type Annahme } from '../../schemas/index.js';
 
 const annahme = (n: number, extra: Partial<Annahme> = {}): Annahme => ({
   id: `A${n}`, text: `Annahme ${n}`, art: 'machbar', wichtig: 'niedrig', beleg: 'getan', belegIds: [], ...extra,
@@ -26,15 +26,26 @@ describe('annahmenPunkte', () => {
     expect(annahmenPunkte([annahme(1)], null)[0]!.hervor).toBe(false);
   });
 
-  it.each([
-    ['hoch', 'keiner'], ['hoch', 'getan'], ['mittel', 'gesagt'], ['niedrig', 'getan'], ['niedrig', 'keiner'], ['mittel', 'erzaehlt'],
-  ] as const)('fünf Annahmen in %s/%s: fünf verschiedene Punkte im selben Quadranten', (wichtig, beleg) => {
-    const liste = [1, 2, 3, 4, 5].map((n) => annahme(n, { wichtig, beleg }));
-    const q = quadrant(liste[0]!);
+  it('A1 liegt im Feld oben links, A2 oben rechts', () => {
+    const p = annahmenPunkte(beispiel.annahmen as Annahme[], 'A1');
+    expect(p[0]).toMatchObject({ id: 'A1' });
+    expect(p[0]!.x).toBeLessThan(0.5);
+    expect(p[0]!.y).toBeGreaterThan(0.5);
+    expect(p[1]!.x).toBeGreaterThan(0.5);
+    expect(p[1]!.y).toBeGreaterThan(0.5);
+  });
+
+  it('kürzt nach Zeichen, nicht nach UTF-16-Einheiten (Emoji an Stelle 40)', () => {
+    const text = `${'x'.repeat(39)}😀${'y'.repeat(10)}`;
+    const [p] = annahmenPunkte([annahme(1, { text })], null);
+    expect(p!.t).toBe(`A1 · ${'x'.repeat(39)}😀…`);
+  });
+
+  it('nutzt punkt() ohne eigene Versatzlogik: fünf in einer Randzelle bleiben im Quadranten', () => {
+    const liste = [1, 2, 3, 4, 5].map((n) => annahme(n));
     const punkte = annahmenPunkte(liste, null);
     expect(new Set(punkte.map((p) => `${p.x}|${p.y}`)).size).toBe(5);
-    for (const p of punkte) {
-      expect(`${p.y > 0.5 ? 'o' : 'u'}${p.x > 0.5 ? 'r' : 'l'}`).toBe(q);
-    }
+    punkte.forEach((p, i) => expect(p).toMatchObject(punkt(liste[i]!, liste)));
+    for (const p of punkte) expect(`${p.y > 0.5 ? 'o' : 'u'}${p.x > 0.5 ? 'r' : 'l'}`).toBe(quadrant(liste[0]!));
   });
 });

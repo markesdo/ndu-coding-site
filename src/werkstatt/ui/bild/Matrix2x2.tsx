@@ -10,7 +10,7 @@ export type MatrixProps = {
   felder?: [string, string, string, string];
   hervor?: Feld;
   // farbe: Klasse der Art (yellow|blue|green|purple); art: Text der Art, nur für Screenreader.
-  punkte?: { t: string; x: number; y: number; hervor?: boolean; farbe?: string; art?: string }[];
+  punkte?: { id?: string; t: string; x: number; y: number; hervor?: boolean; farbe?: string; art?: string }[];
 };
 
 const NAMEN: Feld[] = ['ol', 'or', 'ul', 'ur'];
@@ -26,7 +26,7 @@ export function Matrix2x2({ label, x, y, felder = ['', '', '', ''], hervor, punk
         {NAMEN.map((n, i) => <div key={n} className={klassen('matrix-feld', n, hervor === n && 'hervor')}>{felder[i] && <span>{felder[i]}</span>}</div>)}
         {punkte.map((p, i) => (
           <span
-            key={i}
+            key={p.id ?? i}
             className={klassen('matrix-punkt', p.farbe, p.hervor && 'hervor')}
             style={{ left: prozent(p.x), bottom: prozent(p.y), ['--x' as string]: klemme(p.x), ['--y' as string]: klemme(p.y) }}
           >{p.t}</span>
@@ -36,7 +36,7 @@ export function Matrix2x2({ label, x, y, felder = ['', '', '', ''], hervor, punk
       {/* Für Screenreader: die Fläche ist aria-hidden, hier steht dasselbe als Liste. */}
       <ul className="sr-only">
         {NAMEN.map((n, i) => felder[i] && <li key={n}>Feld {y.label} {n[0] === 'o' ? y.oben : y.unten}, {x.label} {n[1] === 'r' ? x.rechts : x.links}: {felder[i]}{hervor === n ? ' (hervorgehoben)' : ''}</li>)}
-        {punkte.map((p, i) => <li key={i}>{p.t}{p.art ? ` (${p.art})` : ''}: {x.label} {klemme(p.x) >= .5 ? x.rechts : x.links}, {y.label} {klemme(p.y) >= .5 ? y.oben : y.unten}{p.hervor ? ' (hervorgehoben)' : ''}</li>)}
+        {punkte.map((p, i) => <li key={p.id ?? i}>{p.t}{p.art ? ` (${p.art})` : ''}: {x.label} {klemme(p.x) >= .5 ? x.rechts : x.links}, {y.label} {klemme(p.y) >= .5 ? y.oben : y.unten}{p.hervor ? ' (hervorgehoben)' : ''}</li>)}
       </ul>
     </figure>
   );

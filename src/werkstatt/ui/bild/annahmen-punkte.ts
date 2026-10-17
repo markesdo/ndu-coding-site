@@ -1,6 +1,6 @@
 import { punkt, type Annahme } from '../../schemas/index.js';
 
-export type MatrixPunkt = { t: string; x: number; y: number; hervor: boolean; farbe: string; art: string };
+export type MatrixPunkt = { id: string; t: string; x: number; y: number; hervor: boolean; farbe: string; art: string };
 
 // Farbe und Text je Art wie auf der Folie „Vier Arten von Annahmen“ (VierArten.astro).
 const ART: Record<Annahme['art'], { farbe: string; text: string }> = {
@@ -10,33 +10,21 @@ const ART: Record<Annahme['art'], { farbe: string; text: string }> = {
   bedienbar: { farbe: 'purple', text: 'bedienbar' },
 };
 
-const SCHRITT = 0.06;
 const MAX_ZEICHEN = 40;
 
-const kuerzen = (s: string) => (s.length > MAX_ZEICHEN ? `${s.slice(0, MAX_ZEICHEN).trimEnd()}…` : s);
-
-// Schritt von einer Zelle weg in die Richtung des Quadranten, in der mehr Platz bleibt (Quadrantengrenze 0,5).
-// So bleiben auch fünf Annahmen einer Zelle im Quadranten und liegen auf verschiedenen Punkten.
-function richtung(wert: number): 1 | -1 {
-  const [unten, oben] = wert < 0.5 ? [0, 0.5] : [0.5, 1];
-  return oben - wert >= wert - unten ? 1 : -1;
+// Nach Zeichen, nicht nach UTF-16-Einheiten: ein Emoji wird nie mittendrin zerschnitten.
+function kuerzen(s: string): string {
+  const zeichen = Array.from(s);
+  return zeichen.length > MAX_ZEICHEN ? `${zeichen.slice(0, MAX_ZEICHEN).join('').trimEnd()}…` : s;
 }
 
-export function annahmenPunkte(annahmen: readonly Annahme[], riskanteste: string | null): MatrixPunkt[] {
-  const gesehen = new Map<string, number>();
-  return annahmen.map((a) => {
-    const zelle = `${a.wichtig}|${a.beleg}`;
-    const k = gesehen.get(zelle) ?? 0;
-    gesehen.set(zelle, k + 1);
-    const basis = punkt(a, [a]);
-    const runden = (v: number) => Math.round(v * 1000) / 1000;
-    return {
-      t: `${a.id} · ${kuerzen(a.text)}`,
-      x: runden(basis.x + richtung(basis.x) * k * SCHRITT),
-      y: runden(basis.y + richtung(basis.y) * k * SCHRITT),
-      hervor: a.id === riskanteste,
-      farbe: ART[a.art].farbe,
-      art: ART[a.art].text,
-    };
-  });
+export function annahmenPunkte(annahmen: readonly Annahme[], riskanteste: string | null | undefined): MatrixPunkt[] {
+  return annahmen.map((a) => ({
+    id: a.id,
+    t: `${a.id} · ${kuerzen(a.text)}`,
+    ...punkt(a, annahmen),
+    hervor: a.id === riskanteste,
+    farbe: ART[a.art].farbe,
+    art: ART[a.art].text,
+  }));
 }

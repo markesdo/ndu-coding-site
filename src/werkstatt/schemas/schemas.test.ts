@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKT_NAMEN } from './namen';
-import { ARTEFAKTE, artefaktParsen, BELEGSTUFEN, BELEGSTUFE_TEXT, MIGRATIONEN, punkt, quadrant, type Annahme } from './index';
+import { ARTEFAKTE, artefaktParsen, BELEGSTUFEN, BELEGSTUFE_TEXT, WICHTIGKEITEN, MIGRATIONEN, punkt, quadrant, type Annahme } from './index';
 import brief from '../beispiele/brief.json';
 import entscheidungen from '../beispiele/entscheidungen.json';
 import leitfaden from '../beispiele/leitfaden.json';
@@ -214,33 +214,50 @@ describe('quadrant', () => {
 });
 
 describe('punkt', () => {
-  it('Grundwerte einer allein stehenden Annahme', () => {
-    expect(punkt(a('hoch', 'keiner'), [])).toEqual({ x: 0.1, y: 0.85 });
-    expect(punkt(a('mittel', 'gesagt'), [])).toEqual({ x: 0.35, y: 0.35 });
-    expect(punkt(a('niedrig', 'getan'), [])).toEqual({ x: 0.9, y: 0.15 });
-    expect(punkt(a('hoch', 'erzaehlt'), [])).toEqual({ x: 0.65, y: 0.85 });
+  const XB = { keiner: [0, 0.25], gesagt: [0.25, 0.5], erzaehlt: [0.5, 0.75], getan: [0.75, 1] } as const;
+  const YB = { niedrig: [0, 0.25], mittel: [0.25, 0.5], hoch: [0.5, 1] } as const;
+  const zellen = BELEGSTUFEN.flatMap((beleg) => WICHTIGKEITEN.map((wichtig) => ({ beleg, wichtig })));
+  const liste = (wichtig: Annahme['wichtig'], beleg: Annahme['beleg'], n: number) =>
+    Array.from({ length: n }, (_, i) => a(wichtig, beleg, `A${i + 1}`));
+
+  it('eine einzelne Annahme liegt in der Rechteckmitte ihrer Zelle', () => {
+    expect(punkt(a('hoch', 'keiner'), [])).toEqual({ x: 0.125, y: 0.75 });
+    expect(punkt(a('mittel', 'gesagt'), [])).toEqual({ x: 0.375, y: 0.375 });
+    expect(punkt(a('niedrig', 'getan'), [])).toEqual({ x: 0.875, y: 0.125 });
+    expect(punkt(a('hoch', 'erzaehlt'), [])).toEqual({ x: 0.625, y: 0.75 });
   });
-  it('zwei Annahmen in derselben Zelle bekommen verschiedene Punkte, nach rechts unten versetzt', () => {
-    const p1 = a('hoch', 'keiner', 'A1');
-    const p2 = a('hoch', 'keiner', 'A2');
-    const alle = [p1, p2];
-    const k1 = punkt(p1, alle);
-    const k2 = punkt(p2, alle);
-    expect(k1).not.toEqual(k2);
-    expect(k2.x).toBeCloseTo(k1.x + 0.06, 10);
-    expect(k2.y).toBeCloseTo(k1.y - 0.06, 10);
+  it.each(zellen.flatMap((z) => [1, 5, 12].map((n) => ({ ...z, n }))))(
+    '$n Annahmen in $wichtig/$beleg: verschieden, im Rechteck und im passenden Quadranten',
+    ({ wichtig, beleg, n }) => {
+      const alle = liste(wichtig, beleg, n);
+      const punkte = alle.map((p) => punkt(p, alle));
+      expect(new Set(punkte.map((p) => `${p.x}|${p.y}`)).size).toBe(n);
+      const [x0, x1] = XB[beleg];
+      const [y0, y1] = YB[wichtig];
+      for (const p of punkte) {
+        expect(p.x).toBeGreaterThanOrEqual(x0);
+        expect(p.x).toBeLessThanOrEqual(x1);
+        expect(p.y).toBeGreaterThanOrEqual(y0);
+        expect(p.y).toBeLessThanOrEqual(y1);
+        expect(`${p.y > 0.5 ? 'o' : 'u'}${p.x > 0.5 ? 'r' : 'l'}`).toBe(quadrant({ wichtig, beleg }));
+      }
+    },
+  );
+  it('Nachbarzellen im selben Quadranten (mittel/keiner, mittel/gesagt, je 3): keine zwei Punkte näher als 0,05', () => {
+    const alle = [
+      ...liste('mittel', 'keiner', 3),
+      ...liste('mittel', 'gesagt', 3).map((p) => ({ ...p, id: `B${p.id}` })),
+    ];
+    const punkte = alle.map((p) => punkt(p, alle));
+    for (let i = 0; i < punkte.length; i++) {
+      for (let j = i + 1; j < punkte.length; j++) {
+        expect(Math.hypot(punkte[i]!.x - punkte[j]!.x, punkte[i]!.y - punkte[j]!.y)).toBeGreaterThanOrEqual(0.05);
+      }
+    }
   });
   it('Annahmen in anderen Zellen verschieben nicht', () => {
     const p1 = a('hoch', 'keiner', 'A1');
     const p2 = a('hoch', 'gesagt', 'A2');
-    expect(punkt(p2, [p1, p2])).toEqual({ x: 0.35, y: 0.85 });
-  });
-  it('Versatz wird auf [0, 1] geklemmt', () => {
-    const viele = Array.from({ length: 30 }, (_, i) => a('niedrig', 'getan', `A${i + 1}`));
-    for (const p of viele) {
-      const k = punkt(p, viele);
-      expect(k.x).toBeLessThanOrEqual(1);
-      expect(k.y).toBeGreaterThanOrEqual(0);
-    }
+    expect(punkt(p2, [p1, p2])).toEqual(punkt(p2, []));
   });
 });
