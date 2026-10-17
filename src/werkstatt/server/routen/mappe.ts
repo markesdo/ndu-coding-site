@@ -24,6 +24,8 @@ const NICHT_AENDERN = 'Gespeicherte Entscheidungen lassen sich nicht ändern –
 // Was an einer gespeicherten Zeile fest ist (alles außer der ID selbst).
 const FESTE_FELDER = ['datum', 'entscheidung', 'grund', 'beleg', 'belegIds', 'ersetzt'] as const;
 const NACHRICHT_HOECHSTENS = 100;
+// Rückhalt: Grapheme können beliebig lang sein (kombinierende Zeichen); mehr UTF-16-Einheiten kommen nie in den Commit.
+const NACHRICHT_EINHEITEN = 300;
 
 // Kaputtes JSON im Repo (z. B. direkt auf GitHub bearbeitet): eigener Satz statt „GitHub nicht erreichbar“.
 function unlesbar(name: ArtefaktName, e: DateiUnlesbar): ApiAusnahme {
@@ -60,7 +62,15 @@ function entscheidungenBleiben(alt: unknown, neu: Record<string, unknown>[]): Fe
 function kurzeNachricht(roh: string): string {
   const sauber = roh.replace(/(?!\p{Join_Control})[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/g, ' ').trim();
   const zeichen = Array.from(new Intl.Segmenter('de', { granularity: 'grapheme' }).segment(sauber), (g) => g.segment);
-  return zeichen.slice(0, NACHRICHT_HOECHSTENS).join('').trim();
+  let laenge = 0;
+  const behalten: string[] = [];
+  // Nur ganze Grapheme, damit nichts mitten in einem Zeichen abbricht.
+  for (const g of zeichen.slice(0, NACHRICHT_HOECHSTENS)) {
+    if (laenge + g.length > NACHRICHT_EINHEITEN) break;
+    behalten.push(g);
+    laenge += g.length;
+  }
+  return behalten.join('').trim();
 }
 
 function istArtefaktName(x: string): x is ArtefaktName {
@@ -86,11 +96,13 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       try {
         await abh.speicher.anlegen(m, s.githubId);
       } catch (e) {
-        // „Gehört jemand anderem“ geht durch. Vorübergehendes (GitHub 5xx, Netz, Zeitlimit, 503) heißt „wird
+        // „Gehört jemand anderem“ geht durch. Vorübergehendes (GitHub 5xx, Netz/Zeitlimit = Status 0, 503) heißt „wird
         // eingerichtet“ – der Editor versucht es dann von selbst noch einmal. Alles andere ist ein Fehler bei uns.
         if (e instanceof ApiAusnahme && e.status === 403) throw e;
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', ursache(e));
-        const voruebergehend = e instanceof GithubAusnahme || (e instanceof ApiAusnahme && e.status === 503);
+        // GitHub 4xx (Rechte, Vorlage fehlt …) geht nicht von selbst weg, darum nicht „wird eingerichtet“.
+        const voruebergehend = (e instanceof GithubAusnahme && (e.githubStatus === 0 || e.githubStatus >= 500))
+          || (e instanceof ApiAusnahme && e.status === 503);
         throw voruebergehend ? wirdEingerichtet() : new ApiAusnahme(500, 'unbekannt', SCHIEF);
       }
       wj = await abh.speicher.werkstattJson(repo);

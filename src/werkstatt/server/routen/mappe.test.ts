@@ -147,6 +147,17 @@ describe('GET /api/werkstatt/mappe', () => {
     }
   });
 
+  it('Anlegen scheitert mit GitHub 4xx → 500 unbekannt (kein endloses „wird eingerichtet“)', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    for (const status of [401, 404, 422]) {
+      const t = aufbau({ anlegen: async () => { throw new GithubAusnahme(status); } });
+      const r = await t.holen('');
+      expect(r.status).toBe(500);
+      expect(await r.json()).toStrictEqual({ code: 'unbekannt', fehler: 'Da ist etwas schiefgegangen. Sag Markus Bescheid.' });
+    }
+    log.mockRestore();
+  });
+
   it('Anlegen scheitert anders (intern, TypeError, 409) → 500 unbekannt, Ursache samt Stack im Log', async () => {
     const log = vi.spyOn(console, 'error').mockImplementation(() => {});
     for (const ausnahme of [internerFehler('Kohorte fehlt'), new TypeError('x is not a function'), new ApiAusnahme(409, 'konflikt', 'Name belegt')]) {
@@ -299,6 +310,16 @@ describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
     const umgestellt = Object.fromEntries(Object.entries(d1).reverse());
     const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [umgestellt, d2] }, basisSha: sha });
     expect(r.status).toBe(200);
+  });
+
+  it('gespeicherte Datei passt nicht zum Schema: Zeilen mit ID zählen trotzdem', async () => {
+    const t = await mitMappe();
+    // Von Hand kaputt gemacht: stand fehlt, eine Zeile ohne Pflichtfelder – D1 hat aber eine lesbare ID.
+    const basisSha = await vonAussenGespeichert(t.fake, { schema: 'entscheidungen@1', entscheidungen: [{ id: 'D1' }] });
+    const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d2] }, basisSha });
+    expect(r.status).toBe(422);
+    expect((await r.json()).felder).toStrictEqual([{ pfad: 'entscheidungen', meldung: 'D1: Gespeicherte Entscheidungen lassen sich nicht löschen – ersetze sie stattdessen.' }]);
+    expect(t.fake.commits(REPO)).toHaveLength(1);
   });
 
   it('verglichen wird mit der migrierten Fassung, nicht mit dem Rohtext', async () => {
@@ -475,6 +496,16 @@ describe('PUT /api/werkstatt/mappe/:artefakt', () => {
     sha = (await (await t.holen('/brief')).json()).basisSha;
     await t.speichern('brief', { daten: briefBeispiel, basisSha: sha, nachricht: `${'x'.repeat(100)}${familie}` });
     expect(t.fake.commits(REPO)[2].nachricht).toBe(`Produkt-Brief: ${'x'.repeat(100)}`);
+  });
+
+  it('Nachricht: höchstens 300 UTF-16-Einheiten, auch wenn 100 Grapheme länger wären', async () => {
+    const t = await mitMappe();
+    // Ein Graphem aus Buchstabe + 9 kombinierenden Zeichen = 10 UTF-16-Einheiten; 100 davon wären 1000.
+    const schwer = `e${'\u0301'.repeat(9)}`;
+    await t.speichern('brief', { daten: briefBeispiel, basisSha: null, nachricht: schwer.repeat(100) });
+    const kurz = t.fake.commits(REPO)[0].nachricht.slice('Produkt-Brief: '.length);
+    expect(kurz.length).toBeLessThanOrEqual(300);
+    expect(kurz).toBe(schwer.repeat(30));
   });
 
   it('unvollständige Anfrage (ohne basisSha, ohne daten) → 422 ohne Feldfehler', async () => {
