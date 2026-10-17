@@ -48,7 +48,7 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   r.get('/login', (c) => {
     const state = zufall();
     const weiter = sichererPfad(c.req.query('weiter'));
-    setCookie(c, stateName(), `${state}.${encodeURIComponent(weiter)}`, { ...cookieOpt(), maxAge: STATE_SEKUNDEN });
+    setCookie(c, stateName(), `${state}.${weiter}`, { ...cookieOpt(), maxAge: STATE_SEKUNDEN });
     c.header('Cache-Control', 'no-store');
     return c.redirect(abh.github.loginUrl(state, redirectUri(c)), 302);
   });
@@ -58,7 +58,7 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     const i = roh.indexOf('.');
     const state = i > 0 ? roh.slice(0, i) : '';
     let weiter = '/';
-    try { weiter = sichererPfad(decodeURIComponent(roh.slice(i + 1))); } catch { /* bleibt / */ }
+    if (i > 0) weiter = sichererPfad(roh.slice(i + 1)); // hono kodiert/dekodiert den Cookie-Wert selbst
     const code = c.req.query('code');
     deleteCookie(c, stateName(), { path: '/', secure: sicher() });
     c.header('Cache-Control', 'no-store');
