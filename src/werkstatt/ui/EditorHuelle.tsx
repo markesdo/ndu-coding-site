@@ -10,7 +10,7 @@ import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
-import { darfSpeichern, huelle, leererStand, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
+import { darfSpeichern, huelle, leererStand, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
 import '../../styles/werkstatt.css';
 
 export interface EditorHuelleProps<N extends ArtefaktName> {
@@ -18,8 +18,16 @@ export interface EditorHuelleProps<N extends ArtefaktName> {
   titel: string;
   /** Live-Bild rechts. */
   bild: (daten: DatenVon<N>) => ReactNode;
-  /** Formular links. `setze` ersetzt die ganzen Daten; `fehler(pfad)` liefert die Meldung zum Feld, zum Beispiel „annahmen.0.id“. */
-  formular: (daten: DatenVon<N>, setze: (neu: DatenVon<N>) => void, fehler: (pfad: string) => string | undefined) => ReactNode;
+  /**
+   * Formular links. `setze` ersetzt die ganzen Daten; `fehler(pfad)` liefert die Meldung zum Feld, zum Beispiel „annahmen.0.id“.
+   * `gespeichert`: was gerade auf dem Server liegt (nie ein Entwurf; null, solange die Datei fehlt), nach jedem Speichern aktuell.
+   */
+  formular: (
+    daten: DatenVon<N>,
+    setze: (neu: DatenVon<N>) => void,
+    fehler: (pfad: string) => string | undefined,
+    gespeichert: DatenVon<N> | null,
+  ) => ReactNode;
   /** Markdown des Artefakts für „Für Claude kopieren“ (liefert der Renderer der Mappe). */
   alsMarkdown: (daten: DatenVon<N>) => string;
 }
@@ -63,6 +71,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const [versuche, setVersuche] = useState(0);
   // Entwurf auf einem anderen Stand als dem des Servers: wartet auf die ausdrückliche Wahl.
   const [aelterEntwurf, setAelterEntwurf] = useState<DatenVon<N> | null>(null);
+  // Stand des Servers (ohne Entwurf) für das Formular.
+  const [gespeichert, setGespeichert] = useState<DatenVon<N> | null>(null);
 
   // Aktueller Stand für asynchrone Abläufe (Zustand in React-State wäre dort veraltet).
   const z = useRef<HuellenZustand>('laden');
@@ -117,6 +127,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
         roh === null ? null : { basisSha: roh.basisSha, daten: entwurfNormalisieren(name, ARTEFAKTE[name].leer(heute()), roh.daten) as DatenVon<N> },
       );
       basisSha.current = start.basisSha;
+      setGespeichert(serverStandNachLaden(antwort.daten, vomServer.daten as DatenVon<N>));
       datenRef.current = start.daten;
       setDatenAnzeige(start.daten);
       setDirty(start.alsEntwurf);
@@ -137,6 +148,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     datenRef.current = leer.daten;
     basisSha.current = leer.basisSha;
     setDatenAnzeige(leer.daten);
+    setGespeichert(null);
     setDirty(leer.dirty);
     setAelterEntwurf(leer.aelterEntwurf);
     setGesichert(leer.gesichert);
@@ -218,6 +230,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
         if (!('konflikt' in antwort) && wer !== null) entwurfNachCommitLoeschen(name, wer.githubId, wer.kohorte, gesendeterStand, gesendeteDaten);
         return;
       }
+      setGespeichert((vorher) => serverStandNachSpeichern(vorher, antwort, gesendeteDaten as DatenVon<N>));
       if ('konflikt' in antwort) return void senden({ typ: 'speichernFehlgeschlagen', status: 409, code: 'konflikt' });
       basisSha.current = antwort.basisSha;
       senden({ typ: 'gespeichert' });
@@ -366,7 +379,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
                 <fieldset className="wk-formular" disabled={zustand === 'speichert' || aelterEntwurf !== null}>
                   <legend className="wk-nur-leser">{titel} bearbeiten</legend>
                   <Fehlergrenze key={`f${grenzeNr}`} onFehler={() => setAnzeigeKaputt(true)} onVerwerfen={kaputtenEntwurfVerwerfen}>
-                    <Ausfuehren was={() => formular(daten, setze, fehlerAm)} />
+                    <Ausfuehren was={() => formular(daten, setze, fehlerAm, gespeichert)} />
                   </Fehlergrenze>
                 </fieldset>
                 <section className="wk-bild" aria-label="Vorschau">

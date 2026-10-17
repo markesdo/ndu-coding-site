@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import beispiel from '../../beispiele/entscheidungen.json';
 import { artefaktParsen, type Entscheidungen } from '../../schemas/index.js';
-import { datumAnzeigen, ersetzen, ersetztVon, heuteWien, loeschen, mitStand, zeileHinzufuegen } from './entscheidungen-hilfen.js';
+import { serverStandNachSpeichern } from '../huelle.js';
+import { datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, zeileHinzufuegen } from './entscheidungen-hilfen.js';
 
 const leer = (): Entscheidungen => ({ schema: 'entscheidungen@1', stand: '2026-10-22', entscheidungen: [] });
 const kaffeebar = () => structuredClone(beispiel) as Entscheidungen;
@@ -101,18 +102,29 @@ describe('loeschen', () => {
   });
 });
 
-describe('Datum', () => {
-  it('heute in Wien, auch wenn es in UTC noch gestern ist', () => {
-    expect(heuteWien(new Date('2026-10-21T22:30:00Z'))).toBe('2026-10-22');
-    expect(heuteWien(new Date('2026-10-22T21:59:00Z'))).toBe('2026-10-22');
+describe('gespeichert aus der Editor-Hülle', () => {
+  it('ohne Datei auf dem Server ist nichts gespeichert', () => {
+    expect(gespeicherteIds(null)).toStrictEqual(new Set());
   });
 
+  it('nach dem Speichern ist eine neue Zeile nicht mehr löschbar', () => {
+    const r = zeileHinzufuegen(kaffeebar(), [], '2026-11-06'); // D5, noch nicht gespeichert
+    expect(loeschen(r.daten, 'D5', gespeicherteIds(kaffeebar())).ok).toBe(true);
+    const nachher = serverStandNachSpeichern(kaffeebar(), { basisSha: 'sha-2' }, r.daten);
+    expect(loeschen(r.daten, 'D5', gespeicherteIds(nachher))).toStrictEqual({
+      ok: false, grund: 'D5 ist schon gespeichert und bleibt im Log. Ersetze sie stattdessen.',
+    });
+  });
+
+  it('nach einem Konflikt bleibt sie löschbar', () => {
+    const r = zeileHinzufuegen(kaffeebar(), [], '2026-11-06');
+    const nachher = serverStandNachSpeichern(kaffeebar(), { konflikt: true }, r.daten);
+    expect(loeschen(r.daten, 'D5', gespeicherteIds(nachher)).ok).toBe(true);
+  });
+});
+
+describe('Datum', () => {
   it('zeigt österreichisch an', () => {
     expect(datumAnzeigen('2026-10-22')).toBe('22.10.2026');
-  });
-
-  it('mitStand setzt den Stand, sonst nichts', () => {
-    const d = kaffeebar();
-    expect(mitStand(d, '2026-11-06')).toStrictEqual({ ...d, stand: '2026-11-06' });
   });
 });

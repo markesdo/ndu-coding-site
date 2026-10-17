@@ -97,3 +97,16 @@ export function leererStand(): { daten: null; dirty: false; basisSha: null; aelt
 export function versucheNach(zustand: HuellenZustand, versuche: number): number {
   return zustand === 'laden' || zustand === 'wird-eingerichtet' ? versuche : 0;
 }
+
+/**
+ * Was auf dem Server liegt, für das Formular (zum Beispiel: welche Zeilen schon gespeichert sind). Nie ein Entwurf.
+ * `roh` ist die Antwort des Servers (null = die Datei gibt es noch nicht), `geparst` dieselbe Datei nach dem Schema.
+ */
+export function serverStandNachLaden<D>(roh: unknown, geparst: D): D | null {
+  return roh === null || roh === undefined ? null : geparst;
+}
+
+/** Nach dem Speichern: Geglückt → das Gesendete liegt jetzt auf dem Server; Konflikt → unverändert. */
+export function serverStandNachSpeichern<D>(vorher: D | null, antwort: { konflikt: true } | { basisSha: string }, gesendet: D): D | null {
+  return 'konflikt' in antwort ? vorher : gesendet;
+}

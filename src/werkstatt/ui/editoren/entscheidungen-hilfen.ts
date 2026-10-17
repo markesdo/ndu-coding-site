@@ -6,19 +6,10 @@ import type { Entscheidung, Entscheidungen } from '../../schemas/index.js';
 
 export type Ergebnis = { ok: true; daten: Entscheidungen; id: string } | { ok: false; grund: string };
 
-/** Heutiges Datum in Wien als JJJJ-MM-TT, unabhängig von der Zeitzone des Geräts. */
-export function heuteWien(jetzt: Date = new Date()): string {
-  return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Vienna' }).format(jetzt);
-}
-
 /** 2026-10-22 → 22.10.2026. Fremdes bleibt unverändert. */
 export function datumAnzeigen(iso: string): string {
   const t = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
   return t ? `${t[3]}.${t[2]}.${t[1]}` : iso;
-}
-
-export function mitStand<T extends { stand: string }>(d: T, heute: string): T {
-  return { ...d, stand: heute };
 }
 
 // `vergeben`: alle IDs, die in dieser Sitzung schon einmal da waren, auch inzwischen gelöschte.
@@ -63,9 +54,7 @@ export function loeschen(d: Entscheidungen, id: string, gespeichert: ReadonlySet
   return { ok: true, daten: { ...d, entscheidungen: d.entscheidungen.filter((e) => e.id !== id) }, id };
 }
 
-/** IDs der Entscheidungen in einer Antwort des Servers; alles andere zählt nicht. */
-export function gespeicherteIds(daten: unknown): Set<string> {
-  const liste = (daten as { entscheidungen?: unknown } | null)?.entscheidungen;
-  if (!Array.isArray(liste)) return new Set();
-  return new Set(liste.flatMap((e) => (typeof (e as { id?: unknown })?.id === 'string' ? [(e as { id: string }).id] : [])));
+/** IDs der Zeilen, die auf dem Server liegen (`gespeichert` aus der Editor-Hülle; null = noch keine Datei). */
+export function gespeicherteIds(gespeichert: Entscheidungen | null): Set<string> {
+  return new Set(gespeichert?.entscheidungen.map((e) => e.id) ?? []);
 }
