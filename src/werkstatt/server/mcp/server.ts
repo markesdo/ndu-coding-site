@@ -12,7 +12,7 @@ import { anweisung } from './anweisung.js';
 import { werkzeugeRegistrieren } from './werkzeuge.js';
 
 // 401 nach RFC 6750 §3 / MCP-Autorisierung: Claude folgt resource_metadata zur Discovery.
-// error="invalid_token" nur, wenn überhaupt ein Token mitkam.
+// error="invalid_token" nur, wenn ein Bearer-Credential mitkam (RFC 6750 §3.1); sonst ohne Fehlercode.
 function ohneZugang(c: Context<WerkstattEnv>, tokenDabei: boolean): Response {
   const teile = [wwwAuthenticate(c), `scope="${SCOPE}"`];
   if (tokenDabei) teile.push('error="invalid_token"');
@@ -28,14 +28,18 @@ function nurPost(): Response {
   });
 }
 
+// '/' = /api/werkstatt/mcp; das leere Segment fängt /api/werkstatt/mcp/ (mit Schrägstrich) und sonst nichts,
+// /mcp/resource und andere Unterpfade bleiben bei oauthRouten bzw. beim 404.
+const PFADE = ['/', '/:leer{^$}'];
+
 export function mcpRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
   const r = new Hono<WerkstattEnv>();
 
-  r.all('/', async (c) => {
+  r.on('ALL', PFADE, async (c) => {
     // Innerhalb der Hono-Anfrage, damit ein Cache-Ausfall (503 als ApiAusnahme) bei onError ankommt.
     const kopf = c.req.header('authorization');
     const claims = await bearerPruefen(abh, kopf, issuer(c));
-    if (!claims) return ohneZugang(c, kopf !== undefined);
+    if (!claims) return ohneZugang(c, /^Bearer\s/i.test(kopf ?? ''));
     if (c.req.method !== 'POST') return nurPost();
 
     const basis = origin(c);

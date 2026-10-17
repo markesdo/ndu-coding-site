@@ -10,8 +10,10 @@ import { ApiAusnahme } from '../antwort';
 import { appErstellen } from '../app';
 import { mapCache } from '../cache';
 import { fakeSpeicher } from '../fake-speicher';
+import { GithubAusnahme } from '../github/app-token';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { cookieName, sitzungErstellen } from '../sitzung';
+import { wirdEingerichtet } from '../speicher-fehler';
 import type { Cache } from '../typen';
 
 const BASIS = 'http://localhost:4321';
@@ -239,7 +241,7 @@ describe('Werkzeuge', () => {
     }
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
-    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['artefakt', 'markdown', 'pruefpunkte', 'titel', 'vorhanden']);
+    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'markdown', 'pruefpunkte', 'titel', 'vorhanden']);
     expect(pruefen.description).toMatch(/höchstens drei Befunde/);
   });
 
@@ -360,15 +362,6 @@ describe('Werkzeuge', () => {
     }
   });
 
-  it('Mappe noch nicht angelegt -> Hinweis auf die Werkstatt statt Absturz', async () => {
-    const h = await aufbau();
-    h.abh.umgebung.zugang.test.studierende.push({ githubId: 1003, kuerzel: 'neu' });
-    const c = await client(h, await accessToken(h, 1003));
-    const r = await c.callTool({ name: 'mappe_uebersicht', arguments: {} });
-    expect(r.isError).toBe(true);
-    expect(text(r)).toContain(`${BASIS}/innolab/mappe`);
-  });
-
   it('interner Fehler im Speicher: keine Einzelheiten an den Client', async () => {
     const h = await aufbau();
     vi.spyOn(h.speicher, 'lesen').mockRejectedValue(new Error('GET /repos/ndu-innolab/test-sofie geheim'));
@@ -435,5 +428,149 @@ describe('Werkzeuge', () => {
     const r = await c.callTool({ name: 'methode_erklaeren', arguments: { slug: 'gibts-nicht' } });
     expect(r.isError).toBe(true);
     expect(text(r)).toContain('interview');
+  });
+});
+
+const KEINE_MAPPE = `Deine Mappe gibt es noch nicht. Öffne einmal die Werkstatt unter ${BASIS}/innolab/mappe, dann wird sie angelegt.`;
+const ANLEITUNG_LEER = 'Noch nichts eingetragen. Bitte die Person, es zuerst selbst in der Werkstatt auszufüllen, und prüfe danach.';
+const post = (h: Aufbau, pfad: string, kopf: Record<string, string> = {}) =>
+  h.anfrage(pfad, { method: 'POST', headers: { ...MCP_KOPF, ...kopf }, body: jsonrpc('tools/list') });
+
+describe('Runde R22', () => {
+  it('ohne Mappe (Repo fehlt): alle Mappe-Werkzeuge antworten gleich', async () => {
+    const h = await aufbau();
+    h.abh.umgebung.zugang.test.studierende.push({ githubId: 1003, kuerzel: 'neu' });
+    const c = await client(h, await accessToken(h, 1003));
+    for (const [name, args] of [
+      ['mappe_uebersicht', {}],
+      ['artefakt_lesen', { artefakt: 'annahmen' }],
+      ['artefakt_pruefen', { artefakt: 'annahmen' }],
+    ] as const) {
+      const r = await c.callTool({ name, arguments: args });
+      expect(r.isError, name).toBe(true);
+      expect(text(r), name).toBe(KEINE_MAPPE);
+    }
+  });
+
+  it('Repo gehört laut werkstatt.json einer anderen GitHub-ID -> nichts lesen', async () => {
+    const h = await aufbau();
+    await h.speicher.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'neu' }, 4242);
+    await h.speicher.speichern('test-neu', 'annahmen', { 'mappe/annahmen.json': `${JSON.stringify(mitText('Fremder Text der Vorbesitzerin.'), null, 2)}\n` }, null, AUTOR, 'x');
+    h.abh.umgebung.zugang.test.studierende.push({ githubId: 1003, kuerzel: 'neu' });
+    const c = await client(h, await accessToken(h, 1003));
+    for (const name of ['artefakt_lesen', 'artefakt_pruefen']) {
+      const r = await c.callTool({ name, arguments: { artefakt: 'annahmen' } });
+      expect(r.isError, name).toBe(true);
+      expect(JSON.stringify(r), name).not.toContain('Fremder Text');
+      expect(text(r), name).toMatch(/Frag Markus/);
+    }
+  });
+
+  it('kaputtes JSON im Repo -> derselbe Hinweis wie bei falschem Format; echter GitHub-Ausfall bleibt allgemein', async () => {
+    const h = await aufbau();
+    await h.speicher.speichern('test-sofie', 'brief', { 'mappe/brief.json': '{ kaputt' }, null, AUTOR, 'kaputt');
+    await h.speicher.speichern('test-sofie', 'entscheidungen', { 'mappe/entscheidungen.json': '{"schema":"entscheidungen@1"}\n' }, null, AUTOR, 'falsch');
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const c = await client(h, await accessToken(h));
+    for (const name of ['artefakt_lesen', 'artefakt_pruefen']) {
+      const kaputt = await c.callTool({ name, arguments: { artefakt: 'brief' } });
+      const falsch = await c.callTool({ name, arguments: { artefakt: 'entscheidungen' } });
+      for (const r of [kaputt, falsch]) {
+        expect(r.isError, name).toBe(true);
+        expect(text(r), name).toMatch(/passt nicht zum Format/);
+        expect(text(r), name).toMatch(/speichere sie neu/);
+        expect(text(r), name).not.toMatch(/GitHub ist gerade nicht erreichbar/);
+      }
+    }
+    vi.spyOn(h.speicher, 'lesen').mockRejectedValue(new GithubAusnahme(500));
+    const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'annahmen' } });
+    expect(r.isError).toBe(true);
+    expect(text(r)).toMatch(/GitHub ist gerade nicht erreichbar/);
+    expect(text(r)).not.toMatch(/passt nicht zum Format/);
+  });
+
+  it('Speicher-Ausnahmen werden zu Sätzen für den Chat (kein „Seite neu laden“)', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    vi.spyOn(h.speicher, 'lesen').mockRejectedValue(wirdEingerichtet());
+    const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'annahmen' } });
+    expect(r.isError).toBe(true);
+    expect(text(r)).toMatch(/eingerichtet/);
+    expect(text(r)).not.toMatch(/Seite|neu laden|Lade/);
+  });
+
+  it('Zugang zwischen bearerPruefen und Werkzeug entzogen -> „nicht mehr aktiv“', async () => {
+    const h = await aufbau();
+    const lesen = vi.spyOn(h.speicher, 'lesen');
+    const c = await client(h, await accessToken(h));
+    // Der Client holt vor dem ersten callTool die Werkzeugliste (für outputSchema); das vorher erledigen.
+    await c.listTools();
+    const voll = h.abh.umgebung.zugang;
+    const leer = { test: { lehrende: [], studierende: [] } };
+    // Erster Zugriff = bearerPruefen der Anfrage, jeder weitere = das Werkzeug.
+    let zugriffe = 0;
+    Object.defineProperty(h.abh.umgebung, 'zugang', { configurable: true, get: () => (zugriffe++ === 0 ? voll : leer) });
+    const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'annahmen' } });
+    expect(zugriffe).toBeGreaterThan(1);
+    expect(r.isError).toBe(true);
+    expect(text(r)).toBe('Dein Zugang zur Werkstatt ist nicht mehr aktiv. Frag Markus.');
+    expect(lesen).not.toHaveBeenCalled();
+  });
+
+  it('artefakt_pruefen: Tutor-Regeln auch in structuredContent (anleitung, im outputSchema)', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    const { tools } = await c.listTools();
+    const schema = tools.find((t) => t.name === 'artefakt_pruefen')!.outputSchema!;
+    expect(Object.keys(schema.properties ?? {})).toContain('anleitung');
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen' } });
+    const anleitung = (r.structuredContent as { anleitung: string }).anleitung;
+    expect(anleitung).toMatch(/[Hh]öchstens drei Befunde/);
+    expect(anleitung).toMatch(/wörtlich/);
+    expect(anleitung).toContain(`${BASIS}/innolab/mappe`);
+    expect(text(r)).toContain(anleitung);
+  });
+
+  it('artefakt_pruefen ohne Inhalt: keine Zitat-Anleitung, Prüfpunkte zur Orientierung', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden' } });
+    expect(r.isError).toBeFalsy();
+    const sc = r.structuredContent as { anleitung: string; vorhanden: boolean; pruefpunkte: unknown[] };
+    expect(sc.vorhanden).toBe(false);
+    expect(sc.anleitung).toBe(ANLEITUNG_LEER);
+    expect(sc.pruefpunkte.length).toBeGreaterThan(0);
+    expect(text(r)).toContain(ANLEITUNG_LEER);
+    expect(text(r)).not.toMatch(/Zitat/);
+  });
+
+  it('error="invalid_token" nur bei einem Bearer-Credential (RFC 6750 §3.1)', async () => {
+    const h = await aufbau();
+    for (const kopf of [{}, { Authorization: 'Basic YWxhZGRpbjpvcGVuc2VzYW1l' }, { Authorization: '' }] as Record<string, string>[]) {
+      const r = await post(h, MCP, kopf);
+      expect(r.status, JSON.stringify(kopf)).toBe(401);
+      expect(r.headers.get('www-authenticate'), JSON.stringify(kopf)).not.toContain('error=');
+      expect(r.headers.get('www-authenticate'), JSON.stringify(kopf)).toContain('resource_metadata=');
+    }
+    for (const kopf of [{ Authorization: 'Bearer quatsch' }, { Authorization: 'bearer quatsch' }]) {
+      const r = await post(h, MCP, kopf);
+      expect(r.status).toBe(401);
+      expect(r.headers.get('www-authenticate'), JSON.stringify(kopf)).toContain('error="invalid_token"');
+    }
+  });
+
+  it('/api/werkstatt/mcp/ mit Schrägstrich verhält sich wie ohne; /mcp/resource bleibt Metadaten', async () => {
+    const h = await aufbau();
+    const ohne = await post(h, `${MCP}/`);
+    expect(ohne.status).toBe(401);
+    expect(ohne.headers.get('www-authenticate')).toContain(`resource_metadata="${BASIS}/api/werkstatt/mcp/resource"`);
+    const token = await accessToken(h);
+    const mit = await post(h, `${MCP}/`, { Authorization: `Bearer ${token}` });
+    expect(mit.status).toBe(200);
+    const namen = ((await mit.json()) as { result: { tools: { name: string }[] } }).result.tools.map((t) => t.name);
+    expect(namen).toHaveLength(4);
+    const res = await h.anfrage('/api/werkstatt/mcp/resource');
+    expect(await res.json()).toMatchObject({ resource: MCP });
+    expect((await h.anfrage(`${MCP}/anderes`, { method: 'POST' })).status).toBe(404);
   });
 });

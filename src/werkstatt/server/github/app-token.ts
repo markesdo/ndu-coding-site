@@ -4,6 +4,7 @@
 import { createPrivateKey } from 'node:crypto';
 import { SignJWT } from 'jose';
 import { ApiAusnahme } from '../antwort.js';
+import { GITHUB_SATZ } from '../speicher-fehler.js';
 import type { Cache } from '../typen.js';
 
 export type Rechte = Record<string, 'read' | 'write'>;
@@ -70,7 +71,6 @@ export async function githubAnfrage(
   return { status, daten };
 }
 
-const GITHUB_SATZ = 'GitHub ist gerade nicht erreichbar. Bitte gleich noch einmal versuchen.';
 
 // 502 an die Person; der GitHub-Status bleibt für Aufrufer lesbar (z. B. veraltete gemerkte IDs bei 404/422).
 export class GithubAusnahme extends ApiAusnahme {
@@ -85,15 +85,8 @@ export function githubFehler(methode: string, pfad: string, status: number): Git
   return new GithubAusnahme(status);
 }
 
-// Datei im Repo ist kein gültiges JSON (z. B. von Hand auf GitHub kaputt bearbeitet) → ebenfalls 502.
-export function jsonAusRepo(pfad: string, inhalt: string): unknown {
-  try {
-    return JSON.parse(inhalt) as unknown;
-  } catch {
-    console.error(`werkstatt: kaputtes JSON in ${pfad}`);
-    throw new ApiAusnahme(502, 'github-fehler', GITHUB_SATZ);
-  }
-}
+// jsonAusRepo liegt in speicher-fehler.ts (gemeinsam mit fakeSpeicher); hier weiter exportiert.
+export { jsonAusRepo } from '../speicher-fehler.js';
 
 // GitHub liefert den Schlüssel als PKCS#1 („BEGIN RSA PRIVATE KEY“); jose.importPKCS8 lehnt das ab, createPrivateKey nicht.
 export async function appJwt(appId: string, privateKeyPem: string, jetztSek: number): Promise<string> {
