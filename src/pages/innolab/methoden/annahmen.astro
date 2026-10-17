@@ -10,6 +10,7 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import VierArten from '../../../components/bild/VierArten.astro';
+import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 // Achsen und Felder der Annahmen-Map: leer auf „Worum es geht“, gefüllt auf „Am Beispiel“.
 const karte = {
@@ -18,6 +19,8 @@ const karte = {
   felder: ['Zuerst testen', 'Darauf bauen', 'Später prüfen', 'Abhaken'] as [string, string, string, string],
   hervor: 'ol' as const,
 };
+// Red Team über den Connector; der Werkzeugname kommt aus dem Vertrag, nicht als Text.
+const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Wo im Brief steckt eine Annahme, die in der Map fehlt? Zitier höchstens drei Stellen wörtlich und frag mich zu jeder, was wir dort voraussetzen. Formulier die Annahmen nicht für mich – ich entscheide, was in die Map kommt.`;
 ---
 <Layout title="Annahmen-Map">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -89,7 +92,7 @@ const karte = {
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="annahmen" />
   <p>Danach ein zweiter Durchgang als Red Team:</p>
-  <Prompt label="Red Team · Claude mit der Werkstatt">Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkstatt (Werkzeug artefakt_lesen). Wo im Brief steckt eine Annahme, die in der Map fehlt? Zitier höchstens drei Stellen wörtlich und frag mich zu jeder, was wir dort voraussetzen. Formulier die Annahmen nicht für mich – ich entscheide, was in die Map kommt.</Prompt>
+  <Prompt label="Red Team · Claude mit der Werkstatt">{redTeam}</Prompt>
 
   </div>
 

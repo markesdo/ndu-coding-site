@@ -2,7 +2,7 @@
 import { aufgeloest } from '../../components/aufloesung.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
-import type { MappeStand } from '../vertrag.js';
+import { ROUTEN, type MappeStand } from '../vertrag.js';
 
 /** Texte zu ?fehler=… – die Anmeldung (routen/auth.ts) springt damit auf /innolab/mappe zurück. */
 export const FEHLER_TEXT = {
@@ -42,6 +42,12 @@ export function beimOeffnenLaden(rueckmeldung: { neuAnmelden: boolean } | null):
 }
 
 export const LEITFADEN_SPAETER = 'Öffnet ihr nach dem Mom Test auf der Interview-Seite.';
+/** Überschrift direkt vor der Auflösung mit dem Leitfaden-Editor (seiten.test.ts prüft den Anker). Wer dort schon
+ *  freigeschaltet ist (Knopf „Editor und Vorlage öffnen“), kommt so trotzdem an den Editor. */
+export const LEITFADEN_LINK = '/innolab/methoden/interview#vorlage';
+
+/** Anmelden mit Rücksprung auf /innolab/mappe – ohne ?fehler, damit ein späteres Neuladen die alte Meldung nicht zeigt. */
+export const LOGIN_HREF = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent('/innolab/mappe')}`;
 
 export interface MappeZeile {
   name: ArtefaktName;

@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE, METHODEN, artefakt } from '../components/methoden';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from './schemas/index.js';
 import { EDITOREN } from './ui/editoren/index.js';
+import { LEITFADEN_LINK } from './ui/mappe-hilfen.js';
+import { MCP_WERKZEUGE } from './vertrag.js';
 
 // Seitenintegration der Werkstatt (Spec §3.5): Jede Methode, deren Artefakt in der Werkstatt lebt, hat auf ihrer Seite
 // einen „Bearbeiten“-Knopf, und ihre Texte schicken niemanden mehr in eine Datei unter docs/.
@@ -59,10 +61,9 @@ describe('Werkstatt auf den Methodenseiten', () => {
     for (const p of ['tag-1/abschluss', 'methoden/interview']) expect(seite(p), p).not.toContain('docs/interviews/');
     const tag1 = Object.entries(seiten).filter(([p]) => /pages\/innolab\/(tag-1(\.astro|\/)|methoden\/(problem-rahmen|entscheidungslog|interview|annahmen)\.astro)/.test(p));
     expect(tag1.length).toBe(6);
+    // Jede Zeile: Auf Tag 1 wird nichts mehr committet – was die Hausaufgabe festhält, liegt privat oder in der Werkstatt.
     for (const [p, quelle] of tag1) {
-      for (const zeile of quelle.split('\n')) {
-        if (/committet und gepusht/i.test(zeile)) expect(zeile, p).not.toMatch(/Transkript|Notiz/i);
-      }
+      expect(quelle.split('\n').filter((z) => /committ(et)? und gepusht/i.test(z)), p).toStrictEqual([]);
     }
   });
 
@@ -71,9 +72,21 @@ describe('Werkstatt auf den Methodenseiten', () => {
     const aufloesungen = [...iv.matchAll(/<Aufloesung\b[\s\S]*?<\/Aufloesung>/g)].map(([a]) => a);
     expect(aufloesungen.filter((a) => a.includes('<Bearbeiten artefakt="leitfaden"'))).toHaveLength(1);
     expect(iv.split('<Bearbeiten artefakt="leitfaden"').length - 1).toBe(1);
+    // Der Link der Mappe („Zur Interview-Seite“) springt auf die Überschrift direkt vor dieser Auflösung.
+    const anker = LEITFADEN_LINK.split('#')[1];
+    expect(LEITFADEN_LINK.startsWith('/innolab/methoden/interview#')).toBe(true);
+    expect(iv).toMatch(new RegExp(`<h2 id="${anker}">[^<]*</h2>\\s*<Aufloesung\\b[^>]*>[\\s\\S]*?<Bearbeiten artefakt="leitfaden"`));
     // Dieselbe Freigabezeit wie /innolab/mappe: aus innolab-zeiten.ts, nicht als eigene Konstante.
     expect(iv).toContain("import { NACH_MOM_TEST } from '../../../components/innolab-zeiten';");
     expect(iv).not.toMatch(/const NACH_MOM_TEST\s*=/);
+  });
+
+  it('Werkzeugnamen des Connectors kommen aus MCP_WERKZEUGE, nicht als Text in die Seite', () => {
+    for (const m of werkstattMethoden) {
+      const q = seite(`methoden/${m.slug}`);
+      for (const w of Object.values(MCP_WERKZEUGE)) expect(q, `${m.slug}: ${w}`).not.toContain(w);
+    }
+    expect(seite('methoden/annahmen')).toContain('MCP_WERKZEUGE.artefaktLesen');
   });
 
   it('die Hausaufgabe nennt die Werkstatt und die Seite zum Verbinden von Claude', () => {

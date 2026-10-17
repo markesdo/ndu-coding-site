@@ -3,10 +3,10 @@
 import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { kohorte } from '../kohorten/index.js';
-import { ROUTEN, type Ich, type MappeStand } from '../vertrag.js';
+import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
-import { LEITFADEN_SPAETER, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -99,10 +99,23 @@ export default function MappeUebersicht() {
   useEffect(() => {
     const l = liste.current;
     if (!l) return;
-    const neu = () => void laden(true);
+    const neu = () => void standNeu();
     l.addEventListener('close', neu, true);
     return () => l.removeEventListener('close', neu, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [zustand.typ, laden]);
+
+  // Nur der Stand der Mappe; die Person (ich) bleibt. Scheitert es, übernimmt das volle Laden die Fehleranzeige.
+  async function standNeu(): Promise<void> {
+    const mein = ++lauf.current;
+    try {
+      const stand = await api.mappe();
+      if (mein !== lauf.current) return;
+      setZustand((z) => (z.typ === 'bereit' ? { ...z, stand } : z));
+    } catch {
+      if (mein === lauf.current) void laden(true);
+    }
+  }
 
   async function abmelden(): Promise<void> {
     setMeldung('');
@@ -114,9 +127,8 @@ export default function MappeUebersicht() {
     void laden();
   }
 
-  const loginHref = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent('/innolab/mappe')}`;
   const anmelden = (
-    <a className="wk-knopf wk-primaer" href={loginHref}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
+    <a className="wk-knopf wk-primaer" href={LOGIN_HREF}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
   );
 
   function inhalt() {
@@ -176,7 +188,9 @@ export default function MappeUebersicht() {
                         {z.vorhanden ? 'vorhanden' : 'offen'}
                       </span>
                     </div>
-                    {z.name === 'leitfaden' && !leitfadenOffen ? <span className="wk-hilfe">{LEITFADEN_SPAETER}</span> : <Editor />}
+                    {z.name === 'leitfaden' && !leitfadenOffen
+                      ? <span className="wk-hilfe">{LEITFADEN_SPAETER} <a href={LEITFADEN_LINK}>Zur Interview-Seite</a></span>
+                      : <Editor />}
                   </li>
                 );
               })}
@@ -193,6 +207,8 @@ export default function MappeUebersicht() {
       {rueckmeldung && (
         <div className="wk-hinweis mappe-hinweis" role="alert">
           <p>{rueckmeldung.text}</p>
+          {/* Nicht freigeschaltet lädt die Seite nichts: Ist man inzwischen eingetragen, geht es hier weiter. */}
+          {!rueckmeldung.neuAnmelden && anmelden}
         </div>
       )}
       {(rueckmeldung === null || rueckmeldung.neuAnmelden) && inhalt()}

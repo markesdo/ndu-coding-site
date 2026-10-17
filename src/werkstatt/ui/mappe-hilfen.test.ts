@@ -3,7 +3,7 @@ import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
+import { FEHLER_TEXT, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -22,6 +22,13 @@ describe('anmeldeFehler', () => {
     expect(anmeldeFehler('?fehler=')).toBeNull();
     expect(anmeldeFehler('?fehler=<script>')).toBeNull();
     expect(anmeldeFehler('?fehler=toString')).toBeNull();
+  });
+});
+
+describe('LOGIN_HREF', () => {
+  it('meldet an und springt auf /innolab/mappe ohne ?fehler zurück – auch nach „nicht freigeschaltet“', () => {
+    expect(LOGIN_HREF).toBe(`${ROUTEN.login.pfad}?weiter=${encodeURIComponent('/innolab/mappe')}`);
+    expect(LOGIN_HREF).not.toContain('fehler');
   });
 });
 
