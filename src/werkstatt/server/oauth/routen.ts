@@ -1,6 +1,6 @@
 // OAuth-Autorisierungsserver für den Connector (claude.ai als öffentlicher CIMD-Client), ohne Datenbank:
 // Codes und Tokens sind versiegelte Umschläge (umschlag.ts). Im Cache liegen nur Merker, alle nach bestem Bemühen:
-// „Code schon eingelöst“, „Refresh-Token schon rotiert“ (30 s lang mit seiner Antwort) und „Familie widerrufen“.
+// „Code schon eingelöst“, „Refresh-Token schon rotiert“ (30 s lang mit seiner verschlüsselten Antwort) und „Familie widerrufen“.
 // PKCE macht einen abgefangenen Code ohnehin nutzlos. Familie = eine Verbindung: alle Tokens aus einem Code und seinen Refreshes tragen dieselbe
 // zufällige ID. Taucht ein verbrauchter Code oder ein schon rotiertes Refresh-Token wieder auf, hat jemand mitgelesen:
 // dann gilt die ganze Familie nicht mehr (OAuth 2.1 / RFC 9700 §4.14.2). Ausnahme: Ein Refresh-Token, das vor
@@ -26,6 +26,7 @@ import type { Abhaengigkeiten, WerkstattEnv } from '../typen.js';
 import { clientErlaubt, clientMelden } from './clients.js';
 import { ISSUER_PFAD, SCOPE, issuer, issuerMetadaten, resource, resourceMetadaten } from './metadaten.js';
 import { oeffnen, versiegeln } from './umschlag.js';
+import { antwortOeffnen, antwortVersiegeln } from './wiederholung.js';
 import { clientName, meldungsSeite, zustimmungsSeite } from './zustimmung.js';
 
 export interface TokenClaims {
@@ -227,8 +228,10 @@ async function paarPraegen(c: Context, abh: Abhaengigkeiten, k: Kette): Promise<
   return { access_token: access, token_type: 'Bearer', expires_in: ACCESS_SEKUNDEN, refresh_token: refresh, scope: SCOPE };
 }
 
-function istPaar(v: unknown): v is Paar {
-  return typeof v === 'object' && v !== null && typeof (v as Paar).access_token === 'string' && typeof (v as Paar).refresh_token === 'string';
+function istGespeichertesPaar(v: unknown): v is { erstellt: number; paar: Paar } {
+  if (typeof v !== 'object' || v === null) return false;
+  const { erstellt, paar } = v as { erstellt?: unknown; paar?: Partial<Paar> };
+  return typeof erstellt === 'number' && typeof paar === 'object' && paar !== null && typeof paar.access_token === 'string' && typeof paar.refresh_token === 'string';
 }
 
 function paarAntwort(c: Context, p: Paar): Response {
@@ -358,19 +361,22 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     if (!claims || claims.clientId !== clientId) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     if (!mitgliedAktiv(abh, claims) || (await familieWiderrufenen(abh, claims.familie))) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre.
-    // Neuversuch (verlorene Antwort, zwei Werkzeugaufrufe zugleich): Innerhalb von REFRESH_GNADE_SEKUNDEN bekommt
-    // dasselbe Token genau die Antwort der ersten Rotation noch einmal. So entsteht kein zweiter Zweig der Familie,
-    // und jede spätere Vorlage eines verbrauchten Tokens fällt weiter auf. Danach: die ganze Familie widerrufen.
+    // Neuversuch nach verlorener Antwort: Innerhalb von REFRESH_GNADE_SEKUNDEN bekommt dasselbe Token die Antwort der
+    // ersten Rotation noch einmal (verschlüsselt im Cache, siehe wiederholung.ts). Es entsteht kein neues Paar, und
+    // jede spätere Vorlage eines verbrauchten Tokens fällt weiter auf. Danach: die ganze Familie widerrufen.
+    // Wie alle Merker nach bestem Bemühen: Zwei Anfragen im selben Augenblick können beide rotieren.
     const merker = `werkstatt:oauth:refresh:${await sha256(refresh)}`;
+    const vorher = await antwortOeffnen(refresh, await abh.cache.get(`${merker}:antwort`));
+    if (istGespeichertesPaar(vorher)) {
+      const rest = vorher.erstellt + ACCESS_SEKUNDEN - t;
+      if (rest > 0) return paarAntwort(c, { ...vorher.paar, expires_in: rest });
+    }
     if ((await abh.cache.get(merker)) !== undefined) {
-      const vorher = await abh.cache.get(`${merker}:antwort`);
-      if (istPaar(vorher)) return paarAntwort(c, vorher);
       await familieWiderrufen(abh, claims.familie);
       return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     }
     const paar = await paarPraegen(c, abh, claims);
-    // Erst die Antwort, dann der Merker: Wer den Merker sieht, findet die Antwort schon vor (nach bestem Bemühen).
-    await abh.cache.set(`${merker}:antwort`, paar, REFRESH_GNADE_SEKUNDEN);
+    await abh.cache.set(`${merker}:antwort`, await antwortVersiegeln(refresh, { erstellt: t, paar }), REFRESH_GNADE_SEKUNDEN);
     await abh.cache.set(merker, 1, REFRESH_SEKUNDEN);
     return paarAntwort(c, paar);
   });

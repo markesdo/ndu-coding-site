@@ -441,7 +441,8 @@ describe('oauth/token', () => {
     for (let i = 0; i < 2; i++) {
       const nochmal = await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token });
       expect(nochmal.status).toBe(200);
-      expect(await nochmal.json()).toStrictEqual(erst);
+      // Gleiches Paar; expires_in zählt die Zeit seit der ersten Rotation ab.
+      expect(await nochmal.json()).toStrictEqual({ ...erst, expires_in: erst.expires_in - 20 });
     }
     expect(await bearerPruefen(h.abh, `Bearer ${erst.access_token}`, ISSUER)).not.toBeNull();
     // Die Kette geht mit dem Token aus der ersten Antwort weiter.
