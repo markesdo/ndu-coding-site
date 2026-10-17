@@ -3,9 +3,10 @@ import { datumAt, einzeilig } from './format.js';
 
 function beleg(e: Entscheidung): string {
   const stufe = BELEGSTUFE_TEXT[e.beleg];
-  const mitIds = e.belegIds.length > 0 ? `${stufe} (${e.belegIds.map(einzeilig).join(', ')})` : stufe;
-  // Leere Notiz (Entwurf) zählt wie keine.
-  return e.belegNotiz ? `${mitIds} (${einzeilig(e.belegNotiz)})` : mitIds;
+  const teile = e.belegIds.map(einzeilig).join(', ');
+  // Leere Notiz (Entwurf) zählt wie keine. IDs und Notiz teilen sich eine Klammer.
+  const zusatz = [teile, e.belegNotiz ? einzeilig(e.belegNotiz) : ''].filter(Boolean).join('; ');
+  return zusatz ? `${stufe} (${zusatz})` : stufe;
 }
 
 // Eine Zeile pro Entscheidung: Datum — Entscheidung — Grund — Beleg. Gelöscht wird nichts.

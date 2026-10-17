@@ -56,7 +56,7 @@ describe('Entscheidungen', () => {
     const e = laden('entscheidungen');
     const z = { ...e.entscheidungen[2], belegNotiz: 'Interviews Oktober' };
     const s = rendern('entscheidungen', { ...e, entscheidungen: [z] });
-    expect(s).toContain('Beleg: erzählt (I1, I3, I4) (Interviews Oktober)');
+    expect(s).toContain('Beleg: erzählt (I1, I3, I4; Interviews Oktober)');
     expect(rendern('entscheidungen', { ...e, entscheidungen: [{ ...z, belegNotiz: '' }] })).not.toContain('Oktober');
   });
   it('ersetzte Entscheidung zeigt das Datum der ersetzenden Zeile', () => {
