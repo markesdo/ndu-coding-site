@@ -15,7 +15,7 @@
       "datum": "2026-10-22",
       "entscheidung": "Kein Mittagsgeschäft",
       "grund": "Mittags ist die Bar halb leer",
-      "beleg": "getestet",
+      "beleg": "getan",
       "belegIds": []
     },
     {
@@ -23,7 +23,7 @@
       "datum": "2026-11-05",
       "entscheidung": "Zielgruppe: Pendler*innen nach Wien und Linz, 7:15–7:45",
       "grund": "3 von 5 Interviewten fahren Richtung Linz",
-      "beleg": "beobachtet",
+      "beleg": "erzaehlt",
       "belegIds": ["I1", "I3", "I4"],
       "ersetzt": "D1"
     },
@@ -32,7 +32,7 @@
       "datum": "2026-11-05",
       "entscheidung": "Vorbestellen vor der Ankunft verworfen",
       "grund": "3 von 5 entscheiden erst beim Ankommen",
-      "beleg": "beobachtet",
+      "beleg": "erzaehlt",
       "belegIds": ["T1", "I1-2", "I3-1", "I5-3"]
     }
   ]

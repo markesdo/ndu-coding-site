@@ -16,7 +16,7 @@
       "text": "Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann.",
       "art": "machbar",
       "wichtig": "hoch",
-      "beleg": "getestet",
+      "beleg": "getan",
       "belegIds": []
     },
     {
@@ -32,7 +32,7 @@
       "text": "Wir glauben, dass sich die zusätzlichen Bestellungen ohne eine weitere Kraft am Morgen rechnen.",
       "art": "wirtschaftlich",
       "wichtig": "niedrig",
-      "beleg": "getestet",
+      "beleg": "getan",
       "belegIds": []
     }
   ]

@@ -3,8 +3,16 @@ import { z } from 'zod';
 import { istId, type IdPraefix } from '../ids';
 
 // Reihenfolge ist die Skala „sagen → tun“.
-export const BELEGSTUFEN = ['keiner', 'gesagt', 'beobachtet', 'getestet'] as const;
+export const BELEGSTUFEN = ['keiner', 'gesagt', 'erzaehlt', 'getan'] as const;
 export type Belegstufe = (typeof BELEGSTUFEN)[number];
+
+// Anzeigetexte wie auf den Kursseiten (Skala im Entscheidungslog).
+export const BELEGSTUFE_TEXT: Record<Belegstufe, string> = {
+  keiner: 'noch keiner',
+  gesagt: 'gesagt',
+  erzaehlt: 'erzählt',
+  getan: 'getan',
+};
 
 export interface Feldfehler {
   pfad: string;
@@ -12,7 +20,7 @@ export interface Feldfehler {
 }
 
 export const belegstufe = z.enum(BELEGSTUFEN, {
-  error: 'Der Beleg muss „keiner“, „gesagt“, „beobachtet“ oder „getestet“ sein.',
+  error: 'Der Beleg muss „noch keiner“, „gesagt“, „erzählt“ oder „getan“ sein.',
 });
 
 // Pflichtfeld als Text; leer ist erlaubt (Entwürfe), Prüflisten-Hinweise sind keine Schemafehler.

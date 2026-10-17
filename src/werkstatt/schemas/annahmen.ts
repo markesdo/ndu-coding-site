@@ -42,12 +42,12 @@ export type Quadrant = 'ol' | 'or' | 'ul' | 'ur';
 // Wird abgeleitet, nie eingegeben: oben = wichtig, rechts = belegt. „ol“ heißt zuerst testen.
 export function quadrant(a: Pick<Annahme, 'wichtig' | 'beleg'>): Quadrant {
   const oben = a.wichtig === 'hoch';
-  const rechts = a.beleg === 'beobachtet' || a.beleg === 'getestet';
+  const rechts = a.beleg === 'erzaehlt' || a.beleg === 'getan';
   return `${oben ? 'o' : 'u'}${rechts ? 'r' : 'l'}` as Quadrant;
 }
 
 const Y: Record<Annahme['wichtig'], number> = { hoch: 0.85, mittel: 0.5, niedrig: 0.15 };
-const X: Record<Belegstufe, number> = { keiner: 0.1, gesagt: 0.35, beobachtet: 0.65, getestet: 0.9 };
+const X: Record<Belegstufe, number> = { keiner: 0.1, gesagt: 0.35, erzaehlt: 0.65, getan: 0.9 };
 const VERSATZ = 0.06;
 
 const klemmen = (n: number) => Math.min(1, Math.max(0, n));

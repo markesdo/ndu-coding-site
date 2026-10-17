@@ -48,7 +48,7 @@ describe('ARTEFAKTE', () => {
     });
   }
   it('Belegstufen in dieser Reihenfolge', () => {
-    expect([...BELEGSTUFEN]).toEqual(['keiner', 'gesagt', 'beobachtet', 'getestet']);
+    expect([...BELEGSTUFEN]).toEqual(['keiner', 'gesagt', 'erzaehlt', 'getan']);
   });
   it('Migrationstabelle ist (noch) leer', () => {
     expect(Object.keys(MIGRATIONEN)).toEqual([]);
@@ -177,16 +177,16 @@ describe('quadrant', () => {
   it('hoch + keiner → ol (zuerst testen)', () => {
     expect(quadrant({ wichtig: 'hoch', beleg: 'keiner' })).toBe('ol');
   });
-  it('niedrig + getestet → ur', () => {
-    expect(quadrant({ wichtig: 'niedrig', beleg: 'getestet' })).toBe('ur');
+  it('niedrig + getan → ur', () => {
+    expect(quadrant({ wichtig: 'niedrig', beleg: 'getan' })).toBe('ur');
   });
   it('alle Kombinationen', () => {
     expect(quadrant({ wichtig: 'hoch', beleg: 'gesagt' })).toBe('ol');
-    expect(quadrant({ wichtig: 'hoch', beleg: 'beobachtet' })).toBe('or');
-    expect(quadrant({ wichtig: 'hoch', beleg: 'getestet' })).toBe('or');
+    expect(quadrant({ wichtig: 'hoch', beleg: 'erzaehlt' })).toBe('or');
+    expect(quadrant({ wichtig: 'hoch', beleg: 'getan' })).toBe('or');
     expect(quadrant({ wichtig: 'mittel', beleg: 'keiner' })).toBe('ul');
     expect(quadrant({ wichtig: 'niedrig', beleg: 'gesagt' })).toBe('ul');
-    expect(quadrant({ wichtig: 'mittel', beleg: 'beobachtet' })).toBe('ur');
+    expect(quadrant({ wichtig: 'mittel', beleg: 'erzaehlt' })).toBe('ur');
   });
 });
 
@@ -194,8 +194,8 @@ describe('punkt', () => {
   it('Grundwerte einer allein stehenden Annahme', () => {
     expect(punkt(a('hoch', 'keiner'), [])).toEqual({ x: 0.1, y: 0.85 });
     expect(punkt(a('mittel', 'gesagt'), [])).toEqual({ x: 0.35, y: 0.5 });
-    expect(punkt(a('niedrig', 'getestet'), [])).toEqual({ x: 0.9, y: 0.15 });
-    expect(punkt(a('hoch', 'beobachtet'), [])).toEqual({ x: 0.65, y: 0.85 });
+    expect(punkt(a('niedrig', 'getan'), [])).toEqual({ x: 0.9, y: 0.15 });
+    expect(punkt(a('hoch', 'erzaehlt'), [])).toEqual({ x: 0.65, y: 0.85 });
   });
   it('zwei Annahmen in derselben Zelle bekommen verschiedene Punkte, nach rechts unten versetzt', () => {
     const p1 = a('hoch', 'keiner', 'A1');
@@ -213,7 +213,7 @@ describe('punkt', () => {
     expect(punkt(p2, [p1, p2])).toEqual({ x: 0.35, y: 0.85 });
   });
   it('Versatz wird auf [0, 1] geklemmt', () => {
-    const viele = Array.from({ length: 30 }, (_, i) => a('niedrig', 'getestet', `A${i + 1}`));
+    const viele = Array.from({ length: 30 }, (_, i) => a('niedrig', 'getan', `A${i + 1}`));
     for (const p of viele) {
       const k = punkt(p, viele);
       expect(k.x).toBeLessThanOrEqual(1);
