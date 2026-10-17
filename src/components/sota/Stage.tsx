@@ -74,6 +74,8 @@ export default function Stage({ title, steps, children }: StageProps) {
   useEffect(() => {
     const onDocKey = (e: globalThis.KeyboardEvent) => {
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      // Schon behandelt (z. B. blättert der Beamer die Seite in Layout.astro): nicht zusätzlich die Stage weiterschalten.
+      if (e.defaultPrevented) return;
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
       const aktiv = document.activeElement;
       if (aktiv && aktiv !== document.body) return;

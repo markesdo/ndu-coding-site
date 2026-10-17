@@ -83,7 +83,7 @@ const { vorher, danach } = nachbarn(path);
       </main>
     </div>
     <script>
-      import { aktuelleFolie, timerFuerT, weiter as folieWeiter, zurueck as folieZurueck } from '../components/folien';
+      import { aktuelleFolie, tasteSteuertFolien, tastenZiel, timerFuerT, weiter as folieWeiter, zurueck as folieZurueck } from '../components/folien';
       const btn = document.getElementById('menu-btn');
       const sb = document.getElementById('sidebar');
       btn?.addEventListener('click', () => sb?.classList.toggle('open'));
@@ -142,12 +142,12 @@ const { vorher, danach } = nachbarn(path);
       addEventListener('storage', (e) => { if (e.key === 'ndu-seitenleiste') setLeiste(e.newValue === 'zu', false); });
       // Tastenkürzel nicht beim Tippen, nicht bei gehaltener Taste, und nicht solange ein Dialog (Screenshot-Präsentation)
       // oder ein Vollbild die Tasten hat. defaultPrevented: Die SOTA-Bühne nimmt ←/→ selbst, solange sie den Fokus hat.
-      const tastenFrei = (e: KeyboardEvent) => {
-        if (e.defaultPrevented || e.repeat) return false;
-        const t = e.target as HTMLElement | null;
-        if (t?.closest?.('input, textarea, select, [contenteditable]') || t?.isContentEditable) return false;
-        return !document.querySelector('dialog[open]') && !document.fullscreenElement;
-      };
+      const tastenFrei = (e: KeyboardEvent) =>
+        tasteSteuertFolien({
+          schonBehandelt: e.defaultPrevented, wiederholt: e.repeat,
+          dialogOffen: !!document.querySelector('dialog[open]'), vollbild: !!document.fullscreenElement,
+          ziel: tastenZiel((e.composedPath()[0] ?? e.target) as HTMLElement | null),
+        });
       document.addEventListener('keydown', (e) => {
         // „[“ braucht auf deutscher Tastatur Wahl (Mac: ⌥5) bzw. AltGr (Windows: meldet Strg+Alt) – das zählt nicht als Kürzel.
         if (e.key !== '[' || e.metaKey || (e.ctrlKey && !e.altKey) || !tastenFrei(e)) return;
