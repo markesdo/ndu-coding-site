@@ -286,7 +286,7 @@ Plan B für den 22.10.: Fällt Login, GitHub oder Connector aus, arbeiten die St
 1. GitHub-Org `ndu-innolab` anlegen (Name frei, geprüft 17.10.).
 2. GitHub App „NDU Werkstatt“ registrieren und auf der Org mit „All repositories“ installieren (Schritt-für-Schritt-Anleitung im Plan).
 3. Vorlagen-Repo `mappe-vorlage-2026` freigeben (Inhalt liefert ein Agent).
-4. Vercel-Umgebungsvariablen setzen (Prod) – nach Okay, Werte nie im Chat.
+4. Vercel-Umgebungsvariablen setzen (Prod und Preview) – nach Okay, Werte nie im Chat. `WERKSTATT_SESSION_SECRET` mindestens 32 Zeichen (`openssl rand -hex 32`), sonst startet die Werkstatt nicht.
 5. Freigabe für Merges, Deploy und das Teilen der Setup-Seite.
 
 Die GitHub-IDs der Kohorte 2026 sind ermittelt (17.10.) und kommen nur in `WERKSTATT_ZUGANG`, nicht in dieses Repo. Kürzel legt Markus fest.
