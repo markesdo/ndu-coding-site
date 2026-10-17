@@ -17,7 +17,7 @@ exports[`README > Titel, Kohorte, Link nur bei vorhandenen Dateien 1`] = `
 exports[`Snapshots der Kaffeebar-Beispiele > annahmen 1`] = `
 "# Annahmen
 
-**Stand:** 22.10.2026
+Stand: 22.10.2026
 Riskanteste Annahme: A1
 
 | ID | Wir glauben, dass … | Art | Wichtig | Beleg |

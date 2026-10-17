@@ -82,11 +82,43 @@ describe('Annahmen', () => {
   it('Art und Beleg ausgeschrieben, Datum österreichisch', () => {
     expect(s).toContain('| wünschenswert | hoch | noch keiner |');
     expect(s).toContain('| **A2** | Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann. | machbar | hoch | getan |');
-    expect(s).toContain('**Stand:** 22.10.2026');
+    expect(s).toContain('Stand: 22.10.2026');
   });
   it('senkrechter Strich in der Tabelle wird maskiert', () => {
     const d = { ...laden('annahmen'), annahmen: [{ ...laden('annahmen').annahmen[0], text: 'a | b\nc' }] };
     expect(rendern('annahmen', d)).toContain('a \\| b c');
+  });
+});
+
+const FALSCH = 'x\n## Gefälscht\nfoo';
+const hatFalschzeile = (s: string) => s.split('\n').some((z) => z.startsWith('## Gefälscht'));
+
+describe('Eingeschleuste Zeilen', () => {
+  it('Brief: kein Feld beginnt eine Überschrift', () => {
+    const b = laden('brief');
+    const s = rendern('brief', { ...b, fuerWen: FALSCH, problem: FALSCH, heuteGeloestDurch: FALSCH, produktSatz: FALSCH, nicht: [FALSCH], offeneFragen: [FALSCH], outcome: { wirGlauben: FALSCH, wirMerkenEs: FALSCH } });
+    expect(hatFalschzeile(s)).toBe(false);
+    expect(s).toContain('\\## Gefälscht');
+    expect(s.split('\n').filter((z) => /^## /.test(z))).toHaveLength(7);
+  });
+  it('Entscheidungen: Zeile bleibt eine Zeile', () => {
+    const e = laden('entscheidungen');
+    const s = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: FALSCH, grund: FALSCH, belegIds: [] }] });
+    expect(hatFalschzeile(s)).toBe(false);
+    expect(s.split('\n').filter((z) => z.startsWith('- '))).toHaveLength(1);
+  });
+  it('Leitfaden: Felder bleiben einzeilig', () => {
+    const l = laden('leitfaden');
+    const s = rendern('leitfaden', { ...l, ziel: FALSCH, wen: FALSCH, einstieg: FALSCH, abschluss: FALSCH, fragen: [{ id: 'F1', art: 'kern', text: FALSCH }, { id: 'F2', art: 'nachfrage', text: FALSCH }] });
+    expect(hatFalschzeile(s)).toBe(false);
+    expect(s.split('\n').filter((z) => z.startsWith('## '))).toHaveLength(4);
+  });
+  it('Annahmen: Tabellenzeilen bleiben eine Zeile, Backslash maskiert', () => {
+    const a = laden('annahmen');
+    const s = rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[0], text: FALSCH + ' a\\b', belegIds: ['I1'] }] });
+    expect(hatFalschzeile(s)).toBe(false);
+    expect(s.split('\n').filter((z) => z.startsWith('| **A1**'))).toHaveLength(1);
+    expect(s).toContain('a\\\\b');
   });
 });
 

@@ -1,5 +1,5 @@
 import { BELEGSTUFE_TEXT, type Annahme, type Annahmen } from '../schemas/index.js';
-import { datumAt, zelle } from './format.js';
+import { datumAt, einzeilig, zelle } from './format.js';
 
 const ART_TEXT: Record<Annahme['art'], string> = {
   wuenschenswert: 'wünschenswert',
@@ -14,13 +14,13 @@ export function annahmenRendern(d: Annahmen): string {
 |----|---------------------|-----|---------|-------|`;
   const zeilen = d.annahmen.map((a) => {
     const id = a.id === d.riskanteste ? `**${a.id}** (riskanteste)` : `**${a.id}**`;
-    const beleg = BELEGSTUFE_TEXT[a.beleg] + (a.belegIds.length > 0 ? ` (${a.belegIds.join(', ')})` : '');
+    const beleg = BELEGSTUFE_TEXT[a.beleg] + (a.belegIds.length > 0 ? ` (${a.belegIds.map(zelle).join(', ')})` : '');
     return `| ${id} | ${zelle(a.text)} | ${ART_TEXT[a.art]} | ${a.wichtig} | ${beleg} |`;
   });
   return `# Annahmen
 
-**Stand:** ${datumAt(d.stand)}
-Riskanteste Annahme: ${d.riskanteste ?? 'noch keine gewählt'}
+Stand: ${datumAt(d.stand)}
+Riskanteste Annahme: ${d.riskanteste !== undefined ? einzeilig(d.riskanteste) : 'noch keine gewählt'}
 
 ${d.annahmen.length > 0 ? [kopf, ...zeilen].join('\n') : 'Noch keine Annahmen eingetragen.'}
 `;
