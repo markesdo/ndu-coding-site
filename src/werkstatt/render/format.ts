@@ -6,16 +6,21 @@ export function datumAt(iso: string): string {
   return t ? `${t[3]}.${t[2]}.${t[1]}` : iso;
 }
 
+// CommonMark kennt \n, \r\n und ein einzelnes \r als Zeilenende; hier wird alles zu \n.
+function zeilenende(s: string): string {
+  return s.replace(/\r\n?/g, '\n');
+}
+
 // Einzeilige Felder: Zeilenumbrüche werden zu Leerzeichen, so kann kein Text eine neue Zeile beginnen.
 export function einzeilig(s: string): string {
-  return s.replace(/\s*\r?\n\s*/g, ' ').trim();
+  return zeilenende(s).replace(/\s*\n\s*/g, ' ').trim();
 }
 
 // Mehrzeilige Felder: Umbrüche bleiben, aber keine Zeile darf als Überschrift, Liste, Zitat,
 // Tabelle, Codeblock oder Trennlinie beginnen. Ein Backslash davor macht das Zeichen wörtlich.
 export function mehrzeilig(s: string): string {
-  return s
-    .split(/\r?\n/)
+  return zeilenende(s)
+    .split('\n')
     .map((z) => z.replace(/^(\s*)(?=[#>*+\-=|`~]|\d+[.)]\s)/, '$1\\'))
     .join('\n');
 }

@@ -90,16 +90,16 @@ describe('Annahmen', () => {
   });
 });
 
-const FALSCH = 'x\n## Gefälscht\nfoo';
-const hatFalschzeile = (s: string) => s.split('\n').some((z) => z.startsWith('## Gefälscht'));
+const FALSCHE = ['x\n## Gefälscht\nfoo', 'x\r## Gefälscht\rfoo', 'x\r\n## Gefälscht\r\nfoo'];
+const hatFalschzeile = (s: string) => s.split(/\r\n|\r|\n/).some((z) => z.startsWith('## Gefälscht'));
 
-describe('Eingeschleuste Zeilen', () => {
+describe.each(FALSCHE)('Eingeschleuste Zeilen (%j)', (FALSCH) => {
   it('Brief: kein Feld beginnt eine Überschrift', () => {
     const b = laden('brief');
     const s = rendern('brief', { ...b, fuerWen: FALSCH, problem: FALSCH, heuteGeloestDurch: FALSCH, produktSatz: FALSCH, nicht: [FALSCH], offeneFragen: [FALSCH], outcome: { wirGlauben: FALSCH, wirMerkenEs: FALSCH } });
     expect(hatFalschzeile(s)).toBe(false);
     expect(s).toContain('\\## Gefälscht');
-    expect(s.split('\n').filter((z) => /^## /.test(z))).toHaveLength(7);
+    expect(s.split(/\r\n|\r|\n/).filter((z) => /^## /.test(z))).toHaveLength(7);
   });
   it('Entscheidungen: Zeile bleibt eine Zeile', () => {
     const e = laden('entscheidungen');
