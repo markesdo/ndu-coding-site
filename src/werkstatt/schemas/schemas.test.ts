@@ -110,6 +110,29 @@ describe('Entscheidungen', () => {
     e.entscheidungen[2].ersetzt = 'D3';
     expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.2.ersetzt');
   });
+  it('ersetzt zeigt auf eine spätere Zeile → Fehler', () => {
+    const e = klon(entscheidungen);
+    delete e.entscheidungen[2].ersetzt;
+    e.entscheidungen[0].ersetzt = 'D2';
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.0.ersetzt');
+  });
+  it('D1 ersetzt D2 und D2 ersetzt D1 (Zyklus) → Fehler', () => {
+    const e = klon(entscheidungen);
+    delete e.entscheidungen[2].ersetzt;
+    e.entscheidungen[0].ersetzt = 'D2';
+    e.entscheidungen[1].ersetzt = 'D1';
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.0.ersetzt');
+  });
+  it('zwei Zeilen ersetzen dieselbe Zeile → Fehler an der zweiten', () => {
+    const e = klon(entscheidungen);
+    e.entscheidungen[1].ersetzt = 'D1'; // D3 ersetzt D1 schon
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.2.ersetzt');
+  });
+  it('eine frühere Zeile ersetzen, jede höchstens einmal → gültig', () => {
+    const e = klon(entscheidungen);
+    e.entscheidungen[3].ersetzt = 'D2';
+    expect(artefaktParsen('entscheidungen', e).ok).toBe(true);
+  });
   it('ungültige ID-Form und falsches Präfix → Fehler', () => {
     const e = klon(entscheidungen);
     e.entscheidungen[0].id = 'A1';
