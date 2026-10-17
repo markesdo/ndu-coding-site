@@ -37,7 +37,7 @@ export function clientErlaubt(clientId: string): ErlaubterClient | null {
   return { redirectUris: [CLAUDE_REDIRECT] };
 }
 
-// Jede neue client_id einmal pro Tag ins Log (für die Probe in T15). Nur die öffentliche client_id, nichts sonst.
+// Jede neue client_id einmal pro Tag ins Log, damit ein neuer Client (z. B. ChatGPT, Phase 1b) auffällt. Nur die öffentliche client_id.
 // Nach bestem Bemühen: Fällt der Cache aus, wird lieber doppelt als gar nicht geloggt, und die Anmeldung läuft weiter.
 export async function clientMelden(abh: Abhaengigkeiten, clientId: string): Promise<void> {
   const tag = new Date(abh.jetzt()).toISOString().slice(0, 10);
