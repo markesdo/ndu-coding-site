@@ -14,11 +14,11 @@
 // CSRF (nur Origin, Formular erlaubt) für POST /api/werkstatt/oauth/authorize prüft schon appErstellen.
 import { Hono, type Context } from 'hono';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
-import { gleich, sichererPfad } from '../../../lib/kurszugang.js';
+import { b64url, gleich, sichererPfad } from '../../../lib/kurszugang.js';
 import { KOHORTEN } from '../../kohorten/index.js';
 import { mitgliedschaften, type Rolle } from '../../zugang.js';
 import { json } from '../antwort.js';
-import { sitzungDerAnfrage } from '../sitzung.js';
+import { sitzungMitMitgliedschaft } from '../sitzung.js';
 import type { Abhaengigkeiten, WerkstattEnv } from '../typen.js';
 import { clientErlaubt, clientMelden } from './clients.js';
 import { ISSUER_PFAD, SCOPE, issuer, issuerMetadaten, resource, resourceMetadaten } from './metadaten.js';
@@ -49,28 +49,32 @@ const jetztSek = (abh: Abhaengigkeiten) => Math.floor(abh.jetzt() / 1000);
 
 async function sha256(text: string): Promise<string> {
   const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-  return Buffer.from(h).toString('base64url');
+  return b64url(h);
 }
 
 // Gilt die Person noch in dieser Kohorte mit dieser Rolle? Archivierte Kohorte oder aus WERKSTATT_ZUGANG entfernt: nein.
+// (Die Sitzung prüft das selbst, siehe sitzungMitMitgliedschaft; dies ist dieselbe Prüfung für Codes und Tokens.)
 function mitgliedAktiv(abh: Abhaengigkeiten, githubId: number, kohorte: string, rolle: Rolle): boolean {
   return mitgliedschaften(abh.umgebung.zugang, githubId, KOHORTEN).some((m) => m.kohorte === kohorte && m.rolle === rolle);
 }
 
-function claimsAus(inhalt: Record<string, unknown>): Omit<TokenClaims, 'exp'> | null {
+// Jeder Umschlag trägt den Issuer, der ihn ausgestellt hat (origin(c) + /api/werkstatt/oauth). Eine Preview mit denselben
+// MCP_TOKEN_KEYS nimmt so keine Prod-Tokens an und umgekehrt.
+function claimsAus(inhalt: Record<string, unknown>, iss: string): Omit<TokenClaims, 'exp'> | null {
   const { githubId, kohorte, rolle, clientId } = inhalt;
+  if (inhalt.iss !== iss) return null;
   if (!Number.isSafeInteger(githubId) || typeof kohorte !== 'string' || typeof clientId !== 'string') return null;
   if (rolle !== 'studierende' && rolle !== 'lehrende') return null;
   return { githubId: githubId as number, kohorte, rolle, clientId };
 }
 
-// Für den MCP-Endpunkt (T12): Claims eines gültigen Access-Tokens oder null.
-export async function bearerPruefen(abh: Abhaengigkeiten, header: string | null | undefined): Promise<TokenClaims | null> {
+// Für den MCP-Endpunkt (T12): Claims eines gültigen Access-Tokens oder null. iss = issuer(c) der Anfrage.
+export async function bearerPruefen(abh: Abhaengigkeiten, header: string | null | undefined, iss: string): Promise<TokenClaims | null> {
   const treffer = /^Bearer +([A-Za-z0-9._-]+)$/i.exec(header ?? '');
   if (!treffer) return null;
   const inhalt = await oeffnen('access', treffer[1], abh.umgebung.tokenKeys, jetztSek(abh));
   if (!inhalt) return null;
-  const claims = claimsAus(inhalt);
+  const claims = claimsAus(inhalt, iss);
   if (!claims || !mitgliedAktiv(abh, claims.githubId, claims.kohorte, claims.rolle)) return null;
   return { ...claims, exp: inhalt.exp };
 }
@@ -141,8 +145,6 @@ function zurueckZumClient(c: Context, a: Anfrage, werte: Record<string, string>)
   return c.redirect(ziel.toString(), 302);
 }
 
-const NICHT_FREI = 'Du bist für keinen laufenden Kurs freigeschaltet. Schreib Markus deinen GitHub-Namen.';
-
 // --- token ---
 
 type OAuthFehler = 'invalid_request' | 'invalid_client' | 'invalid_grant' | 'unsupported_grant_type' | 'invalid_target';
@@ -154,7 +156,7 @@ function oauthFehler(c: Context, status: ContentfulStatusCode, error: OAuthFehle
 async function tokenPaar(c: Context, abh: Abhaengigkeiten, claims: Omit<TokenClaims, 'exp'>): Promise<Response> {
   const keys = abh.umgebung.tokenKeys;
   const t = jetztSek(abh);
-  const inhalt = { githubId: claims.githubId, kohorte: claims.kohorte, rolle: claims.rolle, clientId: claims.clientId };
+  const inhalt = { githubId: claims.githubId, kohorte: claims.kohorte, rolle: claims.rolle, clientId: claims.clientId, iss: issuer(c) };
   const access = await versiegeln('access', inhalt, ACCESS_SEKUNDEN, keys, t);
   const refresh = await versiegeln('refresh', inhalt, REFRESH_SEKUNDEN, keys, t);
   return c.json(
@@ -185,7 +187,9 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     const a = p.anfrage;
     await clientMelden(abh, a.clientId);
 
-    const s = await sitzungDerAnfrage(c, abh);
+    // Ohne gültige Sitzung (auch: nicht mehr in der Zugangsliste, Kohorte archiviert) zur Anmeldung; die sagt dann,
+    // falls nötig, „nicht freigeschaltet“.
+    const s = (await sitzungMitMitgliedschaft(c, abh))?.sitzung;
     if (!s) {
       const weiter = rueckweg(a);
       // sichererPfad ließe ein zu langes oder seltsames Ziel stillschweigend zur Startseite werden: lieber gleich sagen.
@@ -193,7 +197,6 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
       c.header('Cache-Control', 'no-store');
       return c.redirect(`${LOGIN}?weiter=${encodeURIComponent(weiter)}`, 302);
     }
-    if (!mitgliedAktiv(abh, s.githubId, s.kohorte, s.rolle)) return meldungsSeite(c, 403, 'Nicht freigeschaltet', NICHT_FREI);
 
     return zustimmungsSeite(c, { zielHost: new URL(a.redirectUri).host, login: s.login, felder: felder(a), aktion: AUTHORIZE });
   });
@@ -205,14 +208,13 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     if ('seite' in p) return p.seite;
     const a = p.anfrage;
 
-    const s = await sitzungDerAnfrage(c, abh);
+    const s = (await sitzungMitMitgliedschaft(c, abh))?.sitzung;
     if (!s) {
       return meldungsSeite(c, 401, 'Anmeldung abgelaufen', 'Bitte melde dich noch einmal mit GitHub an.', {
         text: 'Mit GitHub anmelden',
         href: `${LOGIN}?weiter=${encodeURIComponent(sichererPfad(rueckweg(a)))}`,
       });
     }
-    if (!mitgliedAktiv(abh, s.githubId, s.kohorte, s.rolle)) return meldungsSeite(c, 403, 'Nicht freigeschaltet', NICHT_FREI);
 
     const entscheidung = wert('entscheidung');
     if (entscheidung === 'ablehnen') return zurueckZumClient(c, a, { error: 'access_denied' });
@@ -220,7 +222,7 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
 
     const code = await versiegeln(
       'code',
-      { clientId: a.clientId, redirectUri: a.redirectUri, codeChallenge: a.codeChallenge, githubId: s.githubId, kohorte: s.kohorte, rolle: s.rolle },
+      { clientId: a.clientId, redirectUri: a.redirectUri, codeChallenge: a.codeChallenge, githubId: s.githubId, kohorte: s.kohorte, rolle: s.rolle, iss: issuer(c) },
       CODE_SEKUNDEN,
       abh.umgebung.tokenKeys,
       jetztSek(abh),
@@ -253,7 +255,7 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
       const verifier = wert('code_verifier');
       if (!code || !wert('redirect_uri') || !verifier) return oauthFehler(c, 400, 'invalid_request', 'code, redirect_uri und code_verifier sind Pflicht.');
       const inhalt = await oeffnen('code', code, keys, t);
-      const claims = inhalt && claimsAus(inhalt);
+      const claims = inhalt && claimsAus(inhalt, issuer(c));
       if (!inhalt || !claims || claims.clientId !== clientId || inhalt.redirectUri !== wert('redirect_uri')) {
         return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
       }
@@ -271,7 +273,7 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     const refresh = wert('refresh_token');
     if (!refresh) return oauthFehler(c, 400, 'invalid_request', 'refresh_token ist Pflicht.');
     const inhalt = await oeffnen('refresh', refresh, keys, t);
-    const claims = inhalt && claimsAus(inhalt);
+    const claims = inhalt && claimsAus(inhalt, issuer(c));
     if (!claims || claims.clientId !== clientId) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     if (!mitgliedAktiv(abh, claims.githubId, claims.kohorte, claims.rolle)) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre.

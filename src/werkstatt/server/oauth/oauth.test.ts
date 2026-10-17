@@ -4,7 +4,7 @@ import { kohorteTest } from '../../kohorten/test';
 import { appErstellen } from '../app';
 import { mapCache } from '../cache';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
-import { COOKIE_WERKSTATT, sitzungErstellen } from '../sitzung';
+import { cookieName, sitzungErstellen } from '../sitzung';
 import type { GithubIdentitaet } from '../typen';
 import { bearerPruefen } from './routen';
 
@@ -24,10 +24,11 @@ function pkce() {
 }
 const form = (o: Record<string, string>) => new URLSearchParams(o).toString();
 
-function aufbau(opts: { origin?: string } = {}) {
+function aufbau(opts: { origin?: string; wieBei?: Aufbau } = {}) {
   const uhr = { ms: START };
   const umgebung = {
-    ...lokaleUmgebung(),
+    // wieBei: dieselben Schlüssel und Secrets wie ein anderer Aufbau (z. B. Preview neben Prod).
+    ...(opts.wieBei?.abh.umgebung ?? lokaleUmgebung()),
     zugang: { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }] } },
     origin: opts.origin ?? null,
   };
@@ -38,12 +39,19 @@ function aufbau(opts: { origin?: string } = {}) {
   const abh = lokaleAbhaengigkeiten({ umgebung, github, jetzt: () => uhr.ms, cache: mapCache(() => uhr.ms) });
   const app = appErstellen(abh);
   const anfrage = (pfad: string, init: RequestInit = {}) => app.request(pfad.startsWith('http') ? pfad : `${BASIS}${pfad}`, init);
+  // Sitzungen nur für Personen aus zugang: die Sitzung wird gegen die aktuelle Zugangsliste geprüft (T4).
   const sitzung = async (githubId = 1001, rolle: 'studierende' | 'lehrende' = 'studierende') =>
-    `${COOKIE_WERKSTATT}=${await sitzungErstellen({ githubId, login: 'x', kohorte: 'test', rolle, exp: Math.floor(uhr.ms / 1000) + 3600 }, umgebung.sessionSecret)}`;
+    `${cookieName(umgebung.lokal)}=${await sitzungErstellen({ githubId, login: 'x', kohorte: 'test', rolle, exp: Math.floor(uhr.ms / 1000) + 3600 }, umgebung.sessionSecret)}`;
   return { app, abh, uhr, anfrage, sitzung };
 }
 
-type Aufbau = ReturnType<typeof aufbau>;
+interface Aufbau {
+  app: ReturnType<typeof appErstellen>;
+  abh: ReturnType<typeof lokaleAbhaengigkeiten>;
+  uhr: { ms: number };
+  anfrage(pfad: string, init?: RequestInit): Response | Promise<Response>;
+  sitzung(githubId?: number, rolle?: 'studierende' | 'lehrende'): Promise<string>;
+}
 
 function authorizeParameter(challenge: string, extra: Record<string, string> = {}) {
   return {
@@ -187,7 +195,7 @@ describe('oauth/authorize', () => {
     const cb = await h.anfrage(`/api/werkstatt/auth/callback?code=x&state=${state}`, { headers: { Cookie: stateCookie } });
     expect(cb.status).toBe(302);
     expect(cb.headers.get('location')).toBe(weiter);
-    const sitzung = cb.headers.getSetCookie().find((c) => c.startsWith(`${COOKIE_WERKSTATT}=`))!.split(';')[0];
+    const sitzung = cb.headers.getSetCookie().find((c) => c.startsWith(`${cookieName(true)}=`))!.split(';')[0];
 
     const seite = await h.anfrage(weiter, { headers: { Cookie: sitzung } });
     expect(seite.status).toBe(200);
@@ -220,10 +228,13 @@ describe('oauth/authorize', () => {
     expect(html).toContain('&quot;&gt;&lt;script&gt;');
   });
 
-  it('nicht (mehr) freigeschaltet: keine Zustimmungsseite', async () => {
+  it('nicht (mehr) freigeschaltet: keine Zustimmungsseite, sondern zur Anmeldung', async () => {
     const h = aufbau();
-    const r = await h.anfrage(`/api/werkstatt/oauth/authorize?${form(authorizeParameter(pkce().challenge))}`, { headers: { Cookie: await h.sitzung(4242) } });
-    expect(r.status).toBe(403);
+    const cookie = await h.sitzung();
+    h.abh.umgebung.zugang = { test: { lehrende: [1000], studierende: [] } };
+    const r = await h.anfrage(`/api/werkstatt/oauth/authorize?${form(authorizeParameter(pkce().challenge))}`, { headers: { Cookie: cookie } });
+    expect(r.status).toBe(302);
+    expect(r.headers.get('location')).toMatch(/^\/api\/werkstatt\/auth\/login\?weiter=/);
     expect(await r.text()).not.toContain('method="post"');
   });
 
@@ -300,7 +311,7 @@ describe('oauth/token', () => {
     expect(paar.token_type).toBe('Bearer');
     expect(paar.expires_in).toBe(3600);
     expect(paar.refresh_token).toBeTruthy();
-    const claims = await bearerPruefen(h.abh, `Bearer ${paar.access_token}`);
+    const claims = await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER);
     expect(claims).toStrictEqual({ githubId: 1001, kohorte: 'test', rolle: 'studierende', clientId: CLAUDE_CLIENT, exp: Math.floor(START / 1000) + 3600 });
   });
 
@@ -358,7 +369,7 @@ describe('oauth/token', () => {
     const neu = await r.json();
     expect(neu.refresh_token).toBeTruthy();
     expect(neu.refresh_token).not.toBe(paar.refresh_token);
-    expect(await bearerPruefen(h.abh, `Bearer ${neu.access_token}`)).toMatchObject({ githubId: 1001 });
+    expect(await bearerPruefen(h.abh, `Bearer ${neu.access_token}`, ISSUER)).toMatchObject({ githubId: 1001 });
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
     // Das neue gilt weiter.
     expect((await token(h, { grant_type: 'refresh_token', refresh_token: neu.refresh_token })).status).toBe(200);
@@ -375,7 +386,7 @@ describe('oauth/token', () => {
     const h = aufbau();
     const paar = await tokenPaar(h);
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.access_token }));
-    expect(await bearerPruefen(h.abh, `Bearer ${paar.refresh_token}`)).toBeNull();
+    expect(await bearerPruefen(h.abh, `Bearer ${paar.refresh_token}`, ISSUER)).toBeNull();
   });
 
   it('Kohorte auf archiviert: Refresh invalid_grant, Access-Token gilt nicht mehr', async () => {
@@ -383,7 +394,7 @@ describe('oauth/token', () => {
     const paar = await tokenPaar(h);
     kohorteTest.status = 'archiviert';
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
-    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`)).toBeNull();
+    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER)).toBeNull();
   });
 
   it('Kohorte auf archiviert: Code einlösen invalid_grant', async () => {
@@ -422,27 +433,50 @@ describe('oauth/token', () => {
   });
 });
 
+describe('Bindung an den Issuer (Preview mit denselben Schlüsseln)', () => {
+  const PROD = 'https://ndu.datamonkeys.ai';
+
+  it('Access-Token einer anderen Origin: bearerPruefen null', async () => {
+    const h = aufbau();
+    const paar = await tokenPaar(h);
+    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER)).not.toBeNull();
+    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, `${PROD}/api/werkstatt/oauth`)).toBeNull();
+  });
+
+  it('Refresh-Token und Code einer anderen Origin: invalid_grant', async () => {
+    const preview = aufbau();
+    const prod = aufbau({ origin: PROD, wieBei: preview });
+    const paar = await tokenPaar(preview);
+    await erwarteInvalidGrant(await token(prod, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
+    const p = pkce();
+    const { code } = await codeHolen(preview, p.challenge);
+    await erwarteInvalidGrant(await token(prod, { grant_type: 'authorization_code', code, redirect_uri: CALLBACK, code_verifier: p.verifier }));
+    // Gegenprobe: dieselben Schlüssel, dieselbe Origin – gilt.
+    expect((await token(aufbau({ wieBei: preview }), { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).status).toBe(200);
+  });
+});
+
 describe('bearerPruefen', () => {
   it('ohne, mit Müll oder ohne Bearer: null', async () => {
     const h = aufbau();
     const paar = await tokenPaar(h);
     for (const kopf of [null, '', 'Bearer', 'Bearer x', `Basic ${paar.access_token}`, paar.access_token]) {
-      expect(await bearerPruefen(h.abh, kopf), String(kopf)).toBeNull();
+      expect(await bearerPruefen(h.abh, kopf, ISSUER), String(kopf)).toBeNull();
     }
-    expect(await bearerPruefen(h.abh, `bearer ${paar.access_token}`)).not.toBeNull();
+    expect(await bearerPruefen(h.abh, `bearer ${paar.access_token}`, ISSUER)).not.toBeNull();
   });
 
   it('nach einer Stunde abgelaufen', async () => {
     const h = aufbau();
     const paar = await tokenPaar(h);
     h.uhr.ms += 3600 * 1000;
-    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`)).toBeNull();
+    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER)).toBeNull();
   });
 
   it('Person aus WERKSTATT_ZUGANG entfernt: null', async () => {
     const h = aufbau();
     const paar = await tokenPaar(h);
     h.abh.umgebung.zugang = { test: { lehrende: [1000], studierende: [] } };
-    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`)).toBeNull();
+    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER)).toBeNull();
   });
 });

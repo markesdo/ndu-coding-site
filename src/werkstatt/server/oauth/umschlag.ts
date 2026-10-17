@@ -7,6 +7,7 @@
 //
 // Schlüssel aus MCP_TOKEN_KEYS (abh.umgebung.tokenKeys): versiegelt wird mit dem ersten, geöffnet mit jedem gelisteten.
 // Einen neuen kid vorne anstellen rotiert, ohne jemanden abzumelden; einen kid streichen macht seine Tokens ungültig.
+import { b64url } from '../../../lib/kurszugang.js';
 import type { Schluessel } from '../typen.js';
 
 export type UmschlagTyp = 'code' | 'access' | 'refresh';
@@ -48,7 +49,7 @@ export async function versiegeln(
   const roh = new Uint8Array(NONCE_BYTES + geheim.byteLength);
   roh.set(nonce);
   roh.set(new Uint8Array(geheim), NONCE_BYTES);
-  return `${VERSION}.${erster.kid}.${Buffer.from(roh).toString('base64url')}`;
+  return `${VERSION}.${erster.kid}.${b64url(roh)}`;
 }
 
 // Inhalt (mit `exp`, ohne `typ`) oder null für alles, was kein unversehrter, gültiger Umschlag dieses Typs unter einem
