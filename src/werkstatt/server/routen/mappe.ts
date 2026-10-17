@@ -22,7 +22,7 @@ const KONFLIKT = 'Inzwischen geändert – neu laden. Dein Entwurf bleibt erhalt
 const NICHT_LOESCHEN = 'Gespeicherte Entscheidungen lassen sich nicht löschen – ersetze sie stattdessen.';
 const NICHT_AENDERN = 'Gespeicherte Entscheidungen lassen sich nicht ändern – ersetze sie stattdessen.';
 // Was an einer gespeicherten Zeile fest ist (alles außer der ID selbst).
-const FESTE_FELDER = ['datum', 'entscheidung', 'grund', 'beleg', 'belegIds', 'ersetzt'] as const;
+const FESTE_FELDER = ['datum', 'entscheidung', 'grund', 'beleg', 'belegIds', 'belegNotiz', 'ersetzt'] as const;
 const NACHRICHT_HOECHSTENS = 100;
 // Rückhalt: Grapheme können beliebig lang sein (kombinierende Zeichen); mehr UTF-16-Einheiten kommen nie in den Commit.
 const NACHRICHT_EINHEITEN = 300;

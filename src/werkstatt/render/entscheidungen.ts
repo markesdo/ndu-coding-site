@@ -3,7 +3,9 @@ import { datumAt, einzeilig } from './format.js';
 
 function beleg(e: Entscheidung): string {
   const stufe = BELEGSTUFE_TEXT[e.beleg];
-  return e.belegIds.length > 0 ? `${stufe} (${e.belegIds.map(einzeilig).join(', ')})` : stufe;
+  const mitIds = e.belegIds.length > 0 ? `${stufe} (${e.belegIds.map(einzeilig).join(', ')})` : stufe;
+  // Leere Notiz (Entwurf) zählt wie keine.
+  return e.belegNotiz ? `${mitIds} – ${einzeilig(e.belegNotiz)}` : mitIds;
 }
 
 // Eine Zeile pro Entscheidung: Datum — Entscheidung — Grund — Beleg. Gelöscht wird nichts.

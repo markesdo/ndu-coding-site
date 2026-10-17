@@ -16,7 +16,8 @@
       "entscheidung": "Kein Mittagsgeschäft",
       "grund": "Mittags ist die Bar halb leer",
       "beleg": "getan",
-      "belegIds": []
+      "belegIds": [],
+      "belegNotiz": "Kassendaten September"
     },
     {
       "id": "D3",

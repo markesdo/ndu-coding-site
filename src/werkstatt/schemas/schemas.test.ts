@@ -143,6 +143,18 @@ describe('Entscheidungen', () => {
     e.entscheidungen[2].belegIds = ['I1', 'Interview 3'];
     expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.2.belegIds.1');
   });
+  it('belegNotiz ist optional, höchstens 120 Zeichen und einzeilig', () => {
+    const e = klon(entscheidungen);
+    e.entscheidungen[1].belegNotiz = 'x'.repeat(120);
+    expect(artefaktParsen('entscheidungen', e).ok).toBe(true);
+    e.entscheidungen[1].belegNotiz = 'x'.repeat(121);
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
+    expect(JSON.stringify(artefaktParsen('entscheidungen', e))).toContain('höchstens 120 Zeichen');
+    e.entscheidungen[1].belegNotiz = 'Kassendaten\nSeptember';
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
+    e.entscheidungen[1].belegNotiz = 5;
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
+  });
   it('unbekannte Belegstufe → Fehler', () => {
     const e = klon(entscheidungen);
     e.entscheidungen[0].beleg = 'stark';

@@ -72,7 +72,13 @@ export function gespeicherteIds(gespeichert: Entscheidungen | null): Set<string>
   return new Set(gespeichert?.entscheidungen.map((e) => e.id) ?? []);
 }
 
-const FELDER = ['id', 'datum', 'entscheidung', 'grund', 'beleg', 'belegIds', 'ersetzt'] as const;
+const FELDER = ['id', 'datum', 'entscheidung', 'grund', 'beleg', 'belegIds', 'belegNotiz', 'ersetzt'] as const;
+
+/** Setzt die Beleg-Notiz; leer entfernt das Feld ganz (optional, nie als leerer Text gespeichert). */
+export function belegNotizSetzen(e: Entscheidung, notiz: string): Entscheidung {
+  const { belegNotiz: _alt, ...rest } = e;
+  return notiz === '' ? rest : { ...rest, belegNotiz: notiz };
+}
 
 /** Alle Feldfehler der Zeile `i` (auch die einzelner Beleg-IDs), ohne doppelte. */
 export function zeileFehler(e: Entscheidung, i: number, fehler: (pfad: string) => string | undefined): string[] {

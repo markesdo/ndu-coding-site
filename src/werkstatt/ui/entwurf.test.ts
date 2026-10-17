@@ -143,6 +143,13 @@ describe('entwurfNormalisieren: falsch geformte Entwürfe lassen die Anzeige nic
     expect(r.annahmen[0]).toMatchObject({ id: 'A1', text: 'T', art: 'machbar', belegIds: ['I1', 'I2'] });
   });
 
+  it('belegNotiz einer Entscheidung bleibt erhalten und wird nicht erfunden', () => {
+    const leerE = ARTEFAKTE.entscheidungen.leer('2026-10-22');
+    const r = entwurfNormalisieren('entscheidungen', leerE, { entscheidungen: [{ id: 'D1', belegNotiz: 'Kassendaten' }, { id: 'D2' }] }) as { entscheidungen: Record<string, unknown>[] };
+    expect(r.entscheidungen[0]!.belegNotiz).toBe('Kassendaten');
+    expect('belegNotiz' in r.entscheidungen[1]!).toBe(false);
+  });
+
   it('verschachtelte Objekte und Stringlisten (Brief)', () => {
     const r = entwurfNormalisieren('brief', ARTEFAKTE.brief.leer('2026-10-22'), { outcome: 'x', nicht: ['a', 1, 'b'], offeneFragen: {} }) as Record<string, unknown>;
     expect(r.outcome).toStrictEqual({ wirGlauben: '', wirMerkenEs: '' });
