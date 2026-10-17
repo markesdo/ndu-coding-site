@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { aktuelleFolie, restText, tasteSteuertFolien, timerFuerT, weiter, zurueck } from './folien';
+import { aktuelleFolie, restText, tasteSteuertFolien, tastenZiel, timerFuerT, weiter, zurueck } from './folien';
 
 describe('weiter (→ im Beamer)', () => {
   const folie = { versteckteSchritte: 0, offeneAufloesung: false, naechsteFolie: true };
@@ -96,39 +96,44 @@ describe('restText', () => {
 });
 
 describe('tasteSteuertFolien (Fokus nach dem Mausklick)', () => {
-  const mit = (ziel: { tag: string; typ?: string; bearbeitbar?: boolean }, rest = {}) => tasteSteuertFolien({ ziel, ...rest });
+  const mit = (el: Parameters<typeof tastenZiel>[0], rest = {}) => tasteSteuertFolien({ ziel: tastenZiel(el), ...rest });
 
   it('blättert ohne fokussiertes Element und auf Knopf, Link und Auflösungs-Inhalt', () => {
-    expect(tasteSteuertFolien({})).toBe(true);
-    expect(mit({ tag: 'button' })).toBe(true);
-    expect(mit({ tag: 'a' })).toBe(true);
-    expect(mit({ tag: 'div' })).toBe(true);
+    expect(mit(null)).toBe(true);
+    expect(mit({ tagName: 'BUTTON' })).toBe(true);
+    expect(mit({ tagName: 'A' })).toBe(true);
+    expect(mit({ tagName: 'DIV' })).toBe(true);
   });
 
   it('blättert weiter, wenn ein Haken oder Knopf-Input nach dem Klick den Fokus hat', () => {
     for (const typ of ['checkbox', 'button', 'submit', 'reset', 'image', 'file', 'color', 'hidden']) {
-      expect(mit({ tag: 'input', typ }), typ).toBe(true);
+      expect(mit({ tagName: 'INPUT', type: typ }), typ).toBe(true);
     }
   });
 
   it('blättert nicht beim Tippen in Textfeld, Textbereich, Auswahl, contenteditable', () => {
-    expect(mit({ tag: 'input', typ: 'text' })).toBe(false);
-    expect(mit({ tag: 'input' })).toBe(false);
-    expect(mit({ tag: 'input', typ: 'password' })).toBe(false);
-    expect(mit({ tag: 'textarea' })).toBe(false);
-    expect(mit({ tag: 'select' })).toBe(false);
-    expect(mit({ tag: 'mark', bearbeitbar: true })).toBe(false);
+    expect(mit({ tagName: 'INPUT', type: 'text' })).toBe(false);
+    expect(mit({ tagName: 'INPUT' })).toBe(false);
+    expect(mit({ tagName: 'INPUT', type: 'password' })).toBe(false);
+    expect(mit({ tagName: 'TEXTAREA' })).toBe(false);
+    expect(mit({ tagName: 'SELECT' })).toBe(false);
+    expect(mit({ tagName: 'MARK', isContentEditable: true })).toBe(false);
+  });
+
+  it('sperrt auch, wenn nur ein Vorfahre contenteditable ist, nicht aber bei contenteditable=false', () => {
+    expect(mit({ tagName: 'SPAN', closest: (sel: string) => (sel.startsWith('[contenteditable]') ? {} : null) })).toBe(false);
+    expect(mit({ tagName: 'SPAN', closest: () => null })).toBe(true);
   });
 
   it('lässt Radio und Regler die Pfeile behalten', () => {
-    expect(mit({ tag: 'input', typ: 'radio' })).toBe(false);
-    expect(mit({ tag: 'input', typ: 'range' })).toBe(false);
+    expect(mit({ tagName: 'INPUT', type: 'radio' })).toBe(false);
+    expect(mit({ tagName: 'INPUT', type: 'range' })).toBe(false);
   });
 
   it('blättert nicht bei offenem Dialog, Vollbild, Wiederholung oder schon behandelter Taste', () => {
-    expect(mit({ tag: 'button' }, { dialogOffen: true })).toBe(false);
-    expect(mit({ tag: 'button' }, { vollbild: true })).toBe(false);
-    expect(mit({ tag: 'button' }, { wiederholt: true })).toBe(false);
-    expect(mit({ tag: 'button' }, { schonBehandelt: true })).toBe(false);
+    expect(mit({ tagName: 'BUTTON' }, { dialogOffen: true })).toBe(false);
+    expect(mit({ tagName: 'BUTTON' }, { vollbild: true })).toBe(false);
+    expect(mit({ tagName: 'BUTTON' }, { wiederholt: true })).toBe(false);
+    expect(mit({ tagName: 'BUTTON' }, { schonBehandelt: true })).toBe(false);
   });
 });

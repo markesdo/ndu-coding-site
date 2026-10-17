@@ -22,20 +22,32 @@ export function weiter(z: {
   return z.naechsteFolie ? 'folie' : 'seite';
 }
 
+/** Was am fokussierten Element für „wird hier getippt?“ zählt: Tag klein ('' ohne Element), bei <input> der type. */
+export type TastenZiel = { tag: string; typ?: string; bearbeitbar: boolean };
+
+/**
+ * Fokussiertes Element (bei Tastendruck: `e.composedPath()[0] ?? e.target`) → TastenZiel. `bearbeitbar` auch, wenn ein
+ * Vorfahre contenteditable ist. Ohne Element (null) ist es kein Tippen.
+ */
+export function tastenZiel(el: {
+  tagName?: string; type?: string; isContentEditable?: boolean; closest?: (selektor: string) => unknown;
+} | null | undefined): TastenZiel {
+  if (!el) return { tag: '', bearbeitbar: false };
+  const bearbeitbar = !!el.isContentEditable || !!el.closest?.('[contenteditable]:not([contenteditable="false"])');
+  return { tag: (el.tagName ?? '').toLowerCase(), typ: el.type, bearbeitbar };
+}
+
 /**
  * Soll eine Taste (←, →, B, T, [) die Folien steuern? Nein bei Wiederholung, bei schon behandelter Taste, bei offenem
  * Dialog oder Vollbild und beim Tippen. Getippt wird in Textfeldern, Auswahllisten, contenteditable und in Feldern, die
  * selbst mit ←/→ arbeiten (Radio, Regler). Ein Haken (Checkbox), ein Knopf oder ein Link behalten nach dem Mausklick den
  * Fokus – dort muss → weiter blättern, sonst bleibt die Folie nach dem Klick stehen.
- * `ziel` ist das fokussierte Element: Tag klein, bei <input> der type, `bearbeitbar` = isContentEditable.
  */
 export function tasteSteuertFolien(z: {
-  schonBehandelt?: boolean; wiederholt?: boolean; dialogOffen?: boolean; vollbild?: boolean;
-  ziel?: { tag: string; typ?: string; bearbeitbar?: boolean };
+  schonBehandelt?: boolean; wiederholt?: boolean; dialogOffen?: boolean; vollbild?: boolean; ziel: TastenZiel;
 }): boolean {
   if (z.schonBehandelt || z.wiederholt || z.dialogOffen || z.vollbild) return false;
   const t = z.ziel;
-  if (!t) return true;
   if (t.bearbeitbar || t.tag === 'textarea' || t.tag === 'select') return false;
   if (t.tag === 'input') return KEIN_TEXT.has((t.typ ?? 'text').toLowerCase());
   return true;
