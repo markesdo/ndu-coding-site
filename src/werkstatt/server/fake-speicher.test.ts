@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fakeSpeicher } from './fake-speicher';
 import type { Mitgliedschaft } from '../zugang';
+import { kohorteTest } from '../kohorten/test';
 
 const sofie: Mitgliedschaft = { kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' };
 const autor = { name: 'sofie', email: '8+sofie@users.noreply.github.com' };
@@ -18,10 +19,10 @@ async function mitRepo() {
 describe('fakeSpeicher', () => {
   afterEach(() => vi.unstubAllEnvs());
 
-  it('anlegen: Repo-Name aus der Mitgliedschaft, werkstatt.json mit Kohorte und GitHub-ID', async () => {
+  it('anlegen: Repo-Name aus der Mitgliedschaft, werkstatt.json mit Kohorte, GitHub-ID und Schema-Versionen der Kohorte', async () => {
     const { s, repo } = await mitRepo();
     expect(repo).toBe('test-sofie');
-    expect(await s.werkstattJson(repo)).toEqual({ kohorte: 'test', githubId: 8 });
+    expect(await s.werkstattJson(repo)).toStrictEqual({ kohorte: 'test', githubId: 8, schemaVersionen: [...kohorteTest.artefakte] });
     expect(await s.werkstattJson('test-niemand')).toBeNull();
   });
 
