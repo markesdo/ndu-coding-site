@@ -172,7 +172,8 @@ describe('githubSpeicher.speichern', () => {
 describe('githubSpeicher.anlegen', () => {
   it('erzeugt das Repo aus der Vorlage, privat, mit dem org-weiten Token (administration write, contents read)', async () => {
     const { gh, s } = aufbau();
-    expect(await s.anlegen(sofie, 1001)).toStrictEqual({ repo: '2026-sofie' });
+    // Fehler als Wert, damit fehlende Rechte hier auf der Assertion rot werden statt als Absturz.
+    expect(await s.anlegen(sofie, 1001).catch((e: unknown) => e)).toStrictEqual({ repo: '2026-sofie' });
     const [gen] = gh.zustand.aufrufeVon('POST', '/generate');
     expect(gen.pfad).toBe('/repos/ndu-innolab/mappe-vorlage-2026/generate');
     expect(gen.body).toStrictEqual({ owner: 'ndu-innolab', name: '2026-sofie', private: true });
