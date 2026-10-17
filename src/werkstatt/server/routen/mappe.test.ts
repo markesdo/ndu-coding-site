@@ -174,6 +174,8 @@ describe('GET /api/werkstatt/mappe', () => {
     await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
     // Der Fake schreibt immer die eigene Kohorte; ein test-sofie mit fremder Kohorte in werkstatt.json wird nachgestellt.
     const fremd = { ...t.fake, werkstattJson: async (repo: string) => (repo === REPO ? { kohorte: 'andere', githubId: 1001 } : null) };
+    const lesezugriff = vi.fn(t.fake.lesezugriff);
+    fremd.lesezugriff = lesezugriff;
     const app = appErstellen(lokaleAbhaengigkeiten({ umgebung: t.umgebung, speicher: fremd, jetzt: () => JETZT }));
     const kopf = { Cookie: await t.cookie() };
     for (const r of [
@@ -185,6 +187,8 @@ describe('GET /api/werkstatt/mappe', () => {
       expect(await r.json()).toMatchObject({ code: 'nicht-freigeschaltet' });
     }
     expect(t.fake.commits(REPO)).toHaveLength(0);
+    // Ein Repo, das nicht zu dieser Sitzung passt, bekommt keine Einladung.
+    expect(lesezugriff).not.toHaveBeenCalled();
   });
 
   it('Anlegen scheitert an GitHub (5xx, 4xx wie 429/403/404, Netz/Zeitlimit) oder 503 → 503 wird-eingerichtet', async () => {
@@ -216,14 +220,12 @@ describe('GET /api/werkstatt/mappe', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     for (const ausnahme of [new ApiAusnahme(403, 'nicht-freigeschaltet', 'fremd'), new ApiAusnahme(409, 'konflikt', 'Name belegt. Schreib Markus.')]) {
       const t = aufbau({ anlegen: async () => { throw ausnahme; } });
-      const lesezugriff = vi.spyOn(t.speicher, 'lesezugriff');
       for (const pfad of ['', '/brief']) {
         const r = await t.holen(pfad);
         expect(r.status, pfad).toBe(ausnahme.status);
         expect(await r.json(), pfad).toMatchObject({ code: ausnahme.code, fehler: ausnahme.message });
       }
-      // Ein Repo, das nicht dieser Person gehört, bekommt nie eine Einladung.
-      expect(lesezugriff).not.toHaveBeenCalled();
+
     }
   });
 

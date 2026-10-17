@@ -87,14 +87,12 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   // Repo der Sitzung, nachdem werkstatt.json bestätigt hat, dass es dieser Person in dieser Kohorte gehört.
   // anlegen: fehlt das Repo (oder werkstatt.json), einmal erneut anlegen (idempotent) – die GET-Routen tun das (Übersicht
   // und Artefakt: der Editor kommt oft direkt vom Login), PUT nicht.
-  // neuAngelegt: diese Anfrage hat das Repo angelegt (dann fehlt noch die Einladung zum Lesen).
-  async function eigenesRepo(c: Context<SitzungEnv>, anlegen: boolean): Promise<{ repo: string; neuAngelegt: boolean }> {
+  async function eigenesRepo(c: Context<SitzungEnv>, anlegen: boolean): Promise<string> {
     const s = c.get('sitzung');
     const m = c.get('mitgliedschaft');
     const repo = repoName(m);
     let wj = await abh.speicher.werkstattJson(repo);
-    const neuAngelegt = !wj && anlegen;
-    if (neuAngelegt) {
+    if (!wj && anlegen) {
       try {
         await abh.speicher.anlegen(m, s.githubId);
       } catch (e) {
@@ -118,10 +116,11 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       console.error('werkstatt: werkstatt.json passt nicht zur Sitzung, Zugriff verweigert');
       throw new ApiAusnahme(403, 'nicht-freigeschaltet', KEIN_ZUGRIFF);
     }
-    return { repo, neuAngelegt };
+    return repo;
   }
 
-  // Einladung zum Lesen nach bestem Bemühen; die Antwort wartet nicht auf GitHub, wenn es hakt.
+  // Einladung zum Lesen nach bestem Bemühen: scheitert sie, bleibt es bei einer Zeile im Log. Nur nach eigenesRepo
+  // aufrufen (Besitz geprüft). lesezugriff merkt sich den Stand im Cache; ein wiederholter Aufruf kostet meist nur das.
   function einladen(repo: string, githubId: number): Promise<MappeStand['lesezugriff']> {
     return abh.speicher.lesezugriff(repo, githubId).catch((e): MappeStand['lesezugriff'] => {
       console.error('werkstatt: Lesezugriff nicht prüfbar –', ursache(e));
@@ -133,7 +132,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     const m = c.get('mitgliedschaft');
     // Lehrende haben kein eigenes Repo; ihre Ansicht auf die Mappen folgt in Phase 2.
     if (m.rolle !== 'studierende') return json(c, { kohorte: m.kohorte, repo: '', lesezugriff: 'unbekannt', artefakte: [] } satisfies MappeStand);
-    const { repo } = await eigenesRepo(c, true);
+    const repo = await eigenesRepo(c, true);
     // Best effort: die Mappe lädt auch, wenn GitHub die Einladung nicht beantwortet.
     const [lesezugriff, artefakte] = await Promise.all([einladen(repo, c.get('sitzung').githubId), abh.speicher.uebersicht(repo)]);
     const stand: MappeStand = { kohorte: m.kohorte, repo, lesezugriff, artefakte };
@@ -159,10 +158,13 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   r.get('/:artefakt', async (c) => {
     const name = artefaktName(c);
     if (name instanceof Response) return name;
-    // Hat diese Anfrage angelegt (Anlegen beim Login gescheitert), geht die Einladung wie im Login raus – erst nach
-    // der Besitzprüfung in eigenesRepo und neben dem Lesen her. Die Übersicht lädt ohnehin bei jedem Aufruf ein.
-    const { repo, neuAngelegt } = await eigenesRepo(c, true);
-    const [{ daten, basisSha }] = await Promise.all([lesen(repo, name), neuAngelegt ? einladen(repo, c.get('sitzung').githubId) : null]);
+    // Wie die Übersicht lädt auch der Editor zum Lesen ein (der Editor kommt oft direkt vom Login, und dort kann die
+    // Einladung gescheitert sein) – erst nach der Besitzprüfung in eigenesRepo und neben dem Lesen her. allSettled:
+    // Auch wenn das Lesen scheitert, läuft die Einladung zu Ende, bevor die Antwort rausgeht.
+    const repo = await eigenesRepo(c, true);
+    const [gelesen] = await Promise.allSettled([lesen(repo, name), einladen(repo, c.get('sitzung').githubId)]);
+    if (gelesen.status === 'rejected') throw gelesen.reason;
+    const { daten, basisSha } = gelesen.value;
     const antwort: ArtefaktAntwort = { name, daten, basisSha };
     return json(c, antwort);
   });
@@ -178,7 +180,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     ]);
     if (besitz.status === 'rejected') throw besitz.reason;
     if (gespeichert.status === 'rejected') throw gespeichert.reason;
-    const { repo } = besitz.value;
+    const repo = besitz.value;
 
     let anfrage: unknown;
     try {
