@@ -11,7 +11,7 @@ import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
-import { darfSpeichern, huelle, ichPruefen, ladefehlerHinweis, leererStand, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
+import { darfSpeichern, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
 import '../../styles/werkstatt.css';
 
 export interface EditorHuelleProps<N extends ArtefaktName> {
@@ -41,9 +41,6 @@ const TEXT = {
   wirdEingerichtet: 'Deine Mappe wird eingerichtet …',
   wirdEingerichtetLang: 'Das dauert länger als gedacht. Versuch es gleich noch einmal.',
   konflikt: 'Inzwischen geändert – neu laden. Dein Entwurf bleibt erhalten.',
-  speichernGesichert: 'Speichern gerade nicht möglich. Dein Entwurf ist auf diesem Gerät gesichert.',
-  speichernUngesichert: 'Speichern gerade nicht möglich. Dein Entwurf konnte auf diesem Gerät nicht gesichert werden – lass diesen Tab offen.',
-  ladenFehlt: 'Deine Mappe lässt sich gerade nicht laden.',
 } as const;
 
 const NEUVERSUCHE = 3; // à 3 s: höchstens ~10 s „wird eingerichtet“, dann Knopf
@@ -61,6 +58,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const [gesichert, setGesichert] = useState(true);
   const [abgelaufen, setAbgelaufen] = useState(false);
   const [fehlerCode, setFehlerCode] = useState<string | null>(null);
+  // Meldung des Servers zum letzten Fehler (Lehrende, fremde Mappe, abgelehntes Speichern …), sonst null.
+  const [meldung, setMeldung] = useState<string | null>(null);
   const [serverFelder, setServerFelder] = useState<Feldfehler[]>([]);
   const [kopieStatus, setKopieStatus] = useState('');
   // Text für „Für Claude kopieren“: sichtbar nur, wenn die Zwischenablage nicht ging; zum Kopieren kurz verborgen im DOM.
@@ -104,46 +103,39 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     const mein = ++lauf.current;
     const gueltig = () => mein === lauf.current;
     setFehlerCode(null);
+    setMeldung(null);
     setServerFelder([]);
     setAelterEntwurf(null);
-    try {
-      const ich = await api.ich();
-      if (!gueltig()) return;
-      if (ich === null) return void senden({ typ: 'ladenFehlgeschlagen', status: 401, code: 'nicht-angemeldet' });
-      person.current = { githubId: ich.githubId, kohorte: ich.kohorte };
-      const geprueft = ichPruefen(ich);
-      if (!geprueft.ok) {
-        if (geprueft.hinweis !== null) setFehlerCode(geprueft.hinweis);
-        return void senden({ typ: 'ladenFehlgeschlagen', status: geprueft.status, code: geprueft.code });
-      }
-      const antwort = await api.lesen(name);
-      if (!gueltig()) return;
-      const vomServer = artefaktParsen(name, antwort.daten ?? ARTEFAKTE[name].leer(heute()));
-      if (!vomServer.ok) {
-        setFehlerCode('datei');
-        return void senden({ typ: 'ladenFehlgeschlagen', status: 500, code: 'unbekannt' });
-      }
-      // Nur ein Entwurf auf dem Stand des Servers kommt still zurück; ein älterer wird zur Wahl angeboten.
-      // Auch ein unvollständiger Entwurf kommt zurück (Schema scheitert → Feldfehler, Speichern gesperrt); nur Müll nicht.
-      const roh = entwurfLaden(name, ich.githubId, ich.kohorte);
-      const start = startStand(
-        { daten: vomServer.daten as DatenVon<N>, basisSha: antwort.basisSha },
-        roh === null ? null : { basisSha: roh.basisSha, daten: entwurfNormalisieren(name, ARTEFAKTE[name].leer(heute()), roh.daten) as DatenVon<N> },
-      );
-      basisSha.current = start.basisSha;
-      setGespeichert(serverStandNachLaden(antwort.daten, vomServer.daten as DatenVon<N>));
-      datenRef.current = start.daten;
-      setDatenAnzeige(start.daten);
-      setDirty(start.alsEntwurf);
-      setAelterEntwurf(start.aelterEntwurf);
-      setGesichert(true);
-      senden({ typ: 'geladen' });
-    } catch (err) {
-      if (!gueltig()) return;
-      const a = err instanceof ApiError ? err : new ApiError(0, 'unbekannt', TEXT.ladenFehlt);
-      setFehlerCode(a.code);
-      senden({ typ: 'ladenFehlgeschlagen', status: a.status, code: a.code });
+    const r = await mappeLaden({ ich: () => api.ich(), mappe: () => api.mappe(), lesen: () => api.lesen(name) });
+    if (!gueltig()) return;
+    if (r.typ === 'abgemeldet') return void senden({ typ: 'ladenFehlgeschlagen', status: 401, code: 'nicht-angemeldet' });
+    if (r.ich !== null) person.current = { githubId: r.ich.githubId, kohorte: r.ich.kohorte };
+    if (r.typ === 'fehler') {
+      setFehlerCode(r.code);
+      setMeldung(r.meldung);
+      return void senden({ typ: 'ladenFehlgeschlagen', status: r.status, code: r.code });
     }
+    const { ich, antwort } = r;
+    const vomServer = artefaktParsen(name, antwort.daten ?? ARTEFAKTE[name].leer(heute()));
+    if (!vomServer.ok) {
+      setFehlerCode('datei');
+      return void senden({ typ: 'ladenFehlgeschlagen', status: 500, code: 'unbekannt' });
+    }
+    // Nur ein Entwurf auf dem Stand des Servers kommt still zurück; ein älterer wird zur Wahl angeboten.
+    // Auch ein unvollständiger Entwurf kommt zurück (Schema scheitert → Feldfehler, Speichern gesperrt); nur Müll nicht.
+    const roh = entwurfLaden(name, ich.githubId, ich.kohorte);
+    const start = startStand(
+      { daten: vomServer.daten as DatenVon<N>, basisSha: antwort.basisSha },
+      roh === null ? null : { basisSha: roh.basisSha, daten: entwurfNormalisieren(name, ARTEFAKTE[name].leer(heute()), roh.daten) as DatenVon<N> },
+    );
+    basisSha.current = start.basisSha;
+    setGespeichert(serverStandNachLaden(antwort.daten, vomServer.daten as DatenVon<N>));
+    datenRef.current = start.daten;
+    setDatenAnzeige(start.daten);
+    setDirty(start.alsEntwurf);
+    setAelterEntwurf(start.aelterEntwurf);
+    setGesichert(true);
+    senden({ typ: 'geladen' });
   }
 
   function oeffnen(): void {
@@ -157,6 +149,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     setAelterEntwurf(leer.aelterEntwurf);
     setGesichert(leer.gesichert);
     setFehlerCode(null);
+    setMeldung(null);
     setServerFelder([]);
     senden({ typ: 'oeffnen' });
     setVersuche(0);
@@ -240,9 +233,10 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       senden({ typ: 'gespeichert' });
     } catch (err) {
       if (mein !== lauf.current) return;
-      const a = err instanceof ApiError ? err : new ApiError(0, 'unbekannt', TEXT.speichernGesichert);
+      const a = err instanceof ApiError ? err : new ApiError(0, 'unbekannt', '');
       if (a.status === 401) setAbgelaufen(true);
       setFehlerCode(a.code);
+      setMeldung(a.message || null);
       if (a.felder) setServerFelder(a.felder);
       senden({ typ: 'speichernFehlgeschlagen', status: a.status, code: a.code });
     }
@@ -325,7 +319,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       );
     }
     if (zustand === 'ladefehler') {
-      const { text, nochmal } = ladefehlerHinweis(fehlerCode);
+      const { text, nochmal } = ladefehlerHinweis(fehlerCode, meldung);
       return (
         <div className="wk-hinweis" role="alert">
           <p>{text}</p>
@@ -338,9 +332,15 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       );
     }
     if (zustand === 'fehler') {
+      const { text, details } = speicherfehlerHinweis(fehlerCode, meldung, serverFelder, gesichert);
       return (
         <div className="wk-hinweis" role="alert">
-          <p>{gesichert ? TEXT.speichernGesichert : TEXT.speichernUngesichert}</p>
+          <p>{text}</p>
+          {details.length > 0 && (
+            <ul>
+              {details.map((d) => <li key={d}>{d}</li>)}
+            </ul>
+          )}
         </div>
       );
     }

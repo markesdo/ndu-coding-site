@@ -70,29 +70,69 @@ export function huelle(zustand: HuellenZustand, e: Ereignis): { zustand: Huellen
   }
 }
 
-/**
- * Was nach /auth/ich gilt: weiterladen, oder ein Ladefehler. Lehrende haben keine eigene Mappe; ohne diesen Fall
- * hielte die Hülle ihr fehlendes Repo für „wird eingerichtet“ und wartete vergeblich.
- */
-export function ichPruefen(ich: Pick<Ich, 'rolle' | 'repo'>): { ok: true } | { ok: false; status: number; code: ApiFehler['code']; hinweis: 'lehrende' | null } {
-  if (ich.rolle !== 'studierende') return { ok: false, status: 403, code: 'nicht-freigeschaltet', hinweis: 'lehrende' };
-  if (ich.repo === null) return { ok: false, status: 503, code: 'wird-eingerichtet', hinweis: null };
-  return { ok: true };
+type Code = ApiFehler['code'];
+
+export type LadeErgebnis<A> =
+  | { typ: 'abgemeldet' }
+  | { typ: 'fehler'; ich: Ich | null; status: number; code: Code; meldung: string | null }
+  | { typ: 'geladen'; ich: Ich; antwort: A };
+
+/** Fehler, wie sie der API-Client wirft (ApiError); alles andere zählt als unbekannt, ohne Meldung. */
+function alsFehler(e: unknown): { status: number; code: Code; meldung: string | null } {
+  if (typeof e === 'object' && e !== null && 'status' in e && 'code' in e) {
+    const { status, code, message } = e as { status: number; code: Code; message?: unknown };
+    return { status, code, meldung: typeof message === 'string' && message !== '' ? message : null };
+  }
+  return { status: 0, code: 'unbekannt', meldung: null };
 }
 
-const LADEFEHLER = {
-  lehrende: 'Als Lehrende*r hast du hier noch keine eigene Mappe.',
-  nichtFreigeschaltet: 'Du bist für keinen Kurs freigeschaltet. Schreib Markus deinen GitHub-Namen.',
+/**
+ * Laden der Editor-Hülle, ohne React: Anmeldung, dann (falls /auth/ich noch kein Repo kennt) GET mappe, das ein
+ * fehlendes Repo anlegt oder mit eigener Meldung ablehnt, dann das Artefakt. Was nicht passt, sagt der Server samt
+ * Meldung (Lehrende, fremde Mappe, unlesbare Datei); die Hülle zeigt diese Meldung statt eines eigenen Satzes.
+ */
+export async function mappeLaden<A>(quelle: { ich(): Promise<Ich | null>; mappe(): Promise<unknown>; lesen(): Promise<A> }): Promise<LadeErgebnis<A>> {
+  let ich: Ich | null = null;
+  try {
+    ich = await quelle.ich();
+    if (ich === null) return { typ: 'abgemeldet' };
+    if (ich.repo === null && ich.rolle === 'studierende') await quelle.mappe();
+    return { typ: 'geladen', ich, antwort: await quelle.lesen() };
+  } catch (e) {
+    const f = alsFehler(e);
+    if (f.status === 401 || f.code === 'nicht-angemeldet') return { typ: 'abgemeldet' };
+    return { typ: 'fehler', ich, ...f };
+  }
+}
+
+const TEXT = {
   datei: 'Die Datei in deiner Mappe passt nicht zum erwarteten Format. Sag Markus Bescheid.',
   ladenFehlt: 'Deine Mappe lässt sich gerade nicht laden.',
+  speichernGesichert: 'Speichern gerade nicht möglich. Dein Entwurf ist auf diesem Gerät gesichert.',
+  speichernUngesichert: 'Speichern gerade nicht möglich. Dein Entwurf konnte auf diesem Gerät nicht gesichert werden – lass diesen Tab offen.',
+  gesichert: 'Dein Entwurf ist auf diesem Gerät gesichert.',
+  ungesichert: 'Dein Entwurf konnte auf diesem Gerät nicht gesichert werden – lass diesen Tab offen.',
 } as const;
 
-/** Hinweis im Zustand „ladefehler“: Text und ob „Neu versuchen“ helfen kann. */
-export function ladefehlerHinweis(fehlerCode: string | null): { text: string; nochmal: boolean } {
-  if (fehlerCode === 'lehrende') return { text: LADEFEHLER.lehrende, nochmal: false };
-  if (fehlerCode === 'nicht-freigeschaltet') return { text: LADEFEHLER.nichtFreigeschaltet, nochmal: false };
-  if (fehlerCode === 'datei') return { text: LADEFEHLER.datei, nochmal: false };
-  return { text: LADEFEHLER.ladenFehlt, nochmal: true };
+// Abgelehnt, weil die Anfrage nicht passt: Neu versuchen hilft nicht, die Meldung des Servers sagt, was zu tun ist.
+const ABGELEHNT: readonly string[] = ['nicht-freigeschaltet', 'ungueltig', 'csrf'];
+
+/** Hinweis im Zustand „ladefehler“. `fehlerCode` „datei“ setzt die Hülle selbst (Datei passt nicht zum Schema). */
+export function ladefehlerHinweis(fehlerCode: string | null, meldung: string | null): { text: string; nochmal: boolean } {
+  if (fehlerCode === 'datei') return { text: TEXT.datei, nochmal: false };
+  return { text: meldung ?? TEXT.ladenFehlt, nochmal: fehlerCode === null || !ABGELEHNT.includes(fehlerCode) };
+}
+
+/**
+ * Hinweis im Zustand „fehler“ (Speichern gescheitert). Hat der Server abgelehnt, steht seine Meldung da, dazu jede
+ * Feldmeldung (auch solche, die kein Formularfeld zeigt, etwa zu einer gespeicherten Entscheidung). Sonst gilt
+ * „gerade nicht möglich“.
+ */
+export function speicherfehlerHinweis(fehlerCode: string | null, meldung: string | null, felder: readonly Feldfehler[], gesichert: boolean): { text: string; details: string[] } {
+  if (fehlerCode !== null && ABGELEHNT.includes(fehlerCode) && meldung !== null) {
+    return { text: `${meldung} ${gesichert ? TEXT.gesichert : TEXT.ungesichert}`, details: [...new Set(felder.map((f) => f.meldung))] };
+  }
+  return { text: gesichert ? TEXT.speichernGesichert : TEXT.speichernUngesichert, details: [] };
 }
 
 /** Das Statuswort der Statuszeile. Leer, wenn es nichts zu sagen gibt. */
