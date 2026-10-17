@@ -1,17 +1,12 @@
 // Kurzlebiger Schlüssel-Wert-Speicher (Installations-Tokens, verbrauchte Refresh-Tokens).
 // Prod: Vercel Runtime Cache wie api/position.ts. Tests und Dev: eine Map pro Prozess.
 import { getCache } from '@vercel/functions';
+import { ohneRuntimeCache } from '../../lib/runtime-cache.js';
 import { ApiAusnahme } from './antwort.js';
 import type { Cache } from './typen.js';
 
-// getCache() fiele auf Vercel ohne Anfrage-Kontext still auf einen Speicher pro Instanz zurück – dann sähen
-// verschiedene Instanzen Verschiedenes (z. B. ein verbrauchtes Refresh-Token als frisch). Lieber laut scheitern.
-const KONTEXT = Symbol.for('@vercel/request-context');
-function ohneRuntimeCache(): boolean {
-  const kontext = (globalThis as Record<symbol, { get?: () => { cache?: unknown } } | undefined>)[KONTEXT]?.get?.();
-  return Boolean(process.env.VERCEL) && !kontext?.cache && !process.env.RUNTIME_CACHE_ENDPOINT;
-}
-
+// Ohne Runtime Cache auf Vercel lieber laut scheitern (503): Sonst sähen verschiedene Instanzen Verschiedenes,
+// z. B. ein verbrauchtes Refresh-Token als frisch.
 export function vercelCache(): Cache {
   const cache = () => {
     if (ohneRuntimeCache()) throw new ApiAusnahme(503, 'unbekannt', 'Die Werkstatt ist gerade nicht erreichbar. Bitte später noch einmal versuchen.');

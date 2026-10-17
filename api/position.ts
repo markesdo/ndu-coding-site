@@ -6,6 +6,7 @@
 // Speicher: Vercel Runtime Cache – flüchtig, reicht für „wo ist er gerade“; der Beamer-Tab sendet jede Minute neu.
 import { getCache } from '@vercel/functions';
 import { passwortStimmt } from '../src/lib/kurszugang.js'; // .js-Endung wie in middleware.ts
+import { ohneRuntimeCache } from '../src/lib/runtime-cache.js';
 import { positionPruefen, type Position } from '../src/lib/position.js';
 
 const SCHLUESSEL = 'position';
@@ -18,15 +19,6 @@ function json(daten: unknown, status = 200): Response {
     status,
     headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
   });
-}
-
-// getCache() nimmt den echten Runtime Cache aus dem Anfrage-Kontext (in @vercel/functions: getContext().cache, nicht
-// exportiert – gleiches Symbol wie dort), sonst den Build-Cache über RUNTIME_CACHE_ENDPOINT, sonst still einen
-// Speicher pro Instanz. Auf Vercel hieße Letzteres: Studierende sehen je nach Instanz etwas anderes – lieber laut scheitern.
-const KONTEXT = Symbol.for('@vercel/request-context');
-function ohneRuntimeCache(): boolean {
-  const kontext = (globalThis as Record<symbol, { get?: () => { cache?: unknown } } | undefined>)[KONTEXT]?.get?.();
-  return Boolean(process.env.VERCEL) && !kontext?.cache && !process.env.RUNTIME_CACHE_ENDPOINT;
 }
 
 export async function GET(): Promise<Response> {
