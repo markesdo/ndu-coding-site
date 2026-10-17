@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isoDatum, schemaKennung, text } from './gemeinsam';
+import { isoDatum, schemaKennung, text } from './gemeinsam.js';
 
 export const briefSchema = z.object({
   schema: schemaKennung('brief'),

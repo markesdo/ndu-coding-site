@@ -83,10 +83,14 @@ const WERKSTATT_WELL_KNOWN = [
   '/.well-known/oauth-protected-resource/api/werkstatt/mcp',
 ];
 
+// Kodierte Trenner und Punkte (%2F, %5C, %2E) haben in Werkstatt-Pfaden nichts zu suchen. Ein Proxy oder Rewrite,
+// der sie dekodiert, machte aus /api/werkstatt/..%2F..%2Ftag-1 sonst eine Kursseite ohne Kurspasswort.
+const KODIERT = /%(2f|5c|2e)/i;
+
 export function istOeffentlich(pfad: string): boolean {
   if (pfad === '/start' || pfad === '/start/') return true;
-  if (pfad === WERKSTATT || pfad.startsWith(`${WERKSTATT}/`)) return true;
-  return WERKSTATT_WELL_KNOWN.includes(pfad);
+  const werkstatt = pfad === WERKSTATT || pfad.startsWith(`${WERKSTATT}/`) || WERKSTATT_WELL_KNOWN.includes(pfad);
+  return werkstatt && !KODIERT.test(pfad);
 }
 
 // Ohne Anmeldung: Wer die Wurzel / aufruft (etwa die Domain aus einer Nachricht), sieht zuerst die Kurswahl auf /start –

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam';
+import { doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam.js';
 
 export const FRAGE_ARTEN = ['kern', 'nachfrage'] as const;
 

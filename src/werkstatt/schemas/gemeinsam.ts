@@ -1,6 +1,6 @@
 // Bausteine, die alle Artefakt-Schemas teilen: Belegstufe, Datum, IDs, Fehlerform.
 import { z } from 'zod';
-import { istId, type IdPraefix } from '../ids';
+import { istId, type IdPraefix } from '../ids.js';
 
 // Reihenfolge ist die Skala „sagen → tun“.
 export const BELEGSTUFEN = ['keiner', 'gesagt', 'erzaehlt', 'getan'] as const;

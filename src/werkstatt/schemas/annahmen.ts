@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { belegIds, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId, type Belegstufe } from './gemeinsam';
+import { belegIds, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId, type Belegstufe } from './gemeinsam.js';
 
 export const ANNAHME_ARTEN = ['wuenschenswert', 'machbar', 'wirtschaftlich', 'bedienbar'] as const;
 export const WICHTIGKEITEN = ['hoch', 'mittel', 'niedrig'] as const;

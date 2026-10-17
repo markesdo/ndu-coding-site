@@ -1,19 +1,19 @@
 // Öffentliche Fläche der Schemas: Browser, API und MCP importieren nur von hier.
 import type { ZodType } from 'zod';
-import type { ArtefaktName } from './namen';
-import { briefLeer, briefSchema, type Brief } from './brief';
-import { entscheidungenLeer, entscheidungenSchema, type Entscheidungen } from './entscheidungen';
-import { leitfadenLeer, leitfadenSchema, type Leitfaden } from './leitfaden';
-import { annahmenLeer, annahmenSchema, type Annahmen } from './annahmen';
-import type { Feldfehler } from './gemeinsam';
+import type { ArtefaktName } from './namen.js';
+import { briefLeer, briefSchema, type Brief } from './brief.js';
+import { entscheidungenLeer, entscheidungenSchema, type Entscheidungen } from './entscheidungen.js';
+import { leitfadenLeer, leitfadenSchema, type Leitfaden } from './leitfaden.js';
+import { annahmenLeer, annahmenSchema, type Annahmen } from './annahmen.js';
+import type { Feldfehler } from './gemeinsam.js';
 
-export type { ArtefaktName } from './namen';
-export { ARTEFAKT_NAMEN } from './namen';
-export { BELEGSTUFEN, BELEGSTUFE_TEXT, type Belegstufe, type Feldfehler } from './gemeinsam';
-export type { Brief } from './brief';
-export type { Entscheidungen, Entscheidung } from './entscheidungen';
-export { FRAGE_ARTEN, type Leitfaden, type Frage } from './leitfaden';
-export { ANNAHME_ARTEN, WICHTIGKEITEN, quadrant, punkt, type Annahmen, type Annahme, type Quadrant } from './annahmen';
+export type { ArtefaktName } from './namen.js';
+export { ARTEFAKT_NAMEN } from './namen.js';
+export { BELEGSTUFEN, BELEGSTUFE_TEXT, type Belegstufe, type Feldfehler } from './gemeinsam.js';
+export type { Brief } from './brief.js';
+export type { Entscheidungen, Entscheidung } from './entscheidungen.js';
+export { FRAGE_ARTEN, type Leitfaden, type Frage } from './leitfaden.js';
+export { ANNAHME_ARTEN, WICHTIGKEITEN, quadrant, punkt, type Annahmen, type Annahme, type Quadrant } from './annahmen.js';
 
 export type ArtefaktDaten = Brief | Entscheidungen | Leitfaden | Annahmen;
 

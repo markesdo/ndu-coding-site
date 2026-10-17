@@ -132,6 +132,27 @@ describe('Werkstatt ohne Kurspasswort', () => {
       '/x/api/werkstatt',
     ]) expect(istOeffentlich(p), p).toBe(false);
   });
+  it('kodierte Trenner oder Punkte im Werkstatt-Pfad: geschützt (kein Umweg auf Kursseiten)', () => {
+    for (const p of [
+      '/api/werkstatt/..%2F..%2Ftag-1',
+      '/api/werkstatt/..%2f..%2ftag-1',
+      '/api/werkstatt/%2e%2e/%2e%2e/tag-1',
+      '/api/werkstatt/%2E%2E/tag-1',
+      '/api/werkstatt/..%5C..%5Ctag-1',
+      '/api/werkstatt/..%5c..%5ctag-1',
+      '/api/werkstatt/mappe%2Fbrief',
+      '/.well-known/oauth-protected-resource/api/werkstatt/mcp%2F..',
+    ]) expect(istOeffentlich(p), p).toBe(false);
+    expect(istOeffentlich('/api/werkstatt/mappe/brief')).toBe(true);
+    expect(istOeffentlich('/api/werkstatt/auth/login')).toBe(true);
+  });
+  it('Middleware: /api/werkstatt/..%2F..%2Ftag-1 ohne Cookie bekommt 401, nicht die Seite', async () => {
+    vi.stubEnv('SITE_PASSWORD', 'pw');
+    vi.stubEnv('SITE_SESSION_SECRET', 's'.repeat(32));
+    const r = await middleware(new Request('https://kurs.invalid/api/werkstatt/..%2F..%2Ftag-1'));
+    expect(r.headers.get('x-middleware-next')).toBeNull();
+    expect(r.status).toBe(401);
+  });
   it('/start bleibt öffentlich, /start/geheim nicht', () => {
     expect(istOeffentlich('/start')).toBe(true);
     expect(istOeffentlich('/start/')).toBe(true);

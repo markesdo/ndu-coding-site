@@ -28,11 +28,12 @@ describe('fakeSpeicher', () => {
   it('anlegen zweimal: ein Repo, Gespeichertes bleibt', async () => {
     const { s, repo } = await mitRepo();
     const erst = await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu');
+    if (!('basisSha' in erst)) throw new Error('erster Commit erwartet');
     expect(await s.anlegen(sofie, 8)).toEqual({ repo });
     expect(s.commits(repo)).toHaveLength(1);
     const gelesen = await s.lesen(repo, 'brief');
     expect(gelesen.daten).toEqual({ a: 1 });
-    expect('basisSha' in erst && gelesen.basisSha).toBe('basisSha' in erst && erst.basisSha);
+    expect(gelesen.basisSha).toBe(erst.basisSha);
   });
 
   it('anlegen für ein Repo, das einer anderen Person gehört, wirft', async () => {

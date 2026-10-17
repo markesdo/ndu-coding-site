@@ -1,5 +1,5 @@
 // Eine Kohorte = ein Jahrgang. Öffentlich und im Repo; wer dazugehört, steht in WERKSTATT_ZUGANG.
-import type { ArtefaktName } from '../schemas/namen';
+import type { ArtefaktName } from '../schemas/namen.js';
 
 export type KohortenStatus = 'aktiv' | 'archiviert';
 

@@ -1,4 +1,4 @@
-import type { Kohorte } from './typen';
+import type { Kohorte } from './typen.js';
 
 export const kohorte2026: Kohorte = {
   id: '2026',

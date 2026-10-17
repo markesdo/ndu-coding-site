@@ -6,6 +6,7 @@
 //   /.well-known/oauth-authorization-server/api/werkstatt/oauth    (RFC 8414, gleiches JSON wie oauth/metadata)
 //   /.well-known/oauth-protected-resource/api/werkstatt/mcp        (RFC 9728, gleiches JSON wie mcp/resource)
 // Nur diese Pfade registrieren, kein Sammelpfad wie '/*': der finge auch Anfragen der anderen Router ab.
+// Ebenso kein use() ohne Pfad: diese Middleware liefe sonst bei jeder Werkstatt-Anfrage mit.
 // CSRF (nur Origin, Formular erlaubt) für POST /api/werkstatt/oauth/authorize prüft schon appErstellen.
 import { Hono } from 'hono';
 import { nochNichtGebaut } from '../stub.js';

@@ -20,14 +20,22 @@ describe('fakeIdentitaet', () => {
     await expect(fakeIdentitaet().codeEinloesen('42', CALLBACK)).rejects.toThrow();
   });
 
-  it('Auswahlseite verlinkt jede Testperson auf den Callback und maskiert state', async () => {
+  it('Auswahlseite maskiert Text, den keine URL-Kodierung schützt (Login im Linktext)', async () => {
+    const url = new URL(ANMELDE_PFAD, 'http://localhost:4321');
+    url.searchParams.set('state', 's');
+    url.searchParams.set('redirect_uri', CALLBACK);
+    const html = await anmeldeSeite(new Request(url), [{ githubId: 1, login: '<img src=x onerror=alert(1)>', rolle: null, kuerzel: null }]).text();
+    expect(html).not.toContain('<img');
+    expect(html).toContain('&lt;img src=x onerror=alert(1)&gt;');
+  });
+
+  it('Auswahlseite verlinkt jede Testperson auf den Callback, state bleibt erhalten', async () => {
     const url = new URL(ANMELDE_PFAD, 'http://localhost:4321');
     url.searchParams.set('state', '"><script>x</script>');
     url.searchParams.set('redirect_uri', CALLBACK);
     const r = anmeldeSeite(new Request(url));
     expect(r.status).toBe(200);
     const html = await r.text();
-    expect(html).not.toContain('<script>x');
     for (const p of TESTPERSONEN) expect(html).toContain(p.login);
     const ziel = new URL(CALLBACK);
     ziel.searchParams.set('code', String(TESTPERSONEN[0].githubId));

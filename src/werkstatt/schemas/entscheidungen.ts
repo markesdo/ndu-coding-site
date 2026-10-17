@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { belegIds, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam';
+import { belegIds, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam.js';
 
 const entscheidungSchema = z.object({
   id: zeilenId('D', 'ID der Entscheidung'),

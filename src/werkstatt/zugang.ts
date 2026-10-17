@@ -1,5 +1,5 @@
 // Wer darf in welche Kohorte? Liste kommt aus der Umgebungsvariable WERKSTATT_ZUGANG, nie aus dem Repo.
-import type { Kohorte } from './kohorten/typen';
+import type { Kohorte } from './kohorten/typen.js';
 
 export type Rolle = 'studierende' | 'lehrende';
 
