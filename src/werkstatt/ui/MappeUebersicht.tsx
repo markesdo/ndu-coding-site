@@ -6,7 +6,7 @@ import { kohorte } from '../kohorten/index.js';
 import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
-import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis, beiRueckkehrPruefen } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -106,24 +106,25 @@ export default function MappeUebersicht() {
   }, [zustand.typ, laden]);
 
   // Einladung offen: Wer aus dem GitHub-Tab zurückkommt, sieht ohne Neuladen, ob der Zugriff jetzt aktiv ist.
-  const zuletztGeprueft = useRef(0);
   const eingeladen = zustand.typ === 'bereit' && zustand.stand.lesezugriff === 'eingeladen';
   useEffect(() => {
     if (!eingeladen) return;
-    const zurueck = () => {
-      if (document.visibilityState !== 'visible') return;
-      if (!beiRueckkehrPruefen({ lesezugriff: 'eingeladen' }, Date.now(), zuletztGeprueft.current)) return;
-      zuletztGeprueft.current = Date.now();
-      void standNeu();
-    };
-    document.addEventListener('visibilitychange', zurueck);
-    window.addEventListener('focus', zurueck);
-    return () => {
-      document.removeEventListener('visibilitychange', zurueck);
-      window.removeEventListener('focus', zurueck);
-    };
+    return rueckkehrBeobachten(document, window, () => void stillNachsehen());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eingeladen]);
+
+  // Hintergrund-Prüfung: zählt nicht als eigener Lauf und meldet keine Fehler. Läuft inzwischen ein anderes Laden,
+  // gewinnt dieses; scheitert sie, bleibt die Seite, wie sie ist (der nächste Fokus versucht es wieder).
+  async function stillNachsehen(): Promise<void> {
+    const vorher = lauf.current;
+    try {
+      const stand = await api.mappe();
+      if (vorher !== lauf.current) return;
+      setZustand((z) => (z.typ === 'bereit' ? { ...z, stand } : z));
+    } catch {
+      // still
+    }
+  }
 
   // Nur der Stand der Mappe; die Person (ich) bleibt. Scheitert es, übernimmt das volle Laden die Fehleranzeige.
   async function standNeu(): Promise<void> {

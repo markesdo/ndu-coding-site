@@ -82,8 +82,25 @@ export function repoHinweis(stand: Pick<MappeStand, 'repo' | 'lesezugriff'>, org
   return { art: 'unbekannt' };
 }
 
-// Nach „Einladung annehmen“ (neuer Tab) kommt die Person zurück: Dann den Stand neu holen, höchstens alle 2 s.
+// Nach „Einladung annehmen“ (neuer Tab) kommt die Person zurück: Dann still nachsehen, höchstens alle 2 s.
+// Gibt die Aufräumfunktion zurück. dok/fenster als Parameter, damit der Test sie durch EventTargets ersetzen kann.
 export const RUECKKEHR_ABSTAND_MS = 2000;
-export function beiRueckkehrPruefen(stand: Pick<MappeStand, 'lesezugriff'>, jetzt: number, zuletzt: number): boolean {
-  return stand.lesezugriff === 'eingeladen' && jetzt - zuletzt >= RUECKKEHR_ABSTAND_MS;
+export function rueckkehrBeobachten(
+  dok: Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'>,
+  fenster: Pick<Window, 'addEventListener' | 'removeEventListener'>,
+  nachsehen: () => void,
+  jetzt: () => number = Date.now,
+): () => void {
+  let zuletzt = Number.NEGATIVE_INFINITY;
+  const zurueck = () => {
+    if (dok.visibilityState !== 'visible' || jetzt() - zuletzt < RUECKKEHR_ABSTAND_MS) return;
+    zuletzt = jetzt();
+    nachsehen();
+  };
+  dok.addEventListener('visibilitychange', zurueck);
+  fenster.addEventListener('focus', zurueck);
+  return () => {
+    dok.removeEventListener('visibilitychange', zurueck);
+    fenster.removeEventListener('focus', zurueck);
+  };
 }

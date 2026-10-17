@@ -3,7 +3,7 @@ import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, LOGIN_HREF, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beiRueckkehrPruefen, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis } from './mappe-hilfen.js';
+import { FEHLER_TEXT, LOGIN_HREF, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -111,11 +111,40 @@ describe('repoHinweis', () => {
   });
 });
 
-describe('beiRueckkehrPruefen', () => {
-  it('nur solange eingeladen und nicht öfter als alle 2 s', () => {
-    expect(beiRueckkehrPruefen({ lesezugriff: 'eingeladen' }, 10_000, 0)).toBe(true);
-    expect(beiRueckkehrPruefen({ lesezugriff: 'eingeladen' }, 10_000, 10_000 - RUECKKEHR_ABSTAND_MS + 1)).toBe(false);
-    expect(beiRueckkehrPruefen({ lesezugriff: 'aktiv' }, 10_000, 0)).toBe(false);
-    expect(beiRueckkehrPruefen({ lesezugriff: 'unbekannt' }, 10_000, 0)).toBe(false);
+describe('rueckkehrBeobachten', () => {
+  function aufbau() {
+    const dok = Object.assign(new EventTarget(), { visibilityState: 'visible' as DocumentVisibilityState });
+    const fenster = new EventTarget();
+    const uhr = { ms: 10_000 };
+    const nachsehen = vi.fn();
+    const aus = rueckkehrBeobachten(dok as unknown as Document, fenster as unknown as Window, nachsehen, () => uhr.ms);
+    return { dok, fenster, uhr, nachsehen, aus };
+  }
+
+  it('Fokus oder sichtbarer Tab → nachsehen, beide Ereignisse zusammen nur einmal', () => {
+    const { dok, fenster, nachsehen } = aufbau();
+    dok.dispatchEvent(new Event('visibilitychange'));
+    fenster.dispatchEvent(new Event('focus'));
+    expect(nachsehen).toHaveBeenCalledTimes(1);
+  });
+
+  it('nach 2 s wieder, verborgener Tab nie', () => {
+    const { dok, fenster, uhr, nachsehen } = aufbau();
+    fenster.dispatchEvent(new Event('focus'));
+    uhr.ms += RUECKKEHR_ABSTAND_MS;
+    fenster.dispatchEvent(new Event('focus'));
+    expect(nachsehen).toHaveBeenCalledTimes(2);
+    dok.visibilityState = 'hidden';
+    uhr.ms += RUECKKEHR_ABSTAND_MS;
+    dok.dispatchEvent(new Event('visibilitychange'));
+    expect(nachsehen).toHaveBeenCalledTimes(2);
+  });
+
+  it('nach dem Aufräumen keine Aufrufe mehr', () => {
+    const { dok, fenster, nachsehen, aus } = aufbau();
+    aus();
+    dok.dispatchEvent(new Event('visibilitychange'));
+    fenster.dispatchEvent(new Event('focus'));
+    expect(nachsehen).not.toHaveBeenCalled();
   });
 });
