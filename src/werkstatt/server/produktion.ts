@@ -1,25 +1,30 @@
 // Abhängigkeiten für Vercel (api/werkstatt.ts). Wirft nie beim Import: Fehlen Secrets, scheitert erst die Anfrage,
 // die sie braucht, mit 503 – die Website baut und deployt auch ohne Werkstatt-Secrets.
+import { KOHORTEN } from '../kohorten/index.js';
 import { ApiAusnahme } from './antwort.js';
 import { vercelCache } from './cache.js';
+import { botIdentitaetGeber, installationTokenGeber } from './github/app-token.js';
 import { githubIdentitaet } from './github/identitaet.js';
+import { githubSpeicher } from './github/speicher.js';
 import { umgebungLesen } from './umgebung.js';
 import type { Abhaengigkeiten, Speicher, Umgebung } from './typen.js';
 
-// Platzhalter, bis T5 (githubSpeicher) hier ihre Implementierung eintragen.
-function nochNicht(): never {
-  throw new ApiAusnahme(501, 'unbekannt', 'Diese Funktion der Werkstatt gibt es noch nicht.');
+// Repos liegen in der Org der neuesten aktiven Kohorte. App-ID und Schlüssel erst beim ersten Token lesen.
+function produktionsSpeicher(abh: Pick<Abhaengigkeiten, 'umgebung' | 'cache' | 'jetzt'>): Speicher {
+  const neueste = [...KOHORTEN].filter((k) => k.status === 'aktiv').sort((a, b) => (a.beginn < b.beginn ? 1 : -1))[0];
+  if (!neueste) throw new Error('keine aktive Kohorte');
+  const app = {
+    fetch: (eingabe: RequestInfo | URL, init?: RequestInit) => fetch(eingabe, init),
+    cache: abh.cache,
+    jetzt: () => abh.jetzt(),
+    schluessel: () => ({ appId: abh.umgebung.githubAppId, privateKeyPem: abh.umgebung.githubPrivateKey }),
+  };
+  return githubSpeicher({ fetch: app.fetch, cache: abh.cache, token: installationTokenGeber(app), bot: botIdentitaetGeber(app), kohorte: neueste });
 }
-const speicherPlatzhalter: Speicher = {
-  anlegen: async () => nochNicht(),
-  lesen: async () => nochNicht(),
-  speichern: async () => nochNicht(),
-  uebersicht: async () => nochNicht(),
-  werkstattJson: async () => nochNicht(),
-};
 
 export function produktionsAbhaengigkeiten(env: NodeJS.ProcessEnv = process.env): Abhaengigkeiten {
   let umgebung: Umgebung | undefined;
+  let speicher: Speicher | undefined;
   const abh: Abhaengigkeiten = {
     // Erst beim ersten Zugriff gelesen und dann behalten. Die Meldung nennt nur Variablennamen und geht ins Log,
     // nicht in die Antwort.
@@ -34,7 +39,10 @@ export function produktionsAbhaengigkeiten(env: NodeJS.ProcessEnv = process.env)
       }
       return umgebung;
     },
-    speicher: speicherPlatzhalter,
+    // Liest die Umgebung erst beim ersten Token, nicht hier.
+    get speicher(): Speicher {
+      return (speicher ??= produktionsSpeicher(abh));
+    },
     github: githubIdentitaet(() => abh.umgebung),
     cache: vercelCache(),
     jetzt: () => Date.now(),
