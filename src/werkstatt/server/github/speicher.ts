@@ -111,6 +111,16 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
     return r.daten.object.sha as string;
   }
 
+  // Pfade aller Dateien eines Baums (main oder Tree-SHA); leer, solange es main noch nicht gibt.
+  async function baumPfade(z: Zugriff, baum: string): Promise<Set<string>> {
+    const r = await anfrage(z, 'GET', `/git/trees/${baum}?recursive=1`);
+    if (r.status === 200 && Array.isArray(r.daten?.tree)) {
+      return new Set((r.daten.tree as { path: string; type: string }[]).filter((e) => e.type === 'blob').map((e) => e.path));
+    }
+    if (r.status === 404 || r.status === 409) return new Set();
+    throw githubFehler('GET', `git/trees/${baum}`, r.status);
+  }
+
   async function dateiLesen(z: Zugriff, pfad: string, ref?: string): Promise<{ inhalt: string; sha: string } | null> {
     const r = await anfrage(z, 'GET', `/contents/${pfadKodieren(pfad)}${ref ? `?ref=${encodeURIComponent(ref)}` : ''}`);
     if (r.status === 404) return null;
@@ -199,7 +209,7 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
       return { daten: jsonAusRepo(jsonPfad(name), datei.inhalt), basisSha: datei.sha };
     },
 
-    async speichern(repo, name, dateien, basisSha, autor, nachricht) {
+    async speichern(repo, name, dateien, basisSha, autor, nachricht, readme) {
       const json = jsonPfad(name);
       const neu = dateien[json];
       if (neu === undefined) throw intern(`speichern ohne ${json}`);
@@ -219,7 +229,14 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
         // Konflikt nur, wenn sich genau diese JSON-Datei seit dem Laden geändert hat.
         if ((aktuell?.sha ?? null) !== basisSha) return { konflikt: true };
 
-        const t = await anfrage(z, 'POST', '/git/trees', { base_tree: c.daten.tree.sha, tree: eintraege });
+        // README aus genau dem Baum, auf dem dieser Versuch aufsetzt (ein anderes Artefakt kann inzwischen dazugekommen sein).
+        let baum = eintraege;
+        if (readme) {
+          const pfade = await baumPfade(z, c.daten.tree.sha);
+          const vorhanden = ARTEFAKT_NAMEN.map((n) => ({ name: n, vorhanden: n === name || pfade.has(jsonPfad(n)) }));
+          baum = [...eintraege.filter((e) => e.path !== 'README.md'), { path: 'README.md', mode: '100644', type: 'blob', content: readme(vorhanden) }];
+        }
+        const t = await anfrage(z, 'POST', '/git/trees', { base_tree: c.daten.tree.sha, tree: baum });
         if (t.status !== 201 || typeof t.daten?.sha !== 'string') throw githubFehler('POST', 'git/trees', t.status);
         const commit = await anfrage(z, 'POST', '/git/commits', { message: nachricht, tree: t.daten.sha, parents: [kopf], author: autor, committer });
         if (commit.status !== 201 || typeof commit.daten?.sha !== 'string') throw githubFehler('POST', 'git/commits', commit.status);
@@ -238,13 +255,7 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
     async uebersicht(repo) {
       const z = await zugriff(repo);
       if (!z) throw unbekanntesRepo();
-      const r = await anfrage(z, 'GET', '/git/trees/main?recursive=1');
-      let pfade = new Set<string>();
-      if (r.status === 200 && Array.isArray(r.daten?.tree)) {
-        pfade = new Set((r.daten.tree as { path: string; type: string }[]).filter((e) => e.type === 'blob').map((e) => e.path));
-      } else if (r.status !== 404 && r.status !== 409) {
-        throw githubFehler('GET', 'git/trees/main', r.status);
-      }
+      const pfade = await baumPfade(z, 'main');
       return ARTEFAKT_NAMEN.map((name) => ({ name, vorhanden: pfade.has(jsonPfad(name)) }));
     },
 

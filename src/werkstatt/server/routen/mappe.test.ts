@@ -5,10 +5,12 @@ import entscheidungenBeispiel from '../../beispiele/entscheidungen.json';
 import { rendern } from '../../render';
 import { ApiAusnahme } from '../antwort';
 import { appErstellen } from '../app';
-import { fakeSpeicher } from '../fake-speicher';
+import { fakeSpeicher, type FakeSpeicher } from '../fake-speicher';
+import { GithubAusnahme } from '../github/app-token';
+import { MIGRATIONEN } from '../../schemas';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { COOKIE_WERKSTATT, sitzungErstellen, type Sitzung } from '../sitzung';
-import { DateiUnlesbar, GITHUB_SATZ, wirdEingerichtet } from '../speicher-fehler';
+import { DateiUnlesbar, GITHUB_SATZ, internerFehler, wirdEingerichtet } from '../speicher-fehler';
 import type { Speicher } from '../typen';
 
 const BASIS = 'http://localhost:4321';
@@ -19,11 +21,12 @@ const ZUGANG = { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerz
 const REPO = 'test-sofie';
 const SOFIE = { githubId: 1001, login: 'sofie-x', kohorte: 'test', rolle: 'studierende' } as const;
 
-function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: Speicher['speichern']; lesen?: Speicher['lesen'] } = {}) {
+function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: (fake: FakeSpeicher) => Speicher['speichern']; lesen?: Speicher['lesen'] } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: ZUGANG };
   const fake = fakeSpeicher();
   const anlegen = vi.fn(opts.anlegen ?? fake.anlegen);
-  const speicher: Speicher = { ...fake, anlegen, speichern: opts.speichern ?? fake.speichern, lesen: opts.lesen ?? fake.lesen };
+  const uebersicht = vi.fn(fake.uebersicht);
+  const speicher: Speicher = { ...fake, anlegen, uebersicht, speichern: opts.speichern ? opts.speichern(fake) : fake.speichern, lesen: opts.lesen ?? fake.lesen };
   const app = appErstellen(lokaleAbhaengigkeiten({ umgebung, speicher, jetzt: () => JETZT }));
 
   async function cookie(s: Omit<Sitzung, 'exp'> = SOFIE): Promise<string> {
@@ -41,7 +44,7 @@ function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: Speicher['spe
     });
   }
   const speichern = (name: string, body: unknown, s?: Omit<Sitzung, 'exp'>) => rohSpeichern(name, JSON.stringify(body), s);
-  return { app, fake, anlegen, holen, speichern, rohSpeichern, cookie, umgebung };
+  return { app, fake, anlegen, uebersicht, holen, speichern, rohSpeichern, cookie, umgebung };
 }
 
 async function mitMappe(opts: Parameters<typeof aufbau>[0] = {}) {
@@ -92,7 +95,7 @@ describe('GET /api/werkstatt/mappe', () => {
     expect(t.anlegen).toHaveBeenCalledTimes(1);
     expect(t.anlegen).toHaveBeenCalledWith({ kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
     expect((await r.json()).repo).toBe(REPO);
-    expect(await t.fake.werkstattJson(REPO)).toStrictEqual({ kohorte: 'test', githubId: 1001 });
+    expect(await t.fake.werkstattJson(REPO)).toMatchObject({ kohorte: 'test', githubId: 1001 });
   });
 
   it('Anlegen scheitert erneut → 503 wird-eingerichtet', async () => {
@@ -101,15 +104,6 @@ describe('GET /api/werkstatt/mappe', () => {
     expect(r.status).toBe(503);
     expect(await r.json()).toMatchObject({ code: 'wird-eingerichtet' });
     expect(t.anlegen).toHaveBeenCalledTimes(1);
-  });
-
-  it('Anlegen scheitert mit einem unerwarteten Fehler → 503 wird-eingerichtet', async () => {
-    const t = aufbau({ anlegen: async () => { throw new Error('GitHub kaputt'); } });
-    const fehlerLog = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const r = await t.holen('');
-    fehlerLog.mockRestore();
-    expect(r.status).toBe(503);
-    expect(await r.json()).toMatchObject({ code: 'wird-eingerichtet' });
   });
 
   it('Repo mit fremder werkstatt.json → 403 nicht-freigeschaltet, auch für Artefakte', async () => {
@@ -142,8 +136,8 @@ describe('GET /api/werkstatt/mappe', () => {
     expect(t.fake.commits(REPO)).toHaveLength(0);
   });
 
-  it('Anlegen scheitert mit 409 oder 502 → 503 wird-eingerichtet, nicht 409', async () => {
-    for (const ausnahme of [new ApiAusnahme(409, 'konflikt', 'x'), new ApiAusnahme(502, 'github-fehler', 'y')]) {
+  it('Anlegen scheitert vorübergehend (GitHub 5xx, Netz/Zeitlimit, 503) → 503 wird-eingerichtet', async () => {
+    for (const ausnahme of [new GithubAusnahme(502), new GithubAusnahme(0), wirdEingerichtet()]) {
       const t = aufbau({ anlegen: async () => { throw ausnahme; } });
       const log = vi.spyOn(console, 'error').mockImplementation(() => {});
       const r = await t.holen('');
@@ -151,6 +145,22 @@ describe('GET /api/werkstatt/mappe', () => {
       expect(r.status).toBe(503);
       expect(await r.json()).toMatchObject({ code: 'wird-eingerichtet' });
     }
+  });
+
+  it('Anlegen scheitert anders (intern, TypeError, 409) → 500 unbekannt, Ursache samt Stack im Log', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    for (const ausnahme of [internerFehler('Kohorte fehlt'), new TypeError('x is not a function'), new ApiAusnahme(409, 'konflikt', 'Name belegt')]) {
+      log.mockClear();
+      const t = aufbau({ anlegen: async () => { throw ausnahme; } });
+      const r = await t.holen('');
+      expect(r.status).toBe(500);
+      expect(await r.json()).toStrictEqual({ code: 'unbekannt', fehler: 'Da ist etwas schiefgegangen. Sag Markus Bescheid.' });
+      const geloggt = log.mock.calls.flat().map(String).join(' ');
+      expect(geloggt).toContain(ausnahme.name);
+      expect(geloggt).toContain(ausnahme.message);
+      expect(geloggt).toContain(ausnahme.stack!.split('\n')[1].trim());
+    }
+    log.mockRestore();
   });
 
   it('Anlegen meldet fremdes Repo (403) → 403 geht durch', async () => {
@@ -214,6 +224,14 @@ describe('GET /api/werkstatt/mappe/:artefakt – kaputte Datei', () => {
     expect(body.fehler).toContain('Produkt-Brief: Die gespeicherte Datei lässt sich nicht lesen');
   });
 });
+
+// Legt mappe/entscheidungen.json mit beliebigem Inhalt an (wie von Hand auf GitHub) und liefert den basisSha.
+async function vonAussenGespeichert(fake: FakeSpeicher, daten: unknown): Promise<string> {
+  const json = `${JSON.stringify(daten, null, 2)}\n`;
+  const erg = await fake.speichern(REPO, 'entscheidungen', { 'mappe/entscheidungen.json': json }, null, { name: 'x', email: 'x' }, 'von Hand');
+  if (!('basisSha' in erg)) throw new Error('Commit erwartet');
+  return erg.basisSha;
+}
 
 describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
   const [d1, d2] = entscheidungenBeispiel.entscheidungen;
@@ -281,6 +299,26 @@ describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
     const umgestellt = Object.fromEntries(Object.entries(d1).reverse());
     const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [umgestellt, d2] }, basisSha: sha });
     expect(r.status).toBe(200);
+  });
+
+  it('verglichen wird mit der migrierten Fassung, nicht mit dem Rohtext', async () => {
+    const t = await mitMappe();
+    // Eine ältere Fassung, in der die Entscheidung noch „text“ hieß; die Migration hebt sie auf @1.
+    MIGRATIONEN['entscheidungen@0'] = (alt) => {
+      const a = alt as { entscheidungen: Record<string, unknown>[] };
+      return { ...a, schema: 'entscheidungen@1', entscheidungen: a.entscheidungen.map(({ text, ...z }) => ({ ...z, entscheidung: text })) };
+    };
+    try {
+      const { entscheidung, ...ohne } = d1;
+      const alt = { schema: 'entscheidungen@0', stand: '2026-10-22', entscheidungen: [{ ...ohne, text: entscheidung }] };
+      const basisSha = await vonAussenGespeichert(t.fake, alt);
+      const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d1] }, basisSha });
+      expect(r.status).toBe(200);
+      const geaendert = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [{ ...d1, entscheidung: 'anders' }] }, basisSha: ((await r.json()) as { basisSha: string }).basisSha });
+      expect(geaendert.status).toBe(422);
+    } finally {
+      delete MIGRATIONEN['entscheidungen@0'];
+    }
   });
 
   it('veralteter basisSha → 409 (nicht 422 gegen eine fremde Fassung)', async () => {
@@ -409,8 +447,48 @@ describe('PUT /api/werkstatt/mappe/:artefakt', () => {
     expect(t.fake.commits(REPO)).toHaveLength(0);
   });
 
+  it('README aus dem Stand, auf dem der Commit landet: ein anderes Artefakt dazwischen steht mit drin', async () => {
+    const t = await mitMappe({
+      speichern: (fake) => async (...a) => {
+        // Zwischen Lesen der Route und Commit speichert ein anderer Tab den Brief.
+        fake.aendernVonAussen(REPO, 'brief');
+        return fake.speichern(...a);
+      },
+    });
+    const r = await t.speichern('annahmen', { daten: annahmenBeispiel, basisSha: null });
+    expect(r.status).toBe(200);
+    const readme = t.fake.commits(REPO)[0].dateien['README.md'];
+    expect(readme).toContain('[mappe/annahmen.md](mappe/annahmen.md)');
+    expect(readme).toContain('[mappe/brief.md](mappe/brief.md)');
+    // Die Route liest die Übersicht beim Speichern nicht mehr selbst.
+    expect(t.uebersicht).not.toHaveBeenCalled();
+  });
+
+  it('Nachricht: Steuer- und Formatzeichen raus (auch U+202E), ZWJ-Emoji bleibt ganz', async () => {
+    const t = await mitMappe();
+    await t.speichern('brief', { daten: briefBeispiel, basisSha: null, nachricht: 'gut\u202Eböse\u200B!' });
+    expect(t.fake.commits(REPO)[0].nachricht).toBe('Produkt-Brief: gut böse !');
+    const familie = '\u{1F468}\u200D\u{1F469}\u200D\u{1F467}';
+    let sha = (await (await t.holen('/brief')).json()).basisSha;
+    await t.speichern('brief', { daten: briefBeispiel, basisSha: sha, nachricht: `${'x'.repeat(99)}${familie}y` });
+    expect(t.fake.commits(REPO)[1].nachricht).toBe(`Produkt-Brief: ${'x'.repeat(99)}${familie}`);
+    sha = (await (await t.holen('/brief')).json()).basisSha;
+    await t.speichern('brief', { daten: briefBeispiel, basisSha: sha, nachricht: `${'x'.repeat(100)}${familie}` });
+    expect(t.fake.commits(REPO)[2].nachricht).toBe(`Produkt-Brief: ${'x'.repeat(100)}`);
+  });
+
+  it('unvollständige Anfrage (ohne basisSha, ohne daten) → 422 ohne Feldfehler', async () => {
+    const t = await mitMappe();
+    for (const body of [{ daten: briefBeispiel }, { basisSha: null }, {}]) {
+      const r = await t.speichern('brief', body);
+      expect(r.status).toBe(422);
+      expect(await r.json()).toStrictEqual({ code: 'ungueltig', fehler: 'Die Anfrage ist unvollständig.' });
+    }
+    expect(t.fake.commits(REPO)).toHaveLength(0);
+  });
+
   it('Fehler des Speichers gehen unverändert durch (502 github-fehler)', async () => {
-    const t = await mitMappe({ speichern: async () => { throw new ApiAusnahme(502, 'github-fehler', 'Speichern gerade nicht möglich.'); } });
+    const t = await mitMappe({ speichern: () => async () => { throw new ApiAusnahme(502, 'github-fehler', 'Speichern gerade nicht möglich.'); } });
     const r = await t.speichern('brief', { daten: briefBeispiel, basisSha: null });
     expect(r.status).toBe(502);
     expect(await r.json()).toStrictEqual({ code: 'github-fehler', fehler: 'Speichern gerade nicht möglich.' });

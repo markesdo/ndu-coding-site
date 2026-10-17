@@ -60,13 +60,16 @@ export function fakeSpeicher(): FakeSpeicher {
       return { daten: jsonAusRepo(jsonPfad(name), inhalt), basisSha: blobSha(inhalt) };
     },
 
-    async speichern(repo, name, dateien, basisSha, autor, nachricht) {
+    async speichern(repo, name, dateien, basisSha, autor, nachricht, readme) {
       const r = repoHolen(repo);
       const neu = dateien[jsonPfad(name)];
       if (neu === undefined) throw internerFehler(`speichern ohne ${jsonPfad(name)}`);
       if (shaVon(r.dateien, name) !== basisSha) return { konflikt: true };
-      for (const [pfad, inhalt] of Object.entries(dateien)) r.dateien.set(pfad, inhalt);
-      r.commits.push({ dateien: { ...dateien }, autor: { ...autor }, nachricht });
+      const alle = { ...dateien };
+      // README aus dem Stand, auf dem dieser Commit landet (wie githubSpeicher pro Versuch).
+      if (readme) alle['README.md'] = readme(ARTEFAKT_NAMEN.map((n) => ({ name: n, vorhanden: n === name || r.dateien.has(jsonPfad(n)) })));
+      for (const [pfad, inhalt] of Object.entries(alle)) r.dateien.set(pfad, inhalt);
+      r.commits.push({ dateien: alle, autor: { ...autor }, nachricht });
       return { basisSha: blobSha(neu), commitUrl: `https://github.invalid/fake/${repo}/commit/${r.commits.length}` };
     },
 

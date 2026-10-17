@@ -43,7 +43,7 @@ export const ARTEFAKTE: Record<ArtefaktName, { titel: string; slug: string; vers
 // Gelesen wird immer mit Migration im Speicher; geschrieben erst beim ausdrücklichen Speichern.
 export const MIGRATIONEN: Record<string, (alt: unknown) => unknown> = {};
 
-function istObjekt(x: unknown): x is Record<string, unknown> {
+export function istObjekt(x: unknown): x is Record<string, unknown> {
   return typeof x === 'object' && x !== null && !Array.isArray(x);
 }
 

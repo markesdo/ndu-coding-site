@@ -3,6 +3,7 @@ import { appErstellen } from './app';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from './lokal';
 import { produktionsAbhaengigkeiten } from './produktion';
 import { mapCache } from './cache';
+import { COOKIE_WERKSTATT, sitzungErstellen } from './sitzung';
 
 const BASIS = 'http://localhost:4321';
 const app = appErstellen(lokaleAbhaengigkeiten());
@@ -65,6 +66,17 @@ describe('Routing', () => {
     // mappe ist gebaut (T11): ohne Sitzung 401 statt Stub.
     expect(await mappe(await anfrage('/api/werkstatt/mappe'))).toBe('nicht-angemeldet');
     expect(await mappe(await anfrage('/api/werkstatt/mappe/brief'))).toBe('nicht-angemeldet');
+  });
+
+  it('mit gültiger Sitzung liefert /api/werkstatt/mappe einen MappeStand (Router wirklich eingehängt)', async () => {
+    const abh = lokaleAbhaengigkeiten();
+    const mit = appErstellen(abh);
+    const wert = await sitzungErstellen({ githubId: 900001, login: 'sofie-test', kohorte: 'test', rolle: 'studierende', exp: Math.floor(Date.now() / 1000) + 600 }, abh.umgebung.sessionSecret);
+    const r = await mit.request(`${BASIS}/api/werkstatt/mappe`, { headers: { Cookie: `${COOKIE_WERKSTATT}=${wert}` } });
+    expect(r.status).toBe(200);
+    const stand = await r.json();
+    expect(stand).toMatchObject({ kohorte: 'test', repo: 'test-sofie' });
+    expect(stand.artefakte.map((a: { name: string }) => a.name)).toStrictEqual(['brief', 'entscheidungen', 'leitfaden', 'annahmen']);
   });
 
   it('Metadaten ohne Suffix an der Wurzel: 404 als ApiFehler (Issuer mit Pfad, RFC 8414 §3.3)', async () => {

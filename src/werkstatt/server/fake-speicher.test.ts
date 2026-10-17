@@ -94,6 +94,15 @@ describe('fakeSpeicher', () => {
     expect((await s.lesen(repo, 'brief')).daten).toEqual({ v: 2 });
   });
 
+  it('speichern mit readme: README aus dem Stand beim Commit, dieses Artefakt eingeschlossen', async () => {
+    const { s, repo } = await mitRepo();
+    await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu');
+    const d = dateien('annahmen', { annahmen: [] });
+    delete d['README.md'];
+    await s.speichern(repo, 'annahmen', d, null, autor, 'Annahmen: neu', (v) => v.filter((x) => x.vorhanden).map((x) => x.name).join(','));
+    expect(s.commits(repo)[1].dateien['README.md']).toBe('brief,annahmen');
+  });
+
   it('uebersicht: alle Artefakte mit vorhanden', async () => {
     const { s, repo } = await mitRepo();
     await s.speichern(repo, 'leitfaden', dateien('leitfaden', {}), null, autor, 'Leitfaden: neu');

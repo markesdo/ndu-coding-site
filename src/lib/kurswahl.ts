@@ -1,6 +1,6 @@
 // Kurswahl auf der Startseite (/start): Das Innolab ist ausgegraut, bis der Coding-Kurs vorbei ist.
 // Stichtag als Kalendertag in Wien – nicht in UTC, sonst öffnet es am Vorabend um 1 bzw. 2 Uhr Wiener Zeit zu spät oder zu früh.
-import { zumLogin } from './kurszugang';
+import { zumLogin } from './kurszugang.js'; // .js: auch die Werkstatt-Funktion auf Vercel lädt diese Datei
 
 /** Tag nach dem letzten Coding-Tag; spätestens der erste Innolab-Tag (TAGE[0].datum in components/methoden.ts – seit der
  *  Absage am 16.10. ist das der 22.10.). kurswahl.test.ts prüft beide Grenzen. */
