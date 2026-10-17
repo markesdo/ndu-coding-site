@@ -6,5 +6,8 @@ export const kohorteTest: Kohorte = {
   ...kohorte2026,
   id: 'test',
   titel: 'Test',
+  // Immer zuletzt, ausdrücklich aktiv (nicht von 2026 geerbt).
+  status: 'aktiv',
+  beginn: '2000-01-01',
   termine: {},
 };

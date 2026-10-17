@@ -7,6 +7,7 @@ export const kohorte2026: Kohorte = {
   org: 'ndu-innolab',
   vorlage: 'mappe-vorlage-2026',
   status: 'aktiv',
+  beginn: '2026-10-22',
   artefakte: ['brief@1', 'entscheidungen@1', 'leitfaden@1', 'annahmen@1'],
   termine: {
     tag1: '2026-10-22',

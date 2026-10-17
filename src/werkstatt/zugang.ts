@@ -59,7 +59,7 @@ export function zugangLesen(roh: string | undefined): Zugang {
 // Nur aktive Kohorten, neueste zuerst. Lehrende haben kein Kürzel.
 export function mitgliedschaften(z: Zugang, githubId: number, kohorten: readonly Kohorte[]): Mitgliedschaft[] {
   const treffer: Mitgliedschaft[] = [];
-  for (const k of [...kohorten].filter((k) => k.status === 'aktiv').sort((a, b) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0))) {
+  for (const k of [...kohorten].filter((k) => k.status === 'aktiv').sort((a, b) => (a.beginn < b.beginn ? 1 : a.beginn > b.beginn ? -1 : 0))) {
     const eintrag = z[k.id];
     if (!eintrag) continue;
     if (eintrag.lehrende.includes(githubId)) treffer.push({ kohorte: k.id, rolle: 'lehrende', kuerzel: null });

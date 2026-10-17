@@ -12,6 +12,8 @@ export interface Kohorte {
   org: string;
   vorlage: string;
   status: KohortenStatus;
+  // Beginn des Jahrgangs (ISO-Datum). Bestimmt die Reihenfolge der Mitgliedschaften: neuester zuerst.
+  beginn: string;
   artefakte: ArtefaktVersion[];
   // Kurstag -> Datum (ISO) oder null, solange der Termin offen ist.
   termine: Record<string, string | null>;

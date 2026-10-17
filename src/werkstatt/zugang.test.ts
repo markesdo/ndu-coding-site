@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { mitgliedschaften, repoName, zugangLesen } from './zugang';
 import type { Kohorte } from './kohorten/typen';
 
-function kohorte(id: string, status: Kohorte['status'] = 'aktiv'): Kohorte {
-  return { id, kurs: 'innolab', titel: `Innolab ${id}`, org: 'test-org', vorlage: `mappe-vorlage-${id}`, status, artefakte: [], termine: {} };
+function kohorte(id: string, status: Kohorte['status'] = 'aktiv', beginn = `${id}-01-01`): Kohorte {
+  return { id, kurs: 'innolab', titel: `Innolab ${id}`, org: 'test-org', vorlage: `mappe-vorlage-${id}`, status, beginn, artefakte: [], termine: {} };
 }
 
 const zugang = zugangLesen(JSON.stringify({
@@ -16,6 +16,19 @@ describe('mitgliedschaften', () => {
     const m = mitgliedschaften(zugang, 1001, [kohorte('2026'), kohorte('2027')]);
     expect(m.map((x) => x.kohorte)).toEqual(['2027', '2026']);
     expect(m[0]).toEqual({ kohorte: '2027', rolle: 'studierende', kuerzel: 'anna2' });
+  });
+  it('Testkohorte steht nach den echten Jahrgängen, auch wenn ihre ID alphabetisch später kommt', () => {
+    const z = zugangLesen(JSON.stringify({
+      '2026': { lehrende: [], studierende: [{ githubId: 1001, kuerzel: 'anna' }] },
+      test: { lehrende: [], studierende: [{ githubId: 1001, kuerzel: 'anna-t' }] },
+    }));
+    const m = mitgliedschaften(z, 1001, [kohorte('test', 'aktiv', '2000-01-01'), kohorte('2026', 'aktiv', '2026-10-22')]);
+    expect(m.map((x) => x.kohorte)).toEqual(['2026', 'test']);
+    expect(mitgliedschaften(z, 1001, [kohorte('2026', 'aktiv', '2026-10-22'), kohorte('test', 'aktiv', '2000-01-01')]).map((x) => x.kohorte)).toEqual(['2026', 'test']);
+  });
+  it('zwei echte Jahrgänge: nach Beginn, neuester zuerst', () => {
+    const m = mitgliedschaften(zugang, 1001, [kohorte('2026', 'aktiv', '2026-10-22'), kohorte('2027', 'aktiv', '2027-10-21')]);
+    expect(m.map((x) => x.kohorte)).toEqual(['2027', '2026']);
   });
   it('archivierte Kohorte zählt nicht', () => {
     const m = mitgliedschaften(zugang, 1001, [kohorte('2026', 'archiviert'), kohorte('2027')]);
