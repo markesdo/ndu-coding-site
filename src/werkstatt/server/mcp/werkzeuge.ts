@@ -82,7 +82,8 @@ async function artefaktHolen(k: WerkzeugKontext, name: ArtefaktName) {
 const nochLeer = (k: WerkzeugKontext, name: ArtefaktName) =>
   `${ARTEFAKTE[name].titel}: noch nicht ausgefüllt. Bitte die Person, es zuerst selbst in der Werkstatt auszufüllen: ${mappeUrl(k)}`;
 
-const befundSchema = z.object({
+// Format eines Befunds. Heute nur in Beschreibung, Text und Anweisung; vorschlag_hinterlegen (Phase 1b) nimmt es als Eingabe.
+export const befundSchema = z.object({
   pruefpunkt: z.string().describe('ID des Prüfpunkts, z. B. annahmen-2.'),
   zitat: z.string().describe('Wörtliches Zitat der betroffenen Stelle aus dem Artefakt.'),
   frage: z.string().describe('Eine Rückfrage, die die Person selbst weiterbringt. Kein umformulierter Artefakttext.'),
@@ -160,7 +161,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
     MCP_WERKZEUGE.artefaktPruefen,
     {
       title: 'Artefakt prüfen',
-      description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit IDs wie annahmen-1). Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt und einer Rückfrage (Format wie das Feld befunde). Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Nur lesen.`,
+      description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit IDs wie annahmen-1). Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt und einer Rückfrage. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Nur lesen.`,
       inputSchema: { artefakt: artefaktArg },
       outputSchema: {
         artefakt: z.enum(ARTEFAKT_NAMEN as [ArtefaktName, ...ArtefaktName[]]),
@@ -168,10 +169,6 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         vorhanden: z.boolean(),
         markdown: z.string().describe('Das Artefakt als Markdown; leer, wenn es noch nicht ausgefüllt ist.'),
         pruefpunkte: z.array(z.object({ id: z.string(), text: z.string() })),
-        befunde: z
-          .array(befundSchema)
-          .max(3)
-          .describe('Vom Server immer leer. Deine Befunde (höchstens drei) gibst du in genau diesem Format in deiner Antwort.'),
       },
       annotations: LESEN,
     },
@@ -194,7 +191,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
           'Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat aus dem Artefakt, eine Rückfrage. Kein umformulierter Text. Passt alles, sag das in einem Satz.',
           `Ändern kann die Person nur selbst in der Werkstatt: ${mappeUrl(k)}`,
         ].join('\n');
-        return textErgebnis(text, { artefakt, titel, vorhanden: a !== null, markdown: a?.markdown ?? '', pruefpunkte, befunde: [] });
+        return textErgebnis(text, { artefakt, titel, vorhanden: a !== null, markdown: a?.markdown ?? '', pruefpunkte });
       }),
   );
 }

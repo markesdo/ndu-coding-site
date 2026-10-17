@@ -238,9 +238,9 @@ describe('Werkzeuge', () => {
       expect(felder.every((f) => f === 'artefakt' || f === 'slug'), `${t.name}: ${felder}`).toBe(true);
     }
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
-    const befunde = (pruefen.outputSchema?.properties as Record<string, { maxItems?: number; items?: { properties?: object } }>).befunde;
-    expect(befunde.maxItems).toBe(3);
-    expect(Object.keys(befunde.items?.properties ?? {}).sort()).toStrictEqual(['frage', 'pruefpunkt', 'zitat']);
+    // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
+    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['artefakt', 'markdown', 'pruefpunkte', 'titel', 'vorhanden']);
+    expect(pruefen.description).toMatch(/höchstens drei Befunde/);
   });
 
   it('artefakt_pruefen(annahmen): Markdown + fünf Prüfpunkte annahmen-1 … annahmen-5 aus methoden.ts', async () => {
@@ -248,11 +248,11 @@ describe('Werkzeuge', () => {
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen' } });
     expect(r.isError).toBeFalsy();
-    const sc = r.structuredContent as { artefakt: string; markdown: string; pruefpunkte: { id: string; text: string }[]; befunde: unknown[] };
+    const sc = r.structuredContent as { artefakt: string; markdown: string; pruefpunkte: { id: string; text: string }[] };
     const liste = METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!;
     expect(sc.pruefpunkte).toStrictEqual(liste.map((t, i) => ({ id: `annahmen-${i + 1}`, text: t })));
     expect(sc.pruefpunkte.map((p) => p.id)).toStrictEqual(['annahmen-1', 'annahmen-2', 'annahmen-3', 'annahmen-4', 'annahmen-5']);
-    expect(sc.befunde).toStrictEqual([]);
+    expect(sc).not.toHaveProperty('befunde');
     expect(sc.markdown).toContain(TEXT_A);
     const t = text(r);
     expect(t).toContain(TEXT_A);
@@ -336,6 +336,18 @@ describe('Werkzeuge', () => {
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'test-jonas' } });
     expect(r.isError).toBe(true);
+  });
+
+  it('artefakt "" oder null -> isError-Ergebnis, kein Protokollfehler', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    for (const name of ['artefakt_pruefen', 'artefakt_lesen']) {
+      for (const artefakt of ['', null]) {
+        const r = await c.callTool({ name, arguments: { artefakt } });
+        expect(r.isError, `${name}(${JSON.stringify(artefakt)})`).toBe(true);
+        expect(text(r)).not.toContain(TEXT_A);
+      }
+    }
   });
 
   it('mappe_uebersicht verträgt "" und null in Argumenten (ChatGPT)', async () => {
