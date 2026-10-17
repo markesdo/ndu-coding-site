@@ -1,0 +1,19 @@
+{
+  "schema": "brief@1",
+  "stand": "2026-10-22",
+  "fuerWen": "Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten",
+  "problem": "Die Schlange ist morgens länger als die Zeit bis zur Abfahrt. Wer den Zug erreichen will, verzichtet auf Kaffee oder nimmt den Automaten.",
+  "heuteGeloestDurch": "Automat, Thermobecher von zu Hause, ganz verzichten, einen Zug später nehmen",
+  "nicht": [
+    "Keine Lieferung an den Bahnsteig",
+    "Kein Mittagsgeschäft",
+    "Keine anderen Bahnhöfe"
+  ],
+  "outcome": {
+    "wirGlauben": "Pendler*innen bekommen morgens Kaffee, ohne ihren Zug zu riskieren.",
+    "wirMerkenEs": "Wenn 4 von 5 Testpersonen an drei Tagen hintereinander mit Kaffee in ihren Zug steigen."
+  },
+  "offeneFragen": [
+    "Wollen Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen?"
+  ]
+}
