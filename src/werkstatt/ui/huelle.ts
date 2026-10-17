@@ -47,7 +47,7 @@ export function huelle(zustand: HuellenZustand, e: Ereignis): { zustand: Huellen
       return { zustand: zustand === 'konflikt' ? 'konflikt' : 'bereit', effekte: ['entwurfSichern'] };
     case 'speichern':
       // Der Entwurf wird vor dem Senden gesichert: Bricht die Verbindung ab, geht nichts verloren.
-      if (zustand === 'bereit' || zustand === 'gespeichert' || zustand === 'fehler') {
+      if (darfSpeichern(zustand)) {
         return { zustand: 'speichert', effekte: ['entwurfSichern'] };
       }
       return bleibt;
@@ -75,4 +75,9 @@ export function statusText(zustand: HuellenZustand, hatEntwurf: boolean): string
 export function speichernErlaubt(name: ArtefaktName, daten: unknown): { erlaubt: boolean; fehler: Feldfehler[] } {
   const r = artefaktParsen(name, daten);
   return r.ok ? { erlaubt: true, fehler: [] } : { erlaubt: false, fehler: r.fehler };
+}
+
+/** Nur aus diesen Zuständen geht ein Speichern los. Wer „speichert“ ist, sendet nicht noch einmal (kein doppeltes PUT). */
+export function darfSpeichern(zustand: HuellenZustand): boolean {
+  return zustand === 'bereit' || zustand === 'gespeichert' || zustand === 'fehler';
 }

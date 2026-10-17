@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { huelle, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
+import { darfSpeichern, huelle, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
 import annahmen from '../beispiele/annahmen.json';
 
 function lauf(start: HuellenZustand, ...ereignisse: Ereignis[]) {
@@ -48,8 +48,8 @@ describe('Zustandsmaschine der Editor-Hülle', () => {
     expect(n.zustand).toBe('laden');
     expect(n.effekte).toStrictEqual(['neuLaden']);
     expect(n.effekte).not.toContain('entwurfLoeschen');
-    // Entwurf bleibt auch nach dem Neuladen abrufbar: geladen → bereit ohne Löschen.
-    expect(huelle('laden', { typ: 'geladen' }).effekte).toStrictEqual([]);
+    // Dass der Entwurf danach abrufbar bleibt (nie gelöscht, Wahl über startStand), prüft entwurf.test.ts.
+    expect(huelle('laden', { typ: 'geladen' }).effekte).not.toContain('entwurfLoeschen');
   });
 
   it('Änderungen werden als Entwurf gesichert; im Konflikt bleibt der Konflikt', () => {
@@ -58,7 +58,7 @@ describe('Zustandsmaschine der Editor-Hülle', () => {
     expect(huelle('konflikt', { typ: 'geaendert' })).toStrictEqual({ zustand: 'konflikt', effekte: ['entwurfSichern'] });
   });
 
-  it('Speichern geht nur aus bereit, fehler und abgemeldet-nach-Login nicht aus laden', () => {
+  it('Speichern geht nur aus bereit, gespeichert und fehler – nicht aus laden, speichert, konflikt', () => {
     expect(huelle('laden', { typ: 'speichern' })).toStrictEqual({ zustand: 'laden', effekte: [] });
     expect(huelle('speichert', { typ: 'speichern' })).toStrictEqual({ zustand: 'speichert', effekte: [] });
     expect(huelle('fehler', { typ: 'speichern' }).zustand).toBe('speichert');
@@ -70,6 +70,16 @@ describe('Zustandsmaschine der Editor-Hülle', () => {
     expect(statusText('bereit', true)).toBe('Entwurf');
     expect(statusText('fehler', true)).toBe('Entwurf');
     expect(statusText('bereit', false)).toBe('');
+  });
+});
+
+describe('Doppeltes Absenden', () => {
+  it('während „speichert“ löst ein zweites Speichern nichts aus', () => {
+    const erst = huelle('bereit', { typ: 'speichern' });
+    expect(darfSpeichern(erst.zustand)).toBe(false);
+    expect(huelle(erst.zustand, { typ: 'speichern' })).toStrictEqual({ zustand: 'speichert', effekte: [] });
+    for (const z of ['laden', 'speichert', 'konflikt', 'abgemeldet', 'wird-eingerichtet'] as const) expect(darfSpeichern(z)).toBe(false);
+    for (const z of ['bereit', 'gespeichert', 'fehler'] as const) expect(darfSpeichern(z)).toBe(true);
   });
 });
 

@@ -1,9 +1,8 @@
 ---
-// Nur Dev: Testseite für die Editor-Hülle. Im Build entsteht sie nicht (getStaticPaths ist dann leer).
+// Nur Dev: Testseite für die Editor-Hülle. Liegt bewusst nicht in src/pages; astro.config.mjs hängt sie nur im Dev-Server ein,
+// sodass weder Seite noch Fake-API im Build landen.
 import Layout from '../../../layouts/Layout.astro';
-import TestEditor from '../../../werkstatt/ui/dev/TestEditor';
-
-export const getStaticPaths = () => (import.meta.env.DEV ? [{ params: { seite: 'test' } }] : []);
+import TestEditor from './TestEditor';
 ---
 <Layout title="Werkstatt-Test">
   <h1>Werkstatt-Test</h1>

@@ -7,8 +7,8 @@ import { METHODEN } from '../../components/methoden.js';
 import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldfehler } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
-import { entwurfLaden, entwurfLoeschen, entwurfSichern } from './entwurf.js';
-import { huelle, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
+import { entwurfLaden, entwurfLoeschen, entwurfSichern, startStand } from './entwurf.js';
+import { darfSpeichern, huelle, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
 import '../../styles/werkstatt.css';
 
 export interface EditorHuelleProps<N extends ArtefaktName> {
@@ -25,6 +25,8 @@ export interface EditorHuelleProps<N extends ArtefaktName> {
 const TEXT = {
   abgemeldet: 'Melde dich mit GitHub an, um deine Mappe zu bearbeiten.',
   abgelaufen: 'Deine Sitzung ist abgelaufen. Melde dich neu an – dein Entwurf bleibt erhalten.',
+  abgelaufenUngesichert: 'Deine Sitzung ist abgelaufen. Melde dich neu an. Dein Entwurf konnte auf diesem Gerät nicht gesichert werden – lass diesen Tab offen.',
+  aelterEntwurf: 'Auf diesem Gerät liegt ein älterer Entwurf.',
   nichtFreigeschaltet: 'Du bist für keinen Kurs freigeschaltet. Schreib Markus deinen GitHub-Namen.',
   wirdEingerichtet: 'Deine Mappe wird eingerichtet …',
   wirdEingerichtetLang: 'Das dauert länger als gedacht. Versuch es gleich noch einmal.',
@@ -53,12 +55,14 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const [kopierMeldung, setKopierMeldung] = useState('');
   const [kopierText, setKopierText] = useState<string | null>(null);
   const [versuche, setVersuche] = useState(0);
+  // Entwurf auf einem anderen Stand als dem des Servers: wartet auf die ausdrückliche Wahl.
+  const [aelterEntwurf, setAelterEntwurf] = useState<DatenVon<N> | null>(null);
 
   // Aktueller Stand für asynchrone Abläufe (Zustand in React-State wäre dort veraltet).
   const z = useRef<HuellenZustand>('laden');
   const datenRef = useRef<DatenVon<N> | null>(null);
   const basisSha = useRef<string | null>(null);
-  const kohorte = useRef<string | null>(null);
+  const person = useRef<{ githubId: number; kohorte: string } | null>(null);
   const lauf = useRef(0); // verwirft Antworten veralteter Ladevorgänge
 
   const senden = useCallback((e: Ereignis) => {
@@ -66,10 +70,10 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     z.current = r.zustand;
     setZustand(r.zustand);
     for (const effekt of r.effekte) {
-      if (effekt === 'entwurfSichern' && kohorte.current !== null) {
-        setGesichert(entwurfSichern(name, kohorte.current, datenRef.current));
-      } else if (effekt === 'entwurfLoeschen' && kohorte.current !== null) {
-        entwurfLoeschen(name, kohorte.current);
+      if (effekt === 'entwurfSichern' && person.current !== null) {
+        setGesichert(entwurfSichern(name, person.current.githubId, person.current.kohorte, basisSha.current, datenRef.current));
+      } else if (effekt === 'entwurfLoeschen' && person.current !== null) {
+        entwurfLoeschen(name, person.current.githubId, person.current.kohorte);
         setDirty(false);
         setGesichert(true);
       } else if (effekt === 'neuLaden') {
@@ -85,28 +89,32 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     const gueltig = () => mein === lauf.current;
     setFehlerCode(null);
     setServerFelder([]);
+    setAelterEntwurf(null);
     try {
       const ich = await api.ich();
       if (!gueltig()) return;
       if (ich === null) return void senden({ typ: 'ladenFehlgeschlagen', status: 401, code: 'nicht-angemeldet' });
-      kohorte.current = ich.kohorte;
+      person.current = { githubId: ich.githubId, kohorte: ich.kohorte };
       if (ich.repo === null) return void senden({ typ: 'ladenFehlgeschlagen', status: 503, code: 'wird-eingerichtet' });
       const antwort = await api.lesen(name);
       if (!gueltig()) return;
-      basisSha.current = antwort.basisSha;
       const vomServer = artefaktParsen(name, antwort.daten ?? ARTEFAKTE[name].leer(heute()));
       if (!vomServer.ok) {
         setFehlerCode('datei');
         return void senden({ typ: 'ladenFehlgeschlagen', status: 500, code: 'unbekannt' });
       }
-      // Ein Entwurf auf diesem Gerät gewinnt – auch nach „Neu laden“ nach einem Konflikt: Er trägt die eigenen Änderungen.
-      const roh = entwurfLaden(name, ich.kohorte);
-      const entwurf = roh === null ? null : artefaktParsen(name, roh);
-      const ausEntwurf = entwurf?.ok === true;
-      const start = (ausEntwurf ? entwurf.daten : vomServer.daten) as DatenVon<N>;
-      datenRef.current = start;
-      setDatenAnzeige(start);
-      setDirty(ausEntwurf);
+      // Nur ein Entwurf auf dem Stand des Servers kommt still zurück; ein älterer wird zur Wahl angeboten.
+      const roh = entwurfLaden(name, ich.githubId, ich.kohorte);
+      const entwurf = roh === null ? null : artefaktParsen(name, roh.daten);
+      const start = startStand(
+        { daten: vomServer.daten as DatenVon<N>, basisSha: antwort.basisSha },
+        roh !== null && entwurf?.ok === true ? { basisSha: roh.basisSha, daten: entwurf.daten as DatenVon<N> } : null,
+      );
+      basisSha.current = start.basisSha;
+      datenRef.current = start.daten;
+      setDatenAnzeige(start.daten);
+      setDirty(start.alsEntwurf);
+      setAelterEntwurf(start.aelterEntwurf);
       setGesichert(true);
       senden({ typ: 'geladen' });
     } catch (err) {
@@ -166,6 +174,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const fehlerAm = useCallback((pfad: string) => alleFehler.find((f) => f.pfad === pfad)?.meldung, [alleFehler]);
 
   async function speichern(): Promise<void> {
+    if (aelterEntwurf !== null || !darfSpeichern(z.current)) return; // auch kein zweites PUT, solange eines läuft
     if (datenRef.current === null || !speichernErlaubt(name, datenRef.current).erlaubt) return;
     if (senden({ typ: 'speichern' }) !== 'speichert') return;
     try {
@@ -200,16 +209,28 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     }
   }
 
-  const loginHref = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(typeof location === 'undefined' ? '/' : location.pathname)}`;
+  const zurueck = typeof location === 'undefined' ? '/' : location.pathname + location.search + location.hash;
+  const loginHref = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(zurueck)}`;
+
+  function entwurfUebernehmen(): void {
+    if (aelterEntwurf === null) return;
+    setAelterEntwurf(null);
+    setze(aelterEntwurf); // ab jetzt auf dem aktuellen Stand (basisSha), gesichert als Entwurf
+  }
+
+  function entwurfVerwerfen(): void {
+    if (person.current !== null) entwurfLoeschen(name, person.current.githubId, person.current.kohorte);
+    setAelterEntwurf(null);
+  }
   const status = statusText(zustand, dirty);
-  const kannSpeichern = daten !== null && pruefung.erlaubt && (zustand === 'bereit' || zustand === 'gespeichert' || zustand === 'fehler');
+  const kannSpeichern = daten !== null && pruefung.erlaubt && aelterEntwurf === null && darfSpeichern(zustand);
   const ersteMeldung = pruefung.fehler[0];
 
   function hinweis(): ReactNode {
     if (zustand === 'abgemeldet') {
       return (
         <div className="wk-hinweis" role="alert">
-          <p>{abgelaufen ? TEXT.abgelaufen : TEXT.abgemeldet}</p>
+          <p>{abgelaufen ? (gesichert ? TEXT.abgelaufen : TEXT.abgelaufenUngesichert) : TEXT.abgemeldet}</p>
           <a className="wk-knopf wk-primaer" href={loginHref}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
         </div>
       );
@@ -277,9 +298,17 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
 
             {zustand === 'laden' && <p className="wk-hilfe" role="status">Deine Mappe wird geladen …</p>}
 
+            {aelterEntwurf !== null && zustand !== 'laden' && (
+              <div className="wk-hinweis" role="alert">
+                <p>{TEXT.aelterEntwurf}</p>
+                <button type="button" className="wk-knopf wk-primaer" onClick={entwurfUebernehmen}>Entwurf übernehmen</button>
+                <button type="button" className="wk-knopf" onClick={entwurfVerwerfen}>Entwurf verwerfen</button>
+              </div>
+            )}
+
             {daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && (
               <div className="wk-inhalt">
-                <fieldset className="wk-formular" disabled={zustand === 'speichert'}>
+                <fieldset className="wk-formular" disabled={zustand === 'speichert' || aelterEntwurf !== null}>
                   <legend className="wk-nur-leser">{titel} bearbeiten</legend>
                   {formular(daten, setze, fehlerAm)}
                 </fieldset>

@@ -1,5 +1,6 @@
 // Browser-Client der Werkstatt-API. Wirft ApiError mit status und code; Texte kommen vom Server (Spec §5).
 import { ROUTEN, type ApiFehler, type ArtefaktAntwort, type Ich, type SpeichernAnfrage, type SpeichernAntwort } from '../vertrag.js';
+import { entwuerfeLoeschen } from './entwurf.js';
 import type { ArtefaktName, Feldfehler } from '../schemas/index.js';
 
 export class ApiError extends Error {
@@ -44,6 +45,13 @@ async function fehlerAus(antwort: Response): Promise<ApiError> {
 const artefaktPfad = (name: ArtefaktName) => ROUTEN.artefaktLesen.pfad.replace(':artefakt', encodeURIComponent(name));
 
 export const api = {
+  /** Meldet ab und löscht alle Entwürfe dieses Browsers (geteilter Rechner). Die Entwürfe gehen auch weg, wenn die Anfrage scheitert. */
+  async abmelden(): Promise<void> {
+    entwuerfeLoeschen();
+    const a = await anfrage('POST', ROUTEN.abmelden.pfad);
+    if (!a.ok) throw await fehlerAus(a);
+  },
+
   /** null = nicht angemeldet. */
   async ich(): Promise<Ich | null> {
     const a = await anfrage('GET', ROUTEN.ich.pfad);

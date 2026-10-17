@@ -16,7 +16,12 @@ export function fakeApiEinschalten(szenario: string): void {
       return json(200, { githubId: 900001, login: 'sofie-test', kohorte: 'test', rolle: 'studierende', repo: szenario === 'einrichten' ? null : 'test/mappe-sofie' });
     }
     if (optionen?.method === 'PUT') {
-      if (szenario === 'konflikt') return json(409, { fehler: 'Inzwischen geändert – neu laden. Dein Entwurf bleibt erhalten.', code: 'konflikt' });
+      (window as unknown as { __puts: number }).__puts = ((window as unknown as { __puts?: number }).__puts ?? 0) + 1;
+      await new Promise((r) => setTimeout(r, 300)); // langsam genug, um Doppelklick zu probieren
+      if (szenario === 'konflikt') {
+        sha = `sha-${Number(sha.slice(4)) + 1}`; // jemand anderes hat inzwischen gespeichert
+        return json(409, { fehler: 'Inzwischen geändert – neu laden. Dein Entwurf bleibt erhalten.', code: 'konflikt' });
+      }
       if (szenario === 'ausfall') return json(502, { fehler: 'GitHub nicht erreichbar.', code: 'github-fehler' });
       sha = `sha-${Number(sha.slice(4)) + 1}`;
       return json(200, { basisSha: sha, commitUrl: 'https://example.invalid/commit' });
