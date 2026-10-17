@@ -1,6 +1,7 @@
 // Abhängigkeiten für Vercel (api/werkstatt.ts). Wirft nie beim Import: Fehlen Secrets, scheitert erst die Anfrage,
 // die sie braucht, mit 503 – die Website baut und deployt auch ohne Werkstatt-Secrets.
 import { KOHORTEN } from '../kohorten/index.js';
+import { neuesteAktiveKohorte } from '../zugang.js';
 import { ApiAusnahme } from './antwort.js';
 import { vercelCache } from './cache.js';
 import { botIdentitaetGeber, installationTokenGeber } from './github/app-token.js';
@@ -11,7 +12,7 @@ import type { Abhaengigkeiten, Speicher, Umgebung } from './typen.js';
 
 // Repos liegen in der Org der neuesten aktiven Kohorte. App-ID und Schlüssel erst beim ersten Token lesen.
 function produktionsSpeicher(abh: Pick<Abhaengigkeiten, 'umgebung' | 'cache' | 'jetzt'>): Speicher {
-  const neueste = [...KOHORTEN].filter((k) => k.status === 'aktiv').sort((a, b) => (a.beginn < b.beginn ? 1 : -1))[0];
+  const neueste = neuesteAktiveKohorte(KOHORTEN);
   if (!neueste) throw new Error('keine aktive Kohorte');
   const app = {
     fetch: (eingabe: RequestInfo | URL, init?: RequestInit) => fetch(eingabe, init),

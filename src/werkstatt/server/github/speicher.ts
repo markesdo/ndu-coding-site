@@ -6,7 +6,7 @@ import { ARTEFAKT_NAMEN } from '../../schemas/index.js';
 import { kohorte as kohorteVon, type Kohorte } from '../../kohorten/index.js';
 import { repoName } from '../../zugang.js';
 import type { Cache, Speicher } from '../typen.js';
-import { githubAnfrage, githubFehler, type InstallationToken } from './app-token.js';
+import { githubAnfrage, githubFehler, jsonAusRepo, type InstallationToken } from './app-token.js';
 
 export interface GithubSpeicherAbh {
   fetch: typeof fetch;
@@ -27,7 +27,8 @@ const WARTEN_SCHRITT_MS = 1000;
 const WARTEN_HOECHSTENS_MS = 8000;
 
 // Org-weit für /generate (und das Auflösen von Repo-Namen); alles im Repo nur mit einem Token für genau dieses Repo.
-const ORG_RECHTE = { administration: 'write' } as const;
+// GitHub verlangt für /generate neben Administration write auch Contents read.
+const ORG_RECHTE = { administration: 'write', contents: 'read' } as const;
 const REPO_RECHTE = { contents: 'write' } as const;
 
 const jsonPfad = (name: string) => `mappe/${name}.json`;
@@ -88,9 +89,12 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
   async function werkstattJsonLesen(z: Zugriff): Promise<{ kohorte: string; githubId: number } | null> {
     const datei = await dateiLesen(z, 'werkstatt.json');
     if (!datei) return null;
-    const wj = JSON.parse(datei.inhalt) as { kohorte?: unknown; githubId?: unknown };
+    const wj = jsonAusRepo('werkstatt.json', datei.inhalt) as { kohorte?: unknown; githubId?: unknown } | null;
     // Unlesbar heißt nicht „frei“: lieber scheitern als ein Repo der falschen Person zuordnen.
-    if (typeof wj?.kohorte !== 'string' || typeof wj?.githubId !== 'number') throw new Error('werkstatt-json-ungueltig');
+    if (typeof wj?.kohorte !== 'string' || typeof wj?.githubId !== 'number') {
+      console.error('werkstatt: werkstatt.json ohne kohorte/githubId');
+      throw githubFehler('GET', 'contents/werkstatt.json', 200);
+    }
     return { kohorte: wj.kohorte, githubId: wj.githubId };
   }
 
@@ -133,7 +137,7 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
         pruefen(vorhanden);
         return { repo };
       }
-      const inhalt = `${JSON.stringify({ kohorte: m.kohorte, githubId }, null, 2)}\n`;
+      const inhalt = `${JSON.stringify({ kohorte: m.kohorte, githubId, schemaVersionen: k.artefakte }, null, 2)}\n`;
       const put = await anfrage(z, 'PUT', '/contents/werkstatt.json', {
         message: 'Werkstatt: Mappe zugeordnet',
         content: Buffer.from(inhalt, 'utf8').toString('base64'),
@@ -153,7 +157,7 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
       const z = await zugriff(repo);
       const datei = z ? await dateiLesen(z, jsonPfad(name)) : null;
       if (!datei) return { daten: null, basisSha: null };
-      return { daten: JSON.parse(datei.inhalt) as unknown, basisSha: datei.sha };
+      return { daten: jsonAusRepo(jsonPfad(name), datei.inhalt), basisSha: datei.sha };
     },
 
     async speichern(repo, name, dateien, basisSha, autor, nachricht) {
@@ -190,7 +194,10 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
         const ref = await anfrage(z, 'PATCH', '/git/refs/heads/main', { sha: neu.daten.sha, force: false });
         if (ref.status === 200) return { basisSha: neuerSha, commitUrl: String(neu.daten.html_url) };
         // 422 „not a fast forward“: inzwischen hat jemand ein anderes Artefakt gespeichert → einmal von vorn.
-        if (ref.status !== 422) throw githubFehler('PATCH', 'git/refs/heads/main', ref.status);
+        // Jeder andere 422 ist ein echter Fehler.
+        if (ref.status !== 422 || !/fast forward/i.test(String(ref.daten?.message ?? ''))) {
+          throw githubFehler('PATCH', 'git/refs/heads/main', ref.status);
+        }
       }
       return { konflikt: true };
     },

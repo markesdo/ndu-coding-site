@@ -1,6 +1,7 @@
 // githubSpeicher gegen die fetch-Attrappe fakeGithub: die echte Implementierung läuft, nur GitHub ist nachgebaut.
 import { createHash, generateKeyPairSync } from 'node:crypto';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { ApiAusnahme } from '../antwort';
 import { kohorte2026 } from '../../kohorten/2026';
 import type { Mitgliedschaft } from '../../zugang';
 import { mapCache } from '../cache';
@@ -17,6 +18,7 @@ const { privateKey: PEM } = generateKeyPairSync('rsa', {
 // Keine echten GitHub-IDs von Studierenden (Repo ist öffentlich).
 const sofie: Mitgliedschaft = { kohorte: '2026', rolle: 'studierende', kuerzel: 'sofie' };
 const autor = { name: 'sofiethon', email: '1001+sofiethon@users.noreply.github.com' };
+const WERKSTATT_JSON = { kohorte: '2026', githubId: 1001, schemaVersionen: [...kohorte2026.artefakte] };
 const BOT = { name: 'ndu-werkstatt[bot]', email: '4242+ndu-werkstatt[bot]@users.noreply.github.com' };
 
 function blobSha(inhalt: string): string {
@@ -81,7 +83,7 @@ describe('githubSpeicher.speichern', () => {
     const imKopf = gh.zustand.dateien(repo);
     for (const [pfad, inhalt] of Object.entries(d)) expect(imKopf[pfad], pfad).toBe(inhalt);
     expect(imKopf['AGENTS.md']).toBe('# Agenten\n');
-    expect(JSON.parse(imKopf['werkstatt.json'])).toStrictEqual({ kohorte: '2026', githubId: 1001 });
+    expect(JSON.parse(imKopf['werkstatt.json'])).toStrictEqual(WERKSTATT_JSON);
 
     expect(erg.basisSha).toBe(blobSha(d['mappe/brief.json']));
     expect(erg.commitUrl).toBe(`https://github.com/ndu-innolab/${repo}/commit/${kopf}`);
@@ -168,13 +170,13 @@ describe('githubSpeicher.speichern', () => {
 });
 
 describe('githubSpeicher.anlegen', () => {
-  it('erzeugt das Repo aus der Vorlage, privat, mit dem org-weiten Token (administration)', async () => {
+  it('erzeugt das Repo aus der Vorlage, privat, mit dem org-weiten Token (administration write, contents read)', async () => {
     const { gh, s } = aufbau();
     expect(await s.anlegen(sofie, 1001)).toStrictEqual({ repo: '2026-sofie' });
     const [gen] = gh.zustand.aufrufeVon('POST', '/generate');
     expect(gen.pfad).toBe('/repos/ndu-innolab/mappe-vorlage-2026/generate');
     expect(gen.body).toStrictEqual({ owner: 'ndu-innolab', name: '2026-sofie', private: true });
-    expect(gh.zustand.tokens.get(gen.token!)).toStrictEqual({ permissions: { administration: 'write' }, repositoryIds: null });
+    expect(gh.zustand.tokens.get(gen.token!)).toStrictEqual({ permissions: { administration: 'write', contents: 'read' }, repositoryIds: null });
     expect(await s.werkstattJson('2026-sofie')).toStrictEqual({ kohorte: '2026', githubId: 1001 });
   });
 
@@ -185,7 +187,7 @@ describe('githubSpeicher.anlegen', () => {
     expect(gh.zustand.aufrufeVon('GET', '/git/ref/heads/main')).toHaveLength(3);
     expect(schlafen.mock.calls).toStrictEqual([[1000], [1000]]);
     const imKopf = gh.zustand.dateien('2026-sofie');
-    expect(JSON.parse(imKopf['werkstatt.json'])).toStrictEqual({ kohorte: '2026', githubId: 1001 });
+    expect(JSON.parse(imKopf['werkstatt.json'])).toStrictEqual(WERKSTATT_JSON);
     expect(imKopf['AGENTS.md']).toBe('# Agenten\n');
   });
 
@@ -264,3 +266,88 @@ function aufbauMitGleichemGithub(gh: ReturnType<typeof fakeGithub>) {
   const app = { fetch: gh.fetch, cache, jetzt: () => Date.now(), schluessel: () => ({ appId: '123456', privateKeyPem: PEM }) };
   return githubSpeicher({ fetch: gh.fetch, cache, token: installationTokenGeber(app), bot: botIdentitaetGeber(app), kohorte: kohorte2026 });
 }
+
+async function alsFehler(p: Promise<unknown>): Promise<ApiAusnahme> {
+  const e = await p.then(
+    () => null,
+    (e: unknown) => e,
+  );
+  if (!(e instanceof ApiAusnahme)) throw new Error(`ApiAusnahme erwartet, bekam ${String(e)}`);
+  return e;
+}
+
+describe('fakeGithub', () => {
+  it('/generate verlangt administration: write und contents: read', async () => {
+    const { gh } = aufbau();
+    const app = { fetch: gh.fetch, cache: mapCache(), jetzt: () => Date.now(), schluessel: () => ({ appId: '1', privateKeyPem: PEM }) };
+    const token = installationTokenGeber(app);
+    const versuch = async (rechte: Record<string, 'read' | 'write'>) =>
+      (await gh.fetch('https://api.github.com/repos/ndu-innolab/mappe-vorlage-2026/generate', {
+        method: 'POST',
+        headers: { authorization: `Bearer ${await token({ org: 'ndu-innolab', rechte })}` },
+        body: JSON.stringify({ owner: 'ndu-innolab', name: '2026-x', private: true }),
+      })).status;
+    expect(await versuch({ administration: 'write' })).toBe(403);
+    expect(await versuch({ contents: 'read' })).toBe(403);
+    expect(await versuch({ administration: 'write', contents: 'read' })).toBe(201);
+  });
+
+  it('PATCH mit force: true überschreibt wie echtes GitHub', async () => {
+    const { gh, s, repo } = await mitRepo();
+    await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu');
+    const alt = gh.zustand.commit(repo, gh.zustand.kopf(repo)!).parents[0];
+    const antwort = await gh.fetch(`https://api.github.com/repos/ndu-innolab/${repo}/git/refs/heads/main`, {
+      method: 'PATCH',
+      headers: { authorization: `Bearer ${gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main')[0].token}` },
+      body: JSON.stringify({ sha: alt, force: true }),
+    });
+    expect(antwort.status).toBe(200);
+    expect(gh.zustand.kopf(repo)).toBe(alt);
+  });
+});
+
+describe('GitHub-Fehler', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it('Status außerhalb des Erwarteten → 502 github-fehler; ins Log nur Methode, Pfad, Status', async () => {
+    const { gh, s, repo } = await mitRepo();
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    gh.zustand.stoerung = (methode, pfad) =>
+      methode === 'GET' && pfad.includes('/contents/') ? new Response('{"message":"geheim-im-body"}', { status: 500 }) : undefined;
+    const e = await alsFehler(s.lesen(repo, 'brief'));
+    expect(e.status).toBe(502);
+    expect(e.code).toBe('github-fehler');
+    expect(e.satz).toBe('GitHub ist gerade nicht erreichbar. Bitte gleich noch einmal versuchen.');
+    const zeilen = log.mock.calls.map((c) => c.join(' ')).join('\n');
+    expect(zeilen).toMatch(/GET .*contents\/mappe\/brief\.json.* 500/);
+    expect(zeilen).not.toContain('geheim-im-body');
+    expect(zeilen).not.toMatch(/ghs_|ey[A-Za-z0-9_-]{10}/);
+  });
+
+  it('kaputte JSON-Datei → 502 github-fehler mit Log', async () => {
+    const { gh, s, repo } = await mitRepo();
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    gh.zustand.aendernVonAussen(repo, 'mappe/brief.json', '{kaputt');
+    const e = await alsFehler(s.lesen(repo, 'brief'));
+    expect([e.status, e.code]).toStrictEqual([502, 'github-fehler']);
+    expect(log.mock.calls.map((c) => c.join(' ')).join('\n')).toContain('mappe/brief.json');
+  });
+
+  it('kaputte werkstatt.json → 502 github-fehler', async () => {
+    const { gh, s, repo } = await mitRepo();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    gh.zustand.aendernVonAussen(repo, 'werkstatt.json', 'nicht json');
+    const e = await alsFehler(s.werkstattJson(repo));
+    expect([e.status, e.code]).toStrictEqual([502, 'github-fehler']);
+  });
+
+  it('422 beim Ref-Update ohne „fast forward“ → github-fehler, kein Neuversuch', async () => {
+    const { gh, s, repo } = await mitRepo();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    gh.zustand.stoerung = (methode, pfad) =>
+      methode === 'PATCH' && pfad.endsWith('/git/refs/heads/main') ? new Response('{"message":"Validation Failed"}', { status: 422 }) : undefined;
+    const e = await alsFehler(s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu'));
+    expect([e.status, e.code]).toStrictEqual([502, 'github-fehler']);
+    expect(gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main')).toHaveLength(1);
+  });
+});

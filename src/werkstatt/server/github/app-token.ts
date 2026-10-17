@@ -3,6 +3,7 @@
 // nie geloggt; Fehlermeldungen nennen nur Methode, Pfad und Status.
 import { createPrivateKey } from 'node:crypto';
 import { SignJWT } from 'jose';
+import { ApiAusnahme } from '../antwort.js';
 import type { Cache } from '../typen.js';
 
 export type Rechte = Record<string, 'read' | 'write'>;
@@ -50,8 +51,22 @@ export async function githubAnfrage(
   return { status: antwort.status, daten };
 }
 
-export function githubFehler(methode: string, pfad: string, status: number): Error {
-  return new Error(`github ${methode} ${pfad} → ${status}`);
+const GITHUB_SATZ = 'GitHub ist gerade nicht erreichbar. Bitte gleich noch einmal versuchen.';
+
+// Unerwartete Antwort von GitHub → 502. Ins Log nur Methode, Pfad und Status (nie Token oder Antwortinhalt).
+export function githubFehler(methode: string, pfad: string, status: number): ApiAusnahme {
+  console.error(`werkstatt: github ${methode} ${pfad} → ${status}`);
+  return new ApiAusnahme(502, 'github-fehler', GITHUB_SATZ);
+}
+
+// Datei im Repo ist kein gültiges JSON (z. B. von Hand auf GitHub kaputt bearbeitet) → ebenfalls 502.
+export function jsonAusRepo(pfad: string, inhalt: string): unknown {
+  try {
+    return JSON.parse(inhalt) as unknown;
+  } catch {
+    console.error(`werkstatt: kaputtes JSON in ${pfad}`);
+    throw new ApiAusnahme(502, 'github-fehler', GITHUB_SATZ);
+  }
 }
 
 // GitHub liefert den Schlüssel als PKCS#1 („BEGIN RSA PRIVATE KEY“); jose.importPKCS8 lehnt das ab, createPrivateKey nicht.

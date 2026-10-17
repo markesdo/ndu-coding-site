@@ -1,6 +1,6 @@
 import { createPublicKey, generateKeyPairSync } from 'node:crypto';
 import { decodeProtectedHeader, jwtVerify } from 'jose';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mapCache } from '../cache';
 import { appJwt, botIdentitaetGeber, installationTokenGeber } from './app-token';
 import { fakeGithub } from './fake-github';
@@ -75,7 +75,9 @@ describe('installationToken', () => {
 
   it('unbekannte Org wirft', async () => {
     const { token } = await aufbau();
-    await expect(token({ org: 'woanders', rechte: { contents: 'write' } })).rejects.toThrow(/github/);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await expect(token({ org: 'woanders', rechte: { contents: 'write' } })).rejects.toMatchObject({ status: 502, code: 'github-fehler' });
+    vi.restoreAllMocks();
   });
 });
 

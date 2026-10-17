@@ -44,6 +44,8 @@ export interface FakeGithubZustand {
   vorRefUpdate: ((repo: string) => void) | null;
   // Für frisch aus der Vorlage erzeugte Repos: so viele `GET git/ref/heads/main` antworten zuerst 404.
   mainVerzoegerung: number;
+  // Liefert sie eine Antwort, kommt diese statt der normalen (Fehler von GitHub nachstellen).
+  stoerung: ((methode: string, pfad: string) => Response | undefined) | null;
   vorlageAnlegen(name: string, dateien: Record<string, string>): void;
   repoAnlegen(name: string, dateien: Record<string, string> | null): void;
   kopf(repo: string): string | null;
@@ -118,6 +120,7 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
     tokens: new Map(),
     vorRefUpdate: null,
     mainVerzoegerung: 0,
+    stoerung: null,
     vorlageAnlegen(name, dateien) {
       zustand.repoAnlegen(name, dateien);
     },
@@ -183,6 +186,11 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
 
     if (methode === 'POST' && rest === '/generate') {
       if (!r || !darf(token, r)) return nichtGefunden();
+      // GitHub verlangt für /generate Administration write und zusätzlich Contents read.
+      const rechte = zustand.tokens.get(token!)!.permissions;
+      if (rechte.administration !== 'write' || (rechte.contents !== 'read' && rechte.contents !== 'write')) {
+        return antwort(403, { message: 'Resource not accessible by integration' });
+      }
       if (body?.owner !== zustand.org || typeof body?.name !== 'string' || body?.private !== true) return antwort(422, { message: 'Invalid request' });
       if (zustand.repos.has(body.name)) {
         return antwort(422, { message: 'Unprocessable Entity', errors: ['Could not clone: Name already exists on this account'] });
@@ -268,8 +276,8 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
       zustand.vorRefUpdate?.(r.name);
       const c = r.commits.get(body.sha);
       if (!c) return antwort(422, { message: 'Object does not exist' });
-      if (body.force !== false && body.force !== undefined) return antwort(400, { message: 'force nicht erwartet' });
-      if (c.parents[0] !== r.main) return antwort(422, { message: 'Update is not a fast forward' });
+      // force: true überschreibt wie bei GitHub; sonst nur Fast-Forward.
+      if (body.force !== true && c.parents[0] !== r.main) return antwort(422, { message: 'Update is not a fast forward' });
       r.main = c.sha;
       return antwort(200, { ref: 'refs/heads/main', object: { sha: c.sha, type: 'commit' } });
     }
@@ -285,6 +293,8 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
     const auth = kopfzeilen.get('authorization');
     const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
     zustand.aufrufe.push({ methode, pfad: url.pathname, body, token });
+    const gestoert = zustand.stoerung?.(methode, url.pathname);
+    if (gestoert) return gestoert;
     return bearbeiten(methode, url.pathname, url.searchParams, body, token);
   };
 

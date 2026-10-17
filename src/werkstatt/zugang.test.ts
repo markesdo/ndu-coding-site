@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mitgliedschaften, repoName, zugangLesen } from './zugang';
+import { mitgliedschaften, neuesteAktiveKohorte, repoName, zugangLesen } from './zugang';
 import type { Kohorte } from './kohorten/typen';
 
 function kohorte(id: string, status: Kohorte['status'] = 'aktiv', beginn = `${id}-01-01`): Kohorte {
@@ -111,5 +111,13 @@ describe('repoName', () => {
   });
   it('Lehrende ohne Kürzel: wirft', () => {
     expect(() => repoName({ kohorte: '2026', rolle: 'lehrende', kuerzel: null })).toThrow();
+  });
+});
+
+describe('neuesteAktiveKohorte', () => {
+  it('nach Beginn, archivierte zählen nicht, keine aktive → undefined', () => {
+    const k = [kohorte('test', 'aktiv', '2000-01-01'), kohorte('2027', 'archiviert', '2027-10-21'), kohorte('2026', 'aktiv', '2026-10-22')];
+    expect(neuesteAktiveKohorte(k)?.id).toBe('2026');
+    expect(neuesteAktiveKohorte([kohorte('2026', 'archiviert')])).toBeUndefined();
   });
 });
