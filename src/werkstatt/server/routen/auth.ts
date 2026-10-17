@@ -82,11 +82,11 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
         await abh.speicher.anlegen(m, person.githubId);
         angelegt = true;
       } catch (e) {
-        // Cookie trotzdem: /innolab/mappe zeigt „wird eingerichtet“, GET /api/werkstatt/mappe (Task 11) legt ein fehlendes Repo erneut an.
+        // Cookie trotzdem: GET /api/werkstatt/mappe und GET /mappe/:artefakt legen ein fehlendes Repo erneut an und laden dann ein.
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', e instanceof Error ? e.message : 'Fehler');
       }
       // Best effort, nur nach erfolgreichem anlegen (sonst könnte das Repo einer anderen Person gehören): die Einladung
-      // zum Lesen geht früh raus (Mail von GitHub); scheitert sie, holt GET mappe sie nach.
+      // zum Lesen geht früh raus (Mail von GitHub); scheitert sie, holt GET mappe sie nach (prüft den Stand bei jedem Aufruf).
       try {
         if (angelegt) await abh.speicher.lesezugriff(repoName(m), person.githubId);
       } catch (e) {
