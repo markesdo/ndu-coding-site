@@ -40,11 +40,15 @@ export function zugangLesen(roh: string | undefined): Zugang {
     if (!Array.isArray(studierende)) throw new Error(FEHLER);
 
     const gesehen = new Set<string>();
+    // Jede GitHub-ID höchstens einmal je Kohorte, sonst ist die Rolle mehrdeutig.
+    const ids = new Set<number>(lehrende);
+    if (ids.size !== lehrende.length) throw new Error(FEHLER);
     for (const s of studierende) {
       if (typeof s !== 'object' || s === null) throw new Error(FEHLER);
       const { githubId, kuerzel } = s as { githubId?: unknown; kuerzel?: unknown };
       if (!istGithubId(githubId) || typeof kuerzel !== 'string' || !KUERZEL.test(kuerzel)) throw new Error(FEHLER);
-      if (gesehen.has(kuerzel)) throw new Error(FEHLER);
+      if (gesehen.has(kuerzel) || ids.has(githubId)) throw new Error(FEHLER);
+      ids.add(githubId);
       gesehen.add(kuerzel);
     }
     zugang[id] = { lehrende, studierende: studierende as Zugang[string]['studierende'] };
@@ -58,10 +62,7 @@ export function mitgliedschaften(z: Zugang, githubId: number, kohorten: readonly
   for (const k of [...kohorten].filter((k) => k.status === 'aktiv').sort((a, b) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0))) {
     const eintrag = z[k.id];
     if (!eintrag) continue;
-    if (eintrag.lehrende.includes(githubId)) {
-      treffer.push({ kohorte: k.id, rolle: 'lehrende', kuerzel: null });
-      continue;
-    }
+    if (eintrag.lehrende.includes(githubId)) treffer.push({ kohorte: k.id, rolle: 'lehrende', kuerzel: null });
     const s = eintrag.studierende.find((s) => s.githubId === githubId);
     if (s) treffer.push({ kohorte: k.id, rolle: 'studierende', kuerzel: s.kuerzel });
   }

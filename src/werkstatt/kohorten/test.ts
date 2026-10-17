@@ -1,13 +1,10 @@
+import { kohorte2026 } from './2026';
 import type { Kohorte } from './typen';
 
-// Übungskohorte für Probeläufe; kommt in WERKSTATT_ZUGANG nur vor, wenn Lehrende sie dort eintragen.
+// Übungskohorte für Probeläufe; Org und Vorlage kommen von 2026, damit sie nur dort stehen.
 export const kohorteTest: Kohorte = {
+  ...kohorte2026,
   id: 'test',
-  kurs: 'innolab',
   titel: 'Test',
-  org: 'ndu-innolab',
-  vorlage: 'mappe-vorlage-2026',
-  status: 'aktiv',
-  artefakte: ['brief@1', 'entscheidungen@1', 'leitfaden@1', 'annahmen@1'],
   termine: {},
 };

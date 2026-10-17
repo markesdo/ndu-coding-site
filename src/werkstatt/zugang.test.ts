@@ -64,6 +64,27 @@ describe('zugangLesen', () => {
       expect(() => zugangLesen(roh), k).toThrow('WERKSTATT_ZUGANG ungültig');
     }
   });
+  it('gleiche githubId zweimal in studierende wirft', () => {
+    const roh = JSON.stringify({ '2026': { lehrende: [], studierende: [{ githubId: 1001, kuerzel: 'anna' }, { githubId: 1001, kuerzel: 'ben' }] } });
+    expect(() => zugangLesen(roh)).toThrow('WERKSTATT_ZUGANG ungültig');
+  });
+  it('githubId in lehrende und studierende wirft', () => {
+    const roh = JSON.stringify({ '2026': { lehrende: [1001], studierende: [{ githubId: 1001, kuerzel: 'anna' }] } });
+    expect(() => zugangLesen(roh)).toThrow('WERKSTATT_ZUGANG ungültig');
+  });
+  it('githubId doppelt in lehrende wirft', () => {
+    expect(() => zugangLesen(JSON.stringify({ '2026': { lehrende: [9001, 9001], studierende: [] } }))).toThrow('WERKSTATT_ZUGANG ungültig');
+  });
+  it('nicht positive githubId wirft', () => {
+    for (const id of [0, -5]) {
+      expect(() => zugangLesen(JSON.stringify({ '2026': { lehrende: [id], studierende: [] } })), `lehrende ${id}`).toThrow('WERKSTATT_ZUGANG ungültig');
+      expect(() => zugangLesen(JSON.stringify({ '2026': { lehrende: [], studierende: [{ githubId: id, kuerzel: 'anna' }] } })), `studierende ${id}`).toThrow('WERKSTATT_ZUGANG ungültig');
+    }
+  });
+  it('nicht ganzzahlige githubId wirft', () => {
+    expect(() => zugangLesen(JSON.stringify({ '2026': { lehrende: [1.5], studierende: [] } }))).toThrow('WERKSTATT_ZUGANG ungültig');
+    expect(() => zugangLesen(JSON.stringify({ '2026': { lehrende: [], studierende: [{ githubId: 2.5, kuerzel: 'anna' }] } }))).toThrow('WERKSTATT_ZUGANG ungültig');
+  });
   it('falsche Form wirft', () => {
     expect(() => zugangLesen('[]')).toThrow('WERKSTATT_ZUGANG ungültig');
     expect(() => zugangLesen('{"2026":{"lehrende":"x","studierende":[]}}')).toThrow('WERKSTATT_ZUGANG ungültig');
