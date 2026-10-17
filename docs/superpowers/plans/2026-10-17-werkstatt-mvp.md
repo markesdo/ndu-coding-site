@@ -124,13 +124,13 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 - Consumes: `istId`, `IdPraefix` (Task 1)
 - Produces:
   - `type ArtefaktName = 'brief' | 'entscheidungen' | 'leitfaden' | 'annahmen'`
-  - `type Belegstufe = 'keiner' | 'gesagt' | 'beobachtet' | 'getestet'`, `BELEGSTUFEN` (Reihenfolge so)
+  - `type Belegstufe = 'keiner' | 'gesagt' | 'erzaehlt' | 'getan'`, `BELEGSTUFEN` (Reihenfolge so)
   - Typen `Brief`, `Entscheidungen` (Zeilentyp `Entscheidung`), `Leitfaden` (Zeilentyp `Frage`), `Annahmen` (Zeilentyp `Annahme`) exakt nach Spec §3.4; jede Datei zusätzlich `schema: '<name>@1'` und `stand: string` (ISO-Datum `YYYY-MM-DD`); `type ArtefaktDaten = Brief | Entscheidungen | Leitfaden | Annahmen`
   - `interface Feldfehler { pfad: string; meldung: string }` – `pfad` wie `annahmen.3.art`, `meldung` deutsch
   - `ARTEFAKTE: Record<ArtefaktName, { titel: string; slug: string; version: 1; leer(heute: string): unknown }>` – `slug` = Methodenseite (`problem-rahmen`, `entscheidungslog`, `interview`, `annahmen`)
   - `artefaktParsen(name: ArtefaktName, roh: unknown): { ok: true; daten: ArtefaktDaten } | { ok: false; fehler: Feldfehler[] }` – liest auch künftig ältere Versionen über eine (jetzt leere) Migrationstabelle `MIGRATIONEN: Record<string, (alt: unknown) => unknown>`
-  - `quadrant(a: Annahme): 'ol' | 'or' | 'ul' | 'ur'` – oben = `wichtig === 'hoch'`, rechts = `beleg` ∈ {`beobachtet`, `getestet`}; `ol` = zuerst testen (passt zu `annahmen.astro`: nach oben wichtig, nach rechts belegt)
-  - `punkt(a: Annahme, nachbarn: readonly Annahme[]): { x: number; y: number }` – y: hoch .85 / mittel .5 / niedrig .15; x: keiner .1 / gesagt .35 / beobachtet .65 / getestet .9; gleiche Zelle → um 0,06 pro Nachbar nach rechts unten versetzt, geklemmt auf [0,1]
+  - `quadrant(a: Annahme): 'ol' | 'or' | 'ul' | 'ur'` – oben = `wichtig === 'hoch'`, rechts = `beleg` ∈ {`erzaehlt`, `getan`}; `ol` = zuerst testen (passt zu `annahmen.astro`: nach oben wichtig, nach rechts belegt)
+  - `punkt(a: Annahme, nachbarn: readonly Annahme[]): { x: number; y: number }` – y: hoch .85 / mittel .5 / niedrig .15; x: keiner .1 / gesagt .35 / erzaehlt .65 / getan .9; gleiche Zelle → um 0,06 pro Nachbar nach rechts unten versetzt, geklemmt auf [0,1]
   - In `vertrag.ts`:
     - `interface ApiFehler { fehler: string; code: 'nicht-angemeldet' | 'nicht-freigeschaltet' | 'wird-eingerichtet' | 'ungueltig' | 'konflikt' | 'github-fehler' | 'csrf' | 'unbekannt'; felder?: Feldfehler[] }`
     - `interface MappeStand { kohorte: string; repo: string; artefakte: { name: ArtefaktName; vorhanden: boolean }[] }`
@@ -145,7 +145,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
   - `annahmen` ohne `art` an Zeile 2 → `fehler` enthält `{ pfad: 'annahmen.1.art' }` mit deutscher Meldung.
   - `riskanteste: 'A9'` bei fehlendem A9 → Fehler `pfad: 'riskanteste'`.
   - Doppelte ID in `entscheidungen` → Fehler. `ersetzt` zeigt auf unbekannte D-ID → Fehler.
-  - `quadrant({ wichtig: 'hoch', beleg: 'keiner' })` → `'ol'`; `({ wichtig: 'niedrig', beleg: 'getestet' })` → `'ur'`.
+  - `quadrant({ wichtig: 'hoch', beleg: 'keiner' })` → `'ol'`; `({ wichtig: 'niedrig', beleg: 'getan' })` → `'ur'`.
   - `punkt`: zwei Annahmen in derselben Zelle bekommen verschiedene Punkte.
   - `ARTEFAKTE[n].leer('2026-10-22')` ist gültig für alle vier.
 - [ ] **Schritt 2:** FAIL.

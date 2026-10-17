@@ -166,7 +166,7 @@ Geteilte Zod-Schemas in `src/werkstatt/schemas/` (Browser, API und MCP nutzen di
 
 Vor dem Festschreiben der Tag-2- und Tag-3-Präfixe gleicht ein Agent sie mit allen Methodenseiten ab (Beispiele und Vorlagen nutzen schon IDs).
 
-**Belegstufe** (eine Aufzählung für Annahmen und Entscheidungen, passend zur Skala „sagen → tun“): `keiner | gesagt | beobachtet | getestet`.
+**Belegstufe** (eine Aufzählung für Annahmen und Entscheidungen, passend zur Skala „sagen → tun“): `keiner | gesagt | erzaehlt | getan`, angezeigt als „noch keiner · gesagt · erzählt · getan“ wie auf der Skala im Entscheidungslog.
 
 **Tag-1-Schemas** (aus den bisherigen Vorlagen und Prüflisten in `methoden.ts`):
 
