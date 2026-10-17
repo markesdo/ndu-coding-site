@@ -18,6 +18,7 @@ exports[`Snapshots der Kaffeebar-Beispiele > annahmen 1`] = `
 "# Annahmen
 
 Stand: 22.10.2026
+
 Riskanteste Annahme: A1
 
 | ID | Wir glauben, dass … | Art | Wichtig | Beleg |
@@ -37,6 +38,7 @@ Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten
 
 ## 2. Welches Problem?
 Die Schlange ist morgens länger als die Zeit bis zur Abfahrt. Wer den Zug erreichen will, verzichtet auf Kaffee oder nimmt den Automaten.
+
 Heute gelöst durch: Automat, Thermobecher von zu Hause, ganz verzichten, einen Zug später nehmen
 
 ## 3. Was ist das Produkt in einem Satz?
@@ -52,6 +54,7 @@ Kommt aus der Story Map (Tag 3).
 
 ## 6. Woran merken wir, dass es funktioniert?
 Wir glauben: Pendler*innen bekommen morgens Kaffee, ohne ihren Zug zu riskieren.
+
 Wir merken es: Wenn 4 von 5 Testpersonen an drei Tagen hintereinander mit Kaffee in ihren Zug steigen.
 
 ## 7. Offene Fragen
@@ -77,6 +80,7 @@ exports[`Snapshots der Kaffeebar-Beispiele > leitfaden 1`] = `
 **Stand:** 22.10.2026
 
 Ziel: Herausfinden, ob Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.
+
 Wen: Pendler*innen, die werktags zwischen 7:15 und 7:45 am Bahnhof auf den Zug nach Wien warten
 
 ## Einstieg

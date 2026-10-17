@@ -1,5 +1,5 @@
 import type { Leitfaden } from '../schemas/index.js';
-import { datumAt, einzeilig } from './format.js';
+import { datumAt, einzeilig, zitat } from './format.js';
 
 // Überschriften wie in der Vorlage auf der Methodenseite „Jobs to be Done & Mom Test“.
 export function leitfadenRendern(d: Leitfaden): string {
@@ -10,10 +10,11 @@ export function leitfadenRendern(d: Leitfaden): string {
 **Stand:** ${datumAt(d.stand)}
 
 Ziel: ${einzeilig(d.ziel)}
+
 Wen: ${einzeilig(d.wen)}
 
 ## Einstieg
-„${einzeilig(d.einstieg)}“
+${zitat(d.einstieg)}
 
 ## Kernfragen
 ${kern.length > 0 ? kern.join('\n') : 'Noch keine Fragen eingetragen.'}
@@ -22,6 +23,6 @@ ${kern.length > 0 ? kern.join('\n') : 'Noch keine Fragen eingetragen.'}
 ${nach.length > 0 ? nach.join('\n') : 'Noch keine Fragen eingetragen.'}
 
 ## Abschluss
-„${einzeilig(d.abschluss)}“
+${zitat(d.abschluss)}
 `;
 }

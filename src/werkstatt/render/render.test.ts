@@ -136,6 +136,75 @@ describe.each(FALSCHE)('Eingeschleuste Zeilen (%j)', (FALSCH) => {
   });
 });
 
+const zeilen = (s: string) => s.split('\n');
+
+describe('Allgemeine Zeilenanfangs-Regel', () => {
+  const b = laden('brief');
+  const nicht = ['## x', '___', '    Pendler', 'x\n<!--', '1. Anstellen', '2) Zahlen', ':--|--', '- y', '> z', '\\#'];
+  const s = rendern('brief', { ...b, nicht });
+  it('Listeneinträge: Satzzeichen am Anfang wird maskiert, Einrückung entfernt', () => {
+    expect(zeilen(s)).toContain('- \\## x');
+    expect(zeilen(s)).toContain('- \\___');
+    expect(zeilen(s)).toContain('- Pendler');
+    expect(zeilen(s)).toContain('- x <!--');
+    expect(zeilen(s)).toContain('- 1\\. Anstellen');
+    expect(zeilen(s)).toContain('- 2\\) Zahlen');
+    expect(zeilen(s)).toContain('- \\:--|--');
+    expect(zeilen(s)).toContain('- \\- y');
+    expect(zeilen(s)).toContain('- \\> z');
+    expect(zeilen(s)).toContain('- \\\\#');
+  });
+  it('mehrzeilige Felder: jede Zeile folgt der Regel', () => {
+    const t = rendern('brief', { ...b, fuerWen: 'x\n<!--\n    Pendler\n___\n1. Anstellen\n:--|--' });
+    expect(zeilen(t)).toContain('\\<!--\\');
+    expect(zeilen(t)).toContain('Pendler\\');
+    expect(zeilen(t)).toContain('\\___\\');
+    expect(zeilen(t)).toContain('1\\. Anstellen\\');
+    expect(zeilen(t)).toContain('\\:--|--');
+    expect(t).not.toContain('\\1');
+  });
+  it('Leitfaden-Fragen und Annahmen-Text folgen derselben Regel', () => {
+    const l = laden('leitfaden');
+    const ls = rendern('leitfaden', { ...l, fragen: [{ id: 'F1', art: 'kern', text: '# x' }, { id: 'F2', art: 'nachfrage', text: '1. y' }] });
+    expect(zeilen(ls)).toContain('1. **F1** \\# x');
+    expect(zeilen(ls)).toContain('- **F2** 1\\. y');
+  });
+});
+
+describe('Sichtbare Zeilenumbrüche', () => {
+  it('Beschriftungszeilen sind eigene Absätze, Umbrüche im Feld sind harte Umbrüche', () => {
+    const b = laden('brief');
+    const s = rendern('brief', { ...b, problem: 'a\nb', heuteGeloestDurch: 'c' });
+    expect(s).toContain('## 2. Welches Problem?\na\\\nb\n\nHeute gelöst durch: c\n');
+    expect(s).toContain('\n\nWir merken es: ');
+    expect(rendern('leitfaden', laden('leitfaden'))).toContain('\n\nWen: ');
+    expect(rendern('annahmen', laden('annahmen'))).toContain('\n\nRiskanteste Annahme: A1\n');
+  });
+  it('Zeile, die mit Backslash endet, bleibt ein harter Umbruch', () => {
+    const s = rendern('brief', { ...laden('brief'), problem: 'a\\\nb' });
+    expect(s).toContain('a\\\\  \nb');
+  });
+});
+
+describe('Leere Pflichtfelder', () => {
+  it('zeigen „Noch nichts eingetragen.“', () => {
+    const leer = rendern('brief', { ...laden('brief'), fuerWen: '', problem: '  ', heuteGeloestDurch: '', produktSatz: '   ', outcome: { wirGlauben: '', wirMerkenEs: '' } });
+    expect(leer).toContain('## 1. Für wen?\nNoch nichts eingetragen.');
+    expect(leer).toContain('## 2. Welches Problem?\nNoch nichts eingetragen.\n\nHeute gelöst durch: Noch nichts eingetragen.');
+    expect(leer).toContain('Satz?\nOffen – steht nach Tag 3 fest.');
+    expect(leer).toContain('Wir glauben: Noch nichts eingetragen.');
+    const l = rendern('leitfaden', { ...laden('leitfaden'), ziel: '', wen: '', einstieg: '', abschluss: ' ' });
+    expect(l).toContain('Ziel: Noch nichts eingetragen.');
+    expect(l).toContain('## Einstieg\nNoch nichts eingetragen.');
+    expect(l).toContain('## Abschluss\nNoch nichts eingetragen.');
+    expect(l).not.toContain('„“');
+    const e = laden('entscheidungen');
+    expect(rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: '', grund: '' }] })).toContain('Noch nichts eingetragen. — Noch nichts eingetragen.');
+    const a = laden('annahmen');
+    expect(rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[0], text: '' }] })).toContain('| Noch nichts eingetragen. |');
+  });
+});
+
 describe('README', () => {
   it('Titel, Kohorte, Link nur bei vorhandenen Dateien', () => {
     const s = readmeRendern(k, [

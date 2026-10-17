@@ -12,10 +12,11 @@ ${mehrzeilig(d.fuerWen)}
 
 ## 2. Welches Problem?
 ${mehrzeilig(d.problem)}
+
 Heute gelöst durch: ${mehrzeilig(d.heuteGeloestDurch)}
 
 ## 3. Was ist das Produkt in einem Satz?
-${d.produktSatz !== undefined && d.produktSatz !== '' ? mehrzeilig(d.produktSatz) : 'Offen – steht nach Tag 3 fest.'}
+${d.produktSatz !== undefined && d.produktSatz.trim() !== '' ? mehrzeilig(d.produktSatz) : 'Offen – steht nach Tag 3 fest.'}
 
 ## 4. Was macht es NICHT?
 ${nicht}
@@ -25,6 +26,7 @@ Kommt aus der Story Map (Tag 3).
 
 ## 6. Woran merken wir, dass es funktioniert?
 Wir glauben: ${mehrzeilig(d.outcome.wirGlauben)}
+
 Wir merken es: ${mehrzeilig(d.outcome.wirMerkenEs)}
 
 ## 7. Offene Fragen
