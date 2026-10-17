@@ -8,7 +8,8 @@ export interface ErlaubterClient {
 }
 
 // claude.ai (Web, Desktop, Mobil) – Anthropic-Doku „Authentication for connectors“, gelesen 17.10.2026.
-// Die genaue client_id loggt die Probe (T15); danach kann sie hier festgepinnt werden.
+// Probe 17.10.2026: claude.ai meldet sich als `https://claude.ai/oauth/mcp-oauth-client-metadata`. Bewusst nicht auf
+// genau diese ID verengt: redirect_uri ist ohnehin fest, und ein neuer Pfad bei Anthropic soll den Kurs nicht stoppen.
 const CLAUDE_HOST = 'claude.ai';
 const CLAUDE_REDIRECT = 'https://claude.ai/api/mcp/auth_callback';
 
@@ -36,7 +37,7 @@ export function clientErlaubt(clientId: string): ErlaubterClient | null {
   return { redirectUris: [CLAUDE_REDIRECT] };
 }
 
-// Jede neue client_id einmal pro Tag ins Log (für die Probe in T15). Nur die öffentliche client_id, nichts sonst.
+// Jede neue client_id einmal pro Tag ins Log, damit ein neuer Client (z. B. ChatGPT, Phase 1b) auffällt. Nur die öffentliche client_id.
 // Nach bestem Bemühen: Fällt der Cache aus, wird lieber doppelt als gar nicht geloggt, und die Anmeldung läuft weiter.
 export async function clientMelden(abh: Abhaengigkeiten, clientId: string): Promise<void> {
   const tag = new Date(abh.jetzt()).toISOString().slice(0, 10);

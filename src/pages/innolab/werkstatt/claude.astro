@@ -4,56 +4,48 @@ import Callout from '../../../components/Callout.astro';
 import Folie from '../../../components/Folie.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Prompt from '../../../components/Prompt.astro';
+import Schritte from '../../../components/Schritte.astro';
+import { bild } from '../../../components/anleitung-bilder';
 import { CONNECTOR_NAME, connectorLink, connectorUrl } from '../../../werkstatt/connector.js';
 
 // site steht in astro.config.mjs; ohne site soll der Build scheitern statt still eine falsche Domain zu nennen.
 const seite = Astro.site!;
 ---
 {/*
-  VORLÄUFIG: Die genauen Beschriftungen in claude.ai („Einstellungen“, „Connectors“, „Benutzerdefinierten Connector hinzufügen“,
-  „Verbinden“, „Erlauben“, „Datenschutz“, „Modelltraining“) sind noch nicht am echten Bildschirm geprüft.
-  Task 15 prüft sie mit Screenshots und ergänzt sie; erst dann gilt der Text als final.
-  Ausnahme, schon geprüft (17.10.): Der Link aus connectorLink() öffnet den Dialog mit Name und URL ausgefüllt.
-  Ungeprüft bleiben die Beschriftungen ab Schritt 2.
-  Der Hinweis „erweiterte OAuth-Felder leer lassen“ stützt sich auf die Anthropic-Dokumentation: Eine leere Client-ID heißt, dass
-  claude.ai seine veröffentlichte Identität (CIMD) nutzt. Wird in T15 ebenfalls geprüft.
+  Geprüft am 17.10. in claude.ai (englische Oberfläche): Link → „Add custom connector“ ausgefüllt → Continue →
+  Authentication/OAuth client schon auf „Detected“ → Add → „Connect“ → GitHub „Authorize NDU Werkstatt“ → Erlauben →
+  verbunden, Werkzeuge auf „Needs approval“. Screenshots ohne persönliche Konten (GitHub- und Zustimmungsseite nur als Text).
+  Ungeprüft bleiben nur die Datenschutz-Beschriftungen in Schritt 2 (Modelltraining).
 */}
 <Layout title="Werkstatt · Claude verbinden">
   <span class="eyebrow">Innolab · Werkstatt</span>
   <h1>Claude mit der Werkstatt verbinden</h1>
-  <p class="lead">Vier Schritte, einmal pro Person. Danach kann Claude eure Mappe lesen und prüfen.</p>
+  <p class="lead">Drei Schritte, einmal pro Person. Danach kann Claude eure Mappe lesen und prüfen.</p>
 
   <Folie>
     <h2 id="connector-anlegen">1. Connector anlegen</h2>
     <p class="folie-satz">Ein Klick öffnet claude.ai mit dem fertig ausgefüllten Dialog.</p>
     <p><a class="btn primary" href={connectorLink(seite)} target="_blank" rel="noopener">Werkstatt mit Claude verbinden</a></p>
-    <ol>
-      <li>Meldet euch in claude.ai an, falls ihr es noch nicht seid. Der Dialog „Add custom connector“ (deutsch: „Benutzerdefinierten Connector hinzufügen“) öffnet sich, Name und URL stehen schon drin.</li>
-      <li>Klickt auf <strong>Add</strong> (<strong>Hinzufügen</strong>). Sonst nichts ändern: Client-ID, Client-Secret und die erweiterten Einstellungen bleiben leer.</li>
-    </ol>
+    <p>Meldet euch in claude.ai an, falls ihr es noch nicht seid. Der Link öffnet claude.ai im Browser; der Connector gilt danach auch in der Claude-App am Laptop und am Handy.</p>
+    <Schritte id="connector" steps={[
+      { img: bild('werkstatt/connector-1-dialog'), alt: 'Dialog „Add custom connector“ mit Name NDU Werkstatt, der Werkstatt-URL und dem Knopf Continue', text: `Name und URL stehen schon drin. Der rote Hinweis sagt nur, dass der Vorschlag von einem Link kam: Prüft, dass die URL mit <code>${new URL(seite).origin}</code> beginnt, dann <em>Continue</em> (1).`, marks: [{ x: 874, y: 913, w: 169, h: 60, n: 1 }], crop: false },
+      { img: bild('werkstatt/connector-2-anmeldung'), alt: 'Zweiter Schritt des Dialogs: Sign in now und Use Claude’s published identity sind ausgewählt und als Detected markiert, unten der Knopf Add', text: 'Hier nichts ändern: <em>Sign in now</em> und <em>Use Claude’s published identity</em> sind schon gewählt (1). Klickt <em>Add</em> (2).', marks: [{ x: 68, y: 262, w: 976, h: 650, n: 1 }, { x: 942, y: 1822, w: 101, h: 60, n: 2 }], crop: false },
+      { img: bild('werkstatt/connector-3-connect'), alt: 'Seite des Connectors: „You’re not connected to NDU Werkstatt yet.“ mit dem Knopf Connect', text: 'Klickt <em>Connect</em> (1). Jetzt kommt GitHub: Bestätigt dort euer eigenes Konto mit <em>Authorize</em> oder <em>Continue</em>. Danach zeigt die Werkstatt „Claude (claude.ai) möchte deine Mappe lesen“ mit eurem GitHub-Namen; prüft ihn und klickt <em>Erlauben</em>.', marks: [{ x: 539, y: 481, w: 162, h: 62, n: 1 }], crop: false },
+      { img: bild('werkstatt/connector-4-werkzeuge'), alt: 'Verbundener Connector NDU Werkstatt mit vier Read-only tools, alle auf Needs approval', text: 'Verbunden: Die vier Werkzeuge stehen unter <em>Read-only tools</em>. Sie lesen nur. Damit Claude nicht bei jedem Lesen fragt, stellt ihr sie oben rechts auf <em>Always allow</em> (1). Das gilt nur, solange dort ausschließlich <em>Read-only tools</em> stehen.', marks: [{ x: 1701, y: 400, w: 333, h: 63, n: 1 }], crop: false },
+    ]} />
+    <p>Eure Mappe entsteht beim ersten Login, hier über den Connector oder über „Bearbeiten“ auf einer Methodenseite. <a data-werkstatt href="/innolab/mappe">Zu eurer Mappe</a></p>
     <p>Kein Dialog, leere Felder oder eine Fehlerseite? Dann geht in claude.ai auf <strong>Customize → Connectors</strong>, klickt <strong>Add custom connector</strong> und tragt Name <code>{CONNECTOR_NAME}</code> und diese URL ein:</p>
     <Prompt label="Connector-URL">{connectorUrl(seite)}</Prompt>
   </Folie>
 
   <Folie>
-    <h2 id="verbinden">2. Verbinden und erlauben</h2>
-    <p class="folie-satz">Ihr meldet euch mit GitHub an und erlaubt den Zugriff einmal.</p>
-    <ol>
-      <li>Klickt beim neuen Connector auf <strong>Verbinden</strong>.</li>
-      <li>Falls ihr noch nicht in der Werkstatt angemeldet seid, meldet ihr euch mit GitHub an.</li>
-      <li>Auf der Werkstatt-Seite klickt ihr <strong>Erlauben</strong>. Prüft dort, dass ihr mit eurem eigenen GitHub-Konto angemeldet seid. Außerdem steht dort, dass der Zugriff an <code>claude.ai</code> geht.</li>
-    </ol>
-    <p>Noch keine Mappe? Sie wird beim ersten Login angelegt, über den Connector (dieser Schritt) oder über „Bearbeiten“ auf einer Methodenseite. <a data-werkstatt href="/innolab/mappe">Zu eurer Mappe</a></p>
-  </Folie>
-
-  <Folie>
-    <h2 id="datenschutz">3. Modelltraining ausschalten</h2>
+    <h2 id="datenschutz">2. Modelltraining ausschalten</h2>
     <p class="folie-satz">Eure Mappe soll nicht zum Training von Modellen dienen.</p>
     <p>Über den Connector fließen eure Artefakte zu Anthropic. Schaltet deshalb in Claude unter <strong>Einstellungen → Datenschutz</strong> das <strong>Modelltraining</strong> aus.</p>
   </Folie>
 
   <Folie>
-    <h2 id="erster-prompt">4. Erster Prompt</h2>
+    <h2 id="erster-prompt">3. Erster Prompt</h2>
     <p class="folie-satz">Fragt Claude nach einer Prüfung eurer Annahmen-Map.</p>
     <Prompt label="Prompt für Claude">Prüf meine Annahmen-Map mit der Werkstatt.</Prompt>
     <Callout type="info" title="Claude liest nur">
