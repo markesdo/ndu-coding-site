@@ -10,22 +10,21 @@ import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
 <Layout title="Tag 1 · Abschluss">
   <span class="eyebrow">Innolab · Tag 1 · Abschluss</span>
   <h1>Tag 1 · Abschluss</h1>
-  <p class="lead">Was bis Tag 2 passiert: fünf echte Interviews, die Transkripte im Repo, die Überraschungen im Entscheidungslog der Werkstatt.</p>
+  <p class="lead">Was bis Tag 2 passiert: fünf echte Interviews, eure Notizen pseudonymisiert und nur bei euch, die Überraschungen im Entscheidungslog der Werkstatt.</p>
 
   <Folie>
     <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
     <p class="folie-satz">Fünf echte Interviews mit eurer Zielgruppe.</p>
-    <Fluss label="Hausaufgabe: Interview, Transkript, Zeile im Entscheidungslog" knoten={[
+    <Fluss label="Hausaufgabe: Interview, Notizen, Zeile im Entscheidungslog" knoten={[
       { t: '5 Interviews', sub: 'je 20–30 min, Aufnahme nur mit Einwilligung', icon: Mic },
-      { t: 'Transkripte', sub: 'ohne Namen, <code>docs/interviews/I1.md</code> bis <code>I5.md</code>', icon: ScrollText },
+      { t: 'Notizen', sub: 'pro Interview ein Pseudonym (I1 bis I5), keine Namen – nur bei euch, nicht ins Repo', icon: ScrollText },
       { t: 'Überraschungen', sub: 'je eine Zeile im Entscheidungslog, in der Werkstatt gespeichert', icon: ClipboardList },
     ]} />
     <p>Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett.</p>
     <div class="nur-handout"><Checklist id="il-tag1-hausaufgabe" items={[
       'Fünf Personen aus der Zielgruppe gefunden (Tipp: am Ende jedes Interviews fragen, wen ihr noch fragen solltet)',
       'Einwilligung zur Aufnahme eingeholt',
-      'Transkripte ohne Namen als <code>docs/interviews/I1.md</code> bis <code>I5.md</code> im Repo',
-      'Transkripte committet und gepusht',
+      'Notizen pro Interview mit Pseudonym (I1 bis I5) und ohne Namen, Arbeitgeber oder Erkennbares, nur privat gespeichert – nicht im App-Repo. Vor Tag 2 kommt der Interview-Editor in die Werkstatt, dann tragt ihr sie dort ein.',
       'Eine Zeile pro Überraschung im Entscheidungslog, in der Werkstatt gespeichert (<a href="/innolab/mappe">Meine Mappe</a>)',
       'Claude mit der Werkstatt verbunden (<a href="/innolab/werkstatt/claude">Claude verbinden</a>) und das Entscheidungslog prüfen lassen',
     ]} /></div>

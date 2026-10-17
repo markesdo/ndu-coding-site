@@ -64,14 +64,18 @@ describe('methoden', () => {
     expect(inWerkstatt.map((a) => [a.id, a.werkstatt])).toStrictEqual([
       ['brief', 'brief'], ['entscheidungen', 'entscheidungen'], ['transkripte', 'leitfaden'], ['annahmen', 'annahmen'],
     ]);
+    // Interview-Notizen nie ins App-Repo (öffentlich): Leitfaden und Notizen leben nur in der Werkstatt.
+    for (const a of inWerkstatt) expect(a.lebtIn, a.id).not.toContain('repo');
     expect(ARTEFAKTE.filter((a) => a.werkstatt !== undefined)).toStrictEqual(inWerkstatt);
     for (const a of inWerkstatt) {
-      // Nur in der Werkstatt: der Pfad zeigt in die Mappe. Die Transkripte bleiben im Repo, nur der Leitfaden zieht um.
-      if (!a.lebtIn.includes('repo')) expect(a.pfad, a.id).toBe(`mappe/${a.werkstatt}.json`);
+      // Der Pfad zeigt in die Mappe.
+      expect(a.pfad, a.id).toBe(`mappe/${a.werkstatt}.json`);
       // Die Methodenseite des Werkstatt-Artefakts ist die Methode, die das Artefakt erzeugt.
       expect(erzeugtVon(a.id)!.slug, a.id).toBe(WERKSTATT_ARTEFAKTE[a.werkstatt!].slug);
     }
-    expect(ARTEFAKTE.find((a) => a.id === 'transkripte')).toMatchObject({ lebtIn: ['werkstatt', 'repo'], pfad: 'docs/interviews/' });
+    expect(ARTEFAKTE.find((a) => a.id === 'transkripte')).toStrictEqual({
+      id: 'transkripte', name: 'Leitfaden und Interview-Notizen (pseudonymisiert)', lebtIn: ['werkstatt'], pfad: 'mappe/leitfaden.json', werkstatt: 'leitfaden',
+    });
     // Der Akkusativ nennt das Artefakt mit dem Titel aus der Werkstatt, für jedes Artefakt der Mappe.
     expect(Object.keys(WERKSTATT_AKKUSATIV).sort()).toStrictEqual([...ARTEFAKT_NAMEN].sort());
     for (const n of ARTEFAKT_NAMEN) expect(WERKSTATT_AKKUSATIV[n], n).toMatch(new RegExp(`^mein(e|en)? ${WERKSTATT_ARTEFAKTE[n].titel}$`));
@@ -95,9 +99,9 @@ describe('methoden', () => {
       expect(t).toContain('Schreib nichts um und formulier keinen Text für mich');
     }
     expect(METHODEN.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'interview', 'annahmen']);
-    // Mit Pfad bleibt es die Prüfung einer Datei (zum Beispiel ein einzelnes Transkript).
-    expect(pruefungInWerkstatt(METHODEN.find((m) => m.slug === 'interview')!, 'docs/interviews/I1.md')).toBe(false);
-    expect(pruefPrompt(METHODEN.find((m) => m.slug === 'interview')!, 'docs/interviews/I1.md')).toMatch(/^Lies docs\/interviews\/I1\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
+    // Mit Pfad bleibt es die Prüfung einer Datei; die Vorarbeit kommt weiter aus der Werkstatt.
+    expect(pruefungInWerkstatt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toBe(false);
+    expect(pruefPrompt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toMatch(/^Lies notizen\/alt\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
   });
 
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
@@ -121,9 +125,9 @@ describe('methoden', () => {
     expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch docs\/interviews\/SYNTHESE\.md\./);
     const jm = pruefPrompt(METHODEN.find((m) => m.slug === 'journey-map')!);
     expect(jm).toContain('Zum Abgleich lies auch docs/KUNDENPROFIL.md, docs/interviews/SYNTHESE.md.');
-    // Vorarbeit aus Repo und Werkstatt: erst die Dateien, dann die Werkstatt – die Transkripte bleiben im Repo.
+    // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).
     const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
-    expect(sy).toMatch(/^Lies docs\/interviews\/SYNTHESE\.md\. Zum Abgleich lies auch docs\/interviews\/ und aus der Werkstatt meine Annahmen-Map \(Werkzeug artefakt_lesen\)\. Prüf es/);
+    expect(sy).toMatch(/^Lies docs\/interviews\/SYNTHESE\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Interviewleitfaden und meine Annahmen-Map \(Werkzeug artefakt_lesen\)\. Prüf es/);
   });
 
   it('wer in der Prüfliste ein früheres Artefakt nennt, hat es in „braucht“ – sonst liest Claude es beim Prüfen nicht', () => {

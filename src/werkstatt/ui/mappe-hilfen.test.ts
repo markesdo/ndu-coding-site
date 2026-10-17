@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
-import { FEHLER_TEXT, anmeldeFehler, mappeZeilen } from './mappe-hilfen.js';
+import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
+import { FEHLER_TEXT, adresseOhneFehler, anmeldeFehler, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -21,6 +22,23 @@ describe('anmeldeFehler', () => {
     expect(anmeldeFehler('?fehler=')).toBeNull();
     expect(anmeldeFehler('?fehler=<script>')).toBeNull();
     expect(anmeldeFehler('?fehler=toString')).toBeNull();
+  });
+});
+
+describe('adresseOhneFehler', () => {
+  it('nimmt nur ?fehler aus der Adresse, der Rest bleibt', () => {
+    expect(adresseOhneFehler('/innolab/mappe', '?fehler=anmeldung-ungueltig', '')).toBe('/innolab/mappe');
+    expect(adresseOhneFehler('/innolab/mappe', '?a=1&fehler=x&b=2', '#claude')).toBe('/innolab/mappe?a=1&b=2#claude');
+  });
+});
+
+describe('leitfadenFrei', () => {
+  it('gibt den Leitfaden-Editor erst nach dem Mom Test frei (Wiener Zeit), den Präsentator immer', () => {
+    expect(NACH_MOM_TEST).toBe('2026-10-22T13:45');
+    expect(leitfadenFrei(new Date('2026-10-22T11:44:00Z'), false)).toBe(false); // 13:44 in Wien
+    expect(leitfadenFrei(new Date('2026-10-22T11:45:00Z'), false)).toBe(true);
+    expect(leitfadenFrei(new Date('2026-10-17T08:00:00Z'), false)).toBe(false);
+    expect(leitfadenFrei(new Date('2026-10-17T08:00:00Z'), true)).toBe(true);
   });
 });
 

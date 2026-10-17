@@ -21,15 +21,16 @@ export interface Artefakt {
   lebtIn: Ort[];
   /** Datei oder Abschnitt im Projekt-Repo, wenn es dort festgehalten wird; nur in der Werkstatt: die Datei in der Mappe. */
   pfad?: string;
-  /** Name in der Werkstatt-Mappe, wenn das Artefakt (oder ein Teil davon) dort bearbeitet wird. Die IDs hier bleiben,
-   *  auch wo die Werkstatt anders heißt: Von „transkripte“ zieht nur der Leitfaden um, die Transkripte bleiben im Repo. */
+  /** Name in der Werkstatt-Mappe, wenn das Artefakt dort bearbeitet wird. Die IDs hier bleiben, auch wo die Werkstatt
+   *  anders heißt („transkripte“ → leitfaden). Interview-Notizen kommen nie ins App-Repo (öffentlich); bis der
+   *  Interview-Editor da ist, bleiben sie privat bei den Studierenden. */
   werkstatt?: ArtefaktName;
 }
 
 export const ARTEFAKTE: Artefakt[] = [
   { id: 'brief', name: 'Produkt-Brief mit Outcome-Metrik', lebtIn: ['werkstatt'], pfad: 'mappe/brief.json', werkstatt: 'brief' },
   { id: 'entscheidungen', name: 'Entscheidungslog', lebtIn: ['werkstatt'], pfad: 'mappe/entscheidungen.json', werkstatt: 'entscheidungen' },
-  { id: 'transkripte', name: 'Leitfaden und Interview-Transkripte (anonymisiert)', lebtIn: ['werkstatt', 'repo'], pfad: 'docs/interviews/', werkstatt: 'leitfaden' },
+  { id: 'transkripte', name: 'Leitfaden und Interview-Notizen (pseudonymisiert)', lebtIn: ['werkstatt'], pfad: 'mappe/leitfaden.json', werkstatt: 'leitfaden' },
   { id: 'annahmen', name: 'Annahmen-Map', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/annahmen.json', werkstatt: 'annahmen' },
   { id: 'synthese', name: 'Themen mit Zitat-IDs', lebtIn: ['miro', 'repo'], pfad: 'docs/interviews/SYNTHESE.md' },
   { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains)', lebtIn: ['miro', 'repo'], pfad: 'docs/KUNDENPROFIL.md' },

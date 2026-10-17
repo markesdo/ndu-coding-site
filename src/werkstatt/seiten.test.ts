@@ -55,6 +55,27 @@ describe('Werkstatt auf den Methodenseiten', () => {
     }
   });
 
+  it('Interview-Notizen gehen nie ins App-Repo (öffentlich): kein docs/interviews/, kein „committet und gepusht“', () => {
+    for (const p of ['tag-1/abschluss', 'methoden/interview']) expect(seite(p), p).not.toContain('docs/interviews/');
+    const tag1 = Object.entries(seiten).filter(([p]) => /pages\/innolab\/(tag-1(\.astro|\/)|methoden\/(problem-rahmen|entscheidungslog|interview|annahmen)\.astro)/.test(p));
+    expect(tag1.length).toBe(6);
+    for (const [p, quelle] of tag1) {
+      for (const zeile of quelle.split('\n')) {
+        if (/committet und gepusht/i.test(zeile)) expect(zeile, p).not.toMatch(/Transkript|Notiz/i);
+      }
+    }
+  });
+
+  it('der Leitfaden-Editor steckt auf der Interview-Seite in einer Auflösung (er verrät den Mom Test)', () => {
+    const iv = seite('methoden/interview');
+    const aufloesungen = [...iv.matchAll(/<Aufloesung\b[\s\S]*?<\/Aufloesung>/g)].map(([a]) => a);
+    expect(aufloesungen.filter((a) => a.includes('<Bearbeiten artefakt="leitfaden"'))).toHaveLength(1);
+    expect(iv.split('<Bearbeiten artefakt="leitfaden"').length - 1).toBe(1);
+    // Dieselbe Freigabezeit wie /innolab/mappe: aus innolab-zeiten.ts, nicht als eigene Konstante.
+    expect(iv).toContain("import { NACH_MOM_TEST } from '../../../components/innolab-zeiten';");
+    expect(iv).not.toMatch(/const NACH_MOM_TEST\s*=/);
+  });
+
   it('die Hausaufgabe nennt die Werkstatt und die Seite zum Verbinden von Claude', () => {
     const a = seite('tag-1/abschluss');
     expect(a).toContain('Werkstatt');

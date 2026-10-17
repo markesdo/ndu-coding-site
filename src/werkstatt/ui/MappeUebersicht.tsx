@@ -6,7 +6,7 @@ import { kohorte } from '../kohorten/index.js';
 import { ROUTEN, type Ich, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
-import { anmeldeFehler, mappeZeilen } from './mappe-hilfen.js';
+import { LEITFADEN_SPAETER, adresseOhneFehler, anmeldeFehler, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -33,7 +33,10 @@ export default function MappeUebersicht() {
   const [zustand, setZustand] = useState<Zustand>({ typ: 'laden' });
   const [versuche, setVersuche] = useState(0);
   const [meldung, setMeldung] = useState('');
-  const [rueckmeldung] = useState(() => anmeldeFehler(location.search));
+  const [rueckmeldung, setRueckmeldung] = useState(() => anmeldeFehler(location.search));
+  // Leitfaden erst nach dem Mom Test (wie die Auflösungen der Interview-Seite); jede Minute nachsehen.
+  const frei = () => leitfadenFrei(new Date(), document.documentElement.hasAttribute('data-ist-praesentator'));
+  const [leitfadenOffen, setLeitfadenOffen] = useState(frei);
   const liste = useRef<HTMLUListElement>(null);
   const lauf = useRef(0);
 
@@ -49,6 +52,9 @@ export default function MappeUebersicht() {
       if (mein !== lauf.current) return;
       setVersuche(0);
       setZustand({ typ: 'bereit', ich, stand });
+      // Angemeldet und geladen: eine alte Meldung aus ?fehler gilt nicht mehr, auch nicht nach dem Neuladen.
+      setRueckmeldung(null);
+      if (new URLSearchParams(location.search).has('fehler')) history.replaceState(history.state, '', adresseOhneFehler(location.pathname, location.search, location.hash));
     } catch (e) {
       if (mein !== lauf.current) return;
       const a = e instanceof ApiError ? e : new ApiError(0, 'unbekannt', TEXT.ladenFehlt);
@@ -64,6 +70,13 @@ export default function MappeUebersicht() {
     if (rueckmeldung && !rueckmeldung.neuAnmelden) return;
     void laden();
   }, [laden, rueckmeldung]);
+
+  useEffect(() => {
+    if (leitfadenOffen) return;
+    const uhr = setInterval(() => { if (frei()) setLeitfadenOffen(true); }, 60_000);
+    return () => clearInterval(uhr);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leitfadenOffen]);
 
   // „Wird eingerichtet“: alle 3 s neu versuchen, nach ~10 s gibt der Knopf das Heft zurück.
   useEffect(() => {
@@ -156,7 +169,7 @@ export default function MappeUebersicht() {
                         {z.vorhanden ? 'vorhanden' : 'offen'}
                       </span>
                     </div>
-                    <Editor />
+                    {z.name === 'leitfaden' && !leitfadenOffen ? <span className="wk-hilfe">{LEITFADEN_SPAETER}</span> : <Editor />}
                   </li>
                 );
               })}

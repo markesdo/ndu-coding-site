@@ -1,4 +1,6 @@
 // Reine Hilfen für /innolab/mappe (MappeUebersicht.tsx): Rücksprünge der Anmeldung und Zeilen der Übersicht.
+import { aufgeloest } from '../../components/aufloesung.js';
+import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import type { MappeStand } from '../vertrag.js';
 
@@ -18,6 +20,22 @@ export function anmeldeFehler(suche: string): { code: AnmeldeFehler; text: strin
   const c = code as AnmeldeFehler;
   return { code: c, text: FEHLER_TEXT[c], neuAnmelden: c !== 'nicht-freigeschaltet' };
 }
+
+/** Die Adresse ohne ?fehler – nachdem die Anmeldung geklappt hat, soll ein Neuladen die Meldung nicht wieder zeigen. */
+export function adresseOhneFehler(pfad: string, suche: string, hash: string): string {
+  const p = new URLSearchParams(suche);
+  p.delete('fehler');
+  const rest = p.toString();
+  return `${pfad}${rest ? `?${rest}` : ''}${hash}`;
+}
+
+/** Der Leitfaden-Editor verrät die Regeln des Mom Test: wie die Auflösungen der Interview-Seite erst ab NACH_MOM_TEST,
+ *  der Präsentator (Markus) immer. */
+export function leitfadenFrei(jetzt: Date, praesentator: boolean): boolean {
+  return praesentator || aufgeloest(NACH_MOM_TEST, jetzt);
+}
+
+export const LEITFADEN_SPAETER = 'Öffnet ihr nach dem Mom Test auf der Interview-Seite.';
 
 export interface MappeZeile {
   name: ArtefaktName;
