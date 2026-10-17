@@ -14,6 +14,9 @@ const { privateKey: PEM } = generateKeyPairSync('rsa', {
 
 function aufbau() {
   const gh = fakeGithub();
+  // Repos 5001 und 5002: Token-Ausgabe für unbekannte repository_ids lehnt GitHub mit 422 ab.
+  gh.zustand.repoAnlegen('r1', null);
+  gh.zustand.repoAnlegen('r2', null);
   const uhr = { ms: 1_800_000_000_000 };
   const abh = {
     fetch: gh.fetch,
@@ -21,7 +24,8 @@ function aufbau() {
     jetzt: () => uhr.ms,
     schluessel: () => ({ appId: '123456', privateKeyPem: PEM }),
   };
-  return { gh, uhr, token: installationTokenGeber(abh), bot: botIdentitaetGeber(abh) };
+  const token = installationTokenGeber(abh);
+  return { gh, uhr, token, bot: () => botIdentitaetGeber(abh, token)('ndu-innolab') };
 }
 
 describe('appJwt', () => {
@@ -47,13 +51,13 @@ describe('installationToken', () => {
 
   it('pro Repo: repository_ids = [repoId]', async () => {
     const { gh, token } = await aufbau();
-    const t = await token({ org: 'ndu-innolab', repoId: 5009, rechte: { contents: 'write' } });
-    expect(gh.zustand.tokens.get(t)).toStrictEqual({ permissions: { contents: 'write' }, repositoryIds: [5009] });
+    const t = await token({ org: 'ndu-innolab', repoId: 5001, rechte: { contents: 'write' } });
+    expect(gh.zustand.tokens.get(t)).toStrictEqual({ permissions: { contents: 'write' }, repositoryIds: [5001] });
   });
 
   it('Cache: innerhalb 50 min kein neuer access_tokens-Aufruf, danach ein neuer', async () => {
     const { gh, uhr, token } = await aufbau();
-    const opts = { org: 'ndu-innolab', repoId: 5009, rechte: { contents: 'write' as const } };
+    const opts = { org: 'ndu-innolab', repoId: 5001, rechte: { contents: 'write' as const } };
     const erst = await token(opts);
     uhr.ms += 49 * 60_000;
     expect(await token(opts)).toBe(erst);
@@ -65,8 +69,8 @@ describe('installationToken', () => {
 
   it('Cache trennt Repo und Rechte', async () => {
     const { gh, token } = await aufbau();
-    const a = await token({ org: 'ndu-innolab', repoId: 5009, rechte: { contents: 'write' } });
-    const b = await token({ org: 'ndu-innolab', repoId: 5010, rechte: { contents: 'write' } });
+    const a = await token({ org: 'ndu-innolab', repoId: 5001, rechte: { contents: 'write' } });
+    const b = await token({ org: 'ndu-innolab', repoId: 5002, rechte: { contents: 'write' } });
     const c = await token({ org: 'ndu-innolab', rechte: { contents: 'write' } });
     const d = await token({ org: 'ndu-innolab', rechte: { administration: 'write' } });
     expect(new Set([a, b, c, d]).size).toBe(4);
@@ -88,5 +92,21 @@ describe('botIdentitaet', () => {
     expect(await bot()).toStrictEqual(erwartet);
     expect(await bot()).toStrictEqual(erwartet);
     expect(gh.zustand.aufrufeVon('GET', '/app')).toHaveLength(1);
+  });
+});
+
+describe('gemerkte Installations-ID veraltet', () => {
+  it('App neu installiert: access_tokens 404 mit gemerkter ID → Installation neu abfragen, einmal neu versuchen', async () => {
+    const { gh, token } = await aufbau();
+    await token({ org: 'ndu-innolab', rechte: { contents: 'write' } });
+    gh.zustand.installationId = 78;
+    const t = await token({ org: 'ndu-innolab', rechte: { administration: 'write' } });
+    expect(gh.zustand.tokens.has(t)).toBe(true);
+    expect(gh.zustand.aufrufeVon('GET', '/installation')).toHaveLength(2);
+    expect(gh.zustand.aufrufeVon('POST', '/access_tokens').map((a) => a.pfad)).toStrictEqual([
+      '/app/installations/77/access_tokens',
+      '/app/installations/77/access_tokens',
+      '/app/installations/78/access_tokens',
+    ]);
   });
 });

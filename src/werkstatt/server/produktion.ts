@@ -1,7 +1,5 @@
 // Abhängigkeiten für Vercel (api/werkstatt.ts). Wirft nie beim Import: Fehlen Secrets, scheitert erst die Anfrage,
 // die sie braucht, mit 503 – die Website baut und deployt auch ohne Werkstatt-Secrets.
-import { KOHORTEN } from '../kohorten/index.js';
-import { neuesteAktiveKohorte } from '../zugang.js';
 import { ApiAusnahme } from './antwort.js';
 import { vercelCache } from './cache.js';
 import { botIdentitaetGeber, installationTokenGeber } from './github/app-token.js';
@@ -10,17 +8,17 @@ import { githubSpeicher } from './github/speicher.js';
 import { umgebungLesen } from './umgebung.js';
 import type { Abhaengigkeiten, Speicher, Umgebung } from './typen.js';
 
-// Repos liegen in der Org der neuesten aktiven Kohorte. App-ID und Schlüssel erst beim ersten Token lesen.
+// Ein Speicher für alle Jahrgänge: Org und Vorlage bestimmt githubSpeicher pro Aufruf aus der Kohorte.
+// App-ID und Schlüssel erst beim ersten Token lesen.
 function produktionsSpeicher(abh: Pick<Abhaengigkeiten, 'umgebung' | 'cache' | 'jetzt'>): Speicher {
-  const neueste = neuesteAktiveKohorte(KOHORTEN);
-  if (!neueste) throw new Error('keine aktive Kohorte');
   const app = {
     fetch: (eingabe: RequestInfo | URL, init?: RequestInit) => fetch(eingabe, init),
     cache: abh.cache,
     jetzt: () => abh.jetzt(),
     schluessel: () => ({ appId: abh.umgebung.githubAppId, privateKeyPem: abh.umgebung.githubPrivateKey }),
   };
-  return githubSpeicher({ fetch: app.fetch, cache: abh.cache, token: installationTokenGeber(app), bot: botIdentitaetGeber(app), kohorte: neueste });
+  const token = installationTokenGeber(app);
+  return githubSpeicher({ fetch: app.fetch, cache: abh.cache, token, bot: botIdentitaetGeber(app, token) });
 }
 
 export function produktionsAbhaengigkeiten(env: NodeJS.ProcessEnv = process.env): Abhaengigkeiten {

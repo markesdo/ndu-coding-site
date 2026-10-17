@@ -3,6 +3,7 @@ import { createHash, generateKeyPairSync } from 'node:crypto';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ApiAusnahme } from '../antwort';
 import { kohorte2026 } from '../../kohorten/2026';
+import type { Kohorte } from '../../kohorten/index';
 import type { Mitgliedschaft } from '../../zugang';
 import { mapCache } from '../cache';
 import { botIdentitaetGeber, installationTokenGeber } from './app-token';
@@ -34,7 +35,7 @@ function dateien(name: string, daten: unknown): Record<string, string> {
   };
 }
 
-function aufbau() {
+function aufbau(opts: { zeitlimitMs?: number } = {}) {
   const gh = fakeGithub({ org: kohorte2026.org });
   gh.zustand.vorlageAnlegen(kohorte2026.vorlage, { 'README.md': '# Vorlage\n', 'AGENTS.md': '# Agenten\n' });
   const uhr = { ms: 1_800_000_000_000 };
@@ -43,16 +44,17 @@ function aufbau() {
   const schlafen = vi.fn(async (ms: number) => {
     uhr.ms += ms;
   });
+  const token = installationTokenGeber(app);
   const s = githubSpeicher({
     fetch: gh.fetch,
     cache,
-    token: installationTokenGeber(app),
-    bot: botIdentitaetGeber(app),
-    kohorte: kohorte2026,
+    token,
+    bot: botIdentitaetGeber(app, token),
     schlafen,
     jetzt: () => uhr.ms,
+    zeitlimitMs: opts.zeitlimitMs,
   });
-  return { gh, s, schlafen };
+  return { gh, s, schlafen, uhr };
 }
 
 async function mitRepo() {
@@ -71,6 +73,8 @@ describe('githubSpeicher.speichern', () => {
 
     const commitAufrufe = gh.zustand.aufrufeVon('POST', '/git/commits');
     expect(commitAufrufe).toHaveLength(1);
+    // Inhalte inline im Tree, keine eigenen Blob-Aufrufe.
+    expect(gh.zustand.aufrufeVon('POST', '/git/blobs')).toHaveLength(0);
     const kopf = gh.zustand.kopf(repo)!;
     const c = gh.zustand.commit(repo, kopf);
     expect(c.parents).toStrictEqual([vorher]);
@@ -153,19 +157,47 @@ describe('githubSpeicher.speichern', () => {
     expect(gh.zustand.commit(repo, gh.zustand.kopf(repo)!).message).toBe('Annahmen: neu');
   });
 
-  it('wettlauf zweimal verloren → Konflikt, kein dritter Versuch', async () => {
+  it('wettlauf zweimal verloren, dritter Versuch klappt', async () => {
+    const { gh, s, repo } = await mitRepo();
+    let n = 0;
+    gh.zustand.vorRefUpdate = (r) => {
+      if (n < 2) gh.zustand.aendernVonAussen(r, 'mappe/brief.json', `{"n":${n++}}\n`);
+    };
+    const erg = await s.speichern(repo, 'annahmen', dateien('annahmen', { annahmen: [] }), null, autor, 'Annahmen: neu');
+    expect('basisSha' in erg).toBe(true);
+    expect(gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main')).toHaveLength(3);
+    expect(JSON.parse(gh.zustand.dateien(repo)['mappe/annahmen.json'])).toStrictEqual({ annahmen: [] });
+  });
+
+  it('wettlauf dreimal verloren → 503 github-fehler (kein falscher Konflikt), kein vierter Versuch', async () => {
     const { gh, s, repo } = await mitRepo();
     let n = 0;
     gh.zustand.vorRefUpdate = (r) => gh.zustand.aendernVonAussen(r, 'mappe/brief.json', `{"n":${n++}}\n`);
+    const e = await alsFehler(s.speichern(repo, 'annahmen', dateien('annahmen', { annahmen: [] }), null, autor, 'Annahmen: neu'));
+    expect([e.status, e.code, e.satz]).toStrictEqual([503, 'github-fehler', 'Gerade speichern viele gleichzeitig. Bitte gleich noch einmal.']);
+    expect(gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main')).toHaveLength(3);
+    expect(gh.zustand.dateien(repo)['mappe/annahmen.json']).toBeUndefined();
+  });
+
+  it('wettlauf gegen dasselbe Artefakt → beim Neuversuch Konflikt', async () => {
+    const { gh, s, repo } = await mitRepo();
+    let einmal = true;
+    gh.zustand.vorRefUpdate = (r) => {
+      if (einmal) gh.zustand.aendernVonAussen(r, 'mappe/annahmen.json', '{"annahmen":[{"id":"X"}]}\n');
+      einmal = false;
+    };
     const erg = await s.speichern(repo, 'annahmen', dateien('annahmen', { annahmen: [] }), null, autor, 'Annahmen: neu');
     expect(erg).toStrictEqual({ konflikt: true });
-    expect(gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main')).toHaveLength(2);
-    expect(gh.zustand.dateien(repo)['mappe/annahmen.json']).toBeUndefined();
+    expect(gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main')).toHaveLength(1);
   });
 
   it('ohne die JSON-Datei des Artefakts in dateien wirft', async () => {
     const { s, repo } = await mitRepo();
-    await expect(s.speichern(repo, 'brief', { 'README.md': '#' }, null, autor, 'x')).rejects.toThrow(/mappe\/brief\.json/);
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const e = await alsFehler(s.speichern(repo, 'brief', { 'README.md': '#' }, null, autor, 'x'));
+    expect([e.status, e.code]).toStrictEqual([500, 'unbekannt']);
+    expect(log.mock.calls.join(' ')).toContain('mappe/brief.json');
+    log.mockRestore();
   });
 });
 
@@ -195,7 +227,8 @@ describe('githubSpeicher.anlegen', () => {
   it('main kommt nicht innerhalb von 8 s → wirft', async () => {
     const { gh, s, schlafen } = aufbau();
     gh.zustand.mainVerzoegerung = 100;
-    await expect(s.anlegen(sofie, 1001)).rejects.toThrow('repo-nicht-bereit');
+    const e = await alsFehler(s.anlegen(sofie, 1001));
+    expect([e.status, e.code]).toStrictEqual([503, 'wird-eingerichtet']);
     expect(schlafen).toHaveBeenCalledTimes(8);
   });
 
@@ -207,19 +240,24 @@ describe('githubSpeicher.anlegen', () => {
     expect(gh.zustand.aufrufeVon('POST', '/generate')).toHaveLength(2);
     // Kein zweites werkstatt.json.
     expect(gh.zustand.kopf('2026-sofie')).toBe(kopf);
-    await expect(s.anlegen(sofie, 1002)).rejects.toThrow('repo-gehoert-anderer-person');
+    const e = await alsFehler(s.anlegen(sofie, 1002));
+    expect([e.status, e.code]).toStrictEqual([403, 'nicht-freigeschaltet']);
   });
 
   it('Repo existiert schon ohne werkstatt.json (abgebrochener erster Versuch) → wird nachgetragen', async () => {
     const { gh, s } = aufbau();
-    gh.zustand.repoAnlegen('2026-sofie', { 'README.md': '# Vorlage\n' });
+    gh.zustand.repoAnlegen('2026-sofie', { 'README.md': '# Vorlage\n' }, { vorlage: kohorte2026.vorlage });
     expect(await s.anlegen(sofie, 1001)).toStrictEqual({ repo: '2026-sofie' });
     expect(await s.werkstattJson('2026-sofie')).toStrictEqual({ kohorte: '2026', githubId: 1001 });
   });
 
   it('unbekannte Kohorte wirft', async () => {
     const { s } = aufbau();
-    await expect(s.anlegen({ kohorte: 'gibtsnicht', rolle: 'studierende', kuerzel: 'sofie' }, 1001)).rejects.toThrow();
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const e = await alsFehler(s.anlegen({ kohorte: 'gibtsnicht', rolle: 'studierende', kuerzel: 'sofie' }, 1001));
+    expect([e.status, e.code]).toStrictEqual([500, 'unbekannt']);
+    expect(log.mock.calls.join(' ')).toContain('gibtsnicht');
+    log.mockRestore();
   });
 });
 
@@ -265,7 +303,8 @@ describe('githubSpeicher.lesen, uebersicht, werkstattJson', () => {
 function aufbauMitGleichemGithub(gh: ReturnType<typeof fakeGithub>) {
   const cache = mapCache();
   const app = { fetch: gh.fetch, cache, jetzt: () => Date.now(), schluessel: () => ({ appId: '123456', privateKeyPem: PEM }) };
-  return githubSpeicher({ fetch: gh.fetch, cache, token: installationTokenGeber(app), bot: botIdentitaetGeber(app), kohorte: kohorte2026 });
+  const token = installationTokenGeber(app);
+  return githubSpeicher({ fetch: gh.fetch, cache, token, bot: botIdentitaetGeber(app, token) });
 }
 
 async function alsFehler(p: Promise<unknown>): Promise<ApiAusnahme> {
@@ -350,5 +389,159 @@ describe('GitHub-Fehler', () => {
     const e = await alsFehler(s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu'));
     expect([e.status, e.code]).toStrictEqual([502, 'github-fehler']);
     expect(gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main')).toHaveLength(1);
+  });
+});
+
+describe('anlegen: vorhandenes Repo nur übernehmen, wenn es aus der Vorlage stammt', () => {
+  const BELEGT = [409, 'konflikt', 'Für dich existiert schon ein anderes Repo mit diesem Namen. Schreib Markus.'];
+  it('ohne Vorlage → 409 konflikt, nichts geschrieben', async () => {
+    const { gh, s } = aufbau();
+    gh.zustand.repoAnlegen('2026-sofie', { 'README.md': '# Privat\n' });
+    const kopf = gh.zustand.kopf('2026-sofie');
+    const e = await alsFehler(s.anlegen(sofie, 1001));
+    expect([e.status, e.code, e.satz]).toStrictEqual(BELEGT);
+    expect(gh.zustand.kopf('2026-sofie')).toBe(kopf);
+  });
+  it('aus einer anderen Vorlage → 409 konflikt', async () => {
+    const { gh, s } = aufbau();
+    gh.zustand.repoAnlegen('2026-sofie', { 'README.md': '#\n' }, { vorlage: 'mappe-vorlage-2025' });
+    const e = await alsFehler(s.anlegen(sofie, 1001));
+    expect([e.status, e.code, e.satz]).toStrictEqual(BELEGT);
+  });
+  it('gleich benannte Vorlage einer fremden Org → 409 konflikt', async () => {
+    const { gh, s } = aufbau();
+    gh.zustand.repoAnlegen('2026-sofie', { 'README.md': '#\n' }, { vorlage: kohorte2026.vorlage, vorlageOwner: 'fremde-org' });
+    const e = await alsFehler(s.anlegen(sofie, 1001));
+    expect([e.status, e.code, e.satz]).toStrictEqual(BELEGT);
+  });
+});
+
+describe('werkstatt.json-PUT im Wettlauf', () => {
+  for (const status of [409, 422]) {
+    it(`${status}: anderer Tab hat werkstatt.json derselben Person geschrieben → Erfolg; fremde ID → 403`, async () => {
+      for (const [githubId, erwartet] of [[1001, 'ok'], [1002, 403]] as const) {
+        const { gh, s } = aufbau();
+        gh.zustand.stoerung = (methode, pfad) => {
+          if (methode !== 'PUT' || !pfad.endsWith('/contents/werkstatt.json')) return undefined;
+          gh.zustand.aendernVonAussen('2026-sofie', 'werkstatt.json', `${JSON.stringify({ kohorte: '2026', githubId })}\n`);
+          return new Response('{"message":"is at 123 but expected 456"}', { status });
+        };
+        const erg = await s.anlegen(sofie, 1001).catch((e: unknown) => e);
+        expect(gh.zustand.aufrufeVon('PUT', '/contents/werkstatt.json')).toHaveLength(1);
+        if (erwartet === 'ok') expect(erg).toStrictEqual({ repo: '2026-sofie' });
+        else expect([(erg as ApiAusnahme).status, (erg as ApiAusnahme).code]).toStrictEqual([403, 'nicht-freigeschaltet']);
+      }
+    });
+  }
+});
+
+describe('Wächter: werkstatt.json ohne githubId', () => {
+  it('gültiges JSON ohne githubId gilt nicht als frei', async () => {
+    const { gh, s, repo } = await mitRepo();
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    gh.zustand.aendernVonAussen(repo, 'werkstatt.json', '{"kohorte":"2026"}\n');
+    const e = await alsFehler(s.werkstattJson(repo));
+    expect([e.status, e.code]).toStrictEqual([502, 'github-fehler']);
+    const f = await alsFehler(s.anlegen(sofie, 1001));
+    expect([f.status, f.code]).toStrictEqual([502, 'github-fehler']);
+    expect(gh.zustand.dateien(repo)['werkstatt.json']).toBe('{"kohorte":"2026"}\n');
+    log.mockRestore();
+  });
+});
+
+describe('Bot-Identität', () => {
+  it('GET /users/<slug>[bot] mit dem Org-Installations-Token', async () => {
+    const { gh, s, repo } = await mitRepo();
+    await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu');
+    const [aufruf] = gh.zustand.aufrufeVon('GET', '/users/ndu-werkstatt%5Bbot%5D');
+    expect(aufruf.token).not.toBeNull();
+    expect(gh.zustand.tokens.get(aufruf.token!)).toStrictEqual({ permissions: { administration: 'write', contents: 'read' }, repositoryIds: null });
+  });
+});
+
+describe('gemerkte IDs veralten', () => {
+  it('Repo gelöscht und neu angelegt: Token-Ausgabe scheitert mit der alten ID → neu auflösen, einmal neu versuchen', async () => {
+    const { gh, s, repo, uhr } = await mitRepo();
+    // Repo-Token abgelaufen (50 min), gemerkte ID (1 Tag) noch da.
+    uhr.ms += 51 * 60_000;
+    const alteId = gh.zustand.repos.get(repo)!.id;
+    gh.zustand.repos.delete(repo);
+    gh.zustand.repoAnlegen(repo, { 'mappe/brief.json': '{"neu":true}\n' }, { vorlage: kohorte2026.vorlage });
+    expect(gh.zustand.repos.get(repo)!.id).not.toBe(alteId);
+    expect((await s.lesen(repo, 'brief')).daten).toStrictEqual({ neu: true });
+    const ids = gh.zustand.aufrufeVon('POST', '/access_tokens').map((a) => (a.body as { repository_ids?: number[] }).repository_ids?.[0]).filter((id) => id !== undefined);
+    expect(ids.slice(-2)).toStrictEqual([alteId, gh.zustand.repos.get(repo)!.id]);
+  });
+});
+
+describe('Zeitlimit', () => {
+  it('hängt GitHub, bricht githubAnfrage nach dem Zeitlimit mit 502 github-fehler ab', async () => {
+    const a = aufbau({ zeitlimitMs: 50 });
+    const { repo: r2 } = await a.s.anlegen(sofie, 1001);
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    a.gh.zustand.stoerung = (_m, pfad) => (pfad.includes('/contents/') ? new Promise<Response>(() => {}) : undefined);
+    const erg = await Promise.race([
+      a.s.lesen(r2, 'brief').catch((e: unknown) => e),
+      new Promise((fertig) => setTimeout(() => fertig('hängt'), 500)),
+    ]);
+    expect(erg).toBeInstanceOf(ApiAusnahme);
+    expect([(erg as ApiAusnahme).status, (erg as ApiAusnahme).code]).toStrictEqual([502, 'github-fehler']);
+    log.mockRestore();
+  });
+});
+
+// Zwei aktive Jahrgänge in verschiedenen Orgs, ein Speicher: Org und Vorlage pro Aufruf aus der Kohorte.
+describe('mehrere Jahrgänge gleichzeitig', () => {
+  const kA: Kohorte = { ...kohorte2026, id: '2026', org: 'org-a', vorlage: 'vorlage-a' };
+  const kB: Kohorte = { ...kohorte2026, id: '2027', org: 'org-b', vorlage: 'vorlage-b', beginn: '2027-10-21', artefakte: ['brief@1'] };
+
+  function zweiOrgs() {
+    const a = fakeGithub({ org: 'org-a', installationId: 71 });
+    const b = fakeGithub({ org: 'org-b', installationId: 72 });
+    a.zustand.vorlageAnlegen('vorlage-a', { 'README.md': '# A\n' });
+    b.zustand.vorlageAnlegen('vorlage-b', { 'README.md': '# B\n' });
+    const f: typeof fetch = async (eingabe, init) => {
+      const pfad = new URL(String(eingabe)).pathname;
+      const token = new Headers(init?.headers).get('authorization')?.slice(7) ?? '';
+      let m = pfad.match(/^\/(?:orgs|repos)\/([^/]+)/);
+      if (m) return (m[1] === 'org-b' ? b : a).fetch(eingabe, init);
+      m = pfad.match(/^\/app\/installations\/(\d+)/);
+      if (m) return (m[1] === '72' ? b : a).fetch(eingabe, init);
+      return (b.zustand.tokens.has(token) ? b : a).fetch(eingabe, init);
+    };
+    const cache = mapCache();
+    const app = { fetch: f, cache, jetzt: () => Date.now(), schluessel: () => ({ appId: '123456', privateKeyPem: PEM }) };
+    const token = installationTokenGeber(app);
+    const s = githubSpeicher({ fetch: f, cache, token, bot: botIdentitaetGeber(app, token), kohorteZu: (id) => [kA, kB].find((k) => k.id === id) });
+    return { a, b, s };
+  }
+
+  it('anlegen, speichern, lesen je in der Org der Kohorte', async () => {
+    const { a, b, s } = zweiOrgs();
+    const alt = await s.anlegen({ kohorte: '2026', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
+    const neu = await s.anlegen({ kohorte: '2027', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
+    expect([alt.repo, neu.repo]).toStrictEqual(['2026-sofie', '2027-sofie']);
+    expect(a.zustand.aufrufeVon('POST', '/generate')[0].pfad).toBe('/repos/org-a/vorlage-a/generate');
+    expect(b.zustand.aufrufeVon('POST', '/generate')[0].pfad).toBe('/repos/org-b/vorlage-b/generate');
+    expect(JSON.parse(b.zustand.dateien('2027-sofie')['werkstatt.json'])).toStrictEqual({ kohorte: '2027', githubId: 1001, schemaVersionen: ['brief@1'] });
+    expect(a.zustand.repos.has('2027-sofie')).toBe(false);
+
+    await s.speichern('2027-sofie', 'brief', dateien('brief', { jahr: 2027 }), null, autor, 'Brief: neu');
+    await s.speichern('2026-sofie', 'brief', dateien('brief', { jahr: 2026 }), null, autor, 'Brief: neu');
+    expect((await s.lesen('2027-sofie', 'brief')).daten).toStrictEqual({ jahr: 2027 });
+    expect((await s.lesen('2026-sofie', 'brief')).daten).toStrictEqual({ jahr: 2026 });
+    expect(JSON.parse(b.zustand.dateien('2027-sofie')['mappe/brief.json'])).toStrictEqual({ jahr: 2027 });
+    expect(await s.werkstattJson('2027-sofie')).toStrictEqual({ kohorte: '2027', githubId: 1001 });
+    expect((await s.uebersicht('2026-sofie')).find((x) => x.name === 'brief')?.vorhanden).toBe(true);
+  });
+
+  it('unbekanntes Präfix oder Name ohne Präfix → 404 unbekannt', async () => {
+    const { s } = zweiOrgs();
+    for (const repo of ['2030-sofie', 'sofie']) {
+      for (const aufruf of [() => s.lesen(repo, 'brief'), () => s.uebersicht(repo), () => s.werkstattJson(repo), () => s.speichern(repo, 'brief', dateien('brief', {}), null, autor, 'x')]) {
+        const e = await alsFehler(aufruf());
+        expect([repo, e.status, e.code]).toStrictEqual([repo, 404, 'unbekannt']);
+      }
+    }
   });
 });

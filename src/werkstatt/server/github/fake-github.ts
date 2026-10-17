@@ -3,6 +3,7 @@
 // ein Ref `main`. `PATCH git/refs/heads/main` antwortet 422 genau dann, wenn parents[0] des neuen Commits nicht der
 // aktuelle Kopf ist (echtes Fast-Forward-Modell, kein Schalter). Nur bei NODE_ENV ∈ {development, test}.
 import { createHash } from 'node:crypto';
+import { blobSha } from '../git-sha.js';
 import { istLokal } from '../umgebung.js';
 
 export interface FakeGitCommit {
@@ -21,6 +22,8 @@ interface FakeRepo {
   trees: Map<string, Map<string, string>>;
   commits: Map<string, FakeGitCommit>;
   main: string | null;
+  // Aus welcher Vorlage /generate das Repo erzeugt hat (GitHub: template_repository); null = keine.
+  vorlage: { name: string; owner: string } | null;
   // Wie oft `GET git/ref/heads/main` noch 404 antwortet (GitHub kopiert die Vorlage nicht synchron).
   mainVerzoegerung: number;
 }
@@ -45,9 +48,11 @@ export interface FakeGithubZustand {
   // Für frisch aus der Vorlage erzeugte Repos: so viele `GET git/ref/heads/main` antworten zuerst 404.
   mainVerzoegerung: number;
   // Liefert sie eine Antwort, kommt diese statt der normalen (Fehler von GitHub nachstellen).
-  stoerung: ((methode: string, pfad: string) => Response | undefined) | null;
+  // Ein nie erfüllter Promise stellt ein hängendes GitHub nach (abbrechbar über das AbortSignal der Anfrage).
+  stoerung: ((methode: string, pfad: string) => Response | Promise<Response> | undefined) | null;
   vorlageAnlegen(name: string, dateien: Record<string, string>): void;
-  repoAnlegen(name: string, dateien: Record<string, string> | null): void;
+  // opts.vorlage: als wäre es aus dieser Vorlage erzeugt (Owner Standard: die Org).
+  repoAnlegen(name: string, dateien: Record<string, string> | null, opts?: { vorlage?: string; vorlageOwner?: string }): void;
   kopf(repo: string): string | null;
   commit(repo: string, sha: string): FakeGitCommit;
   // Dateien im Kopf von main (Pfad -> Inhalt).
@@ -62,17 +67,13 @@ const BASIS = 'https://api.github.com';
 function sha1(text: string): string {
   return createHash('sha1').update(text).digest('hex');
 }
-function blobSha(inhalt: string): string {
-  const bytes = Buffer.from(inhalt, 'utf8');
-  return createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex');
-}
 
 function antwort(status: number, body?: unknown): Response {
   return new Response(body === undefined ? null : JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
 }
 const nichtGefunden = () => antwort(404, { message: 'Not Found' });
 
-export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; zustand: FakeGithubZustand } {
+export function fakeGithub(opts: { org?: string; installationId?: number } = {}): { fetch: typeof fetch; zustand: FakeGithubZustand } {
   if (!istLokal(process.env)) throw new Error('fakeGithub nur bei NODE_ENV development oder test');
   let naechsteId = 5001;
   let tokenZaehler = 0;
@@ -85,6 +86,7 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
     trees: new Map(),
     commits: new Map(),
     main: null,
+    vorlage: null,
     mainVerzoegerung: 0,
   });
   const blobAblegen = (r: FakeRepo, inhalt: string) => {
@@ -113,7 +115,7 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
 
   const zustand: FakeGithubZustand = {
     org: opts.org ?? 'ndu-innolab',
-    installationId: 77,
+    installationId: opts.installationId ?? 77,
     bot: { slug: 'ndu-werkstatt', id: 4242 },
     repos: new Map(),
     aufrufe: [],
@@ -124,8 +126,9 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
     vorlageAnlegen(name, dateien) {
       zustand.repoAnlegen(name, dateien);
     },
-    repoAnlegen(name, dateien) {
+    repoAnlegen(name, dateien, o = {}) {
       const r = repoNeu(name);
+      if (o.vorlage) r.vorlage = { name: o.vorlage, owner: o.vorlageOwner ?? zustand.org };
       zustand.repos.set(name, r);
       if (dateien) direktCommit(r, dateien, 'Anfang');
     },
@@ -166,7 +169,10 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
     if (methode === 'POST' && (m = pfad.match(/^\/app\/installations\/(\d+)\/access_tokens$/))) {
       if (!token?.startsWith('ey')) return antwort(401, { message: 'A JSON web token could not be decoded' });
       if (Number(m[1]) !== zustand.installationId) return nichtGefunden();
-      const t = `ghs_fake_${++tokenZaehler}`;
+      const ids = body?.repository_ids as number[] | undefined;
+      const bekannt = new Set([...zustand.repos.values()].map((x) => x.id));
+      if (ids?.some((id) => !bekannt.has(id))) return antwort(422, { message: 'There is at least one repository that does not exist or is not accessible to the parent installation.' });
+      const t = `ghs_fake_${zustand.installationId}_${++tokenZaehler}`;
       zustand.tokens.set(t, { permissions: body?.permissions ?? {}, repositoryIds: body?.repository_ids ?? null });
       return antwort(201, { token: t, expires_at: '2099-01-01T00:00:00Z' });
     }
@@ -175,6 +181,7 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
       return antwort(200, { slug: zustand.bot.slug });
     }
     if (methode === 'GET' && (m = pfad.match(/^\/users\/([^/]+)$/))) {
+      if (!token || !zustand.tokens.has(token)) return antwort(401, { message: 'Bad credentials' });
       const login = decodeURIComponent(m[1]);
       return login === `${zustand.bot.slug}[bot]` ? antwort(200, { id: zustand.bot.id, login }) : nichtGefunden();
     }
@@ -196,6 +203,7 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
         return antwort(422, { message: 'Unprocessable Entity', errors: ['Could not clone: Name already exists on this account'] });
       }
       const neu = repoNeu(body.name);
+      neu.vorlage = { name: r.name, owner: zustand.org };
       zustand.repos.set(body.name, neu);
       // Inhalt der Vorlage übernehmen, aber main erst nach der Verzögerung sichtbar.
       direktCommit(neu, zustand.dateien(r.name), 'Initial commit');
@@ -204,7 +212,10 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
     }
 
     if (!r || !darf(token, r)) return nichtGefunden();
-    if (methode === 'GET' && rest === '') return antwort(200, { id: r.id, name: r.name });
+    if (methode === 'GET' && rest === '') {
+      const vorlage = r.vorlage ? { name: r.vorlage.name, owner: { login: r.vorlage.owner } } : null;
+      return antwort(200, { id: r.id, name: r.name, template_repository: vorlage });
+    }
 
     const leer = () => antwort(409, { message: 'Git Repository is empty.' });
     const sichtbar = () => r.main !== null && r.mainVerzoegerung === 0;
@@ -254,8 +265,13 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
       const basis = body.base_tree ? r.trees.get(body.base_tree) : new Map<string, string>();
       if (!basis) return antwort(422, { message: 'base_tree fehlt' });
       const eintraege = new Map(basis);
-      for (const e of body.tree as { path: string; sha: string }[]) {
-        if (!r.blobs.has(e.sha)) return antwort(422, { message: `blob fehlt: ${e.sha}` });
+      // Einträge mit `sha` (vorhandener Blob) oder inline `content` (GitHub legt den Blob selbst an).
+      for (const e of body.tree as { path: string; sha?: string; content?: string }[]) {
+        if (typeof e.content === 'string') {
+          eintraege.set(e.path, blobAblegen(r, e.content));
+          continue;
+        }
+        if (!e.sha || !r.blobs.has(e.sha)) return antwort(422, { message: `blob fehlt: ${e.sha}` });
         eintraege.set(e.path, e.sha);
       }
       return antwort(201, { sha: treeAblegen(r, eintraege) });
@@ -294,8 +310,17 @@ export function fakeGithub(opts: { org?: string } = {}): { fetch: typeof fetch; 
     const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
     zustand.aufrufe.push({ methode, pfad: url.pathname, body, token });
     const gestoert = zustand.stoerung?.(methode, url.pathname);
-    if (gestoert) return gestoert;
-    return bearbeiten(methode, url.pathname, url.searchParams, body, token);
+    const ergebnis = gestoert ? Promise.resolve(gestoert) : bearbeiten(methode, url.pathname, url.searchParams, body, token);
+    const signal = init?.signal;
+    if (!signal) return ergebnis;
+    // Wie fetch: Abbruch über das Signal (z. B. AbortSignal.timeout) lässt die Anfrage scheitern.
+    return Promise.race([
+      ergebnis,
+      new Promise<Response>((_, abbruch) => {
+        if (signal.aborted) abbruch(signal.reason);
+        signal.addEventListener('abort', () => abbruch(signal.reason), { once: true });
+      }),
+    ]);
   };
 
   return { fetch: fakeFetch, zustand };

@@ -1,9 +1,9 @@
 // Speicher im Arbeitsspeicher für Tests und den lokalen Dev-Server – dieselben Regeln wie der GitHub-Speicher (spec §3.3):
 // basisSha = Git-Blob-SHA von mappe/<name>.json, Konflikt nur pro Artefakt, ein Speichern = ein Commit.
 // Nur bei NODE_ENV ∈ {development, test}.
-import { createHash } from 'node:crypto';
 import { ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { repoName } from '../zugang.js';
+import { blobSha } from './git-sha.js';
 import type { Speicher } from './typen.js';
 import { istLokal } from './umgebung.js';
 
@@ -19,12 +19,6 @@ export type FakeSpeicher = Speicher & {
   // Wie eine Änderung direkt auf GitHub: ändert mappe/<name>.json, damit ein vorher gelesener basisSha veraltet.
   aendernVonAussen(repo: string, name: ArtefaktName): void;
 };
-
-// Wie `git hash-object`: sha1("blob <bytes>\0<inhalt>").
-function blobSha(inhalt: string): string {
-  const bytes = Buffer.from(inhalt, 'utf8');
-  return createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex');
-}
 
 const jsonPfad = (name: ArtefaktName) => `mappe/${name}.json`;
 

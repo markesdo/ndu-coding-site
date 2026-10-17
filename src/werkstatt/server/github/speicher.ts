@@ -1,72 +1,112 @@
 // Speicher auf GitHub (spec §3.3): ein privates Mappe-Repo pro Person, aus der Vorlage der Kohorte erzeugt.
-// Ein Speichern = ein Commit über die Git-Data-API. Konflikte gelten pro Artefakt: basisSha ist der Blob-SHA von
-// mappe/<name>.json im Kopf von main (null = neu). Ein anderes Artefakt, das inzwischen gespeichert wurde, lässt das
-// Ref-Update mit 422 „not a fast forward“ scheitern; dann einmal von vorn auf dem neuen Kopf.
+// Ein Speicher für alle Jahrgänge: Org und Vorlage kommen pro Aufruf aus der Kohorte (anlegen: m.kohorte; sonst das
+// Präfix `<kohorte>-` des Repo-Namens). Ein Speichern = ein Commit über die Git-Data-API. Konflikte gelten pro Artefakt:
+// basisSha ist der Blob-SHA von mappe/<name>.json im Kopf von main (null = neu). Ein anderes Artefakt, das inzwischen
+// gespeichert wurde, lässt das Ref-Update mit 422 „not a fast forward“ scheitern; dann bis zu dreimal auf dem neuen Kopf.
 import { ARTEFAKT_NAMEN } from '../../schemas/index.js';
-import { kohorte as kohorteVon, type Kohorte } from '../../kohorten/index.js';
+import { kohorte as kohorteNachId, type Kohorte } from '../../kohorten/index.js';
 import { repoName } from '../../zugang.js';
+import { ApiAusnahme } from '../antwort.js';
+import { blobSha } from '../git-sha.js';
 import type { Cache, Speicher } from '../typen.js';
-import { githubAnfrage, githubFehler, jsonAusRepo, type InstallationToken } from './app-token.js';
+import { GithubAusnahme, ORG_RECHTE, githubAnfrage, githubFehler, jsonAusRepo, type InstallationToken } from './app-token.js';
 
 export interface GithubSpeicherAbh {
   fetch: typeof fetch;
   cache: Cache;
   token: InstallationToken;
-  // Committer aller Commits (Autor*in ist die Person).
-  bot(): Promise<{ name: string; email: string }>;
-  // Die Kohorte, deren Org die Repos gehören.
-  kohorte: Kohorte;
-  // In Tests steuerbar; Standard: setTimeout und Date.now.
+  // Committer aller Commits in dieser Org (Autor*in ist die Person).
+  bot(org: string): Promise<{ name: string; email: string }>;
+  // Kohorte zu einer ID; Standard: kohorte() aus src/werkstatt/kohorten.
+  kohorteZu?(id: string): Kohorte | undefined;
+  // In Tests steuerbar; Standard: setTimeout, Date.now, 8 s.
   schlafen?(ms: number): Promise<void>;
   jetzt?(): number;
+  zeitlimitMs?: number;
 }
 
 const TAG_SEK = 24 * 60 * 60;
 // Nach /generate ist main nicht sofort da: alle 1 s nachsehen, höchstens 8 s.
 const WARTEN_SCHRITT_MS = 1000;
 const WARTEN_HOECHSTENS_MS = 8000;
+// Versuche, wenn das Ref-Update das Fast-Forward-Rennen gegen ein anderes Artefakt verliert.
+const SPEICHER_VERSUCHE = 3;
 
-// Org-weit für /generate (und das Auflösen von Repo-Namen); alles im Repo nur mit einem Token für genau dieses Repo.
-// GitHub verlangt für /generate neben Administration write auch Contents read.
-const ORG_RECHTE = { administration: 'write', contents: 'read' } as const;
 const REPO_RECHTE = { contents: 'write' } as const;
 
 const jsonPfad = (name: string) => `mappe/${name}.json`;
 const pfadKodieren = (pfad: string) => pfad.split('/').map(encodeURIComponent).join('/');
 
+const unbekanntesRepo = () => new ApiAusnahme(404, 'unbekannt', 'Diese Mappe gibt es nicht.');
+const wirdEingerichtet = () => new ApiAusnahme(503, 'wird-eingerichtet', 'Deine Mappe wird eingerichtet. Lade die Seite in ein paar Sekunden neu.');
+const fremdesRepo = () => new ApiAusnahme(403, 'nicht-freigeschaltet', 'Diese Mappe gehört zu einer anderen Person. Schreib Markus.');
+const nameBelegt = () => new ApiAusnahme(409, 'konflikt', 'Für dich existiert schon ein anderes Repo mit diesem Namen. Schreib Markus.');
+const vieleGleichzeitig = () => new ApiAusnahme(503, 'github-fehler', 'Gerade speichern viele gleichzeitig. Bitte gleich noch einmal.');
+function intern(log: string): ApiAusnahme {
+  console.error(`werkstatt: ${log}`);
+  return new ApiAusnahme(500, 'unbekannt', 'In der Werkstatt ist etwas schiefgegangen. Bitte später noch einmal versuchen.');
+}
+
 interface Zugriff {
+  org: string;
   token: string;
   basis: string;
 }
 
+interface RepoInfo {
+  id: number;
+  vorlage: { name: string; owner: string } | null;
+}
+
 export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
-  const org = abh.kohorte.org;
+  const kohorteZu = abh.kohorteZu ?? kohorteNachId;
   const schlafen = abh.schlafen ?? ((ms: number) => new Promise<void>((fertig) => setTimeout(fertig, ms)));
   const jetzt = abh.jetzt ?? (() => Date.now());
   const anfrage = (z: Zugriff | string, methode: string, pfad: string, body?: unknown) =>
     typeof z === 'string'
-      ? githubAnfrage(abh.fetch, z, methode, pfad, body)
-      : githubAnfrage(abh.fetch, z.token, methode, `${z.basis}${pfad}`, body);
+      ? githubAnfrage(abh.fetch, z, methode, pfad, body, abh.zeitlimitMs)
+      : githubAnfrage(abh.fetch, z.token, methode, `${z.basis}${pfad}`, body, abh.zeitlimitMs);
 
-  const orgToken = () => abh.token({ org, rechte: ORG_RECHTE });
-  const idSchluessel = (repo: string) => `gh-repo-id:${org}/${repo}`;
+  const orgToken = (org: string) => abh.token({ org, rechte: ORG_RECHTE });
+  const idSchluessel = (org: string, repo: string) => `gh-repo-id:${org}/${repo}`;
+  const repoPfad = (org: string, repo: string) => `/repos/${encodeURIComponent(org)}/${encodeURIComponent(repo)}`;
 
-  // Repo-Name → numerische ID (für repository_ids), einmal mit dem Org-Token aufgelöst und gemerkt. null = kein Repo.
-  async function repoId(repo: string): Promise<number | null> {
-    const gemerkt = await abh.cache.get(idSchluessel(repo));
-    if (typeof gemerkt === 'number') return gemerkt;
-    const pfad = `/repos/${encodeURIComponent(org)}/${encodeURIComponent(repo)}`;
-    const r = await anfrage(await orgToken(), 'GET', pfad);
-    if (r.status === 404) return null;
-    if (r.status !== 200 || typeof r.daten?.id !== 'number') throw githubFehler('GET', pfad, r.status);
-    await abh.cache.set(idSchluessel(repo), r.daten.id, TAG_SEK);
-    return r.daten.id as number;
+  // Repo-Name `<kohorte>-<kuerzel>` → Kohorte. Kohorten-IDs enthalten keinen Bindestrich (2026, test).
+  function kohorteDesRepos(repo: string): Kohorte {
+    const i = repo.indexOf('-');
+    const k = i > 0 ? kohorteZu(repo.slice(0, i)) : undefined;
+    if (!k) throw unbekanntesRepo();
+    return k;
   }
 
+  // Metadaten mit dem Org-Token; merkt die ID. null = kein Repo.
+  async function repoInfo(org: string, repo: string): Promise<RepoInfo | null> {
+    const pfad = repoPfad(org, repo);
+    const r = await anfrage(await orgToken(org), 'GET', pfad);
+    if (r.status === 404) return null;
+    if (r.status !== 200 || typeof r.daten?.id !== 'number') throw githubFehler('GET', pfad, r.status);
+    await abh.cache.set(idSchluessel(org, repo), r.daten.id, TAG_SEK);
+    const t = r.daten.template_repository;
+    return { id: r.daten.id, vorlage: t && typeof t.name === 'string' ? { name: t.name, owner: String(t.owner?.login ?? '') } : null };
+  }
+
+  // Token für genau dieses Repo. Die ID wird einmal aufgelöst und gemerkt; scheitert die Token-Ausgabe mit einer
+  // gemerkten ID (Repo gelöscht und neu angelegt), einmal neu auflösen. null = kein Repo.
   async function zugriff(repo: string): Promise<Zugriff | null> {
-    const id = await repoId(repo);
-    if (id === null) return null;
-    return { token: await abh.token({ org, repoId: id, rechte: REPO_RECHTE }), basis: `/repos/${encodeURIComponent(org)}/${encodeURIComponent(repo)}` };
+    const { org } = kohorteDesRepos(repo);
+    const basis = repoPfad(org, repo);
+    const gemerkt = await abh.cache.get(idSchluessel(org, repo));
+    if (typeof gemerkt === 'number') {
+      try {
+        return { org, basis, token: await abh.token({ org, repoId: gemerkt, rechte: REPO_RECHTE }) };
+      } catch (e) {
+        if (!(e instanceof GithubAusnahme && (e.githubStatus === 404 || e.githubStatus === 422))) throw e;
+        await abh.cache.set(idSchluessel(org, repo), null, 1);
+      }
+    }
+    const info = await repoInfo(org, repo);
+    if (!info) return null;
+    return { org, basis, token: await abh.token({ org, repoId: info.id, rechte: REPO_RECHTE }) };
   }
 
   // SHA des Kopfs von main; null, solange es main noch nicht gibt (leeres oder frisch erzeugtes Repo).
@@ -100,35 +140,40 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
 
   return {
     async anlegen(m, githubId) {
-      const k = kohorteVon(m.kohorte);
-      if (!k || k.org !== org) throw new Error('kohorte-passt-nicht');
+      const k = kohorteZu(m.kohorte);
+      if (!k) throw intern(`anlegen: unbekannte Kohorte ${m.kohorte}`);
       const repo = repoName(m);
+      if (kohorteDesRepos(repo).id !== k.id) throw intern(`anlegen: Repo-Name ${repo} passt nicht zur Kohorte ${k.id}`);
+      const org = k.org;
       const pruefen = (wj: { githubId: number }) => {
-        if (wj.githubId !== githubId) throw new Error('repo-gehoert-anderer-person');
+        if (wj.githubId !== githubId) throw fremdesRepo();
       };
 
-      const pfad = `/repos/${encodeURIComponent(org)}/${encodeURIComponent(k.vorlage)}/generate`;
-      const r = await anfrage(await orgToken(), 'POST', pfad, { owner: org, name: repo, private: true });
+      const pfad = `${repoPfad(org, k.vorlage)}/generate`;
+      const r = await anfrage(await orgToken(org), 'POST', pfad, { owner: org, name: repo, private: true });
       if (r.status === 201 && typeof r.daten?.id === 'number') {
-        await abh.cache.set(idSchluessel(repo), r.daten.id, TAG_SEK);
+        await abh.cache.set(idSchluessel(org, repo), r.daten.id, TAG_SEK);
       } else if (r.status === 422 && /already exists/i.test(JSON.stringify(r.daten))) {
-        // Zweiter Tab oder Wiederholung: Erfolg, wenn werkstatt.json zur Person passt; fehlt sie, unten nachtragen.
+        // Zweiter Tab oder Wiederholung – aber nur ein Repo aus der Vorlage dieser Kohorte zählt als unseres.
+        const info = await repoInfo(org, repo);
+        if (!info || info.vorlage?.name !== k.vorlage || info.vorlage.owner !== org) throw nameBelegt();
         const z = await zugriff(repo);
         const wj = z && (await kopfLesen(z)) ? await werkstattJsonLesen(z) : null;
         if (wj) {
           pruefen(wj);
           return { repo };
         }
+        // werkstatt.json fehlt noch (abgebrochener erster Versuch): unten nachtragen.
       } else {
         throw githubFehler('POST', pfad, r.status);
       }
 
       const z = await zugriff(repo);
-      if (!z) throw new Error('repo-nicht-bereit');
+      if (!z) throw wirdEingerichtet();
       // GitHub kopiert die Vorlage nicht garantiert synchron.
       const beginn = jetzt();
       while (!(await kopfLesen(z))) {
-        if (jetzt() - beginn >= WARTEN_HOECHSTENS_MS) throw new Error('repo-nicht-bereit');
+        if (jetzt() - beginn >= WARTEN_HOECHSTENS_MS) throw wirdEingerichtet();
         await schlafen(WARTEN_SCHRITT_MS);
       }
 
@@ -142,7 +187,7 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
         message: 'Werkstatt: Mappe zugeordnet',
         content: Buffer.from(inhalt, 'utf8').toString('base64'),
       });
-      if (put.status === 422) {
+      if (put.status === 409 || put.status === 422) {
         // Ein zweiter Tab war schneller: dann muss dessen werkstatt.json passen.
         const wj = await werkstattJsonLesen(z);
         if (!wj) throw githubFehler('PUT', 'contents/werkstatt.json', put.status);
@@ -162,49 +207,43 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
 
     async speichern(repo, name, dateien, basisSha, autor, nachricht) {
       const json = jsonPfad(name);
-      if (dateien[json] === undefined) throw new Error(`speichern ohne ${json}`);
+      const neu = dateien[json];
+      if (neu === undefined) throw intern(`speichern ohne ${json}`);
       const z = await zugriff(repo);
-      if (!z) throw new Error(`repo-fehlt: ${repo}`);
-      const committer = await abh.bot();
+      if (!z) throw unbekanntesRepo();
+      const committer = await abh.bot(z.org);
+      // Inhalte inline im Tree (GitHub legt die Blobs an); den neuen Blob-SHA kennen wir selbst.
+      const eintraege = Object.entries(dateien).map(([path, content]) => ({ path, mode: '100644', type: 'blob', content }));
+      const neuerSha = blobSha(neu);
 
-      // Blobs hängen nicht am Kopf: einmal anlegen, für beide Versuche.
-      const eintraege: { path: string; mode: '100644'; type: 'blob'; sha: string }[] = [];
-      for (const [pfad, inhalt] of Object.entries(dateien)) {
-        const b = await anfrage(z, 'POST', '/git/blobs', { content: Buffer.from(inhalt, 'utf8').toString('base64'), encoding: 'base64' });
-        if (b.status !== 201 || typeof b.daten?.sha !== 'string') throw githubFehler('POST', 'git/blobs', b.status);
-        eintraege.push({ path: pfad, mode: '100644', type: 'blob', sha: b.daten.sha });
-      }
-      const neuerSha = eintraege.find((e) => e.path === json)!.sha;
-
-      for (let versuch = 1; versuch <= 2; versuch++) {
+      for (let versuch = 1; versuch <= SPEICHER_VERSUCHE; versuch++) {
         const kopf = await kopfLesen(z);
-        if (!kopf) throw new Error(`repo-ohne-main: ${repo}`);
-        const c = await anfrage(z, 'GET', `/git/commits/${kopf}`);
+        if (!kopf) throw wirdEingerichtet();
+        const [c, aktuell] = await Promise.all([anfrage(z, 'GET', `/git/commits/${kopf}`), dateiLesen(z, json, kopf)]);
         if (c.status !== 200 || typeof c.daten?.tree?.sha !== 'string') throw githubFehler('GET', 'git/commits', c.status);
 
         // Konflikt nur, wenn sich genau diese JSON-Datei seit dem Laden geändert hat.
-        const aktuell = (await dateiLesen(z, json, kopf))?.sha ?? null;
-        if (aktuell !== basisSha) return { konflikt: true };
+        if ((aktuell?.sha ?? null) !== basisSha) return { konflikt: true };
 
         const t = await anfrage(z, 'POST', '/git/trees', { base_tree: c.daten.tree.sha, tree: eintraege });
         if (t.status !== 201 || typeof t.daten?.sha !== 'string') throw githubFehler('POST', 'git/trees', t.status);
-        const neu = await anfrage(z, 'POST', '/git/commits', { message: nachricht, tree: t.daten.sha, parents: [kopf], author: autor, committer });
-        if (neu.status !== 201 || typeof neu.daten?.sha !== 'string') throw githubFehler('POST', 'git/commits', neu.status);
+        const commit = await anfrage(z, 'POST', '/git/commits', { message: nachricht, tree: t.daten.sha, parents: [kopf], author: autor, committer });
+        if (commit.status !== 201 || typeof commit.daten?.sha !== 'string') throw githubFehler('POST', 'git/commits', commit.status);
 
-        const ref = await anfrage(z, 'PATCH', '/git/refs/heads/main', { sha: neu.daten.sha, force: false });
-        if (ref.status === 200) return { basisSha: neuerSha, commitUrl: String(neu.daten.html_url) };
-        // 422 „not a fast forward“: inzwischen hat jemand ein anderes Artefakt gespeichert → einmal von vorn.
-        // Jeder andere 422 ist ein echter Fehler.
+        const ref = await anfrage(z, 'PATCH', '/git/refs/heads/main', { sha: commit.daten.sha, force: false });
+        if (ref.status === 200) return { basisSha: neuerSha, commitUrl: String(commit.daten.html_url) };
+        // Nur 422 „not a fast forward“ heißt: inzwischen hat jemand anderes gespeichert → auf dem neuen Kopf von vorn.
         if (ref.status !== 422 || !/fast forward/i.test(String(ref.daten?.message ?? ''))) {
           throw githubFehler('PATCH', 'git/refs/heads/main', ref.status);
         }
       }
-      return { konflikt: true };
+      // Kein Konflikt (unser Artefakt war jedes Mal unverändert), nur zu viel Betrieb.
+      throw vieleGleichzeitig();
     },
 
     async uebersicht(repo) {
       const z = await zugriff(repo);
-      if (!z) throw new Error(`repo-fehlt: ${repo}`);
+      if (!z) throw unbekanntesRepo();
       const r = await anfrage(z, 'GET', '/git/trees/main?recursive=1');
       let pfade = new Set<string>();
       if (r.status === 200 && Array.isArray(r.daten?.tree)) {
