@@ -1,9 +1,10 @@
 // OAuth-Autorisierungsserver für den Connector (claude.ai als öffentlicher CIMD-Client), ohne Datenbank:
 // Codes und Tokens sind versiegelte Umschläge (umschlag.ts). Im Cache liegen nur Merker, alle nach bestem Bemühen:
-// „Code schon eingelöst“, „Refresh-Token schon rotiert“ und „Familie widerrufen“. PKCE macht einen abgefangenen Code
-// ohnehin nutzlos. Familie = eine Verbindung: alle Tokens aus einem Code und seinen Refreshes tragen dieselbe
+// „Code schon eingelöst“, „Refresh-Token schon rotiert“ (30 s lang mit seiner Antwort) und „Familie widerrufen“.
+// PKCE macht einen abgefangenen Code ohnehin nutzlos. Familie = eine Verbindung: alle Tokens aus einem Code und seinen Refreshes tragen dieselbe
 // zufällige ID. Taucht ein verbrauchter Code oder ein schon rotiertes Refresh-Token wieder auf, hat jemand mitgelesen:
-// dann gilt die ganze Familie nicht mehr (OAuth 2.1 / RFC 9700 §4.14.2).
+// dann gilt die ganze Familie nicht mehr (OAuth 2.1 / RFC 9700 §4.14.2). Ausnahme: Ein Refresh-Token, das vor
+// höchstens 30 s rotiert wurde, bekommt dieselbe Antwort noch einmal (Neuversuch nach verlorener Antwort).
 //
 // Anders als die übrigen Router hängt dieser an der Wurzel und trägt VOLLE Pfade, weil er auch außerhalb von
 // /api/werkstatt/oauth antwortet. appErstellen registriert ihn vor mcpRouten. Ihm gehören genau:
@@ -39,7 +40,7 @@ export interface TokenClaims {
 const CODE_SEKUNDEN = 60;
 const ACCESS_SEKUNDEN = 60 * 60;
 const REFRESH_SEKUNDEN = 30 * 24 * 60 * 60;
-// Neuversuch desselben Refresh-Tokens nach einer verlorenen Antwort: kein Diebstahl, solange er so kurz danach kommt.
+// So lange bekommt ein Neuversuch desselben Refresh-Tokens die Antwort der ersten Rotation noch einmal.
 const REFRESH_GNADE_SEKUNDEN = 30;
 
 const AUTHORIZE = `${ISSUER_PFAD}/authorize`;
@@ -209,17 +210,33 @@ function oauthFehler(c: Context, status: ContentfulStatusCode, error: OAuthFehle
   return c.json({ error, error_description: beschreibung }, status, { 'Cache-Control': 'no-store', Pragma: 'no-cache' });
 }
 
-async function tokenPaar(c: Context, abh: Abhaengigkeiten, k: Kette): Promise<Response> {
+interface Paar {
+  access_token: string;
+  token_type: 'Bearer';
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
+}
+
+async function paarPraegen(c: Context, abh: Abhaengigkeiten, k: Kette): Promise<Paar> {
   const keys = abh.umgebung.tokenKeys;
   const t = jetztSek(abh);
   const inhalt = { githubId: k.githubId, kohorte: k.kohorte, rolle: k.rolle, clientId: k.clientId, familie: k.familie, iss: issuer(c) };
   const access = await versiegeln('access', inhalt, ACCESS_SEKUNDEN, keys, t);
   const refresh = await versiegeln('refresh', inhalt, REFRESH_SEKUNDEN, keys, t);
-  return c.json(
-    { access_token: access, token_type: 'Bearer', expires_in: ACCESS_SEKUNDEN, refresh_token: refresh, scope: SCOPE },
-    200,
-    { 'Cache-Control': 'no-store', Pragma: 'no-cache' },
-  );
+  return { access_token: access, token_type: 'Bearer', expires_in: ACCESS_SEKUNDEN, refresh_token: refresh, scope: SCOPE };
+}
+
+function istPaar(v: unknown): v is Paar {
+  return typeof v === 'object' && v !== null && typeof (v as Paar).access_token === 'string' && typeof (v as Paar).refresh_token === 'string';
+}
+
+function paarAntwort(c: Context, p: Paar): Response {
+  return c.json(p, 200, { 'Cache-Control': 'no-store', Pragma: 'no-cache' });
+}
+
+async function tokenPaar(c: Context, abh: Abhaengigkeiten, k: Kette): Promise<Response> {
+  return paarAntwort(c, await paarPraegen(c, abh, k));
 }
 
 const ABGELAUFEN = 'Der Code oder das Token ist ungültig, abgelaufen oder schon verbraucht.';
@@ -340,24 +357,22 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     const claims = inhalt && claimsAus(inhalt, issuer(c));
     if (!claims || claims.clientId !== clientId) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     if (!mitgliedAktiv(abh, claims) || (await familieWiderrufenen(abh, claims.familie))) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
-    // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre. Der Merker
-    // hält den Zeitpunkt der ersten Rotation. Kommt dasselbe Token innerhalb von REFRESH_GNADE_SEKUNDEN noch einmal
-    // (verlorene Antwort, Neuversuch, zwei Werkzeugaufrufe zugleich), gibt es genau ein weiteres Paar derselben Familie;
-    // das Fenster beginnt dabei nicht neu. Jede weitere Vorlage: eins der Tokens ist gestohlen, die ganze Familie widerrufen.
+    // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre.
+    // Neuversuch (verlorene Antwort, zwei Werkzeugaufrufe zugleich): Innerhalb von REFRESH_GNADE_SEKUNDEN bekommt
+    // dasselbe Token genau die Antwort der ersten Rotation noch einmal. So entsteht kein zweiter Zweig der Familie,
+    // und jede spätere Vorlage eines verbrauchten Tokens fällt weiter auf. Danach: die ganze Familie widerrufen.
     const merker = `werkstatt:oauth:refresh:${await sha256(refresh)}`;
-    const rotiert = await abh.cache.get(merker);
-    if (rotiert !== undefined) {
-      const alter = typeof rotiert === 'number' ? t - rotiert : -1;
-      const gnade = `${merker}:gnade`;
-      if (alter >= 0 && alter < REFRESH_GNADE_SEKUNDEN && (await abh.cache.get(gnade)) === undefined) {
-        await abh.cache.set(gnade, 1, REFRESH_GNADE_SEKUNDEN);
-        return tokenPaar(c, abh, claims);
-      }
+    if ((await abh.cache.get(merker)) !== undefined) {
+      const vorher = await abh.cache.get(`${merker}:antwort`);
+      if (istPaar(vorher)) return paarAntwort(c, vorher);
       await familieWiderrufen(abh, claims.familie);
       return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     }
-    await abh.cache.set(merker, t, REFRESH_SEKUNDEN);
-    return tokenPaar(c, abh, claims);
+    const paar = await paarPraegen(c, abh, claims);
+    // Erst die Antwort, dann der Merker: Wer den Merker sieht, findet die Antwort schon vor (nach bestem Bemühen).
+    await abh.cache.set(`${merker}:antwort`, paar, REFRESH_GNADE_SEKUNDEN);
+    await abh.cache.set(merker, 1, REFRESH_SEKUNDEN);
+    return paarAntwort(c, paar);
   });
 
   return r;

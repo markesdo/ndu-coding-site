@@ -433,30 +433,29 @@ describe('oauth/token', () => {
     expect((await token(h, { grant_type: 'refresh_token', refresh_token: andere.refresh_token })).status).toBe(200);
   });
 
-  it('Refresh-Neuversuch innerhalb von 30 s: neues Paar, Familie bleibt gültig; das Fenster beginnt nicht neu', async () => {
+  it('Refresh-Neuversuch innerhalb von 30 s: dieselbe Antwort noch einmal, kein zweiter Zweig', async () => {
     const h = aufbau();
     const paar = await tokenPaar(h);
     const erst = await (await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).json();
     h.uhr.ms += 20_000;
-    const nochmal = await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token });
-    expect(nochmal.status).toBe(200);
-    const zweit = await nochmal.json();
+    for (let i = 0; i < 2; i++) {
+      const nochmal = await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token });
+      expect(nochmal.status).toBe(200);
+      expect(await nochmal.json()).toStrictEqual(erst);
+    }
     expect(await bearerPruefen(h.abh, `Bearer ${erst.access_token}`, ISSUER)).not.toBeNull();
-    expect(await bearerPruefen(h.abh, `Bearer ${zweit.access_token}`, ISSUER)).not.toBeNull();
+    // Die Kette geht mit dem Token aus der ersten Antwort weiter.
     expect((await token(h, { grant_type: 'refresh_token', refresh_token: erst.refresh_token })).status).toBe(200);
-    // 20 s + 11 s nach der ersten Rotation: vorbei, obwohl der Neuversuch erst 11 s her ist.
-    h.uhr.ms += 11_000;
-    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
-    expect(await bearerPruefen(h.abh, `Bearer ${zweit.access_token}`, ISSUER)).toBeNull();
   });
 
-  it('Refresh-Gnade nur einmal: dritte Vorlage im Fenster widerruft die Familie', async () => {
+  it('Refresh-Neuversuch nach 30 s: Familie widerrufen, auch das Paar aus der ersten Rotation', async () => {
     const h = aufbau();
     const paar = await tokenPaar(h);
     const erst = await (await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).json();
-    expect((await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).status).toBe(200);
+    h.uhr.ms += 31_000;
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
     expect(await bearerPruefen(h.abh, `Bearer ${erst.access_token}`, ISSUER)).toBeNull();
+    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: erst.refresh_token }));
   });
 
   it('Body über 16 KB: 413 invalid_request, mit und ohne Content-Length', async () => {
