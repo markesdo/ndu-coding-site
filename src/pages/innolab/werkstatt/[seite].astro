@@ -1,0 +1,12 @@
+---
+// Nur Dev: Testseite für die Editor-Hülle. Im Build entsteht sie nicht (getStaticPaths ist dann leer).
+import Layout from '../../../layouts/Layout.astro';
+import TestEditor from '../../../werkstatt/ui/dev/TestEditor';
+
+export const getStaticPaths = () => (import.meta.env.DEV ? [{ params: { seite: 'test' } }] : []);
+---
+<Layout title="Werkstatt-Test">
+  <h1>Werkstatt-Test</h1>
+  <p>Dev-Seite für die Editor-Hülle. Mit <code>?fake=ok|konflikt|ausfall|abgemeldet|einrichten</code> ohne echte API.</p>
+  <TestEditor client:only="react" />
+</Layout>
