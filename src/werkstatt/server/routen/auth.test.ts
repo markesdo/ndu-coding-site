@@ -129,6 +129,13 @@ describe('auth/callback', () => {
     expect(r.headers.get('location')).toBe('/');
   });
 
+  it('weiter im state-Cookie ist untergeschoben (nicht über login gesetzt): Ziel /', async () => {
+    const { app } = aufbau();
+    const r = await callback(app, 'abc', `abc.${encodeURIComponent('https://boese.example')}`);
+    expect(r.status).toBe(302);
+    expect(r.headers.get('location')).toBe('/');
+  });
+
   it('GitHub lehnt den Code ab: 502, kein Cookie', async () => {
     const abh = lokaleAbhaengigkeiten({ github: { loginUrl: (s) => `https://github.test/?state=${s}`, codeEinloesen: async () => { throw new Error('nein'); } } });
     const app = appErstellen(abh);
