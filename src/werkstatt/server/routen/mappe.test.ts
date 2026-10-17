@@ -216,11 +216,14 @@ describe('GET /api/werkstatt/mappe', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     for (const ausnahme of [new ApiAusnahme(403, 'nicht-freigeschaltet', 'fremd'), new ApiAusnahme(409, 'konflikt', 'Name belegt. Schreib Markus.')]) {
       const t = aufbau({ anlegen: async () => { throw ausnahme; } });
+      const lesezugriff = vi.spyOn(t.speicher, 'lesezugriff');
       for (const pfad of ['', '/brief']) {
         const r = await t.holen(pfad);
         expect(r.status, pfad).toBe(ausnahme.status);
         expect(await r.json(), pfad).toMatchObject({ code: ausnahme.code, fehler: ausnahme.message });
       }
+      // Ein Repo, das nicht dieser Person gehört, bekommt nie eine Einladung.
+      expect(lesezugriff).not.toHaveBeenCalled();
     }
   });
 

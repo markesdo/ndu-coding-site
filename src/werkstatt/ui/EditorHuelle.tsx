@@ -120,6 +120,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       const { ich, antwort } = r;
       const vomServer = artefaktParsen(name, antwort.daten ?? ARTEFAKTE[name].leer(heute()));
       if (!vomServer.ok) {
+        console.error('werkstatt: gespeicherte Datei passt nicht zum Schema –', vomServer.fehler);
         setFehlerCode('datei');
         return void senden({ typ: 'ladenFehlgeschlagen', status: 500, code: 'unbekannt' });
       }
@@ -139,7 +140,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       setGesichert(true);
       senden({ typ: 'geladen' });
     } catch (err) {
-      console.error('werkstatt: Laden der Mappe gescheitert –', err);
+      console.error('werkstatt: geladene Daten oder Entwurf ließen sich nicht verarbeiten –', err);
       if (!gueltig()) return;
       senden({ typ: 'ladenFehlgeschlagen', status: 0, code: 'unbekannt' });
     }
