@@ -99,7 +99,6 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
         // eingerichtet“ – der Editor versucht es dann von selbst noch einmal. Alles andere ist ein Fehler bei uns.
         if (e instanceof ApiAusnahme && e.status === 403) throw e;
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', ursache(e));
-        // GitHub 4xx (Rechte, Vorlage fehlt …) geht nicht von selbst weg, darum nicht „wird eingerichtet“.
         // Jede GitHub-Antwort zählt als vorübergehend, auch 4xx (Rate-Limit 403/429, Verzögerung direkt nach
         // /generate, Wettlauf um werkstatt.json); der Editor hört nach drei Versuchen von selbst auf.
         const voruebergehend = e instanceof GithubAusnahme || (e instanceof ApiAusnahme && e.status === 503);
