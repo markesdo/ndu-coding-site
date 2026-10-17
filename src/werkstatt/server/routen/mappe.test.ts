@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
 import briefBeispiel from '../../beispiele/brief.json';
 import entscheidungenBeispiel from '../../beispiele/entscheidungen.json';
@@ -14,6 +14,9 @@ import { DateiUnlesbar, GITHUB_SATZ, internerFehler, wirdEingerichtet } from '..
 import type { Speicher } from '../typen';
 
 const BASIS = 'http://localhost:4321';
+
+// console.error-Spies auch dann zurück, wenn ein Test vorher scheitert.
+afterEach(() => vi.restoreAllMocks());
 // 21.10.2026, 22:30 UTC = 22.10.2026, 00:30 in Wien (Sommerzeit): Datum nach UTC wäre falsch.
 const JETZT = Date.UTC(2026, 9, 21, 22, 30);
 const HEUTE_WIEN = '2026-10-22';
@@ -136,12 +139,11 @@ describe('GET /api/werkstatt/mappe', () => {
     expect(t.fake.commits(REPO)).toHaveLength(0);
   });
 
-  it('Anlegen scheitert vorübergehend (GitHub 5xx, Netz/Zeitlimit, 503) → 503 wird-eingerichtet', async () => {
-    for (const ausnahme of [new GithubAusnahme(502), new GithubAusnahme(0), wirdEingerichtet()]) {
+  it('Anlegen scheitert an GitHub (5xx, 4xx wie 429/403/404, Netz/Zeitlimit) oder 503 → 503 wird-eingerichtet', async () => {
+    for (const ausnahme of [new GithubAusnahme(502), new GithubAusnahme(0), new GithubAusnahme(429), new GithubAusnahme(403), new GithubAusnahme(404), wirdEingerichtet()]) {
       const t = aufbau({ anlegen: async () => { throw ausnahme; } });
       const log = vi.spyOn(console, 'error').mockImplementation(() => {});
       const r = await t.holen('');
-      log.mockRestore();
       expect(r.status).toBe(503);
       expect(await r.json()).toMatchObject({ code: 'wird-eingerichtet' });
     }
@@ -160,7 +162,6 @@ describe('GET /api/werkstatt/mappe', () => {
       expect(geloggt).toContain(ausnahme.message);
       expect(geloggt).toContain(ausnahme.stack!.split('\n')[1].trim());
     }
-    log.mockRestore();
   });
 
   it('Anlegen meldet fremdes Repo (403) → 403 geht durch', async () => {
@@ -299,6 +300,16 @@ describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
     const umgestellt = Object.fromEntries(Object.entries(d1).reverse());
     const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [umgestellt, d2] }, basisSha: sha });
     expect(r.status).toBe(200);
+  });
+
+  it('gespeicherte Datei passt nicht zum Schema: Zeilen mit ID zählen trotzdem', async () => {
+    const t = await mitMappe();
+    // Von Hand kaputt gemacht: stand fehlt, eine Zeile ohne Pflichtfelder – D1 hat aber eine lesbare ID.
+    const basisSha = await vonAussenGespeichert(t.fake, { schema: 'entscheidungen@1', entscheidungen: [{ id: 'D1' }] });
+    const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d2] }, basisSha });
+    expect(r.status).toBe(422);
+    expect((await r.json()).felder).toStrictEqual([{ pfad: 'entscheidungen', meldung: 'D1: Gespeicherte Entscheidungen lassen sich nicht löschen – ersetze sie stattdessen.' }]);
+    expect(t.fake.commits(REPO)).toHaveLength(1);
   });
 
   it('verglichen wird mit der migrierten Fassung, nicht mit dem Rohtext', async () => {
@@ -475,6 +486,16 @@ describe('PUT /api/werkstatt/mappe/:artefakt', () => {
     sha = (await (await t.holen('/brief')).json()).basisSha;
     await t.speichern('brief', { daten: briefBeispiel, basisSha: sha, nachricht: `${'x'.repeat(100)}${familie}` });
     expect(t.fake.commits(REPO)[2].nachricht).toBe(`Produkt-Brief: ${'x'.repeat(100)}`);
+  });
+
+  it('Nachricht: höchstens 300 UTF-16-Einheiten, auch wenn 100 Grapheme länger wären', async () => {
+    const t = await mitMappe();
+    // Ein Graphem aus Buchstabe + 9 kombinierenden Zeichen = 10 UTF-16-Einheiten; 100 davon wären 1000.
+    const schwer = `e${'\u0301'.repeat(9)}`;
+    await t.speichern('brief', { daten: briefBeispiel, basisSha: null, nachricht: schwer.repeat(100) });
+    const kurz = t.fake.commits(REPO)[0].nachricht.slice('Produkt-Brief: '.length);
+    expect(kurz.length).toBeLessThanOrEqual(300);
+    expect(kurz).toBe(schwer.repeat(30));
   });
 
   it('unvollständige Anfrage (ohne basisSha, ohne daten) → 422 ohne Feldfehler', async () => {
