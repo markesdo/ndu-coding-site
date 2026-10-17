@@ -7,3 +7,30 @@
 .wk-wurzel .wk-karte .wk-offen { color: var(--muted); font-style: italic; }
 .wk-wurzel .wk-karte-nr { font-family: var(--mono); color: var(--muted); font-size: .85rem; margin-right: .4rem; }
 .wk-wurzel .wk-art { font-size: .8rem; padding: .05rem .5rem; border: 1px solid var(--border); border-radius: 999px; background: var(--code-bg); margin-left: .4rem; }
+
+/* Entscheidungslog: Zeilen als Karten, ersetzte gedämpft (der Text „ersetzt am …“ sagt es zusätzlich). */
+.wk-wurzel .wk-entscheidungen { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .75rem; }
+.wk-wurzel .wk-entscheidungen > .wk-zeile { display: block; }
+.wk-wurzel .wk-entscheidungen > .wk-ersetzt { opacity: .8; }
+.wk-wurzel .wk-zeile-kopf { margin: 0 0 .5rem; font-size: 1rem; }
+.wk-wurzel .wk-zeile-kopf span { font-weight: 400; }
+.wk-wurzel .wk-zeile-daten { margin: 0; }
+.wk-wurzel .wk-entscheidungen .wk-knoepfe { margin-left: 0; }
+.wk-wurzel .wk-meldung { margin-top: .5rem; }
+.wk-wurzel tr.wk-ersetzt { color: var(--muted); }
+
+/* Annahmen: Art als Radiogruppe mit den Farben der Folie „Vier Arten“; Titel und Frage tragen die Art als Text. */
+.wk-wurzel .wk-zeile-id { margin: 0 0 .5rem; }
+.wk-wurzel .wk-artwahl { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .4rem; margin-top: .3rem; }
+.wk-wurzel .wk-artwahl label { display: flex; gap: .5rem; align-items: flex-start; padding: .4rem .6rem; border-radius: var(--radius); cursor: pointer; }
+.wk-wurzel .wk-artwahl input { margin-top: .2rem; }
+.wk-wurzel .wk-art-frage { display: block; font-size: .85rem; }
+.wk-wurzel .wk-artfarbe { border-left: 5px solid var(--c); background: var(--c-soft); }
+.wk-wurzel .wk-artfarbe.yellow { --c: var(--yellow); --c-soft: var(--yellow-soft); }
+.wk-wurzel .wk-artfarbe.blue { --c: var(--blue); --c-soft: var(--blue-soft); }
+.wk-wurzel .wk-artfarbe.green { --c: var(--green); --c-soft: var(--green-soft); }
+.wk-wurzel .wk-artfarbe.purple { --c: var(--purple); --c-soft: var(--purple-soft); }
+.wk-wurzel .wk-arten-fehlen { color: var(--fg); font-weight: 600; }
+.wk-wurzel .wk-legende { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+.wk-wurzel .wk-legende li { padding: .2rem .6rem; border-radius: var(--radius); font-size: .85rem; }
+.wk-wurzel .wk-annahmen-text { padding-left: 1.1rem; font-size: .9rem; }

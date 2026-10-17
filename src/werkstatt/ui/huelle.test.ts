@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { darfSpeichern, huelle, leererStand, versucheNach, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
+import { darfSpeichern, huelle, leererStand, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
 import annahmen from '../beispiele/annahmen.json';
 
 function lauf(start: HuellenZustand, ...ereignisse: Ereignis[]) {
@@ -131,5 +131,23 @@ describe('Speichern sperren', () => {
     const r = speichernErlaubt('annahmen', { ...annahmen, stand: 'gestern' });
     expect(r.erlaubt).toBe(false);
     expect(r.fehler.map((f) => f.pfad)).toContain('stand');
+  });
+});
+
+describe('Stand des Servers für das Formular', () => {
+  it('nach dem Laden: die Datei des Servers, null wenn es sie nicht gibt', () => {
+    expect(serverStandNachLaden(annahmen, { schon: 'geparst' })).toStrictEqual({ schon: 'geparst' });
+    expect(serverStandNachLaden(null, { leer: true })).toBeNull();
+  });
+
+  it('nach geglücktem Speichern: das Gesendete', () => {
+    const neu = { ...annahmen, stand: '2026-11-01' };
+    expect(serverStandNachSpeichern(annahmen, { basisSha: 'b' }, neu)).toBe(neu);
+    expect(serverStandNachSpeichern(null, { basisSha: 'b' }, neu)).toBe(neu);
+  });
+
+  it('bei Konflikt: unverändert', () => {
+    expect(serverStandNachSpeichern(annahmen, { konflikt: true }, { ...annahmen, stand: '2026-12-01' })).toBe(annahmen);
+    expect(serverStandNachSpeichern(null, { konflikt: true }, { ...annahmen, stand: '2026-12-01' })).toBeNull();
   });
 });
