@@ -34,7 +34,7 @@ describe('Brief', () => {
     }
     expect(s).toContain('## 3. Was ist das Produkt in einem Satz?\nOffen – steht nach Tag 3 fest.');
     expect(s).toContain('Heute gelöst durch: Automat');
-    expect(s).toContain('Wir glauben: Pendler*innen bekommen morgens Kaffee');
+    expect(s).toContain('Wir glauben: Pendler\\*innen bekommen morgens Kaffee');
     expect(s).toContain('Wir merken es: Wenn 4 von 5');
     expect(s).toContain('- Kein Mittagsgeschäft');
   });
@@ -133,6 +133,127 @@ describe.each(FALSCHE)('Eingeschleuste Zeilen (%j)', (FALSCH) => {
     expect(hatFalschzeile(s)).toBe(false);
     expect(s.split('\n').filter((z) => z.startsWith('| **A1**'))).toHaveLength(1);
     expect(s).toContain('a\\\\b');
+  });
+});
+
+const zeilen = (s: string) => s.split('\n');
+
+describe('Allgemeine Zeilenanfangs-Regel', () => {
+  const b = laden('brief');
+  const nicht = ['## x', '___', '    Pendler', 'x\n<!--', '1. Anstellen', '2) Zahlen', ':--|--', '- y', '> z', '\\#'];
+  const s = rendern('brief', { ...b, nicht });
+  it('Listeneinträge: Satzzeichen am Anfang wird maskiert, Einrückung entfernt', () => {
+    expect(zeilen(s)).toContain('- \\## x');
+    expect(zeilen(s)).toContain('- \\_\\_\\_');
+    expect(zeilen(s)).toContain('- Pendler');
+    expect(zeilen(s)).toContain('- x \\<!--');
+    expect(zeilen(s)).toContain('- 1\\. Anstellen');
+    expect(zeilen(s)).toContain('- 2\\) Zahlen');
+    expect(zeilen(s)).toContain('- \\:--|--');
+    expect(zeilen(s)).toContain('- \\- y');
+    expect(zeilen(s)).toContain('- \\> z');
+    expect(zeilen(s)).toContain('- \\\\#');
+  });
+  it('mehrzeilige Felder: jede Zeile folgt der Regel', () => {
+    const t = rendern('brief', { ...b, fuerWen: 'x\n<!--\n    Pendler\n___\n1. Anstellen\n:--|--' });
+    expect(t).toContain('## 1. Für wen?\nx  \n\\<!--  \nPendler  \n\\_\\_\\_  \n1\\. Anstellen  \n\\:--|--\n');
+  });
+  it('Felder mitten in der Zeile: Satzzeichen am Anfang ohne Backslash', () => {
+    const l = laden('leitfaden');
+    const ls = rendern('leitfaden', { ...l, ziel: '(Pilot) x', fragen: [{ id: 'F1', art: 'kern', text: '# x' }, { id: 'F2', art: 'nachfrage', text: '"Was 1. y' }] });
+    expect(zeilen(ls)).toContain('1. **F1** # x');
+    expect(zeilen(ls)).toContain('- **F2** "Was 1. y');
+    expect(zeilen(ls)).toContain('Ziel: (Pilot) x');
+    const e = laden('entscheidungen');
+    const es = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: '(Pilot) nur montags' }] });
+    expect(es).toContain(' — (Pilot) nur montags — ');
+    const a = laden('annahmen');
+    expect(rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[0], text: '# x' }] })).toContain('| # x |');
+  });
+  it('Zeichen, die Markdown auslösen, bleiben wörtlich – am Zeilenanfang wie mitten im Text', () => {
+    const b = laden('brief');
+    const faelle: [string, string][] = [
+      ['[a]: https://x.at', '\\[a\\]: https://x.at'],
+      ['<!--a@b>', '\\<!--a@b>'],
+      ['```js', '\\`\\`\\`js'],
+      ['!Achtung', '\\!Achtung'],
+      ['Pendler*innen und Mitarbeiter*innen', 'Pendler\\*innen und Mitarbeiter\\*innen'],
+      ['Erzähl von <Situation> am Morgen', 'Erzähl von \\<Situation> am Morgen'],
+      ['Kosten 5 &euro; &amp; mehr', 'Kosten 5 \\&euro; \\&amp; mehr'],
+      ['snake_case und _betont_', 'snake_case und \\_betont\\_'],
+      ['https://x.at/?a=1&b=2', 'https://x.at/?a=1&b=2'],
+      ['~~weg~~', '\\~\\~weg\\~\\~'],
+      ['<div>', '\\<div>'],
+      ['~~~', '\\~\\~\\~'],
+      ['_ _ _', '\\_ \\_ \\_'],
+      ['[Interview I2](https://x.at) zeigt', '\\[Interview I2\\](https://x.at) zeigt'],
+      ['`Kasse` hängt', '\\`Kasse\\` hängt'],
+      ['Quelle: https://de.wikipedia.org/wiki/Mom_Test_(Buch) und https://x.at/~user/a_', 'Quelle: https://de.wikipedia.org/wiki/Mom_Test_(Buch) und https://x.at/~user/a_'],
+      ['Quelle: <https://x.at> und www.x.at/a*b', 'Quelle: <https://x.at> und www.x.at/a*b'],
+    ];
+    const s = rendern('brief', { ...b, nicht: faelle.map(([ein]) => ein) });
+    for (const [, aus] of faelle) expect(zeilen(s)).toContain(`- ${aus}`);
+  });
+  it('Felder mitten in der Zeile: auch dort keine Kursivschrift und kein HTML', () => {
+    const e = laden('entscheidungen');
+    const s = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: 'Pilot <!-- startet', grund: 'weil --> Montag' }] });
+    expect(s).toContain(' — Pilot \\<!-- startet — weil --> Montag — ');
+    const l = rendern('leitfaden', { ...laden('leitfaden'), ziel: 'Erzähl mir von <Situation>' });
+    expect(zeilen(l)).toContain('Ziel: Erzähl mir von \\<Situation>');
+  });
+  it('leere Einträge mitten in einer Liste erscheinen nicht', () => {
+    const s = rendern('brief', { ...b, offeneFragen: ['Wie oft?', ' ', 'Was kostet es?'] });
+    expect(s).toContain('## 7. Offene Fragen\n- Wie oft?\n- Was kostet es?\n');
+  });
+});
+
+describe('Sichtbare Zeilenumbrüche', () => {
+  it('Beschriftungszeilen sind eigene Absätze, Umbrüche im Feld sind harte Umbrüche', () => {
+    const b = laden('brief');
+    const s = rendern('brief', { ...b, problem: 'a\nb', heuteGeloestDurch: 'c' });
+    expect(s).toContain('## 2. Welches Problem?\na  \nb\n\nHeute gelöst durch: c\n');
+    expect(s).toContain('\n\nWir merken es: ');
+    expect(rendern('leitfaden', laden('leitfaden'))).toContain('\n\nWen: ');
+    expect(rendern('annahmen', laden('annahmen'))).toContain('\n\nRiskanteste Annahme: A1\n');
+  });
+  it('harter Umbruch mit zwei Leerzeichen: ein Backslash im Text bleibt wörtlich, eine URL am Zeilenende ganz', () => {
+    const s = rendern('brief', { ...laden('brief'), problem: 'a\\\nb\nStudie: https://x.at/studie\nc' });
+    expect(s).toContain('Problem?\na\\\\  \nb  \nStudie: https://x.at/studie  \nc\n');
+  });
+});
+
+describe('Verweisdefinition über zwei Zeilen', () => {
+  it('die erste Zeile wird maskiert, nichts verschwindet', () => {
+    const s = rendern('brief', { ...laden('brief'), fuerWen: '[Interview\nI2]: siehe unten' });
+    expect(zeilen(s)).toContain('\\[Interview  ');
+    expect(zeilen(s)).toContain('I2\\]: siehe unten');
+  });
+});
+
+describe('Beleg-Klammer', () => {
+  it('leere IDs zählen wie keine', () => {
+    const e = laden('entscheidungen');
+    const s = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[2], belegIds: ['', ' ', 'I1'], belegNotiz: ' ' }] });
+    expect(s).toContain('Beleg: erzählt (I1)');
+  });
+});
+
+describe('Leere Pflichtfelder', () => {
+  it('zeigen „Noch nichts eingetragen.“', () => {
+    const leer = rendern('brief', { ...laden('brief'), fuerWen: '', problem: '  ', heuteGeloestDurch: '', produktSatz: '   ', outcome: { wirGlauben: '', wirMerkenEs: '' } });
+    expect(leer).toContain('## 1. Für wen?\nNoch nichts eingetragen.');
+    expect(leer).toContain('## 2. Welches Problem?\nNoch nichts eingetragen.\n\nHeute gelöst durch: Noch nichts eingetragen.');
+    expect(leer).toContain('Satz?\nOffen – steht nach Tag 3 fest.');
+    expect(leer).toContain('Wir glauben: Noch nichts eingetragen.');
+    const l = rendern('leitfaden', { ...laden('leitfaden'), ziel: '', wen: '', einstieg: '', abschluss: ' ' });
+    expect(l).toContain('Ziel: Noch nichts eingetragen.');
+    expect(l).toContain('## Einstieg\nNoch nichts eingetragen.');
+    expect(l).toContain('## Abschluss\nNoch nichts eingetragen.');
+    expect(l).not.toContain('„Noch nichts');
+    const e = laden('entscheidungen');
+    expect(rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: '', grund: '' }] })).toContain('Noch nichts eingetragen. — Noch nichts eingetragen.');
+    const a = laden('annahmen');
+    expect(rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[0], text: '' }] })).toContain('| Noch nichts eingetragen. |');
   });
 });
 
