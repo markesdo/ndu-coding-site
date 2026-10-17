@@ -174,6 +174,8 @@ describe('GET /api/werkstatt/mappe', () => {
     await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
     // Der Fake schreibt immer die eigene Kohorte; ein test-sofie mit fremder Kohorte in werkstatt.json wird nachgestellt.
     const fremd = { ...t.fake, werkstattJson: async (repo: string) => (repo === REPO ? { kohorte: 'andere', githubId: 1001 } : null) };
+    const lesezugriff = vi.fn(t.fake.lesezugriff);
+    fremd.lesezugriff = lesezugriff;
     const app = appErstellen(lokaleAbhaengigkeiten({ umgebung: t.umgebung, speicher: fremd, jetzt: () => JETZT }));
     const kopf = { Cookie: await t.cookie() };
     for (const r of [
@@ -185,6 +187,8 @@ describe('GET /api/werkstatt/mappe', () => {
       expect(await r.json()).toMatchObject({ code: 'nicht-freigeschaltet' });
     }
     expect(t.fake.commits(REPO)).toHaveLength(0);
+    // Ein Repo, das nicht zu dieser Sitzung passt, bekommt keine Einladung.
+    expect(lesezugriff).not.toHaveBeenCalled();
   });
 
   it('Anlegen scheitert an GitHub (5xx, 4xx wie 429/403/404, Netz/Zeitlimit) oder 503 → 503 wird-eingerichtet', async () => {
@@ -197,9 +201,9 @@ describe('GET /api/werkstatt/mappe', () => {
     }
   });
 
-  it('Anlegen scheitert anders (intern, TypeError, 409) → 500 unbekannt, Ursache samt Stack im Log', async () => {
+  it('Anlegen scheitert anders (intern, TypeError) → 500 unbekannt, Ursache samt Stack im Log', async () => {
     const log = vi.spyOn(console, 'error').mockImplementation(() => {});
-    for (const ausnahme of [internerFehler('Kohorte fehlt'), new TypeError('x is not a function'), new ApiAusnahme(409, 'konflikt', 'Name belegt')]) {
+    for (const ausnahme of [internerFehler('Kohorte fehlt'), new TypeError('x is not a function')]) {
       log.mockClear();
       const t = aufbau({ anlegen: async () => { throw ausnahme; } });
       const r = await t.holen('');
@@ -212,11 +216,17 @@ describe('GET /api/werkstatt/mappe', () => {
     }
   });
 
-  it('Anlegen meldet fremdes Repo (403) → 403 geht durch', async () => {
-    const t = aufbau({ anlegen: async () => { throw new ApiAusnahme(403, 'nicht-freigeschaltet', 'fremd'); } });
-    const r = await t.holen('');
-    expect(r.status).toBe(403);
-    expect(await r.json()).toMatchObject({ code: 'nicht-freigeschaltet' });
+  it('Anlegen lehnt mit eigener Meldung ab (fremdes Repo 403, Name belegt 409) → geht durch, auf beiden GET-Routen', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    for (const ausnahme of [new ApiAusnahme(403, 'nicht-freigeschaltet', 'fremd'), new ApiAusnahme(409, 'konflikt', 'Name belegt. Schreib Markus.')]) {
+      const t = aufbau({ anlegen: async () => { throw ausnahme; } });
+      for (const pfad of ['', '/brief']) {
+        const r = await t.holen(pfad);
+        expect(r.status, pfad).toBe(ausnahme.status);
+        expect(await r.json(), pfad).toMatchObject({ code: ausnahme.code, fehler: ausnahme.message });
+      }
+
+    }
   });
 
   it('Lehrende: GET mappe 200 ohne Repo, Artefakt-Routen 403', async () => {
@@ -253,12 +263,22 @@ describe('GET /api/werkstatt/mappe/:artefakt', () => {
     expect(t.fake.commits(REPO)).toHaveLength(0);
   });
 
-  it('Mappe noch nicht angelegt → 503 wird-eingerichtet (ohne anzulegen)', async () => {
+  it('Mappe noch nicht angelegt → legt an und liefert die (fehlende) Datei', async () => {
     const t = aufbau();
+    const lesezugriff = vi.spyOn(t.speicher, 'lesezugriff');
+    const r = await t.holen('/brief');
+    expect(r.status).toBe(200);
+    expect(await r.json()).toMatchObject({ name: 'brief', daten: null, basisSha: null });
+    expect(t.anlegen).toHaveBeenCalledTimes(1);
+    // Wie nach dem Login: Einladung zum Lesen gleich nach dem Anlegen.
+    expect(lesezugriff).toHaveBeenCalledWith(REPO, 1001);
+  });
+  it('Mappe noch nicht angelegt, Anlegen scheitert an GitHub → 503 wird-eingerichtet', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = aufbau({ anlegen: async () => { throw new GithubAusnahme(502); } });
     const r = await t.holen('/brief');
     expect(r.status).toBe(503);
     expect(await r.json()).toMatchObject({ code: 'wird-eingerichtet' });
-    expect(t.anlegen).not.toHaveBeenCalled();
   });
 });
 

@@ -28,6 +28,8 @@ export function fakeApiEinschalten(szenario: string): void {
     }
     // Von Hand in der Konsole: window.__ladenAusfall = true → Laden scheitert (Wiederöffnen nach Fehler prüfen).
     if ((window as unknown as { __ladenAusfall?: boolean }).__ladenAusfall) return json(502, { fehler: 'GitHub nicht erreichbar.', code: 'github-fehler' });
+    // GET artefakt legt die Mappe an; solange das dauert: 503 „wird eingerichtet“.
+    if (szenario === 'einrichten') return json(503, { fehler: 'Deine Mappe wird eingerichtet.', code: 'wird-eingerichtet' });
     return json(200, { name: 'annahmen', daten: beispiel, basisSha: sha });
   };
 }

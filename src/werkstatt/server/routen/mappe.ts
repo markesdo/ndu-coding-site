@@ -85,7 +85,8 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   r.use(mitSitzung);
 
   // Repo der Sitzung, nachdem werkstatt.json bestätigt hat, dass es dieser Person in dieser Kohorte gehört.
-  // anlegen: fehlt das Repo (oder werkstatt.json), einmal erneut anlegen (idempotent) – nur GET mappe tut das.
+  // anlegen: fehlt das Repo (oder werkstatt.json), einmal erneut anlegen (idempotent) – die GET-Routen tun das (Übersicht
+  // und Artefakt: der Editor kommt oft direkt vom Login), PUT nicht.
   async function eigenesRepo(c: Context<SitzungEnv>, anlegen: boolean): Promise<string> {
     const s = c.get('sitzung');
     const m = c.get('mitgliedschaft');
@@ -95,9 +96,13 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       try {
         await abh.speicher.anlegen(m, s.githubId);
       } catch (e) {
-        // „Gehört jemand anderem“ geht durch. Vorübergehendes (jeder GitHub-Fehler, Netz/Zeitlimit, 503) heißt „wird
-        // eingerichtet“ – der Editor versucht es dann von selbst noch einmal. Alles andere ist ein Fehler bei uns.
-        if (e instanceof ApiAusnahme && e.status === 403) throw e;
+        // Abgelehnt mit eigener Meldung (gehört jemand anderem 403, Name belegt 409) geht durch, mit einer Zeile im Log.
+        // Vorübergehendes (jeder GitHub-Fehler, Netz/Zeitlimit, 503) heißt „wird eingerichtet“ – der Editor versucht es
+        // dann von selbst noch einmal. Alles andere ist ein Fehler bei uns.
+        if (e instanceof ApiAusnahme && (e.status === 403 || e.status === 409)) {
+          console.error(`werkstatt: Mappe anlegen abgelehnt (${e.status} ${e.code})`);
+          throw e;
+        }
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', ursache(e));
         // Jede GitHub-Antwort zählt als vorübergehend, auch 4xx (Rate-Limit 403/429, Verzögerung direkt nach
         // /generate, Wettlauf um werkstatt.json); der Editor hört nach drei Versuchen von selbst auf.
@@ -114,19 +119,22 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     return repo;
   }
 
+  // Einladung zum Lesen nach bestem Bemühen: scheitert sie, bleibt es bei einer Zeile im Log. Nur nach eigenesRepo
+  // aufrufen (Besitz geprüft). lesezugriff merkt sich den Stand im Cache; ein wiederholter Aufruf kostet meist nur das.
+  function einladen(repo: string, githubId: number): Promise<MappeStand['lesezugriff']> {
+    return abh.speicher.lesezugriff(repo, githubId).catch((e): MappeStand['lesezugriff'] => {
+      console.error('werkstatt: Lesezugriff nicht prüfbar –', ursache(e));
+      return 'unbekannt';
+    });
+  }
+
   r.get('/', async (c) => {
     const m = c.get('mitgliedschaft');
     // Lehrende haben kein eigenes Repo; ihre Ansicht auf die Mappen folgt in Phase 2.
     if (m.rolle !== 'studierende') return json(c, { kohorte: m.kohorte, repo: '', lesezugriff: 'unbekannt', artefakte: [] } satisfies MappeStand);
     const repo = await eigenesRepo(c, true);
     // Best effort: die Mappe lädt auch, wenn GitHub die Einladung nicht beantwortet.
-    const [lesezugriff, artefakte] = await Promise.all([
-      abh.speicher.lesezugriff(repo, c.get('sitzung').githubId).catch((e): MappeStand['lesezugriff'] => {
-        console.error('werkstatt: Lesezugriff nicht prüfbar –', ursache(e));
-        return 'unbekannt';
-      }),
-      abh.speicher.uebersicht(repo),
-    ]);
+    const [lesezugriff, artefakte] = await Promise.all([einladen(repo, c.get('sitzung').githubId), abh.speicher.uebersicht(repo)]);
     const stand: MappeStand = { kohorte: m.kohorte, repo, lesezugriff, artefakte };
     return json(c, stand);
   });
@@ -150,8 +158,13 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   r.get('/:artefakt', async (c) => {
     const name = artefaktName(c);
     if (name instanceof Response) return name;
-    const repo = await eigenesRepo(c, false);
-    const { daten, basisSha } = await lesen(repo, name);
+    // Wie die Übersicht lädt auch der Editor zum Lesen ein (der Editor kommt oft direkt vom Login, und dort kann die
+    // Einladung gescheitert sein) – erst nach der Besitzprüfung in eigenesRepo und neben dem Lesen her. allSettled:
+    // Auch wenn das Lesen scheitert, läuft die Einladung zu Ende, bevor die Antwort rausgeht.
+    const repo = await eigenesRepo(c, true);
+    const [gelesen] = await Promise.allSettled([lesen(repo, name), einladen(repo, c.get('sitzung').githubId)]);
+    if (gelesen.status === 'rejected') throw gelesen.reason;
+    const { daten, basisSha } = gelesen.value;
     const antwort: ArtefaktAntwort = { name, daten, basisSha };
     return json(c, antwort);
   });
