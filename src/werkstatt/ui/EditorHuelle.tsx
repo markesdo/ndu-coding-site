@@ -4,6 +4,7 @@ import { flushSync } from 'react-dom';
 import { Copy, LogIn, Pencil, RefreshCw, Save, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { kopiereText, kopierMeldung } from '../../lib/kopieren.js';
+import { tagInWien } from '../../lib/kurswahl.js';
 import { METHODEN } from '../../components/methoden.js';
 import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldfehler } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
@@ -47,7 +48,7 @@ const TEXT = {
 } as const;
 
 const NEUVERSUCHE = 3; // à 3 s: höchstens ~10 s „wird eingerichtet“, dann Knopf
-const heute = () => new Date().toLocaleDateString('sv-SE'); // JJJJ-MM-TT in Ortszeit
+const heute = () => tagInWien(new Date()); // JJJJ-MM-TT in Wien, wie der Kurs
 
 export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild, formular, alsMarkdown }: EditorHuelleProps<N>) {
   const dialog = useRef<HTMLDialogElement>(null);

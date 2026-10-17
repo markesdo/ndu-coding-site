@@ -1,8 +1,8 @@
-// Editor für das Entscheidungslog: Zeilen werden angelegt und ersetzt, gespeicherte nie gelöscht.
+// Editor für das Entscheidungslog: Neue Zeilen sind frei änderbar; gespeicherte nur noch lesbar und ersetzbar, nie gelöscht.
 // Die Regeln stehen in entscheidungen-hilfen.ts (rein, getestet); hier nur Anzeige und Fokus.
 import { Plus, Replace, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { heuteWien } from '../../datum.js';
+import { tagInWien } from '../../../lib/kurswahl.js';
 import { rendern } from '../../render/index.js';
 import { ARTEFAKTE, BELEGSTUFEN, BELEGSTUFE_TEXT, type Entscheidung, type Entscheidungen } from '../../schemas/index.js';
 import EditorHuelle from '../EditorHuelle.js';
@@ -10,7 +10,7 @@ import Auswahl from '../felder/Auswahl.js';
 import Textfeld from '../felder/Textfeld.js';
 import VerweisAuswahl from '../felder/VerweisAuswahl.js';
 import {
-  datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, loeschenVerboten, zeileHinzufuegen,
+  datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileHinzufuegen, zeilenModus,
 } from './entscheidungen-hilfen.js';
 import './editoren.css';
 
@@ -30,7 +30,7 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
   // Alle IDs, die in dieser Sitzung je da waren: Eine gelöschte ID wird nie neu vergeben.
   const vergeben = useRef(new Set<string>());
   for (const e of daten.entscheidungen) vergeben.current.add(e.id);
-  // IDs, die auf dem Server liegen: Die sind nicht mehr löschbar.
+  // IDs, die auf dem Server liegen: Die sind nur noch lesbar und ersetzbar.
   const gespeichert = gespeicherteIds(serverStand);
   const [meldung, setMeldung] = useState('');
   const [fokus, setFokus] = useState<string | null>(null);
@@ -47,15 +47,15 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
   const vergib = (id: string) => vergeben.current.add(id);
 
   const neueZeile = () => {
-    const r = zeileHinzufuegen(daten, [...vergeben.current], heuteWien());
+    const r = zeileHinzufuegen(daten, [...vergeben.current], tagInWien(new Date()));
     vergib(r.id);
     setze(r.daten);
     setMeldung(`${r.id} angelegt.`);
     setFokus(r.id);
   };
 
-  const zeileErsetzen = (altId: string) => {
-    const r = ersetzen(daten, altId, [...vergeben.current], heuteWien());
+  const zeileErsetzen = (altId: string, fehlerfrei: boolean) => {
+    const r = ersetzen(daten, altId, [...vergeben.current], tagInWien(new Date()), gespeichert, fehlerfrei);
     if ('grund' in r) return setMeldung(r.grund);
     vergib(r.id);
     setze(r.daten);
@@ -76,7 +76,7 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
   return (
     <>
       <p className="wk-hilfe">
-        Stand: {datumAnzeigen(daten.stand)}. Eine gespeicherte Entscheidung wird nie gelöscht. Hat sie sich geändert, ersetze sie: Die alte bleibt im Log und zeigt, wann sie ersetzt wurde.
+        Stand: {datumAnzeigen(daten.stand)}. Eine gespeicherte Entscheidung wird nicht mehr geändert oder gelöscht. Hat sie sich geändert, ersetze sie: Die alte bleibt im Log und zeigt, wann sie ersetzt wurde.
       </p>
       {fehler('stand') && <p className="wk-fehler">{fehler('stand')}</p>}
       {fehler('entscheidungen') && <p className="wk-fehler">{fehler('entscheidungen')}</p>}
@@ -85,7 +85,7 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
         {daten.entscheidungen.map((e, i) => {
           const neue = ersetztVon(daten, e.id);
           const pfad = (feld: string) => `entscheidungen.${i}.${feld}`;
-          const darfLoeschen = loeschenVerboten(daten, e.id, gespeichert) === null;
+          const modus = zeilenModus(daten, i, gespeichert, fehler);
           const kopfId = `wk-d-${e.id}`;
           return (
             <li
@@ -99,10 +99,18 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
                 {e.ersetzt !== undefined && <span> · ersetzt {e.ersetzt}</span>}
                 {neue && <span> · ersetzt am {datumAnzeigen(neue.datum)} durch {neue.id}</span>}
               </h3>
-              {[fehler(pfad('id')), fehler(pfad('ersetzt'))].filter(Boolean).map((m) => <p key={m} className="wk-fehler">{m}</p>)}
-              {neue ? (
+              {modus.bearbeitbar ? (
                 <>
-                  <p className="wk-hilfe">Ersetzt – nicht mehr änderbar.</p>
+                  {[fehler(pfad('id')), fehler(pfad('ersetzt'))].filter(Boolean).map((m) => <p key={m} className="wk-fehler">{m}</p>)}
+                  <Textfeld label={`Datum (${e.id})`} hilfe="JJJJ-MM-TT, zum Beispiel 2026-10-22" wert={e.datum} onChange={(datum) => setzeZeile(i, { ...e, datum })} fehler={fehler(pfad('datum'))} />
+                  <Textfeld label={`Entscheidung (${e.id})`} mehrzeilig zeilen={2} wert={e.entscheidung} onChange={(entscheidung) => setzeZeile(i, { ...e, entscheidung })} fehler={fehler(pfad('entscheidung'))} />
+                  <Textfeld label={`Grund (${e.id})`} mehrzeilig zeilen={2} wert={e.grund} onChange={(grund) => setzeZeile(i, { ...e, grund })} fehler={fehler(pfad('grund'))} />
+                  <Auswahl label={`Beleg (${e.id})`} hilfe="Wie stark ist der Beleg: gesagt, erzählt oder getan?" wert={e.beleg} optionen={BELEG} onChange={(beleg) => setzeZeile(i, { ...e, beleg })} fehler={fehler(pfad('beleg'))} />
+                  <VerweisAuswahl label={`Beleg-IDs (${e.id})`} hilfe="Worauf stützt sich die Entscheidung, zum Beispiel I2-4 oder T1?" werte={e.belegIds} onChange={(belegIds) => setzeZeile(i, { ...e, belegIds })} fehler={fehler(pfad('belegIds'))} />
+                </>
+              ) : (
+                <>
+                  <p className="wk-hilfe">{neue ? 'Ersetzt – nicht mehr änderbar.' : 'Gespeichert – nicht mehr änderbar. Hat sie sich geändert, ersetze sie.'}</p>
                   <dl className="wk-zeile-daten">
                     <dt>Datum</dt><dd>{datumAnzeigen(e.datum)}</dd>
                     <dt>Entscheidung</dt><dd>{e.entscheidung || '–'}</dd>
@@ -110,25 +118,27 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
                     <dt>Beleg</dt><dd>{BELEGSTUFE_TEXT[e.beleg]}</dd>
                     <dt>Beleg-IDs</dt><dd>{e.belegIds.length ? e.belegIds.join(', ') : '–'}</dd>
                   </dl>
+                  {modus.fehler.length > 0 && (
+                    <div role="alert">
+                      {modus.fehler.map((m) => <p key={m} className="wk-fehler">{m}</p>)}
+                      <p className="wk-hilfe">{sperrHinweis(daten, e.id, gespeichert)}</p>
+                    </div>
+                  )}
                 </>
-              ) : (
-                <>
-                  <Textfeld label={`Datum (${e.id})`} hilfe="JJJJ-MM-TT, zum Beispiel 2026-10-22" wert={e.datum} onChange={(datum) => setzeZeile(i, { ...e, datum })} fehler={fehler(pfad('datum'))} />
-                  <Textfeld label={`Entscheidung (${e.id})`} mehrzeilig zeilen={2} wert={e.entscheidung} onChange={(entscheidung) => setzeZeile(i, { ...e, entscheidung })} fehler={fehler(pfad('entscheidung'))} />
-                  <Textfeld label={`Grund (${e.id})`} mehrzeilig zeilen={2} wert={e.grund} onChange={(grund) => setzeZeile(i, { ...e, grund })} fehler={fehler(pfad('grund'))} />
-                  <Auswahl label={`Beleg (${e.id})`} hilfe="Wie stark ist der Beleg: gesagt, erzählt oder getan?" wert={e.beleg} optionen={BELEG} onChange={(beleg) => setzeZeile(i, { ...e, beleg })} fehler={fehler(pfad('beleg'))} />
-                  <VerweisAuswahl label={`Beleg-IDs (${e.id})`} hilfe="Worauf stützt sich die Entscheidung, zum Beispiel I2-4 oder T1?" werte={e.belegIds} onChange={(belegIds) => setzeZeile(i, { ...e, belegIds })} fehler={fehler(pfad('belegIds'))} />
-                  <div className="wk-knoepfe">
-                    <button type="button" className="wk-knopf" onClick={() => zeileErsetzen(e.id)} aria-label={`${e.id} ersetzen`}>
+              )}
+              {(modus.ersetzbar || modus.loeschbar) && (
+                <div className="wk-knoepfe">
+                  {modus.ersetzbar && (
+                    <button type="button" className="wk-knopf" onClick={() => zeileErsetzen(e.id, modus.fehler.length === 0)} aria-label={`${e.id} ersetzen`}>
                       <Replace size={16} aria-hidden="true" /> Ersetzen
                     </button>
-                    {darfLoeschen && (
-                      <button type="button" className="wk-knopf" onClick={() => zeileLoeschen(e.id)} aria-label={`${e.id} löschen (noch nicht gespeichert)`}>
-                        <Trash2 size={16} aria-hidden="true" /> Löschen
-                      </button>
-                    )}
-                  </div>
-                </>
+                  )}
+                  {modus.loeschbar && (
+                    <button type="button" className="wk-knopf" onClick={() => zeileLoeschen(e.id)} aria-label={`${e.id} löschen (noch nicht gespeichert)`}>
+                      <Trash2 size={16} aria-hidden="true" /> Löschen
+                    </button>
+                  )}
+                </div>
               )}
             </li>
           );
