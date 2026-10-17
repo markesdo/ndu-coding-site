@@ -16,7 +16,7 @@ function zeilenende(s: string): string {
 
 // Regel für den Anfang jeder Freitext-Zeile, die einen Markdown-Block beginnen könnte: Einrückung entfernen
 // (kein Codeblock), dann nur Zeichen maskieren, die dort einen Block öffnen (Überschrift, Zitat, Liste, Trennlinie,
-// Tabelle, Codezaun, HTML-Block, Verweisdefinition). Links, Code und Betonung am Zeilenanfang bleiben wirksam.
+// Tabelle, Codezaun, HTML-Block, Verweisdefinition). Links, Autolinks, Code und Betonung bleiben wirksam.
 function zeilenanfang(z: string): string {
   const ohne = z.replace(/^[ \t]+/, '');
   if (/^\d{1,9}[.)]/.test(ohne)) return ohne.replace(/^(\d{1,9})([.)])/, '$1\\$2');
@@ -25,8 +25,10 @@ function zeilenanfang(z: string): string {
     /^:-/.test(ohne) ||
     /^(`{3,}|~{3,})/.test(ohne) ||
     /^(_[ \t]*){3,}$/.test(ohne) ||
-    /^\[[^\]]*\]:/.test(ohne) ||
-    (/^<[!?/A-Za-z]/.test(ohne) && !/^<[A-Za-z][A-Za-z0-9+.-]{1,31}:[^<>\s]*>/.test(ohne));
+    // [ am Anfang kann eine Verweisdefinition öffnen (auch über mehrere Zeilen) oder ein Aufgaben-Kästchen;
+    // wirksam bleibt nur ein Link, der in derselben Zeile mit ]( weitergeht.
+    (/^\[/.test(ohne) && !/^\[(?:[^\]\\]|\\.)*\]\(/.test(ohne)) ||
+    (/^<[!?/A-Za-z]/.test(ohne) && !/^<(?:[A-Za-z][A-Za-z0-9+.-]{1,31}:[^<>\s]*|[^<>\s@]+@[^<>\s]+)>/.test(ohne));
   return block ? `\\${ohne}` : ohne;
 }
 
@@ -42,7 +44,7 @@ export function einzeilig(s: string): string {
 }
 
 // Einzeilige Felder, die einen Listenpunkt füllen und darum einen Block beginnen könnten.
-export function punkt(s: string): string {
+export function listenpunkt(s: string): string {
   const t = flach(s);
   return t === '' ? LEER : zeilenanfang(t);
 }
@@ -70,11 +72,13 @@ export function zelle(s: string): string {
 
 // Anführungszeichen nur um echten Text.
 export function zitat(s: string): string {
-  return flach(s) === '' ? LEER : `„${einzeilig(s)}“`;
+  const t = flach(s);
+  return t === '' ? LEER : `„${t}“`;
 }
 
-// IDs und Notiz teilen sich eine Klammer; eine leere Notiz (Entwurf) zählt wie keine.
+// IDs und Notiz teilen sich eine Klammer; leere IDs und eine leere Notiz (Entwurf) zählen wie keine.
 export function belegText(stufe: Belegstufe, ids: readonly string[], notiz?: string): string {
-  const zusatz = [ids.map(zelle).join(', '), notiz?.trim() ? zelle(notiz) : ''].filter(Boolean).join('; ');
+  const idText = ids.filter((id) => flach(id) !== '').map(zelle).join(', ');
+  const zusatz = [idText, notiz !== undefined && flach(notiz) !== '' ? zelle(notiz) : ''].filter(Boolean).join('; ');
   return zusatz ? `${BELEGSTUFE_TEXT[stufe]} (${zusatz})` : BELEGSTUFE_TEXT[stufe];
 }

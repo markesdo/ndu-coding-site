@@ -177,7 +177,7 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
   });
   it('Links, Code und Betonung am Zeilenanfang bleiben wirksam', () => {
     const b = laden('brief');
-    const nicht = ['[Interview I2](https://x.at) zeigt', '`Kasse` hängt', '<https://x.at>', '_wichtig_', '!Achtung'];
+    const nicht = ['[Interview I2](https://x.at) zeigt', '[a\\]b](https://x.at)', '`Kasse` hängt', '<https://x.at>', '<kontakt@firma.at>', '_wichtig_', '!Achtung'];
     const s = rendern('brief', { ...b, nicht, fuerWen: '[I2](https://x.at)\n`Kasse`' });
     for (const n of nicht) expect(zeilen(s)).toContain(`- ${n}`);
     expect(zeilen(s)).toContain('[I2](https://x.at)\\');
@@ -185,7 +185,7 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
   });
   it('Blockzeichen, die nur mit Folgezeichen wirken, werden maskiert', () => {
     const b = laden('brief');
-    const nicht = ['[a]: https://x.at', '```js', '~~~', '_ _ _', '<div>', '<!-- x'];
+    const nicht = ['[a]: https://x.at', '[a\\]b]: /url', '[ ] Bezahlfunktion', '```js', '~~~', '_ _ _', '<div>', '<!-- x'];
     const s = rendern('brief', { ...b, nicht });
     for (const n of nicht) expect(zeilen(s)).toContain(`- \\${n}`);
   });
@@ -208,6 +208,21 @@ describe('Sichtbare Zeilenumbrüche', () => {
     // Eine Zeile nur aus einem Backslash: maskiert \\, der Umbruch braucht genau einen weiteren.
     const s = rendern('brief', { ...laden('brief'), problem: '\\\nb' });
     expect(s).toContain('Problem?\n\\\\\\\nb');
+  });
+});
+
+describe('Verweisdefinition über zwei Zeilen', () => {
+  it('die erste Zeile wird maskiert, nichts verschwindet', () => {
+    const s = rendern('brief', { ...laden('brief'), fuerWen: '[Interview\nI2]: siehe unten' });
+    expect(zeilen(s)).toContain('\\[Interview\\');
+  });
+});
+
+describe('Beleg-Klammer', () => {
+  it('leere IDs zählen wie keine', () => {
+    const e = laden('entscheidungen');
+    const s = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[2], belegIds: ['', ' ', 'I1'], belegNotiz: ' ' }] });
+    expect(s).toContain('Beleg: erzählt (I1)');
   });
 });
 
