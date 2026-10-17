@@ -49,8 +49,13 @@ describe('Routing', () => {
     expect(await stub(await anfrage('/api/werkstatt/mappe/brief'))).toBe('mappe');
   });
 
+  it('Metadaten ohne Suffix an der Wurzel erreichen oauthRouten (so sucht Claude zuerst)', async () => {
+    expect(await stub(await anfrage('/.well-known/oauth-authorization-server'))).toBe('oauth');
+    expect(await stub(await anfrage('/.well-known/oauth-protected-resource'))).toBe('oauth');
+  });
+
   it('andere /.well-known-Pfade gehören nicht zur Werkstatt', async () => {
-    expect((await anfrage('/.well-known/oauth-authorization-server')).status).toBe(404);
+    expect((await anfrage('/.well-known/openid-configuration')).status).toBe(404);
   });
 });
 

@@ -76,11 +76,13 @@ export function sichererPfad(roh: string | null | undefined): string {
 // - die Startseite /start (exakt, mit oder ohne Schrägstrich). Kein Präfix: /startseite, /start-x oder /start/geheim
 //   bleiben geschützt. /login prüft die Middleware gesondert.
 // - die Werkstatt: genau /api/werkstatt und alles darunter (/api/werkstattx nicht) sowie die zwei OAuth-Metadatenpfade,
-//   die Claude unter /.well-known sucht. Die Werkstatt hat ihre eigene Anmeldung (GitHub, Sitzung, Bearer-Token).
+//   die Claude unter /.well-known sucht, und dieselben zwei ohne Suffix (so fragt Claude zuerst, vor dem Pfad-Suffix). Die Werkstatt hat ihre eigene Anmeldung (GitHub, Sitzung, Bearer-Token).
 const WERKSTATT = '/api/werkstatt';
 const WERKSTATT_WELL_KNOWN = [
   '/.well-known/oauth-authorization-server/api/werkstatt/oauth',
   '/.well-known/oauth-protected-resource/api/werkstatt/mcp',
+  '/.well-known/oauth-authorization-server',
+  '/.well-known/oauth-protected-resource',
 ];
 
 // Kodierte Trenner und Punkte (%2F, %5C, %2E) haben in Werkstatt-Pfaden nichts zu suchen. Ein Proxy oder Rewrite,

@@ -15,6 +15,14 @@ describe('vercel.json Rewrites', () => {
       }
     }
   });
+  it('beide Metadatenpfade an der Wurzel (mit und ohne Suffix) laufen auf die Funktion', () => {
+    for (const quelle of [
+      '/.well-known/oauth-authorization-server',
+      '/.well-known/oauth-protected-resource',
+      '/.well-known/oauth-authorization-server/api/werkstatt/oauth',
+      '/.well-known/oauth-protected-resource/api/werkstatt/mcp',
+    ]) expect(konfig.rewrites, quelle).toContainEqual({ source: quelle, destination: '/api/werkstatt' });
+  });
   it('Werkstatt-Pfade laufen über eine unbenannte Gruppe', () => {
     expect(konfig.rewrites).toContainEqual({ source: '/api/werkstatt/(.*)', destination: '/api/werkstatt' });
   });

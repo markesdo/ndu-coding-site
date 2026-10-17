@@ -5,6 +5,7 @@
 // den Hinweis „Seite aktualisiert“ – sonst bekäme die Abfrage die Login-Seite zurück).
 // Frei ist auch die Werkstatt: /api/werkstatt und alles darunter (nicht /api/werkstattx) sowie
 // /.well-known/oauth-authorization-server/api/werkstatt/oauth und /.well-known/oauth-protected-resource/api/werkstatt/mcp
+// sowie /.well-known/oauth-authorization-server und /.well-known/oauth-protected-resource ohne Suffix
 // (OAuth-Metadaten für den Claude-Connector). Sie hat ihre eigene Anmeldung; vercel.json schreibt diese Pfade auf
 // api/werkstatt.ts um. Andere /.well-known-Pfade bleiben gesperrt.
 // Alles andere braucht das Cookie.

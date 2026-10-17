@@ -108,7 +108,7 @@ describe('Middleware mit Anmeldung', () => {
 
 describe('Werkstatt ohne Kurspasswort', () => {
   afterEach(() => vi.unstubAllEnvs());
-  it('nimmt genau /api/werkstatt und die zwei OAuth-Metadatenpfade aus', () => {
+  it('nimmt genau /api/werkstatt und die vier OAuth-Metadatenpfade aus', () => {
     for (const p of [
       '/api/werkstatt',
       '/api/werkstatt/',
@@ -117,6 +117,8 @@ describe('Werkstatt ohne Kurspasswort', () => {
       '/api/werkstatt/mappe/brief',
       '/.well-known/oauth-authorization-server/api/werkstatt/oauth',
       '/.well-known/oauth-protected-resource/api/werkstatt/mcp',
+      '/.well-known/oauth-authorization-server',
+      '/.well-known/oauth-protected-resource',
     ]) expect(istOeffentlich(p), p).toBe(true);
   });
   it('alles andere bleibt hinter dem Kurspasswort', () => {
@@ -126,7 +128,9 @@ describe('Werkstatt ohne Kurspasswort', () => {
       '/api/position',
       '/innolab/mappe',
       '/.well-known/anderes',
-      '/.well-known/oauth-authorization-server',
+      '/.well-known/openid-configuration',
+      '/.well-known/oauth-authorization-server/',
+      '/.well-known/oauth-protected-resource/',
       '/.well-known/oauth-authorization-server/api/werkstatt/oauth/x',
       '/.well-known/oauth-protected-resource/api/werkstatt/mcpx',
       '/x/api/werkstatt',

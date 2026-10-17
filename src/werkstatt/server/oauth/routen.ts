@@ -5,6 +5,8 @@
 //   /api/werkstatt/mcp/resource                                    (RFC 9728)
 //   /.well-known/oauth-authorization-server/api/werkstatt/oauth    (RFC 8414, gleiches JSON wie oauth/metadata)
 //   /.well-known/oauth-protected-resource/api/werkstatt/mcp        (RFC 9728, gleiches JSON wie mcp/resource)
+//   /.well-known/oauth-authorization-server                        (ohne Suffix, dieselben Handler wie die Pfad-Variante)
+//   /.well-known/oauth-protected-resource                          (ohne Suffix, dieselben Handler wie die Pfad-Variante)
 // Nur diese Pfade registrieren, kein Sammelpfad wie '/*': der finge auch Anfragen der anderen Router ab.
 // Ebenso kein use() ohne Pfad: diese Middleware liefe sonst bei jeder Werkstatt-Anfrage mit.
 // CSRF (nur Origin, Formular erlaubt) für POST /api/werkstatt/oauth/authorize prüft schon appErstellen.
@@ -19,5 +21,7 @@ export function oauthRouten(_abh: Abhaengigkeiten): Hono<WerkstattEnv> {
   r.all('/api/werkstatt/mcp/resource', stub);
   r.all('/.well-known/oauth-authorization-server/api/werkstatt/oauth', stub);
   r.all('/.well-known/oauth-protected-resource/api/werkstatt/mcp', stub);
+  r.all('/.well-known/oauth-authorization-server', stub);
+  r.all('/.well-known/oauth-protected-resource', stub);
   return r;
 }
