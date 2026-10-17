@@ -33,7 +33,7 @@ Jedes Element hat eine ID: Präfix plus Nummer, optional mit Unternummer (`A12`,
 
 ## Belegstufen
 
-Annahmen und Entscheidungen tragen `beleg` mit einem von vier Werten. Die Skala geht von „sagen“ zu „tun“:
+Annahmen und Entscheidungen tragen `beleg` mit einem von vier Werten. Die vier Stufen heißen „noch keiner · gesagt · erzählt · getan“ (Skala von sagen zu tun):
 
 | Wert in der JSON | Anzeige |
 |---|---|
