@@ -10,7 +10,7 @@ import Auswahl from '../felder/Auswahl.js';
 import Textfeld from '../felder/Textfeld.js';
 import VerweisAuswahl from '../felder/VerweisAuswahl.js';
 import {
-  belegNotizSetzen, datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileHinzufuegen, zeilenModus,
+  belegNotizHilfe, belegNotizSetzen, belegNotizZaehler, datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileHinzufuegen, zeilenModus,
 } from './entscheidungen-hilfen.js';
 import './editoren.css';
 
@@ -107,7 +107,8 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
                   <Textfeld label={`Grund (${e.id})`} mehrzeilig zeilen={2} wert={e.grund} onChange={(grund) => setzeZeile(i, { ...e, grund })} fehler={fehler(pfad('grund'))} />
                   <Auswahl label={`Beleg (${e.id})`} hilfe="Wie stark ist der Beleg: gesagt, erzählt oder getan?" wert={e.beleg} optionen={BELEG} onChange={(beleg) => setzeZeile(i, { ...e, beleg })} fehler={fehler(pfad('beleg'))} />
                   <VerweisAuswahl label={`Beleg-IDs (${e.id})`} hilfe="Worauf stützt sich die Entscheidung, zum Beispiel I2-4 oder T1?" werte={e.belegIds} onChange={(belegIds) => setzeZeile(i, { ...e, belegIds })} fehler={fehler(pfad('belegIds'))} />
-                  <Textfeld label={`Beleg (Notiz, z. B. Quelle oder Zahl) (${e.id})`} hilfe="Zum Beispiel „Kassendaten September“. Höchstens 120 Zeichen, eine Zeile." wert={e.belegNotiz ?? ''} onChange={(notiz) => setzeZeile(i, belegNotizSetzen(e, notiz))} fehler={fehler(pfad('belegNotiz'))} />
+                  <Textfeld label={`Beleg (Notiz, z. B. Quelle oder Zahl) (${e.id})`} hilfe={belegNotizHilfe} wert={e.belegNotiz ?? ''} onChange={(notiz) => setzeZeile(i, belegNotizSetzen(e, notiz))} fehler={fehler(pfad('belegNotiz'))} />
+                  <p className="wk-hilfe" aria-live="off">Zeichen: {belegNotizZaehler(e.belegNotiz ?? '')}</p>
                 </>
               ) : (
                 <>

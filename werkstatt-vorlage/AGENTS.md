@@ -42,7 +42,7 @@ Annahmen und Entscheidungen tragen `beleg` mit einem von vier Werten. Die vier S
 | `erzaehlt` | erzählt |
 | `getan` | getan |
 
-`belegIds` nennt die IDs, die den Beleg tragen (zum Beispiel Interviewzitate wie `I2-3`). Eine hohe Stufe ohne `belegIds` ist ein Hinweis, nachzufragen.
+`belegIds` nennt die IDs, die den Beleg tragen (zum Beispiel Interviewzitate wie `I2-3`). `belegNotiz` (optional) ist ein freier Hinweis auf einen Beleg außerhalb der Mappe, zum Beispiel „Kassendaten September“. Eine hohe Stufe ohne `belegIds` **und** ohne `belegNotiz` ist ein Hinweis, nachzufragen. Mit `belegNotiz` frag nach, wo der Beleg liegt; werte die Zeile nicht als „unbelegt“.
 
 ## Wie du hilfst
 

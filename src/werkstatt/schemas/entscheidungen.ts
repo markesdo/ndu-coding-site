@@ -1,7 +1,11 @@
 import { z } from 'zod';
+import { graphemAnzahl } from '../text.js';
 import { belegIds, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam.js';
 
 export const BELEG_NOTIZ_MAX = 120;
+
+// Steuer- und Formatzeichen (z. B. U+202E dreht Text um) plus Zeilenumbrüche. Der Joiner in Emoji-Folgen (Join_Control) ist erlaubt.
+const STEUERZEICHEN = /(?!\p{Join_Control})[\p{Cc}\p{Cf}\u2028\u2029\u0085]/u;
 
 const entscheidungSchema = z.object({
   id: zeilenId('D', 'ID der Entscheidung'),
@@ -11,10 +15,12 @@ const entscheidungSchema = z.object({
   beleg: belegstufe,
   belegIds,
   // Optional: Quelle oder Zahl zum Beleg (z. B. „Kassendaten September“). Kein neues Pflichtfeld, daher keine neue Version.
+  // Das Feld ist unveränderlich, darum lehnt das Schema ab statt zu bereinigen (anders als die Commit-Nachricht in server/routen/mappe.ts).
   belegNotiz: z
     .string({ error: 'Beleg (Notiz): bitte als Text eintragen.' })
-    .max(BELEG_NOTIZ_MAX, { error: `Beleg (Notiz): höchstens ${BELEG_NOTIZ_MAX} Zeichen. Kürze die Notiz oder nenne nur die Quelle.` })
-    .regex(/^[^\r\n\u2028\u2029]*$/, { error: 'Beleg (Notiz): bitte in einer Zeile, ohne Zeilenumbruch.' })
+    .refine((s) => !STEUERZEICHEN.test(s), { error: 'Beleg-Notiz: eine Zeile, ohne Steuerzeichen' })
+    .refine((s) => s === s.trim(), { error: 'Beleg-Notiz: ohne Leerzeichen am Anfang oder Ende' })
+    .refine((s) => graphemAnzahl(s) <= BELEG_NOTIZ_MAX, { error: `Beleg (Notiz): höchstens ${BELEG_NOTIZ_MAX} Zeichen. Kürze die Notiz oder nenne nur die Quelle.` })
     .optional(),
   // Die neue Zeile zeigt auf die alte; die alte wird nie gelöscht.
   ersetzt: zeilenId('D', 'Ersetzt').optional(),
