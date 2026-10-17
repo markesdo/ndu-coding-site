@@ -96,15 +96,17 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       try {
         await abh.speicher.anlegen(m, s.githubId);
       } catch (e) {
-        // „Gehört jemand anderem“ geht durch. Vorübergehendes (jeder GitHub-Fehler, Netz/Zeitlimit, 503) heißt „wird
+        // Abgelehnt mit eigener Meldung (gehört jemand anderem 403, Name belegt 409) geht durch. Vorübergehendes (jeder GitHub-Fehler, Netz/Zeitlimit, 503) heißt „wird
         // eingerichtet“ – der Editor versucht es dann von selbst noch einmal. Alles andere ist ein Fehler bei uns.
-        if (e instanceof ApiAusnahme && e.status === 403) throw e;
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', ursache(e));
+        if (e instanceof ApiAusnahme && (e.status === 403 || e.status === 409)) throw e;
         // Jede GitHub-Antwort zählt als vorübergehend, auch 4xx (Rate-Limit 403/429, Verzögerung direkt nach
         // /generate, Wettlauf um werkstatt.json); der Editor hört nach drei Versuchen von selbst auf.
         const voruebergehend = e instanceof GithubAusnahme || (e instanceof ApiAusnahme && e.status === 503);
         throw voruebergehend ? wirdEingerichtet() : new ApiAusnahme(500, 'unbekannt', SCHIEF);
       }
+      // Wie im Login-Callback: Nach erfolgreichem Anlegen geht die Einladung zum Lesen raus (best effort).
+      await abh.speicher.lesezugriff(repo, s.githubId).catch((e) => console.error('werkstatt: Lesezugriff nicht prüfbar –', ursache(e)));
       wj = await abh.speicher.werkstattJson(repo);
     }
     if (!wj) throw wirdEingerichtet();

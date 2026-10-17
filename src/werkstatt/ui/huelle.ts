@@ -113,7 +113,7 @@ const TEXT = {
 } as const;
 
 // Abgelehnt, weil die Anfrage nicht passt: Neu versuchen hilft nicht, die Meldung des Servers sagt, was zu tun ist.
-const ABGELEHNT: readonly string[] = ['nicht-freigeschaltet', 'ungueltig', 'csrf'];
+const ABGELEHNT: readonly string[] = ['nicht-freigeschaltet', 'ungueltig', 'csrf', 'konflikt'];
 
 /** Hinweis im Zustand „ladefehler“. `fehlerCode` „datei“ setzt die Hülle selbst (Datei passt nicht zum Schema). */
 export function ladefehlerHinweis(fehlerCode: string | null, meldung: string | null): { text: string; nochmal: boolean } {

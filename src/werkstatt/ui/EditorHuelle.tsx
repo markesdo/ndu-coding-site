@@ -138,7 +138,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       setAelterEntwurf(start.aelterEntwurf);
       setGesichert(true);
       senden({ typ: 'geladen' });
-    } catch {
+    } catch (err) {
+      console.error('werkstatt: Laden der Mappe gescheitert –', err);
       if (!gueltig()) return;
       senden({ typ: 'ladenFehlgeschlagen', status: 0, code: 'unbekannt' });
     }
