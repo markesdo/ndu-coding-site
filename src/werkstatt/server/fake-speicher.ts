@@ -1,9 +1,10 @@
 // Speicher im Arbeitsspeicher für Tests und den lokalen Dev-Server – dieselben Regeln wie der GitHub-Speicher (spec §3.3):
 // basisSha = Git-Blob-SHA von mappe/<name>.json, Konflikt nur pro Artefakt, ein Speichern = ein Commit.
 // Nur bei NODE_ENV ∈ {development, test}.
-import { createHash } from 'node:crypto';
 import { ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { repoName } from '../zugang.js';
+import { blobSha } from './git-sha.js';
+import { fremdesRepo, internerFehler, unbekanntesRepo } from './speicher-fehler.js';
 import type { Speicher } from './typen.js';
 import { istLokal } from './umgebung.js';
 
@@ -20,12 +21,6 @@ export type FakeSpeicher = Speicher & {
   aendernVonAussen(repo: string, name: ArtefaktName): void;
 };
 
-// Wie `git hash-object`: sha1("blob <bytes>\0<inhalt>").
-function blobSha(inhalt: string): string {
-  const bytes = Buffer.from(inhalt, 'utf8');
-  return createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex');
-}
-
 const jsonPfad = (name: ArtefaktName) => `mappe/${name}.json`;
 
 export function fakeSpeicher(): FakeSpeicher {
@@ -34,7 +29,7 @@ export function fakeSpeicher(): FakeSpeicher {
 
   const repoHolen = (repo: string) => {
     const r = repos.get(repo);
-    if (!r) throw new Error(`repo-fehlt: ${repo}`);
+    if (!r) throw unbekanntesRepo();
     return r;
   };
   const shaVon = (dateien: Map<string, string>, name: ArtefaktName) => {
@@ -48,7 +43,7 @@ export function fakeSpeicher(): FakeSpeicher {
       const vorhanden = repos.get(repo);
       if (vorhanden) {
         const wj = JSON.parse(vorhanden.dateien.get('werkstatt.json') ?? 'null') as { githubId: number } | null;
-        if (wj && wj.githubId !== githubId) throw new Error('repo-gehoert-anderer-person');
+        if (wj && wj.githubId !== githubId) throw fremdesRepo();
         return { repo };
       }
       const dateien = new Map([['werkstatt.json', `${JSON.stringify({ kohorte: m.kohorte, githubId }, null, 2)}\n`]]);
@@ -65,7 +60,7 @@ export function fakeSpeicher(): FakeSpeicher {
     async speichern(repo, name, dateien, basisSha, autor, nachricht) {
       const r = repoHolen(repo);
       const neu = dateien[jsonPfad(name)];
-      if (neu === undefined) throw new Error(`speichern ohne ${jsonPfad(name)}`);
+      if (neu === undefined) throw internerFehler(`speichern ohne ${jsonPfad(name)}`);
       if (shaVon(r.dateien, name) !== basisSha) return { konflikt: true };
       for (const [pfad, inhalt] of Object.entries(dateien)) r.dateien.set(pfad, inhalt);
       r.commits.push({ dateien: { ...dateien }, autor: { ...autor }, nachricht });

@@ -38,7 +38,8 @@ describe('fakeSpeicher', () => {
 
   it('anlegen für ein Repo, das einer anderen Person gehört, wirft', async () => {
     const { s } = await mitRepo();
-    await expect(s.anlegen(sofie, 9)).rejects.toThrow('repo-gehoert-anderer-person');
+    // Wie githubSpeicher: 403 nicht-freigeschaltet.
+    await expect(s.anlegen(sofie, 9)).rejects.toMatchObject({ status: 403, code: 'nicht-freigeschaltet' });
   });
 
   it('lesen ohne Datei: daten und basisSha null', async () => {
@@ -103,9 +104,18 @@ describe('fakeSpeicher', () => {
     ]);
   });
 
-  it('speichern in ein Repo, das es nicht gibt, wirft', async () => {
+  it('speichern oder uebersicht für ein Repo, das es nicht gibt → 404 unbekannt wie githubSpeicher', async () => {
     const s = fakeSpeicher();
-    await expect(s.speichern('test-niemand', 'brief', dateien('brief', {}), null, autor, 'x')).rejects.toThrow();
+    await expect(s.speichern('test-niemand', 'brief', dateien('brief', {}), null, autor, 'x')).rejects.toMatchObject({ status: 404, code: 'unbekannt' });
+    await expect(s.uebersicht('test-niemand')).rejects.toMatchObject({ status: 404, code: 'unbekannt' });
+  });
+
+  it('speichern ohne die JSON-Datei → 500 unbekannt mit Log wie githubSpeicher', async () => {
+    const { s, repo } = await mitRepo();
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    await expect(s.speichern(repo, 'brief', { 'README.md': '#' }, null, autor, 'x')).rejects.toMatchObject({ status: 500, code: 'unbekannt' });
+    expect(log.mock.calls.join(' ')).toContain('mappe/brief.json');
+    log.mockRestore();
   });
 
   it('verweigert außerhalb von development und test', () => {

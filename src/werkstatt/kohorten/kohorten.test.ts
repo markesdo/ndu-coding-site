@@ -23,3 +23,11 @@ describe('kohorte2026.termine', () => {
     expect(kohorte2026.termine.tag2).toBeNull();
   });
 });
+
+describe('Kohorten-IDs', () => {
+  // githubSpeicher liest die Kohorte aus dem Präfix vor dem ersten `-` des Repo-Namens.
+  it('enthalten keinen Bindestrich (nur a-z und 0-9) und sind eindeutig', () => {
+    for (const k of KOHORTEN) expect(k.id, k.id).toMatch(/^[a-z0-9]+$/);
+    expect(new Set(KOHORTEN.map((k) => k.id)).size).toBe(KOHORTEN.length);
+  });
+});
