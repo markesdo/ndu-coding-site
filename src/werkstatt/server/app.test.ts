@@ -58,7 +58,10 @@ describe('Routing', () => {
   });
 
   it('übrige Bereiche erreichen ihren eigenen Router', async () => {
-    expect(await stub(await anfrage('/api/werkstatt/mcp', { method: 'POST' }))).toBe('mcp');
+    // mcp ist gebaut (T12): ohne Token 401 mit Discovery-Verweis statt Stub.
+    const mcp = await anfrage('/api/werkstatt/mcp', { method: 'POST' });
+    expect(mcp.status).toBe(401);
+    expect(mcp.headers.get('www-authenticate')).toContain('resource_metadata=');
     // auth ist gebaut (T4): ohne Sitzung 401 statt Stub.
     expect((await anfrage('/api/werkstatt/auth/ich')).status).toBe(401);
     expect(await stub(await anfrage('/api/werkstatt/mappe'))).toBe('mappe');
