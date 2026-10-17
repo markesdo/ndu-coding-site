@@ -3,7 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
-import Prompt from '../../../components/Prompt.astro';
+import Bearbeiten from '../../../components/Bearbeiten.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
@@ -37,9 +37,9 @@ const loesungsraum = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', 
     ]} />
     <p>Dazu zwei Fragen, die den Rahmen schärfen: <strong>Wie wird das Problem heute gelöst?</strong> Und <strong>was macht euer Produkt bewusst nicht?</strong></p>
     <div class="nur-handout">
-      <p>Das Outcome ist die Wurzel des Opportunity Solution Tree, an der alle weiteren Methoden hängen. Der Brief ist derselbe wie im Coding-Kurs: <code>docs/PRODUKT.md</code>. Neu ist der Blick darauf. Alles darin ist eine <strong>Annahme</strong>, bis Interviews und Tests sie stützen. Deshalb bleibt Abschnitt 3 („das Produkt in einem Satz“) heute offen, und Abschnitt 5 (MVP) kommt erst an Tag 3 aus der Story Map. Wer heute schon die Lösung festschreibt, hört in den Interviews nur noch, was dazu passt.</p>
+      <p>Das Outcome ist die Wurzel des Opportunity Solution Tree, an der alle weiteren Methoden hängen. Der Brief hat dieselben Abschnitte wie im Coding-Kurs. Neu ist der Blick darauf, und ihr speichert ihn in der Werkstatt. Alles darin ist eine <strong>Annahme</strong>, bis Interviews und Tests sie stützen. Deshalb bleibt Abschnitt 3 („das Produkt in einem Satz“) heute offen, und Abschnitt 5 (MVP) kommt erst an Tag 3 aus der Story Map. Wer heute schon die Lösung festschreibt, hört in den Interviews nur noch, was dazu passt.</p>
       <Callout type="info" title="Ihr habt schon ein Produkt?">
-        <p>Dann überarbeitet ihr euren Brief, statt neu anzufangen: Abschnitte 1, 2, 4 und 6 schärfen, die Stand-Zeile aktualisieren. Was ihr dabei ändert, kommt als Zeile ins <a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>.</p>
+        <p>Dann übertragt ihr euren Brief aus dem Coding-Kurs in die Werkstatt, statt neu anzufangen, und schärft dabei die Abschnitte 1, 2, 4 und 6. Was ihr dabei ändert, kommt als Zeile ins <a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>.</p>
       </Callout>
     </div>
   </Folie>
@@ -99,40 +99,15 @@ const loesungsraum = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', 
       <li data-schritt><strong>Allein, auf Papier:</strong> Für wen? Welches Problem? Wie wird es heute gelöst? Was macht es nicht (drei Dinge)? Keine Lösung, kein Produktname. <Timer minuten={15} /></li>
       <li data-schritt><strong>Outcome:</strong> „Wir glauben, dass … Wir merken es, wenn …“ – etwas, das Menschen tun und das ihr mit 3–5 Personen beobachten könnt. <Timer minuten={10} /></li>
       <li data-schritt><strong>Dreierrunde:</strong> Jede*r liest vor. Die anderen fragen nur: „Woran würdest du das merken?“ und „Ist das schon eine Lösung?“ <Timer minuten={15} /></li>
-      <li data-schritt><strong>Festhalten:</strong> in <code>docs/PRODUKT.md</code> – Vorlage im Handout auf euren Laptops. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Festhalten:</strong> in der Werkstatt speichern – „Bearbeiten“ im Handout auf euren Laptops. <Timer minuten={10} /></li>
       <li data-schritt><strong>Prüfen:</strong> erst die Prüfliste selbst (Handout), dann Claude. <Timer minuten={10} /></li>
     </ol>
   </Folie>
 
   <div class="nur-handout">
-  <h2 id="vorlage">Vorlage</h2>
-  <p>Die Abschnitte entsprechen eurem Brief aus dem Coding-Kurs. Kopiert die Vorlage in Claude Code mit dem Satz „Übernimm das in docs/PRODUKT.md, ohne Inhalte zu erfinden“ – oder tragt sie selbst ein.</p>
-  <Prompt label="Vorlage · docs/PRODUKT.md">**Stand:** [Datum] — Problem-Rahmen, Innolab Tag 1
-
-## 1. Für wen?
-[Eine konkrete Person in einer konkreten Situation]
-
-## 2. Welches Problem?
-[Was ist heute mühsam, langsam oder frustrierend – ohne Lösung formuliert]
-Heute gelöst durch: [was die Person jetzt tut, auch „gar nicht“]
-
-## 3. Was ist das Produkt in einem Satz?
-Offen – steht nach Tag 3 fest.
-
-## 4. Was macht es NICHT?
-- [naheliegend, aber bewusst nicht]
-- [naheliegend, aber bewusst nicht]
-- [naheliegend, aber bewusst nicht]
-
-## 5. Was gehört ins MVP?
-Kommt aus der Story Map (Tag 3).
-
-## 6. Woran merken wir, dass es funktioniert?
-Wir glauben, dass [Zielgruppe] [Veränderung].
-Wir merken es, wenn [beobachtbares Verhalten, mit 3–5 Menschen].
-
-## 7. Offene Fragen
-- [was ihr in den Interviews herausfinden wollt]</Prompt>
+  <h2 id="werkstatt">In der Werkstatt speichern</h2>
+  <p>Jede*r speichert den eigenen Brief in der Werkstatt. Der Editor hat dieselben sieben Abschnitte wie der Brief im Coding-Kurs, links das Formular, rechts die Vorschau. Abschnitt 3 bleibt heute offen, Abschnitt 5 füllt ihr an Tag 3 aus der Story Map. Alle Artefakte seht ihr unter <a href="/innolab/mappe">Meine Mappe</a>.</p>
+  <Bearbeiten artefakt="brief" />
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="problem-rahmen" />

@@ -1,6 +1,6 @@
-/* Werkstatt: Editor-Hülle und Felder. Der Einstieg trägt data-werkstatt und ist im Beamer-Modus weg;
-   das Panel trägt es nicht (EditorHuelle schließt es beim Wechsel in den Beamer). Stile hängen an .wk-wurzel. */
-html[data-beamer] [data-werkstatt] { display: none; }
+/* Werkstatt: Editor-Hülle und Felder. Der Einstieg trägt data-werkstatt und ist im Beamer-Modus weg (Regel in
+   beamer.css, die jede Seite lädt); das Panel trägt es nicht (EditorHuelle schließt es beim Wechsel in den Beamer).
+   Stile hängen an .wk-wurzel. */
 
 .wk-wurzel .wk-nur-leser {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;

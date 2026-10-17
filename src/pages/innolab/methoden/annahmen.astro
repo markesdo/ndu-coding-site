@@ -4,6 +4,7 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
+import Bearbeiten from '../../../components/Bearbeiten.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
@@ -76,28 +77,19 @@ const karte = {
       <li data-schritt><strong>Allein sammeln:</strong> pro Art mindestens drei Sätze „Wir glauben, dass …“, je ein Sticky in Miro. <Timer minuten={10} /></li>
       <li data-schritt><strong>Einordnen:</strong> jede Annahme in die Matrix – wie wichtig, wie belegt. <Timer minuten={10} /></li>
       <li data-schritt><strong>Dreierrunde:</strong> Die anderen schieben Stickies, wo sie anderer Meinung sind, und ergänzen, was fehlt. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Festhalten und prüfen:</strong> in <code>docs/ANNAHMEN.md</code>, die riskanteste markieren, Prüfliste, Claude. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Festhalten und prüfen:</strong> in der Werkstatt speichern, die riskanteste markieren, Prüfliste, Claude. <Timer minuten={15} /></li>
     </ol>
   </Folie>
 
   <div class="nur-handout">
-  <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/ANNAHMEN.md"># Annahmen — [Produkt]
-
-Stand: [Datum]
-Riskanteste Annahme: A[n]
-
-| ID | Wir glauben, dass … | Art | Wichtig (hoch/mittel/niedrig) | Beleg (keiner/schwach/stark) |
-|----|---------------------|-----|-------------------------------|------------------------------|
-| A1 | [...] | wünschenswert | [...] | [...] |
-| A2 | [...] | machbar | [...] | [...] |
-| A3 | [...] | wirtschaftlich | [...] | [...] |
-| A4 | [...] | bedienbar | [...] | [...] |</Prompt>
+  <h2 id="werkstatt">In der Werkstatt speichern</h2>
+  <p>Aus Miro in die Werkstatt: Jede*r trägt die eigene Map ein, eine Annahme pro Zeile mit Art, Wichtigkeit und Beleg. Rechts entsteht dieselbe Matrix wie auf der Folie. Zum Schluss wählt ihr die riskanteste Annahme aus.</p>
+  <Bearbeiten artefakt="annahmen" />
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="annahmen" />
   <p>Danach ein zweiter Durchgang als Red Team:</p>
-  <Prompt label="Red Team · Claude Code">Lies docs/PRODUKT.md und docs/ANNAHMEN.md. Welche Annahmen stecken im Brief, die in der Liste fehlen? Nenn höchstens drei, jeweils mit der Stelle im Brief, aus der sie folgen. Trag nichts ein – ich entscheide, was in die Liste kommt.</Prompt>
+  <Prompt label="Red Team · Claude mit der Werkstatt">Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkstatt (Werkzeug artefakt_lesen). Wo im Brief steckt eine Annahme, die in der Map fehlt? Zitier höchstens drei Stellen wörtlich und frag mich zu jeder, was wir dort voraussetzen. Formulier die Annahmen nicht für mich – ich entscheide, was in die Map kommt.</Prompt>
 
   </div>
 

@@ -1,0 +1,16 @@
+---
+// Knopf „Bearbeiten“ einer Methodenseite: öffnet den Editor der Werkstatt für dieses Artefakt (Spec §3.5).
+// Der Knopf trägt data-werkstatt (EditorHuelle) und fehlt darum im Beamer (beamer.css). Nie in eine Folie mit Auflösung
+// setzen – seiten.test.ts prüft das. client:only: Der Editor braucht den Browser (Anmeldung, Entwurf in localStorage).
+import { ARTEFAKT_NAMEN, type ArtefaktName } from '../werkstatt/schemas/index';
+import BearbeitenInsel from '../werkstatt/ui/Bearbeiten';
+
+const { artefakt } = Astro.props as { artefakt: ArtefaktName };
+if (!(ARTEFAKT_NAMEN as readonly string[]).includes(artefakt)) throw new Error(`Bearbeiten: unbekanntes Artefakt „${artefakt}“`);
+---
+<div class="werkstatt-einstieg">
+  <BearbeitenInsel client:only="react" artefakt={artefakt} />
+</div>
+<style>
+  .werkstatt-einstieg { margin: 1rem 0 1.5rem; min-height: 2.5rem; }
+</style>
