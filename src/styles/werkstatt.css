@@ -1,0 +1,75 @@
+/* Werkstatt: Editor-Hülle und Felder. Der Einstieg trägt data-werkstatt und ist im Beamer-Modus weg;
+   das Panel trägt es nicht (EditorHuelle schließt es beim Wechsel in den Beamer). Stile hängen an .wk-wurzel. */
+html[data-beamer] [data-werkstatt] { display: none; }
+
+.wk-wurzel .wk-nur-leser {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* Knöpfe */
+.wk-wurzel .wk-knopf {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  font: inherit; font-size: .95rem; line-height: 1.2; text-decoration: none; cursor: pointer;
+  min-height: 2.5rem; padding: .4rem .9rem; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--bg); color: var(--fg);
+}
+.wk-wurzel .wk-knopf:hover:not(:disabled) { border-color: var(--accent); }
+.wk-wurzel .wk-knopf:disabled { opacity: .45; cursor: default; }
+.wk-wurzel .wk-primaer { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.wk-wurzel .wk-icon { min-width: 2.5rem; padding: .4rem; }
+.wk-wurzel .wk-knopf:focus-visible,
+.wk-wurzel input:focus-visible, .wk-wurzel textarea:focus-visible, .wk-wurzel select:focus-visible,
+.wk-wurzel h2:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+/* Panel: breit als Seitenpanel rechts, schmal als Vollbild */
+.wk-dialog {
+  position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0;
+  width: min(100vw, 76rem); height: 100dvh; max-width: 100vw; max-height: 100dvh;
+  border: 0; border-left: 1px solid var(--border); background: var(--bg); color: var(--fg);
+}
+.wk-dialog::backdrop { background: rgb(0 0 0 / .45); }
+.wk-huelle { display: flex; flex-direction: column; height: 100%; }
+.wk-kopf { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; border-bottom: 1px solid var(--border); }
+.wk-kopf h2 { margin: 0; font-size: 1.15rem; }
+.wk-inhalt { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.wk-formular { min-width: 0; margin: 0; padding: 1rem; border: 0; overflow-y: auto; }
+.wk-bild { min-width: 0; padding: 1rem; overflow-y: auto; background: var(--bg-2); border-left: 1px solid var(--border); }
+.wk-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: .75rem 1rem; border-top: 1px solid var(--border); }
+.wk-fuss .wk-status, .wk-fuss .wk-fehler { margin: 0; }
+.wk-knoepfe { display: flex; flex-wrap: wrap; gap: .5rem; margin-left: auto; }
+.wk-status { color: var(--muted); font-size: .9rem; min-height: 1.3em; }
+.wk-hinweis { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin: 1rem; padding: .75rem 1rem; border: 1px solid var(--yellow); border-radius: var(--radius); background: var(--yellow-soft); color: var(--fg); }
+.wk-hinweis p { margin: 0; }
+.wk-kopiertext { padding: 0 1rem; }
+.wk-kopiertext textarea { width: 100%; }
+@media (max-width: 760px) {
+  .wk-dialog { width: 100vw; border-left: 0; }
+  .wk-inhalt { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
+  .wk-formular, .wk-bild { overflow-y: visible; }
+  .wk-bild { border-left: 0; border-top: 1px solid var(--border); }
+}
+
+/* Felder */
+.wk-feld { display: flex; flex-direction: column; gap: .25rem; margin-bottom: 1rem; }
+.wk-feld label, .wk-liste legend, .wk-verweise legend { font-weight: 600; font-size: .95rem; }
+.wk-wurzel input[type="text"], .wk-wurzel textarea, .wk-wurzel select {
+  font: inherit; width: 100%; min-height: 2.5rem; padding: .4rem .6rem; box-sizing: border-box;
+  border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); color: var(--fg);
+}
+.wk-wurzel [aria-invalid="true"] { border-color: var(--accent); border-width: 2px; }
+.wk-hilfe { margin: 0; color: var(--muted); font-size: .88rem; }
+.wk-fehler { margin: .15rem 0 0; color: var(--accent-ink); font-size: .9rem; font-weight: 600; }
+
+/* Liste mit Zeilen */
+.wk-liste, .wk-verweise { margin: 0 0 1rem; padding: 0; border: 0; min-width: 0; }
+.wk-liste ol { list-style: none; margin: .5rem 0; padding: 0; display: grid; gap: .75rem; }
+.wk-zeile { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; padding: .75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+.wk-zeile-knoepfe { display: flex; flex-direction: column; gap: .25rem; }
+.wk-zeile-felder .wk-feld:last-child { margin-bottom: 0; }
+
+/* Verweise */
+.wk-chips { list-style: none; margin: .4rem 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+.wk-chips li { display: inline-flex; align-items: center; gap: .15rem; padding-left: .6rem; border: 1px solid var(--border); border-radius: 999px; background: var(--code-bg); font-family: var(--mono); font-size: .85rem; }
+.wk-chips .wk-knopf { min-height: 2rem; min-width: 2rem; border: 0; background: none; }
+.wk-verweis-neu { display: flex; gap: .5rem; align-items: stretch; }
+.wk-verweis-neu input { flex: 1; }

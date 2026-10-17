@@ -1,0 +1,11 @@
+---
+// Nur Dev: Testseite für die Editor-Hülle. Liegt bewusst nicht in src/pages; astro.config.mjs hängt sie nur im Dev-Server ein,
+// sodass weder Seite noch Fake-API im Build landen.
+import Layout from '../../../layouts/Layout.astro';
+import TestEditor from './TestEditor';
+---
+<Layout title="Werkstatt-Test">
+  <h1>Werkstatt-Test</h1>
+  <p>Dev-Seite für die Editor-Hülle. Mit <code>?fake=ok|konflikt|ausfall|abgemeldet|einrichten</code> ohne echte API.</p>
+  <TestEditor client:only="react" />
+</Layout>

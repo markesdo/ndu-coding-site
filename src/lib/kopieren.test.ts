@@ -37,6 +37,24 @@ describe('kopiereText', () => {
   });
 });
 
+describe('kopiereText mit Textarea', () => {
+  it('markiert über select() und setSelectionRange statt über einen Range', async () => {
+    const g = globalThis as Record<string, unknown>;
+    const vorher = { document: g.document, getSelection: g.getSelection };
+    const aufrufe: string[] = [];
+    g.document = { execCommand: (c: string) => { aufrufe.push(c); return true; }, createRange: () => { aufrufe.push('range'); return {}; } };
+    g.getSelection = () => { aufrufe.push('selection'); return null; };
+    const feld = { value: 'Text', select: () => aufrufe.push('select'), setSelectionRange: (a: number, b: number) => aufrufe.push(`bereich ${a}-${b}`) };
+    try {
+      expect(await kopiereText('Text', feld as unknown as Node)).toBe('kopiert');
+      expect(aufrufe).toStrictEqual(['select', 'bereich 0-4', 'copy']);
+    } finally {
+      g.document = vorher.document;
+      g.getSelection = vorher.getSelection;
+    }
+  });
+});
+
 describe('kopierMeldung', () => {
   it('ehrlich bei Erfolg und Fehler', () => {
     expect(kopierMeldung('kopiert', 'MacIntel')).toBe('Kopiert');
