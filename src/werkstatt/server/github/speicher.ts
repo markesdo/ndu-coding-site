@@ -8,7 +8,7 @@ import { kohorte as kohorteNachId, type Kohorte } from '../../kohorten/index.js'
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme } from '../antwort.js';
 import { blobSha } from '../git-sha.js';
-import { fremdesRepo, internerFehler as intern, unbekanntesRepo, wirdEingerichtet } from '../speicher-fehler.js';
+import { LOGIN_MUSTER, fremdesRepo, internerFehler as intern, unbekanntesRepo, wirdEingerichtet } from '../speicher-fehler.js';
 import type { Cache, Speicher } from '../typen.js';
 import { GithubAusnahme, ORG_RECHTE, githubAnfrage, githubFehler, jsonAusRepo, type InstallationToken } from './app-token.js';
 
@@ -34,6 +34,12 @@ const WARTEN_HOECHSTENS_MS = 8000;
 const SPEICHER_VERSUCHE = 3;
 
 const REPO_RECHTE = { contents: 'write' } as const;
+// Collaborators einladen und prüfen: nur dafür, nur für dieses Repo.
+const EINLADEN_RECHTE = { administration: 'write' } as const;
+// Marker „eingeladen“ (und der aufgelöste Login) nur kurz: drosselt das erneute PUT; der Status wird trotzdem jedes Mal geprüft.
+const EINGELADEN_SEK = 10 * 60;
+// Aufgelöster Login, nur für die Statusabfrage (lesend). Eingeladen wird immer mit frisch aufgelöstem Login.
+const LOGIN_SEK = 10 * 60;
 
 const jsonPfad = (name: string) => `mappe/${name}.json`;
 const pfadKodieren = (pfad: string) => pfad.split('/').map(encodeURIComponent).join('/');
@@ -86,13 +92,13 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
 
   // Token für genau dieses Repo. Die ID wird einmal aufgelöst und gemerkt; scheitert die Token-Ausgabe mit einer
   // gemerkten ID (Repo gelöscht und neu angelegt), einmal neu auflösen. null = kein Repo.
-  async function zugriff(repo: string): Promise<Zugriff | null> {
+  async function zugriff(repo: string, rechte: typeof REPO_RECHTE | typeof EINLADEN_RECHTE = REPO_RECHTE): Promise<Zugriff | null> {
     const { org } = kohorteDesRepos(repo);
     const basis = repoPfad(org, repo);
     const gemerkt = await abh.cache.get(idSchluessel(org, repo));
     if (typeof gemerkt === 'number') {
       try {
-        return { org, basis, token: await abh.token({ org, repoId: gemerkt, rechte: REPO_RECHTE }) };
+        return { org, basis, token: await abh.token({ org, repoId: gemerkt, rechte }) };
       } catch (e) {
         if (!(e instanceof GithubAusnahme && (e.githubStatus === 404 || e.githubStatus === 422))) throw e;
         await abh.cache.set(idSchluessel(org, repo), null, 1);
@@ -100,7 +106,7 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
     }
     const info = await repoInfo(org, repo);
     if (!info) return null;
-    return { org, basis, token: await abh.token({ org, repoId: info.id, rechte: REPO_RECHTE }) };
+    return { org, basis, token: await abh.token({ org, repoId: info.id, rechte }) };
   }
 
   // SHA des Kopfs von main; null, solange es main noch nicht gibt (leeres oder frisch erzeugtes Repo).
@@ -142,7 +148,53 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
     return { kohorte: wj.kohorte, githubId: wj.githubId };
   }
 
+  const lesenSchluessel = (org: string, repo: string, githubId: number, art: 'aktiv' | 'eingeladen' | 'login') =>
+    `gh-lesezugriff-${art}:${org}/${repo}:${githubId}`;
+
   return {
+    async lesezugriff(repo, githubId) {
+      if (!Number.isSafeInteger(githubId) || githubId <= 0) throw intern('lesezugriff: ungültige GitHub-ID');
+      const { org } = kohorteDesRepos(repo);
+      const aktivKey = lesenSchluessel(org, repo, githubId, 'aktiv');
+      if ((await abh.cache.get(aktivKey)) === 'aktiv') return 'aktiv';
+      const z = await zugriff(repo, EINLADEN_RECHTE);
+      if (!z) throw unbekanntesRepo();
+      // Der Login ist umbenennbar, die ID nicht: den aktuellen Namen bei GitHub erfragen.
+      const loginKey = lesenSchluessel(org, repo, githubId, 'login');
+      const aufloesen = async (): Promise<string> => {
+        const nutzer = await anfrage(z.token, 'GET', `/user/${githubId}`);
+        if (nutzer.status !== 200) throw githubFehler('GET', '/user/{id}', nutzer.status);
+        const l = nutzer.daten?.login;
+        if (typeof l !== 'string' || !LOGIN_MUSTER.test(l)) throw intern('lesezugriff: ungültiger GitHub-Login von GitHub');
+        await abh.cache.set(loginKey, l, LOGIN_SEK);
+        return l;
+      };
+      const gemerkt = await abh.cache.get(loginKey);
+      // Für die Statusabfrage darf der gemerkte Name gelten (sie gibt nichts frei).
+      const login = typeof gemerkt === 'string' && LOGIN_MUSTER.test(gemerkt) ? gemerkt : await aufloesen();
+      const pfad = `/collaborators/${encodeURIComponent(login)}`;
+      // Der Status wird immer geprüft (die Annahme soll sofort zählen); gedrosselt wird nur das erneute Einladen.
+      const geprueft = await anfrage(z, 'GET', pfad);
+      if (geprueft.status === 204) {
+        await abh.cache.set(aktivKey, 'aktiv', TAG_SEK);
+        return 'aktiv';
+      }
+      if (geprueft.status !== 404) throw githubFehler('GET', 'collaborators', geprueft.status);
+      const markeKey = lesenSchluessel(org, repo, githubId, 'eingeladen');
+      if ((await abh.cache.get(markeKey)) === 'eingeladen') return 'eingeladen';
+      // Einladen gibt Zugriff frei: Login frisch auflösen, nie den gemerkten nehmen (Umbenennung, Name neu vergeben).
+      const frisch = login === gemerkt ? await aufloesen() : login;
+      // Nie Schreibrechte: Lesende, die Werkstatt bleibt die einzige Schreiberin.
+      const r = await anfrage(z, 'PUT', `/collaborators/${encodeURIComponent(frisch)}`, { permission: 'pull' });
+      if (r.status === 204) {
+        await abh.cache.set(aktivKey, 'aktiv', TAG_SEK);
+        return 'aktiv';
+      }
+      if (r.status !== 201) throw githubFehler('PUT', 'collaborators', r.status);
+      await abh.cache.set(markeKey, 'eingeladen', EINGELADEN_SEK);
+      return 'eingeladen';
+    },
+
     async anlegen(m, githubId) {
       const k = kohorteZu(m.kohorte);
       if (!k) throw intern(`anlegen: unbekannte Kohorte ${m.kohorte}`);

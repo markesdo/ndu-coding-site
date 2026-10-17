@@ -19,6 +19,8 @@ export interface ApiFehler {
 export interface MappeStand {
   kohorte: string;
   repo: string;
+  // Lesezugriff der Person auf ihr Repo: 'unbekannt' bei Lehrenden, im MCP und wenn GitHub nicht antwortet.
+  lesezugriff: 'aktiv' | 'eingeladen' | 'unbekannt';
   artefakte: { name: ArtefaktName; vorhanden: boolean }[];
 }
 

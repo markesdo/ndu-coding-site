@@ -77,11 +77,20 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     if (!m) return c.redirect(`${MAPPE}?fehler=nicht-freigeschaltet`, 302);
 
     if (m.rolle === 'studierende') {
+      let angelegt = false;
       try {
         await abh.speicher.anlegen(m, person.githubId);
+        angelegt = true;
       } catch (e) {
         // Cookie trotzdem: /innolab/mappe zeigt „wird eingerichtet“, GET /api/werkstatt/mappe (Task 11) legt ein fehlendes Repo erneut an.
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', e instanceof Error ? e.message : 'Fehler');
+      }
+      // Best effort, nur nach erfolgreichem anlegen (sonst könnte das Repo einer anderen Person gehören): die Einladung
+      // zum Lesen geht früh raus (Mail von GitHub); scheitert sie, holt GET mappe sie nach.
+      try {
+        if (angelegt) await abh.speicher.lesezugriff(repoName(m), person.githubId);
+      } catch (e) {
+        console.error('werkstatt: Lesezugriff nicht prüfbar –', e instanceof Error ? e.message : 'Fehler');
       }
     }
 

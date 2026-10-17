@@ -9,21 +9,22 @@ import type { GithubIdentitaet, Speicher, Umgebung } from '../typen';
 
 const BASIS = 'http://localhost:4321';
 
-function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean; werkstattJson?: Speicher['werkstattJson'] } = {}) {
+function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean; lesezugriff?: Speicher['lesezugriff']; werkstattJson?: Speicher['werkstattJson'] } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: opts.zugang ?? { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] } } };
   const basis = fakeSpeicher();
   const anlegen = vi.fn(async (...a: Parameters<Speicher['anlegen']>) => {
     if (opts.anlegenWirft) throw new Error('GitHub kaputt');
     return basis.anlegen(...a);
   });
-  const speicher: Speicher = { ...basis, anlegen, ...(opts.werkstattJson ? { werkstattJson: opts.werkstattJson } : {}) };
+  const lesezugriff = vi.fn(opts.lesezugriff ?? basis.lesezugriff);
+  const speicher: Speicher = { ...basis, anlegen, lesezugriff, ...(opts.werkstattJson ? { werkstattJson: opts.werkstattJson } : {}) };
   const person = opts.person ?? { githubId: 1001, login: 'sofie-x' };
   const github: GithubIdentitaet = {
     loginUrl: (state, uri) => `https://github.test/auth?state=${state}&redirect_uri=${encodeURIComponent(uri)}`,
     codeEinloesen: async () => person,
   };
   const abh = lokaleAbhaengigkeiten({ umgebung, speicher, github, jetzt: () => 1_800_000_000_000 });
-  return { app: appErstellen(abh), anlegen, umgebung };
+  return { app: appErstellen(abh), anlegen, lesezugriff, umgebung };
 }
 
 const setCookies = (r: Response) => r.headers.getSetCookie();
@@ -150,6 +151,37 @@ describe('auth/callback', () => {
 
   it('anlegen scheitert: Cookie und Rücksprung trotzdem', async () => {
     const { app, umgebung } = aufbau({ anlegenWirft: true });
+    const { state, stateCookie } = await login(app, '/innolab/mappe');
+    const r = await callback(app, state, stateCookie);
+    expect(r.status).toBe(302);
+    expect(r.headers.get('location')).toBe('/innolab/mappe');
+    expect(await sitzungLesen(wert(r, COOKIE_WERKSTATT), umgebung.sessionSecret, 1_800_000_000)).not.toBeNull();
+  });
+
+  it('Student: Lesezugriff best effort mit dem Login der Person; Lehrende ohne Aufruf', async () => {
+    const t = aufbau();
+    const { state, stateCookie } = await login(t.app);
+    await callback(t.app, state, stateCookie);
+    expect(t.lesezugriff).toHaveBeenCalledWith('test-sofie', 1001);
+    const l = aufbau({ person: { githubId: 1000, login: 'lehrer' } });
+    const z = await login(l.app);
+    await callback(l.app, z.state, z.stateCookie);
+    expect(l.lesezugriff).not.toHaveBeenCalled();
+  });
+
+  it('anlegen wirft (z. B. fremdes Repo): kein lesezugriff, Login klappt', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = aufbau({ anlegenWirft: true });
+    const { state, stateCookie } = await login(t.app);
+    const r = await callback(t.app, state, stateCookie);
+    expect(r.status).toBe(302);
+    expect(wert(r, COOKIE_WERKSTATT)).toBeDefined();
+    expect(t.lesezugriff).not.toHaveBeenCalled();
+  });
+
+  it('lesezugriff wirft: Login klappt trotzdem', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { app, umgebung } = aufbau({ lesezugriff: async () => { throw new Error('GitHub kaputt'); } });
     const { state, stateCookie } = await login(app, '/innolab/mappe');
     const r = await callback(app, state, stateCookie);
     expect(r.status).toBe(302);

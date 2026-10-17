@@ -3,7 +3,7 @@ import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
+import { FEHLER_TEXT, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -59,7 +59,7 @@ describe('leitfadenFrei', () => {
 
 describe('mappeZeilen', () => {
   it('listet alle Artefakte der Mappe in fester Reihenfolge mit Titel, Methodenseite und Stand', () => {
-    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }] };
+    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }] };
     const z = mappeZeilen(stand);
     expect(z.map((x) => x.name)).toStrictEqual([...ARTEFAKT_NAMEN]);
     expect(z.find((x) => x.name === 'annahmen')).toStrictEqual({ name: 'annahmen', titel: 'Annahmen-Map', href: '/innolab/methoden/annahmen', vorhanden: true });
@@ -72,7 +72,7 @@ describe('api.mappe', () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it('liest den Stand der Mappe', async () => {
-    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', artefakte: [] };
+    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [] };
     const f = vi.fn(async () => new Response(JSON.stringify(stand), { status: 200 }));
     vi.stubGlobal('fetch', f);
     await expect(api.mappe()).resolves.toStrictEqual(stand);
@@ -84,5 +84,29 @@ describe('api.mappe', () => {
     const e = await api.mappe().catch((x: unknown) => x);
     expect(e).toBeInstanceOf(ApiError);
     expect(e).toMatchObject({ status: 503, code: 'wird-eingerichtet' });
+  });
+});
+
+describe('repoHinweis', () => {
+  const stand = (lesezugriff: MappeStand['lesezugriff'], repo = '2026-sofie') => ({ repo, lesezugriff });
+
+  it('aktiv: Link auf das Repo', () => {
+    expect(repoHinweis(stand('aktiv'), 'ndu-innolab')).toStrictEqual({ art: 'aktiv', href: 'https://github.com/ndu-innolab/2026-sofie' });
+  });
+
+  it('eingeladen: Link nur auf die Einladung, nie auf das Repo', () => {
+    expect(repoHinweis(stand('eingeladen'), 'ndu-innolab')).toStrictEqual({
+      art: 'eingeladen',
+      href: 'https://github.com/ndu-innolab/2026-sofie/invitations',
+    });
+  });
+
+  it('unbekannt: kein Link', () => {
+    expect(repoHinweis(stand('unbekannt'), 'ndu-innolab')).toStrictEqual({ art: 'unbekannt' });
+  });
+
+  it('ohne Repo (Lehrende) oder Org: nichts', () => {
+    expect(repoHinweis(stand('unbekannt', ''), 'ndu-innolab')).toStrictEqual({ art: 'keine' });
+    expect(repoHinweis(stand('aktiv'), undefined)).toStrictEqual({ art: 'keine' });
   });
 });

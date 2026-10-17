@@ -26,6 +26,8 @@ interface FakeRepo {
   vorlage: { name: string; owner: string } | null;
   // Wie oft `GET git/ref/heads/main` noch 404 antwortet (GitHub kopiert die Vorlage nicht synchron).
   mainVerzoegerung: number;
+  // Eingeladene und aktive Collaborators (Schlüssel: login in Kleinschreibung).
+  kollaboration: Map<string, { permission: string; status: 'eingeladen' | 'aktiv' }>;
 }
 
 export interface FakeAufruf {
@@ -60,6 +62,12 @@ export interface FakeGithubZustand {
   // Wie eine Änderung direkt auf GitHub: ein Commit auf main, der `pfad` setzt.
   aendernVonAussen(repo: string, pfad: string, inhalt: string): void;
   aufrufeVon(methode: string, pfadEnde: string): FakeAufruf[];
+  // GitHub-ID -> aktueller Login (GET /user/{id}).
+  nutzer: Map<number, string>;
+  // Die Person nimmt die Einladung an: aus „eingeladen“ wird „aktiv“.
+  einladungAnnehmen(repo: string, login: string): void;
+  // Eingeladene und aktive Collaborators mit ihrer Berechtigung.
+  kollaboration(repo: string): Record<string, { permission: string; status: 'eingeladen' | 'aktiv' }>;
 }
 
 const BASIS = 'https://api.github.com';
@@ -88,6 +96,7 @@ export function fakeGithub(opts: { org?: string; installationId?: number } = {})
     main: null,
     vorlage: null,
     mainVerzoegerung: 0,
+    kollaboration: new Map(),
   });
   const blobAblegen = (r: FakeRepo, inhalt: string) => {
     const sha = blobSha(inhalt);
@@ -148,8 +157,20 @@ export function fakeGithub(opts: { org?: string; installationId?: number } = {})
       if (!r) throw new Error(`repo-fehlt: ${repo}`);
       direktCommit(r, { [pfad]: inhalt }, `Von außen: ${pfad}`);
     },
+    nutzer: new Map(),
     aufrufeVon(methode, pfadEnde) {
       return zustand.aufrufe.filter((a) => a.methode === methode && a.pfad.endsWith(pfadEnde));
+    },
+    einladungAnnehmen(repo, login) {
+      const r = zustand.repos.get(repo);
+      const k = r?.kollaboration.get(login.toLowerCase());
+      if (!k) throw new Error(`einladung-fehlt: ${repo} ${login}`);
+      k.status = 'aktiv';
+    },
+    kollaboration(repo) {
+      const r = zustand.repos.get(repo);
+      if (!r) throw new Error(`repo-fehlt: ${repo}`);
+      return Object.fromEntries([...r.kollaboration].map(([login, k]) => [login, { ...k }]));
     },
   };
 
@@ -186,6 +207,12 @@ export function fakeGithub(opts: { org?: string; installationId?: number } = {})
       return login === `${zustand.bot.slug}[bot]` ? antwort(200, { id: zustand.bot.id, login }) : nichtGefunden();
     }
 
+    if (methode === 'GET' && (m = pfad.match(/^\/user\/(\d+)$/))) {
+      if (!token || !zustand.tokens.has(token)) return antwort(401, { message: 'Bad credentials' });
+      const login = zustand.nutzer.get(Number(m[1]));
+      return login ? antwort(200, { id: Number(m[1]), login }) : nichtGefunden();
+    }
+
     m = pfad.match(/^\/repos\/([^/]+)\/([^/]+)(\/.*)?$/);
     if (!m || m[1] !== zustand.org) return nichtGefunden();
     const rest = m[3] ?? '';
@@ -215,6 +242,20 @@ export function fakeGithub(opts: { org?: string; installationId?: number } = {})
     if (methode === 'GET' && rest === '') {
       const vorlage = r.vorlage ? { name: r.vorlage.name, owner: { login: r.vorlage.owner } } : null;
       return antwort(200, { id: r.id, name: r.name, template_repository: vorlage });
+    }
+
+    // Collaborators brauchen Administration write (wie bei GitHub; Contents allein reicht nicht).
+    if ((m = rest.match(/^\/collaborators\/([^/]+)$/))) {
+      if (zustand.tokens.get(token!)!.permissions.administration !== 'write') return antwort(403, { message: 'Resource not accessible by integration' });
+      const login = decodeURIComponent(m[1]).toLowerCase();
+      const k = r.kollaboration.get(login);
+      if (methode === 'GET') return k?.status === 'aktiv' ? antwort(204) : nichtGefunden();
+      if (methode === 'PUT') {
+        if (typeof body?.permission !== 'string') return antwort(422, { message: 'Invalid request' });
+        if (k?.status === 'aktiv') return antwort(204);
+        r.kollaboration.set(login, { permission: body.permission, status: 'eingeladen' });
+        return antwort(201, { id: 1, permissions: body.permission });
+      }
     }
 
     const leer = () => antwort(409, { message: 'Git Repository is empty.' });

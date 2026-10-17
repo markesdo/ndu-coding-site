@@ -284,6 +284,7 @@ describe('Werkzeuge', () => {
     expect(stand.structuredContent).toStrictEqual({
       kohorte: 'test',
       repo: 'test-sofie',
+      lesezugriff: 'unbekannt',
       artefakte: [
         { name: 'brief', vorhanden: false },
         { name: 'entscheidungen', vorhanden: false },

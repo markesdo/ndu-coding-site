@@ -54,7 +54,7 @@ function aufbau(opts: { zeitlimitMs?: number } = {}) {
     jetzt: () => uhr.ms,
     zeitlimitMs: opts.zeitlimitMs,
   });
-  return { gh, s, schlafen, uhr };
+  return { gh, s, schlafen, uhr, cache };
 }
 
 async function mitRepo() {
@@ -562,5 +562,127 @@ describe('mehrere Jahrgänge gleichzeitig', () => {
         expect([repo, e.status, e.code]).toStrictEqual([repo, 404, 'unbekannt']);
       }
     }
+  });
+});
+
+describe('githubSpeicher.lesezugriff', () => {
+  const LOGIN = 'probe-login';
+  const ID = 1001;
+  const anrufe = (gh: ReturnType<typeof aufbau>['gh']) => gh.zustand.aufrufe.filter((a) => a.pfad.includes('/collaborators/'));
+  async function bereit() {
+    const t = await mitRepo();
+    t.gh.zustand.nutzer.set(ID, LOGIN);
+    return t;
+  }
+
+  it('ohne Zugriff: lädt als Lesende (pull) ein und meldet eingeladen', async () => {
+    const { gh, s, repo } = await bereit();
+    expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
+    const put = gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`);
+    expect(put).toHaveLength(1);
+    expect(put[0].body).toStrictEqual({ permission: 'pull' });
+    expect(gh.zustand.kollaboration(repo)).toStrictEqual({ [LOGIN]: { permission: 'pull', status: 'eingeladen' } });
+    // Token nur für dieses Repo und nur mit Administration.
+    expect(gh.zustand.tokens.get(put[0].token!)).toStrictEqual({ permissions: { administration: 'write' }, repositoryIds: [gh.zustand.repos.get(repo)!.id] });
+  });
+
+  it('der Login kommt aus GET /user/{id} (aktueller Name), nicht aus einer Sitzung', async () => {
+    const { gh, s, repo } = await bereit();
+    gh.zustand.nutzer.set(ID, 'neuer-name');
+    await s.lesezugriff(repo, ID);
+    expect(gh.zustand.aufrufeVon('GET', `/user/${ID}`)).toHaveLength(1);
+    expect(Object.keys(gh.zustand.kollaboration(repo))).toStrictEqual(['neuer-name']);
+  });
+
+  it('eingeladen wird nur mit frisch aufgelöstem Login, nie mit dem gemerkten', async () => {
+    const { gh, s, repo, cache } = await bereit();
+    // Gemerkter Name von vorhin, inzwischen umbenannt (und der alte Name womöglich neu vergeben).
+    await cache.set(`gh-lesezugriff-login:ndu-innolab/${repo}:${ID}`, 'alter-name', 600);
+    gh.zustand.nutzer.set(ID, 'neuer-name');
+    expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
+    expect(gh.zustand.aufrufeVon('PUT', '/collaborators/alter-name')).toHaveLength(0);
+    expect(Object.keys(gh.zustand.kollaboration(repo))).toStrictEqual(['neuer-name']);
+  });
+
+  it('GET /user/{id} 404 → githubFehler, kein PUT', async () => {
+    const { gh, s, repo } = await mitRepo();
+    await expect(s.lesezugriff(repo, 4242)).rejects.toMatchObject({ status: 502, code: 'github-fehler' });
+    expect(anrufe(gh)).toHaveLength(0);
+  });
+
+  it('ungültiger Login von GitHub → wirft, kein Collaborator-Request', async () => {
+    const { gh, s, repo } = await bereit();
+    for (const login of ['../x', 'a/b', '-abc', 'a'.repeat(40), 'x?y=1']) {
+      gh.zustand.nutzer.set(ID, login);
+      await expect(s.lesezugriff(repo, ID), login).rejects.toBeInstanceOf(ApiAusnahme);
+    }
+    expect(anrufe(gh)).toHaveLength(0);
+  });
+
+  it('ungültige ID wirft ohne jeden Request', async () => {
+    const { gh, s, repo } = await bereit();
+    gh.zustand.aufrufe.length = 0;
+    for (const id of [0, -1, 1.5, Number.NaN, Number.MAX_SAFE_INTEGER + 1]) {
+      await expect(s.lesezugriff(repo, id), String(id)).rejects.toBeInstanceOf(ApiAusnahme);
+    }
+    expect(gh.zustand.aufrufe).toHaveLength(0);
+  });
+
+  it('offene Einladung: innerhalb von 10 Minuten nur GET, kein neues PUT; danach wieder PUT', async () => {
+    const { gh, s, repo, uhr } = await bereit();
+    expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
+    uhr.ms += 9 * 60 * 1000;
+    expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
+    expect(gh.zustand.aufrufeVon('GET', `/collaborators/${LOGIN}`)).toHaveLength(2);
+    expect(gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`)).toHaveLength(1);
+    uhr.ms += 61 * 1000;
+    expect(await s.lesezugriff(repo, ID)).toBe('eingeladen');
+    expect(gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`)).toHaveLength(2);
+  });
+
+  it('Annahme innerhalb der 10 Minuten: der nächste Aufruf meldet sofort aktiv (ein GET, kein PUT)', async () => {
+    const { gh, s, repo, uhr } = await bereit();
+    await s.lesezugriff(repo, ID);
+    gh.zustand.einladungAnnehmen(repo, LOGIN);
+    uhr.ms += 60 * 1000;
+    gh.zustand.aufrufe.length = 0;
+    expect(await s.lesezugriff(repo, ID)).toBe('aktiv');
+    expect(gh.zustand.aufrufeVon('GET', `/collaborators/${LOGIN}`)).toHaveLength(1);
+    expect(gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`)).toHaveLength(0);
+  });
+
+  it('PUT 204 (schon Collaborator, GET gab 404): aktiv', async () => {
+    const { gh, s, repo } = await bereit();
+    gh.zustand.stoerung = (methode, pfad) => {
+      if (methode === 'GET' && pfad.endsWith(`/collaborators/${LOGIN}`)) return new Response(null, { status: 404 });
+      if (methode === 'PUT' && pfad.endsWith(`/collaborators/${LOGIN}`)) return new Response(null, { status: 204 });
+      return undefined;
+    };
+    expect(await s.lesezugriff(repo, ID)).toBe('aktiv');
+  });
+
+  it('aktiv wird einen Tag gemerkt: der zweite Aufruf macht keinen Request', async () => {
+    const { gh, s, repo, uhr } = await bereit();
+    await s.lesezugriff(repo, ID);
+    gh.zustand.einladungAnnehmen(repo, LOGIN);
+    uhr.ms += 11 * 60 * 1000;
+    expect(await s.lesezugriff(repo, ID)).toBe('aktiv');
+    const bisher = gh.zustand.aufrufe.length;
+    expect(await s.lesezugriff(repo, ID)).toBe('aktiv');
+    expect(gh.zustand.aufrufe).toHaveLength(bisher);
+    uhr.ms += 24 * 60 * 60 * 1000 + 1;
+    expect(await s.lesezugriff(repo, ID)).toBe('aktiv');
+    expect(anrufe(gh).length).toBeGreaterThan(0);
+    expect(gh.zustand.aufrufe.length).toBeGreaterThan(bisher);
+  });
+
+  it('5xx beim GET oder PUT → githubFehler (502), kein Cache', async () => {
+    const { gh, s, repo } = await bereit();
+    gh.zustand.stoerung = (methode, pfad) => (pfad.includes('/collaborators/') && methode === 'GET' ? new Response(null, { status: 500 }) : undefined);
+    await expect(s.lesezugriff(repo, ID)).rejects.toMatchObject({ status: 502, code: 'github-fehler' });
+    gh.zustand.stoerung = (methode, pfad) =>
+      pfad.includes('/collaborators/') ? new Response(null, { status: methode === 'GET' ? 404 : 502 }) : undefined;
+    await expect(s.lesezugriff(repo, ID)).rejects.toMatchObject({ status: 502, code: 'github-fehler' });
+    expect(gh.zustand.kollaboration(repo)).toStrictEqual({});
   });
 });
