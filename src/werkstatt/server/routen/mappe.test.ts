@@ -41,7 +41,7 @@ function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: Speicher['spe
     });
   }
   const speichern = (name: string, body: unknown, s?: Omit<Sitzung, 'exp'>) => rohSpeichern(name, JSON.stringify(body), s);
-  return { app, fake, anlegen, holen, speichern, rohSpeichern };
+  return { app, fake, anlegen, holen, speichern, rohSpeichern, cookie, umgebung };
 }
 
 async function mitMappe(opts: Parameters<typeof aufbau>[0] = {}) {
@@ -122,6 +122,42 @@ describe('GET /api/werkstatt/mappe', () => {
     expect((await t.holen('/brief')).status).toBe(403);
     expect((await t.speichern('brief', { daten: briefBeispiel, basisSha: null })).status).toBe(403);
     expect(t.fake.commits(REPO)).toHaveLength(0);
+  });
+
+  it('werkstatt.json mit passender ID, aber anderer Kohorte → 403 auf allen Routen, kein Commit', async () => {
+    const t = aufbau();
+    await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
+    // Der Fake schreibt immer die eigene Kohorte; ein test-sofie mit fremder Kohorte in werkstatt.json wird nachgestellt.
+    const fremd = { ...t.fake, werkstattJson: async (repo: string) => (repo === REPO ? { kohorte: 'andere', githubId: 1001 } : null) };
+    const app = appErstellen(lokaleAbhaengigkeiten({ umgebung: t.umgebung, speicher: fremd, jetzt: () => JETZT }));
+    const kopf = { Cookie: await t.cookie() };
+    for (const r of [
+      await app.request(`${BASIS}/api/werkstatt/mappe`, { headers: kopf }),
+      await app.request(`${BASIS}/api/werkstatt/mappe/brief`, { headers: kopf }),
+      await app.request(`${BASIS}/api/werkstatt/mappe/brief`, { method: 'PUT', headers: { ...kopf, Origin: BASIS, 'Content-Type': 'application/json' }, body: JSON.stringify({ daten: briefBeispiel, basisSha: null }) }),
+    ]) {
+      expect(r.status).toBe(403);
+      expect(await r.json()).toMatchObject({ code: 'nicht-freigeschaltet' });
+    }
+    expect(t.fake.commits(REPO)).toHaveLength(0);
+  });
+
+  it('Anlegen scheitert mit 409 oder 502 → 503 wird-eingerichtet, nicht 409', async () => {
+    for (const ausnahme of [new ApiAusnahme(409, 'konflikt', 'x'), new ApiAusnahme(502, 'github-fehler', 'y')]) {
+      const t = aufbau({ anlegen: async () => { throw ausnahme; } });
+      const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const r = await t.holen('');
+      log.mockRestore();
+      expect(r.status).toBe(503);
+      expect(await r.json()).toMatchObject({ code: 'wird-eingerichtet' });
+    }
+  });
+
+  it('Anlegen meldet fremdes Repo (403) → 403 geht durch', async () => {
+    const t = aufbau({ anlegen: async () => { throw new ApiAusnahme(403, 'nicht-freigeschaltet', 'fremd'); } });
+    const r = await t.holen('');
+    expect(r.status).toBe(403);
+    expect(await r.json()).toMatchObject({ code: 'nicht-freigeschaltet' });
   });
 
   it('Lehrende: GET mappe 200 ohne Repo, Artefakt-Routen 403', async () => {
@@ -325,6 +361,27 @@ describe('PUT /api/werkstatt/mappe/:artefakt', () => {
     const t = await mitMappe();
     await t.speichern('brief', { daten: briefBeispiel, basisSha: null, nachricht: '  Problem geschärft\n  und Zielgruppe ' });
     expect(t.fake.commits(REPO)[0].nachricht).toBe('Produkt-Brief: Problem geschärft und Zielgruppe');
+  });
+
+  it('Nachricht: Steuerzeichen raus, nach Codepunkten auf 100 gekürzt', async () => {
+    const t = await mitMappe();
+    await t.speichern('brief', { daten: briefBeispiel, basisSha: null, nachricht: 'a\u0000b\u001bc\u007fd' });
+    expect(t.fake.commits(REPO)[0].nachricht).toBe('Produkt-Brief: a b c d');
+    const sha = (await (await t.holen('/brief')).json()).basisSha;
+    await t.speichern('brief', { daten: briefBeispiel, basisSha: sha, nachricht: `${'x'.repeat(99)}😀😀` });
+    const n = t.fake.commits(REPO)[1].nachricht;
+    expect(n).toBe(`Produkt-Brief: ${'x'.repeat(99)}😀`);
+    expect(n.isWellFormed()).toBe(true);
+  });
+
+  it('Nachricht kein Text → 422, kein Commit', async () => {
+    const t = await mitMappe();
+    for (const nachricht of [42, null, ['a'], { a: 1 }]) {
+      const r = await t.speichern('brief', { daten: briefBeispiel, basisSha: null, nachricht });
+      expect(r.status).toBe(422);
+      expect(await r.json()).toMatchObject({ code: 'ungueltig' });
+    }
+    expect(t.fake.commits(REPO)).toHaveLength(0);
   });
 
   it('Fehler des Speichers gehen unverändert durch (502 github-fehler)', async () => {

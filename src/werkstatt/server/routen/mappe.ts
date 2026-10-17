@@ -73,8 +73,9 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       try {
         await abh.speicher.anlegen(m, s.githubId);
       } catch (e) {
-        if (e instanceof ApiAusnahme) throw e;
-        console.error('werkstatt: Mappe anlegen fehlgeschlagen –', e instanceof Error ? e.message : 'Fehler');
+        // Nur „gehört jemand anderem“ geht durch; alles andere (auch 409 oder 502) heißt für den Editor „wird eingerichtet“.
+        if (e instanceof ApiAusnahme && e.status === 403) throw e;
+        console.error('werkstatt: Mappe anlegen fehlgeschlagen –', e instanceof ApiAusnahme ? `${e.status} ${e.code}` : e instanceof Error ? e.message : 'Fehler');
         throw wirdEingerichtet();
       }
       wj = await abh.speicher.werkstattJson(repo);
@@ -133,6 +134,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     }
     if (!istObjekt(anfrage) || !('daten' in anfrage)) return ungueltig(c);
     const { daten: roh, nachricht } = anfrage;
+    if (nachricht !== undefined && typeof nachricht !== 'string') return ungueltig(c);
     const basisSha = typeof anfrage.basisSha === 'string' ? anfrage.basisSha : null;
     if (anfrage.basisSha !== null && basisSha === null) return ungueltig(c);
 
@@ -156,7 +158,8 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
 
     const s = c.get('sitzung');
     const autor = { name: s.login, email: `${s.githubId}+${s.login}@users.noreply.github.com` };
-    const kurz = typeof nachricht === 'string' ? nachricht.replace(/\s+/g, ' ').trim().slice(0, 100) : '';
+    // Einzeilig, ohne Steuerzeichen, höchstens 100 Zeichen (nach Codepunkten, damit kein Emoji zerbricht).
+    const kurz = typeof nachricht === 'string' ? Array.from(nachricht.replace(/\p{Cc}/gu, ' ').replace(/\s+/g, ' ').trim()).slice(0, 100).join('').trim() : '';
     const text = `${ARTEFAKTE[name].titel}: ${kurz || 'gespeichert über die Werkstatt'}`;
 
     const ergebnis = await abh.speicher.speichern(repo, name, dateien, basisSha, autor, text);
