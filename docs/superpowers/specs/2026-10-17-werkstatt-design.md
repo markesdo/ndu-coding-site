@@ -98,8 +98,8 @@ Zwei Teile, getrennt nach öffentlich und personenbezogen:
 **Zugang** (personenbezogen, nur als Vercel-Umgebungsvariable `WERKSTATT_ZUGANG`, nie im Repo):
 
 ```json
-{ "2026": { "lehrende": [57681871],
-            "studierende": [{ "githubId": 339529141, "kuerzel": "sofie" }, …] } }
+{ "2026": { "lehrende": [9001],
+            "studierende": [{ "githubId": 1001, "kuerzel": "sofie" }, …] } }
 ```
 
 Regeln:

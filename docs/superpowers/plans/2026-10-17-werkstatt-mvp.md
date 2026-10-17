@@ -213,7 +213,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
   - Sitzung: Rundlauf; manipulierte Signatur → null; abgelaufen → null.
   - Callback mit falschem `state` → 400, kein Cookie.
   - Callback für unbekannte ID → 302 `/innolab/mappe?fehler=nicht-freigeschaltet`, `anlegen` nie aufgerufen.
-  - `umbenannter login behält zugang`: Fake liefert `{ githubId: 339529141, login: 'neuer-name' }` → Cookie gesetzt, `anlegen` mit Kürzel `sofie`.
+  - `umbenannter login behält zugang`: Fake liefert `{ githubId: 1001, login: 'neuer-name' }` → Cookie gesetzt, `anlegen` mit Kürzel `sofie`.
   - Lehrende: Cookie mit `rolle: 'lehrende'`, `anlegen` nicht aufgerufen.
   - `weiter=https://boese.example` → Ziel `/`.
 - [ ] **Schritt 2:** FAIL. **Schritt 3:** Implementieren. **Schritt 4:** Grün + Build.
@@ -241,7 +241,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
   - `fakeGithub(): { fetch: typeof fetch; zustand }` – Attrappe der REST-Endpunkte; `PATCH git/refs` antwortet 422 genau dann, wenn `parents[0]` des neuen Commits nicht der aktuelle Kopf ist (echtes Fast-Forward-Modell, kein Schalter)
 
 - [ ] **Schritt 1: Tests** (Fake-GitHub als `fetch`-Attrappe, nicht nur `fakeSpeicher`, damit die echte Implementierung läuft)
-  - `speichern schreibt einen commit mit drei dateien`: JSON, MD, README in genau einem `git/commits`-Aufruf; `author.email` = `339529141+sofiethon@users.noreply.github.com`.
+  - `speichern schreibt einen commit mit drei dateien`: JSON, MD, README in genau einem `git/commits`-Aufruf; `author.email` = `1001+sofiethon@users.noreply.github.com`.
   - `speichern mit veraltetem basisSha`: Annahmen wurden zwischendurch von außen geändert → `{ konflikt: true }`, Kopf unverändert.
   - `anderes artefakt blockiert nicht`: Brief und Annahmen mit je eigenem `basisSha` nacheinander gespeichert → beide erfolgreich, zwei Commits.
   - `wettlauf beim ref-update`: zwischen Commit und PATCH bewegt sich der Kopf (Fake-Hook) → ein Neuversuch, dann Erfolg.

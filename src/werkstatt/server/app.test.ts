@@ -44,7 +44,8 @@ describe('Routing', () => {
 
   it('übrige Bereiche erreichen ihren eigenen Router', async () => {
     expect(await stub(await anfrage('/api/werkstatt/mcp', { method: 'POST' }))).toBe('mcp');
-    expect(await stub(await anfrage('/api/werkstatt/auth/ich'))).toBe('auth');
+    // auth ist gebaut (T4): ohne Sitzung 401 statt Stub.
+    expect((await anfrage('/api/werkstatt/auth/ich')).status).toBe(401);
     expect(await stub(await anfrage('/api/werkstatt/mappe'))).toBe('mappe');
     expect(await stub(await anfrage('/api/werkstatt/mappe/brief'))).toBe('mappe');
   });
@@ -98,7 +99,7 @@ describe('CSRF', () => {
   });
 
   it('Abmelden: nur Origin zählt, Content-Type egal', async () => {
-    expect(await stub(await anfrage('/api/werkstatt/auth/abmelden', { method: 'POST', headers: { Origin: BASIS } }))).toBe('auth');
+    expect((await anfrage('/api/werkstatt/auth/abmelden', { method: 'POST', headers: { Origin: BASIS } })).status).toBe(200);
     const fremd = await anfrage('/api/werkstatt/auth/abmelden', { method: 'POST', headers: { ...JSON_KOPF, Origin: 'https://boese.example' } });
     expect(fremd.status).toBe(403);
     expect(await fremd.json()).toMatchObject({ code: 'csrf' });
