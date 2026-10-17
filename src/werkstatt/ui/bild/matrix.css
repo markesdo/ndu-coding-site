@@ -1,0 +1,24 @@
+/* Stile der React-Matrix; Kopie aus src/components/bild/Matrix2x2.astro (dort bleibt alles unverändert).
+   Zusätzlich: Farben der vier Annahme-Arten wie in VierArten.astro. */
+.matrix { margin: 1.5rem 0; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; gap: .5rem .75rem; max-width: 44rem; }
+.matrix-y { grid-row: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; max-width: 5.5rem; font-size: .85rem; color: var(--muted); }
+.matrix-y strong { writing-mode: vertical-rl; transform: rotate(180deg); }
+.matrix-y strong, .matrix-x strong { color: var(--fg); font-size: .95rem; }
+.matrix-x { grid-column: 2; display: flex; justify-content: space-between; align-items: baseline; font-size: .85rem; color: var(--muted); }
+.matrix-x strong::after { content: ' →' / ''; }
+.matrix-y strong::after { content: ' →' / ''; }
+.matrix-flaeche { position: relative; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; aspect-ratio: 4 / 3; border: 2px solid var(--fg); border-radius: var(--radius); overflow: hidden; }
+.matrix-feld { padding: .6rem .75rem; font-size: .85rem; font-weight: 600; color: var(--muted); background: var(--bg-2); }
+.matrix-feld.ol, .matrix-feld.or { border-bottom: 1px dashed var(--border); }
+.matrix-feld.ol, .matrix-feld.ul { border-right: 1px dashed var(--border); }
+.matrix-feld.or, .matrix-feld.ur { text-align: right; }
+.matrix-feld.ul, .matrix-feld.ur { display: flex; flex-direction: column; justify-content: flex-end; }
+.matrix-feld.hervor { background: color-mix(in srgb, var(--accent) 12%, var(--bg-2)); color: var(--accent-ink); }
+.matrix-punkt { position: absolute; transform: translate(calc(var(--x) * -100%), calc(var(--y) * 100%)); width: max-content; max-width: min(11rem, 40%); padding: .3rem .5rem; font-size: .8rem; line-height: 1.25; background: var(--yellow-soft); border: 1px solid var(--yellow); border-radius: 3px; box-shadow: 0 1px 2px rgba(0, 0, 0, .12); }
+.matrix-punkt.hervor { background: var(--accent-soft); border-color: var(--accent); font-weight: 700; }
+/* Farbe nach Art der Annahme (hervorgehoben bleibt die Akzentfarbe). */
+.matrix-punkt.blue { background: var(--blue-soft); border-color: var(--blue); }
+.matrix-punkt.green { background: var(--green-soft); border-color: var(--green); }
+.matrix-punkt.purple { background: var(--purple-soft); border-color: var(--purple); }
+.matrix-punkt.hervor.blue, .matrix-punkt.hervor.green, .matrix-punkt.hervor.purple, .matrix-punkt.hervor.yellow { background: var(--accent-soft); border-color: var(--accent); }
+html[data-beamer] .matrix { max-width: min(44rem, max(22rem, calc((100vh - var(--topbar-h, 48px) - 15rem) * 4 / 3 + 3rem))); }
