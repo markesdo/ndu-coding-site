@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { darfSpeichern, huelle, leererStand, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
+import { darfSpeichern, huelle, ichPruefen, ladefehlerHinweis, leererStand, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
 import annahmen from '../beispiele/annahmen.json';
 
 function lauf(start: HuellenZustand, ...ereignisse: Ereignis[]) {
@@ -149,5 +149,30 @@ describe('Stand des Servers für das Formular', () => {
   it('bei Konflikt: unverändert', () => {
     expect(serverStandNachSpeichern(annahmen, { konflikt: true }, { ...annahmen, stand: '2026-12-01' })).toBe(annahmen);
     expect(serverStandNachSpeichern(null, { konflikt: true }, { ...annahmen, stand: '2026-12-01' })).toBeNull();
+  });
+});
+
+describe('Nach /auth/ich', () => {
+  it('Lehrende: Ladefehler mit eigenem Hinweis, kein „wird eingerichtet“ und kein Neuversuch', () => {
+    const r = ichPruefen({ rolle: 'lehrende', repo: null });
+    expect(r).toStrictEqual({ ok: false, status: 403, code: 'nicht-freigeschaltet', hinweis: 'lehrende' });
+    if (r.ok) throw new Error('unerreichbar');
+    expect(lauf('laden', { typ: 'ladenFehlgeschlagen', status: r.status, code: r.code }).zustand).toBe('ladefehler');
+    expect(ladefehlerHinweis(r.hinweis)).toStrictEqual({ text: 'Als Lehrende*r hast du hier noch keine eigene Mappe.', nochmal: false });
+  });
+  it('Studierende ohne Repo: wird eingerichtet', () => {
+    const r = ichPruefen({ rolle: 'studierende', repo: null });
+    expect(r).toStrictEqual({ ok: false, status: 503, code: 'wird-eingerichtet', hinweis: null });
+    if (r.ok) throw new Error('unerreichbar');
+    expect(lauf('laden', { typ: 'ladenFehlgeschlagen', status: r.status, code: r.code }).zustand).toBe('wird-eingerichtet');
+  });
+  it('Studierende mit Repo: weiter', () => {
+    expect(ichPruefen({ rolle: 'studierende', repo: 'ndu-innolab/2026-x' })).toStrictEqual({ ok: true });
+  });
+  it('übrige Ladefehler: freigeschaltet und Datei ohne Neuversuch, sonst mit', () => {
+    expect(ladefehlerHinweis('nicht-freigeschaltet').nochmal).toBe(false);
+    expect(ladefehlerHinweis('datei').nochmal).toBe(false);
+    expect(ladefehlerHinweis('github-fehler')).toStrictEqual({ text: 'Deine Mappe lässt sich gerade nicht laden.', nochmal: true });
+    expect(ladefehlerHinweis(null).nochmal).toBe(true);
   });
 });

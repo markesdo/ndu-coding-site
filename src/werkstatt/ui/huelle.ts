@@ -1,6 +1,7 @@
 // Zustandsmaschine der Editor-Hülle: rein, ohne React und DOM. Die Komponente führt die Effekte aus.
 // Regel: Der Entwurf wird nur gelöscht, wenn der Server das Speichern bestätigt hat.
 import { artefaktParsen, type ArtefaktName, type Feldfehler } from '../schemas/index.js';
+import type { ApiFehler, Ich } from '../vertrag.js';
 
 export type HuellenZustand =
   | 'laden'
@@ -67,6 +68,31 @@ export function huelle(zustand: HuellenZustand, e: Ereignis): { zustand: Huellen
       }
       return bleibt;
   }
+}
+
+/**
+ * Was nach /auth/ich gilt: weiterladen, oder ein Ladefehler. Lehrende haben keine eigene Mappe; ohne diesen Fall
+ * hielte die Hülle ihr fehlendes Repo für „wird eingerichtet“ und wartete vergeblich.
+ */
+export function ichPruefen(ich: Pick<Ich, 'rolle' | 'repo'>): { ok: true } | { ok: false; status: number; code: ApiFehler['code']; hinweis: 'lehrende' | null } {
+  if (ich.rolle !== 'studierende') return { ok: false, status: 403, code: 'nicht-freigeschaltet', hinweis: 'lehrende' };
+  if (ich.repo === null) return { ok: false, status: 503, code: 'wird-eingerichtet', hinweis: null };
+  return { ok: true };
+}
+
+const LADEFEHLER = {
+  lehrende: 'Als Lehrende*r hast du hier noch keine eigene Mappe.',
+  nichtFreigeschaltet: 'Du bist für keinen Kurs freigeschaltet. Schreib Markus deinen GitHub-Namen.',
+  datei: 'Die Datei in deiner Mappe passt nicht zum erwarteten Format. Sag Markus Bescheid.',
+  ladenFehlt: 'Deine Mappe lässt sich gerade nicht laden.',
+} as const;
+
+/** Hinweis im Zustand „ladefehler“: Text und ob „Neu versuchen“ helfen kann. */
+export function ladefehlerHinweis(fehlerCode: string | null): { text: string; nochmal: boolean } {
+  if (fehlerCode === 'lehrende') return { text: LADEFEHLER.lehrende, nochmal: false };
+  if (fehlerCode === 'nicht-freigeschaltet') return { text: LADEFEHLER.nichtFreigeschaltet, nochmal: false };
+  if (fehlerCode === 'datei') return { text: LADEFEHLER.datei, nochmal: false };
+  return { text: LADEFEHLER.ladenFehlt, nochmal: true };
 }
 
 /** Das Statuswort der Statuszeile. Leer, wenn es nichts zu sagen gibt. */

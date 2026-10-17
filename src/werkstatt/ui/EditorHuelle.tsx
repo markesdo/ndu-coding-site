@@ -11,7 +11,7 @@ import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
-import { darfSpeichern, huelle, leererStand, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
+import { darfSpeichern, huelle, ichPruefen, ladefehlerHinweis, leererStand, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
 import '../../styles/werkstatt.css';
 
 export interface EditorHuelleProps<N extends ArtefaktName> {
@@ -38,7 +38,6 @@ const TEXT = {
   abgelaufen: 'Deine Sitzung ist abgelaufen. Melde dich neu an – dein Entwurf bleibt erhalten.',
   abgelaufenUngesichert: 'Deine Sitzung ist abgelaufen. Melde dich neu an. Dein Entwurf konnte auf diesem Gerät nicht gesichert werden – lass diesen Tab offen.',
   aelterEntwurf: 'Auf diesem Gerät liegt ein älterer Entwurf.',
-  nichtFreigeschaltet: 'Du bist für keinen Kurs freigeschaltet. Schreib Markus deinen GitHub-Namen.',
   wirdEingerichtet: 'Deine Mappe wird eingerichtet …',
   wirdEingerichtetLang: 'Das dauert länger als gedacht. Versuch es gleich noch einmal.',
   konflikt: 'Inzwischen geändert – neu laden. Dein Entwurf bleibt erhalten.',
@@ -112,7 +111,11 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       if (!gueltig()) return;
       if (ich === null) return void senden({ typ: 'ladenFehlgeschlagen', status: 401, code: 'nicht-angemeldet' });
       person.current = { githubId: ich.githubId, kohorte: ich.kohorte };
-      if (ich.repo === null) return void senden({ typ: 'ladenFehlgeschlagen', status: 503, code: 'wird-eingerichtet' });
+      const geprueft = ichPruefen(ich);
+      if (!geprueft.ok) {
+        if (geprueft.hinweis !== null) setFehlerCode(geprueft.hinweis);
+        return void senden({ typ: 'ladenFehlgeschlagen', status: geprueft.status, code: geprueft.code });
+      }
       const antwort = await api.lesen(name);
       if (!gueltig()) return;
       const vomServer = artefaktParsen(name, antwort.daten ?? ARTEFAKTE[name].leer(heute()));
@@ -322,14 +325,11 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       );
     }
     if (zustand === 'ladefehler') {
-      const frei = fehlerCode === 'nicht-freigeschaltet';
-      const datei = fehlerCode === 'datei';
+      const { text, nochmal } = ladefehlerHinweis(fehlerCode);
       return (
         <div className="wk-hinweis" role="alert">
-          <p>
-            {frei ? TEXT.nichtFreigeschaltet : datei ? 'Die Datei in deiner Mappe passt nicht zum erwarteten Format. Sag Markus Bescheid.' : TEXT.ladenFehlt}
-          </p>
-          {!frei && !datei && (
+          <p>{text}</p>
+          {nochmal && (
             <button type="button" className="wk-knopf" onClick={() => { setVersuche(0); senden({ typ: 'neuLaden' }); }}>
               <RefreshCw size={16} aria-hidden="true" /> Neu versuchen
             </button>
