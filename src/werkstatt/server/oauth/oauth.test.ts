@@ -450,6 +450,15 @@ describe('oauth/token', () => {
     expect(await bearerPruefen(h.abh, `Bearer ${zweit.access_token}`, ISSUER)).toBeNull();
   });
 
+  it('Refresh-Gnade nur einmal: dritte Vorlage im Fenster widerruft die Familie', async () => {
+    const h = aufbau();
+    const paar = await tokenPaar(h);
+    const erst = await (await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).json();
+    expect((await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).status).toBe(200);
+    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
+    expect(await bearerPruefen(h.abh, `Bearer ${erst.access_token}`, ISSUER)).toBeNull();
+  });
+
   it('Body über 16 KB: 413 invalid_request, mit und ohne Content-Length', async () => {
     const h = aufbau();
     const gross = form({ grant_type: 'refresh_token', client_id: CLAUDE_CLIENT, refresh_token: 'x'.repeat(17 * 1024) });

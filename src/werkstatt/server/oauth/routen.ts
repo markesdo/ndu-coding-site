@@ -342,12 +342,17 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     if (!mitgliedAktiv(abh, claims) || (await familieWiderrufenen(abh, claims.familie))) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre. Der Merker
     // hält den Zeitpunkt der ersten Rotation. Kommt dasselbe Token innerhalb von REFRESH_GNADE_SEKUNDEN noch einmal
-    // (verlorene Antwort, Neuversuch, zwei Werkzeugaufrufe zugleich), gibt es ein weiteres Paar derselben Familie;
-    // das Fenster beginnt dabei nicht neu. Später ist eins von beiden gestohlen: die ganze Familie widerrufen.
+    // (verlorene Antwort, Neuversuch, zwei Werkzeugaufrufe zugleich), gibt es genau ein weiteres Paar derselben Familie;
+    // das Fenster beginnt dabei nicht neu. Jede weitere Vorlage: eins der Tokens ist gestohlen, die ganze Familie widerrufen.
     const merker = `werkstatt:oauth:refresh:${await sha256(refresh)}`;
     const rotiert = await abh.cache.get(merker);
     if (rotiert !== undefined) {
-      if (typeof rotiert === 'number' && t - rotiert < REFRESH_GNADE_SEKUNDEN) return tokenPaar(c, abh, claims);
+      const alter = typeof rotiert === 'number' ? t - rotiert : -1;
+      const gnade = `${merker}:gnade`;
+      if (alter >= 0 && alter < REFRESH_GNADE_SEKUNDEN && (await abh.cache.get(gnade)) === undefined) {
+        await abh.cache.set(gnade, 1, REFRESH_GNADE_SEKUNDEN);
+        return tokenPaar(c, abh, claims);
+      }
       await familieWiderrufen(abh, claims.familie);
       return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     }
