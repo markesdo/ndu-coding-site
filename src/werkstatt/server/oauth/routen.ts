@@ -1,9 +1,10 @@
 // OAuth-Autorisierungsserver für den Connector (claude.ai als öffentlicher CIMD-Client), ohne Datenbank:
 // Codes und Tokens sind versiegelte Umschläge (umschlag.ts). Im Cache liegen nur Merker, alle nach bestem Bemühen:
-// „Code schon eingelöst“, „Refresh-Token schon rotiert“ und „Familie widerrufen“. PKCE macht einen abgefangenen Code
-// ohnehin nutzlos. Familie = eine Verbindung: alle Tokens aus einem Code und seinen Refreshes tragen dieselbe
+// „Code schon eingelöst“, „Refresh-Token schon rotiert“ (30 s lang mit seiner verschlüsselten Antwort) und „Familie widerrufen“.
+// PKCE macht einen abgefangenen Code ohnehin nutzlos. Familie = eine Verbindung: alle Tokens aus einem Code und seinen Refreshes tragen dieselbe
 // zufällige ID. Taucht ein verbrauchter Code oder ein schon rotiertes Refresh-Token wieder auf, hat jemand mitgelesen:
-// dann gilt die ganze Familie nicht mehr (OAuth 2.1 / RFC 9700 §4.14.2).
+// dann gilt die ganze Familie nicht mehr (OAuth 2.1 / RFC 9700 §4.14.2). Ausnahme: Ein Refresh-Token, das vor
+// höchstens 30 s rotiert wurde, bekommt dieselbe Antwort noch einmal (Neuversuch nach verlorener Antwort).
 //
 // Anders als die übrigen Router hängt dieser an der Wurzel und trägt VOLLE Pfade, weil er auch außerhalb von
 // /api/werkstatt/oauth antwortet. appErstellen registriert ihn vor mcpRouten. Ihm gehören genau:
@@ -25,6 +26,7 @@ import type { Abhaengigkeiten, WerkstattEnv } from '../typen.js';
 import { clientErlaubt, clientMelden } from './clients.js';
 import { ISSUER_PFAD, SCOPE, issuer, issuerMetadaten, resource, resourceMetadaten } from './metadaten.js';
 import { oeffnen, versiegeln } from './umschlag.js';
+import { antwortOeffnen, antwortVersiegeln } from './wiederholung.js';
 import { clientName, meldungsSeite, zustimmungsSeite } from './zustimmung.js';
 
 export interface TokenClaims {
@@ -39,6 +41,8 @@ export interface TokenClaims {
 const CODE_SEKUNDEN = 60;
 const ACCESS_SEKUNDEN = 60 * 60;
 const REFRESH_SEKUNDEN = 30 * 24 * 60 * 60;
+// So lange bekommt ein Neuversuch desselben Refresh-Tokens die Antwort der ersten Rotation noch einmal.
+const REFRESH_GNADE_SEKUNDEN = 30;
 
 const AUTHORIZE = `${ISSUER_PFAD}/authorize`;
 const LOGIN = '/api/werkstatt/auth/login';
@@ -207,17 +211,35 @@ function oauthFehler(c: Context, status: ContentfulStatusCode, error: OAuthFehle
   return c.json({ error, error_description: beschreibung }, status, { 'Cache-Control': 'no-store', Pragma: 'no-cache' });
 }
 
-async function tokenPaar(c: Context, abh: Abhaengigkeiten, k: Kette): Promise<Response> {
+interface Paar {
+  access_token: string;
+  token_type: 'Bearer';
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
+}
+
+async function paarPraegen(c: Context, abh: Abhaengigkeiten, k: Kette): Promise<Paar> {
   const keys = abh.umgebung.tokenKeys;
   const t = jetztSek(abh);
   const inhalt = { githubId: k.githubId, kohorte: k.kohorte, rolle: k.rolle, clientId: k.clientId, familie: k.familie, iss: issuer(c) };
   const access = await versiegeln('access', inhalt, ACCESS_SEKUNDEN, keys, t);
   const refresh = await versiegeln('refresh', inhalt, REFRESH_SEKUNDEN, keys, t);
-  return c.json(
-    { access_token: access, token_type: 'Bearer', expires_in: ACCESS_SEKUNDEN, refresh_token: refresh, scope: SCOPE },
-    200,
-    { 'Cache-Control': 'no-store', Pragma: 'no-cache' },
-  );
+  return { access_token: access, token_type: 'Bearer', expires_in: ACCESS_SEKUNDEN, refresh_token: refresh, scope: SCOPE };
+}
+
+function istGespeichertesPaar(v: unknown): v is { erstellt: number; paar: Paar } {
+  if (typeof v !== 'object' || v === null) return false;
+  const { erstellt, paar } = v as { erstellt?: unknown; paar?: Partial<Paar> };
+  return typeof erstellt === 'number' && typeof paar === 'object' && paar !== null && typeof paar.access_token === 'string' && typeof paar.refresh_token === 'string';
+}
+
+function paarAntwort(c: Context, p: Paar): Response {
+  return c.json(p, 200, { 'Cache-Control': 'no-store', Pragma: 'no-cache' });
+}
+
+async function tokenPaar(c: Context, abh: Abhaengigkeiten, k: Kette): Promise<Response> {
+  return paarAntwort(c, await paarPraegen(c, abh, k));
 }
 
 const ABGELAUFEN = 'Der Code oder das Token ist ungültig, abgelaufen oder schon verbraucht.';
@@ -339,14 +361,24 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     if (!claims || claims.clientId !== clientId) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     if (!mitgliedAktiv(abh, claims) || (await familieWiderrufenen(abh, claims.familie))) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre.
-    // Wird ein schon rotiertes vorgelegt, ist eins von beiden gestohlen: die ganze Familie widerrufen.
+    // Neuversuch nach verlorener Antwort: Innerhalb von REFRESH_GNADE_SEKUNDEN bekommt dasselbe Token die Antwort der
+    // ersten Rotation noch einmal (verschlüsselt im Cache, siehe wiederholung.ts). Es entsteht kein neues Paar, und
+    // jede spätere Vorlage eines verbrauchten Tokens fällt weiter auf. Danach: die ganze Familie widerrufen.
+    // Wie alle Merker nach bestem Bemühen: Zwei Anfragen im selben Augenblick können beide rotieren.
     const merker = `werkstatt:oauth:refresh:${await sha256(refresh)}`;
+    const vorher = await antwortOeffnen(refresh, await abh.cache.get(`${merker}:antwort`));
+    if (istGespeichertesPaar(vorher)) {
+      const rest = vorher.erstellt + ACCESS_SEKUNDEN - t;
+      if (rest > 0) return paarAntwort(c, { ...vorher.paar, expires_in: rest });
+    }
     if ((await abh.cache.get(merker)) !== undefined) {
       await familieWiderrufen(abh, claims.familie);
       return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     }
+    const paar = await paarPraegen(c, abh, claims);
+    await abh.cache.set(`${merker}:antwort`, await antwortVersiegeln(refresh, { erstellt: t, paar }), REFRESH_GNADE_SEKUNDEN);
     await abh.cache.set(merker, 1, REFRESH_SEKUNDEN);
-    return tokenPaar(c, abh, claims);
+    return paarAntwort(c, paar);
   });
 
   return r;
