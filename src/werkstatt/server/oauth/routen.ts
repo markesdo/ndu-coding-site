@@ -39,6 +39,8 @@ export interface TokenClaims {
 const CODE_SEKUNDEN = 60;
 const ACCESS_SEKUNDEN = 60 * 60;
 const REFRESH_SEKUNDEN = 30 * 24 * 60 * 60;
+// Neuversuch desselben Refresh-Tokens nach einer verlorenen Antwort: kein Diebstahl, solange er so kurz danach kommt.
+const REFRESH_GNADE_SEKUNDEN = 30;
 
 const AUTHORIZE = `${ISSUER_PFAD}/authorize`;
 const LOGIN = '/api/werkstatt/auth/login';
@@ -338,14 +340,18 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     const claims = inhalt && claimsAus(inhalt, issuer(c));
     if (!claims || claims.clientId !== clientId) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     if (!mitgliedAktiv(abh, claims) || (await familieWiderrufenen(abh, claims.familie))) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
-    // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre.
-    // Wird ein schon rotiertes vorgelegt, ist eins von beiden gestohlen: die ganze Familie widerrufen.
+    // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre. Der Merker
+    // hält den Zeitpunkt der ersten Rotation. Kommt dasselbe Token innerhalb von REFRESH_GNADE_SEKUNDEN noch einmal
+    // (verlorene Antwort, Neuversuch, zwei Werkzeugaufrufe zugleich), gibt es ein weiteres Paar derselben Familie;
+    // das Fenster beginnt dabei nicht neu. Später ist eins von beiden gestohlen: die ganze Familie widerrufen.
     const merker = `werkstatt:oauth:refresh:${await sha256(refresh)}`;
-    if ((await abh.cache.get(merker)) !== undefined) {
+    const rotiert = await abh.cache.get(merker);
+    if (rotiert !== undefined) {
+      if (typeof rotiert === 'number' && t - rotiert < REFRESH_GNADE_SEKUNDEN) return tokenPaar(c, abh, claims);
       await familieWiderrufen(abh, claims.familie);
       return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     }
-    await abh.cache.set(merker, 1, REFRESH_SEKUNDEN);
+    await abh.cache.set(merker, t, REFRESH_SEKUNDEN);
     return tokenPaar(c, abh, claims);
   });
 
