@@ -312,8 +312,9 @@ async function alsFehler(p: Promise<unknown>): Promise<ApiAusnahme> {
     () => null,
     (e: unknown) => e,
   );
-  if (!(e instanceof ApiAusnahme)) throw new Error(`ApiAusnahme erwartet, bekam ${String(e)}`);
-  return e;
+  // Als Assertion, damit ein fehlender Fehler rot auf expect wird, nicht als Absturz.
+  expect(e).toBeInstanceOf(ApiAusnahme);
+  return e as ApiAusnahme;
 }
 
 describe('fakeGithub', () => {
@@ -518,9 +519,9 @@ describe('mehrere Jahrgänge gleichzeitig', () => {
 
   it('anlegen, speichern, lesen je in der Org der Kohorte', async () => {
     const { a, b, s } = zweiOrgs();
-    const alt = await s.anlegen({ kohorte: '2026', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
-    const neu = await s.anlegen({ kohorte: '2027', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
-    expect([alt.repo, neu.repo]).toStrictEqual(['2026-sofie', '2027-sofie']);
+    const alt = await s.anlegen({ kohorte: '2026', rolle: 'studierende', kuerzel: 'sofie' }, 1001).catch((e: unknown) => e);
+    const neu = await s.anlegen({ kohorte: '2027', rolle: 'studierende', kuerzel: 'sofie' }, 1001).catch((e: unknown) => e);
+    expect([alt, neu]).toStrictEqual([{ repo: '2026-sofie' }, { repo: '2027-sofie' }]);
     expect(a.zustand.aufrufeVon('POST', '/generate')[0].pfad).toBe('/repos/org-a/vorlage-a/generate');
     expect(b.zustand.aufrufeVon('POST', '/generate')[0].pfad).toBe('/repos/org-b/vorlage-b/generate');
     expect(JSON.parse(b.zustand.dateien('2027-sofie')['werkstatt.json'])).toStrictEqual({ kohorte: '2027', githubId: 1001, schemaVersionen: ['brief@1'] });
