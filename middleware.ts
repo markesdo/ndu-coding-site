@@ -3,6 +3,11 @@
 // Frei: /start (Startseite vor dem Login), /login und /login/innolab (istLoginSeite), /_astro/* (Schriften, Skripte, Bilder), Favicons, robots.txt,
 // og.png und og-innolab.png (Bilder der Link-Vorschau – WhatsApp & Co. sind nicht angemeldet), version.json (nur die Commit-Kennung, für
 // den Hinweis „Seite aktualisiert“ – sonst bekäme die Abfrage die Login-Seite zurück).
+// Frei ist auch die Werkstatt: /api/werkstatt und alles darunter (nicht /api/werkstattx) sowie
+// /.well-known/oauth-authorization-server/api/werkstatt/oauth und /.well-known/oauth-protected-resource/api/werkstatt/mcp
+// sowie /.well-known/oauth-authorization-server und /.well-known/oauth-protected-resource ohne Suffix
+// (OAuth-Metadaten für den Claude-Connector). Sie hat ihre eigene Anmeldung; vercel.json schreibt diese Pfade auf
+// api/werkstatt.ts um. Andere /.well-known-Pfade bleiben gesperrt.
 // Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
@@ -29,7 +34,8 @@ function weiter(ort: string, extra: Record<string, string> = {}): Response {
 export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url);
   // Startseite: für alle, auch ohne Anmeldung (sie zeigt nur Titel und Kurstage) – und unabhängig davon,
-  // ob das Kurspasswort gesetzt ist. Alles andere bleibt ohne SITE_PASSWORD/SITE_SESSION_SECRET gesperrt.
+  // ob das Kurspasswort gesetzt ist. Ebenso die Werkstatt (eigene Anmeldung, siehe istOeffentlich).
+  // Alles andere bleibt ohne SITE_PASSWORD/SITE_SESSION_SECRET gesperrt.
   if (istOeffentlich(url.pathname)) return next({ headers: NOINDEX });
 
   const passwort = process.env.SITE_PASSWORD;

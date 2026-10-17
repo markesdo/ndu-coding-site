@@ -1,0 +1,39 @@
+{
+  "schema": "annahmen@1",
+  "stand": "2026-10-22",
+  "riskanteste": "A1",
+  "annahmen": [
+    {
+      "id": "A1",
+      "text": "Wir glauben, dass Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.",
+      "art": "wuenschenswert",
+      "wichtig": "hoch",
+      "beleg": "keiner",
+      "belegIds": []
+    },
+    {
+      "id": "A2",
+      "text": "Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann.",
+      "art": "machbar",
+      "wichtig": "hoch",
+      "beleg": "getan",
+      "belegIds": []
+    },
+    {
+      "id": "A3",
+      "text": "Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können.",
+      "art": "bedienbar",
+      "wichtig": "mittel",
+      "beleg": "keiner",
+      "belegIds": []
+    },
+    {
+      "id": "A4",
+      "text": "Wir glauben, dass sich die zusätzlichen Bestellungen ohne eine weitere Kraft am Morgen rechnen.",
+      "art": "wirtschaftlich",
+      "wichtig": "niedrig",
+      "beleg": "getan",
+      "belegIds": []
+    }
+  ]
+}

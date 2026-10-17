@@ -1,0 +1,19 @@
+{
+  "schema": "leitfaden@1",
+  "stand": "2026-10-22",
+  "ziel": "Herausfinden, ob Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.",
+  "wen": "Pendler*innen, die werktags zwischen 7:15 und 7:45 am Bahnhof auf den Zug nach Wien warten",
+  "einstieg": "Danke, dass du dir Zeit nimmst. Ich will verstehen, wie du Kaffee am Bahnhof heute erlebst – es gibt keine falschen Antworten. Darf ich das Gespräch aufnehmen? Die Aufnahme bleibt bei mir, im Projekt steht nur ein Transkript ohne Namen.",
+  "fragen": [
+    { "id": "F1", "text": "Erzähl mir vom letzten Morgen, an dem du am Bahnhof Kaffee wolltest.", "art": "kern" },
+    { "id": "F2", "text": "Was hast du da genau gemacht? Was ist dann passiert?", "art": "kern" },
+    { "id": "F3", "text": "Was war daran mühsam?", "art": "kern" },
+    { "id": "F4", "text": "Was hast du schon ausprobiert, um das zu umgehen? Was hat es dich gekostet (Zeit, Geld, Nerven)?", "art": "kern" },
+    { "id": "F5", "text": "Was hast du diese Woche für Kaffee unterwegs ausgegeben?", "art": "kern" },
+    { "id": "F6", "text": "Warum?", "art": "nachfrage" },
+    { "id": "F7", "text": "Wann war das zuletzt?", "art": "nachfrage" },
+    { "id": "F8", "text": "Wie oft kommt das vor?", "art": "nachfrage" },
+    { "id": "F9", "text": "Kannst du mir das zeigen?", "art": "nachfrage" }
+  ],
+  "abschluss": "Wen sollte ich noch fragen?"
+}
