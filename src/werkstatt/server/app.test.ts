@@ -18,6 +18,20 @@ async function stub(r: Response): Promise<string | null> {
   return r.headers.get('x-werkstatt-stub');
 }
 
+// Antworten des OAuth-Routers (T7): Metadaten bzw. OAuth-Fehler im Format von RFC 6749.
+async function issuerMeta(r: Response): Promise<string> {
+  expect(r.status).toBe(200);
+  return (await r.json()).issuer;
+}
+async function resourceMeta(r: Response): Promise<string> {
+  expect(r.status).toBe(200);
+  return (await r.json()).resource;
+}
+async function oauthFehler(r: Response): Promise<string> {
+  expect(r.status).toBe(400);
+  return (await r.json()).error;
+}
+
 const JSON_KOPF = { 'Content-Type': 'application/json', Origin: BASIS };
 
 describe('Routing', () => {
@@ -32,14 +46,15 @@ describe('Routing', () => {
   });
 
   it('Resource-Metadaten erreichen oauthRouten, nicht mcpRouten', async () => {
-    expect(await stub(await anfrage('/.well-known/oauth-protected-resource/api/werkstatt/mcp'))).toBe('oauth');
-    expect(await stub(await anfrage('/api/werkstatt/mcp/resource'))).toBe('oauth');
+    // oauth ist gebaut (T7): Metadaten statt Stub.
+    expect(await resourceMeta(await anfrage('/.well-known/oauth-protected-resource/api/werkstatt/mcp'))).toBe(`${BASIS}/api/werkstatt/mcp`);
+    expect(await resourceMeta(await anfrage('/api/werkstatt/mcp/resource'))).toBe(`${BASIS}/api/werkstatt/mcp`);
   });
 
   it('Issuer-Metadaten und OAuth-Endpunkte erreichen oauthRouten', async () => {
-    expect(await stub(await anfrage('/.well-known/oauth-authorization-server/api/werkstatt/oauth'))).toBe('oauth');
-    expect(await stub(await anfrage('/api/werkstatt/oauth/metadata'))).toBe('oauth');
-    expect(await stub(await anfrage('/api/werkstatt/oauth/token', { method: 'POST' }))).toBe('oauth');
+    expect(await issuerMeta(await anfrage('/.well-known/oauth-authorization-server/api/werkstatt/oauth'))).toBe(`${BASIS}/api/werkstatt/oauth`);
+    expect(await issuerMeta(await anfrage('/api/werkstatt/oauth/metadata'))).toBe(`${BASIS}/api/werkstatt/oauth`);
+    expect(await oauthFehler(await anfrage('/api/werkstatt/oauth/token', { method: 'POST' }))).toBe('invalid_request');
   });
 
   it('übrige Bereiche erreichen ihren eigenen Router', async () => {
@@ -50,9 +65,12 @@ describe('Routing', () => {
     expect(await stub(await anfrage('/api/werkstatt/mappe/brief'))).toBe('mappe');
   });
 
-  it('Metadaten ohne Suffix an der Wurzel erreichen oauthRouten (so sucht Claude zuerst)', async () => {
-    expect(await stub(await anfrage('/.well-known/oauth-authorization-server'))).toBe('oauth');
-    expect(await stub(await anfrage('/.well-known/oauth-protected-resource'))).toBe('oauth');
+  it('Metadaten ohne Suffix an der Wurzel: 404 als ApiFehler (Issuer mit Pfad, RFC 8414 §3.3)', async () => {
+    for (const p of ['/.well-known/oauth-authorization-server', '/.well-known/oauth-protected-resource']) {
+      const r = await anfrage(p);
+      expect(r.status, p).toBe(404);
+      expect(await r.json(), p).toMatchObject({ code: 'unbekannt' });
+    }
   });
 
   it('andere /.well-known-Pfade gehören nicht zur Werkstatt', async () => {
@@ -107,13 +125,16 @@ describe('CSRF', () => {
 
   it('Zustimmung POST oauth/authorize: Formular erlaubt, fremde Origin nicht', async () => {
     const form = { 'Content-Type': 'application/x-www-form-urlencoded' };
-    expect(await stub(await anfrage('/api/werkstatt/oauth/authorize', { method: 'POST', headers: { ...form, Origin: BASIS }, body: 'a=1' }))).toBe('oauth');
+    // Durch die CSRF-Prüfung bis zum OAuth-Router: der lehnt die unvollständige Anfrage selbst ab (400-Seite, nicht 403).
+    const durch = await anfrage('/api/werkstatt/oauth/authorize', { method: 'POST', headers: { ...form, Origin: BASIS }, body: 'a=1' });
+    expect(durch.status).toBe(400);
+    expect(durch.headers.get('content-type')).toContain('text/html');
     expect((await anfrage('/api/werkstatt/oauth/authorize', { method: 'POST', headers: { ...form, Origin: 'https://boese.example' }, body: 'a=1' })).status).toBe(403);
     expect((await anfrage('/api/werkstatt/oauth/authorize', { method: 'POST', headers: form, body: 'a=1' })).status).toBe(403);
   });
 
   it('Token-Endpunkt bleibt ohne Origin erreichbar (Claude ruft ihn vom Server aus)', async () => {
-    expect(await stub(await anfrage('/api/werkstatt/oauth/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'a=1' }))).toBe('oauth');
+    expect(await oauthFehler(await anfrage('/api/werkstatt/oauth/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'a=1' }))).toBe('unsupported_grant_type');
   });
 
   it('mit WERKSTATT_ORIGIN zählt diese, nicht die Origin der Anfrage-URL', async () => {

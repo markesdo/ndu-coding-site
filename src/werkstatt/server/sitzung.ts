@@ -3,9 +3,9 @@
 // mit eigenem Zusatz, damit das Secret nirgends sonst als roher HMAC-Schlüssel dient.
 import type { Context, MiddlewareHandler } from 'hono';
 import { deleteCookie } from 'hono/cookie';
-import { b64url, cookieLesen, gleich } from '../../lib/kurszugang.js';
+import { ausB64url, b64url, cookieLesen, gleich } from '../../lib/kurszugang.js';
 import { KOHORTEN } from '../kohorten/index.js';
-import { mitgliedschaften, type Mitgliedschaft, type Rolle } from '../zugang.js';
+import { mitgliedschaften, type Mitgliedschaft, type Rolle, type Zugang } from '../zugang.js';
 import { fehler } from './antwort.js';
 import type { Abhaengigkeiten } from './typen.js';
 
@@ -32,11 +32,6 @@ export interface SitzungEnv {
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();
-
-function ausB64url(text: string): Uint8Array {
-  const b = atob(text.replace(/-/g, '+').replace(/_/g, '/'));
-  return Uint8Array.from(b, (z) => z.charCodeAt(0));
-}
 
 async function signieren(secret: string, text: string): Promise<string> {
   const key = await crypto.subtle.importKey('raw', enc.encode(`${secret}\0werkstatt-sitzung`), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
@@ -69,6 +64,12 @@ export async function sitzungLesen(cookie: string | undefined, secret: string, j
   }
 }
 
+// Die aktuelle Mitgliedschaft genau in dieser Kohorte und Rolle, sonst undefined (archivierte Kohorte oder aus
+// WERKSTATT_ZUGANG entfernt). Eine Prüfung für Sitzung und Connector-Tokens (oauth/routen.ts).
+export function mitgliedschaftFinden(zugang: Zugang, githubId: number, kohorte: string, rolle: Rolle): Mitgliedschaft | undefined {
+  return mitgliedschaften(zugang, githubId, KOHORTEN).find((x) => x.kohorte === kohorte && x.rolle === rolle);
+}
+
 // Sitzung der Anfrage samt der passenden aktuellen Mitgliedschaft oder null (ohne Antwort zu schreiben). Gilt nur,
 // solange die Person laut aktueller Zugangsliste noch in dieser Kohorte (aktiv) und Rolle steht: entfernte Personen
 // und archivierte Kohorten fallen raus.
@@ -76,7 +77,7 @@ export async function sitzungMitMitgliedschaft(c: Context, abh: Abhaengigkeiten)
   const cookie = cookieLesen(c.req.header('cookie') ?? null, cookieName(abh.umgebung.lokal));
   const s = await sitzungLesen(cookie, abh.umgebung.sessionSecret, Math.floor(abh.jetzt() / 1000));
   if (!s) return null;
-  const m = mitgliedschaften(abh.umgebung.zugang, s.githubId, KOHORTEN).find((x) => x.kohorte === s.kohorte && x.rolle === s.rolle);
+  const m = mitgliedschaftFinden(abh.umgebung.zugang, s.githubId, s.kohorte, s.rolle);
   return m ? { sitzung: s, mitgliedschaft: m } : null;
 }
 
