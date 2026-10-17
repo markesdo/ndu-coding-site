@@ -51,6 +51,15 @@ describe('umgebungLesen', () => {
       expect(meldung).not.toContain(schluessel(1).slice(0, 12));
     }
   });
+  it('Secrets werden getrimmt (Zeilenumbruch am Ende aus `vercel env add`)', () => {
+    const u = umgebungLesen({ ...VOLL, GITHUB_APP_ID: '12345\n', GITHUB_APP_CLIENT_SECRET: ' geheim \r\n', WERKSTATT_SESSION_SECRET: `${'x'.repeat(32)}\n` });
+    expect(u.githubAppId).toBe('12345');
+    expect(u.githubClientSecret).toBe('geheim');
+    expect(u.sessionSecret).toBe('x'.repeat(32));
+  });
+  it('WERKSTATT_SESSION_SECRET: die Mindestlänge zählt ohne Zeilenumbruch', () => {
+    expect(() => umgebungLesen({ ...VOLL, WERKSTATT_SESSION_SECRET: `${'x'.repeat(31)}\n` })).toThrow('WERKSTATT_SESSION_SECRET');
+  });
   it('zu kurzes WERKSTATT_SESSION_SECRET wirft', () => {
     expect(() => umgebungLesen({ ...VOLL, WERKSTATT_SESSION_SECRET: 'kurz' })).toThrow('WERKSTATT_SESSION_SECRET');
   });

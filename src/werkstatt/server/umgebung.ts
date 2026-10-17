@@ -10,7 +10,7 @@ export function istLokal(env: NodeJS.ProcessEnv): boolean {
 function pflicht(env: NodeJS.ProcessEnv, name: string): string {
   const wert = env[name];
   if (!wert || !wert.trim()) throw new Error(`${name} fehlt`);
-  return wert;
+  return wert.trim();
 }
 
 // `<kid>:<base64 32 B>`, kommagetrennt, erster = aktuell.
