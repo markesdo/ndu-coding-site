@@ -1,5 +1,4 @@
 // Editor für den Interview-Leitfaden. Der Einstieg kommt aus der Vorlage; Fragen beginnen immer leer.
-import { useEffect, useRef } from 'react';
 import type { Frage, Leitfaden } from '../../schemas/index.js';
 import { FRAGE_ARTEN } from '../../schemas/index.js';
 import { rendern } from '../../render/index.js';
@@ -7,7 +6,7 @@ import EditorHuelle from '../EditorHuelle.js';
 import Auswahl from '../felder/Auswahl.js';
 import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
-import { einstiegVorbefuellen, neueFrage } from './leitfaden-hilfen.js';
+import { hatPlatzhalter, neueFrage, PLATZHALTER_HINWEIS } from './leitfaden-hilfen.js';
 import './editoren.css';
 
 const ARTEN = FRAGE_ARTEN.map((a) => ({ wert: a, text: a === 'kern' ? 'Kernfrage' : 'Nachfrage' }));
@@ -26,6 +25,7 @@ function Vorschau({ daten }: { daten: Leitfaden }) {
       {karte('Ziel', daten.ziel)}
       {karte('Wen', daten.wen)}
       {karte('Einstieg', daten.einstieg)}
+      {hatPlatzhalter(daten.einstieg) && <li className="wk-karte"><p className="wk-offen" role="status">{PLATZHALTER_HINWEIS}</p></li>}
       <li className="wk-karte">
         <h3>Fragen</h3>
         {daten.fragen.length === 0 && leer}
@@ -42,19 +42,6 @@ function Vorschau({ daten }: { daten: Leitfaden }) {
   );
 }
 
-// Füllt einen leeren Einstieg einmal beim Öffnen mit der Vorlage. Wer ihn danach löscht, behält ihn leer.
-function EinstiegVorlage({ daten, setze }: { daten: Leitfaden; setze: (neu: Leitfaden) => void }) {
-  const getan = useRef(false);
-  useEffect(() => {
-    if (getan.current) return;
-    getan.current = true;
-    const neu = einstiegVorbefuellen(daten);
-    if (neu !== daten) setze(neu);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return null;
-}
-
 export default function LeitfadenEditor() {
   return (
     <EditorHuelle
@@ -64,7 +51,6 @@ export default function LeitfadenEditor() {
       bild={(d) => <Vorschau daten={d} />}
       formular={(d, setze, fehler) => (
         <>
-          <EinstiegVorlage daten={d} setze={setze} />
           <Textfeld label="Stand" wert={d.stand} onChange={(stand) => setze({ ...d, stand })} fehler={fehler('stand')} hilfe="Datum als JJJJ-MM-TT, zum Beispiel 2026-10-22." />
           <Textfeld label="Ziel" mehrzeilig wert={d.ziel} onChange={(ziel) => setze({ ...d, ziel })} fehler={fehler('ziel')} hilfe="Welche offene Frage aus dem Brief soll das Interview klären?" />
           <Textfeld label="Wen" mehrzeilig zeilen={2} wert={d.wen} onChange={(wen) => setze({ ...d, wen })} fehler={fehler('wen')} hilfe="Die Zielgruppe aus Abschnitt 1 des Briefs und wie du sie findest." />
@@ -78,7 +64,7 @@ export default function LeitfadenEditor() {
             fehler={fehler('fragen')}
             zeile={(f, s, i) => (
               <>
-                <Textfeld label="ID" wert={f.id} onChange={(id) => s({ ...f, id })} fehler={fehler(`fragen.${i}.id`)} />
+                <p className="wk-hilfe">ID: <strong>{f.id}</strong></p>
                 <Textfeld
                   label={`Frage ${i + 1}`}
                   mehrzeilig

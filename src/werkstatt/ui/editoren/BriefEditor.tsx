@@ -50,8 +50,8 @@ export default function BriefEditor() {
               <Textfeld label={`Was es nicht macht ${i + 1}`} wert={t} onChange={s} fehler={fehler(`nicht.${i}`)} hilfe={i === 0 ? 'Drei Dinge, die naheliegen und die du bewusst nicht machst.' : undefined} />
             )}
           />
-          <Textfeld label="6. Wir glauben, dass …" mehrzeilig wert={d.outcome.wirGlauben} onChange={(wirGlauben) => setze({ ...d, outcome: { ...d.outcome, wirGlauben } })} fehler={fehler('outcome.wirGlauben')} hilfe="Zielgruppe und Veränderung." />
-          <Textfeld label="6. Wir merken es, wenn …" mehrzeilig wert={d.outcome.wirMerkenEs} onChange={(wirMerkenEs) => setze({ ...d, outcome: { ...d.outcome, wirMerkenEs } })} fehler={fehler('outcome.wirMerkenEs')} hilfe="Beobachtbares Verhalten, mit 3–5 Menschen." />
+          <Textfeld label="6. Woran merken wir es? – Wir glauben, dass …" mehrzeilig wert={d.outcome.wirGlauben} onChange={(wirGlauben) => setze({ ...d, outcome: { ...d.outcome, wirGlauben } })} fehler={fehler('outcome.wirGlauben')} hilfe="Zielgruppe und Veränderung." />
+          <Textfeld label="6. Woran merken wir es? – Wir merken es, wenn …" mehrzeilig wert={d.outcome.wirMerkenEs} onChange={(wirMerkenEs) => setze({ ...d, outcome: { ...d.outcome, wirMerkenEs } })} fehler={fehler('outcome.wirMerkenEs')} hilfe="Beobachtbares Verhalten, mit 3–5 Menschen." />
           <Liste<string>
             label="7. Offene Fragen"
             einzahl="Frage"
