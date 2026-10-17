@@ -81,3 +81,9 @@ export function repoHinweis(stand: Pick<MappeStand, 'repo' | 'lesezugriff'>, org
   if (stand.lesezugriff === 'eingeladen') return { art: 'eingeladen', href: `${basis}/invitations` };
   return { art: 'unbekannt' };
 }
+
+// Nach „Einladung annehmen“ (neuer Tab) kommt die Person zurück: Dann den Stand neu holen, höchstens alle 2 s.
+export const RUECKKEHR_ABSTAND_MS = 2000;
+export function beiRueckkehrPruefen(stand: Pick<MappeStand, 'lesezugriff'>, jetzt: number, zuletzt: number): boolean {
+  return stand.lesezugriff === 'eingeladen' && jetzt - zuletzt >= RUECKKEHR_ABSTAND_MS;
+}

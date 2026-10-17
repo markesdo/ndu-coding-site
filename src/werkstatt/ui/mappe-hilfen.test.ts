@@ -3,7 +3,7 @@ import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis } from './mappe-hilfen.js';
+import { FEHLER_TEXT, LOGIN_HREF, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beiRueckkehrPruefen, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -108,5 +108,14 @@ describe('repoHinweis', () => {
   it('ohne Repo (Lehrende) oder Org: nichts', () => {
     expect(repoHinweis(stand('unbekannt', ''), 'ndu-innolab')).toStrictEqual({ art: 'keine' });
     expect(repoHinweis(stand('aktiv'), undefined)).toStrictEqual({ art: 'keine' });
+  });
+});
+
+describe('beiRueckkehrPruefen', () => {
+  it('nur solange eingeladen und nicht öfter als alle 2 s', () => {
+    expect(beiRueckkehrPruefen({ lesezugriff: 'eingeladen' }, 10_000, 0)).toBe(true);
+    expect(beiRueckkehrPruefen({ lesezugriff: 'eingeladen' }, 10_000, 10_000 - RUECKKEHR_ABSTAND_MS + 1)).toBe(false);
+    expect(beiRueckkehrPruefen({ lesezugriff: 'aktiv' }, 10_000, 0)).toBe(false);
+    expect(beiRueckkehrPruefen({ lesezugriff: 'unbekannt' }, 10_000, 0)).toBe(false);
   });
 });
