@@ -16,25 +16,27 @@ const NUR_STUDIERENDE = 'Als Lehrende*r hast du hier noch keine eigene Mappe.';
 const UNGUELTIG = 'Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder.';
 const KONFLIKT = 'Inzwischen geändert – neu laden. Dein Entwurf bleibt erhalten.';
 const NICHT_LOESCHEN = 'Gespeicherte Entscheidungen lassen sich nicht löschen – ersetze sie stattdessen.';
-const ERSETZT_FEST = 'Was eine gespeicherte Entscheidung ersetzt, lässt sich nicht mehr ändern – lege stattdessen eine neue an.';
+const NICHT_AENDERN = 'Gespeicherte Entscheidungen lassen sich nicht ändern – ersetze sie stattdessen.';
+// Was an einer gespeicherten Zeile fest ist (alles außer der ID selbst).
+const FESTE_FELDER = ['datum', 'entscheidung', 'grund', 'beleg', 'belegIds', 'ersetzt'] as const;
 
 // Kaputtes JSON im Repo (z. B. direkt auf GitHub bearbeitet): eigener Satz statt „GitHub nicht erreichbar“.
 function unlesbar(name: ArtefaktName, e: DateiUnlesbar): ApiAusnahme {
   return new ApiAusnahme(502, e.code, `${ARTEFAKTE[name].titel}: Die gespeicherte Datei lässt sich nicht lesen (vielleicht direkt auf GitHub geändert). Stell sie auf GitHub wieder her oder schreib Markus.`);
 }
 
-// Spec §3.4: Zeilen des Entscheidungslogs werden nie gelöscht, und was eine gespeicherte Zeile ersetzt, bleibt so.
-// Verglichen wird mit der gespeicherten Fassung; Zeilen ohne lesbare ID dort zählen nicht.
-function entscheidungenBleiben(alt: unknown, neu: { id: string; ersetzt?: string }[]): Feldfehler[] {
+// Spec §3.4: Gespeicherte Zeilen des Entscheidungslogs werden nie gelöscht oder geändert; eine neue Zeile ersetzt sie
+// über `ersetzt`. Verglichen wird mit der gespeicherten Fassung; Zeilen ohne lesbare ID dort zählen nicht.
+function entscheidungenBleiben(alt: unknown, neu: Entscheidungen['entscheidungen']): Feldfehler[] {
   const zeilen = istObjekt(alt) && Array.isArray(alt.entscheidungen) ? alt.entscheidungen.filter(istObjekt) : [];
-  const neuNachId = new Map(neu.map((e, i) => [e.id, { e, i }]));
+  const neuNachId = new Map(neu.map((e, i) => [e.id, { e: e as Record<string, unknown>, i }]));
   const meldungen: Feldfehler[] = [];
   for (const z of zeilen) {
     if (typeof z.id !== 'string') continue;
     const treffer = neuNachId.get(z.id);
     if (!treffer) meldungen.push({ pfad: 'entscheidungen', meldung: `${z.id}: ${NICHT_LOESCHEN}` });
-    else if ((typeof z.ersetzt === 'string' ? z.ersetzt : undefined) !== treffer.e.ersetzt) {
-      meldungen.push({ pfad: `entscheidungen.${treffer.i}.ersetzt`, meldung: ERSETZT_FEST });
+    else if (FESTE_FELDER.some((f) => JSON.stringify(z[f]) !== JSON.stringify(treffer.e[f]))) {
+      meldungen.push({ pfad: `entscheidungen.${treffer.i}`, meldung: `${z.id}: ${NICHT_AENDERN}` });
     }
   }
   return meldungen;

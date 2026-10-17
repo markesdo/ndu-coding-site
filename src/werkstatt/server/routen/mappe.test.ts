@@ -253,9 +253,34 @@ describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
     for (const neuD3 of [{ ...d3, ersetzt: 'D2' }, (({ ersetzt: _, ...rest }) => rest)(d3)]) {
       const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d1, d2, neuD3] }, basisSha: sha });
       expect(r.status).toBe(422);
-      expect((await r.json()).felder).toStrictEqual([{ pfad: 'entscheidungen.2.ersetzt', meldung: expect.stringContaining('ersetzt') }]);
+      expect((await r.json()).felder).toStrictEqual([{ pfad: 'entscheidungen.2', meldung: 'D3: Gespeicherte Entscheidungen lassen sich nicht ändern – ersetze sie stattdessen.' }]);
     }
     expect(t.fake.commits(REPO)).toHaveLength(2);
+  });
+
+  it('Inhalt einer gespeicherten Zeile ändern → 422 an der Zeile, kein Commit', async () => {
+    const { t, sha } = await gespeichert();
+    const geaendert = [
+      { ...d2, entscheidung: 'Doch Mittagsgeschäft' },
+      { ...d2, grund: 'anders' },
+      { ...d2, datum: '2026-10-23' },
+      { ...d2, beleg: 'gesagt' },
+      { ...d2, belegIds: ['I1'] },
+      { ...d2, ersetzt: 'D1' },
+    ];
+    for (const neu of geaendert) {
+      const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d1, neu] }, basisSha: sha });
+      expect(r.status).toBe(422);
+      expect((await r.json()).felder).toStrictEqual([{ pfad: 'entscheidungen.1', meldung: 'D2: Gespeicherte Entscheidungen lassen sich nicht ändern – ersetze sie stattdessen.' }]);
+    }
+    expect(t.fake.commits(REPO)).toHaveLength(1);
+  });
+
+  it('unveränderte gespeicherte Zeilen (auch in anderer Schlüsselreihenfolge) → 200', async () => {
+    const { t, sha } = await gespeichert();
+    const umgestellt = Object.fromEntries(Object.entries(d1).reverse());
+    const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [umgestellt, d2] }, basisSha: sha });
+    expect(r.status).toBe(200);
   });
 
   it('veralteter basisSha → 409 (nicht 422 gegen eine fremde Fassung)', async () => {
