@@ -10,11 +10,13 @@ export type HuellenZustand =
   | 'speichert'
   | 'gespeichert'
   | 'konflikt'
-  | 'fehler';
+  | 'fehler' // Speichern gescheitert (der Entwurf bleibt)
+  | 'ladefehler'; // Laden gescheitert: es gibt nichts zu bearbeiten
 
 export type Effekt = 'entwurfSichern' | 'entwurfLoeschen' | 'neuLaden';
 
 export type Ereignis =
+  | { typ: 'oeffnen' }
   | { typ: 'geladen' }
   | { typ: 'ladenFehlgeschlagen'; status: number; code?: string }
   | { typ: 'geaendert' }
@@ -33,16 +35,20 @@ function ausFehler(status: number, code?: string): HuellenZustand {
 export function huelle(zustand: HuellenZustand, e: Ereignis): { zustand: HuellenZustand; effekte: Effekt[] } {
   const bleibt = { zustand, effekte: [] as Effekt[] };
   switch (e.typ) {
+    case 'oeffnen':
+      // Jedes Öffnen beginnt von vorn; die Komponente leert dazu zugleich ihre Daten (leererStand).
+      return { zustand: 'laden', effekte: [] };
     case 'geladen':
       return zustand === 'laden' ? { zustand: 'bereit', effekte: [] } : bleibt;
     case 'ladenFehlgeschlagen': {
       if (zustand !== 'laden') return bleibt;
       // Beim Laden gibt es keinen Konflikt; ein 409 hier ist ein Fehler.
       const z = ausFehler(e.status, e.code);
-      return { zustand: z === 'konflikt' ? 'fehler' : z, effekte: [] };
+      return { zustand: z === 'konflikt' || z === 'fehler' ? 'ladefehler' : z, effekte: [] };
     }
     case 'geaendert':
-      if (zustand === 'laden' || zustand === 'speichert') return bleibt;
+      // Wer nichts geladen hat, kann nichts ändern: Tippen heilt keinen Ladefehler.
+      if (zustand === 'laden' || zustand === 'speichert' || zustand === 'ladefehler') return bleibt;
       // Im Konflikt bleibt der Konflikt, der Entwurf wird trotzdem gesichert.
       return { zustand: zustand === 'konflikt' ? 'konflikt' : 'bereit', effekte: ['entwurfSichern'] };
     case 'speichern':
@@ -56,7 +62,7 @@ export function huelle(zustand: HuellenZustand, e: Ereignis): { zustand: Huellen
     case 'speichernFehlgeschlagen':
       return zustand === 'speichert' ? { zustand: ausFehler(e.status, e.code), effekte: [] } : bleibt;
     case 'neuLaden':
-      if (zustand === 'konflikt' || zustand === 'fehler' || zustand === 'wird-eingerichtet' || zustand === 'abgemeldet') {
+      if (zustand === 'konflikt' || zustand === 'fehler' || zustand === 'ladefehler' || zustand === 'wird-eingerichtet' || zustand === 'abgemeldet') {
         return { zustand: 'laden', effekte: ['neuLaden'] };
       }
       return bleibt;
@@ -80,4 +86,14 @@ export function speichernErlaubt(name: ArtefaktName, daten: unknown): { erlaubt:
 /** Nur aus diesen Zuständen geht ein Speichern los. Wer „speichert“ ist, sendet nicht noch einmal (kein doppeltes PUT). */
 export function darfSpeichern(zustand: HuellenZustand): boolean {
   return zustand === 'bereit' || zustand === 'gespeichert' || zustand === 'fehler';
+}
+
+/** Was beim Öffnen gilt: nichts vom letzten Mal. Ein Ladefehler zeigt so nie alte Daten. */
+export function leererStand(): { daten: null; dirty: false; basisSha: null; aelterEntwurf: null; gesichert: true } {
+  return { daten: null, dirty: false, basisSha: null, aelterEntwurf: null, gesichert: true };
+}
+
+/** Neuversuche zählen nur innerhalb einer Einrichtungsphase; sobald etwas anderes passiert, beginnt das Zählen von vorn. */
+export function versucheNach(zustand: HuellenZustand, versuche: number): number {
+  return zustand === 'laden' || zustand === 'wird-eingerichtet' ? versuche : 0;
 }

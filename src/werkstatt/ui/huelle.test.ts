@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { darfSpeichern, huelle, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
+import { darfSpeichern, huelle, leererStand, versucheNach, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
 import annahmen from '../beispiele/annahmen.json';
 
 function lauf(start: HuellenZustand, ...ereignisse: Ereignis[]) {
@@ -18,7 +18,8 @@ describe('Zustandsmaschine der Editor-Hülle', () => {
     expect(lauf('laden', { typ: 'geladen' }).zustand).toBe('bereit');
     expect(lauf('laden', { typ: 'ladenFehlgeschlagen', status: 401, code: 'nicht-angemeldet' }).zustand).toBe('abgemeldet');
     expect(lauf('laden', { typ: 'ladenFehlgeschlagen', status: 503, code: 'wird-eingerichtet' }).zustand).toBe('wird-eingerichtet');
-    expect(lauf('laden', { typ: 'ladenFehlgeschlagen', status: 502, code: 'github-fehler' }).zustand).toBe('fehler');
+    expect(lauf('laden', { typ: 'ladenFehlgeschlagen', status: 502, code: 'github-fehler' }).zustand).toBe('ladefehler');
+    expect(lauf('laden', { typ: 'ladenFehlgeschlagen', status: 403, code: 'nicht-freigeschaltet' }).zustand).toBe('ladefehler');
   });
 
   it('Entwurf bleibt bei 401 und 502: sichern beim Speichern, nie löschen', () => {
@@ -70,6 +71,38 @@ describe('Zustandsmaschine der Editor-Hülle', () => {
     expect(statusText('bereit', true)).toBe('Entwurf');
     expect(statusText('fehler', true)).toBe('Entwurf');
     expect(statusText('bereit', false)).toBe('');
+  });
+});
+
+describe('Ladefehler heilt Tippen nicht', () => {
+  it('geaendert aus ladefehler bleibt ladefehler und sichert nichts', () => {
+    expect(huelle('ladefehler', { typ: 'geaendert' })).toStrictEqual({ zustand: 'ladefehler', effekte: [] });
+  });
+
+  it('Speicherfehler heilt weiter durch Tippen, Ladefehler nur durch Neu versuchen', () => {
+    expect(huelle('fehler', { typ: 'geaendert' }).zustand).toBe('bereit');
+    expect(huelle('ladefehler', { typ: 'neuLaden' })).toStrictEqual({ zustand: 'laden', effekte: ['neuLaden'] });
+    expect(huelle('ladefehler', { typ: 'speichern' }).zustand).toBe('ladefehler');
+  });
+});
+
+describe('Öffnen setzt alles zurück', () => {
+  it('leererStand hat keine alten Daten, keinen Entwurfsrest, keinen Stand', () => {
+    expect(leererStand()).toStrictEqual({ daten: null, dirty: false, basisSha: null, aelterEntwurf: null, gesichert: true });
+  });
+
+  it('oeffnen führt aus jedem Zustand nach laden, ohne Effekte', () => {
+    for (const z of ['bereit', 'gespeichert', 'konflikt', 'fehler', 'ladefehler', 'abgemeldet', 'wird-eingerichtet', 'speichert'] as const) {
+      expect(huelle(z, { typ: 'oeffnen' }), z).toStrictEqual({ zustand: 'laden', effekte: [] });
+    }
+  });
+});
+
+describe('Neuversuche bei „wird eingerichtet“', () => {
+  it('bleiben während Laden und Einrichten erhalten, sonst Neustart bei 0', () => {
+    expect(versucheNach('wird-eingerichtet', 2)).toBe(2);
+    expect(versucheNach('laden', 2)).toBe(2);
+    for (const z of ['bereit', 'speichert', 'gespeichert', 'konflikt', 'fehler', 'ladefehler', 'abgemeldet'] as const) expect(versucheNach(z, 3), z).toBe(0);
   });
 });
 

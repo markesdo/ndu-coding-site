@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
-import { useId, type ReactNode } from 'react';
+import { useId, useRef, type ReactNode } from 'react';
+import { schluesselAbgleichen, schluesselSchieben } from './schluessel.js';
 
 interface Props<T> {
   /** Überschrift der ganzen Liste, zum Beispiel „Annahmen“. */
@@ -10,18 +11,25 @@ interface Props<T> {
   onChange: (neu: T[]) => void;
   /** Neuer Eintrag; bekommt die vorhandenen, damit er eine freie ID wählen kann. */
   neu: (vorhandene: readonly T[]) => T;
-  /** Stabiler Schlüssel (meist die ID), damit Eingaben beim Verschieben nicht springen. */
-  schluessel: (eintrag: T, index: number) => string;
   /** Felder einer Zeile. `setze` ersetzt den Eintrag. */
   zeile: (eintrag: T, setze: (neu: T) => void, index: number) => ReactNode;
   fehler?: string;
 }
 
-export default function Liste<T>({ label, einzahl, eintraege, onChange, neu, schluessel, zeile, fehler }: Props<T>) {
+export default function Liste<T>({ label, einzahl, eintraege, onChange, neu, zeile, fehler }: Props<T>) {
   const id = useId();
+  // Eigene, vom Inhalt unabhängige Schlüssel (nicht die editierbare ID): Beim Tippen in ein ID-Feld bleibt die Zeile dieselbe.
+  const zaehler = useRef({ n: 0 });
+  const schluessel = useRef<string[]>([]);
+  schluessel.current = schluesselAbgleichen(schluessel.current, eintraege.length, zaehler.current);
+
   const ersetze = (i: number, e: T) => onChange(eintraege.map((alt, j) => (j === i ? e : alt)));
-  const entferne = (i: number) => onChange(eintraege.filter((_, j) => j !== i));
+  const entferne = (i: number) => {
+    schluessel.current = schluessel.current.filter((_, j) => j !== i);
+    onChange(eintraege.filter((_, j) => j !== i));
+  };
   const schiebe = (i: number, d: -1 | 1) => {
+    schluessel.current = schluesselSchieben(schluessel.current, i, d);
     const kopie = [...eintraege];
     [kopie[i], kopie[i + d]] = [kopie[i + d], kopie[i]];
     onChange(kopie);
@@ -32,7 +40,7 @@ export default function Liste<T>({ label, einzahl, eintraege, onChange, neu, sch
       {eintraege.length === 0 && <p className="wk-hilfe">Noch kein Eintrag.</p>}
       <ol>
         {eintraege.map((e, i) => (
-          <li key={schluessel(e, i)} className="wk-zeile">
+          <li key={schluessel.current[i]} className="wk-zeile">
             <div className="wk-zeile-felder">{zeile(e, (n) => ersetze(i, n), i)}</div>
             <div className="wk-zeile-knoepfe">
               <button type="button" className="wk-knopf wk-icon" onClick={() => schiebe(i, -1)} disabled={i === 0} aria-label={`${einzahl} ${i + 1} nach oben`}>

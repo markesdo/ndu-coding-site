@@ -2,13 +2,13 @@
 // Die Zustandsmaschine steht in huelle.ts (rein, getestet); hier laufen nur die Effekte und die Anzeige.
 import { Copy, LogIn, Pencil, RefreshCw, Save, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { kopiereText, kopierKuerzel } from '../../lib/kopieren.js';
+import { kopiereText, kopierMeldung } from '../../lib/kopieren.js';
 import { METHODEN } from '../../components/methoden.js';
 import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldfehler } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
-import { entwurfLaden, entwurfLoeschen, entwurfSichern, startStand } from './entwurf.js';
-import { darfSpeichern, huelle, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
+import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfSichern, startStand } from './entwurf.js';
+import { darfSpeichern, huelle, leererStand, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
 import '../../styles/werkstatt.css';
 
 export interface EditorHuelleProps<N extends ArtefaktName> {
@@ -52,7 +52,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const [abgelaufen, setAbgelaufen] = useState(false);
   const [fehlerCode, setFehlerCode] = useState<string | null>(null);
   const [serverFelder, setServerFelder] = useState<Feldfehler[]>([]);
-  const [kopierMeldung, setKopierMeldung] = useState('');
+  const [kopieStatus, setKopieStatus] = useState('');
   const [kopierText, setKopierText] = useState<string | null>(null);
   const [versuche, setVersuche] = useState(0);
   // Entwurf auf einem anderen Stand als dem des Servers: wartet auf die ausdrückliche Wahl.
@@ -104,11 +104,11 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
         return void senden({ typ: 'ladenFehlgeschlagen', status: 500, code: 'unbekannt' });
       }
       // Nur ein Entwurf auf dem Stand des Servers kommt still zurück; ein älterer wird zur Wahl angeboten.
+      // Auch ein unvollständiger Entwurf kommt zurück (Schema scheitert → Feldfehler, Speichern gesperrt); nur Müll nicht.
       const roh = entwurfLaden(name, ich.githubId, ich.kohorte);
-      const entwurf = roh === null ? null : artefaktParsen(name, roh.daten);
       const start = startStand(
         { daten: vomServer.daten as DatenVon<N>, basisSha: antwort.basisSha },
-        roh !== null && entwurf?.ok === true ? { basisSha: roh.basisSha, daten: entwurf.daten as DatenVon<N> } : null,
+        roh === null ? null : { basisSha: roh.basisSha, daten: roh.daten as DatenVon<N> },
       );
       basisSha.current = start.basisSha;
       datenRef.current = start.daten;
@@ -126,11 +126,20 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   }
 
   function oeffnen(): void {
-    z.current = 'laden';
-    setZustand('laden');
+    // Jedes Öffnen beginnt leer: Ein Ladefehler zeigt nie die Daten vom letzten Mal.
+    const leer = leererStand();
+    datenRef.current = leer.daten;
+    basisSha.current = leer.basisSha;
+    setDatenAnzeige(leer.daten);
+    setDirty(leer.dirty);
+    setAelterEntwurf(leer.aelterEntwurf);
+    setGesichert(leer.gesichert);
+    setFehlerCode(null);
+    setServerFelder([]);
+    senden({ typ: 'oeffnen' });
     setVersuche(0);
     setAbgelaufen(false);
-    setKopierMeldung('');
+    setKopieStatus('');
     setKopierText(null);
     setOffen(true);
     void laden();
@@ -154,6 +163,18 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     return () => clearTimeout(t);
   }, [offen, zustand, versuche, senden]);
 
+  // Neuversuche zählen nur innerhalb einer Einrichtungsphase.
+  useEffect(() => setVersuche((v) => versucheNach(zustand, v)), [zustand]);
+
+  // Beamer: Panel zu (der Entwurf bleibt), sonst bliebe die Seite hinter einem unsichtbaren Dialog gesperrt.
+  useEffect(() => {
+    const beobachter = new MutationObserver(() => {
+      if (document.documentElement.hasAttribute('data-beamer')) dialog.current?.close();
+    });
+    beobachter.observe(document.documentElement, { attributes: true, attributeFilter: ['data-beamer'] });
+    return () => beobachter.disconnect();
+  }, []);
+
   useEffect(() => {
     if (kopierText !== null) {
       kopierRef.current?.focus();
@@ -174,15 +195,26 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const fehlerAm = useCallback((pfad: string) => alleFehler.find((f) => f.pfad === pfad)?.meldung, [alleFehler]);
 
   async function speichern(): Promise<void> {
-    if (aelterEntwurf !== null || !darfSpeichern(z.current)) return; // auch kein zweites PUT, solange eines läuft
-    if (datenRef.current === null || !speichernErlaubt(name, datenRef.current).erlaubt) return;
+    // kannSpeichern: Schema ok, kein älterer Entwurf offen, Zustand erlaubt es. Der Ref-Test fängt den Doppelklick im selben Takt.
+    if (!kannSpeichern || !darfSpeichern(z.current)) return;
     if (senden({ typ: 'speichern' }) !== 'speichert') return;
+    setVersuche(0);
+    const mein = lauf.current;
+    const gesendeterStand = basisSha.current;
+    const wer = person.current;
     try {
-      const antwort = await api.speichern(name, { daten: datenRef.current, basisSha: basisSha.current });
+      const antwort = await api.speichern(name, { daten: datenRef.current, basisSha: gesendeterStand });
+      if (mein !== lauf.current) {
+        // Antwort aus einer früheren Öffnung: Zustand und Stand nicht anfassen. Ein geglückter Commit macht aber den
+        // zugehörigen Entwurf überflüssig.
+        if (!('konflikt' in antwort) && wer !== null) entwurfNachCommitLoeschen(name, wer.githubId, wer.kohorte, gesendeterStand);
+        return;
+      }
       if ('konflikt' in antwort) return void senden({ typ: 'speichernFehlgeschlagen', status: 409, code: 'konflikt' });
       basisSha.current = antwort.basisSha;
       senden({ typ: 'gespeichert' });
     } catch (err) {
+      if (mein !== lauf.current) return;
       const a = err instanceof ApiError ? err : new ApiError(0, 'unbekannt', TEXT.speichernGesichert);
       if (a.status === 401) setAbgelaufen(true);
       setFehlerCode(a.code);
@@ -198,15 +230,12 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     const text =
       alsMarkdown(daten).trimEnd() +
       (pruefliste.length ? `\n\n## Prüfliste\n\n${pruefliste.map((p) => `- [ ] ${p}`).join('\n')}\n` : '\n');
-    const ergebnis = await kopiereText(text);
-    if (ergebnis === 'kopiert') {
-      setKopierText(null);
-      setKopierMeldung('Kopiert');
-    } else {
-      // Zwischenablage gesperrt: Text sichtbar machen und markieren, damit man selbst kopieren kann.
-      setKopierText(text);
-      setKopierMeldung(`Markiert – mit ${kopierKuerzel(navigator.platform)} kopieren`);
-    }
+    // Der Text liegt in der (meist verborgenen) Textarea: Scheitert die Zwischenablage, markiert kopiereText dort.
+    const feld = kopierRef.current;
+    if (feld) feld.value = text;
+    const ergebnis = await kopiereText(text, feld);
+    setKopieStatus(kopierMeldung(ergebnis, navigator.platform));
+    setKopierText(ergebnis === 'kopiert' ? null : text); // nicht kopiert: Feld sichtbar machen, damit man selbst kopieren kann
   }
 
   const zurueck = typeof location === 'undefined' ? '/' : location.pathname + location.search + location.hash;
@@ -257,22 +286,26 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
         </div>
       );
     }
-    if (zustand === 'fehler') {
+    if (zustand === 'ladefehler') {
       const frei = fehlerCode === 'nicht-freigeschaltet';
-      const text =
-        frei ? TEXT.nichtFreigeschaltet
-        : fehlerCode === 'datei' ? 'Die Datei in deiner Mappe passt nicht zum erwarteten Format. Sag Markus Bescheid.'
-        : daten === null ? TEXT.ladenFehlt
-        : gesichert ? TEXT.speichernGesichert
-        : TEXT.speichernUngesichert;
+      const datei = fehlerCode === 'datei';
       return (
         <div className="wk-hinweis" role="alert">
-          <p>{text}</p>
-          {!frei && fehlerCode !== 'datei' && daten === null && (
-            <button type="button" className="wk-knopf" onClick={() => senden({ typ: 'neuLaden' })}>
+          <p>
+            {frei ? TEXT.nichtFreigeschaltet : datei ? 'Die Datei in deiner Mappe passt nicht zum erwarteten Format. Sag Markus Bescheid.' : TEXT.ladenFehlt}
+          </p>
+          {!frei && !datei && (
+            <button type="button" className="wk-knopf" onClick={() => { setVersuche(0); senden({ typ: 'neuLaden' }); }}>
               <RefreshCw size={16} aria-hidden="true" /> Neu versuchen
             </button>
           )}
+        </div>
+      );
+    }
+    if (zustand === 'fehler') {
+      return (
+        <div className="wk-hinweis" role="alert">
+          <p>{gesichert ? TEXT.speichernGesichert : TEXT.speichernUngesichert}</p>
         </div>
       );
     }
@@ -280,11 +313,12 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   }
 
   return (
-    <div data-werkstatt className="wk-wurzel">
-      <button type="button" className="wk-knopf wk-primaer" onClick={oeffnen}>
+    // data-werkstatt nur am Einstieg: Der Beamer blendet ihn aus. Am Panel hinge sonst ein offener Dialog unsichtbar über der Seite.
+    <div className="wk-wurzel">
+      <button type="button" data-werkstatt className="wk-knopf wk-primaer" onClick={oeffnen}>
         <Pencil size={16} aria-hidden="true" /> Bearbeiten
       </button>
-      <dialog ref={dialog} data-werkstatt className="wk-dialog" aria-labelledby={`wk-titel-${name}`} onClose={() => setOffen(false)}>
+      <dialog ref={dialog} className="wk-dialog" aria-labelledby={`wk-titel-${name}`} onClose={() => setOffen(false)}>
         {offen && (
           <div className="wk-huelle">
             <header className="wk-kopf">
@@ -306,7 +340,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
               </div>
             )}
 
-            {daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && (
+            {daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && zustand !== 'ladefehler' && (
               <div className="wk-inhalt">
                 <fieldset className="wk-formular" disabled={zustand === 'speichert' || aelterEntwurf !== null}>
                   <legend className="wk-nur-leser">{titel} bearbeiten</legend>
@@ -316,17 +350,15 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
               </div>
             )}
 
-            {kopierText !== null && (
-              <div className="wk-kopiertext">
-                <label htmlFor={`wk-kopie-${name}`}>Text für Claude</label>
-                <textarea id={`wk-kopie-${name}`} ref={kopierRef} readOnly rows={6} value={kopierText} />
-              </div>
-            )}
+            <div className={kopierText !== null ? 'wk-kopiertext' : 'wk-nur-leser'}>
+              <label htmlFor={`wk-kopie-${name}`}>Text für Claude</label>
+              <textarea id={`wk-kopie-${name}`} ref={kopierRef} readOnly rows={6} value={kopierText ?? ''} tabIndex={kopierText !== null ? 0 : -1} />
+            </div>
 
             <footer className="wk-fuss">
               <p className="wk-status" aria-live="polite">
                 <span>{status}</span>
-                {kopierMeldung && <span> {kopierMeldung}</span>}
+                {kopieStatus && <span> {kopieStatus}</span>}
               </p>
               {!pruefung.erlaubt && ersteMeldung && daten !== null && (
                 <p className="wk-fehler">Speichern ist gesperrt: {ersteMeldung.meldung}</p>

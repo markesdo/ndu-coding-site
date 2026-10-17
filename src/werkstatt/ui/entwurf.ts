@@ -18,7 +18,10 @@ export function entwurfLaden(name: ArtefaktName, githubId: number, kohorte: stri
     const roh = localStorage.getItem(schluessel(name, githubId, kohorte));
     if (roh === null) return null;
     const e = JSON.parse(roh) as Partial<Entwurf> | null;
-    if (typeof e !== 'object' || e === null || !('daten' in e)) return null;
+    // Entwürfe sind oft unvollständig: Objekt-Form genügt, ob das Schema passt, zeigt der Editor an den Feldern.
+    // Nur Müll (kein Objekt, daten kein Objekt) gilt als kein Entwurf.
+    if (typeof e !== 'object' || e === null || Array.isArray(e)) return null;
+    if (typeof e.daten !== 'object' || e.daten === null || Array.isArray(e.daten)) return null;
     return { basisSha: typeof e.basisSha === 'string' ? e.basisSha : null, daten: e.daten };
   } catch {
     return null;
@@ -33,6 +36,17 @@ export function entwurfSichern(name: ArtefaktName, githubId: number, kohorte: st
   } catch {
     return false;
   }
+}
+
+/**
+ * Ein Commit kam erst nach dem Schließen oder Neu-Öffnen an: Der Entwurf, der auf dem gespeicherten Stand beruht, ist
+ * jetzt veröffentlicht und kann weg; ein Entwurf auf anderem Stand bleibt. true = gelöscht.
+ */
+export function entwurfNachCommitLoeschen(name: ArtefaktName, githubId: number, kohorte: string, gesendeterStand: string | null): boolean {
+  const e = entwurfLaden(name, githubId, kohorte);
+  if (e === null || e.basisSha !== gesendeterStand) return false;
+  entwurfLoeschen(name, githubId, kohorte);
+  return true;
 }
 
 export function entwurfLoeschen(name: ArtefaktName, githubId: number, kohorte: string): void {

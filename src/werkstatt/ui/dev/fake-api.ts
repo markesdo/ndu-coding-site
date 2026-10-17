@@ -26,6 +26,8 @@ export function fakeApiEinschalten(szenario: string): void {
       sha = `sha-${Number(sha.slice(4)) + 1}`;
       return json(200, { basisSha: sha, commitUrl: 'https://example.invalid/commit' });
     }
+    // Von Hand in der Konsole: window.__ladenAusfall = true → Laden scheitert (Wiederöffnen nach Fehler prüfen).
+    if ((window as unknown as { __ladenAusfall?: boolean }).__ladenAusfall) return json(502, { fehler: 'GitHub nicht erreichbar.', code: 'github-fehler' });
     return json(200, { name: 'annahmen', daten: beispiel, basisSha: sha });
   };
 }

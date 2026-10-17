@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { entwuerfeLoeschen, entwurfLaden, entwurfLoeschen, entwurfSichern, startStand } from './entwurf';
+import { entwuerfeLoeschen, entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfSichern, startStand } from './entwurf';
 
 function speicher(): Storage {
   const m = new Map<string, string>();
@@ -70,6 +70,39 @@ describe('entwurf', () => {
     g.localStorage = undefined;
     expect(entwurfSichern('brief', ICH, 'test', null, {})).toBe(false);
     expect(entwurfLaden('brief', ICH, 'test')).toBeNull();
+  });
+});
+
+describe('unvollständige Entwürfe', () => {
+  it('Objekt-Form wird auch dann wiederhergestellt, wenn das Schema scheitern würde', () => {
+    entwurfSichern('annahmen', ICH, 'test', 'sha-1', { schema: 'annahmen@1', stand: 'gestern', annahmen: [] });
+    expect(entwurfLaden('annahmen', ICH, 'test')?.daten).toStrictEqual({ schema: 'annahmen@1', stand: 'gestern', annahmen: [] });
+  });
+
+  it('nur nicht parsebarer Müll wird ignoriert', () => {
+    for (const roh of ['{kaputt', '"text"', '42', 'null', '[]', '{"basisSha":"x"}', '{"basisSha":"x","daten":"text"}', '{"basisSha":"x","daten":[1]}', '{"basisSha":"x","daten":null}']) {
+      g.localStorage!.setItem('ndu-werkstatt-1001-test-brief', roh);
+      expect(entwurfLaden('brief', ICH, 'test'), roh).toBeNull();
+    }
+  });
+});
+
+describe('Entwurf nach einem späten Commit', () => {
+  it('löscht den Entwurf, dessen Stand zum gespeicherten Stand gehört', () => {
+    entwurfSichern('brief', ICH, 'test', 'sha-1', { x: 1 });
+    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', 'sha-1')).toBe(true);
+    expect(entwurfLaden('brief', ICH, 'test')).toBeNull();
+  });
+
+  it('lässt einen Entwurf auf anderem Stand stehen', () => {
+    entwurfSichern('brief', ICH, 'test', 'sha-2', { x: 1 });
+    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', 'sha-1')).toBe(false);
+    expect(entwurfLaden('brief', ICH, 'test')).not.toBeNull();
+  });
+
+  it('Datei neu (null) passt zu null', () => {
+    entwurfSichern('brief', ICH, 'test', null, { x: 1 });
+    expect(entwurfNachCommitLoeschen('brief', ICH, 'test', null)).toBe(true);
   });
 });
 

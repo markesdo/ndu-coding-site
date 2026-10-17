@@ -39,7 +39,6 @@ export default function TestEditor() {
             einzahl="Annahme"
             eintraege={d.annahmen}
             onChange={(annahmen) => setze({ ...d, annahmen })}
-            schluessel={(a, i) => `${i}-${a.id}`}
             neu={(v) => ({ id: `A${v.length + 1}`, text: '', art: 'wuenschenswert', wichtig: 'mittel', beleg: 'keiner', belegIds: [] })}
             zeile={(a, s, i) => (
               <>
