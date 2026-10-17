@@ -175,17 +175,9 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
     const a = laden('annahmen');
     expect(rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[0], text: '# x' }] })).toContain('| # x |');
   });
-  it('Links, Code und Betonung am Zeilenanfang bleiben wirksam', () => {
+  it('jedes Satzzeichen am Zeilenanfang wird maskiert, ohne Ausnahme', () => {
     const b = laden('brief');
-    const nicht = ['[Interview I2](https://x.at) zeigt', '[a\\]b](https://x.at)', '`Kasse` hängt', '<https://x.at>', '<kontakt@firma.at>', '_wichtig_', '!Achtung'];
-    const s = rendern('brief', { ...b, nicht, fuerWen: '[I2](https://x.at)\n`Kasse`' });
-    for (const n of nicht) expect(zeilen(s)).toContain(`- ${n}`);
-    expect(zeilen(s)).toContain('[I2](https://x.at)\\');
-    expect(zeilen(s)).toContain('`Kasse`');
-  });
-  it('Blockzeichen, die nur mit Folgezeichen wirken, werden maskiert', () => {
-    const b = laden('brief');
-    const nicht = ['[a]: https://x.at', '[a\\]b]: /url', '[ ] Bezahlfunktion', '```js', '~~~', '_ _ _', '<div>', '<!-- x'];
+    const nicht = ['[a]: https://x.at', '[a\\]b]: /url', '[ ] Bezahlfunktion', '```js', '~~~', '_ _ _', '<div>', '<!-- x', '<!--a@b>', '<?a@b>', '[Interview I2](https://x.at) zeigt', '<https://x.at>', '`Kasse` hängt', '!Achtung'];
     const s = rendern('brief', { ...b, nicht });
     for (const n of nicht) expect(zeilen(s)).toContain(`- \\${n}`);
   });
@@ -215,6 +207,7 @@ describe('Verweisdefinition über zwei Zeilen', () => {
   it('die erste Zeile wird maskiert, nichts verschwindet', () => {
     const s = rendern('brief', { ...laden('brief'), fuerWen: '[Interview\nI2]: siehe unten' });
     expect(zeilen(s)).toContain('\\[Interview\\');
+    expect(zeilen(s)).toContain('I2]: siehe unten');
   });
 });
 

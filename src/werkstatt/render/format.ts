@@ -15,21 +15,14 @@ function zeilenende(s: string): string {
 }
 
 // Regel für den Anfang jeder Freitext-Zeile, die einen Markdown-Block beginnen könnte: Einrückung entfernen
-// (kein Codeblock), dann nur Zeichen maskieren, die dort einen Block öffnen (Überschrift, Zitat, Liste, Trennlinie,
-// Tabelle, Codezaun, HTML-Block, Verweisdefinition). Links, Autolinks, Code und Betonung bleiben wirksam.
+// (kein Codeblock), dann jedes ASCII-Satzzeichen am Anfang mit Backslash wörtlich machen. Bewusst ohne Ausnahmen:
+// Ein Link oder Code ganz am Zeilenanfang erscheint dann als Text, dafür öffnet kein Eintrag je einen Block
+// (Überschrift, Liste, HTML, Verweisdefinition …). Eine geordnete Liste (1. oder 2)) wird vor dem Satzzeichen
+// maskiert (1\.), die Ziffer bleibt.
 function zeilenanfang(z: string): string {
   const ohne = z.replace(/^[ \t]+/, '');
   if (/^\d{1,9}[.)]/.test(ohne)) return ohne.replace(/^(\d{1,9})([.)])/, '$1\\$2');
-  const block =
-    /^[#>*+\-=|\\]/.test(ohne) ||
-    /^:-/.test(ohne) ||
-    /^(`{3,}|~{3,})/.test(ohne) ||
-    /^(_[ \t]*){3,}$/.test(ohne) ||
-    // [ am Anfang kann eine Verweisdefinition öffnen (auch über mehrere Zeilen) oder ein Aufgaben-Kästchen;
-    // wirksam bleibt nur ein Link, der in derselben Zeile mit ]( weitergeht.
-    (/^\[/.test(ohne) && !/^\[(?:[^\]\\]|\\.)*\]\(/.test(ohne)) ||
-    (/^<[!?/A-Za-z]/.test(ohne) && !/^<(?:[A-Za-z][A-Za-z0-9+.-]{1,31}:[^<>\s]*|[^<>\s@]+@[^<>\s]+)>/.test(ohne));
-  return block ? `\\${ohne}` : ohne;
+  return /^[!-/:-@[-`{-~]/.test(ohne) ? `\\${ohne}` : ohne;
 }
 
 // Zeilenumbrüche werden zu Leerzeichen, so kann kein Text eine neue Zeile beginnen.
@@ -78,7 +71,9 @@ export function zitat(s: string): string {
 
 // IDs und Notiz teilen sich eine Klammer; leere IDs und eine leere Notiz (Entwurf) zählen wie keine.
 export function belegText(stufe: Belegstufe, ids: readonly string[], notiz?: string): string {
-  const idText = ids.filter((id) => flach(id) !== '').map(zelle).join(', ');
-  const zusatz = [idText, notiz !== undefined && flach(notiz) !== '' ? zelle(notiz) : ''].filter(Boolean).join('; ');
+  const maskiert = (t: string) => t.replace(/\\/g, '\\\\').replace(/\|/g, '\\|');
+  const idText = ids.map(flach).filter(Boolean).map(maskiert).join(', ');
+  const notizText = maskiert(flach(notiz ?? ''));
+  const zusatz = [idText, notizText].filter(Boolean).join('; ');
   return zusatz ? `${BELEGSTUFE_TEXT[stufe]} (${zusatz})` : BELEGSTUFE_TEXT[stufe];
 }
