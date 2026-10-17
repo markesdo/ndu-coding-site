@@ -3,18 +3,42 @@
 import { Hono, type Context } from 'hono';
 import { kohorte } from '../../kohorten/index.js';
 import { dateienFuerSpeichern, readmeRendern } from '../../render/index.js';
-import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, type ArtefaktName } from '../../schemas/index.js';
+import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, type ArtefaktName, type Entscheidungen, type Feldfehler } from '../../schemas/index.js';
 import type { ApiFehler, ArtefaktAntwort, MappeStand, SpeichernAntwort } from '../../vertrag.js';
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme, fehler, json } from '../antwort.js';
 import { mitSitzung, type SitzungEnv } from '../sitzung.js';
-import { internerFehler, wirdEingerichtet } from '../speicher-fehler.js';
+import { DateiUnlesbar, internerFehler, wirdEingerichtet } from '../speicher-fehler.js';
 import type { Abhaengigkeiten } from '../typen.js';
 
 const KEIN_ZUGRIFF = 'Diese Mappe gehört nicht zu deiner Anmeldung. Schreib Markus.';
 const NUR_STUDIERENDE = 'Als Lehrende*r hast du hier noch keine eigene Mappe.';
 const UNGUELTIG = 'Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder.';
 const KONFLIKT = 'Inzwischen geändert – neu laden. Dein Entwurf bleibt erhalten.';
+const NICHT_LOESCHEN = 'Gespeicherte Entscheidungen lassen sich nicht löschen – ersetze sie stattdessen.';
+const ERSETZT_FEST = 'Was eine gespeicherte Entscheidung ersetzt, lässt sich nicht mehr ändern – lege stattdessen eine neue an.';
+
+// Kaputtes JSON im Repo (z. B. direkt auf GitHub bearbeitet): eigener Satz statt „GitHub nicht erreichbar“.
+function unlesbar(name: ArtefaktName, e: DateiUnlesbar): ApiAusnahme {
+  return new ApiAusnahme(502, e.code, `${ARTEFAKTE[name].titel}: Die gespeicherte Datei lässt sich nicht lesen (vielleicht direkt auf GitHub geändert). Stell sie auf GitHub wieder her oder schreib Markus.`);
+}
+
+// Spec §3.4: Zeilen des Entscheidungslogs werden nie gelöscht, und was eine gespeicherte Zeile ersetzt, bleibt so.
+// Verglichen wird mit der gespeicherten Fassung; Zeilen ohne lesbare ID dort zählen nicht.
+function entscheidungenBleiben(alt: unknown, neu: { id: string; ersetzt?: string }[]): Feldfehler[] {
+  const zeilen = istObjekt(alt) && Array.isArray(alt.entscheidungen) ? alt.entscheidungen.filter(istObjekt) : [];
+  const neuNachId = new Map(neu.map((e, i) => [e.id, { e, i }]));
+  const meldungen: Feldfehler[] = [];
+  for (const z of zeilen) {
+    if (typeof z.id !== 'string') continue;
+    const treffer = neuNachId.get(z.id);
+    if (!treffer) meldungen.push({ pfad: 'entscheidungen', meldung: `${z.id}: ${NICHT_LOESCHEN}` });
+    else if ((typeof z.ersetzt === 'string' ? z.ersetzt : undefined) !== treffer.e.ersetzt) {
+      meldungen.push({ pfad: `entscheidungen.${treffer.i}.ersetzt`, meldung: ERSETZT_FEST });
+    }
+  }
+  return meldungen;
+}
 
 // Heutiges Datum in Wien als JJJJ-MM-TT (en-CA formatiert genau so).
 function heuteInWien(ms: number): string {
@@ -80,10 +104,18 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     return { name, repo: await eigenesRepo(c, false) };
   }
 
+  async function lesen(repo: string, name: ArtefaktName) {
+    try {
+      return await abh.speicher.lesen(repo, name);
+    } catch (e) {
+      throw e instanceof DateiUnlesbar ? unlesbar(name, e) : e;
+    }
+  }
+
   r.get('/:artefakt', async (c) => {
     const z = await artefaktZugriff(c);
     if (z instanceof Response) return z;
-    const { daten, basisSha } = await abh.speicher.lesen(z.repo, z.name);
+    const { daten, basisSha } = await lesen(z.repo, z.name);
     const antwort: ArtefaktAntwort = { name: z.name, daten, basisSha };
     return json(c, antwort);
   });
@@ -107,6 +139,14 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     // Der Stand ist immer der Tag des Speicherns (Wien), egal was der Browser mitschickt.
     const geprueft = artefaktParsen(name, istObjekt(roh) ? { ...roh, stand: heuteInWien(abh.jetzt()) } : roh);
     if ('fehler' in geprueft) return ungueltig(c, geprueft.fehler);
+
+    if (name === 'entscheidungen') {
+      const alt = await lesen(repo, name);
+      // Anderer Stand als der des Browsers: gleich Konflikt, sonst prüften wir gegen die falsche Fassung.
+      if (alt.basisSha !== basisSha) return fehler(c, 409, 'konflikt', KONFLIKT);
+      const geloescht = entscheidungenBleiben(alt.daten, (geprueft.daten as Entscheidungen).entscheidungen);
+      if (geloescht.length > 0) return ungueltig(c, geloescht);
+    }
 
     const k = kohorte(c.get('mitgliedschaft').kohorte);
     if (!k) throw internerFehler(`speichern: unbekannte Kohorte ${c.get('mitgliedschaft').kohorte}`);

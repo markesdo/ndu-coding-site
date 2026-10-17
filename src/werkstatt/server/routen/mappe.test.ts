@@ -1,13 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
 import briefBeispiel from '../../beispiele/brief.json';
+import entscheidungenBeispiel from '../../beispiele/entscheidungen.json';
 import { rendern } from '../../render';
 import { ApiAusnahme } from '../antwort';
 import { appErstellen } from '../app';
 import { fakeSpeicher } from '../fake-speicher';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { COOKIE_WERKSTATT, sitzungErstellen, type Sitzung } from '../sitzung';
-import { wirdEingerichtet } from '../speicher-fehler';
+import { DateiUnlesbar, GITHUB_SATZ, wirdEingerichtet } from '../speicher-fehler';
 import type { Speicher } from '../typen';
 
 const BASIS = 'http://localhost:4321';
@@ -18,11 +19,11 @@ const ZUGANG = { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerz
 const REPO = 'test-sofie';
 const SOFIE = { githubId: 1001, login: 'sofie-x', kohorte: 'test', rolle: 'studierende' } as const;
 
-function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: Speicher['speichern'] } = {}) {
+function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: Speicher['speichern']; lesen?: Speicher['lesen'] } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: ZUGANG };
   const fake = fakeSpeicher();
   const anlegen = vi.fn(opts.anlegen ?? fake.anlegen);
-  const speicher: Speicher = { ...fake, anlegen, speichern: opts.speichern ?? fake.speichern };
+  const speicher: Speicher = { ...fake, anlegen, speichern: opts.speichern ?? fake.speichern, lesen: opts.lesen ?? fake.lesen };
   const app = appErstellen(lokaleAbhaengigkeiten({ umgebung, speicher, jetzt: () => JETZT }));
 
   async function cookie(s: Omit<Sitzung, 'exp'> = SOFIE): Promise<string> {
@@ -163,6 +164,78 @@ describe('GET /api/werkstatt/mappe/:artefakt', () => {
     expect(r.status).toBe(503);
     expect(await r.json()).toMatchObject({ code: 'wird-eingerichtet' });
     expect(t.anlegen).not.toHaveBeenCalled();
+  });
+});
+
+describe('GET /api/werkstatt/mappe/:artefakt – kaputte Datei', () => {
+  it('kaputtes JSON im Repo → 502 mit eigenem Hinweis statt „GitHub nicht erreichbar“', async () => {
+    const t = await mitMappe({ lesen: async () => { throw new DateiUnlesbar('mappe/brief.json'); } });
+    const r = await t.holen('/brief');
+    expect(r.status).toBe(502);
+    const body = (await r.json()) as { code: string; fehler: string };
+    expect(body.code).toBe('github-fehler');
+    expect(body.fehler).not.toBe(GITHUB_SATZ);
+    expect(body.fehler).toContain('Produkt-Brief: Die gespeicherte Datei lässt sich nicht lesen');
+  });
+});
+
+describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
+  const [d1, d2] = entscheidungenBeispiel.entscheidungen;
+  const basis = { schema: 'entscheidungen@1', stand: '2026-10-22', entscheidungen: [d1, d2] };
+
+  async function gespeichert() {
+    const t = await mitMappe();
+    const r = await t.speichern('entscheidungen', { daten: basis, basisSha: null });
+    expect(r.status).toBe(200);
+    return { t, sha: ((await r.json()) as { basisSha: string }).basisSha };
+  }
+
+  it('gespeicherte Entscheidung löschen → 422 mit Feldfehler, kein Commit', async () => {
+    const { t, sha } = await gespeichert();
+    const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d2] }, basisSha: sha });
+    expect(r.status).toBe(422);
+    const body = (await r.json()) as { code: string; felder: { pfad: string; meldung: string }[] };
+    expect(body.code).toBe('ungueltig');
+    expect(body.felder).toStrictEqual([{ pfad: 'entscheidungen', meldung: 'D1: Gespeicherte Entscheidungen lassen sich nicht löschen – ersetze sie stattdessen.' }]);
+    expect(t.fake.commits(REPO)).toHaveLength(1);
+  });
+
+  it('neue Zeile anfügen, die eine gespeicherte über ersetzt ablöst → 200', async () => {
+    const { t, sha } = await gespeichert();
+    const d3 = { id: 'D3', datum: '2026-11-05', entscheidung: 'Auch Linz', grund: 'Interviews', beleg: 'erzaehlt', belegIds: [], ersetzt: 'D1' };
+    const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d1, d2, d3] }, basisSha: sha });
+    expect(r.status).toBe(200);
+    expect(JSON.parse(t.fake.commits(REPO)[1].dateien['mappe/entscheidungen.json']).entscheidungen).toHaveLength(3);
+  });
+
+  it('ersetzt einer gespeicherten Zeile nachträglich ändern → 422', async () => {
+    const { t } = await gespeichert();
+    const d3 = { id: 'D3', datum: '2026-11-05', entscheidung: 'Auch Linz', grund: 'Interviews', beleg: 'erzaehlt', belegIds: [], ersetzt: 'D1' };
+    const zwei = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d1, d2, d3] }, basisSha: (await (await t.holen('/entscheidungen')).json()).basisSha });
+    expect(zwei.status).toBe(200);
+    const sha = ((await zwei.json()) as { basisSha: string }).basisSha;
+    for (const neuD3 of [{ ...d3, ersetzt: 'D2' }, (({ ersetzt: _, ...rest }) => rest)(d3)]) {
+      const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d1, d2, neuD3] }, basisSha: sha });
+      expect(r.status).toBe(422);
+      expect((await r.json()).felder).toStrictEqual([{ pfad: 'entscheidungen.2.ersetzt', meldung: expect.stringContaining('ersetzt') }]);
+    }
+    expect(t.fake.commits(REPO)).toHaveLength(2);
+  });
+
+  it('veralteter basisSha → 409 (nicht 422 gegen eine fremde Fassung)', async () => {
+    const { t, sha } = await gespeichert();
+    t.fake.aendernVonAussen(REPO, 'entscheidungen');
+    const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d2] }, basisSha: sha });
+    expect(r.status).toBe(409);
+  });
+
+  it('stand setzt der Server, auch wenn der Browser keinen schickt', async () => {
+    const { t, sha } = await gespeichert();
+    const { stand: _, ...ohneStand } = basis;
+    const r = await t.speichern('entscheidungen', { daten: ohneStand, basisSha: sha });
+    expect(r.status).toBe(200);
+    expect(JSON.parse(t.fake.commits(REPO)[1].dateien['mappe/entscheidungen.json']).stand).toBe(HEUTE_WIEN);
+    expect(JSON.parse(t.fake.commits(REPO)[0].dateien['mappe/entscheidungen.json']).stand).toBe(HEUTE_WIEN);
   });
 });
 
