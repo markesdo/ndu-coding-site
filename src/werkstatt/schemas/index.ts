@@ -9,7 +9,7 @@ import type { Feldfehler } from './gemeinsam';
 
 export type { ArtefaktName } from './namen';
 export { ARTEFAKT_NAMEN } from './namen';
-export { BELEGSTUFEN, type Belegstufe, type Feldfehler } from './gemeinsam';
+export { BELEGSTUFEN, BELEGSTUFE_TEXT, type Belegstufe, type Feldfehler } from './gemeinsam';
 export type { Brief } from './brief';
 export type { Entscheidungen, Entscheidung } from './entscheidungen';
 export type { Leitfaden, Frage } from './leitfaden';

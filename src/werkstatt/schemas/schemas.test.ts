@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKT_NAMEN } from './namen';
-import { ARTEFAKTE, artefaktParsen, BELEGSTUFEN, MIGRATIONEN, punkt, quadrant, type Annahme } from './index';
+import { ARTEFAKTE, artefaktParsen, BELEGSTUFEN, BELEGSTUFE_TEXT, MIGRATIONEN, punkt, quadrant, type Annahme } from './index';
 import brief from '../beispiele/brief.json';
 import entscheidungen from '../beispiele/entscheidungen.json';
 import leitfaden from '../beispiele/leitfaden.json';
@@ -52,6 +52,12 @@ describe('ARTEFAKTE', () => {
   });
   it('Migrationstabelle ist (noch) leer', () => {
     expect(Object.keys(MIGRATIONEN)).toEqual([]);
+  });
+});
+
+describe('Anzeigetexte der Belegstufen', () => {
+  it('wie auf den Kursseiten', () => {
+    expect(BELEGSTUFE_TEXT).toStrictEqual({ keiner: 'noch keiner', gesagt: 'gesagt', erzaehlt: 'erzählt', getan: 'getan' });
   });
 });
 
