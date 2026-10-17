@@ -2,8 +2,10 @@
 // Format: "<base64url(JSON)>.<base64url(HMAC-SHA256)>". Der Schlüssel leitet sich vom Session-Secret ab,
 // mit eigenem Zusatz, damit das Secret nirgends sonst als roher HMAC-Schlüssel dient.
 import type { Context, MiddlewareHandler } from 'hono';
+import { deleteCookie } from 'hono/cookie';
 import { cookieLesen, gleich } from '../../lib/kurszugang.js';
-import type { Rolle } from '../zugang.js';
+import { KOHORTEN } from '../kohorten/index.js';
+import { mitgliedschaften, type Rolle } from '../zugang.js';
 import { fehler } from './antwort.js';
 import type { Abhaengigkeiten } from './typen.js';
 
@@ -68,15 +70,23 @@ export async function sitzungLesen(cookie: string | undefined, secret: string, j
   }
 }
 
-// Sitzung der Anfrage oder null (ohne Antwort zu schreiben).
+// Sitzung der Anfrage oder null (ohne Antwort zu schreiben). Gilt nur, solange die Person laut aktueller
+// Zugangsliste noch in dieser Kohorte (aktiv) und Rolle steht: entfernte Personen und archivierte Kohorten fallen raus.
 export async function sitzungDerAnfrage(c: Context, abh: Abhaengigkeiten): Promise<Sitzung | null> {
-  return sitzungLesen(cookieLesen(c.req.header('cookie') ?? null, COOKIE_WERKSTATT), abh.umgebung.sessionSecret, Math.floor(abh.jetzt() / 1000));
+  const s = await sitzungLesen(cookieLesen(c.req.header('cookie') ?? null, COOKIE_WERKSTATT), abh.umgebung.sessionSecret, Math.floor(abh.jetzt() / 1000));
+  if (!s) return null;
+  const noch = mitgliedschaften(abh.umgebung.zugang, s.githubId, KOHORTEN).some((m) => m.kohorte === s.kohorte && m.rolle === s.rolle);
+  return noch ? s : null;
 }
 
-// Setzt c.var.sitzung oder antwortet 401 nicht-angemeldet.
+// Setzt c.var.sitzung oder antwortet 401 nicht-angemeldet (und räumt ein ungültiges Cookie ab).
 export const mitSitzung: MiddlewareHandler<SitzungEnv> = async (c, weiter) => {
-  const s = await sitzungDerAnfrage(c, c.get('abh'));
-  if (!s) return fehler(c, 401, 'nicht-angemeldet', 'Bitte melde dich mit GitHub an.');
+  const abh = c.get('abh');
+  const s = await sitzungDerAnfrage(c, abh);
+  if (!s) {
+    if (cookieLesen(c.req.header('cookie') ?? null, COOKIE_WERKSTATT)) deleteCookie(c, COOKIE_WERKSTATT, { path: '/', secure: !abh.umgebung.lokal });
+    return fehler(c, 401, 'nicht-angemeldet', 'Bitte melde dich mit GitHub an.');
+  }
   c.set('sitzung', s);
   return weiter();
 };

@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { kohorteTest } from '../../kohorten/test';
 import { appErstellen } from '../app';
 import { githubIdentitaet } from '../github/identitaet';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
@@ -9,14 +10,14 @@ import type { GithubIdentitaet, Speicher, Umgebung } from '../typen';
 const BASIS = 'http://localhost:4321';
 
 function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean } = {}) {
-  const umgebung = { ...lokaleUmgebung(), zugang: opts.zugang ?? { test: { lehrende: [1000], studierende: [{ githubId: 339529141, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] } } };
+  const umgebung = { ...lokaleUmgebung(), zugang: opts.zugang ?? { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] } } };
   const basis = fakeSpeicher();
   const anlegen = vi.fn(async (...a: Parameters<Speicher['anlegen']>) => {
     if (opts.anlegenWirft) throw new Error('GitHub kaputt');
     return basis.anlegen(...a);
   });
   const speicher: Speicher = { ...basis, anlegen };
-  const person = opts.person ?? { githubId: 339529141, login: 'sofie-x' };
+  const person = opts.person ?? { githubId: 1001, login: 'sofie-x' };
   const github: GithubIdentitaet = {
     loginUrl: (state, uri) => `https://github.test/auth?state=${state}&redirect_uri=${encodeURIComponent(uri)}`,
     codeEinloesen: async () => person,
@@ -54,6 +55,24 @@ describe('auth/login', () => {
   });
 });
 
+describe('Cookies in Produktion (lokal: false)', () => {
+  it('Host-Präfix und Secure bei state- und Sitzungs-Cookie', async () => {
+    const t = aufbau();
+    const umgebung = { ...t.umgebung, lokal: false };
+    const abh = lokaleAbhaengigkeiten({ umgebung, github: { loginUrl: (s) => `https://github.test/?state=${s}`, codeEinloesen: async () => ({ githubId: 1001, login: 'x' }) } });
+    const app = appErstellen(abh);
+    const l = await app.request(`${BASIS}/api/werkstatt/auth/login`);
+    const sc = setCookies(l)[0];
+    expect(sc.startsWith('__Host-werkstatt_state=')).toBe(true);
+    expect(sc).toMatch(/Secure/i);
+    expect(sc).toMatch(/Path=\//);
+    const state = new URL(l.headers.get('location')!).searchParams.get('state')!;
+    const r = await app.request(`${BASIS}/api/werkstatt/auth/callback?code=x&state=${state}`, { headers: { Cookie: `__Host-werkstatt_state=${sc.split(';')[0].split('=').slice(1).join('=')}` } });
+    const sitz = setCookies(r).find((c) => c.startsWith(`${COOKIE_WERKSTATT}=`))!;
+    expect(sitz).toMatch(/Secure/i);
+  });
+});
+
 describe('auth/callback', () => {
   it('Rücksprung auf weiter, Sitzungs-Cookie, Mappe angelegt', async () => {
     const { app, anlegen, umgebung } = aufbau();
@@ -62,26 +81,31 @@ describe('auth/callback', () => {
     expect(r.status).toBe(302);
     expect(r.headers.get('location')).toBe('/innolab/mappe/brief');
     const s = await sitzungLesen(wert(r, COOKIE_WERKSTATT), umgebung.sessionSecret, 1_800_000_000);
-    expect(s).toMatchObject({ githubId: 339529141, kohorte: 'test', rolle: 'studierende' });
+    expect(s).toMatchObject({ githubId: 1001, kohorte: 'test', rolle: 'studierende' });
     expect(s!.exp).toBe(1_800_000_000 + 30 * 24 * 3600);
-    expect(setCookies(r).find((c) => c.startsWith(`${COOKIE_WERKSTATT}=`))).toMatch(/HttpOnly/i);
+    const sc = setCookies(r).find((c) => c.startsWith(`${COOKIE_WERKSTATT}=`))!;
+    expect(sc).toMatch(/HttpOnly/i);
+    expect(sc).toMatch(/SameSite=Lax/i);
+    expect(sc).toMatch(/Path=\//);
     expect(anlegen).toHaveBeenCalledTimes(1);
   });
 
-  it('falscher state: 400, kein Sitzungs-Cookie', async () => {
+  it('falscher state: Weiterleitung mit Fehler, kein Sitzungs-Cookie', async () => {
     const { app, anlegen } = aufbau();
     const { stateCookie } = await login(app);
     const r = await callback(app, 'falsch', stateCookie);
-    expect(r.status).toBe(400);
+    expect(r.status).toBe(302);
+    expect(r.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-ungueltig');
     expect(wert(r, COOKIE_WERKSTATT)).toBeUndefined();
     expect(anlegen).not.toHaveBeenCalled();
   });
 
-  it('ohne state-Cookie: 400, kein Sitzungs-Cookie', async () => {
+  it('ohne state-Cookie: Weiterleitung mit Fehler, kein Sitzungs-Cookie', async () => {
     const { app } = aufbau();
     const { state } = await login(app);
     const r = await callback(app, state, undefined);
-    expect(r.status).toBe(400);
+    expect(r.status).toBe(302);
+    expect(r.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-ungueltig');
     expect(wert(r, COOKIE_WERKSTATT)).toBeUndefined();
   });
 
@@ -96,12 +120,12 @@ describe('auth/callback', () => {
   });
 
   it('umbenannter login behält zugang', async () => {
-    const { app, anlegen, umgebung } = aufbau({ person: { githubId: 339529141, login: 'neuer-name' } });
+    const { app, anlegen, umgebung } = aufbau({ person: { githubId: 1001, login: 'neuer-name' } });
     const { state, stateCookie } = await login(app);
     const r = await callback(app, state, stateCookie);
     const s = await sitzungLesen(wert(r, COOKIE_WERKSTATT), umgebung.sessionSecret, 1_800_000_000);
-    expect(s).toMatchObject({ githubId: 339529141, login: 'neuer-name' });
-    expect(anlegen).toHaveBeenCalledWith(expect.objectContaining({ kuerzel: 'sofie', kohorte: 'test' }), 339529141);
+    expect(s).toMatchObject({ githubId: 1001, login: 'neuer-name' });
+    expect(anlegen).toHaveBeenCalledWith(expect.objectContaining({ kuerzel: 'sofie', kohorte: 'test' }), 1001);
   });
 
   it('Lehrende: Cookie mit rolle lehrende, anlegen nicht aufgerufen', async () => {
@@ -136,12 +160,13 @@ describe('auth/callback', () => {
     expect(r.headers.get('location')).toBe('/');
   });
 
-  it('GitHub lehnt den Code ab: 502, kein Cookie', async () => {
+  it('GitHub lehnt den Code ab: Weiterleitung mit Fehler, kein Cookie', async () => {
     const abh = lokaleAbhaengigkeiten({ github: { loginUrl: (s) => `https://github.test/?state=${s}`, codeEinloesen: async () => { throw new Error('nein'); } } });
     const app = appErstellen(abh);
     const { state, stateCookie } = await login(app);
     const r = await callback(app, state, stateCookie);
-    expect(r.status).toBe(502);
+    expect(r.status).toBe(302);
+    expect(r.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-fehlgeschlagen');
     expect(wert(r, COOKIE_WERKSTATT)).toBeUndefined();
   });
 });
@@ -162,9 +187,9 @@ describe('auth/ich und abmelden', () => {
   });
 
   it('Studierende: Ich mit repo', async () => {
-    const { app, cookie } = await angemeldet({ githubId: 339529141, login: 'neuer-name' });
+    const { app, cookie } = await angemeldet({ githubId: 1001, login: 'neuer-name' });
     const r = await app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: cookie } });
-    expect(await r.json()).toStrictEqual({ githubId: 339529141, login: 'neuer-name', kohorte: 'test', rolle: 'studierende', repo: 'test-sofie' });
+    expect(await r.json()).toStrictEqual({ githubId: 1001, login: 'neuer-name', kohorte: 'test', rolle: 'studierende', repo: 'test-sofie' });
   });
 
   it('Lehrende: repo null', async () => {
@@ -179,6 +204,39 @@ describe('auth/ich und abmelden', () => {
     const cookie = `${COOKIE_WERKSTATT}=${wert(await callback(t.app, state, stateCookie), COOKIE_WERKSTATT)}`;
     const r = await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: cookie } });
     expect(await r.json()).toMatchObject({ repo: null });
+  });
+
+  it('Person nach dem Login aus der Zugangsliste entfernt: 401 und Cookie weg', async () => {
+    const t = await angemeldet({ githubId: 1001, login: 'x' });
+    t.umgebung.zugang.test.studierende = [];
+    const r = await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: t.cookie } });
+    expect(r.status).toBe(401);
+    expect(await r.json()).toMatchObject({ code: 'nicht-angemeldet' });
+    expect(setCookies(r).find((c) => c.startsWith(`${COOKIE_WERKSTATT}=`))).toMatch(/Max-Age=0/i);
+  });
+
+  it('entfernte Lehrende: 401', async () => {
+    const t = await angemeldet({ githubId: 1000, login: 'l' });
+    t.umgebung.zugang.test.lehrende = [];
+    expect((await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: t.cookie } })).status).toBe(401);
+  });
+
+  it('Rolle gewechselt (Studierende wurde Lehrende): alte Sitzung 401', async () => {
+    const t = await angemeldet({ githubId: 1001, login: 'x' });
+    t.umgebung.zugang.test.studierende = t.umgebung.zugang.test.studierende.filter((x) => x.githubId !== 1001);
+    t.umgebung.zugang.test.lehrende = [1001];
+    expect((await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: t.cookie } })).status).toBe(401);
+  });
+
+  it('Kohorte archiviert: 401', async () => {
+    const t = await angemeldet({ githubId: 1001, login: 'x' });
+    expect((await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: t.cookie } })).status).toBe(200);
+    (kohorteTest as { status: string }).status = 'archiviert';
+    try {
+      expect((await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: t.cookie } })).status).toBe(401);
+    } finally {
+      (kohorteTest as { status: string }).status = 'aktiv';
+    }
   });
 
   it('Abmelden löscht das Cookie', async () => {

@@ -99,7 +99,7 @@ Zwei Teile, getrennt nach öffentlich und personenbezogen:
 
 ```json
 { "2026": { "lehrende": [57681871],
-            "studierende": [{ "githubId": 339529141, "kuerzel": "sofie" }, …] } }
+            "studierende": [{ "githubId": 1001, "kuerzel": "sofie" }, …] } }
 ```
 
 Regeln:

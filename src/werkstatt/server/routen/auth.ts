@@ -2,11 +2,11 @@
 // CSRF für POST /abmelden prüft appErstellen.
 import { Hono } from 'hono';
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
-import { sichererPfad } from '../../../lib/kurszugang.js';
+import { gleich, sichererPfad } from '../../../lib/kurszugang.js';
 import { KOHORTEN } from '../../kohorten/index.js';
 import type { Ich } from '../../vertrag.js';
 import { mitgliedschaften, repoName } from '../../zugang.js';
-import { ApiAusnahme, json, origin } from '../antwort.js';
+import { json, origin } from '../antwort.js';
 import { COOKIE_WERKSTATT, GUELTIG_SEKUNDEN, mitSitzung, sitzungErstellen, type SitzungEnv } from '../sitzung.js';
 import type { Abhaengigkeiten } from '../typen.js';
 
@@ -36,7 +36,8 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
         try {
           const name = repoName(m);
           repo = (await abh.speicher.werkstattJson(name)) ? name : null;
-        } catch {
+        } catch (e) {
+          console.error('werkstatt: Mappe nicht lesbar –', e instanceof Error ? e.message : 'Fehler');
           repo = null; // Mappe wird noch eingerichtet
         }
       }
@@ -62,16 +63,14 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     const code = c.req.query('code');
     deleteCookie(c, stateName(), { path: '/', secure: sicher() });
     c.header('Cache-Control', 'no-store');
-    if (!state || !code || c.req.query('state') !== state) {
-      throw new ApiAusnahme(400, 'unbekannt', 'Die Anmeldung ist abgelaufen oder ungültig. Bitte starte sie noch einmal.');
-    }
+    if (!state || !code || !gleich(c.req.query('state') ?? '', state)) return c.redirect(`${MAPPE}?fehler=anmeldung-ungueltig`, 302);
 
     let person;
     try {
       person = await abh.github.codeEinloesen(code, redirectUri(c));
     } catch (e) {
       console.error('werkstatt: GitHub-Anmeldung fehlgeschlagen –', e instanceof Error ? e.message : 'Fehler');
-      throw new ApiAusnahme(502, 'unbekannt', 'GitHub hat die Anmeldung nicht bestätigt. Bitte versuche es noch einmal.');
+      return c.redirect(`${MAPPE}?fehler=anmeldung-fehlgeschlagen`, 302);
     }
 
     // Neueste aktive Kohorte zuerst; Zuordnung nur über die ID, nie über den (umbenennbaren) login.
