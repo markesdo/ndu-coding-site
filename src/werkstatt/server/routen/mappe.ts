@@ -95,7 +95,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       try {
         await abh.speicher.anlegen(m, s.githubId);
       } catch (e) {
-        // „Gehört jemand anderem“ geht durch. Vorübergehendes (GitHub 5xx, Netz/Zeitlimit = Status 0, 503) heißt „wird
+        // „Gehört jemand anderem“ geht durch. Vorübergehendes (jeder GitHub-Fehler, Netz/Zeitlimit, 503) heißt „wird
         // eingerichtet“ – der Editor versucht es dann von selbst noch einmal. Alles andere ist ein Fehler bei uns.
         if (e instanceof ApiAusnahme && e.status === 403) throw e;
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', ursache(e));
