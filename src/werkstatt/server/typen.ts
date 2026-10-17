@@ -30,6 +30,8 @@ export interface Speicher {
   lesen(repo: string, name: ArtefaktName): Promise<{ daten: unknown | null; basisSha: string | null }>;
   // Ein Aufruf = ein Commit mit allen `dateien` (Pfad -> Inhalt). Konflikt nur, wenn basisSha nicht zur JSON-Datei
   // dieses Artefakts passt; ein anderes Artefakt blockiert nie.
+  // readme: wenn angegeben, schreibt der Speicher README.md bei jedem Versuch neu – aus der Dateiliste des Stands,
+  // auf dem genau dieser Commit landet (dieses Artefakt eingeschlossen). So bleibt es auch bei Wettläufen aktuell.
   speichern(
     repo: string,
     name: ArtefaktName,
@@ -37,6 +39,7 @@ export interface Speicher {
     basisSha: string | null,
     autor: { name: string; email: string },
     nachricht: string,
+    readme?: (vorhanden: { name: ArtefaktName; vorhanden: boolean }[]) => string,
   ): Promise<{ basisSha: string; commitUrl: string } | { konflikt: true }>;
   uebersicht(repo: string): Promise<{ name: ArtefaktName; vorhanden: boolean }[]>;
   // null = Repo oder Datei fehlt.

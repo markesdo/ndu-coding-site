@@ -10,8 +10,9 @@ export function json(c: Context, daten: unknown, status: ContentfulStatusCode = 
   return c.json(daten, status, KOPF);
 }
 
-export function fehler(c: Context, status: ContentfulStatusCode, code: ApiFehler['code'], satz: string): Response {
-  const body: ApiFehler = { fehler: satz, code };
+// felder nur, wenn es wirklich Feldfehler gibt (422 ungueltig nach der Schemaprüfung).
+export function fehler(c: Context, status: ContentfulStatusCode, code: ApiFehler['code'], satz: string, felder?: ApiFehler['felder']): Response {
+  const body: ApiFehler = felder ? { fehler: satz, code, felder } : { fehler: satz, code };
   return c.json(body, status, KOPF);
 }
 

@@ -157,6 +157,24 @@ describe('githubSpeicher.speichern', () => {
     expect(gh.zustand.commit(repo, gh.zustand.kopf(repo)!).message).toBe('Annahmen: neu');
   });
 
+  it('readme: pro Versuch aus dem Baum, auf dem der Commit landet (anderes Artefakt dazwischen steht mit drin)', async () => {
+    const { gh, s, repo } = await mitRepo();
+    let einmal = true;
+    gh.zustand.vorRefUpdate = (r) => {
+      if (!einmal) return;
+      einmal = false;
+      gh.zustand.aendernVonAussen(r, 'mappe/brief.json', '{"von":"tab2"}\n');
+    };
+    const readme = vi.fn((v: { name: string; vorhanden: boolean }[]) => `# ${v.filter((x) => x.vorhanden).map((x) => x.name).join(',')}\n`);
+    const d = dateien('annahmen', { annahmen: [] });
+    delete d['README.md'];
+    const erg = await s.speichern(repo, 'annahmen', d, null, autor, 'Annahmen: neu', readme);
+    expect('basisSha' in erg).toBe(true);
+    expect(readme).toHaveBeenCalledTimes(2);
+    expect(readme.mock.calls[0][0].filter((x) => x.vorhanden).map((x) => x.name)).toStrictEqual(['annahmen']);
+    expect(gh.zustand.dateien(repo)['README.md']).toBe('# brief,annahmen\n');
+  });
+
   it('wettlauf zweimal verloren, dritter Versuch klappt', async () => {
     const { gh, s, repo } = await mitRepo();
     let n = 0;
