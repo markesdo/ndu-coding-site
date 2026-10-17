@@ -56,12 +56,20 @@ export interface MappeZeile {
   vorhanden: boolean;
 }
 
+/** Anker der Überschrift „In der Werkstatt speichern“ direkt vor dem Editor (seiten.test.ts prüft, dass er dort steht). */
+export const EDITOR_ANKER: Readonly<Record<ArtefaktName, string>> = {
+  brief: 'werkstatt',
+  entscheidungen: 'werkstatt',
+  leitfaden: 'vorlage',
+  annahmen: 'werkstatt',
+};
+
 /** Alle Artefakte der Mappe in fester Reihenfolge; was in der Antwort fehlt, gilt als offen. */
 export function mappeZeilen(stand: MappeStand): MappeZeile[] {
   return ARTEFAKT_NAMEN.map((name) => ({
     name,
     titel: ARTEFAKTE[name].titel,
-    href: `/innolab/methoden/${ARTEFAKTE[name].slug}`,
+    href: `/innolab/methoden/${ARTEFAKTE[name].slug}#${EDITOR_ANKER[name]}`,
     vorhanden: stand.artefakte.some((a) => a.name === name && a.vorhanden),
   }));
 }

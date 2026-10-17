@@ -62,7 +62,7 @@ describe('mappeZeilen', () => {
     const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }] };
     const z = mappeZeilen(stand);
     expect(z.map((x) => x.name)).toStrictEqual([...ARTEFAKT_NAMEN]);
-    expect(z.find((x) => x.name === 'annahmen')).toStrictEqual({ name: 'annahmen', titel: 'Annahmen-Map', href: '/innolab/methoden/annahmen', vorhanden: true });
+    expect(z.find((x) => x.name === 'annahmen')).toStrictEqual({ name: 'annahmen', titel: 'Annahmen-Map', href: '/innolab/methoden/annahmen#werkstatt', vorhanden: true });
     // Fehlt ein Artefakt in der Antwort, gilt es als offen.
     expect(z.filter((x) => x.vorhanden).map((x) => x.name)).toStrictEqual(['annahmen']);
   });

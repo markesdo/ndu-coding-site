@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE, METHODEN, artefakt } from '../components/methoden';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from './schemas/index.js';
 import { EDITOREN } from './ui/editoren/index.js';
-import { LEITFADEN_LINK } from './ui/mappe-hilfen.js';
+import { EDITOR_ANKER, LEITFADEN_LINK } from './ui/mappe-hilfen.js';
 import { MCP_WERKZEUGE } from './vertrag.js';
 
 // Seitenintegration der Werkstatt (Spec §3.5): Jede Methode, deren Artefakt in der Werkstatt lebt, hat auf ihrer Seite
@@ -129,5 +129,17 @@ describe('Claude verbinden', () => {
     expect(seite).toContain('href={connectorLink(seite)}');
     expect(seite).toContain('{connectorUrl(seite)}');
     expect(seite).not.toContain('https://ndu.datamonkeys.ai/api/werkstatt/mcp</code>');
+  });
+});
+
+describe('Mappe verlinkt direkt zum Editor', () => {
+  it('der Anker jedes Artefakts ist die letzte Überschrift vor seinem „Bearbeiten“', () => {
+    for (const name of ARTEFAKT_NAMEN) {
+      const seite = seiten[`../pages/innolab/methoden/${WERKSTATT_ARTEFAKTE[name].slug}.astro`];
+      const knopf = seite.indexOf(`<Bearbeiten artefakt="${name}"`);
+      expect(knopf, name).toBeGreaterThan(-1);
+      const davor = [...seite.slice(0, knopf).matchAll(/<h2 id="([^"]+)"/g)].at(-1)?.[1];
+      expect(davor, name).toBe(EDITOR_ANKER[name]);
+    }
   });
 });
