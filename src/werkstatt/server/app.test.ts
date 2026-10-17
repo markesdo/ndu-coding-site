@@ -65,9 +65,12 @@ describe('Routing', () => {
     expect(await stub(await anfrage('/api/werkstatt/mappe/brief'))).toBe('mappe');
   });
 
-  it('Metadaten ohne Suffix an der Wurzel erreichen oauthRouten (so sucht Claude zuerst)', async () => {
-    expect(await issuerMeta(await anfrage('/.well-known/oauth-authorization-server'))).toBe(`${BASIS}/api/werkstatt/oauth`);
-    expect(await resourceMeta(await anfrage('/.well-known/oauth-protected-resource'))).toBe(`${BASIS}/api/werkstatt/mcp`);
+  it('Metadaten ohne Suffix an der Wurzel: 404 als ApiFehler (Issuer mit Pfad, RFC 8414 §3.3)', async () => {
+    for (const p of ['/.well-known/oauth-authorization-server', '/.well-known/oauth-protected-resource']) {
+      const r = await anfrage(p);
+      expect(r.status, p).toBe(404);
+      expect(await r.json(), p).toMatchObject({ code: 'unbekannt' });
+    }
   });
 
   it('andere /.well-known-Pfade gehören nicht zur Werkstatt', async () => {

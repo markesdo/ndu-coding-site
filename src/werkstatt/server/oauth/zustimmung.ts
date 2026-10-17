@@ -30,13 +30,16 @@ button:focus-visible,a.knopf:focus-visible{outline:3px solid var(--akzent);outli
 `;
 
 function seite(c: Context, status: ContentfulStatusCode, titel: string, rumpf: string, zielHost?: string): Response {
+  // Mit Formular (zielHost gesetzt) same-origin: unter no-referrer schickt der Browser beim Absenden „Origin: null“
+  // (Fetch-Spec, „serializing a request origin“), und die CSRF-Prüfung lehnt ab. same-origin gibt dem Ziel
+  // (claude.ai) nach der Weiterleitung trotzdem keinen Referer. Reine Meldungsseiten bleiben bei no-referrer.
   const nonce = crypto.getRandomValues(new Uint8Array(16)).reduce((s, b) => s + b.toString(16).padStart(2, '0'), '');
   // form-action muss auch das Ziel erlauben: Browser wenden es auf die Weiterleitung nach dem Absenden an.
   const formAction = zielHost ? `'self' https://${zielHost}` : `'self'`;
   c.header('Content-Security-Policy', `default-src 'none'; style-src 'nonce-${nonce}'; form-action ${formAction}; frame-ancestors 'none'; base-uri 'none'`);
   c.header('X-Frame-Options', 'DENY');
   c.header('Cache-Control', 'no-store');
-  c.header('Referrer-Policy', 'no-referrer');
+  c.header('Referrer-Policy', zielHost ? 'same-origin' : 'no-referrer');
   c.header('X-Content-Type-Options', 'nosniff');
   return c.html(
     `<!doctype html>

@@ -7,7 +7,7 @@
 //
 // Schlüssel aus MCP_TOKEN_KEYS (abh.umgebung.tokenKeys): versiegelt wird mit dem ersten, geöffnet mit jedem gelisteten.
 // Einen neuen kid vorne anstellen rotiert, ohne jemanden abzumelden; einen kid streichen macht seine Tokens ungültig.
-import { b64url } from '../../../lib/kurszugang.js';
+import { ausB64url, b64url } from '../../../lib/kurszugang.js';
 import type { Schluessel } from '../typen.js';
 
 export type UmschlagTyp = 'code' | 'access' | 'refresh';
@@ -23,9 +23,21 @@ const dec = new TextDecoder();
 
 const aad = (kid: string, typ: UmschlagTyp) => enc.encode(`${VERSION}|${kid}|${typ}`);
 
-function aesSchluessel(key: Uint8Array, zweck: 'encrypt' | 'decrypt'): Promise<CryptoKey> {
-  // Kopie: Web Crypto verlangt einen Puffer auf einem echten ArrayBuffer (Typen ab TS 5.7).
-  return crypto.subtle.importKey('raw', new Uint8Array(key), { name: 'AES-GCM' }, false, [zweck]);
+// Importierte Schlüssel je Schlüssel-Objekt aus der Umgebung zwischengespeichert (ein Import pro kid und Prozess).
+// WeakMap über die Bytes statt über den kid-Namen: zwei Umgebungen mit gleichem kid, aber anderem Schlüssel
+// (Tests, Rotation mit Tippfehler) verwechseln sich so nie.
+const importiert = new WeakMap<Uint8Array, Promise<CryptoKey>>();
+
+function aesSchluessel(key: Uint8Array): Promise<CryptoKey> {
+  let k = importiert.get(key);
+  if (!k) {
+    // Kopie: Web Crypto verlangt einen Puffer auf einem echten ArrayBuffer (Typen ab TS 5.7).
+    k = crypto.subtle.importKey('raw', new Uint8Array(key), { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+    importiert.set(key, k);
+    // Ein fehlgeschlagener Import (falsche Länge) bleibt nicht hängen.
+    k.catch(() => importiert.delete(key));
+  }
+  return k;
 }
 
 // Ablauf `exp` (Sekunden seit 1970) steht mit im Umschlag. jetztSek nur für Tests anders als die Uhr.
@@ -43,7 +55,7 @@ export async function versiegeln(
   const klar = enc.encode(JSON.stringify({ ...inhalt, typ, exp: jetztSek + ttlSek }));
   const geheim = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv: nonce, additionalData: aad(erster.kid, typ), tagLength: TAG_BYTES * 8 },
-    await aesSchluessel(erster.key, 'encrypt'),
+    await aesSchluessel(erster.key),
     klar,
   );
   const roh = new Uint8Array(NONCE_BYTES + geheim.byteLength);
@@ -65,12 +77,12 @@ export async function oeffnen(
   const [, kid, rumpf] = teile;
   const s = schluessel.find((k) => k.kid === kid);
   if (!s || !/^[A-Za-z0-9_-]+$/.test(rumpf)) return null;
-  const roh = Buffer.from(rumpf, 'base64url');
-  if (roh.length < NONCE_BYTES + TAG_BYTES + 1) return null;
   try {
+    const roh = ausB64url(rumpf);
+    if (roh.length < NONCE_BYTES + TAG_BYTES + 1) return null;
     const klar = await crypto.subtle.decrypt(
       { name: 'AES-GCM', iv: roh.subarray(0, NONCE_BYTES), additionalData: aad(kid, typ), tagLength: TAG_BYTES * 8 },
-      await aesSchluessel(s.key, 'decrypt'),
+      await aesSchluessel(s.key),
       roh.subarray(NONCE_BYTES),
     );
     const daten: unknown = JSON.parse(dec.decode(klar));

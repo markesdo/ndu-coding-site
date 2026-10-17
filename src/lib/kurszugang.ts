@@ -12,6 +12,12 @@ export function b64url(bytes: ArrayBuffer | Uint8Array): string {
   return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
+// Umkehrung von b64url. Wirft bei ungültigem base64.
+export function ausB64url(text: string): Uint8Array<ArrayBuffer> {
+  const b = atob(text.replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from(b, (z) => z.charCodeAt(0));
+}
+
 // Schlüssel aus Geheimnis UND Passwort: Wird das Kurspasswort geändert, verlieren alte Cookies ihre Gültigkeit.
 async function schluessel(secret: string, passwort: string): Promise<CryptoKey> {
   return crypto.subtle.importKey('raw', enc.encode(`${secret}\0${passwort}`), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);

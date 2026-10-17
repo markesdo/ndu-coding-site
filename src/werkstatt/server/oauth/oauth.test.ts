@@ -102,8 +102,17 @@ afterEach(() => {
 });
 
 describe('Metadaten', () => {
-  const AS_PFADE = ['/api/werkstatt/oauth/metadata', '/.well-known/oauth-authorization-server/api/werkstatt/oauth', '/.well-known/oauth-authorization-server'];
-  const PR_PFADE = ['/api/werkstatt/mcp/resource', '/.well-known/oauth-protected-resource/api/werkstatt/mcp', '/.well-known/oauth-protected-resource'];
+  const AS_PFADE = ['/api/werkstatt/oauth/metadata', '/.well-known/oauth-authorization-server/api/werkstatt/oauth'];
+  const PR_PFADE = ['/api/werkstatt/mcp/resource', '/.well-known/oauth-protected-resource/api/werkstatt/mcp'];
+
+  it('keine Aliasse an der Wurzel: Issuer und Resource passen nur zur Pfad-Variante (RFC 8414 §3.3, RFC 9728) -> 404', async () => {
+    const h = aufbau();
+    for (const p of ['/.well-known/oauth-authorization-server', '/.well-known/oauth-protected-resource']) {
+      const r = await h.anfrage(p);
+      expect(r.status, p).toBe(404);
+      expect(await r.json(), p).toMatchObject({ code: 'unbekannt' });
+    }
+  });
 
   it('Issuer-Metadaten: CIMD, öffentlicher Client, S256, offline_access; an allen Pfaden gleich', async () => {
     const h = aufbau();
@@ -289,18 +298,61 @@ describe('oauth/authorize', () => {
     expect(r.status).toBe(403);
   });
 
-  it('jede neue client_id wird einmal pro Tag geloggt', async () => {
+  it('jede neue client_id wird nach der Zustimmung einmal pro Tag geloggt', async () => {
     const h = aufbau();
     const log = vi.spyOn(console, 'info').mockImplementation(() => {});
-    const url = `/api/werkstatt/oauth/authorize?${form(authorizeParameter(pkce().challenge))}`;
-    await h.anfrage(url);
-    await h.anfrage(url);
     const treffer = () => log.mock.calls.filter((a) => String(a[0]).includes(CLAUDE_CLIENT));
+    await codeHolen(h, pkce().challenge);
+    await codeHolen(h, pkce().challenge);
     expect(treffer()).toHaveLength(1);
     expect(String(treffer()[0][0])).not.toContain('zustand-123');
     h.uhr.ms += 24 * 3600 * 1000;
-    await h.anfrage(url);
+    await codeHolen(h, pkce().challenge);
     expect(treffer()).toHaveLength(2);
+  });
+
+  it('anonymes GET authorize: kein Log, kein Cache-Eintrag (sonst flutet jeder den Cache)', async () => {
+    const h = aufbau();
+    const log = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const set = vi.spyOn(h.abh.cache, 'set');
+    const r = await h.anfrage(`/api/werkstatt/oauth/authorize?${form(authorizeParameter(pkce().challenge, { client_id: 'https://claude.ai/irgendwas' }))}`);
+    expect(r.status).toBe(302);
+    expect(set).not.toHaveBeenCalled();
+    expect(log).not.toHaveBeenCalled();
+  });
+
+  it('Zustimmungsseite: Referrer-Policy same-origin, sonst schickt der Browser beim Absenden Origin: null', async () => {
+    const h = aufbau();
+    const r = await h.anfrage(`/api/werkstatt/oauth/authorize?${form(authorizeParameter(pkce().challenge))}`, { headers: { Cookie: await h.sitzung() } });
+    expect(r.status).toBe(200);
+    expect(r.headers.get('referrer-policy')).toBe('same-origin');
+    // Meldungsseiten ohne Formular bleiben bei no-referrer.
+    const m = await h.anfrage(`/api/werkstatt/oauth/authorize?${form(authorizeParameter(pkce().challenge, { client_id: 'https://boese.example/c' }))}`);
+    expect(m.status).toBe(400);
+    expect(m.headers.get('referrer-policy')).toBe('no-referrer');
+  });
+
+  it('POST mit Origin: null (so sendet ihn ein Browser unter no-referrer): 403', async () => {
+    const h = aufbau();
+    const r = await h.anfrage('/api/werkstatt/oauth/authorize', {
+      method: 'POST',
+      headers: { ...FORM, Origin: 'null', Cookie: await h.sitzung() },
+      body: form({ ...authorizeParameter(pkce().challenge), entscheidung: 'erlauben' }),
+    });
+    expect(r.status).toBe(403);
+  });
+
+  it('zu langer Rücksprung: ausdrückliche Fehlerseite in GET und POST statt stillem Rückfall auf /', async () => {
+    const h = aufbau();
+    const lang = authorizeParameter(pkce().challenge, { state: 's'.repeat(500) });
+    const g = await h.anfrage(`/api/werkstatt/oauth/authorize?${form(lang)}`);
+    expect(g.status).toBe(400);
+    expect(await g.text()).toContain('zu lang');
+    const p = await h.anfrage('/api/werkstatt/oauth/authorize', { method: 'POST', headers: { ...FORM, Origin: BASIS }, body: form({ ...lang, entscheidung: 'erlauben' }) });
+    expect(p.status).toBe(400);
+    const html = await p.text();
+    expect(html).toContain('zu lang');
+    expect(html).not.toContain('weiter=%2F"');
   });
 });
 
@@ -352,13 +404,49 @@ describe('oauth/token', () => {
     await erwarteInvalidGrant(await token(h, { grant_type: 'authorization_code', code, redirect_uri: CALLBACK, code_verifier: p.verifier, client_id: 'https://claude.ai/oauth/anderer' }));
   });
 
-  it('Code zweimal eingelöst: beim zweiten Mal invalid_grant', async () => {
+  it('Code zweimal eingelöst: beim zweiten Mal invalid_grant, und die Tokens des ersten Mals gelten nicht mehr', async () => {
     const h = aufbau();
     const p = pkce();
     const { code } = await codeHolen(h, p.challenge);
     const felder = { grant_type: 'authorization_code', code, redirect_uri: CALLBACK, code_verifier: p.verifier };
-    expect((await token(h, felder)).status).toBe(200);
+    const erst = await token(h, felder);
+    expect(erst.status).toBe(200);
+    const paar = await erst.json();
     await erwarteInvalidGrant(await token(h, felder));
+    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER)).toBeNull();
+    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
+  });
+
+  it('Refresh-Familie: Angreifer rotiert R1 -> R2, Claude legt R1 vor -> invalid_grant, R2 und alle Access-Tokens der Familie ungültig', async () => {
+    const h = aufbau();
+    const paar = await tokenPaar(h);
+    const angreifer = await (await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token })).json();
+    expect(await bearerPruefen(h.abh, `Bearer ${angreifer.access_token}`, ISSUER)).not.toBeNull();
+    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
+    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: angreifer.refresh_token }));
+    expect(await bearerPruefen(h.abh, `Bearer ${angreifer.access_token}`, ISSUER)).toBeNull();
+    expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER)).toBeNull();
+    // Eine andere Verbindung derselben Person bleibt unberührt.
+    const andere = await tokenPaar(h);
+    expect(await bearerPruefen(h.abh, `Bearer ${andere.access_token}`, ISSUER)).not.toBeNull();
+    expect((await token(h, { grant_type: 'refresh_token', refresh_token: andere.refresh_token })).status).toBe(200);
+  });
+
+  it('Body über 16 KB: 413 invalid_request, mit und ohne Content-Length', async () => {
+    const h = aufbau();
+    const gross = form({ grant_type: 'refresh_token', client_id: CLAUDE_CLIENT, refresh_token: 'x'.repeat(17 * 1024) });
+    const mit = await h.anfrage('/api/werkstatt/oauth/token', { method: 'POST', headers: { ...FORM, 'Content-Length': String(gross.length) }, body: gross });
+    expect(mit.status).toBe(413);
+    expect(await mit.json()).toMatchObject({ error: 'invalid_request' });
+    const strom = new ReadableStream({
+      start(k) {
+        k.enqueue(new TextEncoder().encode(gross));
+        k.close();
+      },
+    });
+    const ohne = await h.anfrage('/api/werkstatt/oauth/token', { method: 'POST', headers: FORM, body: strom, duplex: 'half' } as RequestInit);
+    expect(ohne.status).toBe(413);
+    expect(await ohne.json()).toMatchObject({ error: 'invalid_request' });
   });
 
   it('Refresh rotiert: neues Refresh-Token ≠ altes; altes erneut -> invalid_grant', async () => {
@@ -370,9 +458,14 @@ describe('oauth/token', () => {
     expect(neu.refresh_token).toBeTruthy();
     expect(neu.refresh_token).not.toBe(paar.refresh_token);
     expect(await bearerPruefen(h.abh, `Bearer ${neu.access_token}`, ISSUER)).toMatchObject({ githubId: 1001 });
+    // Ohne Wiederverwendung rotiert die Kette beliebig weiter.
+    const dritt = await token(h, { grant_type: 'refresh_token', refresh_token: neu.refresh_token });
+    expect(dritt.status).toBe(200);
+    const drittes = await dritt.json();
+    expect(drittes.refresh_token).not.toBe(neu.refresh_token);
     await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: paar.refresh_token }));
-    // Das neue gilt weiter.
-    expect((await token(h, { grant_type: 'refresh_token', refresh_token: neu.refresh_token })).status).toBe(200);
+    // Wiederverwendung widerruft die ganze Familie, also auch das jüngste (siehe „Refresh-Familie“).
+    await erwarteInvalidGrant(await token(h, { grant_type: 'refresh_token', refresh_token: drittes.refresh_token }));
   });
 
   it('Refresh nach 30 Tagen abgelaufen: invalid_grant', async () => {

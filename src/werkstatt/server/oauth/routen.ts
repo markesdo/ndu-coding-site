@@ -1,6 +1,9 @@
 // OAuth-Autorisierungsserver für den Connector (claude.ai als öffentlicher CIMD-Client), ohne Datenbank:
-// Codes und Tokens sind versiegelte Umschläge (umschlag.ts). Nur zwei Merker liegen im Cache, beide nach bestem
-// Bemühen: „Code schon eingelöst“ und „Refresh-Token schon rotiert“. PKCE macht einen abgefangenen Code ohnehin nutzlos.
+// Codes und Tokens sind versiegelte Umschläge (umschlag.ts). Im Cache liegen nur Merker, alle nach bestem Bemühen:
+// „Code schon eingelöst“, „Refresh-Token schon rotiert“ und „Familie widerrufen“. PKCE macht einen abgefangenen Code
+// ohnehin nutzlos. Familie = eine Verbindung: alle Tokens aus einem Code und seinen Refreshes tragen dieselbe
+// zufällige ID. Taucht ein verbrauchter Code oder ein schon rotiertes Refresh-Token wieder auf, hat jemand mitgelesen:
+// dann gilt die ganze Familie nicht mehr (OAuth 2.1 / RFC 9700 §4.14.2).
 //
 // Anders als die übrigen Router hängt dieser an der Wurzel und trägt VOLLE Pfade, weil er auch außerhalb von
 // /api/werkstatt/oauth antwortet. appErstellen registriert ihn vor mcpRouten. Ihm gehören genau:
@@ -8,17 +11,16 @@
 //   /api/werkstatt/mcp/resource                                    (RFC 9728)
 //   /.well-known/oauth-authorization-server/api/werkstatt/oauth    (RFC 8414, gleiches JSON wie oauth/metadata)
 //   /.well-known/oauth-protected-resource/api/werkstatt/mcp        (RFC 9728, gleiches JSON wie mcp/resource)
-//   /.well-known/oauth-authorization-server                        (ohne Suffix, dieselben Handler)
-//   /.well-known/oauth-protected-resource                          (ohne Suffix, dieselben Handler)
+// Nicht an der Wurzel (/.well-known/oauth-authorization-server ohne Suffix): Issuer und Resource haben einen Pfad,
+// die Metadaten müssen zur Well-known-URL passen (RFC 8414 §3.3, RFC 9728 §3.3). Dort antwortet die App mit 404.
 // Kein Sammelpfad wie '/*' und kein use() ohne Pfad: das fänge Anfragen der anderen Router ab.
 // CSRF (nur Origin, Formular erlaubt) für POST /api/werkstatt/oauth/authorize prüft schon appErstellen.
 import { Hono, type Context } from 'hono';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
 import { b64url, gleich, sichererPfad } from '../../../lib/kurszugang.js';
-import { KOHORTEN } from '../../kohorten/index.js';
-import { mitgliedschaften, type Rolle } from '../../zugang.js';
+import type { Rolle } from '../../zugang.js';
 import { json } from '../antwort.js';
-import { sitzungMitMitgliedschaft } from '../sitzung.js';
+import { mitgliedschaftFinden, sitzungMitMitgliedschaft } from '../sitzung.js';
 import type { Abhaengigkeiten, WerkstattEnv } from '../typen.js';
 import { clientErlaubt, clientMelden } from './clients.js';
 import { ISSUER_PFAD, SCOPE, issuer, issuerMetadaten, resource, resourceMetadaten } from './metadaten.js';
@@ -44,6 +46,8 @@ const LOGIN = '/api/werkstatt/auth/login';
 const CHALLENGE = /^[A-Za-z0-9_-]{43}$/;
 const VERIFIER = /^[A-Za-z0-9._~-]{43,128}$/;
 const MAX_STATE = 512;
+// Token-Anfragen sind klein (Code oder Refresh-Token plus ein paar Felder); mehr wird gar nicht erst gelesen.
+const MAX_TOKEN_BODY = 16 * 1024;
 
 const jetztSek = (abh: Abhaengigkeiten) => Math.floor(abh.jetzt() / 1000);
 
@@ -52,20 +56,37 @@ async function sha256(text: string): Promise<string> {
   return b64url(h);
 }
 
-// Gilt die Person noch in dieser Kohorte mit dieser Rolle? Archivierte Kohorte oder aus WERKSTATT_ZUGANG entfernt: nein.
-// (Die Sitzung prüft das selbst, siehe sitzungMitMitgliedschaft; dies ist dieselbe Prüfung für Codes und Tokens.)
-function mitgliedAktiv(abh: Abhaengigkeiten, githubId: number, kohorte: string, rolle: Rolle): boolean {
-  return mitgliedschaften(abh.umgebung.zugang, githubId, KOHORTEN).some((m) => m.kohorte === kohorte && m.rolle === rolle);
+// Gilt die Person noch in dieser Kohorte mit dieser Rolle? Dieselbe Prüfung wie für die Sitzung.
+function mitgliedAktiv(abh: Abhaengigkeiten, c: Pick<TokenClaims, 'githubId' | 'kohorte' | 'rolle'>): boolean {
+  return mitgliedschaftFinden(abh.umgebung.zugang, c.githubId, c.kohorte, c.rolle) !== undefined;
+}
+
+const familienMerker = (familie: string) => `werkstatt:oauth:familie:${familie}`;
+
+async function familieWiderrufen(abh: Abhaengigkeiten, familie: string): Promise<void> {
+  await abh.cache.set(familienMerker(familie), 1, REFRESH_SEKUNDEN);
+}
+
+async function familieWiderrufenen(abh: Abhaengigkeiten, familie: string): Promise<boolean> {
+  return (await abh.cache.get(familienMerker(familie))) !== undefined;
+}
+
+function neueFamilie(): string {
+  return b64url(crypto.getRandomValues(new Uint8Array(16)));
 }
 
 // Jeder Umschlag trägt den Issuer, der ihn ausgestellt hat (origin(c) + /api/werkstatt/oauth). Eine Preview mit denselben
 // MCP_TOKEN_KEYS nimmt so keine Prod-Tokens an und umgekehrt.
-function claimsAus(inhalt: Record<string, unknown>, iss: string): Omit<TokenClaims, 'exp'> | null {
-  const { githubId, kohorte, rolle, clientId } = inhalt;
-  if (inhalt.iss !== iss) return null;
+interface Kette extends Omit<TokenClaims, 'exp'> {
+  familie: string;
+}
+
+function claimsAus(inhalt: Record<string, unknown>, iss: string): Kette | null {
+  const { githubId, kohorte, rolle, clientId, familie } = inhalt;
+  if (inhalt.iss !== iss || typeof familie !== 'string' || !familie) return null;
   if (!Number.isSafeInteger(githubId) || typeof kohorte !== 'string' || typeof clientId !== 'string') return null;
   if (rolle !== 'studierende' && rolle !== 'lehrende') return null;
-  return { githubId: githubId as number, kohorte, rolle, clientId };
+  return { githubId: githubId as number, kohorte, rolle, clientId, familie };
 }
 
 // Für den MCP-Endpunkt (T12): Claims eines gültigen Access-Tokens oder null. iss = issuer(c) der Anfrage.
@@ -74,9 +95,9 @@ export async function bearerPruefen(abh: Abhaengigkeiten, header: string | null 
   if (!treffer) return null;
   const inhalt = await oeffnen('access', treffer[1], abh.umgebung.tokenKeys, jetztSek(abh));
   if (!inhalt) return null;
-  const claims = claimsAus(inhalt, iss);
-  if (!claims || !mitgliedAktiv(abh, claims.githubId, claims.kohorte, claims.rolle)) return null;
-  return { ...claims, exp: inhalt.exp };
+  const k = claimsAus(inhalt, iss);
+  if (!k || !mitgliedAktiv(abh, k) || (await familieWiderrufenen(abh, k.familie))) return null;
+  return { githubId: k.githubId, kohorte: k.kohorte, rolle: k.rolle, clientId: k.clientId, exp: inhalt.exp };
 }
 
 // --- authorize ---
@@ -132,8 +153,41 @@ function felder(a: Anfrage): Record<string, string> {
   return f;
 }
 
-function rueckweg(a: Anfrage): string {
-  return `${AUTHORIZE}?${new URLSearchParams(felder(a))}`;
+// null = zu lang oder für sichererPfad nicht sicher; der Login fiele dann still auf / zurück.
+function rueckweg(a: Anfrage): string | null {
+  const weiter = `${AUTHORIZE}?${new URLSearchParams(felder(a))}`;
+  return sichererPfad(weiter) === weiter ? weiter : null;
+}
+
+function zuLang(c: Context): Response {
+  return meldungsSeite(c, 400, UNGUELTIG, `Die Anfrage ist zu lang. ${NEU_STARTEN}`);
+}
+
+// Body als Text, höchstens max Bytes; null, wenn mehr kommt (Content-Length oder tatsächlich gelesen).
+async function begrenztLesen(req: Request, max: number): Promise<string | null> {
+  const angabe = Number(req.headers.get('content-length') ?? '0');
+  if (!Number.isFinite(angabe) || angabe > max) return null;
+  if (!req.body) return '';
+  const leser = req.body.getReader();
+  const teile: Uint8Array[] = [];
+  let laenge = 0;
+  for (;;) {
+    const { done, value } = await leser.read();
+    if (done) break;
+    laenge += value.byteLength;
+    if (laenge > max) {
+      await leser.cancel();
+      return null;
+    }
+    teile.push(value);
+  }
+  const alles = new Uint8Array(laenge);
+  let pos = 0;
+  for (const t of teile) {
+    alles.set(t, pos);
+    pos += t.byteLength;
+  }
+  return new TextDecoder().decode(alles);
 }
 
 function zurueckZumClient(c: Context, a: Anfrage, werte: Record<string, string>): Response {
@@ -153,10 +207,10 @@ function oauthFehler(c: Context, status: ContentfulStatusCode, error: OAuthFehle
   return c.json({ error, error_description: beschreibung }, status, { 'Cache-Control': 'no-store', Pragma: 'no-cache' });
 }
 
-async function tokenPaar(c: Context, abh: Abhaengigkeiten, claims: Omit<TokenClaims, 'exp'>): Promise<Response> {
+async function tokenPaar(c: Context, abh: Abhaengigkeiten, k: Kette): Promise<Response> {
   const keys = abh.umgebung.tokenKeys;
   const t = jetztSek(abh);
-  const inhalt = { githubId: claims.githubId, kohorte: claims.kohorte, rolle: claims.rolle, clientId: claims.clientId, iss: issuer(c) };
+  const inhalt = { githubId: k.githubId, kohorte: k.kohorte, rolle: k.rolle, clientId: k.clientId, familie: k.familie, iss: issuer(c) };
   const access = await versiegeln('access', inhalt, ACCESS_SEKUNDEN, keys, t);
   const refresh = await versiegeln('refresh', inhalt, REFRESH_SEKUNDEN, keys, t);
   return c.json(
@@ -172,11 +226,11 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
   const r = new Hono<WerkstattEnv>();
   const nurGet = (c: Context) => oauthFehler(c, 405, 'invalid_request', 'Nur GET.');
 
-  for (const pfad of [`${ISSUER_PFAD}/metadata`, '/.well-known/oauth-authorization-server/api/werkstatt/oauth', '/.well-known/oauth-authorization-server']) {
+  for (const pfad of [`${ISSUER_PFAD}/metadata`, '/.well-known/oauth-authorization-server/api/werkstatt/oauth']) {
     r.get(pfad, (c) => json(c, issuerMetadaten(c)));
     r.all(pfad, nurGet);
   }
-  for (const pfad of ['/api/werkstatt/mcp/resource', '/.well-known/oauth-protected-resource/api/werkstatt/mcp', '/.well-known/oauth-protected-resource']) {
+  for (const pfad of ['/api/werkstatt/mcp/resource', '/.well-known/oauth-protected-resource/api/werkstatt/mcp']) {
     r.get(pfad, (c) => json(c, resourceMetadaten(c)));
     r.all(pfad, nurGet);
   }
@@ -185,15 +239,13 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     const p = anfragePruefen(c, (k) => c.req.query(k));
     if ('seite' in p) return p.seite;
     const a = p.anfrage;
-    await clientMelden(abh, a.clientId);
 
     // Ohne gültige Sitzung (auch: nicht mehr in der Zugangsliste, Kohorte archiviert) zur Anmeldung; die sagt dann,
     // falls nötig, „nicht freigeschaltet“.
     const s = (await sitzungMitMitgliedschaft(c, abh))?.sitzung;
     if (!s) {
       const weiter = rueckweg(a);
-      // sichererPfad ließe ein zu langes oder seltsames Ziel stillschweigend zur Startseite werden: lieber gleich sagen.
-      if (sichererPfad(weiter) !== weiter) return meldungsSeite(c, 400, UNGUELTIG, `Die Anfrage ist zu lang. ${NEU_STARTEN}`);
+      if (!weiter) return zuLang(c);
       c.header('Cache-Control', 'no-store');
       return c.redirect(`${LOGIN}?weiter=${encodeURIComponent(weiter)}`, 302);
     }
@@ -210,9 +262,11 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
 
     const s = (await sitzungMitMitgliedschaft(c, abh))?.sitzung;
     if (!s) {
+      const weiter = rueckweg(a);
+      if (!weiter) return zuLang(c);
       return meldungsSeite(c, 401, 'Anmeldung abgelaufen', 'Bitte melde dich noch einmal mit GitHub an.', {
         text: 'Mit GitHub anmelden',
-        href: `${LOGIN}?weiter=${encodeURIComponent(sichererPfad(rueckweg(a)))}`,
+        href: `${LOGIN}?weiter=${encodeURIComponent(weiter)}`,
       });
     }
 
@@ -222,12 +276,14 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
 
     const code = await versiegeln(
       'code',
-      { clientId: a.clientId, redirectUri: a.redirectUri, codeChallenge: a.codeChallenge, githubId: s.githubId, kohorte: s.kohorte, rolle: s.rolle, iss: issuer(c) },
+      { clientId: a.clientId, redirectUri: a.redirectUri, codeChallenge: a.codeChallenge, githubId: s.githubId, kohorte: s.kohorte, rolle: s.rolle, familie: neueFamilie(), iss: issuer(c) },
       CODE_SEKUNDEN,
       abh.umgebung.tokenKeys,
       jetztSek(abh),
     );
     console.info(JSON.stringify({ werkstatt: 'oauth-zustimmung', host: clientName(new URL(a.redirectUri).host), kohorte: s.kohorte }));
+    // Erst nach erfolgreicher Zustimmung: anonyme Aufrufe sollen weder Log noch Cache füllen.
+    await clientMelden(abh, a.clientId);
     return zurueckZumClient(c, a, { code });
   });
 
@@ -235,7 +291,9 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     // Claude schickt beides (Code und Refresh) als Formular (RFC 6749 §4.1.3); JSON nehmen wir nicht.
     const typ = (c.req.header('content-type') ?? '').toLowerCase();
     if (!typ.startsWith('application/x-www-form-urlencoded')) return oauthFehler(c, 400, 'invalid_request', 'Erwartet application/x-www-form-urlencoded.');
-    const form = new URLSearchParams(await c.req.text());
+    const text = await begrenztLesen(c.req.raw, MAX_TOKEN_BODY);
+    if (text === null) return oauthFehler(c, 413, 'invalid_request', 'Anfrage zu groß.');
+    const form = new URLSearchParams(text);
     for (const k of new Set(form.keys())) {
       if (form.getAll(k).length > 1) return oauthFehler(c, 400, 'invalid_request', `Parameter ${k} doppelt.`);
     }
@@ -262,10 +320,14 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
       if (!VERIFIER.test(verifier) || typeof inhalt.codeChallenge !== 'string' || !gleich(await sha256(verifier), inhalt.codeChallenge)) {
         return oauthFehler(c, 400, 'invalid_grant', 'code_verifier passt nicht.');
       }
-      if (!mitgliedAktiv(abh, claims.githubId, claims.kohorte, claims.rolle)) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
-      // Einmaligkeit nach bestem Bemühen (zwischen get und set ist kein Schloss).
+      if (!mitgliedAktiv(abh, claims)) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
+      // Einmaligkeit nach bestem Bemühen (zwischen get und set ist kein Schloss). Zweiter Versuch: Familie widerrufen,
+      // damit auch die Tokens aus dem ersten Einlösen nicht mehr gelten (RFC 6749 §4.1.2).
       const merker = `werkstatt:oauth:code:${await sha256(code)}`;
-      if ((await abh.cache.get(merker)) !== undefined) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
+      if ((await abh.cache.get(merker)) !== undefined) {
+        await familieWiderrufen(abh, claims.familie);
+        return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
+      }
       await abh.cache.set(merker, 1, CODE_SEKUNDEN * 2);
       return tokenPaar(c, abh, claims);
     }
@@ -275,10 +337,14 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     const inhalt = await oeffnen('refresh', refresh, keys, t);
     const claims = inhalt && claimsAus(inhalt, issuer(c));
     if (!claims || claims.clientId !== clientId) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
-    if (!mitgliedAktiv(abh, claims.githubId, claims.kohorte, claims.rolle)) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
+    if (!mitgliedAktiv(abh, claims) || (await familieWiderrufenen(abh, claims.familie))) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
     // Rotation: das alte Refresh-Token gilt ab jetzt als verbraucht, so lange, wie es höchstens gültig wäre.
+    // Wird ein schon rotiertes vorgelegt, ist eins von beiden gestohlen: die ganze Familie widerrufen.
     const merker = `werkstatt:oauth:refresh:${await sha256(refresh)}`;
-    if ((await abh.cache.get(merker)) !== undefined) return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
+    if ((await abh.cache.get(merker)) !== undefined) {
+      await familieWiderrufen(abh, claims.familie);
+      return oauthFehler(c, 400, 'invalid_grant', ABGELAUFEN);
+    }
     await abh.cache.set(merker, 1, REFRESH_SEKUNDEN);
     return tokenPaar(c, abh, claims);
   });
