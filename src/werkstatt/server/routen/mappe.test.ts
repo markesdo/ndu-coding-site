@@ -253,12 +253,18 @@ describe('GET /api/werkstatt/mappe/:artefakt', () => {
     expect(t.fake.commits(REPO)).toHaveLength(0);
   });
 
-  it('Mappe noch nicht angelegt → 503 wird-eingerichtet (ohne anzulegen)', async () => {
+  it('Mappe noch nicht angelegt → legt an und liefert die (fehlende) Datei', async () => {
     const t = aufbau();
+    const r = await t.holen('/brief');
+    expect(r.status).toBe(200);
+    expect(await r.json()).toMatchObject({ name: 'brief', daten: null, basisSha: null });
+    expect(t.anlegen).toHaveBeenCalledTimes(1);
+  });
+  it('Mappe noch nicht angelegt, Anlegen scheitert an GitHub → 503 wird-eingerichtet', async () => {
+    const t = aufbau({ anlegen: async () => { throw new GithubAusnahme(502); } });
     const r = await t.holen('/brief');
     expect(r.status).toBe(503);
     expect(await r.json()).toMatchObject({ code: 'wird-eingerichtet' });
-    expect(t.anlegen).not.toHaveBeenCalled();
   });
 });
 

@@ -37,7 +37,7 @@ async function fehlerAus(antwort: Response): Promise<ApiError> {
   try {
     k = (await antwort.json()) as Partial<ApiFehler>;
   } catch {
-    // kein JSON: Standardtext unten
+    // kein JSON: ohne Meldung (die Anzeige wählt ihren Text)
   }
   const code = k.code ?? (antwort.status === 401 ? 'nicht-angemeldet' : 'unbekannt');
   return new ApiError(antwort.status, code, typeof k.fehler === 'string' ? k.fehler : OHNE_MELDUNG, k.felder);

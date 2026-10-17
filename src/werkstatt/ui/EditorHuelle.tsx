@@ -106,7 +106,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     setMeldung(null);
     setServerFelder([]);
     setAelterEntwurf(null);
-    const r = await mappeLaden({ ich: () => api.ich(), mappe: () => api.mappe(), lesen: () => api.lesen(name) });
+    const r = await mappeLaden({ ich: () => api.ich(), lesen: () => api.lesen(name) });
     if (!gueltig()) return;
     if (r.typ === 'abgemeldet') return void senden({ typ: 'ladenFehlgeschlagen', status: 401, code: 'nicht-angemeldet' });
     if (r.ich !== null) person.current = { githubId: r.ich.githubId, kohorte: r.ich.kohorte };
@@ -115,27 +115,33 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       setMeldung(r.meldung);
       return void senden({ typ: 'ladenFehlgeschlagen', status: r.status, code: r.code });
     }
-    const { ich, antwort } = r;
-    const vomServer = artefaktParsen(name, antwort.daten ?? ARTEFAKTE[name].leer(heute()));
-    if (!vomServer.ok) {
-      setFehlerCode('datei');
-      return void senden({ typ: 'ladenFehlgeschlagen', status: 500, code: 'unbekannt' });
+    // Was nach dem Laden kommt (Schema, Migration, Entwurf), darf die Hülle nie auf „laden“ hängen lassen.
+    try {
+      const { ich, antwort } = r;
+      const vomServer = artefaktParsen(name, antwort.daten ?? ARTEFAKTE[name].leer(heute()));
+      if (!vomServer.ok) {
+        setFehlerCode('datei');
+        return void senden({ typ: 'ladenFehlgeschlagen', status: 500, code: 'unbekannt' });
+      }
+      // Nur ein Entwurf auf dem Stand des Servers kommt still zurück; ein älterer wird zur Wahl angeboten.
+      // Auch ein unvollständiger Entwurf kommt zurück (Schema scheitert → Feldfehler, Speichern gesperrt); nur Müll nicht.
+      const roh = entwurfLaden(name, ich.githubId, ich.kohorte);
+      const start = startStand(
+        { daten: vomServer.daten as DatenVon<N>, basisSha: antwort.basisSha },
+        roh === null ? null : { basisSha: roh.basisSha, daten: entwurfNormalisieren(name, ARTEFAKTE[name].leer(heute()), roh.daten) as DatenVon<N> },
+      );
+      basisSha.current = start.basisSha;
+      setGespeichert(serverStandNachLaden(antwort.daten, vomServer.daten as DatenVon<N>));
+      datenRef.current = start.daten;
+      setDatenAnzeige(start.daten);
+      setDirty(start.alsEntwurf);
+      setAelterEntwurf(start.aelterEntwurf);
+      setGesichert(true);
+      senden({ typ: 'geladen' });
+    } catch {
+      if (!gueltig()) return;
+      senden({ typ: 'ladenFehlgeschlagen', status: 0, code: 'unbekannt' });
     }
-    // Nur ein Entwurf auf dem Stand des Servers kommt still zurück; ein älterer wird zur Wahl angeboten.
-    // Auch ein unvollständiger Entwurf kommt zurück (Schema scheitert → Feldfehler, Speichern gesperrt); nur Müll nicht.
-    const roh = entwurfLaden(name, ich.githubId, ich.kohorte);
-    const start = startStand(
-      { daten: vomServer.daten as DatenVon<N>, basisSha: antwort.basisSha },
-      roh === null ? null : { basisSha: roh.basisSha, daten: entwurfNormalisieren(name, ARTEFAKTE[name].leer(heute()), roh.daten) as DatenVon<N> },
-    );
-    basisSha.current = start.basisSha;
-    setGespeichert(serverStandNachLaden(antwort.daten, vomServer.daten as DatenVon<N>));
-    datenRef.current = start.daten;
-    setDatenAnzeige(start.daten);
-    setDirty(start.alsEntwurf);
-    setAelterEntwurf(start.aelterEntwurf);
-    setGesichert(true);
-    senden({ typ: 'geladen' });
   }
 
   function oeffnen(): void {
@@ -332,7 +338,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       );
     }
     if (zustand === 'fehler') {
-      const { text, details } = speicherfehlerHinweis(fehlerCode, meldung, serverFelder, gesichert);
+      const { text, details } = speicherfehlerHinweis(meldung, serverFelder, gesichert);
       return (
         <div className="wk-hinweis" role="alert">
           <p>{text}</p>

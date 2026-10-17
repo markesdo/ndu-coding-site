@@ -85,7 +85,8 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   r.use(mitSitzung);
 
   // Repo der Sitzung, nachdem werkstatt.json bestätigt hat, dass es dieser Person in dieser Kohorte gehört.
-  // anlegen: fehlt das Repo (oder werkstatt.json), einmal erneut anlegen (idempotent) – nur GET mappe tut das.
+  // anlegen: fehlt das Repo (oder werkstatt.json), einmal erneut anlegen (idempotent) – die GET-Routen tun das (Übersicht
+  // und Artefakt: der Editor kommt oft direkt vom Login), PUT nicht.
   async function eigenesRepo(c: Context<SitzungEnv>, anlegen: boolean): Promise<string> {
     const s = c.get('sitzung');
     const m = c.get('mitgliedschaft');
@@ -150,7 +151,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   r.get('/:artefakt', async (c) => {
     const name = artefaktName(c);
     if (name instanceof Response) return name;
-    const repo = await eigenesRepo(c, false);
+    const repo = await eigenesRepo(c, true);
     const { daten, basisSha } = await lesen(repo, name);
     const antwort: ArtefaktAntwort = { name, daten, basisSha };
     return json(c, antwort);

@@ -87,16 +87,15 @@ function alsFehler(e: unknown): { status: number; code: Code; meldung: string | 
 }
 
 /**
- * Laden der Editor-Hülle, ohne React: Anmeldung, dann (falls /auth/ich noch kein Repo kennt) GET mappe, das ein
- * fehlendes Repo anlegt oder mit eigener Meldung ablehnt, dann das Artefakt. Was nicht passt, sagt der Server samt
- * Meldung (Lehrende, fremde Mappe, unlesbare Datei); die Hülle zeigt diese Meldung statt eines eigenen Satzes.
+ * Laden der Editor-Hülle, ohne React: Anmeldung, dann das Artefakt. GET artefakt legt ein fehlendes Repo selbst an
+ * (503 „wird eingerichtet“, solange das dauert); was nicht passt, sagt der Server samt Meldung (Lehrende, fremde
+ * Mappe, unlesbare Datei). Die Hülle zeigt diese Meldung statt eines eigenen Satzes; `repo` aus /auth/ich zählt nicht.
  */
-export async function mappeLaden<A>(quelle: { ich(): Promise<Ich | null>; mappe(): Promise<unknown>; lesen(): Promise<A> }): Promise<LadeErgebnis<A>> {
+export async function mappeLaden<A>(quelle: { ich(): Promise<Ich | null>; lesen(): Promise<A> }): Promise<LadeErgebnis<A>> {
   let ich: Ich | null = null;
   try {
     ich = await quelle.ich();
     if (ich === null) return { typ: 'abgemeldet' };
-    if (ich.repo === null && ich.rolle === 'studierende') await quelle.mappe();
     return { typ: 'geladen', ich, antwort: await quelle.lesen() };
   } catch (e) {
     const f = alsFehler(e);
@@ -108,8 +107,7 @@ export async function mappeLaden<A>(quelle: { ich(): Promise<Ich | null>; mappe(
 const TEXT = {
   datei: 'Die Datei in deiner Mappe passt nicht zum erwarteten Format. Sag Markus Bescheid.',
   ladenFehlt: 'Deine Mappe lässt sich gerade nicht laden.',
-  speichernGesichert: 'Speichern gerade nicht möglich. Dein Entwurf ist auf diesem Gerät gesichert.',
-  speichernUngesichert: 'Speichern gerade nicht möglich. Dein Entwurf konnte auf diesem Gerät nicht gesichert werden – lass diesen Tab offen.',
+  speichernNicht: 'Speichern gerade nicht möglich.',
   gesichert: 'Dein Entwurf ist auf diesem Gerät gesichert.',
   ungesichert: 'Dein Entwurf konnte auf diesem Gerät nicht gesichert werden – lass diesen Tab offen.',
 } as const;
@@ -124,15 +122,12 @@ export function ladefehlerHinweis(fehlerCode: string | null, meldung: string | n
 }
 
 /**
- * Hinweis im Zustand „fehler“ (Speichern gescheitert). Hat der Server abgelehnt, steht seine Meldung da, dazu jede
- * Feldmeldung (auch solche, die kein Formularfeld zeigt, etwa zu einer gespeicherten Entscheidung). Sonst gilt
- * „gerade nicht möglich“.
+ * Hinweis im Zustand „fehler“ (Speichern gescheitert): die Meldung des Servers (sonst „gerade nicht möglich“), dazu
+ * ob der Entwurf gesichert ist und jede Feldmeldung (auch solche, die kein Formularfeld zeigt, etwa zu einer
+ * gespeicherten Entscheidung).
  */
-export function speicherfehlerHinweis(fehlerCode: string | null, meldung: string | null, felder: readonly Feldfehler[], gesichert: boolean): { text: string; details: string[] } {
-  if (fehlerCode !== null && ABGELEHNT.includes(fehlerCode) && meldung !== null) {
-    return { text: `${meldung} ${gesichert ? TEXT.gesichert : TEXT.ungesichert}`, details: [...new Set(felder.map((f) => f.meldung))] };
-  }
-  return { text: gesichert ? TEXT.speichernGesichert : TEXT.speichernUngesichert, details: [] };
+export function speicherfehlerHinweis(meldung: string | null, felder: readonly Feldfehler[], gesichert: boolean): { text: string; details: string[] } {
+  return { text: `${meldung ?? TEXT.speichernNicht} ${gesichert ? TEXT.gesichert : TEXT.ungesichert}`, details: [...new Set(felder.map((f) => f.meldung))] };
 }
 
 /** Das Statuswort der Statuszeile. Leer, wenn es nichts zu sagen gibt. */
