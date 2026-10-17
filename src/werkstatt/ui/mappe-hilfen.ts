@@ -35,6 +35,12 @@ export function leitfadenFrei(jetzt: Date, praesentator: boolean): boolean {
   return praesentator || aufgeloest(NACH_MOM_TEST, jetzt);
 }
 
+/** Lädt /innolab/mappe beim Öffnen? Nicht bei „nicht freigeschaltet“: Es gibt keine Sitzung, Laden zeigte nur „Melde dich an“.
+ *  Wird nur einmal beim Öffnen entschieden – das spätere Leeren der Meldung darf kein zweites Laden auslösen. */
+export function beimOeffnenLaden(rueckmeldung: { neuAnmelden: boolean } | null): boolean {
+  return rueckmeldung === null || rueckmeldung.neuAnmelden;
+}
+
 export const LEITFADEN_SPAETER = 'Öffnet ihr nach dem Mom Test auf der Interview-Seite.';
 
 export interface MappeZeile {

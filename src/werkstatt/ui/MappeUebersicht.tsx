@@ -6,7 +6,7 @@ import { kohorte } from '../kohorten/index.js';
 import { ROUTEN, type Ich, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
-import { LEITFADEN_SPAETER, adresseOhneFehler, anmeldeFehler, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
+import { LEITFADEN_SPAETER, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -34,11 +34,19 @@ export default function MappeUebersicht() {
   const [versuche, setVersuche] = useState(0);
   const [meldung, setMeldung] = useState('');
   const [rueckmeldung, setRueckmeldung] = useState(() => anmeldeFehler(location.search));
+  // Einmal beim Öffnen festgelegt: Leert ein geglücktes Laden die Meldung, lädt die Seite nicht noch einmal.
+  const startLaden = useRef(beimOeffnenLaden(rueckmeldung));
   // Leitfaden erst nach dem Mom Test (wie die Auflösungen der Interview-Seite); jede Minute nachsehen.
   const frei = () => leitfadenFrei(new Date(), document.documentElement.hasAttribute('data-ist-praesentator'));
   const [leitfadenOffen, setLeitfadenOffen] = useState(frei);
   const liste = useRef<HTMLUListElement>(null);
   const lauf = useRef(0);
+
+  // Angemeldet und geladen: eine alte Meldung aus ?fehler gilt nicht mehr, auch nicht nach dem Neuladen der Seite.
+  function meldungErledigt(): void {
+    setRueckmeldung(null);
+    if (new URLSearchParams(location.search).has('fehler')) history.replaceState(history.state, '', adresseOhneFehler(location.pathname, location.search, location.hash));
+  }
 
   const laden = useCallback(async (still = false) => {
     const mein = ++lauf.current;
@@ -47,14 +55,15 @@ export default function MappeUebersicht() {
       const ich = await api.ich();
       if (mein !== lauf.current) return;
       if (ich === null) return setZustand({ typ: 'abgemeldet' });
-      if (ich.rolle !== 'studierende') return setZustand({ typ: 'lehrende', ich });
+      if (ich.rolle !== 'studierende') {
+        setZustand({ typ: 'lehrende', ich });
+        return meldungErledigt();
+      }
       const stand = await api.mappe(); // legt die Mappe an, falls sie noch fehlt
       if (mein !== lauf.current) return;
       setVersuche(0);
       setZustand({ typ: 'bereit', ich, stand });
-      // Angemeldet und geladen: eine alte Meldung aus ?fehler gilt nicht mehr, auch nicht nach dem Neuladen.
-      setRueckmeldung(null);
-      if (new URLSearchParams(location.search).has('fehler')) history.replaceState(history.state, '', adresseOhneFehler(location.pathname, location.search, location.hash));
+      meldungErledigt();
     } catch (e) {
       if (mein !== lauf.current) return;
       const a = e instanceof ApiError ? e : new ApiError(0, 'unbekannt', TEXT.ladenFehlt);
@@ -66,10 +75,8 @@ export default function MappeUebersicht() {
   }, []);
 
   useEffect(() => {
-    // Nicht freigeschaltet: Es gibt keine Sitzung, Laden zeigte nur „Melde dich an“ unter der Fehlermeldung.
-    if (rueckmeldung && !rueckmeldung.neuAnmelden) return;
-    void laden();
-  }, [laden, rueckmeldung]);
+    if (startLaden.current) void laden();
+  }, [laden]);
 
   useEffect(() => {
     if (leitfadenOffen) return;

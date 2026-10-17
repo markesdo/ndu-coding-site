@@ -3,7 +3,7 @@ import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, adresseOhneFehler, anmeldeFehler, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
+import { FEHLER_TEXT, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -22,6 +22,14 @@ describe('anmeldeFehler', () => {
     expect(anmeldeFehler('?fehler=')).toBeNull();
     expect(anmeldeFehler('?fehler=<script>')).toBeNull();
     expect(anmeldeFehler('?fehler=toString')).toBeNull();
+  });
+});
+
+describe('beimOeffnenLaden', () => {
+  it('lädt ohne Meldung und nach Anmeldefehlern, nicht bei „nicht freigeschaltet“', () => {
+    expect(beimOeffnenLaden(null)).toBe(true);
+    expect(beimOeffnenLaden(anmeldeFehler('?fehler=anmeldung-ungueltig'))).toBe(true);
+    expect(beimOeffnenLaden(anmeldeFehler('?fehler=nicht-freigeschaltet'))).toBe(false);
   });
 });
 
