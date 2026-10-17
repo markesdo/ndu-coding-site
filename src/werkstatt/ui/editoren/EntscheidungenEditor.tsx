@@ -10,7 +10,7 @@ import Auswahl from '../felder/Auswahl.js';
 import Textfeld from '../felder/Textfeld.js';
 import VerweisAuswahl from '../felder/VerweisAuswahl.js';
 import {
-  datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileHinzufuegen, zeilenModus,
+  belegNotizHilfe, belegNotizSetzen, belegNotizZaehler, datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileHinzufuegen, zeilenModus,
 } from './entscheidungen-hilfen.js';
 import './editoren.css';
 
@@ -107,6 +107,8 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
                   <Textfeld label={`Grund (${e.id})`} mehrzeilig zeilen={2} wert={e.grund} onChange={(grund) => setzeZeile(i, { ...e, grund })} fehler={fehler(pfad('grund'))} />
                   <Auswahl label={`Beleg (${e.id})`} hilfe="Wie stark ist der Beleg: gesagt, erzählt oder getan?" wert={e.beleg} optionen={BELEG} onChange={(beleg) => setzeZeile(i, { ...e, beleg })} fehler={fehler(pfad('beleg'))} />
                   <VerweisAuswahl label={`Beleg-IDs (${e.id})`} hilfe="Worauf stützt sich die Entscheidung, zum Beispiel I2-4 oder T1?" werte={e.belegIds} onChange={(belegIds) => setzeZeile(i, { ...e, belegIds })} fehler={fehler(pfad('belegIds'))} />
+                  <Textfeld label={`Beleg (Notiz, z. B. Quelle oder Zahl) (${e.id})`} hilfe={belegNotizHilfe} wert={e.belegNotiz ?? ''} onChange={(notiz) => setzeZeile(i, belegNotizSetzen(e, notiz))} fehler={fehler(pfad('belegNotiz'))} />
+                  <p className="wk-hilfe" aria-live="off">Zeichen: {belegNotizZaehler(e.belegNotiz ?? '')}</p>
                 </>
               ) : (
                 <>
@@ -117,6 +119,7 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
                     <dt>Grund</dt><dd>{e.grund || '–'}</dd>
                     <dt>Beleg</dt><dd>{BELEGSTUFE_TEXT[e.beleg]}</dd>
                     <dt>Beleg-IDs</dt><dd>{e.belegIds.length ? e.belegIds.join(', ') : '–'}</dd>
+                    <dt>Beleg (Notiz)</dt><dd>{e.belegNotiz || '–'}</dd>
                   </dl>
                   {modus.fehler.length > 0 && (
                     <div role="alert">
@@ -159,7 +162,7 @@ function Tabelle({ daten }: { daten: Entscheidungen }) {
       <table>
         <caption className="sr-only">Entscheidungslog, Stand {datumAnzeigen(daten.stand)}</caption>
         <thead>
-          <tr><th scope="col">ID</th><th scope="col">Datum</th><th scope="col">Entscheidung</th><th scope="col">Grund</th><th scope="col">Beleg</th><th scope="col">Beleg-IDs</th></tr>
+          <tr><th scope="col">ID</th><th scope="col">Datum</th><th scope="col">Entscheidung</th><th scope="col">Grund</th><th scope="col">Beleg</th><th scope="col">Beleg-IDs</th><th scope="col">Beleg (Notiz)</th></tr>
         </thead>
         <tbody>
           {daten.entscheidungen.map((e) => {
@@ -176,6 +179,7 @@ function Tabelle({ daten }: { daten: Entscheidungen }) {
                 <td>{e.grund}</td>
                 <td>{BELEGSTUFE_TEXT[e.beleg]}</td>
                 <td>{e.belegIds.join(', ')}</td>
+                <td>{e.belegNotiz}</td>
               </tr>
             );
           })}

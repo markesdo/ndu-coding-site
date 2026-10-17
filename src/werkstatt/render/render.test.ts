@@ -48,8 +48,16 @@ describe('Entscheidungen', () => {
   it('Datum österreichisch, IDs fett, Belegstufe ausgeschrieben', () => {
     expect(s).toContain('- **D2** 22.10.2026 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: getan');
     expect(s).toContain('Beleg: noch keiner');
+    expect(s).toContain('Beleg: getan (Kassendaten September)');
     expect(s).toContain('Beleg: erzählt (I1, I3, I4)');
     expect(s).not.toContain('erzaehlt');
+  });
+  it('Beleg-Notiz steht nach Stufe und IDs', () => {
+    const e = laden('entscheidungen');
+    const z = { ...e.entscheidungen[2], belegNotiz: 'Interviews Oktober' };
+    const s = rendern('entscheidungen', { ...e, entscheidungen: [z] });
+    expect(s).toContain('Beleg: erzählt (I1, I3, I4; Interviews Oktober)');
+    expect(rendern('entscheidungen', { ...e, entscheidungen: [{ ...z, belegNotiz: '' }] })).not.toContain('Oktober');
   });
   it('ersetzte Entscheidung zeigt das Datum der ersetzenden Zeile', () => {
     const d1 = s.split('\n').find((z) => z.startsWith('- **D1**'))!;
@@ -104,6 +112,12 @@ describe.each(FALSCHE)('Eingeschleuste Zeilen (%j)', (FALSCH) => {
   it('Entscheidungen: Zeile bleibt eine Zeile', () => {
     const e = laden('entscheidungen');
     const s = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: FALSCH, grund: FALSCH, belegIds: [] }] });
+    expect(hatFalschzeile(s)).toBe(false);
+    expect(s.split('\n').filter((z) => z.startsWith('- '))).toHaveLength(1);
+  });
+  it('Entscheidungen: Beleg-Notiz bleibt in der Zeile', () => {
+    const e = laden('entscheidungen');
+    const s = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], belegNotiz: FALSCH }] });
     expect(hatFalschzeile(s)).toBe(false);
     expect(s.split('\n').filter((z) => z.startsWith('- '))).toHaveLength(1);
   });

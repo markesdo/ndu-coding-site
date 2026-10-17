@@ -1,12 +1,35 @@
 import { describe, expect, it } from 'vitest';
 import beispiel from '../../beispiele/entscheidungen.json';
-import { artefaktParsen, type Entscheidungen } from '../../schemas/index.js';
+import { artefaktParsen, BELEG_NOTIZ_MAX, type Entscheidungen } from '../../schemas/index.js';
 import { serverStandNachSpeichern } from '../huelle.js';
-import { datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileFehler, zeileHinzufuegen, zeilenModus } from './entscheidungen-hilfen.js';
+import { belegNotizHilfe, belegNotizZaehler, belegNotizSetzen, datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileFehler, zeileHinzufuegen, zeilenModus } from './entscheidungen-hilfen.js';
 
 const leer = (): Entscheidungen => ({ schema: 'entscheidungen@1', stand: '2026-10-22', entscheidungen: [] });
 const kaffeebar = () => structuredClone(beispiel) as Entscheidungen;
 const ALLE = new Set(['D1', 'D2', 'D3', 'D4']); // Kaffeebar: alles gespeichert
+
+describe('belegNotizSetzen', () => {
+  it('setzt die Notiz; leer entfernt den Schlüssel ganz', () => {
+    const e = kaffeebar().entscheidungen[0]!;
+    expect(belegNotizSetzen(e, 'Kassendaten').belegNotiz).toBe('Kassendaten');
+    expect(belegNotizSetzen({ ...e, belegNotiz: 'x' }, '')).toStrictEqual(e);
+  });
+  it('Wert, der nach trim() leer ist, entfernt den Schlüssel; sonst unverändert (auch mit Rand-Leerraum)', () => {
+    const e = kaffeebar().entscheidungen[0]!;
+    expect(belegNotizSetzen({ ...e, belegNotiz: 'x' }, '   ')).toStrictEqual(e);
+    expect(belegNotizSetzen({ ...e, belegNotiz: 'x' }, ' \t ')).toStrictEqual(e);
+    expect(belegNotizSetzen(e, ' x ').belegNotiz).toBe(' x ');
+  });
+  it('Hilfetext und Zähler kommen aus BELEG_NOTIZ_MAX und zählen Grapheme', () => {
+    expect(belegNotizHilfe).toContain(`Höchstens ${BELEG_NOTIZ_MAX} Zeichen`);
+    expect(belegNotizZaehler('')).toBe(`0/${BELEG_NOTIZ_MAX}`);
+    expect(belegNotizZaehler('e\u0301'.repeat(5))).toBe(`5/${BELEG_NOTIZ_MAX}`);
+  });
+  it('zeileFehler meldet auch den Fehler der Notiz', () => {
+    const e = kaffeebar().entscheidungen[0]!;
+    expect(zeileFehler(e, 0, (p) => (p === 'entscheidungen.0.belegNotiz' ? 'zu lang' : undefined))).toStrictEqual(['zu lang']);
+  });
+});
 
 describe('zeileHinzufuegen', () => {
   it('vergibt fortlaufende IDs mit dem heutigen Datum', () => {

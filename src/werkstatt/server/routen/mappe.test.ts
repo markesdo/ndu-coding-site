@@ -285,6 +285,8 @@ describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
       { ...d2, datum: '2026-10-23' },
       { ...d2, beleg: 'gesagt' },
       { ...d2, belegIds: ['I1'] },
+      { ...d2, belegNotiz: 'Kassendaten Oktober' },
+      (({ belegNotiz: _, ...rest }) => rest)(d2),
       { ...d2, ersetzt: 'D1' },
     ];
     for (const neu of geaendert) {

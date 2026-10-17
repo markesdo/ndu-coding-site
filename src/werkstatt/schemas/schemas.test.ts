@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKT_NAMEN } from './namen';
-import { ARTEFAKTE, artefaktParsen, BELEGSTUFEN, BELEGSTUFE_TEXT, WICHTIGKEITEN, MIGRATIONEN, punkt, quadrant, type Annahme } from './index';
+import { ARTEFAKTE, artefaktParsen, BELEGSTUFEN, BELEGSTUFE_TEXT, WICHTIGKEITEN, MIGRATIONEN, punkt, quadrant, BELEG_NOTIZ_MAX, type Annahme } from './index';
 import brief from '../beispiele/brief.json';
 import entscheidungen from '../beispiele/entscheidungen.json';
 import leitfaden from '../beispiele/leitfaden.json';
@@ -142,6 +142,40 @@ describe('Entscheidungen', () => {
     const e = klon(entscheidungen);
     e.entscheidungen[2].belegIds = ['I1', 'Interview 3'];
     expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.2.belegIds.1');
+  });
+  it('belegNotiz ist optional, höchstens 120 Zeichen und einzeilig', () => {
+    const e = klon(entscheidungen);
+    e.entscheidungen[1].belegNotiz = 'x'.repeat(120);
+    expect(artefaktParsen('entscheidungen', e).ok).toBe(true);
+    e.entscheidungen[1].belegNotiz = 'x'.repeat(121);
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
+    expect(JSON.stringify(artefaktParsen('entscheidungen', e))).toContain('höchstens 120 Zeichen');
+    e.entscheidungen[1].belegNotiz = 'Kassendaten\nSeptember';
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
+    e.entscheidungen[1].belegNotiz = 5;
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
+  });
+  it('belegNotiz lehnt Steuer- und Formatzeichen sowie Rand-Leerraum ab', () => {
+    const e = klon(entscheidungen);
+    const pruefe = (notiz: string) => {
+      e.entscheidungen[1].belegNotiz = notiz;
+      return JSON.stringify(artefaktParsen('entscheidungen', e));
+    };
+    for (const schlecht of ['a\u202Eb', 'a\u0085b', 'a\u2028b', 'a\u2029b', 'a\tb', 'a\u0000b']) {
+      expect(pruefe(schlecht), JSON.stringify(schlecht)).toContain('eine Zeile, ohne Steuerzeichen');
+    }
+    for (const schlecht of [' ', ' x', 'x ', '\u00A0x']) {
+      expect(pruefe(schlecht), JSON.stringify(schlecht)).toContain('ohne Leerzeichen am Anfang oder Ende');
+    }
+    expect(pruefe('Kassendaten September')).toContain('"ok":true');
+    expect(pruefe('\u{1F469}\u200D\u{1F4BB} Kasse')).toContain('"ok":true');
+  });
+  it('belegNotiz zählt Grapheme: 120 zerlegte é erlaubt, 121 abgelehnt', () => {
+    const e = klon(entscheidungen);
+    e.entscheidungen[1].belegNotiz = 'e\u0301'.repeat(BELEG_NOTIZ_MAX);
+    expect(artefaktParsen('entscheidungen', e).ok).toBe(true);
+    e.entscheidungen[1].belegNotiz = 'e\u0301'.repeat(BELEG_NOTIZ_MAX + 1);
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
   });
   it('unbekannte Belegstufe → Fehler', () => {
     const e = klon(entscheidungen);

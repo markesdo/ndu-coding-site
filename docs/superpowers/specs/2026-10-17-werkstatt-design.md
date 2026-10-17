@@ -171,7 +171,7 @@ Vor dem Festschreiben der Tag-2- und Tag-3-Präfixe gleicht ein Agent sie mit al
 **Tag-1-Schemas** (aus den bisherigen Vorlagen und Prüflisten in `methoden.ts`):
 
 - `brief@1`: `fuerWen`, `problem`, `heuteGeloestDurch`, `produktSatz?` (offen bis Tag 3), `nicht: string[]` (3 erwartet), `outcome: { wirGlauben, wirMerkenEs }`, `offeneFragen: string[]`.
-- `entscheidungen@1`: Liste von `{ id: "D1", datum, entscheidung, grund, beleg: Belegstufe, belegIds: string[], ersetzt?: "D3" }`. Zeilen werden nie gelöscht; eine ersetzte Zeile zeigt „ersetzt am …“ aus der neuen.
+- `entscheidungen@1`: Liste von `{ id: "D1", datum, entscheidung, grund, beleg: Belegstufe, belegIds: string[], belegNotiz?: string, ersetzt?: "D3" }`. `belegNotiz` ist ein freier Hinweis auf einen Beleg außerhalb der Mappe (z. B. „Kassendaten September“): eine Zeile, höchstens 120 Zeichen (Grapheme), ohne Steuerzeichen und ohne Leerzeichen am Rand. Hohe Stufe ohne `belegIds` **und** ohne `belegNotiz` → der Agent fragt nach; mit `belegNotiz` fragt er, wo der Beleg liegt, und wertet die Zeile nicht als „unbelegt“. Zeilen werden nie gelöscht; eine ersetzte Zeile zeigt „ersetzt am …“ aus der neuen.
 - `leitfaden@1`: `{ ziel, wen, einstieg, fragen: [{ id: "F1", text, art: "kern" | "nachfrage" }], abschluss }`.
 - `annahmen@1`: Liste von `{ id: "A1", text, art: "wuenschenswert" | "machbar" | "wirtschaftlich" | "bedienbar", wichtig: "hoch" | "mittel" | "niedrig", beleg: Belegstufe, belegIds }` plus `riskanteste: "A4"`. Quadrant der 2×2 wird abgeleitet, nicht eingegeben.
 - `interview@1` (pro Datei, Hausaufgabe nach Tag 1): `{ id: "I1", datum, pseudonym, rolle, einwilligung: true, zitate: [{ id: "I1-1", text }], notizen }`. Pflichtfeld Pseudonym, Warnhinweis bei Eigennamen.
