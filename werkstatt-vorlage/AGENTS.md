@@ -8,10 +8,10 @@ Dieses Repo ist die Mappe einer Person aus dem Innolab. Die Werkstatt auf der Ku
 
 - `mappe/<artefakt>.json` ist die Quelle: strukturierte Daten mit `schema: "<artefakt>@<version>"` und `stand` (ISO-Datum).
 - `mappe/<artefakt>.md` ist daraus generiert (gleicher Inhalt, lesbar). Nie von Hand ändern; beim nächsten Speichern wird sie überschrieben.
-- Artefakte: `brief`, `entscheidungen`, `leitfaden`, `annahmen`, `interviews/I<n>` (je Interview eine Datei). Später können weitere dazukommen.
-- `vorschlaege/<artefakt>.json` (offene Vorschläge) und `pruefungen/<artefakt>.json` (Prüfungen) liegen ebenfalls in `mappe/`, sobald es sie gibt.
+- Artefakte jetzt: `brief`, `entscheidungen`, `leitfaden`, `annahmen`.
+- Interviews, Vorschläge und Prüfungen kommen in späteren Kurstagen dazu.
 - `werkstatt.json` im Wurzelverzeichnis: Zuordnung des Repos (`kohorte`, `githubId`) und `schemaVersionen`, also welche Schema-Versionen dieses Repo nutzt. Nicht ändern.
-- Die `README.md` im Wurzelverzeichnis ist eine generierte Übersicht.
+- Die `README.md` im Wurzelverzeichnis wird von der Werkstatt generiert.
 
 ## IDs
 

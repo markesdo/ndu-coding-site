@@ -1,6 +1,7 @@
 // Speicher im Arbeitsspeicher für Tests und den lokalen Dev-Server – dieselben Regeln wie der GitHub-Speicher (spec §3.3):
 // basisSha = Git-Blob-SHA von mappe/<name>.json, Konflikt nur pro Artefakt, ein Speichern = ein Commit.
 // Nur bei NODE_ENV ∈ {development, test}.
+import { kohorte as kohorteNachId } from '../kohorten/index.js';
 import { ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { repoName } from '../zugang.js';
 import { blobSha } from './git-sha.js';
@@ -46,7 +47,9 @@ export function fakeSpeicher(): FakeSpeicher {
         if (wj && wj.githubId !== githubId) throw fremdesRepo();
         return { repo };
       }
-      const dateien = new Map([['werkstatt.json', `${JSON.stringify({ kohorte: m.kohorte, githubId }, null, 2)}\n`]]);
+      const k = kohorteNachId(m.kohorte);
+      if (!k) throw internerFehler(`anlegen: unbekannte Kohorte ${m.kohorte}`);
+      const dateien = new Map([['werkstatt.json', `${JSON.stringify({ kohorte: m.kohorte, githubId, schemaVersionen: k.artefakte }, null, 2)}\n`]]);
       repos.set(repo, { dateien, commits: [] });
       return { repo };
     },

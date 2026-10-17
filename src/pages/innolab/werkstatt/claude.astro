@@ -9,6 +9,8 @@ import Prompt from '../../../components/Prompt.astro';
   VORLÄUFIG: Die genauen Beschriftungen in claude.ai („Einstellungen“, „Connectors“, „Benutzerdefinierten Connector hinzufügen“,
   „Verbinden“, „Erlauben“, „Datenschutz“, „Modelltraining“) sind noch nicht am echten Bildschirm geprüft.
   Task 15 prüft sie mit Screenshots und ergänzt sie; erst dann gilt der Text als final.
+  Der Hinweis „erweiterte OAuth-Felder leer lassen“ stützt sich auf die Anthropic-Dokumentation: Eine leere Client-ID heißt, dass
+  claude.ai seine veröffentlichte Identität (CIMD) nutzt. Wird in T15 ebenfalls geprüft.
 */}
 <Layout title="Werkstatt · Claude verbinden">
   <span class="eyebrow">Innolab · Werkstatt</span>
@@ -32,10 +34,10 @@ import Prompt from '../../../components/Prompt.astro';
     <p class="folie-satz">Ihr meldet euch mit GitHub an und erlaubt den Zugriff einmal.</p>
     <ol>
       <li>Klickt beim neuen Connector auf <strong>Verbinden</strong>.</li>
-      <li>Meldet euch <strong>mit GitHub</strong> an, mit demselben Konto wie in der Werkstatt.</li>
-      <li>Auf der Werkstatt-Seite klickt ihr <strong>Erlauben</strong>. Dort steht, dass der Zugriff an <code>claude.ai</code> geht.</li>
+      <li>Falls ihr noch nicht in der Werkstatt angemeldet seid, meldet ihr euch mit GitHub an.</li>
+      <li>Auf der Werkstatt-Seite klickt ihr <strong>Erlauben</strong>. Prüft dort, dass ihr mit eurem eigenen GitHub-Konto angemeldet seid. Außerdem steht dort, dass der Zugriff an <code>claude.ai</code> geht.</li>
     </ol>
-    <p><a data-werkstatt href="/innolab/methoden/annahmen">Noch keine Mappe? Öffnet eine Methode wie die Annahmen-Map und klickt auf „Bearbeiten“ – beim ersten Mal meldet ihr euch mit GitHub an.</a></p>
+    <p>Noch keine Mappe? Sie wird beim ersten Login angelegt, über den Connector (dieser Schritt) oder über „Bearbeiten“ auf einer Methodenseite. <a data-werkstatt href="/innolab/mappe">Zu eurer Mappe</a></p>
   </Folie>
 
   <Folie>
