@@ -65,3 +65,19 @@ export function mappeZeilen(stand: MappeStand): MappeZeile[] {
     vorhanden: stand.artefakte.some((a) => a.name === name && a.vorhanden),
   }));
 }
+
+export type RepoHinweis =
+  | { art: 'keine' }
+  | { art: 'aktiv'; href: string }
+  | { art: 'eingeladen'; href: string }
+  | { art: 'unbekannt' };
+
+/** Was die Seite über das Repo zeigt: Link erst, wenn der Lesezugriff aktiv ist; vorher die Einladung (href = Einladungsseite).
+ *  Ohne Org oder Repo (Lehrende) nichts. */
+export function repoHinweis(stand: Pick<MappeStand, 'repo' | 'lesezugriff'>, org: string | undefined): RepoHinweis {
+  if (!org || !stand.repo) return { art: 'keine' };
+  const basis = `https://github.com/${org}/${stand.repo}`;
+  if (stand.lesezugriff === 'aktiv') return { art: 'aktiv', href: basis };
+  if (stand.lesezugriff === 'eingeladen') return { art: 'eingeladen', href: `${basis}/invitations` };
+  return { art: 'unbekannt' };
+}

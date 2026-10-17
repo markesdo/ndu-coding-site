@@ -564,3 +564,79 @@ describe('mehrere Jahrgänge gleichzeitig', () => {
     }
   });
 });
+
+describe('githubSpeicher.lesezugriff', () => {
+  const LOGIN = 'probe-login';
+  const anrufe = (gh: ReturnType<typeof aufbau>['gh']) => gh.zustand.aufrufe.filter((a) => a.pfad.includes('/collaborators/'));
+
+  it('ohne Zugriff: lädt als Lesende (pull) ein und meldet eingeladen', async () => {
+    const { gh, s, repo } = await mitRepo();
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('eingeladen');
+    const put = gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`);
+    expect(put).toHaveLength(1);
+    expect(put[0].body).toStrictEqual({ permission: 'pull' });
+    expect(gh.zustand.kollaboration(repo)).toStrictEqual({ [LOGIN]: { permission: 'pull', status: 'eingeladen' } });
+    // Token nur für dieses Repo und nur mit Administration.
+    expect(gh.zustand.tokens.get(put[0].token!)).toStrictEqual({ permissions: { administration: 'write' }, repositoryIds: [gh.zustand.repos.get(repo)!.id] });
+  });
+
+  it('eingeladen wird nicht gemerkt: nach dem Annehmen meldet der nächste Aufruf aktiv', async () => {
+    const { gh, s, repo } = await mitRepo();
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('eingeladen');
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('eingeladen');
+    gh.zustand.einladungAnnehmen(repo, LOGIN);
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('aktiv');
+  });
+
+  it('GET 204: aktiv ohne PUT', async () => {
+    const { gh, s, repo } = await mitRepo();
+    await s.lesezugriff(repo, LOGIN);
+    gh.zustand.einladungAnnehmen(repo, LOGIN);
+    gh.zustand.aufrufe.length = 0;
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('aktiv');
+    expect(gh.zustand.aufrufeVon('PUT', `/collaborators/${LOGIN}`)).toHaveLength(0);
+  });
+
+  it('PUT 204 (schon Collaborator, GET gab 404): aktiv', async () => {
+    const { gh, s, repo } = await mitRepo();
+    gh.zustand.stoerung = (methode, pfad) => {
+      if (methode === 'GET' && pfad.endsWith(`/collaborators/${LOGIN}`)) return new Response(null, { status: 404 });
+      if (methode === 'PUT' && pfad.endsWith(`/collaborators/${LOGIN}`)) return new Response(null, { status: 204 });
+      return undefined;
+    };
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('aktiv');
+  });
+
+  it('aktiv wird einen Tag gemerkt: der zweite Aufruf macht keinen Collaborator-Request', async () => {
+    const { gh, s, repo, uhr } = await mitRepo();
+    await s.lesezugriff(repo, LOGIN);
+    gh.zustand.einladungAnnehmen(repo, LOGIN);
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('aktiv');
+    const bisher = anrufe(gh).length;
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('aktiv');
+    expect(anrufe(gh)).toHaveLength(bisher);
+    // Nach einem Tag wird wieder geprüft.
+    uhr.ms += 24 * 60 * 60 * 1000 + 1;
+    expect(await s.lesezugriff(repo, LOGIN)).toBe('aktiv');
+    expect(anrufe(gh)).toHaveLength(bisher + 1);
+  });
+
+  it('ungültiger login wirft ohne jeden Request', async () => {
+    const { gh, s, repo } = await mitRepo();
+    gh.zustand.aufrufe.length = 0;
+    for (const login of ['', '../x', 'a/b', 'a b', '-abc', 'a'.repeat(40), 'x?y=1', 'x%2Fy']) {
+      await expect(s.lesezugriff(repo, login), login).rejects.toBeInstanceOf(ApiAusnahme);
+    }
+    expect(gh.zustand.aufrufe).toHaveLength(0);
+  });
+
+  it('5xx beim GET oder PUT → githubFehler (502), kein Cache', async () => {
+    const { gh, s, repo } = await mitRepo();
+    gh.zustand.stoerung = (methode, pfad) => (pfad.includes('/collaborators/') && methode === 'GET' ? new Response(null, { status: 500 }) : undefined);
+    await expect(s.lesezugriff(repo, LOGIN)).rejects.toMatchObject({ status: 502, code: 'github-fehler' });
+    gh.zustand.stoerung = (methode, pfad) =>
+      pfad.includes('/collaborators/') ? new Response(null, { status: methode === 'GET' ? 404 : 502 }) : undefined;
+    await expect(s.lesezugriff(repo, LOGIN)).rejects.toMatchObject({ status: 502, code: 'github-fehler' });
+    expect(gh.zustand.kollaboration(repo)).toStrictEqual({});
+  });
+});

@@ -185,7 +185,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
   server.registerTool(MCP_WERKZEUGE.mappeUebersicht, UEBERSICHT, () =>
     sicher(k, async () => {
       const repo = await eigeneMappe(k);
-      const stand: MappeStand = { kohorte: k.claims.kohorte, repo, artefakte: await k.abh.speicher.uebersicht(repo) };
+      const stand: MappeStand = { kohorte: k.claims.kohorte, repo, lesezugriff: 'unbekannt', artefakte: await k.abh.speicher.uebersicht(repo) };
       const zeilen = stand.artefakte.map((a) => `- ${ARTEFAKTE[a.name].titel} (${a.name}): ${a.vorhanden ? 'gespeichert' : 'noch leer'}`);
       return textErgebnis([`Deine Mappe (Kohorte ${stand.kohorte}):`, ...zeilen, '', `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`].join('\n'), { ...stand });
     }),

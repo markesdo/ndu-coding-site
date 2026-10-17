@@ -6,7 +6,7 @@ import { kohorte } from '../kohorten/index.js';
 import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
-import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -167,14 +167,18 @@ export default function MappeUebersicht() {
       case 'lehrende':
         return <p className="mappe-person">Angemeldet als <strong>{zustand.ich.login}</strong> (Lehrende). {TEXT.lehrende}</p>;
       case 'bereit': {
-        const org = kohorte(zustand.stand.kohorte)?.org;
+        const hinweis = repoHinweis(zustand.stand, kohorte(zustand.stand.kohorte)?.org);
         return (
           <>
             <p className="mappe-person">
               Angemeldet als <strong>{zustand.ich.login}</strong>.
-              {org && zustand.stand.repo && (
-                <> Deine Mappe liegt in <a href={`https://github.com/${org}/${zustand.stand.repo}`}>{zustand.stand.repo}<ExternalLink size={14} aria-label="auf GitHub" style={{ marginLeft: '.2em', verticalAlign: '-.1em' }} /></a>.</>
+              {hinweis.art === 'aktiv' && (
+                <> Deine Mappe liegt in <a href={hinweis.href}>{zustand.stand.repo}<ExternalLink size={14} aria-label="auf GitHub" style={{ marginLeft: '.2em', verticalAlign: '-.1em' }} /></a>.</>
               )}
+              {hinweis.art === 'eingeladen' && (
+                <> Deine Mappe liegt in <strong>{zustand.stand.repo}</strong> auf GitHub. Du hast eine Einladung bekommen (per E-Mail und auf GitHub); nimm sie an, dann kannst du die Mappe dort lesen. <a href={hinweis.href} target="_blank" rel="noreferrer">Einladung annehmen<ExternalLink size={14} aria-label="öffnet GitHub in einem neuen Tab" style={{ marginLeft: '.2em', verticalAlign: '-.1em' }} /></a></>
+              )}
+              {hinweis.art === 'unbekannt' && <> Deine Mappe liegt in <strong>{zustand.stand.repo}</strong>.</>}
             </p>
             <ul className="mappe-liste" ref={liste}>
               {mappeZeilen(zustand.stand).map((z) => {

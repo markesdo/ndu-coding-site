@@ -42,6 +42,8 @@ export interface Speicher {
     readme?: (vorhanden: { name: ArtefaktName; vorhanden: boolean }[]) => string,
   ): Promise<{ basisSha: string; commitUrl: string } | { konflikt: true }>;
   uebersicht(repo: string): Promise<{ name: ArtefaktName; vorhanden: boolean }[]>;
+  // Idempotent; lädt die Person ein, falls nötig; nie Schreibrechte (nur `pull`). 'eingeladen' = Einladung offen.
+  lesezugriff(repo: string, login: string): Promise<'aktiv' | 'eingeladen'>;
   // null = Repo oder Datei fehlt.
   werkstattJson(repo: string): Promise<{ kohorte: string; githubId: number } | null>;
 }

@@ -26,6 +26,16 @@ describe('fakeSpeicher', () => {
     expect(await s.werkstattJson('test-niemand')).toBeNull();
   });
 
+  it('lesezugriff: erst eingeladen, nach einladungAnnehmen aktiv; ungültiger Login und unbekanntes Repo werfen', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { s, repo } = await mitRepo();
+    expect(await s.lesezugriff(repo, 'Probe-Login')).toBe('eingeladen');
+    s.einladungAnnehmen(repo, 'probe-login');
+    expect(await s.lesezugriff(repo, 'probe-login')).toBe('aktiv');
+    await expect(s.lesezugriff(repo, '../x')).rejects.toMatchObject({ status: 500 });
+    await expect(s.lesezugriff('test-niemand', 'probe-login')).rejects.toMatchObject({ status: 404 });
+  });
+
   it('anlegen zweimal: ein Repo, Gespeichertes bleibt', async () => {
     const { s, repo } = await mitRepo();
     const erst = await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu');

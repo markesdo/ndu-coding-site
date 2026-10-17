@@ -47,7 +47,7 @@ function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: (fake: FakeSp
     });
   }
   const speichern = (name: string, body: unknown, s?: Omit<Sitzung, 'exp'>) => rohSpeichern(name, JSON.stringify(body), s);
-  return { app, fake, anlegen, uebersicht, holen, speichern, rohSpeichern, cookie, umgebung };
+  return { app, fake, speicher, anlegen, uebersicht, holen, speichern, rohSpeichern, cookie, umgebung };
 }
 
 async function mitMappe(opts: Parameters<typeof aufbau>[0] = {}) {
@@ -80,6 +80,7 @@ describe('GET /api/werkstatt/mappe', () => {
     expect(await r.json()).toStrictEqual({
       kohorte: 'test',
       repo: REPO,
+      lesezugriff: 'eingeladen',
       artefakte: [
         { name: 'brief', vorhanden: false },
         { name: 'entscheidungen', vorhanden: false },
@@ -88,6 +89,33 @@ describe('GET /api/werkstatt/mappe', () => {
       ],
     });
     expect(t.anlegen).not.toHaveBeenCalled();
+  });
+
+  it('Student bekommt den Lesezugriff; nach dem Annehmen aktiv', async () => {
+    const t = await mitMappe();
+    const lesezugriff = vi.spyOn(t.speicher, 'lesezugriff');
+    expect((await (await t.holen('')).json()).lesezugriff).toBe('eingeladen');
+    expect(lesezugriff).toHaveBeenCalledWith(REPO, 'sofie-x');
+    t.fake.einladungAnnehmen(REPO, 'sofie-x');
+    expect((await (await t.holen('')).json()).lesezugriff).toBe('aktiv');
+  });
+
+  it('Speicher wirft beim Lesezugriff: 200 mit unbekannt, Ursache im Log', async () => {
+    const fehler = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = await mitMappe();
+    t.speicher.lesezugriff = async () => { throw new GithubAusnahme(500); };
+    const r = await t.holen('');
+    expect(r.status).toBe(200);
+    expect(await r.json()).toMatchObject({ repo: REPO, lesezugriff: 'unbekannt' });
+    expect(fehler.mock.calls.flat().join(' ')).toContain('Lesezugriff');
+  });
+
+  it('Lehrende: unbekannt, ohne Aufruf', async () => {
+    const t = aufbau();
+    const lesezugriff = vi.spyOn(t.speicher, 'lesezugriff');
+    const r = await t.holen('', { githubId: 1000, login: 'lehrer', kohorte: 'test', rolle: 'lehrende' });
+    expect(await r.json()).toStrictEqual({ kohorte: 'test', repo: '', lesezugriff: 'unbekannt', artefakte: [] });
+    expect(lesezugriff).not.toHaveBeenCalled();
   });
 
   it('erstes Anlegen beim Login gescheitert → GET mappe legt an und liefert 200', async () => {
@@ -176,7 +204,7 @@ describe('GET /api/werkstatt/mappe', () => {
     const lehrende = { githubId: 1000, login: 'markus-x', kohorte: 'test', rolle: 'lehrende' } as const;
     const r = await t.holen('', lehrende);
     expect(r.status).toBe(200);
-    expect(await r.json()).toStrictEqual({ kohorte: 'test', repo: '', artefakte: [] });
+    expect(await r.json()).toStrictEqual({ kohorte: 'test', repo: '', lesezugriff: 'unbekannt', artefakte: [] });
     expect(t.anlegen).not.toHaveBeenCalled();
     const g = await t.holen('/brief', lehrende);
     expect(g.status).toBe(403);

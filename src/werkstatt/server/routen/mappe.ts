@@ -117,9 +117,16 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   r.get('/', async (c) => {
     const m = c.get('mitgliedschaft');
     // Lehrende haben kein eigenes Repo; ihre Ansicht auf die Mappen folgt in Phase 2.
-    if (m.rolle !== 'studierende') return json(c, { kohorte: m.kohorte, repo: '', artefakte: [] } satisfies MappeStand);
+    if (m.rolle !== 'studierende') return json(c, { kohorte: m.kohorte, repo: '', lesezugriff: 'unbekannt', artefakte: [] } satisfies MappeStand);
     const repo = await eigenesRepo(c, true);
-    const stand: MappeStand = { kohorte: m.kohorte, repo, artefakte: await abh.speicher.uebersicht(repo) };
+    // Best effort: die Mappe lädt auch, wenn GitHub die Einladung nicht beantwortet.
+    let lesezugriff: MappeStand['lesezugriff'] = 'unbekannt';
+    try {
+      lesezugriff = await abh.speicher.lesezugriff(repo, c.get('sitzung').login);
+    } catch (e) {
+      console.error('werkstatt: Lesezugriff nicht prüfbar –', ursache(e));
+    }
+    const stand: MappeStand = { kohorte: m.kohorte, repo, lesezugriff, artefakte: await abh.speicher.uebersicht(repo) };
     return json(c, stand);
   });
 

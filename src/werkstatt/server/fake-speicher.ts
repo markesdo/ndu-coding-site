@@ -20,12 +20,16 @@ export type FakeSpeicher = Speicher & {
   commits(repo: string): FakeCommit[];
   // Wie eine Änderung direkt auf GitHub: ändert mappe/<name>.json, damit ein vorher gelesener basisSha veraltet.
   aendernVonAussen(repo: string, name: ArtefaktName): void;
+  // Die Person nimmt die Einladung an: lesezugriff meldet danach 'aktiv'.
+  einladungAnnehmen(repo: string, login: string): void;
 };
 
 const jsonPfad = (name: ArtefaktName) => `mappe/${name}.json`;
 
 export function fakeSpeicher(): FakeSpeicher {
   if (!istLokal(process.env)) throw new Error('fakeSpeicher nur bei NODE_ENV development oder test');
+  // Schlüssel `${repo}:${login in Kleinschreibung}`.
+  const lesende = new Map<string, 'aktiv' | 'eingeladen'>();
   const repos = new Map<string, { dateien: Map<string, string>; commits: FakeCommit[] }>();
 
   const repoHolen = (repo: string) => {
@@ -76,6 +80,19 @@ export function fakeSpeicher(): FakeSpeicher {
     async uebersicht(repo) {
       const r = repoHolen(repo);
       return ARTEFAKT_NAMEN.map((name) => ({ name, vorhanden: r.dateien.has(jsonPfad(name)) }));
+    },
+
+    async lesezugriff(repo, login) {
+      if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/.test(login)) throw internerFehler('lesezugriff: ungültiger GitHub-Login');
+      repoHolen(repo);
+      const schluessel = `${repo}:${login.toLowerCase()}`;
+      const stand = lesende.get(schluessel) ?? 'eingeladen';
+      lesende.set(schluessel, stand);
+      return stand;
+    },
+
+    einladungAnnehmen(repo, login) {
+      lesende.set(`${repo}:${login.toLowerCase()}`, 'aktiv');
     },
 
     async werkstattJson(repo) {

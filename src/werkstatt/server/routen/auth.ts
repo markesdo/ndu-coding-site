@@ -83,6 +83,12 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
         // Cookie trotzdem: /innolab/mappe zeigt „wird eingerichtet“, GET /api/werkstatt/mappe (Task 11) legt ein fehlendes Repo erneut an.
         console.error('werkstatt: Mappe anlegen fehlgeschlagen –', e instanceof Error ? e.message : 'Fehler');
       }
+      // Best effort: die Einladung zum Lesen geht früh raus (Mail von GitHub); scheitert sie, holt GET mappe sie nach.
+      try {
+        await abh.speicher.lesezugriff(repoName(m), person.login);
+      } catch (e) {
+        console.error('werkstatt: Lesezugriff nicht prüfbar –', e instanceof Error ? e.message : 'Fehler');
+      }
     }
 
     const cookie = await sitzungErstellen(

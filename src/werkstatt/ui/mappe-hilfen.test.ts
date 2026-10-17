@@ -3,7 +3,7 @@ import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen } from './mappe-hilfen.js';
+import { FEHLER_TEXT, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -84,5 +84,29 @@ describe('api.mappe', () => {
     const e = await api.mappe().catch((x: unknown) => x);
     expect(e).toBeInstanceOf(ApiError);
     expect(e).toMatchObject({ status: 503, code: 'wird-eingerichtet' });
+  });
+});
+
+describe('repoHinweis', () => {
+  const stand = (lesezugriff: MappeStand['lesezugriff'], repo = '2026-sofie') => ({ repo, lesezugriff });
+
+  it('aktiv: Link auf das Repo', () => {
+    expect(repoHinweis(stand('aktiv'), 'ndu-innolab')).toStrictEqual({ art: 'aktiv', href: 'https://github.com/ndu-innolab/2026-sofie' });
+  });
+
+  it('eingeladen: Link nur auf die Einladung, nie auf das Repo', () => {
+    expect(repoHinweis(stand('eingeladen'), 'ndu-innolab')).toStrictEqual({
+      art: 'eingeladen',
+      href: 'https://github.com/ndu-innolab/2026-sofie/invitations',
+    });
+  });
+
+  it('unbekannt: kein Link', () => {
+    expect(repoHinweis(stand('unbekannt'), 'ndu-innolab')).toStrictEqual({ art: 'unbekannt' });
+  });
+
+  it('ohne Repo (Lehrende) oder Org: nichts', () => {
+    expect(repoHinweis(stand('unbekannt', ''), 'ndu-innolab')).toStrictEqual({ art: 'keine' });
+    expect(repoHinweis(stand('aktiv'), undefined)).toStrictEqual({ art: 'keine' });
   });
 });
