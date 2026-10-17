@@ -163,11 +163,31 @@ describe('Allgemeine Zeilenanfangs-Regel', () => {
     expect(zeilen(t)).toContain('\\:--|--');
     expect(t).not.toContain('\\1');
   });
-  it('Leitfaden-Fragen und Annahmen-Text folgen derselben Regel', () => {
+  it('Felder mitten in der Zeile bleiben unmaskiert', () => {
     const l = laden('leitfaden');
-    const ls = rendern('leitfaden', { ...l, fragen: [{ id: 'F1', art: 'kern', text: '# x' }, { id: 'F2', art: 'nachfrage', text: '1. y' }] });
-    expect(zeilen(ls)).toContain('1. **F1** \\# x');
-    expect(zeilen(ls)).toContain('- **F2** 1\\. y');
+    const ls = rendern('leitfaden', { ...l, ziel: '(Pilot) x', fragen: [{ id: 'F1', art: 'kern', text: '# x' }, { id: 'F2', art: 'nachfrage', text: '"Was 1. y' }] });
+    expect(zeilen(ls)).toContain('1. **F1** # x');
+    expect(zeilen(ls)).toContain('- **F2** "Was 1. y');
+    expect(zeilen(ls)).toContain('Ziel: (Pilot) x');
+    const e = laden('entscheidungen');
+    const es = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: '(Pilot) nur montags' }] });
+    expect(es).toContain(' — (Pilot) nur montags — ');
+    const a = laden('annahmen');
+    expect(rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[0], text: '# x' }] })).toContain('| # x |');
+  });
+  it('Links, Code und Betonung am Zeilenanfang bleiben wirksam', () => {
+    const b = laden('brief');
+    const nicht = ['[Interview I2](https://x.at) zeigt', '`Kasse` hängt', '<https://x.at>', '_wichtig_', '!Achtung'];
+    const s = rendern('brief', { ...b, nicht, fuerWen: '[I2](https://x.at)\n`Kasse`' });
+    for (const n of nicht) expect(zeilen(s)).toContain(`- ${n}`);
+    expect(zeilen(s)).toContain('[I2](https://x.at)\\');
+    expect(zeilen(s)).toContain('`Kasse`');
+  });
+  it('Blockzeichen, die nur mit Folgezeichen wirken, werden maskiert', () => {
+    const b = laden('brief');
+    const nicht = ['[a]: https://x.at', '```js', '~~~', '_ _ _', '<div>', '<!-- x'];
+    const s = rendern('brief', { ...b, nicht });
+    for (const n of nicht) expect(zeilen(s)).toContain(`- \\${n}`);
   });
 });
 
@@ -184,6 +204,11 @@ describe('Sichtbare Zeilenumbrüche', () => {
     const s = rendern('brief', { ...laden('brief'), problem: 'a\\\nb' });
     expect(s).toContain('a\\\\  \nb');
   });
+  it('Zeile, die mit maskiertem Backslash endet, bekommt keinen zusätzlichen', () => {
+    // Eine Zeile nur aus einem Backslash: maskiert \\, der Umbruch braucht genau einen weiteren.
+    const s = rendern('brief', { ...laden('brief'), problem: '\\\nb' });
+    expect(s).toContain('Problem?\n\\\\\\\nb');
+  });
 });
 
 describe('Leere Pflichtfelder', () => {
@@ -197,7 +222,7 @@ describe('Leere Pflichtfelder', () => {
     expect(l).toContain('Ziel: Noch nichts eingetragen.');
     expect(l).toContain('## Einstieg\nNoch nichts eingetragen.');
     expect(l).toContain('## Abschluss\nNoch nichts eingetragen.');
-    expect(l).not.toContain('„“');
+    expect(l).not.toContain('„Noch nichts');
     const e = laden('entscheidungen');
     expect(rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[0], entscheidung: '', grund: '' }] })).toContain('Noch nichts eingetragen. — Noch nichts eingetragen.');
     const a = laden('annahmen');

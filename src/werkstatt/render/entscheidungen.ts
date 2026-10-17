@@ -1,10 +1,10 @@
-import type { Entscheidungen } from '../schemas/index.js';
+import type { Entscheidung, Entscheidungen } from '../schemas/index.js';
 import { belegText, datumAt, einzeilig } from './format.js';
 
 // Eine Zeile pro Entscheidung: Datum — Entscheidung — Grund — Beleg. Gelöscht wird nichts.
 export function entscheidungenRendern(d: Entscheidungen): string {
   // Ersetzte ID -> ersetzende Zeile (bei mehreren gewinnt die spätere).
-  const ersetzer = new Map<string, Entscheidungen['entscheidungen'][number]>();
+  const ersetzer = new Map<string, Entscheidung>();
   for (const x of d.entscheidungen) if (x.ersetzt !== undefined) ersetzer.set(x.ersetzt, x);
   const zeilen = d.entscheidungen.map((e) => {
     const neue = ersetzer.get(e.id);
