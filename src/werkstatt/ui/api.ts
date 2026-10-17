@@ -1,5 +1,5 @@
 // Browser-Client der Werkstatt-API. Wirft ApiError mit status und code; Texte kommen vom Server (Spec §5).
-import { ROUTEN, type ApiFehler, type ArtefaktAntwort, type Ich, type SpeichernAnfrage, type SpeichernAntwort } from '../vertrag.js';
+import { ROUTEN, type ApiFehler, type ArtefaktAntwort, type Ich, type MappeStand, type SpeichernAnfrage, type SpeichernAntwort } from '../vertrag.js';
 import { entwuerfeLoeschen } from './entwurf.js';
 import type { ArtefaktName, Feldfehler } from '../schemas/index.js';
 
@@ -58,6 +58,13 @@ export const api = {
     if (a.status === 401) return null;
     if (!a.ok) throw await fehlerAus(a);
     return (await a.json()) as Ich;
+  },
+
+  /** Stand der ganzen Mappe; legt sie beim ersten Mal an (503 „wird-eingerichtet“, solange das dauert). */
+  async mappe(): Promise<MappeStand> {
+    const a = await anfrage('GET', ROUTEN.mappe.pfad);
+    if (!a.ok) throw await fehlerAus(a);
+    return (await a.json()) as MappeStand;
   },
 
   async lesen(name: ArtefaktName): Promise<ArtefaktAntwort> {

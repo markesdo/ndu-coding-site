@@ -41,6 +41,17 @@ describe('NAV', () => {
   }
 });
 
+describe('Werkstatt im Innolab-Menü', () => {
+  it('führt zu „Meine Mappe“ und „Claude verbinden“, nach den Kurstagen (das Blättern durch Tag 1–7 bleibt gleich)', () => {
+    const gruppe = NAV.innolab.find((g) => g.h === 'Werkstatt');
+    expect(gruppe?.items).toStrictEqual([
+      { href: '/innolab/mappe', t: 'Meine Mappe' },
+      { href: '/innolab/werkstatt/claude', t: 'Claude verbinden' },
+    ]);
+    expect(NAV.innolab.at(-1)).toBe(gruppe);
+  });
+});
+
 describe('nachbarn', () => {
   it('blättert nicht vom letzten Coding-Punkt ins Innolab und nicht vom Innolab zurück', () => {
     const letzte = NAV.coding.flatMap((g) => g.items).at(-1)!.href;

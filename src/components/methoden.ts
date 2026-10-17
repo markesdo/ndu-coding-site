@@ -1,8 +1,10 @@
 // Toolbox des Innolabs: jede Methode beantwortet eine Frage und ergibt ein Artefakt. Spätere Methoden bauen auf
 // diesen Artefakten auf, statt sie neu zu erarbeiten (Pains etwa nur im Kundenprofil). methoden.test.ts prüft die Kette.
 // Ohne Astro, damit testbar.
+import type { ArtefaktName } from '../werkstatt/schemas/index.js';
+import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
 
-export type Ort = 'repo' | 'miro' | 'linear' | 'live' | 'vortrag';
+export type Ort = 'repo' | 'miro' | 'linear' | 'live' | 'vortrag' | 'werkstatt';
 
 export const ORTE: Record<Ort, string> = {
   repo: 'Repo',
@@ -10,21 +12,26 @@ export const ORTE: Record<Ort, string> = {
   linear: 'Linear',
   live: 'Live-App',
   vortrag: 'Präsentation',
+  werkstatt: 'Werkstatt',
 };
 
 export interface Artefakt {
   id: string;
   name: string;
   lebtIn: Ort[];
-  /** Datei oder Abschnitt im Projekt-Repo, wenn es dort festgehalten wird. */
+  /** Datei oder Abschnitt im Projekt-Repo, wenn es dort festgehalten wird; nur in der Werkstatt: die Datei in der Mappe. */
   pfad?: string;
+  /** Name in der Werkstatt-Mappe, wenn das Artefakt dort bearbeitet wird. Die IDs hier bleiben, auch wo die Werkstatt
+   *  anders heißt („transkripte“ → leitfaden). Interview-Notizen kommen nie ins App-Repo (öffentlich); bis der
+   *  Interview-Editor da ist, bleiben sie privat bei den Studierenden. */
+  werkstatt?: ArtefaktName;
 }
 
 export const ARTEFAKTE: Artefakt[] = [
-  { id: 'brief', name: 'Produkt-Brief mit Outcome-Metrik', lebtIn: ['repo'], pfad: 'docs/PRODUKT.md' },
-  { id: 'entscheidungen', name: 'Entscheidungslog', lebtIn: ['repo'], pfad: 'docs/ENTSCHEIDUNGEN.md' },
-  { id: 'transkripte', name: 'Leitfaden und Interview-Transkripte (anonymisiert)', lebtIn: ['repo'], pfad: 'docs/interviews/' },
-  { id: 'annahmen', name: 'Annahmen-Map', lebtIn: ['miro', 'repo'], pfad: 'docs/ANNAHMEN.md' },
+  { id: 'brief', name: 'Produkt-Brief mit Outcome-Metrik', lebtIn: ['werkstatt'], pfad: 'mappe/brief.json', werkstatt: 'brief' },
+  { id: 'entscheidungen', name: 'Entscheidungslog', lebtIn: ['werkstatt'], pfad: 'mappe/entscheidungen.json', werkstatt: 'entscheidungen' },
+  { id: 'transkripte', name: 'Leitfaden und Interview-Notizen (pseudonymisiert)', lebtIn: ['werkstatt'], pfad: 'mappe/leitfaden.json', werkstatt: 'leitfaden' },
+  { id: 'annahmen', name: 'Annahmen-Map', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/annahmen.json', werkstatt: 'annahmen' },
   { id: 'synthese', name: 'Themen mit Zitat-IDs', lebtIn: ['miro', 'repo'], pfad: 'docs/interviews/SYNTHESE.md' },
   { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains)', lebtIn: ['miro', 'repo'], pfad: 'docs/KUNDENPROFIL.md' },
   { id: 'journey', name: 'Journey Map mit Momenten der Wahrheit', lebtIn: ['miro', 'repo'], pfad: 'docs/JOURNEY.md' },
@@ -397,27 +404,75 @@ export const erzeugtVon = (id: string): Methode | undefined => METHODEN.find((m)
 export const methodenVonTag = (tag: number): Methode[] => METHODEN.filter((m) => m.tag === tag);
 
 /** So findet Claude ein Artefakt: als Datei im Repo oder über den Linear-MCP – Team und Projekt stehen in docs/BACKLOG.md,
- *  die Regeln für Linear in docs/LINEAR.md des Projekts. */
+ *  die Regeln für Linear in docs/LINEAR.md des Projekts. Was nur in der Werkstatt liegt, liest Claude über den Connector. */
 export const LINEAR_QUELLE = 'die Issues über den Linear-MCP (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)';
+
+/** Wie der Prüf-Prompt ein Artefakt der Mappe nennt („Prüf meinen Produkt-Brief …“). */
+export const WERKSTATT_AKKUSATIV: Record<ArtefaktName, string> = {
+  brief: 'meinen Produkt-Brief',
+  entscheidungen: 'mein Entscheidungslog',
+  leitfaden: 'meinen Interviewleitfaden',
+  annahmen: 'meine Annahmen-Map',
+};
+
+const nurInWerkstatt = (a: Artefakt) => a.werkstatt !== undefined && !a.lebtIn.includes('repo');
+
+/** Datei im Repo oder Linear; nichts für Artefakte, die nur in der Werkstatt liegen (die Mappe ist ein eigenes Repo). */
 function quelle(id: string): string | undefined {
   const a = artefakt(id)!;
+  if (nurInWerkstatt(a)) return undefined;
   return a.pfad ?? (a.lebtIn.includes('linear') ? LINEAR_QUELLE : undefined);
 }
 
+/** Werkstatt-Artefakt, das Claude zum Abgleich mit artefakt_lesen holt. */
+function werkstattQuelle(id: string): ArtefaktName | undefined {
+  const a = artefakt(id)!;
+  return nurInWerkstatt(a) ? a.werkstatt : undefined;
+}
+
+const aufzaehlen = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} und ${xs.at(-1)}`);
+const ausWerkstatt = (namen: ArtefaktName[]) => `${aufzaehlen(namen.map((n) => WERKSTATT_AKKUSATIV[n]))} (Werkzeug ${MCP_WERKZEUGE.artefaktLesen})`;
+
+/** Wird das Ergebnis dieser Methode in der Werkstatt geprüft (Connector) statt als Datei im Repo? Mit pfad: immer die Datei. */
+export function pruefungInWerkstatt(m: Methode, pfad?: string): boolean {
+  return !pfad && m.ergibt.length > 0 && m.ergibt.every((id) => artefakt(id)?.werkstatt !== undefined);
+}
+
+const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst.';
+
 /** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
- *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. den Leitfaden statt aller Interview-Dateien). */
+ *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. ein Transkript statt aller Interview-Dateien).
+ *  Liegt das Ergebnis in der Werkstatt, prüft Claude es dort mit artefakt_pruefen – nie über eine Datei unter docs/. */
 export function pruefPrompt(m: Methode, pfad?: string): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
+  const liste = m.pruefliste.map((p, i) => `${i + 1}. ${p}`);
+  const werkstattAbgleich = [...new Set(m.braucht.map(werkstattQuelle).filter((n): n is ArtefaktName => !!n))];
+
+  if (pruefungInWerkstatt(m, pfad)) {
+    // Claude (claude.ai mit dem Connector) sieht nur die Mappe; Vorarbeit aus Dateien ließe sich so nicht lesen.
+    const dateien = m.braucht.map(quelle).filter((p): p is string => !!p);
+    if (dateien.length) throw new Error(`pruefPrompt: Methode „${m.slug}“ prüft in der Werkstatt, braucht aber Dateien: ${dateien.join(', ')}`);
+    const namen = m.ergibt.map((id) => artefakt(id)!.werkstatt!);
+    return [
+      `Prüf ${aufzaehlen(namen.map((n) => WERKSTATT_AKKUSATIV[n]))} mit der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktPruefen}) gegen diese Prüfliste (${m.name}):`,
+      ...liste,
+      ...(werkstattAbgleich.length ? [`Zum Abgleich lies auch ${ausWerkstatt(werkstattAbgleich)}.`] : []),
+      '',
+      `${REGELN_ANFANG} Schreib nichts um und formulier keinen Text für mich – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.`,
+    ].join('\n');
+  }
+
   const pfade = pfad ? [pfad] : [...new Set(m.ergibt.map(quelle).filter((p): p is string => !!p))];
   // Viele Punkte lassen sich nur gegen die Vorarbeit prüfen (Zitate gegen Transkripte, IDs gegen das Kundenprofil).
   if (pfade.length === 0) throw new Error(`pruefPrompt: Methode „${m.slug}“ ergibt nichts, was Claude lesen kann`);
   // Ohne das, was Claude ohnehin liest – auch wenn pfad nur einen Teil davon nennt (z. B. ausgewählte Issues).
   const schonGelesen = new Set([...pfade, ...m.ergibt.map(quelle)]);
   const abgleich = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !schonGelesen.has(p)))];
+  const teile = [abgleich.join(', '), werkstattAbgleich.length ? `aus der Werkstatt ${ausWerkstatt(werkstattAbgleich)}` : ''].filter(Boolean);
   return [
-    `Lies ${pfade.join(' und ')}.${abgleich.length ? ` Zum Abgleich lies auch ${abgleich.join(', ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
-    ...m.pruefliste.map((p, i) => `${i + 1}. ${p}`),
+    `Lies ${pfade.join(' und ')}.${teile.length ? ` Zum Abgleich lies auch ${teile.join(' und ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
+    ...liste,
     '',
-    'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Schreib nichts um, ändere keine Datei und kein Issue – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.',
+    `${REGELN_ANFANG} Schreib nichts um, ändere keine Datei und kein Issue – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.`,
   ].join('\n');
 }

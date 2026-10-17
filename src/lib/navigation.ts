@@ -102,6 +102,11 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
       { href: '/innolab/tag-6', t: 'Tag 6 · Bauen' },
       { href: '/innolab/tag-7', t: 'Tag 7 · Präsentation' },
     ]},
+    // Nach den Kurstagen: Das Blättern im Beamer (nachbarn) läuft weiter von Tag zu Tag.
+    { h: 'Werkstatt', items: [
+      { href: '/innolab/mappe', t: 'Meine Mappe' },
+      { href: '/innolab/werkstatt/claude', t: 'Claude verbinden' },
+    ]},
   ],
 };
 

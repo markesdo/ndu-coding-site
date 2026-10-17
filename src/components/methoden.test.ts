@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, erzeugtVon, methodenVonTag, pruefPrompt } from './methoden';
+import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
+import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefPrompt, pruefungInWerkstatt } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -57,6 +59,51 @@ describe('methoden', () => {
     }
   });
 
+  it('die vier Tag-1-Artefakte leben in der Werkstatt, jedes Werkstatt-Artefakt genau einmal', () => {
+    const inWerkstatt = ARTEFAKTE.filter((a) => a.lebtIn.includes('werkstatt'));
+    expect(inWerkstatt.map((a) => [a.id, a.werkstatt])).toStrictEqual([
+      ['brief', 'brief'], ['entscheidungen', 'entscheidungen'], ['transkripte', 'leitfaden'], ['annahmen', 'annahmen'],
+    ]);
+    // Interview-Notizen nie ins App-Repo (öffentlich): Leitfaden und Notizen leben nur in der Werkstatt.
+    for (const a of inWerkstatt) expect(a.lebtIn, a.id).not.toContain('repo');
+    expect(ARTEFAKTE.filter((a) => a.werkstatt !== undefined)).toStrictEqual(inWerkstatt);
+    for (const a of inWerkstatt) {
+      // Der Pfad zeigt in die Mappe.
+      expect(a.pfad, a.id).toBe(`mappe/${a.werkstatt}.json`);
+      // Die Methodenseite des Werkstatt-Artefakts ist die Methode, die das Artefakt erzeugt.
+      expect(erzeugtVon(a.id)!.slug, a.id).toBe(WERKSTATT_ARTEFAKTE[a.werkstatt!].slug);
+    }
+    expect(ARTEFAKTE.find((a) => a.id === 'transkripte')).toStrictEqual({
+      id: 'transkripte', name: 'Leitfaden und Interview-Notizen (pseudonymisiert)', lebtIn: ['werkstatt'], pfad: 'mappe/leitfaden.json', werkstatt: 'leitfaden',
+    });
+    // Der Akkusativ nennt das Artefakt mit dem Titel aus der Werkstatt, für jedes Artefakt der Mappe.
+    expect(Object.keys(WERKSTATT_AKKUSATIV).sort()).toStrictEqual([...ARTEFAKT_NAMEN].sort());
+    for (const n of ARTEFAKT_NAMEN) expect(WERKSTATT_AKKUSATIV[n], n).toMatch(new RegExp(`^mein(e|en)? ${WERKSTATT_ARTEFAKTE[n].titel}$`));
+  });
+
+  it('Werkstatt-Artefakte prüft Claude mit artefakt_pruefen, nicht aus docs/ – die Vorarbeit liest es mit artefakt_lesen', () => {
+    const pr = pruefPrompt(METHODEN.find((m) => m.slug === 'problem-rahmen')!);
+    expect(pr).toMatch(new RegExp(`^Prüf meinen Produkt-Brief mit der Werkstatt \\(Werkzeug ${MCP_WERKZEUGE.artefaktPruefen}\\) gegen diese Prüfliste \\(Problem-Rahmen & Produkt-Brief\\):\n1\. `));
+    expect(pr).not.toContain('Zum Abgleich');
+    const el = pruefPrompt(METHODEN.find((m) => m.slug === 'entscheidungslog')!);
+    expect(el).toMatch(/^Prüf mein Entscheidungslog mit der Werkstatt \(Werkzeug artefakt_pruefen\)/);
+    expect(el).toContain(`\nZum Abgleich lies auch meinen Produkt-Brief (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}).\n`);
+    const iv = pruefPrompt(METHODEN.find((m) => m.slug === 'interview')!);
+    expect(iv).toMatch(/^Prüf meinen Interviewleitfaden mit der Werkstatt \(Werkzeug artefakt_pruefen\)/);
+    expect(iv).toContain('Zum Abgleich lies auch meinen Produkt-Brief (Werkzeug artefakt_lesen).');
+    const an = pruefPrompt(METHODEN.find((m) => m.slug === 'annahmen')!);
+    expect(an).toMatch(/^Prüf meine Annahmen-Map mit der Werkstatt/);
+    for (const t of [pr, el, iv, an]) {
+      expect(t).not.toMatch(/docs\/|Lies /);
+      // Claude ändert in der Werkstatt nichts: kein „ändere keine Datei“, sondern kein eigener Text.
+      expect(t).toContain('Schreib nichts um und formulier keinen Text für mich');
+    }
+    expect(METHODEN.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'interview', 'annahmen']);
+    // Mit Pfad bleibt es die Prüfung einer Datei; die Vorarbeit kommt weiter aus der Werkstatt.
+    expect(pruefungInWerkstatt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toBe(false);
+    expect(pruefPrompt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toMatch(/^Lies notizen\/alt\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
+  });
+
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
     expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'kundenprofil', 'journey-map', 'hmw', 'ideation']);
     expect(methodenVonTag(7)).toEqual([]);
@@ -78,11 +125,9 @@ describe('methoden', () => {
     expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch docs\/interviews\/SYNTHESE\.md\./);
     const jm = pruefPrompt(METHODEN.find((m) => m.slug === 'journey-map')!);
     expect(jm).toContain('Zum Abgleich lies auch docs/KUNDENPROFIL.md, docs/interviews/SYNTHESE.md.');
-    // Teilprüfung: der Leitfaden statt aller Interview-Dateien, die Vorarbeit bleibt.
-    const iv = pruefPrompt(METHODEN.find((m) => m.slug === 'interview')!, 'docs/interviews/LEITFADEN.md');
-    expect(iv).toMatch(/^Lies docs\/interviews\/LEITFADEN\.md\. Zum Abgleich lies auch docs\/PRODUKT\.md\./);
-    const pr = pruefPrompt(METHODEN.find((m) => m.slug === 'problem-rahmen')!);
-    expect(pr).toMatch(/^Lies docs\/PRODUKT\.md\. Prüf es/);
+    // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).
+    const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
+    expect(sy).toMatch(/^Lies docs\/interviews\/SYNTHESE\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Interviewleitfaden und meine Annahmen-Map \(Werkzeug artefakt_lesen\)\. Prüf es/);
   });
 
   it('wer in der Prüfliste ein früheres Artefakt nennt, hat es in „braucht“ – sonst liest Claude es beim Prüfen nicht', () => {
@@ -104,13 +149,13 @@ describe('methoden', () => {
     expect(ak).toContain('ändere keine Datei und kein Issue');
     // Teilprüfung in Linear: die Issues nicht ein zweites Mal „zum Abgleich“, Brief und Team schon.
     const sprint = pruefPrompt(METHODEN.find((m) => m.slug === 'akzeptanzkriterien')!, 'über den Linear-MCP die Issues für Sprint 1');
-    expect(sprint).toMatch(/^Lies über den Linear-MCP die Issues für Sprint 1\. Zum Abgleich lies auch docs\/PRODUKT\.md, docs\/TEAM\.md\./);
+    expect(sprint).toMatch(/^Lies über den Linear-MCP die Issues für Sprint 1\. Zum Abgleich lies auch docs\/TEAM\.md und aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\./);
     for (const m of METHODEN.filter((x) => x.pruefliste)) expect(pruefPrompt(m), m.slug).not.toMatch(/^Lies \./);
   });
 
   it('der Sprint wird am Sprint-Protokoll geprüft, mit Issues, Team und Brief zum Abgleich', () => {
     const sp = pruefPrompt(METHODEN.find((m) => m.slug === 'sprint')!);
-    expect(sp).toMatch(/^Lies docs\/SPRINTS\.md\. Zum Abgleich lies auch die Issues über den Linear-MCP .*, docs\/TEAM\.md, docs\/PRODUKT\.md\./);
+    expect(sp).toMatch(/^Lies docs\/SPRINTS\.md\. Zum Abgleich lies auch die Issues über den Linear-MCP .*, docs\/TEAM\.md und aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\./);
     // Geschnittene Issues, Issues und Kriterien liegen alle in Linear: einmal lesen, nicht dreimal.
     const sch = pruefPrompt(METHODEN.find((m) => m.slug === 'schneiden')!);
     expect(sch.split('Linear-MCP').length - 1).toBe(1);
@@ -119,7 +164,7 @@ describe('methoden', () => {
 
   it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
-    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/PRODUKT\.md, docs\/STORYS\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md, docs\/ENTSCHEIDUNGEN\.md\. /);
+    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog \(Werkzeug artefakt_lesen\)\. /);
   });
 
   it('jede Tagesseite trägt das Datum aus TAGE als data-kurstag – sonst springt die Jetzt-Markierung am falschen Tag', () => {

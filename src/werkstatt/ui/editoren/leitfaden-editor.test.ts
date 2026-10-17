@@ -31,7 +31,9 @@ describe('Einstieg-Vorlage', () => {
 
   it('EINSTIEG_VORLAGE ist der Einstiegstext der Vorlage auf der Interview-Seite', () => {
     const seite = readFileSync('src/pages/innolab/methoden/interview.astro', 'utf8');
-    const block = seite.slice(seite.indexOf('Vorlage · docs/interviews/LEITFADEN.md'));
+    const start = seite.indexOf('Vorlage · Interviewleitfaden');
+    expect(start).toBeGreaterThan(-1);
+    const block = seite.slice(start);
     const treffer = /## Einstieg\n„([^\n]*)“\n/.exec(block);
     expect(treffer).not.toBeNull();
     expect(EINSTIEG_VORLAGE).toBe(treffer![1]);

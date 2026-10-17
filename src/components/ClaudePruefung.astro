@@ -2,15 +2,21 @@
 // Abschnitt „Prüfen“ auf Methodenseiten: erst die Prüfliste der Methode (methoden.ts) zum Abhaken, dann derselbe Text
 // als Prompt für Claude. Claude prüft nur, schreibt nichts um und ändert keine Datei. Die Punkte sind reiner Text –
 // die Checkliste würde HTML darstellen, der Prompt nicht (methoden.test.ts prüft das).
+// Liegt das Ergebnis in der Werkstatt, geht der Prompt an Claude mit dem Werkstatt-Connector (artefakt_pruefen),
+// sonst an Claude Code im Projekt-Repo.
 import Checklist from './Checklist.astro';
 import Prompt from './Prompt.astro';
-import { METHODEN, pruefPrompt } from './methoden';
+import { METHODEN, pruefPrompt, pruefungInWerkstatt } from './methoden';
 
-// pfad: wenn nur ein Teil des Artefakts geprüft wird (z. B. der Leitfaden, nicht die Transkripte).
+// pfad: wenn nur ein Teil des Artefakts geprüft wird (z. B. ein Transkript statt aller Interview-Dateien).
 const { slug, pfad } = Astro.props as { slug: string; pfad?: string };
 const m = METHODEN.find((x) => x.slug === slug);
 if (!m?.pruefliste) throw new Error(`ClaudePruefung: Methode „${slug}“ hat keine Prüfliste`);
 const text = pruefPrompt(m, pfad);
+const werkstatt = pruefungInWerkstatt(m, pfad);
 ---
 <Checklist id={`il-${m.slug}`} items={m.pruefliste} />
-<Prompt label="Prüfen lassen · Claude Code" note="Erst nachdem ihr die Prüfliste selbst durchgegangen seid. Claude findet, ihr entscheidet."><Fragment set:text={text} /></Prompt>
+<Prompt label={werkstatt ? 'Prüfen lassen · Claude mit der Werkstatt' : 'Prüfen lassen · Claude Code'} note="Erst nachdem ihr die Prüfliste selbst durchgegangen seid. Claude findet, ihr entscheidet."><Fragment set:text={text} /></Prompt>
+{werkstatt && (
+  <p class="small muted">Dafür braucht Claude den Werkstatt-Connector: <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>. Ohne Connector klickt ihr im Editor auf „Für Claude kopieren“ und fügt den Text in ein Gespräch mit Claude ein.</p>
+)}

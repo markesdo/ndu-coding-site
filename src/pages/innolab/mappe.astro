@@ -1,0 +1,28 @@
+---
+// Meine Mappe (Spec §3.5): die Artefakte der Person mit Stand und „Bearbeiten“. Die Anmeldung springt mit ?fehler=…
+// hierher zurück (routen/auth.ts); die Texte dazu stehen in werkstatt/ui/mappe-hilfen.ts.
+import Layout from '../../layouts/Layout.astro';
+import FooterNav from '../../components/FooterNav.astro';
+import MappeUebersicht from '../../werkstatt/ui/MappeUebersicht';
+---
+<Layout title="Meine Mappe">
+  <span class="eyebrow">Innolab · Werkstatt</span>
+  <h1>Meine Mappe</h1>
+  <p class="lead">Brief, Entscheidungslog, Leitfaden und Annahmen-Map auf einen Blick: was schon gespeichert ist, was noch offen ist.</p>
+
+  <MappeUebersicht client:only="react" />
+
+  <h2 id="claude">Claude prüfen lassen</h2>
+  <p>Claude liest die Mappe über den Werkstatt-Connector und prüft sie gegen die Prüflisten der Methoden. Eingerichtet wird er einmal pro Person: <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>.</p>
+
+  <FooterNav prev={{ href: '/innolab/tag-1', t: 'Tag 1 · Rahmen & Verstehen' }} next={{ href: '/innolab/werkstatt/claude', t: 'Claude verbinden' }} />
+</Layout>
+
+<style is:global>
+  .mappe .mappe-hinweis { margin: 1rem 0; }
+  .mappe .mappe-liste { list-style: none; padding: 0; margin: 1.25rem 0; display: grid; gap: .75rem; }
+  .mappe .mappe-zeile { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: .75rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); }
+  .mappe .mappe-titel { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .75rem; }
+  .mappe .mappe-stand { display: inline-flex; align-items: center; gap: .3rem; color: var(--muted); font-size: .9rem; }
+  .mappe .mappe-vorhanden { color: var(--fg); }
+</style>

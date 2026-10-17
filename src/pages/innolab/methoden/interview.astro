@@ -4,6 +4,8 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
+import Bearbeiten from '../../../components/Bearbeiten.astro';
+import { NACH_MOM_TEST } from '../../../components/innolab-zeiten';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
@@ -14,8 +16,7 @@ import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import Skala from '../../../components/bild/Skala.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
 
-// Ende des Blocks „Jobs to be Done & Mom Test“ an Tag 1 (tag-1.astro): ab dann sehen alle die Auflösungen.
-const NACH_MOM_TEST = '2026-10-22T13:45';
+// Ab NACH_MOM_TEST (Ende des Blocks laut tag-1.astro) sehen alle die Auflösungen – und den Leitfaden-Editor.
 ---
 <Layout title="Jobs to be Done & Mom Test">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -113,7 +114,7 @@ const NACH_MOM_TEST = '2026-10-22T13:45';
     <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
     <p class="folie-satz">Erst schreiben, dann proben – mit Claude und mit Markus.</p>
     <ol class="gross">
-      <li data-schritt><strong>Leitfaden allein schreiben:</strong> 5–7 Fragen, Vorlage im Handout auf euren Laptops, jede gegen die drei Regeln halten. <Timer minuten={20} /></li>
+      <li data-schritt><strong>Leitfaden allein schreiben:</strong> 5–7 Fragen, jede gegen die drei Regeln halten, in der Werkstatt speichern – „Bearbeiten“ im Handout auf euren Laptops. <Timer minuten={20} /></li>
       <li data-schritt><strong>Prüfliste und Claude.</strong> <Timer minuten={10} /></li>
       <li data-schritt><strong>Probe mit Claude:</strong> Claude spielt eine zurückhaltende Person aus eurer Zielgruppe, danach Feedback. <Timer minuten={15} /></li>
       <li data-schritt><strong>Live-Interview, reihum 3 × 15 min:</strong> Markus spielt eine schwierige Person, 10 min Interview, 5 min Feedback. Die anderen beobachten: Wo wurde gepitcht, wo fehlte eine Nachfrage? Was ihr lernt, kommt danach in den Leitfaden. <Timer minuten={15} /></li>
@@ -121,15 +122,17 @@ const NACH_MOM_TEST = '2026-10-22T13:45';
   </Folie>
 
   <div class="nur-handout">
-  <h2 id="vorlage">Vorlage</h2>
-  <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Die Vorlage enthält die Lösung des Mom Test – öffnet sie erst danach." knopf="Vorlage öffnen">
-  <Prompt label="Vorlage · docs/interviews/LEITFADEN.md"># Interviewleitfaden — [Produkt]
+  <h2 id="vorlage">In der Werkstatt speichern</h2>
+  <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Editor und Vorlage enthalten die Lösung des Mom Test – öffnet sie erst danach." knopf="Editor und Vorlage öffnen">
+  <p>Jede*r speichert den eigenen Leitfaden in der Werkstatt: Ziel, Zielgruppe, Einstieg, Kern- und Nachfragen, Abschluss. Die Vorlage darunter zeigt, wie ein Leitfaden nach dem Mom Test aussieht. Übertragt nur, was zu eurem Produkt passt.</p>
+  <Bearbeiten artefakt="leitfaden" />
+  <Prompt label="Vorlage · Interviewleitfaden"># Interviewleitfaden — [Produkt]
 
 Ziel: [Welche offene Frage aus dem Brief soll das Interview klären?]
 Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
 
 ## Einstieg
-„Danke, dass du dir Zeit nimmst. Ich will verstehen, wie du [Situation] heute erlebst – es gibt keine falschen Antworten. Darf ich das Gespräch aufnehmen? Die Aufnahme bleibt bei mir, im Projekt steht nur ein Transkript ohne Namen.“
+„Danke, dass du dir Zeit nimmst. Ich will verstehen, wie du [Situation] heute erlebst – es gibt keine falschen Antworten. Darf ich das Gespräch aufnehmen? Die Aufnahme bleibt bei mir, aufgeschrieben wird nur, was ohne deinen Namen auskommt.“
 
 ## Kernfragen
 1. Erzähl mir vom letzten Mal, als du [Situation].
@@ -149,7 +152,7 @@ Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
   </Aufloesung>
 
   <Callout type="warn" title="Einwilligung und Anonymisierung">
-    <p>Nehmt nur mit Einwilligung auf. Ins Repo kommt nie die Aufnahme, nur das Transkript – ohne Namen, Arbeitgeber oder andere Angaben, an denen man die Person erkennt. Nennt die Transkripte <code>docs/interviews/I1.md</code> bis <code>I5.md</code>; das sind später die Zitat-IDs. Bevor ihr ein Transkript Claude gebt, muss es anonymisiert sein.</p>
+    <p>Nehmt nur mit Einwilligung auf. Die Aufnahme und eure Notizen bleiben bei euch und kommen nie ins App-Repo, das ist öffentlich. Jedes Interview bekommt ein Pseudonym, I1 bis I5; das sind später die Zitat-IDs. In den Notizen stehen keine Namen, Arbeitgeber oder andere Angaben, an denen man die Person erkennt. Bevor ihr Notizen Claude gebt, müssen sie so bereinigt sein.</p>
   </Callout>
 
   <h2 id="probe">Probe mit Claude</h2>
@@ -161,7 +164,7 @@ Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
 
   <h2 id="pruefen">Prüfen</h2>
   <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Die Prüfliste verrät die Regeln des Mom Test – öffnet sie erst danach." knopf="Prüfliste öffnen">
-    <ClaudePruefung slug="interview" pfad="docs/interviews/LEITFADEN.md" />
+    <ClaudePruefung slug="interview" />
   </Aufloesung>
 
   </div>
