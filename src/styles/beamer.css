@@ -90,6 +90,16 @@ html[data-beamer] .content > .inner > .folie > h2:first-child { margin-top: 0; p
 html[data-beamer] .folie + .folie { border-top: 1px solid var(--border); }
 html[data-beamer] .nur-handout { display: none; }
 html[data-beamer] [data-schritt]:not(.gezeigt) { visibility: hidden; }
+/* Hinweis auf Aufdeck-Schritte (Layout.astro, schritteAnzeigen): unten rechts, hervorgehoben, solange noch etwas kommt. */
+html[data-beamer] .folie { position: relative; }
+html[data-beamer] .folie[data-schritte]::after {
+  content: attr(data-schritte); position: absolute; right: 0; bottom: .9rem;
+  font-family: var(--mono); font-size: .9rem; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 999px; padding: .15rem .65rem;
+}
+html[data-beamer] .folie[data-schritte-offen]::after {
+  color: var(--fg); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
 html[data-beamer] .timer { font-size: 1.2rem; }
 html[data-beamer] .folie-satz { font-size: 1.6rem; }
 /* Auf Folienseiten trägt die Folie ihren Titel selbst; die klebende „Wo bin ich“-Leiste würde ihn verdecken. */
