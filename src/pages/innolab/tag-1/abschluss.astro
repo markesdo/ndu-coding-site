@@ -8,7 +8,7 @@ import FooterNav from '../../../components/FooterNav.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
-import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
+import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target } from '@lucide/astro';
 ---
 <Layout title="Tag 1 · Abschluss">
   <span class="eyebrow">Innolab · Tag 1 · Abschluss</span>
@@ -56,6 +56,22 @@ import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
       <p>Teresa Torres empfiehlt, nach jedem Interview sofort zu verdichten, statt fünf Gespräche am Stück auszuwerten („Continuous Discovery Habits“, S. 67–70). Nach ein paar Interviews verschwimmen die Geschichten; der Snapshot hält fest, was dieses eine Gespräch gezeigt hat. Bild und Zitat sind Schlüssel für die Erinnerung, die Kurzinfos sagen, wer das war, und unten steht, was ihr gelernt habt.</p>
       <p>Wünscht sich jemand eine Funktion („Ich will per App vorbestellen“), fragt nach: „Was würde dir das bringen?“ Die Antwort („Ich will den Zug nicht verpassen“) ist die Chance – sie lässt mehr Lösungen zu als der Wunsch (S. 69). Notiert auch, was nur eine Person sagt: Oft taucht es später bei anderen wieder auf. An Tag 2 bringt ihr die fünf Snapshots mit; aus ihren Chancen wächst euer Baum.</p>
       <p>Der Snapshot kommt aufs Team-Board, damit ihr an Tag 2 gemeinsam daraus den Baum baut – deshalb nur mit Pseudonym, ohne Foto, Namen oder Arbeitgeber. Eure Rohnotizen bleiben bei euch.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="rueckblick">Rückblick auf Tag 1</h2>
+    <p class="folie-satz">Vom Outcome zur einen Frage, mit der ihr jetzt rausgeht.</p>
+    <Fluss label="Tag 1 im Rückblick: Outcome, Problem-Rahmen, Annahmen-Map, Leitfaden, Interviews" hervor={[4]} knoten={[
+      { t: 'Outcome', sub: 'was sich bei euren Leuten ändern soll, nicht was ihr baut', icon: Target },
+      { t: 'Problem-Rahmen', sub: 'für wen, welches Problem, woran ihr es merkt', icon: Crosshair },
+      { t: 'Annahmen-Map', sub: 'die riskanteste Annahme oben rechts', icon: Grid2x2 },
+      { t: 'Leitfaden', sub: 'die Annahme als Forschungsfrage, gefragt nach echtem Verhalten', icon: ListChecks },
+      { t: 'Interviews', sub: 'fünf bis Tag 2, je ein Snapshot', icon: Mic },
+    ]} />
+    <div class="nur-handout">
+      <p>In eurer Mappe liegen jetzt Produkt-Brief, Entscheidungslog, Annahmen-Map und Leitfaden; auf dem Team-Board die Frames T1 · 1 bis T1 · 4. Jedes Artefakt baut auf dem vorigen auf: Das Outcome begrenzt den Problem-Rahmen, aus dem Rahmen kommen die Annahmen, die riskanteste wird zur Forschungsfrage des Leitfadens.</p>
+      <p>An Tag 2 dreht sich die Richtung: Bisher habt ihr aufgeschrieben, was ihr glaubt. Mit den Snapshots kommt dazu, was eure Interviewpartner*innen tatsächlich erlebt haben – daraus baut ihr den Baum.</p>
     </div>
   </Folie>
 

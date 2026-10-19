@@ -92,7 +92,7 @@ export const METHODEN: Methode[] = [
     ],
   },
   {
-    slug: 'entscheidungslog', name: 'Entscheidungslog', tag: 1, dauer: 15,
+    slug: 'entscheidungslog', name: 'Entscheidungslog', tag: 1, dauer: 5,
     frage: 'Was haben wir geglaubt, wie geprüft, was gelernt – und was haben wir darum geändert?',
     braucht: ['brief'], ergibt: ['entscheidungen'],
     ki: 'Prüft am Ende jedes Tages, welche Entscheidung ohne Beleg dasteht.',
