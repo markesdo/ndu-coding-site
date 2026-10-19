@@ -10,6 +10,7 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Baum from '../../../components/bild/Baum.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import { CircleAlert, Footprints, Hammer, Target, TrendingUp, Users } from '@lucide/astro';
 import { KAFFEEBAR_BAUM } from '../../../components/innolab-beispiel';
 
@@ -56,7 +57,21 @@ const loesungsraum = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: chance.t, kinder: chan
     <h2 id="loesungsraum">Ein Problem, mehrere Lösungen</h2>
     <p class="folie-satz">Die starke Fassung lässt drei Lösungen zu – die schwache nur eine.</p>
     <Baum knoten={loesungsraum} label="Ein Problem, drei mögliche Lösungen: App, Express-Theke, Kaffeewagen" />
-    <p class="nur-handout">Die schwache Fassung lässt nur eine Lösung zu, die App. Die starke beschreibt das Problem und lässt Platz für drei – und für bessere, die erst in den Interviews auftauchen. Ein bekanntes Beispiel: Mieter*innen beschweren sich über einen langsamen Aufzug. Statt eines schnelleren Motors hängt man Spiegel auf – die Wartezeit fühlt sich kürzer an (Thomas Wedell-Wedellsborg, <a href="https://hbr.org/2017/01/are-you-solving-the-right-problems">„Are You Solving the Right Problems?“</a>, HBR 2017).</p>
+    <p class="nur-handout">Die schwache Fassung lässt nur eine Lösung zu, die App. Die starke beschreibt das Problem und lässt Platz für drei – und für bessere, die erst in den Interviews auftauchen. Alle drei Lösungen hängen aber noch an derselben Sicht auf das Problem: Die Schlange ist zu lang. Die nächste Folie fragt, ob es ein besseres Problem gibt.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="reframing">Gibt es ein besseres Problem?</h2>
+    <p class="folie-satz">Wer das Problem neu rahmt, findet Lösungen, an die vorher niemand dachte.</p>
+    <BuchAbbildung src="/quellen/hbr/reframing.png" breit alt="Oben: Problem „Der Aufzug ist zu langsam“ führt zu Lösungen, die ihn schneller machen – neuer Aufzug, stärkerer Motor, besserer Algorithmus. Darunter, neu gerahmt: „Das Warten nervt“ führt zu „das Warten soll sich kürzer anfühlen“ – Spiegel, Musik, Desinfektionsspender" quelle="Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“, Harvard Business Review, Jan.–Feb. 2017, S. 2." />
+    <div data-schritt>
+      <p><strong>Kaffeebar:</strong> „Die Schlange ist zu lang“ führt zu Express-Theke, App, Kaffeewagen. Neu gerahmt: „Pendler*innen wissen nicht, ob sich ein Kaffee bis zur Abfahrt ausgeht“ – dann hilft schon eine Anzeige der Wartezeit an der Hallentür.</p>
+    </div>
+    <div class="nur-handout">
+      <p>Die Mieter*innen eines Bürohauses beschweren sich über den langsamen Aufzug. Fast alle denken sofort an Lösungen, die ihn schneller machen. Die Hausverwaltung hängt Spiegel neben den Aufzug – die Beschwerden hören auf, weil die Wartenden sich selbst ansehen. Der Spiegel löst nicht das gestellte Problem, sondern ein anderes, besseres. Wedell-Wedellsborg betont: Die erste Sicht ist nicht falsch. Es geht nicht darum, das „echte“ Problem zu finden, sondern zu prüfen, ob es ein besseres gibt.</p>
+      <p>Warum das zählt: In seiner Umfrage unter Führungskräften aus 91 Organisationen in 17 Ländern sagten 85 %, ihre Organisation sei schlecht darin, Probleme zu erkennen, und 87 %, das koste viel. Ein zweites Beispiel aus dem Artikel: Tierheime werben seit Jahrzehnten um mehr Adoptionen. Lori Weise rahmte das Problem neu: Etwa 30 % der Hunde werden von ihren Besitzer*innen abgegeben, oft aus Geldnot. Ihr Programm hilft diesen Familien, ihre Hunde zu behalten – die Hunde kommen gar nicht erst ins Heim.</p>
+      <p>Aus den sieben Praktiken des Artikels nutzen wir drei. <strong>Schreibt das Problem in ganzen Sätzen auf</strong> – erst dann merkt man, dass alle Verschiedenes meinen. <strong>Sucht positive Ausnahmen:</strong> Wer erwischt den Zug doch mit Kaffee, und was ist bei ihr anders? <strong>Stellt das Ziel infrage:</strong> Geht es um Kaffee – oder darum, wach im Büro anzukommen?</p>
+    </div>
   </Folie>
 
   <Folie>
@@ -97,7 +112,7 @@ const loesungsraum = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: chance.t, kinder: chan
     <ol class="gross">
       <li data-schritt><strong>Allein, auf Papier:</strong> Für wen? Welches Problem? Wie wird es heute gelöst? Was macht es nicht (drei Dinge)? Keine Lösung, kein Produktname. <Timer minuten={15} /></li>
       <li data-schritt><strong>Outcome:</strong> „Wir glauben, dass … Wir merken es, wenn …“ – etwas, das Menschen anders tun und das ihr schon an wenigen Personen beobachten könnt. Keine Funktion, noch keine Zielzahl. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Dreierrunde:</strong> Jede*r liest vor. Die anderen fragen nur: „Woran würdest du das merken?“ und „Ist das schon eine Lösung?“ <Timer minuten={15} /></li>
+      <li data-schritt><strong>Dreierrunde:</strong> Jede*r liest vor. Die anderen fragen nur: „Woran würdest du das merken?“, „Ist das schon eine Lösung?“ und „Gibt es ein besseres Problem – wer hat es nicht, und warum?“ <Timer minuten={15} /></li>
       <li data-schritt><strong>Festhalten:</strong> in der Werkstatt speichern – „Bearbeiten“ im Handout auf euren Laptops. <Timer minuten={10} /></li>
       <li data-schritt><strong>Prüfen:</strong> erst die Prüfliste selbst (Handout), dann Claude. <Timer minuten={10} /></li>
     </ol>

@@ -10,6 +10,7 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import VierArten from '../../../components/bild/VierArten.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 // Achsen und Felder der Annahmen-Map: leer auf „Worum es geht“, gefüllt auf „Am Beispiel“.
@@ -32,10 +33,23 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
   <MethodenKarte slug="annahmen" />
 
   <Folie>
+    <h2 id="warum">Warum Annahmen sichtbar machen?</h2>
+    <p class="folie-satz">Wer seine Annahmen nicht kennt, kann sie nicht prüfen – und baut das Falsche.</p>
+    <p data-schritt>Portland baut mit Millionen Steuergeld Wohnungen für Familien, die aus ihrem Viertel verdrängt wurden. Jahre später stehen die meisten leer: Es gab fast nur Ein- und Zweizimmerwohnungen, die Familien hatten vier und mehr Personen.</p>
+    <div class="nur-handout">
+      <p>Teresa Torres eröffnet ihr Kapitel über Annahmen mit dieser Geschichte („Continuous Discovery Habits“, 2021, S. 115–116). Stadt und Bauträger wollten das Richtige und nahmen an, kleine Wohnungen helfen den meisten Familien. Niemand prüfte das. Am Ende wurden die Wohnungen auf dem freien Markt verkauft.</p>
+      <p>Zwei Denkfehler machen das so häufig. <strong>Confirmation Bias:</strong> Wir suchen und merken uns, was unsere Idee bestätigt, und übersehen, was dagegen spricht. <strong>Escalation of Commitment:</strong> Je mehr wir in eine Idee gesteckt haben, desto fester halten wir an ihr fest – auch wenn sie Fehler hat (S. 116–117). Dagegen hilft, die Annahmen hinter einer Idee aufzuschreiben, bevor man baut, und gezielt die riskanteste zu prüfen. Das geht schneller als die ganze Idee zu testen, und man verliebt sich weniger in sie.</p>
+    </div>
+  </Folie>
+
+  <Folie>
     <h2 id="worum">Worum es geht</h2>
     <p class="folie-satz">Getestet wird zuerst, was sehr wichtig ist und kaum belegt.</p>
     <p class="nur-handout">Zwei Fragen pro Annahme: <strong>Wie wichtig ist sie?</strong> Fällt das Produkt um, wenn sie falsch ist? <strong>Welchen Beleg habt ihr?</strong></p>
     <Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts weniger Beleg; oben rechts zuerst testen" {...karte} />
+    <div data-schritt>
+      <BuchAbbildung src="/quellen/bland/annahmen-map.jpg" alt="Assumptions Map aus Testing Business Ideas: senkrecht Important bis Unimportant, waagrecht Have Evidence bis No Evidence; oben rechts gestrichelt umrandet die Hypothesen, die zuerst getestet werden" quelle="Assumptions Map. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 38." />
+    </div>
     <p class="nur-handout">Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach diesen zwei Fragen. Die riskanteste Annahme – sehr wichtig, kaum belegt – kommt zuerst dran. Oben links liegt, was wichtig und gut belegt ist: Darauf baut ihr, prüft aber, ob der Beleg wirklich trägt.</p>
     <p class="nur-handout"><strong>Heute und an Tag 3.</strong> Heute geht es vor allem um Annahmen über eure Kundschaft und ihr Problem: Wer hat es, wann, was tun sie heute? Diese prüft ihr mit den Interviews bis Tag 2; die riskanteste wird zur Forschungsfrage eures Leitfadens. Annahmen über eine Lösung – ob jemand im Gehen bestellt, ob es sich rechnet – lassen sich in Interviews kaum prüfen. Für sie macht ihr an Tag 3 eine eigene Map pro Idee, wenn ihr mehrere Ideen habt, und testet sie mit Experimenten (Teresa Torres, „Continuous Discovery Habits“, 2021, Kap. 9–10).</p>
   </Folie>
@@ -60,7 +74,18 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
         </tbody>
       </table>
     </div>
+    <div class="nur-handout">
+      <BuchAbbildung src="/quellen/bland/annahmen-arten.jpg" alt="Drei überlappende Kreise: Feasible – Can we do this?, Desirable – Do they want this?, Viable – Should we do this?" quelle="Types of Hypotheses. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 32." />
+      <p>Bland unterscheidet drei Arten: Wollen sie das? Können wir das? Sollten wir das (trägt es sich)? Marty Cagan nimmt die Bedienbarkeit als vierte dazu, weil ein Produkt, das Menschen wollen, an der Bedienung scheitern kann. Teresa Torres ergänzt eine fünfte Frage, die fast alle Teams vergessen: <strong>Kann es schaden?</strong> Welche Daten sammelt ihr, wer bleibt außen vor, würde es euch stören, wenn eine Zeitung darüber berichtet („Continuous Discovery Habits“, S. 118, 126–128)?</p>
+    </div>
     <p class="small muted">Die vier Arten gehen auf Marty Cagan zurück (Wert, Machbarkeit, Wirtschaftlichkeit, Bedienbarkeit), die Map auf David J. Bland.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="beleg">Was zählt als Beleg?</h2>
+    <p class="folie-satz">Was Menschen tun, wiegt mehr als was sie sagen.</p>
+    <BuchAbbildung src="/quellen/bland/beleg-staerke.jpg" breit alt="Tabelle Weak Evidence gegen Strong(er) Evidence: Meinungen gegen Fakten, was Menschen sagen gegen was sie tun, Laborsituation gegen echte Situation, kleine gegen große Investition" quelle="Strength of Evidence. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 52." />
+    <p class="nur-handout">Daraus entsteht die Skala in der Werkstatt: <strong>noch keiner</strong> – <strong>gesagt</strong> (Meinung: „Ich würde …“) – <strong>erzählt</strong> (was jemand das letzte Mal tatsächlich getan hat) – <strong>getan</strong> (beobachtet, gemessen, bezahlt). Eure Interviews bis Tag 2 bringen Annahmen bestenfalls auf „erzählt“. „Getan“ zeigen erst Experimente ab Tag 3.</p>
   </Folie>
 
   <Folie>

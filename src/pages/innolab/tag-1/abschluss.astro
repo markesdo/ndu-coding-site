@@ -5,6 +5,7 @@ import Checklist from '../../../components/Checklist.astro';
 import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
 ---
 <Layout title="Tag 1 · Abschluss">
@@ -25,6 +26,7 @@ import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
       'Fünf Personen aus der Zielgruppe gefunden (Tipp: am Ende jedes Interviews fragen, wen ihr noch fragen solltet)',
       'Einwilligung zur Aufnahme eingeholt',
       'Notizen pro Interview mit Pseudonym (I1 bis I5) und ohne Namen, Arbeitgeber oder Erkennbares, nur privat gespeichert – nicht im App-Repo. Vor Tag 2 kommt der Interview-Editor in die Werkstatt, dann tragt ihr sie dort ein.',
+      'Gleich nach jedem Interview ein Interview-Snapshot auf einer Seite (siehe unten)',
       'Eine Zeile pro Überraschung im Entscheidungslog, in der Werkstatt gespeichert (<a href="/innolab/mappe">Meine Mappe</a>)',
       'Claude mit der Werkstatt verbunden (<a href="/innolab/werkstatt/claude">Claude verbinden</a>) und das Entscheidungslog prüfen lassen',
     ]} /></div>
@@ -32,6 +34,23 @@ import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
       <Callout type="info" title="Nur drei geschafft?">
         <p>Bringt mit, was ihr habt. Unter drei Interviews wird die Auswertung an Tag 2 dünn – dann ergänzt ihr am Morgen mit Gesprächen im Haus.</p>
       </Callout>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="snapshot">Nach jedem Interview: ein Snapshot</h2>
+    <p class="folie-satz">Eine Seite pro Interview, gleich danach – sonst verschwimmen die Gespräche.</p>
+    <BuchAbbildung src="/quellen/torres/interview-snapshot.jpg" alt="Vorlage Interview-Snapshot: Name und Foto, ein einprägsames Zitat, eine kleine Skizze der erzählten Geschichte, darunter drei Spalten: Quick Facts, Insights, Opportunities" quelle="Interview Snapshot. Teresa Torres, „Continuous Discovery Habits“ (2021), S. 68." />
+    <ul data-schritt>
+      <li><strong>Pseudonym und ein Bild</strong> statt Foto – etwas, das euch an die Geschichte erinnert.</li>
+      <li><strong>Ein Zitat</strong>, wörtlich, das im Kopf bleibt.</li>
+      <li><strong>Die Geschichte als Skizze</strong>: Knoten und Verbindungen wie beim Toast.</li>
+      <li><strong>Kurzinfos, Einsichten, Chancen</strong> – Chancen als Bedürfnis in ihren Worten, nicht als Lösung.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Teresa Torres empfiehlt, nach jedem Interview sofort zu verdichten, statt fünf Gespräche am Stück auszuwerten („Continuous Discovery Habits“, S. 67–70). Nach ein paar Interviews verschwimmen die Geschichten; der Snapshot hält fest, was dieses eine Gespräch gezeigt hat. Bild und Zitat sind Schlüssel für die Erinnerung, die Kurzinfos sagen, wer das war, und unten steht, was ihr gelernt habt.</p>
+      <p>Wünscht sich jemand eine Funktion („Ich will per App vorbestellen“), fragt nach: „Was würde dir das bringen?“ Die Antwort („Ich will den Zug nicht verpassen“) ist die Chance – sie lässt mehr Lösungen zu als der Wunsch (S. 69). Notiert auch, was nur eine Person sagt: Oft taucht es später bei anderen wieder auf. An Tag 2 bringt ihr die fünf Snapshots mit; aus ihren Chancen wächst euer Baum.</p>
+      <p>Wie die Notizen bleibt der Snapshot bei euch, mit Pseudonym und ohne Foto der Person.</p>
     </div>
   </Folie>
 
