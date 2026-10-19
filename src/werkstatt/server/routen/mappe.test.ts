@@ -86,6 +86,7 @@ describe('GET /api/werkstatt/mappe', () => {
         { name: 'entscheidungen', vorhanden: false },
         { name: 'annahmen', vorhanden: false },
         { name: 'leitfaden', vorhanden: false },
+        { name: 'interviews', vorhanden: false },
       ],
     });
     expect(t.anlegen).not.toHaveBeenCalled();
@@ -253,12 +254,12 @@ describe('GET /api/werkstatt/mappe/:artefakt', () => {
 
   it('unbekannter Name → 404 unbekannt', async () => {
     const t = await mitMappe();
-    for (const name of ['interviews', 'constructor', '..%2Fwerkstatt']) {
+    for (const name of ['persona', 'constructor', '..%2Fwerkstatt']) {
       const r = await t.holen(`/${name}`);
       expect(r.status).toBe(404);
       expect(await r.json()).toMatchObject({ code: 'unbekannt' });
     }
-    const p = await t.speichern('interviews', { daten: {}, basisSha: null });
+    const p = await t.speichern('persona', { daten: {}, basisSha: null });
     expect(p.status).toBe(404);
     expect(t.fake.commits(REPO)).toHaveLength(0);
   });

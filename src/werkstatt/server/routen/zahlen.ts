@@ -34,7 +34,7 @@ export function zahlenRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       return zaehlen(kuerzel, Object.fromEntries(gelesen as (readonly [ArtefaktName, unknown])[]) as Record<ArtefaktName, unknown | null>);
     } catch (e) {
       console.error('werkstatt: Zahlen – Mappe nicht lesbar –', e instanceof Error ? `${e.name}: ${e.message}` : 'Fehler');
-      return { ...zaehlen(kuerzel, { brief: null, entscheidungen: null, annahmen: null, leitfaden: null }), fehler: true };
+      return { ...zaehlen(kuerzel, { brief: null, entscheidungen: null, annahmen: null, leitfaden: null, interviews: null }), fehler: true };
     }
   }
 

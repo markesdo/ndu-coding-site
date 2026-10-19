@@ -59,10 +59,10 @@ describe('methoden', () => {
     }
   });
 
-  it('die vier Tag-1-Artefakte leben in der Werkstatt, jedes Werkstatt-Artefakt genau einmal', () => {
+  it('die vier Tag-1-Artefakte und die Interviews leben in der Werkstatt, jedes Werkstatt-Artefakt genau einmal', () => {
     const inWerkstatt = ARTEFAKTE.filter((a) => a.lebtIn.includes('werkstatt'));
     expect(inWerkstatt.map((a) => [a.id, a.werkstatt])).toStrictEqual([
-      ['brief', 'brief'], ['entscheidungen', 'entscheidungen'], ['transkripte', 'leitfaden'], ['annahmen', 'annahmen'],
+      ['brief', 'brief'], ['entscheidungen', 'entscheidungen'], ['transkripte', 'leitfaden'], ['annahmen', 'annahmen'], ['synthese', 'interviews'],
     ]);
     // Interview-Notizen nie ins App-Repo (öffentlich): Leitfaden und Notizen leben nur in der Werkstatt.
     for (const a of inWerkstatt) expect(a.lebtIn, a.id).not.toContain('repo');
@@ -98,7 +98,7 @@ describe('methoden', () => {
       // Claude ändert in der Werkstatt nichts: kein „ändere keine Datei“, sondern kein eigener Text.
       expect(t).toContain('Schreib nichts um und formulier keinen Text für mich');
     }
-    expect(METHODEN.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'annahmen', 'interview']);
+    expect(METHODEN.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'annahmen', 'interview', 'synthese']);
     // Mit Pfad bleibt es die Prüfung einer Datei; die Vorarbeit kommt weiter aus der Werkstatt.
     expect(pruefungInWerkstatt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toBe(false);
     expect(pruefPrompt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toMatch(/^Lies notizen\/alt\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
@@ -122,12 +122,13 @@ describe('methoden', () => {
 
   it('der Prüf-Prompt nennt das Ergebnis und zum Abgleich die Vorarbeit, jede nur einmal', () => {
     const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!);
-    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch docs\/interviews\/SYNTHESE\.md\./);
+    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch aus der Werkstatt meine Interviews und Snapshots \(Werkzeug artefakt_lesen\)\./);
     const jm = pruefPrompt(METHODEN.find((m) => m.slug === 'journey-map')!);
-    expect(jm).toContain('Zum Abgleich lies auch docs/KUNDENPROFIL.md, docs/interviews/SYNTHESE.md.');
+    expect(jm).toContain('Zum Abgleich lies auch docs/KUNDENPROFIL.md und aus der Werkstatt meine Interviews und Snapshots (Werkzeug artefakt_lesen).');
     // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).
     const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
-    expect(sy).toMatch(/^Lies docs\/interviews\/SYNTHESE\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Interviewleitfaden und meine Annahmen-Map \(Werkzeug artefakt_lesen\)\. Prüf es/);
+    expect(sy).toMatch(/^Prüf meine Interviews und Snapshots mit der Werkstatt \(Werkzeug artefakt_pruefen\) gegen diese Prüfliste \(Interview-Synthese\):/);
+    expect(sy).toContain('Zum Abgleich lies auch meinen Interviewleitfaden und meine Annahmen-Map (Werkzeug artefakt_lesen).');
   });
 
   it('wer in der Prüfliste ein früheres Artefakt nennt, hat es in „braucht“ – sonst liest Claude es beim Prüfen nicht', () => {

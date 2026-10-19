@@ -36,7 +36,7 @@ const SLUGS = METHODEN.map((m) => m.slug);
 const UEBERSICHT = {
   title: 'Mappe: Übersicht',
   description:
-    'Zeigt, welche der vier Artefakte (Produkt-Brief, Entscheidungslog, Interviewleitfaden, Annahmen-Map) in der eigenen Werkstatt-Mappe der angemeldeten Person schon gespeichert sind. Ohne Argumente: die Mappe ergibt sich aus der Anmeldung. Nur lesen.',
+    `Zeigt, welche Artefakte (${ARTEFAKT_NAMEN.map((n) => ARTEFAKTE[n].titel).join(', ')}) in der eigenen Werkstatt-Mappe der angemeldeten Person schon gespeichert sind. Ohne Argumente: die Mappe ergibt sich aus der Anmeldung. Nur lesen.`,
   inputSchema: {},
   outputSchema: {
     kohorte: z.string(),

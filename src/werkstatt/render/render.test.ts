@@ -6,8 +6,9 @@ import brief from '../beispiele/brief.json';
 import entscheidungen from '../beispiele/entscheidungen.json';
 import leitfaden from '../beispiele/leitfaden.json';
 import annahmen from '../beispiele/annahmen.json';
+import interviews from '../beispiele/interviews.json';
 
-const roh = { brief, entscheidungen, leitfaden, annahmen } as const;
+const roh = { brief, entscheidungen, leitfaden, annahmen, interviews } as const;
 
 function laden<N extends ArtefaktName>(name: N): DatenVon<N> {
   const r = artefaktParsen(name, roh[name]);

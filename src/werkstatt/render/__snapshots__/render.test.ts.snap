@@ -74,6 +74,79 @@ exports[`Snapshots der Kaffeebar-Beispiele > entscheidungen 1`] = `
 "
 `;
 
+exports[`Snapshots der Kaffeebar-Beispiele > interviews 1`] = `
+"# Interviews und Snapshots
+
+**Stand:** 27.10.2026
+
+Pseudonymisiert. Die Skizze jeder Geschichte liegt auf dem Team-Board in Miro.
+
+## I1 · Pendler, Zug 7:38
+
+**Datum:** 23.10.2026
+
+„Kommt drauf an, wie ich drauf bin.“
+
+**Kurzinfos:** Pendelt viermal pro Woche nach Wien, holt Kaffee nur, wenn Zeit bleibt.
+
+### Einsichten
+- Entscheidet erst am Bahnhof, ob er Kaffee holt.
+
+### Chancen
+- Der Kaffee aus dem Automaten schmeckt mir nicht, aber er geht schnell. (I1-3)
+
+### Notizen
+Kommt meist knapp. Schaut erst auf die Schlange, dann auf die Uhr. Nimmt bei langer Schlange den Automaten.
+
+### Zitate
+- **I1-1** „Ich bin eigentlich immer knapp dran.“
+- **I1-2** „Kommt drauf an, wie ich drauf bin.“
+- **I1-3** „Der Automat ist halt Notlösung, aber er ist schnell.“
+
+## I2 · Pendlerin, Zug 7:42
+
+**Datum:** 24.10.2026
+
+„Wenn ich auf die Uhr schauen muss, geh ich.“
+
+**Kurzinfos:** Pendelt täglich nach Wien. Holt dreimal pro Woche Kaffee.
+
+### Einsichten
+- Entscheidet erst beim Ankommen.
+
+### Chancen
+- Wenn ich anstehe, verpasse ich den Zug. (I2-2)
+
+### Notizen
+Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42.
+
+### Zitate
+- **I2-1** „Acht Leute vor mir, da hab ich gleich gewusst, das wird nix.“
+- **I2-2** „Wenn ich auf die Uhr schauen muss, geh ich.“
+
+## I3 · Student, Zug 7:20
+
+**Datum:** 26.10.2026
+
+„Ich weiß nie, wie lange das dauert.“
+
+**Kurzinfos:** Pendelt an drei Tagen zur Uni, kauft fast jedes Mal Kaffee.
+
+### Einsichten
+- Plant Kaffee nicht, entscheidet beim Vorbeigehen.
+
+### Chancen
+- Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht. (I3-1, I3-2)
+
+### Notizen
+Hat zweimal den Zug fast verpasst. Stellt sich trotzdem an, wenn weniger als fünf Leute warten.
+
+### Zitate
+- **I3-1** „Ich weiß nie, wie lange das dauert.“
+- **I3-2** „Bei mehr als fünf Leuten lass ich es.“
+"
+`;
+
 exports[`Snapshots der Kaffeebar-Beispiele > leitfaden 1`] = `
 "# Interviewleitfaden
 

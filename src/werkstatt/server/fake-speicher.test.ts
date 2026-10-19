@@ -122,6 +122,7 @@ describe('fakeSpeicher', () => {
       { name: 'entscheidungen', vorhanden: false },
       { name: 'annahmen', vorhanden: false },
       { name: 'leitfaden', vorhanden: true },
+      { name: 'interviews', vorhanden: false },
     ]);
   });
 

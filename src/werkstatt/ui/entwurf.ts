@@ -95,6 +95,9 @@ const ZEILEN: Record<string, Record<string, unknown>> = {
   'annahmen.annahmen': { id: '', text: '', art: 'wuenschenswert', wichtig: 'mittel', beleg: 'keiner', belegIds: [] },
   'entscheidungen.entscheidungen': { id: '', datum: '', entscheidung: '', grund: '', beleg: 'keiner', belegIds: [] },
   'leitfaden.fragen': { id: '', text: '', art: 'kern' },
+  'interviews.interviews': { id: '', datum: '', pseudonym: '', einwilligung: false, zitat: '', kurzinfos: '', einsichten: [], chancen: [], notizen: '', zitate: [] },
+  'interviews.interviews.chancen': { text: '', belege: [] },
+  'interviews.interviews.zitate': { id: '', text: '' },
 };
 
 const istObjekt = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);

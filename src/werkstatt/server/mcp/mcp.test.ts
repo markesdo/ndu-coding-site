@@ -291,6 +291,7 @@ describe('Werkzeuge', () => {
         { name: 'entscheidungen', vorhanden: false },
         { name: 'annahmen', vorhanden: true },
         { name: 'leitfaden', vorhanden: false },
+        { name: 'interviews', vorhanden: false },
       ],
     });
 

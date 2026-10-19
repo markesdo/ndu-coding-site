@@ -6,6 +6,7 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Bearbeiten from '../../../components/Bearbeiten.astro';
 ---
 <Layout title="Interview-Synthese">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
@@ -41,6 +42,10 @@ import FooterNav from '../../../components/FooterNav.astro';
     <li><strong>Zweiter Blick mit Claude (10 min):</strong> Claude clustert unabhängig von euch. Was hat es gefunden, was ihr übersehen habt – und was erfindet es?</li>
     <li><strong>Festhalten (10 min):</strong> <code>docs/interviews/SYNTHESE.md</code>, Belege in der Annahmen-Map nachtragen, Entscheidungslog.</li>
   </ol>
+
+  <h2 id="werkstatt">In der Werkstatt speichern</h2>
+  <p>Pro Interview ein Eintrag: Pseudonym, Einwilligung, der Snapshot (Zitat, Kurzinfos, Einsichten, Chancen), pseudonymisierte Notizen und wörtliche Zitate mit ID (I2-1, I2-2 …). Die Skizze der Geschichte bleibt auf Miro, Rohnotizen und Aufnahmen bleiben bei euch.</p>
+  <Bearbeiten artefakt="interviews" />
 
   <h2 id="claude">Zweiter Blick mit Claude</h2>
   <p>Erst nachdem eure eigenen Themen stehen – sonst übernehmt ihr Claudes Sortierung und denkt nicht mehr selbst. Die Transkripte müssen anonymisiert sein.</p>

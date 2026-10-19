@@ -3,6 +3,7 @@ import type { ArtefaktName, DatenVon } from '../schemas/index.js';
 import { annahmenRendern } from './annahmen.js';
 import { briefRendern } from './brief.js';
 import { entscheidungenRendern } from './entscheidungen.js';
+import { interviewsRendern } from './interviews.js';
 import { leitfadenRendern } from './leitfaden.js';
 
 export { readmeRendern } from './readme.js';
@@ -12,6 +13,7 @@ const RENDERER: { [N in ArtefaktName]: (daten: DatenVon<N>) => string } = {
   entscheidungen: entscheidungenRendern,
   leitfaden: leitfadenRendern,
   annahmen: annahmenRendern,
+  interviews: interviewsRendern,
 };
 
 export function rendern<N extends ArtefaktName>(name: N, daten: DatenVon<N>): string {
