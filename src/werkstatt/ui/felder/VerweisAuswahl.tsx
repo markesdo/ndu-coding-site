@@ -1,4 +1,4 @@
-// Verweise auf IDs der Mappe (I2-4, T1, E3): gewählte als Liste mit Entfernen, neue per Eingabe mit Vorschlägen.
+// Verweise auf IDs der Mappe (I2-4, A3, E3): gewählte als Liste mit Entfernen, neue per Eingabe mit Vorschlägen.
 import { Plus, X } from 'lucide-react';
 import { useId, useState } from 'react';
 import { istId } from '../../ids.js';

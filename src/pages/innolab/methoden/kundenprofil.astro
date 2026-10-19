@@ -27,7 +27,7 @@ import FooterNav from '../../../components/FooterNav.astro';
     </table>
   </div>
   <p><strong>Hier – und nur hier – erarbeitet ihr Pains.</strong> Jeder Eintrag bekommt eine ID (J1, P1, G1). Journey Map, Value Map und Story Map verweisen später auf diese IDs, statt Pains neu zu diskutieren.</p>
-  <p>Die Grundlage sind eure Themen aus der Synthese, nicht euer Bauchgefühl. Und das Profil beschreibt die Person, nicht euer Produkt: Wer beim Schreiben schon an die Lösung denkt, findet nur Pains, die sie zufällig löst.</p>
+  <p>Die Grundlage sind eure Interview-Snapshots – Chancen, Einsichten, Zitate –, nicht euer Bauchgefühl. Und das Profil beschreibt die Person, nicht euer Produkt: Wer beim Schreiben schon an die Lösung denkt, findet nur Pains, die sie zufällig löst.</p>
 
   <h3 id="rangfolge">Rangfolge: der Chancenwert</h3>
   <p>Nicht jeder Pain ist gleich viel wert. Gebt jedem Job und Pain zwei Werte von 1 bis 5: <strong>Wichtigkeit</strong> (wie sehr es der Person darauf ankommt) und <strong>Zufriedenheit</strong> mit dem, was sie heute tut. Daraus ergibt sich der Chancenwert:</p>
@@ -39,13 +39,13 @@ import FooterNav from '../../../components/FooterNav.astro';
     <table>
       <thead><tr><th>ID</th><th>Eintrag</th><th>Art</th><th>W</th><th>Z</th><th>Chance</th><th>Beleg</th></tr></thead>
       <tbody>
-        <tr><th>P1</th><td>Steht zwischen 7:20 und 7:40 mehr als 6 Minuten an</td><td>Hindernis</td><td>5</td><td>1</td><td>9</td><td>T2</td></tr>
-        <tr><th>J1</th><td>Rechtzeitig mit Kaffee im Zug sitzen</td><td>funktional</td><td>5</td><td>2</td><td>8</td><td>T1, T2</td></tr>
-        <tr><th>P2</th><td>Weiß beim Anstellen nicht, ob es sich bis zur Abfahrt ausgeht</td><td>Risiko</td><td>4</td><td>1</td><td>7</td><td>T2</td></tr>
-        <tr><th>J2</th><td>Den Arbeitstag nicht gehetzt beginnen</td><td>emotional</td><td>4</td><td>2</td><td>6</td><td>T2, T3</td></tr>
-        <tr><th>P3</th><td>Automatenkaffee fühlt sich wie eine Niederlage an</td><td>unerwünschtes Ergebnis</td><td>3</td><td>1</td><td>5</td><td>T3</td></tr>
+        <tr><th>P1</th><td>Steht zwischen 7:20 und 7:40 mehr als 6 Minuten an</td><td>Hindernis</td><td>5</td><td>1</td><td>9</td><td>I2-1</td></tr>
+        <tr><th>J1</th><td>Rechtzeitig mit Kaffee im Zug sitzen</td><td>funktional</td><td>5</td><td>2</td><td>8</td><td>I2-2, I3-3</td></tr>
+        <tr><th>P2</th><td>Weiß beim Anstellen nicht, ob es sich bis zur Abfahrt ausgeht</td><td>Risiko</td><td>4</td><td>1</td><td>7</td><td>I3-2</td></tr>
+        <tr><th>J2</th><td>Den Arbeitstag nicht gehetzt beginnen</td><td>emotional</td><td>4</td><td>2</td><td>6</td><td>I1-1, I4-5</td></tr>
+        <tr><th>P3</th><td>Automatenkaffee fühlt sich wie eine Niederlage an</td><td>unerwünschtes Ergebnis</td><td>3</td><td>1</td><td>5</td><td>I1-3, I4-4</td></tr>
         <tr><th>J3</th><td>Im Büro nicht als die*der Gehetzte ankommen</td><td>sozial</td><td>2</td><td>3</td><td>2</td><td>I4-5</td></tr>
-        <tr><th>G1</th><td>Kaffee in unter 3 Minuten ab Betreten der Halle</td><td>erwartet</td><td colspan="3">–</td><td>T2</td></tr>
+        <tr><th>G1</th><td>Kaffee in unter 3 Minuten ab Betreten der Halle</td><td>erwartet</td><td colspan="3">–</td><td>I2-2</td></tr>
         <tr><th>G2</th><td>Die Barista kennt die übliche Bestellung</td><td>gewünscht</td><td colspan="3">–</td><td>I3-6</td></tr>
         <tr><th>G3</th><td>Ohne Nachfragen wissen, wann der Kaffee fertig ist</td><td>unerwartet</td><td colspan="3">–</td><td>I2-5</td></tr>
       </tbody>
@@ -57,7 +57,7 @@ import FooterNav from '../../../components/FooterNav.astro';
   <h2 id="vorgehen">So geht ihr vor (75 min)</h2>
   <ol>
     <li><strong>Input (15 min):</strong> die drei Felder, die Arten, der Chancenwert.</li>
-    <li><strong>Allein in Miro (25 min):</strong> Jobs, Pains, Gains aus euren Themen ableiten, je ein Sticky mit Beleg. Mindestens ein sozialer oder emotionaler Job.</li>
+    <li><strong>Allein in Miro (25 min):</strong> Jobs, Pains, Gains aus euren Snapshots ableiten, je ein Sticky mit Beleg. Mindestens ein sozialer oder emotionaler Job.</li>
     <li><strong>Konkret machen (10 min):</strong> Bei jedem Pain fragen „Ab wann genau?“, bei jedem Gain „Wie viel genau?“.</li>
     <li><strong>Bewerten und sortieren (10 min):</strong> Wichtigkeit, Zufriedenheit, Chancenwert; Top 3 markieren.</li>
     <li><strong>Festhalten und prüfen (15 min):</strong> <code>docs/KUNDENPROFIL.md</code>, Prüfliste, Claude.</li>
@@ -71,7 +71,7 @@ Top 3: [ID], [ID], [ID]
 
 | ID | Eintrag | Art | Wichtigkeit 1–5 | Zufriedenheit 1–5 | Chance | Beleg |
 |----|---------|-----|-----------------|-------------------|--------|-------|
-| J1 | [Job der Person] | funktional | [...] | [...] | [...] | [T…] |
+| J1 | [Job der Person] | funktional | [...] | [...] | [...] | [I…-…] |
 | J2 | [...] | sozial/emotional | [...] | [...] | [...] | [...] |
 | P1 | [konkret, mit Zahl] | Hindernis/Risiko/unerwünschtes Ergebnis | [...] | [...] | [...] | [...] |
 | G1 | [konkret, mit Zahl] | notwendig/erwartet/gewünscht/unerwartet | | | | [...] |

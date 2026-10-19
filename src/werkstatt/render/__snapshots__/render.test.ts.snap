@@ -70,14 +70,14 @@ exports[`Snapshots der Kaffeebar-Beispiele > entscheidungen 1`] = `
 - **D1** 22.10.2026 — Zielgruppe: Pendler\\*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner — ersetzt am 05.11.2026
 - **D2** 22.10.2026 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: getan (Kassendaten September)
 - **D3** 05.11.2026 — Zielgruppe: Pendler\\*innen nach Wien und Linz, 7:15–7:45 — 3 von 5 Interviewten fahren Richtung Linz — Beleg: erzählt (I1, I3, I4) — ersetzt **D1**
-- **D4** 05.11.2026 — Vorbestellen vor der Ankunft verworfen — 3 von 5 entscheiden erst beim Ankommen — Beleg: erzählt (T1, I1-2, I3-1, I5-3)
+- **D4** 05.11.2026 — Vorbestellen vor der Ankunft verworfen — 3 von 5 entscheiden erst beim Ankommen — Beleg: erzählt (I1-2, I3-1, I5-3)
 "
 `;
 
 exports[`Snapshots der Kaffeebar-Beispiele > interviews 1`] = `
 "# Interviews und Snapshots
 
-**Stand:** 27.10.2026
+**Stand:** 28.10.2026
 
 Pseudonymisiert. Die Skizze jeder Geschichte liegt auf dem Team-Board in Miro.
 
@@ -93,7 +93,8 @@ Pseudonymisiert. Die Skizze jeder Geschichte liegt auf dem Team-Board in Miro.
 - Entscheidet erst am Bahnhof, ob er Kaffee holt.
 
 ### Chancen
-- Der Kaffee aus dem Automaten schmeckt mir nicht, aber er geht schnell. (I1-3)
+- Der Automat ist eine Notlösung, aber er geht schnell. (I1-3)
+- Wenn der erste Schluck passt, ist der Morgen gerettet. (I1-4)
 
 ### Notizen
 Kommt meist knapp. Schaut erst auf die Schlange, dann auf die Uhr. Nimmt bei langer Schlange den Automaten.
@@ -102,6 +103,7 @@ Kommt meist knapp. Schaut erst auf die Schlange, dann auf die Uhr. Nimmt bei lan
 - **I1-1** „Ich bin eigentlich immer knapp dran.“
 - **I1-2** „Kommt drauf an, wie ich drauf bin.“
 - **I1-3** „Der Automat ist halt Notlösung, aber er ist schnell.“
+- **I1-4** „Wenn der erste Schluck passt, ist der Morgen gerettet.“
 
 ## I2 · Pendlerin, Zug 7:42
 
@@ -116,6 +118,7 @@ Kommt meist knapp. Schaut erst auf die Schlange, dann auf die Uhr. Nimmt bei lan
 
 ### Chancen
 - Wenn ich anstehe, verpasse ich den Zug. (I2-2)
+- Ich will wissen, wann mein Kaffee fertig ist. (I2-5)
 
 ### Notizen
 Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42.
@@ -123,6 +126,9 @@ Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automate
 ### Zitate
 - **I2-1** „Acht Leute vor mir, da hab ich gleich gewusst, das wird nix.“
 - **I2-2** „Wenn ich auf die Uhr schauen muss, geh ich.“
+- **I2-3** „Ich hab dann am Automaten gedrückt, ohne nachzudenken.“
+- **I2-4** „Ich schau auf die Tafel, dann auf die Schlange, und dann entscheid ich.“
+- **I2-5** „Am liebsten wüsste ich einfach, wann er fertig ist.“
 
 ## I3 · Student, Zug 7:20
 
@@ -134,16 +140,71 @@ Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automate
 
 ### Einsichten
 - Plant Kaffee nicht, entscheidet beim Vorbeigehen.
+- Mag es, wenn die Barista seine Bestellung kennt.
 
 ### Chancen
-- Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht. (I3-1, I3-2)
+- Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht. (I3-2, I3-3)
 
 ### Notizen
 Hat zweimal den Zug fast verpasst. Stellt sich trotzdem an, wenn weniger als fünf Leute warten.
 
 ### Zitate
-- **I3-1** „Ich weiß nie, wie lange das dauert.“
-- **I3-2** „Bei mehr als fünf Leuten lass ich es.“
+- **I3-1** „Ich schau halt, wie es ausschaut, wenn ich vorbeikomm.“
+- **I3-2** „Ich weiß nie, wie lange das dauert.“
+- **I3-3** „Einmal stand ich da, der Zug war schon eingefahren, und ich hab gewusst: Das war ein Fehler.“
+- **I3-4** „Bei mehr als fünf Leuten lass ich es.“
+- **I3-5** „Im Zug trink ich ihn dann in Ruhe.“
+- **I3-6** „Die Barista weiß schon, was ich will. Das ist schön.“
+
+## I4 · Pendlerin, Zug 7:35
+
+**Datum:** 27.10.2026
+
+„Dann halt die Brühe.“
+
+**Kurzinfos:** Pendelt täglich, Kaffee gehört für sie zum Weg ins Büro.
+
+### Einsichten
+- Nimmt den Automaten in Kauf, statt den Zug zu riskieren.
+
+### Chancen
+- Ich will nicht gehetzt im Büro ankommen. (I4-5)
+
+### Notizen
+Steht selten an. Ärgert sich über den Automatenkaffee, nimmt ihn aber fast immer.
+
+### Zitate
+- **I4-1** „Ich bin um 7:28 da, das reicht nie für die Schlange.“
+- **I4-2** „Anstellen ist ein Glücksspiel.“
+- **I4-3** „Meistens ist es der Automat.“
+- **I4-4** „Dann halt die Brühe.“
+- **I4-5** „Ich will nicht verschwitzt und gestresst ins Büro kommen.“
+
+## I5 · Pendler, Zug 7:50
+
+**Datum:** 28.10.2026
+
+„Das entscheid ich, wenn ich die Halle seh.“
+
+**Kurzinfos:** Pendelt an vier Tagen, bestellt oft für Kolleg\\*innen mit.
+
+### Einsichten
+- Entscheidet beim Betreten der Halle.
+- Bestellt für Kolleg\\*innen per Nachricht mit (Einzelfall).
+
+### Chancen
+- Ich will für Kolleg\\*innen mitbestellen, ohne lange zu warten. (I5-6)
+
+### Notizen
+Kommt meist zehn Minuten vor Abfahrt. Schaut, wie voll es ist, und entscheidet dann.
+
+### Zitate
+- **I5-1** „Zehn Minuten hab ich meistens.“
+- **I5-2** „Wenn es voll ist, lass ich es.“
+- **I5-3** „Das entscheid ich, wenn ich die Halle seh.“
+- **I5-4** „Die Kolleg\\*innen schreiben mir, was sie wollen.“
+- **I5-5** „Vier Becher tragen ist dann schon sportlich.“
+- **I5-6** „Bei mehreren Bestellungen wird mir das Warten zu lang.“
 "
 `;
 

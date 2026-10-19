@@ -50,7 +50,7 @@ export const zeilenId = (p: IdPraefix, feld: string) =>
     .string({ error: `${feld}: bitte eine ID wie ${p}1 eintragen.` })
     .regex(new RegExp(`^${p}[1-9][0-9]*$`), { error: `${feld}: die ID muss wie ${p}1 aussehen.` });
 
-// Verweis auf irgendeine ID der Mappe (I2-4, T1, E3).
+// Verweis auf irgendeine ID der Mappe (I2-4, A3, E3).
 export const verweisId = z
   .string({ error: 'Ein Verweis muss eine ID wie I2-4 sein.' })
   .refine(istId, { error: 'Ein Verweis muss eine ID wie I2-4 sein.' });
