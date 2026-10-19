@@ -100,7 +100,11 @@ html[data-beamer] .folie[data-schritte]::after {
 html[data-beamer] .folie[data-schritte-offen]::after {
   color: var(--fg); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
+/* Im Beamer steht der Timer in einer eigenen Zeile unter dem Text – mitten im Satz dehnt sein Rahmen die Zeile. */
 html[data-beamer] .timer { font-size: 1.2rem; }
+/* Steht der Timer am Ende eines Absatzes, bekommt er im Beamer eine eigene Zeile – mitten im Satz dehnt sein Rahmen die Zeile.
+   In Schritt-Listen bleibt er am Schritt, sonst wird die Liste zu hoch für eine Folie. */
+html[data-beamer] p > .timer { display: flex; width: fit-content; margin-top: .6rem; }
 html[data-beamer] .folie-satz { font-size: 1.6rem; }
 /* Auf Folienseiten trägt die Folie ihren Titel selbst; die klebende „Wo bin ich“-Leiste würde ihn verdecken. */
 html[data-beamer]:has(.folie) .orient { display: none; }
