@@ -31,7 +31,7 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
     <p>Eine Zeile: <strong>Datum — Entscheidung — Grund — Beleg</strong></p>
     <div class="nur-handout">
       <p>Im Coding-Kurs hat Claude im Repo festgehalten, was im Projekt gilt: Stack, Sprache, Regeln. Das bleibt dort. Im Innolab kommen <strong>Produktentscheidungen</strong> dazu, und die brauchen einen Beleg. Deshalb bekommt jede Zeile eine vierte Spalte, und das Log liegt in der Werkstatt.</p>
-      <p>Der Beleg ist ein Interview (I3), ein Thema aus der Synthese (T2), ein Experiment (E1) oder eine Zahl. „Noch keiner“ ist kein Makel: Eine Entscheidung ohne Beleg ist eine Annahme, und genau die testet ihr als Nächstes. Widerlegt ein Test etwas, löscht ihr die alte Zeile nicht, sondern schreibt eine neue darunter und vermerkt bei der alten „ersetzt am …“. So sieht man am Ende, was ihr gelernt habt. Das ist der Kern eurer Präsentation.</p>
+      <p>Der Beleg ist ein Interview (I3), ein Zitat daraus (I3-2), ein Experiment (E1) oder eine Zahl. „Noch keiner“ ist kein Makel: Eine Entscheidung ohne Beleg ist eine Annahme, und genau die testet ihr als Nächstes. Widerlegt ein Test etwas, löscht ihr die alte Zeile nicht, sondern schreibt eine neue darunter und vermerkt bei der alten „ersetzt am …“. So sieht man am Ende, was ihr gelernt habt. Das ist der Kern eurer Präsentation.</p>
     </div>
   </Folie>
 
@@ -42,14 +42,14 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
       { datum: '22.10.', t: 'Zielgruppe: Pendler*innen nach Wien, 7:15–7:45', kurz: 'Zielgruppe', grund: 'Inhaberin sieht morgens die längste Schlange', beleg: 'noch keiner' },
       { datum: '22.10.', t: 'Kein Mittagsgeschäft', grund: 'Mittags ist die Bar halb leer', beleg: 'Kassendaten September' },
       { datum: '05.11.', t: 'Zielgruppe: Pendler*innen nach Wien und Linz, 7:15–7:45', grund: '3 von 5 Interviewten fahren Richtung Linz', beleg: 'I1, I3, I4', ersetzt: 0, schritt: true },
-      { datum: '05.11.', t: 'Vorbestellen vor der Ankunft verworfen', grund: '3 von 5 entscheiden erst beim Ankommen', beleg: 'T1 (I1-2, I3-1, I5-3)', schritt: true },
+      { datum: '05.11.', t: 'Vorbestellen vor der Ankunft verworfen', grund: '3 von 5 entscheiden erst beim Ankommen', beleg: 'I1-2, I3-1, I5-3', schritt: true },
     ]} />
     <div class="nur-handout">
       <p>Die dritte Zeile ersetzt die erste – gelöscht wird die erste trotzdem nicht, sie bekommt nur den Vermerk „ersetzt am …“. Wer das Log liest, sieht: Am Anfang war die Zielgruppe geraten, nach den Interviews war sie belegt. In eurer Mappe sieht das so aus: Hinter „Beleg:“ steht die Stufe, danach in Klammern die IDs, eure Notiz (wie „Kassendaten September“ bei D2) oder beides, getrennt durch Strichpunkt.</p>
       <Prompt label="Beispiel · Entscheidungslog in der Mappe">- D1 22.10.2026 — Zielgruppe: Pendler*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner — ersetzt am 05.11.2026
 - D2 22.10.2026 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: getan (Kassendaten September)
 - D3 05.11.2026 — Zielgruppe: Pendler*innen nach Wien und Linz, 7:15–7:45 — 3 von 5 Interviewten fahren Richtung Linz — Beleg: erzählt (I1, I3, I4) — ersetzt D1
-- D4 05.11.2026 — Vorbestellen vor der Ankunft verworfen — 3 von 5 entscheiden erst beim Ankommen — Beleg: erzählt (T1, I1-2, I3-1, I5-3)</Prompt>
+- D4 05.11.2026 — Vorbestellen vor der Ankunft verworfen — 3 von 5 entscheiden erst beim Ankommen — Beleg: erzählt (I1-2, I3-1, I5-3)</Prompt>
     </div>
   </Folie>
 
@@ -66,7 +66,7 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
       punkte={[
         { t: 'Zielgruppe Wien', stufe: 0 },
         { t: 'Wien und Linz: I1, I3, I4', stufe: 2 },
-        { t: 'Vorbestellen verworfen: T1', stufe: 2 },
+        { t: 'Vorbestellen verworfen: drei Interviews', stufe: 2 },
         { t: 'Kein Mittagsgeschäft: Kassendaten', stufe: 3, hervor: true },
       ]} />
     <p class="nur-handout">Dieselbe Richtung wie die <a href="/innolab/methoden/interview#antworten">Skala der Antworten im Interview</a>, mit „noch keiner“ davor. „Gesagt“ ist kaum besser als „noch keiner“: „Würde ich nutzen“ hört ihr von fast allen. Nach der Tabelle „Strength of Evidence“ von David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 52 – die Abbildung steht auf der <a href="/innolab/methoden/annahmen#beleg">Annahmen-Map</a>. Itamar Gilads <a href="https://itamargilad.com/the-tool-that-will-help-you-choose-better-product-ideas/">Confidence Meter</a> ordnet Belege ähnlich, aber nach Herkunft und Menge.</p>
@@ -84,7 +84,7 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
 
   <div class="nur-handout">
   <h2 id="werkstatt">In der Werkstatt speichern</h2>
-  <p>Jede*r führt das eigene Log in der Werkstatt. Jede Zeile bekommt eine ID (D1, D2, …), ein Datum, die Entscheidung, den Grund und den Beleg: wie stark er ist und, wo es ihn gibt, die IDs dazu (I3, T2). Liegt der Beleg außerhalb eurer Mappe, etwa in Kassendaten, tragt ihr dazu optional eine kurze Notiz ein. Gespeicherte Zeilen lassen sich nicht mehr ändern oder löschen. Stimmt eine nicht mehr, ersetzt ihr sie: Die neue Zeile zeigt auf die alte, die alte bekommt „ersetzt am …“.</p>
+  <p>Jede*r führt das eigene Log in der Werkstatt. Jede Zeile bekommt eine ID (D1, D2, …), ein Datum, die Entscheidung, den Grund und den Beleg: wie stark er ist und, wo es ihn gibt, die IDs dazu (I3, I3-2). Liegt der Beleg außerhalb eurer Mappe, etwa in Kassendaten, tragt ihr dazu optional eine kurze Notiz ein. Gespeicherte Zeilen lassen sich nicht mehr ändern oder löschen. Stimmt eine nicht mehr, ersetzt ihr sie: Die neue Zeile zeigt auf die alte, die alte bekommt „ersetzt am …“.</p>
   <Bearbeiten artefakt="entscheidungen" />
 
   <h2 id="pruefen">Prüfen</h2>
