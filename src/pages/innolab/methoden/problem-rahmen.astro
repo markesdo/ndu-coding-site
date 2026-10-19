@@ -11,14 +11,12 @@ import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Baum from '../../../components/bild/Baum.astro';
 import { CircleAlert, Footprints, Hammer, Target, TrendingUp, Users } from '@lucide/astro';
+import { KAFFEEBAR_BAUM } from '../../../components/innolab-beispiel';
 
-// Ein Problem ohne Lösung lässt mehrere Lösungen zu (Fehler 1).
-// Wurzel und Chance wie im roten Faden auf tag-1.astro.
-const loesungsraum = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den Zug', kinder: [
-  { t: '„Wenn ich anstehe, verpasse ich meinen Zug.“', kinder: [
-    { t: 'Vorbestellen per App' }, { t: 'Zweite Kasse von 7 bis 8' }, { t: 'Kaffeewagen am Bahnsteig' },
-  ] },
-] };
+// Ein Problem ohne Lösung lässt mehrere Lösungen zu (Fehler 1): Wurzel und erste Chance aus dem roten Faden (tag-1.astro),
+// die Lösungen ohne ihre Tests.
+const chance = KAFFEEBAR_BAUM.kinder![0]!;
+const loesungsraum = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: chance.t, kinder: chance.kinder!.map((l) => ({ t: l.t })) }] };
 ---
 <Layout title="Problem-Rahmen & Produkt-Brief">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -57,7 +55,7 @@ const loesungsraum = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den 
   <Folie>
     <h2 id="loesungsraum">Ein Problem, mehrere Lösungen</h2>
     <p class="folie-satz">Die starke Fassung lässt drei Lösungen zu – die schwache nur eine.</p>
-    <Baum knoten={loesungsraum} label="Ein Problem, drei mögliche Lösungen: App, zweite Kasse, Kaffeewagen" />
+    <Baum knoten={loesungsraum} label="Ein Problem, drei mögliche Lösungen: App, Express-Theke, Kaffeewagen" />
     <p class="nur-handout">Die schwache Fassung lässt nur eine Lösung zu, die App. Die starke beschreibt das Problem und lässt Platz für drei – und für bessere, die erst in den Interviews auftauchen. Ein bekanntes Beispiel: Mieter*innen beschweren sich über einen langsamen Aufzug. Statt eines schnelleren Motors hängt man Spiegel auf – die Wartezeit fühlt sich kürzer an (Thomas Wedell-Wedellsborg, <a href="https://hbr.org/2017/01/are-you-solving-the-right-problems">„Are You Solving the Right Problems?“</a>, HBR 2017).</p>
   </Folie>
 

@@ -111,7 +111,7 @@ export const METHODEN: Methode[] = [
       'Jede Annahme ist ein prüfbarer Satz: „Wir glauben, dass …“.',
       'Alle vier Arten kommen vor: wünschenswert, machbar, wirtschaftlich, bedienbar.',
       'Bei jeder Annahme steht, wie wichtig sie ist und welchen Beleg es gibt.',
-      'Die riskanteste Annahme – sehr wichtig, kaum Beleg – ist markiert, und daraus ist eine Forschungsfrage für die Interviews geworden.',
+      'Die riskanteste Annahme – sehr wichtig, kaum Beleg – ist markiert.',
       'Keine Annahme ist eine Aufgabe („Logo gestalten“) oder eine Funktion („Es gibt einen Login“).',
     ],
     ki: 'Red Team: sucht Annahmen, die ihr übersehen habt.',
@@ -122,6 +122,7 @@ export const METHODEN: Methode[] = [
     frage: 'Was tun Menschen heute wirklich, um ihren Job zu erledigen?',
     braucht: ['brief', 'annahmen'], ergibt: ['transkripte'],
     pruefliste: [
+      'Das Ziel ist eine Forschungsfrage aus der riskantesten Annahme der Annahmen-Map.',
       'Keine Frage nach der Zukunft („Würdest du …?“, „Wie viel würdest du zahlen?“).',
       'Keine Frage stellt eure Idee vor oder will sie bewertet haben.',
       'Die Kernfragen fragen nach dem letzten konkreten Mal („Erzähl vom letzten Mal, als …“).',

@@ -11,17 +11,10 @@ import Diamant from '../../components/bild/Diamant.astro';
 import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import { FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
 import FooterNav from '../../components/FooterNav.astro';
+import { KAFFEEBAR_BAUM } from '../../components/innolab-beispiel';
 
 // Roter Faden des Innolab am Beispiel der Kaffeebar: heute entsteht die oberste Ebene.
-// Nach Torres: Chancen in den Worten der Kundschaft, mehrere Lösungen pro Chance, getestet wird eine Annahme.
-const faden = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den Zug', kinder: [
-  { t: '„Wenn ich anstehe, verpasse ich meinen Zug.“', kinder: [
-    { t: 'Vorbestellen per App', kinder: [{ t: 'Scannen 3 von 10 das Schild an der Tür?' }] },
-    { t: 'Express-Theke' },
-    { t: 'Kaffeewagen am Bahnsteig' },
-  ] },
-  { t: '„Ich weiß nicht, ob sich ein Kaffee noch ausgeht.“', kinder: [{ t: 'Wartezeit an der Hallentür' }] },
-] };
+const faden = KAFFEEBAR_BAUM;
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 ---
 <Layout title="Tag 1 · Rahmen & Verstehen">
@@ -80,7 +73,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
           <tr><th>Outcome</th><td>Was Menschen anders tun sollen</td><td>Mehr Pendler*innen steigen mit Kaffee in den Zug</td><td>heute</td></tr>
           <tr><th>Chancen</th><td>Bedürfnis, Schmerz oder Wunsch in den Worten der Kundschaft – nie eine Lösung</td><td>„Wenn ich anstehe, verpasse ich meinen Zug.“</td><td>Tag 2</td></tr>
           <tr><th>Lösungen</th><td>mehrere pro Chance, damit ihr vergleichen könnt</td><td>App, Express-Theke, Kaffeewagen</td><td>Tag 2–3</td></tr>
-          <tr><th>Annahmen-Tests (Experimente)</th><td>nicht die ganze Idee, sondern was dafür stimmen muss</td><td>Scannen 3 von 10 das Schild?</td><td>Tag 3</td></tr>
+          <tr><th>Annahmen-Tests (Experimente)</th><td>nicht die ganze Idee, sondern was dafür stimmen muss</td><td>Bestellen 3 von 10 per WhatsApp vor?</td><td>Tag 3</td></tr>
         </tbody>
       </table>
     </div>

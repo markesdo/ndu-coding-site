@@ -5,7 +5,7 @@ import { Matrix2x2 } from './Matrix2x2.js';
 // Achsen und Felder wie auf annahmen.astro: nach oben wichtig, nach rechts weniger Beleg, „Zuerst testen“ (or) hervorgehoben.
 const ACHSEN = {
   y: { label: 'wichtig', unten: 'weniger', oben: 'sehr' },
-  x: { label: 'Beleg', links: 'starker Beleg', rechts: 'kein Beleg' },
+  x: { label: 'Unsicherheit', links: 'starker Beleg', rechts: 'kein Beleg' },
   felder: ['Beleg prüfen, darauf bauen', 'Zuerst testen', 'Abhaken', 'Später prüfen'] as [string, string, string, string],
   hervor: 'or' as const,
 };

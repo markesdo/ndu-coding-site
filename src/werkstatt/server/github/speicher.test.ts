@@ -293,8 +293,8 @@ describe('githubSpeicher.lesen, uebersicht, werkstattJson', () => {
     expect(await s.uebersicht(repo)).toStrictEqual([
       { name: 'brief', vorhanden: false },
       { name: 'entscheidungen', vorhanden: false },
-      { name: 'leitfaden', vorhanden: false },
       { name: 'annahmen', vorhanden: true },
+      { name: 'leitfaden', vorhanden: false },
     ]);
   });
 

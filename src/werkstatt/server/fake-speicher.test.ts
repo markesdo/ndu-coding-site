@@ -120,8 +120,8 @@ describe('fakeSpeicher', () => {
     expect(await s.uebersicht(repo)).toEqual([
       { name: 'brief', vorhanden: false },
       { name: 'entscheidungen', vorhanden: false },
-      { name: 'leitfaden', vorhanden: true },
       { name: 'annahmen', vorhanden: false },
+      { name: 'leitfaden', vorhanden: true },
     ]);
   });
 
