@@ -3,78 +3,116 @@ import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
-import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
+
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
 ---
 <Layout title="Interview-Synthese">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
   <h1>Interview-Synthese</h1>
-  <p class="lead">Aus fünf Gesprächen werden wenige Aussagen, die jede*r im Team mit Zitaten belegen kann.</p>
+  <p class="lead">Die Synthese habt ihr schon gemacht: ein Snapshot nach jedem Interview. Heute teilt ihr sie im Team, damit das Gelernte in allen Köpfen ist und nicht nur in einem.</p>
   <Orientierung seite="innolab/methoden/synthese" leiste={false} />
   <MethodenKarte slug="synthese" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Nach fünf Interviews habt ihr viele Eindrücke und meistens schon eine Lieblingsgeschichte. Die Synthese schützt davor, nur diese eine weiterzuerzählen. Ihr zerlegt die Transkripte in einzelne Beobachtungen, gruppiert sie und formuliert für jede Gruppe ein <strong>Thema</strong>: einen Satz darüber, was Menschen tun oder erleben. Jedes Thema muss sich mit Zitaten aus mehreren Interviews belegen lassen.</p>
-  <p>Zitat-IDs machen das prüfbar: <strong>I3-4</strong> heißt Interview 3, vierte markierte Stelle. Wer später fragt „Woher wisst ihr das?“, bekommt eine ID statt eines Gefühls.</p>
+  <Folie>
+    <h2 id="warum">Warum gemeinsam?</h2>
+    <p class="folie-satz">Drei Leute hören in derselben Geschichte drei verschiedene Dinge.</p>
+    <ul>
+      <li data-schritt>„Unter ‚Beliebt‘ waren nur Serien“ – hört, wer sich um das Angebot sorgt.</li>
+      <li data-schritt>„Wir haben den Film nicht gefunden“ – hört, wer an der Bedienung arbeitet.</li>
+      <li data-schritt>„Fast nur Kinderfilme vorgeschlagen“ – hört, wer an den Empfehlungen baut.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Teresa Torres erzählt dieselbe Geschichte eines Netflix-Kunden aus drei Blickwinkeln: Produktmanagerin, Designer und Entwicklerin halten jeweils etwas anderes für wichtig, weil sie anderes Vorwissen mitbringen. Jede Sicht ist berechtigt, und jede kann zu einer Verbesserung führen. Je unterschiedlicher das Team, desto mehr holt es aus jedem Interview heraus. Darum interviewt bei ihr das ganze Team, statt eine Person zur „Stimme der Kundin“ zu machen ({TORRES}, S. 74–75).</p>
+      <p>Rob Fitzpatrick nennt das Gegenteil einen <strong>Lern-Engpass</strong>: Eine Person führt alle Gespräche und sagt danach dem Team, was die Kund*innen wollen. „Was ich gelernt habe“ heißt dann in Wahrheit „was ihr tun werdet“ – und „Die Kund*innen haben es gesagt“ sticht jedes Argument ({MOMTEST}, S. 98–99). Ihr habt eure Interviews allein geführt. Die Besprechung heute holt nach, was beim gemeinsamen Interview von selbst passiert wäre.</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <p>Fünf Pendler*innen, je 25 Minuten. Aus rund 40 Beobachtungen in Miro entstehen vier Themen:</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>ID</th><th>Thema</th><th>Belege</th></tr></thead>
-      <tbody>
-        <tr><th>T1</th><td>Pendler*innen entscheiden spontan beim Ankommen, ob sie Kaffee holen – nicht vorher.</td><td>I1-2 „Kommt drauf an, wie ich drauf bin.“ · I3-1 · I5-3</td></tr>
-        <tr><th>T2</th><td>Wer länger als etwa sechs Minuten ansteht, gibt auf – knapp vor der Abfahrt noch früher.</td><td>I2-4 „Wenn ich auf die Uhr schauen muss, geh ich.“ · I3-3 · I4-2</td></tr>
-        <tr><th>T3</th><td>Der Automat gilt als Notlösung, über die man sich ärgert.</td><td>I1-5 · I4-4 „Dann halt die Brühe.“</td></tr>
-        <tr><th>T4</th><td>Einzelfall: bestellt für Kolleg*innen per WhatsApp mit.</td><td>I5-6</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p><strong>T1 widerspricht A1</strong>, der riskantesten Annahme von Tag 1 („Pendler*innen entscheiden schon vor der Ankunft, ob sie Kaffee holen“). Das ist kein Rückschlag, sondern das wertvollste Ergebnis des Tages: A1 bekommt einen Beleg – einen, der sie widerlegt. In der Annahmen-Map wandert sie nach links oben (wichtig, belegt) und wird als widerlegt markiert; im Entscheidungslog steht eine neue Zeile.</p>
+  <Folie>
+    <h2 id="snapshot">Der Snapshot ist die Synthese</h2>
+    <p class="folie-satz">Verdichtet wird nach jedem Interview – nicht erst nach allen.</p>
+    <MiroFrame name="T1 · 5 · Interview-Snapshots (Hausaufgabe)" />
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/interview-snapshot.jpg" alt="Vorlage Interview-Snapshot: Name und Foto, ein einprägsames Zitat, eine kleine Skizze der erzählten Geschichte, darunter drei Spalten: Quick Facts, Insights, Opportunities" quelle={`Interview Snapshot. ${TORRES}, S. 68.`} />
+      <ul>
+        <li data-schritt><strong>Bild und Zitat</strong> sind Schlüssel für die Erinnerung an diese eine Geschichte.</li>
+        <li data-schritt><strong>Kurzinfos</strong> zeigen, wie diese Person zu den anderen passt.</li>
+        <li data-schritt><strong>Chancen:</strong> Bedürfnis, Schmerzpunkt oder Wunsch – in den Worten der Person.</li>
+        <li data-schritt><strong>Einsichten:</strong> auffälliges Verhalten, das (noch) keine Chance ist.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Torres empfiehlt, nicht fünf Interviews zu sammeln und dann mit Stickies und Affinitätsdiagramm auszuwerten, sondern jedes Gespräch sofort auf einer Seite zu verdichten. Nach ein paar Interviews verschwimmen die Geschichten; der Snapshot hält fest, was genau dieses Gespräch gezeigt hat ({TORRES}, S. 67–70, 77).</p>
+      <p><strong>Chancen</strong> sind Bedürfnisse, keine Lösungen. Wünscht sich jemand eine Funktion, fragt ihr: „Was würde dir das bringen?“ Die Antwort ist die Chance – sie lässt mehr Lösungen zu als der Wunsch. Chancen müssen keine wörtlichen Zitate sein, aber sie stehen in der Sprache der Kund*innen, nicht in eurer (S. 69–70).</p>
+      <p><strong>Einsichten</strong> sind alles, was auffällt, aber kein Bedürfnis ist – etwa ein ungewöhnliches Verhalten. Haltet auch fest, was nur eine Person erzählt: Oft taucht es später bei anderen wieder auf (S. 70). Die <strong>Skizze der Geschichte</strong> zeigt die Momente und ihre Verbindungen wie beim Toast; mit ihr findet ihr später die Muster über alle Geschichten hinweg (S. 70).</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
-  <ol>
-    <li><strong>Markieren (15 min, allein):</strong> In jedem Transkript Stellen markieren, an denen jemand etwas tut, fühlt oder umgeht. Jede Stelle bekommt eine ID (I1-1, I1-2 …) und kommt als Sticky nach Miro.</li>
-    <li><strong>Clustern (15 min, allein):</strong> Stickies verschieben, bis Gruppen entstehen. Gruppen nicht vorher festlegen.</li>
-    <li><strong>Themen formulieren (10 min):</strong> Pro Gruppe ein Satz. Gruppen mit nur einem Interview als Einzelfall markieren.</li>
-    <li><strong>Zweiter Blick mit Claude (10 min):</strong> Claude clustert unabhängig von euch. Was hat es gefunden, was ihr übersehen habt – und was erfindet es?</li>
-    <li><strong>Festhalten (10 min):</strong> <code>docs/interviews/SYNTHESE.md</code>, Belege in der Annahmen-Map nachtragen, Entscheidungslog.</li>
-  </ol>
+  <Folie>
+    <h2 id="besprechen">Snapshots im Team besprechen</h2>
+    <p class="folie-satz">Gemeinsam durchgehen, Überzeugungen anpassen, besser fragen.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Was wurde gesagt?</strong> Die wichtigsten Zitate und Aussagen.</li>
+      <li data-schritt><strong>Was ändert sich?</strong> Welche Annahme bekommt einen Beleg, welche Frage ist offen?</li>
+      <li data-schritt><strong>Wie war das Gespräch?</strong> Welche Fragen haben funktioniert, welche nicht?</li>
+      <li data-schritt><strong>Was haben wir überhört?</strong> Signale, denen man hätte nachgehen sollen.</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Nach Rob Fitzpatrick: Nach jedem Gespräch geht das Team die Notizen gemeinsam durch und passt seine Überzeugungen und seine drei großen Fragen an. Ziel ist, dass das Gelernte auf Papier und in allen Köpfen ist. Besprochen werden die wichtigsten Zitate und Aussagen, Probleme im Gespräch und die Meta-Ebene: welche Fragen funktioniert haben, welche nicht, welche Signale oder Fragen gefehlt haben. Der Schritt klingt so einfach, dass man ihn gern überspringt – tut es nicht ({MOMTEST}, S. 102).</p>
+      <p>Bei euch heißt „Überzeugungen anpassen“: Belege in der Annahmen-Map nachtragen, und wo eine Entscheidung fällt, eine Zeile im Entscheidungslog. Die „drei großen Fragen“ sind die Forschungsfragen in eurem Leitfaden.</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">I2, Pendlerin, Zug 7:42: „Wenn ich auf die Uhr schauen muss, geh ich.“</p>
+    <p class="nur-handout"><strong>Geschichte:</strong> Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42. <strong>Kurzinfos:</strong> pendelt täglich nach Wien, holt dreimal pro Woche Kaffee. <strong>Einsicht:</strong> entscheidet erst beim Ankommen. <strong>Chance:</strong> „Wenn ich anstehe, verpasse ich den Zug.“</p>
+    <ul>
+      <li data-schritt><strong>Gesagt:</strong> Sie geht, sobald sie auf die Uhr schauen muss – nicht erst, wenn es knapp wird.</li>
+      <li data-schritt><strong>Ändert sich:</strong> Die Einsicht widerspricht A1 („entscheiden schon vor der Ankunft“) – ein erster Beleg dagegen.</li>
+      <li data-schritt><strong>Gespräch:</strong> „Erzähl mir vom letzten Morgen …“ brachte die Geschichte; die Frage nach dem Automaten fehlte.</li>
+      <li data-schritt><strong>Überhört:</strong> Warum der Automat? Notlösung oder gut genug? Ins nächste Interview mitnehmen.</li>
+    </ul>
+    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis: Erst wenn dieselbe Einsicht in weiteren Snapshots wiederkehrt, rückt A1 in der Annahmen-Map nach links. Im Entscheidungslog steht vorerst nur, dass A1 einen ersten Gegenbeleg hat (I2).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+    <p class="folie-satz">Reihum: eine Person zeigt ihre Snapshots, die anderen beiden fragen.</p>
+    <MiroFrame name="T1 · 5 · Interview-Snapshots (Hausaufgabe)" />
+    <ol class="gross">
+      <li data-schritt><strong>Zeigen:</strong> Die erste Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Besprechen:</strong> Die anderen beiden fragen mit den vier Fragen. Was sie anders hören, kommt auf den Snapshot. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Reihum,</strong> bis alle drei dran waren.</li>
+      <li data-schritt><strong>Festhalten:</strong> Belege in der Annahmen-Map, Forschungsfragen im Leitfaden, Zeilen im Entscheidungslog. <Timer minuten={10} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Dreimal sechs plus acht Minuten sind 42; dazu zehn Minuten Festhalten und Zeit für die Theorie. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung (S. 75).</p>
+      <p><strong>Hört ihr noch Neues?</strong> Rob Fitzpatrick rät, so lange Gespräche zu führen, bis nichts Neues mehr kommt. Bei einer klar umrissenen Zielgruppe können drei bis fünf reichen; wer nach mehr als zehn Gesprächen noch Ergebnisse bekommt, die in alle Richtungen streuen, hat vermutlich eine zu unscharfe Zielgruppe ({MOMTEST}, S. 88). Streuen eure fünf Snapshots in alle Richtungen, sprecht im Team darüber, ob ihr die Zielgruppe im Produkt-Brief enger fassen solltet.</p>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="werkstatt">In der Werkstatt speichern</h2>
-  <p>Pro Interview ein Eintrag: Pseudonym, Einwilligung, der Snapshot (Zitat, Kurzinfos, Einsichten, Chancen), pseudonymisierte Notizen und wörtliche Zitate mit ID (I2-1, I2-2 …). Die Skizze der Geschichte bleibt auf Miro, Rohnotizen und Aufnahmen bleiben bei euch.</p>
+  <p>Pro Interview ein Eintrag: Pseudonym, Einwilligung, der Snapshot (Zitat, Kurzinfos, Einsichten, Chancen), pseudonymisierte Notizen und wörtliche Zitate mit ID (I2-1, I2-2 …). Chancen verweisen auf die Zitate, die sie belegen. Die Skizze der Geschichte bleibt auf Miro, Rohnotizen und Aufnahmen bleiben bei euch.</p>
   <Bearbeiten artefakt="interviews" />
-
-  <h2 id="claude">Zweiter Blick mit Claude</h2>
-  <p>Erst nachdem eure eigenen Themen stehen – sonst übernehmt ihr Claudes Sortierung und denkt nicht mehr selbst. Die Transkripte müssen anonymisiert sein.</p>
-  <Prompt label="Zweiter Blick · Claude Code">Lies alle Transkripte in docs/interviews/ (I1.md, I2.md …), aber nicht SYNTHESE.md und nicht LEITFADEN.md. Fass zusammen, welche Muster sich über die Interviews zeigen: höchstens fünf Themen, jedes als ein Satz über Verhalten oder Erleben. Belege jedes Thema mit wörtlichen Zitaten und nenn dazu die Datei. Ein Thema, das nur in einem Interview vorkommt, markierst du als Einzelfall. Erfinde keine Zitate; findest du für ein Thema kein wörtliches Zitat, lass es weg. Schreib nichts in Dateien.</Prompt>
-  <Callout type="warn" title="Zitate nachprüfen">
-    <p>Sprachmodelle glätten Zitate gern oder erfinden sie. Sucht jedes Zitat, das ihr übernehmt, im Transkript (⌘F). Findet ihr es nicht, gilt es nicht.</p>
-  </Callout>
-
-  <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/interviews/SYNTHESE.md"># Synthese — [Produkt]
-
-Stand: [Datum] · Interviews: I1–I[n]
-
-| ID | Thema (ein Satz über Verhalten oder Erleben) | Belege (Zitat-IDs) | Einzelfall? |
-|----|----------------------------------------------|--------------------|-------------|
-| T1 | [...] | [I1-2, I3-1] | nein |
-| T2 | [...] | [...] | [...] |
-
-## Überraschungen und Widersprüche
-- [Thema] widerspricht A[n]: [...]
-
-## Wichtige Zitate
-- I[n]-[m]: „[wörtlich]“</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="synthese" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Welches eurer Themen ist euer T1 – das, was eine Annahme von Tag 1 umwirft? Wenn es keins gibt, fragt euch, ob eure Interviews zu nett waren oder ob ihr nach eurer Idee gefragt habt.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Welche Annahme von Tag 1 hat heute einen Beleg bekommen – dafür oder dagegen?</p>
+    <p class="nur-handout">Wenn keine: Waren die Interviews zu nett, oder habt ihr nach eurer Idee gefragt statt nach vergangenem Verhalten? Als Nächstes zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu – ihre Momente werden die Äste eures Baums.</p>
+  </Folie>
 
   <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} />
 </Layout>
