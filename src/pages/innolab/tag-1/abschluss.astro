@@ -7,6 +7,7 @@ import Fluss from '../../../components/Fluss.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
 ---
 <Layout title="Tag 1 · Abschluss">
@@ -41,6 +42,7 @@ import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
   <Folie>
     <h2 id="snapshot">Nach jedem Interview: ein Snapshot</h2>
     <p class="folie-satz">Eine Seite pro Interview, gleich danach – sonst verschwimmen die Gespräche.</p>
+    <MiroFrame name="T1 · 5 · Interview-Snapshots (Hausaufgabe)" />
     <BildText>
     <BuchAbbildung src="/quellen/torres/interview-snapshot.jpg" alt="Vorlage Interview-Snapshot: Name und Foto, ein einprägsames Zitat, eine kleine Skizze der erzählten Geschichte, darunter drei Spalten: Quick Facts, Insights, Opportunities" quelle="Interview Snapshot. Teresa Torres, „Continuous Discovery Habits“ (2021), S. 68." />
     <ul data-schritt>

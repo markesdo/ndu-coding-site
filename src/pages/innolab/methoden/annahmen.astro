@@ -12,6 +12,7 @@ import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import VierArten from '../../../components/bild/VierArten.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 // Achsen und Felder der Annahmen-Map: leer auf „Worum es geht“, gefüllt auf „Am Beispiel“.
@@ -123,6 +124,7 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
     <p class="folie-satz">Erst allein sammeln und einordnen, dann zu dritt verschieben.</p>
+    <MiroFrame name="T1 · 3 · Annahmen-Map" />
     <ol class="gross">
       <li data-schritt><strong>Allein sammeln:</strong> pro Art mindestens drei Sätze „Wir glauben, dass …“, je ein Sticky in Miro. <Timer minuten={10} /></li>
       <li data-schritt><strong>Einordnen:</strong> jede Annahme in die Matrix – wie wichtig, wie belegt. <Timer minuten={10} /></li>

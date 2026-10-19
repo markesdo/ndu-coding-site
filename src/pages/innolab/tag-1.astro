@@ -11,6 +11,7 @@ import Diamant from '../../components/bild/Diamant.astro';
 import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import BildText from '../../components/bild/BildText.astro';
 import Video from '../../components/Video.astro';
+import MiroFrame from '../../components/MiroFrame.astro';
 import { FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
 import FooterNav from '../../components/FooterNav.astro';
 import { KAFFEEBAR_BAUM } from '../../components/innolab-beispiel';
@@ -47,6 +48,30 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <p class="folie-satz">Ihr seid ein Team mit drei Produkten.</p>
     <p>Jede*r ist Product Owner des eigenen Produkts und arbeitet in den anderen beiden mit. Bewertung: Prototyp 70 %, Präsentation 30 %. Alle Methoden: die <a href="/innolab/methoden">Toolbox</a>.</p>
     <p class="nur-handout">Im Innolab entwickelt ihr ein eigenes digitales Produkt – neu oder als Weiterführung eures Projekts aus dem Coding-Kurs. Die Methoden lernt ihr am Beispiel einer Kaffeebar am Bahnhof, die alle kennen, und wendet sie sofort auf euer Produkt an. Die Toolbox zeigt alle Methoden mit der Frage, die sie beantworten, und dem Artefakt, das dabei entsteht.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="miro">So arbeitet ihr in Miro</h2>
+    <p class="folie-satz">Ein Board für den ganzen Kurs – jeder Frame ist ein Block.</p>
+    <div class="miro-plan" aria-label="Aufbau des Team-Boards: oben Start hier und Roter Faden, darunter je eine Spalte für Tag 1 bis Tag 7, Tag 1 mit fünf Frames">
+      <div class="miro-reihe"><span>Start hier</span><span>Roter Faden</span></div>
+      <div class="miro-reihe miro-tage">
+        <div><b>Tag 1</b><span>T1 · 1 Experience Map</span><span>T1 · 2 Problem-Rahmen</span><span>T1 · 3 Annahmen-Map</span><span>T1 · 4 Interviewleitfaden</span><span>T1 · 5 Snapshots</span></div>
+        <div><b>Tag 2</b><span>…</span></div>
+        <div><b>Tag 3</b><span>…</span></div>
+        <div class="miro-weitere"><b>Tag 4–7</b></div>
+      </div>
+    </div>
+    <ul>
+      <li data-schritt><strong>Frame-Nummer = Block auf der Website:</strong> T1 · 3 ist Tag 1, die Annahmen-Map.</li>
+      <li data-schritt><strong>Links im Frame die Kaffeebar,</strong> daneben eure Spalte. Das Beispiel nicht verschieben – kopieren.</li>
+      <li data-schritt><strong>Ein Gedanke pro Sticky.</strong> Farben nur dort, wo der Frame sie erklärt.</li>
+      <li data-schritt><strong>Fragen für später</strong> in den Parkplatz unter „Start hier“.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Den Link zum Board bekommt ihr im Teams-Kanal. Der Frame „Start hier“ wiederholt diese Regeln und verlinkt jeden Frame; in Miro findet ihr dieselbe Liste unter „Frames“. Miro ist zum Denken in der Session da. Das Ergebnis haltet ihr in den letzten zehn Minuten jedes Blocks in der Werkstatt fest, denn daraus liest Claude, und daran sehen wir eure Entscheidungen. Interviewte stehen auch in Miro nur mit Pseudonym (I1 bis I5) – keine Namen, Fotos oder Arbeitgeber.</p>
+      <p class="small muted">Aufbau nach bewährter Praxis für Lehre und Workshops: benannte Frames als Kapitel und Navigation (Miro Community), eine feste Grundstruktur mit klaren Überschriften und wenigen Formen (bpb, „Kooperatives Online-Lernen, Teil 4“), eine eigene Arbeitsfläche pro Person mit Namen darüber (Fallstudie TU Dresden), ein Parkplatz für Fragen, die gerade nicht dran sind.</p>
+    </div>
   </Folie>
 
   <Folie>
@@ -167,6 +192,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="toast-uebertrag">Übertrag: eure Experience Map</h2>
     <p class="folie-satz">Zeichnet, wie eure Zielgruppe ihr Problem heute löst.</p>
+    <MiroFrame name="T1 · 1 · Experience Map" />
     <BildText>
       <BuchAbbildung src="/quellen/torres/experience-map.jpg" alt="Skizze einer Experience Map mit Strichmännchen: von einer Empfehlung über das Suchen bis zum Film und dem Ende, mit einem Abzweig, wenn nichts gefunden wird" quelle={`Experience Map „Wie unterhalten sich Menschen mit Videos?“. ${TORRES}, S. 54.`} />
       <ul>
@@ -308,3 +334,14 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <FooterNav prev={{ href: '/innolab/methoden', t: 'Toolbox' }} next={{ href: '/innolab/methoden/problem-rahmen', t: 'Problem-Rahmen & Produkt-Brief' }} />
 </Layout>
+
+<style>
+  /* Skizze des Team-Boards auf der Folie „So arbeitet ihr in Miro“: oben die Kurs-Frames, darunter eine Spalte pro Tag. */
+  .miro-plan { display: grid; gap: .5rem; margin: 1rem 0; max-width: 46rem; font-size: .85rem; }
+  .miro-reihe { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .miro-reihe > span { border: 1px solid var(--border); border-radius: 6px; padding: .4rem .6rem; font-weight: 600; background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .miro-tage { grid-template-columns: repeat(4, 1fr); }
+  .miro-tage > div { display: flex; flex-direction: column; gap: .25rem; border: 1px dashed var(--border); border-radius: 6px; padding: .4rem; }
+  .miro-tage span { border: 1px solid var(--border); border-radius: 4px; padding: .15rem .4rem; }
+  .miro-weitere { opacity: .6; }
+</style>
