@@ -9,7 +9,7 @@ export const kohorte2026: Kohorte = {
   vorlage: 'mappe-vorlage-2026',
   status: 'aktiv',
   beginn: '2026-10-22',
-  artefakte: ['brief@1', 'entscheidungen@1', 'leitfaden@1', 'annahmen@1'],
+  artefakte: ['brief@1', 'entscheidungen@1', 'leitfaden@1', 'annahmen@1', 'interviews@1'],
   // Aus dem Kursplan (TAGE), keine zweite Liste: tag<n> -> Datum oder null, solange der Termin offen ist.
   termine: Object.fromEntries(TAGE.map((t) => [`tag${t.n}`, t.datum ?? null])),
 };

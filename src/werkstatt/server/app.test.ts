@@ -76,7 +76,7 @@ describe('Routing', () => {
     expect(r.status).toBe(200);
     const stand = await r.json();
     expect(stand).toMatchObject({ kohorte: 'test', repo: 'test-sofie' });
-    expect(stand.artefakte.map((a: { name: string }) => a.name)).toStrictEqual(['brief', 'entscheidungen', 'annahmen', 'leitfaden']);
+    expect(stand.artefakte.map((a: { name: string }) => a.name)).toStrictEqual(['brief', 'entscheidungen', 'annahmen', 'leitfaden', 'interviews']);
   });
 
   it('Metadaten ohne Suffix an der Wurzel: 404 als ApiFehler (Issuer mit Pfad, RFC 8414 §3.3)', async () => {

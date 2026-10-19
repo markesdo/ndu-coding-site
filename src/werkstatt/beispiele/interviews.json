@@ -1,0 +1,58 @@
+{
+  "schema": "interviews@1",
+  "stand": "2026-10-27",
+  "interviews": [
+    {
+      "id": "I1",
+      "datum": "2026-10-23",
+      "pseudonym": "Pendler, Zug 7:38",
+      "einwilligung": true,
+      "zitat": "Kommt drauf an, wie ich drauf bin.",
+      "kurzinfos": "Pendelt viermal pro Woche nach Wien, holt Kaffee nur, wenn Zeit bleibt.",
+      "einsichten": ["Entscheidet erst am Bahnhof, ob er Kaffee holt."],
+      "chancen": [
+        { "text": "Der Kaffee aus dem Automaten schmeckt mir nicht, aber er geht schnell.", "belege": ["I1-3"] }
+      ],
+      "notizen": "Kommt meist knapp. Schaut erst auf die Schlange, dann auf die Uhr. Nimmt bei langer Schlange den Automaten.",
+      "zitate": [
+        { "id": "I1-1", "text": "Ich bin eigentlich immer knapp dran." },
+        { "id": "I1-2", "text": "Kommt drauf an, wie ich drauf bin." },
+        { "id": "I1-3", "text": "Der Automat ist halt Notlösung, aber er ist schnell." }
+      ]
+    },
+    {
+      "id": "I2",
+      "datum": "2026-10-24",
+      "pseudonym": "Pendlerin, Zug 7:42",
+      "einwilligung": true,
+      "zitat": "Wenn ich auf die Uhr schauen muss, geh ich.",
+      "kurzinfos": "Pendelt täglich nach Wien. Holt dreimal pro Woche Kaffee.",
+      "einsichten": ["Entscheidet erst beim Ankommen."],
+      "chancen": [
+        { "text": "Wenn ich anstehe, verpasse ich den Zug.", "belege": ["I2-2"] }
+      ],
+      "notizen": "Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42.",
+      "zitate": [
+        { "id": "I2-1", "text": "Acht Leute vor mir, da hab ich gleich gewusst, das wird nix." },
+        { "id": "I2-2", "text": "Wenn ich auf die Uhr schauen muss, geh ich." }
+      ]
+    },
+    {
+      "id": "I3",
+      "datum": "2026-10-26",
+      "pseudonym": "Student, Zug 7:20",
+      "einwilligung": true,
+      "zitat": "Ich weiß nie, wie lange das dauert.",
+      "kurzinfos": "Pendelt an drei Tagen zur Uni, kauft fast jedes Mal Kaffee.",
+      "einsichten": ["Plant Kaffee nicht, entscheidet beim Vorbeigehen."],
+      "chancen": [
+        { "text": "Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.", "belege": ["I3-1", "I3-2"] }
+      ],
+      "notizen": "Hat zweimal den Zug fast verpasst. Stellt sich trotzdem an, wenn weniger als fünf Leute warten.",
+      "zitate": [
+        { "id": "I3-1", "text": "Ich weiß nie, wie lange das dauert." },
+        { "id": "I3-2", "text": "Bei mehr als fünf Leuten lass ich es." }
+      ]
+    }
+  ]
+}

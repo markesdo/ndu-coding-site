@@ -5,8 +5,9 @@ import brief from '../beispiele/brief.json';
 import entscheidungen from '../beispiele/entscheidungen.json';
 import leitfaden from '../beispiele/leitfaden.json';
 import annahmen from '../beispiele/annahmen.json';
+import interviews from '../beispiele/interviews.json';
 
-const beispiele = { brief, entscheidungen, leitfaden, annahmen } as const;
+const beispiele = { brief, entscheidungen, leitfaden, annahmen, interviews } as const;
 
 function fehlerPfade(name: Parameters<typeof artefaktParsen>[0], roh: unknown): string[] {
   const r = artefaktParsen(name, roh);
@@ -293,5 +294,39 @@ describe('punkt', () => {
     const p1 = a('hoch', 'keiner', 'A1');
     const p2 = a('hoch', 'gesagt', 'A2');
     expect(punkt(p2, [p1, p2])).toEqual(punkt(p2, []));
+  });
+});
+
+describe('Interviews', () => {
+  it('ohne Einwilligung wird nicht gespeichert', () => {
+    const roh = klon(interviews);
+    roh.interviews[1].einwilligung = false;
+    expect(fehlerPfade('interviews', roh)).toStrictEqual(['interviews.1.einwilligung']);
+  });
+
+  it('Pseudonym ist Pflicht', () => {
+    const roh = klon(interviews);
+    roh.interviews[0].pseudonym = '  ';
+    expect(fehlerPfade('interviews', roh)).toStrictEqual(['interviews.0.pseudonym']);
+  });
+
+  it('Zitat-IDs gehören zum eigenen Interview', () => {
+    const roh = klon(interviews);
+    roh.interviews[1].zitate[0].id = 'I3-9';
+    expect(fehlerPfade('interviews', roh)).toStrictEqual(['interviews.1.zitate.0.id']);
+  });
+
+  it('Belege einer Chance verweisen auf vorhandene Zitate desselben Interviews', () => {
+    const roh = klon(interviews);
+    roh.interviews[1].chancen[0].belege = ['I2-2', 'I2-7'];
+    expect(fehlerPfade('interviews', roh)).toStrictEqual(['interviews.1.chancen.0.belege.1']);
+  });
+
+  it('doppelte Interview-IDs', () => {
+    const roh = klon(interviews);
+    roh.interviews[2].id = 'I2';
+    roh.interviews[2].zitate = [];
+    roh.interviews[2].chancen = [];
+    expect(fehlerPfade('interviews', roh)).toStrictEqual(['interviews.2.id']);
   });
 });

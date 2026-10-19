@@ -5,6 +5,7 @@ import { briefLeer, briefSchema, type Brief } from './brief.js';
 import { entscheidungenLeer, entscheidungenSchema, type Entscheidungen } from './entscheidungen.js';
 import { leitfadenLeer, leitfadenSchema, type Leitfaden } from './leitfaden.js';
 import { annahmenLeer, annahmenSchema, type Annahmen } from './annahmen.js';
+import { interviewsLeer, interviewsSchema, type Interviews } from './interviews.js';
 import type { Feldfehler } from './gemeinsam.js';
 
 export type { ArtefaktName } from './namen.js';
@@ -14,14 +15,16 @@ export type { Brief } from './brief.js';
 export { BELEG_NOTIZ_MAX, type Entscheidungen, type Entscheidung } from './entscheidungen.js';
 export { EINSTIEG_VORLAGE, FRAGE_ARTEN, type Leitfaden, type Frage } from './leitfaden.js';
 export { ANNAHME_ARTEN, WICHTIGKEITEN, quadrant, punkt, type Annahmen, type Annahme, type Quadrant } from './annahmen.js';
+export type { Interviews, Interview, Chance } from './interviews.js';
 
-export type ArtefaktDaten = Brief | Entscheidungen | Leitfaden | Annahmen;
+export type ArtefaktDaten = Brief | Entscheidungen | Leitfaden | Annahmen | Interviews;
 
 export type DatenVon<N extends ArtefaktName> = {
   brief: Brief;
   entscheidungen: Entscheidungen;
   leitfaden: Leitfaden;
   annahmen: Annahmen;
+  interviews: Interviews;
 }[N];
 
 const SCHEMAS: Record<ArtefaktName, ZodType<ArtefaktDaten>> = {
@@ -29,6 +32,7 @@ const SCHEMAS: Record<ArtefaktName, ZodType<ArtefaktDaten>> = {
   entscheidungen: entscheidungenSchema,
   leitfaden: leitfadenSchema,
   annahmen: annahmenSchema,
+  interviews: interviewsSchema,
 };
 
 // slug = Methodenseite unter /innolab/methoden/.
@@ -37,6 +41,7 @@ export const ARTEFAKTE: Record<ArtefaktName, { titel: string; slug: string; vers
   entscheidungen: { titel: 'Entscheidungslog', slug: 'entscheidungslog', version: 1, leer: entscheidungenLeer },
   leitfaden: { titel: 'Interviewleitfaden', slug: 'interview', version: 1, leer: leitfadenLeer },
   annahmen: { titel: 'Annahmen-Map', slug: 'annahmen', version: 1, leer: annahmenLeer },
+  interviews: { titel: 'Interviews und Snapshots', slug: 'synthese', version: 1, leer: interviewsLeer },
 };
 
 // Schlüssel ist die Kennung der alten Fassung („annahmen@1“), Wert hebt sie eine Version an.

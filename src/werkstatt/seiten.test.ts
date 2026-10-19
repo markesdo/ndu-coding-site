@@ -24,7 +24,7 @@ const folienMitAufloesung = (quelle: string): string[] =>
 
 describe('Werkstatt auf den Methodenseiten', () => {
   it('die vier Tag-1-Methoden gehören zur Werkstatt (sonst prüft der Test nichts)', () => {
-    expect(werkstattMethoden.map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'annahmen', 'interview']);
+    expect(werkstattMethoden.map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'annahmen', 'interview', 'synthese']);
   });
 
   it('jede Werkstatt-Methode hat auf ihrer Seite <Bearbeiten artefakt=…> für ihr Artefakt, nach „So geht ihr vor“', () => {

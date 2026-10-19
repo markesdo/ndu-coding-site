@@ -4,6 +4,7 @@ import type { ArtefaktName } from '../../schemas/index.js';
 import AnnahmenEditor from './AnnahmenEditor.js';
 import BriefEditor from './BriefEditor.js';
 import EntscheidungenEditor from './EntscheidungenEditor.js';
+import InterviewsEditor from './InterviewsEditor.js';
 import LeitfadenEditor from './LeitfadenEditor.js';
 
 export const EDITOREN: Record<ArtefaktName, ComponentType> = {
@@ -11,4 +12,5 @@ export const EDITOREN: Record<ArtefaktName, ComponentType> = {
   entscheidungen: EntscheidungenEditor,
   leitfaden: LeitfadenEditor,
   annahmen: AnnahmenEditor,
+  interviews: InterviewsEditor,
 };

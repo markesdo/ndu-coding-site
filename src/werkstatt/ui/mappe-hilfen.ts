@@ -49,6 +49,7 @@ export const EDITOR_ANKER: Readonly<Record<ArtefaktName, string>> = {
   entscheidungen: 'werkstatt',
   leitfaden: 'vorlage',
   annahmen: 'werkstatt',
+  interviews: 'werkstatt',
 };
 
 /** Überschrift direkt vor der Auflösung mit dem Leitfaden-Editor (seiten.test.ts prüft den Anker). Wer dort schon
