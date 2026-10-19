@@ -1,10 +1,9 @@
 import type { Interviews } from '../schemas/index.js';
-import { datumAt, einzeilig, listenpunkt, mehrzeilig, zitat } from './format.js';
+import { datumAt, einzeilig, liste, listenpunkt, mehrzeilig, zitat } from './format.js';
 
 // Ein Abschnitt pro Interview, oben der Snapshot (Torres S. 68), darunter Notizen und Zitate mit ID.
 export function interviewsRendern(d: Interviews): string {
   const teile = d.interviews.map((iv) => {
-    const einsichten = iv.einsichten.map((e) => `- ${listenpunkt(e)}`);
     const chancen = iv.chancen.map((c) => `- ${listenpunkt(c.text)}${c.belege.length ? ` (${c.belege.join(', ')})` : ''}`);
     const zitate = iv.zitate.map((z) => `- **${z.id}** „${einzeilig(z.text)}“`);
     return `## ${iv.id} · ${einzeilig(iv.pseudonym)}
@@ -16,7 +15,7 @@ ${zitat(iv.zitat)}
 **Kurzinfos:** ${einzeilig(iv.kurzinfos)}
 
 ### Einsichten
-${einsichten.length ? einsichten.join('\n') : 'Noch keine eingetragen.'}
+${liste(iv.einsichten)}
 
 ### Chancen
 ${chancen.length ? chancen.join('\n') : 'Noch keine eingetragen.'}

@@ -38,11 +38,12 @@ const interviewSchema = z
   .superRefine((iv, ctx) => {
     const nummer = iv.id.slice(1);
     iv.zitate.forEach((z0, i) => {
-      if (ZITAT_ID.exec(z0.id)?.[1] !== nummer) ctx.addIssue({ code: 'custom', path: ['zitate', i, 'id'], message: `Das Zitat gehört zu ${iv.id} und braucht eine ID wie ${iv.id}-1.` });
+      const treffer = ZITAT_ID.exec(z0.id);
+      if (treffer && treffer[1] !== nummer) ctx.addIssue({ code: 'custom', path: ['zitate', i, 'id'], message: `Das Zitat gehört zu ${iv.id} und braucht eine ID wie ${iv.id}-1.` });
     });
     const vorhanden = new Set(iv.zitate.map((z0) => z0.id));
     iv.chancen.forEach((c, i) => c.belege.forEach((b, j) => {
-      if (!vorhanden.has(b)) ctx.addIssue({ code: 'custom', path: ['chancen', i, 'belege', j], message: `${b} gibt es in ${iv.id} nicht.` });
+      if (ZITAT_ID.test(b) && !vorhanden.has(b)) ctx.addIssue({ code: 'custom', path: ['chancen', i, 'belege', j], message: `${b} gibt es in ${iv.id} nicht.` });
     }));
   });
 

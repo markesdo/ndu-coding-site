@@ -23,7 +23,7 @@ const folienMitAufloesung = (quelle: string): string[] =>
   [...quelle.matchAll(/<Folie\b[^>]*>([\s\S]*?)<\/Folie>/g)].map(([, inhalt]) => inhalt).filter((f) => /<Aufloesung\b/.test(f));
 
 describe('Werkstatt auf den Methodenseiten', () => {
-  it('die vier Tag-1-Methoden gehören zur Werkstatt (sonst prüft der Test nichts)', () => {
+  it('die Tag-1-Methoden und die Synthese gehören zur Werkstatt (sonst prüft der Test nichts)', () => {
     expect(werkstattMethoden.map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'annahmen', 'interview', 'synthese']);
   });
 

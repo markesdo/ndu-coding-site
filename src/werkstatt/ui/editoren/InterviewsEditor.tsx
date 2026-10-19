@@ -76,6 +76,7 @@ export default function InterviewsEditor() {
                 return (
                   <>
                     <p className="wk-hilfe">ID: <strong>{iv.id}</strong></p>
+                    {f('id') && <p className="wk-fehler">{f('id')}</p>}
                     <Textfeld label="Pseudonym" wert={iv.pseudonym} onChange={(pseudonym) => s({ ...iv, pseudonym })} fehler={f('pseudonym')} hilfe="Etwas, das dich an die Person erinnert, zum Beispiel „Pendlerin, Zug 7:42“ – kein Name." />
                     <Textfeld label="Datum" wert={iv.datum} onChange={(datum) => s({ ...iv, datum })} fehler={f('datum')} hilfe="JJJJ-MM-TT, zum Beispiel 2026-10-23." />
                     <Einwilligung wert={iv.einwilligung} onChange={(einwilligung) => s({ ...iv, einwilligung })} fehler={f('einwilligung')} />
@@ -100,7 +101,7 @@ export default function InterviewsEditor() {
                       zeile={(c, sc, j) => (
                         <>
                           <Textfeld label={`Chance ${j + 1}`} mehrzeilig zeilen={2} wert={c.text} onChange={(text) => sc({ ...c, text })} fehler={f(`chancen.${j}.text`)} hilfe={j === 0 ? 'Bedürfnis, Schmerzpunkt oder Wunsch in den Worten der Person – keine Lösung. Wünscht sie sich eine Funktion: „Was würde dir das bringen?“' : undefined} />
-                          <VerweisAuswahl label="Belege (Zitat-IDs)" werte={c.belege} onChange={(belege) => sc({ ...c, belege })} vorschlaege={zitatVorschlaege} fehler={f(`chancen.${j}.belege`)} />
+                          <VerweisAuswahl label="Belege (Zitat-IDs)" werte={c.belege} onChange={(belege) => sc({ ...c, belege })} vorschlaege={zitatVorschlaege} fehler={f(`chancen.${j}.belege`) ?? c.belege.map((_, k) => f(`chancen.${j}.belege.${k}`)).find(Boolean)} />
                         </>
                       )}
                     />

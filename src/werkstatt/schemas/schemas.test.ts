@@ -330,3 +330,12 @@ describe('Interviews', () => {
     expect(fehlerPfade('interviews', roh)).toStrictEqual(['interviews.2.id']);
   });
 });
+
+describe('Interviews: ein Fehler pro Stelle', () => {
+  it('kaputte Zitat-ID meldet nur die Form, nicht zusätzlich den Besitz', () => {
+    const roh = klon(interviews);
+    roh.interviews[1].zitate[0].id = 'x';
+    roh.interviews[1].chancen = [];
+    expect(fehlerPfade('interviews', roh)).toStrictEqual(['interviews.1.zitate.0.id']);
+  });
+});
