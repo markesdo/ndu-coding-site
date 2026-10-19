@@ -23,6 +23,9 @@ if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwa
 </div>
 <script>
   import { aufgeloest } from './aufloesung';
+  // Erst alle Knöpfe binden, dann öffnen: Sonst löst eine Box, die schon offen sein soll, den Knopf einer
+  // späteren aus derselben Gruppe aus, bevor der einen Listener hat.
+  const offen: (() => void)[] = [];
   document.querySelectorAll<HTMLElement>('[data-aufloesung-ab]').forEach(box => {
     if (box.dataset.bound) return; box.dataset.bound = '1';
     const inhalt = box.querySelector<HTMLElement>('[data-aufloesung-inhalt]');
@@ -34,13 +37,16 @@ if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwa
       // Dieselbe Gruppe mit öffnen: deren Knopf auslösen (er ist danach weg, darum keine Endlosschleife).
       const gruppe = box.dataset.aufloesungGruppe;
       if (gruppe) document.querySelectorAll<HTMLElement>(`[data-aufloesung-gruppe="${CSS.escape(gruppe)}"] [data-aufloesung-zeigen]`).forEach(k => k.click());
+      // Für den Schritt-Hinweis im Beamer (Layout.astro): Öffnet die Uhr die Auflösung, gab es keinen Klick.
+      document.dispatchEvent(new Event('aufloesung-offen'));
     };
     box.querySelector('[data-aufloesung-zeigen]')?.addEventListener('click', zeigen);
     const ab = box.dataset.aufloesungAb ?? '';
-    if (aufgeloest(ab, new Date())) { zeigen(); return; }
+    if (aufgeloest(ab, new Date())) { offen.push(zeigen); return; }
     // Seite bleibt im Kurs offen: jede Minute nachsehen, bis es so weit ist.
     const uhr = setInterval(() => { if (aufgeloest(ab, new Date())) { clearInterval(uhr); zeigen(); } }, 60_000);
   });
+  offen.forEach(zeigen => zeigen());
 </script>
 <style>
   .aufloesung-knopf { display: inline-flex; align-items: center; gap: .4rem; font: inherit; padding: .35rem .8rem; border: 1px solid var(--border); border-radius: 6px; background: none; color: inherit; cursor: pointer; }

@@ -176,6 +176,8 @@ const { vorher, danach } = nachbarn(path);
       schritteAnzeigen();
       // Eine Auflösung öffnet sich per Klick (Aufloesung.astro) und bringt eigene Schritte mit.
       document.addEventListener('click', () => requestAnimationFrame(schritteAnzeigen));
+      // … oder von selbst, wenn ihre Uhrzeit erreicht ist (Aufloesung.astro).
+      document.addEventListener('aufloesung-offen', () => requestAnimationFrame(schritteAnzeigen));
       // Sofort statt weich scrollen: Beim schnellen Weiterdrücken soll die aktuelle Folie nicht mitten im Scrollen gemessen werden.
       const springe = (f: HTMLElement) => f.scrollIntoView({ behavior: 'instant' as ScrollBehavior });
       const folienBlaettern = (vor: boolean): boolean => {

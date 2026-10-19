@@ -42,7 +42,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
     <h2 id="mom-test">Der Mom Test</h2>
     <p class="folie-satz">Schreibt drei Fragen an eure Zielgruppe.</p>
     <p>Allein, eine Frage pro Sticky. Markus antwortet danach als Person aus eurer Zielgruppe. <Timer minuten={5} /></p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Die Auflösung kommt nach der Übung – erst eure Fragen schreiben." knopf="Auflösung zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Die Auflösung kommt nach der Übung – erst eure Fragen schreiben." knopf="Auflösung zeigen (nach der Übung)">
       <p class="folie-satz">Auf „Würdest du …?“ sagen alle Ja – selbst eure Mutter.</p>
       <ol class="gross">
         <li data-schritt><strong>Redet über ihr Leben, nicht über eure Idee.</strong> Sobald ihr die Idee erzählt, wird das Gespräch höflich.</li>
@@ -56,7 +56,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   <Folie>
     <h2 id="fragen-matrix">Wo liegen eure Fragen?</h2>
     <p class="folie-satz">Prüft eure drei Fragen an zwei Achsen.</p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Matrix zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Matrix zeigen (nach der Übung)">
       <Matrix2x2 label="Mom Test als Matrix: nach oben über ihr Leben statt über eure Idee, nach rechts Vergangenheit statt Zukunft"
         y={{ label: 'Thema', unten: 'eure Idee', oben: 'ihr Leben' }}
         x={{ label: 'Zeit', links: 'Zukunft', rechts: 'Vergangenheit' }}
@@ -72,7 +72,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   <Folie>
     <h2 id="statt-besser">Eure Fragen umschreiben</h2>
     <p class="folie-satz">Jetzt macht ihr eure drei Fragen besser.</p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Beispiele zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Beispiele zeigen (nach der Übung)">
       <div style="overflow-x:auto">
         <table>
           <thead><tr><th>Statt: Zukunft</th><th>Besser: Vergangenheit</th></tr></thead>
@@ -93,7 +93,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
     <h2 id="antworten">Welche Antwort zählt?</h2>
     <p class="folie-satz">Sortiert die vier Antworten von schwach nach stark.</p>
     <p>Bestellt vor und zahlt im Voraus. · „Coole Idee!“ · „Letzte Woche zweimal den Zug verpasst.“ · „Würde ich sicher nutzen.“ <Timer minuten={2} /></p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Skala zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Skala zeigen (nach der Übung)">
       <Skala label="Antworten von sagen bis tun: Kompliment, Zukunftsversprechen, erzählte Vergangenheit, Commitment" links="sagen" rechts="tun"
         stufen={[
           { t: 'Kompliment', sub: 'lobt die Idee' },
@@ -114,7 +114,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   <Folie>
     <h2 id="warum-geschichten">Warum Meinungsfragen täuschen</h2>
     <p class="folie-satz">Menschen beschreiben ihr ideales Ich – nicht, was sie tun.</p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
       <div class="gegenueber">
         <div data-schritt><p><strong>„Worauf achtest du beim Jeanskauf?“</strong><br />„Die Passform ist das Wichtigste.“</p></div>
         <div data-schritt><p><strong>„Erzähl vom letzten Jeanskauf.“</strong><br />„Auf Amazon. Ob sie passt, wusste ich nicht – aber die Marke mag ich, und sie war im Angebot.“</p></div>
@@ -130,7 +130,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   <Folie>
     <h2 id="forschungsfrage">Was ihr wissen wollt ≠ was ihr fragt</h2>
     <p class="folie-satz">Die Forschungsfrage stellt ihr nie – ihr fragt nach einer Geschichte.</p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
       <div style="overflow-x:auto">
         <table>
           <thead><tr><th></th><th>Forschungsfrage: was ihr lernen wollt</th><th>Interviewfrage: was ihr fragt</th></tr></thead>
@@ -148,7 +148,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   <Folie>
     <h2 id="ausgraben">Die Geschichte ausgraben</h2>
     <p class="folie-satz">Die erste Antwort ist ein Satz – die Geschichte müsst ihr ausgraben.</p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
       <ul class="gross">
         <li data-schritt><strong>Ankündigen:</strong> „Erzähl mit allen Details – ich frage am Ende nach.“</li>
         <li data-schritt><strong>Zeit:</strong> „Wo warst du? Was ist als Erstes passiert? Und dann?“</li>

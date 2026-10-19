@@ -53,7 +53,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="miro">So arbeitet ihr in Miro</h2>
     <p class="folie-satz">Ein Board für den ganzen Kurs – jeder Frame ist ein Block.</p>
-    <div class="miro-plan" aria-label="Aufbau des Team-Boards: oben Start hier und Roter Faden, darunter je eine Spalte für Tag 1 bis Tag 7, Tag 1 mit fünf Frames">
+    <div class="miro-plan" role="img" aria-label="Aufbau des Team-Boards: oben Start hier und Roter Faden, darunter je eine Spalte für Tag 1 bis Tag 7, Tag 1 mit fünf Frames">
       <div class="miro-reihe"><span>Start hier</span><span>Roter Faden</span></div>
       <div class="miro-reihe miro-tage">
         <div><b>Tag 1</b><span>T1 · 1 Experience Map</span><span>T1 · 2 Problem-Rahmen</span><span>T1 · 3 Annahmen-Map</span><span>T1 · 4 Interviewleitfaden</span><span>T1 · 5 Snapshots</span></div>
@@ -63,7 +63,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       </div>
     </div>
     <ul>
-      <li data-schritt><strong>Frame-Nummer = Block auf der Website:</strong> T1 · 3 ist Tag 1, die Annahmen-Map.</li>
+      <li data-schritt><strong>Frames in der Reihenfolge des Tages:</strong> T1 · 3 ist die dritte Aufgabe an Tag 1, die Annahmen-Map. Jede Aufgaben-Folie nennt ihren Frame.</li>
       <li data-schritt><strong>Links im Frame die Kaffeebar,</strong> daneben eure Spalte. Das Beispiel nicht verschieben – kopieren.</li>
       <li data-schritt><strong>Ein Gedanke pro Sticky.</strong> Farben nur dort, wo der Frame sie erklärt.</li>
       <li data-schritt><strong>Fragen für später</strong> in den Parkplatz unter „Start hier“.</li>
@@ -344,4 +344,5 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .miro-tage > div { display: flex; flex-direction: column; gap: .25rem; border: 1px dashed var(--border); border-radius: 6px; padding: .4rem; }
   .miro-tage span { border: 1px solid var(--border); border-radius: 4px; padding: .15rem .4rem; }
   .miro-weitere { opacity: .6; }
+  @media (max-width: 600px) { .miro-tage { grid-template-columns: 1fr 1fr; } }
 </style>
