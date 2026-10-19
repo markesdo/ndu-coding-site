@@ -1,6 +1,6 @@
 {
   "schema": "interviews@1",
-  "stand": "2026-10-27",
+  "stand": "2026-10-28",
   "interviews": [
     {
       "id": "I1",
@@ -11,13 +11,15 @@
       "kurzinfos": "Pendelt viermal pro Woche nach Wien, holt Kaffee nur, wenn Zeit bleibt.",
       "einsichten": ["Entscheidet erst am Bahnhof, ob er Kaffee holt."],
       "chancen": [
-        { "text": "Der Kaffee aus dem Automaten schmeckt mir nicht, aber er geht schnell.", "belege": ["I1-3"] }
+        { "text": "Der Automat ist eine Notlösung, aber er geht schnell.", "belege": ["I1-3"] },
+        { "text": "Wenn der erste Schluck passt, ist der Morgen gerettet.", "belege": ["I1-4"] }
       ],
       "notizen": "Kommt meist knapp. Schaut erst auf die Schlange, dann auf die Uhr. Nimmt bei langer Schlange den Automaten.",
       "zitate": [
         { "id": "I1-1", "text": "Ich bin eigentlich immer knapp dran." },
         { "id": "I1-2", "text": "Kommt drauf an, wie ich drauf bin." },
-        { "id": "I1-3", "text": "Der Automat ist halt Notlösung, aber er ist schnell." }
+        { "id": "I1-3", "text": "Der Automat ist halt Notlösung, aber er ist schnell." },
+        { "id": "I1-4", "text": "Wenn der erste Schluck passt, ist der Morgen gerettet." }
       ]
     },
     {
@@ -29,12 +31,16 @@
       "kurzinfos": "Pendelt täglich nach Wien. Holt dreimal pro Woche Kaffee.",
       "einsichten": ["Entscheidet erst beim Ankommen."],
       "chancen": [
-        { "text": "Wenn ich anstehe, verpasse ich den Zug.", "belege": ["I2-2"] }
+        { "text": "Wenn ich anstehe, verpasse ich den Zug.", "belege": ["I2-2"] },
+        { "text": "Ich will wissen, wann mein Kaffee fertig ist.", "belege": ["I2-5"] }
       ],
       "notizen": "Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42.",
       "zitate": [
         { "id": "I2-1", "text": "Acht Leute vor mir, da hab ich gleich gewusst, das wird nix." },
-        { "id": "I2-2", "text": "Wenn ich auf die Uhr schauen muss, geh ich." }
+        { "id": "I2-2", "text": "Wenn ich auf die Uhr schauen muss, geh ich." },
+        { "id": "I2-3", "text": "Ich hab dann am Automaten gedrückt, ohne nachzudenken." },
+        { "id": "I2-4", "text": "Ich schau auf die Tafel, dann auf die Schlange, und dann entscheid ich." },
+        { "id": "I2-5", "text": "Am liebsten wüsste ich einfach, wann er fertig ist." }
       ]
     },
     {
@@ -44,15 +50,59 @@
       "einwilligung": true,
       "zitat": "Ich weiß nie, wie lange das dauert.",
       "kurzinfos": "Pendelt an drei Tagen zur Uni, kauft fast jedes Mal Kaffee.",
-      "einsichten": ["Plant Kaffee nicht, entscheidet beim Vorbeigehen."],
+      "einsichten": ["Plant Kaffee nicht, entscheidet beim Vorbeigehen.", "Mag es, wenn die Barista seine Bestellung kennt."],
       "chancen": [
-        { "text": "Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.", "belege": ["I3-2"] }
+        { "text": "Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.", "belege": ["I3-2", "I3-3"] }
       ],
       "notizen": "Hat zweimal den Zug fast verpasst. Stellt sich trotzdem an, wenn weniger als fünf Leute warten.",
       "zitate": [
         { "id": "I3-1", "text": "Ich schau halt, wie es ausschaut, wenn ich vorbeikomm." },
         { "id": "I3-2", "text": "Ich weiß nie, wie lange das dauert." },
-        { "id": "I3-3", "text": "Bei mehr als fünf Leuten lass ich es." }
+        { "id": "I3-3", "text": "Einmal stand ich da, der Zug war schon eingefahren, und ich hab gewusst: Das war ein Fehler." },
+        { "id": "I3-4", "text": "Bei mehr als fünf Leuten lass ich es." },
+        { "id": "I3-5", "text": "Im Zug trink ich ihn dann in Ruhe." },
+        { "id": "I3-6", "text": "Die Barista weiß schon, was ich will. Das ist schön." }
+      ]
+    },
+    {
+      "id": "I4",
+      "datum": "2026-10-27",
+      "pseudonym": "Pendlerin, Zug 7:35",
+      "einwilligung": true,
+      "zitat": "Dann halt die Brühe.",
+      "kurzinfos": "Pendelt täglich, Kaffee gehört für sie zum Weg ins Büro.",
+      "einsichten": ["Nimmt den Automaten in Kauf, statt den Zug zu riskieren."],
+      "chancen": [
+        { "text": "Ich will nicht gehetzt im Büro ankommen.", "belege": ["I4-5"] }
+      ],
+      "notizen": "Steht selten an. Ärgert sich über den Automatenkaffee, nimmt ihn aber fast immer.",
+      "zitate": [
+        { "id": "I4-1", "text": "Ich bin um 7:28 da, das reicht nie für die Schlange." },
+        { "id": "I4-2", "text": "Anstellen ist ein Glücksspiel." },
+        { "id": "I4-3", "text": "Meistens ist es der Automat." },
+        { "id": "I4-4", "text": "Dann halt die Brühe." },
+        { "id": "I4-5", "text": "Ich will nicht verschwitzt und gestresst ins Büro kommen." }
+      ]
+    },
+    {
+      "id": "I5",
+      "datum": "2026-10-28",
+      "pseudonym": "Pendler, Zug 7:50",
+      "einwilligung": true,
+      "zitat": "Das entscheid ich, wenn ich die Halle seh.",
+      "kurzinfos": "Pendelt an vier Tagen, bestellt oft für Kolleg*innen mit.",
+      "einsichten": ["Entscheidet beim Betreten der Halle.", "Bestellt für Kolleg*innen per Nachricht mit (Einzelfall)."],
+      "chancen": [
+        { "text": "Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.", "belege": ["I5-6"] }
+      ],
+      "notizen": "Kommt meist zehn Minuten vor Abfahrt. Schaut, wie voll es ist, und entscheidet dann.",
+      "zitate": [
+        { "id": "I5-1", "text": "Zehn Minuten hab ich meistens." },
+        { "id": "I5-2", "text": "Wenn es voll ist, lass ich es." },
+        { "id": "I5-3", "text": "Das entscheid ich, wenn ich die Halle seh." },
+        { "id": "I5-4", "text": "Die Kolleg*innen schreiben mir, was sie wollen." },
+        { "id": "I5-5", "text": "Vier Becher tragen ist dann schon sportlich." },
+        { "id": "I5-6", "text": "Bei mehreren Bestellungen wird mir das Warten zu lang." }
       ]
     }
   ]

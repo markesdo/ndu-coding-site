@@ -106,7 +106,7 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
                   <Textfeld label={`Entscheidung (${e.id})`} mehrzeilig zeilen={2} wert={e.entscheidung} onChange={(entscheidung) => setzeZeile(i, { ...e, entscheidung })} fehler={fehler(pfad('entscheidung'))} />
                   <Textfeld label={`Grund (${e.id})`} mehrzeilig zeilen={2} wert={e.grund} onChange={(grund) => setzeZeile(i, { ...e, grund })} fehler={fehler(pfad('grund'))} />
                   <Auswahl label={`Beleg (${e.id})`} hilfe="Wie stark ist der Beleg: gesagt, erzählt oder getan?" wert={e.beleg} optionen={BELEG} onChange={(beleg) => setzeZeile(i, { ...e, beleg })} fehler={fehler(pfad('beleg'))} />
-                  <VerweisAuswahl label={`Beleg-IDs (${e.id})`} hilfe="Worauf stützt sich die Entscheidung, zum Beispiel I2-4 oder T1?" werte={e.belegIds} onChange={(belegIds) => setzeZeile(i, { ...e, belegIds })} fehler={fehler(pfad('belegIds'))} />
+                  <VerweisAuswahl label={`Beleg-IDs (${e.id})`} hilfe="Worauf stützt sich die Entscheidung, zum Beispiel I2-4 oder A3?" werte={e.belegIds} onChange={(belegIds) => setzeZeile(i, { ...e, belegIds })} fehler={fehler(pfad('belegIds'))} />
                   <Textfeld label={`Beleg (Notiz, z. B. Quelle oder Zahl) (${e.id})`} hilfe={belegNotizHilfe} wert={e.belegNotiz ?? ''} onChange={(notiz) => setzeZeile(i, belegNotizSetzen(e, notiz))} fehler={fehler(pfad('belegNotiz'))} />
                   <p className="wk-hilfe" aria-live="off">Zeichen: {belegNotizZaehler(e.belegNotiz ?? '')}</p>
                 </>

@@ -34,7 +34,7 @@
       "entscheidung": "Vorbestellen vor der Ankunft verworfen",
       "grund": "3 von 5 entscheiden erst beim Ankommen",
       "beleg": "erzaehlt",
-      "belegIds": ["T1", "I1-2", "I3-1", "I5-3"]
+      "belegIds": ["I1-2", "I3-1", "I5-3"]
     }
   ]
 }
