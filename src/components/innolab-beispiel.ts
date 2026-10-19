@@ -9,5 +9,5 @@ export const KAFFEEBAR_BAUM: Knoten = { t: 'Mehr Pendler*innen steigen morgens m
     { t: 'Express-Theke' },
     { t: 'Kaffeewagen am Bahnsteig' },
   ] },
-  { t: '„Ich weiß nicht, ob sich ein Kaffee noch ausgeht.“', kinder: [{ t: 'Wartezeit an der Hallentür' }] },
+  { t: '„Geht sich ein Kaffee noch aus?“', kinder: [{ t: 'Wartezeit an der Tür' }] },
 ] };

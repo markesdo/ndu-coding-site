@@ -1,0 +1,21 @@
+---
+// YouTube-Video im Seitenfluss, 16:9, über youtube-nocookie.com (keine Cookies, bis jemand abspielt).
+// id = die Video-Kennung aus der URL (watch?v=<id>), start = Sekunde, ab der es läuft.
+const { id, titel, quelle, start } = Astro.props as { id: string; titel: string; quelle: string; start?: number };
+if (!/^[\w-]{11}$/.test(id)) throw new Error(`Video: keine gültige YouTube-Kennung: ${id}`);
+const src = `https://www.youtube-nocookie.com/embed/${id}?rel=0${start ? `&start=${start}` : ''}`;
+---
+<figure class="video">
+  <div class="video-rahmen">
+    <iframe src={src} title={titel} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+  <figcaption class="small muted">{quelle} · <a href={`https://www.youtube.com/watch?v=${id}`}>auf YouTube öffnen</a></figcaption>
+</figure>
+
+<style>
+  .video { margin: 1rem 0; max-width: 46rem; }
+  .video-rahmen { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; overflow: hidden; }
+  .video-rahmen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  :global(html[data-beamer]) .video { max-width: min(46rem, calc((100vh - 15rem) * 16 / 9)); }
+  .video figcaption { margin-top: .4rem; }
+</style>

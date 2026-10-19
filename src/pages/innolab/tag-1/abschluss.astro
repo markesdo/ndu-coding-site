@@ -6,6 +6,7 @@ import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
 import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
 ---
 <Layout title="Tag 1 · Abschluss">
@@ -40,6 +41,7 @@ import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
   <Folie>
     <h2 id="snapshot">Nach jedem Interview: ein Snapshot</h2>
     <p class="folie-satz">Eine Seite pro Interview, gleich danach – sonst verschwimmen die Gespräche.</p>
+    <BildText>
     <BuchAbbildung src="/quellen/torres/interview-snapshot.jpg" alt="Vorlage Interview-Snapshot: Name und Foto, ein einprägsames Zitat, eine kleine Skizze der erzählten Geschichte, darunter drei Spalten: Quick Facts, Insights, Opportunities" quelle="Interview Snapshot. Teresa Torres, „Continuous Discovery Habits“ (2021), S. 68." />
     <ul data-schritt>
       <li><strong>Pseudonym und ein Bild</strong> statt Foto – etwas, das euch an die Geschichte erinnert.</li>
@@ -47,6 +49,7 @@ import { ClipboardList, Mic, ScrollText } from '@lucide/astro';
       <li><strong>Die Geschichte als Skizze</strong>: Knoten und Verbindungen wie beim Toast.</li>
       <li><strong>Kurzinfos, Einsichten, Chancen</strong> – Chancen als Bedürfnis in ihren Worten, nicht als Lösung.</li>
     </ul>
+    </BildText>
     <div class="nur-handout">
       <p>Teresa Torres empfiehlt, nach jedem Interview sofort zu verdichten, statt fünf Gespräche am Stück auszuwerten („Continuous Discovery Habits“, S. 67–70). Nach ein paar Interviews verschwimmen die Geschichten; der Snapshot hält fest, was dieses eine Gespräch gezeigt hat. Bild und Zitat sind Schlüssel für die Erinnerung, die Kurzinfos sagen, wer das war, und unten steht, was ihr gelernt habt.</p>
       <p>Wünscht sich jemand eine Funktion („Ich will per App vorbestellen“), fragt nach: „Was würde dir das bringen?“ Die Antwort („Ich will den Zug nicht verpassen“) ist die Chance – sie lässt mehr Lösungen zu als der Wunsch (S. 69). Notiert auch, was nur eine Person sagt: Oft taucht es später bei anderen wieder auf. An Tag 2 bringt ihr die fünf Snapshots mit; aus ihren Chancen wächst euer Baum.</p>

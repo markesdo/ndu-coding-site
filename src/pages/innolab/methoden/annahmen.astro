@@ -11,6 +11,7 @@ import Timer from '../../../components/Timer.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import VierArten from '../../../components/bild/VierArten.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 // Achsen und Felder der Annahmen-Map: leer auf „Worum es geht“, gefüllt auf „Am Beispiel“.
@@ -46,10 +47,16 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
     <h2 id="worum">Worum es geht</h2>
     <p class="folie-satz">Getestet wird zuerst, was sehr wichtig ist und kaum belegt.</p>
     <p class="nur-handout">Zwei Fragen pro Annahme: <strong>Wie wichtig ist sie?</strong> Fällt das Produkt um, wenn sie falsch ist? <strong>Welchen Beleg habt ihr?</strong></p>
-    <Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts weniger Beleg; oben rechts zuerst testen" {...karte} />
-    <div data-schritt>
+    <BildText>
       <BuchAbbildung src="/quellen/bland/annahmen-map.jpg" alt="Assumptions Map aus Testing Business Ideas: senkrecht Important bis Unimportant, waagrecht Have Evidence bis No Evidence; oben rechts gestrichelt umrandet die Hypothesen, die zuerst getestet werden" quelle="Assumptions Map. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 38." />
-    </div>
+      <ul>
+        <li data-schritt><strong>Oben rechts:</strong> wichtig, kein Beleg – zuerst testen.</li>
+        <li data-schritt><strong>Oben links:</strong> wichtig, belegt – darauf bauen, Beleg prüfen.</li>
+        <li data-schritt><strong>Unten:</strong> weniger wichtig – später oder gar nicht.</li>
+        <li data-schritt>Schnell sortieren: relativ zueinander, nicht exakt.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout"><Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts weniger Beleg; oben rechts zuerst testen" {...karte} /></div>
     <p class="nur-handout">Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach diesen zwei Fragen. Die riskanteste Annahme – sehr wichtig, kaum belegt – kommt zuerst dran. Oben links liegt, was wichtig und gut belegt ist: Darauf baut ihr, prüft aber, ob der Beleg wirklich trägt.</p>
     <p class="nur-handout"><strong>Heute und an Tag 3.</strong> Heute geht es vor allem um Annahmen über eure Kundschaft und ihr Problem: Wer hat es, wann, was tun sie heute? Diese prüft ihr mit den Interviews bis Tag 2; die riskanteste wird zur Forschungsfrage eures Leitfadens. Annahmen über eine Lösung – ob jemand im Gehen bestellt, ob es sich rechnet – lassen sich in Interviews kaum prüfen. Für sie macht ihr an Tag 3 eine eigene Map pro Idee, wenn ihr mehrere Ideen habt, und testet sie mit Experimenten (Teresa Torres, „Continuous Discovery Habits“, 2021, Kap. 9–10).</p>
   </Folie>
@@ -84,7 +91,19 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
   <Folie>
     <h2 id="beleg">Was zählt als Beleg?</h2>
     <p class="folie-satz">Was Menschen tun, wiegt mehr als was sie sagen.</p>
-    <BuchAbbildung src="/quellen/bland/beleg-staerke.jpg" breit alt="Tabelle Weak Evidence gegen Strong(er) Evidence: Meinungen gegen Fakten, was Menschen sagen gegen was sie tun, Laborsituation gegen echte Situation, kleine gegen große Investition" quelle="Strength of Evidence. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 52." />
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Schwacher Beleg</th><th>Stärkerer Beleg</th></tr></thead>
+        <tbody>
+          <tr data-schritt><td><strong>Meinung:</strong> „Ich würde …“, „Ich finde … wichtig“</td><td><strong>Tatsache:</strong> „Letzte Woche habe ich …“</td></tr>
+          <tr data-schritt><td><strong>Was Menschen sagen</strong> – im Interview, in einer Umfrage</td><td><strong>Was Menschen tun</strong> – beobachtet, gemessen</td></tr>
+          <tr data-schritt><td><strong>Testsituation:</strong> Sie wissen, dass sie getestet werden</td><td><strong>Echte Situation:</strong> Sie wissen es nicht</td></tr>
+          <tr data-schritt><td><strong>Kleiner Einsatz:</strong> E-Mail-Adresse hinterlassen</td><td><strong>Großer Einsatz:</strong> im Voraus bezahlen, den eigenen Namen geben</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted">Nach „Strength of Evidence“, David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 52.</p>
+    <div class="nur-handout"><BuchAbbildung src="/quellen/bland/beleg-staerke.jpg" breit alt="Tabelle Weak Evidence gegen Strong(er) Evidence: Meinungen gegen Fakten, was Menschen sagen gegen was sie tun, Laborsituation gegen echte Situation, kleine gegen große Investition" quelle="Strength of Evidence. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 52." /></div>
     <p class="nur-handout">Daraus entsteht die Skala in der Werkstatt: <strong>noch keiner</strong> – <strong>gesagt</strong> (Meinung: „Ich würde …“) – <strong>erzählt</strong> (was jemand das letzte Mal tatsächlich getan hat) – <strong>getan</strong> (beobachtet, gemessen, bezahlt). Eure Interviews bis Tag 2 bringen Annahmen bestenfalls auf „erzählt“. „Getan“ zeigen erst Experimente ab Tag 3.</p>
   </Folie>
 

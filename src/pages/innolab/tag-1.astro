@@ -9,6 +9,8 @@ import Fluss from '../../components/Fluss.astro';
 import Baum from '../../components/bild/Baum.astro';
 import Diamant from '../../components/bild/Diamant.astro';
 import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
+import BildText from '../../components/bild/BildText.astro';
+import Video from '../../components/Video.astro';
 import { FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
 import FooterNav from '../../components/FooterNav.astro';
 import { KAFFEEBAR_BAUM } from '../../components/innolab-beispiel';
@@ -26,7 +28,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-22">
     <Block time="09:00–09:35" type="plenum" title="Kick-off" href="#kickoff">Wie das Innolab läuft, Bewertung, die Toolbox als Landkarte.</Block>
-    <Block time="09:35–10:10" type="uebung" title="Warm-up · Wie macht man Toast?" href="#toast">Zeichnen, vergleichen, übertragen.</Block>
+    <Block time="09:35–10:10" type="uebung" title="Warm-up · Wie macht man Toast?" href="#toast">Zeichnen, TED-Talk, übertragen.</Block>
     <Block time="10:10–10:50" type="konzept" title="Outcome statt Output" href="#outcome">Outcome, Output, MVP – und wie Design Thinking schiefgeht.</Block>
     <Block time="10:50–11:00" type="pause" title="Pause" />
     <Block time="11:00–12:00" type="uebung" title="Problem-Rahmen & Produkt-Brief" href="/innolab/methoden/problem-rahmen">Für wen, welches Problem, woran ihr es merkt.</Block>
@@ -50,7 +52,15 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="faden">Der rote Faden: ein Baum vom Ziel bis zum Test</h2>
     <p class="folie-satz">Wer gleich Lösungen sammelt, löst oft das falsche Problem.</p>
-    <BuchAbbildung src="/quellen/torres/ost.jpg" breit alt="Opportunity Solution Tree: oben ein Outcome, darunter mehrere Ebenen von Opportunities, unter einer davon drei Solutions mit je zwei Assumption Tests" quelle={`Opportunity Solution Tree. ${TORRES}, S. 26.`} />
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/ost.jpg" alt="Opportunity Solution Tree: oben ein Outcome, darunter mehrere Ebenen von Opportunities, unter einer davon drei Solutions mit je zwei Assumption Tests" quelle={`Opportunity Solution Tree. ${TORRES}, S. 26.`} />
+      <ul>
+        <li data-schritt><strong>Outcome:</strong> das Ziel – was Menschen anders tun sollen.</li>
+        <li data-schritt><strong>Chancen:</strong> Bedürfnisse, Schmerzen, Wünsche der Kundschaft, die das Ziel bewegen.</li>
+        <li data-schritt><strong>Lösungen:</strong> mehrere unter einer Chance.</li>
+        <li data-schritt><strong>Annahmen-Tests:</strong> prüfen, ob eine Lösung trägt.</li>
+      </ul>
+    </BildText>
     <div class="nur-handout">
       <p>Teresa Torres hat den Baum gezeichnet, nachdem ein Team sie fragte: „Du sagst uns immer, was als Nächstes kommt. Wie sollen wir das allein wissen?“ Ihre Antwort: Discovery hat eine Struktur. Oben steht ein <strong>Outcome</strong>, das Ziel des Unternehmens. Darunter liegen die <strong>Chancen</strong> (Opportunities): Bedürfnisse, Schmerzen und Wünsche der Kundschaft, die dieses Ziel bewegen würden. Unter einer Chance hängen mehrere <strong>Lösungen</strong>, und unter jeder Lösung die <strong>Annahmen-Tests</strong>, die zeigen, ob sie trägt (S. 25–27).</p>
       <p>Die Reihenfolge ist der Kern: erst das Ziel, dann die Kundschaft, dann Lösungen. Eine Lösung zählt nur, wenn sie Menschen hilft <em>und</em> das Ziel bewegt. Die nächsten drei Folien zeigen, wogegen der Baum hilft.</p>
@@ -60,9 +70,16 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="was-noch">Was könnten wir noch bauen?</h2>
     <p class="folie-satz">Vergleichen statt „machen wir das – ja oder nein?“</p>
-    <BuchAbbildung src="/quellen/torres/was-noch.jpg" alt="Eine Opportunity mit drei Lösungen darunter: eine ausgefüllt, zwei mit Fragezeichen. Darunter: What else could we build?" quelle={`${TORRES}, S. 30.`} />
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/was-noch.jpg" alt="Eine Opportunity mit drei Lösungen darunter: eine ausgefüllt, zwei mit Fragezeichen. Darunter: What else could we build?" quelle={`${TORRES}, S. 30.`} />
+      <ul>
+        <li data-schritt>Teams springen zur ersten Lösung und fragen: „Bauen wir das – ja oder nein?“</li>
+        <li data-schritt>Wer nur eine Option prüft, sucht Belege dafür und übersieht, was dagegen spricht.</li>
+        <li data-schritt>Besser: „<em>Welche</em> von dreien trägt am besten?“</li>
+      </ul>
+    </BildText>
     <div class="nur-handout">
-      <p>Hört ein Team ein Problem, springt es zur ersten Lösung – aus gutem Willen, weil es helfen will. Dann folgt die Frage: „Sollen wir das bauen – ja oder nein?“ Torres nennt das eine <em>Whether-or-not</em>-Entscheidung und hält sie für den häufigsten Fehler von Produktteams (S. 30). Wer nur eine Option prüft, sucht Belege dafür und übersieht, was dagegen spricht.</p>
+      <p>Hört ein Team ein Problem, springt es zur ersten Lösung – aus gutem Willen, weil es helfen will. Dann folgt die Frage: „Sollen wir das bauen – ja oder nein?“ Torres nennt das eine <em>Whether-or-not</em>-Entscheidung und hält sie für den häufigsten Fehler von Produktteams (S. 30).</p>
       <p>Chip und Dan Heath („Decisive“) beschreiben vier Feinde guter Entscheidungen, auf die Torres sich stützt: ein zu enger Blick auf das Problem, die Suche nach Bestätigung (Confirmation Bias), kurzfristige Gefühle – man verliebt sich in die eigene Idee – und Selbstüberschätzung. Der Baum setzt dagegen eine einfache Frage: <em>Welche</em> dieser Chancen ist gerade die wichtigste, und <em>was könnten wir noch</em> bauen? Darum stehen unter einer Chance immer mehrere Lösungen (S. 30–31).</p>
     </div>
   </Folie>
@@ -70,39 +87,54 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="klein-gross">Klein lösen, Großes erreichen</h2>
     <p class="folie-satz">Große Chancen zerfallen in kleine – die löst ihr nacheinander.</p>
-    <BuchAbbildung src="/quellen/torres/klein-gross.jpg" alt="Eine Opportunity mit drei kleineren darunter; Pfeile: Wer die kleinen löst, löst nach und nach die große" quelle={`${TORRES}, S. 29.`} />
-    <p class="nur-handout">„Ist die Serie gut?“ ist eine riesige Frage. „Wer spielt mit?“ ist eine kleine, die sich in einer Woche lösen lässt – und sie zahlt auf die große ein (S. 84–85). Viele Teams nehmen ein Projekt von sechs Monaten, schneiden es in Sprints von zwei Wochen und nennen das agil. Der Baum zerlegt stattdessen das <em>Problem</em>: Jede kleine Chance, die ihr löst, liefert schon Wert, und gemeinsam lösen sie die große (S. 29). Für euch heißt das: Euer Prototyp muss nicht alles können, aber eine kleine Chance wirklich lösen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/klein-gross.jpg" alt="Eine Opportunity mit drei kleineren darunter; Pfeile: Wer die kleinen löst, löst nach und nach die große" quelle={`${TORRES}, S. 29.`} />
+      <ul>
+        <li data-schritt>„Ist die Serie gut?“ ist zu groß für einen Schritt.</li>
+        <li data-schritt>„Wer spielt mit?“ lässt sich in einer Woche lösen – und zahlt auf die große Frage ein.</li>
+        <li data-schritt>Jede kleine Lösung liefert schon Wert.</li>
+        <li data-schritt>Euer Prototyp: eine kleine Chance wirklich lösen.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Viele Teams nehmen ein Projekt von sechs Monaten, schneiden es in Sprints von zwei Wochen und nennen das agil. Der Baum zerlegt stattdessen das <em>Problem</em>: Jede kleine Chance, die ihr löst, liefert schon Wert, und gemeinsam lösen sie die große ({TORRES}, S. 29, 84–85). Euer Prototyp muss deshalb nicht alles können.</p>
   </Folie>
 
   <Folie>
     <h2 id="problem-loesung">Problem und Lösung wachsen gemeinsam</h2>
     <p class="folie-satz">Scheitert eine Lösung, habt ihr etwas über die Kundschaft gelernt.</p>
-    <BuchAbbildung schmal src="/quellen/torres/problem-loesung.jpg" alt="Zwei Wolken, Problem Space und Solution Space, mit Pfeilen in beide Richtungen: Sie entwickeln sich gemeinsam" quelle={`${TORRES}, S. 32.`} />
-    <div class="nur-handout">
-      <p>Nigel Cross hat erfahrene und unerfahrene Designer*innen verglichen: Die besten entwickeln Problem und Lösung zusammen. Während sie Lösungen ausprobieren, verstehen sie das Problem besser, und mit dem besseren Verständnis werden neue Lösungen möglich (S. 32).</p>
-      <p>Deshalb wird der Baum nicht einmal gezeichnet und dann abgehakt. Scheitert ein Test, reicht es nicht, die nächste Idee zu nehmen. Fragt: „Wir dachten, das funktioniert. Was haben wir an der Kundschaft missverstanden?“ – und ändert die Chancen, bevor ihr die nächste Lösung sucht. Sonst rät man nur noch (S. 33). Im Innolab wächst der Baum darum jeden Tag mit, und am Ende zeigt er, wie ihr zu euren Entscheidungen gekommen seid.</p>
-    </div>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/problem-loesung.jpg" alt="Zwei Wolken, Problem Space und Solution Space, mit Pfeilen in beide Richtungen: Sie entwickeln sich gemeinsam" quelle={`${TORRES}, S. 32.`} />
+      <ul>
+        <li data-schritt>Die besten Designer*innen entwickeln Problem und Lösung zusammen (Nigel Cross).</li>
+        <li data-schritt>Scheitert ein Test, fragt: „Was haben wir an der Kundschaft missverstanden?“</li>
+        <li data-schritt>Erst die Chancen ändern, dann die nächste Lösung – sonst ratet ihr nur.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Nigel Cross hat erfahrene und unerfahrene Designer*innen verglichen: Die besten verstehen das Problem besser, während sie Lösungen ausprobieren, und mit dem besseren Verständnis werden neue Lösungen möglich ({TORRES}, S. 32–33). Deshalb wird der Baum nicht einmal gezeichnet und dann abgehakt: Im Innolab wächst er jeden Tag mit, und am Ende zeigt er, wie ihr zu euren Entscheidungen gekommen seid.</p>
   </Folie>
 
   <Folie>
-    <h2 id="ebenen">Die vier Ebenen</h2>
+    <h2 id="ebenen">Die vier Ebenen bei der Kaffeebar</h2>
     <p class="folie-satz">Oben das Ziel, unten der Test – dazwischen die Kundschaft.</p>
     <div style="overflow-x:auto">
       <table>
         <thead><tr><th>Ebene</th><th>Was dort steht</th><th>Kaffeebar</th><th>Wann</th></tr></thead>
         <tbody>
-          <tr><th>Outcome</th><td>Was Menschen anders tun sollen</td><td>Mehr Pendler*innen steigen mit Kaffee in den Zug</td><td>heute</td></tr>
-          <tr><th>Chancen</th><td>Bedürfnis, Schmerz oder Wunsch in den Worten der Kundschaft – nie eine Lösung</td><td>„Wenn ich anstehe, verpasse ich meinen Zug.“</td><td>Tag 2</td></tr>
-          <tr><th>Lösungen</th><td>mehrere pro Chance, damit ihr vergleichen könnt</td><td>App, Express-Theke, Kaffeewagen</td><td>Tag 2–3</td></tr>
-          <tr><th>Annahmen-Tests (Experimente)</th><td>nicht die ganze Idee, sondern was dafür stimmen muss</td><td>Bestellen 3 von 10 per WhatsApp vor?</td><td>Tag 3</td></tr>
+          <tr data-schritt><th>Outcome</th><td>Was Menschen anders tun sollen</td><td>Mehr Pendler*innen steigen mit Kaffee in den Zug</td><td>heute</td></tr>
+          <tr data-schritt><th>Chancen</th><td>Bedürfnis, Schmerz oder Wunsch in den Worten der Kundschaft – nie eine Lösung</td><td>„Wenn ich anstehe, verpasse ich meinen Zug.“</td><td>Tag 2</td></tr>
+          <tr data-schritt><th>Lösungen</th><td>mehrere pro Chance, damit ihr vergleichen könnt</td><td>App, Express-Theke, Kaffeewagen</td><td>Tag 2–3</td></tr>
+          <tr data-schritt><th>Annahmen-Tests (Experimente)</th><td>nicht die ganze Idee, sondern was dafür stimmen muss</td><td>Bestellen 3 von 10 per WhatsApp vor?</td><td>Tag 3</td></tr>
         </tbody>
       </table>
     </div>
-    <div data-schritt>
-      <Baum knoten={faden} hervor={0} label="Opportunity Solution Tree der Kaffeebar: Outcome, Chancen, Lösungen, Annahmen-Tests; heute das Outcome" />
-    </div>
-    <p class="nur-handout">Ein Prüfstein für Chancen: Gibt es mehr als eine Lösung dafür? „Ich will vorbestellen“ hat nur eine – das ist eine Lösung in Verkleidung. „Wenn ich anstehe, verpasse ich meinen Zug“ lässt App, Express-Theke und Kaffeewagen zu (S. 94). Chancen schreibt ihr so, wie Menschen sie in Interviews sagen würden, nicht aus Sicht des Unternehmens: Niemand sagt „Ich wünsche mir mehr Kaffeebar-Umsatz“ (S. 92).</p>
-    <p class="small muted">{TORRES}, Kap. 2 und 6.</p>
+    <p data-schritt><strong>Prüfstein für Chancen:</strong> Gibt es mehr als eine Lösung dafür? „Ich will vorbestellen“ hat nur eine – eine Lösung in Verkleidung.</p>
+    <p class="nur-handout">„Wenn ich anstehe, verpasse ich meinen Zug“ lässt App, Express-Theke und Kaffeewagen zu (S. 94). Chancen schreibt ihr so, wie Menschen sie in Interviews sagen würden, nicht aus Sicht des Unternehmens: Niemand sagt „Ich wünsche mir mehr Kaffeebar-Umsatz“ (S. 92). {TORRES}, Kap. 2 und 6.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="baum-kaffeebar">Der Baum der Kaffeebar</h2>
+    <p class="folie-satz">Heute entsteht die Wurzel – der Rest wächst bis Tag 3.</p>
+    <Baum knoten={faden} hervor={0} label="Opportunity Solution Tree der Kaffeebar: Outcome, Chancen, Lösungen, Annahmen-Tests; heute das Outcome" />
   </Folie>
 
   <Folie>
@@ -110,28 +142,47 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <p class="folie-satz">Zeichnet, wie man Toast macht.</p>
     <p>Ein Blatt, ein dicker Stift. Allein, ohne zu reden, möglichst ohne Wörter. Es gibt kein Richtig oder Falsch. <Timer minuten={3} /></p>
     <Aufloesung ab="2026-10-22T10:10">
-      <p class="folie-satz">Keine Zeichnung ist falsch – jede*r hat ein anderes Modell im Kopf.</p>
-      <p>Jede Zeichnung besteht aus <strong>Knoten</strong> (Dinge, Schritte, Personen) und <strong>Verbindungen</strong>. Zwei Modelle derselben Aufgabe:</p>
-      <Fluss label="Toast-Modell 1, in der Küche: Brot, Toaster, Butter, essen" knoten={[{ t: 'Brot' }, { t: 'Toaster' }, { t: 'Butter' }, { t: 'essen' }]} />
-      <Fluss label="Toast-Modell 2, von der Herkunft her: Feld, Bäckerei, Supermarkt, Toaster" knoten={[{ t: 'Feld' }, { t: 'Bäckerei' }, { t: 'Supermarkt' }, { t: 'Toaster' }]} />
-      <p class="nur-handout">Erst wenn Modelle sichtbar sind, wird daraus ein gemeinsames Bild – deshalb arbeiten wir mit Stickies: ein Knoten pro Sticky.</p>
-      <p class="small muted nur-handout">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (<a href="https://www.ted.com/talks/tom_wujec_got_a_wicked_problem_first_tell_me_how_you_make_toast">TED 2013</a>), <a href="https://www.drawtoast.com/">drawtoast.com</a>.</p>
+      <Video id="_vS_b7cJn2A" titel="Tom Wujec: Got a wicked problem? First, tell me how you make toast" quelle="Tom Wujec, „Got a wicked problem? First, tell me how you make toast“, TED 2013 (9 min)" />
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="toast-aufloesung">Was der Toast zeigt</h2>
+    <p class="folie-satz">Jede*r hat ein anderes Modell im Kopf – sichtbar wird es erst gezeichnet.</p>
+    <Aufloesung ab="2026-10-22T10:10">
+      <ul class="gross">
+        <li data-schritt><strong>Knoten und Verbindungen:</strong> Jede Zeichnung besteht aus Dingen, Schritten, Personen – und Pfeilen dazwischen.</li>
+        <li data-schritt><strong>Kein Bild ist falsch:</strong> Die eine beginnt in der Küche, der andere auf dem Feld.</li>
+        <li data-schritt><strong>Ein Knoten pro Sticky:</strong> So lassen sich Modelle verschieben und zu einem gemeinsamen Bild zusammenführen.</li>
+      </ul>
+      <div class="nur-handout">
+        <Fluss label="Toast-Modell 1, in der Küche: Brot, Toaster, Butter, essen" knoten={[{ t: 'Brot' }, { t: 'Toaster' }, { t: 'Butter' }, { t: 'essen' }]} />
+        <Fluss label="Toast-Modell 2, von der Herkunft her: Feld, Bäckerei, Supermarkt, Toaster" knoten={[{ t: 'Feld' }, { t: 'Bäckerei' }, { t: 'Supermarkt' }, { t: 'Toaster' }]} />
+        <p class="small muted">Nach Tom Wujec, „Got a wicked problem? First, tell me how you make toast“ (<a href="https://www.ted.com/talks/tom_wujec_got_a_wicked_problem_first_tell_me_how_you_make_toast">TED 2013</a>), <a href="https://www.drawtoast.com/">drawtoast.com</a>.</p>
+      </div>
     </Aufloesung>
   </Folie>
 
   <Folie>
     <h2 id="toast-uebertrag">Übertrag: eure Experience Map</h2>
     <p class="folie-satz">Zeichnet, wie eure Zielgruppe ihr Problem heute löst.</p>
-    <p>Genauso wie beim Toast: allein, ohne zu reden, ein Knoten pro Sticky. Nicht euer Produkt, sondern was die Menschen heute erleben – auch Umwege und wo sie aufgeben. <Timer minuten={6} /></p>
-    <BuchAbbildung src="/quellen/torres/experience-map.jpg" alt="Skizze einer Experience Map mit Strichmännchen: von einer Empfehlung über das Suchen bis zum Film und dem Ende, mit einem Abzweig, wenn nichts gefunden wird" quelle={`Experience Map „Wie unterhalten sich Menschen mit Videos?“. ${TORRES}, S. 54.`} />
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/experience-map.jpg" alt="Skizze einer Experience Map mit Strichmännchen: von einer Empfehlung über das Suchen bis zum Film und dem Ende, mit einem Abzweig, wenn nichts gefunden wird" quelle={`Experience Map „Wie unterhalten sich Menschen mit Videos?“. ${TORRES}, S. 54.`} />
+      <ul>
+        <li><strong>Allein</strong>, ohne zu reden, ein Knoten pro Sticky.</li>
+        <li><strong>Nicht euer Produkt</strong>, sondern was die Menschen heute erleben – auch Umwege und wo sie aufgeben.</li>
+        <li><strong>Zeichnen statt schreiben</strong>, Strichmännchen reichen.</li>
+        <li>Unsicher? Ein <strong>„?“</strong> an die Verbindung. <Timer minuten={6} /></li>
+      </ul>
+    </BildText>
     <div class="nur-handout">
-      <p>Was ihr hier zeichnet, nennt Teresa Torres eine <strong>Experience Map</strong>: eine Bestandsaufnahme dessen, was ihr über eure Kundschaft zu wissen glaubt (Kap. 4). Drei Regeln aus ihrem Buch:</p>
+      <p>Was ihr hier zeichnet, nennt Teresa Torres eine <strong>Experience Map</strong>: eine Bestandsaufnahme dessen, was ihr über eure Kundschaft zu wissen glaubt (Kap. 4). Drei Gründe für die Regeln:</p>
       <ul>
         <li><strong>Erst allein.</strong> Wer gleich gemeinsam zeichnet, landet beim Gruppendenken: Die Lauteste setzt das Bild, die anderen nicken. Erst danach zeigt ihr euch die Bilder und fragt nach – ohne eure eigene Zeichnung zu verteidigen.</li>
         <li><strong>Zeichnen statt schreiben.</strong> Sprache ist ungenau; zwei Menschen glauben, sich einig zu sein, und meinen Verschiedenes. Eine Zeichnung zwingt zu Knoten und Verbindungen.</li>
         <li><strong>Das ist ein Entwurf, keine Wahrheit.</strong> Die Map zeigt, was ihr vermutet. Sie sagt euch, wonach ihr in den Interviews fragt, und an Tag 2 werden ihre Momente die obersten Äste eures Baums.</li>
       </ul>
-      <p>Dieses Bild nehmt ihr in den Problem-Rahmen mit. Jede Verbindung, bei der ihr unsicher seid, bekommt ein „?“ – das sind Kandidaten für die Annahmen-Map nach der Mittagspause.</p>
+      <p>Dieses Bild nehmt ihr in den Problem-Rahmen mit. Jede Verbindung mit „?“ ist ein Kandidat für die Annahmen-Map nach der Mittagspause.</p>
     </div>
   </Folie>
 
@@ -143,49 +194,69 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       { t: 'Outcome', sub: 'Was Menschen anders machen:<br>Die Pendlerin steigt mit Kaffee in den Zug', icon: Footprints },
       { t: 'Impact', sub: 'Was es dem Unternehmen bringt:<br>mehr Umsatz am Morgen', icon: TrendingUp },
     ]} />
-    <p class="nur-handout"><strong>Output</strong> ist, was ihr baut: Funktionen, Seiten, Releases. <strong>Outcome</strong> ist, was Menschen danach anders machen. <strong>Impact</strong> ist, was das für das Unternehmen bedeutet. Gemessen wird am Outcome – eine fertige Funktion, die niemand anders benutzt, ist kein Erfolg.</p>
+    <p data-schritt>Gemessen wird am Outcome – eine fertige Funktion, die niemand benutzt, ist kein Erfolg.</p>
+    <p class="nur-handout"><strong>Output</strong> ist, was ihr baut: Funktionen, Seiten, Releases. <strong>Outcome</strong> ist, was Menschen danach anders machen. <strong>Impact</strong> ist, was das für das Unternehmen bedeutet. Torres zitiert Josh Seiden: „Ein Outcome ist eine Veränderung im Verhalten von Menschen, die Geschäftsergebnisse antreibt“ (S. 37).</p>
   </Folie>
 
   <Folie>
     <h2 id="outcome-arten">Drei Arten von Zielen</h2>
     <p class="folie-satz">Die Wurzel eures Baums ist ein Product Outcome.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/outcome-arten.jpg" alt="Drei Zeilen: Business Outcomes messen Geschäftswert (Retention), Product Outcomes messen, wie das Produkt ihn treibt (Hunde, denen das Futter schmeckt), Traction Metrics die Nutzung einer Funktion (Besitzer*innen, die den Umstellungskalender nutzen)" quelle={`Beispiel tails.com, Hundefutter im Abo. ${TORRES}, S. 40.`} />
+      <ul>
+        <li data-schritt><strong>Business Outcome</strong> – Kundenbindung nach 90 Tagen: zu spät messbar, viele Hebel.</li>
+        <li data-schritt><strong>Product Outcome</strong> – Hunde, denen das Futter schmeckt: sofort messbar, vom Team beeinflussbar.</li>
+        <li data-schritt><strong>Traction Metric</strong> – Nutzung des Umstellungskalenders: legt die Lösung schon fest.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Das Team von tails.com sollte die Kundenbindung nach 90 Tagen erhöhen. Darauf mussten sie aber jeweils drei Monate warten. In Interviews fanden sie zwei Gründe für Kündigungen: Manche verstanden den Wert des maßgeschneiderten Futters nicht, und manchen Hunden schmeckte es nicht. Daraus wurden zwei Product Outcomes, die das Team sofort messen und selbst beeinflussen konnte (S. 37–38). Hätte es „Nutzung des Umstellungskalenders“ als Ziel bekommen, wäre die Lösung schon festgelegt gewesen. Will den Kalender niemand, steckt das Team fest (S. 41).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="outcome-kaffeebar">Drei Arten von Zielen bei der Kaffeebar</h2>
+    <p class="folie-satz">Ein neues Outcome beginnt mit einem Lernziel.</p>
     <div style="overflow-x:auto">
       <table>
-        <thead><tr><th></th><th>misst</th><th>Kaffeebar</th><th>als Wurzel</th></tr></thead>
+        <thead><tr><th></th><th>Kaffeebar</th><th>als Wurzel</th></tr></thead>
         <tbody>
-          <tr><th>Business Outcome</th><td>was das Unternehmen davon hat</td><td>Umsatz am Morgen</td><td>zu spät messbar, zu viele Hebel</td></tr>
-          <tr><th>Product Outcome</th><td>was Menschen mit dem Produkt anders tun</td><td>Mehr Pendler*innen steigen mit Kaffee in den Zug</td><td><strong>ja</strong></td></tr>
-          <tr><th>Traction Metric</th><td>wie oft eine Funktion benutzt wird</td><td>Vorbestellungen per App</td><td>Falle: legt die Lösung schon fest</td></tr>
+          <tr data-schritt><th>Business Outcome</th><td>Umsatz am Morgen</td><td>zu spät messbar, zu viele Hebel</td></tr>
+          <tr data-schritt><th>Product Outcome</th><td>Mehr Pendler*innen steigen mit Kaffee in den Zug</td><td><strong>ja</strong></td></tr>
+          <tr data-schritt><th>Traction Metric</th><td>Vorbestellungen per App</td><td>Falle: legt die Lösung schon fest</td></tr>
         </tbody>
       </table>
     </div>
-    <div data-schritt>
-      <BuchAbbildung src="/quellen/torres/outcome-arten.jpg" alt="Drei Zeilen: Business Outcomes messen Geschäftswert (Retention), Product Outcomes messen, wie das Produkt ihn treibt (Hunde, denen das Futter schmeckt), Traction Metrics die Nutzung einer Funktion (Besitzer*innen, die den Umstellungskalender nutzen)" quelle={`Beispiel tails.com, Hundefutter im Abo. ${TORRES}, S. 40.`} />
-    </div>
-    <div class="nur-handout">
-      <p>Das Team von tails.com sollte die Kundenbindung nach 90 Tagen erhöhen. Darauf mussten sie aber jeweils drei Monate warten. In Interviews fanden sie zwei Gründe für Kündigungen: Manche verstanden den Wert des maßgeschneiderten Futters nicht, und manchen Hunden schmeckte es nicht. Daraus wurden zwei <strong>Product Outcomes</strong>, die das Team sofort messen und selbst beeinflussen konnte (S. 37–38). Hätte es stattdessen „Nutzung des Umstellungskalenders“ als Ziel bekommen, wäre die Lösung schon festgelegt gewesen. Will den Kalender niemand, steckt das Team fest (S. 41).</p>
-      <p>Ein neues Outcome beginnt mit einem <strong>Lernziel</strong> („herausfinden, was Pendler*innen vom Kaffee abhält“). Eine Zielzahl kommt erst, wenn ihr wisst, was es bewegt. Torres stützt das auf Forschung zu Zielen: Bei komplexen Aufgaben schneiden Teams mit einem Lernziel besser ab als Teams, die sofort eine schwierige Zahl erreichen sollen (S. 44).</p>
-    </div>
+    <p data-schritt><strong>Lernziel zuerst:</strong> „Herausfinden, was Pendler*innen vom Kaffee abhält“ – die Zielzahl kommt, wenn ihr wisst, was es bewegt.</p>
+    <p class="nur-handout">Torres stützt das auf Forschung zu Zielen: Bei komplexen Aufgaben schneiden Teams mit einem Lernziel besser ab als Teams, die sofort eine schwierige Zahl erreichen sollen (S. 44). Wie viele es in einem Test sein müssen – etwa „4 von 5“ –, gehört auf die Experiment-Karte.</p>
   </Folie>
 
   <Folie>
     <h2 id="outcome-filter">Das Outcome filtert die Chancen</h2>
     <p class="folie-satz">In den Baum kommt nur, was auf euer Outcome wirkt.</p>
-    <BuchAbbildung src="/quellen/torres/nur-relevante.jpg" alt="Ein Outcome mit drei Opportunities und darunter weiteren: Nur Opportunities, die für das Outcome relevant sind" quelle={`${TORRES}, S. 27.`} />
-    <div class="nur-handout">
-      <p>Interviews liefern Dutzende Wünsche und Schmerzen. Eure Aufgabe ist nicht, alle zu lösen, sondern die, die euer Outcome bewegen. So schafft ihr Wert für die Kundschaft <em>und</em> für das Unternehmen (S. 80). Bei der Kaffeebar gehört „Das WLAN am Bahnhof ist schlecht“ nicht in den Baum, auch wenn es stimmt.</p>
-      <p>Umgekehrt braucht das Outcome die Kundschaft. Torres erzählt dazu von Wells Fargo: Die Bank wollte, dass jede Kundin mehr Konten hat, und setzte ihre Berater*innen mit unerreichbaren Quoten unter Druck. Viele eröffneten Konten ohne Wissen der Kundschaft; das kostete Strafen und Klagen in Milliardenhöhe. „Mehr Konten um jeden Preis“ war das falsche Problem; „Kundschaft, die von sich aus mehr Konten will“ wäre das richtige gewesen (S. 21–24). Darum braucht ein Outcome ein Gegengewicht: Mehr Kaffee im Zug darf nicht heißen, dass die Schlange für alle anderen länger wird (S. 48).</p>
-    </div>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/nur-relevante.jpg" alt="Ein Outcome mit drei Opportunities und darunter weiteren: Nur Opportunities, die für das Outcome relevant sind" quelle={`${TORRES}, S. 27.`} />
+      <ul>
+        <li data-schritt>Interviews liefern Dutzende Wünsche – ihr löst die, die das Outcome bewegen.</li>
+        <li data-schritt>„Das WLAN am Bahnhof ist schlecht“ stimmt – gehört aber nicht in den Baum.</li>
+        <li data-schritt>Umgekehrt: Ein Outcome ohne Kundschaft geht schief (Wells Fargo).</li>
+        <li data-schritt>Darum ein Gegengewicht: Die Schlange darf für alle anderen nicht länger werden.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Wells Fargo wollte, dass jede Kundin mehr Konten hat, und setzte die Berater*innen mit unerreichbaren Quoten unter Druck. Viele eröffneten Konten ohne Wissen der Kundschaft; das kostete Strafen und Klagen in Milliardenhöhe. „Mehr Konten um jeden Preis“ war das falsche Problem; „Kundschaft, die von sich aus mehr Konten will“ wäre das richtige gewesen ({TORRES}, S. 21–24, 48).</p>
   </Folie>
 
   <Folie>
     <h2 id="skateboard">Skateboard statt Rad</h2>
     <p class="folie-satz">Jede Stufe muss jemand benutzen können – sonst lernt ihr nichts.</p>
-    <BuchAbbildung src="/quellen/kniberg/mvp.png" alt="Zwei Reihen: Nicht so – Rad, Achse, Karosserie, Auto, die Person ist bis zum Schluss unzufrieden. Sondern so – Skateboard, Roller, Fahrrad, Motorrad, Auto, die Person ist mit jeder Stufe zufriedener" quelle="Henrik Kniberg, „Making sense of MVP“ (Crisp Blog, 2016)." />
-    <div class="nur-handout">
-      <p>Die obere Reihe ist für Henrik Kniberg „verfälschtes Agil“: Es wird in Schritten geliefert, aber ein Rad hilft niemandem, also gibt es kein Feedback. In der unteren Reihe bringt schon das Skateboard die Person von A nach B – nicht gut, aber besser als nichts. Sie benutzt es, und ihr erfahrt, was ihr wirklich fehlt.</p>
-      <p>Kniberg sagt deshalb lieber <em>Earliest Testable Product</em> statt MVP. Seine Schlüsselfrage: „Was ist der billigste und schnellste Weg, mit dem Lernen anzufangen?“ Manchmal ist das nicht einmal ein Skateboard, sondern ein Busticket. Spotify begann mit einer Version ohne Funktionen außer ein paar fest eingebauten Liedern – für Freunde und Familie, um zu prüfen, ob es technisch geht und ob sie es mögen.</p>
-    </div>
+    <BildText>
+      <BuchAbbildung src="/quellen/kniberg/mvp.png" alt="Zwei Reihen: Nicht so – Rad, Achse, Karosserie, Auto, die Person ist bis zum Schluss unzufrieden. Sondern so – Skateboard, Roller, Fahrrad, Motorrad, Auto, die Person ist mit jeder Stufe zufriedener" quelle="Henrik Kniberg, „Making sense of MVP“ (Crisp Blog, 2016)." />
+      <ul>
+        <li data-schritt><strong>Oben:</strong> Ein Rad hilft niemandem – kein Feedback bis zum Schluss.</li>
+        <li data-schritt><strong>Unten:</strong> Schon das Skateboard bringt von A nach B, und ihr erfahrt, was fehlt.</li>
+        <li data-schritt>Kniberg: „Earliest Testable Product“ statt MVP.</li>
+        <li data-schritt>Schlüsselfrage: Was ist der billigste, schnellste Weg, mit dem Lernen anzufangen?</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Die obere Reihe ist für Kniberg „verfälschtes Agil“: Es wird in Schritten geliefert, aber ohne echte Rückmeldung. Manchmal ist der erste Schritt nicht einmal ein Skateboard, sondern ein Busticket. Spotify begann mit einer Version ohne Funktionen außer ein paar fest eingebauten Liedern – für Freunde und Familie, um zu prüfen, ob es technisch geht und ob sie es mögen.</p>
   </Folie>
 
   <Folie>

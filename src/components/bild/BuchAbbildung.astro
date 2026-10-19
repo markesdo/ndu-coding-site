@@ -16,4 +16,6 @@ if (!src.startsWith('/quellen/')) throw new Error(`BuchAbbildung: Bilder gehöre
   /* Die Abbildungen sind grau auf weiß gedruckt: auch im dunklen Modus auf weißem Grund lassen, sonst verschwinden die Linien. */
   .buch-abbildung img { display: block; width: 100%; height: auto; background: #fff; border-radius: 6px; padding: .5rem; box-sizing: border-box; border: 1px solid var(--border, #ddd); }
   .buch-abbildung figcaption { margin-top: .4rem; }
+  /* Im Beamer passt die Abbildung samt Überschrift auf den Bildschirm (1280×720). */
+  :global(html[data-beamer]) .buch-abbildung img { max-height: calc(100vh - 17rem); width: auto; max-width: 100%; }
 </style>
