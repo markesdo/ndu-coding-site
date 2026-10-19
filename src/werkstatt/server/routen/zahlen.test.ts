@@ -7,6 +7,7 @@ import { appErstellen } from '../app';
 import { fakeSpeicher } from '../fake-speicher';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { COOKIE_WERKSTATT, sitzungErstellen, type Sitzung } from '../sitzung';
+import { DateiUnlesbar } from '../speicher-fehler';
 import type { Speicher } from '../typen';
 
 const BASIS = 'http://localhost:4321';
@@ -18,7 +19,7 @@ const AUTOR = { name: 'sofie-x', email: 'x@example.invalid' };
 
 afterEach(() => vi.restoreAllMocks());
 
-async function aufbau(opts: { lesen?: (fake: Speicher) => Speicher['lesen'] } = {}) {
+async function aufbau(opts: { lesen?: (fake: Speicher) => Speicher['lesen']; werkstattJson?: Speicher['werkstattJson'] } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: ZUGANG };
   const fake = fakeSpeicher();
   // Sofie hat alle vier Artefakte, Jonas noch keine Mappe.
@@ -27,7 +28,7 @@ async function aufbau(opts: { lesen?: (fake: Speicher) => Speicher['lesen'] } = 
   for (const [name, daten] of Object.entries(beispiele)) {
     await fake.speichern('test-sofie', name as keyof typeof beispiele, { [`mappe/${name}.json`]: JSON.stringify(daten) }, null, AUTOR, 'x');
   }
-  const speicher: Speicher = { ...fake, lesen: opts.lesen ? opts.lesen(fake) : fake.lesen };
+  const speicher: Speicher = { ...fake, lesen: opts.lesen ? opts.lesen(fake) : fake.lesen, werkstattJson: opts.werkstattJson ?? fake.werkstattJson };
   const app = appErstellen(lokaleAbhaengigkeiten({ umgebung, speicher, jetzt: () => JETZT }));
   async function holen(s?: Omit<Sitzung, 'exp'>) {
     const headers: Record<string, string> = {};
@@ -81,6 +82,19 @@ describe('GET /api/werkstatt/zahlen', () => {
     const r = await t.holen(MARKUS);
     const sofie = (await r.json()).personen[0];
     expect(sofie).toStrictEqual({ ...SOFIE_ZAHLEN, annahmen: 0, unlesbar: ['annahmen'] });
+  });
+
+  it('kaputtes JSON in einer Datei: nur dieses Artefakt unlesbar, der Rest zählt', async () => {
+    const t = await aufbau({ lesen: (fake) => async (repo, name) => { if (name === 'leitfaden') throw new DateiUnlesbar('mappe/leitfaden.json'); return fake.lesen(repo, name); } });
+    const sofie = (await (await t.holen(MARKUS)).json()).personen[0];
+    expect(sofie).toStrictEqual({ ...SOFIE_ZAHLEN, fragen: 0, unlesbar: ['leitfaden'] });
+  });
+
+  it('Repo gehört laut werkstatt.json jemand anderem: nicht mitzählen, fehler', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = await aufbau({ werkstattJson: async (repo) => (repo === 'test-sofie' ? { kohorte: 'test', githubId: 4242 } : null) });
+    const r = await t.holen(MARKUS);
+    expect((await r.json()).personen).toStrictEqual([{ ...NULLEN('sofie'), fehler: true }, NULLEN('jonas')]);
   });
 
   it('Brief: leere Felder zählen nicht, „nicht“ zählt einmal', async () => {

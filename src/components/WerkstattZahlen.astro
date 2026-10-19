@@ -18,6 +18,9 @@ import { ChartColumnIncreasing } from '@lucide/astro';
     const feld = box.querySelector<HTMLElement>('[data-zahlen-kacheln]')!;
     const liste = box.querySelector<HTMLElement>('[data-zahlen-personen]')!;
     const melden = (text: string, link?: { href: string; t: string }) => {
+      // Alte Zahlen weg, sobald etwas anderes als ein neuer Stand kommt – sonst stünden sie ohne Uhrzeit da.
+      feld.hidden = true;
+      liste.hidden = true;
       meldung.textContent = text;
       if (link) { const a = document.createElement('a'); a.href = link.href; a.textContent = link.t; meldung.append(' ', a); }
     };
@@ -43,9 +46,9 @@ import { ChartColumnIncreasing } from '@lucide/astro';
           return d;
         }));
         liste.replaceChildren(...z.personen.map((p) => { const li = document.createElement('li'); li.textContent = personZeile(p, z.briefFelderGesamt); return li; }));
+        melden(`Stand ${new Date().toLocaleTimeString('de-AT', { hour: '2-digit', minute: '2-digit' })}, ${z.personen.length} Mappen.`);
         feld.hidden = false;
         liste.hidden = false;
-        melden(`Stand ${new Date().toLocaleTimeString('de-AT', { hour: '2-digit', minute: '2-digit' })}, ${z.personen.length} Mappen.`);
       } catch {
         melden('Die Werkstatt antwortet gerade nicht.');
       } finally {

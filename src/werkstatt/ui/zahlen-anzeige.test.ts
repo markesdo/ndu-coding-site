@@ -14,7 +14,7 @@ const Z: Zahlen = {
 
 describe('Zahlen-Anzeige', () => {
   it('summiert über die Gruppe; Brief gegen alle möglichen Felder', () => {
-    expect(kacheln(Z).map((k) => k.zahl)).toStrictEqual(['13', '16', '5', '10 / 18']);
+    expect(kacheln(Z).map((k) => k.zahl)).toStrictEqual(['13', '16', '5', '10 / 12']);
   });
 
   it('eine Zeile pro Person, Fehler und unlesbare Dateien sichtbar', () => {

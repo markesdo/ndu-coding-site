@@ -7,13 +7,15 @@ export interface Kachel {
   was: string;
 }
 
+// Personen mit `fehler` zählen nicht mit (ihre Nullen hießen sonst „nichts gemacht“); ihre Zeile sagt, dass die Mappe fehlt.
 export function kacheln(z: Zahlen): Kachel[] {
-  const summe = (f: (p: Zahlen['personen'][number]) => number) => z.personen.reduce((s, p) => s + f(p), 0);
+  const gelesen = z.personen.filter((p) => !p.fehler);
+  const summe = (f: (p: Zahlen['personen'][number]) => number) => gelesen.reduce((s, p) => s + f(p), 0);
   return [
     { zahl: String(summe((p) => p.annahmen)), was: 'Annahmen auf der Map' },
     { zahl: String(summe((p) => p.fragen)), was: 'Fragen im Leitfaden' },
     { zahl: String(summe((p) => p.entscheidungen)), was: 'Zeilen im Entscheidungslog' },
-    { zahl: `${summe((p) => p.briefFelder)} / ${z.briefFelderGesamt * z.personen.length}`, was: 'Felder im Produkt-Brief' },
+    { zahl: `${summe((p) => p.briefFelder)} / ${z.briefFelderGesamt * gelesen.length}`, was: 'Felder im Produkt-Brief' },
   ];
 }
 
