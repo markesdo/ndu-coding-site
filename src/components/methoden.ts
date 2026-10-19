@@ -88,7 +88,7 @@ export const METHODEN: Methode[] = [
       'Der Problemsatz enthält keine Lösung: kein „App“, keine „Plattform“, keine Funktion.',
       'Es steht da, wie das Problem heute gelöst wird – auch „gar nicht“ ist eine Antwort.',
       '„Was macht es NICHT?“ nennt drei Dinge, die naheliegen würden.',
-      'Die Outcome-Metrik beschreibt, was Menschen tun – nicht, was das Produkt kann – und ist mit 3–5 Menschen prüfbar.',
+      'Die Outcome-Metrik beschreibt, was Menschen anders tun – nicht, was das Produkt kann, und nicht, wie oft eine Funktion benutzt wird – und lässt sich schon an wenigen Menschen beobachten.',
     ],
   },
   {
@@ -104,9 +104,23 @@ export const METHODEN: Methode[] = [
     ],
   },
   {
+    slug: 'annahmen', name: 'Annahmen-Map', tag: 1, dauer: 45,
+    frage: 'Welche Annahmen müssen stimmen – und welche ist am riskantesten?',
+    braucht: ['brief'], ergibt: ['annahmen'],
+    pruefliste: [
+      'Jede Annahme ist ein prüfbarer Satz: „Wir glauben, dass …“.',
+      'Alle vier Arten kommen vor: wünschenswert, machbar, wirtschaftlich, bedienbar.',
+      'Bei jeder Annahme steht, wie wichtig sie ist und welchen Beleg es gibt.',
+      'Die riskanteste Annahme – sehr wichtig, kaum Beleg – ist markiert, und daraus ist eine Forschungsfrage für die Interviews geworden.',
+      'Keine Annahme ist eine Aufgabe („Logo gestalten“) oder eine Funktion („Es gibt einen Login“).',
+    ],
+    ki: 'Red Team: sucht Annahmen, die ihr übersehen habt.',
+    quelle: 'David J. Bland & Alex Osterwalder, Testing Business Ideas',
+  },
+  {
     slug: 'interview', name: 'Jobs to be Done & Mom Test', tag: 1, dauer: 120,
     frage: 'Was tun Menschen heute wirklich, um ihren Job zu erledigen?',
-    braucht: ['brief'], ergibt: ['transkripte'],
+    braucht: ['brief', 'annahmen'], ergibt: ['transkripte'],
     pruefliste: [
       'Keine Frage nach der Zukunft („Würdest du …?“, „Wie viel würdest du zahlen?“).',
       'Keine Frage stellt eure Idee vor oder will sie bewertet haben.',
@@ -117,20 +131,6 @@ export const METHODEN: Methode[] = [
     ],
     ki: 'Markiert suggestive und hypothetische Fragen im Leitfaden und spielt zur Probe eine zurückhaltende Person aus der Zielgruppe.',
     quelle: 'Rob Fitzpatrick, The Mom Test; Clayton Christensen, Jobs to be Done',
-  },
-  {
-    slug: 'annahmen', name: 'Annahmen-Map', tag: 1, dauer: 45,
-    frage: 'Welche Annahmen müssen stimmen – und welche ist am riskantesten?',
-    braucht: ['brief'], ergibt: ['annahmen'],
-    pruefliste: [
-      'Jede Annahme ist ein prüfbarer Satz: „Wir glauben, dass …“.',
-      'Alle vier Arten kommen vor: wünschenswert, machbar, wirtschaftlich, bedienbar.',
-      'Bei jeder Annahme steht, wie wichtig sie ist und welchen Beleg es gibt.',
-      'Die riskanteste Annahme – sehr wichtig, kaum Beleg – ist markiert.',
-      'Keine Annahme ist eine Aufgabe („Logo gestalten“) oder eine Funktion („Es gibt einen Login“).',
-    ],
-    ki: 'Red Team: sucht Annahmen, die ihr übersehen habt.',
-    quelle: 'David J. Bland & Alex Osterwalder, Testing Business Ideas',
   },
   {
     slug: 'synthese', name: 'Interview-Synthese', tag: 2, dauer: 60,

@@ -26,12 +26,12 @@ describe('annahmenPunkte', () => {
     expect(annahmenPunkte([annahme(1)], null)[0]!.hervor).toBe(false);
   });
 
-  it('A1 liegt im Feld oben links, A2 oben rechts', () => {
+  it('A1 (kein Beleg) liegt im Feld oben rechts, A2 (getan) oben links', () => {
     const p = annahmenPunkte(beispiel.annahmen as Annahme[], 'A1');
     expect(p[0]).toMatchObject({ id: 'A1' });
-    expect(p[0]!.x).toBeLessThan(0.5);
+    expect(p[0]!.x).toBeGreaterThan(0.5);
     expect(p[0]!.y).toBeGreaterThan(0.5);
-    expect(p[1]!.x).toBeGreaterThan(0.5);
+    expect(p[1]!.x).toBeLessThan(0.5);
     expect(p[1]!.y).toBeGreaterThan(0.5);
   });
 

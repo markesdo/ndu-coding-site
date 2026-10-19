@@ -23,7 +23,7 @@ Riskanteste Annahme: A1
 
 | ID | Wir glauben, dass … | Art | Wichtig | Beleg |
 |----|---------------------|-----|---------|-------|
-| **A1** (riskanteste) | Wir glauben, dass Pendler\\*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen. | wünschenswert | hoch | noch keiner |
+| **A1** (riskanteste) | Wir glauben, dass Pendler\\*innen schon vor der Ankunft am Bahnhof entscheiden, ob sie Kaffee holen. | wünschenswert | hoch | noch keiner |
 | **A2** | Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann. | machbar | hoch | getan |
 | **A3** | Wir glauben, dass Pendler\\*innen im Gehen innerhalb von 20 Sekunden bestellen können. | bedienbar | mittel | noch keiner |
 | **A4** | Wir glauben, dass sich die zusätzlichen Bestellungen ohne eine weitere Kraft am Morgen rechnen. | wirtschaftlich | niedrig | getan |
@@ -55,10 +55,10 @@ Kommt aus der Story Map (Tag 3).
 ## 6. Woran merken wir, dass es funktioniert?
 Wir glauben: Pendler\\*innen bekommen morgens Kaffee, ohne ihren Zug zu riskieren.
 
-Wir merken es: Wenn 4 von 5 Testpersonen an drei Tagen hintereinander mit Kaffee in ihren Zug steigen.
+Wir merken es: Wenn mehr Pendler\\*innen morgens mit Kaffee in den Zug steigen – zuerst beobachtet an wenigen Testpersonen.
 
 ## 7. Offene Fragen
-- Wollen Pendler\\*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen?
+- Entscheiden Pendler\\*innen schon vor der Ankunft am Bahnhof, ob sie Kaffee holen?
 "
 `;
 
@@ -79,7 +79,7 @@ exports[`Snapshots der Kaffeebar-Beispiele > leitfaden 1`] = `
 
 **Stand:** 22.10.2026
 
-Ziel: Herausfinden, ob Pendler\\*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.
+Ziel: Herausfinden, wann und wo Pendler\\*innen entscheiden, ob sie Kaffee holen – schon vor der Ankunft oder erst am Bahnhof.
 
 Wen: Pendler\\*innen, die werktags zwischen 7:15 und 7:45 am Bahnhof auf den Zug nach Wien warten
 

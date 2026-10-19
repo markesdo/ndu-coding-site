@@ -13,11 +13,13 @@ import VierArten from '../../../components/bild/VierArten.astro';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 // Achsen und Felder der Annahmen-Map: leer auf „Worum es geht“, gefüllt auf „Am Beispiel“.
+// Ausrichtung wie bei Bland (Testing Business Ideas) und Torres (Kap. 9): rechts wenig Beleg, oben rechts zuerst testen –
+// so passt die Folie zu den Abbildungen in beiden Büchern.
 const karte = {
   y: { label: 'wichtig', unten: 'weniger', oben: 'sehr' },
-  x: { label: 'belegt', links: 'kein Beleg', rechts: 'starker Beleg' },
-  felder: ['Zuerst testen', 'Darauf bauen', 'Später prüfen', 'Abhaken'] as [string, string, string, string],
-  hervor: 'ol' as const,
+  x: { label: 'Beleg', links: 'starker Beleg', rechts: 'kein Beleg' },
+  felder: ['Beleg prüfen, darauf bauen', 'Zuerst testen', 'Abhaken', 'Später prüfen'] as [string, string, string, string],
+  hervor: 'or' as const,
 };
 // Red Team über den Connector; der Werkzeugname kommt aus dem Vertrag, nicht als Text.
 const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Wo im Brief steckt eine Annahme, die in der Map fehlt? Zitier höchstens drei Stellen wörtlich und frag mich zu jeder, was wir dort voraussetzen. Formulier die Annahmen nicht für mich – ich entscheide, was in die Map kommt.`;
@@ -33,8 +35,9 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
     <h2 id="worum">Worum es geht</h2>
     <p class="folie-satz">Getestet wird zuerst, was sehr wichtig ist und kaum belegt.</p>
     <p class="nur-handout">Zwei Fragen pro Annahme: <strong>Wie wichtig ist sie?</strong> Fällt das Produkt um, wenn sie falsch ist? <strong>Welchen Beleg habt ihr?</strong></p>
-    <Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts belegt; oben links zuerst testen" {...karte} />
-    <p class="nur-handout">Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach diesen zwei Fragen. Die riskanteste Annahme – sehr wichtig, kaum belegt – kommt zuerst dran.</p>
+    <Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts weniger Beleg; oben rechts zuerst testen" {...karte} />
+    <p class="nur-handout">Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach diesen zwei Fragen. Die riskanteste Annahme – sehr wichtig, kaum belegt – kommt zuerst dran. Oben links liegt, was wichtig und gut belegt ist: Darauf baut ihr, prüft aber, ob der Beleg wirklich trägt.</p>
+    <p class="nur-handout"><strong>Heute und an Tag 3.</strong> Heute geht es vor allem um Annahmen über eure Kundschaft und ihr Problem: Wer hat es, wann, was tun sie heute? Diese prüft ihr mit den Interviews bis Tag 2; die riskanteste wird zur Forschungsfrage eures Leitfadens. Annahmen über eine Lösung – ob jemand im Gehen bestellt, ob es sich rechnet – lassen sich in Interviews kaum prüfen. Für sie macht ihr an Tag 3 eine eigene Map pro Idee, wenn ihr mehrere Ideen habt, und testet sie mit Experimenten (Teresa Torres, „Continuous Discovery Habits“, 2021, Kap. 9–10).</p>
   </Folie>
 
   <Folie>
@@ -65,12 +68,12 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
     <p class="folie-satz">A1 ist sehr wichtig und gar nicht belegt – sie wird zuerst getestet.</p>
     <Matrix2x2 label="Annahmen-Map der Kaffeebar: nach oben wichtig, nach rechts belegt" {...karte}
       punkte={[
-        { t: 'A1 · Kaffee schon vor der Ankunft bestimmen', x: .08, y: .86, hervor: true },
-        { t: 'A2 · 40 Bestellungen in 30 min', x: .9, y: .72 },
-        { t: 'A3 · Bestellen in 20 s im Gehen', x: .1, y: .3 },
-        { t: 'A4 · Rechnet sich ohne weitere Kraft', x: .9, y: .26 },
+        { t: 'A1 · Entscheiden schon vor der Ankunft', x: .92, y: .86, hervor: true },
+        { t: 'A2 · 40 Bestellungen in 30 min', x: .1, y: .72 },
+        { t: 'A3 · Bestellen in 20 s im Gehen', x: .9, y: .3 },
+        { t: 'A4 · Rechnet sich ohne weitere Kraft', x: .1, y: .26 },
       ]} />
-    <p class="nur-handout"><strong>A1 · Wir glauben, dass Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.</strong> Ist sie falsch, braucht es kein Vorbestellen, egal wie gut es gebaut ist. Sie ist damit wichtiger als die Frage, ob 20 Sekunden zum Bestellen reichen. Die Interviews bis Tag 2 sollen genau dazu Geschichten liefern.</p>
+    <p class="nur-handout"><strong>A1 · Wir glauben, dass Pendler*innen schon vor der Ankunft am Bahnhof entscheiden, ob sie Kaffee holen.</strong> Das ist eine Annahme über ihr Verhalten, nicht über eine Lösung. Ist sie falsch, hilft keine Vorbestellung, egal wie gut sie gebaut ist. Sie ist damit wichtiger als die Frage, ob 20 Sekunden zum Bestellen reichen. Daraus wird die Forschungsfrage für die Interviews: <em>Wann und wo entscheiden Pendler*innen, ob sie Kaffee holen?</em> Gefragt wird nicht danach, sondern nach dem letzten Morgen: „Erzähl mir von deinem letzten Morgen am Bahnhof.“</p>
   </Folie>
 
   <Folie>
@@ -98,9 +101,9 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
 
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-    <p class="folie-satz">Welche Annahme ist bei euch das „Kaffee schon vorher bestimmen“?</p>
-    <p>Die Annahme, ohne die alles andere egal ist, wird Ziel eures <a href="/innolab/methoden/interview">Interviewleitfadens</a>.</p>
+    <p class="folie-satz">Welche Annahme ist bei euch das „schon vor der Ankunft entscheiden“?</p>
+    <p>Die Annahme, ohne die alles andere egal ist, wird die Forschungsfrage eures <a href="/innolab/methoden/interview">Interviewleitfadens</a> – den schreibt ihr gleich danach.</p>
   </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} next={{ href: '/innolab/tag-1/abschluss', t: 'Tag 1 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/entscheidungslog', t: 'Entscheidungslog' }} next={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} />
 </Layout>

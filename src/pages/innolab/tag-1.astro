@@ -8,14 +8,21 @@ import Timer from '../../components/Timer.astro';
 import Fluss from '../../components/Fluss.astro';
 import Baum from '../../components/bild/Baum.astro';
 import Diamant from '../../components/bild/Diamant.astro';
+import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import { FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
 import FooterNav from '../../components/FooterNav.astro';
 
 // Roter Faden des Innolab am Beispiel der Kaffeebar: heute entsteht die oberste Ebene.
-const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder: [
-  { t: 'Die Schlange ist zu lang für den Zug', kinder: [{ t: 'Vorbestellen per App', kinder: [{ t: 'Fake-Door auf der Landingpage' }] }] },
-  { t: 'Unklar, ob der Kaffee rechtzeitig fertig ist', kinder: [{ t: 'Abholzeit live anzeigen' }] },
+// Nach Torres: Chancen in den Worten der Kundschaft, mehrere Lösungen pro Chance, getestet wird eine Annahme.
+const faden = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den Zug', kinder: [
+  { t: '„Wenn ich anstehe, verpasse ich meinen Zug.“', kinder: [
+    { t: 'Vorbestellen per App', kinder: [{ t: 'Scannen 3 von 10 das Schild an der Tür?' }] },
+    { t: 'Express-Theke' },
+    { t: 'Kaffeewagen am Bahnsteig' },
+  ] },
+  { t: '„Ich weiß nicht, ob sich ein Kaffee noch ausgeht.“', kinder: [{ t: 'Wartezeit an der Hallentür' }] },
 ] };
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 ---
 <Layout title="Tag 1 · Rahmen & Verstehen">
   <span class="eyebrow">Innolab · Tag 1 · Donnerstag, 22. Oktober 2026 · 09:00–16:45</span>
@@ -32,10 +39,10 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
     <Block time="11:00–12:00" type="uebung" title="Problem-Rahmen & Produkt-Brief" href="/innolab/methoden/problem-rahmen">Für wen, welches Problem, woran ihr es merkt.</Block>
     <Block time="12:00–12:15" type="uebung" title="Entscheidungslog" href="/innolab/methoden/entscheidungslog">Die ersten Zeilen, mit Beleg oder „noch keiner“.</Block>
     <Block time="12:15–13:15" type="pause" title="Mittagspause" />
-    <Block time="13:15–13:45" type="konzept" title="Jobs to be Done & Mom Test" href="/innolab/methoden/interview#jtbd">Was Menschen wirklich erledigen wollen, und wie man danach fragt.</Block>
-    <Block time="13:45–15:15" type="uebung" title="Interviewleitfaden" href="/innolab/methoden/interview#vorgehen">Leitfaden, Probe mit Claude, Live-Interview mit Markus.</Block>
-    <Block time="15:15–15:30" type="pause" title="Pause" />
-    <Block time="15:30–16:15" type="uebung" title="Annahmen-Map" href="/innolab/methoden/annahmen">Vier Arten von Annahmen, die riskanteste zuerst.</Block>
+    <Block time="13:15–14:00" type="uebung" title="Annahmen-Map" href="/innolab/methoden/annahmen">Was ihr nur annehmt – die riskanteste Annahme wird zur Forschungsfrage.</Block>
+    <Block time="14:00–14:30" type="konzept" title="Jobs to be Done & Mom Test" href="/innolab/methoden/interview#jtbd">Was Menschen wirklich erledigen wollen, und wie man danach fragt.</Block>
+    <Block time="14:30–14:45" type="pause" title="Pause" />
+    <Block time="14:45–16:15" type="uebung" title="Interviewleitfaden" href="/innolab/methoden/interview#vorgehen">Leitfaden, Probe mit Claude, Live-Interview mit Markus.</Block>
     <Block time="16:15–16:45" type="plenum" title="Hausaufgabe & Abschluss" href="/innolab/tag-1/abschluss">Fünf echte Interviews bis Tag 2.</Block>
   </div>
 
@@ -48,10 +55,40 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
   </Folie>
 
   <Folie>
-    <h2 id="faden">Der rote Faden</h2>
-    <p class="folie-satz">Heute legt ihr das Ziel fest – alles andere hängt daran.</p>
-    <Baum knoten={faden} hervor={0} label="Opportunity Solution Tree der Kaffeebar: Outcome, Chancen, Lösungen, Experimente; heute das Outcome" />
-    <p class="small muted">Opportunity Solution Tree nach Teresa Torres, „Continuous Discovery Habits“ (2021).</p>
+    <h2 id="faden">Der rote Faden: ein Baum vom Ziel bis zum Test</h2>
+    <p class="folie-satz">Wer gleich Lösungen sammelt, löst oft das falsche Problem.</p>
+    <BuchAbbildung src="/quellen/torres/ost.jpg" breit alt="Opportunity Solution Tree: oben ein Outcome, darunter mehrere Ebenen von Opportunities, unter einer davon drei Solutions mit je zwei Assumption Tests" quelle={`Opportunity Solution Tree. ${TORRES}, S. 26.`} />
+    <ul data-schritt>
+      <li><strong>Erst das Ziel, dann die Kundschaft, dann Lösungen.</strong> Eine Lösung zählt nur, wenn sie Menschen hilft <em>und</em> das Ziel bewegt.</li>
+      <li><strong>Vergleichen statt „machen wir das – ja oder nein?“</strong> Mehrere Chancen, mehrere Lösungen nebeneinander.</li>
+      <li><strong>Groß in klein zerlegen.</strong> Kleine Chancen lösen, bis die große gelöst ist.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Teresa Torres hat den Baum gezeichnet, nachdem ein Team sie fragte: „Du sagst uns immer, was als Nächstes kommt. Wie sollen wir das allein wissen?“ Ihre Antwort: Discovery hat eine Struktur. Oben steht ein <strong>Outcome</strong>, das Ziel des Unternehmens. Darunter liegen die <strong>Chancen</strong> (Opportunities): Bedürfnisse, Schmerzen und Wünsche der Kundschaft, die dieses Ziel bewegen würden. Unter einer Chance hängen mehrere <strong>Lösungen</strong>, und unter jeder Lösung die <strong>Annahmen-Tests</strong>, die zeigen, ob sie trägt (S. 25–27).</p>
+      <p>Der Baum hilft gegen zwei typische Fehler. Der erste: Ein Team hört ein Problem und springt zur ersten Lösung, ohne zu fragen, wie man es sonst lösen könnte. Der zweite sind Ja-oder-nein-Entscheidungen („Sollen wir diese Funktion bauen?“). Wer nur eine Option prüft, sucht Belege dafür und übersieht, was dagegen spricht. Der Baum zwingt zum Vergleich: <em>Welche</em> dieser Chancen ist gerade die wichtigste? <em>Welche</em> von drei Lösungen trägt am besten (S. 28–31)?</p>
+      <p>Der Baum wird nicht einmal gezeichnet und dann abgehakt. Scheitert ein Test, fragt ihr: „Was haben wir an der Kundschaft missverstanden?“ – und ändert die Chancen, bevor ihr die nächste Lösung sucht (S. 33). Darum wächst der Baum im Innolab jeden Tag mit, und bei Präsentationen zeigt er, wie ihr zu euren Entscheidungen gekommen seid.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="ebenen">Die vier Ebenen</h2>
+    <p class="folie-satz">Oben das Ziel, unten der Test – dazwischen die Kundschaft.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Ebene</th><th>Was dort steht</th><th>Kaffeebar</th><th>Wann</th></tr></thead>
+        <tbody>
+          <tr><th>Outcome</th><td>Was Menschen anders tun sollen</td><td>Mehr Pendler*innen steigen mit Kaffee in den Zug</td><td>heute</td></tr>
+          <tr><th>Chancen</th><td>Bedürfnis, Schmerz oder Wunsch in den Worten der Kundschaft – nie eine Lösung</td><td>„Wenn ich anstehe, verpasse ich meinen Zug.“</td><td>Tag 2</td></tr>
+          <tr><th>Lösungen</th><td>mehrere pro Chance, damit ihr vergleichen könnt</td><td>App, Express-Theke, Kaffeewagen</td><td>Tag 2–3</td></tr>
+          <tr><th>Annahmen-Tests (Experimente)</th><td>nicht die ganze Idee, sondern was dafür stimmen muss</td><td>Scannen 3 von 10 das Schild?</td><td>Tag 3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div data-schritt>
+      <Baum knoten={faden} hervor={0} label="Opportunity Solution Tree der Kaffeebar: Outcome, Chancen, Lösungen, Annahmen-Tests; heute das Outcome" />
+    </div>
+    <p class="nur-handout">Ein Prüfstein für Chancen: Gibt es mehr als eine Lösung dafür? „Ich will vorbestellen“ hat nur eine – das ist eine Lösung in Verkleidung. „Wenn ich anstehe, verpasse ich meinen Zug“ lässt App, Express-Theke und Kaffeewagen zu (S. 94). Chancen schreibt ihr so, wie Menschen sie in Interviews sagen würden, nicht aus Sicht des Unternehmens: Niemand sagt „Ich wünsche mir mehr Kaffeebar-Umsatz“ (S. 92).</p>
+    <p class="small muted">{TORRES}, Kap. 2 und 6.</p>
   </Folie>
 
   <Folie>
@@ -69,10 +106,19 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
   </Folie>
 
   <Folie>
-    <h2 id="toast-uebertrag">Übertrag: euer Problem als Modell</h2>
+    <h2 id="toast-uebertrag">Übertrag: eure Experience Map</h2>
     <p class="folie-satz">Zeichnet, wie eure Zielgruppe ihr Problem heute löst.</p>
-    <p>Genauso wie beim Toast: allein, ohne zu reden, ein Knoten pro Sticky. <Timer minuten={6} /></p>
-    <p class="nur-handout">Dieses Bild nehmt ihr in den Problem-Rahmen mit. Jede Verbindung, bei der ihr unsicher seid, bekommt ein „?“ – das sind Kandidaten für die Annahmen-Map am Nachmittag.</p>
+    <p>Genauso wie beim Toast: allein, ohne zu reden, ein Knoten pro Sticky. Nicht euer Produkt, sondern was die Menschen heute erleben – auch Umwege und wo sie aufgeben. <Timer minuten={6} /></p>
+    <BuchAbbildung src="/quellen/torres/experience-map.jpg" alt="Skizze einer Experience Map mit Strichmännchen: von einer Empfehlung über das Suchen bis zum Film und dem Ende, mit einem Abzweig, wenn nichts gefunden wird" quelle={`Experience Map „Wie unterhalten sich Menschen mit Videos?“. ${TORRES}, S. 54.`} />
+    <div class="nur-handout">
+      <p>Was ihr hier zeichnet, nennt Teresa Torres eine <strong>Experience Map</strong>: eine Bestandsaufnahme dessen, was ihr über eure Kundschaft zu wissen glaubt (Kap. 4). Drei Regeln aus ihrem Buch:</p>
+      <ul>
+        <li><strong>Erst allein.</strong> Wer gleich gemeinsam zeichnet, landet beim Gruppendenken: Die Lauteste setzt das Bild, die anderen nicken. Erst danach zeigt ihr euch die Bilder und fragt nach – ohne eure eigene Zeichnung zu verteidigen.</li>
+        <li><strong>Zeichnen statt schreiben.</strong> Sprache ist ungenau; zwei Menschen glauben, sich einig zu sein, und meinen Verschiedenes. Eine Zeichnung zwingt zu Knoten und Verbindungen.</li>
+        <li><strong>Das ist ein Entwurf, keine Wahrheit.</strong> Die Map zeigt, was ihr vermutet. Sie sagt euch, wonach ihr in den Interviews fragt, und an Tag 2 werden ihre Momente die obersten Äste eures Baums.</li>
+      </ul>
+      <p>Dieses Bild nehmt ihr in den Problem-Rahmen mit. Jede Verbindung, bei der ihr unsicher seid, bekommt ein „?“ – das sind Kandidaten für die Annahmen-Map nach der Mittagspause.</p>
+    </div>
   </Folie>
 
   <Folie>
@@ -84,6 +130,28 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
       { t: 'Impact', sub: 'Was es dem Unternehmen bringt:<br>mehr Umsatz am Morgen', icon: TrendingUp },
     ]} />
     <p class="nur-handout"><strong>Output</strong> ist, was ihr baut: Funktionen, Seiten, Releases. <strong>Outcome</strong> ist, was Menschen danach anders machen. <strong>Impact</strong> ist, was das für das Unternehmen bedeutet. Gemessen wird am Outcome – eine fertige Funktion, die niemand anders benutzt, ist kein Erfolg.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="outcome-arten">Drei Arten von Zielen</h2>
+    <p class="folie-satz">Die Wurzel eures Baums ist ein Product Outcome.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th></th><th>misst</th><th>Kaffeebar</th><th>als Wurzel</th></tr></thead>
+        <tbody>
+          <tr><th>Business Outcome</th><td>was das Unternehmen davon hat</td><td>Umsatz am Morgen</td><td>zu spät messbar, zu viele Hebel</td></tr>
+          <tr><th>Product Outcome</th><td>was Menschen mit dem Produkt anders tun</td><td>Mehr Pendler*innen steigen mit Kaffee in den Zug</td><td><strong>ja</strong></td></tr>
+          <tr><th>Traction Metric</th><td>wie oft eine Funktion benutzt wird</td><td>Vorbestellungen per App</td><td>Falle: legt die Lösung schon fest</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div data-schritt>
+      <BuchAbbildung src="/quellen/torres/outcome-arten.jpg" alt="Drei Zeilen: Business Outcomes messen Geschäftswert (Retention), Product Outcomes messen, wie das Produkt ihn treibt (Hunde, denen das Futter schmeckt), Traction Metrics die Nutzung einer Funktion (Besitzer*innen, die den Umstellungskalender nutzen)" quelle={`Beispiel tails.com, Hundefutter im Abo. ${TORRES}, S. 40.`} />
+    </div>
+    <div class="nur-handout">
+      <p>Das Team von tails.com sollte die Kundenbindung nach 90 Tagen erhöhen. Darauf mussten sie aber jeweils drei Monate warten. In Interviews fanden sie zwei Gründe für Kündigungen: Manche verstanden den Wert des maßgeschneiderten Futters nicht, und manchen Hunden schmeckte es nicht. Daraus wurden zwei <strong>Product Outcomes</strong>, die das Team sofort messen und selbst beeinflussen konnte (S. 37–38). Hätte es stattdessen „Nutzung des Umstellungskalenders“ als Ziel bekommen, wäre die Lösung schon festgelegt gewesen. Will den Kalender niemand, steckt das Team fest (S. 41).</p>
+      <p>Zwei Regeln für euch: Ein neues Outcome beginnt mit einem <strong>Lernziel</strong> („herausfinden, was Pendler*innen vom Kaffee abhält“). Eine Zielzahl kommt erst, wenn ihr wisst, was es bewegt (S. 44). Und ein Outcome braucht ein Gegengewicht: Mehr Kaffee im Zug darf nicht heißen, dass die Schlange für alle anderen länger wird (S. 48).</p>
+    </div>
   </Folie>
 
   <Folie>
@@ -126,8 +194,8 @@ const faden = { t: 'Mehr Pendler*innen holen morgens Kaffee am Bahnhof', kinder:
     <Fluss label="Die Methoden von Tag 1 und was dabei entsteht" knoten={[
       { t: 'Problem-Rahmen', sub: '<a href="/innolab/methoden/problem-rahmen">Brief</a>', icon: FileText },
       { t: 'Entscheidungslog', sub: '<a href="/innolab/methoden/entscheidungslog">erste Zeilen</a>', icon: ListPlus },
-      { t: 'Jobs to be Done & Mom Test', sub: '<a href="/innolab/methoden/interview">Leitfaden</a>', icon: MessagesSquare },
       { t: 'Annahmen-Map', sub: '<a href="/innolab/methoden/annahmen">riskanteste Annahme</a>', icon: Grid2x2 },
+      { t: 'Jobs to be Done & Mom Test', sub: '<a href="/innolab/methoden/interview">Leitfaden</a>', icon: MessagesSquare },
     ]} />
     <p class="nur-handout">Die Hausaufgabe bis Tag 2 – fünf Interviews, Notizen, Entscheidungslog – steht auf der Seite <a href="/innolab/tag-1/abschluss">Abschluss & Hausaufgabe</a>.</p>
   </Folie>

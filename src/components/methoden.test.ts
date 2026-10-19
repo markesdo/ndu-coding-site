@@ -90,7 +90,7 @@ describe('methoden', () => {
     expect(el).toContain(`\nZum Abgleich lies auch meinen Produkt-Brief (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}).\n`);
     const iv = pruefPrompt(METHODEN.find((m) => m.slug === 'interview')!);
     expect(iv).toMatch(/^Prüf meinen Interviewleitfaden mit der Werkstatt \(Werkzeug artefakt_pruefen\)/);
-    expect(iv).toContain('Zum Abgleich lies auch meinen Produkt-Brief (Werkzeug artefakt_lesen).');
+    expect(iv).toContain('Zum Abgleich lies auch meinen Produkt-Brief und meine Annahmen-Map (Werkzeug artefakt_lesen).');
     const an = pruefPrompt(METHODEN.find((m) => m.slug === 'annahmen')!);
     expect(an).toMatch(/^Prüf meine Annahmen-Map mit der Werkstatt/);
     for (const t of [pr, el, iv, an]) {
@@ -98,7 +98,7 @@ describe('methoden', () => {
       // Claude ändert in der Werkstatt nichts: kein „ändere keine Datei“, sondern kein eigener Text.
       expect(t).toContain('Schreib nichts um und formulier keinen Text für mich');
     }
-    expect(METHODEN.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'interview', 'annahmen']);
+    expect(METHODEN.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'annahmen', 'interview']);
     // Mit Pfad bleibt es die Prüfung einer Datei; die Vorarbeit kommt weiter aus der Werkstatt.
     expect(pruefungInWerkstatt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toBe(false);
     expect(pruefPrompt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toMatch(/^Lies notizen\/alt\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);

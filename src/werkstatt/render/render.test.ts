@@ -35,7 +35,7 @@ describe('Brief', () => {
     expect(s).toContain('## 3. Was ist das Produkt in einem Satz?\nOffen – steht nach Tag 3 fest.');
     expect(s).toContain('Heute gelöst durch: Automat');
     expect(s).toContain('Wir glauben: Pendler\\*innen bekommen morgens Kaffee');
-    expect(s).toContain('Wir merken es: Wenn 4 von 5');
+    expect(s).toContain('Wir merken es: Wenn mehr Pendler\\*innen morgens mit Kaffee');
     expect(s).toContain('- Kein Mittagsgeschäft');
   });
   it('Produktsatz erscheint, wenn gesetzt', () => {
