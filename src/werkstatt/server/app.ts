@@ -5,6 +5,7 @@ import { mcpRouten } from './mcp/server.js';
 import { oauthRouten } from './oauth/routen.js';
 import { authRouten } from './routen/auth.js';
 import { mappeRouten } from './routen/mappe.js';
+import { zahlenRouten } from './routen/zahlen.js';
 import type { Abhaengigkeiten, WerkstattEnv } from './typen.js';
 
 const AENDERND = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
@@ -37,6 +38,7 @@ export function appErstellen(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
 
   app.route('/api/werkstatt/auth', authRouten(abh));
   app.route('/api/werkstatt/mappe', mappeRouten(abh));
+  app.route('/api/werkstatt/zahlen', zahlenRouten(abh));
   // Vor mcpRouten: /api/werkstatt/mcp/resource gehört dem OAuth-Router (volle Pfade, siehe oauth/routen.ts).
   app.route('/', oauthRouten(abh));
   app.route('/api/werkstatt/mcp', mcpRouten(abh));
