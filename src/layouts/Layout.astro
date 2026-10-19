@@ -161,6 +161,23 @@ const { vorher, danach } = nachbarn(path);
         const i = aktuelleFolie(folien.map((f) => f.getBoundingClientRect().top), oben);
         return { folien, i, oben };
       };
+      // Schritte einer Folie: in einer noch verborgenen Auflösung zählen sie erst, wenn sie offen ist; im Handout-Teil nie
+      // (der fehlt im Beamer, ein Schritt dort wäre ein unsichtbarer Tastendruck).
+      const schritteVon = (folie: HTMLElement) =>
+        [...folie.querySelectorAll<HTMLElement>('[data-schritt]')].filter((s) => !s.closest('[hidden], .nur-handout'));
+      // Hinweis unten rechts im Beamer (beamer.css): „→ 4 Schritte“, dann „→ 2 / 4“, am Ende „4 / 4“.
+      const schritteAnzeigen = () => document.querySelectorAll<HTMLElement>('[data-folie]').forEach((f) => {
+        const s = schritteVon(f);
+        const g = s.filter((x) => x.classList.contains('gezeigt')).length;
+        if (!s.length) { f.removeAttribute('data-schritte'); f.removeAttribute('data-schritte-offen'); return; }
+        f.dataset.schritte = g === 0 ? `→ ${s.length} ${s.length === 1 ? 'Schritt' : 'Schritte'}` : g < s.length ? `→ ${g} / ${s.length}` : `${g} / ${s.length}`;
+        f.toggleAttribute('data-schritte-offen', g < s.length);
+      });
+      schritteAnzeigen();
+      // Eine Auflösung öffnet sich per Klick (Aufloesung.astro) und bringt eigene Schritte mit.
+      document.addEventListener('click', () => requestAnimationFrame(schritteAnzeigen));
+      // … oder von selbst, wenn ihre Uhrzeit erreicht ist (Aufloesung.astro).
+      document.addEventListener('aufloesung-offen', () => requestAnimationFrame(schritteAnzeigen));
       // Sofort statt weich scrollen: Beim schnellen Weiterdrücken soll die aktuelle Folie nicht mitten im Scrollen gemessen werden.
       const springe = (f: HTMLElement) => f.scrollIntoView({ behavior: 'instant' as ScrollBehavior });
       const folienBlaettern = (vor: boolean): boolean => {
@@ -168,8 +185,7 @@ const { vorher, danach } = nachbarn(path);
         if (i < 0) return false;
         const folie = folien[i];
         const rand = folie.getBoundingClientRect();
-        // Schritte in einer noch verborgenen Auflösung zählen erst, wenn sie offen ist.
-        const schritte = [...folie.querySelectorAll<HTMLElement>('[data-schritt]')].filter((s) => !s.closest('[hidden]'));
+        const schritte = schritteVon(folie);
         const gezeigt = schritte.filter((s) => s.classList.contains('gezeigt'));
         if (vor) {
           const knopf = folie.querySelector<HTMLButtonElement>('[data-aufloesung-zeigen]');
@@ -212,7 +228,7 @@ const { vorher, danach } = nachbarn(path);
         // ← / → blättern nur im Beamer-Modus; sonst bleiben die Pfeile beim Browser (waagrecht scrollen).
         if (!root.hasAttribute('data-beamer')) return;
         // Seiten mit Folien: erst innerhalb der Seite blättern (Schritte, Auflösung, Folien), dann zur nächsten Seite.
-        if (folienBlaettern(e.key === 'ArrowRight')) { e.preventDefault(); return; }
+        if (folienBlaettern(e.key === 'ArrowRight')) { e.preventDefault(); schritteAnzeigen(); return; }
         const ziel = e.key === 'ArrowRight' ? nextHref : prevHref;
         if (!ziel) return;
         e.preventDefault();

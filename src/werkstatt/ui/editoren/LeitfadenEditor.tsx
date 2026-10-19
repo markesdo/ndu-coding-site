@@ -72,7 +72,7 @@ export default function LeitfadenEditor() {
         <>
           <IdReparatur daten={d} setze={setze} />
           <Textfeld label="Stand" wert={d.stand} onChange={(stand) => setze({ ...d, stand })} fehler={fehler('stand')} hilfe="Datum als JJJJ-MM-TT, zum Beispiel 2026-10-22." />
-          <Textfeld label="Ziel" mehrzeilig wert={d.ziel} onChange={(ziel) => setze({ ...d, ziel })} fehler={fehler('ziel')} hilfe="Welche offene Frage aus dem Brief soll das Interview klären?" />
+          <Textfeld label="Ziel" mehrzeilig wert={d.ziel} onChange={(ziel) => setze({ ...d, ziel })} fehler={fehler('ziel')} hilfe="Die Forschungsfrage aus deiner riskantesten Annahme (Annahmen-Map): Was willst du herausfinden?" />
           <Textfeld label="Wen" mehrzeilig zeilen={2} wert={d.wen} onChange={(wen) => setze({ ...d, wen })} fehler={fehler('wen')} hilfe="Die Zielgruppe aus Abschnitt 1 des Briefs und wie du sie findest." />
           <Textfeld label="Einstieg" mehrzeilig zeilen={5} wert={d.einstieg} onChange={(einstieg) => setze({ ...d, einstieg })} fehler={fehler('einstieg')} hilfe="Ersetze [Situation] durch deine eigene. Du kannst den Text umformulieren." />
           <Liste<Frage>

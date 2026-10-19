@@ -49,9 +49,9 @@ describe('adresseOhneFehler', () => {
 
 describe('leitfadenFrei', () => {
   it('gibt den Leitfaden-Editor erst nach dem Mom Test frei (Wiener Zeit), den Präsentator immer', () => {
-    expect(NACH_MOM_TEST).toBe('2026-10-22T13:45');
-    expect(leitfadenFrei(new Date('2026-10-22T11:44:00Z'), false)).toBe(false); // 13:44 in Wien
-    expect(leitfadenFrei(new Date('2026-10-22T11:45:00Z'), false)).toBe(true);
+    expect(NACH_MOM_TEST).toBe('2026-10-22T14:30');
+    expect(leitfadenFrei(new Date('2026-10-22T12:29:00Z'), false)).toBe(false); // 14:29 in Wien
+    expect(leitfadenFrei(new Date('2026-10-22T12:30:00Z'), false)).toBe(true);
     expect(leitfadenFrei(new Date('2026-10-17T08:00:00Z'), false)).toBe(false);
     expect(leitfadenFrei(new Date('2026-10-17T08:00:00Z'), true)).toBe(true);
   });

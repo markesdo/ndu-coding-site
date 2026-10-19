@@ -10,14 +10,19 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import VierArten from '../../../components/bild/VierArten.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 // Achsen und Felder der Annahmen-Map: leer auf „Worum es geht“, gefüllt auf „Am Beispiel“.
+// Ausrichtung wie bei Bland (Testing Business Ideas) und Torres (Kap. 9): rechts wenig Beleg, oben rechts zuerst testen –
+// so passt die Folie zu den Abbildungen in beiden Büchern.
 const karte = {
   y: { label: 'wichtig', unten: 'weniger', oben: 'sehr' },
-  x: { label: 'belegt', links: 'kein Beleg', rechts: 'starker Beleg' },
-  felder: ['Zuerst testen', 'Darauf bauen', 'Später prüfen', 'Abhaken'] as [string, string, string, string],
-  hervor: 'ol' as const,
+  x: { label: 'Unsicherheit', links: 'starker Beleg', rechts: 'kein Beleg' },
+  felder: ['Beleg prüfen, darauf bauen', 'Zuerst testen', 'Abhaken', 'Später prüfen'] as [string, string, string, string],
+  hervor: 'or' as const,
 };
 // Red Team über den Connector; der Werkzeugname kommt aus dem Vertrag, nicht als Text.
 const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Wo im Brief steckt eine Annahme, die in der Map fehlt? Zitier höchstens drei Stellen wörtlich und frag mich zu jeder, was wir dort voraussetzen. Formulier die Annahmen nicht für mich – ich entscheide, was in die Map kommt.`;
@@ -30,11 +35,31 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
   <MethodenKarte slug="annahmen" />
 
   <Folie>
+    <h2 id="warum">Warum Annahmen sichtbar machen?</h2>
+    <p class="folie-satz">Wer seine Annahmen nicht kennt, kann sie nicht prüfen – und baut das Falsche.</p>
+    <p data-schritt>Portland baut mit Millionen Steuergeld Wohnungen für Familien, die aus ihrem Viertel verdrängt wurden. Jahre später stehen die meisten leer: Es gab fast nur Ein- und Zweizimmerwohnungen, die Familien hatten vier und mehr Personen.</p>
+    <div class="nur-handout">
+      <p>Teresa Torres eröffnet ihr Kapitel über Annahmen mit dieser Geschichte („Continuous Discovery Habits“, 2021, S. 115–116). Stadt und Bauträger wollten das Richtige und nahmen an, kleine Wohnungen helfen den meisten Familien. Niemand prüfte das. Am Ende wurden die Wohnungen auf dem freien Markt verkauft.</p>
+      <p>Zwei Denkfehler machen das so häufig. <strong>Confirmation Bias:</strong> Wir suchen und merken uns, was unsere Idee bestätigt, und übersehen, was dagegen spricht. <strong>Escalation of Commitment:</strong> Je mehr wir in eine Idee gesteckt haben, desto fester halten wir an ihr fest – auch wenn sie Fehler hat (S. 116–117). Dagegen hilft, die Annahmen hinter einer Idee aufzuschreiben, bevor man baut, und gezielt die riskanteste zu prüfen. Das geht schneller als die ganze Idee zu testen, und man verliebt sich weniger in sie.</p>
+    </div>
+  </Folie>
+
+  <Folie>
     <h2 id="worum">Worum es geht</h2>
     <p class="folie-satz">Getestet wird zuerst, was sehr wichtig ist und kaum belegt.</p>
     <p class="nur-handout">Zwei Fragen pro Annahme: <strong>Wie wichtig ist sie?</strong> Fällt das Produkt um, wenn sie falsch ist? <strong>Welchen Beleg habt ihr?</strong></p>
-    <Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts belegt; oben links zuerst testen" {...karte} />
-    <p class="nur-handout">Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach diesen zwei Fragen. Die riskanteste Annahme – sehr wichtig, kaum belegt – kommt zuerst dran.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/bland/annahmen-map.jpg" alt="Assumptions Map aus Testing Business Ideas: senkrecht Important bis Unimportant, waagrecht Have Evidence bis No Evidence; oben rechts gestrichelt umrandet die Hypothesen, die zuerst getestet werden" quelle="Assumptions Map. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 38." />
+      <ul>
+        <li data-schritt><strong>Oben rechts:</strong> wichtig, kein Beleg – zuerst testen.</li>
+        <li data-schritt><strong>Oben links:</strong> wichtig, belegt – darauf bauen, Beleg prüfen.</li>
+        <li data-schritt><strong>Unten:</strong> weniger wichtig – später oder gar nicht.</li>
+        <li data-schritt>Schnell sortieren: relativ zueinander, nicht exakt.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout"><Matrix2x2 label="Annahmen-Map, leer: nach oben wichtig, nach rechts weniger Beleg; oben rechts zuerst testen" {...karte} /></div>
+    <p class="nur-handout">Euer Brief ist voller Annahmen, auch wenn sie wie Tatsachen klingen. Die Annahmen-Map macht sie sichtbar und sortiert sie nach diesen zwei Fragen. Die riskanteste Annahme – sehr wichtig, kaum belegt – kommt zuerst dran. Oben links liegt, was wichtig und gut belegt ist: Darauf baut ihr, prüft aber, ob der Beleg wirklich trägt.</p>
+    <p class="nur-handout"><strong>Heute und an Tag 3.</strong> Heute geht es vor allem um Annahmen über eure Kundschaft und ihr Problem: Wer hat es, wann, was tun sie heute? Diese prüft ihr mit den Interviews bis Tag 2; die riskanteste wird zur Forschungsfrage eures Leitfadens. Annahmen über eine Lösung – ob jemand im Gehen bestellt, ob es sich rechnet – lassen sich in Interviews kaum prüfen. Für sie macht ihr an Tag 3 eine eigene Map pro Idee, wenn ihr mehrere Ideen habt, und testet sie mit Experimenten (Teresa Torres, „Continuous Discovery Habits“, 2021, Kap. 9–10).</p>
   </Folie>
 
   <Folie>
@@ -57,25 +82,49 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
         </tbody>
       </table>
     </div>
+    <div class="nur-handout">
+      <BuchAbbildung src="/quellen/bland/annahmen-arten.jpg" alt="Drei überlappende Kreise: Feasible – Can we do this?, Desirable – Do they want this?, Viable – Should we do this?" quelle="Types of Hypotheses. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 32." />
+      <p>Bland unterscheidet drei Arten: Wollen sie das? Können wir das? Sollten wir das (trägt es sich)? Marty Cagan nimmt die Bedienbarkeit als vierte dazu, weil ein Produkt, das Menschen wollen, an der Bedienung scheitern kann. Teresa Torres ergänzt eine fünfte Frage, die fast alle Teams vergessen: <strong>Kann es schaden?</strong> Welche Daten sammelt ihr, wer bleibt außen vor, würde es euch stören, wenn eine Zeitung darüber berichtet („Continuous Discovery Habits“, S. 118, 126–128)?</p>
+    </div>
     <p class="small muted">Die vier Arten gehen auf Marty Cagan zurück (Wert, Machbarkeit, Wirtschaftlichkeit, Bedienbarkeit), die Map auf David J. Bland.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="beleg">Was zählt als Beleg?</h2>
+    <p class="folie-satz">Was Menschen tun, wiegt mehr als was sie sagen.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Schwacher Beleg</th><th>Stärkerer Beleg</th></tr></thead>
+        <tbody>
+          <tr data-schritt><td><strong>Meinung:</strong> „Ich würde …“, „Ich finde … wichtig“</td><td><strong>Tatsache:</strong> „Letzte Woche habe ich …“</td></tr>
+          <tr data-schritt><td><strong>Was Menschen sagen</strong> – im Interview, in einer Umfrage</td><td><strong>Was Menschen tun</strong> – beobachtet, gemessen</td></tr>
+          <tr data-schritt><td><strong>Testsituation:</strong> Sie wissen, dass sie getestet werden</td><td><strong>Echte Situation:</strong> Sie wissen es nicht</td></tr>
+          <tr data-schritt><td><strong>Kleiner Einsatz:</strong> E-Mail-Adresse hinterlassen</td><td><strong>Großer Einsatz:</strong> im Voraus bezahlen, den eigenen Namen geben</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted">Nach „Strength of Evidence“, David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 52.</p>
+    <div class="nur-handout"><BuchAbbildung src="/quellen/bland/beleg-staerke.jpg" breit alt="Tabelle Weak Evidence gegen Strong(er) Evidence: Meinungen gegen Fakten, was Menschen sagen gegen was sie tun, Laborsituation gegen echte Situation, kleine gegen große Investition" quelle="Strength of Evidence. David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019), S. 52." /></div>
+    <p class="nur-handout">Daraus entsteht die Skala in der Werkstatt: <strong>noch keiner</strong> – <strong>gesagt</strong> (Meinung: „Ich würde …“) – <strong>erzählt</strong> (was jemand das letzte Mal tatsächlich getan hat) – <strong>getan</strong> (beobachtet, gemessen, bezahlt). Eure Interviews bis Tag 2 bringen Annahmen bestenfalls auf „erzählt“. „Getan“ zeigen erst Experimente ab Tag 3.</p>
   </Folie>
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die riskanteste Annahme</h2>
     <p class="folie-satz">A1 ist sehr wichtig und gar nicht belegt – sie wird zuerst getestet.</p>
-    <Matrix2x2 label="Annahmen-Map der Kaffeebar: nach oben wichtig, nach rechts belegt" {...karte}
+    <Matrix2x2 label="Annahmen-Map der Kaffeebar: nach oben wichtig, nach rechts weniger Beleg" {...karte}
       punkte={[
-        { t: 'A1 · Kaffee schon vor der Ankunft bestimmen', x: .08, y: .86, hervor: true },
-        { t: 'A2 · 40 Bestellungen in 30 min', x: .9, y: .72 },
-        { t: 'A3 · Bestellen in 20 s im Gehen', x: .1, y: .3 },
-        { t: 'A4 · Rechnet sich ohne weitere Kraft', x: .9, y: .26 },
+        { t: 'A1 · Entscheiden schon vor der Ankunft', x: .92, y: .86, hervor: true },
+        { t: 'A2 · 40 Bestellungen in 30 min', x: .1, y: .72 },
+        { t: 'A3 · Bestellen in 20 s im Gehen', x: .9, y: .3 },
+        { t: 'A4 · Rechnet sich ohne weitere Kraft', x: .1, y: .26 },
       ]} />
-    <p class="nur-handout"><strong>A1 · Wir glauben, dass Pendler*innen ihren Kaffee schon vor der Ankunft am Bahnhof bestimmen wollen.</strong> Ist sie falsch, braucht es kein Vorbestellen, egal wie gut es gebaut ist. Sie ist damit wichtiger als die Frage, ob 20 Sekunden zum Bestellen reichen. Die Interviews bis Tag 2 sollen genau dazu Geschichten liefern.</p>
+    <p class="nur-handout"><strong>A1 · Wir glauben, dass Pendler*innen schon vor der Ankunft am Bahnhof entscheiden, ob sie Kaffee holen.</strong> Das ist eine Annahme über ihr Verhalten, nicht über eine Lösung. Ist sie falsch, hilft keine Vorbestellung, egal wie gut sie gebaut ist. Sie ist damit wichtiger als die Frage, ob 20 Sekunden zum Bestellen reichen. Daraus wird die Forschungsfrage für die Interviews: <em>Wann und wo entscheiden Pendler*innen, ob sie Kaffee holen?</em> Gefragt wird nicht danach, sondern nach dem letzten Morgen: „Erzähl mir von deinem letzten Morgen am Bahnhof.“</p>
   </Folie>
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
     <p class="folie-satz">Erst allein sammeln und einordnen, dann zu dritt verschieben.</p>
+    <MiroFrame name="T1 · 3 · Annahmen-Map" />
     <ol class="gross">
       <li data-schritt><strong>Allein sammeln:</strong> pro Art mindestens drei Sätze „Wir glauben, dass …“, je ein Sticky in Miro. <Timer minuten={10} /></li>
       <li data-schritt><strong>Einordnen:</strong> jede Annahme in die Matrix – wie wichtig, wie belegt. <Timer minuten={10} /></li>
@@ -98,9 +147,9 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
 
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-    <p class="folie-satz">Welche Annahme ist bei euch das „Kaffee schon vorher bestimmen“?</p>
-    <p>Die Annahme, ohne die alles andere egal ist, wird Ziel eures <a href="/innolab/methoden/interview">Interviewleitfadens</a>.</p>
+    <p class="folie-satz">Welche Annahme ist bei euch das „schon vor der Ankunft entscheiden“?</p>
+    <p>Die Annahme, ohne die alles andere egal ist, wird die Forschungsfrage eures <a href="/innolab/methoden/interview">Interviewleitfadens</a> – den schreibt ihr gleich danach.</p>
   </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} next={{ href: '/innolab/tag-1/abschluss', t: 'Tag 1 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/entscheidungslog', t: 'Entscheidungslog' }} next={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} />
 </Layout>

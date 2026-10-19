@@ -8,6 +8,7 @@ import Bearbeiten from '../../../components/Bearbeiten.astro';
 import { NACH_MOM_TEST } from '../../../components/innolab-zeiten';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
@@ -41,12 +42,12 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
     <h2 id="mom-test">Der Mom Test</h2>
     <p class="folie-satz">Schreibt drei Fragen an eure Zielgruppe.</p>
     <p>Allein, eine Frage pro Sticky. Markus antwortet danach als Person aus eurer Zielgruppe. <Timer minuten={5} /></p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Die Auflösung kommt nach der Übung – erst eure Fragen schreiben." knopf="Auflösung zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Die Auflösung kommt nach der Übung – erst eure Fragen schreiben." knopf="Auflösung zeigen (nach der Übung)">
       <p class="folie-satz">Auf „Würdest du …?“ sagen alle Ja – selbst eure Mutter.</p>
       <ol class="gross">
         <li data-schritt><strong>Redet über ihr Leben, nicht über eure Idee.</strong> Sobald ihr die Idee erzählt, wird das Gespräch höflich.</li>
         <li data-schritt><strong>Fragt nach dem letzten konkreten Mal.</strong> Was jemand letzten Dienstag getan hat, ist eine Tatsache.</li>
-        <li data-schritt><strong>Redet weniger, hört mehr.</strong> Mehr als ein Drittel der Zeit gesprochen – nichts gelernt.</li>
+        <li data-schritt><strong>Redet weniger, hört mehr.</strong> Je mehr ihr redet, desto weniger erfahrt ihr.</li>
       </ol>
       <p class="small muted">Nach Rob Fitzpatrick, „The Mom Test“ (2013).</p>
     </Aufloesung>
@@ -55,7 +56,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   <Folie>
     <h2 id="fragen-matrix">Wo liegen eure Fragen?</h2>
     <p class="folie-satz">Prüft eure drei Fragen an zwei Achsen.</p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Matrix zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Matrix zeigen (nach der Übung)">
       <Matrix2x2 label="Mom Test als Matrix: nach oben über ihr Leben statt über eure Idee, nach rechts Vergangenheit statt Zukunft"
         y={{ label: 'Thema', unten: 'eure Idee', oben: 'ihr Leben' }}
         x={{ label: 'Zeit', links: 'Zukunft', rechts: 'Vergangenheit' }}
@@ -71,7 +72,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   <Folie>
     <h2 id="statt-besser">Eure Fragen umschreiben</h2>
     <p class="folie-satz">Jetzt macht ihr eure drei Fragen besser.</p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Beispiele zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Beispiele zeigen (nach der Übung)">
       <div style="overflow-x:auto">
         <table>
           <thead><tr><th>Statt: Zukunft</th><th>Besser: Vergangenheit</th></tr></thead>
@@ -92,7 +93,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
     <h2 id="antworten">Welche Antwort zählt?</h2>
     <p class="folie-satz">Sortiert die vier Antworten von schwach nach stark.</p>
     <p>Bestellt vor und zahlt im Voraus. · „Coole Idee!“ · „Letzte Woche zweimal den Zug verpasst.“ · „Würde ich sicher nutzen.“ <Timer minuten={2} /></p>
-    <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Skala zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Skala zeigen (nach der Übung)">
       <Skala label="Antworten von sagen bis tun: Kompliment, Zukunftsversprechen, erzählte Vergangenheit, Commitment" links="sagen" rechts="tun"
         stufen={[
           { t: 'Kompliment', sub: 'lobt die Idee' },
@@ -111,10 +112,59 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   </Folie>
 
   <Folie>
+    <h2 id="warum-geschichten">Warum Meinungsfragen täuschen</h2>
+    <p class="folie-satz">Menschen beschreiben ihr ideales Ich – nicht, was sie tun.</p>
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
+      <div class="gegenueber">
+        <div data-schritt><p><strong>„Worauf achtest du beim Jeanskauf?“</strong><br />„Die Passform ist das Wichtigste.“</p></div>
+        <div data-schritt><p><strong>„Erzähl vom letzten Jeanskauf.“</strong><br />„Auf Amazon. Ob sie passt, wusste ich nicht – aber die Marke mag ich, und sie war im Angebot.“</p></div>
+      </div>
+      <div class="nur-handout">
+        <p>Teresa Torres stellt diese zwei Fragen in jedem Workshop, und immer klafft eine Lücke zwischen der ersten und der zweiten Antwort. Niemand lügt: Wir verstehen unser eigenes Verhalten schlecht. Wir überschätzen, wie oft wir Sport machen, und halten uns für überdurchschnittliche Autofahrer*innen (Teresa Torres, „Continuous Discovery Habits“ (2021), S. 60–61).</p>
+        <p>Dahinter steckt, was der Neuropsychologe Michael Gazzaniga den „Interpreter“ im Gehirn nennt: Fehlt uns der wahre Grund für eine Handlung, erfinden wir eine stimmige Erklärung und glauben sie selbst. Daniel Kahneman: Selbstsicherheit zeigt nur, dass sich jemand eine stimmige Geschichte gebaut hat – nicht, dass sie wahr ist (S. 61–62).</p>
+        <p>Torres hat das teuer gelernt. Alle Recruiter*innen, die sie befragte, wollten „passive Kandidat*innen“ gewinnen – Menschen, die gerade nicht suchen. Ihr Team baute genau dafür ein Produkt, und es floppte: Gemessen wurden die Recruiter*innen daran, wie schnell sie Stellen besetzen, und das geht mit aktiv Suchenden schneller. Sie hatte gefragt, was die Leute <em>wollen</em>, nicht, was sie <em>tun</em> (S. 63).</p>
+      </div>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="forschungsfrage">Was ihr wissen wollt ≠ was ihr fragt</h2>
+    <p class="folie-satz">Die Forschungsfrage stellt ihr nie – ihr fragt nach einer Geschichte.</p>
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th></th><th>Forschungsfrage: was ihr lernen wollt</th><th>Interviewfrage: was ihr fragt</th></tr></thead>
+          <tbody>
+            <tr data-schritt><th>Kaffeebar</th><td>Wann und wo entscheiden Pendler*innen, ob sie Kaffee holen? (aus A1)</td><td>„Erzähl mir von deinem letzten Morgen am Bahnhof.“</td></tr>
+            <tr data-schritt><th>enger</th><td>Was passiert, wenn die Schlange zu lang ist?</td><td>„Erzähl vom letzten Mal, als du an der Kaffeebar angestanden bist.“</td></tr>
+            <tr data-schritt><th>weiter</th><td>Wie werden Pendler*innen morgens wach?</td><td>„Erzähl mir von deinem gestrigen Morgen, vom Aufstehen bis ins Büro.“</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nur-handout">Teresa Torres trennt, was ihr lernen wollt (Forschungsfragen), von dem, was ihr im Gespräch fragt (Interviewfragen). Direkte Fragen nach dem eigenen Verhalten liefern das ideale Ich; eine konkrete Erinnerung an das letzte Mal ist verlässlicher. Ein bis zwei Geschichten-Fragen ersetzen einen langen Fragebogen. Wie eng ihr fragt, hängt davon ab, was ihr gerade lernen wollt: Eng hilft, ein bestehendes Angebot zu verbessern; weit zeigt, womit es eigentlich konkurriert (Teresa Torres, „Continuous Discovery Habits“ (2021), S. 64–65). Eure Forschungsfrage kommt aus der riskantesten Annahme der Annahmen-Map.</p>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="ausgraben">Die Geschichte ausgraben</h2>
+    <p class="folie-satz">Die erste Antwort ist ein Satz – die Geschichte müsst ihr ausgraben.</p>
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis="Kommt nach der Auflösung des Mom Test." knopf="Zeigen (nach der Übung)">
+      <ul class="gross">
+        <li data-schritt><strong>Ankündigen:</strong> „Erzähl mit allen Details – ich frage am Ende nach.“</li>
+        <li data-schritt><strong>Zeit:</strong> „Wo warst du? Was ist als Erstes passiert? Und dann?“</li>
+        <li data-schritt><strong>Personen und Hürden:</strong> „Wer war dabei? Was war schwierig? Wie bist du damit umgegangen?“</li>
+        <li data-schritt><strong>Zurück zum Fall:</strong> Auf „Normalerweise …“ folgt „Und an diesem Morgen?“</li>
+      </ul>
+      <p class="nur-handout">Auf „Erzähl vom letzten Mal“ kommt meist ein Satz: „Gestern nach dem Essen hab ich eine Serie geschaut.“ Im Gespräch erwarten wir ein Hin und Her zu gleichen Teilen; das müsst ihr am Anfang aufheben. Dann helfen die Bausteine jeder Geschichte: eine Hauptfigur, ein Ablauf in der Zeit, ein Ort, Hindernisse und Helfer. Rutscht die Person ins Allgemeine („Meistens …“), holt sie freundlich zurück. Und nicht jede Person hat die Geschichte, die ihr sucht – nehmt, was sie erzählen will (Teresa Torres, „Continuous Discovery Habits“ (2021), S. 65–67).</p>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
     <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
     <p class="folie-satz">Erst schreiben, dann proben – mit Claude und mit Markus.</p>
+    <MiroFrame name="T1 · 4 · Interviewleitfaden" />
     <ol class="gross">
-      <li data-schritt><strong>Leitfaden allein schreiben:</strong> 5–7 Fragen, jede gegen die drei Regeln halten, in der Werkstatt speichern – „Bearbeiten“ im Handout auf euren Laptops. <Timer minuten={20} /></li>
+      <li data-schritt><strong>Leitfaden allein schreiben:</strong> Ziel ist die Forschungsfrage aus eurer riskantesten Annahme. Dann 5–7 Fragen, die meisten nach dem letzten konkreten Mal, jede gegen die drei Regeln halten, in der Werkstatt speichern – „Bearbeiten“ im Handout auf euren Laptops. <Timer minuten={20} /></li>
       <li data-schritt><strong>Prüfliste und Claude.</strong> <Timer minuten={10} /></li>
       <li data-schritt><strong>Probe mit Claude:</strong> Claude spielt eine zurückhaltende Person aus eurer Zielgruppe, danach Feedback. <Timer minuten={15} /></li>
       <li data-schritt><strong>Live-Interview, reihum 3 × 15 min:</strong> Markus spielt eine schwierige Person, 10 min Interview, 5 min Feedback. Die anderen beobachten: Wo wurde gepitcht, wo fehlte eine Nachfrage? Was ihr lernt, kommt danach in den Leitfaden. <Timer minuten={15} /></li>
@@ -128,7 +178,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
   <Bearbeiten artefakt="leitfaden" />
   <Prompt label="Vorlage · Interviewleitfaden"># Interviewleitfaden — [Produkt]
 
-Ziel: [Welche offene Frage aus dem Brief soll das Interview klären?]
+Ziel: [Forschungsfrage aus eurer riskantesten Annahme – was wollt ihr herausfinden?]
 Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
 
 ## Einstieg
@@ -175,5 +225,5 @@ Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
     <p>Die konkrete Situation, nach der ihr fragt. Fällt euch keine ein, ist eure Zielgruppe noch zu allgemein – zurück zum <a href="/innolab/methoden/problem-rahmen">Problem-Rahmen</a>.</p>
   </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/entscheidungslog', t: 'Entscheidungslog' }} next={{ href: '/innolab/methoden/annahmen', t: 'Annahmen-Map' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/annahmen', t: 'Annahmen-Map' }} next={{ href: '/innolab/tag-1/abschluss', t: 'Tag 1 · Abschluss' }} />
 </Layout>

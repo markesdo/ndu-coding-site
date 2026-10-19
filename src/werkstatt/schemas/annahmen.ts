@@ -39,17 +39,17 @@ export const annahmenLeer = (heute: string): Annahmen => ({
 
 export type Quadrant = 'ol' | 'or' | 'ul' | 'ur';
 
-// Wird abgeleitet, nie eingegeben: oben = wichtig, rechts = belegt. „ol“ heißt zuerst testen.
+// Wird abgeleitet, nie eingegeben: oben = wichtig, rechts = wenig Beleg (wie bei Bland und Torres). „or“ heißt zuerst testen.
 export function quadrant(a: Pick<Annahme, 'wichtig' | 'beleg'>): Quadrant {
   const oben = a.wichtig === 'hoch';
-  const rechts = a.beleg === 'erzaehlt' || a.beleg === 'getan';
+  const rechts = a.beleg === 'keiner' || a.beleg === 'gesagt';
   return `${oben ? 'o' : 'u'}${rechts ? 'r' : 'l'}` as Quadrant;
 }
 
 // Jede der 12 Zellen (Belegstufe × Wichtigkeit) hat ein eigenes Rechteck im Bild; die Rechtecke überschneiden
 // sich nicht und liegen je ganz in einem Quadranten (Grenze bei 0,5), passend zu quadrant().
 const X_BAND: Record<Belegstufe, readonly [number, number]> = {
-  keiner: [0, 0.25], gesagt: [0.25, 0.5], erzaehlt: [0.5, 0.75], getan: [0.75, 1],
+  getan: [0, 0.25], erzaehlt: [0.25, 0.5], gesagt: [0.5, 0.75], keiner: [0.75, 1],
 };
 const Y_BAND: Record<Annahme['wichtig'], readonly [number, number]> = {
   niedrig: [0, 0.25], mittel: [0.25, 0.5], hoch: [0.5, 1],

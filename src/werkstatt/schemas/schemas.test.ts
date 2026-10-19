@@ -231,34 +231,34 @@ const a = (wichtig: Annahme['wichtig'], beleg: Annahme['beleg'], id = 'A1'): Ann
 });
 
 describe('quadrant', () => {
-  it('hoch + keiner → ol (zuerst testen)', () => {
-    expect(quadrant({ wichtig: 'hoch', beleg: 'keiner' })).toBe('ol');
+  it('hoch + keiner → or (zuerst testen, wie bei Bland und Torres)', () => {
+    expect(quadrant({ wichtig: 'hoch', beleg: 'keiner' })).toBe('or');
   });
-  it('niedrig + getan → ur', () => {
-    expect(quadrant({ wichtig: 'niedrig', beleg: 'getan' })).toBe('ur');
+  it('niedrig + getan → ul', () => {
+    expect(quadrant({ wichtig: 'niedrig', beleg: 'getan' })).toBe('ul');
   });
   it('alle Kombinationen', () => {
-    expect(quadrant({ wichtig: 'hoch', beleg: 'gesagt' })).toBe('ol');
-    expect(quadrant({ wichtig: 'hoch', beleg: 'erzaehlt' })).toBe('or');
-    expect(quadrant({ wichtig: 'hoch', beleg: 'getan' })).toBe('or');
-    expect(quadrant({ wichtig: 'mittel', beleg: 'keiner' })).toBe('ul');
-    expect(quadrant({ wichtig: 'niedrig', beleg: 'gesagt' })).toBe('ul');
-    expect(quadrant({ wichtig: 'mittel', beleg: 'erzaehlt' })).toBe('ur');
+    expect(quadrant({ wichtig: 'hoch', beleg: 'gesagt' })).toBe('or');
+    expect(quadrant({ wichtig: 'hoch', beleg: 'erzaehlt' })).toBe('ol');
+    expect(quadrant({ wichtig: 'hoch', beleg: 'getan' })).toBe('ol');
+    expect(quadrant({ wichtig: 'mittel', beleg: 'keiner' })).toBe('ur');
+    expect(quadrant({ wichtig: 'niedrig', beleg: 'gesagt' })).toBe('ur');
+    expect(quadrant({ wichtig: 'mittel', beleg: 'erzaehlt' })).toBe('ul');
   });
 });
 
 describe('punkt', () => {
-  const XB = { keiner: [0, 0.25], gesagt: [0.25, 0.5], erzaehlt: [0.5, 0.75], getan: [0.75, 1] } as const;
+  const XB = { getan: [0, 0.25], erzaehlt: [0.25, 0.5], gesagt: [0.5, 0.75], keiner: [0.75, 1] } as const;
   const YB = { niedrig: [0, 0.25], mittel: [0.25, 0.5], hoch: [0.5, 1] } as const;
   const zellen = BELEGSTUFEN.flatMap((beleg) => WICHTIGKEITEN.map((wichtig) => ({ beleg, wichtig })));
   const liste = (wichtig: Annahme['wichtig'], beleg: Annahme['beleg'], n: number) =>
     Array.from({ length: n }, (_, i) => a(wichtig, beleg, `A${i + 1}`));
 
   it('eine einzelne Annahme liegt in der Rechteckmitte ihrer Zelle', () => {
-    expect(punkt(a('hoch', 'keiner'), [])).toEqual({ x: 0.125, y: 0.75 });
-    expect(punkt(a('mittel', 'gesagt'), [])).toEqual({ x: 0.375, y: 0.375 });
-    expect(punkt(a('niedrig', 'getan'), [])).toEqual({ x: 0.875, y: 0.125 });
-    expect(punkt(a('hoch', 'erzaehlt'), [])).toEqual({ x: 0.625, y: 0.75 });
+    expect(punkt(a('hoch', 'keiner'), [])).toEqual({ x: 0.875, y: 0.75 });
+    expect(punkt(a('mittel', 'gesagt'), [])).toEqual({ x: 0.625, y: 0.375 });
+    expect(punkt(a('niedrig', 'getan'), [])).toEqual({ x: 0.125, y: 0.125 });
+    expect(punkt(a('hoch', 'erzaehlt'), [])).toEqual({ x: 0.375, y: 0.75 });
   });
   it.each(zellen.flatMap((z) => [1, 5, 12].map((n) => ({ ...z, n }))))(
     '$n Annahmen in $wichtig/$beleg: verschieden, im Rechteck und im passenden Quadranten',

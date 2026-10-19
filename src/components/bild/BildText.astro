@@ -1,0 +1,17 @@
+---
+// Folie mit Abbildung links und Kernpunkten rechts (im Beamer nebeneinander, schmal untereinander).
+// Erstes Kind: die Abbildung (z. B. BuchAbbildung), zweites: die Punkte (ul/ol/div). Die Punkte stehen im Beamer –
+// die ausführliche Erklärung gehört weiter in .nur-handout darunter.
+---
+<div class="bild-text"><slot /></div>
+
+<style>
+  .bild-text { display: grid; gap: 1.5rem; align-items: center; margin: 1rem 0; }
+  @media (min-width: 900px) { .bild-text { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 2rem; } }
+  .bild-text > :global(*) { margin: 0; }
+  .bild-text :global(.buch-abbildung) { max-width: none; }
+  .bild-text :global(ul), .bild-text :global(ol) { padding-left: 1.2rem; }
+  .bild-text :global(li + li) { margin-top: .55rem; }
+  /* Im Beamer lesbar aus der letzten Reihe. */
+  :global(html[data-beamer]) .bild-text :global(li) { font-size: 1.2rem; line-height: 1.4; }
+</style>

@@ -1,0 +1,14 @@
+---
+// Hinweis auf der Aufgaben-Folie: In welchem Frame des Team-Boards gearbeitet wird. Der Name steht genau so im
+// Frame-Titel auf dem Board (Nummer = Reihenfolge der Aufgaben am Tag, T1 · 3 = Tag 1, dritte Aufgabe).
+import { LayoutGrid } from '@lucide/astro';
+const { name } = Astro.props as { name: string };
+---
+<p class="miro-frame"><LayoutGrid size={18} aria-hidden="true" /> Miro: <strong>{name}</strong></p>
+
+<style>
+  .miro-frame { display: inline-flex; align-items: center; gap: .4rem; margin: .25rem 0 .75rem; padding: .2rem .7rem; border: 1px solid var(--border); border-radius: 999px; font-size: .95rem; color: var(--muted); }
+  .miro-frame strong { color: var(--fg); font-weight: 600; }
+  /* Im Beamer oben rechts in der Folie (beamer.css: .folie ist position: relative) – kostet keine Höhe. */
+  :global(html[data-beamer] .folie) > .miro-frame { position: absolute; top: .9rem; right: 0; margin: 0; }
+</style>
