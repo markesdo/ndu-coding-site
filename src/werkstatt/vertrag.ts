@@ -52,6 +52,26 @@ export interface Ich {
   repo: string | null;
 }
 
+// Rückblick (nur Lehrende): Zählstand jeder Mappe der Kohorte. Fehlt eine Mappe noch, stehen dort Nullen.
+export interface PersonZahlen {
+  kuerzel: string;
+  // Von BRIEF_FELDER (statistik.ts) ausgefüllt.
+  briefFelder: number;
+  entscheidungen: number;
+  annahmen: number;
+  fragen: number;
+  // Artefakte, deren Datei nicht zum Schema passt (zählen als 0).
+  unlesbar: ArtefaktName[];
+  // Die Mappe ließ sich gerade nicht lesen (GitHub): Zahlen sind 0, nicht „nichts gemacht“.
+  fehler?: true;
+}
+
+export interface Zahlen {
+  kohorte: string;
+  briefFelderGesamt: number;
+  personen: PersonZahlen[];
+}
+
 export const WERKSTATT_BASIS = '/api/werkstatt';
 
 export const ROUTEN = {
@@ -63,6 +83,8 @@ export const ROUTEN = {
   artefaktLesen: { methode: 'GET', pfad: '/api/werkstatt/mappe/:artefakt' },
   // 409 mit code „konflikt“, wenn basisSha nicht mehr stimmt.
   artefaktSpeichern: { methode: 'PUT', pfad: '/api/werkstatt/mappe/:artefakt' },
+  // Nur Lehrende; 403 für Studierende.
+  zahlen: { methode: 'GET', pfad: '/api/werkstatt/zahlen' },
   mcp: { methode: 'ALL', pfad: '/api/werkstatt/mcp' },
 } as const;
 

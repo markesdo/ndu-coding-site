@@ -1,0 +1,72 @@
+---
+// Knopf auf der Folie nach dem Rückblick: holt die Zählstände aller Mappen (GET /api/werkstatt/zahlen, nur Lehrende) und zeigt sie.
+// Der Knopf ist nur beim Präsentator sichtbar; geschützt ist die Route selbst über die Werkstatt-Anmeldung.
+import { ChartColumnIncreasing } from '@lucide/astro';
+---
+<div class="werkstatt-zahlen" data-werkstatt-zahlen>
+  <button type="button" class="zahlen-knopf" data-zahlen-holen data-nur-praesentator><ChartColumnIncreasing size={18} aria-hidden="true" /> Zahlen aus der Werkstatt holen</button>
+  <p class="small muted" data-zahlen-meldung aria-live="polite"></p>
+  <div class="zahlen-kacheln" data-zahlen-kacheln hidden></div>
+  <ul class="zahlen-personen small" data-zahlen-personen hidden></ul>
+</div>
+<script>
+  import { ROUTEN, type ApiFehler, type Zahlen } from '../werkstatt/vertrag';
+  import { kacheln, personZeile } from '../werkstatt/ui/zahlen-anzeige';
+  document.querySelectorAll<HTMLElement>('[data-werkstatt-zahlen]').forEach((box) => {
+    const knopf = box.querySelector<HTMLButtonElement>('[data-zahlen-holen]')!;
+    const meldung = box.querySelector<HTMLElement>('[data-zahlen-meldung]')!;
+    const feld = box.querySelector<HTMLElement>('[data-zahlen-kacheln]')!;
+    const liste = box.querySelector<HTMLElement>('[data-zahlen-personen]')!;
+    const melden = (text: string, link?: { href: string; t: string }) => {
+      // Alte Zahlen weg, sobald etwas anderes als ein neuer Stand kommt – sonst stünden sie ohne Uhrzeit da.
+      feld.hidden = true;
+      liste.hidden = true;
+      meldung.textContent = text;
+      if (link) { const a = document.createElement('a'); a.href = link.href; a.textContent = link.t; meldung.append(' ', a); }
+    };
+    knopf.addEventListener('click', async () => {
+      knopf.disabled = true;
+      melden('Lese die Mappen …');
+      try {
+        const r = await fetch(ROUTEN.zahlen.pfad, { credentials: 'same-origin', headers: { accept: 'application/json' } });
+        if (r.status === 401) {
+          const weiter = `${location.pathname}#zahlen`;
+          return melden('Erst in der Werkstatt anmelden.', { href: `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(weiter)}`, t: 'Anmelden' });
+        }
+        if (!r.ok) {
+          const f = (await r.json().catch(() => ({}))) as Partial<ApiFehler>;
+          return melden(f.fehler || 'Die Werkstatt antwortet gerade nicht.');
+        }
+        const z = (await r.json()) as Zahlen;
+        feld.replaceChildren(...kacheln(z).map((k) => {
+          const d = document.createElement('div');
+          const b = document.createElement('strong'); b.textContent = k.zahl;
+          const s = document.createElement('span'); s.textContent = k.was;
+          d.append(b, s);
+          return d;
+        }));
+        liste.replaceChildren(...z.personen.map((p) => { const li = document.createElement('li'); li.textContent = personZeile(p, z.briefFelderGesamt); return li; }));
+        melden(`Stand ${new Date().toLocaleTimeString('de-AT', { hour: '2-digit', minute: '2-digit' })}, ${z.personen.length} Mappen.`);
+        feld.hidden = false;
+        liste.hidden = false;
+      } catch {
+        melden('Die Werkstatt antwortet gerade nicht.');
+      } finally {
+        knopf.disabled = false;
+      }
+    });
+  });
+</script>
+<style>
+  /* Kacheln und Zeilen entstehen erst im Skript (ohne Astro-Scope-Attribut), darum :global für ihre Kinder. */
+  .werkstatt-zahlen { margin-top: 1rem; }
+  .zahlen-knopf { display: inline-flex; align-items: center; gap: .4rem; font: inherit; padding: .35rem .8rem; border: 1px solid var(--border); border-radius: 6px; background: none; color: inherit; cursor: pointer; }
+  .zahlen-knopf:hover { border-color: var(--accent); }
+  .zahlen-kacheln { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; margin-top: .5rem; }
+  .zahlen-kacheln :global(> div) { display: flex; flex-direction: column; gap: .1rem; padding: .5rem .8rem; border: 1px solid var(--border); border-radius: 8px; }
+  .zahlen-kacheln :global(strong) { font-size: 2rem; line-height: 1.1; }
+  .zahlen-kacheln :global(span) { color: var(--muted); font-size: .85rem; line-height: 1.3; }
+  .zahlen-personen { margin: .5rem 0 0; padding-left: 1.1rem; }
+  .zahlen-kacheln[hidden], .zahlen-personen[hidden] { display: none; }
+  @media (max-width: 600px) { .zahlen-kacheln { grid-template-columns: 1fr 1fr; } }
+</style>

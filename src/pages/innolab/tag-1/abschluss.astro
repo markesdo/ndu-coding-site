@@ -8,6 +8,7 @@ import FooterNav from '../../../components/FooterNav.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import WerkstattZahlen from '../../../components/WerkstattZahlen.astro';
 import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target } from '@lucide/astro';
 ---
 <Layout title="Tag 1 · Abschluss">
@@ -73,6 +74,13 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
       <p>In eurer Mappe liegen jetzt Produkt-Brief, Entscheidungslog, Annahmen-Map und Leitfaden; auf dem Team-Board die Frames T1 · 1 bis T1 · 4. Jedes Artefakt baut auf dem vorigen auf: Das Outcome begrenzt den Problem-Rahmen, aus dem Rahmen kommen die Annahmen, die riskanteste wird zur Forschungsfrage des Leitfadens.</p>
       <p>An Tag 2 dreht sich die Richtung: Bisher habt ihr aufgeschrieben, was ihr glaubt. Mit den Snapshots kommt dazu, was eure Interviewpartner*innen tatsächlich erlebt haben – daraus baut ihr den Baum.</p>
     </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="zahlen">Was ihr heute geschafft habt</h2>
+    <p class="folie-satz">Alles, was jetzt in euren Mappen steht.</p>
+    <WerkstattZahlen />
+    <p class="nur-handout">Gezählt wird nur, was in der Werkstatt gespeichert ist: Felder im Produkt-Brief, Annahmen, Fragen im Leitfaden und Zeilen im Entscheidungslog.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} next={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} />
