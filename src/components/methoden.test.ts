@@ -105,7 +105,7 @@ describe('methoden', () => {
   });
 
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
-    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'kundenprofil', 'journey-map', 'hmw', 'ideation']);
+    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map', 'hmw', 'ideation']);
     expect(methodenVonTag(7)).toEqual([]);
   });
 
@@ -133,7 +133,7 @@ describe('methoden', () => {
 
   it('wer in der Prüfliste ein früheres Artefakt nennt, hat es in „braucht“ – sonst liest Claude es beim Prüfen nicht', () => {
     const namen: Record<string, string> = {
-      'Annahmen-Map': 'annahmen', Synthese: 'synthese', Kundenprofil: 'profil', 'Journey Map': 'journey',
+      'Annahmen-Map': 'annahmen', Synthese: 'synthese', Kundenprofil: 'profil', 'Experience Map': 'journey',
       'Value Map': 'valuemap', 'Story Map': 'storymap',
     };
     for (const m of METHODEN.filter((x) => x.pruefliste)) {
