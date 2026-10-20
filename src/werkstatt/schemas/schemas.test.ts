@@ -220,6 +220,13 @@ describe('Annahmen', () => {
     a.annahmen[3].id = 'A2';
     expect(fehlerPfade('annahmen', a)).toContain('annahmen.3.id');
   });
+  it('Art „ethisch“ (Torres, ab Tag 3) ist gültig, eine erfundene Art nicht', () => {
+    const a = klon(annahmen);
+    a.annahmen[0].art = 'ethisch';
+    expect(artefaktParsen('annahmen', a).ok).toBe(true);
+    a.annahmen[0].art = 'rechtlich';
+    expect(fehlerPfade('annahmen', a)).toContain('annahmen.0.art');
+  });
   it('wichtig außerhalb hoch/mittel/niedrig → Fehler', () => {
     const a = klon(annahmen);
     a.annahmen[0].wichtig = 'sehr';

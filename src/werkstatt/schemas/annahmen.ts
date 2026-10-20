@@ -1,13 +1,14 @@
 import { z } from 'zod';
 import { belegIds, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId, type Belegstufe } from './gemeinsam.js';
 
-export const ANNAHME_ARTEN = ['wuenschenswert', 'machbar', 'wirtschaftlich', 'bedienbar'] as const;
+// Die vier Arten von Tag 1 (Bland) und Torres' fünfte, „ethisch“ (Continuous Discovery Habits, S. 118), ab Tag 3.
+export const ANNAHME_ARTEN = ['wuenschenswert', 'machbar', 'wirtschaftlich', 'bedienbar', 'ethisch'] as const;
 export const WICHTIGKEITEN = ['hoch', 'mittel', 'niedrig'] as const;
 
 const annahmeSchema = z.object({
   id: zeilenId('A', 'ID der Annahme'),
   text: text('Annahme'),
-  art: z.enum(ANNAHME_ARTEN, { error: 'Die Art der Annahme muss wünschenswert, machbar, wirtschaftlich oder bedienbar sein.' }),
+  art: z.enum(ANNAHME_ARTEN, { error: 'Die Art der Annahme muss wünschenswert, machbar, wirtschaftlich, bedienbar oder ethisch sein.' }),
   wichtig: z.enum(WICHTIGKEITEN, { error: 'Die Wichtigkeit muss „hoch“, „mittel“ oder „niedrig“ sein.' }),
   beleg: belegstufe,
   belegIds,
