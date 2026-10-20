@@ -4,81 +4,150 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Fluss from '../../../components/Fluss.astro';
+import Timer from '../../../components/Timer.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 ---
 <Layout title="Ideation">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
   <h1>Ideation</h1>
-  <p class="lead">Viele Ideen für eine Frage – erst allein, dann im Kreis, dann mit Claude – und eine Auswahl, die nicht der lautesten Stimme folgt.</p>
+  <p class="lead">15 bis 20 Ideen für eine Ziel-Chance, erst allein, dann geteilt, dann wieder allein – und am Ende drei, nicht eine.</p>
   <Orientierung seite="innolab/methoden/ideation" leiste={false} />
   <MethodenKarte slug="ideation" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Drei Befunde aus der Forschung bestimmen den Ablauf:</p>
-  <ul>
-    <li><strong>Allein zuerst.</strong> Gruppen, die frei durcheinander brainstormen, haben weniger verschiedene Ideen als dieselben Menschen, die erst allein nachdenken – vor allem, weil immer nur eine*r reden kann. Schriftliches Weitergeben (Brainwriting) ist mindestens so gut und regt mehr an.</li>
-    <li><strong>KI erst danach.</strong> Wer zuerst die Vorschläge eines Sprachmodells sieht, bleibt an ihnen hängen. Ideen mit KI ähneln öfter schon bekannten Produkten. Claude kommt deshalb erst, wenn eure eigenen Ideen auf dem Tisch liegen, und soll vor allem Richtungen öffnen, an die ihr nicht gedacht habt.</li>
-    <li><strong>Leise auswählen.</strong> Menschen bevorzugen machbare Ideen gegenüber originellen, und in offener Runde gewinnt oft, wer zuerst spricht. Deshalb erst still abstimmen, dann reden.</li>
-  </ul>
+  <Folie>
+    <h2 id="menge">Menge führt zu Qualität</h2>
+    <p class="folie-satz">Die erste Idee ist selten die beste.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Viele Ideen</strong> werden vielfältiger und origineller.</li>
+      <li data-schritt><strong>Die originellsten</strong> kommen gegen Ende, nicht am Anfang.</li>
+      <li data-schritt>Darum die Schleife <strong>länger offen halten</strong> als bequem.</li>
+    </ul>
+    <p class="nur-handout">Teresa Torres fasst die Kreativitätsforschung zusammen: Gemessen wird Kreativität an der Zahl der Ideen, an ihrer Vielfalt und an ihrer Originalität, und die Zahl hängt mit den anderen beiden zusammen. Je mehr Ideen, desto vielfältiger und neuer werden sie; die originellsten entstehen eher gegen Ende einer Sitzung. Viele Teams haben trotzdem nur ein, zwei Lösungen pro Chance – jede Menge erste Ideen zu vielen Chancen. Nicht jede Chance braucht eine innovative Lösung („Passwort vergessen“ muss niemand neu erfinden), aber bei strategischen Chancen lohnt es sich ({TORRES}, S. 107).</p>
+  </Folie>
 
-  <h2 id="ablauf">Der Ablauf (90 min)</h2>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Min</th><th>Schritt</th><th>Wie</th></tr></thead>
-      <tbody>
-        <tr><td>10</td><td>Schlechteste Idee</td><td>Zu eurer HMW-Frage die schlechteste denkbare Lösung. Dann umdrehen: Was steckt Brauchbares im Gegenteil?</td></tr>
-        <tr><td>20</td><td>Allein</td><td><strong>Neues Produkt:</strong> Crazy 8s – ein A4-Blatt achtmal falten, acht Skizzen in acht Minuten, zweimal. <strong>Bestehendes Produkt:</strong> SCAMPER – was lässt sich ersetzen, kombinieren, anpassen, verändern, anders nutzen, weglassen, umkehren?</td></tr>
-        <tr><td>20</td><td>Brainwriting im Kreis</td><td>Jede*r legt die gewählte HMW-Frage des eigenen Produkts auf ein Blatt. Das Blatt wandert zweimal weiter; wer es bekommt, schreibt in fünf Minuten drei Ideen dazu, gern auf den vorherigen aufbauend.</td></tr>
-        <tr><td>10</td><td>Claude</td><td>Analogien aus anderen Branchen, sehr verschiedene Nutzer*innen, Claude als neugierige*r Neue*r im Team (Prompt unten).</td></tr>
-        <tr><td>15</td><td>Note-and-Vote</td><td>Alle Ideen an die Wand. Still lesen, jede*r drei Punkte für die anderen Boards. Dann reden: Was überzeugt, was überrascht? Wer das Produkt verantwortet (Product Owner), entscheidet.</td></tr>
-        <tr><td>15</td><td>Lösungsskizze</td><td>Die gewählte Idee in drei Bildern: vorher – die Idee in Aktion – nachher. Dazu ein Titel.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <Folie>
+    <h2 id="brainstorming">Das Problem mit Brainstorming</h2>
+    <p class="folie-satz">Allein entstehen mehr, vielfältigere und originellere Ideen als in der Gruppe.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Trittbrettfahren:</strong> In der Gruppe strengt man sich weniger an.</li>
+      <li data-schritt><strong>Anpassung:</strong> Frühe Ideen geben den Ton vor, man zensiert sich.</li>
+      <li data-schritt><strong>Blockieren:</strong> Wer wartet, bis er dran ist, vergisst die eigene Idee.</li>
+      <li data-schritt><strong>Nach unten angleichen:</strong> Die Gruppe sinkt auf das schwächste Mitglied.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Brainstorming stammt von Alex Osborn („Applied Imagination“, 1953) mit vier Regeln: Menge zählt, Urteil aufschieben, ungewöhnliche Ideen begrüßen, Ideen kombinieren. Jahrzehntelang verglichen Forschende Gruppen mit gleich vielen Einzelnen: Die Einzelnen hatten mehr, vielfältigere und originellere Ideen. Gründe sind „social loafing“, Gruppenanpassung, „production blocking“ und „downward norm setting“ ({TORRES}, S. 108–109).</p>
+      <p>Dass Gruppen sich trotzdem für produktiver halten, nennen Bernard Nijstad und Kolleg*innen die „Illusion der Gruppenproduktivität“: In der Gruppe bleibt man seltener stecken und fühlt sich deshalb besser – die Einzelnen müssen sich mehr anstrengen und kommen doch weiter (S. 109).</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <p>Frage H1: <em>Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?</em></p>
-  <ul>
-    <li><strong>Schlechteste Idee:</strong> Kaffee nur noch auf dem Bahnsteig, per Drohne. Umgedreht: ein Kaffeewagen direkt am Bahnsteig 1.</li>
-    <li><strong>Crazy 8s (Auswahl):</strong> Anzeige der aktuellen Wartezeit an der Hallentür · Express-Theke nur für die drei häufigsten Getränke · QR-Code an der Tür: im Gehen bestellen, an der Express-Ausgabe abholen · Barista ruft „Wer muss in den nächsten 5 Minuten weg?“</li>
-    <li><strong>Brainwriting dazu:</strong> Abfahrtszeit beim Bestellen angeben, die Bar sortiert danach · Becher mit Deckel, der nicht verschüttet</li>
-    <li><strong>Claude, als Analogie:</strong> Boarding-Gruppen am Flughafen – Bestellungen nach Abfahrtszeit aufrufen.</li>
-  </ul>
-  <p><strong>Ausgewählt:</strong> „Im Gehen bestellen“ – QR-Code an der Hallentür, Bestellung mit Abfahrtszeit, Abholung an einer Express-Ausgabe. Sie beantwortet H1 und passt zu dem, was die Interviews zeigen (I1-2, I3-1): Die Entscheidung fällt beim Ankommen, nicht vorher. Ab Tag 3 wird diese Idee das digitale Produkt im Beispiel.</p>
+  <Folie>
+    <h2 id="wechsel">Allein, teilen, wieder allein</h2>
+    <p class="folie-satz">Die Ideen der anderen hören, aber allein weiterdenken.</p>
+    <Fluss label="Ablauf nach Korde und Paulus: allein, teilen, allein, teilen – bis 15 bis 20 Ideen" hervor={[4]} knoten={[
+      { t: 'Allein', sub: 'so viele Ideen wie möglich' },
+      { t: 'Teilen', sub: 'erklären, nachfragen, weiterspinnen' },
+      { t: 'Allein', sub: 'angeregt von den anderen' },
+      { t: 'Teilen', sub: 'wiederholen, bis es reicht' },
+      { t: '15–20 Ideen', sub: 'für eine Ziel-Chance' },
+    ]} />
+    <p class="nur-handout">Runa Korde und Paul Paulus zeigten, dass der Wechsel zwischen Ideen allein und Teilen in der Gruppe die Ideen der nächsten Einzelrunde verbessert: Fremde Ideen regen neue an, entwickelt wird trotzdem allein ({TORRES}, S. 110). Torres' Ablauf: die Ziel-Chance gemeinsam vergegenwärtigen, allein Ideen sammeln, teilen (Ideen erklären, Fragen zulassen, weiterspinnen), wiederholen – bis 15 bis 20 Ideen für diese eine Chance stehen (S. 112). Ideation ist der eine Schritt, den sie ausdrücklich mit dem ganzen Team empfiehlt: Je unterschiedlicher die Leute, desto unterschiedlicher die Ideen (S. 114). Bei euch heißt das: Alle drei denken für alle drei Produkte mit.</p>
+  </Folie>
 
-  <h2 id="claude">Claude in der Ideation</h2>
-  <p>Erst wenn eure Ideen aus den ersten drei Schritten an der Wand hängen:</p>
+  <Folie>
+    <h2 id="festgefahren">Wenn ihr feststeckt</h2>
+    <p class="folie-satz">Feststecken gehört dazu – und es gibt Wege heraus.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Pause</strong> machen: Das Gehirn arbeitet weiter (Inkubation).</li>
+      <li data-schritt><strong>Analoge Produkte:</strong> Wer löst ein ähnliches Problem, auch ganz woanders?</li>
+      <li data-schritt><strong>Extreme Nutzer*innen:</strong> Was bräuchte jemand, der das zum ersten Mal macht – oder täglich?</li>
+      <li data-schritt><strong>Wilde Ideen</strong> zulassen: Sie verbessern die machbaren.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Jede*r bleibt irgendwann stecken; das ist kein Zeichen, unkreativ zu sein. Torres empfiehlt Pausen und Ortswechsel, weil das Gehirn weiterarbeitet, wenn man aufhört, bewusst nachzudenken. Dann der Blick zur Konkurrenz und weiter: Welche anderen Branchen haben ein ähnliches Problem gelöst? Klettverschluss entstand aus einer Klette in der Socke. Dazu die Bedürfnisse extremer Nutzer*innen und wilde Ideen – mit einem Zauberstab ist alles möglich, und wilde Ideen lassen sich mit machbaren mischen ({TORRES}, S. 110–112).</p>
+      <p>Im Kurs ist Claude eine Hilfe beim Feststecken, nach euren eigenen Runden: als Quelle für analoge Produkte und extreme Nutzer*innen. Ideen von Claude kennzeichnet ihr als solche.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="auswahl">Von 20 auf drei</h2>
+    <p class="folie-satz">Ideen entwickelt man besser allein, bewertet sie aber besser gemeinsam.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Aussortieren:</strong> Löst die Idee die Ziel-Chance – wenigstens zum Teil?</li>
+      <li data-schritt><strong>Punkten:</strong> drei Punkte pro Person; einziges Kriterium: Wie gut trifft sie die Ziel-Chance?</li>
+      <li data-schritt><strong>Klarer Sieger?</strong> Beiseitelegen. Sonst kurz werben, neu punkten – bis drei stehen.</li>
+      <li data-schritt><strong>Begeisterung:</strong> Jede der drei hat eine Fürsprecher*in.</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Zuerst fragt ihr bei jeder Idee: Löst sie die Ziel-Chance? Teilweise reicht. Ideen, die das nicht tun, fliegen raus – auch glänzende, die vielleicht irgendwann gut wären; sonst macht ihr die strategische Wahl der Ziel-Chance rückgängig (S. 112–114). Dann „Dot-Voting“: drei Punkte pro Person, beliebig verteilt. Bewertet wird nur, wie gut eine Idee die Ziel-Chance trifft – nicht, wie cool sie ist, und schwierige oder unmögliche Ideen werden nicht ausgeschlossen. Gibt es nach einer Runde keinen klaren Sieger, wirbt jede*r kurz für die eigenen Punkte, ohne lange Debatte, dann wird neu gepunktet. Am Ende ein kurzer Check: Jede*r ist von mindestens einer Idee begeistert, jede Idee hat eine Fürsprecher*in (S. 113).</p>
+      <p>Warum drei und nicht eine? Torres will einen echten Vergleich: Welche der drei erfüllt die Ziel-Chance am besten? Das entscheiden später Annahmentests und Prototypen, nicht eine Abstimmung (S. 113). Bei euch beginnt Tag 3 mit diesem Vergleich.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">H1: „Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</p>
+    <ul class="gross">
+      <li data-schritt><strong>18 Ideen</strong>, darunter Ampel an der Tür, Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen), Express-Kasse wie im Supermarkt, Kaffee per Drohne.</li>
+      <li data-schritt><strong>Aussortiert:</strong> „Becher mit Deckel, der nicht verschüttet“, „mehr Sitzplätze“ – gut, aber nicht für diese Chance.</li>
+      <li data-schritt><strong>Drei nach dem Punkten:</strong> Wartezeit an der Hallentür · Im Gehen bestellen, mit Abfahrtszeit · Kaffeewagen am Bahnsteig.</li>
+    </ul>
+    <p class="nur-handout">Die drei sind absichtlich verschieden: eine Anzeige, ein Bestellweg, ein anderer Ort. Varianten derselben Idee (Ampel an der Tür, Anzeige neben der Abfahrtstafel, Wartezeit in der Bahn-App) sind zusammengefasst – Torres warnt davor, nur Varianten einer Idee in die Auswahl zu nehmen (S. 114). Welche weitergeht, entscheidet sich an Tag 3, wenn ihr für jede der drei eine Value Map zeichnet und den Fit vergleicht. Im weiteren Beispiel ist es „Im Gehen bestellen“; warum, zeigt Tag 3.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
+    <p class="folie-satz">Zwei Runden allein und teilen, dann auswählen – für jedes der drei Produkte.</p>
+    <MiroFrame name="T2 · 5 · Ideation" />
+    <ol class="gross">
+      <li data-schritt><strong>Allein:</strong> Ideen zu allen drei HMW-Fragen, ein Sticky pro Idee. <Timer minuten={12} /></li>
+      <li data-schritt><strong>Teilen:</strong> pro Produkt vier Minuten erklären und weiterspinnen. <Timer minuten={12} /></li>
+      <li data-schritt><strong>Wieder allein</strong> – wer feststeckt: Analogien, extreme Nutzer*innen, Claude. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Teilen</strong>, bis jedes Produkt 15 bis 20 Ideen hat. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Auswählen:</strong> pro Produkt aussortieren, punkten, drei Ideen. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
+    </ol>
+    <p class="nur-handout">Dazu 15 Minuten Theorie und 5 Minuten Kaffeebar; die übrigen Minuten sind Puffer. Torres rät, Ideen nicht nur in einer Sitzung zu sammeln (S. 114): Was euch über Nacht einfällt, kommt dazu.</p>
+  </Folie>
+
+  <div class="nur-handout">
+  <h2 id="claude">Claude, wenn ihr feststeckt</h2>
+  <p>Erst nach eurer ersten Runde allein:</p>
   <Prompt label="Ideation · Claude Chat oder Claude Code">Unsere Frage: [HMW-Frage]. Unsere bisherigen Ideen: [Liste]. Hilf uns, Richtungen zu finden, die darin fehlen – keine Varianten unserer Ideen.
 1. Nenn drei Branchen, die ein ähnliches Problem gelöst haben, und je den Kern ihrer Lösung in einem Satz.
-2. Stell dir drei sehr verschiedene Menschen aus unserer Zielgruppe vor (zum Beispiel ungeduldig, sparsam, gewohnheitstreu). Was würde jede*r von ihnen an unseren Ideen stören?
-3. Stell uns dann als neugierige*r Neue*r im Team drei Fragen zu unseren Ideen, die wir noch nicht beantworten können.
+2. Nenn drei extreme Nutzer*innen aus unserer Zielgruppe (zum Beispiel zum ersten Mal, jeden Tag, unter Zeitdruck) und was jede*r von ihnen bräuchte.
 Bewerte unsere Ideen nicht und wähle keine aus.</Prompt>
-
-  <Callout type="info" title="Was mit den anderen Ideen passiert">
-    <p>Nichts wird gelöscht. Alle Ideen bleiben in <code>docs/IDEEN.md</code>. Wenn die gewählte Idee in einem Test scheitert, ist die zweitplatzierte euer nächster Kandidat – und ihr müsst nicht von vorn anfangen.</p>
-  </Callout>
 
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/IDEEN.md"># Ideen — [Produkt]
 
-Frage: H[n] – [Wie könnten wir …?]
+Ziel-Chance: „[...]“ · Frage: H[n] – [Wie könnten wir …?]
 
-## Ausgewählt
-**[Titel der Idee]** – [ein Satz, was sie tut]
-Beantwortet: H[n] · Passt zu: [T…, P…]
-Warum: [Begründung aus der Abstimmung]
-Skizze: [Link zu Miro]
+## Drei Ideen für den Vergleich
+1. **[Titel]** – [ein Satz, was sie tut]
+   Trifft die Ziel-Chance, weil: [...] ([Zitat-IDs]) · Beantwortet: H[n] · Fürsprecher*in: [Name]
+2. **[...]**
+3. **[...]**
+
+## Aussortiert (löst die Ziel-Chance nicht)
+- [...]
 
 ## Alle Ideen
-- [Idee] (eigene / Brainwriting / Claude) – [Punkte]
-- [...]</Prompt>
+- [Idee] (eigene / geteilt / Claude) – [Punkte]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="ideation" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Welche eurer Ideen ist euer „Im Gehen bestellen“ – die, die zu einer Chance aus euren Snapshots passt und nicht nur zu eurer ursprünglichen Vorstellung? Wenn die Siegeridee genau die ist, mit der ihr in Tag 1 gestartet seid: Prüft, ob die Interviews sie wirklich stützen.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Sind eure drei Ideen wirklich verschieden – oder drei Varianten derselben?</p>
+    <p class="nur-handout">Wenn alle drei dasselbe in anderer Form sind, sucht in der Liste nach einer Idee aus einer anderen Kategorie. Der Vergleich an Tag 3 lohnt sich nur, wenn es etwas zu vergleichen gibt.</p>
+  </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} next={{ href: '/innolab/tag-2#abschluss', t: 'Tag 2 · Abschluss' }} />
 </Layout>
