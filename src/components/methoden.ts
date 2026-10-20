@@ -284,7 +284,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 115–118; Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128',
   },
   {
-    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 3, dauer: 30,
+    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 3, dauer: 40,
     frage: 'An welcher Annahme hängt der Spitzenreiter – und wie prüfen wir sie diese Woche?',
     braucht: ['annahmen', 'ideen', 'valuemap', 'concept', 'geschaeftsmodell'], ergibt: ['experimente', 'origin'],
     pruefliste: [
@@ -294,7 +294,7 @@ export const METHODEN: Methode[] = [
       'Die Schwelle steht als „x von y“ fest, bevor der Test läuft.',
       'Es ist der schnellste Test dieser Woche, der den stärksten Beleg liefert, den ihr euch leisten könnt.',
       'Es steht da, was die Testpersonen danach erfahren; die riskanteste Annahme der anderen beiden Ideen steht je als Zeile darunter.',
-      'Die Origin Story führt zu genau einer Handlung, und diese Handlung ist die Messgröße der Karte.',
+      'Am Abend: Die Origin Story führt zu genau einer Handlung, und diese Handlung ist die Messgröße der Karte.',
     ],
     ki: 'Pre-Mortem: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Origin Story nach Donna Lichaw, Kap. 4',
@@ -333,7 +333,7 @@ export const METHODEN: Methode[] = [
   {
     slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 3, dauer: 90,
     frage: 'Erreichen fünf Menschen mit dem Prototyp den Höhepunkt, ohne dass ihr helft?',
-    braucht: ['usage', 'storymap', 'annahmen'], ergibt: ['spike'],
+    braucht: ['usage', 'storymap', 'annahmen', 'entscheidungen'], ergibt: ['spike'],
     pruefliste: [
       'Papierskizzen für jeden Bildschirm der Usage Story liegen als Foto in docs/TESTS.md; der Höhepunkt ist ein eigener Bildschirm.',
       'Der Prototyp liegt in einem eigenen Branch, trägt „Prototyp – nicht echt“ und hat Abnahmekriterien und eine Zeitbox – er wird nicht gemergt.',

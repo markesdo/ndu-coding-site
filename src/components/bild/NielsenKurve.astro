@@ -8,9 +8,10 @@ const x = (n: number) => L + (n / MAX) * (B - L - R);
 const y = (a: number) => O + (1 - a) * (H - O - U);
 const punkte = Array.from({ length: MAX + 1 }, (_, n) => `${x(n).toFixed(1)},${y(gefundenAnteil(n)).toFixed(1)}`).join(' ');
 const fuenf = { x: x(5), y: y(gefundenAnteil(5)) };
+const prozent = Math.round(gefundenAnteil(5) * 100);
 ---
 <figure class="nielsen">
-  <svg viewBox={`0 0 ${B} ${H}`} role="img" aria-label="Kurve: Anteil gefundener Usability-Probleme steigt mit der Zahl der Testpersonen steil an und flacht ab; bei fünf Personen rund 85 Prozent">
+  <svg viewBox={`0 0 ${B} ${H}`} role="img" aria-label={`Kurve: Anteil gefundener Usability-Probleme steigt mit der Zahl der Testpersonen steil an und flacht ab; bei fünf Personen ${prozent} Prozent`}>
     <line x1={L} y1={y(0)} x2={B - R} y2={y(0)} class="achse" />
     <line x1={L} y1={y(0)} x2={L} y2={O} class="achse" />
     {[0, 0.5, 1].map((a) => <text x={L - 8} y={y(a) + 5} text-anchor="end" class="beschriftung">{Math.round(a * 100)} %</text>)}
@@ -19,7 +20,7 @@ const fuenf = { x: x(5), y: y(gefundenAnteil(5)) };
     <polyline points={punkte} class="kurve" />
     <line x1={fuenf.x} y1={fuenf.y} x2={fuenf.x} y2={y(0)} class="hilfslinie" />
     <circle cx={fuenf.x} cy={fuenf.y} r="6" class="punkt" />
-    <text x={fuenf.x + 12} y={fuenf.y + 26} class="beschriftung stark">5 Personen: rund 85 %</text>
+    <text x={fuenf.x + 12} y={fuenf.y + 26} class="beschriftung stark">5 Personen: {prozent} %</text>
   </svg>
   <figcaption class="small muted">N(1 − (1 − L)ⁿ), L ≈ 31 %. Nach Jakob Nielsen, NN/g (2000).</figcaption>
 </figure>

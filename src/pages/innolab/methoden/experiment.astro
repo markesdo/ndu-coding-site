@@ -9,10 +9,12 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
+const PRE_MORTEM = `Lies docs/EXPERIMENTE.md und aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Stell dir vor, E1 ist gelaufen und hat uns in die Irre geführt. Nenn drei Gründe, warum das passiert sein könnte (zum Beispiel falsches Publikum, eine Schwelle, die zu leicht ist, ein Test, der die ganze Idee statt der Annahme prüft), und je einen kleineren oder genaueren Test. Ändere keine Datei.`;
 ---
 <Layout title="Experiment-Karte & Origin Story">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
@@ -136,11 +138,11 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     <Prompt label="Beispiel · Experiment-Karte E1">E1 · A5 (wünschenswert) · läuft bis: drei Werktage vor Tag 4
 Wir glauben, dass Pendler*innen, die beim Betreten der Halle die Schlange sehen, am Aufsteller bestellen, statt zum Automaten zu gehen.
 Um das zu prüfen, stellen wir an drei Morgen (7:15–7:45) einen Aufsteller mit QR-Code an die Hallentür. Die Seite verspricht „Im Gehen bestellen – bald“ und bittet, den eigenen Zug einzutragen. Bestellen geht noch nicht; das steht auf der Seite.
-Wir messen Scans und eingetragene Züge pro Morgen.
-Wir haben recht, wenn von den ersten 30 Scans mindestens 10 einen Zug eintragen.
+Wir messen: wer bei Schlange zum Automaten geht (Strichliste), wer am Aufsteller einen Zug einträgt.
+Wir haben recht, wenn von den ersten 30, die bei Schlange zum Automaten gehen oder einen Zug eintragen, mindestens 10 eintragen.
 Danach: Wer eingetragen hat, erfährt, wann es losgeht.
 Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt es keine Schlange“)</Prompt>
-    <p class="nur-handout">Kommen in drei Morgen keine 30 Scans zusammen, sagt der Test nichts über A5, sondern über den Aufsteller – das ist Torres' Warnung vor zu wenigen Kriterien ({TORRES}, S. 144–145). Ein Eintrag ist ein kleiner Einsatz und darum ein mittlerer Beleg ({BLAND}, S. 52). Besteht E1, wäre der stärkere nächste Test ein Concierge: drei Morgen lang per Nachricht vorbestellen, von Hand zubereitet. Bland nennt so eine Folge für Dienstleistungen: vom Interview über die Landingpage bis zum Concierge (S. 99). Und wer getestet wird, erfährt danach, was dahintersteckt: „Are you experimenting with your customers or on them?“ (S. 86).</p>
+    <p class="nur-handout">Gezählt wird beides, weil A5 eine Wahl behauptet: Aufsteller statt Automat. Wer nur Scans zählt, misst, wer sich ohnehin für den Aufsteller interessiert – nicht, wer sich gegen den Automaten entscheidet. Die Strichliste braucht eine Person neben dem Automaten; Torres warnt vor zu wenigen Kriterien und vor Tests, die nicht die Annahme prüfen ({TORRES}, S. 133, 144–145). Ein Eintrag ist ein kleiner Einsatz und darum ein mittlerer Beleg ({BLAND}, S. 52). Besteht E1, wäre der stärkere nächste Test ein Concierge: drei Morgen lang per Nachricht vorbestellen, von Hand zubereitet. Bland nennt so eine Folge für Dienstleistungen: vom Interview über die Landingpage bis zum Concierge (S. 99). Und wer getestet wird, erfährt danach, was dahintersteckt: „Are you experimenting with your customers or on them?“ (S. 86).</p>
   </Folie>
 
   <Folie>
@@ -154,7 +156,7 @@ Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt 
     </ol>
     <div class="nur-handout">
       <p>Dazu zwölf Minuten Theorie und Beispiel. Die Schritte kommen aus Lückensatz und Value Map der gewählten Idee. Bei den Annahmen markiert ihr, welche auch für eure anderen beiden Ideen gelten – geteilte Annahmen sind oft die schnellsten Tests. Die neuen Annahmen tragt ihr mit den nächsten freien IDs in der Werkstatt in eure Annahmen-Map ein, mit Art, Wichtigkeit und Beleg. Unter die Karte kommt je eine Zeile für die anderen beiden Ideen: deren riskanteste Annahme.</p>
-      <p>Die Karte steht danach in <code>docs/EXPERIMENTE.md</code>. Prüfen mit Claude könnt ihr in der Mittagspause.</p>
+      <p>Die Karte steht danach in <code>docs/EXPERIMENTE.md</code>. Prüfen mit Claude am Abend, wenn auch die Origin Story steht.</p>
     </div>
   </Folie>
 
@@ -182,7 +184,7 @@ Darum werden wir: [weitermachen · umschwenken · verwerfen] → Zeile im Entsch
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="experiment" />
-  <Prompt label="Pre-Mortem · Claude Code">Lies docs/EXPERIMENTE.md und aus der Werkstatt meine Annahmen-Map (Werkzeug artefakt_lesen). Stell dir vor, E1 ist gelaufen und hat uns in die Irre geführt. Nenn drei Gründe, warum das passiert sein könnte (zum Beispiel falsches Publikum, eine Schwelle, die zu leicht ist, ein Test, der die ganze Idee statt der Annahme prüft), und je einen kleineren oder genaueren Test. Ändere keine Datei.</Prompt>
+  <Prompt label="Pre-Mortem · Claude Code">{PRE_MORTEM}</Prompt>
   </div>
 
   <Folie>
