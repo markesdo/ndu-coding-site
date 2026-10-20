@@ -14,13 +14,13 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-21">
-    <Block time="09:00–10:00" type="uebung" title="Value Map & Fit" href="/innolab/methoden/value-map">Produkte, Schmerzlinderer, Gewinnerzeuger – gegen das Kundenprofil.</Block>
-    <Block time="10:00–10:10" type="pause" title="Pause" />
-    <Block time="10:10–10:40" type="konzept" title="Der Story-Bogen" href="/innolab/methoden/concept-story#story-bogen">Sieben Stationen, A × B = C, der Antiklimax.</Block>
-    <Block time="10:40–11:25" type="uebung" title="Concept Story" href="/innolab/methoden/concept-story#vorgehen">ERRC-Raster, sieben Stationen, in 90 Sekunden erzählen.</Block>
-    <Block time="11:25–11:55" type="uebung" title="Experiment-Karte & Origin Story" href="/innolab/methoden/experiment">Die riskanteste offene Annahme, der billigste Test.</Block>
-    <Block time="11:55–12:55" type="pause" title="Mittagspause" />
-    <Block time="12:55–14:55" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Kano, Slice 1.</Block>
+    <Block time="09:00–10:15" type="uebung" title="Kundenprofil & Value Map (Fit)" href="/innolab/methoden/kundenprofil">Profil aus dem Baum, drei Ideen als Lückensätze, Fit vergleichen, eine Idee ausarbeiten.</Block>
+    <Block time="10:15–10:25" type="pause" title="Pause" />
+    <Block time="10:25–10:55" type="konzept" title="Der Story-Bogen" href="/innolab/methoden/concept-story#story-bogen">Sieben Stationen, A × B = C, der Antiklimax.</Block>
+    <Block time="10:55–11:40" type="uebung" title="Concept Story" href="/innolab/methoden/concept-story#vorgehen">ERRC-Raster, sieben Stationen, in 90 Sekunden erzählen.</Block>
+    <Block time="11:40–12:10" type="uebung" title="Experiment-Karte & Origin Story" href="/innolab/methoden/experiment">Die riskanteste offene Annahme, der billigste Test.</Block>
+    <Block time="12:10–13:10" type="pause" title="Mittagspause" />
+    <Block time="13:10–14:55" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Kano, Slice 1.</Block>
     <Block time="14:55–15:05" type="pause" title="Pause" />
     <Block time="15:05–15:35" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Der Kernablauf mit Höhepunkt am Ende.</Block>
     <Block time="15:35–17:05" type="uebung" title="Prototyp-Spike" href="/innolab/methoden/prototyp-spike">Papier, dann Claude Code; Testplan.</Block>
@@ -30,14 +30,15 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
-  <p>Heute werden aus <strong>Lösungen</strong> <strong>Experimente</strong>. Die Value Map zeigt, welche Pains eure Idee trifft; die Concept Story, warum das jemanden interessiert; die Story Map, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das am Abend mit echten Menschen.</p>
+  <p>Heute werden aus <strong>Lösungen</strong> <strong>Experimente</strong>. Kundenprofil und Value Map zeigen, welche eurer drei Ideen die wichtigsten Pains trifft; die Concept Story, warum das jemanden interessiert; die Story Map, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das am Abend mit echten Menschen.</p>
   <Callout type="info" title="Ein langer Tag – mit Absicht">
     <p>Tag 3 endet erst um 17:45. Dafür habt ihr am Abend etwas, das man anklicken kann. Wer bei der Story Map hinterherhängt, kürzt bei der Usage Story auf die Stationen 4 und 5: Krise und Höhepunkt reichen für den Prototyp.</p>
   </Callout>
 
   <h2 id="methoden">Die Methoden von heute</h2>
   <ul>
-    <li><a href="/innolab/methoden/value-map">Value Map & Fit</a> – was eure Idee trifft und was nicht</li>
+    <li><a href="/innolab/methoden/kundenprofil">Kundenprofil</a> – Jobs, Pains, Gains aus eurem Baum, je Spalte geordnet</li>
+    <li><a href="/innolab/methoden/value-map">Value Map & Fit</a> – drei Ideen vergleichen, eine ausarbeiten</li>
     <li><a href="/innolab/methoden/concept-story">Concept Story</a> – warum es das Produkt gibt, mit ERRC-Raster</li>
     <li><a href="/innolab/methoden/experiment">Experiment-Karte & Origin Story</a> – testen, bevor ihr baut</li>
     <li><a href="/innolab/methoden/story-map">Story Map</a> – der Plan, mit Kano geschnitten</li>
@@ -48,7 +49,7 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2 id="abschluss">Abschluss & Hausaufgabe bis Tag 4</h2>
   <Checklist id="il-tag3-hausaufgabe" items={[
-    '<code>docs/VALUE-MAP.md</code>, <code>STORYS.md</code>, <code>EXPERIMENTE.md</code>, <code>STORY-MAP.md</code>, <code>GESCHAEFTSMODELL.md</code> und <code>TESTS.md</code> im Repo',
+    '<code>docs/KUNDENPROFIL.md</code>, <code>VALUE-MAP.md</code>, <code>STORYS.md</code>, <code>EXPERIMENTE.md</code>, <code>STORY-MAP.md</code>, <code>GESCHAEFTSMODELL.md</code> und <code>TESTS.md</code> im Repo',
     'Abschnitt 3 und 5 in <code>docs/PRODUKT.md</code> gefüllt: Produkt in einem Satz, Slice 1 als Stichworte',
     'Fünf Usability-Tests mit dem Spike, Befunde als U1, U2 … in <code>docs/TESTS.md</code>',
     'Origin Story als Landingpage-Text ausgeschrieben; das Experiment läuft, wenn es eins braucht',
@@ -57,5 +58,5 @@ import FooterNav from '../../components/FooterNav.astro';
   ]} />
   <p>An <a href="/innolab/tag-4">Tag 4</a> werdet ihr ein Team: Aus euren Story Maps entstehen drei Backlogs in einem gemeinsamen Linear-Workspace, und ihr arbeitet nach Scrum.</p>
 
-  <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} />
+  <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} />
 </Layout>

@@ -1,5 +1,5 @@
 // Toolbox des Innolabs: jede Methode beantwortet eine Frage und ergibt ein Artefakt. Spätere Methoden bauen auf
-// diesen Artefakten auf, statt sie neu zu erarbeiten (Pains etwa nur im Kundenprofil). methoden.test.ts prüft die Kette.
+// diesen Artefakten auf, statt sie neu zu erarbeiten (Chancen etwa nur im Baum; das Kundenprofil übernimmt sie mit ihren Zitat-IDs). methoden.test.ts prüft die Kette.
 // Ohne Astro, damit testbar.
 import type { ArtefaktName } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
@@ -33,13 +33,13 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'transkripte', name: 'Leitfaden und Interview-Notizen (pseudonymisiert)', lebtIn: ['werkstatt'], pfad: 'mappe/leitfaden.json', werkstatt: 'leitfaden' },
   { id: 'annahmen', name: 'Annahmen-Map', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/annahmen.json', werkstatt: 'annahmen' },
   { id: 'synthese', name: 'Interviews mit Snapshots (pseudonymisiert)', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/interviews.json', werkstatt: 'interviews' },
-  { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains)', lebtIn: ['miro', 'repo'], pfad: 'docs/KUNDENPROFIL.md' },
+  { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet', lebtIn: ['miro', 'repo'], pfad: 'docs/KUNDENPROFIL.md' },
   { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro', 'repo'], pfad: 'docs/JOURNEY.md' },
   { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro', 'repo'], pfad: 'docs/BAUM.md' },
   { id: 'ziel', name: 'Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe', lebtIn: ['miro', 'repo'], pfad: 'docs/ZIEL-CHANCE.md' },
   { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/HMW.md' },
   { id: 'ideen', name: 'Drei Ideen für die Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/IDEEN.md' },
-  { id: 'valuemap', name: 'Value Map und Fit', lebtIn: ['miro', 'repo'], pfad: 'docs/VALUE-MAP.md' },
+  { id: 'valuemap', name: 'Value Map der gewählten Idee mit Fit-Vergleich', lebtIn: ['miro', 'repo'], pfad: 'docs/VALUE-MAP.md' },
   { id: 'concept', name: 'Concept Story', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
   { id: 'experimente', name: 'Experiment-Karten', lebtIn: ['repo'], pfad: 'docs/EXPERIMENTE.md' },
   { id: 'origin', name: 'Origin Story als Landingpage-Text', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
@@ -222,34 +222,35 @@ export const METHODEN: Methode[] = [
     ki: 'Nach der ersten eigenen Runde, wenn ihr feststeckt: analoge Produkte aus anderen Branchen und extreme Nutzer*innen.',
   },
   {
-    slug: 'kundenprofil', name: 'Kundenprofil', tag: 3, dauer: 75,
+    slug: 'kundenprofil', name: 'Kundenprofil', tag: 3, dauer: 30,
     frage: 'Welche Jobs, Pains und Gains hat dieses Segment – und welche zählen am meisten?',
-    braucht: ['synthese'], ergibt: ['profil'],
+    braucht: ['synthese', 'baum', 'ziel'], ergibt: ['profil'],
     pruefliste: [
       'Das Profil beschreibt genau ein Segment.',
       'Jobs sind Aufgaben der Person – keine Ergebnisse und keine Funktionen eures Produkts.',
       'Neben funktionalen Jobs steht mindestens ein sozialer oder emotionaler.',
-      'Pains und Gains sind konkret: „mehr als 6 Minuten anstehen“ statt „zu lange“.',
+      'Pains und Gains sind konkret: „mehr als fünf Leute in der Schlange“ statt „zu voll“.',
       'Kein Eintrag beschreibt euer Produkt oder eure Lösung.',
-      'Jeder Eintrag verweist auf eine Chance oder ein Zitat aus euren Interview-Snapshots.',
-      'Die Einträge sind nach Chancenwert sortiert, die drei wichtigsten markiert.',
+      'Die Ziel-Chance steht als Pain im Profil; jeder Eintrag verweist auf Zitat-IDs aus den Interviews.',
+      'Jede Spalte ist für sich geordnet: Jobs nach Wichtigkeit, Pains nach Schwere, Gains nach Relevanz.',
     ],
-    ki: 'Prüft gegen die häufigen Fehler: vermischte Segmente, vage Pains, nur funktionale Jobs.',
-    quelle: 'Strategyzer, Value Proposition Design',
+    ki: 'Prüft gegen die häufigen Fehler: vermischte Segmente, Jobs mit Ergebnissen verwechselt, vage Pains, nur funktionale Jobs.',
+    quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–80 (PDF)',
   },
   {
-    slug: 'value-map', name: 'Value Map & Fit', tag: 3, dauer: 60,
-    frage: 'Wie lindert unser Angebot die wichtigsten Pains und schafft die wichtigsten Gains?',
+    slug: 'value-map', name: 'Value Map & Fit', tag: 3, dauer: 45,
+    frage: 'Welche unserer drei Ideen trifft das Profil am besten – und wie genau schafft sie Wert?',
     braucht: ['profil', 'ideen'], ergibt: ['valuemap'],
     pruefliste: [
+      'Für jede der drei Ideen von Tag 2 steht ein Lückensatz.',
       'Unter Produkte und Services steht nur, was für dieses Segment gedacht ist.',
-      'Bei Schmerzlinderern und Gewinnerzeugern stehen keine Produkte, sondern was sie bewirken.',
-      'Jeder Schmerzlinderer und Gewinnerzeuger nennt die ID des Pains oder Gains, den er adressiert.',
-      'Die drei wichtigsten Einträge des Kundenprofils sind adressiert – oder es steht da, warum nicht.',
-      'Was bewusst offen bleibt, ist markiert; es wird nicht jeder Pain gelöst.',
+      'Der Fit-Vergleich hakt jede Idee gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).',
+      'Gewählt ist die Idee mit dem besten Fit, mit einem Satz warum.',
+      'Bei Schmerzlinderern und Gewinnerzeugern stehen keine Produkte, sondern was sie bewirken – mit der ID des Pains oder Gains.',
+      'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was bewusst offen bleibt, ist markiert.',
     ],
-    ki: 'Markiert Schmerzlinderer, die zu keinem Pain passen.',
-    quelle: 'Strategyzer, Value Proposition Design',
+    ki: 'Markiert Schmerzlinderer, die zu keinem Pain passen, und fragt nach jedem ✓ im Fit-Vergleich.',
+    quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 157–159 (PDF)',
   },
   {
     slug: 'concept-story', name: 'Concept Story', tag: 3, dauer: 75,
@@ -280,7 +281,7 @@ export const METHODEN: Methode[] = [
     ki: 'Pre-Mortem, billigere Testvarianten, Schwelle für Erfolg vor dem Test.',
   },
   {
-    slug: 'story-map', name: 'Story Map', tag: 3, dauer: 120,
+    slug: 'story-map', name: 'Story Map', tag: 3, dauer: 105,
     frage: 'Was bauen wir in welcher Reihenfolge, damit Nutzer*innen ihr Ziel erreichen?',
     braucht: ['valuemap', 'journey'], ergibt: ['storymap'],
     pruefliste: [
