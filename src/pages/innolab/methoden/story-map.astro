@@ -9,6 +9,7 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
@@ -189,6 +190,7 @@ const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annah
   <Folie>
     <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
     <p class="folie-satz">Zwei Gruppen, ein Erzählfluss, Slices nach Outcome.</p>
+    <MiroFrame name="T3 · 3 · Story Map" />
     <div style="overflow-x:auto">
       <table class="map">
         <thead><tr><th></th><th>In die Halle</th><th>Bestellen</th><th>Abholen</th><th>Zahlen</th><th>Zum Zug</th></tr></thead>
@@ -216,6 +218,7 @@ const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annah
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (65 min)</h2>
     <p class="folie-satz">Erzählen, erkunden, fragen lassen, schneiden, durchgehen.</p>
+    <MiroFrame name="T3 · 3 · Story Map" />
     <ol class="gross">
       <li data-schritt><strong>Ablauf erzählen, allein:</strong> Rahmen, wer handelt, Tasks bis zum Ende, Aktivitäten darüber. <Timer minuten={20} /></li>
       <li data-schritt><strong>Erkunden:</strong> an jedem Schritt die vier Fragen. <Timer minuten={10} /></li>
