@@ -24,7 +24,6 @@ Jedes Element hat eine ID: Präfix plus Nummer, optional mit Unternummer (`A12`,
 | A | Annahme |
 | I | Interview; Zitat `I2-4` ist Zitat 4 aus Interview 2 |
 | J / P / G | Job / Pain / Gain |
-| W | Moment der Wahrheit |
 | H | HMW / Chance |
 | L | Lösungsidee |
 | E | Experiment |
