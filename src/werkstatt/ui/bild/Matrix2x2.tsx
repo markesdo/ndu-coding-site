@@ -9,7 +9,7 @@ export type MatrixProps = {
   y: { label: string; unten: string; oben: string };
   felder?: [string, string, string, string];
   hervor?: Feld;
-  // farbe: Klasse der Art (yellow|blue|green|purple); art: Text der Art, nur für Screenreader.
+  // farbe: Klasse der Art (yellow|blue|green|purple|muted); art: Text der Art, nur für Screenreader.
   punkte?: { id?: string; t: string; x: number; y: number; hervor?: boolean; farbe?: string; art?: string }[];
 };
 

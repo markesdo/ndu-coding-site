@@ -41,6 +41,13 @@ describe('fehlendeArten', () => {
   });
 });
 
+describe('ethisch', () => {
+  it('fehlt sie, gibt es keinen Hinweis – sie gehört nicht zu den vier Arten von Tag 1', () => {
+    expect(kaffeebar().annahmen.some((a) => a.art === 'ethisch')).toBe(false);
+    expect(fehlendeArtenHinweis(kaffeebar().annahmen)).toBeNull();
+  });
+});
+
 describe('riskanteste', () => {
   it('fällt weg, wenn ihre Annahme gelöscht wird', () => {
     const d = kaffeebar(); // riskanteste: A1

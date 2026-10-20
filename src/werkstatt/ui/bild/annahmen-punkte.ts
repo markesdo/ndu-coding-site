@@ -8,6 +8,7 @@ const ART: Record<Annahme['art'], { farbe: string; text: string }> = {
   machbar: { farbe: 'blue', text: 'machbar' },
   wirtschaftlich: { farbe: 'green', text: 'wirtschaftlich' },
   bedienbar: { farbe: 'purple', text: 'bedienbar' },
+  ethisch: { farbe: 'muted', text: 'ethisch' },
 };
 
 const MAX_ZEICHEN = 40;

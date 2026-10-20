@@ -30,6 +30,7 @@
 .wk-wurzel .wk-artfarbe.blue { --c: var(--blue); --c-soft: var(--blue-soft); }
 .wk-wurzel .wk-artfarbe.green { --c: var(--green); --c-soft: var(--green-soft); }
 .wk-wurzel .wk-artfarbe.purple { --c: var(--purple); --c-soft: var(--purple-soft); }
+.wk-wurzel .wk-artfarbe.muted { --c: var(--fg); --c-soft: var(--code-bg); }
 .wk-wurzel .wk-arten-fehlen { color: var(--fg); font-weight: 600; }
 .wk-wurzel .wk-legende { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: .4rem; }
 .wk-wurzel .wk-legende li { padding: .2rem .6rem; border-radius: var(--radius); font-size: .85rem; }

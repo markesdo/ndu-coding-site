@@ -6,6 +6,7 @@ const ART_TEXT: Record<Annahme['art'], string> = {
   machbar: 'machbar',
   wirtschaftlich: 'wirtschaftlich',
   bedienbar: 'bedienbar',
+  ethisch: 'ethisch',
 };
 
 // Tabelle wie in der Vorlage auf der Methodenseite „Annahmen-Map“.
