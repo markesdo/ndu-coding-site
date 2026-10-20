@@ -11,7 +11,7 @@ const BEISPIELE = 'src/werkstatt/beispiele';
 const dateien = (ordner: string, endung: string): string[] =>
   readdirSync(ordner, { recursive: true, encoding: 'utf8' }).filter((f) => f.endsWith(endung)).map((f) => join(ordner, f));
 
-const quellen = [...dateien(SEITEN, '.astro'), ...dateien(BEISPIELE, '.json').filter((f) => !f.endsWith('interviews.json'))];
+const quellen = [...dateien(SEITEN, '.astro'), ...dateien(BEISPIELE, '.json').filter((f) => !f.endsWith('interviews.json')), 'src/components/innolab-beispiel.ts'];
 const vorhanden = new Set(interviews.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
 
 describe('Kaffeebar-Beispiel', () => {

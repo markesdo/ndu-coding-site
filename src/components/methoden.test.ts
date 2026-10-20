@@ -105,7 +105,7 @@ describe('methoden', () => {
   });
 
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
-    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map', 'hmw', 'ideation']);
+    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map', 'baum', 'hmw', 'ideation']);
     expect(methodenVonTag(7)).toEqual([]);
   });
 

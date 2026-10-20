@@ -5,11 +5,13 @@
 // Die Äste baut BaumAst.astro (rekursiv, mit ihren Stilen). Tiefer als vier Ebenen bleibt Label und Farbe „Experiment“.
 import BaumAst from './BaumAst.astro';
 export interface Knoten { t: string; kinder?: Knoten[] }
-const { knoten, label, hervor } = Astro.props as { knoten: Knoten; label: string; hervor?: number };
+// momente: Die oberste Ebene unter dem Outcome sind die Momente der Experience Map (Torres S. 87); darunter Chancen,
+// Lösungen, Experimente. schmal: viele Äste nebeneinander – am Beamer schmalere Knoten statt waagrecht scrollen.
+const { knoten, label, hervor, schmal = false, momente = false } = Astro.props as { knoten: Knoten; label: string; hervor?: number; schmal?: boolean; momente?: boolean };
 if (hervor !== undefined && ![0, 1, 2, 3].includes(hervor)) throw new Error(`Baum: hervor muss 0–3 sein (0 = Outcome), war ${hervor}`);
 ---
-<figure class="baum" aria-label={label}>
-  <ul class="baum-wurzel"><BaumAst knoten={knoten} hervor={hervor} /></ul>
+<figure class:list={['baum', { 'baum-schmal': schmal }]} aria-label={label}>
+  <ul class="baum-wurzel"><BaumAst knoten={knoten} hervor={hervor} momente={momente} /></ul>
 </figure>
 
 <style>
