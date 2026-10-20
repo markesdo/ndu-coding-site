@@ -268,6 +268,21 @@ export const METHODEN: Methode[] = [
     quelle: 'Donna Lichaw, The User’s Journey; ERRC-Raster aus Blue Ocean Strategy',
   },
   {
+    slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 3, dauer: 20,
+    frage: 'Wer zahlt wofür – und welche Annahme steckt dahinter?',
+    braucht: ['profil', 'valuemap', 'concept', 'annahmen', 'brief'], ergibt: ['geschaeftsmodell'],
+    pruefliste: [
+      'Wer? und Was? verweisen auf Kundenprofil und Value Map; Wie? und Wert? stehen neu da.',
+      'Bei Wert? steht, wer wofür zahlt – und wie die Kundschaft heute bezahlt.',
+      'Die wichtigsten Kosten sind als Posten genannt, nicht als „gering“.',
+      'Das gewählte Muster ist benannt, und für jede andere Karte steht, warum sie verworfen wurde.',
+      'Die Annahme, an der das Modell hängt, steht als Wenn-dann-weil-Satz in der Annahmen-Map, Art „wirtschaftlich“, mit Wichtigkeit und Beleg.',
+      'Nichts im Modell widerspricht der Krise der Concept Story oder einem Pain im Kundenprofil.',
+    ],
+    ki: 'Prüft, ob Wer, Was, Wie und Wert zusammenpassen; spielt keine Muster durch.',
+    quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 115–118; Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128',
+  },
+  {
     slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 3, dauer: 30,
     frage: 'Wie testen wir die riskanteste Annahme am billigsten?',
     braucht: ['annahmen', 'ideen'], ergibt: ['experimente', 'origin'],
@@ -322,19 +337,6 @@ export const METHODEN: Methode[] = [
       'Nach den Tests (Hausaufgabe): Für jede Testperson steht fest, ob sie den Höhepunkt erreicht hat und wo sie hängen blieb.',
     ],
     ki: 'Baut den Wegwerf-Prototyp – erst nach der Papierskizze.',
-  },
-  {
-    slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 3, dauer: 20,
-    frage: 'Wie trägt sich das Produkt?',
-    braucht: ['valuemap', 'annahmen', 'brief'], ergibt: ['geschaeftsmodell'],
-    pruefliste: [
-      'Es steht da, wer zahlt und wofür.',
-      'Mindestens drei Muster wurden durchgespielt, eins ist gewählt – mit Grund.',
-      'Die wichtigsten Kosten sind genannt.',
-      'Die Annahme, an der das Modell hängt, ist als eigene Zeile formuliert.',
-    ],
-    ki: 'Spielt drei gezogene Muster gegen euer Produkt durch.',
-    quelle: 'Gassmann, Frankenberger, Csik: St. Galler Business Model Navigator',
   },
   {
     slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 160,

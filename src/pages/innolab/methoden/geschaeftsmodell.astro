@@ -5,61 +5,198 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+
+const GASSMANN = 'Oliver Gassmann, Karolin Frankenberger, Michaela Csik, „Geschäftsmodelle entwickeln“ (2. Aufl. 2017)';
+const GASSMANN_KURZ = 'Gassmann u. a., „Geschäftsmodelle entwickeln“ (2017)';
+const VPD = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
+const CAGAN = 'Marty Cagan, „Inspired“ (2. Aufl. 2018)';
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+
+// Der Kartensatz des Kurses: zwölf der 55 Muster, die zu kleinen digitalen Produkten passen, in eigenen Worten nach
+// Gassmanns Übersicht „Alle Muster auf einen Blick“ (III-3). Dimensionen und Firmen wie in den Steckbriefen.
+const KARTEN = [
+  { muster: 'Add-on', dim: 'Was, Wert', idee: 'Ein günstiges Grundprodukt, Extras kosten', firma: 'Ryanair' },
+  { muster: 'Subscription', dim: 'Was, Wert', idee: 'Regelmäßig zahlen, regelmäßig bekommen', firma: 'Netflix' },
+  { muster: 'Freemium', dim: 'Was, Wert', idee: 'Basis gratis, wenige zahlen für mehr', firma: 'Skype' },
+  { muster: 'Flatrate', dim: 'Was, Wert', idee: 'Ein Preis, so viel man will', firma: 'Netflix, SBB-GA' },
+  { muster: 'Pay-per-Use', dim: 'Was, Wert', idee: 'Bezahlt wird, was tatsächlich genutzt wird', firma: 'Car2Go' },
+  { muster: 'Pay What You Want', dim: 'Was, Wert', idee: 'Die Kundschaft legt den Preis fest', firma: 'Radiohead' },
+  { muster: 'Hidden Revenue', dim: 'Wer, Was, Wie, Wert', idee: 'Nicht die Nutzer*innen zahlen, sondern Dritte', firma: 'Google' },
+  { muster: 'Two-Sided Market', dim: 'Wer, Was, Wie, Wert', idee: 'Zwei Gruppen, die einander brauchen', firma: 'eBay' },
+  { muster: 'Affiliation', dim: 'Wie, Wert', idee: 'Andere bringen Kundschaft und werden pro Abschluss bezahlt', firma: 'Amazon' },
+  { muster: 'Customer Loyalty', dim: 'Was, Wert', idee: 'Treue wird belohnt, Kaufdaten fallen an', firma: 'Payback' },
+  { muster: 'Self-Service', dim: 'Was, Wie, Wert', idee: 'Die Kundschaft übernimmt einen Teil der Arbeit', firma: 'IKEA' },
+  { muster: 'Cross Selling', dim: 'Was, Wie, Wert', idee: 'Zum Grundprodukt ein zweites mit höherer Marge', firma: 'Tchibo' },
+];
 ---
 <Layout title="Geschäftsmodell-Karten">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Geschäftsmodell-Karten</h1>
-  <p class="lead">Wer zahlt wofür? Drei Muster gezogen, gegen euer Produkt gespielt, eins gewählt – in zwanzig Minuten.</p>
+  <p class="lead">Problem-Solution Fit habt ihr heute Vormittag auf Papier. Jetzt die dritte Art von Fit, ebenfalls auf Papier: Wer zahlt wofür, was kostet es – und welche Annahme steckt dahinter?</p>
   <Orientierung seite="innolab/methoden/geschaeftsmodell" leiste={false} />
   <MethodenKarte slug="geschaeftsmodell" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Ein Produkt, das Menschen lieben, kann trotzdem scheitern, wenn es sich nicht trägt. Das ist die dritte Art von Fit: Nach Problem-Solution Fit (Papier) und Product-Market Fit (Markt) kommt der <em>Business Model Fit</em> – es bringt mehr ein, als es kostet.</p>
-  <p>Die Universität St. Gallen hat 55 Muster gefunden, aus denen sich fast alle Geschäftsmodelle zusammensetzen – vom Abo (Spotify) über Freemium bis zum Add-on (Ryanair). Neue Geschäftsmodelle entstehen meist, indem man ein Muster in eine Branche überträgt, in der es noch niemand nutzt. Ein Geschäftsmodell beantwortet vier Fragen: <strong>Wer</strong> sind die Kund*innen? <strong>Was</strong> bekommen sie? <strong>Wie</strong> wird es hergestellt? Und wie entsteht <strong>Wert</strong> – wer zahlt wofür?</p>
+  <Folie>
+    <h2 id="dreieck">Wer, Was, Wie, Wert</h2>
+    <p class="folie-satz">Ein Geschäftsmodell beantwortet vier Fragen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/gassmann/dreieck.jpg" alt="Dreieck mit WER? in der Mitte und WAS?, WIE? und WERT? an den Ecken; dazwischen die Felder Nutzenversprechen, Wertschöpfungskette und Ertragsmechanik, außen die vier Fragen" quelle={`Das magische Dreieck. ${GASSMANN_KURZ}, Bild 1.2.`} />
+      <ul>
+        <li data-schritt><strong>Wer?</strong> Eure Zielkundschaft – das Kundenprofil.</li>
+        <li data-schritt><strong>Was?</strong> Euer Angebot – die Value Map.</li>
+        <li data-schritt><strong>Wie?</strong> Ressourcen, Aktivitäten, Partner.</li>
+        <li data-schritt><strong>Wert?</strong> Erträge und Kosten: „Create value, capture value.“</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Gassmann, Frankenberger und Csik beschreiben ein Geschäftsmodell mit vier Dimensionen: <em>Wer</em> sind unsere Zielkunden? <em>Was</em> bieten wir ihnen an (Nutzenversprechen)? <em>Wie</em> stellen wir die Leistung her (Prozesse, Aktivitäten, Ressourcen, Fähigkeiten)? <em>Wie wird Wert erzielt</em> (Ertragsmechanik: Kostenstruktur und Umsatzmechanismen)? Die Kundschaft steht in der Mitte – „immer und ohne Ausnahme“. Die ersten beiden Fragen betreffen die externe Seite, die letzten beiden die interne. Magisch ist das Dreieck, weil sich keine Ecke ändern lässt, ohne dass die anderen nachziehen ({GASSMANN}, I-1.2). Sie ziehen es für Workshops „komplexen Canvas-Strukturen“ vor, weil fokussierter diskutiert wird.</p>
+      <p>Der Abgleich mit Value Proposition Design: Kundensegment = Wer?, Wertversprechen = Was?, Schlüsselressourcen, -aktivitäten und -partner = Wie?, Einnahmequellen und Kostenstruktur = Wert? ({VPD}, S. 27–29 PDF). Wer? und Was? habt ihr also schon; heute kommen Wie? und Wert? dazu.</p>
+      <p>Warum Wert? eine eigene Frage ist: Fast alle Geschäftsmodellinnovatoren können Wert schaffen, viele scheitern daran, ihn auch abzuschöpfen ({GASSMANN}, I-1.2). Für Apps heißt das: Über die Hälfte aller App-Entwickler verdient weniger als 1.000 US-Dollar im Monat – ein gutes Produkt allein ergibt noch kein tragfähiges Geschäftsmodell (I-2.2.2).</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Muster</th><th>Übertragen</th><th>Einschätzung</th></tr></thead>
-      <tbody>
-        <tr><th>Add-on</th><td>Kaffee zum normalen Preis, 30 Cent Express-Zuschlag</td><td>Einfach, aber der Zuschlag könnte genau die Hürde aus der Krise sein</td></tr>
-        <tr><th>Abo</th><td>Fünf Morgen pro Woche, 12 € im Monat Rabatt gegen Vorauszahlung</td><td>Bindet Stammkundschaft, verlangt aber Planung – widerspricht den Interviews: Die Entscheidung fällt erst beim Ankommen (I1-2, I3-1, I5-3)</td></tr>
-        <tr><th>Cross-Selling</th><td>Kein Aufpreis; in der Bestellung wird ein Gebäck zum Kaffee angeboten</td><td>Gewählt: keine neue Hürde, mehr Umsatz pro Bestellung – hängt aber daran, dass die Bar mehr Bestellungen schafft</td></tr>
-      </tbody>
-    </table>
+  <Folie>
+    <h2 id="warum-jetzt">Warum jetzt – und warum nur kurz</h2>
+    <p class="folie-satz">Ein Produkt, das Menschen lieben, muss sich trotzdem tragen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/vpd/drei-fits.png" alt="Illustration in drei Stufen: unten 1 Problem-Solution Fit am Zeichentisch, darüber 2 Product-Market Fit auf einer grünen Wiese, oben 3 Business Model Fit auf einem Bankgebäude" quelle={`Drei Arten von Fit. ${VPD}, S. 115 (PDF).`} schmal />
+      <ul>
+        <li data-schritt><strong>Business Model Fit:</strong> mehr Ertrag als Kosten.</li>
+        <li data-schritt><strong>Jetzt:</strong> bevor ihr die riskanteste Annahme wählt.</li>
+        <li data-schritt><strong>Kurz:</strong> Preise optimieren ist heute noch akademisch.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Business Model Fit habt ihr erst, wenn euer Wertversprechen mehr einbringt, als es kostet, es zu schaffen und zu liefern; kein Wertversprechen überlebt ohne tragfähiges Geschäftsmodell ({VPD}, S. 115–118). Marty Cagan sagt dasselbe: Die Kosten, ein Produkt herzustellen, zu vermarkten und zu verkaufen, müssen ausreichend unter dem Umsatz liegen ({CAGAN}, S. 277).</p>
+      <p>Warum vor der Experiment-Karte: Teresa Torres zählt wirtschaftliche Annahmen („Should we build it?“) zu den vier Arten, die ihr vor dem Priorisieren aufzählt ({TORRES}, S. 118). Die meisten Teams denken an Wünschbarkeit und Bedienbarkeit und vergessen die Wirtschaftlichkeit (S. 128). Wer sie erst am Abend findet, hat die riskanteste Annahme schon gewählt.</p>
+      <p>Warum nur zwanzig Minuten: Cagan hält Preis, Kanäle und Kosten für echte Risiken, in diesem Stadium aber für „largely academic“ – das größte Risiko ist, ob die Kundschaft das Produkt überhaupt will ({CAGAN}, S. 189–190). Gassmann: „weniger Business-Plan, dafür mehr haptische Realisierung“ (I-2.5). Ihr benennt das Modell und seine Annahme, ihr rechnet es nicht durch.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="muster">Muster statt Erfindung</h2>
+    <p class="folie-satz">„Wie würde Netflix unser Geschäft führen?“</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/gassmann/add-on.jpg" alt="Zeichnung einer Flugzeugkabine: Sitzplatz, Gepäck und Getränk tragen je ein Preisschild mit Pluszeichen" quelle={`Das Muster Add-on (Ryanair). ${GASSMANN_KURZ}, Steckbrief II-1.1.`} schmal />
+      <ul>
+        <li data-schritt><strong>Neun von zehn</strong> Geschäftsmodellinnovationen kombinieren 55 bekannte Muster neu.</li>
+        <li data-schritt><strong>Konfrontation:</strong> Muster, die eurer Branche fremd sind.</li>
+        <li data-schritt><strong>Pro Karte</strong> mehrere Ideen, keine Killerphrasen.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Rund 90 Prozent der Geschäftsmodellinnovationen sind Rekombinationen von Elementen aus 55 bestehenden Geschäftsmodellen; ein Muster ist eine bestimmte Konfiguration von Wer-Was-Wie-Wert, die sich anderswo bewährt hat. Neu ist sie nur für die eigene Branche – „Kapieren geht vor Kopieren“ ({GASSMANN}, I-2.1). Das größte Hindernis ist die dominante Logik der eigenen Branche (I-1.3).</p>
+      <p>Das <strong>Konfrontationsprinzip</strong> durchbricht sie: sechs bis acht Muster, die sich von der eigenen Branchenlogik grundlegend unterscheiden, ausgewählt ohne langes Nachdenken; jedes Muster wird zur Frage „Wie würde [Firma] unser Geschäft führen?“ – Freemium: Skype, Subscription: Netflix, Self-Service: IKEA. Pro Karte müssen mehrere Ideen entstehen (I-2.3.2). Gegenstück ist das Ähnlichkeitsprinzip, das Muster aus verwandten Branchen sucht; Motto des einen „Mache dir das Fremde vertraut“, des anderen „Mache dir das Vertraute fremd“ (Tabelle 2.1).</p>
+      <p>Im Workshop empfehlen die Autor*innen drei Minuten pro Muster, in Stillarbeit 90 Sekunden, und mindestens zwei bis drei Runden; dazu Regeln wie „Alles ist erlaubt“, „Keine Urheberrechte“, „Quantität vor Qualität“, „Keine Killerphrasen“ (I-2.3.3). Wir machen eine Runde: zu dritt sechs Karten, zwei pro Produkt, und die anderen beiden ergänzen eure Ideen – eine Kürzung des Kurses. Im Beispiel unten laufen alle sechs Karten gegen ein Produkt.</p>
+      <p>Eine Geschäftsmodellinnovation verändert mindestens zwei der vier Dimensionen (I-1.2). Darum geht es heute nicht: Ihr sucht ein Modell, das euer Produkt trägt.</p>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
+    <h2 id="karten">Der Kartensatz</h2>
+    <p>Zwölf der 55 Muster, die zu kleinen digitalen Produkten passen. Handgeschriebene Karteikarten funktionieren genauso gut wie der gedruckte Satz der Autor*innen ({GASSMANN}, I-2.3). Die Frage auf jeder Karte: „Wie würde [Firma] unser Geschäft führen?“</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Muster</th><th>Dimensionen</th><th>Idee</th><th>Firma</th></tr></thead>
+        <tbody>
+          {KARTEN.map((k) => <tr><th>{k.muster}</th><td>{k.dim}</td><td>{k.idee}</td><td>{k.firma}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
   </div>
-  <p><strong>Wer zahlt wofür:</strong> Pendler*innen zahlen den Kaffee wie bisher, manche ein Gebäck dazu; mehr Bestellungen pro Morgen ohne zusätzliche Kraft. <strong>Kosten:</strong> Aufsteller, Bildschirm an der Ausgabe, Betrieb der Bestellseite. <strong>Annahme, an der alles hängt:</strong> Wir glauben, dass die Bar morgens 40 statt 25 Bestellungen in 30 Minuten schafft – das ist die Machbarkeits-Annahme aus Tag 1.</p>
 
-  <h2 id="vorgehen">So geht ihr vor (20 min)</h2>
-  <ol>
-    <li><strong>Ziehen (2 min):</strong> drei Karten aus dem Stapel – zufällig. Gerade die unpassenden bringen Ideen.</li>
-    <li><strong>Durchspielen (10 min):</strong> Jede Karte auf euer Produkt übertragen: Wer zahlt dann wofür?</li>
-    <li><strong>Wählen und festhalten (8 min):</strong> ein Muster, die wichtigsten Kosten, die Annahme, an der es hängt. Gehört sie noch nicht in die Annahmen-Map, kommt sie hinein.</li>
-  </ol>
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">Sechs Karten gegen „Im Gehen bestellen“ – eine bleibt.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Karte</th><th>Übertragen</th><th>Befund</th></tr></thead>
+        <tbody>
+          <tr data-schritt><th>Add-on</th><td>30 Cent Express-Zuschlag</td><td>Verworfen: Der Automat ist schon schnell (I1-3)</td></tr>
+          <tr data-schritt><th>Subscription</th><td>12 € im Monat für fünf Morgen</td><td>Verworfen: entschieden wird erst in der Halle</td></tr>
+          <tr data-schritt><th>Cross Selling</th><td>Gebäck in der Bestellung</td><td>Gewählt: keine neue Hürde</td></tr>
+          <tr data-schritt><th>Self-Service</th><td>Selbst bestellen, die Theke macht nur Kaffee</td><td>Schon im Produkt – das Wie?</td></tr>
+          <tr data-schritt><th>Freemium</th><td>Garantie „fertig vor Abfahrt“ kostet</td><td>Verworfen: jede Bestellung kostet</td></tr>
+          <tr data-schritt><th>Two-Sided Market</th><td>Bars zahlen, Pendler*innen nicht</td><td>Zu früh: erst eine Bar</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nur-handout">
+      <p><strong>Add-on</strong> (Ryanair): Kaffee zum normalen Preis, 30 Cent Express-Zuschlag – ein neuer Ertragsstrom ohne neues Produkt. Er widerspricht aber der Krise der Concept Story: Die Alternative, der Automat, ist schon schnell (I1-3) – ein Aufpreis fürs Tempo macht sie nur attraktiver. Gassmanns Checkliste fragt außerdem, ob man die Kundschaft ausreichend an sich bindet, damit sie die Extras beim selben Anbieter kauft.</p>
+      <p><strong>Subscription</strong> (Netflix): fünf Morgen pro Woche, 12 € im Monat im Voraus. Laut Gassmann passt ein Abo, sobald etwas „auf regulärer Basis nachgefragt“ wird und es gegenüber dem Einzelkauf einen Mehrwert stiftet. Die Interviews zeigen das Gegenteil: Die Entscheidung fällt erst beim Ankommen (I2-4, I3-1, I5-3). Das Abo bleibt in der Story Map unter „Später“.</p>
+      <p><strong>Cross Selling</strong> (Tchibo, Tankstellenshops): kein Aufpreis; die Bestellung bietet ein Gebäck an. Das ist Gassmanns Anwendungsregel fast wörtlich: ein einfaches Produkt mit geringer Marge, das ein Grundbedürfnis befriedigt, kombiniert mit einem Produkt mit höherer Marge.</p>
+      <p><strong>Self-Service</strong> (IKEA, BackWerk): Die Kundschaft bestellt und zahlt selbst, die Theke macht nur noch Kaffee. Das ist schon Teil des Produkts – es verändert das Wie?. Die Frage aus der Checkliste bleibt offen und gehört in den Usability-Test: „Werden Kunden die selbst verrichtete Arbeit als positives Erlebnis aufnehmen?“</p>
+      <p><strong>Freemium</strong> (Skype): Bestellen gratis, eine Garantie „fertig vor der Abfahrt“ kostet. Freemium passt laut Gassmann zu Software, deren Grenzkosten gegen null gehen – hier kostet jede Bestellung Kaffee und Zeit an der Theke.</p>
+      <p><strong>Two-Sided Market</strong> (eBay, Google): Die Bars zahlen, die Pendler*innen nicht – eine Bestellseite für alle Bars am Bahnhof. Das ändert das Wer? und ist für eine Bar an einem Morgen zu früh; die Frage wandert in den Pitch.</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="modell">Das Modell – und seine Annahme</h2>
+    <p class="folie-satz">Wie? und Wert? neu, dazu ein Satz, an dem alles hängt.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Wie?</strong> Bestellseite, Express-Ausgabe; Kosten: Aufsteller, Bildschirm, Betrieb der Seite.</li>
+      <li data-schritt><strong>Wert?</strong> Kaffee zum normalen Preis, Gebäck als Angebot – ohne weitere Kraft am Morgen.</li>
+      <li data-schritt><strong>Annahme:</strong> „Wenn mehr Pendler*innen mit Kaffee in den Zug steigen, dann steigt der Umsatz am Morgen, weil die zusätzlichen Bestellungen die neuen Kosten decken.“</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Wer? und Was? stehen schon fest: Pendler*innen zwischen 7:15 und 7:45 (Kundenprofil) und Bestellen im Gehen mit der Zusage „fertig vor der Abfahrt“ (Value Map). Wie? und Wert? folgen Gassmanns Checkliste für das neue Modell: bei Wie? Ressourcen, Aktivitäten und Partner, bei Wert? die Kostentreiber („Welches sind die wesentlichen Kosten?“) und die Ertragsströme („Wofür ist der Kunde bereit zu bezahlen? Wie bezahlen die Kunden momentan?“) ({GASSMANN}, Tabelle 2.2). Erst in diesem Schritt wird aus einer Musteridee ein Geschäftsmodell (I-2.4).</p>
+      <p>Die Annahme entsteht, indem ihr die Linien eures Baums abschreitet: von der Lösung zur Ziel-Chance, von der Ziel-Chance zum Outcome – und vom Outcome zum Geschäftsergebnis. Torres' Satzanfang: „Addressing the target opportunity will drive the desired outcome because …“; bei einem Produkt-Outcome kommt die Verbindung zum Geschäft dazu ({TORRES}, S. 125–126). Bei der Kaffeebar ist das die Linie vom Outcome „mehr Pendler*innen mit Kaffee im Zug“ zum Impact „mehr Umsatz am Morgen“ aus dem Problem-Rahmen.</p>
+      <p>In der Annahmen-Map steht diese Annahme seit Tag 1 als A4 („rechnet sich ohne weitere Kraft“) – unten, als unwichtig. Mit den Kosten vor Augen rückt sie nach oben: Wichtigkeit hoch, Beleg keiner. Neben ihr steht A2, die Machbarkeit (40 Bestellungen in 30 Minuten). Welche von beiden riskanter ist, entscheidet ihr gleich an der Experiment-Karte.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (20 min)</h2>
+    <p class="folie-satz">Eine Runde Konfrontation, dann Wie? und Wert?, dann die Annahme.</p>
+    <MiroFrame name="T3 · 3 · Geschäftsmodell" />
+    <ol class="gross">
+      <li data-schritt><strong>Karten nehmen:</strong> je zwei, die eurem Produkt am fremdesten sind. <Timer minuten={1} /></li>
+      <li data-schritt><strong>Still schreiben:</strong> 90 Sekunden pro Karte, mindestens zwei Ideen. <Timer minuten={3} /></li>
+      <li data-schritt><strong>Zu dritt:</strong> vorlesen, die anderen ergänzen je eine Idee – keine Killerphrasen. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Wie? und Wert?</strong> für eine Idee, mit den wichtigsten Kosten. <Timer minuten={4} /></li>
+      <li data-schritt><strong>Annahme</strong> als Wenn-dann-weil-Satz in die Annahmen-Map. <Timer minuten={2} /></li>
+    </ol>
+    <p class="nur-handout">Dazu fünf Minuten Theorie. Wer? und Was? verweisen auf Kundenprofil und Value Map, ihr schreibt sie nicht neu. Die Annahme kommt in der Werkstatt als Art „wirtschaftlich“ in die Annahmen-Map, mit Wichtigkeit und Beleg – direkt danach wählt ihr an der Experiment-Karte die riskanteste. Prüfen mit der Liste unten ist Hausaufgabe.</p>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/GESCHAEFTSMODELL.md"># Geschäftsmodell — [Produkt]
 
-Stand: [Datum]
+Stand: [Datum] · Profil: docs/KUNDENPROFIL.md · Value Map: docs/VALUE-MAP.md
 
-| Muster | Übertragen auf uns | Einschätzung |
-|--------|--------------------|--------------|
-| [...] | [...] | [...] |
-| [...] | [...] | [...] |
-| [...] | [...] | [...] |
+## Karten (eine Runde Konfrontationsprinzip)
+| Karte | Wie würde [Firma] unser Geschäft führen? | Wer zahlt dann wofür? | Befund |
+|---|---|---|---|
+| [Muster] | [...] | [...] | verworfen, weil [...] / gewählt |
 
-Gewählt: [Muster] – weil [...]
-Wer zahlt wofür: [...]
-Wichtigste Kosten: [...]
-Annahme, an der es hängt: Wir glauben, dass [...] (A[n])</Prompt>
-  <Prompt label="Muster durchspielen · Claude Code">Lies docs/PRODUKT.md und docs/VALUE-MAP.md. Ich habe diese drei Geschäftsmodell-Muster des St. Galler Business Model Navigator gezogen: [Muster 1], [Muster 2], [Muster 3]. Spiel jedes kurz auf unser Produkt durch: Wer zahlt dann wofür, und was ist das größte Risiko? Höchstens drei Sätze pro Muster. Wähle keins aus und schreib nichts in Dateien.</Prompt>
+## Wer, Was, Wie, Wert
+- Wer? → Kundenprofil: [Segment]
+- Was? → Value Map: [Angebot]
+- Wie? [Ressourcen, Aktivitäten, Partner]; Kosten: [Posten], [Posten]
+- Wert? [wer zahlt wofür]; heute bezahlt die Kundschaft [...]
+
+Gewählt: [Muster] – weil [ein Satz]
+Annahme (wirtschaftlich): Wenn [Outcome], dann [Impact], weil [...] (A[n])</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="geschaeftsmodell" />
+  <Prompt label="Konsistenz prüfen · Claude Code">Lies docs/GESCHAEFTSMODELL.md, docs/KUNDENPROFIL.md und docs/VALUE-MAP.md, aus der Werkstatt meine Annahmen-Map (Werkzeug artefakt_lesen). Prüfe nur, ob Wer, Was, Wie und Wert zusammenpassen: Passt „Wert?“ zu dem, was die Kundschaft laut Profil heute zahlt? Fehlt ein Kostenposten, den „Wie?“ verlangt? Lässt sich die wirtschaftliche Annahme als Wenn-dann-weil-Satz prüfen? Zitiere die Zeile, höchstens drei Befunde, und stell mir eine Rückfrage. Schlag kein Muster vor und ändere keine Datei.</Prompt>
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Woran hängt euer Geschäftsmodell – an einer Zahl, die ihr heute noch nicht kennt? Dann ist das eure nächste Experiment-Karte.</p>
-  <p class="small muted">Nach Oliver Gassmann, Karolin Frankenberger & Michaela Csik, <em>Geschäftsmodelle entwickeln: 55 innovative Konzepte mit dem St. Galler Business Model Navigator</em> (Hanser).</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Woran hängt euer Modell – an einer Zahl, die ihr heute nicht kennt?</p>
+    <p class="nur-handout">Dann steht sie jetzt als wirtschaftliche Annahme in eurer Annahmen-Map. Ist sie riskanter als alles andere, wird sie eure Experiment-Karte. Und prüft, wer bei euch zahlt: die Menschen, die das Produkt nutzen, oder jemand anderes? Gassmanns erste Frage ist auch: Für wen schaffen wir zusätzlichen Wert (Tabelle 2.2)?</p>
+  </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/prototyp-spike', t: 'Prototyp-Spike & Usability-Test' }} next={{ href: '/innolab/tag-3#abschluss', t: 'Tag 3 · Abschluss' }} />
+  <p class="small muted">Nach {GASSMANN}, Hanser – St. Galler Business Model Navigator; {VPD}, S. 115–118; {CAGAN}, S. 189–190, 277; {TORRES}, S. 118, 125–128.</p>
+
+  <FooterNav prev={{ href: '/innolab/methoden/concept-story', t: 'Concept Story' }} next={{ href: '/innolab/methoden/experiment', t: 'Experiment-Karte & Origin Story' }} />
 </Layout>
