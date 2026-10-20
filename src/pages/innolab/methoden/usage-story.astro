@@ -10,7 +10,7 @@ import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 
-const LICHAW = 'Donna Lichaw, „The User’s Journey“ (Rosenfeld 2016)';
+const LICHAW = 'Donna Lichaw, „The User’s Journey: Storymapping Products That People Love“ (Rosenfeld 2016)';
 const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
 ---
 <Layout title="Usage Story">
@@ -65,7 +65,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
       <li data-schritt><strong>Exposition:</strong> I1, Zug 7:38, „eigentlich immer knapp dran“ (I1-1); will Kaffee, ohne den Zug zu riskieren (J1, P1).</li>
       <li data-schritt><strong>Auslöser:</strong> 7:27, „Ich komme in die Halle“: Schlange bis zur Tür, an der Tür der Aufsteller.</li>
       <li data-schritt><strong>Steigende Handlung:</strong> scannen → eins aus drei → 7:38 eintippen.</li>
-      <li data-schritt><strong>Krise:</strong> tippen im Gehen – und: „Und wenn’s doch nicht reicht?“ (P1)</li>
+      <li data-schritt><strong>Krise:</strong> tippen im Gehen – und der Zweifel, ob es reicht (P1, I3-3).</li>
       <li data-schritt><strong>Höhepunkt:</strong> „Fertig 7:31. Dein Zug fährt 7:38.“ Er geht an der Schlange vorbei.</li>
       <li data-schritt><strong>Fallende Handlung:</strong> Express-Ausgabe, Nummer am Bildschirm, bar bezahlt.</li>
       <li data-schritt><strong>Ende:</strong> 7:34 am Bahnsteig; im Zug der erste Schluck (I1-4).</li>
@@ -83,12 +83,12 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <ol class="gross">
       <li data-schritt><strong>Kernaufgabe wählen:</strong> der Weg durch Slice 1, den Menschen immer wieder gehen. <Timer minuten={2} /></li>
       <li data-schritt><strong>Sieben Stationen, allein:</strong> Person aus den Interviews, Uhrzeit, Ort. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Boom-Probe, zu zweit:</strong> Ist der Höhepunkt konkret? Kommt danach noch Schluss? <Timer minuten={4} /></li>
+      <li data-schritt><strong>Boom-Probe, reihum:</strong> Ist der Höhepunkt konkret? Kommt danach noch Schluss? <Timer minuten={4} /></li>
       <li data-schritt><strong>Festhalten.</strong> <Timer minuten={2} /></li>
     </ol>
     <div class="nur-handout">
       <p>Dazu zwölf Minuten Theorie und Beispiel. Lichaws Fragen je Station ({LICHAW}, Kap. 5, Mapping the Usage Story): <em>Exposition</em> – Wer? Welche Ziele? Was steht im Weg? <em>Auslöser</em> – Was startet genau diesen Ablauf? <em>Steigende Handlung</em> – Erste Aktion? Nächste? <em>Krise</em> – Was könnte im Weg stehen? <em>Höhepunkt</em> – „What value do you want the user to experience during this flow? What will make all of her conflict, crisis, and work … worthwhile?“ <em>Fallende Handlung</em> – Wie schließt ihr die Episode möglichst schnell ab? <em>Ende</em> – Wo steht die Person, und ist das der Anfang der nächsten Story?</p>
-      <p>Zur Boom-Probe: Die andere Person liest nur die Stationen 4 bis 7 und fragt: Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens ein, zwei Schritte? Wo würdest du lächeln? Wer hinterherhängt, füllt nur Krise und Höhepunkt – die braucht der Prototyp.</p>
+      <p>Zur Boom-Probe: Reihum liest jede*r die Story der Nachbarin oder des Nachbarn – A die von B, B die von C, C die von A –, nur die Stationen 4 bis 7, und fragt: Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens ein, zwei Schritte? Wo würdest du lächeln? Wer hinterherhängt, füllt nur Krise und Höhepunkt – die braucht der Prototyp.</p>
       <p>Festhalten in <code>docs/STORYS.md</code>, Abschnitt „Usage Story“. Der Prototyp-Spike baut genau die Stationen 2 bis 6.</p>
     </div>
   </Folie>

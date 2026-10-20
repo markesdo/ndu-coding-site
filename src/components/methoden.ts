@@ -255,7 +255,7 @@ export const METHODEN: Methode[] = [
   {
     slug: 'concept-story', name: 'Concept Story', tag: 3, dauer: 75,
     frage: 'Warum versteht jemand in Sekunden, dass euer Produkt besser ist als das, was er heute tut?',
-    braucht: ['synthese', 'profil', 'valuemap'], ergibt: ['concept'],
+    braucht: ['annahmen', 'synthese', 'profil', 'valuemap'], ergibt: ['concept'],
     pruefliste: [
       'Alle sieben Stationen sind gefüllt; die Exposition beschreibt die Welt der Zielgruppe, was darin gut ist, und ihr großes Ziel – nicht das Produkt.',
       'Die steigende Handlung nennt Namen und Art des Produkts in einem Satz.',
@@ -266,7 +266,7 @@ export const METHODEN: Methode[] = [
       'Das Ende nennt das Ziel der Person und ein messbares Ziel des Geschäfts; jede Behauptung trägt eine J-, P-, G- oder Zitat-ID.',
     ],
     ki: 'Prüft, ob die Story Krise und Höhepunkt hat oder nur eine Linie ist; schreibt sie nicht um.',
-    quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2–4, 7–8',
+    quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2–4, 6–8',
   },
   {
     slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 3, dauer: 20,
@@ -314,7 +314,7 @@ export const METHODEN: Methode[] = [
   {
     slug: 'usage-story', name: 'Usage Story', tag: 3, dauer: 30,
     frage: 'Wo erlebt die Person im Kernablauf den Wert – und wie schnell ist danach Schluss?',
-    braucht: ['synthese', 'storymap', 'journey', 'profil', 'concept'], ergibt: ['usage'],
+    braucht: ['annahmen', 'synthese', 'storymap', 'journey', 'profil', 'concept'], ergibt: ['usage'],
     pruefliste: [
       'Die Story hat eine Person aus den Interviews (Pseudonym, ID), Zeit, Ort und das Ziel aus der Concept Story.',
       'Der Auslöser ist ein Ereignis oder eine Aufforderung an einem Moment der Experience Map und passt zum Pain der Concept Story.',
@@ -325,7 +325,7 @@ export const METHODEN: Methode[] = [
       'Das Ende sagt, wo die Person steht und was die nächste Episode wäre.',
     ],
     ki: 'Prüft, ob der Höhepunkt nahe am Ende liegt und danach schnell Schluss ist.',
-    quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 5–8',
+    quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2, 5–8',
   },
   {
     slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 3, dauer: 90,
