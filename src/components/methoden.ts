@@ -170,7 +170,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 6, S. 78–95',
     pruefliste: [
       'Jede Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch in den Worten der Kundschaft – keine Lösung.',
-      'Jede Chance im Baum ist mit Zitat-IDs aus mehr als einem Interview belegt; Einzelfälle stehen getrennt.',
+      'Jede gehörte Chance im Baum ist mit Zitat-IDs aus mehr als einem Interview belegt; ergänzte Eltern-Chancen sind als ergänzt markiert, Einzelfälle stehen getrennt.',
       'Jede Chance hängt unter genau einem Moment der Experience Map; keine hat zwei Eltern.',
       'Ein Kind ist ein Teil seines Elternteils; Geschwister lassen sich einzeln lösen.',
       'Kein senkrechter Stapel: Wo ein Elternteil nur ein Kind hat, ist notiert, wonach ihr als Nächstes fragt.',

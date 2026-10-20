@@ -1,15 +1,15 @@
 ---
 // Ein Ast von Baum.astro: Knoten plus Kinder, rekursiv über Astro.self. Die Ebene ergibt sich aus der Tiefe.
 import type { Knoten } from './Baum.astro';
-const EBENEN = ['Outcome', 'Chance', 'Lösung', 'Experiment'];
-const { knoten, hervor, ebene = 0 } = Astro.props as { knoten: Knoten; hervor?: number; ebene?: number };
-const e = Math.min(knoten.ebene ?? ebene, 3);
-const leise = hervor !== undefined && hervor !== e;
+import { baumEbene } from './baum-ebene';
+const { knoten, hervor, ebene = 0, momente = false } = Astro.props as { knoten: Knoten; hervor?: number; ebene?: number; momente?: boolean };
+const { name, klasse, stufe } = baumEbene(ebene, momente);
+const leise = hervor !== undefined && hervor !== stufe;
 ---
-<li class:list={['baum-ast', `e${e}`, { leise }]}>
-  <span class="baum-knoten"><small>{knoten.marke ?? EBENEN[e]}</small>{knoten.t}</span>
+<li class:list={['baum-ast', klasse, { leise }]}>
+  <span class="baum-knoten"><small>{name}</small>{knoten.t}</span>
   {knoten.kinder?.length ? (
-    <ul class="baum-kinder">{knoten.kinder.map((k) => <Astro.self knoten={k} hervor={hervor} ebene={ebene + 1} />)}</ul>
+    <ul class="baum-kinder">{knoten.kinder.map((k) => <Astro.self knoten={k} hervor={hervor} ebene={ebene + 1} momente={momente} />)}</ul>
   ) : null}
 </li>
 
@@ -35,6 +35,7 @@ const leise = hervor !== undefined && hervor !== e;
   .baum-ast.e1 { --farbe: var(--blue); }
   .baum-ast.e2 { --farbe: var(--green); }
   .baum-ast.e3 { --farbe: var(--purple); }
+  .baum-ast.em { --farbe: var(--yellow-ink); }
   .baum-ast.leise > .baum-knoten { --farbe: var(--border); color: var(--muted); }
   .baum-ast.leise > .baum-knoten small { color: var(--muted); }
   /* Am Beamer kompakter: breitere Knoten (weniger Zeilen) – vier Ebenen passen in 720p. Hier statt in beamer.css,

@@ -91,7 +91,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <h2 id="anti-muster">Sechs Anti-Muster</h2>
     <p class="folie-satz">Prüft euren ersten Entwurf gegen diese Fehler.</p>
     <BildText>
-      <BuchAbbildung src="/quellen/torres/vertikal.jpg" alt="Senkrechter Stapel aus drei Chancen ohne Geschwister: „Is this show any good?“, darunter „Will I like this show?“, darunter „I don't like it when I start a show and it isn't good.“" quelle={`Senkrechte Chancen. ${TORRES}, S. 93.`} schmal />
+      <BuchAbbildung src="/quellen/torres/vertikal.jpg" alt="Senkrechter Stapel aus drei Chancen ohne Geschwister: „Is this show any good?“, darunter „Will I like this show?“, darunter „I don't like it when I start a show and it isn't good.“" quelle={`Senkrechte Chancen. ${TORRES}, S. 93.`} hochkant />
       <ul>
         <li data-schritt><strong>Aus Firmensicht:</strong> Haben wir das gehört – oder wünschen wir es uns?</li>
         <li data-schritt><strong>Senkrecht:</strong> ein Kind unter einem Kind – fehlen Geschwister?</li>
@@ -117,10 +117,10 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">Vier Momente, darunter belegte Chancen.</p>
-    <Baum schmal knoten={KAFFEEBAR_BAUM_TAG2} label="Opportunity Solution Tree der Kaffeebar nach Tag 2: Outcome, darunter vier Momente, darunter Chancen mit Zitat-IDs" />
-    <p data-schritt><strong>Nicht im Baum:</strong> was nur eine Person erzählt hat (I5, I1).</p>
+    <Baum schmal momente knoten={KAFFEEBAR_BAUM_TAG2} label="Opportunity Solution Tree der Kaffeebar nach Tag 2: Outcome, darunter vier Momente, darunter Chancen mit Zitat-IDs" />
+    <p data-schritt><strong>Nicht im Baum:</strong> Chancen, die nur eine Person erzählt hat (I1-4, I4-5, I5-6).</p>
     <div class="nur-handout">
-    <p>Im Baum steht nur, was mehr als ein Interview stützt. „Für Kolleg*innen mitbestellen“ (I5) und „der erste Schluck“ (I1) bleiben auf ihren Snapshots. Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Schnell geht nur der Automat.“ (I1-3, I4-3) · „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2) · „Wann ist mein Kaffee fertig?“ (I2-5, I3-3). Unter „Ich stehe an“ und „Ich bin im Zug“ fehlen Geschwister – eine Frage für die nächsten Interviews.</p>
+    <p>Im Baum steht nur, was mehr als ein Interview stützt. „Der erste Schluck rettet den Morgen“ (I1-4), „nicht gehetzt im Büro ankommen“ (I4-5) und „für Kolleg*innen mitbestellen“ (I5-6) bleiben auf ihren Snapshots. Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Schnell geht nur der Automat.“ (I1-3, I4-3) · „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2) · „Wann ist mein Kaffee fertig?“ (I2-5, I3-3). Unter „Ich stehe an“ und „Ich warte auf meinen Kaffee“ hängt nur je eine Chance, unter „Ich bin im Zug“ noch keine – Fragen für die nächsten Interviews.</p>
     <p>Wünscht sich jemand „per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1), ist die Chance dahinter „Ich will den Zug nicht verpassen“ – sie steckt schon in „Wenn ich anstehe, verpasse ich meinen Zug“. „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl; die Ursache dahinter ist dieselbe Chance. Dass unter einem Moment nur eine Chance hängt, ist hier ehrlich: Mehr haben fünf Interviews nicht hergegeben. Es ist kein senkrechter Stapel, solange darunter nicht wieder genau ein Kind folgt – aber ein Hinweis, wonach ihr als Nächstes fragt.</p>
     </div>
   </Folie>
@@ -145,8 +145,8 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 Stand: [Datum] · Miro: [Link zum Frame] · Outcome (aus dem Produkt-Brief): [...]
 
 ## „[Moment 1 aus der Experience Map]“
-- „[Chance in den Worten der Kundschaft]“ ([Zitat-IDs aus mindestens zwei Interviews])
-  - „[Kind-Chance]“ ([...])
+- „[Eltern-Chance]“ (ergänzt, wenn niemand sie so gesagt hat)
+  - „[Chance in den Worten der Kundschaft]“ ([Zitat-IDs aus mindestens zwei Interviews])
 - „[...]“ ([...])
 
 ## „[Moment 2]“
