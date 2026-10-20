@@ -59,7 +59,7 @@ function Formular({ daten, setze, fehler }: { daten: Annahmen; setze: (neu: Anna
 
   return (
     <>
-      <p className="wk-hilfe">Sammle Annahmen in allen vier Arten. Wo eine Annahme in der Map landet, ergibt sich aus Wichtigkeit und Beleg.</p>
+      <p className="wk-hilfe">Sammle Annahmen in allen vier Arten – und, wo es passt, zur fünften Frage: Kann es schaden? Wo eine Annahme in der Map landet, ergibt sich aus Wichtigkeit und Beleg.</p>
       <p className={hinweis ? 'wk-hilfe wk-arten-fehlen' : 'wk-hilfe'} role="status">{hinweis ?? 'Alle vier Arten sind vertreten.'}</p>
       {fehler('stand') && <p className="wk-fehler">{fehler('stand')}</p>}
       <Liste<Annahme>

@@ -20,6 +20,6 @@
 .matrix-punkt.blue { background: var(--blue-soft); border-color: var(--blue); }
 .matrix-punkt.green { background: var(--green-soft); border-color: var(--green); }
 .matrix-punkt.purple { background: var(--purple-soft); border-color: var(--purple); }
-.matrix-punkt.grau { background: var(--code-bg); border-color: var(--muted); }
-.matrix-punkt.hervor.blue, .matrix-punkt.hervor.green, .matrix-punkt.hervor.purple, .matrix-punkt.hervor.yellow, .matrix-punkt.hervor.grau { background: var(--accent-soft); border-color: var(--accent); }
+.matrix-punkt.muted { background: var(--code-bg); border-color: var(--fg); }
+.matrix-punkt.hervor.blue, .matrix-punkt.hervor.green, .matrix-punkt.hervor.purple, .matrix-punkt.hervor.yellow, .matrix-punkt.hervor.muted { background: var(--accent-soft); border-color: var(--accent); }
 html[data-beamer] .matrix { max-width: min(44rem, max(22rem, calc((100vh - var(--topbar-h, 48px) - 15rem) * 4 / 3 + 3rem))); }

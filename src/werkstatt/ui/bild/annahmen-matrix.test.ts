@@ -23,7 +23,7 @@ describe('annahmenPunkte', () => {
   });
 
   it('ethisch hat eine eigene Farbe', () => {
-    expect(annahmenPunkte([annahme(1, { art: 'ethisch' })], null)[0]!.farbe).toBe('grau');
+    expect(annahmenPunkte([annahme(1, { art: 'ethisch' })], null)[0]!.farbe).toBe('muted');
   });
 
   it('ohne riskanteste ist nichts hervorgehoben', () => {

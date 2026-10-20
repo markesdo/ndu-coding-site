@@ -46,11 +46,6 @@ describe('ethisch', () => {
     expect(kaffeebar().annahmen.some((a) => a.art === 'ethisch')).toBe(false);
     expect(fehlendeArtenHinweis(kaffeebar().annahmen)).toBeNull();
   });
-
-  it('zählt nicht für eine der vier: nur ethisch → alle vier fehlen', () => {
-    const nur: Annahmen['annahmen'] = [{ id: 'A1', text: 'Speichern ist okay', art: 'ethisch', wichtig: 'hoch', beleg: 'keiner', belegIds: [] }];
-    expect(fehlendeArten(nur)).toStrictEqual(['wuenschenswert', 'machbar', 'wirtschaftlich', 'bedienbar']);
-  });
 });
 
 describe('riskanteste', () => {

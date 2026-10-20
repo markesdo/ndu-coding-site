@@ -1,8 +1,10 @@
 import { z } from 'zod';
 import { belegIds, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId, type Belegstufe } from './gemeinsam.js';
 
-// Die vier Arten von Tag 1 (Bland) und Torres' fünfte, „ethisch“ (Continuous Discovery Habits, S. 118), ab Tag 3.
-export const ANNAHME_ARTEN = ['wuenschenswert', 'machbar', 'wirtschaftlich', 'bedienbar', 'ethisch'] as const;
+// Die vier Arten von Tag 1 (nach Marty Cagan, wie auf der Kursseite) und Torres' fünfte Frage „Kann es schaden?“
+// (Continuous Discovery Habits, S. 118, 126–128), die Tag 3 für die Annahmen einer Idee braucht.
+export const TAG1_ARTEN = ['wuenschenswert', 'machbar', 'wirtschaftlich', 'bedienbar'] as const;
+export const ANNAHME_ARTEN = [...TAG1_ARTEN, 'ethisch'] as const;
 export const WICHTIGKEITEN = ['hoch', 'mittel', 'niedrig'] as const;
 
 const annahmeSchema = z.object({
