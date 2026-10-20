@@ -4,90 +4,244 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
+const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 ---
 <Layout title="Experiment-Karte & Origin Story">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Experiment-Karte & Origin Story</h1>
-  <p class="lead">Die riskanteste offene Annahme mit dem billigsten Test prüfen – und dafür die Geschichte schreiben, wie jemand zum ersten Mal von eurem Produkt erfährt.</p>
+  <p class="lead">Nicht die ganze Idee testen, sondern die Annahme, an der sie hängt: Schritte, Annahmen, Map, eine Karte mit Schwelle – und am Abend die Geschichte, mit der jemand zum ersten Mal davon erfährt.</p>
   <Orientierung seite="innolab/methoden/experiment" leiste={false} />
   <MethodenKarte slug="experiment" />
 
-  <h2 id="karte">Die Experiment-Karte</h2>
-  <p>Bevor ihr baut, testet ihr. Eine Experiment-Karte hat vier Zeilen, und alle stehen fest, <strong>bevor</strong> der Test läuft:</p>
-  <ol>
-    <li><strong>Wir glauben, dass …</strong> – die Annahme, mit ID aus der Annahmen-Map</li>
-    <li><strong>Um das zu prüfen, …</strong> – der Test</li>
-    <li><strong>Wir messen …</strong> – eine Zahl, die man beobachten kann</li>
-    <li><strong>Wir haben recht, wenn …</strong> – die Schwelle</li>
-  </ol>
-  <p>Wer die Schwelle erst nach dem Test festlegt, findet immer einen Grund, warum es doch geklappt hat.</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Test</th><th>So geht's</th><th>Prüft vor allem</th></tr></thead>
-      <tbody>
-        <tr><th>Fake Door</th><td>Ein Knopf oder Aushang für etwas, das es noch nicht gibt; wer klickt, erfährt „kommt bald“</td><td>Wollen sie es?</td></tr>
-        <tr><th>Landingpage</th><td>Eine Seite, die das Produkt verspricht, mit einem Eintrag als Ziel</td><td>Wollen sie es? Versteht man es?</td></tr>
-        <tr><th>Concierge</th><td>Ihr erbringt die Leistung von Hand, für wenige Menschen</td><td>Wollen sie es, wenn es funktioniert?</td></tr>
-        <tr><th>Wizard of Oz</th><td>Es sieht automatisch aus, dahinter macht ein Mensch die Arbeit</td><td>Bedienbarkeit, Ablauf</td></tr>
-        <tr><th>Prototyp-Test</th><td>Menschen versuchen eine Aufgabe mit einem Klick-Prototyp</td><td>Kommen sie damit zurecht?</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Nehmt den billigsten Test, der eure Frage beantwortet. Bauen ist fast nie der billigste.</p>
+  <Folie>
+    <h2 id="annahmen-der-idee">Annahmen testen, nicht Ideen</h2>
+    <p class="folie-satz">Ideen zu testen dauert Wochen – Annahmen gehen in Tagen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/story-map-idee.jpg" alt="Drei Zeilen Subscriber, Platform, Local Channel; darin die Schritte Visits platform, Shows sports options, Browses options, Chooses sport, Delivers content, Watches sport über die Zeit verteilt" quelle={`Eine Idee als Story Map. ${TORRES}, S. 121.`} />
+      <ul>
+        <li data-schritt><strong>Tut so, als gäbe es die Lösung</strong> schon.</li>
+        <li data-schritt><strong>Wer muss was tun,</strong> damit jemand Wert bekommt – Schritt für Schritt.</li>
+        <li data-schritt><strong>Jeder Schritt</strong> verbirgt Annahmen: wünschenswert, bedienbar, machbar.</li>
+        <li data-schritt><strong>Dazu:</strong> Trägt es sich? Kann es schaden?</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Teresa Torres nennt zwei Fallen: Wir suchen eher Belege, die uns bestätigen, und je mehr wir in eine Idee investieren, desto mehr hängen wir an ihr. Ganze Ideen zu bauen und zu vergleichen dauert zu lang; stattdessen testet man die Annahmen, die wahr sein müssen, damit eine Idee funktioniert ({TORRES}, S. 116–117).</p>
+      <p>Ihr Weg zu den Annahmen ist eine kleine Story Map: „Start by assuming the solution already exists“, die Beteiligten benennen, die Schritte jeder Person in eine Reihe legen, bis jemand Wert bekommt (S. 119–122). Wo ihr annehmt, dass jemand etwas tut, stecken Annahmen über Wünschbarkeit, Bedienbarkeit und Machbarkeit; dazu kommen Wirtschaftlichkeit und mögliche Schäden – fünf Arten (S. 118, 122–128). „From a simple 5-step story map, we generated 20 assumptions“ (S. 124). Eine zweite Quelle ist die Pre-Mortem-Frage, als stünde das Scheitern fest: „Imagine it’s six months in the future; your product … launched, and it was a complete failure. What went wrong?“ (S. 125).</p>
+      <p>Formuliert jede Annahme so, dass ihr sie braucht, und konkret genug, um sie zu beobachten: „Customers will remember their passwords“ statt einer Verneinung (S. 131–132).</p>
+    </div>
+  </Folie>
 
-  <h2 id="origin-story">Die Origin Story</h2>
-  <p>Die Origin Story erzählt mit demselben Story-Bogen wie die <a href="/innolab/methoden/concept-story">Concept Story</a>, wie jemand von „nie davon gehört“ zu „ich probier's“ kommt: Wo ist die Person gerade (Exposition)? Was macht sie offen für etwas Neues (Auslöser)? Wo hört sie davon (steigende Handlung)? Was hält sie zurück (Krise)? Was überzeugt sie (Höhepunkt)? Was ist der erste Schritt (fallende Handlung) – und wo steht sie danach (Ende)?</p>
-  <p>Ihr schreibt sie heute als <strong>Text für eine Landingpage oder einen Aushang</strong> – genau das, was euer Experiment braucht.</p>
+  <Folie>
+    <h2 id="spitzenreiter">Drei Ideen, ein Spitzenreiter</h2>
+    <p class="folie-satz">Eure Wahl von heute früh ist der Spitzenreiter auf Papier – nicht das Ende.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Torres</strong> testet die Annahmen aller drei Ideen parallel.</li>
+      <li data-schritt><strong>Wir</strong> testen den Spitzenreiter – und halten die anderen beiden offen.</li>
+      <li data-schritt><strong>Gemeinsame Annahmen</strong> zuerst: Scheitern sie, fallen alle drei.</li>
+      <li data-schritt><strong>An Tag 4</strong> entscheiden die Lernkarten, nicht der Fit auf Papier.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Torres ist hier deutlich: „You’ll want to story map, generate assumptions, and assumption map for each of your three ideas“ (S. 130), denn „If we test only one idea at a time, confirmation bias will rear its ugly head“ (S. 134). Gesucht ist „a clear front runner“ (S. 134).</p>
+      <p>Wir weichen bewusst ab: Ihr seid drei, habt eine Woche bis Tag 4, und der Nachmittag (Story Map, Usage Story, Prototyp) braucht eine Idee. Darum gilt die Wahl von 9:00 als das, was Value Proposition Design „Fit auf Papier“ nennt (S. 115 PDF); entschieden wird nach den Tests, mit Blands drei Möglichkeiten: weitermachen, umschwenken, verwerfen ({BLAND}, S. 61–63). Was wir von Torres behalten: Annahmen aus den Schritten, alle fünf Arten, die Map, die Schwelle vor dem Test, der kleinste Test, das richtige Publikum. Und zwei ihrer Mittel gegen das Verlieben: Annahmen, die alle drei Ideen teilen, testet ihr zuerst – „It’s common for ideas to share assumptions“ (S. 136). Und die riskanteste Annahme jeder anderen Idee steht als eine Zeile unter eurer Karte. Scheitert der Spitzenreiter, wisst ihr, womit ihr weitermacht.</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <p>A1 ist durch die Interviews widerlegt. A2 (machbar) und A4 (wirtschaftlich, aus dem Geschäftsmodell) stehen oben auf der Map – beide prüft erst eine Woche mit echter Bar. Riskanter und billiger zu prüfen ist eine neue:</p>
-  <Prompt label="Beispiel · Experiment-Karte E1">E1 · Stand: Tag 3
-Wir glauben, dass Pendler*innen im Gehen einen QR-Code scannen und dabei ihre Abfahrtszeit angeben. (A5, wünschenswert/bedienbar)
-Um das zu prüfen, stellen wir an drei Morgen einen Aufsteller mit QR-Code an die Hallentür. Er führt auf eine Seite „Im Gehen bestellen – bald. Trag deinen Zug ein, wir sagen dir, ob es sich ausgeht.“ Bestellen kann man noch nicht (Fake Door).
-Wir messen Scans und eingetragene Abfahrtszeiten zwischen 7:15 und 7:45.
-Wir haben recht, wenn an drei Morgen mindestens 30 Scans und 10 Einträge zusammenkommen.</Prompt>
-  <p>Der Text auf dem Aufsteller ist die Origin Story im Kleinen:</p>
-  <Prompt label="Beispiel · Origin Story als Aufstellertext">Zug in 8 Minuten, Schlange bis zur Tür?
-Bestell im Gehen. Scan den Code, gib deine Abfahrtszeit ein –
-wir sagen dir sofort, ob dein Kaffee vor der Abfahrt fertig ist.
-Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
-  <p>Erst der Pain („Zug in 8 Minuten“), dann das Produkt, dann die Antwort auf die Hürde aus der Krise („ohne App“).</p>
+  <Folie>
+    <h2 id="map">Die Map der Idee</h2>
+    <p class="folie-satz">Schnell, relativ zueinander – oben rechts testet ihr.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/leap-of-faith.jpg" alt="Kreuz aus zwei Achsen: senkrecht More Important bis Less Important, waagrecht Strong Evidence bis Weak Evidence; leere Kärtchen verteilt, oben rechts drei in einem Kreis „Leap of Faith“ Assumptions" quelle={`Die Map der Annahmen. ${TORRES}, S. 129.`} schmal />
+      <ul>
+        <li data-schritt><strong>Beleg:</strong> Was wissen wir schon? Viel links, nichts rechts.</li>
+        <li data-schritt><strong>Wichtig:</strong> Fällt die Idee um, wenn es falsch ist?</li>
+        <li data-schritt><strong>Höchstens zehn Minuten</strong> – relativ, nicht genau.</li>
+        <li data-schritt><strong>Oben rechts:</strong> zwei, drei Annahmen, auf die ihr alles setzt.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Die Map kennt ihr von Tag 1; jetzt bekommt sie die Annahmen der gewählten Idee. „This exercise does not need to be precise. You are mapping assumptions relative to each other“; Teams sind genauso gut, wenn sie es in höchstens zehn Minuten pro Idee machen. Getestet werden die zwei oder drei Annahmen ganz oben rechts – Blands „leap of faith“-Annahmen ({TORRES}, S. 129–130). Bland ordnet die Reihenfolge: zuerst Wünschbarkeit, dann Machbarkeit, dann Wirtschaftlichkeit ({BLAND}, S. 34–35, 39). Wenn eine wichtige Annahme falsch ist, „your business idea will fail and all other hypotheses become irrelevant“ (S. 38).</p>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
-  <ol>
-    <li><strong>Annahme wählen (5 min):</strong> die riskanteste <em>offene</em> Annahme – nach den Interviews oft eine neue.</li>
-    <li><strong>Karte schreiben (10 min):</strong> vier Zeilen, Schwelle zuerst festlegen.</li>
-    <li><strong>Origin Story skizzieren (10 min):</strong> der Weg zum ersten Schritt, als Stichpunkte unter der Karte.</li>
-    <li><strong>Festhalten (5 min):</strong> <code>docs/EXPERIMENTE.md</code>; der Landingpage-Text wird Hausaufgabe.</li>
-  </ol>
-  <Callout type="info" title="Hausaufgabe bis Tag 4">
-    <p>Schreibt die Origin Story als Landingpage-Text aus (<code>docs/STORYS.md</code>, Abschnitt „Origin Story“). Wenn euer Experiment eine Landingpage braucht, baut sie mit Claude Code und bringt die ersten Zahlen mit.</p>
-  </Callout>
+  <Folie>
+    <h2 id="karte">Die Experiment-Karte</h2>
+    <p class="folie-satz">Die Schwelle steht fest, bevor der Test läuft.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/bland/test-card.jpg" alt="Grüne Test Card „Concierge“: We believe that millennial parents prefer curated science projects; To verify that, we will manually curate science project kits for 20 children; And measure time to create, cost, customer satisfaction; We are right if satisfaction is partially to very satisfied for 16 of the 20 parents" quelle={`Test Card. ${BLAND}, S. 46.`} hochkant />
+      <ul>
+        <li data-schritt><strong>Wir glauben, dass …</strong> – eine Annahme, mit ID und Art.</li>
+        <li data-schritt><strong>Um das zu prüfen …</strong> – wer, wo, was, so genau, dass es jemand wiederholen kann.</li>
+        <li data-schritt><strong>Wir messen …</strong> – eine Handlung, keine Meinung.</li>
+        <li data-schritt><strong>Wir haben recht, wenn …</strong> – x von y, nicht 70 %.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Ein gutes Experiment hat vier Teile – Hypothese, Experiment, Messgröße, Kriterium – und legt genau fest, wer getestet wird, wo und womit ({BLAND}, S. 44–46). Im Beispiel der Karte: „16 of the 20 parents“. Torres: „Instead of saying, ‚Some people choose sports,‘ we want to say, ‚At least 3 out of 10 people choose sports.‘ We want to define both how many people we’ll test with and how many people need to exhibit the behavior“ ({TORRES}, S. 136). Die Zahlen sind eine Ermessensfrage – ihr wollt Risiko senken, nicht beweisen (S. 137). Zahlen statt Prozent, genug Kriterien, das richtige Publikum mit dem Pain, und ein Test, der im besten Fall bestehen kann (S. 144–145).</p>
+      <p>Warum die Schwelle vorher: Wer sie nach dem Test festlegt, findet immer einen Grund, warum es doch geklappt hat – das ist dieselbe Bestätigungsneigung wie oben (S. 116, 134).</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="welcher-test">Welcher Test?</h2>
+    <p class="folie-satz">Ein Test simuliert einen Moment – und ihr schaut, was Menschen tun.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Am Anfang schnell und billig</strong> – aber der stärkste Beleg, den ihr euch leisten könnt.</li>
+      <li data-schritt><strong>Mehrere Tests</strong> für dieselbe Annahme, keine Entscheidung aus einem.</li>
+      <li data-schritt><strong>Unsicherheit senken,</strong> bevor ihr baut.</li>
+      <li data-schritt><strong>Tun schlägt sagen,</strong> echte Situation schlägt Labor (Tag 1).</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Blands vier Faustregeln: „Go cheap and fast at the beginning“; „Increase the strength of evidence with multiple experiments for the same hypothesis“; „Always pick the experiment that produces the strongest evidence given your constraints“; „Reduce uncertainty as much as you can before you build anything“ ({BLAND}, S. 93). Torres: „A strong assumption test simulates an experience, giving your participant the opportunity to behave either in accordance with your assumption or not“ – und nicht mehr simulieren als nötig ({TORRES}, S. 135). Ihre drei billigen Formen für eine Woche: ein simulierter Moment mit einem Mock-up, eine Ein-Frage-Umfrage zu einem konkreten vergangenen Fall, Daten, die ihr schon habt (S. 142–144). „With assumption testing, most of our learning comes from failed tests“ (S. 138).</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Test (Bland)</th><th>Gut für</th><th>Nicht gut für</th><th>Beleg</th></tr></thead>
+          <tbody>
+            <tr><th>Simple Landing Page</th><td>ob das Wertversprechen ankommt; Handlung = Eintrag</td><td>ohne Besucher*innen (Bland: etwa 100 am Tag)</td><td>eher schwach: eine E-Mail gibt man leicht her (S. 260–263)</td></tr>
+            <tr><th>Clickable Prototype</th><td>Konzept und Ablauf, etwas genauer als Papier</td><td>Ersatz für echte Nutzung; „wollen sie es?“</td><td>Aufgabe geschafft, Zeit, wo gehangen (S. 236–239)</td></tr>
+            <tr><th>Concierge</th><td>selbst lernen, was es braucht, den Wert von Hand zu liefern; man sieht die Menschen</td><td>Skalieren</td><td>stark: Zufriedenheit nach geliefertem Wert, Zahlungen (S. 248–251)</td></tr>
+            <tr><th>Wizard of Oz</th><td>wie Concierge, aber die Menschen arbeiten hinter einem „digitalen Vorhang“</td><td>Skalieren</td><td>stark (S. 284–287)</td></tr>
+            <tr><th>Mock Sale</th><td>Preise</td><td>ohne Kostenrechnung</td><td>Zahlungsdaten: sehr stark (S. 288–291)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">Schritte, Annahmen, Map – und eine Karte für die oberste.</p>
+    <ol>
+      <li data-schritt><strong>Schritte:</strong> Halle betreten, Schlange und Aufsteller sehen → scannen → Getränk, Abfahrtszeit → Bar zeigt „Fertig 7:31“ und bereitet zu → abholen, bar zahlen.</li>
+      <li data-schritt><strong>A5 wünschenswert:</strong> Wer die Schlange sieht, bestellt am Aufsteller statt am Automaten.</li>
+      <li data-schritt><strong>A6 wünschenswert:</strong> Die Zeile „Fertig 7:31“ reicht, damit sie an der Schlange vorbeigehen.</li>
+      <li data-schritt><strong>A7 ethisch:</strong> Sie sind einverstanden, dass wir ihre Abfahrtszeit kennen.</li>
+      <li data-schritt><strong>Oben rechts:</strong> A5, A7, A4 – zuerst A5, denn wünschenswert kommt vor allem anderen.</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Die Schritte, als gäbe es „Im Gehen bestellen“ schon: (1) Pendler*in betritt die Halle, sieht Schlange und Aufsteller – (2) scannt den Code – (3) wählt ein Getränk, gibt die Abfahrtszeit ein – (4) die Bar zeigt „Fertig 7:31“ und bereitet zu – (5) Abholen an der Express-Ausgabe, bar bezahlen. Daraus unter anderem: <strong>A5</strong> (wünschenswert, Schritt 1–2): Pendler*innen, die beim Betreten der Halle die Schlange sehen, bestellen am Aufsteller, statt zum Automaten zu gehen. Beleg: keiner – und „Ich hab dann am Automaten gedrückt, ohne nachzudenken“ (I2-3) spricht dagegen. <strong>A3</strong> (bedienbar, Schritt 2–3): Bestellen im Gehen in 20 Sekunden (Tag 1, kein Beleg). <strong>A2</strong> (machbar, Schritt 4): 40 Bestellungen in 30 Minuten. <strong>A6</strong> (wünschenswert, Schritt 4): Die Zeile „Fertig 7:31“ reicht, damit sie an der Schlange vorbeigehen – erzählt in I2-5 und I3-2; das ist die fallende Handlung der Concept Story. <strong>A7</strong> (ethisch, Schritt 3): Pendler*innen sind einverstanden, dass wir ihre Abfahrtszeit kennen (kein Beleg). <strong>A4</strong> (wirtschaftlich): aus dem Geschäftsmodell, Wichtigkeit hoch, kein Beleg.</p>
+      <p>Die Map: oben rechts A5, A7 und A4; A6 oben in der Mitte; A3 rechts in der Mitte; A2 links. Getestet wird zuerst A5, weil Bland mit der Wünschbarkeit beginnt ({BLAND}, S. 34–35): Bestellt niemand, sind Datenschutz und Wirtschaftlichkeit egal. Die Annahme, die alle drei Ideen teilen, lautet: „Pendler*innen nehmen ein Angebot der Bar an, wenn die Zeit bis zur Abfahrt sicher ist“ – erzählt in I2-2, I3-4 und I4-4, also schon belegt, und nicht oben rechts. Die anderen beiden Ideen tragen je eine Zeile: Die Wartezeit-Anzeige hängt an A6, der Kaffeewagen am Bahnsteig an „Am Bahnsteig gibt es keine Schlange“ – das „?“ aus dem Fit-Vergleich.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="karte-e1">Die Karte E1</h2>
+    <p class="folie-satz">Ein Aufsteller, drei Morgen, eine Schwelle als x von y.</p>
+    <Prompt label="Beispiel · Experiment-Karte E1">E1 · A5 (wünschenswert) · läuft bis: drei Werktage vor Tag 4
+Wir glauben, dass Pendler*innen, die beim Betreten der Halle die Schlange sehen, am Aufsteller bestellen, statt zum Automaten zu gehen.
+Um das zu prüfen, stellen wir an drei Morgen (7:15–7:45) einen Aufsteller mit QR-Code an die Hallentür. Die Seite verspricht „Im Gehen bestellen – bald“ und bittet, den eigenen Zug einzutragen. Bestellen geht noch nicht; das steht auf der Seite.
+Wir messen Scans und eingetragene Züge pro Morgen.
+Wir haben recht, wenn von den ersten 30 Scans mindestens 10 einen Zug eintragen.
+Danach: Wer eingetragen hat, erfährt, wann es losgeht.
+Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt es keine Schlange“)</Prompt>
+    <p class="nur-handout">Kommen in drei Morgen keine 30 Scans zusammen, sagt der Test nichts über A5, sondern über den Aufsteller – das ist Torres' Warnung vor zu wenigen Kriterien ({TORRES}, S. 144–145). Ein Eintrag ist ein kleiner Einsatz und darum ein mittlerer Beleg ({BLAND}, S. 52). Besteht E1, wäre der stärkere nächste Test ein Concierge: drei Morgen lang per Nachricht vorbestellen, von Hand zubereitet. Bland nennt so eine Folge für Dienstleistungen: vom Interview über die Landingpage bis zum Concierge (S. 99). Und wer getestet wird, erfährt danach, was dahintersteckt: „Are you experimenting with your customers or on them?“ (S. 86).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (18 min)</h2>
+    <p class="folie-satz">Schritte, Annahmen, Map, Karte – allein, schnell.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Schritte:</strong> vier bis sechs, als gäbe es eure Idee schon. <Timer minuten={3} /></li>
+      <li data-schritt><strong>Annahmen:</strong> pro Schritt mindestens zwei, mit Art; dazu die Pre-Mortem-Frage. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Map:</strong> Beleg nach rechts, Wichtigkeit nach oben. <Timer minuten={3} /></li>
+      <li data-schritt><strong>Karte E1</strong> für die oberste rechts, Schwelle als x von y. <Timer minuten={6} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Dazu zwölf Minuten Theorie und Beispiel. Die Schritte kommen aus Lückensatz und Value Map der gewählten Idee. Bei den Annahmen markiert ihr, welche auch für eure anderen beiden Ideen gelten – geteilte Annahmen sind oft die schnellsten Tests. Die neuen Annahmen tragt ihr mit den nächsten freien IDs in der Werkstatt in eure Annahmen-Map ein, mit Art, Wichtigkeit und Beleg. Unter die Karte kommt je eine Zeile für die anderen beiden Ideen: deren riskanteste Annahme.</p>
+      <p>Die Karte steht danach in <code>docs/EXPERIMENTE.md</code>. Prüfen mit Claude könnt ihr in der Mittagspause.</p>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/EXPERIMENTE.md"># Experimente — [Produkt]
 
-## E[n] · Stand: [Datum]
-Wir glauben, dass [...]. (A[n], [Art])
-Um das zu prüfen, [Test].
-Wir messen [Zahl].
-Wir haben recht, wenn [Schwelle].
+Spitzenreiter auf Papier (docs/VALUE-MAP.md): [Idee]
+Schritte, als gäbe es sie schon: 1 [...] → 2 [...] → 3 [...] → 4 [...] → 5 [...]
+Neue Annahmen in der Annahmen-Map (Werkstatt): A[n] … A[m] · gilt auch für Idee 2/3: A[...]
 
-Ergebnis: [nach dem Test eintragen] → Entscheidungslog
+## E1 · A[n] ([Art]) · läuft bis [Datum] · wer: [Name]
+Wir glauben, dass [...].
+Um das zu prüfen, [wer, wo, was].
+Wir messen [Handlung].
+Wir haben recht, wenn [x von y].
+Danach erfahren die Testpersonen: [...] · Wir sammeln: [...]
+Falls E1 scheitert: Idee 2 [...] hängt an „[...]“ · Idee 3 [...] hängt an „[...]“
 
-### Origin Story (Skizze)
-Exposition: [...] · Auslöser: [...] · Erfährt davon: [...] · Hürde: [...] · Überzeugt durch: [...] · Erster Schritt: [...]
-Für den Text: erst der Pain, dann das Produkt, dann die Antwort auf die Hürde.</Prompt>
+### Lernkarte E1 (nach dem Test)
+Wir glaubten, dass [...].
+Wir haben beobachtet: [x von y, Zitate]
+Daraus lernen wir: [...]
+Darum werden wir: [weitermachen · umschwenken · verwerfen] → Zeile im Entscheidungslog</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="experiment" />
-  <Prompt label="Pre-Mortem · Claude Code">Lies docs/EXPERIMENTE.md und docs/ANNAHMEN.md. Stell dir vor, das neueste Experiment ist gelaufen und hat uns in die Irre geführt. Nenn drei Gründe, warum das passiert sein könnte (zum Beispiel falsche Zeit, falsche Menschen, eine Schwelle, die zu leicht ist), und je einen billigeren oder genaueren Test. Ändere keine Datei.</Prompt>
+  <Prompt label="Pre-Mortem · Claude Code">Lies docs/EXPERIMENTE.md und aus der Werkstatt meine Annahmen-Map (Werkzeug artefakt_lesen). Stell dir vor, E1 ist gelaufen und hat uns in die Irre geführt. Nenn drei Gründe, warum das passiert sein könnte (zum Beispiel falsches Publikum, eine Schwelle, die zu leicht ist, ein Test, der die ganze Idee statt der Annahme prüft), und je einen kleineren oder genaueren Test. Ändere keine Datei.</Prompt>
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Was ist euer Aufsteller an der Hallentür – der Ort, an dem eure Zielgruppe ohnehin vorbeikommt? Dort läuft euer billigster Test.</p>
-  <p class="small muted">Experiment-Karte nach David J. Bland & Alex Osterwalder, <em>Testing Business Ideas</em> (Wiley 2019); Origin Story nach Donna Lichaw.</p>
+  <Folie>
+    <h2 id="origin-story">Die Origin Story (Abschluss, 17:25)</h2>
+    <p class="folie-satz">Wie jemand euren Wert zum ersten Mal sieht – und was er dann tut.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/lichaw/origin-story.jpg" alt="Grüner Bogen: Current State, Problem, Find out about product mit Wegweiser (Search, Marketing, Word of mouth), Impediments Competition als Hürde, See value / solution mit Glühbirne (Landing page, Touchpoints, Content), Take action Experience value, Goal(s) met" quelle={`Die Origin Story. ${LICHAW}, Abb. 4.3.`} />
+      <ul>
+        <li data-schritt><strong>Exposition, Auslöser</strong> wie in der Concept Story.</li>
+        <li data-schritt><strong>Steigende Handlung:</strong> wo sie davon hört. <strong>Krise:</strong> was sie zurückhält.</li>
+        <li data-schritt><strong>Höhepunkt:</strong> sie <em>sieht</em> den Wert – auf Aufsteller oder Landingpage.</li>
+        <li data-schritt><strong>Fallende Handlung:</strong> die eine Handlung – die Messgröße eurer Karte.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>„An origin story is the story of how someone becomes your customer for the first time“; sie ist die Brücke zwischen Concept Story und Usage Story ({LICHAW}, Kap. 4). Die Krise kennt vier Formen: Konkurrenz, andere Lösungen (selbst machen, analog), Widerstand gegen Neues, Sorgen um Sicherheit. Der Höhepunkt liegt dort, wo jemand den Wert sieht – Startseite, Landingpage, Laden, Telefon. Danach kommt genau eine Handlung, und am Ende steht, wie ihr sie messt: „you call your main character to action and determine how to measure that action“. Die Handlung soll das Ziel der Person benennen: „start training“ statt „sign up“ (Kap. 4, FitCounter).</p>
+      <p>Bei der Kaffeebar ist das der Aufsteller aus E1. Seine Handlung heißt „Trag deinen Zug ein“, nicht „E-Mail hinterlassen“ – sie benennt das Ziel der Person und ist zugleich die Messgröße der Karte:</p>
+      <Prompt label="Beispiel · Origin Story als Aufstellertext">Zug in 8 Minuten, Schlange bis zur Tür?
+Bestell im Gehen. Scan den Code, gib deine Abfahrtszeit ein –
+wir sagen dir sofort, ob dein Kaffee vor der Abfahrt fertig ist.
+Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
+      <p>Erst der Pain, dann das Produkt, dann die Antwort auf die Hürde – dieselbe Reihenfolge empfiehlt Bland für eine Landingpage: Wertversprechen, Handlung, darunter Pains, Lösung, Gains ({BLAND}, S. 261).</p>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
+  <h3>Vorlage · Origin Story in docs/STORYS.md</h3>
+  <Prompt label="Vorlage · docs/STORYS.md, Abschnitt Origin Story">## Origin Story · [Kanal: Aushang / Landingpage / Nachricht]
+1. Exposition: wie Concept Story
+2. Auslöser: wie Concept Story
+3. Steigende Handlung: wo sie davon hört ([Kanal]) – warum passt der Kanal zum Pain?
+4. Krise: was sie zurückhält ([Alternative], „[innere Hürde]“)
+5. Höhepunkt: was sie auf [Aufsteller / Landingpage] sieht – in ihren Worten (Zitat-IDs)
+6. Fallende Handlung: die eine Handlung = Messgröße von E1: [...]
+7. Ende: ihr Ziel [...] · Geschäftsziel, messbar: [...]
+Text (Überschrift · Wertversprechen aus der Value Map · Handlung · Antwort auf die Hürde): [...]</Prompt>
+  </div>
+
+  <Folie>
+    <h2 id="lernkarte">Nach dem Test: die Lernkarte</h2>
+    <p class="folie-satz">Geglaubt, beobachtet, gelernt – und darum entschieden.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/bland/learning-card.jpg" alt="Blaue Learning Card „Concierge“: We believed that millennial parents prefer curated science projects; We observed overall feedback was positive, but time and cost exceeded our target price point; From that we learned that we have to bring time and cost down; Therefore, we will explore wholesale suppliers" quelle={`Learning Card. ${BLAND}, S. 55.`} hochkant />
+      <ul>
+        <li data-schritt><strong>Wir glaubten, dass …</strong> – die Zeile von der Karte.</li>
+        <li data-schritt><strong>Wir haben beobachtet …</strong> – x von y, Zitate.</li>
+        <li data-schritt><strong>Darum werden wir …</strong> weitermachen, umschwenken oder verwerfen.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Die Lernkarte schließt jede Experiment-Karte ab ({BLAND}, S. 55). Danach entscheidet ihr: weitermachen – mit einem stärkeren Test oder der nächsten Annahme –, umschwenken oder verwerfen (S. 61–63). Scheitert E1, steht unter eurer Karte, mit welcher Idee ihr weitermacht. Die Entscheidung kommt als Zeile ins Entscheidungslog; an Tag 4 lest ihr die Lernkarten zu Beginn vor.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Wo kommt eure Zielgruppe ohnehin vorbei – euer Aufsteller an der Hallentür?</p>
+    <p class="nur-handout">Habt ihr keinen echten Ort, keine Gruppe, keine Seite mit Besucher*innen, dann lauft E1 als simulierten Moment: Zehn Menschen aus der Zielgruppe sehen den Aufsteller oder die Landingpage als Bild am Handy, in der beschriebenen Situation, und ihr zählt, wer die Handlung wählt ({TORRES}, S. 135, 142–144). Schreibt die Schwelle für diese Form vor dem ersten Gespräch neu, etwa „4 von 10 tippen auf ‚Zug eintragen‘“.</p>
+  </Folie>
+
+  <p class="small muted">Nach {TORRES}, Kap. 9–10; {BLAND}; Origin Story nach {LICHAW}, Kap. 4.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell-Karten' }} next={{ href: '/innolab/methoden/story-map', t: 'Story Map' }} />
 </Layout>
