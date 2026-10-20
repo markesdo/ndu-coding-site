@@ -105,7 +105,7 @@ describe('methoden', () => {
   });
 
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
-    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'kundenprofil', 'journey-map', 'hmw', 'ideation']);
+    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map', 'hmw', 'ideation']);
     expect(methodenVonTag(7)).toEqual([]);
   });
 
@@ -124,7 +124,7 @@ describe('methoden', () => {
     const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!);
     expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch aus der Werkstatt meine Interviews und Snapshots \(Werkzeug artefakt_lesen\)\./);
     const jm = pruefPrompt(METHODEN.find((m) => m.slug === 'journey-map')!);
-    expect(jm).toContain('Zum Abgleich lies auch docs/KUNDENPROFIL.md und aus der Werkstatt meine Interviews und Snapshots (Werkzeug artefakt_lesen).');
+    expect(jm).toContain('Lies docs/JOURNEY.md. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief und meine Interviews und Snapshots (Werkzeug artefakt_lesen).');
     // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).
     const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
     expect(sy).toMatch(/^Prüf meine Interviews und Snapshots mit der Werkstatt \(Werkzeug artefakt_pruefen\) gegen diese Prüfliste \(Interview-Synthese\):/);
@@ -133,7 +133,7 @@ describe('methoden', () => {
 
   it('wer in der Prüfliste ein früheres Artefakt nennt, hat es in „braucht“ – sonst liest Claude es beim Prüfen nicht', () => {
     const namen: Record<string, string> = {
-      'Annahmen-Map': 'annahmen', Synthese: 'synthese', Kundenprofil: 'profil', 'Journey Map': 'journey',
+      'Annahmen-Map': 'annahmen', Synthese: 'synthese', Kundenprofil: 'profil', 'Experience Map': 'journey',
       'Value Map': 'valuemap', 'Story Map': 'storymap',
     };
     for (const m of METHODEN.filter((x) => x.pruefliste)) {

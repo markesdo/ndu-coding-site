@@ -4,91 +4,143 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Fluss from '../../../components/Fluss.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memories“, Nielsen Norman Group (2018)';
 ---
-<Layout title="Journey Map">
+<Layout title="Experience Map">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
-  <h1>Journey Map</h1>
-  <p class="lead">Der heutige Ablauf aus Sicht eurer Zielgruppe, Moment für Moment – und die drei Momente, in denen sie entscheidet, ob sie bleibt.</p>
+  <h1>Experience Map aus den Geschichten</h1>
+  <p class="lead">Eure Map von Tag 1 war eine Vermutung. Jetzt habt ihr fünf echte Geschichten – daraus wird die Map, deren Momente die obersten Äste eures Baums werden.</p>
   <Orientierung seite="innolab/methoden/journey-map" leiste={false} />
   <MethodenKarte slug="journey-map" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p><strong>Customer Experience</strong> ist die Summe aller Höhen und Tiefen, die jemand mit einem Angebot erlebt – auch der Momente, auf die ihr keinen Einfluss habt. Die Journey Map legt diese Momente in eine Reihe. Ihr zeichnet heute den <strong>Ist-Zustand</strong>: wie es jetzt läuft, ohne euer Produkt. Den Soll-Zustand beschreibt an Tag 3 die Usage Story.</p>
-  <p>Vier Schritte, in dieser Reihenfolge:</p>
-  <ol>
-    <li><strong>Alle Momente:</strong> 12–20 Kästchen vom Moment vor dem ersten Kontakt bis nach dem letzten. Auch das Warten, auch den Weg dazwischen.</li>
-    <li><strong>Gefühl:</strong> Für jeden Moment von −2 (sehr schlecht) bis +2 (sehr gut). Daraus entsteht eine Kurve.</li>
-    <li><strong>Pains verorten:</strong> Die IDs aus dem Kundenprofil an die Momente hängen, an denen sie entstehen.</li>
-    <li><strong>Momente der Wahrheit:</strong> die drei Momente, in denen die Person entscheidet, ob sie weitermacht oder abspringt. Jeder mit Beleg.</li>
-  </ol>
-  <p>Für Momente der Wahrheit hilft die <strong>Peak-End-Regel</strong> (Daniel Kahneman): Menschen beurteilen ein Erlebnis vor allem nach dem intensivsten Moment und nach dem Ende – nicht nach der Dauer oder dem Durchschnitt.</p>
+  <Folie>
+    <h2 id="warum">Warum die Map neu zeichnen?</h2>
+    <p class="folie-satz">Die Map von Tag 1 zeigt, was ihr geglaubt habt – nicht, was ist.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/experience-map.jpg" alt="Skizze einer Experience Map mit Strichmännchen: von einer Empfehlung über das Suchen bis zum Film und dem Ende, mit einem Abzweig, wenn nichts gefunden wird" quelle={`Experience Map „Wie unterhalten sich Menschen mit Videos?“. ${TORRES}, S. 54.`} />
+      <ul>
+        <li data-schritt><strong>Ein Entwurf</strong> aus Vermutungen und offenen Fragen.</li>
+        <li data-schritt><strong>Fehler 1:</strong> so weiterarbeiten, als wäre die Map wahr.</li>
+        <li data-schritt><strong>Fehler 2:</strong> sie nach neuen Interviews nicht anpassen.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Teresa Torres beschreibt die erste Experience Map als Bestandsaufnahme dessen, was das Team zu wissen glaubt: „hunches and possibilities, not truth“. Sie zeigt, wo ihr offene Fragen habt und was die Interviews prüfen sollen ({TORRES}, S. 51). Zwei der Anti-Muster, die sie nennt, betreffen genau diesen Moment: so weiterzumachen, als wäre die Map wahr, und zu vergessen, sie mit dem Gelernten weiterzuentwickeln. Sonst laufen die Bilder im Team auseinander, auch wenn alle dieselben Interviews gehört haben (S. 57).</p>
+      <p>Der Umfang bleibt der von Tag 1: Er kommt aus eurem Outcome im Produkt-Brief (S. 52). Gezeichnet wird das Erleben der Menschen, nicht euer Produkt und keine Bildschirmabfolge (S. 54).</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>#</th><th>Moment</th><th>Gefühl</th><th>Pains</th><th>Wahrheit</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>Zu Hause los, knapp dran</td><td>−1</td><td></td><td></td></tr>
-        <tr><td>2</td><td>Weg zum Bahnhof</td><td>0</td><td></td><td></td></tr>
-        <tr><td>3</td><td>Betritt die Halle, riecht Kaffee</td><td>+1</td><td></td><td></td></tr>
-        <tr><td>4</td><td>Sieht Schlange und Abfahrtstafel gleichzeitig</td><td>−1</td><td>P2</td><td>W1</td></tr>
-        <tr><td>5</td><td>Stellt sich an</td><td>0</td><td></td><td></td></tr>
-        <tr><td>6</td><td>Wartet, schaut auf die Uhr</td><td>−2</td><td>P1, P2</td><td></td></tr>
-        <tr><td>7</td><td>Bestellt und bezahlt</td><td>0</td><td></td><td></td></tr>
-        <tr><td>8</td><td>Wartet auf den Kaffee, weiß nicht wie lange</td><td>−2</td><td>P1, P2</td><td>W2</td></tr>
-        <tr><td>9</td><td>Bekommt den Kaffee</td><td>+1</td><td></td><td></td></tr>
-        <tr><td>10</td><td>Läuft zum Bahnsteig, verschüttet fast</td><td>−1</td><td></td><td></td></tr>
-        <tr><td>11</td><td>Steigt ein, findet einen Platz</td><td>+1</td><td></td><td></td></tr>
-        <tr><td>12</td><td>Erster Schluck im Zug</td><td>+2</td><td></td><td>W3</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <ul>
-    <li><strong>W1 · Schlange und Abfahrtstafel:</strong> Hier fällt die Entscheidung „anstellen oder Automat“ (I2-4).</li>
-    <li><strong>W2 · Warten auf den Kaffee:</strong> der Tiefpunkt der Kurve; wer hier knapp wird, bereut, sich angestellt zu haben (I3-3).</li>
-    <li><strong>W3 · Erster Schluck:</strong> das Ende der Geschichte. Ist es gut, wird der ganze Morgen besser erinnert (Peak-End, I1-4).</li>
-  </ul>
-  <p>Die Momente 6 und 8 sind <strong>Leerlauf</strong>: Es passiert nichts, und genau dort ist die Kurve am tiefsten. Leerlauf, in dem die Person nicht weiß, wie lange er dauert, ist oft ein Moment der Wahrheit. Hier hängen beide zusammen; markiert ist Moment 8, weil dort niemand mehr umkehren kann – bezahlt ist schon.</p>
+  <Folie>
+    <h2 id="geschichten">Aus Geschichten eine Map</h2>
+    <p class="folie-satz">Welche Knoten tauchen in Geschichte um Geschichte auf?</p>
+    <MiroFrame name="T2 · 1 · Experience Map" />
+    <ol class="gross">
+      <li data-schritt><strong>Beschriften:</strong> In jeder Skizze eurer Snapshots die Knoten benennen – Momente, Handlungen, Ereignisse.</li>
+      <li data-schritt><strong>Muster suchen:</strong> Was kommt in mehreren Geschichten vor?</li>
+      <li data-schritt><strong>Zusammenfügen:</strong> Gleiche Knoten zusammenlegen, ohne Wichtiges wegzuglätten.</li>
+      <li data-schritt><strong>Verbinden:</strong> Pfeile – auch Umwege, Schleifen und wo jemand aufgibt.</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Torres nennt zwei Wege zur Struktur des Chancenraums: die Schritte der Experience Map – oder, wenn die Map noch keine klaren Momente hat, die Zeichnungen aus den Interviews. Dann beschriftet ihr die Knoten jeder Geschichte, sucht die Knoten, die in Geschichte um Geschichte auftauchen, und fügt die häufigsten zu einer Map zusammen, die eure gesammelten Geschichten abbildet ({TORRES}, S. 86–87).</p>
+      <p>Beim Zusammenführen gelten dieselben Regeln wie für die gemeinsame Map in Kapitel 4: Ein <strong>Knoten</strong> ist ein Zeitpunkt, eine Handlung oder ein Ereignis, eine <strong>Verbindung</strong> zeigt, wie es weitergeht. Ähnliche Knoten dürft ihr zusammenlegen, aber nicht so weit verallgemeinern, dass wichtige Details verloren gehen. Zeichnet nicht nur den glatten Weg: wo Schritte wiederholt werden, wo jemand aus Frust aufgibt, wo es in Schleifen zurückgeht. Zum Schluss kommt der Kontext an jeden Schritt: Was denkt, fühlt, tut die Person dort? (S. 56)</p>
+    </div>
+  </Folie>
 
-  <h3 id="hinter-den-kulissen">Hinter den Kulissen (optional)</h3>
-  <p>Unter die Momente könnt ihr eine Zeile „Backstage“ legen: Wer oder was sorgt intern für diesen Moment – Personen, Systeme, Abläufe, Regeln? Bei der Kaffeebar: Kasse und Siebträger stehen hintereinander, eine Person macht beides. Das erklärt Moment 8, gehört aber nicht in die Gefühlskurve.</p>
+  <Folie>
+    <h2 id="momente">Momente werden Äste</h2>
+    <p class="folie-satz">Jeder Ast ist ein eigener Zeitpunkt – ohne Überschneidung.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/aeste-momente.jpg" alt="Baum mit dem Outcome „Increase viewing minutes“ oben und vier Ästen darunter: „I need something to do.“, „I'm not sure what to watch.“, „I'm watching a show.“, „My show ended.“" quelle={`Oberste Chancen aus den Momenten der Experience Map. ${TORRES}, S. 87.`} />
+      <ul>
+        <li data-schritt><strong>Ein Moment pro Ast</strong>, in der Reihenfolge der Geschichte.</li>
+        <li data-schritt><strong>Keine Überschneidung</strong>, sonst lässt sich nicht eine Chance nach der anderen bearbeiten.</li>
+        <li data-schritt><strong>In den Worten der Kundschaft:</strong> „Ich weiß nicht, was ich schauen soll.“</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Ziel ist, den Chancenraum nach unterscheidbaren Momenten zu ordnen, damit sich die Äste nicht überschneiden. Oft reicht es, jeden Knoten der Experience Map auf die oberste Ebene des Baums zu legen. Im Streaming-Beispiel werden aus vier Momenten – sich entscheiden, etwas zu schauen; etwas auswählen; schauen; das Ende – vier oberste Chancen (S. 86–87). Ohne Überschneidung könnt ihr an einer Chance arbeiten, ohne alle anderen mitzuziehen (S. 86). Im nächsten Block hängt ihr die Chancen aus euren Snapshots unter diese Äste.</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (35 min Input, 85 min Übung)</h2>
-  <ol>
-    <li><strong>Alle Momente (25 min, allein in Miro):</strong> Erst Start und Ende festlegen, dann die Geschichte Kästchen für Kästchen erzählen. Lücken suchen: Wo wartet die Person?</li>
-    <li><strong>Gefühlskurve (10 min).</strong></li>
-    <li><strong>Pains verorten (10 min):</strong> nur IDs aus dem Kundenprofil. Taucht ein neuer Pain auf, kommt er zuerst ins Profil.</li>
-    <li><strong>Dreierrunde (20 min):</strong> Jede*r erzählt die eigene Map in fünf Minuten. Die anderen fragen: „Was passiert davor?“, „Woher wisst ihr, dass das ein Tiefpunkt ist?“</li>
-    <li><strong>Momente der Wahrheit und Festhalten (20 min):</strong> drei markieren, mit Beleg; <code>docs/JOURNEY.md</code>; prüfen.</li>
-  </ol>
+  <Folie>
+    <h2 id="peak-end">Höhepunkt und Ende</h2>
+    <p class="folie-satz">Erinnert wird der stärkste Moment und das Ende – nicht der Durchschnitt.</p>
+    <Fluss label="Kälteversuch, Durchgang 1: 60 Sekunden bei 14 Grad, dann Hand raus" knoten={[{ t: 'Durchgang 1', sub: '60 s bei 14 °C' }, { t: 'Ende', sub: 'Hand raus' }]} />
+    <Fluss label="Kälteversuch, Durchgang 2: 60 Sekunden bei 14 Grad, dann 30 Sekunden bei 15 Grad" hervor={[1]} knoten={[{ t: 'Durchgang 2', sub: '60 s bei 14 °C' }, { t: '+ 30 s bei 15 °C', sub: 'etwas weniger unangenehm' }]} />
+    <p data-schritt><strong>Die meisten</strong> wollten Durchgang 2 wiederholen – den längeren. Markiert darum auf eurer Map den stärksten Moment und das Ende.</p>
+    <div class="nur-handout">
+      <p>Die Peak-End-Regel ist ein Denkfehler beim Erinnern: Intensive Momente (die Spitzen) und das Ende eines Erlebnisses zählen beim späteren Urteil am meisten ({KANE}). Der Artikel beschreibt den Versuch von Daniel Kahneman, Barbara Fredrickson, Charles Schreiber und Donald Redelmeier („When More Pain Is Preferred to Less: Adding a Better End“, 1993): Teilnehmende hielten eine Hand in kaltes Wasser, einmal 60 Sekunden bei 14 °C, einmal dieselben 60 Sekunden und danach 30 Sekunden bei 15 °C. Vor die Wahl gestellt, welchen Durchgang sie wiederholen, wählten laut NN/g 80 % den zweiten – obwohl er länger unangenehm war, weil er etwas besser endete.</p>
+      <p>Für eure Map heißt das: Schaut, wo die Geschichten am stärksten ausschlagen, im Guten wie im Schlechten, und wie sie enden. Das NN/g-Team rät, negative Spitzen ernst zu nehmen (Verwirrung, Frust) und auf ein gutes Ende zu achten – „last impressions are lasting impressions“. Die Experience Map selbst stammt nicht aus diesem Artikel; die Regel ist der Grund, warum ihr Höhepunkt und Ende markiert.</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">Fünf Geschichten, vier Momente, ein Umweg.</p>
+    <Fluss label="Experience Map der Kaffeebar: vier Momente, Tiefpunkt beim Warten, Ende im Zug" hervor={[2, 3]} knoten={[
+      { t: '„Ich komme in die Halle.“', sub: 'Schlange und Abfahrtstafel, dann die Entscheidung (I2-4, I5-3, I3-4)' },
+      { t: '„Ich stehe an.“', sub: '„Anstellen ist ein Glücksspiel.“ (I4-2)' },
+      { t: '„Ich warte auf meinen Kaffee.“', sub: 'Tiefpunkt: weiß nicht, wie lange (I3-2, I3-3, I2-5)' },
+      { t: '„Ich bin im Zug.“', sub: 'Ende: der erste Schluck (I1-4)' },
+    ]} />
+    <ul>
+      <li data-schritt><strong>Umweg:</strong> Automat statt Schlange – „Notlösung, aber schnell“ (I1-3, I4-4).</li>
+      <li data-schritt><strong>Neu gegenüber Tag 1:</strong> das Warten nach dem Bestellen – dort liegt der Tiefpunkt.</li>
+    </ul>
+    <p class="nur-handout">Die Map von Tag 1 (Miro T1 · 1) ging von „Ankunft am Bahnhof“ über „Blick auf die Schlange“ und „Reicht die Zeit?“ zu „Anstellen“ oder „Zum Automaten“ – der Pfeil zum Automaten mit „?“ – und endete „im Zug, mit oder ohne Kaffee“. Die fünf Geschichten bestätigen die Entscheidung beim Blick auf Schlange und Tafel (I1-2, I2-4, I3-1, I5-3) und beantworten das „?“: Der Automat ist die Ausweichroute (I1-3, I4-4). Neu ist ein Knoten, der auf der alten Map fehlte: das Warten nach dem Bestellen, ohne zu wissen, wie lange – dort liegt der Tiefpunkt (I3-2, I3-3). Das Ende ist der erste Schluck im Zug (I1-4). Der Automat ist kein eigener Moment, sondern ein Umweg aus „Ich komme in die Halle“; er gehört als Pfeil auf die Map, damit ihr nicht nur den glatten Weg zeichnet.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+    <p class="folie-satz">Erst allein, dann zu dritt, dann die Momente festlegen.</p>
+    <MiroFrame name="T2 · 1 · Experience Map" />
+    <ol class="gross">
+      <li data-schritt><strong>Allein:</strong> Knoten aus euren Snapshot-Skizzen beschriften, zur neuen Map zusammenfügen, die Map von Tag 1 daneben. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Zu dritt:</strong> Jede*r zeigt die eigene Map, die anderen fragen nach – ohne die eigene zu verteidigen. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Momente festlegen:</strong> drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
+    </ol>
+    <p class="nur-handout">Dazu zehn Minuten Theorie und zehn Minuten Kaffeebar gemeinsam. Beim Zeigen gilt, was Torres für das Teilen der ersten Maps empfiehlt: Fragen stellen, um die andere Sicht zu verstehen, auf die Unterschiede achten, die eigene Zeichnung nicht verteidigen (S. 55). Wo ihr euch über Details streitet, zeichnet den Unterschied, statt ihn zu diskutieren (S. 56–57).</p>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/JOURNEY.md"># Journey Map (Ist) — [Segment]
+  <Prompt label="Vorlage · docs/JOURNEY.md"># Experience Map — [Produkt]
 
-Stand: [Datum] · Miro: [Link zum Board]
-Start: [Moment vor dem ersten Kontakt] · Ende: [Moment nach dem letzten]
+Stand: [Datum] · Miro: [Link zum Frame] · Grundlage: Snapshots I1–I[n]
 
-| # | Moment (was die Person tut oder erlebt) | Gefühl −2…+2 | Pains (IDs) | Moment der Wahrheit |
-|---|------------------------------------------|--------------|-------------|---------------------|
-| 1 | [...] | [...] | | |
-| 2 | [...] | [...] | [P…] | [W1] |
+## Momente (oberste Äste des Baums)
+1. „[Moment in den Worten der Kundschaft]“ – [was dort passiert] ([Zitat-IDs])
+2. „[...]“ – [...] ([...])
 
-## Momente der Wahrheit
-- W1 · [Moment]: [warum hier entschieden wird] ([Beleg])
-- W2 · [...]
-- W3 · [...]</Prompt>
+## Umwege und Abbrüche
+- [Wo jemand aufgibt, zurückgeht oder ausweicht] ([Zitat-IDs])
 
-  <Callout type="tip" title="Typische Phasen als Gedächtnisstütze">
-    <p>Bei digitalen Produkten hilft beim Sammeln eine grobe Folge: aufmerksam werden → vergleichen → ausprobieren → kaufen oder anmelden → einsteigen → nutzen → Hilfe brauchen → verlängern → weiterempfehlen. Nicht jede Phase gehört in eure Map – aber oft fehlt eine, die wichtig wäre.</p>
-  </Callout>
+## Höhepunkt und Ende
+- Stärkster Moment: [...] ([Zitat-IDs])
+- Ende: [...] ([Zitat-IDs])
+
+## Anders als auf der Map von Tag 1
+- [...]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="journey-map" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Wo ist bei euch der „Blick auf Schlange und Abfahrtstafel“ – der Moment, in dem eure Zielgruppe entscheidet, ob sie es heute überhaupt versucht? Und wo wartet sie, ohne zu wissen, wie lange?</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Was steht jetzt auf eurer Map, das an Tag 1 noch fehlte?</p>
+    <p class="nur-handout">Wenn nichts: Habt ihr die Geschichten wirklich nachgezeichnet oder die alte Map nur abgehakt? Die Momente nehmt ihr in den nächsten Block mit – sie werden die obersten Äste eures Opportunity Solution Tree.</p>
+  </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} next={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/synthese', t: 'Interview-Synthese' }} next={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} />
 </Layout>
