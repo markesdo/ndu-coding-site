@@ -4,76 +4,249 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
+
+const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
+const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Geh Slice 1 Schritt für Schritt durch und nenn für jeden Schritt, was dort angenommen wird – nach den Arten der Map: wünschenswert, bedienbar, machbar, wirtschaftlich, ethisch. Markier die Annahmen, die noch nicht in der Map stehen. Ändere keine Datei.`;
 ---
 <Layout title="Story Map">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Story Map</h1>
-  <p class="lead">Was Menschen mit eurem Produkt tun, als Geschichte von links nach rechts – und quer geschnitten in das, was ihr zuerst baut.</p>
+  <p class="lead">Was Menschen mit eurem Produkt tun, als Geschichte von links nach rechts – und quer geschnitten nach dem, was sie danach anders tun und was ihr dabei lernen wollt.</p>
   <Orientierung seite="innolab/methoden/story-map" leiste={false} />
   <MethodenKarte slug="story-map" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Eine Story Map ist eine Wand voller Stickies. <strong>Waagrecht</strong> steht der Ablauf, so wie man ihn erzählen würde: erst das, dann das. <strong>Senkrecht</strong> darunter stehen Details, Alternativen und Fehlerfälle. Ganz oben fassen <strong>Aktivitäten</strong> mehrere Schritte zusammen; sie bilden das <em>Backbone</em>. Dann zieht ihr waagrechte Linien – <strong>Slices</strong>: Alles über der ersten Linie ist die kleinste Version, mit der Menschen ihr Ziel von Anfang bis Ende erreichen.</p>
-  <p>Die Experience Map von Tag 2 zeigt, wie es heute ist. Die Story Map zeigt, wie es mit eurem Produkt sein soll – und in welcher Reihenfolge ihr es baut. Aus ihr entstehen an Tag 4 die Issues.</p>
-  <p class="small muted">Nicht zu verwechseln mit dem Story-Bogen (Concept, Origin, Usage Story): Die Story Map ordnet Arbeit, der Story-Bogen ordnet Erleben.</p>
+  <Folie>
+    <h2 id="warmup">Euer Morgen, Schritt für Schritt</h2>
+    <p class="folie-satz">Ein Sticky pro Schritt, vom Aufwachen bis zur Tür.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/morgen-schreiben.jpg" alt="Hände schreiben gelbe Stickies: Hit snooze, Turn off alarm, Stumble to bathroom, Take a shower, Brush teeth, Get dressed, Make coffee und mehr" quelle={`Den Morgen aufschreiben. ${PATTON}, Kap. 5.`} schmal />
+      <ul>
+        <li data-schritt><strong>Kurze Verb-Sätze:</strong> „Snooze drücken“, „Kaffee machen“.</li>
+        <li data-schritt><strong>Drei, vier Minuten</strong> – die meisten haben 15 bis 25.</li>
+        <li data-schritt><strong>Das sind Tasks:</strong> etwas, das wir tun, um ein Ziel zu erreichen.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Patton lehrt Story Mapping am liebsten mit dem eigenen Morgen: „It’s hands down my favorite way of teaching these basic mapping concepts.“ Ihr tut erst, die Namen kommen danach ({PATTON}, Kap. 5). Kurze Verb-Sätze wie „Take a shower“ sind Tasks – „something we do in order to reach a goal“; „User tasks are the basic building blocks of a story map.“ Tasks haben Ebenen: „Duschen“ liegt auf Meereshöhe, darunter Teilschritte, darüber Zusammenfassungen (Kap. 5, Tasks Are What We Do).</p>
+  </Folie>
 
-  <h2 id="warmup">Warm-up: euer Morgen</h2>
-  <ol>
-    <li>Schreibt jeden Schritt eures heutigen Morgens auf ein Sticky, vom Wecker bis zur Tür: „Wecker ausschalten“, „Snooze“, „ins Bad“ … Kurze Verben.</li>
-    <li>Legt sie von links nach rechts und erzählt: „Zuerst …, dann …“. Was fehlt?</li>
-    <li>Darunter: Was machst du an einem schlechten Morgen anders? Was, wenn das Warmwasser ausfällt?</li>
-    <li>Gruppiert zusammengehörige Schritte, gebt jeder Gruppe ein Verb – „Aufstehen“, „Fertig machen“, „Frühstücken“. Das ist euer Backbone.</li>
-    <li>Ihr habt verschlafen und müsst in fünf Minuten raus. Zieht eine Linie: Was bleibt über der Linie? Eine Aktivität ohne Schritt darüber heißt: das fällt heute weg.</li>
-  </ol>
-  <p>Genau so funktioniert der Schnitt bei eurem Produkt: Das Ziel bestimmt, was über die Linie kommt.</p>
+  <Folie>
+    <h2 id="erzaehlfluss">Von links nach rechts</h2>
+    <p class="folie-satz">Erzählt: „Zuerst …, und dann …“</p>
+    <ul>
+      <li data-schritt><strong>Die Reihenfolge,</strong> in der ihr es erzählen würdet – was gleichzeitig passiert, stapelt ihr.</li>
+      <li data-schritt><strong>Das ist der Erzählfluss.</strong> Was fehlt noch?</li>
+    </ul>
+    <div data-schritt><BuchAbbildung src="/quellen/patton/erzaehlfluss.jpg" alt="Stickies in einer Reihe unter einem blauen Pfeil Narrative Flow; darunter gestapelt, was ungefähr gleichzeitig passiert" quelle={`Erzählfluss. ${PATTON}, Kap. 5.`} /></div>
+    <p class="nur-handout">„Maps are organized left-to-right using a narrative flow: the order in which you’d tell the story.“ Beim Erzählen fallen fehlende Schritte auf (Kap. 5, 2. Organize Your Story).</p>
+  </Folie>
 
-  <h2 id="kano">Was zuerst? Das Kano-Modell</h2>
-  <p>Beim Schneiden hilft eine Einteilung nach Noriaki Kano:</p>
-  <ul>
-    <li><strong>Basismerkmale</strong> – fehlen sie, sind Menschen unzufrieden; sind sie da, merkt es niemand.</li>
-    <li><strong>Leistungsmerkmale</strong> – je mehr, desto zufriedener.</li>
-    <li><strong>Begeisterungsmerkmale</strong> – erwartet niemand; sind sie da, begeistern sie.</li>
-  </ul>
-  <p>In den ersten Slice gehören alle Basismerkmale und <strong>ein</strong> Begeisterungsmerkmal. Das Begeisterungsmerkmal ist oft der Höhepunkt eurer Usage Story.</p>
+  <Folie>
+    <h2 id="varianten">Gestern, schlechter Morgen, Traum-Morgen</h2>
+    <p class="folie-satz">Was war gestern anders? Was, wenn das Warmwasser ausfällt? Wie wäre er perfekt?</p>
+    <ul>
+      <li data-schritt><strong>Alternativen, Details, Ausnahmen</strong> gehen nach unten – ähnliche in eine Spalte.</li>
+      <li data-schritt><strong>Streitet ihr über die Reihenfolge,</strong> ist sie egal.</li>
+    </ul>
+    <div data-schritt><BuchAbbildung src="/quellen/patton/varianten.jpg" alt="Die Reihe der Morgen-Stickies; unter einzelnen Schritten weitere Stickies mit Varianten, Alternativen und Details, beschriftet Variations, Alternatives, Details" quelle={`Varianten und Details. ${PATTON}, Kap. 5.`} /></div>
+    <p class="nur-handout">„Details, alternatives, variations, and exceptions fill in the body of a map.“ Und: „If you’re arguing, it likely means that it doesn’t matter“ (Kap. 5, 3. Explore Alternative Stories, Keep the Flow).</p>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Aktivität</th><th>Bestellen anstoßen</th><th>Getränk wählen</th><th>Zug angeben</th><th>Bezahlen</th><th>Abholen</th></tr></thead>
-      <tbody>
-        <tr><th>Slice 1 · Bestellen im Gehen klappt</th><td>QR-Code scannen</td><td>eins aus drei</td><td>Uhrzeit eintippen · „Fertig 7:31“ (Begeisterung)</td><td>bar an der Ausgabe</td><td>Abholnummer am Bildschirm</td></tr>
-        <tr><th>Slice 2 · Abholen, ohne anzuhalten</th><td>Link in den Favoriten</td><td>Größe, Milch</td><td>Zug aus der Liste</td><td>online zahlen</td><td>Becher mit Zug beschriftet</td></tr>
-        <tr><th>Später · Stammgäste bleiben</th><td>Stammbestellung mit einem Tipp</td><td>Saisongetränke</td><td>Verspätung automatisch</td><td>Kaffee-Abo</td><td>Abholfach</td></tr>
-        <tr><th>Fehlerfälle</th><td>Code nicht lesbar</td><td>ausverkauft</td><td>Zug fährt zu früh</td><td>nicht abgeholt</td><td>falscher Becher</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Für die Bar gibt es eine zweite Reihe Aktivitäten: Bestellung sehen → zubereiten → bereitstellen. Auch sie gehört auf die Map – die Barista ist ebenfalls Nutzerin.</p>
-  <p>Slice 1 ist ein Lern-Slice: Er prüft, ob Bestellen im Gehen funktioniert, bevor ihr Online-Zahlung baut. Bezahlt wird bar an der Ausgabe – nicht schön, aber genug, um zu lernen. Basismerkmal: Die Bestellung kommt richtig an. Begeisterung: „Fertig 7:31. Dein Zug fährt 7:38.“</p>
+  <Folie>
+    <h2 id="backbone">Gruppen benennen</h2>
+    <p class="folie-satz">Über jede Gruppe ein andersfarbiges Sticky: ein Verb für alles darunter.</p>
+    <ul>
+      <li data-schritt><strong>„Aufstehen“, „Fertig machen“, „Frühstücken“</strong> – in der Sprache derer, die es tun.</li>
+      <li data-schritt><strong>Das sind Aktivitäten.</strong> Ihre Reihe oben ist das Backbone.</li>
+    </ul>
+    <div data-schritt><BuchAbbildung src="/quellen/patton/backbone-morgen.jpg" alt="Die Morgen-Map mit grünen Stickies über den Gruppen, beschriftet Activities; die Reihe der grünen Stickies ist das Backbone" quelle={`Aktivitäten bilden das Backbone. ${PATTON}, Kap. 5.`} /></div>
+    <p class="nur-handout">„Activities aggregate tasks directed at a common goal.“ Aktivitäten und große Tasks bilden das Backbone; liest man es mit „und dann“, erzählt es die Geschichte im Groben (Kap. 5, 4. Distill Your Map to Make a Backbone).</p>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (105 min)</h2>
-  <ol>
-    <li><strong>Input und Warm-up (20 min).</strong></li>
-    <li><strong>Ablauf (25 min, allein in Miro):</strong> Erzählt den Ablauf mit eurer Idee Schritt für Schritt, als Verben. Erst breit („einen Kilometer breit, einen Zentimeter tief“), dann Aktivitäten darüber.</li>
-    <li><strong>Erkunden (15 min):</strong> Unter jeden Schritt: Was genau? Welche Alternative? Was macht es besonders? Was kann schiefgehen? Gibt es eine zweite Nutzergruppe, die mitspielt?</li>
-    <li><strong>Kano und Schnitt (20 min):</strong> Stickies einordnen, dann die Linie für Slice 1 ziehen und benennen: Welches Outcome erreicht er?</li>
-    <li><strong>Dreierrunde (15 min):</strong> Die anderen gehen Slice 1 von links nach rechts durch. Kommt man ans Ziel?</li>
-    <li><strong>Festhalten (10 min):</strong> <code>docs/STORY-MAP.md</code> mit Link aufs Board; Slice 1 als Stichworte in Abschnitt 5 des Briefs.</li>
-  </ol>
+  <Folie>
+    <h2 id="verschlafen">Ihr habt verschlafen</h2>
+    <p class="folie-satz">Schreibt links oben: „In fünf Minuten aus der Tür.“ Zieht eine Linie wie einen Gürtel.</p>
+    <ul>
+      <li data-schritt><strong>Nach unten,</strong> was ihr heute nicht tut – Aktivitäten bleiben oben.</li>
+      <li data-schritt><strong>Ergänzt,</strong> was ihr nur heute tut. <strong>Das ist ein Slice.</strong></li>
+    </ul>
+    <div data-schritt><BuchAbbildung src="/quellen/patton/slice-morgen.jpg" alt="Die Morgen-Map mit zwei blauen Linien; links ein rotes Sticky Desired Outcome; zwischen den Linien die wenigen Tasks, mit denen das Ziel erreichbar ist" quelle={`Ein Slice für ein Outcome. ${PATTON}, Kap. 5.`} /></div>
+    <div class="nur-handout">
+      <p>„Write ‚Get out the door in a few minutes‘ on a sticky and place it to the left of the map near the top. Now, imagine a line slicing through the middle of the map left to right—kinda like a belt.“ Alles, was ihr für dieses Ziel nicht tut, wandert nach unten. „Don’t move the activities down, even if there are no tasks left under them“ – eine leere Aktivität zeigt, dass ihr dieses Ziel heute nicht erreicht. Dann ergänzt ihr, was ihr nur an einem späten Morgen tut: „Splash water on face“ (Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome).</p>
+      <p>Das sind alle wichtigen Begriffe: Tasks sind kurze Verb-Sätze; sie haben Ebenen; die Map folgt dem Erzählfluss; in der Tiefe stehen Varianten und Alternativen; Aktivitäten fassen Tasks zusammen und bilden das Backbone; ein Slice enthält, was ein bestimmtes Outcome braucht (Kap. 5, That’s It!).</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="warum">Warum eine Map und keine Liste</h2>
+    <p class="folie-satz">Gemeinsame Dokumente sind kein gemeinsames Verständnis.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/gary.jpg" alt="Ein Mann hockt auf einem Holzboden hinter langen Reihen von Karten, die zu einer Story Map gelegt sind" quelle={`Garys Map auf dem Boden. ${PATTON}, Kap. 1.`} />
+      <ul>
+        <li data-schritt><strong>Gary</strong> baute monatelang nach einer priorisierten Liste.</li>
+        <li data-schritt><strong>Nach einem Tag Mapping:</strong> „Nearly none of it“ stand auf der Map.</li>
+        <li data-schritt><strong>Die Geschichte erzählen</strong> und sie dabei zerlegen.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>„Shared documents aren’t shared understanding“ – Ziel von Storys ist gemeinsames Verständnis, nicht das perfekte Dokument ({PATTON}, Read This First). Gary von Mad Mimi hatte nach einer priorisierten Liste gebaut. Nach einem Tag Mapping fragte Patton, wie viel davon auf der Map stehe: „Nearly none of it … when I built a list and prioritized things, I sort of assumed we needed to start somewhere else“ (Kap. 1, Gary and the Tragedy of the Flat Backlog).</p>
+      <p>„Story maps are for breaking down big stories as you tell them.“ Geredet wird mit Karten in der Hand: denken, schreiben, erklären, hinlegen (Kap. 1, Telling the Whole Story, Talk and Doc).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="outcome">Output und Outcome</h2>
+    <p class="folie-satz">Nicht was ihr baut, zählt – sondern was Menschen danach anders tun.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/output-outcome.jpg" alt="Zwei Kreise: links Now mit unzufriedenen Gesichtern und einer Glühbirne Ideas (Products, Features, Requirements), Pfeil Output nach rechts zu Later mit Release und zufriedeneren Gesichtern, beschriftet Outcome" quelle={`Jetzt, Output, Später, Outcome. ${PATTON}, Read This First.`} />
+      <ul>
+        <li data-schritt><strong>Output:</strong> was ihr baut.</li>
+        <li data-schritt><strong>Outcome:</strong> was Menschen danach anders tun, um ihr Ziel zu erreichen.</li>
+        <li data-schritt><strong>Es gibt immer mehr zu bauen als Zeit:</strong> wenig Output, viel Outcome.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Outcome ist „what people actually do differently to reach their goals as a consequence of what you’ve built“. „There’s always more to build than we have time or resources to build—always.“ Darum: „Minimize output, and maximize outcome and impact“ ({PATTON}, Read This First). Euer Outcome steht seit Tag 1 im Produkt-Brief.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="jetzt-spaeter">Jetzt-Map und Später-Map</h2>
+    <p class="folie-satz">Die Experience Map zeigt heute; die Story Map, wie es mit eurem Produkt sein soll.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/jetzt-spaeter.jpg" alt="Links eine Now Story Map mit Pains, Questions, Ideas, Joys, sometimes called a Journey Map; rechts eine Later Story Map; darüber die Kreise Now, Output, Later, Outcome, Impact" quelle={`Jetzt-Map und Später-Map. ${PATTON}, Kap. 5.`} />
+      <ul>
+        <li data-schritt><strong>Dieselben Bausteine,</strong> andere Zeit.</li>
+        <li data-schritt><strong>Später-Map:</strong> „Das Produkt ist live – ein Tag im Leben von …“</li>
+        <li data-schritt><strong>Verben, keine Bildschirme.</strong></li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Die Morgen-Map ist eine Jetzt-Map; Produkt-Maps sind Später-Maps, „the concepts are the same in both“. Jetzt-Maps mit Pains, Freuden, Fragen und Ideen heißen oft Journey Maps – eure Experience Map von Tag 2 ({PATTON}, Kap. 5, It’s a Now Map, Not a Later Map). Für die Später-Map: „let’s assume for a minute this product is live and let’s talk about a day in the life of someone who uses it“ (Kap. 1). Bei Software ist das schwerer: Es dauert, bis man nicht mehr über Features und Bildschirme redet, sondern in kurzen Verb-Sätzen darüber, was Menschen tun wollen (Kap. 5, With Software It’s Harder). Nicht zu verwechseln mit dem Story-Bogen von heute Vormittag: Die Story Map ordnet Arbeit, der Bogen ordnet Erleben.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="anatomie">Backbone, Körper – und wer handelt</h2>
+    <p class="folie-satz">Oben die großen Dinge, darunter die kleinen, darüber, wer gerade handelt.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/anatomie.jpg" alt="Zeichnung über einem Foto einer Story Map an der Wand: oben Backbone mit Big Activity Users Engage In, darunter Steps That Happen In That Activity, darunter Body mit Details In The Step Above" quelle={`Anatomie einer Story Map. ${PATTON}, Kap. 2.`} />
+      <ul>
+        <li data-schritt><strong>Backbone:</strong> Aktivitäten in Erzählreihenfolge.</li>
+        <li data-schritt><strong>Körper:</strong> Tasks, darunter Details, Alternativen, Fehlerfälle.</li>
+        <li data-schritt><strong>Wer handelt:</strong> ein Sticky über dem Backbone – auch eine zweite Gruppe oder das System.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">„It’s just big things and little things“: das Backbone oben, der Körper darunter ({PATTON}, Kap. 2, Anatomy of a Big Map). Wo mehrere Nutzergruppen oder Systeme mitspielen, zeigen kleine Personen-Stickies über dem Backbone, wer gerade handelt – „it’s OK to anthropomorphize backend services“ (Kap. 2, Map in a Narrative Flow Across Many Users and Systems). Torres zählt beim Mappen einer Idee ausdrücklich alle Beteiligten auf, auch die Software (S. 120). Ziele und Kundschaft hängen als Rahmen über der Map (Kap. 1, Explore Details and Options).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="erkunden">Was ist, wenn …?</h2>
+    <p class="folie-satz">Die Map findet die Löcher in eurem Denken.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/erkunden.jpg" alt="Zeichnung über Garys Boden-Map: oben eine Activity people will use the software for, rechts Steps inside that bigger activity, darunter Details of the step above" quelle={`Aktivität, Schritte, Details. ${PATTON}, Kap. 1.`} />
+      <ul>
+        <li data-schritt><strong>An jedem Schritt:</strong> Was genau? Welche Alternative? Was macht es richtig gut? Was, wenn es schiefgeht?</li>
+        <li data-schritt><strong>Erst bis zum Ende,</strong> dann in die Tiefe: einen Kilometer breit, einen Zentimeter tief.</li>
+        <li data-schritt><strong>„Scope doesn’t creep; understanding grows.“</strong></li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Patton stellt an jedem Schritt vier Fragen: „What are the specific things they’d do here? What are alternative things they could do? What would make it really cool? What about when things go wrong?“ ({PATTON}, Kap. 1, Explore Details and Options). Vorher: „kilometer wide, centimeter deep. Get to the end of the story before getting lost in the details“ (Kap. 1). Andere fragen „Was ist, wenn …?“ – so findet die Map die Löcher (Kap. 2, Mapping Helps You Spot Holes in Your Story). Und denkt an die unscheinbaren Schritte dazwischen (Kap. 14, Validate completeness).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="schneiden">Schneiden nach Outcome</h2>
+    <p class="folie-satz">Links am Slice steht nicht, was ihr baut, sondern was Menschen danach tun.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/slices-outcome.jpg" alt="Ein Mann an einer Story-Map-Wand; links Kreise Target Outcomes 1, 2, 3, quer blaue Linien, beschriftet Viable Releases (at least we think they are …), unten All the rest" quelle={`Slices nach Ziel-Outcomes. ${PATTON}, Kap. 2.`} />
+      <ul>
+        <li data-schritt><strong>Klebeband quer,</strong> Karten rauf und runter.</li>
+        <li data-schritt><strong>Links ein Sticky</strong> mit dem Ziel-Outcome.</li>
+        <li data-schritt><strong>Untereinander:</strong> eine Roadmap aus Nutzen, nicht aus Features.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">„Focus on outcomes—what users need to do and see when the system comes out—and slice out releases that will get you those outcomes.“ Links neben jedem Slice stehen die Ziel-Outcomes: „Notice how the list isn’t a bunch of features. It’s a list of real-world benefits“ ({PATTON}, Kap. 2, Slice Out a Release Roadmap). „Don’t Prioritize Features—Prioritize Outcomes“: Hinter Outcomes stehen bestimmte Verhaltensänderungen bestimmter Menschen bei bestimmten Aktivitäten (Kap. 2). Patton definiert das MVP als „the smallest product release that successfully achieves its desired outcomes“ (Kap. 2, Why We Argue So Much About MVP).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="lernen">Der erste Slice: laufen und lernen</h2>
+    <p class="folie-satz">Einmal von Anfang bis Ende – genug, um zu lernen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/skelett.jpg" alt="Story Map an einer Wand mit drei blauen Linien: See it work, Make it better, Make it releasable; links ein Skelett Functional Walking Skeleton; unten These would make it even better, but there may not be time" quelle={`Das laufende Skelett. ${PATTON}, Kap. 4.`} />
+      <ul>
+        <li data-schritt><strong>Durch alle Aktivitäten,</strong> nicht tief in eine.</li>
+        <li data-schritt><strong>Links dazu:</strong> was ihr damit lernen wollt.</li>
+        <li data-schritt><strong>Produktionsreif?</strong> Dann habt ihr zu viel gebaut.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Der erste Slice „cuts all the way through the functionality … I call this first slice a functional walking skeleton—a term I borrowed from Alistair Cockburn“. Danach „Make it better“, „Make it releasable“; jeder Slice ist ein Meilenstein, nicht automatisch ein Release ({PATTON}, Kap. 4). Für den Anfang: die Schritte, die quer durchgehen, und das technisch Riskante; Optionales weglassen (Kap. 4, Opening-, Mid-, and Endgame Strategy).</p>
+      <p>Eric von Liquidnet hängt links an jeden Slice „a few words about what they want to learn in this release“. „If we recognize that our goal is to learn, then we can minimize what we build … what you build early may not be production ready. In fact, if it is, you’ve likely done too much“ – Patton selbst nahm für frühe Experimente eine Datenbank im Speicher statt Oracle (Kap. 3, Build to Learn, Really Minimize Your Experiments). Das ist Knibergs Skateboard von Tag 1. „Map only what you need to support your conversation“ (Kap. 4).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+    <p class="folie-satz">Zwei Gruppen, ein Erzählfluss, Slices nach Outcome.</p>
+    <div style="overflow-x:auto">
+      <table class="map">
+        <thead><tr><th></th><th>In die Halle</th><th>Bestellen</th><th>Abholen</th><th>Zahlen</th><th>Zum Zug</th></tr></thead>
+        <tbody>
+          <tr data-schritt><th>Barista</th><td>–</td><td>Bestellung sehen · zubereiten</td><td>bereitstellen</td><td>kassieren</td><td>–</td></tr>
+          <tr data-schritt><th>Slice 1</th><td>Aufsteller sehen · scannen</td><td>eins aus drei · Abfahrtszeit · „Fertig 7:31“</td><td>Nummer sehen · Becher nehmen</td><td>bar an der Ausgabe*</td><td>erster Schluck*</td></tr>
+          <tr data-schritt><th>Was, wenn …?</th><td>Code nicht lesbar → an der Bar bestellen*</td><td>Zeit schon vorbei → Hinweis</td><td>nicht abgeholt → nach Abfahrt weg</td><td>kein Bargeld → Karte an der Ausgabe*</td><td>–</td></tr>
+          <tr data-schritt><th>Slice 2</th><td>Link in den Favoriten</td><td>Größe, Milch · Zug aus der Liste</td><td>Becher mit Zug beschriftet</td><td>vorher online zahlen</td><td>–</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="small">
+      <li data-schritt><strong>Slice 1:</strong> Sie bestellen im Gehen statt am Automaten. Lernen: tun sie es (A5), schafft die Bar es (A2)? * kein Software-Schritt</li>
+    </ul>
+    <div class="nur-handout">
+      <p><strong>Rahmen über der Map:</strong> für Pendler*innen werktags 7:15–7:45 · Outcome aus dem Brief: mehr Pendler*innen mit Kaffee im Zug · Idee: Im Gehen bestellen, mit Abfahrtszeit (Value Map). Über dem Backbone zwei Personen-Stickies: Pendler*in und Barista. Die Barista hat eigene Aktivitäten auf derselben Zeitachse – ohne sie kommt kein Kaffee an.</p>
+      <p><strong>Tasks und Körper</strong>, gelesen mit „und dann“: <em>In die Halle kommen</em> – Schlange und Tafel anschauen (I2-4), Aufsteller sehen, Code scannen; darunter: Link in den Favoriten (Slice 2), Stammbestellung (später), Fehler: Code nicht lesbar → mündlich an der Bar bestellen (Slice 1, kein Software-Schritt). <em>Bestellen</em> – Getränk wählen, Abfahrtszeit angeben, Fertig-Zeit sehen, bestätigen; darunter: eins aus drei (Slice 1), Größe und Milch (Slice 2), Uhrzeit eintippen (Slice 1), Zug aus der Liste (Slice 2), „Geht sich knapp nicht aus“ → abbrechen oder trotzdem (Slice 1), Fehler: Zeit schon vorbei (Slice 1), ausverkauft (Slice 2). <em>Abholen</em> – Nummer am Bildschirm sehen, Becher nehmen; Becher mit Zug beschriftet (Slice 2), Abholfach (später); Fehler: nicht abgeholt → die Barista stellt ihn nach der Abfahrt weg (Slice 1). <em>Zahlen</em> – bar an der Ausgabe (Slice 1, kein Software-Schritt); Fehler: kein Bargeld → Karte an der Ausgabe (Slice 1, kein Software-Schritt); vorher online zahlen (Slice 2), Kaffee-Abo (später). <em>Zum Zug gehen</em> – der erste Schluck im Zug (I1-4, kein Software-Schritt). <em>Barista</em> – neue Bestellung sehen, nach Abfahrt sortiert; zubereiten; bereit markieren, dann leuchtet die Nummer; kassieren (alles Slice 1).</p>
+      <p>Auf der Folie fehlt die Zeile „Später“: Stammbestellung, Verspätung automatisch, Abholfach, Kaffee-Abo.</p>
+      <p><strong>Slice 1</strong> – Outcome: Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt (P1, P2, G1; Automat I1-3, I4-3). Lernen: Bestellen sie wirklich im Gehen (A5), und schafft die Bar 40 Bestellungen in 30 Minuten (A2)? Bezahlt wird bar – nicht schön, aber genug, um zu lernen. <strong>Slice 2</strong> – Wer regelmäßig bestellt, bezahlt vorher und geht nur noch vorbei. <strong>Später</strong> – Stammgäste bleiben, weil die Bar sie kennt (G3).</p>
+      <p>Slice 1 einmal durchgehen: Pendler I1 sieht den Aufsteller, scannt, wählt Cappuccino, tippt 7:38, liest „Fertig 7:31“, bestätigt – die Barista sieht die Bestellung oben in der Liste, bereitet zu, markiert bereit – die Nummer leuchtet, I1 nimmt den Becher, zahlt bar, erster Schluck im Zug. Jede Aktivität hat mindestens einen Schritt über der Linie. Das sind die Bildschirme des Spikes und an Tag 4 die ersten Issues.</p>
+      <p>Für den Live-Aufbau: Beginnt mit einem Sticky „Bestellseite“ – und ersetzt es durch „Getränk wählen“. Das ist die Falle „Features und Bildschirme“ (Kap. 5, With Software It’s Harder).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (65 min)</h2>
+    <p class="folie-satz">Erzählen, erkunden, fragen lassen, schneiden, durchgehen.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Ablauf erzählen, allein:</strong> Rahmen, wer handelt, Tasks bis zum Ende, Aktivitäten darüber. <Timer minuten={20} /></li>
+      <li data-schritt><strong>Erkunden:</strong> an jedem Schritt die vier Fragen. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Was ist, wenn …? Zu dritt.</strong> <Timer minuten={10} /></li>
+      <li data-schritt><strong>Schneiden:</strong> Outcome und Lernziel links, Linie, ergänzen. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Slice 1 durchgehen, zu dritt.</strong> <Timer minuten={10} /></li>
+      <li data-schritt><strong>Festhalten.</strong> <Timer minuten={5} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Davor: Warm-up 12 Minuten, Theorie 13, Kaffeebar gemeinsam 15. Zu 1: Das erste Sticky ist der Rahmen – für wen, welches Outcome (Brief), welche Idee (Value Map); darüber Personen-Stickies für alle, die handeln. Dann „das Produkt ist live – ein Tag im Leben von …“ als Verb-Sätze bis zum Ende, einen Kilometer breit; danach Aktivitäten über die Gruppen. Zu 2: Muss jemand anderes handeln, damit der Wert ankommt – Personal, das System –, bekommt er eine eigene Reihe. Zu 3: Jede*r erzählt die Map in zwei Minuten und zeigt auf die Stickies; die anderen fragen „Was ist, wenn …?“ und „Was passiert dazwischen?“; ihr ergänzt, ohne zu verteidigen. Zu 4: links das Outcome (wer tut danach was anders) und ein Lern-Sticky („Wir lernen, ob …“ mit Annahmen-ID); die Linie ziehen; nach unten schieben; ergänzen, was Slice 1 braucht; Aktivitäten bleiben oben; was keine Software ist, markieren. Zu 5: Die anderen beiden gehen Slice 1 mit „und dann“ durch: Erreicht er das Outcome? Hat jede Aktivität einen Schritt? Welcher ist am riskantesten zu bauen? Zu 6: Screenshot des Frames, <code>docs/STORY-MAP.md</code>, Slice 1 als Stichworte in Abschnitt 5 des Briefs, eine Zeile im Entscheidungslog: warum dieses Outcome zuerst.</p>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/STORY-MAP.md"># Story Map — [Produkt]
 
-Stand: [Datum] · Miro: [Link zum Board]
+Stand: [Datum] · Miro: [Link zum Frame] · Screenshot: [Link]
+Rahmen: für [Segment aus dem Kundenprofil] · Outcome: [aus dem Produkt-Brief] · Idee: [aus docs/VALUE-MAP.md]
+Wer handelt: [Hauptnutzer*in] · [zweite Gruppe / System]
 
-Backbone: [Aktivität] → [Aktivität] → [Aktivität] → [...]
+## Backbone
+[Aktivität] → [Aktivität] → [Aktivität] → [...]
+[zweite Gruppe:] [Aktivität] → [...]
 
-## Slice 1 · [Outcome, das er erreicht]
-- [Aktivität]: [Schritte über der Linie]
+## Slice 1 · [Was Menschen danach anders tun]
+Lernen: Wir lernen, ob [...] (A…)
+- [Aktivität]: [Task] · [Task] – darunter: [...]
 - [...]
-Basismerkmale: [...] · Begeisterung: [...]
+- Kein Software-Schritt: [...]
+- Fehlerfälle in Slice 1: [...]
 
 ## Slice 2 · [Outcome]
 - [...]
@@ -81,19 +254,26 @@ Basismerkmale: [...] · Begeisterung: [...]
 ## Später
 - [...]
 
-## Fehlerfälle und offene Fragen
-- [...]</Prompt>
-
-  <Callout type="tip" title="Claude als Prüfer der Fehlerwege">
-    <p>Claude findet gut, was in einer Map fehlt – vor allem Fehlerfälle. Aber erst, wenn eure Map steht: Sonst übernehmt ihr seine Struktur.</p>
-  </Callout>
+## Offene Fragen und neue Annahmen
+- [...] → Annahmen-Map</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="story-map" />
+  <Prompt label="Annahmen hinter Slice 1 · Claude Code" note="Erst nachdem ihr Slice 1 selbst auf Annahmen abgeklopft habt. Claude findet, ihr entscheidet.">{ANNAHMEN_SLICE}</Prompt>
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Was ist euer „bar an der Ausgabe“ – die unschöne, aber ausreichende Abkürzung, mit der Slice 1 schon lernt, ohne alles zu bauen?</p>
-  <p class="small muted">Nach Jeff Patton, <em>User Story Mapping</em> (O’Reilly 2014); Kano-Modell nach Noriaki Kano (1984).</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Was ist euer „bar an der Ausgabe“?</p>
+    <p class="nur-handout">Die unschöne, aber ausreichende Abkürzung, mit der Slice 1 schon lernt, ohne alles zu bauen. Wenn ihr keine findet, ist euer erster Slice vermutlich zu dick.</p>
+  </Folie>
+
+  <p class="small muted">Nach {PATTON}, Read This First, Kap. 1–5, 14; Torres, „Continuous Discovery Habits“ (2021), S. 119–124.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/experiment', t: 'Experiment-Karte & Origin Story' }} next={{ href: '/innolab/methoden/usage-story', t: 'Usage Story' }} />
 </Layout>
+
+<style>
+  .map th, .map td { font-size: .85rem; vertical-align: top; }
+  :global(html[data-beamer]) .map th, :global(html[data-beamer]) .map td { font-size: .9rem; padding-top: .3rem; padding-bottom: .3rem; }
+</style>
