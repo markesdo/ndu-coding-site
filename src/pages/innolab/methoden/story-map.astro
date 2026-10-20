@@ -12,7 +12,7 @@ import BildText from '../../../components/bild/BildText.astro';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
-const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Geh Slice 1 Schritt für Schritt durch und nenn für jeden Schritt, was dort angenommen wird: dass Menschen es wollen, dass sie es können, dass wir es bauen können. Markier die Annahmen, die noch nicht in der Map stehen. Ändere keine Datei.`;
+const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Geh Slice 1 Schritt für Schritt durch und nenn für jeden Schritt, was dort angenommen wird – nach den Arten der Map: wünschenswert, bedienbar, machbar, wirtschaftlich, ethisch. Markier die Annahmen, die noch nicht in der Map stehen. Ändere keine Datei.`;
 ---
 <Layout title="Story Map">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
@@ -38,53 +38,44 @@ const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annah
   <Folie>
     <h2 id="erzaehlfluss">Von links nach rechts</h2>
     <p class="folie-satz">Erzählt: „Zuerst …, und dann …“</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/patton/erzaehlfluss.jpg" alt="Stickies in einer Reihe unter einem blauen Pfeil Narrative Flow; darunter gestapelt, was ungefähr gleichzeitig passiert" quelle={`Erzählfluss. ${PATTON}, Kap. 5.`} />
-      <ul>
-        <li data-schritt><strong>Die Reihenfolge,</strong> in der ihr es erzählen würdet – was gleichzeitig passiert, stapelt ihr.</li>
-        <li data-schritt><strong>Das ist der Erzählfluss.</strong> Was fehlt noch?</li>
-      </ul>
-    </BildText>
+    <ul>
+      <li data-schritt><strong>Die Reihenfolge,</strong> in der ihr es erzählen würdet – was gleichzeitig passiert, stapelt ihr.</li>
+      <li data-schritt><strong>Das ist der Erzählfluss.</strong> Was fehlt noch?</li>
+    </ul>
+    <div data-schritt><BuchAbbildung src="/quellen/patton/erzaehlfluss.jpg" alt="Stickies in einer Reihe unter einem blauen Pfeil Narrative Flow; darunter gestapelt, was ungefähr gleichzeitig passiert" quelle={`Erzählfluss. ${PATTON}, Kap. 5.`} /></div>
     <p class="nur-handout">„Maps are organized left-to-right using a narrative flow: the order in which you’d tell the story.“ Beim Erzählen fallen fehlende Schritte auf (Kap. 5, 2. Organize Your Story).</p>
   </Folie>
 
   <Folie>
     <h2 id="varianten">Gestern, schlechter Morgen, Traum-Morgen</h2>
     <p class="folie-satz">Was war gestern anders? Was, wenn das Warmwasser ausfällt? Wie wäre er perfekt?</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/patton/varianten.jpg" alt="Die Reihe der Morgen-Stickies; unter einzelnen Schritten weitere Stickies mit Varianten, Alternativen und Details, beschriftet Variations, Alternatives, Details" quelle={`Varianten und Details. ${PATTON}, Kap. 5.`} />
-      <ul>
-        <li data-schritt><strong>Alternativen, Details, Ausnahmen</strong> gehen nach unten – ähnliche in eine Spalte.</li>
-        <li data-schritt><strong>Streitet ihr über die Reihenfolge,</strong> ist sie egal.</li>
-      </ul>
-    </BildText>
+    <ul>
+      <li data-schritt><strong>Alternativen, Details, Ausnahmen</strong> gehen nach unten – ähnliche in eine Spalte.</li>
+      <li data-schritt><strong>Streitet ihr über die Reihenfolge,</strong> ist sie egal.</li>
+    </ul>
+    <div data-schritt><BuchAbbildung src="/quellen/patton/varianten.jpg" alt="Die Reihe der Morgen-Stickies; unter einzelnen Schritten weitere Stickies mit Varianten, Alternativen und Details, beschriftet Variations, Alternatives, Details" quelle={`Varianten und Details. ${PATTON}, Kap. 5.`} /></div>
     <p class="nur-handout">„Details, alternatives, variations, and exceptions fill in the body of a map.“ Und: „If you’re arguing, it likely means that it doesn’t matter“ (Kap. 5, 3. Explore Alternative Stories, Keep the Flow).</p>
   </Folie>
 
   <Folie>
     <h2 id="backbone">Gruppen benennen</h2>
     <p class="folie-satz">Über jede Gruppe ein andersfarbiges Sticky: ein Verb für alles darunter.</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/patton/backbone-morgen.jpg" alt="Die Morgen-Map mit grünen Stickies über den Gruppen, beschriftet Activities; die Reihe der grünen Stickies ist das Backbone" quelle={`Aktivitäten bilden das Backbone. ${PATTON}, Kap. 5.`} />
-      <ul>
-        <li data-schritt><strong>„Aufstehen“, „Fertig machen“, „Frühstücken“</strong> – in der Sprache derer, die es tun.</li>
-        <li data-schritt><strong>Das sind Aktivitäten.</strong> Ihre Reihe oben ist das Backbone.</li>
-      </ul>
-    </BildText>
+    <ul>
+      <li data-schritt><strong>„Aufstehen“, „Fertig machen“, „Frühstücken“</strong> – in der Sprache derer, die es tun.</li>
+      <li data-schritt><strong>Das sind Aktivitäten.</strong> Ihre Reihe oben ist das Backbone.</li>
+    </ul>
+    <div data-schritt><BuchAbbildung src="/quellen/patton/backbone-morgen.jpg" alt="Die Morgen-Map mit grünen Stickies über den Gruppen, beschriftet Activities; die Reihe der grünen Stickies ist das Backbone" quelle={`Aktivitäten bilden das Backbone. ${PATTON}, Kap. 5.`} /></div>
     <p class="nur-handout">„Activities aggregate tasks directed at a common goal.“ Aktivitäten und große Tasks bilden das Backbone; liest man es mit „und dann“, erzählt es die Geschichte im Groben (Kap. 5, 4. Distill Your Map to Make a Backbone).</p>
   </Folie>
 
   <Folie>
     <h2 id="verschlafen">Ihr habt verschlafen</h2>
     <p class="folie-satz">Schreibt links oben: „In fünf Minuten aus der Tür.“ Zieht eine Linie wie einen Gürtel.</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/patton/slice-morgen.jpg" alt="Die Morgen-Map mit zwei blauen Linien; links ein rotes Sticky Desired Outcome; zwischen den Linien die wenigen Tasks, mit denen das Ziel erreichbar ist" quelle={`Ein Slice für ein Outcome. ${PATTON}, Kap. 5.`} />
-      <ul>
-        <li data-schritt><strong>Nach unten,</strong> was ihr heute nicht tut. Aktivitäten bleiben oben, auch leer.</li>
-        <li data-schritt><strong>Ergänzt,</strong> was ihr nur heute tut: „Wasser ins Gesicht“.</li>
-        <li data-schritt><strong>Das ist ein Slice:</strong> Das Ziel links bestimmt, was über der Linie bleibt.</li>
-      </ul>
-    </BildText>
+    <ul>
+      <li data-schritt><strong>Nach unten,</strong> was ihr heute nicht tut – Aktivitäten bleiben oben.</li>
+      <li data-schritt><strong>Ergänzt,</strong> was ihr nur heute tut. <strong>Das ist ein Slice.</strong></li>
+    </ul>
+    <div data-schritt><BuchAbbildung src="/quellen/patton/slice-morgen.jpg" alt="Die Morgen-Map mit zwei blauen Linien; links ein rotes Sticky Desired Outcome; zwischen den Linien die wenigen Tasks, mit denen das Ziel erreichbar ist" quelle={`Ein Slice für ein Outcome. ${PATTON}, Kap. 5.`} /></div>
     <div class="nur-handout">
       <p>„Write ‚Get out the door in a few minutes‘ on a sticky and place it to the left of the map near the top. Now, imagine a line slicing through the middle of the map left to right—kinda like a belt.“ Alles, was ihr für dieses Ziel nicht tut, wandert nach unten. „Don’t move the activities down, even if there are no tasks left under them“ – eine leere Aktivität zeigt, dass ihr dieses Ziel heute nicht erreicht. Dann ergänzt ihr, was ihr nur an einem späten Morgen tut: „Splash water on face“ (Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome).</p>
       <p>Das sind alle wichtigen Begriffe: Tasks sind kurze Verb-Sätze; sie haben Ebenen; die Map folgt dem Erzählfluss; in der Tiefe stehen Varianten und Alternativen; Aktivitäten fassen Tasks zusammen und bilden das Backbone; ein Slice enthält, was ein bestimmtes Outcome braucht (Kap. 5, That’s It!).</p>
@@ -200,24 +191,24 @@ const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annah
     <p class="folie-satz">Zwei Gruppen, ein Erzählfluss, Slices nach Outcome.</p>
     <div style="overflow-x:auto">
       <table class="map">
-        <thead><tr><th></th><th>In die Halle</th><th>Bestellen</th><th>Zahlen</th><th>Abholen</th><th>Zum Zug</th></tr></thead>
+        <thead><tr><th></th><th>In die Halle</th><th>Bestellen</th><th>Abholen</th><th>Zahlen</th><th>Zum Zug</th></tr></thead>
         <tbody>
-          <tr data-schritt><th>Barista</th><td>–</td><td>Bestellung sehen</td><td>Zubereiten</td><td>Bereitstellen</td><td>–</td></tr>
-          <tr data-schritt><th>Slice 1</th><td>Aufsteller sehen · scannen</td><td>eins aus drei · Abfahrtszeit · „Fertig 7:31“</td><td>bar an der Ausgabe*</td><td>Nummer sehen · Becher nehmen</td><td>erster Schluck*</td></tr>
-          <tr data-schritt><th>Slice 2</th><td>Link in den Favoriten</td><td>Größe, Milch · Zug aus der Liste</td><td>online zahlen</td><td>Becher mit Zug beschriftet</td><td>–</td></tr>
-          <tr data-schritt><th>Später</th><td>Stammbestellung</td><td>Verspätung automatisch</td><td>Kaffee-Abo</td><td>Abholfach</td><td>–</td></tr>
+          <tr data-schritt><th>Barista</th><td>–</td><td>Bestellung sehen · zubereiten</td><td>bereitstellen</td><td>kassieren</td><td>–</td></tr>
+          <tr data-schritt><th>Slice 1</th><td>Aufsteller sehen · scannen</td><td>eins aus drei · Abfahrtszeit · „Fertig 7:31“</td><td>Nummer sehen · Becher nehmen</td><td>bar an der Ausgabe*</td><td>erster Schluck*</td></tr>
+          <tr data-schritt><th>Was, wenn …?</th><td>Code nicht lesbar → an der Bar bestellen*</td><td>Zeit schon vorbei → Hinweis</td><td>nicht abgeholt → nach Abfahrt weg</td><td>kein Bargeld → Karte an der Ausgabe*</td><td>–</td></tr>
+          <tr data-schritt><th>Slice 2</th><td>Link in den Favoriten</td><td>Größe, Milch · Zug aus der Liste</td><td>Becher mit Zug beschriftet</td><td>vorher online zahlen</td><td>–</td></tr>
         </tbody>
       </table>
     </div>
     <ul class="small">
       <li data-schritt><strong>Slice 1:</strong> Sie bestellen im Gehen statt am Automaten. Lernen: tun sie es (A5), schafft die Bar es (A2)? * kein Software-Schritt</li>
-      <li data-schritt><strong>Slice 2:</strong> Sie zahlen vorher und gehen nur noch vorbei. <strong>Später:</strong> Stammgäste bleiben.</li>
     </ul>
     <div class="nur-handout">
       <p><strong>Rahmen über der Map:</strong> für Pendler*innen werktags 7:15–7:45 · Outcome aus dem Brief: mehr Pendler*innen mit Kaffee im Zug · Idee: Im Gehen bestellen, mit Abfahrtszeit (Value Map). Über dem Backbone zwei Personen-Stickies: Pendler*in und Barista. Die Barista hat eigene Aktivitäten auf derselben Zeitachse – ohne sie kommt kein Kaffee an.</p>
-      <p><strong>Tasks und Körper</strong>, gelesen mit „und dann“: <em>In die Halle kommen</em> – Schlange und Tafel anschauen (I2-4), Aufsteller sehen, Code scannen; darunter: Link in den Favoriten (Slice 2), Stammbestellung (später), Fehler: Code nicht lesbar → mündlich an der Bar bestellen (Slice 1, kein Software-Schritt). <em>Bestellen</em> – Getränk wählen, Abfahrtszeit angeben, Fertig-Zeit sehen, bestätigen; darunter: eins aus drei (Slice 1), Größe und Milch (Slice 2), Uhrzeit eintippen (Slice 1), Zug aus der Liste (Slice 2), „Geht sich knapp nicht aus“ → abbrechen oder trotzdem (Slice 1), Fehler: Zeit schon vorbei (Slice 1), ausverkauft (Slice 2). <em>Zahlen</em> – bar an der Ausgabe (Slice 1, kein Software-Schritt); online zahlen (Slice 2), Kaffee-Abo (später). <em>Abholen</em> – Nummer am Bildschirm sehen, Becher nehmen; Becher mit Zug beschriftet (Slice 2), Fehler: nicht abgeholt (Slice 2). <em>Zum Zug gehen</em> – der erste Schluck im Zug (I1-4, kein Software-Schritt). <em>Barista</em> – neue Bestellung sehen, nach Abfahrt sortiert; zubereiten; bereit markieren, dann leuchtet die Nummer (alles Slice 1).</p>
-      <p><strong>Slice 1</strong> – Outcome: Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt (P1, P2, G1; Automat I1-3, I4-3). Lernen: Bestellen sie wirklich im Gehen (A5), und schafft die Bar die Fertig-Zeit (A2)? Bezahlt wird bar – nicht schön, aber genug, um zu lernen. <strong>Slice 2</strong> – Wer regelmäßig bestellt, bezahlt vorher und geht nur noch vorbei. <strong>Später</strong> – Stammgäste bleiben, weil die Bar sie kennt (G3).</p>
-      <p>Slice 1 einmal durchgehen: Pendler I1 sieht den Aufsteller, scannt, wählt Cappuccino, tippt 7:38, liest „Fertig 7:31“, bestätigt – die Barista sieht die Bestellung oben in der Liste, bereitet zu, markiert bereit – die Nummer leuchtet, I1 zahlt bar, nimmt den Becher, erster Schluck im Zug. Jede Aktivität hat mindestens einen Schritt über der Linie. Das sind die Bildschirme des Spikes und an Tag 4 die ersten Issues.</p>
+      <p><strong>Tasks und Körper</strong>, gelesen mit „und dann“: <em>In die Halle kommen</em> – Schlange und Tafel anschauen (I2-4), Aufsteller sehen, Code scannen; darunter: Link in den Favoriten (Slice 2), Stammbestellung (später), Fehler: Code nicht lesbar → mündlich an der Bar bestellen (Slice 1, kein Software-Schritt). <em>Bestellen</em> – Getränk wählen, Abfahrtszeit angeben, Fertig-Zeit sehen, bestätigen; darunter: eins aus drei (Slice 1), Größe und Milch (Slice 2), Uhrzeit eintippen (Slice 1), Zug aus der Liste (Slice 2), „Geht sich knapp nicht aus“ → abbrechen oder trotzdem (Slice 1), Fehler: Zeit schon vorbei (Slice 1), ausverkauft (Slice 2). <em>Abholen</em> – Nummer am Bildschirm sehen, Becher nehmen; Becher mit Zug beschriftet (Slice 2), Abholfach (später); Fehler: nicht abgeholt → die Barista stellt ihn nach der Abfahrt weg (Slice 1). <em>Zahlen</em> – bar an der Ausgabe (Slice 1, kein Software-Schritt); Fehler: kein Bargeld → Karte an der Ausgabe (Slice 1, kein Software-Schritt); vorher online zahlen (Slice 2), Kaffee-Abo (später). <em>Zum Zug gehen</em> – der erste Schluck im Zug (I1-4, kein Software-Schritt). <em>Barista</em> – neue Bestellung sehen, nach Abfahrt sortiert; zubereiten; bereit markieren, dann leuchtet die Nummer; kassieren (alles Slice 1).</p>
+      <p>Auf der Folie fehlt die Zeile „Später“: Stammbestellung, Verspätung automatisch, Abholfach, Kaffee-Abo.</p>
+      <p><strong>Slice 1</strong> – Outcome: Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt (P1, P2, G1; Automat I1-3, I4-3). Lernen: Bestellen sie wirklich im Gehen (A5), und schafft die Bar 40 Bestellungen in 30 Minuten (A2)? Bezahlt wird bar – nicht schön, aber genug, um zu lernen. <strong>Slice 2</strong> – Wer regelmäßig bestellt, bezahlt vorher und geht nur noch vorbei. <strong>Später</strong> – Stammgäste bleiben, weil die Bar sie kennt (G3).</p>
+      <p>Slice 1 einmal durchgehen: Pendler I1 sieht den Aufsteller, scannt, wählt Cappuccino, tippt 7:38, liest „Fertig 7:31“, bestätigt – die Barista sieht die Bestellung oben in der Liste, bereitet zu, markiert bereit – die Nummer leuchtet, I1 nimmt den Becher, zahlt bar, erster Schluck im Zug. Jede Aktivität hat mindestens einen Schritt über der Linie. Das sind die Bildschirme des Spikes und an Tag 4 die ersten Issues.</p>
       <p>Für den Live-Aufbau: Beginnt mit einem Sticky „Bestellseite“ – und ersetzt es durch „Getränk wählen“. Das ist die Falle „Features und Bildschirme“ (Kap. 5, With Software It’s Harder).</p>
     </div>
   </Folie>
@@ -268,7 +259,7 @@ Lernen: Wir lernen, ob [...] (A…)
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="story-map" />
-  <Prompt label="Annahmen hinter Slice 1 · Claude Code">{ANNAHMEN_SLICE}</Prompt>
+  <Prompt label="Annahmen hinter Slice 1 · Claude Code" note="Erst nachdem ihr Slice 1 selbst auf Annahmen abgeklopft habt. Claude findet, ihr entscheidet.">{ANNAHMEN_SLICE}</Prompt>
   </div>
 
   <Folie>
@@ -284,5 +275,5 @@ Lernen: Wir lernen, ob [...] (A…)
 
 <style>
   .map th, .map td { font-size: .85rem; vertical-align: top; }
-  :global(html[data-beamer]) .map th, :global(html[data-beamer]) .map td { font-size: .95rem; padding-top: .35rem; padding-bottom: .35rem; }
+  :global(html[data-beamer]) .map th, :global(html[data-beamer]) .map td { font-size: .9rem; padding-top: .3rem; padding-bottom: .3rem; }
 </style>
