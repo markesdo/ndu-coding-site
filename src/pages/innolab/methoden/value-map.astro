@@ -5,74 +5,141 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+
+const VPD = 'Alexander Osterwalder, Yves Pigneur, Greg Bernarda, Alan Smith, „Value Proposition Design“ (2014)';
+const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
 ---
 <Layout title="Value Map & Fit">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Value Map & Fit</h1>
-  <p class="lead">Wie eure gewählte Idee genau die Pains und Gains trifft, die im Kundenprofil oben stehen – und was sie bewusst offenlässt.</p>
+  <p class="lead">Drei Ideen von Tag 2, ein Profil: Welche trifft die wichtigsten Jobs, die extremsten Pains und die unverzichtbarsten Gains? Die mit dem besten Fit auf Papier geht weiter.</p>
   <Orientierung seite="innolab/methoden/value-map" leiste={false} />
   <MethodenKarte slug="value-map" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Die Value Map ist die linke Hälfte des Value Proposition Canvas, das Gegenstück zum Kundenprofil:</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Feld</th><th>Was hineingehört</th><th>Passt zu</th></tr></thead>
-      <tbody>
-        <tr><th>Produkte & Services</th><td>Was ihr anbietet – wie ein Schaufenster. Nur, was für dieses Segment gedacht ist.</td><td>Jobs</td></tr>
-        <tr><th>Schmerzlinderer</th><td>Wie das Angebot einen bestimmten Pain verringert oder beseitigt</td><td>Pains</td></tr>
-        <tr><th>Gewinnerzeuger</th><td>Wie das Angebot einen bestimmten Gain herstellt</td><td>Gains</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Den Unterschied zum Kundenprofil merkt euch so: <strong>Pains und Gains habt ihr nicht in der Hand</strong> – die hat eure Zielgruppe. <strong>Schmerzlinderer und Gewinnerzeuger entscheidet ihr.</strong> Deshalb nennt jeder Schmerzlinderer die ID des Pains, den er trifft.</p>
-  <p><strong>Fit</strong> heißt: Die wichtigsten Jobs, die stärksten Pains und die wichtigsten Gains sind adressiert. Nicht alle – kein Angebot löst alles, und die guten lösen wenige Dinge sehr gut. Was ihr heute auf Papier habt, ist <em>Problem-Solution Fit</em>. Ob Menschen das Angebot wirklich wollen (<em>Product-Market Fit</em>), zeigen erst Tests.</p>
+  <Folie>
+    <h2 id="value-map">Die Value Map</h2>
+    <p class="folie-satz">Pains und Gains hat die Kundschaft – Schmerzlinderer und Gewinnerzeuger entscheidet ihr.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Produkte & Services:</strong> was ihr diesem Segment anbietet, wie ein Schaufenster.</li>
+      <li data-schritt><strong>Schmerzlinderer:</strong> wie genau sie einen bestimmten Pain verringern.</li>
+      <li data-schritt><strong>Gewinnerzeuger:</strong> wie genau sie einen bestimmten Gain schaffen.</li>
+      <li data-schritt><strong>Nicht alles:</strong> Gute Angebote lösen wenige Pains extrem gut.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Die Value Map zerlegt ein Wertversprechen in Produkte und Services, Schmerzlinderer und Gewinnerzeuger ({VPD}, S. 49). Schmerzlinderer beschreiben, wie genau das Angebot bestimmte Pains verringert; ihr braucht nicht für jeden Pain einen – das schafft kein Angebot. Gute Angebote konzentrieren sich auf wenige Pains, die sie extrem gut lindern (S. 86–87). Der Unterschied zum Profil: Über Schmerzlinderer und Gewinnerzeuger entscheidet ihr, über Jobs, Pains und Gains die Kundschaft (S. 103).</p>
+      <p>Häufige Fehler: alle eigenen Produkte aufzählen statt nur die für dieses Segment; Produkte in die Felder für Schmerzlinderer und Gewinnerzeuger schreiben; Schmerzlinderer, die zu keinem Pain im Profil passen; der Versuch, alle Pains und Gains zu lösen (S. 105).</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <p>Idee aus Tag 2: „Im Gehen bestellen“.</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Feld</th><th>Eintrag</th><th>Trifft</th></tr></thead>
-      <tbody>
-        <tr><th>Produkt</th><td>QR-Code an der Hallentür, Bestellung im Browser, ohne App</td><td>J1</td></tr>
-        <tr><th>Produkt</th><td>Express-Ausgabe mit drei Standardgetränken</td><td>J1</td></tr>
-        <tr><th>Schmerzlinderer</th><td>Statt anzustehen, bestellt man in 20 Sekunden im Gehen</td><td>P1</td></tr>
-        <tr><th>Schmerzlinderer</th><td>Beim Bestellen steht da, ob der Kaffee vor der Abfahrt fertig ist</td><td>P2</td></tr>
-        <tr><th>Gewinnerzeuger</th><td>Der Kaffee steht bereit, wenn man an der Ausgabe ankommt</td><td>G1</td></tr>
-        <tr><th>Gewinnerzeuger</th><td>Eine Abholnummer am Bildschirm zeigt, wann es fertig ist</td><td>G3</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p><strong>Fit:</strong> Die Top 3 aus dem Kundenprofil – P1, J1, P2 – sind adressiert. <strong>Bewusst offen:</strong> P3 (Automat als Niederlage) wird nur indirekt besser, G2 (Barista kennt die Bestellung) und J3 (nicht gehetzt im Büro ankommen) gar nicht. Das ist in Ordnung, solange es dasteht.</p>
+  <Folie>
+    <h2 id="ad-libs">Drei Ideen, drei Sätze</h2>
+    <p class="folie-satz">Ein Lückensatz pro Idee macht sichtbar, wie sie Wert schafft.</p>
+    <p class="gross" data-schritt>„Unser <strong>[Angebot]</strong> hilft <strong>[Segment]</strong>, die <strong>[Job]</strong> wollen, indem es <strong>[Pain]</strong> verringert und <strong>[Gain]</strong> ermöglicht – anders als <strong>[Alternative]</strong>.“</p>
+    <div class="nur-handout">
+      <p>Osterwalder empfiehlt, mehrere Richtungen schnell als Prototypen zu skizzieren, bevor man eine ausarbeitet: als Serviettenskizze, als Lückensatz („Ad-lib“) oder als kurzen Canvas. Der Lückensatz zwingt dazu, genau zu benennen, wie eine Idee Wert schafft; im Buch steht er auf Englisch: „Our [products and services] help(s) [customer segment] who want to [jobs to be done] by [verb, e.g. reducing, avoiding] [a customer pain] and [verb, e.g. increasing, enabling] [a customer gain]“, optional mit „unlike [competing value proposition]“ ({VPD}, S. 157–159, 183–184 PDF). Eure drei Ideen von Tag 2 sind genau solche Alternativen.</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
-  <ol>
-    <li><strong>Input (15 min):</strong> die drei Felder, der Unterschied zum Profil, Fit.</li>
-    <li><strong>Allein in Miro (20 min):</strong> Value Map neben das Kundenprofil legen. Zu jedem Schmerzlinderer und Gewinnerzeuger einen Pfeil auf seinen Pain oder Gain.</li>
-    <li><strong>Fit prüfen (10 min):</strong> Im Kundenprofil abhaken, was getroffen ist. Was bleibt offen, und ist das Absicht?</li>
-    <li><strong>Festhalten und prüfen (15 min):</strong> <code>docs/VALUE-MAP.md</code>, Prüfliste, Claude.</li>
-  </ol>
+  <Folie>
+    <h2 id="fit">Fit prüfen</h2>
+    <p class="folie-satz">Abhaken, was getroffen ist – ein Kreuz, wo nicht.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/vpd/fit.png" alt="Links die Value Map als Quadrat mit Geschenk, Pille und Diagramm, rechts das Kundenprofil als Kreis mit Gesicht, dazwischen ein roter Kreis „Fit“ und Pfeile von links nach rechts" quelle={`Fit. ${VPD_KURZ}, S. 108 (PDF).`} />
+      <ul>
+        <li data-schritt><strong>✓</strong> Ein Schmerzlinderer oder Gewinnerzeuger trifft einen Job, Pain oder Gain.</li>
+        <li data-schritt><strong>✗</strong> Was das Angebot nicht trifft.</li>
+        <li data-schritt><strong>Fit:</strong> wichtige Jobs, extreme Pains, unverzichtbare Gains – oben im Profil.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Fit entsteht, wenn Kund*innen von einem Wertversprechen begeistert sind, weil es wichtige Jobs adressiert, extreme Pains lindert und unverzichtbare Gains schafft ({VPD}, S. 108). Geprüft wird Eintrag für Eintrag: Haken an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; Kreuze an das, was offen bleibt (S. 110, 112). Ihr vergleicht so die drei Lückensätze am selben Profil – und nehmt die mit dem besten Fit weiter.</p>
+  </Folie>
 
+  <Folie>
+    <h2 id="drei-fits">Fit auf Papier ist noch kein Beweis</h2>
+    <p class="folie-satz">Auf Papier, im Markt, im Geschäftsmodell.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/vpd/drei-fits.png" alt="Illustration in drei Stufen: unten 1 Problem-Solution Fit am Zeichentisch, darüber 2 Product-Market Fit auf einer grünen Wiese, oben 3 Business Model Fit auf einem Bankgebäude" quelle={`Drei Arten von Fit. ${VPD_KURZ}, S. 115 (PDF).`} schmal />
+      <ul>
+        <li data-schritt><strong>1 Problem-Solution Fit:</strong> heute, auf Papier.</li>
+        <li data-schritt><strong>2 Product-Market Fit:</strong> wenn Menschen tatsächlich reagieren – eure Tests.</li>
+        <li data-schritt><strong>3 Business Model Fit:</strong> wenn es sich trägt – die Geschäftsmodell-Karten heute Abend.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Problem-Solution Fit heißt: Ihr habt Belege, dass der Kundschaft bestimmte Jobs, Pains und Gains wichtig sind, und ein Wertversprechen, das sie adressiert. Ob sie sich für dieses Wertversprechen interessiert, ist noch nicht belegt – der Fit existiert vor allem auf Papier. Nächster Schritt: Belege sammeln oder neu entwerfen. Product-Market Fit zeigt sich erst, wenn das Angebot Wert schafft und Zuspruch findet; Business Model Fit, wenn es sich in ein tragfähiges Geschäftsmodell einbetten lässt ({VPD}, S. 115–118). Die Wahl heute ist deshalb umkehrbar: Scheitert die Idee in den Tests, sind die anderen beiden noch da.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">Drei Lückensätze am selben Profil – einer trifft am meisten.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Idee</th><th>P1 ausgehen?</th><th>P2 Schlange</th><th>P3 wann fertig?</th><th>G1 Kaffee vor dem Zug</th></tr></thead>
+        <tbody>
+          <tr data-schritt><th>Wartezeit an der Hallentür</th><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
+          <tr data-schritt><th>Im Gehen bestellen, mit Abfahrtszeit</th><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr data-schritt><th>Kaffeewagen am Bahnsteig</th><td>✓</td><td>?</td><td>✗</td><td>✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-schritt><strong>Weiter mit:</strong> Im Gehen bestellen. Offen bleiben J3, G3, P4 – bewusst.</p>
+    <div class="nur-handout">
+      <p>Die Lückensätze: „Unsere <em>Wartezeit-Anzeige an der Hallentür</em> hilft Pendler*innen, die auf dem Weg zum Zug Kaffee besorgen wollen, indem sie das Raten vor der Schlange beendet.“ – „Unser <em>Bestellen im Gehen</em> hilft …, indem es das Anstehen erspart und beim Bestellen zeigt, ob der Kaffee vor der Abfahrt fertig ist – anders als der Automat.“ – „Unser <em>Kaffeewagen am Bahnsteig</em> hilft …, indem er den Kaffee dorthin bringt, wo sie warten.“ Das „?“ beim Kaffeewagen ist eine Annahme: Gibt es am Bahnsteig keine Schlange? Sie käme in die Annahmen-Map, wenn diese Idee weiterginge.</p>
+      <p>Die volle Value Map für „Im Gehen bestellen“: <strong>Produkte</strong> – QR-Code an der Hallentür, Bestellung im Browser ohne App; Express-Ausgabe mit drei Standardgetränken. <strong>Schmerzlinderer</strong> – beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist (P1); statt anzustehen, bestellt man in 20 Sekunden im Gehen (P2); man sieht, wann er fertig ist (P3). <strong>Gewinnerzeuger</strong> – der Kaffee steht bereit, wenn man an der Ausgabe ankommt (G1); man sieht ohne Nachfragen, wann er fertig ist (G2). Bewusst offen: J3 (nicht als die*der Gehetzte ankommen), G3 (die Barista kennt die Bestellung), P4 (Automatenkaffee).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
+    <p class="folie-satz">Drei Lückensätze, Fit vergleichen, eine Map ausarbeiten.</p>
+    <MiroFrame name="T3 · 1 · Kundenprofil & Value Map" />
+    <ol class="gross">
+      <li data-schritt><strong>Lückensätze:</strong> für jede eurer drei Ideen einen. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Fit vergleichen:</strong> ✓ und ✗ gegen die obersten Einträge eures Profils. <Timer minuten={7} /></li>
+      <li data-schritt><strong>Zu dritt:</strong> Jede*r zeigt die Wahl; die anderen fragen nach den Kreuzen. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Value Map</strong> für die gewählte Idee, mit Verweis auf J-, P- und G-IDs. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
+    </ol>
+    <p class="nur-handout">Dazu fünf Minuten Theorie. Die Wahl kommt als Zeile ins Entscheidungslog, mit dem Fit als Beleg und dem Hinweis, dass er auf Papier steht. Was ihr mit „?“ markiert habt, wird später eine Annahme für die Experiment-Karte.</p>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/VALUE-MAP.md"># Value Map — [Idee]
+  <Prompt label="Vorlage · docs/VALUE-MAP.md"># Value Map — [Produkt]
 
-Stand: [Datum] · Idee aus docs/IDEEN.md (eine Map pro Idee) · Profil: docs/KUNDENPROFIL.md
+Stand: [Datum] · Ideen aus docs/IDEEN.md · Profil: docs/KUNDENPROFIL.md
 
-| Feld | Eintrag | Trifft (ID) |
-|------|---------|-------------|
-| Produkt/Service | [...] | [J…] |
-| Schmerzlinderer | [was es bewirkt] | [P…] |
-| Gewinnerzeuger | [was es bewirkt] | [G…] |
+## Drei Lückensätze
+1. Unser [Angebot] hilft [Segment], die [Job] wollen, indem es [Pain] verringert und [Gain] ermöglicht – anders als [Alternative].
+2. [...]
+3. [...]
 
-## Fit
-Top 3 aus dem Profil: [ID] ✓ · [ID] ✓ · [ID] [✓ oder: warum nicht]
-Bewusst offen: [IDs, mit einem Satz]</Prompt>
+## Fit-Vergleich
+| Idee | [oberster Job] | [P1] | [P2] | [G1] |
+|---|---|---|---|---|
+| [...] | ✓ / ✗ / ? | | | |
+
+## Gewählt: [Idee] – weil [ein Satz]
+
+## Value Map der gewählten Idee
+- Produkte & Services: [...]
+- Schmerzlinderer: [wie genau] (P…)
+- Gewinnerzeuger: [wie genau] (G…)
+- Bewusst offen: [J…, P…, G…]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="value-map" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Welcher eurer Schmerzlinderer trifft eure Ziel-Chance von Tag 2? Wenn keiner: Ist eure Idee wirklich die Antwort auf eure HMW-Frage?</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Trifft eure gewählte Idee euren obersten Pain – oder nur die bequemen?</p>
+    <p class="nur-handout">Gute Wertversprechen lösen die Pains, die zählen, und das extrem gut (S. 86–87, 103). Wenn eure Idee vor allem die unteren Einträge trifft, ist eine der anderen beiden vielleicht die bessere.</p>
+  </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} next={{ href: '/innolab/methoden/concept-story', t: 'Concept Story' }} />
 </Layout>

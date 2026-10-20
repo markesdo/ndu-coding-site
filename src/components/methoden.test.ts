@@ -122,7 +122,7 @@ describe('methoden', () => {
 
   it('der Prüf-Prompt nennt das Ergebnis und zum Abgleich die Vorarbeit, jede nur einmal', () => {
     const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!);
-    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch aus der Werkstatt meine Interviews und Snapshots \(Werkzeug artefakt_lesen\)\./);
+    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch docs\/BAUM\.md, docs\/ZIEL-CHANCE\.md und aus der Werkstatt meine Interviews und Snapshots \(Werkzeug artefakt_lesen\)\./);
     const jm = pruefPrompt(METHODEN.find((m) => m.slug === 'journey-map')!);
     expect(jm).toContain('Lies docs/JOURNEY.md. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief und meine Interviews und Snapshots (Werkzeug artefakt_lesen).');
     // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).

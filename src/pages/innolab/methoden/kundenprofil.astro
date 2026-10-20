@@ -4,89 +4,132 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+
+const VPD = 'Alexander Osterwalder, Yves Pigneur, Greg Bernarda, Alan Smith, „Value Proposition Design“ (2014)';
+const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
 ---
 <Layout title="Kundenprofil">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Kundenprofil</h1>
-  <p class="lead">Was eure Zielgruppe erledigen will, was sie dabei stört und was sie sich erhofft – konkret, belegt und nach Wichtigkeit sortiert.</p>
+  <p class="lead">Die rechte Hälfte des Value Proposition Canvas: was eure Kundschaft erledigen will, was sie daran hindert und was sie sich wünscht – gefüllt aus eurem Baum, nicht aus dem Bauch.</p>
   <Orientierung seite="innolab/methoden/kundenprofil" leiste={false} />
   <MethodenKarte slug="kundenprofil" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Das Kundenprofil ist die rechte Hälfte des Value Proposition Canvas. Es hat drei Felder:</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Feld</th><th>Was hineingehört</th><th>Arten</th></tr></thead>
-      <tbody>
-        <tr><th>Jobs</th><td>Was die Person erledigen will – Aufgaben, Probleme, Bedürfnisse</td><td>funktional · sozial (wie sie wirken will) · emotional (wie sie sich fühlen will)</td></tr>
-        <tr><th>Pains</th><td>Was sie vor, während oder nach dem Job stört oder hindert</td><td>unerwünschte Ergebnisse · Hindernisse · Risiken</td></tr>
-        <tr><th>Gains</th><td>Was sie sich als Ergebnis oder Nutzen wünscht</td><td>notwendig · erwartet · gewünscht · unerwartet</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p><strong>Hier – und nur hier – erarbeitet ihr Pains.</strong> Jeder Eintrag bekommt eine ID (J1, P1, G1). Journey Map, Value Map und Story Map verweisen später auf diese IDs, statt Pains neu zu diskutieren.</p>
-  <p>Die Grundlage sind eure Interview-Snapshots – Chancen, Einsichten, Zitate –, nicht euer Bauchgefühl. Und das Profil beschreibt die Person, nicht euer Produkt: Wer beim Schreiben schon an die Lösung denkt, findet nur Pains, die sie zufällig löst.</p>
+  <Folie>
+    <h2 id="canvas">Zwei Seiten, ein Fit</h2>
+    <p class="folie-satz">Gestern habt ihr Chancen geordnet; heute prüft ihr, ob eine Idee sie trifft.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/vpd/canvas.png" alt="Illustration: links ein Würfel mit einem Geschenk (das Angebot), rechts ein Zylinder mit einem Gesicht (die Kundschaft), verbunden durch eine Brücke" quelle={`Value Proposition Canvas. ${VPD_KURZ}, S. 45 (PDF).`} />
+      <ul>
+        <li data-schritt><strong>Kundenprofil:</strong> euer Verständnis der Kundschaft.</li>
+        <li data-schritt><strong>Value Map:</strong> wie euer Angebot Wert schaffen soll.</li>
+        <li data-schritt><strong>Fit:</strong> wenn das eine auf das andere trifft.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Der Value Proposition Canvas von Alexander Osterwalder und Kolleg*innen hat zwei Seiten: Mit dem Kundenprofil klärt ihr euer Verständnis der Kundschaft, mit der Value Map beschreibt ihr, wie ihr für sie Wert schaffen wollt. Fit entsteht, wenn beides zusammenpasst ({VPD}, S. 44).</p>
+      <p>Torres und Osterwalder ordnen dieselben Belege unterschiedlich: Torres als Baum, um eine Chance zu wählen; Osterwalder als Profil neben dem Angebot, um zu prüfen, ob eine Idee trifft. Gleiche Belege, zwei Anordnungen – wir nutzen beide, jede für ihre Frage. Darum füllt ihr das Profil aus eurem Baum von Tag 2 und erfindet nichts neu.</p>
+    </div>
+  </Folie>
 
-  <h3 id="rangfolge">Rangfolge: der Chancenwert</h3>
-  <p>Nicht jeder Pain ist gleich viel wert. Gebt jedem Job und Pain zwei Werte von 1 bis 5: <strong>Wichtigkeit</strong> (wie sehr es der Person darauf ankommt) und <strong>Zufriedenheit</strong> mit dem, was sie heute tut. Daraus ergibt sich der Chancenwert:</p>
-  <p><strong>Chance = Wichtigkeit + (Wichtigkeit − Zufriedenheit)</strong>, wobei die Klammer nicht unter 0 fällt.</p>
-  <p>Hoch ist er, wenn etwas sehr wichtig ist und heute schlecht gelöst wird. Wichtig, aber schon gut gelöst, gibt wenig Chance. So arbeitet Tony Ulwicks Opportunity Scoring – bei euch geschätzt aus den Interviews, nicht aus einer Umfrage. Schreibt dazu, worauf die Schätzung beruht.</p>
+  <Folie>
+    <h2 id="profil">Jobs, Pains, Gains</h2>
+    <p class="folie-satz">Erledigen, stören, wünschen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/vpd/kundenprofil.png" alt="Kreis mit drei Feldern um ein Gesicht: Gains (lachendes Gesicht), Pains (trauriges Gesicht), Customer Jobs (Liste), darunter die drei Definitionen" quelle={`Kundenprofil. ${VPD_KURZ}, S. 52 (PDF).`} />
+      <ul>
+        <li data-schritt><strong>Jobs:</strong> funktional, sozial, emotional – in den Worten der Kundschaft.</li>
+        <li data-schritt><strong>Pains:</strong> schlechte Ergebnisse, Hindernisse, Risiken – konkret: „mehr als x Minuten“.</li>
+        <li data-schritt><strong>Gains:</strong> erforderlich, erwartet, gewünscht, unerwartet – ebenso konkret.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p><strong>Jobs</strong> beschreiben, was Kund*innen in Arbeit und Leben erledigen wollen, in ihren eigenen Worten. Neben funktionalen gibt es soziale (wie man vor anderen dasteht) und emotionale Jobs (wie man sich fühlt); dazu unterstützende Jobs rund um den Kauf, etwa „in der Kassenschlange stehen“. Jobs hängen vom Kontext ab ({VPD}, S. 52–56). <strong>Pains</strong> sind schlechte Ergebnisse, Risiken und Hindernisse rund um einen Job. Macht sie konkret: Sagt jemand, das Warten sei Zeitverschwendung, fragt nach, ab wie vielen Minuten (S. 58). <strong>Gains</strong> sind Ergebnisse und Vorteile, die sich jemand wünscht: erforderliche, erwartete, gewünschte und unerwartete, ebenfalls so konkret wie möglich (S. 62, 66).</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>ID</th><th>Eintrag</th><th>Art</th><th>W</th><th>Z</th><th>Chance</th><th>Beleg</th></tr></thead>
-      <tbody>
-        <tr><th>P1</th><td>Steht zwischen 7:20 und 7:40 mehr als 6 Minuten an</td><td>Hindernis</td><td>5</td><td>1</td><td>9</td><td>I2-1</td></tr>
-        <tr><th>J1</th><td>Rechtzeitig mit Kaffee im Zug sitzen</td><td>funktional</td><td>5</td><td>2</td><td>8</td><td>I2-2, I3-3</td></tr>
-        <tr><th>P2</th><td>Weiß beim Anstellen nicht, ob es sich bis zur Abfahrt ausgeht</td><td>Risiko</td><td>4</td><td>1</td><td>7</td><td>I3-2</td></tr>
-        <tr><th>J2</th><td>Den Arbeitstag nicht gehetzt beginnen</td><td>emotional</td><td>4</td><td>2</td><td>6</td><td>I1-1, I4-5</td></tr>
-        <tr><th>P3</th><td>Automatenkaffee fühlt sich wie eine Niederlage an</td><td>unerwünschtes Ergebnis</td><td>3</td><td>1</td><td>5</td><td>I1-3, I4-4</td></tr>
-        <tr><th>J3</th><td>Im Büro nicht als die*der Gehetzte ankommen</td><td>sozial</td><td>2</td><td>3</td><td>2</td><td>I4-5</td></tr>
-        <tr><th>G1</th><td>Kaffee in unter 3 Minuten ab Betreten der Halle</td><td>erwartet</td><td colspan="3">–</td><td>I2-2</td></tr>
-        <tr><th>G2</th><td>Die Barista kennt die übliche Bestellung</td><td>gewünscht</td><td colspan="3">–</td><td>I3-6</td></tr>
-        <tr><th>G3</th><td>Ohne Nachfragen wissen, wann der Kaffee fertig ist</td><td>unerwartet</td><td colspan="3">–</td><td>I2-5</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Die drei wichtigsten: P1, J1, P2. Kein Eintrag spricht von Apps oder Vorbestellen – das wäre schon eine Lösung. Und P1 ist konkret: „mehr als 6 Minuten“ statt „Schlange zu lang“, weil die Interviewten genau dort aufgeben.</p>
-  <p class="small muted">Gains bekommen in diesem Beispiel keinen Chancenwert; ihr könnt sie genauso bewerten oder nur nach Relevanz ordnen.</p>
+  <Folie>
+    <h2 id="rangfolge">Rangfolge je Spalte</h2>
+    <p class="folie-satz">Jede Spalte für sich, ohne Formel.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/vpd/rangfolge.png" alt="Senkrechte Skala von Important oben bis Insignificant unten, daneben gelbe Haftnotizen mit Jobs eines Business-Buch-Lesers, wichtigste oben" quelle={`Jobs nach Wichtigkeit. ${VPD_KURZ}, S. 68 (PDF).`} hochkant />
+      <ul>
+        <li data-schritt><strong>Jobs</strong> nach Wichtigkeit, <strong>Pains</strong> nach Schwere, <strong>Gains</strong> nach Relevanz.</li>
+        <li data-schritt><strong>Keine Formel</strong> über alle drei Spalten.</li>
+        <li data-schritt>Ihr dürft mit eurer Vermutung anfangen – und prüft sie dann.</li>
+      </ul>
+    </BildText>
+    <p class="nur-handout">Osterwalder ordnet jede Spalte für sich: Jobs nach Wichtigkeit, Pains danach, wie extrem sie für die Kundschaft sind, Gains danach, wie unverzichtbar sie sind. Es ist in Ordnung, mit einer Rangfolge nach eigener Einschätzung zu beginnen, solange ihr sie danach an der Kundschaft prüft ({VPD}, S. 67–70, 76). Die Formel von Ulwick habt ihr an Tag 2 als Gegenprobe gerechnet; hier ordnet ihr ohne sie.</p>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (75 min)</h2>
-  <ol>
-    <li><strong>Input (15 min):</strong> die drei Felder, die Arten, der Chancenwert.</li>
-    <li><strong>Allein in Miro (25 min):</strong> Jobs, Pains, Gains aus euren Snapshots ableiten, je ein Sticky mit Beleg. Mindestens ein sozialer oder emotionaler Job.</li>
-    <li><strong>Konkret machen (10 min):</strong> Bei jedem Pain fragen „Ab wann genau?“, bei jedem Gain „Wie viel genau?“.</li>
-    <li><strong>Bewerten und sortieren (10 min):</strong> Wichtigkeit, Zufriedenheit, Chancenwert; Top 3 markieren.</li>
-    <li><strong>Festhalten und prüfen (15 min):</strong> <code>docs/KUNDENPROFIL.md</code>, Prüfliste, Claude.</li>
-  </ol>
+  <Folie>
+    <h2 id="fehler">Sechs häufige Fehler</h2>
+    <p class="folie-satz">Vergesst, was ihr anbietet – beschreibt die Menschen.</p>
+    <ul class="gross">
+      <li data-schritt>Mehrere Segmente in einem Profil.</li>
+      <li data-schritt>Jobs und Ergebnisse vermischt.</li>
+      <li data-schritt>Nur funktionale Jobs, keine sozialen und emotionalen.</li>
+      <li data-schritt>Mit dem eigenen Angebot im Kopf geschrieben.</li>
+      <li data-schritt>Zu wenige Einträge.</li>
+      <li data-schritt>Zu vage Pains und Gains.</li>
+    </ul>
+    <p class="nur-handout">Die Liste der häufigen Fehler aus dem Buch ({VPD}, S. 78): mehrere Segmente in einem Profil; Jobs und Ergebnisse vermischen; nur funktionale Jobs; Jobs, Pains und Gains mit dem eigenen Angebot im Kopf aufschreiben; zu wenige Einträge; zu vage Pains und Gains. Dazu zwei Hinweise: Pains sind nicht einfach das Gegenteil der Gains, und fragt mehrmals „Warum?“, bis ihr den Job wirklich versteht (S. 80). Kartiert wie Ethnolog*innen und „vergesst“, was ihr anbietet (S. 79).</p>
+  </Folie>
 
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">Ein Segment: Pendler*innen, werktags 7:15–7:45.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Jobs (wichtigste oben)</th><th>Pains (extremste oben)</th><th>Gains (unverzichtbarste oben)</th></tr></thead>
+        <tbody>
+          <tr data-schritt><td>J1 Auf dem Weg zum Zug Kaffee besorgen · funktional (I2-4, I5-3)</td><td>P1 Nicht wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht (I3-2, I2-4, I5-2)</td><td>G1 Kaffee in der Hand, bevor der Zug einfährt · erwartet (I3-3)</td></tr>
+          <tr data-schritt><td>J2 Den Arbeitstag nicht gehetzt beginnen · emotional (I1-1, I4-5)</td><td>P2 Mehr als fünf Leute in der Schlange (I3-4, I2-1)</td><td>G2 Ohne Nachfragen sehen, wann der Kaffee fertig ist · unerwartet (I2-5)</td></tr>
+          <tr data-schritt><td>J3 Im Büro nicht als die*der Gehetzte ankommen · sozial (I4-5)</td><td>P3 Nicht wissen, wann der Kaffee fertig ist (I2-5, I3-3)</td><td>G3 Die Barista kennt die übliche Bestellung · gewünscht (I3-6)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nur-handout">P1 ist die Ziel-Chance von Tag 2, P2 bis P4 sind die Geschwister und Nachbarn aus dem Baum – mit denselben Zitat-IDs. J1 ist ein Job und kein Ergebnis („rechtzeitig mit Kaffee im Zug sitzen“ wäre ein Ergebnis, einer der Fehler auf S. 78). Weiter unten in den Spalten: J4 „Anstehen und bezahlen“, ein unterstützender Job im Sinne des Buchs (S. 55), und P4 „Der Automatenkaffee schmeckt nicht“ (I1-3, I4-4). Die Gains sind neu, aus den Snapshots: Sie stehen in Torres' Baum nur indirekt. Das ist ein Ausschnitt; ein echtes Profil ist „voll mit Haftnotizen“ (S. 79).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
+    <p class="folie-satz">Aus dem Baum übernehmen, Gains ergänzen, je Spalte ordnen.</p>
+    <MiroFrame name="T3 · 1 · Kundenprofil & Value Map" />
+    <ol class="gross">
+      <li data-schritt><strong>Übernehmen:</strong> Ziel-Chance und ihr Ast als Pains, mit Zitat-IDs; Jobs aus Tag 1. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Ergänzen:</strong> Gains aus den Snapshots, konkret; mindestens ein sozialer oder emotionaler Job. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Ordnen:</strong> jede Spalte für sich, wichtigste oben. <Timer minuten={4} /></li>
+    </ol>
+    <p class="nur-handout">Dazu zehn Minuten Theorie mit der Kaffeebar. Dann geht es ohne Pause weiter mit der Value Map: Eure drei Ideen von Tag 2 kommen neben dieses Profil.</p>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/KUNDENPROFIL.md"># Kundenprofil — [Segment]
 
-Stand: [Datum] · Grundlage: Interviews und Snapshots in der Werkstatt (Zitat-IDs I1-1 …)
-Top 3: [ID], [ID], [ID]
+Stand: [Datum] · Grundlage: Baum und Ziel-Chance (docs/BAUM.md, docs/ZIEL-CHANCE.md), Interviews in der Werkstatt
 
-| ID | Eintrag | Art | Wichtigkeit 1–5 | Zufriedenheit 1–5 | Chance | Beleg |
-|----|---------|-----|-----------------|-------------------|--------|-------|
-| J1 | [Job der Person] | funktional | [...] | [...] | [...] | [I…-…] |
-| J2 | [...] | sozial/emotional | [...] | [...] | [...] | [...] |
-| P1 | [konkret, mit Zahl] | Hindernis/Risiko/unerwünschtes Ergebnis | [...] | [...] | [...] | [...] |
-| G1 | [konkret, mit Zahl] | notwendig/erwartet/gewünscht/unerwartet | | | | [...] |
+## Jobs (wichtigste oben)
+- J1 [Job in den Worten der Kundschaft] · funktional ([Zitat-IDs])
+- J2 [...] · sozial / emotional ([...])
 
-Chance = Wichtigkeit + max(0, Wichtigkeit − Zufriedenheit)</Prompt>
+## Pains (extremste oben)
+- P1 [Ziel-Chance, konkret] ([Zitat-IDs])
+- P2 [...]
 
-  <Callout type="info" title="Wo ist die Persona?">
-    <p>Eine Persona-Karte machen wir bewusst nicht: Sie würde dieselben Pains und Gains noch einmal mit Namen und Foto erzählen. Wer für das Team ein Gesicht braucht, gibt dem Profil eine Zeile mit einem typischen Zitat aus den Interviews.</p>
-  </Callout>
+## Gains (unverzichtbarste oben)
+- G1 [konkret, mit Zahl, wo möglich] · erforderlich / erwartet / gewünscht / unerwartet ([Zitat-IDs])</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="kundenprofil" />
-
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Was ist euer P1 – der Pain mit dem höchsten Chancenwert? Steht dort eine Zahl, an der eure Zielgruppe aufgibt? Wenn nicht: Welche Stelle in den Transkripten zeigt, ab wann es ihr reicht?</p>
+  </div>
 
   <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung, Story, Prototyp' }} next={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} />
 </Layout>
