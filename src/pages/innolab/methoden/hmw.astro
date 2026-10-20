@@ -5,57 +5,113 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Fluss from '../../../components/Fluss.astro';
+import Timer from '../../../components/Timer.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+
+const BERGER = 'Warren Berger, „The Secret Phrase Top Innovators Use“, HBR Blog Network (17.09.2012)';
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 ---
 <Layout title="How Might We">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
   <h1>How Might We</h1>
-  <p class="lead">Aus der gewählten Chance wird eine Frage, auf die es viele Antworten gibt.</p>
+  <p class="lead">Aus der Ziel-Chance wird eine Frage, auf die es viele Antworten gibt – die Brücke zur Ideation.</p>
   <Orientierung seite="innolab/methoden/hmw" leiste={false} />
   <MethodenKarte slug="hmw" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>„Wie könnten wir …?“ – auf Englisch <em>How might we</em> – verwandelt ein Problem in eine Einladung. <em>Wie</em> sagt, dass es eine Antwort gibt; <em>könnten</em>, dass es mehrere sein dürfen; <em>wir</em>, dass ihr sie gemeinsam sucht. Im Opportunity Solution Tree sind diese Fragen die <strong>Chancen</strong>: Sie hängen unter dem Outcome von Tag 1, und die Ideen hängen unter ihnen.</p>
-  <p>Die Kunst ist die Weite der Frage. Zu weit, und jede Idee passt. Zu eng, und die Lösung steckt schon drin.</p>
+  <Folie>
+    <h2 id="warum">Warum „könnten“?</h2>
+    <p class="folie-satz">„Können“ und „sollen“ urteilen schon – „könnten“ schiebt das Urteil auf.</p>
+    <Fluss label="How Might We: drei Wörter, drei Rollen" knoten={[
+      { t: 'Wie', sub: 'Es gibt Lösungen – das gibt Zuversicht.' },
+      { t: 'könnten', sub: 'Ideen dürfen auch nicht funktionieren.' },
+      { t: 'wir', sub: 'gemeinsam, auf den Ideen der anderen aufbauend' },
+    ]} />
+    <div class="nur-handout">
+      <p>Die Frageform stammt von Min Basadur, der sie in den frühen 1970ern bei Procter & Gamble einsetzte; über IDEO, Google und Facebook wurde sie verbreitet. Basadur: Wer fragt „Wie können wir …?“ oder „Wie sollen wir …?“, urteilt schon – können wir das wirklich, sollen wir? Mit „might“ wird das Urteil aufgeschoben; es entstehen freier mehr Optionen. Tim Brown (IDEO) gibt jedem Wort eine Rolle: „How“ setzt voraus, dass es Lösungen gibt, „Might“ erlaubt Ideen, die vielleicht nicht funktionieren, „We“ heißt, dass ihr gemeinsam auf den Ideen der anderen aufbaut ({BERGER}, S. 1). Im Deutschen trägt der Konjunktiv das „might“: „Wie <em>könnten</em> wir …?“ statt „Wie können wir …?“.</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th></th><th>Frage zum Moment „Ich komme in die Halle“</th></tr></thead>
-      <tbody>
-        <tr><th>Zu weit</th><td>Wie könnten wir den Morgen von Pendler*innen schöner machen?</td></tr>
-        <tr><th>Zu eng</th><td>Wie könnten wir eine Ampel mit der Wartezeit über die Theke hängen?</td></tr>
-        <tr><th>Passt · H1</th><td>Wie könnten wir Pendler*innen beim Betreten der Halle zeigen, ob sich ein Kaffee bis zur Abfahrt ausgeht?</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Zum Moment „Ich warte auf meinen Kaffee“ entsteht <strong>H2</strong>: <em>Wie könnten wir das Warten auf den Kaffee so kurz machen, dass niemand auf die Uhr schaut?</em> – und zum Ende „Ich bin im Zug“ <strong>H3</strong>: <em>Wie könnten wir den ersten Schluck im Zug zum besten Moment des Morgens machen?</em></p>
-  <p>Ausgewählt werden <strong>H1</strong> und <strong>H2</strong>: H2 hängt am Pain mit dem höchsten Chancenwert (P1), H1 am Risiko P2, dem dritten der Top 3. H3 bleibt im Board, für später.</p>
+  <Folie>
+    <h2 id="coast">Coast statt grüner Streifen</h2>
+    <p class="folie-satz">Die falsche Frage liefert Kopien; die richtige kommt aus der Sicht der Kundschaft.</p>
+    <Fluss label="Vom Kopieren zur neuen Seife: falsche Frage, Warum, Kundensicht, neue Frage, Coast" hervor={[3]} knoten={[
+      { t: 'Kopien', sub: 'sechs Streifenseifen, keine besser als Irish Spring' },
+      { t: 'Warum?', sub: 'Warum noch eine grüne Streifenseife?' },
+      { t: 'Kundensicht', sub: 'Es geht ums Erfrischtsein, nicht um Streifen.' },
+      { t: 'Neue Frage', sub: '„How might we create a more refreshing soap of our own?“' },
+      { t: 'Coast', sub: 'Hunderte Ideen, eine neue Marke' },
+    ]} />
+    <p class="nur-handout">Procter & Gamble wollte gegen Irish Spring von Colgate-Palmolive antreten, eine grün gestreifte Seife, die Erfrischung verspricht, und testete ein halbes Dutzend eigener Streifenseifen – keine war besser. Die Frage war falsch: „How can we make a better green-stripe bar?“ Basadur stellte erst Warum-Fragen und lenkte den Blick vom Konkurrenzprodukt auf die Kundschaft: Ihr ging es nie um grüne Streifen, sondern darum, sich erfrischt zu fühlen. Aus „How might we create a more refreshing soap of our own?“ entstanden in wenigen Stunden Hunderte Ideen, das Thema Küste und die Seife Coast, eine erfolgreiche eigene Marke ({BERGER}, S. 2). Bei euch ist dieser Schritt schon getan: Eure Ziel-Chance steht in den Worten der Kundschaft.</p>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
-  <ol>
-    <li><strong>Allein (10 min):</strong> Zur gewählten Chance zwei bis drei Fragen, in ihren Worten.</li>
-    <li><strong>Weite prüfen (5 min):</strong> Bei jeder Frage zwei Ideen ausdenken. Passt alles? Zu weit. Fällt euch nur eine ein? Zu eng.</li>
-    <li><strong>Auswählen (10 min):</strong> ein bis zwei Fragen, die am meisten auf das Outcome wirken – meist die am Pain mit dem höchsten Chancenwert.</li>
-    <li><strong>Festhalten (5 min):</strong> <code>docs/CHANCEN.md</code>.</li>
-  </ol>
+  <Folie>
+    <h2 id="bruecke">Von der Chance zur Frage</h2>
+    <p class="folie-satz">Die Frage zielt auf die Chance, nicht auf eine Lösung.</p>
+    <Fluss label="Torres: Lösungswunsch, Chance dahinter, How-might-we-Frage, mehrere Optionen" hervor={[2]} knoten={[
+      { t: 'Lösungswunsch', sub: '„Ich will Werbung vorspulen können.“' },
+      { t: 'Chance', sub: '„Ich mag keine Werbung.“' },
+      { t: 'Frage', sub: '„How might we address ‚I don’t like commercials‘?“' },
+      { t: 'Optionen', sub: 'bessere Werbung · vorspulen · Abo ohne Werbung' },
+    ]} />
+    <p class="nur-handout">Teresa Torres zeigt den Schritt an einer verkleideten Lösung: „Ich will Werbung vorspulen können“ lässt nur eine Antwort zu. Die Chance dahinter, „Ich mag keine Werbung“, öffnet erst mit der Frage „How might we address ‚I don't like commercials'?“ mehrere Optionen – unterhaltsamere Werbung, Vorspulen oder ein Abo ohne Werbung. Ihr Test: Gibt es mehr als einen Weg, die Chance anzugehen? ({TORRES}, S. 94–95). Darum fragt ihr nach eurer Ziel-Chance, nicht nach einer Funktion.</p>
+  </Folie>
 
+  <Folie>
+    <h2 id="sweet-spot">Der Sweet Spot</h2>
+    <p class="folie-satz">Nicht zu weit, nicht zu eng – ehrgeizig, aber erreichbar.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th></th><th>Zur Ziel-Chance „Geht sich ein Kaffee noch aus?“</th></tr></thead>
+        <tbody>
+          <tr data-schritt><th>Zu weit</th><td>Wie könnten wir den Morgen von Pendler*innen schöner machen?</td></tr>
+          <tr data-schritt><th>Zu eng</th><td>Wie könnten wir die Wartezeit um 30 Sekunden senken?</td></tr>
+          <tr data-schritt><th>Lösung drin</th><td>Wie könnten wir eine Ampel mit der Wartezeit über die Theke hängen?</td></tr>
+          <tr data-schritt><th>Passt · H1</th><td>Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nur-handout">Tim Brown: Die Frageform passt zu Herausforderungen, die ehrgeizig und doch erreichbar sind. Zu weit wäre „How might we solve world hunger?“, zu eng „How might we increase profits by 5 percent next quarter?“. Die richtige Frage zu finden ist selbst ein Prozess: „You need to find the sweet spot“ ({BERGER}, S. 2). Die dritte Zeile scheitert an Torres' Test: Eine Ampel ist eine Lösung, es gibt nur einen Weg, sie zu bauen (S. 94).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
+    <p class="folie-satz">Mehrere Fragen zur Ziel-Chance, dann eine wählen.</p>
+    <MiroFrame name="T2 · 4 · How Might We" />
+    <ol class="gross">
+      <li data-schritt><strong>Allein:</strong> drei Fragen zu eurer Ziel-Chance, jede beginnt mit „Wie könnten wir …“. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Zu dritt:</strong> Vorlesen. Die anderen prüfen: Sweet Spot? Mehr als ein Weg? <Timer minuten={10} /></li>
+      <li data-schritt><strong>Wählen und festhalten:</strong> eine Frage, mit einem Satz warum. <Timer minuten={5} /></li>
+    </ol>
+    <p class="nur-handout">Dazu fünf Minuten Theorie und die Kaffeebar. Die gewählte Frage nehmt ihr in die Ideation mit: Alle Ideen dort beantworten sie.</p>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/CHANCEN.md"># Chancen — [Produkt]
+  <Prompt label="Vorlage · docs/CHANCEN.md"># How Might We — [Produkt]
 
-Outcome (aus docs/PRODUKT.md, Abschnitt 6): [...]
+Stand: [Datum]
 
-| ID | Wie könnten wir …? | Chance aus dem Baum | Ausgewählt |
-|----|--------------------|---------------------|------------|
-| H1 | [...] | [...] | ja |
-| H2 | [...] | [...] | [...] |
+Ziel-Chance (aus docs/ZIEL-CHANCE.md): „[...]“
 
-Warum diese Auswahl: [ein Satz zur Wirkung auf das Outcome]</Prompt>
+## Fragen
+- H1: Wie könnten wir […]?
+- H2: Wie könnten wir […]?
+- H3: Wie könnten wir […]?
+
+## Gewählt
+H[n] – weil [ein Satz: Sweet Spot, mehr als ein Weg]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="hmw" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Probiert bei eurer ausgewählten Frage den Test aus dem Beispiel: Fallen euch in einer Minute fünf sehr verschiedene Ideen ein? Dann ist sie bereit für die Ideation.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Gibt es mehr als einen Weg, eure Frage zu beantworten?</p>
+    <p class="nur-handout">Wenn nicht, steckt die Lösung schon in der Frage (Torres S. 94). Und ist sie ehrgeizig, aber erreichbar (Brown bei Berger)? Mit der gewählten Frage geht es in die Ideation.</p>
+  </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/ziel-chance', t: 'Ziel-Chance wählen' }} next={{ href: '/innolab/methoden/ideation', t: 'Ideation' }} />
 </Layout>
