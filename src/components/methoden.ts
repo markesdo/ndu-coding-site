@@ -37,7 +37,7 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro', 'repo'], pfad: 'docs/JOURNEY.md' },
   { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro', 'repo'], pfad: 'docs/BAUM.md' },
   { id: 'ziel', name: 'Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe', lebtIn: ['miro', 'repo'], pfad: 'docs/ZIEL-CHANCE.md' },
-  { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/CHANCEN.md' },
+  { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/HMW.md' },
   { id: 'ideen', name: 'Ideen mit Auswahl', lebtIn: ['miro', 'repo'], pfad: 'docs/IDEEN.md' },
   { id: 'valuemap', name: 'Value Map und Fit', lebtIn: ['miro', 'repo'], pfad: 'docs/VALUE-MAP.md' },
   { id: 'concept', name: 'Concept Story', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
@@ -205,7 +205,7 @@ export const METHODEN: Methode[] = [
       'Sie ist aus Sicht der Kundschaft gestellt, nicht aus Sicht eures Produkts.',
       'Eine Frage ist ausgewählt, mit einem Satz, warum.',
     ],
-    ki: 'Prüft, ob eine Frage schon eine Lösung vorgibt oder zu weit ist.',
+    ki: 'Prüft, ob eine Frage eine Lösung vorgibt, zu weit oder zu eng ist und aus Sicht der Kundschaft gestellt ist.',
   },
   {
     slug: 'ideation', name: 'Ideation', tag: 2, dauer: 90,
