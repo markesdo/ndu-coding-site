@@ -196,9 +196,9 @@ export const METHODEN: Methode[] = [
   {
     slug: 'hmw', name: 'How Might We', tag: 2, dauer: 30,
     frage: 'Welche Frage öffnet für die gewählte Chance möglichst viele Ideen?',
-    braucht: ['baum', 'ziel'], ergibt: ['chancen'],
+    braucht: ['ziel'], ergibt: ['chancen'],
     pruefliste: [
-      'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an einer Chance aus eurem Baum.',
+      'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an eurer Ziel-Chance.',
       'Keine Frage enthält schon eine Lösung.',
       'Keine Frage ist so weit, dass jede Idee passt.',
       'Ein bis zwei Fragen sind ausgewählt, mit einem Satz, warum sie am meisten auf das Outcome wirken.',
