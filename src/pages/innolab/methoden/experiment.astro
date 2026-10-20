@@ -9,6 +9,7 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
@@ -60,6 +61,7 @@ const PRE_MORTEM = `Lies docs/EXPERIMENTE.md und aus der Werkstatt meine Annahme
   <Folie>
     <h2 id="map">Die Map der Idee</h2>
     <p class="folie-satz">Schnell, relativ zueinander – oben rechts testet ihr.</p>
+    <MiroFrame name="T3 · 2 · Annahmen der Idee" />
     <BildText>
       <BuchAbbildung src="/quellen/torres/leap-of-faith.jpg" alt="Kreuz aus zwei Achsen: senkrecht More Important bis Less Important, waagrecht Strong Evidence bis Weak Evidence; leere Kärtchen verteilt, oben rechts drei in einem Kreis „Leap of Faith“ Assumptions" quelle={`Die Map der Annahmen. ${TORRES}, S. 129.`} schmal />
       <ul>
@@ -148,6 +150,7 @@ Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (18 min)</h2>
     <p class="folie-satz">Schritte, Annahmen, Map, Karte – allein, schnell.</p>
+    <MiroFrame name="T3 · 2 · Annahmen der Idee" />
     <ol class="gross">
       <li data-schritt><strong>Schritte:</strong> vier bis sechs, als gäbe es eure Idee schon. <Timer minuten={3} /></li>
       <li data-schritt><strong>Annahmen:</strong> pro Schritt mindestens zwei, mit Art; dazu die Pre-Mortem-Frage. <Timer minuten={6} /></li>
