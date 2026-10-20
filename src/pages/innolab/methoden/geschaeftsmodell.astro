@@ -9,7 +9,6 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
-import MiroFrame from '../../../components/MiroFrame.astro';
 
 const GASSMANN = 'Oliver Gassmann, Karolin Frankenberger, Michaela Csik, „Geschäftsmodelle entwickeln“ (2. Aufl. 2017)';
 const GASSMANN_KURZ = 'Gassmann u. a., „Geschäftsmodelle entwickeln“ (2017)';
@@ -128,7 +127,7 @@ const KARTEN = [
     </div>
     <div class="nur-handout">
       <p><strong>Add-on</strong> (Ryanair): Kaffee zum normalen Preis, 30 Cent Express-Zuschlag – ein neuer Ertragsstrom ohne neues Produkt. Er widerspricht aber der Krise der Concept Story: Die Alternative, der Automat, ist schon schnell (I1-3) – ein Aufpreis fürs Tempo macht sie nur attraktiver. Gassmanns Checkliste fragt außerdem, ob man die Kundschaft ausreichend an sich bindet, damit sie die Extras beim selben Anbieter kauft.</p>
-      <p><strong>Subscription</strong> (Netflix): fünf Morgen pro Woche, 12 € im Monat im Voraus. Laut Gassmann passt ein Abo, sobald etwas „auf regulärer Basis nachgefragt“ wird und es gegenüber dem Einzelkauf einen Mehrwert stiftet. Die Interviews zeigen das Gegenteil: Die Entscheidung fällt erst beim Ankommen (I2-4, I3-1, I5-3). Das Abo bleibt in der Story Map unter „Später“.</p>
+      <p><strong>Subscription</strong> (Netflix): fünf Morgen pro Woche, 12 € im Monat im Voraus. Laut Gassmann passt ein Abo, sobald etwas „auf regulärer Basis nachgefragt“ wird und es gegenüber dem Einzelkauf einen Mehrwert stiftet. Die Interviews zeigen das Gegenteil: Die Entscheidung fällt erst beim Ankommen (I1-2, I3-1, I5-3). Das Abo ist eine Idee für später – am Nachmittag ein Kandidat für einen späteren Slice der Story Map.</p>
       <p><strong>Cross Selling</strong> (Tchibo, Tankstellenshops): kein Aufpreis; die Bestellung bietet ein Gebäck an. Das ist Gassmanns Anwendungsregel fast wörtlich: ein einfaches Produkt mit geringer Marge, das ein Grundbedürfnis befriedigt, kombiniert mit einem Produkt mit höherer Marge.</p>
       <p><strong>Self-Service</strong> (IKEA, BackWerk): Die Kundschaft bestellt und zahlt selbst, die Theke macht nur noch Kaffee. Das ist schon Teil des Produkts – es verändert das Wie?. Die Frage aus der Checkliste bleibt offen und gehört in den Usability-Test: „Werden Kunden die selbst verrichtete Arbeit als positives Erlebnis aufnehmen?“</p>
       <p><strong>Freemium</strong> (Skype): Bestellen gratis, eine Garantie „fertig vor der Abfahrt“ kostet. Freemium passt laut Gassmann zu Software, deren Grenzkosten gegen null gehen – hier kostet jede Bestellung Kaffee und Zeit an der Theke.</p>
@@ -142,27 +141,26 @@ const KARTEN = [
     <ul class="gross">
       <li data-schritt><strong>Wie?</strong> Bestellseite, Express-Ausgabe; Kosten: Aufsteller, Bildschirm, Betrieb der Seite.</li>
       <li data-schritt><strong>Wert?</strong> Kaffee zum normalen Preis, Gebäck als Angebot – ohne weitere Kraft am Morgen.</li>
-      <li data-schritt><strong>Annahme:</strong> „Wenn mehr Pendler*innen mit Kaffee in den Zug steigen, dann steigt der Umsatz am Morgen, weil die zusätzlichen Bestellungen die neuen Kosten decken.“</li>
+      <li data-schritt><strong>Annahme (A4):</strong> „Wir glauben, dass die zusätzlichen Bestellungen mehr einbringen, als Aufsteller, Bildschirm und Bestellseite kosten – ohne weitere Kraft am Morgen.“</li>
     </ul>
     <div class="nur-handout">
       <p>Wer? und Was? stehen schon fest: Pendler*innen zwischen 7:15 und 7:45 (Kundenprofil) und Bestellen im Gehen mit der Zusage „fertig vor der Abfahrt“ (Value Map). Wie? und Wert? folgen Gassmanns Checkliste für das neue Modell: bei Wie? Ressourcen, Aktivitäten und Partner, bei Wert? die Kostentreiber („Welches sind die wesentlichen Kosten?“) und die Ertragsströme („Wofür ist der Kunde bereit zu bezahlen? Wie bezahlen die Kunden momentan?“) ({GASSMANN}, Tabelle 2.2). Erst in diesem Schritt wird aus einer Musteridee ein Geschäftsmodell (I-2.4).</p>
-      <p>Die Annahme entsteht, indem ihr die Linien eures Baums abschreitet: von der Lösung zur Ziel-Chance, von der Ziel-Chance zum Outcome – und vom Outcome zum Geschäftsergebnis. Torres' Satzanfang: „Addressing the target opportunity will drive the desired outcome because …“; bei einem Produkt-Outcome kommt die Verbindung zum Geschäft dazu ({TORRES}, S. 125–126). Bei der Kaffeebar ist das die Linie vom Outcome „mehr Pendler*innen mit Kaffee im Zug“ zum Impact „mehr Umsatz am Morgen“ aus dem Problem-Rahmen.</p>
-      <p>In der Annahmen-Map steht diese Annahme seit Tag 1 als A4 („rechnet sich ohne weitere Kraft“) – unten, als unwichtig. Mit den Kosten vor Augen rückt sie nach oben: Wichtigkeit hoch, Beleg keiner. Neben ihr steht A2, die Machbarkeit (40 Bestellungen in 30 Minuten). Welche von beiden riskanter ist, entscheidet ihr gleich an der Experiment-Karte.</p>
+      <p>Die Annahme findet ihr, indem ihr die Linien eures Baums abschreitet: von der Lösung zur Ziel-Chance, von der Ziel-Chance zum Outcome – und vom Outcome zum Geschäftsergebnis. Torres' Satzanfang: „Addressing the target opportunity will drive the desired outcome because …“; bei einem Produkt-Outcome kommt die Verbindung zum Geschäft dazu ({TORRES}, S. 125–126). Bei der Kaffeebar ist das die Linie vom Outcome „mehr Pendler*innen mit Kaffee im Zug“ zum Impact „mehr Umsatz am Morgen“ aus dem Problem-Rahmen: Mehr Pendler*innen mit Kaffee führen zu mehr Umsatz, <em>weil</em> die zusätzlichen Bestellungen mehr einbringen, als sie kosten. Dieses „weil“ ist die Annahme. In die Map kommt sie wie jede andere als „Wir glauben, dass …“ – und zwar das, was ihr prüfen wollt: Ertrag über den Kosten, nicht bloß mehr Umsatz.</p>
+      <p>In der Annahmen-Map steht diese Annahme seit Tag 1 als A4 („rechnet sich ohne weitere Kraft“), als unwichtig und mit Beleg „getan“ – damals war der heutige Betrieb gemeint. Mit den Kosten vor Augen bewertet ihr sie neu: Wichtigkeit hoch; für zusätzliche Bestellungen mit neuen Kosten gibt es noch keinen Beleg. Neben ihr steht A2, die Machbarkeit (40 Bestellungen in 30 Minuten). Beide stehen auf der Map, wenn ihr gleich an der Experiment-Karte die riskanteste Annahme wählt.</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (20 min)</h2>
     <p class="folie-satz">Eine Runde Konfrontation, dann Wie? und Wert?, dann die Annahme.</p>
-    <MiroFrame name="T3 · 3 · Geschäftsmodell" />
     <ol class="gross">
       <li data-schritt><strong>Karten nehmen:</strong> je zwei, die eurem Produkt am fremdesten sind. <Timer minuten={1} /></li>
       <li data-schritt><strong>Still schreiben:</strong> 90 Sekunden pro Karte, mindestens zwei Ideen. <Timer minuten={3} /></li>
       <li data-schritt><strong>Zu dritt:</strong> vorlesen, die anderen ergänzen je eine Idee – keine Killerphrasen. <Timer minuten={5} /></li>
       <li data-schritt><strong>Wie? und Wert?</strong> für eine Idee, mit den wichtigsten Kosten. <Timer minuten={4} /></li>
-      <li data-schritt><strong>Annahme</strong> als Wenn-dann-weil-Satz in die Annahmen-Map. <Timer minuten={2} /></li>
+      <li data-schritt><strong>Annahme:</strong> „Wir glauben, dass …“ – was eure Kosten deckt – in die Annahmen-Map. <Timer minuten={2} /></li>
     </ol>
-    <p class="nur-handout">Dazu fünf Minuten Theorie. Wer? und Was? verweisen auf Kundenprofil und Value Map, ihr schreibt sie nicht neu. Die Annahme kommt in der Werkstatt als Art „wirtschaftlich“ in die Annahmen-Map, mit Wichtigkeit und Beleg – direkt danach wählt ihr an der Experiment-Karte die riskanteste. Prüfen mit der Liste unten ist Hausaufgabe.</p>
+    <p class="nur-handout">Dazu fünf Minuten Theorie. Gassmann empfiehlt Karteikarten von Hand; die Ideen schreibt ihr auf Papier. Wer? und Was? verweisen auf Kundenprofil und Value Map, ihr schreibt sie nicht neu. Die Annahme kommt in der Werkstatt als Art „wirtschaftlich“ in die Annahmen-Map, mit Wichtigkeit und Beleg – direkt danach wählt ihr an der Experiment-Karte die riskanteste. Prüfen mit der Liste unten ist Hausaufgabe.</p>
   </Folie>
 
   <div class="nur-handout">
@@ -183,11 +181,11 @@ Stand: [Datum] · Profil: docs/KUNDENPROFIL.md · Value Map: docs/VALUE-MAP.md
 - Wert? [wer zahlt wofür]; heute bezahlt die Kundschaft [...]
 
 Gewählt: [Muster] – weil [ein Satz]
-Annahme (wirtschaftlich): Wenn [Outcome], dann [Impact], weil [...] (A[n])</Prompt>
+Linie: [Outcome] führt zu [Impact], weil [...]
+Annahme (wirtschaftlich): Wir glauben, dass [...] (A[n])</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="geschaeftsmodell" />
-  <Prompt label="Konsistenz prüfen · Claude Code">Lies docs/GESCHAEFTSMODELL.md, docs/KUNDENPROFIL.md und docs/VALUE-MAP.md, aus der Werkstatt meine Annahmen-Map (Werkzeug artefakt_lesen). Prüfe nur, ob Wer, Was, Wie und Wert zusammenpassen: Passt „Wert?“ zu dem, was die Kundschaft laut Profil heute zahlt? Fehlt ein Kostenposten, den „Wie?“ verlangt? Lässt sich die wirtschaftliche Annahme als Wenn-dann-weil-Satz prüfen? Zitiere die Zeile, höchstens drei Befunde, und stell mir eine Rückfrage. Schlag kein Muster vor und ändere keine Datei.</Prompt>
   </div>
 
   <Folie>
