@@ -1,5 +1,5 @@
 // Toolbox des Innolabs: jede Methode beantwortet eine Frage und ergibt ein Artefakt. Spätere Methoden bauen auf
-// diesen Artefakten auf, statt sie neu zu erarbeiten (Pains etwa nur im Kundenprofil). methoden.test.ts prüft die Kette.
+// diesen Artefakten auf, statt sie neu zu erarbeiten (Chancen etwa nur im Baum; das Kundenprofil übernimmt sie mit ihren Zitat-IDs). methoden.test.ts prüft die Kette.
 // Ohne Astro, damit testbar.
 import type { ArtefaktName } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
@@ -243,10 +243,11 @@ export const METHODEN: Methode[] = [
     braucht: ['profil', 'ideen'], ergibt: ['valuemap'],
     pruefliste: [
       'Für jede der drei Ideen von Tag 2 steht ein Lückensatz.',
+      'Unter Produkte und Services steht nur, was für dieses Segment gedacht ist.',
       'Der Fit-Vergleich hakt jede Idee gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).',
       'Gewählt ist die Idee mit dem besten Fit, mit einem Satz warum.',
       'Bei Schmerzlinderern und Gewinnerzeugern stehen keine Produkte, sondern was sie bewirken – mit der ID des Pains oder Gains.',
-      'Was bewusst offen bleibt, ist markiert; es wird nicht jeder Pain gelöst.',
+      'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was bewusst offen bleibt, ist markiert.',
     ],
     ki: 'Markiert Schmerzlinderer, die zu keinem Pain passen, und fragt nach jedem ✓ im Fit-Vergleich.',
     quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 157–159 (PDF)',
