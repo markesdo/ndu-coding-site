@@ -1,0 +1,172 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import MethodenKarte from '../../../components/MethodenKarte.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Prompt from '../../../components/Prompt.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import Baum from '../../../components/bild/Baum.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+import { KAFFEEBAR_BAUM_TAG2 } from '../../../components/innolab-beispiel';
+
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+---
+<Layout title="Opportunity Solution Tree">
+  <span class="eyebrow">Innolab · Tag 2 · Methode</span>
+  <h1>Opportunity Solution Tree</h1>
+  <p class="lead">Aus fünf Interviews kommen Dutzende Chancen. Der Baum ordnet sie unter die Momente eurer Experience Map, damit ihr sie vergleichen könnt – statt auf die erstbeste zu springen.</p>
+  <Orientierung seite="innolab/methoden/baum" leiste={false} />
+  <MethodenKarte slug="baum" />
+
+  <Folie>
+    <h2 id="warum">Warum ein Baum statt einer Liste?</h2>
+    <p class="folie-satz">Chancen haben verschiedene Formen und Größen – eine flache Liste lässt sie sich nicht vergleichen.</p>
+    <ul class="gross">
+      <li data-schritt>„Ich finde nichts zum Schauen“ und „Mir sind die Folgen ausgegangen“ – das eine ist ein Grund für das andere.</li>
+      <li data-schritt>„Im Flugzeug schauen“ und „im Zug schauen“ – ähnlich, aber nicht gleich: offline, Steckdose, Netz.</li>
+      <li data-schritt>Ein Baum zeigt beides: <strong>Eltern und Kinder</strong>, <strong>Geschwister</strong>.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Teresa Torres beginnt Kapitel 6 mit einer Liste von Chancen aus dem Streaming-Beispiel, wie sie viele Teams als „Opportunity Backlog“ führen. Das ist besser als nur eine Chance auf einmal, aber eine flache Liste lässt sich schwer priorisieren: Manche Chancen hängen zusammen, andere sind Teilmengen von anderen ({TORRES}, S. 81–82). Unser Job ist auch nicht, jede gehörte Chance zu erfüllen, sondern die, die unser Outcome treiben (S. 80). Dafür braucht es erst eine Bestandsaufnahme des Chancenraums und dann eine Struktur – und die wird, wie Barbara Tversky schreibt, „getan, verworfen und neu getan“ (S. 80).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="eltern-kind">Eltern, Kinder, Geschwister</h2>
+    <p class="folie-satz">Ein Kind ist ein Teil seines Elternteils.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/eltern-kind.jpg" alt="Baum: „I can't find anything to watch.“ oben, darunter „I'm out of episodes of my favorite shows.“ und zwei leere Kreise mit Fragezeichen" quelle={`Eltern und Kinder. ${TORRES}, S. 83.`} />
+      <ul>
+        <li data-schritt><strong>Kind:</strong> ein Grund für die Eltern-Chance – aber nicht der einzige.</li>
+        <li data-schritt><strong>Geschwister:</strong> ähnlich, aber eines lässt sich lösen, ohne das andere.</li>
+        <li data-schritt>Jedes gelöste Kind löst die Eltern-Chance <strong>zum Teil</strong>.</li>
+        <li data-schritt>Große Chancen zerfallen in kleine, die ihr nacheinander liefern könnt.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>„Mir sind die Folgen meiner Lieblingsserie ausgegangen“ ist ein Grund – aber nicht der einzige – für „Ich finde nichts zum Schauen“, also dessen Kind. Die Frage „Was sind andere Gründe?“ füllt die Fragezeichen: Geschwister sind einander ähnlich, weil sie zum selben Elternteil gehören, aber verschieden genug, dass sich eines ohne das andere lösen lässt (S. 82–83). So zerfällt eine große, kaum lösbare Chance wie „Ist diese Serie gut?“ in kleinere: Welche Art Serie ist das? Wer spielt mit? Wer schaut sie noch? Das hat zwei Vorteile: Unlösbares wird lösbar, und ihr könnt Wert nach und nach liefern, statt auf die Lösung des großen Problems zu warten (S. 84–85).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="inventar">Inventar: drei Fragen pro Chance</h2>
+    <p class="folie-satz">Nicht jede Chance kommt in den Baum.</p>
+    <MiroFrame name="T2 · 2 · Opportunity Solution Tree" />
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/inventar.jpg" alt="Oben vier Momente als Kreise, darunter eine Linie und viele Chancen-Kreise, jeweils unter ihren Moment sortiert" quelle={`Chancen unter den Momenten. ${TORRES}, S. 89.`} />
+      <ol>
+        <li data-schritt><strong>Bedürfnis, Schmerzpunkt oder Wunsch</strong> – keine Lösung?</li>
+        <li data-schritt>In <strong>mehr als einem</strong> Interview gehört?</li>
+        <li data-schritt>Treibt sie euer <strong>Outcome</strong>?</li>
+      </ol>
+    </BildText>
+    <div class="nur-handout">
+      <p>Mit den Ästen aus der Experience Map geht ihr jeden Snapshot durch. Eine Chance kommt in den Baum, wenn alle drei Fragen mit Ja beantwortet sind; zunächst hängt ihr sie einfach unter den Moment, in dem sie vorkommt. Passt sie unter mehr als einen Ast, ist sie zu breit: Formuliert sie genauer, notfalls als eigene Chance für jeden Moment. „Die Oberfläche ist schwer zu bedienen“ wird so zu „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ ({TORRES}, S. 88). Was nur eine Person erzählt hat, bleibt auf ihrem Snapshot – es kann in späteren Interviews wiederkommen (S. 70).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="struktur">Struktur: Ast für Ast</h2>
+    <p class="folie-satz">Gruppieren, bis alles unter einem Moment hängt.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/geschwister-eltern.jpg" alt="Baum: „I want to watch my shows on the go.“ oben, darunter die Geschwister „…on my flight.“ und „…on my train commute.“" quelle={`Geschwister bekommen ein Elternteil. ${TORRES}, S. 90.`} schmal />
+      <ul>
+        <li data-schritt><strong>Geschwister?</strong> Ein Elternteil suchen – oder ergänzen, wenn es nicht gesagt wurde.</li>
+        <li data-schritt><strong>Dasselbe, anders gesagt?</strong> Zu einer Chance zusammenlegen.</li>
+        <li data-schritt>Mini-Bäume weiter gruppieren, bis sie unter dem Moment hängen.</li>
+        <li data-schritt><strong>Genug Struktur:</strong> nicht in 30 Minuten fertig, nicht stundenlang feilen.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Arbeitet einen Ast nach dem anderen. Geschwister wie „im Flugzeug schauen“ und „im Zug schauen“ bekommen ein gemeinsames Elternteil („unterwegs schauen“). Wurde es nicht ausdrücklich gesagt, dürft ihr es ergänzen, weil es aus den Kindern folgt. Zwei Sätze, die dasselbe meinen („Den Titel mit der Fernbedienung einzugeben ist mühsam“, „Buchstaben auswählen ist schwer“), legt ihr zusammen ({TORRES}, S. 89–90). Dann sucht ihr Geschwister unter den Eltern der Mini-Bäume, bis eine Reihe von Geschwistern zum Moment hinaufführt (S. 90–91).</p>
+      <p>Der Baum sieht einfach aus und verlangt doch kritisches Denken: Ist jede Chance richtig gefasst, wisst ihr, was sie meint, kann sie das Outcome treiben? Torres warnt vor beiden Fehlern – den ersten Baum in einer halben Stunde für fertig zu halten und stundenlang am perfekten Baum zu feilen. Macht so viel, wie ihr gerade wisst; der Baum wächst mit jedem Interview (S. 91).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="anti-muster">Sechs Anti-Muster</h2>
+    <p class="folie-satz">Prüft euren ersten Entwurf gegen diese Fehler.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/vertikal.jpg" alt="Senkrechter Stapel aus drei Chancen ohne Geschwister: „Is this show any good?“, darunter „Will I like this show?“, darunter „I don't like it when I start a show and it isn't good.“" quelle={`Senkrechte Chancen. ${TORRES}, S. 93.`} schmal />
+      <ul>
+        <li data-schritt><strong>Aus Firmensicht:</strong> Haben wir das gehört – oder wünschen wir es uns?</li>
+        <li data-schritt><strong>Senkrecht:</strong> ein Kind unter einem Kind – fehlen Geschwister?</li>
+        <li data-schritt><strong>Zwei Eltern:</strong> zu breit, pro Moment eine Chance.</li>
+        <li data-schritt><strong>Unkonkret:</strong> „Das ist zu schwer“ statt „Den Titel einzugeben ist mühsam“.</li>
+        <li data-schritt><strong>Verkleidete Lösung:</strong> nur ein Weg denkbar?</li>
+        <li data-schritt><strong>Gefühl statt Ursache:</strong> „Ich bin frustriert“ – worüber?</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Torres nennt diese Anti-Muster für den ersten Entwurf ({TORRES}, S. 91–95):</p>
+      <ul>
+        <li><strong>Aus Sicht der Firma formuliert.</strong> Niemand sagt „Ich wünsche mir mehr Streaming-Abos“, wohl aber „Ich will Zugang zu mehr guten Inhalten“. Fragt bei jeder Chance: Haben wir das in Interviews gehört? Bei ergänzten Eltern: Kann ich mir vorstellen, dass jemand das sagt – oder wünschen wir uns das nur?</li>
+        <li><strong>Senkrechte Chancen.</strong> Ein Elternteil mit nur einem Kind, das wieder nur ein Kind hat. Entweder sagen alle dasselbe in anderen Worten – dann eine Chance daraus machen –, oder es fehlen Geschwister. Wisst ihr nicht, welche, fragt in den nächsten Interviews danach.</li>
+        <li><strong>Mehrere Eltern.</strong> Wenn die obersten Chancen eigene Zeitpunkte sind, hat keine Chance zwei Eltern. Passt eine unter zwei, ist sie zu breit: eine Chance pro Moment.</li>
+        <li><strong>Nicht konkret.</strong> Themen, Gestaltungsregeln oder Stimmungen („Das ist zu schwer“) sind keine Chancen; „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam“ schon.</li>
+        <li><strong>Verkleidete Lösungen.</strong> „Ich will Werbung vorspulen können“ lässt nur eine Lösung zu. Die Chance dahinter, „Ich mag keine Werbung“, lässt mehrere zu. Test: Gibt es mehr als einen Weg, sie anzugehen?</li>
+        <li><strong>Gefühle als Chancen.</strong> Ein Gefühl zeigt, dass eine Chance in der Nähe ist. Gefühle lassen sich nicht lösen, ihre Ursachen schon – sucht die Ursache.</li>
+      </ul>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">Vier Momente, darunter belegte Chancen.</p>
+    <Baum schmal knoten={KAFFEEBAR_BAUM_TAG2} label="Opportunity Solution Tree der Kaffeebar nach Tag 2: Outcome, darunter vier Momente, darunter Chancen mit Zitat-IDs" />
+    <p data-schritt><strong>Nicht im Baum:</strong> was nur eine Person erzählt hat (I5, I1).</p>
+    <div class="nur-handout">
+    <p>Im Baum steht nur, was mehr als ein Interview stützt. „Für Kolleg*innen mitbestellen“ (I5) und „der erste Schluck“ (I1) bleiben auf ihren Snapshots. Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Schnell geht nur der Automat.“ (I1-3, I4-3) · „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2) · „Wann ist mein Kaffee fertig?“ (I2-5, I3-3). Unter „Ich stehe an“ und „Ich bin im Zug“ fehlen Geschwister – eine Frage für die nächsten Interviews.</p>
+    <p>Wünscht sich jemand „per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1), ist die Chance dahinter „Ich will den Zug nicht verpassen“ – sie steckt schon in „Wenn ich anstehe, verpasse ich meinen Zug“. „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl; die Ursache dahinter ist dieselbe Chance. Dass unter einem Moment nur eine Chance hängt, ist hier ehrlich: Mehr haben fünf Interviews nicht hergegeben. Es ist kein senkrechter Stapel, solange darunter nicht wieder genau ein Kind folgt – aber ein Hinweis, wonach ihr als Nächstes fragt.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (65 min)</h2>
+    <p class="folie-satz">Erst allein inventarisieren, dann ordnen, dann gegenlesen.</p>
+    <MiroFrame name="T2 · 2 · Opportunity Solution Tree" />
+    <ol class="gross">
+      <li data-schritt><strong>Inventar, allein:</strong> jede Chance aus euren Snapshots durch die drei Fragen, unter ihren Moment. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Struktur, allein:</strong> Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Gegenlesen, reihum:</strong> Die anderen beiden suchen die sechs Anti-Muster. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
+    </ol>
+    <p class="nur-handout">Dazu 15 Minuten Theorie und 5 Minuten Kaffeebar. Beim Gegenlesen hat jede Person fünf Minuten für ihren Baum; die anderen fragen bei jeder Chance „Haben wir das gehört?“ und „Gibt es mehr als einen Weg?“. Was nach dem Gegenlesen offen bleibt, wird eine Frage für die nächsten Interviews.</p>
+  </Folie>
+
+  <div class="nur-handout">
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · docs/BAUM.md"># Opportunity Solution Tree — [Produkt]
+
+Stand: [Datum] · Miro: [Link zum Frame] · Outcome (aus dem Produkt-Brief): [...]
+
+## „[Moment 1 aus der Experience Map]“
+- „[Chance in den Worten der Kundschaft]“ ([Zitat-IDs aus mindestens zwei Interviews])
+  - „[Kind-Chance]“ ([...])
+- „[...]“ ([...])
+
+## „[Moment 2]“
+- [...]
+
+## Nur in einem Interview (bleibt auf dem Snapshot)
+- „[...]“ ([Zitat-ID])
+
+## Fragen für die nächsten Interviews
+- [Wo fehlen Geschwister? Was ist noch unklar?]</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="baum" />
+  </div>
+
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Welcher Ast eures Baums ist der vollste – und ist das auch der wichtigste?</p>
+    <p class="nur-handout">Ein voller Ast heißt nur, dass ihr dort viel gehört habt. Ob er der wichtigste ist, klärt der nächste Block: Dort vergleicht ihr die Chancen und wählt eine Ziel-Chance.</p>
+  </Folie>
+
+  <FooterNav prev={{ href: '/innolab/methoden/journey-map', t: 'Experience Map' }} next={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} />
+</Layout>

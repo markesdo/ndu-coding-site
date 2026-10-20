@@ -4,11 +4,14 @@
 // die farbig bleibt – die übrigen treten zurück („heute arbeitet ihr hier“).
 // Die Äste baut BaumAst.astro (rekursiv, mit ihren Stilen). Tiefer als vier Ebenen bleibt Label und Farbe „Experiment“.
 import BaumAst from './BaumAst.astro';
-export interface Knoten { t: string; kinder?: Knoten[] }
-const { knoten, label, hervor } = Astro.props as { knoten: Knoten; label: string; hervor?: number };
+// ebene: Ebene für Farbe und Label, wenn sie nicht aus der Tiefe folgt (Chancen unter Momenten, Torres S. 87–88).
+// marke: eigenes Label statt des Ebenennamens (z. B. „Moment“ für die obersten Chancen).
+export interface Knoten { t: string; kinder?: Knoten[]; ebene?: number; marke?: string }
+// schmal: viele Äste nebeneinander (z. B. Momente mit Chancen) – am Beamer schmalere Knoten statt waagrecht scrollen.
+const { knoten, label, hervor, schmal = false } = Astro.props as { knoten: Knoten; label: string; hervor?: number; schmal?: boolean };
 if (hervor !== undefined && ![0, 1, 2, 3].includes(hervor)) throw new Error(`Baum: hervor muss 0–3 sein (0 = Outcome), war ${hervor}`);
 ---
-<figure class="baum" aria-label={label}>
+<figure class:list={['baum', { 'baum-schmal': schmal }]} aria-label={label}>
   <ul class="baum-wurzel"><BaumAst knoten={knoten} hervor={hervor} /></ul>
 </figure>
 

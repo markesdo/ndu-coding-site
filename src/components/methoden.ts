@@ -35,6 +35,7 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'synthese', name: 'Interviews mit Snapshots (pseudonymisiert)', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/interviews.json', werkstatt: 'interviews' },
   { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains)', lebtIn: ['miro', 'repo'], pfad: 'docs/KUNDENPROFIL.md' },
   { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro', 'repo'], pfad: 'docs/JOURNEY.md' },
+  { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro', 'repo'], pfad: 'docs/BAUM.md' },
   { id: 'chancen', name: 'Chancen als HMW-Fragen', lebtIn: ['miro', 'repo'], pfad: 'docs/CHANCEN.md' },
   { id: 'ideen', name: 'Ideen mit Auswahl', lebtIn: ['miro', 'repo'], pfad: 'docs/IDEEN.md' },
   { id: 'valuemap', name: 'Value Map und Fit', lebtIn: ['miro', 'repo'], pfad: 'docs/VALUE-MAP.md' },
@@ -163,9 +164,24 @@ export const METHODEN: Methode[] = [
     ki: 'Liest eure Interviews und fragt, welche Geschichte in der Map fehlt und wo sich Momente überschneiden.',
   },
   {
+    slug: 'baum', name: 'Opportunity Solution Tree', tag: 2, dauer: 65,
+    frage: 'Welche Chancen aus den Interviews gehören unter welchen Moment – und wie hängen sie zusammen?',
+    braucht: ['brief', 'synthese', 'journey'], ergibt: ['baum'],
+    quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 6, S. 78–95',
+    pruefliste: [
+      'Jede Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch in den Worten der Kundschaft – keine Lösung.',
+      'Jede Chance im Baum ist mit Zitat-IDs aus mehr als einem Interview belegt; Einzelfälle stehen getrennt.',
+      'Jede Chance hängt unter genau einem Moment der Experience Map; keine hat zwei Eltern.',
+      'Ein Kind ist ein Teil seines Elternteils; Geschwister lassen sich einzeln lösen.',
+      'Kein senkrechter Stapel: Wo ein Elternteil nur ein Kind hat, ist notiert, wonach ihr als Nächstes fragt.',
+      'Keine Chance ist ein Gefühl ohne Ursache oder so unkonkret wie „Das ist zu schwer“.',
+    ],
+    ki: 'Liest eure Interviews und sucht die sechs Anti-Muster – mit Zitat aus Baum und Interview.',
+  },
+  {
     slug: 'hmw', name: 'How Might We', tag: 2, dauer: 30,
     frage: 'Welche Frage öffnet für die gewählte Chance möglichst viele Ideen?',
-    braucht: ['journey'], ergibt: ['chancen'],
+    braucht: ['baum'], ergibt: ['chancen'],
     pruefliste: [
       'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an einer Chance aus eurem Baum.',
       'Keine Frage enthält schon eine Lösung.',

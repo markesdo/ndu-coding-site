@@ -3,11 +3,11 @@
 import type { Knoten } from './Baum.astro';
 const EBENEN = ['Outcome', 'Chance', 'Lösung', 'Experiment'];
 const { knoten, hervor, ebene = 0 } = Astro.props as { knoten: Knoten; hervor?: number; ebene?: number };
-const e = Math.min(ebene, 3);
+const e = Math.min(knoten.ebene ?? ebene, 3);
 const leise = hervor !== undefined && hervor !== e;
 ---
 <li class:list={['baum-ast', `e${e}`, { leise }]}>
-  <span class="baum-knoten"><small>{EBENEN[e]}</small>{knoten.t}</span>
+  <span class="baum-knoten"><small>{knoten.marke ?? EBENEN[e]}</small>{knoten.t}</span>
   {knoten.kinder?.length ? (
     <ul class="baum-kinder">{knoten.kinder.map((k) => <Astro.self knoten={k} hervor={hervor} ebene={ebene + 1} />)}</ul>
   ) : null}
@@ -41,4 +41,5 @@ const leise = hervor !== undefined && hervor !== e;
      weil die Scope-Attribute sonst die spezifischere Regel stellen. */
   :global(html[data-beamer]) .baum-knoten { max-width: 17rem; padding: .3rem .6rem; font-size: .8rem; }
   :global(html[data-beamer]) .baum-knoten small { font-size: .65rem; }
+  :global(html[data-beamer] .baum-schmal) .baum-knoten { min-width: 5.5rem; max-width: 9.5rem; padding: .3rem .45rem; }
 </style>
