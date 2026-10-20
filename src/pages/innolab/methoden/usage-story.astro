@@ -5,55 +5,118 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+
+const LICHAW = 'Donna Lichaw, „The User’s Journey: Storymapping Products That People Love“ (Rosenfeld 2016)';
+const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
 ---
 <Layout title="Usage Story">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Usage Story</h1>
-  <p class="lead">Der Kernablauf von Slice 1 als Geschichte – mit einem Höhepunkt am Ende, den euer Prototyp liefern muss.</p>
+  <p class="lead">Der Kernablauf von Slice 1 als Geschichte – mit einem Höhepunkt nahe am Ende, den euer Prototyp liefern muss, und einem schnellen Schluss danach.</p>
   <Orientierung seite="innolab/methoden/usage-story" leiste={false} />
   <MethodenKarte slug="usage-story" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Daniel Kahneman hat gezeigt: Menschen beurteilen ein Erlebnis nicht nach seiner Dauer oder dem Durchschnitt, sondern nach dem <strong>intensivsten Moment</strong> und dem <strong>Ende</strong>. In seinen Versuchen wollten Menschen eine längere unangenehme Erfahrung eher wiederholen, wenn sie milder endete, als eine kürzere, die schlecht endete. Wir erinnern Geschichten, nicht Minuten.</p>
-  <p>Die Usage Story nutzt das. Ihr erzählt den Kernablauf eures ersten Slices mit dem Story-Bogen und plant bewusst, wo der Höhepunkt liegt – der Moment, in dem die Person den Wert spürt. Er gehört ans Ende, nicht in die Mitte. Ein kleiner, bedeutsamer „Boom“ am Schluss macht den Ablauf erinnerbar.</p>
-  <p>Die Experience Map zeigt den Ist-Zustand, die Usage Story den Soll-Zustand – für einen Ablauf, nicht für alles. Sie ist die Vorlage für den Prototyp und für die Testaufgaben.</p>
+  <Folie>
+    <h2 id="usage-story">So funktioniert eine Usage Story</h2>
+    <p class="folie-satz">Derselbe Bogen, jetzt Schritt für Schritt – für den Weg, den Menschen immer wieder gehen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/lichaw/usage-story.jpg" alt="Oranger Bogen: Current State als Foto, Problem, Trigger or CTA mit erschrockenem Gesicht, Steps als Treppenpfeil, Impediment(s) als Hürde, Problem solved, Experience value or delight als Glühbirne am Gipfel, Then what? als Pfeil nach unten, Goal(s) met mit lächelndem Gesicht" quelle={`Die Usage Story. ${LICHAW_KURZ}, Abb. 5.2.`} />
+      <ul>
+        <li data-schritt><strong>Auslöser:</strong> ein Ereignis oder eine Aufforderung, passend zum Pain.</li>
+        <li data-schritt><strong>Steigende Handlung:</strong> Schritte, jeder relevanter als der vorige.</li>
+        <li data-schritt><strong>Krise:</strong> Hürden – Anmeldung, Bezahlen, Zweifel, Bedienung.</li>
+        <li data-schritt><strong>Höhepunkt:</strong> die Person <em>erlebt</em> den Wert – nicht nur, dass, sondern wie.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Die Usage Story erzählt, wie jemand euer Produkt nutzt, Schritt für Schritt; Schritte können Bildschirme sein oder außerhalb des Bildschirms liegen ({LICHAW}, Kap. 5). Die Exposition ist dieselbe wie in der Concept Story; der Auslöser soll zu dem Problem passen, das ihr dort beschrieben habt. In der steigenden Handlung soll jeder Schritt interessanter oder relevanter werden als der vorige: „Things don’t get good or bad for your user. They get better and better.“</p>
+      <p>Lichaws Liste typischer Hürden für die Krise: Anmeldung; Bezahlen und sensible Daten; mentale Hürden wie Langeweile, ein falsches mentales Modell oder fehlender Wert; schlechte Bedienbarkeit. Am Höhepunkt zählt „not just that the problem is solved, but how it is solved“ – ist das Lösen allein schon das Großartige, fließt die Story, bleibt aber flach; manchmal braucht es einen kleinen Zusatz (Kap. 5, Crisis, Climax).</p>
+      <p>Welcher Ablauf? Lichaw empfiehlt, mit Kernaufgaben zu beginnen: „Core tasks are interactions that you want and expect users to perform over and over again“ (Kap. 5). Bei euch ist das der Weg durch Slice 1 eurer Story Map.</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: Lena, 7:27</h2>
-  <ol>
-    <li><strong>Exposition:</strong> Lena kommt um 7:27 in die Bahnhofshalle, ihr Zug nach Wien fährt um 7:38. Sie will Kaffee, aber nicht ihren Zug riskieren (J1).</li>
-    <li><strong>Auslöser:</strong> An der Hallentür sieht sie den Aufsteller: „Zug in 8 Minuten, Schlange bis zur Tür?“ (Moment „Ich komme in die Halle“)</li>
-    <li><strong>Steigende Handlung:</strong> Sie scannt den Code, tippt auf „Cappuccino“ und gibt ihre Abfahrtszeit ein: 7:38.</li>
-    <li><strong>Krise:</strong> Kurz die Frage: Geht sich das aus, oder steht sie gleich doch in der Schlange? (P1)</li>
-    <li><strong>Höhepunkt:</strong> „Fertig 7:31. Dein Zug fährt 7:38.“ Sie geht an der Schlange vorbei.</li>
-    <li><strong>Fallende Handlung:</strong> An der Express-Ausgabe leuchtet ihre Nummer, der Becher steht schon da.</li>
-    <li><strong>Ende:</strong> 7:34 auf dem Bahnsteig, Kaffee in der Hand, vier Minuten Puffer. Der erste Schluck im Zug (Moment „Ich bin im Zug“, das Ende).</li>
-  </ol>
-  <p>Der Höhepunkt ist ein einziger Satz auf dem Bildschirm. Genau den muss der Prototyp zeigen – sonst testet ihr eine Bestellseite, nicht euer Produkt.</p>
+  <Folie>
+    <h2 id="nahe-am-ende">Nahe am Ende, dann schnell Schluss</h2>
+    <p class="folie-satz">Erinnert werden Höhepunkt und Ende – das kennt ihr von Tag 2.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/lichaw/storyboard.jpg" alt="Neun Felder in drei Reihen: Foto, erschrockenes Gesicht, drei Treppenpfeile, Hürde, Glühbirne mit Gesicht im siebten Feld, Pfeil nach unten, lächelnde Sonne" quelle={`Storyboard in neun Feldern. ${LICHAW_KURZ}, Abb. 7.2.`} schmal />
+      <ul>
+        <li data-schritt><strong>Peak-End</strong> spiegelt den Story-Bogen.</li>
+        <li data-schritt><strong>Höhepunkt</strong> im siebten von neun Feldern.</li>
+        <li data-schritt><strong>Danach</strong> ein, zwei Schritte – nicht am Gipfel aufhören.</li>
+        <li data-schritt><strong>Ein kleiner „Boom“</strong> reicht: ein Satz, eine Animation.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Die Peak-End-Regel habt ihr an Tag 2 bei der <a href="/innolab/methoden/journey-map#peak-end">Experience Map</a> kennengelernt. Lichaw verbindet sie mit dem Bogen: Die Regel „not at all coincidentally mirrors the structure of a narrative arc“ ({LICHAW}, Kap. 5, Abb. 5.1).</p>
+      <BuchAbbildung src="/quellen/lichaw/peak-end.jpg" alt="Grauer Bogen mit zwei gerahmten Ausschnitten: oben Peak am Gipfel, unten End am Auslauf" quelle={`Peak und End auf dem Bogen. ${LICHAW_KURZ}, Abb. 5.1.`} schmal />
+      <p>Wo der Höhepunkt liegt: „humans need a little something near the end of an experience“ (Kap. 8, Make Things Go Boom!). Im Storyboard gehören der Auslöser ins zweite und der Höhepunkt ins siebte von neun Feldern, damit das Ende schnell folgt (Kap. 7). Danach braucht es noch Schluss: „The flow can’t just end on a high point—it has to go somewhere“ (Kap. 5), und die fallende Handlung soll „as quickly as possible“ kommen (Kap. 2). Der „Boom“ darf klein sein – eine Animation –, muss aber bedeutsam sein (Kap. 8).</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
-  <ol>
-    <li><strong>Ablauf wählen (5 min):</strong> der Weg durch Slice 1, den Menschen am häufigsten gehen.</li>
-    <li><strong>Sieben Stationen (15 min, allein):</strong> eine konkrete Person, eine Uhrzeit, ein Ziel. Krise und Höhepunkt mit IDs.</li>
-    <li><strong>Boom prüfen (5 min):</strong> Liegt der Höhepunkt am Ende? Würde ihn jemand weitererzählen?</li>
-    <li><strong>Festhalten (5 min):</strong> <code>docs/STORYS.md</code>, Abschnitt „Usage Story“.</li>
-  </ol>
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: Pendler I1, 7:27</h2>
+    <p class="folie-satz">Bestellen im Gehen – die Kernaufgabe aus Slice 1.</p>
+    <ol>
+      <li data-schritt><strong>Exposition:</strong> I1, Zug 7:38, „eigentlich immer knapp dran“ (I1-1); will Kaffee, ohne den Zug zu riskieren (J1, P1).</li>
+      <li data-schritt><strong>Auslöser:</strong> 7:27, „Ich komme in die Halle“: Schlange bis zur Tür, an der Tür der Aufsteller.</li>
+      <li data-schritt><strong>Steigende Handlung:</strong> scannen → eins aus drei → 7:38 eintippen.</li>
+      <li data-schritt><strong>Krise:</strong> tippen im Gehen – und der Zweifel, ob es reicht (P1, I3-3).</li>
+      <li data-schritt><strong>Höhepunkt:</strong> „Fertig 7:31. Dein Zug fährt 7:38.“ Er geht an der Schlange vorbei.</li>
+      <li data-schritt><strong>Fallende Handlung:</strong> Express-Ausgabe, Nummer am Bildschirm, bar bezahlt.</li>
+      <li data-schritt><strong>Ende:</strong> 7:34 am Bahnsteig; im Zug der erste Schluck (I1-4).</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Die Figur stammt aus den Interviews: I1, „Pendler, Zug 7:38“, eigentlich immer knapp dran (I1-1); heute nimmt er bei langer Schlange den Automaten, „Notlösung, aber schnell“ (I1-3). Das ist der Ist-Zustand aus der Experience Map – ein Cliffhanger an der Krise: P1 bleibt ungelöst. Die Usage Story erzählt den Soll-Zustand für Slice 1.</p>
+      <p>Der Auslöser hängt am Moment „Ich komme in die Halle“ der Experience Map. Die Schritte sind die Tasks aus Slice 1 der Story Map: QR-Code scannen, eins aus drei, Uhrzeit eintippen. Die Krise verbindet eine Bedien-Hürde (tippen im Gehen) mit einem Zweifel: Reicht es wirklich? (P1, I3-3). Der Höhepunkt ist ein einziger Satz auf dem Bildschirm, und erlebt wird er, weil I1 an der Schlange vorbeigeht. Danach ein, zwei Schritte: abholen an der Express-Ausgabe, bar bezahlen. Ende – für heute: Kaffee in der Hand am Bahnsteig, „Wenn der erste Schluck passt, ist der Morgen gerettet“ (I1-4, Moment „Ich bin im Zug“). Die nächste Episode wäre Slice 2.</p>
+      <p>Lichaws Smile Test: Bei Station 5 erwartet ihr im Test das Lächeln oder ein „Ah, ich versteh’s“ ({LICHAW}, Kap. 6). Genau das zählt der Spike-Test als „Höhepunkt erreicht“.</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (18 min)</h2>
+    <p class="folie-satz">Eine Person, eine Kernaufgabe, sieben Stationen.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Kernaufgabe wählen:</strong> der Weg durch Slice 1, den Menschen immer wieder gehen. <Timer minuten={2} /></li>
+      <li data-schritt><strong>Sieben Stationen, allein:</strong> Person aus den Interviews, Uhrzeit, Ort. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Boom-Probe, reihum:</strong> Ist der Höhepunkt konkret? Kommt danach noch Schluss? <Timer minuten={4} /></li>
+      <li data-schritt><strong>Festhalten.</strong> <Timer minuten={2} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Dazu zwölf Minuten Theorie und Beispiel. Lichaws Fragen je Station ({LICHAW}, Kap. 5, Mapping the Usage Story): <em>Exposition</em> – Wer? Welche Ziele? Was steht im Weg? <em>Auslöser</em> – Was startet genau diesen Ablauf? <em>Steigende Handlung</em> – Erste Aktion? Nächste? <em>Krise</em> – Was könnte im Weg stehen? <em>Höhepunkt</em> – „What value do you want the user to experience during this flow? What will make all of her conflict, crisis, and work … worthwhile?“ <em>Fallende Handlung</em> – Wie schließt ihr die Episode möglichst schnell ab? <em>Ende</em> – Wo steht die Person, und ist das der Anfang der nächsten Story?</p>
+      <p>Zur Boom-Probe: Reihum liest jede*r die Story der Nachbarin oder des Nachbarn – A die von B, B die von C, C die von A –, nur die Stationen 4 bis 7, und fragt: Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens ein, zwei Schritte? Wo würdest du lächeln? Wer hinterherhängt, füllt nur Krise und Höhepunkt – die braucht der Prototyp.</p>
+      <p>Festhalten in <code>docs/STORYS.md</code>, Abschnitt „Usage Story“. Der Prototyp-Spike baut genau die Stationen 2 bis 6.</p>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/STORYS.md, Abschnitt Usage Story">## Usage Story · [Ablauf aus Slice 1]
-1. Exposition: [Person], [Zeit, Ort] – will [Ziel] ([J…])
-2. Auslöser: [was den Ablauf startet] ([W…])
-3. Steigende Handlung: [Schritt] → [Schritt] → [Schritt]
-4. Krise: [Hürde] ([P…])
-5. Höhepunkt: [der Moment, in dem sie den Wert spürt]
-6. Fallende Handlung: [was direkt danach passiert]
-7. Ende: [wo sie danach steht]</Prompt>
+  <Prompt label="Vorlage · docs/STORYS.md, Abschnitt Usage Story">## Usage Story · [Kernaufgabe aus Slice 1]
+Person: [Pseudonym aus den Interviews] (I…) · [Uhrzeit, Ort]
+1. Exposition: wie in der Concept Story – will [Ziel] (J…), Hindernis [Pain] (P…)
+2. Auslöser: [Ereignis oder Aufforderung] am Moment „[...]“ der Experience Map (Zitat-IDs)
+3. Steigende Handlung: [Task] → [Task] → [Task] (Slice 1)
+4. Krise: [Hürde: Anmeldung / Bezahlen / Zweifel / Bedienung] (P…, A… oder Zitat-ID)
+5. Höhepunkt: [der Bildschirm oder Moment] – erlebt, weil [wie]
+6. Fallende Handlung: [ein, zwei Schritte]
+7. Ende: [wo die Person steht] · nächste Episode: [...]
+Smile: Im Test erwarten wir das Lächeln bei Station 5 → Testaufgabe in docs/TESTS.md</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="usage-story" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Was ist euer „Fertig 7:31“ – der eine Satz oder das eine Bild, in dem eure Person merkt, dass es sich gelohnt hat? Wenn ihr ihn nicht zeigen könnt, ist euer Prototyp noch keiner.</p>
-  <p class="small muted">Nach Donna Lichaw, <em>The User’s Journey</em> (Rosenfeld 2016); Peak-End-Regel nach Daniel Kahneman.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Was ist euer „Fertig 7:31“?</p>
+    <p class="nur-handout">Der eine Satz oder das eine Bild, in dem eure Person merkt, dass es sich gelohnt hat. Wenn ihr ihn nicht zeigen könnt, ist euer Prototyp noch keiner – dann testet ihr eine Bestellseite, nicht euer Produkt.</p>
+  </Folie>
+
+  <p class="small muted">Nach {LICHAW}, Kap. 2, 5–8.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/story-map', t: 'Story Map' }} next={{ href: '/innolab/methoden/prototyp-spike', t: 'Prototyp-Spike & Usability-Test' }} />
 </Layout>
