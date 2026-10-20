@@ -213,9 +213,9 @@ export const METHODEN: Methode[] = [
     braucht: ['chancen'], ergibt: ['ideen'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 8, S. 106–114',
     pruefliste: [
-      'Für die Ziel-Chance stehen 15 bis 20 Ideen, aus zwei Runden allein und geteilt.',
+      'Für die Ziel-Chance stehen 15 bis 20 Ideen, entstanden im Wechsel von allein und geteilt.',
       'Ideen, die die Ziel-Chance nicht lösen, sind aussortiert und stehen getrennt.',
-      'Genau drei Ideen gehen weiter, gewählt nach einem Kriterium: wie gut sie die Ziel-Chance treffen.',
+      'Genau drei Ideen gehen weiter; bei jeder steht, warum sie die Ziel-Chance trifft.',
       'Die drei sind verschieden und keine Varianten derselben Idee; jede hat eine Fürsprecher*in.',
       'Ideen von Claude sind als solche markiert.',
     ],
