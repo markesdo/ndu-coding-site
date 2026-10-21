@@ -22,8 +22,8 @@ export interface Artefakt {
   /** Datei oder Abschnitt im Projekt-Repo, wenn es dort festgehalten wird; nur in der Werkstatt: die Datei in der Mappe. */
   pfad?: string;
   /** Name in der Werkstatt-Mappe, wenn das Artefakt dort bearbeitet wird. Die IDs hier bleiben, auch wo die Werkstatt
-   *  anders heißt („transkripte“ → leitfaden). Interview-Notizen kommen nie ins App-Repo (öffentlich); bis der
-   *  Interview-Editor da ist, bleiben sie privat bei den Studierenden. */
+   *  anders heißt („transkripte“ → leitfaden). Interview-Notizen kommen nie ins App-Repo (öffentlich), nur
+   *  pseudonymisiert in die private Mappe (interviews). */
   werkstatt?: ArtefaktName;
 }
 

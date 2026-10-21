@@ -64,7 +64,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
         'Folie zeigen, Timer 10 min. Die Anleitung mit Bildern liegt auf /innolab/werkstatt/claude.',
         'Mappe zuerst: Die Anmeldung mit GitHub legt sie an und zeigt sofort, ob jemand freigeschaltet ist.',
         'Dann der Connector über den Ein-Klick-Link: Connect, in GitHub bestätigen, in der Werkstatt „Erlauben“, Werkzeuge auf „Always allow“. Danach Modelltraining aus.',
-        'Kurz herumgehen: Sieht jede*r die leere Mappe und den Connector mit vier Werkzeugen?',
+        'Kurz herumgehen: Sieht jede*r die leere Mappe und den Connector mit seinen Werkzeugen?',
       ],
       achten: [
         '„Nicht freigeschaltet“ heißt: GitHub-Name fehlt in der Werkstatt. Neu anmelden hilft nicht, erst eintragen.',
@@ -76,7 +76,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       ],
     },
     fragen: [
-      { frage: 'Was sieht Claude über den Connector?', antwort: 'Nur die eigene Mappe, und nur lesend: vier Werkzeuge, alle read-only. Claude prüft, schreibt aber nichts.' },
+      { frage: 'Was sieht Claude über den Connector?', antwort: 'Nur die eigene Mappe, und nur lesend: Alle Werkzeuge sind read-only. Claude prüft, schreibt aber nichts.' },
       { frage: 'Was, wenn der Connector nicht klappt?', antwort: 'Ohne ihn weiterarbeiten: erst den Prüf-Prompt einfügen, dann den Text aus „Für Claude kopieren“. Nur der kopierte Text allein, und Claude schreibt um, statt zu prüfen.' },
     ],
   },
