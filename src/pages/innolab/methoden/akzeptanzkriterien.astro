@@ -4,44 +4,133 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import Fluss from '../../../components/Fluss.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import { CircleCheck, MousePointerClick, Flag } from '@lucide/astro';
+
+const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
+const NORTH = 'Dan North, „Introducing BDD“ (Better Software, 2006; dannorth.net)';
+const GHERKIN = 'Cucumber, „Gherkin Reference“ (cucumber.io)';
+const WAKE = 'Bill Wake, „INVEST in Good Stories, and SMART Tasks“ (xp123.com, 2003)';
+const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
+const COHN = 'Mike Cohn, „Agile Estimating and Planning“ (2005)';
+const DUARTE = 'Vasco Duarte, „NoEstimates“ (2016)';
+const EVALS = 'Anthropic, „Define success criteria and build evaluations“ (docs.claude.com)';
+const GRENZFAELLE = 'Lies Issue [Kennung] über den Linear-MCP. Wir haben zu dritt den Normalfall und unsere Was-wenn-Fälle als Akzeptanzkriterien geschrieben. Nenn höchstens drei Fehler- oder Grenzfälle, die fehlen, jeweils als „Gegeben … wenn … dann …“ mit konkreten Werten, ohne technische Umsetzung. Ändere das Issue nicht – ich entscheide, was hineinkommt.';
 ---
 <Layout title="Akzeptanzkriterien">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Akzeptanzkriterien</h1>
-  <p class="lead">Woran ihr – und Claude – erkennt, dass ein Issue fertig ist: konkret, mit Fehlerfall und ohne ein Wort zum Wie.</p>
+  <p class="lead">Woran ihr – und Claude – erkennt, dass ein Issue fertig ist: gemeinsam festgelegt, mit echten Werten, mit Fehlerfall und ohne ein Wort zum Wie.</p>
   <Orientierung seite="innolab/methoden/akzeptanzkriterien" leiste={false} />
   <MethodenKarte slug="akzeptanzkriterien" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Akzeptanzkriterien kennt ihr aus dem Coding-Kurs: Sie sagen, was ein Issue können muss, damit es abgenommen wird. Im Team bekommen sie eine zweite Aufgabe: Sie sind die gemeinsame Sprache zwischen Product Owner, Developers und Claude. Wer ein fremdes Issue baut, hat nur sie.</p>
-  <p>Zwei Formen:</p>
-  <ul>
-    <li><strong>Szenario:</strong> <em>Gegeben</em> [Ausgangslage], <em>wenn</em> [Handlung], <em>dann</em> [Ergebnis]. Gut für Abläufe.</li>
-    <li><strong>Regel:</strong> eine prüfbare Aussage als Checkliste, z. B. „Die Abfahrtszeit akzeptiert nur Uhrzeiten im Format 7:38 oder 07:38.“ Gut für Darstellung und Grenzen.</li>
-  </ul>
-  <p>Akzeptanzkriterien gelten für <strong>ein</strong> Issue. Die <strong>Definition of Done</strong> aus <code>docs/TEAM.md</code> gilt für <strong>alle</strong> – Belege, Review, live. Was in der DoD steht, wiederholt ihr nicht in jedem Issue.</p>
+  <Folie>
+    <h2 id="worum">Confirmation: zwei Fragen</h2>
+    <p class="folie-satz">Woran prüfen wir, dass es fertig ist – und wie zeigen wir es im Review?</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/kriterien-flipchart.jpg" alt="Foto von drei Flipchart-Bögen an einer Glaswand, je mit einem Story-Namen als Überschrift und einer Liste von Akzeptanzkriterien darunter; Beschriftung: Record your agreements as acceptance criteria" quelle={`Kriterien groß und sichtbar, eine Liste je Story. ${PATTON}, Kap. 6, „Words and Pictures“.`} />
+      <ul>
+        <li data-schritt>„If we build what we agree to, what will we check to see that we’re done?“ – eine kurze Liste.</li>
+        <li data-schritt>„When it comes time to demonstrate this later at a product review, how will we do that?“ – welche Daten, welches Gerät, welcher Weg.</li>
+        <li data-schritt><strong>Gemeinsam</strong> festgelegt, bevor gebaut wird.</li>
+        <li data-schritt><strong>Groß und sichtbar,</strong> während ihr redet.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Beide Fragen stehen bei {PATTON}, Kap. 6, „3. Confirmation“. Die Antwort auf die erste ist „a short list of things to check. This list is often called acceptance criteria, or story tests.“ Die zweite „often reveals some holes. For example, you could make the software work, but to demonstrate it you’ll need to get your hands on some realistic data.“ Bei euch ist die Antwort auf die zweite Frage die Zeile <strong>Fertig, wenn</strong>: womit, mit welchen Daten, auf welchem Gerät ihr es im Review zeigt – das Review zeigt das Inkrement „am Handy, entlang der Usage Story“ (<a href="/innolab/methoden/sprint#review">Sprint Review</a>). Zur Abbildung: „Keep the acceptance criteria you decide on big and visible during the conversation“ (Kap. 6, „Words and Pictures“) – bei euch auf dem Miro-Frame.</p>
+      <p>Vor dem Bauen: „In each cycle, we define the next few features to build and we say how they’ll be tested“ ({JEFFRIES}, S. 44). Wake: „Writing a story card carries an implicit promise: ‚I understand what I want well enough that I could write a test for it.‘“ ({WAKE}). Duarte: Testbare Stories „include, for example, a set of criteria that define when the story is done. These criteria are called Acceptance Criteria and expressed from the point of view of the end-user or customer“ ({DUARTE}, S. 71).</p>
+      <p>Akzeptanzkriterien gelten für <strong>ein</strong> Issue, die <strong>Definition of Done</strong> aus <code>docs/TEAM.md</code> für <strong>alle</strong>. Was dort steht – Beleg im Issue, Pull Request geprüft, live, das Mess-Ereignis kommt an –, wiederholt ihr nicht in jedem Issue.</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: Issue 2 „Abfahrtszeit angeben“</h2>
-  <Prompt label="Beispiel · Akzeptanzkriterien Issue 2">- Gegeben es ist 7:27, vor mir ist keine Bestellung offen, und ich habe einen Cappuccino gewählt, wenn ich 7:38 als Abfahrt eingebe, dann sehe ich „Fertig 7:31. Dein Zug fährt 7:38.“
-- Gegeben vor mir sind so viele Bestellungen, dass mein Getränk später als 3 Minuten vor der Abfahrt fertig wäre, wenn ich die Abfahrtszeit eingebe, dann sehe ich „Geht sich knapp nicht aus“ und kann abbrechen oder trotzdem bestellen.
-- Gegeben ich gebe eine Uhrzeit ein, die schon vorbei ist, wenn ich bestätige, dann erscheint ein Hinweis und nichts wird bestellt.
-- Regel: Die Abfahrtszeit akzeptiert nur Uhrzeiten wie 7:38 oder 07:38; alles andere zeigt einen Hinweis unter dem Feld.</Prompt>
-  <p>Das erste Kriterium ist der Normalfall, die anderen sind Grenz- und Fehlerfälle. Keines sagt, wie die Fertig-Zeit berechnet oder gespeichert wird – das entscheidet, wer baut.</p>
+  <Folie>
+    <h2 id="formen">Gegeben – wenn – dann, mit echten Werten</h2>
+    <p class="folie-satz">Ein Kriterium ist ein Beispiel mit Zahlen, kein Adjektiv.</p>
+    <Fluss label="Ein Szenario: Gegeben eine Ausgangslage, wenn eine Handlung, dann ein sichtbares Ergebnis" knoten={[
+      { t: 'Gegeben', sub: 'die Ausgangslage – ein Zustand, kein Klick', icon: Flag },
+      { t: 'Wenn', sub: 'die eine Handlung', icon: MousePointerClick },
+      { t: 'Dann', sub: 'was man sieht, wörtlich', icon: CircleCheck },
+    ]} />
+    <ul class="gross">
+      <li data-schritt><strong>Echte Werte:</strong> „Gegeben es ist 7:27 … dann sehe ich ‚Fertig 7:31.‘“</li>
+      <li data-schritt><strong>Eine Regel</strong> nur mit mindestens einem Beispiel darunter.</li>
+      <li data-schritt><strong>Kein Wort zur Technik:</strong> wie es gerechnet oder gespeichert wird, entscheidet, wer baut.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Die Form stammt aus dem Behaviour-Driven Development: „Given some initial context (the givens), When an event occurs, Then ensure some outcomes.“ Und: „A story’s behaviour is simply its acceptance criteria: if the system fulfils all the acceptance criteria, it’s behaving correctly; if it doesn’t, it isn’t“ ({NORTH}). Norths Beispiel ist der Geldautomat, Szenario „Account is in credit“: „Given the account is in credit And the card is valid And the dispenser contains cash When the customer requests cash Then ensure the account is debited And ensure cash is dispensed And ensure the card is returned“; ein zweites Szenario prüft das überzogene Konto. Mehrere Ausgangslagen oder Ergebnisse verbindet ihr mit „und“.</p>
+      <p>Die Ausgangslage ist ein Zustand: „Avoid talking about user interaction in Given’s. If you were creating use cases, Given’s would be your preconditions“ ({GHERKIN}). Also „Gegeben ein Cappuccino liegt in meiner Bestellung“, nicht „Gegeben ich habe einen Cappuccino gewählt“. Eine Regel ist in Gherkin ein eigenes Schlüsselwort: „The purpose of the Rule keyword is to represent one business rule that should be implemented“, und sie gruppiert die Beispiele, die zu ihr gehören. Darum steht bei euch unter jeder Regel mindestens ein Beispiel. Patton sagt dasselbe für das Gespräch: „Speak in examples. Wherever possible, use specific examples of what users do, exactly what data might be entered, exactly what users would see in response“ ({PATTON}, Kap. 16, „Workshopping Stories“); Cohn nennt das „specification by example“ ({COHN}, S. 222).</p>
+      <p>Prüfbar heißt messbar: nicht „schnell“ oder „übersichtlich“, sondern eine Zeit, eine Zahl, ein Text, den man sieht. Und kein Wort zur Technik – Wake: „A good story captures the essence, not the details“; Duarte: Stories, die „do not dictate an implementation strategy“ ({DUARTE}, S. 70–71).</p>
+    </div>
+  </Folie>
 
-  <h3 id="gute-kriterien">Was gute Kriterien ausmacht</h3>
-  <ul>
-    <li>vor dem Bauen geschrieben, nicht danach</li>
-    <li>prüfbar und messbar, nicht „schnell“ oder „übersichtlich“</li>
-    <li>mindestens ein Fehler- oder Grenzfall</li>
-    <li>kein Wort zur Technik</li>
-    <li>vom ganzen Team verstanden – auch von denen, die das Produkt nicht verantworten</li>
-  </ul>
+  <Folie>
+    <h2 id="drei-rollen">Was wäre, wenn: drei Rollen am Tisch</h2>
+    <p class="folie-satz">Wertvoll ist die Frage: Was geht schief?</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/three-amigos.jpg" alt="Zeichnung: oben eine Lupe über Story-Karten, beschriftet Deep-Dive in Story Workshops und Workshop with the Three Amigos; unten drei Figuren an einer Tafel mit who, what, why, how, Pfeile von Tester, Developer und Product Discovery Team Member; rechts kommen kleinere Stories heraus, ein Papierkorb heißt Output Minimizer" quelle={`Die drei Amigos. ${PATTON}, Kap. 12.`} schmal />
+      <ul>
+        <li data-schritt><strong>Product Owner</strong> erzählt: Titel, Ziel, Normalfall.</li>
+        <li data-schritt><strong>Developer:</strong> „Was muss ich wissen, um das bauen zu lassen?“</li>
+        <li data-schritt><strong>Tester:</strong> „Was, wenn leer, doppelt, zu spät?“</li>
+        <li data-schritt><strong>Claude erst danach</strong> – höchstens drei Grenzfälle.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Patton nennt das Gespräch den Story-Workshop: „These are our ‚last best conversations‘—the conversations where we really need to agree on confirmation, or the acceptance criteria for the small parts of software we build“ (Kap. 11, „Dive into the Details of Each Story During Delivery“). Dabei sitzen drei Rollen: Developer, Tester und jemand aus dem Discovery-Team. „A tester—the first amigo—will often bring a critical eye into the discussion, spotting things that might go wrong sooner than most. The tester is often the best at playing the ‚What-About‘ game“ (Kap. 12, „The Three Amigos“). „Three to five people is a good size“; und es funktioniert nicht, wenn „one person describes what’s required and everyone else listens“ (Kap. 16, „Workshopping Stories“). Fragen dafür liefert Kap. 7, „A Checklist of What to Really Talk About“: „What happens when things go wrong?“</p>
+      <p>Bei euch ist der Product Owner die Discovery-Person, die anderen beiden bauen das Issue später. Die Rollen wechseln reihum – eine Anpassung des Kurses an drei Personen. Claude kommt erst nach dem Gespräch dazu, wie überall im Kurs: erst ihr, dann die KI.</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: Issue 2 der Kaffeebar</h2>
+    <p class="folie-satz">Ein Normalfall, zwei Was-wenn, eine Regel mit Beispiel, eine Demo-Zeile.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Normalfall:</strong> Gegeben es ist 7:27 und nichts ist offen, wenn ich 7:38 eingebe, dann sehe ich „Fertig 7:31“.</li>
+      <li data-schritt><strong>Was, wenn</strong> es knapp wird? „Geht sich knapp nicht aus.“ Und wenn die Zeit schon vorbei ist?</li>
+      <li data-schritt><strong>Regel mit Beispiel:</strong> nur 7:38 oder 07:38 – „738“ zeigt einen Hinweis.</li>
+      <li data-schritt><strong>Fertig, wenn:</strong> leer und voll am Handy gezeigt – fünf Testbestellungen.</li>
+    </ul>
+    <div class="nur-handout">
+    <Prompt label="Beispiel · Akzeptanzkriterien Issue 2, nach dem Workshop">Normalfall (Product Ownerin):
+- Gegeben es ist 7:27, keine Bestellung ist offen und ein Cappuccino liegt in meiner Bestellung, wenn ich 7:38 als Abfahrt eingebe, dann sehe ich „Fertig 7:31. Dein Zug fährt 7:38.“
+
+Was, wenn (Tester):
+- Gegeben es ist 7:27, fünf Bestellungen sind vor mir offen und ein Cappuccino liegt in meiner Bestellung, wenn ich 7:38 als Abfahrt eingebe, dann sehe ich „Fertig 7:36. Geht sich knapp nicht aus“ und kann abbrechen oder trotzdem bestellen. (Regel: knapp heißt später als 3 Minuten vor der Abfahrt.)
+- Gegeben die eingegebene Uhrzeit ist schon vorbei, wenn ich bestätige, dann erscheint ein Hinweis und nichts wird bestellt.
+
+Regel mit Beispiel (Developer fragte nach dem Format):
+- Regel: Die Abfahrtszeit akzeptiert nur Uhrzeiten wie 7:38 oder 07:38.
+  Beispiel: Gegeben im Feld Abfahrt steht „738“, wenn ich bestätige, dann steht unter dem Feld ein Hinweis und nichts wird bestellt.
+
+Fertig, wenn: mit leerer und mit voller Warteschlange am Handy gezeigt – dafür braucht die Demo fünf offene Testbestellungen.</Prompt>
+      <p>Der Normalfall stimmt mit der Usage Story überein: I1 bestellt um 7:27, Zug 7:38, „Fertig 7:31“ – vier Minuten ohne Warteschlange. Mit fünf offenen Bestellungen wären es nach der Regel im Kontext (etwa 1 Minute je offener Bestellung, eine Kurszahl aus A2) neun Minuten, also 7:36: zwei Minuten vor der Abfahrt – „Geht sich knapp nicht aus“. Darum braucht die Demo fünf Testbestellungen; die Demo-Frage hat dieses Loch gefunden.</p>
+      <p>Die 3 Minuten hat die Product Ownerin im Workshop entschieden – das ist das N in INVEST: Die Einzelheiten entstehen im Gespräch. Beleg ist I3-3, ein Ereignis, das der Student I3 erzählt hat: „Einmal stand ich da, der Zug war schon eingefahren, und ich hab gewusst: Das war ein Fehler.“ Kein Kriterium sagt, wie die Fertig-Zeit berechnet oder gespeichert wird; die Regel zum Format kam, weil der Developer fragte, was er Claude über Eingaben sagen muss. Die Uhrzeit, die schon vorbei ist, steht auf der Story Map schon als Fehlerfall unter „Bestellen“.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (32 min Übung)</h2>
+    <p class="folie-satz">Allein den Normalfall, reihum der Workshop, dann Claude und Linear.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Normalfall, allein:</strong> je Issue für Sprint 1 ein Szenario mit echten Werten und „Fertig, wenn“. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Story-Workshop, reihum:</strong> sechs Minuten je Product Owner, Rollen wechseln. <Timer minuten={18} /></li>
+      <li data-schritt><strong>Claude und Linear:</strong> höchstens drei weitere Grenzfälle; Kriterien ins Issue. <Timer minuten={6} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Davor: Theorie 8 Minuten, Kaffeebar gemeinsam 5 – zusammen 45. Zu 1: für jedes Issue, das in Sprint 1 kommen könnte, ein „Gegeben … wenn … dann …“ mit echten Werten und die Zeile „Fertig, wenn“ als Antwort auf die Demo-Frage. Zu 2: A erzählt ein Issue (Titel, Ziel, Normalfall); B ist Developer, C Tester; A schreibt die Kriterien live auf den Frame. Dann erzählt B, C ist Developer, A Tester; dann C. Pro Runde so viele Issues, wie in sechs Minuten gehen – die riskanten zuerst. Was die anderen nicht verstehen, formuliert ihr um. Patton rechnet für so einen Workshop mehr Zeit; die sechs Minuten pro Person sind eine Kürzung des Kurses. Zu 3: für ein Issue, bei dem die Runde weniger als einen Grenzfall fand, der Prompt unten; dann die Kriterien in die Linear-Beschreibung, unter „Akzeptanzkriterien“.</p>
+      <Prompt label="Grenzfälle · Claude Code" note="Erst nach dem Workshop. Claude schlägt vor, ihr entscheidet, was ins Issue kommt.">{GRENZFAELLE}</Prompt>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="evals">Wenn euer Produkt eine KI-Funktion hat: Evals</h2>
-  <p>Bei einer KI-Funktion gibt es nicht <em>die</em> richtige Antwort, und dieselbe Eingabe kann zweimal verschieden ausgehen. Ein einzelnes „Gegeben … wenn … dann …“ reicht deshalb nicht. Stattdessen schreibt ihr <strong>Eval-Fälle</strong>: eine Liste von Eingaben mit erwartetem Verhalten, und eine Schwelle, ab der die Funktion als fertig gilt.</p>
-  <p><em>Angenommen</em>, die Kaffeebar ließe auch Freitext zu („großer Hafer-Cappu“):</p>
+  <p>Dieser Abschnitt ist eine Ergänzung des Kurses; Patton, North und die anderen Buchquellen behandeln ihn nicht. Bei einer KI-Funktion gibt es nicht <em>die</em> richtige Antwort, und dieselbe Eingabe kann zweimal verschieden ausgehen. Ein einzelnes „Gegeben … wenn … dann …“ reicht deshalb nicht. Stattdessen schreibt ihr <strong>Eval-Fälle</strong>: eine Liste von Eingaben mit erwartetem Verhalten und eine Schwelle, ab der die Funktion als fertig gilt – dieselbe Confirmation, in anderer Form. Die Grundsätze stehen bei {EVALS}: „Be task-specific: Design evals that mirror your real-world task distribution. Don’t forget to factor in edge cases!“, „Automate when possible“ und „Prioritize volume over quality“. Die Schwelle „x von y“, festgelegt vor dem Test, kennt ihr von der <a href="/innolab/methoden/experiment">Experiment-Karte</a>.</p>
+  <p><em>Angenommen</em>, die Kaffeebar ließe auch Freitext zu („großer Hafer-Cappu“) – das tut sie in Slice 1 nicht:</p>
   <Prompt label="Beispiel · Eval-Fälle">Eval: Freitext → Getränk
 - „großer Hafer-Cappu“ → Cappuccino, groß, Hafermilch
 - „Espresso“ → Espresso
@@ -51,24 +140,30 @@ import FooterNav from '../../../components/FooterNav.astro';
 Schwelle: mindestens 18 von 20 richtig; nie ein Getränk, das nicht auf der Karte steht.</Prompt>
   <p>Hat euer Produkt keine KI-Funktion, lasst diesen Teil weg.</p>
 
-  <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
-  <ol>
-    <li><strong>Input (10 min).</strong></li>
-    <li><strong>Normalfall (15 min, allein):</strong> für jedes Issue, das in Sprint 1 kommen könnte, ein „Gegeben … wenn … dann …“.</li>
-    <li><strong>Fehler- und Grenzfälle (15 min):</strong> Was, wenn die Eingabe leer, falsch, zu spät, doppelt ist? Erst selbst, dann Claude (Prompt unten).</li>
-    <li><strong>In Linear (5 min).</strong></li>
-  </ol>
-  <Prompt label="Grenzfälle · Claude Code">Lies Issue [Kennung] über den Linear-MCP. Ich habe den Normalfall als Akzeptanzkriterium geschrieben. Nenn höchstens drei Fehler- oder Grenzfälle, die fehlen, jeweils als „Gegeben … wenn … dann …“, ohne technische Umsetzung. Ändere das Issue nicht – ich entscheide, was hineinkommt.</Prompt>
-  <Callout type="info" title="Gleich danach">
-    <p>Ob die Kriterien ohne Rückfrage verständlich sind, prüfen die anderen beiden beim Querlesen in <a href="/innolab/methoden/schneiden#quer-lesen">Schneiden statt Schätzen</a>.</p>
-  </Callout>
+  <h2 id="vorlage">Vorlage</h2>
+  <p>Die Vorlage ersetzt im Issue nur den Abschnitt „## Akzeptanzkriterien (folgt)“ aus dem <a href="/innolab/methoden/backlog#vorlage">Backlog</a>. Den Abschnitt „## Fertig, wenn“ hat das Issue schon; ihr ergänzt ihn um die Antwort auf die Demo-Frage: womit, auf welchem Gerät, mit welchen Daten.</p>
+  <Prompt label="Vorlage · Abschnitt Akzeptanzkriterien in Linear">## Akzeptanzkriterien
+Normalfall:
+- Gegeben [Zustand mit echten Werten], wenn [eine Handlung], dann [was man sieht, wörtlich].
+Was, wenn:
+- Gegeben [...], wenn [...], dann [...].
+Regel (falls nötig):
+- Regel: [...]
+  Beispiel: Gegeben [Zustand], wenn [...], dann [...].
+(nur bei KI-Funktion)
+Eval: [Eingabe] → [erwartet] · ... · Schwelle: [x] von [y]; nie [harte Grenze]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="akzeptanzkriterien" pfad="über den Linear-MCP die Issues, die in Sprint 1 kommen könnten (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Was ist bei euch die „Uhrzeit, die schon vorbei ist“ – die Eingabe, an die beim Bauen niemand denkt, die echte Menschen aber sicher machen?</p>
-  <p class="small muted">Gegeben/Wenn/Dann nach Behaviour-Driven Development (Dan North).</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Was ist bei euch die „Uhrzeit, die schon vorbei ist“ – der Fall, an den beim Bauen niemand denkt, den echte Menschen aber sicher auslösen?</p>
+    <p class="nur-handout">Sucht ihn auf eurer Story Map unter „Was, wenn …?“ und in euren Testbefunden. Steht er dort nicht, hat die Tester-Rolle im Workshop noch nicht genug gefragt.</p>
+  </Folie>
+
+  <p class="small muted">Nach {PATTON}, Kap. 6, 7, 11, 12, 16; {NORTH}; {GHERKIN}; {WAKE}; {JEFFRIES}, S. 44; {COHN}, S. 222; {DUARTE}, S. 70–71; Evals als Ergänzung des Kurses nach {EVALS}.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/backlog', t: 'Backlog aus Issues' }} next={{ href: '/innolab/methoden/schneiden', t: 'Schneiden statt Schätzen' }} />
 </Layout>
