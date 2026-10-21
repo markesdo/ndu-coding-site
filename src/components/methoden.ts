@@ -435,7 +435,8 @@ export const METHODEN: Methode[] = [
       'Die Demo folgt der Usage Story bis zum Höhepunkt, live am Handy auf der Produktions-URL; ihr führt sie vor, und ein Video liegt als Plan B bereit.',
       'Jede Behauptung über Nutzer*innen hat einen Beleg mit ID, eine Zahl mit der Zahl der Personen dahinter und ein Wort dazu, wie sicher sie ist – nicht sicherer als in der Lernkarte.',
       'Mindestens eine Annahme, die nicht gehalten hat, kommt vor – mit der Entscheidung, die dazu im Entscheidungslog steht.',
-      'Der Teil Position nennt gegenüber den heutigen Alternativen, was wegfällt, weniger wird, mehr wird und neu ist – alle vier, jede Zeile mit einer ID aus dem Kundenprofil oder der Value Map.',
+      'Die Zahlen der Outcome-Metrik stehen da, mit der Zahl der Personen dahinter, auch wenn sie klein ist.',
+      'Der Teil Position nennt gegenüber den heutigen Alternativen, was wegfällt, weniger wird, mehr wird und neu ist – alle vier, jede Zeile mit Beleg: einer ID aus dem Kundenprofil oder einem Verweis auf die Value Map.',
       'Der Pitch-Satz aus Abschnitt 3 des Produkt-Briefs steht da und verspricht nichts, was die Demo nicht zeigt.',
       'Es steht da, wer zahlt und wofür, an welcher Annahme das Modell hängt – benannt, nicht gerechnet –, und was ihr als Nächstes prüft und warum.',
     ],
@@ -510,6 +511,16 @@ const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchsten
 /** ID der abhakbaren Prüfliste (localStorage-Schlüssel in Checklist.astro); mit Stand, sobald die Punkte neu geschrieben wurden. */
 export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `il-${m.slug}-${m.prueflisteStand}` : `il-${m.slug}`);
 
+/** Was Claude zum Abgleich liest: die Dateien der Vorarbeit (ohne die schon gelesenen) und die Werkstatt-Artefakte,
+ *  z. B. ["docs/STORYS.md, docs/TESTS.md", "aus der Werkstatt meinen Produkt-Brief (Werkzeug artefakt_lesen)"].
+ *  Für Prompts, die dieselbe Vorarbeit lesen sollen wie die Prüfung (etwa die skeptische Investorin beim Pitch). */
+export function vorarbeitLesen(m: Methode, schonGelesen: (string | undefined)[] = []): string[] {
+  const gelesen = new Set(schonGelesen);
+  const dateien = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !gelesen.has(p)))];
+  const werkstatt = [...new Set(m.braucht.map(werkstattQuelle).filter((n): n is ArtefaktName => !!n))];
+  return [dateien.join(', '), werkstatt.length ? `aus der Werkstatt ${ausWerkstatt(werkstatt)}` : ''].filter(Boolean);
+}
+
 export function pruefPrompt(m: Methode, pfad?: string): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
   const liste = m.pruefliste.map((p, i) => `${i + 1}. ${p}`);
@@ -533,9 +544,7 @@ export function pruefPrompt(m: Methode, pfad?: string): string {
   // Viele Punkte lassen sich nur gegen die Vorarbeit prüfen (Zitate gegen Transkripte, IDs gegen das Kundenprofil).
   if (pfade.length === 0) throw new Error(`pruefPrompt: Methode „${m.slug}“ ergibt nichts, was Claude lesen kann`);
   // Ohne das, was Claude ohnehin liest – auch wenn pfad nur einen Teil davon nennt (z. B. ausgewählte Issues).
-  const schonGelesen = new Set([...pfade, ...m.ergibt.map(quelle)]);
-  const abgleich = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !schonGelesen.has(p)))];
-  const teile = [abgleich.join(', '), werkstattAbgleich.length ? `aus der Werkstatt ${ausWerkstatt(werkstattAbgleich)}` : ''].filter(Boolean);
+  const teile = vorarbeitLesen(m, [...pfade, ...m.ergibt.map(quelle)]);
   return [
     `Lies ${pfade.join(' und ')}.${teile.length ? ` Zum Abgleich lies auch ${teile.join(' und ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
     ...liste,

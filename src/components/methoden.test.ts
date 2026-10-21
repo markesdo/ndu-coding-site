@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -175,9 +175,16 @@ describe('methoden', () => {
   it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
     expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/KUNDENPROFIL\.md, docs\/VALUE-MAP\.md, docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog \(Werkzeug artefakt_lesen\)\. /);
-    // Die Prüfliste verlangt Raster-Zeilen mit IDs aus Kundenprofil oder Value Map und Sicherheit wie in den Lernkarten (E1, E2).
+    // Die Prüfliste verlangt alle vier Raster-Felder mit Beleg aus Kundenprofil oder Value Map, ein Sicherheits-Wort wie in
+    // den Lernkarten (E1, E2) und die Outcome-Zahlen – darum liest Claude Profil, Value Map, Experimente und Tests mit.
     const pitch = METHODEN.find((m) => m.slug === 'pitch')!;
-    expect(pitch.pruefliste!.join(' ')).toMatch(/wegfällt, weniger wird, mehr wird und neu ist/);
+    const liste = pitch.pruefliste!.join(' ');
+    expect(liste).toMatch(/wegfällt, weniger wird, mehr wird und neu ist/);
+    expect(liste).toMatch(/ID aus dem Kundenprofil oder einem Verweis auf die Value Map/);
+    expect(liste).toMatch(/ein Wort dazu, wie sicher sie ist/);
+    expect(liste).toMatch(/Zahlen der Outcome-Metrik/);
+    // Die Investorin auf der Pitch-Seite liest dieselbe Vorarbeit wie die Prüfung, ohne docs/PITCH.md doppelt.
+    expect(pi).toContain(`Zum Abgleich lies auch ${vorarbeitLesen(pitch, ['docs/PITCH.md']).join(' und ')}. `);
     expect(pitch.braucht).toEqual(expect.arrayContaining(['profil', 'valuemap', 'experimente', 'spike', 'entscheidungen', 'brief']));
   });
 

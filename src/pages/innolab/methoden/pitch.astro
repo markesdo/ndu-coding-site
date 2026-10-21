@@ -10,30 +10,43 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
-import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
+import { METHODEN, vorarbeitLesen } from '../../../components/methoden';
 
 const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 const BOS = 'W. Chan Kim & Renée Mauborgne, „Blue Ocean Strategy“ (2005)';
 const CAGAN = 'Marty Cagan, „Inspired“ (2. Aufl. 2018)';
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
-const INVESTORIN = `Lies docs/PITCH.md und zum Hintergrund docs/STORYS.md, docs/KUNDENPROFIL.md, docs/VALUE-MAP.md, docs/GESCHAEFTSMODELL.md, docs/EXPERIMENTE.md, docs/TESTS.md, docs/SPRINTS.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Du bist eine skeptische Investorin, die schon viele Pitches gehört hat. Stell mir fünf Fragen, eine nach der anderen, und warte jeweils auf meine Antwort. Frag dort nach, wo eine Behauptung keinen Beleg hat, wo eine Zahl klein ist, wo ich sicherer klinge, als meine Lernkarten es sind, oder wo das Geschäftsmodell an einer Annahme hängt, die ich nicht benenne. Verlang keine Preis- oder Kostenrechnung – frag, ob die Annahme benannt ist und wie ich sie prüfen würde. Bewerte meine Antworten erst am Ende, in drei Sätzen. Ändere keine Datei.`;
+// Dieselbe Vorarbeit, die auch die Prüfung liest (methoden.ts, braucht der Methode „pitch“).
+const HINTERGRUND = vorarbeitLesen(METHODEN.find((m) => m.slug === 'pitch')!, ['docs/PITCH.md']).join(' und ');
+const INVESTORIN = `Lies docs/PITCH.md und zum Hintergrund ${HINTERGRUND}. Du bist eine skeptische Investorin, die schon viele Pitches gehört hat. Stell mir fünf Fragen, eine nach der anderen, und warte jeweils auf meine Antwort. Frag dort nach, wo eine Behauptung keinen Beleg hat, wo eine Zahl klein ist, wo ich sicherer klinge, als meine Lernkarten es sind, oder wo das Geschäftsmodell an einer Annahme hängt, die ich nicht benenne. Verlang keine Preis- oder Kostenrechnung – frag, ob die Annahme benannt ist und wie ich sie prüfen würde. Bewerte meine Antworten erst am Ende, in drei Sätzen. Ändere keine Datei.`;
 
-// Wertkurve der Kaffeebar: Stufe 0 keins · 1 niedrig · 2 mittel · 3 hoch; null = nicht erhoben (nicht erfinden).
-const FAKTOREN = ['Anstehen', 'Gespräch', 'Auswahl', 'Qualität', 'Kaffee bereit', 'Fertig-Zeit', 'Im Gehen'];
+// Wertkurve der Kaffeebar. Jeder Faktor ist ein Angebot; die Stufe sagt, wie viel davon geboten wird (Kim & Mauborgne,
+// S. 27): 0 keins · 1 niedrig · 2 mittel · 3 hoch; null = nicht erhoben (nicht erfinden). Herleitung in der Tabelle im Handout.
+// quer: Zeilen unter der waagrechten Achse; hoch: eine Zeile links neben der Kurve.
+const FAKTOREN: { quer: string[]; hoch: string }[] = [
+  { quer: ['An der', 'Theke'], hoch: 'An der Theke' }, { quer: ['Gespräch'], hoch: 'Gespräch' }, { quer: ['Auswahl'], hoch: 'Auswahl' },
+  { quer: ['Qualität'], hoch: 'Qualität' }, { quer: ['Tempo'], hoch: 'Tempo' }, { quer: ['Fertig-', 'Zeit'], hoch: 'Fertig-Zeit' },
+  { quer: ['Im', 'Gehen'], hoch: 'Im Gehen' },
+];
 const KURVEN: { name: string; klasse: string; stufen: (number | null)[]; versatz: number }[] = [
   { name: 'Theke', klasse: 'theke', stufen: [3, 3, 3, 3, 1, 0, 0], versatz: 0 },
-  { name: 'Automat', klasse: 'automat', stufen: [1, 0, null, 1, 3, 0, 0], versatz: 5 },
+  { name: 'Automat', klasse: 'automat', stufen: [0, 0, null, 1, 3, 0, 0], versatz: 5 },
   { name: 'Gleis-1-Express', klasse: 'express', stufen: [0, 1, 1, 3, 3, 3, 3], versatz: -5 },
 ];
-const px = (i: number) => 95 + i * 90;
-const py = (s: number) => 200 - s * 50;
-/** Teilstrecken einer Kurve: Eine Lücke (null) unterbricht sie. */
-const strecken = (stufen: (number | null)[], versatz: number) =>
+/** Teilstrecken einer Kurve als Punktlisten: Eine Lücke (null) unterbricht sie. punkt(i, stufe, versatz) → "x,y". */
+const strecken = (stufen: (number | null)[], punkt: (i: number, s: number) => string) =>
   stufen.reduce<string[][]>((acc, s, i) => {
     if (s === null) { acc.push([]); return acc; }
-    acc[acc.length - 1].push(`${px(i)},${py(s) + versatz}`);
+    acc[acc.length - 1].push(punkt(i, s));
     return acc;
   }, [[]]).filter((t) => t.length > 1);
+// Quer (Beamer, breite Bildschirme): Faktoren waagrecht wie bei Kim & Mauborgne.
+const qx = (i: number) => 95 + i * 90;
+const qy = (s: number) => 200 - s * 50;
+// Hoch (Handy): Faktoren untereinander, Stufe nach rechts – sonst wäre die Schrift auf 375 px kaum lesbar.
+const hx = (s: number) => 205 + s * 55;
+const hy = (i: number) => 75 + i * 55;
+const ARIA = 'Wertkurve der Kaffeebar mit sieben Angeboten. Theke: Bestellen an der Theke, Gespräch, Auswahl und Qualität hoch, Kaffee bereit vor dem Zug niedrig, keine Fertig-Zeit, kein Bestellen im Gehen. Automat: kein Bestellen an der Theke, kein Gespräch, Auswahl nicht erhoben, Qualität niedrig, Kaffee bereit vor dem Zug hoch, keine Fertig-Zeit, kein Bestellen im Gehen. Gleis-1-Express: kein Bestellen an der Theke, Gespräch und Auswahl niedrig, Qualität, Kaffee bereit vor dem Zug, Fertig-Zeit und Bestellen im Gehen hoch.';
 ---
 <Layout title="Pitch">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
@@ -156,32 +169,41 @@ const strecken = (stufen: (number | null)[], versatz: number) =>
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Wertkurve von „Gleis-1-Express“</h2>
-    <p class="folie-satz">Hoch, wo Theke und Automat nichts bieten; gleich bei der Qualität; weniger beim Rest.</p>
-    <figure class="wertkurve">
-      <svg viewBox="0 0 720 250" role="img" aria-label="Wertkurve der Kaffeebar mit sieben Faktoren: Theke hoch bei Anstehen, Gespräch, Auswahl und Qualität, tief bei Kaffee bereit, ohne Fertig-Zeit und ohne Bestellen im Gehen; Automat wenig Anstehen, kein Gespräch, Auswahl nicht erhoben, niedrige Qualität, hoch bei Kaffee bereit; Gleis-1-Express kein Anstehen, wenig Gespräch und Auswahl, hoch bei Qualität, Kaffee bereit, Fertig-Zeit und Bestellen im Gehen">
-        {[0, 1, 2, 3].map((s) => <line class="raster" x1="75" x2="680" y1={py(s)} y2={py(s)} />)}
-        <text class="achse" x="68" y={py(3) + 5} text-anchor="end">hoch</text>
-        <text class="achse" x="68" y={py(0) + 5} text-anchor="end">keins</text>
-        {FAKTOREN.map((f, i) => <text class="faktor" x={px(i)} y="235" text-anchor="middle">{f}</text>)}
-        <text class="faktor frage" x={px(2)} y={py(2) + 6} text-anchor="middle">?</text>
-        {KURVEN.map((k) => strecken(k.stufen, k.versatz).map((t) => <polyline class={k.klasse} points={t.join(' ')} />))}
-        {KURVEN.map((k) => k.stufen.map((s, i) => s !== null && <circle class={k.klasse} cx={px(i)} cy={py(s) + k.versatz} r="5" />))}
+    <p class="folie-satz">Neu oben: Fertig-Zeit und im Gehen – dazu die Qualität der Theke und das Tempo des Automaten.</p>
+    <figure class="wertkurve" role="img" aria-label={ARIA}>
+      <svg class="quer" viewBox="0 0 720 262" aria-hidden="true">
+        {[0, 1, 2, 3].map((st) => <line class="raster" x1="75" x2="680" y1={qy(st)} y2={qy(st)} />)}
+        <text class="achse" x="68" y={qy(3) + 6} text-anchor="end">hoch</text>
+        <text class="achse" x="68" y={qy(0) + 6} text-anchor="end">keins</text>
+        {FAKTOREN.map((f, i) => <text class="faktor" x={qx(i)} y="232" text-anchor="middle">{f.quer.map((z, j) => <tspan x={qx(i)} dy={j === 0 ? 0 : 21}>{z}</tspan>)}</text>)}
+        <text class="frage" x={qx(2)} y={qy(2) + 7} text-anchor="middle">?</text>
+        {KURVEN.map((k) => strecken(k.stufen, (i, st) => `${qx(i)},${qy(st) + k.versatz}`).map((t) => <polyline class={k.klasse} points={t.join(' ')} />))}
+        {KURVEN.map((k) => k.stufen.map((st, i) => st !== null && <circle class={k.klasse} cx={qx(i)} cy={qy(st) + k.versatz} r="5" />))}
+      </svg>
+      <svg class="hoch" viewBox="0 0 400 450" aria-hidden="true">
+        {[0, 1, 2, 3].map((st) => <line class="raster" x1={hx(st)} x2={hx(st)} y1="50" y2="430" />)}
+        <text class="achse" x={hx(0)} y="35" text-anchor="middle">keins</text>
+        <text class="achse" x={hx(3)} y="35" text-anchor="middle">hoch</text>
+        {FAKTOREN.map((f, i) => <text class="faktor" x="185" y={hy(i) + 7} text-anchor="end">{f.hoch}</text>)}
+        <text class="frage" x={hx(2)} y={hy(2) + 7} text-anchor="middle">?</text>
+        {KURVEN.map((k) => strecken(k.stufen, (i, st) => `${hx(st) + k.versatz},${hy(i)}`).map((t) => <polyline class={k.klasse} points={t.join(' ')} />))}
+        {KURVEN.map((k) => k.stufen.map((st, i) => st !== null && <circle class={k.klasse} cx={hx(st) + k.versatz} cy={hy(i)} r="5" />))}
       </svg>
       <figcaption class="legende">
         {KURVEN.map((k) => <span><svg viewBox="0 0 30 10" width="30" height="10" aria-hidden="true"><line class={k.klasse} x1="0" x2="30" y1="5" y2="5" /></svg>{k.name}</span>)}
       </figcaption>
     </figure>
     <div class="nur-handout">
-      <p>Jeder Faktor kommt aus dem <a href="/innolab/methoden/kundenprofil#beispiel">Kundenprofil</a> oder der <a href="/innolab/methoden/value-map#beispiel">Value Map</a>; wo die Daten schweigen, steht es dabei. Die Stufen sind eine grobe Einschätzung aus den Interviews, keine Messung.</p>
+      <p>Jeder Faktor ist ein Angebot, und die Höhe sagt, wie viel davon geboten wird – „the offering level that buyers receive“ ({BOS}, S. 27). Ein Pain steht deshalb nicht selbst auf der Achse, sondern begründet, welches Angebot zählt: Das Anstehen (P2) ist der Preis des Bestellens an der Theke. Jeder Faktor kommt aus dem <a href="/innolab/methoden/kundenprofil#beispiel">Kundenprofil</a> oder der <a href="/innolab/methoden/value-map#beispiel">Value Map</a>; wo die Daten schweigen, steht es dabei. Die Stufen sind eine grobe Einschätzung aus den Interviews, keine Messung.</p>
       <div style="overflow-x:auto">
         <table>
           <thead><tr><th>Faktor</th><th>Woher</th><th>Theke</th><th>Automat</th><th>Gleis-1-Express</th></tr></thead>
           <tbody>
-            <tr><th>Anstehen zum Bestellen</th><td>P2 (I2-2, I3-4, I4-2); erzählt: „Acht Leute vor mir, da hab ich gleich gewusst, das wird nix“ (I2-1)</td><td>hoch</td><td>niedrig – „schnell“ (I1-3)</td><td>keins: bestellen im Gehen</td></tr>
+            <tr><th>Bestellen an der Theke</th><td>P2, der Preis dafür: das Anstehen (I2-2, I3-4, I4-2); erzählt: „Acht Leute vor mir, da hab ich gleich gewusst, das wird nix“ (I2-1)</td><td>hoch</td><td>keins – man drückt selbst (I2-3)</td><td>keins: bestellt wird im Gehen</td></tr>
             <tr><th>Gespräch, die Barista kennt die Bestellung</th><td>G3 (I3-6)</td><td>hoch</td><td>keins</td><td>niedrig: Express-Ausgabe</td></tr>
             <tr><th>Getränkeauswahl</th><td>Value Map: Express-Ausgabe mit drei Standardgetränken – an der Theke gibt es mehr</td><td>hoch</td><td>nicht erhoben</td><td>niedrig: drei</td></tr>
             <tr><th>Qualität des Kaffees</th><td>P4 – „Notlösung“ (I1-3), „Dann halt die Brühe“ (I4-4)</td><td>hoch</td><td>niedrig</td><td>hoch, dieselbe Bar</td></tr>
-            <tr><th>Kaffee bereit, bevor der Zug einfährt</th><td>G1 (I3-3)</td><td>niedrig</td><td>hoch</td><td>hoch</td></tr>
+            <tr><th>Tempo: Kaffee bereit, bevor der Zug einfährt</th><td>G1; erzählt: „Einmal stand ich da, der Zug war schon eingefahren …“ (I3-3)</td><td>niedrig</td><td>hoch – „schnell“ (I1-3)</td><td>hoch</td></tr>
             <tr><th>Fertig-Zeit beim Bestellen</th><td>P1, P3 – „Ich weiß nie, wie lange das dauert“ (I3-2)</td><td>keine</td><td>keine</td><td>hoch: „Fertig 7:31“</td></tr>
             <tr><th>Bestellen im Gehen, ohne App</th><td>Value Map (QR-Code, Browser)</td><td>keins</td><td>keins</td><td>hoch</td></tr>
           </tbody>
@@ -196,15 +218,15 @@ const strecken = (stufen: (number | null)[], versatz: number) =>
     <h2 id="beispiel-errc">Das Raster der Kaffeebar</h2>
     <p class="folie-satz">Auch „Reduzieren“ ist gefüllt – und es tut weh: Die Barista kennt die Bestellung dann nicht mehr.</p>
     <div class="errc">
-      <div data-schritt><strong>Eliminieren</strong><span>Anstehen zum Bestellen (P2)</span></div>
-      <div data-schritt><strong>Steigern</strong><span>Kaffee bereit, bevor der Zug einfährt (G1)</span></div>
+      <div data-schritt><strong>Eliminieren</strong><span>Bestellen an der Theke, also kein Anstehen (P2)</span></div>
+      <div data-schritt><strong>Steigern</strong><span>Kaffee bereit vor dem Zug – weit über der Theke (G1)</span></div>
       <div data-schritt><strong>Reduzieren</strong><span>Auswahl auf drei Getränke (Value Map) · Gespräch an der Theke (G3)</span></div>
-      <div data-schritt><strong>Schaffen</strong><span>Fertig-Zeit als Zusage beim Bestellen (P1, P3) · bestellen im Gehen, ohne App</span></div>
+      <div data-schritt><strong>Schaffen</strong><span>Fertig-Zeit als Zusage beim Bestellen (P1, P3) · bestellen im Gehen, ohne App (Value Map)</span></div>
     </div>
     <p data-schritt><strong>Tagline:</strong> „Anders als Automat und Schlange: Gewissheit statt Glücksspiel.“</p>
     <div class="nur-handout">
-      <p><strong>Fokus:</strong> Drei Faktoren tragen die Kurve – Kaffee bereit, Fertig-Zeit, bestellen im Gehen; die Qualität bleibt die der Bar, der Rest wird weniger. <strong>Abweichung:</strong> Beim Anstehen liegt die Kurve beim Automaten, bei der Qualität bei der Theke, und oben, wo keine der beiden etwas bietet. <strong>Tagline:</strong> der Pitch-Satz von Tag 3, der Unterschied in vier Wörtern; „Glücksspiel“ ist das Wort einer Pendlerin: „Anstellen ist ein Glücksspiel“ (I4-2). Er ist wahr, solange die Fertig-Zeit stimmt – sie rechnet mit 4 Minuten plus etwa 1 Minute je offener Bestellung, und ob die Bar das schafft, ist A2. Darum hängt der nächste Test daran.</p>
-      <p>Eine Beobachtung des Kurses, keine Regel aus dem Buch: Die Wartezeit-Anzeige an der Hallentür hätte nur einen Faktor gehoben, den es schon gibt – die Gewissheit beim Blick auf die Schlange –, also „mehr vom Selben“. Das erklärt mit, warum „Im Gehen bestellen“ der Spitzenreiter wurde.</p>
+      <p><strong>Der Standard</strong> ist der der Branche, also der Bar mit ihrer Theke; der Automat ist die Alternative. Steigern heißt darum „raised well above the industry’s standard“ ({BOS}, S. 29): Beim Tempo liegt die Theke niedrig, Gleis-1-Express hoch – so hoch wie der Automat. Das ist der Kompromiss, den die dritte Frage auflösen soll: „The third question pushes you to uncover and eliminate the compromises your industry forces customers to make“ (S. 30) – heute heißt es guter Kaffee oder Zug. <strong>Fokus:</strong> Zwei neue Faktoren tragen die Kurve – Fertig-Zeit und bestellen im Gehen; dazu hält sie die Qualität der Bar und hebt das Tempo. Das Bestellen an der Theke fällt weg, Gespräch und Auswahl werden weniger. <strong>Abweichung:</strong> Die Kurve folgt keiner der beiden: bei der Qualität liegt sie bei der Theke, beim Tempo beim Automaten, bei Fertig-Zeit und im Gehen über beiden. <strong>Tagline:</strong> der Pitch-Satz von Tag 3, der Unterschied in drei Wörtern; „Glücksspiel“ ist das Wort einer Pendlerin: „Anstellen ist ein Glücksspiel“ (I4-2). Er ist wahr, solange die Fertig-Zeit stimmt – sie rechnet mit 4 Minuten plus etwa 1 Minute je offener Bestellung, und ob die Bar das schafft, ist A2. Darum hängt der nächste Test daran.</p>
+      <p>Eine Beobachtung des Kurses, keine Regel aus dem Buch: Die Wartezeit-Anzeige an der Hallentür hätte das Bestellen an der Theke behalten und nur das Raten davor ersetzt – kein Feld Eliminieren, kaum Abweichung von der Theke. Das erklärt mit, warum „Im Gehen bestellen“ der Spitzenreiter wurde.</p>
       <p>Das Feld <em>Reduzieren</em> ist der Preis der Idee: G3 („Die Barista weiß schon, was ich will. Das ist schön.“, I3-6) hat die Value Map bewusst offen gelassen; mit Express-Ausgabe wird das Gespräch an der Theke seltener. Eliminieren und Reduzieren sind zugleich die Behauptung hinter A4 – die zusätzlichen Bestellungen rechnen sich ohne weitere Kraft am Morgen. Im Pitch wird sie benannt, nicht gerechnet.</p>
     </div>
   </Folie>
@@ -238,7 +260,7 @@ Daten: Bestellung um 7:27, keine offene Bestellung davor. Plan B: video-demo.mp4
 - Gemessen: 5 von 6 Abholungen vor der Abfahrt – drei Personen an zwei Morgen. Sicherheit: schwach, sechs Fälle. Ein Hinweis aufs Outcome, noch kein Beleg.
 
 ## Position, Modell, nächster Schritt (2 min)
-Das Bild, 30 Sekunden: Gegenüber Theke und Automat: weg mit dem Anstehen · weniger Auswahl und Gespräch · mehr Kaffee bereit vor dem Zug · neu die Fertig-Zeit beim Bestellen, im Gehen.
+Das Bild, 30 Sekunden: Gegenüber Theke und Automat: weg mit dem Bestellen an der Theke (P2) · weniger Auswahl (Value Map) und Gespräch (G3) · mehr Tempo, Kaffee bereit vor dem Zug (G1) · neu die Fertig-Zeit beim Bestellen (P1, P3) und bestellen im Gehen (Value Map).
 Wer zahlt wofür: Kaffee zum normalen Preis, Gebäck als Angebot in der Bestellung. Hängt an: A2 (40 Bestellungen in 30 Minuten) und A4 (ohne weitere Kraft) – benannt, nicht gerechnet.
 Nächster Test: eine Woche mit echter Bar, gemessen an Abholungen pro Morgen – weil ohne diese Kapazität weder die Fertig-Zeit noch das Modell trägt.
 Letzter Satz: „Anders als Automat und Schlange: Gewissheit statt Glücksspiel.“</Prompt>
@@ -263,7 +285,7 @@ Letzter Satz: „Anders als Automat und Schlange: Gewissheit statt Glücksspiel.
 
   <div class="nur-handout">
   <h2 id="danach">Bis Tag 7</h2>
-  <p>Den Pitch tragt ihr ab jetzt mit: Nach jedem Review ergänzt ihr die Belege. Zum ersten Mal laut erzählt – zwei Minuten „Geschichte“ vor den anderen beiden – wird er nach der Retro an <a href="/innolab/tag-5#pitch-probe">Tag 5</a>. Bis Tag 7 probt ihr den ganzen Pitch mindestens zweimal laut, einmal mit Claude als skeptischem Gegenüber – direkt nach Tag 6, solange Pro noch läuft:</p>
+  <p>Den Pitch tragt ihr ab jetzt mit: Nach jedem Review ergänzt ihr die Belege. Zum ersten Mal laut erzählt – zwei Minuten „Geschichte“ vor den anderen beiden – wird er nach der Retro an <a href="/innolab/tag-5#pitch-probe">Tag 5</a>. Bis Tag 7 probt ihr den ganzen Pitch mindestens zweimal laut, mit Demo – die anderen achten darauf, wo sie lächeln: Lichaws Signal, dass der Höhepunkt sitzt, „Maybe they’ll smile at just the right time“ ({LICHAW}, Kap. 7, „Test and Validate“) –, und einmal mit Claude als skeptischem Gegenüber – direkt nach Tag 6, solange Pro noch läuft:</p>
   <Prompt label="Skeptische Investorin · Claude Code" note="Erst wenn alle vier Teile stehen. Claude fragt, ihr antwortet laut – wie an Tag 7.">{INVESTORIN}</Prompt>
   <Callout type="tip" title="Wer stellt die Fragen an Tag 7?">
     <p>Markus, Louis und die Gäste – und die anderen beiden aus eurem Team, die euer Produkt als Developers am besten kennen. Bereitet für jedes der anderen Produkte eine Frage vor, die ihr wirklich beantwortet haben wollt. Die Gäste notieren, was sie überzeugt hat und wo sie gezweifelt haben – wie die Jury bei Kim &amp; Mauborgne, die erklären sollte, warum sie für eine Kurve gestimmt hat, und auch, „why they did not vote for the other value curves“ ({BOS}, S. 91).</p>
@@ -289,7 +311,7 @@ Daten: [was vorbereitet sein muss] · Plan B: [Video, Datum der Aufnahme]
 - Gemessen: [Zahl] – [wie viele Personen, wie lange]. Outcome: [belegt / noch nicht, warum]
 
 ## Position, Modell, nächster Schritt (2 min)
-Gegenüber [Alternative 1] und [Alternative 2]: weg mit [...] · weniger [...] · mehr [...] · neu [...] ([P…/G…])
+Gegenüber [Alternative 1] und [Alternative 2]: weg mit [...] · weniger [...] · mehr [...] · neu [...] – je Zeile ([P…/G…] oder Value Map)
 Wer zahlt wofür: [...] · Hängt an: [A… machbar], [A… wirtschaftlich] – benannt, nicht gerechnet
 Nächster Test: [...] – weil [...]
 Letzter Satz: [der Pitch-Satz, oder sein zweiter Teil]
@@ -316,9 +338,14 @@ Letzter Satz: [der Pitch-Satz, oder sein zweiter Teil]
 <style>
   .wertkurve { margin: 1rem 0; max-width: 46rem; }
   .wertkurve > svg { display: block; width: 100%; height: auto; }
+  .wertkurve > svg.hoch { display: none; max-width: 26rem; }
+  @media (max-width: 640px) { .wertkurve > svg.quer { display: none; } .wertkurve > svg.hoch { display: block; } }
+  :global(html[data-beamer]) .wertkurve > svg.quer { display: block; }
+  :global(html[data-beamer]) .wertkurve > svg.hoch { display: none; }
   .wertkurve .raster { stroke: var(--border); stroke-width: 1; }
-  .wertkurve .achse, .wertkurve .faktor { fill: var(--muted); font-size: 15px; }
-  .wertkurve .frage { fill: var(--muted); font-weight: 700; }
+  .wertkurve .achse { fill: var(--muted); font-size: 17px; }
+  .wertkurve .faktor { fill: var(--fg); font-size: 19px; }
+  .wertkurve .frage { fill: var(--muted); font-size: 20px; font-weight: 700; }
   .wertkurve polyline { fill: none; stroke-width: 2.5; }
   .wertkurve line.theke, .wertkurve polyline.theke { stroke: var(--fg); stroke-dasharray: 3 5; }
   .wertkurve line.automat, .wertkurve polyline.automat { stroke: var(--muted); stroke-dasharray: 12 5 2 5; }
@@ -335,5 +362,5 @@ Letzter Satz: [der Pitch-Satz, oder sein zweiter Teil]
   .errc > div:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
   .errc strong { font-size: 1.05rem; }
   :global(html[data-beamer]) .errc span { font-size: 1.2rem; line-height: 1.35; }
-  :global(html[data-beamer]) .wertkurve { max-width: min(46rem, calc((100vh - 17rem) * 720 / 250)); }
+  :global(html[data-beamer]) .wertkurve { max-width: min(46rem, calc((100vh - 17rem) * 720 / 262)); }
 </style>
