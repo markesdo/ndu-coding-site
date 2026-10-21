@@ -11,7 +11,7 @@
 // Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
-import { COOKIE, COOKIE_LOESCHEN, GUELTIG_SEKUNDEN, cookieLesen, istAbmelden, istLoginSeite, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zumLogin } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
+import { GUELTIG_SEKUNDEN, abmeldenCookies, cookieLesen, istAbmelden, istLoginSeite, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zugangsCookie, zumLogin } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
 
 export const config = {
   matcher: ['/((?!_astro/|favicon(?:-innolab)?\\.svg$|favicon\\.ico$|robots\\.txt$|og(?:-innolab)?\\.png$|version\\.json$).*)'],
@@ -33,10 +33,14 @@ function weiter(ort: string, extra: Record<string, string> = {}): Response {
 
 export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url);
-  // Abmelden (Link „Abmelden“ in der Seitenleiste): Cookie löschen, zur Startseite. GET genügt und ist unbedenklich –
-  // eine fremde Seite, die /logout aufruft, kann damit nur das eigene Cookie des Besuchers löschen (CSRF ohne Schaden).
+  // Abmelden (Link „Abmelden“ in der Seitenleiste): Kurszugang und Werkstatt-Sitzung löschen, zur Startseite. GET ohne
+  // CSRF-Schutz ist Absicht: Schlimmstenfalls meldet ein fremder Link Studierende ab – lästig, aber ohne Schaden an Daten.
   // Vor allen anderen Prüfungen: Es klappt ohne gültiges Cookie und ohne SITE_PASSWORD; alles andere bleibt fail closed.
-  if (istAbmelden(url.pathname)) return weiter('/start', { 'Set-Cookie': COOKIE_LOESCHEN });
+  if (istAbmelden(url.pathname)) {
+    const headers = new Headers({ Location: '/start', ...NOINDEX });
+    for (const c of abmeldenCookies()) headers.append('Set-Cookie', c);
+    return new Response(null, { status: 303, headers });
+  }
   // Startseite: für alle, auch ohne Anmeldung (sie zeigt nur Titel und Kurstage) – und unabhängig davon,
   // ob das Kurspasswort gesetzt ist. Ebenso die Werkstatt (eigene Anmeldung, siehe istOeffentlich).
   // Alles andere bleibt ohne SITE_PASSWORD/SITE_SESSION_SECRET gesperrt.
@@ -56,7 +60,7 @@ export default async function middleware(request: Request): Promise<Response> {
       if (eingabe && await passwortStimmt(eingabe, passwort, secret)) {
         const token = await tokenErstellen(secret, passwort, jetzt);
         return weiter(ziel, {
-          'Set-Cookie': `${COOKIE}=${token}; Path=/; Max-Age=${GUELTIG_SEKUNDEN}; HttpOnly; Secure; SameSite=Lax`,
+          'Set-Cookie': zugangsCookie(token, GUELTIG_SEKUNDEN),
         });
       }
       // Verzögerung bremst nur einzelnes Ausprobieren, nicht parallele Anfragen. Der eigentliche Schutz ist ein
