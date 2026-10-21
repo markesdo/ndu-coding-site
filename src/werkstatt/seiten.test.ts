@@ -176,6 +176,15 @@ describe('Interviews als Hausaufgabe (Phase 1b)', () => {
     expect(q).toMatch(/@media print \{\s*\.nicht-drucken \{ display: none !important; \}/);
   });
 
+  it('gedruckt wird das Blatt schwarz auf weiß, auch aus dem dunklen Modus (Text und Unterschriftslinien)', () => {
+    const q = seite('werkstatt/interview-datenschutz');
+    const druck = /@media print \{([\s\S]*?)\n {2}\}\n<\/style>/.exec(q)?.[1] ?? '';
+    const blatt = /\.blatt \{([^}]*)\}/.exec(druck)?.[1] ?? '';
+    // Die Linien unter „Interview geführt von“ usw. zeichnet var(--fg); im dunklen Modus wäre das fast weiß.
+    expect(q).toMatch(/\.blatt-kontakt dd \{[^}]*border-bottom: 1px solid var\(--fg\)/);
+    for (const d of ['--fg: #000', '--bg: #fff', '--muted: #000', '--border: #000', 'color: #000', 'background: #fff']) expect(blatt, d).toContain(`${d};`);
+  });
+
   it('Begleiter und Tageskarte kündigen den Interview-Editor nicht mehr an', () => {
     const texte = JSON.stringify([NOTIZEN['/innolab/tag-1/abschluss'], TAG_1.material]);
     expect(texte).not.toMatch(/Teams-Post|Teams-Ankündigung|sobald der Editor|noch nicht gibt/);

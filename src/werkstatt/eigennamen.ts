@@ -22,15 +22,21 @@ const VORNAMEN = [
 
 const WORT = '\\p{Lu}[\\p{L}\\-]+';
 const TITEL = '(?:Dr|Mag|Prof|Ing|DI)\\.';
-// „eine Frau Mitte 40“, „der Herr Doktor“: mit Artikel davor ist Herr/Frau ein Nomen, keine Anrede.
-const ARTIKEL = ['der', 'die', 'den', 'dem', 'des', 'ein', 'eine', 'einen', 'einem', 'einer', 'eines', 'jede', 'jeder', 'keine', 'ältere', 'älterer', 'junge', 'junger'];
-const KEIN_ARTIKEL = `(?<!(?:${ARTIKEL.flatMap((w) => [w, w[0].toUpperCase() + w.slice(1)]).join('|')}) )`;
+// Nach Herr/Frau steht in Österreich oft ein Artikel davor („die Frau Huber“), darum zählt nur das Wort danach: Ein Name
+// ist es nicht, wenn dort ein gewöhnliches Wort steht („eine Frau Mitte 40“, „der Herr Doktor“, „Herr Und“ am Zeilenanfang).
+const KEIN_NAME = [
+  'Mitte', 'Ende', 'Anfang', 'Doktor', 'Professor', 'Professorin', 'Magister', 'Magistra', 'Ingenieur', 'Ingenieurin',
+  'Direktor', 'Direktorin', 'Ober', 'Nachbar', 'Nachbarin', 'Kollege', 'Kollegin', 'Chef', 'Chefin', 'Mama', 'Papa',
+  'Und', 'Oder', 'Aber', 'Mit', 'Ohne', 'Im', 'In', 'Am', 'An', 'Aus', 'Bei', 'Vor', 'Nach', 'Neben', 'Hinter', 'Dann', 'Da',
+];
+const ANREDE_NAME = `(?!(?:${KEIN_NAME.join('|')})(?![\\p{L}\\-]))${WORT}`;
 // Kontaktdaten zuerst: Ein Treffer belegt seine Stelle, „Anna.Maier@example.at“ ist eine E-Mail, kein Vorname.
 const MUSTER: { re: RegExp; grund: NamenFund['grund'] }[] = [
   { re: /[\p{L}\p{N}._%+-]+@[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+/gu, grund: 'E-Mail-Adresse' },
-  { re: /(?<![\p{N}])(?:\+|00|0)\p{N}[\p{N} /-]{6,}\p{N}/gu, grund: 'Telefonnummer' },
+  // Ein Datum wie 05/10/2026 oder 05-10-2026 ist keine Telefonnummer.
+  { re: /(?<![\p{N}])(?!\p{N}{1,2}([/-])\p{N}{1,2}\1\p{N}{2,4}(?![\p{N}]))(?:\+|00|0)\p{N}[\p{N} /-]{6,}\p{N}/gu, grund: 'Telefonnummer' },
   { re: /(?<![\p{L}\p{N}._%+-])@[A-Za-z0-9_]{3,}/gu, grund: 'Konto-Name' },
-  { re: new RegExp(`(?<![\\p{L}])${KEIN_ARTIKEL}(?:(?:Herr|Frau)(?:\\s+${TITEL})*|${TITEL}(?:\\s+${TITEL})*)\\s+${WORT}`, 'gu'), grund: 'Anrede mit Namen' },
+  { re: new RegExp(`(?<![\\p{L}])(?:(?:Herrn?|Frau)(?:\\s+${TITEL})*|${TITEL}(?:\\s+${TITEL})*)\\s+${ANREDE_NAME}`, 'gu'), grund: 'Anrede mit Namen' },
   { re: new RegExp(`(?<![\\p{L}])(?:[Ii]ch heiße|[Ii]ch heisse|namens|[Mm]ein Name ist)\\s+(?!Sie\\b|Ihnen\\b)${WORT}`, 'gu'), grund: 'Name genannt' },
   // Mit Bindestrich ist es meist ein Ort oder eine Einrichtung (Franz-Josefs-Bahnhof); Doppelnamen wie Anna-Lena entgehen dabei.
   { re: new RegExp(`(?<![\\p{L}-])(?:${VORNAMEN.join('|')})s?(?![\\p{L}-])`, 'gu'), grund: 'Vorname' },

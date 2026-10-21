@@ -12,7 +12,8 @@ export interface MappeDaten {
   interviews: Eintrag<Interviews>;
 }
 
-export type BefundArt = 'unbekannte-id' | 'fehlender-beleg' | 'verwaist';
+export const BEFUND_ARTEN = ['unbekannte-id', 'fehlender-beleg', 'verwaist'] as const;
+export type BefundArt = (typeof BEFUND_ARTEN)[number];
 export interface Befund {
   art: BefundArt;
   artefakt: ArtefaktName;
@@ -30,10 +31,13 @@ export interface Verknuepfungen {
 }
 
 // Welches Artefakt eine ID auflöst. Spätere Präfixe (T, J, P, …) gibt es in der Mappe noch nicht.
-const QUELLE: Partial<Record<string, ArtefaktName>> = { D: 'entscheidungen', A: 'annahmen', F: 'leitfaden', I: 'interviews' };
-// IDs im Fließtext: nur die Präfixe, die die Mappe schon kennt, damit „S1“ (S-Bahn) keinen Befund auslöst; nach
-// „der“, „auf“, „von“ … ist eher die Autobahn gemeint („von der A2“).
-const ID_IM_TEXT = /(?<![\p{L}\p{N}-])(?<!(?:der|die|den|dem|auf|von|über|Richtung|zur|zum) )[DAFI][1-9][0-9]*(?:-[1-9][0-9]*)?(?![\p{L}\p{N}-])/gu;
+const QUELLE_FEST = { D: 'entscheidungen', A: 'annahmen', F: 'leitfaden', I: 'interviews' } as const satisfies Record<string, ArtefaktName>;
+const QUELLE: Partial<Record<string, ArtefaktName>> = QUELLE_FEST;
+// IDs im Fließtext: nur die Präfixe, die die Mappe schon kennt, damit „S1“ (S-Bahn) keinen Befund auslöst; nach dem
+// Wort „der“, „auf“, „von“ … ist eher die Autobahn gemeint („von der A2“), nach „oder“ oder „Kunden“ nicht.
+const VOR_STRASSE = '(?<![\\p{L}])(?:der|die|den|dem|auf|von|über|Richtung|zur|zum) ';
+const ID_IM_TEXT = new RegExp(`(?<![\\p{L}\\p{N}-])(?<!${VOR_STRASSE})[${Object.keys(QUELLE_FEST).join('')}][1-9][0-9]*(?:-[1-9][0-9]*)?(?![\\p{L}\\p{N}-])`, 'gu');
+const idsImText = (t: string): string[] => [...t.matchAll(ID_IM_TEXT)].map(([id]) => id);
 
 const da = <T>(e: Eintrag<T>): e is T => e !== null && e !== 'unlesbar';
 
@@ -72,7 +76,7 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     }
   };
   const textVon = (artefakt: ArtefaktName, ort: string, t: string) => {
-    for (const [id] of t.matchAll(ID_IM_TEXT)) {
+    for (const id of idsImText(t)) {
       const warum = warumUnbekannt(id);
       if (warum) befund({ art: 'unbekannte-id', artefakt, ort, id, text: `${ort} nennt ${id} im Text. Ist das eine ID? ${warum}` });
     }
@@ -105,10 +109,14 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     for (const a of m.annahmen.annahmen) {
       belegeVon('annahmen', a.id, a.belegIds);
       textVon('annahmen', a.id, a.text);
-      // „gesagt“ und „erzählt“ kommen aus Gesprächen, also aus den Interviews. „getan“ (beobachtetes Verhalten, z. B.
-      // Kassendaten) kann außerhalb der Mappe liegen; Annahmen haben dafür keine Beleg-Notiz, darum kein Befund.
-      if ((a.beleg === 'gesagt' || a.beleg === 'erzaehlt') && a.belegIds.length === 0) {
+      // „gesagt“ und „erzählt“ kommen aus Gesprächen, also aus den Interviews: Ein D- oder A-Verweis allein reicht nicht.
+      // „getan“ (beobachtetes Verhalten, z. B. Kassendaten) kann außerhalb der Mappe liegen, aber ganz ohne Quelle
+      // fragt man nach (Begleiter Annahmen-Map: „getan, aber ohne Quelle – nachfragen“); Annahmen haben keine Beleg-Notiz.
+      if ((a.beleg === 'gesagt' || a.beleg === 'erzaehlt') && !a.belegIds.some((id) => QUELLE[id[0]] === 'interviews')) {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „${BELEGSTUFE_TEXT[a.beleg]}“, nennt aber kein Interview oder Zitat als Beleg.` });
+      }
+      if (a.beleg === 'getan' && a.belegIds.length === 0) {
+        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle als Beleg. Wo liegt das beobachtete Verhalten?` });
       }
     }
   }
@@ -117,13 +125,14 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     m.interviews.interviews.forEach((iv) => iv.chancen.forEach((c, j) => {
       if (c.belege.length === 0) befund({ art: 'fehlender-beleg', artefakt: 'interviews', ort: `${iv.id} · Chance ${j + 1}`, text: `${iv.id} · Chance ${j + 1} hat kein Zitat als Beleg.` });
     }));
-    // Verwaist: kein Beleg im Entscheidungslog oder in der Annahmen-Map nennt das Interview oder eines seiner Zitate.
+    // Verwaist: weder ein Beleg noch der Text im Entscheidungslog oder in der Annahmen-Map nennt das Interview oder eines
+    // seiner Zitate.
     // Ist eine der beiden Dateien unlesbar, lässt sich das nicht sagen; fehlen beide, gibt es noch nichts zu belegen.
     const belegQuellen = [m.entscheidungen, m.annahmen];
     if (!belegQuellen.includes('unlesbar') && belegQuellen.some(da)) {
       const genannt = new Set<string>([
-        ...(da(m.entscheidungen) ? m.entscheidungen.entscheidungen.flatMap((e) => e.belegIds) : []),
-        ...(da(m.annahmen) ? m.annahmen.annahmen.flatMap((a) => a.belegIds) : []),
+        ...(da(m.entscheidungen) ? m.entscheidungen.entscheidungen.flatMap((e) => [...e.belegIds, ...idsImText(`${e.entscheidung}\n${e.grund}`)]) : []),
+        ...(da(m.annahmen) ? m.annahmen.annahmen.flatMap((a) => [...a.belegIds, ...idsImText(a.text)]) : []),
       ]);
       for (const iv of m.interviews.interviews) {
         if (genannt.has(iv.id) || iv.zitate.some((z) => genannt.has(z.id))) continue;
@@ -135,11 +144,11 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
   return ergebnis;
 }
 
-const UEBERSCHRIFT: Record<BefundArt, string> = {
+const UEBERSCHRIFT = {
   'unbekannte-id': 'Unbekannte IDs',
   'fehlender-beleg': 'Fehlende Belege',
   verwaist: 'Verwaiste Elemente',
-};
+} as const satisfies Record<BefundArt, string>;
 
 /** Markdown fürs Chatfenster: je Art eine Liste, dazu was fehlt oder nicht lesbar war. */
 export function verknuepfungenText(v: Verknuepfungen): string {
@@ -151,7 +160,7 @@ export function verknuepfungenText(v: Verknuepfungen): string {
     zeilen.push('', 'Keine Lücken: Jede genannte ID gibt es, jede Belegstufe hat einen Beleg, jedes Interview wird genannt.');
     return zeilen.join('\n');
   }
-  for (const art of Object.keys(UEBERSCHRIFT) as BefundArt[]) {
+  for (const art of BEFUND_ARTEN) {
     const liste = v.befunde.filter((b) => b.art === art);
     if (liste.length) zeilen.push('', `## ${UEBERSCHRIFT[art]} (${liste.length})`, ...liste.map((b) => `- ${b.text}`));
   }

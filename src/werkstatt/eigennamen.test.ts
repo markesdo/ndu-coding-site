@@ -30,6 +30,26 @@ describe('namenFinden', () => {
     expect(namenFinden('Mail: Anna.Maier@example.at')).toStrictEqual([{ fund: 'Anna.Maier@example.at', grund: 'E-Mail-Adresse' }]);
   });
 
+  it('Herr/Frau mit Artikel davor bleibt ein Name („die Frau Huber“, „meine Frau Huber“)', () => {
+    expect(namenFinden('Die Frau Huber hat gesagt, sie fährt immer mit dem Herrn Berger.')).toStrictEqual([
+      { fund: 'Frau Huber', grund: 'Anrede mit Namen' },
+      { fund: 'Herrn Berger', grund: 'Anrede mit Namen' },
+    ]);
+    expect(namenFinden('Meine Frau Huber kommt, der Herr Dr. Maier auch.')).toStrictEqual([
+      { fund: 'Frau Huber', grund: 'Anrede mit Namen' },
+      { fund: 'Herr Dr. Maier', grund: 'Anrede mit Namen' },
+    ]);
+  });
+
+  it('gewöhnliche Wörter und Zahlen nach Herr/Frau sind kein Name', () => {
+    expect(namenFinden('Frau Mitte 40, Herr Anfang 30, Frau Ende 50. Herr Und dann. Frau 40 Jahre.')).toStrictEqual([]);
+  });
+
+  it('ein Datum ist keine Telefonnummer, eine Nummer mit Schrägstrich schon', () => {
+    expect(namenFinden('Interview am 05/10/2026, nächstes am 06-10-2026.')).toStrictEqual([]);
+    expect(namenFinden('Ruf 0664/123 45 67 an.')).toStrictEqual([{ fund: '0664/123 45 67', grund: 'Telefonnummer' }]);
+  });
+
   it('Genitiv und Vorname als Teil eines Wortes', () => {
     expect(namenFinden('Annas Zug fährt um 7:42.')).toStrictEqual([{ fund: 'Annas', grund: 'Vorname' }]);
     // „Annahme“ und „Paulaner“ enthalten Vornamen, sind aber keine.

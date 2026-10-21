@@ -19,6 +19,7 @@ import { wirdEingerichtet } from '../speicher-fehler';
 import { MAX_ANFRAGE_BYTES } from './server';
 import type { Cache } from '../typen';
 import { MCP_WERKZEUGE } from '../../vertrag';
+import { BEFUND_ARTEN } from '../../verknuepfungen';
 
 const BASIS = 'http://localhost:4321';
 const MCP = `${BASIS}/api/werkstatt/mcp`;
@@ -258,6 +259,12 @@ describe('Werkzeuge', () => {
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
     expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'markdown', 'pruefpunkte', 'titel', 'vorhanden']);
+    // Die Arten der Befunde kommen aus verknuepfungen.ts, nicht aus einer zweiten Liste.
+    const verkn = tools.find((t) => t.name === MCP_WERKZEUGE.verknuepfungenPruefen)!;
+    const befund = (verkn.outputSchema?.properties as { befunde: { items: { properties: { art: { enum: string[] } } } } }).befunde;
+    expect(befund.items.properties.art.enum).toStrictEqual([...BEFUND_ARTEN]);
+    // Beschreibung und Prüfung stimmen überein: „getan“ ohne Beleg ist ein Befund.
+    expect(verkn.description).toContain('„getan“ ohne Beleg');
     expect(pruefen.description).toMatch(/höchstens drei Befunde/);
   });
 
@@ -634,13 +641,17 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBeFalsy();
     // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
+    // Einzige Lücke: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle.
     expect(r.structuredContent).toStrictEqual({
-      befunde: [],
+      befunde: ['A2', 'A4'].map((id) => ({
+        art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle als Beleg. Wo liegt das beobachtete Verhalten?`,
+      })),
       geprueft: ['entscheidungen', 'annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],
       unlesbar: [],
     });
-    expect(text(r)).toContain('Keine Lücken');
+    expect(text(r)).toContain('## Fehlende Belege (2)');
+    expect(text(r)).not.toContain('## Unbekannte IDs');
     expect(text(r)).toContain('Ändern kann die Person nur selbst');
     expect(text(r)).toContain(`${BASIS}/innolab/mappe`);
   });

@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { METHODEN, type Methode } from '../../../components/methoden.js';
 import { rendern } from '../../render/index.js';
 import { ARTEFAKT_NAMEN, ARTEFAKTE, artefaktParsen, type ArtefaktName } from '../../schemas/index.js';
-import { verknuepfungenPruefen, verknuepfungenText, type MappeDaten } from '../../verknuepfungen.js';
+import { BEFUND_ARTEN, verknuepfungenPruefen, verknuepfungenText, type MappeDaten } from '../../verknuepfungen.js';
 import { MCP_WERKZEUGE, type MappeStand } from '../../vertrag.js';
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme } from '../antwort.js';
@@ -79,11 +79,11 @@ const PRUEFEN = {
 
 const VERKNUEPFUNGEN = {
   title: 'Verknüpfungen prüfen',
-  description: `Prüft ohne KI, ob die Verweise der eigenen Werkstatt-Mappe zusammenpassen, über Produkt-Brief, Entscheidungslog, Annahmen-Map und Interviews: unbekannte IDs (z. B. ein Beleg I2-3, den es in den Interviews nicht gibt, oder D4, A3 im Text), fehlende Belege (Belegstufe „gesagt“, „erzählt“ oder „getan“ ohne Beleg; Chance ohne Zitat) und verwaiste Interviews (von keinem Beleg genannt). Ohne Argumente. Das Ergebnis ist eine Liste von Befunden; geh sie mit der Person durch, frag nach, wo der Beleg liegt, und formuliere keinen Artefakttext. Ändern kann die Person nur selbst in der Werkstatt. Nur lesen.`,
+  description: `Prüft ohne KI, ob die Verweise der eigenen Werkstatt-Mappe zusammenpassen, über Produkt-Brief, Entscheidungslog, Annahmen-Map und Interviews: unbekannte IDs (z. B. ein Beleg I2-3, den es in den Interviews nicht gibt, oder D4, A3 im Text), fehlende Belege (Belegstufe „gesagt“, „erzählt“ oder „getan“ ohne Beleg, bei Annahmen mit „gesagt“ oder „erzählt“ ohne Interview oder Zitat; Chance ohne Zitat) und verwaiste Interviews (von keinem Beleg genannt). Ohne Argumente. Das Ergebnis ist eine Liste von Befunden; geh sie mit der Person durch, frag nach, wo der Beleg liegt, und formuliere keinen Artefakttext. Ändern kann die Person nur selbst in der Werkstatt. Nur lesen.`,
   inputSchema: {},
   outputSchema: {
     befunde: z.array(z.object({
-      art: z.enum(['unbekannte-id', 'fehlender-beleg', 'verwaist']),
+      art: z.enum(BEFUND_ARTEN),
       artefakt: ARTEFAKT_ENUM,
       ort: z.string().describe('ID der Zeile (D4) oder Feld (Brief · Offene Frage 2, I2 · Chance 1).'),
       id: z.string().optional().describe('Die unbekannte ID bzw. das verwaiste Interview.'),

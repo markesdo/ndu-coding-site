@@ -69,7 +69,8 @@ import { Printer } from '@lucide/astro';
   }
   @media print {
     .nicht-drucken { display: none !important; }
-    .blatt { margin: 0; padding: 0; border: 0; font-size: 10.5pt; line-height: 1.4; }
+    /* Auch aus dem dunklen Modus schwarz auf weiß, sonst druckt helle Schrift und die Unterschriftslinien verschwinden. */
+    .blatt { --fg: #000; --bg: #fff; --muted: #000; --border: #000; color: #000; background: #fff; margin: 0; padding: 0; border: 0; font-size: 10.5pt; line-height: 1.4; }
     .blatt h3 { margin-top: .7rem; }
   }
 </style>
