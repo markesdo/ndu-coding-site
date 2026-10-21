@@ -581,6 +581,8 @@ html[data-beamer] .zurueck { display: none; }
 /* Eingeklappt: nur der Pin als runder Knopf (48 px), verdeckt keinen Text. */
 .wo-ist[data-klein] .wo-ist-text, .wo-ist[data-klein] .wo-ist-weg { display: none; }
 .wo-ist[data-klein] .wo-ist-link { padding: 0; width: 48px; justify-content: center; border-radius: 999px; }
+/* Eingeklappt, und Markus ist inzwischen woanders: Ring als Hinweis, ohne aufzuklappen. */
+.wo-ist[data-klein][data-neu] { box-shadow: 0 0 0 3px var(--accent), 0 8px 28px rgba(0, 0, 0, .28); }
 .wo-ist-weg:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; opacity: 1; }
 .wo-ist-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .wo-ist-alt { opacity: .7; }

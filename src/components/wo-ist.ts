@@ -193,10 +193,11 @@ const X = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBo
 const PIN = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>';
 
 // Von Studierenden eingeklappt (× oder Wischen): nur noch der runde Pin, damit nichts Text verdeckt. Gilt für diesen Tab
-// über Seitenwechsel hinweg; ein Tipp auf den Pin klappt wieder auf.
+// über Seitenwechsel hinweg; ein Tipp auf den Pin klappt wieder auf. Gemerkt wird, wo Markus beim Einklappen war – ist er
+// inzwischen woanders, bekommt der Pin einen Ring (data-neu), klappt aber nicht von selbst auf.
 const KLEIN = 'ndu-wo-ist-klein';
-const istKlein = (): boolean => { try { return sessionStorage.getItem(KLEIN) === '1'; } catch { return false; } };
-const kleinMerken = (an: boolean) => { try { if (an) sessionStorage.setItem(KLEIN, '1'); else sessionStorage.removeItem(KLEIN); } catch {} };
+const kleinBei = (): string | null => { try { return sessionStorage.getItem(KLEIN); } catch { return null; } };
+const kleinMerken = (bei: string | null) => { try { if (bei !== null) sessionStorage.setItem(KLEIN, bei); else sessionStorage.removeItem(KLEIN); } catch {} };
 
 function studierende() {
   // Kasten mit Link und eigenem Schließen-Knopf; hidden steht am Kasten.
@@ -213,26 +214,41 @@ function studierende() {
   let erledigt = '';
 
   let langText = '';
-  function klein(an: boolean) {
-    kleinMerken(an);
-    kasten.toggleAttribute('data-klein', an);
-    link.setAttribute('aria-label', an ? 'Anzeigen, wo Markus ist' : langText);
+  // Eine Stelle für den zugänglichen Namen: eingeklappt kurz, sonst Ziel und Alter; ohne Position keiner.
+  function beschriften() {
+    const bei = kleinBei();
+    const neu = bei !== null && aktuell !== null && positionHref(aktuell) !== bei;
+    kasten.toggleAttribute('data-neu', neu);
+    const name = bei !== null ? (neu ? 'Markus ist woanders – anzeigen' : 'Anzeigen, wo Markus ist') : langText;
+    if (name) link.setAttribute('aria-label', name); else link.removeAttribute('aria-label');
   }
-  klein(istKlein());
-  const wegblenden = () => klein(true);
-  kasten.querySelector('button')!.addEventListener('click', wegblenden);
-  // Wischen zur Seite klappt ein (Tablet, Laptop mit Touchscreen); senkrecht bleibt Scrollen.
-  let wisch: { x: number; y: number } | null = null;
-  kasten.addEventListener('touchstart', (e) => { const t = e.touches[0]; wisch = { x: t.clientX, y: t.clientY }; }, { passive: true });
+  function klein(an: boolean) {
+    kleinMerken(an ? (aktuell ? positionHref(aktuell) : '') : null);
+    kasten.toggleAttribute('data-klein', an);
+    beschriften();
+  }
+  kasten.toggleAttribute('data-klein', kleinBei() !== null);
+  beschriften();
+  kasten.querySelector('button')!.addEventListener('click', () => {
+    klein(true);
+    link.focus(); // der ×-Knopf verschwindet; der Fokus bleibt am Pin statt auf <body> zu fallen
+  });
+  // Wischen zur Seite klappt ein (Tablet, Laptop mit Touchscreen); senkrecht bleibt Scrollen. Nur ein Finger zählt.
+  let wisch: { id: number; x: number; y: number } | null = null;
+  kasten.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    wisch = e.touches.length === 1 ? { id: t.identifier, x: t.clientX, y: t.clientY } : null;
+  }, { passive: true });
+  kasten.addEventListener('touchcancel', () => { wisch = null; }, { passive: true });
   kasten.addEventListener('touchend', (e) => {
-    const t = e.changedTouches[0];
-    if (wisch && Math.abs(t.clientX - wisch.x) > 50 && Math.abs(t.clientX - wisch.x) > 2 * Math.abs(t.clientY - wisch.y)) wegblenden();
+    const t = [...e.changedTouches].find((x) => x.identifier === wisch?.id);
+    if (wisch && t && Math.abs(t.clientX - wisch.x) > 50 && Math.abs(t.clientX - wisch.x) > 2 * Math.abs(t.clientY - wisch.y)) klein(true);
     wisch = null;
   }, { passive: true });
 
   link.addEventListener('click', (e) => {
-    // Eingeklappt: der erste Tipp klappt nur auf, springt aber nicht.
-    if (kasten.hasAttribute('data-klein')) { e.preventDefault(); klein(false); return; }
+    // Eingeklappt: der erste Tipp klappt nur auf, springt aber nicht (Cmd/Strg/Mittelklick öffnen weiter einen neuen Tab).
+    if (kasten.hasAttribute('data-klein') && !(e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0)) { e.preventDefault(); klein(false); return; }
     if (!aktuell) return;
     erledigt = positionHref(aktuell);
     kasten.hidden = true;
@@ -288,7 +304,7 @@ function studierende() {
           titel.textContent = d.position.titel;
           alt.textContent = alter ? ` · ${alter}` : '';
           langText = `Zu Markus springen: ${d.position.titel}${alter ? `, ${alter}` : ''}`;
-          if (!kasten.hasAttribute('data-klein')) link.setAttribute('aria-label', langText);
+          beschriften();
           kasten.hidden = schonDa(d.position) || (positionHref(d.position) === erledigt && !zeigbar(d.position));
         }
       } catch {
