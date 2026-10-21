@@ -30,9 +30,9 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-10-22">
-    <Block time="09:00–09:40" type="plenum" title="Kick-off" href="#kickoff">Wie das Innolab läuft, Bewertung, die Toolbox als Landkarte.</Block>
-    <Block time="09:40–10:15" type="uebung" title="Warm-up · Wie macht man Toast?" href="#toast">Zeichnen, TED-Talk, übertragen.</Block>
-    <Block time="10:15–11:00" type="konzept" title="Outcome statt Output" href="#outcome">Outcome, Output, MVP – und wie Design Thinking schiefgeht.</Block>
+    <Block time="09:00–09:50" type="plenum" title="Kick-off" href="#kickoff">Wie das Innolab läuft, Bewertung, Toolbox, Miro, Werkstatt und Claude verbinden, der Baum als roter Faden.</Block>
+    <Block time="09:50–10:20" type="uebung" title="Warm-up · Wie macht man Toast?" href="#toast">Zeichnen, TED-Talk, übertragen.</Block>
+    <Block time="10:20–11:00" type="konzept" title="Outcome statt Output" href="#outcome">Outcome, Output, MVP – und wie Design Thinking schiefgeht.</Block>
     <Block time="11:00–11:10" type="pause" title="Pause" />
     <Block time="11:10–12:10" type="uebung" title="Problem-Rahmen & Produkt-Brief" href="/innolab/methoden/problem-rahmen">Für wen, welches Problem, woran ihr es merkt.</Block>
     <Block time="12:10–12:15" type="uebung" title="Entscheidungslog" href="/innolab/methoden/entscheidungslog">Die ersten Zeilen, mit Beleg oder „noch keiner“.</Block>
@@ -81,6 +81,21 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       )}
       <p>Der Frame <MiroLink name="Start hier · So arbeitet ihr auf diesem Board">„Start hier“</MiroLink> wiederholt diese Regeln und verlinkt jeden Frame; in Miro findet ihr dieselbe Liste unter „Frames“. Miro ist zum Denken in der Session da. Das Ergebnis haltet ihr in den letzten zehn Minuten jedes Blocks in der Werkstatt fest, denn daraus liest Claude, und daran sehen wir eure Entscheidungen. Interviewte stehen auch in Miro nur mit Pseudonym (I1 bis I5) – keine Namen, Fotos oder Arbeitgeber.</p>
       <p class="small muted">Aufbau nach bewährter Praxis für Lehre und Workshops: benannte Frames als Kapitel und Navigation (Miro Community), eine feste Grundstruktur mit klaren Überschriften und wenigen Formen (bpb, „Kooperatives Online-Lernen, Teil 4“), eine eigene Arbeitsfläche pro Person mit Namen darüber (Fallstudie TU Dresden), ein Parkplatz für Fragen, die gerade nicht dran sind.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="verbinden">Werkstatt und Claude verbinden</h2>
+    <p class="folie-satz">Einmal pro Person – danach liest Claude eure Mappe.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Mappe öffnen:</strong> <a href="/innolab/mappe">Meine Mappe</a>, mit eurem GitHub-Konto anmelden. Sie ist noch leer.</li>
+      <li data-schritt><strong>Connector anlegen:</strong> den Link auf <a href="/innolab/werkstatt/claude">Claude verbinden</a> öffnen, Connect, in GitHub bestätigen, in der Werkstatt „Erlauben“, die Werkzeuge auf „Always allow“.</li>
+      <li data-schritt><strong>Modelltraining aus:</strong> in Claude unter Settings → Privacy „Help improve our AI models“ ausschalten.</li>
+    </ol>
+    <p>Alle drei Schritte zusammen: <Timer minuten={10} /></p>
+    <div class="nur-handout">
+      <p>Ab dem Problem-Rahmen haltet ihr jedes Ergebnis in der Werkstatt fest, und gegen Mittag prüft Claude zum ersten Mal. Deshalb richtet ihr beides jetzt ein, nicht erst bei der ersten Prüfung. Die Anleitung mit Bildern zu jedem Schritt steht auf <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>.</p>
+      <p>Meldet die Mappe „nicht freigeschaltet“, schreibt Markus euren GitHub-Namen. Klappt der Connector nicht, arbeitet ihr vorerst ohne ihn: Erst den Prüf-Prompt der Methode in ein Gespräch mit Claude einfügen, dann darunter den Text aus „Für Claude kopieren“ im Editor. Nur der kopierte Text allein reicht nicht – dann schreibt Claude euer Artefakt um, statt es zu prüfen.</p>
     </div>
   </Folie>
 
@@ -176,7 +191,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <h2 id="toast">Warm-up · Wie macht man Toast?</h2>
     <p class="folie-satz">Zeichnet, wie man Toast macht.</p>
     <p>Ein Blatt, ein dicker Stift. Allein, ohne zu reden, möglichst ohne Wörter. Es gibt kein Richtig oder Falsch. <Timer minuten={3} /></p>
-    <Aufloesung ab="2026-10-22T10:15" gruppe="toast">
+    <Aufloesung ab="2026-10-22T10:20" gruppe="toast">
       <Video id="_vS_b7cJn2A" titel="Tom Wujec: Got a wicked problem? First, tell me how you make toast" quelle="Tom Wujec, „Got a wicked problem? First, tell me how you make toast“, TED 2013 (9 min)" />
     </Aufloesung>
   </Folie>
@@ -184,7 +199,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="toast-aufloesung">Was der Toast zeigt</h2>
     <p class="folie-satz">Was ist euch an euren Zeichnungen aufgefallen?</p>
-    <Aufloesung ab="2026-10-22T10:15" gruppe="toast" hinweis="Öffnet sich zusammen mit dem Video auf der vorigen Folie.">
+    <Aufloesung ab="2026-10-22T10:20" gruppe="toast" hinweis="Öffnet sich zusammen mit dem Video auf der vorigen Folie.">
       <p><strong>Jede*r hat ein anderes Modell im Kopf – sichtbar wird es erst gezeichnet.</strong></p>
       <ul class="gross">
         <li data-schritt><strong>Knoten und Verbindungen:</strong> Jede Zeichnung besteht aus Dingen, Schritten, Personen – und Pfeilen dazwischen.</li>

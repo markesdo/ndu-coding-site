@@ -31,7 +31,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       '„Das Ergebnis jedes Blocks haltet ihr in den letzten zehn Minuten in der Werkstatt fest – daraus liest Claude.“',
       'Hinweis Datenschutz: Interviewte nur als I1 bis I5, keine Namen, Fotos.',
     ],
-    ueberleitung: 'Bevor wir loslegen: das Bild, das uns durch alle Tage trägt – ein Baum vom Ziel bis zum Test.',
+    ueberleitung: 'Miro ist die Denkfläche. Jetzt richtet ihr die Werkstatt ein, aus der Claude liest.',
     miro: {
       schritte: [
         '„Start hier“ auf dem Beamer öffnen. Als Erstes wählt jede*r eine der drei Spalten „Produkt von: …“ und trägt Namen und Produkt ein. Diese Spalte gehört ihr bzw. ihm in jedem Frame; die linke Spalte ist die Kaffeebar.',
@@ -47,6 +47,37 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { frage: 'Wie komme ich aufs Board?', antwort: 'Über den Link auf der Folie (Handout) bzw. im Teams-Kanal; das Passwort ist dasselbe wie für die Website.' },
       { frage: 'Warum zusätzlich die Werkstatt, wenn alles in Miro steht?', antwort: 'Aus der Werkstatt liest Claude, und dort sind die Entscheidungen nachvollziehbar festgehalten. Miro bleibt die Denkfläche.' },
       { frage: 'Dürfen Interviewte mit Namen oder Foto aufs Board?', antwort: 'Nein. Nur Pseudonyme I1 bis I5, keine Namen, Fotos oder Arbeitgeber – auch in Miro.' },
+    ],
+  },
+
+  'verbinden': {
+    live: [
+      'Timer 10 min starten, alle arbeiten am eigenen Laptop.',
+      'Reihenfolge: Mappe anmelden, Connector anlegen, Modelltraining aus.',
+      '„Meldet die Mappe ‚nicht freigeschaltet‘, sagt mir euren GitHub-Namen.“',
+      'Nach 10 min: Wer hängt, macht um 11:00 in der Pause weiter.',
+    ],
+    ueberleitung: 'Jetzt sind die Werkzeuge bereit. Fehlt noch das Bild, das uns durch alle Tage trägt.',
+    uebung: { dauer: '10 min', form: 'allein am eigenen Laptop' },
+    ablauf: {
+      schritte: [
+        'Folie zeigen, Timer 10 min. Die Anleitung mit Bildern liegt auf /innolab/werkstatt/claude.',
+        'Mappe zuerst: Die Anmeldung mit GitHub legt sie an und zeigt sofort, ob jemand freigeschaltet ist.',
+        'Dann der Connector über den Ein-Klick-Link: Connect, in GitHub bestätigen, in der Werkstatt „Erlauben“, Werkzeuge auf „Always allow“. Danach Modelltraining aus.',
+        'Kurz herumgehen: Sieht jede*r die leere Mappe und den Connector mit vier Werkzeugen?',
+      ],
+      achten: [
+        '„Nicht freigeschaltet“ heißt: GitHub-Name fehlt in der Werkstatt. Neu anmelden hilft nicht, erst eintragen.',
+        'Kein Dialog in claude.ai: Connector von Hand unter Customize → Connectors anlegen, Name und URL stehen auf der Anleitung.',
+      ],
+      fehler: [
+        'Werkzeuge auf „Needs approval“ lassen: Dann fragt Claude bei jeder Prüfung vor jedem Lesen.',
+        'Den Connector auf die erste Prüfung um 12:00 verschieben – dann wird die Prüfung zur Einrichtung.',
+      ],
+    },
+    fragen: [
+      { frage: 'Was sieht Claude über den Connector?', antwort: 'Nur die eigene Mappe, und nur lesend: vier Werkzeuge, alle read-only. Claude prüft, schreibt aber nichts.' },
+      { frage: 'Was, wenn der Connector nicht klappt?', antwort: 'Ohne ihn weiterarbeiten: erst den Prüf-Prompt einfügen, dann den Text aus „Für Claude kopieren“. Nur der kopierte Text allein, und Claude schreibt um, statt zu prüfen.' },
     ],
   },
 
@@ -169,7 +200,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Auf die Wurzel zeigen: Pendler*innen mit Kaffee im Zug – heute dran.',
       '„Die Chancen der Kaffeebar zeigen nur die Form – eure kommen erst aus echten Interviews.“',
       '„An Tag 2 werden die Momente eurer Experience Map die oberste Ebene unter dem Outcome.“',
-      'Zeit: 09:40 Toast.',
+      'Zeit: 09:50 Toast.',
     ],
     verstaendnis: {
       frage: 'Ist ‚Ich will per App vorbestellen‘ eine Chance oder eine Lösung – und woran erkennt ihr das?',
@@ -193,7 +224,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Aufgabe nur einmal sagen, keine Beispiele geben.',
       'Rückfragen wie „Toaster oder Pfanne?“ nicht beantworten.',
       '„Ihr könnt nicht zeichnen? Kästchen, Pfeile und Strichmännchen reichen völlig.“',
-      'Danach Blätter nebeneinander, Video per Knopf öffnen (sonst 10:15).',
+      'Danach Blätter nebeneinander, Video per Knopf öffnen (sonst 10:20).',
     ],
     ueberleitung: 'Zeichnungen nebeneinander: Was fällt euch auf?',
     uebung: { dauer: '3 min Zeichnen, danach Video (TED, ca. 9 min)', form: 'allein, ohne zu reden' },
@@ -202,7 +233,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
         'Aufgabe nur einmal sagen: „Zeichnet, wie man Toast macht.“ Keine Beispiele geben.',
         'Timer 3 min; währenddessen nichts kommentieren.',
         'Die drei Blätter nebeneinander legen oder hochhalten lassen.',
-        'Video von Tom Wujec zeigen: Auflösung per Knopf auf dem Beamer öffnen (sie öffnet sich sonst erst automatisch um 10:15).',
+        'Video von Tom Wujec zeigen: Auflösung per Knopf auf dem Beamer öffnen (sie öffnet sich sonst erst automatisch um 10:20).',
       ],
       achten: [
         'Rückfragen („Toaster oder Pfanne?“) nicht beantworten – genau die Unterschiede sind die Pointe.',

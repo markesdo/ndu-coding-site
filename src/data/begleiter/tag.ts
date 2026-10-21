@@ -26,6 +26,7 @@ export const TAG_1: TagKarte = {
         'Die vier Feinde guter Entscheidungen nach Heath weglassen (was-noch).',
         'Nur den Folien-Satz, ohne Nigel Cross (problem-loesung).',
         'Miro: nur Spalte wählen und „Alle zu mir holen“, den Rest erklärt der Frame „Start hier“ (miro).',
+        'Verbinden nach 10 min beenden, wer nicht fertig ist, macht um 11:00 weiter (verbinden).',
       ],
     },
     'Warm-up · Wie macht man Toast?': {
@@ -96,12 +97,13 @@ export const TAG_1: TagKarte = {
   material: [
     { id: 'beamer', wann: 'Vor dem Start', was: 'Beamer-Tab mit Präsentator-Schlüssel, Begleiter auf dem Tablet folgt' },
     { id: 'miro-board', wann: 'Vor dem Start', was: 'Miro-Team-Board offen, Link im Teams-Kanal (Passwort = Website-Passwort)' },
+    { id: 'werkstatt-freigeschaltet', wann: 'Vor dem Start', was: 'GitHub-Namen aller drei in der Werkstatt freigeschaltet (sonst „nicht freigeschaltet“ beim Verbinden)' },
     { id: 'werkstatt-markus', wann: 'Vor dem Start', was: 'In der Werkstatt angemeldet (für „Zahlen aus der Werkstatt holen“ am Ende)' },
+    { id: 'verbinden-alle', wann: 'Kick-off', was: 'Alle in der Mappe angemeldet und Claude-Connector verbunden (Folie „Werkstatt und Claude verbinden“)' },
     { id: 'toast-papier', wann: 'Toast', was: 'Je Person ein Blatt und ein dicker Stift' },
     { id: 'toast-ton', wann: 'Toast', was: 'Ton für das TED-Video getestet' },
-    { id: 'werkstatt-alle', wann: 'Problem-Rahmen', was: 'Alle in der Werkstatt angemeldet; wer aus dem Coding-Kurs kommt, hat den alten Brief griffbereit' },
+    { id: 'alter-brief', wann: 'Problem-Rahmen', was: 'Wer aus dem Coding-Kurs kommt, hat den alten Brief griffbereit' },
     { id: 'annahmen-stickies', wann: 'Annahmen-Map', was: 'Stickies in vier Farben im Frame T1 · 3 (gelb, blau, grün, lila)' },
-    { id: 'annahmen-connector', wann: 'Annahmen-Map', was: 'Claude-Connector der Werkstatt funktioniert (Prüfliste, Red Team)' },
     { id: 'interview-probe', wann: 'Interviewleitfaden', was: 'Prompt „Probe mit Claude“ griffbereit; du spielst in den drei Live-Runden die schwierige Person' },
     { id: 'abschluss-teams', wann: 'Abschluss', was: 'Teams-Post zur Ankündigung des Interview-Editors vorbereitet' },
   ],
