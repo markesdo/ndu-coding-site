@@ -9,6 +9,7 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 
 const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
 const WAKE = 'Bill Wake, „INVEST in Good Stories, and SMART Tasks“ (xp123.com, 2003)';
@@ -116,6 +117,7 @@ const NACH_LINEAR = `Lies docs/LINEAR.md, docs/STORY-MAP.md und docs/TESTS.md. H
   <Folie>
     <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
     <p class="folie-satz">Sechs Issues aus Slice 1, Testbefund U2 und DoD.</p>
+    <MiroFrame name="T4 · 2 · Backlog-Reihenfolge" />
     <div style="overflow-x:auto">
       <table>
         <thead><tr><th>Platz</th><th>#</th><th>Issue</th><th>Warum hier</th></tr></thead>
@@ -174,6 +176,7 @@ mit leerer und mit voller Warteschlange am Handy gezeigt</Prompt>
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (40 min Übung)</h2>
     <p class="folie-satz">Allein schreiben und ordnen, reihum erzählen, dann nach Linear.</p>
+    <MiroFrame name="T4 · 2 · Backlog-Reihenfolge" />
     <ol class="gross">
       <li data-schritt><strong>Karten schreiben, allein:</strong> Slice 1 Karte für Karte, Testbefunde, das Mess-Issue. <Timer minuten={15} /></li>
       <li data-schritt><strong>Ordnen, allein:</strong> Wert und Risiko, Platz 1 bis n. <Timer minuten={5} /></li>
