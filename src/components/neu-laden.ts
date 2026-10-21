@@ -1,7 +1,7 @@
 // „Neue Version – neu laden“ – im Browser, eingebunden über NeuLaden.astro. Logik und Takt: lib/neu-laden.ts.
 // Fragt nur, solange der Tab sichtbar ist und nicht im Beamer-Modus; immer nur eine Anfrage zugleich (Kette: lib/kette.ts).
 // Lädt nie selbst neu und nimmt nie den Fokus.
-import { aktiverAbschnitt } from './abschnitt';
+import { aktiverAbschnitt, ueberschriftOberkanten } from './abschnitt';
 import { abfrageKette, jsonHolen } from '../lib/kette';
 import { MIN_ABSTAND_MS, PRUEF_MS, TIMEOUT_MS, brauchtHinweis, naechstePruefung, versionAus, ziel } from '../lib/neu-laden';
 
@@ -57,7 +57,7 @@ function baldPruefen() {
 
 function neuLaden() {
   const hs = [...document.querySelectorAll<HTMLElement>('.inner :is(h2, h3)[id]')].filter((h) => h.getClientRects().length > 0);
-  const i = aktiverAbschnitt(hs.map((h) => h.getBoundingClientRect().top), innerHeight * 0.35);
+  const i = aktiverAbschnitt(ueberschriftOberkanten(hs), innerHeight * 0.35);
   // Zeigt der Anker schon auf etwas im Bild (z. B. einen geöffneten Screenshot-Schritt), bleibt er – er ist genauer.
   // Kein Abschnitt (Seitenanfang) → Adresse lassen, der Browser stellt die Position selbst wieder her.
   const jetzt = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));

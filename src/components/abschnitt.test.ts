@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { abschnittName, aktiverAbschnitt, kuerzen, pfadOhneSchraegstrich, seitenName, ueberschriftText } from './abschnitt';
+import { abschnittName, aktiverAbschnitt, kuerzen, pfadOhneSchraegstrich, seitenName, ueberschriftOberkanten, ueberschriftText } from './abschnitt';
 
 describe('pfadOhneSchraegstrich', () => {
   it('/tag-1/ und /tag-1 sind dieselbe Seite, / bleibt /', () => {
@@ -60,5 +60,26 @@ describe('aktiverAbschnitt', () => {
   });
   it('vor der ersten Überschrift → -1', () => {
     expect(aktiverAbschnitt([100, 400], 50)).toBe(-1);
+  });
+});
+
+describe('ueberschriftOberkanten (Beamer: Inhalt der Folie senkrecht mittig)', () => {
+  // Gemessen am 21.10. auf /innolab/methoden/interview im Beamer (997 px hoch, Lesezeile 349, Kopfleiste ~48 px): Nach
+  // dem Sprung auf „forschungsfrage“ steht die Folie unter der Kopfleiste, ihre h2 aber bei 367 – gemeldet wurde die Folie davor.
+  const linie = 997 * 0.35;
+  const rect = (top: number) => ({ getBoundingClientRect: () => ({ top }) });
+  const knoten = (top: number, folie: ReturnType<typeof rect> | null) => ({ ...rect(top), closest: () => folie });
+  it('erste Überschrift einer Folie zählt mit der Oberkante der Folie', () => {
+    const vorige = rect(-1260), jetzt = rect(48);
+    const hs = [knoten(-1253, vorige), knoten(367, jetzt)];
+    expect(ueberschriftOberkanten(hs)).toStrictEqual([-1260, 48]);
+    expect(aktiverAbschnitt(ueberschriftOberkanten(hs), linie)).toBe(1);
+  });
+  it('weitere Überschriften derselben Folie zählen mit der eigenen Oberkante', () => {
+    const folie = rect(48);
+    expect(ueberschriftOberkanten([knoten(200, folie), knoten(600, folie)])).toStrictEqual([48, 600]);
+  });
+  it('ohne Folie zählt die eigene Oberkante', () => {
+    expect(ueberschriftOberkanten([knoten(-1300, null), knoten(367, null)])).toStrictEqual([-1300, 367]);
   });
 });
