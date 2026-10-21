@@ -5,6 +5,7 @@
 // Der Live-Schalter in Kopf- bzw. Seitenleiste zeigt den Zustand und pausiert (Position wird dann gelöscht).
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftOberkanten, ueberschriftVon } from './abschnitt';
 import { abfrageKette, jsonHolen, zeitlimit } from '../lib/kette';
+import { hinweis } from './hinweis';
 import { PRAESENTATOR_SCHLUESSEL, beamerSchalten } from '../lib/beamer';
 import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
@@ -38,18 +39,6 @@ if (location.hash.startsWith('#presenter=')) {
 
 function hinweisSpaeter(text: string) {
   if (document.body) hinweis(text); else addEventListener('DOMContentLoaded', () => hinweis(text), { once: true });
-}
-
-function hinweis(text: string) {
-  const el = document.createElement('div');
-  el.className = 'wo-ist-hinweis';
-  el.setAttribute('role', 'status');
-  el.textContent = text;
-  // Steht gerade der Hinweis „Seite aktualisiert“ oben (sichtbar, nicht im Beamer ausgeblendet), darunter einreihen.
-  const banner = document.querySelector('.neu-laden');
-  if (banner && banner.getClientRects().length > 0) el.style.top = `${Math.round(banner.getBoundingClientRect().bottom) + 8}px`;
-  document.body.append(el);
-  setTimeout(() => el.remove(), 4000);
 }
 
 // Für /praesentator: Schlüssel beim Server prüfen (speichert nichts), dann merken.

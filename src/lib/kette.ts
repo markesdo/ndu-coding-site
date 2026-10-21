@@ -7,6 +7,8 @@ export interface Kette {
   planen(ms: number): void;
   /** Gleich eine Runde – läuft schon eine, plant die ohnehin die nächste. */
   sofort(): void;
+  /** Endgültig aufhören: keine weitere Runde, auch nicht nach einer laufenden; planen/sofort tun danach nichts. */
+  stoppen(): void;
 }
 
 export interface KettenOptionen {
@@ -22,7 +24,8 @@ export interface KettenOptionen {
 export function abfrageKette(o: KettenOptionen): Kette {
   let timer: ReturnType<typeof setTimeout> | undefined;
   let laeuft = false;
-  const planen = (ms: number) => { clearTimeout(timer); timer = setTimeout(tick, ms); };
+  let gestoppt = false;
+  const planen = (ms: number) => { if (gestoppt) return; clearTimeout(timer); timer = setTimeout(tick, ms); };
 
   async function tick() {
     if (laeuft) return; // die laufende Runde plant die nächste selbst
@@ -40,7 +43,7 @@ export function abfrageKette(o: KettenOptionen): Kette {
     }
   }
 
-  return { planen, sofort: () => planen(0) };
+  return { planen, sofort: () => planen(0), stoppen: () => { gestoppt = true; clearTimeout(timer); } };
 }
 
 /** AbortSignal.timeout fehlt in älterem Safari (< 16). */

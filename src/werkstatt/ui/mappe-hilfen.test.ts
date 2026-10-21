@@ -3,7 +3,7 @@ import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, LOGIN_HREF, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { FEHLER_TEXT, LOGIN_HREF, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, leitfadenNachfragen, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -60,6 +60,15 @@ describe('leitfadenFrei', () => {
     expect(leitfadenFrei(vorher, false, ['mom-test'])).toBe(true);
     expect(leitfadenFrei(vorher, false, ['toast'])).toBe(false);
     expect(leitfadenFrei(vorher, false)).toBe(false);
+  });
+});
+
+describe('leitfadenNachfragen', () => {
+  it('fragt nur am Kurstag des Mom Test und nur im sichtbaren Tab nach', () => {
+    expect(leitfadenNachfragen(new Date('2026-10-22T08:05:00Z'), true)).toBe(true);
+    expect(leitfadenNachfragen(new Date('2026-10-22T08:05:00Z'), false)).toBe(false);
+    expect(leitfadenNachfragen(new Date('2026-10-21T08:05:00Z'), true)).toBe(false); // Vortag
+    expect(leitfadenNachfragen(new Date('2026-10-23T08:05:00Z'), true)).toBe(false); // danach
   });
 });
 

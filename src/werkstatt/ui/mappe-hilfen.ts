@@ -1,6 +1,7 @@
 // Reine Hilfen für /innolab/mappe (MappeUebersicht.tsx): Rücksprünge der Anmeldung und Zeilen der Übersicht.
 import { aufgeloest } from '../../components/aufloesung.js';
 import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
+import { heuteZuFragen } from '../../lib/aufgedeckt.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 
@@ -33,6 +34,11 @@ export function adresseOhneFehler(pfad: string, suche: string, hash: string): st
  *  Gruppe „mom-test“ aufgedeckt hat (aufgedeckt aus /api/aufgedeckt), spätestens ab NACH_MOM_TEST; der Präsentator immer. */
 export function leitfadenFrei(jetzt: Date, praesentator: boolean, aufgedeckt: readonly string[] = []): boolean {
   return praesentator || aufgedeckt.includes('mom-test') || aufgeloest(NACH_MOM_TEST, jetzt);
+}
+
+/** Bei /api/aufgedeckt nach „mom-test“ fragen? Nur am Kurstag von NACH_MOM_TEST und im sichtbaren Tab – sonst reicht die Uhr. */
+export function leitfadenNachfragen(jetzt: Date, sichtbar: boolean): boolean {
+  return sichtbar && heuteZuFragen([NACH_MOM_TEST], jetzt);
 }
 
 /** Lädt /innolab/mappe beim Öffnen? Nicht bei „nicht freigeschaltet“: Es gibt keine Sitzung, Laden zeigte nur „Melde dich an“.

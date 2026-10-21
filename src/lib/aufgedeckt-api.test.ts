@@ -2,8 +2,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { GET, POST } from '../../api/aufgedeckt';
 
 // Außerhalb von Vercel nimmt getCache() einen Speicher im Prozess (runtime-cache.ts) – genug für den Ablauf.
+const URL_API = 'https://kurs.invalid/api/aufgedeckt';
 const melden = (kennung: unknown, key = 'geheim') =>
-  POST(new Request('https://kurs.invalid/api/aufgedeckt', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: JSON.stringify({ kennung }) }));
+  POST(new Request(URL_API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: JSON.stringify({ kennung }) }));
+const lesen = async (...k: string[]) => (await GET(new Request(`${URL_API}?${new URLSearchParams(k.map((x) => ['k', x]))}`))).json();
 
 describe('api/aufgedeckt', () => {
   afterEach(() => { vi.unstubAllEnvs(); vi.useRealTimers(); });
@@ -14,12 +16,22 @@ describe('api/aufgedeckt', () => {
     vi.setSystemTime(new Date('2026-10-22T08:05:00Z'));
     expect((await melden('toast', 'falsch')).status).toBe(403);
     expect((await melden('a\nb')).status).toBe(400);
+    expect(await lesen('toast', 'mom-test')).toStrictEqual({ offen: [] });
     expect((await melden('toast')).status).toBe(200);
     expect((await melden('mom-test')).status).toBe(200);
-    expect(await (await GET()).json()).toStrictEqual({ offen: ['toast', 'mom-test'] });
+    expect(await lesen('toast', 'mom-test', 'lego')).toStrictEqual({ offen: ['toast', 'mom-test'] });
     // Am nächsten Kurstag gilt der alte Stand nicht.
     vi.setSystemTime(new Date('2026-11-21T09:00:00Z'));
-    expect(await (await GET()).json()).toStrictEqual({ offen: [] });
+    expect(await lesen('toast', 'mom-test')).toStrictEqual({ offen: [] });
+  });
+
+  it('zwei Meldungen zugleich: keine geht verloren', async () => {
+    vi.stubEnv('PRESENTER_KEY', 'geheim');
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-29T08:05:00Z'));
+    const kennungen = ['a', 'b', 'c', 'd'];
+    expect((await Promise.all(kennungen.map((k) => melden(k)))).map((r) => r.status)).toStrictEqual([200, 200, 200, 200]);
+    expect(await lesen(...kennungen)).toStrictEqual({ offen: kennungen });
   });
 
   it('ohne PRESENTER_KEY nimmt niemand Meldungen an (503)', async () => {

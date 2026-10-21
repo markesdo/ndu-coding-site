@@ -62,6 +62,27 @@ describe('abfrageKette', () => {
     expect(runde).toHaveBeenCalledTimes(1);
   });
 
+  it('stoppen() in der laufenden Runde: keine weitere, auch nicht per sofort()', async () => {
+    let k!: ReturnType<typeof abfrageKette>;
+    const runde = vi.fn(async () => { k.stoppen(); return 1000; });
+    k = abfrageKette({ runde, ruht: () => false, ruheMs: 1000 });
+    k.sofort();
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(runde).toHaveBeenCalledTimes(1);
+    k.sofort();
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(runde).toHaveBeenCalledTimes(1);
+  });
+
+  it('stoppen() hebt eine schon geplante Runde auf', async () => {
+    const runde = vi.fn(async () => 1000);
+    const k = abfrageKette({ runde, ruht: () => false, ruheMs: 1000 });
+    k.planen(500);
+    k.stoppen();
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(runde).not.toHaveBeenCalled();
+  });
+
   it('unbrauchbare Wartezeit (undefined, NaN, 0) → ruheMs statt Dauerfeuer', async () => {
     const runde = vi.fn(async () => undefined as unknown as number);
     abfrageKette({ runde, ruht: () => false, ruheMs: 1000 }).sofort();

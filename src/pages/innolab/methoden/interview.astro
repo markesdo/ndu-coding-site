@@ -17,10 +17,11 @@ import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import Skala from '../../../components/bild/Skala.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
 // Hinweise an den gesperrten Teilen: wann sie aufgehen und was ein Klick öffnet. Alles zum Mom Test ist eine Gruppe
-// (gruppe="mom-test"): Auflösungen, Editor und Vorlage, Probe-Prompt, Prüfliste – deckt Markus auf, geht alles auf.
+// (gruppe="mom-test"): Auflösungen, Editor und Vorlage, Probe-Prompt, Prüfliste – deckt Markus auf, geht alles auf (auch
+// bei allen); ein Klick der Studierenden öffnet nur den einen Teil.
 const [, monat, tag] = NACH_MOM_TEST.slice(0, 10).split('-');
 const AB = `am ${tag}.${monat}. um ${NACH_MOM_TEST.slice(11)}`;
-const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sagt Markus es, öffnet auch ein Klick auf den Knopf alles zum Mom Test auf dieser Seite.`;
+const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sagt Markus es, öffnet ein Klick auf den Knopf diesen Teil.`;
 
 // Auflösungen und Leitfaden-Editor: offen, sobald Markus aufdeckt, spätestens ab NACH_MOM_TEST (Ende des Kurstags).
 ---
