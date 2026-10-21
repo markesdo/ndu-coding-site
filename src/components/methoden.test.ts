@@ -183,7 +183,7 @@ describe('methoden', () => {
     expect(liste).toMatch(/ID aus dem Kundenprofil oder einem Verweis auf die Value Map/);
     expect(liste).toMatch(/ein Wort dazu, wie sicher sie ist/);
     expect(liste).toMatch(/Zahlen der Outcome-Metrik/);
-    // Die Investorin auf der Pitch-Seite liest dieselbe Vorarbeit wie die Prüfung, ohne docs/PITCH.md doppelt.
+    // vorarbeitLesen (daraus baut die Pitch-Seite den Prompt der Investorin) liefert dieselbe Liste wie der Prüf-Prompt.
     expect(pi).toContain(`Zum Abgleich lies auch ${vorarbeitLesen(pitch, ['docs/PITCH.md']).join(' und ')}. `);
     expect(pitch.braucht).toEqual(expect.arrayContaining(['profil', 'valuemap', 'experimente', 'spike', 'entscheidungen', 'brief']));
   });
