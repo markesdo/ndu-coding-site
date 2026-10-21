@@ -88,6 +88,7 @@ const { vorher, danach } = nachbarn(path);
       </main>
     </div>
     <script>
+      import { beamerSchalten } from '../lib/beamer';
       import { aktuelleFolie, tasteSteuertFolien, tastenZiel, timerFuerT, weiter as folieWeiter, zurueck as folieZurueck } from '../components/folien';
       const btn = document.getElementById('menu-btn');
       const sb = document.getElementById('sidebar');
@@ -101,11 +102,10 @@ const { vorher, danach } = nachbarn(path);
       const toggles = document.querySelectorAll<HTMLButtonElement>('[data-beamer-toggle]');
       const sync = () => toggles.forEach((t) => t.setAttribute('aria-pressed', String(root.hasAttribute('data-beamer'))));
       const setBeamer = (an: boolean) => {
-        // Nur der Präsentator schaltet ein (Regel in BeamerStart.astro); ausschalten geht immer.
-        if (an && !root.hasAttribute('data-ist-praesentator')) return;
-        root.toggleAttribute('data-beamer', an);
-        if (an) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
-        try { if (an) localStorage.setItem('ndu-beamer', '1'); else localStorage.removeItem('ndu-beamer'); } catch {}
+        // Nur der Präsentator schaltet ein (lib/beamer.ts, Regel in BeamerStart.astro); ausschalten geht immer.
+        let speicher: Storage | undefined;
+        try { speicher = localStorage; } catch {}
+        if (!beamerSchalten(root, an, { speicher })) return;
         sb?.classList.remove('open');
         sync();
         hoeheMessen();

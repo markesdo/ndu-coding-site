@@ -1,0 +1,51 @@
+---
+// Unten auf /start und /innolab: beim Präsentator der Knopf „Beamer starten“, sonst ein unauffälliger Link „Präsentator“
+// zu /praesentator; im Beamer-Modus nichts (Entscheidung: einstieg() in lib/beamer.ts).
+// Beides ist zuerst hidden, das Skript blendet eines ein – so blitzt bei Studierenden nie der Knopf auf. Ohne JavaScript
+// bleibt beides weg: Den Beamer-Modus gibt es ohnehin nur mit JavaScript, und Studierende brauchen den Link nicht.
+// Eingeschaltet wird nur über beamerSchalten() (Regel aus BeamerStart.astro): ohne Präsentator-Schlüssel tut der Knopf
+// nichts, auch wenn ihn jemand per DevTools einblendet.
+// layout: Seite mit Layout.astro – dann ist der Knopf ein [data-beamer-toggle] und dessen Klick-Handler schaltet um
+// (Seitenleiste, aria-pressed, Kopfleistenhöhe). /start hat kein Layout und eigenes dunkles Farbschema (hell = false).
+import { Presentation } from '@lucide/astro';
+
+const { layout = false } = Astro.props as { layout?: boolean };
+---
+<div class="praes-einstieg">
+  <button type="button" class="btn mit-icon" data-einstieg-knopf data-nur-praesentator data-beamer-toggle={layout ? '' : undefined} hidden>
+    <Presentation size={18} aria-hidden="true" /> Beamer starten
+  </button>
+  <a class="praes-einstieg-link" href="/praesentator" data-einstieg-link hidden>Präsentator</a>
+</div>
+
+<script>
+  import { beamerSchalten, einstieg } from '../lib/beamer';
+  const root = document.documentElement;
+  for (const box of document.querySelectorAll<HTMLElement>('.praes-einstieg')) {
+    const knopf = box.querySelector<HTMLButtonElement>('[data-einstieg-knopf]')!;
+    const link = box.querySelector<HTMLAnchorElement>('[data-einstieg-link]')!;
+    const zeichnen = () => {
+      const was = einstieg(root);
+      knopf.hidden = was !== 'knopf';
+      link.hidden = was !== 'link';
+    };
+    // Ohne Layout (nur /start) schaltet der Knopf selbst; mit Layout übernimmt dessen Handler für [data-beamer-toggle].
+    if (!knopf.hasAttribute('data-beamer-toggle')) {
+      knopf.addEventListener('click', () => {
+        let speicher: Storage | undefined;
+        try { speicher = localStorage; } catch {}
+        beamerSchalten(root, true, { hell: false, speicher });
+      });
+    }
+    // Beamer an/aus (Knopf, Taste B) und An-/Abmelden in einem anderen Tab (wo-ist.ts) ändern die Wahl.
+    new MutationObserver(zeichnen).observe(root, { attributes: true, attributeFilter: ['data-beamer', 'data-ist-praesentator'] });
+    zeichnen();
+  }
+</script>
+
+<style>
+  .praes-einstieg { margin-top: 2.5rem; }
+  .praes-einstieg [hidden] { display: none !important; }
+  .praes-einstieg-link { font-size: .85rem; color: var(--muted); text-decoration: none; }
+  .praes-einstieg-link:hover { color: var(--fg); text-decoration: underline; }
+</style>
