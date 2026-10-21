@@ -12,6 +12,7 @@ import Fluss from '../../../components/Fluss.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import { Eye, MessagesSquare, RefreshCw, Target } from '@lucide/astro';
 
 const GUIDE = 'Ken Schwaber & Jeff Sutherland, „The Scrum Guide“ (2020)';
@@ -348,6 +349,7 @@ const NACH_LEGO = '2026-11-28T11:45';
   <Folie>
     <h2 id="team">Euer Team aufstellen</h2>
     <p class="folie-satz">Je Produkt ein Product Owner und ein Produktziel – alle drei sind überall Developers.</p>
+    <MiroFrame name="T4 · 1 · Teamaufstellung & DoD" />
     <ol class="gross">
       <li data-schritt><strong>Aus dem Lego:</strong> Was hätte euch im ersten Review gerettet? Drei Stichworte an die Tafel. <Timer minuten={5} /></li>
       <li data-schritt><strong>Reihum:</strong> Produkt, Product Owner, Produktziel, Linear-Projekt; Scrum Master für Sprint 1 und 2; die Abweichungen. <Timer minuten={10} /></li>
@@ -366,6 +368,7 @@ const NACH_LEGO = '2026-11-28T11:45';
   <Folie>
     <h2 id="dod">Definition of Done: die Messung gehört dazu</h2>
     <p class="folie-satz">Jede Zeile lässt sich im Browser, auf GitHub oder in Supabase prüfen.</p>
+    <MiroFrame name="T4 · 1 · Teamaufstellung & DoD" />
     <p class="small muted">Am Beispiel der Kaffeebar:</p>
     <ol class="gross">
       <li data-schritt><strong>Jedes Akzeptanzkriterium</strong> im Browser am Handy geprüft, Beleg im Issue.</li>
