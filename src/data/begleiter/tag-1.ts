@@ -200,7 +200,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Auf die Wurzel zeigen: Pendler*innen mit Kaffee im Zug – heute dran.',
       '„Die Chancen der Kaffeebar zeigen nur die Form – eure kommen erst aus echten Interviews.“',
       '„An Tag 2 werden die Momente eurer Experience Map die oberste Ebene unter dem Outcome.“',
-      'Zeit: 09:40 Toast.',
+      'Zeit: 09:50 Toast.',
     ],
     verstaendnis: {
       frage: 'Ist ‚Ich will per App vorbestellen‘ eine Chance oder eine Lösung – und woran erkennt ihr das?',
@@ -224,7 +224,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Aufgabe nur einmal sagen, keine Beispiele geben.',
       'Rückfragen wie „Toaster oder Pfanne?“ nicht beantworten.',
       '„Ihr könnt nicht zeichnen? Kästchen, Pfeile und Strichmännchen reichen völlig.“',
-      'Danach Blätter nebeneinander, Video per Knopf öffnen (sonst 10:15).',
+      'Danach Blätter nebeneinander, Video per Knopf öffnen (sonst 10:20).',
     ],
     ueberleitung: 'Zeichnungen nebeneinander: Was fällt euch auf?',
     uebung: { dauer: '3 min Zeichnen, danach Video (TED, ca. 9 min)', form: 'allein, ohne zu reden' },
@@ -233,7 +233,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
         'Aufgabe nur einmal sagen: „Zeichnet, wie man Toast macht.“ Keine Beispiele geben.',
         'Timer 3 min; währenddessen nichts kommentieren.',
         'Die drei Blätter nebeneinander legen oder hochhalten lassen.',
-        'Video von Tom Wujec zeigen: Auflösung per Knopf auf dem Beamer öffnen (sie öffnet sich sonst erst automatisch um 10:15).',
+        'Video von Tom Wujec zeigen: Auflösung per Knopf auf dem Beamer öffnen (sie öffnet sich sonst erst automatisch um 10:20).',
       ],
       achten: [
         'Rückfragen („Toaster oder Pfanne?“) nicht beantworten – genau die Unterschiede sind die Pointe.',
