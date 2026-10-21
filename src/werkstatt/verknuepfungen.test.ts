@@ -142,6 +142,8 @@ describe('verknuepfungenPruefen', () => {
     expect(fall((d) => { d[d3]!.beleg = 'getan'; d[d3]!.belegIds = ['D2']; })).toStrictEqual([]);
     // „getan“ mit Notiz: trägt.
     expect(fall((d) => { d[d3]!.beleg = 'getan'; d[d3]!.belegNotiz = 'Strichliste Oktober'; })).toStrictEqual([]);
+    // Beleg-ID, die es nicht gibt (F99): trägt nicht.
+    expect(fall((d) => { d[d3]!.beleg = 'getan'; d[d3]!.belegIds = ['F99']; })).toHaveLength(1);
     // zeigt nur auf die Annahme selbst zurück: trägt nicht.
     expect(fall((d) => { d[d3]!.beleg = 'getan'; d[d3]!.belegIds = ['A2']; })).toHaveLength(1);
     // ersetzte Entscheidung (D1 wird von D3 ersetzt) ist Geschichte, auch mit „getan“ und Notiz.
