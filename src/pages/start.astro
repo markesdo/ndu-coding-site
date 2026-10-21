@@ -63,7 +63,7 @@ const offen = innolabOffen(new Date());
         </a>
       </div>
 
-      <PraesentatorEinstieg />
+      <PraesentatorEinstieg seite="start" />
     </main>
 
     <script>
@@ -76,10 +76,13 @@ const offen = innolabOffen(new Date());
         innolab.removeAttribute('role');
         innolab.querySelector<HTMLElement>('[data-hinweis]')!.hidden = true;
       }
-      // Mit „Beamer starten“ (PraesentatorEinstieg) kommt der Beamer ohne ?beamer in der Adresse – dann zählt html[data-beamer].
+      // Mit „Beamer starten“ / „Beamer beenden“ (PraesentatorEinstieg) ändert sich der Modus ohne neue Adresse – dann zählt
+      // html[data-beamer]; die übrigen Parameter der Adresse bleiben.
       const root = document.documentElement;
       const verlinken = () => {
-        const suche = root.hasAttribute('data-beamer') ? '?beamer' : location.search;
+        const p = new URLSearchParams(location.search);
+        if (root.hasAttribute('data-beamer')) p.set('beamer', ''); else p.delete('beamer');
+        const suche = `?${p}`;
         for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-kurs]')) {
           if (!a.classList.contains('gesperrt')) a.href = kursLink(a.dataset.kurs!, suche);
         }

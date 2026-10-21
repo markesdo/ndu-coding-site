@@ -103,13 +103,11 @@ const { vorher, danach } = nachbarn(path);
       const sync = () => toggles.forEach((t) => t.setAttribute('aria-pressed', String(root.hasAttribute('data-beamer'))));
       const setBeamer = (an: boolean) => {
         // Nur der Präsentator schaltet ein (lib/beamer.ts, Regel in BeamerStart.astro); ausschalten geht immer.
-        let speicher: Storage | undefined;
-        try { speicher = localStorage; } catch {}
-        if (!beamerSchalten(root, an, { speicher })) return;
+        if (!beamerSchalten(root, an)) return;
         sb?.classList.remove('open');
-        sync();
-        hoeheMessen();
       };
+      // aria-pressed und Kopfleistenhöhe folgen dem Attribut – egal, wer umschaltet (auch PraesentatorEinstieg, wo-ist.ts).
+      new MutationObserver(() => { sync(); hoeheMessen(); }).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
 
       // Klebende Kopfleiste: Höhe für Schrittleiste und Sprungziele (beamer.css, --topbar-h).
       const topbar = document.querySelector<HTMLElement>('.topbar');

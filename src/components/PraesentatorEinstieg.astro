@@ -1,44 +1,55 @@
 ---
-// Unten auf /start und /innolab: beim Präsentator der Knopf „Beamer starten“, sonst ein unauffälliger Link „Präsentator“
-// zu /praesentator; im Beamer-Modus nichts (Entscheidung: einstieg() in lib/beamer.ts).
-// Beides ist zuerst hidden, das Skript blendet eines ein – so blitzt bei Studierenden nie der Knopf auf. Ohne JavaScript
-// bleibt beides weg: Den Beamer-Modus gibt es ohnehin nur mit JavaScript, und Studierende brauchen den Link nicht.
+// Unten auf /start und /innolab: beim Präsentator „Beamer starten“, sonst ein unauffälliger Link „Präsentator“ zu
+// /praesentator; im Beamer-Modus auf /start „Beamer beenden“ (dort gibt es sonst keinen Weg hinaus), auf /innolab nichts
+// (dort gibt es den Knopf „Beamer“ und Taste B). Entscheidung: einstieg() und klickAktion() in lib/beamer.ts.
+// Alles ist zuerst hidden, das Skript blendet eines ein – so blitzt bei Studierenden nie ein Knopf auf. Ohne JavaScript
+// bleibt alles weg: Den Beamer-Modus gibt es ohnehin nur mit JavaScript, und Studierende brauchen den Link nicht.
 // Eingeschaltet wird nur über beamerSchalten() (Regel aus BeamerStart.astro): ohne Präsentator-Schlüssel tut der Knopf
 // nichts, auch wenn ihn jemand per DevTools einblendet.
-// layout: Seite mit Layout.astro – dann ist der Knopf ein [data-beamer-toggle] und dessen Klick-Handler schaltet um
-// (Seitenleiste, aria-pressed, Kopfleistenhöhe). /start hat kein Layout und eigenes dunkles Farbschema (hell = false).
-import { Presentation } from '@lucide/astro';
+// seite: 'start' für /start (ohne Layout, eigenes dunkles Farbschema), sonst 'layout'.
+import { Presentation, X } from '@lucide/astro';
+import type { Seitenart } from '../lib/beamer';
 
-const { layout = false } = Astro.props as { layout?: boolean };
+const { seite = 'layout' } = Astro.props as { seite?: Seitenart };
 ---
-<div class="praes-einstieg">
-  <button type="button" class="btn mit-icon" data-einstieg-knopf data-nur-praesentator data-beamer-toggle={layout ? '' : undefined} hidden>
+<div class="praes-einstieg" data-seite={seite}>
+  <button type="button" class="btn mit-icon" data-einstieg="starten" data-nur-praesentator hidden>
     <Presentation size={18} aria-hidden="true" /> Beamer starten
   </button>
-  <a class="praes-einstieg-link" href="/praesentator" data-einstieg-link hidden>Präsentator</a>
+  <button type="button" class="btn mit-icon" data-einstieg="beenden" hidden>
+    <X size={18} aria-hidden="true" /> Beamer beenden
+  </button>
+  <a class="praes-einstieg-link" href="/praesentator" data-einstieg="link" hidden>Präsentator</a>
 </div>
 
 <script>
-  import { beamerSchalten, einstieg } from '../lib/beamer';
+  import { PRAESENTATOR_SCHLUESSEL, beamerSchalten, einstieg, klickAktion, praesentatorAngemeldet, type Seitenart } from '../lib/beamer';
   const root = document.documentElement;
   for (const box of document.querySelectorAll<HTMLElement>('.praes-einstieg')) {
-    const knopf = box.querySelector<HTMLButtonElement>('[data-einstieg-knopf]')!;
-    const link = box.querySelector<HTMLAnchorElement>('[data-einstieg-link]')!;
+    const seite = box.dataset.seite as Seitenart;
+    const teile = [...box.querySelectorAll<HTMLElement>('[data-einstieg]')];
+    const lage = () => ({ praesentator: root.hasAttribute('data-ist-praesentator'), beamer: root.hasAttribute('data-beamer'), seite });
     const zeichnen = () => {
-      const was = einstieg(root);
-      knopf.hidden = was !== 'knopf';
-      link.hidden = was !== 'link';
+      const was = einstieg(lage());
+      for (const t of teile) t.hidden = t.dataset.einstieg !== was;
     };
-    // Ohne Layout (nur /start) schaltet der Knopf selbst; mit Layout übernimmt dessen Handler für [data-beamer-toggle].
-    if (!knopf.hasAttribute('data-beamer-toggle')) {
+    for (const knopf of box.querySelectorAll<HTMLButtonElement>('button[data-einstieg]')) {
       knopf.addEventListener('click', () => {
-        let speicher: Storage | undefined;
-        try { speicher = localStorage; } catch {}
-        beamerSchalten(root, true, { hell: false, speicher });
+        const aktion = klickAktion(lage());
+        if (!aktion || !beamerSchalten(root, aktion.an, { hell: aktion.hell })) return;
+        zeichnen(); // sofort, nicht erst über den MutationObserver – sonst fände der Fokus unten noch den alten Knopf
+        // Der geklickte Knopf verschwindet: Fokus auf den anderen Knopf (/start) bzw. die Überschrift, nicht auf <body>.
+        const ziel = teile.find((t) => !t.hidden && t.tagName === 'BUTTON') ?? document.querySelector<HTMLElement>('h1');
+        if (ziel && !ziel.matches('button, a')) ziel.tabIndex = -1;
+        ziel?.focus();
       });
     }
-    // Beamer an/aus (Knopf, Taste B) und An-/Abmelden in einem anderen Tab (wo-ist.ts) ändern die Wahl.
+    // Beamer an/aus (Knopf, Taste B) und Präsentator-Merkmal (wo-ist.ts auf Layout-Seiten) ändern die Wahl.
     new MutationObserver(zeichnen).observe(root, { attributes: true, attributeFilter: ['data-beamer', 'data-ist-praesentator'] });
+    // An- oder Abmelden in einem anderen Tab: /start lädt wo-ist.ts nicht, darum hier das Merkmal selbst nachführen.
+    addEventListener('storage', (e) => {
+      if (e.key === null || e.key === PRAESENTATOR_SCHLUESSEL) root.toggleAttribute('data-ist-praesentator', praesentatorAngemeldet());
+    });
     zeichnen();
   }
 </script>
