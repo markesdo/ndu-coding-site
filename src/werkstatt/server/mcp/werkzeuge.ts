@@ -4,7 +4,9 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
+import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
+import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
 import { METHODEN, TAGE, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
@@ -376,6 +378,26 @@ function tagLesen(tag: number | string | null | undefined): number | undefined {
   return n;
 }
 
+// Eine Prüfliste, die die Lösung einer Übung verrät (prueflisteNach, z. B. die Interview-Methode und der Mom Test), gibt der
+// Connector erst frei wie die Seite und der Leitfaden-Editor (gruppeFrei): sobald Markus die Gruppe aufgedeckt hat –
+// derselbe Runtime-Cache-Eintrag wie api/aufgedeckt.ts, je Wiener Kalendertag – oder die Zeit vorbei ist; Lehrende immer.
+const kommtNachDerUebung = (m: Methode) =>
+  `Kommt nach der Übung: Die Prüfliste von „${m.name}“ verrät die Lösung der Übung. Sie ist frei, sobald Markus sie aufdeckt, spätestens ${abText(m.prueflisteNach!.ab)}. Bis dahin prüfst du nichts dagegen und nennst ihre Regeln nicht.`;
+
+async function prueflisteFrei(k: WerkzeugKontext, m: Methode): Promise<boolean> {
+  const nach = m.prueflisteNach;
+  if (!nach) return true;
+  const jetzt = new Date(k.abh.jetzt());
+  if (gruppeFrei(nach.gruppe, nach.ab, jetzt, [], k.claims.rolle === 'lehrende')) return true;
+  try {
+    return Boolean(await k.abh.cache.get(aufgedecktSchluessel(nach.gruppe, jetzt)));
+  } catch (e) {
+    // Lieber zu als zu früh offen: die Uhrzeit öffnet sie ohnehin.
+    fehlerLoggen('werkstatt-mcp aufgedeckt:', e);
+    return false;
+  }
+}
+
 // --- Registrierung ---
 
 export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): void {
@@ -400,6 +422,10 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
     sicher(k, async () => {
       const m = METHODEN.find((x) => x.slug === slug);
       if (!m) throw new Hinweis(`Diese Methode gibt es nicht. Mögliche Slugs: ${SLUGS.join(', ')}.`);
+      if (!(await prueflisteFrei(k, m))) {
+        const { pruefliste: _zu, ...d } = methodeDaten(k, m);
+        return textErgebnis(`${methodeText(d)}\n\n${kommtNachDerUebung(m)}`, { ...d, prueflisteGesperrt: true });
+      }
       const d = methodeDaten(k, m);
       return textErgebnis(methodeText(d), d);
     }),
@@ -440,8 +466,11 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
   server.registerTool(MCP_WERKZEUGE.artefaktPruefen, PRUEFEN, ({ artefakt, pruefpunkt }) =>
     sicher(k, async () => {
       const m = methodeZu(artefakt);
-      // Zuerst die Mappe: Lehrende und Personen ohne Mappe hören das vor jedem Hinweis zum Prüfpunkt.
+      // Freigabe gleichzeitig mit der Mappe nachsehen (prueflisteFrei wirft nie); zuerst aber der Satz zur Mappe.
+      const frei = prueflisteFrei(k, m);
       const repo = await eigeneMappe(k);
+      // Ohne Prüfliste prüfte Claude mit eigenem Mom-Test-Wissen – das verriete die Übung genauso.
+      if (!(await frei)) throw new Hinweis(kommtNachDerUebung(m));
       const alle = m.pruefliste ?? [];
       // ChatGPT schickt für ein leeres optionales Argument "" oder null: das heißt „alle Prüfpunkte“.
       // Welche Schreibweisen gelten (feste ID, alte Positions-ID, Nummer), steht bei pruefpunktFinden.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { aufgeloest, aufloesungAb } from './aufloesung';
+import { aufgeloest, aufloesungAb, abText } from './aufloesung';
 
 // Oktober = Sommerzeit in Wien (UTC+2).
 const wien = (zeit: string, datum = '2026-10-16') => new Date(`${datum}T${zeit}:00+02:00`);
@@ -39,4 +39,8 @@ describe('aufgeloest', () => {
   it('ungültiges ab verrät nichts', () => {
     expect(aufgeloest('morgen', wien('12:00', '2030-01-01'))).toBe(false);
   });
+});
+
+describe('abText', () => {
+  it('„am 22.10. um 16:45“', () => expect(abText('2026-10-22T16:45')).toBe('am 22.10. um 16:45'));
 });

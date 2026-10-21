@@ -15,6 +15,12 @@ export function aufloesungAb(text: string): { datum: string; minuten: number } |
 }
 
 /** Ist die Auflösung zum Zeitpunkt `jetzt` freigegeben? Ungültiges `ab` bleibt verborgen. */
+/** „am 22.10. um 16:45“ für eine Zeit wie an <Aufloesung ab=…> (JJJJ-MM-TTTHH:MM). */
+export function abText(ab: string): string {
+  const [, monat, tag] = ab.slice(0, 10).split('-');
+  return `am ${tag}.${monat}. um ${ab.slice(11)}`;
+}
+
 export function aufgeloest(ab: string, jetzt: Date): boolean {
   const ziel = aufloesungAb(ab);
   if (!ziel) return false;

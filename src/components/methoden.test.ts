@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
+import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from './innolab-zeiten';
 import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
@@ -222,6 +223,11 @@ describe('methoden', () => {
     const werkstatt = METHODEN.filter((m) => pruefungInWerkstatt(m)).flatMap((m) => m.pruefliste ?? []);
     expect(werkstatt.map((p) => p.id).sort()).toStrictEqual(Object.keys(STICHWORT).sort());
     for (const p of werkstatt) expect(p.text, p.id).toMatch(STICHWORT[p.id]);
+  });
+
+  it('die Interview-Prüfliste ist zu wie die Mom-Test-Auflösung (NDU-29); andere Prüflisten sind nicht gesperrt', () => {
+    expect(METHODEN.find((m) => m.slug === 'interview')!.prueflisteNach).toStrictEqual({ gruppe: MOM_TEST_GRUPPE, ab: NACH_MOM_TEST });
+    expect(METHODEN.filter((m) => m.prueflisteNach).map((m) => m.slug)).toStrictEqual(['interview']);
   });
 
   it('jede Methode mit eigener Seite hat eine Prüfliste mit 3–8 Punkten', () => {

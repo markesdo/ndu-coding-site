@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { KENNUNG_UNGUELTIG, MAX_KENNUNGEN, MELDEN_NOCHMAL_MS, MELDEN_TIMEOUT_MS, NICHT_GEMELDET, SCHLUESSEL_FALSCH, abfrageAbstand, aufdeckenMelden, aufgedecktHolen, aufgedecktSchluessel, gefragteKennungen, kennungFehler, kennungPruefen } from './aufgedeckt';
+import { KENNUNG_UNGUELTIG, MAX_KENNUNGEN, MELDEN_NOCHMAL_MS, MELDEN_TIMEOUT_MS, NICHT_GEMELDET, SCHLUESSEL_FALSCH, abfrageAbstand, aufdeckenMelden, aufgedecktHolen, aufgedecktSchluessel, gefragteKennungen, kennungFehler, kennungPruefen, gruppeFrei } from './aufgedeckt';
 
 // 22.10.2026 10:05 in Wien = 08:05 UTC (Sommerzeit bis 25.10.).
 const KURSTAG = new Date('2026-10-22T08:05:00Z');
@@ -103,5 +103,18 @@ describe('aufdeckenMelden', () => {
       expect(o.senden).toHaveBeenCalledTimes(2);
       expect(o.hinweis.mock.calls).toStrictEqual([[NICHT_GEMELDET]]);
     }
+  });
+});
+
+// NDU-29: dieselbe Regel für Mappe (leitfadenFrei) und Connector (prueflisteFrei).
+describe('gruppeFrei', () => {
+  const ab = '2026-10-22T16:45';
+  const vormittag = new Date('2026-10-22T08:00:00Z');
+  it('zu vor ab, ohne Aufdecken; frei mit Aufdecken der Gruppe, ab ab oder immer', () => {
+    expect(gruppeFrei('mom-test', ab, vormittag, [])).toBe(false);
+    expect(gruppeFrei('mom-test', ab, vormittag, ['mom-test-auftakt'])).toBe(false);
+    expect(gruppeFrei('mom-test', ab, vormittag, ['mom-test'])).toBe(true);
+    expect(gruppeFrei('mom-test', ab, new Date('2026-10-22T14:45:00Z'), [])).toBe(true);
+    expect(gruppeFrei('mom-test', ab, vormittag, [], true)).toBe(true);
   });
 });
