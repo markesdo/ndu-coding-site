@@ -123,7 +123,7 @@ describe('methoden', () => {
   it('neu geschriebene Prüflisten bekommen eine neue Checklisten-ID – alte Häkchen hängen sonst an neuen Punkten', () => {
     const id = (slug: string) => pruefChecklisteId(METHODEN.find((m) => m.slug === slug)!);
     expect(['scrum', 'sprint', 'backlog', 'akzeptanzkriterien', 'schneiden', 'pitch'].map(id)).toStrictEqual(
-      ['il-scrum-2', 'il-sprint-2', 'il-backlog-2', 'il-akzeptanzkriterien-2', 'il-schneiden-2', 'il-pitch'],
+      ['il-scrum-2', 'il-sprint-2', 'il-backlog-2', 'il-akzeptanzkriterien-2', 'il-schneiden-2', 'il-pitch-2'],
     );
     const ids = METHODEN.map(pruefChecklisteId);
     expect(new Set(ids).size).toBe(ids.length);
@@ -174,7 +174,11 @@ describe('methoden', () => {
 
   it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
-    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog \(Werkzeug artefakt_lesen\)\. /);
+    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/KUNDENPROFIL\.md, docs\/VALUE-MAP\.md, docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog \(Werkzeug artefakt_lesen\)\. /);
+    // Die Prüfliste verlangt Raster-Zeilen mit IDs aus Kundenprofil oder Value Map und Sicherheit wie in den Lernkarten (E1, E2).
+    const pitch = METHODEN.find((m) => m.slug === 'pitch')!;
+    expect(pitch.pruefliste!.join(' ')).toMatch(/wegfällt, weniger wird, mehr wird und neu ist/);
+    expect(pitch.braucht).toEqual(expect.arrayContaining(['profil', 'valuemap', 'experimente', 'spike', 'entscheidungen', 'brief']));
   });
 
   it('jede Tagesseite trägt das Datum aus TAGE als data-kurstag – sonst springt die Jetzt-Markierung am falschen Tag', () => {
