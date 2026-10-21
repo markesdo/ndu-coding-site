@@ -335,7 +335,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2, 5–8',
   },
   {
-    slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 3, dauer: 90,
+    slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 3, dauer: 90, prueflisteStand: 2,
     frage: 'Erreichen fünf Menschen mit dem Prototyp den Höhepunkt, ohne dass ihr helft?',
     braucht: ['usage', 'storymap', 'annahmen', 'entscheidungen'], ergibt: ['spike'],
     pruefliste: [
@@ -345,7 +345,7 @@ export const METHODEN: Methode[] = [
       'Die Aufgabe beschreibt Situation und Ziel, keine Bedienschritte und keine Begriffe aus der Oberfläche.',
       'Ein Trockenlauf mit den anderen beiden ist gelaufen; die Testpersonen danach haben den Pain und kennen das Produkt nicht.',
       'Pro Testperson steht fest: Höhepunkt ohne Hilfe erreicht, Zeit, wo gehangen, Reaktion am Höhepunkt.',
-      'Nach den Tests: Lernkarte, und was ihr deshalb ändert, als Zeile im Entscheidungslog mit U-IDs.',
+      'Nach den Tests: Lernkarte mit Verlässlichkeit und Befund (gestützt, widerlegt, unklar oder neue Einsicht), und was ihr deshalb ändert, als Zeile im Entscheidungslog mit U-IDs.',
     ],
     ki: 'Baut den Wegwerf-Prototyp – erst nach der Papierskizze und innerhalb der Abnahmekriterien.',
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',

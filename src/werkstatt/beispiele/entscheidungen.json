@@ -32,9 +32,10 @@
       "id": "D4",
       "datum": "2026-11-05",
       "entscheidung": "Vorbestellen vor der Ankunft verworfen",
-      "grund": "3 von 5 entscheiden erst beim Ankommen",
-      "beleg": "erzaehlt",
-      "belegIds": ["I1-2", "I3-1", "I5-3"]
+      "grund": "4 von 5 sagen, sie entscheiden erst in der Halle",
+      "beleg": "gesagt",
+      "belegIds": ["I2-4", "I3-1", "I5-3"],
+      "belegNotiz": "bei I1 laut Notiz"
     }
   ]
 }
