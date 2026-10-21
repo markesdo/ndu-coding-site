@@ -6,7 +6,7 @@
 // sonst an Claude Code im Projekt-Repo.
 import Checklist from './Checklist.astro';
 import Prompt from './Prompt.astro';
-import { METHODEN, pruefPrompt, pruefungInWerkstatt } from './methoden';
+import { METHODEN, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt } from './methoden';
 
 // pfad: wenn nur ein Teil des Artefakts geprüft wird (z. B. ein Transkript statt aller Interview-Dateien).
 const { slug, pfad } = Astro.props as { slug: string; pfad?: string };
@@ -15,7 +15,7 @@ if (!m?.pruefliste) throw new Error(`ClaudePruefung: Methode „${slug}“ hat k
 const text = pruefPrompt(m, pfad);
 const werkstatt = pruefungInWerkstatt(m, pfad);
 ---
-<Checklist id={`il-${m.slug}`} items={m.pruefliste} />
+<Checklist id={pruefChecklisteId(m)} items={m.pruefliste} />
 <Prompt label={werkstatt ? 'Prüfen lassen · Claude mit der Werkstatt' : 'Prüfen lassen · Claude Code'} note="Erst nachdem ihr die Prüfliste selbst durchgegangen seid. Claude findet, ihr entscheidet."><Fragment set:text={text} /></Prompt>
 {werkstatt && (
   <p class="small muted">Dafür braucht Claude den Werkstatt-Connector: <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>. Ohne Connector klickt ihr im Editor auf „Für Claude kopieren“ und fügt den Text in ein Gespräch mit Claude ein.</p>

@@ -10,18 +10,18 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="Tag 4 · Scrum im Team">
   <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:30</span>
   <h1>Tag 4 · Scrum im Team</h1>
-  <p class="lead">Der letzte Input-Tag: Ihr werdet ein Team mit drei Produkten, baut Backlogs, die jede*r im Team abarbeiten kann, plant Sprint 1 und legt das Gerüst für euren Pitch. Danach wird gebaut.</p>
+  <p class="lead">Der letzte Input-Tag: Ihr spielt Scrum einmal mit Lego durch, stellt euch als Team für drei Produkte auf, baut Backlogs, die jede*r im Team abarbeiten kann, plant Sprint 1 und legt das Gerüst für euren Pitch. Danach wird gebaut.</p>
   <Orientierung seite="innolab/tag-4" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-28">
-    <Block time="09:00–09:20" type="plenum" title="Test-Debrief" href="#debrief">Lernkarten zu E1 und E2 – und was sich dadurch ändert.</Block>
-    <Block time="09:20–10:20" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#agil">Wasserfall, Agiles Manifest, Scrum auf einer Seite, mehr Teams.</Block>
+    <Block time="09:00–09:25" type="plenum" title="Test-Debrief" href="#debrief">Lernkarten zu E1 und E2 – und was sich dadurch ändert.</Block>
+    <Block time="09:25–10:20" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#agil">Wasserfall, Agiles Manifest, Scrum nach dem Guide, wo wir abweichen; die Kaffeebar in Scrum-Begriffen.</Block>
     <Block time="10:20–10:30" type="pause" title="Pause" />
-    <Block time="10:30–11:10" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Rollen, Sprints, Linear; „fertig“ mit Mess-Ereignis.</Block>
-    <Block time="11:10–12:30" type="uebung" title="Lego4Scrum" href="/innolab/methoden/scrum#lego">Eine Stadt in drei Sprints.</Block>
+    <Block time="10:30–11:50" type="uebung" title="Lego4Scrum" href="/innolab/methoden/scrum#lego">Eine Vision, das Produkt an der Wand, drei Sprints.</Block>
+    <Block time="11:50–12:30" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Produktziele, Rollen, Linear; „fertig“ aus dem Lego und mit Mess-Ereignis.</Block>
     <Block time="12:30–13:30" type="pause" title="Mittagspause" />
-    <Block time="13:30–14:30" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, RICE, nach Linear.</Block>
+    <Block time="13:30–14:30" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, nach Linear.</Block>
     <Block time="14:30–15:15" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Normalfall, Grenz- und Fehlerfälle.</Block>
     <Block time="15:15–15:30" type="pause" title="Pause" />
     <Block time="15:30–16:00" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Plan-Check mit Claude, quer lesen.</Block>
@@ -36,18 +36,18 @@ import FooterNav from '../../components/FooterNav.astro';
 
   <h2 id="faden">Vom Entdecken zum Liefern</h2>
   <p>Bis Tag 3 habt ihr herausgefunden, <em>was</em> ihr bauen solltet. Ab heute geht es darum, es <em>gemeinsam</em> zu liefern – so, wie Produktteams in Unternehmen arbeiten. Das Entdecken hört dabei nicht auf: Jeder Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
-  <Callout type="tip" title="Ein Team, drei Produkte">
-    <p>Jede*r ist Product Owner des eigenen Produkts und Developer in allen dreien. Ihr baut also auch Issues, die ihr nicht geschrieben habt. Deshalb müssen eure Issues und Kriterien ohne Rückfrage verständlich sein – das ist der Test für heute Nachmittag.</p>
+  <Callout type="tip" title="Drei Produkte, ein Takt">
+    <p>Jede*r ist Product Owner des eigenen Produkts und Developer in allen dreien – drei Scrum-Teams mit denselben drei Personen. Ihr baut also auch Issues, die ihr nicht geschrieben habt. Deshalb müssen eure Issues und Kriterien ohne Rückfrage verständlich sein – das ist der Test für heute Nachmittag.</p>
   </Callout>
   <p>Heute ist ein dichter Tag, weil danach keine neue Methode mehr kommt: Tag 5 und 6 sind Bautage, Tag 7 ist die Präsentation.</p>
 
   <h2 id="methoden">Die Methoden von heute</h2>
   <ul>
-    <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Rahmenwerk, Lego4Scrum, Teamaufstellung</li>
-    <li><a href="/innolab/methoden/backlog">Backlog aus Issues</a> – User Story und Issue, INVEST, RICE</li>
+    <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Agil und Scrum, Lego4Scrum, Teamaufstellung mit Definition of Done</li>
+    <li><a href="/innolab/methoden/backlog">Backlog aus Issues</a> – User Story und Issue, INVEST</li>
     <li><a href="/innolab/methoden/akzeptanzkriterien">Akzeptanzkriterien</a> – Szenarien, Regeln, Evals</li>
     <li><a href="/innolab/methoden/schneiden">Schneiden statt Schätzen</a> – Plan-Check mit Claude, quer lesen</li>
-    <li><a href="/innolab/methoden/sprint">Sprint</a> – Definition of Done mit Messung, Issue als Spezifikation, Planning, Daily, Review, Retro</li>
+    <li><a href="/innolab/methoden/sprint">Sprint</a> – Issue als Spezifikation, Planning, Daily, Review, Retro</li>
     <li><a href="/innolab/methoden/pitch">Pitch</a> – Geschichte, Demo, Belege</li>
   </ul>
 
@@ -71,12 +71,12 @@ Jede Richtung bekommt:
 Stell die drei nebeneinander und sag zu jeder in einem Satz, zu wem sie passt und was sie riskiert. Wenn ich eine gewählt habe, bau unser Design-System danach um – mit Farben nach Zweck, allen Zuständen jeder Komponente und sichtbarem Tastatur-Fokus.</Prompt>
   <p class="small">Zeigt die drei Richtungen eurem Team, bevor ihr wählt – die anderen bauen eure Issues mit. Die Wahl kommt als Zeile in <code>docs/ENTSCHEIDUNGEN.md</code>.</p>
   <Checklist id="il-tag4-sprint1" items={[
-    '<code>docs/TEAM.md</code> in allen drei Repos, mit Rollen, Sprints und Definition of Done samt Mess-Ereignis',
+    '<code>docs/TEAM.md</code> in allen drei Repos, mit Produktzielen, Rollen, Sprints, Abweichungen vom Scrum Guide und Definition of Done samt Mess-Ereignis',
     'Linear: ein Team, ein Projekt pro Produkt, Verweis in <code>docs/BACKLOG.md</code>, Label <code>Sprint 1</code> an den gewählten Issues',
     'Was ihr nach den Tests geändert habt, im Entscheidungslog',
     '<code>docs/SPRINTS.md</code> mit Sprint-Ziel und Auswahl',
     'Die anderen beiden als Collaborator in eurem GitHub-Repo',
-    'Daily an jedem Arbeitstag als Kommentar in Linear',
+    'Daily an jedem Arbeitstag als Kommentar in Linear – unsere Abweichung vom Guide, wie in <code>docs/TEAM.md</code>',
     'Jedes Issue nach der Definition of Done; Pull Requests der anderen geprüft',
     '<code>docs/PITCH.md</code> mit Geschichte und Demo-Ablauf',
     'Zwei Testpersonen für Tag 5 verabredet – vor Ort oder per Video',

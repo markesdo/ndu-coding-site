@@ -76,6 +76,9 @@ export interface Methode {
   /** Prüfliste: die häufigen Fehler als prüfbare Sätze. Die Studierenden haken sie ab, Claude prüft dagegen
    *  (ClaudePruefung.astro). Pflicht, sobald die Methode eine eigene Seite hat. */
   pruefliste?: string[];
+  /** Stand der Prüfliste, wenn ihre Punkte neu geschrieben wurden: Die Checkliste speichert Häkchen je Position unter
+   *  ihrer ID (Checklist.astro), alte Häkchen sollen nicht an neuen Punkten hängen. ID: il-<slug>-<stand>. */
+  prueflisteStand?: number;
 }
 
 /** In Kursreihenfolge – die Prüfung „braucht nur Früheres“ verlässt sich darauf. */
@@ -348,18 +351,20 @@ export const METHODEN: Methode[] = [
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
   },
   {
-    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 160,
-    frage: 'Wie arbeiten wir als ein Team an drei Produkten?',
-    braucht: [], ergibt: ['team'],
+    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 175, prueflisteStand: 2,
+    frage: 'Wie arbeiten wir als drei Scrum-Teams mit denselben drei Personen an drei Produkten?',
+    braucht: ['brief'], ergibt: ['team'],
     pruefliste: [
-      'Für jedes Produkt steht fest, wer Product Owner ist; alle drei sind Developer in allen drei Produkten.',
-      'Es steht fest, wer im ersten Sprint Scrum Master ist – und dass die Rolle jeden Sprint wechselt.',
-      'Sprintlänge, Zeiten der Events und das Daily zwischen den Kurstagen sind festgelegt.',
-      'Die Definition of Done ist eine Liste prüfbarer Punkte und gilt für alle drei Produkte.',
-      'Das Linear-Team ist genannt, und für jedes Produkt steht sein Linear-Projekt in der Tabelle.',
+      'Für jedes der drei Produkte stehen Product Owner, Linear-Projekt und als Produktziel das Outcome aus dem Produkt-Brief („Wir glauben, dass … Wir merken es, wenn …“), das sagt, was Menschen danach anders tun.',
+      'Alle drei sind Developers in allen drei Produkten; der Scrum Master für Sprint 1 und Sprint 2 ist genannt.',
+      'Sprint 1 und Sprint 2 haben ein Datum für Planning, Review und Retro; das Daily hat Zeit und Ort an Kurstagen und eine Regel für dazwischen.',
+      'Die Definition of Done ist eine Liste von Punkten, die sich im Browser, auf GitHub oder in Supabase prüfen lassen, und gilt für alle drei Produkte.',
+      'In der Definition of Done steht das Ereignis, das die Outcome-Metrik des Produkt-Briefs misst, mit seinen Feldern – ohne Name und E-Mail.',
+      'Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, ungleiche Sprintlängen, schriftliches Daily.',
+      'Unter „Aus Lego4Scrum“ steht je Person eine Sache, die das Team in den echten Sprints anders macht.',
     ],
-    ki: 'Keine Rolle – Scrum lernt ihr im Team und im Lego-Spiel.',
-    quelle: 'Schwaber & Sutherland, Scrum Guide 2020',
+    ki: 'Keine Rolle – Scrum lernt ihr im Spiel und im Team.',
+    quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Manifesto for Agile Software Development (2001); Alexey Krivitsky, lego4scrum (2023); Ron Jeffries, The Nature of Software Development (2015)',
   },
   {
     slug: 'backlog', name: 'Backlog aus Issues', tag: 4, dauer: 60,
@@ -400,18 +405,20 @@ export const METHODEN: Methode[] = [
     ki: 'Macht im Plan-Modus einen Plan pro Issue, ohne zu bauen – ihr beurteilt, ob er in einen Durchgang passt.',
   },
   {
-    slug: 'sprint', name: 'Sprint', tag: 4, dauer: 125,
+    slug: 'sprint', name: 'Sprint', tag: 4, dauer: 150, prueflisteStand: 2,
     frage: 'Was liefern wir in diesem Sprint – und was lernen wir daraus?',
     braucht: ['geschnitten', 'team', 'brief'], ergibt: ['inkrement', 'sprintlog'],
     pruefliste: [
       'Jedes Produkt hat ein Sprint-Ziel in einem Satz, der sagt, was danach jemand kann – keine Liste von Issues.',
-      'Die ausgewählten Issues stehen da; ab Sprint 2 sind es nicht mehr, als im Sprint davor fertig wurden.',
-      'Die Definition of Done enthält ein gespeichertes Ereignis, das die Outcome-Metrik aus dem Produkt-Brief misst.',
-      'Jedes erledigte Issue hat einen Beleg je Akzeptanzkriterium, den Link zum Pull Request und den Namen der Person, die ihn geprüft hat.',
-      'Das Review hält fest, was gezeigt wurde, was Tests und Messung ergeben haben und was sich deshalb am Backlog ändert.',
-      'Die Retro endet mit einer Maßnahme, einer verantwortlichen Person und dem Zeitpunkt, an dem ihr sie prüft.',
+      'Die ausgewählten Issues stehen mit Kennung und Anzahl da; das Mess-Issue ist in Sprint 1 dabei.',
+      'Ab Sprint 2 sind es nicht mehr Issues, als im Sprint davor nach der Definition of Done fertig wurden.',
+      'Jedes als fertig genannte Issue hat einen Beleg je Akzeptanzkriterium, den Link zum Pull Request und den Namen der prüfenden Person.',
+      'Das Review hält fest, ob das Sprint-Ziel erreicht ist, was Tests und Messung ergeben haben und welche Issues zurück in den Backlog gehen.',
+      'Die Retro von Sprint 1 (Lightning Decision Jam) endet mit einer Maßnahme, einem ersten Schritt, der am selben Tag erledigt wurde, einer verantwortlichen Person und dem Datum der Prüfung.',
+      'Die kurze Retro von Sprint 2 hält fest, ob die Maßnahme aus Sprint 1 gewirkt hat und woran man es sieht.',
     ],
-    ki: 'Baut die Issues als Developer im Rahmen der Definition of Done; prüft das Sprint-Ziel.',
+    ki: 'Baut die Issues als Developer im Rahmen der Definition of Done; prüft, ob die Issues zusammen das Sprint-Ziel erreichen.',
+    quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Ron Jeffries, The Nature of Software Development (2015), Kap. 5–6; AJ&Smart, Lightning Decision Jam (2020)',
   },
   {
     slug: 'pitch', name: 'Pitch', tag: 4, dauer: 45,
@@ -438,10 +445,10 @@ export const TAGE: { n: number; datum?: string; titel: string; text: string }[] 
   { n: 1, datum: '2026-10-22', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
   { n: 2, titel: 'Kunde & Erlebnis', text: 'Snapshots besprechen, Experience Map, Opportunity Solution Tree, Ziel-Chance, Ideen.' },
   { n: 3, datum: '2026-11-21', titel: 'Lösung, Story, Prototyp', text: 'Kundenprofil und Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
-  { n: 4, datum: '2026-11-28', titel: 'Scrum im Team', text: 'Ein Team, drei Produkte: Scrum, Backlog, Akzeptanzkriterien, Sprint-1-Planning, Pitch.' },
+  { n: 4, datum: '2026-11-28', titel: 'Scrum im Team', text: 'Drei Produkte, ein Takt: Scrum und Lego4Scrum, Backlog, Akzeptanzkriterien, Sprint-1-Planning, Pitch.' },
   { n: 5, datum: '2026-12-12', titel: 'Bauen & Review', text: 'Bauen, Usability-Tests über Kreuz, Sprint-1-Review, Retro, Sprint-2-Planning mit Störfall.' },
-  { n: 6, datum: '2026-12-19', titel: 'Bauen', text: 'Sprint 2 fertig bauen und abnehmen: Der Prototyp steht.' },
-  { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Finales Sprint-Review: Pitch, Live-Demo und Belege.' },
+  { n: 6, datum: '2026-12-19', titel: 'Bauen', text: 'Sprint 2 fertig bauen, Review und Retro: Der Prototyp steht.' },
+  { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
 ];
 
 export const artefakt = (id: string): Artefakt | undefined => ARTEFAKTE.find((a) => a.id === id);
@@ -493,6 +500,9 @@ const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchsten
 /** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
  *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. ein Transkript statt aller Interview-Dateien).
  *  Liegt das Ergebnis in der Werkstatt, prüft Claude es dort mit artefakt_pruefen – nie über eine Datei unter docs/. */
+/** ID der abhakbaren Prüfliste (localStorage-Schlüssel in Checklist.astro); mit Stand, sobald die Punkte neu geschrieben wurden. */
+export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `il-${m.slug}-${m.prueflisteStand}` : `il-${m.slug}`);
+
 export function pruefPrompt(m: Methode, pfad?: string): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
   const liste = m.pruefliste.map((p, i) => `${i + 1}. ${p}`);

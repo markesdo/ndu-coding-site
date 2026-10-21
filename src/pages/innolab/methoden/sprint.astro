@@ -6,112 +6,215 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
+
+const GUIDE = 'Ken Schwaber & Jeff Sutherland, „The Scrum Guide“ (2020)';
+const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
+const KRIVITSKY = 'Alexey Krivitsky, „lego4scrum“, deutsche Ausgabe (2023)';
+const LDJ = 'AJ&Smart, „Lightning Decision Jam“ (2020)';
+const SPRINT_ZIEL = `Lies docs/SPRINTS.md, aus der Werkstatt meinen Produkt-Brief (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}) und über den Linear-MCP die Issues unseres Projekts mit dem Label des aktuellen Sprints. Erreichen diese Issues zusammen das Sprint-Ziel? Nenn höchstens drei Lücken oder Issues, die für das Ziel nicht nötig sind. Ändere nichts.`;
 ---
 <Layout title="Sprint">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Sprint</h1>
-  <p class="lead">Ein Sprint von innen: was „fertig“ heißt, wie ein Issue zu Claude kommt, wie ihr plant, prüft und besser werdet.</p>
+  <p class="lead">Ein Sprint von innen: wie ein Issue zu Claude kommt, wie ihr plant, prüft und besser werdet – zweimal, mit Review und Retro am Ende.</p>
   <Orientierung seite="innolab/methoden/sprint" leiste={false} />
   <MethodenKarte slug="sprint" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Die Events kennt ihr aus <a href="/innolab/methoden/scrum#scrum">Scrum im Team</a> und vom Lego. Hier geht es darum, sie mit echten Produkten zu füllen. Ihr habt zwei Sprints: Sprint 1 vom Planning am 28. November bis zum Review am 12. Dezember; Sprint 2 vom Planning am 12. Dezember bis zum Ende von Tag 6 am 19. Dezember – eine Woche. Dann ist euer Prototyp fertig; das Review dazu ist die Präsentation am 7. Jänner. Am Ende jedes Sprints steht ein <strong>Inkrement</strong> – live, am Handy nutzbar und nach der Definition of Done fertig.</p>
-  <p>Alles, was ihr dabei entscheidet, kommt in <code>docs/SPRINTS.md</code>: Sprint-Ziel, Auswahl, Review, Retro. Daraus holt ihr euch an Tag 7 die Belege für den Pitch.</p>
+  <Folie>
+    <h2 id="worum">Zwei Sprints</h2>
+    <p class="folie-satz">Jeder Sprint endet mit einem Inkrement, einem Review und einer Retro.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Sprint 1:</strong> Planning heute 16:00 – Review und Retro an Tag 5, 12. Dezember.</li>
+      <li data-schritt><strong>Sprint 2:</strong> Planning 12. Dezember – Review und Retro an Tag 6, 19. Dezember.</li>
+      <li data-schritt><strong>7. Jänner:</strong> Präsentation an Stakeholder – kein Sprint-Review.</li>
+      <li data-schritt><strong>Alles</strong> in <code>docs/SPRINTS.md</code>: Ziel, Auswahl, Review, Retro.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Die Events kennt ihr aus <a href="/innolab/methoden/scrum#events">Scrum im Team</a> und vom Lego, die Definition of Done habt ihr um 11:50 geschrieben (<a href="/innolab/methoden/scrum#dod">mit dem Mess-Ereignis</a>). Am Ende jedes Sprints steht ein Inkrement – live, am Handy nutzbar und nach der Definition of Done fertig.</p>
+      <p>Warum Sprint 2 ein eigenes Review und eine eigene Retro hat: Das Review ist „the second to last event of the Sprint“, die Retro „concludes the Sprint“ ({GUIDE}, S. 9–10). Und das Review ist „a working session and the Scrum Team should avoid limiting it to a presentation“ (S. 9). Ein benoteter Pitch vor Gästen ist genau eine Präsentation. Darum schließt ihr Sprint 2 an Tag 6 ab und präsentiert am 7. Jänner den Stakeholdern, was dabei herausgekommen ist. Die Belege für den Pitch holt ihr aus <code>docs/SPRINTS.md</code>.</p>
+    </div>
+  </Folie>
 
-  <h2 id="dod">Definition of Done: Die Messung gehört dazu</h2>
-  <p>In <code>docs/TEAM.md</code> steht schon, was jedes Issue erfüllen muss. Heute kommt eine Zeile dazu: <strong>Das Ereignis, das eure Outcome-Metrik misst, wird gespeichert.</strong> Ohne diese Zeile könnt ihr nach dem Sprint nur sagen, dass etwas gebaut ist – nicht, ob es wirkt.</p>
-  <ul>
-    <li>Ein Ereignis ist eine Zeile in einer Tabelle <code>ereignisse</code> in Supabase: was passiert ist, wann, und eine zufällige Kennung pro Gerät. Kein Name, keine E-Mail – sagt euren Testpersonen, dass ihr das misst.</li>
-    <li>Das Ereignis einzuführen ist ein eigenes Issue in Sprint 1, mit Akzeptanzkriterien und Plan-Check wie jedes andere.</li>
-    <li>Ab dann gilt für jedes Issue: Nach dem Merge kommt das Ereignis noch an.</li>
-  </ul>
-  <p><strong>Am Beispiel:</strong> Das Outcome der Kaffeebar lautet „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“. Das Ereignis ist <em>abgeholt</em>: Die Bar tippt bei der Übergabe darauf, gespeichert werden Abholzeit, Abfahrtszeit und die Kennung des Geräts. Liegt die Abholzeit vor der Abfahrt, zählt der Tag. Daraus wird das Issue „Bar markiert Bestellung als abgeholt, das Ereignis wird gespeichert“.</p>
-
-  <h2 id="spec">Das Issue ist die Spezifikation</h2>
-  <p>Claude baut aus dem Issue, nicht aus eurem Kopf. Was im Issue fehlt, ergänzt Claude nach eigenem Ermessen – oder fragt, wenn ihr es verlangt. Den Ablauf kennt ihr aus dem Coding-Kurs (<a href="/konzepte/linear#prompts">Prompts für den Alltag</a>); im Team kommen drei Regeln dazu:</p>
-  <ol>
-    <li><strong>Zuweisen vor Anfangen.</strong> Wer ein Issue nimmt, weist es sich in Linear zu – auch bei fremden Produkten. So baut nie jemand dasselbe doppelt.</li>
-    <li><strong>Fragen gehen ins Issue.</strong> Versteht ihr ein Kriterium nicht, kommt die Frage als Kommentar ins Issue, nicht in den Chat. Der Product Owner antwortet dort und passt das Issue an.</li>
-    <li><strong>Done setzt der Product Owner.</strong> Ihr setzt auf In Review, mit Beleg je Kriterium und Link zum Pull Request. Eine andere Person prüft den Pull Request und schreibt das als Kommentar ins Issue; der Product Owner nimmt im Browser ab.</li>
-  </ol>
+  <Folie>
+    <h2 id="spec">Das Issue ist die Spezifikation</h2>
+    <p class="folie-satz">Claude baut aus dem Issue, nicht aus eurem Kopf.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Zuweisen vor Anfangen</strong> – auch bei fremden Produkten.</li>
+      <li data-schritt><strong>Fragen gehen ins Issue,</strong> nicht in den Chat; der Product Owner antwortet dort.</li>
+      <li data-schritt><strong>Done setzt der Product Owner,</strong> nachdem er die Definition of Done im Browser geprüft hat.</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Was im Issue fehlt, ergänzt Claude nach eigenem Ermessen – oder fragt, wenn ihr es verlangt. Den Ablauf kennt ihr aus dem Coding-Kurs (<a href="/konzepte/linear#prompts">Prompts für den Alltag</a>); im Team kommen drei Regeln dazu. Zu 1: Wer ein Issue nimmt, weist es sich in Linear zu, damit nie zwei dasselbe bauen. Zu 2: Versteht ihr ein Kriterium nicht, kommt die Frage als Kommentar ins Issue; der Product Owner antwortet und passt das Issue an. Zu 3: Ihr setzt auf In Review, mit Beleg je Kriterium und Link zum Pull Request. Eine andere Person prüft den Pull Request und schreibt das als Kommentar ins Issue; der Product Owner prüft im Browser, ob die Definition of Done erfüllt ist, und setzt Done – oder nicht.</p>
+      <p>Regel 3 ist eine Vereinbarung des Kurses, kein Satz aus dem Scrum Guide. Dort entscheidet die Definition of Done, was fertig ist: „The Developers are required to conform to the Definition of Done“; was sie nicht erfüllt, „returns to the Product Backlog for future consideration“ ({GUIDE}, S. 12). Der Product Owner prüft also nicht nach Geschmack, sondern gegen die Liste, die ihr gemeinsam geschrieben habt.</p>
+    </div>
+  </Folie>
   <Callout type="warn" title="Zugang zu fremden Repos">
     <p>Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein. Die Schlüssel aus <code>.env.local</code> gebt ihr einander direkt – nie in ein Issue, einen Kommentar oder das Repo.</p>
   </Callout>
 
-  <h2 id="planning">Sprint Planning</h2>
-  <p>Drei Fragen, in dieser Reihenfolge – für jedes Produkt:</p>
-  <ol>
-    <li><strong>Warum ist der Sprint wertvoll?</strong> Ein Sprint-Ziel in einem Satz: was danach jemand kann. Der Product Owner schlägt es vor, das Team stimmt zu.</li>
-    <li><strong>Was schaffen wir?</strong> Die Issues, die das Ziel erreichen, von oben im Backlog. Weil jedes in einen Durchgang mit Claude passt, zählt ihr einfach Issues.</li>
-    <li><strong>Wie?</strong> Wer nimmt was zuerst? Jede*r baut in mindestens einem fremden Produkt.</li>
-  </ol>
-  <p>Für Sprint 1 habt ihr noch keine Erfahrungswerte, und er läuft zwei Wochen zu Hause. Plant knapp: Beim Lego habt ihr gesehen, dass Teams anfangs zu viel versprechen. Für Sprint 2 gilt dann die Faustregel <em>yesterday’s weather</em>: nicht mehr Issues als im Sprint davor wirklich fertig wurden. Sprint 2 dauert nur eine Woche, also etwa die Hälfte.</p>
-  <p><strong>Am Beispiel:</strong> Sprint-Ziel „Pendler*innen bestellen im Gehen und sehen, ob ihr Kaffee vor dem Zug fertig ist.“ Auswahl: Issue 1, 2, 3, 4a (Zugliste) und das Mess-Issue – fünf Issues. Die Zugliste kommt mit, weil im Test ohne sie kaum jemand den Höhepunkt erreicht hat (U2) – deshalb steht sie im Backlog vor der Abholnummer. Issue 5 (Abholnummer) wartet auf Sprint 2: Ohne sie ist das Ziel erreicht.</p>
-  <p>In Linear bekommen die gewählten Issues das Label <code>Sprint 1</code> (später <code>Sprint 2</code>). Linears <em>Cycles</em> laufen in ganzen Wochen und gelten für das ganze Team – für Sprints, die an euren Kurstagen beginnen und enden, passt ein Label besser.</p>
+  <Folie>
+    <h2 id="planning">Sprint Planning</h2>
+    <p class="folie-satz">Warum, was, wie – für jedes Produkt, in dieser Reihenfolge.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Warum:</strong> Der Product Owner schlägt ein Sprint-Ziel vor, ihr einigt euch auf einen Satz. <Timer minuten={2} /></li>
+      <li data-schritt><strong>Was:</strong> Die Developers wählen von oben aus dem Backlog – knapp, das Mess-Issue ist dabei. <Timer minuten={4} /></li>
+      <li data-schritt><strong>Wie:</strong> Wer nimmt was zuerst? Jede*r baut in mindestens einem fremden Produkt. <Timer minuten={2} /></li>
+      <li data-schritt><strong>Festhalten:</strong> Label <code>Sprint 1</code> in Linear, <code>docs/SPRINTS.md</code> anlegen. <Timer minuten={2} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Reihum, zehn Minuten pro Produkt. Zu 1: „The Product Owner proposes how the product could increase its value and utility in the current Sprint. The whole Scrum Team then collaborates to define a Sprint Goal“ ({GUIDE}, S. 8). Das Ziel sagt, was danach jemand kann – nicht, welche Issues erledigt sind. Zu 2: „the Developers select items from the Product Backlog“; je mehr sie über „their past performance, their upcoming capacity, and their Definition of Done“ wissen, desto sicherer die Prognose (S. 8). Weil jedes Issue in einen Durchgang mit Claude passt, zählt ihr einfach Issues. Zu 3: „How this is done is at the sole discretion of the Developers“ (S. 8); dass jede*r in einem fremden Produkt baut, ist eine Regel des Kurses.</p>
+      <p>Für Sprint 1 habt ihr noch keinen Erfahrungswert, und er läuft zwei Wochen zu Hause. Plant knapp: Beim Lego habt ihr gesehen, wie schnell eine Prognose zu groß wird; Krivitsky beobachtet, dass ein Lego-Team im Schnitt drei Karten pro Sprint schafft ({KRIVITSKY}, S. 76). Jeffries: „When there’s too much food on your plate, don’t eat it“ ({JEFFRIES}, S. 41). Ab Sprint 2 gilt <em>Yesterday’s Weather</em>: nicht mehr Issues, als im Sprint davor nach der Definition of Done fertig wurden (S. 37). Sprint 2 dauert nur eine Woche, also eher die Hälfte.</p>
+      <p>In Linear bekommen die gewählten Issues das Label <code>Sprint 1</code> (später <code>Sprint 2</code>). Linears <em>Cycles</em> laufen in ganzen Wochen und gelten für das ganze Team – für Sprints, die an euren Kurstagen beginnen und enden, passt ein Label besser.</p>
+    </div>
+  </Folie>
 
-  <h2 id="daily">Daily Scrum</h2>
-  <p>Fünfzehn Minuten, im Stehen, am Sprint-Ziel entlang: Was hat mich dem Ziel nähergebracht? Was mache ich als Nächstes? Was blockiert mich? Probleme werden hier genannt, nicht gelöst – das macht ihr danach, mit denen, die es betrifft. Zwischen den Kurstagen schriftlich in Linear, wie in <code>docs/TEAM.md</code> vereinbart.</p>
+  <Folie>
+    <h2 id="planning-beispiel">Am Beispiel: Sprint 1 der Kaffeebar</h2>
+    <p class="folie-satz">Ein Ziel, fünf Issues – und eines wartet.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Sprint-Ziel:</strong> „Pendler*innen bestellen im Gehen und sehen, ob ihr Kaffee vor dem Zug fertig ist.“</li>
+      <li data-schritt><strong>Auswahl:</strong> Issues 1, 2, 3, 4 und 6 – fünf Issues.</li>
+      <li data-schritt><strong>Issue 5 wartet:</strong> Ohne die Abholnummer ist das Ziel erreicht.</li>
+      <li data-schritt><strong>Wer zuerst:</strong> die Product Ownerin 2 und 6, die anderen beiden 1, 3 und 4.</li>
+    </ul>
+    <p class="nur-handout">Die Issues aus <a href="/innolab/methoden/backlog#beispiel">Backlog aus Issues</a>: 1 Getränk wählen und bestellen · 2 Abfahrtszeit angeben und Fertig-Zeit sehen · 3 Bar sieht Bestellungen nach Abfahrt sortiert · 4 Zug aus einer Liste der nächsten Abfahrten wählen · 5 Abholnummer am Bildschirm der Ausgabe · 6 Bar markiert Bestellung als abgeholt, das Ereignis wird gespeichert (aus der Definition of Done). Die Zugliste (4) ist dabei, weil der Testbefund U2 bei allen fünf Testpersonen auftrat – darum steht sie im Backlog vor der Abholnummer. Das Mess-Issue (6) ist dabei, weil die Definition of Done es verlangt: Ohne Messung zeigt das Review nur, dass gebaut wurde.</p>
+  </Folie>
 
-  <h2 id="review">Sprint Review</h2>
-  <p>Das Review ist keine Vorführung, sondern eine Arbeitssitzung mit Stakeholdern – im Kurs Markus und Louis. Pro Produkt:</p>
-  <ol>
-    <li>Der Product Owner sagt das Sprint-Ziel und ob es erreicht ist.</li>
-    <li>Jemand anderes zeigt das Inkrement live, am Handy, entlang der Usage Story.</li>
-    <li>Was haben die Tests gezeigt, was sagt die Messung? Auch wenn es erst wenige Zeilen sind.</li>
-    <li>Was ändert sich deshalb am Backlog? Neue Issues, andere Reihenfolge, Gestrichenes.</li>
-  </ol>
+  <Folie>
+    <h2 id="daily">Daily Scrum</h2>
+    <p class="folie-satz">Am Sprint-Ziel entlang: Was bringt uns heute näher, was blockiert?</p>
+    <ul class="gross">
+      <li data-schritt><strong>Für die Developers,</strong> 15 Minuten, an Kurstagen um 9:00 – je Produkt fünf.</li>
+      <li data-schritt><strong>Die Form ist frei;</strong> heraus kommt ein Plan für heute.</li>
+      <li data-schritt><strong>Probleme nennen,</strong> danach lösen – mit denen, die es betrifft.</li>
+      <li data-schritt><strong>Zwischen den Kurstagen</strong> schriftlich in Linear – eine Abweichung des Kurses.</li>
+    </ul>
+    <p class="nur-handout">„The Daily Scrum is a 15-minute event for the Developers of the Scrum Team“, „held at the same time and place every working day of the Sprint“. „The Developers can select whatever structure and techniques they want, as long as their Daily Scrum focuses on progress toward the Sprint Goal and produces an actionable plan for the next day of work.“ Es ist „not the only time Developers are allowed to adjust their plan“ ({GUIDE}, S. 9). Feste Fragen schreibt der Guide nicht vor. Wer eine Form braucht, nimmt diese drei – ein Vorschlag des Kurses: Was hat mich dem Sprint-Ziel nähergebracht? Was mache ich als Nächstes? Was blockiert mich? Zwischen den Kurstagen schreibt jede*r an jedem Arbeitstag einen Kommentar in Linear, wie in <code>docs/TEAM.md</code> vereinbart.</p>
+  </Folie>
 
-  <h2 id="retro">Retrospektive: Lightning Decision Jam</h2>
-  <p>Die Retro fragt nicht nach dem Produkt, sondern nach eurer Zusammenarbeit. Sie endet mit <strong>einer</strong> Maßnahme, nicht mit einer Wunschliste. Der Lightning Decision Jam schafft das in 30 Minuten – fast alles still, damit nicht die lauteste Stimme entscheidet:</p>
-  <ol>
-    <li><strong>Was lief gut (3 min):</strong> still auf Zettel, kurz vorlesen.</li>
-    <li><strong>Was hat uns gebremst (5 min):</strong> still, ein Problem pro Zettel.</li>
-    <li><strong>Abstimmen (3 min):</strong> zwei Punkte pro Person, auf die Probleme, nicht auf die eigenen.</li>
-    <li><strong>Umformulieren (3 min):</strong> Das Problem mit den meisten Punkten wird eine HMW-Frage – wie an <a href="/innolab/methoden/hmw">Tag 2</a>.</li>
-    <li><strong>Lösungen (5 min):</strong> still, so viele wie möglich.</li>
-    <li><strong>Aufwand und Wirkung (5 min):</strong> die Lösungen in ein Raster mit zwei Achsen legen.</li>
-    <li><strong>Eine Maßnahme (6 min):</strong> die mit viel Wirkung und wenig Aufwand, als konkreter Schritt – wer, was, ab wann. In der nächsten Retro prüft ihr zuerst, ob sie gewirkt hat.</li>
-  </ol>
+  <Folie>
+    <h2 id="review">Sprint Review</h2>
+    <p class="folie-satz">Keine Vorführung: zeigen, was fertig ist, und gemeinsam entscheiden, was als Nächstes kommt.</p>
+    <ol class="gross" start="0">
+      <li data-schritt><strong>Regel:</strong> Was die Definition of Done nicht erfüllt, wird nicht gezeigt – es steht wieder im Backlog.</li>
+      <li data-schritt><strong>Der Product Owner:</strong> das Sprint-Ziel – erreicht oder nicht?</li>
+      <li data-schritt><strong>Jemand anderes</strong> zeigt das Inkrement am Handy, entlang der Usage Story; die Stakeholder fragen.</li>
+      <li data-schritt><strong>Tests und Messung</strong> – und was sich deshalb am Backlog ändert.</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Zehn Minuten pro Produkt, Stakeholder sind Markus und Louis. Zu 0: „If a Product Backlog item does not meet the Definition of Done, it cannot be released or even presented at the Sprint Review. Instead, it returns to the Product Backlog for future consideration“ ({GUIDE}, S. 12); Jeffries: „Features need to be ‚done‘ or ‚not done‘: there is no middle ground“ ({JEFFRIES}, S. 46). Zu 1–3: Das Review soll „inspect the outcome of the Sprint and determine future adaptations“; „The Product Backlog may also be adjusted to meet new opportunities“ ({GUIDE}, S. 9). Fragen, die das Gespräch öffnen, kennt ihr vom Lego: „Was seht ihr hier?“ · „Was fehlt und ist falsch ausgerichtet?“ · „Wie komfortabel wird es für unsere Benutzer sein?“ ({KRIVITSKY}, S. 98). Tests meint die Usability-Tests vom selben Nachmittag (U-IDs in <code>docs/TESTS.md</code>), Messung die Zeilen des Mess-Ereignisses. Was ihr am Backlog ändert, kommt mit Grund in <code>docs/SPRINTS.md</code>.</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (125 min)</h2>
-  <ol>
-    <li><strong>Definition of Done (20 min, Tag 4, mit der Teamaufstellung):</strong> Mess-Ereignis festlegen, DoD in <code>docs/TEAM.md</code> ergänzen, Mess-Issue anlegen; Collaborator einladen.</li>
-    <li><strong>Sprint-1-Planning (30 min, Tag 4):</strong> zehn Minuten pro Produkt, mit den Regeln für fremde Issues. Label in Linear, <code>docs/SPRINTS.md</code> anlegen.</li>
-    <li><strong>Daily (15 min, Tag 5 und 6;</strong> dazwischen schriftlich in Linear).</li>
-    <li><strong>Review (30 min, Tag 5):</strong> zehn Minuten pro Produkt, Ergebnis in <code>docs/SPRINTS.md</code>.</li>
-    <li><strong>Retro (30 min, Tag 5):</strong> eine für das ganze Team; die Maßnahme in alle drei <code>docs/SPRINTS.md</code>.</li>
-    <li><strong>Abnahme Sprint 2 (30 min, Tag 6):</strong> Der Product Owner nimmt ab; fertig und offen in <code>docs/SPRINTS.md</code>. Ob die Maßnahme aus der Retro gewirkt hat, sagt ihr in der Kurs-Retro an Tag 7. Das Review ist die Präsentation.</li>
-  </ol>
-  <Prompt label="Sprint-Ziel prüfen · Claude Code">Lies docs/SPRINTS.md, docs/PRODUKT.md und über den Linear-MCP die Issues unseres Projekts mit dem Label des aktuellen Sprints. Erreichen diese Issues zusammen das Sprint-Ziel? Nenn höchstens drei Lücken oder Issues, die für das Ziel nicht nötig sind. Ändere nichts.</Prompt>
+  <Folie>
+    <h2 id="retro">Retrospektive: Lightning Decision Jam</h2>
+    <p class="folie-satz">Fast alles still – nicht die lauteste Stimme entscheidet.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/ldj/sailboat.jpg" alt="Gezeichnetes Quadrat, waagrecht geteilt von einer Wellenlinie: oben ein Segelboot mit Segel, unten ein Anker unter Wasser" quelle={`Das Segelboot: oben, was gut läuft, unten, was uns zurückhält. ${LDJ}, S. 16.`} schmal />
+      <ol>
+        <li data-schritt><strong>Was lief gut:</strong> still, dann reihum ans Segel. <Timer minuten={4} /></li>
+        <li data-schritt><strong>Was hat gebremst:</strong> still, alle zugleich zum Anker. <Timer minuten={4} /></li>
+        <li data-schritt><strong>Gewichten:</strong> drei Punkte pro Person. <Timer minuten={3} /></li>
+        <li data-schritt><strong>HMW:</strong> Der Scrum Master formuliert den Spitzenreiter um. <Timer minuten={2} /></li>
+      </ol>
+    </BildText>
+    <div class="nur-handout">
+      <p>Thema: „Sprint 1 – Zusammenarbeit, Werkzeuge, Definition of Done“. Die Retro inspiziert „individuals, interactions, processes, tools, and their Definition of Done“ ({GUIDE}, S. 10); das Booklet rät, das Thema breit zu setzen (S. 7) und es zu Beginn kurz zu rahmen (S. 17). Der Scrum Master moderiert und macht selbst mit; Diskussionen beendet er „(politely)“ (S. 8). Drei Personen sind „the minimum group size“ (S. 7). Das Prinzip dahinter: „We work together, alone“ – statt eines offenen Forums, in dem „the loudest, most extroverted person“ sich durchsetzt (S. 3).</p>
+      <p>Zu 1: Booklet 10 Minuten – 4 still, dann je 1–2 Minuten vorlesen und ans Segel (S. 15–18); bei uns 2 + 2, eine Kürzung des Kurses. Zu 2: Booklet 5 Minuten – 4 still, dann „This time, the team does not read out their sticky notes“, alle kleben gleichzeitig unter die Wasserlinie (S. 20–22); bei uns 3 + 1, eine Kürzung des Kurses. Zu 3: „Everybody gets 3 votes … They can vote on their own sticky notes and can also put more than one sticker on a negative“; der Moderator ordnet sie zu einem Dreieck (S. 23–24) – ungekürzt. Zu 4: der meistgewählte Zettel als „How Might We“-Frage, wie an <a href="/innolab/methoden/hmw">Tag 2</a> (S. 25–26); Booklet 3 Minuten, bei uns 2 und nur eine HMW – eine Kürzung des Kurses.</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="massnahme">Von der Frage zur Maßnahme</h2>
+    <p class="folie-satz">Viele Lösungen, ein Raster, ein erster Schritt heute.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/ldj/quadranten.jpg" alt="Raster mit den Achsen Impact (senkrecht) und Effort (waagrecht), vier Felder: oben links gelb Do Now, oben rechts Make a project, unten links Make a task, unten rechts Forget for now" quelle={`Wirkung und Aufwand. ${LDJ}, S. 36.`} schmal />
+      <ol start="5">
+        <li data-schritt><strong>Lösungen:</strong> still, so viele wie möglich. <Timer minuten={5} /></li>
+        <li data-schritt><strong>Gewichten:</strong> sechs Punkte; was nur einen hat, fällt weg. <Timer minuten={3} /></li>
+        <li data-schritt><strong>Wirkung, dann Aufwand:</strong> höchstens 20 Sekunden reden. <Timer minuten={5} /></li>
+        <li data-schritt><strong>Eine Maßnahme</strong> oben links: drei Schritte, der erste heute. <Timer minuten={4} /></li>
+      </ol>
+    </BildText>
+    <div class="nur-handout">
+      <p>Zu 5: Booklet 6 Minuten – 5 still, „quantity over quality“; die Ideen werden nicht vorgestellt, darum müssen sie allein lesbar sein; 1 Minute aufhängen (S. 28–29). Bei uns 4 + 1, eine Kürzung des Kurses. Zu 6: „Each participant has 6 dot stickers and 4 minutes“; „You can ignore anything that only got one vote“ (S. 31). Booklet 5 Minuten, bei uns 3 – eine Kürzung des Kurses. Zu 7: Der Moderator hält jede top-gewählte Lösung über die Mitte des Rasters: „is the impact higher or lower?“, dann der Aufwand; Diskussionen nicht länger als 20 Sekunden. Oben links liegt der „sweet spot“ (S. 32–36). Booklet 10 Minuten, bei uns 5 – eine Kürzung des Kurses. Zu 8: „three action steps for testing the solution“; „The first step should be something easy and frictionless, something which can be done right after LDJ is over“; die Schritte sollen „no longer than one to two weeks“ dauern (S. 38–39); jede Lösung bekommt eine verantwortliche Person (S. 40). Booklet 5 Minuten für alle Lösungen im Sweet Spot; bei uns 4 Minuten für eine – eine Kürzung des Kurses. Zusammen: Booklet 47 Minuten, bei uns 30; das Booklet nennt seine Zeiten ausdrücklich „guidelines“ und erlaubt ab 30 Minuten (S. 9).</p>
+      <p>Die Maßnahme kommt in alle drei <code>docs/SPRINTS.md</code>. Geprüft wird sie an Tag 6 in der Retro von Sprint 2 – das Booklet empfiehlt, nach ein, zwei Wochen zu fragen: „What happened with the results of the last LDJ?“ (S. 42).</p>
+      <p><strong>Wie das aussehen kann</strong> (ausgedacht, zur Illustration des Formats, kein Ergebnis): Problem-Zettel „Zwei haben dasselbe Issue angefangen“ → HMW „Wie könnten wir sehen, wer woran arbeitet?“ → Maßnahme „Issue zuweisen vor Anfangen“, erster Schritt: gleich nach der Retro alle offenen Issues zuweisen; verantwortlich: der Scrum Master. Das ist der Fall, den Regel 1 unter <a href="#spec">Das Issue ist die Spezifikation</a> beschreibt.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="sprint-2">Review und Retro von Sprint 2 (Tag 6)</h2>
+    <p class="folie-satz">Am 19. Dezember schließt ihr Sprint 2 ab – vor der Präsentation, nicht mit ihr.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Review, 20 Minuten:</strong> Ziel erreicht? Inkrement am Handy, Messung, was offen bleibt.</li>
+      <li data-schritt><strong>Retro, 10 Minuten:</strong> Hat die Maßnahme aus Sprint 1 gewirkt – woran seht ihr es?</li>
+      <li data-schritt><strong>Eine Zeile</strong> je Produkt in <code>docs/SPRINTS.md</code>.</li>
+    </ul>
+    <p class="nur-handout">Das Review läuft wie in Sprint 1, mit derselben Regel: Was die Definition of Done nicht erfüllt, steht wieder im Backlog ({GUIDE}, S. 12). Was offen bleibt, kommt in den Pitch als nächster Schritt. Die Retro ist kurz und fragt, was aus der Maßnahme geworden ist – „What happened with the results of the last LDJ?“ ({LDJ}, S. 42). Ein ganzer Lightning Decision Jam passt nicht in zehn Minuten; das ist eine Kürzung des Kurses. Welche Methoden ihr mitnehmt, besprecht ihr am 7. Jänner in der Kurs-Retro.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (150 min über drei Kurstage)</h2>
+    <p class="folie-satz">Planen an Tag 4, prüfen und anpassen an Tag 5 und 6.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Sprint-1-Planning (30 min, Tag 4):</strong> zehn Minuten pro Produkt.</li>
+      <li data-schritt><strong>Daily (je 15 min, Tag 5 und 6);</strong> dazwischen schriftlich.</li>
+      <li data-schritt><strong>Review und Retro Sprint 1 (je 30 min, Tag 5).</strong></li>
+      <li data-schritt><strong>Review und Retro Sprint 2 (30 min, Tag 6).</strong></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Das Sprint-2-Planning an Tag 5 läuft wie das erste, mit Erfahrungswert und einer Störung (<a href="/innolab/tag-5#stoerfall">Tag 5</a>). Am Abend nach dem Planning prüft ihr das Sprint-Ziel mit Claude:</p>
+      <Prompt label="Sprint-Ziel prüfen · Claude Code" note="Nach dem Planning, nicht währenddessen. Claude findet Lücken, ihr entscheidet.">{SPRINT_ZIEL}</Prompt>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/SPRINTS.md"># Sprints — [Produkt]
 
-## Sprint 1 · 28.11., Planning – 12.12., Review
+## Sprint 1 · 28.11., Planning – 12.12., Review und Retro
 Sprint-Ziel: [ein Satz: was danach jemand kann]
-Auswahl: [Kennung] · [...] — [Anzahl] Issues
+Auswahl: [Kennung] · [...] · [Mess-Issue] — [Anzahl] Issues
+Wer zuerst: [Name: Kennung, ...]
 
-### Review
+### Review (12.12.)
 - Ziel erreicht: [ja / teilweise / nein, warum]
-- Fertig: [Kennungen, Anzahl]
-- Tests und Messung: [was sich gezeigt hat, mit Befund-IDs oder Zahlen]
-- Änderungen am Backlog: [neu, verschoben, gestrichen]
+- Fertig nach DoD: [Kennungen, Anzahl] · zurück in den Backlog: [Kennungen]
+- Tests und Messung: [U-IDs; Zahl der Ereignisse, seit wann]
+- Backlog danach: [neu, umgeordnet, gestrichen]
 
-### Retro
-- Maßnahme: [konkreter Schritt] · verantwortlich: [Name] · geprüft: [wann]
+### Retro (12.12., Lightning Decision Jam)
+- HMW: [...]
+- Maßnahme: [...] · erster Schritt (heute erledigt): [...] · verantwortlich: [Name] · geprüft am: 19.12.
 
-## Sprint 2 · 12.12., Planning – 19.12., Abnahme
+## Sprint 2 · 12.12., Planning – 19.12., Review und Retro
 Sprint-Ziel: [ein Satz]
-- Fertig: [Kennungen, Anzahl] · Offen: [Kennungen – kommen in den Pitch als nächster Schritt]
+Auswahl: [...] — [Anzahl, nicht mehr als in Sprint 1 fertig wurden]
+
+### Review (19.12.)
+- Ziel erreicht: [...] · Fertig: [...] · Offen (kommt in den Pitch als nächster Schritt): [...]
 - Messung: [Zahl, wie viele Personen, seit wann]
+
+### Retro (19.12.)
 - Maßnahme aus Sprint 1: [hat gewirkt / nicht, woran man es sieht]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="sprint" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Welches Ereignis zeigt bei euch, dass sich für Menschen etwas verbessert hat – nicht nur, dass jemand geklickt hat? Wenn ihr es nicht speichern könnt, ohne jemanden zu identifizieren: Was misst ihr stattdessen?</p>
-  <p class="small muted">Nach Ken Schwaber & Jeff Sutherland, <em>The Scrum Guide</em> (2020); Lightning Decision Jam nach AJ&amp;Smart.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Woran merkt ihr im Review, dass euer Sprint-Ziel ein Ziel war – und keine Liste?</p>
+    <p class="nur-handout">Ein Ziel lässt sich erreichen, auch wenn ein Issue fehlt, und es lässt sich verfehlen, obwohl alle Issues fertig sind. Wenn ihr im Review nur abhakt, was erledigt ist, war es eine Liste. Das Sprint-Ziel ist „the single objective for the Sprint“ und lässt „flexibility in terms of the exact work needed to achieve it“ ({GUIDE}, S. 11).</p>
+  </Folie>
+
+  <p class="small muted">Nach {GUIDE}; {JEFFRIES}, Kap. 5–6; {KRIVITSKY}; {LDJ}.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/schneiden', t: 'Schneiden statt Schätzen' }} next={{ href: '/innolab/methoden/pitch', t: 'Pitch' }} />
 </Layout>
