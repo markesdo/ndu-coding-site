@@ -215,7 +215,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
     ],
     geschichte: {
-      text: 'Sonja Martin ist Produktmanagerin bei tails.com, einem Abo für maßgeschneidertes Hundefutter. Ihr Team soll die Kundenbindung verbessern, gemessen nach 90 Tagen. Das Problem: Um eine Änderung zu bewerten, muss man 90 Tage warten. Sie gehen auf 30 Tage, dann auf 5 Tage – schneller, aber unklar, ob das noch etwas über die echte Bindung sagt. In den Interviews finden sie zwei Gründe für Kündigungen: Manche verstehen den Wert von maßgeschneidertem Futter nicht, und manche Hunde mögen das Futter einfach nicht. Daraus werden zwei Product Outcomes, die sofort messbar sind: wahrgenommener Wert und Anzahl der Hunde, die das Futter mögen. Torres zeigt dann die Falle: Hätte das Team „Nutzung eines Umstellungskalenders“ als Ziel genommen, wäre es auf eine Lösung festgelegt – und stecken geblieben, falls niemand den Kalender will.',
+      text: 'Erinnere an die tails.com-Geschichte vom Vormittag (Folie „Drei Arten von Zielen“): Aus den Interviews wurden zwei sofort messbare Product Outcomes, wahrgenommener Wert und Anzahl der Hunde, die das Futter mögen. Genau hier liegt Fehler 2: Hätte das Team „Nutzung eines Umstellungskalenders“ als Ziel genommen, wäre es auf eine Lösung festgelegt – und stecken geblieben, falls niemand den Kalender will.',
       quelle: 'Teresa Torres, Continuous Discovery Habits, S. 37–38, 41',
     },
     fragen: [

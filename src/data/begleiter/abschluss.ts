@@ -6,7 +6,7 @@ import type { Notiz } from './typen';
 export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
   'hausaufgabe': {
     live: [
-      'Ihr habt 30 Minuten für vier Folien. Die Hausaufgabe kommt zuerst, damit genug Zeit für Fragen bleibt.',
+      'Du hast 30 Minuten für vier Folien. Die Hausaufgabe kommt zuerst, damit genug Zeit für Fragen bleibt.',
       'Fünf Gespräche pro Person, jede*r für das eigene Produkt. Die anderen beiden aus dem Team zählen nicht.',
       'Freund*innen sind zu nett, da entstehen Komplimente statt Daten. Fitzpatrick nennt das Problem schon im Titel.',
       'Die Einwilligung einholen, bevor das Gespräch anfängt: zur Aufnahme und dazu, dass die pseudonymisierten Notizen mit KI ausgewertet werden.',

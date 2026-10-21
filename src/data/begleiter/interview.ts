@@ -226,7 +226,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
         quelle: 'Rob Fitzpatrick, The Mom Test, S. 24',
       },
       {
-        text: 'Fluff gibt es in drei Formen: Verallgemeinerungen („I usually“, „I always“, „I never“), Zukunftsversprechen („I would“, „I will“) und hypothetische Vielleichts („I might“, „I could“). Der gefährlichste Satz: „I would definitely buy that.“ Fitzpatricks erstes Startup ist darauf hereingefallen und hat rund 10 Millionen Dollar verloren.',
+        text: 'Fluff gibt es in drei Formen: Verallgemeinerungen („I usually“, „I always“, „I never“), Zukunftsversprechen („I would“, „I will“) und hypothetische Vielleichts („I might“, „I could“). Der gefährlichste Satz: „I would definitely buy that.“ Darauf ist das erste Startup, bei dem er arbeitete, hereingefallen; die ganze Geschichte steht bei der nächsten Folie „Welche Antwort zählt?“.',
         quelle: 'Rob Fitzpatrick, The Mom Test, S. 28–29',
       },
       {
@@ -243,7 +243,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       },
     ],
     geschichte: {
-      text: 'Ganz nah an der Kaffeebar: Vor Fitzpatrick in der Schlange schimpft einer: „Welcher Idiot hatte die Idee, dass ich tausend Café-Stempelkarten mit mir herumtragen muss?“ Die schlechte Reaktion ist der Pitch: „Ich baue genau dafür eine App, würdest du die nutzen?“ Antwort: „Klar, wurde ja Zeit!“, also wertloser Fluff. Die gute Reaktion verankert in der Vergangenheit: „Hast du schon mal eine dieser Treue-Apps ausprobiert?“ – „Gibt es die?“ – „Ja, im Campus-Café hängt ein Schild.“ – „Ach ja, ich hab es halt immer eilig.“ Und dann: „Warum lädst du sie nicht jetzt runter?“ – „Mach ich nächstes Mal.“ Kein echtes Problem: ein Nörgler, kein Kunde. Andere Antworten wären wertvoll gewesen, etwa „Für jede Kette eine eigene App, das will ich nicht“ oder „Die App ist so umständlich, dass das Bezahlen schneller geht“.',
+      text: 'Ganz nah an der Kaffeebar, Fitzpatricks Beispiel: Stell dir vor, du baust eine Treue-App, mit der Läden ihrer Stammkundschaft Rabatte geben, und vor dir in der Schlange schimpft einer: „Welcher Idiot hatte die Idee, dass ich tausend Café-Stempelkarten mit mir herumtragen muss?“ Die schlechte Reaktion ist der Pitch: „Ich baue genau dafür eine App, würdest du die nutzen?“ Antwort: „Klar, wurde ja Zeit!“, also wertloser Fluff. Die gute Reaktion verankert in der Vergangenheit: „Hast du schon mal eine dieser Treue-Apps ausprobiert?“ – „Gibt es die?“ – „Ja, im Campus-Café hängt ein Schild.“ – „Ach ja, ich hab es halt immer eilig.“ Und dann: „Warum lädst du sie nicht jetzt runter?“ – „Mach ich nächstes Mal.“ Kein echtes Problem: ein Nörgler, kein Kunde. Andere Antworten wären wertvoll gewesen, etwa „Für jede Kette eine eigene App, das will ich nicht“ oder „Die App ist so umständlich, dass das Bezahlen schneller geht“.',
       quelle: 'Rob Fitzpatrick, The Mom Test, S. 31–33',
     },
     fragen: [
