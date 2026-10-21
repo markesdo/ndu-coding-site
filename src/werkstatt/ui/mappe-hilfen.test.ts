@@ -49,11 +49,17 @@ describe('adresseOhneFehler', () => {
 
 describe('leitfadenFrei', () => {
   it('gibt den Leitfaden-Editor erst nach dem Mom Test frei (Wiener Zeit), den Präsentator immer', () => {
-    expect(NACH_MOM_TEST).toBe('2026-10-22T14:30');
-    expect(leitfadenFrei(new Date('2026-10-22T12:29:00Z'), false)).toBe(false); // 14:29 in Wien
-    expect(leitfadenFrei(new Date('2026-10-22T12:30:00Z'), false)).toBe(true);
+    expect(NACH_MOM_TEST).toBe('2026-10-22T16:45');
+    expect(leitfadenFrei(new Date('2026-10-22T14:44:00Z'), false)).toBe(false); // 16:44 in Wien
+    expect(leitfadenFrei(new Date('2026-10-22T14:45:00Z'), false)).toBe(true);
     expect(leitfadenFrei(new Date('2026-10-17T08:00:00Z'), false)).toBe(false);
     expect(leitfadenFrei(new Date('2026-10-17T08:00:00Z'), true)).toBe(true);
+  });
+  it('frei, sobald Markus „mom-test“ aufgedeckt hat – andere Kennungen zählen nicht', () => {
+    const vorher = new Date('2026-10-22T12:31:00Z'); // 14:31 in Wien, vor dem Rückfall
+    expect(leitfadenFrei(vorher, false, ['mom-test'])).toBe(true);
+    expect(leitfadenFrei(vorher, false, ['toast'])).toBe(false);
+    expect(leitfadenFrei(vorher, false)).toBe(false);
   });
 });
 

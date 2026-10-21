@@ -66,7 +66,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       'Aufgabe zeigen, Timer 5 min starten, nichts zur Methode sagen.',
       'Du in der Rolle: „Würdest du …?“ → leeres Ja, „letztes Mal“ → Geschichte.',
       '„Welche Antwort hat euch etwas Neues verraten?“',
-      'Auflösung aufdecken öffnet Gruppe „mom-test“; ab 14:30 ohnehin offen.',
+      'Auflösung aufdecken öffnet alles zum Mom Test, auch bei allen.',
       'Kochbuch-App erzählen (Geschichte): „Das klingt toll“, niemand kauft.',
     ],
     ueberleitung: 'Jetzt legt ihr eure drei Fragen auf zwei Achsen und seht, wo sie liegen.',

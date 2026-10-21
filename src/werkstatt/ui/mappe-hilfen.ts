@@ -29,10 +29,10 @@ export function adresseOhneFehler(pfad: string, suche: string, hash: string): st
   return `${pfad}${rest ? `?${rest}` : ''}${hash}`;
 }
 
-/** Der Leitfaden-Editor verrät die Regeln des Mom Test: wie die Auflösungen der Interview-Seite erst ab NACH_MOM_TEST,
- *  der Präsentator (Markus) immer. */
-export function leitfadenFrei(jetzt: Date, praesentator: boolean): boolean {
-  return praesentator || aufgeloest(NACH_MOM_TEST, jetzt);
+/** Der Leitfaden-Editor verrät die Regeln des Mom Test: frei wie die Auflösungen der Interview-Seite – sobald Markus die
+ *  Gruppe „mom-test“ aufgedeckt hat (aufgedeckt aus /api/aufgedeckt), spätestens ab NACH_MOM_TEST; der Präsentator immer. */
+export function leitfadenFrei(jetzt: Date, praesentator: boolean, aufgedeckt: readonly string[] = []): boolean {
+  return praesentator || aufgedeckt.includes('mom-test') || aufgeloest(NACH_MOM_TEST, jetzt);
 }
 
 /** Lädt /innolab/mappe beim Öffnen? Nicht bei „nicht freigeschaltet“: Es gibt keine Sitzung, Laden zeigte nur „Melde dich an“.
