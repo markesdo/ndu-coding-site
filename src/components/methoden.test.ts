@@ -112,6 +112,118 @@ describe('methoden', () => {
     expect(methodenVonTag(7)).toEqual([]);
   });
 
+  // NDU-28: Prüfpunkte haben feste IDs <slug>-<thema>, unabhängig von Reihenfolge und Text.
+  it('Prüf-Prompt nennt zu jedem Punkt seine feste ID (auch ohne Connector dieselben IDs wie artefakt_pruefen)', () => {
+    for (const m of METHODEN.filter((x) => x.pruefliste)) {
+      const prompt = pruefPrompt(m);
+      m.pruefliste!.forEach((p, i) => expect(prompt, p.id).toContain(`\n${i + 1}. ${p.text} (${p.id})\n`));
+    }
+  });
+
+  it('Prüfpunkt-IDs: eindeutig, <slug>-<thema> ohne Ziffern', () => {
+    const alle = METHODEN.flatMap((m) => m.pruefliste ?? []).map((p) => p.id);
+    expect(new Set(alle).size).toBe(alle.length);
+    for (const m of METHODEN) {
+      for (const p of m.pruefliste ?? []) {
+        expect(p.id.startsWith(`${m.slug}-`), p.id).toBe(true);
+        expect(p.id.slice(m.slug.length + 1), p.id).toMatch(/^[a-z]+(-[a-z]+)*$/);
+      }
+    }
+  });
+
+  it('Prüfpunkt-IDs wandern nicht: vergeben ist vergeben, gestrichen bleibt gestrichen', () => {
+    // Jede je vergebene ID. Ein neuer Punkt kommt hier dazu; ein gestrichener oder umbenannter kommt nach GESTRICHEN, und
+    // seine ID wird nie wieder vergeben – so bedeutet eine ID in Gesprächen und im Kalibrierungslog immer dasselbe.
+    const VERGEBEN = [
+      'problem-rahmen-zielgruppe', 'problem-rahmen-loesung', 'problem-rahmen-heute', 'problem-rahmen-nicht', 'problem-rahmen-outcome',
+      'entscheidungslog-felder', 'entscheidungslog-beleg', 'entscheidungslog-tatsache', 'entscheidungslog-ersetzt',
+      'annahmen-pruefbar', 'annahmen-arten', 'annahmen-wichtig-beleg', 'annahmen-riskanteste', 'annahmen-loesung', 'annahmen-getan-quelle',
+      'interview-ziel', 'interview-zukunft', 'interview-idee', 'interview-letztes-mal', 'interview-heute', 'interview-nachfragen', 'interview-einwilligung',
+      'synthese-snapshot', 'synthese-chance-beduerfnis', 'synthese-einsichten', 'synthese-pseudonym', 'synthese-beleg-nachgetragen',
+      'journey-map-geschichten', 'journey-map-erleben', 'journey-map-umwege', 'journey-map-momente-getrennt', 'journey-map-worte-belegt', 'journey-map-hoehepunkt-ende',
+      'baum-chance-beduerfnis', 'baum-belegt', 'baum-ein-elternteil', 'baum-kind-teil', 'baum-stapel', 'baum-konkret',
+      'ziel-chance-geschwister', 'ziel-chance-blatt', 'ziel-chance-linsen', 'ziel-chance-belegt', 'ziel-chance-ulwick',
+      'hmw-wie-koennten', 'hmw-loesung', 'hmw-reichweite', 'hmw-kundensicht', 'hmw-auswahl',
+      'ideation-menge', 'ideation-aussortiert', 'ideation-drei', 'ideation-verschieden', 'ideation-claude',
+      'kundenprofil-segment', 'kundenprofil-jobs', 'kundenprofil-sozial-emotional', 'kundenprofil-konkret', 'kundenprofil-produkt', 'kundenprofil-ziel-chance', 'kundenprofil-geordnet',
+      'value-map-lueckensatz', 'value-map-segment', 'value-map-fit-vergleich', 'value-map-wahl', 'value-map-wirkung', 'value-map-adressiert',
+      'concept-story-stationen', 'concept-story-produkt', 'concept-story-krise', 'concept-story-hoehepunkt', 'concept-story-linie', 'concept-story-fallend', 'concept-story-ende',
+      'geschaeftsmodell-verweise', 'geschaeftsmodell-wert', 'geschaeftsmodell-kosten', 'geschaeftsmodell-muster', 'geschaeftsmodell-annahme', 'geschaeftsmodell-widerspruch',
+      'experiment-annahmen-arten', 'experiment-eine-annahme', 'experiment-wer-wo-was', 'experiment-schwelle', 'experiment-schnellster', 'experiment-danach', 'experiment-origin', 'experiment-lernkarte',
+      'story-map-rahmen', 'story-map-schritte', 'story-map-erzaehlbar', 'story-map-alternativen', 'story-map-slice-ziel', 'story-map-slice-durchgehend', 'story-map-kein-software',
+      'usage-story-person', 'usage-story-ausloeser', 'usage-story-schritte', 'usage-story-krise', 'usage-story-hoehepunkt', 'usage-story-nach-gipfel', 'usage-story-ende',
+      'prototyp-spike-skizzen', 'prototyp-spike-branch', 'prototyp-spike-karte', 'prototyp-spike-aufgabe', 'prototyp-spike-trockenlauf', 'prototyp-spike-protokoll', 'prototyp-spike-lernkarte',
+      'scrum-produkte', 'scrum-rollen', 'scrum-termine', 'scrum-dod', 'scrum-dod-messung', 'scrum-abweichungen', 'scrum-lego',
+      'backlog-herkunft', 'backlog-titel-ziel', 'backlog-senkrecht', 'backlog-nicht-im-umfang', 'backlog-reihenfolge', 'backlog-erzaehlt',
+      'akzeptanzkriterien-szenario', 'akzeptanzkriterien-gegeben-zustand', 'akzeptanzkriterien-grenzfall', 'akzeptanzkriterien-kein-bau', 'akzeptanzkriterien-zeigbar', 'akzeptanzkriterien-ki',
+      'schneiden-plan-check', 'schneiden-ein-durchgang', 'schneiden-entscheidung', 'schneiden-spike', 'schneiden-gesehen',
+      'sprint-ziel', 'sprint-auswahl', 'sprint-nicht-mehr', 'sprint-beleg', 'sprint-review', 'sprint-retro', 'sprint-retro-kurz',
+      'pitch-einstieg', 'pitch-demo', 'pitch-belege', 'pitch-gescheitert', 'pitch-outcome', 'pitch-position', 'pitch-pitch-satz', 'pitch-geschaeftsmodell',
+    ];
+    const GESTRICHEN: string[] = [];
+    const jetzt = METHODEN.flatMap((m) => m.pruefliste ?? []).map((p) => p.id);
+    for (const id of jetzt) expect(VERGEBEN, `${id}: neue ID in VERGEBEN eintragen`).toContain(id);
+    for (const id of VERGEBEN) {
+      if (GESTRICHEN.includes(id)) expect(jetzt, `${id} ist gestrichen und darf nicht wiederkommen`).not.toContain(id);
+      else expect(jetzt, `${id} fehlt: umbenannt oder gestrichen? Dann nach GESTRICHEN`).toContain(id);
+    }
+  });
+
+  it('alte Positions-IDs (vor NDU-28) sind eingefroren: jede zeigt für immer auf denselben Punkt, neue kommen nicht dazu', () => {
+    // So vergab artefakt_pruefen die IDs bis NDU-28 (<slug>-<Position>); nur die Werkstatt-Methoden waren erreichbar.
+    const ALT: Record<string, string> = {
+      'problem-rahmen-1': 'problem-rahmen-zielgruppe',
+      'problem-rahmen-2': 'problem-rahmen-loesung',
+      'problem-rahmen-3': 'problem-rahmen-heute',
+      'problem-rahmen-4': 'problem-rahmen-nicht',
+      'problem-rahmen-5': 'problem-rahmen-outcome',
+      'entscheidungslog-1': 'entscheidungslog-felder',
+      'entscheidungslog-2': 'entscheidungslog-beleg',
+      'entscheidungslog-3': 'entscheidungslog-tatsache',
+      'entscheidungslog-4': 'entscheidungslog-ersetzt',
+      'annahmen-1': 'annahmen-pruefbar',
+      'annahmen-2': 'annahmen-arten',
+      'annahmen-3': 'annahmen-wichtig-beleg',
+      'annahmen-4': 'annahmen-riskanteste',
+      'annahmen-5': 'annahmen-loesung',
+      'annahmen-6': 'annahmen-getan-quelle',
+      'interview-1': 'interview-ziel',
+      'interview-2': 'interview-zukunft',
+      'interview-3': 'interview-idee',
+      'interview-4': 'interview-letztes-mal',
+      'interview-5': 'interview-heute',
+      'interview-6': 'interview-nachfragen',
+      'interview-7': 'interview-einwilligung',
+      'synthese-1': 'synthese-snapshot',
+      'synthese-2': 'synthese-chance-beduerfnis',
+      'synthese-3': 'synthese-einsichten',
+      'synthese-4': 'synthese-pseudonym',
+      'synthese-5': 'synthese-beleg-nachgetragen',
+    };
+    const jetzt = Object.fromEntries(METHODEN.flatMap((m) => m.pruefliste ?? []).filter((p) => p.alt).map((p) => [p.alt!, p.id]));
+    expect(jetzt).toStrictEqual(ALT);
+  });
+
+  it('Prüfpunkt-IDs der Werkstatt-Methoden bleiben bei ihrem Thema', () => {
+    // Stichwort aus dem Text jedes Punkts, den artefakt_pruefen liefert. Wird ein Punkt umformuliert, bleibt das Stichwort;
+    // sonst ist es ein neues Thema mit neuer ID (und die alte kommt nach GESTRICHEN, Test oben).
+    const STICHWORT: Record<string, RegExp> = {
+      'problem-rahmen-zielgruppe': /Zielgruppe/, 'problem-rahmen-loesung': /keine Lösung/, 'problem-rahmen-heute': /heute gelöst/,
+      'problem-rahmen-nicht': /NICHT/, 'problem-rahmen-outcome': /Outcome-Metrik/,
+      'entscheidungslog-felder': /Datum, Entscheidung und Grund/, 'entscheidungslog-beleg': /Beleg/, 'entscheidungslog-tatsache': /Tatsache/,
+      'entscheidungslog-ersetzt': /ersetzt/,
+      'annahmen-pruefbar': /prüfbarer Satz/, 'annahmen-arten': /vier Arten/, 'annahmen-wichtig-beleg': /wie wichtig/,
+      'annahmen-riskanteste': /riskanteste/, 'annahmen-loesung': /Funktion/, 'annahmen-getan-quelle': /„getan“/,
+      'interview-ziel': /Forschungsfrage/, 'interview-zukunft': /Zukunft/, 'interview-idee': /Idee/, 'interview-letztes-mal': /letzten konkreten Mal/,
+      'interview-heute': /heute schon tut/, 'interview-nachfragen': /Nachfragen/, 'interview-einwilligung': /Einwilligung/,
+      'synthese-snapshot': /Snapshot/, 'synthese-chance-beduerfnis': /Bedürfnis/, 'synthese-einsichten': /Einsichten/,
+      'synthese-pseudonym': /Pseudonym/, 'synthese-beleg-nachgetragen': /Beleg nachgetragen/,
+    };
+    const werkstatt = METHODEN.filter((m) => pruefungInWerkstatt(m)).flatMap((m) => m.pruefliste ?? []);
+    expect(werkstatt.map((p) => p.id).sort()).toStrictEqual(Object.keys(STICHWORT).sort());
+    for (const p of werkstatt) expect(p.text, p.id).toMatch(STICHWORT[p.id]);
+  });
+
   it('jede Methode mit eigener Seite hat eine Prüfliste mit 3–8 Punkten', () => {
     const mitSeite = METHODEN.filter((m) => existsSync(new URL(`../pages/innolab/methoden/${m.slug}.astro`, import.meta.url)));
     expect(mitSeite.length).toBeGreaterThan(0);
@@ -119,7 +231,7 @@ describe('methoden', () => {
       expect(m.pruefliste?.length ?? 0, m.slug).toBeGreaterThanOrEqual(3);
       expect(m.pruefliste!.length, m.slug).toBeLessThanOrEqual(8);
       // Reiner Text: Die Checkliste rendert HTML, der Claude-Prompt kopiert Text – beides soll gleich aussehen.
-      for (const p of m.pruefliste!) expect(p, m.slug).not.toMatch(/[<>&]/);
+      for (const p of m.pruefliste!) expect(p.text, m.slug).not.toMatch(/[<>&]/);
     }
   });
 
@@ -149,7 +261,7 @@ describe('methoden', () => {
       'Value Map': 'valuemap', 'Story Map': 'storymap', Entscheidungslog: 'entscheidungen',
     };
     for (const m of METHODEN.filter((x) => x.pruefliste)) {
-      const text = m.pruefliste!.join(' ');
+      const text = m.pruefliste!.map((p) => p.text).join(' ');
       for (const [name, id] of Object.entries(namen)) {
         if (text.includes(name)) expect([...m.braucht, ...m.ergibt], `${m.slug} nennt ${name}`).toContain(id);
       }
@@ -181,7 +293,7 @@ describe('methoden', () => {
     // Die Prüfliste verlangt alle vier Raster-Felder mit Beleg aus Kundenprofil oder Value Map, ein Sicherheits-Wort wie in
     // den Lernkarten (E1, E2) und die Outcome-Zahlen – darum liest Claude Profil, Value Map, Experimente und Tests mit.
     const pitch = METHODEN.find((m) => m.slug === 'pitch')!;
-    const liste = pitch.pruefliste!.join(' ');
+    const liste = pitch.pruefliste!.map((p) => p.text).join(' ');
     expect(liste).toMatch(/wegfällt, weniger wird, mehr wird und neu ist/);
     expect(liste).toMatch(/ID aus dem Kundenprofil oder einem Verweis auf die Value Map/);
     expect(liste).toMatch(/ein Wort dazu, wie sicher sie ist/);

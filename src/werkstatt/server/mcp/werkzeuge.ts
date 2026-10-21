@@ -5,7 +5,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import { wienerZeit } from '../../../components/jetzt.js';
-import { METHODEN, TAGE, werkstattVorarbeit, type Methode } from '../../../components/methoden.js';
+import { METHODEN, TAGE, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
@@ -38,7 +38,8 @@ const ARTEFAKT_LISTE = ARTEFAKT_NAMEN.map((n) => `${n} (${ARTEFAKTE[n].titel})`)
 const ARTEFAKT_EINGABE = { artefakt: ARTEFAKT_ENUM.describe(`Welches Artefakt: ${ARTEFAKT_LISTE}.`) };
 const SLUGS = METHODEN.map((m) => m.slug);
 const PRUEFPUNKT = z.object({ id: z.string(), text: z.string() });
-type Pruefpunkt = z.infer<typeof PRUEFPUNKT>;
+// Was Claude von einem Prüfpunkt sieht: ID und Text, ohne die alte Positions-ID.
+const ausgabe = (p: Pruefpunkt) => ({ id: p.id, text: p.text });
 
 const UEBERSICHT = {
   title: 'Mappe: Übersicht',
@@ -70,13 +71,13 @@ const METHODE = {
 
 const PRUEFEN = {
   title: 'Artefakt prüfen',
-  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit IDs wie annahmen-1), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-5) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Nur lesen.`,
+  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Nur lesen.`,
   inputSchema: {
     ...ARTEFAKT_EINGABE,
     pruefpunkt: z
       .string()
       .nullish()
-      .describe('Optional: ID eines Prüfpunkts dieses Artefakts (z. B. annahmen-5), um nur diesen Punkt gründlich zu prüfen. Ohne: alle Prüfpunkte.'),
+      .describe('Optional: ID eines Prüfpunkts dieses Artefakts (z. B. annahmen-loesung) oder seine Nummer in der Liste (5), um nur diesen Punkt gründlich zu prüfen. Ohne: alle Prüfpunkte.'),
   },
   // Das Markdown steht nur im Text des Ergebnisses, nicht noch einmal hier (spart Kontext).
   outputSchema: {
@@ -276,7 +277,7 @@ function methodeDaten(k: WerkzeugKontext, m: Methode) {
     slug: m.slug,
     name: m.name,
     frage: m.frage,
-    ...(m.pruefliste ? { pruefliste: [...m.pruefliste] } : {}),
+    ...(m.pruefliste ? { pruefliste: m.pruefliste.map(ausgabe) } : {}),
     ki: m.ki,
     ...(m.quelle ? { quelle: m.quelle } : {}),
     link: `${k.origin}/innolab/methoden/${m.slug}`,
@@ -285,15 +286,16 @@ function methodeDaten(k: WerkzeugKontext, m: Methode) {
 
 function methodeText(d: ReturnType<typeof methodeDaten>): string {
   const zeilen = [`# ${d.name}`, '', `Frage: ${d.frage}`, ''];
-  if (d.pruefliste) zeilen.push('Prüfliste:', ...d.pruefliste.map((p, i) => `${i + 1}. ${p}`), '');
+  if (d.pruefliste) zeilen.push(`Prüfliste (Prüfpunkt-IDs für ${MCP_WERKZEUGE.artefaktPruefen}):`, ...d.pruefliste.map((p) => `- ${p.id}: ${p.text}`), '');
   zeilen.push(`Rolle der KI (immer erst nach der eigenen Arbeit): ${d.ki}`);
   if (d.quelle) zeilen.push(`Quelle: ${d.quelle}`);
   zeilen.push(`Methodenseite: ${d.link}`);
   return zeilen.join('\n');
 }
 
-// Schreibweise einer Prüfpunkt-Angabe vereinheitlichen: klein, Umlaute wie in den Slugs (prüfpunkt -> pruefpunkt),
-// Leerzeichen und Striche als Bindestrich, ohne Satzzeichen am Ende, ohne „Punkt“/„Prüfpunkt“/„#“ davor.
+// Schreibweise einer Prüfpunkt-Angabe vereinheitlichen: klein, Umlaute wie in den IDs (prüfpunkt -> pruefpunkt), alles
+// außer Buchstaben und Ziffern als ein Bindestrich (Leerzeichen, Striche, „&“, „#“, Satzzeichen am Ende), ohne
+// „Punkt“/„Prüfpunkt“ davor.
 // "" und null = keine Angabe.
 function pruefpunktNormal(s: string | null | undefined): string | undefined {
   const t = (s ?? '')
@@ -303,18 +305,27 @@ function pruefpunktNormal(s: string | null | undefined): string | undefined {
     .replace(/ö/g, 'oe')
     .replace(/ü/g, 'ue')
     .replace(/ß/g, 'ss')
-    .replace(/[\s\u2010-\u2015\u2212]+/g, '-')
-    .replace(/[.:)]+$/, '')
-    .replace(/^(?:pruef)?punkt-|^#/, '');
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/^(?:pruef)?punkt-/, '');
   return t || undefined;
 }
 
-// Index des gemeinten Prüfpunkts, sonst -1: die ID (annahmen-5), dieselbe Nummer mit dem Artefaktnamen statt des Slugs
-// (leitfaden-3 = interview-3) oder nur die Nummer (5, 05).
-function pruefpunktFinden(alle: readonly { id: string }[], roh: string, slug: string, artefakt: ArtefaktName): number {
-  const nummer = /^(?:(.+)-)?0*(\d+)$/.exec(roh);
-  const id = nummer && (nummer[1] === undefined || nummer[1] === artefakt || nummer[1] === slug) ? `${slug}-${nummer[2]}` : roh;
-  return alle.findIndex((p) => p.id === id);
+// Index des gemeinten Prüfpunkts, sonst -1.
+// - Die feste ID (annahmen-loesung), auch ohne Slug (loesung) oder mit dem Artefaktnamen statt des Slugs
+//   (leitfaden-zukunft = interview-zukunft).
+// - Eine alte Positions-ID von vor NDU-28 (annahmen-5, leitfaden-3) über ihr eingefrorenes alt: Sie zeigt auch nach
+//   Umsortieren auf denselben Punkt. Positions-IDs ohne alt (annahmen-9) gibt es nicht.
+// - Eine bloße Nummer (5, 05) meint die Position in der aktuellen Liste, wie der Prüf-Prompt sie nummeriert.
+function pruefpunktFinden(alle: readonly Pruefpunkt[], roh: string, slug: string, artefakt: ArtefaktName): number {
+  if (/^\d+$/.test(roh)) {
+    const i = Number(roh) - 1;
+    return i >= 0 && i < alle.length ? i : -1;
+  }
+  const ohne = roh.startsWith(`${slug}-`) ? roh.slice(slug.length + 1) : roh.startsWith(`${artefakt}-`) ? roh.slice(artefakt.length + 1) : roh;
+  const kurz = /^\d+$/.test(ohne) ? String(Number(ohne)) : ohne;
+  const i = alle.findIndex((p) => p.id === `${slug}-${kurz}`);
+  return i >= 0 ? i : alle.findIndex((p) => p.alt === `${slug}-${kurz}`);
 }
 
 const LAGE_TEXT: Record<Kurstag['lage'], string> = {
@@ -429,9 +440,9 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const m = methodeZu(artefakt);
       // Zuerst die Mappe: Lehrende und Personen ohne Mappe hören das vor jedem Hinweis zum Prüfpunkt.
       const repo = await eigeneMappe(k);
-      const alle: Pruefpunkt[] = (m.pruefliste ?? []).map((text, i) => ({ id: `${m.slug}-${i + 1}`, text }));
+      const alle = m.pruefliste ?? [];
       // ChatGPT schickt für ein leeres optionales Argument "" oder null: das heißt „alle Prüfpunkte“.
-      // „Annahmen-5“, „annahmen 5“, „annahmen–5“ und „5“ meinen annahmen-5; beim Leitfaden auch „leitfaden-3“ (= interview-3).
+      // Welche Schreibweisen gelten (feste ID, alte Positions-ID, Nummer), steht bei pruefpunktFinden.
       const roh = pruefpunktNormal(pruefpunkt);
       const fokusIndex = roh === undefined ? -1 : pruefpunktFinden(alle, roh, m.slug, artefakt);
       if (roh !== undefined && fokusIndex < 0) {
@@ -484,7 +495,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         artefakt,
         titel,
         vorhanden: a !== null,
-        pruefpunkte,
+        pruefpunkte: pruefpunkte.map(ausgabe),
         vorarbeit: vorarbeit.map((v) => ({ artefakt: v.name, titel: ARTEFAKTE[v.name].titel, vorhanden: v.inhalt !== null })),
         anleitung,
       });
