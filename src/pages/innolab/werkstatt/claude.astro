@@ -7,6 +7,7 @@ import Prompt from '../../../components/Prompt.astro';
 import Schritte from '../../../components/Schritte.astro';
 import { bild } from '../../../components/anleitung-bilder';
 import { CONNECTOR_NAME, connectorLink, connectorUrl } from '../../../werkstatt/connector.js';
+import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag.js';
 
 // site steht in astro.config.mjs; ohne site soll der Build scheitern statt still eine falsche Domain zu nennen.
 const seite = Astro.site!;
@@ -31,7 +32,7 @@ const seite = Astro.site!;
       { img: bild('werkstatt/connector-1-dialog'), alt: 'Dialog „Add custom connector“ mit Name NDU Werkstatt, der Werkstatt-URL und dem Knopf Continue', text: `Name und URL stehen schon drin. Der rote Hinweis sagt nur, dass der Vorschlag von einem Link kam: Prüft, dass die URL mit <code>${new URL(seite).origin}</code> beginnt, dann <em>Continue</em> (1).`, marks: [{ x: 874, y: 913, w: 169, h: 60, n: 1 }], crop: false },
       { img: bild('werkstatt/connector-2-anmeldung'), alt: 'Zweiter Schritt des Dialogs: Sign in now und Use Claude’s published identity sind ausgewählt und als Detected markiert, unten der Knopf Add', text: 'Hier nichts ändern: <em>Sign in now</em> und <em>Use Claude’s published identity</em> sind schon gewählt (1). Klickt <em>Add</em> (2).', marks: [{ x: 68, y: 262, w: 976, h: 650, n: 1 }, { x: 942, y: 1822, w: 101, h: 60, n: 2 }], crop: false },
       { img: bild('werkstatt/connector-3-connect'), alt: 'Seite des Connectors: „You’re not connected to NDU Werkstatt yet.“ mit dem Knopf Connect', text: 'Klickt <em>Connect</em> (1). Jetzt kommt GitHub: Bestätigt dort euer eigenes Konto mit <em>Authorize</em> oder <em>Continue</em>. Danach zeigt die Werkstatt „Claude (claude.ai) möchte deine Mappe lesen“ mit eurem GitHub-Namen; prüft ihn und klickt <em>Erlauben</em>.', marks: [{ x: 539, y: 481, w: 162, h: 62, n: 1 }], crop: false },
-      { img: bild('werkstatt/connector-4-werkzeuge'), alt: 'Verbundener Connector NDU Werkstatt mit vier Read-only tools, alle auf Needs approval', text: 'Verbunden: Die vier Werkzeuge stehen unter <em>Read-only tools</em>. Sie lesen nur. Damit Claude nicht bei jedem Lesen fragt, stellt ihr sie oben rechts auf <em>Always allow</em> (1). Das gilt nur, solange dort ausschließlich <em>Read-only tools</em> stehen.', marks: [{ x: 1701, y: 400, w: 333, h: 63, n: 1 }], crop: false },
+      { img: bild('werkstatt/connector-4-werkzeuge'), alt: 'Verbundener Connector NDU Werkstatt mit vier Read-only tools, alle auf Needs approval', text: `Verbunden: Die ${Object.keys(MCP_WERKZEUGE).length} Werkzeuge stehen unter <em>Read-only tools</em> (auf dem Bild noch die ersten vier). Sie lesen nur. Damit Claude nicht bei jedem Lesen fragt, stellt ihr sie oben rechts auf <em>Always allow</em> (1). Das gilt nur, solange dort ausschließlich <em>Read-only tools</em> stehen.`, marks: [{ x: 1701, y: 400, w: 333, h: 63, n: 1 }], crop: false },
     ]} />
     <p>Eure Mappe entsteht beim ersten Login, hier über den Connector oder über „Bearbeiten“ auf einer Methodenseite. <a data-werkstatt href="/innolab/mappe">Zu eurer Mappe</a></p>
     <p>Kein Dialog, leere Felder oder eine Fehlerseite? Dann geht in claude.ai auf <strong>Customize → Connectors</strong>, klickt <strong>Add custom connector</strong> und tragt Name <code>{CONNECTOR_NAME}</code> und diese URL ein:</p>

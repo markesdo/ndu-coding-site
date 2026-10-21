@@ -5,6 +5,8 @@ import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from './schemas/inde
 import { EDITOREN } from './ui/editoren/index.js';
 import { EDITOR_ANKER, LEITFADEN_LINK } from './ui/mappe-hilfen.js';
 import { MCP_WERKZEUGE } from './vertrag.js';
+import { NOTIZEN } from '../data/begleiter/index.js';
+import { TAG_1 } from '../data/begleiter/tag.js';
 
 // Seitenintegration der Werkstatt (Spec §3.5): Jede Methode, deren Artefakt in der Werkstatt lebt, hat auf ihrer Seite
 // einen „Bearbeiten“-Knopf, und ihre Texte schicken niemanden mehr in eine Datei unter docs/.
@@ -142,5 +144,56 @@ describe('Mappe verlinkt direkt zum Editor', () => {
       expect(davor, name).toBe(EDITOR_ANKER[name]);
       expect(seite.split(`id="${EDITOR_ANKER[name]}"`).length - 1, `${name}: Anker eindeutig`).toBe(1);
     }
+  });
+});
+
+describe('Interviews als Hausaufgabe (Phase 1b)', () => {
+  const DATENSCHUTZ = 'href="/innolab/werkstatt/interview-datenschutz"';
+
+  it('der Abschluss von Tag 1 öffnet den Interview-Editor und verlinkt den Datenschutzhinweis; keine Ankündigung mehr', () => {
+    const a = seite('tag-1/abschluss');
+    expect(a.split('<Bearbeiten artefakt="interviews"').length - 1).toBe(1);
+    expect(a).toContain(DATENSCHUTZ);
+    expect(a).not.toMatch(/Sobald der Interview-Editor|sobald es dort den Interview-Editor|Teams-Kanal/);
+  });
+
+  it('die Interview-Seite verlinkt den Datenschutzhinweis im Abschnitt zur Einwilligung', () => {
+    const q = seite('methoden/interview');
+    const callout = /<Callout type="warn" title="Einwilligung und Anonymisierung">([\s\S]*?)<\/Callout>/.exec(q)?.[1] ?? '';
+    expect(callout).toContain(DATENSCHUTZ);
+  });
+
+  it('der Datenschutzhinweis nennt Einwilligung, Pseudonym, private Mappe, KI und Widerruf und siezt die Interviewten', () => {
+    const q = seite('werkstatt/interview-datenschutz');
+    const blatt = /<article class="blatt"[\s\S]*?<\/article>/.exec(q)?.[0] ?? '';
+    for (const h of ['Aufnahme nur mit Ihrer Einwilligung', 'Pseudonym statt Name', 'Wo die Notizen liegen', 'Auswertung mit KI', 'Widerruf']) {
+      expect(blatt).toContain(`<h3>${h}</h3>`);
+    }
+    expect(blatt).toContain('privaten Repository');
+    // Kleingeschrieben (ihr, euch) und Du-Formen; das große „Ihr“ ist die Sie-Form und erlaubt.
+    expect(blatt).not.toMatch(/\b(du|dich|dir|dein\w*|ihr|euch|euer\w*|Du|Dich|Dir|Dein\w*|Euch|Euer\w*)\b/);
+    // Gedruckt wird nur das Blatt.
+    expect(q).toMatch(/@media print \{\s*\.nicht-drucken \{ display: none !important; \}/);
+  });
+
+  it('gedruckt wird das Blatt schwarz auf weiß, auch aus dem dunklen Modus (Text und Unterschriftslinien)', () => {
+    const q = seite('werkstatt/interview-datenschutz');
+    const druck = /@media print \{([\s\S]*?)\n {2}\}\n<\/style>/.exec(q)?.[1] ?? '';
+    const blatt = /\.blatt \{([^}]*)\}/.exec(druck)?.[1] ?? '';
+    // Die Linien unter „Interview geführt von“ usw. zeichnet var(--fg); im dunklen Modus wäre das fast weiß.
+    expect(q).toMatch(/\.blatt-kontakt dd \{[^}]*border-bottom: 1px solid var\(--fg\)/);
+    for (const d of ['--fg: #000', '--bg: #fff', '--muted: #000', '--border: #000', 'color: #000', 'background: #fff']) expect(blatt, d).toContain(`${d};`);
+  });
+
+  it('Begleiter und Tageskarte kündigen den Interview-Editor nicht mehr an', () => {
+    const texte = JSON.stringify([NOTIZEN['/innolab/tag-1/abschluss'], TAG_1.material]);
+    expect(texte).not.toMatch(/Teams-Post|Teams-Ankündigung|sobald der Editor|noch nicht gibt/);
+    expect(texte).toContain('Datenschutzhinweis');
+  });
+
+  it('„Claude verbinden“ nennt die Zahl der Werkzeuge aus MCP_WERKZEUGE, nicht „vier“', () => {
+    const q = seite('werkstatt/claude');
+    expect(q).toContain('${Object.keys(MCP_WERKZEUGE).length} Werkzeuge');
+    expect(q).not.toContain('Die vier Werkzeuge');
   });
 });

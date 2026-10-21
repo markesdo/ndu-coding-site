@@ -1,0 +1,76 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Callout from '../../../components/Callout.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+import { Printer } from '@lucide/astro';
+---
+{/*
+  Einseitiger Hinweis für Interviewte (Spec §3.8): zeigen am Handy oder ausdrucken. Gedruckt wird nur das Blatt.
+  Die Interviewten sind Fremde aus der Zielgruppe, darum „Sie“; die Hinweise für Studierende darunter bleiben bei „ihr“.
+*/}
+<Layout title="Datenschutz für Interviewte">
+  <div class="nicht-drucken">
+    <span class="eyebrow">Innolab · Werkstatt</span>
+    <h1>Datenschutzhinweis für Interviewte</h1>
+    <p class="lead">Zeigt dieses Blatt vor dem Interview am Handy oder druckt es aus. Erst wenn die Person einverstanden ist, nehmt ihr auf und schreibt mit.</p>
+    <p><button type="button" class="btn primary mit-icon" data-drucken><Printer size={18} aria-hidden="true" /> Blatt drucken</button></p>
+  </div>
+
+  <article class="blatt" aria-labelledby="blatt-titel">
+    <h2 id="blatt-titel">Informationen zu diesem Interview</h2>
+    <p>Danke, dass Sie sich Zeit nehmen. Ich studiere im Kurs Innolab (MSc Management by Innovation, NDU) und möchte verstehen, wie Sie eine Situation aus Ihrem Alltag erleben. Es gibt keine falschen Antworten. Die Teilnahme ist freiwillig.</p>
+
+    <h3>Aufnahme nur mit Ihrer Einwilligung</h3>
+    <p>Ich nehme das Gespräch nur auf, wenn Sie zustimmen. Die Aufnahme und meine Mitschrift mit Ihrem Namen bleiben bei mir und werden nicht weitergegeben oder hochgeladen.</p>
+
+    <h3>Pseudonym statt Name</h3>
+    <p>Für den Kurs schreibe ich Notizen und wörtliche Zitate ohne Ihren Namen auf. Sie bekommen ein Pseudonym wie „Pendlerin, Zug 7:42“. Arbeitgeber, Adresse, Fotos und andere Angaben, an denen man Sie erkennen könnte, lasse ich weg.</p>
+
+    <h3>Wo die Notizen liegen</h3>
+    <p>Die pseudonymisierten Notizen speichere ich in meiner Kursmappe, einem privaten Repository bei GitHub (USA). Lesen können es nur ich und die Lehrenden des Kurses. Eine Kurzfassung mit Pseudonym bespreche ich mit meinem Kursteam auf einem gemeinsamen Whiteboard (Miro).</p>
+
+    <h3>Auswertung mit KI</h3>
+    <p>Die pseudonymisierten Notizen werte ich auch mit KI-Werkzeugen aus, etwa Claude (Anthropic, USA). Dabei ist das Training der Modelle mit diesen Daten ausgeschaltet. Die Aufnahme gebe ich keiner KI.</p>
+
+    <h3>Widerruf</h3>
+    <p>Sie können Ihre Einwilligung jederzeit ohne Begründung widerrufen, auch nach dem Gespräch. Eine kurze Nachricht an mich genügt. Ich lösche dann die Aufnahme und entferne Ihre Notizen und Zitate aus der Kursmappe, auch aus deren Versionsgeschichte.</p>
+
+    <dl class="blatt-kontakt">
+      <dt>Interview geführt von</dt><dd></dd>
+      <dt>Kontakt für Fragen und Widerruf</dt><dd></dd>
+      <dt>Datum</dt><dd></dd>
+    </dl>
+  </article>
+
+  <div class="nicht-drucken">
+    <Callout type="warn" title="Für euch: was das Blatt verspricht">
+      <p>Ihr haltet ein, was hier steht. Die Aufnahme und Rohnotizen mit Namen bleiben auf eurem Gerät. In die <a href="/innolab/mappe">Werkstatt</a> kommt nur die pseudonymisierte Fassung; der Editor weist auf Namen, E-Mail-Adressen und Telefonnummern hin, die ihr übersehen habt. Widerruft jemand, löscht ihr das Interview in der Werkstatt und schreibt Markus, damit es auch aus der Versionsgeschichte eures Mappe-Repos verschwindet.</p>
+    </Callout>
+  </div>
+
+  <FooterNav />
+</Layout>
+
+<script>
+  document.querySelector('[data-drucken]')?.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .blatt { margin: 2rem 0; padding: 1.5rem 1.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+  .blatt h2 { margin-top: 0; }
+  .blatt h3 { margin: 1.1rem 0 .25rem; font-size: 1.05rem; }
+  .blatt p { margin: 0; }
+  .blatt-kontakt { display: grid; grid-template-columns: max-content 1fr; gap: .9rem 1rem; margin: 1.5rem 0 0; }
+  .blatt-kontakt dt { font-weight: 600; }
+  .blatt-kontakt dd { margin: 0; border-bottom: 1px solid var(--fg); min-height: 1.4em; }
+  @media (max-width: 520px) {
+    .blatt { padding: 1rem; }
+    .blatt-kontakt { grid-template-columns: 1fr; gap: .35rem; }
+  }
+  @media print {
+    .nicht-drucken { display: none !important; }
+    /* Auch aus dem dunklen Modus schwarz auf weiß, sonst druckt helle Schrift und die Unterschriftslinien verschwinden. */
+    .blatt { --fg: #000; --bg: #fff; --muted: #000; --border: #000; color: #000; background: #fff; margin: 0; padding: 0; border: 0; font-size: 10.5pt; line-height: 1.4; }
+    .blatt h3 { margin-top: .7rem; }
+  }
+</style>

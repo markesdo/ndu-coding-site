@@ -2,6 +2,7 @@
 // Interview; die Skizze der Geschichte bleibt auf Miro. Nur pseudonymisiert – Rohnotizen gehören nicht hierher.
 import { useId } from 'react';
 import { tagInWien } from '../../../lib/kurswahl.js';
+import { namenHinweis } from '../../eigennamen.js';
 import type { Chance, Interviews } from '../../schemas/index.js';
 import { rendern } from '../../render/index.js';
 import EditorHuelle from '../EditorHuelle.js';
@@ -77,11 +78,11 @@ export default function InterviewsEditor() {
                   <>
                     <p className="wk-hilfe">ID: <strong>{iv.id}</strong></p>
                     {f('id') && <p className="wk-fehler">{f('id')}</p>}
-                    <Textfeld label="Pseudonym" wert={iv.pseudonym} onChange={(pseudonym) => s({ ...iv, pseudonym })} fehler={f('pseudonym')} hilfe="Etwas, das dich an die Person erinnert, zum Beispiel „Pendlerin, Zug 7:42“ – kein Name." />
+                    <Textfeld label="Pseudonym" wert={iv.pseudonym} onChange={(pseudonym) => s({ ...iv, pseudonym })} fehler={f('pseudonym')} hinweis={namenHinweis(iv.pseudonym)} hilfe="Etwas, das dich an die Person erinnert, zum Beispiel „Pendlerin, Zug 7:42“ – kein Name." />
                     <Textfeld label="Datum" wert={iv.datum} onChange={(datum) => s({ ...iv, datum })} fehler={f('datum')} hilfe="JJJJ-MM-TT, zum Beispiel 2026-10-23." />
                     <Einwilligung wert={iv.einwilligung} onChange={(einwilligung) => s({ ...iv, einwilligung })} fehler={f('einwilligung')} />
-                    <Textfeld label="Einprägsames Zitat" wert={iv.zitat} onChange={(zitat) => s({ ...iv, zitat })} fehler={f('zitat')} hilfe="Ein Satz, wörtlich, der dich an diese Geschichte erinnert." />
-                    <Textfeld label="Kurzinfos" mehrzeilig zeilen={2} wert={iv.kurzinfos} onChange={(kurzinfos) => s({ ...iv, kurzinfos })} fehler={f('kurzinfos')} hilfe="Was zeigt, wie diese Person zu den anderen passt – ohne sie erkennbar zu machen." />
+                    <Textfeld label="Einprägsames Zitat" wert={iv.zitat} onChange={(zitat) => s({ ...iv, zitat })} fehler={f('zitat')} hinweis={namenHinweis(iv.zitat)} hilfe="Ein Satz, wörtlich, der dich an diese Geschichte erinnert." />
+                    <Textfeld label="Kurzinfos" mehrzeilig zeilen={2} wert={iv.kurzinfos} onChange={(kurzinfos) => s({ ...iv, kurzinfos })} fehler={f('kurzinfos')} hinweis={namenHinweis(iv.kurzinfos)} hilfe="Was zeigt, wie diese Person zu den anderen passt – ohne sie erkennbar zu machen." />
                     <Liste<string>
                       label="Einsichten"
                       einzahl="Einsicht"
@@ -89,7 +90,7 @@ export default function InterviewsEditor() {
                       onChange={(einsichten) => s({ ...iv, einsichten })}
                       neu={() => ''}
                       fehler={f('einsichten')}
-                      zeile={(e, se, j) => <Textfeld label={`Einsicht ${j + 1}`} wert={e} onChange={se} fehler={f(`einsichten.${j}`)} hilfe={j === 0 ? 'Auffälliges Verhalten, das (noch) kein Bedürfnis ist.' : undefined} />}
+                      zeile={(e, se, j) => <Textfeld label={`Einsicht ${j + 1}`} wert={e} onChange={se} fehler={f(`einsichten.${j}`)} hinweis={namenHinweis(e)} hilfe={j === 0 ? 'Auffälliges Verhalten, das (noch) kein Bedürfnis ist.' : undefined} />}
                     />
                     <Liste<Chance>
                       label="Chancen"
@@ -100,12 +101,12 @@ export default function InterviewsEditor() {
                       fehler={f('chancen')}
                       zeile={(c, sc, j) => (
                         <>
-                          <Textfeld label={`Chance ${j + 1}`} mehrzeilig zeilen={2} wert={c.text} onChange={(text) => sc({ ...c, text })} fehler={f(`chancen.${j}.text`)} hilfe={j === 0 ? 'Bedürfnis, Schmerzpunkt oder Wunsch in den Worten der Person – keine Lösung. Wünscht sie sich eine Funktion: „Was würde dir das bringen?“' : undefined} />
+                          <Textfeld label={`Chance ${j + 1}`} mehrzeilig zeilen={2} wert={c.text} onChange={(text) => sc({ ...c, text })} fehler={f(`chancen.${j}.text`)} hinweis={namenHinweis(c.text)} hilfe={j === 0 ? 'Bedürfnis, Schmerzpunkt oder Wunsch in den Worten der Person – keine Lösung. Wünscht sie sich eine Funktion: „Was würde dir das bringen?“' : undefined} />
                           <VerweisAuswahl label="Belege (Zitat-IDs)" werte={c.belege} onChange={(belege) => sc({ ...c, belege })} vorschlaege={zitatVorschlaege} fehler={f(`chancen.${j}.belege`) ?? c.belege.map((_, k) => f(`chancen.${j}.belege.${k}`)).find(Boolean)} />
                         </>
                       )}
                     />
-                    <Textfeld label="Notizen" mehrzeilig zeilen={6} wert={iv.notizen} onChange={(notizen) => s({ ...iv, notizen })} fehler={f('notizen')} hilfe="Pseudonymisiert: Was ist passiert, in welcher Reihenfolge?" />
+                    <Textfeld label="Notizen" mehrzeilig zeilen={6} wert={iv.notizen} onChange={(notizen) => s({ ...iv, notizen })} fehler={f('notizen')} hinweis={namenHinweis(iv.notizen)} hilfe="Pseudonymisiert: Was ist passiert, in welcher Reihenfolge?" />
                     <Liste<{ id: string; text: string }>
                       label="Zitate"
                       einzahl="Zitat"
@@ -116,7 +117,7 @@ export default function InterviewsEditor() {
                       zeile={(z, sz, j) => (
                         <>
                           <p className="wk-hilfe">ID: <strong>{z.id}</strong></p>
-                          <Textfeld label={`Zitat ${j + 1}`} mehrzeilig zeilen={2} wert={z.text} onChange={(text) => sz({ ...z, text })} fehler={f(`zitate.${j}.text`) ?? f(`zitate.${j}.id`)} hilfe={j === 0 ? 'Wörtlich. Auf die ID verweisen Chancen und später der Baum.' : undefined} />
+                          <Textfeld label={`Zitat ${j + 1}`} mehrzeilig zeilen={2} wert={z.text} onChange={(text) => sz({ ...z, text })} fehler={f(`zitate.${j}.text`) ?? f(`zitate.${j}.id`)} hinweis={namenHinweis(z.text)} hilfe={j === 0 ? 'Wörtlich. Auf die ID verweisen Chancen und später der Baum.' : undefined} />
                         </>
                       )}
                     />

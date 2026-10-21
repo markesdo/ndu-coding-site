@@ -105,6 +105,6 @@ export const TAG_1: TagKarte = {
     { id: 'alter-brief', wann: 'Problem-Rahmen', was: 'Wer aus dem Coding-Kurs kommt, hat den alten Brief griffbereit' },
     { id: 'annahmen-stickies', wann: 'Annahmen-Map', was: 'Stickies in vier Farben im Frame T1 · 3 (gelb, blau, grün, lila)' },
     { id: 'interview-probe', wann: 'Interviewleitfaden', was: 'Prompt „Probe mit Claude“ griffbereit; du spielst in den drei Live-Runden die schwierige Person' },
-    { id: 'abschluss-teams', wann: 'Abschluss', was: 'Teams-Post zur Ankündigung des Interview-Editors vorbereitet' },
+    { id: 'abschluss-interviews', wann: 'Abschluss', was: 'Interview-Editor auf der Abschluss-Seite geöffnet; Datenschutzhinweis für Interviewte (Werkstatt) zum Zeigen bereit' },
   ],
 };

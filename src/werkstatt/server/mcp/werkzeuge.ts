@@ -1,4 +1,4 @@
-// Die vier Lesewerkzeuge des Connectors (Phase 1). Die Mappe ergibt sich immer aus den Token-Claims (githubId,
+// Die Lesewerkzeuge des Connectors (Phase 1 und 1b). Die Mappe ergibt sich immer aus den Token-Claims (githubId,
 // kohorte, rolle); kein Argument nennt ein Repo oder eine Person. Beschreibungen tragen das Nötige selbst, weil
 // ChatGPT weder Prompts noch Ressourcen zeigt.
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { METHODEN, type Methode } from '../../../components/methoden.js';
 import { rendern } from '../../render/index.js';
 import { ARTEFAKT_NAMEN, ARTEFAKTE, artefaktParsen, type ArtefaktName } from '../../schemas/index.js';
+import { BEFUND_ARTEN, verknuepfungenPruefen, verknuepfungenText, type MappeDaten } from '../../verknuepfungen.js';
 import { MCP_WERKZEUGE, type MappeStand } from '../../vertrag.js';
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme } from '../antwort.js';
@@ -72,6 +73,25 @@ const PRUEFEN = {
     markdown: z.string().describe('Das Artefakt als Markdown; leer, wenn es noch nicht ausgefüllt ist.'),
     pruefpunkte: z.array(z.object({ id: z.string(), text: z.string() })),
     anleitung: z.string().describe('So antwortest du auf diese Prüfung.'),
+  },
+  annotations: LESEN,
+};
+
+const VERKNUEPFUNGEN = {
+  title: 'Verknüpfungen prüfen',
+  description: `Prüft ohne KI, ob die Verweise der eigenen Werkstatt-Mappe zusammenpassen, über Produkt-Brief, Entscheidungslog, Annahmen-Map und Interviews: unbekannte IDs (z. B. ein Beleg I2-3, den es in den Interviews nicht gibt, oder D4, A3 im Text), fehlende Belege (Belegstufe „gesagt“, „erzählt“ oder „getan“ ohne Beleg, bei Annahmen mit „gesagt“ oder „erzählt“ ohne Interview oder Zitat; Chance ohne Zitat) und verwaiste Interviews (von keinem Beleg genannt). Ohne Argumente. Das Ergebnis ist eine Liste von Befunden; geh sie mit der Person durch, frag nach, wo der Beleg liegt, und formuliere keinen Artefakttext. Ändern kann die Person nur selbst in der Werkstatt. Nur lesen.`,
+  inputSchema: {},
+  outputSchema: {
+    befunde: z.array(z.object({
+      art: z.enum(BEFUND_ARTEN),
+      artefakt: ARTEFAKT_ENUM,
+      ort: z.string().describe('ID der Zeile (D4) oder Feld (Brief · Offene Frage 2, I2 · Chance 1).'),
+      id: z.string().optional().describe('Die unbekannte ID bzw. das verwaiste Interview.'),
+      text: z.string(),
+    })),
+    geprueft: z.array(ARTEFAKT_ENUM),
+    fehlen: z.array(ARTEFAKT_ENUM).describe('Noch nicht gespeichert.'),
+    unlesbar: z.array(ARTEFAKT_ENUM).describe('Passt nicht zum Format der Werkstatt; dort neu speichern.'),
   },
   annotations: LESEN,
 };
@@ -144,19 +164,25 @@ async function eigeneMappe(k: WerkzeugKontext): Promise<string> {
   return repo;
 }
 
-async function artefaktHolen(k: WerkzeugKontext, name: ArtefaktName) {
-  const repo = await eigeneMappe(k);
+// Geparste Daten, null = noch nicht gespeichert, 'unlesbar' = kaputtes JSON oder falsches Format.
+async function artefaktLaden<N extends ArtefaktName>(k: WerkzeugKontext, repo: string, name: N) {
   let daten: unknown;
   try {
     ({ daten } = await k.abh.speicher.lesen(repo, name));
   } catch (e) {
-    if (e instanceof DateiUnlesbar) throw new Hinweis(unpassendeDatei(k, name));
+    if (e instanceof DateiUnlesbar) return 'unlesbar' as const;
     throw e;
   }
   if (daten === null) return null;
   const p = artefaktParsen(name, daten);
-  if (!p.ok) throw new Hinweis(unpassendeDatei(k, name));
-  return { daten: p.daten as Record<string, unknown>, markdown: rendern(name, p.daten) };
+  return p.ok ? p.daten : ('unlesbar' as const);
+}
+
+async function artefaktHolen(k: WerkzeugKontext, name: ArtefaktName) {
+  const daten = await artefaktLaden(k, await eigeneMappe(k), name);
+  if (daten === null) return null;
+  if (daten === 'unlesbar') throw new Hinweis(unpassendeDatei(k, name));
+  return { daten: daten as Record<string, unknown>, markdown: rendern(name, daten) };
 }
 
 function methodeDaten(k: WerkzeugKontext, m: Methode) {
@@ -229,6 +255,21 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         anleitung,
       ].join('\n');
       return textErgebnis(text, { artefakt, titel, vorhanden: a !== null, markdown: a?.markdown ?? '', pruefpunkte, anleitung });
+    }),
+  );
+  server.registerTool(MCP_WERKZEUGE.verknuepfungenPruefen, VERKNUEPFUNGEN, () =>
+    sicher(k, async () => {
+      const repo = await eigeneMappe(k);
+      const [brief, entscheidungen, leitfaden, annahmen, interviews] = await Promise.all([
+        artefaktLaden(k, repo, 'brief'),
+        artefaktLaden(k, repo, 'entscheidungen'),
+        artefaktLaden(k, repo, 'leitfaden'),
+        artefaktLaden(k, repo, 'annahmen'),
+        artefaktLaden(k, repo, 'interviews'),
+      ]);
+      const mappe: MappeDaten = { brief, entscheidungen, leitfaden, annahmen, interviews };
+      const v = verknuepfungenPruefen(mappe);
+      return textErgebnis(`${verknuepfungenText(v)}\n\nÄndern kann die Person nur selbst in der Werkstatt: ${mappeUrl(k)}`, { ...v });
     }),
   );
 }

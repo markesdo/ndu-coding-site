@@ -106,6 +106,7 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
     { h: 'Werkstatt', items: [
       { href: '/innolab/mappe', t: 'Meine Mappe' },
       { href: '/innolab/werkstatt/claude', t: 'Claude verbinden' },
+      { href: '/innolab/werkstatt/interview-datenschutz', t: 'Datenschutz für Interviewte' },
     ]},
   ],
 };

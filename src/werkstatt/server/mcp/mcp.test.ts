@@ -5,6 +5,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { METHODEN } from '../../../components/methoden';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
 import briefBeispiel from '../../beispiele/brief.json';
+import entscheidungenBeispiel from '../../beispiele/entscheidungen.json';
+import interviewsBeispiel from '../../beispiele/interviews.json';
 import { kohorteTest } from '../../kohorten/test';
 import { ApiAusnahme } from '../antwort';
 import { appErstellen } from '../app';
@@ -16,6 +18,8 @@ import { cookieName, sitzungErstellen } from '../sitzung';
 import { wirdEingerichtet } from '../speicher-fehler';
 import { MAX_ANFRAGE_BYTES } from './server';
 import type { Cache } from '../typen';
+import { MCP_WERKZEUGE } from '../../vertrag';
+import { BEFUND_ARTEN } from '../../verknuepfungen';
 
 const BASIS = 'http://localhost:4321';
 const MCP = `${BASIS}/api/werkstatt/mcp`;
@@ -234,13 +238,15 @@ describe('Werkzeuge', () => {
     expect(anweisung).toMatch(/wörtlich/);
     expect(anweisung).toContain(`${BASIS}/innolab/mappe`);
     expect(anweisung).not.toMatch(/\bSie\b/);
+    expect(anweisung).toContain(MCP_WERKZEUGE.verknuepfungenPruefen);
   });
 
-  it('tools/list: genau die vier Namen, alle readOnlyHint, deutsche Beschreibung', async () => {
+  it('tools/list: genau die fünf Namen, alle readOnlyHint, deutsche Beschreibung', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
     const { tools } = await c.listTools();
-    expect(tools.map((t) => t.name).sort()).toStrictEqual(['artefakt_lesen', 'artefakt_pruefen', 'mappe_uebersicht', 'methode_erklaeren']);
+    expect(tools.map((t) => t.name).sort()).toStrictEqual(['artefakt_lesen', 'artefakt_pruefen', 'mappe_uebersicht', 'methode_erklaeren', 'verknuepfungen_pruefen']);
+    expect(Object.values(MCP_WERKZEUGE).sort()).toStrictEqual(tools.map((t) => t.name).sort());
     for (const t of tools) {
       expect(t.annotations?.readOnlyHint, t.name).toBe(true);
       expect(t.description?.length ?? 0, t.name).toBeGreaterThan(60);
@@ -253,6 +259,12 @@ describe('Werkzeuge', () => {
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
     expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'markdown', 'pruefpunkte', 'titel', 'vorhanden']);
+    // Die Arten der Befunde kommen aus verknuepfungen.ts, nicht aus einer zweiten Liste.
+    const verkn = tools.find((t) => t.name === MCP_WERKZEUGE.verknuepfungenPruefen)!;
+    const befund = (verkn.outputSchema?.properties as { befunde: { items: { properties: { art: { enum: string[] } } } } }).befunde;
+    expect(befund.items.properties.art.enum).toStrictEqual([...BEFUND_ARTEN]);
+    // Beschreibung und Prüfung stimmen überein: „getan“ ohne Beleg ist ein Befund.
+    expect(verkn.description).toContain('„getan“ ohne Beleg');
     expect(pruefen.description).toMatch(/höchstens drei Befunde/);
   });
 
@@ -394,6 +406,7 @@ describe('Werkzeuge', () => {
       ['mappe_uebersicht', {}],
       ['artefakt_lesen', { artefakt: 'annahmen' }],
       ['artefakt_pruefen', { artefakt: 'annahmen' }],
+      ['verknuepfungen_pruefen', {}],
     ] as const) {
       const r = await c.callTool({ name, arguments: args });
       expect(text(r), name).toMatch(/Lehrende-Ansicht/);
@@ -458,6 +471,7 @@ describe('Runde R22', () => {
       ['mappe_uebersicht', {}],
       ['artefakt_lesen', { artefakt: 'annahmen' }],
       ['artefakt_pruefen', { artefakt: 'annahmen' }],
+      ['verknuepfungen_pruefen', {}],
     ] as const) {
       const r = await c.callTool({ name, arguments: args });
       expect(r.isError, name).toBe(true);
@@ -581,9 +595,100 @@ describe('Runde R22', () => {
     const mit = await post(h, `${MCP}/`, { Authorization: `Bearer ${token}` });
     expect(mit.status).toBe(200);
     const namen = ((await mit.json()) as { result: { tools: { name: string }[] } }).result.tools.map((t) => t.name);
-    expect(namen).toHaveLength(4);
+    expect(namen).toHaveLength(Object.keys(MCP_WERKZEUGE).length);
     const res = await h.anfrage('/api/werkstatt/mcp/resource');
     expect(await res.json()).toMatchObject({ resource: MCP });
     expect((await h.anfrage(`${MCP}/anderes`, { method: 'POST' })).status).toBe(404);
+  });
+});
+
+const speichernJson = (h: Aufbau, repo: string, name: 'entscheidungen' | 'interviews', daten: unknown) =>
+  h.speicher.speichern(repo, name, { [`mappe/${name}.json`]: `${JSON.stringify(daten, null, 2)}\n` }, null, AUTOR, name);
+
+describe('Interviews und Verknüpfungen (Phase 1b)', () => {
+  it('artefakt_lesen(interviews): nur Felder des Schemas, ein zusätzliches Namensfeld kommt nie heraus', async () => {
+    const h = await aufbau();
+    const mitName = structuredClone(interviewsBeispiel) as typeof interviewsBeispiel & { interviews: Record<string, unknown>[] };
+    // Jemand trägt direkt auf GitHub einen Klarnamen ein: das Schema kennt das Feld nicht, es wird verworfen.
+    mitName.interviews[1].name = 'Maria Klarname';
+    await speichernJson(h, 'test-sofie', 'interviews', mitName);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'interviews' } });
+    expect(r.isError).toBeFalsy();
+    expect(r.structuredContent).toStrictEqual(interviewsBeispiel);
+    expect(JSON.stringify(r)).not.toContain('Klarname');
+    expect(text(r)).toContain('## I2 · Pendlerin, Zug 7:42');
+  });
+
+  it('artefakt_lesen(interviews): Interview ohne Pseudonym -> keine Notizen, nur der Hinweis zum Neuspeichern', async () => {
+    const h = await aufbau();
+    const ohne = structuredClone(interviewsBeispiel);
+    ohne.interviews[0].pseudonym = '';
+    await speichernJson(h, 'test-sofie', 'interviews', ohne);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'interviews' } });
+    expect(r.isError).toBe(true);
+    expect(text(r)).toMatch(/passt nicht zum Format/);
+    expect(JSON.stringify(r)).not.toContain(interviewsBeispiel.interviews[0].notizen.slice(0, 20));
+    expect(JSON.stringify(r)).not.toContain(interviewsBeispiel.interviews[1].notizen.slice(0, 20));
+  });
+
+  it('verknuepfungen_pruefen: Beleg-IDs aus Entscheidungslog und Annahmen-Map werden gegen die Interviews aufgelöst', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'entscheidungen', entscheidungenBeispiel);
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
+    expect(r.isError).toBeFalsy();
+    // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
+    // Einzige Lücke: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle.
+    expect(r.structuredContent).toStrictEqual({
+      befunde: ['A2', 'A4'].map((id) => ({
+        art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle als Beleg. Wo liegt das beobachtete Verhalten?`,
+      })),
+      geprueft: ['entscheidungen', 'annahmen', 'interviews'],
+      fehlen: ['brief', 'leitfaden'],
+      unlesbar: [],
+    });
+    expect(text(r)).toContain('## Fehlende Belege (2)');
+    expect(text(r)).not.toContain('## Unbekannte IDs');
+    expect(text(r)).toContain('Ändern kann die Person nur selbst');
+    expect(text(r)).toContain(`${BASIS}/innolab/mappe`);
+  });
+
+  it('verknuepfungen_pruefen: unbekanntes Zitat I2-9 im Entscheidungslog wird gemeldet', async () => {
+    const h = await aufbau();
+    const e = structuredClone(entscheidungenBeispiel);
+    e.entscheidungen[3].belegIds = ['I2-4', 'I2-9'];
+    await speichernJson(h, 'test-sofie', 'entscheidungen', e);
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
+    const befunde = (r.structuredContent as { befunde: { art: string; id?: string }[] }).befunde;
+    expect(befunde.filter((b) => b.art === 'unbekannte-id')).toStrictEqual([
+      { art: 'unbekannte-id', artefakt: 'entscheidungen', ort: 'D4', id: 'I2-9', text: 'D4 nennt I2-9 als Beleg. I2 hat kein Zitat I2-9.' },
+    ]);
+    expect(text(r)).toContain('## Unbekannte IDs (1)');
+  });
+
+  it('verknuepfungen_pruefen: unlesbare Datei wird gelistet statt das ganze Werkzeug abzubrechen; liest nur die eigene Mappe', async () => {
+    const h = await aufbau();
+    await h.speicher.speichern('test-sofie', 'interviews', { 'mappe/interviews.json': '{ kaputt' }, null, AUTOR, 'kaputt');
+    const lesen = vi.spyOn(h.speicher, 'lesen');
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: { repo: 'test-jonas' } });
+    expect(r.isError).toBeFalsy();
+    expect((r.structuredContent as { unlesbar: string[] }).unlesbar).toStrictEqual(['interviews']);
+    expect(text(r)).toMatch(/Nicht lesbar.*Interviews und Snapshots/);
+    expect(new Set(lesen.mock.calls.map((a) => a[0]))).toStrictEqual(new Set(['test-sofie']));
+  });
+
+  it('verknuepfungen_pruefen: GitHub-Ausfall -> allgemeiner Satz, kein Teilergebnis', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    vi.spyOn(h.speicher, 'lesen').mockRejectedValue(new GithubAusnahme(500));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
+    expect(r.isError).toBe(true);
+    expect(text(r)).toMatch(/GitHub ist gerade nicht erreichbar/);
   });
 });

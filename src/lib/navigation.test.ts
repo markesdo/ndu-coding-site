@@ -42,11 +42,12 @@ describe('NAV', () => {
 });
 
 describe('Werkstatt im Innolab-Menü', () => {
-  it('führt zu „Meine Mappe“ und „Claude verbinden“, nach den Kurstagen (das Blättern durch Tag 1–7 bleibt gleich)', () => {
+  it('führt zu „Meine Mappe“, „Claude verbinden“ und dem Datenschutzhinweis, nach den Kurstagen (das Blättern durch Tag 1–7 bleibt gleich)', () => {
     const gruppe = NAV.innolab.find((g) => g.h === 'Werkstatt');
     expect(gruppe?.items).toStrictEqual([
       { href: '/innolab/mappe', t: 'Meine Mappe' },
       { href: '/innolab/werkstatt/claude', t: 'Claude verbinden' },
+      { href: '/innolab/werkstatt/interview-datenschutz', t: 'Datenschutz für Interviewte' },
     ]);
     expect(NAV.innolab.at(-1)).toBe(gruppe);
   });
