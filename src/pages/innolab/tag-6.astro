@@ -8,7 +8,7 @@ import FooterNav from '../../components/FooterNav.astro';
 <Layout title="Tag 6 · Bauen">
   <span class="eyebrow">Innolab · Tag 6 · Samstag, 19. Dezember 2026 · 09:00–13:00 · online in Teams</span>
   <h1>Tag 6 · Bauen</h1>
-  <p class="lead">Online, in einer Teams-Besprechung; die Einladung kommt per E-Mail. Der letzte Bautag: Sprint 2 fertig, abgenommen und live. Was heute um 13 Uhr läuft, ist euer Prototyp.</p>
+  <p class="lead">Online, in einer Teams-Besprechung; die Einladung kommt per E-Mail. Der letzte Bautag: Sprint 2 fertig, live, mit Review und Retro abgeschlossen. Was heute um 13 Uhr läuft, ist euer Prototyp.</p>
   <Orientierung seite="innolab/tag-6" />
 
   <h2 id="ablauf">Ablauf</h2>
@@ -17,7 +17,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <Block time="09:15–10:45" type="uebung" title="Bauen · Sprint 2" href="#bauen">Issues, Belege, Pull Requests.</Block>
     <Block time="10:45–11:00" type="pause" title="Pause" />
     <Block time="11:00–12:15" type="uebung" title="Bauen · Sprint 2" href="#bauen">Letzte Issues, Reviews über Kreuz.</Block>
-    <Block time="12:15–12:45" type="uebung" title="Abnahme" href="#abnahme">Die Product Owner nehmen im Browser ab, am Handy.</Block>
+    <Block time="12:15–12:45" type="uebung" title="Review & Retro Sprint 2" href="#review-retro">Ziel erreicht? Inkrement am Handy, Messung; hat die Maßnahme gewirkt?</Block>
     <Block time="12:45–13:00" type="plenum" title="Abschluss" href="#abschluss">Was bis zur Präsentation passiert.</Block>
   </div>
 
@@ -25,14 +25,15 @@ import FooterNav from '../../components/FooterNav.astro';
   <h2 id="bauen">Bauen</h2>
   <p>Ihr baut jede*r am eigenen Laptop und bleibt dabei in der Teams-Besprechung, Mikrofon stumm. Nutzt den Vormittag für das, was allein zu Hause schwer geht: Issues aus fremden Produkten, bei denen ihr den Product Owner sofort fragen könnt – Mikrofon an, Bildschirm teilen –, und Pull Requests, die jemand gleich prüft. Die Regeln sind dieselben wie in Sprint 1 (<a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>), dazu die Maßnahme aus eurer Retro. Wird ein Issue bis 12:15 nicht fertig, nehmt es lieber zurück, als halb Gebautes live zu lassen.</p>
 
-  <h2 id="abnahme">Abnahme</h2>
-  <p>Jeder Product Owner geht die Issues von Sprint 2 auf der Produktions-URL am Handy durch, Kriterium für Kriterium, und setzt Done – oder nicht. Die anderen sehen zu: Teilt dazu den Bildschirm des Handys in Teams, so wie an <a href="/innolab/tag-7#technik">Tag 7</a> – eine gute Probe dafür. In <code>docs/SPRINTS.md</code> kommt unter Sprint 2, was fertig ist und was offen bleibt. Was offen bleibt, gehört in den Pitch: als nächster Schritt.</p>
+  <h2 id="review-retro">Review &amp; Retro Sprint 2</h2>
+  <p><strong>Review (20 Minuten):</strong> Jeder Product Owner sagt, ob das Sprint-Ziel erreicht ist, und geht die Issues von Sprint 2 auf der Produktions-URL am Handy durch, gegen die Definition of Done – was sie nicht erfüllt, steht wieder im Backlog. Dazu die Messung: wie viele Ereignisse, von wie vielen Personen, seit wann. Die anderen sehen zu und fragen nach: Teilt dazu den Bildschirm des Handys in Teams, so wie an <a href="/innolab/tag-7#technik">Tag 7</a> – eine gute Probe dafür. Was offen bleibt, gehört in den Pitch: als nächster Schritt.</p>
+  <p><strong>Retro (10 Minuten):</strong> Hat die Maßnahme aus der Retro von Sprint 1 gewirkt – und woran seht ihr es? Eine Zeile je Produkt in <code>docs/SPRINTS.md</code> (<a href="/innolab/methoden/sprint#sprint-2">Sprint</a>).</p>
 
   <h2 id="abschluss">Abschluss & bis zur Präsentation</h2>
   <p>Jede*r sagt in einem Satz, wie nah das eigene Produkt am Sprint-Ziel ist. Damit ist der Prototyp fertig. Bis zur Präsentation baut ihr nichts mehr, ihr bereitet den Pitch vor. Euer Pro-Monat läuft noch bis etwa 21. Dezember – was ihr dafür mit Claude machen wollt, macht ihr in diesen Tagen. Wer danach weiterbauen will, braucht ein eigenes Abo; für den Kurs ist das nicht nötig. Bis zur Präsentation gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
   <Checklist id="il-tag6-abnahme" items={[
-    'Sprint 2 abgenommen, jedes Issue nach der Definition of Done',
-    'Sprint 2 in <code>docs/SPRINTS.md</code>: fertig, offen, Messung',
+    'Review und Retro von Sprint 2 gelaufen, jedes Issue nach der Definition of Done geprüft',
+    'Sprint 2 in <code>docs/SPRINTS.md</code>: Ziel erreicht, fertig, offen, Messung, ob die Maßnahme gewirkt hat',
     'Committet und gepusht, Produktions-URL läuft am Handy',
   ]} />
   <p>Bis zur Präsentation:</p>

@@ -6,112 +6,424 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import Fluss from '../../../components/Fluss.astro';
+import Aufloesung from '../../../components/Aufloesung.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import { Eye, MessagesSquare, RefreshCw, Target } from '@lucide/astro';
+
+const GUIDE = 'Ken Schwaber & Jeff Sutherland, „The Scrum Guide“ (2020)';
+const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
+const KRIVITSKY = 'Alexey Krivitsky, „lego4scrum“, deutsche Ausgabe (2023)';
+const MANIFEST = 'Manifesto for Agile Software Development (2001), agilemanifesto.org';
+
+// Lego4Scrum 10:30–11:50 laut tag-4.astro: Review 1 endet nach Minute 43 (11:13), die Nachbesprechung beginnt nach Minute 75 (11:45).
+const NACH_REVIEW_1 = '2026-11-28T11:13';
+const NACH_LEGO = '2026-11-28T11:45';
 ---
 <Layout title="Scrum im Team">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Scrum im Team</h1>
-  <p class="lead">Wie Produktteams in Unternehmen arbeiten – und wie ihr zu dritt an drei Produkten nach denselben Regeln arbeitet.</p>
+  <p class="lead">Wie Produktteams in Unternehmen arbeiten, einmal mit Lego durchgespielt – und wie ihr zu dritt drei Produkte im selben Takt baut.</p>
   <Orientierung seite="innolab/methoden/scrum" leiste={false} />
   <MethodenKarte slug="scrum" />
 
-  <h2 id="agil">Warum agil</h2>
-  <p>Im klassischen <strong>Wasserfall</strong> folgen die Phasen aufeinander: Anforderungen, Entwurf, Umsetzung, Test, Betrieb. Jede beginnt erst, wenn die vorige fertig ist. Das funktioniert, wenn die Anforderungen am Anfang feststehen und sich nicht ändern. Bei neuen Produkten tun sie das nie – ihr habt es in drei Tagen selbst erlebt: Die Interviews haben eure riskanteste Annahme widerlegt.</p>
-  <p><strong>Agile</strong> Vorgehen liefern stattdessen in kurzen Zyklen etwas Nutzbares, holen Feedback und passen den Plan an. Das <em>Agile Manifest</em> (2001) stellt vier Werte voran:</p>
-  <ul>
-    <li><strong>Individuen und Interaktionen</strong> mehr als Prozesse und Werkzeuge</li>
-    <li><strong>Funktionierende Software</strong> mehr als umfassende Dokumentation</li>
-    <li><strong>Zusammenarbeit mit Kund*innen</strong> mehr als Vertragsverhandlung</li>
-    <li><strong>Reagieren auf Veränderung</strong> mehr als das Befolgen eines Plans</li>
-  </ul>
-  <p>Die Dinge rechts sind nicht wertlos – die links zählen mehr.</p>
+  <Folie>
+    <h2 id="agil">Warum nicht Wasserfall</h2>
+    <p class="folie-satz">Erst wenn ihr die Software seht, wisst ihr, wo ihr steht.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/jeffries/phasen.jpg" alt="Handgezeichnetes Diagramm: senkrecht Features, waagrecht die Zeit mit den Phasen A, D, C, T; eine grüne Linie bleibt lange flach und steigt erst spät steil zu einem Stern an der Deadline" quelle={`Ein Projekt in Phasen. ${JEFFRIES}, S. 20.`} />
+      <ul>
+        <li data-schritt><strong>Phasen nacheinander:</strong> Analyse, Entwurf, Code, Test.</li>
+        <li data-schritt><strong>Bis zum Test</strong> sieht niemand Software – Probleme kommen spät.</li>
+        <li data-schritt><strong>Das Produkt ist ein Monolith:</strong> alles oder nichts.</li>
+        <li data-schritt><strong>Stattdessen:</strong> von Anfang an mehrere Releases, Feature für Feature.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>„Many projects plan with activity-based phases: Analysis, Design, Coding, and finally Testing.“ Selbst wenn die Analyse pünktlich fertig ist, sagt das nichts über Entwurf und Code: „Until we begin to see the software, we can’t really tell how well we’re doing“ ({JEFFRIES}, S. 20). „The activity-based product is a monolith.“ Daraus folgt: „Instead, let’s plan for multiple releases from the very beginning“ (S. 22). Und: „A project that delivers feature by feature is more predictable“ (S. 23).</p>
+      <p>Ihr habt das an Tag 3 im Kleinen erlebt: E1 und die Usability-Tests mit dem Prototyp haben euch nach wenigen Tagen etwas gezeigt, worauf ein Wasserfall bis zur Testphase gewartet hätte. Was es bei euch war, habt ihr heute früh im Debrief gesagt.</p>
+    </div>
+  </Folie>
 
-  <h2 id="scrum">Scrum auf einer Seite</h2>
-  <p>Scrum ist das verbreitetste agile Rahmenwerk. Es ist absichtlich unvollständig: Es legt nur fest, was nötig ist, damit ein Team aus Erfahrung lernt – <strong>Transparenz</strong>, <strong>Überprüfung</strong>, <strong>Anpassung</strong>.</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th></th><th>Was</th><th>Wofür</th></tr></thead>
-      <tbody>
-        <tr><th>Product Owner</th><td>Eine Person pro Produkt</td><td>Produktziel, Reihenfolge im Product Backlog, Abnahme</td></tr>
-        <tr><th>Developers</th><td>Alle, die das Inkrement bauen</td><td>Sprint Backlog, Qualität nach der Definition of Done</td></tr>
-        <tr><th>Scrum Master</th><td>Eine Person im Team</td><td>Dass Scrum funktioniert: Hindernisse weg, Events gut und kurz</td></tr>
-        <tr><th>Sprint</th><td>Feste Länge, höchstens ein Monat</td><td>Container für alles andere</td></tr>
-        <tr><th>Sprint Planning</th><td>Am Anfang</td><td>Warum ist der Sprint wertvoll? Was schaffen wir? Wie?</td></tr>
-        <tr><th>Daily Scrum</th><td>Täglich, 15 Minuten</td><td>Fortschritt zum Sprint-Ziel, Plan anpassen</td></tr>
-        <tr><th>Sprint Review</th><td>Am Ende</td><td>Ergebnis zeigen, mit Stakeholdern über das Weitere entscheiden</td></tr>
-        <tr><th>Retrospektive</th><td>Ganz am Ende</td><td>Wie arbeiten wir besser?</td></tr>
-        <tr><th>Product Backlog</th><td>Geordnete Liste</td><td>Verpflichtung: das Produktziel</td></tr>
-        <tr><th>Sprint Backlog</th><td>Ziel, Auswahl, Plan</td><td>Verpflichtung: das Sprint-Ziel</td></tr>
-        <tr><th>Inkrement</th><td>Nutzbares Ergebnis</td><td>Verpflichtung: die Definition of Done</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Die fünf Scrum-Werte: Commitment, Fokus, Offenheit, Respekt, Mut.</p>
+  <Folie>
+    <h2 id="manifest">Das Agile Manifest</h2>
+    <p class="folie-satz">Die Dinge rechts sind wertvoll – die links zählen mehr.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Individuen und Interaktionen</strong> mehr als Prozesse und Werkzeuge</li>
+      <li data-schritt><strong>Funktionierende Software</strong> mehr als umfassende Dokumentation</li>
+      <li data-schritt><strong>Zusammenarbeit mit Kund*innen</strong> mehr als Vertragsverhandlung</li>
+      <li data-schritt><strong>Reagieren auf Veränderung</strong> mehr als das Befolgen eines Plans</li>
+    </ul>
+    <p class="small muted" data-schritt>Dazu zwölf Prinzipien, etwa Nr. 7: „Working software is the primary measure of progress.“</p>
+    <div class="nur-handout">
+      <p>„We are uncovering better ways of developing software by doing it and helping others do it.“ Die vier Werte im Original: „Individuals and interactions over processes and tools · Working software over comprehensive documentation · Customer collaboration over contract negotiation · Responding to change over following a plan“. Schluss: „That is, while there is value in the items on the right, we value the items on the left more.“ Unterzeichnet haben 17 Personen, darunter Kent Beck, Alistair Cockburn, Martin Fowler, Ron Jeffries, Ken Schwaber und Jeff Sutherland ({MANIFEST}).</p>
+      <p>Aus den zwölf Prinzipien (agilemanifesto.org/principles.html), die für diese Woche zählen:</p>
+      <ul>
+        <li>(1) „Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.“ – früh und laufend Nützliches liefern.</li>
+        <li>(2) „Welcome changing requirements, even late in development.“ – Änderungen willkommen heißen.</li>
+        <li>(3) „Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.“ – oft liefern, lieber kürzer.</li>
+        <li>(7) „Working software is the primary measure of progress.“ – Fortschritt ist, was läuft.</li>
+        <li>(10) „Simplicity--the art of maximizing the amount of work not done--is essential.“ – weglassen ist eine Kunst.</li>
+        <li>(11) „The best architectures, requirements, and designs emerge from self-organizing teams.“</li>
+        <li>(12) „At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.“ – das ist die Retrospektive.</li>
+      </ul>
+    </div>
+  </Folie>
 
-  <h3 id="skalierung">Wenn es mehr Teams werden</h3>
-  <p>Ein Scrum-Team hat meist zehn oder weniger Personen. Arbeiten mehrere Teams an einem Produkt, gibt es Rahmenwerke darüber: <strong>Nexus</strong> (3–9 Teams mit einem gemeinsamen Integrationsteam), <strong>LeSS</strong> (viele Teams, ein Product Owner, ein Backlog) und <strong>SAFe</strong> (ganze Bereiche, gemeinsame Planung alle paar Monate). Allen gemeinsam: ein Produktziel, ein gemeinsames Inkrement, regelmäßige Abstimmung zwischen den Teams. Wenn ihr in einem Unternehmen anfangt, fragt, welches davon gilt.</p>
+  <Folie>
+    <h2 id="scrum">Scrum in vier Schritten</h2>
+    <p class="folie-satz">Eine Person ordnet, das Team baut ein Inkrement, alle prüfen und passen an – wiederholen.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Der Zyklus:</strong> Product Backlog → Inkrement im Sprint → prüfen mit Stakeholdern → nächster Sprint.</li>
+      <li data-schritt><strong>Absichtlich unvollständig:</strong> Regeln für die Zusammenarbeit, keine Anleitung.</li>
+      <li data-schritt><strong>Aus Erfahrung lernen:</strong> Transparenz, Überprüfung, Anpassung.</li>
+      <li data-schritt><strong>Fünf Werte:</strong> Commitment, Fokus, Offenheit, Respekt, Mut.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>„Scrum is a lightweight framework that helps people, teams and organizations generate value through adaptive solutions for complex problems.“ Die vier Schritte: Ein Product Owner ordnet die Arbeit in ein Product Backlog; das Scrum Team macht daraus im Sprint ein Inkrement; Team und Stakeholder „inspect the results and adjust for the next Sprint“; wiederholen ({GUIDE}, S. 3).</p>
+      <p>„The Scrum framework is purposefully incomplete, only defining the parts required to implement Scrum theory.“ Und: „Rather than provide people with detailed instructions, the rules of Scrum guide their relationships and interactions“ (S. 3). Scrum beruht auf Empirismus und Lean Thinking; die drei Säulen sind Transparenz, Überprüfung und Anpassung. „Inspection without adaptation is considered pointless“ (S. 3–4). Die Werte: „Commitment, Focus, Openness, Respect, and Courage“ (S. 4). Der Scrum Guide steht unter CC BY-SA 4.0.</p>
+    </div>
+  </Folie>
 
-  <h2 id="lego">Lego4Scrum: eine Stadt in drei Sprints</h2>
-  <p>Bevor ihr Scrum auf eure Produkte anwendet, spielt ihr es einmal durch – mit Lego. Das Spiel geht auf Alexey Krivitsky zurück.</p>
-  <ul>
-    <li><strong>Product Owner:</strong> Markus. Er hat einen Backlog von Gebäuden für eine Stadt: Wohnhaus, Schule, Brücke, Park, Bahnhof …</li>
-    <li><strong>Stakeholder:</strong> Louis, Bürgermeister mit eigenen Wünschen – die sich ändern.</li>
-    <li><strong>Developers:</strong> ihr drei.</li>
-    <li><strong>Drei Sprints:</strong> je 5 min Planning, 7 min Bauen, 5 min Review, 3 min Retro. Vor jedem Sprint sagt ihr, wie viele Gebäude ihr schafft; nach jedem vergleicht ihr Zusage und Ergebnis.</li>
-  </ul>
-  <p>Achtet dabei auf: Was passiert, wenn das Sprint-Ziel unklar ist? Was macht der Product Owner, wenn der Bürgermeister mitten im Sprint etwas Neues will? Wird eure Zusage von Sprint zu Sprint genauer?</p>
+  <Folie>
+    <h2 id="verantwortlichkeiten">Drei Verantwortlichkeiten</h2>
+    <p class="folie-satz">Eine Person ordnet, alle bauen, eine sorgt dafür, dass Scrum funktioniert.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Product Owner:</strong> Produktziel, Backlog-Einträge, Reihenfolge – eine Person, kein Gremium.</li>
+      <li data-schritt><strong>Developers:</strong> Sprint Backlog, Qualität nach der Definition of Done, Plan täglich anpassen.</li>
+      <li data-schritt><strong>Scrum Master:</strong> Wirksamkeit des Teams, Hindernisse weg, Events in der Timebox.</li>
+      <li data-schritt><strong>Ein Team, meist zehn oder weniger:</strong> Es entscheidet selbst, wer was wann wie macht.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Ein Scrum Team besteht aus „one Scrum Master, one Product Owner, and Developers“, ohne „sub-teams or hierarchies“, und ist „focused on one objective at a time, the Product Goal“. Es ist cross-functional und self-managing: „they internally decide who does what, when, and how“; „typically 10 or fewer people“ ({GUIDE}, S. 5). Der Guide spricht seit 2020 nicht mehr von Rollen: „Scrum defines three specific accountabilities“ (S. 5).</p>
+      <p>Developers sind verantwortlich für den Sprint Backlog, „Instilling quality by adhering to a Definition of Done“, die tägliche Anpassung des Plans und „Holding each other accountable as professionals“ (S. 5). Der Product Owner ist „accountable for maximizing the value of the product“: Produktziel entwickeln und kommunizieren, Backlog-Einträge erstellen und ordnen, den Backlog transparent halten; „The Product Owner is one person, not a committee“ (S. 5–6). Der Scrum Master ist „accountable for the Scrum Team’s effectiveness“, unter anderem durch „Causing the removal of impediments“ und indem alle Events stattfinden und „kept within the timebox“ sind (S. 6). Arbeiten Product Owner oder Scrum Master an Einträgen des Sprint Backlogs mit, „they participate as Developers“ (S. 9).</p>
+      <p>Wird ein Team zu groß: „If Scrum Teams become too large, they should consider reorganizing into multiple cohesive Scrum Teams, each focused on the same product. Therefore, they should share the same Product Goal, Product Backlog, and Product Owner“ (S. 5). Krivitsky baut sein Lego-Spiel nach derselben Logik: ein Produkt, ein Product Backlog, ein Product Owner, ein Sprint zur gleichen Zeit, ein Inkrement ({KRIVITSKY}, S. 40). Skalierungsrahmenwerke beschreibt der Guide nicht. Wenn ihr in einem Unternehmen anfangt, fragt, welches Rahmenwerk über den Teams gilt.</p>
+    </div>
+  </Folie>
 
-  <h2 id="team">Euer Team: drei Produkte, ein Team</h2>
-  <p>In Unternehmen hat ein Team meist ein Produkt. Ihr habt drei – deshalb diese Aufteilung:</p>
-  <ul>
-    <li>Jede*r ist <strong>Product Owner des eigenen Produkts</strong> und entscheidet dort über Backlog und Abnahme.</li>
-    <li>Alle drei sind <strong>Developers in allen drei Produkten</strong>: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente.</li>
-    <li><strong>Scrum Master</strong> wechselt mit jedem Sprint.</li>
-    <li><strong>Ein Sprint für alle</strong> mit einem Sprint-Ziel pro Produkt. Sprint 1: vom Planning an Tag 4 bis zum Review an Tag 5. Sprint 2: vom Planning an Tag 5 bis zum Ende von Tag 6; danach ist der Prototyp fertig.</li>
-    <li><strong>Linear:</strong> ein Team, ein Projekt pro Produkt, ein Label pro Sprint (<code>Sprint 1</code>, <code>Sprint 2</code>). Eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>).</li>
-  </ul>
+  <Folie>
+    <h2 id="events">Ein Sprint von innen</h2>
+    <p class="folie-satz">Der Sprint ist der Behälter; vier Events darin prüfen und passen an.</p>
+    <Fluss label="Die vier Events im Sprint: Planning, Daily Scrum, Review, Retrospektive" knoten={[
+      { t: 'Sprint Planning', sub: 'Warum? Was? Wie?', icon: Target },
+      { t: 'Daily Scrum', sub: '15 Minuten, Plan für heute', icon: MessagesSquare },
+      { t: 'Sprint Review', sub: 'Arbeitssitzung mit Stakeholdern', icon: Eye },
+      { t: 'Retrospektive', sub: 'Wie werden wir besser?', icon: RefreshCw },
+    ]} />
+    <ul>
+      <li data-schritt><strong>Höchstens ein Monat, feste Länge:</strong> nichts, was das Sprint-Ziel gefährdet; die Qualität sinkt nicht.</li>
+      <li data-schritt><strong>Drei Verpflichtungen:</strong> Produktziel – Sprint-Ziel – Definition of Done.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>„The Sprint is a container for all other events.“ Sprints „are fixed length events of one month or less to create consistency“. Im Sprint gilt: „No changes are made that would endanger the Sprint Goal“, „Quality does not decrease“, „The Product Backlog is refined as needed“, und „Scope may be clarified and renegotiated with the Product Owner as more is learned“ ({GUIDE}, S. 7). Nur der Product Owner kann einen Sprint abbrechen (S. 8).</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th></th><th>Was der Guide sagt</th></tr></thead>
+          <tbody>
+            <tr><th>Sprint Planning</th><td>Drei Themen: „Why is this Sprint valuable?“ – der Product Owner schlägt vor, „The whole Scrum Team then collaborates to define a Sprint Goal“. „What can be Done this Sprint?“ – die Developers wählen aus. „How will the chosen work get done?“ – „No one else tells them how“ (S. 8). Ziel, Auswahl und Plan zusammen sind der Sprint Backlog (S. 9).</td></tr>
+            <tr><th>Daily Scrum</th><td>„a 15-minute event for the Developers“, „at the same time and place every working day“; die Struktur ist frei, solange es um den Fortschritt zum Sprint-Ziel geht und „an actionable plan for the next day of work“ herauskommt (S. 9).</td></tr>
+            <tr><th>Sprint Review</th><td>„inspect the outcome of the Sprint and determine future adaptations“; „The Sprint Review is a working session and the Scrum Team should avoid limiting it to a presentation“ (S. 9).</td></tr>
+            <tr><th>Retrospektive</th><td>„plan ways to increase quality and effectiveness“: Individuen, Interaktionen, Prozesse, Werkzeuge und die Definition of Done. „The Sprint Retrospective concludes the Sprint“ (S. 10).</td></tr>
+            <tr><th>Product Backlog</th><td>Verpflichtung: das Produktziel – „a future state of the product which can serve as a target“, „the long-term objective for the Scrum Team“ (S. 10–11).</td></tr>
+            <tr><th>Sprint Backlog</th><td>Verpflichtung: das Sprint-Ziel – „the single objective for the Sprint“, mit „flexibility in terms of the exact work needed to achieve it“ (S. 10–11).</td></tr>
+            <tr><th>Inkrement</th><td>Verpflichtung: die Definition of Done. „In order to provide value, the Increment must be usable“ (S. 11).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="fertig">Fertig heißt fertig</h2>
+    <p class="folie-satz">Was die Definition of Done nicht erfüllt, wird im Review nicht gezeigt – es geht zurück ins Backlog.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Die Definition of Done</strong> beschreibt, wann ein Inkrement die nötige Qualität hat.</li>
+      <li data-schritt><strong>Ohne Firmenstandard</strong> schreibt das Team sie selbst – passend zum Produkt.</li>
+      <li data-schritt><strong>„Done“ oder „not done“</strong> – nichts dazwischen.</li>
+      <li data-schritt><strong>Bei uns gehört die Messung dazu</strong> – das schreibt ihr um 11:50.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>„The Definition of Done is a formal description of the state of the Increment when it meets the quality measures required for the product.“ „If a Product Backlog item does not meet the Definition of Done, it cannot be released or even presented at the Sprint Review. Instead, it returns to the Product Backlog for future consideration.“ Gibt es keinen Standard der Organisation, „the Scrum Team must create a Definition of Done appropriate for the product“ ({GUIDE}, S. 12).</p>
+      <p>Jeffries: „We can’t accept ‚90 percent done.‘ Features need to be ‚done‘ or ‚not done‘: there is no middle ground“ ({JEFFRIES}, S. 46). Und: „Eliminate the test-and-fix finish“ (S. 48) – getestet wird im Sprint, nicht danach.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="abweichungen">Wo wir vom Scrum Guide abweichen</h2>
+    <p class="folie-satz">Drei Produkte, drei Personen: drei Scrum-Teams mit denselben Köpfen.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Je Produkt</strong> ein Product Owner, ein Produktziel, ein Sprint-Ziel – aber ein gemeinsamer Takt.</li>
+      <li data-schritt><strong>Sprint 1 zwei Wochen, Sprint 2 eine Woche</strong> – keine feste Länge, weil die Kurstage so liegen.</li>
+      <li data-schritt><strong>Daily zwischen den Kurstagen schriftlich</strong> in Linear – nicht am selben Ort.</li>
+      <li data-schritt><strong>Scrum Master wechselt</strong> mit jedem Sprint – damit es jede*r einmal macht.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Ein Scrum Team ist „focused on one objective at a time, the Product Goal“ ({GUIDE}, S. 5), und „While implementing only parts of Scrum is possible, the result is not Scrum“ (S. 13). Darum sagen wir genau, wo wir abweichen und warum – Transparenz ist die erste Säule (S. 3). Jedes eurer Produkte hat ein eigenes Scrum Team: eine Person ist Product Owner, alle drei sind Developers, eine ist Scrum Master. Weil es dieselben drei Personen sind, laufen die drei Sprints im selben Takt, mit gemeinsamen Events.</p>
+      <p>Die Abweichungen: Sprints sind „fixed length events“ (S. 7) – unsere liegen an den Kurstagen, 28.11.–12.12. und 12.12.–19.12. Das Daily ist „held at the same time and place every working day“ (S. 9) – zwischen den Kurstagen arbeitet ihr zu Hause, darum schriftlich. Dass der Scrum Master wechselt, ist eine Regel des Kurses; der Guide sagt dazu nichts. Eine gemeinsame Definition of Done verlangt der Guide nur für Teams am selben Produkt (S. 12); dass sie bei uns für alle drei Produkte gilt, ist eine Vereinbarung des Kurses – ihr prüft ohnehin jede*r die Arbeit der anderen.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="planen">Planen ohne Schätzen</h2>
+    <p class="folie-satz">Zählt, was fertig wurde – und nehmt nicht mehr.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/jeffries/gestern-wetter.jpg" alt="Zwei gezeichnete Fenster mit einem Pfeil dazwischen: links Regenwolken mit Blitz, rechts fast dasselbe Wetter mit etwas Sonne" quelle={`Yesterday’s Weather. ${JEFFRIES}, S. 37.`} />
+      <ul>
+        <li data-schritt><strong>Yesterday’s Weather:</strong> so viel wie im Sprint davor.</li>
+        <li data-schritt><strong>Das Team entscheidet selbst,</strong> wie viel es nimmt.</li>
+        <li data-schritt><strong>Klein und ähnlich groß schneiden,</strong> dann zählen.</li>
+        <li data-schritt><strong>Zu viel auf dem Teller?</strong> Runternehmen – acht Dinge gut statt zehn schlecht.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Wie viel nimmt ein Team? „the team itself should decide how much work it can accomplish“; die Idee stammt von Kent Beck und Martin Fowler: „You’ll probably get as much done today as you did yesterday. In iterative projects, plan to do as much this iteration as you did last iteration.“ Und: „I don’t recommend estimating the individual work pieces at all. Instead, understand them, and then look at the aggregate and decide how much of it the team can do“ ({JEFFRIES}, S. 37). „Things go best if each feature, often called a story, takes only two or three days to do“ (S. 36); wer vorhersagen muss, zählt: „When they need to predict how long things will take, they just count things done“ (S. 38). „Planning with ‚stretch goals‘ is destructive“ (S. 39). „It’s far better to do eight things well than ten things poorly“ (S. 41).</p>
+      <p>Der Scrum Guide: „The Developers who will be doing the work are responsible for the sizing“ ({GUIDE}, S. 11). Krivitsky lässt im Lego-Spiel kein Planning Poker mehr spielen – „so viel Zeit mit etwas zu verschwenden, das immer falsch sein wird“, den Schätzungen ({KRIVITSKY}, S. 24) – und nennt einen Sprint-Plan nach außen „nichts anderes als eine Prognose“ (S. 91). Wie ihr Issues so schneidet, dass Zählen reicht, kommt am Nachmittag in <a href="/innolab/methoden/schneiden">Schneiden statt Schätzen</a>.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“ in Scrum-Begriffen</h2>
+    <p class="folie-satz">Ein Produkt, einmal durch alle Begriffe.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Produktziel:</strong> der Outcome-Satz aus dem Brief – Kaffee bekommen, ohne den Zug zu riskieren.</li>
+      <li data-schritt><strong>Product Backlog:</strong> Issues 1–5 aus Slice 1 und dem Testbefund U2, dazu Issue 6: die Messung.</li>
+      <li data-schritt><strong>Sprint-Ziel 1:</strong> „Pendler*innen bestellen im Gehen und sehen, ob ihr Kaffee vor dem Zug fertig ist.“</li>
+      <li data-schritt><strong>Inkrement:</strong> Bestellseite live am Handy, die Bar sieht die Bestellungen nach Abfahrt sortiert.</li>
+    </ul>
+    <div class="nur-handout">
+      <p><strong>Produktziel</strong> im Wortlaut des Briefs: „Wir glauben, dass Pendler*innen morgens Kaffee bekommen, ohne ihren Zug zu riskieren. Wir merken es, wenn mehr von ihnen mit Kaffee in den Zug steigen.“</p>
+      <p><strong>Produkt:</strong> Im Gehen bestellen, mit Abfahrtszeit, abholen an der Express-Ausgabe (Value Map, Tag 3). <strong>Produktziel:</strong> der Outcome-Satz aus dem Produkt-Brief (<a href="/innolab/methoden/problem-rahmen">Problem-Rahmen</a>) – er beschreibt, wie es nach dem Produkt sein soll, und daran misst sich jeder Sprint. <strong>Product Owner:</strong> die Product Ownerin der Kaffeebar; Developers sind alle drei. <strong>Product Backlog:</strong> 1 Getränk wählen und bestellen · 2 Abfahrtszeit angeben und Fertig-Zeit sehen · 3 Bar sieht Bestellungen nach Abfahrt sortiert · 4 Zug aus einer Liste der nächsten Abfahrten wählen (U2) · 5 Abholnummer am Bildschirm der Ausgabe · 6 Bar markiert Bestellung als abgeholt, das Ereignis wird gespeichert (aus der Definition of Done, 11:50). Wie die Issues entstehen, kommt um 13:30 in <a href="/innolab/methoden/backlog">Backlog aus Issues</a>. <strong>Stakeholder im Review:</strong> Markus und Louis, dazu die Testpersonen aus den Usability-Tests an Tag 5. <strong>Sprint-Ziel 1:</strong> ein Satz, der sagt, was danach jemand kann – nicht die Liste der Issues. <strong>Definition of Done:</strong> siehe <a href="#dod">unten</a>.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="reihum">Euer Produkt in einem Satz</h2>
+    <p class="folie-satz">Reihum: euer Produktziel – und ein Stakeholder, der nicht im Team ist.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Produktziel:</strong> der Outcome-Satz aus eurem Produkt-Brief, laut vorgelesen.</li>
+      <li data-schritt><strong>Ein Stakeholder:</strong> wer sollte im Review sitzen, außer Markus und Louis?</li>
+      <li data-schritt><strong>Die anderen beiden</strong> fragen je einmal nach. <Timer minuten={5} /></li>
+    </ul>
+    <p class="nur-handout">Das Produktziel ist die Verpflichtung des Product Backlogs ({GUIDE}, S. 10–11). Euer Outcome aus Tag 1 hat genau diese Form: ein künftiger Zustand, an dem sich der Backlog ausrichtet. Wer keinen Stakeholder außerhalb des Teams findet, hat für das Review an Tag 5 niemanden, der das Inkrement mit frischen Augen sieht.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="lego">Lego4Scrum: warum Lego</h2>
+    <p class="folie-satz">Scrum lernt man, indem man es lebt – 80 Minuten mit Lego.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Markus trägt drei Hüte:</strong> Moderator, Product Owner, Agilist.</li>
+      <li data-schritt><strong>Ein Produkt, ein Backlog,</strong> drei Teams – jede*r von euch ist eins.</li>
+      <li data-schritt><strong>Erst das Produkt,</strong> dann drei Sprints, dann die Nachbesprechung.</li>
+      <li data-schritt><strong>Wörter des Alltags:</strong> die Scrum-Begriffe kommen erst am Ende dazu.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>„Der Workshop lehrt Scrum, indem Scrum gelebt wird“ ({KRIVITSKY}, S. 55). Der Moderator trägt „mindestens drei verschiedene Hüte: einen als Workshop-Moderator, einen als Product Owner und einen als Agilist“ (S. 35), und muss dabei kein idealer Product Owner sein (S. 36). Im Spiel soll „so wenig Scrum-Terminologie wie nötig“ vorkommen; die Sprint-Planung ist einfach „Zeit und Ort, an dem die Teams entscheiden können, wie viel Arbeit sie leisten können“ (S. 33). Für kurze Workshops nennt Krivitsky zwei Wege – erst Theorie, dann Spiel, oder umgekehrt: „Beide Wege funktionieren“ (S. 57). Wir nehmen den ersten, weil ihr die Begriffe am Nachmittag braucht.</p>
+      <p><strong>Was das Original vorsieht und was wir kürzen.</strong> Krivitskys Beispielagenda dauert gut drei Stunden: vor dem Spiel „Prozess und Rollen (10 Minuten) · die Vision (7 Minuten) · Benutzer &amp; Bedürfnisse (15 Minuten) · Produktmerkmale (10 Minuten) · Produkt Release (10 Minuten) · Schätzung und Detaillierung (15 Minuten)“, dann drei Sprints mit je „Sprintplanung (5 Minuten) – Sprinten (8 Minuten) – Sprint Review (7 Minuten) – Sprint Retrospectives im Team und insgesamt (10 Minuten)“, danach „Diskussionen (30 Minuten)“ (S. 58–59). Wir haben 80 Minuten:</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Min</th><th>Schritt</th><th>Krivitsky</th><th>Bei uns</th></tr></thead>
+          <tbody>
+            <tr><td>0–3</td><td>Warum Lego, drei Hüte</td><td>10 min (S. 58)</td><td>3 min – eine Kürzung des Kurses; die Begriffe kamen schon vor der Pause.</td></tr>
+            <tr><td>3–8</td><td>Vision</td><td>7 min (S. 58)</td><td>5 min – eine Kürzung des Kurses.</td></tr>
+            <tr><td>8–16</td><td>Nutzer und Bedürfnisse</td><td>15 min (S. 58), 5 + 10–15 min (S. 68, 71)</td><td>8 min – eine Kürzung des Kurses; Story Maps kennt ihr von Tag 3.</td></tr>
+            <tr><td>16–23</td><td>Features</td><td>etwa 7 min (S. 73)</td><td>ungekürzt.</td></tr>
+            <tr><td>23–30</td><td>Release-Linie, wesentliche Details</td><td>10 + 5 min (S. 58, 78)</td><td>7 min – eine Kürzung des Kurses. Schätzen (15 min) entfällt ganz: wir schätzen nicht.</td></tr>
+            <tr><td>30–75</td><td>Drei Sprints</td><td>je 30 min (S. 59)</td><td>je 15 min: 3 planen, 7 bauen, 3 zeigen, 2 Retro – eine Kürzung des Kurses; Team- und Gesamt-Retro in einem.</td></tr>
+            <tr><td>75–80</td><td>Nachbesprechung</td><td>30 min (S. 59)</td><td>5 min – eine Kürzung des Kurses; die übrigen Fragen gehen in die Kurs-Retro an Tag 7.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Drei Ein-Personen-Teams – eine Abweichung des Kurses.</strong> Krivitsky bevorzugt Teams mit „jeweils 4-6 Personen“ (S. 59) und rät bei wenigen Personen eher zu einem anderen Spiel (S. 39). Zugleich empfiehlt er „niemals, lego4scrum mit einem einzigen Entwicklungsteam auszuführen“, und bei einer Handvoll: „teile sie dennoch in mehrere kleinere Teams auf“ (S. 111). Mit drei Personen nehmen wir das Kleinstmögliche: drei Teams aus je einer Person, ein gemeinsames Backlog. Teamdynamik im Team zeigt das nicht, das Zusammenspiel zwischen Teams schon.</p>
+      <p>Material: ein Lego-Set für drei Personen (Krivitsky rechnet 1500 Teile für 20 Personen, S. 50; für uns reichen einige Hundert), blaues Klebeband, Zettel in drei Farben, der Timer am Beamer.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vision">Die Vision</h2>
+    <p class="folie-satz">Markus erzählt, was ihr baut – keine „weitere langweilige LEGO-Stadt“.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Eine Idee</strong> mit einem Zweck, erzählt, nicht vorgelesen.</li>
+      <li data-schritt><strong>Drei Nutzergruppen</strong> mit klaren Bedürfnissen.</li>
+      <li data-schritt><strong>Danach:</strong> Wie fühlt sich das an? Fragt nach.</li>
+    </ul>
+    <div class="nur-handout">
+      <p class="small"><strong>Vision: folgt von Markus.</strong></p>
+      <p>„Ein Product Owner muss eine starke Vision haben“; Krivitsky empfiehlt, „eine Produktidee zu entwickeln, die sich wie Deine anfühlt“ ({KRIVITSKY}, S. 61). Sie braucht „eine Art übergeordnete Idee und klare Benutzerbedürfnisse“ – „nicht nur ‚eine weitere langweilige LEGO-Stadt bauen‘“ (S. 62). Nach dem Erzählen fragt der Product Owner die Gruppe, wie sie sich dabei fühlt (S. 63). „Drei Personas sind eine gute Größe, um damit anzufangen“ (S. 63). Und: „Eine Vision ist ein gemeinsames Verständnis davon, wozu wir tun, was wir tun“ – kein Dokument (S. 64).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="produkt-board">Das Produkt an der Wand</h2>
+    <p class="folie-satz">Nutzer, Bedürfnisse, Features – und eine Release-Linie.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/krivitsky/story-map.jpg" alt="Foto einer Wand mit Haftzetteln: oben ein gelber Zettel für die Nutzergruppe, darunter blaue Zettel mit Bedürfnissen wie Arrive und Check in, darunter lila Zettel mit Features; quer eine blaue Klebebandlinie, links gelbe Zettel MVP R.1 und R2" quelle={`Eine dreistufige Story Map. ${KRIVITSKY}, S. 75.`} />
+      <ul>
+        <li data-schritt><strong>Nutzer</strong> auf große Zettel – wer ist am wichtigsten?</li>
+        <li data-schritt><strong>Bedürfnisse</strong> als Verben im Tagesablauf; ihr ruft, Markus schreibt.</li>
+        <li data-schritt><strong>Features:</strong> jede*r allein, eine Idee pro Karte. <Timer minuten={7} /></li>
+        <li data-schritt><strong>Klebeband:</strong> Release 1 – minimal, aber funktionsfähig.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Seit der Ausgabe 2023 bringt der Product Owner kein fertiges Backlog mehr mit: „Dies ist falsch, und ich entschuldige mich dafür, dass ich das aufgeschrieben habe“ ({KRIVITSKY}, S. 67). Stattdessen entsteht die Story Map gemeinsam. Zuerst die Nutzer, dann die Frage, wer der wichtigste ist: „Die Priorisierung beginnt lange bevor die Product Backlog Items (auch bekannt als User Stories) identifiziert wurden“ (S. 69). Die Bedürfnisse ruft die Gruppe als Verben, der Product Owner schreibt als Einziger an die Wand (S. 70). Features schreiben alle, „eine Idee pro Karte“, ungefiltert; gebaut wird meist „nur auf 20-30% der vorgeschlagenen Funktionen“ (S. 73). Dann zieht der Product Owner mit Klebeband die Release-Linien – Patton: „Ergebnis maximieren, Output minimieren“ (S. 74) – und alle schieben Karten, bis das erste Release „minimal, aber dennoch funktionsfähig“ ist (S. 76). Zum Schluss nennt Markus einige wesentliche Details (S. 78) und ordnet die Karten mit Begründung (S. 85).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="lego-sprint">Ein Sprint mit Lego</h2>
+    <p class="folie-satz">Planen, bauen, zeigen, besser werden.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/krivitsky/sprint-backlogs.jpg" alt="Tafel: links Haftzettel mit Features wie Bicycle Storage, Shop, Café, Cottage, Park, Hotel; rechts mit Klebeband vier leere Zeilen, nummeriert 1 bis 4" quelle={`Links das Product Backlog, rechts eine Zeile pro Team. ${KRIVITSKY}, S. 89.`} />
+      <ol>
+        <li data-schritt><strong>Wie viel schafft ihr?</strong> Karten in eure Zeile, Hand hoch: 0–5. <Timer minuten={3} /></li>
+        <li data-schritt><strong>Bauen.</strong> <Timer minuten={7} /></li>
+        <li data-schritt><strong>Zeigen.</strong> <Timer minuten={3} /></li>
+        <li data-schritt><strong>Eine Sache, die ihr anders macht.</strong> <Timer minuten={2} /></li>
+      </ol>
+    </BildText>
+    <div class="nur-handout">
+      <p>Alle ziehen aus einem gemeinsamen Product Backlog in ihre eigene Zeile und stimmen sich dabei ab; mit nur drei Minuten Zeit gibt es keine „Analyse-Paralyse“ ({KRIVITSKY}, S. 89). Danach zeigt jede*r mit der Hand, wie sicher der Plan ist – Faust heißt „auf keinen Fall“, fünf Finger heißt sehr sicher; bei Zweien und Dreien wird neu geplant (Fist-of-Five, S. 91–92). Was ihr dabei sagt, ist eine Prognose, kein Versprechen: „Extern ist ein Sprint Plan nichts anderes als eine Prognose“ (S. 91). Krivitsky ist „ein großer Fan von kurzen lego4scrum Sprints von 7 oder 8 Minuten“, mit großem, sichtbarem Timer (S. 93). In der Retro: „Bitte teilt uns eine wichtige Sache mit, die ihr beim nächsten Mal anders machen möchten“ – „Fünf Minuten reichen aus“ (S. 101). Die Zeiten 3 / 7 / 3 / 2 statt 5 / 8 / 7 / 10 sind eine Kürzung des Kurses (S. 59).</p>
+      <p>Ab dem zweiten Review sitzt Louis als Kundenvertreter dabei, wenn er am 28. November da ist. Bei uns spricht er nur im Review und gibt Feedback zum Inkrement – nach Krivitskys „Dimension 2“, in der Kundenvertreter „die Stimme des Marktes“ sind und Fachexperten „in der besten Position, um das Inkrement zu überprüfen und Feedback zu geben“ (S. 107–108). Sonst stellt Markus die Fragen des Product Owners selbst: „Was seht ihr hier? … Stell Dir vor, Sie sind ein Benutzer X, der dieses Gebäude betritt …“ (S. 98).</p>
+      <p>Vor Sprint 3 dürft ihr euch zu einem Team zusammenschließen, wenn ihr das in der Retro beschließt – ein Zusatz des Kurses; Krivitsky lässt Teams sich in größeren Spielen selbst bilden (S. 119–121). Achtet von Sprint zu Sprint darauf: Wird eure Prognose genauer?</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="review-1">Das erste Review</h2>
+    <p class="folie-satz">Markus kommt als Product Owner an eure Tische.</p>
+    <Aufloesung ab={NACH_REVIEW_1} hinweis="Die Auflösung kommt nach dem ersten Review." knopf="Auflösung zeigen (nach Review 1)">
+      <BildText>
+        <BuchAbbildung src="/quellen/krivitsky/inspektion.jpg" alt="Eine Gruppe von Menschen steht im Kreis um ein Lego-Modell auf dem Boden und schaut es an; einige halten die Hand ans Kinn, einer kniet davor" quelle={`Inspektion der Arbeit. ${KRIVITSKY}, S. 97.`} />
+        <ul>
+          <li data-schritt><strong>„Wo ist meine Stadt?“</strong> Gefragt war ein Produkt, nicht drei Einzelstücke.</li>
+          <li data-schritt><strong>19 von 20 Teams</strong> integrieren im ersten Sprint nicht – egal, wie viele Folien sie vorher sahen.</li>
+          <li data-schritt><strong>Keine Definition of Done vor Sprint 1</strong> – mit Absicht.</li>
+          <li data-schritt><strong>Prüfen und anpassen,</strong> nicht prüfen und abnehmen.</li>
+        </ul>
+      </BildText>
+      <div class="nur-handout">
+        <p>„Normalerweise springe ich auf einen Tisch in der Mitte des Raumes und rufe: ‚Wo ist meine Stadt?!!‘“ Die Teams merken, dass der Product Owner „eine einzige Stadt möchte, nicht nur eine Sammlung einzelner nicht integrierter, nicht getesteter, nicht ausgerichteter Elemente“. Das nachträgliche Zusammensetzen kostet „etwa 25% der Sprintdauer“. „Interessanterweise werden 19 von 20 Teams beim ersten Sprint nicht integriert, unabhängig davon, wie viele Folien Du der Klasse zu den Konzepten Integration, Definition von Fertig, Inkrementen usw. gezeigt hast“ ({KRIVITSKY}, S. 96).</p>
+        <p>Darum gab es vorher keine Definition of Done: „Ich möchte, dass die Teams scheitern und verstehen, warum sie in jedem Projekt eine gute DoD brauchen“ (S. 46). Und das Review ist kein Abnahmetermin: „Inspect und Adapt (nicht prüfen und akzeptieren)“ – je mehr alle gemeinsam auf das Inkrement schauen, desto besser (S. 97). Aus den Fragen des Product Owners entstehen neue Karten fürs Backlog (S. 98). Für die echten Produkte schreibt ihr die Definition of Done um 11:50 – mit dem, was euch heute gefehlt hat.</p>
+      </div>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="nachbesprechung">Was ihr mitnehmt</h2>
+    <p class="folie-satz">Die drei Sprints an der Wand nachzeichnen – dann zwei Fragen.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Was hat uns trotz allem geholfen,</strong> am Ende etwas zu bauen?</li>
+      <li data-schritt><strong>Was davon nehmt ihr in eure drei Produkte mit?</strong> Ein Zettel pro Person – er kommt um 11:50 in <code>docs/TEAM.md</code>. <Timer minuten={5} /></li>
+    </ul>
+    <Aufloesung ab={NACH_LEGO} hinweis="Was Markus absichtlich eingebaut hat, erscheint nach dem dritten Sprint." knopf="Zeigen (nach dem Spiel)">
+      <p><strong>Was Markus absichtlich eingebaut hat</strong> – Krivitsky nennt es „Design for Failure“: „Wenn deine Teams im ersten lego4scrum Sprint nicht auf die Schnauze fallen, machst du etwas falsch“ ({KRIVITSKY}, S. 41).</p>
+      <ul>
+        <li data-schritt><strong>Mehrdeutige Anforderungen,</strong> etwa „Alle Gebäude müssen eine Farbe haben“ – je Gebäude oder für alle?</li>
+        <li data-schritt><strong>Gleiche Größe verlangt,</strong> ohne sie festzulegen – ihr musstet euch einigen.</li>
+        <li data-schritt><strong>Kein Wort zur Integration,</strong> kein Tisch für die Stadt.</li>
+        <li data-schritt><strong>Der Product Owner auf Geschäftsreise</strong> in Sprint 2.</li>
+      </ul>
+      <div class="nur-handout">
+        <p>Krivitskys Mittel: mehrdeutige Anforderungen, gleiche Größe und Proportionen verlangen, nicht sagen, dass am Ende des Sprints integriert werden muss, und „Der PO ist auf Geschäftsreise“ – danach treffen die Teams in der Retro Abmachungen mit dem Product Owner (S. 41). Den Tisch für die Stadt vergisst der Moderator absichtlich (S. 45); die Größe gibt er nicht vor (S. 50). Zum Product Owner im Sprint: „Aber lass sie zuerst ihren ersten Sprint nicht bestehen. Misserfolge sind große Katalysatoren des Lernens“ (S. 95).</p>
+        <p>Krivitskys weitere Fragen für die Nachbesprechung (S. 103–104) – sie kommen in die Kurs-Retro an Tag 7: „Was war deine Erfahrung? Was hast du beobachtet?“ · „Welche Prozesselemente waren am wertvollsten?“ · „Welches waren die am wenigsten profitablen Prozesselemente? (z. B. Schätzen)“ · „Wenn wir diese Simulation erneut von Grund auf neu ausführen würden, was würdest Du anders machen und warum?“ · „Wie ist dies für Deine eigentliche Arbeit relevant?“</p>
+        <p>Jetzt erst die Begriffe: Die Wand war der Product Backlog, „Wie viel schafft ihr?“ das Sprint Planning, „Zeigen“ das Sprint Review, „Eine Sache anders“ die Retrospektive, und die fehlende Stadt das fehlende Inkrement.</p>
+      </div>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
+    <h2 id="team">Euer Team aufstellen</h2>
+    <p class="folie-satz">Je Produkt ein Product Owner und ein Produktziel – alle drei sind überall Developers.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Aus dem Lego:</strong> Was hätte euch im ersten Review gerettet? Drei Stichworte an die Tafel. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Reihum:</strong> Produkt, Product Owner, Produktziel, Linear-Projekt; Scrum Master für Sprint 1 und 2; die Abweichungen. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Definition of Done,</strong> eine für alle drei Produkte. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Mess-Ereignis je Produkt</strong> als Issue 6 in Stichworten; Collaborator einladen. <Timer minuten={10} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Zu 1: Die Stichworte werden Zeilen der Definition of Done – sie kommen aus eurer eigenen Erfahrung, nicht aus einer Vorlage ({KRIVITSKY}, S. 46, 96). Zu 2: Jede*r ist Product Owner des eigenen Produkts und entscheidet dort über Produktziel, Backlog und Reihenfolge ({GUIDE}, S. 5–6). Alle drei sind Developers in allen drei Produkten: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente. Den Scrum Master für Sprint 1 und 2 lost ihr. Linear: ein Team, ein Projekt pro Produkt, ein Label pro Sprint (<code>Sprint 1</code>, <code>Sprint 2</code>); eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>). Die Abweichungen vom Guide übernehmt ihr als eigenen Abschnitt in <code>docs/TEAM.md</code>. Zu 3 und 4: siehe nächste Folie. Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein (<a href="/innolab/methoden/sprint#spec">Sprint</a>).</p>
+      <p>Die Sprints: Sprint 1 vom Planning heute um 16:00 bis zu Review und Retro an Tag 5 (12. Dezember); Sprint 2 vom Planning an Tag 5 bis zu Review und Retro an Tag 6 (19. Dezember). Am 7. Jänner präsentiert ihr euer Produkt den Stakeholdern.</p>
+    </div>
+  </Folie>
   <Callout type="info" title="Daily zwischen den Kurstagen">
-    <p>An Kurstagen um 9:00 im Raum. Dazwischen schriftlich in Linear: ein Kommentar pro Person an jedem Arbeitstag – was erledigt, was als Nächstes, was blockiert.</p>
+    <p>An Kurstagen um 9:00, an Tag 5 im Raum, an Tag 6 in der Teams-Besprechung. Dazwischen schriftlich in Linear: ein Kommentar pro Person an jedem Arbeitstag – was mich dem Sprint-Ziel nähergebracht hat, was als Nächstes kommt, was blockiert.</p>
   </Callout>
 
-  <h2 id="vorgehen">So geht ihr vor (160 min)</h2>
-  <ol>
-    <li><strong>Input (60 min):</strong> agil, Scrum, Skalierung.</li>
-    <li><strong>Teamaufstellung (20 min):</strong> Rollen, Sprints, Events; Linear einrichten; <code>docs/TEAM.md</code> in jedem der drei Repos. Die Definition of Done schreibt ihr gleich danach, mit dem Mess-Ereignis (<a href="/innolab/methoden/sprint#dod">Sprint</a>).</li>
-    <li><strong>Lego4Scrum (80 min):</strong> fünf Minuten Einführung, drei Sprints à 20 Minuten, danach 15 Minuten gemeinsame Retro: Was nehmt ihr für eure Produkte mit? Ergänzt <code>docs/TEAM.md</code>.</li>
-  </ol>
+  <Folie>
+    <h2 id="dod">Definition of Done: die Messung gehört dazu</h2>
+    <p class="folie-satz">Jede Zeile lässt sich im Browser oder in Supabase prüfen – auch die Messung.</p>
+    <p class="small muted">Am Beispiel der Kaffeebar:</p>
+    <ol class="gross">
+      <li data-schritt><strong>Jedes Akzeptanzkriterium</strong> im Browser am Handy geprüft, Beleg im Issue.</li>
+      <li data-schritt><strong>Pull Request</strong> von einer anderen Person geprüft.</li>
+      <li data-schritt><strong>Auf Vercel live.</strong></li>
+      <li data-schritt><strong>Das Ereignis <em>abgeholt</em></strong> kommt nach dem Merge noch an – ohne Name, ohne E-Mail.</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Ohne die vierte Zeile könnt ihr nach dem Sprint nur sagen, dass etwas gebaut ist – nicht, ob es wirkt. Ein Ereignis ist eine Zeile in einer Tabelle <code>ereignisse</code> in Supabase: was passiert ist, wann, und eine zufällige Kennung pro Gerät. Bei der Kaffeebar tippt die Bar bei der Übergabe auf „abgeholt“; gespeichert werden Abholzeit, Abfahrtszeit und die Kennung des Geräts. Liegt die Abholzeit vor der Abfahrt, zählt der Tag für das Produktziel: mehr Pendler*innen mit Kaffee im Zug. Nebenbei zeigen die Zeilen pro halbe Stunde, ob die Bar 40 Bestellungen in 30 Minuten schafft (A2) – ein Zusatz des Kurses, kein Teil der Definition of Done.</p>
+      <p>Was ihr <strong>nicht</strong> speichert, gehört dazu: kein Name, keine E-Mail, und sagt euren Testpersonen, dass ihr messt. Bei der Kaffeebar hängt das an A7 (ethisch): „Sie sind einverstanden, dass wir ihre Abfahrtszeit kennen“ (<a href="/innolab/methoden/experiment#beispiel">Experiment-Karte</a>). Das Ereignis einzuführen ist ein eigenes Issue, Issue 6: „Bar markiert Bestellung als abgeholt; das Ereignis abgeholt wird gespeichert“ – Quelle: die Definition of Done. Ausformuliert wird es um 13:30 im Backlog, mit Akzeptanzkriterien wie jedes andere. Ab dann gilt für jedes Issue: Nach dem Merge kommt das Ereignis noch an.</p>
+      <p>Eine Mess-Zeile ist eine Definition of Done „appropriate for the product“ ({GUIDE}, S. 12): Euer Produkt soll ein Outcome bewirken, also gehört dessen Messung zur Qualität des Inkrements.</p>
+    </div>
+  </Folie>
 
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (175 min)</h2>
+    <p class="folie-satz">Theorie mit der Kaffeebar, Lego, dann euer Team.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Agil &amp; Scrum (9:25–10:20):</strong> acht Folien, die Kaffeebar in Scrum-Begriffen, euer Produktziel reihum.</li>
+      <li data-schritt><strong>Lego4Scrum (10:30–11:50):</strong> Vision, Produkt an der Wand, drei Sprints, Nachbesprechung.</li>
+      <li data-schritt><strong>Teamaufstellung &amp; Definition of Done (11:50–12:30):</strong> <code>docs/TEAM.md</code> in jedem der drei Repos.</li>
+    </ol>
+    <p class="nur-handout">Agil &amp; Scrum: 35 Minuten Theorie, 15 Minuten Kaffeebar gemeinsam, 5 Minuten reihum. Lego4Scrum: 80 Minuten, Ablauf und Kürzungen oben unter <a href="#lego">Warum Lego</a>. Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
+  </Folie>
+
+  <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/TEAM.md"># Team — [Teamname]
 
-Stand: [Datum]
+Stand: [Datum] · Linear-Team: [Name, Kürzel]
 
-## Produkte und Rollen
-Linear-Team: [Name, Kürzel]
-
-| Produkt | Product Owner | Linear-Projekt |
-|---------|---------------|----------------|
-| [...] | [...] | [...] |
-Developers: alle drei · Scrum Master Sprint 1: [Name], Sprint 2: [Name]
+## Produkte
+| Produkt | Product Owner | Produktziel (Outcome aus dem Produkt-Brief) | Linear-Projekt |
+|---------|---------------|---------------------------------------------|----------------|
+| [...]   | [...]         | [Wir glauben, dass … Wir merken es, wenn …] | [...]          |
+Developers: alle drei in allen drei Produkten · Scrum Master Sprint 1: [Name], Sprint 2: [Name]
 
 ## Sprints
-- Sprint 1: Planning 28.11. – Review 12.12. · Sprint 2: Planning 12.12. – Abnahme 19.12.
-- Planning: [wann] · Daily: 9:00 an Kurstagen, sonst Kommentar in Linear · Review & Retro: [wann]
+- Sprint 1: Planning 28.11. – Review und Retro 12.12. · Sprint 2: Planning 12.12. – Review und Retro 19.12.
+- Daily: 9:00 an Kurstagen (12.12. im Raum, 19.12. in der Teams-Besprechung); dazwischen ein Kommentar pro Person und Arbeitstag in Linear
+- Stakeholder im Review: Markus, Louis, [...]
 
 ## Definition of Done (gilt für alle drei Produkte)
-- Jedes Akzeptanzkriterium im Browser geprüft, Beleg im Issue
+- Jedes Akzeptanzkriterium im Browser am Handy geprüft, Beleg im Issue
 - Pull Request von einer anderen Person aus dem Team geprüft
-- Auf Vercel live, am Handy geöffnet
-- [...]
+- Auf Vercel live
+- Das Ereignis [Name] kommt nach dem Merge an: Felder [...]; gespeichert wird kein Name und keine E-Mail
+- [aus dem Lego: ...]
 
-## Was wir aus Lego4Scrum mitnehmen
-- [...]</Prompt>
+## Abweichungen vom Scrum Guide (und warum)
+- Drei Produkte, drei Sprint-Ziele, ein Takt: [...]
+- Sprint 1 zwei Wochen, Sprint 2 eine Woche: [...]
+- Daily zwischen Kurstagen schriftlich: [...]
+
+## Aus Lego4Scrum
+- [Name]: [eine Sache, die wir in den echten Sprints anders machen]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="scrum" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf eure Produkte</h2>
-  <p>Was war beim Lego der Bürgermeister, der mitten im Sprint etwas Neues wollte? Wer ist das bei eurem Produkt – und was antwortet ihr als Product Owner?</p>
-  <p class="small muted">Nach Ken Schwaber & Jeff Sutherland, <em>The Scrum Guide</em> (2020); Manifest für Agile Softwareentwicklung (2001); Lego4Scrum nach Alexey Krivitsky.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf eure Produkte</h2>
+    <p class="folie-satz">Was antwortet ihr als Product Owner, wenn mitten im Sprint jemand etwas Neues will?</p>
+    <p class="nur-handout">Im Sprint gilt: „No changes are made that would endanger the Sprint Goal“; der Umfang darf mit dem Product Owner neu verhandelt werden, das Ziel nicht ({GUIDE}, S. 7). Was Neues kommt, landet im Product Backlog – und im nächsten Planning entscheidet ihr, ob es dran ist.</p>
+  </Folie>
+
+  <p class="small muted">Nach {GUIDE}; {MANIFEST}; {JEFFRIES}, Kap. 3 und 5; {KRIVITSKY}.</p>
 
   <FooterNav prev={{ href: '/innolab/tag-4', t: 'Tag 4 · Scrum im Team' }} next={{ href: '/innolab/methoden/backlog', t: 'Backlog aus Issues' }} />
 </Layout>
+
