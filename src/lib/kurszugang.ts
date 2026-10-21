@@ -115,6 +115,16 @@ export function istLoginSeite(pfad: string): boolean {
   return p === '/login' || p === '/login/innolab';
 }
 
+// Abmelden: /logout (mit oder ohne Schrägstrich) löscht das Cookie und führt zur Startseite. Die Middleware prüft das
+// vor allem anderen, also auch ohne gültiges Cookie und ohne Kurspasswort-Variablen – sonst ginge es im Kreis zum Login.
+export const ABMELDEN = '/logout';
+export function istAbmelden(pfad: string): boolean {
+  return pfad === ABMELDEN || pfad === `${ABMELDEN}/`;
+}
+
+// Set-Cookie zum Löschen: gleicher Name und Pfad wie beim Setzen, Max-Age=0.
+export const COOKIE_LOESCHEN = `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`;
+
 export function zumLogin(ziel: string): string {
   const sicher = sichererPfad(ziel);
   const pfad = new URL(sicher, 'https://kurs.invalid').pathname;

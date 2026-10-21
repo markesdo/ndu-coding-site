@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { afterEach, vi } from 'vitest';
 import middleware, { config } from '../../middleware';
@@ -171,5 +172,67 @@ describe('Werkstatt ohne Kurspasswort', () => {
     expect(metadaten.headers.get('x-middleware-next')).toBe('1');
     const gesperrt = await middleware(new Request('https://kurs.invalid/api/werkstattx'));
     expect(gesperrt.status).toBe(401);
+  });
+});
+
+describe('Abmelden', () => {
+  afterEach(() => vi.unstubAllEnvs());
+  const anfrage = (pfad: string, cookie?: string) =>
+    middleware(new Request(`https://kurs.invalid${pfad}`, cookie ? { headers: { cookie } } : {}));
+  const mitVariablen = () => {
+    vi.stubEnv('SITE_PASSWORD', 'pw');
+    vi.stubEnv('SITE_SESSION_SECRET', 's'.repeat(32));
+  };
+
+  it('/logout löscht das Cookie und führt zur Startseite', async () => {
+    mitVariablen();
+    const token = await tokenErstellen('s'.repeat(32), 'pw', Math.floor(Date.now() / 1000));
+    for (const pfad of ['/logout', '/logout/']) {
+      const r = await anfrage(pfad, `${COOKIE}=${token}`);
+      expect(r.status).toBe(303);
+      expect(r.headers.get('location')).toBe('/start');
+      expect(r.headers.get('set-cookie')).toBe(`${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`);
+      expect(r.headers.get('cache-control')).toBe('private, no-store');
+      expect(r.headers.get('x-robots-tag')).toBe('noindex, nofollow');
+    }
+  });
+
+  it('klappt ohne Cookie und ohne Kurspasswort-Variablen – kein Umweg über /login', async () => {
+    mitVariablen();
+    const ohne = await anfrage('/logout');
+    expect(ohne.status).toBe(303);
+    expect(ohne.headers.get('location')).toBe('/start');
+    expect(ohne.headers.get('set-cookie')).toContain('Max-Age=0');
+    vi.unstubAllEnvs();
+    vi.stubEnv('SITE_PASSWORD', '');
+    vi.stubEnv('SITE_SESSION_SECRET', '');
+    const ohneVariablen = await anfrage('/logout');
+    expect(ohneVariablen.headers.get('location')).toBe('/start');
+  });
+
+  it('der Matcher lässt /logout zur Middleware durch (sonst bliebe das Cookie)', () => {
+    expect(geschuetzt('/logout')).toBe(true);
+  });
+
+  it('ähnliche Pfade bleiben hinter dem Kurspasswort, ohne Variablen gesperrt', async () => {
+    mitVariablen();
+    for (const pfad of ['/logoutx', '/logout/x', '/logout.html', '/innolab/logout']) {
+      const r = await anfrage(pfad);
+      expect(r.status, pfad).toBe(303);
+      expect(r.headers.get('location'), pfad).toMatch(/^\/login/);
+      expect(r.headers.get('set-cookie'), pfad).toBeNull();
+    }
+    vi.unstubAllEnvs();
+    vi.stubEnv('SITE_PASSWORD', '');
+    vi.stubEnv('SITE_SESSION_SECRET', '');
+    expect((await anfrage('/tag-1')).status).toBe(503);
+    expect(istOeffentlich('/logout')).toBe(false);
+  });
+
+  it('„Abmelden“ steht in der Seitenleiste der Kursseiten und ist im Beamer ausgeblendet', () => {
+    const layout = readFileSync(new URL('../layouts/Layout.astro', import.meta.url), 'utf8');
+    const beamer = readFileSync(new URL('../styles/beamer.css', import.meta.url), 'utf8');
+    expect(layout).toMatch(/<p class="small abmelden"><a href="\/logout">Abmelden<\/a><\/p>\s*<\/aside>/);
+    expect(beamer).toMatch(/html\[data-beamer\] \.sidebar \.abmelden \{ display: none; \}/);
   });
 });

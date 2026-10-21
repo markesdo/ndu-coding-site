@@ -75,6 +75,8 @@ const { vorher, danach } = nachbarn(path);
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <p class="small muted" style="margin-top:2rem">NDU · MSc Management by Innovation<br/>{kurs.termine}</p>
         <p class="small kurswechsel"><a href={anderer.start}>Zum Kurs {anderer.kurz} →</a></p>
+        <!-- Nur auf Vercel wirksam (middleware.ts); /start und /login haben eigene Seiten ohne dieses Layout. -->
+        <p class="small abmelden"><a href="/logout">Abmelden</a></p>
       </aside>
       <main class="content">
         <div class="inner">

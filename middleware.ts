@@ -1,6 +1,6 @@
 // Kurspasswort für die Website – Vercel Routing Middleware (plattformweit, nicht Astro-Middleware).
 // Läuft nur auf Vercel; lokal (`astro dev`) gibt es kein Passwort.
-// Frei: /start (Startseite vor dem Login), /login und /login/innolab (istLoginSeite), /_astro/* (Schriften, Skripte, Bilder), Favicons, robots.txt,
+// Frei: /start (Startseite vor dem Login), /login und /login/innolab (istLoginSeite), /logout (löscht nur das Cookie), /_astro/* (Schriften, Skripte, Bilder), Favicons, robots.txt,
 // og.png und og-innolab.png (Bilder der Link-Vorschau – WhatsApp & Co. sind nicht angemeldet), version.json (nur die Commit-Kennung, für
 // den Hinweis „Seite aktualisiert“ – sonst bekäme die Abfrage die Login-Seite zurück).
 // Frei ist auch die Werkstatt: /api/werkstatt und alles darunter (nicht /api/werkstattx) sowie
@@ -11,7 +11,7 @@
 // Alles andere braucht das Cookie.
 // Fehlt SITE_PASSWORD oder SITE_SESSION_SECRET, ist die Seite gesperrt (fail closed).
 import { next } from '@vercel/functions';
-import { COOKIE, GUELTIG_SEKUNDEN, cookieLesen, istLoginSeite, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zumLogin } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
+import { COOKIE, COOKIE_LOESCHEN, GUELTIG_SEKUNDEN, cookieLesen, istAbmelden, istLoginSeite, istOeffentlich, ohneAnmeldungZiel, passwortStimmt, sichererPfad, tokenErstellen, tokenGueltig, zumLogin } from './src/lib/kurszugang.js'; // .js-Endung nötig: ohne sie fand Vercels Middleware-Build das Modul nicht (500)
 
 export const config = {
   matcher: ['/((?!_astro/|favicon(?:-innolab)?\\.svg$|favicon\\.ico$|robots\\.txt$|og(?:-innolab)?\\.png$|version\\.json$).*)'],
@@ -33,6 +33,10 @@ function weiter(ort: string, extra: Record<string, string> = {}): Response {
 
 export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url);
+  // Abmelden (Link „Abmelden“ in der Seitenleiste): Cookie löschen, zur Startseite. GET genügt und ist unbedenklich –
+  // eine fremde Seite, die /logout aufruft, kann damit nur das eigene Cookie des Besuchers löschen (CSRF ohne Schaden).
+  // Vor allen anderen Prüfungen: Es klappt ohne gültiges Cookie und ohne SITE_PASSWORD; alles andere bleibt fail closed.
+  if (istAbmelden(url.pathname)) return weiter('/start', { 'Set-Cookie': COOKIE_LOESCHEN });
   // Startseite: für alle, auch ohne Anmeldung (sie zeigt nur Titel und Kurstage) – und unabhängig davon,
   // ob das Kurspasswort gesetzt ist. Ebenso die Werkstatt (eigene Anmeldung, siehe istOeffentlich).
   // Alles andere bleibt ohne SITE_PASSWORD/SITE_SESSION_SECRET gesperrt.
