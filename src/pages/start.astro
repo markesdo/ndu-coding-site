@@ -6,6 +6,7 @@
 // siehe BeamerStart.astro); die Kurs-Links behalten ihn.
 import BeamerStart from '../components/BeamerStart.astro';
 import Marke from '../components/Marke.astro';
+import PraesentatorEinstieg from '../components/PraesentatorEinstieg.astro';
 import LinkVorschau from '../components/LinkVorschau.astro';
 import { TAGE } from '../components/methoden';
 import { innolabOffen, kursLink } from '../lib/kurswahl';
@@ -61,6 +62,8 @@ const offen = innolabOffen(new Date());
           <span class="kurs-hinweis" data-hinweis hidden={offen}>Öffnet nach dem Coding-Kurs, am 16. Oktober.</span>
         </a>
       </div>
+
+      <PraesentatorEinstieg seite="start" />
     </main>
 
     <script>
@@ -73,9 +76,19 @@ const offen = innolabOffen(new Date());
         innolab.removeAttribute('role');
         innolab.querySelector<HTMLElement>('[data-hinweis]')!.hidden = true;
       }
-      for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-kurs]')) {
-        if (!a.classList.contains('gesperrt')) a.href = kursLink(a.dataset.kurs!, location.search);
-      }
+      // Mit „Beamer starten“ / „Beamer beenden“ (PraesentatorEinstieg) ändert sich der Modus ohne neue Adresse – dann zählt
+      // html[data-beamer]; die übrigen Parameter der Adresse bleiben.
+      const root = document.documentElement;
+      const verlinken = () => {
+        const p = new URLSearchParams(location.search);
+        if (root.hasAttribute('data-beamer')) p.set('beamer', ''); else p.delete('beamer');
+        const suche = `?${p}`;
+        for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-kurs]')) {
+          if (!a.classList.contains('gesperrt')) a.href = kursLink(a.dataset.kurs!, suche);
+        }
+      };
+      new MutationObserver(verlinken).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
+      verlinken();
     </script>
   </body>
 </html>

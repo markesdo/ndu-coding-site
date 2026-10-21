@@ -5,9 +5,10 @@
 // Der Live-Schalter in Kopf- bzw. Seitenleiste zeigt den Zustand und pausiert (Position wird dann gelöscht).
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftVon } from './abschnitt';
 import { abfrageKette, jsonHolen, zeitlimit } from '../lib/kette';
+import { PRAESENTATOR_SCHLUESSEL, beamerSchalten } from '../lib/beamer';
 import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
-const KEY = 'ndu-presenter';
+const KEY = PRAESENTATOR_SCHLUESSEL;
 const PAUSE = 'ndu-presenter-pause';
 const API = '/api/position';
 const root = document.documentElement;
@@ -133,11 +134,7 @@ function praesentator() {
     root.toggleAttribute('data-ist-praesentator', Boolean(key));
     // Abgemeldet (hier, in einem anderen Tab oder per 403), aber noch im Beamer-Modus: verlassen – ohne Schlüssel gibt es
     // keinen Knopf und keine Taste mehr zum Ausschalten.
-    if (!key && root.hasAttribute('data-beamer')) {
-      root.removeAttribute('data-beamer');
-      root.removeAttribute('data-theme');
-      try { localStorage.removeItem('ndu-beamer'); } catch {}
-    }
+    if (!key && root.hasAttribute('data-beamer')) beamerSchalten(root, false);
     for (const b of knoepfe) {
       b.hidden = !key;
       b.dataset.zustand = zustand;

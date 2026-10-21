@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Callout from '../../components/Callout.astro';
+import PraesentatorEinstieg from '../../components/PraesentatorEinstieg.astro';
 import { TAGE } from '../../components/methoden';
 
 // Tageskarten verlinken, sobald es die Tagesseite gibt.
@@ -50,4 +51,6 @@ const datumKurz = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateStri
   <p>Prototyp 70 %, Präsentation 30 %. Details folgen.</p>
 
   <p class="small muted" style="margin-top:3rem">Lehrende: Markus Doppelreiter · Louis Perner</p>
+
+  <PraesentatorEinstieg />
 </Layout>
