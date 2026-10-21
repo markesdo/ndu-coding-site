@@ -492,14 +492,18 @@ function quelle(id: string): string | undefined {
   return a.pfad ?? (a.lebtIn.includes('linear') ? LINEAR_QUELLE : undefined);
 }
 
-/** Werkstatt-Artefakt, das Claude zum Abgleich mit artefakt_lesen holt. */
+/** Werkstatt-Artefakt der Vorarbeit: artefakt_pruefen liefert es zum Abgleich mit (jede Zeile in braucht macht jede Prüfung länger). */
 function werkstattQuelle(id: string): ArtefaktName | undefined {
   const a = artefakt(id)!;
   return nurInWerkstatt(a) ? a.werkstatt : undefined;
 }
 
+/** Werkstatt-Artefakte der Vorarbeit, die zum Abgleich gehören (für die Interview-Methode: Brief und Annahmen-Map). */
+export const werkstattVorarbeit = (m: Methode): ArtefaktName[] => [...new Set(m.braucht.map(werkstattQuelle).filter((n): n is ArtefaktName => !!n))];
+
 const aufzaehlen = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} und ${xs.at(-1)}`);
-const ausWerkstatt = (namen: ArtefaktName[]) => `${aufzaehlen(namen.map((n) => WERKSTATT_AKKUSATIV[n]))} (Werkzeug ${MCP_WERKZEUGE.artefaktLesen})`;
+const akkusativListe = (namen: ArtefaktName[]) => aufzaehlen(namen.map((n) => WERKSTATT_AKKUSATIV[n]));
+const ausWerkstatt = (namen: ArtefaktName[]) => `${akkusativListe(namen)} (Werkzeug ${MCP_WERKZEUGE.artefaktLesen})`;
 
 /** Wird das Ergebnis dieser Methode in der Werkstatt geprüft (Connector) statt als Datei im Repo? Mit pfad: immer die Datei. */
 export function pruefungInWerkstatt(m: Methode, pfad?: string): boolean {
@@ -520,14 +524,14 @@ export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `i
 export function vorarbeitLesen(m: Methode, schonGelesen: (string | undefined)[] = []): string[] {
   const gelesen = new Set(schonGelesen);
   const dateien = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !gelesen.has(p)))];
-  const werkstatt = [...new Set(m.braucht.map(werkstattQuelle).filter((n): n is ArtefaktName => !!n))];
+  const werkstatt = werkstattVorarbeit(m);
   return [dateien.join(', '), werkstatt.length ? `aus der Werkstatt ${ausWerkstatt(werkstatt)}` : ''].filter(Boolean);
 }
 
 export function pruefPrompt(m: Methode, pfad?: string): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
   const liste = m.pruefliste.map((p, i) => `${i + 1}. ${p}`);
-  const werkstattAbgleich = [...new Set(m.braucht.map(werkstattQuelle).filter((n): n is ArtefaktName => !!n))];
+  const werkstattAbgleich = werkstattVorarbeit(m);
 
   if (pruefungInWerkstatt(m, pfad)) {
     // Claude (claude.ai mit dem Connector) sieht nur die Mappe; Vorarbeit aus Dateien ließe sich so nicht lesen.
@@ -535,11 +539,12 @@ export function pruefPrompt(m: Methode, pfad?: string): string {
     if (dateien.length) throw new Error(`pruefPrompt: Methode „${m.slug}“ prüft in der Werkstatt, braucht aber Dateien: ${dateien.join(', ')}`);
     const namen = m.ergibt.map((id) => artefakt(id)!.werkstatt!);
     return [
-      `Prüf ${aufzaehlen(namen.map((n) => WERKSTATT_AKKUSATIV[n]))} mit der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktPruefen}) gegen diese Prüfliste (${m.name}):`,
+      `Prüf ${akkusativListe(namen)} mit der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktPruefen}) gegen diese Prüfliste (${m.name}):`,
       ...liste,
-      ...(werkstattAbgleich.length ? [`Zum Abgleich lies auch ${ausWerkstatt(werkstattAbgleich)}.`] : []),
+      // artefakt_pruefen liefert die Vorarbeit aus der Mappe selbst mit (nur zum Abgleich).
+      ...(werkstattAbgleich.length ? [`Zum Abgleich liefert das Werkzeug auch ${akkusativListe(werkstattAbgleich)} mit.`] : []),
       // Ohne Connector fügen die Studierenden die Texte aus „Für Claude kopieren“ unter den Prompt (ClaudePruefung.astro).
-      `Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: ${aufzaehlen([...namen, ...werkstattAbgleich].map((n) => WERKSTATT_AKKUSATIV[n]))}.`,
+      `Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: ${akkusativListe([...namen, ...werkstattAbgleich])}.`,
       '',
       `${REGELN_ANFANG} Schreib nichts um und formulier keinen Text für mich – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.`,
     ].join('\n');

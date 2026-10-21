@@ -25,6 +25,18 @@ describe('Snapshots der Kaffeebar-Beispiele', () => {
   }
 });
 
+// NDU-26: Jede Zeile mit eigener ID trägt sie fett im Markdown, damit Befunde mit ID sofort zu finden sind.
+describe('IDs im gerenderten Text', () => {
+  const ids = (x: unknown): string[] =>
+    Array.isArray(x) ? x.flatMap(ids) : x && typeof x === 'object' ? Object.entries(x).flatMap(([k, v]) => (k === 'id' && typeof v === 'string' ? [v] : ids(v))) : [];
+  for (const name of ARTEFAKT_NAMEN) {
+    it(name, () => {
+      const s = md(name);
+      for (const id of ids(roh[name])) expect(s, id).toContain(name === 'interviews' && !id.includes('-') ? `## ${id} · ` : `**${id}**`);
+    });
+  }
+});
+
 describe('Brief', () => {
   it('Datum österreichisch, Überschriften der Vorlage, Produktsatz offen', () => {
     const s = md('brief');
