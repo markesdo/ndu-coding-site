@@ -15,6 +15,7 @@ npm run build    # Ausgabe in dist/
 1. Repo auf GitHub pushen.
 2. vercel.com → Add New → Project → Repo importieren. Framework „Astro“ wird erkannt.
 3. Deploy. Fertig – jeder Push auf `main` deployt neu.
+4. Optional: Vercel-Variable `MIRO_BOARD_URL` (Sensitive) mit dem Link zum Miro-Team-Board des Innolab. Sie wird beim Build in die Seiten hinter dem Kurspasswort geschrieben (Tag 1, Frame-Hinweise als Deep Links; Frame-IDs in `src/components/miro-frames.ts`); ohne Wert bleibt dort Text ohne Link. Board-Link-Passwort in Miro = SITE_PASSWORD; wer SITE_PASSWORD ändert, ändert es auch in Miro (Share → Sharing settings).
 
 ## Struktur
 

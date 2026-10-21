@@ -24,10 +24,10 @@ export function miroBoard(wert: string | undefined): string | null {
 }
 
 // Deep Link auf einen Frame: dasselbe Board, dazu moveToWidget=<Frame-ID> (share_link_id bleibt).
+// board ist schon durch miroBoard() geprüft (TEAM_BOARD in team-board.ts); hier wird nur noch angehängt.
 export function miroFrameLink(board: string, frameId: string): string | null {
-  const gueltig = miroBoard(board);
-  if (!gueltig || !FRAME_ID.test(frameId)) return null;
-  const url = new URL(gueltig);
+  if (!FRAME_ID.test(frameId)) return null;
+  const url = new URL(board);
   url.searchParams.set('moveToWidget', frameId);
   return url.href;
 }

@@ -1,0 +1,8 @@
+---
+// Text, der auf einen Frame des Team-Boards zeigt (z. B. „Start hier“ im Fließtext): mit gültiger MIRO_BOARD_URL ein
+// Link auf den Frame (neuer Tab), sonst nur der Text. name = Frame-Titel genau wie in MIRO_FRAMES.
+import { teamFrameLink } from '../lib/team-board';
+const { name } = Astro.props as { name: string };
+const link = teamFrameLink(name);
+---
+{link ? <a href={link} target="_blank" rel="noopener noreferrer"><slot /><span class="sr-only"> (öffnet in neuem Tab)</span></a> : <slot />}

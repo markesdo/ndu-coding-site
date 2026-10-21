@@ -1,11 +1,10 @@
 // Frame-Name auf dem Team-Board → Miro-Frame-ID (für den Deep Link mit moveToWidget). Die IDs sind nicht geheim:
 // Ohne die Board-Adresse (MIRO_BOARD_URL, nur auf Vercel) führen sie nirgendwohin.
-// Der Name steht genau so im Frame-Titel auf dem Board und in <MiroFrame name="…">; ein Test prüft, dass jeder
-// Name aus den Seiten hier steht. Neuer Frame auf dem Board → ID hier eintragen (Miro: Frame anklicken, „Copy link“,
+// Der Name steht genau so im Frame-Titel auf dem Board und in <MiroFrame name="…"> bzw. <MiroLink name="…">; ein Test
+// prüft, dass jeder Name aus den Seiten hier steht und jeder Eintrag hier auf einer Seite benutzt wird (sonst raus). Neuer Frame auf dem Board → ID hier eintragen (Miro: Frame anklicken, „Copy link“,
 // die Zahl hinter moveToWidget=).
 export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'Start hier · So arbeitet ihr auf diesem Board': '3458764687728125024',
-  'Roter Faden · Euer Opportunity Solution Tree': '3458764687728125025',
   'T1 · 1 · Experience Map': '3458764687728125026',
   'T1 · 2 · Problem-Rahmen & Produkt-Brief': '3458764687406008349',
   'T1 · 3 · Annahmen-Map': '3458764687406008351',

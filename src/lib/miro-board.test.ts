@@ -55,9 +55,13 @@ describe('miroFrameLink', () => {
     expect(miroFrameLink(BOARD, '42')).toBe(`${BOARD}?moveToWidget=42`);
   });
 
-  it('gibt bei ungültigem Board oder ungültiger Frame-ID null zurück', () => {
-    expect(miroFrameLink('https://miro.com.evil.tld/app/board/TESTKEY=/', '42')).toBeNull();
+  it('ersetzt ein schon vorhandenes moveToWidget statt es zu verdoppeln', () => {
+    expect(miroFrameLink(`${BOARD}?moveToWidget=1`, '42')).toBe(`${BOARD}?moveToWidget=42`);
+  });
+
+  it('gibt bei ungültiger Frame-ID null zurück', () => {
     expect(miroFrameLink(BOARD, '')).toBeNull();
+    expect(miroFrameLink(BOARD, 'abc')).toBeNull();
     expect(miroFrameLink(BOARD, '42&x=1')).toBeNull();
   });
 });

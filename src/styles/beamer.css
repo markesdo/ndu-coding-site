@@ -26,7 +26,7 @@ html[data-beamer] .content .pa-punkt { width: .9em; height: .9em; }
 /* Kontrast: Projektoren waschen Farben aus. Gedämpfter Text und Linien kräftiger, Links unterstrichen
    (nur die Farbe reicht am Beamer nicht). */
 html[data-beamer] .shell, html[data-beamer] .topbar { --muted: color-mix(in srgb, var(--fg) 80%, var(--bg)); --border: color-mix(in srgb, var(--fg) 25%, var(--bg)); }
-html[data-beamer] .content a:not(.btn, .day, .footer-nav a, .stepbar a) { text-decoration: underline; text-underline-offset: .15em; }
+html[data-beamer] .content a:not(.btn, .day, .footer-nav a, .stepbar a, .miro-frame a) { text-decoration: underline; text-underline-offset: .15em; }
 
 /* Eine Spalte; die Navigation gibt es weiter, als Overlay hinter „Menü“ wie am Handy. */
 html[data-beamer] .shell { grid-template-columns: 1fr; }
