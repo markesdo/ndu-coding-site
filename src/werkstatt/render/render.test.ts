@@ -50,14 +50,18 @@ describe('Entscheidungen', () => {
     expect(s).toContain('- **D2** 22.10.2026 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: getan');
     expect(s).toContain('Beleg: noch keiner');
     expect(s).toContain('Beleg: getan (Kassendaten September)');
-    expect(s).toContain('Beleg: erzählt (I1, I3, I4)');
-    expect(s).not.toContain('erzaehlt');
+    expect(s).toContain('Beleg: gesagt (I1, I2, I3, I4, I5)');
+    // Das Beispiel hat keine erzählte Zeile mehr – die Stufe erzaehlt eigens rendern.
+    const e = laden('entscheidungen');
+    const erz = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[2], beleg: 'erzaehlt' }] });
+    expect(erz).toContain('Beleg: erzählt (I1, I2, I3, I4, I5)');
+    expect(erz).not.toContain('erzaehlt');
   });
   it('Beleg-Notiz steht nach Stufe und IDs', () => {
     const e = laden('entscheidungen');
     const z = { ...e.entscheidungen[2], belegNotiz: 'Interviews Oktober' };
     const s = rendern('entscheidungen', { ...e, entscheidungen: [z] });
-    expect(s).toContain('Beleg: erzählt (I1, I3, I4; Interviews Oktober)');
+    expect(s).toContain('Beleg: gesagt (I1, I2, I3, I4, I5; Interviews Oktober)');
     expect(rendern('entscheidungen', { ...e, entscheidungen: [{ ...z, belegNotiz: '' }] })).not.toContain('Oktober');
   });
   it('ersetzte Entscheidung zeigt das Datum der ersetzenden Zeile', () => {
@@ -235,7 +239,7 @@ describe('Beleg-Klammer', () => {
   it('leere IDs zählen wie keine', () => {
     const e = laden('entscheidungen');
     const s = rendern('entscheidungen', { ...e, entscheidungen: [{ ...e.entscheidungen[2], belegIds: ['', ' ', 'I1'], belegNotiz: ' ' }] });
-    expect(s).toContain('Beleg: erzählt (I1)');
+    expect(s).toContain('Beleg: gesagt (I1)');
   });
 });
 
