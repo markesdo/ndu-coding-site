@@ -115,7 +115,6 @@ html[data-beamer] .content :is(ul, ol).gross > li { font-size: 1.25rem; }
   html[data-beamer] .content { padding: 1.25rem 16px 4rem; }
   html[data-beamer] .topbar { padding: 6px 16px; font-size: 13px; }
   html[data-beamer] .topbar .beamer-weiter { display: none; }
-  html[data-beamer] .topbar .begleiter-knopf { display: none; }
   html[data-beamer] .topbar strong { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 }
 
@@ -139,11 +138,15 @@ html .topbar .beamer-toggle[aria-pressed="true"], .beamer-toggle[aria-pressed="t
 .beamer-toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .beamer-toggle kbd { font-family: var(--mono); font-size: .75em; color: var(--muted); }
 .topbar-actions { display: flex; gap: .5rem; align-items: center; }
-/* Begleiter-Knopf (nur Icon, Layout.astro): so hoch wie die Knöpfe mit Text daneben, damit die Leiste nicht wächst.
-   Nur im Beamer-Modus am großen Bildschirm; am Handy ist die Kopfleiste schon voll. Außerhalb des Beamers führt der Link
-   „Begleiter“ unten auf /innolab (PraesentatorEinstieg.astro) und auf /praesentator dorthin. */
+/* Begleiter-Knopf (nur Icon, Layout.astro): so hoch wie die Knöpfe mit Text daneben, damit die Leiste nicht wächst; Rahmen
+   und Abstand wie „Menü“ (global.css .topbar button) bzw. im Beamer-Modus wie „Beamer“ (oben). Sichtbar überall, wo die
+   Kopfleiste steht – im Beamer-Modus und ohne ihn am Tablet (das iPad ist das Begleitgerät). Nur am Handy (≤ 600 px) nicht,
+   dort ist die Leiste schon voll. html[data-beamer] …: sonst gewänne die Beamer-Regel oben. Ohne Kopfleiste (Desktop
+   außerhalb des Beamers) führt der Link „Begleiter“ unten auf /innolab (PraesentatorEinstieg.astro) und auf /praesentator dorthin. */
 .topbar .begleiter-knopf { align-self: stretch; text-decoration: none; }
-html:not([data-beamer]) .topbar .begleiter-knopf { display: none; }
+@media (max-width: 600px) {
+  html .topbar .begleiter-knopf, html[data-beamer] .topbar .begleiter-knopf { display: none; }
+}
 .topbar .begleiter-knopf:hover { border-color: var(--accent); }
 .topbar .begleiter-knopf:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .sidebar .beamer-toggle { margin-top: 1.5rem; vertical-align: top; }

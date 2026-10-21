@@ -223,7 +223,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
   .sidebar { position: fixed; inset: 0; z-index: 50; height: auto; transform: translateX(-100%); transition: transform .2s; width: min(320px, 85vw); box-shadow: 0 0 40px rgba(0,0,0,.25); }
   .sidebar.open { transform: none; }
   .topbar { display: flex; align-items: center; justify-content: space-between; padding: .75rem 1rem; border-bottom: 1px solid var(--border); background: var(--bg-2); position: sticky; top: 0; z-index: 40; }
-  .topbar button { display: inline-flex; align-items: center; gap: .35rem; font: inherit; background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: .35rem .7rem; color: var(--fg); cursor: pointer; }
+  .topbar button, .topbar .begleiter-knopf { display: inline-flex; align-items: center; gap: .35rem; font: inherit; background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: .35rem .7rem; color: var(--fg); cursor: pointer; }
   .content { padding: 1.5rem 16px 5rem; }
   body { font-size: 16px; }
 }

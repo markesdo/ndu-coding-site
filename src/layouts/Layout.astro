@@ -51,7 +51,7 @@ const { vorher, danach } = nachbarn(path);
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
         {/* Begleiter (Notizen zur Folie) in einem neuen Tab, damit die projizierte Seite stehen bleibt. Nur im Innolab und nur beim
-            Präsentator (data-nur-praesentator, beamer.css); sichtbar ist die Kopfleiste im Beamer-Modus und am Handy. */}
+            Präsentator (data-nur-praesentator, beamer.css); steht überall, wo die Kopfleiste steht (Beamer-Modus, Tablet), nur am Handy nicht. */}
         {bereich === 'innolab' && (
           <a class="begleiter-knopf" href="/innolab/begleiter" target="_blank" rel="noopener" data-nur-praesentator aria-label="Begleiter öffnen" title="Begleiter öffnen (neuer Tab)"><NotebookPen size={18} aria-hidden="true" /></a>
         )}

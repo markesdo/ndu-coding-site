@@ -6,6 +6,7 @@ import { bereichVon } from '../lib/navigation';
 // er trägt data-nur-praesentator, das beamer.css ohne html[data-ist-praesentator] ausblendet.
 const layout = readFileSync(new URL('../layouts/Layout.astro', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles/beamer.css', import.meta.url), 'utf8');
+const global = readFileSync(new URL('../styles/global.css', import.meta.url), 'utf8');
 const praesentator = readFileSync(new URL('../pages/praesentator.astro', import.meta.url), 'utf8');
 
 /** Das <a …>-Tag des Knopfs (Klasse begleiter-knopf) samt Attributen. */
@@ -48,14 +49,21 @@ describe('Begleiter-Knopf in der Kopfleiste', () => {
     expect(bereichVon('/tag-1')).toBe('coding');
   });
 
-  it('nur im Beamer-Modus und nicht am Handy (dort ist die Kopfleiste voll)', () => {
-    expect(regel('html:not([data-beamer]) .topbar .begleiter-knopf')).toBe('display: none;');
-    const schmal = css.slice(css.indexOf('@media (max-width: 900px) {'));
-    expect(regel('html[data-beamer] .topbar .begleiter-knopf', schmal.slice(0, schmal.indexOf('\n}')))).toBe('display: none;');
+  it('überall, wo die Kopfleiste steht (Beamer-Modus und Tablet), nur am Handy nicht (dort ist sie voll)', () => {
+    // Keine Regel blendet den Knopf außerhalb des Beamer-Modus oder im Beamer-Modus am Tablet aus …
+    expect(css).not.toMatch(/html:not\(\[data-beamer\]\)[^{]*\.begleiter-knopf[^{]*\{[^}]*display: none/);
+    const tablet = css.slice(css.indexOf('@media (max-width: 900px) {'));
+    expect(tablet.slice(0, tablet.indexOf('\n}'))).not.toContain('begleiter-knopf');
+    // … nur ≤ 600 px, in beiden Modi (die Beamer-Regel ist spezifischer, daher steht sie eigens da).
+    const handy = css.slice(css.indexOf('@media (max-width: 600px) {'));
+    expect(regel('html .topbar .begleiter-knopf, html[data-beamer] .topbar .begleiter-knopf', handy.slice(0, handy.indexOf('\n}')))).toBe('display: none;');
   });
 
-  it('so hoch wie die Knöpfe daneben: gleicher Rahmen und Abstand wie „Beamer“, gestreckt auf die Zeilenhöhe', () => {
+  it('so hoch wie die Knöpfe daneben: gleicher Rahmen und Abstand wie „Beamer“ bzw. „Menü“, gestreckt auf die Zeilenhöhe', () => {
     expect(css).toMatch(/html\[data-beamer\] \.topbar button,[^{]*html\[data-beamer\] \.topbar \.begleiter-knopf \{/);
+    // außerhalb des Beamer-Modus: dieselbe Regel wie die Knöpfe der Kopfleiste am Tablet (global.css)
+    const schmal = global.slice(global.indexOf('@media (max-width: 900px) {'));
+    expect(regel('.topbar button, .topbar .begleiter-knopf', schmal.slice(0, schmal.indexOf('\n}'))) ?? '').toContain('border: 1px solid var(--border);');
     expect(regel('.topbar .begleiter-knopf')).toContain('align-self: stretch;');
   });
 });
