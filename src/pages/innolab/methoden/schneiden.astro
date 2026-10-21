@@ -6,6 +6,18 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+
+const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
+const GRENNING = 'James Grenning, „Planning Poker“ (2002)';
+const COHN = 'Mike Cohn, „Agile Estimating and Planning“ (2005)';
+const DUARTE = 'Vasco Duarte, „NoEstimates“ (2016)';
+const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
+const WAKE = 'Bill Wake, „INVEST in Good Stories, and SMART Tasks“ (xp123.com, 2003)';
+const PLAN_CHECK = 'Lies Issue [Kennung] über den Linear-MCP und docs/PRODUKT.md. Mach einen Plan, wie du das Issue umsetzen würdest – baue nichts. Schreib den Plan so, dass ihn jemand ohne Programmierkenntnisse versteht: höchstens sieben Schritte. Sag danach in einem Satz, ob das in einen Durchgang passt, und nenn alles, was du annehmen müsstest, weil es im Issue nicht steht. Ändere das Issue nicht.';
 ---
 <Layout title="Schneiden statt Schätzen">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
@@ -14,64 +26,127 @@ import FooterNav from '../../../components/FooterNav.astro';
   <Orientierung seite="innolab/methoden/schneiden" leiste={false} />
   <MethodenKarte slug="schneiden" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>Vor einem Sprint will ein Team zwei Dinge wissen: Wie viel passt hinein? Und verstehen alle die Issues gleich? Entwicklungsteams beantworten das meist mit <strong>Schätzen</strong>. Das setzt voraus, dass man ein Gefühl dafür hat, wie Software entsteht. Ihr habt dieses Gefühl nicht – und müsst es auch nicht haben, denn bei euch baut Claude. Ihr beantwortet beide Fragen deshalb anders:</p>
-  <ul>
-    <li><strong>Wie viel passt hinein?</strong> Jedes Issue wird so geschnitten, dass es in <em>einen Durchgang</em> mit Claude passt. Dann sind alle Issues ungefähr gleich groß, und ihr zählt einfach Issues.</li>
-    <li><strong>Verstehen alle dasselbe?</strong> Die anderen beiden lesen jedes Issue und fragen, was unklar ist – im Issue, nicht im Gespräch.</li>
-  </ul>
+  <Folie>
+    <h2 id="worum">Wer baut, schätzt – bei euch Claude</h2>
+    <p class="folie-satz">Schätzen ist ein Gespräch unter denen, die bauen; ihr lasst euch stattdessen den Plan zeigen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/grenning/hand.jpg" alt="Grüner runder Spieltisch, in der Mitte eine Karte „the Story“, rundherum sechs aufgedeckte Karten mit den Zahlen 1, 3, 2, 3, 5 und 3" quelle={`Eine aufgedeckte Hand: 1, 3, 2, 3, 5, 3. ${GRENNING}, S. 2.`} schmal />
+      <ul>
+        <li data-schritt><strong>Planning Poker:</strong> alle decken gleichzeitig auf; wer am höchsten und am tiefsten liegt, erklärt.</li>
+        <li data-schritt><strong>Der Product Owner schätzt nicht mit.</strong> Die Unendlich-Karte heißt: teilen.</li>
+        <li data-schritt>„the people most competent in solving the task should estimate it“ – bei euch ist das Claude.</li>
+        <li data-schritt><strong>Statt einer Zahl</strong> fragt ihr Claude: Passt das in einen Durchgang?</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>In Unternehmen werdet ihr fast sicher auf Planning Poker treffen. Grenning hat es 2002 beschrieben, weil Schätzrunden lang wurden und nicht alle mitredeten: „Precision of individual estimates is not the goal. Determining the project scope is.“ Jede*r legt verdeckt eine Karte, dann „turn over all the cards. If there is agreement, great“; sonst wird diskutiert – „Defer the story, split it, or take the low estimate“ ({GRENNING}, S. 1). Bei der Hand oben beginnen „the programmers at the extremes“; und: „They all have to be a turtle and stick their neck out when they play their card. … The whole team plays the game, not just the most vocal, or most senior“ (S. 2). Sein Deck: „1,2,3,5,7,10 days and infinity“; ist eine Story länger als zwei Wochen, „play the infinity card and make the customer split the story“. „Common ground and differences become evident“ (S. 3).</p>
+      <p>Cohn hat das Spiel verbreitet ({COHN}, S. 56, „Grenning 2002“), mit dem Deck „0, 1, 2, 3, 5, 8, 13, 20, 40, and 100“ und der Regel: „The product owner participates in planning poker but does not estimate.“ „If estimates differ, the high and low estimators explain their estimates“ (S. 56); „It rarely takes more than three rounds“ (S. 57). Warum es funktioniert: Cohn zitiert Jørgensens Literaturübersicht – „the people most competent in solving the task should estimate it“ (S. 58); begründen zu müssen, verbessert die Schätzung, „especially on items with large amounts of uncertainty“, und „Being asked to justify estimates has also been shown to result in estimates that better compensate for missing information“ (S. 59). Schon vorher: „estimates prepared by those who will do the work are better than estimates prepared by anyone else“ (S. 51). Patton sagt dasselbe: „The best estimates come from developers who really understand what they’re estimating“ ({PATTON}, Kap. 4, „The Secret to Good Estimation“), und den Arbeitsplan macht das Team, nicht die Produktperson (Kap. 10).</p>
+      <p>Daraus folgt die Regel des Kurses: Ihr baut nicht selbst, also schätzt ihr nicht – ihr lasst euch von der, die baut, den Plan zeigen und entscheidet. Die Frage an Claude ist Duartes „Flashtimate“: „To determine if a story is small enough I ask: ‚Tom, can you get this story done by tomorrow?‘ … The first question is intuitive (some call in Flashtimate), and not a result of a detailed analysis“ ({DUARTE}, S. 71). Ángel Medinilla fragt dasselbe für den Sprint: „does this Story feel like it could fit into a 2-week sprint?“ – „it is only when we start working on a Story that we actually know how long it will take“ (S. 81). Eine Runde Poker spielt ihr nicht: Ohne Bauerfahrung hättet ihr keine Zahl – eine Kürzung des Kurses.</p>
+    </div>
+  </Folie>
 
-  <h3 id="im-unternehmen">Wie Entwicklungsteams schätzen</h3>
-  <p>In einem Unternehmen werdet ihr fast sicher auf <strong>Story Points</strong> und <strong>Planning Poker</strong> treffen: Die Developers schätzen die Größe eines Issues relativ zu einem Referenz-Issue, auf einer Skala wie 1, 2, 3, 5, 8, und decken ihre Zahl gleichzeitig auf. Liegen die Zahlen weit auseinander, reden sie darüber – und genau dieses Gespräch ist der eigentliche Wert: Es zeigt, wo ein Issue verschieden verstanden wird. Viele Teams zählen inzwischen nur noch Issues statt Punkte (<em>#NoEstimates</em>). Das funktioniert, wenn alle Issues ähnlich klein sind – und dahin bringt euch das Schneiden.</p>
+  <Folie>
+    <h2 id="zaehlen">Zählen statt Punkte</h2>
+    <p class="folie-satz">Sind alle Issues ungefähr gleich klein, zählt ihr Issues – ab Sprint 2 mit gestrigem Wetter.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/duarte/run-chart.jpg" alt="Handgezeichnetes Liniendiagramm: senkrecht Stories Delivered, waagrecht 21 Iterationen; die Linie schwankt eng um eine Linie Avg, weit darüber eine Linie Target!!!" quelle={`Gelieferte Stories über 21 Iterationen. ${DUARTE}, Abb. 9, S. 88.`} />
+      <ul>
+        <li data-schritt><strong>Fertig zählt nur,</strong> was läuft, getestet und abgenommen ist.</li>
+        <li data-schritt><strong>Kein Issue größer als ein Durchgang</strong> – zu groß heißt teilen, am besten entlang der Kriterien.</li>
+        <li data-schritt><strong>Sprint 1 knapp,</strong> Sprint 2 so viele, wie in Sprint 1 fertig wurden.</li>
+        <li data-schritt><strong>Ein Spike</strong> ist kein Issue für Sprint 1.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Zu 1: „RTS, Running-Tested-Stories is the only metric that reliably describes the progress in a software project“ ({DUARTE}, S. 68); bei euch heißt das: fertig nach der Definition of Done. Zu 2: „There should be no ‚huge‘ Stories (e.g. in Scrum: bigger than half a sprint counts as ‚too big‘ and should be split.)“ (S. 69). Sind die Stories klein, sind sie „typically pretty homogeneous in size, which means that you can focus on their value, instead of their cost“ (S. 71); im letzten Schritt seines Wegs zu #NoEstimates: „Simply count Stories and project progress based on how many Stories the project was able to deliver in the past“ (S. 97). Jeffries: „Many teams today are working quite successfully using no detailed estimates at all. … When they need to predict how long things will take, they just count things done“ (S. 38); „Once we become proficient at breaking all features down to approximately the same size, we can manage the project very nicely“ (S. 40). Beide sagen „ungefähr gleich“, nicht „gleich“.</p>
+      <p>Zu 3: Für eine Vorhersage nimmt Duarte „the progress data from 3 to 5 iterations“ (S. 87). Ihr habt zwei Sprints, also ist Zählen bei euch eine Faustregel, keine Vorhersage: Sprint 1 plant ihr knapp, ab Sprint 2 gilt <em>Yesterday’s Weather</em> – „plan to do as much this iteration as you did last iteration“ ({JEFFRIES}, S. 37), wie in <a href="/innolab/methoden/sprint#planning">Sprint Planning</a>. „Planning with ‚stretch goals‘ is destructive“ (S. 39). Zu 4: Ein Spike dient dem Lernen; Patton: „Use stories to describe spikes“ (Kap. 11, „Discover a Minimum Viable Solution“), Wake: ein Spike ist „(time-boxed)“ und liefert „enough information to make a decent estimate“ ({WAKE}). Er gehört nicht in Sprint 1, solange Slice 1 nicht läuft.</p>
+      <h3 id="teilen">Zu groß? So teilt ihr</h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Teilen nach</th><th>So sähe es bei der Kaffeebar aus</th><th>Quelle</th></tr></thead>
+          <tbody>
+            <tr><th>den Akzeptanzkriterien: ein Teil je Kriterium</th><td>wäre Issue 2 zu groß: erst ohne „Geht sich knapp nicht aus“, das wird ein eigenes Issue</td><td>{PATTON}, Kap. 16, „Split and Thin“: „It’s the discussion of the acceptance criteria that reveals how we could break down the work into smaller parts“; Kap. 17: „each story satisfies as little as one agreement“</td></tr>
+            <tr><th>schnell vor aufwendig: erst ein vorläufiger Speicher, später die echte Quelle</th><td>Zugliste aus einer Tabelle, die die Bar morgens füllt; die Fahrplandaten später</td><td>{DUARTE}, S. 82–83: „Slice to separate quick from time-intensive functionality“; „you may decide at some point to go live with the temporary solution“</td></tr>
+            <tr><th>Ablaufschritten</th><td>„Bestellen“ → Getränk wählen · Abfahrt angeben · Nummer sehen</td><td>{DUARTE}, S. 84: „slice following your user journey steps“</td></tr>
+            <tr><th>gut genug – besser – am besten</th><td>Uhrzeit eintippen → Zug aus der Liste → Verspätung automatisch</td><td>{PATTON}, Kap. 16, „Split and Thin“ (Good-Better-Best)</td></tr>
+            <tr><th>Anlegen, Ansehen, Ändern, Löschen</th><td>Bestellung aufgeben → ansehen → stornieren</td><td>{COHN}, S. 122–123</td></tr>
+            <tr><th>Fehlerfälle und Querschnittsthemen (Login, Zahlung, Schnittstelle) abtrennen</th><td>Bestellen ohne Online-Zahlung; „Zeit schon vorbei“ als eigenes Teil</td><td>{COHN}, S. 121 („removing the handling of exceptional or error conditions from the main story“) und S. 123–124</td></tr>
+            <tr><th>nie in Schichten (Datenbank, Oberfläche)</th><td>–</td><td>{COHN}, S. 125; {PATTON}, Kap. 10; {WAKE}</td></tr>
+            <tr><th>Spike: erst „herausfinden, ob …“, dann das Issue</th><td>„Gibt es Fahrplandaten mit Gleis, die wir abfragen dürfen?“</td><td>{PATTON}, Kap. 11; {WAKE}</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Jedes Teil bleibt ein senkrechter Schnitt und bekommt mindestens eines der Kriterien, die ihr um 14:30 geschrieben habt – keine neuen. Duarte: „it must be testable and final, i.e. the team can make sure that a particular User Story has been successfully completed according to a Definition of Done“ (S. 84).</p>
+    </div>
+  </Folie>
 
-  <h2 id="plan-check">Der Plan-Check mit Claude</h2>
-  <p>Claude Code hat einen <strong>Plan-Modus</strong>: Claude liest, überlegt und schlägt einen Plan vor, ändert aber nichts. Ihr schaltet ihn mit <kbd>Shift</kbd><kbd>Tab</kbd> ein, bis unten „plan mode on“ steht, und danach genauso wieder aus, bis „auto mode on“ dasteht (<a href="/konzepte/coding-agent">Coding-Agent</a>). Für jedes Issue lasst ihr euch einen Plan machen und beurteilt nur drei Dinge:</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Ihr seht im Plan …</th><th>Dann …</th></tr></thead>
-      <tbody>
-        <tr><th>wenige Schritte, alle verständlich</th><td>passt in einen Durchgang</td></tr>
-        <tr><th>viele Schritte, mehrere Seiten oder Tabellen, oder etwas „Externes“ (Schnittstelle, Zahlung, Login)</th><td>zu groß: teilen mit den Mustern aus <a href="/innolab/methoden/backlog#splitting">Backlog aus Issues</a></td></tr>
-        <tr><th>eine Frage von Claude oder eine Annahme, die ihr nicht getroffen habt</th><td>unklar: ins Issue schreiben, was ihr meint</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <Prompt label="Plan-Check · Claude Code im Plan-Modus">Lies Issue [Kennung] über den Linear-MCP und docs/PRODUKT.md. Mach einen Plan, wie du das Issue umsetzen würdest – baue nichts. Schreib den Plan so, dass ihn jemand ohne Programmierkenntnisse versteht: höchstens sieben Schritte. Sag danach in einem Satz, ob das in einen Durchgang passt, und nenn alles, was du annehmen müsstest, weil es im Issue nicht steht. Ändere das Issue nicht.</Prompt>
+  <Folie>
+    <h2 id="plan-check">Der Plan-Check mit Claude</h2>
+    <p class="folie-satz">Claude macht einen Plan und baut nichts – ihr lest ihn und entscheidet.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Wenige Schritte, alle verständlich:</strong> passt.</li>
+      <li data-schritt><strong>Viele Schritte oder etwas Externes</strong> (Schnittstelle, Zahlung, Login): zu groß – teilen.</li>
+      <li data-schritt><strong>Eine Frage oder Annahme,</strong> die ihr nicht getroffen habt: eure Entscheidung ins Issue.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Claude Code hat einen Plan-Modus: „Claude reads files and proposes a plan but makes no edits until you approve“. Ihr schaltet ihn mit <kbd>Shift</kbd><kbd>Tab</kbd> ein, bis unten „⏸ plan mode on“ steht (Claude Code Docs, „Common workflows“), und danach genauso wieder aus, bis „auto mode on“ dasteht (<a href="/konzepte/coding-agent">Coding-Agent</a>). „Etwas Externes“ entspricht Cohns Querschnittsthemen und Duartes funktionalen Abhängigkeiten (Tabelle oben). „Höchstens sieben Schritte“ im Prompt ist eine Zahl des Kurses, damit ihr den Plan in einer Minute lesen könnt.</p>
+      <Prompt label="Plan-Check · Claude Code im Plan-Modus" note="Für jedes Issue, das in Sprint 1 kommen könnte. Ob es passt, entscheidet ihr am Plan, nicht Claude mit einem Satz.">{PLAN_CHECK}</Prompt>
+    </div>
+  </Folie>
   <Callout type="info" title="Claude macht den Plan, ihr entscheidet">
-    <p>Ob ein Issue zu groß ist, entscheidet ihr am Plan, nicht Claude mit einem Satz. Und was Claude annehmen müsste, ist eure Entscheidung als Product Owner – schreibt sie ins Issue, statt Claude raten zu lassen.</p>
+    <p>Was Claude annehmen müsste, ist eure Entscheidung als Product Owner – schreibt sie ins Issue, statt Claude raten zu lassen.</p>
   </Callout>
 
-  <h2 id="quer-lesen">Quer lesen</h2>
-  <p>Danach liest jede*r die Issues der anderen beiden Produkte – ihr seid Developers in allen dreien. Die Frage ist: <em>Könnte ich das bauen lassen und abnehmen, ohne nachzufragen?</em> Was nicht klar ist, kommt als Kommentar ins Issue. Der Product Owner antwortet dort und passt das Issue an.</p>
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+    <p class="folie-satz">Sechs Plan-Checks, ein Spike abgetrennt, eine Frage aus der Runde.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>#</th><th>Issue</th><th>Plan-Check</th><th>Ergebnis</th></tr></thead>
+        <tbody>
+          <tr data-schritt><td>1</td><td>Getränk wählen und bestellen</td><td>vier Schritte</td><td>passt</td></tr>
+          <tr data-schritt><td>2</td><td>Abfahrtszeit und Fertig-Zeit</td><td>Frage: ändert sich die Fertig-Zeit noch?</td><td>ergänzt</td></tr>
+          <tr data-schritt><td>3</td><td>Bar sieht Bestellungen sortiert</td><td>fünf Schritte</td><td>passt</td></tr>
+          <tr data-schritt><td>4</td><td>Zug aus einer Liste wählen</td><td>„Fahrplan-Schnittstelle suchen“</td><td>geteilt: 4 und Spike 7</td></tr>
+          <tr data-schritt><td>6</td><td>Bar markiert Bestellung als abgeholt</td><td>drei Schritte</td><td>passt</td></tr>
+          <tr data-schritt><td>5</td><td>Abholnummer am Bildschirm</td><td>drei Schritte</td><td>passt</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nur-handout">
+      <p>Issue 2: Im Backlog-Gespräch blieb die Frage offen, ob sich die Fertig-Zeit nach dem Bestellen noch ändert; der Plan zeigt, dass Claude es sonst selbst entschieden hätte. Die Product Ownerin entscheidet und schreibt unter Nicht im Umfang: „Die Fertig-Zeit wird nur beim Bestellen berechnet.“ Issue 4 wird schmaler und behält seine Nummer: Die Liste der Abfahrten kommt aus einer Tabelle, in die die Bar morgens die Züge der Stunde einträgt – Duartes vorläufiger Speicher, der nach Duarte auch live gehen darf. Neu ist Issue 7, ein Spike: „Gibt es Fahrplandaten mit Gleis, die wir abfragen dürfen?“ – nicht in Sprint 1. So bleibt die Auswahl im <a href="/innolab/methoden/sprint#planning-beispiel">Sprint Planning</a> bei 1, 2, 3, 4 und 6.</p>
+      <p>Beim Zeigen reihum fragt ein Developer zu Issue 3: „Und wenn zwei denselben Zug haben?“ Die Product Ownerin antwortet: zuerst, wer früher bestellt hat – und ergänzt das als Kriterium. Ohne die Frage hätte Claude die Reihenfolge erfunden. Das ist Pattons What-About-Spiel (Kap. 12).</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>#</th><th>Issue</th><th>Plan-Check</th><th>Ergebnis</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>Getränk wählen und bestellen</td><td>vier Schritte, eine Seite, eine Tabelle</td><td>passt</td></tr>
-        <tr><td>2</td><td>Abfahrtszeit angeben und Fertig-Zeit sehen</td><td>Claude fragt, ob sich die Fertig-Zeit später noch ändern soll</td><td>unklar → „Nicht im Umfang: Fertig-Zeit wird nur beim Bestellen berechnet“</td></tr>
-        <tr><td>3</td><td>Bar sieht Bestellungen nach Abfahrt sortiert</td><td>fünf Schritte</td><td>passt</td></tr>
-        <tr><td>4</td><td>Zug aus einer Liste der nächsten Abfahrten wählen</td><td>Plan beginnt mit „eine Fahrplan-Schnittstelle suchen“</td><td>zu groß → 4a Liste aus einer Tabelle, in die die Bar die Abfahrten der Morgenstunde einträgt; 4b Spike „gibt es Fahrplandaten mit Gleis, die wir abfragen dürfen?“, nicht in Sprint 1</td></tr>
-        <tr><td>5</td><td>Abholnummer am Bildschirm der Ausgabe</td><td>drei Schritte</td><td>passt</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Beim Querlesen fragt ein Developer in Issue 3: „Und wenn zwei denselben Zug haben?“ Die Product Ownerin antwortet: dann zuerst, wer früher bestellt hat – und ergänzt das als Kriterium. Ohne die Frage hätte Claude die Reihenfolge erfunden.</p>
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (20 min Übung)</h2>
+    <p class="folie-satz">Allein den Plan prüfen, reihum zeigen, was ihr geteilt habt.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Plan-Check, allein:</strong> je Issue für Sprint 1, Ergebnis als Kommentar ins Issue. <Timer minuten={12} /></li>
+      <li id="zeigen" data-schritt><strong>Geteiltes zeigen, reihum:</strong> je gut zwei Minuten, die anderen prüfen. <Timer minuten={8} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Davor: Theorie 6 Minuten, Kaffeebar gemeinsam 4 – zusammen 30. Zu 1: Plan-Modus an, Prompt oben, für jedes Issue, das in Sprint 1 kommen könnte. Ins Issue kommt ein Kommentar nach der Vorlage unten: „passt“, „geteilt in …“ oder „ergänzt: …“. Was Claude annehmen musste, schreibt ihr als eure Entscheidung ins Issue – als Kriterium oder unter Nicht im Umfang. Zu 2: Jede*r zeigt das Issue, das zu groß war, und seine Teile; die anderen prüfen: Ist jedes Teil senkrecht? Hat jedes ein eigenes Kriterium? Ist der Spike draußen? Und: Könnte ich das bauen lassen und abnehmen, ohne nachzufragen? Was offen bleibt, kommt als Kommentar ins Issue; der Product Owner antwortet bis zum Planning um 16:00. Grenning: „Common ground and differences become evident“ ({GRENNING}, S. 3) – das gilt auch ohne Karten.</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
-  <ol>
-    <li><strong>Input (5 min):</strong> wie Entwicklungsteams schätzen, warum ihr schneidet.</li>
-    <li><strong>Plan-Check (15 min, allein):</strong> für jedes Issue, das in Sprint 1 kommen könnte. Ergebnis als Kommentar ins Issue: „passt“, „geteilt in …“ oder „ergänzt: …“.</li>
-    <li><strong>Quer lesen (10 min):</strong> die Issues der anderen beiden; Fragen als Kommentar. Antworten bis zum Sprint-Planning.</li>
-  </ol>
+  <div class="nur-handout">
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · Kommentar im Issue">Plan-Check [Datum]: passt / geteilt in [Titel a], [Titel b] / ergänzt: [Entscheidung]
+Claude musste annehmen: [...] → steht jetzt unter [Akzeptanzkriterien / Nicht im Umfang]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="schneiden" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Welches eurer Issues hat Claude anders verstanden als ihr – und hätte es ohne Plan-Check gebaut, bevor ihr es merkt?</p>
-  <p class="small muted">Planning Poker nach James Grenning (2002), verbreitet durch Mike Cohn, <em>Agile Estimating and Planning</em> (2005); #NoEstimates nach Woody Zuill und Vasco Duarte.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Welches eurer Issues hat Claude anders verstanden als ihr – und hätte es ohne Plan gebaut, bevor ihr es merkt?</p>
+    <p class="nur-handout">Wenn euch keins einfällt, lest die Annahmen in den Plänen noch einmal: Jede Annahme, die ihr nicht selbst getroffen habt, ist eine Stelle, an der Claude etwas anderes gebaut hätte.</p>
+  </Folie>
+
+  <p class="small muted">Nach {DUARTE}, S. 68–71, 80–88, 97; {JEFFRIES}, S. 37–40; {PATTON}, Kap. 4, 10–12, 16–17; {WAKE}; Gegenposition: {GRENNING}; {COHN}, S. 51–59, Kap. 12. #NoEstimates nach Woody Zuill und Vasco Duarte.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/akzeptanzkriterien', t: 'Akzeptanzkriterien' }} next={{ href: '/innolab/methoden/sprint', t: 'Sprint' }} />
 </Layout>

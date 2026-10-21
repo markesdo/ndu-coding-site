@@ -4,112 +4,225 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
+
+const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
+const WAKE = 'Bill Wake, „INVEST in Good Stories, and SMART Tasks“ (xp123.com, 2003)';
+const COHN = 'Mike Cohn, „Agile Estimating and Planning“ (2005)';
+const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
+const DUARTE = 'Vasco Duarte, „NoEstimates“ (2016)';
+const GILAD = 'Itamar Gilad, „Evidence-Guided“ (2023)';
+const NACH_LINEAR = `Lies docs/LINEAR.md, docs/STORY-MAP.md und docs/TESTS.md. Hier sind meine Issues für Slice 1 in dieser Reihenfolge, je mit Titel, Ziel, Kontext, Nicht im Umfang, Fragen aus dem Gespräch und Fertig wenn: [Liste]. Zeig mir zuerst, wie du sie anlegen würdest; Akzeptanzkriterien als „folgt“. Leg sie erst nach meinem Okay in Linear an, in genau dieser Reihenfolge, und schreib die Fragen aus dem Gespräch als ersten Kommentar ins Issue.`;
+const REIHENFOLGE_LOG = `Lies aus der Werkstatt mein Entscheidungslog (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}) und über den Linear-MCP die Issues meines Projekts. Steht für jede Stelle, an der die Reihenfolge vom Bauchgefühl abweicht, eine Zeile mit Grund im Entscheidungslog? Nenn höchstens drei Stellen ohne Begründung. Ändere nichts.`;
 ---
 <Layout title="Backlog aus Issues">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Backlog aus Issues</h1>
-  <p class="lead">Aus Slice 1 der Story Map wird ein geordneter Backlog – in dem Format, das Claude Code abarbeiten kann und das jedes Produktteam versteht.</p>
+  <p class="lead">Aus Slice 1 der Story Map wird ein geordneter Backlog – Karten, die ihr einander erzählt, in einem Format, das Claude Code abarbeiten kann.</p>
   <Orientierung seite="innolab/methoden/backlog" leiste={false} />
   <MethodenKarte slug="backlog" />
 
-  <h2 id="user-story">User Story und Issue</h2>
-  <p>In vielen Teams heißen Backlog-Einträge <strong>User Storys</strong>, geschrieben als Satz: <em>„Als [Rolle] möchte ich [Ziel], damit [Nutzen].“</em> Dazu gehören die <strong>drei Cs</strong> (Ron Jeffries): die <em>Card</em> mit dem Satz, die <em>Conversation</em>, in der das Team klärt, was genau gemeint ist, und die <em>Confirmation</em> – die Akzeptanzkriterien. Der Satz allein ist nie die Anforderung; er ist eine Einladung zum Gespräch.</p>
-  <p>Im Coding-Kurs habt ihr Issues geschrieben – mit denselben Teilen, nur ausgeschrieben, damit auch ein Agent sie versteht. So bildet sich das eine aufs andere ab:</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>User Story</th><th>Issue im Kurs</th></tr></thead>
-      <tbody>
-        <tr><th>Als … möchte ich … damit …</th><td><strong>Ziel:</strong> was danach möglich ist, für wen und warum</td></tr>
-        <tr><th>Conversation</th><td><strong>Kontext</strong> und <strong>Nicht im Umfang</strong> – was ihr besprochen und bewusst ausgeschlossen habt</td></tr>
-        <tr><th>Confirmation</th><td><strong>Akzeptanzkriterien</strong> (Gegeben … wenn … dann …) und <strong>Fertig, wenn</strong></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Wenn ihr in einem Team mit User Storys arbeitet: Ihr schreibt den Satz als Titel, den Rest wie gewohnt darunter. <strong>Sub-Issues</strong> sind keine Storys, sondern Aufgaben für die Umsetzung (Datenbank, Oberfläche, Fehlerbehandlung) – die übernimmt bei euch Claude.</p>
+  <Folie>
+    <h2 id="drei-cs">Eine Karte ist eine Einladung zum Gespräch</h2>
+    <p class="folie-satz">Stories heißen so, weil man sie erzählt – nicht, weil man sie aufschreibt.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/3cs.jpg" alt="Drei gezeichnete Szenen mit Pfeilen: Card – eine Person mit einem Stapel Karten; Conversation – zwei Personen mit Fragezeichen über Skizzen; Confirmation – beide mit Ausrufezeichen, davor eine nummerierte Liste" quelle={`Card, Conversation, Confirmation. ${PATTON}, Kap. 6, „Ron Jeffries and the 3 Cs“.`} />
+      <ul>
+        <li data-schritt><strong>Card:</strong> ein kurzer Titel – meist das Sticky von der Map.</li>
+        <li data-schritt><strong>Conversation:</strong> zusammen klären, wer was warum braucht – mit Fragen, Skizzen, Beispielen.</li>
+        <li data-schritt><strong>Confirmation:</strong> gemeinsam festlegen, was ihr prüft – im nächsten Block.</li>
+        <li data-schritt>„If you’re not getting together to have rich discussions about your stories, then you’re not really using stories.“</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Patton erzählt Kent Becks Idee: Geteilte Dokumente erzeugen kein gemeinsames Verständnis, Gespräche schon. „Stories get their name from how they’re supposed to be used, not from what you’re trying to write down“ ({PATTON}, Kap. 6, „Kent’s Disruptively Simple Idea“); der Satz auf der Folie steht im Abschnitt „Simple Isn’t Easy“. Die drei Cs stammen von Ron Jeffries (<em>Extreme Programming Installed</em>, 2000), zitiert nach Patton, Kap. 6, „Ron Jeffries and the 3 Cs“, und nach {WAKE}: Card – „Write what you’d like to see in the software on a bunch of index cards.“ Conversation – „Get together and have a rich conversation about what software to build.“ Confirmation – „Together agree on how you’ll confirm that the software is done.“ Wake fasst es so: „Cards (their physical medium), Conversation (the discussion surrounding them), and Confirmation (tests that verify them).“ Zur Card schreibt Patton: „The bunch of cards that describes the whole product … is called a product backlog“ (Kap. 6, „1. Card“) – euer Backlog in Linear.</p>
+      <p>Warum ihr das Gespräch nicht weglassen dürft: Bei euch baut jede*r auch die Issues der anderen beiden. Genau davor warnt Patton: „Handing off all the details about the story to someone else to build doesn’t work. Don’t do that.“ – „Remember, those details are your vacation photos, not theirs“ (Kap. 9, „Construct with a Clear Picture in Your Head“). Darum erzählt ihr einander heute jedes Issue, bevor es nach Linear geht. Und: „Conversations are one of the best tools for breaking down big stories“ (Kap. 11, „Stories Are Like Rocks“) – das braucht ihr um 15:30 beim Schneiden.</p>
+    </div>
+  </Folie>
 
-  <h2 id="invest">Gute Issues: INVEST</h2>
-  <ul>
-    <li><strong>Independent</strong> – lässt sich ohne ein anderes Issue liefern</li>
-    <li><strong>Negotiable</strong> – beschreibt das Ziel, nicht jede Einzelheit</li>
-    <li><strong>Valuable</strong> – danach kann jemand etwas, das vorher nicht ging</li>
-    <li><strong>Estimable</strong> – das Team kann die Größe einschätzen; bei euch: Claudes Plan zeigt, dass es in einen Durchgang passt</li>
-    <li><strong>Small</strong> – bei euch: ein Durchgang mit Claude</li>
-    <li><strong>Testable</strong> – hat prüfbare Akzeptanzkriterien</li>
-  </ul>
-  <p>Valuable heißt <strong>senkrecht schneiden</strong>: nicht „Datenbank für Bestellungen“, dann „Oberfläche für Bestellungen“, sondern „Getränk wählen und bestellen“ – durch alle Schichten, aber nur ein kleines Stück.</p>
+  <Folie>
+    <h2 id="karte">Was auf die Karte gehört</h2>
+    <p class="folie-satz">Ein kurzer Titel, darunter wer, was, warum – der Rest sind Urlaubsfotos aus dem Gespräch.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/karte.jpg" alt="Handgeschriebene Karteikarte mit Beschriftungen: oben Ticket-Nummer und kurzer Titel „Ask a question while reviewing“, darunter who, what, why, verwandte Stories, Autor, Datum, ein Punkt für die Wichtigkeit, ein Haftzettel „in discovery“ als Status und ein M als grobe Größe" quelle={`Was auf eine Story-Karte passt. ${PATTON}, Kap. 8, „Radiators and Ice Boxes“.`} />
+      <ul>
+        <li data-schritt><strong>Titel:</strong> ein kurzer Verb-Satz, „Getränk wählen und bestellen“.</li>
+        <li data-schritt><strong>Ziel:</strong> wer, was, warum – „Als … möchte ich … damit …“ öffnet das Gespräch, es ersetzt es nicht.</li>
+        <li data-schritt><strong>Kontext, Nicht im Umfang, Fragen:</strong> eure Notizen aus dem Gespräch.</li>
+        <li data-schritt><strong>Keine Sub-Tasks:</strong> das Rezept macht bei euch Claude.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Die Vorlage „As a [type of user] I want to [do something] So that I can [get some benefit]“ stammt von Connextra (Rachel Davies, XPDay 2001). Patton: „Note that their stories still have short, useful titles“ und „Use the simple story template to start conversations“ (Kap. 7, „Connextra’s Cool Template“). Gegen das, was er Template-Zombies nennt: „Many people have even quit using titles on stories and write only that long sentence on every single card. … It’s tough on the brain“ – und „It doesn’t need to be written in a template to be considered a story“ (Kap. 7, „Template Zombies and the Snowplow“). Darum steht der Als-möchte-damit-Satz bei euch im Feld <strong>Ziel</strong>, nicht im Titel. Zur Karte selbst: „A good title is the most valuable part of your story“; „The only thing that’s required on your card is a good title“ (Kap. 8, „Radiators and Ice Boxes“).</p>
+      <p>Sub-Tasks sind das Rezept, nicht die Story: Das Team macht den Arbeitsplan, und „Don’t break down big things into big plans. Break big things into small things with small plans“ (Kap. 10, „Breaking Down a Big Cake“). Jeffries: „I don’t recommend working with larger stories and breaking them down into technical items, often called tasks. … It’s better to break down stories into smaller stories, each making sense to the business-side people“ ({JEFFRIES}, S. 36); Cohn: „Don’t Split A Story Into Tasks“ ({COHN}, S. 125). Bei euch macht Claude den Plan; ihr schreibt die Story.</p>
+      <p>So bildet sich eine Story auf das Issue-Format ab, das ihr aus dem Coding-Kurs kennt (<a href="/konzepte/spezifikation">Spezifikation</a>) – eine Konvention des Kurses:</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Story</th><th>Issue im Kurs</th></tr></thead>
+          <tbody>
+            <tr><th>Card: kurzer Titel</th><td><strong>Titel:</strong> Verb-Satz, meist das Sticky von der Map</td></tr>
+            <tr><th>Wer, was, warum</th><td><strong>Ziel:</strong> was danach möglich ist, für wen und warum</td></tr>
+            <tr><th>Conversation</th><td>was ihr zu dritt besprochen habt – Entscheidungen, offene Fragen, Skizzen – unter <strong>Kontext</strong>, <strong>Nicht im Umfang</strong>, <strong>Fragen aus dem Gespräch</strong> und als Kommentar. Das sind die Urlaubsfotos des Gesprächs, nicht sein Ersatz (Kap. 7, „Create Vacation Photos“).</td></tr>
+            <tr><th>Confirmation</th><td><strong>Akzeptanzkriterien</strong> und <strong>Fertig, wenn</strong> (<a href="/innolab/methoden/akzeptanzkriterien">nächster Block</a>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Folie>
 
-  <h3 id="splitting">Zu groß? So teilt ihr</h3>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Teilen nach</th><th>Beispiel</th></tr></thead>
-      <tbody>
-        <tr><th>Ablaufschritten</th><td>„Bestellen“ → Getränk wählen · Abfahrtszeit angeben · Abholnummer sehen</td></tr>
-        <tr><th>Einfach vor raffiniert</th><td>Uhrzeit eintippen → später: Zug aus der Liste</td></tr>
-        <tr><th>Anlegen, Ansehen, Ändern, Löschen</th><td>Bestellung aufgeben → ansehen → stornieren</td></tr>
-        <tr><th>Eingabewegen</th><td>Tippen → später Sprachbestellung</td></tr>
-        <tr><th>Spike</th><td>Weiß niemand, wie es geht: erst ein Issue „herausfinden, ob …“, dann das eigentliche</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <Folie>
+    <h2 id="invest">Gute Issues: INVEST</h2>
+    <p class="folie-satz">Senkrecht durch alle Schichten, aber nur ein kleines Stück.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/patton/cupcakes.jpg" alt="Zeichnung: links eine große Torte, daneben ihr Rezept mit Zutaten, Mixer, Backformen, Ofen; darunter viele Cupcakes mit demselben, nur kleineren Rezept. Unterschriften: Big Story, Big Recipe; Small Story, similar recipe, just less of everything" quelle={`Torte oder Cupcakes. ${PATTON}, Kap. 10.`} />
+      <ul>
+        <li data-schritt><strong>Independent, Negotiable:</strong> das Wesentliche, nicht jede Einzelheit.</li>
+        <li data-schritt><strong>Valuable:</strong> senkrecht – keine Datenbank ohne Oberfläche.</li>
+        <li data-schritt><strong>Estimable, Small:</strong> ein Durchgang mit Claude (Regel des Kurses).</li>
+        <li data-schritt><strong>Testable:</strong> ihr könntet einen Test dafür schreiben.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Nach {WAKE}. Independent: Stories, die man „schedule and implement … in any order“ kann. Negotiable: „not an explicit contract for features; rather, details will be co-created by the customer and programmer during development. A good story captures the essence, not the details.“ Valuable: „Think of a whole story as a multi-layer cake … a full database layer (for example) has little value to the customer if there’s no presentation layer.“ Patton nimmt dasselbe Bild: „break it down into lots of little cupcakes. Each one is deliverable, and each one still has a similar recipe“, „half a baked cake, not a half-baked cake“ (Kap. 10, „Breaking Down a Big Cake“, nach Luke Hohmann). Kein Issue heißt also „Datenbank für Bestellungen“ oder „Oberfläche“, sondern „Getränk wählen und bestellen“.</p>
+      <p>Small: Wake – „typically represent at most a few person-weeks worth of work. (Some teams restrict them to a few person-days of work.)“ Patton: „A good rule of thumb is to break down stories to something that takes a couple of days to build and test“ (Kap. 11, „Size Always Matters“). Duarte: „between 0,5 and 1 man-days of effort“ ({DUARTE}, S. 71). Bei euch ist die Einheit ein Durchgang mit Claude – eine Größe des Kurses, keine Zahl aus diesen Quellen. Testable: „Writing a story card carries an implicit promise: ‚I understand what I want well enough that I could write a test for it.‘“ – „If a customer doesn’t know how to test something, this may indicate that the story isn’t clear enough“ (Wake).</p>
+      <p>Duarte ersetzt das E durch <em>Essential</em>: „every story is absolutely required for the product to be viable. To be Essential, a story must not only be valuable, but it’s removal must make the product unusable or unsellable“ ({DUARTE}, S. 71). Das ist eine gute Probe für Slice 1: Ginge der Ablauf der Usage Story ohne dieses Issue noch? Dann gehört es wahrscheinlich in Slice 2.</p>
+      <p>Wie man ein zu großes Issue teilt, kommt um 15:30 in <a href="/innolab/methoden/schneiden#teilen">Schneiden statt Schätzen</a> – nach den Akzeptanzkriterien, weil die Teile meist entlang der Kriterien entstehen.</p>
+    </div>
+  </Folie>
 
-  <h3 id="reihenfolge">Reihenfolge: RICE oder Riskantestes zuerst</h3>
-  <p>Ein Product Owner muss die Reihenfolge begründen können. Zwei Wege:</p>
-  <ul>
-    <li><strong>RICE</strong> = Reach × Impact × Confidence ÷ Effort. Wie viele erreicht es, wie stark wirkt es (0,25–3), wie sicher seid ihr (0–100 %), wie viel Aufwand (in Durchgängen mit Claude)? Höher kommt früher.</li>
-    <li><strong>Riskantestes zuerst:</strong> Was eine offene Annahme prüft, kommt nach vorn – dann lernt ihr früh, ob sich der Rest lohnt.</li>
-  </ul>
+  <Folie>
+    <h2 id="reihenfolge">Reihenfolge: Outcome zuerst, Risiko entscheidet</h2>
+    <p class="folie-satz">Große Unterschiede zählen, kleine nicht – rechnet nicht, entscheidet und begründet.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/cohn/risiko-wert.jpg" alt="Raster mit Wert waagrecht und Risiko senkrecht, vier Felder: oben rechts Do first, unten rechts Do second, unten links Do last, oben links Avoid; ein grauer Pfeil führt von Do first über Do second zu Do last" quelle={`Risiko und Wert kombiniert. ${COHN}, Abb. 9.3, S. 85.`} schmal />
+      <ol>
+        <li data-schritt><strong>Zuerst,</strong> was Slice 1 braucht, damit jemand den Höhepunkt der Usage Story erreicht.</li>
+        <li data-schritt><strong>Dann,</strong> was die offenste Annahme oder das größte technische Risiko trägt.</li>
+        <li data-schritt><strong>Gleicher Wert:</strong> Risiko entscheidet. Wenig Wert, hohes Risiko: raus.</li>
+        <li data-schritt><strong>Weicht ihr vom Bauchgefühl ab,</strong> steht der Grund im Entscheidungslog.</li>
+      </ol>
+    </BildText>
+    <div class="nur-handout">
+      <p>Zu 1: „Don’t Prioritize Features—Prioritize Outcomes“ kennt ihr von der Story Map ({PATTON}, Kap. 2; <a href="/innolab/methoden/story-map">Tag 3</a>). Zu 2: „He and his team put the risky bits first—the parts that Eric or his team wanted to see working sooner so that they could course-correct“ (Kap. 4, „It’s All About Risk“); Duarte nennt als Auswahlregel „riskiest assumptions first“ ({DUARTE}, S. 43). Zu 3: Cohn will „give neither risk nor value total supremacy“ (S. 84): „The high-value, high-risk features should be developed first“, dann die mit hohem Wert und niedrigem Risiko – „use the guideline to work first on high-value features but use risk as a tie-breaker“. Und: „Try to defer low-value, high-risk items right out of the project“ ({COHN}, S. 85). Cohn nennt vier Faktoren: Wert, Kosten, neues Wissen, Risiko (S. 80); die Kosten fallen bei euch weg, weil jedes Issue in einen Durchgang passt.</p>
+      <p>Warum ohne Zahlen: Jeffries lässt die Höhe eines Features für seinen Wert stehen, die Breite für die Kosten – „Which ones should we build first …? Pretty clear, isn’t it?“ ({JEFFRIES}, S. 13). Zum Messen von Wert: „We don’t really know the numbers“ (S. 84); „Big differences are important; small ones aren’t“ (S. 85); „Take any two things you might do. Ask yourself which one to do next—which one is more valuable right now. It turns out you almost always know“ und „If they just won’t, I’d advise throwing out the numbers“ (S. 86). Duarte: Wer weiß, was das Wichtigste ist, für den hat „little value in knowing how much is it going to cost when compared to other items in the backlog“ ({DUARTE}, S. 42).</p>
+      <p>Zu 4: Die Product Ownerin entscheidet, die anderen hören die Begründung – beim Erzählen reihum. Patton: „design is never democratic“ (Kap. 12, nach Leisa Reichelt); Jeffries: „Select a combination of next things to do that the group agrees is most valuable. The true value in doing this is the learning that will come from reaching a consensus“ (S. 87).</p>
+      <p><strong>In Unternehmen mit Produktmetriken</strong> begegnen euch Formeln wie RICE (Reach × Impact × Confidence ÷ Effort; Sean McBride, Intercom 2018) oder ICE (Impact, Confidence, Ease; nach Sean Ellis, bei {GILAD}, Kap. 3). Sie setzen Daten voraus: Reach soll aus „real measurements from product metrics instead of pulling numbers from a hat“ kommen (McBride), Confidence aus Belegen – „Confidence in an idea stems from supporting evidence—facts, data, and experiment results“ (Gilad, Kap. 3). Gilad selbst warnt: „The ICE formula is simplistic, and just sorting ideas by ICE scores can lead to naive decisions“; solange die Confidence niedrig ist, „you should consider ICE scores as mere hints“ (Kap. 3, „Choosing among Multiple Ideas“), und statt Zahlen „you can also just use Low/Medium/High“. Hier lasst ihr die Formel weg: Ihr habt keine Nachfragezahl, jedes Issue ist ein Durchgang, und Slice 1 ist ein Skelett, durch das jede Nutzerin ganz geht – Reach und Effort wären für alle Issues gleich.</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
-  <p>Aus Slice 1 und Testbefund U2 entstehen fünf Issues im Projekt „Gleis-1-Express“:</p>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>#</th><th>Issue</th><th>Quelle</th><th>RICE</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>Getränk wählen und bestellen</td><td>Slice 1</td><td>400 × 3 × 100 % ÷ 1 = 1200</td></tr>
-        <tr><td>2</td><td>Abfahrtszeit angeben und Fertig-Zeit sehen</td><td>Slice 1, Höhepunkt</td><td>400 × 3 × 80 % ÷ 1 = 960</td></tr>
-        <tr><td>3</td><td>Bar sieht Bestellungen nach Abfahrt sortiert</td><td>Slice 1</td><td>400 × 2 × 100 % ÷ 1 = 800</td></tr>
-        <tr><td>4</td><td>Zug aus einer Liste der nächsten Abfahrten wählen</td><td>U2</td><td>400 × 2 × 80 % ÷ 2 = 320</td></tr>
-        <tr><td>5</td><td>Abholnummer am Bildschirm der Ausgabe</td><td>Slice 1</td><td>400 × 1 × 100 % ÷ 1 = 400</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Reach = Bestellungen pro Woche. Nach RICE käme die Abholnummer vor der Zugliste. Die Product Ownerin zieht trotzdem die Zugliste (4) vor die Abholnummer (5): U2 hatten alle fünf Testpersonen, und ohne Liste erreicht der Höhepunkt kaum jemand – „Riskantestes zuerst“ schlägt hier die Rechnung. Das steht als Zeile im Entscheidungslog. Reihenfolge: 1, 2, 3, 4, 5.</p>
-  <Prompt label="Beispiel · Issue 2 (Akzeptanzkriterien folgen im nächsten Block)">## Ziel
-Pendler*innen geben beim Bestellen ihre Abfahrtszeit ein und sehen sofort, wann ihr Getränk fertig ist – damit sie ohne Sorge um den Zug bestellen (P1, Usage Story Höhepunkt).
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
+    <p class="folie-satz">Sechs Issues aus Slice 1, Testbefund U2 und DoD.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Platz</th><th>#</th><th>Issue</th><th>Warum hier</th></tr></thead>
+        <tbody>
+          <tr data-schritt><td>1</td><td>1</td><td>Getränk wählen und bestellen</td><td>ohne das nichts</td></tr>
+          <tr data-schritt><td>2</td><td>2</td><td>Abfahrtszeit angeben und Fertig-Zeit sehen</td><td>der Höhepunkt</td></tr>
+          <tr data-schritt><td>3</td><td>3</td><td>Bar sieht Bestellungen nach Abfahrt sortiert</td><td>sonst kein Kaffee</td></tr>
+          <tr data-schritt><td>4</td><td>4</td><td>Zug aus einer Liste der nächsten Abfahrten wählen</td><td>U2 bei allen fünf; größtes Risiko</td></tr>
+          <tr data-schritt><td>5</td><td>6</td><td>Bar markiert Bestellung als abgeholt</td><td>aus der DoD; misst das Outcome</td></tr>
+          <tr data-schritt><td>6</td><td>5</td><td>Abholnummer am Bildschirm der Ausgabe</td><td>geht auch mündlich</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nur-handout">
+      <p>Die Issues kommen aus Slice 1 der <a href="/innolab/methoden/story-map#beispiel">Story Map</a>: Bestellen (eins aus drei, Abfahrtszeit, „Fertig 7:31“), die Barista (Bestellung sehen, nach Abfahrt sortiert; bereit markieren, dann leuchtet die Nummer) und Abholen (Nummer sehen). Issue 4 kommt aus dem Testbefund U2 – „alle fünf suchten eine Liste der nächsten Abfahrten“ (<a href="/innolab/methoden/prototyp-spike#beispiel">Prototyp-Spike</a>) –, der „Zug aus der Liste“ von Slice 2 in Slice 1 geschoben hat. Issue 6 kommt aus der <a href="/innolab/methoden/scrum#dod">Definition of Done</a>: Die Bar tippt bei der Übergabe auf „abgeholt“, und das Ereignis <em>abgeholt</em> wird gespeichert. Die Nummern sind die Reihenfolge, in der die Issues entstanden sind; die Plätze sind die Reihenfolge im Backlog.</p>
+      <p>Wert und Risiko: 1 und 3 tragen das Skelett, ohne sie gibt es keinen Ablauf (Risiko niedrig). 2 ist der Höhepunkt der Usage Story; offen ist, ob die Fertig-Zeit stimmt (A2: schafft die Bar 40 Bestellungen in 30 Minuten?). 4: Ohne Liste erreicht kaum jemand den Höhepunkt, und ob es Fahrplandaten gibt, die man abfragen darf, ist das größte technische Risiko – das soll früh auf den Tisch (Patton: „put the risky bits first“). 6 misst das Outcome; ohne Messung zeigt das Review nur, dass gebaut wurde. 5 ist Komfort: Die Übergabe geht auch mündlich.</p>
+      <p>Die Zeile im Entscheidungslog: „Zugliste (4) und Mess-Issue (6) vor der Abholnummer (5): U2 hatten alle fünf Testpersonen, die Fahrplandaten sind unser größtes technisches Risiko, und ohne 6 messen wir nichts. Ohne Abholnummer erreichen wir das Sprint-Ziel trotzdem. Beleg: U2, Definition of Done.“ Im <a href="/innolab/methoden/sprint#planning-beispiel">Sprint Planning</a> wählen die Developers von oben: 1, 2, 3, 4 und 6.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel-issue">Issue 2 als Karte</h2>
+    <p class="folie-satz">Titel von der Map, Ziel mit wer, was, warum – und die Frage, die offen blieb.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Titel:</strong> „Abfahrtszeit angeben und Fertig-Zeit sehen“.</li>
+      <li data-schritt><strong>Ziel:</strong> Pendler*innen sehen beim Bestellen, wann ihr Getränk fertig ist – damit sie bestellen, ohne um den Zug zu bangen.</li>
+      <li data-schritt><strong>Kontext:</strong> 4 Minuten plus etwa 1 Minute je offener Bestellung (Kurszahl aus A2).</li>
+      <li data-schritt><strong>Offen:</strong> Ändert sich die Fertig-Zeit nach dem Bestellen noch?</li>
+    </ul>
+    <div class="nur-handout">
+    <Prompt label="Beispiel · Issue 2 in Linear (Akzeptanzkriterien folgen im nächsten Block)">Abfahrtszeit angeben und Fertig-Zeit sehen
+
+## Ziel
+Pendler*innen geben beim Bestellen ihre Abfahrtszeit ein und sehen sofort, wann ihr Getränk fertig ist – damit sie bestellen, ohne um den Zug zu bangen (P1; I2-5, I3-2; Höhepunkt der Usage Story).
 
 ## Kontext
-Slice 1 der Story Map: Abfahrtszeit wird eingetippt, die Liste kommt in Issue 4. Ein Getränk ist derzeit 4 Minuten nach der Bestellung fertig, plus 3 Minuten für jede offene Bestellung davor.
+Slice 1 der Story Map: Die Uhrzeit wird eingetippt, die Liste kommt in Issue 4. Die Bar schafft 40 Bestellungen in 30 Minuten (A2); die Fertig-Zeit rechnet mit 4 Minuten plus etwa 1 Minute je offener Bestellung davor (Kurszahl, aus A2 gerundet).
 
 ## Nicht im Umfang
-- Zugliste, Verspätungen
-- Online-Zahlung
+- Zugliste, Verspätungen (Issue 4)
+- Online-Zahlung (Slice 2)
+
+## Fragen aus dem Gespräch
+- Ändert sich die Fertig-Zeit noch, nachdem ich bestellt habe? – offen, die Product Ownerin entscheidet bis zum Plan-Check
 
 ## Akzeptanzkriterien
 (folgt)
 
 ## Fertig, wenn
-Mit leerer und mit voller Warteschlange am Handy durchgespielt.</Prompt>
+mit leerer und mit voller Warteschlange am Handy gezeigt</Prompt>
+    <p>Die Belege im Ziel: P1 aus dem Kundenprofil; I2-5 hat die Pendlerin I2 gesagt („Am liebsten wüsste ich einfach, wann er fertig ist.“), I3-2 der Student I3 („Ich weiß nie, wie lange das dauert.“) – beides Aussagen, keine erzählten Ereignisse. Die 4 Minuten für ein Getränk ohne Warteschlange ergeben die Usage Story: I1 bestellt um 7:27 und liest „Fertig 7:31“. Die „etwa 1 Minute je offener Bestellung“ ist eine Zahl des Kurses: 40 Bestellungen in 30 Minuten (A2) sind 45 Sekunden je Bestellung, aufgerundet. Ob A2 stimmt, zeigen erst die Zeilen des Mess-Ereignisses.</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
-  <ol>
-    <li><strong>Input (15 min):</strong> User Story und Issue, INVEST, teilen, RICE.</li>
-    <li><strong>Issues schreiben (25 min, allein):</strong> Slice 1 Karte für Karte; Testbefunde dazunehmen. Erst in Stichworten, dann im Format. „Fertig, wenn“ nennt nur, was für dieses Issue gilt – die Definition of Done gilt ohnehin.</li>
-    <li><strong>Ordnen (10 min):</strong> RICE oder Risiko; wo ihr von der Rechnung abweicht, eine Zeile ins Entscheidungslog.</li>
-    <li><strong>Nach Linear (10 min):</strong> mit Claude, nach eurer Freigabe.</li>
-  </ol>
-  <Prompt label="Issues nach Linear · Claude Code">Lies docs/LINEAR.md, docs/STORY-MAP.md und docs/TESTS.md. Hier sind meine Issues für Slice 1, in dieser Reihenfolge: [Liste]. Zeig mir zuerst, wie du sie anlegen würdest – Titel, Ziel, Kontext, Nicht im Umfang, Fertig wenn; Akzeptanzkriterien als „folgt“. Leg sie erst nach meinem Okay in Linear an, in genau dieser Reihenfolge.</Prompt>
-  <Callout type="tip" title="Ihr seid Developers in allen drei Produkten">
-    <p>Lest nach dem Anlegen die Issues der anderen beiden. Versteht ihr ohne Rückfrage, was zu tun ist? Wenn nicht, ist das ein Kommentar im Issue – genau das wäre die Conversation.</p>
-  </Callout>
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (40 min Übung)</h2>
+    <p class="folie-satz">Allein schreiben und ordnen, reihum erzählen, dann nach Linear.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Karten schreiben, allein:</strong> Slice 1 Karte für Karte, Testbefunde, das Mess-Issue. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Ordnen, allein:</strong> Wert und Risiko, Platz 1 bis n. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Erzählen, reihum:</strong> je drei Minuten, die anderen fragen. <Timer minuten={9} /></li>
+      <li data-schritt><strong>Nach Linear:</strong> Claude zeigt erst, legt nach eurem Okay an. <Timer minuten={11} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Davor: Theorie 12 Minuten, Kaffeebar gemeinsam 8 – zusammen 60. Zu 1: Geht Slice 1 eurer Story Map (<code>docs/STORY-MAP.md</code>) von links nach rechts durch. Titel = der Verb-Satz vom Sticky; Ziel = wer, was, warum; dazu die Testbefunde aus <code>docs/TESTS.md</code>, die etwas am Slice ändern, die Fehlerfälle aus Slice 1 und das Issue für das Mess-Ereignis aus der Definition of Done in <code>docs/TEAM.md</code>. Erst Stichworte, dann das Format (Vorlage unten). „Fertig, wenn“ nennt nur, was für dieses Issue gilt – die Definition of Done gilt ohnehin. Zu 2: Legt die Karten in das Raster von Cohn und nummeriert sie. Wo ihr vom Bauchgefühl abweicht, schreibt ihr eine Zeile ins Entscheidungslog.</p>
+      <p>Zu 3: A erzählt den eigenen Backlog entlang der Map, mit „und dann …“, und sagt, warum diese Reihenfolge. B und C fragen nach Pattons Liste „What to Really Talk About“ ({PATTON}, Kap. 7): Wer genau? Was genau? Warum? Was passiert, wenn etwas schiefgeht? Welche Fragen und Annahmen sind offen? A notiert die Antworten auf der Karte – unter Kontext, Nicht im Umfang oder Fragen aus dem Gespräch. Dann B, dann C. Patton hält solche Gespräche in Gruppen von „two to five“ für richtig (Kap. 9, „Build an Oral Tradition of Storytelling“); die drei Minuten pro Person sind eine Kürzung des Kurses. Zu 4: Prompt unten, in eurem Repo.</p>
+      <Prompt label="Issues nach Linear · Claude Code" note="Claude legt nichts an, bevor ihr die Vorschau freigegeben habt. Prüft vor dem Okay Titel und Reihenfolge.">{NACH_LINEAR}</Prompt>
+      <Prompt label="Begründung der Reihenfolge prüfen · Claude Code" note="Nach dem Anlegen, nicht davor. Claude findet Lücken, die Begründung schreibt ihr.">{REIHENFOLGE_LOG}</Prompt>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
+  <h2 id="vorlage">Vorlage</h2>
+  <Prompt label="Vorlage · ein Issue in Linear">[Titel: kurzer Verb-Satz, meist das Sticky von der Map]
+
+## Ziel
+[Wer] kann danach [was], damit [warum] ([Profil-ID; Zitat-IDs]).
+
+## Kontext
+[Quelle: Slice 1 / U-ID / Definition of Done] · [was aus dem Gespräch wichtig ist, mit Annahmen-ID]
+
+## Nicht im Umfang
+- [was ihr bewusst weglasst, mit Verweis auf Issue oder Slice]
+
+## Fragen aus dem Gespräch
+- [Frage] – [offen / entschieden: …]
+
+## Akzeptanzkriterien
+(folgt)
+
+## Fertig, wenn
+[womit und mit welchen Daten ihr es im Review zeigt]</Prompt>
+  <p class="small">In <code>docs/BACKLOG.md</code> steht nur noch eine Zeile: „Issues: Linear · [Team] · [Projekt] · Reihenfolge begründet im Entscheidungslog, [Datum]“.</p>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="backlog" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Welches eurer Issues ist euer „Zug aus der Liste“ – das, was die Rechnung nach hinten schiebt, ein Test aber nach vorn? Wenn ihr keins findet, habt ihr eure Testbefunde noch nicht im Backlog.</p>
-  <p class="small muted">INVEST nach Bill Wake; drei Cs nach Ron Jeffries; RICE nach Intercom.</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Welches eurer Issues ist eure „Zugliste“ – nach vorn, weil ein Test und ein Risiko es verlangen, nicht eine Rechnung?</p>
+    <p class="nur-handout">Wenn ihr keins findet, stehen eure Testbefunde noch nicht im Backlog. Oder eure Reihenfolge folgt der Map von links nach rechts – dann fragt euch, welches Issue ihr als erstes sehen wollt, weil ihr am wenigsten wisst, ob es geht.</p>
+  </Folie>
+
+  <p class="small muted">Nach {PATTON}, Kap. 4, 6–11; drei Cs nach Ron Jeffries, <em>Extreme Programming Installed</em> (2000), zitiert in Patton Kap. 6 und Wake 2003; {WAKE}; {COHN}, Kap. 9; {JEFFRIES}, Kap. 2, 5, 11; {DUARTE}; RICE und ICE im Handout nach Sean McBride, Intercom (2018), und {GILAD}, Kap. 3.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/scrum', t: 'Scrum im Team' }} next={{ href: '/innolab/methoden/akzeptanzkriterien', t: 'Akzeptanzkriterien' }} />
 </Layout>
