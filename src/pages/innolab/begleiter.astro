@@ -378,7 +378,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       let wisch: { x: number; y: number } | null = null;
       document.querySelector('main')!.addEventListener('touchstart', (e) => {
         const t = e.touches[0];
-        wisch = e.touches.length === 1 && e.target instanceof HTMLElement && wischErlaubt(e.target) ? { x: t.clientX, y: t.clientY } : null;
+        wisch = e.touches.length === 1 && e.target instanceof Element && wischErlaubt(e.target) ? { x: t.clientX, y: t.clientY } : null;
       }, { passive: true });
       document.querySelector('main')!.addEventListener('touchend', (e) => {
         if (!wisch) return;

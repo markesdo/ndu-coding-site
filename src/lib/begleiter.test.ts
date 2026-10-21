@@ -129,6 +129,13 @@ describe('wischErlaubt', () => {
     expect(wischErlaubt(knoten('LI', [], knoten('UL', [], live)))).toBe(true);
     expect(wischErlaubt(knoten('H1', [], kopf))).toBe(true);
   });
+  it('auf einem SVG-Icon im Kopf ja (kleingeschriebener tagName, Breiten fehlen)', () => {
+    const svg: WischKnoten = { tagName: 'svg', classList: { contains: () => false }, parentElement: knoten('A', ['oeffnen'], kopf) };
+    const pfad: WischKnoten = { tagName: 'path', classList: { contains: () => false }, parentElement: svg };
+    expect(wischErlaubt(pfad)).toBe(true);
+    const inPre: WischKnoten = { tagName: 'svg', classList: { contains: () => false }, parentElement: knoten('pre', [], live) };
+    expect(wischErlaubt(inPre)).toBe(false);
+  });
   it('in der Vorbereitung, außerhalb von Kopf und Live oder ohne Ziel nein', () => {
     expect(wischErlaubt(knoten('P', [], knoten('DIV', ['vb'], vorbereitung)))).toBe(false);
     expect(wischErlaubt(artikel)).toBe(false);

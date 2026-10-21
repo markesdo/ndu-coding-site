@@ -209,9 +209,12 @@ export function tempo(p: PlanFolie, jetzt: number): { rest: number; abweichung: 
   return { rest: Math.round(p.bis - jetzt), abweichung: Math.round(abweichung) };
 }
 
-/** Was wischErlaubt vom DOM braucht (HTMLElement erfüllt das), damit es ohne Browser testbar ist. */
+/**
+ * Was wischErlaubt vom DOM braucht (jedes Element erfüllt das, auch SVG-Icons), damit es ohne Browser testbar ist.
+ * Fehlen die Breiten (manche SVG-Knoten), gilt der Knoten als nicht scrollbar.
+ */
 export type WischKnoten = {
-  tagName: string; scrollWidth: number; clientWidth: number;
+  tagName: string; scrollWidth?: number; clientWidth?: number;
   classList: { contains(klasse: string): boolean }; parentElement: WischKnoten | null;
 };
 
@@ -225,9 +228,9 @@ const WISCH_NIE = new Set(['SELECT', 'INPUT', 'TEXTAREA', 'DETAILS', 'PRE', 'TAB
 export function wischErlaubt(start: WischKnoten | null): boolean {
   let imBereich = false;
   for (let el = start; el; el = el.parentElement) {
-    if (WISCH_NIE.has(el.tagName) || el.scrollWidth > el.clientWidth + 1) return false;
+    if (WISCH_NIE.has(el.tagName.toUpperCase()) || (el.scrollWidth ?? 0) > (el.clientWidth ?? 0) + 1) return false;
     if (el.classList.contains('kopf') || el.classList.contains('live')) imBereich = true;
-    if (el.tagName === 'ARTICLE') break;
+    if (el.tagName.toUpperCase() === 'ARTICLE') break;
   }
   return imBereich;
 }
