@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { MIRO_FRAMES } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
+import { TAG_1 } from '../data/begleiter/tag';
 import {
   TAG_1_SEITEN, bloeckeAus, folieZu, folienAus, folienPlan, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie, pfadAusGlob,
   quellenAusGlob, seitenLabel, tagFolien, tempo, uebungMinuten,
@@ -178,6 +179,39 @@ describe('Folien von Tag 1 (echte Seiten)', () => {
   });
   it('erkennt eine Notiz ohne Folie', () => {
     expect(notizenOhneFolie(folien, { '/innolab/tag-1': { gibtsnicht: { live: ['x'] } } })).toStrictEqual(['/innolab/tag-1#gibtsnicht']);
+  });
+});
+
+// Stil der live-Stichworte (typen.ts): Satz zum Sagen ganz in „…“ höchstens 25 Wörter, sonst Regieanweisung, höchstens 12.
+const woerter = (s: string) => s.split(/\s+/).filter((t) => /[\p{L}\p{N}]/u.test(t)).length;
+const zuLang = (s: string) => woerter(s) > (/^„[^“]*“\.?$/.test(s) ? 25 : 12);
+
+describe('Stil der Notizen', () => {
+  it('erkennt zu lange Stichworte', () => {
+    expect(zuLang('Portland erzählen: gute Absicht, viel Geld, falsches Produkt.')).toBe(false);
+    expect(zuLang('eins zwei drei vier fünf sechs sieben acht neun zehn elf zwölf dreizehn')).toBe(true);
+    expect(zuLang('„eins zwei drei vier fünf sechs sieben acht neun zehn elf zwölf dreizehn – ‚vierzehn‘?“')).toBe(false);
+  });
+  it('jedes live-Stichwort hält die Längengrenze ein', () => {
+    const lang = Object.entries(NOTIZEN).flatMap(([pfad, je]) =>
+      Object.entries(je).flatMap(([id, n]) => n.live.filter(zuLang).map((s) => `${pfad}#${id}: ${s}`)));
+    expect(lang).toStrictEqual([]);
+  });
+  it('Verständnisfragen haben Frage und Antwort', () => {
+    const leer = Object.entries(NOTIZEN).flatMap(([pfad, je]) =>
+      Object.entries(je).filter(([, n]) => n.verstaendnis && (!n.verstaendnis.frage.trim() || !n.verstaendnis.antwort.trim())).map(([id]) => `${pfad}#${id}`));
+    expect(leer).toStrictEqual([]);
+  });
+});
+
+describe('Tageskarte', () => {
+  const titel = bloeckeAus(quellen['/innolab/tag-1']).filter((b) => b.href).map((b) => b.titel);
+  it('jeder Block mit Link im Ablauf hat ein Lernziel, kein Eintrag ohne Block', () => {
+    expect(titel.filter((t) => !TAG_1.bloecke[t]?.lernziel.trim())).toStrictEqual([]);
+    expect(Object.keys(TAG_1.bloecke).filter((t) => !titel.includes(t))).toStrictEqual([]);
+  });
+  it('Material ist nicht leer', () => {
+    expect(TAG_1.material.length).toBeGreaterThan(0);
   });
 });
 

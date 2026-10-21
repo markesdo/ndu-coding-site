@@ -85,7 +85,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
           <h2>Material und Technik</h2>
           <ul class="tk-material">
             {TAG_1.material.map((m, k) => (
-              <li><label><input type="checkbox" data-material={k} /> {m.was} <span class="tk-wann">({m.wann})</span></label></li>
+              <li><label><input type="checkbox" data-material={k} /> <span>{m.was} <span class="tk-wann">({m.wann})</span></span></label></li>
             ))}
           </ul>
         </>
@@ -477,11 +477,11 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .sozial { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .9rem 0 0; font-size: 1.25rem; font-weight: 600; color: var(--accent-ink); }
       button.sozial { width: 100%; padding: .5rem .7rem; text-align: left; font: inherit; font-size: 1.25rem; font-weight: 600; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius); cursor: pointer; }
       .sozial .start { margin-left: auto; font-size: 1rem; }
-      .check { margin-top: .9rem; padding: .6rem .8rem; border: 1px solid var(--blue); border-radius: var(--radius); background: var(--blue-soft); }
+      .check { margin-top: .7rem; padding: .5rem .8rem; border: 1px solid var(--blue); border-radius: var(--radius); background: var(--blue-soft); }
       .check .frage { display: flex; gap: .5rem; align-items: flex-start; margin: 0; font-size: 1.2rem; }
       .check .frage svg { flex: none; margin-top: .25rem; color: var(--blue); }
       .check .label { color: var(--blue); font-weight: 600; }
-      .check summary { min-height: 40px; display: flex; align-items: center; cursor: pointer; color: var(--muted); }
+      .check summary { min-height: 36px; display: flex; align-items: center; cursor: pointer; color: var(--muted); }
       .check details p { margin: .2rem 0; font-size: 1.05rem; }
       .check .falsch span { color: var(--yellow-ink); font-weight: 600; }
       .weiter { margin-top: 1rem; padding: .7rem .9rem; border-left: 4px solid var(--accent); background: var(--bg); border-radius: 4px; }

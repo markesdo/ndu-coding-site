@@ -6,13 +6,12 @@ import type { Notiz } from './typen';
 export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
   worum: {
     live: [
-      'Erst der Rahmen, dann die Lösung: Die drei Fragen stehen vor jeder Idee.',
-      'Hervorgehoben ist „Woran merkt ihr es?“ – das Outcome wird die Wurzel des Baums, an dem alle weiteren Methoden hängen.',
-      'Zwei Schärfungsfragen dazu: Wie wird es heute gelöst? Was macht ihr bewusst nicht?',
-      'Alles im Brief ist heute eine Annahme. Abschnitt 3 (Produkt in einem Satz) bleibt offen, Abschnitt 5 (MVP) kommt an Tag 3.',
-      'Wer schon ein Produkt aus dem Coding-Kurs hat: übertragen und Abschnitte 1, 2, 4, 6 schärfen, Änderungen ins Entscheidungslog.',
+      'Theorie knapp halten: Die Übung braucht die volle Stunde.',
+      'Mittlere Frage betonen: Outcome wird Wurzel des Opportunity Solution Tree.',
+      '„Alles im Brief ist heute eine Annahme. Abschnitt 3, das Produkt in einem Satz, bleibt offen; Abschnitt 5 kommt an Tag 3.“',
+      'Coding-Kurs-Produkt: übertragen, Abschnitte 1, 2, 4, 6 schärfen, Änderungen ins Entscheidungslog.',
     ],
-    ueberleitung: 'Der häufigste Fehler beim ersten Punkt, dem Problem, ist so verbreitet, dass er eine eigene Folie bekommt.',
+    ueberleitung: 'Beim Problem passiert euch am ehesten der häufigste Fehler – so verbreitet, dass er eine eigene Folie bekommt.',
     kern: [
       {
         text: 'Discovery hat eine Struktur: Sie beginnt mit einem klaren Outcome, das den Rahmen setzt. Darunter liegt der Raum der Chancen (Bedürfnisse, Schmerzpunkte, Wünsche der Kundschaft) – das ist die Problem-Rahmung, die den Lösungsraum erst öffnet. Erst darunter kommen Lösungen und Annahmentests. Die Wurzel des Opportunity Solution Tree ist das gewünschte Outcome.',
@@ -49,13 +48,13 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
 
   'fehler-1': {
     live: [
-      'Erst nur die schwache Fassung zeigen und fragen: Was ist daran schwach? Antworten abwarten, dann aufdecken.',
-      'Die Kaffeebar ist erfunden und begleitet den ganzen Kurs.',
-      '„App zum Vorbestellen“ ist eine Lösung, kein Problem – das Problem steckt nur zwischen den Zeilen.',
-      'Die starke Fassung beschreibt, was heute schiefgeht: Schlange länger als die Zeit bis zur Abfahrt, also Verzicht oder Automat.',
-      'Test: Gibt es mehr als eine Art, das zu lösen? Wenn nein, ist es eine verkleidete Lösung.',
+      'Nur schwache Fassung zeigen, Raum fragen, Antworten abwarten, dann aufdecken.',
+      'Kaffeebar ist erfunden und begleitet den ganzen Kurs.',
+      '„Gibt es mehr als eine Art, das zu lösen? Wenn nein, habt ihr eine verkleidete Lösung.“',
+      'Vorspulen-Beispiel erzählen (geschichte): App zum Vorbestellen ist das Vorspulen.',
+      'Falle: Gefühl als Problem („gestresst“) – nach der Ursache fragen.',
     ],
-    ueberleitung: 'Was die starke Fassung bringt, sieht man, wenn man die möglichen Lösungen darunter aufmalt.',
+    ueberleitung: 'Was die starke Fassung bringt, seht ihr, wenn wir die möglichen Lösungen darunter aufmalen.',
     kern: [
       {
         text: 'Torres nennt das „solutions in disguise“: Kundschaft äußert oft Lösungswünsche, die wie Chancen klingen. Prüffrage: Gibt es mehr als einen Weg, das anzugehen? Wörtlich: „An opportunity should have more than one potential solution. Otherwise, it’s simply a solution in disguise.“ Dann sucht man die dahinterliegende Chance.',
@@ -88,12 +87,12 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
 
   loesungsraum: {
     live: [
-      'Unter der starken Fassung hängen drei Lösungen: App, Express-Theke, Kaffeewagen.',
-      'Die schwache Fassung hätte nur eine erlaubt – die App.',
-      'Und Platz für bessere Ideen, die erst in den Interviews auftauchen.',
-      'Haken: Alle drei teilen dieselbe Sicht – die Schlange ist zu lang. Das ist ein Lösungsraum.',
+      'Raum fragen: Welche Lösungen erlaubt die schwache Fassung?',
+      '„Unter der starken Fassung ist Platz für bessere Ideen, die erst in euren Interviews auftauchen.“',
+      'Haken zeigen: Alle drei Lösungen teilen dieselbe Sicht, Schlange zu lang.',
+      'Charlotte-Geschichte erzählen: verliebt in Lösung, eigentlich Motivationsproblem.',
     ],
-    ueberleitung: 'Wenn alle drei Lösungen an derselben Sicht hängen, lohnt die Frage: Gibt es ein besseres Problem?',
+    ueberleitung: 'Wenn alle drei Lösungen an derselben Sicht hängen, fragt ihr euch: Gibt es ein besseres Problem?',
     kern: [
       {
         text: 'Wedell-Wedellsborg nennt eine solche Gruppe einen „solution space“: Lösungen, die dieselben Annahmen darüber teilen, was das Problem ist. Beim Aufzug: neuer Lift, stärkerer Motor, besserer Algorithmus – alle gehen davon aus, dass der Aufzug zu langsam ist.',
@@ -122,13 +121,13 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
 
   reframing: {
     live: [
-      'Aufzugsgeschichte erzählen: Mieter beschweren sich, alle denken an schnellere Aufzüge, die Hausverwaltung hängt Spiegel auf.',
-      'Der Spiegel löst nicht das gestellte Problem, sondern ein anderes: Das Warten nervt.',
-      'Die erste Sicht ist nicht falsch – es geht darum, ob es ein besseres Problem gibt.',
-      'Erst dann die Kaffeebar aufdecken: „Geht sich ein Kaffee bis zur Abfahrt aus?“ führt zur Wartezeit-Anzeige an der Tür.',
-      'Drei Praktiken für heute: ganze Sätze, positive Ausnahmen, Ziel infrage stellen.',
+      'Aufzug erzählen: Beschwerden, alle wollen schnelleren Lift, Verwaltung hängt Spiegel.',
+      'Raum fragen: Welches Problem löst der Spiegel?',
+      '„Die erste Sicht ist nicht falsch. Ihr prüft nur, ob es ein besseres Problem gibt.“',
+      'Erst danach Kaffeebar aufdecken: Wartezeit-Anzeige an der Tür.',
+      'Bei Zeit: Tierheim-Geschichte aus geschichte, sonst weglassen.',
     ],
-    ueberleitung: 'Der Rahmen hat noch einen zweiten Teil, und dort passiert der zweite typische Fehler: beim Outcome.',
+    ueberleitung: 'Der Rahmen hat einen zweiten Teil, das Outcome – und dort passiert euch der zweite typische Fehler.',
     kern: [
       {
         text: 'Wörtlich: „The point of reframing is not to find the “real” problem but, rather, to see if there is a better one to solve.“ Probleme haben meist mehrere Ursachen. Der Aufzug lässt sich auch als Spitzenlast-Problem rahmen (zu viele wollen gleichzeitig fahren) – Lösung: gestaffelte Mittagspausen.',
@@ -185,12 +184,16 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
 
   'fehler-2': {
     live: [
-      'Wieder erst die schwache Fassung: „500 Downloads“ – was ist daran schwach?',
-      'Downloads zählen, was ihr baut. Ob jemand seinen Zug mit Kaffee erwischt, sagen sie nicht.',
-      'Kette Output, Outcome, Impact: Das Outcome ist das, was Menschen anders tun – mehr steigen mit Kaffee in den Zug.',
-      'Satzform: „Wir glauben, dass … Wir merken es, wenn …“ – noch ohne Zielzahl.',
-      'Für ein neues Outcome mit einem Lernziel starten, die Zahl („4 von 5“) kommt erst auf die Experiment-Karte.',
+      'Wieder erst schwache Fassung zeigen: Was ist an „500 Downloads“ schwach?',
+      '„Downloads zählen, was ihr baut. Ob jemand seinen Zug mit Kaffee erwischt, zeigen sie nicht.“',
+      'tails.com vom Vormittag aufgreifen: Kalender-Ziel hätte auf Lösung festgelegt.',
+      'Falle: Zielzahl schon heute – erst Lernziel, Zahl auf Experiment-Karte.',
     ],
+    verstaendnis: {
+      frage: 'Ist „Viele nutzen die Vorbestell-Funktion“ ein gutes Outcome? Warum?',
+      antwort: 'Nein: Das ist eine Traction-Metrik, sie misst die Nutzung einer Funktion und legt auf eine Lösung fest. Ein Outcome ist geändertes Verhalten, etwa „mehr steigen mit Kaffee in den Zug“.',
+      falsch: '„Ja, es misst doch, was Menschen tun“ – aber nur mit einer bestimmten Funktion, das lässt keinen Spielraum für andere Lösungen.',
+    },
     ueberleitung: 'Jetzt kennt ihr beide Fehler – Zeit, euren eigenen Rahmen zu schreiben.',
     kern: [
       {
@@ -236,13 +239,13 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Allein, dann zu dritt, dann festhalten und prüfen; 60 min.',
-      'Allein zuerst: drei Sichten, die sich nicht gleich angleichen.',
-      'Ein Sticky pro Feld, ganze Sätze, keine Lösung.',
-      'Dreierrunde: nur fragen, keine Lösungen vorschlagen.',
-      'Zum Schluss erst die Prüfliste selbst, dann Claude.',
+      'Alle auf Frame T1 · 2 holen, Timer 15 min starten.',
+      'Nach 15 min: Outcome-Feld; auf Zielzahlen und Downloads achten.',
+      'Nach 25 min: Dreierrunden, nur Fragen, keine Lösungen; je 5 min.',
+      'Nach 40 min: Werkstatt, Brief speichern, Abschnitt 3 offen, 5 leer.',
+      'Nach 50 min: erst Prüfliste selbst, dann Claude.',
     ],
-    ueberleitung: 'Bevor ihr loslegt, noch die Frage, die ihr euch für das eigene Produkt stellt.',
+    ueberleitung: 'Zum Abschluss die Frage, die ihr euch für euer eigenes Produkt stellt.',
     uebung: { dauer: '60 min (15 + 10 + 15 + 10 + 10)', form: 'allein, dann zu dritt reihum, dann jede*r für sich in der Werkstatt' },
     miro: {
       frame: 'T1 · 2 · Problem-Rahmen & Produkt-Brief',
@@ -306,12 +309,12 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
 
   uebertrag: {
     live: [
-      'Frage an alle drei: Was ist bei euch die Schlange vor der Kaffeebar?',
-      'Gemeint ist der konkrete Moment, in dem für eure Zielgruppe heute etwas schiefgeht.',
-      'Passt er nicht in einen Satz, ist das kein Versagen, sondern eine offene Frage für die Interviews – Abschnitt 7.',
-      'Bei der Kaffeebar steht dort: Entscheiden Pendler*innen schon vor der Ankunft am Bahnhof, ob sie Kaffee holen?',
+      'Zwei, drei Teams antworten lassen, je ein Satz.',
+      '„Passt es nicht in einen Satz, ist das kein Versagen, sondern eine offene Frage für Abschnitt 7.“',
+      'Kaffeebar-Beispiel für Abschnitt 7: Entscheiden Pendler*innen schon vor dem Bahnhof?',
+      '„Euer Rahmen ist durch euer Wissen begrenzt – darum bald raus zur Kundschaft, in die Interviews.“',
     ],
-    ueberleitung: 'Was ihr heute festlegt und später ändert, braucht ein Gedächtnis: das Entscheidungslog – Worum es geht.',
+    ueberleitung: 'Was ihr heute festlegt und später ändert, braucht ein Gedächtnis – dafür kommt jetzt das Entscheidungslog.',
     kern: [
       {
         text: 'Reframing ist durch das Wissen der Leute im Raum begrenzt. Darum nicht zu lange am Schreibtisch rahmen, sondern bald raus zur Kundschaft – Denken und Testen zusammen bringen die Ergebnisse.',
