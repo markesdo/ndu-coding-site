@@ -1,4 +1,5 @@
 import type { Notiz } from './typen';
+import { MCP_WERKZEUGE } from '../../werkstatt/vertrag';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/problem-rahmen.astro (Tag 1).
 // Seitenangaben: Torres = PDF-Seite (wie auf der Kursseite zitiert), HBR = Seite im Kurs-PDF
@@ -264,7 +265,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         'Outcome, 10 min: „Wir glauben, dass … Wir merken es, wenn …“ – beobachtbares Verhalten, keine Funktion, keine Zielzahl.',
         'Dreierrunde, 15 min: reihum vorlesen; die anderen fragen nur „Woran würdest du das merken?“, „Ist das schon eine Lösung?“, „Gibt es ein besseres Problem – wer hat es nicht, und warum?“',
         'Festhalten, 10 min: jede*r speichert den eigenen Brief in der Werkstatt („Bearbeiten“ im Handout), Abschnitt 3 offen, 5 leer.',
-        'Prüfen, 10 min: Prüfliste im Handout selbst durchgehen, dann ClaudePruefung laufen lassen.',
+        'Prüfen, 10 min: Prüfliste im Handout selbst durchgehen, dann Claude: den Prompt aus „Prüfen lassen“ kopieren und in claude.ai einfügen. Mit Connector liest Claude den Brief selbst. Ohne Connector darunter den Brief aus „Für Claude kopieren“ im Editor einfügen.',
       ],
       achten: [
         'Ganze Sätze statt Stichworte: Wedell-Wedellsborg rät, Problemdefinitionen in Satzform zu sammeln, weil Stichpunkte zu verdichtet sind und Unterschiede verstecken (HBR, S. 7).',
@@ -272,6 +273,8 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         '„Für wen“ ist eine Situation mit Zeit und Ort, nicht eine Zielgruppe wie „Studierende“.',
         '„Was macht es nicht“ nennt drei Dinge, die naheliegen würden – nicht drei absurde.',
         'Bei drei Personen braucht die Dreierrunde etwa 5 min pro Person; auf die Zeit achten.',
+        'Was von Claude zurückkommt: höchstens drei Befunde mit Zitat, zu jedem eine Frage; umgeschrieben wird nichts. Jede*r entscheidet selbst, was davon in den Brief kommt („Claude findet, ihr entscheidet“).',
+        'Am guten Brief findet Claude oft Kleinigkeiten (etwa „Lieferung setzt eine Lösungsrichtung voraus“). Ein Befund ist eine Frage, kein Fehler.',
       ],
       fehler: [
         'Produktname oder Funktion im Problemsatz („unsere App …“, „eine Plattform für …“).',
@@ -279,6 +282,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         'Zielzahl schon heute („80 % …“) statt beobachtbarem Verhalten an wenigen Personen.',
         '„Heute gelöst durch“ leer gelassen – auch „gar nicht“ ist eine Antwort.',
         'Abschnitt 3 („Produkt in einem Satz“) trotzdem ausgefüllt.',
+        'Nur den Text aus „Für Claude kopieren“ einfügen, ohne den Prompt: Dann schreibt Claude den Brief um und erfindet Zahlen.',
       ],
     },
     kern: [
@@ -296,6 +300,10 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
     ],
     fragen: [
+      {
+        frage: `Claude schreibt, es könne ${MCP_WERKZEUGE.artefaktPruefen} nicht aufrufen. Was nun?`,
+        antwort: 'Im Gespräch ist kein Connector aktiv. Den Brief aus „Für Claude kopieren“ unter den Prompt einfügen; der Prompt sagt Claude, dann die eingefügten Texte zu nehmen.',
+      },
       {
         frage: 'Machen wir einen gemeinsamen Brief oder jede*r einen eigenen?',
         antwort: 'Jede*r speichert den eigenen Brief in der Werkstatt; die Dreierrunde schärft die einzelnen Rahmen.',
