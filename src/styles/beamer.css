@@ -19,6 +19,8 @@ html[data-beamer] .content .lead { font-size: 1.15rem; max-width: 50ch; color: v
 html[data-beamer] .content .block .desc, html[data-beamer] .content .faden p, html[data-beamer] .content .small,
 html[data-beamer] .content .callout, html[data-beamer] .content .prompt-note, html[data-beamer] .content .quiz .why { font-size: 1rem; }
 html[data-beamer] .content th { font-size: .8rem; }
+/* Zeilenköpfe mit Inhalt (global.css) am Beamer so groß wie die Zellen daneben. */
+html[data-beamer] .content tr:has(td) > th { font-size: 1rem; }
 html[data-beamer] .content .block .pill, html[data-beamer] .content .eyebrow, html[data-beamer] .content .prompt .label,
 html[data-beamer] .content .footer-nav .fn-cap { font-size: .85rem; font-weight: 700; }
 html[data-beamer] .content .pa-punkt { width: .9em; height: .9em; }

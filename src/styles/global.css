@@ -91,8 +91,8 @@ a { color: var(--blue); text-decoration: none; }
 a:hover { text-decoration: underline; }
 /* Links im Fließtext unterstrichen: Die Linkfarbe hebt sich nur 2,1–2,9 : 1 vom Text ab, in grauen Quellenzeilen
    gar nicht (WCAG 1.4.1). Nur Links ohne Klasse – Knöpfe, Pillen und Navigation behalten ihr eigenes Aussehen. */
-.content :is(p, li, td, dd, figcaption) a:not([class]) { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .18em; }
-.content :is(p, li, td, dd, figcaption) a:not([class]):hover { text-decoration-thickness: 2px; }
+.content :is(p, li, td, dd, figcaption) a:not([class], .toc a) { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .18em; }
+.content :is(p, li, td, dd, figcaption) a:not([class], .toc a):hover { text-decoration-thickness: 2px; }
 h1, h2, h3, h4 { line-height: 1.2; letter-spacing: -0.01em; }
 /* Überschriften in JetBrains Mono: eng gesetzt, damit sie als Anker wirken – auch auf dem Beamer. Mono läuft breiter, daher etwas kleiner. */
 h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
@@ -116,14 +116,17 @@ h2 { font-size: 1.4rem; line-height: 1.2; margin: 2.5rem 0 .75rem; }
 /* h3 deutlich über dem Fließtext, damit die Gliederung der Übungen trägt. */
 h3 { font-size: 1.2rem; line-height: 1.3; margin: var(--h3-oben, 2.25rem) 0 .6rem; }
 h2 + h3 { margin-top: .75rem; }
-/* Zeilenlänge: Fließtext höchstens ~80 Zeichen breit, auch in Callouts, Karten, Begriffslisten und Widgets;
+/* Zeilenlänge: Fließtext höchstens rund 75 Zeichen breit, auch in Callouts, Karten, Begriffslisten und Widgets;
    Ablauf, Animationen, Tabellen und Prompts nutzen die volle Spalte. In em, nicht ch: Die Schrift hat eine breite „0“,
-   68ch ergaben 770 px und rund 100 Zeichen pro Zeile (Messung 21.10.). 36em sind bei 17 px rund 610 px, 80–85 Zeichen.
-   Dazu der Handout-Text unter einer Folie (.folie > .nur-handout), nummerierte Schritte (ol.gross) und Prüflisten. */
-.content > .inner > :is(p:not(.lead), h3, ul:not([class]), ol:not([class])),
-.content > .inner > :is(.folie, .nur-handout) > :is(p:not(.lead, .folie-satz), h3, ul:not([class]), ol:not([class]), ol.gross, ul.checklist),
-.content > .inner > .folie > .nur-handout > :is(p, h3, ul:not([class]), ol:not([class])),
-[data-aufloesung-inhalt] > :is(p:not(.folie-satz), h3, ul:not([class]), ol:not([class]), ol.gross) { max-width: 36em; }
+   68ch ergaben 770 px und rund 100 Zeichen pro Zeile. 36em (bei 17 px rund 610 px) ergaben bei 1280 px im Median
+   65–70, höchstens 74 Zeichen (Messung 21.10.). Dazu der Handout-Text unter einer Folie (.folie > .nur-handout),
+   Schritt- und Stichpunktlisten (.gross) und Prüflisten – überall, wo sie direkt im Text stehen. */
+.content > .inner > :is(p:not(.lead), h3, ul:not([class]), ol:not([class]), :is(ul, ol).gross, ul.checklist),
+.content > .inner > :is(.folie, .nur-handout) > :is(p:not(.lead, .folie-satz), h3, ul:not([class]), ol:not([class]), :is(ul, ol).gross, ul.checklist),
+.content > .inner > .folie > .nur-handout > :is(p, h3, ul:not([class]), ol:not([class]), :is(ul, ol).gross, ul.checklist),
+[data-aufloesung-inhalt] > :is(p:not(.folie-satz), h3, ul:not([class]), ol:not([class]), :is(ul, ol).gross, ul.checklist) { max-width: 36em; }
+/* Am Beamer füllen die großen Listen die Folie wie bisher. */
+html[data-beamer] .content :is(ul, ol).gross { max-width: none; }
 /* In Kästen ohne Spezifität (:where), damit Komponenten-Regeln wie .lead oder .toc gewinnen; das Inhaltsverzeichnis bleibt voll breit. */
 :where(.callout, .card, .begriffe dd, details:not(.toc), .widget, .station) > :where(p, ul:not([class]), ol:not([class])) { max-width: 36em; }
 /* --absatz und --h3-oben setzt beamer.css enger. */
@@ -156,8 +159,9 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.5rem; font-size: .95rem; font-variant-numeric: tabular-nums; }
 th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
 th { font-family: var(--mono); font-weight: 600; color: var(--muted); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; }
-/* Zeilenköpfe tragen Inhalt („Outcome“, „Chancen“ …), nicht nur Spaltennamen: lesbar groß, ohne Versalien. */
-tbody th { font-family: inherit; font-size: .95rem; font-weight: 600; color: var(--fg); text-transform: none; letter-spacing: 0; }
+/* Zeilenköpfe tragen Inhalt („Outcome“, „Chancen“ …), nicht nur Spaltennamen: lesbar groß, ohne Versalien. Nur th in
+   Zeilen mit td – Kopfzeilen ohne <thead> landen im impliziten <tbody> und bleiben Spaltennamen. */
+tr:has(td) > th { font-family: inherit; font-size: .95rem; font-weight: 600; color: var(--fg); text-transform: none; letter-spacing: 0; }
 /* Breite Tabellen in .table-scroll: ist der Bildschirm trotz Silbentrennung zu schmal, scrollt nur die Tabelle. */
 .table-scroll { overflow-x: auto; margin: 1rem 0 1.5rem; }
 .table-scroll > table { margin: 0; }
@@ -209,7 +213,7 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 /* Seitenleiste einklappen (nur Desktop, nicht im Beamer-Modus – dort ist sie ohnehin hinter „Menü“). Offen: runder Griff
    knapp rechts neben der Leiste (nicht auf ihrer Scrollleiste). Eingeklappt: Gruppe links oben mit „Ausklappen“ und – nur
    beim Präsentator – Live und Beamer, die sonst nur in der Leiste stehen. Eingeklappt bekommt der Inhalt mehr Breite:
-   Bilder, Prompts, Tabellen bis 1040 px; Fließtext bleibt bei 68ch. */
+   Bilder, Prompts, Tabellen bis 1040 px; Fließtext bleibt bei 36em. */
 .leiste-griff, .leiste-gruppe { display: none; }
 .leiste-griff, .leiste-auf { align-items: center; justify-content: center; padding: 0; font: inherit; border: 1px solid var(--border); color: var(--muted); cursor: pointer; }
 .leiste-griff:hover, .leiste-auf:hover { color: var(--fg); border-color: var(--fg); }
