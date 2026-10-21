@@ -12,7 +12,7 @@
     { "id": "F5", "text": "Was hast du diese Woche für Kaffee unterwegs ausgegeben?", "art": "kern" },
     { "id": "F6", "text": "Warum?", "art": "nachfrage" },
     { "id": "F7", "text": "Wann war das zuletzt?", "art": "nachfrage" },
-    { "id": "F8", "text": "Wie oft kommt das vor?", "art": "nachfrage" },
+    { "id": "F8", "text": "Und davor?", "art": "nachfrage" },
     { "id": "F9", "text": "Kannst du mir das zeigen?", "art": "nachfrage" }
   ],
   "abschluss": "Wen sollte ich noch fragen?"

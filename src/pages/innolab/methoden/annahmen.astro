@@ -24,8 +24,9 @@ const karte = {
   felder: ['Beleg prüfen, darauf bauen', 'Zuerst testen', 'Abhaken', 'Später prüfen'] as [string, string, string, string],
   hervor: 'or' as const,
 };
-// Red Team über den Connector; der Werkzeugname kommt aus dem Vertrag, nicht als Text.
-const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Wo im Brief steckt eine Annahme, die in der Map fehlt? Zitier höchstens drei Stellen wörtlich und frag mich zu jeder, was wir dort voraussetzen. Formulier die Annahmen nicht für mich – ich entscheide, was in die Map kommt.`;
+// Red Team über den Connector, ohne ihn mit beiden Artefakten per „Für Claude kopieren“; der Werkzeugname kommt aus dem
+// Vertrag, nicht als Text.
+const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Ohne Werkstatt-Zugang nimm die beiden Texte, die ich unter diese Nachricht einfüge. Wo im Brief steckt eine Annahme, die in der Map fehlt? Zitier höchstens drei Stellen wörtlich und frag mich zu jeder, was wir dort voraussetzen. Formulier die Annahmen nicht für mich – ich entscheide, was in die Map kommt.`;
 ---
 <Layout title="Annahmen-Map">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -141,7 +142,8 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="annahmen" />
   <p>Danach ein zweiter Durchgang als Red Team:</p>
-  <Prompt label="Red Team · Claude mit der Werkstatt">{redTeam}</Prompt>
+  <Prompt label="Red Team · Claude, mit oder ohne Connector">{redTeam}</Prompt>
+  <p class="small muted">Ohne Connector: Prompt einfügen, darunter den Brief und die Annahmen-Map, beide aus „Für Claude kopieren“ im jeweiligen Editor.</p>
 
   </div>
 

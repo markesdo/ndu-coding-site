@@ -97,7 +97,7 @@ export const METHODEN: Methode[] = [
     ],
   },
   {
-    slug: 'entscheidungslog', name: 'Entscheidungslog', tag: 1, dauer: 5,
+    slug: 'entscheidungslog', name: 'Entscheidungslog', tag: 1, dauer: 5, prueflisteStand: 2,
     frage: 'Was haben wir geglaubt, wie geprüft, was gelernt – und was haben wir darum geändert?',
     braucht: ['brief'], ergibt: ['entscheidungen'],
     ki: 'Prüft am Ende jedes Tages, welche Entscheidung ohne Beleg dasteht.',
@@ -105,7 +105,7 @@ export const METHODEN: Methode[] = [
       'Jede Zeile nennt Datum, Entscheidung und Grund.',
       'Jede Produktentscheidung nennt einen Beleg – oder ausdrücklich „noch keiner“.',
       'Keine Annahme ist als Tatsache formuliert („Pendler*innen wollen …“ statt „Wir glauben, dass …“).',
-      'Wo ein Test etwas widerlegt hat, steht die Änderung als neue Zeile da („ersetzt [Stichwort] vom …“) – die alte bleibt stehen und trägt „ersetzt am …“.',
+      'Wo ein Test etwas widerlegt hat, steht die Änderung als neue Zeile da („ersetzt D…“ mit der ID der alten Zeile) – die alte bleibt stehen und trägt „ersetzt am …“.',
     ],
   },
   {
@@ -123,7 +123,7 @@ export const METHODEN: Methode[] = [
     quelle: 'David J. Bland & Alex Osterwalder, Testing Business Ideas',
   },
   {
-    slug: 'interview', name: 'Jobs to be Done & Mom Test', tag: 1, dauer: 120,
+    slug: 'interview', name: 'Jobs to be Done & Mom Test', tag: 1, dauer: 120, prueflisteStand: 2,
     frage: 'Was tun Menschen heute wirklich, um ihren Job zu erledigen?',
     braucht: ['brief', 'annahmen'], ergibt: ['transkripte'],
     pruefliste: [
@@ -132,7 +132,7 @@ export const METHODEN: Methode[] = [
       'Keine Frage stellt eure Idee vor oder will sie bewertet haben.',
       'Die Kernfragen fragen nach dem letzten konkreten Mal („Erzähl vom letzten Mal, als …“).',
       'Mindestens eine Frage zielt darauf, was die Person heute schon tut, um das Problem zu lösen – und was sie das kostet.',
-      'Nachfragen sind vorbereitet („Warum?“, „Was ist dann passiert?“, „Wie oft kommt das vor?“).',
+      'Nachfragen sind vorbereitet („Warum?“, „Was ist dann passiert?“, „Und davor?“).',
       'Am Anfang stehen die Bitte um Einwilligung zur Aufnahme und die Zusage, dass nichts mit Namen ins Projekt kommt.',
     ],
     ki: 'Markiert suggestive und hypothetische Fragen im Leitfaden und spielt zur Probe eine zurückhaltende Person aus der Zielgruppe.',
@@ -536,6 +536,8 @@ export function pruefPrompt(m: Methode, pfad?: string): string {
       `Prüf ${aufzaehlen(namen.map((n) => WERKSTATT_AKKUSATIV[n]))} mit der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktPruefen}) gegen diese Prüfliste (${m.name}):`,
       ...liste,
       ...(werkstattAbgleich.length ? [`Zum Abgleich lies auch ${ausWerkstatt(werkstattAbgleich)}.`] : []),
+      // Ohne Connector fügen die Studierenden die Texte aus „Für Claude kopieren“ unter den Prompt (ClaudePruefung.astro).
+      `Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: ${aufzaehlen([...namen, ...werkstattAbgleich].map((n) => WERKSTATT_AKKUSATIV[n]))}.`,
       '',
       `${REGELN_ANFANG} Schreib nichts um und formulier keinen Text für mich – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.`,
     ].join('\n');
