@@ -287,7 +287,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 115–118; Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128',
   },
   {
-    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 3, dauer: 40,
+    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 3, dauer: 40, prueflisteStand: 2,
     frage: 'An welcher Annahme hängt der Spitzenreiter – und wie prüfen wir sie diese Woche?',
     braucht: ['annahmen', 'ideen', 'valuemap', 'concept', 'geschaeftsmodell'], ergibt: ['experimente', 'origin'],
     pruefliste: [
@@ -298,6 +298,7 @@ export const METHODEN: Methode[] = [
       'Es ist der schnellste Test dieser Woche, der den stärksten Beleg liefert, den ihr euch leisten könnt.',
       'Es steht da, was die Testpersonen danach erfahren; die riskanteste Annahme der anderen beiden Ideen steht je als Zeile darunter.',
       'Am Abend: Die Origin Story führt zu genau einer Handlung, und diese Handlung ist die Messgröße der Karte.',
+      'Nach dem Test: Die Lernkarte nennt die Verlässlichkeit mit Grund und den Befund (gestützt, widerlegt, unklar oder neue Einsicht), bevor sie sagt, was ihr deshalb tut.',
     ],
     ki: 'Pre-Mortem: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Origin Story nach Donna Lichaw, Kap. 4',

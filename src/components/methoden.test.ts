@@ -122,8 +122,8 @@ describe('methoden', () => {
 
   it('neu geschriebene Prüflisten bekommen eine neue Checklisten-ID – alte Häkchen hängen sonst an neuen Punkten', () => {
     const id = (slug: string) => pruefChecklisteId(METHODEN.find((m) => m.slug === slug)!);
-    expect(['prototyp-spike', 'scrum', 'sprint', 'backlog', 'akzeptanzkriterien', 'schneiden', 'pitch'].map(id)).toStrictEqual(
-      ['il-prototyp-spike-2', 'il-scrum-2', 'il-sprint-2', 'il-backlog-2', 'il-akzeptanzkriterien-2', 'il-schneiden-2', 'il-pitch-2'],
+    expect(['experiment', 'prototyp-spike', 'scrum', 'sprint', 'backlog', 'akzeptanzkriterien', 'schneiden', 'pitch'].map(id)).toStrictEqual(
+      ['il-experiment-2', 'il-prototyp-spike-2', 'il-scrum-2', 'il-sprint-2', 'il-backlog-2', 'il-akzeptanzkriterien-2', 'il-schneiden-2', 'il-pitch-2'],
     );
     const ids = METHODEN.map(pruefChecklisteId);
     expect(new Set(ids).size).toBe(ids.length);
