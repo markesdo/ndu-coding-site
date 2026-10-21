@@ -55,7 +55,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Timer 10 min starten, alle arbeiten am eigenen Laptop.',
       'Reihenfolge: Mappe anmelden, Connector anlegen, Modelltraining aus.',
       '„Meldet die Mappe ‚nicht freigeschaltet‘, sagt mir euren GitHub-Namen.“',
-      'Nach 10 min: Wer noch hängt, macht in der Pause weiter.',
+      'Nach 10 min: Wer hängt, macht um 11:00 in der Pause weiter.',
     ],
     ueberleitung: 'Jetzt sind die Werkzeuge bereit. Fehlt noch das Bild, das uns durch alle Tage trägt.',
     uebung: { dauer: '10 min', form: 'allein am eigenen Laptop' },
@@ -63,7 +63,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       schritte: [
         'Folie zeigen, Timer 10 min. Die Anleitung mit Bildern liegt auf /innolab/werkstatt/claude.',
         'Mappe zuerst: Die Anmeldung mit GitHub legt sie an und zeigt sofort, ob jemand freigeschaltet ist.',
-        'Dann der Connector über den Ein-Klick-Link, Bestätigung in GitHub, danach Modelltraining aus.',
+        'Dann der Connector über den Ein-Klick-Link: Connect, in GitHub bestätigen, in der Werkstatt „Erlauben“, Werkzeuge auf „Always allow“. Danach Modelltraining aus.',
         'Kurz herumgehen: Sieht jede*r die leere Mappe und den Connector mit vier Werkzeugen?',
       ],
       achten: [
@@ -71,6 +71,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
         'Kein Dialog in claude.ai: Connector von Hand unter Customize → Connectors anlegen, Name und URL stehen auf der Anleitung.',
       ],
       fehler: [
+        'Werkzeuge auf „Needs approval“ lassen: Dann fragt Claude bei jeder Prüfung vor jedem Lesen.',
         'Den Connector auf die erste Prüfung um 12:00 verschieben – dann wird die Prüfung zur Einrichtung.',
       ],
     },
