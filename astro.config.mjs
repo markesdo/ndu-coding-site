@@ -31,6 +31,7 @@ export default defineConfig({
   env: {
     schema: {
       LINEAR_INVITE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      MIRO_BOARD_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });

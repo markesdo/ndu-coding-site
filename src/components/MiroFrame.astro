@@ -1,14 +1,24 @@
 ---
 // Hinweis auf der Aufgaben-Folie: In welchem Frame des Team-Boards gearbeitet wird. Der Name steht genau so im
 // Frame-Titel auf dem Board (Nummer = Reihenfolge der Frames am Tag, T1 · 3 = Tag 1, dritter Frame; nicht jede Aufgabe hat einen).
-import { LayoutGrid } from '@lucide/astro';
+// Mit gültiger MIRO_BOARD_URL (nur auf Vercel, Seiten hinter dem Kurspasswort) und bekanntem Frame wird die Pille ein
+// Link direkt auf den Frame; sonst bleibt sie Text.
+import { ExternalLink, LayoutGrid } from '@lucide/astro';
+import { teamFrameLink } from '../lib/team-board';
 const { name } = Astro.props as { name: string };
+const link = teamFrameLink(name);
+const Tag = link ? 'a' : 'span';
 ---
-<p class="miro-frame"><LayoutGrid size={18} aria-hidden="true" /> Miro: <strong>{name}</strong></p>
+<p class="miro-frame"><Tag class="miro-frame-inhalt" href={link ?? undefined} target={link ? '_blank' : undefined} rel={link ? 'noopener noreferrer' : undefined}><LayoutGrid size={18} aria-hidden="true" /> Miro: <strong>{name}</strong>{link && <><ExternalLink size={14} aria-hidden="true" /><span class="sr-only">(öffnet in neuem Tab)</span></>}</Tag></p>
 
 <style>
-  .miro-frame { display: inline-flex; align-items: center; gap: .4rem; margin: .25rem 0 .75rem; padding: .2rem .7rem; border: 1px solid var(--border); border-radius: 999px; font-size: .95rem; color: var(--muted); }
+  .miro-frame { display: inline-flex; align-items: center; margin: .25rem 0 .75rem; padding: .2rem .7rem; border: 1px solid var(--border); border-radius: 999px; font-size: .95rem; color: var(--muted); }
+  .miro-frame-inhalt { display: inline-flex; align-items: center; gap: .4rem; color: inherit; }
   .miro-frame strong { color: var(--fg); font-weight: 600; }
+  /* Als Link: nur der Name in Linkfarbe und unterstrichen. beamer.css nimmt .miro-frame a von der Beamer-Unterstreichung aus. */
+  a.miro-frame-inhalt, a.miro-frame-inhalt:hover { text-decoration: none; }
+  a.miro-frame-inhalt strong { color: var(--blue); text-decoration: underline; text-underline-offset: .15em; }
+  .miro-frame:has(a:hover) { border-color: var(--blue); }
   /* Im Beamer oben rechts in der Folie (beamer.css: .folie ist position: relative) – kostet keine Höhe. */
   :global(html[data-beamer] .folie) > .miro-frame { position: absolute; top: .9rem; right: 0; margin: 0; }
 </style>

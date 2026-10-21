@@ -12,7 +12,9 @@ import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import BildText from '../../components/bild/BildText.astro';
 import Video from '../../components/Video.astro';
 import MiroFrame from '../../components/MiroFrame.astro';
-import { FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
+import { ExternalLink, FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
+import MiroLink from '../../components/MiroLink.astro';
+import { TEAM_BOARD } from '../../lib/team-board';
 import FooterNav from '../../components/FooterNav.astro';
 import { KAFFEEBAR_BAUM } from '../../components/innolab-beispiel';
 
@@ -66,10 +68,18 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <li data-schritt><strong>Frames in der Reihenfolge des Tages:</strong> T1 · 3 ist die dritte Aufgabe an Tag 1, die Annahmen-Map. Jede Aufgaben-Folie nennt ihren Frame.</li>
       <li data-schritt><strong>Links im Frame die Kaffeebar,</strong> daneben eure Spalte. Das Beispiel nicht verschieben – kopieren.</li>
       <li data-schritt><strong>Ein Gedanke pro Sticky.</strong> Farben nur dort, wo der Frame sie erklärt.</li>
-      <li data-schritt><strong>Fragen für später</strong> in den Parkplatz unter „Start hier“.</li>
+      <li data-schritt><strong>Fragen für später</strong> in den <MiroLink name="Start hier · So arbeitet ihr auf diesem Board">Parkplatz unter „Start hier“</MiroLink>.</li>
     </ul>
     <div class="nur-handout">
-      <p>Den Link zum Board bekommt ihr im Teams-Kanal. Der Frame „Start hier“ wiederholt diese Regeln und verlinkt jeden Frame; in Miro findet ihr dieselbe Liste unter „Frames“. Miro ist zum Denken in der Session da. Das Ergebnis haltet ihr in den letzten zehn Minuten jedes Blocks in der Werkstatt fest, denn daraus liest Claude, und daran sehen wir eure Entscheidungen. Interviewte stehen auch in Miro nur mit Pseudonym (I1 bis I5) – keine Namen, Fotos oder Arbeitgeber.</p>
+      {TEAM_BOARD ? (
+        <>
+          <p><a class="btn primary mit-icon" href={TEAM_BOARD} target="_blank" rel="noopener noreferrer">Team-Board öffnen <ExternalLink size={16} aria-hidden="true" /><span class="sr-only">(öffnet in neuem Tab)</span></a></p>
+          <p>Das Board fragt nach einem Passwort: dasselbe wie für diese Website.</p>
+        </>
+      ) : (
+        <p>Den Link zum Board bekommt ihr im Teams-Kanal.</p>
+      )}
+      <p>Der Frame <MiroLink name="Start hier · So arbeitet ihr auf diesem Board">„Start hier“</MiroLink> wiederholt diese Regeln und verlinkt jeden Frame; in Miro findet ihr dieselbe Liste unter „Frames“. Miro ist zum Denken in der Session da. Das Ergebnis haltet ihr in den letzten zehn Minuten jedes Blocks in der Werkstatt fest, denn daraus liest Claude, und daran sehen wir eure Entscheidungen. Interviewte stehen auch in Miro nur mit Pseudonym (I1 bis I5) – keine Namen, Fotos oder Arbeitgeber.</p>
       <p class="small muted">Aufbau nach bewährter Praxis für Lehre und Workshops: benannte Frames als Kapitel und Navigation (Miro Community), eine feste Grundstruktur mit klaren Überschriften und wenigen Formen (bpb, „Kooperatives Online-Lernen, Teil 4“), eine eigene Arbeitsfläche pro Person mit Namen darüber (Fallstudie TU Dresden), ein Parkplatz für Fragen, die gerade nicht dran sind.</p>
     </div>
   </Folie>
