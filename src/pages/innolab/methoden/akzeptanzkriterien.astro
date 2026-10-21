@@ -100,12 +100,12 @@ const GRENZFAELLE = 'Lies Issue [Kennung] über den Linear-MCP. Wir haben zu dri
 - Gegeben es ist 7:27, keine Bestellung ist offen und ein Cappuccino liegt in meiner Bestellung, wenn ich 7:38 als Abfahrt eingebe, dann sehe ich „Fertig 7:31. Dein Zug fährt 7:38.“
 
 Was, wenn (Tester):
-- Gegeben vor mir sind so viele Bestellungen offen, dass mein Getränk später als 3 Minuten vor der Abfahrt fertig wäre, wenn ich die Abfahrt eingebe, dann sehe ich „Geht sich knapp nicht aus“ und kann abbrechen oder trotzdem bestellen.
+- Gegeben es ist 7:27, fünf Bestellungen sind vor mir offen und ein Cappuccino liegt in meiner Bestellung, wenn ich 7:38 als Abfahrt eingebe, dann sehe ich „Fertig 7:36. Geht sich knapp nicht aus“ und kann abbrechen oder trotzdem bestellen. (Regel: knapp heißt später als 3 Minuten vor der Abfahrt.)
 - Gegeben die eingegebene Uhrzeit ist schon vorbei, wenn ich bestätige, dann erscheint ein Hinweis und nichts wird bestellt.
 
 Regel mit Beispiel (Developer fragte nach dem Format):
 - Regel: Die Abfahrtszeit akzeptiert nur Uhrzeiten wie 7:38 oder 07:38.
-  Beispiel: Gegeben ich tippe „738“, wenn ich bestätige, dann steht unter dem Feld ein Hinweis und nichts wird bestellt.
+  Beispiel: Gegeben im Feld Abfahrt steht „738“, wenn ich bestätige, dann steht unter dem Feld ein Hinweis und nichts wird bestellt.
 
 Fertig, wenn: mit leerer und mit voller Warteschlange am Handy gezeigt – dafür braucht die Demo fünf offene Testbestellungen.</Prompt>
       <p>Der Normalfall stimmt mit der Usage Story überein: I1 bestellt um 7:27, Zug 7:38, „Fertig 7:31“ – vier Minuten ohne Warteschlange. Mit fünf offenen Bestellungen wären es nach der Regel im Kontext (etwa 1 Minute je offener Bestellung, eine Kurszahl aus A2) neun Minuten, also 7:36: zwei Minuten vor der Abfahrt – „Geht sich knapp nicht aus“. Darum braucht die Demo fünf Testbestellungen; die Demo-Frage hat dieses Loch gefunden.</p>
@@ -141,6 +141,7 @@ Schwelle: mindestens 18 von 20 richtig; nie ein Getränk, das nicht auf der Kart
   <p>Hat euer Produkt keine KI-Funktion, lasst diesen Teil weg.</p>
 
   <h2 id="vorlage">Vorlage</h2>
+  <p>Die Vorlage ersetzt im Issue nur den Abschnitt „## Akzeptanzkriterien (folgt)“ aus dem <a href="/innolab/methoden/backlog#vorlage">Backlog</a>. Den Abschnitt „## Fertig, wenn“ hat das Issue schon; ihr ergänzt ihn um die Antwort auf die Demo-Frage: womit, auf welchem Gerät, mit welchen Daten.</p>
   <Prompt label="Vorlage · Abschnitt Akzeptanzkriterien in Linear">## Akzeptanzkriterien
 Normalfall:
 - Gegeben [Zustand mit echten Werten], wenn [eine Handlung], dann [was man sieht, wörtlich].
@@ -148,11 +149,7 @@ Was, wenn:
 - Gegeben [...], wenn [...], dann [...].
 Regel (falls nötig):
 - Regel: [...]
-  Beispiel: Gegeben [...], wenn [...], dann [...].
-
-## Fertig, wenn
-[womit gezeigt, auf welchem Gerät, mit welchen Daten]
-
+  Beispiel: Gegeben [Zustand], wenn [...], dann [...].
 (nur bei KI-Funktion)
 Eval: [Eingabe] → [erwartet] · ... · Schwelle: [x] von [y]; nie [harte Grenze]</Prompt>
 

@@ -4,7 +4,6 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
@@ -93,9 +92,6 @@ const PLAN_CHECK = 'Lies Issue [Kennung] über den Linear-MCP und docs/PRODUKT.m
       <Prompt label="Plan-Check · Claude Code im Plan-Modus" note="Für jedes Issue, das in Sprint 1 kommen könnte. Ob es passt, entscheidet ihr am Plan, nicht Claude mit einem Satz.">{PLAN_CHECK}</Prompt>
     </div>
   </Folie>
-  <Callout type="info" title="Claude macht den Plan, ihr entscheidet">
-    <p>Was Claude annehmen müsste, ist eure Entscheidung als Product Owner – schreibt sie ins Issue, statt Claude raten zu lassen.</p>
-  </Callout>
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
@@ -114,7 +110,7 @@ const PLAN_CHECK = 'Lies Issue [Kennung] über den Linear-MCP und docs/PRODUKT.m
       </table>
     </div>
     <div class="nur-handout">
-      <p>Issue 2: Im Backlog-Gespräch blieb die Frage offen, ob sich die Fertig-Zeit nach dem Bestellen noch ändert; der Plan zeigt, dass Claude es sonst selbst entschieden hätte. Die Product Ownerin entscheidet und schreibt unter Nicht im Umfang: „Die Fertig-Zeit wird nur beim Bestellen berechnet.“ Issue 4 wird schmaler und behält seine Nummer: Die Liste der Abfahrten kommt aus einer Tabelle, in die die Bar morgens die Züge der Stunde einträgt – Duartes vorläufiger Speicher, der nach Duarte auch live gehen darf. Neu ist Issue 7, ein Spike: „Gibt es Fahrplandaten mit Gleis, die wir abfragen dürfen?“ – nicht in Sprint 1. So bleibt die Auswahl im <a href="/innolab/methoden/sprint#planning-beispiel">Sprint Planning</a> bei 1, 2, 3, 4 und 6.</p>
+      <p>Issue 2: Im Backlog-Gespräch blieb die Frage offen, ob sich die Fertig-Zeit nach dem Bestellen noch ändert; der Plan zeigt, dass Claude es sonst selbst entschieden hätte. Die Product Ownerin entscheidet und schreibt unter Nicht im Umfang: „Die Fertig-Zeit wird nur beim Bestellen berechnet.“ Issue 4 wird schmaler und behält seine Nummer: Die Liste der Abfahrten kommt aus einer Tabelle, in die die Bar morgens die Züge der Stunde einträgt – Duartes vorläufiger Speicher, der nach Duarte auch live gehen darf. Neu ist Issue 7, ein Spike: „Gibt es Fahrplandaten mit Gleis, die wir abfragen dürfen?“ – nicht in Sprint 1. Das Risiko, das 4 im Backlog nach oben gebracht hat, ist damit nicht verschwunden, aber entschärft: Slice 1 läuft ohne die Daten, und der Spike klärt die Frage, bevor die echte Quelle gebaut wird. So bleibt die Auswahl im <a href="/innolab/methoden/sprint#planning-beispiel">Sprint Planning</a> bei 1, 2, 3, 4 und 6.</p>
       <p>Beim Zeigen reihum fragt ein Developer zu Issue 3: „Und wenn zwei denselben Zug haben?“ Die Product Ownerin antwortet: zuerst, wer früher bestellt hat – und ergänzt das als Kriterium. Ohne die Frage hätte Claude die Reihenfolge erfunden. Das ist Pattons What-About-Spiel (Kap. 12).</p>
     </div>
   </Folie>

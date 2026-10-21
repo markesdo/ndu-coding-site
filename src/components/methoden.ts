@@ -379,7 +379,7 @@ export const METHODEN: Methode[] = [
       'Jedes Issue haben die beiden anderen erzählt bekommen; ihre Fragen und eure Antworten stehen im Issue.',
     ],
     ki: 'Prüft INVEST und ob die Reihenfolge Outcome und Risiko folgt – schlägt keine Issues vor und ändert keins.',
-    quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Kap. 4, 6–11; Bill Wake, INVEST in Good Stories (2003); Mike Cohn, Agile Estimating and Planning (2005), Kap. 9',
+    quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Kap. 2, 4, 6–12; Bill Wake, INVEST in Good Stories (2003); Mike Cohn, Agile Estimating and Planning (2005), Kap. 9; Ron Jeffries, The Nature of Software Development (2015), S. 13, 36, 84–87; Vasco Duarte, NoEstimates (2016), S. 42–43, 71',
   },
   {
     slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 4, dauer: 45, prueflisteStand: 2,
@@ -394,7 +394,7 @@ export const METHODEN: Methode[] = [
       'Hat das Produkt eine KI-Funktion: Es gibt eine Liste von Eingaben mit erwartetem Verhalten, Grenzfälle eingeschlossen, und eine Schwelle „x von y“.',
     ],
     ki: 'Ergänzt höchstens drei Fehler- oder Grenzfälle als Gegeben/Wenn/Dann – nachdem ihr zu dritt den Normalfall und eure Was-wenn-Fälle geschrieben habt.',
-    quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Kap. 6, 12, 16; Dan North, Introducing BDD (2006); Cucumber, Gherkin Reference; Evals als Ergänzung des Kurses nach Anthropic, Define success criteria and build evaluations',
+    quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Kap. 6, 7, 11, 12, 16; Dan North, Introducing BDD (2006); Cucumber, Gherkin Reference; Bill Wake, INVEST (2003); Jeffries (2015), S. 44; Cohn (2005), S. 222; Duarte (2016), S. 70–71; Evals als Ergänzung des Kurses nach Anthropic, Define success criteria and build evaluations',
   },
   {
     slug: 'schneiden', name: 'Schneiden statt Schätzen', tag: 4, dauer: 30, prueflisteStand: 2,
@@ -408,7 +408,7 @@ export const METHODEN: Methode[] = [
       'Die geteilten Issues haben die beiden anderen gesehen; ihre Fragen sind im Issue beantwortet.',
     ],
     ki: 'Macht im Plan-Modus einen Plan pro Issue, ohne zu bauen, und sagt, was es annehmen müsste – ihr entscheidet, ob es passt.',
-    quelle: 'Vasco Duarte, NoEstimates (2016); Ron Jeffries, The Nature of Software Development (2015), Kap. 5; Jeff Patton, User Story Mapping (2014), Kap. 4, 10–12, 16–17; Gegenposition: James Grenning, Planning Poker (2002), und Mike Cohn, Agile Estimating and Planning (2005), Kap. 6',
+    quelle: 'Vasco Duarte, NoEstimates (2016), S. 68–71, 80–88, 97; Ron Jeffries, The Nature of Software Development (2015), S. 37–40; Jeff Patton, User Story Mapping (2014), Kap. 4, 10–12, 16–17; Bill Wake, INVEST (2003); Gegenposition: James Grenning, Planning Poker (2002), und Mike Cohn, Agile Estimating and Planning (2005), S. 51–59; Teilen nach Cohn Kap. 12, S. 121–125',
   },
   {
     slug: 'sprint', name: 'Sprint', tag: 4, dauer: 150, prueflisteStand: 2,
