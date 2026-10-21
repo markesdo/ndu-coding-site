@@ -125,7 +125,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Fragen: Welches Problem löst der Spiegel?',
       '„Die erste Sicht ist nicht falsch. Ihr prüft nur, ob es ein besseres Problem gibt.“',
       'Erst danach Kaffeebar aufdecken: Wartezeit-Anzeige an der Tür.',
-      'Bei Bedarf: Tierheim-Geschichte aus „Zum Erzählen“.',
+      'Bei Bedarf: Tierheim-Geschichte aus „Zum Erzählen“, nur wenn Zeit ist.',
     ],
     ueberleitung: 'Der Rahmen hat einen zweiten Teil, das Outcome – und dort passiert euch der zweite typische Fehler.',
     kern: [

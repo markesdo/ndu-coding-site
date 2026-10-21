@@ -506,12 +506,15 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
       .steuer .lage[hidden] { display: none; }
       .lage[data-lage="hinten"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); }
       .lage[data-lage="vorn"], .lage[data-lage="ok"] { border-color: var(--green); color: var(--green); }
-      /* Telefon: oben Status, Ansicht, Plan und Uhr; darunter Blättern mit der Folienliste in voller Breite. */
-      @media (max-width: 640px) {
+      /* Telefon und Tablet hochkant: oben Status, Ansicht, Plan und Uhr; darunter Blättern mit der Folienliste in voller
+         Breite. In einer Zeile drückten Plan-Knopf und „Zeit! +1:23“ bei 820 px die Liste auf ~90 px („3“ statt „39. …“). */
+      @media (max-width: 900px) {
         .steuer { flex-wrap: wrap; gap: .4rem; }
         .steuer::after { content: ""; flex-basis: 100%; order: 1; }
         [data-zurueck], .steuer select, [data-weiter] { order: 2; }
         .steuer .uhr { margin-left: auto; }
+      }
+      @media (max-width: 640px) {
         /* Nur Punkt bzw. Zurück-Pfeil; der Text bleibt für Screenreader. */
         .folgen [data-folgen-text] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
         .uhr[data-timer] { font-size: 1.35rem; }
