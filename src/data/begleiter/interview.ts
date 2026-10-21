@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu /innolab/methoden/interview (Tag 1, 14:00–16:15).
-// Seitenzahlen: Mom Test = gedruckte Seite (PDF − 1, also PDF-Seite + 1); Torres und VPD wie im Kurs nach PDF-Seite
+// Seitenzahlen: Mom Test = gedruckte Seite (= PDF-Seite + 1); Torres und VPD wie im Kurs nach PDF-Seite
 // (die Torres-PDF hat keine gedruckten Seitenzahlen). Kaffeebar-Zitate: IDs aus src/werkstatt/beispiele/interviews.json
 // (ausgedachte Beispieldaten, gekennzeichnet).
 

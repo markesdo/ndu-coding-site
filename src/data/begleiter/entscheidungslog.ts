@@ -95,13 +95,13 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
 
   'beleg-staerke': {
     live: [
-      'Eine Regel: Was Menschen tun, wiegt mehr als was sie sagen.',
-      'Vier Stufen: noch keiner, gesagt, erzählt, getan. „Gesagt“ ist kaum besser als nichts – „Würde ich nutzen“ hört man von fast allen.',
-      'Unterschied gesagt/erzählt streng nehmen: „erzählt“ ist ein konkretes vergangenes Ereignis, „gesagt“ ist Meinung, Gewohnheit, Wunsch.',
-      'Kaffeebar: D3 und D4 stehen auf „gesagt“ – D4 ist darum vorläufig und kann von einem Test ersetzt werden.',
-      'Gleiche Richtung wie die Antworten-Skala beim Interview, die heute noch kommt.',
+      'Bei Zeitnot überspringen: Dieselbe Regel kommt nach dem Mittag in der Annahmen-Map („Was zählt als Beleg?“) noch einmal.',
+      'Eine Regel: tun wiegt mehr als sagen.',
+      'Vier Stufen: noch keiner, gesagt, erzählt, getan. „Gesagt“ ≈ nichts („Würde ich nutzen“ sagen fast alle).',
+      'Streng: „erzählt“ = konkretes Ereignis, „gesagt“ = Meinung, Gewohnheit, Wunsch.',
+      'Kaffeebar: D3 und D4 nur „gesagt“, D4 darum vorläufig.',
     ],
-    ueberleitung: 'Jetzt schreiben sie ihre eigenen ersten Zeilen.',
+    ueberleitung: 'Jetzt fünf Minuten: eure ersten Zeilen im eigenen Log.',
     kern: [
       {
         text: 'Bland prüft die Stärke eines Belegs an vier Achsen, jeweils schwach gegen stark: Meinungen („I would …“, „I think … is important“, „I like …“) gegen Fakten/Ereignisse („Last week I …“, „I spent … on“); was Menschen sagen gegen was sie tun („What people say in an interview or survey is not necessarily what they do in real life or will do in the future.“); Laborsituation gegen echte Umgebung; kleine gegen große Investitionen (E-Mail-Anmeldung gegen Vorkauf oder Ruf aufs Spiel setzen). Die Kurs-Skala ist eine Vereinfachung dieser Tabelle.',
@@ -126,7 +126,7 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
     ],
     zusatz: [
       {
-        titel: 'Einweg- und Zweiwegtüren (Amazon, Aktionärsbrief 2015)',
+        titel: 'Einweg- und Zweiwegtüren (Amazon, Aktionärsbrief 2015, veröffentlicht April 2016)',
         text: 'Jeff Bezos unterscheidet zwei Arten von Entscheidungen: Typ 1 ist kaum umkehrbar („one-way doors“) und braucht langsame, sorgfältige Abwägung. Die meisten Entscheidungen sind Typ 2, umkehrbar („two-way doors“): Ist eine davon schlecht, öffnet man die Tür wieder und geht zurück – sie sollen schnell und von kleinen Gruppen getroffen werden. Große Organisationen neigen dazu, auch Typ-2-Entscheidungen wie Typ 1 zu behandeln, mit Langsamkeit und zu wenig Experimenten als Folge. Passt zu D4: auf schwachem Beleg entschieden, aber umkehrbar – darum ist es in Ordnung, jetzt zu entscheiden und später zu ersetzen. Bland gibt denselben Rat: umkehrbare und nicht umkehrbare Entscheidungen unterscheiden, bei den umkehrbaren schnell handeln (TBI S. 314).',
         quelle: 'https://www.sec.gov/Archives/edgar/data/1018724/000119312516530910/d168744dex991.htm',
       },

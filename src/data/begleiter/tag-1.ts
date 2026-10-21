@@ -385,7 +385,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       quelle: `${TORRES}, S. 21–22`,
     },
     zusatz: [
-      { titel: 'Wells Fargo: 3 Milliarden Dollar Vergleich 2020', text: 'Am 21. Februar 2020 einigte sich Wells Fargo mit dem US-Justizministerium und der SEC auf 3 Milliarden Dollar, um die strafrechtlichen und zivilrechtlichen Ermittlungen zu den Verkaufspraktiken beizulegen. Die Bank räumte ein, dass ihr Privatkundengeschäft Mitarbeitende unter Druck setzte, große Mengen Produkte an bestehende Kundschaft zu verkaufen, oft ohne Rücksicht auf deren Bedarf. Für 2002 bis 2016 wurden u. a. Konten ohne Zustimmung eröffnet, Unterschriften gefälscht und Kontaktdaten geändert, damit Kund*innen nichts merkten. Laut der Mitteilung wussten leitende Manager schon 2002 davon.', quelle: 'US Department of Justice, Pressemitteilung vom 21.02.2020, https://www.justice.gov/usao-cdca/pr/wells-fargo-agrees-pay-3-billion-resolve-criminal-and-civil-investigations-sales (gespiegelt: https://fdicoig.gov/news/investigations-press-releases/wells-fargo-agrees-pay-3-billion-resolve-criminal-and-civil)' },
+      { titel: 'Wells Fargo: 3 Milliarden Dollar Vergleich 2020', text: 'Am 21. Februar 2020 einigte sich Wells Fargo mit dem US-Justizministerium und der SEC auf 3 Milliarden Dollar, um die strafrechtlichen und zivilrechtlichen Ermittlungen zu den Verkaufspraktiken beizulegen. Die Bank räumte ein, dass ihr Privatkundengeschäft Mitarbeitende unter Druck setzte, große Mengen Produkte an bestehende Kundschaft zu verkaufen, oft ohne Rücksicht auf deren Bedarf. Für 2002 bis 2016 wurden u. a. Konten ohne Zustimmung eröffnet, Unterschriften gefälscht und Kontaktdaten geändert, damit Kund*innen nichts merkten. Laut der Mitteilung wusste die Führungsebene seit mindestens 2002 davon.', quelle: 'US Department of Justice, Pressemitteilung vom 21.02.2020, https://www.justice.gov/usao-cdca/pr/wells-fargo-agrees-pay-3-billion-resolve-criminal-and-civil-investigations-sales (gespiegelt: https://fdicoig.gov/news/investigations-press-releases/wells-fargo-agrees-pay-3-billion-resolve-criminal-and-civil)' },
     ],
     fragen: [
       { frage: 'Was machen wir mit Interview-Funden, die nicht zum Outcome passen?', antwort: 'Notieren, aber nicht in den Baum. Sie können für ein anderes Outcome wertvoll sein; im Baum lenken sie ab.' },
@@ -471,7 +471,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Hausaufgabe bis Tag 2: fünf echte Interviews, Notizen mit Pseudonym, Snapshot auf Miro, Entscheidungslog.',
       'Jetzt zehn Minuten Pause, dann Problem-Rahmen.',
     ],
-    ueberleitung: 'Nach der Pause: Problem-Rahmen und Produkt-Brief – worum es geht (/innolab/methoden/problem-rahmen#worum).',
+    ueberleitung: 'Pause bis 11:10. Danach: erst der Rahmen, dann die Lösung – Problem-Rahmen und Produkt-Brief.',
     fragen: [
       { frage: 'Bis wann müssen die fünf Interviews fertig sein?', antwort: 'Bis Tag 2; Details auf der Seite Abschluss & Hausaufgabe (/innolab/tag-1/abschluss).' },
       { frage: 'Wo sehe ich, welche Methode welches Artefakt liefert?', antwort: 'In der Toolbox (/innolab/methoden): jede Methode mit ihrer Frage und dem Artefakt.' },
