@@ -1,4 +1,5 @@
 import type { Notiz } from './typen';
+import { MCP_WERKZEUGE } from '../../werkstatt/vertrag';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/problem-rahmen.astro (Tag 1).
 // Seitenangaben: Torres = PDF-Seite (wie auf der Kursseite zitiert), HBR = Seite im Kurs-PDF
@@ -272,7 +273,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         '„Für wen“ ist eine Situation mit Zeit und Ort, nicht eine Zielgruppe wie „Studierende“.',
         '„Was macht es nicht“ nennt drei Dinge, die naheliegen würden – nicht drei absurde.',
         'Bei drei Personen braucht die Dreierrunde etwa 5 min pro Person; auf die Zeit achten.',
-        'Was von Claude zurückkommt: höchstens drei Befunde mit Zitat, zu jedem eine Frage; umgeschrieben wird nichts. Jede*r entscheidet selbst, was davon in den Brief kommt: Claude findet, ihr entscheidet.',
+        'Was von Claude zurückkommt: höchstens drei Befunde mit Zitat, zu jedem eine Frage; umgeschrieben wird nichts. Jede*r entscheidet selbst, was davon in den Brief kommt („Claude findet, ihr entscheidet“).',
         'Am guten Brief findet Claude oft Kleinigkeiten (etwa „Lieferung setzt eine Lösungsrichtung voraus“). Ein Befund ist eine Frage, kein Fehler.',
       ],
       fehler: [
@@ -300,7 +301,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
     ],
     fragen: [
       {
-        frage: 'Claude schreibt, es könne artefakt_pruefen nicht aufrufen. Was nun?',
+        frage: `Claude schreibt, es könne ${MCP_WERKZEUGE.artefaktPruefen} nicht aufrufen. Was nun?`,
         antwort: 'Im Gespräch ist kein Connector aktiv. Den Brief aus „Für Claude kopieren“ unter den Prompt einfügen; der Prompt sagt Claude, dann die eingefügten Texte zu nehmen.',
       },
       {

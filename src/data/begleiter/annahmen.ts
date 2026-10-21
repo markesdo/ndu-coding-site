@@ -280,7 +280,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
         'Heute vor allem Annahmen über Kundschaft und Problem, nicht über eine Lösung.',
         'Tempo: Torres findet schnelles Einordnen genauso gut wie langes Diskutieren (S. 130).',
         'Red Team: Claude soll höchstens drei Stellen aus dem Brief zitieren und fragen, die Annahmen formulieren die Studierenden selbst.',
-        'So geht es mit Claude: erst der Prompt „Prüfen lassen“, dann im selben Gespräch der Red-Team-Prompt. Ohne Connector unter den Prüf-Prompt die Map, unter den Red-Team-Prompt Brief und Map, je aus „Für Claude kopieren“.',
+        'So geht es mit Claude: erst der Prompt „Prüfen lassen“, dann im selben Gespräch der Red-Team-Prompt. Ohne Connector unter den Prüf-Prompt Map und Brief, je aus „Für Claude kopieren“; für das Red Team danach nichts erneut einfügen, beide stehen schon im Gespräch.',
         'Claude übersieht leicht die als Annahme verkleidete Lösung („Pendler*innen wollen eine App“), weil nur drei Befunde Platz haben. Danach selbst fragen.',
       ],
       fehler: [

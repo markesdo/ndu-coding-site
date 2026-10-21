@@ -545,7 +545,6 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
         'Im Live-Interview: Wird nach „normalerweise“ zurückgeholt? Wird ein Kompliment abgelenkt? Wird ein Feature-Wunsch hinterfragt?',
         'Zeit: Die drei Live-Runden brauchen 45 min. Wenn Schritt 1 überzieht, Schritt 2 kürzen, nicht die Live-Runden.',
         'Platzhalter vergessen: Dann fragt Claude erst nach der Zielgruppe, statt zu spielen. Kein Fehler, einfach Abschnitt 1 nachreichen.',
-        'Im Probe-Feedback schlägt Claude manchmal Ja/Nein- oder Suggestivfragen vor. Nur übernehmen, was nach dem letzten konkreten Mal fragt.',
       ],
       fehler: [
         'Die Idee wird in der Einleitung erklärt („Wir bauen eine App, die …“).',
