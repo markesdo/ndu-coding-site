@@ -367,7 +367,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Manifesto for Agile Software Development (2001); Alexey Krivitsky, lego4scrum (2023); Ron Jeffries, The Nature of Software Development (2015)',
   },
   {
-    slug: 'backlog', name: 'Backlog aus Issues', tag: 4, dauer: 60,
+    slug: 'backlog', name: 'Backlog aus Issues', tag: 4, dauer: 60, prueflisteStand: 2,
     frage: 'Welche Issues ergeben sich aus dem ersten Slice – und in welcher Reihenfolge?',
     braucht: ['storymap', 'usage', 'spike', 'experimente', 'team', 'entscheidungen'], ergibt: ['issues'],
     pruefliste: [
@@ -382,7 +382,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Kap. 4, 6–11; Bill Wake, INVEST in Good Stories (2003); Mike Cohn, Agile Estimating and Planning (2005), Kap. 9',
   },
   {
-    slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 4, dauer: 45,
+    slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 4, dauer: 45, prueflisteStand: 2,
     frage: 'Woran prüfen wir, dass ein Issue fertig ist – und wie zeigen wir es im Review?',
     braucht: ['issues', 'brief', 'team'], ergibt: ['kriterien'],
     pruefliste: [
@@ -397,7 +397,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Kap. 6, 12, 16; Dan North, Introducing BDD (2006); Cucumber, Gherkin Reference; Evals als Ergänzung des Kurses nach Anthropic, Define success criteria and build evaluations',
   },
   {
-    slug: 'schneiden', name: 'Schneiden statt Schätzen', tag: 4, dauer: 30,
+    slug: 'schneiden', name: 'Schneiden statt Schätzen', tag: 4, dauer: 30, prueflisteStand: 2,
     frage: 'Passt jedes Issue in einen Durchgang mit Claude – und versteht es das ganze Team?',
     braucht: ['issues', 'kriterien'], ergibt: ['geschnitten'],
     pruefliste: [
