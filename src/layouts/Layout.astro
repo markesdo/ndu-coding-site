@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, Menu, PanelLeftClose, PanelLeftOpen, Presentation } from '@lucide/astro';
+import { ArrowRight, Menu, NotebookPen, PanelLeftClose, PanelLeftOpen, Presentation } from '@lucide/astro';
 // Schriften liegen auf unserem Server (fontsource), nicht bei Google: keine IP-Weitergabe an Dritte (DSGVO).
 // Die CSS-Dateien deklarieren mehrere Zeichensätze; der Browser lädt per unicode-range nur, was die Seite nutzt (hier latin, ggf. latin-ext).
 import '@fontsource-variable/instrument-sans';
@@ -50,6 +50,11 @@ const { vorher, danach } = nachbarn(path);
         <!-- „Wo ist Markus?“: nur sichtbar, wo der Präsentator-Schlüssel liegt (wo-ist.ts) -->
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
+        {/* Begleiter (Notizen zur Folie) in einem neuen Tab, damit die projizierte Seite stehen bleibt. Nur im Innolab und nur beim
+            Präsentator (data-nur-praesentator, beamer.css); sichtbar ist die Kopfleiste im Beamer-Modus und am Handy. */}
+        {bereich === 'innolab' && (
+          <a class="begleiter-knopf" href="/innolab/begleiter" target="_blank" rel="noopener" data-nur-praesentator aria-label="Begleiter öffnen" title="Begleiter öffnen (neuer Tab)"><NotebookPen size={18} aria-hidden="true" /></a>
+        )}
         <button id="menu-btn" aria-label="Menü öffnen"><Menu size={18} aria-hidden="true" /> Menü</button>
       </div>
     </div>

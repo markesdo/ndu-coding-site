@@ -1,5 +1,6 @@
 ---
 // Anmeldung für „Wo ist Markus?“ (wo-ist.ts). Nicht im Menü; liegt wie alles hinter dem Kurspasswort.
+import { NotebookPen } from '@lucide/astro';
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout title="Präsentator">
@@ -18,7 +19,11 @@ import Layout from '../layouts/Layout.astro';
 
   <div data-praes-angemeldet hidden>
     <p><strong>Angemeldet auf diesem Gerät.</strong> Gesendet wird nur im Beamer-Modus (Taste <kbd>B</kbd>). Der Schalter „Live“ neben „Beamer“ zeigt, ob gerade gesendet wird; ein Klick darauf pausiert, die Studierenden sehen dann nichts mehr.</p>
-    <button type="button" class="btn" data-praes-abmelden>Abmelden</button>
+    <div class="praes-knoepfe">
+      <!-- Begleiter in einem neuen Tab: Notizen zur Folie fürs Tablet, die Beamer-Seite bleibt stehen. -->
+      <a class="btn mit-icon" href="/innolab/begleiter" target="_blank" rel="noopener" data-praes-begleiter><NotebookPen size={18} aria-hidden="true" /> Begleiter öffnen</a>
+      <button type="button" class="btn" data-praes-abmelden>Abmelden</button>
+    </div>
   </div>
 
   <script>
@@ -53,6 +58,7 @@ import Layout from '../layouts/Layout.astro';
     .praes-form input[type="password"] { font: inherit; padding: .6rem .75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); }
     .praes-form .btn { justify-self: start; }
     .praes-form[hidden] { display: none; }
+    .praes-knoepfe { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
     .praes-fehler { color: var(--accent-ink); margin: 0; }
   </style>
 </Layout>
