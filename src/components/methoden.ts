@@ -109,13 +109,14 @@ export const METHODEN: Methode[] = [
     ],
   },
   {
-    slug: 'annahmen', name: 'Annahmen-Map', tag: 1, dauer: 45,
+    slug: 'annahmen', name: 'Annahmen-Map', tag: 1, dauer: 45, prueflisteStand: 2,
     frage: 'Welche Annahmen müssen stimmen – und welche ist am riskantesten?',
     braucht: ['brief'], ergibt: ['annahmen'],
     pruefliste: [
       'Jede Annahme ist ein prüfbarer Satz: „Wir glauben, dass …“.',
       'Alle vier Arten kommen vor: wünschenswert, machbar, wirtschaftlich, bedienbar.',
       'Bei jeder Annahme steht, wie wichtig sie ist und welchen Beleg es gibt.',
+      'Wo „getan“ steht, nennt die Beleg-ID die Quelle (Interview-Zitat oder Entscheidung mit Beleg).',
       'Die riskanteste Annahme – sehr wichtig, kaum Beleg – ist markiert.',
       'Keine Annahme ist eine Aufgabe („Logo gestalten“) oder eine Funktion („Es gibt einen Login“).',
     ],

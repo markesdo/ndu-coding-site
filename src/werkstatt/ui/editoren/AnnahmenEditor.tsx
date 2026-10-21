@@ -83,7 +83,7 @@ function Formular({ daten, setze, fehler }: { daten: Annahmen; setze: (neu: Anna
               <ArtWahl id={a.id} wert={a.art} onChange={(art) => s({ ...a, art })} fehler={fehler(pfad('art'))} />
               <Auswahl label={`Wichtig (${a.id})`} hilfe="Wie schlimm wäre es, wenn die Annahme falsch ist?" wert={a.wichtig} optionen={WICHTIG} onChange={(wichtig) => s({ ...a, wichtig })} fehler={fehler(pfad('wichtig'))} />
               <Auswahl label={`Beleg (${a.id})`} wert={a.beleg} optionen={BELEG} onChange={(beleg) => s({ ...a, beleg })} fehler={fehler(pfad('beleg'))} />
-              <VerweisAuswahl label={`Beleg-IDs (${a.id})`} hilfe="Zum Beispiel I2-4 für ein Zitat aus Interview 2." werte={a.belegIds} onChange={(belegIds) => s({ ...a, belegIds })} fehler={fehler(pfad('belegIds'))} />
+              <VerweisAuswahl label={`Beleg-IDs (${a.id})`} hilfe="Zum Beispiel I2-4 für ein Zitat aus Interview 2. Bei „getan“ ist die Quelle Pflicht: ein Zitat (I2-4) oder eine Entscheidung mit Beleg (D2)." werte={a.belegIds} onChange={(belegIds) => s({ ...a, belegIds })} fehler={fehler(pfad('belegIds'))} />
             </>
           );
         }}
