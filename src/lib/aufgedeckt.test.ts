@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { KENNUNG_UNGUELTIG, MAX_KENNUNGEN, NICHT_GEMELDET, SCHLUESSEL_FALSCH, abfrageAbstand, aufdeckenMelden, aufgedecktHolen, aufgedecktSchluessel, gefragteKennungen, kennungFehler, kennungPruefen } from './aufgedeckt';
+import { KENNUNG_UNGUELTIG, MAX_KENNUNGEN, MELDEN_NOCHMAL_MS, MELDEN_TIMEOUT_MS, NICHT_GEMELDET, SCHLUESSEL_FALSCH, abfrageAbstand, aufdeckenMelden, aufgedecktHolen, aufgedecktSchluessel, gefragteKennungen, kennungFehler, kennungPruefen } from './aufgedeckt';
 
 // 22.10.2026 10:05 in Wien = 08:05 UTC (Sommerzeit bis 25.10.).
 const KURSTAG = new Date('2026-10-22T08:05:00Z');
@@ -71,6 +71,9 @@ describe('aufdeckenMelden', () => {
   };
   const umgeleitet = () => { const r = new Response('<html>'); Object.defineProperty(r, 'redirected', { value: true }); return r; };
 
+  it('der Hinweis kommt spätestens nach 11 s (zwei Versuche mit Zeitlimit, dazwischen warten)', () => {
+    expect(2 * MELDEN_TIMEOUT_MS + MELDEN_NOCHMAL_MS).toBeLessThanOrEqual(11_000);
+  });
   it('klappt es gleich: kein zweiter Versuch, kein Hinweis', async () => {
     const o = ablauf(new Response('{}'));
     expect(await aufdeckenMelden(o)).toBe(true);

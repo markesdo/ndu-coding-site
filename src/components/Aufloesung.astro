@@ -33,7 +33,7 @@ if (fehler) throw new Error(`Aufloesung auf ${Astro.url.pathname}: ${fehler}`);
 <script>
   import { aufgeloest, aufloesungSteuerung, type AufloesungBox } from './aufloesung';
   import { hinweis } from './hinweis';
-  import { AUFGEDECKT_MS, abfrageAbstand, aufdeckenMelden, aufgedecktHolen } from '../lib/aufgedeckt';
+  import { AUFGEDECKT_MS, MELDEN_TIMEOUT_MS, abfrageAbstand, aufdeckenMelden, aufgedecktHolen } from '../lib/aufgedeckt';
   import { PRAESENTATOR_SCHLUESSEL } from '../lib/beamer';
   import { abfrageKette, zeitlimit, type Kette } from '../lib/kette';
   const praesentatorKey = (): string | null => { try { return localStorage.getItem(PRAESENTATOR_SCHLUESSEL); } catch { return null; } };
@@ -42,7 +42,7 @@ if (fehler) throw new Error(`Aufloesung auf ${Astro.url.pathname}: ${fehler}`);
     const key = praesentatorKey();
     if (!key) return;
     void aufdeckenMelden({
-      senden: () => fetch('/api/aufgedeckt', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: JSON.stringify({ kennung }), signal: zeitlimit(8000) }),
+      senden: () => fetch('/api/aufgedeckt', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: JSON.stringify({ kennung }), signal: zeitlimit(MELDEN_TIMEOUT_MS) }),
       warten: (ms) => new Promise((r) => setTimeout(r, ms)),
       hinweis: (text) => hinweis(text, 8000),
     });

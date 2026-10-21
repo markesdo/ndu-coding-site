@@ -63,8 +63,10 @@ export async function aufgedecktHolen(kennungen: readonly string[]): Promise<str
 export const NICHT_GEMELDET = 'Aufdecken nicht an die Studierenden gemeldet – Seite neu laden oder /praesentator prüfen.';
 export const SCHLUESSEL_FALSCH = 'Präsentator-Schlüssel stimmt nicht – auf /praesentator neu anmelden.';
 export const KENNUNG_UNGUELTIG = 'Kennung ungültig – bitte Markus/Code prüfen.';
-/** Schlägt die Meldung fehl (Netz, 5xx), nach so langer Zeit ein zweites Mal. */
+/** Schlägt die Meldung fehl (Netz, 5xx), nach so langer Zeit ein zweites Mal … */
 export const MELDEN_NOCHMAL_MS = 3000;
+/** … und jeder Versuch gibt nach so langer Zeit auf: Spätestens nach 2 × 4 s + 3 s sieht der Präsentator den Hinweis. */
+export const MELDEN_TIMEOUT_MS = 4000;
 
 export interface MeldenOptionen {
   /** Die eigentliche Anfrage (POST /api/aufgedeckt). */

@@ -16,9 +16,10 @@ import Aufloesung from '../../../components/Aufloesung.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import Skala from '../../../components/bild/Skala.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
-// Hinweise an den gesperrten Teilen: wann sie aufgehen und was ein Klick öffnet. Alles zum Mom Test ist eine Gruppe
-// (gruppe={MOM_TEST_GRUPPE}): Auflösungen, Editor und Vorlage, Probe-Prompt, Prüfliste – deckt Markus auf, geht alles auf (auch
-// bei allen); ein Klick der Studierenden öffnet nur den einen Teil.
+// Hinweise an den gesperrten Teilen: wann sie aufgehen und was ein Klick öffnet. Jede Übung hat ihre eigene Gruppe
+// (mom-test-…): Markus deckt eine auf, alle sehen nur diese – die Pointen späterer Übungen bleiben zu. Die letzte („ausgraben“)
+// ist in MOM_TEST_GRUPPE, zusammen mit Editor und Vorlage, Probe-Prompt und Prüfliste (nur im Handout) und dem Leitfaden der
+// Mappe: Mit ihr geht das Material für den Leitfaden-Block auf. Ein Klick der Studierenden öffnet nur den einen Teil.
 const [, monat, tag] = NACH_MOM_TEST.slice(0, 10).split('-');
 const AB = `am ${tag}.${monat}. um ${NACH_MOM_TEST.slice(11)}`;
 const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sagt Markus es, öffnet ein Klick auf den Knopf diesen Teil.`;
@@ -48,7 +49,7 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
     <h2 id="mom-test">Der Mom Test</h2>
     <p class="folie-satz">Schreibt drei Fragen an eure Zielgruppe.</p>
     <p>Allein, eine Frage pro Sticky. Markus antwortet danach als Person aus eurer Zielgruppe. <Timer minuten={5} /></p>
-    <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={`Erst eure Fragen schreiben. ${OEFFNET}`} knopf="Auflösung zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test-auftakt" fuer="alle" hinweis={`Erst eure Fragen schreiben. ${OEFFNET}`} knopf="Auflösung zeigen (nach der Übung)">
       <p class="folie-satz">Auf „Würdest du …?“ sagen alle Ja – selbst eure Mutter.</p>
       <ol class="gross">
         <li data-schritt><strong>Redet über ihr Leben, nicht über eure Idee.</strong> Sobald ihr die Idee erzählt, wird das Gespräch höflich.</li>
@@ -62,7 +63,7 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
   <Folie>
     <h2 id="fragen-matrix">Wo liegen eure Fragen?</h2>
     <p class="folie-satz">Prüft eure drei Fragen an zwei Achsen.</p>
-    <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={OEFFNET} knopf="Matrix zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test-matrix" fuer="alle" hinweis={OEFFNET} knopf="Matrix zeigen (nach der Übung)">
       <Matrix2x2 label="Mom Test als Matrix: nach oben über ihr Leben statt über eure Idee, nach rechts Vergangenheit statt Zukunft"
         y={{ label: 'Thema', unten: 'eure Idee', oben: 'ihr Leben' }}
         x={{ label: 'Zeit', links: 'Zukunft', rechts: 'Vergangenheit' }}
@@ -78,7 +79,7 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
   <Folie>
     <h2 id="statt-besser">Eure Fragen umschreiben</h2>
     <p class="folie-satz">Jetzt macht ihr eure drei Fragen besser.</p>
-    <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={OEFFNET} knopf="Beispiele zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test-umschreiben" fuer="alle" hinweis={OEFFNET} knopf="Beispiele zeigen (nach der Übung)">
       <div style="overflow-x:auto">
         <table>
           <thead><tr><th>Statt: Zukunft</th><th>Besser: Vergangenheit</th></tr></thead>
@@ -99,7 +100,7 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
     <h2 id="antworten">Welche Antwort zählt?</h2>
     <p class="folie-satz">Sortiert die vier Antworten von schwach nach stark.</p>
     <p>Bestellt vor und zahlt im Voraus. · „Coole Idee!“ · „Letzte Woche zweimal den Zug verpasst.“ · „Würde ich sicher nutzen.“ <Timer minuten={2} /></p>
-    <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={OEFFNET} knopf="Skala zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test-antworten" fuer="alle" hinweis={OEFFNET} knopf="Skala zeigen (nach der Übung)">
       <Skala label="Antworten von sagen bis tun: Kompliment, Zukunftsversprechen, erzählte Vergangenheit, Commitment" links="sagen" rechts="tun"
         stufen={[
           { t: 'Kompliment', sub: 'lobt die Idee' },
@@ -120,7 +121,7 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
   <Folie>
     <h2 id="warum-geschichten">Warum Meinungsfragen täuschen</h2>
     <p class="folie-satz">Menschen beschreiben ihr ideales Ich – nicht, was sie tun.</p>
-    <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={OEFFNET} knopf="Zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test-geschichten" fuer="alle" hinweis={OEFFNET} knopf="Zeigen (nach der Übung)">
       <div class="gegenueber">
         <div data-schritt><p><strong>„Worauf achtest du beim Jeanskauf?“</strong><br />„Die Passform ist das Wichtigste.“</p></div>
         <div data-schritt><p><strong>„Erzähl vom letzten Jeanskauf.“</strong><br />„Auf Amazon. Ob sie passt, wusste ich nicht – aber die Marke mag ich, und sie war im Angebot.“</p></div>
@@ -136,7 +137,7 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
   <Folie>
     <h2 id="forschungsfrage">Was ihr wissen wollt ≠ was ihr fragt</h2>
     <p class="folie-satz">Die Forschungsfrage stellt ihr nie – ihr fragt nach einer Geschichte.</p>
-    <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={OEFFNET} knopf="Zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test-forschungsfrage" fuer="alle" hinweis={OEFFNET} knopf="Zeigen (nach der Übung)">
       <div style="overflow-x:auto">
         <table>
           <thead><tr><th></th><th>Forschungsfrage: was ihr lernen wollt</th><th>Interviewfrage: was ihr fragt</th></tr></thead>
