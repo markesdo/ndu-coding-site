@@ -150,7 +150,8 @@ describe('verknuepfungenPruefen', () => {
     const m = kaffeebar();
     m.annahmen.annahmen[1].belegIds = ['D1'];
     Object.assign(m.entscheidungen.entscheidungen[0]!, { beleg: 'getan', belegNotiz: 'Kassendaten August' });
-    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.ort === 'A2')).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A2'));
+    const [a2] = KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A2');
+    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.ort === 'A2')).toStrictEqual([{ ...a2, text: `${a2!.text} D1 ist ersetzt – nennt die neue Zeile (D3).` }]);
   });
 
   it('Entscheidung „getan“ ohne Beleg-Notiz (nur IDs) ist selbst ein Befund; mit Notiz oder ersetzt still', () => {
@@ -160,10 +161,17 @@ describe('verknuepfungenPruefen', () => {
     // D1 ist ersetzt: Geschichte, auch ohne Notiz.
     Object.assign(d1, { beleg: 'getan', belegIds: ['I1'] });
     expect(verknuepfungenPruefen(m).befunde.filter((b) => b.artefakt === 'entscheidungen')).toStrictEqual([
-      { art: 'fehlender-beleg', artefakt: 'entscheidungen', ort: 'D3', text: 'D3 ist „getan“, nennt aber keine Quelle (Beleg-Notiz) – Interviews belegen höchstens „erzählt“.' },
+      { art: 'fehlender-beleg', artefakt: 'entscheidungen', ort: 'D3', text: 'D3 ist „getan“, nennt aber keine Quelle (Beleg-Notiz). Gespeicherte Entscheidungen bleiben, wie sie sind: Ersetzt D3 durch eine neue Zeile mit Quelle oder mit der passenden Stufe (Interviews belegen höchstens „erzählt“).' },
     ]);
     d3.belegNotiz = 'Strichliste Oktober';
     expect(verknuepfungenPruefen(m).befunde.filter((b) => b.artefakt === 'entscheidungen')).toStrictEqual([]);
+  });
+
+  it('IDs in einer Beleg-Notiz werden aufgelöst wie im Text: unbekannte melden, bekannte still', () => {
+    const m = kaffeebar();
+    m.entscheidungen.entscheidungen[1].belegNotiz = 'Kassendaten September, siehe I9';
+    m.annahmen.annahmen[1].belegNotiz = 'Strichliste wie in D7, dazu I1';
+    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.art === 'unbekannte-id').map((b) => [b.ort, b.id])).toStrictEqual([['D2', 'I9'], ['A2', 'D7']]);
   });
 
   it('Annahme „getan“: unbekannte D-IDs neben aufgelösten ändern nichts; nur unbekannte D-IDs → nur der Befund zur ID', () => {

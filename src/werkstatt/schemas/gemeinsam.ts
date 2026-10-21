@@ -67,6 +67,7 @@ const STEUERZEICHEN = /(?!\p{Join_Control})[\p{Cc}\p{Cf}\u2028\u2029\u0085]/u;
 // Das Schema lehnt ab statt zu bereinigen: Was gespeichert wird, ist genau das, was die Person sieht.
 export const belegNotiz = z
   .string({ error: 'Beleg (Notiz): bitte als Text eintragen.' })
+  .refine((s) => s.trim() !== '', { error: 'Beleg-Notiz: nicht leer – ohne Notiz das Feld weglassen' })
   .refine((s) => !STEUERZEICHEN.test(s), { error: 'Beleg-Notiz: eine Zeile, ohne Steuerzeichen' })
   .refine((s) => s === s.trim(), { error: 'Beleg-Notiz: ohne Leerzeichen am Anfang oder Ende' })
   .refine((s) => graphemAnzahl(s) <= BELEG_NOTIZ_MAX, { error: `Beleg (Notiz): höchstens ${BELEG_NOTIZ_MAX} Zeichen. Kürze die Notiz oder nenne nur die Quelle.` })

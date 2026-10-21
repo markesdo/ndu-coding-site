@@ -259,6 +259,16 @@ describe('Annahmen', () => {
     expect(meldung(' Kasse')).toBe('Beleg-Notiz: ohne Leerzeichen am Anfang oder Ende');
     expect(meldung(5)).toBe('Beleg (Notiz): bitte als Text eintragen.');
   });
+  it('belegNotiz: leerer Text wird abgelehnt (ohne Notiz fehlt das Feld), in beiden Artefakten; kein Beispiel speichert ""', () => {
+    const a = klon(annahmen);
+    a.annahmen[1].belegNotiz = '';
+    const r = artefaktParsen('annahmen', a);
+    expect('fehler' in r ? r.fehler.find((f) => f.pfad === 'annahmen.1.belegNotiz')?.meldung : undefined).toBe('Beleg-Notiz: nicht leer – ohne Notiz das Feld weglassen');
+    const e = klon(entscheidungen);
+    e.entscheidungen[1].belegNotiz = '';
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
+    for (const roh of Object.values(beispiele)) expect(JSON.stringify(roh)).not.toContain('"belegNotiz":""');
+  });
 });
 
 const a = (wichtig: Annahme['wichtig'], beleg: Annahme['beleg'], id = 'A1'): Annahme => ({
