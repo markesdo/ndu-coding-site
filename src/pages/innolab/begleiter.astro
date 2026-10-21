@@ -502,7 +502,8 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
       .uhr[data-timer="laeuft"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
       .uhr[data-timer="knapp"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); }
       .uhr[data-timer="aus"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); outline: 3px solid var(--yellow); outline-offset: 1px; }
-      .lage[hidden] { display: none; }
+      /* .steuer davor: sonst gewinnt „.steuer .btn“ (inline-flex), und der leere Knopf bliebe neben der Uhr stehen. */
+      .steuer .lage[hidden] { display: none; }
       .lage[data-lage="hinten"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); }
       .lage[data-lage="vorn"], .lage[data-lage="ok"] { border-color: var(--green); color: var(--green); }
       /* Telefon: oben Status, Ansicht, Plan und Uhr; darunter Blättern mit der Folienliste in voller Breite. */
