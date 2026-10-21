@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { MIRO_FRAMES } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
 import {
-  TAG_1_SEITEN, folieZu, folienAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie, pfadAusGlob, quellenAusGlob, seitenLabel, tagFolien,
+  TAG_1_SEITEN, bloeckeAus, folieZu, folienAus, folienPlan, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie, pfadAusGlob,
+  quellenAusGlob, seitenLabel, tagFolien, tempo, uebungMinuten,
 } from './begleiter';
 
 // Dieselbe Glob-Form wie in pages/innolab/begleiter.astro (vom Projektwurzel aus, unabhängig vom Ordner der Datei).
@@ -35,6 +36,58 @@ describe('folienAus', () => {
       { id: 'b', titel: 'B mit & Tag', unterIds: ['uebung-1-c', 'werkstatt', 'pruefen'] },
       { id: 'c', titel: 'C', unterIds: [] },
     ]);
+  });
+  it('liest den Folien-Satz, ohne Satz null', () => {
+    expect(folienAus('/innolab/tag-1', QUELLE).map((f) => f.satz)).toStrictEqual(['Eins.', null, null]);
+  });
+});
+
+describe('Zeitplan', () => {
+  const ABLAUF = `<div class="schedule" data-kurstag="2026-10-22">
+    <Block time="09:00–09:10" type="plenum" title="Start &amp; Ziel" href="#a">x</Block>
+    <Block time="09:10–09:20" type="pause" title="Pause" />
+    <Block time="09:20–09:40" href="/innolab/tag-1#c" title="Rest">y</Block>
+    <Block title="ohne Zeit" href="#b" />
+  </div>`;
+  const folien = folienAus('/innolab/tag-1', QUELLE);
+  it('liest Blöcke mit Zeit (Minuten ab Mitternacht) und den Kurstag', () => {
+    expect(bloeckeAus(ABLAUF)).toStrictEqual([
+      { von: 540, bis: 550, titel: 'Start & Ziel', href: '#a' },
+      { von: 550, bis: 560, titel: 'Pause', href: null },
+      { von: 560, bis: 580, titel: 'Rest', href: '/innolab/tag-1#c' },
+    ]);
+    expect(kurstagAus(ABLAUF)).toBe('2026-10-22');
+    expect(kurstagAus('<div>')).toBeNull();
+  });
+  it('Übungsdauer: führende Minuten, sonst null', () => {
+    expect(uebungMinuten('60 min (15 + 10 + 15 + 10 + 10)')).toBe(60);
+    expect(uebungMinuten('5 min')).toBe(5);
+    expect(uebungMinuten('bis Tag 2; je Interview 20–30 min')).toBeNull();
+    expect(uebungMinuten(undefined)).toBeNull();
+  });
+  it('Übung bekommt ihre Dauer, die übrigen Folien den Rest; Pausen zählen nicht', () => {
+    const plan = folienPlan(folien, bloeckeAus(ABLAUF), (i) => (i === 1 ? 6 : null));
+    expect(plan).toStrictEqual([
+      { block: 'Start & Ziel', von: 540, bis: 550, sollVon: 540, sollBis: 544 },
+      { block: 'Start & Ziel', von: 540, bis: 550, sollVon: 544, sollBis: 550 },
+      { block: 'Rest', von: 560, bis: 580, sollVon: 560, sollBis: 580 },
+    ]);
+  });
+  it('zu lange Übung wird gestaucht, Folien ohne Übung behalten ihre Mindestzeit', () => {
+    const plan = folienPlan(folien, bloeckeAus(ABLAUF), (i) => (i === 1 ? 60 : null));
+    expect(plan.slice(0, 2).map((p) => [p!.sollVon, p!.sollBis])).toStrictEqual([[540, 542], [542, 550]]);
+  });
+  it('Folie vor dem ersten Block → null', () => {
+    const plan = folienPlan(folien, bloeckeAus('<Block time="09:00–09:30" title="B" href="#b" />'), () => null);
+    expect(plan[0]).toBeNull();
+    expect(plan[2]).toStrictEqual({ block: 'B', von: 540, bis: 570, sollVon: 555, sollBis: 570 });
+  });
+  it('tempo: hinten, vorn, im Plan, Rest bis Blockende', () => {
+    const p = { block: 'B', von: 540, bis: 570, sollVon: 550, sollBis: 560 };
+    expect(tempo(p, 555)).toStrictEqual({ rest: 15, abweichung: 0 });
+    expect(tempo(p, 567)).toStrictEqual({ rest: 3, abweichung: 7 });
+    expect(tempo(p, 545)).toStrictEqual({ rest: 25, abweichung: -5 });
+    expect(tempo(p, 575)).toStrictEqual({ rest: -5, abweichung: 15 });
   });
 });
 
@@ -114,6 +167,14 @@ describe('Folien von Tag 1 (echte Seiten)', () => {
   it('jede Tag-1-Folie hat eine Notiz mit mindestens einem live-Stichwort', () => {
     const ohne = folien.filter((f) => !NOTIZEN[f.pfad]?.[f.id]?.live?.some((s) => s.trim() !== ''));
     expect(ohne.map((f) => `${f.pfad}#${f.id}`)).toStrictEqual([]);
+  });
+  it('der Ablauf von tag-1.astro ordnet jeder Folie einen Block zu, Blöcke lückenlos in Tagesreihenfolge', () => {
+    const plan = folienPlan(folien, bloeckeAus(quellen['/innolab/tag-1']), () => null);
+    expect(plan.every((p) => p !== null)).toBe(true);
+    expect(plan[0]!.block).toBe('Kick-off');
+    expect(plan.at(-1)!.block).toBe('Hausaufgabe & Abschluss');
+    expect(plan.find((_, i) => folien[i].pfad === '/innolab/methoden/entscheidungslog')!.block).toBe('Entscheidungslog');
+    expect(kurstagAus(quellen['/innolab/tag-1'])).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
   it('erkennt eine Notiz ohne Folie', () => {
     expect(notizenOhneFolie(folien, { '/innolab/tag-1': { gibtsnicht: { live: ['x'] } } })).toStrictEqual(['/innolab/tag-1#gibtsnicht']);

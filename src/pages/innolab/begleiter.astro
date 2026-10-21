@@ -7,9 +7,9 @@
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../../styles/global.css';
-import { ChevronLeft, ChevronRight, ExternalLink, LayoutGrid, Radio, Timer } from '@lucide/astro';
+import { ChevronLeft, ChevronRight, ExternalLink, LayoutGrid, Timer } from '@lucide/astro';
 import { NOTIZEN } from '../../data/begleiter';
-import { quellenAusGlob, seitenLabel, tagFolien } from '../../lib/begleiter';
+import { bloeckeAus, folienPlan, kurstagAus, quellenAusGlob, seitenLabel, tagFolien, uebungMinuten } from '../../lib/begleiter';
 import { teamFrameLink } from '../../lib/team-board';
 
 // Glob vom Projektwurzel aus (wie in lib/begleiter.test.ts), damit die Schlüssel nicht vom Ordner dieser Datei abhängen.
@@ -17,6 +17,11 @@ const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro',
 const folien = tagFolien(quellen);
 // Ohne Folien wäre die Seite leer und das Folgen sinnlos – lieber den Build abbrechen.
 if (folien.length === 0) throw new Error('Begleiter: keine Folien von Tag 1 gefunden (Glob oder Seitenpfade geändert?)');
+// Soll-Zeit je Folie aus dem Ablauf von Tag 1 (Übungen mit ihrer Dauer); Kurstag, damit „vorn/hinten“ nur an dem Tag erscheint.
+const ablauf = quellen['/innolab/tag-1'] ?? '';
+const minutenJe = folien.map((f) => uebungMinuten(NOTIZEN[f.pfad]?.[f.id]?.uebung?.dauer));
+const plan = folienPlan(folien, bloeckeAus(ablauf), (i) => minutenJe[i]);
+const kurstag = kurstagAus(ablauf);
 const seitenName = (pfad: string) => seitenLabel(pfad, quellen[pfad] ?? '');
 const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
   pfad, name: seitenName(pfad), folien: folien.map((f, i) => ({ ...f, i })).filter((f) => f.pfad === pfad),
@@ -28,6 +33,9 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>Begleiter · Innolab</title>
     <link rel="icon" href="/favicon-innolab.svg" type="image/svg+xml" />
   </head>
@@ -42,9 +50,11 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         ))}
       </select>
       <button type="button" class="btn rund" data-weiter aria-label="Nächste Folie" title="Nächste Folie (→)"><ChevronRight size={22} aria-hidden="true" /></button>
-      <button type="button" class="btn folgen" data-folgen aria-pressed="true"><Radio size={18} aria-hidden="true" /> Dem Beamer folgen</button>
-      <p class="status" data-status role="status">Frage den Beamer …</p>
+      <button type="button" class="btn folgen" data-folgen data-meldung="frage"><span class="punkt" aria-hidden="true"></span> <span data-folgen-text>Frage den Beamer …</span></button>
+      <button type="button" class="btn uhr" data-uhr title="Uhrzeit; läuft ein Übungs-Timer, hier tippen zum Stoppen">--:--</button>
+      <p class="sr-only" data-status role="status"></p>
     </nav>
+    <p class="plan" data-plan data-kurstag={kurstag} hidden></p>
 
     <main>
       {folien.map((f, i) => {
@@ -52,10 +62,11 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         const naechste = folien[i + 1];
         const frameLink = n?.miro?.frame ? teamFrameLink(n.miro.frame) : null;
         return (
-          <article data-index={i} hidden={i !== 0}>
+          <article data-index={i} hidden={i !== 0} data-plan-folie={plan[i] ? JSON.stringify(plan[i]) : undefined}>
             <header class="kopf">
               <p class="seite">{seitenName(f.pfad)} · Folie {i + 1} von {folien.length}</p>
               <h1>{f.titel}</h1>
+              {f.satz && <p class="satz">{f.satz}</p>}
               <a class="oeffnen" href={`${f.pfad}#${f.id}`} target="_blank" rel="noopener">Folie öffnen <ExternalLink size={14} aria-hidden="true" /></a>
             </header>
 
@@ -64,31 +75,37 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
                 <>
                   <ul class="stichworte">{n.live.map((s) => <li>{s}</li>)}</ul>
                   {n.uebung && (n.uebung.dauer || n.uebung.form) && (
-                    <p class="sozial"><Timer size={20} aria-hidden="true" /> {[n.uebung.dauer, n.uebung.form].filter(Boolean).join(' · ')}</p>
+                    minutenJe[i]
+                      ? <button type="button" class="sozial" data-timer={minutenJe[i]} title={`Timer ${minutenJe[i]} min starten`}><Timer size={20} aria-hidden="true" /> {[n.uebung.dauer, n.uebung.form].filter(Boolean).join(' · ')} <span class="start">▶ Timer</span></button>
+                      : <p class="sozial"><Timer size={20} aria-hidden="true" /> {[n.uebung.dauer, n.uebung.form].filter(Boolean).join(' · ')}</p>
                   )}
-                  {n.miro && (
-                    <div class="miro">
-                      <h2><LayoutGrid size={18} aria-hidden="true" /> In Miro</h2>
-                      {n.miro.frame && (
-                        <p class="frame">{frameLink
-                          ? <a href={frameLink} target="_blank" rel="noopener noreferrer"><strong>{n.miro.frame}</strong> <ExternalLink size={14} aria-hidden="true" /><span class="sr-only">(öffnet in neuem Tab)</span></a>
-                          : <strong>{n.miro.frame}</strong>}</p>
-                      )}
-                      <ul>{n.miro.schritte.map((s) => <li>{s}</li>)}</ul>
-                      {n.miro.vorschlaege && n.miro.vorschlaege.length > 0 && (
-                        <>
-                          <h3>Vorschläge für die Kaffeebar</h3>
-                          <ul class="zettel">{n.miro.vorschlaege.map((s) => <li>{s}</li>)}</ul>
-                        </>
-                      )}
-                    </div>
-                  )}
-                  {n.ueberleitung && <p class="ueberleitung"><span>Überleitung:</span> {n.ueberleitung}</p>}
                 </>
               ) : (
                 <p class="leer">Zu dieser Folie gibt es noch keine Notizen.</p>
               )}
-              {naechste && <p class="naechste">Als Nächstes: {naechste.titel}{naechste.pfad !== f.pfad && ` (${seitenName(naechste.pfad)})`}</p>}
+              {(n?.ueberleitung || naechste) && (
+                <div class="weiter">
+                  {n?.ueberleitung && <p class="ueberleitung">{n.ueberleitung}</p>}
+                  {naechste && <p class="naechste"><span>Als Nächstes:</span> <strong>{naechste.titel}</strong>{naechste.pfad !== f.pfad && ` (${seitenName(naechste.pfad)})`}</p>}
+                </div>
+              )}
+              {n?.miro && (
+                <div class="miro">
+                  <h2><LayoutGrid size={18} aria-hidden="true" /> In Miro{n.miro.frame && ':'} {n.miro.frame && (frameLink
+                    ? <a href={frameLink} target="_blank" rel="noopener noreferrer"><strong>{n.miro.frame}</strong> <ExternalLink size={14} aria-hidden="true" /><span class="sr-only">(öffnet in neuem Tab)</span></a>
+                    : <strong>{n.miro.frame}</strong>)}</h2>
+                  <details>
+                    <summary>Schritte{n.miro.vorschlaege && n.miro.vorschlaege.length > 0 && ' und Vorschläge'}</summary>
+                    <ul>{n.miro.schritte.map((s) => <li>{s}</li>)}</ul>
+                    {n.miro.vorschlaege && n.miro.vorschlaege.length > 0 && (
+                      <>
+                        <h3>Vorschläge für die Kaffeebar</h3>
+                        <ul class="zettel">{n.miro.vorschlaege.map((s) => <li>{s}</li>)}</ul>
+                      </>
+                    )}
+                  </details>
+                </div>
+              )}
             </section>
 
             {n && (n.kern || n.geschichte || n.zusatz || n.fragen || n.ablauf) && (
@@ -141,7 +158,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
 
     <script>
       import { anzeige, type Ereignis, type Zustand } from '../../components/begleiter-anzeige';
-      import { folieZu, type Folie } from '../../lib/begleiter';
+      import { folieZu, tempo, type Folie, type PlanFolie } from '../../lib/begleiter';
       import { abfrageKette, jsonHolen } from '../../lib/kette';
       import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, RUHIG_MS, alterText, naechsteAbfrage, positionPruefen } from '../../lib/position';
 
@@ -150,11 +167,21 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       const folien = JSON.parse(document.getElementById('begleiter-folien')!.textContent!) as Folie[];
       const liste = document.querySelector<HTMLSelectElement>('[data-liste]')!;
       const folgenKnopf = document.querySelector<HTMLButtonElement>('[data-folgen]')!;
+      const folgenText = document.querySelector<HTMLElement>('[data-folgen-text]')!;
       const status = document.querySelector<HTMLElement>('[data-status]')!;
+      const uhrKnopf = document.querySelector<HTMLButtonElement>('[data-uhr]')!;
+      const planZeile = document.querySelector<HTMLElement>('[data-plan]')!;
+      const plaene = artikel.map((a) => (a.dataset.planFolie ? (JSON.parse(a.dataset.planFolie) as PlanFolie) : null));
 
       let z: Zustand = { index: 0, folgen: true, meldung: 'frage' };
       let beamerTitel = '';
       let fehlerInFolge = 0;
+
+      // Kurz im Knopf (passt in eine Zeile), ausführlich für Screenreader und im Tooltip.
+      const KURZ: Record<string, string> = {
+        frage: 'Frage den Beamer …', ok: 'Folgt dem Beamer', 'nicht-tag-1': 'Beamer nicht auf Tag 1',
+        'keine-position': 'Beamer meldet nichts', 'keine-verbindung': 'Keine Verbindung', hand: 'Zurück zum Beamer',
+      };
 
       function zeichnen(vorher: number) {
         if (z.index !== vorher) {
@@ -163,17 +190,83 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
           scrollTo({ top: 0 });
         }
         liste.value = String(z.index);
-        folgenKnopf.setAttribute('aria-pressed', String(z.folgen));
-        status.dataset.meldung = z.folgen ? z.meldung : 'hand';
-        status.textContent = !z.folgen
-          ? 'Von Hand geblättert, Folgen pausiert'
+        const meldung = z.folgen ? z.meldung : 'hand';
+        const lang = !z.folgen
+          ? 'Von Hand geblättert, Folgen pausiert. Tippen: zurück zum Beamer'
           : {
                 frage: 'Frage den Beamer …',
                 ok: 'Folgt dem Beamer',
                 'nicht-tag-1': `Beamer ist nicht auf Tag 1${beamerTitel ? `: ${beamerTitel}` : ''}`,
                 'keine-position': 'Beamer meldet nichts',
-                'keine-verbindung': 'Keine Verbindung zum Beamer',
+                'keine-verbindung': 'Keine Verbindung zum Beamer, die letzte Folie bleibt stehen',
               }[z.meldung];
+        folgenKnopf.dataset.meldung = meldung;
+        folgenKnopf.title = z.folgen ? `${lang}. Tippen: hier stehen bleiben` : lang;
+        folgenText.textContent = KURZ[meldung];
+        if (status.textContent !== lang) status.textContent = lang;
+        planZeichnen();
+      }
+
+      // Zeitplan: Block und Rest bis Blockende; am Kurstag zwischen Beginn und Ende auch „vorn/hinten“ gegenüber der
+      // Soll-Zeit der gezeigten Folie (folienPlan in lib/begleiter.ts).
+      const kurstag = planZeile.dataset.kurstag ?? '';
+      const zwei = (n: number) => String(n).padStart(2, '0');
+      const hhmm = (min: number) => { const r = Math.round(min); return `${zwei(Math.floor(r / 60))}:${zwei(r % 60)}`; };
+      function planZeichnen() {
+        const p = plaene[z.index];
+        planZeile.hidden = !p;
+        if (!p) return;
+        const d = new Date();
+        const heute = `${d.getFullYear()}-${zwei(d.getMonth() + 1)}-${zwei(d.getDate())}`;
+        const jetzt = d.getHours() * 60 + d.getMinutes() + d.getSeconds() / 60;
+        // Am Kurstag knapp (eine Zeile auf dem Tablet), sonst mit Soll-Fenster der Folie für die Vorbereitung.
+        let teile = [`${p.block} · ${hhmm(p.von)}–${hhmm(p.bis)}`, `Folie ca. ${hhmm(p.sollVon)}–${hhmm(p.sollBis)}`];
+        let lage = '';
+        if (heute === kurstag && jetzt >= (plaene.find(Boolean)?.von ?? 0) - 30 && jetzt <= (plaene.at(-1)?.bis ?? 0) + 30) {
+          const t = tempo(p, jetzt);
+          teile = [`${p.block} bis ${hhmm(p.bis)}`, t.rest >= 0 ? `noch ${t.rest} min` : `${-t.rest} min überzogen`];
+          if (t.abweichung > 0) { teile.push(`${t.abweichung} min hinten`); lage = 'hinten'; }
+          else if (t.abweichung < 0) { teile.push(`${-t.abweichung} min vorn`); lage = 'vorn'; }
+          else { teile.push('im Plan'); lage = 'ok'; }
+        }
+        planZeile.textContent = teile.join(' · ');
+        planZeile.dataset.lage = lage;
+      }
+
+      // Uhr in der Leiste; ein Tipp auf die Dauer einer Übung startet dort einen Countdown, ein Tipp auf die Uhr stoppt ihn.
+      let timerEnde: number | null = null;
+      function uhrZeichnen() {
+        const d = new Date();
+        if (timerEnde === null) {
+          uhrKnopf.textContent = `${zwei(d.getHours())}:${zwei(d.getMinutes())}`;
+          delete uhrKnopf.dataset.timer;
+          return;
+        }
+        const rest = Math.round((timerEnde - d.getTime()) / 1000);
+        uhrKnopf.dataset.timer = rest <= 0 ? 'aus' : rest < 60 ? 'knapp' : 'laeuft';
+        uhrKnopf.textContent = rest <= 0 ? `Zeit! +${Math.floor(-rest / 60)}:${zwei(-rest % 60)}` : `${Math.floor(rest / 60)}:${zwei(rest % 60)}`;
+      }
+      document.addEventListener('click', (e) => {
+        const knopf = (e.target as Element | null)?.closest<HTMLElement>('[data-timer]');
+        if (!knopf || knopf === uhrKnopf) return;
+        timerEnde = Date.now() + Number(knopf.dataset.timer) * 60_000;
+        uhrZeichnen();
+      });
+      uhrKnopf.addEventListener('click', () => { timerEnde = null; uhrZeichnen(); });
+      setInterval(() => { uhrZeichnen(); planZeichnen(); }, 1000);
+
+      // Bildschirm wach halten, solange die Seite offen ist (sonst schläft das Tablet ein und das Folgen ruht).
+      let wachSperre: { release(): Promise<void> } | null = null;
+      async function wachHalten() {
+        const wl = (navigator as Navigator & { wakeLock?: { request(art: 'screen'): Promise<{ release(): Promise<void>; addEventListener(t: string, f: () => void): void }> } }).wakeLock;
+        if (!wl || wachSperre || document.hidden) return;
+        try {
+          const sperre = await wl.request('screen');
+          wachSperre = sperre;
+          sperre.addEventListener('release', () => { wachSperre = null; });
+        } catch (e) {
+          console.warn('[begleiter] Bildschirm bleibt nicht wach:', e);
+        }
       }
 
       function melden(e: Ereignis) {
@@ -222,9 +315,37 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         if (e.key === 'ArrowLeft') { e.preventDefault(); blaettern(z.index - 1); }
         if (e.key === 'ArrowRight') { e.preventDefault(); blaettern(z.index + 1); }
       });
-      document.addEventListener('visibilitychange', () => { if (!document.hidden && z.folgen) kette.sofort(); });
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) return;
+        wachHalten();
+        if (z.folgen) kette.sofort();
+      });
+      // Nach einem WLAN-Aussetzer nicht erst die lange Pause der Fehlerkette abwarten.
+      addEventListener('online', () => { if (z.folgen) kette.sofort(); });
+      // Manche Browser geben die Sperre erst nach einer Berührung.
+      addEventListener('pointerdown', wachHalten, { passive: true });
+
+      // Wischen nach links/rechts blättert (nur deutlich waagerecht, nicht in Listen und Feldern).
+      let wisch: { x: number; y: number } | null = null;
+      document.querySelector('main')!.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        wisch = e.touches.length === 1 && !(e.target as Element).closest('select, input, textarea, details') ? { x: t.clientX, y: t.clientY } : null;
+      }, { passive: true });
+      document.querySelector('main')!.addEventListener('touchend', (e) => {
+        if (!wisch) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - wisch.x;
+        const dy = t.clientY - wisch.y;
+        wisch = null;
+        if (Math.abs(dx) > 70 && Math.abs(dy) < Math.abs(dx) / 2) blaettern(z.index + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      // Drucken (Vorbereitung): alle Miro-Schritte aufgeklappt.
+      addEventListener('beforeprint', () => { for (const d of document.querySelectorAll('details')) d.open = true; });
 
       zeichnen(0);
+      uhrZeichnen();
+      wachHalten();
       kette.sofort();
     </script>
     <script type="application/json" id="begleiter-folien" set:html={JSON.stringify(folien).replace(/</g, '\\u003c')} />
@@ -232,39 +353,56 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
     <style>
       .begleiter { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 18px; line-height: 1.5; }
       .steuer {
-        position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
-        padding: .6rem 16px; background: var(--bg-2); border-bottom: 1px solid var(--border);
+        position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: .5rem;
+        padding: .5rem 16px; background: var(--bg-2); border-bottom: 1px solid var(--border);
       }
-      .steuer .btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; }
+      .steuer .btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; white-space: nowrap; }
       .steuer .rund { padding: .4rem .6rem; }
       .steuer select {
-        flex: 1 1 14rem; min-width: 0; min-height: 44px; font: inherit; font-size: 1rem; padding: .4rem .6rem;
+        flex: 1 1 10rem; min-width: 0; min-height: 44px; font: inherit; font-size: 1rem; padding: .4rem .6rem;
         background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: var(--radius);
       }
-      .folgen[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-      .status { flex: 1 0 100%; margin: 0; font-size: .95rem; color: var(--muted); }
-      .status[data-meldung="ok"] { color: var(--green); }
-      .status[data-meldung="keine-verbindung"], .status[data-meldung="nicht-tag-1"] { color: var(--yellow-ink); }
+      /* Status als Punkt im Folgen-Knopf: grün folgt, gelb Problem, grau fragt; pausiert = Akzent „Zurück zum Beamer“. */
+      .folgen .punkt { width: .7rem; height: .7rem; border-radius: 50%; background: var(--muted); flex: none; }
+      .folgen[data-meldung="ok"] .punkt { background: var(--green); }
+      .folgen[data-meldung="keine-verbindung"] .punkt, .folgen[data-meldung="nicht-tag-1"] .punkt, .folgen[data-meldung="keine-position"] .punkt { background: var(--yellow); }
+      .folgen[data-meldung="keine-verbindung"], .folgen[data-meldung="nicht-tag-1"] { color: var(--yellow-ink); }
+      .folgen[data-meldung="hand"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+      .folgen[data-meldung="hand"] .punkt { display: none; }
+      .uhr { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.05rem; padding: .4rem .7rem; }
+      .uhr[data-timer="laeuft"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
+      .uhr[data-timer="knapp"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); font-weight: 700; }
+      .uhr[data-timer="aus"] { background: var(--yellow); border-color: var(--yellow); color: var(--bg); font-weight: 700; }
+      .plan { max-width: 900px; margin: .6rem auto 0; padding: 0 16px; font-size: .95rem; color: var(--muted); }
+      .plan[data-lage="ok"] { color: var(--green); }
+      .plan[data-lage="hinten"] { color: var(--yellow-ink); font-weight: 600; }
+      @media (max-width: 640px) { .folgen [data-folgen-text] { display: none; } }
       main { max-width: 900px; margin: 0 auto; padding: 1rem 16px 4rem; }
       article[hidden] { display: none; }
       .kopf .seite { margin: 0; font-size: .95rem; color: var(--muted); }
+      .kopf .satz { margin: 0 0 .3rem; font-size: 1.05rem; color: var(--muted); font-style: italic; }
       .kopf h1 { margin: .15rem 0 .3rem; font-family: var(--display); font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.2; }
       .oeffnen { display: inline-flex; align-items: center; gap: .3rem; font-size: .9rem; color: var(--blue); }
       .live { margin-top: 1rem; padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-2); }
       .stichworte { margin: 0; padding-left: 1.2em; font-size: clamp(1.35rem, 3.2vw, 1.7rem); line-height: 1.4; }
       .stichworte li + li { margin-top: .35rem; }
-      .sozial { display: flex; align-items: center; gap: .4rem; margin: .9rem 0 0; font-size: 1.25rem; font-weight: 600; color: var(--accent-ink); }
+      .sozial { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .9rem 0 0; font-size: 1.25rem; font-weight: 600; color: var(--accent-ink); }
+      button.sozial { width: 100%; padding: .5rem .7rem; text-align: left; font: inherit; font-size: 1.25rem; font-weight: 600; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius); cursor: pointer; }
+      .sozial .start { margin-left: auto; font-size: 1rem; }
+      .weiter { margin-top: 1rem; padding: .7rem .9rem; border-left: 4px solid var(--accent); background: var(--bg); border-radius: 4px; }
       .miro { margin-top: 1rem; padding-top: .8rem; border-top: 1px solid var(--border); }
-      .miro h2 { display: flex; align-items: center; gap: .4rem; margin: 0; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+      .miro h2 { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: 0; font-size: 1.15rem; color: var(--muted); font-weight: 600; }
+      .miro h2 a, .miro h2 strong { color: var(--blue); }
+      .miro h2 strong { color: var(--fg); }
+      .miro h2 a strong { color: var(--blue); }
+      .miro summary { margin-top: .3rem; min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--muted); }
       .miro h3 { margin: .7rem 0 .2rem; font-size: .95rem; color: var(--muted); }
-      .miro .frame { margin: .3rem 0; font-size: 1.25rem; }
-      .miro .frame a { color: var(--blue); }
       .miro ul { margin: .3rem 0 0; padding-left: 1.2em; font-size: 1.1rem; }
       .miro .zettel { font-size: .95rem; color: var(--muted); }
-      .ueberleitung { margin: 1rem 0 0; font-size: 1.15rem; }
-      .ueberleitung span { color: var(--muted); }
+      .ueberleitung { margin: 0; font-size: 1.2rem; }
       .leer { margin: 0; font-size: 1.25rem; color: var(--muted); }
-      .naechste { margin: .9rem 0 0; font-size: .95rem; color: var(--muted); }
+      .naechste { margin: .4rem 0 0; font-size: 1.15rem; }
+      .naechste span { color: var(--muted); }
       .vorbereitung { margin-top: 1.5rem; }
       .vb { margin-top: 1.5rem; }
       .vb h2 { margin: 0 0 .4rem; font-family: var(--display); font-size: 1.15rem; }
@@ -277,7 +415,12 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .etikett { margin: 0; font-size: .85rem; font-weight: 600; color: var(--yellow-ink); }
       dt { font-weight: 600; margin-top: .6rem; }
       dd { margin: .1rem 0 0; }
-      @media (min-width: 1000px) { .status { flex: 1 1 auto; } }
+      /* Vorbereitung auf Papier: alle Folien untereinander, ohne Leiste. */
+      @media print {
+        .steuer, .plan, .oeffnen, .sozial .start { display: none !important; }
+        article[hidden] { display: block; }
+        article + article { break-before: page; }
+      }
     </style>
   </body>
 </html>
