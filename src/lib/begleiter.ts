@@ -234,3 +234,36 @@ export function wischErlaubt(start: WischKnoten | null): boolean {
   }
   return imBereich;
 }
+
+/**
+ * Form eines live-Stichworts für die Anzeige: zitat = Satz zum Sagen („…“), sonst Regieanweisung mit cue = Stichwort
+ * vor dem ersten Doppelpunkt („Fragen“, „Falle“, „Nach 15 min“), rest = Text danach; takt = Minuten bei „Nach N min:“,
+ * damit die Seite dazu die Uhrzeit ab Timer-Start zeigen kann.
+ */
+export function stichwortForm(s: string): { zitat: boolean; cue: string | null; rest: string; takt: number | null } {
+  if (s.startsWith('„')) return { zitat: true, cue: null, rest: s, takt: null };
+  const m = s.match(/^([^:„“]{2,24}):\s+(.*)$/s);
+  if (!m) return { zitat: false, cue: null, rest: s, takt: null };
+  const takt = m[1].match(/^Nach (\d+) min$/);
+  return { zitat: false, cue: m[1], rest: m[2], takt: takt ? Number(takt[1]) : null };
+}
+
+/** Quellenangabe in Text und Links zerlegt: eine URL wird zum kurzen Link mit dem Host („hbr.org“), Satzzeichen danach bleiben Text. */
+export function quelleTeile(quelle: string): ({ text: string } | { url: string; host: string })[] {
+  const teile: ({ text: string } | { url: string; host: string })[] = [];
+  let rest = quelle;
+  for (const m of quelle.matchAll(/https?:\/\/[^\s;,)]+[^\s;,).]/g)) {
+    const [vor] = rest.split(m[0], 1);
+    if (vor) teile.push({ text: vor });
+    teile.push({ url: m[0], host: new URL(m[0]).hostname.replace(/^www\./, '') });
+    rest = rest.slice(vor.length + m[0].length);
+  }
+  if (rest) teile.push({ text: rest });
+  return teile;
+}
+
+/** Streich-Eintrag der Tageskarte („… (toast).“, „… (vorgehen, Schritt 3).“) → Text und Folien-id in der Klammer am Ende. */
+export function streichVerweis(eintrag: string): { text: string; id: string | null; zusatz: string } {
+  const m = eintrag.match(/^(.*?)\s*\(([a-z0-9-]+)(, [^)]*)?\)\.?$/s);
+  return m ? { text: m[1], id: m[2], zusatz: m[3] ?? '' } : { text: eintrag, id: null, zusatz: '' };
+}

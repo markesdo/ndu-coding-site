@@ -7,10 +7,11 @@
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../../styles/global.css';
-import { CalendarClock, ChevronLeft, ChevronRight, CircleQuestionMark, ExternalLink, Eye, LayoutGrid, Play, Timer } from '@lucide/astro';
+import { CalendarClock, ChevronLeft, ChevronRight, CircleQuestionMark, ExternalLink, Eye, LayoutGrid, Play, Timer, Undo2 } from '@lucide/astro';
+import Quelle from '../../components/BegleiterQuelle.astro';
 import { NOTIZEN } from '../../data/begleiter';
 import { TAG_1 } from '../../data/begleiter/tag';
-import { ablaufBloecke, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, tagFolien, uebungMinuten } from '../../lib/begleiter';
+import { ablaufBloecke, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, uebungMinuten } from '../../lib/begleiter';
 import { teamFrameLink } from '../../lib/team-board';
 
 // Glob vom Projektwurzel aus (wie in lib/begleiter.test.ts), damit die Schlüssel nicht vom Ordner dieser Datei abhängen.
@@ -29,9 +30,11 @@ const seitenName = (pfad: string) => seitenLabel(pfad, quellen[pfad] ?? '');
 const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
   pfad, name: seitenName(pfad), folien: folien.map((f, i) => ({ ...f, i })).filter((f) => f.pfad === pfad),
 }));
+// Streich-Eintrag der Tageskarte → Index der Folie in seinem Block, damit „(toast)“ dorthin blättert.
+const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => plan[i]?.block === block && (f.id === id || f.unterIds.includes(id)));
 ---
 <!doctype html>
-<html lang="de" data-bereich="innolab" data-theme="dark">
+<html lang="de" data-bereich="innolab">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -53,17 +56,17 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         ))}
       </select>
       <button type="button" class="btn rund" data-weiter aria-label="Nächste Folie" title="Nächste Folie (→)"><ChevronRight size={22} aria-hidden="true" /></button>
-      <button type="button" class="btn folgen" data-folgen data-meldung="frage"><span class="punkt" aria-hidden="true"></span> <span data-folgen-text>Frage den Beamer …</span></button>
+      <button type="button" class="btn folgen" data-folgen data-meldung="frage"><span class="punkt" aria-hidden="true"></span><Undo2 class="zurueck-icon" size={18} aria-hidden="true" /> <span data-folgen-text>Frage den Beamer …</span></button>
       <button type="button" class="btn klein" data-nur-live aria-pressed="false" title="Vorbereitung ausblenden, nur den Live-Block zeigen"><Eye size={18} aria-hidden="true" /> <span>Nur live</span></button>
       <button type="button" class="btn klein" data-tag-auf title="Tageskarte: Ablauf, Lernziele, Streichliste, Material"><CalendarClock size={18} aria-hidden="true" /> <span>Tag</span></button>
+      <button type="button" class="btn lage" data-lage data-kurstag={kurstag} hidden></button>
       <button type="button" class="btn uhr" data-uhr title="Uhrzeit; läuft ein Übungs-Timer, hier tippen zum Stoppen">--:--</button>
       <p class="sr-only" data-status role="status"></p>
     </nav>
-    <button type="button" class="plan" data-plan data-kurstag={kurstag} title="Tageskarte öffnen" hidden></button>
 
     <dialog class="tageskarte" data-tageskarte aria-labelledby="tageskarte-titel">
       <div class="tk-kopf">
-        <h1 id="tageskarte-titel">Tag 1 · Ablauf, Lernziele, Material</h1>
+        <h1 id="tageskarte-titel">Tag 1 <span>Ablauf, Lernziele, Material</span></h1>
         <form method="dialog"><button class="btn" aria-label="Tageskarte schließen">Schließen</button></form>
       </div>
       <ol class="tk-bloecke">
@@ -74,7 +77,11 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
               <p class="tk-zeit">{hhmm(b.von)}–{hhmm(b.bis)} · <strong>{b.titel}</strong></p>
               {t && <p class="tk-ziel">{t.lernziel}</p>}
               {t?.streichen && t.streichen.length > 0 && (
-                <div class="tk-streichen"><span>Wenn hinten:</span><ul>{t.streichen.map((x) => <li>{x}</li>)}</ul></div>
+                <div class="tk-streichen"><span>Wenn hinten:</span><ul>{t.streichen.map((x) => {
+                  const v = streichVerweis(x);
+                  const ziel = v.id ? folieImBlock(b.titel, v.id) : -1;
+                  return <li>{ziel >= 0 ? <>{v.text} <button type="button" class="tk-folie" data-springe={ziel} title={`Zu Folie ${ziel + 1}: ${folien[ziel].titel}`}>{folien[ziel].titel}{v.zusatz}</button></> : x}</li>;
+                })}</ul></div>
               )}
             </li>
           );
@@ -100,23 +107,29 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         return (
           <article data-index={i} hidden={i !== 0} data-plan-folie={plan[i] ? JSON.stringify(plan[i]) : undefined}>
             <header class="kopf">
-              <p class="seite">{seitenName(f.pfad)} · Folie {i + 1} von {folien.length}</p>
+              <p class="seite"><span class="nr">{i + 1}/{folien.length}</span> <span data-plan-text>{seitenName(f.pfad)}</span> <a class="oeffnen" href={`${f.pfad}#${f.id}`} target="_blank" rel="noopener" aria-label="Folie öffnen (neuer Tab)" title="Folie öffnen"><ExternalLink size={16} aria-hidden="true" /></a></p>
               <h1>{f.titel}</h1>
               {f.satz && <p class="satz">{f.satz}</p>}
-              <a class="oeffnen" href={`${f.pfad}#${f.id}`} target="_blank" rel="noopener">Folie öffnen <ExternalLink size={14} aria-hidden="true" /></a>
             </header>
 
             <section class="live" aria-label="Live">
               {n ? (
                 <>
-                  <ul class="stichworte">{n.live.map((s) => <li>{s}</li>)}</ul>
+                  <ul class="stichworte">{n.live.map((s) => {
+                    const st = stichwortForm(s);
+                    return (
+                      <li class:list={[{ zitat: st.zitat }]} data-takt={st.takt ?? undefined}>
+                        {st.cue && <><b class="cue">{st.cue}:</b> </>}{st.rest}{st.takt !== null && <span class="takt-zeit" aria-hidden="true"></span>}
+                      </li>
+                    );
+                  })}</ul>
                   {n.verstaendnis && (
                     <div class="check">
                       <p class="frage"><CircleQuestionMark size={20} aria-hidden="true" /> <span><span class="label">Frag den Raum:</span> {n.verstaendnis.frage}</span></p>
+                      {n.verstaendnis.falsch && <p class="falsch"><span>Häufig falsch:</span> {n.verstaendnis.falsch}</p>}
                       <details>
                         <summary>Antwort</summary>
                         <p>{n.verstaendnis.antwort}</p>
-                        {n.verstaendnis.falsch && <p class="falsch"><span>Häufig falsch:</span> {n.verstaendnis.falsch}</p>}
                       </details>
                     </div>
                   )}
@@ -159,13 +172,13 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
                 {n.kern && n.kern.length > 0 && (
                   <div class="vb">
                     <h2>Kern aus der Quelle</h2>
-                    {n.kern.map((k) => <p>{k.text} <cite>{k.quelle}</cite></p>)}
+                    {n.kern.map((k) => <p>{k.text} <Quelle q={k.quelle} /></p>)}
                   </div>
                 )}
                 {n.geschichte && (
                   <div class="vb">
                     <h2>Zum Erzählen</h2>
-                    <p>{n.geschichte.text} <cite>{n.geschichte.quelle}</cite></p>
+                    <p>{n.geschichte.text} <Quelle q={n.geschichte.quelle} /></p>
                   </div>
                 )}
                 {n.zusatz && n.zusatz.length > 0 && (
@@ -175,7 +188,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
                       <div class="zusatz">
                         <p class="etikett">Zusatz, nicht aus den Kursquellen</p>
                         <h3>{z.titel}</h3>
-                        <p>{z.text} <cite>{z.quelle}</cite></p>
+                        <p>{z.text} <Quelle q={z.quelle} /></p>
                       </div>
                     ))}
                   </div>
@@ -216,7 +229,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       const folgenText = document.querySelector<HTMLElement>('[data-folgen-text]')!;
       const status = document.querySelector<HTMLElement>('[data-status]')!;
       const uhrKnopf = document.querySelector<HTMLButtonElement>('[data-uhr]')!;
-      const planZeile = document.querySelector<HTMLElement>('[data-plan]')!;
+      const lageKnopf = document.querySelector<HTMLButtonElement>('[data-lage]')!;
       const plaene = artikel.map((a) => (a.dataset.planFolie ? (JSON.parse(a.dataset.planFolie) as PlanFolie) : null));
 
       let z: Zustand = { index: 0, folgen: true, meldung: 'frage' };
@@ -226,7 +239,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       // Kurz im Knopf (passt in eine Zeile), ausführlich für Screenreader und im Tooltip.
       const KURZ: Record<string, string> = {
         frage: 'Frage den Beamer …', ok: 'Folgt dem Beamer', 'nicht-tag-1': 'Beamer nicht auf Tag 1',
-        'keine-position': 'Beamer meldet nichts', 'keine-verbindung': 'Keine Verbindung', hand: 'Zurück zum Beamer',
+        'keine-position': 'Beamer meldet nichts', 'keine-verbindung': 'Keine Verbindung', hand: 'Zum Beamer',
       };
 
       function zeichnen(vorher: number) {
@@ -253,35 +266,55 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         planZeichnen();
       }
 
-      // Zeitplan: Block und Rest bis Blockende; am Kurstag zwischen Beginn und Ende auch „vorn/hinten“ gegenüber der
-      // Soll-Zeit der gezeigten Folie (folienPlan in lib/begleiter.ts).
-      const kurstag = planZeile.dataset.kurstag ?? '';
+      // Zeitplan in der Kopfzeile der Folie: Block und Rest bis Blockende (sonst Soll-Fenster der Folie für die
+      // Vorbereitung). Am Kurstag zwischen Beginn und Ende zeigt der Knopf neben der Uhr nur die Abweichung von der
+      // Soll-Zeit der gezeigten Folie (folienPlan in lib/begleiter.ts): +29 hinten, −5 vorn, ✓ im Plan.
+      const kurstag = lageKnopf.dataset.kurstag ?? '';
       const zwei = (n: number) => String(n).padStart(2, '0');
       function planZeichnen() {
         const p = plaene[z.index];
-        planZeile.hidden = !p;
-        if (!p) return;
-        const d = new Date();
-        const heute = `${d.getFullYear()}-${zwei(d.getMonth() + 1)}-${zwei(d.getDate())}`;
-        const jetzt = d.getHours() * 60 + d.getMinutes() + d.getSeconds() / 60;
-        // Am Kurstag knapp (eine Zeile auf dem Tablet), sonst mit Soll-Fenster der Folie für die Vorbereitung.
-        let teile = [`${p.block} · ${hhmm(p.von)}–${hhmm(p.bis)}`, `Folie ca. ${hhmm(p.sollVon)}–${hhmm(p.sollBis)}`];
+        const zeile = artikel[z.index].querySelector<HTMLElement>('[data-plan-text]')!;
+        let text = zeile.textContent ?? '';
         let lage = '';
-        if (heute === kurstag && jetzt >= (plaene.find(Boolean)?.von ?? 0) - 30 && jetzt <= (plaene.at(-1)?.bis ?? 0) + 30) {
-          const t = tempo(p, jetzt);
-          teile = [`${p.block} bis ${hhmm(p.bis)}`, t.rest >= 0 ? `noch ${t.rest} min` : `${-t.rest} min überzogen`];
-          if (t.abweichung > 0) { teile.push(`${t.abweichung} min hinten`); lage = 'hinten'; }
-          else if (t.abweichung < 0) { teile.push(`${-t.abweichung} min vorn`); lage = 'vorn'; }
-          else { teile.push('im Plan'); lage = 'ok'; }
+        if (p) {
+          const d = new Date();
+          const heute = `${d.getFullYear()}-${zwei(d.getMonth() + 1)}-${zwei(d.getDate())}`;
+          const jetzt = d.getHours() * 60 + d.getMinutes() + d.getSeconds() / 60;
+          text = `${p.block} · ${hhmm(p.von)}–${hhmm(p.bis)} · Folie ca. ${hhmm(p.sollVon)}–${hhmm(p.sollBis)}`;
+          if (heute === kurstag && jetzt >= (plaene.find(Boolean)?.von ?? 0) - 30 && jetzt <= (plaene.at(-1)?.bis ?? 0) + 30) {
+            const t = tempo(p, jetzt);
+            text = `${p.block} bis ${hhmm(p.bis)} · ${t.rest >= 0 ? `noch ${t.rest} min` : `${-t.rest} min überzogen`}`;
+            lage = t.abweichung > 0 ? 'hinten' : t.abweichung < 0 ? 'vorn' : 'ok';
+            lageKnopf.textContent = t.abweichung > 0 ? `+${t.abweichung}` : t.abweichung < 0 ? `−${-t.abweichung}` : '✓';
+            const lang = t.abweichung > 0 ? `${t.abweichung} min hinter dem Plan` : t.abweichung < 0 ? `${-t.abweichung} min vor dem Plan` : 'Im Plan';
+            lageKnopf.title = `${lang}. Tippen: Tageskarte`;
+            lageKnopf.setAttribute('aria-label', `${lang}, Tageskarte öffnen`);
+          }
         }
-        planZeile.textContent = teile.join(' · ');
-        planZeile.dataset.lage = lage;
+        if (zeile.textContent !== text) zeile.textContent = text;
+        lageKnopf.hidden = !lage;
+        lageKnopf.dataset.lage = lage;
       }
 
       // Uhr in der Leiste; ein Tipp auf die Dauer einer Übung startet dort einen Countdown, ein Tipp auf die Uhr stoppt ihn.
+      // „Nach N min:“-Stichworte der Folie, auf der der Timer gestartet wurde, bekommen die Uhrzeit dazu und werden blass,
+      // sobald sie vorbei sind.
       let timerEnde: number | null = null;
+      let timerStart = 0;
+      let timerArtikel: Element | null = null;
+      function taktZeichnen() {
+        for (const li of document.querySelectorAll<HTMLElement>('li[data-takt]')) {
+          const an = timerEnde !== null && li.closest('article') === timerArtikel;
+          const zeit = new Date(timerStart + Number(li.dataset.takt) * 60_000);
+          const text = an ? ` → ${zwei(zeit.getHours())}:${zwei(zeit.getMinutes())}` : '';
+          const span = li.querySelector('.takt-zeit')!;
+          if (span.textContent !== text) span.textContent = text;
+          li.classList.toggle('vorbei', an && Date.now() >= zeit.getTime());
+        }
+      }
       function uhrZeichnen() {
         const d = new Date();
+        taktZeichnen();
         if (timerEnde === null) {
           uhrKnopf.textContent = `${zwei(d.getHours())}:${zwei(d.getMinutes())}`;
           delete uhrKnopf.dataset.timer;
@@ -294,7 +327,9 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       document.addEventListener('click', (e) => {
         const knopf = (e.target as Element | null)?.closest<HTMLElement>('[data-timer]');
         if (!knopf || knopf === uhrKnopf) return;
-        timerEnde = Date.now() + Number(knopf.dataset.timer) * 60_000;
+        timerStart = Date.now();
+        timerEnde = timerStart + Number(knopf.dataset.timer) * 60_000;
+        timerArtikel = knopf.closest('article');
         uhrZeichnen();
       });
       uhrKnopf.addEventListener('click', () => { timerEnde = null; uhrZeichnen(); });
@@ -401,7 +436,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       nurLive(gemerkt('begleiter:nur-live') === '1');
       nurLiveKnopf.addEventListener('click', () => nurLive(!document.body.classList.contains('nur-live')));
 
-      // Tageskarte: aus der Leiste oder der Zeitplan-Zeile; der laufende Block ist markiert, Material-Häkchen je Kurstag gemerkt.
+      // Tageskarte: aus der Leiste oder dem Plan-Knopf neben der Uhr; der laufende Block ist markiert, Material-Häkchen je Kurstag gemerkt.
       const karte = document.querySelector<HTMLDialogElement>('[data-tageskarte]')!;
       function karteAuf() {
         const p = plaene[z.index];
@@ -412,7 +447,11 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         karte.querySelector('.jetzt')?.scrollIntoView({ block: 'center' });
       }
       document.querySelector('[data-tag-auf]')!.addEventListener('click', karteAuf);
-      planZeile.addEventListener('click', karteAuf);
+      lageKnopf.addEventListener('click', karteAuf);
+      // „Wenn hinten“-Einträge nennen ihre Folie: tippen blättert dorthin (pausiert das Folgen wie jedes Blättern).
+      for (const b of karte.querySelectorAll<HTMLElement>('[data-springe]')) {
+        b.addEventListener('click', () => { karte.close(); blaettern(Number(b.dataset.springe)); });
+      }
       karte.addEventListener('click', (e) => { if (e.target === karte) karte.close(); }); // Tipp neben die Karte schließt
       const haken = `begleiter:material:${kurstag}`;
       const gesetzt = new Set((gemerkt(haken) ?? '').split(',').filter(Boolean));
@@ -440,7 +479,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: .5rem;
         padding: .5rem 16px; background: var(--bg-2); border-bottom: 1px solid var(--border);
       }
-      .steuer .btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; white-space: nowrap; }
+      .steuer .btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 48px; white-space: nowrap; }
       .steuer .rund { padding: .4rem .6rem; }
       .steuer select {
         flex: 1 1 10rem; min-width: 0; min-height: 44px; font: inherit; font-size: 1rem; padding: .4rem .6rem;
@@ -452,31 +491,53 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .folgen[data-meldung="keine-verbindung"] .punkt, .folgen[data-meldung="nicht-tag-1"] .punkt, .folgen[data-meldung="keine-position"] .punkt { background: var(--yellow); }
       .folgen[data-meldung="keine-verbindung"], .folgen[data-meldung="nicht-tag-1"] { color: var(--yellow-ink); }
       .folgen[data-meldung="hand"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-      .folgen[data-meldung="hand"] .punkt { display: none; }
+      .folgen[data-meldung="hand"] .punkt, .folgen:not([data-meldung="hand"]) .zurueck-icon { display: none; }
       .klein { padding: .4rem .6rem; }
       .klein[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
       .nur-live .vorbereitung { display: none; }
-      .uhr { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.05rem; padding: .4rem .7rem; }
-      .uhr[data-timer="laeuft"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
-      .uhr[data-timer="knapp"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); font-weight: 700; }
-      .uhr[data-timer="aus"] { background: var(--yellow); border-color: var(--yellow); color: var(--bg); font-weight: 700; }
-      .plan {
-        display: block; width: 100%; max-width: 900px; margin: .6rem auto 0; padding: 0 16px; border: 0; background: none;
-        font: inherit; font-size: .95rem; text-align: left; color: var(--muted); cursor: pointer;
+      /* Uhr und Plan-Abweichung: auf Armlänge lesbar, Ziffern gleich breit. */
+      .uhr, .lage { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.35rem; font-weight: 700; padding: .3rem .6rem; }
+      .uhr { justify-content: center; min-width: 5.2ch; }
+      .uhr[data-timer] { font-size: 1.6rem; }
+      .uhr[data-timer="laeuft"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
+      .uhr[data-timer="knapp"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); }
+      .uhr[data-timer="aus"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); outline: 3px solid var(--yellow); outline-offset: 1px; }
+      /* .steuer davor: sonst gewinnt „.steuer .btn“ (inline-flex), und der leere Knopf bliebe neben der Uhr stehen. */
+      .steuer .lage[hidden] { display: none; }
+      .lage[data-lage="hinten"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); }
+      .lage[data-lage="vorn"], .lage[data-lage="ok"] { border-color: var(--green); color: var(--green); }
+      /* Telefon und Tablet hochkant: oben Status, Ansicht, Plan und Uhr; darunter Blättern mit der Folienliste in voller
+         Breite. In einer Zeile drückten Plan-Knopf und „Zeit! +1:23“ bei 820 px die Liste auf ~90 px („3“ statt „39. …“). */
+      @media (max-width: 900px) {
+        .steuer { flex-wrap: wrap; gap: .4rem; }
+        .steuer::after { content: ""; flex-basis: 100%; order: 1; }
+        [data-zurueck], .steuer select, [data-weiter] { order: 2; }
+        .steuer .uhr { margin-left: auto; }
       }
-      .plan[hidden] { display: none; }
-      .plan[data-lage="ok"] { color: var(--green); }
-      .plan[data-lage="hinten"] { color: var(--yellow-ink); font-weight: 600; }
-      @media (max-width: 640px) { .folgen [data-folgen-text] { display: none; } }
+      @media (max-width: 640px) {
+        /* Nur Punkt bzw. Zurück-Pfeil; der Text bleibt für Screenreader. */
+        .folgen [data-folgen-text] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .uhr[data-timer] { font-size: 1.35rem; }
+        .steuer:has(.lage:not([hidden])) [data-tag-auf] { display: none; }
+      }
       main { max-width: 900px; margin: 0 auto; padding: 1rem 16px 4rem; }
       article[hidden] { display: none; }
-      .kopf .seite { margin: 0; font-size: .95rem; color: var(--muted); }
+      /* Eine Kopfzeile: Foliennummer, Block mit Rest (planZeichnen), Folie öffnen als Icon. */
+      .kopf .seite { display: flex; align-items: baseline; gap: .5rem; margin: 0; font-size: 1rem; color: var(--muted); }
+      .kopf .nr { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--fg); }
       .kopf .satz { margin: 0 0 .3rem; font-size: 1.05rem; color: var(--muted); font-style: italic; }
       .kopf h1 { margin: .15rem 0 .3rem; font-family: var(--display); font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.2; }
-      .oeffnen { display: inline-flex; align-items: center; gap: .3rem; font-size: .9rem; color: var(--blue); }
+      .oeffnen { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; min-height: 36px; margin: -8px 0 -8px auto; align-self: center; color: var(--blue); flex: none; }
+      @media (max-width: 640px) { .kopf .satz { display: none; } }
       .live { margin-top: 1rem; padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-2); }
       .stichworte { margin: 0; padding-left: 1.2em; font-size: clamp(1.35rem, 3.2vw, 1.7rem); line-height: 1.4; }
       .stichworte li + li { margin-top: .35rem; }
+      /* Zum Sagen kursiv mit Akzent-Punkt, Regieanweisungen gerade; das Stichwort vor dem Doppelpunkt fängt den Blick. */
+      .stichworte li.zitat { font-style: italic; }
+      .stichworte li.zitat::marker { color: var(--accent); }
+      .stichworte .cue { color: var(--accent-ink); font-weight: 600; }
+      .stichworte .takt-zeit { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent-ink); }
+      .stichworte li.vorbei { opacity: .5; }
       .sozial { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .9rem 0 0; font-size: 1.25rem; font-weight: 600; color: var(--accent-ink); }
       button.sozial { width: 100%; padding: .5rem .7rem; text-align: left; font: inherit; font-size: 1.25rem; font-weight: 600; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius); cursor: pointer; }
       .sozial .start { display: inline-flex; align-items: center; gap: .25rem; margin-left: auto; font-size: 1rem; }
@@ -486,6 +547,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .check .label { color: var(--blue); font-weight: 600; }
       .check summary { min-height: 36px; display: flex; align-items: center; cursor: pointer; color: var(--muted); }
       .check details p { margin: .2rem 0; font-size: 1.05rem; }
+      .check .falsch { margin: .3rem 0 0; font-size: 1.05rem; }
       .check .falsch span { color: var(--yellow-ink); font-weight: 600; }
       .weiter { margin-top: 1rem; padding: .7rem .9rem; border-left: 4px solid var(--accent); background: var(--bg); border-radius: 4px; }
       .miro { margin-top: 1rem; padding-top: .8rem; border-top: 1px solid var(--border); }
@@ -501,13 +563,11 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .leer { margin: 0; font-size: 1.25rem; color: var(--muted); }
       .naechste { margin: .4rem 0 0; font-size: 1.15rem; }
       .naechste span { color: var(--muted); }
-      .vorbereitung { margin-top: 1.5rem; }
+      .vorbereitung { margin-top: 1.5rem; max-width: 36em; } /* rund 70 Zeichen je Zeile */
       .vb { margin-top: 1.5rem; }
       .vb h2 { margin: 0 0 .4rem; font-family: var(--display); font-size: 1.15rem; }
       .vb h3 { margin: .8rem 0 .2rem; font-size: 1rem; }
       .vb p, .vb li, .vb dd { font-size: 1.05rem; }
-      cite { font-style: normal; font-size: .9rem; color: var(--muted); }
-      cite::before { content: "("; } cite::after { content: ")"; }
       .zusatz { margin-top: .8rem; padding: .6rem .9rem; border-left: 3px solid var(--yellow); background: var(--yellow-soft); border-radius: 4px; }
       .zusatz h3 { margin: .2rem 0; }
       .etikett { margin: 0; font-size: .85rem; font-weight: 600; color: var(--yellow-ink); }
@@ -520,6 +580,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .tageskarte::backdrop { background: rgb(0 0 0 / .6); }
       .tk-kopf { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
       .tk-kopf h1 { margin: 0; font-family: var(--display); font-size: 1.3rem; }
+      .tk-kopf h1 span { display: block; font-family: var(--font); font-size: .95rem; font-weight: 400; color: var(--muted); }
       .tk-kopf .btn { min-height: 44px; }
       .tk-bloecke { list-style: none; margin: .8rem 0 0; padding: 0; }
       .tk-bloecke > li { padding: .6rem .8rem; border-left: 3px solid var(--border); margin-top: .4rem; }
@@ -530,6 +591,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .tk-streichen { margin-top: .3rem; font-size: .95rem; }
       .tk-streichen span { color: var(--yellow-ink); font-weight: 600; }
       .tk-streichen ul { margin: .1rem 0 0; padding-left: 1.2em; }
+      .tk-streichen .tk-folie { display: inline; font: inherit; text-align: left; padding: 0; border: 0; background: none; color: var(--blue); text-decoration: underline; cursor: pointer; }
       .tageskarte h2 { margin: 1.2rem 0 .4rem; font-family: var(--display); font-size: 1.1rem; }
       .tk-material { list-style: none; margin: 0; padding: 0; }
       .tk-material label { display: flex; gap: .6rem; align-items: flex-start; min-height: 40px; padding: .3rem 0; }
@@ -539,7 +601,8 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
 
       /* Vorbereitung auf Papier: alle Folien untereinander, ohne Leiste. */
       @media print {
-        .steuer, .plan, .oeffnen, .sozial .start, .tageskarte { display: none !important; }
+        .steuer, .oeffnen, .sozial .start, .tageskarte { display: none !important; }
+        .kopf .satz { display: block; }
         .nur-live .vorbereitung { display: block; }
         article[hidden] { display: block; }
         article + article { break-before: page; }

@@ -4,7 +4,9 @@ export type Notiz = {
   /**
    * 3–5 Stichworte, live auf einen Blick. Zwei Formen: Regieanweisung an Markus (Verb oder Stichwort vorn, höchstens
    * 12 Wörter, z. B. „Portland erzählen: gute Absicht, viel Geld, falsches Produkt“) oder ein Satz zum Sagen in „…“
-   * (höchstens 25 Wörter), an die Studierenden mit „ihr“. In Regieanweisungen heißen die Studierenden „alle“/„jede*r“,
+   * (höchstens 18 Wörter, damit er am Tablet in zwei Zeilen passt), an die Studierenden mit „ihr“. Das Stichwort vor dem
+   * Doppelpunkt hebt die Seite hervor; wiederkehrende heißen immer gleich: „Fragen:“, „Falle:“, „Zeit:“, „Bei Bedarf:“,
+   * „Wenn hinten:“ und „Nach N min:“ (in einer Übung; die Seite zeigt dazu die Uhrzeit ab Timer-Start). In Regieanweisungen heißen die Studierenden „alle“/„jede*r“,
    * nicht „sie“ oder „ihr“; muss Markus angesprochen werden, dann mit „du“.
    */
   live: string[];

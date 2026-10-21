@@ -60,7 +60,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
       'Wichtig erklären: Ist sie falsch, wird alles andere egal.',
       'Falle: Achse anders als in manchen Vorlagen, „kein Beleg“ rechts.',
       'Nur die zwei, drei Annahmen ganz oben rechts testen, nicht den Quadranten.',
-      '„Heute geht es um Kundschaft und Problem; Annahmen über eine Lösung kommen an Tag 3 in eine eigene Map.“',
+      '„Heute geht es um Kundschaft und Problem; Lösungs-Annahmen kommen an Tag 3 in eine eigene Map.“',
     ],
     ueberleitung: 'Damit ihr beim Sammeln keine Art von Risiko überseht, gibt es vier Arten von Annahmen.',
     kern: [

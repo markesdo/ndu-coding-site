@@ -80,7 +80,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Fragen: Wer hat zur eigenen Idee schon Alternativen geprüft?',
       '„Torres nennt ‚ja oder nein?‘ eine Whether-or-not-Entscheidung – für sie vielleicht der häufigste Fehler von Produktteams.“',
       'Heath nennen: vier Feinde – enger Blick, Bestätigung, Gefühle, Selbstüberschätzung.',
-      'Fallstrick: „Wir wissen schon, welche die beste ist“ – das ist Selbstüberschätzung.',
+      'Falle: „Wir wissen schon, welche die beste ist“ – das ist Selbstüberschätzung.',
       '„Drei Lösungen heißt nicht drei bauen: Ihr testet Annahmen über mehrere parallel.“',
     ],
     ueberleitung: 'Zweiter Nutzen des Baums: Große Chancen lassen sich in kleine zerlegen.',
@@ -102,7 +102,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Provozieren: Sechs-Monats-Projekt in Sprints schneiden ist für Torres nicht agil.',
       'Streaming-Beispiel erzählen: „Wer spielt mit?“ als kleine Chance.',
       '„Welche kleine Chance könnte euer Prototyp in einer Woche wirklich lösen?“',
-      '„Euer Prototyp muss nicht alles können – eine kleine Chance, wirklich gelöst, zeigt mehr als eine halbe Lösung für alles.“',
+      '„Euer Prototyp muss nicht alles können: Eine kleine Chance, wirklich gelöst, zeigt mehr als eine halbe Lösung.“',
     ],
     ueberleitung: 'Und wenn eine Lösung scheitert, lernt ihr etwas über die Kundschaft – Problem und Lösung wachsen gemeinsam.',
     kern: [
@@ -125,7 +125,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     live: [
       'Kontrast nennen: PM besitzt Problem, Design die Lösung – zerbricht in der Praxis.',
       'Fragen: Ist ein gescheiterter Test Zeitverschwendung? Nur ohne Ableitung.',
-      'Fallstrick: nach Fehlschlag sofort neue Idee, ohne Chancen anzupassen.',
+      'Falle: nach Fehlschlag sofort neue Idee, ohne Chancen anzupassen.',
       '„Euer Baum wächst jeden Tag mit – am Ende zeigt er, wie ihr zu euren Entscheidungen gekommen seid.“',
     ],
     ueberleitung: 'Jetzt die vier Ebenen konkret – am Beispiel der Kaffeebar.',
@@ -144,7 +144,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     live: [
       'Werbung-Beispiel erzählen: „Werbung vorspulen“ ist Lösung, Chance ist „keine Werbung mögen“.',
       '„Schreibt Chancen so, wie Menschen sie im Interview sagen würden – niemand sagt ‚Ich wünsche mir mehr Kaffeebar-Umsatz‘.“',
-      'Fallstrick: zu vage Chancen wie „Das soll einfach sein“.',
+      'Falle: zu vage Chancen wie „Das soll einfach sein“.',
       '„Getestet wird nicht die ganze Idee, sondern das, was dafür stimmen muss – mehr an Tag 3.“',
     ],
     ueberleitung: 'So sieht der Baum der Kaffeebar aus – und heute entsteht nur die Wurzel.',
@@ -167,9 +167,9 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'baum-kaffeebar': {
     live: [
       'Auf die Wurzel zeigen: Pendler*innen mit Kaffee im Zug – heute dran.',
-      '„Die Chancen der Kaffeebar sind nur ein Beispiel für die Form – bei euch kommen sie erst aus echten Interviews.“',
-      '„An Tag 2 werden die Momente der Experience Map, die ihr gleich zeichnet, die oberste Ebene unter dem Outcome.“',
-      'Zeitcheck: Kick-off endet 09:40, dann Toast.',
+      '„Die Chancen der Kaffeebar zeigen nur die Form – eure kommen erst aus echten Interviews.“',
+      '„An Tag 2 werden die Momente eurer Experience Map die oberste Ebene unter dem Outcome.“',
+      'Zeit: 09:40 Toast.',
     ],
     verstaendnis: {
       frage: 'Ist ‚Ich will per App vorbestellen‘ eine Chance oder eine Lösung – und woran erkennt ihr das?',
@@ -252,7 +252,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'toast-uebertrag': {
     live: [
       'Alle zu mir holen auf T1 · 1, Kaffeebar-Map links zeigen.',
-      'Fallstrick: Klickpfad durch die eigene App statt heutiges Erleben.',
+      'Falle: Klickpfad durch die eigene App statt heutiges Erleben.',
       'Nach dem Timer reihum zeigen: nachfragen, nicht verteidigen.',
       '„Jede Verbindung mit Fragezeichen nehmt ihr nach der Mittagspause mit in die Annahmen-Map.“',
       'Bei Protest gegen Alleinzeichnen: Antrags-Trio von Torres erzählen.',
@@ -311,7 +311,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Seiden zitieren: Outcome ist Verhaltensänderung, die Geschäftsergebnisse antreibt.',
       'Kursbewertungs-Geschichte erzählen: nach der Wirkung des Outcomes fragen.',
       '„Ein fester Feature-Fahrplan täuscht Gewissheit vor; ein Outcome sagt ehrlich: Wir wissen noch nicht, wie.“',
-      'Fallstrick: „App launchen“ ist Output, kein Outcome.',
+      'Falle: „App launchen“ ist Output, kein Outcome.',
     ],
     ueberleitung: 'Outcome ist nicht gleich Outcome – Torres unterscheidet drei Arten von Zielen.',
     kern: [
@@ -378,7 +378,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     live: [
       'Wells Fargo erzählen: Konten ohne Wissen der Kundschaft, Klagen in Milliardenhöhe.',
       'Fragen: Was tun mit Funden, die nicht zum Outcome passen?',
-      '„Wells Fargo hatte das Ziel richtig gewählt, aber ohne Blick auf die Kundschaft – darum führt ihr ein Gegengewicht mit.“',
+      '„Wells Fargo hatte das richtige Ziel, aber keinen Blick auf die Kundschaft – darum führt ihr ein Gegengewicht mit.“',
       '„Ein Vorbestell-Weg könnte die Schlange für alle anderen verlängern – genau das misst euer Gegengewicht.“',
     ],
     ueberleitung: 'Vom Ziel zum Bauen: Wie klein darf euer erster Schritt sein, damit ihr schon etwas lernt?',
@@ -407,7 +407,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Lego Universe gegen Minecraft erzählen: Jahre ohne Skateboard, sechs Tage mit.',
       '„Kniberg sagt lieber ‚früh‘ als ‚minimal‘: Kaum jemand will minimal, aber fast alle wollen früh.“',
       'Busticket erwähnen: manchmal geht es noch früher als ein Skateboard.',
-      'Fallstrick: MVP als „Minimum Releasable Crap“ missverstehen.',
+      'Falle: MVP als „Minimum Releasable Crap“ missverstehen.',
     ],
     ueberleitung: 'Was ist das Skateboard der Kaffeebar?',
     kern: [
@@ -429,10 +429,10 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'mvp': {
     live: [
       'Erst nur obere Reihe zeigen, fragen: Wann lernen wir hier etwas?',
-      '„Ein Schild ist ein Test, kein Produkt – es beantwortet in einer Woche, was sonst erst die fertige App beantwortet.“',
+      '„Ein Schild ist ein Test, kein Produkt: Nach einer Woche wisst ihr, was sonst erst die App zeigt.“',
       '„Kommt in einer Woche keine WhatsApp-Bestellung, braucht es die App nicht.“',
       'Fragen: Was wäre das Schild für das eigene Produkt?',
-      'Bei Bedarf Zappos: Schuhe fotografiert statt eingelagert.',
+      'Bei Bedarf: Zappos, Schuhe fotografiert statt eingelagert.',
     ],
     ueberleitung: 'Zum Schluss des Vormittags: wie Design Thinking typischerweise schiefgeht.',
     kern: [
@@ -479,7 +479,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'methoden': {
     live: [
-      'Zeitcheck: um 11:00 Pause, um 11:10 Problem-Rahmen.',
+      'Zeit: 11:00 Pause, 11:10 Problem-Rahmen.',
       '„Bis Tag 2 führt ihr fünf echte Interviews; Notizen nur mit Pseudonym, Snapshot auf Miro, Entscheidungslog nachziehen.“',
       'Fragen offen? In den Parkplatz unter „Start hier“.',
       'Toolbox zeigen, falls jemand fragt, welche Methode welches Artefakt liefert.',
