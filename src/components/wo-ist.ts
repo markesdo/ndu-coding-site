@@ -189,24 +189,69 @@ function praesentator() {
 
 // ---------------------------------------------------------------------------
 // Studierende
+const X = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
 const PIN = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>';
 
+// Von Studierenden eingeklappt (× oder Wischen): nur noch der runde Pin, damit nichts Text verdeckt. Gilt für diesen Tab
+// über Seitenwechsel hinweg; ein Tipp auf den Pin klappt wieder auf. Gemerkt wird, wo Markus beim Einklappen war – ist er
+// inzwischen woanders, bekommt der Pin einen Ring (data-neu), klappt aber nicht von selbst auf.
+const KLEIN = 'ndu-wo-ist-klein';
+const kleinBei = (): string | null => { try { return sessionStorage.getItem(KLEIN); } catch { return null; } };
+const kleinMerken = (bei: string | null) => { try { if (bei !== null) sessionStorage.setItem(KLEIN, bei); else sessionStorage.removeItem(KLEIN); } catch {} };
+
 function studierende() {
-  const link = document.createElement('a');
-  link.className = 'wo-ist';
-  link.hidden = true;
-  link.innerHTML = `${PIN}<span class="wo-ist-text"><span>Markus ist bei: </span><b></b><span class="wo-ist-alt"></span></span>`;
+  // Kasten mit Link und eigenem Schließen-Knopf; hidden steht am Kasten.
+  const kasten = document.createElement('div');
+  kasten.className = 'wo-ist';
+  kasten.hidden = true;
+  kasten.innerHTML = `<a class="wo-ist-link">${PIN}<span class="wo-ist-text"><span>Markus ist bei: </span><b></b><span class="wo-ist-alt"></span></span></a><button type="button" class="wo-ist-weg" aria-label="Einklappen" title="Einklappen – der Pin bleibt, ein Tipp darauf zeigt es wieder">${X}</button>`;
+  const link = kasten.querySelector<HTMLAnchorElement>('a')!;
   const titel = link.querySelector('b')!;
   const alt = link.querySelector<HTMLElement>('.wo-ist-alt')!;
-  document.body.append(link);
+  document.body.append(kasten);
   let aktuell: Position | null = null;
   // Nach einem Klick auf ein Ziel, das hier nicht darstellbar ist, nicht weiter drängeln, bis Markus woanders ist.
   let erledigt = '';
 
+  let langText = '';
+  // Eine Stelle für den zugänglichen Namen: eingeklappt kurz, sonst Ziel und Alter; ohne Position keiner.
+  function beschriften() {
+    const bei = kleinBei();
+    const neu = bei !== null && aktuell !== null && positionHref(aktuell) !== bei;
+    kasten.toggleAttribute('data-neu', neu);
+    const name = bei !== null ? (neu ? 'Markus ist woanders – anzeigen' : 'Anzeigen, wo Markus ist') : langText;
+    if (name) link.setAttribute('aria-label', name); else link.removeAttribute('aria-label');
+  }
+  function klein(an: boolean) {
+    kleinMerken(an ? (aktuell ? positionHref(aktuell) : '') : null);
+    kasten.toggleAttribute('data-klein', an);
+    beschriften();
+  }
+  kasten.toggleAttribute('data-klein', kleinBei() !== null);
+  beschriften();
+  kasten.querySelector('button')!.addEventListener('click', () => {
+    klein(true);
+    link.focus(); // der ×-Knopf verschwindet; der Fokus bleibt am Pin statt auf <body> zu fallen
+  });
+  // Wischen zur Seite klappt ein (Tablet, Laptop mit Touchscreen); senkrecht bleibt Scrollen. Nur ein Finger zählt.
+  let wisch: { id: number; x: number; y: number } | null = null;
+  kasten.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    wisch = e.touches.length === 1 ? { id: t.identifier, x: t.clientX, y: t.clientY } : null;
+  }, { passive: true });
+  kasten.addEventListener('touchcancel', () => { wisch = null; }, { passive: true });
+  kasten.addEventListener('touchend', (e) => {
+    const t = [...e.changedTouches].find((x) => x.identifier === wisch?.id);
+    if (wisch && t && Math.abs(t.clientX - wisch.x) > 50 && Math.abs(t.clientX - wisch.x) > 2 * Math.abs(t.clientY - wisch.y)) klein(true);
+    wisch = null;
+  }, { passive: true });
+
   link.addEventListener('click', (e) => {
+    // Eingeklappt: der erste Tipp klappt nur auf, springt aber nicht (Cmd/Strg/Mittelklick öffnen weiter einen neuen Tab).
+    if (kasten.hasAttribute('data-klein') && !(e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0)) { e.preventDefault(); klein(false); return; }
     if (!aktuell) return;
     erledigt = positionHref(aktuell);
-    link.hidden = true;
+    kasten.hidden = true;
     if (aktuell.pfad !== hierPfad()) return; // andere Seite: normaler Link
     const el = aktuell.anker ? document.getElementById(aktuell.anker) : null;
     // Sichtbares Ziel: sanft hinscrollen. Ziel in zugeklapptem <details> oder ausgeblendetem Mac/Windows-Teil:
@@ -244,7 +289,7 @@ function studierende() {
   const kette = abfrageKette({
     // Im Hintergrund, im Beamer-Modus oder beim Präsentator selbst: ohne Anfrage nur nachsehen, ob sich das geändert hat.
     ruht: () => document.visibilityState !== 'visible' || root.hasAttribute('data-beamer') || Boolean(lies()),
-    ruhend: () => { link.hidden = true; },
+    ruhend: () => { kasten.hidden = true; },
     ruheMs: ABFRAGE_MS,
     runde: async () => {
       let ergebnis: 'frisch' | 'leer' | 'fehler' = 'fehler';
@@ -258,15 +303,16 @@ function studierende() {
           link.href = positionHref(d.position);
           titel.textContent = d.position.titel;
           alt.textContent = alter ? ` · ${alter}` : '';
-          link.setAttribute('aria-label', `Zu Markus springen: ${d.position.titel}${alter ? `, ${alter}` : ''}`);
-          link.hidden = schonDa(d.position) || (positionHref(d.position) === erledigt && !zeigbar(d.position));
+          langText = `Zu Markus springen: ${d.position.titel}${alter ? `, ${alter}` : ''}`;
+          beschriften();
+          kasten.hidden = schonDa(d.position) || (positionHref(d.position) === erledigt && !zeigbar(d.position));
         }
       } catch {
         // ergebnis bleibt 'fehler'
       }
       fehlerInFolge = ergebnis === 'fehler' ? fehlerInFolge + 1 : 0;
       const { ms, ausblenden } = naechsteAbfrage(ergebnis, fehlerInFolge);
-      if (ausblenden) { aktuell = null; link.hidden = true; }
+      if (ausblenden) { aktuell = null; kasten.hidden = true; }
       return ms;
     },
   });
@@ -275,7 +321,7 @@ function studierende() {
   // Zurück im Tab: sofort fragen (läuft gerade eine Abfrage, plant sie die nächste ohnehin).
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') kette.sofort(); });
   // Beim Scrollen sofort ausblenden, wenn man angekommen ist (ohne auf die nächste Abfrage zu warten).
-  addEventListener('scroll', () => { if (aktuell && !link.hidden && schonDa(aktuell)) link.hidden = true; }, { passive: true });
+  addEventListener('scroll', () => { if (aktuell && !kasten.hidden && schonDa(aktuell)) kasten.hidden = true; }, { passive: true });
 }
 
 praesentator();
