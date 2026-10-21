@@ -23,7 +23,7 @@ export const TAG_1: TagKarte = {
     'Kick-off': {
       lernziel: 'Nach dem Block können alle die vier Ebenen des Opportunity Solution Tree nennen und eine Lösung in Verkleidung von einer Chance unterscheiden.',
       streichen: [
-        'Die vier Gegner nach Heath weglassen (was-noch).',
+        'Die vier Feinde guter Entscheidungen nach Heath weglassen (was-noch).',
         'Nur den Folien-Satz, ohne Nigel Cross (problem-loesung).',
         'Miro: nur Spalte wählen und „Alle zu mir holen“, den Rest erklärt der Frame „Start hier“ (miro).',
       ],
@@ -49,7 +49,7 @@ export const TAG_1: TagKarte = {
       streichen: [
         'Die Übung allein braucht 60 min, so lang wie der Block: Theorie-Folien sehr knapp halten.',
         'Tierheim-Geschichte und Zusatzfälle weglassen, nur Aufzug und Spiegel plus Kaffeebar (reframing).',
-        'Charlotte-Geschichte weglassen, nur „gleiche Sicht“ nennen (loesungsraum).',
+        'Charlotte-Geschichte weglassen, nur sagen: Alle drei Lösungen hängen an derselben Sicht auf das Problem (loesungsraum).',
         'Schritt 5: Claude-Prüfung in die Hausaufgabe, im Raum nur die Prüfliste (vorgehen).',
       ],
     },
@@ -90,7 +90,6 @@ export const TAG_1: TagKarte = {
       streichen: [
         'Kochbuch-Geschichte weglassen, wenn sie beim Mom Test schon kam (hausaufgabe).',
         'Streaming-Beispiel weglassen, nur die Kaffeebar-Karte I2 (snapshot).',
-        'Kein Zoom über das Board, nur den Satz zu Tag 2 (rueckblick).',
       ],
     },
   },
