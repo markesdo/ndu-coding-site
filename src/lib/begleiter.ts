@@ -218,14 +218,14 @@ export type WischKnoten = {
 const WISCH_NIE = new Set(['SELECT', 'INPUT', 'TEXTAREA', 'DETAILS', 'PRE', 'TABLE']);
 
 /**
- * Darf ein Wisch, der auf start beginnt, blättern? Nur im Kopf (.kopf) oder im Live-Block (.live) der Folie; nie in der
- * Vorbereitung, in Feldern, details, pre, table oder einem Element, das waagerecht scrollt (scrollWidth > clientWidth),
- * bis hinauf zum article.
+ * Darf ein Wisch, der auf start beginnt, blättern? Nur im Kopf (.kopf) oder im Live-Block (.live) der Folie, also nie in
+ * der Vorbereitung; auch dort nicht in Feldern, details, pre, table oder einem Element, das waagerecht scrollt
+ * (scrollWidth > clientWidth), geprüft bis hinauf zum article.
  */
 export function wischErlaubt(start: WischKnoten | null): boolean {
   let imBereich = false;
   for (let el = start; el; el = el.parentElement) {
-    if (WISCH_NIE.has(el.tagName) || el.scrollWidth > el.clientWidth + 1 || el.classList.contains('vorbereitung')) return false;
+    if (WISCH_NIE.has(el.tagName) || el.scrollWidth > el.clientWidth + 1) return false;
     if (el.classList.contains('kopf') || el.classList.contains('live')) imBereich = true;
     if (el.tagName === 'ARTICLE') break;
   }
