@@ -128,6 +128,7 @@ describe('Werkstatt ohne Kurspasswort', () => {
       '/api/werkstattx',
       '/api/werkstatt-x/mcp',
       '/api/position',
+      '/api/aufgedeckt',
       '/innolab/mappe',
       '/.well-known/anderes',
       '/.well-known/openid-configuration',

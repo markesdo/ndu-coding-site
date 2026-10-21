@@ -1,6 +1,7 @@
 // Reine Hilfen für /innolab/mappe (MappeUebersicht.tsx): Rücksprünge der Anmeldung und Zeilen der Übersicht.
 import { aufgeloest } from '../../components/aufloesung.js';
-import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
+import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
+import { AUFGEDECKT_MS, abfrageAbstand } from '../../lib/aufgedeckt.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 
@@ -29,10 +30,16 @@ export function adresseOhneFehler(pfad: string, suche: string, hash: string): st
   return `${pfad}${rest ? `?${rest}` : ''}${hash}`;
 }
 
-/** Der Leitfaden-Editor verrät die Regeln des Mom Test: wie die Auflösungen der Interview-Seite erst ab NACH_MOM_TEST,
- *  der Präsentator (Markus) immer. */
-export function leitfadenFrei(jetzt: Date, praesentator: boolean): boolean {
-  return praesentator || aufgeloest(NACH_MOM_TEST, jetzt);
+/** Der Leitfaden-Editor verrät die Regeln des Mom Test: frei wie die Auflösungen der Interview-Seite – sobald Markus die
+ *  Gruppe „mom-test“ aufgedeckt hat (aufgedeckt aus /api/aufgedeckt), spätestens ab NACH_MOM_TEST; der Präsentator immer. */
+export function leitfadenFrei(jetzt: Date, praesentator: boolean, aufgedeckt: readonly string[] = []): boolean {
+  return praesentator || aufgedeckt.includes(MOM_TEST_GRUPPE) || aufgeloest(NACH_MOM_TEST, jetzt);
+}
+
+/** Solange der Leitfaden zu ist: so oft bei /api/aufgedeckt nach MOM_TEST_GRUPPE fragen – oft am Kurstag von
+ *  NACH_MOM_TEST, sonst selten (der Termin kann wandern). Wie die Auflösungen der Interview-Seite (abfrageAbstand). */
+export function leitfadenAbstand(jetzt: Date): number {
+  return abfrageAbstand([NACH_MOM_TEST], jetzt) ?? AUFGEDECKT_MS;
 }
 
 /** Lädt /innolab/mappe beim Öffnen? Nicht bei „nicht freigeschaltet“: Es gibt keine Sitzung, Laden zeigte nur „Melde dich an“.

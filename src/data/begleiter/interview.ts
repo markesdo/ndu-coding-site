@@ -66,7 +66,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       'Aufgabe zeigen, Timer 5 min starten, nichts zur Methode sagen.',
       'Du in der Rolle: „Würdest du …?“ → leeres Ja, „letztes Mal“ → Geschichte.',
       '„Welche Antwort hat euch etwas Neues verraten?“',
-      'Auflösung aufdecken öffnet Gruppe „mom-test“; ab 14:30 ohnehin offen.',
+      'Auflösung aufdecken öffnet nur diese Übung, auch bei allen.',
       'Kochbuch-App erzählen (Geschichte): „Das klingt toll“, niemand kauft.',
     ],
     ueberleitung: 'Jetzt legt ihr eure drei Fragen auf zwei Achsen und seht, wo sie liegen.',
@@ -183,7 +183,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
     ],
     ablauf: {
       schritte: [
-        'Matrix aufdecken (ist mit der Mom-Test-Auflösung schon offen).',
+        'Matrix aufdecken: öffnet nur diese Übung, auch bei allen.',
         'Jede*r ordnet die eigenen drei Stickys ein.',
         'Eine Frage von links unten gemeinsam ansehen: Was würde die Person antworten, und was wüsstet ihr danach?',
       ],
@@ -430,6 +430,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       '„Im Gespräch erwarten wir 50/50. Darum kündigt ihr am Anfang an, dass ihr die ganze Geschichte hören wollt.“',
       'Café-Geschichte erzählen: „schlimmster Teil meines Tages“, Gründer fragt nicht nach.',
       '„Nicht jede Person hat die Geschichte, die ihr sucht. Nehmt, was sie erzählen will.“',
+      'Aufdecken öffnet auch Editor, Vorlage, Probe-Prompt, Prüfliste für alle.',
       'Zeit: 14:30 Pause.',
     ],
     verstaendnis: {
