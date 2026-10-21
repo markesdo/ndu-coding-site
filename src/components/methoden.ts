@@ -105,7 +105,7 @@ export const METHODEN: Methode[] = [
       'Jede Zeile nennt Datum, Entscheidung und Grund.',
       'Jede Produktentscheidung nennt einen Beleg – oder ausdrücklich „noch keiner“.',
       'Keine Annahme ist als Tatsache formuliert („Pendler*innen wollen …“ statt „Wir glauben, dass …“).',
-      'Wo ein Test etwas widerlegt hat, steht die Änderung als neue Zeile da („ersetzt [Stichwort] vom …“) – die alte bleibt stehen und trägt „ersetzt am …“.',
+      'Wo ein Test etwas widerlegt hat, steht die Änderung als neue Zeile da („ersetzt D1“) – die alte bleibt stehen und trägt „ersetzt am …“.',
     ],
   },
   {
@@ -132,7 +132,7 @@ export const METHODEN: Methode[] = [
       'Keine Frage stellt eure Idee vor oder will sie bewertet haben.',
       'Die Kernfragen fragen nach dem letzten konkreten Mal („Erzähl vom letzten Mal, als …“).',
       'Mindestens eine Frage zielt darauf, was die Person heute schon tut, um das Problem zu lösen – und was sie das kostet.',
-      'Nachfragen sind vorbereitet („Warum?“, „Was ist dann passiert?“, „Wie oft kommt das vor?“).',
+      'Nachfragen sind vorbereitet („Warum?“, „Was ist dann passiert?“, „Wann ist das davor zuletzt passiert?“).',
       'Am Anfang stehen die Bitte um Einwilligung zur Aufnahme und die Zusage, dass nichts mit Namen ins Projekt kommt.',
     ],
     ki: 'Markiert suggestive und hypothetische Fragen im Leitfaden und spielt zur Probe eine zurückhaltende Person aus der Zielgruppe.',
