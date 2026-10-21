@@ -18,7 +18,7 @@ describe('belegNotizSetzen an einer Annahme', () => {
 });
 
 describe('getanOhneQuelleHinweis', () => {
-  const HINWEIS = '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung (D…), die selbst „getan“ ist und eine Quelle nennt. Ein Interview-Zitat belegt höchstens „erzählt“.';
+  const HINWEIS = '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung (D…), die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“.';
   it('„getan“ ohne Notiz und ohne D-ID: Hinweis; Interview-Zitat oder A-ID allein ändern daran nichts', () => {
     const a = kaffeebar().annahmen[1]!;
     expect(a.beleg).toBe('getan');
@@ -26,9 +26,10 @@ describe('getanOhneQuelleHinweis', () => {
     expect(getanOhneQuelleHinweis({ ...a, belegIds: ['I2-4', 'A3'] })).toBe(HINWEIS);
     expect(getanOhneQuelleHinweis({ ...a, belegNotiz: ' ' })).toBe(HINWEIS);
   });
-  it('mit D-ID: der Editor kennt das Entscheidungslog nicht und sagt, was die Entscheidung selbst braucht', () => {
+  it('mit D-ID still: Ob die Entscheidung trägt, entscheidet verknuepfungen_pruefen (der Editor kennt das Log nicht)', () => {
     const a = kaffeebar().annahmen[1]!;
-    expect(getanOhneQuelleHinweis({ ...a, belegIds: ['I2-4', 'D2'] })).toBe('D2 trägt „getan“ nur, wenn die Entscheidung selbst „getan“ ist und eine Quelle nennt. Sonst hier die Quelle notieren.');
+    expect(getanOhneQuelleHinweis({ ...a, belegIds: ['I2-4', 'D2'] })).toBeNull();
+    expect(getanOhneQuelleHinweis({ ...a, belegIds: ['D1'] })).toBeNull();
   });
   it('mit Beleg-Notiz still (auch neben einer D-ID), andere Stufen nie', () => {
     const a = kaffeebar().annahmen[1]!;

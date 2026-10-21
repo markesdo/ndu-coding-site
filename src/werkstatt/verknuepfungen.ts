@@ -1,6 +1,6 @@
 // Verknüpfungen der Mappe prüfen (deterministisch, ohne KI): unbekannte IDs, fehlende Belege, verwaiste Interviews.
 // Grundlage für das MCP-Werkzeug verknuepfungen_pruefen und später für die Lehrende-Ansicht (Spec §3.4, §3.7).
-import { entscheidungsIds, getanQuellePruefer } from './belege.js';
+import { entscheidungsIds, getanHatEigeneQuelle, getanQuellePruefer, notizGefuellt } from './belege.js';
 import { ARTEFAKT_NAMEN, ARTEFAKTE, BELEGSTUFE_TEXT, type Annahmen, type ArtefaktName, type Brief, type Entscheidungen, type Interviews, type Leitfaden } from './schemas/index.js';
 
 // Je Artefakt: die Daten, null = noch nicht gespeichert, 'unlesbar' = Datei passt nicht zum Schema.
@@ -102,12 +102,15 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
       textVon('entscheidungen', e.id, `${e.entscheidung}\n${e.grund}`);
       if (e.beleg !== 'keiner' && e.belegIds.length === 0 && !e.belegNotiz && !ersetzt.has(e.id)) {
         befund({ art: 'fehlender-beleg', artefakt: 'entscheidungen', ort: e.id, text: `${e.id} hat die Belegstufe „${BELEGSTUFE_TEXT[e.beleg]}“, nennt aber weder eine ID noch eine Notiz zum Beleg.` });
+      } else if (e.beleg === 'getan' && !notizGefuellt(e.belegNotiz) && !ersetzt.has(e.id)) {
+        // „getan“ braucht eine Quelle für Verhalten (Beleg-Notiz); IDs allein, etwa Interviews, belegen höchstens „erzählt“.
+        befund({ art: 'fehlender-beleg', artefakt: 'entscheidungen', ort: e.id, text: `${e.id} ist „getan“, nennt aber keine Quelle (Beleg-Notiz) – Interviews belegen höchstens „erzählt“.` });
       }
     }
   }
 
   if (da(m.annahmen)) {
-    const hatQuelle = getanQuellePruefer(da(m.entscheidungen) ? m.entscheidungen : null, (id) => bekannt.has(id));
+    const hatQuelle = da(m.entscheidungen) ? getanQuellePruefer(m.entscheidungen) : getanHatEigeneQuelle;
     for (const a of m.annahmen.annahmen) {
       belegeVon('annahmen', a.id, a.belegIds);
       textVon('annahmen', a.id, a.text);
@@ -117,11 +120,12 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „${BELEGSTUFE_TEXT[a.beleg]}“, nennt aber kein Interview oder Zitat als Beleg.` });
       }
       // „getan“ heißt beobachtet, gemessen, bezahlt: Regel in belege.ts. Ohne Quelle fragt man nach (Begleiter Annahmen-Map:
-      // „getan, aber ohne Quelle – nachfragen“). Nicht prüfbar (Entscheidungslog unlesbar) oder schon als unbekannte ID
-      // gemeldet (z. B. Entscheidungslog noch nicht gespeichert): kein zweiter Befund zur selben D-ID.
-      const dOffen = entscheidungsIds(a).some((id) => m.entscheidungen === 'unlesbar' || warumUnbekannt(id) !== null);
-      if (!hatQuelle(a) && !dOffen) {
-        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Quelle nennt. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?` });
+      // „getan, aber ohne Quelle – nachfragen“). Still nur, wenn es nichts zu prüfen gibt: Entscheidungslog unlesbar, oder
+      // jede genannte D-ID ist unbekannt (dafür steht schon der Befund zur unbekannten ID). Sonst zählen die aufgelösten.
+      const dIds = entscheidungsIds(a);
+      const dNichtPruefbar = dIds.length > 0 && (m.entscheidungen === 'unlesbar' || dIds.every((id) => warumUnbekannt(id) !== null));
+      if (!hatQuelle(a) && !dNichtPruefbar) {
+        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?` });
       }
     }
   }

@@ -119,7 +119,7 @@ export const METHODEN: Methode[] = [
       'Die riskanteste Annahme – sehr wichtig, kaum Beleg – ist markiert.',
       'Keine Annahme ist eine Aufgabe („Logo gestalten“) oder eine Funktion („Es gibt einen Login“).',
       // Angehängt statt eingefügt und ohne neuen prueflisteStand: Die Häkchen hängen an der Position, die ersten fünf bleiben.
-      'Wo „getan“ steht, ist die Quelle genannt (Beleg-Notiz oder eine Entscheidung, die selbst „getan“ ist und ihre Quelle nennt) – kein Interview-Zitat.',
+      'Wo „getan“ steht, ist die Quelle genannt (Beleg-Notiz oder eine Entscheidung, die selbst „getan“ ist und ihre Quelle als Beleg-Notiz nennt) – kein Interview-Zitat.',
     ],
     ki: 'Red Team: sucht Annahmen, die ihr übersehen habt.',
     quelle: 'David J. Bland & Alex Osterwalder, Testing Business Ideas',

@@ -221,7 +221,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
         quelle: 'Kurs-Beispieldaten src/werkstatt/beispiele/brief.json',
       },
       {
-        text: 'A2 liegt oben links. Blands Regel dafür: den Beleg mit dem Team teilen und hinterfragen, ob er wirklich trägt (S. 38). In der Beispieldatei steht „getan“, aber keine Quelle – genau so ein Fall, bei dem man nachfragt. A4 ist der zweite solche Fall (wirtschaftlich, „getan“ ohne Quelle); Claude meldet beide bei verknuepfungen_pruefen. A4 klärt die Seite Geschäftsmodell an Tag 3: Mit den Kosten vor Augen ist sie wichtig und ohne Beleg.',
+        text: 'A2 liegt oben links. Blands Regel dafür: den Beleg mit dem Team teilen und hinterfragen, ob er wirklich trägt (S. 38). In der Beispieldatei steht „getan“, aber keine Quelle – genau so ein Fall, bei dem man nachfragt. Auch A4 (wirtschaftlich, „getan“) nennt keine Quelle, darum meldet Claude bei verknuepfungen_pruefen A2 und A4. Inhaltlich meinte „getan“ bei A4 den heutigen Betrieb; an Tag 3 (Geschäftsmodell) wird A4 mit den Kosten vor Augen neu eingeschätzt.',
         quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 38; annahmen.json; Methodenseite Geschäftsmodell (Tag 3)',
       },
       {
@@ -278,7 +278,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
         'Konkret genug zum Testen: Wofür haben Kund*innen Zeit, was genau müssen sie wissen (Torres S. 131)?',
         'Alle vier Arten vertreten; viele Teams vergessen eine Art, fast alle die Ethik (Torres S. 128, 132).',
         'Heute vor allem Annahmen über Kundschaft und Problem, nicht über eine Lösung.',
-        'Bei „getan“ steht die Quelle als Beleg-Notiz oder als Entscheidung (D…), die selbst „getan“ ist und ihre Quelle nennt; ein Interview-Zitat belegt höchstens „erzählt“, ohne Quelle ist es „noch keiner“ – so steht es im Handout und in der Prüfliste.',
+        'Bei „getan“ steht die Quelle als Beleg-Notiz oder als Entscheidung (D…), die selbst „getan“ ist und ihre Quelle als Beleg-Notiz nennt; ein Interview-Zitat belegt höchstens „erzählt“, ohne Quelle ist es „noch keiner“ – so steht es im Handout und in der Prüfliste.',
         'Tempo: Torres findet schnelles Einordnen genauso gut wie langes Diskutieren (S. 130).',
         'Red Team: Claude soll höchstens drei Stellen aus dem Brief zitieren und fragen, die Annahmen formulieren die Studierenden selbst.',
         'So geht es mit Claude: erst der Prompt „Prüfen lassen“, dann im selben Gespräch der Red-Team-Prompt. Ohne Connector unter den Prüf-Prompt Map und Brief, je aus „Für Claude kopieren“; für das Red Team danach nichts erneut einfügen, beide stehen schon im Gespräch.',
