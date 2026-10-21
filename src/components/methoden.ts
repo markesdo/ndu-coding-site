@@ -76,6 +76,9 @@ export interface Methode {
   /** Prüfliste: die häufigen Fehler als prüfbare Sätze. Die Studierenden haken sie ab, Claude prüft dagegen
    *  (ClaudePruefung.astro). Pflicht, sobald die Methode eine eigene Seite hat. */
   pruefliste?: string[];
+  /** Stand der Prüfliste, wenn ihre Punkte neu geschrieben wurden: Die Checkliste speichert Häkchen je Position unter
+   *  ihrer ID (Checklist.astro), alte Häkchen sollen nicht an neuen Punkten hängen. ID: il-<slug>-<stand>. */
+  prueflisteStand?: number;
 }
 
 /** In Kursreihenfolge – die Prüfung „braucht nur Früheres“ verlässt sich darauf. */
@@ -348,14 +351,14 @@ export const METHODEN: Methode[] = [
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
   },
   {
-    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 175,
+    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 175, prueflisteStand: 2,
     frage: 'Wie arbeiten wir als drei Scrum-Teams mit denselben drei Personen an drei Produkten?',
     braucht: ['brief'], ergibt: ['team'],
     pruefliste: [
-      'Für jedes der drei Produkte stehen Product Owner, Linear-Projekt und ein Produktziel in einem Satz, der sagt, was Menschen danach anders tun.',
+      'Für jedes der drei Produkte stehen Product Owner, Linear-Projekt und als Produktziel das Outcome aus dem Produkt-Brief („Wir glauben, dass … Wir merken es, wenn …“), das sagt, was Menschen danach anders tun.',
       'Alle drei sind Developers in allen drei Produkten; der Scrum Master für Sprint 1 und Sprint 2 ist genannt.',
       'Sprint 1 und Sprint 2 haben ein Datum für Planning, Review und Retro; das Daily hat Zeit und Ort an Kurstagen und eine Regel für dazwischen.',
-      'Die Definition of Done ist eine Liste von Punkten, die sich im Browser oder in Supabase prüfen lassen, und gilt für alle drei Produkte.',
+      'Die Definition of Done ist eine Liste von Punkten, die sich im Browser, auf GitHub oder in Supabase prüfen lassen, und gilt für alle drei Produkte.',
       'In der Definition of Done steht das Ereignis, das die Outcome-Metrik des Produkt-Briefs misst, mit seinen Feldern – ohne Name und E-Mail.',
       'Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, ungleiche Sprintlängen, schriftliches Daily.',
       'Unter „Aus Lego4Scrum“ steht je Person eine Sache, die das Team in den echten Sprints anders macht.',
@@ -402,7 +405,7 @@ export const METHODEN: Methode[] = [
     ki: 'Macht im Plan-Modus einen Plan pro Issue, ohne zu bauen – ihr beurteilt, ob er in einen Durchgang passt.',
   },
   {
-    slug: 'sprint', name: 'Sprint', tag: 4, dauer: 150,
+    slug: 'sprint', name: 'Sprint', tag: 4, dauer: 150, prueflisteStand: 2,
     frage: 'Was liefern wir in diesem Sprint – und was lernen wir daraus?',
     braucht: ['geschnitten', 'team', 'brief'], ergibt: ['inkrement', 'sprintlog'],
     pruefliste: [
@@ -411,8 +414,8 @@ export const METHODEN: Methode[] = [
       'Ab Sprint 2 sind es nicht mehr Issues, als im Sprint davor nach der Definition of Done fertig wurden.',
       'Jedes als fertig genannte Issue hat einen Beleg je Akzeptanzkriterium, den Link zum Pull Request und den Namen der prüfenden Person.',
       'Das Review hält fest, ob das Sprint-Ziel erreicht ist, was Tests und Messung ergeben haben und welche Issues zurück in den Backlog gehen.',
-      'Die Retro endet mit einer Maßnahme, einem ersten Schritt, der am selben Tag erledigt wurde, einer verantwortlichen Person und dem Datum der Prüfung.',
-      'Nach Sprint 2 steht da, ob die Maßnahme aus Sprint 1 gewirkt hat und woran man es sieht.',
+      'Die Retro von Sprint 1 (Lightning Decision Jam) endet mit einer Maßnahme, einem ersten Schritt, der am selben Tag erledigt wurde, einer verantwortlichen Person und dem Datum der Prüfung.',
+      'Die kurze Retro von Sprint 2 hält fest, ob die Maßnahme aus Sprint 1 gewirkt hat und woran man es sieht.',
     ],
     ki: 'Baut die Issues als Developer im Rahmen der Definition of Done; prüft, ob die Issues zusammen das Sprint-Ziel erreichen.',
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Ron Jeffries, The Nature of Software Development (2015), Kap. 5–6; AJ&Smart, Lightning Decision Jam (2020)',
@@ -497,6 +500,9 @@ const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchsten
 /** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
  *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. ein Transkript statt aller Interview-Dateien).
  *  Liegt das Ergebnis in der Werkstatt, prüft Claude es dort mit artefakt_pruefen – nie über eine Datei unter docs/. */
+/** ID der abhakbaren Prüfliste (localStorage-Schlüssel in Checklist.astro); mit Stand, sobald die Punkte neu geschrieben wurden. */
+export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `il-${m.slug}-${m.prueflisteStand}` : `il-${m.slug}`);
+
 export function pruefPrompt(m: Methode, pfad?: string): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
   const liste = m.pruefliste.map((p, i) => `${i + 1}. ${p}`);

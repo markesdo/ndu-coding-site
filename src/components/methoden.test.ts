@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefPrompt, pruefungInWerkstatt } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -118,6 +118,13 @@ describe('methoden', () => {
       // Reiner Text: Die Checkliste rendert HTML, der Claude-Prompt kopiert Text – beides soll gleich aussehen.
       for (const p of m.pruefliste!) expect(p, m.slug).not.toMatch(/[<>&]/);
     }
+  });
+
+  it('neu geschriebene Prüflisten bekommen eine neue Checklisten-ID – alte Häkchen hängen sonst an neuen Punkten', () => {
+    const id = (slug: string) => pruefChecklisteId(METHODEN.find((m) => m.slug === slug)!);
+    expect([id('scrum'), id('sprint'), id('backlog')]).toStrictEqual(['il-scrum-2', 'il-sprint-2', 'il-backlog']);
+    const ids = METHODEN.map(pruefChecklisteId);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
   it('der Prüf-Prompt nennt das Ergebnis und zum Abgleich die Vorarbeit, jede nur einmal', () => {

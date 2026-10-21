@@ -232,7 +232,7 @@ const NACH_LEGO = '2026-11-28T11:45';
             <tr><td>16–23</td><td>Features</td><td>etwa 7 min (S. 73)</td><td>ungekürzt.</td></tr>
             <tr><td>23–30</td><td>Release-Linie, wesentliche Details</td><td>10 + 5 min (S. 58, 78)</td><td>7 min – eine Kürzung des Kurses. Schätzen (15 min) entfällt ganz: wir schätzen nicht.</td></tr>
             <tr><td>30–75</td><td>Drei Sprints</td><td>je 30 min (S. 59)</td><td>je 15 min: 3 planen, 7 bauen, 3 zeigen, 2 Retro – eine Kürzung des Kurses; Team- und Gesamt-Retro in einem.</td></tr>
-            <tr><td>75–80</td><td>Nachbesprechung</td><td>30 min (S. 59)</td><td>5 min – eine Kürzung des Kurses; die übrigen Fragen gehen in die Kurs-Retro an Tag 7.</td></tr>
+            <tr><td>75–80</td><td>Nachbesprechung</td><td>30 min (S. 59)</td><td>5 min – eine Kürzung des Kurses; die übrigen Fragen entfallen.</td></tr>
           </tbody>
         </table>
       </div>
@@ -328,7 +328,7 @@ const NACH_LEGO = '2026-11-28T11:45';
       </ul>
       <div class="nur-handout">
         <p>Krivitskys Mittel: mehrdeutige Anforderungen, gleiche Größe und Proportionen verlangen, nicht sagen, dass am Ende des Sprints integriert werden muss, und „Der PO ist auf Geschäftsreise“ – danach treffen die Teams in der Retro Abmachungen mit dem Product Owner (S. 41). Den Tisch für die Stadt vergisst der Moderator absichtlich (S. 45); die Größe gibt er nicht vor (S. 50). Zum Product Owner im Sprint: „Aber lass sie zuerst ihren ersten Sprint nicht bestehen. Misserfolge sind große Katalysatoren des Lernens“ (S. 95).</p>
-        <p>Krivitskys weitere Fragen für die Nachbesprechung (S. 103–104) – sie kommen in die Kurs-Retro an Tag 7: „Was war deine Erfahrung? Was hast du beobachtet?“ · „Welche Prozesselemente waren am wertvollsten?“ · „Welches waren die am wenigsten profitablen Prozesselemente? (z. B. Schätzen)“ · „Wenn wir diese Simulation erneut von Grund auf neu ausführen würden, was würdest Du anders machen und warum?“ · „Wie ist dies für Deine eigentliche Arbeit relevant?“</p>
+        <p>Krivitskys weitere Fragen für die Nachbesprechung (S. 103–104) – sie entfallen bei uns, eine Kürzung des Kurses; wer mag, nimmt sie für sich mit: „Was war deine Erfahrung? Was hast du beobachtet?“ · „Welche Prozesselemente waren am wertvollsten?“ · „Welches waren die am wenigsten profitablen Prozesselemente? (z. B. Schätzen)“ · „Wenn wir diese Simulation erneut von Grund auf neu ausführen würden, was würdest Du anders machen und warum?“ · „Wie ist dies für Deine eigentliche Arbeit relevant?“</p>
         <p>Jetzt erst die Begriffe: Die Wand war der Product Backlog, „Wie viel schafft ihr?“ das Sprint Planning, „Zeigen“ das Sprint Review, „Eine Sache anders“ die Retrospektive, und die fehlende Stadt das fehlende Inkrement.</p>
       </div>
     </Aufloesung>
@@ -341,7 +341,7 @@ const NACH_LEGO = '2026-11-28T11:45';
       <li data-schritt><strong>Aus dem Lego:</strong> Was hätte euch im ersten Review gerettet? Drei Stichworte an die Tafel. <Timer minuten={5} /></li>
       <li data-schritt><strong>Reihum:</strong> Produkt, Product Owner, Produktziel, Linear-Projekt; Scrum Master für Sprint 1 und 2; die Abweichungen. <Timer minuten={10} /></li>
       <li data-schritt><strong>Definition of Done,</strong> eine für alle drei Produkte. <Timer minuten={15} /></li>
-      <li data-schritt><strong>Mess-Ereignis je Produkt</strong> als Issue 6 in Stichworten; Collaborator einladen. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Mess-Ereignis je Produkt</strong> als Mess-Issue in Stichworten; Collaborator einladen. <Timer minuten={10} /></li>
     </ol>
     <div class="nur-handout">
       <p>Zu 1: Die Stichworte werden Zeilen der Definition of Done – sie kommen aus eurer eigenen Erfahrung, nicht aus einer Vorlage ({KRIVITSKY}, S. 46, 96). Zu 2: Jede*r ist Product Owner des eigenen Produkts und entscheidet dort über Produktziel, Backlog und Reihenfolge ({GUIDE}, S. 5–6). Alle drei sind Developers in allen drei Produkten: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente. Den Scrum Master für Sprint 1 und 2 lost ihr. Linear: ein Team, ein Projekt pro Produkt, ein Label pro Sprint (<code>Sprint 1</code>, <code>Sprint 2</code>); eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>). Die Abweichungen vom Guide übernehmt ihr als eigenen Abschnitt in <code>docs/TEAM.md</code>. Zu 3 und 4: siehe nächste Folie. Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein (<a href="/innolab/methoden/sprint#spec">Sprint</a>).</p>
@@ -354,7 +354,7 @@ const NACH_LEGO = '2026-11-28T11:45';
 
   <Folie>
     <h2 id="dod">Definition of Done: die Messung gehört dazu</h2>
-    <p class="folie-satz">Jede Zeile lässt sich im Browser oder in Supabase prüfen – auch die Messung.</p>
+    <p class="folie-satz">Jede Zeile lässt sich im Browser, auf GitHub oder in Supabase prüfen.</p>
     <p class="small muted">Am Beispiel der Kaffeebar:</p>
     <ol class="gross">
       <li data-schritt><strong>Jedes Akzeptanzkriterium</strong> im Browser am Handy geprüft, Beleg im Issue.</li>
@@ -364,7 +364,7 @@ const NACH_LEGO = '2026-11-28T11:45';
     </ol>
     <div class="nur-handout">
       <p>Ohne die vierte Zeile könnt ihr nach dem Sprint nur sagen, dass etwas gebaut ist – nicht, ob es wirkt. Ein Ereignis ist eine Zeile in einer Tabelle <code>ereignisse</code> in Supabase: was passiert ist, wann, und eine zufällige Kennung pro Gerät. Bei der Kaffeebar tippt die Bar bei der Übergabe auf „abgeholt“; gespeichert werden Abholzeit, Abfahrtszeit und die Kennung des Geräts. Liegt die Abholzeit vor der Abfahrt, zählt der Tag für das Produktziel: mehr Pendler*innen mit Kaffee im Zug. Nebenbei zeigen die Zeilen pro halbe Stunde, ob die Bar 40 Bestellungen in 30 Minuten schafft (A2) – ein Zusatz des Kurses, kein Teil der Definition of Done.</p>
-      <p>Was ihr <strong>nicht</strong> speichert, gehört dazu: kein Name, keine E-Mail, und sagt euren Testpersonen, dass ihr messt. Bei der Kaffeebar hängt das an A7 (ethisch): „Sie sind einverstanden, dass wir ihre Abfahrtszeit kennen“ (<a href="/innolab/methoden/experiment#beispiel">Experiment-Karte</a>). Das Ereignis einzuführen ist ein eigenes Issue, Issue 6: „Bar markiert Bestellung als abgeholt; das Ereignis abgeholt wird gespeichert“ – Quelle: die Definition of Done. Ausformuliert wird es um 13:30 im Backlog, mit Akzeptanzkriterien wie jedes andere. Ab dann gilt für jedes Issue: Nach dem Merge kommt das Ereignis noch an.</p>
+      <p>Was ihr <strong>nicht</strong> speichert, gehört dazu: kein Name, keine E-Mail, und sagt euren Testpersonen, dass ihr messt. Bei der Kaffeebar hängt das an A7 (ethisch): „Sie sind einverstanden, dass wir ihre Abfahrtszeit kennen“ (<a href="/innolab/methoden/experiment#beispiel">Experiment-Karte</a>). Das Ereignis einzuführen ist ein eigenes Issue, das Mess-Issue – bei der Kaffeebar Issue 6: „Bar markiert Bestellung als abgeholt; das Ereignis abgeholt wird gespeichert“ – Quelle: die Definition of Done. Ausformuliert wird es um 13:30 im Backlog, mit Akzeptanzkriterien wie jedes andere. Ab dann gilt für jedes Issue: Nach dem Merge kommt das Ereignis noch an.</p>
       <p>Eine Mess-Zeile ist eine Definition of Done „appropriate for the product“ ({GUIDE}, S. 12): Euer Produkt soll ein Outcome bewirken, also gehört dessen Messung zur Qualität des Inkrements.</p>
     </div>
   </Folie>
