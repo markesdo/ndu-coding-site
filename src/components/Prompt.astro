@@ -1,8 +1,9 @@
 ---
-// Prompt-Karte mit Copy-Button. Inhalt als Slot (Text wird 1:1 kopiert).
+// Prompt-Karte mit Copy-Button. Inhalt als Slot (Text wird 1:1 kopiert). kopieren={false}: nur zeigen, z. B. bei
+// Beispielen, die niemand übernehmen soll.
 import { Check, Copy, Info, SquareTerminal } from '@lucide/astro';
 import { lueckenMarkieren } from './luecken';
-const { label = 'Prompt für Claude Code', note } = Astro.props;
+const { label = 'Prompt für Claude Code', note, kopieren = true } = Astro.props;
 // [Lücken] wie „[Nummer]“ farbig markieren, damit man sieht, was zu ersetzen ist. Kopiert wird weiter der Text
 // (innerText) – die Klammern bleiben darin, <mark> ändert nur die Darstellung.
 const html = lueckenMarkieren(await Astro.slots.render('default'));
@@ -13,11 +14,13 @@ const zeigeWie = Astro.url.pathname.replace(/\/$/, '') !== '/prompts-ausfuellen'
 <div class="prompt">
   <div class="label">
     <span class="label-text"><SquareTerminal size={14} aria-hidden="true" />{label}</span>
-    <button class="copy" type="button">
-      <Copy class="ico-copy" size={14} aria-hidden="true" />
-      <Check class="ico-done" size={14} stroke-width={2.5} aria-hidden="true" />
-      <span class="copy-text" aria-live="polite">Kopieren</span>
-    </button>
+    {kopieren && (
+      <button class="copy" type="button">
+        <Copy class="ico-copy" size={14} aria-hidden="true" />
+        <Check class="ico-done" size={14} stroke-width={2.5} aria-hidden="true" />
+        <span class="copy-text" aria-live="polite">Kopieren</span>
+      </button>
+    )}
   </div>
   <pre set:html={html}></pre>
   {hatLuecken && <p class="luecken-hinweis">Gelbe Lücken anklicken und ausfüllen – Kopieren nimmt eure Eingaben mit.{zeigeWie && <> <a href="/prompts-ausfuellen">Wie?</a></>}</p>}
