@@ -79,7 +79,7 @@ const PRUEFEN = {
 
 const VERKNUEPFUNGEN = {
   title: 'Verknüpfungen prüfen',
-  description: `Prüft ohne KI, ob die Verweise der eigenen Werkstatt-Mappe zusammenpassen, über Produkt-Brief, Entscheidungslog, Annahmen-Map und Interviews: unbekannte IDs (z. B. ein Beleg I2-3, den es in den Interviews nicht gibt, oder D4, A3 im Text), fehlende Belege (Belegstufe „gesagt“, „erzählt“ oder „getan“ ohne Beleg, bei Annahmen mit „gesagt“ oder „erzählt“ ohne Interview oder Zitat; Chance ohne Zitat) und verwaiste Interviews (von keinem Beleg genannt). Ohne Argumente. Das Ergebnis ist eine Liste von Befunden; geh sie mit der Person durch, frag nach, wo der Beleg liegt, und formuliere keinen Artefakttext. Ändern kann die Person nur selbst in der Werkstatt. Nur lesen.`,
+  description: `Prüft ohne KI, ob die Verweise der eigenen Werkstatt-Mappe zusammenpassen, über Produkt-Brief, Entscheidungslog, Annahmen-Map und Interviews: unbekannte IDs (z. B. ein Beleg I2-3, den es in den Interviews nicht gibt, oder D4, A3 im Text), fehlende Belege (Belegstufe „gesagt“, „erzählt“ oder „getan“ ohne Beleg, bei Annahmen mit „gesagt“ oder „erzählt“ ohne Interview oder Zitat, eine Beleg-Notiz genügt nur bei „getan“; Chance ohne Zitat) und verwaiste Interviews (von keinem Beleg genannt). Ohne Argumente. Das Ergebnis ist eine Liste von Befunden; geh sie mit der Person durch, frag nach, wo der Beleg liegt, und formuliere keinen Artefakttext. Ändern kann die Person nur selbst in der Werkstatt. Nur lesen.`,
   inputSchema: {},
   outputSchema: {
     befunde: z.array(z.object({

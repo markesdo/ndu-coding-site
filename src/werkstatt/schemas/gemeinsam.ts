@@ -1,6 +1,7 @@
 // Bausteine, die alle Artefakt-Schemas teilen: Belegstufe, Datum, IDs, Fehlerform.
 import { z } from 'zod';
 import { istId, type IdPraefix } from '../ids.js';
+import { graphemAnzahl } from '../text.js';
 
 // Reihenfolge ist die Skala „sagen → tun“.
 export const BELEGSTUFEN = ['keiner', 'gesagt', 'erzaehlt', 'getan'] as const;
@@ -56,6 +57,20 @@ export const verweisId = z
   .refine(istId, { error: 'Ein Verweis muss eine ID wie I2-4 sein.' });
 
 export const belegIds = z.array(verweisId, { error: 'Belege müssen eine Liste von IDs sein.' });
+
+export const BELEG_NOTIZ_MAX = 120;
+
+// Steuer- und Formatzeichen (z. B. U+202E dreht Text um) plus Zeilenumbrüche. Der Joiner in Emoji-Folgen (Join_Control) ist erlaubt.
+const STEUERZEICHEN = /(?!\p{Join_Control})[\p{Cc}\p{Cf}\u2028\u2029\u0085]/u;
+
+// Optional: Quelle oder Zahl zum Beleg (z. B. „Kassendaten September“), in Entscheidungslog und Annahmen-Map gleich.
+// Das Schema lehnt ab statt zu bereinigen: Was gespeichert wird, ist genau das, was die Person sieht.
+export const belegNotiz = z
+  .string({ error: 'Beleg (Notiz): bitte als Text eintragen.' })
+  .refine((s) => !STEUERZEICHEN.test(s), { error: 'Beleg-Notiz: eine Zeile, ohne Steuerzeichen' })
+  .refine((s) => s === s.trim(), { error: 'Beleg-Notiz: ohne Leerzeichen am Anfang oder Ende' })
+  .refine((s) => graphemAnzahl(s) <= BELEG_NOTIZ_MAX, { error: `Beleg (Notiz): höchstens ${BELEG_NOTIZ_MAX} Zeichen. Kürze die Notiz oder nenne nur die Quelle.` })
+  .optional();
 
 // Doppelte IDs in einer Liste: Fehler am zweiten Vorkommen, Pfad <index>.id (relativ zur Liste).
 export function doppelteIds(zeilen: readonly { id: string }[], ctx: z.RefinementCtx, meldung: string): void {

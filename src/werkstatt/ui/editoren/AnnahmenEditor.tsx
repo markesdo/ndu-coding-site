@@ -10,6 +10,7 @@ import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
 import VerweisAuswahl from '../felder/VerweisAuswahl.js';
 import { ART_ANZEIGE, WICHTIG_TEXT, annahmeNeu, annahmenSetzen, fehlendeArtenHinweis, riskantesteSetzen } from './annahmen-hilfen.js';
+import { belegNotizHilfe, belegNotizSetzen, belegNotizZaehler } from './entscheidungen-hilfen.js';
 import './editoren.css';
 
 const WICHTIG = WICHTIGKEITEN.map((w) => ({ wert: w, text: WICHTIG_TEXT[w] }));
@@ -84,6 +85,8 @@ function Formular({ daten, setze, fehler }: { daten: Annahmen; setze: (neu: Anna
               <Auswahl label={`Wichtig (${a.id})`} hilfe="Wie schlimm wäre es, wenn die Annahme falsch ist?" wert={a.wichtig} optionen={WICHTIG} onChange={(wichtig) => s({ ...a, wichtig })} fehler={fehler(pfad('wichtig'))} />
               <Auswahl label={`Beleg (${a.id})`} wert={a.beleg} optionen={BELEG} onChange={(beleg) => s({ ...a, beleg })} fehler={fehler(pfad('beleg'))} />
               <VerweisAuswahl label={`Beleg-IDs (${a.id})`} hilfe="Zum Beispiel I2-4 für ein Zitat aus Interview 2." werte={a.belegIds} onChange={(belegIds) => s({ ...a, belegIds })} fehler={fehler(pfad('belegIds'))} />
+              <Textfeld label={`Beleg (Notiz, z. B. Quelle oder Zahl) (${a.id})`} hilfe={belegNotizHilfe} wert={a.belegNotiz ?? ''} onChange={(notiz) => s(belegNotizSetzen(a, notiz))} fehler={fehler(pfad('belegNotiz'))} />
+              <p className="wk-hilfe" aria-live="off">Zeichen: {belegNotizZaehler(a.belegNotiz ?? '')}</p>
             </>
           );
         }}

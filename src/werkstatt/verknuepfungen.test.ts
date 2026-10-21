@@ -118,6 +118,27 @@ describe('verknuepfungenPruefen', () => {
     expect(verknuepfungenPruefen(m).befunde).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A4'));
   });
 
+  it('Annahme „getan“ mit Beleg-Notiz (Quelle außerhalb der Mappe) ist still, ohne Notiz bleibt der Befund', () => {
+    const m = kaffeebar();
+    m.annahmen.annahmen[1].belegNotiz = 'Kassendaten September';
+    expect(verknuepfungenPruefen(m).befunde).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A4'));
+  });
+
+  it('Annahme „gesagt“ oder „erzählt“: eine Beleg-Notiz allein ersetzt kein Interview', () => {
+    const m = kaffeebar();
+    const [a1, a2, a3, a4] = m.annahmen.annahmen;
+    a1.beleg = 'gesagt';
+    a1.belegNotiz = 'Gespräch am Bahnsteig';
+    a3.beleg = 'erzaehlt';
+    a3.belegNotiz = 'Umfrage Oktober';
+    a2.belegNotiz = 'Kassendaten September';
+    a4.belegNotiz = 'Strichliste';
+    expect(verknuepfungenPruefen(m).befunde).toStrictEqual([
+      { art: 'fehlender-beleg', artefakt: 'annahmen', ort: 'A1', text: 'A1 hat die Belegstufe „gesagt“, nennt aber kein Interview oder Zitat als Beleg.' },
+      { art: 'fehlender-beleg', artefakt: 'annahmen', ort: 'A3', text: 'A3 hat die Belegstufe „erzählt“, nennt aber kein Interview oder Zitat als Beleg.' },
+    ]);
+  });
+
   it('Unternummer an einer Nicht-Interview-ID (D1-2): „gibt es nicht“, nicht „hat kein Zitat“', () => {
     const m = kaffeebar();
     m.entscheidungen.entscheidungen[3].belegIds = ['D1-2'];

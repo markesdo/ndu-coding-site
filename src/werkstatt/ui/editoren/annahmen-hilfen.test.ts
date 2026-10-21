@@ -2,9 +2,21 @@ import { describe, expect, it } from 'vitest';
 import beispiel from '../../beispiele/annahmen.json';
 import { artefaktParsen, type Annahmen } from '../../schemas/index.js';
 import { annahmeNeu, annahmenSetzen, fehlendeArten, fehlendeArtenHinweis, riskantesteSetzen } from './annahmen-hilfen.js';
+import { belegNotizSetzen } from './entscheidungen-hilfen.js';
 
 const kaffeebar = () => structuredClone(beispiel) as Annahmen;
 const leer = (): Annahmen => ({ schema: 'annahmen@1', stand: '2026-10-22', annahmen: [] });
+
+describe('belegNotizSetzen an einer Annahme', () => {
+  it('setzt die Notiz und lässt die übrigen Felder; leer entfernt den Schlüssel ganz', () => {
+    const a = kaffeebar().annahmen[1]!;
+    expect(belegNotizSetzen(a, 'Kassendaten September')).toStrictEqual({ ...a, belegNotiz: 'Kassendaten September' });
+    expect(belegNotizSetzen({ ...a, belegNotiz: 'x' }, ' ')).toStrictEqual(a);
+  });
+  it('neue Annahme hat keine Notiz', () => {
+    expect('belegNotiz' in annahmeNeu([], [])).toBe(false);
+  });
+});
 
 describe('annahmeNeu', () => {
   it('vergibt die nächste freie ID und nimmt gelöschte nicht wieder', () => {

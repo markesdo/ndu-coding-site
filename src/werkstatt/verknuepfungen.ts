@@ -110,12 +110,13 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
       belegeVon('annahmen', a.id, a.belegIds);
       textVon('annahmen', a.id, a.text);
       // „gesagt“ und „erzählt“ kommen aus Gesprächen, also aus den Interviews: Ein D- oder A-Verweis allein reicht nicht.
-      // „getan“ (beobachtetes Verhalten, z. B. Kassendaten) kann außerhalb der Mappe liegen, aber ganz ohne Quelle
-      // fragt man nach (Begleiter Annahmen-Map: „getan, aber ohne Quelle – nachfragen“); Annahmen haben keine Beleg-Notiz.
+      // Eine Beleg-Notiz allein reicht dafür nicht.
+      // „getan“ (beobachtetes Verhalten, z. B. Kassendaten) kann außerhalb der Mappe liegen: Eine ID oder eine Beleg-Notiz
+      // genügt; ganz ohne Quelle fragt man nach (Begleiter Annahmen-Map: „getan, aber ohne Quelle – nachfragen“).
       if ((a.beleg === 'gesagt' || a.beleg === 'erzaehlt') && !a.belegIds.some((id) => QUELLE[id[0]] === 'interviews')) {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „${BELEGSTUFE_TEXT[a.beleg]}“, nennt aber kein Interview oder Zitat als Beleg.` });
       }
-      if (a.beleg === 'getan' && a.belegIds.length === 0) {
+      if (a.beleg === 'getan' && a.belegIds.length === 0 && !a.belegNotiz) {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle als Beleg. Wo liegt das beobachtete Verhalten?` });
       }
     }

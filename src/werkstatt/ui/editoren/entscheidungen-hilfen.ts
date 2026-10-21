@@ -82,10 +82,10 @@ export function belegNotizZaehler(notiz: string): string {
   return `${graphemAnzahl(notiz)}/${BELEG_NOTIZ_MAX}`;
 }
 
-/** Setzt die Beleg-Notiz; nach trim() leer entfernt das Feld ganz (optional, nie als leerer Text gespeichert). Rand-Leerraum meldet das Schema. */
-export function belegNotizSetzen(e: Entscheidung, notiz: string): Entscheidung {
+/** Setzt die Beleg-Notiz (Entscheidung oder Annahme); nach trim() leer entfernt das Feld ganz (optional, nie als leerer Text gespeichert). Rand-Leerraum meldet das Schema. */
+export function belegNotizSetzen<Z extends { belegNotiz?: string }>(e: Z, notiz: string): Z {
   const { belegNotiz: _alt, ...rest } = e;
-  return notiz.trim() === '' ? rest : { ...rest, belegNotiz: notiz };
+  return (notiz.trim() === '' ? rest : { ...rest, belegNotiz: notiz }) as Z;
 }
 
 /** Alle Feldfehler der Zeile `i` (auch die einzelner Beleg-IDs), ohne doppelte. */

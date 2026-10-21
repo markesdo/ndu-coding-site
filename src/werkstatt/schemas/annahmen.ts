@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { belegIds, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId, type Belegstufe } from './gemeinsam.js';
+import { belegIds, belegNotiz, belegstufe, doppelteIds, isoDatum, schemaKennung, text, zeilenId, type Belegstufe } from './gemeinsam.js';
 
 // Die vier Arten von Tag 1 (nach Marty Cagan, wie auf der Kursseite) und Torres' fünfte Frage „Kann es schaden?“
 // (Continuous Discovery Habits, S. 118, 126–128), die Tag 3 für die Annahmen einer Idee braucht.
@@ -14,6 +14,8 @@ const annahmeSchema = z.object({
   wichtig: z.enum(WICHTIGKEITEN, { error: 'Die Wichtigkeit muss „hoch“, „mittel“ oder „niedrig“ sein.' }),
   beleg: belegstufe,
   belegIds,
+  // Optional (kein neues Pflichtfeld, daher keine neue Version): Quelle außerhalb der Mappe, etwa für „getan“.
+  belegNotiz,
 });
 
 export const annahmenSchema = z
