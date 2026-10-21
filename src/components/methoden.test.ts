@@ -81,16 +81,17 @@ describe('methoden', () => {
     for (const n of ARTEFAKT_NAMEN) expect(WERKSTATT_AKKUSATIV[n], n).toMatch(new RegExp(`^mein(e|en)? ${WERKSTATT_ARTEFAKTE[n].titel}$`));
   });
 
-  it('Werkstatt-Artefakte prüft Claude mit artefakt_pruefen, nicht aus docs/ – die Vorarbeit liest es mit artefakt_lesen', () => {
+  it('Werkstatt-Artefakte prüft Claude mit artefakt_pruefen, nicht aus docs/ – die Vorarbeit liefert das Werkzeug mit', () => {
     const pr = pruefPrompt(METHODEN.find((m) => m.slug === 'problem-rahmen')!);
     expect(pr).toMatch(new RegExp(`^Prüf meinen Produkt-Brief mit der Werkstatt \\(Werkzeug ${MCP_WERKZEUGE.artefaktPruefen}\\) gegen diese Prüfliste \\(Problem-Rahmen & Produkt-Brief\\):\n1\. `));
     expect(pr).not.toContain('Zum Abgleich');
     const el = pruefPrompt(METHODEN.find((m) => m.slug === 'entscheidungslog')!);
     expect(el).toMatch(/^Prüf mein Entscheidungslog mit der Werkstatt \(Werkzeug artefakt_pruefen\)/);
-    expect(el).toContain(`\nZum Abgleich lies auch meinen Produkt-Brief (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}).\n`);
+    expect(el).toContain('\nZum Abgleich liefert das Werkzeug auch meinen Produkt-Brief mit.\n');
+    expect(el).not.toContain(MCP_WERKZEUGE.artefaktLesen);
     const iv = pruefPrompt(METHODEN.find((m) => m.slug === 'interview')!);
     expect(iv).toMatch(/^Prüf meinen Interviewleitfaden mit der Werkstatt \(Werkzeug artefakt_pruefen\)/);
-    expect(iv).toContain('Zum Abgleich lies auch meinen Produkt-Brief und meine Annahmen-Map (Werkzeug artefakt_lesen).');
+    expect(iv).toContain('Zum Abgleich liefert das Werkzeug auch meinen Produkt-Brief und meine Annahmen-Map mit.');
     const an = pruefPrompt(METHODEN.find((m) => m.slug === 'annahmen')!);
     expect(an).toMatch(/^Prüf meine Annahmen-Map mit der Werkstatt/);
     expect(iv).toContain('Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: meinen Interviewleitfaden, meinen Produkt-Brief und meine Annahmen-Map.');
@@ -139,7 +140,7 @@ describe('methoden', () => {
     // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).
     const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
     expect(sy).toMatch(/^Prüf meine Interviews und Snapshots mit der Werkstatt \(Werkzeug artefakt_pruefen\) gegen diese Prüfliste \(Interview-Synthese\):/);
-    expect(sy).toContain('Zum Abgleich lies auch meinen Interviewleitfaden und meine Annahmen-Map (Werkzeug artefakt_lesen).');
+    expect(sy).toContain('Zum Abgleich liefert das Werkzeug auch meinen Interviewleitfaden und meine Annahmen-Map mit.');
   });
 
   it('wer in der Prüfliste ein früheres Artefakt nennt, hat es in „braucht“ – sonst liest Claude es beim Prüfen nicht', () => {

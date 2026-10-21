@@ -7,6 +7,7 @@ import annahmenBeispiel from '../../beispiele/annahmen.json';
 import briefBeispiel from '../../beispiele/brief.json';
 import entscheidungenBeispiel from '../../beispiele/entscheidungen.json';
 import interviewsBeispiel from '../../beispiele/interviews.json';
+import leitfadenBeispiel from '../../beispiele/leitfaden.json';
 import { kohorteTest } from '../../kohorten/test';
 import { ApiAusnahme } from '../antwort';
 import { appErstellen } from '../app';
@@ -239,6 +240,11 @@ describe('Werkzeuge', () => {
     expect(anweisung).toContain(`${BASIS}/innolab/mappe`);
     expect(anweisung).not.toMatch(/\bSie\b/);
     expect(anweisung).toContain(MCP_WERKZEUGE.verknuepfungenPruefen);
+    // IDs beim Zitieren, nur aus dem geprüften Artefakt, Fokus auf einen Prüfpunkt.
+    expect(anweisung).toContain('Abschnitt „Artefakt“');
+    expect(anweisung).toContain('I2-4');
+    expect(anweisung).toMatch(/Vorarbeit zum Abgleich zitierst du nie/);
+    expect(anweisung).toContain('pruefpunkt');
   });
 
   it('tools/list: genau die fünf Namen, alle readOnlyHint, deutsche Beschreibung', async () => {
@@ -254,11 +260,12 @@ describe('Werkzeuge', () => {
     // Kein Werkzeug nimmt ein Argument, das ein Repo oder eine Person nennt.
     for (const t of tools) {
       const felder = Object.keys((t.inputSchema.properties ?? {}) as object);
-      expect(felder.every((f) => f === 'artefakt' || f === 'slug'), `${t.name}: ${felder}`).toBe(true);
+      expect(felder.every((f) => f === 'artefakt' || f === 'slug' || f === 'pruefpunkt'), `${t.name}: ${felder}`).toBe(true);
     }
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
-    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'markdown', 'pruefpunkte', 'titel', 'vorhanden']);
+    // Kein markdown: das Artefakt steht nur im Text des Ergebnisses.
+    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
     // Die Arten der Befunde kommen aus verknuepfungen.ts, nicht aus einer zweiten Liste.
     const verkn = tools.find((t) => t.name === MCP_WERKZEUGE.verknuepfungenPruefen)!;
     const befund = (verkn.outputSchema?.properties as { befunde: { items: { properties: { art: { enum: string[] } } } } }).befunde;
@@ -266,6 +273,9 @@ describe('Werkzeuge', () => {
     // Beschreibung und Prüfung stimmen überein: „getan“ ohne Beleg ist ein Befund.
     expect(verkn.description).toContain('„getan“ ohne Beleg');
     expect(pruefen.description).toMatch(/höchstens drei Befunde/);
+    expect(Object.keys(pruefen.inputSchema.properties ?? {})).toContain('pruefpunkt');
+    expect(pruefen.inputSchema.required).toStrictEqual(['artefakt']);
+    expect(pruefen.description).toContain('pruefpunkt');
   });
 
   it('artefakt_pruefen(annahmen): Markdown + sechs Prüfpunkte annahmen-1 … annahmen-6 aus methoden.ts', async () => {
@@ -278,7 +288,7 @@ describe('Werkzeuge', () => {
     expect(sc.pruefpunkte).toStrictEqual(liste.map((t, i) => ({ id: `annahmen-${i + 1}`, text: t })));
     expect(sc.pruefpunkte.map((p) => p.id)).toStrictEqual(['annahmen-1', 'annahmen-2', 'annahmen-3', 'annahmen-4', 'annahmen-5', 'annahmen-6']);
     expect(sc).not.toHaveProperty('befunde');
-    expect(sc.markdown).toContain(TEXT_A);
+    expect(sc).not.toHaveProperty('markdown');
     const t = text(r);
     expect(t).toContain(TEXT_A);
     expect(t).toContain('annahmen-6');
@@ -690,5 +700,198 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBe(true);
     expect(text(r)).toMatch(/GitHub ist gerade nicht erreichbar/);
+  });
+});
+
+// NDU-24: Vorarbeit zum Abgleich; NDU-25: Fokus auf einen Prüfpunkt.
+describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
+  const LEITFADEN = `${JSON.stringify(leitfadenBeispiel, null, 2)}\n`;
+  const ZIEL = leitfadenBeispiel.ziel.replace(/\*/g, '\\*');
+  const sc = (r: Awaited<ReturnType<Client['callTool']>>) =>
+    r.structuredContent as { pruefpunkte: { id: string; text: string }[]; vorarbeit: { artefakt: string; titel: string; vorhanden: boolean }[]; anleitung: string };
+
+  it('leitfaden: Brief und Annahmen-Map kommen mit, getrennt nach dem Artefakt; Markdown nicht doppelt', async () => {
+    const h = await aufbau();
+    await h.speicher.speichern('test-jonas', 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
+    const c = await client(h, await accessToken(h, 1002));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden' } });
+    expect(r.isError).toBeFalsy();
+    expect(sc(r).vorarbeit).toStrictEqual([
+      { artefakt: 'brief', titel: 'Produkt-Brief', vorhanden: true },
+      { artefakt: 'annahmen', titel: 'Annahmen-Map', vorhanden: true },
+    ]);
+    const t = text(r);
+    const artefakt = t.indexOf('## Artefakt');
+    const brief = t.indexOf('## Vorarbeit zum Abgleich: Produkt-Brief (brief)');
+    const annahmen = t.indexOf('## Vorarbeit zum Abgleich: Annahmen-Map (annahmen)');
+    const anleitung = t.indexOf('## So antwortest du');
+    expect(artefakt).toBeGreaterThan(-1);
+    expect(brief).toBeGreaterThan(artefakt);
+    expect(annahmen).toBeGreaterThan(brief);
+    expect(anleitung).toBeGreaterThan(annahmen);
+    expect(t.slice(artefakt, brief)).toContain(ZIEL);
+    expect(t.slice(annahmen, anleitung)).toContain(TEXT_B);
+    // Überschriften der eingebetteten Artefakte stehen unter den ##-Abschnitten, sonst endete „Artefakt“ bei der ersten.
+    expect(t.slice(brief, annahmen)).toContain('\n#### 1. Für wen?');
+    expect(t.slice(artefakt, brief)).toContain('\n### Interviewleitfaden\n');
+    expect(t.split('\n').filter((z) => /^#{1,2} /.test(z))).toStrictEqual([
+      '# Prüfung: Interviewleitfaden',
+      '## Prüfpunkte (Jobs to be Done & Mom Test)',
+      '## Artefakt',
+      '## Vorarbeit zum Abgleich: Produkt-Brief (brief)',
+      '## Vorarbeit zum Abgleich: Annahmen-Map (annahmen)',
+      '## So antwortest du',
+    ]);
+    // Das geprüfte Artefakt steht genau einmal im Ergebnis, nicht noch einmal in structuredContent.
+    expect(t.split(ZIEL)).toHaveLength(2);
+    expect(JSON.stringify(r.structuredContent)).not.toContain(leitfadenBeispiel.ziel);
+    expect(sc(r).anleitung).toMatch(/Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht/);
+    expect(sc(r).anleitung).toMatch(/nur aus dem Abschnitt „Artefakt“ und nenn die ID der Zeile, wo sie eine hat \(wie F4\)/);
+    // Die A-IDs der Vorarbeit sind kein Beispiel für Stellen im Leitfaden.
+    expect(sc(r).anleitung).not.toMatch(/A3/);
+    expect(sc(r).anleitung).not.toMatch(/nicht abgleichen/);
+  });
+
+  it('fehlende Vorarbeit -> klarer Hinweis im Text, vorhanden: false, Anleitung sagt es weiter', async () => {
+    const h = await aufbau();
+    // Sofie hat eine Annahmen-Map, aber keinen Brief.
+    await h.speicher.speichern('test-sofie', 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden' } });
+    expect(r.isError).toBeFalsy();
+    expect(sc(r).vorarbeit.map((v) => [v.artefakt, v.vorhanden])).toStrictEqual([
+      ['brief', false],
+      ['annahmen', true],
+    ]);
+    const t = text(r);
+    expect(t).toContain('## Vorarbeit zum Abgleich: Produkt-Brief (brief)');
+    expect(t).toContain('Produkt-Brief: noch nicht ausgefüllt. Was sich darauf bezieht, lässt sich nicht abgleichen.');
+    expect(t).toContain(TEXT_A);
+    expect(sc(r).anleitung).toMatch(/dass du sie nicht abgleichen konntest/);
+    expect(sc(r).anleitung).toMatch(/nur bei „noch nicht ausgefüllt“, dass sie fehlt/);
+  });
+
+  it('unlesbare Vorarbeit verhindert die Prüfung nicht', async () => {
+    const h = await aufbau();
+    // Jonas hat schon einen Brief: überschreiben mit seinem aktuellen basisSha.
+    const { basisSha } = await h.speicher.lesen('test-jonas', 'brief');
+    expect(await h.speicher.speichern('test-jonas', 'brief', { 'mappe/brief.json': '{ kaputt' }, basisSha, AUTOR, 'kaputt')).not.toHaveProperty('konflikt');
+    await h.speicher.speichern('test-jonas', 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
+    const c = await client(h, await accessToken(h, 1002));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden' } });
+    expect(r.isError).toBeFalsy();
+    expect(sc(r).vorarbeit.find((v) => v.artefakt === 'brief')?.vorhanden).toBe(false);
+    expect(text(r)).toMatch(/Produkt-Brief: Diese Datei passt nicht zum Format/);
+    expect(text(r)).toContain(ZIEL);
+  });
+
+  it('GitHub-Ausfall bei der Vorarbeit: Prüfung läuft, Hinweis statt Brief', async () => {
+    const h = await aufbau();
+    await h.speicher.speichern('test-jonas', 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
+    const echt = h.speicher.lesen.bind(h.speicher);
+    vi.spyOn(h.speicher, 'lesen').mockImplementation((repo, name) => (name === 'brief' ? Promise.reject(new GithubAusnahme(500)) : echt(repo, name)));
+    const fehler = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const c = await client(h, await accessToken(h, 1002));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden' } });
+    expect(r.isError).toBeFalsy();
+    expect(text(r)).toContain('Produkt-Brief: ließ sich gerade nicht lesen.');
+    expect(text(r)).toContain(ZIEL);
+    expect(sc(r).vorarbeit.find((v) => v.artefakt === 'brief')?.vorhanden).toBe(false);
+    expect(fehler).toHaveBeenCalled();
+  });
+
+  it('brief: Anleitung ohne Zeilen-ID (der Brief hat keine)', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h, 1002));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'brief' } });
+    expect(sc(r).anleitung).toMatch(/Zitiere nur aus dem Abschnitt „Artefakt“\./);
+    expect(sc(r).anleitung).not.toMatch(/ID der Zeile/);
+  });
+
+  it('leeres Artefakt: keine Vorarbeit mitgeliefert; Methode ohne Vorarbeit: kein Abschnitt', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h, 1002));
+    const leer = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden' } });
+    expect(sc(leer).vorarbeit).toStrictEqual([]);
+    expect(text(leer)).not.toContain('Vorarbeit');
+    expect(text(leer)).not.toContain(TEXT_B);
+    const brief = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'brief' } });
+    expect(sc(brief).vorarbeit).toStrictEqual([]);
+    expect(text(brief)).not.toContain('Vorarbeit');
+  });
+
+  it('mit pruefpunkt: nur dieser Punkt, mehr als drei Stellen erlaubt, Frage nach dem nächsten', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    const liste = METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!;
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: 'annahmen-2' } });
+    expect(r.isError).toBeFalsy();
+    expect(sc(r).pruefpunkte).toStrictEqual([{ id: 'annahmen-2', text: liste[1] }]);
+    expect(sc(r).anleitung).toMatch(/^Prüf nur annahmen-2\./);
+    expect(sc(r).anleitung).toMatch(/auch mehr als drei/);
+    expect(sc(r).anleitung).toMatch(/ob als Nächstes annahmen-3 drankommen soll/);
+    expect(sc(r).anleitung).not.toMatch(/[Hh]öchstens drei/);
+    const t = text(r);
+    expect(t).toContain('## Prüfpunkt im Fokus');
+    expect(t).not.toContain('annahmen-1:');
+    expect(t).toContain(TEXT_A);
+
+    // Der letzte Punkt der Liste (seit NDU-31 annahmen-6), aus methoden.ts statt fest.
+    const letzter = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: `annahmen-${liste.length}` } });
+    expect(sc(letzter).anleitung).toMatch(/letzte Prüfpunkt/);
+    expect(sc(letzter).anleitung).not.toMatch(/Als Nächstes|als Nächstes/);
+  });
+
+  it('pruefpunkt tolerant: „Annahmen-5“, „annahmen 5“ und „5“ meinen annahmen-5', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    for (const pruefpunkt of ['Annahmen-5', ' annahmen 5 ', 'annahmen–5', 'annahmen−5', 'annahmen-5.', 'annahmen-05', '5', '05', 'Punkt 5', 'Prüfpunkt 5:', '#5']) {
+      const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt } });
+      expect(r.isError, pruefpunkt).toBeFalsy();
+      expect(sc(r).pruefpunkte.map((p) => p.id), pruefpunkt).toStrictEqual(['annahmen-5']);
+    }
+  });
+
+  it('pruefpunkt mit dem Artefaktnamen: leitfaden-3 meint interview-3', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h, 1002));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden', pruefpunkt: 'leitfaden-3' } });
+    expect(r.isError).toBeFalsy();
+    expect(sc(r).pruefpunkte.map((p) => p.id)).toStrictEqual(['interview-3']);
+  });
+
+  it('Lehrende-Token mit unbekanntem pruefpunkt: zuerst der Satz zur Lehrende-Ansicht', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h, 1000, 'lehrende'));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: 'annahmen-9' } });
+    expect(r.isError).toBe(true);
+    expect(text(r)).toMatch(/Lehrende/);
+    expect(text(r)).not.toMatch(/Prüfpunkt/);
+  });
+
+  it('ohne pruefpunkt ("", null, fehlt): alle Punkte, höchstens drei Befunde wie bisher', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    for (const args of [{ artefakt: 'annahmen' }, { artefakt: 'annahmen', pruefpunkt: '' }, { artefakt: 'annahmen', pruefpunkt: null }]) {
+      const r = await c.callTool({ name: 'artefakt_pruefen', arguments: args });
+      expect(r.isError, JSON.stringify(args)).toBeFalsy();
+      expect(sc(r).pruefpunkte).toHaveLength(METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!.length);
+      expect(sc(r).anleitung).toMatch(/^Höchstens drei Befunde/);
+      expect(sc(r).anleitung).not.toMatch(/drankommen/);
+    }
+  });
+
+  it('unbekannter pruefpunkt (auch einer anderen Methode) -> Hinweis mit den gültigen IDs, nichts gelesen', async () => {
+    const h = await aufbau();
+    const lesen = vi.spyOn(h.speicher, 'lesen');
+    const c = await client(h, await accessToken(h));
+    for (const pruefpunkt of ['annahmen-9', 'interview-1', '9']) {
+      const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt } });
+      expect(r.isError, pruefpunkt).toBe(true);
+      expect(text(r)).toContain(`„${pruefpunkt}“ gibt es für Annahmen-Map nicht`);
+      expect(text(r)).toContain(METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!.map((_, i) => `annahmen-${i + 1}`).join(', '));
+      expect(text(r)).not.toContain(TEXT_A);
+    }
+    expect(lesen).not.toHaveBeenCalled();
   });
 });
