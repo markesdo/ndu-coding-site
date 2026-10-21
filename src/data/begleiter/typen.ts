@@ -1,9 +1,16 @@
 // Notizen des Präsentator-Begleiters (/innolab/begleiter) zu einer Folie. Oben „live“ (auf einen Blick am Tablet),
 // darunter Vorbereitung. Quellen: gedruckte Seite bzw. EPUB-Kapitel + Abschnitt; Zusatzfälle nur echte, nachprüfbare.
 export type Notiz = {
-  /** 3–5 Stichworte zum Sagen. */
+  /**
+   * 3–5 Stichworte, live auf einen Blick. Zwei Formen: Regieanweisung an Markus (Verb oder Stichwort vorn, höchstens
+   * 12 Wörter, z. B. „Portland erzählen: gute Absicht, viel Geld, falsches Produkt“) oder ein Satz zum Sagen in „…“
+   * (höchstens 25 Wörter), an die Studierenden mit „ihr“. In Regieanweisungen heißen die Studierenden „alle“/„jede*r“,
+   * nicht „sie“ oder „ihr“; muss Markus angesprochen werden, dann mit „du“.
+   */
   live: string[];
-  /** Ein Satz Überleitung zur nächsten Folie. */
+  /** Verständnisfrage an den Raum, bevor es weitergeht: erwartete Antwort und die häufigste falsche (optional). */
+  verstaendnis?: { frage: string; antwort: string; falsch?: string };
+  /** Ein Satz Überleitung zur nächsten Folie, zum Sagen an die Studierenden („ihr“). */
   ueberleitung?: string;
   /** Bei Übungen: Timer-Dauer und Sozialform. */
   uebung?: { dauer?: string; form?: string };

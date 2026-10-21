@@ -7,8 +7,9 @@
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../../styles/global.css';
-import { ChevronLeft, ChevronRight, ExternalLink, LayoutGrid, Timer } from '@lucide/astro';
+import { CalendarClock, ChevronLeft, ChevronRight, CircleQuestionMark, ExternalLink, Eye, LayoutGrid, Timer } from '@lucide/astro';
 import { NOTIZEN } from '../../data/begleiter';
+import { TAG_1 } from '../../data/begleiter/tag';
 import { bloeckeAus, folienPlan, kurstagAus, quellenAusGlob, seitenLabel, tagFolien, uebungMinuten } from '../../lib/begleiter';
 import { teamFrameLink } from '../../lib/team-board';
 
@@ -22,6 +23,8 @@ const ablauf = quellen['/innolab/tag-1'] ?? '';
 const minutenJe = folien.map((f) => uebungMinuten(NOTIZEN[f.pfad]?.[f.id]?.uebung?.dauer));
 const plan = folienPlan(folien, bloeckeAus(ablauf), (i) => minutenJe[i]);
 const kurstag = kurstagAus(ablauf);
+const bloecke = bloeckeAus(ablauf);
+const hhmm = (min: number) => `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
 const seitenName = (pfad: string) => seitenLabel(pfad, quellen[pfad] ?? '');
 const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
   pfad, name: seitenName(pfad), folien: folien.map((f, i) => ({ ...f, i })).filter((f) => f.pfad === pfad),
@@ -51,10 +54,43 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       </select>
       <button type="button" class="btn rund" data-weiter aria-label="Nächste Folie" title="Nächste Folie (→)"><ChevronRight size={22} aria-hidden="true" /></button>
       <button type="button" class="btn folgen" data-folgen data-meldung="frage"><span class="punkt" aria-hidden="true"></span> <span data-folgen-text>Frage den Beamer …</span></button>
+      <button type="button" class="btn klein" data-nur-live aria-pressed="false" title="Vorbereitung ausblenden, nur den Live-Block zeigen"><Eye size={18} aria-hidden="true" /> <span>Nur live</span></button>
+      <button type="button" class="btn klein" data-tag-auf title="Tageskarte: Ablauf, Lernziele, Streichliste, Material"><CalendarClock size={18} aria-hidden="true" /> <span>Tag</span></button>
       <button type="button" class="btn uhr" data-uhr title="Uhrzeit; läuft ein Übungs-Timer, hier tippen zum Stoppen">--:--</button>
       <p class="sr-only" data-status role="status"></p>
     </nav>
-    <p class="plan" data-plan data-kurstag={kurstag} hidden></p>
+    <button type="button" class="plan" data-plan data-kurstag={kurstag} title="Tageskarte öffnen" hidden></button>
+
+    <dialog class="tageskarte" data-tageskarte aria-labelledby="tageskarte-titel">
+      <div class="tk-kopf">
+        <h1 id="tageskarte-titel">Tag 1 · Ablauf, Lernziele, Material</h1>
+        <form method="dialog"><button class="btn" aria-label="Tageskarte schließen">Schließen</button></form>
+      </div>
+      <ol class="tk-bloecke">
+        {bloecke.map((b) => {
+          const t = TAG_1.bloecke[b.titel];
+          return (
+            <li class:list={[{ pause: !b.href }]} data-von={b.von} data-bis={b.bis}>
+              <p class="tk-zeit">{hhmm(b.von)}–{hhmm(b.bis)} · <strong>{b.titel}</strong></p>
+              {t && <p class="tk-ziel">{t.lernziel}</p>}
+              {t?.streichen && t.streichen.length > 0 && (
+                <div class="tk-streichen"><span>Wenn hinten:</span><ul>{t.streichen.map((x) => <li>{x}</li>)}</ul></div>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+      {TAG_1.material.length > 0 && (
+        <>
+          <h2>Material und Technik</h2>
+          <ul class="tk-material">
+            {TAG_1.material.map((m, k) => (
+              <li><label><input type="checkbox" data-material={k} /> {m.was} <span class="tk-wann">({m.wann})</span></label></li>
+            ))}
+          </ul>
+        </>
+      )}
+    </dialog>
 
     <main>
       {folien.map((f, i) => {
@@ -74,6 +110,16 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
               {n ? (
                 <>
                   <ul class="stichworte">{n.live.map((s) => <li>{s}</li>)}</ul>
+                  {n.verstaendnis && (
+                    <div class="check">
+                      <p class="frage"><CircleQuestionMark size={20} aria-hidden="true" /> <span><span class="label">Frag den Raum:</span> {n.verstaendnis.frage}</span></p>
+                      <details>
+                        <summary>Antwort</summary>
+                        <p>{n.verstaendnis.antwort}</p>
+                        {n.verstaendnis.falsch && <p class="falsch"><span>Häufig falsch:</span> {n.verstaendnis.falsch}</p>}
+                      </details>
+                    </div>
+                  )}
                   {n.uebung && (n.uebung.dauer || n.uebung.form) && (
                     minutenJe[i]
                       ? <button type="button" class="sozial" data-timer={minutenJe[i]} title={`Timer ${minutenJe[i]} min starten`}><Timer size={20} aria-hidden="true" /> {[n.uebung.dauer, n.uebung.form].filter(Boolean).join(' · ')} <span class="start">▶ Timer</span></button>
@@ -311,7 +357,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         else { melden({ art: 'folgen' }); kette.sofort(); }
       });
       addEventListener('keydown', (e) => {
-        if (e.repeat || e.altKey || e.ctrlKey || e.metaKey || (e.target as Element | null)?.closest?.('select, input, textarea')) return;
+        if (e.repeat || e.altKey || e.ctrlKey || e.metaKey || karte.open || (e.target as Element | null)?.closest?.('select, input, textarea')) return;
         if (e.key === 'ArrowLeft') { e.preventDefault(); blaettern(z.index - 1); }
         if (e.key === 'ArrowRight') { e.preventDefault(); blaettern(z.index + 1); }
       });
@@ -339,6 +385,41 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         wisch = null;
         if (Math.abs(dx) > 70 && Math.abs(dy) < Math.abs(dx) / 2) blaettern(z.index + (dx < 0 ? 1 : -1));
       }, { passive: true });
+
+      // „Nur live“: Vorbereitung ausblenden, damit Scrollen im Kurs nie im Langtext landet; je Gerät gemerkt.
+      const nurLiveKnopf = document.querySelector<HTMLButtonElement>('[data-nur-live]')!;
+      const merken = (k: string, v: string | null) => { try { if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch { /* ohne Speicher eben nicht gemerkt */ } };
+      const gemerkt = (k: string) => { try { return localStorage.getItem(k); } catch { return null; } };
+      function nurLive(an: boolean) {
+        document.body.classList.toggle('nur-live', an);
+        nurLiveKnopf.setAttribute('aria-pressed', String(an));
+        merken('begleiter:nur-live', an ? '1' : null);
+      }
+      nurLive(gemerkt('begleiter:nur-live') === '1');
+      nurLiveKnopf.addEventListener('click', () => nurLive(!document.body.classList.contains('nur-live')));
+
+      // Tageskarte: aus der Leiste oder der Zeitplan-Zeile; der laufende Block ist markiert, Material-Häkchen je Kurstag gemerkt.
+      const karte = document.querySelector<HTMLDialogElement>('[data-tageskarte]')!;
+      function karteAuf() {
+        const p = plaene[z.index];
+        for (const li of karte.querySelectorAll<HTMLElement>('.tk-bloecke > li')) {
+          li.classList.toggle('jetzt', !!p && Number(li.dataset.von) === p.von && Number(li.dataset.bis) === p.bis);
+        }
+        karte.showModal();
+        karte.querySelector('.jetzt')?.scrollIntoView({ block: 'center' });
+      }
+      document.querySelector('[data-tag-auf]')!.addEventListener('click', karteAuf);
+      planZeile.addEventListener('click', karteAuf);
+      karte.addEventListener('click', (e) => { if (e.target === karte) karte.close(); }); // Tipp neben die Karte schließt
+      const haken = `begleiter:material:${kurstag}`;
+      const gesetzt = new Set((gemerkt(haken) ?? '').split(',').filter(Boolean));
+      for (const box of karte.querySelectorAll<HTMLInputElement>('[data-material]')) {
+        box.checked = gesetzt.has(box.dataset.material!);
+        box.addEventListener('change', () => {
+          if (box.checked) gesetzt.add(box.dataset.material!); else gesetzt.delete(box.dataset.material!);
+          merken(haken, [...gesetzt].join(',') || null);
+        });
+      }
 
       // Drucken (Vorbereitung): alle Miro-Schritte aufgeklappt.
       addEventListener('beforeprint', () => { for (const d of document.querySelectorAll('details')) d.open = true; });
@@ -369,11 +450,18 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .folgen[data-meldung="keine-verbindung"], .folgen[data-meldung="nicht-tag-1"] { color: var(--yellow-ink); }
       .folgen[data-meldung="hand"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
       .folgen[data-meldung="hand"] .punkt { display: none; }
+      .klein { padding: .4rem .6rem; }
+      .klein[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
+      .nur-live .vorbereitung { display: none; }
       .uhr { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.05rem; padding: .4rem .7rem; }
       .uhr[data-timer="laeuft"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
       .uhr[data-timer="knapp"] { background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); font-weight: 700; }
       .uhr[data-timer="aus"] { background: var(--yellow); border-color: var(--yellow); color: var(--bg); font-weight: 700; }
-      .plan { max-width: 900px; margin: .6rem auto 0; padding: 0 16px; font-size: .95rem; color: var(--muted); }
+      .plan {
+        display: block; width: 100%; max-width: 900px; margin: .6rem auto 0; padding: 0 16px; border: 0; background: none;
+        font: inherit; font-size: .95rem; text-align: left; color: var(--muted); cursor: pointer;
+      }
+      .plan[hidden] { display: none; }
       .plan[data-lage="ok"] { color: var(--green); }
       .plan[data-lage="hinten"] { color: var(--yellow-ink); font-weight: 600; }
       @media (max-width: 640px) { .folgen [data-folgen-text] { display: none; } }
@@ -389,6 +477,13 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .sozial { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .9rem 0 0; font-size: 1.25rem; font-weight: 600; color: var(--accent-ink); }
       button.sozial { width: 100%; padding: .5rem .7rem; text-align: left; font: inherit; font-size: 1.25rem; font-weight: 600; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius); cursor: pointer; }
       .sozial .start { margin-left: auto; font-size: 1rem; }
+      .check { margin-top: .9rem; padding: .6rem .8rem; border: 1px solid var(--blue); border-radius: var(--radius); background: var(--blue-soft); }
+      .check .frage { display: flex; gap: .5rem; align-items: flex-start; margin: 0; font-size: 1.2rem; }
+      .check .frage svg { flex: none; margin-top: .25rem; color: var(--blue); }
+      .check .label { color: var(--blue); font-weight: 600; }
+      .check summary { min-height: 40px; display: flex; align-items: center; cursor: pointer; color: var(--muted); }
+      .check details p { margin: .2rem 0; font-size: 1.05rem; }
+      .check .falsch span { color: var(--yellow-ink); font-weight: 600; }
       .weiter { margin-top: 1rem; padding: .7rem .9rem; border-left: 4px solid var(--accent); background: var(--bg); border-radius: 4px; }
       .miro { margin-top: 1rem; padding-top: .8rem; border-top: 1px solid var(--border); }
       .miro h2 { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: 0; font-size: 1.15rem; color: var(--muted); font-weight: 600; }
@@ -415,9 +510,34 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .etikett { margin: 0; font-size: .85rem; font-weight: 600; color: var(--yellow-ink); }
       dt { font-weight: 600; margin-top: .6rem; }
       dd { margin: .1rem 0 0; }
+      .tageskarte {
+        width: min(760px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 1rem 1.2rem; overflow: auto;
+        color: var(--fg); background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px;
+      }
+      .tageskarte::backdrop { background: rgb(0 0 0 / .6); }
+      .tk-kopf { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+      .tk-kopf h1 { margin: 0; font-family: var(--display); font-size: 1.3rem; }
+      .tk-kopf .btn { min-height: 44px; }
+      .tk-bloecke { list-style: none; margin: .8rem 0 0; padding: 0; }
+      .tk-bloecke > li { padding: .6rem .8rem; border-left: 3px solid var(--border); margin-top: .4rem; }
+      .tk-bloecke > li.pause { color: var(--muted); padding-block: .2rem; }
+      .tk-bloecke > li.jetzt { border-left-color: var(--accent); background: var(--bg); }
+      .tk-zeit { margin: 0; font-family: var(--mono); font-size: .95rem; }
+      .tk-ziel { margin: .2rem 0 0; }
+      .tk-streichen { margin-top: .3rem; font-size: .95rem; }
+      .tk-streichen span { color: var(--yellow-ink); font-weight: 600; }
+      .tk-streichen ul { margin: .1rem 0 0; padding-left: 1.2em; }
+      .tageskarte h2 { margin: 1.2rem 0 .4rem; font-family: var(--display); font-size: 1.1rem; }
+      .tk-material { list-style: none; margin: 0; padding: 0; }
+      .tk-material label { display: flex; gap: .6rem; align-items: flex-start; min-height: 40px; padding: .3rem 0; }
+      .tk-material input { width: 1.3rem; height: 1.3rem; margin-top: .15rem; flex: none; }
+      .tk-wann { color: var(--muted); font-size: .9rem; }
+      @media (max-width: 760px) { .klein span { display: none; } }
+
       /* Vorbereitung auf Papier: alle Folien untereinander, ohne Leiste. */
       @media print {
-        .steuer, .plan, .oeffnen, .sozial .start { display: none !important; }
+        .steuer, .plan, .oeffnen, .sozial .start, .tageskarte { display: none !important; }
+        .nur-live .vorbereitung { display: block; }
         article[hidden] { display: block; }
         article + article { break-before: page; }
       }
