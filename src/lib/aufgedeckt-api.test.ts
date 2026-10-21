@@ -1,7 +1,18 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { GET, POST } from '../../api/aufgedeckt';
 
-// Außerhalb von Vercel nimmt getCache() einen Speicher im Prozess (runtime-cache.ts) – genug für den Ablauf.
+// Speicher wie der Runtime Cache, aber jeder Zugriff braucht etwas Zeit – so überlappen gleichzeitige Meldungen wirklich
+// (ein Speicher, der sofort antwortet, verdeckte verlorene Updates).
+vi.mock('@vercel/functions', () => {
+  const daten = new Map<string, unknown>();
+  const dauer = () => new Promise((r) => setTimeout(r, 5));
+  return {
+    getCache: () => ({
+      get: async (k: string) => { await dauer(); return daten.get(k); },
+      set: async (k: string, v: unknown) => { await dauer(); daten.set(k, v); },
+    }),
+  };
+});
 const URL_API = 'https://kurs.invalid/api/aufgedeckt';
 const melden = (kennung: unknown, key = 'geheim') =>
   POST(new Request(URL_API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key }, body: JSON.stringify({ kennung }) }));
