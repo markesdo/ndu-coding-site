@@ -8,13 +8,13 @@ import type { Notiz } from './typen';
 export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
   'jtbd': {
     live: [
-      'Brücke von der Annahmen-Map: Die riskanteste Annahme kennt ihr. Jetzt geht es darum, wie ihr sie bei echten Menschen prüft.',
-      'Niemand will „einen Kaffee“. Die Pendlerin will wach und gut gelaunt in Wien ankommen, ohne den Zug zu riskieren.',
-      'Konkurrenz ist alles, was denselben Job erledigt, auch der Automat oder Schlaf im Zug. Und „gar nichts tun“ ist immer auch eine Option.',
-      'Satz laut durchgehen: Wenn … will ich … damit … Das „damit“ ist der eigentliche Job.',
-      'Pointe für die nächste Folie: Jobs findet man nicht, indem man danach fragt.',
+      '„Die riskanteste Annahme kennt ihr. Jetzt geht es darum, wie ihr sie bei echten Menschen prüft.“',
+      '„Was will die Pendlerin wirklich? Einen Kaffee, oder wach in Wien ankommen, ohne den Zug zu riskieren?“',
+      'Konkurrenz ergänzen: auch „gar nichts tun“ ist immer eine Option.',
+      'Bei Nachfragen Milchshake-Fall (Zusatz): Pendler*innen, eine freie Hand.',
+      '„Merkt euch: Jobs findet ihr nicht, indem ihr danach fragt.“',
     ],
-    ueberleitung: 'Wie findet ihr so einen Job heraus? Bevor ich es erkläre, schreibt ihr selbst drei Fragen.',
+    ueberleitung: 'Bevor ich erkläre, wie ihr so einen Job herausfindet, schreibt ihr selbst drei Fragen.',
     kern: [
       {
         text: 'Jobs sind das, was Kund*innen in Arbeit oder Leben erledigen wollen: Aufgaben, Probleme, Bedürfnisse. Und zwar aus ihrer Sicht, nicht aus der des Unternehmens. Das Buch unterscheidet funktionale Jobs (eine Aufgabe erledigen), soziale Jobs (wie man vor anderen dasteht) und persönliche/emotionale Jobs (ein Gefühl, etwa Sicherheit). Dazu kommen unterstützende Jobs rund um den Kauf, etwa „in der Kassenschlange stehen“.',
@@ -63,11 +63,11 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'mom-test': {
     live: [
-      'Erst machen: drei Fragen an eure Zielgruppe, eine pro Sticky, allein.',
-      'Du spielst die Zielgruppe: „Würdest du …?“ → begeistertes Ja; „Normalerweise …“ → allgemein; „letztes Mal“ → Geschichte.',
-      'Dann Auflösung aufdecken; sie öffnet die ganze Gruppe „mom-test“.',
-      'Kern: Wer nie über seine Idee redet, dem kann man nichts vorlügen.',
-      'Block 14:00–14:30; ab 14:30 sind die Auflösungen ohnehin offen.',
+      'Aufgabe zeigen, Timer 5 min starten, nichts zur Methode sagen.',
+      'Du in der Rolle: „Würdest du …?“ → leeres Ja, „letztes Mal“ → Geschichte.',
+      '„Welche Antwort hat euch etwas Neues verraten?“',
+      'Auflösung aufdecken öffnet Gruppe „mom-test“; ab 14:30 ohnehin offen.',
+      'Kochbuch-App erzählen (Geschichte): „Das klingt toll“, niemand kauft.',
     ],
     ueberleitung: 'Jetzt legt ihr eure drei Fragen auf zwei Achsen und seht, wo sie liegen.',
     uebung: { dauer: '5 min', form: 'allein, eine Frage pro Sticky; danach antwortest du als Person aus ihrer Zielgruppe' },
@@ -133,10 +133,11 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'fragen-matrix': {
     live: [
-      'Zwei Achsen, eure drei Stickys: Thema (eure Idee oder ihr Leben) und Zeit (Zukunft oder Vergangenheit).',
-      'Rechts oben fragen. Links unten gibt es höfliches Ja.',
-      'Jede*r legt die eigenen Fragen hin, ohne Diskussion. Danach schaut ihr gemeinsam auf den Quadranten links unten.',
-      'Die leeren Felder sind nicht automatisch schlecht: „Hast du schon mal so eine App ausprobiert?“ fragt nach der Vergangenheit und ist laut Fitzpatrick ein guter Anker.',
+      'Jede*r ordnet die eigenen drei Stickies laut ein, ohne Diskussion.',
+      'Nur zwei lehrreiche Fragen besprechen; neun einzeln dauern zu lang.',
+      '„Was würde die Person auf diese Frage antworten, und was wüsstet ihr danach?“',
+      'Falle: „Wie oft …?“ klingt nach Vergangenheit, ist aber Verallgemeinerung.',
+      'Geschichte erzählen: „sofort zahlen“, aber nie nach Lösungen gegoogelt.',
     ],
     ueberleitung: 'Was links unten liegt, schreibt ihr jetzt um, und zwar nach rechts oben.',
     uebung: { form: 'allein die eigenen drei Fragen einordnen, dann kurz alle zusammen' },
@@ -198,10 +199,11 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'statt-besser': {
     live: [
-      'Vier Paare schrittweise: Was antwortet die Pendlerin links, was rechts?',
-      'Zukunft → letztes Mal, Zahlungsbereitschaft → echte Ausgaben, Meinung → Handlung.',
-      'Warnsignale: Kompliment, Allgemeinplatz, Zukunft → „Wann war das zuletzt?“',
-      'Dann 5 min: eigene drei Fragen umschreiben.',
+      'Zeilen einzeln aufdecken, je Zeile Antwort der Pendlerin durchspielen.',
+      'Treue-App-Geschichte erzählen: „Klar, wurde ja Zeit!“, ein Nörgler, kein Kunde.',
+      'Timer 5 min: jede*r schreibt die eigenen drei Fragen um.',
+      'Fallen: Lösung steckt noch drin, oder Zukunft nur ins Präsens gesetzt.',
+      'Danach zwei, drei Stickies vorlesen lassen, in der Rolle antworten.',
     ],
     ueberleitung: 'Und wenn die Antworten kommen: Welche davon zählt überhaupt?',
     uebung: { dauer: '5 min', form: 'allein, die eigenen drei Fragen umschreiben' },
@@ -276,10 +278,11 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'antworten': {
     live: [
-      'Erst sortieren lassen (2 min), dann die Skala Punkt für Punkt aufdecken.',
-      'Das Kriterium ist nicht, wie begeistert jemand klingt, sondern was die Antwort kostet.',
-      'Kompliment und Zukunft kosten nichts. Erzählte Vergangenheit ist verlässlicher. Commitment heißt, jemand gibt Zeit, Geld oder Ruf her.',
-      'Commitment bekommt ihr nicht im Interview, sondern in Experimenten (Tag 3).',
+      'Timer 2 min starten, dann Skala Punkt für Punkt aufdecken.',
+      '„Woran messt ihr die Stärke: wie begeistert jemand klingt, oder was die Antwort die Person kostet?“',
+      '10-Millionen-Geschichte erzählen: „I would definitely buy that“ für Commitment gehalten.',
+      '„Bei ‚Letzte Woche zweimal den Zug verpasst‘: Was würdet ihr jetzt nachfragen?“',
+      '„Commitment bekommt ihr nicht im Interview, sondern in Experimenten an Tag 3.“',
     ],
     ueberleitung: 'Warum ist „Würde ich sicher nutzen“ so wertlos, selbst wenn die Person es ehrlich meint?',
     uebung: { dauer: '2 min', form: 'alle zusammen die vier Antworten sortieren' },
@@ -338,10 +341,11 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'warum-geschichten': {
     live: [
-      'Live machen, bevor du aufdeckst: Eine Person fragen „Worauf achtest du beim Jeanskauf?“, dann „Erzähl vom letzten Jeanskauf.“ Torres macht das immer wieder in Workshops.',
-      'Niemand lügt. Wir verstehen unser eigenes Verhalten schlecht und erzählen von unserem idealen Ich.',
-      'Das Gehirn erfindet stimmige Gründe (Gazzaniga). Selbstsicherheit beweist nichts (Kahneman).',
-      'Torres’ eigener Flop: Alle Recruiter*innen wollten passive Kandidat*innen, und das Produkt dafür floppte.',
+      'Vor dem Aufdecken live: eine Person nach Jeanskauf-Kriterien fragen.',
+      'Dann dieselbe Person: „Erzähl vom letzten Jeanskauf.“ Lücke zeigen.',
+      '„Niemand lügt hier. Wir verstehen unser eigenes Verhalten schlecht und erzählen von unserem idealen Ich.“',
+      'Torres’ Flop erzählen: alle wollten passive Kandidat*innen, besetzt wurde mit aktiven.',
+      'Gazzaniga und Kahneman nur nennen, wenn Zeit ist.',
     ],
     ueberleitung: 'Wenn direkte Fragen täuschen: Wie fragt ihr dann nach dem, was ihr wissen wollt?',
     kern: [
@@ -380,10 +384,10 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'forschungsfrage': {
     live: [
-      'Zwei Spalten: was ihr lernen wollt und was ihr im Gespräch fragt. Die linke Spalte sagt ihr nie laut.',
-      'Die Forschungsfrage kommt aus der riskantesten Annahme. Bei der Kaffeebar ist das A1: Entscheiden Pendler*innen schon vor der Ankunft?',
-      'Eng oder weit: Eng verbessert ein bestehendes Angebot, weit zeigt, womit es eigentlich konkurriert.',
-      'Ein, zwei Geschichten-Fragen ersetzen einen langen Fragebogen.',
+      'Betonen: Die Forschungsfrage wird nie laut gestellt.',
+      '„Welche Forschungsfrage steckt in eurer riskantesten Annahme? Bei der Kaffeebar ist das A1.“',
+      'Streaming-Beispiel bei Bedarf (Geschichte): eng, weiter, „last time you were entertained“.',
+      '„Ein, zwei Geschichten-Fragen ersetzen einen langen Fragebogen. Den Rest holt ihr mit Nachfragen.“',
     ],
     ueberleitung: 'Auf „Erzähl mir vom letzten Morgen“ kommt meist nur ein Satz. Wie wird daraus eine Geschichte?',
     kern: [
@@ -422,13 +426,18 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'ausgraben': {
     live: [
-      'Die erste Antwort ist ein Satz: „Gestern nach dem Essen hab ich eine Serie geschaut.“ Das ist noch keine Geschichte.',
-      'Gespräche laufen normalerweise 50/50. Das müsst ihr am Anfang ausdrücklich aufheben.',
-      'Bausteine jeder Geschichte: Hauptfigur, Ablauf, Ort, Hindernisse, Helfer. Danach fragt ihr.',
-      '„Normalerweise …“ freundlich zurückholen: „Und an diesem Morgen?“',
-      'Nicht jede Person hat die Geschichte, die ihr sucht. Nehmt, was sie erzählen will.',
+      'Ein-Satz-Antwort vorspielen: „Gestern nach dem Essen hab ich eine Serie geschaut.“',
+      '„Im Gespräch erwarten wir 50/50. Darum kündigt ihr am Anfang an, dass ihr die ganze Geschichte hören wollt.“',
+      'Café-Geschichte erzählen: „schlimmster Teil meines Tages“, Gründer fragt nicht nach.',
+      '„Nicht jede Person hat die Geschichte, die ihr sucht. Nehmt, was sie erzählen will.“',
+      'Uhr prüfen: um 14:30 ist Pause.',
     ],
-    ueberleitung: 'Jetzt habt ihr alle Werkzeuge. So läuft die nächste Stunde ab.',
+    verstaendnis: {
+      frage: 'Die Person sagt: „Normalerweise hole ich mir am Bahnhof was.“ Was fragt ihr als Nächstes?',
+      antwort: 'Freundlich zurück zum konkreten Fall: „Und an diesem Morgen?“ Die Verallgemeinerung zeigt das ideale Ich, erst das konkrete Mal zeigt, was passiert ist.',
+      falsch: '„Was holst du dir denn normalerweise?“ Das bleibt in der Verallgemeinerung; sie fühlt sich wie eine Abkürzung zum echten Bedürfnis an, ist aber keine (Torres, S. 66).',
+    },
+    ueberleitung: 'Nach der Pause schreibt ihr euren eigenen Leitfaden und probt ihn zweimal, mit Claude und mit mir.',
     kern: [
       {
         text: 'Auf eine kurze Frage kommt eine kurze Antwort, weil wir im Gespräch ein Hin und Her zu gleichen Teilen erwarten („50/50 back-and-forth“). Am wirksamsten: vorher ankündigen, dass ihr die ganze Geschichte mit allen Details hören wollt und am Ende nachfragt.',
@@ -469,10 +478,11 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'vorgehen': {
     live: [
-      'Vier Schritte, 90 min (14:45–16:15): schreiben, dann zweimal proben.',
-      'Leitfaden zur Forschungsfrage; Herz: ein, zwei Fragen nach dem letzten Mal.',
-      'Speichern in der Werkstatt („Bearbeiten“), Miro T1 · 4 zum Denken.',
-      'Live-Interview: du spielst eine schwierige Person, zwei beobachten.',
+      'Überzieht Schritt 1, Schritt 2 kürzen, nie die Live-Runden.',
+      'Checkpoint: Live-Runden spätestens 15:30 starten, sie brauchen 45 min.',
+      'Du spielst schwierig: Ein-Satz-Antworten, „normalerweise“, Komplimente, Feature-Wünsche.',
+      'Vor Runde 1 MTV-Geschichte erzählen: Feature-Wunsch notiert statt Wozu gefragt.',
+      '„Die Probe mit Claude findet Pitch-Reflexe, aber Claude kennt eure Zielgruppe nicht.“',
     ],
     ueberleitung: 'Zum Schluss die Frage, mit der ihr morgen rausgeht: Was ist bei euch „der letzte Morgen am Bahnhof“?',
     uebung: { dauer: '90 min (20 + 10 + 15 + 3 × 15)', form: 'Leitfaden, Prüfliste und Claude-Probe allein; Live-Interview reihum mit dir, die anderen beobachten' },
@@ -546,9 +556,11 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'uebertrag': {
     live: [
-      'Eine Frage an alle drei: Was ist eure Situation, nach der ihr fragt? So konkret wie „7:30 am Bahnhof“.',
-      'Wem keine einfällt, dessen Zielgruppe ist noch zu allgemein. Zurück zum Problem-Rahmen.',
-      'Jede*r sagt die eigene Situation in einem Satz. Das ist die erste Kernfrage des Leitfadens.',
+      'Reihum: jede*r sagt die eigene Situation in einem Satz.',
+      '„So konkret wie ‚7:30 am Bahnhof‘, nicht ‚morgens unterwegs‘.“',
+      'Mehrere Situationen? Die nehmen, die zur riskantesten Annahme passt.',
+      '„Diese Situation wird die erste Kernfrage in eurem Leitfaden.“',
+      'Uhr: um 16:15 beginnt Hausaufgabe & Abschluss.',
     ],
     ueberleitung: 'Mit dieser Situation geht ihr jetzt raus: fünf echte Interviews bis Tag 2.',
     kern: [
