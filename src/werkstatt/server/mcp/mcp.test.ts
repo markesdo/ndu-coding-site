@@ -14,6 +14,7 @@ import { GithubAusnahme } from '../github/app-token';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { cookieName, sitzungErstellen } from '../sitzung';
 import { wirdEingerichtet } from '../speicher-fehler';
+import { MAX_ANFRAGE_BYTES } from './server';
 import type { Cache } from '../typen';
 
 const BASIS = 'http://localhost:4321';
@@ -173,6 +174,15 @@ describe('Zugang zum MCP-Endpunkt', () => {
       expect(r.status, method).toBe(405);
       expect(r.headers.get('allow')).toBe('POST');
     }
+  });
+
+  it('Anfrage über MAX_ANFRAGE_BYTES mit gültigem Token -> 413, darunter normal', async () => {
+    const h = await aufbau();
+    const token = await accessToken(h);
+    const kopf = { ...MCP_KOPF, Authorization: `Bearer ${token}` };
+    const gross = JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list', params: { fuell: 'x'.repeat(MAX_ANFRAGE_BYTES) } });
+    expect((await h.anfrage(MCP, { method: 'POST', headers: kopf, body: gross })).status).toBe(413);
+    expect((await h.anfrage(MCP, { method: 'POST', headers: kopf, body: jsonrpc('tools/list') })).status).toBe(200);
   });
 
   it('widerrufene Familie (Code zweimal eingelöst) -> 401', async () => {

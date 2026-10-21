@@ -8,7 +8,7 @@
 
 **Architecture:** Astro bleibt statisch. Eine Hono-App in `api/werkstatt.ts` (eine Vercel-Funktion, fra1; `vercel.json` schreibt `/api/werkstatt/*` und die zwei `/.well-known/oauth-*`-Pfade darauf um) liefert Login, Mappe-API, OAuth-Autorisierungsserver und MCP-Endpunkt, alles unter `/api/werkstatt/`. Gespeichert wird über eine GitHub App in `ndu-innolab/<kohorte>-<kuerzel>`; keine Datenbank, Zustand steckt in signierten Cookies und verschlüsselten Umschlägen. Editoren sind React-Islands, die geteilte Zod-Schemas nutzen.
 
-**Tech Stack:** Astro 7, React 19, Vercel Functions + Routing Middleware, `hono@4.13.13` (ohne den veralteten Adapter `hono/vercel`; Export `export default { fetch: (req: Request) => app.fetch(req) }`), `zod@4.6.7`, `jose@6.2.12` (Schlüssel über `node:crypto` `createPrivateKey`), `@modelcontextprotocol/sdk@1.31.0` (`WebStandardStreamableHTTPServerTransport` aus `@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js`), Vitest 5; dev: `@hono/node-server@2.1.5`, `tsx@4.23.15`.
+**Tech Stack:** Astro 7, React 19, Vercel Functions + Routing Middleware, `hono@4.13.13` (ohne den veralteten Adapter `hono/vercel`; Export `export default { fetch: (req: Request) => app.fetch(req) }`), `zod@4.6.7`, `jose@6.2.12` (Schlüssel über `node:crypto` `createPrivateKey`), `@modelcontextprotocol/sdk@1.32.1` (`WebStandardStreamableHTTPServerTransport` aus `@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js`), Vitest 5; dev: `@hono/node-server@2.1.5`, `tsx@4.23.15`.
 
 **Spec:** `docs/superpowers/specs/2026-10-17-werkstatt-design.md` (Rev. 2). Executors lesen Spec und Plan.
 
@@ -80,7 +80,7 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
 ### Task 1: Abhängigkeiten, Kohorten, Zugang, IDs (Vertrag)
 
 **Files:**
-- Modify: `package.json` (deps `hono@4.13.13`, `zod@4.6.7`, `jose@6.2.12`, `@modelcontextprotocol/sdk@1.31.0`; devDeps `@hono/node-server@2.1.5`, `tsx@4.23.15`; Skript `"werkstatt:dev": "NODE_ENV=development tsx scripts/werkstatt-dev.ts"`)
+- Modify: `package.json` (deps `hono@4.13.13`, `zod@4.6.7`, `jose@6.2.12`, `@modelcontextprotocol/sdk@1.32.1`; devDeps `@hono/node-server@2.1.5`, `tsx@4.23.15`; Skript `"werkstatt:dev": "NODE_ENV=development tsx scripts/werkstatt-dev.ts"`)
 - Create: `src/werkstatt/kohorten/typen.ts`, `src/werkstatt/kohorten/2026.ts`, `src/werkstatt/kohorten/test.ts`, `src/werkstatt/kohorten/index.ts`
 - Create: `src/werkstatt/zugang.ts`, `src/werkstatt/ids.ts`
 - Test: `src/werkstatt/zugang.test.ts`, `src/werkstatt/ids.test.ts`

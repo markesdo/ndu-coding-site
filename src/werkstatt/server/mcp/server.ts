@@ -32,6 +32,10 @@ function nurPost(): Response {
 // /mcp/resource und andere Unterpfade bleiben bei oauthRouten bzw. beim 404.
 const PFADE = ['/', '/:leer{^$}'];
 
+// Größte Anfrage, die das SDK liest (sonst 413). Werkzeugaufrufe der Werkstatt sind wenige KiB; der SDK-Standard
+// (4 MiB) ließe Token-Inhaber große Körper in die Funktion schieben (vgl. GHSA-46jr-4wx8-v453).
+export const MAX_ANFRAGE_BYTES = 64 * 1024;
+
 export function mcpRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
   const r = new Hono<WerkstattEnv>();
 
@@ -45,7 +49,7 @@ export function mcpRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
     const basis = origin(c);
     const server = new McpServer({ name: 'ndu-werkstatt', version: '1.0.0' }, { instructions: anweisung(`${basis}/innolab/mappe`) });
     werkzeugeRegistrieren(server, { abh, claims, origin: basis });
-    const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
+    const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true, maxRequestBodySize: MAX_ANFRAGE_BYTES });
     try {
       await server.connect(transport);
       const antwort = await transport.handleRequest(c.req.raw);
