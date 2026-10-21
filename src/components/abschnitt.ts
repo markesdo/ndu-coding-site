@@ -72,6 +72,15 @@ export function abschnittName(h2?: string, h3?: string, bild?: string): string {
 }
 
 /**
+ * Oberkante, mit der eine Überschrift gegen die Lesezeile zählt. Im Beamer füllt eine Folie die Höhe und zentriert
+ * ihren Inhalt (beamer.css); die erste Überschrift einer kurzen Folie steht dann unter der Lesezeile, und gemeldet würde
+ * die Folie davor. Für die erste Überschrift einer Folie zählt deshalb die Oberkante der Folie (folieTop), sonst ihre eigene.
+ */
+export function zaehlendeOberkante(top: number, folieTop: number | null): number {
+  return folieTop ?? top;
+}
+
+/**
  * Index der Überschrift, in deren Abschnitt die Lesezeile liegt: die letzte, deren Oberkante darüber ist.
  * `tops` sind Oberkanten relativ zum Fenster, in Dokumentreihenfolge. Keine darüber → -1 (Seitenanfang).
  */

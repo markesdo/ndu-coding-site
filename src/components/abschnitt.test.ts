@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { abschnittName, aktiverAbschnitt, kuerzen, pfadOhneSchraegstrich, seitenName, ueberschriftText } from './abschnitt';
+import { abschnittName, aktiverAbschnitt, kuerzen, pfadOhneSchraegstrich, seitenName, ueberschriftText, zaehlendeOberkante } from './abschnitt';
 
 describe('pfadOhneSchraegstrich', () => {
   it('/tag-1/ und /tag-1 sind dieselbe Seite, / bleibt /', () => {
@@ -60,5 +60,19 @@ describe('aktiverAbschnitt', () => {
   });
   it('vor der ersten Überschrift → -1', () => {
     expect(aktiverAbschnitt([100, 400], 50)).toBe(-1);
+  });
+});
+
+describe('zaehlendeOberkante (Beamer: Inhalt der Folie senkrecht mittig)', () => {
+  // Gemessen am 21.10. auf /innolab/methoden/interview im Beamer (997 px hoch, Lesezeile 349): Nach dem Sprung auf
+  // „forschungsfrage“ steht die Folie oben, ihre h2 aber bei 367 – gemeldet wurde die Folie davor.
+  const linie = 997 * 0.35;
+  it('erste Überschrift einer Folie zählt mit der Oberkante der Folie', () => {
+    const tops = [zaehlendeOberkante(-1300, -1307), zaehlendeOberkante(367, 0)];
+    expect(aktiverAbschnitt(tops, linie)).toBe(1);
+  });
+  it('ohne Folie zählt die eigene Oberkante', () => {
+    expect(zaehlendeOberkante(367, null)).toBe(367);
+    expect(aktiverAbschnitt([zaehlendeOberkante(-1300, null), zaehlendeOberkante(367, null)], linie)).toBe(0);
   });
 });

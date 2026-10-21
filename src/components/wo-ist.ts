@@ -3,7 +3,7 @@
 // Studierende: fragen nach (Takt: ABFRAGE_MS / RUHIG_MS in lib/position.ts; Kette aus lib/kette.ts), immer nur eine Anfrage zugleich und zeigen unten rechts „Markus ist bei: …“ – ein Klick springt hin, nie automatisch.
 // Anmelden am Präsentator-Rechner auf /praesentator (Schlüssel = PRESENTER_KEY, liegt dann im localStorage dieses Browsers).
 // Der Live-Schalter in Kopf- bzw. Seitenleiste zeigt den Zustand und pausiert (Position wird dann gelöscht).
-import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftVon } from './abschnitt';
+import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftVon, zaehlendeOberkante } from './abschnitt';
 import { abfrageKette, jsonHolen, zeitlimit } from '../lib/kette';
 import { PRAESENTATOR_SCHLUESSEL, beamerSchalten } from '../lib/beamer';
 import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, type Position } from '../lib/position';
@@ -96,7 +96,12 @@ function jetzigePosition(): Position {
   if (!ziel) {
     // Am Seitenende erreichen die letzten Überschriften die Lesezeile nie – dann zählt das ganze Fenster.
     const amEnde = innerHeight + scrollY >= document.documentElement.scrollHeight - 2;
-    const i = aktiverAbschnitt(hs.map((h) => h.getBoundingClientRect().top), amEnde ? innerHeight : innerHeight * 0.35);
+    const oberkante = (h: HTMLElement) => {
+      const folie = h.closest<HTMLElement>('.folie');
+      const erste = folie?.querySelector(':is(h2, h3)[id]') === h;
+      return zaehlendeOberkante(h.getBoundingClientRect().top, erste ? folie!.getBoundingClientRect().top : null);
+    };
+    const i = aktiverAbschnitt(hs.map(oberkante), amEnde ? innerHeight : innerHeight * 0.35);
     ziel = hs[i];
   }
   const davor = ziel ? hs.filter((h) => vorOderGleich(h, ziel!)) : [];
