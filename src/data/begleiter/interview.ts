@@ -63,11 +63,11 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'mom-test': {
     live: [
-      'Erst machen, nichts erklären: drei Fragen an eure Zielgruppe, eine pro Sticky, allein.',
-      'Danach spielst du die Zielgruppe: Auf „Würdest du …?“ antwortest du begeistert mit Ja. Auf „Normalerweise …“ antwortest du allgemein. Konkretes erzählst du nur, wenn jemand nach dem letzten Mal fragt.',
-      'Erst dann die Auflösung aufdecken. Der Knopf öffnet die ganze Gruppe „mom-test“ mit, also auch die nächsten sechs Folien.',
-      'Die drei Regeln auf einen Satz bringen: Wer nie über seine Idee redet, dem kann man nichts vorlügen.',
-      'Zeitplan im Blick: Der ganze Block geht von 14:00 bis 14:30. Ab 14:30 sehen alle die Auflösungen ohnehin.',
+      'Erst machen: drei Fragen an eure Zielgruppe, eine pro Sticky, allein.',
+      'Du spielst die Zielgruppe: „Würdest du …?“ → begeistertes Ja; „Normalerweise …“ → allgemein; „letztes Mal“ → Geschichte.',
+      'Dann Auflösung aufdecken; sie öffnet die ganze Gruppe „mom-test“.',
+      'Kern: Wer nie über seine Idee redet, dem kann man nichts vorlügen.',
+      'Block 14:00–14:30; ab 14:30 sind die Auflösungen ohnehin offen.',
     ],
     ueberleitung: 'Jetzt legt ihr eure drei Fragen auf zwei Achsen und seht, wo sie liegen.',
     uebung: { dauer: '5 min', form: 'allein, eine Frage pro Sticky; danach antwortest du als Person aus ihrer Zielgruppe' },
@@ -198,19 +198,19 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'statt-besser': {
     live: [
-      'Vier Paare schrittweise zeigen und jedes Mal fragen: Was würde die Pendlerin auf die linke Frage antworten, was auf die rechte?',
-      'Muster: die Zukunft durch das letzte Mal ersetzen, die Zahlungsbereitschaft durch echte Ausgaben, die Meinung durch eine Handlung.',
-      'Drei Warnsignale im Gespräch: Komplimente, Allgemeinplätze, Zukunftsversprechen. Jedes Mal zurückholen: „Wann war das zuletzt?“',
-      'Dann 5 Minuten für die eigenen drei Fragen.',
+      'Vier Paare schrittweise: Was antwortet die Pendlerin links, was rechts?',
+      'Zukunft → letztes Mal, Zahlungsbereitschaft → echte Ausgaben, Meinung → Handlung.',
+      'Warnsignale: Kompliment, Allgemeinplatz, Zukunft → „Wann war das zuletzt?“',
+      'Dann 5 min: eigene drei Fragen umschreiben.',
     ],
     ueberleitung: 'Und wenn die Antworten kommen: Welche davon zählt überhaupt?',
     uebung: { dauer: '5 min', form: 'allein, die eigenen drei Fragen umschreiben' },
     miro: {
       frame: 'T1 · 4 · Interviewleitfaden',
       schritte: [
-        'Kaffeebar-Spalte auf T1 · 4, drei Felder. Erst nach der Auflösung füllst du sie live: die vier „Statt“-Fragen aus der Tabelle ins Feld „Meine drei Fragen“, die vier „Besser“-Fragen in derselben Reihenfolge ins Feld „Umgeschrieben nach der Auflösung“, je ein Sticky (Paare unten).',
+        'Erst jetzt, nach der Auflösung, füllst du die Kaffeebar-Spalte live: „Statt“-Fragen ins Feld „Meine drei Fragen“, „Besser“-Fragen in derselben Reihenfolge ins Feld „Umgeschrieben nach der Auflösung“ (Paare unten).',
         'Das dritte Feld „Gelernt im Live-Interview“ bleibt leer, bis die Live-Interviews gelaufen sind.',
-        'Die eigenen Fragen umschreiben: Jede*r kopiert das Sticky mit Cmd+D bzw. Strg+D, zieht die Kopie ins Feld „Umgeschrieben nach der Auflösung“ und schreibt sie dort um. Das Original bleibt in „Meine drei Fragen“ stehen, damit man den Unterschied sieht.',
+        'Jede*r kopiert die eigenen Stickies (Cmd+D bzw. Strg+D) ins Feld „Umgeschrieben nach der Auflösung“ und schreibt sie dort um; das Original bleibt stehen.',
         'Nach dem Timer „Alle zu mir holen“ und zwei, drei umgeschriebene Stickies vorlesen lassen.',
       ],
       vorschlaege: [
@@ -469,10 +469,10 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'vorgehen': {
     live: [
-      'Vier Schritte, 90 Minuten (14:45–16:15). Erst schreiben, dann zweimal proben.',
-      'Ziel des Leitfadens ist die Forschungsfrage aus der riskantesten Annahme. 5–7 Fragen sind das Gerüst, das Herz sind ein, zwei Fragen nach dem letzten Mal.',
-      'Speichern in der Werkstatt über „Bearbeiten“ im Handout auf ihren Laptops. Miro-Frame „T1 · 4 · Interviewleitfaden“ zum Denken.',
-      'Im Live-Interview spielst du eine schwierige Person. Die beiden anderen beobachten: Wo wurde gepitcht, wo fehlte eine Nachfrage?',
+      'Vier Schritte, 90 min (14:45–16:15): schreiben, dann zweimal proben.',
+      'Leitfaden zur Forschungsfrage; Herz: ein, zwei Fragen nach dem letzten Mal.',
+      'Speichern in der Werkstatt („Bearbeiten“), Miro T1 · 4 zum Denken.',
+      'Live-Interview: du spielst eine schwierige Person, zwei beobachten.',
     ],
     ueberleitung: 'Zum Schluss die Frage, mit der ihr morgen rausgeht: Was ist bei euch „der letzte Morgen am Bahnhof“?',
     uebung: { dauer: '90 min (20 + 10 + 15 + 3 × 15)', form: 'Leitfaden, Prüfliste und Claude-Probe allein; Live-Interview reihum mit dir, die anderen beobachten' },

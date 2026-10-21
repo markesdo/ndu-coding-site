@@ -236,10 +236,10 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Ablauf zeigen: erst allein, dann zu dritt, dann festhalten und prüfen – 60 Minuten, Timer pro Schritt.',
-      'Allein zuerst, damit drei verschiedene Sichten entstehen und sich nicht gleich angleichen.',
-      'Ein Sticky pro Feld im Miro-Frame, ganze Sätze, keine Lösung, kein Produktname.',
-      'In der Dreierrunde nur drei Fragen stellen, keine Lösungen vorschlagen.',
+      'Allein, dann zu dritt, dann festhalten und prüfen; 60 min.',
+      'Allein zuerst: drei Sichten, die sich nicht gleich angleichen.',
+      'Ein Sticky pro Feld, ganze Sätze, keine Lösung.',
+      'Dreierrunde: nur fragen, keine Lösungen vorschlagen.',
       'Zum Schluss erst die Prüfliste selbst, dann Claude.',
     ],
     ueberleitung: 'Bevor ihr loslegt, noch die Frage, die ihr euch für das eigene Produkt stellt.',

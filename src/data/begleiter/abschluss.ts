@@ -98,10 +98,10 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
 
   'snapshot': {
     live: [
-      'Snapshot heißt eine Seite pro Gespräch, geschrieben noch am selben Tag. Nach dem dritten Interview verschwimmen die Geschichten sonst.',
-      'Das Bild und das Zitat dienen als Schlüssel für die Erinnerung. Am Board steht nur ein Pseudonym, kein Foto.',
-      'Ein Wunsch nach einer Funktion ist noch keine Chance. Frag nach, was ihnen das bringen würde.',
-      'Was nur eine Person sagt, kommt trotzdem auf den Snapshot. Oft taucht es später bei anderen wieder auf.',
+      'Eine Seite pro Gespräch, am selben Tag geschrieben.',
+      'Bild und Zitat als Erinnerungsschlüssel; am Board nur Pseudonym, kein Foto.',
+      'Funktionswunsch ist keine Chance: nachfragen, was es bringt.',
+      'Auch was nur eine Person sagt, kommt auf den Snapshot.',
       'Kaffeebar zeigen: I2, „Wenn ich auf die Uhr schauen muss, geh ich.“',
     ],
     ueberleitung: 'Bevor ihr rausgeht, schauen wir noch einmal zurück, wie ihr heute zu dieser einen Frage gekommen seid.',

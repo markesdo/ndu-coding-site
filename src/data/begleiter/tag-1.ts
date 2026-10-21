@@ -26,11 +26,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'miro': {
     live: [
-      'Ein Board für den ganzen Kurs, eine Spalte pro Tag, jeder Frame ist ein Block – heute T1 · 1 bis T1 · 5.',
-      'Links im Frame die Kaffeebar, daneben eure Spalte: Beispiel kopieren, nicht verschieben.',
-      'Ein Gedanke pro Sticky – das brauchen wir gleich beim Toast wieder.',
-      'Fragen, die gerade nicht dran sind: in den Parkplatz unter „Start hier“.',
-      'Miro ist zum Denken; das Ergebnis kommt in den letzten zehn Minuten jedes Blocks in die Werkstatt.',
+      'Ein Board, eine Spalte pro Tag; heute T1 · 1 bis T1 · 5.',
+      'Links die Kaffeebar, daneben eure Spalte: kopieren, nicht verschieben.',
+      'Ein Gedanke pro Sticky.',
+      'Fragen, die nicht dran sind: in den Parkplatz.',
+      'Miro zum Denken; das Ergebnis kommt am Ende jedes Blocks in die Werkstatt.',
     ],
     ueberleitung: 'Bevor wir loslegen: das Bild, das uns durch alle Tage trägt – ein Baum vom Ziel bis zum Test.',
     miro: {
@@ -244,11 +244,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'toast-uebertrag': {
     live: [
-      'Frame T1 · 1 Experience Map: allein, ohne zu reden, ein Knoten pro Sticky.',
-      'Nicht euer Produkt, sondern was Menschen heute erleben – auch Umwege und wo sie aufgeben.',
-      'Erst allein gegen Gruppendenken; danach reihum zeigen und nachfragen, nicht verteidigen.',
-      'Unsichere Verbindung: ein „?“ dran – das sind Kandidaten für die Annahmen-Map.',
-      'Entwurf, keine Wahrheit: Die Map sagt, wonach ihr im Interview fragt.',
+      'T1 · 1: allein, ohne zu reden, ein Knoten pro Sticky.',
+      'Was Menschen heute erleben, nicht euer Produkt; auch Umwege und Abbrüche.',
+      'Danach reihum zeigen: nachfragen, nicht verteidigen.',
+      'Unsichere Verbindung: „?“ dran, Kandidat für die Annahmen-Map.',
+      'Entwurf, keine Wahrheit: Die Map sagt, wonach ihr fragt.',
     ],
     ueberleitung: 'Damit habt ihr gezeichnet, was Menschen heute tun – jetzt: Woran messt ihr, ob sie es nach eurem Produkt anders tun?',
     uebung: { dauer: '6 min', form: 'allein, ohne zu reden; danach reihum zeigen' },
