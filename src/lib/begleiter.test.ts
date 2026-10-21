@@ -111,6 +111,10 @@ describe('Folien von Tag 1 (echte Seiten)', () => {
   it('jede Notiz zeigt auf eine existierende Folie', () => {
     expect(notizenOhneFolie(folien, NOTIZEN)).toStrictEqual([]);
   });
+  it('jede Tag-1-Folie hat eine Notiz mit mindestens einem live-Stichwort', () => {
+    const ohne = folien.filter((f) => !NOTIZEN[f.pfad]?.[f.id]?.live?.some((s) => s.trim() !== ''));
+    expect(ohne.map((f) => `${f.pfad}#${f.id}`)).toStrictEqual([]);
+  });
   it('erkennt eine Notiz ohne Folie', () => {
     expect(notizenOhneFolie(folien, { '/innolab/tag-1': { gibtsnicht: { live: ['x'] } } })).toStrictEqual(['/innolab/tag-1#gibtsnicht']);
   });
