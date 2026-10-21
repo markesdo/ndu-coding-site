@@ -6,8 +6,6 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
 import { NACH_MOM_TEST } from '../../../components/innolab-zeiten';
-// Hinweis an den gesperrten Teilen: wann sie aufgehen und dass ein Klick (wenn Markus es sagt) die ganze Gruppe öffnet.
-const OEFFNET = `Öffnet sich um ${NACH_MOM_TEST.slice(11)} von selbst. Sagt Markus es früher, öffnet ein Klick auf den Knopf alle Teile.`;
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
@@ -18,6 +16,11 @@ import Aufloesung from '../../../components/Aufloesung.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import Skala from '../../../components/bild/Skala.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
+// Hinweise an den gesperrten Teilen: wann sie aufgehen (Datum und Uhrzeit, gilt nur am Kurstag) und was ein Klick öffnet.
+// Die Auflösungen des Mom Test sind eine Gruppe (gruppe="mom-test"); Editor, Probe-Prompt und Prüfliste gehen einzeln auf.
+const [, monat, tag] = NACH_MOM_TEST.slice(0, 10).split('-');
+const AB = `am ${tag}.${monat}. um ${NACH_MOM_TEST.slice(11)}`;
+const OEFFNET = `Öffnet sich ${AB} von selbst. Sagt Markus es früher, öffnet ein Klick die Auflösungen des Mom Test auf dieser Seite.`;
 
 // Ab NACH_MOM_TEST (Ende des Blocks laut tag-1.astro) sehen alle die Auflösungen – und den Leitfaden-Editor.
 ---
@@ -44,7 +47,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
     <h2 id="mom-test">Der Mom Test</h2>
     <p class="folie-satz">Schreibt drei Fragen an eure Zielgruppe.</p>
     <p>Allein, eine Frage pro Sticky. Markus antwortet danach als Person aus eurer Zielgruppe. <Timer minuten={5} /></p>
-    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis={`Die Auflösung kommt nach der Übung – erst eure Fragen schreiben. Sie öffnet sich um ${NACH_MOM_TEST.slice(11)} oder wenn Markus es sagt.`} knopf="Auflösung zeigen (nach der Übung)">
+    <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test" fuer="alle" hinweis={`Erst eure Fragen schreiben. ${OEFFNET}`} knopf="Auflösung zeigen (nach der Übung)">
       <p class="folie-satz">Auf „Würdest du …?“ sagen alle Ja – selbst eure Mutter.</p>
       <ol class="gross">
         <li data-schritt><strong>Redet über ihr Leben, nicht über eure Idee.</strong> Sobald ihr die Idee erzählt, wird das Gespräch höflich.</li>
@@ -175,7 +178,7 @@ import { Flag, MapPin, Sparkles } from '@lucide/astro';
 
   <div class="nur-handout">
   <h2 id="vorlage">In der Werkstatt speichern</h2>
-  <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis={`Editor und Vorlage enthalten die Lösung des Mom Test – öffnet sie erst danach (ab ${NACH_MOM_TEST.slice(11)} von selbst).`} knopf="Editor und Vorlage öffnen">
+  <Aufloesung ab={NACH_MOM_TEST} fuer="alle" hinweis={`Editor und Vorlage enthalten die Lösung des Mom Test – öffnet sie erst danach. Sie gehen ${AB} von selbst auf.`} knopf="Editor und Vorlage öffnen">
   <p>Jede*r speichert den eigenen Leitfaden in der Werkstatt: Ziel, Zielgruppe, Einstieg, Kern- und Nachfragen, Abschluss. Die Vorlage darunter zeigt, wie ein Leitfaden nach dem Mom Test aussieht. Übertragt nur, was zu eurem Produkt passt.</p>
   <Bearbeiten artefakt="leitfaden" />
   <Prompt label="Vorlage · Interviewleitfaden"># Interviewleitfaden — [Produkt]

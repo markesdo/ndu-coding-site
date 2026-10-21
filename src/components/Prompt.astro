@@ -23,7 +23,7 @@ const zeigeWie = Astro.url.pathname.replace(/\/$/, '') !== '/prompts-ausfuellen'
     )}
   </div>
   <pre set:html={html}></pre>
-  {hatLuecken && <p class="luecken-hinweis">Gelbe Lücken anklicken und ausfüllen – Kopieren nimmt eure Eingaben mit.{zeigeWie && <> <a href="/prompts-ausfuellen">Wie?</a></>}</p>}
+  {hatLuecken && kopieren && <p class="luecken-hinweis">Gelbe Lücken anklicken und ausfüllen – Kopieren nimmt eure Eingaben mit.{zeigeWie && <> <a href="/prompts-ausfuellen">Wie?</a></>}</p>}
 </div>
 {/* Hinweis außerhalb der grauen Karte: Die Karte ist genau das, was kopiert wird. */}
 {note && <p class="prompt-note"><Info size={14} aria-hidden="true" /><span><strong>Hinweis</strong> {note}</span></p>}
@@ -35,7 +35,8 @@ const zeigeWie = Astro.url.pathname.replace(/\/$/, '') !== '/prompts-ausfuellen'
   // Kopieren liest weiter innerText des <pre> – Eingaben sind damit automatisch dabei.
   document.querySelectorAll<HTMLElement>('.prompt mark.luecke').forEach(m => {
     // Lücken in Links oder Code bleiben Anzeige – ein Klick soll dort nicht editieren.
-    if (m.dataset.platzhalter || m.closest('a, code')) return;
+    // Ohne Kopieren-Knopf (kopieren={false}) ist die Karte nur Anzeige – dann auch nichts ausfüllen.
+    if (m.dataset.platzhalter || m.closest('a, code') || !m.closest('.prompt')?.querySelector('.copy')) return;
     const platzhalter = m.textContent ?? '';
     m.dataset.platzhalter = platzhalter;
     // Ältere Browser (Firefox vor 136) werfen bei unbekanntem Wert einen Fehler – dann normales contenteditable.
