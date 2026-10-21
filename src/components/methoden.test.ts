@@ -93,7 +93,9 @@ describe('methoden', () => {
     expect(iv).toContain('Zum Abgleich lies auch meinen Produkt-Brief und meine Annahmen-Map (Werkzeug artefakt_lesen).');
     const an = pruefPrompt(METHODEN.find((m) => m.slug === 'annahmen')!);
     expect(an).toMatch(/^Prüf meine Annahmen-Map mit der Werkstatt/);
+    expect(iv).toContain('Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: meinen Interviewleitfaden, meinen Produkt-Brief und meine Annahmen-Map.');
     for (const t of [pr, el, iv, an]) {
+      expect(t).toContain('Ohne Werkstatt-Zugang nimm stattdessen die Texte');
       expect(t).not.toMatch(/docs\/|Lies /);
       // Claude ändert in der Werkstatt nichts: kein „ändere keine Datei“, sondern kein eigener Text.
       expect(t).toContain('Schreib nichts um und formulier keinen Text für mich');
