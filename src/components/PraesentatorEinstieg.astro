@@ -6,8 +6,9 @@
 // bleibt alles weg: Den Beamer-Modus gibt es ohnehin nur mit JavaScript, und Studierende brauchen den Link nicht.
 // Eingeschaltet wird nur über beamerSchalten() (Regel aus BeamerStart.astro): ohne Präsentator-Schlüssel tut der Knopf
 // nichts, auch wenn ihn jemand per DevTools einblendet.
+// Neben „Beamer starten“ (nur beim Präsentator) der Link „Begleiter“ zu /innolab/begleiter: Notizen zur Folie fürs Tablet.
 // seite: 'start' für /start (ohne Layout, eigenes dunkles Farbschema), sonst 'layout'.
-import { Presentation, X } from '@lucide/astro';
+import { NotebookPen, Presentation, X } from '@lucide/astro';
 import type { Seitenart } from '../lib/beamer';
 
 const { seite = 'layout' } = Astro.props as { seite?: Seitenart };
@@ -16,6 +17,9 @@ const { seite = 'layout' } = Astro.props as { seite?: Seitenart };
   <button type="button" class="btn mit-icon" data-einstieg="starten" data-nur-praesentator hidden>
     <Presentation size={18} aria-hidden="true" /> Beamer starten
   </button>
+  <a class="btn mit-icon" href="/innolab/begleiter" data-einstieg="starten" data-nur-praesentator hidden>
+    <NotebookPen size={18} aria-hidden="true" /> Begleiter
+  </a>
   <button type="button" class="btn mit-icon" data-einstieg="beenden" hidden>
     <X size={18} aria-hidden="true" /> Beamer beenden
   </button>
@@ -55,7 +59,7 @@ const { seite = 'layout' } = Astro.props as { seite?: Seitenart };
 </script>
 
 <style>
-  .praes-einstieg { margin-top: 2.5rem; }
+  .praes-einstieg { margin-top: 2.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
   .praes-einstieg [hidden] { display: none !important; }
   .praes-einstieg-link { font-size: .85rem; color: var(--muted); text-decoration: none; }
   .praes-einstieg-link:hover { color: var(--fg); text-decoration: underline; }
