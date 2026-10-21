@@ -94,10 +94,16 @@ export function zitat(s: string): string {
   return t === '' ? LEER : `„${zeichen(t)}“`;
 }
 
-// IDs und Notiz teilen sich eine Klammer; leere IDs und eine leere Notiz (Entwurf) zählen wie keine.
-export function belegText(stufe: Belegstufe, ids: readonly string[], notiz?: string): string {
-  const idText = gefuellt(ids).map(zelle).join(', ');
-  const notizText = notiz !== undefined && flach(notiz) !== '' ? zelle(notiz) : '';
+// IDs und Notiz teilen sich eine Klammer; leere IDs und eine leere Notiz (Entwurf) zählen wie keine. `teil` formatiert
+// jedes Stück: im Markdown als Tabellenzelle, in der Editor-Anzeige nur flach (React maskiert selbst).
+export function belegText(stufe: Belegstufe, ids: readonly string[], notiz?: string, teil: (s: string) => string = zelle): string {
+  const idText = gefuellt(ids).map(teil).join(', ');
+  const notizText = notiz !== undefined && flach(notiz) !== '' ? teil(notiz) : '';
   const zusatz = [idText, notizText].filter(Boolean).join('; ');
   return zusatz ? `${BELEGSTUFE_TEXT[stufe]} (${zusatz})` : BELEGSTUFE_TEXT[stufe];
+}
+
+/** Wie belegText, ohne Markdown-Maskierung: für Text im Editor. */
+export function belegTextSchlicht(stufe: Belegstufe, ids: readonly string[], notiz?: string): string {
+  return belegText(stufe, ids, notiz, flach);
 }

@@ -268,7 +268,7 @@ describe('Werkzeuge', () => {
     expect(pruefen.description).toMatch(/höchstens drei Befunde/);
   });
 
-  it('artefakt_pruefen(annahmen): Markdown + fünf Prüfpunkte annahmen-1 … annahmen-5 aus methoden.ts', async () => {
+  it('artefakt_pruefen(annahmen): Markdown + sechs Prüfpunkte annahmen-1 … annahmen-6 aus methoden.ts', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen' } });
@@ -276,13 +276,13 @@ describe('Werkzeuge', () => {
     const sc = r.structuredContent as { artefakt: string; markdown: string; pruefpunkte: { id: string; text: string }[] };
     const liste = METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!;
     expect(sc.pruefpunkte).toStrictEqual(liste.map((t, i) => ({ id: `annahmen-${i + 1}`, text: t })));
-    expect(sc.pruefpunkte.map((p) => p.id)).toStrictEqual(['annahmen-1', 'annahmen-2', 'annahmen-3', 'annahmen-4', 'annahmen-5']);
+    expect(sc.pruefpunkte.map((p) => p.id)).toStrictEqual(['annahmen-1', 'annahmen-2', 'annahmen-3', 'annahmen-4', 'annahmen-5', 'annahmen-6']);
     expect(sc).not.toHaveProperty('befunde');
     expect(sc.markdown).toContain(TEXT_A);
     const t = text(r);
     expect(t).toContain(TEXT_A);
-    expect(t).toContain('annahmen-5');
-    expect(t).toContain(liste[4]);
+    expect(t).toContain('annahmen-6');
+    expect(t).toContain(liste[5]);
   });
 
   it('artefakt_pruefen(leitfaden): IDs mit dem Slug der Methodenseite (interview-1 …), auch ohne gespeichertes Artefakt', async () => {
@@ -644,7 +644,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     // Einzige Lücke: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle.
     expect(r.structuredContent).toStrictEqual({
       befunde: ['A2', 'A4'].map((id) => ({
-        art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle als Beleg. Wo liegt das beobachtete Verhalten?`,
+        art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
       })),
       geprueft: ['entscheidungen', 'annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],

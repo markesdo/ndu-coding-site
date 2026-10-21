@@ -1,6 +1,8 @@
 // Reine Hilfsfunktionen des Annahmen-Editors. Ohne React und DOM.
+import { entscheidungsIds, getanHatEigeneQuelle } from '../../belege.js';
 import { naechsteId } from '../../ids.js';
-import { TAG1_ARTEN, type Annahme, type Annahmen } from '../../schemas/index.js';
+import { belegTextSchlicht } from '../../render/format.js';
+import { BELEG_NOTIZ_MAX, TAG1_ARTEN, type Annahme, type Annahmen } from '../../schemas/index.js';
 
 type Art = Annahme['art'];
 
@@ -20,6 +22,22 @@ export const WICHTIG_TEXT: Record<Annahme['wichtig'], string> = { hoch: 'hoch', 
 export function annahmeNeu(vorhandene: readonly Annahme[], vergeben: readonly string[]): Annahme {
   const id = naechsteId('A', [...vergeben, ...vorhandene.map((a) => a.id)]);
   return { id, text: '', art: 'wuenschenswert', wichtig: 'mittel', beleg: 'keiner', belegIds: [] };
+}
+
+// Skala nach Bland wie auf der Methodenseite: „getan“ = beobachtet, gemessen, bezahlt; Interviews reichen höchstens bis „erzählt“.
+export const annahmeBelegNotizHilfe = `Bei „getan“: was beobachtet, gemessen oder bezahlt wurde, z. B. „Kassendaten September“. Höchstens ${BELEG_NOTIZ_MAX} Zeichen, eine Zeile.`;
+
+/** Weicher Hinweis am Notizfeld (kein Schemafehler, Speichern bleibt erlaubt): nur bei „getan“ ohne Notiz und ohne D-ID.
+ *  Mit einer D-ID schweigt der Editor; ob die Entscheidung trägt, entscheidet verknuepfungen_pruefen (belege.ts), denn
+ *  das Entscheidungslog kennt der Editor nicht. */
+export function getanOhneQuelleHinweis(a: Pick<Annahme, 'beleg' | 'belegIds' | 'belegNotiz'>): string | null {
+  if (getanHatEigeneQuelle(a) || entscheidungsIds(a).length > 0) return null;
+  return '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung (D…), die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“.';
+}
+
+/** Beleg wie im Markdown, ohne Markdown: „getan (D2; Kassendaten September)“. */
+export function belegAnzeige(a: Pick<Annahme, 'beleg' | 'belegIds' | 'belegNotiz'>): string {
+  return belegTextSchlicht(a.beleg, a.belegIds, a.belegNotiz);
 }
 
 // Der Hinweis gilt den vier Arten von Tag 1; „ethisch“ ist eine Ergänzung, kein Muss.

@@ -15,7 +15,7 @@ export function annahmenRendern(d: Annahmen): string {
 |----|---------------------|-----|---------|-------|`;
   const zeilen = d.annahmen.map((a) => {
     const id = a.id === d.riskanteste ? `**${a.id}** (riskanteste)` : `**${a.id}**`;
-    return `| ${id} | ${zelle(a.text)} | ${ART_TEXT[a.art]} | ${a.wichtig} | ${belegText(a.beleg, a.belegIds)} |`;
+    return `| ${id} | ${zelle(a.text)} | ${ART_TEXT[a.art]} | ${a.wichtig} | ${belegText(a.beleg, a.belegIds, a.belegNotiz)} |`;
   });
   return `# Annahmen
 

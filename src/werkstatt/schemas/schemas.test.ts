@@ -232,6 +232,43 @@ describe('Annahmen', () => {
     a.annahmen[0].wichtig = 'sehr';
     expect(fehlerPfade('annahmen', a)).toContain('annahmen.0.wichtig');
   });
+  it('belegNotiz ist optional: alte Dateien ohne das Feld bleiben gültig, ohne dass es dazukommt', () => {
+    const a = klon(annahmen);
+    expect(a.annahmen.some((z: Record<string, unknown>) => 'belegNotiz' in z)).toBe(false);
+    const r = artefaktParsen('annahmen', a);
+    expect('fehler' in r ? r.fehler : []).toStrictEqual([]);
+    if (!('daten' in r)) return;
+    expect(r.daten.annahmen[1]).toStrictEqual(a.annahmen[1]);
+  });
+  it('belegNotiz bleibt beim Parsen erhalten, höchstens 120 Zeichen und einzeilig, mit denselben Meldungen wie im Entscheidungslog', () => {
+    const a = klon(annahmen);
+    a.annahmen[1].belegNotiz = 'Kassendaten September';
+    const r = artefaktParsen('annahmen', a);
+    expect('fehler' in r ? r.fehler : []).toStrictEqual([]);
+    if (!('daten' in r)) return;
+    expect(r.daten.annahmen[1]!.belegNotiz).toBe('Kassendaten September');
+    a.annahmen[1].belegNotiz = 'x'.repeat(BELEG_NOTIZ_MAX);
+    expect(artefaktParsen('annahmen', a).ok).toBe(true);
+    const meldung = (notiz: unknown) => {
+      a.annahmen[1].belegNotiz = notiz;
+      const p = artefaktParsen('annahmen', a);
+      return 'fehler' in p ? p.fehler.find((f) => f.pfad === 'annahmen.1.belegNotiz')?.meldung : undefined;
+    };
+    expect(meldung('x'.repeat(BELEG_NOTIZ_MAX + 1))).toBe('Beleg (Notiz): höchstens 120 Zeichen. Kürze die Notiz oder nenne nur die Quelle.');
+    expect(meldung('Kassendaten\nSeptember')).toBe('Beleg-Notiz: eine Zeile, ohne Steuerzeichen');
+    expect(meldung(' Kasse')).toBe('Beleg-Notiz: ohne Leerzeichen am Anfang oder Ende');
+    expect(meldung(5)).toBe('Beleg (Notiz): bitte als Text eintragen.');
+  });
+  it('belegNotiz: leerer Text wird abgelehnt (ohne Notiz fehlt das Feld), in beiden Artefakten; kein Beispiel speichert ""', () => {
+    const a = klon(annahmen);
+    a.annahmen[1].belegNotiz = '';
+    const r = artefaktParsen('annahmen', a);
+    expect('fehler' in r ? r.fehler.find((f) => f.pfad === 'annahmen.1.belegNotiz')?.meldung : undefined).toBe('Beleg-Notiz: nicht leer – ohne Notiz das Feld weglassen');
+    const e = klon(entscheidungen);
+    e.entscheidungen[1].belegNotiz = '';
+    expect(fehlerPfade('entscheidungen', e)).toContain('entscheidungen.1.belegNotiz');
+    for (const roh of Object.values(beispiele)) expect(JSON.stringify(roh)).not.toContain('"belegNotiz":""');
+  });
 });
 
 const a = (wichtig: Annahme['wichtig'], beleg: Annahme['beleg'], id = 'A1'): Annahme => ({

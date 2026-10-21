@@ -2,14 +2,14 @@
 // Die Regeln stehen in annahmen-hilfen.ts (rein, getestet).
 import { useId, useRef } from 'react';
 import { rendern } from '../../render/index.js';
-import { ANNAHME_ARTEN, ARTEFAKTE, BELEGSTUFEN, BELEGSTUFE_TEXT, WICHTIGKEITEN, type Annahme, type Annahmen } from '../../schemas/index.js';
+import { ANNAHME_ARTEN, ARTEFAKTE, BELEGSTUFEN, BELEGSTUFE_TEXT, WICHTIGKEITEN, belegNotizSetzen, belegNotizZaehler, type Annahme, type Annahmen } from '../../schemas/index.js';
 import { AnnahmenMatrix } from '../bild/AnnahmenMatrix.js';
 import EditorHuelle from '../EditorHuelle.js';
 import Auswahl from '../felder/Auswahl.js';
 import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
 import VerweisAuswahl from '../felder/VerweisAuswahl.js';
-import { ART_ANZEIGE, WICHTIG_TEXT, annahmeNeu, annahmenSetzen, fehlendeArtenHinweis, riskantesteSetzen } from './annahmen-hilfen.js';
+import { ART_ANZEIGE, WICHTIG_TEXT, annahmeBelegNotizHilfe, annahmeNeu, belegAnzeige, annahmenSetzen, fehlendeArtenHinweis, getanOhneQuelleHinweis, riskantesteSetzen } from './annahmen-hilfen.js';
 import './editoren.css';
 
 const WICHTIG = WICHTIGKEITEN.map((w) => ({ wert: w, text: WICHTIG_TEXT[w] }));
@@ -84,6 +84,8 @@ function Formular({ daten, setze, fehler }: { daten: Annahmen; setze: (neu: Anna
               <Auswahl label={`Wichtig (${a.id})`} hilfe="Wie schlimm wäre es, wenn die Annahme falsch ist?" wert={a.wichtig} optionen={WICHTIG} onChange={(wichtig) => s({ ...a, wichtig })} fehler={fehler(pfad('wichtig'))} />
               <Auswahl label={`Beleg (${a.id})`} wert={a.beleg} optionen={BELEG} onChange={(beleg) => s({ ...a, beleg })} fehler={fehler(pfad('beleg'))} />
               <VerweisAuswahl label={`Beleg-IDs (${a.id})`} hilfe="Zum Beispiel I2-4 für ein Zitat aus Interview 2." werte={a.belegIds} onChange={(belegIds) => s({ ...a, belegIds })} fehler={fehler(pfad('belegIds'))} />
+              <Textfeld label={`Beleg (Notiz, z. B. Quelle oder Zahl) (${a.id})`} hilfe={annahmeBelegNotizHilfe} wert={a.belegNotiz ?? ''} onChange={(notiz) => s(belegNotizSetzen(a, notiz))} fehler={fehler(pfad('belegNotiz'))} hinweis={getanOhneQuelleHinweis(a) ?? undefined} />
+              <p className="wk-hilfe" aria-live="off">Zeichen: {belegNotizZaehler(a.belegNotiz ?? '')}</p>
             </>
           );
         }}
@@ -100,7 +102,7 @@ function Formular({ daten, setze, fehler }: { daten: Annahmen; setze: (neu: Anna
   );
 }
 
-function Bild({ daten }: { daten: Annahmen }) {
+export function Bild({ daten }: { daten: Annahmen }) {
   return (
     <>
       <AnnahmenMatrix annahmen={daten.annahmen} riskanteste={daten.riskanteste} />
@@ -116,7 +118,7 @@ function Bild({ daten }: { daten: Annahmen }) {
         <ul className="wk-annahmen-text">
           {daten.annahmen.map((a) => (
             <li key={a.id}>
-              <strong>{a.id}</strong> {ART_ANZEIGE[a.art].text} · wichtig {WICHTIG_TEXT[a.wichtig]} · Beleg {BELEGSTUFE_TEXT[a.beleg]}
+              <strong>{a.id}</strong> {ART_ANZEIGE[a.art].text} · wichtig {WICHTIG_TEXT[a.wichtig]} · Beleg {belegAnzeige(a)}
               {a.id === daten.riskanteste && <strong> · riskanteste</strong>}
             </li>
           ))}

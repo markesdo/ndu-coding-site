@@ -4,7 +4,6 @@
 // Zeile kommt ans Ende). Noch nicht gespeicherte Zeilen sind frei änderbar und löschbar.
 import { naechsteId } from '../../ids.js';
 import { BELEG_NOTIZ_MAX, type Entscheidung, type Entscheidungen } from '../../schemas/index.js';
-import { graphemAnzahl } from '../../text.js';
 
 export type Ergebnis = { ok: true; daten: Entscheidungen; id: string } | { ok: false; grund: string };
 
@@ -76,17 +75,6 @@ export function gespeicherteIds(gespeichert: Entscheidungen | null): Set<string>
 const FELDER = ['id', 'datum', 'entscheidung', 'grund', 'beleg', 'belegIds', 'belegNotiz', 'ersetzt'] as const;
 
 export const belegNotizHilfe = `Zum Beispiel „Kassendaten September“. Höchstens ${BELEG_NOTIZ_MAX} Zeichen, eine Zeile.`;
-
-/** Zähler neben dem Feld, z. B. „12/120“ (Grapheme, wie im Schema). */
-export function belegNotizZaehler(notiz: string): string {
-  return `${graphemAnzahl(notiz)}/${BELEG_NOTIZ_MAX}`;
-}
-
-/** Setzt die Beleg-Notiz; nach trim() leer entfernt das Feld ganz (optional, nie als leerer Text gespeichert). Rand-Leerraum meldet das Schema. */
-export function belegNotizSetzen(e: Entscheidung, notiz: string): Entscheidung {
-  const { belegNotiz: _alt, ...rest } = e;
-  return notiz.trim() === '' ? rest : { ...rest, belegNotiz: notiz };
-}
 
 /** Alle Feldfehler der Zeile `i` (auch die einzelner Beleg-IDs), ohne doppelte. */
 export function zeileFehler(e: Entscheidung, i: number, fehler: (pfad: string) => string | undefined): string[] {

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import beispiel from '../../beispiele/entscheidungen.json';
-import { artefaktParsen, BELEG_NOTIZ_MAX, type Entscheidungen } from '../../schemas/index.js';
+import { artefaktParsen, BELEG_NOTIZ_MAX, belegNotizSetzen, belegNotizZaehler, type Entscheidungen } from '../../schemas/index.js';
 import { serverStandNachSpeichern } from '../huelle.js';
-import { belegNotizHilfe, belegNotizZaehler, belegNotizSetzen, datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileFehler, zeileHinzufuegen, zeilenModus } from './entscheidungen-hilfen.js';
+import { belegNotizHilfe, datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileFehler, zeileHinzufuegen, zeilenModus } from './entscheidungen-hilfen.js';
 
 const leer = (): Entscheidungen => ({ schema: 'entscheidungen@1', stand: '2026-10-22', entscheidungen: [] });
 const kaffeebar = () => structuredClone(beispiel) as Entscheidungen;

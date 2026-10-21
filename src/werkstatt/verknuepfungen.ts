@@ -1,5 +1,6 @@
 // Verknüpfungen der Mappe prüfen (deterministisch, ohne KI): unbekannte IDs, fehlende Belege, verwaiste Interviews.
 // Grundlage für das MCP-Werkzeug verknuepfungen_pruefen und später für die Lehrende-Ansicht (Spec §3.4, §3.7).
+import { entscheidungsIds, entscheidungTraegtGetan, ersetztDurch, getanHatEigeneQuelle, getanMitNotiz, getanQuellePruefer } from './belege.js';
 import { ARTEFAKT_NAMEN, ARTEFAKTE, BELEGSTUFE_TEXT, type Annahmen, type ArtefaktName, type Brief, type Entscheidungen, type Interviews, type Leitfaden } from './schemas/index.js';
 
 // Je Artefakt: die Daten, null = noch nicht gespeichert, 'unlesbar' = Datei passt nicht zum Schema.
@@ -95,28 +96,42 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
 
   if (da(m.entscheidungen)) {
     // Ersetzte Zeilen sind Geschichte: ihre Verweise werden geprüft, ein fehlender Beleg nicht mehr angemahnt.
-    const ersetzt = new Set(m.entscheidungen.entscheidungen.flatMap((e) => (e.ersetzt ? [e.ersetzt] : [])));
+    const ersetzt = ersetztDurch(m.entscheidungen.entscheidungen);
     for (const e of m.entscheidungen.entscheidungen) {
       belegeVon('entscheidungen', e.id, e.belegIds);
-      textVon('entscheidungen', e.id, `${e.entscheidung}\n${e.grund}`);
+      textVon('entscheidungen', e.id, `${e.entscheidung}\n${e.grund}\n${e.belegNotiz ?? ''}`);
       if (e.beleg !== 'keiner' && e.belegIds.length === 0 && !e.belegNotiz && !ersetzt.has(e.id)) {
         befund({ art: 'fehlender-beleg', artefakt: 'entscheidungen', ort: e.id, text: `${e.id} hat die Belegstufe „${BELEGSTUFE_TEXT[e.beleg]}“, nennt aber weder eine ID noch eine Notiz zum Beleg.` });
+      } else if (e.beleg === 'getan' && !ersetzt.has(e.id) && !entscheidungTraegtGetan(e, ersetzt)) {
+        // „getan“ braucht eine Quelle für Verhalten (Beleg-Notiz); IDs allein, etwa Interviews, belegen höchstens „erzählt“.
+        // Gespeicherte Zeilen sind fest (server/routen/mappe.ts), darum: ersetzen statt ändern.
+        befund({ art: 'fehlender-beleg', artefakt: 'entscheidungen', ort: e.id, text: `${e.id} ist „getan“, nennt aber keine Quelle (Beleg-Notiz). Gespeicherte Entscheidungen bleiben, wie sie sind: Ersetzt ${e.id} durch eine neue Zeile mit Quelle oder mit der passenden Stufe (Interviews belegen höchstens „erzählt“).` });
       }
     }
   }
 
   if (da(m.annahmen)) {
+    const hatQuelle = da(m.entscheidungen) ? getanQuellePruefer(m.entscheidungen) : getanHatEigeneQuelle;
+    const nachId = new Map(da(m.entscheidungen) ? m.entscheidungen.entscheidungen.map((e) => [e.id, e] as const) : []);
+    const ersetztVon = da(m.entscheidungen) ? ersetztDurch(m.entscheidungen.entscheidungen) : new Map<string, string>();
     for (const a of m.annahmen.annahmen) {
       belegeVon('annahmen', a.id, a.belegIds);
-      textVon('annahmen', a.id, a.text);
-      // „gesagt“ und „erzählt“ kommen aus Gesprächen, also aus den Interviews: Ein D- oder A-Verweis allein reicht nicht.
-      // „getan“ (beobachtetes Verhalten, z. B. Kassendaten) kann außerhalb der Mappe liegen, aber ganz ohne Quelle
-      // fragt man nach (Begleiter Annahmen-Map: „getan, aber ohne Quelle – nachfragen“); Annahmen haben keine Beleg-Notiz.
+      textVon('annahmen', a.id, `${a.text}\n${a.belegNotiz ?? ''}`);
+      // Skala nach Bland: „gesagt“ und „erzählt“ kommen aus Gesprächen, also aus den Interviews. Ein D- oder A-Verweis
+      // oder eine Beleg-Notiz allein reicht dafür nicht.
       if ((a.beleg === 'gesagt' || a.beleg === 'erzaehlt') && !a.belegIds.some((id) => QUELLE[id[0]] === 'interviews')) {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „${BELEGSTUFE_TEXT[a.beleg]}“, nennt aber kein Interview oder Zitat als Beleg.` });
       }
-      if (a.beleg === 'getan' && a.belegIds.length === 0) {
-        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle als Beleg. Wo liegt das beobachtete Verhalten?` });
+      // „getan“ heißt beobachtet, gemessen, bezahlt: Regel in belege.ts. Ohne Quelle fragt man nach (Begleiter Annahmen-Map:
+      // „getan, aber ohne Quelle – nachfragen“). Still nur, wenn es nichts zu prüfen gibt: Entscheidungslog unlesbar, oder
+      // jede genannte D-ID ist unbekannt (dafür steht schon der Befund zur unbekannten ID). Sonst zählen die aufgelösten.
+      const dIds = entscheidungsIds(a);
+      const dNichtPruefbar = dIds.length > 0 && (m.entscheidungen === 'unlesbar' || dIds.every((id) => warumUnbekannt(id) !== null));
+      if (!hatQuelle(a) && !dNichtPruefbar) {
+        // Würde eine genannte Entscheidung tragen, ist aber ersetzt: auf die neue Zeile zeigen.
+        const ersetzte = dIds.filter((id) => { const e = nachId.get(id); return e !== undefined && getanMitNotiz(e) && ersetztVon.has(id); });
+        const zusatz = ersetzte.map((id) => ` ${id} ist ersetzt – nennt die neue Zeile (${ersetztVon.get(id)}).`).join('');
+        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?${zusatz}` });
       }
     }
   }

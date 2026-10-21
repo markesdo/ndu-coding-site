@@ -97,6 +97,13 @@ describe('Annahmen', () => {
     expect(s).toContain('| **A2** | Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann. | machbar | hoch | getan |');
     expect(s).toContain('Stand: 22.10.2026');
   });
+  it('Beleg-Notiz steht in der Beleg-Spalte nach Stufe und IDs, ohne Notiz bleibt die Zelle wie bisher', () => {
+    const a = laden('annahmen');
+    const mit = rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[1], belegNotiz: 'Kassendaten September' }] });
+    expect(mit).toContain('| **A2** | Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann. | machbar | hoch | getan (Kassendaten September) |');
+    const mitId = rendern('annahmen', { ...a, annahmen: [{ ...a.annahmen[1], belegIds: ['D2'], belegNotiz: 'Strichliste | Woche 1' }] });
+    expect(mitId).toContain('| hoch | getan (D2; Strichliste \\| Woche 1) |');
+  });
   it('senkrechter Strich in der Tabelle wird maskiert', () => {
     const d = { ...laden('annahmen'), annahmen: [{ ...laden('annahmen').annahmen[0], text: 'a | b\nc' }] };
     expect(rendern('annahmen', d)).toContain('a \\| b c');
