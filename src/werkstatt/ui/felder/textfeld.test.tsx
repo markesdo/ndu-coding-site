@@ -7,7 +7,7 @@ const html = (hinweis?: string) => renderToStaticMarkup(<Textfeld label="Notizen
 describe('Textfeld: Hinweis', () => {
   it('zeigt den Hinweis am Feld und verknüpft ihn mit aria-describedby, ohne aria-invalid', () => {
     const h = html('Klingt nach einem Namen.');
-    const id = /<p class="wk-feldhinweis" id="([^"]+)">Klingt nach einem Namen\.<\/p>/.exec(h)?.[1];
+    const id = /<p class="wk-feldhinweis" id="([^"]+)" role="status">Klingt nach einem Namen\.<\/p>/.exec(h)?.[1];
     expect(id).toBeTruthy();
     expect(h).toContain(`aria-describedby="${id}"`);
     expect(h).not.toContain('aria-invalid');

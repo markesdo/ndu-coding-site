@@ -34,7 +34,7 @@ export default function Textfeld({ label, wert, onChange, fehler, hilfe, hinweis
         <input {...gemeinsam} type="text" onChange={(e) => onChange(e.target.value)} />
       )}
       {fehler && <p className="wk-fehler" id={fehlerId}>{fehler}</p>}
-      {hinweis && <p className="wk-feldhinweis" id={hinweisId}>{hinweis}</p>}
+      {hinweis && <p className="wk-feldhinweis" id={hinweisId} role="status">{hinweis}</p>}
     </div>
   );
 }

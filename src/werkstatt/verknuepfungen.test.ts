@@ -26,7 +26,7 @@ function kaffeebar(): MappeDaten & { [K in ArtefaktName]: DatenVon<K> } {
 
 // Die Kaffeebar hat eine Lücke mit Absicht: A2 und A4 stehen auf „getan“ ohne Quelle (Begleiter: „nachfragen“).
 const KAFFEEBAR_BEFUNDE = ['A2', 'A4'].map((id) => ({
-  art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung mit Beleg (D…). Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
+  art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Quelle nennt. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
 }));
 
 describe('verknuepfungenPruefen', () => {
@@ -112,26 +112,53 @@ describe('verknuepfungenPruefen', () => {
     ]);
   });
 
-  it('Annahme „getan“: still mit einer Entscheidung, die selbst eine Quelle nennt (D2: Notiz, D3: Interviews)', () => {
+  it('Annahme „getan“: still mit einer Entscheidung, die selbst „getan“ ist und eine Quelle nennt (D2: Kassendaten September)', () => {
     const m = kaffeebar();
     m.annahmen.annahmen[1].belegIds = ['D2'];
-    m.annahmen.annahmen[3].belegIds = ['D3'];
+    m.annahmen.annahmen[3].belegIds = ['I2-4', 'D2'];
     expect(verknuepfungenPruefen(m).befunde).toStrictEqual([]);
   });
 
-  it('Annahme „getan“: Interview-Zitat, A- oder F-ID oder eine Entscheidung ohne Quelle (D1) reichen nicht', () => {
-    for (const ids of [['I2-4'], ['I1'], ['A3'], ['F1'], ['D1']]) {
+  it('Annahme „getan“: Interview-Zitat, A- oder F-ID oder eine Entscheidung ohne eigene „getan“-Quelle reichen nicht', () => {
+    // D1: noch keiner und ersetzt; D3 und D4: „gesagt“, nur mit Interviews belegt.
+    for (const ids of [['I2-4'], ['I1'], ['A3'], ['F1'], ['D1'], ['D3'], ['D4'], ['D3', 'D4', 'I2-4']]) {
       const m = kaffeebar();
       m.annahmen.annahmen[1].belegIds = ids;
       expect(verknuepfungenPruefen(m).befunde, ids.join()).toStrictEqual(KAFFEEBAR_BEFUNDE);
     }
   });
 
-  it('Annahme „getan“ mit D-ID: Entscheidungslog fehlt → Befund; unlesbar → nicht prüfbar, still', () => {
+  it('Entscheidung als Quelle für „getan“: selbst „getan“, nicht ersetzt, Beleg-ID kein Interview, nicht die Annahme selbst', () => {
+    const fall = (aendern: (d: ReturnType<typeof kaffeebar>['entscheidungen']['entscheidungen']) => void) => {
+      const m = kaffeebar();
+      m.annahmen.annahmen[1].belegIds = ['D3'];
+      aendern(m.entscheidungen.entscheidungen);
+      return verknuepfungenPruefen(m).befunde.filter((b) => b.art === 'fehlender-beleg' && b.ort === 'A2');
+    };
+    const [d1, , d3] = [0, 1, 2];
+    // „getan“, aber nur Interviews als Beleg: kein Beleg für Verhalten.
+    expect(fall((d) => { d[d3]!.beleg = 'getan'; })).toHaveLength(1);
+    // „getan“ mit einer Beleg-ID, die es gibt und kein Interview ist (D2): trägt.
+    expect(fall((d) => { d[d3]!.beleg = 'getan'; d[d3]!.belegIds = ['D2']; })).toStrictEqual([]);
+    // „getan“ mit Notiz: trägt.
+    expect(fall((d) => { d[d3]!.beleg = 'getan'; d[d3]!.belegNotiz = 'Strichliste Oktober'; })).toStrictEqual([]);
+    // zeigt nur auf die Annahme selbst zurück: trägt nicht.
+    expect(fall((d) => { d[d3]!.beleg = 'getan'; d[d3]!.belegIds = ['A2']; })).toHaveLength(1);
+    // ersetzte Entscheidung (D1 wird von D3 ersetzt) ist Geschichte, auch mit „getan“ und Notiz.
+    const m = kaffeebar();
+    m.annahmen.annahmen[1].belegIds = ['D1'];
+    Object.assign(m.entscheidungen.entscheidungen[d1]!, { beleg: 'getan', belegNotiz: 'Kassendaten August' });
+    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.ort === 'A2')).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A2'));
+  });
+
+  it('Annahme „getan“ mit D-ID: Entscheidungslog fehlt → nur der Befund zur unbekannten ID; unlesbar → nicht prüfbar, still', () => {
     const fehlt = kaffeebar();
     fehlt.annahmen.annahmen[1].belegIds = ['D2'];
     const v = verknuepfungenPruefen({ ...fehlt, entscheidungen: null });
-    expect(v.befunde.filter((b) => b.art === 'fehlender-beleg')).toStrictEqual(KAFFEEBAR_BEFUNDE);
+    expect(v.befunde.filter((b) => b.ort === 'A2')).toStrictEqual([
+      { art: 'unbekannte-id', artefakt: 'annahmen', ort: 'A2', id: 'D2', text: 'A2 nennt D2 als Beleg. „Entscheidungslog“ ist noch nicht gespeichert, D2 gibt es darum noch nicht.' },
+    ]);
+    expect(v.befunde.filter((b) => b.art === 'fehlender-beleg')).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A4'));
     const unlesbar = kaffeebar();
     unlesbar.annahmen.annahmen[1].belegIds = ['D2'];
     expect(verknuepfungenPruefen({ ...unlesbar, entscheidungen: 'unlesbar' }).befunde).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A4'));

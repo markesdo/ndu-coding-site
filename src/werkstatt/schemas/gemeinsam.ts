@@ -72,6 +72,18 @@ export const belegNotiz = z
   .refine((s) => graphemAnzahl(s) <= BELEG_NOTIZ_MAX, { error: `Beleg (Notiz): höchstens ${BELEG_NOTIZ_MAX} Zeichen. Kürze die Notiz oder nenne nur die Quelle.` })
   .optional();
 
+/** Zähler neben dem Notizfeld, z. B. „12/120“ (Grapheme, wie im Schema). */
+export function belegNotizZaehler(notiz: string): string {
+  return `${graphemAnzahl(notiz)}/${BELEG_NOTIZ_MAX}`;
+}
+
+/** Setzt die Beleg-Notiz (Entscheidung oder Annahme); nach trim() leer entfernt das Feld ganz (optional, nie als leerer
+ *  Text gespeichert). Rand-Leerraum meldet das Schema. */
+export function belegNotizSetzen<Z extends { belegNotiz?: string }>(zeile: Z, notiz: string): Omit<Z, 'belegNotiz'> & { belegNotiz?: string } {
+  const { belegNotiz: _alt, ...rest } = zeile;
+  return notiz.trim() === '' ? rest : { ...rest, belegNotiz: notiz };
+}
+
 // Doppelte IDs in einer Liste: Fehler am zweiten Vorkommen, Pfad <index>.id (relativ zur Liste).
 export function doppelteIds(zeilen: readonly { id: string }[], ctx: z.RefinementCtx, meldung: string): void {
   const gesehen = new Set<string>();

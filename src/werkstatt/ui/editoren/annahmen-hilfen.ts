@@ -1,6 +1,7 @@
 // Reine Hilfsfunktionen des Annahmen-Editors. Ohne React und DOM.
+import { entscheidungsIds, getanHatQuelle } from '../../belege.js';
 import { naechsteId } from '../../ids.js';
-import { BELEG_NOTIZ_MAX, TAG1_ARTEN, type Annahme, type Annahmen } from '../../schemas/index.js';
+import { BELEG_NOTIZ_MAX, BELEGSTUFE_TEXT, TAG1_ARTEN, type Annahme, type Annahmen } from '../../schemas/index.js';
 
 type Art = Annahme['art'];
 
@@ -25,10 +26,19 @@ export function annahmeNeu(vorhandene: readonly Annahme[], vergeben: readonly st
 // Skala nach Bland wie auf der Methodenseite: „getan“ = beobachtet, gemessen, bezahlt; Interviews reichen höchstens bis „erzählt“.
 export const annahmeBelegNotizHilfe = `Bei „getan“: was beobachtet, gemessen oder bezahlt wurde, z. B. „Kassendaten September“. Höchstens ${BELEG_NOTIZ_MAX} Zeichen, eine Zeile.`;
 
-/** Weicher Hinweis (kein Schemafehler): „getan“ ohne Beleg-Notiz und ohne Entscheidung (D…) als Beleg. */
-export function getanOhneQuelleHinweis(a: Pick<Annahme, 'beleg' | 'belegIds' | 'belegNotiz'>): string | null {
-  if (a.beleg !== 'getan' || (a.belegNotiz ?? '').trim() !== '' || a.belegIds.some((id) => id.startsWith('D'))) return null;
-  return '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung mit Beleg (D…). Ein Interview-Zitat belegt höchstens „erzählt“.';
+/** Weicher Hinweis am Notizfeld (kein Schemafehler, Speichern bleibt erlaubt), Regel aus belege.ts. Der Editor kennt das
+ *  Entscheidungslog nicht: Bei einer D-ID erinnert er nur daran, was die Entscheidung selbst braucht. */
+export function getanOhneQuelleHinweis(a: Pick<Annahme, 'id' | 'beleg' | 'belegIds' | 'belegNotiz'>): string | null {
+  if (getanHatQuelle(a, null)) return null;
+  const d = entscheidungsIds(a);
+  if (d.length > 0) return `${d.join(', ')} trägt „getan“ nur, wenn die Entscheidung selbst „getan“ ist und eine Quelle nennt. Sonst hier die Quelle notieren.`;
+  return '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung (D…), die selbst „getan“ ist und eine Quelle nennt. Ein Interview-Zitat belegt höchstens „erzählt“.';
+}
+
+/** Beleg wie im Markdown, ohne Markdown: „getan (D2; Kassendaten September)“. */
+export function belegAnzeige(a: Pick<Annahme, 'beleg' | 'belegIds' | 'belegNotiz'>): string {
+  const zusatz = [a.belegIds.filter((id) => id.trim() !== '').join(', '), (a.belegNotiz ?? '').trim()].filter(Boolean).join('; ');
+  return zusatz ? `${BELEGSTUFE_TEXT[a.beleg]} (${zusatz})` : BELEGSTUFE_TEXT[a.beleg];
 }
 
 // Der Hinweis gilt den vier Arten von Tag 1; „ethisch“ ist eine Ergänzung, kein Muss.

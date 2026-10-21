@@ -4,13 +4,13 @@ import { Plus, Replace, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { rendern } from '../../render/index.js';
-import { ARTEFAKTE, BELEGSTUFEN, BELEGSTUFE_TEXT, type Entscheidung, type Entscheidungen } from '../../schemas/index.js';
+import { ARTEFAKTE, BELEGSTUFEN, BELEGSTUFE_TEXT, belegNotizSetzen, belegNotizZaehler, type Entscheidung, type Entscheidungen } from '../../schemas/index.js';
 import EditorHuelle from '../EditorHuelle.js';
 import Auswahl from '../felder/Auswahl.js';
 import Textfeld from '../felder/Textfeld.js';
 import VerweisAuswahl from '../felder/VerweisAuswahl.js';
 import {
-  belegNotizHilfe, belegNotizSetzen, belegNotizZaehler, datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileHinzufuegen, zeilenModus,
+  belegNotizHilfe, datumAnzeigen, ersetzen, ersetztVon, gespeicherteIds, loeschen, sperrHinweis, zeileHinzufuegen, zeilenModus,
 } from './entscheidungen-hilfen.js';
 import './editoren.css';
 

@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import beispiel from '../../beispiele/annahmen.json';
-import { artefaktParsen, type Annahmen } from '../../schemas/index.js';
-import { annahmeBelegNotizHilfe, annahmeNeu, annahmenSetzen, fehlendeArten, fehlendeArtenHinweis, getanOhneQuelleHinweis, riskantesteSetzen } from './annahmen-hilfen.js';
-import { belegNotizSetzen } from './entscheidungen-hilfen.js';
+import { artefaktParsen, belegNotizSetzen, type Annahmen } from '../../schemas/index.js';
+import { annahmeBelegNotizHilfe, annahmeNeu, annahmenSetzen, belegAnzeige, fehlendeArten, fehlendeArtenHinweis, getanOhneQuelleHinweis, riskantesteSetzen } from './annahmen-hilfen.js';
 
 const kaffeebar = () => structuredClone(beispiel) as Annahmen;
 const leer = (): Annahmen => ({ schema: 'annahmen@1', stand: '2026-10-22', annahmen: [] });
@@ -19,7 +18,7 @@ describe('belegNotizSetzen an einer Annahme', () => {
 });
 
 describe('getanOhneQuelleHinweis', () => {
-  const HINWEIS = '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung mit Beleg (D…). Ein Interview-Zitat belegt höchstens „erzählt“.';
+  const HINWEIS = '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung (D…), die selbst „getan“ ist und eine Quelle nennt. Ein Interview-Zitat belegt höchstens „erzählt“.';
   it('„getan“ ohne Notiz und ohne D-ID: Hinweis; Interview-Zitat oder A-ID allein ändern daran nichts', () => {
     const a = kaffeebar().annahmen[1]!;
     expect(a.beleg).toBe('getan');
@@ -27,15 +26,29 @@ describe('getanOhneQuelleHinweis', () => {
     expect(getanOhneQuelleHinweis({ ...a, belegIds: ['I2-4', 'A3'] })).toBe(HINWEIS);
     expect(getanOhneQuelleHinweis({ ...a, belegNotiz: ' ' })).toBe(HINWEIS);
   });
-  it('mit Beleg-Notiz oder D-ID still, andere Stufen nie', () => {
+  it('mit D-ID: der Editor kennt das Entscheidungslog nicht und sagt, was die Entscheidung selbst braucht', () => {
+    const a = kaffeebar().annahmen[1]!;
+    expect(getanOhneQuelleHinweis({ ...a, belegIds: ['I2-4', 'D2'] })).toBe('D2 trägt „getan“ nur, wenn die Entscheidung selbst „getan“ ist und eine Quelle nennt. Sonst hier die Quelle notieren.');
+  });
+  it('mit Beleg-Notiz still (auch neben einer D-ID), andere Stufen nie', () => {
     const a = kaffeebar().annahmen[1]!;
     expect(getanOhneQuelleHinweis({ ...a, belegNotiz: 'Kassendaten September' })).toBeNull();
-    expect(getanOhneQuelleHinweis({ ...a, belegIds: ['D2'] })).toBeNull();
-    for (const beleg of ['keiner', 'gesagt', 'erzaehlt'] as const) expect(getanOhneQuelleHinweis({ ...a, beleg })).toBeNull();
+    expect(getanOhneQuelleHinweis({ ...a, belegIds: ['D2'], belegNotiz: 'Kassendaten September' })).toBeNull();
+    for (const beleg of ['keiner', 'gesagt', 'erzaehlt'] as const) expect(getanOhneQuelleHinweis({ ...a, beleg, belegIds: [] })).toBeNull();
   });
   it('Hilfe des Notizfelds erklärt „getan“ und nennt die Grenze', () => {
     expect(annahmeBelegNotizHilfe).toContain('beobachtet, gemessen oder bezahlt');
     expect(annahmeBelegNotizHilfe).toContain('Höchstens 120 Zeichen');
+  });
+});
+
+describe('belegAnzeige', () => {
+  it('Stufe, dann IDs und Notiz wie im Markdown, ohne Zusatz nur die Stufe', () => {
+    const a = kaffeebar().annahmen[1]!;
+    expect(belegAnzeige(a)).toBe('getan');
+    expect(belegAnzeige({ ...a, belegNotiz: 'Kassendaten September' })).toBe('getan (Kassendaten September)');
+    expect(belegAnzeige({ ...a, belegIds: ['D2', 'I2-4'], belegNotiz: 'Kassendaten September' })).toBe('getan (D2, I2-4; Kassendaten September)');
+    expect(belegAnzeige({ ...a, beleg: 'keiner', belegIds: [''] })).toBe('noch keiner');
   });
 });
 

@@ -644,7 +644,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     // Einzige Lücke: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle.
     expect(r.structuredContent).toStrictEqual({
       befunde: ['A2', 'A4'].map((id) => ({
-        art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung mit Beleg (D…). Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
+        art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Quelle nennt. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
       })),
       geprueft: ['entscheidungen', 'annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],
