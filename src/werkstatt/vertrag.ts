@@ -93,4 +93,5 @@ export const MCP_WERKZEUGE = {
   artefaktLesen: 'artefakt_lesen',
   methodeErklaeren: 'methode_erklaeren',
   artefaktPruefen: 'artefakt_pruefen',
+  verknuepfungenPruefen: 'verknuepfungen_pruefen',
 } as const;

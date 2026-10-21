@@ -59,6 +59,7 @@
 .wk-wurzel [aria-invalid="true"] { border-color: var(--accent); border-width: 2px; }
 .wk-hilfe { margin: 0; color: var(--muted); font-size: .88rem; }
 .wk-fehler { margin: .15rem 0 0; color: var(--accent-ink); font-size: .9rem; font-weight: 600; }
+.wk-feldhinweis { margin: .25rem 0 0; padding: .35rem .6rem; border-left: 3px solid var(--yellow); background: var(--yellow-soft); color: var(--fg); font-size: .9rem; }
 
 /* Liste mit Zeilen */
 .wk-liste, .wk-verweise { margin: 0 0 1rem; padding: 0; border: 0; min-width: 0; }

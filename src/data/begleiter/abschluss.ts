@@ -71,8 +71,8 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
         antwort: 'Ja, wenn sie wirklich zur Zielgruppe gehören und das Problem haben. Fitzpatrick hält freundliche Kontakte für brauchbar, solange die Fragen gut sind (S. 56). Vermeiden sollst du nur, dass das ganze Material aus engen Freund*innen kommt, und das Team zählt nie.',
       },
       {
-        frage: 'Wohin mit den Notizen, solange es den Interview-Editor noch nicht gibt?',
-        antwort: 'Die Rohnotizen bleiben bei dir, pseudonymisiert als I1 bis I5. Schon jetzt kommen der Snapshot nach Miro (T1 · 5) und die Überraschungen als Zeilen ins Entscheidungslog. Notizen und Zitate überträgst du, sobald der Editor im Teams-Kanal angekündigt ist.',
+        frage: 'Wohin mit den Notizen?',
+        antwort: 'In den Interview-Editor der Werkstatt, unten auf der Abschluss-Seite: pro Interview Pseudonym (I1 bis I5), Notizen, Zitate mit IDs wie I2-3 und den Snapshot-Text. Aufnahme und Rohnotizen mit Namen bleiben bei dir. Der Snapshot kommt zusätzlich nach Miro (T1 · 5), die Überraschungen als Zeilen ins Entscheidungslog, belegt mit den Zitat-IDs.',
       },
       {
         frage: 'Muss ich aufnehmen?',
@@ -117,7 +117,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
         'Pro Interview die nächste freie Karte in der eigenen Spalte: „I1 · Pseudonym“ durch das Pseudonym ersetzen, ins Feld „Bild“ ein Bild oder Stichwort statt Foto, ins Feld „Zitat“ den wörtlichen Satz.',
         'Geschichte als Skizze: das kleine Sticky in der Karte mit Cmd+D bzw. Strg+D kopieren, je eines pro Schritt, Pfeile mit dem Verbindungswerkzeug.',
         'Kurzinfos, Einsichten und Chancen in die drei Felder darunter; Chancen in den Worten der Person, nicht als Lösung.',
-        'An Tag 2 besprecht ihr die Karten gemeinsam auf dem Board. Notizen und Zitate kommen erst mit dem Interview-Editor in die Werkstatt.',
+        'An Tag 2 besprecht ihr die Karten gemeinsam auf dem Board. Notizen, Zitate und Snapshot-Text tragt ihr zusätzlich in den Interview-Editor der Werkstatt ein.',
       ],
     },
     kern: [
@@ -236,7 +236,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       'In der Werkstatt angemeldet? Dann „Zahlen aus der Werkstatt holen“ klicken.',
       '„Gezählt wird nur, was in der Werkstatt gespeichert ist, nicht was auf dem Miro-Board oder lokal steht.“',
       '„Fehlt bei jemandem eine Zahl, ist das ein Auftrag für heute Abend, kein Urteil.“',
-      'An die Teams-Ankündigung des Interview-Editors erinnern.',
+      'Interview-Editor unten auf der Seite und Datenschutzhinweis zeigen: „Vor jedem Gespräch zeigen.“',
     ],
     ueberleitung: 'Bis Tag 2 führt ihr eure fünf Gespräche mit je einem Snapshot, und Tag 2 beginnt mit der Interview-Synthese, in der ihr die Snapshots im Team besprecht.',
     kern: [

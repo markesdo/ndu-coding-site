@@ -1,0 +1,61 @@
+import { describe, expect, it } from 'vitest';
+import interviewsBeispiel from './beispiele/interviews.json';
+import { namenFinden, namenHinweis } from './eigennamen';
+import { artefaktParsen } from './schemas/index';
+
+describe('namenFinden', () => {
+  it('Anrede mit Namen, „ich heiße …“ und häufige Vornamen', () => {
+    expect(namenFinden('Frau Huber kommt jeden Tag. Ich heiße Berger, sagt er. Dann kam Lukas dazu.')).toStrictEqual([
+      { fund: 'Frau Huber', grund: 'Anrede mit Namen' },
+      { fund: 'Ich heiße Berger', grund: 'Name genannt' },
+      { fund: 'Lukas', grund: 'Vorname' },
+    ]);
+  });
+
+  it('Kontaktdaten: E-Mail, Telefonnummer, @Konto', () => {
+    expect(namenFinden('Schreib an pendlerin.42@example.at oder ruf 0664 123 45 67 an, Insta @kaffee_lisa_wien')).toStrictEqual([
+      { fund: 'pendlerin.42@example.at', grund: 'E-Mail-Adresse' },
+      { fund: '0664 123 45 67', grund: 'Telefonnummer' },
+      { fund: '@kaffee_lisa_wien', grund: 'Konto-Name' },
+    ]);
+  });
+
+  it('Genitiv und Vorname als Teil eines Wortes', () => {
+    expect(namenFinden('Annas Zug fährt um 7:42.')).toStrictEqual([{ fund: 'Annas', grund: 'Vorname' }]);
+    // „Annahme“ und „Paulaner“ enthalten Vornamen, sind aber keine.
+    expect(namenFinden('Die Annahme hält. Paulaner im Kühlschrank.')).toStrictEqual([]);
+  });
+
+  it('Nomen, Uhrzeiten, Daten und Frau ohne Namen bleiben still', () => {
+    expect(namenFinden('Die Frau neben ihr schaut auf die Uhr. Zug 7:42, am 2026-10-23, acht Leute in der Schlange.')).toStrictEqual([]);
+    expect(namenFinden('Sie heißt das gut, er heißt mich willkommen.')).toStrictEqual([]);
+  });
+
+  it('die Kaffeebar-Interviews lösen keinen Hinweis aus', () => {
+    for (const iv of interviewsBeispiel.interviews) {
+      const texte = [iv.pseudonym, iv.zitat, iv.kurzinfos, iv.notizen, ...iv.einsichten, ...iv.chancen.map((c) => c.text), ...iv.zitate.map((z) => z.text)];
+      for (const t of texte) expect(namenFinden(t), `${iv.id}: ${t}`).toStrictEqual([]);
+    }
+  });
+});
+
+describe('namenHinweis', () => {
+  it('nennt jeden Fund mit Grund und sagt, dass trotzdem gespeichert wird', () => {
+    expect(namenHinweis('Herr Maier, Tel. 0043 664 1234567')).toBe(
+      'Klingt nach etwas, woran man die Person erkennt: „Herr Maier“ (Anrede mit Namen), „0043 664 1234567“ (Telefonnummer). Ersetze es durch eine Rolle oder das Pseudonym. Gespeichert wird trotzdem.',
+    );
+  });
+
+  it('ohne Fund: undefined', () => {
+    expect(namenHinweis('Pendlerin, Zug 7:42')).toBeUndefined();
+  });
+});
+
+describe('nur Hinweis, keine Sperre', () => {
+  it('ein Interview mit Namen in den Notizen lässt sich trotzdem speichern (Schema bleibt gültig)', () => {
+    const d = structuredClone(interviewsBeispiel);
+    d.interviews[0].notizen = 'Frau Huber kommt jeden Tag.';
+    expect(namenHinweis(d.interviews[0].notizen)).toBeDefined();
+    expect(artefaktParsen('interviews', d).ok).toBe(true);
+  });
+});
