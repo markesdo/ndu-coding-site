@@ -236,14 +236,16 @@ describe('Annahmen', () => {
     const a = klon(annahmen);
     expect(a.annahmen.some((z: Record<string, unknown>) => 'belegNotiz' in z)).toBe(false);
     const r = artefaktParsen('annahmen', a);
-    if (!('daten' in r)) throw new Error(JSON.stringify(r));
+    expect('fehler' in r ? r.fehler : []).toStrictEqual([]);
+    if (!('daten' in r)) return;
     expect(r.daten.annahmen[1]).toStrictEqual(a.annahmen[1]);
   });
   it('belegNotiz bleibt beim Parsen erhalten, höchstens 120 Zeichen und einzeilig, mit denselben Meldungen wie im Entscheidungslog', () => {
     const a = klon(annahmen);
     a.annahmen[1].belegNotiz = 'Kassendaten September';
     const r = artefaktParsen('annahmen', a);
-    if (!('daten' in r)) throw new Error(JSON.stringify(r));
+    expect('fehler' in r ? r.fehler : []).toStrictEqual([]);
+    if (!('daten' in r)) return;
     expect(r.daten.annahmen[1]!.belegNotiz).toBe('Kassendaten September');
     a.annahmen[1].belegNotiz = 'x'.repeat(BELEG_NOTIZ_MAX);
     expect(artefaktParsen('annahmen', a).ok).toBe(true);
