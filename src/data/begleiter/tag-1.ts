@@ -10,13 +10,12 @@ const KNIBERG = 'Henrik Kniberg, Making sense of MVP (Crisp Blog, 2016), https:/
 export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'kickoff': {
     live: [
-      'Ein Team, drei Produkte: jede*r ist Product Owner des eigenen und arbeitet in den beiden anderen mit.',
-      'Bewertung: Prototyp 70 %, Präsentation 30 %.',
-      'Neues Produkt oder Weiterführung des Coding-Projekts – beides geht.',
-      'Rhythmus jeder Methode: erst Theorie mit Buchgrafik, dann Kaffeebar gemeinsam, dann euer Produkt.',
-      'Toolbox als Landkarte: jede Methode mit ihrer Frage und dem Artefakt, das entsteht.',
+      '„Ihr dürft ein neues Produkt starten oder euer Projekt aus dem Coding-Kurs weiterführen – beides zählt.“',
+      '„Jede Methode läuft gleich: erst die Theorie mit der Buchgrafik, dann die Kaffeebar gemeinsam, dann euer Produkt.“',
+      'Fragen: Wer hat schon eine Produktidee, wer führt weiter?',
+      'Rollen klären: Product Owner entscheidet, die anderen denken und interviewen mit.',
     ],
-    ueberleitung: 'Gearbeitet wird auf einem gemeinsamen Miro-Board – kurz, wie das aufgebaut ist.',
+    ueberleitung: 'Ihr arbeitet auf einem gemeinsamen Miro-Board – ich zeige euch kurz, wie es aufgebaut ist.',
     fragen: [
       { frage: 'Darf ich mein Projekt aus dem Coding-Kurs weiterführen?', antwort: 'Ja, laut Handout: neu oder als Weiterführung. Entscheidend ist, dass es ein eigenes digitales Produkt mit einer echten Zielgruppe ist, die man bis Tag 2 interviewen kann.' },
       { frage: 'Warum die Kaffeebar und nicht gleich unser Produkt?', antwort: 'Am Beispiel, das alle kennen, sieht man die Methode ohne Streit über Inhalte. Danach wendet ihr sie sofort auf euer Produkt an – im selben Frame direkt daneben.' },
@@ -26,11 +25,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'miro': {
     live: [
-      'Ein Board, eine Spalte pro Tag; heute T1 · 1 bis T1 · 5.',
-      'Links die Kaffeebar, daneben eure Spalte: kopieren, nicht verschieben.',
-      'Ein Gedanke pro Sticky.',
-      'Fragen, die nicht dran sind: in den Parkplatz.',
-      'Miro zum Denken; das Ergebnis kommt am Ende jedes Blocks in die Werkstatt.',
+      'Board am Beamer öffnen, „Start hier“ zeigen.',
+      'Spalten wählen lassen: jede*r trägt Namen und Produkt ein.',
+      'Vorführen: „Alle zu mir holen“ holt alle an deinen Frame.',
+      '„Das Ergebnis jedes Blocks haltet ihr in den letzten zehn Minuten in der Werkstatt fest – daraus liest Claude.“',
+      'Hinweis Datenschutz: Interviewte nur als I1 bis I5, keine Namen, Fotos.',
     ],
     ueberleitung: 'Bevor wir loslegen: das Bild, das uns durch alle Tage trägt – ein Baum vom Ziel bis zum Test.',
     miro: {
@@ -53,11 +52,10 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'faden': {
     live: [
-      'Torres wurde von einem Team gefragt, woher es allein wissen soll, was als Nächstes kommt – daraus entstand der Baum.',
-      'Reihenfolge ist der Kern: erst Ziel, dann Kundschaft, dann Lösungen.',
-      'Chancen heißen Chancen, nicht Probleme: auch Wünsche zählen (Eis schmeckt, Mountainbiken macht Spaß).',
-      'Eine Lösung zählt nur, wenn sie Menschen hilft und das Ziel bewegt.',
-      'Die nächsten drei Folien: wogegen der Baum hilft.',
+      'Geschichte erzählen: Team fragt Torres, wie es allein weiterweiß.',
+      'Fragen: Womit fangen Teams meist an? Erwartet: mit Lösungen.',
+      '„Chancen heißen Chancen, nicht Probleme: Auch Wünsche zählen – Eis oder Mountainbiken lösen kein Problem.“',
+      '„Eine Lösung zählt nur, wenn sie Menschen hilft und euer Ziel bewegt.“',
     ],
     ueberleitung: 'Erste Falle, gegen die der Baum hilft: nur eine Lösung im Blick und die Frage „ja oder nein?“.',
     kern: [
@@ -79,10 +77,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'was-noch': {
     live: [
-      'Wer ein Problem hört, springt zur ersten Lösung – aus gutem Willen, weil man helfen will.',
-      '„Ja oder nein?“ heißt bei Torres Whether-or-not-Entscheidung – laut ihr wohl der häufigste Fehler von Produktteams.',
-      'Vier Feinde guter Entscheidungen nach Heath: zu enger Blick, Bestätigungssuche, kurzfristige Gefühle, Selbstüberschätzung.',
-      'Gegenmittel: vergleichen – „Welche von dreien?“ und „Was könnten wir noch bauen?“',
+      'Fragen: Wer hat zur eigenen Idee schon Alternativen geprüft?',
+      '„Torres nennt ‚ja oder nein?‘ eine Whether-or-not-Entscheidung – für sie vielleicht der häufigste Fehler von Produktteams.“',
+      'Heath nennen: vier Feinde – enger Blick, Bestätigung, Gefühle, Selbstüberschätzung.',
+      'Fallstrick: „Wir wissen schon, welche die beste ist“ – das ist Selbstüberschätzung.',
+      '„Drei Lösungen heißt nicht drei bauen: Ihr testet Annahmen über mehrere parallel.“',
     ],
     ueberleitung: 'Zweiter Nutzen des Baums: Große Chancen lassen sich in kleine zerlegen.',
     kern: [
@@ -100,12 +99,12 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'klein-gross': {
     live: [
-      'Sechs-Monats-Projekt in Zwei-Wochen-Sprints schneiden ist für Torres nicht agil – der Baum zerlegt das Problem, nicht den Plan.',
-      'Torres-Beispiel Streaming: „Ist die Serie gut?“ ist zu groß; „Wer spielt mit?“ ist klein und lösbar.',
-      'Jede kleine Lösung liefert schon Wert – die große Chance wird nach und nach mitgelöst.',
-      'Für euch: Der Prototyp muss nicht alles können, sondern eine kleine Chance wirklich lösen.',
+      'Provozieren: Sechs-Monats-Projekt in Sprints schneiden ist für Torres nicht agil.',
+      'Streaming-Beispiel erzählen: „Wer spielt mit?“ als kleine Chance.',
+      '„Welche kleine Chance könnte euer Prototyp in einer Woche wirklich lösen?“',
+      '„Euer Prototyp muss nicht alles können – eine kleine Chance, wirklich gelöst, zeigt mehr als eine halbe Lösung für alles.“',
     ],
-    ueberleitung: 'Und wenn eine Lösung scheitert? Dann lernt ihr etwas über die Kundschaft – Problem und Lösung wachsen gemeinsam.',
+    ueberleitung: 'Und wenn eine Lösung scheitert, lernt ihr etwas über die Kundschaft – Problem und Lösung wachsen gemeinsam.',
     kern: [
       { text: 'Kontinuierliches Denken statt Projekt-Denken: Ein sechsmonatiges Wasserfallprojekt in Zwei-Wochen-Sprints zerlegen und „agil“ nennen ist weder agil noch kontinuierlich. Kontinuierlich heißt: jeden Sprint Wert liefern.', quelle: `${TORRES}, S. 29` },
       { text: 'Der Baum zerlegt projektgroße Chancen in kleinere; je tiefer im Baum, desto kleiner. Teams lösen eine Chance nach der anderen, und die vielen kleinen Lösungen lösen nach und nach die große.', quelle: `${TORRES}, S. 29` },
@@ -124,11 +123,10 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'problem-loesung': {
     live: [
-      'Viele Firmen trennen: PM definiert das Problem, Design und Entwicklung die Lösung – das zerbricht in der Praxis.',
-      'Nigel Cross: Die besten Designer*innen entwickeln Problem und Lösung zusammen.',
-      'Scheitert ein Test, nicht einfach zur nächsten Idee: „Was haben wir an der Kundschaft missverstanden?“',
-      'Erst die Chancen anpassen, dann neue Lösungen – sonst nur erneut raten.',
-      'Darum wächst der Baum im Innolab jeden Tag mit und zeigt am Ende euren Weg.',
+      'Kontrast nennen: PM besitzt Problem, Design die Lösung – zerbricht in der Praxis.',
+      'Fragen: Ist ein gescheiterter Test Zeitverschwendung? Nur ohne Ableitung.',
+      'Fallstrick: nach Fehlschlag sofort neue Idee, ohne Chancen anzupassen.',
+      '„Euer Baum wächst jeden Tag mit – am Ende zeigt er, wie ihr zu euren Entscheidungen gekommen seid.“',
     ],
     ueberleitung: 'Jetzt die vier Ebenen konkret – am Beispiel der Kaffeebar.',
     kern: [
@@ -144,11 +142,10 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'ebenen': {
     live: [
-      'Outcome heute, Chancen ab Tag 2 aus den Interviews, Lösungen Tag 2–3, Tests Tag 3.',
-      'Chancen in den Worten der Kundschaft – niemand sagt „Ich wünsche mir mehr Kaffeebar-Umsatz“.',
-      'Prüfstein: Gibt es mehr als eine Lösung? „Ich will vorbestellen“ hat nur eine – Lösung in Verkleidung.',
-      '„Wenn ich anstehe, verpasse ich meinen Zug“ lässt App, Express-Theke und Kaffeewagen zu.',
-      'Getestet wird nicht die ganze Idee, sondern was dafür stimmen muss.',
+      'Werbung-Beispiel erzählen: „Werbung vorspulen“ ist Lösung, Chance ist „keine Werbung mögen“.',
+      '„Schreibt Chancen so, wie Menschen sie im Interview sagen würden – niemand sagt ‚Ich wünsche mir mehr Kaffeebar-Umsatz‘.“',
+      'Fallstrick: zu vage Chancen wie „Das soll einfach sein“.',
+      '„Getestet wird nicht die ganze Idee, sondern das, was dafür stimmen muss – mehr an Tag 3.“',
     ],
     ueberleitung: 'So sieht der Baum der Kaffeebar aus – und heute entsteht nur die Wurzel.',
     kern: [
@@ -169,11 +166,16 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'baum-kaffeebar': {
     live: [
-      'Wurzel: Mehr Pendler*innen steigen morgens mit Kaffee in den Zug – das ist heute dran.',
-      'Darunter zwei Chancen, unter einer drei Lösungen, unter einer Lösung ein Test (WhatsApp 3 von 10).',
-      'Die Chancen sind heute noch Vermutungen; ab Tag 2 kommen sie aus euren Interviews.',
-      'An Tag 2 werden die Momente der Experience Map zur obersten Ebene unter dem Outcome.',
+      'Auf die Wurzel zeigen: Pendler*innen mit Kaffee im Zug – heute dran.',
+      '„Die Chancen der Kaffeebar sind nur ein Beispiel für die Form – bei euch kommen sie erst aus echten Interviews.“',
+      '„An Tag 2 werden die Momente der Experience Map, die ihr gleich zeichnet, die oberste Ebene unter dem Outcome.“',
+      'Zeitcheck: Kick-off endet 09:40, dann Toast.',
     ],
+    verstaendnis: {
+      frage: 'Ist ‚Ich will per App vorbestellen‘ eine Chance oder eine Lösung – und woran erkennt ihr das?',
+      antwort: 'Eine Lösung in Verkleidung: Es gibt nur einen Weg, sie umzusetzen. Die Chance dahinter wäre etwa „Wenn ich anstehe, verpasse ich meinen Zug“, die App, Express-Theke und Kaffeewagen zulässt.',
+      falsch: '„Eine Chance, weil die Kundschaft es so sagt“ – Kund*innen äußern oft Lösungswünsche; der Prüfstein ist, ob es mehr als eine Lösung gibt.',
+    },
     ueberleitung: 'Bevor wir eure Wurzel schreiben, ein Warm-up: Wie macht man Toast?',
     kern: [
       { text: 'Die Wurzel des Baums ist das gewünschte Outcome – der Geschäftsbedarf, über den das Team Wert für das Unternehmen schafft.', quelle: `${TORRES}, S. 26` },
@@ -188,9 +190,10 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'toast': {
     live: [
       'Blatt und dicken Stift verteilen, Timer starten.',
-      'Allein, ohne zu reden, möglichst ohne Wörter – es gibt kein Richtig oder Falsch.',
-      'Wer „ich kann nicht zeichnen“ sagt: Kästchen, Pfeile, Strichmännchen reichen.',
-      'Danach alle drei Zeichnungen nebeneinanderlegen, erst dann das Video.',
+      'Aufgabe nur einmal sagen, keine Beispiele geben.',
+      'Rückfragen wie „Toaster oder Pfanne?“ nicht beantworten.',
+      '„Ihr könnt nicht zeichnen? Kästchen, Pfeile und Strichmännchen reichen völlig.“',
+      'Danach Blätter nebeneinander, Video per Knopf öffnen (sonst 10:15).',
     ],
     ueberleitung: 'Zeichnungen nebeneinander: Was fällt euch auf?',
     uebung: { dauer: '3 min Zeichnen, danach Video (TED, ca. 9 min)', form: 'allein, ohne zu reden' },
@@ -223,11 +226,15 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'toast-aufloesung': {
     live: [
       'Erst fragen und sammeln, dann die drei Punkte aufdecken.',
-      'Knoten und Verbindungen: Dinge, Schritte, Personen – und Pfeile dazwischen.',
-      'Kein Bild ist falsch: die eine beginnt in der Küche, der andere auf dem Feld.',
-      'Ein Knoten pro Sticky – nur so lassen sich Modelle verschieben und zusammenführen.',
-      'Dieselben Wörter benutzt Torres für die Experience Map: Knoten und Verbindungen.',
+      '„Wo fängt eure Zeichnung an – in der Küche, im Supermarkt oder auf dem Feld?“',
+      '„Welches Modell ist das richtige? Keines allein – zusammengeführt entsteht ein reicheres Bild als jedes einzelne.“',
+      'Brücke schlagen: Torres nutzt dieselben Wörter, Knoten und Verbindungen.',
     ],
+    verstaendnis: {
+      frage: 'Warum genau ein Knoten pro Sticky?',
+      antwort: 'Damit sich die Modelle verschieben und mehrere Einzelzeichnungen zu einem gemeinsamen, reicheren Bild zusammenführen lassen.',
+      falsch: '„Damit es ordentlich aussieht“ – es geht nicht um Ordnung, sondern darum, Knoten neu anordnen und ähnliche zusammenlegen zu können.',
+    },
     ueberleitung: 'Jetzt dasselbe für euer Produkt: Wie löst eure Zielgruppe ihr Problem heute?',
     kern: [
       { text: 'Torres verwendet dieselbe Sprache: Beim Zusammenführen werden die einzelnen Maps in Knoten (ein Moment, eine Handlung, ein Ereignis) und Verbindungen zerlegt, ähnliche Knoten zusammengelegt, ohne wichtige Details wegzugeneralisieren, und Pfeile zeigen den Fluss – inklusive Schleifen, Wiederholungen und Abbrüche.', quelle: `${TORRES}, S. 56` },
@@ -244,11 +251,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'toast-uebertrag': {
     live: [
-      'T1 · 1: allein, ohne zu reden, ein Knoten pro Sticky.',
-      'Was Menschen heute erleben, nicht euer Produkt; auch Umwege und Abbrüche.',
-      'Danach reihum zeigen: nachfragen, nicht verteidigen.',
-      'Unsichere Verbindung: „?“ dran, Kandidat für die Annahmen-Map.',
-      'Entwurf, keine Wahrheit: Die Map sagt, wonach ihr fragt.',
+      'Alle zu mir holen auf T1 · 1, Kaffeebar-Map links zeigen.',
+      'Fallstrick: Klickpfad durch die eigene App statt heutiges Erleben.',
+      'Nach dem Timer reihum zeigen: nachfragen, nicht verteidigen.',
+      '„Jede Verbindung mit Fragezeichen nehmt ihr nach der Mittagspause mit in die Annahmen-Map.“',
+      'Bei Protest gegen Alleinzeichnen: Antrags-Trio von Torres erzählen.',
     ],
     ueberleitung: 'Damit habt ihr gezeichnet, was Menschen heute tun – jetzt: Woran messt ihr, ob sie es nach eurem Produkt anders tun?',
     uebung: { dauer: '6 min', form: 'allein, ohne zu reden; danach reihum zeigen' },
@@ -300,10 +307,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'outcome': {
     live: [
-      'Output = was ihr baut, Outcome = was Menschen danach anders machen, Impact = was es dem Unternehmen bringt.',
-      'Josh Seiden: Ein Outcome ist eine Verhaltensänderung, die Geschäftsergebnisse antreibt.',
-      'Eine fertige Funktion, die niemand benutzt, ist kein Erfolg.',
-      'Fester Feature-Fahrplan täuscht Gewissheit vor; ein Outcome sagt ehrlich: Wir wissen noch nicht, wie.',
+      'Fragen: Woran merkt ein Team, dass sich eine Funktion gelohnt hat?',
+      'Seiden zitieren: Outcome ist Verhaltensänderung, die Geschäftsergebnisse antreibt.',
+      'Kursbewertungs-Geschichte erzählen: nach der Wirkung des Outcomes fragen.',
+      '„Ein fester Feature-Fahrplan täuscht Gewissheit vor; ein Outcome sagt ehrlich: Wir wissen noch nicht, wie.“',
+      'Fallstrick: „App launchen“ ist Output, kein Outcome.',
     ],
     ueberleitung: 'Outcome ist nicht gleich Outcome – Torres unterscheidet drei Arten von Zielen.',
     kern: [
@@ -324,10 +332,10 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'outcome-arten': {
     live: [
-      'tails.com: Hundefutter im Abo, Ziel Kundenbindung nach 90 Tagen – auf jedes Ergebnis drei Monate warten.',
-      'Interviews fanden zwei Kündigungsgründe: Wert nicht verstanden, Hund mag das Futter nicht.',
-      'Daraus Product Outcomes: sofort messbar, vom Team selbst beeinflussbar.',
-      'Traction Metric „Nutzung des Umstellungskalenders“ legt die Lösung fest – will ihn niemand, steckt das Team fest.',
+      'tails.com erzählen: 90 Tage warten, Interviews zeigen zwei Kündigungsgründe.',
+      '„Ein Product Outcome könnt ihr sofort messen und selbst beeinflussen – darum steht es an der Wurzel eures Baums.“',
+      '„Will den Umstellungskalender niemand, steckt ein Team mit dieser Traction Metric fest.“',
+      'Nachfrage erwarten: Traction Metric passt nur beim Optimieren bewährter Lösungen.',
     ],
     ueberleitung: 'Dieselben drei Arten bei der Kaffeebar – und warum ein neues Outcome mit einem Lernziel beginnt.',
     kern: [
@@ -348,10 +356,10 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'outcome-kaffeebar': {
     live: [
-      'Umsatz am Morgen: zu spät messbar, zu viele Hebel.',
-      'Wurzel: Mehr Pendler*innen steigen mit Kaffee in den Zug – Verhalten, vom Team beeinflussbar.',
-      'Vorbestellungen per App: Falle, die Lösung steht schon drin.',
-      'Neues Outcome: erst Lernziel („Herausfinden, was Pendler*innen vom Kaffee abhält“), die Zielzahl später.',
+      'Zuerst verdeckt fragen: Welche Zeile taugt als Wurzel?',
+      '„Mit Kaffee in den Zug ist keine Lösung – es beschreibt Verhalten und lässt App, Express-Theke oder Kaffeewagen offen.“',
+      '„Bei komplexen Aufgaben schneiden Teams mit Lernziel besser ab als Teams, die sofort eine schwierige Zahl erreichen sollen.“',
+      'Ausblick: Schwellen wie „4 von 5“ kommen auf die Experiment-Karte.',
     ],
     ueberleitung: 'Das Outcome hat noch eine zweite Aufgabe: Es filtert, was überhaupt in den Baum kommt.',
     kern: [
@@ -368,12 +376,12 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'outcome-filter': {
     live: [
-      'Interviews liefern Dutzende Wünsche – in den Baum kommt nur, was das Outcome bewegt.',
-      'Schlechtes WLAN am Bahnhof stimmt, gehört aber nicht in diesen Baum.',
-      'Umgekehrt: Outcome ohne Kundschaft – Wells Fargo.',
-      'Gegengewicht mitführen: Die Schlange darf für alle anderen nicht länger werden.',
+      'Wells Fargo erzählen: Konten ohne Wissen der Kundschaft, Klagen in Milliardenhöhe.',
+      'Fragen: Was tun mit Funden, die nicht zum Outcome passen?',
+      '„Wells Fargo hatte das Ziel richtig gewählt, aber ohne Blick auf die Kundschaft – darum führt ihr ein Gegengewicht mit.“',
+      '„Ein Vorbestell-Weg könnte die Schlange für alle anderen verlängern – genau das misst euer Gegengewicht.“',
     ],
-    ueberleitung: 'Vom Ziel zum Bauen: Wie klein darf der erste Schritt sein? Knibergs Skateboard.',
+    ueberleitung: 'Vom Ziel zum Bauen: Wie klein darf euer erster Schritt sein, damit ihr schon etwas lernt?',
     kern: [
       { text: 'Der Baum löst die Spannung zwischen Geschäft und Kundschaft: zuerst das Geschäftsziel, dann nur die Chancen, die dieses Ziel treiben können. Outcome und Chancenraum begrenzen die Lösungen – das schützt vor dem Schicksal von Wells Fargo.', quelle: `${TORRES}, S. 27–28` },
       { text: 'Rahmung entscheidet: Wells Fargo hatte das Problem (ob ausgesprochen oder nicht) als „Konten um jeden Preis steigern“ gerahmt – das öffnete dem Betrug die Tür. „Kundschaft schaffen, die mehr Konten eröffnen will“ hätte Betrug unwahrscheinlicher gemacht.', quelle: `${TORRES}, S. 24` },
@@ -395,11 +403,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'skateboard': {
     live: [
-      'Obere Reihe: Rad, Achse, Karosserie – erst ganz am Ende ist etwas nutzbar, kein Feedback dazwischen. Kniberg nennt das „bastardized agile“.',
-      'Untere Reihe: Schon das Skateboard bringt von A nach B – und ihr erfahrt, was fehlt.',
-      'Kniberg: „Earliest Testable Product“ statt MVP, weil kaum jemand „minimal“ will, aber fast alle „früh“.',
-      'Schlüsselfrage: Was ist der billigste, schnellste Weg, mit dem Lernen anzufangen?',
-      'Manchmal ist der erste Schritt nicht mal ein Skateboard, sondern ein Busticket.',
+      'Bild zeigen, fragen: Wer ist oben nach Schritt eins zufrieden?',
+      'Lego Universe gegen Minecraft erzählen: Jahre ohne Skateboard, sechs Tage mit.',
+      '„Kniberg sagt lieber ‚früh‘ als ‚minimal‘: Kaum jemand will minimal, aber fast alle wollen früh.“',
+      'Busticket erwähnen: manchmal geht es noch früher als ein Skateboard.',
+      'Fallstrick: MVP als „Minimum Releasable Crap“ missverstehen.',
     ],
     ueberleitung: 'Was ist das Skateboard der Kaffeebar?',
     kern: [
@@ -420,10 +428,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'mvp': {
     live: [
-      'Nicht so: Login, Menü, fertige App – erst am Ende erfahrt ihr, ob jemand vorbestellen will.',
-      'Sondern: Schild „Per WhatsApp vorbestellen“ – lernt sofort, ob jemand will; dann Formular (was, wann); dann App (wie oft).',
-      'MVP ist nicht die schlechteste veröffentlichbare Version, sondern das Kleinste, mit dem ihr eine Annahme prüft.',
-      'Kommt in einer Woche keine WhatsApp-Bestellung, braucht es die App nicht.',
+      'Erst nur obere Reihe zeigen, fragen: Wann lernen wir hier etwas?',
+      '„Ein Schild ist ein Test, kein Produkt – es beantwortet in einer Woche, was sonst erst die fertige App beantwortet.“',
+      '„Kommt in einer Woche keine WhatsApp-Bestellung, braucht es die App nicht.“',
+      'Fragen: Was wäre das Schild für das eigene Produkt?',
+      'Bei Bedarf Zappos: Schuhe fotografiert statt eingelagert.',
     ],
     ueberleitung: 'Zum Schluss des Vormittags: wie Design Thinking typischerweise schiefgeht.',
     kern: [
@@ -441,12 +450,16 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'schiefgehen': {
     live: [
-      'Patton: Design Thinking klingt in jedem Schritt vernünftig – in der Praxis tun die meisten das Gegenteil.',
-      'Entdecken: ohne Rahmen starten; nicht mit Menschen reden, weil die Idee so überzeugt.',
-      'Definieren: viele Probleme für viele Menschen zugleich lösen wollen.',
-      'Entwickeln: nur eine Lösung betrachten. Ausliefern: „Sieht toll aus“ für einen Test halten.',
-      'Der erste Fehler ist der, gegen den wir gleich arbeiten: ohne Rahmen weiß niemand, für wen.',
+      'Patton-Geschichte erzählen: agil, planbar – und trotzdem kaum Outcome.',
+      'Fragen: Welchen Fehler kennt jede*r aus dem Coding-Projekt?',
+      '„Patton ist für Design Thinking – er kritisiert, wie es oft ausgeführt wird, nicht den Prozess.“',
+      '„Gegen den ersten Fehler arbeiten wir gleich: Ohne Rahmen weiß niemand, für wen die Lösung gut sein soll.“',
     ],
+    verstaendnis: {
+      frage: 'Ein Prototyp ‚sieht toll aus‘, alle nicken. Ist er damit getestet?',
+      antwort: 'Nein. Ein Test prüft, ob die Lösung das Problem wirklich löst und Menschen ihr Verhalten ändern – also das Outcome, nicht den Eindruck.',
+      falsch: '„Ja, positives Feedback ist ein Test“ – Zustimmung zu einem schönen Prototyp sagt nichts darüber, ob ihn jemand benutzt.',
+    },
     ueberleitung: 'Was ihr heute noch erarbeitet: die Methoden des Tages auf einen Blick.',
     kern: [
       { text: 'Woher die erste Zeile stammt: Die Schritte von Design Thinking „seem like obviously good ideas. But, in practice, what I and most people tend to do is the exact opposite.“ Und später: „There are some predictable ways that design processes fail. […] It’s not the process.“', quelle: `${PATTON}, Kap. 15, Abschnitte „Empathize, Focus, Ideate, Prototype, Test“ und „How to Mess Up a Good Thing“` },
@@ -466,12 +479,12 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'methoden': {
     live: [
-      'Am Abend habt ihr: Produkt-Brief, erste Zeilen im Entscheidungslog, riskanteste Annahme, Interviewleitfaden.',
-      'Reihenfolge: Problem-Rahmen → Entscheidungslog → nach dem Mittag Annahmen-Map → Jobs to be Done & Mom Test → Leitfaden.',
-      'Hausaufgabe bis Tag 2: fünf echte Interviews, Notizen mit Pseudonym, Snapshot auf Miro, Entscheidungslog.',
-      'Jetzt zehn Minuten Pause, dann Problem-Rahmen.',
+      'Zeitcheck: um 11:00 Pause, um 11:10 Problem-Rahmen.',
+      '„Bis Tag 2 führt ihr fünf echte Interviews; Notizen nur mit Pseudonym, Snapshot auf Miro, Entscheidungslog nachziehen.“',
+      'Fragen offen? In den Parkplatz unter „Start hier“.',
+      'Toolbox zeigen, falls jemand fragt, welche Methode welches Artefakt liefert.',
     ],
-    ueberleitung: 'Pause bis 11:10. Danach: erst der Rahmen, dann die Lösung – Problem-Rahmen und Produkt-Brief.',
+    ueberleitung: 'Ihr habt jetzt Pause bis 11:10, danach legt ihr mit dem Problem-Rahmen und eurem Produkt-Brief los.',
     fragen: [
       { frage: 'Bis wann müssen die fünf Interviews fertig sein?', antwort: 'Bis Tag 2; Details auf der Seite Abschluss & Hausaufgabe (/innolab/tag-1/abschluss).' },
       { frage: 'Wo sehe ich, welche Methode welches Artefakt liefert?', antwort: 'In der Toolbox (/innolab/methoden): jede Methode mit ihrer Frage und dem Artefakt.' },
