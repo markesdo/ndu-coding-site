@@ -11,6 +11,23 @@ export function ueberschriftText(roh: string): string {
   return roh.replace(/\s+/g, ' ').replace(/\s*\(\d+\s*min\)\s*$/, '').trim();
 }
 
+const ENTITAETEN: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', shy: '' };
+
+/** HTML aus einem Seitenquelltext → Text: ohne Tags, Entitäten (&amp;, &#8211; …) aufgelöst, Leerraum zusammengefasst. */
+export function textAusHtml(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, '')
+    .replace(/&(?:#(\d+)|#x([0-9a-f]+)|(\w+));/gi, (m, dez?: string, hex?: string, name?: string) =>
+      dez ? String.fromCodePoint(Number(dez)) : hex ? String.fromCodePoint(parseInt(hex, 16)) : (ENTITAETEN[name!.toLowerCase()] ?? m))
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** Überschrift aus dem Seitenquelltext (inneres HTML des h2/h3) → Text ohne Zeit-Pille und ohne „(10 min)“ am Ende. */
+export function ueberschriftAusHtml(html: string): string {
+  return ueberschriftText(textAusHtml(html.replace(/<span[^>]*class="pill[^"]*"[^>]*>[\s\S]*?<\/span>/g, '')));
+}
+
 /** Text einer Überschrift im Browser, ohne Zeit-Pille. */
 export function ueberschriftVon(h: HTMLElement): string {
   const k = h.cloneNode(true) as HTMLElement;

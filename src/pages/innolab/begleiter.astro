@@ -1,0 +1,283 @@
+---
+// Präsentator-Begleiter: auf dem Tablet neben dem Beamer. Zeigt zu einer Folie von Tag 1 oben, was Markus sagt (live),
+// darunter die Vorbereitung. Folgt der Position, die der Beamer-Tab an /api/position meldet (wo-ist.ts); von Hand
+// blättern pausiert das Folgen. Folienliste aus den Seitenquellen (lib/begleiter.ts), Notizen aus data/begleiter/.
+// Eigenes schlankes Gerüst statt Layout.astro: ohne Seitenleiste, Beamer-Modus und „Markus ist bei …“-Knopf.
+// Liegt hinter dem Kurspasswort wie alles unter /innolab; verlinkt nur beim Präsentator (PraesentatorEinstieg.astro).
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/jetbrains-mono';
+import '../../styles/global.css';
+import { ChevronLeft, ChevronRight, ExternalLink, LayoutGrid, Radio, Timer } from '@lucide/astro';
+import { NOTIZEN } from '../../data/begleiter';
+import { quellenAusGlob, seitenLabel, tagFolien } from '../../lib/begleiter';
+import { teamFrameLink } from '../../lib/team-board';
+
+// Glob vom Projektwurzel aus (wie in lib/begleiter.test.ts), damit die Schlüssel nicht vom Ordner dieser Datei abhängen.
+const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
+const folien = tagFolien(quellen);
+// Ohne Folien wäre die Seite leer und das Folgen sinnlos – lieber den Build abbrechen.
+if (folien.length === 0) throw new Error('Begleiter: keine Folien von Tag 1 gefunden (Glob oder Seitenpfade geändert?)');
+const seitenName = (pfad: string) => seitenLabel(pfad, quellen[pfad] ?? '');
+const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
+  pfad, name: seitenName(pfad), folien: folien.map((f, i) => ({ ...f, i })).filter((f) => f.pfad === pfad),
+}));
+---
+<!doctype html>
+<html lang="de" data-bereich="innolab" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Begleiter · Innolab</title>
+    <link rel="icon" href="/favicon-innolab.svg" type="image/svg+xml" />
+  </head>
+  <body class="begleiter">
+    <nav class="steuer" aria-label="Folien">
+      <button type="button" class="btn rund" data-zurueck aria-label="Vorige Folie" title="Vorige Folie (←)"><ChevronLeft size={22} aria-hidden="true" /></button>
+      <select data-liste aria-label="Folie wählen">
+        {gruppen.map((g) => (
+          <optgroup label={g.name}>
+            {g.folien.map((f) => <option value={f.i}>{f.i + 1}. {f.titel}</option>)}
+          </optgroup>
+        ))}
+      </select>
+      <button type="button" class="btn rund" data-weiter aria-label="Nächste Folie" title="Nächste Folie (→)"><ChevronRight size={22} aria-hidden="true" /></button>
+      <button type="button" class="btn folgen" data-folgen aria-pressed="true"><Radio size={18} aria-hidden="true" /> Dem Beamer folgen</button>
+      <p class="status" data-status role="status">Frage den Beamer …</p>
+    </nav>
+
+    <main>
+      {folien.map((f, i) => {
+        const n = NOTIZEN[f.pfad]?.[f.id];
+        const naechste = folien[i + 1];
+        const frameLink = n?.miro?.frame ? teamFrameLink(n.miro.frame) : null;
+        return (
+          <article data-index={i} hidden={i !== 0}>
+            <header class="kopf">
+              <p class="seite">{seitenName(f.pfad)} · Folie {i + 1} von {folien.length}</p>
+              <h1>{f.titel}</h1>
+              <a class="oeffnen" href={`${f.pfad}#${f.id}`} target="_blank" rel="noopener">Folie öffnen <ExternalLink size={14} aria-hidden="true" /></a>
+            </header>
+
+            <section class="live" aria-label="Live">
+              {n ? (
+                <>
+                  <ul class="stichworte">{n.live.map((s) => <li>{s}</li>)}</ul>
+                  {n.uebung && (n.uebung.dauer || n.uebung.form) && (
+                    <p class="sozial"><Timer size={20} aria-hidden="true" /> {[n.uebung.dauer, n.uebung.form].filter(Boolean).join(' · ')}</p>
+                  )}
+                  {n.miro && (
+                    <div class="miro">
+                      <h2><LayoutGrid size={18} aria-hidden="true" /> In Miro</h2>
+                      {n.miro.frame && (
+                        <p class="frame">{frameLink
+                          ? <a href={frameLink} target="_blank" rel="noopener noreferrer"><strong>{n.miro.frame}</strong> <ExternalLink size={14} aria-hidden="true" /><span class="sr-only">(öffnet in neuem Tab)</span></a>
+                          : <strong>{n.miro.frame}</strong>}</p>
+                      )}
+                      <ul>{n.miro.schritte.map((s) => <li>{s}</li>)}</ul>
+                      {n.miro.vorschlaege && n.miro.vorschlaege.length > 0 && (
+                        <>
+                          <h3>Vorschläge für die Kaffeebar</h3>
+                          <ul class="zettel">{n.miro.vorschlaege.map((s) => <li>{s}</li>)}</ul>
+                        </>
+                      )}
+                    </div>
+                  )}
+                  {n.ueberleitung && <p class="ueberleitung"><span>Überleitung:</span> {n.ueberleitung}</p>}
+                </>
+              ) : (
+                <p class="leer">Zu dieser Folie gibt es noch keine Notizen.</p>
+              )}
+              {naechste && <p class="naechste">Als Nächstes: {naechste.titel}{naechste.pfad !== f.pfad && ` (${seitenName(naechste.pfad)})`}</p>}
+            </section>
+
+            {n && (n.kern || n.geschichte || n.zusatz || n.fragen || n.ablauf) && (
+              <section class="vorbereitung" aria-label="Vorbereitung">
+                {n.kern && n.kern.length > 0 && (
+                  <div class="vb">
+                    <h2>Kern aus der Quelle</h2>
+                    {n.kern.map((k) => <p>{k.text} <cite>{k.quelle}</cite></p>)}
+                  </div>
+                )}
+                {n.geschichte && (
+                  <div class="vb">
+                    <h2>Zum Erzählen</h2>
+                    <p>{n.geschichte.text} <cite>{n.geschichte.quelle}</cite></p>
+                  </div>
+                )}
+                {n.zusatz && n.zusatz.length > 0 && (
+                  <div class="vb">
+                    <h2>Zusatzfälle</h2>
+                    {n.zusatz.map((z) => (
+                      <div class="zusatz">
+                        <p class="etikett">Zusatz, nicht aus den Kursquellen</p>
+                        <h3>{z.titel}</h3>
+                        <p>{z.text} <cite>{z.quelle}</cite></p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {n.fragen && n.fragen.length > 0 && (
+                  <div class="vb">
+                    <h2>Erwartbare Fragen</h2>
+                    <dl>{n.fragen.map((q) => <><dt>{q.frage}</dt><dd>{q.antwort}</dd></>)}</dl>
+                  </div>
+                )}
+                {n.ablauf && (
+                  <div class="vb">
+                    <h2>Übung</h2>
+                    {n.ablauf.schritte && <><h3>Ablauf</h3><ol>{n.ablauf.schritte.map((s) => <li>{s}</li>)}</ol></>}
+                    {n.ablauf.achten && <><h3>Worauf achten</h3><ul>{n.ablauf.achten.map((s) => <li>{s}</li>)}</ul></>}
+                    {n.ablauf.fehler && <><h3>Typische Fehler</h3><ul>{n.ablauf.fehler.map((s) => <li>{s}</li>)}</ul></>}
+                    {n.ablauf.aufloesung && <><h3>Auflösung</h3><p>{n.ablauf.aufloesung}</p></>}
+                  </div>
+                )}
+              </section>
+            )}
+          </article>
+        );
+      })}
+    </main>
+
+    <script>
+      import { anzeige, type Ereignis, type Zustand } from '../../components/begleiter-anzeige';
+      import { folieZu, type Folie } from '../../lib/begleiter';
+      import { abfrageKette, jsonHolen } from '../../lib/kette';
+      import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, RUHIG_MS, alterText, naechsteAbfrage, positionPruefen } from '../../lib/position';
+
+      const artikel = [...document.querySelectorAll<HTMLElement>('main > article')];
+      // Folienliste für folieZu: beim Bauen als JSON in die Seite geschrieben (unten, begleiter-folien).
+      const folien = JSON.parse(document.getElementById('begleiter-folien')!.textContent!) as Folie[];
+      const liste = document.querySelector<HTMLSelectElement>('[data-liste]')!;
+      const folgenKnopf = document.querySelector<HTMLButtonElement>('[data-folgen]')!;
+      const status = document.querySelector<HTMLElement>('[data-status]')!;
+
+      let z: Zustand = { index: 0, folgen: true, meldung: 'frage' };
+      let beamerTitel = '';
+      let fehlerInFolge = 0;
+
+      function zeichnen(vorher: number) {
+        if (z.index !== vorher) {
+          artikel[vorher].hidden = true;
+          artikel[z.index].hidden = false;
+          scrollTo({ top: 0 });
+        }
+        liste.value = String(z.index);
+        folgenKnopf.setAttribute('aria-pressed', String(z.folgen));
+        status.dataset.meldung = z.folgen ? z.meldung : 'hand';
+        status.textContent = !z.folgen
+          ? 'Von Hand geblättert, Folgen pausiert'
+          : {
+                frage: 'Frage den Beamer …',
+                ok: 'Folgt dem Beamer',
+                'nicht-tag-1': `Beamer ist nicht auf Tag 1${beamerTitel ? `: ${beamerTitel}` : ''}`,
+                'keine-position': 'Beamer meldet nichts',
+                'keine-verbindung': 'Keine Verbindung zum Beamer',
+              }[z.meldung];
+      }
+
+      function melden(e: Ereignis) {
+        const vorher = z.index;
+        z = anzeige(z, e);
+        zeichnen(vorher);
+      }
+
+      const blaettern = (index: number) => melden({ art: 'blaettern', index: Math.max(0, Math.min(artikel.length - 1, index)) });
+
+      const kette = abfrageKette({
+        ruheMs: RUHIG_MS,
+        ruht: () => document.hidden || !z.folgen,
+        // Auch ohne Position im schnellen Takt: Das Tablet ist meist offen, bevor der Beamer startet. Bei Fehlern wie in
+        // wo-ist.ts erst nach mehreren in Folge langsamer (naechsteAbfrage).
+        runde: async () => {
+          try {
+            const daten = (await jsonHolen('/api/position', ABFRAGE_TIMEOUT_MS)) as { position?: unknown; zeit?: number; jetzt?: number };
+            fehlerInFolge = 0;
+            const p = positionPruefen(daten.position);
+            const alt = typeof daten.zeit === 'number' && typeof daten.jetzt === 'number' && alterText(daten.jetzt - daten.zeit) === null;
+            if (!p || alt) melden({ art: 'leer' });
+            else {
+              beamerTitel = p.titel;
+              melden({ art: 'position', index: folieZu(folien, p.pfad, p.anker) });
+            }
+            return ABFRAGE_MS;
+          } catch (e) {
+            fehlerInFolge += 1;
+            console.warn('[begleiter] Position nicht geholt:', e);
+            melden({ art: 'fehler' });
+            return naechsteAbfrage('fehler', fehlerInFolge).ms;
+          }
+        },
+      });
+
+      document.querySelector('[data-zurueck]')!.addEventListener('click', () => blaettern(z.index - 1));
+      document.querySelector('[data-weiter]')!.addEventListener('click', () => blaettern(z.index + 1));
+      liste.addEventListener('change', () => blaettern(Number(liste.value)));
+      folgenKnopf.addEventListener('click', () => {
+        if (z.folgen) blaettern(z.index); // Schalter aus = hier stehen bleiben
+        else { melden({ art: 'folgen' }); kette.sofort(); }
+      });
+      addEventListener('keydown', (e) => {
+        if (e.repeat || e.altKey || e.ctrlKey || e.metaKey || (e.target as Element | null)?.closest?.('select, input, textarea')) return;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); blaettern(z.index - 1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); blaettern(z.index + 1); }
+      });
+      document.addEventListener('visibilitychange', () => { if (!document.hidden && z.folgen) kette.sofort(); });
+
+      zeichnen(0);
+      kette.sofort();
+    </script>
+    <script type="application/json" id="begleiter-folien" set:html={JSON.stringify(folien).replace(/</g, '\\u003c')} />
+
+    <style>
+      .begleiter { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 18px; line-height: 1.5; }
+      .steuer {
+        position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
+        padding: .6rem 16px; background: var(--bg-2); border-bottom: 1px solid var(--border);
+      }
+      .steuer .btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; }
+      .steuer .rund { padding: .4rem .6rem; }
+      .steuer select {
+        flex: 1 1 14rem; min-width: 0; min-height: 44px; font: inherit; font-size: 1rem; padding: .4rem .6rem;
+        background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: var(--radius);
+      }
+      .folgen[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+      .status { flex: 1 0 100%; margin: 0; font-size: .95rem; color: var(--muted); }
+      .status[data-meldung="ok"] { color: var(--green); }
+      .status[data-meldung="keine-verbindung"], .status[data-meldung="nicht-tag-1"] { color: var(--yellow-ink); }
+      main { max-width: 900px; margin: 0 auto; padding: 1rem 16px 4rem; }
+      article[hidden] { display: none; }
+      .kopf .seite { margin: 0; font-size: .95rem; color: var(--muted); }
+      .kopf h1 { margin: .15rem 0 .3rem; font-family: var(--display); font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.2; }
+      .oeffnen { display: inline-flex; align-items: center; gap: .3rem; font-size: .9rem; color: var(--blue); }
+      .live { margin-top: 1rem; padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-2); }
+      .stichworte { margin: 0; padding-left: 1.2em; font-size: clamp(1.35rem, 3.2vw, 1.7rem); line-height: 1.4; }
+      .stichworte li + li { margin-top: .35rem; }
+      .sozial { display: flex; align-items: center; gap: .4rem; margin: .9rem 0 0; font-size: 1.25rem; font-weight: 600; color: var(--accent-ink); }
+      .miro { margin-top: 1rem; padding-top: .8rem; border-top: 1px solid var(--border); }
+      .miro h2 { display: flex; align-items: center; gap: .4rem; margin: 0; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+      .miro h3 { margin: .7rem 0 .2rem; font-size: .95rem; color: var(--muted); }
+      .miro .frame { margin: .3rem 0; font-size: 1.25rem; }
+      .miro .frame a { color: var(--blue); }
+      .miro ul { margin: .3rem 0 0; padding-left: 1.2em; font-size: 1.1rem; }
+      .miro .zettel { font-size: .95rem; color: var(--muted); }
+      .ueberleitung { margin: 1rem 0 0; font-size: 1.15rem; }
+      .ueberleitung span { color: var(--muted); }
+      .leer { margin: 0; font-size: 1.25rem; color: var(--muted); }
+      .naechste { margin: .9rem 0 0; font-size: .95rem; color: var(--muted); }
+      .vorbereitung { margin-top: 1.5rem; }
+      .vb { margin-top: 1.5rem; }
+      .vb h2 { margin: 0 0 .4rem; font-family: var(--display); font-size: 1.15rem; }
+      .vb h3 { margin: .8rem 0 .2rem; font-size: 1rem; }
+      .vb p, .vb li, .vb dd { font-size: 1.05rem; }
+      cite { font-style: normal; font-size: .9rem; color: var(--muted); }
+      cite::before { content: "("; } cite::after { content: ")"; }
+      .zusatz { margin-top: .8rem; padding: .6rem .9rem; border-left: 3px solid var(--yellow); background: var(--yellow-soft); border-radius: 4px; }
+      .zusatz h3 { margin: .2rem 0; }
+      .etikett { margin: 0; font-size: .85rem; font-weight: 600; color: var(--yellow-ink); }
+      dt { font-weight: 600; margin-top: .6rem; }
+      dd { margin: .1rem 0 0; }
+      @media (min-width: 1000px) { .status { flex: 1 1 auto; } }
+    </style>
+  </body>
+</html>
