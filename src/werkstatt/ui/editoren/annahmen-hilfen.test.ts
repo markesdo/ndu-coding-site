@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import beispiel from '../../beispiele/annahmen.json';
 import { artefaktParsen, type Annahmen } from '../../schemas/index.js';
-import { annahmeNeu, annahmenSetzen, fehlendeArten, fehlendeArtenHinweis, riskantesteSetzen } from './annahmen-hilfen.js';
+import { annahmeBelegNotizHilfe, annahmeNeu, annahmenSetzen, fehlendeArten, fehlendeArtenHinweis, getanOhneQuelleHinweis, riskantesteSetzen } from './annahmen-hilfen.js';
 import { belegNotizSetzen } from './entscheidungen-hilfen.js';
 
 const kaffeebar = () => structuredClone(beispiel) as Annahmen;
@@ -15,6 +15,27 @@ describe('belegNotizSetzen an einer Annahme', () => {
   });
   it('neue Annahme hat keine Notiz', () => {
     expect('belegNotiz' in annahmeNeu([], [])).toBe(false);
+  });
+});
+
+describe('getanOhneQuelleHinweis', () => {
+  const HINWEIS = '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung mit Beleg (D…). Ein Interview-Zitat belegt höchstens „erzählt“.';
+  it('„getan“ ohne Notiz und ohne D-ID: Hinweis; Interview-Zitat oder A-ID allein ändern daran nichts', () => {
+    const a = kaffeebar().annahmen[1]!;
+    expect(a.beleg).toBe('getan');
+    expect(getanOhneQuelleHinweis(a)).toBe(HINWEIS);
+    expect(getanOhneQuelleHinweis({ ...a, belegIds: ['I2-4', 'A3'] })).toBe(HINWEIS);
+    expect(getanOhneQuelleHinweis({ ...a, belegNotiz: ' ' })).toBe(HINWEIS);
+  });
+  it('mit Beleg-Notiz oder D-ID still, andere Stufen nie', () => {
+    const a = kaffeebar().annahmen[1]!;
+    expect(getanOhneQuelleHinweis({ ...a, belegNotiz: 'Kassendaten September' })).toBeNull();
+    expect(getanOhneQuelleHinweis({ ...a, belegIds: ['D2'] })).toBeNull();
+    for (const beleg of ['keiner', 'gesagt', 'erzaehlt'] as const) expect(getanOhneQuelleHinweis({ ...a, beleg })).toBeNull();
+  });
+  it('Hilfe des Notizfelds erklärt „getan“ und nennt die Grenze', () => {
+    expect(annahmeBelegNotizHilfe).toContain('beobachtet, gemessen oder bezahlt');
+    expect(annahmeBelegNotizHilfe).toContain('Höchstens 120 Zeichen');
   });
 });
 

@@ -106,18 +106,26 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
   }
 
   if (da(m.annahmen)) {
+    // Entscheidungen, die selbst eine Quelle nennen (Stufe über „noch keiner“ mit Beleg-ID oder Beleg-Notiz).
+    const entscheidungMitQuelle = (id: string): boolean => {
+      if (m.entscheidungen === 'unlesbar') return true; // nicht prüfbar: lieber still als falsch
+      if (!da(m.entscheidungen)) return false;
+      const e = m.entscheidungen.entscheidungen.find((z) => z.id === id);
+      return e !== undefined && e.beleg !== 'keiner' && (e.belegIds.length > 0 || !!e.belegNotiz);
+    };
     for (const a of m.annahmen.annahmen) {
       belegeVon('annahmen', a.id, a.belegIds);
       textVon('annahmen', a.id, a.text);
-      // „gesagt“ und „erzählt“ kommen aus Gesprächen, also aus den Interviews: Ein D- oder A-Verweis allein reicht nicht.
-      // Eine Beleg-Notiz allein reicht dafür nicht.
-      // „getan“ (beobachtetes Verhalten, z. B. Kassendaten) kann außerhalb der Mappe liegen: Eine ID oder eine Beleg-Notiz
-      // genügt; ganz ohne Quelle fragt man nach (Begleiter Annahmen-Map: „getan, aber ohne Quelle – nachfragen“).
+      // Skala nach Bland: „gesagt“ und „erzählt“ kommen aus Gesprächen, also aus den Interviews. Ein D- oder A-Verweis
+      // oder eine Beleg-Notiz allein reicht dafür nicht.
       if ((a.beleg === 'gesagt' || a.beleg === 'erzaehlt') && !a.belegIds.some((id) => QUELLE[id[0]] === 'interviews')) {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „${BELEGSTUFE_TEXT[a.beleg]}“, nennt aber kein Interview oder Zitat als Beleg.` });
       }
-      if (a.beleg === 'getan' && a.belegIds.length === 0 && !a.belegNotiz) {
-        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle als Beleg. Wo liegt das beobachtete Verhalten?` });
+      // „getan“ heißt beobachtet, gemessen, bezahlt: Die Quelle liegt meist außerhalb der Mappe und steht als Beleg-Notiz da
+      // oder in einer Entscheidung mit Beleg (D…). Ein Interview-Zitat belegt höchstens „erzählt“, A- oder F-IDs gar nichts.
+      // Ohne Quelle fragt man nach (Begleiter Annahmen-Map: „getan, aber ohne Quelle – nachfragen“).
+      if (a.beleg === 'getan' && !a.belegNotiz && !a.belegIds.some((id) => QUELLE[id[0]] === 'entscheidungen' && entscheidungMitQuelle(id))) {
+        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung mit Beleg (D…). Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?` });
       }
     }
   }

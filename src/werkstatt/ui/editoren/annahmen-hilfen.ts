@@ -1,6 +1,6 @@
 // Reine Hilfsfunktionen des Annahmen-Editors. Ohne React und DOM.
 import { naechsteId } from '../../ids.js';
-import { TAG1_ARTEN, type Annahme, type Annahmen } from '../../schemas/index.js';
+import { BELEG_NOTIZ_MAX, TAG1_ARTEN, type Annahme, type Annahmen } from '../../schemas/index.js';
 
 type Art = Annahme['art'];
 
@@ -20,6 +20,15 @@ export const WICHTIG_TEXT: Record<Annahme['wichtig'], string> = { hoch: 'hoch', 
 export function annahmeNeu(vorhandene: readonly Annahme[], vergeben: readonly string[]): Annahme {
   const id = naechsteId('A', [...vergeben, ...vorhandene.map((a) => a.id)]);
   return { id, text: '', art: 'wuenschenswert', wichtig: 'mittel', beleg: 'keiner', belegIds: [] };
+}
+
+// Skala nach Bland wie auf der Methodenseite: „getan“ = beobachtet, gemessen, bezahlt; Interviews reichen höchstens bis „erzählt“.
+export const annahmeBelegNotizHilfe = `Bei „getan“: was beobachtet, gemessen oder bezahlt wurde, z. B. „Kassendaten September“. Höchstens ${BELEG_NOTIZ_MAX} Zeichen, eine Zeile.`;
+
+/** Weicher Hinweis (kein Schemafehler): „getan“ ohne Beleg-Notiz und ohne Entscheidung (D…) als Beleg. */
+export function getanOhneQuelleHinweis(a: Pick<Annahme, 'beleg' | 'belegIds' | 'belegNotiz'>): string | null {
+  if (a.beleg !== 'getan' || (a.belegNotiz ?? '').trim() !== '' || a.belegIds.some((id) => id.startsWith('D'))) return null;
+  return '„getan“ braucht eine Quelle: eine Beleg-Notiz oder eine Entscheidung mit Beleg (D…). Ein Interview-Zitat belegt höchstens „erzählt“.';
 }
 
 // Der Hinweis gilt den vier Arten von Tag 1; „ethisch“ ist eine Ergänzung, kein Muss.
