@@ -6,102 +6,365 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Timer from '../../../components/Timer.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
+import { METHODEN, vorarbeitLesen } from '../../../components/methoden';
+
+const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
+const BOS = 'W. Chan Kim & Renée Mauborgne, „Blue Ocean Strategy“ (2005)';
+const CAGAN = 'Marty Cagan, „Inspired“ (2. Aufl. 2018)';
+const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
+// Dieselbe Vorarbeit, die auch die Prüfung liest (methoden.ts, braucht der Methode „pitch“).
+const HINTERGRUND = vorarbeitLesen(METHODEN.find((m) => m.slug === 'pitch')!, ['docs/PITCH.md']).join(' und ');
+const INVESTORIN = `Lies docs/PITCH.md und zum Hintergrund ${HINTERGRUND}. Du bist eine skeptische Investorin, die schon viele Pitches gehört hat. Stell mir fünf Fragen, eine nach der anderen, und warte jeweils auf meine Antwort. Frag dort nach, wo eine Behauptung keinen Beleg hat, wo eine Zahl klein ist, wo ich sicherer klinge, als meine Lernkarten es sind, oder wo das Geschäftsmodell an einer Annahme hängt, die ich nicht benenne. Verlang keine Preis- oder Kostenrechnung – frag, ob die Annahme benannt ist und wie ich sie prüfen würde. Bewerte meine Antworten erst am Ende, in drei Sätzen. Ändere keine Datei.`;
+
+// Wertkurve der Kaffeebar. Jeder Faktor ist ein Angebot; die Stufe sagt, wie viel davon geboten wird (Kim & Mauborgne,
+// S. 27): 0 keins · 1 niedrig · 2 mittel · 3 hoch; null = nicht erhoben (nicht erfinden). Herleitung in der Tabelle im Handout.
+// quer: Zeilen unter der waagrechten Achse; hoch: eine Zeile links neben der Kurve.
+const FAKTOREN: { quer: string[]; hoch: string }[] = [
+  { quer: ['An der', 'Theke'], hoch: 'An der Theke' }, { quer: ['Gespräch'], hoch: 'Gespräch' }, { quer: ['Auswahl'], hoch: 'Auswahl' },
+  { quer: ['Qualität'], hoch: 'Qualität' }, { quer: ['Tempo'], hoch: 'Tempo' }, { quer: ['Fertig-', 'Zeit'], hoch: 'Fertig-Zeit' },
+  { quer: ['Im', 'Gehen'], hoch: 'Im Gehen' },
+];
+const KURVEN: { name: string; klasse: string; stufen: (number | null)[]; versatz: number }[] = [
+  { name: 'Theke', klasse: 'theke', stufen: [3, 3, 3, 3, 1, 0, 0], versatz: 0 },
+  { name: 'Automat', klasse: 'automat', stufen: [0, 0, null, 1, 3, 0, 0], versatz: 5 },
+  { name: 'Gleis-1-Express', klasse: 'express', stufen: [0, 1, 1, 3, 3, 3, 3], versatz: -5 },
+];
+/** Teilstrecken einer Kurve als Punktlisten: Eine Lücke (null) unterbricht sie. punkt(i, stufe) → "x,y"; den Versatz bringt der Aufrufer mit. */
+const strecken = (stufen: (number | null)[], punkt: (i: number, s: number) => string) =>
+  stufen.reduce<string[][]>((acc, s, i) => {
+    if (s === null) { acc.push([]); return acc; }
+    acc[acc.length - 1].push(punkt(i, s));
+    return acc;
+  }, [[]]).filter((t) => t.length > 1);
+// Quer (Beamer, breite Bildschirme): Faktoren waagrecht wie bei Kim & Mauborgne.
+const qx = (i: number) => 95 + i * 90;
+const qy = (s: number) => 200 - s * 50;
+// Hoch (Handy): Faktoren untereinander, Stufe nach rechts – sonst wäre die Schrift auf 375 px kaum lesbar.
+const hx = (s: number) => 205 + s * 55;
+const hy = (i: number) => 75 + i * 55;
+const STUFE: Record<number, string> = { 0: 'keins', 1: 'niedrig', 2: 'mittel', 3: 'hoch' };
+const ARIA = 'Wertkurve der Kaffeebar mit sieben Angeboten. ' + KURVEN.map((k) => `${k.name}: ` + FAKTOREN.map((f, i) => {
+  const s = k.stufen[i];
+  return `${f.hoch} ${s === null ? 'nicht erhoben' : STUFE[s]}`;
+}).join(', ')).join('. ') + '.';
 ---
 <Layout title="Pitch">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Pitch</h1>
-  <p class="lead">Die Präsentation an Stakeholder: eine Geschichte, ein Produkt, das live läuft, und Belege für jede Behauptung.</p>
+  <p class="lead">Die Präsentation an Stakeholder an Tag 7: eine Geschichte, ein Produkt, das live läuft, Belege für jede Behauptung – und ein Bild, das zeigt, worin ihr anders seid als das, was es heute gibt.</p>
   <Orientierung seite="innolab/methoden/pitch" leiste={false} />
   <MethodenKarte slug="pitch" />
 
-  <h2 id="worum">Worum es geht</h2>
-  <p>An Tag 7 stellt ihr euer Produkt vor – Markus, Louis und Gäste sind die Stakeholder im letzten Review. Ihr müsst dafür nichts Neues erfinden. Das meiste liegt schon in eurem Repo: die Geschichte in der Concept Story, der Ablauf für die Demo in der Usage Story, erste Belege im Entscheidungslog und in den Testbefunden. Was die Sprints zeigen – Messung, Review, neue Tests –, kommt bis Tag 7 dazu.</p>
-  <p>Ein Pitch überzeugt nicht durch Begeisterung, sondern durch drei Dinge, die zusammenpassen: Die Geschichte macht das Problem spürbar, die Demo zeigt, dass die Lösung existiert, die Belege zeigen, dass beides stimmt. Fehlt eines, merkt man es sofort – eine Geschichte ohne Demo ist ein Versprechen, eine Demo ohne Geschichte eine Funktionsliste, beides ohne Belege eine Behauptung.</p>
+  <Folie>
+    <h2 id="aufbau">Der Pitch ist eine Story in vier Teilen</h2>
+    <p class="folie-satz">Die Geschichte hört vor dem Höhepunkt auf, die Demo zeigt ihn, der Rest bringt sie zu Ende.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/lichaw/bogen.jpg" alt="Kurve über der Zeit, unterteilt in Beginning, Middle und End: Die Action steigt langsam bis kurz vor dem Ende und fällt dann steil ab" quelle={`Der narrative Bogen. ${LICHAW}, Abb. 2.2.`} />
+      <ol>
+        <li data-schritt><strong>Geschichte, 2 min:</strong> Exposition bis Krise, aus der Concept Story.</li>
+        <li data-schritt><strong>Demo, 4 min:</strong> der Höhepunkt, aus der Usage Story.</li>
+        <li data-schritt><strong>Belege, 4 min:</strong> der Wert, bewiesen – die fallende Handlung.</li>
+        <li data-schritt><strong>Position, Modell, nächster Schritt, 2 min:</strong> das Ende, mit dem einen Bild.</li>
+      </ol>
+    </BildText>
+    <div class="nur-handout">
+      <p>An Tag 7 stellt ihr euer Produkt Menschen vor, die es nicht kennen – Markus, Louis und Gäste. Ihr müsst dafür nichts Neues erfinden: Die Geschichte liegt in der Concept Story, der Ablauf für die Demo in der Usage Story, die Belege in Lernkarten, Testbefunden und Entscheidungslog, die Position in Kundenprofil und Value Map. Nach den 12 Minuten kommen 10 Minuten Fragen. Die Origin Story gehört nicht in die 12 Minuten: Sie erzählt, wie Menschen von eurem Produkt erfahren. Haltet eure Landingpage bereit, falls jemand genau das fragt.</p>
+      <p>Warum vier Teile mit einem Bogen: Lichaw verlangt, die Story „through everything you do related to creating a product, including pitching, presenting, and demonstrating your ideas“ zu weben ({LICHAW}, Kap. 7, „Putting It All Together“). Ihren Elevator Pitch bildet sie auf die Concept Story ab; den Satz kennt ihr von der <a href="/innolab/methoden/concept-story#ein-satz">Concept Story</a>. Die letzte Zeile ihrer Zuordnung steht dort noch nicht: „And the falling action and end = this is how it all comes together: a customer should be able to use a product not only to get something done, but also to see the benefit and the value. Conflict overcome, crisis averted.“ (Kap. 7, „Elevator Pitch“). Darum hört der Pitch nicht mit der Demo auf: „Stories can’t just end on a high point, or they’re as unsatisfying as a cliffhanger“ (Kap. 2). Im Storyboard liegt der Höhepunkt auf dem siebten von neun Feldern, und „your climax or resolution leads to a very swift ending“ (Kap. 7, „Storyboard“). Darum bleiben die sechs Minuten nach der Demo knapp: Belege, ein Bild, ein Satz – kein zweiter Höhepunkt.</p>
+      <p>Eine Zuordnung des Kurses: Lichaw schreibt weder vier Teile noch Minuten vor. Die Länge stützt Kim &amp; Mauborgne: Bei ihrer Visual Strategy Fair hatte jedes Team „no more than ten minutes to present each curve, on the theory that any idea that takes more than ten minutes to communicate is probably too complicated to be any good“ ({BOS}, S. 90). Unsere zwölf Minuten schließen die Demo ein.</p>
+    </div>
+  </Folie>
 
-  <h2 id="aufbau">Der Aufbau: 12 Minuten</h2>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>Teil</th><th>Dauer</th><th>Woraus</th></tr></thead>
-      <tbody>
-        <tr><th>Geschichte</th><td>2 min</td><td>Concept Story: Exposition bis Krise. Hört vor dem Höhepunkt auf – den zeigt die Demo.</td></tr>
-        <tr><th>Demo</th><td>4 min</td><td>Usage Story, live am Handy, endet am Höhepunkt</td></tr>
-        <tr><th>Belege</th><td>4 min</td><td>Was ihr geglaubt habt, was sich gezeigt hat, was ihr deshalb entschieden habt; die Messung</td></tr>
-        <tr><th>Modell und nächster Schritt</th><td>2 min</td><td>Wer zahlt wofür, an welcher Annahme alles hängt, was ihr als Nächstes prüft</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Danach 10 Minuten Fragen. Die Origin Story gehört nicht in die 12 Minuten: Sie erzählt, wie Menschen von eurem Produkt erfahren. Haltet eure Landingpage bereit, falls jemand genau das fragt.</p>
+  <Folie>
+    <h2 id="demo">Eine Demo verkauft. Sie testet nicht.</h2>
+    <p class="folie-satz">An Tag 5 haben die Testpersonen gefahren – an Tag 7 fahrt ihr.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Ihr zeigt den Wert,</strong> nicht die Bedienung – keine Schulung, kein Test.</li>
+      <li data-schritt><strong>Live, auf dem Handy,</strong> auf der Produktions-URL; die Daten liegen schon da.</li>
+      <li data-schritt><strong>Eine Geschichte, kein Rundgang:</strong> die Usage Story bis zum Höhepunkt.</li>
+      <li data-schritt><strong>Plan B:</strong> eine Bildschirmaufnahme derselben Demo, vom Vortag.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Cagan: „Learn how to give a great demo. … We’re not trying to teach them how to operate the product, and we’re not trying to do a user test on them. We’re trying to show them the value of what we’re building. A demo is not training, and it’s not a test. It’s a persuasive tool“ ({CAGAN}, S. 152, Nr. 6). Er unterscheidet drei Arten, einen Prototyp zu zeigen: Im User Test „we let the user drive“ – das waren eure Tests an Tag 3 und Tag 5. In der Product Demo „the product manager does the driving. The purpose is to show off the value of the prototype or product“ – das ist Tag 7. Im Walkthrough sollen Stakeholder „see and note absolutely everything that might be a concern“ (S. 281–282) – bei uns eher das Review, eine Zuordnung des Kurses. „Be sure to be clear about whether you’re doing a user test, a product demo, or a walkthrough“ (S. 282).</p>
+      <p>Daten vorbereitet heißt: Was die Demo braucht, liegt schon in der Datenbank – ihr tippt nur, was die Hauptfigur tippen würde. Lichaw beschreibt Steve Jobs’ iPhone-Vorstellung 2007: Das Gerät war „a semi-functional prototype“, „essentially a prop that supported the overall vision and story“. „Nothing is too small, fast, or insignificant to inject into a design or prototype as long as it supports the story“ ({LICHAW}, Kap. 7, „Build and Communicate“). Kein „und hier gibt es noch …“, keine Einstellungen. Wie ihr das Handy in Teams teilt, steht im <a href="/innolab/tag-7#technik">Technikcheck</a>; wenn Verbindung oder Teilen streikt, sagt ihr das und spielt das Video.</p>
+    </div>
+  </Folie>
 
-  <h3 id="demo">Regeln für die Demo</h3>
-  <ul>
-    <li><strong>Live, auf dem Handy.</strong> Die Produktions-URL, nicht localhost. Die Präsentation ist online: Ihr teilt den Bildschirm des Handys in Teams (<a href="/innolab/tag-7#technik">Technikcheck</a>).</li>
-    <li><strong>Eine Geschichte, kein Rundgang.</strong> Ihr spielt die Usage Story durch und hört am Höhepunkt auf. Keine Einstellungen, kein „und hier gibt es noch …“.</li>
-    <li><strong>Daten vorbereitet.</strong> Was die Demo braucht, liegt schon in der Datenbank – ihr tippt nur, was die Hauptfigur tippen würde.</li>
-    <li><strong>Plan B.</strong> Eine Bildschirmaufnahme derselben Demo, am Vortag aufgenommen. Wenn die Verbindung oder das Teilen streikt, sagt ihr das und spielt das Video.</li>
-  </ul>
+  <Folie>
+    <h2 id="belege">Belege statt Adjektive</h2>
+    <p class="folie-satz">Jede Behauptung: eine ID, eine Zahl und wie sicher.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/bland/beleg-staerke.jpg" alt="Tabelle Weak Evidence gegen Strong(er) Evidence: Meinungen gegen Fakten, was Menschen sagen gegen was sie tun, Laborsituation gegen echte Situation, kleine gegen große Investition" quelle={`Strength of Evidence. ${BLAND}, S. 52.`} />
+      <ul>
+        <li data-schritt><strong>Geglaubt, gezeigt, entschieden:</strong> drei Zeilen aus euren Lernkarten.</li>
+        <li data-schritt><strong>Zahl, Personen, Zeitraum:</strong> „5 von 6, drei Personen, zwei Morgen“ statt „83 %“.</li>
+        <li data-schritt><strong>Sicherheit benennen:</strong> fünf Tests im Labor sind ein mittlerer Beleg, kein starker.</li>
+        <li data-schritt><strong>Mindestens eine Annahme, die gefallen ist</strong> – sie zeigt, dass ihr getestet habt.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>„Die Nutzer*innen lieben es“ ist keine Aussage. „4 von 5 haben den Höhepunkt ohne Hilfe erreicht (U1)“ ist eine. Jede Behauptung über Menschen bekommt eine ID – ein Zitat, einen Testbefund, eine Zahl aus der Messung. Kleine Zahlen sind kein Makel, wenn ihr sie als das nennt, was sie sind: „5 von 6 Abholungen vor der Abfahrt, drei Personen an zwei Morgen“ ist ehrlich, „83 % Erfolgsquote“ verschweigt, dass es sechs Fälle waren.</p>
+      <p>Wie sicher ein Beleg ist, misst Bland an vier Fragen: Meinung oder Tatsache, sagen oder tun, Laborsituation oder echt, kleiner oder großer Einsatz – „When people are aware that you are testing something, they may behave differently than in a real world setting“ ({BLAND}, S. 52). Dazu kommen die Zahl der Datenpunkte und die Zahl der Experimente: „Five quotes from personal customer interviews is obviously weaker than 100 quotes. However, those same quotes are likely to be more accurate than 100 data points in an anonymous customer survey“ (S. 56). Wer nur Interviews hat, ist nach Bland „Not Really Confident“; „Very Confident“ erst mit mehreren Experimenten, darunter „a call-to-action test that produced very strong evidence“ (S. 57). Das Wort auf euren Lernkarten – schwach, mittel, stark – sagt ihr im Pitch mit (siehe <a href="/innolab/tag-4#debrief">Test-Debrief</a>).</p>
+      <p>Warum eine gefallene Annahme hineingehört: Cagan rät, „not just the things that went well, but share the problems, too“ ({CAGAN}, S. 152, Nr. 4), und „Be the undisputed expert on your users and customers“ (Nr. 7). Bland empfiehlt Startups, Investoren auf dem Laufenden zu halten, „even if that means sharing your struggles“ ({BLAND}, S. 81).</p>
+    </div>
+  </Folie>
 
-  <h3 id="belege">Belege statt Adjektive</h3>
-  <p>„Die Nutzer*innen lieben es“ ist keine Aussage. „4 von 5 haben den Höhepunkt ohne Hilfe erreicht (U1)“ ist eine. Jede Behauptung über Menschen bekommt eine ID – ein Zitat, einen Testbefund, eine Zahl aus der Messung. Und zeigt mindestens eine Annahme, die sich als falsch herausgestellt hat: Sie beweist, dass ihr wirklich getestet habt, statt eure Idee zu bestätigen.</p>
-  <p>Kleine Zahlen sind kein Makel, wenn ihr sie als das nennt, was sie sind. „5 von 6 Abholungen vor der Abfahrt, drei Personen an zwei Morgen“ ist ehrlich und genau. „83 % Erfolgsquote“ verschweigt, dass es sechs Fälle waren.</p>
+  <Folie>
+    <h2 id="wertkurve">Die Wertkurve: euer Produkt gegen das, was es heute gibt</h2>
+    <p class="folie-satz">Waagrecht die Faktoren, senkrecht wie viel davon.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/bos/wertkurve-yellow-tail.jpg" alt="Diagramm mit Faktoren waagrecht und High bis Low senkrecht: Premium Wines oben und Budget Wines in der Mitte verlaufen fast parallel über sieben Faktoren; [yellow tail] liegt bei den alten Faktoren tief und bei drei neuen Faktoren rechts – Easy drinking, Ease of selection, Fun and adventure – hoch" quelle={`The Strategy Canvas of [yellow tail]. ${BOS}, Abb. 2-3, S. 32.`} />
+      <ul>
+        <li data-schritt><strong>Faktoren aus eurem Kundenprofil:</strong> Pains und Gains, in Worten der Kundschaft.</li>
+        <li data-schritt><strong>Eine Kurve je Alternative:</strong> was Menschen heute tun.</li>
+        <li data-schritt><strong>Schaut auf Alternativen und Nicht-Kund*innen,</strong> nicht nur auf die Konkurrenz.</li>
+        <li data-schritt><strong>Kund*innen wünschen sich „mehr für weniger“</strong> – die neue Kurve kommt von euch.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>„The strategy canvas is both a diagnostic and an action framework for building a compelling blue ocean strategy.“ Die waagrechte Achse „captures the range of factors the industry competes on and invests in“, die senkrechte „the offering level that buyers receive across all these key competing factors“. „The value curve, the basic component of the strategy canvas, is a graphic depiction of a company’s relative performance across its industry’s factors of competition“ ({BOS}, S. 25–27). Beim Wein vor [yellow tail] haben Premium- und Billigweine dieselbe Kurvenform, „but at different altitudes of offering level“ (S. 27):</p>
+      <BuchAbbildung src="/quellen/bos/wertkurve-wein.jpg" alt="Diagramm mit sieben Faktoren waagrecht: Premium Wines verlaufen gleichmäßig hoch, Budget Wines tiefer, mit niedrigem Preis und einem Ausschlag bei der Fachsprache – beide Kurven haben dieselbe Form" quelle={`The Strategy Canvas of the U.S. Wine Industry in the Late 1990s. ${BOS}, Abb. 2-1, S. 26.`} />
+      <p>Woher die neue Kurve nicht kommt: „it won’t work to benchmark competitors and try to outcompete them by offering a little more for a little less“, und auch nicht aus Kundenbefragung – „customers can scarcely imagine how to create uncontested market space. Their insight also tends toward the familiar ‚offer me more for less‘“ (S. 27). Stattdessen: „reorienting your strategic focus from competitors to alternatives, and from customers to noncustomers of the industry“ (S. 28). Casella Wines schaute auf Bier und Cocktails und auf Menschen, die Wein „intimidating and pretentious“ fanden (S. 28). Bei euch sind die Alternativen das, was eure Hauptfigur in der Krise der Concept Story tut; die Nicht-Kund*innen sind die, die es heute ganz lassen.</p>
+      <p>Die Faktoren zu finden „is far from straightforward. … the final list is usually very different from the first draft“ (S. 83); Manager nennen gern, was ihnen intern wichtig ist, während die Kundschaft an „speed and ease of use“ denkt (S. 83). Kim &amp; Mauborgne fragen deshalb: „Are the competing factors stated in terms buyers can understand and value, or are they in operational jargon?“ (S. 43). Bei ihrer Visual Strategy Fair stellte sich heraus, dass „fully one-third of what they had thought were key competitive factors were, in fact, marginal to customers“ (S. 91). Die Faktoren aus eurem Kundenprofil zu nehmen, ist eine Ergänzung des Kurses: Kim &amp; Mauborgne gehen von den Faktoren einer Branche aus; euer Profil sagt euch, welche davon für eure Kundschaft zählen und welche Pains und Gains die Branche noch gar nicht bedient.</p>
+    </div>
+  </Folie>
 
-  <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
-  <Prompt label="Beispiel · docs/PITCH.md">## Geschichte (2 min)
+  <Folie>
+    <h2 id="errc">Vier Fragen, ein Raster</h2>
+    <p class="folie-satz">Weg, weniger, mehr, neu – alle vier Felder.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/bos/vier-aktionen.jpg" alt="Vier Kästen mit Pfeilen auf einen Kreis „A New Value Curve“: Eliminate links, Reduce oben, Create rechts, Raise unten, jeweils mit der Frage dazu" quelle={`The Four Actions Framework. ${BOS}, Abb. 2-2, S. 29.`} />
+      <ul>
+        <li data-schritt><strong>Eliminieren:</strong> was die Branche für selbstverständlich hält.</li>
+        <li data-schritt><strong>Reduzieren:</strong> deutlich unter den Standard.</li>
+        <li data-schritt><strong>Steigern:</strong> deutlich darüber. <strong>Schaffen:</strong> was es noch nie gab.</li>
+        <li data-schritt><strong>Nur rechts gefüllt</strong> heißt: mehr Kosten, kein neuer Markt.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Die vier Fragen im Wortlaut: „Which of the factors that the industry takes for granted should be eliminated? Which factors should be reduced well below the industry’s standard? Which factors should be raised well above the industry’s standard? Which factors should be created that the industry has never offered?“ ({BOS}, S. 29). Eliminieren und Reduzieren senken die Kosten, Steigern und Schaffen heben den Nutzen; „Of particular importance are the actions of eliminating and creating, which push companies to go beyond value maximization exercises with existing factors of competition“ (S. 30).</p>
+      <p>Das Raster ist „a supplementary analytic to the four actions framework“: „The grid pushes companies not only to ask all four questions in the four actions framework but also to act on all four to create a new value curve“ (S. 35). Es „immediately flags companies that are focused only on raising and creating and thereby lifting their cost structure and often overengineering products and services“; es „is easily understood by managers at any level“; und weil es schwer zu füllen ist, lässt es Unternehmen „discover the range of implicit assumptions they make unconsciously in competing“ (S. 36). Wer überall hoch liefert, muss entscheiden, „which factors to eliminate and reduce—and not only those to raise and create“ (S. 42).</p>
+      <BuchAbbildung src="/quellen/bos/errc-yellow-tail.jpg" alt="Raster mit vier Feldern: Eliminate – Fachsprache, Reifung, klassische Werbung; Raise – Preis gegenüber Billigweinen, Einsatz im Handel; Reduce – Komplexität, Auswahl, Prestige des Weinguts; Create – leicht zu trinken, leicht zu wählen, Spaß und Abenteuer" quelle={`Eliminate-Reduce-Raise-Create Grid: The Case of [yellow tail]. ${BOS}, Abb. 2-4, S. 35.`} />
+      <p>[yellow tail] in drei Sätzen: zwei Weine statt einer Karte – „Chardonnay … and a red, Shiraz“ –, keine Fachsprache auf dem Etikett, keine Reifung; neu sind „easy drinking, easy to select, and fun and adventure“ (S. 31–34). Für euch heißt Eliminieren und Reduzieren: Das ist eure <em>Behauptung</em> dazu, warum sich das Produkt rechnen kann. Ihr nennt sie im Pitch als Annahme, ihr rechnet sie nicht – siehe die nächste Folie.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="lackmus">Fokus, Abweichung, Tagline</h2>
+    <p class="folie-satz">Das dritte Merkmal ist euer Pitch-Satz.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/bos/southwest.jpg" alt="Diagramm: Average Airlines im Zickzack über Preis, Essen, Lounges, Sitzklassen, Drehkreuz; Southwest tief bei diesen Faktoren und hoch bei Friendly service, Speed und Frequent point-to-point departures; Car Transport nur rechts hoch" quelle={`The Strategy Canvas of Southwest Airlines. ${BOS}, Abb. 2-6, S. 38.`} />
+      <ul>
+        <li data-schritt><strong>Fokus:</strong> wenige Faktoren tragen die Kurve, nicht alle.</li>
+        <li data-schritt><strong>Abweichung:</strong> eure Kurve sieht anders aus als jede Alternative.</li>
+        <li data-schritt><strong>Tagline:</strong> ein wahrer Satz – euer Pitch-Satz aus dem Produkt-Brief.</li>
+        <li data-schritt><strong>Preis, Kanäle, Kosten:</strong> „largely academic“ – zwei Minuten, keine Rechnung.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>„An effective blue ocean strategy like [yellow tail]’s has three complementary qualities: focus, divergence, and a compelling tagline. … These three characteristics serve as an initial litmus test of the commercial viability of blue ocean ideas“ ({BOS}, S. 37). Fokus: Southwest „emphasizes only three factors: friendly service, speed, and frequent point-to-point departures“ (S. 39). Abweichung: Reaktive Strategen „tend to share the same strategic profile“, die Kurven von Blue-Ocean-Strategen „always stand apart“ (S. 39). Tagline: „The speed of a plane at the price of a car—whenever you need it“ (S. 39); „A good tagline must not only deliver a clear message but also advertise an offering truthfully, or else customers will lose trust and interest“ (S. 40). Ohne Fokus wird es teuer, ohne Abweichung „a me-too“, ohne Tagline „innovation for innovation’s sake“ (S. 42).</p>
+      <p>Euer Pitch-Satz steht in Abschnitt 3 eures Produkt-Briefs (<a href="/innolab/methoden/concept-story#ein-satz">Concept Story</a>). Ihn als Tagline zu lesen, ist eine Gleichsetzung des Kurses: Kim &amp; Mauborgne meinen einen Satz, der eine Strategie bewirbt, Lichaw einen Satz, der die Story erzählt – „a strategic tool you can use to make sure you are clear on a product or project’s objectives, market, and value to an intended audience“ ({LICHAW}, Kap. 7, „Elevator Pitch“). Beide verlangen, dass er den Unterschied benennt und wahr ist. Darum fällt er als letzter Satz des Pitches, nach der Demo, die ihn einlöst.</p>
+      <p>Warum das Modell nur zwei Minuten bekommt: Cagan sieht Gründer*innen, die sich auf „unique value proposition, pricing, channels, and costs“ konzentrieren – „real risks“, aber „largely academic at this stage“; das größte Risiko sei „value risk“ ({CAGAN}, S. 189–190). „You don’t need to spend your time doing pricing optimization testing, sales tools, marketing programs, and cutting costs, until and unless you have discovered a truly valuable product“ (S. 190). Ihr nennt, wer wofür zahlt und an welcher Annahme das hängt – mehr nicht. Die Wertkurve ist dabei das eine Bild des Pitches: Kim &amp; Mauborgne verteilen am Ende ihres Verfahrens „the one-page picture showing its new and old strategic profiles“ (S. 93). Zeigt es 30 Sekunden lang und sagt einen Satz dazu.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Wertkurve von „Gleis-1-Express“</h2>
+    <p class="folie-satz">Neu oben: Fertig-Zeit und im Gehen – dazu die Qualität der Theke und das Tempo des Automaten.</p>
+    <figure class="wertkurve" role="img" aria-label={ARIA}>
+      <svg class="quer" viewBox="0 0 720 262" aria-hidden="true">
+        {[0, 1, 2, 3].map((st) => <line class="raster" x1="75" x2="680" y1={qy(st)} y2={qy(st)} />)}
+        <text class="achse" x="68" y={qy(3) + 6} text-anchor="end">hoch</text>
+        <text class="achse" x="68" y={qy(0) + 6} text-anchor="end">keins</text>
+        {FAKTOREN.map((f, i) => <text class="faktor" x={qx(i)} y="232" text-anchor="middle">{f.quer.map((z, j) => <tspan x={qx(i)} dy={j === 0 ? 0 : 21}>{z}</tspan>)}</text>)}
+        <text class="frage" x={qx(2)} y={qy(2) + 7} text-anchor="middle">?</text>
+        {KURVEN.map((k) => strecken(k.stufen, (i, st) => `${qx(i)},${qy(st) + k.versatz}`).map((t) => <polyline class={k.klasse} points={t.join(' ')} />))}
+        {KURVEN.map((k) => k.stufen.map((st, i) => st !== null && <circle class={k.klasse} cx={qx(i)} cy={qy(st) + k.versatz} r="5" />))}
+      </svg>
+      <svg class="hoch" viewBox="0 0 400 450" aria-hidden="true">
+        {[0, 1, 2, 3].map((st) => <line class="raster" x1={hx(st)} x2={hx(st)} y1="50" y2="430" />)}
+        <text class="achse" x={hx(0)} y="35" text-anchor="middle">keins</text>
+        <text class="achse" x={hx(3)} y="35" text-anchor="middle">hoch</text>
+        {FAKTOREN.map((f, i) => <text class="faktor" x="185" y={hy(i) + 7} text-anchor="end">{f.hoch}</text>)}
+        <text class="frage" x={hx(2)} y={hy(2) + 7} text-anchor="middle">?</text>
+        {KURVEN.map((k) => strecken(k.stufen, (i, st) => `${hx(st) + k.versatz},${hy(i)}`).map((t) => <polyline class={k.klasse} points={t.join(' ')} />))}
+        {KURVEN.map((k) => k.stufen.map((st, i) => st !== null && <circle class={k.klasse} cx={hx(st) + k.versatz} cy={hy(i)} r="5" />))}
+      </svg>
+      <figcaption class="legende">
+        {KURVEN.map((k) => <span><svg viewBox="0 0 30 10" width="30" height="10" aria-hidden="true"><line class={k.klasse} x1="0" x2="30" y1="5" y2="5" /></svg>{k.name}</span>)}
+      </figcaption>
+    </figure>
+    <div class="nur-handout">
+      <p>Jeder Faktor ist ein Angebot, und die Höhe sagt, wie viel davon geboten wird – „the offering level that buyers receive“ ({BOS}, S. 27). Ein Pain steht deshalb nicht selbst auf der Achse, sondern begründet, welches Angebot zählt: Das Anstehen (P2) ist der Preis des Bestellens an der Theke. Jeder Faktor kommt aus dem <a href="/innolab/methoden/kundenprofil#beispiel">Kundenprofil</a> oder der <a href="/innolab/methoden/value-map#beispiel">Value Map</a>; wo die Daten schweigen, steht es dabei. Die Stufen sind eine grobe Einschätzung aus den Interviews, keine Messung.</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Faktor</th><th>Woher</th><th>Theke</th><th>Automat</th><th>Gleis-1-Express</th></tr></thead>
+          <tbody>
+            <tr><th>Bestellen an der Theke</th><td>P2, der Preis dafür: das Anstehen (I2-2, I3-4, I4-2); erzählt: „Acht Leute vor mir, da hab ich gleich gewusst, das wird nix“ (I2-1)</td><td>hoch</td><td>keins – der Automat hat keine Theke</td><td>keins: bestellt wird im Gehen</td></tr>
+            <tr><th>Gespräch, die Barista kennt die Bestellung</th><td>G3 (I3-6)</td><td>hoch</td><td>keins</td><td>niedrig: Express-Ausgabe</td></tr>
+            <tr><th>Getränkeauswahl</th><td>Value Map: Express-Ausgabe mit drei Standardgetränken – an der Theke gibt es mehr</td><td>hoch</td><td>nicht erhoben</td><td>niedrig: drei</td></tr>
+            <tr><th>Qualität des Kaffees</th><td>P4 – „Notlösung“ (I1-3), „Dann halt die Brühe“ (I4-4)</td><td>hoch</td><td>niedrig</td><td>hoch, dieselbe Bar</td></tr>
+            <tr><th>Tempo: Kaffee bereit, bevor der Zug einfährt</th><td>G1; erzählt: „Einmal stand ich da, der Zug war schon eingefahren …“ (I3-3)</td><td>niedrig</td><td>hoch – „schnell“ (I1-3)</td><td>hoch</td></tr>
+            <tr><th>Fertig-Zeit beim Bestellen</th><td>P1, P3 – „Ich weiß nie, wie lange das dauert“ (I3-2)</td><td>keine</td><td>keine</td><td>hoch: „Fertig 7:31“</td></tr>
+            <tr><th>Bestellen im Gehen, ohne App</th><td>Value Map (QR-Code, Browser)</td><td>keins</td><td>keins</td><td>hoch</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Der Preis fehlt bewusst: Er kommt in den Interviews nicht vor, und das Modell sagt nur „Kaffee zum normalen Preis“ (<a href="/innolab/methoden/geschaeftsmodell#beispiel">Geschäftsmodell</a>). Was der Automat kostet, wissen wir nicht – also erfinden wir es nicht. Die Nicht-Kund*innen der Bar sind die, die es heute ganz lassen: „Bei mehr als fünf Leuten lass ich es“ (I3-4), „Wenn es voll ist, lass ich es“ (I5-2).</p>
+      <p>Am Beamer zeichnet Markus zuerst die Theke aus den Pains, dann den Automaten; ihr ruft, wo Gleis-1-Express liegt.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel-errc">Das Raster der Kaffeebar</h2>
+    <p class="folie-satz">Auch „Reduzieren“ ist gefüllt – und es tut weh: Die Barista kennt die Bestellung dann nicht mehr.</p>
+    <div class="errc">
+      <div data-schritt><strong>Eliminieren</strong><span>Bestellen an der Theke, also kein Anstehen (P2)</span></div>
+      <div data-schritt><strong>Steigern</strong><span>Kaffee bereit vor dem Zug – weit über der Theke (G1)</span></div>
+      <div data-schritt><strong>Reduzieren</strong><span>Auswahl auf drei Getränke (Value Map) · Gespräch an der Theke (G3)</span></div>
+      <div data-schritt><strong>Schaffen</strong><span>Fertig-Zeit als Zusage beim Bestellen (P1, P3) · bestellen im Gehen, ohne App (Value Map)</span></div>
+    </div>
+    <p data-schritt><strong>Tagline:</strong> „Anders als Automat und Schlange: Gewissheit statt Glücksspiel.“</p>
+    <div class="nur-handout">
+      <p><strong>Der Standard</strong> ist der der Branche, also der Bar mit ihrer Theke; der Automat ist die Alternative. Steigern heißt darum „raised well above the industry’s standard“ ({BOS}, S. 29): Beim Tempo liegt die Theke niedrig, Gleis-1-Express hoch – so hoch wie der Automat. Das ist der Kompromiss, den die dritte Frage auflösen soll: „The third question pushes you to uncover and eliminate the compromises your industry forces customers to make“ (S. 30) – heute heißt es guter Kaffee oder Zug. <strong>Fokus:</strong> Zwei neue Faktoren tragen die Kurve – Fertig-Zeit und bestellen im Gehen; dazu hält sie die Qualität der Bar und hebt das Tempo. Das Bestellen an der Theke fällt weg, Gespräch und Auswahl werden weniger. <strong>Abweichung:</strong> Die Kurve folgt keiner der beiden: bei der Qualität liegt sie bei der Theke, beim Tempo beim Automaten, bei Fertig-Zeit und im Gehen über beiden. <strong>Tagline:</strong> der Pitch-Satz von Tag 3, der Unterschied in drei Wörtern; „Glücksspiel“ ist das Wort einer Pendlerin: „Anstellen ist ein Glücksspiel“ (I4-2). Er ist wahr, solange die Fertig-Zeit stimmt – sie rechnet mit 4 Minuten plus etwa 1 Minute je offener Bestellung, und ob die Bar das schafft, ist A2. Darum hängt der nächste Test daran.</p>
+      <p>Eine Beobachtung des Kurses, keine Regel aus dem Buch: Die Wartezeit-Anzeige an der Hallentür hätte das Bestellen an der Theke behalten und nur das Raten davor ersetzt – kein Feld Eliminieren, kaum Abweichung von der Theke. Das erklärt mit, warum „Im Gehen bestellen“ der Spitzenreiter wurde.</p>
+      <p>Das Feld <em>Reduzieren</em> ist der Preis der Idee: G3 („Die Barista weiß schon, was ich will. Das ist schön.“, I3-6) hat die Value Map bewusst offen gelassen; mit Express-Ausgabe wird das Gespräch an der Theke seltener. Eliminieren und Reduzieren sind zugleich die Behauptung hinter A4 – die zusätzlichen Bestellungen rechnen sich ohne weitere Kraft am Morgen. Im Pitch wird sie benannt, nicht gerechnet.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel-pitch">Am Beispiel: der Pitch von „Gleis-1-Express“</h2>
+    <p class="folie-satz">Vier Teile, jede Behauptung mit ID und Sicherheit, ein Bild, ein letzter Satz.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Geschichte:</strong> 7:27, der Zug fährt 7:38, acht Leute in der Schlange.</li>
+      <li data-schritt><strong>Demo:</strong> QR-Code, Cappuccino, Zug aus der Liste – „Fertig 7:31“.</li>
+      <li data-schritt><strong>Belege:</strong> eine gefallene Annahme (A1), U1 und U2, E1 knapp unter der Schwelle.</li>
+      <li data-schritt><strong>Position, Modell, nächster Schritt:</strong> die Wertkurve, A2 und A4 benannt, eine Woche mit echter Bar.</li>
+    </ul>
+    <div class="nur-handout">
+    <Prompt label="Beispiel · docs/PITCH.md">Pitch-Satz (Produkt-Brief, Abschnitt 3): „Für Pendler*innen, die nicht wissen, ob sich der Kaffee vor der Abfahrt ausgeht, ist Gleis-1-Express eine Bestellung per QR-Code, die beim Bestellen sagt, ob er vor dem Zug fertig ist. Anders als Automat und Schlange: Gewissheit statt Glücksspiel.“
+Das eine Bild: Wertkurve mit Raster als PNG aus Miro
+
+## Geschichte (2 min)
 Pendler*innen, 7:15–7:45, Zug nach Wien oder Linz. Die Bar ist gut, nur nicht in sechs Minuten.
 Die Schlange ist länger als die Zeit bis zur Abfahrt (P1, P2). Heute bleibt der Automat – „Notlösung, aber schnell“ (I1-3) – oder kein Kaffee (I3-4).
 → Übergang: „7:27, ein Pendler kommt in die Halle. Sein Zug fährt 7:38.“ (I1)
 
 ## Demo (4 min)
-QR-Code an der Hallentür → Cappuccino → Zug 7:38 aus der Liste → „Fertig 7:31. Dein Zug fährt 7:38.“ Ende.
-Daten: Bestellung um 7:27, keine offene Bestellung davor. Plan B: video-demo.mp4
+QR-Code an der Hallentür → Cappuccino → Zug 7:38 aus der Liste → „Fertig 7:31. Dein Zug fährt 7:38.“ Ende. Wir fahren, nicht die Gäste.
+Daten: Bestellung um 7:27, keine offene Bestellung davor. Plan B: video-demo.mp4, aufgenommen am Vortag
 
 ## Belege (4 min)
-- Geglaubt: Pendler*innen entscheiden schon vor der Ankunft, ob sie Kaffee holen (A1). Gezeigt: 3 von 5 entscheiden erst beim Ankommen (I1-2, I3-1, I5-3). Entschieden: kein Vorbestellen, bestellen im Gehen.
-- Getestet: Zug eintippen dauert zu lang, 5 von 5 suchten eine Liste (U2). Entschieden: Zugliste in Sprint 1.
-- Gemessen: 5 von 6 Abholungen vor der Abfahrt – drei Personen an zwei Morgen. Ein Hinweis aufs Outcome (mehr Pendler*innen mit Kaffee im Zug), noch kein Beleg.
+- Gefallen: Pendler*innen entscheiden schon vor der Ankunft, ob sie Kaffee holen (A1). Gezeigt: 4 von 5 sagen, sie entscheiden erst in der Halle (I2-4, I3-1, I5-3; bei I1 laut Notiz). Sicherheit: schwach – Aussagen aus fünf Interviews. Entschieden: kein Vorbestellen, bestellen im Gehen.
+- Geglaubt: Pendler*innen bestellen im Gehen (A3). Gezeigt: 4 von 5 erreichten den Höhepunkt ohne Hilfe, alle fünf suchten eine Zugliste (U1, U2) – fünf Tests am Klick-Prototyp. Sicherheit: mittel – sie haben es getan, aber im Test. Entschieden: Zugliste in Sprint 1.
+- Geglaubt: Wer die Schlange sieht, bestellt am Aufsteller statt am Automaten (A5). Gezeigt: 8 von 30 trugen einen Zug ein, Schwelle 10 (E1). Sicherheit: mittel – echte Situation, kleiner Einsatz. Entschieden: unklar, weiter testen.
+- Gemessen: 5 von 6 Abholungen vor der Abfahrt – drei Personen an zwei Morgen. Sicherheit: schwach, sechs Fälle. Ein Hinweis aufs Outcome, noch kein Beleg.
 
-## Modell und nächster Schritt (2 min)
-Kaffee zum normalen Preis, Gebäck als Angebot in der Bestellung.
-Alles hängt daran, ob die Bar 40 Bestellungen in 30 Minuten schafft (A2) und ob sich die zusätzlichen Bestellungen ohne weitere Kraft rechnen (A4).
-Nächster Test: eine Woche mit echter Bar, gemessen an Abholungen pro Morgen – weil ohne diese Kapazität weder das Modell noch das Outcome trägt.</Prompt>
-  <p>Die Zahlen bei „Gemessen“ sind ausgedacht – an der Form erkennt ihr, wie eure aussehen sollten.</p>
+## Position, Modell, nächster Schritt (2 min)
+Das Bild, 30 Sekunden: Gegenüber Theke und Automat: weg mit dem Bestellen an der Theke (P2) · weniger Auswahl (Value Map) und Gespräch (G3) · mehr Tempo, Kaffee bereit vor dem Zug (G1) · neu die Fertig-Zeit beim Bestellen (P1, P3) und bestellen im Gehen (Value Map).
+Wer zahlt wofür: Kaffee zum normalen Preis, Gebäck als Angebot in der Bestellung. Hängt an: A2 (40 Bestellungen in 30 Minuten) und A4 (ohne weitere Kraft) – benannt, nicht gerechnet.
+Nächster Test: eine Woche mit echter Bar, gemessen an Abholungen pro Morgen – weil ohne diese Kapazität weder die Fertig-Zeit noch das Modell trägt.
+Letzter Satz: „Anders als Automat und Schlange: Gewissheit statt Glücksspiel.“</Prompt>
+    <p>Ausgedacht sind die Zahlen bei E1 und bei „Gemessen“, wie die Testbefunde U1–U3 – an der Form erkennt ihr, wie eure aussehen sollten. Die Zählung bei A1 folgt den Interviews: I2-4, I3-1 und I5-3 sagen, dass die Entscheidung erst beim Blick auf Halle, Tafel oder Schlange fällt; bei I1 steht es in Einsicht und Notiz („Schaut erst auf die Schlange, dann auf die Uhr“), nicht im Zitat. Alle drei Zitate sind Aussagen über das eigene Verhalten, keine erzählten Ereignisse – darum „schwach“. Die Fertig-Zeit folgt der Kursregel aus A2: 4 Minuten, plus etwa 1 Minute je offener Bestellung davor; ohne offene Bestellung um 7:27 also 7:31. Wie es mit E1 weitergeht, steht im <a href="/innolab/tag-4#debrief">Test-Debrief</a>.</p>
+    </div>
+  </Folie>
 
-  <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
-  <ol>
-    <li><strong>Input (20 min):</strong> Aufbau, Regeln für die Demo, Belege.</li>
-    <li><strong>Gerüst (25 min, allein):</strong> <code>docs/PITCH.md</code> nach der Vorlage, Stichworte statt Fließtext. Geschichte und Demo-Ablauf habt ihr schon; bei den Belegen tragt ihr ein, was es aus Interviews und Tests gibt, und lasst Platz für Messung und Sprint-Ergebnisse. Jede Behauptung bekommt ihre ID.</li>
-  </ol>
-  <p>Den Pitch tragt ihr ab jetzt mit: Nach jedem Review ergänzt ihr die Belege. Zum ersten Mal laut erzählt – zwei Minuten „Geschichte“ vor den anderen beiden – wird er nach der Retro an Tag 5.</p>
-  <p>Bis Tag 7 probt ihr den ganzen Pitch mindestens zweimal laut, einmal mit Claude als skeptischem Gegenüber – direkt nach Tag 6, solange Pro noch läuft:</p>
-  <Prompt label="Skeptischer Investor · Claude Code">Lies docs/PITCH.md und zum Hintergrund docs/PRODUKT.md, docs/STORYS.md, docs/GESCHAEFTSMODELL.md, docs/TESTS.md, docs/SPRINTS.md und docs/ENTSCHEIDUNGEN.md. Du bist eine skeptische Investorin, die schon viele Pitches gehört hat. Stell mir fünf Fragen, eine nach der anderen, und warte jeweils auf meine Antwort. Frag dort nach, wo eine Behauptung keinen Beleg hat, wo eine Zahl klein ist oder wo das Geschäftsmodell an einer ungeprüften Annahme hängt. Bewerte meine Antworten erst am Ende, in drei Sätzen. Ändere keine Datei.</Prompt>
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (24 min Übung)</h2>
+    <p class="folie-satz">Raster allein, Gerüst allein, dann reihum der eine Satz.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Raster, allein:</strong> Faktoren aus dem Kundenprofil, Kurven, vier Felder. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Gerüst, allein:</strong> Belege und Position in <code>docs/PITCH.md</code>. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Tagline-Runde, reihum:</strong> Pitch-Satz und Raster in einem Atemzug. <Timer minuten={6} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Davor: Theorie 15 Minuten, Kaffeebar gemeinsam 6 – zusammen 45. Zu 1: in Miro, bei Tag 4. Nehmt fünf bis sieben Pains und Gains aus <code>docs/KUNDENPROFIL.md</code> als Faktoren, in den Worten eurer Kundschaft. Zeichnet je eine Kurve für die Alternativen aus der Krise eurer Concept Story, dann eure eigene. Füllt die vier Felder, Eliminieren und Reduzieren zuerst; jedes Feld bekommt mindestens eine Zeile. Was ihr nicht wisst, markiert ihr mit „?“, statt es zu schätzen. Das PNG davon ist an Tag 7 das eine Bild.</p>
+      <p>Zu 2: Nur die Teile Belege und Position, Modell, nächster Schritt (Vorlage unten). Jede Behauptung mit ID, Zahl und dem Sicherheits-Wort aus eurer Lernkarte; die Raster-Zeile mit den IDs aus dem Kundenprofil; darunter, wer zahlt, an welcher Annahme es hängt und der nächste Test. Geschichte und Demo-Ablauf kopiert ihr zu Hause aus <code>docs/STORYS.md</code>.</p>
+      <p>Zu 3: Je zwei Minuten. Ihr sagt den Pitch-Satz und eine Zeile „weg mit …, weniger …, mehr …, neu …“. Die anderen beiden antworten nur auf zwei Fragen: Sieht man den Unterschied zu dem, was es heute gibt? Verspricht der Satz etwas, das die Demo nicht zeigt? Die zweite Frage kommt von Kim &amp; Mauborgne – eine Tagline muss „advertise an offering truthfully“ ({BOS}, S. 40); dass es nur diese zwei Fragen sind, ist eine Kürzung des Kurses. Claude kommt in diesem Block nicht vor: Das Raster ist Kopfarbeit, geprüft wird erst der fertige Pitch.</p>
+    </div>
+  </Folie>
+
+  <div class="nur-handout">
+  <h2 id="danach">Bis Tag 7</h2>
+  <p>Den Pitch tragt ihr ab jetzt mit: Nach jedem Review ergänzt ihr die Belege. Zum ersten Mal laut erzählt – zwei Minuten „Geschichte“ vor den anderen beiden – wird er nach der Retro an <a href="/innolab/tag-5#pitch-probe">Tag 5</a>. Bis Tag 7 probt ihr den ganzen Pitch mindestens zweimal laut, mit Demo – die anderen achten darauf, wo sie lächeln: Lichaws Signal, dass der Höhepunkt sitzt, „Maybe they’ll smile at just the right time“ ({LICHAW}, Kap. 7, „Test and Validate“) –, und einmal mit Claude als skeptischem Gegenüber – direkt nach Tag 6, solange Pro noch läuft:</p>
+  <Prompt label="Skeptische Investorin · Claude Code" note="Erst wenn alle vier Teile stehen. Claude fragt, ihr antwortet laut – wie an Tag 7.">{INVESTORIN}</Prompt>
   <Callout type="tip" title="Wer stellt die Fragen an Tag 7?">
-    <p>Markus, Louis und die Gäste – und die anderen beiden aus eurem Team, die euer Produkt als Developers am besten kennen. Bereitet für jedes der anderen Produkte eine Frage vor, die ihr wirklich beantwortet haben wollt.</p>
+    <p>Markus, Louis und die Gäste – und die anderen beiden aus eurem Team, die euer Produkt als Developers am besten kennen. Bereitet für jedes der anderen Produkte eine Frage vor, die ihr wirklich beantwortet haben wollt. Die Gäste notieren, was sie überzeugt hat und wo sie gezweifelt haben – wie die Jury bei Kim &amp; Mauborgne, die erklären sollte, warum sie für eine Kurve gestimmt hat, und auch, „why they did not vote for the other value curves“ ({BOS}, S. 91).</p>
   </Callout>
 
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/PITCH.md"># Pitch — [Produkt]
 
+Pitch-Satz (Produkt-Brief, Abschnitt 3): „Für [...] ist [...] ein [...], das [...]. Anders als [...]: [...].“
+Das eine Bild: [Wertkurve mit Raster, als PNG aus Miro]
+
 ## Geschichte (2 min)
-[Exposition, Auslöser, Krise – aus docs/STORYS.md; mit Pain-IDs]
+[Exposition, Auslöser, Krise – aus docs/STORYS.md; mit Pain- und Zitat-IDs]
 → Übergang zur Demo: [ein Satz, der die Hauptfigur in die Situation bringt]
 
 ## Demo (4 min)
-[Schritte der Usage Story bis zum Höhepunkt]
-Daten: [was vorbereitet sein muss] · Plan B: [Video]
+[Schritte der Usage Story bis zum Höhepunkt; ihr fahrt, nicht die Gäste]
+Daten: [was vorbereitet sein muss] · Plan B: [Video, Datum der Aufnahme]
 
 ## Belege (4 min)
-- Geglaubt: [...] ([A…]). Gezeigt: [...] ([Zitat-ID/U…]). Entschieden: [...]
+- Geglaubt: [...] ([A…]). Gezeigt: [x von y, Personen, Zeitraum] ([Zitat-ID/U…/E…]). Sicherheit: [schwach / mittel / stark – warum]. Entschieden: [...]
+- Gefallen: [die Annahme, die nicht gehalten hat] ([A…], [Beleg]). Entschieden: [...]
 - Gemessen: [Zahl] – [wie viele Personen, wie lange]. Outcome: [belegt / noch nicht, warum]
 
-## Modell und nächster Schritt (2 min)
-[Wer zahlt wofür] · Hängt an: [Annahme] · Nächster Test: [...] – weil [...]</Prompt>
+## Position, Modell, nächster Schritt (2 min)
+Gegenüber [Alternative 1] und [Alternative 2]: weg mit [...] · weniger [...] · mehr [...] · neu [...] – je Zeile ([P…/G…] oder Value Map)
+Wer zahlt wofür: [...] · Hängt an: [A… machbar], [A… wirtschaftlich] – benannt, nicht gerechnet
+Nächster Test: [...] – weil [...]
+Letzter Satz: [der Pitch-Satz, oder sein zweiter Teil]
+
+## Offene Fragen (nach Tag 7)
+- [...]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
-  <p>Die Prüfliste gilt für den fertigen Pitch. Lasst sie nach <a href="/innolab/tag-6#review-retro">Review &amp; Retro Sprint 2</a> an Tag 6 laufen, solange euer Pro-Monat noch läuft (bis etwa 21. Dezember), und geht sie nach den letzten Tests noch einmal selbst durch; euer Gerüst von heute erfüllt erst Geschichte, Demo-Ablauf und Modell.</p>
+  <p>Die Prüfliste gilt für den fertigen Pitch. Lasst sie nach <a href="/innolab/tag-6#review-retro">Review &amp; Retro Sprint 2</a> an Tag 6 laufen, solange euer Pro-Monat noch läuft (bis etwa 21. Dezember), und geht sie nach den letzten Tests noch einmal selbst durch; euer Gerüst von heute erfüllt erst Belege und Position.</p>
   <ClaudePruefung slug="pitch" />
+  </div>
 
-  <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-  <p>Welche eurer Annahmen hat sich als falsch herausgestellt – und traut ihr euch, mit ihr den Teil „Belege“ zu beginnen?</p>
-  <p class="small muted">Story-Bogen nach Donna Lichaw, <em>The User’s Journey</em> (2016).</p>
+  <Folie>
+    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
+    <p class="folie-satz">Was steht in eurem Feld „Eliminieren“ – und traut ihr euch, es an Tag 7 zu zeigen?</p>
+    <p class="nur-handout">Wenn das Feld leer bleibt, legt euer Produkt nur etwas drauf: mehr Aufwand für die Bar, für euch oder für die Kundschaft. Und wenn ihr eine Annahme habt, die gefallen ist – beginnt mit ihr den Teil „Belege“.</p>
+  </Folie>
+
+  <p class="small muted">Nach {LICHAW}, Kap. 2 und 7; {BOS}, Kap. 2, S. 25–43, und Kap. 4, S. 82–93; {CAGAN}, S. 151–153, 189–190, 281–282; {BLAND}, S. 52, 56–57, 81.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/sprint', t: 'Sprint' }} next={{ href: '/innolab/tag-4#abschluss', t: 'Tag 4 · Abschluss' }} />
 </Layout>
+
+<style>
+  .wertkurve { margin: 1rem 0; max-width: 46rem; }
+  .wertkurve > svg { display: block; width: 100%; height: auto; }
+  .wertkurve > svg.hoch { display: none; max-width: 26rem; }
+  @media (max-width: 640px) { .wertkurve > svg.quer { display: none; } .wertkurve > svg.hoch { display: block; } }
+  :global(html[data-beamer]) .wertkurve > svg.quer { display: block; }
+  :global(html[data-beamer]) .wertkurve > svg.hoch { display: none; }
+  .wertkurve .raster { stroke: var(--border); stroke-width: 1; }
+  .wertkurve .achse { fill: var(--muted); font-size: 17px; }
+  .wertkurve .faktor { fill: var(--fg); font-size: 19px; }
+  .wertkurve .frage { fill: var(--muted); font-size: 20px; font-weight: 700; }
+  .wertkurve polyline { fill: none; stroke-width: 2.5; }
+  .wertkurve line.theke, .wertkurve polyline.theke { stroke: var(--fg); stroke-dasharray: 3 5; }
+  .wertkurve line.automat, .wertkurve polyline.automat { stroke: var(--muted); stroke-dasharray: 12 5 2 5; }
+  .wertkurve line.express, .wertkurve polyline.express { stroke: var(--accent); stroke-width: 4; }
+  .wertkurve circle.theke { fill: var(--fg); }
+  .wertkurve circle.automat { fill: var(--muted); }
+  .wertkurve circle.express { fill: var(--accent); }
+  .wertkurve .legende { display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; font-size: .95rem; margin-top: .5rem; }
+  .wertkurve .legende span { display: inline-flex; align-items: center; gap: .5rem; }
+  .wertkurve .legende line { stroke-width: 3; }
+  .errc { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 46rem; border: 2px solid var(--fg); border-radius: var(--radius, 8px); overflow: hidden; margin: 1rem 0; }
+  .errc > div { padding: .7rem 1rem; display: flex; flex-direction: column; gap: .3rem; background: var(--bg-2); }
+  .errc > div:nth-child(odd) { border-right: 1px solid var(--border); }
+  .errc > div:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+  .errc strong { font-size: 1.05rem; }
+  :global(html[data-beamer]) .errc span { font-size: 1.2rem; line-height: 1.35; }
+  :global(html[data-beamer]) .wertkurve { max-width: min(46rem, calc((100vh - 17rem) * 720 / 262)); }
+</style>

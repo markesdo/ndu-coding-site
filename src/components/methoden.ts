@@ -427,19 +427,21 @@ export const METHODEN: Methode[] = [
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Ron Jeffries, The Nature of Software Development (2015), Kap. 5–6; AJ&Smart, Lightning Decision Jam (2020)',
   },
   {
-    slug: 'pitch', name: 'Pitch', tag: 4, dauer: 45,
-    frage: 'Überzeugt das Produkt – mit Belegen?',
-    braucht: ['brief', 'concept', 'usage', 'origin', 'geschaeftsmodell', 'spike', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
+    slug: 'pitch', name: 'Pitch', tag: 4, dauer: 45, prueflisteStand: 2,
+    frage: 'Überzeugt das Produkt – mit Belegen und einem sichtbaren Unterschied zu dem, was es heute gibt?',
+    braucht: ['brief', 'profil', 'valuemap', 'concept', 'experimente', 'origin', 'geschaeftsmodell', 'usage', 'spike', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
     pruefliste: [
-      'Der Einstieg ist die Concept Story: Die Nutzer*innen und ihr Problem kommen vor dem Produkt.',
-      'Die Demo folgt der Usage Story, läuft live und endet am Höhepunkt; ein Video liegt als Plan B bereit.',
-      'Jede Behauptung über Nutzer*innen hat einen Beleg mit ID: Zitat, Testbefund oder Messung.',
-      'Mindestens eine widerlegte Annahme kommt vor – mit der Entscheidung, die daraus folgte.',
+      'Der Einstieg ist die Concept Story: Die Nutzer*innen und ihr Problem kommen vor dem Produkt, und die Geschichte hört vor dem Höhepunkt auf.',
+      'Die Demo folgt der Usage Story bis zum Höhepunkt, live am Handy auf der Produktions-URL; ihr führt sie vor, und ein Video liegt als Plan B bereit.',
+      'Jede Behauptung über Nutzer*innen hat einen Beleg mit ID, eine Zahl mit der Zahl der Personen dahinter und ein Wort dazu, wie sicher sie ist – nicht sicherer als in der Lernkarte.',
+      'Mindestens eine Annahme, die nicht gehalten hat, kommt vor – mit der Entscheidung, die dazu im Entscheidungslog steht.',
       'Die Zahlen der Outcome-Metrik stehen da, mit der Zahl der Personen dahinter, auch wenn sie klein ist.',
-      'Es steht da, wer zahlt und wofür, und an welcher Annahme das Modell hängt.',
-      'Der Schluss sagt, was ihr als Nächstes prüfen würdet und warum.',
+      'Der Teil Position nennt gegenüber den heutigen Alternativen, was wegfällt, weniger wird, mehr wird und neu ist – alle vier, jede Zeile mit Beleg: einer ID aus dem Kundenprofil oder einem Verweis auf die Value Map.',
+      'Der Pitch-Satz aus Abschnitt 3 des Produkt-Briefs steht da und verspricht nichts, was die Demo nicht zeigt.',
+      'Es steht da, wer zahlt und wofür, an welcher Annahme das Modell hängt – benannt, nicht gerechnet –, und was ihr als Nächstes prüft und warum.',
     ],
-    ki: 'Spielt einen skeptischen Investor; prüft jede Behauptung gegen das Entscheidungslog.',
+    ki: 'Spielt eine skeptische Investorin; prüft jede Behauptung gegen Lernkarten und Entscheidungslog und verlangt keine Preis- oder Kostenrechnung.',
+    quelle: 'Donna Lichaw, The User’s Journey (2016), Kap. 2, 7; W. Chan Kim & Renée Mauborgne, Blue Ocean Strategy (2005), S. 25–43, 82–93; Marty Cagan, Inspired (2018), S. 151–153, 189–190, 281–282; David J. Bland & Alexander Osterwalder, Testing Business Ideas (2019), S. 52, 56–57, 81',
   },
 ];
 
@@ -509,6 +511,16 @@ const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchsten
 /** ID der abhakbaren Prüfliste (localStorage-Schlüssel in Checklist.astro); mit Stand, sobald die Punkte neu geschrieben wurden. */
 export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `il-${m.slug}-${m.prueflisteStand}` : `il-${m.slug}`);
 
+/** Was Claude zum Abgleich liest: die Dateien der Vorarbeit (ohne die schon gelesenen) und die Werkstatt-Artefakte,
+ *  z. B. ["docs/STORYS.md, docs/TESTS.md", "aus der Werkstatt meinen Produkt-Brief (Werkzeug artefakt_lesen)"].
+ *  Für Prompts, die dieselbe Vorarbeit lesen sollen wie die Prüfung (etwa die skeptische Investorin beim Pitch). */
+export function vorarbeitLesen(m: Methode, schonGelesen: (string | undefined)[] = []): string[] {
+  const gelesen = new Set(schonGelesen);
+  const dateien = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !gelesen.has(p)))];
+  const werkstatt = [...new Set(m.braucht.map(werkstattQuelle).filter((n): n is ArtefaktName => !!n))];
+  return [dateien.join(', '), werkstatt.length ? `aus der Werkstatt ${ausWerkstatt(werkstatt)}` : ''].filter(Boolean);
+}
+
 export function pruefPrompt(m: Methode, pfad?: string): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
   const liste = m.pruefliste.map((p, i) => `${i + 1}. ${p}`);
@@ -532,9 +544,7 @@ export function pruefPrompt(m: Methode, pfad?: string): string {
   // Viele Punkte lassen sich nur gegen die Vorarbeit prüfen (Zitate gegen Transkripte, IDs gegen das Kundenprofil).
   if (pfade.length === 0) throw new Error(`pruefPrompt: Methode „${m.slug}“ ergibt nichts, was Claude lesen kann`);
   // Ohne das, was Claude ohnehin liest – auch wenn pfad nur einen Teil davon nennt (z. B. ausgewählte Issues).
-  const schonGelesen = new Set([...pfade, ...m.ergibt.map(quelle)]);
-  const abgleich = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !schonGelesen.has(p)))];
-  const teile = [abgleich.join(', '), werkstattAbgleich.length ? `aus der Werkstatt ${ausWerkstatt(werkstattAbgleich)}` : ''].filter(Boolean);
+  const teile = vorarbeitLesen(m, [...pfade, ...m.ergibt.map(quelle)]);
   return [
     `Lies ${pfade.join(' und ')}.${teile.length ? ` Zum Abgleich lies auch ${teile.join(' und ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
     ...liste,

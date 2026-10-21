@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -123,7 +123,7 @@ describe('methoden', () => {
   it('neu geschriebene Prüflisten bekommen eine neue Checklisten-ID – alte Häkchen hängen sonst an neuen Punkten', () => {
     const id = (slug: string) => pruefChecklisteId(METHODEN.find((m) => m.slug === slug)!);
     expect(['scrum', 'sprint', 'backlog', 'akzeptanzkriterien', 'schneiden', 'pitch'].map(id)).toStrictEqual(
-      ['il-scrum-2', 'il-sprint-2', 'il-backlog-2', 'il-akzeptanzkriterien-2', 'il-schneiden-2', 'il-pitch'],
+      ['il-scrum-2', 'il-sprint-2', 'il-backlog-2', 'il-akzeptanzkriterien-2', 'il-schneiden-2', 'il-pitch-2'],
     );
     const ids = METHODEN.map(pruefChecklisteId);
     expect(new Set(ids).size).toBe(ids.length);
@@ -174,7 +174,18 @@ describe('methoden', () => {
 
   it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
-    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog \(Werkzeug artefakt_lesen\)\. /);
+    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/KUNDENPROFIL\.md, docs\/VALUE-MAP\.md, docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog \(Werkzeug artefakt_lesen\)\. /);
+    // Die Prüfliste verlangt alle vier Raster-Felder mit Beleg aus Kundenprofil oder Value Map, ein Sicherheits-Wort wie in
+    // den Lernkarten (E1, E2) und die Outcome-Zahlen – darum liest Claude Profil, Value Map, Experimente und Tests mit.
+    const pitch = METHODEN.find((m) => m.slug === 'pitch')!;
+    const liste = pitch.pruefliste!.join(' ');
+    expect(liste).toMatch(/wegfällt, weniger wird, mehr wird und neu ist/);
+    expect(liste).toMatch(/ID aus dem Kundenprofil oder einem Verweis auf die Value Map/);
+    expect(liste).toMatch(/ein Wort dazu, wie sicher sie ist/);
+    expect(liste).toMatch(/Zahlen der Outcome-Metrik/);
+    // vorarbeitLesen (daraus baut die Pitch-Seite den Prompt der Investorin) liefert dieselbe Liste wie der Prüf-Prompt.
+    expect(pi).toContain(`Zum Abgleich lies auch ${vorarbeitLesen(pitch, ['docs/PITCH.md']).join(' und ')}. `);
+    expect(pitch.braucht).toEqual(expect.arrayContaining(['profil', 'valuemap', 'experimente', 'spike', 'entscheidungen', 'brief']));
   });
 
   it('jede Tagesseite trägt das Datum aus TAGE als data-kurstag – sonst springt die Jetzt-Markierung am falschen Tag', () => {
