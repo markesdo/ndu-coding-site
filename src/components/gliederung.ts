@@ -1,6 +1,8 @@
 // Gliederung einer Tagesseite aus ihrem Quelltext: h2 mit id, darunter die Übungsschritte a)–f) als h3 mit id.
 // Daraus entstehen beim Bauen das Inhaltsverzeichnis und die Beschriftung der „Wo bin ich“-Leiste.
 
+import { textAusHtml as ohneTags } from './abschnitt';
+
 export interface Eintrag {
   id: string;
   /** Text für das Inhaltsverzeichnis. */
@@ -12,13 +14,6 @@ export interface Eintrag {
 export interface Abschnitt extends Eintrag {
   schritte: Eintrag[];
 }
-
-const ohneTags = (html: string) =>
-  html
-    .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
 
 /** „c) Vage oder präzise – ein Raum-Experiment (10 min)“ → { titel: „c) Vage oder präzise“, dauer: „10 min“ } */
 function kurz(text: string): { titel: string; dauer?: string } {

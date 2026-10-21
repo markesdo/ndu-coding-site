@@ -9,14 +9,15 @@ import '@fontsource-variable/jetbrains-mono';
 import '../../styles/global.css';
 import { ChevronLeft, ChevronRight, ExternalLink, LayoutGrid, Radio, Timer } from '@lucide/astro';
 import { NOTIZEN } from '../../data/begleiter';
-import { pfadAusGlob, tagFolien } from '../../lib/begleiter';
+import { quellenAusGlob, seitenLabel, tagFolien } from '../../lib/begleiter';
 import { teamFrameLink } from '../../lib/team-board';
 
-const seiten = import.meta.glob('./**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
-const quellen = Object.fromEntries(Object.entries(seiten).map(([k, v]) => [pfadAusGlob(k.replace(/^\.\//, '../pages/innolab/')), v]));
+// Glob vom Projektwurzel aus (wie in lib/begleiter.test.ts), damit die Schlüssel nicht vom Ordner dieser Datei abhängen.
+const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 const folien = tagFolien(quellen);
-// Seitenname aus <Layout title="…"> der Seite, sonst der Pfad.
-const seitenName = (pfad: string) => quellen[pfad]?.match(/<Layout\b[^>]*\btitle="([^"]+)"/)?.[1] ?? pfad;
+// Ohne Folien wäre die Seite leer und das Folgen sinnlos – lieber den Build abbrechen.
+if (folien.length === 0) throw new Error('Begleiter: keine Folien von Tag 1 gefunden (Glob oder Seitenpfade geändert?)');
+const seitenName = (pfad: string) => seitenLabel(pfad, quellen[pfad] ?? '');
 const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
   pfad, name: seitenName(pfad), folien: folien.map((f, i) => ({ ...f, i })).filter((f) => f.pfad === pfad),
 }));
@@ -142,7 +143,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       import { anzeige, type Ereignis, type Zustand } from '../../components/begleiter-anzeige';
       import { folieZu, type Folie } from '../../lib/begleiter';
       import { abfrageKette, jsonHolen } from '../../lib/kette';
-      import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, RUHIG_MS, alterText, positionPruefen } from '../../lib/position';
+      import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, RUHIG_MS, alterText, naechsteAbfrage, positionPruefen } from '../../lib/position';
 
       const artikel = [...document.querySelectorAll<HTMLElement>('main > article')];
       // Folienliste für folieZu: beim Bauen als JSON in die Seite geschrieben (unten, begleiter-folien).
@@ -151,9 +152,9 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       const folgenKnopf = document.querySelector<HTMLButtonElement>('[data-folgen]')!;
       const status = document.querySelector<HTMLElement>('[data-status]')!;
 
-      let z: Zustand = { index: 0, folgen: true, meldung: 'keine-position' };
+      let z: Zustand = { index: 0, folgen: true, meldung: 'frage' };
       let beamerTitel = '';
-      let geantwortet = false;
+      let fehlerInFolge = 0;
 
       function zeichnen(vorher: number) {
         if (z.index !== vorher) {
@@ -166,9 +167,8 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         status.dataset.meldung = z.folgen ? z.meldung : 'hand';
         status.textContent = !z.folgen
           ? 'Von Hand geblättert, Folgen pausiert'
-          : !geantwortet
-            ? 'Frage den Beamer …'
-            : {
+          : {
+                frage: 'Frage den Beamer …',
                 ok: 'Folgt dem Beamer',
                 'nicht-tag-1': `Beamer ist nicht auf Tag 1${beamerTitel ? `: ${beamerTitel}` : ''}`,
                 'keine-position': 'Beamer meldet nichts',
@@ -187,21 +187,26 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       const kette = abfrageKette({
         ruheMs: RUHIG_MS,
         ruht: () => document.hidden || !z.folgen,
+        // Auch ohne Position im schnellen Takt: Das Tablet ist meist offen, bevor der Beamer startet. Bei Fehlern wie in
+        // wo-ist.ts erst nach mehreren in Folge langsamer (naechsteAbfrage).
         runde: async () => {
           try {
             const daten = (await jsonHolen('/api/position', ABFRAGE_TIMEOUT_MS)) as { position?: unknown; zeit?: number; jetzt?: number };
-            geantwortet = true;
+            fehlerInFolge = 0;
             const p = positionPruefen(daten.position);
             const alt = typeof daten.zeit === 'number' && typeof daten.jetzt === 'number' && alterText(daten.jetzt - daten.zeit) === null;
-            if (!p || alt) { melden({ art: 'leer' }); return RUHIG_MS; }
-            beamerTitel = p.titel;
-            melden({ art: 'position', index: folieZu(folien, p.pfad, p.anker) });
+            if (!p || alt) melden({ art: 'leer' });
+            else {
+              beamerTitel = p.titel;
+              melden({ art: 'position', index: folieZu(folien, p.pfad, p.anker) });
+            }
+            return ABFRAGE_MS;
           } catch (e) {
-            geantwortet = true;
+            fehlerInFolge += 1;
             console.warn('[begleiter] Position nicht geholt:', e);
             melden({ art: 'fehler' });
+            return naechsteAbfrage('fehler', fehlerInFolge).ms;
           }
-          return ABFRAGE_MS;
         },
       });
 

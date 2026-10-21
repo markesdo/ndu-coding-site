@@ -2,7 +2,8 @@
 // testbar. Folgen an: jede Beamer-Meldung zählt (Index nur bei einer Tag-1-Folie, sonst bleibt die letzte stehen).
 // Folgen aus (von Hand geblättert): Beamer-Meldungen ändern nichts, bis „Dem Beamer folgen“ gedrückt wird.
 
-export type Meldung = 'ok' | 'nicht-tag-1' | 'keine-position' | 'keine-verbindung';
+/** frage = noch keine Antwort seit dem Laden bzw. seit „Dem Beamer folgen“. */
+export type Meldung = 'frage' | 'ok' | 'nicht-tag-1' | 'keine-position' | 'keine-verbindung';
 export type Zustand = { index: number; folgen: boolean; meldung: Meldung };
 export type Ereignis =
   | { art: 'position'; index: number | null }
@@ -14,7 +15,7 @@ export type Ereignis =
 export function anzeige(z: Zustand, e: Ereignis): Zustand {
   switch (e.art) {
     case 'blaettern': return { ...z, index: e.index, folgen: false };
-    case 'folgen': return { ...z, folgen: true };
+    case 'folgen': return { ...z, folgen: true, meldung: 'frage' };
   }
   if (!z.folgen) return z;
   switch (e.art) {

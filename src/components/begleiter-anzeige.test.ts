@@ -27,7 +27,8 @@ describe('anzeige (Begleiter)', () => {
   it('Blättern pausiert das Folgen', () => {
     expect(anzeige(folgt, { art: 'blaettern', index: 7 })).toStrictEqual({ index: 7, folgen: false, meldung: 'ok' });
   });
-  it('„Dem Beamer folgen“ schaltet das Folgen wieder ein', () => {
-    expect(anzeige(vonHand, { art: 'folgen' })).toStrictEqual({ ...vonHand, folgen: true });
+  it('„Dem Beamer folgen“ schaltet das Folgen wieder ein und vergisst die alte Meldung, bis der Beamer antwortet', () => {
+    expect(anzeige(vonHand, { art: 'folgen' })).toStrictEqual({ index: 2, folgen: true, meldung: 'frage' });
+    expect(anzeige(anzeige(vonHand, { art: 'folgen' }), { art: 'position', index: 4 })).toStrictEqual({ index: 4, folgen: true, meldung: 'ok' });
   });
 });
