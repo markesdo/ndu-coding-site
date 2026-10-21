@@ -14,10 +14,6 @@ const quellen = dateien(SEITEN).map((p) => ({ p, text: readFileSync(p, 'utf8') }
 const aufrufe = quellen.flatMap(({ p, text }) => [...text.matchAll(/<Miro(?:Frame|Link)\b[^>]*>/g)].map((m) => ({ p, tag: m[0] })));
 const namen = aufrufe.map(({ tag }) => /name="([^"]+)"/.exec(tag)?.[1]);
 
-// Frames, die schon auf dem Board stehen, deren Seiten aber noch in einem offenen PR liegen (Tag 4: PR #253).
-// Ist der gemergt, die Namen hier streichen – dann greift die Prüfung auch für sie.
-const BOARD_VORAUS = new Set(['T4 · 1 · Teamaufstellung & DoD', 'T4 · 2 · Backlog-Reihenfolge', 'T4 · 3 · Wertkurve & ERRC']);
-
 describe('MIRO_FRAMES', () => {
   it('jede <MiroFrame>/<MiroLink> auf den Seiten nennt ihren Namen als festen Text', () => {
     expect(aufrufe.length).toBeGreaterThan(10);
@@ -32,7 +28,7 @@ describe('MIRO_FRAMES', () => {
   });
 
   it('jeder Eintrag der Karte wird auf einer Seite benutzt – sonst ist er tot oder der Name auf der Seite falsch', () => {
-    for (const name of Object.keys(MIRO_FRAMES)) if (!BOARD_VORAUS.has(name)) expect(namen, name).toContain(name);
+    for (const name of Object.keys(MIRO_FRAMES)) expect(namen, name).toContain(name);
   });
 
   it('Frame-IDs sind Zahlen und kommen nur einmal vor', () => {
