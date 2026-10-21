@@ -4,7 +4,7 @@ import { NOTIZEN } from '../data/begleiter';
 import { TAG_1 } from '../data/begleiter/tag';
 import {
   TAG_1_SEITEN, ablaufBloecke, bloeckeAus, folieZu, folienAus, folienPlan, hhmm, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie,
-  pfadAusGlob, quellenAusGlob, seitenLabel, tagFolien, tempo, uebungMinuten, wischErlaubt, type WischKnoten,
+  pfadAusGlob, quelleTeile, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, tempo, uebungMinuten, wischErlaubt, type WischKnoten,
 } from './begleiter';
 
 // Dieselbe Glob-Form wie in pages/innolab/begleiter.astro (vom Projektwurzel aus, unabhängig vom Ordner der Datei).
@@ -256,15 +256,23 @@ describe('Folien von Tag 1 (echte Seiten)', () => {
   });
 });
 
-// Stil der live-Stichworte (typen.ts): Satz zum Sagen ganz in „…“ höchstens 25 Wörter, sonst Regieanweisung, höchstens 12.
+// Stil der live-Stichworte (typen.ts): Satz zum Sagen ganz in „…“ höchstens 18 Wörter, sonst Regieanweisung, höchstens 12.
 const woerter = (s: string) => s.split(/\s+/).filter((t) => /[\p{L}\p{N}]/u.test(t)).length;
-const zuLang = (s: string) => woerter(s) > (/^„[^“]*“\.?$/.test(s) ? 25 : 12);
+const zuLang = (s: string) => woerter(s) > (/^„[^“]*“\.?$/.test(s) ? 18 : 12);
+// Feste Stichworte vor dem Doppelpunkt (typen.ts); diese Synonyme heißen dort anders.
+const ALTE_CUES = /^(Fallstrick|Fallen|Zeitcheck|Uhr|Uhr prüfen|Checkpoint|Raum fragen|Bei Zeit|Bei Zeitnot[^:]*):/;
 
 describe('Stil der Notizen', () => {
   it('erkennt zu lange Stichworte', () => {
     expect(zuLang('Portland erzählen: gute Absicht, viel Geld, falsches Produkt.')).toBe(false);
     expect(zuLang('eins zwei drei vier fünf sechs sieben acht neun zehn elf zwölf dreizehn')).toBe(true);
     expect(zuLang('„eins zwei drei vier fünf sechs sieben acht neun zehn elf zwölf dreizehn – ‚vierzehn‘?“')).toBe(false);
+    expect(zuLang('„1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19.“')).toBe(true);
+  });
+  it('live-Stichworte nutzen die festen Stichworte (Falle, Zeit, Fragen, Bei Bedarf, Wenn hinten)', () => {
+    const alt = Object.entries(NOTIZEN).flatMap(([pfad, je]) =>
+      Object.entries(je).flatMap(([id, n]) => n.live.filter((s) => ALTE_CUES.test(s)).map((s) => `${pfad}#${id}: ${s}`)));
+    expect(alt).toStrictEqual([]);
   });
   it('jedes live-Stichwort hält die Längengrenze ein', () => {
     const lang = Object.entries(NOTIZEN).flatMap(([pfad, je]) =>
@@ -278,8 +286,37 @@ describe('Stil der Notizen', () => {
   });
 });
 
+describe('Anzeige der Notizen', () => {
+  it('stichwortForm: Zitat, Stichwort vorn, Takt', () => {
+    expect(stichwortForm('„Sagt es.“')).toStrictEqual({ zitat: true, cue: null, rest: '„Sagt es.“', takt: null });
+    expect(stichwortForm('Falle: Gefühl als Problem')).toStrictEqual({ zitat: false, cue: 'Falle', rest: 'Gefühl als Problem', takt: null });
+    expect(stichwortForm('Nach 25 min: Dreierrunden')).toStrictEqual({ zitat: false, cue: 'Nach 25 min', rest: 'Dreierrunden', takt: 25 });
+    expect(stichwortForm('Kaffeebar ist erfunden.')).toStrictEqual({ zitat: false, cue: null, rest: 'Kaffeebar ist erfunden.', takt: null });
+    expect(stichwortForm('Frage „Was heißt: fertig?“ stellen').cue).toBe(null);
+  });
+  it('quelleTeile: URL als Link mit Host, Satzzeichen bleiben Text', () => {
+    expect(quelleTeile('Klein, HBR: https://hbr.org/2007/09/premortem; vgl. Torres S. 125')).toStrictEqual([
+      { text: 'Klein, HBR: ' }, { url: 'https://hbr.org/2007/09/premortem', host: 'hbr.org' }, { text: '; vgl. Torres S. 125' },
+    ]);
+    expect(quelleTeile('https://www.sec.gov/a.htm.')).toStrictEqual([{ url: 'https://www.sec.gov/a.htm', host: 'sec.gov' }, { text: '.' }]);
+    expect(quelleTeile('Torres, S. 12')).toStrictEqual([{ text: 'Torres, S. 12' }]);
+  });
+  it('streichVerweis: Folien-id aus der Klammer am Ende', () => {
+    expect(streichVerweis('Zappos weglassen (mvp).')).toStrictEqual({ text: 'Zappos weglassen', id: 'mvp', zusatz: '' });
+    expect(streichVerweis('Probe 15 → 5 min (vorgehen, Schritt 3).')).toStrictEqual({ text: 'Probe 15 → 5 min', id: 'vorgehen', zusatz: ', Schritt 3' });
+    expect(streichVerweis('Theorie knapp halten.')).toStrictEqual({ text: 'Theorie knapp halten.', id: null, zusatz: '' });
+  });
+});
+
 describe('Tageskarte', () => {
   const titel = bloeckeAus(quellen['/innolab/tag-1']).filter((b) => b.href).map((b) => b.titel);
+  it('jeder Streich-Verweis zeigt auf eine Folie in seinem Block', () => {
+    const folien = tagFolien(quellen);
+    const plan = folienPlan(folien, bloeckeAus(quellen['/innolab/tag-1']), () => null);
+    const ins = Object.entries(TAG_1.bloecke).flatMap(([block, b]) => (b.streichen ?? []).map((x) => ({ block, ...streichVerweis(x) })))
+      .filter((v) => v.id && !folien.some((f, i) => plan[i]?.block === v.block && (f.id === v.id || f.unterIds.includes(v.id!))));
+    expect(ins).toStrictEqual([]);
+  });
   it('jeder Block mit Link im Ablauf hat ein Lernziel, kein Eintrag ohne Block', () => {
     expect(titel.filter((t) => !TAG_1.bloecke[t]?.lernziel.trim())).toStrictEqual([]);
     expect(Object.keys(TAG_1.bloecke).filter((t) => !titel.includes(t))).toStrictEqual([]);

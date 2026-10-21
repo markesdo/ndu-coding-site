@@ -202,7 +202,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       'Zeilen einzeln aufdecken, je Zeile Antwort der Pendlerin durchspielen.',
       'Treue-App-Geschichte erzählen: „Klar, wurde ja Zeit!“, ein Nörgler, kein Kunde.',
       'Timer 5 min: jede*r schreibt die eigenen drei Fragen um.',
-      'Fallen: Lösung steckt noch drin, oder Zukunft nur ins Präsens gesetzt.',
+      'Falle: Lösung steckt noch drin oder Zukunft nur ins Präsens gesetzt.',
       'Danach zwei, drei Stickies vorlesen lassen, in der Rolle antworten.',
     ],
     ueberleitung: 'Und wenn die Antworten kommen: Welche davon zählt überhaupt?',
@@ -430,7 +430,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       '„Im Gespräch erwarten wir 50/50. Darum kündigt ihr am Anfang an, dass ihr die ganze Geschichte hören wollt.“',
       'Café-Geschichte erzählen: „schlimmster Teil meines Tages“, Gründer fragt nicht nach.',
       '„Nicht jede Person hat die Geschichte, die ihr sucht. Nehmt, was sie erzählen will.“',
-      'Uhr prüfen: um 14:30 ist Pause.',
+      'Zeit: 14:30 Pause.',
     ],
     verstaendnis: {
       frage: 'Die Person sagt: „Normalerweise hole ich mir am Bahnhof was.“ Was fragt ihr als Nächstes?',
@@ -479,7 +479,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
   'vorgehen': {
     live: [
       'Überzieht Schritt 1, Schritt 2 kürzen, nie die Live-Runden.',
-      'Checkpoint: Live-Runden spätestens 15:30 starten, sie brauchen 45 min.',
+      'Zeit: Live-Runden spätestens 15:30 starten, sie brauchen 45 min.',
       'Du spielst schwierig: Ein-Satz-Antworten, „normalerweise“, Komplimente, Feature-Wünsche.',
       'Vor Runde 1 MTV-Geschichte erzählen: Feature-Wunsch notiert statt Wozu gefragt.',
       '„Die Probe mit Claude findet Pitch-Reflexe, aber Claude kennt eure Zielgruppe nicht.“',
@@ -560,7 +560,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       '„So konkret wie ‚7:30 am Bahnhof‘, nicht ‚morgens unterwegs‘.“',
       'Mehrere Situationen? Die nehmen, die zur riskantesten Annahme passt.',
       '„Diese Situation wird die erste Kernfrage in eurem Leitfaden.“',
-      'Uhr: um 16:15 beginnt Hausaufgabe & Abschluss.',
+      'Zeit: 16:15 Hausaufgabe & Abschluss.',
     ],
     ueberleitung: 'Mit dieser Situation geht ihr jetzt raus: fünf echte Interviews bis Tag 2.',
     kern: [

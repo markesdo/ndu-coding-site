@@ -97,7 +97,7 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
 
   'beleg-staerke': {
     live: [
-      'Bei Zeitnot überspringen: kommt nach dem Mittag in der Annahmen-Map wieder.',
+      'Wenn hinten: überspringen, kommt nach dem Mittag in der Annahmen-Map wieder.',
       '„Ein ‚Würde ich nutzen‘ hört ihr von fast allen – darum ist gesagt kaum besser als noch keiner.“',
       'Streng trennen: erzählt = konkretes Ereignis, „meistens …“ zählt als gesagt.',
     ],

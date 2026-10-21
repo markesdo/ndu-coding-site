@@ -1,0 +1,13 @@
+---
+// Quellenangabe im Präsentator-Begleiter: eigene Zeile unter dem Absatz, URLs als kurzer Link mit Host statt langer
+// Adresse im Fließtext (quelleTeile in lib/begleiter.ts). Gedruckt steht die volle Adresse dahinter (begleiter.astro).
+import { quelleTeile } from '../lib/begleiter';
+const { q } = Astro.props as { q: string };
+---
+<cite>{quelleTeile(q).map((t) => ('url' in t ? <a href={t.url} target="_blank" rel="noopener noreferrer">{t.host} ↗</a> : t.text))}</cite>
+
+<style>
+  cite { display: block; margin-top: .15rem; font-style: normal; font-size: .9rem; color: var(--muted); }
+  a { color: var(--blue); }
+  @media print { a::after { content: " " attr(href); } }
+</style>

@@ -8,7 +8,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
     live: [
       'Theorie knapp halten: Die Übung braucht die volle Stunde.',
       'Mittlere Frage betonen: Outcome wird Wurzel des Opportunity Solution Tree.',
-      '„Alles im Brief ist heute eine Annahme. Abschnitt 3, das Produkt in einem Satz, bleibt offen; Abschnitt 5 kommt an Tag 3.“',
+      '„Alles im Brief ist heute eine Annahme. Abschnitt 3, das Produkt in einem Satz, bleibt offen.“',
       'Coding-Kurs-Produkt: übertragen, Abschnitte 1, 2, 4, 6 schärfen, Änderungen ins Entscheidungslog.',
     ],
     ueberleitung: 'Beim Problem passiert euch am ehesten der häufigste Fehler – so verbreitet, dass er eine eigene Folie bekommt.',
@@ -87,7 +87,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
 
   loesungsraum: {
     live: [
-      'Raum fragen: Welche Lösungen erlaubt die schwache Fassung?',
+      'Fragen: Welche Lösungen erlaubt die schwache Fassung?',
       '„Unter der starken Fassung ist Platz für bessere Ideen, die erst in euren Interviews auftauchen.“',
       'Haken zeigen: Alle drei Lösungen teilen dieselbe Sicht, Schlange zu lang.',
       'Charlotte-Geschichte erzählen: verliebt in Lösung, eigentlich Motivationsproblem.',
@@ -122,10 +122,10 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
   reframing: {
     live: [
       'Aufzug erzählen: Beschwerden, alle wollen schnelleren Lift, Verwaltung hängt Spiegel.',
-      'Raum fragen: Welches Problem löst der Spiegel?',
+      'Fragen: Welches Problem löst der Spiegel?',
       '„Die erste Sicht ist nicht falsch. Ihr prüft nur, ob es ein besseres Problem gibt.“',
       'Erst danach Kaffeebar aufdecken: Wartezeit-Anzeige an der Tür.',
-      'Bei Zeit: Tierheim-Geschichte aus geschichte, sonst weglassen.',
+      'Bei Bedarf: Tierheim-Geschichte aus „Zum Erzählen“.',
     ],
     ueberleitung: 'Der Rahmen hat einen zweiten Teil, das Outcome – und dort passiert euch der zweite typische Fehler.',
     kern: [

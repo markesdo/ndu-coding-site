@@ -9,7 +9,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       'Zeit: 30 Minuten für vier Folien, Hausaufgabe zuerst wegen Fragen.',
       '„Fünf Gespräche pro Person, jede*r für das eigene Produkt; die anderen beiden aus eurem Team zählen nicht.“',
       'Kochbuch-Geschichte erzählen, falls beim Mom Test noch nicht erzählt.',
-      '„Holt die Einwilligung vor dem Gespräch ein: für die Aufnahme und dafür, dass die pseudonymisierten Notizen mit KI ausgewertet werden.“',
+      '„Holt die Einwilligung vor dem Gespräch ein: für die Aufnahme und für die KI-Auswertung der pseudonymisierten Notizen.“',
       '„Fragt am Ende jedes Gesprächs: ‚Wen sollte ich noch fragen?‘ So kommt ihr vom ersten zum fünften Interview.“',
     ],
     verstaendnis: {
@@ -187,7 +187,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       'Board herauszoomen, T1 · 1 bis T1 · 4 zeigen, „Alle zu mir holen“.',
       'Fünf Schritte als Kette durchgehen: jeder begrenzt den nächsten.',
       '„Die riskanteste Annahme ist eure Forschungsfrage. Im Interview fragt ihr aber nach einer Geschichte, nicht nach der Annahme.“',
-      '„An Tag 2 dreht sich die Richtung: Bisher steht da, was ihr glaubt; dann kommt dazu, was eure Leute erlebt haben.“',
+      '„An Tag 2 dreht sich die Richtung: Zu dem, was ihr glaubt, kommt, was eure Leute erlebt haben.“',
     ],
     ueberleitung: 'Zum Schluss schauen wir, was davon heute wirklich in euren Mappen gelandet ist.',
     miro: {
