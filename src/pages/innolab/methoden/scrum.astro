@@ -20,6 +20,7 @@ const KRIVITSKY = 'Alexey Krivitsky, „lego4scrum“, deutsche Ausgabe (2023)';
 const MANIFEST = 'Manifesto for Agile Software Development (2001), agilemanifesto.org';
 
 // Lego4Scrum 10:30–11:50 laut tag-4.astro: Review 1 endet nach Minute 43 (11:13), die Nachbesprechung beginnt nach Minute 75 (11:45).
+const AB_LEGO = '2026-11-28T10:30';
 const NACH_REVIEW_1 = '2026-11-28T11:13';
 const NACH_LEGO = '2026-11-28T11:45';
 ---
@@ -250,15 +251,17 @@ const NACH_LEGO = '2026-11-28T11:45';
       <li data-schritt><strong>Danach:</strong> Wie fühlt sich das an? Fragt nach.</li>
     </ul>
     <div class="nur-handout">
-      <p><strong>Vision: Bahnhofsviertel Gleis 1</strong></p>
-      <p>Wir bauen das Viertel rund um einen kleinen Bahnhof, an dem jeden Morgen tausende Menschen umsteigen. Bisher ist er nur ein Durchgang. Wir wollen einen Ort daraus machen, an dem man gern ein paar Minuten bleibt, ohne je den Zug zu verpassen.</p>
-      <ul>
-        <li><strong>Pendler*innen</strong> (die Hauptpersona) kommen jeden Tag. Sie wollen schnell und trocken vom Zug zum Bus oder zur Arbeit, unterwegs etwas mitnehmen und immer wissen, wie viel Zeit noch bleibt.</li>
-        <li><strong>Reisende</strong> sind einmal da, mit Gepäck und ohne Ortskenntnis. Sie müssen sich sofort zurechtfinden und brauchen einen Platz zum Warten.</li>
-        <li><strong>Betreiber*innen</strong> von Kaffeebar, Kiosk und Bahnhofsdienst halten alles am Laufen. Sie brauchen Zugang für die Lieferungen und Platz zum Arbeiten.</li>
-      </ul>
-      <p>Die Kaffeebar steht schon – ihr baut alles drumherum. Offene Frage an euch: Womit verdient das Viertel sein Geld?</p>
-      <p class="small">Diese Vision ist eine Ergänzung des Kurses nach Krivitskys Muster, seinem „Silicon Village“ (S. 61–64): eine Idee mit einem Zweck und drei Personas – eine Hauptpersona, die täglich da ist („das ist unsere Haupt-Persona“), eine, die nur kurz kommt („Investoren kommen für kurze Besuche“), und „Personal oder Angestellte, welche die Stadt instandhalten“ (S. 64). Auch die offene Frage nach dem Geld stammt von ihm: Er ermutigt die Teilnehmer zu Fragen, „wie wir unser Geschäft monetarisieren sollen“ (S. 62). Markus erzählt die Vision, statt sie vorzulesen: „Eine Vision ist kein Dokument“ (S. 64).</p>
+      <Aufloesung ab={AB_LEGO} hinweis="Die Vision erzählt Markus zu Beginn des Spiels; hier steht sie ab 10:30." knopf="Vision zeigen">
+        <p><strong>Vision: Bahnhofsviertel Gleis 1</strong></p>
+        <p>Wir bauen das Viertel rund um einen kleinen Bahnhof, an dem jeden Morgen tausende Menschen umsteigen. Bisher ist er nur ein Durchgang. Wir wollen einen Ort daraus machen, an dem man gern ein paar Minuten bleibt, ohne je den Zug zu verpassen.</p>
+        <ul>
+          <li><strong>Pendler*innen</strong> (die Hauptpersona) kommen jeden Tag. Sie wollen schnell und trocken vom Zug zum Bus oder zur Arbeit, unterwegs etwas mitnehmen und immer wissen, wie viel Zeit noch bleibt.</li>
+          <li><strong>Reisende</strong> sind einmal da, mit Gepäck und ohne Ortskenntnis. Sie müssen sich sofort zurechtfinden und brauchen einen Platz zum Warten.</li>
+          <li><strong>Betreiber*innen</strong> von Kaffeebar, Kiosk und Bahnhofsdienst halten alles am Laufen. Sie brauchen Zugang für die Lieferungen und Platz zum Arbeiten.</li>
+        </ul>
+        <p>Die Kaffeebar gibt es schon – ihr baut nicht sie, sondern alles drumherum. Offene Frage an euch: Womit verdient das Viertel sein Geld?</p>
+        <p class="small">Diese Vision ist eine Ergänzung des Kurses nach Krivitskys Muster, seinem „Silicon Village“ (S. 61–64). Seine Personas: Gründer*innen als Hauptpersona, die dort wohnen und arbeiten; Investoren, die nur für kurze Besuche kommen; das Personal, das alles instand hält (S. 64). Bei uns sind das Pendler*innen, Reisende und Betreiber*innen. Auch die offene Frage am Ende ist eine Ergänzung des Kurses; Krivitsky ermutigt die Teilnehmer, selbst solche Fragen zu stellen, etwa wie sich das Geschäft monetarisieren lässt (S. 62).</p>
+      </Aufloesung>
       <p>„Ein Product Owner muss eine starke Vision haben“; Krivitsky empfiehlt, „eine Produktidee zu entwickeln, die sich wie Deine anfühlt“ ({KRIVITSKY}, S. 61). Sie braucht „eine Art übergeordnete Idee und klare Benutzerbedürfnisse“ – „nicht nur ‚eine weitere langweilige LEGO-Stadt bauen‘“ (S. 62). Nach dem Erzählen fragt der Product Owner die Gruppe, wie sie sich dabei fühlt (S. 63). „Drei Personas sind eine gute Größe, um damit anzufangen“ (S. 63). Und: „Eine Vision ist ein gemeinsames Verständnis davon, wozu wir tun, was wir tun“ – kein Dokument (S. 64).</p>
     </div>
   </Folie>
@@ -306,7 +309,7 @@ const NACH_LEGO = '2026-11-28T11:45';
       <BildText>
         <BuchAbbildung src="/quellen/krivitsky/inspektion.jpg" alt="Eine Gruppe von Menschen steht im Kreis um ein Lego-Modell auf dem Boden und schaut es an; einige halten die Hand ans Kinn, einer kniet davor" quelle={`Inspektion der Arbeit. ${KRIVITSKY}, S. 97.`} />
         <ul>
-          <li data-schritt><strong>„Wo ist mein Bahnhofsviertel?“</strong> Gefragt war ein Produkt, nicht drei Einzelstücke.</li>
+          <li data-schritt><strong>„Wo ist mein Bahnhofsviertel?“</strong> – Krivitskys Frage, für unser Viertel. Gefragt war ein Produkt, nicht drei Einzelstücke.</li>
           <li data-schritt><strong>19 von 20 Teams</strong> integrieren im ersten Sprint nicht – egal, wie viele Folien sie vorher sahen.</li>
           <li data-schritt><strong>Keine Definition of Done vor Sprint 1</strong> – mit Absicht.</li>
           <li data-schritt><strong>Prüfen und anpassen,</strong> nicht prüfen und abnehmen.</li>
