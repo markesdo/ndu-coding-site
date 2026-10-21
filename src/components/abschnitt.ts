@@ -71,13 +71,26 @@ export function abschnittName(h2?: string, h3?: string, bild?: string): string {
   return teile.join(' · ');
 }
 
+/** Was ueberschriftOberkanten vom DOM braucht (jedes Element erfüllt das), damit es ohne Browser testbar ist. */
+export type OberkantenKnoten = {
+  getBoundingClientRect(): { top: number };
+  closest(selektor: string): { getBoundingClientRect(): { top: number } } | null;
+};
+
 /**
- * Oberkante, mit der eine Überschrift gegen die Lesezeile zählt. Im Beamer füllt eine Folie die Höhe und zentriert
- * ihren Inhalt (beamer.css); die erste Überschrift einer kurzen Folie steht dann unter der Lesezeile, und gemeldet würde
- * die Folie davor. Für die erste Überschrift einer Folie zählt deshalb die Oberkante der Folie (folieTop), sonst ihre eigene.
+ * Oberkanten der Überschriften für aktiverAbschnitt. Im Beamer füllt eine Folie die Höhe und zentriert ihren Inhalt
+ * (beamer.css); die erste Überschrift einer kurzen Folie steht dann unter der Lesezeile, und es zählte die Folie davor.
+ * Deshalb zählt für die erste der übergebenen Überschriften einer .folie die Oberkante der Folie, für alle anderen die
+ * eigene. hs: sichtbare Überschriften in Dokumentreihenfolge – eine ausgeblendete zählt so nicht als „erste“.
  */
-export function zaehlendeOberkante(top: number, folieTop: number | null): number {
-  return folieTop ?? top;
+export function ueberschriftOberkanten(hs: readonly OberkantenKnoten[]): number[] {
+  const gesehen = new Set<unknown>();
+  return hs.map((h) => {
+    const folie = h.closest('.folie');
+    if (!folie || gesehen.has(folie)) return h.getBoundingClientRect().top;
+    gesehen.add(folie);
+    return folie.getBoundingClientRect().top;
+  });
 }
 
 /**
