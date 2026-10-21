@@ -22,19 +22,20 @@
     {
       "id": "D3",
       "datum": "2026-11-05",
-      "entscheidung": "Zielgruppe: Pendler*innen nach Wien und Linz, 7:15–7:45",
-      "grund": "3 von 5 Interviewten fahren Richtung Linz",
-      "beleg": "erzaehlt",
-      "belegIds": ["I1", "I3", "I4"],
+      "entscheidung": "Zielgruppe: Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin",
+      "grund": "Alle 5 haben einen festen Zug zwischen 7:20 und 7:50; das Ziel ist verschieden (Wien, Uni) und spielt für die Entscheidung keine Rolle",
+      "beleg": "gesagt",
+      "belegIds": ["I1", "I2", "I3", "I4", "I5"],
       "ersetzt": "D1"
     },
     {
       "id": "D4",
       "datum": "2026-11-05",
       "entscheidung": "Vorbestellen vor der Ankunft verworfen",
-      "grund": "3 von 5 entscheiden erst beim Ankommen",
-      "beleg": "erzaehlt",
-      "belegIds": ["I1-2", "I3-1", "I5-3"]
+      "grund": "3 von 5 sagen, sie entscheiden erst in der Halle",
+      "beleg": "gesagt",
+      "belegIds": ["I2-4", "I3-1", "I5-3"],
+      "belegNotiz": "bei I1 steht es nur in der Notiz"
     }
   ]
 }
