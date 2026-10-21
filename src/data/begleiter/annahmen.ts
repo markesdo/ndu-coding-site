@@ -6,13 +6,13 @@ import type { Notiz } from './typen';
 export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
   warum: {
     live: [
-      'Portland erzählen: gute Absicht, viel Geld, falsches Produkt',
-      'Niemand hat die Annahme „kleine Wohnungen helfen den meisten“ geprüft',
-      'Zwei Denkfehler: Confirmation Bias, Escalation of Commitment',
-      'Annahmen testen geht schneller als Ideen testen – und man verliebt sich weniger',
-      'Euer Brief von heute Vormittag steckt voller solcher Annahmen',
+      'Portland-Geschichte erzählen, siehe Geschichte; Pointe: niemand hat geprüft.',
+      '„Was hätten Stadt und Bauträger vorher nur fragen müssen? Ruft es rein.“',
+      'Zwei Denkfehler nennen: Confirmation Bias, Escalation of Commitment.',
+      '„Annahmen testen geht schneller als ganze Ideen testen – und ihr verliebt euch weniger in eure Idee.“',
+      '„Euer Brief von heute Vormittag steckt voller solcher Annahmen – sie klingen nur wie Tatsachen.“',
     ],
-    ueberleitung: 'Wie findet man die gefährlichste Annahme? Mit zwei Fragen pro Annahme – das ist die Map.',
+    ueberleitung: 'Wie findet ihr die gefährlichste Annahme? Mit zwei Fragen pro Annahme – das ist die Map.',
     kern: [
       {
         text: 'Stadt und Bauträger trafen Annahmen darüber, was verdrängte Familien als Wohnung brauchen, und keiner von beiden kam auf die Idee, sie zu prüfen. Gebaut wurden vor allem Ein- und Zweizimmerwohnungen, die meisten Familien hatten vier oder mehr Personen. Torres: Jedes Produktteam hat das schon erlebt – Zeit, Energie und Geld in das falsche Produkt gesteckt.',
@@ -56,11 +56,11 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
 
   worum: {
     live: [
-      'Zwei Fragen pro Annahme: Wie wichtig? Welcher Beleg?',
-      'Wichtig heißt: Ist sie falsch, fällt die Idee um, der Rest wird egal',
-      'Oben rechts zuerst testen, oben links den Beleg hinterfragen',
-      'Schnell und relativ sortieren, nicht exakt',
-      'Heute Kundschaft und Problem, Lösungs-Annahmen an Tag 3',
+      '„Zwei Fragen pro Annahme: Fällt euer Produkt um, wenn sie falsch ist? Und welchen Beleg habt ihr?“',
+      'Wichtig erklären: Ist sie falsch, wird alles andere egal.',
+      'Falle: Achse anders als in manchen Vorlagen, „kein Beleg“ rechts.',
+      'Nur die zwei, drei Annahmen ganz oben rechts testen, nicht den Quadranten.',
+      '„Heute geht es um Kundschaft und Problem; Annahmen über eine Lösung kommen an Tag 3 in eine eigene Map.“',
     ],
     ueberleitung: 'Damit ihr beim Sammeln keine Art von Risiko überseht, gibt es vier Arten von Annahmen.',
     kern: [
@@ -103,13 +103,12 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
 
   arten: {
     live: [
-      'Vier Fragen: wollen sie es, können wir es, trägt es sich, kommen sie damit zurecht',
-      'Am Kaffeebar-Beispiel je eine Annahme durchgehen',
-      'Teams haben meist eine Lieblingsart und einen blinden Fleck',
-      'Bland hat drei Arten, Cagan vier, Torres fünf: dazu „Kann es schaden?“',
-      'Zeitungs-Test als schnelle Ethik-Frage',
+      '„Welche der vier Arten vergesst ihr in eurem Team am ehesten?“',
+      'Falle: wünschenswert mit bedienbar verwechseln – bedienbar heißt nicht gewollt.',
+      'Herkunft kurz: Bland drei Arten, Cagan vier, Torres fünf.',
+      '„Torres fragt zusätzlich: Kann es schaden? Würde es euch stören, wenn eine Zeitung auf der Titelseite darüber berichtet?“',
     ],
-    ueberleitung: 'Jetzt habt ihr die Annahmen – wie belegt sie sind, hängt davon ab, was als Beleg zählt.',
+    ueberleitung: 'Ihr wisst jetzt, wo ihr sucht – wie gut eine Annahme belegt ist, hängt davon ab, was als Beleg zählt.',
     kern: [
       {
         text: 'Bland unterscheidet drei Arten (adaptiert von Larry Keeley, Doblin Group und IDEO): Desirable – „Do they want this?“ (Risiko: Markt zu klein, zu wenige wollen das Wertversprechen, Kundschaft nicht erreichbar oder zu halten), Feasible – „Can we do this?“ (Ressourcen, Aktivitäten, Partner nicht zu managen oder zu skalieren), Viable – „Should we do this?“ (nicht mehr Umsatz als Kosten).',
@@ -150,13 +149,13 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
 
   beleg: {
     live: [
-      'Zeile für Zeile: Meinung gegen Tatsache, sagen gegen tun',
-      'Testsituation verändert Verhalten',
-      'E-Mail hinterlassen kostet nichts, vorbestellen schon',
-      'Werkstatt-Skala: noch keiner – gesagt – erzählt – getan',
-      'Interviews schaffen höchstens „erzählt“, „getan“ erst ab Tag 3',
+      'Zeilen einzeln aufdecken, pro Zeile ein Kaffeebar-Beispiel vom Raum holen.',
+      '„Ist ‚Ich würde dort Kaffee holen‘ ein Beleg? Und ‚Letzten Dienstag habe ich dort Kaffee geholt‘?“',
+      'New Coke für Testsituation gegen echte Situation, siehe Zusatz.',
+      'Werkstatt-Skala nennen: noch keiner – gesagt – erzählt – getan.',
+      '„Eure Interviews bringen eine Annahme höchstens auf ‚erzählt‘ – ‚getan‘ zeigen erst Experimente ab Tag 3.“',
     ],
-    ueberleitung: 'Wie das zusammen aussieht, zeigt die Map der Kaffeebar.',
+    ueberleitung: 'Wie das zusammen aussieht, zeigt euch die Map der Kaffeebar.',
     kern: [
       {
         text: 'Beleg ist, womit ihr Hypothesen stützt oder widerlegt: Daten aus Recherche oder Experimenten, Fakten, in vielen Formen (Zitate, Verhalten, Conversion, Bestellungen, Käufe), schwach oder stark. Wie stark ein Beleg ist, entscheidet, wie verlässlich er eine Hypothese stützt oder widerlegt.',
@@ -200,12 +199,17 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
 
   beispiel: {
     live: [
-      'A1 durchgehen: Annahme über Verhalten, nicht über die Lösung',
-      'Ist A1 falsch, hilft keine Vorbestellung, egal wie gut gebaut',
-      'Darum wichtiger als die 20 Sekunden (A3)',
-      'A2 und A4 oben/unten links: belegt, aber Beleg prüfen',
-      'A1 wird Forschungsfrage, gefragt wird nach dem letzten Morgen',
+      '„Warum liegt A1 oben rechts und A3 darunter? Was passiert, wenn A1 falsch ist?“',
+      'Pointe: Ist A1 falsch, hilft keine Vorbestellung, egal wie gut gebaut.',
+      'A2 oben links: Beleg „getan“, aber ohne Quelle – nachfragen.',
+      'A1 wird Forschungsfrage; gefragt wird nach dem letzten Morgen.',
+      'Nicht verraten, ob A1 stimmt – das klären die Interviews.',
     ],
+    verstaendnis: {
+      frage: 'Warum testen wir A1 vor A3, obwohl für beide noch kein Beleg da ist?',
+      antwort: 'Weil A1 wichtiger ist: Entscheiden Pendler*innen nicht schon vor der Ankunft, hilft keine Vorbestellung, egal wie schnell das Bestellen geht. Beide liegen rechts, A1 aber weiter oben.',
+      falsch: '„Weil A1 schlechter belegt ist.“ Beide haben keinen Beleg; der Unterschied liegt auf der Wichtigkeits-Achse, nicht auf der Beleg-Achse.',
+    },
     ueberleitung: 'Jetzt baut ihr eure eigene Map – so geht ihr vor.',
     kern: [
       {
@@ -243,10 +247,11 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Erst allein, damit niemand die anderen mitzieht',
-      'Pro Art mindestens drei „Wir glauben, dass …“',
-      'Dreierrunde: schieben, wo ihr anderer Meinung seid',
-      'Zum Schluss Werkstatt, riskanteste markieren, Prüfliste und Red Team',
+      'Frame T1 · 3 zeigen, Timer 10 min starten, erst allein sammeln.',
+      'Nach 5 min: Wer stockt, bekommt das Pre-Mortem als Joker.',
+      'Nach 20 min: Dreierrunde ansagen, fremde Stickies verschieben erlaubt, nichts löschen.',
+      'Nach 30 min: alle in die Werkstatt, riskanteste markieren, Prüfliste, Red Team.',
+      'Falle: Lösungs-Annahmen und „getan“ für bloß Gesagtes – herumgehen, nachfragen.',
     ],
     ueberleitung: 'Nach der Übung: Welche Annahme ist bei euch das „schon vor der Ankunft entscheiden“?',
     uebung: { dauer: '45 min (10 + 10 + 10 + 15)', form: 'allein, dann zu dritt' },
@@ -323,12 +328,12 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
 
   uebertrag: {
     live: [
-      'Frage an alle: Was ist bei euch das „schon vor der Ankunft entscheiden“?',
-      'Die Annahme, ohne die alles andere egal ist',
-      'Reihum: jede*r nennt die eigene riskanteste in einem Satz',
-      'Die wird gleich die Forschungsfrage im Leitfaden',
+      'Reihum: jede*r nennt die eigene riskanteste Annahme in einem Satz.',
+      '„Nehmt die Annahme, ohne die alles andere egal wird und die ein Interview überhaupt klären kann.“',
+      'Bei Lösungs-Annahme fragen, welche Annahme über Kundschaft darunterliegt.',
+      '„Diese Annahme wird gleich die Forschungsfrage eures Leitfadens – gefragt wird aber nach dem letzten konkreten Mal.“',
     ],
-    ueberleitung: 'Wie man diese Annahme im Gespräch prüft, ohne nach ihr zu fragen: Jobs to be Done.',
+    ueberleitung: 'Wie ihr diese Annahme im Gespräch prüft, ohne nach ihr zu fragen, zeigt euch Jobs to be Done.',
     kern: [
       {
         text: 'Zuerst werden die zwei, drei Annahmen ganz oben rechts getestet, nicht der ganze Quadrant. Für den Leitfaden reicht eine davon als Forschungsfrage.',

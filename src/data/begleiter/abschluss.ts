@@ -6,12 +6,17 @@ import type { Notiz } from './typen';
 export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
   'hausaufgabe': {
     live: [
-      'Du hast 30 Minuten für vier Folien. Die Hausaufgabe kommt zuerst, damit genug Zeit für Fragen bleibt.',
-      'Fünf Gespräche pro Person, jede*r für das eigene Produkt. Die anderen beiden aus dem Team zählen nicht.',
-      'Freund*innen sind zu nett, da entstehen Komplimente statt Daten. Fitzpatrick nennt das Problem schon im Titel.',
-      'Die Einwilligung einholen, bevor das Gespräch anfängt: zur Aufnahme und dazu, dass die pseudonymisierten Notizen mit KI ausgewertet werden.',
-      'Am Ende jedes Gesprächs fragen, wen ihr noch fragen solltet. So kommt ihr vom ersten Interview zum fünften.',
+      'Zeit: 30 Minuten für vier Folien, Hausaufgabe zuerst wegen Fragen.',
+      '„Fünf Gespräche pro Person, jede*r für das eigene Produkt; die anderen beiden aus eurem Team zählen nicht.“',
+      'Kochbuch-Geschichte erzählen, falls beim Mom Test noch nicht erzählt.',
+      '„Holt die Einwilligung vor dem Gespräch ein: für die Aufnahme und dafür, dass die pseudonymisierten Notizen mit KI ausgewertet werden.“',
+      '„Fragt am Ende jedes Gesprächs: ‚Wen sollte ich noch fragen?‘ So kommt ihr vom ersten zum fünften Interview.“',
     ],
+    verstaendnis: {
+      frage: 'Wenn ich statt des Namens ‚I3‘ schreibe, sind meine Notizen dann anonym?',
+      antwort: 'Nein, sie sind pseudonymisiert: Mit Zusatzinformationen wie euren Rohnotizen lässt sich die Person wieder zuordnen, die Daten bleiben personenbezogen. Deshalb braucht es trotzdem die Einwilligung, und die Rohnotizen bleiben bei euch.',
+      falsch: '„Ja, ohne Namen ist es anonym.“ Das Pseudonym senkt nur das Risiko; solange es die Rohnotizen mit Namen gibt, ist die Person zuordenbar (EDPB-Leitlinien, siehe Zusatz).',
+    },
     ueberleitung: 'Was ihr nach jedem dieser Gespräche festhaltet, zeigt die nächste Folie: der Snapshot.',
     uebung: { dauer: 'bis Tag 2; je Interview 20–30 min plus Snapshot gleich danach', form: 'allein, jede*r für das eigene Produkt' },
     miro: {
@@ -51,7 +56,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
     zusatz: [
       {
         titel: 'Pseudonym ist nicht anonym (EDPB-Leitlinien 2025)',
-        text: 'Der Europäische Datenschutzausschuss stellt in seinen Leitlinien zur Pseudonymisierung klar: Pseudonymisierte Daten, die sich mit Zusatzinformationen einer Person zuordnen lassen, gelten weiter als Information über eine identifizierbare Person und bleiben damit personenbezogen (mit Verweis auf Erwägungsgrund 26 DSGVO). Das gilt auch, wenn die Zusatzinformation bei jemand anderem liegt. Für die Hausaufgabe heißt das: I1 bis I5 senkt das Risiko, ersetzt aber nicht die Einwilligung. Die Rohnotizen mit Namen sind genau diese „Zusatzinformation“, deshalb bleiben sie bei den Studierenden. Stand: Fassung für die öffentliche Konsultation, angenommen am 16. Januar 2025.',
+        text: 'Der Europäische Datenschutzausschuss stellt in seinen Leitlinien zur Pseudonymisierung klar: Pseudonymisierte Daten, die sich mit Zusatzinformationen einer Person zuordnen lassen, gelten weiter als Information über eine identifizierbare Person und bleiben damit personenbezogen (mit Verweis auf Erwägungsgrund 26 DSGVO). Das gilt auch, wenn die Zusatzinformation bei jemand anderem liegt. Für die Hausaufgabe heißt das: I1 bis I5 senkt das Risiko, ersetzt aber nicht die Einwilligung. Die Rohnotizen mit Namen sind genau diese „Zusatzinformation“, deshalb bleiben sie bei den Studierenden. Stand: Fassung für die öffentliche Konsultation, angenommen am 16. Januar 2025. Vor dem Kurs auf edpb.europa.eu prüfen, ob es eine neuere Fassung gibt, bevor du sie als geltende Fassung zitierst.',
         quelle: 'EDPB, Guidelines 01/2025 on Pseudonymisation, Executive Summary, S. 3: https://www.edpb.europa.eu/system/files/2025-01/edpb_guidelines_202501_pseudonymisation_en.pdf',
       },
       {
@@ -98,11 +103,10 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
 
   'snapshot': {
     live: [
-      'Eine Seite pro Gespräch, am selben Tag geschrieben.',
-      'Bild und Zitat als Erinnerungsschlüssel; am Board nur Pseudonym, kein Foto.',
-      'Funktionswunsch ist keine Chance: nachfragen, was es bringt.',
-      'Auch was nur eine Person sagt, kommt auf den Snapshot.',
-      'Kaffeebar zeigen: I2, „Wenn ich auf die Uhr schauen muss, geh ich.“',
+      'Kaffeebar-Karte I2 in T1 · 5 zeigen, Zitat vorlesen.',
+      '„Wünscht sich jemand eine Funktion, fragt: ‚Was würde dir das bringen?‘ Die Antwort darauf ist die Chance.“',
+      'Bei Bedarf Torres’ Streaming-Beispiel: Wunsch ‚Titel sagen‘, Bedürfnis ‚nicht tippen‘.',
+      '„Schreibt auch auf, was nur eine Person sagt. Oft taucht es später in anderen Interviews wieder auf.“',
     ],
     ueberleitung: 'Bevor ihr rausgeht, schauen wir noch einmal zurück, wie ihr heute zu dieser einen Frage gekommen seid.',
     uebung: { dauer: 'gleich nach jedem Interview', form: 'allein; an Tag 2 im Team besprochen' },
@@ -180,10 +184,10 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
 
   'rueckblick': {
     live: [
-      'Geh die fünf Schritte als Kette durch: Jeder Schritt begrenzt den nächsten.',
-      'Das Outcome sagt, was sich bei euren Leuten ändern soll. Der Rahmen sagt, für wen. Die Map sagt, was ihr nur glaubt.',
-      'Die riskanteste Annahme ist zur Forschungsfrage geworden. Gefragt wird aber nach einer Geschichte, nicht nach der Annahme.',
-      'An Tag 2 dreht sich die Richtung: Bisher steht da, was ihr glaubt, danach kommt dazu, was sie erlebt haben.',
+      'Board herauszoomen, T1 · 1 bis T1 · 4 zeigen, „Alle zu mir holen“.',
+      'Fünf Schritte als Kette durchgehen: jeder begrenzt den nächsten.',
+      '„Die riskanteste Annahme ist eure Forschungsfrage. Im Interview fragt ihr aber nach einer Geschichte, nicht nach der Annahme.“',
+      '„An Tag 2 dreht sich die Richtung: Bisher steht da, was ihr glaubt; dann kommt dazu, was eure Leute erlebt haben.“',
     ],
     ueberleitung: 'Zum Schluss schauen wir, was davon heute wirklich in euren Mappen gelandet ist.',
     miro: {
@@ -229,12 +233,12 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
 
   'zahlen': {
     live: [
-      'Den Knopf „Zahlen aus der Werkstatt holen“ siehst nur du im Präsentator, und du musst in der Werkstatt angemeldet sein.',
-      'Gezählt wird nur, was gespeichert ist: Felder im Brief, Annahmen, Leitfaden-Fragen und Zeilen im Entscheidungslog.',
-      'Fehlt bei jemandem eine Zahl, ist das ein Auftrag für heute Abend und kein Urteil.',
-      'Zum Schluss: Bis Tag 2 kommen fünf Gespräche dazu, fünf Snapshots und die Überraschungen ins Log.',
+      'In der Werkstatt angemeldet? Dann „Zahlen aus der Werkstatt holen“ klicken.',
+      '„Gezählt wird nur, was in der Werkstatt gespeichert ist, nicht was auf dem Miro-Board oder lokal steht.“',
+      '„Fehlt bei jemandem eine Zahl, ist das ein Auftrag für heute Abend, kein Urteil.“',
+      'An die Teams-Ankündigung des Interview-Editors erinnern.',
     ],
-    ueberleitung: 'Ende von Tag 1: Erinner an die Hausaufgabe und die Ankündigung des Interview-Editors im Teams-Kanal. Tag 2 beginnt mit der Interview-Synthese, bei der die Snapshots im Team besprochen werden.',
+    ueberleitung: 'Bis Tag 2 führt ihr eure fünf Gespräche mit je einem Snapshot, und Tag 2 beginnt mit der Interview-Synthese, in der ihr die Snapshots im Team besprecht.',
     kern: [
       {
         text: 'Fitzpatricks Faustregel: „Notes are useless if you don’t look at them.“ Notizen sollen so leicht sein, dass man sie wirklich durchsieht, allein und mit dem Team. Dafür müssen sie an einem dauerhaften Ort liegen, wo man sie sortieren und mit den Notizen des Teams zusammenführen kann. Das ist der Grund, warum nur zählt, was in der Werkstatt gespeichert ist.',

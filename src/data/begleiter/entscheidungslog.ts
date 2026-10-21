@@ -7,12 +7,16 @@ import type { Notiz } from './typen';
 export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
   worum: {
     live: [
-      'Kurz, fünf Minuten – aber das Log begleitet sie bis Tag 7 und ist am Ende das Rückgrat der Präsentation.',
-      'Neu gegenüber dem Coding-Kurs: dort hielt Claude Stack und Regeln fest, hier geht es um Produktentscheidungen – darum die vierte Spalte „Beleg“.',
-      '„Noch keiner“ ist erlaubt und ehrlich: Eine Entscheidung ohne Beleg ist eine Annahme – genau das Material für die Annahmen-Map gleich danach.',
-      'Nichts wird gelöscht: Widerlegt ein Test etwas, kommt eine neue Zeile, die alte bekommt „ersetzt am …“.',
+      '„Dieses Log begleitet euch bis Tag 7 – am Ende ist es das Rückgrat eurer Präsentation.“',
+      'Bezug Coding-Kurs: dort Stack und Regeln, hier Produktentscheidungen – darum Spalte „Beleg“.',
+      '„Ihr dürft beim Beleg ehrlich ‚noch keiner‘ schreiben: Das ist eine Annahme, genau das Material für die Annahmen-Map.“',
     ],
-    ueberleitung: 'Wie das aussieht, wenn eine Entscheidung tatsächlich kippt, zeigt die Kaffeebar.',
+    verstaendnis: {
+      frage: 'Ihr seid euch bei der Zielgruppe unsicher – jetzt eintragen oder warten, bis ihr einen Beleg habt?',
+      antwort: 'Jetzt eintragen, mit Beleg „noch keiner“: Die Zeile hält fest, wovon ihr ausgeht – eine Annahme, die ihr als Nächstes testet.',
+      falsch: 'Warten, bis es belegt ist – dann fehlt genau der Ausgangspunkt, den das Log später sichtbar ersetzt, so wie D3 bei der Kaffeebar D1.',
+    },
+    ueberleitung: 'Wie das aussieht, wenn eine Entscheidung kippt, seht ihr jetzt an der Kaffeebar.',
     kern: [
       {
         text: 'Das Entscheidungslog ist eine eigene Methode des Kurses. Am nächsten kommt die Learning Card von Bland & Osterwalder: Sie hat vier Schritte – „We believed that …“ (Hypothese), „We observed …“ (Beobachtung), „From that we learned that …“ (Erkenntnis), „Therefore, we will …“ (Entscheidung und nächste Schritte). Das Log verdichtet das auf eine Zeile: geglaubt, geprüft, geändert.',
@@ -56,13 +60,11 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
 
   beispiel: {
     live: [
-      'Zeitleiste von links nach rechts erzählen: am 22.10. – also heute – zwei Zeilen, am 05.11. nach den Interviews zwei neue.',
-      'D1 war geraten: Die Inhaberin sieht morgens die längste Schlange. Nach fünf Interviews ist die Zielgruppe schärfer – fester Morgenzug, Ziel egal (I3 fährt zur Uni, nicht nach Wien).',
-      'D1 bleibt stehen, mit „ersetzt am 05.11.2026“; D3 sagt „ersetzt D1“.',
-      'D4 zeigt: Auch ein Verwerfen ist eine Entscheidung. Vorbestellen vor der Ankunft fällt, weil drei von fünf erst in der Halle entscheiden.',
-      'Format in der Mappe zeigen: hinter „Beleg:“ zuerst die Stufe, dann in Klammern IDs oder Notiz.',
+      'Zeitleiste links nach rechts: 22.10. ist heute, 05.11. nach den Interviews.',
+      'Warum „egal wohin“: I3 fährt zur Uni, nicht nach Wien.',
+      '„Auch Verwerfen ist eine Entscheidung: D4 streicht das Vorbestellen, und genau das gehört ins Log.“',
     ],
-    ueberleitung: 'Die Belege von D2, D3 und D4 sind nicht gleich viel wert – das zeigt die nächste Folie.',
+    ueberleitung: 'Schaut auf die Belege von D2, D3 und D4: Die sind nicht gleich viel wert.',
     kern: [
       {
         text: 'Die Kaffeebar-Kette ist durchgängig: Im Brief steht als offene Frage, ob Pendler*innen schon vor der Ankunft entscheiden, ob sie Kaffee holen. Daraus wird A1, die riskanteste Annahme (Beleg „keiner“). Die Interviews widerlegen sie – das Ergebnis steht als D4 im Log.',
@@ -88,20 +90,18 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
       },
       {
         frage: 'Die Interviews sind doch erst nach heute datiert?',
-        antwort: 'Ja, das Beispiel läuft dem Kurs voraus: D1 und D2 entstehen heute, die Interviews kommen bis Tag 2, D3 und D4 danach. So sehen sie heute schon, wohin das Log führt.',
+        antwort: 'Ja, das Beispiel läuft dem Kurs voraus: D1 und D2 entstehen heute, die Interviews kommen bis Tag 2, D3 und D4 danach. So seht ihr heute schon, wohin das Log führt.',
       },
     ],
   },
 
   'beleg-staerke': {
     live: [
-      'Eine Regel: Was Menschen tun, wiegt mehr als was sie sagen.',
-      'Vier Stufen: noch keiner, gesagt, erzählt, getan. „Gesagt“ ist kaum besser als nichts – „Würde ich nutzen“ hört man von fast allen.',
-      'Unterschied gesagt/erzählt streng nehmen: „erzählt“ ist ein konkretes vergangenes Ereignis, „gesagt“ ist Meinung, Gewohnheit, Wunsch.',
-      'Kaffeebar: D3 und D4 stehen auf „gesagt“ – D4 ist darum vorläufig und kann von einem Test ersetzt werden.',
-      'Gleiche Richtung wie die Antworten-Skala beim Interview, die heute noch kommt.',
+      'Bei Zeitnot überspringen: kommt nach dem Mittag in der Annahmen-Map wieder.',
+      '„Ein ‚Würde ich nutzen‘ hört ihr von fast allen – darum ist gesagt kaum besser als noch keiner.“',
+      'Streng trennen: erzählt = konkretes Ereignis, „meistens …“ zählt als gesagt.',
     ],
-    ueberleitung: 'Jetzt schreiben sie ihre eigenen ersten Zeilen.',
+    ueberleitung: 'Jetzt fünf Minuten: eure ersten Zeilen im eigenen Log.',
     kern: [
       {
         text: 'Bland prüft die Stärke eines Belegs an vier Achsen, jeweils schwach gegen stark: Meinungen („I would …“, „I think … is important“, „I like …“) gegen Fakten/Ereignisse („Last week I …“, „I spent … on“); was Menschen sagen gegen was sie tun („What people say in an interview or survey is not necessarily what they do in real life or will do in the future.“); Laborsituation gegen echte Umgebung; kleine gegen große Investitionen (E-Mail-Anmeldung gegen Vorkauf oder Ruf aufs Spiel setzen). Die Kurs-Skala ist eine Vereinfachung dieser Tabelle.',
@@ -126,7 +126,7 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
     ],
     zusatz: [
       {
-        titel: 'Einweg- und Zweiwegtüren (Amazon, Aktionärsbrief 2015)',
+        titel: 'Einweg- und Zweiwegtüren (Amazon, Aktionärsbrief 2015, veröffentlicht April 2016)',
         text: 'Jeff Bezos unterscheidet zwei Arten von Entscheidungen: Typ 1 ist kaum umkehrbar („one-way doors“) und braucht langsame, sorgfältige Abwägung. Die meisten Entscheidungen sind Typ 2, umkehrbar („two-way doors“): Ist eine davon schlecht, öffnet man die Tür wieder und geht zurück – sie sollen schnell und von kleinen Gruppen getroffen werden. Große Organisationen neigen dazu, auch Typ-2-Entscheidungen wie Typ 1 zu behandeln, mit Langsamkeit und zu wenig Experimenten als Folge. Passt zu D4: auf schwachem Beleg entschieden, aber umkehrbar – darum ist es in Ordnung, jetzt zu entscheiden und später zu ersetzen. Bland gibt denselben Rat: umkehrbare und nicht umkehrbare Entscheidungen unterscheiden, bei den umkehrbaren schnell handeln (TBI S. 314).',
         quelle: 'https://www.sec.gov/Archives/edgar/data/1018724/000119312516530910/d168744dex991.htm',
       },
@@ -149,12 +149,11 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Fünf Minuten, jede*r im eigenen Log in der Werkstatt.',
-      'Zwei bis drei Zeilen aus dem Problem-Rahmen, den sie gerade geschrieben haben: Zielgruppe, ein „Nicht“, das Outcome.',
-      'Bei fast allem wird „noch keiner“ stehen – das ist richtig so und kein Versäumnis.',
-      'Prüfen ist Hausaufgabe: zuerst selbst mit der Prüfliste, dann Claude. Ab jetzt: am Ende jedes Kurstags fünf Minuten fürs Log.',
+      'Werkstatt öffnen lassen, Timer starten; zwei gute Zeilen reichen.',
+      '„Fast überall wird noch keiner stehen – das ist richtig so, kein Versäumnis.“',
+      '„Gespeicherte Zeilen könnt ihr nicht mehr ändern – lest sie vor dem Speichern kurz gegen.“',
     ],
-    ueberleitung: 'Zum Schluss die Frage, was davon in die Interviews gehört.',
+    ueberleitung: 'Zum Schluss: Was davon gehört in eure Interviews?',
     uebung: { dauer: '5 min', form: 'allein, jede*r im eigenen Log' },
     ablauf: {
       schritte: [
@@ -201,12 +200,11 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
 
   uebertrag: {
     live: [
-      'Frage an alle drei: Welcher Satz in eurem Brief ist am wenigsten belegt?',
-      'Reihum je ein Satz – das ist der Stoff für die Interviews bis Tag 2.',
-      'Kaffeebar als Muster: offene Frage im Brief → riskanteste Annahme A1 → Interviews → D4.',
-      'Hausaufgabe nennen: nach den Interviews das Log nachziehen.',
+      'Frage von der Folie stellen, reihum je einen Satz sammeln, nicht diskutieren.',
+      'Muster Kaffeebar: offene Frage im Brief → A1 → Interviews → D4.',
+      '„Nach den Interviews zieht ihr euer Log nach – das gehört zur Hausaufgabe bis Tag 2.“',
     ],
-    ueberleitung: 'Aus diesen unbelegten Sätzen wird jetzt die Annahmen-Map – und zuerst die Frage, warum man Annahmen überhaupt sichtbar macht.',
+    ueberleitung: 'Aus diesen unbelegten Sätzen baut ihr nach der Mittagspause die Annahmen-Map.',
     uebung: { form: 'reihum, je ein Satz' },
     kern: [
       {
