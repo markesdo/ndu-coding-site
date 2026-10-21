@@ -31,8 +31,9 @@ export interface Verknuepfungen {
 
 // Welches Artefakt eine ID auflöst. Spätere Präfixe (T, J, P, …) gibt es in der Mappe noch nicht.
 const QUELLE: Partial<Record<string, ArtefaktName>> = { D: 'entscheidungen', A: 'annahmen', F: 'leitfaden', I: 'interviews' };
-// IDs im Fließtext: nur die Präfixe, die die Mappe schon kennt, damit „S1“ (S-Bahn) keinen Befund auslöst.
-const ID_IM_TEXT = /(?<![\p{L}\p{N}-])[DAFI][1-9][0-9]*(?:-[1-9][0-9]*)?(?![\p{L}\p{N}-])/gu;
+// IDs im Fließtext: nur die Präfixe, die die Mappe schon kennt, damit „S1“ (S-Bahn) keinen Befund auslöst; nach
+// „der“, „auf“, „von“ … ist eher die Autobahn gemeint („von der A2“).
+const ID_IM_TEXT = /(?<![\p{L}\p{N}-])(?<!(?:der|die|den|dem|auf|von|über|Richtung|zur|zum) )[DAFI][1-9][0-9]*(?:-[1-9][0-9]*)?(?![\p{L}\p{N}-])/gu;
 
 const da = <T>(e: Eintrag<T>): e is T => e !== null && e !== 'unlesbar';
 
@@ -60,7 +61,7 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     const titel = ARTEFAKTE[quelle].titel;
     if (m[quelle] === null) return `„${titel}“ ist noch nicht gespeichert, ${id} gibt es darum noch nicht.`;
     const interview = id.split('-')[0];
-    if (id.includes('-') && bekannt.has(interview)) return `${interview} hat kein Zitat ${id}.`;
+    if (quelle === 'interviews' && id.includes('-') && bekannt.has(interview)) return `${interview} hat kein Zitat ${id}.`;
     return `In „${titel}“ gibt es ${id} nicht.`;
   };
 
@@ -73,7 +74,7 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
   const textVon = (artefakt: ArtefaktName, ort: string, t: string) => {
     for (const [id] of t.matchAll(ID_IM_TEXT)) {
       const warum = warumUnbekannt(id);
-      if (warum) befund({ art: 'unbekannte-id', artefakt, ort, id, text: `${ort} nennt ${id} im Text. ${warum}` });
+      if (warum) befund({ art: 'unbekannte-id', artefakt, ort, id, text: `${ort} nennt ${id} im Text. Ist das eine ID? ${warum}` });
     }
   };
 
@@ -104,8 +105,10 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     for (const a of m.annahmen.annahmen) {
       belegeVon('annahmen', a.id, a.belegIds);
       textVon('annahmen', a.id, a.text);
-      if (a.beleg !== 'keiner' && a.belegIds.length === 0) {
-        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „${BELEGSTUFE_TEXT[a.beleg]}“, nennt aber keine ID als Beleg.` });
+      // „gesagt“ und „erzählt“ kommen aus Gesprächen, also aus den Interviews. „getan“ (beobachtetes Verhalten, z. B.
+      // Kassendaten) kann außerhalb der Mappe liegen; Annahmen haben dafür keine Beleg-Notiz, darum kein Befund.
+      if ((a.beleg === 'gesagt' || a.beleg === 'erzaehlt') && a.belegIds.length === 0) {
+        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „${BELEGSTUFE_TEXT[a.beleg]}“, nennt aber kein Interview oder Zitat als Beleg.` });
       }
     }
   }
@@ -115,8 +118,9 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
       if (c.belege.length === 0) befund({ art: 'fehlender-beleg', artefakt: 'interviews', ort: `${iv.id} · Chance ${j + 1}`, text: `${iv.id} · Chance ${j + 1} hat kein Zitat als Beleg.` });
     }));
     // Verwaist: kein Beleg im Entscheidungslog oder in der Annahmen-Map nennt das Interview oder eines seiner Zitate.
-    // Ist eine der beiden Dateien unlesbar, lässt sich das nicht sagen.
-    if (m.entscheidungen !== 'unlesbar' && m.annahmen !== 'unlesbar') {
+    // Ist eine der beiden Dateien unlesbar, lässt sich das nicht sagen; fehlen beide, gibt es noch nichts zu belegen.
+    const belegQuellen = [m.entscheidungen, m.annahmen];
+    if (!belegQuellen.includes('unlesbar') && belegQuellen.some(da)) {
       const genannt = new Set<string>([
         ...(da(m.entscheidungen) ? m.entscheidungen.entscheidungen.flatMap((e) => e.belegIds) : []),
         ...(da(m.annahmen) ? m.annahmen.annahmen.flatMap((a) => a.belegIds) : []),

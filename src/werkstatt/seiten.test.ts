@@ -170,7 +170,8 @@ describe('Interviews als Hausaufgabe (Phase 1b)', () => {
       expect(blatt).toContain(`<h3>${h}</h3>`);
     }
     expect(blatt).toContain('privaten Repository');
-    expect(blatt).not.toMatch(/\b(du|dich|dir|dein|ihr|euch|euer)\b/i);
+    // Kleingeschrieben (ihr, euch) und Du-Formen; das große „Ihr“ ist die Sie-Form und erlaubt.
+    expect(blatt).not.toMatch(/\b(du|dich|dir|dein\w*|ihr|euch|euer\w*|Du|Dich|Dir|Dein\w*|Euch|Euer\w*)\b/);
     // Gedruckt wird nur das Blatt.
     expect(q).toMatch(/@media print \{\s*\.nicht-drucken \{ display: none !important; \}/);
   });

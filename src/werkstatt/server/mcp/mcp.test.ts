@@ -633,17 +633,15 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBeFalsy();
-    // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1; A2/A4 („getan“) ohne ID. Brief hat nur Jonas.
+    // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
     expect(r.structuredContent).toStrictEqual({
-      befunde: [
-        { art: 'fehlender-beleg', artefakt: 'annahmen', ort: 'A2', text: 'A2 hat die Belegstufe „getan“, nennt aber keine ID als Beleg.' },
-        { art: 'fehlender-beleg', artefakt: 'annahmen', ort: 'A4', text: 'A4 hat die Belegstufe „getan“, nennt aber keine ID als Beleg.' },
-      ],
+      befunde: [],
       geprueft: ['entscheidungen', 'annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],
       unlesbar: [],
     });
-    expect(text(r)).toContain('## Fehlende Belege (2)');
+    expect(text(r)).toContain('Keine Lücken');
+    expect(text(r)).toContain('Ändern kann die Person nur selbst');
     expect(text(r)).toContain(`${BASIS}/innolab/mappe`);
   });
 

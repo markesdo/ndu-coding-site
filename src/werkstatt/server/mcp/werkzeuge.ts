@@ -269,7 +269,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       ]);
       const mappe: MappeDaten = { brief, entscheidungen, leitfaden, annahmen, interviews };
       const v = verknuepfungenPruefen(mappe);
-      return textErgebnis(`${verknuepfungenText(v)}\n\nÄndern kannst du nur selbst in der Werkstatt: ${mappeUrl(k)}`, { ...v });
+      return textErgebnis(`${verknuepfungenText(v)}\n\nÄndern kann die Person nur selbst in der Werkstatt: ${mappeUrl(k)}`, { ...v });
     }),
   );
 }

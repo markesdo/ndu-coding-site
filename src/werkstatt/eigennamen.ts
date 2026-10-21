@@ -1,6 +1,7 @@
 // Hinweis auf Eigennamen und Kontaktdaten in Interview-Texten. Nur ein Hinweis, kein Schemafehler: Deutsch schreibt
 // jedes Nomen groß, darum sucht die Funktion nicht nach Großbuchstaben, sondern nach Mustern, die fast immer eine
-// Person meinen (Anrede mit Namen, „ich heiße …“, häufige Vornamen, E-Mail, Telefonnummer, @Konto).
+// Person meinen (Anrede mit Namen, „ich heiße …“, häufige Vornamen, E-Mail, Telefonnummer, @Konto). Ein Hinweis zu
+// viel ist billiger als ein übersehener Name, aber gewöhnliche Sätze sollen still bleiben.
 
 export interface NamenFund {
   fund: string;
@@ -20,13 +21,19 @@ const VORNAMEN = [
 ];
 
 const WORT = '\\p{Lu}[\\p{L}\\-]+';
+const TITEL = '(?:Dr|Mag|Prof|Ing|DI)\\.';
+// „eine Frau Mitte 40“, „der Herr Doktor“: mit Artikel davor ist Herr/Frau ein Nomen, keine Anrede.
+const ARTIKEL = ['der', 'die', 'den', 'dem', 'des', 'ein', 'eine', 'einen', 'einem', 'einer', 'eines', 'jede', 'jeder', 'keine', 'ältere', 'älterer', 'junge', 'junger'];
+const KEIN_ARTIKEL = `(?<!(?:${ARTIKEL.flatMap((w) => [w, w[0].toUpperCase() + w.slice(1)]).join('|')}) )`;
+// Kontaktdaten zuerst: Ein Treffer belegt seine Stelle, „Anna.Maier@example.at“ ist eine E-Mail, kein Vorname.
 const MUSTER: { re: RegExp; grund: NamenFund['grund'] }[] = [
-  { re: new RegExp(`(?<![\\p{L}])(?:Herr|Frau|Hr\\.|Fr\\.|Dr\\.|Mag\\.|Prof\\.|Ing\\.)\\s+${WORT}`, 'gu'), grund: 'Anrede mit Namen' },
-  { re: new RegExp(`(?<![\\p{L}])(?:[Ii]ch heiße|[Ii]ch heisse|[Ee]r heißt|[Ss]ie heißt|namens|[Mm]ein Name ist)\\s+${WORT}`, 'gu'), grund: 'Name genannt' },
-  { re: new RegExp(`(?<![\\p{L}])(?:${VORNAMEN.join('|')})s?(?![\\p{L}])`, 'gu'), grund: 'Vorname' },
   { re: /[\p{L}\p{N}._%+-]+@[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+/gu, grund: 'E-Mail-Adresse' },
   { re: /(?<![\p{N}])(?:\+|00|0)\p{N}[\p{N} /-]{6,}\p{N}/gu, grund: 'Telefonnummer' },
   { re: /(?<![\p{L}\p{N}._%+-])@[A-Za-z0-9_]{3,}/gu, grund: 'Konto-Name' },
+  { re: new RegExp(`(?<![\\p{L}])${KEIN_ARTIKEL}(?:(?:Herr|Frau)(?:\\s+${TITEL})*|${TITEL}(?:\\s+${TITEL})*)\\s+${WORT}`, 'gu'), grund: 'Anrede mit Namen' },
+  { re: new RegExp(`(?<![\\p{L}])(?:[Ii]ch heiße|[Ii]ch heisse|namens|[Mm]ein Name ist)\\s+(?!Sie\\b|Ihnen\\b)${WORT}`, 'gu'), grund: 'Name genannt' },
+  // Mit Bindestrich ist es meist ein Ort oder eine Einrichtung (Franz-Josefs-Bahnhof); Doppelnamen wie Anna-Lena entgehen dabei.
+  { re: new RegExp(`(?<![\\p{L}-])(?:${VORNAMEN.join('|')})s?(?![\\p{L}-])`, 'gu'), grund: 'Vorname' },
 ];
 
 /** Stellen, die wahrscheinlich eine Person erkennbar machen, in der Reihenfolge im Text; überlappende Treffer einmal. */

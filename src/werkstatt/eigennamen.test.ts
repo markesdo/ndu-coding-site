@@ -20,15 +20,30 @@ describe('namenFinden', () => {
     ]);
   });
 
+  it('überlappende Treffer zählen einmal, die genauere Art gewinnt', () => {
+    expect(namenFinden('Herr Paul kommt.')).toStrictEqual([{ fund: 'Herr Paul', grund: 'Anrede mit Namen' }]);
+    // Titel davor: der Name gehört zum Fund, nicht nur „Herr Dr“.
+    expect(namenFinden('Herr Dr. Maier und Mag. Berger')).toStrictEqual([
+      { fund: 'Herr Dr. Maier', grund: 'Anrede mit Namen' },
+      { fund: 'Mag. Berger', grund: 'Anrede mit Namen' },
+    ]);
+    expect(namenFinden('Mail: Anna.Maier@example.at')).toStrictEqual([{ fund: 'Anna.Maier@example.at', grund: 'E-Mail-Adresse' }]);
+  });
+
   it('Genitiv und Vorname als Teil eines Wortes', () => {
     expect(namenFinden('Annas Zug fährt um 7:42.')).toStrictEqual([{ fund: 'Annas', grund: 'Vorname' }]);
     // „Annahme“ und „Paulaner“ enthalten Vornamen, sind aber keine.
-    expect(namenFinden('Die Annahme hält. Paulaner im Kühlschrank.')).toStrictEqual([]);
+    expect(namenFinden('Die Annahme hält. Paulaner im Kühlschrank, der Automat heißt SuperMax.')).toStrictEqual([]);
   });
 
   it('Nomen, Uhrzeiten, Daten und Frau ohne Namen bleiben still', () => {
     expect(namenFinden('Die Frau neben ihr schaut auf die Uhr. Zug 7:42, am 2026-10-23, acht Leute in der Schlange.')).toStrictEqual([]);
     expect(namenFinden('Sie heißt das gut, er heißt mich willkommen.')).toStrictEqual([]);
+    expect(namenFinden('Sie heißt Pendler gut. Ich heiße Sie willkommen.')).toStrictEqual([]);
+    expect(namenFinden('Mein Name ist egal, sagt sie.')).toStrictEqual([]);
+    expect(namenFinden('Eine Frau Mitte 40 wartet, der Herr Doktor auch. Fr. Morgen wieder.')).toStrictEqual([]);
+    // Orte und Einrichtungen mit Vornamen im Bindestrich-Wort.
+    expect(namenFinden('Steigt am Franz-Josefs-Bahnhof aus, studiert am Max-Reinhardt-Seminar.')).toStrictEqual([]);
   });
 
   it('die Kaffeebar-Interviews lösen keinen Hinweis aus', () => {
