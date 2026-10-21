@@ -7,10 +7,10 @@
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../../styles/global.css';
-import { CalendarClock, ChevronLeft, ChevronRight, CircleQuestionMark, ExternalLink, Eye, LayoutGrid, Timer } from '@lucide/astro';
+import { CalendarClock, ChevronLeft, ChevronRight, CircleQuestionMark, ExternalLink, Eye, LayoutGrid, Play, Timer } from '@lucide/astro';
 import { NOTIZEN } from '../../data/begleiter';
 import { TAG_1 } from '../../data/begleiter/tag';
-import { bloeckeAus, folienPlan, kurstagAus, quellenAusGlob, seitenLabel, tagFolien, uebungMinuten } from '../../lib/begleiter';
+import { ablaufBloecke, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, tagFolien, uebungMinuten } from '../../lib/begleiter';
 import { teamFrameLink } from '../../lib/team-board';
 
 // Glob vom Projektwurzel aus (wie in lib/begleiter.test.ts), damit die Schlüssel nicht vom Ordner dieser Datei abhängen.
@@ -19,12 +19,12 @@ const folien = tagFolien(quellen);
 // Ohne Folien wäre die Seite leer und das Folgen sinnlos – lieber den Build abbrechen.
 if (folien.length === 0) throw new Error('Begleiter: keine Folien von Tag 1 gefunden (Glob oder Seitenpfade geändert?)');
 // Soll-Zeit je Folie aus dem Ablauf von Tag 1 (Übungen mit ihrer Dauer); Kurstag, damit „vorn/hinten“ nur an dem Tag erscheint.
-const ablauf = quellen['/innolab/tag-1'] ?? '';
+// Ohne Ablauf (Quelle fehlt oder keine Blöcke) bricht ablaufBloecke den Build ab.
+const ablauf = quellen['/innolab/tag-1'];
+const bloecke = ablaufBloecke(ablauf);
 const minutenJe = folien.map((f) => uebungMinuten(NOTIZEN[f.pfad]?.[f.id]?.uebung?.dauer));
-const plan = folienPlan(folien, bloeckeAus(ablauf), (i) => minutenJe[i]);
-const kurstag = kurstagAus(ablauf);
-const bloecke = bloeckeAus(ablauf);
-const hhmm = (min: number) => `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
+const plan = folienPlan(folien, bloecke, (i) => minutenJe[i]);
+const kurstag = kurstagAus(ablauf ?? '');
 const seitenName = (pfad: string) => seitenLabel(pfad, quellen[pfad] ?? '');
 const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
   pfad, name: seitenName(pfad), folien: folien.map((f, i) => ({ ...f, i })).filter((f) => f.pfad === pfad),
@@ -84,8 +84,8 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
         <>
           <h2>Material und Technik</h2>
           <ul class="tk-material">
-            {TAG_1.material.map((m, k) => (
-              <li><label><input type="checkbox" data-material={k} /> <span>{m.was} <span class="tk-wann">({m.wann})</span></span></label></li>
+            {TAG_1.material.map((m) => (
+              <li><label><input type="checkbox" data-material={m.id} /> <span>{m.was} <span class="tk-wann">({m.wann})</span></span></label></li>
             ))}
           </ul>
         </>
@@ -122,7 +122,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
                   )}
                   {n.uebung && (n.uebung.dauer || n.uebung.form) && (
                     minutenJe[i]
-                      ? <button type="button" class="sozial" data-timer={minutenJe[i]} title={`Timer ${minutenJe[i]} min starten`}><Timer size={20} aria-hidden="true" /> {[n.uebung.dauer, n.uebung.form].filter(Boolean).join(' · ')} <span class="start">▶ Timer</span></button>
+                      ? <button type="button" class="sozial" data-timer={minutenJe[i]} title={`Timer ${minutenJe[i]} min starten`}><Timer size={20} aria-hidden="true" /> {[n.uebung.dauer, n.uebung.form].filter(Boolean).join(' · ')} <span class="start"><Play size={16} aria-hidden="true" /> Timer</span></button>
                       : <p class="sozial"><Timer size={20} aria-hidden="true" /> {[n.uebung.dauer, n.uebung.form].filter(Boolean).join(' · ')}</p>
                   )}
                 </>
@@ -204,7 +204,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
 
     <script>
       import { anzeige, type Ereignis, type Zustand } from '../../components/begleiter-anzeige';
-      import { folieZu, tempo, type Folie, type PlanFolie } from '../../lib/begleiter';
+      import { folieZu, hhmm, tempo, wischErlaubt, type Folie, type PlanFolie } from '../../lib/begleiter';
       import { abfrageKette, jsonHolen } from '../../lib/kette';
       import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, RUHIG_MS, alterText, naechsteAbfrage, positionPruefen } from '../../lib/position';
 
@@ -257,7 +257,6 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       // Soll-Zeit der gezeigten Folie (folienPlan in lib/begleiter.ts).
       const kurstag = planZeile.dataset.kurstag ?? '';
       const zwei = (n: number) => String(n).padStart(2, '0');
-      const hhmm = (min: number) => { const r = Math.round(min); return `${zwei(Math.floor(r / 60))}:${zwei(r % 60)}`; };
       function planZeichnen() {
         const p = plaene[z.index];
         planZeile.hidden = !p;
@@ -301,18 +300,21 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       uhrKnopf.addEventListener('click', () => { timerEnde = null; uhrZeichnen(); });
       setInterval(() => { uhrZeichnen(); planZeichnen(); }, 1000);
 
-      // Bildschirm wach halten, solange die Seite offen ist (sonst schläft das Tablet ein und das Folgen ruht).
+      // Bildschirm wach halten, solange die Seite offen ist (sonst schläft das Tablet ein und das Folgen ruht). Eine
+      // laufende Anfrage blockiert weitere (schnelle Tipps hintereinander), damit es nur eine Sperre gibt; der Browser
+      // gibt sie beim Verstecken der Seite frei, visibilitychange holt sie wieder.
       let wachSperre: { release(): Promise<void> } | null = null;
-      async function wachHalten() {
+      let wachAnfrage: Promise<void> | null = null;
+      function wachHalten() {
         const wl = (navigator as Navigator & { wakeLock?: { request(art: 'screen'): Promise<{ release(): Promise<void>; addEventListener(t: string, f: () => void): void }> } }).wakeLock;
-        if (!wl || wachSperre || document.hidden) return;
-        try {
-          const sperre = await wl.request('screen');
-          wachSperre = sperre;
-          sperre.addEventListener('release', () => { wachSperre = null; });
-        } catch (e) {
-          console.warn('[begleiter] Bildschirm bleibt nicht wach:', e);
-        }
+        if (!wl || wachSperre || wachAnfrage || document.hidden) return;
+        wachAnfrage = wl.request('screen')
+          .then((sperre) => {
+            wachSperre = sperre;
+            sperre.addEventListener('release', () => { if (wachSperre === sperre) wachSperre = null; });
+          })
+          .catch((e) => console.warn('[begleiter] Bildschirm bleibt nicht wach:', e))
+          .finally(() => { wachAnfrage = null; });
       }
 
       function melden(e: Ereignis) {
@@ -371,11 +373,12 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       // Manche Browser geben die Sperre erst nach einer Berührung.
       addEventListener('pointerdown', wachHalten, { passive: true });
 
-      // Wischen nach links/rechts blättert (nur deutlich waagerecht, nicht in Listen und Feldern).
+      // Wischen nach links/rechts blättert: nur deutlich waagerecht und nur im Kopf oder Live-Block, nicht in der
+      // Vorbereitung, in Feldern oder in waagerecht scrollbarem Inhalt (wischErlaubt in lib/begleiter.ts).
       let wisch: { x: number; y: number } | null = null;
       document.querySelector('main')!.addEventListener('touchstart', (e) => {
         const t = e.touches[0];
-        wisch = e.touches.length === 1 && !(e.target as Element).closest('select, input, textarea, details') ? { x: t.clientX, y: t.clientY } : null;
+        wisch = e.touches.length === 1 && e.target instanceof HTMLElement && wischErlaubt(e.target) ? { x: t.clientX, y: t.clientY } : null;
       }, { passive: true });
       document.querySelector('main')!.addEventListener('touchend', (e) => {
         if (!wisch) return;
@@ -476,7 +479,7 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
       .stichworte li + li { margin-top: .35rem; }
       .sozial { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .9rem 0 0; font-size: 1.25rem; font-weight: 600; color: var(--accent-ink); }
       button.sozial { width: 100%; padding: .5rem .7rem; text-align: left; font: inherit; font-size: 1.25rem; font-weight: 600; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius); cursor: pointer; }
-      .sozial .start { margin-left: auto; font-size: 1rem; }
+      .sozial .start { display: inline-flex; align-items: center; gap: .25rem; margin-left: auto; font-size: 1rem; }
       .check { margin-top: .7rem; padding: .5rem .8rem; border: 1px solid var(--blue); border-radius: var(--radius); background: var(--blue-soft); }
       .check .frage { display: flex; gap: .5rem; align-items: flex-start; margin: 0; font-size: 1.2rem; }
       .check .frage svg { flex: none; margin-top: .25rem; color: var(--blue); }

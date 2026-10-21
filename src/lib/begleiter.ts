@@ -131,6 +131,20 @@ export function bloeckeAus(quelle: string): Block[] {
   });
 }
 
+/** Blöcke des Ablaufs von tag-1.astro; ohne Quelle oder ohne einen Block bricht der Build ab (wie bei fehlenden Folien). */
+export function ablaufBloecke(quelle: string | undefined): Block[] {
+  if (!quelle) throw new Error('Begleiter: Ablauf von Tag 1 nicht gefunden (Seitenpfad /innolab/tag-1 geändert?)');
+  const bloecke = bloeckeAus(quelle);
+  if (bloecke.length === 0) throw new Error('Begleiter: keine <Block time="…"> im Ablauf von Tag 1 gefunden');
+  return bloecke;
+}
+
+/** Minuten ab Mitternacht → „HH:MM“, auf ganze Minuten gerundet (Frontmatter und Client nutzen dieselbe Funktion). */
+export function hhmm(min: number): string {
+  const r = Math.round(min);
+  return `${String(Math.floor(r / 60)).padStart(2, '0')}:${String(r % 60).padStart(2, '0')}`;
+}
+
 /** Kurstag aus data-kurstag="2026-10-22" im Ablauf, sonst null. */
 export function kurstagAus(quelle: string): string | null {
   return quelle.match(/\bdata-kurstag="(\d{4}-\d{2}-\d{2})"/)?.[1] ?? null;
@@ -145,14 +159,14 @@ export function uebungMinuten(dauer: string | undefined): number | null {
 /** Soll-Zeit einer Folie: ihr Block (Titel, von, bis) und das Zeitfenster der Folie darin, alles in Minuten. */
 export type PlanFolie = { block: string; von: number; bis: number; sollVon: number; sollBis: number };
 
-/** Mindestzeit je Folie ohne Übung, bevor die Übungen ihre volle Dauer bekommen. */
-const MIN_JE_FOLIE = 2;
-
 /**
  * Soll-Zeit je Folie aus dem Ablauf. Ein Block mit href beginnt bei der Folie, auf die href zeigt („#kickoff“ auf
  * seite, „/pfad#anker“, „/pfad“), und reicht bis vor die Folie des nächsten Blocks; Pausen (ohne href) zählen nicht.
- * Im Block bekommen Übungen ihre Dauer (minuten(i)), die übrigen Folien teilen sich den Rest, mindestens je
- * MIN_JE_FOLIE (dann werden die Übungen gestaucht); reicht der Block nicht einmal dafür, alle gleich viel.
+ * Im Block behält jede Übung immer ihre volle Dauer (minuten(i)), damit Soll-Fenster und Timer übereinstimmen und tempo
+ * nicht „hinten“ meldet, solange der Timer läuft. Die übrigen Folien teilen sich den Rest; bleibt keiner (Übung so lang
+ * wie der Block, z. B. Problem-Rahmen 60 in 60 min) oder ist die Übung länger, bekommen sie 0 min – sie sind kurze
+ * Hinführungen, die Zeit dafür zählt in den Übungs-Timer hinein, und reicht der Block nicht, läuft der Plan über das
+ * Blockende hinaus. Nur Übungen im Block: auf den Block gestreckt (nie kürzer). Ohne Übung: alle gleich viel.
  * Folien vor dem ersten Block → null.
  */
 export function folienPlan(folien: Folie[], bloecke: Block[], minuten: (i: number) => number | null, seite = TAG_1_SEITEN[0]): (PlanFolie | null)[] {
@@ -172,14 +186,13 @@ export function folienPlan(folien: Folie[], bloecke: Block[], minuten: (i: numbe
     const uebSumme = ueb.reduce<number>((s, m) => s + (m ?? 0), 0);
     const ohne = ueb.filter((m) => m === null).length;
     let anteile: number[];
-    if (dauer < MIN_JE_FOLIE * ohne || (uebSumme === 0 && ohne === 0)) anteile = idx.map(() => dauer / idx.length);
-    else if (uebSumme + MIN_JE_FOLIE * ohne <= dauer) {
-      const rest = ohne > 0 ? (dauer - uebSumme) / ohne : 0;
-      const streck = ohne === 0 ? dauer / uebSumme : 1; // nur Übungen: auf den Block strecken
-      anteile = ueb.map((m) => (m === null ? rest : m * streck));
+    if (uebSumme === 0) anteile = idx.map(() => dauer / idx.length);
+    else if (ohne === 0) {
+      const streck = Math.max(1, dauer / uebSumme);
+      anteile = ueb.map((m) => (m ?? 0) * streck);
     } else {
-      const fuerUeb = dauer - MIN_JE_FOLIE * ohne;
-      anteile = ueb.map((m) => (m === null ? MIN_JE_FOLIE : (m * fuerUeb) / uebSumme));
+      const rest = Math.max(0, dauer - uebSumme) / ohne;
+      anteile = ueb.map((m) => m ?? rest);
     }
     let t = b.von;
     idx.forEach((i, j) => { plan[i] = { block: b.titel, von: b.von, bis: b.bis, sollVon: t, sollBis: t + anteile[j] }; t += anteile[j]; });
@@ -194,4 +207,27 @@ export function folienPlan(folien: Folie[], bloecke: Block[], minuten: (i: numbe
 export function tempo(p: PlanFolie, jetzt: number): { rest: number; abweichung: number } {
   const abweichung = jetzt > p.sollBis ? jetzt - p.sollBis : jetzt < p.sollVon ? jetzt - p.sollVon : 0;
   return { rest: Math.round(p.bis - jetzt), abweichung: Math.round(abweichung) };
+}
+
+/** Was wischErlaubt vom DOM braucht (HTMLElement erfüllt das), damit es ohne Browser testbar ist. */
+export type WischKnoten = {
+  tagName: string; scrollWidth: number; clientWidth: number;
+  classList: { contains(klasse: string): boolean }; parentElement: WischKnoten | null;
+};
+
+const WISCH_NIE = new Set(['SELECT', 'INPUT', 'TEXTAREA', 'DETAILS', 'PRE', 'TABLE']);
+
+/**
+ * Darf ein Wisch, der auf start beginnt, blättern? Nur im Kopf (.kopf) oder im Live-Block (.live) der Folie; nie in der
+ * Vorbereitung, in Feldern, details, pre, table oder einem Element, das waagerecht scrollt (scrollWidth > clientWidth),
+ * bis hinauf zum article.
+ */
+export function wischErlaubt(start: WischKnoten | null): boolean {
+  let imBereich = false;
+  for (let el = start; el; el = el.parentElement) {
+    if (WISCH_NIE.has(el.tagName) || el.scrollWidth > el.clientWidth + 1 || el.classList.contains('vorbereitung')) return false;
+    if (el.classList.contains('kopf') || el.classList.contains('live')) imBereich = true;
+    if (el.tagName === 'ARTICLE') break;
+  }
+  return imBereich;
 }

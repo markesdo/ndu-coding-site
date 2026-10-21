@@ -3,8 +3,8 @@ import { MIRO_FRAMES } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
 import { TAG_1 } from '../data/begleiter/tag';
 import {
-  TAG_1_SEITEN, bloeckeAus, folieZu, folienAus, folienPlan, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie, pfadAusGlob,
-  quellenAusGlob, seitenLabel, tagFolien, tempo, uebungMinuten,
+  TAG_1_SEITEN, ablaufBloecke, bloeckeAus, folieZu, folienAus, folienPlan, hhmm, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie,
+  pfadAusGlob, quellenAusGlob, seitenLabel, tagFolien, tempo, uebungMinuten, wischErlaubt, type WischKnoten,
 } from './begleiter';
 
 // Dieselbe Glob-Form wie in pages/innolab/begleiter.astro (vom Projektwurzel aus, unabhängig vom Ordner der Datei).
@@ -74,9 +74,14 @@ describe('Zeitplan', () => {
       { block: 'Rest', von: 560, bis: 580, sollVon: 560, sollBis: 580 },
     ]);
   });
-  it('zu lange Übung wird gestaucht, Folien ohne Übung behalten ihre Mindestzeit', () => {
+  it('Übung länger als der Block: sie behält ihre volle Dauer, die Folien ohne Übung bekommen 0 min', () => {
     const plan = folienPlan(folien, bloeckeAus(ABLAUF), (i) => (i === 1 ? 60 : null));
-    expect(plan.slice(0, 2).map((p) => [p!.sollVon, p!.sollBis])).toStrictEqual([[540, 542], [542, 550]]);
+    expect(plan.slice(0, 2).map((p) => [p!.sollVon, p!.sollBis])).toStrictEqual([[540, 540], [540, 600]]);
+  });
+  it('Block nur aus Übungen: auf den Block gestreckt, nie kürzer als die Übung', () => {
+    const zwei = folienAus('/innolab/tag-1', '<Folie><h2 id="a">A</h2></Folie><Folie><h2 id="b">B</h2></Folie>');
+    const plan = folienPlan(zwei, bloeckeAus('<Block time="09:00–09:20" title="B" href="#a" />'), () => 5);
+    expect(plan.map((p) => [p!.sollVon, p!.sollBis])).toStrictEqual([[540, 550], [550, 560]]);
   });
   it('Folie vor dem ersten Block → null', () => {
     const plan = folienPlan(folien, bloeckeAus('<Block time="09:00–09:30" title="B" href="#b" />'), () => null);
@@ -89,6 +94,51 @@ describe('Zeitplan', () => {
     expect(tempo(p, 567)).toStrictEqual({ rest: 3, abweichung: 7 });
     expect(tempo(p, 545)).toStrictEqual({ rest: 25, abweichung: -5 });
     expect(tempo(p, 575)).toStrictEqual({ rest: -5, abweichung: 15 });
+  });
+});
+
+describe('hhmm', () => {
+  it('rundet auf ganze Minuten und füllt mit Nullen auf', () => {
+    expect(hhmm(540)).toBe('09:00');
+    expect(hhmm(674.6)).toBe('11:15');
+    expect(hhmm(59.6)).toBe('01:00');
+    expect(hhmm(1005)).toBe('16:45');
+  });
+});
+
+describe('ablaufBloecke', () => {
+  it('liefert die Blöcke des Ablaufs', () => {
+    expect(ablaufBloecke('<Block time="09:00–09:30" title="B" href="#b" />')).toHaveLength(1);
+  });
+  it('bricht ohne Quelle oder ohne Blöcke ab (Build schlägt fehl)', () => {
+    expect(() => ablaufBloecke(undefined)).toThrow(/Ablauf/);
+    expect(() => ablaufBloecke('')).toThrow(/Ablauf/);
+    expect(() => ablaufBloecke('<div>kein Block</div>')).toThrow(/Ablauf/);
+  });
+});
+
+describe('wischErlaubt', () => {
+  const knoten = (tagName: string, klassen: string[] = [], parentElement: WischKnoten | null = null, breit = false): WischKnoten => ({
+    tagName, classList: { contains: (k: string) => klassen.includes(k) }, parentElement, scrollWidth: breit ? 900 : 300, clientWidth: 300,
+  });
+  const artikel = knoten('ARTICLE');
+  const live = knoten('SECTION', ['live'], artikel);
+  const kopf = knoten('HEADER', ['kopf'], artikel);
+  const vorbereitung = knoten('SECTION', ['vorbereitung'], artikel);
+  it('im Kopf und im Live-Block ja', () => {
+    expect(wischErlaubt(knoten('LI', [], knoten('UL', [], live)))).toBe(true);
+    expect(wischErlaubt(knoten('H1', [], kopf))).toBe(true);
+  });
+  it('in der Vorbereitung, außerhalb von Kopf und Live oder ohne Ziel nein', () => {
+    expect(wischErlaubt(knoten('P', [], knoten('DIV', ['vb'], vorbereitung)))).toBe(false);
+    expect(wischErlaubt(artikel)).toBe(false);
+    expect(wischErlaubt(null)).toBe(false);
+  });
+  it('in waagerecht scrollbarem Inhalt, pre, table und Feldern nein, auch im Live-Block', () => {
+    expect(wischErlaubt(knoten('SPAN', [], knoten('DIV', [], live, true)))).toBe(false);
+    expect(wischErlaubt(knoten('CODE', [], knoten('PRE', [], live)))).toBe(false);
+    expect(wischErlaubt(knoten('TD', [], knoten('TR', [], knoten('TABLE', [], live))))).toBe(false);
+    expect(wischErlaubt(knoten('SUMMARY', [], knoten('DETAILS', [], live)))).toBe(false);
   });
 });
 
@@ -177,6 +227,23 @@ describe('Folien von Tag 1 (echte Seiten)', () => {
     expect(plan.find((_, i) => folien[i].pfad === '/innolab/methoden/entscheidungslog')!.block).toBe('Entscheidungslog');
     expect(kurstagAus(quellen['/innolab/tag-1'])).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
+  // Übungen, die ihren Block füllen oder länger sind als Block minus Folien: Soll-Fenster = volle Timer-Dauer, und
+  // solange der Timer läuft (vom Start des Fensters bis zu seinem Ende), meldet tempo nie „hinten“.
+  const minutenJe = folien.map((f) => uebungMinuten(NOTIZEN[f.pfad]?.[f.id]?.uebung?.dauer));
+  const echterPlan = folienPlan(folien, bloeckeAus(quellen['/innolab/tag-1']), (i) => minutenJe[i]);
+  it.each([
+    ['/innolab/methoden/problem-rahmen', 'vorgehen', 60, 670],
+    ['/innolab/methoden/entscheidungslog', 'vorgehen', 5, 730],
+    ['/innolab/methoden/annahmen', 'vorgehen', 45, 795],
+    ['/innolab/methoden/interview', 'vorgehen', 90, 885],
+  ])('%s#%s: Übung behält %i min ab Blockbeginn, tempo nie hinten, solange der Timer läuft', (pfad, id, min, von) => {
+    const i = folien.findIndex((f) => f.pfad === pfad && f.id === id);
+    expect(minutenJe[i]).toBe(min);
+    const p = echterPlan[i]!;
+    expect([p.sollVon, p.sollBis]).toStrictEqual([von, von + min]);
+    expect(p.sollBis).toBeLessThanOrEqual(p.bis);
+    for (let t = p.sollVon; t <= p.sollBis; t += 0.5) expect(tempo(p, t).abweichung).toBeLessThanOrEqual(0);
+  });
   it('erkennt eine Notiz ohne Folie', () => {
     expect(notizenOhneFolie(folien, { '/innolab/tag-1': { gibtsnicht: { live: ['x'] } } })).toStrictEqual(['/innolab/tag-1#gibtsnicht']);
   });
@@ -210,8 +277,11 @@ describe('Tageskarte', () => {
     expect(titel.filter((t) => !TAG_1.bloecke[t]?.lernziel.trim())).toStrictEqual([]);
     expect(Object.keys(TAG_1.bloecke).filter((t) => !titel.includes(t))).toStrictEqual([]);
   });
-  it('Material ist nicht leer', () => {
+  it('Material ist nicht leer, jede id eindeutig und kommafrei (Häkchen werden als Liste gespeichert)', () => {
     expect(TAG_1.material.length).toBeGreaterThan(0);
+    const ids = TAG_1.material.map((m) => m.id);
+    expect(ids.filter((id) => !/^[a-z0-9-]+$/.test(id))).toStrictEqual([]);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });
 

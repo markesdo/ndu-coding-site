@@ -11,8 +11,11 @@ export type TagBlock = {
 
 export type TagKarte = {
   bloecke: Record<string, TagBlock>;
-  /** Vor dem Start bereitlegen bzw. prüfen; wann = Block-Titel oder „Vor dem Start“. */
-  material: { wann: string; was: string }[];
+  /**
+   * Vor dem Start bereitlegen bzw. prüfen; wann = Block-Titel oder „Vor dem Start“. id = fester Schlüssel für das
+   * gemerkte Häkchen (a–z, 0–9, „-“; eindeutig, Test), damit Umsortieren oder Einfügen keine Häkchen verschiebt.
+   */
+  material: { id: string; wann: string; was: string }[];
 };
 
 export const TAG_1: TagKarte = {
@@ -34,7 +37,7 @@ export const TAG_1: TagKarte = {
       ],
     },
     'Outcome statt Output': {
-      lernziel: 'Nach dem Block können alle Output, Outcome und Impact unterscheiden, ein Product Outcome als Wurzel formulieren und ein Skateboard-MVP für die erste Annahme benennen.',
+      lernziel: 'Nach dem Block können alle Output, Outcome und Impact unterscheiden, Business Outcome, Product Outcome und Traction Metric auseinanderhalten und begründen, warum ein Product Outcome die Wurzel des Baums ist und warum beim MVP jede Stufe benutzbar sein muss (Skateboard statt Rad).',
       streichen: [
         'Lego/Minecraft und das Busticket weglassen (skateboard).',
         'Zappos weglassen (mvp).',
@@ -92,15 +95,15 @@ export const TAG_1: TagKarte = {
     },
   },
   material: [
-    { wann: 'Vor dem Start', was: 'Beamer-Tab mit Präsentator-Schlüssel, Begleiter auf dem Tablet folgt' },
-    { wann: 'Vor dem Start', was: 'Miro-Team-Board offen, Link im Teams-Kanal (Passwort = Website-Passwort)' },
-    { wann: 'Vor dem Start', was: 'In der Werkstatt angemeldet (für „Zahlen aus der Werkstatt holen“ am Ende)' },
-    { wann: 'Toast', was: 'Je Person ein Blatt und ein dicker Stift' },
-    { wann: 'Toast', was: 'Ton für das TED-Video getestet' },
-    { wann: 'Problem-Rahmen', was: 'Alle in der Werkstatt angemeldet; wer aus dem Coding-Kurs kommt, hat den alten Brief griffbereit' },
-    { wann: 'Annahmen-Map', was: 'Stickies in vier Farben im Frame T1 · 3 (gelb, blau, grün, lila)' },
-    { wann: 'Annahmen-Map', was: 'Claude-Connector der Werkstatt funktioniert (Prüfliste, Red Team)' },
-    { wann: 'Interviewleitfaden', was: 'Prompt „Probe mit Claude“ griffbereit; du spielst in den drei Live-Runden die schwierige Person' },
-    { wann: 'Abschluss', was: 'Teams-Post zur Ankündigung des Interview-Editors vorbereitet' },
+    { id: 'beamer', wann: 'Vor dem Start', was: 'Beamer-Tab mit Präsentator-Schlüssel, Begleiter auf dem Tablet folgt' },
+    { id: 'miro-board', wann: 'Vor dem Start', was: 'Miro-Team-Board offen, Link im Teams-Kanal (Passwort = Website-Passwort)' },
+    { id: 'werkstatt-markus', wann: 'Vor dem Start', was: 'In der Werkstatt angemeldet (für „Zahlen aus der Werkstatt holen“ am Ende)' },
+    { id: 'toast-papier', wann: 'Toast', was: 'Je Person ein Blatt und ein dicker Stift' },
+    { id: 'toast-ton', wann: 'Toast', was: 'Ton für das TED-Video getestet' },
+    { id: 'werkstatt-alle', wann: 'Problem-Rahmen', was: 'Alle in der Werkstatt angemeldet; wer aus dem Coding-Kurs kommt, hat den alten Brief griffbereit' },
+    { id: 'annahmen-stickies', wann: 'Annahmen-Map', was: 'Stickies in vier Farben im Frame T1 · 3 (gelb, blau, grün, lila)' },
+    { id: 'annahmen-connector', wann: 'Annahmen-Map', was: 'Claude-Connector der Werkstatt funktioniert (Prüfliste, Red Team)' },
+    { id: 'interview-probe', wann: 'Interviewleitfaden', was: 'Prompt „Probe mit Claude“ griffbereit; du spielst in den drei Live-Runden die schwierige Person' },
+    { id: 'abschluss-teams', wann: 'Abschluss', was: 'Teams-Post zur Ankündigung des Interview-Editors vorbereitet' },
   ],
 };
