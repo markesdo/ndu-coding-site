@@ -6,11 +6,12 @@
 // aussperren darf, wenn der Ablauf früher dran ist oder der Termin wandert. hinweis/knopf: eigene Texte dafür.
 // gruppe: Auflösungen mit derselben Gruppe öffnen sich gemeinsam (eine Pointe über zwei Folien, z. B. Video + Erklärung) –
 // wenn der Präsentator aufdeckt oder die Uhrzeit erreicht ist; ein Klick der Studierenden öffnet nur die eine Box.
-// Aufdecken für alle (lib/aufgedeckt.ts, api/aufgedeckt.ts): Klickt der Präsentator den Knopf (oder → im Beamer), meldet
-// er die Kennung (Gruppe, sonst Seite + Knopftext, aufloesungKennung); Seiten der Studierenden fragen am Kurstag nach und
-// öffnen sie. `ab` ist damit nur der späte Rückfall, falls niemand aufdeckt – meist das Ende des Kurstags.
+// Aufdecken für alle (lib/aufgedeckt.ts, api/aufgedeckt.ts): Klickt der Präsentator im Beamer-Modus den Knopf (oder →),
+// meldet er die Kennung (Gruppe, sonst Seite + Knopftext, aufloesungKennung); die anderen Seiten fragen nach, solange
+// etwas zu ist, und öffnen sie. `ab` ist damit nur der späte Rückfall, falls niemand aufdeckt – meist das Ende des Kurstags.
 import { Eye } from '@lucide/astro';
 import { aufloesungAb, aufloesungKennung } from './aufloesung';
+import { kennungFehler } from '../lib/aufgedeckt';
 const { ab, fuer = 'praesentator', hinweis = 'Die Auflösung erscheint nach der Übung.', knopf = 'Auflösung zeigen', gruppe } = Astro.props as {
   ab: string;
   gruppe?: string;
@@ -19,8 +20,12 @@ const { ab, fuer = 'praesentator', hinweis = 'Die Auflösung erscheint nach der 
   knopf?: string;
 };
 if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwartet JJJJ-MM-TTTHH:MM`);
+// Die Kennung muss beim Server genauso ankommen (lib/aufgedeckt.ts), sonst fände die Seite ihre Meldung nicht.
+const kennung = aufloesungKennung(Astro.url.pathname, gruppe, knopf);
+const fehler = kennungFehler(gruppe, knopf, kennung);
+if (fehler) throw new Error(`Aufloesung auf ${Astro.url.pathname}: ${fehler}`);
 ---
-<div class="aufloesung" data-aufloesung-ab={ab} data-aufloesung-gruppe={gruppe} data-aufloesung-kennung={aufloesungKennung(Astro.url.pathname, gruppe, knopf)}>
+<div class="aufloesung" data-aufloesung-ab={ab} data-aufloesung-gruppe={gruppe} data-aufloesung-kennung={kennung}>
   <p class="small muted" data-aufloesung-hinweis>{hinweis}</p>
   <button type="button" class="aufloesung-knopf" data-aufloesung-zeigen data-nur-praesentator={fuer === 'praesentator' ? '' : undefined}><Eye size={18} aria-hidden="true" /> {knopf}</button>
   <div data-aufloesung-inhalt hidden><slot /></div>
@@ -28,10 +33,11 @@ if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwa
 <script>
   import { aufgeloest, aufloesungSteuerung, type AufloesungBox } from './aufloesung';
   import { hinweis } from './hinweis';
-  import { AUFGEDECKT_MS, aufdeckenMelden, aufgedecktHolen, heuteZuFragen } from '../lib/aufgedeckt';
+  import { AUFGEDECKT_MS, abfrageAbstand, aufdeckenMelden, aufgedecktHolen } from '../lib/aufgedeckt';
   import { PRAESENTATOR_SCHLUESSEL } from '../lib/beamer';
   import { abfrageKette, zeitlimit, type Kette } from '../lib/kette';
   const praesentatorKey = (): string | null => { try { return localStorage.getItem(PRAESENTATOR_SCHLUESSEL); } catch { return null; } };
+  const imBeamer = () => document.documentElement.hasAttribute('data-beamer');
   const melden = (kennung: string) => {
     const key = praesentatorKey();
     if (!key) return;
@@ -60,20 +66,22 @@ if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwa
     const box = { el, kennung: el.dataset.aufloesungKennung ?? '', gruppe: el.dataset.aufloesungGruppe, oeffnen };
     boxen.push(box);
     // Auch der synthetische Klick der Pfeiltaste im Beamer (Layout.astro, knopf.click()) kommt hier an und meldet.
-    el.querySelector('[data-aufloesung-zeigen]')?.addEventListener('click', () => steuerung.knopf(box, !!praesentatorKey()));
+    el.querySelector('[data-aufloesung-zeigen]')?.addEventListener('click', () =>
+      steuerung.knopf(box, !praesentatorKey() ? 'studi' : imBeamer() ? 'beamer' : 'praesentator'));
   });
   const uhrPruefen = () => { for (const b of boxen) if (istZu(b.el) && aufgeloest(b.el.dataset.aufloesungAb ?? '', new Date())) steuerung.uhr(b); };
   uhrPruefen();
 
-  // Studierende: am Kurstag nachfragen, was der Präsentator aufgedeckt hat. Nur solange heute noch etwas zu ist, nur im
-  // sichtbaren Tab, nicht beim Präsentator selbst (der deckt per Knopf auf). Jede Minute und beim Zurückkehren in den
-  // Tab neu entscheiden – ein Tab vom Vortag fängt am Kurstag an; ist alles offen oder der Tag vorbei, hört die Kette auf.
+  // Nachfragen, was der Präsentator aufgedeckt hat: Studierende und Geräte des Präsentators außerhalb des Beamers (der
+  // Beamer-Tab deckt selbst auf). Solange etwas zu ist und der Tab sichtbar – oft, wenn eine geschlossene Auflösung heute
+  // fällig wird, sonst selten (Termine wandern). Ist alles offen, hört die Kette auf; jede Minute und beim Zurückkehren in
+  // den Tab wird neu entschieden.
   const zu = () => boxen.filter((b) => istZu(b.el));
-  const lohnt = () => !praesentatorKey() && heuteZuFragen(zu().map((b) => b.el.dataset.aufloesungAb ?? ''), new Date());
+  const abstand = () => (imBeamer() ? null : abfrageAbstand(zu().map((b) => b.el.dataset.aufloesungAb ?? ''), new Date()));
   let kette: Kette | null = null;
   const nachfragen = () => {
     if (kette) { kette.sofort(); return; }
-    if (document.hidden || !lohnt()) return;
+    if (document.hidden || abstand() === null) return;
     const k = abfrageKette({
       ruheMs: AUFGEDECKT_MS,
       ruht: () => document.hidden,
@@ -83,8 +91,9 @@ if (!aufloesungAb(ab)) throw new Error(`Aufloesung: ungültiges ab="${ab}", erwa
         } catch {
           // Netz weg oder lokal ohne API: die Uhrzeit bleibt der Rückfall.
         }
-        if (!lohnt()) { k.stoppen(); kette = null; }
-        return AUFGEDECKT_MS;
+        const ms = abstand();
+        if (ms === null) { k.stoppen(); kette = null; }
+        return ms ?? AUFGEDECKT_MS;
       },
     });
     kette = k;

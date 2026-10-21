@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MAX_KENNUNGEN, NICHT_GEMELDET, aufdeckenMelden, aufgedecktHolen, aufgedecktSchluessel, gefragteKennungen, heuteZuFragen, kennungPruefen } from './aufgedeckt';
+import { KENNUNG_UNGUELTIG, MAX_KENNUNGEN, NICHT_GEMELDET, SCHLUESSEL_FALSCH, abfrageAbstand, aufdeckenMelden, aufgedecktHolen, aufgedecktSchluessel, gefragteKennungen, kennungFehler, kennungPruefen } from './aufgedeckt';
 
 // 22.10.2026 10:05 in Wien = 08:05 UTC (Sommerzeit bis 25.10.).
 const KURSTAG = new Date('2026-10-22T08:05:00Z');
@@ -27,12 +27,24 @@ describe('aufgedecktSchluessel / gefragteKennungen', () => {
   });
 });
 
-describe('heuteZuFragen', () => {
-  it('nur wenn eine geschlossene Auflösung heute fällig wird', () => {
-    expect(heuteZuFragen(['2026-10-22T16:45'], KURSTAG)).toBe(true);
-    expect(heuteZuFragen(['2026-11-28T10:30'], KURSTAG)).toBe(false);
-    expect(heuteZuFragen([], KURSTAG)).toBe(false);
-    expect(heuteZuFragen(['ungültig'], KURSTAG)).toBe(false);
+describe('abfrageAbstand', () => {
+  it('oft, wenn eine geschlossene Auflösung heute fällig wird; sonst selten; nichts zu → aufhören', () => {
+    expect(abfrageAbstand(['2026-10-22T16:45'], KURSTAG)).toBe(4000);
+    expect(abfrageAbstand(['2026-11-28T10:30', '2026-10-22T11:00'], KURSTAG)).toBe(4000);
+    // Termin verschoben oder anderer Tag: trotzdem nachfragen, nur seltener.
+    expect(abfrageAbstand(['2026-11-28T10:30'], KURSTAG)).toBe(30_000);
+    expect(abfrageAbstand(['ungültig'], KURSTAG)).toBe(30_000);
+    expect(abfrageAbstand([], KURSTAG)).toBeNull();
+  });
+});
+
+describe('kennungFehler (Build-Prüfung in Aufloesung.astro)', () => {
+  it('meldet Leerraum am Rand, zu lange und ungültige Kennungen; passt alles, null', () => {
+    expect(kennungFehler(undefined, 'Zeigen', '/s:Zeigen')).toBeNull();
+    expect(kennungFehler('toast', 'egal ', 'toast')).toBeNull();
+    expect(kennungFehler(undefined, 'Zeigen ', '/s:Zeigen')).toMatch(/Leerraum.*knopf/);
+    expect(kennungFehler(' toast', 'x', 'toast')).toMatch(/Leerraum.*gruppe/);
+    expect(kennungFehler(undefined, 'x'.repeat(170), `/s:${'x'.repeat(170)}`)).toMatch(/höchstens 160/);
   });
 });
 
@@ -65,19 +77,28 @@ describe('aufdeckenMelden', () => {
     expect(o.senden).toHaveBeenCalledTimes(1);
     expect(o.hinweis).not.toHaveBeenCalled();
   });
-  it('Fehler, dann Erfolg: nach 3 s noch einmal, kein Hinweis', async () => {
+  it('5xx, dann Erfolg: nach 3 s noch einmal, kein Hinweis', async () => {
     const o = ablauf(new Response('{}', { status: 503 }), new Response('{}'));
     expect(await aufdeckenMelden(o)).toBe(true);
     expect(o.warten).toHaveBeenCalledWith(3000);
     expect(o.senden).toHaveBeenCalledTimes(2);
     expect(o.hinweis).not.toHaveBeenCalled();
   });
-  it('403, Netzfehler oder Umleitung zur Login-Seite: nach dem zweiten Versuch sieht der Präsentator den Hinweis', async () => {
-    for (const [a, b] of [[new Response('{}', { status: 403 }), new Response('{}', { status: 403 })], [new Error('offline'), umgeleitet()]] as const) {
+  it('403 und 400: kein zweiter Versuch, eigener Hinweis', async () => {
+    for (const [status, text] of [[403, SCHLUESSEL_FALSCH], [400, KENNUNG_UNGUELTIG]] as const) {
+      const o = ablauf(new Response('{}', { status }), new Response('{}'));
+      expect(await aufdeckenMelden(o)).toBe(false);
+      expect(o.senden).toHaveBeenCalledTimes(1);
+      expect(o.warten).not.toHaveBeenCalled();
+      expect(o.hinweis.mock.calls).toStrictEqual([[text]]);
+    }
+  });
+  it('Netzfehler, 5xx oder Umleitung zur Login-Seite: nach dem zweiten Versuch der allgemeine Hinweis', async () => {
+    for (const [a, b] of [[new Error('offline'), umgeleitet()], [new Response('{}', { status: 500 }), new Error('offline')]] as const) {
       const o = ablauf(a, b);
       expect(await aufdeckenMelden(o)).toBe(false);
       expect(o.senden).toHaveBeenCalledTimes(2);
-      expect(o.hinweis).toHaveBeenCalledWith(NICHT_GEMELDET);
+      expect(o.hinweis.mock.calls).toStrictEqual([[NICHT_GEMELDET]]);
     }
   });
 });

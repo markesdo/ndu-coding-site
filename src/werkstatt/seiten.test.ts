@@ -77,7 +77,7 @@ describe('Werkstatt auf den Methodenseiten', () => {
     expect(LEITFADEN_LINK.startsWith('/innolab/methoden/interview#')).toBe(true);
     expect(iv).toMatch(new RegExp(`<h2 id="${anker}">[^<]*</h2>\\s*<Aufloesung\\b[^>]*>[\\s\\S]*?<Bearbeiten artefakt="leitfaden"`));
     // Dieselbe Freigabezeit wie /innolab/mappe: aus innolab-zeiten.ts, nicht als eigene Konstante.
-    expect(iv).toContain("import { NACH_MOM_TEST } from '../../../components/innolab-zeiten';");
+    expect(iv).toContain("import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../../components/innolab-zeiten';");
     expect(iv).not.toMatch(/const NACH_MOM_TEST\s*=/);
   });
 

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { aufloesungKennung, aufloesungSteuerung, type AufloesungBox } from './aufloesung';
+import { kennungPruefen } from '../lib/aufgedeckt';
 
 const box = (kennung: string, gruppe?: string) => ({ kennung, gruppe, oeffnen: vi.fn<() => void>() }) satisfies AufloesungBox;
 
@@ -10,21 +11,31 @@ describe('aufloesungKennung', () => {
     expect(aufloesungKennung('/innolab/methoden/scrum/', undefined, 'Auflösung zeigen')).toBe('/innolab/methoden/scrum:Auflösung zeigen');
     expect(aufloesungKennung('/innolab/methoden/scrum', undefined, 'Auflösung zeigen')).toBe('/innolab/methoden/scrum:Auflösung zeigen');
     expect(aufloesungKennung('/', undefined, 'Zeigen')).toBe('/:Zeigen');
+    // Dieselbe Normalform wie der Server (kennungPruefen): ohne Leerraum am Rand.
+    expect(aufloesungKennung('/s', ' toast ', 'x')).toBe(kennungPruefen(' toast '));
+    expect(aufloesungKennung('/s', undefined, 'Zeigen ')).toBe(kennungPruefen('/s:Zeigen '));
   });
 });
 
 describe('aufloesungSteuerung', () => {
-  it('Präsentator (Klick oder Pfeiltaste): meldet genau einmal und öffnet die ganze Gruppe', () => {
+  it('Beamer (Klick oder Pfeiltaste): meldet genau einmal und öffnet die ganze Gruppe', () => {
     const [a, b, c] = [box('mom-test', 'mom-test'), box('mom-test', 'mom-test'), box('toast', 'toast')];
     const melden = vi.fn();
-    aufloesungSteuerung([a, b, c], melden).knopf(a, true);
+    aufloesungSteuerung([a, b, c], melden).knopf(a, 'beamer');
     expect(melden.mock.calls).toStrictEqual([['mom-test']]);
     expect([a, b, c].map((x) => x.oeffnen.mock.calls.length)).toStrictEqual([1, 1, 0]);
+  });
+  it('Präsentator außerhalb des Beamers: Gruppe nur hier, keine Meldung', () => {
+    const [a, b] = [box('mom-test', 'mom-test'), box('mom-test', 'mom-test')];
+    const melden = vi.fn();
+    aufloesungSteuerung([a, b], melden).knopf(a, 'praesentator');
+    expect(melden).not.toHaveBeenCalled();
+    expect([a, b].map((x) => x.oeffnen.mock.calls.length)).toStrictEqual([1, 1]);
   });
   it('Studierende: ein Klick öffnet nur diese Box und meldet nichts', () => {
     const [a, b] = [box('mom-test', 'mom-test'), box('mom-test', 'mom-test')];
     const melden = vi.fn();
-    aufloesungSteuerung([a, b], melden).knopf(b, false);
+    aufloesungSteuerung([a, b], melden).knopf(b, 'studi');
     expect(melden).not.toHaveBeenCalled();
     expect([a, b].map((x) => x.oeffnen.mock.calls.length)).toStrictEqual([0, 1]);
   });

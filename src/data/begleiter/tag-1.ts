@@ -224,7 +224,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Aufgabe nur einmal sagen, keine Beispiele geben.',
       'Rückfragen wie „Toaster oder Pfanne?“ nicht beantworten.',
       '„Ihr könnt nicht zeichnen? Kästchen, Pfeile und Strichmännchen reichen völlig.“',
-      'Danach Blätter nebeneinander, Video per Knopf öffnen – auch bei allen.',
+      'Blätter nebeneinander, Video per Knopf – auch bei allen (sonst 11:00).',
     ],
     ueberleitung: 'Zeichnungen nebeneinander: Was fällt euch auf?',
     uebung: { dauer: '3 min Zeichnen, danach Video (TED, ca. 9 min)', form: 'allein, ohne zu reden' },
@@ -233,7 +233,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
         'Aufgabe nur einmal sagen: „Zeichnet, wie man Toast macht.“ Keine Beispiele geben.',
         'Timer 3 min; währenddessen nichts kommentieren.',
         'Die drei Blätter nebeneinander legen oder hochhalten lassen.',
-        'Video von Tom Wujec zeigen: Auflösung per Knopf auf dem Beamer öffnen. Damit öffnet sie sich auch auf den Laptops der Studierenden (sonst erst am Ende des Kurstags).',
+        'Video von Tom Wujec zeigen: Auflösung per Knopf auf dem Beamer öffnen. Damit öffnet sie sich auch auf den Laptops der Studierenden (sonst spätestens 11:00, Ende von „Outcome statt Output“).',
       ],
       achten: [
         'Rückfragen („Toaster oder Pfanne?“) nicht beantworten – genau die Unterschiede sind die Pointe.',

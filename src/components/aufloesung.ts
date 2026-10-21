@@ -25,7 +25,12 @@ export function aufgeloest(ab: string, jetzt: Date): boolean {
 /** Kennung fürs Aufdecken für alle (lib/aufgedeckt.ts): die Gruppe – global, z. B. „mom-test“ auch für die Mappe –, sonst
  *  Seite und Knopftext, damit gleiche Knopftexte auf verschiedenen Seiten nicht zusammen aufgehen. */
 export function aufloesungKennung(pfad: string, gruppe: string | undefined, knopf: string): string {
-  return gruppe ?? `${pfad.replace(/\/+$/, '') || '/'}:${knopf}`;
+  return kennungNormal(gruppe ?? `${pfad.replace(/\/+$/, '') || '/'}:${knopf}`);
+}
+
+/** Dieselbe Normalform im Browser und auf dem Server (lib/aufgedeckt.ts kennungPruefen): ohne Leerraum am Rand. */
+export function kennungNormal(roh: string): string {
+  return roh.trim();
 }
 
 /** Eine Auflösung, wie Aufloesung.astro sie hier anmeldet. oeffnen() muss mehrfach aufrufbar sein. */
@@ -35,10 +40,14 @@ export interface AufloesungBox {
   oeffnen: () => void;
 }
 
+/** Wer den Knopf drückt: der Beamer-Tab des Präsentators (meldet), ein anderes Gerät des Präsentators, Studierende. */
+export type Knopfrolle = 'beamer' | 'praesentator' | 'studi';
+
 /**
  * Wer öffnet was (ohne DOM, damit testbar):
- * - Knopf beim Präsentator (Klick oder Pfeiltaste im Beamer, die den Knopf auslöst): melden – das deckt für alle auf –
- *   und die ganze Gruppe öffnen.
+ * - Knopf im Beamer-Modus (Klick oder Pfeiltaste, die den Knopf auslöst): melden – das deckt für alle auf – und die ganze
+ *   Gruppe öffnen. Gemeldet wird nur aus dem Beamer, wie bei „Wo ist Markus?“ (wo-ist.ts).
+ * - Knopf beim Präsentator außerhalb des Beamers: die Gruppe nur hier öffnen, nichts melden.
  * - Knopf bei Studierenden (fuer="alle"): nur diese Box – ein Klick auf „Prompt öffnen“ verrät nicht den Rest des Mom Test.
  * - Von Markus aufgedeckt (Nachfrage) oder Uhrzeit erreicht: jede Box mit der Kennung samt Gruppe.
  * Gruppen öffnen direkt, nicht über Klicks auf die anderen Knöpfe – so meldet jedes Aufdecken genau einmal.
@@ -49,9 +58,9 @@ export function aufloesungSteuerung(boxen: readonly AufloesungBox[], melden: (ke
     if (b.gruppe) for (const x of boxen) if (x !== b && x.gruppe === b.gruppe) x.oeffnen();
   };
   return {
-    knopf(b: AufloesungBox, praesentator: boolean) {
-      if (!praesentator) { b.oeffnen(); return; }
-      melden(b.kennung);
+    knopf(b: AufloesungBox, rolle: Knopfrolle) {
+      if (rolle === 'studi') { b.oeffnen(); return; }
+      if (rolle === 'beamer') melden(b.kennung);
       mitGruppe(b);
     },
     aufgedeckt(kennung: string) { for (const b of boxen) if (b.kennung === kennung) mitGruppe(b); },

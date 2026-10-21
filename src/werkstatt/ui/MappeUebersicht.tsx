@@ -2,12 +2,14 @@
 // (?fehler=…), Abmelden. Lehrende sehen vorerst nur einen Hinweis (Phase 2).
 import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { aufgedecktHolen } from '../../lib/aufgedeckt.js';
+import { AUFGEDECKT_MS, aufgedecktHolen } from '../../lib/aufgedeckt.js';
+import { abfrageKette } from '../../lib/kette.js';
+import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
 import { kohorte } from '../kohorten/index.js';
 import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
-import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, leitfadenNachfragen, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -38,7 +40,7 @@ export default function MappeUebersicht() {
   // Einmal beim Öffnen festgelegt: Leert ein geglücktes Laden die Meldung, lädt die Seite nicht noch einmal.
   const startLaden = useRef(beimOeffnenLaden(rueckmeldung));
   // Leitfaden erst nach dem Mom Test (wie die Auflösungen der Interview-Seite): aufgedeckt von Markus oder Uhrzeit;
-  // jede Minute nachsehen, gefragt wird nur am Kurstag im sichtbaren Tab (lib/aufgedeckt.ts, api/aufgedeckt.ts).
+  // nachgefragt wird im sichtbaren Tab, am Kurstag oft, sonst selten (lib/aufgedeckt.ts, api/aufgedeckt.ts).
   const aufgedeckt = useRef<string[]>([]);
   const frei = () => leitfadenFrei(new Date(), document.documentElement.hasAttribute('data-ist-praesentator'), aufgedeckt.current);
   const [leitfadenOffen, setLeitfadenOffen] = useState(frei);
@@ -85,21 +87,24 @@ export default function MappeUebersicht() {
 
   useEffect(() => {
     if (leitfadenOffen) return;
-    const pruefen = async () => {
-      if (leitfadenNachfragen(new Date(), !document.hidden)) {
+    // Eine Kette (lib/kette.ts): nie zwei Anfragen zugleich, im Hintergrund-Tab keine; ist der Leitfaden frei, Schluss.
+    const kette = abfrageKette({
+      ruheMs: AUFGEDECKT_MS,
+      ruht: () => document.hidden,
+      runde: async () => {
         try {
-          aufgedeckt.current = await aufgedecktHolen(['mom-test']);
+          aufgedeckt.current = await aufgedecktHolen([MOM_TEST_GRUPPE]);
         } catch {
           // Lokal ohne API oder Netz weg: die Uhrzeit bleibt.
         }
-      }
-      if (frei()) setLeitfadenOffen(true);
-    };
-    void pruefen();
-    const uhr = setInterval(() => { void pruefen(); }, 60_000);
-    const sichtbar = () => { if (!document.hidden) void pruefen(); };
+        if (frei()) { kette.stoppen(); setLeitfadenOffen(true); }
+        return leitfadenAbstand(new Date());
+      },
+    });
+    kette.sofort();
+    const sichtbar = () => { if (!document.hidden) kette.sofort(); };
     document.addEventListener('visibilitychange', sichtbar);
-    return () => { clearInterval(uhr); document.removeEventListener('visibilitychange', sichtbar); };
+    return () => { kette.stoppen(); document.removeEventListener('visibilitychange', sichtbar); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leitfadenOffen]);
 

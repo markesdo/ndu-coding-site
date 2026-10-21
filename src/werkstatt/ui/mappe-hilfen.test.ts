@@ -2,8 +2,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
-import { NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, LOGIN_HREF, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenFrei, leitfadenNachfragen, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
+import { FEHLER_TEXT, LOGIN_HREF, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -57,18 +57,17 @@ describe('leitfadenFrei', () => {
   });
   it('frei, sobald Markus „mom-test“ aufgedeckt hat – andere Kennungen zählen nicht', () => {
     const vorher = new Date('2026-10-22T12:31:00Z'); // 14:31 in Wien, vor dem Rückfall
-    expect(leitfadenFrei(vorher, false, ['mom-test'])).toBe(true);
+    expect(MOM_TEST_GRUPPE).toBe('mom-test');
+    expect(leitfadenFrei(vorher, false, [MOM_TEST_GRUPPE])).toBe(true);
     expect(leitfadenFrei(vorher, false, ['toast'])).toBe(false);
     expect(leitfadenFrei(vorher, false)).toBe(false);
   });
 });
 
-describe('leitfadenNachfragen', () => {
-  it('fragt nur am Kurstag des Mom Test und nur im sichtbaren Tab nach', () => {
-    expect(leitfadenNachfragen(new Date('2026-10-22T08:05:00Z'), true)).toBe(true);
-    expect(leitfadenNachfragen(new Date('2026-10-22T08:05:00Z'), false)).toBe(false);
-    expect(leitfadenNachfragen(new Date('2026-10-21T08:05:00Z'), true)).toBe(false); // Vortag
-    expect(leitfadenNachfragen(new Date('2026-10-23T08:05:00Z'), true)).toBe(false); // danach
+describe('leitfadenAbstand', () => {
+  it('am Kurstag des Mom Test oft, sonst selten nachfragen (der Termin kann wandern)', () => {
+    expect(leitfadenAbstand(new Date('2026-10-22T08:05:00Z'))).toBe(4000);
+    expect(leitfadenAbstand(new Date('2026-10-21T08:05:00Z'))).toBe(30_000);
   });
 });
 

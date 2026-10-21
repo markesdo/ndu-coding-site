@@ -5,7 +5,7 @@
 // /praesentator: nur den Schlüssel prüfen, nichts speichern.
 // Speicher: Vercel Runtime Cache – flüchtig, reicht für „wo ist er gerade“; der Beamer-Tab sendet jede Minute neu.
 import { getCache } from '@vercel/functions';
-import { passwortStimmt } from '../src/lib/kurszugang.js'; // .js-Endung wie in middleware.ts
+import { json, praesentatorAbweisen } from '../src/lib/praesentator-api.js'; // .js-Endung wie in middleware.ts
 import { ohneRuntimeCache } from '../src/lib/runtime-cache.js';
 import { positionPruefen, type Position } from '../src/lib/position.js';
 
@@ -13,13 +13,6 @@ const SCHLUESSEL = 'position';
 const TTL_SEKUNDEN = 6 * 60 * 60;
 
 type Gespeichert = Position & { zeit: number };
-
-function json(daten: unknown, status = 200): Response {
-  return new Response(JSON.stringify(daten), {
-    status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
-  });
-}
 
 export async function GET(): Promise<Response> {
   if (ohneRuntimeCache()) return json({ fehler: 'Runtime Cache nicht verfügbar' }, 503);
@@ -30,10 +23,8 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  const key = process.env.PRESENTER_KEY;
-  if (!key || ohneRuntimeCache()) return json({ fehler: 'Nicht eingerichtet' }, 503);
-  const eingabe = request.headers.get('x-presenter-key') ?? '';
-  if (!eingabe || !(await passwortStimmt(eingabe, key, key))) return json({ fehler: 'Falscher Präsentator-Schlüssel' }, 403);
+  const abgewiesen = await praesentatorAbweisen(request);
+  if (abgewiesen) return abgewiesen;
   const body: unknown = await request.json().catch(() => null);
   if ((body as { pruefen?: unknown } | null)?.pruefen === true) return json({ ok: true });
   if ((body as { aus?: unknown } | null)?.aus === true) {
