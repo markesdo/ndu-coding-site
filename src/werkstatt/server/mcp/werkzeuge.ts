@@ -4,10 +4,14 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { METHODEN, werkstattVorarbeit, type Methode } from '../../../components/methoden.js';
+import { wienerZeit } from '../../../components/jetzt.js';
+import { METHODEN, TAGE, werkstattVorarbeit, type Methode } from '../../../components/methoden.js';
+import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
+import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
 import { ARTEFAKT_NAMEN, ARTEFAKTE, artefaktParsen, type ArtefaktName } from '../../schemas/index.js';
 import { BEFUND_ARTEN, verknuepfungenPruefen, verknuepfungenText, type MappeDaten } from '../../verknuepfungen.js';
+import { STAENDE, TAG_LAGEN, artefaktStand, entstehtAn, faelligBis, inArbeitAn, kurstagBestimmen, type ArtefaktStand, type Kurstag } from '../../tag-stand.js';
 import { MCP_WERKZEUGE, type MappeStand } from '../../vertrag.js';
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme } from '../antwort.js';
@@ -103,6 +107,36 @@ const VERKNUEPFUNGEN = {
     geprueft: z.array(ARTEFAKT_ENUM),
     fehlen: z.array(ARTEFAKT_ENUM).describe('Noch nicht gespeichert.'),
     unlesbar: z.array(ARTEFAKT_ENUM).describe('Passt nicht zum Format der Werkstatt; dort neu speichern.'),
+  },
+  annotations: LESEN,
+};
+
+const STAND_SCHEMA = z.object({
+  artefakt: ARTEFAKT_ENUM,
+  titel: z.string(),
+  stand: z.enum(STAENDE),
+  umfang: z.string(),
+  fehlt: z.array(z.string()),
+});
+
+const TAG_STAND = {
+  title: 'Kurstag und Stand',
+  description: `Zeigt, welcher Kurstag dran ist (heute oder der nächste, aus den Terminen der Kohorte), welche Artefakte der eigenen Werkstatt-Mappe bis dahin fällig sind und was davon noch leer oder dünn ist (z. B. „2 von 5 Snapshots“, „I3 ohne Chance“). Nur Zählen, kein Urteil über die Qualität; prüfen geht mit ${MCP_WERKZEUGE.artefaktPruefen}. Optional tag (1–${TAGE.length}) für einen bestimmten Kurstag. Nur lesen.`,
+  inputSchema: {
+    // Auch als Text: ChatGPT schickt Zahlen mitunter als "2" und ein leeres optionales Argument als "".
+    tag: z.union([z.number(), z.string()]).nullish().describe(`Optional: Kurstag 1–${TAGE.length}. Ohne: heute bzw. der nächste Kurstag.`),
+  },
+  outputSchema: {
+    kohorte: z.string(),
+    heute: z.string().describe('Kalendertag in Wien (JJJJ-MM-TT).'),
+    tag: z.number(),
+    titel: z.string(),
+    datum: z.string().nullable().describe('Termin des Kurstags; null = noch offen.'),
+    lage: z.enum(TAG_LAGEN),
+    ohneTermin: z.array(z.number()).describe('Frühere Kurstage, deren Termin noch offen ist.'),
+    faellig: z.array(STAND_SCHEMA).describe('Bis zu diesem Kurstag fällig.'),
+    inArbeit: z.array(STAND_SCHEMA).describe('Ab diesem Kurstag in Arbeit, fällig zum nächsten.'),
+    entsteht: z.array(z.object({ slug: z.string(), name: z.string() })).describe('Methoden dieses Kurstags.'),
   },
   annotations: LESEN,
 };
@@ -283,6 +317,52 @@ function pruefpunktFinden(alle: readonly { id: string }[], roh: string, slug: st
   return alle.findIndex((p) => p.id === id);
 }
 
+const LAGE_TEXT: Record<Kurstag['lage'], string> = {
+  heute: 'heute',
+  naechster: 'nächster Kurstag',
+  gewaehlt: 'gewählt',
+  vorbei: 'letzter Kurstag, der Kurs ist vorbei',
+};
+const STAND_TEXT: Record<ArtefaktStand['stand'], string> = {
+  leer: 'leer',
+  duenn: 'dünn',
+  ausgefuellt: 'ausgefüllt',
+  unlesbar: 'unlesbar',
+  'nicht-gelesen': 'nicht gelesen',
+};
+
+function standZeile(s: ArtefaktStand): string {
+  return `- ${s.titel} (${s.artefakt}): ${STAND_TEXT[s.stand]} – ${s.umfang}${s.fehlt.length ? `; ${s.fehlt.join('; ')}` : ''}`;
+}
+
+// Liest die Artefakte für tag_stand: eine unlesbare Datei zählt als „unlesbar“, ein GitHub-Ausfall nur bei diesem
+// Artefakt als „nicht gelesen“; die übrigen Zeilen bleiben.
+async function staendeLesen(k: WerkzeugKontext, repo: string, namen: readonly ArtefaktName[]): Promise<ArtefaktStand[]> {
+  return Promise.all(
+    namen.map(async (name) => {
+      let daten: Awaited<ReturnType<typeof artefaktLaden>>;
+      try {
+        daten = await artefaktLaden(k, repo, name);
+      } catch (e) {
+        // Nur ein GitHub-Ausfall wird zur Zeile „nicht gelesen“; alles andere ist ein Fehler des Werkzeugs (sicher()).
+        if (!(e instanceof ApiAusnahme && e.code === 'github-fehler')) throw e;
+        fehlerLoggen('werkstatt-mcp tag_stand:', e);
+        return artefaktStand(name, 'nicht-gelesen');
+      }
+      return artefaktStand(name, daten);
+    }),
+  );
+}
+
+// tag als Zahl 1–7; "" und null = ohne. Alles andere: Hinweis mit dem gültigen Bereich.
+function tagLesen(tag: number | string | null | undefined): number | undefined {
+  const roh = typeof tag === 'string' ? tag.trim() : tag;
+  if (roh === undefined || roh === null || roh === '') return undefined;
+  const n = typeof roh === 'number' ? roh : /^\d+$/.test(roh) ? Number(roh) : NaN;
+  if (!Number.isInteger(n) || n < 1 || n > TAGE.length) throw new Hinweis(`Den Kurstag „${tag}“ gibt es nicht. Möglich sind 1 bis ${TAGE.length}.`);
+  return n;
+}
+
 // --- Registrierung ---
 
 export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): void {
@@ -309,6 +389,38 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       if (!m) throw new Hinweis(`Diese Methode gibt es nicht. Mögliche Slugs: ${SLUGS.join(', ')}.`);
       const d = methodeDaten(k, m);
       return textErgebnis(methodeText(d), d);
+    }),
+  );
+
+  server.registerTool(MCP_WERKZEUGE.tagStand, TAG_STAND, ({ tag }) =>
+    sicher(k, async () => {
+      const repo = await eigeneMappe(k);
+      const gewaehlt = tagLesen(tag);
+      const kh = kohorte(k.claims.kohorte);
+      if (!kh) throw new Hinweis('Deine Kohorte kennt die Werkstatt nicht (mehr). Frag Markus.');
+      const vorhanden = werkstattArtefakte(kh);
+      const heute = wienerZeit(new Date(k.abh.jetzt())).datum;
+      const kt = kurstagBestimmen(kh.termine, heute, gewaehlt);
+      const faelligNamen = faelligBis(kt.tag, vorhanden);
+      const inArbeitNamen = kt.lage === 'vorbei' ? [] : inArbeitAn(kt.tag, vorhanden);
+      const [faellig, inArbeit] = await Promise.all([staendeLesen(k, repo, faelligNamen), staendeLesen(k, repo, inArbeitNamen)]);
+      const entsteht = entstehtAn(kt.tag);
+      const termin = kt.datum ? datumAt(kt.datum) : 'Termin noch offen';
+      const zeilen = [
+        `# Kurstag ${kt.tag}: ${kt.titel} (${termin}; ${LAGE_TEXT[kt.lage]})`,
+        `Heute ist der ${datumAt(heute)}.`,
+        ...(kt.ohneTermin.length
+          ? [`Noch ohne Termin: ${kt.ohneTermin.map((n) => `Tag ${n} (${TAGE.find((t) => t.n === n)!.titel})`).join(', ')}; was dafür fällig ist, steht unten mit.`]
+          : []),
+        '',
+        `## Fällig bis Tag ${kt.tag}`,
+        ...(faellig.length ? faellig.map(standZeile) : ['Noch nichts aus der Werkstatt-Mappe.']),
+        ...(inArbeit.length ? ['', `## Ab Tag ${kt.tag} in Arbeit (fällig zu Tag ${kt.tag + 1})`, ...inArbeit.map(standZeile)] : []),
+        ...(entsteht.length ? ['', `## Methoden an Tag ${kt.tag}`, ...entsteht.map((m) => `- ${m.name}`)] : []),
+        '',
+        `Das sind nur Zahlen, kein Urteil über die Qualität. Inhaltlich prüfen: ${MCP_WERKZEUGE.artefaktPruefen}. Bearbeiten in der Werkstatt: ${mappeUrl(k)}`,
+      ];
+      return textErgebnis(zeilen.join('\n'), { kohorte: k.claims.kohorte, heute, ...kt, faellig, inArbeit, entsteht });
     }),
   );
 

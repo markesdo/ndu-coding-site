@@ -25,6 +25,9 @@ export interface Artefakt {
    *  anders heißt („transkripte“ → leitfaden). Interview-Notizen kommen nie ins App-Repo (öffentlich), nur
    *  pseudonymisiert in die private Mappe (interviews). */
   werkstatt?: ArtefaktName;
+  /** Hausaufgabe zwischen zwei Kurstagen: fällig zu Kurstag bisTag (sonst am Tag nach der Methode), anzahl = so viele
+   *  Einträge je Person (tag_stand zählt mit). */
+  hausaufgabe?: { bisTag: number; anzahl?: number };
 }
 
 export const ARTEFAKTE: Artefakt[] = [
@@ -32,7 +35,7 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'entscheidungen', name: 'Entscheidungslog', lebtIn: ['werkstatt'], pfad: 'mappe/entscheidungen.json', werkstatt: 'entscheidungen' },
   { id: 'transkripte', name: 'Leitfaden und Interview-Notizen (pseudonymisiert)', lebtIn: ['werkstatt'], pfad: 'mappe/leitfaden.json', werkstatt: 'leitfaden' },
   { id: 'annahmen', name: 'Annahmen-Map', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/annahmen.json', werkstatt: 'annahmen' },
-  { id: 'synthese', name: 'Interviews mit Snapshots (pseudonymisiert)', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/interviews.json', werkstatt: 'interviews' },
+  { id: 'synthese', name: 'Interviews mit Snapshots (pseudonymisiert)', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/interviews.json', werkstatt: 'interviews', hausaufgabe: { bisTag: 2, anzahl: 5 } },
   { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet', lebtIn: ['miro', 'repo'], pfad: 'docs/KUNDENPROFIL.md' },
   { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro', 'repo'], pfad: 'docs/JOURNEY.md' },
   { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro', 'repo'], pfad: 'docs/BAUM.md' },

@@ -245,13 +245,17 @@ describe('Werkzeuge', () => {
     expect(anweisung).toContain('I2-4');
     expect(anweisung).toMatch(/Vorarbeit zum Abgleich zitierst du nie/);
     expect(anweisung).toContain('pruefpunkt');
+    // NDU-27: zuerst schauen, was da ist; nie das ganze Artefakt zurückkopieren.
+    expect(anweisung).toContain(`Anfang des Gesprächs ${MCP_WERKZEUGE.mappeUebersicht}`);
+    expect(anweisung).toContain(MCP_WERKZEUGE.tagStand);
+    expect(anweisung).toMatch(/Kopier nie ein ganzes Artefakt zurück in den Chat/);
   });
 
-  it('tools/list: genau die fünf Namen, alle readOnlyHint, deutsche Beschreibung', async () => {
+  it('tools/list: genau die Namen aus MCP_WERKZEUGE, alle readOnlyHint, deutsche Beschreibung', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
     const { tools } = await c.listTools();
-    expect(tools.map((t) => t.name).sort()).toStrictEqual(['artefakt_lesen', 'artefakt_pruefen', 'mappe_uebersicht', 'methode_erklaeren', 'verknuepfungen_pruefen']);
+    expect(tools.map((t) => t.name).sort()).toStrictEqual(['artefakt_lesen', 'artefakt_pruefen', 'mappe_uebersicht', 'methode_erklaeren', 'tag_stand', 'verknuepfungen_pruefen']);
     expect(Object.values(MCP_WERKZEUGE).sort()).toStrictEqual(tools.map((t) => t.name).sort());
     for (const t of tools) {
       expect(t.annotations?.readOnlyHint, t.name).toBe(true);
@@ -260,7 +264,7 @@ describe('Werkzeuge', () => {
     // Kein Werkzeug nimmt ein Argument, das ein Repo oder eine Person nennt.
     for (const t of tools) {
       const felder = Object.keys((t.inputSchema.properties ?? {}) as object);
-      expect(felder.every((f) => f === 'artefakt' || f === 'slug' || f === 'pruefpunkt'), `${t.name}: ${felder}`).toBe(true);
+      expect(felder.every((f) => ['artefakt', 'slug', 'pruefpunkt', 'tag'].includes(f)), `${t.name}: ${felder}`).toBe(true);
     }
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
@@ -893,5 +897,117 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
       expect(text(r)).not.toContain(TEXT_A);
     }
     expect(lesen).not.toHaveBeenCalled();
+  });
+});
+
+// NDU-27: Kurstag und Stand der Mappe.
+describe('tag_stand', () => {
+  type StandSc = { tag: number; lage: string; datum: string | null; faellig: { artefakt: string; stand: string; umfang: string; fehlt: string[] }[]; inArbeit: unknown[]; entsteht: { slug: string }[] };
+  const sc = (r: Awaited<ReturnType<Client['callTool']>>) => r.structuredContent as StandSc;
+  const json = (d: unknown) => `${JSON.stringify(d, null, 2)}\n`;
+  const alleSpeichern = async (h: Aufbau, repo: string, daten: Record<string, unknown>) => {
+    for (const [name, d] of Object.entries(daten)) {
+      const { basisSha } = await h.speicher.lesen(repo, name as 'brief');
+      await h.speicher.speichern(repo, name as 'brief', { [`mappe/${name}.json`]: json(d) }, basisSha, AUTOR, name);
+    }
+  };
+
+  it('leere Mappe (nur Annahmen): zu Tag 2 ist alles fällig, das meiste leer', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
+    expect(r.isError).toBeFalsy();
+    const s = sc(r);
+    expect(s).toMatchObject({ tag: 2, lage: 'gewaehlt', datum: null });
+    expect(s.faellig.map((f) => [f.artefakt, f.stand])).toStrictEqual([
+      ['brief', 'leer'],
+      ['entscheidungen', 'leer'],
+      ['annahmen', 'ausgefuellt'],
+      ['leitfaden', 'leer'],
+      ['interviews', 'leer'],
+    ]);
+    expect(s.entsteht.map((m) => m.slug)).toContain('synthese');
+    const t = text(r);
+    expect(t).toContain('## Fällig bis Tag 2');
+    expect(t).toContain('- Interviews und Snapshots (interviews): leer – noch nicht angelegt');
+    // Nur Zahlen, kein Artefakttext.
+    expect(t).not.toContain(TEXT_A);
+  });
+
+  it('teilweise Mappe: „2 von 5 Snapshots“ und welches Interview ohne Chance ist', async () => {
+    const h = await aufbau();
+    const iv = structuredClone(interviewsBeispiel);
+    iv.interviews = iv.interviews.slice(0, 2);
+    iv.interviews[1].chancen = [];
+    await alleSpeichern(h, 'test-sofie', { brief: briefBeispiel, interviews: iv });
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
+    const interviews = sc(r).faellig.find((f) => f.artefakt === 'interviews')!;
+    expect(interviews).toMatchObject({ stand: 'duenn', umfang: '2 von 5 Snapshots' });
+    expect(interviews.fehlt).toStrictEqual(['noch 3 von 5 Interviews offen', 'I2 ohne Chance']);
+    expect(text(r)).toContain('Interviews und Snapshots (interviews): dünn – 2 von 5 Snapshots; noch 3 von 5 Interviews offen; I2 ohne Chance');
+  });
+
+  it('volle Mappe: alles ausgefüllt', async () => {
+    const h = await aufbau();
+    await alleSpeichern(h, 'test-jonas', { entscheidungen: entscheidungenBeispiel, leitfaden: leitfadenBeispiel, annahmen: annahmenBeispiel, interviews: interviewsBeispiel });
+    const c = await client(h, await accessToken(h, 1002));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
+    expect(sc(r).faellig.map((f) => f.stand)).toStrictEqual(['ausgefuellt', 'ausgefuellt', 'ausgefuellt', 'ausgefuellt', 'ausgefuellt']);
+    expect(sc(r).faellig.flatMap((f) => f.fehlt)).toStrictEqual([]);
+  });
+
+  it('ohne tag ("", null, fehlt): Termine der Kohorte entscheiden (Kohorte test ohne Termine -> Tag 1, in Arbeit)', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    for (const args of [{}, { tag: null }, { tag: '' }]) {
+      const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: args });
+      expect(r.isError, JSON.stringify(args)).toBeFalsy();
+      expect(sc(r)).toMatchObject({ tag: 1, lage: 'naechster', datum: null, ohneTermin: [] });
+      expect(sc(r).faellig).toStrictEqual([]);
+      expect(sc(r).inArbeit).toHaveLength(5);
+      expect(text(r)).toContain('Termin noch offen');
+    }
+  });
+
+  it('GitHub-Ausfall bei einem Artefakt: nur diese Zeile „nicht gelesen“, die anderen bleiben', async () => {
+    const h = await aufbau();
+    const echt = h.speicher.lesen.bind(h.speicher);
+    vi.spyOn(h.speicher, 'lesen').mockImplementation((repo, name) => (name === 'interviews' ? Promise.reject(new GithubAusnahme(502)) : echt(repo, name)));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
+    expect(r.isError).toBeFalsy();
+    expect(sc(r).faellig.find((f) => f.artefakt === 'interviews')?.stand).toBe('nicht-gelesen');
+    expect(sc(r).faellig.find((f) => f.artefakt === 'annahmen')?.stand).toBe('ausgefuellt');
+  });
+
+  it('anderer Fehler beim Lesen (kein GitHub-Ausfall): Fehlerergebnis statt „nicht gelesen“', async () => {
+    const h = await aufbau();
+    vi.spyOn(h.speicher, 'lesen').mockRejectedValue(new TypeError('kaputt'));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
+    expect(r.isError).toBe(true);
+    expect(text(r)).toMatch(/etwas schiefgegangen/);
+  });
+
+  it('unlesbare Datei zählt als unlesbar, ungültiger tag -> Fehlerergebnis, Lehrende -> Satz zur Lehrende-Ansicht', async () => {
+    const h = await aufbau();
+    await h.speicher.speichern('test-sofie', 'brief', { 'mappe/brief.json': '{ kaputt' }, null, AUTOR, 'kaputt');
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
+    expect(sc(r).faellig.find((f) => f.artefakt === 'brief')?.stand).toBe('unlesbar');
+    for (const tag of [0, 8, 2.5, 'zwei', '-1']) {
+      const f = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag } });
+      expect(f.isError, String(tag)).toBe(true);
+      expect(text(f), String(tag)).toMatch(/Möglich sind 1 bis 7/);
+    }
+    // Zahl als Text (ChatGPT) gilt.
+    expect(sc(await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: '2' } })).tag).toBe(2);
+    const lehrende = await client(h, await accessToken(h, 1000, 'lehrende'));
+    const l = await lehrende.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: {} });
+    expect(l.isError).toBe(true);
+    expect(text(l)).toMatch(/Lehrende/);
   });
 });
