@@ -46,7 +46,7 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
     ]} />
     <div class="nur-handout">
       <p>Die dritte Zeile ersetzt die erste – gelöscht wird die erste trotzdem nicht, sie bekommt nur den Vermerk „ersetzt am …“. Wer das Log liest, sieht: Am Anfang war die Zielgruppe geraten, nach den Interviews war sie belegt. In eurer Mappe sieht das so aus: Hinter „Beleg:“ steht die Stufe, danach in Klammern die IDs, eure Notiz (wie „Kassendaten September“ bei D2) oder beides, getrennt durch Strichpunkt.</p>
-      <Prompt label="Beispiel · Entscheidungslog in der Mappe">- D1 22.10.2026 — Zielgruppe: Pendler*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner — ersetzt am 05.11.2026
+      <Prompt label="Beispiel · Entscheidungslog in der Mappe" kopieren={false}>- D1 22.10.2026 — Zielgruppe: Pendler*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner — ersetzt am 05.11.2026
 - D2 22.10.2026 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: getan (Kassendaten September)
 - D3 05.11.2026 — Zielgruppe: Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin — Alle 5 haben einen festen Zug zwischen 7:20 und 7:50; das Ziel ist verschieden (Wien, Uni) und spielt für die Entscheidung keine Rolle — Beleg: gesagt (I1, I2, I3, I4, I5) — ersetzt D1
 - D4 05.11.2026 — Vorbestellen vor der Ankunft verworfen — 3 von 5 sagen, sie entscheiden erst in der Halle — Beleg: gesagt (I2-4, I3-1, I5-3; bei I1 steht es nur in der Notiz)</Prompt>
@@ -77,7 +77,7 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
     <p class="folie-satz">Heute zwei bis drei Zeilen, danach jeden Kurstag fünf Minuten.</p>
     <ol class="gross">
       <li data-schritt><strong>Zeilen schreiben</strong> und in der Werkstatt speichern: Datum — Entscheidung — Grund — Beleg. Aus eurem Problem-Rahmen: Zielgruppe, was das Produkt nicht macht, das Outcome. <Timer minuten={5} /></li>
-      <li data-schritt><strong>Prüfen</strong> als Hausaufgabe: erst die Prüfliste selbst, dann Claude – beides im Handout.</li>
+      <li data-schritt><strong>Prüfen</strong> als Hausaufgabe: erst die Prüfliste selbst, dann Claude – beides unter <a href="#pruefen">Prüfen</a>.</li>
       <li data-schritt><strong>Ab jetzt am Ende jedes Kurstags:</strong> Was habt ihr entschieden oder verworfen? Je eine Zeile, dann prüft Claude, was ohne Beleg dasteht.</li>
     </ol>
   </Folie>
