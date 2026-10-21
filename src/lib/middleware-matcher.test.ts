@@ -1,7 +1,9 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { afterEach, vi } from 'vitest';
 import middleware, { config } from '../../middleware';
-import { COOKIE, istOeffentlich, tokenErstellen } from './kurszugang';
+import { ABMELDEN, COOKIE, WERKSTATT_COOKIES, istAbmelden, istOeffentlich, tokenErstellen } from './kurszugang';
+import { cookieName } from '../werkstatt/server/sitzung';
 
 // Vercel wendet den Matcher wie einen Pfad-Ausdruck an; für unsere Muster genügt ein verankerter RegExp.
 const geschuetzt = (pfad: string) => config.matcher.some((m) => new RegExp(`^${m}$`).test(pfad));
@@ -171,5 +173,95 @@ describe('Werkstatt ohne Kurspasswort', () => {
     expect(metadaten.headers.get('x-middleware-next')).toBe('1');
     const gesperrt = await middleware(new Request('https://kurs.invalid/api/werkstattx'));
     expect(gesperrt.status).toBe(401);
+  });
+});
+
+describe('Abmelden', () => {
+  afterEach(() => vi.unstubAllEnvs());
+  const anfrage = (pfad: string, cookie?: string) =>
+    middleware(new Request(`https://kurs.invalid${pfad}`, cookie ? { headers: { cookie } } : {}));
+  const mitVariablen = () => {
+    vi.stubEnv('SITE_PASSWORD', 'pw');
+    vi.stubEnv('SITE_SESSION_SECRET', 's'.repeat(32));
+  };
+  const geloescht = (r: Response) => r.headers.getSetCookie();
+  const ERWARTET = [
+    'ndu_zugang=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
+    '__Host-ndu_werkstatt=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
+    'ndu_werkstatt=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
+  ];
+
+  it('/logout löscht Kurszugang und Werkstatt-Sitzung und führt zur Startseite', async () => {
+    mitVariablen();
+    const token = await tokenErstellen('s'.repeat(32), 'pw', Math.floor(Date.now() / 1000));
+    for (const pfad of ['/logout', '/logout/']) {
+      const r = await anfrage(pfad, `${COOKIE}=${token}; __Host-ndu_werkstatt=x`);
+      expect(r.status).toBe(303);
+      expect(r.headers.get('location')).toBe('/start');
+      expect(geloescht(r)).toStrictEqual(ERWARTET);
+      expect(r.headers.get('cache-control')).toBe('private, no-store');
+      expect(r.headers.get('x-robots-tag')).toBe('noindex, nofollow');
+    }
+  });
+
+  it('die Werkstatt-Namen sind genau die aus sitzung.ts (Vercel und lokal)', () => {
+    expect([...WERKSTATT_COOKIES]).toStrictEqual([cookieName(false), cookieName(true)]);
+  });
+
+  it('Anmelden und Abmelden setzen das Cookie mit denselben Flags und demselben Pfad', async () => {
+    mitVariablen();
+    const form = new FormData();
+    form.set('passwort', 'pw');
+    form.set('weiter', '/tag-1');
+    const login = await middleware(new Request('https://kurs.invalid/login', { method: 'POST', body: form }));
+    const gesetzt = login.headers.get('set-cookie')!;
+    const flags = (c: string) => c.split('; ').filter((t) => !/^(ndu_zugang|Max-Age)=/.test(t));
+    expect(gesetzt).toMatch(/^ndu_zugang=v1\./);
+    const abmelden = await anfrage('/logout');
+    expect(flags(gesetzt)).toStrictEqual(['Path=/', 'HttpOnly', 'Secure', 'SameSite=Lax']);
+    expect(flags(geloescht(abmelden)[0])).toStrictEqual(flags(gesetzt));
+  });
+
+  it('klappt ohne Cookie und ohne Kurspasswort-Variablen – kein Umweg über /login', async () => {
+    mitVariablen();
+    const ohne = await anfrage('/logout');
+    expect(ohne.status).toBe(303);
+    expect(ohne.headers.get('location')).toBe('/start');
+    expect(geloescht(ohne)).toStrictEqual(ERWARTET);
+    vi.unstubAllEnvs();
+    vi.stubEnv('SITE_PASSWORD', '');
+    vi.stubEnv('SITE_SESSION_SECRET', '');
+    const ohneVariablen = await anfrage('/logout');
+    expect(ohneVariablen.headers.get('location')).toBe('/start');
+  });
+
+  it('der Matcher lässt /logout zur Middleware durch (sonst bliebe das Cookie)', () => {
+    expect(geschuetzt('/logout')).toBe(true);
+  });
+
+  // /logout.html fehlt hier absichtlich: vercel.json hat cleanUrls, Vercel leitet /logout.html mit 308 auf /logout um,
+  // bevor die Middleware läuft (in Produktion geprüft) – auch das meldet also ab.
+  it('ähnliche Pfade bleiben hinter dem Kurspasswort, ohne Variablen gesperrt', async () => {
+    mitVariablen();
+    for (const pfad of ['/logoutx', '/logout/x', '/innolab/logout']) {
+      const r = await anfrage(pfad);
+      expect(r.status, pfad).toBe(303);
+      expect(r.headers.get('location'), pfad).toMatch(/^\/login/);
+      expect(r.headers.get('set-cookie'), pfad).toBeNull();
+    }
+    vi.unstubAllEnvs();
+    vi.stubEnv('SITE_PASSWORD', '');
+    vi.stubEnv('SITE_SESSION_SECRET', '');
+    expect((await anfrage('/tag-1')).status).toBe(503);
+    expect(istOeffentlich('/logout')).toBe(false);
+  });
+
+  it('„Abmelden“ steht in der Seitenleiste der Kursseiten und ist im Beamer ausgeblendet', () => {
+    expect(istAbmelden(ABMELDEN)).toBe(true);
+    const layout = readFileSync(new URL('../layouts/Layout.astro', import.meta.url), 'utf8');
+    const beamer = readFileSync(new URL('../styles/beamer.css', import.meta.url), 'utf8');
+    expect(layout).toMatch(/import \{ ABMELDEN \} from '\.\.\/lib\/kurszugang'/);
+    expect(layout).toMatch(/class="[^"]*\babmelden\b[^"]*"[^>]*>\s*<a\b[^>]*\bhref=\{ABMELDEN\}/);
+    expect(beamer).toMatch(/html\[data-beamer\][^{}]*\.abmelden\s*\{[^}]*display:\s*none/);
   });
 });

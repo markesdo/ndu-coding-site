@@ -115,6 +115,28 @@ export function istLoginSeite(pfad: string): boolean {
   return p === '/login' || p === '/login/innolab';
 }
 
+// Abmelden: /logout (mit oder ohne Schrägstrich) löscht das Cookie und führt zur Startseite. Die Middleware prüft das
+// vor allem anderen, also auch ohne gültiges Cookie und ohne Kurspasswort-Variablen – sonst ginge es im Kreis zum Login.
+export const ABMELDEN = '/logout';
+export function istAbmelden(pfad: string): boolean {
+  return pfad === ABMELDEN || pfad === `${ABMELDEN}/`;
+}
+
+// Ein Set-Cookie-Wert für Anmelden und Abmelden: gleiche Flags, gleicher Pfad – sonst löschte das Abmelden ein anderes Cookie.
+export function zugangsCookie(wert: string, maxAge: number, name = COOKIE): string {
+  return `${name}=${wert}; Path=/; Max-Age=${maxAge}; HttpOnly; Secure; SameSite=Lax`;
+}
+
+// Sitzung der Werkstatt (src/werkstatt/server/sitzung.ts, cookieName): auf Vercel __Host-ndu_werkstatt, lokal ndu_werkstatt.
+// Hier als Text, damit die Middleware Hono nicht mitlädt; ein Test prüft, dass die Namen zu cookieName() passen.
+export const WERKSTATT_COOKIES = ['__Host-ndu_werkstatt', 'ndu_werkstatt'] as const;
+
+// Set-Cookie-Werte zum Abmelden: Kurszugang und Werkstatt-Sitzung, je Max-Age=0. __Host- verlangt Path=/, Secure und
+// keine Domain – zugangsCookie erfüllt das. localStorage bleibt (das kann der Server ohnehin nicht löschen).
+export function abmeldenCookies(): string[] {
+  return [COOKIE, ...WERKSTATT_COOKIES].map((name) => zugangsCookie('', 0, name));
+}
+
 export function zumLogin(ziel: string): string {
   const sicher = sichererPfad(ziel);
   const pfad = new URL(sicher, 'https://kurs.invalid').pathname;

@@ -10,6 +10,7 @@ import BeamerStart from '../components/BeamerStart.astro';
 import Marke from '../components/Marke.astro';
 import NeuLaden from '../components/NeuLaden.astro';
 import { BUILD } from '../lib/build';
+import { ABMELDEN } from '../lib/kurszugang';
 import { BEREICHE, NAV, bereichVon, nachbarn } from '../lib/navigation';
 import { pfadOhneSchraegstrich } from '../components/abschnitt';
 import '../styles/global.css';
@@ -75,6 +76,10 @@ const { vorher, danach } = nachbarn(path);
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <p class="small muted" style="margin-top:2rem">NDU · MSc Management by Innovation<br/>{kurs.termine}</p>
         <p class="small kurswechsel"><a href={anderer.start}>Zum Kurs {anderer.kurz} →</a></p>
+        {/* Abmelden: nur auf Vercel wirksam (middleware.ts); /start und /login haben eigene Seiten ohne dieses Layout. Es löscht
+            nur die Cookies (Kurszugang, Werkstatt-Sitzung), nicht localStorage: Präsentator-Schlüssel und Werkstatt-Entwürfe
+            bleiben absichtlich, Entwürfe gingen sonst verloren. */}
+        <p class="small abmelden"><a href={ABMELDEN}>Abmelden</a></p>
       </aside>
       <main class="content">
         <div class="inner">
