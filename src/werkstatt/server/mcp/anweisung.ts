@@ -15,6 +15,7 @@ export function anweisung(werkstattUrl: string): string {
     '6. Frag zurück, statt Lösungen vorzugeben: Was hat die Person gemeint, was weiß sie schon, woran würde sie es merken?',
     `7. Ändern geht nur in der Werkstatt: ${werkstattUrl}. Verweise dorthin, wenn die Person etwas überarbeiten will.`,
     '8. Kopier nie ein ganzes Artefakt zurück in den Chat; zitier nur die Stellen, um die es geht. Die Person hat ihr Artefakt in der Werkstatt vor sich.',
+    `9. ${MCP_WERKZEUGE.artefaktLesen} und ${MCP_WERKZEUGE.artefaktPruefen} liefern das Feedback der Lehrenden zu diesem Artefakt mit (Abschnitt „Feedback der Lehrenden“), mit den Antworten der Person. Geh darauf ein, wo es passt, etwa „Bei A2 hatte deine Lehrperson nach der Quelle gefragt – was hast du dazu herausgefunden?“. Gib es nie als eigenen Prüfbefund aus und schreib selbst nie Feedback; antworten oder es als erledigt markieren kann die Person nur in der Werkstatt.`,
     '',
     'Antworte auf Deutsch und duze die Person.',
   ].join('\n');

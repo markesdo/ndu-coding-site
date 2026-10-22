@@ -3,6 +3,7 @@
 // Präfix `<kohorte>-` des Repo-Namens). Ein Speichern = ein Commit über die Git-Data-API. Konflikte gelten pro Artefakt:
 // basisSha ist der Blob-SHA von mappe/<name>.json im Kopf von main (null = neu). Ein anderes Artefakt, das inzwischen
 // gespeichert wurde, lässt das Ref-Update mit 422 „not a fast forward“ scheitern; dann bis zu dreimal auf dem neuen Kopf.
+import { FEEDBACK_PFAD } from '../../feedback.js';
 import { ARTEFAKT_NAMEN } from '../../schemas/index.js';
 import { VERLAUF_HOECHSTENS } from '../../vertrag.js';
 import { kohorte as kohorteNachId, type Kohorte } from '../../kohorten/index.js';
@@ -329,6 +330,38 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
     async werkstattJson(repo) {
       const z = await zugriff(repo);
       return z ? werkstattJsonLesen(z) : null;
+    },
+
+    async feedbackLesen(repo) {
+      const z = await zugriff(repo);
+      const datei = z ? await dateiLesen(z, FEEDBACK_PFAD) : null;
+      return datei ? jsonAusRepo(FEEDBACK_PFAD, datei.inhalt) : null;
+    },
+
+    // Wie speichern, aber ohne basisSha: Die Datei wird nur ergänzt, darum gibt es keinen Konflikt. Jeder Versuch liest
+    // sie am Kopf, auf dem sein Commit aufsetzt; scheitert das Fast-Forward, gilt der nächste Versuch dem neuen Kopf.
+    async feedbackAendern(repo, aendern, autor, nachricht) {
+      const z = await zugriff(repo);
+      if (!z) throw unbekanntesRepo();
+      const committer = await abh.bot(z.org);
+      for (let versuch = 1; versuch <= SPEICHER_VERSUCHE; versuch++) {
+        const kopf = await kopfLesen(z);
+        if (!kopf) throw wirdEingerichtet();
+        const [c, aktuell] = await Promise.all([anfrage(z, 'GET', `/git/commits/${kopf}`), dateiLesen(z, FEEDBACK_PFAD, kopf)]);
+        if (c.status !== 200 || typeof c.daten?.tree?.sha !== 'string') throw githubFehler('GET', 'git/commits', c.status);
+        const inhalt = aendern(aktuell ? jsonAusRepo(FEEDBACK_PFAD, aktuell.inhalt) : null);
+        if (inhalt === null) return { unveraendert: true };
+        const t = await anfrage(z, 'POST', '/git/trees', { base_tree: c.daten.tree.sha, tree: [{ path: FEEDBACK_PFAD, mode: '100644', type: 'blob', content: inhalt }] });
+        if (t.status !== 201 || typeof t.daten?.sha !== 'string') throw githubFehler('POST', 'git/trees', t.status);
+        const commit = await anfrage(z, 'POST', '/git/commits', { message: nachricht, tree: t.daten.sha, parents: [kopf], author: autor, committer });
+        if (commit.status !== 201 || typeof commit.daten?.sha !== 'string') throw githubFehler('POST', 'git/commits', commit.status);
+        const ref = await anfrage(z, 'PATCH', '/git/refs/heads/main', { sha: commit.daten.sha, force: false });
+        if (ref.status === 200) return { commitUrl: String(commit.daten.html_url) };
+        if (ref.status !== 422 || !/fast forward/i.test(String(ref.daten?.message ?? ''))) {
+          throw githubFehler('PATCH', 'git/refs/heads/main', ref.status);
+        }
+      }
+      throw vieleGleichzeitig();
     },
   };
 }

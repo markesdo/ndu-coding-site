@@ -1,6 +1,7 @@
 // Speicher im Arbeitsspeicher für Tests und den lokalen Dev-Server – dieselben Regeln wie der GitHub-Speicher (spec §3.3):
 // basisSha = Git-Blob-SHA von mappe/<name>.json, Konflikt nur pro Artefakt, ein Speichern = ein Commit.
 // Nur bei NODE_ENV ∈ {development, test}.
+import { FEEDBACK_PFAD } from '../feedback.js';
 import { kohorte as kohorteNachId } from '../kohorten/index.js';
 import { ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { VERLAUF_HOECHSTENS } from '../vertrag.js';
@@ -17,7 +18,7 @@ export interface FakeCommit {
 }
 
 export type FakeSpeicher = Speicher & {
-  // Nur Commits aus speichern(); anlegen und aendernVonAussen zählen nicht.
+  // Nur Commits aus speichern() und feedbackAendern(); anlegen und aendernVonAussen zählen nicht.
   commits(repo: string): FakeCommit[];
   // Wie eine Änderung direkt auf GitHub: ändert mappe/<name>.json, damit ein vorher gelesener basisSha veraltet.
   aendernVonAussen(repo: string, name: ArtefaktName): void;
@@ -115,6 +116,24 @@ export function fakeSpeicher(opts: { jetzt?: () => number } = {}): FakeSpeicher 
     async werkstattJson(repo) {
       const inhalt = repos.get(repo)?.dateien.get('werkstatt.json');
       return inhalt === undefined ? null : (JSON.parse(inhalt) as { kohorte: string; githubId: number });
+    },
+
+    async feedbackLesen(repo) {
+      const inhalt = repos.get(repo)?.dateien.get(FEEDBACK_PFAD);
+      return inhalt === undefined ? null : jsonAusRepo(FEEDBACK_PFAD, inhalt);
+    },
+
+    // Ein Aufruf läuft hier ohne Unterbrechung: aendern sieht immer den neuesten Stand (wie githubSpeicher nach einem
+    // verlorenen Fast-Forward-Rennen).
+    async feedbackAendern(repo, aendern, autor, nachricht) {
+      const r = repoHolen(repo);
+      const alt = r.dateien.get(FEEDBACK_PFAD);
+      const inhalt = aendern(alt === undefined ? null : jsonAusRepo(FEEDBACK_PFAD, alt));
+      if (inhalt === null) return { unveraendert: true };
+      r.dateien.set(FEEDBACK_PFAD, inhalt);
+      r.commits.push({ dateien: { [FEEDBACK_PFAD]: inhalt }, autor: { ...autor }, nachricht });
+      r.zeiten.push(new Date(jetzt()).toISOString());
+      return { commitUrl: `https://github.invalid/fake/${repo}/commit/${r.commits.length}` };
     },
 
     commits(repo) {

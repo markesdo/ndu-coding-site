@@ -9,6 +9,7 @@ import { METHODEN } from '../../components/methoden.js';
 import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldfehler } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
+import { StudierendenFeedback } from './Feedback.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
 import { darfSpeichern, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
@@ -292,6 +293,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     void laden();
   }
   const status = statusText(zustand, dirty);
+  // Formular und Feedback erst, wenn die eigene Mappe geladen ist (nicht beim Laden, abgemeldet, im Einrichten, Ladefehler).
+  const inhaltSichtbar = daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && zustand !== 'ladefehler';
   const kannSpeichern = daten !== null && !anzeigeKaputt && pruefung.erlaubt && aelterEntwurf === null && darfSpeichern(zustand);
   const ersteMeldung = pruefung.fehler[0];
 
@@ -383,7 +386,10 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
               </div>
             )}
 
-            {daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && zustand !== 'ladefehler' && (
+            {/* Feedback der Lehrenden (NDU-35): erst, wenn die eigene Mappe geladen ist; ohne Feedback nichts. */}
+            {inhaltSichtbar && <StudierendenFeedback name={name} />}
+
+            {inhaltSichtbar && (
               <div className="wk-inhalt">
                 <fieldset className="wk-formular" disabled={zustand === 'speichert' || aelterEntwurf !== null}>
                   <legend className="wk-nur-leser">{titel} bearbeiten</legend>

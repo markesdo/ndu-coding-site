@@ -1,4 +1,5 @@
 // Vertrag zwischen Browser, API und MCP-Connector: nur Typen und Konstanten, keine Logik.
+import type { FeedbackEintrag, FeedbackZahlen } from './feedback.js';
 import type { ArtefaktName, Feldfehler } from './schemas/index.js';
 import type { Befund } from './verknuepfungen.js';
 import type { Rolle } from './zugang.js';
@@ -96,6 +97,9 @@ export interface LehrendenArtefakt {
   mehr: boolean;
   // Zeitpunkt des letzten Commits (ISO); null = nie gespeichert.
   zuletzt: string | null;
+  // Feedback der Lehrenden zu diesem Artefakt (NDU-35): offen, erledigt, noch nicht geöffnet, Antworten.
+  // null = mappe/feedback.json ließ sich nicht lesen.
+  feedback: FeedbackZahlen | null;
 }
 
 // Inhalt eines Artefakts für den Leser, erst beim Öffnen geholt (GET /api/werkstatt/lehrende/artefakt).
@@ -107,6 +111,27 @@ export interface LehrendenInhalt {
   // Nur bei unlesbar, wenn die Datei gültiges JSON ist, aber nicht zum Schema passt: ihr Inhalt als Text (Rückfall im
   // Leser). Kaputtes JSON liefert der Speicher nicht mit: dann null.
   roh: string | null;
+  // Feedback und Antworten zu diesem Artefakt; null = mappe/feedback.json ließ sich nicht lesen (dann auch kein Schreiben).
+  feedback: FeedbackEintrag[] | null;
+}
+
+// Feedback (NDU-35). Lehrende: POST /api/werkstatt/lehrende/feedback?kohorte=…&person=…
+export interface FeedbackSchreibenAnfrage {
+  artefakt: ArtefaktName;
+  // Zeilen-ID (A2, I2-4) oder beim Brief der Abschnitt (problem); fehlt = zum ganzen Artefakt.
+  zeilenId?: string;
+  text: string;
+}
+
+// Studierende: POST /api/werkstatt/mappe/feedback, genau eine Änderung.
+export type FeedbackAktion =
+  | { aktion: 'antworten'; antwortAuf: string; text: string }
+  | { aktion: 'erledigt'; id: string; erledigt: boolean }
+  | { aktion: 'gesehen'; artefakt: ArtefaktName };
+
+// Antwort beider Seiten: alle Einträge der Mappe (Lehrende: nur die des Artefakts) nach der Änderung.
+export interface FeedbackAntwort {
+  eintraege: FeedbackEintrag[];
 }
 
 export type LehrendenMappe =
@@ -158,6 +183,11 @@ export const ROUTEN = {
   lehrende: { methode: 'GET', pfad: '/api/werkstatt/lehrende' },
   // Inhalt eines Artefakts für den Leser; ?kohorte=<id>&person=<Kürzel>&artefakt=<name>, dieselben Prüfungen.
   lehrendeArtefakt: { methode: 'GET', pfad: '/api/werkstatt/lehrende/artefakt' },
+  // Feedback schreiben (nur Lehrende der Kohorte, nie ins Artefakt); ?kohorte=<id>&person=<Kürzel>, dieselben Prüfungen.
+  lehrendeFeedback: { methode: 'POST', pfad: '/api/werkstatt/lehrende/feedback' },
+  // Eigenes Feedback lesen bzw. antworten, erledigt setzen, als gesehen markieren (nur Studierende, eigene Mappe).
+  feedbackLesen: { methode: 'GET', pfad: '/api/werkstatt/mappe/feedback' },
+  feedbackAendern: { methode: 'POST', pfad: '/api/werkstatt/mappe/feedback' },
   mcp: { methode: 'ALL', pfad: '/api/werkstatt/mcp' },
 } as const;
 

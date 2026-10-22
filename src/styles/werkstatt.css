@@ -160,3 +160,25 @@
 .lv-text { max-width: 80ch; margin: 0; padding: 1rem; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: .86rem; line-height: 1.55; color: var(--fg); background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); }
 .lv-vorschau { max-width: 60rem; }
 .lv-unlesbar-hinweis { display: flex; align-items: center; gap: .35rem; color: var(--yellow-ink); font-weight: 600; }
+
+/* Feedback (NDU-35, Feedback.tsx): Fäden aus Feedback der Lehrenden und Antworten. „neu“ und „offen“ als Wort mit Symbol,
+   nie Farbe allein; keine Noten. Alles mit data-werkstatt: im Beamer weg. */
+.lv-feedback { display: inline-flex; align-items: center; gap: .25rem; color: var(--fg); font-size: .84rem; font-weight: 600; }
+.fb { margin: 1.25rem 0 0; padding: .75rem 1rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); max-width: 60rem; }
+.fb h3 { display: flex; align-items: center; gap: .4rem; margin: 0 0 .5rem; font-size: 1rem; }
+.fb-editor { margin: .75rem 1rem 0; max-height: 34vh; overflow-y: auto; max-width: none; }
+.fb-liste { list-style: none; margin: 0 0 .75rem; padding: 0; display: grid; gap: .6rem; }
+.fb-faden { padding: .6rem .75rem; border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: var(--radius); background: var(--bg); }
+.fb-faden-neu { border-left-color: var(--accent); }
+.fb-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .5rem; margin: 0 0 .2rem; font-size: .9rem; }
+.fb-text { margin: 0 0 .4rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fb-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 0; }
+.fb-neu { display: inline-block; padding: .05rem .45rem; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: .78rem; font-weight: 700; letter-spacing: .02em; }
+.fb-stand { display: inline-flex; align-items: center; gap: .25rem; font-size: .88rem; font-weight: 600; }
+.fb-offen { color: var(--yellow-ink); }
+.fb-erledigt { color: var(--green); }
+.fb-antworten { list-style: none; margin: .3rem 0 .4rem 1rem; padding: 0 0 0 .75rem; border-left: 2px solid var(--border); display: grid; gap: .4rem; }
+.fb-knoepfe { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.fb-form { margin-top: .5rem; }
+.fb-form .wk-feld { margin-bottom: .6rem; }
+.mappe-feedback { display: inline-flex; align-items: center; gap: .35rem; font-size: .9rem; font-weight: 600; }

@@ -224,6 +224,7 @@ Zu jedem Schema gibt es eine **Kaffeebar-Beispieldatei** (gültig, aus den Beisp
 
 - **Lehrende-Ansicht** (Phase 2): alle Mappen einer Kohorte nebeneinander, pro Artefakt Stand, Commits seit dem letzten Kurstag, Lücken aus `verknuepfungen_pruefen`.
 - **Verlauf pro Artefakt** aus der Git-Historie: „seit Tag 1 geändert“, als Reflexionsfrage zu Beginn des nächsten Tags.
+- **Feedback der Lehrenden** (NDU-35): im Leser der Lehrende-Ansicht je Artefakt, optional zu einer Zeile (Auswahl der Zeilen-IDs, beim Brief der Abschnitt). Liegt in `mappe/feedback.json` (`feedback@1`) im Repo der Person, geschrieben über die Werkstatt mit Autor; nie in den Artefakten, keine Noten. Studierende sehen es im Editor und in „Meine Mappe“ („neu“ bis geöffnet), antworten kurz oder setzen „erledigt“; Lehrende sehen „1 offen“ je Zelle. Jede Änderung wird auf dem Stand gerechnet, auf dem ihr Commit landet (kein Eintrag geht bei gleichzeitigem Schreiben verloren). `artefakt_lesen` und `artefakt_pruefen` liefern es mit, nur lesend und nie als Prüfbefund.
 - **Kalibrierungslog** (Phase 3): Häkchen der Studierenden aus der Prüfliste und Claudes Befunde zu denselben Prüfpunkt-IDs landen in `mappe/pruefungen/`, **mit dem Prüfpunkt-Text als Schnappschuss**, damit spätere Änderungen an Prüflisten alte Logs nicht verfälschen.
 - **Abruf zum Tagesbeginn** (Phase 3): drei Fragen aus den eigenen IDs (vorhandene `Quiz`-Komponente).
 - **Peer-Review** (Phase 3, Tag 3/4): GitHub-Issues am Mappe-Repo, Lesezugriff für die Peers in der Werkstatt.
@@ -233,7 +234,7 @@ Zu jedem Schema gibt es eine **Kaffeebar-Beispieldatei** (gültig, aus den Beisp
 - Daten liegen bei GitHub (privat, US), Verarbeitung auf Vercel `fra1`, keine eigene Datenbank.
 - Über den Connector fließen Artefakte zu Anthropic bzw. OpenAI. Tag-1-Setup: „In Claude: Einstellungen → Datenschutz → Modelltraining aus.“
 - Interviews nur mit Pseudonym und Einwilligung; einseitiger Datenschutzhinweis für Interviewte (Phase 1b).
-- **CSRF:** Ändernde Routen unter `/api/werkstatt/mappe/*` verlangen `Content-Type: application/json` und einen passenden `Origin`-Header.
+- **CSRF:** Ändernde Routen unter `/api/werkstatt/mappe/*` und `/api/werkstatt/lehrende/*` verlangen `Content-Type: application/json` und einen passenden `Origin`-Header.
 - **Rate Limit:** Vercel-Firewall-Regel pro IP auf `/api/werkstatt/auth/*` und `/api/werkstatt/oauth/*` (In-Memory-Limits funktionieren serverless nicht).
 - Die Werkstatt-Pfade sind ohne Kurspasswort aus dem Internet erreichbar; ohne Sitzung oder Token liefern sie nichts außer Login, Metadaten und 401.
 - Nach Tag 7: **Markus überträgt die Repos** mit seinem Konto (`gh api -X POST repos/ndu-innolab/<repo>/transfer`; Installations-Tokens dürfen das nicht), die Studierenden nehmen per E-Mail an; ZIP-Export in der Werkstatt als Fallback. Danach Kohorte auf `archiviert`.

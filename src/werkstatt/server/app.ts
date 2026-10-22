@@ -34,6 +34,8 @@ export function appErstellen(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
 
   // Hono wendet diese Muster mit demselben Router an wie die Routen (auch für /mappe ohne Rest und kodierte Pfade).
   app.use('/api/werkstatt/mappe/*', csrf({ mitJson: true }));
+  // Feedback der Lehrenden (POST /api/werkstatt/lehrende/feedback); die Lese-Routen dort sind GET und bleiben frei.
+  app.use('/api/werkstatt/lehrende/*', csrf({ mitJson: true }));
   app.use('/api/werkstatt/auth/abmelden', csrf({ mitJson: false }));
   app.use('/api/werkstatt/oauth/authorize', csrf({ mitJson: false, methoden: new Set(['POST']) }));
 
