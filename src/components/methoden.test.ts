@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from './innolab-zeiten';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -259,6 +259,60 @@ describe('methoden', () => {
     const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
     expect(sy).toMatch(/^Prüf meine Interviews und Snapshots mit der Werkstatt \(Werkzeug artefakt_pruefen\) gegen diese Prüfliste \(Interview-Synthese\):/);
     expect(sy).toContain('Zum Abgleich liefert das Werkzeug auch meinen Interviewleitfaden und meine Annahmen-Map mit.');
+  });
+
+  // NDU-18: Claude Code liest Dateien im Repo und die Werkstatt über den Connector. Ohne Claude Code der Ausweichweg:
+  // das Ergebnis als Text in Claude einfügen – nur, wo das Ergebnis in einer Datei liegt.
+  it('Ausweichweg „einfügen“: für Ergebnisse in Dateien, nicht für die Werkstatt und nicht für Linear', () => {
+    const mitListe = METHODEN.filter((m) => m.pruefliste);
+    const ohne = mitListe.filter((m) => !einfuegenMoeglich(m)).map((m) => m.slug);
+    expect(ohne).toStrictEqual([...mitListe.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug), 'backlog', 'akzeptanzkriterien', 'schneiden']);
+    for (const m of mitListe.filter((x) => einfuegenMoeglich(x))) {
+      expect(pruefPrompt(m), m.slug).toMatch(/^Lies /);
+      const p = pruefPrompt(m, undefined, 'einfuegen');
+      // „oder Text aus Miro“ nur, wo das Ergebnis auch auf Miro liegt.
+      const miro = m.ergibt.some((id) => ARTEFAKTE.find((a) => a.id === id)!.lebtIn.includes('miro'));
+      expect(p, m.slug).toMatch(miro ? /^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Datei oder Text aus Miro\): / : /^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Datei\): /);
+      // Nichts, was nur Claude Code kann: keine Datei lesen, keine Datei ändern.
+      expect(p, m.slug).not.toMatch(/^Lies |ändere keine Datei/m);
+    }
+    expect(() => pruefPrompt(METHODEN.find((m) => m.slug === 'annahmen')!, undefined, 'einfuegen')).toThrow(/keinen Weg zum Einfügen/);
+    // pfad: nur, wenn er eine Datei nennt.
+    const ak = METHODEN.find((m) => m.slug === 'akzeptanzkriterien')!;
+    expect(einfuegenMoeglich(ak, 'über den Linear-MCP die Issues für Sprint 1')).toBe(false);
+    expect(einfuegenMoeglich(ak, 'über den Linear-MCP die Issues aus docs/BACKLOG.md')).toBe(false);
+    expect(einfuegenMoeglich(ak, 'docs/interviews/I2.md')).toBe(true);
+    expect(pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, 'docs/X.md', 'einfuegen')).toMatch(/: docs\/X\.md\. Prüf es/);
+    // Vorarbeit aus Dateien wird mit eingefügt, Werkstatt-Vorarbeit kommt über den Connector.
+    const baum = pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, undefined, 'einfuegen');
+    expect(baum).toContain('\nZum Abgleich füge ich auch ein: Experience Map mit Momenten (Äste des Baums) (docs/JOURNEY.md).\n');
+    expect(baum).toContain('\nZum Abgleich lies außerdem meinen Produkt-Brief und meine Interviews und Snapshots (Werkzeug artefakt_lesen).\n');
+    const hmw = pruefPrompt(METHODEN.find((m) => m.slug === 'hmw')!, undefined, 'einfuegen');
+    expect(hmw).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe (docs/ZIEL-CHANCE.md).\n');
+    expect(hmw).not.toContain(MCP_WERKZEUGE.artefaktLesen);
+  });
+
+  it('Einfügen: jede Datei einmal, nichts aus Linear; ohne Ergebnis ein Fehler beim Bauen', () => {
+    // Der Pitch braucht Concept, Origin und Usage Story (alle docs/STORYS.md).
+    const pitch = METHODEN.find((m) => m.slug === 'pitch')!;
+    const p = pruefPrompt(pitch, undefined, 'einfuegen');
+    expect(p.split('docs/STORYS.md')).toHaveLength(2);
+    // Der Name der ersten Story in braucht steht für die Datei.
+    // Alle Storys der Datei unter einem Namen, die Datei einmal.
+    const storys = pitch.braucht.map((id) => ARTEFAKTE.find((a) => a.id === id)!).filter((a) => a.pfad === 'docs/STORYS.md').map((a) => a.name);
+    expect(storys.length).toBeGreaterThan(1);
+    expect(p).toContain(`${storys.slice(0, -1).join(', ')} und ${storys.at(-1)} (docs/STORYS.md)`);
+    // Vorarbeit in derselben Datei wie das Ergebnis steht beim Ergebnis (Usage und Concept Story in docs/STORYS.md).
+    const us = pruefPrompt(METHODEN.find((m) => m.slug === 'usage-story')!, undefined, 'einfuegen');
+    expect(us).toMatch(/: Usage Story des Kernablaufs und Concept Story \(docs\/STORYS\.md\)\. Prüf es/);
+    expect(us.split('docs/STORYS.md')).toHaveLength(2);
+    // Vorarbeit in Linear: ausdrücklich zum Kopieren.
+    const sprint = pruefPrompt(METHODEN.find((m) => m.slug === 'sprint')!, undefined, 'einfuegen');
+    expect(sprint).toContain('\nAus Linear kopiere ich zum Abgleich Issues geschnitten und quer gelesen dazu (Kennung, Titel und Text jedes Issues).\n');
+    // Akzeptanzkriterien mit einem Ergebnis in einer Datei: die Issues kommen als Kopie aus Linear, nie als Datei.
+    const ak = METHODEN.find((m) => m.slug === 'akzeptanzkriterien')!;
+    expect(pruefPrompt({ ...ak, ergibt: ['team'] }, undefined, 'einfuegen')).toMatch(/\nAus Linear kopiere ich zum Abgleich Backlog aus Issues dazu/);
+    expect(() => pruefPrompt({ ...pitch, ergibt: [] }, undefined, 'einfuegen')).toThrow(/keinen Weg zum Einfügen/);
   });
 
   it('wer in der Prüfliste ein früheres Artefakt nennt, hat es in „braucht“ – sonst liest Claude es beim Prüfen nicht', () => {

@@ -9,6 +9,7 @@ import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
 const GRENNING = 'James Grenning, „Planning Poker“ (2002)';
@@ -16,7 +17,7 @@ const COHN = 'Mike Cohn, „Agile Estimating and Planning“ (2005)';
 const DUARTE = 'Vasco Duarte, „NoEstimates“ (2016)';
 const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
 const WAKE = 'Bill Wake, „INVEST in Good Stories, and SMART Tasks“ (xp123.com, 2003)';
-const PLAN_CHECK = 'Lies Issue [Kennung] über den Linear-MCP und docs/PRODUKT.md. Mach einen Plan, wie du das Issue umsetzen würdest – baue nichts. Schreib den Plan so, dass ihn jemand ohne Programmierkenntnisse versteht: höchstens sieben Schritte. Sag danach in einem Satz, ob das in einen Durchgang passt, und nenn alles, was du annehmen müsstest, weil es im Issue nicht steht. Ändere das Issue nicht.';
+const PLAN_CHECK = `Lies Issue [Kennung] über den Linear-MCP, docs/STORY-MAP.md (Slice 1) und aus der Werkstatt meinen Produkt-Brief (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Mach einen Plan, wie du das Issue umsetzen würdest – baue nichts. Schreib den Plan so, dass ihn jemand ohne Programmierkenntnisse versteht: höchstens sieben Schritte. Sag danach in einem Satz, ob das in einen Durchgang passt, und nenn alles, was du annehmen müsstest, weil es im Issue nicht steht. Ändere das Issue nicht.`;
 ---
 <Layout title="Schneiden statt Schätzen">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
