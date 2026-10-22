@@ -2,8 +2,8 @@ import type { Notiz } from './typen';
 import { MCP_WERKZEUGE } from '../../werkstatt/vertrag';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/problem-rahmen.astro (Tag 1).
-// Seitenangaben: Torres = PDF-Seite (wie auf der Kursseite zitiert), HBR = Seite im Kurs-PDF
-// (Reprint, gedruckt im Heft S. 76–83), Cagan = gedruckte Seite (PDF − 22).
+// Seitenangaben: Torres = PDF-Seite (wie auf der Kursseite zitiert), Wedell-Wedellsborg (HBR 2017) = Seite im
+// Kurs-PDF (Reprint, gedruckt im Heft S. 76–83), Ulwick (HBR 2002) = gedruckte Heftseite, Cagan = gedruckte Seite (PDF − 22).
 export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
   worum: {
     live: [
@@ -52,7 +52,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Nur schwache Fassung zeigen, Raum fragen, Antworten abwarten, dann aufdecken.',
       'Kaffeebar ist erfunden und begleitet den ganzen Kurs.',
       '„Gibt es mehr als eine Art, das zu lösen? Wenn nein, habt ihr eine verkleidete Lösung.“',
-      'Vorspulen-Beispiel erzählen (geschichte): App zum Vorbestellen ist das Vorspulen.',
+      'Ulwick erzählen (geschichte): „online einkaufen“ ist Lösung, Ergebnis ist kürzerer Weg.',
       'Falle: Gefühl als Problem („gestresst“) – nach der Ursache fragen.',
     ],
     ueberleitung: 'Was die starke Fassung bringt, seht ihr, wenn wir die möglichen Lösungen darunter aufmalen.',
@@ -71,8 +71,8 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
     ],
     geschichte: {
-      text: 'Torres’ Beispiel aus einem Streaming-Interview: Eine Kundin sagt „Ich wünschte, ich könnte Werbung vorspulen.“ Das klingt wie eine Chance, ist aber ein Lösungswunsch – es gibt genau eine Art, Vorspulen anzubieten, nämlich Vorspulen. Dahinter liegt die eigentliche Chance: „Ich mag keine Werbung.“ Fragt man nun, wie man das angehen könnte, gibt es plötzlich mehrere Wege: unterhaltsamere Werbung wie beim Super Bowl, Vorspulen wie gewünscht, oder ein Abo ohne Werbung. Genau das passiert bei der Kaffeebar: „App zum Vorbestellen“ ist das Vorspulen, die Schlange vor der Abfahrt ist die Werbung, die keiner mag.',
-      quelle: 'Teresa Torres, Continuous Discovery Habits, S. 94–95',
+      text: 'Ulwick beschreibt 2002 in der Harvard Business Review, was passiert, wenn Unternehmen ihre Kundschaft einfach fragen, was sie will: Die Antworten sind Lösungen. Kund*innen wünschen sich ein Bildtelefon oder sagen sinngemäß „Ich will Lebensmittel online kaufen“ („I want to buy groceries on-line“). Die Unternehmen liefern genau das – und sehr oft kauft es dann niemand. Ulwicks Schluss, sinngemäß: „Kund*innen sollte man nicht zutrauen, Lösungen zu finden“ („Customers should not be trusted to come up with solutions“). Fragen soll man nach dem Ergebnis, das die Kundschaft will (Ulwick: outcome), also danach, was ein Produkt für sie leisten soll: zum Beispiel weniger Zeit für den Weg zum Laden und zurück, beim Bildtelefon das Gefühl, Menschen beim Telefonieren näher zu sein. Dann den Raum fragen: „Wie viele Lösungen gibt es für ‚weniger Zeit für den Weg zum Laden und zurück‘? Mehr als eine – sonst wäre es wieder eine verkleidete Lösung.“ Bei der Kaffeebar ist „App zum Vorbestellen“ das „Lebensmittel online kaufen“; die starke Fassung auf der Folie beschreibt stattdessen, was die Kundschaft erlebt: „Die Schlange ist morgens länger als die Zeit bis zur Abfahrt.“ Ulwick ist dabei strenger als Torres: Er würde gar nicht nach Lösungen fragen. Torres hält den Lösungswunsch fest und fragt im Team, ob es mehr als einen Weg gibt – sonst ist es eine verkleidete Lösung (S. 94–95).',
+      quelle: 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Harvard Business Review, Januar 2002, S. 91–92; Teresa Torres, Continuous Discovery Habits, S. 94–95',
     },
     fragen: [
       {
