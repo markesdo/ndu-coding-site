@@ -265,7 +265,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         'Outcome, 10 min: „Wir glauben, dass … Wir merken es, wenn …“ – beobachtbares Verhalten, keine Funktion, keine Zielzahl.',
         'Dreierrunde, 15 min: reihum vorlesen; die anderen fragen nur „Woran würdest du das merken?“, „Ist das schon eine Lösung?“, „Gibt es ein besseres Problem – wer hat es nicht, und warum?“',
         'Festhalten, 10 min: jede*r speichert den eigenen Brief in der Werkstatt („Bearbeiten“ im Handout), Abschnitt 3 offen, 5 leer.',
-        'Prüfen, 10 min: Prüfliste im Handout selbst durchgehen, dann Claude: den Prompt aus „Prüfen lassen“ kopieren und in claude.ai einfügen. Mit Connector liest Claude den Brief selbst. Ohne Connector darunter den Brief aus „Für Claude kopieren“ im Editor einfügen.',
+        'Prüfen, 10 min: Prüfliste im Handout selbst durchgehen, dann Claude: den Prompt aus „Prüfen lassen“ kopieren und in claude.ai einfügen. Mit Connector liest Claude den Brief selbst. Ohne Connector reicht „Für Claude kopieren“ im Editor mit Häkchen bei „Prüf-Prompt mitkopieren“: Prompt und Brief in einem Stück.',
       ],
       achten: [
         'Ganze Sätze statt Stichworte: Wedell-Wedellsborg rät, Problemdefinitionen in Satzform zu sammeln, weil Stichpunkte zu verdichtet sind und Unterschiede verstecken (HBR, S. 7).',
@@ -282,7 +282,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         'Zielzahl schon heute („80 % …“) statt beobachtbarem Verhalten an wenigen Personen.',
         '„Heute gelöst durch“ leer gelassen – auch „gar nicht“ ist eine Antwort.',
         'Abschnitt 3 („Produkt in einem Satz“) trotzdem ausgefüllt.',
-        'Nur den Text aus „Für Claude kopieren“ einfügen, ohne den Prompt: Dann schreibt Claude den Brief um und erfindet Zahlen.',
+        '„Für Claude kopieren“ ohne Häkchen bei „Prüf-Prompt mitkopieren“ und ohne den Prompt einfügen: Dann schreibt Claude den Brief um und erfindet Zahlen.',
       ],
     },
     kern: [
@@ -302,7 +302,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
     fragen: [
       {
         frage: `Claude schreibt, es könne ${MCP_WERKZEUGE.artefaktPruefen} nicht aufrufen. Was nun?`,
-        antwort: 'Im Gespräch ist kein Connector aktiv. Den Brief aus „Für Claude kopieren“ unter den Prompt einfügen; der Prompt sagt Claude, dann die eingefügten Texte zu nehmen.',
+        antwort: 'Im Gespräch ist kein Connector aktiv. Den Brief aus „Für Claude kopieren“ unter den Prompt einfügen (mit Häkchen bei „Prüf-Prompt mitkopieren“ ist der Prompt schon dabei); der Prompt sagt Claude, dann die eingefügten Texte zu nehmen.',
       },
       {
         frage: 'Machen wir einen gemeinsamen Brief oder jede*r einen eigenen?',
