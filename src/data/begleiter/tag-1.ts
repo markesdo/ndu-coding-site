@@ -430,16 +430,30 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
 
   'outcome-filter': {
     live: [
-      'Wells Fargo erzählen: Konten ohne Wissen der Kundschaft, Klagen in Milliardenhöhe.',
       'Fragen: Was tun mit Funden, die nicht zum Outcome passen?',
-      '„Wells Fargo hatte das richtige Ziel, aber keinen Blick auf die Kundschaft – darum führt ihr ein Gegengewicht mit.“',
       '„Ein Vorbestell-Weg könnte die Schlange für alle anderen verlängern – genau das misst euer Gegengewicht.“',
+    ],
+    ueberleitung: 'Was passiert, wenn das Ziel die Kundschaft vergisst: Wells Fargo.',
+    kern: [
+      { text: 'Antipattern „ein Outcome auf Kosten von allem anderen“: Neben dem Hauptziel Gesundheitsmetriken beobachten, z. B. Kundengewinnung zusammen mit Kundenzufriedenheit – Ziel ist, die eine zu steigern, ohne die andere zu verschlechtern.', quelle: `${TORRES}, S. 48` },
+    ],
+    fragen: [
+      { frage: 'Was machen wir mit Interview-Funden, die nicht zum Outcome passen?', antwort: 'Notieren, aber nicht in den Baum. Sie können für ein anderes Outcome wertvoll sein; im Baum lenken sie ab.' },
+      { frage: 'Warum ein Gegengewicht bei der Kaffeebar?', antwort: 'Ein Vorbestell-Weg könnte die Schlange für alle anderen verlängern. Die Gesundheitsmetrik sorgt dafür, dass ihr das Outcome nicht auf Kosten anderer Kundschaft erreicht (Torres S. 48).' },
+    ],
+  },
+
+  'wells-fargo': {
+    live: [
+      'Wells Fargo erzählen: Konten ohne Wissen der Kundschaft, Klagen in Milliardenhöhe.',
+      'Schritt 2: „um jeden Preis“ öffnet dem Betrug die Tür.',
+      '„Wells Fargo hatte das richtige Ziel, aber keinen Blick auf die Kundschaft – darum führt ihr ein Gegengewicht mit.“',
+      'Fragen: Wie klingt euer Outcome „um jeden Preis“?',
     ],
     ueberleitung: 'Vom Ziel zum Bauen: Wie klein darf euer erster Schritt sein, damit ihr schon etwas lernt?',
     kern: [
       { text: 'Der Baum löst die Spannung zwischen Geschäft und Kundschaft: zuerst das Geschäftsziel, dann nur die Chancen, die dieses Ziel treiben können. Outcome und Chancenraum begrenzen die Lösungen – das schützt vor dem Schicksal von Wells Fargo.', quelle: `${TORRES}, S. 27–28` },
       { text: 'Rahmung entscheidet: Wells Fargo hatte das Problem (ob ausgesprochen oder nicht) als „Konten um jeden Preis steigern“ gerahmt – das öffnete dem Betrug die Tür. „Kundschaft schaffen, die mehr Konten eröffnen will“ hätte Betrug unwahrscheinlicher gemacht.', quelle: `${TORRES}, S. 24` },
-      { text: 'Antipattern „ein Outcome auf Kosten von allem anderen“: Neben dem Hauptziel Gesundheitsmetriken beobachten, z. B. Kundengewinnung zusammen mit Kundenzufriedenheit – Ziel ist, die eine zu steigern, ohne die andere zu verschlechtern.', quelle: `${TORRES}, S. 48` },
       { text: 'Drucker: Aufgabe eines Unternehmens ist, Bedürfnisse der Gesellschaft in profitable Geschäftschancen zu verwandeln – Kundschaft zu dienen ist der Weg zum Gewinn, kein Gegensatz.', quelle: `${TORRES}, S. 21–22` },
     ],
     geschichte: {
@@ -448,10 +462,6 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     },
     zusatz: [
       { titel: 'Wells Fargo: 3 Milliarden Dollar Vergleich 2020', text: 'Am 21. Februar 2020 einigte sich Wells Fargo mit dem US-Justizministerium und der SEC auf 3 Milliarden Dollar, um die strafrechtlichen und zivilrechtlichen Ermittlungen zu den Verkaufspraktiken beizulegen. Die Bank räumte ein, dass ihr Privatkundengeschäft Mitarbeitende unter Druck setzte, große Mengen Produkte an bestehende Kundschaft zu verkaufen, oft ohne Rücksicht auf deren Bedarf. Für 2002 bis 2016 wurden u. a. Konten ohne Zustimmung eröffnet, Unterschriften gefälscht und Kontaktdaten geändert, damit Kund*innen nichts merkten. Laut der Mitteilung wussten die obersten Führungskräfte der Community Bank, des Privatkundengeschäfts, schon 2002 von diesen Praktiken.', quelle: 'US Department of Justice, Pressemitteilung vom 21.02.2020, https://www.justice.gov/usao-cdca/pr/wells-fargo-agrees-pay-3-billion-resolve-criminal-and-civil-investigations-sales (gespiegelt: https://fdicoig.gov/news/investigations-press-releases/wells-fargo-agrees-pay-3-billion-resolve-criminal-and-civil)' },
-    ],
-    fragen: [
-      { frage: 'Was machen wir mit Interview-Funden, die nicht zum Outcome passen?', antwort: 'Notieren, aber nicht in den Baum. Sie können für ein anderes Outcome wertvoll sein; im Baum lenken sie ab.' },
-      { frage: 'Warum ein Gegengewicht bei der Kaffeebar?', antwort: 'Ein Vorbestell-Weg könnte die Schlange für alle anderen verlängern. Die Gesundheitsmetrik sorgt dafür, dass ihr das Outcome nicht auf Kosten anderer Kundschaft erreicht (Torres S. 48).' },
     ],
   },
 
