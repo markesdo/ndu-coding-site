@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ApiAusnahme } from '../antwort';
 import { kohorte2026 } from '../../kohorten/2026';
 import type { Kohorte } from '../../kohorten/index';
-import type { Mitgliedschaft } from '../../zugang';
+import { mappeMitgliedschaft, type Mitgliedschaft } from '../../zugang';
 import { mapCache } from '../cache';
 import { botIdentitaetGeber, installationTokenGeber } from './app-token';
 import { fakeGithub } from './fake-github';
@@ -294,6 +294,19 @@ describe('githubSpeicher.anlegen', () => {
     expect(gen.body).toStrictEqual({ owner: 'ndu-innolab', name: '2026-sofie', private: true });
     expect(gh.zustand.tokens.get(gen.token!)).toStrictEqual({ permissions: { administration: 'write', contents: 'read' }, repositoryIds: null });
     expect(await s.werkstattJson('2026-sofie')).toStrictEqual({ kohorte: '2026', githubId: 1001 });
+  });
+
+  it('Demo-Mappe der Lehrenden (NDU-37): dieselbe Vorlage und Org, Repo 2026-demo-<id>, lesen und speichern wie bei Studierenden', async () => {
+    const { gh, s } = aufbau();
+    const demo = mappeMitgliedschaft({ kohorte: '2026', rolle: 'lehrende', kuerzel: null }, 1000);
+    expect(await s.anlegen(demo, 1000).catch((e: unknown) => e)).toStrictEqual({ repo: '2026-demo-1000' });
+    const [gen] = gh.zustand.aufrufeVon('POST', '/generate');
+    expect(gen.pfad).toBe('/repos/ndu-innolab/mappe-vorlage-2026/generate');
+    expect(gen.body).toStrictEqual({ owner: 'ndu-innolab', name: '2026-demo-1000', private: true });
+    expect(await s.werkstattJson('2026-demo-1000')).toStrictEqual({ kohorte: '2026', githubId: 1000 });
+    const r = await s.speichern('2026-demo-1000', 'brief', dateien('brief', { x: 1 }), null, autor, 'Brief');
+    expect(r).toHaveProperty('commitUrl');
+    expect((await s.lesen('2026-demo-1000', 'brief')).daten).toStrictEqual({ x: 1 });
   });
 
   it('anlegen wartet auf main', async () => {

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { darfSpeichern, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
+import { darfSpeichern, demoHinweis, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
 import annahmen from '../beispiele/annahmen.json';
-import { NUR_STUDIERENDE } from '../server/routen/mappe';
 
 function lauf(start: HuellenZustand, ...ereignisse: Ereignis[]) {
   let zustand = start;
@@ -191,13 +190,16 @@ describe('Laden der Hülle (mappeLaden)', () => {
     expect(huelle('laden', { typ: 'ladenFehlgeschlagen', status: r.status, code: r.code }).zustand).toBe('ladefehler');
     expect(ladefehlerHinweis(r.code, r.meldung)).toStrictEqual({ text: fremd, nochmal: false });
   });
-  it('Lehrende: lesen liefert die Meldung des Servers; Ladefehler statt „wird eingerichtet“', async () => {
-    const { q, aufrufe } = quelle({ ich: { ...ICH, rolle: 'lehrende', repo: null }, lesen: () => Promise.reject(apiFehler(403, 'nicht-freigeschaltet', NUR_STUDIERENDE)) });
-    const r = await mappeLaden(q);
+  it('Demo-Hinweis über dem Editor nur für Lehrende (NDU-37)', () => {
+    expect(demoHinweis({ rolle: 'lehrende' })).toBe('Deine Demo-Mappe – zählt nicht als Mappe der Kohorte.');
+    expect(demoHinweis({ rolle: 'studierende' })).toBeNull();
+    expect(demoHinweis(null)).toBeNull();
+  });
+  it('Lehrende (Demo-Mappe, NDU-37): ich, dann lesen wie bei Studierenden – auch ohne Repo in /auth/ich', async () => {
+    const lehrende = { ...ICH, rolle: 'lehrende', repo: null };
+    const { q, aufrufe } = quelle({ ich: lehrende });
+    expect(await mappeLaden(q)).toStrictEqual({ typ: 'geladen', ich: lehrende, antwort: { daten: null, basisSha: null } });
     expect(aufrufe).toStrictEqual(['ich', 'lesen']);
-    if (r.typ !== 'fehler') throw new Error('unerreichbar');
-    expect(huelle('laden', { typ: 'ladenFehlgeschlagen', status: r.status, code: r.code }).zustand).toBe('ladefehler');
-    expect(ladefehlerHinweis(r.code, r.meldung)).toStrictEqual({ text: NUR_STUDIERENDE, nochmal: false });
   });
   it('nicht angemeldet: abgemeldet, auch bei 401 mitten im Laden', async () => {
     expect(await mappeLaden(quelle({ ich: null }).q)).toStrictEqual({ typ: 'abgemeldet' });

@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
 import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
+import { DEMO_HREF } from '../../../lib/nav-rolle.js';
 import { METHODEN, TAGE, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
@@ -15,7 +16,7 @@ import { ARTEFAKT_NAMEN, ARTEFAKTE, artefaktParsen, type ArtefaktName } from '..
 import { BEFUND_ARTEN, verknuepfungenPruefen, verknuepfungenText, type MappeDaten } from '../../verknuepfungen.js';
 import { STAENDE, TAG_LAGEN, artefaktStand, entstehtAn, faelligBis, inArbeitAn, kurstagBestimmen, type ArtefaktStand, type Kurstag } from '../../tag-stand.js';
 import { MCP_WERKZEUGE, type MappeStand } from '../../vertrag.js';
-import { repoName } from '../../zugang.js';
+import { mappeMitgliedschaft, repoName } from '../../zugang.js';
 import { ApiAusnahme } from '../antwort.js';
 import type { TokenClaims } from '../oauth/routen.js';
 import { mitgliedschaftFinden } from '../sitzung.js';
@@ -194,11 +195,14 @@ function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: Prue
 
 // --- Hilfen ---
 
-const mappeUrl = (k: WerkzeugKontext) => `${k.origin}/innolab/mappe`;
+// Wo die Person ihre Mappe bearbeitet: Lehrende in ihrer Demo-Mappe (NDU-37), sonst „Meine Mappe“.
+const mappeUrl = (k: WerkzeugKontext) => `${k.origin}${k.claims.rolle === 'lehrende' ? DEMO_HREF : '/innolab/mappe'}`;
 const methodeZu = (name: ArtefaktName): Methode => METHODEN.find((m) => m.slug === ARTEFAKTE[name].slug)!;
 
 const keineMappe = (k: WerkzeugKontext) =>
-  `Deine Mappe gibt es noch nicht. Öffne einmal die Werkstatt unter ${mappeUrl(k)}, dann wird sie angelegt.`;
+  k.claims.rolle === 'lehrende'
+    ? `Deine Demo-Mappe gibt es noch nicht. Öffne einmal „Meine Demo-Mappe“ unter ${mappeUrl(k)}, dann wird sie angelegt.`
+    : `Deine Mappe gibt es noch nicht. Öffne einmal die Werkstatt unter ${mappeUrl(k)}, dann wird sie angelegt.`;
 const unpassendeDatei = (k: WerkzeugKontext, name: ArtefaktName) =>
   `${ARTEFAKTE[name].titel}: Diese Datei passt nicht zum Format der Werkstatt (vielleicht direkt auf GitHub geändert). Öffne sie in der Werkstatt und speichere sie neu: ${mappeUrl(k)}`;
 const nochLeer = (k: WerkzeugKontext, name: ArtefaktName) =>
@@ -248,15 +252,13 @@ async function sicher(k: WerkzeugKontext, f: () => Promise<CallToolResult>): Pro
 
 // Repo der Person aus den Claims, nur wenn es existiert und laut werkstatt.json ihr gehört. Ein Weg für alle
 // Werkzeuge: der GitHub-Speicher liefert bei fehlendem Repo aus lesen() null, aus uebersicht() einen 404.
+// Lehrende lesen ihre Demo-Mappe (NDU-37), damit sich die Prüfungen im Kurs vorführen lassen.
 async function eigeneMappe(k: WerkzeugKontext): Promise<string> {
   const { githubId, kohorte, rolle } = k.claims;
-  if (rolle === 'lehrende') {
-    throw new Hinweis('Du bist als Lehrende*r angemeldet und hast keine eigene Mappe. Die Lehrende-Ansicht mit allen Mappen einer Kohorte kommt später.');
-  }
   // bearerPruefen hat die Mitgliedschaft gerade geprüft; fehlt sie jetzt trotzdem, nichts lesen.
   const m = mitgliedschaftFinden(k.abh.umgebung.zugang, githubId, kohorte, rolle);
   if (!m) throw new Hinweis('Dein Zugang zur Werkstatt ist nicht mehr aktiv. Frag Markus.');
-  const repo = repoName(m);
+  const repo = repoName(mappeMitgliedschaft(m, githubId));
   const wj = await k.abh.speicher.werkstattJson(repo);
   if (!wj) throw new Hinweis(keineMappe(k));
   // Kürzel neu vergeben: das alte Repo gehört noch der vorigen Person.
@@ -405,11 +407,14 @@ async function heuteAufgedeckt(k: WerkzeugKontext, gruppe: string, jetzt: Date):
   }
 }
 
-async function prueflisteFrei(k: WerkzeugKontext, m: Methode): Promise<boolean> {
+// mappe: geprüft wird eine Mappe – bei Lehrenden ihre Demo-Mappe, die oft am Beamer läuft. Dann gilt die Regel der
+// Studierenden (Aufdecken oder Uhrzeit), sonst verriete die Vorführung die Übung. Ohne Mappe (methode_erklaeren) sehen
+// Lehrende die Prüfliste immer.
+async function prueflisteFrei(k: WerkzeugKontext, m: Methode, mappe = false): Promise<boolean> {
   const nach = m.prueflisteNach;
   if (!nach) return true;
   const jetzt = new Date(k.abh.jetzt());
-  const immer = k.claims.rolle === 'lehrende';
+  const immer = !mappe && k.claims.rolle === 'lehrende';
   // Öffnen Rolle oder Uhrzeit sie schon, braucht es den Cache nicht.
   if (gruppeFrei(nach.gruppe, nach.ab, jetzt, [], immer)) return true;
   return gruppeFrei(nach.gruppe, nach.ab, jetzt, await heuteAufgedeckt(k, nach.gruppe, jetzt), immer);
@@ -423,7 +428,8 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const repo = await eigeneMappe(k);
       const stand: MappeStand = { kohorte: k.claims.kohorte, repo, lesezugriff: 'unbekannt', artefakte: await k.abh.speicher.uebersicht(repo) };
       const zeilen = stand.artefakte.map((a) => `- ${ARTEFAKTE[a.name].titel} (${a.name}): ${a.vorhanden ? 'gespeichert' : 'noch leer'}`);
-      return textErgebnis([`Deine Mappe (Kohorte ${stand.kohorte}):`, ...zeilen, '', `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`].join('\n'), { ...stand });
+      const kopf = k.claims.rolle === 'lehrende' ? `Deine Demo-Mappe (Kohorte ${stand.kohorte}, zählt nicht als Mappe der Kohorte):` : `Deine Mappe (Kohorte ${stand.kohorte}):`;
+      return textErgebnis([kopf, ...zeilen, '', `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`].join('\n'), { ...stand });
     }),
   );
 
@@ -485,11 +491,11 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
   server.registerTool(MCP_WERKZEUGE.artefaktPruefen, PRUEFEN, ({ artefakt, pruefpunkt }) =>
     sicher(k, async () => {
       const m = methodeZu(artefakt);
-      // Zuerst die Mappe: Lehrende und Personen ohne Mappe hören das vor jedem Hinweis zu Sperre oder Prüfpunkt.
+      // Zuerst die Mappe: Personen ohne Mappe hören das vor jedem Hinweis zu Sperre oder Prüfpunkt.
       const repo = await eigeneMappe(k);
       // Ohne Prüfliste prüfte Claude mit eigenem Mom-Test-Wissen – das verriete die Übung genauso. Kein Fehlerergebnis:
       // Die Sperre ist kein Ausfall des Werkzeugs, Clients sollen keinen Fehler anzeigen.
-      if (!(await prueflisteFrei(k, m))) {
+      if (!(await prueflisteFrei(k, m, true))) {
         const titel = ARTEFAKTE[artefakt].titel;
         const anleitung = kommtNachDerUebung(m, MCP_WERKZEUGE.artefaktPruefen);
         return textErgebnis([`# Prüfung: ${titel}`, '', anleitung].join('\n'), { artefakt, titel, gesperrt: true, pruefpunkte: [], vorarbeit: [], anleitung });

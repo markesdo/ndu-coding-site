@@ -149,12 +149,23 @@ describe('Lehrende schreiben Feedback', () => {
     expect((await r.json()).code).toBe('csrf');
   });
 
-  it('Lehrende setzen weder „erledigt“ noch antworten (die Route der Studierenden lehnt sie ab)', async () => {
+  it('Lehrende setzen in Mappen der Studierenden weder „erledigt“ noch antworten (die Route der Studierenden trifft nur ihre Demo-Mappe)', async () => {
     const t = await aufbau();
     await t.schreiben(MARKUS, A2);
-    expect((await t.aendern(MARKUS, { aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(403);
-    expect((await t.aendern(MARKUS, { aktion: 'antworten', antwortAuf: 'FB1', text: 'x' })).status).toBe(403);
-    expect((await t.anfrage('GET', '/api/werkstatt/mappe/feedback', MARKUS)).status).toBe(403);
+    const vorher = await t.datei();
+    const commits = t.fake.commits('2026-sofie').length;
+    // Ohne Demo-Mappe: kein „wird eingerichtet“ (die POST-Route legt nichts an, der Editor versuchte es sonst wieder),
+    // sondern abgelehnt mit dem Weg zur Demo-Mappe.
+    const ohne = await t.aendern(MARKUS, { aktion: 'erledigt', id: 'FB1', erledigt: true });
+    expect(ohne.status).toBe(403);
+    expect(await ohne.json()).toMatchObject({ code: 'nicht-freigeschaltet', fehler: 'Deine Demo-Mappe gibt es noch nicht. Öffne einmal „Meine Demo-Mappe“ (/innolab/mappe?ansicht=demo), dann wird sie angelegt.' });
+    // Mit Demo-Mappe: FB1 gibt es dort nicht, die Mappe von Sofie bleibt unberührt.
+    expect((await t.anfrage('GET', '/api/werkstatt/mappe', MARKUS)).status).toBe(200);
+    expect((await t.aendern(MARKUS, { aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(422);
+    expect((await t.aendern(MARKUS, { aktion: 'antworten', antwortAuf: 'FB1', text: 'x' })).status).toBe(422);
+    expect(await t.lesen(MARKUS)).toStrictEqual([]);
+    expect(await t.datei()).toStrictEqual(vorher);
+    expect(t.fake.commits('2026-sofie')).toHaveLength(commits);
   });
 });
 

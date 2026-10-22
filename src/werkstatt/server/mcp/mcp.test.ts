@@ -420,7 +420,7 @@ describe('Werkzeuge', () => {
     expect(text(r)).toMatch(/schiefgegangen/);
   });
 
-  it('Lehrende-Token: Mappe-Werkzeuge antworten, dass die Lehrende-Ansicht später kommt', async () => {
+  it('Lehrende-Token ohne Demo-Mappe: Satz mit dem Weg zur Demo-Mappe, nichts aus den Mappen der Studierenden (NDU-37)', async () => {
     const h = await aufbau();
     const lesen = vi.spyOn(h.speicher, 'lesen');
     const c = await client(h, await accessToken(h, 1000, 'lehrende'));
@@ -431,12 +431,41 @@ describe('Werkzeuge', () => {
       ['verknuepfungen_pruefen', {}],
     ] as const) {
       const r = await c.callTool({ name, arguments: args });
-      expect(text(r), name).toMatch(/Lehrende-Ansicht/);
+      expect(r.isError, name).toBe(true);
+      expect(text(r), name).toBe(`Deine Demo-Mappe gibt es noch nicht. Öffne einmal „Meine Demo-Mappe“ unter ${BASIS}/innolab/mappe?ansicht=demo, dann wird sie angelegt.`);
       expect(JSON.stringify(r), name).not.toContain(TEXT_A);
     }
     expect(lesen).not.toHaveBeenCalled();
     const m = await c.callTool({ name: 'methode_erklaeren', arguments: { slug: 'annahmen' } });
     expect(m.isError).toBeFalsy();
+  });
+
+  it('Lehrende-Token mit Demo-Mappe: alle Mappe-Werkzeuge lesen test-demo-1000, nie eine Mappe der Studierenden (NDU-37)', async () => {
+    const h = await aufbau();
+    const TEXT_DEMO = 'Wir glauben, dass die Kaffeebar der Demo vorbestellen lässt.';
+    const { repo } = await h.speicher.anlegen({ kohorte: 'test', rolle: 'lehrende', kuerzel: 'demo-1000' }, 1000);
+    expect(repo).toBe('test-demo-1000');
+    await h.speicher.speichern(repo, 'annahmen', { 'mappe/annahmen.json': `${JSON.stringify(mitText(TEXT_DEMO), null, 2)}\n` }, null, AUTOR, 'Annahmen');
+    const lesen = vi.spyOn(h.speicher, 'lesen');
+    const c = await client(h, await accessToken(h, 1000, 'lehrende'));
+
+    const u = await c.callTool({ name: 'mappe_uebersicht', arguments: {} });
+    expect(u.isError).toBeFalsy();
+    expect(u.structuredContent).toMatchObject({ kohorte: 'test', repo: 'test-demo-1000' });
+    expect(text(u)).toContain('Deine Demo-Mappe (Kohorte test, zählt nicht als Mappe der Kohorte):');
+    expect(text(u)).toContain(`${BASIS}/innolab/mappe?ansicht=demo`);
+    for (const [name, args] of [
+      ['artefakt_lesen', { artefakt: 'annahmen' }],
+      ['artefakt_pruefen', { artefakt: 'annahmen' }],
+    ] as const) {
+      const r = await c.callTool({ name, arguments: args });
+      expect(r.isError, name).toBeFalsy();
+      expect(text(r), name).toContain(TEXT_DEMO);
+      expect(JSON.stringify(r), name).not.toContain(TEXT_A);
+      expect(JSON.stringify(r), name).not.toContain(TEXT_B);
+    }
+    expect((await c.callTool({ name: 'verknuepfungen_pruefen', arguments: {} })).isError).toBeFalsy();
+    expect(new Set(lesen.mock.calls.map(([r]) => r))).toStrictEqual(new Set(['test-demo-1000']));
   });
 
   it('methode_erklaeren(interview): nur Felder aus methoden.ts plus Link, nichts aus der Auflösung', async () => {
@@ -916,12 +945,12 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     }
   });
 
-  it('Lehrende-Token mit unbekanntem pruefpunkt: zuerst der Satz zur Lehrende-Ansicht', async () => {
+  it('Lehrende-Token ohne Demo-Mappe mit unbekanntem pruefpunkt: zuerst der Satz zur Demo-Mappe', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h, 1000, 'lehrende'));
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: 'annahmen-9' } });
     expect(r.isError).toBe(true);
-    expect(text(r)).toMatch(/Lehrende/);
+    expect(text(r)).toMatch(/Demo-Mappe gibt es noch nicht/);
     expect(text(r)).not.toMatch(/Prüfpunkt/);
   });
 
@@ -1060,7 +1089,7 @@ describe('tag_stand', () => {
     const lehrende = await client(h, await accessToken(h, 1000, 'lehrende'));
     const l = await lehrende.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: {} });
     expect(l.isError).toBe(true);
-    expect(text(l)).toMatch(/Lehrende/);
+    expect(text(l)).toMatch(/Demo-Mappe gibt es noch nicht/);
   });
 });
 
@@ -1117,12 +1146,33 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
     }
   });
 
+  it('Demo-Mappe der Lehrenden (NDU-37): artefakt_pruefen(leitfaden) gesperrt wie bei Studierenden, nach dem Aufdecken offen', async () => {
+    const { h, c } = await amKurstag(VORMITTAG, { githubId: 1000, rolle: 'lehrende' });
+    const { repo } = await h.speicher.anlegen({ kohorte: 'test', rolle: 'lehrende', kuerzel: 'demo-1000' }, 1000);
+    await h.speicher.speichern(repo, 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
+    const vorher = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(vorher.isError).toBeFalsy();
+    expect(vorher.structuredContent).toMatchObject({ artefakt: 'leitfaden', gesperrt: true, pruefpunkte: [] });
+    expect(text(vorher)).not.toContain(leitfadenBeispiel.wen);
+    zu(vorher);
+    await aufdecken(h);
+    const nachher = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(nachher.isError).toBeFalsy();
+    expect(nachher.structuredContent).not.toHaveProperty('gesperrt');
+    expect(nachher.structuredContent).toHaveProperty('vorhanden', true);
+    expect((nachher.structuredContent as { pruefpunkte: unknown[] }).pruefpunkte).toHaveLength(interview.pruefliste!.length);
+    expect(text(nachher)).toContain(`${BASIS}/innolab/mappe?ansicht=demo`);
+    expect(text(nachher)).not.toMatch(/\/innolab\/mappe(?!\?ansicht=demo)/);
+    // Ohne Mappe (methode_erklaeren) bleibt die Prüfliste für Lehrende immer offen.
+    expect((await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } })).structuredContent).toHaveProperty('pruefliste');
+  });
+
   it('vor dem Aufdecken: Lehrende und Personen ohne Mappe hören bei artefakt_pruefen(leitfaden) den Satz zur Mappe', async () => {
     const { h } = await amKurstag();
     const lehrende = await client(h, await accessToken(h, 1000, 'lehrende'));
     const l = await lehrende.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
     expect(l.isError).toBe(true);
-    expect(text(l)).toMatch(/Lehrende-Ansicht/);
+    expect(text(l)).toMatch(/Demo-Mappe gibt es noch nicht/);
     h.abh.umgebung.zugang.test.studierende.push({ githubId: 1003, kuerzel: 'neu' });
     const ohne = await client(h, await accessToken(h, 1003));
     const o = await ohne.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });

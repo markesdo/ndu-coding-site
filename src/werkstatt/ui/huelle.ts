@@ -104,6 +104,13 @@ export async function mappeLaden<A>(quelle: { ich(): Promise<Ich | null>; lesen(
   }
 }
 
+/** Hinweis über dem Editor, wenn Lehrende ihn öffnen (NDU-37): Sie bearbeiten ihre Demo-Mappe, nicht die einer Person
+ *  der Kohorte. null bei Studierenden und solange niemand angemeldet ist. */
+export const DEMO_EDITOR_HINWEIS = 'Deine Demo-Mappe – zählt nicht als Mappe der Kohorte.';
+export function demoHinweis(ich: Pick<Ich, 'rolle'> | null): string | null {
+  return ich?.rolle === 'lehrende' ? DEMO_EDITOR_HINWEIS : null;
+}
+
 const TEXT = {
   datei: 'Die Datei in deiner Mappe passt nicht zum erwarteten Format. Sag Markus Bescheid.',
   ladenFehlt: 'Deine Mappe lässt sich gerade nicht laden.',

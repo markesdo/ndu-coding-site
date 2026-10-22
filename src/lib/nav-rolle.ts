@@ -10,6 +10,11 @@ export const ROLLE_LEHRENDE = 'lehrende';
 export const MAPPE_PFAD = '/innolab/mappe';
 export const MAPPE_STUDIERENDE = 'Meine Mappe';
 export const MAPPE_LEHRENDE = 'Mappen der Kohorte';
+// Demo-Mappe der Lehrenden (NDU-37): zweite Ansicht derselben Seite, gewählt über ?ansicht=demo.
+export const MAPPE_DEMO = 'Meine Demo-Mappe';
+export const ANSICHT_PARAM = 'ansicht';
+export const ANSICHT_DEMO = 'demo';
+export const DEMO_HREF = `${MAPPE_PFAD}?${ANSICHT_PARAM}=${ANSICHT_DEMO}`;
 /** Markiert die Menülinks zur Mappe und das „Weiter: …“ im Beamer, wenn es zur Mappe führt (Layout.astro). */
 export const NAV_MAPPE = 'data-nav-mappe';
 

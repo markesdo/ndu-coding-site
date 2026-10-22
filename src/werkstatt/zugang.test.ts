@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mitgliedschaften, neuesteAktiveKohorte, repoName, zugangLesen } from './zugang';
+import { demoKuerzel, mappeMitgliedschaft, mitgliedschaften, neuesteAktiveKohorte, repoName, zugangLesen } from './zugang';
 import type { Kohorte } from './kohorten/typen';
 
 function kohorte(id: string, status: Kohorte['status'] = 'aktiv', beginn = `${id}-01-01`): Kohorte {
@@ -102,6 +102,31 @@ describe('zugangLesen', () => {
     expect(() => zugangLesen('[]')).toThrow('WERKSTATT_ZUGANG ungültig');
     expect(() => zugangLesen('{"2026":{"lehrende":"x","studierende":[]}}')).toThrow('WERKSTATT_ZUGANG ungültig');
     expect(() => zugangLesen('{"2026":{"lehrende":[],"studierende":[{"githubId":"1","kuerzel":"anna"}]}}')).toThrow('WERKSTATT_ZUGANG ungültig');
+  });
+  it('reserviertes Kürzel der Demo-Mappe (demo, demo-…) wirft; ähnliche Kürzel bleiben erlaubt', () => {
+    const mit = (kuerzel: string) => () => zugangLesen(JSON.stringify({ '2026': { lehrende: [9001], studierende: [{ githubId: 1001, kuerzel }] } }));
+    for (const k of ['demo', 'demo-9001', 'demo-anna', 'demo-']) expect(mit(k), k).toThrow('WERKSTATT_ZUGANG ungültig');
+    for (const k of ['demos', 'demokrit', 'anna-demo', 'de']) expect(mit(k), k).not.toThrow();
+  });
+});
+
+describe('Demo-Mappe der Lehrenden (NDU-37)', () => {
+  it('Kürzel und Repo je Lehrperson aus der GitHub-ID', () => {
+    expect(demoKuerzel(9001)).toBe('demo-9001');
+    const m = mappeMitgliedschaft({ kohorte: '2026', rolle: 'lehrende', kuerzel: null }, 9001);
+    expect(m).toStrictEqual({ kohorte: '2026', rolle: 'lehrende', kuerzel: 'demo-9001' });
+    expect(repoName(m)).toBe('2026-demo-9001');
+    expect(repoName(mappeMitgliedschaft({ kohorte: '2026', rolle: 'lehrende', kuerzel: null }, 9002))).toBe('2026-demo-9002');
+  });
+  it('Studierende behalten ihre Mitgliedschaft', () => {
+    const anna = { kohorte: '2026', rolle: 'studierende', kuerzel: 'anna' } as const;
+    expect(mappeMitgliedschaft(anna, 1001)).toBe(anna);
+  });
+  it('ungültige GitHub-ID wirft', () => {
+    for (const id of [0, -1, 1.5, Number.NaN]) expect(() => demoKuerzel(id), String(id)).toThrow();
+  });
+  it('die Demo steht nie in den Mitgliedschaften: Lehrende behalten kuerzel null', () => {
+    expect(mitgliedschaften(zugang, 9001, [kohorte('2026')])).toStrictEqual([{ kohorte: '2026', rolle: 'lehrende', kuerzel: null }]);
   });
 });
 

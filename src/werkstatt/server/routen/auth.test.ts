@@ -190,6 +190,13 @@ describe('auth/callback', () => {
     expect(await sitzungLesen(wert(r, COOKIE_WERKSTATT), umgebung.sessionSecret, 1_800_000_000)).not.toBeNull();
   });
 
+  it('weiter mit ?ansicht=demo (Login aus der Demo-Mappe, NDU-37): zurück in die Demo-Mappe', async () => {
+    const { app } = aufbau();
+    const { state, stateCookie } = await login(app, '/innolab/mappe?ansicht=demo');
+    const r = await callback(app, state, stateCookie, '1000');
+    expect(r.headers.get('location')).toBe('/innolab/mappe?ansicht=demo');
+  });
+
   it('weiter auf fremde Adresse: Ziel /', async () => {
     const { app } = aufbau();
     const { state, stateCookie } = await login(app, 'https://boese.example');

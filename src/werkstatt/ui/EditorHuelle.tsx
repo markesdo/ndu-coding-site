@@ -7,12 +7,13 @@ import { kopiereText, kopierMeldung } from '../../lib/kopieren.js';
 import { tagInWien } from '../../lib/kurswahl.js';
 import { METHODEN } from '../../components/methoden.js';
 import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldfehler } from '../schemas/index.js';
+import { DEMO_HREF, MAPPE_DEMO } from '../../lib/nav-rolle.js';
 import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { StudierendenFeedback } from './Feedback.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
-import { darfSpeichern, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
+import { darfSpeichern, demoHinweis, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
 import '../../styles/werkstatt.css';
 
 export interface EditorHuelleProps<N extends ArtefaktName> {
@@ -61,6 +62,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const [fehlerCode, setFehlerCode] = useState<string | null>(null);
   // Meldung des Servers zum letzten Fehler (Lehrende, fremde Mappe, abgelehntes Speichern …), sonst null.
   const [meldung, setMeldung] = useState<string | null>(null);
+  // Lehrende bearbeiten ihre Demo-Mappe (NDU-37): eine Zeile über dem Editor sagt das.
+  const [demo, setDemo] = useState<string | null>(null);
   const [serverFelder, setServerFelder] = useState<Feldfehler[]>([]);
   const [kopieStatus, setKopieStatus] = useState('');
   // Text für „Für Claude kopieren“: sichtbar nur, wenn die Zwischenablage nicht ging; zum Kopieren kurz verborgen im DOM.
@@ -111,6 +114,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     if (!gueltig()) return;
     if (r.typ === 'abgemeldet') return void senden({ typ: 'ladenFehlgeschlagen', status: 401, code: 'nicht-angemeldet' });
     if (r.ich !== null) person.current = { githubId: r.ich.githubId, kohorte: r.ich.kohorte };
+    setDemo(demoHinweis(r.ich));
     if (r.typ === 'fehler') {
       setFehlerCode(r.code);
       setMeldung(r.meldung);
@@ -373,6 +377,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
                 <X size={16} aria-hidden="true" /> Schließen
               </button>
             </header>
+
+            {demo && <p className="wk-hilfe">{demo} <a href={DEMO_HREF}>{MAPPE_DEMO}</a></p>}
 
             {hinweis()}
 
