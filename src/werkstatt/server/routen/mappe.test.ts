@@ -7,7 +7,7 @@ import { ApiAusnahme } from '../antwort';
 import { appErstellen } from '../app';
 import { fakeSpeicher, type FakeSpeicher } from '../fake-speicher';
 import { GithubAusnahme } from '../github/app-token';
-import { MIGRATIONEN } from '../../schemas';
+import { ARTEFAKT_NAMEN, MIGRATIONEN } from '../../schemas';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { COOKIE_WERKSTATT, sitzungErstellen, type Sitzung } from '../sitzung';
 import { DateiUnlesbar, GITHUB_SATZ, internerFehler, wirdEingerichtet } from '../speicher-fehler';
@@ -131,13 +131,6 @@ describe('GET /api/werkstatt/mappe', () => {
     expect((await t.holen('')).status).toBe(503);
   });
 
-  it('Lehrende: unbekannt, ohne Aufruf', async () => {
-    const t = aufbau();
-    const lesezugriff = vi.spyOn(t.speicher, 'lesezugriff');
-    const r = await t.holen('', { githubId: 1000, login: 'lehrer', kohorte: 'test', rolle: 'lehrende' });
-    expect(await r.json()).toStrictEqual({ kohorte: 'test', repo: '', lesezugriff: 'unbekannt', artefakte: [] });
-    expect(lesezugriff).not.toHaveBeenCalled();
-  });
 
   it('erstes Anlegen beim Login gescheitert → GET mappe legt an und liefert 200', async () => {
     const t = aufbau();
@@ -230,17 +223,32 @@ describe('GET /api/werkstatt/mappe', () => {
     }
   });
 
-  it('Lehrende: GET mappe 200 ohne Repo, Artefakt-Routen 403', async () => {
+  it('Lehrende: Demo-Mappe test-demo-1000, angelegt und gespeichert wie eine Mappe der Studierenden (NDU-37)', async () => {
     const t = aufbau();
     const lehrende = { githubId: 1000, login: 'markus-x', kohorte: 'test', rolle: 'lehrende' } as const;
     const r = await t.holen('', lehrende);
     expect(r.status).toBe(200);
-    expect(await r.json()).toStrictEqual({ kohorte: 'test', repo: '', lesezugriff: 'unbekannt', artefakte: [] });
-    expect(t.anlegen).not.toHaveBeenCalled();
+    expect(await r.json()).toMatchObject({ kohorte: 'test', repo: 'test-demo-1000', artefakte: ARTEFAKT_NAMEN.map((name) => ({ name, vorhanden: false })) });
+    expect(t.anlegen).toHaveBeenCalledWith({ kohorte: 'test', rolle: 'lehrende', kuerzel: 'demo-1000' }, 1000);
+    expect(await t.fake.werkstattJson('test-demo-1000')).toMatchObject({ kohorte: 'test', githubId: 1000 });
     const g = await t.holen('/brief', lehrende);
-    expect(g.status).toBe(403);
-    expect(await g.json()).toMatchObject({ code: 'nicht-freigeschaltet' });
-    expect((await t.speichern('brief', { daten: briefBeispiel, basisSha: null }, lehrende)).status).toBe(403);
+    expect(g.status).toBe(200);
+    expect(await g.json()).toStrictEqual({ name: 'brief', daten: null, basisSha: null });
+    const p = await t.speichern('brief', { daten: briefBeispiel, basisSha: null }, lehrende);
+    expect(p.status).toBe(200);
+    expect(t.fake.commits('test-demo-1000').map((c) => Object.keys(c.dateien).sort())).toStrictEqual([['README.md', 'mappe/brief.json', 'mappe/brief.md']]);
+    expect(t.fake.commits('test-demo-1000')[0].autor).toStrictEqual({ name: 'markus-x', email: '1000+markus-x@users.noreply.github.com' });
+    // Keine Mappe der Studierenden angefasst.
+    expect(await t.fake.werkstattJson(REPO)).toBeNull();
+  });
+
+  it('Lehrende: eine zweite Lehrperson bekommt ihre eigene Demo-Mappe, nie die der ersten', async () => {
+    const t = aufbau();
+    t.umgebung.zugang = { test: { ...ZUGANG.test, lehrende: [1000, 1003] } };
+    await t.holen('', { githubId: 1000, login: 'markus-x', kohorte: 'test', rolle: 'lehrende' });
+    const r = await t.holen('', { githubId: 1003, login: 'andere', kohorte: 'test', rolle: 'lehrende' });
+    expect(await r.json()).toMatchObject({ repo: 'test-demo-1003' });
+    expect(await t.fake.werkstattJson('test-demo-1003')).toMatchObject({ kohorte: 'test', githubId: 1003 });
   });
 });
 

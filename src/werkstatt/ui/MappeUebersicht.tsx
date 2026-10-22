@@ -1,9 +1,11 @@
 // /innolab/mappe: alle Artefakte der Person mit Stand (vorhanden/offen) und „Bearbeiten“, Rücksprünge der Anmeldung
-// (?fehler=…), Abmelden. Lehrende sehen stattdessen alle Mappen ihrer Kohorte (LehrendenAnsicht, nur lesend).
-import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, MessageSquare, RefreshCw } from 'lucide-react';
+// (?fehler=…), Abmelden. Lehrende sehen stattdessen alle Mappen ihrer Kohorte (LehrendenAnsicht, nur lesend) oder mit
+// ?ansicht=demo ihre eigene Demo-Mappe (NDU-37), dieselbe Liste wie bei Studierenden.
+import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, MessageSquare, Presentation, RefreshCw, Users } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AUFGEDECKT_MS, aufgedecktHolen } from '../../lib/aufgedeckt.js';
 import { abfrageKette } from '../../lib/kette.js';
+import { DEMO_HREF, MAPPE_DEMO, MAPPE_LEHRENDE, MAPPE_PFAD } from '../../lib/nav-rolle.js';
 import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
 import { kohorte } from '../kohorten/index.js';
 import type { FeedbackEintrag } from '../feedback.js';
@@ -12,7 +14,7 @@ import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
 import { feedbackLader, mappeFeedback } from './feedback-hilfen.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
-import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, lehrendenSeiteSetzen, anmeldeFehler, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, ansichtAusAdresse, lehrendenSeiteSetzen, anmeldeFehler, type LehrendenWahl, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -41,6 +43,8 @@ export default function MappeUebersicht() {
   const [rueckmeldung, setRueckmeldung] = useState(() => anmeldeFehler(location.search));
   // Einmal beim Öffnen festgelegt: Leert ein geglücktes Laden die Meldung, lädt die Seite nicht noch einmal.
   const startLaden = useRef(beimOeffnenLaden(rueckmeldung));
+  // Lehrende: Mappen der Kohorte oder Demo-Mappe, fest für diesen Seitenaufruf (die Reiter sind Links).
+  const wahl = useRef(ansichtAusAdresse(location.search));
   // Leitfaden erst nach dem Mom Test (wie die Auflösungen der Interview-Seite): aufgedeckt von Markus oder Uhrzeit;
   // nachgefragt wird im sichtbaren Tab, am Kurstag oft, sonst selten (lib/aufgedeckt.ts, api/aufgedeckt.ts).
   const aufgedeckt = useRef<string[]>([]);
@@ -68,7 +72,7 @@ export default function MappeUebersicht() {
       const ich = await ichMitMenue(api.ich, document); // zieht auch den Menüeintrag zur Mappe nach
       if (mein !== lauf.current) return;
       if (ich === null) return setZustand({ typ: 'abgemeldet' });
-      if (ich.rolle !== 'studierende') {
+      if (ich.rolle !== 'studierende' && wahl.current !== 'demo') {
         setZustand({ typ: 'lehrende', ich });
         return meldungErledigt();
       }
@@ -94,11 +98,13 @@ export default function MappeUebersicht() {
     if (startLaden.current) void laden();
   }, [laden]);
 
-  // Lehrende: „Mappen der Kohorte“ statt „Meine Mappe“. Studierende sehen den statischen Text der Seite (kein Flackern).
-  const istLehrende = zustand.typ === 'lehrende';
+  // Lehrende: „Mappen der Kohorte“ oder „Meine Demo-Mappe“ statt „Meine Mappe“. Studierende sehen den statischen Text
+  // der Seite (kein Flackern).
+  const lehrendeWahl: LehrendenWahl | null =
+    zustand.typ === 'lehrende' ? 'kohorte' : zustand.typ === 'bereit' && zustand.ich.rolle === 'lehrende' ? 'demo' : null;
   useEffect(() => {
-    if (istLehrende) lehrendenSeiteSetzen(document);
-  }, [istLehrende]);
+    if (lehrendeWahl) lehrendenSeiteSetzen(document, lehrendeWahl);
+  }, [lehrendeWahl]);
 
   useEffect(() => {
     if (leitfadenOffen) return;
@@ -187,6 +193,14 @@ export default function MappeUebersicht() {
     void laden();
   }
 
+  // Reiter für Lehrende: zwei Links auf dieselbe Seite, die aktuelle Ansicht mit aria-current.
+  const ansichten = (aktiv: LehrendenWahl) => (
+    <nav className="mappe-ansichten" aria-label="Ansicht">
+      <a className="wk-knopf" href={MAPPE_PFAD} aria-current={aktiv === 'kohorte' ? 'page' : undefined}><Users size={16} aria-hidden="true" /> {MAPPE_LEHRENDE}</a>
+      <a className="wk-knopf" href={DEMO_HREF} aria-current={aktiv === 'demo' ? 'page' : undefined}><Presentation size={16} aria-hidden="true" /> {MAPPE_DEMO}</a>
+    </nav>
+  );
+
   const anmelden = (
     <a className="wk-knopf wk-primaer" href={LOGIN_HREF}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
   );
@@ -227,16 +241,19 @@ export default function MappeUebersicht() {
       case 'lehrende':
         return (
           <>
-            <p className="mappe-person">Angemeldet als <strong>{zustand.ich.login}</strong> (Lehrende). Eine eigene Mappe gibt es für Lehrende nicht.</p>
+            {ansichten('kohorte')}
+            <p className="mappe-person">Angemeldet als <strong>{zustand.ich.login}</strong> (Lehrende). Zum Vorführen im Kurs hast du eine eigene Demo-Mappe.</p>
             <LehrendenAnsicht />
           </>
         );
       case 'bereit': {
         const hinweis = repoHinweis(zustand.stand, kohorte(zustand.stand.kohorte)?.org);
+        const demo = zustand.ich.rolle === 'lehrende';
         return (
           <>
+            {demo && ansichten('demo')}
             <p className="mappe-person">
-              Angemeldet als <strong>{zustand.ich.login}</strong>.
+              Angemeldet als <strong>{zustand.ich.login}</strong>{demo && <> (Lehrende). Das ist deine Demo-Mappe: Sie zählt nicht als Mappe der Kohorte und taucht in keiner Übersicht auf</>}.
               {hinweis.art === 'aktiv' && (
                 <> Deine Mappe liegt in <a href={hinweis.href}>{zustand.stand.repo}<ExternalLink size={14} aria-label="auf GitHub" style={{ marginLeft: '.2em', verticalAlign: '-.1em' }} /></a>.</>
               )}

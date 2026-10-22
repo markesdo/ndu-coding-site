@@ -18,6 +18,17 @@ const KUERZEL = /^[a-z][a-z0-9-]{1,20}$/;
 
 const FEHLER = 'WERKSTATT_ZUGANG ungültig';
 
+// Demo-Mappe der Lehrenden (NDU-37): ein eigenes Repo `<kohorte>-demo-<githubId>`, angelegt wie jede Mappe aus der
+// Vorlage der Kohorte. Je Lehrperson eins (die GitHub-ID ist unveränderlich, werkstatt.json bindet das Repo an sie);
+// ein gemeinsames `demo` gehörte der ersten Lehrperson, die es öffnet. Darum dürfen Studierende weder `demo` noch
+// `demo-…` als Kürzel tragen. Die Demo steht nie in WERKSTATT_ZUGANG und darum in keiner Kohorten-Ansicht.
+const DEMO = /^demo(-|$)/;
+
+export function demoKuerzel(githubId: number): string {
+  if (!istGithubId(githubId)) throw new Error('Demo-Mappe ohne gültige GitHub-ID');
+  return `demo-${githubId}`;
+}
+
 function istGithubId(x: unknown): x is number {
   return typeof x === 'number' && Number.isSafeInteger(x) && x > 0;
 }
@@ -46,7 +57,7 @@ export function zugangLesen(roh: string | undefined): Zugang {
     for (const s of studierende) {
       if (typeof s !== 'object' || s === null) throw new Error(FEHLER);
       const { githubId, kuerzel } = s as { githubId?: unknown; kuerzel?: unknown };
-      if (!istGithubId(githubId) || typeof kuerzel !== 'string' || !KUERZEL.test(kuerzel)) throw new Error(FEHLER);
+      if (!istGithubId(githubId) || typeof kuerzel !== 'string' || !KUERZEL.test(kuerzel) || DEMO.test(kuerzel)) throw new Error(FEHLER);
       if (gesehen.has(kuerzel) || ids.has(githubId)) throw new Error(FEHLER);
       ids.add(githubId);
       gesehen.add(kuerzel);
@@ -65,7 +76,7 @@ export function neuesteAktiveKohorte(kohorten: readonly Kohorte[]): Kohorte | un
   return aktiveNeuesteZuerst(kohorten)[0];
 }
 
-// Nur aktive Kohorten, neueste zuerst. Lehrende haben kein Kürzel.
+// Nur aktive Kohorten, neueste zuerst. Lehrende haben kein Kürzel (ihre Demo-Mappe: mappeMitgliedschaft).
 export function mitgliedschaften(z: Zugang, githubId: number, kohorten: readonly Kohorte[]): Mitgliedschaft[] {
   const treffer: Mitgliedschaft[] = [];
   for (const k of aktiveNeuesteZuerst(kohorten)) {
@@ -76,6 +87,12 @@ export function mitgliedschaften(z: Zugang, githubId: number, kohorten: readonly
     if (s) treffer.push({ kohorte: k.id, rolle: 'studierende', kuerzel: s.kuerzel });
   }
   return treffer;
+}
+
+/** Die Mitgliedschaft, deren Mappe die Werkstatt (Editoren, Connector) liest und schreibt: Studierende ihre eigene,
+ *  Lehrende ihre Demo-Mappe (Rolle bleibt lehrende, das Kürzel ist demoKuerzel). */
+export function mappeMitgliedschaft(m: Mitgliedschaft, githubId: number): Mitgliedschaft {
+  return m.rolle === 'lehrende' ? { ...m, kuerzel: demoKuerzel(githubId) } : m;
 }
 
 export function repoName(m: Mitgliedschaft): string {

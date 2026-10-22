@@ -1,14 +1,15 @@
 // Mappe lesen und speichern (spec §3.3). Gemountet unter /api/werkstatt/mappe: Pfade hier relativ dazu.
+// Lehrende lesen und schreiben hier ihre Demo-Mappe (NDU-37, mappeMitgliedschaft in zugang.ts), genau wie Studierende
+// ihre eigene; die Mappen der Kohorte liefert /api/werkstatt/lehrende.
 // CSRF (JSON + eigene Origin) für PUT prüft schon appErstellen.
 import { Hono, type Context } from 'hono';
 import { tagInWien } from '../../../lib/kurswahl.js';
-import { MAPPE_LEHRENDE, MAPPE_PFAD } from '../../../lib/nav-rolle.js';
 import { antworten, erledigtSetzen, gesehenSetzen } from '../../feedback.js';
 import { kohorte } from '../../kohorten/index.js';
 import { dateienFuerSpeichern, readmeRendern } from '../../render/index.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName, type Feldfehler } from '../../schemas/index.js';
 import type { ArtefaktAntwort, FeedbackAntwort, MappeStand, SpeichernAntwort } from '../../vertrag.js';
-import { repoName } from '../../zugang.js';
+import { mappeMitgliedschaft, repoName, type Mitgliedschaft } from '../../zugang.js';
 import { ApiAusnahme, fehler, json } from '../antwort.js';
 import { commitAutor, kurzeNachricht } from '../commit.js';
 import { feedbackAendern, feedbackHolen } from '../feedback.js';
@@ -18,7 +19,6 @@ import { DateiUnlesbar, internerFehler, wirdEingerichtet } from '../speicher-feh
 import type { Abhaengigkeiten } from '../typen.js';
 
 const KEIN_ZUGRIFF = 'Diese Mappe gehört nicht zu deiner Anmeldung. Schreib Markus.';
-export const NUR_STUDIERENDE = `Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „${MAPPE_LEHRENDE}“ (${MAPPE_PFAD}).`;
 const UNGUELTIG = 'Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder.';
 const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
 const SCHIEF = 'Da ist etwas schiefgegangen. Sag Markus Bescheid.';
@@ -70,12 +70,15 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   const r = new Hono<SitzungEnv>();
   r.use(mitSitzung);
 
+  // Mitgliedschaft der Mappe dieser Sitzung: Studierende ihre eigene, Lehrende ihre Demo-Mappe.
+  const mappeVon = (c: Context<SitzungEnv>): Mitgliedschaft => mappeMitgliedschaft(c.get('mitgliedschaft'), c.get('sitzung').githubId);
+
   // Repo der Sitzung, nachdem werkstatt.json bestätigt hat, dass es dieser Person in dieser Kohorte gehört.
   // anlegen: fehlt das Repo (oder werkstatt.json), einmal erneut anlegen (idempotent) – die GET-Routen tun das (Übersicht
   // und Artefakt: der Editor kommt oft direkt vom Login), PUT nicht.
   async function eigenesRepo(c: Context<SitzungEnv>, anlegen: boolean): Promise<string> {
     const s = c.get('sitzung');
-    const m = c.get('mitgliedschaft');
+    const m = mappeVon(c);
     const repo = repoName(m);
     let wj = await abh.speicher.werkstattJson(repo);
     if (!wj && anlegen) {
@@ -116,8 +119,6 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
 
   r.get('/', async (c) => {
     const m = c.get('mitgliedschaft');
-    // Lehrende haben kein eigenes Repo; die Mappen der Kohorte liefert /api/werkstatt/lehrende.
-    if (m.rolle !== 'studierende') return json(c, { kohorte: m.kohorte, repo: '', lesezugriff: 'unbekannt', artefakte: [] } satisfies MappeStand);
     const repo = await eigenesRepo(c, true);
     // Best effort: die Mappe lädt auch, wenn GitHub die Einladung nicht beantwortet.
     const [lesezugriff, artefakte] = await Promise.all([einladen(repo, c.get('sitzung').githubId), abh.speicher.uebersicht(repo)]);
@@ -125,11 +126,10 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     return json(c, stand);
   });
 
-  // Gemeinsamer Anfang beider Artefakt-Routen: Name und Rolle prüfen.
+  // Gemeinsamer Anfang beider Artefakt-Routen: Name prüfen.
   function artefaktName(c: Context<SitzungEnv>): ArtefaktName | Response {
     const name = c.req.param('artefakt') ?? '';
     if (!istArtefaktName(name)) return fehler(c, 404, 'unbekannt', 'Dieses Artefakt gibt es in der Werkstatt nicht.');
-    if (c.get('mitgliedschaft').rolle !== 'studierende') return fehler(c, 403, 'nicht-freigeschaltet', NUR_STUDIERENDE);
     return name;
   }
 
@@ -142,9 +142,9 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   }
 
   // Feedback (NDU-35): vor /:artefakt, sonst wäre „feedback“ ein unbekanntes Artefakt. Nur die eigene Mappe (eigenesRepo
-  // prüft werkstatt.json), nur Studierende. Lehrende schreiben über /api/werkstatt/lehrende/feedback.
+  // prüft werkstatt.json; bei Lehrenden die Demo-Mappe). Feedback in die Mappen der Studierenden schreiben Lehrende über
+  // /api/werkstatt/lehrende/feedback.
   r.get('/feedback', async (c) => {
-    if (c.get('mitgliedschaft').rolle !== 'studierende') return fehler(c, 403, 'nicht-freigeschaltet', NUR_STUDIERENDE);
     const repo = await eigenesRepo(c, false);
     const antwort: FeedbackAntwort = { eintraege: (await feedbackHolen(abh.speicher, repo)).eintraege };
     return json(c, antwort);
@@ -153,8 +153,8 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   // Genau eine Änderung je Anfrage: antworten, erledigt setzen, gesehen. Feedback der Lehrenden ändert hier nur die
   // Felder erledigt und gesehen (feedback.ts); einen Eintrag von „lehrende“ kann diese Route nie anlegen.
   r.post('/feedback', async (c) => {
-    const m = c.get('mitgliedschaft');
-    if (m.rolle !== 'studierende' || !m.kuerzel) return fehler(c, 403, 'nicht-freigeschaltet', NUR_STUDIERENDE);
+    const m = mappeVon(c);
+    if (!m.kuerzel) throw internerFehler('feedback: Mappe ohne Kürzel');
     const repo = await eigenesRepo(c, false);
     let anfrage: unknown;
     try {
@@ -214,7 +214,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     // Unabhängige Lesezugriffe parallel. Ausgewertet wird erst der Besitz, damit eine fremde Mappe nie mehr als 403 verrät.
     const [besitz, gespeichert] = await Promise.allSettled([
       eigenesRepo(c, false),
-      name === 'entscheidungen' ? lesen(repoName(c.get('mitgliedschaft')), name) : Promise.resolve(null),
+      name === 'entscheidungen' ? lesen(repoName(mappeVon(c)), name) : Promise.resolve(null),
     ]);
     if (besitz.status === 'rejected') throw besitz.reason;
     if (gespeichert.status === 'rejected') throw gespeichert.reason;

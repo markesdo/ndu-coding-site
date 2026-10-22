@@ -374,3 +374,23 @@ describe('GET /api/werkstatt/lehrende/artefakt – Inhalt für den Leser', () =>
     }
   });
 });
+
+describe('Demo-Mappe der Lehrenden (NDU-37) bleibt aus den Ansichten der Kohorte', () => {
+  it('nach Anlegen und Speichern: weder in der Matrix noch in den Zahlen noch im Leser', async () => {
+    const t = await aufbau();
+    const json = { Origin: BASIS, 'Content-Type': 'application/json' };
+    expect((await t.holen('/api/werkstatt/mappe', MARKUS)).status).toBe(200);
+    const put = await t.holen('/api/werkstatt/mappe/brief', MARKUS, { method: 'PUT', headers: json, body: JSON.stringify({ daten: briefBeispiel, basisSha: null }) });
+    expect(put.status).toBe(200);
+    expect(await t.fake.lesen('2026-demo-1000', 'brief')).toMatchObject({ daten: { problem: briefBeispiel.problem } });
+
+    const a = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
+    expect(a.personen.map((p: { kuerzel: string }) => p.kuerzel)).toStrictEqual(['jonas', 'lea', 'sofie']);
+    const z = await (await t.holen('/api/werkstatt/zahlen', MARKUS)).json();
+    expect(z.personen.map((p: { kuerzel: string }) => p.kuerzel).sort()).toStrictEqual(['jonas', 'lea', 'sofie']);
+    for (const person of ['demo-1000', 'demo']) {
+      const r = await t.holen(`/api/werkstatt/lehrende/artefakt?kohorte=2026&person=${person}&artefakt=brief`, MARKUS);
+      expect(r.status, person).toBe(404);
+    }
+  });
+});
