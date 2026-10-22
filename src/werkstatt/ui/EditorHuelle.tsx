@@ -258,7 +258,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     try {
       text =
         alsMarkdown(daten).trimEnd() +
-        (pruefliste.length ? `\n\n## Prüfliste\n\n${pruefliste.map((p) => `- [ ] ${p}`).join('\n')}\n` : '\n');
+        (pruefliste.length ? `\n\n## Prüfliste\n\n${pruefliste.map((p) => `- [ ] ${p.text} (${p.id})`).join('\n')}\n` : '\n');
     } catch {
       return setKopieStatus('Dieser Entwurf lässt sich nicht kopieren.');
     }

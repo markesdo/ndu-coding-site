@@ -1,12 +1,14 @@
 ---
-// Checkliste mit Fortschritt (im Browser gespeichert, pro Gerät).
-const { id, items } = Astro.props as { id: string; items: string[] };
+// Checkliste mit Fortschritt (im Browser gespeichert, pro Gerät). ids (Prüflisten): Häkchen hängen an der Prüfpunkt-ID
+// statt an der Position (checkliste-stand.ts).
+const { id, items, ids } = Astro.props as { id: string; items: string[]; ids?: string[] };
+if (ids && ids.length !== items.length) throw new Error(`Checklist ${id}: ${ids.length} IDs für ${items.length} Punkte`);
 ---
 <div class="progress-row">
   <div class="progress" data-progress-for={id}><div></div></div>
   <span class="progress-count" data-count-for={id}>0/{items.length}</span>
 </div>
-<ul class="checklist" data-checklist={id}>
+<ul class="checklist" data-checklist={id} data-ids={ids ? JSON.stringify(ids) : undefined}>
   {items.map((it, i) => (
     <li>
       <input type="checkbox" id={`${id}-${i}`} data-i={i} />
@@ -15,22 +17,29 @@ const { id, items } = Astro.props as { id: string; items: string[] };
   ))}
 </ul>
 <script>
+  import { abgehakt, altesFormat, haekchenLesen, haekchenSetzen, type Haekchen } from './checkliste-stand';
   document.querySelectorAll<HTMLUListElement>('[data-checklist]').forEach(list => {
     if (list.dataset.bound) return; list.dataset.bound = '1';
     const key = 'ndu-check-' + list.dataset.checklist;
     const bar = document.querySelector<HTMLElement>(`[data-progress-for="${list.dataset.checklist}"] > div`);
     const count = document.querySelector<HTMLElement>(`[data-count-for="${list.dataset.checklist}"]`);
     const boxes = [...list.querySelectorAll<HTMLInputElement>('input')];
-    let state: boolean[] = [];
-    try { state = JSON.parse(localStorage.getItem(key) || '[]'); } catch {}
+    const ids: string[] | undefined = list.dataset.ids ? JSON.parse(list.dataset.ids) : undefined;
+    let state: Haekchen = ids ? {} : [];
+    try {
+      const roh = localStorage.getItem(key);
+      state = haekchenLesen(roh, ids);
+      // Alte Häkchen je Position gleich als IDs zurückschreiben, damit sie beim nächsten Umsortieren am Punkt bleiben.
+      if (altesFormat(roh, ids)) localStorage.setItem(key, JSON.stringify(state));
+    } catch {}
     const render = () => {
-      boxes.forEach((b, i) => { b.checked = !!state[i]; b.closest('li')?.classList.toggle('done', !!state[i]); });
-      const erledigt = boxes.filter((_, i) => state[i]).length;
+      boxes.forEach((b, i) => { const an = abgehakt(state, i, ids); b.checked = an; b.closest('li')?.classList.toggle('done', an); });
+      const erledigt = boxes.filter((_, i) => abgehakt(state, i, ids)).length;
       if (bar) bar.style.width = (100 * erledigt / boxes.length) + '%';
       if (count) count.textContent = `${erledigt}/${boxes.length}`;
     };
     boxes.forEach((b, i) => b.addEventListener('change', () => {
-      state[i] = b.checked;
+      state = haekchenSetzen(state, i, b.checked, ids);
       try { localStorage.setItem(key, JSON.stringify(state)); } catch {}
       render();
     }));

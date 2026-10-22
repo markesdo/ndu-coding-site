@@ -413,13 +413,13 @@ Worktree pro Task: `git worktree add -b werkstatt/<task-slug> ../ndu-coding-site
     - `mappe_uebersicht()` → Text + `structuredContent` = `MappeStand`
     - `artefakt_lesen({ artefakt })` → Markdown aus `rendern` + `structuredContent` = Daten
     - `methode_erklaeren({ slug })` → aus `METHODEN`: `name`, `frage`, `pruefliste`, `ki`, `quelle`, Link `https://ndu.datamonkeys.ai/innolab/methoden/<slug>`; nichts aus Seiten-Markup
-    - `artefakt_pruefen({ artefakt })` → Artefakt-Markdown + Prüfpunkte `[{ id: '<slug>-<n>', text }]` + `outputSchema` `{ befunde: [{ pruefpunkt, zitat, frage }] (max 3) }`
+    - `artefakt_pruefen({ artefakt })` → Artefakt-Markdown + Prüfpunkte `[{ id, text }]` (seit NDU-28 feste IDs aus `methoden.ts`, z. B. `annahmen-loesung`, statt `<slug>-<n>`) + `outputSchema` `{ befunde: [{ pruefpunkt, zitat, frage }] (max 3) }`
   - Mappe immer aus Claims (`githubId`, `kohorte`), nie aus Argumenten
 
 - [ ] **Schritt 1: Tests** (MCP-Client des SDK gegen die Hono-App mit Fakes)
   - Ohne Token → 401 mit `resource_metadata`-Verweis.
   - `tools/list` enthält genau die vier Namen, alle mit `readOnlyHint: true`.
-  - `artefakt_pruefen('annahmen')` liefert die fünf Prüfpunkte aus `methoden.ts` mit IDs `annahmen-1` … `annahmen-5`.
+  - `artefakt_pruefen('annahmen')` liefert die fünf Prüfpunkte aus `methoden.ts` mit ihren festen IDs (`annahmen-pruefbar` … `annahmen-loesung`; bis NDU-28 `annahmen-1` … `annahmen-5`).
   - `token liest nur eigene mappe`: Token für Kohorte `test`/Person X, Fake hat Repos von X und Y → nur X wird gelesen; ein Argument, das ein anderes Repo nennt, gibt es nicht.
   - `methode_erklaeren('interview')` enthält nicht den Text der Mom-Test-Auflösung (Stichprobe: kein „Ja, total!“).
 - [ ] **Schritt 2:** FAIL. **Schritt 3:** Implementieren. **Schritt 4:** Grün + Build.

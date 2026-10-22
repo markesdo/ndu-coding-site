@@ -282,31 +282,35 @@ describe('Werkzeuge', () => {
     expect(pruefen.description).toContain('pruefpunkt');
   });
 
-  it('artefakt_pruefen(annahmen): Markdown + sechs Prüfpunkte annahmen-1 … annahmen-6 aus methoden.ts', async () => {
+  it('artefakt_pruefen(annahmen): Markdown + die Prüfpunkte aus methoden.ts mit festen IDs, ohne alte Positions-ID', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen' } });
     expect(r.isError).toBeFalsy();
     const sc = r.structuredContent as { artefakt: string; markdown: string; pruefpunkte: { id: string; text: string }[] };
     const liste = METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!;
-    expect(sc.pruefpunkte).toStrictEqual(liste.map((t, i) => ({ id: `annahmen-${i + 1}`, text: t })));
-    expect(sc.pruefpunkte.map((p) => p.id)).toStrictEqual(['annahmen-1', 'annahmen-2', 'annahmen-3', 'annahmen-4', 'annahmen-5', 'annahmen-6']);
+    expect(sc.pruefpunkte).toStrictEqual(liste.map((p) => ({ id: p.id, text: p.text })));
+    expect(sc.pruefpunkte.map((p) => p.id)).toStrictEqual([
+      'annahmen-pruefbar', 'annahmen-arten', 'annahmen-wichtig-beleg', 'annahmen-riskanteste', 'annahmen-loesung', 'annahmen-getan-quelle',
+    ]);
     expect(sc).not.toHaveProperty('befunde');
     expect(sc).not.toHaveProperty('markdown');
     const t = text(r);
     expect(t).toContain(TEXT_A);
-    expect(t).toContain('annahmen-6');
-    expect(t).toContain(liste[5]);
+    // Nummer und ID je Zeile: pruefpunkt nimmt beides an.
+    expect(t).toContain(`\n1. annahmen-pruefbar: ${liste[0].text}\n`);
+    expect(t).toContain(`\n6. annahmen-getan-quelle: ${liste[5].text}\n`);
+    expect(t).not.toContain('annahmen-6');
   });
 
-  it('artefakt_pruefen(leitfaden): IDs mit dem Slug der Methodenseite (interview-1 …), auch ohne gespeichertes Artefakt', async () => {
+  it('artefakt_pruefen(leitfaden): IDs mit dem Slug der Methodenseite (interview-ziel …), auch ohne gespeichertes Artefakt', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden' } });
     expect(r.isError).toBeFalsy();
     const sc = r.structuredContent as { vorhanden: boolean; pruefpunkte: { id: string }[] };
     expect(sc.vorhanden).toBe(false);
-    expect(sc.pruefpunkte[0].id).toBe('interview-1');
+    expect(sc.pruefpunkte[0].id).toBe('interview-ziel');
     expect(sc.pruefpunkte).toHaveLength(METHODEN.find((m) => m.slug === 'interview')!.pruefliste!.length);
     expect(text(r)).toMatch(/noch nicht/);
   });
@@ -441,7 +445,8 @@ describe('Werkzeuge', () => {
       slug: 'interview',
       name: m.name,
       frage: m.frage,
-      pruefliste: m.pruefliste,
+      // Feste IDs wie in artefakt_pruefen, ohne die alte Positions-ID (alt).
+      pruefliste: m.pruefliste!.map((p) => ({ id: p.id, text: p.text })),
       ki: m.ki,
       quelle: m.quelle,
       link: `${BASIS}/innolab/methoden/interview`,
@@ -451,6 +456,7 @@ describe('Werkzeuge', () => {
     expect(alles).not.toContain('<');
     expect(text(r)).toContain(m.frage);
     expect(text(r)).toContain(`${BASIS}/innolab/methoden/interview`);
+    m.pruefliste!.forEach((p, i) => expect(text(r)).toContain(`\n${i + 1}. ${p.id}: ${p.text}\n`));
   });
 
   it('methode_erklaeren und Anweisung: Links mit WERKSTATT_ORIGIN statt der Anfrage-Origin', async () => {
@@ -828,40 +834,82 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
     const liste = METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!;
-    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: 'annahmen-2' } });
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: 'annahmen-arten' } });
     expect(r.isError).toBeFalsy();
-    expect(sc(r).pruefpunkte).toStrictEqual([{ id: 'annahmen-2', text: liste[1] }]);
-    expect(sc(r).anleitung).toMatch(/^Prüf nur annahmen-2\./);
+    expect(sc(r).pruefpunkte).toStrictEqual([{ id: 'annahmen-arten', text: liste[1].text }]);
+    expect(sc(r).anleitung).toMatch(/^Prüf nur annahmen-arten\./);
     expect(sc(r).anleitung).toMatch(/auch mehr als drei/);
-    expect(sc(r).anleitung).toMatch(/ob als Nächstes annahmen-3 drankommen soll/);
+    expect(sc(r).anleitung).toMatch(/ob als Nächstes annahmen-wichtig-beleg drankommen soll/);
     expect(sc(r).anleitung).not.toMatch(/[Hh]öchstens drei/);
     const t = text(r);
     expect(t).toContain('## Prüfpunkt im Fokus');
-    expect(t).not.toContain('annahmen-1:');
+    expect(t).not.toContain('annahmen-pruefbar:');
+    // Die Nummer bleibt die Position in der ganzen Liste, nicht 1.
+    expect(t).toContain(`\n2. annahmen-arten: ${liste[1].text}\n`);
     expect(t).toContain(TEXT_A);
 
-    // Der letzte Punkt der Liste (seit NDU-31 annahmen-6), aus methoden.ts statt fest.
-    const letzter = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: `annahmen-${liste.length}` } });
+    // Der letzte Punkt der Liste, aus methoden.ts statt fest.
+    const letzter = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: liste.at(-1)!.id } });
     expect(sc(letzter).anleitung).toMatch(/letzte Prüfpunkt/);
     expect(sc(letzter).anleitung).not.toMatch(/Als Nächstes|als Nächstes/);
   });
 
-  it('pruefpunkt tolerant: „Annahmen-5“, „annahmen 5“ und „5“ meinen annahmen-5', async () => {
+  it('pruefpunkt tolerant: feste ID in jeder Schreibweise, ohne Präfix, alte Positions-ID, Nummer', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    for (const pruefpunkt of ['annahmen-loesung', 'Annahmen-Lösung', ' loesung ', 'Lösung', 'annahmen–loesung', 'annahmen-loesung.', 'annahmen-loesung?', '„Lösung“']) {
+      const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt } });
+      expect(r.isError, pruefpunkt).toBeFalsy();
+      expect(sc(r).pruefpunkte.map((p) => p.id), pruefpunkt).toStrictEqual(['annahmen-loesung']);
+    }
+  });
+
+  it('pruefpunkt mit Wörtern und Zeichen: „Wichtig & Beleg“ meint annahmen-wichtig-beleg', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    for (const pruefpunkt of ['Wichtig & Beleg', 'wichtig/beleg', 'Prüfpunkt „wichtig-beleg“']) {
+      const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt } });
+      expect(sc(r).pruefpunkte.map((p) => p.id), pruefpunkt).toStrictEqual(['annahmen-wichtig-beleg']);
+    }
+  });
+
+  it('alte Positions-IDs (vor NDU-28) zeigen über alt weiter auf ihren Punkt, auch wenn die Liste umsortiert wird', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    const m = METHODEN.find((x) => x.slug === 'annahmen')!;
+    const vorher = m.pruefliste!;
+    // Umsortieren: annahmen-loesung steht nun vorne; die alte ID annahmen-5 bleibt bei ihr, die Nummer 5 nicht.
+    m.pruefliste = [vorher[4], ...vorher.slice(0, 4), vorher[5]];
+    try {
+      for (const pruefpunkt of ['annahmen-5', 'Annahmen 5', 'annahmen-05']) {
+        const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt } });
+        expect(sc(r).pruefpunkte.map((p) => p.id), pruefpunkt).toStrictEqual(['annahmen-loesung']);
+      }
+      const nummer = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: '5' } });
+      expect(sc(nummer).pruefpunkte.map((p) => p.id)).toStrictEqual(['annahmen-riskanteste']);
+    } finally {
+      m.pruefliste = vorher;
+    }
+  });
+
+  it('pruefpunkt als Nummer und alte Positions-ID in der heutigen Reihenfolge', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
     for (const pruefpunkt of ['Annahmen-5', ' annahmen 5 ', 'annahmen–5', 'annahmen−5', 'annahmen-5.', 'annahmen-05', '5', '05', 'Punkt 5', 'Prüfpunkt 5:', '#5']) {
       const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt } });
       expect(r.isError, pruefpunkt).toBeFalsy();
-      expect(sc(r).pruefpunkte.map((p) => p.id), pruefpunkt).toStrictEqual(['annahmen-5']);
+      expect(sc(r).pruefpunkte.map((p) => p.id), pruefpunkt).toStrictEqual(['annahmen-loesung']);
     }
   });
 
-  it('pruefpunkt mit dem Artefaktnamen: leitfaden-3 meint interview-3', async () => {
+  it('pruefpunkt mit dem Artefaktnamen statt des Slugs: leitfaden-zukunft, auch die alte ID leitfaden-2', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h, 1002));
-    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden', pruefpunkt: 'leitfaden-3' } });
-    expect(r.isError).toBeFalsy();
-    expect(sc(r).pruefpunkte.map((p) => p.id)).toStrictEqual(['interview-3']);
+    for (const pruefpunkt of ['leitfaden-zukunft', 'interview-zukunft', 'zukunft', 'leitfaden-2', 'interview-2', '2']) {
+      const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden', pruefpunkt } });
+      expect(r.isError, pruefpunkt).toBeFalsy();
+      expect(sc(r).pruefpunkte.map((p) => p.id), pruefpunkt).toStrictEqual(['interview-zukunft']);
+    }
   });
 
   it('Lehrende-Token mit unbekanntem pruefpunkt: zuerst der Satz zur Lehrende-Ansicht', async () => {
@@ -889,11 +937,11 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     const h = await aufbau();
     const lesen = vi.spyOn(h.speicher, 'lesen');
     const c = await client(h, await accessToken(h));
-    for (const pruefpunkt of ['annahmen-9', 'interview-1', '9']) {
+    for (const pruefpunkt of ['annahmen-9', 'interview-ziel', 'interview-1', '9', '0', 'gibtsnicht']) {
       const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt } });
       expect(r.isError, pruefpunkt).toBe(true);
       expect(text(r)).toContain(`„${pruefpunkt}“ gibt es für Annahmen-Map nicht`);
-      expect(text(r)).toContain(METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!.map((_, i) => `annahmen-${i + 1}`).join(', '));
+      expect(text(r)).toContain(METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!.map((p) => p.id).join(', '));
       expect(text(r)).not.toContain(TEXT_A);
     }
     expect(lesen).not.toHaveBeenCalled();
