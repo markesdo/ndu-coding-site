@@ -153,7 +153,7 @@ describe('Stand des Servers für das Formular', () => {
 });
 
 const ICH = { githubId: 1001, login: 'sofie', kohorte: '2026', rolle: 'studierende' as const, repo: 'ndu-innolab/2026-sofie' };
-const NUR_STUDIERENDE = 'Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „Meine Mappe“ (/innolab/mappe).';
+const NUR_STUDIERENDE = 'Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „Mappen der Kohorte“ (/innolab/mappe).';
 function apiFehler(status: number, code: string, message: string) {
   return Object.assign(new Error(message), { status, code });
 }

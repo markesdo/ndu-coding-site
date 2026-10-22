@@ -4,6 +4,7 @@ import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, RefreshCw } fro
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AUFGEDECKT_MS, aufgedecktHolen } from '../../lib/aufgedeckt.js';
 import { abfrageKette } from '../../lib/kette.js';
+import { navMappeSetzen, rolleMerken } from '../../lib/nav-rolle.js';
 import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
 import { kohorte } from '../kohorten/index.js';
 import type { Ich, MappeStand } from '../vertrag.js';
@@ -59,6 +60,8 @@ export default function MappeUebersicht() {
     try {
       const ich = await api.ich();
       if (mein !== lauf.current) return;
+      // Rolle fürs Menü auf allen Seiten merken (lib/nav-rolle.ts); abgemeldet oder Studierende: wieder „Meine Mappe“.
+      rolleMerken(() => localStorage, ich?.rolle ?? null);
       if (ich === null) return setZustand({ typ: 'abgemeldet' });
       if (ich.rolle !== 'studierende') {
         setZustand({ typ: 'lehrende', ich });
@@ -72,7 +75,7 @@ export default function MappeUebersicht() {
     } catch (e) {
       if (mein !== lauf.current) return;
       const a = e instanceof ApiError ? e : new ApiError(0, 'unbekannt', TEXT.ladenFehlt);
-      if (a.code === 'nicht-angemeldet') return setZustand({ typ: 'abgemeldet' });
+      if (a.code === 'nicht-angemeldet') { rolleMerken(() => localStorage, null); return setZustand({ typ: 'abgemeldet' }); }
       if (a.code === 'wird-eingerichtet') return setZustand({ typ: 'einrichten' });
       if (a.code === 'nicht-freigeschaltet') return setZustand({ typ: 'fehler', text: a.message || TEXT.nichtFreigeschaltet, nochmal: false });
       // Name belegt: Neu versuchen legt nur noch einmal vergeblich an.
@@ -85,10 +88,12 @@ export default function MappeUebersicht() {
     if (startLaden.current) void laden();
   }, [laden]);
 
-  // Lehrende: „Mappen der Kohorte“ statt „Meine Mappe“. Studierende sehen den statischen Text der Seite (kein Flackern).
+  // Lehrende: „Mappen der Kohorte“ statt „Meine Mappe“, auch im Menü. Studierende sehen den statischen Text der Seite (kein Flackern).
   const istLehrende = zustand.typ === 'lehrende';
   useEffect(() => {
-    if (istLehrende) lehrendenSeiteSetzen(document);
+    if (!istLehrende) return;
+    lehrendenSeiteSetzen(document);
+    navMappeSetzen(document);
   }, [istLehrende]);
 
   useEffect(() => {

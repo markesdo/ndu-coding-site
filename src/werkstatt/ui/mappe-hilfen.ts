@@ -1,6 +1,7 @@
 // Reine Hilfen für /innolab/mappe (MappeUebersicht.tsx): Rücksprünge der Anmeldung und Zeilen der Übersicht.
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
 import { AUFGEDECKT_MS, abfrageAbstand, gruppeFrei } from '../../lib/aufgedeckt.js';
+import { MAPPE_LEHRENDE } from '../../lib/nav-rolle.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 
@@ -49,7 +50,7 @@ export function beimOeffnenLaden(rueckmeldung: { neuAnmelden: boolean } | null):
 
 /** Überschrift und Lead von /innolab/mappe für Lehrende; Studierende behalten den statischen Text der Seite. */
 export const LEHRENDEN_SEITE = {
-  titel: 'Mappen der Kohorte',
+  titel: MAPPE_LEHRENDE,
   lead: 'Was die Studierenden in ihren Mappen gespeichert haben: Stand, Änderungen seit dem letzten Kurstag, Lücken. Nur lesen.',
 } as const;
 

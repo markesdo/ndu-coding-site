@@ -14,7 +14,7 @@ import { DateiUnlesbar, internerFehler, wirdEingerichtet } from '../speicher-feh
 import type { Abhaengigkeiten } from '../typen.js';
 
 const KEIN_ZUGRIFF = 'Diese Mappe gehört nicht zu deiner Anmeldung. Schreib Markus.';
-const NUR_STUDIERENDE = 'Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „Meine Mappe“ (/innolab/mappe).';
+const NUR_STUDIERENDE = 'Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „Mappen der Kohorte“ (/innolab/mappe).';
 const UNGUELTIG = 'Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder.';
 const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
 const SCHIEF = 'Da ist etwas schiefgegangen. Sag Markus Bescheid.';
