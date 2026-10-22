@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
 import { METHODEN, pruefPrompt } from '../../components/methoden.js';
 import { ARTEFAKT_NAMEN } from '../schemas/index.js';
-import { kopierText, pruefMethode, pruefPromptFrei, vorarbeitNamen } from './kopiertext.js';
+import brief from '../beispiele/brief.json';
+import { rendern } from '../render/index.js';
+import { fehltHinweis, kopierPlan, kopierStatus, kopierText, pruefMethode, pruefPromptFrei, vorarbeitAusAntwort, vorarbeitNamen } from './kopiertext.js';
 
 const methode = (slug: string) => METHODEN.find((m) => m.slug === slug)!;
 const BRIEF = '**Stand:** 22.10.2026 — Problem-Rahmen, Innolab Tag 1\n\n## 1. Für wen?\nPendlerinnen am Bahnhof\n';
@@ -12,7 +14,7 @@ const MAP = '# Annahmen\n\n| A1 | … |\n';
 describe('kopierText', () => {
   it('ohne Prüf-Prompt nur das Artefakt – keine Prüfliste, kein Prompt (Brief bekommt seine Überschrift)', () => {
     const r = kopierText({ name: 'brief', markdown: BRIEF, mitPrompt: false, frei: true });
-    expect(r).toStrictEqual({ text: `# Produkt-Brief\n\n${BRIEF.trim()}\n`, mitPrompt: false, fehlt: [] });
+    expect(r).toStrictEqual({ text: `# Produkt-Brief\n\n${BRIEF.trim()}\n`, mitPrompt: false, fehlt: [], laedt: false });
     expect(r.text).not.toMatch(/Prüfliste|problem-rahmen-zielgruppe/);
   });
 
@@ -30,24 +32,52 @@ describe('kopierText', () => {
     // Der Prompt sagt Claude, dass der Text darunter folgt – sonst schriebe Claude ihn um.
     expect(r.text).toContain('Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: meinen Produkt-Brief.');
     expect(r.fehlt).toStrictEqual([]);
+    expect(r.laedt).toBe(false);
   });
 
   it('mit Prüf-Prompt kommt die Vorarbeit in der Reihenfolge des Prompts dazu; was fehlt, steht in fehlt', () => {
-    const voll = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { brief: BRIEF, annahmen: MAP } });
+    const voll = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { brief: { markdown: BRIEF }, annahmen: { markdown: MAP } } });
     expect(voll.text).toBe(`${pruefPrompt(methode('interview'))}\n\n${LEITFADEN.trim()}\n\n# Produkt-Brief\n\n${BRIEF.trim()}\n\n${MAP.trim()}\n`);
     expect(voll.fehlt).toStrictEqual([]);
-    const halb = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { annahmen: MAP } });
+    const halb = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { annahmen: { markdown: MAP }, brief: 'nicht-gespeichert' } });
     expect(halb.text).not.toContain('# Produkt-Brief');
-    expect(halb.fehlt).toStrictEqual(['brief']);
+    expect(halb.fehlt).toStrictEqual([{ name: 'brief', grund: 'nicht-gespeichert' }]);
   });
 
   it('Leitfaden vor dem Mom Test: kein Prompt und keine Prüfliste, auch mit Schalter an', () => {
-    const r = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: false, vorarbeit: { brief: BRIEF, annahmen: MAP } });
-    expect(r).toStrictEqual({ text: LEITFADEN, mitPrompt: false, fehlt: [] });
+    const r = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: false, vorarbeit: { brief: { markdown: BRIEF }, annahmen: { markdown: MAP } } });
+    expect(r).toStrictEqual({ text: LEITFADEN, mitPrompt: false, fehlt: [], laedt: false });
     for (const p of methode('interview').pruefliste!) {
       expect(r.text).not.toContain(p.id);
       expect(r.text).not.toContain(p.text);
     }
+  });
+});
+
+describe('Vorarbeit: nie gespeichert, Fehler, lädt', () => {
+  it('nie gespeichert (daten null) ist „fehlt“ – nie die leere Vorlage als echter Text', () => {
+    expect(vorarbeitAusAntwort('brief', null)).toBe('nicht-gespeichert');
+    expect(vorarbeitAusAntwort('brief', undefined)).toBe('nicht-gespeichert');
+    expect(vorarbeitAusAntwort('brief', { kaputt: true })).toBe('fehler');
+    expect(vorarbeitAusAntwort('brief', brief)).toStrictEqual({ markdown: rendern('brief', brief as never) });
+    const r = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { brief: vorarbeitAusAntwort('brief', null), annahmen: { markdown: MAP } } });
+    expect(r.text).not.toContain('Noch nichts eingetragen');
+    expect(r.text).not.toContain('# Produkt-Brief');
+  });
+
+  it('lädt noch: laedt, solange ein Name fehlt; ohne Prompt nie', () => {
+    expect(kopierPlan({ name: 'leitfaden', mitPrompt: true, frei: true, vorarbeit: { brief: { markdown: BRIEF } } })).toStrictEqual({ mitPrompt: true, fehlt: [], laedt: true });
+    expect(kopierPlan({ name: 'leitfaden', mitPrompt: false, frei: true })).toStrictEqual({ mitPrompt: false, fehlt: [], laedt: false });
+    expect(kopierPlan({ name: 'leitfaden', mitPrompt: true, frei: false })).toStrictEqual({ mitPrompt: false, fehlt: [], laedt: false });
+  });
+
+  it('die Meldung nach dem Kopieren sagt sichtbar, was fehlt', () => {
+    const plan = kopierPlan({ name: 'leitfaden', mitPrompt: true, frei: true, vorarbeit: { brief: 'nicht-gespeichert', annahmen: 'fehler' } });
+    expect(kopierStatus('Kopiert', plan, true)).toBe('Kopiert – aber ohne Produkt-Brief (nicht gespeichert), Annahmen-Map (nicht geladen). Fügt das selbst darunter ein.');
+    expect(kopierStatus('Markiert – mit ⌘C kopieren', plan, false)).toBe('Markiert – mit ⌘C kopieren – aber ohne Produkt-Brief (nicht gespeichert), Annahmen-Map (nicht geladen). Fügt das selbst darunter ein.');
+    expect(kopierStatus('Kopiert', kopierPlan({ name: 'brief', mitPrompt: true, frei: true }), true)).toBe('Kopiert');
+    expect(fehltHinweis(plan.fehlt)).toBe('Fehlt: Produkt-Brief (nicht gespeichert), Annahmen-Map (nicht geladen) – erst im jeweiligen Editor speichern oder selbst darunter einfügen.');
+    expect(fehltHinweis([])).toBe('');
   });
 });
 

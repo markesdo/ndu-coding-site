@@ -5,8 +5,8 @@ import { Copy, LogIn, Pencil, RefreshCw, Save, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { kopiereText, kopierMeldung } from '../../lib/kopieren.js';
 import { tagInWien } from '../../lib/kurswahl.js';
-import { aufgedecktHolen } from '../../lib/aufgedeckt.js';
-import { rendern } from '../render/index.js';
+import { AUFGEDECKT_MS, abfrageAbstand, aufgedecktHolen } from '../../lib/aufgedeckt.js';
+import { abfrageKette } from '../../lib/kette.js';
 import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldfehler } from '../schemas/index.js';
 import { DEMO_HREF, MAPPE_DEMO } from '../../lib/nav-rolle.js';
 import { ROUTEN } from '../vertrag.js';
@@ -14,7 +14,7 @@ import { api, ApiError } from './api.js';
 import { StudierendenFeedback } from './Feedback.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
-import { MITKOPIEREN_SCHLUESSEL, kopierText, pruefMethode, pruefPromptFrei, vorarbeitNamen } from './kopiertext.js';
+import { ERST_SPEICHERN, MITKOPIEREN_SCHLUESSEL, fehltHinweis, kopierPlan, kopierStatus, kopierText, pruefMethode, pruefPromptFrei, vorarbeitAusAntwort, vorarbeitNamen, type VorarbeitStand } from './kopiertext.js';
 import { darfSpeichern, demoHinweis, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
 import '../../styles/werkstatt.css';
 
@@ -82,8 +82,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   // „Prüf-Prompt mitkopieren“ (kopiertext.ts): Schalter, aufgedeckte Gruppe (Mom Test) und die Vorarbeit für den Prompt.
   const [mitPrompt, setMitPrompt] = useState(mitkopierenLesen);
   const [aufgedeckt, setAufgedeckt] = useState<string[]>([]);
-  const [vorarbeit, setVorarbeit] = useState<Partial<Record<ArtefaktName, string>>>({});
-  const [vorarbeitLaedt, setVorarbeitLaedt] = useState(false);
+  const [vorarbeit, setVorarbeit] = useState<Partial<Record<ArtefaktName, VorarbeitStand>>>({});
+  const [vorschauOffen, setVorschauOffen] = useState(false);
   // Formular oder Vorschau sind abgestürzt (falsch geformter Entwurf): Speichern bleibt gesperrt.
   const [anzeigeKaputt, setAnzeigeKaputt] = useState(false);
   const [grenzeNr, setGrenzeNr] = useState(0);
@@ -186,6 +186,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     setKopieStatus('');
     setKopierFeld(null);
     setMitPrompt(mitkopierenLesen()); // ein anderer Editor kann den Schalter inzwischen umgestellt haben
+    setVorschauOffen(false); // „Was kopiert wird“ beginnt zugeklappt
     setAnzeigeKaputt(false);
     setOffen(true);
     void laden();
@@ -228,40 +229,51 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     }
   }, [kopierFeld]);
 
-  // Verrät die Prüfliste eine Übung (Leitfaden: Mom Test), fragt der Editor beim Öffnen, ob Markus sie aufgedeckt hat.
-  // Scheitert die Frage, bleibt es bei Uhrzeit und Präsentator – der Prompt bleibt dann eher zu als zu früh offen.
+  // Verrät die Prüfliste eine Übung (Leitfaden: Mom Test), fragt der Editor, solange er offen und der Prompt zu ist, wie
+  // die Auflösungen der Seite nach, ob Markus sie aufgedeckt hat: am Kurstag oft, sonst selten (abfrageAbstand), nie zwei
+  // Anfragen zugleich, im Hintergrund-Tab keine. Scheitert die Frage, bleibt es bei Uhrzeit und Präsentator – der Prompt
+  // bleibt dann eher zu als zu früh offen. Jede Runde rendert neu, so öffnet auch die Uhrzeit (ab) den Prompt.
   const methode = pruefMethode(name);
+  const promptFrei = methode !== undefined && pruefPromptFrei(methode, new Date(), istPraesentator(), aufgedeckt);
   useEffect(() => {
-    if (!offen || !methode?.prueflisteNach || pruefPromptFrei(methode, new Date(), istPraesentator())) return;
-    let aktiv = true;
-    aufgedecktHolen([methode.prueflisteNach.gruppe]).then((a) => { if (aktiv) setAufgedeckt(a); }, () => {});
-    return () => { aktiv = false; };
-  }, [offen, methode]);
+    const nach = methode?.prueflisteNach;
+    if (!offen || !nach || promptFrei) return;
+    const kette = abfrageKette({
+      ruheMs: AUFGEDECKT_MS,
+      ruht: () => document.hidden,
+      runde: async () => {
+        let neu: string[] = [];
+        try {
+          neu = await aufgedecktHolen([nach.gruppe]);
+        } catch {
+          // Lokal ohne API oder Netz weg: die Uhrzeit bleibt.
+        }
+        setAufgedeckt(neu);
+        return abfrageAbstand([nach.ab], new Date()) ?? AUFGEDECKT_MS;
+      },
+    });
+    kette.sofort();
+    return () => kette.stoppen();
+  }, [offen, methode, promptFrei]);
 
-  // Vorarbeit, die der Prüf-Prompt nennt (Brief, Annahmen-Map …): gespeicherter Stand, einmal je Öffnen, nur mit Schalter an.
+  // Vorarbeit, die der Prüf-Prompt nennt (Brief, Annahmen-Map …): gespeicherter Stand, einmal je Öffnen – nur mit Schalter
+  // an und erst, wenn der Prompt frei ist (beim Leitfaden nach dem Mom Test).
   useEffect(() => {
     const namen = vorarbeitNamen(name);
-    if (!offen || !mitPrompt || namen.length === 0) return;
+    if (!offen || !mitPrompt || !promptFrei || namen.length === 0) return;
     let aktiv = true;
     setVorarbeit({});
-    setVorarbeitLaedt(true);
     void Promise.all(
-      namen.map(async (n) => {
+      namen.map(async (n): Promise<[ArtefaktName, VorarbeitStand]> => {
         try {
-          const antwort = await api.lesen(n);
-          const p = artefaktParsen(n, antwort.daten ?? ARTEFAKTE[n].leer(heute()));
-          return p.ok ? ([n, rendern(n, p.daten as never)] as const) : null;
+          return [n, vorarbeitAusAntwort(n, (await api.lesen(n)).daten)];
         } catch {
-          return null;
+          return [n, 'fehler'];
         }
       }),
-    ).then((r) => {
-      if (!aktiv) return;
-      setVorarbeit(Object.fromEntries(r.filter((x) => x !== null)));
-      setVorarbeitLaedt(false);
-    });
+    ).then((r) => { if (aktiv) setVorarbeit(Object.fromEntries(r)); });
     return () => { aktiv = false; };
-  }, [offen, mitPrompt, name]);
+  }, [offen, mitPrompt, promptFrei, name]);
 
   function mitPromptUmschalten(an: boolean): void {
     setMitPrompt(an);
@@ -269,16 +281,17 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     setKopieStatus('');
   }
 
-  const promptFrei = methode !== undefined && pruefPromptFrei(methode, new Date(), istPraesentator(), aufgedeckt);
-  // Was „Für Claude kopieren“ jetzt kopiert – dieselbe Funktion für den Knopf und die Anzeige „Was kopiert wird“.
-  const kopie = useMemo(() => {
+  // Was der Text enthalten wird (billig, bei jedem Rendern). Den Text selbst baut kopieBauen nur beim Klick und für die
+  // offene Anzeige „Was kopiert wird“ – dieselbe Funktion für beide, nicht bei jedem Tastendruck.
+  const plan = kopierPlan({ name, mitPrompt, frei: promptFrei, vorarbeit });
+  function kopieBauen(): ReturnType<typeof kopierText> | null {
     if (daten === null) return null;
     try {
       return kopierText({ name, markdown: alsMarkdown(daten), mitPrompt, frei: promptFrei, vorarbeit });
     } catch {
       return null;
     }
-  }, [name, daten, alsMarkdown, mitPrompt, promptFrei, vorarbeit]);
+  }
 
   const setze = (neu: DatenVon<N>) => {
     datenRef.current = neu;
@@ -325,13 +338,14 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   }
 
   async function fuerClaudeKopieren(): Promise<void> {
-    if (daten === null) return;
+    if (daten === null || plan.laedt) return;
+    const kopie = kopieBauen();
     if (kopie === null) return setKopieStatus('Dieser Entwurf lässt sich nicht kopieren.');
     const { text } = kopie;
     // Die Textarea wird nur fürs Kopieren eingehängt: Scheitert die Zwischenablage, markiert kopiereText dort den Text.
     flushSync(() => setKopierFeld({ text, sichtbar: false }));
     const ergebnis = await kopiereText(text, kopierRef.current);
-    setKopieStatus(kopierMeldung(ergebnis, navigator.platform));
+    setKopieStatus(kopierStatus(kopierMeldung(ergebnis, navigator.platform), kopie, ergebnis === 'kopiert'));
     setKopierFeld(ergebnis === 'kopiert' ? null : { text, sichtbar: true }); // nicht kopiert: sichtbar, damit man selbst kopieren kann
   }
 
@@ -479,17 +493,17 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
               </div>
             )}
 
-            {inhaltSichtbar && kopie !== null && (
-              <details className="wk-was-kopiert">
+            {inhaltSichtbar && (
+              <details className="wk-was-kopiert" onToggle={(e) => setVorschauOffen(e.currentTarget.open)}>
                 <summary>Was kopiert wird</summary>
                 <p className="wk-hilfe">
-                  {kopie.mitPrompt
+                  {plan.mitPrompt
                     ? 'Oben der Prüf-Prompt wie unter „Prüfen“ auf der Methodenseite, darunter euer Text. Ohne Connector reicht es, das in ein neues Gespräch mit Claude einzufügen.'
                     : 'Nur euer Text. Zum Prüfen gehört der Prüf-Prompt der Methode davor, sonst schreibt Claude euren Text um, statt ihn zu prüfen.'}
-                  {kopie.mitPrompt && vorarbeitLaedt && ' Die weiteren Texte, die der Prompt nennt, werden noch geladen …'}
-                  {kopie.mitPrompt && !vorarbeitLaedt && kopie.fehlt.length > 0 && ` Nicht geladen: ${kopie.fehlt.map((n) => ARTEFAKTE[n].titel).join(', ')} – fügt es selbst darunter ein.`}
+                  {plan.laedt && ' Die weiteren Texte, die der Prompt nennt, werden noch geladen …'}
+                  {plan.fehlt.length > 0 && ` ${fehltHinweis(plan.fehlt)}`}
                 </p>
-                <pre>{kopie.text}</pre>
+                {vorschauOffen && <pre>{kopieBauen()?.text ?? 'Dieser Entwurf lässt sich nicht kopieren.'}</pre>}
               </details>
             )}
 
@@ -508,7 +522,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
                     Prüf-Prompt mitkopieren
                   </label>
                 )}
-                <button type="button" className="wk-knopf" onClick={() => void fuerClaudeKopieren()} disabled={daten === null}>
+                {plan.mitPrompt && dirty && <span className="wk-hilfe">{ERST_SPEICHERN}</span>}
+                <button type="button" className="wk-knopf" onClick={() => void fuerClaudeKopieren()} disabled={daten === null || plan.laedt} aria-busy={plan.laedt}>
                   <Copy size={16} aria-hidden="true" /> Für Claude kopieren
                 </button>
                 <button type="button" className="wk-knopf wk-primaer" onClick={() => void speichern()} disabled={!kannSpeichern && zustand !== 'speichert'} aria-busy={zustand === 'speichert'}>

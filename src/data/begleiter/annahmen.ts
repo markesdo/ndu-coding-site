@@ -281,7 +281,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
         'Bei „getan“ steht die Quelle als Beleg-Notiz oder als Entscheidung (D…), die selbst „getan“ ist und ihre Quelle als Beleg-Notiz nennt; ein Interview-Zitat belegt höchstens „erzählt“, ohne Quelle ist es „noch keiner“ – so steht es im Handout und in der Prüfliste.',
         'Tempo: Torres findet schnelles Einordnen genauso gut wie langes Diskutieren (S. 130).',
         'Red Team: Claude soll höchstens drei Stellen aus dem Brief zitieren und fragen, die Annahmen formulieren die Studierenden selbst.',
-        'So geht es mit Claude: erst der Prompt „Prüfen lassen“, dann im selben Gespräch der Red-Team-Prompt. Ohne Connector „Für Claude kopieren“ im Map-Editor mit Häkchen bei „Prüf-Prompt mitkopieren“: Prüf-Prompt, Map und Brief in einem Stück; für das Red Team danach nichts erneut einfügen, beide stehen schon im Gespräch.',
+        'So geht es mit Claude: erst der Prompt „Prüfen lassen“, dann im selben Gespräch der Red-Team-Prompt. Ohne Connector „Für Claude kopieren“ im Map-Editor mit Häkchen bei „Prüf-Prompt mitkopieren“: Prüf-Prompt, Map und Brief in einem Stück (der Brief nur, wenn er gespeichert ist – sonst meldet der Knopf, was fehlt); für das Red Team danach nichts erneut einfügen, beide stehen schon im Gespräch.',
         'Claude übersieht leicht die als Annahme verkleidete Lösung („Pendler*innen wollen eine App“), weil nur drei Befunde Platz haben. Danach selbst fragen.',
       ],
       fehler: [
