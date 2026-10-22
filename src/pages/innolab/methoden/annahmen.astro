@@ -134,6 +134,25 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
     </ol>
   </Folie>
 
+  <Folie>
+    <h2 id="werkstatt-ausfuellen">Die Map in der Werkstatt</h2>
+    <p class="folie-satz">Eine Zeile pro Annahme – die Matrix entsteht von selbst.</p>
+    <div style="overflow-x:auto">
+      <table class="map-felder">
+        <thead><tr><th>Feld</th><th>Was hinein</th><th>Kaffeebar, A1</th></tr></thead>
+        <tbody>
+          <tr><th>Annahme</th><td>„Wir glauben, dass …“ – ein Sticky aus Miro</td><td>Pendler*innen entscheiden schon vor der Ankunft am Bahnhof, ob sie Kaffee holen.</td></tr>
+          <tr><th>Art</th><td>wünschenswert, machbar, wirtschaftlich, bedienbar – oder ethisch</td><td>wünschenswert</td></tr>
+          <tr><th>Wichtig</th><td>hoch, mittel, niedrig: Wie schlimm, wenn sie falsch ist?</td><td>hoch</td></tr>
+          <tr><th>Beleg</th><td>noch keiner – gesagt – erzählt – getan</td><td>noch keiner</td></tr>
+          <tr data-schritt><th class="nowrap">Beleg-IDs</th><td>ab den Interviews, z. B. I2-4</td><td>–</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-schritt><strong>Zum Schluss:</strong> unter „Riskanteste Annahme“ die eine wählen, die sehr wichtig und kaum belegt ist – sie wird die Forschungsfrage eures Leitfadens.</p>
+    <p class="nur-handout">Die IDs (A1, A2, …) vergibt die Werkstatt. Wo eine Annahme in der Matrix landet, ergibt sich aus „Wichtig“ und „Beleg“; ihr verschiebt dort nichts von Hand. Die Kaffeebar-Zeile ist die Annahme A1 aus dem Beispiel davor. Über dem Formular zeigt die Werkstatt, ob alle vier Arten vertreten sind.</p>
+  </Folie>
+
   <div class="nur-handout">
   <h2 id="werkstatt">In der Werkstatt speichern</h2>
   <p>Aus Miro in die Werkstatt: Jede*r trägt die eigene Map ein, eine Annahme pro Zeile mit Art, Wichtigkeit und Beleg. Rechts entsteht dieselbe Matrix wie auf der Folie. Zum Schluss wählt ihr die riskanteste Annahme aus.</p>
@@ -155,3 +174,10 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
 
   <FooterNav prev={{ href: '/innolab/methoden/entscheidungslog', t: 'Entscheidungslog' }} next={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} />
 </Layout>
+
+<style>
+  /* Folie „Die Map in der Werkstatt“: Tabelle und Schlusssatz passen im Beamer sonst nicht auf eine Höhe. */
+  .nowrap { white-space: nowrap; }
+  :global(html[data-beamer]) .map-felder { font-size: .9rem; }
+  :global(html[data-beamer]) .map-felder :is(th, td) { padding-top: .35rem; padding-bottom: .35rem; }
+</style>

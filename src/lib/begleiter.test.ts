@@ -203,9 +203,9 @@ describe('Seitennamen', () => {
 
 describe('Folien von Tag 1 (echte Seiten)', () => {
   const folien = tagFolien(quellen);
-  it('alle Seiten des Tages in der Tagesreihenfolge, 58 Folien', () => {
+  it('alle Seiten des Tages in der Tagesreihenfolge, 59 Folien', () => {
     expect([...new Set(folien.map((f) => f.pfad))]).toStrictEqual(TAG_1_SEITEN);
-    expect(folien).toHaveLength(58);
+    expect(folien).toHaveLength(59);
     expect(folien[0].pfad).toBe('/innolab/tag-1');
     expect(folien.at(-1)!.pfad).toBe('/innolab/tag-1/abschluss');
   });
