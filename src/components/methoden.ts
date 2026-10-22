@@ -574,6 +574,25 @@ export function einfuegenMoeglich(m: Methode, pfad?: string): boolean {
   return pfad ? IST_DATEI.test(pfad) : einzufuegen(m.ergibt).dateien.length > 0;
 }
 
+// Dateien je mit ihren Namen: mit Semikolon getrennt, weil die Namen selbst „und“ enthalten („Origin Story … und Concept Story“).
+const dateiListe = (dateien: string[]) => dateien.join('; ');
+
+/** Was beim Ausweichweg „einfuegen“ als Ergebnis eingefügt wird. Vorarbeit in derselben Datei wie das Ergebnis (Concept
+ *  und Usage Story in docs/STORYS.md) steht beim Ergebnis. ausMiro: das Ergebnis liegt auch auf Miro (nicht bei pfad). */
+function einfuegenErgebnis(m: Methode, pfad?: string) {
+  const ergebnisPfade = pfad ? [pfad] : m.ergibt.map((id) => artefakt(id)!.pfad);
+  const dateien = pfad ? [pfad] : einzufuegen([...m.ergibt, ...m.braucht.filter((id) => ergebnisPfade.includes(artefakt(id)!.pfad))]).dateien;
+  const ausMiro = !pfad && m.ergibt.some((id) => artefakt(id)!.lebtIn.includes('miro'));
+  return { ergebnisPfade, dateien, ausMiro };
+}
+
+/** Hinweis unter dem Prompt zum Einfügen (ClaudePruefung.astro): Miro nur, wo das Ergebnis auch dort liegt (wie im Prompt). */
+export function einfuegenHinweis(m: Methode, pfad?: string): string {
+  const { dateien, ausMiro } = einfuegenErgebnis(m, pfad);
+  const inhalt = dateien.length > 1 ? 'den Inhalt der Dateien aus eurem Repo' : 'den Inhalt der Datei aus eurem Repo';
+  return `Prompt in ein Gespräch mit Claude einfügen, darunter ${inhalt}${ausMiro ? ' oder den Text aus Miro' : ''} – und jeden weiteren Text, den der Prompt zum Abgleich nennt.`;
+}
+
 const REGELN_CHAT = 'Schreib nichts um und formulier keinen Text für mich – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.';
 
 /** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
@@ -607,15 +626,13 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
   if (weg === 'einfuegen') {
     // Ohne Claude Code: das Ergebnis und die Vorarbeit aus Dateien als Text, die Werkstatt über den Connector.
     if (!einfuegenMoeglich(m, pfad)) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keinen Weg zum Einfügen`);
-    // Vorarbeit in derselben Datei wie das Ergebnis (Concept und Usage Story in docs/STORYS.md) steht beim Ergebnis.
-    const ergebnisPfade = pfad ? [pfad] : m.ergibt.map((id) => artefakt(id)!.pfad);
-    const ergebnis = pfad ? [pfad] : einzufuegen([...m.ergibt, ...m.braucht.filter((id) => ergebnisPfade.includes(artefakt(id)!.pfad))]).dateien;
+    const { ergebnisPfade, dateien: ergebnis, ausMiro } = einfuegenErgebnis(m, pfad);
     const vorarbeit = einzufuegen(m.braucht, ergebnisPfade);
-    const ausMiro = !pfad && m.ergibt.some((id) => artefakt(id)!.lebtIn.includes('miro'));
+    const inhalt = ergebnis.length > 1 ? 'Inhalt der Dateien' : 'Inhalt der Datei';
     return [
-      `Unter diese Nachricht füge ich mein Ergebnis ein (${ausMiro ? 'Inhalt der Datei oder Text aus Miro' : 'Inhalt der Datei'}): ${aufzaehlen(ergebnis)}. Prüf es gegen diese Prüfliste (${m.name}):`,
+      `Unter diese Nachricht füge ich mein Ergebnis ein (${ausMiro ? `${inhalt} oder Text aus Miro` : inhalt}): ${dateiListe(ergebnis)}. Prüf es gegen diese Prüfliste (${m.name}):`,
       ...liste,
-      ...(vorarbeit.dateien.length ? [`Zum Abgleich füge ich auch ein: ${aufzaehlen(vorarbeit.dateien)}.`] : []),
+      ...(vorarbeit.dateien.length ? [`Zum Abgleich füge ich auch ein: ${dateiListe(vorarbeit.dateien)}.`] : []),
       ...(vorarbeit.linear.length ? [`Aus Linear kopiere ich zum Abgleich ${aufzaehlen(vorarbeit.linear)} dazu (Kennung, Titel und Text jedes Issues).`] : []),
       ...(werkstattAbgleich.length
         ? [

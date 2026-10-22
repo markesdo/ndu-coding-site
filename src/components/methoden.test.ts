@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from './innolab-zeiten';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, einfuegenHinweis, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -270,9 +270,10 @@ describe('methoden', () => {
     for (const m of mitListe.filter((x) => einfuegenMoeglich(x))) {
       expect(pruefPrompt(m), m.slug).toMatch(/^Lies /);
       const p = pruefPrompt(m, undefined, 'einfuegen');
-      // „oder Text aus Miro“ nur, wo das Ergebnis auch auf Miro liegt.
+      // „oder Text aus Miro“ nur, wo das Ergebnis auch auf Miro liegt – im Prompt und im Hinweis darunter.
       const miro = m.ergibt.some((id) => ARTEFAKTE.find((a) => a.id === id)!.lebtIn.includes('miro'));
-      expect(p, m.slug).toMatch(miro ? /^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Datei oder Text aus Miro\): / : /^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Datei\): /);
+      expect(p, m.slug).toMatch(miro ? /^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Datei(?:en)? oder Text aus Miro\): / : /^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Datei(?:en)?\): /);
+      expect(einfuegenHinweis(m).includes('Miro'), m.slug).toBe(miro);
       // Nichts, was nur Claude Code kann: keine Datei lesen, keine Datei ändern.
       expect(p, m.slug).not.toMatch(/^Lies |ändere keine Datei/m);
     }
@@ -283,6 +284,9 @@ describe('methoden', () => {
     expect(einfuegenMoeglich(ak, 'über den Linear-MCP die Issues aus docs/BACKLOG.md')).toBe(false);
     expect(einfuegenMoeglich(ak, 'docs/interviews/I2.md')).toBe(true);
     expect(pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, 'docs/X.md', 'einfuegen')).toMatch(/: docs\/X\.md\. Prüf es/);
+    // Nur ein Teil (pfad): eine Datei, kein Miro – auch wenn das ganze Ergebnis auf Miro liegt.
+    expect(einfuegenHinweis(METHODEN.find((m) => m.slug === 'baum')!, 'docs/X.md')).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
+    expect(einfuegenHinweis(METHODEN.find((m) => m.slug === 'baum')!)).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo oder den Text aus Miro – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
     // Vorarbeit aus Dateien wird mit eingefügt, Werkstatt-Vorarbeit kommt über den Connector.
     const baum = pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, undefined, 'einfuegen');
     expect(baum).toContain('\nZum Abgleich füge ich auch ein: Experience Map mit Momenten (Äste des Baums) (docs/JOURNEY.md).\n');
@@ -297,7 +301,6 @@ describe('methoden', () => {
     const pitch = METHODEN.find((m) => m.slug === 'pitch')!;
     const p = pruefPrompt(pitch, undefined, 'einfuegen');
     expect(p.split('docs/STORYS.md')).toHaveLength(2);
-    // Der Name der ersten Story in braucht steht für die Datei.
     // Alle Storys der Datei unter einem Namen, die Datei einmal.
     const storys = pitch.braucht.map((id) => ARTEFAKTE.find((a) => a.id === id)!).filter((a) => a.pfad === 'docs/STORYS.md').map((a) => a.name);
     expect(storys.length).toBeGreaterThan(1);
@@ -306,6 +309,10 @@ describe('methoden', () => {
     const us = pruefPrompt(METHODEN.find((m) => m.slug === 'usage-story')!, undefined, 'einfuegen');
     expect(us).toMatch(/: Usage Story des Kernablaufs und Concept Story \(docs\/STORYS\.md\)\. Prüf es/);
     expect(us.split('docs/STORYS.md')).toHaveLength(2);
+    // Zwei Dateien im Ergebnis (Experiment-Karten und Origin Story): Plural, mit Semikolon getrennt – die Namen enthalten selbst „und“.
+    const ex = METHODEN.find((m) => m.slug === 'experiment')!;
+    expect(pruefPrompt(ex, undefined, 'einfuegen')).toMatch(/^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Dateien\): Experiment-Karten \(docs\/EXPERIMENTE\.md\); Origin Story als Landingpage-Text und Concept Story \(docs\/STORYS\.md\)\. Prüf es/);
+    expect(einfuegenHinweis(ex)).toContain('darunter den Inhalt der Dateien aus eurem Repo – ');
     // Vorarbeit in Linear: ausdrücklich zum Kopieren.
     const sprint = pruefPrompt(METHODEN.find((m) => m.slug === 'sprint')!, undefined, 'einfuegen');
     expect(sprint).toContain('\nAus Linear kopiere ich zum Abgleich Issues geschnitten und quer gelesen dazu (Kennung, Titel und Text jedes Issues).\n');

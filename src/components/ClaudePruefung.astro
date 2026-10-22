@@ -6,8 +6,9 @@
 // an Claude Code im Projekt-Repo, das die Werkstatt-Vorarbeit über denselben Connector liest. Darunter, zugeklappt, der
 // Ausweichweg ohne Claude Code: Ergebnis als Text in Claude einfügen (nur für Ergebnisse in Dateien).
 import Checklist from './Checklist.astro';
+import ClaudeCodeWerkstatt from './ClaudeCodeWerkstatt.astro';
 import Prompt from './Prompt.astro';
-import { METHODEN, einfuegenMoeglich, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, werkstattVorarbeit } from './methoden';
+import { METHODEN, einfuegenHinweis, einfuegenMoeglich, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, werkstattVorarbeit } from './methoden';
 
 // pfad: wenn nur ein Teil des Artefakts geprüft wird (z. B. ein Transkript statt aller Interview-Dateien).
 const { slug, pfad } = Astro.props as { slug: string; pfad?: string };
@@ -22,12 +23,12 @@ const einfuegen = einfuegenMoeglich(m, pfad) ? pruefPrompt(m, pfad, 'einfuegen')
 <Checklist id={pruefChecklisteId(m)} items={m.pruefliste.map((p) => p.text)} ids={m.pruefliste.map((p) => p.id)} />
 <Prompt label={label} note="Erst nachdem ihr die Prüfliste selbst durchgegangen seid. Claude findet, ihr entscheidet."><Fragment set:text={text} /></Prompt>
 {!werkstatt && ausWerkstatt && (
-  <p class="small muted">Was in der Werkstatt liegt, liest Claude Code über den Werkstatt-Connector: <a href="/innolab/werkstatt/claude#claude-code">Claude Code mit der Werkstatt verbinden</a>.</p>
+  <ClaudeCodeWerkstatt />
 )}
 {einfuegen && (
   <details class="fallback">
     <summary>Ohne Claude Code: Text in Claude einfügen</summary>
-    <Prompt label="Prüfen lassen · Claude mit Text zum Einfügen" note="Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo oder den Text aus Miro – und jeden weiteren Text, den der Prompt zum Abgleich nennt."><Fragment set:text={einfuegen} /></Prompt>
+    <Prompt label="Prüfen lassen · Claude mit Text zum Einfügen" note={einfuegenHinweis(m, pfad)}><Fragment set:text={einfuegen} /></Prompt>
     {ausWerkstatt && <p class="small muted">Was in der Werkstatt liegt, liest Claude mit dem <a href="/innolab/werkstatt/claude">Werkstatt-Connector</a> selbst; ohne Connector fügt ihr auch diese Texte ein, je aus „Für Claude kopieren“ im Editor.</p>}
   </details>
 )}
