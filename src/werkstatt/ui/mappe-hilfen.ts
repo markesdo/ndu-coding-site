@@ -1,7 +1,7 @@
 // Reine Hilfen für /innolab/mappe (MappeUebersicht.tsx): Rücksprünge der Anmeldung und Zeilen der Übersicht.
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
 import { AUFGEDECKT_MS, abfrageAbstand, gruppeFrei } from '../../lib/aufgedeckt.js';
-import { ANSICHT_DEMO, ANSICHT_PARAM, MAPPE_DEMO, MAPPE_LEHRENDE, navMappeSetzen } from '../../lib/nav-rolle.js';
+import { ANSICHT_DEMO, ANSICHT_PARAM, DEMO_HREF, MAPPE_DEMO, MAPPE_LEHRENDE, MAPPE_PFAD, MAPPE_STUDIERENDE, navMappeSetzen } from '../../lib/nav-rolle.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { ROUTEN, type Ich, type MappeStand } from '../vertrag.js';
 
@@ -64,6 +64,12 @@ export async function ichMitMenue(holen: () => Promise<Ich | null>, dok: Pick<Do
   }
 }
 
+/** Überschrift und Lead von /innolab/mappe für Studierende: der statische Text der Seite (mappe.astro liest ihn hier). */
+export const STUDIERENDEN_SEITE = {
+  titel: MAPPE_STUDIERENDE,
+  lead: 'Brief, Entscheidungslog, Annahmen-Map und Leitfaden auf einen Blick: was schon gespeichert ist, was noch offen ist.',
+} as const;
+
 /** Überschrift und Lead von /innolab/mappe für Lehrende; Studierende behalten den statischen Text der Seite. */
 export const LEHRENDEN_SEITE = {
   titel: MAPPE_LEHRENDE,
@@ -78,6 +84,8 @@ export const DEMO_SEITE = {
 
 /** Die zwei Ansichten von /innolab/mappe für Lehrende: Mappen der Kohorte (Standard) oder die eigene Demo-Mappe. */
 export type LehrendenWahl = 'kohorte' | 'demo';
+/** Welche Texte die Seite trägt: eine der Ansichten der Lehrenden oder zurück zum Text für Studierende. */
+export type SeitenWahl = LehrendenWahl | 'studierende';
 
 /** Welche Ansicht die Adresse wählt: nur ?ansicht=demo ist die Demo-Mappe, alles andere die Kohorte. */
 export function ansichtAusAdresse(suche: string): LehrendenWahl {
@@ -91,8 +99,8 @@ export function lehrendenDokumentTitel(alt: string, titel: string = LEHRENDEN_SE
 }
 
 /** Setzt Überschrift, Lead und Fenstertitel der Seite für Lehrende (nur Text, die Elemente markiert mappe.astro). */
-export function lehrendenSeiteSetzen(dok: Pick<Document, 'querySelector' | 'title'>, wahl: LehrendenWahl = 'kohorte'): void {
-  const texte = wahl === 'demo' ? DEMO_SEITE : LEHRENDEN_SEITE;
+export function lehrendenSeiteSetzen(dok: Pick<Document, 'querySelector' | 'title'>, wahl: SeitenWahl = 'kohorte'): void {
+  const texte = wahl === 'demo' ? DEMO_SEITE : wahl === 'studierende' ? STUDIERENDEN_SEITE : LEHRENDEN_SEITE;
   const h1 = dok.querySelector('[data-mappe-titel]');
   const lead = dok.querySelector('[data-mappe-lead]');
   if (h1) h1.textContent = texte.titel;
@@ -116,7 +124,13 @@ export const EDITOR_ANKER: Readonly<Record<ArtefaktName, string>> = {
 export const LEITFADEN_LINK = `/innolab/methoden/${ARTEFAKTE.leitfaden.slug}#${EDITOR_ANKER.leitfaden}`;
 
 /** Anmelden mit Rücksprung auf /innolab/mappe – ohne ?fehler, damit ein späteres Neuladen die alte Meldung nicht zeigt. */
-export const LOGIN_HREF = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent('/innolab/mappe')}`;
+export const LOGIN_HREF = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(MAPPE_PFAD)}`;
+
+/** Anmelden aus der gewählten Ansicht: aus der Demo-Mappe zurück in die Demo-Mappe (DEMO_HREF, ein fester Pfad der
+ *  eigenen Seite – sichererPfad in routen/auth.ts lässt ihn durch), sonst LOGIN_HREF. */
+export function loginHref(wahl: LehrendenWahl): string {
+  return wahl === 'demo' ? `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(DEMO_HREF)}` : LOGIN_HREF;
+}
 
 export interface MappeZeile {
   name: ArtefaktName;

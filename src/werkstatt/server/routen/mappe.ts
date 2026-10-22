@@ -4,6 +4,7 @@
 // CSRF (JSON + eigene Origin) für PUT prüft schon appErstellen.
 import { Hono, type Context } from 'hono';
 import { tagInWien } from '../../../lib/kurswahl.js';
+import { DEMO_HREF, MAPPE_DEMO } from '../../../lib/nav-rolle.js';
 import { antworten, erledigtSetzen, gesehenSetzen } from '../../feedback.js';
 import { kohorte } from '../../kohorten/index.js';
 import { dateienFuerSpeichern, readmeRendern } from '../../render/index.js';
@@ -19,6 +20,8 @@ import { DateiUnlesbar, internerFehler, wirdEingerichtet } from '../speicher-feh
 import type { Abhaengigkeiten } from '../typen.js';
 
 const KEIN_ZUGRIFF = 'Diese Mappe gehört nicht zu deiner Anmeldung. Schreib Markus.';
+// POST /feedback ohne Demo-Mappe: kein „wird eingerichtet“ (die Route legt nichts an, Warten hilft nicht).
+const DEMO_FEHLT = `Deine Demo-Mappe gibt es noch nicht. Öffne einmal „${MAPPE_DEMO}“ (${DEMO_HREF}), dann wird sie angelegt.`;
 const UNGUELTIG = 'Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder.';
 const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
 const SCHIEF = 'Da ist etwas schiefgegangen. Sag Markus Bescheid.';
@@ -110,8 +113,10 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
 
   // Einladung zum Lesen nach bestem Bemühen: scheitert sie, bleibt es bei einer Zeile im Log. Nur nach eigenesRepo
   // aufrufen (Besitz geprüft). lesezugriff merkt sich den Stand im Cache; ein wiederholter Aufruf kostet meist nur das.
-  function einladen(repo: string, githubId: number): Promise<MappeStand['lesezugriff']> {
-    return abh.speicher.lesezugriff(repo, githubId).catch((e): MappeStand['lesezugriff'] => {
+  // Lehrende nicht (NDU-37): Ihre Demo-Mappe bearbeiten sie über die Werkstatt, eine GitHub-Einladung dazu braucht es nicht.
+  function einladen(c: Context<SitzungEnv>, repo: string): Promise<MappeStand['lesezugriff']> {
+    if (c.get('mitgliedschaft').rolle === 'lehrende') return Promise.resolve('unbekannt');
+    return abh.speicher.lesezugriff(repo, c.get('sitzung').githubId).catch((e): MappeStand['lesezugriff'] => {
       console.error('werkstatt: Lesezugriff nicht prüfbar –', ursache(e));
       return 'unbekannt';
     });
@@ -121,7 +126,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     const m = c.get('mitgliedschaft');
     const repo = await eigenesRepo(c, true);
     // Best effort: die Mappe lädt auch, wenn GitHub die Einladung nicht beantwortet.
-    const [lesezugriff, artefakte] = await Promise.all([einladen(repo, c.get('sitzung').githubId), abh.speicher.uebersicht(repo)]);
+    const [lesezugriff, artefakte] = await Promise.all([einladen(c, repo), abh.speicher.uebersicht(repo)]);
     const stand: MappeStand = { kohorte: m.kohorte, repo, lesezugriff, artefakte };
     return json(c, stand);
   });
@@ -155,7 +160,13 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   r.post('/feedback', async (c) => {
     const m = mappeVon(c);
     if (!m.kuerzel) throw internerFehler('feedback: Mappe ohne Kürzel');
-    const repo = await eigenesRepo(c, false);
+    let repo: string;
+    try {
+      repo = await eigenesRepo(c, false);
+    } catch (e) {
+      if (m.rolle === 'lehrende' && e instanceof ApiAusnahme && e.code === 'wird-eingerichtet') return fehler(c, 403, 'nicht-freigeschaltet', DEMO_FEHLT);
+      throw e;
+    }
     let anfrage: unknown;
     try {
       anfrage = await c.req.json();
@@ -200,7 +211,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     // Einladung gescheitert sein) – erst nach der Besitzprüfung in eigenesRepo und neben dem Lesen her. allSettled:
     // Auch wenn das Lesen scheitert, läuft die Einladung zu Ende, bevor die Antwort rausgeht.
     const repo = await eigenesRepo(c, true);
-    const [gelesen] = await Promise.allSettled([lesen(repo, name), einladen(repo, c.get('sitzung').githubId)]);
+    const [gelesen] = await Promise.allSettled([lesen(repo, name), einladen(c, repo)]);
     if (gelesen.status === 'rejected') throw gelesen.reason;
     const { daten, basisSha } = gelesen.value;
     const antwort: ArtefaktAntwort = { name, daten, basisSha };

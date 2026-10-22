@@ -195,13 +195,13 @@ function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: Prue
 
 // --- Hilfen ---
 
-const mappeUrl = (k: WerkzeugKontext) => `${k.origin}/innolab/mappe`;
-const demoUrl = (k: WerkzeugKontext) => `${k.origin}${DEMO_HREF}`;
+// Wo die Person ihre Mappe bearbeitet: Lehrende in ihrer Demo-Mappe (NDU-37), sonst „Meine Mappe“.
+const mappeUrl = (k: WerkzeugKontext) => `${k.origin}${k.claims.rolle === 'lehrende' ? DEMO_HREF : '/innolab/mappe'}`;
 const methodeZu = (name: ArtefaktName): Methode => METHODEN.find((m) => m.slug === ARTEFAKTE[name].slug)!;
 
 const keineMappe = (k: WerkzeugKontext) =>
   k.claims.rolle === 'lehrende'
-    ? `Deine Demo-Mappe gibt es noch nicht. Öffne einmal „Meine Demo-Mappe“ unter ${demoUrl(k)}, dann wird sie angelegt.`
+    ? `Deine Demo-Mappe gibt es noch nicht. Öffne einmal „Meine Demo-Mappe“ unter ${mappeUrl(k)}, dann wird sie angelegt.`
     : `Deine Mappe gibt es noch nicht. Öffne einmal die Werkstatt unter ${mappeUrl(k)}, dann wird sie angelegt.`;
 const unpassendeDatei = (k: WerkzeugKontext, name: ArtefaktName) =>
   `${ARTEFAKTE[name].titel}: Diese Datei passt nicht zum Format der Werkstatt (vielleicht direkt auf GitHub geändert). Öffne sie in der Werkstatt und speichere sie neu: ${mappeUrl(k)}`;
@@ -407,11 +407,14 @@ async function heuteAufgedeckt(k: WerkzeugKontext, gruppe: string, jetzt: Date):
   }
 }
 
-async function prueflisteFrei(k: WerkzeugKontext, m: Methode): Promise<boolean> {
+// mappe: geprüft wird eine Mappe – bei Lehrenden ihre Demo-Mappe, die oft am Beamer läuft. Dann gilt die Regel der
+// Studierenden (Aufdecken oder Uhrzeit), sonst verriete die Vorführung die Übung. Ohne Mappe (methode_erklaeren) sehen
+// Lehrende die Prüfliste immer.
+async function prueflisteFrei(k: WerkzeugKontext, m: Methode, mappe = false): Promise<boolean> {
   const nach = m.prueflisteNach;
   if (!nach) return true;
   const jetzt = new Date(k.abh.jetzt());
-  const immer = k.claims.rolle === 'lehrende';
+  const immer = !mappe && k.claims.rolle === 'lehrende';
   // Öffnen Rolle oder Uhrzeit sie schon, braucht es den Cache nicht.
   if (gruppeFrei(nach.gruppe, nach.ab, jetzt, [], immer)) return true;
   return gruppeFrei(nach.gruppe, nach.ab, jetzt, await heuteAufgedeckt(k, nach.gruppe, jetzt), immer);
@@ -425,9 +428,8 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const repo = await eigeneMappe(k);
       const stand: MappeStand = { kohorte: k.claims.kohorte, repo, lesezugriff: 'unbekannt', artefakte: await k.abh.speicher.uebersicht(repo) };
       const zeilen = stand.artefakte.map((a) => `- ${ARTEFAKTE[a.name].titel} (${a.name}): ${a.vorhanden ? 'gespeichert' : 'noch leer'}`);
-      const demo = k.claims.rolle === 'lehrende';
-      const kopf = demo ? `Deine Demo-Mappe (Kohorte ${stand.kohorte}, zählt nicht als Mappe der Kohorte):` : `Deine Mappe (Kohorte ${stand.kohorte}):`;
-      return textErgebnis([kopf, ...zeilen, '', `Bearbeiten in der Werkstatt: ${demo ? demoUrl(k) : mappeUrl(k)}`].join('\n'), { ...stand });
+      const kopf = k.claims.rolle === 'lehrende' ? `Deine Demo-Mappe (Kohorte ${stand.kohorte}, zählt nicht als Mappe der Kohorte):` : `Deine Mappe (Kohorte ${stand.kohorte}):`;
+      return textErgebnis([kopf, ...zeilen, '', `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`].join('\n'), { ...stand });
     }),
   );
 
@@ -493,7 +495,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const repo = await eigeneMappe(k);
       // Ohne Prüfliste prüfte Claude mit eigenem Mom-Test-Wissen – das verriete die Übung genauso. Kein Fehlerergebnis:
       // Die Sperre ist kein Ausfall des Werkzeugs, Clients sollen keinen Fehler anzeigen.
-      if (!(await prueflisteFrei(k, m))) {
+      if (!(await prueflisteFrei(k, m, true))) {
         const titel = ARTEFAKTE[artefakt].titel;
         const anleitung = kommtNachDerUebung(m, MCP_WERKZEUGE.artefaktPruefen);
         return textErgebnis([`# Prüfung: ${titel}`, '', anleitung].join('\n'), { artefakt, titel, gesperrt: true, pruefpunkte: [], vorarbeit: [], anleitung });

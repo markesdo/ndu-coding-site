@@ -4,12 +4,13 @@
 import Layout from '../../layouts/Layout.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import MappeUebersicht from '../../werkstatt/ui/MappeUebersicht';
+import { STUDIERENDEN_SEITE } from '../../werkstatt/ui/mappe-hilfen';
 ---
-<Layout title="Meine Mappe">
+<Layout title={STUDIERENDEN_SEITE.titel}>
   <span class="eyebrow">Innolab · Werkstatt</span>
-  <!-- Für Lehrende tauscht MappeUebersicht Überschrift, Lead und Fenstertitel (seitenTexte in mappe-hilfen.ts). -->
-  <h1 data-mappe-titel>Meine Mappe</h1>
-  <p class="lead" data-mappe-lead>Brief, Entscheidungslog, Annahmen-Map und Leitfaden auf einen Blick: was schon gespeichert ist, was noch offen ist.</p>
+  <!-- Für Lehrende tauscht MappeUebersicht Überschrift, Lead und Fenstertitel (lehrendenSeiteSetzen in mappe-hilfen.ts). -->
+  <h1 data-mappe-titel>{STUDIERENDEN_SEITE.titel}</h1>
+  <p class="lead" data-mappe-lead>{STUDIERENDEN_SEITE.lead}</p>
 
   <MappeUebersicht client:only="react" />
 

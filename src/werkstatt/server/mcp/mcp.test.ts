@@ -1146,6 +1146,27 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
     }
   });
 
+  it('Demo-Mappe der Lehrenden (NDU-37): artefakt_pruefen(leitfaden) gesperrt wie bei Studierenden, nach dem Aufdecken offen', async () => {
+    const { h, c } = await amKurstag(VORMITTAG, { githubId: 1000, rolle: 'lehrende' });
+    const { repo } = await h.speicher.anlegen({ kohorte: 'test', rolle: 'lehrende', kuerzel: 'demo-1000' }, 1000);
+    await h.speicher.speichern(repo, 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
+    const vorher = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(vorher.isError).toBeFalsy();
+    expect(vorher.structuredContent).toMatchObject({ artefakt: 'leitfaden', gesperrt: true, pruefpunkte: [] });
+    expect(text(vorher)).not.toContain(leitfadenBeispiel.wen);
+    zu(vorher);
+    await aufdecken(h);
+    const nachher = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(nachher.isError).toBeFalsy();
+    expect(nachher.structuredContent).not.toHaveProperty('gesperrt');
+    expect(nachher.structuredContent).toHaveProperty('vorhanden', true);
+    expect((nachher.structuredContent as { pruefpunkte: unknown[] }).pruefpunkte).toHaveLength(interview.pruefliste!.length);
+    expect(text(nachher)).toContain(`${BASIS}/innolab/mappe?ansicht=demo`);
+    expect(text(nachher)).not.toMatch(/\/innolab\/mappe(?!\?ansicht=demo)/);
+    // Ohne Mappe (methode_erklaeren) bleibt die Prüfliste für Lehrende immer offen.
+    expect((await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } })).structuredContent).toHaveProperty('pruefliste');
+  });
+
   it('vor dem Aufdecken: Lehrende und Personen ohne Mappe hören bei artefakt_pruefen(leitfaden) den Satz zur Mappe', async () => {
     const { h } = await amKurstag();
     const lehrende = await client(h, await accessToken(h, 1000, 'lehrende'));

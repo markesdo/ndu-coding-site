@@ -131,6 +131,18 @@ describe('GET /api/werkstatt/mappe', () => {
     expect((await t.holen('')).status).toBe(503);
   });
 
+  it('Lehrende (Demo-Mappe): lesezugriff unbekannt, keine Einladung – weder bei der Übersicht noch beim Artefakt', async () => {
+    const t = aufbau();
+    const lesezugriff = vi.spyOn(t.speicher, 'lesezugriff');
+    const lehrende = { githubId: 1000, login: 'lehrer', kohorte: 'test', rolle: 'lehrende' } as const;
+    const r = await t.holen('', lehrende);
+    expect(await r.json()).toMatchObject({ kohorte: 'test', repo: 'test-demo-1000', lesezugriff: 'unbekannt' });
+    expect((await t.holen('/brief', lehrende)).status).toBe(200);
+    expect(lesezugriff).not.toHaveBeenCalled();
+    // Studierende werden weiter eingeladen.
+    await t.holen('');
+    expect(lesezugriff).toHaveBeenCalledWith(REPO, 1001);
+  });
 
   it('erstes Anlegen beim Login gescheitert → GET mappe legt an und liefert 200', async () => {
     const t = aufbau();

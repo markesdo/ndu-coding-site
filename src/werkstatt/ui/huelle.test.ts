@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { darfSpeichern, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
+import { darfSpeichern, demoHinweis, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
 import annahmen from '../beispiele/annahmen.json';
 
 function lauf(start: HuellenZustand, ...ereignisse: Ereignis[]) {
@@ -189,6 +189,11 @@ describe('Laden der Hülle (mappeLaden)', () => {
     if (r.typ !== 'fehler') throw new Error('unerreichbar');
     expect(huelle('laden', { typ: 'ladenFehlgeschlagen', status: r.status, code: r.code }).zustand).toBe('ladefehler');
     expect(ladefehlerHinweis(r.code, r.meldung)).toStrictEqual({ text: fremd, nochmal: false });
+  });
+  it('Demo-Hinweis über dem Editor nur für Lehrende (NDU-37)', () => {
+    expect(demoHinweis({ rolle: 'lehrende' })).toBe('Deine Demo-Mappe – zählt nicht als Mappe der Kohorte.');
+    expect(demoHinweis({ rolle: 'studierende' })).toBeNull();
+    expect(demoHinweis(null)).toBeNull();
   });
   it('Lehrende (Demo-Mappe, NDU-37): ich, dann lesen wie bei Studierenden – auch ohne Repo in /auth/ich', async () => {
     const lehrende = { ...ICH, rolle: 'lehrende', repo: null };

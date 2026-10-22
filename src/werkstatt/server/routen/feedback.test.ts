@@ -154,8 +154,11 @@ describe('Lehrende schreiben Feedback', () => {
     await t.schreiben(MARKUS, A2);
     const vorher = await t.datei();
     const commits = t.fake.commits('2026-sofie').length;
-    // Ohne Demo-Mappe: wird eingerichtet (die POST-Route legt nichts an).
-    expect((await t.aendern(MARKUS, { aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(503);
+    // Ohne Demo-Mappe: kein „wird eingerichtet“ (die POST-Route legt nichts an, der Editor versuchte es sonst wieder),
+    // sondern abgelehnt mit dem Weg zur Demo-Mappe.
+    const ohne = await t.aendern(MARKUS, { aktion: 'erledigt', id: 'FB1', erledigt: true });
+    expect(ohne.status).toBe(403);
+    expect(await ohne.json()).toMatchObject({ code: 'nicht-freigeschaltet', fehler: 'Deine Demo-Mappe gibt es noch nicht. Öffne einmal „Meine Demo-Mappe“ (/innolab/mappe?ansicht=demo), dann wird sie angelegt.' });
     // Mit Demo-Mappe: FB1 gibt es dort nicht, die Mappe von Sofie bleibt unberührt.
     expect((await t.anfrage('GET', '/api/werkstatt/mappe', MARKUS)).status).toBe(200);
     expect((await t.aendern(MARKUS, { aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(422);

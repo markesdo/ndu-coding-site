@@ -14,7 +14,7 @@ import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
 import { feedbackLader, mappeFeedback } from './feedback-hilfen.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
-import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, ansichtAusAdresse, lehrendenSeiteSetzen, anmeldeFehler, type LehrendenWahl, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, adresseOhneFehler, ansichtAusAdresse, lehrendenSeiteSetzen, loginHref, anmeldeFehler, type LehrendenWahl, type SeitenWahl, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -99,12 +99,15 @@ export default function MappeUebersicht() {
   }, [laden]);
 
   // Lehrende: „Mappen der Kohorte“ oder „Meine Demo-Mappe“ statt „Meine Mappe“. Studierende sehen den statischen Text
-  // der Seite (kein Flackern).
-  const lehrendeWahl: LehrendenWahl | null =
-    zustand.typ === 'lehrende' ? 'kohorte' : zustand.typ === 'bereit' && zustand.ich.rolle === 'lehrende' ? 'demo' : null;
+  // der Seite (kein Flackern). Auf ?ansicht=demo stehen Überschrift und Reiter der Demo-Mappe von Anfang an, in jedem
+  // Zustand (laden, einrichten, Fehler, abgemeldet) – zurück zum Text der Seite nur, wenn sich Studierende anmelden.
+  const demoAdresse = wahl.current === 'demo';
+  const studierendeDa = zustand.typ === 'bereit' && zustand.ich.rolle === 'studierende';
+  const seite: SeitenWahl | null =
+    zustand.typ === 'lehrende' ? 'kohorte' : demoAdresse ? (studierendeDa ? 'studierende' : 'demo') : null;
   useEffect(() => {
-    if (lehrendeWahl) lehrendenSeiteSetzen(document, lehrendeWahl);
-  }, [lehrendeWahl]);
+    if (seite) lehrendenSeiteSetzen(document, seite);
+  }, [seite]);
 
   useEffect(() => {
     if (leitfadenOffen) return;
@@ -202,7 +205,7 @@ export default function MappeUebersicht() {
   );
 
   const anmelden = (
-    <a className="wk-knopf wk-primaer" href={LOGIN_HREF}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
+    <a className="wk-knopf wk-primaer" href={loginHref(wahl.current)}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
   );
 
   function inhalt() {
@@ -251,7 +254,6 @@ export default function MappeUebersicht() {
         const demo = zustand.ich.rolle === 'lehrende';
         return (
           <>
-            {demo && ansichten('demo')}
             <p className="mappe-person">
               Angemeldet als <strong>{zustand.ich.login}</strong>{demo && <> (Lehrende). Das ist deine Demo-Mappe: Sie zählt nicht als Mappe der Kohorte und taucht in keiner Übersicht auf</>}.
               {hinweis.art === 'aktiv' && (
@@ -299,6 +301,7 @@ export default function MappeUebersicht() {
   const angemeldet = zustand.typ === 'bereit' || zustand.typ === 'lehrende' || zustand.typ === 'einrichten';
   return (
     <div className="wk-wurzel mappe">
+      {seite === 'demo' && ansichten('demo')}
       {rueckmeldung && (
         <div className="wk-hinweis mappe-hinweis" role="alert">
           <p>{rueckmeldung.text}</p>

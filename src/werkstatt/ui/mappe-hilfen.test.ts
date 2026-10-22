@@ -2,9 +2,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { MAPPE_LEHRENDE, MAPPE_STUDIERENDE, NAV_MAPPE } from '../../lib/nav-rolle.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
+import { sichererPfad } from '../../lib/kurszugang.js';
 import { api, ApiError } from './api.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { DEMO_SEITE, FEHLER_TEXT, LEHRENDEN_SEITE, ansichtAusAdresse, LOGIN_HREF, lehrendenDokumentTitel, lehrendenSeiteSetzen, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { DEMO_SEITE, FEHLER_TEXT, LEHRENDEN_SEITE, STUDIERENDEN_SEITE, ansichtAusAdresse, LOGIN_HREF, loginHref, lehrendenDokumentTitel, lehrendenSeiteSetzen, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -30,6 +31,12 @@ describe('LOGIN_HREF', () => {
   it('meldet an und springt auf /innolab/mappe ohne ?fehler zurück – auch nach „nicht freigeschaltet“', () => {
     expect(LOGIN_HREF).toBe(`${ROUTEN.login.pfad}?weiter=${encodeURIComponent('/innolab/mappe')}`);
     expect(LOGIN_HREF).not.toContain('fehler');
+  });
+  it('aus der Demo-Mappe zurück in die Demo-Mappe; der Rücksprung übersteht sichererPfad', () => {
+    expect(loginHref('kohorte')).toBe(LOGIN_HREF);
+    const weiter = new URL(loginHref('demo'), 'https://x.invalid').searchParams.get('weiter');
+    expect(weiter).toBe('/innolab/mappe?ansicht=demo');
+    expect(sichererPfad(weiter)).toBe('/innolab/mappe?ansicht=demo');
   });
 });
 
@@ -184,6 +191,9 @@ describe('Seitentexte für Lehrende', () => {
     lehrendenSeiteSetzen(dok as unknown as Document, 'demo');
     lehrendenSeiteSetzen(dok as unknown as Document, 'demo');
     expect([h1.textContent, lead.textContent, dok.title]).toStrictEqual(['Meine Demo-Mappe', DEMO_SEITE.lead, 'Meine Demo-Mappe · innolab_2026']);
+    // Meldet sich auf ?ansicht=demo doch eine Studierende an: zurück zum Text der Seite.
+    lehrendenSeiteSetzen(dok as unknown as Document, 'studierende');
+    expect([h1.textContent, lead.textContent, dok.title]).toStrictEqual([STUDIERENDEN_SEITE.titel, STUDIERENDEN_SEITE.lead, 'Meine Mappe · innolab_2026']);
   });
   it('Ansicht aus der Adresse: nur ?ansicht=demo ist die Demo-Mappe', () => {
     expect(ansichtAusAdresse('?ansicht=demo')).toBe('demo');
