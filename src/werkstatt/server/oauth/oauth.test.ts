@@ -651,6 +651,7 @@ describe('Claude Code als Client', () => {
       const r = await zustimmungGet(h, LOOPBACK, clientId);
       expect(r.status, clientId).toBe(400);
       expect(r.headers.get('location'), clientId).toBeNull();
+      expect(await r.text(), clientId).toContain('Ungültige Rücksprungadresse');
     }
   });
 

@@ -60,11 +60,10 @@ export interface Zustimmung {
 }
 
 export function zustimmungsSeite(c: Context, z: Zustimmung): Response {
-  const name = z.name;
   const versteckt = Object.entries(z.felder)
     .map(([k, v]) => `<input type="hidden" name="${esc(k)}" value="${esc(v)}">`)
     .join('\n');
-  const titel = `${name} möchte deine Mappe lesen`;
+  const titel = `${z.name} möchte deine Mappe lesen`;
   return seite(
     c,
     200,
