@@ -64,19 +64,20 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
   'mom-test': {
     live: [
       'Aufgabe zeigen, Timer 5 min starten, nichts zur Methode sagen.',
-      'Du in der Rolle: „Würdest du …?“ → leeres Ja, „letztes Mal“ → Geschichte.',
+      'Reihum: rechts antwortet, höflich und ehrlich. Du hörst zu.',
+      'Notieren: leere Jas bei „Würdest du …?“ – Beispiele für die Auflösung.',
       '„Welche Antwort hat euch etwas Neues verraten?“',
       'Auflösung aufdecken öffnet nur diese Übung, auch bei allen.',
       'Kochbuch-App erzählen (Geschichte): „Das klingt toll“, niemand kauft.',
     ],
     ueberleitung: 'Jetzt legt ihr eure drei Fragen auf zwei Achsen und seht, wo sie liegen.',
-    uebung: { dauer: '5 min', form: 'allein, eine Frage pro Sticky; danach antwortest du als Person aus ihrer Zielgruppe' },
+    uebung: { dauer: '5 min + 5 min', form: 'allein, eine Frage pro Sticky; dann reihum: jede*r fragt die Person rechts, die als jemand aus der Zielgruppe antwortet' },
     miro: {
       frame: 'T1 · 4 · Interviewleitfaden',
       schritte: [
         '„Alle zu mir holen“ auf T1 · 4. Die Kaffeebar-Spalte hat drei Felder: „Meine drei Fragen“, „Umgeschrieben nach der Auflösung“ und „Gelernt im Live-Interview“. Jetzt bleiben alle drei leer, sonst verrät die Kaffeebar die Auflösung. Gefüllt wird sie erst auf der Folie „Eure Fragen umschreiben“.',
         'Jede*r schreibt in der eigenen Spalte „Produkt von: …“ ins Feld „Meine drei Fragen“: drei gelbe Stickies, eine Frage pro Sticky.',
-        'Nach dem Timer „Alle zu mir holen“; Spalte für Spalte liest jede*r eine Frage vor, und du antwortest in der Rolle.',
+        'Nach dem Timer reihum: Wer fragt, sagt in einem Satz, wer die Zielgruppe ist; die Person rechts antwortet höflich und ehrlich. Du hörst zu und sammelst Antworten für die Auflösung.',
       ],
     },
     kern: [
