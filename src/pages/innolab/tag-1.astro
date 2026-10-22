@@ -17,6 +17,7 @@ import MiroLink from '../../components/MiroLink.astro';
 import { TEAM_BOARD } from '../../lib/team-board';
 import FooterNav from '../../components/FooterNav.astro';
 import { KAFFEEBAR_BAUM } from '../../components/innolab-beispiel';
+import { NACH_TOAST } from '../../components/innolab-zeiten';
 
 // Roter Faden des Innolab am Beispiel der Kaffeebar: heute entsteht die oberste Ebene.
 const faden = KAFFEEBAR_BAUM;
@@ -219,7 +220,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <h2 id="toast">Warm-up · Wie macht man Toast?</h2>
     <p class="folie-satz">Zeichnet, wie man Toast macht.</p>
     <p>Ein Blatt, ein dicker Stift. Allein, ohne zu reden, möglichst ohne Wörter. Es gibt kein Richtig oder Falsch. <Timer minuten={3} /></p>
-    <Aufloesung ab="2026-10-22T11:00" gruppe="toast">
+    <Aufloesung ab={NACH_TOAST} gruppe="toast">
       <Video id="_vS_b7cJn2A" titel="Tom Wujec: Got a wicked problem? First, tell me how you make toast" quelle="Tom Wujec, „Got a wicked problem? First, tell me how you make toast“, TED 2013 (9 min)" />
     </Aufloesung>
   </Folie>
@@ -227,7 +228,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="toast-aufloesung">Was der Toast zeigt</h2>
     <p class="folie-satz">Was ist euch an euren Zeichnungen aufgefallen?</p>
-    <Aufloesung ab="2026-10-22T11:00" gruppe="toast" hinweis="Öffnet sich zusammen mit dem Video auf der vorigen Folie.">
+    <Aufloesung ab={NACH_TOAST} gruppe="toast" hinweis="Öffnet sich zusammen mit dem Video auf der vorigen Folie.">
       <p><strong>Jede*r hat ein anderes Modell im Kopf – sichtbar wird es erst gezeichnet.</strong></p>
       <ul class="gross">
         <li data-schritt><strong>Knoten und Verbindungen:</strong> Jede Zeichnung besteht aus Dingen, Schritten, Personen – und Pfeilen dazwischen.</li>
