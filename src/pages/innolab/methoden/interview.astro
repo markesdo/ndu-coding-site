@@ -17,11 +17,23 @@ import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import Skala from '../../../components/bild/Skala.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
 import KAFFEEBAR_LEITFADEN from '../../../werkstatt/beispiele/leitfaden.json';
+import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 // Hinweise an den gesperrten Teilen: Sie gehen auf, sobald Markus aufdeckt; der Knopf bleibt als stiller Ausweg. Jede Übung hat ihre eigene Gruppe
 // (mom-test-…): Markus deckt eine auf, alle sehen nur diese – die Pointen späterer Übungen bleiben zu. Die letzte („ausgraben“)
 // ist in MOM_TEST_GRUPPE, zusammen mit Editor und Beispiel, Probe-Prompt und Prüfliste (nur im Handout) und dem Leitfaden der
 // Mappe: Mit ihr geht das Material für den Leitfaden-Block auf. Ein Klick der Studierenden öffnet nur den einen Teil.
 const OEFFNET = 'Öffnet sich, sobald Markus es aufdeckt.';
+
+// Probe-Interview: Claude baut erst eine Persona aus dem Brief (Kurs-Zusatz, nicht aus Torres oder Fitzpatrick), dann
+// antwortet es nur auf die gestellte Frage und wartet. Ohne diese Regel bat Claude um die erste Frage oder den Leitfaden,
+// statt zu antworten (Probeläufe 22.10.).
+const probe = `Wir proben mein Interview. Lies meinen Produkt-Brief aus der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Ohne Werkstatt-Zugang nimm den Brief, den ich unter diese Nachricht einfüge. Wichtig sind Abschnitt 1 (für wen) und 2 (Problem, heute gelöst durch). Stehen darunter Eckdaten zur Person, etwa aus unserer Persona, halte dich daran.
+
+1. Persona: Bau daraus eine konkrete Person aus der Zielgruppe – Pseudonym, Alter, Wohnort, Beruf und Ausbildung, Haushalt, ein typischer Tag rund um die Situation, wie sie das heute löst, ihre Einstellungen. Realistisch, mit Gewohnheiten, die nicht zu meiner Idee passen müssen. Zeig sie mir in 4–6 kurzen Zeilen und frag nur: „Passt das, oder soll ich etwas ändern?“
+
+2. Interview: Sobald ich zustimme oder meine erste Frage stelle, bist du diese Person, bis ich „Ende“ schreibe. Ich frage, du antwortest: auf jede Nachricht nur das, was gefragt ist, in der Ich-Form, dann hörst du auf und wartest auf meine nächste Frage. Frag nie nach meinem Leitfaden oder meinen Fragen, kündige nichts an, kommentier nichts. Stehen in einer Nachricht mehrere Fragen oder ein ganzer Leitfaden, beantworte nur die erste Frage. Sei zurückhaltend: Antworte kurz, bleib allgemein, wenn ich allgemein frage, und erzähl Konkretes nur, wenn ich nach dem letzten konkreten Mal frage. Frag ich nach der Zukunft oder stelle ich eine Idee vor, sei höflich und unverbindlich.
+
+3. Feedback: Wenn ich „Ende“ schreibe, gib mir Feedback nach dem Mom Test: Wo habe ich gepitcht, wo nach der Zukunft gefragt, wo eine Nachfrage verpasst? Höchstens drei Punkte, mit Zitat, sonst nichts – kein Lob, keine weiteren Tipps. Schlag als bessere Frage nur Fragen nach dem letzten konkreten Mal vor, keine nach Häufigkeiten („Wie oft …?“).`;
 
 // Auflösungen und Leitfaden-Editor: offen, sobald Markus aufdeckt, spätestens ab NACH_MOM_TEST (Ende des Kurstags).
 ---
@@ -216,7 +228,8 @@ const OEFFNET = 'Öffnet sich, sobald Markus es aufdeckt.';
   <h2 id="probe">Probe mit Claude</h2>
   <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={`Der Prompt verrät die Regeln des Mom Test – öffnet ihn erst danach. ${OEFFNET}`} knopf="Prompt öffnen">
   <p>Am besten in Claude Chat (dort geht auch der Sprachmodus), sonst in Claude Code:</p>
-  <Prompt label="Probe-Interview · Claude Chat oder Claude Code">Spiel eine Person aus dieser Zielgruppe: [Abschnitt 1 aus eurem Brief]. Erfinde dir ein realistisches Leben mit Gewohnheiten, die nicht zu meiner Idee passen müssen. Sei zurückhaltend: Antworte kurz, bleib allgemein, wenn ich allgemein frage, und erzähl Konkretes nur, wenn ich nach dem letzten konkreten Mal frage. Frag ich nach der Zukunft oder stelle ich eine Idee vor, sei höflich und unverbindlich. Ich beginne das Interview, du wartest auf meine erste Frage. Wenn ich „Ende“ schreibe, gib mir Feedback nach dem Mom Test: Wo habe ich gepitcht, wo nach der Zukunft gefragt, wo eine Nachfrage verpasst? Höchstens drei Punkte, mit Zitat, sonst nichts – kein Lob, keine weiteren Tipps. Schlag als bessere Frage nur Fragen nach dem letzten konkreten Mal vor, keine nach Häufigkeiten („Wie oft …?“).</Prompt>
+  <Prompt label="Probe-Interview · Claude Chat oder Claude Code, mit oder ohne Connector">{probe}</Prompt>
+  <p class="small muted">Ohne Connector: Prompt einfügen, darunter den Brief aus „Für Claude kopieren“. Habt ihr in Miro schon eine Persona, schreibt ein paar Eckdaten dazu – Alter, Beruf, Wohnort, Lebenssituation. Claude zeigt euch die Person zuerst; passt sie, stellt ihr eure Fragen einzeln, wie im echten Gespräch.</p>
   <p>Die Probe ersetzt kein echtes Interview. Claude erfindet eine plausible Person – eure Zielgruppe kennt es nicht.</p>
   </Aufloesung>
 

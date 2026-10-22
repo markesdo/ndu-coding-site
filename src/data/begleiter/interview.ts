@@ -538,7 +538,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       schritte: [
         '20 min: Leitfaden allein schreiben, Ziel aus der riskantesten Annahme, die meisten Fragen nach dem letzten Mal, jede gegen die drei Regeln halten, in der Werkstatt speichern.',
         '10 min: Prüfliste durchgehen und von Claude prüfen lassen (Handout „Prüfen“). Ohne Connector unter den Prompt Leitfaden, Brief und Annahmen-Map einfügen, je aus „Für Claude kopieren“.',
-        '15 min: Probe-Interview mit Claude als zurückhaltender Person (Prompt im Handout „Probe mit Claude“, neues Gespräch). Den Platzhalter durch Abschnitt 1 aus dem eigenen Brief ersetzen, dann selbst die erste Frage stellen; „Ende“ holt das Feedback, höchstens drei Punkte mit Zitat.',
+        '15 min: Probe-Interview mit Claude (Prompt im Handout „Probe mit Claude“, neues Gespräch). Claude liest den Brief über den Connector; ohne Connector kommt er aus „Für Claude kopieren“ unter den Prompt, gern mit Eckdaten der Miro-Persona. Claude zeigt zuerst eine Persona in wenigen Zeilen und fragt, ob sie passt. Danach stellen sie die Fragen einzeln, Claude antwortet zurückhaltend nur auf das Gefragte und wartet; „Ende“ holt das Feedback, höchstens drei Punkte mit Zitat.',
         '3 × 15 min zu dritt: Eine*r interviewt, eine*r spielt nach einem Satz Briefing eine schwierige Person aus deren Zielgruppe (Rollenkarte im Handout), eine*r beobachtet und notiert Pitch-Stellen und verpasste Nachfragen. 10 min Interview, 5 min Feedback, dann rücken die Rollen eins weiter, bis jede*r jede Rolle einmal hatte. Du hältst die Zeit und hörst zu.',
         'Was sie aus der Runde lernen, kommt danach in den Leitfaden.',
       ],
@@ -548,7 +548,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
         'Im Live-Interview: Wird nach „normalerweise“ zurückgeholt? Wird ein Kompliment abgelenkt? Wird ein Feature-Wunsch hinterfragt?',
         'Spielt die schwierige Person so hart, dass nie etwas Konkretes kommt? Erinnern: Auf die Frage nach dem letzten Mal erzählt sie ehrlich.',
         'Zeit: Die drei Live-Runden brauchen 45 min. Wenn Schritt 1 überzieht, Schritt 2 kürzen, nicht die Live-Runden.',
-        'Platzhalter vergessen: Dann fragt Claude erst nach der Zielgruppe, statt zu spielen. Kein Fehler, einfach Abschnitt 1 nachreichen.',
+        'Probe: Persona zu vage oder daneben? Beim „Passt das?“ korrigieren lassen (Alter, Beruf, Lebenssituation), nicht mitten im Interview. Wer den ganzen Leitfaden einfügt, bekommt nur die Antwort auf die erste Frage – Fragen einzeln stellen.',
       ],
       fehler: [
         'Die Idee wird in der Einleitung erklärt („Wir bauen eine App, die …“).',
