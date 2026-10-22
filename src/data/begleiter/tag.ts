@@ -23,7 +23,7 @@ export const TAG_1: TagKarte = {
     'Kick-off': {
       lernziel: 'Nach dem Block können alle die vier Ebenen des Opportunity Solution Tree nennen und eine Lösung in Verkleidung von einer Chance unterscheiden.',
       streichen: [
-        'Die vier Feinde guter Entscheidungen nach Heath weglassen (was-noch).',
+        'Die vier Feinde guter Entscheidungen nach Heath nur nennen, Folie überspringen (vier-feinde).',
         'Nur den Folien-Satz, ohne Nigel Cross (problem-loesung).',
         'Miro: nur Spalte wählen und „Alle zu mir holen“, den Rest erklärt der Frame „Start hier“ (miro).',
         'Verbinden nach 10 min beenden, wer nicht fertig ist, macht um 11:00 weiter (verbinden).',
