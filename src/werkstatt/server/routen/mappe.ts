@@ -2,6 +2,7 @@
 // CSRF (JSON + eigene Origin) für PUT prüft schon appErstellen.
 import { Hono, type Context } from 'hono';
 import { tagInWien } from '../../../lib/kurswahl.js';
+import { MAPPE_LEHRENDE, MAPPE_PFAD } from '../../../lib/nav-rolle.js';
 import { kohorte } from '../../kohorten/index.js';
 import { dateienFuerSpeichern, readmeRendern } from '../../render/index.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName, type Feldfehler } from '../../schemas/index.js';
@@ -14,7 +15,7 @@ import { DateiUnlesbar, internerFehler, wirdEingerichtet } from '../speicher-feh
 import type { Abhaengigkeiten } from '../typen.js';
 
 const KEIN_ZUGRIFF = 'Diese Mappe gehört nicht zu deiner Anmeldung. Schreib Markus.';
-const NUR_STUDIERENDE = 'Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „Mappen der Kohorte“ (/innolab/mappe).';
+export const NUR_STUDIERENDE = `Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „${MAPPE_LEHRENDE}“ (${MAPPE_PFAD}).`;
 const UNGUELTIG = 'Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder.';
 const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
 const SCHIEF = 'Da ist etwas schiefgegangen. Sag Markus Bescheid.';

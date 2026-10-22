@@ -1,6 +1,7 @@
 // Menüeintrag /innolab/mappe: statisch „Meine Mappe“ (Studierende, kein Flackern), für Lehrende „Mappen der Kohorte“.
 // Die Rolle steht in einem lesbaren Cookie (ROLLE_COOKIE): Die Werkstatt setzt es beim GitHub-Login und bei jedem
-// /auth/ich, löscht es für Studierende, beim Abmelden und mit einer ungültigen Sitzung (routen/auth.ts, sitzung.ts);
+// /auth/ich, löscht es für Studierende, beim Abmelden, nach einer gescheiterten Anmeldung und mit einer ungültigen
+// Sitzung (routen/auth.ts, sitzung.ts);
 // /logout löscht es mit den anderen Cookies (abmeldenCookies). Das Skript im Layout liest es auf jeder Seite, bevor
 // das Menü gezeichnet wird. Nur ein Hinweis fürs Menü: Keine Berechtigung hängt daran, der Server prüft die Rolle
 // allein über die signierte Sitzung.

@@ -191,8 +191,9 @@ describe('Abmelden', () => {
     'ndu_zugang=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
     '__Host-ndu_werkstatt=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
     'ndu_werkstatt=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
-    // Rollen-Cookie fürs Menü (lib/nav-rolle.ts): lesbar gesetzt, darum ohne HttpOnly.
-    `${ROLLE_COOKIE}=; Path=/; Max-Age=0; Secure; SameSite=Lax`,
+    // Rollen-Cookie fürs Menü (lib/nav-rolle.ts): lesbar gesetzt, darum ohne HttpOnly; ohne Secure, sonst verwirft
+    // Safari das Löschen auf http://localhost (dort ist es ohne Secure gesetzt).
+    `${ROLLE_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`,
   ];
 
   it('/logout löscht Kurszugang, Werkstatt-Sitzung und Rollen-Cookie und führt zur Startseite', async () => {

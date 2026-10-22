@@ -10,7 +10,7 @@ import type { GithubIdentitaet, Speicher, Umgebung } from '../typen';
 
 const BASIS = 'http://localhost:4321';
 
-function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean; lesezugriff?: Speicher['lesezugriff']; werkstattJson?: Speicher['werkstattJson'] } = {}) {
+function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean; lesezugriff?: Speicher['lesezugriff']; werkstattJson?: Speicher['werkstattJson']; jetzt?: () => number } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: opts.zugang ?? { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] } } };
   const basis = fakeSpeicher();
   const anlegen = vi.fn(async (...a: Parameters<Speicher['anlegen']>) => {
@@ -24,7 +24,7 @@ function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number
     loginUrl: (state, uri) => `https://github.test/auth?state=${state}&redirect_uri=${encodeURIComponent(uri)}`,
     codeEinloesen: async () => person,
   };
-  const abh = lokaleAbhaengigkeiten({ umgebung, speicher, github, jetzt: () => 1_800_000_000_000 });
+  const abh = lokaleAbhaengigkeiten({ umgebung, speicher, github, jetzt: opts.jetzt ?? (() => 1_800_000_000_000) });
   return { app: appErstellen(abh), anlegen, lesezugriff, umgebung };
 }
 
@@ -268,6 +268,41 @@ describe('Rollen-Cookie fürs Menü', () => {
     const ohne = await stud.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: `${COOKIE_WERKSTATT}=kaputt; ${ROLLE_COOKIE}=lehrende` } });
     expect(ohne.status).toBe(401);
     expect(rolle(ohne)).toMatch(/Max-Age=0/);
+  });
+
+  it('/auth/ich setzt Max-Age auf die Restlaufzeit der Sitzung, nicht wieder 30 Tage', async () => {
+    let jetzt = 1_800_000_000_000;
+    const t = aufbau({ person: { githubId: 1000, login: 'l' }, jetzt: () => jetzt });
+    const l = await login(t.app);
+    const lc = `${COOKIE_WERKSTATT}=${wert(await callback(t.app, l.state, l.stateCookie), COOKIE_WERKSTATT)}`;
+    jetzt += 10 * 24 * 3600 * 1000; // zehn Tage später
+    const r = await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: lc } });
+    expect(r.status).toBe(200);
+    expect(rolle(r)?.split('; ')).toContain(`Max-Age=${GUELTIG_SEKUNDEN - 10 * 24 * 3600}`);
+  });
+
+  it('gescheiterte Anmeldung löscht ein altes „lehrende“ (falscher state, GitHub lehnt ab, nicht freigeschaltet)', async () => {
+    const mitRolle = (app: ReturnType<typeof aufbau>['app'], state: string, stateCookie: string) =>
+      app.request(`${BASIS}/api/werkstatt/auth/callback?code=x&state=${state}`, { headers: { Cookie: `werkstatt_state=${stateCookie}; ${ROLLE_COOKIE}=lehrende` } });
+
+    const a = aufbau();
+    const la = await login(a.app);
+    const ungueltig = await mitRolle(a.app, 'falsch', la.stateCookie);
+    expect(ungueltig.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-ungueltig');
+    expect(rolle(ungueltig)).toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const b = appErstellen(lokaleAbhaengigkeiten({ github: { loginUrl: (s) => `https://github.test/?state=${s}`, codeEinloesen: async () => { throw new Error('nein'); } } }));
+    const lb = await login(b);
+    const fehlgeschlagen = await mitRolle(b, lb.state, lb.stateCookie);
+    expect(fehlgeschlagen.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-fehlgeschlagen');
+    expect(rolle(fehlgeschlagen)).toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+
+    const c = aufbau({ person: { githubId: 777, login: 'fremd' } });
+    const lc = await login(c.app);
+    const fremd = await mitRolle(c.app, lc.state, lc.stateCookie);
+    expect(fremd.headers.get('location')).toBe('/innolab/mappe?fehler=nicht-freigeschaltet');
+    expect(rolle(fremd)).toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
   });
 
   it('Abmelden löscht das Rollen-Cookie', async () => {

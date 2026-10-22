@@ -20,10 +20,14 @@ export const GUELTIG_SEKUNDEN = 30 * 24 * 60 * 60; // 30 Tage
 
 // Rollen-Cookie fürs Menü (lib/nav-rolle.ts): lesbar (ohne HttpOnly), damit das Skript im Layout „Mappen der Kohorte“
 // zeigen kann. Nur ein Hinweis für die Anzeige, keine Berechtigung hängt daran (die prüft allein die Sitzung). Gesetzt
-// für Lehrende, sonst gelöscht; läuft mit der Sitzung ab.
-export function rolleCookieSetzen(c: Context, lokal: boolean, rolle: Rolle | null): void {
-  if (rolle === 'lehrende') setCookie(c, ROLLE_COOKIE, ROLLE_LEHRENDE, { secure: !lokal, sameSite: 'Lax', path: '/', maxAge: GUELTIG_SEKUNDEN });
-  else if (cookieLesen(c.req.header('cookie') ?? null, ROLLE_COOKIE) !== undefined) deleteCookie(c, ROLLE_COOKIE, { path: '/', secure: !lokal });
+// für Lehrende, sonst gelöscht. Max-Age ist die Restlaufzeit der Sitzung (exp steht seit dem Login fest), damit das
+// Cookie, das /auth/ich bei jedem Aufruf neu setzt, die Sitzung nicht überlebt.
+export function rolleCookieSetzen(c: Context, abh: Abhaengigkeiten, s: Pick<Sitzung, 'rolle' | 'exp'> | null): void {
+  const lokal = abh.umgebung.lokal;
+  if (s?.rolle === 'lehrende') {
+    const rest = Math.max(0, s.exp - Math.floor(abh.jetzt() / 1000));
+    setCookie(c, ROLLE_COOKIE, ROLLE_LEHRENDE, { secure: !lokal, sameSite: 'Lax', path: '/', maxAge: rest });
+  } else if (cookieLesen(c.req.header('cookie') ?? null, ROLLE_COOKIE) !== undefined) deleteCookie(c, ROLLE_COOKIE, { path: '/', secure: !lokal });
 }
 
 export interface Sitzung {
@@ -101,7 +105,7 @@ export const mitSitzung: MiddlewareHandler<SitzungEnv> = async (c, weiter) => {
   const t = await sitzungMitMitgliedschaft(c, abh);
   if (!t) {
     if (cookieLesen(c.req.header('cookie') ?? null, name)) deleteCookie(c, name, { path: '/', secure: !abh.umgebung.lokal });
-    rolleCookieSetzen(c, abh.umgebung.lokal, null);
+    rolleCookieSetzen(c, abh, null);
     return fehler(c, 401, 'nicht-angemeldet', 'Bitte melde dich mit GitHub an.');
   }
   c.set('sitzung', t.sitzung);

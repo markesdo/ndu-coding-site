@@ -43,7 +43,7 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     }
     const ich: Ich = { githubId: s.githubId, login: s.login, kohorte: s.kohorte, rolle: s.rolle, repo };
     // Rollen-Cookie fürs Menü nachziehen (auch für Sitzungen von vor dem Cookie).
-    rolleCookieSetzen(c, abh.umgebung.lokal, s.rolle);
+    rolleCookieSetzen(c, abh, s);
     return json(c, ich);
   });
 
@@ -64,19 +64,25 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     const code = c.req.query('code');
     deleteCookie(c, stateName(), { path: '/', secure: sicher() });
     c.header('Cache-Control', 'no-store');
-    if (!state || !code || !gleich(c.req.query('state') ?? '', state)) return c.redirect(`${MAPPE}?fehler=anmeldung-ungueltig`, 302);
+    // Jeder Fehlerweg löscht auch ein altes Rollen-Cookie (etwa von einem anderen Konto am selben Gerät): Das Menü soll
+    // nach einer gescheiterten Anmeldung nicht „Mappen der Kohorte“ behaupten.
+    const abbruch = (grund: string) => {
+      rolleCookieSetzen(c, abh, null);
+      return c.redirect(`${MAPPE}?fehler=${grund}`, 302);
+    };
+    if (!state || !code || !gleich(c.req.query('state') ?? '', state)) return abbruch('anmeldung-ungueltig');
 
     let person;
     try {
       person = await abh.github.codeEinloesen(code, redirectUri(c));
     } catch (e) {
       console.error('werkstatt: GitHub-Anmeldung fehlgeschlagen –', e instanceof Error ? e.message : 'Fehler');
-      return c.redirect(`${MAPPE}?fehler=anmeldung-fehlgeschlagen`, 302);
+      return abbruch('anmeldung-fehlgeschlagen');
     }
 
     // Neueste aktive Kohorte zuerst; Zuordnung nur über die ID, nie über den (umbenennbaren) login.
     const m = mitgliedschaften(abh.umgebung.zugang, person.githubId, KOHORTEN)[0];
-    if (!m) return c.redirect(`${MAPPE}?fehler=nicht-freigeschaltet`, 302);
+    if (!m) return abbruch('nicht-freigeschaltet');
 
     if (m.rolle === 'studierende') {
       let angelegt = false;
@@ -96,18 +102,16 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       }
     }
 
-    const cookie = await sitzungErstellen(
-      { githubId: person.githubId, login: person.login, kohorte: m.kohorte, rolle: m.rolle, exp: Math.floor(abh.jetzt() / 1000) + GUELTIG_SEKUNDEN },
-      abh.umgebung.sessionSecret,
-    );
+    const sitzung = { githubId: person.githubId, login: person.login, kohorte: m.kohorte, rolle: m.rolle, exp: Math.floor(abh.jetzt() / 1000) + GUELTIG_SEKUNDEN };
+    const cookie = await sitzungErstellen(sitzung, abh.umgebung.sessionSecret);
     setCookie(c, cookieName(abh.umgebung.lokal), cookie, { ...cookieOpt(), maxAge: GUELTIG_SEKUNDEN });
-    rolleCookieSetzen(c, abh.umgebung.lokal, m.rolle);
+    rolleCookieSetzen(c, abh, sitzung);
     return c.redirect(weiter, 302);
   });
 
   r.post('/abmelden', (c) => {
     deleteCookie(c, cookieName(abh.umgebung.lokal), { path: '/', secure: sicher() });
-    rolleCookieSetzen(c, abh.umgebung.lokal, null);
+    rolleCookieSetzen(c, abh, null);
     return json(c, { ok: true });
   });
 

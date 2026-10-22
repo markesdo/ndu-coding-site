@@ -134,10 +134,12 @@ export const WERKSTATT_COOKIES = ['__Host-ndu_werkstatt', 'ndu_werkstatt'] as co
 
 // Set-Cookie-Werte zum Abmelden: Kurszugang, Werkstatt-Sitzung und Rollen-Cookie fürs Menü (lib/nav-rolle.ts), je
 // Max-Age=0. __Host- verlangt Path=/, Secure und keine Domain – zugangsCookie erfüllt das. Das Rollen-Cookie ist lesbar
-// gesetzt, darum ohne HttpOnly gelöscht (gelöscht wird nach Name und Pfad, nicht nach Flags). localStorage bleibt (das
-// kann der Server ohnehin nicht löschen).
+// gesetzt, darum ohne HttpOnly gelöscht (gelöscht wird nach Name und Pfad, nicht nach Flags), und ohne Secure: Lokal
+// (http://localhost) setzt die Werkstatt es ohne Secure, und Safari verwirft dort jedes Set-Cookie mit Secure, also
+// auch das Löschen. Über https überschreibt ein Set-Cookie ohne Secure auch das Secure gesetzte Cookie aus Produktion.
+// localStorage bleibt (das kann der Server ohnehin nicht löschen).
 export function abmeldenCookies(): string[] {
-  return [...[COOKIE, ...WERKSTATT_COOKIES].map((name) => zugangsCookie('', 0, name)), `${ROLLE_COOKIE}=; Path=/; Max-Age=0; Secure; SameSite=Lax`];
+  return [...[COOKIE, ...WERKSTATT_COOKIES].map((name) => zugangsCookie('', 0, name)), `${ROLLE_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`];
 }
 
 export function zumLogin(ziel: string): string {

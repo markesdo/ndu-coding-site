@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { darfSpeichern, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, versucheNach, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, statusText, type Ereignis, type HuellenZustand } from './huelle';
 import annahmen from '../beispiele/annahmen.json';
+import { NUR_STUDIERENDE } from '../server/routen/mappe';
 
 function lauf(start: HuellenZustand, ...ereignisse: Ereignis[]) {
   let zustand = start;
@@ -153,7 +154,6 @@ describe('Stand des Servers für das Formular', () => {
 });
 
 const ICH = { githubId: 1001, login: 'sofie', kohorte: '2026', rolle: 'studierende' as const, repo: 'ndu-innolab/2026-sofie' };
-const NUR_STUDIERENDE = 'Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „Mappen der Kohorte“ (/innolab/mappe).';
 function apiFehler(status: number, code: string, message: string) {
   return Object.assign(new Error(message), { status, code });
 }
