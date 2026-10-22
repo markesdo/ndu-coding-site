@@ -4,6 +4,7 @@ import { afterEach, vi } from 'vitest';
 import middleware, { config } from '../../middleware';
 import { ABMELDEN, COOKIE, WERKSTATT_COOKIES, istAbmelden, istOeffentlich, tokenErstellen } from './kurszugang';
 import { cookieName } from '../werkstatt/server/sitzung';
+import { ROLLE_COOKIE } from './nav-rolle';
 
 // Vercel wendet den Matcher wie einen Pfad-Ausdruck an; für unsere Muster genügt ein verankerter RegExp.
 const geschuetzt = (pfad: string) => config.matcher.some((m) => new RegExp(`^${m}$`).test(pfad));
@@ -190,9 +191,12 @@ describe('Abmelden', () => {
     'ndu_zugang=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
     '__Host-ndu_werkstatt=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
     'ndu_werkstatt=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax',
+    // Rollen-Cookie fürs Menü (lib/nav-rolle.ts): lesbar gesetzt, darum ohne HttpOnly; ohne Secure, sonst verwirft
+    // Safari das Löschen auf http://localhost (dort ist es ohne Secure gesetzt).
+    `${ROLLE_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`,
   ];
 
-  it('/logout löscht Kurszugang und Werkstatt-Sitzung und führt zur Startseite', async () => {
+  it('/logout löscht Kurszugang, Werkstatt-Sitzung und Rollen-Cookie und führt zur Startseite', async () => {
     mitVariablen();
     const token = await tokenErstellen('s'.repeat(32), 'pw', Math.floor(Date.now() / 1000));
     for (const pfad of ['/logout', '/logout/']) {

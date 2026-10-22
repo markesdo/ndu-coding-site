@@ -12,6 +12,7 @@ import NeuLaden from '../components/NeuLaden.astro';
 import { BUILD } from '../lib/build';
 import { ABMELDEN } from '../lib/kurszugang';
 import { BEREICHE, NAV, bereichVon, nachbarn } from '../lib/navigation';
+import { MAPPE_PFAD, NAV_MAPPE, NAV_ROLLE_SKRIPT } from '../lib/nav-rolle';
 import { pfadOhneSchraegstrich } from '../components/abschnitt';
 import '../styles/global.css';
 import '../styles/beamer.css';
@@ -24,6 +25,8 @@ const nav = NAV[bereich];
 const { title, description = kurs.beschreibung } = Astro.props;
 // Ersatz-Reihenfolge fürs Blättern im Beamer-Modus, wenn eine Seite keinen FooterNav hat: die Menü-Reihenfolge des Kurses.
 const { vorher, danach } = nachbarn(path);
+// Einträge zur Mappe markieren: Für Lehrende setzt NAV_ROLLE_SKRIPT dort „Mappen der Kohorte“ (Menü und „Weiter: …“).
+const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } : {});
 ---
 <!doctype html>
 <html lang="de" data-bereich={bereich}>
@@ -46,7 +49,7 @@ const { vorher, danach } = nachbarn(path);
     <div class="topbar">
       <strong class="topbar-brand"><Marke einzeilig name={kurs.marke} zeichen={kurs.zeichen} /></strong>
       <div class="topbar-actions">
-        <a class="beamer-weiter" hidden data-fallback-next={danach?.href} data-fallback-next-t={danach?.t} data-fallback-prev={vorher?.href} title="Nächste Seite (Taste →, zurück mit ←)"><span>Weiter: <b></b></span><ArrowRight size={16} aria-hidden="true" /></a>
+        <a class="beamer-weiter" hidden data-fallback-next={danach?.href} data-fallback-next-t={danach?.t} {...zurMappe(danach?.href)} data-fallback-prev={vorher?.href} title="Nächste Seite (Taste →, zurück mit ←)"><span>Weiter: <b></b></span><ArrowRight size={16} aria-hidden="true" /></a>
         <!-- „Wo ist Markus?“: nur sichtbar, wo der Präsentator-Schlüssel liegt (wo-ist.ts) -->
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus: größere Schrift, helles Thema, ohne Seitenleiste (Taste B). Blättern mit ← / →"><Presentation size={18} aria-hidden="true" /> Beamer</button>
@@ -73,10 +76,12 @@ const { vorher, danach } = nachbarn(path);
           {nav.map(g => (
             <div class="group">
               <h4>{g.h}</h4>
-              {g.items.map(i => <a href={i.href} class={path === i.href ? 'active' : ''}>{i.t}</a>)}
+              {g.items.map(i => <a href={i.href} class={path === i.href ? 'active' : ''} {...zurMappe(i.href)}>{i.t}</a>)}
             </div>
           ))}
         </nav>
+        {/* Lehrende: „Mappen der Kohorte“ statt „Meine Mappe“, gleich nach dem Menü, vor dem ersten Zeichnen (lib/nav-rolle.ts). */}
+        <script is:inline set:html={NAV_ROLLE_SKRIPT} />
         <button type="button" class="beamer-toggle" data-beamer-toggle data-nur-praesentator aria-pressed="false" title="Beamer-Modus: größere Schrift, ohne Seitenleiste (Taste B)"><Presentation size={18} aria-hidden="true" /> Beamer <kbd>B</kbd></button>
         <button type="button" class="beamer-toggle praesentator" data-praesentator hidden aria-pressed="true"><span class="live-punkt" aria-hidden="true"></span><span data-praesentator-text>Live</span></button>
         <p class="small muted" style="margin-top:2rem">NDU · MSc Management by Innovation<br/>{kurs.termine}</p>

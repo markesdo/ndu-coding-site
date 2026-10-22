@@ -1,9 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ARTEFAKT_NAMEN } from '../schemas/index.js';
+import { MAPPE_LEHRENDE, MAPPE_STUDIERENDE, NAV_MAPPE } from '../../lib/nav-rolle.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, LEHRENDEN_SEITE, LOGIN_HREF, lehrendenDokumentTitel, lehrendenSeiteSetzen, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { FEHLER_TEXT, LEHRENDEN_SEITE, LOGIN_HREF, lehrendenDokumentTitel, lehrendenSeiteSetzen, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -175,5 +176,46 @@ describe('Seitentexte für Lehrende', () => {
     lehrendenSeiteSetzen(dok as unknown as Document);
     lehrendenSeiteSetzen(dok as unknown as Document);
     expect([h1.textContent, lead.textContent, dok.title]).toStrictEqual([LEHRENDEN_SEITE.titel, LEHRENDEN_SEITE.lead, 'Mappen der Kohorte · innolab_2026']);
+  });
+});
+
+// Verdrahtung in MappeUebersicht.laden: jede Antwort von /auth/ich zieht den Menüeintrag zur Mappe nach.
+describe('ichMitMenue', () => {
+  const ICH = { githubId: 1001, login: 'sofie', kohorte: '2026', repo: 'ndu-innolab/2026-sofie' };
+  function menue(start: string) {
+    const link = { textContent: start, hasAttribute: () => false, setAttribute: () => {} };
+    return { link, dok: { querySelectorAll: (s: string) => (s === `[${NAV_MAPPE}]` ? [link] : []) } as unknown as Document };
+  }
+
+  it('Lehrende: „Mappen der Kohorte“, gibt Ich zurück', async () => {
+    const { link, dok } = menue(MAPPE_STUDIERENDE);
+    const ich = { ...ICH, rolle: 'lehrende' as const, repo: null };
+    expect(await ichMitMenue(async () => ich, dok)).toBe(ich);
+    expect(link.textContent).toBe(MAPPE_LEHRENDE);
+  });
+  it('Studierende (nach einem „lehrende“ am selben Gerät): „Meine Mappe“', async () => {
+    const { link, dok } = menue(MAPPE_LEHRENDE);
+    await ichMitMenue(async () => ({ ...ICH, rolle: 'studierende' as const }), dok);
+    expect(link.textContent).toBe(MAPPE_STUDIERENDE);
+  });
+  it('abgemeldet (null): „Meine Mappe“', async () => {
+    const { link, dok } = menue(MAPPE_LEHRENDE);
+    expect(await ichMitMenue(async () => null, dok)).toBeNull();
+    expect(link.textContent).toBe(MAPPE_STUDIERENDE);
+  });
+  it('Fehler nicht-angemeldet: „Meine Mappe“, Fehler geht weiter', async () => {
+    const { link, dok } = menue(MAPPE_LEHRENDE);
+    const f = new ApiError(401, 'nicht-angemeldet', 'x');
+    await expect(ichMitMenue(async () => { throw f; }, dok)).rejects.toBe(f);
+    expect(link.textContent).toBe(MAPPE_STUDIERENDE);
+  });
+  it('andere Fehler (Netz, Server): Rolle unbekannt, Menü bleibt, Fehler geht weiter', async () => {
+    for (const f of [new ApiError(500, 'intern', 'x'), new ApiError(0, 'unbekannt', 'x'), new TypeError('Failed to fetch')]) {
+      for (const start of [MAPPE_LEHRENDE, MAPPE_STUDIERENDE]) {
+        const { link, dok } = menue(start);
+        await expect(ichMitMenue(async () => { throw f; }, dok)).rejects.toBe(f);
+        expect(link.textContent).toBe(start);
+      }
+    }
   });
 });

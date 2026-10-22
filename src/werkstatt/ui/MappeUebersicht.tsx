@@ -10,7 +10,7 @@ import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
-import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, lehrendenSeiteSetzen, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, lehrendenSeiteSetzen, anmeldeFehler, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -57,7 +57,7 @@ export default function MappeUebersicht() {
     const mein = ++lauf.current;
     if (!still) setZustand({ typ: 'laden' });
     try {
-      const ich = await api.ich();
+      const ich = await ichMitMenue(api.ich, document); // zieht auch den Menüeintrag zur Mappe nach
       if (mein !== lauf.current) return;
       if (ich === null) return setZustand({ typ: 'abgemeldet' });
       if (ich.rolle !== 'studierende') {

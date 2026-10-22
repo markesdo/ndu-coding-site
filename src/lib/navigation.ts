@@ -2,6 +2,7 @@
 // Welcher Kurs gilt, folgt aus dem Pfad (ohne Schrägstrich am Ende, wie bei „Wo ist Markus?“); Layout.astro zeigt nur dessen Menü und blättert im Beamer-Modus nur darin.
 
 import { pfadOhneSchraegstrich } from '../components/abschnitt';
+import { MAPPE_PFAD, MAPPE_STUDIERENDE } from './nav-rolle';
 
 export type Bereich = 'coding' | 'innolab';
 
@@ -104,7 +105,7 @@ export const NAV: Record<Bereich, NavGruppe[]> = {
     ]},
     // Nach den Kurstagen: Das Blättern im Beamer (nachbarn) läuft weiter von Tag zu Tag.
     { h: 'Werkstatt', items: [
-      { href: '/innolab/mappe', t: 'Meine Mappe' },
+      { href: MAPPE_PFAD, t: MAPPE_STUDIERENDE }, // Lehrende: „Mappen der Kohorte“ (lib/nav-rolle.ts)
       { href: '/innolab/werkstatt/claude', t: 'Claude verbinden' },
       { href: '/innolab/werkstatt/interview-datenschutz', t: 'Datenschutz für Interviewte' },
     ]},

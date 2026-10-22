@@ -4,12 +4,13 @@ import { appErstellen } from '../app';
 import { githubIdentitaet } from '../github/identitaet';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { fakeSpeicher } from '../fake-speicher';
-import { COOKIE_WERKSTATT, cookieName, sitzungLesen } from '../sitzung';
+import { ROLLE_COOKIE } from '../../../lib/nav-rolle';
+import { COOKIE_WERKSTATT, GUELTIG_SEKUNDEN, cookieName, sitzungLesen } from '../sitzung';
 import type { GithubIdentitaet, Speicher, Umgebung } from '../typen';
 
 const BASIS = 'http://localhost:4321';
 
-function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean; lesezugriff?: Speicher['lesezugriff']; werkstattJson?: Speicher['werkstattJson'] } = {}) {
+function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean; lesezugriff?: Speicher['lesezugriff']; werkstattJson?: Speicher['werkstattJson']; jetzt?: () => number } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: opts.zugang ?? { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] } } };
   const basis = fakeSpeicher();
   const anlegen = vi.fn(async (...a: Parameters<Speicher['anlegen']>) => {
@@ -23,7 +24,7 @@ function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number
     loginUrl: (state, uri) => `https://github.test/auth?state=${state}&redirect_uri=${encodeURIComponent(uri)}`,
     codeEinloesen: async () => person,
   };
-  const abh = lokaleAbhaengigkeiten({ umgebung, speicher, github, jetzt: () => 1_800_000_000_000 });
+  const abh = lokaleAbhaengigkeiten({ umgebung, speicher, github, jetzt: opts.jetzt ?? (() => 1_800_000_000_000) });
   return { app: appErstellen(abh), anlegen, lesezugriff, umgebung };
 }
 
@@ -211,6 +212,104 @@ describe('auth/callback', () => {
     expect(r.status).toBe(302);
     expect(r.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-fehlgeschlagen');
     expect(wert(r, COOKIE_WERKSTATT)).toBeUndefined();
+  });
+});
+
+// Rollen-Cookie fürs Menü (lib/nav-rolle.ts): nur ein Anzeige-Hinweis, darum lesbar.
+describe('Rollen-Cookie fürs Menü', () => {
+  const rolle = (r: Response) => setCookies(r).find((c) => c.startsWith(`${ROLLE_COOKIE}=`));
+
+  it('Login als Lehrende: lesbar (ohne HttpOnly), Lax, Path=/, läuft mit der Sitzung ab', async () => {
+    const { app } = aufbau({ person: { githubId: 1000, login: 'lehrer' } });
+    const { state, stateCookie } = await login(app);
+    const sc = rolle(await callback(app, state, stateCookie));
+    expect(sc?.split('; ')).toStrictEqual([`${ROLLE_COOKIE}=lehrende`, `Max-Age=${GUELTIG_SEKUNDEN}`, 'Path=/', 'SameSite=Lax']);
+  });
+
+  it('in Produktion zusätzlich Secure', async () => {
+    const t = aufbau();
+    const abh = lokaleAbhaengigkeiten({ umgebung: { ...t.umgebung, lokal: false }, github: { loginUrl: (s) => `https://github.test/?state=${s}`, codeEinloesen: async () => ({ githubId: 1000, login: 'l' }) } });
+    const app = appErstellen(abh);
+    const l = await app.request(`${BASIS}/api/werkstatt/auth/login`);
+    const sc = setCookies(l)[0];
+    const state = new URL(l.headers.get('location')!).searchParams.get('state')!;
+    const r = await app.request(`${BASIS}/api/werkstatt/auth/callback?code=x&state=${state}`, { headers: { Cookie: `__Host-werkstatt_state=${sc.split(';')[0].split('=').slice(1).join('=')}` } });
+    expect(rolle(r)?.split('; ')).toContain('Secure');
+    expect(rolle(r)).not.toMatch(/HttpOnly/i);
+  });
+
+  it('Login als Studierende: ein altes „lehrende“ (anderes Konto am selben Gerät) wird gelöscht', async () => {
+    const { app } = aufbau();
+    const { state, stateCookie } = await login(app);
+    const r = await app.request(`${BASIS}/api/werkstatt/auth/callback?code=x&state=${state}`, { headers: { Cookie: `werkstatt_state=${stateCookie}; ${ROLLE_COOKIE}=lehrende` } });
+    expect(wert(r, COOKIE_WERKSTATT)).toBeDefined();
+    expect(rolle(r)).toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+  });
+
+  it('Login als Studierende ohne altes Cookie: kein Rollen-Cookie', async () => {
+    const { app } = aufbau();
+    const { state, stateCookie } = await login(app);
+    expect(rolle(await callback(app, state, stateCookie))).toBeUndefined();
+  });
+
+  it('/auth/ich zieht nach: Lehrende setzt, Studierende löscht, ungültige Sitzung löscht', async () => {
+    const lehr = aufbau({ person: { githubId: 1000, login: 'l' } });
+    let l = await login(lehr.app);
+    const lc = `${COOKIE_WERKSTATT}=${wert(await callback(lehr.app, l.state, l.stateCookie), COOKIE_WERKSTATT)}`;
+    expect(wert(await lehr.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: lc } }), ROLLE_COOKIE)).toBe('lehrende');
+
+    const stud = aufbau();
+    l = await login(stud.app);
+    const sc = `${COOKIE_WERKSTATT}=${wert(await callback(stud.app, l.state, l.stateCookie), COOKIE_WERKSTATT)}`;
+    const r = await stud.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: `${sc}; ${ROLLE_COOKIE}=lehrende` } });
+    expect(r.status).toBe(200);
+    expect(rolle(r)).toMatch(/Max-Age=0/);
+
+    const ohne = await stud.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: `${COOKIE_WERKSTATT}=kaputt; ${ROLLE_COOKIE}=lehrende` } });
+    expect(ohne.status).toBe(401);
+    expect(rolle(ohne)).toMatch(/Max-Age=0/);
+  });
+
+  it('/auth/ich setzt Max-Age auf die Restlaufzeit der Sitzung, nicht wieder 30 Tage', async () => {
+    let jetzt = 1_800_000_000_000;
+    const t = aufbau({ person: { githubId: 1000, login: 'l' }, jetzt: () => jetzt });
+    const l = await login(t.app);
+    const lc = `${COOKIE_WERKSTATT}=${wert(await callback(t.app, l.state, l.stateCookie), COOKIE_WERKSTATT)}`;
+    jetzt += 10 * 24 * 3600 * 1000; // zehn Tage später
+    const r = await t.app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: lc } });
+    expect(r.status).toBe(200);
+    expect(rolle(r)?.split('; ')).toContain(`Max-Age=${GUELTIG_SEKUNDEN - 10 * 24 * 3600}`);
+  });
+
+  it('gescheiterte Anmeldung löscht ein altes „lehrende“ (falscher state, GitHub lehnt ab, nicht freigeschaltet)', async () => {
+    const mitRolle = (app: ReturnType<typeof aufbau>['app'], state: string, stateCookie: string) =>
+      app.request(`${BASIS}/api/werkstatt/auth/callback?code=x&state=${state}`, { headers: { Cookie: `werkstatt_state=${stateCookie}; ${ROLLE_COOKIE}=lehrende` } });
+
+    const a = aufbau();
+    const la = await login(a.app);
+    const ungueltig = await mitRolle(a.app, 'falsch', la.stateCookie);
+    expect(ungueltig.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-ungueltig');
+    expect(rolle(ungueltig) ?? 'kein Rollen-Cookie').toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const b = appErstellen(lokaleAbhaengigkeiten({ github: { loginUrl: (s) => `https://github.test/?state=${s}`, codeEinloesen: async () => { throw new Error('nein'); } } }));
+    const lb = await login(b);
+    const fehlgeschlagen = await mitRolle(b, lb.state, lb.stateCookie);
+    expect(fehlgeschlagen.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-fehlgeschlagen');
+    expect(rolle(fehlgeschlagen) ?? 'kein Rollen-Cookie').toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+
+    const c = aufbau({ person: { githubId: 777, login: 'fremd' } });
+    const lc = await login(c.app);
+    const fremd = await mitRolle(c.app, lc.state, lc.stateCookie);
+    expect(fremd.headers.get('location')).toBe('/innolab/mappe?fehler=nicht-freigeschaltet');
+    expect(rolle(fremd) ?? 'kein Rollen-Cookie').toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+  });
+
+  it('Abmelden löscht das Rollen-Cookie', async () => {
+    const { app } = aufbau();
+    const r = await app.request(`${BASIS}/api/werkstatt/auth/abmelden`, { method: 'POST', headers: { Origin: BASIS, Cookie: `${ROLLE_COOKIE}=lehrende` } });
+    expect(r.status).toBe(200);
+    expect(rolle(r)).toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
   });
 });
 
