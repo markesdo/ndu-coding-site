@@ -3,6 +3,7 @@
 // Ohne Astro, damit testbar.
 import type { ArtefaktName } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
+import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from './innolab-zeiten.js';
 
 export type Ort = 'repo' | 'miro' | 'linear' | 'live' | 'vortrag' | 'werkstatt';
 
@@ -94,6 +95,10 @@ export interface Methode {
    *  il-<slug>-<stand> (Checklist.astro). Seit NDU-28 speichert sie je Prüfpunkt-ID; ein neuer Stand ist nicht mehr nötig,
    *  der Schlüssel bleibt, damit vorhandene Häkchen bleiben. */
   prueflisteStand?: number;
+  /** Verrät die Prüfliste die Lösung einer Übung, ist sie wie deren Auflösung zu: frei, sobald der Präsentator die Gruppe
+   *  aufdeckt, spätestens ab ab (lib/aufgedeckt.ts gruppeFrei). Der Connector hält sich daran (methode_erklaeren,
+   *  artefakt_pruefen); auf der Methodenseite steht die Prüfliste dafür selbst in <Aufloesung>. */
+  prueflisteNach?: { gruppe: string; ab: string };
 }
 
 /** In Kursreihenfolge – die Prüfung „braucht nur Früheres“ verlässt sich darauf. */
@@ -141,6 +146,7 @@ export const METHODEN: Methode[] = [
   },
   {
     slug: 'interview', name: 'Jobs to be Done & Mom Test', tag: 1, dauer: 120, prueflisteStand: 2,
+    prueflisteNach: { gruppe: MOM_TEST_GRUPPE, ab: NACH_MOM_TEST },
     frage: 'Was tun Menschen heute wirklich, um ihren Job zu erledigen?',
     braucht: ['brief', 'annahmen'], ergibt: ['transkripte'],
     pruefliste: [

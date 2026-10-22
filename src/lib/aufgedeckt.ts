@@ -1,7 +1,7 @@
 // Aufdecken für alle: Deckt der Präsentator eine Auflösung auf (Knopf oder Pfeiltaste im Beamer), öffnet sie sich auch bei
 // den Studierenden – über api/aufgedeckt.ts, so wie „Wo ist Markus?“ über api/position.ts. Die Uhrzeit an <Aufloesung ab=…>
 // bleibt nur der späte Rückfall. Hier ohne DOM und ohne Vercel, damit testbar.
-import { aufloesungAb, kennungNormal } from '../components/aufloesung.js'; // .js-Endung: api/aufgedeckt.ts lädt das per Node-ESM
+import { aufgeloest, aufloesungAb, kennungNormal } from '../components/aufloesung.js'; // .js-Endung: api/aufgedeckt.ts lädt das per Node-ESM
 import { wienerZeit } from '../components/jetzt.js';
 import { jsonHolen } from './kette.js';
 
@@ -36,6 +36,12 @@ export function kennungFehler(gruppe: string | undefined, knopf: string, kennung
  *  bei zwei schnellen Meldungen keine verloren (kein Lesen-Ändern-Schreiben). Ein Stand von gestern gilt heute nicht. */
 export function aufgedecktSchluessel(kennung: string, jetzt: Date): string {
   return `aufgedeckt:${wienerZeit(jetzt).datum}:${kennung}`;
+}
+
+/** Ist eine Gruppe frei? Sobald der Präsentator sie heute aufgedeckt hat (aufgedeckt aus /api/aufgedeckt oder dem
+ *  Runtime Cache), spätestens ab ab; immer für den Präsentator bzw. Lehrende. Für Mappe und Connector dieselbe Regel. */
+export function gruppeFrei(gruppe: string, ab: string, jetzt: Date, aufgedeckt: readonly string[], immer = false): boolean {
+  return immer || aufgedeckt.includes(gruppe) || aufgeloest(ab, jetzt);
 }
 
 /** GET ?k=…&k=…: die geprüften Kennungen, nach denen eine Seite fragt (ohne Doppel, höchstens MAX_KENNUNGEN). */

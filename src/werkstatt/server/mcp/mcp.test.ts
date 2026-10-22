@@ -3,6 +3,8 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { METHODEN } from '../../../components/methoden';
+import { MOM_TEST_GRUPPE } from '../../../components/innolab-zeiten';
+import { aufgedecktSchluessel } from '../../../lib/aufgedeckt';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
 import briefBeispiel from '../../beispiele/brief.json';
 import entscheidungenBeispiel from '../../beispiele/entscheidungen.json';
@@ -269,7 +271,7 @@ describe('Werkzeuge', () => {
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
     // Kein markdown: das Artefakt steht nur im Text des Ergebnisses.
-    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
+    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'gesperrt', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
     // Die Arten der Befunde kommen aus verknuepfungen.ts, nicht aus einer zweiten Liste.
     const verkn = tools.find((t) => t.name === MCP_WERKZEUGE.verknuepfungenPruefen)!;
     const befund = (verkn.outputSchema?.properties as { befunde: { items: { properties: { art: { enum: string[] } } } } }).befunde;
@@ -1057,5 +1059,139 @@ describe('tag_stand', () => {
     const l = await lehrende.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: {} });
     expect(l.isError).toBe(true);
     expect(text(l)).toMatch(/Lehrende/);
+  });
+});
+
+// NDU-29: Die Interview-Prüfliste verrät den Mom Test – erst nach dem Aufdecken (MOM_TEST_GRUPPE) oder NACH_MOM_TEST.
+describe('Connector hält sich an Aufdecken (Mom Test)', () => {
+  // Kurstag 22.10.2026, 10:00 in Wien (UTC+2) – vor NACH_MOM_TEST (16:45).
+  const VORMITTAG = Date.parse('2026-10-22T08:00:00Z');
+  const LEITFADEN = `${JSON.stringify(leitfadenBeispiel, null, 2)}\n`;
+  const interview = METHODEN.find((m) => m.slug === 'interview')!;
+
+  async function amKurstag(ms = VORMITTAG, rolle: { githubId: number; rolle: 'studierende' | 'lehrende' } = { githubId: 1002, rolle: 'studierende' }) {
+    const h = await aufbau();
+    h.uhr.ms = ms;
+    await h.speicher.speichern('test-jonas', 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
+    const c = await client(h, await accessToken(h, rolle.githubId, rolle.rolle));
+    return { h, c };
+  }
+  const aufdecken = (h: Aufbau, kennung = MOM_TEST_GRUPPE, ms = h.uhr.ms) => h.abh.cache.set(aufgedecktSchluessel(kennung, new Date(ms)), true, 3600);
+  const zu = (r: Awaited<ReturnType<Client['callTool']>>) => {
+    for (const p of interview.pruefliste!) {
+      expect(text(r), p.id).not.toContain(p.text);
+      expect(text(r), p.id).not.toContain(p.id);
+    }
+    expect(r.structuredContent ?? {}).not.toHaveProperty('pruefliste');
+  };
+  const NOCHMAL = (werkzeug: string) => `Sobald Markus die Übung aufgedeckt hat, ruf ${werkzeug} noch einmal auf.`;
+
+  it('vor dem Aufdecken: methode_erklaeren(interview) ohne Prüfliste, mit „Kommt nach der Übung“', async () => {
+    const { c } = await amKurstag();
+    const r = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } });
+    expect(r.isError).toBeFalsy();
+    expect(r.structuredContent).not.toHaveProperty('pruefliste');
+    expect(r.structuredContent).toMatchObject({ slug: 'interview', prueflisteGesperrt: true, frage: interview.frage });
+    expect(text(r)).toContain('Kommt nach der Übung');
+    expect(text(r)).toContain('spätestens am 22.10. um 16:45');
+    expect(text(r)).toContain(NOCHMAL(MCP_WERKZEUGE.methodeErklaeren));
+    zu(r);
+  });
+
+  it('vor dem Aufdecken: artefakt_pruefen(leitfaden) prüft nicht – auch nicht mit pruefpunkt –, kein Leitfaden-Text', async () => {
+    const { c } = await amKurstag();
+    for (const args of [{ artefakt: 'leitfaden' }, { artefakt: 'leitfaden', pruefpunkt: '2' }]) {
+      const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: args });
+      // Kein Fehlerergebnis (Clients zeigten sonst einen Werkzeugfehler); structuredContent passt zum outputSchema,
+      // sonst hätte der Client hier schon geworfen.
+      expect(r.isError, JSON.stringify(args)).toBeFalsy();
+      expect(r.structuredContent).toMatchObject({ artefakt: 'leitfaden', gesperrt: true, pruefpunkte: [], vorarbeit: [] });
+      expect(r.structuredContent).not.toHaveProperty('vorhanden');
+      expect((r.structuredContent as { anleitung: string }).anleitung).toMatch(/^Kommt nach der Übung/);
+      expect(text(r)).toContain('Kommt nach der Übung');
+      expect(text(r)).toContain(NOCHMAL(MCP_WERKZEUGE.artefaktPruefen));
+      expect(text(r)).not.toContain(leitfadenBeispiel.wen);
+      zu(r);
+    }
+  });
+
+  it('vor dem Aufdecken: Lehrende und Personen ohne Mappe hören bei artefakt_pruefen(leitfaden) den Satz zur Mappe', async () => {
+    const { h } = await amKurstag();
+    const lehrende = await client(h, await accessToken(h, 1000, 'lehrende'));
+    const l = await lehrende.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(l.isError).toBe(true);
+    expect(text(l)).toMatch(/Lehrende-Ansicht/);
+    h.abh.umgebung.zugang.test.studierende.push({ githubId: 1003, kuerzel: 'neu' });
+    const ohne = await client(h, await accessToken(h, 1003));
+    const o = await ohne.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(o.isError).toBe(true);
+    expect(text(o)).toBe(KEINE_MAPPE);
+  });
+
+  it('vor dem Aufdecken: ohne Mappe fragt artefakt_pruefen gar nicht erst nach dem Aufdecken', async () => {
+    const { h } = await amKurstag();
+    h.abh.umgebung.zugang.test.studierende.push({ githubId: 1003, kuerzel: 'neu' });
+    const ohne = await client(h, await accessToken(h, 1003));
+    const get = vi.spyOn(h.abh.cache, 'get');
+    await ohne.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(get.mock.calls.filter(([k]) => k.startsWith('aufgedeckt:'))).toStrictEqual([]);
+  });
+
+  it('vor dem Aufdecken: andere Methoden und Artefakte bleiben offen', async () => {
+    const { c } = await amKurstag();
+    const m = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'annahmen' } });
+    expect(m.structuredContent).toHaveProperty('pruefliste');
+    const p = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
+    expect(p.isError).toBeFalsy();
+    const l = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'leitfaden' } });
+    expect(l.isError).toBeFalsy();
+  });
+
+  it('nach dem Aufdecken (MOM_TEST_GRUPPE, heute): Prüfliste frei', async () => {
+    const { h, c } = await amKurstag();
+    await aufdecken(h);
+    const m = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } });
+    expect((m.structuredContent as { pruefliste: unknown[] }).pruefliste).toStrictEqual(interview.pruefliste!.map((p) => ({ id: p.id, text: p.text })));
+    expect(m.structuredContent).not.toHaveProperty('prueflisteGesperrt');
+    const p = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(p.isError).toBeFalsy();
+    expect((p.structuredContent as { pruefpunkte: unknown[] }).pruefpunkte).toHaveLength(interview.pruefliste!.length);
+    expect(p.structuredContent).not.toHaveProperty('gesperrt');
+    expect(p.structuredContent).toHaveProperty('vorhanden', true);
+  });
+
+  it('eine frühere Mom-Test-Übung (eigene Gruppe) oder ein Aufdecken von gestern öffnet sie nicht', async () => {
+    const { h, c } = await amKurstag();
+    await aufdecken(h, 'mom-test-auftakt');
+    await aufdecken(h, MOM_TEST_GRUPPE, VORMITTAG - 24 * 3600 * 1000);
+    const m = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } });
+    expect(m.structuredContent).not.toHaveProperty('pruefliste');
+  });
+
+  it('ab NACH_MOM_TEST (16:45 in Wien) frei, auch ohne Aufdecken; 16:44 noch zu', async () => {
+    const { c } = await amKurstag(Date.parse('2026-10-22T14:45:00Z'));
+    const m = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } });
+    expect(m.structuredContent).toHaveProperty('pruefliste');
+    const { c: frueh } = await amKurstag(Date.parse('2026-10-22T14:44:00Z'));
+    const f = await frueh.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } });
+    expect(f.structuredContent).not.toHaveProperty('pruefliste');
+  });
+
+  it('Lehrende sehen die Prüfliste immer', async () => {
+    const { c } = await amKurstag(VORMITTAG, { githubId: 1000, rolle: 'lehrende' });
+    const m = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } });
+    expect(m.structuredContent).toHaveProperty('pruefliste');
+  });
+
+  it('Cache-Ausfall beim Nachsehen: lieber zu (und ins Log), die Werkzeuge antworten trotzdem', async () => {
+    const { h, c } = await amKurstag();
+    await aufdecken(h);
+    const echt = h.abh.cache.get.bind(h.abh.cache);
+    vi.spyOn(h.abh.cache, 'get').mockImplementation((k) => (k.startsWith('aufgedeckt:') ? Promise.reject(new Error('cache weg')) : echt(k)));
+    const fehler = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const m = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } });
+    expect(m.isError).toBeFalsy();
+    expect(m.structuredContent).not.toHaveProperty('pruefliste');
+    expect(fehler).toHaveBeenCalled();
   });
 });

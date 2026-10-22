@@ -4,7 +4,9 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
+import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
+import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
 import { METHODEN, TAGE, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
@@ -85,7 +87,11 @@ const PRUEFEN = {
   outputSchema: {
     artefakt: ARTEFAKT_ENUM,
     titel: z.string(),
-    vorhanden: z.boolean(),
+    vorhanden: z.boolean().optional().describe('Ob das Artefakt gespeichert ist; fehlt, solange die Prüfliste gesperrt ist.'),
+    gesperrt: z
+      .literal(true)
+      .optional()
+      .describe('Die Prüfliste verrät die Lösung einer Übung und ist noch zu: keine Prüfpunkte, nichts prüfen; anleitung sagt, wann es weitergeht.'),
     pruefpunkte: z.array(PRUEFPUNKT).describe('Die zu prüfenden Punkte; mit pruefpunkt nur dieser eine.'),
     vorarbeit: z
       .array(z.object({ artefakt: ARTEFAKT_ENUM, titel: z.string(), vorhanden: z.boolean() }))
@@ -376,6 +382,34 @@ function tagLesen(tag: number | string | null | undefined): number | undefined {
   return n;
 }
 
+// Eine Prüfliste, die die Lösung einer Übung verrät (prueflisteNach, z. B. die Interview-Methode und der Mom Test), gibt der
+// Connector erst frei wie die Seite und der Leitfaden-Editor (gruppeFrei): sobald Markus die Gruppe aufgedeckt hat –
+// derselbe Runtime-Cache-Eintrag wie api/aufgedeckt.ts, je Wiener Kalendertag – oder die Zeit vorbei ist; Lehrende immer.
+// Der Satz nennt das Werkzeug, das Claude nach dem Aufdecken noch einmal aufrufen soll.
+const kommtNachDerUebung = (m: Methode, werkzeug: string) =>
+  `Kommt nach der Übung: Die Prüfliste von „${m.name}“ verrät die Lösung der Übung. Sie ist frei, sobald Markus sie aufdeckt, spätestens ${abText(m.prueflisteNach!.ab)}. Bis dahin prüfst du nichts dagegen und nennst ihre Regeln nicht. Sobald Markus die Übung aufgedeckt hat, ruf ${werkzeug} noch einmal auf.`;
+
+// Hat Markus die Gruppe heute aufgedeckt? [gruppe] oder []; wie aufgedecktHolen für gruppeFrei.
+async function heuteAufgedeckt(k: WerkzeugKontext, gruppe: string, jetzt: Date): Promise<string[]> {
+  try {
+    return (await k.abh.cache.get(aufgedecktSchluessel(gruppe, jetzt))) ? [gruppe] : [];
+  } catch (e) {
+    // Lieber zu als zu früh offen: die Uhrzeit öffnet sie ohnehin.
+    fehlerLoggen('werkstatt-mcp aufgedeckt:', e);
+    return [];
+  }
+}
+
+async function prueflisteFrei(k: WerkzeugKontext, m: Methode): Promise<boolean> {
+  const nach = m.prueflisteNach;
+  if (!nach) return true;
+  const jetzt = new Date(k.abh.jetzt());
+  const immer = k.claims.rolle === 'lehrende';
+  // Öffnen Rolle oder Uhrzeit sie schon, braucht es den Cache nicht.
+  if (gruppeFrei(nach.gruppe, nach.ab, jetzt, [], immer)) return true;
+  return gruppeFrei(nach.gruppe, nach.ab, jetzt, await heuteAufgedeckt(k, nach.gruppe, jetzt), immer);
+}
+
 // --- Registrierung ---
 
 export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): void {
@@ -400,6 +434,10 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
     sicher(k, async () => {
       const m = METHODEN.find((x) => x.slug === slug);
       if (!m) throw new Hinweis(`Diese Methode gibt es nicht. Mögliche Slugs: ${SLUGS.join(', ')}.`);
+      if (!(await prueflisteFrei(k, m))) {
+        const { pruefliste: _zu, ...d } = methodeDaten(k, m);
+        return textErgebnis(`${methodeText(d)}\n\n${kommtNachDerUebung(m, MCP_WERKZEUGE.methodeErklaeren)}`, { ...d, prueflisteGesperrt: true });
+      }
       const d = methodeDaten(k, m);
       return textErgebnis(methodeText(d), d);
     }),
@@ -440,8 +478,15 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
   server.registerTool(MCP_WERKZEUGE.artefaktPruefen, PRUEFEN, ({ artefakt, pruefpunkt }) =>
     sicher(k, async () => {
       const m = methodeZu(artefakt);
-      // Zuerst die Mappe: Lehrende und Personen ohne Mappe hören das vor jedem Hinweis zum Prüfpunkt.
+      // Zuerst die Mappe: Lehrende und Personen ohne Mappe hören das vor jedem Hinweis zu Sperre oder Prüfpunkt.
       const repo = await eigeneMappe(k);
+      // Ohne Prüfliste prüfte Claude mit eigenem Mom-Test-Wissen – das verriete die Übung genauso. Kein Fehlerergebnis:
+      // Die Sperre ist kein Ausfall des Werkzeugs, Clients sollen keinen Fehler anzeigen.
+      if (!(await prueflisteFrei(k, m))) {
+        const titel = ARTEFAKTE[artefakt].titel;
+        const anleitung = kommtNachDerUebung(m, MCP_WERKZEUGE.artefaktPruefen);
+        return textErgebnis([`# Prüfung: ${titel}`, '', anleitung].join('\n'), { artefakt, titel, gesperrt: true, pruefpunkte: [], vorarbeit: [], anleitung });
+      }
       const alle = m.pruefliste ?? [];
       // ChatGPT schickt für ein leeres optionales Argument "" oder null: das heißt „alle Prüfpunkte“.
       // Welche Schreibweisen gelten (feste ID, alte Positions-ID, Nummer), steht bei pruefpunktFinden.
