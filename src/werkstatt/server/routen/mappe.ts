@@ -10,6 +10,7 @@ import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName
 import type { ArtefaktAntwort, FeedbackAntwort, MappeStand, SpeichernAntwort } from '../../vertrag.js';
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme, fehler, json } from '../antwort.js';
+import { commitAutor, kurzeNachricht } from '../commit.js';
 import { feedbackAendern, feedbackHolen } from '../feedback.js';
 import { GithubAusnahme } from '../github/app-token.js';
 import { mitSitzung, type SitzungEnv } from '../sitzung.js';
@@ -26,9 +27,6 @@ const NICHT_LOESCHEN = 'Gespeicherte Entscheidungen lassen sich nicht löschen �
 const NICHT_AENDERN = 'Gespeicherte Entscheidungen lassen sich nicht ändern – ersetze sie stattdessen.';
 // Was an einer gespeicherten Zeile fest ist (alles außer der ID selbst).
 const FESTE_FELDER = ['datum', 'entscheidung', 'grund', 'beleg', 'belegIds', 'belegNotiz', 'ersetzt'] as const;
-const NACHRICHT_HOECHSTENS = 100;
-// Rückhalt: Grapheme können beliebig lang sein (kombinierende Zeichen); mehr UTF-16-Einheiten kommen nie in den Commit.
-const NACHRICHT_EINHEITEN = 300;
 
 // Kaputtes JSON im Repo (z. B. direkt auf GitHub bearbeitet): eigener Satz statt „GitHub nicht erreichbar“.
 function unlesbar(name: ArtefaktName, e: DateiUnlesbar): ApiAusnahme {
@@ -58,21 +56,6 @@ function entscheidungenBleiben(alt: unknown, neu: Record<string, unknown>[]): Fe
     }
   }
   return meldungen;
-}
-
-// Commit-Nachricht: einzeilig, ohne Steuer- und Formatzeichen (z. B. U+202E dreht Text um), höchstens 100 Zeichen
-// nach Graphemen. Der Joiner in Emoji-Folgen (Join_Control) bleibt, sonst zerfiele eine Familie in Einzelpersonen.
-function kurzeNachricht(roh: string): string {
-  const sauber = roh.replace(/(?!\p{Join_Control})[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/g, ' ').trim();
-  let laenge = 0;
-  const behalten: string[] = [];
-  // Lazy über die Grapheme und früh aufhören: lange Eingaben werden nie ganz zerlegt. Nur ganze Grapheme.
-  for (const { segment } of new Intl.Segmenter('de', { granularity: 'grapheme' }).segment(sauber)) {
-    if (behalten.length === NACHRICHT_HOECHSTENS || laenge + segment.length > NACHRICHT_EINHEITEN) break;
-    behalten.push(segment);
-    laenge += segment.length;
-  }
-  return behalten.join('').trim();
 }
 
 function istArtefaktName(x: string): x is ArtefaktName {
@@ -181,8 +164,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     }
     if (!istObjekt(anfrage)) return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
     const a = anfrage;
-    const s = c.get('sitzung');
-    const autor = { name: s.login, email: `${s.githubId}+${s.login}@users.noreply.github.com` };
+    const autor = commitAutor(c.get('sitzung'));
     const kuerzel = m.kuerzel;
     const datum = new Date(abh.jetzt()).toISOString();
     let aenderung: Parameters<typeof feedbackAendern>[2];
@@ -267,8 +249,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     // README.md schreibt der Speicher selbst, aus dem Stand, auf dem der Commit landet.
     const { 'README.md': _ohne, ...dateien } = dateienFuerSpeichern(name, geprueft.daten, '');
 
-    const s = c.get('sitzung');
-    const autor = { name: s.login, email: `${s.githubId}+${s.login}@users.noreply.github.com` };
+    const autor = commitAutor(c.get('sitzung'));
     const kurz = typeof nachricht === 'string' ? kurzeNachricht(nachricht) : '';
     const text = `${ARTEFAKTE[name].titel}: ${kurz || 'gespeichert über die Werkstatt'}`;
 

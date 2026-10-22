@@ -1,40 +1,11 @@
-// Reine Hilfen für das Feedback (NDU-35) in Lehrenden-Ansicht, Editor und „Meine Mappe“: Zeilen zur Auswahl, Zahlen
-// als Text, was „neu“ ist. Nur Text und Daten; das Einsetzen macht React. Keine Noten, keine Punkte.
+// Reine Hilfen für das Feedback (NDU-35) in Lehrenden-Ansicht, Editor und „Meine Mappe“: Zahlen als Text, was „neu“
+// ist. Die Zeilen zur Auswahl stehen in feedback.ts (die Route prüft gegen dieselben). Nur Text und Daten; das
+// Einsetzen macht React. Dazu die Reihenfolge der Anfragen (unten). Keine Noten, keine Punkte.
 import { tagInWien } from '../../lib/kurswahl.js';
-import { BRIEF_ABSCHNITTE, feedbackZaehlen, zeilenName, type FeedbackEintrag, type FeedbackZahlen } from '../feedback.js';
+import { feedbackZaehlen, zeilenName, type FeedbackEintrag, type FeedbackZahlen } from '../feedback.js';
 import { datumAt } from '../render/format.js';
-import type { ArtefaktName, DatenVon } from '../schemas/index.js';
+import type { ArtefaktName } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
-
-export interface ZeilenWahl {
-  wert: string;
-  text: string;
-}
-
-const KURZ = 48;
-function kurz(s: string): string {
-  const t = s.replace(/\s+/g, ' ').trim();
-  const g = [...new Intl.Segmenter('de', { granularity: 'grapheme' }).segment(t)].map((x) => x.segment);
-  return g.length > KURZ ? `${g.slice(0, KURZ).join('').trimEnd()} …` : t;
-}
-const mitText = (id: string, text: string) => ({ wert: id, text: text.trim() ? `${id} · ${kurz(text)}` : id });
-
-/** Zeilen eines Artefakts, zu denen Lehrende Feedback schreiben können: jede Zeile mit ID (beim Brief die Abschnitte),
- *  in der Reihenfolge des Artefakts. daten = mit dem Schema des Editors geprüft; null = nichts gespeichert. */
-export function zeilenAuswahl(name: ArtefaktName, daten: unknown): ZeilenWahl[] {
-  if (name === 'brief') return Object.entries(BRIEF_ABSCHNITTE).map(([wert, text]) => ({ wert, text }));
-  if (daten === null || daten === undefined) return [];
-  switch (name) {
-    case 'entscheidungen':
-      return (daten as DatenVon<'entscheidungen'>).entscheidungen.map((e) => mitText(e.id, e.entscheidung));
-    case 'leitfaden':
-      return (daten as DatenVon<'leitfaden'>).fragen.map((f) => mitText(f.id, f.text));
-    case 'annahmen':
-      return (daten as DatenVon<'annahmen'>).annahmen.map((a) => mitText(a.id, a.text));
-    case 'interviews':
-      return (daten as DatenVon<'interviews'>).interviews.flatMap((iv) => [mitText(iv.id, iv.pseudonym), ...iv.zitate.map((z) => mitText(z.id, z.text))]);
-  }
-}
 
 /** „zu A2“, „zu Welches Problem?“ oder „zum ganzen Artefakt“. */
 export function bezugText(e: Pick<FeedbackEintrag, 'artefakt' | 'zeilenId'>): string {
@@ -73,4 +44,93 @@ export function neueIds(eintraege: readonly FeedbackEintrag[], name: ArtefaktNam
 /** Pfad zum Schreiben für Lehrende. */
 export function lehrendeFeedbackPfad(kohorte: string, person: string): string {
   return `${ROUTEN.lehrendeFeedback.pfad}?${new URLSearchParams({ kohorte, person }).toString()}`;
+}
+
+// --- Reihenfolge und laufende Änderungen (Editor und „Meine Mappe“) ----------------------------------------------------
+
+/** Jede Anfrage zieht beim Start eine Nummer; ihre Antwort gilt nur, wenn noch keine später gestartete übernommen ist.
+ *  So überschreibt eine langsame alte Antwort nie einen neueren Stand. Scheitert die neuere, gilt die ältere weiter. */
+export function reihenfolge(): { start: () => number; uebernehmen: (nr: number) => boolean } {
+  let gezogen = 0;
+  let uebernommen = 0;
+  return {
+    start: () => ++gezogen,
+    uebernehmen: (nr) => {
+      if (nr <= uebernommen) return false;
+      uebernommen = nr;
+      return true;
+    },
+  };
+}
+
+export interface LaufendeAenderungen {
+  merken: <T>(p: Promise<T>) => Promise<T>;
+  ruhig: () => Promise<void>;
+}
+
+/** Was gerade am Feedback geändert wird (gesehen, erledigt, Antwort), über alle Editoren der Seite. ruhig() wartet, bis
+ *  nichts mehr läuft, auch auf das, was währenddessen dazukommt. Scheitern zählt wie fertig. */
+export function laufendeAenderungen(): LaufendeAenderungen {
+  const laufend = new Set<Promise<unknown>>();
+  return {
+    merken(p) {
+      laufend.add(p);
+      const weg = () => { laufend.delete(p); };
+      p.then(weg, weg);
+      return p;
+    },
+    async ruhig() {
+      while (laufend.size > 0) await Promise.allSettled([...laufend]);
+    },
+  };
+}
+
+// Eine für die ganze Seite: Editoren merken sich hier, „Meine Mappe“ wartet darauf.
+export const feedbackAenderungen = laufendeAenderungen();
+
+/** Im Editor: Antworten des Servers (Laden, gesehen, erledigt, Antwort) in der Reihenfolge des Starts übernehmen; jede
+ *  Anfrage zählt als laufende Änderung. Eine späte Antwort auf „gesehen“ überschreibt so kein späteres „erledigt“. */
+export function geordnet(setzen: (e: FeedbackEintrag[]) => void, aenderungen: LaufendeAenderungen = feedbackAenderungen) {
+  const r = reihenfolge();
+  return <T extends { eintraege: FeedbackEintrag[] }>(p: Promise<T>): Promise<T> => {
+    const nr = r.start();
+    return aenderungen.merken(p).then((x) => {
+      if (r.uebernehmen(nr)) setzen(x.eintraege);
+      return x;
+    });
+  };
+}
+
+/** „Meine Mappe“: Feedback neu laden, erst wenn keine Änderung mehr läuft (sonst stünde nach dem Schließen des Editors
+ *  noch „neu“ da, weil „gesehen“ erst gleich ankommt); ältere Antworten fallen weg. Nach bestem Bemühen: scheitert es,
+ *  bleibt der alte Stand. */
+export function feedbackLader(holen: () => Promise<FeedbackEintrag[]>, setzen: (e: FeedbackEintrag[]) => void, aenderungen: LaufendeAenderungen = feedbackAenderungen): () => Promise<void> {
+  const r = reihenfolge();
+  return async () => {
+    const nr = r.start();
+    try {
+      await aenderungen.ruhig();
+      const e = await holen();
+      if (r.uebernehmen(nr)) setzen(e);
+    } catch {
+      // still
+    }
+  };
+}
+
+/** Ein Knopf, eine Anfrage: Solange die eigene läuft, tut ein weiterer Klick nichts, auch der zweite im selben Takt, bevor
+ *  React den Knopf gesperrt hat. melden setzt den Zustand für disabled. */
+export function einzeln(melden: (laeuft: boolean) => void): (f: () => Promise<unknown>) => Promise<void> {
+  let laeuft = false;
+  return async (f) => {
+    if (laeuft) return;
+    laeuft = true;
+    melden(true);
+    try {
+      await f();
+    } finally {
+      laeuft = false;
+      melden(false);
+    }
+  };
 }

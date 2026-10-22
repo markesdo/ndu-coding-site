@@ -1242,6 +1242,20 @@ describe('Feedback der Lehrenden im Connector', () => {
     expect(text(a)).toContain('## Feedback der Lehrenden (kein Prüfbefund)');
   });
 
+  it('artefakt_pruefen, Artefakt noch leer, aber mit Feedback: Anleitung sagt trotzdem, wie mit dem Feedback umzugehen ist', async () => {
+    const h = await aufbau();
+    await mitFeedback(h);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'brief' } });
+    expect(r.isError).toBeFalsy();
+    const sc = r.structuredContent as { anleitung: string; vorhanden: boolean };
+    expect(sc.vorhanden).toBe(false);
+    expect(sc.anleitung.startsWith(ANLEITUNG_LEER)).toBe(true);
+    expect(sc.anleitung).toMatch(/nie als eigenen Befund/);
+    expect(sc.anleitung).toMatch(/schreib selbst kein Feedback/);
+    expect(text(r)).toContain('- FB2: markus zum ganzen Artefakt');
+  });
+
   it('ohne Feedback: kein Abschnitt, kein feedback-Schlüssel, Anleitung ohne den Satz', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));

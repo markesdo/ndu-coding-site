@@ -10,7 +10,7 @@ import type { FeedbackEintrag } from '../feedback.js';
 import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
-import { mappeFeedback } from './feedback-hilfen.js';
+import { feedbackLader, mappeFeedback } from './feedback-hilfen.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
 import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, lehrendenSeiteSetzen, anmeldeFehler, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
@@ -51,10 +51,9 @@ export default function MappeUebersicht() {
   // Feedback der Lehrenden (NDU-35) je Zeile; null = (noch) nicht geladen – dann steht einfach nichts da.
   const [feedback, setFeedback] = useState<FeedbackEintrag[] | null>(null);
 
-  // Nach bestem Bemühen und neben der Mappe her: scheitert es, fehlt nur der Hinweis.
-  function feedbackLaden(): void {
-    api.feedback().then((r) => setFeedback(r.eintraege), () => {});
-  }
+  // Nach bestem Bemühen und neben der Mappe her: scheitert es, fehlt nur der Hinweis. Wartet auf laufende Änderungen
+  // (etwa „gesehen“ aus dem eben geschlossenen Editor); nur die zuletzt gestartete Antwort zählt (feedbackLader).
+  const [feedbackLaden] = useState(() => feedbackLader(async () => (await api.feedback()).eintraege, setFeedback));
 
   // Angemeldet und geladen: eine alte Meldung aus ?fehler gilt nicht mehr, auch nicht nach dem Neuladen der Seite.
   function meldungErledigt(): void {
@@ -77,7 +76,7 @@ export default function MappeUebersicht() {
       if (mein !== lauf.current) return;
       setVersuche(0);
       setZustand({ typ: 'bereit', ich, stand });
-      feedbackLaden();
+      void feedbackLaden();
       meldungErledigt();
     } catch (e) {
       if (mein !== lauf.current) return;
@@ -168,7 +167,7 @@ export default function MappeUebersicht() {
   // Nur der Stand der Mappe; die Person (ich) bleibt. Scheitert es, übernimmt das volle Laden die Fehleranzeige.
   async function standNeu(): Promise<void> {
     const mein = ++lauf.current;
-    feedbackLaden();
+    void feedbackLaden();
     try {
       const stand = await api.mappe();
       if (mein !== lauf.current) return;

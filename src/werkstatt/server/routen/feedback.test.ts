@@ -111,6 +111,37 @@ describe('Lehrende schreiben Feedback', () => {
     expect(await t.datei()).toBeNull();
   });
 
+  it('kaputtes JSON oder kein Objekt → 422, ohne GitHub zu lesen', async () => {
+    const werkstattJson = vi.fn();
+    const t = await aufbau({ speicher: (fake) => ({ werkstattJson: (repo) => { werkstattJson(repo); return fake.werkstattJson(repo); } }) });
+    const pfad = '/api/werkstatt/lehrende/feedback?kohorte=2026&person=sofie';
+    const kaputt = await t.anfrage('POST', pfad, MARKUS, undefined, { Origin: BASIS, 'Content-Type': 'application/json' });
+    expect(kaputt.status).toBe(422);
+    for (const body of [null, ['annahmen'], 'annahmen', 42]) {
+      const r = await t.schreiben(MARKUS, body);
+      expect(r.status, JSON.stringify(body)).toBe(422);
+      expect((await r.json()).fehler).toBe('Die Anfrage ist unvollständig.');
+    }
+    expect(werkstattJson).not.toHaveBeenCalled();
+    expect(await t.datei()).toBeNull();
+  });
+
+  it('Zeile, die es im Artefakt gerade nicht gibt → 422 mit Satz; vorhandene Zeile und Brief-Abschnitt gehen', async () => {
+    const t = await aufbau();
+    // Sofies Annahmen haben A1–A4.
+    const r = await t.schreiben(MARKUS, { ...A2, zeilenId: 'A9' });
+    expect(r.status).toBe(422);
+    expect((await r.json()).fehler).toBe('A9 gibt es in Annahmen-Map gerade nicht (vielleicht inzwischen gelöscht). Neu laden.');
+    // Noch nicht gespeichertes Artefakt: keine Zeile, nur das ganze Artefakt.
+    const leer = await t.schreiben(MARKUS, { artefakt: 'leitfaden', zeilenId: 'F1', text: 'x' });
+    expect(leer.status).toBe(422);
+    expect((await leer.json()).fehler).toBe('F1 gibt es in Interviewleitfaden gerade nicht (vielleicht inzwischen gelöscht). Neu laden.');
+    expect(await t.datei()).toBeNull();
+    expect((await t.schreiben(MARKUS, { ...A2, zeilenId: 'A4' })).status).toBe(200);
+    expect((await t.schreiben(MARKUS, { artefakt: 'brief', zeilenId: 'problem', text: 'x' })).status).toBe(200);
+    expect((await t.datei() as { eintraege: { zeilenId?: string }[] }).eintraege.map((e) => e.zeilenId)).toStrictEqual(['A4', 'problem']);
+  });
+
   it('ohne Origin → 403 csrf', async () => {
     const t = await aufbau();
     const r = await t.anfrage('POST', '/api/werkstatt/lehrende/feedback?kohorte=2026&person=sofie', MARKUS, A2, {});

@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import annahmenBeispiel from '../beispiele/annahmen.json';
 import entscheidungenBeispiel from '../beispiele/entscheidungen.json';
 import interviewsBeispiel from '../beispiele/interviews.json';
 import leitfadenBeispiel from '../beispiele/leitfaden.json';
-import { antworten, erledigtSetzen, feedbackLeer, feedbackSchreiben, gesehenSetzen, type Feedback } from '../feedback';
-import { bezugText, feedbackDatum, lehrendeFeedbackPfad, mappeFeedback, neueIds, zeilenAuswahl, zellenFeedback } from './feedback-hilfen';
+import { antworten, erledigtSetzen, feedbackLeer, feedbackSchreiben, gesehenSetzen, zeilenAuswahl, type Feedback, type FeedbackEintrag } from '../feedback';
+import { bezugText, einzeln, feedbackDatum, feedbackLader, geordnet, laufendeAenderungen, lehrendeFeedbackPfad, mappeFeedback, neueIds, reihenfolge, zellenFeedback } from './feedback-hilfen';
 import { zelle, zellenLabel } from './lehrenden-hilfen';
 
 const D = '2026-10-22T22:30:00.000Z';
@@ -70,5 +70,117 @@ describe('„neu“ und offen für die Studierenden', () => {
     expect([...neueIds(f.eintraege, 'annahmen')]).toStrictEqual(['FB1', 'FB3']);
     expect([...neueIds(gesehenSetzen(f, 'annahmen').eintraege, 'annahmen')]).toStrictEqual([]);
     expect([...neueIds(gesehenSetzen(f, 'annahmen').eintraege, 'brief')]).toStrictEqual(['FB2']);
+  });
+});
+
+// Von außen gesteuertes Versprechen: die Tests bestimmen, welche Antwort wann ankommt.
+function gesteuert<T>() {
+  let erfuellen!: (x: T) => void;
+  let ablehnen!: (e: unknown) => void;
+  const p = new Promise<T>((a, b) => { erfuellen = a; ablehnen = b; });
+  return { p, erfuellen, ablehnen };
+}
+const takt = () => new Promise((r) => setTimeout(r, 0));
+const stand = (text: string): FeedbackEintrag[] => [{ id: 'FB1', artefakt: 'annahmen', von: 'lehrende', autor: 'markus', text, datum: D }];
+
+describe('Reihenfolge der Antworten (Editor und „Meine Mappe“)', () => {
+  it('reihenfolge: eine ältere Antwort nach einer neueren fällt weg; scheitert die neuere, gilt die ältere', () => {
+    const r = reihenfolge();
+    const a = r.start();
+    const b = r.start();
+    expect(r.uebernehmen(b)).toBe(true);
+    expect(r.uebernehmen(a)).toBe(false);
+    const c = r.start();
+    r.start(); // scheitert, kommt nie an
+    expect(r.uebernehmen(c)).toBe(true);
+  });
+
+  it('Editor: späte Antwort auf „gesehen“ überschreibt kein späteres „erledigt“', async () => {
+    const gesetzt: string[] = [];
+    const anwenden = geordnet((e) => gesetzt.push(e[0].text), laufendeAenderungen());
+    const gesehen = gesteuert<{ eintraege: FeedbackEintrag[] }>();
+    const erledigt = gesteuert<{ eintraege: FeedbackEintrag[] }>();
+    const g = anwenden(gesehen.p);
+    const e = anwenden(erledigt.p);
+    erledigt.erfuellen({ eintraege: stand('erledigt') });
+    await e;
+    gesehen.erfuellen({ eintraege: stand('gesehen, ohne erledigt') });
+    await g;
+    expect(gesetzt).toStrictEqual(['erledigt']);
+  });
+
+  it('laufendeAenderungen: ruhig() wartet auf alles, auch was währenddessen dazukommt; Scheitern zählt wie fertig', async () => {
+    const l = laufendeAenderungen();
+    const a = gesteuert<void>();
+    const b = gesteuert<void>();
+    l.merken(a.p);
+    let fertig = false;
+    void l.ruhig().then(() => { fertig = true; });
+    l.merken(b.p).catch(() => {});
+    a.erfuellen();
+    await takt();
+    expect(fertig).toBe(false);
+    b.ablehnen(new Error('weg'));
+    await takt();
+    expect(fertig).toBe(true);
+  });
+
+  it('„Meine Mappe“ lädt nach dem Schließen erst, wenn „gesehen“ angekommen ist', async () => {
+    const l = laufendeAenderungen();
+    const gesehen = gesteuert<{ eintraege: FeedbackEintrag[] }>();
+    // Der Editor hat „gesehen“ geschickt, die Antwort steht noch aus.
+    const anwenden = geordnet(() => {}, l);
+    const g = anwenden(gesehen.p);
+    let server = 'neu';
+    const holen = vi.fn(async () => stand(server));
+    const gesetzt: string[] = [];
+    const laden = feedbackLader(holen, (e) => gesetzt.push(e[0].text), l);
+    const fertig = laden();
+    await takt();
+    expect(holen).not.toHaveBeenCalled();
+    server = 'gesehen';
+    gesehen.erfuellen({ eintraege: stand('gesehen') });
+    await g;
+    await fertig;
+    expect(holen).toHaveBeenCalledTimes(1);
+    expect(gesetzt).toStrictEqual(['gesehen']);
+  });
+
+  it('„Meine Mappe“: zwei Ladevorgänge, der ältere kommt zuletzt an und fällt weg; Fehler bleiben still', async () => {
+    const antworten_ = [gesteuert<FeedbackEintrag[]>(), gesteuert<FeedbackEintrag[]>(), gesteuert<FeedbackEintrag[]>()];
+    let i = 0;
+    const gesetzt: string[] = [];
+    const laden = feedbackLader(() => antworten_[i++].p, (e) => gesetzt.push(e[0].text), laufendeAenderungen());
+    const alt = laden();
+    const neu = laden();
+    await takt();
+    antworten_[1].erfuellen(stand('neu'));
+    await neu;
+    antworten_[0].erfuellen(stand('alt'));
+    await alt;
+    expect(gesetzt).toStrictEqual(['neu']);
+    const kaputt = laden();
+    await takt();
+    antworten_[2].ablehnen(new Error('Netz weg'));
+    await expect(kaputt).resolves.toBeUndefined();
+    expect(gesetzt).toStrictEqual(['neu']);
+  });
+
+  it('einzeln: solange die eigene Anfrage läuft, tut ein zweiter Klick nichts; danach wieder frei', async () => {
+    const gemeldet: boolean[] = [];
+    const klick = einzeln((x) => gemeldet.push(x));
+    const a = gesteuert<void>();
+    const f = vi.fn(() => a.p);
+    const erster = klick(f);
+    const zweiter = klick(f);
+    // Noch vor jeder Antwort: der zweite Klick hat nichts ausgelöst.
+    expect(f).toHaveBeenCalledTimes(1);
+    expect(gemeldet).toStrictEqual([true]);
+    a.erfuellen();
+    await Promise.all([erster, zweiter]);
+    expect(gemeldet).toStrictEqual([true, false]);
+    await klick(async () => {});
+    expect(f).toHaveBeenCalledTimes(1);
+    expect(gemeldet).toStrictEqual([true, false, true, false]);
   });
 });

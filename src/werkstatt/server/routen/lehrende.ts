@@ -6,12 +6,13 @@
 // Die Matrix trägt nur Stand, Umfang, Verlauf und Lücken; den Inhalt holt der Leser erst beim Öffnen (GET /artefakt).
 // GitHub pro Mappe in der Matrix: werkstatt.json, alle fünf Artefakt-Dateien (Lücken wie verknuepfungen_pruefen im
 // Connector), feedback.json und je Spalte der Kohorte eine Seite Commit-Liste (bei fünf Artefakten 12).
-// Leser: werkstatt.json + Artefakt + feedback.json.
+// Leser: werkstatt.json + Artefakt + feedback.json. Feedback schreiben: werkstatt.json, bei einer Zeile das Artefakt,
+// dann feedback.json.
 import { Hono, type Context } from 'hono';
 import { ARTEFAKTE as KURS_ARTEFAKTE } from '../../../components/methoden.js';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { KOHORTEN, kohorte as kohorteNachId, werkstattArtefakte, type Kohorte } from '../../kohorten/index.js';
-import { feedbackSchreiben, feedbackZaehlen, type Feedback } from '../../feedback.js';
+import { feedbackSchreiben, feedbackZaehlen, zeilenAuswahl, zeilePasst, type Feedback } from '../../feedback.js';
 import { bezugBestimmen, verlaufZaehlen } from '../../lehrende.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName } from '../../schemas/index.js';
 import { artefaktStand, faelligBis, faelligZuTag, kurstagBestimmen } from '../../tag-stand.js';
@@ -19,6 +20,7 @@ import { verknuepfungenPruefen, type MappeDaten } from '../../verknuepfungen.js'
 import type { FeedbackAntwort, LehrendenAnsicht, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../../vertrag.js';
 import { mitgliedschaften, repoName } from '../../zugang.js';
 import { fehler, json } from '../antwort.js';
+import { commitAutor, kurzeNachricht } from '../commit.js';
 import { feedbackAendern, feedbackHolen } from '../feedback.js';
 import { mitSitzung, type SitzungEnv } from '../sitzung.js';
 import { DateiUnlesbar } from '../speicher-fehler.js';
@@ -214,20 +216,36 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     } catch {
       anfrage = null;
     }
-    const a = istObjekt(anfrage) ? anfrage : {};
+    // Kaputtes JSON oder kein Objekt: gleich ablehnen, vor jedem Lesen auf GitHub.
+    if (!istObjekt(anfrage)) return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
+    const a = anfrage;
     const ziel = await personUndRepo(c, typeof a.artefakt === 'string' ? a.artefakt : '');
     if (ziel instanceof Response) return ziel;
-    if (!istObjekt(anfrage)) return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
     const { repo, n } = ziel;
+    // Zeile mit passender Form (D3, A2 …): Gibt es sie im Artefakt gerade? Geprüft gegen dieselbe Liste wie die Auswahl
+    // im Leser (zeilenAuswahl). Falsche Form lehnt feedbackSchreiben mit eigenem Satz ab.
+    const zeilenId = typeof a.zeilenId === 'string' && a.zeilenId !== '' ? a.zeilenId : undefined;
+    if (zeilenId !== undefined && zeilePasst(n, zeilenId)) {
+      let daten: unknown;
+      try {
+        // Beim Brief stehen die Abschnitte fest: nichts zu lesen.
+        daten = n === 'brief' ? null : (await laden(repo, n)).daten;
+      } catch (e) {
+        console.error('werkstatt: Lehrenden-Feedback – Artefakt nicht lesbar –', e instanceof Error ? `${e.name}: ${e.message}` : 'Fehler');
+        return fehler(c, 502, 'github-fehler', NICHT_LESBAR);
+      }
+      if (!zeilenAuswahl(n, daten === 'unlesbar' ? null : daten).some((z) => z.wert === zeilenId)) {
+        return fehler(c, 422, 'ungueltig', `${zeilenId} gibt es in ${ARTEFAKTE[n].titel} gerade nicht (vielleicht inzwischen gelöscht). Neu laden.`);
+      }
+    }
     const s = c.get('sitzung');
-    const autor = { name: s.login, email: `${s.githubId}+${s.login}@users.noreply.github.com` };
-    const zeile = typeof a.zeilenId === 'string' && a.zeilenId !== '' ? ` (${a.zeilenId.slice(0, 20)})` : '';
+    const zeile = zeilenId !== undefined ? ` (${zeilenId.slice(0, 20)})` : '';
     const danach = await feedbackAendern(
       abh.speicher,
       repo,
       (f) => feedbackSchreiben(f, { artefakt: n, zeilenId: a.zeilenId, text: a.text, autor: s.login, datum: new Date(abh.jetzt()).toISOString() }),
-      autor,
-      `Feedback von ${s.login}: ${ARTEFAKTE[n].titel}${zeile}`.replace(/[\p{Cc}\p{Cf}]/gu, ' '),
+      commitAutor(s),
+      kurzeNachricht(`Feedback von ${s.login}: ${ARTEFAKTE[n].titel}${zeile}`),
     );
     const antwort: FeedbackAntwort = { eintraege: danach.eintraege.filter((e) => e.artefakt === n) };
     return json(c, antwort);

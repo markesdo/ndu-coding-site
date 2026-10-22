@@ -526,7 +526,8 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const titel = ARTEFAKTE[artefakt].titel;
       const anleitung = a
         ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => v.inhalt === null), feedback: !!fb?.length })
-        : ANLEITUNG_LEER;
+        // Noch leer, aber schon Feedback (etwa zum ganzen Brief): der Satz dazu gilt auch hier.
+        : fb?.length ? `${ANLEITUNG_LEER} ${FEEDBACK_ANLEITUNG}` : ANLEITUNG_LEER;
       const vorarbeitText = vorarbeit.flatMap((v) => [
         '',
         `## Vorarbeit zum Abgleich: ${ARTEFAKTE[v.name].titel} (${v.name})`,

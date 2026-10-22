@@ -5,7 +5,7 @@
 // Änderungen auf dem Stand auf, auf dem der Commit landet (Speicher.feedbackAendern) – so bleibt jeder Eintrag erhalten,
 // auch wenn Lehrende und Studierende gleichzeitig schreiben. Keine Noten, keine Punkte.
 import { z } from 'zod';
-import { ARTEFAKT_NAMEN, ARTEFAKTE, type ArtefaktName } from './schemas/index.js';
+import { ARTEFAKT_NAMEN, ARTEFAKTE, type ArtefaktName, type DatenVon } from './schemas/index.js';
 import { graphemAnzahl } from './text.js';
 
 export const FEEDBACK_PFAD = 'mappe/feedback.json';
@@ -43,6 +43,37 @@ export function zeilePasst(artefakt: ArtefaktName, zeilenId: string): boolean {
 /** „A2“ oder beim Brief der Titel des Abschnitts („Welches Problem?“). */
 export function zeilenName(artefakt: ArtefaktName, zeilenId: string): string {
   return artefakt === 'brief' && Object.hasOwn(BRIEF_ABSCHNITTE, zeilenId) ? BRIEF_ABSCHNITTE[zeilenId as BriefAbschnitt] : zeilenId;
+}
+
+export interface ZeilenWahl {
+  wert: string;
+  text: string;
+}
+
+const KURZ = 48;
+function kurz(s: string): string {
+  const t = s.replace(/\s+/g, ' ').trim();
+  const g = [...new Intl.Segmenter('de', { granularity: 'grapheme' }).segment(t)].map((x) => x.segment);
+  return g.length > KURZ ? `${g.slice(0, KURZ).join('').trimEnd()} …` : t;
+}
+const mitText = (id: string, text: string) => ({ wert: id, text: text.trim() ? `${id} · ${kurz(text)}` : id });
+
+/** Zeilen eines Artefakts, zu denen Lehrende Feedback schreiben können: jede Zeile mit ID (beim Brief die Abschnitte),
+ *  in der Reihenfolge des Artefakts. Dieselbe Liste für die Auswahl im Leser und die Prüfung der Route.
+ *  daten = mit dem Schema des Editors geprüft; null = nichts gespeichert. */
+export function zeilenAuswahl(name: ArtefaktName, daten: unknown): ZeilenWahl[] {
+  if (name === 'brief') return Object.entries(BRIEF_ABSCHNITTE).map(([wert, text]) => ({ wert, text }));
+  if (daten === null || daten === undefined) return [];
+  switch (name) {
+    case 'entscheidungen':
+      return (daten as DatenVon<'entscheidungen'>).entscheidungen.map((e) => mitText(e.id, e.entscheidung));
+    case 'leitfaden':
+      return (daten as DatenVon<'leitfaden'>).fragen.map((f) => mitText(f.id, f.text));
+    case 'annahmen':
+      return (daten as DatenVon<'annahmen'>).annahmen.map((a) => mitText(a.id, a.text));
+    case 'interviews':
+      return (daten as DatenVon<'interviews'>).interviews.flatMap((iv) => [mitText(iv.id, iv.pseudonym), ...iv.zitate.map((z) => mitText(z.id, z.text))]);
+  }
 }
 
 const FEEDBACK_ID = /^FB[1-9][0-9]*$/;

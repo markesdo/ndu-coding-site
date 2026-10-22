@@ -293,6 +293,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     void laden();
   }
   const status = statusText(zustand, dirty);
+  // Formular und Feedback erst, wenn die eigene Mappe geladen ist (nicht beim Laden, abgemeldet, im Einrichten, Ladefehler).
+  const inhaltSichtbar = daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && zustand !== 'ladefehler';
   const kannSpeichern = daten !== null && !anzeigeKaputt && pruefung.erlaubt && aelterEntwurf === null && darfSpeichern(zustand);
   const ersteMeldung = pruefung.fehler[0];
 
@@ -385,9 +387,9 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
             )}
 
             {/* Feedback der Lehrenden (NDU-35): erst, wenn die eigene Mappe geladen ist; ohne Feedback nichts. */}
-            {daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && zustand !== 'ladefehler' && <StudierendenFeedback name={name} />}
+            {inhaltSichtbar && <StudierendenFeedback name={name} />}
 
-            {daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && zustand !== 'ladefehler' && (
+            {inhaltSichtbar && (
               <div className="wk-inhalt">
                 <fieldset className="wk-formular" disabled={zustand === 'speichert' || aelterEntwurf !== null}>
                   <legend className="wk-nur-leser">{titel} bearbeiten</legend>

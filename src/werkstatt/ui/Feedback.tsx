@@ -4,11 +4,11 @@
 import { Check, CircleCheck, CircleDot, MessageSquare, MessageSquareReply, RotateCcw, Send } from 'lucide-react';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { namenHinweis } from '../eigennamen.js';
-import { ANTWORT_MAX, FEEDBACK_MAX, faeden, type FeedbackEintrag, type FeedbackFaden } from '../feedback.js';
+import { ANTWORT_MAX, FEEDBACK_MAX, faeden, zeilenAuswahl, type FeedbackEintrag, type FeedbackFaden } from '../feedback.js';
 import type { ArtefaktName } from '../schemas/index.js';
 import { graphemAnzahl } from '../text.js';
 import { api, ApiError } from './api.js';
-import { bezugText, feedbackDatum, neueIds, zeilenAuswahl } from './feedback-hilfen.js';
+import { bezugText, einzeln, feedbackAenderungen, feedbackDatum, geordnet, neueIds } from './feedback-hilfen.js';
 
 const TEXT = {
   fehltLehrende: 'Das Feedback lässt sich gerade nicht lesen. Schreiben geht erst wieder, wenn es lesbar ist.',
@@ -147,6 +147,9 @@ function Faden({ faden, neu, aendern }: { faden: FeedbackFaden; neu: boolean; ae
   const [offen, setOffen] = useState(false);
   const [text, setText] = useState('');
   const [sendet, setSendet] = useState(false);
+  // „Erledigt“/„Wieder öffnen“: gesperrt, solange die eigene Anfrage läuft (sonst kippte ein Doppelklick es zurück).
+  const [setzt, setSetzt] = useState(false);
+  const [erledigtEinzeln] = useState(() => einzeln(setSetzt));
   const leer = text.trim() === '' || graphemAnzahl(text.trim()) > ANTWORT_MAX;
 
   async function antworten_() {
@@ -165,7 +168,7 @@ function Faden({ faden, neu, aendern }: { faden: FeedbackFaden; neu: boolean; ae
       <Antworten liste={antworten} />
       <div className="fb-knoepfe">
         <Stand f={f} />
-        <button type="button" className="wk-knopf" disabled={sendet} onClick={() => void aendern({ aktion: 'erledigt', id: f.id, erledigt: !f.erledigt })}>
+        <button type="button" className="wk-knopf" disabled={sendet || setzt} aria-busy={setzt} onClick={() => void erledigtEinzeln(() => aendern({ aktion: 'erledigt', id: f.id, erledigt: !f.erledigt }))}>
           {f.erledigt ? <><RotateCcw size={16} aria-hidden="true" /> Wieder öffnen</> : <><Check size={16} aria-hidden="true" /> Erledigt</>}
         </button>
         {!offen && (
@@ -194,27 +197,30 @@ export function StudierendenFeedback({ name }: { name: ArtefaktName }) {
   const [neu, setNeu] = useState<Set<string>>(new Set());
   const [meldung, setMeldung] = useState<string | null>(null);
   const titelId = useId();
+  // Antworten in der Reihenfolge des Starts: Eine späte Antwort auf „gesehen“ überschreibt kein späteres „erledigt“.
+  const [anwenden] = useState(() => geordnet(setEintraege));
 
   useEffect(() => {
     let gilt = true;
-    api.feedback().then(
+    // Laden und „gesehen“ zählen zusammen als laufende Änderung: Schließt die Person den Editor gleich wieder, lädt
+    // „Meine Mappe“ erst danach neu und zeigt nicht mehr „neu“.
+    void feedbackAenderungen.merken(anwenden(api.feedback()).then(
       (r) => {
         if (!gilt) return;
         const n = neueIds(r.eintraege, name);
-        setEintraege(r.eintraege);
         setNeu(n);
         // Nach bestem Bemühen: scheitert es, ist es beim nächsten Öffnen eben noch einmal „neu“.
-        if (n.size > 0) api.feedbackAendern({ aktion: 'gesehen', artefakt: name }).then((x) => { if (gilt) setEintraege(x.eintraege); }, () => {});
+        if (n.size > 0) return anwenden(api.feedbackAendern({ aktion: 'gesehen', artefakt: name })).then(() => {}, () => {});
       },
       () => { if (gilt) setMeldung(TEXT.fehlt); },
-    );
+    ));
     return () => { gilt = false; };
-  }, [name]);
+  }, [name, anwenden]);
 
   async function aendern(a: Parameters<typeof api.feedbackAendern>[0]): Promise<boolean> {
     setMeldung(null);
     try {
-      setEintraege((await api.feedbackAendern(a)).eintraege);
+      await anwenden(api.feedbackAendern(a));
       return true;
     } catch (e) {
       setMeldung(fehlerText(e));
