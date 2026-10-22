@@ -86,16 +86,27 @@ export interface LehrendenArtefakt {
   umfang: string | null;
   fehlt: string[];
   leer: boolean;
-  // Zu welchem Kurstag das Artefakt fällig ist (faelligZuTag in tag-stand.ts).
+  // Zu welchem Kurstag das Artefakt fällig ist (faelligZuTag in tag-stand.ts), und ob es zum Kurstag der Ansicht
+  // (heute oder der nächste) schon fällig ist (faelligBis in tag-stand.ts).
   faelligZuTag: number;
+  faellig: boolean;
   // Commits an mappe/<name>.json seit dem Bezugstag (ab seinem Kalendertag in Wien); ohne Bezugstag alle.
   commits: number;
   // Es gab mehr Commits, als der Speicher liest (commits ist dann die Untergrenze).
   mehr: boolean;
   // Zeitpunkt des letzten Commits (ISO); null = nie gespeichert.
   zuletzt: string | null;
-  // Gerendert wie mappe/<name>.md im Repo und im Connector; null, wenn nicht vorhanden.
-  markdown: string | null;
+}
+
+// Inhalt eines Artefakts für den Leser, erst beim Öffnen geholt (GET /api/werkstatt/lehrende/artefakt).
+export interface LehrendenInhalt {
+  name: ArtefaktName;
+  stand: LehrendenArtefakt['stand'];
+  // Mit dem Schema des Editors geprüft (wie DatenVon<name>); null, wenn offen oder unlesbar.
+  daten: unknown | null;
+  // Nur bei unlesbar, wenn die Datei gültiges JSON ist, aber nicht zum Schema passt: ihr Inhalt als Text (Rückfall im
+  // Leser). Kaputtes JSON liefert der Speicher nicht mit: dann null.
+  roh: string | null;
 }
 
 export type LehrendenMappe =
@@ -118,8 +129,8 @@ export interface LehrendenAnsicht {
   kohorte: string;
   // Aktive Kohorten, in denen die Person lehrt (Auswahl), neueste zuerst.
   kohorten: { id: string; titel: string }[];
-  // Welcher Kurstag dran ist (kurstagBestimmen in tag-stand.ts): heute oder der nächste.
-  kurstag: { tag: number; titel: string; heute: boolean };
+  // Welcher Kurstag dran ist (kurstagBestimmen in tag-stand.ts): heute, der nächste, oder der letzte, wenn der Kurs vorbei ist.
+  kurstag: { tag: number; titel: string; lage: 'heute' | 'naechster' | 'vorbei' };
   // Spalten der Kohorte in Anzeigereihenfolge; hausaufgabe = zwischen zwei Kurstagen (Interviews).
   spalten: { name: ArtefaktName; faelligZuTag: number; hausaufgabe: boolean }[];
   // Kurstage mit Termin bis heute (Auswahl „Änderungen seit …“).
@@ -145,6 +156,8 @@ export const ROUTEN = {
   zahlen: { methode: 'GET', pfad: '/api/werkstatt/zahlen' },
   // Nur Lehrende der Kohorte; ?kohorte=<id>&seit=<Kurstag>, beide optional. 403 für alle anderen.
   lehrende: { methode: 'GET', pfad: '/api/werkstatt/lehrende' },
+  // Inhalt eines Artefakts für den Leser; ?kohorte=<id>&person=<Kürzel>&artefakt=<name>, dieselben Prüfungen.
+  lehrendeArtefakt: { methode: 'GET', pfad: '/api/werkstatt/lehrende/artefakt' },
   mcp: { methode: 'ALL', pfad: '/api/werkstatt/mcp' },
 } as const;
 

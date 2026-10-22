@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
 import briefBeispiel from '../../beispiele/brief.json';
 import interviewsBeispiel from '../../beispiele/interviews.json';
-import { rendern } from '../../render';
 import { artefaktParsen, type ArtefaktName } from '../../schemas';
 import { artefaktStand, faelligZuTag } from '../../tag-stand';
 import { verknuepfungenPruefen } from '../../verknuepfungen';
@@ -30,7 +29,9 @@ afterEach(() => vi.restoreAllMocks());
 
 const ms = (iso: string) => Date.parse(iso);
 const SOFIE_ = (a: { personen: { kuerzel: string; artefakte?: unknown[]; luecken?: unknown[] }[] }) => a.personen.find((p) => p.kuerzel === 'sofie')! as { artefakte: any[]; luecken: any[] };
-const offen = (name: ArtefaktName) => ({ name, stand: 'offen', umfang: null, fehlt: [], leer: false, faelligZuTag: faelligZuTag(name), commits: 0, mehr: false, zuletzt: null, markdown: null });
+// Standard-Uhr 24.10.2026: der nächste Kurstag mit Termin ist Tag 3 (Tag 2 hat keinen).
+const KURSTAG = 3;
+const offen = (name: ArtefaktName) => ({ name, stand: 'offen', umfang: null, fehlt: [], leer: false, faelligZuTag: faelligZuTag(name), faellig: faelligZuTag(name) <= KURSTAG, commits: 0, mehr: false, zuletzt: null });
 
 async function aufbau(opts: { jetzt?: string; speicher?: (fake: Speicher) => Partial<Speicher> } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: ZUGANG };
@@ -128,7 +129,7 @@ describe('GET /api/werkstatt/lehrende – wer darf', () => {
 });
 
 describe('GET /api/werkstatt/lehrende – Inhalt', () => {
-  it('alle Mappen nebeneinander: Stand, Commits seit Tag 1 (Kalendertag in Wien), Markdown, Lücken', async () => {
+  it('alle Mappen nebeneinander: Stand, fällig, Commits seit Tag 1 (Kalendertag in Wien), Lücken – ohne Inhalt', async () => {
     const t = await aufbau();
     const r = await t.holen('/api/werkstatt/lehrende', MARKUS);
     expect(r.status).toBe(200);
@@ -145,14 +146,14 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
     const vorhanden = (name: 'brief' | 'annahmen' | 'interviews', commits: number, zuletzt: string) => {
       const st = artefaktStand(name, daten[name] as never);
       return {
-        name, stand: 'vorhanden', umfang: st.umfang, fehlt: st.fehlt, leer: st.stand === 'leer', faelligZuTag: faelligZuTag(name),
-        commits, mehr: false, zuletzt, markdown: rendern(name, daten[name] as never),
+        name, stand: 'vorhanden', umfang: st.umfang, fehlt: st.fehlt, leer: st.stand === 'leer', faelligZuTag: faelligZuTag(name), faellig: faelligZuTag(name) <= KURSTAG,
+        commits, mehr: false, zuletzt,
       };
     };
     const luecken = verknuepfungenPruefen({ brief: daten.brief, entscheidungen: null, leitfaden: null, annahmen: daten.annahmen, interviews: daten.interviews }).befunde;
     expect(luecken.length).toBeGreaterThan(0);
 
-    expect(a.kurstag).toStrictEqual({ tag: 3, titel: 'Lösung, Story, Prototyp', heute: false });
+    expect(a.kurstag).toStrictEqual({ tag: 3, titel: 'Lösung, Story, Prototyp', lage: 'naechster' });
     expect(a.spalten).toStrictEqual([
       { name: 'brief', faelligZuTag: 2, hausaufgabe: false },
       { name: 'entscheidungen', faelligZuTag: faelligZuTag('entscheidungen'), hausaufgabe: false },
@@ -183,11 +184,16 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
     ]);
   });
 
-  it('Interviews erscheinen wie bei der Person: pseudonymisiert gerendert', async () => {
-    const a = await (await (await aufbau()).holen('/api/werkstatt/lehrende', MARKUS)).json();
-    const iv = SOFIE_(a).artefakte.find((x: { name: string }) => x.name === 'interviews');
-    expect(iv.markdown).toContain(interviewsBeispiel.interviews[0].pseudonym);
-    expect(iv.markdown).toBe(rendern('interviews', parsen('interviews', interviewsBeispiel)));
+  it('Kurstag: heute, als Nächstes, nach dem letzten Termin vorbei', async () => {
+    const heute = await (await (await aufbau({ jetzt: '2026-10-22T15:00:00Z' })).holen('/api/werkstatt/lehrende', MARKUS)).json();
+    expect(heute.kurstag).toStrictEqual({ tag: 1, titel: 'Rahmen & Verstehen', lage: 'heute' });
+    // Am Tag 1 ist noch nichts fällig (alles erst zu Tag 2), ab dem nächsten Kurstag schon.
+    expect(SOFIE_(heute).artefakte.map((x) => x.faellig)).toStrictEqual(NAMEN.map((n) => faelligZuTag(n) <= 1));
+    expect(SOFIE_(heute).artefakte.find((x) => x.name === 'brief')!.faellig).toBe(false);
+    const spaeter = await (await (await aufbau()).holen('/api/werkstatt/lehrende', MARKUS)).json();
+    expect(SOFIE_(spaeter).artefakte.find((x) => x.name === 'brief')!.faellig).toBe(true);
+    const vorbei = await (await (await aufbau({ jetzt: '2027-02-01T10:00:00Z' })).holen('/api/werkstatt/lehrende', MARKUS)).json();
+    expect(vorbei.kurstag).toMatchObject({ tag: 7, lage: 'vorbei' });
   });
 
   it('Lücke aus verknuepfungenPruefen: unbekannte ID in der Annahmen-Map', async () => {
@@ -291,8 +297,74 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
     expect(r.status).toBe(200);
     const a = await r.json();
     const [brief, , annahmen, , interviews] = SOFIE_(a).artefakte;
-    expect(brief).toStrictEqual({ name: 'brief', stand: 'unlesbar', umfang: null, fehlt: [], leer: false, faelligZuTag: 2, commits: 1, mehr: false, zuletzt: '2026-10-21T22:30:00.000Z', markdown: null });
-    expect(interviews).toMatchObject({ name: 'interviews', stand: 'unlesbar', umfang: null, markdown: null, commits: 2 });
+    expect(brief).toStrictEqual({ name: 'brief', stand: 'unlesbar', umfang: null, fehlt: [], leer: false, faelligZuTag: 2, faellig: true, commits: 1, mehr: false, zuletzt: '2026-10-21T22:30:00.000Z' });
+    expect(interviews).toMatchObject({ name: 'interviews', stand: 'unlesbar', umfang: null, commits: 2 });
     expect(annahmen).toMatchObject({ stand: 'vorhanden' });
+  });
+});
+
+describe('GET /api/werkstatt/lehrende/artefakt – Inhalt für den Leser', () => {
+  const pfad = (person: string, artefakt: string, kohorte = '2026') => `/api/werkstatt/lehrende/artefakt?kohorte=${kohorte}&person=${person}&artefakt=${artefakt}`;
+
+  it('Lehrende bekommen die mit dem Editor-Schema geprüften Daten – pseudonymisiert wie bei der Person', async () => {
+    const t = await aufbau();
+    const r = await t.holen(pfad('sofie', 'interviews'), MARKUS);
+    expect(r.status).toBe(200);
+    expect(r.headers.get('cache-control')).toBe('no-store');
+    const a = await r.json();
+    expect(a).toStrictEqual({ name: 'interviews', stand: 'vorhanden', daten: parsen('interviews', interviewsBeispiel), roh: null });
+    expect(a.daten.interviews[0].pseudonym).toBe(interviewsBeispiel.interviews[0].pseudonym);
+    expect(await (await t.holen(pfad('sofie', 'leitfaden'), MARKUS)).json()).toStrictEqual({ name: 'leitfaden', stand: 'offen', daten: null, roh: null });
+  });
+
+  it('Studierende 403 (auch für die eigene Mappe), Lehrende einer anderen Kohorte 403, ohne Anmeldung 401', async () => {
+    const t = await aufbau();
+    expect((await t.holen(pfad('sofie', 'brief'), SOFIE)).status).toBe(403);
+    expect((await t.holen(pfad('sofie', 'brief'), ANDERE)).status).toBe(403);
+    expect((await t.holen(pfad('sofie', 'brief'))).status).toBe(401);
+  });
+
+  it('Person nicht in der Kohorte, unbekanntes Artefakt, noch keine Mappe → 404', async () => {
+    const t = await aufbau();
+    expect((await t.holen(pfad('tom', 'brief'), MARKUS)).status).toBe(404);
+    expect((await t.holen(pfad('sofie', 'quatsch'), MARKUS)).status).toBe(404);
+    expect((await t.holen(pfad('jonas', 'brief'), MARKUS)).status).toBe(404);
+  });
+
+  it('Repo gehört laut werkstatt.json jemand anderem: 409, und gelesen wird nichts', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const gelesen: string[] = [];
+    const t = await aufbau({
+      speicher: (fake) => ({
+        werkstattJson: async (repo) => (repo === '2026-sofie' ? { kohorte: '2026', githubId: 4242 } : fake.werkstattJson(repo)),
+        lesen: async (repo, name) => { gelesen.push(repo); return fake.lesen(repo, name); },
+      }),
+    });
+    const r = await t.holen(pfad('sofie', 'brief'), MARKUS);
+    expect(r.status).toBe(409);
+    expect(gelesen).toStrictEqual([]);
+  });
+
+  it('falsches Format: unlesbar, ohne Daten, mit dem JSON als Rückfall; kaputtes JSON ohne roh', async () => {
+    const t = await aufbau({ speicher: (fake) => ({ lesen: async (repo, name) => { if (name === 'brief') throw new DateiUnlesbar('mappe/brief.json'); return fake.lesen(repo, name); } }) });
+    const alt = await t.fake.lesen('2026-sofie', 'interviews');
+    await t.fake.speichern('2026-sofie', 'interviews', { 'mappe/interviews.json': JSON.stringify({ interviews: 'kaputt' }) }, alt.basisSha, AUTOR, 'x');
+    const iv = await (await t.holen(pfad('sofie', 'interviews'), MARKUS)).json();
+    expect(iv).toStrictEqual({ name: 'interviews', stand: 'unlesbar', daten: null, roh: JSON.stringify({ interviews: 'kaputt' }, null, 2) });
+    expect(await (await t.holen(pfad('sofie', 'brief'), MARKUS)).json()).toStrictEqual({ name: 'brief', stand: 'unlesbar', daten: null, roh: null });
+  });
+
+  it('GitHub scheitert: 502', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = await aufbau({ speicher: () => ({ lesen: async () => { throw new Error('GitHub weg'); } }) });
+    expect((await t.holen(pfad('sofie', 'brief'), MARKUS)).status).toBe(502);
+  });
+
+  it('die Matrix trägt keinen Inhalt mehr (der Leser holt ihn einzeln)', async () => {
+    const a = await (await (await aufbau()).holen('/api/werkstatt/lehrende', MARKUS)).json();
+    for (const x of SOFIE_(a).artefakte) {
+      expect(x).not.toHaveProperty('daten');
+      expect(x).not.toHaveProperty('markdown');
+    }
   });
 });

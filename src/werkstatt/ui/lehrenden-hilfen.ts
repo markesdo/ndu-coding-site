@@ -27,11 +27,16 @@ export function anfragePfad(kohorte?: string, seit?: number): string {
   return `${ROUTEN.lehrende.pfad}${q ? `?${q}` : ''}`;
 }
 
+export function inhaltPfad(kohorte: string, person: string, artefakt: ArtefaktName): string {
+  return `${ROUTEN.lehrendeArtefakt.pfad}?${new URLSearchParams({ kohorte, person, artefakt }).toString()}`;
+}
+
 const titel = (n: ArtefaktName) => ARTEFAKTE[n].titel;
 
-/** „Heute Tag 1“ oder „Als Nächstes Tag 3“. */
+/** „Heute Tag 1“, „Als Nächstes Tag 3“ oder nach dem letzten Termin „Kurs vorbei (zuletzt Tag 7)“. */
 export function kurstagText(k: Kurstag): string {
-  return `${k.heute ? 'Heute' : 'Als Nächstes'} Tag ${k.tag}`;
+  if (k.lage === 'vorbei') return `Kurs vorbei (zuletzt Tag ${k.tag})`;
+  return `${k.lage === 'heute' ? 'Heute' : 'Als Nächstes'} Tag ${k.tag}`;
 }
 
 /** Eintrag der Auswahl „Änderungen seit“: „Tag 1 (22.10.2026)“. */
@@ -56,13 +61,13 @@ export interface Zelle {
 
 /** Noch nichts Eigenes: nicht gespeichert, oder gespeichert, aber leer (vorbefüllter Einstieg, leere Zeilen). */
 export const istOffen = (a: LehrendenArtefakt) => a.stand === 'offen' || (a.stand === 'vorhanden' && a.leer);
-export const istFaellig = (a: Pick<LehrendenArtefakt, 'faelligZuTag'>, k: Kurstag) => a.faelligZuTag <= k.tag;
 
-export function zelle(a: LehrendenArtefakt, k: Kurstag, bezug: Bezug): Zelle {
+// Ob fällig, sagt der Server (faelligBis in tag-stand.ts); hier gibt es keine zweite Regel.
+export function zelle(a: LehrendenArtefakt, bezug: Bezug): Zelle {
   const geaendert = bezug && a.commits > 0 ? `geändert seit Tag ${bezug.tag}` : null;
   if (a.stand === 'unlesbar') return { art: 'unlesbar', wort: 'passt nicht zum Format', umfang: null, geaendert };
   if (istOffen(a)) {
-    return istFaellig(a, k)
+    return a.faellig
       ? { art: 'faellig-offen', wort: 'fällig, offen', umfang: null, geaendert }
       : { art: 'offen', wort: 'noch nicht dran', umfang: null, geaendert };
   }
@@ -98,7 +103,7 @@ export function personText(p: LehrendenMappe, jetzt: number): string {
 }
 
 export interface Hinweis {
-  art: 'nichts-seit' | 'faellig-offen' | 'luecken';
+  art: 'nicht-angemeldet' | 'nichts-seit' | 'faellig-offen' | 'luecken';
   text: string;
 }
 
@@ -106,12 +111,15 @@ export interface Hinweis {
 export function zuerstAnsehen(a: LehrendenAnsicht): Hinweis[] {
   const bereit = a.personen.filter((p): p is BereiteMappe => p.zustand === 'bereit');
   const aus: Hinweis[] = [];
+  // Ohne Mappe zuerst: Wer sich noch nicht angemeldet hat, kann auch nichts speichern.
+  const ohne = a.personen.filter((p) => p.zustand === 'keine-mappe').map((p) => p.kuerzel);
+  if (ohne.length) aus.push({ art: 'nicht-angemeldet', text: `Noch nicht angemeldet: ${ohne.join(', ')}` });
   if (a.bezug) {
     const still = bereit.filter((p) => p.artefakte.every((x) => x.commits === 0)).map((p) => p.kuerzel);
     if (still.length) aus.push({ art: 'nichts-seit', text: `Seit Tag ${a.bezug.tag} nichts gespeichert: ${still.join(', ')}` });
   }
   const faellig = bereit
-    .map((p) => ({ k: p.kuerzel, namen: p.artefakte.filter((x) => istOffen(x) && istFaellig(x, a.kurstag)).map((x) => titel(x.name)) }))
+    .map((p) => ({ k: p.kuerzel, namen: p.artefakte.filter((x) => istOffen(x) && x.faellig).map((x) => titel(x.name)) }))
     .filter((x) => x.namen.length > 0)
     .map((x) => `${x.k} (${x.namen.join(', ')})`);
   if (faellig.length) aus.push({ art: 'faellig-offen', text: `Fällig und offen: ${faellig.join(', ')}` });
@@ -176,8 +184,8 @@ export function nachbar(personen: readonly LehrendenMappe[], kuerzel: string, ri
 }
 
 /** Kopfzeile des Lesers: „vorhanden · 4 von 5 Snapshots · zuletzt gespeichert am 22.10.2026 · geändert seit Tag 1 (3 Commits)“. */
-export function leserKopf(a: LehrendenArtefakt, k: Kurstag, bezug: Bezug): string {
-  const z = zelle(a, k, bezug);
+export function leserKopf(a: LehrendenArtefakt, bezug: Bezug): string {
+  const z = zelle(a, bezug);
   const teile: string[] = [z.wort];
   if (z.umfang) teile.push(z.umfang);
   if (a.zuletzt) teile.push(`zuletzt gespeichert am ${datumAt(tagInWien(new Date(a.zuletzt)))}`);

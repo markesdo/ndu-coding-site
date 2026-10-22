@@ -1,7 +1,7 @@
 // Browser-Client der Werkstatt-API. Wirft ApiError mit status und code; Texte kommen vom Server (Spec §5).
-import { ROUTEN, type ApiFehler, type ArtefaktAntwort, type Ich, type LehrendenAnsicht, type MappeStand, type SpeichernAnfrage, type SpeichernAntwort } from '../vertrag.js';
+import { ROUTEN, type ApiFehler, type ArtefaktAntwort, type Ich, type LehrendenAnsicht, type LehrendenInhalt, type MappeStand, type SpeichernAnfrage, type SpeichernAntwort } from '../vertrag.js';
 import { entwuerfeLoeschen } from './entwurf.js';
-import { anfragePfad } from './lehrenden-hilfen.js';
+import { anfragePfad, inhaltPfad } from './lehrenden-hilfen.js';
 import type { ArtefaktName, Feldfehler } from '../schemas/index.js';
 
 export class ApiError extends Error {
@@ -74,6 +74,13 @@ export const api = {
     const a = await anfrage('GET', anfragePfad(kohorte, seit));
     if (!a.ok) throw await fehlerAus(a);
     return (await a.json()) as LehrendenAnsicht;
+  },
+
+  /** Nur Lehrende: Inhalt eines Artefakts für den Leser (geprüfte Daten oder bei unlesbar der Rückfall roh). */
+  async lehrendeInhalt(kohorte: string, person: string, artefakt: ArtefaktName): Promise<LehrendenInhalt> {
+    const a = await anfrage('GET', inhaltPfad(kohorte, person, artefakt));
+    if (!a.ok) throw await fehlerAus(a);
+    return (await a.json()) as LehrendenInhalt;
   },
 
   async lesen(name: ArtefaktName): Promise<ArtefaktAntwort> {

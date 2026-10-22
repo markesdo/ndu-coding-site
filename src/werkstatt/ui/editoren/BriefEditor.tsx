@@ -7,7 +7,8 @@ import Textfeld from '../felder/Textfeld.js';
 import { briefKarten, produktSatzSetzen } from './brief-hilfen.js';
 import './editoren.css';
 
-function Vorschau({ daten }: { daten: Brief }) {
+// Nur lesend; auch der Leser der Lehrenden-Ansicht zeigt sie (vorschauen.tsx).
+export function Vorschau({ daten }: { daten: Brief }) {
   return (
     <ol className="wk-karten">
       {briefKarten(daten).map((k) => {

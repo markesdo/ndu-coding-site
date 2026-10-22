@@ -99,7 +99,7 @@
 .lv-tabelle .lv-spalte-person { width: 7.5rem; }
 .lv-tabelle .lv-spalte-luecken { width: 5rem; }
 .lv-tabelle th, .lv-tabelle td { border: 1px solid var(--border); vertical-align: top; text-align: left; }
-.lv-tabelle thead th { padding: .5rem .5rem; background: var(--bg-2); overflow-wrap: anywhere; }
+.lv-tabelle thead th { padding: .5rem .5rem; background: var(--bg-2); hyphens: manual; overflow-wrap: normal; }
 .lv-faellig { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); font-family: inherit; font-size: .8rem; }
 .lv-tabelle tbody th { padding: .5rem .5rem; overflow-wrap: anywhere; }
 .lv-kuerzel { display: block; font-weight: 700; font-size: .95rem; }
@@ -130,7 +130,7 @@
 .lv-luecken-liste h4 { margin: .6rem 0 .2rem; font-size: .92rem; }
 .lv-luecken-liste ul { margin: 0; padding-left: 1.2rem; font-size: .9rem; }
 .lv-luecken-liste li + li { margin-top: .25rem; }
-.lv-karten { display: none; list-style: none; margin: .75rem 0 1.5rem; padding: 0; }
+.lv-karten { list-style: none; margin: .75rem 0 1.5rem; padding: 0; }
 .lv-karte { margin-bottom: 1rem; padding: .75rem; border: 1px solid var(--border); border-radius: var(--radius); }
 .lv-karte-kopf { margin-bottom: .5rem; }
 .lv-karte-artefakte { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
@@ -141,8 +141,6 @@
 .lv-karte-luecken { margin-top: .5rem; }
 .lv-karte-luecken summary { display: flex; align-items: center; gap: .3rem; min-height: 44px; cursor: pointer; color: var(--yellow-ink); font-weight: 600; }
 @media (max-width: 640px) {
-  .lv-tabelle-rahmen { display: none; }
-  .lv-karten { display: block; }
   .lv-stand-zeit { margin-left: 0; }
 }
 /* Leser: das Panel der Editor-Hülle (rechts, schmal Vollbild) */
@@ -159,4 +157,6 @@
 .lv-leser-befunde ul, .lv-leser-fehlt ul { margin: 0; padding-left: 1.2rem; font-size: .92rem; }
 .lv-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin: 0 0 1rem; }
 .lv-links a { display: inline-flex; align-items: center; gap: .25rem; min-height: 44px; }
-.lv-text { margin: 0; padding: 1rem; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: .86rem; line-height: 1.5; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); }
+.lv-text { max-width: 80ch; margin: 0; padding: 1rem; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: .86rem; line-height: 1.55; color: var(--fg); background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); }
+.lv-vorschau { max-width: 60rem; }
+.lv-unlesbar-hinweis { display: flex; align-items: center; gap: .35rem; color: var(--yellow-ink); font-weight: 600; }

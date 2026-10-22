@@ -1,14 +1,15 @@
 // Lehrenden-Ansicht auf /innolab/mappe (Spec §3.7): Matrix Person × Artefakt, nur lesend. Eine Anfrage holt alles
-// (GET /api/werkstatt/lehrende); der Leser zeigt nur, was schon geladen ist. Kein Abfragen im Takt (GitHub-Kontingent):
+// (GET /api/werkstatt/lehrende); der Leser zeigt nur, was schon geladen ist, mit der Vorschau des Editors. Kein Abfragen im Takt (GitHub-Kontingent):
 // Neu laden per Knopf, still beim Zurückkommen in den Tab, wenn die Daten älter als zwei Minuten sind.
 // Beamer: data-werkstatt blendet alles aus (beamer.css); der Leser schließt sich beim Wechsel in den Beamer.
 import {
   CalendarClock, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleCheck, CircleDashed, CloudOff, ExternalLink, FileWarning, Link2Off, PencilLine, RefreshCw, UserRound, X,
 } from 'lucide-react';
-import { Fragment, useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { Component, Fragment, useCallback, useEffect, useRef, useState, type ComponentType, type KeyboardEvent, type ReactNode } from 'react';
 import { ARTEFAKTE, type ArtefaktName } from '../schemas/index.js';
-import type { LehrendenAnsicht as Ansicht, LehrendenArtefakt, LehrendenMappe } from '../vertrag.js';
+import type { LehrendenAnsicht as Ansicht, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../vertrag.js';
 import { api, ApiError } from './api.js';
+import { VORSCHAUEN } from './editoren/vorschauen.js';
 import {
   STILL_NEU_AB_MS, adresseMitLeser, alleGithubFehler, dateiVerlaufUrl, kurstagText, leserAusAdresse, leserKopf, lueckenJeArtefakt, nachbar, personText,
   spaltenHinweis, standText, tagText, zelle, zellenLabel, zuerstAnsehen, type BereiteMappe, type Leser, type Zelle, type ZellenArt,
@@ -24,13 +25,33 @@ const TEXT = {
   ohneBezug: 'Noch kein Kurstag vorbei – gezählt wird alles.',
   tagWeg: 'Diesen Kurstag gibt es nicht mehr; die Änderungen zählen wieder seit dem letzten Kurstag.',
   nurLesen: 'Nur lesen: Ändern können die Studierenden ihre Mappe nur selbst.',
+  inhaltFehlt: 'Der Inhalt lässt sich gerade nicht laden. Später neu laden.',
+  inhaltLaden: 'Lese den Inhalt …',
 } as const;
 
 const ICON: Record<ZellenArt, typeof CircleCheck> = { vorhanden: CircleCheck, 'faellig-offen': CalendarClock, offen: CircleDashed, unlesbar: FileWarning };
 const titel = (n: ArtefaktName) => ARTEFAKTE[n].titel;
-// Kurz für Spaltenköpfe und Reiter (fünf Spalten passen so in die Seitenbreite).
-const KURZ: Record<ArtefaktName, string> = { brief: 'Brief', entscheidungen: 'Entscheidungen', annahmen: 'Annahmen', leitfaden: 'Leitfaden', interviews: 'Interviews' };
+// Kurz für Spaltenköpfe und Reiter (fünf Spalten passen so in die Seitenbreite). Weiches Trennzeichen: schmal (iPad)
+// bricht „Entscheidungen“ an der Silbe statt mitten im Wort.
+const KURZ: Record<ArtefaktName, string> = { brief: 'Brief', entscheidungen: 'Entschei\u00ADdungen', annahmen: 'Annahmen', leitfaden: 'Leitfaden', interviews: 'Interviews' };
 const kurztitel = (n: ArtefaktName) => KURZ[n];
+
+// Fängt einen Absturz der Vorschau ab (Daten wider Erwarten anders geformt): nur der Leser zeigt dann einen Hinweis.
+class VorschauGrenze extends Component<{ children: ReactNode }, { kaputt: boolean }> {
+  state = { kaputt: false };
+  static getDerivedStateFromError(): { kaputt: boolean } {
+    return { kaputt: true };
+  }
+  render(): ReactNode {
+    return this.state.kaputt ? <p className="wk-hinweis" role="alert">Dieses Artefakt lässt sich hier nicht anzeigen. Im Repo steht es, wie es ist.</p> : this.props.children;
+  }
+}
+
+// Die Vorschau des passenden Editors; die Daten hat der Server mit dessen Schema geprüft.
+function Vorschau({ name, daten }: { name: ArtefaktName; daten: unknown }) {
+  const V = VORSCHAUEN[name] as ComponentType<{ daten: unknown }>;
+  return <V daten={daten} />;
+}
 
 function ZellenInhalt({ z }: { z: Zelle }) {
   const Icon = ICON[z.art];
@@ -66,7 +87,25 @@ function Luecken({ p }: { p: BereiteMappe }) {
   );
 }
 
+// Unter ~640 px eine Karte pro Person statt der Tabelle; nur eins von beiden wird gerendert.
+const SCHMAL = '(max-width: 640px)';
+function useSchmal(): boolean {
+  const [schmal, setSchmal] = useState(() => matchMedia(SCHMAL).matches);
+  useEffect(() => {
+    const m = matchMedia(SCHMAL);
+    const neu = () => setSchmal(m.matches);
+    m.addEventListener('change', neu);
+    return () => m.removeEventListener('change', neu);
+  }, []);
+  return schmal;
+}
+
+type Inhalt = { schluessel: string } & ({ zustand: 'laden' } | { zustand: 'fehler'; text: string } | { zustand: 'bereit'; inhalt: LehrendenInhalt });
+const schluesselVon = (kohorte: string, l: Leser) => `${kohorte}/${l.person}/${l.artefakt}`;
+
 export default function LehrendenAnsicht() {
+  const schmal = useSchmal();
+  const [inhalt, setInhalt] = useState<Inhalt | null>(null);
   const [ansicht, setAnsicht] = useState<Ansicht | null>(null);
   const [laedt, setLaedt] = useState(true);
   const [fehler, setFehler] = useState<string | null>(null);
@@ -102,11 +141,21 @@ export default function LehrendenAnsicht() {
         setWahl({ kohorte: w.kohorte });
         return;
       }
+      // Abgemeldet oder nicht mehr freigeschaltet: Alte Daten verschwinden sofort, auch in einem offenen Tab.
+      // Netz oder GitHub: Die alte Matrix bleibt (gedimmt) mit dem Hinweis.
+      if (e instanceof ApiError && (e.status === 401 || e.status === 403)) entziehen();
       setFehler((e instanceof ApiError && e.message) || TEXT.ladenFehlt);
     } finally {
       if (mein === lauf.current) setLaedt(false);
     }
   }, []);
+
+  function entziehen() {
+    dialog.current?.close();
+    setAnsicht(null);
+    setLeser(null);
+    setInhalt(null);
+  }
 
   useEffect(() => { void laden(wahl); }, [laden, wahl]);
 
@@ -131,14 +180,43 @@ export default function LehrendenAnsicht() {
     return () => beobachter.disconnect();
   }, []);
 
-  // Leser öffnen, sobald es die Mappe gibt (auch aus der Adresse); die Adresse folgt dem Leser.
+  // Leser öffnen, sobald es die Mappe gibt (auch aus der Adresse). Erst nach dem Laden: Scheitert es, bleibt ein
+  // Deep-Link in der Adresse stehen. Gibt es Person oder Artefakt nach einem Neuladen nicht mehr (Fehler, keine Mappe),
+  // geht der Leser zu und öffnet sich später nicht von selbst wieder.
   const leserMappe = leser && ansicht?.personen.find((p): p is BereiteMappe => p.kuerzel === leser.person && p.zustand === 'bereit');
   const leserArtefakt = leserMappe?.artefakte.find((a) => a.name === leser?.artefakt);
   useEffect(() => {
+    if (!ansicht) return;
+    if (leser && !leserArtefakt) {
+      dialog.current?.close();
+      setLeser(null);
+    }
     history.replaceState(history.state, '', adresseMitLeser(location.pathname, location.search, location.hash, leserArtefakt ? leser : null));
     const d = dialog.current;
     if (leserArtefakt && d && !d.open && !document.documentElement.hasAttribute('data-beamer')) d.showModal();
-  }, [leser, leserArtefakt]);
+  }, [ansicht, leser, leserArtefakt]);
+
+  // Inhalt erst, wenn der Leser ihn zeigt (eine Datei bei GitHub); nach einem Neuladen der Matrix frisch.
+  const offenerSchluessel = ansicht && leser && leserArtefakt ? schluesselVon(ansicht.kohorte, leser) : null;
+  useEffect(() => {
+    if (!ansicht || !leser || !offenerSchluessel) return setInhalt(null);
+    let gilt = true;
+    setInhalt({ schluessel: offenerSchluessel, zustand: 'laden' });
+    api.lehrendeInhalt(ansicht.kohorte, leser.person, leser.artefakt).then(
+      (i) => { if (gilt) setInhalt({ schluessel: offenerSchluessel, zustand: 'bereit', inhalt: i }); },
+      (e) => {
+        if (!gilt) return;
+        if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+          entziehen();
+          setFehler(e.message || TEXT.ladenFehlt);
+          return;
+        }
+        setInhalt({ schluessel: offenerSchluessel, zustand: 'fehler', text: (e instanceof ApiError && e.message) || TEXT.inhaltFehlt });
+      },
+    );
+    return () => { gilt = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offenerSchluessel, geladen]);
 
   function oeffnen(person: string, artefakt: ArtefaktName) {
     setLeser({ person, artefakt });
@@ -222,7 +300,9 @@ export default function LehrendenAnsicht() {
           <ul>
             {hinweise.map((h) => (
               <li key={h.art} className={`lv-zuerst-${h.art}`}>
-                {h.art === 'faellig-offen' ? <CalendarClock size={16} aria-hidden="true" /> : h.art === 'luecken' ? <Link2Off size={16} aria-hidden="true" /> : <CircleDashed size={16} aria-hidden="true" />}
+                {h.art === 'faellig-offen' ? <CalendarClock size={16} aria-hidden="true" />
+                  : h.art === 'luecken' ? <Link2Off size={16} aria-hidden="true" />
+                    : h.art === 'nicht-angemeldet' ? <UserRound size={16} aria-hidden="true" /> : <CircleDashed size={16} aria-hidden="true" />}
                 {' '}{h.text}
               </li>
             ))}
@@ -232,6 +312,7 @@ export default function LehrendenAnsicht() {
 
       {ansicht.personen.length > 0 && !allesWeg && (
         <div className={laedt ? 'lv-daten lv-alt' : 'lv-daten'} aria-busy={laedt}>
+          {!schmal && (
           <div className="lv-tabelle-rahmen">
             <table className="lv-tabelle">
               <caption className="wk-nur-leser">Mappen der Kohorte {ansicht.kohorte}: Stand je Artefakt{ansicht.bezug ? `, Änderungen seit Tag ${ansicht.bezug.tag}` : ''}</caption>
@@ -252,7 +333,7 @@ export default function LehrendenAnsicht() {
                       {p.zustand === 'bereit'
                         ? spalten.map((s) => {
                           const a = p.artefakte.find((x) => x.name === s.name)!;
-                          const z = zelle(a, ansicht.kurstag, ansicht.bezug);
+                          const z = zelle(a, ansicht.bezug);
                           return (
                             <td key={s.name} className={`lv-zelle lv-${z.art}`}>
                               <button type="button" className="lv-zelle-knopf" aria-label={zellenLabel(p.kuerzel, s.name, z)} onClick={() => oeffnen(p.kuerzel, s.name)}>
@@ -283,8 +364,10 @@ export default function LehrendenAnsicht() {
               </tbody>
             </table>
           </div>
+          )}
 
           {/* Schmal (unter ~640 px): eine Karte pro Person statt der Tabelle. */}
+          {schmal && (
           <ul className="lv-karten">
             {ansicht.personen.map((p) => (
               <li key={p.kuerzel} className={`lv-karte lv-${p.zustand}`}>
@@ -294,7 +377,7 @@ export default function LehrendenAnsicht() {
                     <ul className="lv-karte-artefakte">
                       {spalten.map((s) => {
                         const a = p.artefakte.find((x) => x.name === s.name)!;
-                        const z = zelle(a, ansicht.kurstag, ansicht.bezug);
+                        const z = zelle(a, ansicht.bezug);
                         return (
                           <li key={s.name} className={`lv-zelle lv-${z.art}`}>
                             <button type="button" className="lv-zelle-knopf" aria-label={zellenLabel(p.kuerzel, s.name, z)} onClick={() => oeffnen(p.kuerzel, s.name)}>
@@ -316,19 +399,25 @@ export default function LehrendenAnsicht() {
               </li>
             ))}
           </ul>
+          )}
         </div>
       )}
 
       <dialog ref={dialog} className="wk-dialog lv-leser" aria-labelledby="lv-leser-titel" onClose={() => setLeser(null)} onKeyDown={leserTaste}>
         {leserMappe && leserArtefakt && (
-          <LeserInhalt ansicht={ansicht} p={leserMappe} a={leserArtefakt} wechseln={setLeser} schliessen={() => dialog.current?.close()} />
+          <LeserInhalt
+            ansicht={ansicht} p={leserMappe} a={leserArtefakt} wechseln={setLeser} schliessen={() => dialog.current?.close()}
+            inhalt={inhalt && inhalt.schluessel === offenerSchluessel ? inhalt : null}
+          />
         )}
       </dialog>
     </section>
   );
 }
 
-function LeserInhalt({ ansicht, p, a, wechseln, schliessen }: { ansicht: Ansicht; p: BereiteMappe; a: LehrendenArtefakt; wechseln: (l: Leser) => void; schliessen: () => void }) {
+function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt }: {
+  ansicht: Ansicht; p: BereiteMappe; a: LehrendenArtefakt; wechseln: (l: Leser) => void; schliessen: () => void; inhalt: Inhalt | null;
+}) {
   const zurueck = nachbar(ansicht.personen, p.kuerzel, -1);
   const weiter = nachbar(ansicht.personen, p.kuerzel, 1);
   const befunde = p.luecken.filter((b) => b.artefakt === a.name);
@@ -337,7 +426,7 @@ function LeserInhalt({ ansicht, p, a, wechseln, schliessen }: { ansicht: Ansicht
       <header className="wk-kopf lv-leser-kopf">
         <div>
           <h2 id="lv-leser-titel">{p.kuerzel} · {titel(a.name)}</h2>
-          <p className="wk-hilfe">{leserKopf(a, ansicht.kurstag, ansicht.bezug)}</p>
+          <p className="wk-hilfe">{leserKopf(a, ansicht.bezug)}</p>
         </div>
         <button type="button" className="wk-knopf" onClick={schliessen}><X size={16} aria-hidden="true" /> Schließen</button>
       </header>
@@ -375,10 +464,30 @@ function LeserInhalt({ ansicht, p, a, wechseln, schliessen }: { ansicht: Ansicht
           <a href={p.repoUrl} target="_blank" rel="noreferrer">Repo {p.repo}<ExternalLink size={14} aria-label="öffnet GitHub in einem neuen Tab" /></a>
           {a.zuletzt && <a href={dateiVerlaufUrl(p.repoUrl, a.name)} target="_blank" rel="noreferrer">Verlauf der Datei<ExternalLink size={14} aria-label="öffnet GitHub in einem neuen Tab" /></a>}
         </p>
-        {a.markdown !== null
-          ? <pre className="lv-text">{a.markdown}</pre>
-          : <p className="wk-hilfe">{a.stand === 'unlesbar' ? 'Die Datei passt nicht zum Format der Werkstatt; im Repo steht sie, wie sie ist.' : 'Noch nicht gespeichert.'}</p>}
+        {(!inhalt || inhalt.zustand === 'laden') && <p className="wk-hilfe" role="status">{TEXT.inhaltLaden}</p>}
+        {inhalt?.zustand === 'fehler' && <p className="wk-hinweis" role="alert"><CloudOff size={16} aria-hidden="true" /> {inhalt.text}</p>}
+        {inhalt?.zustand === 'bereit' && <InhaltAnzeige i={inhalt.inhalt} schluessel={inhalt.schluessel} />}
       </div>
     </div>
   );
+}
+
+// Geprüfte Daten mit der Vorschau des Editors; unlesbar mit dem Rückfall als Text; offen ein Satz.
+function InhaltAnzeige({ i, schluessel }: { i: LehrendenInhalt; schluessel: string }) {
+  if (i.daten !== null) {
+    return (
+      <div className="lv-vorschau">
+        <VorschauGrenze key={schluessel}><Vorschau name={i.name} daten={i.daten} /></VorschauGrenze>
+      </div>
+    );
+  }
+  if (i.stand === 'unlesbar') {
+    return (
+      <>
+        <p className="lv-unlesbar-hinweis"><FileWarning size={16} aria-hidden="true" /> Passt nicht zum Format der Werkstatt. {i.roh === null ? 'Die Datei ist kein gültiges JSON; im Repo steht sie, wie sie ist.' : 'So steht die Datei im Repo:'}</p>
+        {i.roh !== null && <pre className="lv-text">{i.roh}</pre>}
+      </>
+    );
+  }
+  return <p className="wk-hilfe">Noch nicht gespeichert.</p>;
 }
