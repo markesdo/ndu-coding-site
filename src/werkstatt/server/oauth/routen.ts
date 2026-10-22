@@ -23,11 +23,11 @@ import type { Rolle } from '../../zugang.js';
 import { json } from '../antwort.js';
 import { mitgliedschaftFinden, sitzungMitMitgliedschaft } from '../sitzung.js';
 import type { Abhaengigkeiten, WerkstattEnv } from '../typen.js';
-import { clientErlaubt, clientMelden } from './clients.js';
+import { clientErlaubt, clientMelden, redirectErlaubt } from './clients.js';
 import { ISSUER_PFAD, SCOPE, issuer, issuerMetadaten, resource, resourceMetadaten } from './metadaten.js';
 import { oeffnen, versiegeln } from './umschlag.js';
 import { antwortOeffnen, antwortVersiegeln } from './wiederholung.js';
-import { clientName, meldungsSeite, zustimmungsSeite } from './zustimmung.js';
+import { meldungsSeite, zustimmungsSeite } from './zustimmung.js';
 
 export interface TokenClaims {
   githubId: number;
@@ -108,6 +108,9 @@ export async function bearerPruefen(abh: Abhaengigkeiten, header: string | null 
 
 interface Anfrage {
   clientId: string;
+  // Anzeigename und Trennen-Hinweis aus clients.ts (Zustimmungsseite, Log).
+  clientName: string;
+  clientTrennen: string;
   redirectUri: string;
   codeChallenge: string;
   state: string | null;
@@ -117,7 +120,7 @@ interface Anfrage {
 type Pruefung = { anfrage: Anfrage } | { seite: Response };
 
 const UNGUELTIG = 'Ungültige Anfrage';
-const NEU_STARTEN = 'Starte die Verbindung in Claude bitte noch einmal.';
+const NEU_STARTEN = 'Starte die Verbindung in Claude oder Claude Code bitte noch einmal.';
 
 function anfragePruefen(c: Context, wert: (k: string) => string | undefined): Pruefung {
   const nein = (titel: string, text: string): Pruefung => ({ seite: meldungsSeite(c, 400, titel, text) });
@@ -126,7 +129,7 @@ function anfragePruefen(c: Context, wert: (k: string) => string | undefined): Pr
   if (!client) return nein('Unbekannte Anwendung', 'Diese Anwendung darf sich nicht mit der Werkstatt verbinden.');
   // Genau vergleichen, nie weiterleiten, solange redirect_uri nicht stimmt.
   const redirectUri = wert('redirect_uri') ?? '';
-  if (!client.redirectUris.includes(redirectUri)) return nein('Ungültige Rücksprungadresse', `Diese Rücksprungadresse ist nicht erlaubt. ${NEU_STARTEN}`);
+  if (!redirectErlaubt(client, redirectUri)) return nein('Ungültige Rücksprungadresse', `Diese Rücksprungadresse ist nicht erlaubt. ${NEU_STARTEN}`);
   if (wert('response_type') !== 'code') return nein(UNGUELTIG, `Die Anfrage verlangt keinen Autorisierungscode. ${NEU_STARTEN}`);
   const codeChallenge = wert('code_challenge') ?? '';
   if (!CHALLENGE.test(codeChallenge) || wert('code_challenge_method') !== 'S256') {
@@ -138,7 +141,7 @@ function anfragePruefen(c: Context, wert: (k: string) => string | undefined): Pr
   if (state !== null && state.length > MAX_STATE) return nein(UNGUELTIG, `Die Anfrage ist zu lang. ${NEU_STARTEN}`);
   const scope = wert('scope') ?? null;
   if (scope !== null && scope.length > MAX_STATE) return nein(UNGUELTIG, `Die Anfrage ist zu lang. ${NEU_STARTEN}`);
-  return { anfrage: { clientId, redirectUri, codeChallenge, state, scope } };
+  return { anfrage: { clientId, clientName: client.name, clientTrennen: client.trennen, redirectUri, codeChallenge, state, scope } };
 }
 
 // Die geprüfte Anfrage als Formularfelder (Zustimmungsseite) und als Rücksprung nach der Anmeldung.
@@ -272,7 +275,7 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
       return c.redirect(`${LOGIN}?weiter=${encodeURIComponent(weiter)}`, 302);
     }
 
-    return zustimmungsSeite(c, { zielHost: new URL(a.redirectUri).host, login: s.login, felder: felder(a), aktion: AUTHORIZE });
+    return zustimmungsSeite(c, { ziel: new URL(a.redirectUri), name: a.clientName, trennen: a.clientTrennen, login: s.login, felder: felder(a), aktion: AUTHORIZE });
   });
 
   r.post(AUTHORIZE, async (c) => {
@@ -303,7 +306,7 @@ export function oauthRouten(abh: Abhaengigkeiten): Hono<WerkstattEnv> {
       abh.umgebung.tokenKeys,
       jetztSek(abh),
     );
-    console.info(JSON.stringify({ werkstatt: 'oauth-zustimmung', host: clientName(new URL(a.redirectUri).host), kohorte: s.kohorte }));
+    console.info(JSON.stringify({ werkstatt: 'oauth-zustimmung', host: new URL(a.redirectUri).host, client: a.clientName, kohorte: s.kohorte }));
     // Erst nach erfolgreicher Zustimmung: anonyme Aufrufe sollen weder Log noch Cache füllen.
     await clientMelden(abh, a.clientId);
     return zurueckZumClient(c, a, { code });

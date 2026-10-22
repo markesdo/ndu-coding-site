@@ -17,11 +17,15 @@ const seite = Astro.site!;
   Authentication/OAuth client schon auf „Detected“ → Add → „Connect“ → GitHub „Authorize NDU Werkstatt“ → Erlauben →
   verbunden, Werkzeuge auf „Needs approval“. Screenshots ohne persönliche Konten (GitHub- und Zustimmungsseite nur als Text).
   Schritt 2 (Settings → Privacy → „Help improve our AI models“) ebenfalls am 17.10. geprüft, nur englische Oberfläche.
+  Claude Code (NDU-34) am 22.10. mit Claude Code 2.1.307 gegen die lokale Werkstatt geprüft: `claude mcp login` schickt
+  client_id https://claude.ai/oauth/claude-code-client-metadata und redirect_uri http://localhost:<Port>/callback;
+  Zustimmung → „Authenticated“, `claude mcp list` → Connected. Ob ein in claude.ai angelegter Connector in der CLI ohne
+  eigene Anmeldung läuft, ist nicht dokumentiert – darum der Weg über /mcp.
 */}
 <Layout title="Werkstatt · Claude verbinden">
   <span class="eyebrow">Innolab · Werkstatt</span>
   <h1>Claude mit der Werkstatt verbinden</h1>
-  <p class="lead">Drei Schritte, einmal pro Person. Danach kann Claude eure Mappe lesen und prüfen.</p>
+  <p class="lead">Drei Schritte, einmal pro Person. Danach kann Claude eure Mappe lesen und prüfen, in claude.ai und in Claude Code.</p>
 
   <Folie>
     <h2 id="connector-anlegen">1. Connector anlegen</h2>
@@ -55,6 +59,15 @@ const seite = Astro.site!;
     <Callout type="info" title="Claude liest nur">
       <p>Claude liest eure Mappe und prüft sie. Es schreibt nie hinein. Was ihr ändert, formuliert ihr selbst in der Werkstatt.</p>
     </Callout>
+  </Folie>
+
+  <Folie>
+    <h2 id="claude-code">Claude Code mit der Werkstatt</h2>
+    <p class="folie-satz">Claude Code liest eure Mappe über denselben Connector.</p>
+    <p>Prüfen lassen sich Ergebnisse im Repo (<code>docs/</code>) mit Claude Code; Brief, Entscheidungslog, Annahmen und Interviews liest es dabei aus der Werkstatt. Habt ihr den Connector oben in claude.ai angelegt und seid in Claude Code mit demselben Claude-Konto angemeldet, kann er dort schon stehen. Prüft es in Claude Code mit <code>/mcp</code>: Steht <strong>{CONNECTOR_NAME}</strong> dort und auf <em>connected</em>, seid ihr fertig; steht er auf <em>needs authentication</em>, wählt ihn aus und meldet euch an.</p>
+    <p>Fehlt er, tragt ihn einmal im Terminal ein (gilt dann in jedem Ordner) und meldet euch danach in Claude Code mit <code>/mcp</code> an:</p>
+    <Prompt label="Terminal">{`claude mcp add --transport http --scope user ndu-werkstatt ${connectorUrl(seite)}`}</Prompt>
+    <p>Der Browser öffnet die Werkstatt: Nach der Anmeldung mit GitHub steht dort <strong>Claude Code (auf diesem Rechner) möchte deine Mappe lesen</strong>, und es geht zurück zu <code>localhost</code> auf eurem Rechner. Erlaubt das nur, wenn ihr gerade selbst Claude Code verbindet. Trennen könnt ihr die Verbindung jederzeit in <code>/mcp</code> (Authentifizierung löschen), einen selbst eingetragenen Connector auch mit <code>claude mcp logout ndu-werkstatt</code>.</p>
   </Folie>
 
   <Folie>
