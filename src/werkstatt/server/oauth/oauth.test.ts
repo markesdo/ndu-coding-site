@@ -221,6 +221,8 @@ describe('oauth/authorize', () => {
     const html = await r.text();
     expect(html).toContain('Claude (claude.ai) möchte deine Mappe lesen');
     expect(html).toContain('<strong>claude.ai</strong>');
+    expect(html).toContain('Trennen kannst du die Verbindung jederzeit in Claude unter den Connector-Einstellungen.');
+    expect(html).not.toContain('Claude Code');
     expect(html).toContain('method="post"');
     const csp = r.headers.get('content-security-policy')!;
     expect(csp).toContain("frame-ancestors 'none'");
@@ -599,5 +601,102 @@ describe('bearerPruefen', () => {
     const paar = await tokenPaar(h);
     h.abh.umgebung.zugang = { test: { lehrende: [1000], studierende: [] } };
     expect(await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER)).toBeNull();
+  });
+});
+
+// NDU-34: Claude Code meldet sich mit eigenem CIMD an und springt auf den eigenen Rechner zurück (RFC 8252, Port wechselt).
+describe('Claude Code als Client', () => {
+  const CODE_CLIENT = 'https://claude.ai/oauth/claude-code-client-metadata';
+  const LOOPBACK = 'http://localhost:53682/callback';
+  const codeParameter = (challenge: string, redirect = LOOPBACK, clientId = CODE_CLIENT) =>
+    authorizeParameter(challenge, { client_id: clientId, redirect_uri: redirect });
+  const zustimmungGet = async (h: Aufbau, redirect: string, clientId = CODE_CLIENT) =>
+    h.anfrage(`/api/werkstatt/oauth/authorize?${form(codeParameter(pkce().challenge, redirect, clientId))}`, { headers: { Cookie: await h.sitzung() } });
+
+  it('erlaubt: localhost und 127.0.0.1 mit beliebigem Port, auch ohne Port', async () => {
+    const h = aufbau();
+    for (const redirect of [LOOPBACK, 'http://127.0.0.1:61234/callback', 'http://localhost:1/callback', 'http://localhost/callback']) {
+      expect((await zustimmungGet(h, redirect)).status, redirect).toBe(200);
+    }
+  });
+
+  it('abgelehnt: anderer Pfad, Host, https, Abfrage, Fragment, Zugangsdaten, nicht kanonisch, IPv6, claude.ai-Rücksprung', async () => {
+    const h = aufbau();
+    for (const redirect of [
+      'http://localhost:53682/',
+      'http://localhost:53682/callback/',
+      'http://localhost:53682/Callback',
+      'http://localhost:53682/callback?x=1',
+      'http://localhost:53682/callback#x',
+      'http://user@localhost:53682/callback',
+      'https://localhost:53682/callback',
+      'http://LOCALHOST:53682/callback',
+      'http://localhost:080/callback',
+      'http://127.0.0.2:53682/callback',
+      'http://[::1]:53682/callback',
+      'http://localhost.evil.example:53682/callback',
+      'http://evil.example/callback',
+      'https://claude.ai/api/mcp/auth_callback',
+    ]) {
+      const r = await zustimmungGet(h, redirect);
+      expect(r.status, redirect).toBe(400);
+      expect(r.headers.get('location'), redirect).toBeNull();
+      expect(await r.text()).toContain('Ungültige Rücksprungadresse');
+    }
+  });
+
+  it('abgelehnt: eine andere client_id (auch auf claude.ai) darf nicht auf den eigenen Rechner zurück', async () => {
+    const h = aufbau();
+    for (const clientId of [CLAUDE_CLIENT, 'https://claude.ai/oauth/claude-code-client-metadata/', 'https://claude.ai/oauth/anderer-client']) {
+      const r = await zustimmungGet(h, LOOPBACK, clientId);
+      expect(r.status, clientId).toBe(400);
+      expect(r.headers.get('location'), clientId).toBeNull();
+    }
+  });
+
+  it('Zustimmungsseite nennt Claude Code und den Rücksprung; form-action erlaubt genau diese Origin', async () => {
+    const h = aufbau();
+    const r = await zustimmungGet(h, LOOPBACK);
+    const html = await r.text();
+    expect(html).toContain('Claude Code (auf diesem Rechner) möchte deine Mappe lesen');
+    expect(html).toContain('<strong>localhost:53682</strong>');
+    expect(html).toContain('Trennen kannst du die Verbindung jederzeit in Claude Code mit /mcp (Authentifizierung löschen).');
+    expect(html).not.toContain('Connector-Einstellungen');
+    expect(r.headers.get('content-security-policy')).toContain("form-action 'self' http://localhost:53682;");
+  });
+
+  it('Zustimmung -> 302 auf localhost mit Code; einlösen mit anderem Port: invalid_grant', async () => {
+    const h = aufbau();
+    const p = pkce();
+    const r = await h.anfrage('/api/werkstatt/oauth/authorize', {
+      method: 'POST',
+      headers: { ...FORM, Origin: BASIS, Cookie: await h.sitzung() },
+      body: form({ ...codeParameter(p.challenge), entscheidung: 'erlauben' }),
+    });
+    expect(r.status).toBe(302);
+    const ziel = new URL(r.headers.get('location')!);
+    expect(`${ziel.origin}${ziel.pathname}`).toBe(LOOPBACK);
+    const code = ziel.searchParams.get('code')!;
+    // Ein anderer Port beim Einlösen: der Code gilt nur für genau die Adresse, an die er ging.
+    const andererPort = await h.anfrage('/api/werkstatt/oauth/token', { method: 'POST', headers: FORM, body: form({ client_id: CODE_CLIENT, grant_type: 'authorization_code', code, redirect_uri: 'http://localhost:9999/callback', code_verifier: p.verifier }) });
+    await erwarteInvalidGrant(andererPort);
+  });
+
+  it('Token mit genau der redirect_uri: Claims mit Claude-Code-Client; Zustimmung im Log mit Namen', async () => {
+    const h = aufbau();
+    const log = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const p = pkce();
+    const r = await h.anfrage('/api/werkstatt/oauth/authorize', {
+      method: 'POST',
+      headers: { ...FORM, Origin: BASIS, Cookie: await h.sitzung() },
+      body: form({ ...codeParameter(p.challenge), entscheidung: 'erlauben' }),
+    });
+    const code = new URL(r.headers.get('location')!).searchParams.get('code')!;
+    const t = await h.anfrage('/api/werkstatt/oauth/token', { method: 'POST', headers: FORM, body: form({ client_id: CODE_CLIENT, grant_type: 'authorization_code', code, redirect_uri: LOOPBACK, code_verifier: p.verifier }) });
+    expect(t.status).toBe(200);
+    const paar = (await t.json()) as { access_token: string };
+    const claims = await bearerPruefen(h.abh, `Bearer ${paar.access_token}`, ISSUER);
+    expect(claims).toMatchObject({ githubId: 1001, clientId: CODE_CLIENT });
+    expect(log.mock.calls.map((c) => String(c[0]))).toContain(JSON.stringify({ werkstatt: 'oauth-zustimmung', host: 'localhost:53682', client: 'Claude Code (auf diesem Rechner)', kohorte: 'test' }));
   });
 });
