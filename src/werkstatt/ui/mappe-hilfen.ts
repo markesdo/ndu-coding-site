@@ -120,7 +120,7 @@ export const EDITOR_ANKER: Readonly<Record<ArtefaktName, string>> = {
 };
 
 /** Überschrift direkt vor der Auflösung mit dem Leitfaden-Editor (seiten.test.ts prüft den Anker). Wer dort schon
- *  freigeschaltet ist (Knopf „Editor und Vorlage öffnen“), kommt so trotzdem an den Editor. */
+ *  freigeschaltet ist (Knopf „Editor und Beispiel öffnen“), kommt so trotzdem an den Editor. */
 export const LEITFADEN_LINK = `/innolab/methoden/${ARTEFAKTE.leitfaden.slug}#${EDITOR_ANKER.leitfaden}`;
 
 /** Anmelden mit Rücksprung auf /innolab/mappe – ohne ?fehler, damit ein späteres Neuladen die alte Meldung nicht zeigt. */

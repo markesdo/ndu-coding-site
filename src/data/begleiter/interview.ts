@@ -431,7 +431,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       '„Im Gespräch erwarten wir 50/50. Darum kündigt ihr am Anfang an, dass ihr die ganze Geschichte hören wollt.“',
       'Café-Geschichte erzählen: „schlimmster Teil meines Tages“, Gründer fragt nicht nach.',
       '„Nicht jede Person hat die Geschichte, die ihr sucht. Nehmt, was sie erzählen will.“',
-      'Aufdecken öffnet auch Editor, Vorlage, Probe-Prompt, Prüfliste für alle.',
+      'Aufdecken öffnet auch Editor, Beispiel, Probe-Prompt, Prüfliste für alle.',
       'Zeit: 14:30 Pause.',
     ],
     verstaendnis: {
@@ -522,7 +522,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
     },
     fragen: [
       {
-        frage: 'Die Vorlage fragt „Was war daran mühsam?“ – ist das nicht suggestiv?',
+        frage: 'Das Beispiel fragt „Was war daran mühsam?“ – ist das nicht suggestiv?',
         antwort: 'Ein bisschen: Die Frage unterstellt, dass es mühsam war. Neutraler ist „Was hat das für dich bedeutet?“ oder „Was ist dann passiert?“. Fitzpatricks Frage nach den Folgen („What are the implications of that?“) zeigt, ob das Problem überhaupt zählt (S. 17–18).',
       },
       {

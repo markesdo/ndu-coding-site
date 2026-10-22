@@ -29,14 +29,13 @@ describe('Einstieg-Vorlage', () => {
     expect(artefaktParsen('leitfaden', l).ok).toBe(true);
   });
 
-  it('EINSTIEG_VORLAGE ist der Einstiegstext der Vorlage auf der Interview-Seite', () => {
+  it('das Beispiel der Kaffeebar ist die Einstieg-Vorlage mit ausgefüllter Situation, und die Interview-Seite zeigt es', () => {
+    // Die Interview-Seite zeigt statt einer Kopiervorlage den Leitfaden der Kaffeebar (beispiele/leitfaden.json).
+    expect(beispiel.einstieg).toBe(EINSTIEG_VORLAGE.replace('[Situation]', 'Kaffee am Bahnhof'));
     const seite = readFileSync('src/pages/innolab/methoden/interview.astro', 'utf8');
-    const start = seite.indexOf('Vorlage · Interviewleitfaden');
-    expect(start).toBeGreaterThan(-1);
-    const block = seite.slice(start);
-    const treffer = /## Einstieg\n„([^\n]*)“\n/.exec(block);
-    expect(treffer).not.toBeNull();
-    expect(EINSTIEG_VORLAGE).toBe(treffer![1]);
+    expect(seite).toContain("from '../../../werkstatt/beispiele/leitfaden.json'");
+    expect(seite).toContain('{KAFFEEBAR_LEITFADEN.einstieg}');
+    expect(seite).not.toContain('Vorlage · Interviewleitfaden');
   });
 
   it('erkennt den Platzhalter', () => {
