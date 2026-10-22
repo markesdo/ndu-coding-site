@@ -4,14 +4,13 @@ import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, RefreshCw } fro
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AUFGEDECKT_MS, aufgedecktHolen } from '../../lib/aufgedeckt.js';
 import { abfrageKette } from '../../lib/kette.js';
-import { navMappeSetzen, rolleMerken } from '../../lib/nav-rolle.js';
 import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
 import { kohorte } from '../kohorten/index.js';
 import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
-import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, lehrendenSeiteSetzen, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, lehrendenSeiteSetzen, anmeldeFehler, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -22,12 +21,6 @@ const TEXT = {
   ladenFehlt: 'Deine Mappe lässt sich gerade nicht laden.',
   abmeldenFehlt: 'Abmelden hat nicht geklappt. Deine Entwürfe auf diesem Gerät sind trotzdem gelöscht.',
 } as const;
-
-// Menüeintrag zur Mappe auf dieser Seite setzen und die Rolle für alle anderen Seiten merken.
-function menueRolle(lehrende: boolean): void {
-  rolleMerken(() => localStorage, lehrende);
-  navMappeSetzen(document, lehrende);
-}
 
 const NEUVERSUCHE = 3; // à 3 s: höchstens ~10 s „wird eingerichtet“, dann Knopf (Spec §5)
 
@@ -64,10 +57,8 @@ export default function MappeUebersicht() {
     const mein = ++lauf.current;
     if (!still) setZustand({ typ: 'laden' });
     try {
-      const ich = await api.ich();
+      const ich = await ichMitMenue(api.ich, document); // zieht auch den Menüeintrag zur Mappe nach
       if (mein !== lauf.current) return;
-      // Menütext und gemerkte Rolle (lib/nav-rolle.ts); abgemeldet oder Studierende: wieder „Meine Mappe“.
-      menueRolle(ich !== null && ich.rolle !== 'studierende');
       if (ich === null) return setZustand({ typ: 'abgemeldet' });
       if (ich.rolle !== 'studierende') {
         setZustand({ typ: 'lehrende', ich });
@@ -81,7 +72,7 @@ export default function MappeUebersicht() {
     } catch (e) {
       if (mein !== lauf.current) return;
       const a = e instanceof ApiError ? e : new ApiError(0, 'unbekannt', TEXT.ladenFehlt);
-      if (a.code === 'nicht-angemeldet') { menueRolle(false); return setZustand({ typ: 'abgemeldet' }); }
+      if (a.code === 'nicht-angemeldet') return setZustand({ typ: 'abgemeldet' });
       if (a.code === 'wird-eingerichtet') return setZustand({ typ: 'einrichten' });
       if (a.code === 'nicht-freigeschaltet') return setZustand({ typ: 'fehler', text: a.message || TEXT.nichtFreigeschaltet, nochmal: false });
       // Name belegt: Neu versuchen legt nur noch einmal vergeblich an.

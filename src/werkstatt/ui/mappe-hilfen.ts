@@ -1,9 +1,9 @@
 // Reine Hilfen für /innolab/mappe (MappeUebersicht.tsx): Rücksprünge der Anmeldung und Zeilen der Übersicht.
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
 import { AUFGEDECKT_MS, abfrageAbstand, gruppeFrei } from '../../lib/aufgedeckt.js';
-import { MAPPE_LEHRENDE } from '../../lib/nav-rolle.js';
+import { MAPPE_LEHRENDE, navMappeSetzen } from '../../lib/nav-rolle.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
-import { ROUTEN, type MappeStand } from '../vertrag.js';
+import { ROUTEN, type Ich, type MappeStand } from '../vertrag.js';
 
 /** Texte zu ?fehler=… – die Anmeldung (routen/auth.ts) springt damit auf /innolab/mappe zurück. */
 export const FEHLER_TEXT = {
@@ -46,6 +46,22 @@ export function leitfadenAbstand(jetzt: Date): number {
  *  Wird nur einmal beim Öffnen entschieden – das spätere Leeren der Meldung darf kein zweites Laden auslösen. */
 export function beimOeffnenLaden(rueckmeldung: { neuAnmelden: boolean } | null): boolean {
   return rueckmeldung === null || rueckmeldung.neuAnmelden;
+}
+
+/**
+ * Holt /auth/ich und zieht den Menüeintrag zur Mappe nach (lib/nav-rolle.ts): Lehrende „Mappen der Kohorte“, Studierende
+ * und Abgemeldete (null oder nicht-angemeldet) „Meine Mappe“. Andere Fehler sagen nichts über die Rolle: Menü bleibt,
+ * der Fehler geht weiter. Das Rollen-Cookie setzt der Server mit derselben Antwort; hier nur diese Seite.
+ */
+export async function ichMitMenue(holen: () => Promise<Ich | null>, dok: Pick<Document, 'querySelectorAll'>): Promise<Ich | null> {
+  try {
+    const ich = await holen();
+    navMappeSetzen(dok, ich !== null && ich.rolle === 'lehrende');
+    return ich;
+  } catch (e) {
+    if ((e as { code?: unknown } | null)?.code === 'nicht-angemeldet') navMappeSetzen(dok, false);
+    throw e;
+  }
 }
 
 /** Überschrift und Lead von /innolab/mappe für Lehrende; Studierende behalten den statischen Text der Seite. */

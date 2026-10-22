@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
+import { MAPPE_PFAD, MAPPE_STUDIERENDE } from './nav-rolle';
 import { BEREICHE, NAV, bereichVon, nachbarn, type Bereich } from './navigation';
 
 const seiten = fileURLToPath(new URL('../pages/', import.meta.url));
@@ -45,7 +46,7 @@ describe('Werkstatt im Innolab-Menü', () => {
   it('führt zu „Meine Mappe“, „Claude verbinden“ und dem Datenschutzhinweis, nach den Kurstagen (das Blättern durch Tag 1–7 bleibt gleich)', () => {
     const gruppe = NAV.innolab.find((g) => g.h === 'Werkstatt');
     expect(gruppe?.items).toStrictEqual([
-      { href: '/innolab/mappe', t: 'Meine Mappe' },
+      { href: MAPPE_PFAD, t: MAPPE_STUDIERENDE },
       { href: '/innolab/werkstatt/claude', t: 'Claude verbinden' },
       { href: '/innolab/werkstatt/interview-datenschutz', t: 'Datenschutz für Interviewte' },
     ]);

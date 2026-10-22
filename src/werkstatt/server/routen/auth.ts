@@ -7,7 +7,7 @@ import { KOHORTEN } from '../../kohorten/index.js';
 import type { Ich } from '../../vertrag.js';
 import { mitgliedschaften, repoName } from '../../zugang.js';
 import { json, origin } from '../antwort.js';
-import { GUELTIG_SEKUNDEN, cookieName, mitSitzung, sitzungErstellen, type SitzungEnv } from '../sitzung.js';
+import { GUELTIG_SEKUNDEN, cookieName, mitSitzung, rolleCookieSetzen, sitzungErstellen, type SitzungEnv } from '../sitzung.js';
 import type { Abhaengigkeiten } from '../typen.js';
 
 const STATE_SEKUNDEN = 10 * 60;
@@ -42,6 +42,8 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       }
     }
     const ich: Ich = { githubId: s.githubId, login: s.login, kohorte: s.kohorte, rolle: s.rolle, repo };
+    // Rollen-Cookie fürs Menü nachziehen (auch für Sitzungen von vor dem Cookie).
+    rolleCookieSetzen(c, abh.umgebung.lokal, s.rolle);
     return json(c, ich);
   });
 
@@ -99,11 +101,13 @@ export function authRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       abh.umgebung.sessionSecret,
     );
     setCookie(c, cookieName(abh.umgebung.lokal), cookie, { ...cookieOpt(), maxAge: GUELTIG_SEKUNDEN });
+    rolleCookieSetzen(c, abh.umgebung.lokal, m.rolle);
     return c.redirect(weiter, 302);
   });
 
   r.post('/abmelden', (c) => {
     deleteCookie(c, cookieName(abh.umgebung.lokal), { path: '/', secure: sicher() });
+    rolleCookieSetzen(c, abh.umgebung.lokal, null);
     return json(c, { ok: true });
   });
 

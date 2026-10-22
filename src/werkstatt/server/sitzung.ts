@@ -2,8 +2,9 @@
 // Format: "<base64url(JSON)>.<base64url(HMAC-SHA256)>". Der Schlüssel leitet sich vom Session-Secret ab,
 // mit eigenem Zusatz, damit das Secret nirgends sonst als roher HMAC-Schlüssel dient.
 import type { Context, MiddlewareHandler } from 'hono';
-import { deleteCookie } from 'hono/cookie';
+import { deleteCookie, setCookie } from 'hono/cookie';
 import { ausB64url, b64url, cookieLesen, gleich } from '../../lib/kurszugang.js';
+import { ROLLE_COOKIE, ROLLE_LEHRENDE } from '../../lib/nav-rolle.js';
 import { KOHORTEN } from '../kohorten/index.js';
 import { mitgliedschaften, type Mitgliedschaft, type Rolle, type Zugang } from '../zugang.js';
 import { fehler } from './antwort.js';
@@ -16,6 +17,14 @@ export function cookieName(lokal: boolean): string {
   return lokal ? COOKIE_WERKSTATT : `__Host-${COOKIE_WERKSTATT}`;
 }
 export const GUELTIG_SEKUNDEN = 30 * 24 * 60 * 60; // 30 Tage
+
+// Rollen-Cookie fürs Menü (lib/nav-rolle.ts): lesbar (ohne HttpOnly), damit das Skript im Layout „Mappen der Kohorte“
+// zeigen kann. Nur ein Hinweis für die Anzeige, keine Berechtigung hängt daran (die prüft allein die Sitzung). Gesetzt
+// für Lehrende, sonst gelöscht; läuft mit der Sitzung ab.
+export function rolleCookieSetzen(c: Context, lokal: boolean, rolle: Rolle | null): void {
+  if (rolle === 'lehrende') setCookie(c, ROLLE_COOKIE, ROLLE_LEHRENDE, { secure: !lokal, sameSite: 'Lax', path: '/', maxAge: GUELTIG_SEKUNDEN });
+  else if (cookieLesen(c.req.header('cookie') ?? null, ROLLE_COOKIE) !== undefined) deleteCookie(c, ROLLE_COOKIE, { path: '/', secure: !lokal });
+}
 
 export interface Sitzung {
   githubId: number;
@@ -92,6 +101,7 @@ export const mitSitzung: MiddlewareHandler<SitzungEnv> = async (c, weiter) => {
   const t = await sitzungMitMitgliedschaft(c, abh);
   if (!t) {
     if (cookieLesen(c.req.header('cookie') ?? null, name)) deleteCookie(c, name, { path: '/', secure: !abh.umgebung.lokal });
+    rolleCookieSetzen(c, abh.umgebung.lokal, null);
     return fehler(c, 401, 'nicht-angemeldet', 'Bitte melde dich mit GitHub an.');
   }
   c.set('sitzung', t.sitzung);
