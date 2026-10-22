@@ -12,7 +12,7 @@ import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import BildText from '../../components/bild/BildText.astro';
 import Video from '../../components/Video.astro';
 import MiroFrame from '../../components/MiroFrame.astro';
-import { ArrowRight, Banknote, CheckCheck, Clock, Coffee, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Gavel, Hammer, Heart, ListPlus, MessagesSquare, Target, TrainFront, TrendingUp } from '@lucide/astro';
+import { ArrowRight, Banknote, Bus, CheckCheck, Clock, Coffee, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Gavel, Hammer, Heart, ListPlus, MessagesSquare, Music, Target, TrainFront, TrendingUp } from '@lucide/astro';
 import MiroLink from '../../components/MiroLink.astro';
 import { TEAM_BOARD } from '../../lib/team-board';
 import FooterNav from '../../components/FooterNav.astro';
@@ -380,6 +380,22 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   </Folie>
 
   <Folie>
+    <h2 id="skateboard-praxis">Skateboards aus der Praxis</h2>
+    <p class="folie-satz">Wer kein Skateboard baut, lernt erst nach Jahren.</p>
+    <div class="ob-vergleich">
+      <div class="ob"><b>Lego Universe</b><span>rund 250 Leute, 4–5 Jahre; schön, aber nicht so unterhaltsam wie erwartet – nach 2 Jahren eingestellt.</span><span>„There was no skateboard!“</span></div>
+      <ArrowRight size={28} aria-hidden="true" class="ob-pfeil" />
+      <div class="vergleich"><b>Minecraft</b><span>erste öffentliche Version nach 6 Tagen Programmieren, von einer Person – das Skateboard.</span></div>
+    </div>
+    <div class="praxis" data-schritt>
+      <div><Music size={22} aria-hidden="true" /><b>Spotify</b><span>erst nur ein paar fest eingebaute Songs, für Freunde und Familie. Gemessen: Millisekunden von „Play“ bis zur Musik.</span></div>
+      <div><Bus size={22} aria-hidden="true" /><b>Noch früher: ein Busticket</b><span>Knibergs Frage: Geht es noch früher als ein Skateboard?</span></div>
+    </div>
+    <p class="small muted">Alle Beispiele nach Henrik Kniberg, <a href="https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp">„Making sense of MVP“</a> (2016).</p>
+    <p class="nur-handout">Lego Universe war ein Online-Spiel, an dem laut Kniberg rund 250 Menschen vier bis fünf Jahre arbeiteten, getrieben von Perfektionismus; es wurde nach etwa zwei Jahren eingestellt. Minecraft dagegen erschien nach sechs Tagen Programmieren einer einzigen Person öffentlich. Spotifys erste Version war ein technischer Prototyp ohne Lizenzen und Geschäftsmodell; er ging an Freunde und Familie, um zu prüfen, ob sofortiges Streaming geht und ob es Menschen begeistert. Knibergs Frage davor: Geht es noch früher als ein Skateboard – etwa mit einem Busticket?</p>
+  </Folie>
+
+  <Folie>
     <h2 id="schiefgehen">Wie Design Thinking schiefgeht</h2>
     <p class="folie-satz">Design Thinking scheitert selten an Ideen, meist am Vorgehen.</p>
     <Diamant label="Double Diamond mit fünf typischen Fehlern: zwei beim Entdecken, je einer beim Definieren, Entwickeln und Ausliefern" schritt phasen={[
@@ -430,6 +446,11 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .vergleich { border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
   @media (max-width: 700px) { .feinde { grid-template-columns: 1fr 1fr; } .ob-vergleich { grid-template-columns: 1fr; } :global(.ob-pfeil) { transform: rotate(90deg); justify-self: center; } }
   .nowrap { white-space: nowrap; }
+  /* Folie „Skateboards aus der Praxis“: zwei Karten unter dem Vergleich. */
+  .praxis { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: .5rem 0; }
+  .praxis > div { display: flex; flex-direction: column; gap: .2rem; border: 1px solid var(--border); border-radius: 8px; padding: .6rem .8rem; }
+  .praxis span { color: var(--muted); }
+  @media (max-width: 700px) { .praxis { grid-template-columns: 1fr; } }
   /* Folie „Die vier Ebenen“: Tabelle, Prüfstein und Quelle passen im Beamer sonst nicht auf eine Höhe. */
   :global(html[data-beamer]) .ebenen { font-size: .9rem; }
   :global(html[data-beamer]) .ebenen :is(th, td) { padding-top: .35rem; padding-bottom: .35rem; }
