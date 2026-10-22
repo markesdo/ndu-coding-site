@@ -4,6 +4,7 @@
 // basisSha ist der Blob-SHA von mappe/<name>.json im Kopf von main (null = neu). Ein anderes Artefakt, das inzwischen
 // gespeichert wurde, lässt das Ref-Update mit 422 „not a fast forward“ scheitern; dann bis zu dreimal auf dem neuen Kopf.
 import { ARTEFAKT_NAMEN } from '../../schemas/index.js';
+import { VERLAUF_HOECHSTENS } from '../../vertrag.js';
 import { kohorte as kohorteNachId, type Kohorte } from '../../kohorten/index.js';
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme } from '../antwort.js';
@@ -309,6 +310,20 @@ export function githubSpeicher(abh: GithubSpeicherAbh): Speicher {
       if (!z) throw unbekanntesRepo();
       const pfade = await baumPfade(z, 'main');
       return ARTEFAKT_NAMEN.map((name) => ({ name, vorhanden: pfade.has(jsonPfad(name)) }));
+    },
+
+    // Eine Seite der Commit-Liste mit Pfadfilter: GitHub nennt nur Commits, die genau diese Datei ändern.
+    async verlauf(repo, name) {
+      const z = await zugriff(repo);
+      if (!z) return { zeitpunkte: [], vollstaendig: true };
+      const pfad = `/commits?sha=main&path=${encodeURIComponent(jsonPfad(name))}&per_page=${VERLAUF_HOECHSTENS}`;
+      const r = await anfrage(z, 'GET', pfad);
+      // Leeres oder frisch erzeugtes Repo: noch keine Geschichte.
+      if (r.status === 404 || r.status === 409) return { zeitpunkte: [], vollstaendig: true };
+      if (r.status !== 200 || !Array.isArray(r.daten)) throw githubFehler('GET', 'commits', r.status);
+      const zeitpunkte = (r.daten as { commit?: { committer?: { date?: unknown } } }[]).map((c) => c.commit?.committer?.date);
+      if (!zeitpunkte.every((d): d is string => typeof d === 'string' && !Number.isNaN(Date.parse(d)))) throw githubFehler('GET', 'commits', r.status);
+      return { zeitpunkte, vollstaendig: zeitpunkte.length < VERLAUF_HOECHSTENS };
     },
 
     async werkstattJson(repo) {

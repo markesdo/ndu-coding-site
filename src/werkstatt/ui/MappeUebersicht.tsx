@@ -1,5 +1,5 @@
 // /innolab/mappe: alle Artefakte der Person mit Stand (vorhanden/offen) und „Bearbeiten“, Rücksprünge der Anmeldung
-// (?fehler=…), Abmelden. Lehrende sehen vorerst nur einen Hinweis (Phase 2).
+// (?fehler=…), Abmelden. Lehrende sehen stattdessen alle Mappen ihrer Kohorte (LehrendenAnsicht, nur lesend).
 import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AUFGEDECKT_MS, aufgedecktHolen } from '../../lib/aufgedeckt.js';
@@ -9,6 +9,7 @@ import { kohorte } from '../kohorten/index.js';
 import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
+import LehrendenAnsicht from './LehrendenAnsicht.js';
 import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
@@ -18,7 +19,6 @@ const TEXT = {
   wirdEingerichtet: 'Deine Mappe wird eingerichtet …',
   wirdEingerichtetLang: 'Das dauert länger als gedacht. Versuch es gleich noch einmal.',
   ladenFehlt: 'Deine Mappe lässt sich gerade nicht laden.',
-  lehrende: 'Die Ansicht für Lehrende kommt mit Tag 2.',
   abmeldenFehlt: 'Abmelden hat nicht geklappt. Deine Entwürfe auf diesem Gerät sind trotzdem gelöscht.',
 } as const;
 
@@ -209,7 +209,12 @@ export default function MappeUebersicht() {
           </div>
         );
       case 'lehrende':
-        return <p className="mappe-person">Angemeldet als <strong>{zustand.ich.login}</strong> (Lehrende). {TEXT.lehrende}</p>;
+        return (
+          <>
+            <p className="mappe-person">Angemeldet als <strong>{zustand.ich.login}</strong> (Lehrende). Eine eigene Mappe gibt es für Lehrende nicht.</p>
+            <LehrendenAnsicht />
+          </>
+        );
       case 'bereit': {
         const hinweis = repoHinweis(zustand.stand, kohorte(zustand.stand.kohorte)?.org);
         return (

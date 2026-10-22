@@ -42,6 +42,10 @@ export interface Speicher {
     readme?: (vorhanden: { name: ArtefaktName; vorhanden: boolean }[]) => string,
   ): Promise<{ basisSha: string; commitUrl: string } | { konflikt: true }>;
   uebersicht(repo: string): Promise<{ name: ArtefaktName; vorhanden: boolean }[]>;
+  // Verlauf von mappe/<name>.json auf main (Lehrenden-Ansicht): Commit-Zeitpunkte (ISO, neueste zuerst), höchstens
+  // VERLAUF_HOECHSTENS (vertrag.ts). vollstaendig = false: es gibt ältere, die fehlen. Fehlt das Repo oder main: leer und vollständig.
+  // Eine Anfrage bei GitHub pro Aufruf.
+  verlauf(repo: string, name: ArtefaktName): Promise<{ zeitpunkte: string[]; vollstaendig: boolean }>;
   // Idempotent; lädt die Person ein, falls nötig; nie Schreibrechte (nur `pull`). 'eingeladen' = Einladung offen.
   // Der aktuelle Login kommt aus der unveränderlichen GitHub-ID, nie aus der Sitzung.
   lesezugriff(repo: string, githubId: number): Promise<'aktiv' | 'eingeladen'>;

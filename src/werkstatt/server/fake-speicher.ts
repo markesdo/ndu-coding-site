@@ -3,6 +3,7 @@
 // Nur bei NODE_ENV ∈ {development, test}.
 import { kohorte as kohorteNachId } from '../kohorten/index.js';
 import { ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
+import { VERLAUF_HOECHSTENS } from '../vertrag.js';
 import { repoName } from '../zugang.js';
 import { blobSha } from './git-sha.js';
 import { fremdesRepo, internerFehler, jsonAusRepo, unbekanntesRepo } from './speicher-fehler.js';
@@ -27,11 +28,14 @@ export type FakeSpeicher = Speicher & {
 
 const jsonPfad = (name: ArtefaktName) => `mappe/${name}.json`;
 
-export function fakeSpeicher(): FakeSpeicher {
+// jetzt: Uhr für die Zeitpunkte der Commits (verlauf); Standard Date.now.
+export function fakeSpeicher(opts: { jetzt?: () => number } = {}): FakeSpeicher {
   if (!istLokal(process.env)) throw new Error('fakeSpeicher nur bei NODE_ENV development oder test');
+  const jetzt = opts.jetzt ?? (() => Date.now());
   // Schlüssel `${repo}:${githubId}`.
   const lesende = new Map<string, 'aktiv' | 'eingeladen'>();
-  const repos = new Map<string, { dateien: Map<string, string>; commits: FakeCommit[] }>();
+  // zeiten[i] gehört zu commits[i] (ISO); getrennt, damit commits() unverändert bleibt.
+  const repos = new Map<string, { dateien: Map<string, string>; commits: FakeCommit[]; zeiten: string[] }>();
 
   const repoHolen = (repo: string) => {
     const r = repos.get(repo);
@@ -55,7 +59,7 @@ export function fakeSpeicher(): FakeSpeicher {
       const k = kohorteNachId(m.kohorte);
       if (!k) throw internerFehler(`anlegen: unbekannte Kohorte ${m.kohorte}`);
       const dateien = new Map([['werkstatt.json', `${JSON.stringify({ kohorte: m.kohorte, githubId, schemaVersionen: k.artefakte }, null, 2)}\n`]]);
-      repos.set(repo, { dateien, commits: [] });
+      repos.set(repo, { dateien, commits: [], zeiten: [] });
       return { repo };
     },
 
@@ -75,12 +79,22 @@ export function fakeSpeicher(): FakeSpeicher {
       if (readme) alle['README.md'] = readme(ARTEFAKT_NAMEN.map((n) => ({ name: n, vorhanden: n === name || r.dateien.has(jsonPfad(n)) })));
       for (const [pfad, inhalt] of Object.entries(alle)) r.dateien.set(pfad, inhalt);
       r.commits.push({ dateien: alle, autor: { ...autor }, nachricht });
+      r.zeiten.push(new Date(jetzt()).toISOString());
       return { basisSha: blobSha(neu), commitUrl: `https://github.invalid/fake/${repo}/commit/${r.commits.length}` };
     },
 
     async uebersicht(repo) {
       const r = repoHolen(repo);
       return ARTEFAKT_NAMEN.map((name) => ({ name, vorhanden: r.dateien.has(jsonPfad(name)) }));
+    },
+
+    // Wie githubSpeicher, aber nur Commits aus speichern(), die mappe/<name>.json schreiben, neueste zuerst.
+    async verlauf(repo, name) {
+      const r = repos.get(repo);
+      if (!r) return { zeitpunkte: [], vollstaendig: true };
+      const zeitpunkte = r.zeiten.filter((_, i) => jsonPfad(name) in r.commits[i].dateien).reverse().slice(0, VERLAUF_HOECHSTENS);
+      // Wie bei GitHub: eine volle Seite heißt „vielleicht gibt es ältere“.
+      return { zeitpunkte, vollstaendig: zeitpunkte.length < VERLAUF_HOECHSTENS };
     },
 
     async lesezugriff(repo, githubId) {

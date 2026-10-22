@@ -74,3 +74,89 @@
 .wk-chips .wk-knopf { min-height: 2rem; min-width: 2rem; border: 0; background: none; }
 .wk-verweis-neu { display: flex; gap: .5rem; align-items: stretch; }
 .wk-verweis-neu input { flex: 1; }
+
+
+/* Lehrenden-Ansicht auf /innolab/mappe (LehrendenAnsicht.tsx): Matrix Person × Artefakt, schmal eine Karte pro Person.
+   Symbol und Wort, nie Farbe allein; Schrift auf hellem Grund nie in --yellow (zu wenig Kontrast), sondern --yellow-ink. */
+.lv-kopf { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.25rem; margin: 1rem 0 .5rem; }
+.lv-kopf h2 { margin: 0; font-size: 1.3rem; }
+.lv-kohorte { font-weight: 400; color: var(--muted); }
+.lv-wahl { display: inline-flex; align-items: center; gap: .4rem; font-size: .95rem; }
+.wk-wurzel .lv-wahl select { width: auto; min-height: 2.75rem; }
+.lv-tag { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem; font-size: .95rem; }
+.lv-tag > span:first-child { font-weight: 600; }
+.lv-stand-zeit { display: inline-flex; align-items: center; gap: .6rem; margin-left: auto; color: var(--muted); font-size: .9rem; }
+.wk-wurzel .lv .wk-knopf { min-height: 2.75rem; }
+.lv-info { margin: .5rem 0; color: var(--muted); }
+.lv-zuerst { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1rem; margin: .75rem 0; padding: .6rem .9rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+.lv-zuerst ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
+.lv-zuerst li { display: inline-flex; align-items: center; gap: .3rem; }
+.lv-zuerst-faellig-offen svg, .lv-zuerst-luecken svg { color: var(--yellow-ink); }
+.lv-daten { transition: opacity .15s; }
+.lv-alt { opacity: .55; }
+.lv-tabelle-rahmen { overflow-x: auto; margin: .75rem 0 1.5rem; }
+.lv-tabelle { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: .86rem; }
+.lv-tabelle .lv-spalte-person { width: 7.5rem; }
+.lv-tabelle .lv-spalte-luecken { width: 5rem; }
+.lv-tabelle th, .lv-tabelle td { border: 1px solid var(--border); vertical-align: top; text-align: left; }
+.lv-tabelle thead th { padding: .5rem .5rem; background: var(--bg-2); overflow-wrap: anywhere; }
+.lv-faellig { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); font-family: inherit; font-size: .8rem; }
+.lv-tabelle tbody th { padding: .5rem .5rem; overflow-wrap: anywhere; }
+.lv-kuerzel { display: block; font-weight: 700; font-size: .95rem; }
+.lv-person-text { display: inline-flex; align-items: baseline; gap: .25rem; color: var(--muted); font-size: .8rem; font-weight: 400; }
+.lv-zelle { padding: 0; }
+.lv-zelle-knopf {
+  display: flex; flex-direction: column; align-items: flex-start; gap: .2rem; width: 100%; height: 100%; min-height: 44px;
+  padding: .45rem .5rem; border: 2px solid transparent; background: none; color: var(--fg); font: inherit; text-align: left; cursor: pointer;
+}
+.lv-zelle-knopf:hover { background: var(--bg-2); }
+.lv-zelle-knopf:focus-visible { outline: 3px solid var(--blue); outline-offset: -3px; }
+.lv-stand { display: inline-flex; align-items: flex-start; gap: .3rem; }
+.lv-stand svg { flex: none; margin-top: .15em; }
+.lv-umfang { color: var(--muted); font-size: .84rem; }
+.lv-geaendert { display: inline-flex; align-items: center; gap: .25rem; color: var(--blue); font-size: .84rem; }
+.lv-offen .lv-stand { color: var(--muted); }
+.lv-faellig-offen .lv-zelle-knopf, .lv-unlesbar .lv-zelle-knopf { border-color: var(--yellow); background: var(--yellow-soft); }
+.lv-faellig-offen .lv-stand, .lv-unlesbar .lv-stand { color: var(--yellow-ink); font-weight: 600; }
+.lv-leer-zeile { background: var(--bg-2); }
+.lv-luecken { padding: .3rem .4rem; white-space: nowrap; }
+.lv-keine { display: inline-block; padding: .4rem .3rem; color: var(--muted); }
+.lv-luecken-knopf {
+  display: inline-flex; align-items: center; gap: .3rem; min-height: 44px; padding: .3rem .6rem;
+  border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--yellow-ink); font: inherit; font-weight: 600; cursor: pointer;
+}
+.lv-luecken-knopf:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.lv-luecken-zeile td { padding: .5rem 1rem 1rem; background: var(--bg-2); }
+.lv-luecken-liste h4 { margin: .6rem 0 .2rem; font-size: .92rem; }
+.lv-luecken-liste ul { margin: 0; padding-left: 1.2rem; font-size: .9rem; }
+.lv-luecken-liste li + li { margin-top: .25rem; }
+.lv-karten { display: none; list-style: none; margin: .75rem 0 1.5rem; padding: 0; }
+.lv-karte { margin-bottom: 1rem; padding: .75rem; border: 1px solid var(--border); border-radius: var(--radius); }
+.lv-karte-kopf { margin-bottom: .5rem; }
+.lv-karte-artefakte { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
+.lv-karte-artefakte .lv-zelle-knopf { border: 1px solid var(--border); border-radius: var(--radius); }
+.lv-karte-artefakte .lv-faellig-offen .lv-zelle-knopf, .lv-karte-artefakte .lv-unlesbar .lv-zelle-knopf { border: 2px solid var(--yellow); }
+.lv-karte-titel { font-weight: 600; }
+.lv-karte-titel .lv-faellig { display: inline; }
+.lv-karte-luecken { margin-top: .5rem; }
+.lv-karte-luecken summary { display: flex; align-items: center; gap: .3rem; min-height: 44px; cursor: pointer; color: var(--yellow-ink); font-weight: 600; }
+@media (max-width: 640px) {
+  .lv-tabelle-rahmen { display: none; }
+  .lv-karten { display: block; }
+  .lv-stand-zeit { margin-left: 0; }
+}
+/* Leser: das Panel der Editor-Hülle (rechts, schmal Vollbild) */
+.lv-leser { width: min(100vw, 52rem); }
+.lv-leser-kopf { align-items: flex-start; }
+.lv-leser-kopf h2 { margin: 0 0 .2rem; }
+.lv-leser-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; padding: .5rem 1rem; border-bottom: 1px solid var(--border); }
+.lv-leser-personen, .lv-leser-tabs { display: flex; flex-wrap: wrap; gap: .4rem; }
+.wk-wurzel .lv-tab[aria-current="true"] { border-color: var(--fg); font-weight: 600; }
+.lv-leser-inhalt { flex: 1; min-height: 0; overflow-y: auto; padding: 1rem 1.25rem 2rem; }
+.lv-leser-inhalt h3 { display: flex; align-items: center; gap: .3rem; margin: 0 0 .3rem; font-size: 1rem; }
+.lv-leser-befunde, .lv-leser-fehlt { margin: 0 0 1rem; padding: .6rem .9rem; border-left: 3px solid var(--yellow); background: var(--yellow-soft); }
+.lv-leser-befunde h3 svg { color: var(--yellow-ink); }
+.lv-leser-befunde ul, .lv-leser-fehlt ul { margin: 0; padding-left: 1.2rem; font-size: .92rem; }
+.lv-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin: 0 0 1rem; }
+.lv-links a { display: inline-flex; align-items: center; gap: .25rem; min-height: 44px; }
+.lv-text { margin: 0; padding: 1rem; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: .86rem; line-height: 1.5; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); }
