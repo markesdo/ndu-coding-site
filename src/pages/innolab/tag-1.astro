@@ -12,7 +12,7 @@ import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import BildText from '../../components/bild/BildText.astro';
 import Video from '../../components/Video.astro';
 import MiroFrame from '../../components/MiroFrame.astro';
-import { ArrowRight, CheckCheck, Clock, Coffee, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Hammer, Heart, ListPlus, MessagesSquare, TrainFront, TrendingUp } from '@lucide/astro';
+import { ArrowRight, Banknote, CheckCheck, Clock, Coffee, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Gavel, Hammer, Heart, ListPlus, MessagesSquare, Target, TrainFront, TrendingUp } from '@lucide/astro';
 import MiroLink from '../../components/MiroLink.astro';
 import { TEAM_BOARD } from '../../lib/team-board';
 import FooterNav from '../../components/FooterNav.astro';
@@ -318,11 +318,29 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <ul>
         <li data-schritt>Interviews liefern Dutzende Wünsche – ihr löst die, die das Outcome bewegen.</li>
         <li data-schritt>„Das WLAN am Bahnhof ist schlecht“ stimmt – gehört aber nicht in den Baum.</li>
-        <li data-schritt>Umgekehrt: Ein Outcome ohne Kundschaft geht schief (Wells Fargo).</li>
+        <li data-schritt>Umgekehrt: Ein Outcome ohne Kundschaft geht schief – Wells Fargo, nächste Folie.</li>
         <li data-schritt>Darum ein Gegengewicht: Die Schlange darf für alle anderen nicht länger werden.</li>
       </ul>
     </BildText>
     <p class="nur-handout">Wells Fargo wollte, dass jede Kundin mehr Konten hat, und setzte die Berater*innen mit unerreichbaren Quoten unter Druck. Viele eröffneten Konten ohne Wissen der Kundschaft; das kostete Strafen und Klagen in Milliardenhöhe. „Mehr Konten um jeden Preis“ war das falsche Problem; „Kundschaft, die von sich aus mehr Konten will“ wäre das richtige gewesen ({TORRES}, S. 21–24, 48).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="wells-fargo">Geschäft und Kundschaft: Wells Fargo</h2>
+    <p class="folie-satz">Erst das Geschäftsziel – dann nur Chancen, die es über die Kundschaft treiben.</p>
+    <Fluss label="Wells Fargo: Ziel, Druck, Betrug" knoten={[
+      { t: 'Ziel', sub: 'mehr Konten pro Kunde', icon: Target },
+      { t: 'Druck', sub: 'unerreichbare Quoten, hohe Prämien', icon: Banknote },
+      { t: 'Folge', sub: 'Konten ohne Wissen der Kundschaft – 185 Mio. $ Strafe, Klagen in Milliardenhöhe', icon: Gavel },
+    ]} />
+    <div class="ob-vergleich" data-schritt>
+      <div class="ob"><b>So gerahmt</b><span>„Konten steigern – um jeden Preis“</span></div>
+      <ArrowRight size={28} aria-hidden="true" class="ob-pfeil" />
+      <div class="vergleich"><b>Besser gerahmt</b><span>„Kundschaft schaffen, die mehr Konten eröffnen will“</span></div>
+    </div>
+    <p data-schritt><strong>Der Baum:</strong> Outcome und Chancenraum begrenzen die Lösungen – das schützt vor dem Schicksal von Wells Fargo.</p>
+    <p class="small muted">{TORRES}, S. 21–24, 27–28.</p>
+    <p class="nur-handout">Wells Fargo begann richtig mit einem Outcome – mehr Konten pro Kunde –, verband es aber nicht mit dem Blick auf die Kundschaft (S. 22). Die Führung hatte das Problem, ob ausgesprochen oder nicht, als „Konten steigern um jeden Preis“ gerahmt; das öffnete dem Betrug die Tür. „Kundschaft schaffen, die mehr Konten eröffnen will“ hätte Betrug unwahrscheinlicher gemacht (S. 24). Der Baum löst die Spannung zwischen Geschäft und Kundschaft: zuerst das Geschäftsziel, denn es sichert, dass ihr der Kundschaft auf Dauer dienen könnt; dann nur die Chancen, die dieses Ziel treiben können. Outcome und Chancenraum begrenzen die Lösungen (S. 27–28).</p>
   </Folie>
 
   <Folie>
