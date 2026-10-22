@@ -40,6 +40,8 @@ const SLUGS = METHODEN.map((m) => m.slug);
 const PRUEFPUNKT = z.object({ id: z.string(), text: z.string() });
 // Was Claude von einem Prüfpunkt sieht: ID und Text, ohne die alte Positions-ID.
 const ausgabe = (p: Pruefpunkt) => ({ id: p.id, text: p.text });
+// Eine Zeile der Prüfliste im Text: Position und ID, weil pruefpunkt beides annimmt („5. annahmen-loesung: …“).
+const pruefpunktZeile = (p: { id: string; text: string }, i: number) => `${i + 1}. ${p.id}: ${p.text}`;
 
 const UEBERSICHT = {
   title: 'Mappe: Übersicht',
@@ -286,7 +288,7 @@ function methodeDaten(k: WerkzeugKontext, m: Methode) {
 
 function methodeText(d: ReturnType<typeof methodeDaten>): string {
   const zeilen = [`# ${d.name}`, '', `Frage: ${d.frage}`, ''];
-  if (d.pruefliste) zeilen.push(`Prüfliste (Prüfpunkt-IDs für ${MCP_WERKZEUGE.artefaktPruefen}):`, ...d.pruefliste.map((p) => `- ${p.id}: ${p.text}`), '');
+  if (d.pruefliste) zeilen.push(`Prüfliste (Nummer oder Prüfpunkt-ID für ${MCP_WERKZEUGE.artefaktPruefen}):`, ...d.pruefliste.map(pruefpunktZeile), '');
   zeilen.push(`Rolle der KI (immer erst nach der eigenen Arbeit): ${d.ki}`);
   if (d.quelle) zeilen.push(`Quelle: ${d.quelle}`);
   zeilen.push(`Methodenseite: ${d.link}`);
@@ -482,7 +484,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         `# Prüfung: ${titel}`,
         '',
         fokus ? `## Prüfpunkt im Fokus (${m.name})` : `## Prüfpunkte (${m.name})`,
-        ...pruefpunkte.map((p) => `- ${p.id}: ${p.text}`),
+        ...(fokus ? [pruefpunktZeile(fokus.punkt, fokusIndex)] : alle.map(pruefpunktZeile)),
         '',
         '## Artefakt',
         a ? eingebettet(a.markdown) : nochLeer(k, artefakt),

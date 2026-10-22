@@ -297,7 +297,9 @@ describe('Werkzeuge', () => {
     expect(sc).not.toHaveProperty('markdown');
     const t = text(r);
     expect(t).toContain(TEXT_A);
-    expect(t).toContain(`- annahmen-getan-quelle: ${liste[5].text}`);
+    // Nummer und ID je Zeile: pruefpunkt nimmt beides an.
+    expect(t).toContain(`\n1. annahmen-pruefbar: ${liste[0].text}\n`);
+    expect(t).toContain(`\n6. annahmen-getan-quelle: ${liste[5].text}\n`);
     expect(t).not.toContain('annahmen-6');
   });
 
@@ -454,6 +456,7 @@ describe('Werkzeuge', () => {
     expect(alles).not.toContain('<');
     expect(text(r)).toContain(m.frage);
     expect(text(r)).toContain(`${BASIS}/innolab/methoden/interview`);
+    m.pruefliste!.forEach((p, i) => expect(text(r)).toContain(`\n${i + 1}. ${p.id}: ${p.text}\n`));
   });
 
   it('methode_erklaeren und Anweisung: Links mit WERKSTATT_ORIGIN statt der Anfrage-Origin', async () => {
@@ -841,6 +844,8 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     const t = text(r);
     expect(t).toContain('## Prüfpunkt im Fokus');
     expect(t).not.toContain('annahmen-pruefbar:');
+    // Die Nummer bleibt die Position in der ganzen Liste, nicht 1.
+    expect(t).toContain(`\n2. annahmen-arten: ${liste[1].text}\n`);
     expect(t).toContain(TEXT_A);
 
     // Der letzte Punkt der Liste, aus methoden.ts statt fest.
