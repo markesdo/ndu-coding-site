@@ -312,7 +312,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Bei Protest gegen Alleinzeichnen: Antrags-Trio von Torres erzählen.',
     ],
     ueberleitung: 'Damit habt ihr gezeichnet, was Menschen heute tun – jetzt: Woran messt ihr, ob sie es nach eurem Produkt anders tun?',
-    uebung: { dauer: '6 min', form: 'allein, ohne zu reden; danach reihum zeigen' },
+    uebung: { dauer: '10 min', form: 'allein, ohne zu reden; danach reihum zeigen' },
     miro: {
       frame: 'T1 · 1 · Experience Map',
       schritte: [
@@ -326,7 +326,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Rahmen kurz setzen: Jede*r zeichnet für das eigene Produkt, wie die Zielgruppe das Problem heute löst.',
-        'Timer 6 min; Miro-Frame T1 · 1, eigene Spalte neben der Kaffeebar.',
+        'Timer 10 min; Miro-Frame T1 · 1, eigene Spalte neben der Kaffeebar.',
         'Reihum: jede*r zeigt die Map, die anderen beiden fragen nach, ohne zu bewerten.',
         'Die „?“ markieren lassen – sie wandern nachmittags in die Annahmen-Map.',
       ],
