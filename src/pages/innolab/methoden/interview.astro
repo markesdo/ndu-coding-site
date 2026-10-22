@@ -5,7 +5,6 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
-import { abText } from '../../../components/aufloesung';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../../components/innolab-zeiten';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -17,12 +16,11 @@ import Aufloesung from '../../../components/Aufloesung.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import Skala from '../../../components/bild/Skala.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
-// Hinweise an den gesperrten Teilen: wann sie aufgehen und was ein Klick öffnet. Jede Übung hat ihre eigene Gruppe
+// Hinweise an den gesperrten Teilen: Sie gehen auf, sobald Markus aufdeckt; der Knopf bleibt als stiller Ausweg. Jede Übung hat ihre eigene Gruppe
 // (mom-test-…): Markus deckt eine auf, alle sehen nur diese – die Pointen späterer Übungen bleiben zu. Die letzte („ausgraben“)
 // ist in MOM_TEST_GRUPPE, zusammen mit Editor und Vorlage, Probe-Prompt und Prüfliste (nur im Handout) und dem Leitfaden der
 // Mappe: Mit ihr geht das Material für den Leitfaden-Block auf. Ein Klick der Studierenden öffnet nur den einen Teil.
-const AB = abText(NACH_MOM_TEST);
-const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sagt Markus es, öffnet ein Klick auf den Knopf diesen Teil.`;
+const OEFFNET = 'Öffnet sich, sobald Markus es aufdeckt.';
 
 // Auflösungen und Leitfaden-Editor: offen, sobald Markus aufdeckt, spätestens ab NACH_MOM_TEST (Ende des Kurstags).
 ---
@@ -48,7 +46,8 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
   <Folie>
     <h2 id="mom-test">Der Mom Test</h2>
     <p class="folie-satz">Schreibt drei Fragen an eure Zielgruppe.</p>
-    <p>Allein, eine Frage pro Sticky. Markus antwortet danach als Person aus eurer Zielgruppe. <Timer minuten={5} /></p>
+    <p>Allein, eine Frage pro Sticky. <Timer minuten={5} /></p>
+    <p data-schritt><strong>Dann reihum:</strong> Zielgruppe in einem Satz nennen, Person rechts fragen. Sie antwortet als jemand daraus – höflich und ehrlich, wie im echten Leben.</p>
     <Aufloesung ab={NACH_MOM_TEST} gruppe="mom-test-auftakt" fuer="alle" hinweis={`Erst eure Fragen schreiben. ${OEFFNET}`} knopf="Auflösung zeigen (nach der Übung)">
       <p class="folie-satz">Auf „Würdest du …?“ sagen alle Ja – selbst eure Mutter.</p>
       <ol class="gross">
@@ -92,7 +91,7 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
         </table>
       </div>
       <p class="nur-handout">Vorsicht bei Komplimenten („Coole Idee!“), Allgemeinplätzen („Ich trinke normalerweise …“) und Zukunftsversprechen („Das würde ich sicher nutzen“). Holt sie zurück in die Vergangenheit: „Wann war das zuletzt?“</p>
-      <p data-schritt><strong>Und jetzt eure drei Fragen:</strong> Welche würde Markus wieder mit „Ja, total!“ beantworten? Umschreiben. <Timer minuten={5} /></p>
+      <p data-schritt><strong>Und jetzt eure drei Fragen:</strong> Welche bekam ein „Ja, total!“? Umschreiben, der Person rechts neu stellen: Kommt jetzt eine Geschichte? <Timer minuten={5} /></p>
     </Aufloesung>
   </Folie>
 
@@ -168,14 +167,26 @@ const OEFFNET = `Öffnet sich, sobald Markus es aufdeckt, spätestens ${AB}. Sag
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
-    <p class="folie-satz">Erst schreiben, dann proben – mit Claude und mit Markus.</p>
+    <p class="folie-satz">Erst schreiben, dann proben – mit Claude und miteinander.</p>
     <MiroFrame name="T1 · 4 · Interviewleitfaden" />
     <ol class="gross dicht">
       <li data-schritt><strong>Leitfaden allein schreiben:</strong> Ziel ist die Forschungsfrage aus eurer riskantesten Annahme. Dann 5–7 Fragen, die meisten nach dem letzten konkreten Mal, jede gegen die drei Regeln halten, in der Werkstatt speichern – „Bearbeiten“ unter <a href="#vorlage">In der Werkstatt speichern</a>, auf euren Laptops. <Timer minuten={20} /></li>
       <li data-schritt><strong>Prüfliste und Claude</strong> unter <a href="#pruefen">Prüfen</a>. <Timer minuten={10} /></li>
       <li data-schritt><strong>Probe mit Claude:</strong> Prompt unter <a href="#probe">Probe mit Claude</a>. Claude spielt eine zurückhaltende Person aus eurer Zielgruppe, danach Feedback. <Timer minuten={15} /></li>
-      <li data-schritt><strong>Live-Interview, reihum 3 × 15 min:</strong> Markus spielt eine schwierige Person, 10 min Interview, 5 min Feedback. Die anderen beobachten: Wo wurde gepitcht, wo fehlte eine Nachfrage? Was ihr lernt, kommt danach in den Leitfaden. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Live-Interview zu dritt, 3 × 15 min:</strong> Eine*r interviewt, eine*r spielt eine schwierige Person aus deren Zielgruppe, eine*r notiert Pitch-Stellen und fehlende Nachfragen. 10 min Interview, 5 min Feedback, dann Rollen weiter. Gelerntes kommt in den Leitfaden. <Timer minuten={15} /></li>
     </ol>
+    <div class="nur-handout">
+      <h3>Rollenkarte: die schwierige Person</h3>
+      <p>Wer interviewt, sagt vorher in einem Satz, wer die Zielgruppe ist. Wer spielt, ist dann jemand aus dieser Zielgruppe und macht es der interviewenden Person nicht leicht:</p>
+      <ul>
+        <li>antwortet kurz, oft in einem Satz,</li>
+        <li>sagt „normalerweise“, statt von einem bestimmten Mal zu erzählen,</li>
+        <li>macht Komplimente („Coole Idee!“) und verspricht etwas für die Zukunft („Würde ich sicher nutzen“),</li>
+        <li>wünscht sich Features,</li>
+        <li>erzählt Konkretes nur, wenn nach dem letzten Mal gefragt wird – dann aber ehrlich.</li>
+      </ul>
+      <p>Nach jeder Runde rücken die Rollen eins weiter, sodass jede*r einmal interviewt, einmal spielt und einmal beobachtet. So sehen unkooperative Teilnehmende bei Teresa Torres aus: Sie antworten in einem Satz, haben keine passende Geschichte, wollen über einen anderen Teil der Geschichte reden, bringen Feature-Ideen oder beschweren sich über das Produkt (Teresa Torres, „Continuous Discovery Habits“ (2021), S. 67). Komplimente, „normalerweise“ und „würde ich sicher“ sind die Fallen aus Rob Fitzpatrick, „The Mom Test“ (2013), S. 24–29. Dass Konkretes erst auf die Frage nach dem letzten Mal kommt, ist eine Spielregel für die Übung.</p>
+    </div>
   </Folie>
 
   <div class="nur-handout">

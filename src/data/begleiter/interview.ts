@@ -64,19 +64,20 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
   'mom-test': {
     live: [
       'Aufgabe zeigen, Timer 5 min starten, nichts zur Methode sagen.',
-      'Du in der Rolle: „Würdest du …?“ → leeres Ja, „letztes Mal“ → Geschichte.',
+      'Reihum: rechts antwortet, höflich und ehrlich. Du hörst zu.',
+      'Notieren: leere Jas bei „Würdest du …?“ – Beispiele für die Auflösung.',
       '„Welche Antwort hat euch etwas Neues verraten?“',
       'Auflösung aufdecken öffnet nur diese Übung, auch bei allen.',
       'Kochbuch-App erzählen (Geschichte): „Das klingt toll“, niemand kauft.',
     ],
     ueberleitung: 'Jetzt legt ihr eure drei Fragen auf zwei Achsen und seht, wo sie liegen.',
-    uebung: { dauer: '5 min', form: 'allein, eine Frage pro Sticky; danach antwortest du als Person aus ihrer Zielgruppe' },
+    uebung: { dauer: '5 min + 5 min', form: 'allein, eine Frage pro Sticky; dann reihum: jede*r fragt die Person rechts, die als jemand aus der Zielgruppe antwortet' },
     miro: {
       frame: 'T1 · 4 · Interviewleitfaden',
       schritte: [
         '„Alle zu mir holen“ auf T1 · 4. Die Kaffeebar-Spalte hat drei Felder: „Meine drei Fragen“, „Umgeschrieben nach der Auflösung“ und „Gelernt im Live-Interview“. Jetzt bleiben alle drei leer, sonst verrät die Kaffeebar die Auflösung. Gefüllt wird sie erst auf der Folie „Eure Fragen umschreiben“.',
         'Jede*r schreibt in der eigenen Spalte „Produkt von: …“ ins Feld „Meine drei Fragen“: drei gelbe Stickies, eine Frage pro Sticky.',
-        'Nach dem Timer „Alle zu mir holen“; Spalte für Spalte liest jede*r eine Frage vor, und du antwortest in der Rolle.',
+        'Nach dem Timer reihum: Wer fragt, sagt in einem Satz, wer die Zielgruppe ist; die Person rechts antwortet höflich und ehrlich. Du hörst zu und sammelst Antworten für die Auflösung.',
       ],
     },
     kern: [
@@ -114,13 +115,13 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Aufgabe zeigen, Timer 5 min starten. Nichts zur Methode sagen.',
-        'Jede*r liest eine Frage vor, du antwortest in der Rolle. Hypothetisch heißt höflich Ja, allgemein heißt allgemein, „letztes Mal“ heißt konkrete Geschichte.',
+        'Reihum: Wer fragt, nennt in einem Satz die Zielgruppe; die Person rechts antwortet höflich und ehrlich. Du hörst zu und achtest darauf: Hypothetisch bringt ein höfliches Ja, allgemein bleibt allgemein, „letztes Mal“ bringt eine konkrete Geschichte.',
         'Fragen: Welche Antwort hat euch etwas Neues verraten? Meist ist es die einzige Frage nach einem echten Ereignis.',
         'Auflösung aufdecken, die drei Regeln mit dem Kochbuch-Beispiel verbinden.',
       ],
       achten: [
         'Fragen, die eure Lösung schon enthalten („Würdest du per App vorbestellen?“), sind die besten Lehrbeispiele. Merk sie dir für die Matrix.',
-        'Bleib in der Rolle konsequent. Die Pointe funktioniert nur, wenn „Würdest du …?“ wirklich ein leeres Ja bekommt.',
+        'Merk dir ein, zwei leere Jas auf „Würdest du …?“ wörtlich. Die Pointe trägt, wenn das Beispiel aus der eigenen Runde kommt. Bleibt das Ja aus, erinnere an „höflich, so wie im echten Leben“.',
       ],
       fehler: [
         'Fragen nach Meinung („Findest du …?“) oder Zahlungsbereitschaft („Wie viel würdest du zahlen?“).',
@@ -203,17 +204,17 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       'Treue-App-Geschichte erzählen: „Klar, wurde ja Zeit!“, ein Nörgler, kein Kunde.',
       'Timer 5 min: jede*r schreibt die eigenen drei Fragen um.',
       'Falle: Lösung steckt noch drin oder Zukunft nur ins Präsens gesetzt.',
-      'Danach zwei, drei Stickies vorlesen lassen, in der Rolle antworten.',
+      'Danach reihum: umgeschriebene Frage an rechts. Du hörst, ob Geschichten kommen.',
     ],
     ueberleitung: 'Und wenn die Antworten kommen: Welche davon zählt überhaupt?',
-    uebung: { dauer: '5 min', form: 'allein, die eigenen drei Fragen umschreiben' },
+    uebung: { dauer: '5 min + 5 min', form: 'allein die eigenen drei Fragen umschreiben, dann reihum der Person rechts noch einmal stellen' },
     miro: {
       frame: 'T1 · 4 · Interviewleitfaden',
       schritte: [
         'Erst jetzt, nach der Auflösung, füllst du die Kaffeebar-Spalte live: „Statt“-Fragen ins Feld „Meine drei Fragen“, „Besser“-Fragen in derselben Reihenfolge ins Feld „Umgeschrieben nach der Auflösung“ (Paare unten).',
         'Das dritte Feld „Gelernt im Live-Interview“ bleibt leer, bis die Live-Interviews gelaufen sind.',
         'Jede*r kopiert die eigenen Stickies (Cmd+D bzw. Strg+D) ins Feld „Umgeschrieben nach der Auflösung“ und schreibt sie dort um; das Original bleibt stehen.',
-        'Nach dem Timer „Alle zu mir holen“ und zwei, drei umgeschriebene Stickies vorlesen lassen.',
+        'Nach dem Timer „Alle zu mir holen“; reihum stellt jede*r eine umgeschriebene Frage noch einmal der Person rechts, die wieder als jemand aus der Zielgruppe antwortet.',
       ],
       vorschlaege: [
         'Würdest du Kaffee vorbestellen, wenn es eine App gäbe? → Erzähl mir vom letzten Morgen, an dem du am Bahnhof Kaffee wolltest.',
@@ -262,8 +263,8 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       schritte: [
         'Die vier Zeilen schrittweise aufdecken und zu jeder kurz die Antwort der Pendlerin durchspielen.',
         'Die drei Warnsignale aus dem Handout nennen.',
-        'Timer 5 min: Jede*r schreibt die Fragen um, die du wieder mit „Ja, total!“ beantworten würdest.',
-        'Zwei, drei umgeschriebene Fragen vorlesen lassen und kurz in der Rolle antworten, ob jetzt eine Geschichte kommt.',
+        'Timer 5 min: Jede*r schreibt die Fragen um, die in der Runde ein „Ja, total!“ bekommen haben.',
+        'Reihum stellt jede*r eine umgeschriebene Frage noch einmal der Person rechts. Du hörst zu, ob jetzt eine Geschichte kommt, und greifst ein Beispiel auf.',
       ],
       achten: [
         'Umgeschriebene Fragen, die die Lösung noch enthalten („Erzähl vom letzten Mal, als du per App bestellt hast“), sind nur scheinbar besser.',
@@ -481,18 +482,19 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
     live: [
       'Überzieht Schritt 1, Schritt 2 kürzen, nie die Live-Runden.',
       'Zeit: Live-Runden spätestens 15:30 starten, sie brauchen 45 min.',
-      'Du spielst schwierig: Ein-Satz-Antworten, „normalerweise“, Komplimente, Feature-Wünsche.',
+      'Dreier-Rollen: interviewt, spielt schwierig, beobachtet; je Runde eins weiter.',
+      'Du hältst die Zeit und hörst zu; Rollenkarte steht im Handout.',
       'Vor Runde 1 MTV-Geschichte erzählen: Feature-Wunsch notiert statt Wozu gefragt.',
       '„Die Probe mit Claude findet Pitch-Reflexe, aber Claude kennt eure Zielgruppe nicht.“',
     ],
     ueberleitung: 'Zum Schluss die Frage, mit der ihr morgen rausgeht: Was ist bei euch „der letzte Morgen am Bahnhof“?',
-    uebung: { dauer: '90 min (20 + 10 + 15 + 3 × 15)', form: 'Leitfaden, Prüfliste und Claude-Probe allein; Live-Interview reihum mit dir, die anderen beobachten' },
+    uebung: { dauer: '90 min (20 + 10 + 15 + 3 × 15)', form: 'Leitfaden, Prüfliste und Claude-Probe allein; Live-Interview zu dritt: interviewen, schwierige Person spielen, beobachten, Rollen rotieren' },
     miro: {
       frame: 'T1 · 4 · Interviewleitfaden',
       schritte: [
         'Jede*r füllt in der eigenen Spalte das oberste Feld „Forschungsfrage (aus eurer riskantesten Annahme)“ mit einem Sticky. Vorbild links: „Wann und wo entscheiden Pendler*innen, ob sie Kaffee holen?“',
         'Der Leitfaden selbst entsteht in der Werkstatt („Bearbeiten“ im Handout). Das Board ist nur die Denkfläche; die Stickies aus „Umgeschrieben nach der Auflösung“ sind das Rohmaterial.',
-        'Live-Interviews reihum: Nach jeder Runde schreibt die interviewende Person ins eigene Feld „Gelernt im Live-Interview“, was sie aus Interview und Feedback mitnimmt. Die Beobachtenden sagen es mündlich oder kommentieren, statt in der fremden Spalte zu schreiben.',
+        'Live-Interviews zu dritt: Nach jeder Runde schreibt die interviewende Person ins eigene Feld „Gelernt im Live-Interview“, was sie aus Interview und Feedback mitnimmt. Die Beobachtenden sagen es mündlich oder kommentieren, statt in der fremden Spalte zu schreiben.',
         'Zum Schluss das Gelernte vom Board in den Leitfaden in der Werkstatt übernehmen.',
       ],
     },
@@ -510,7 +512,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
         quelle: 'Rob Fitzpatrick, The Mom Test, S. 58–59',
       },
       {
-        text: 'Für deine Rolle als schwierige Person: Torres beschreibt, wie unkooperative Teilnehmende aussehen. Sie haben keine passende Geschichte, wollen über einen anderen Teil der Geschichte reden, antworten in einem Satz, bringen Feature-Ideen oder beschweren sich über das Produkt. Dazu Fitzpatricks Fallen: Komplimente, „normalerweise“, „würde ich sicher“.',
+        text: 'Grundlage der Rollenkarte für die schwierige Person: Torres beschreibt, wie unkooperative Teilnehmende aussehen. Sie haben keine passende Geschichte, wollen über einen anderen Teil der Geschichte reden, antworten in einem Satz, bringen Feature-Ideen oder beschweren sich über das Produkt. Dazu Fitzpatricks Fallen: Komplimente, „normalerweise“, „würde ich sicher“.',
         quelle: 'Teresa Torres, Continuous Discovery Habits, S. 67; Rob Fitzpatrick, The Mom Test, S. 24–29',
       },
     ],
@@ -537,13 +539,14 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
         '20 min: Leitfaden allein schreiben, Ziel aus der riskantesten Annahme, die meisten Fragen nach dem letzten Mal, jede gegen die drei Regeln halten, in der Werkstatt speichern.',
         '10 min: Prüfliste durchgehen und von Claude prüfen lassen (Handout „Prüfen“). Ohne Connector unter den Prompt Leitfaden, Brief und Annahmen-Map einfügen, je aus „Für Claude kopieren“.',
         '15 min: Probe-Interview mit Claude als zurückhaltender Person (Prompt im Handout „Probe mit Claude“, neues Gespräch). Den Platzhalter durch Abschnitt 1 aus dem eigenen Brief ersetzen, dann selbst die erste Frage stellen; „Ende“ holt das Feedback, höchstens drei Punkte mit Zitat.',
-        '3 × 15 min reihum: 10 min Interview mit dir als schwieriger Person, 5 min Feedback. Die anderen beiden beobachten und notieren Pitch-Stellen und verpasste Nachfragen.',
+        '3 × 15 min zu dritt: Eine*r interviewt, eine*r spielt nach einem Satz Briefing eine schwierige Person aus deren Zielgruppe (Rollenkarte im Handout), eine*r beobachtet und notiert Pitch-Stellen und verpasste Nachfragen. 10 min Interview, 5 min Feedback, dann rücken die Rollen eins weiter, bis jede*r jede Rolle einmal hatte. Du hältst die Zeit und hörst zu.',
         'Was sie aus der Runde lernen, kommt danach in den Leitfaden.',
       ],
       achten: [
         'Steht im Ziel eine Forschungsfrage oder eine Bestätigung der eigenen Idee („Herausfinden, ob sie die App wollen“)?',
         'Fängt das Interview mit einer Geschichte an oder mit Demografie und Meinungen?',
         'Im Live-Interview: Wird nach „normalerweise“ zurückgeholt? Wird ein Kompliment abgelenkt? Wird ein Feature-Wunsch hinterfragt?',
+        'Spielt die schwierige Person so hart, dass nie etwas Konkretes kommt? Erinnern: Auf die Frage nach dem letzten Mal erzählt sie ehrlich.',
         'Zeit: Die drei Live-Runden brauchen 45 min. Wenn Schritt 1 überzieht, Schritt 2 kürzen, nicht die Live-Runden.',
         'Platzhalter vergessen: Dann fragt Claude erst nach der Zielgruppe, statt zu spielen. Kein Fehler, einfach Abschnitt 1 nachreichen.',
       ],

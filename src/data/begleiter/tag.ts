@@ -104,7 +104,7 @@ export const TAG_1: TagKarte = {
     { id: 'toast-ton', wann: 'Toast', was: 'Ton für das TED-Video getestet' },
     { id: 'alter-brief', wann: 'Problem-Rahmen', was: 'Wer aus dem Coding-Kurs kommt, hat den alten Brief griffbereit' },
     { id: 'annahmen-stickies', wann: 'Annahmen-Map', was: 'Stickies in vier Farben im Frame T1 · 3 (gelb, blau, grün, lila)' },
-    { id: 'interview-probe', wann: 'Interviewleitfaden', was: 'Prompt „Probe mit Claude“ griffbereit; du spielst in den drei Live-Runden die schwierige Person' },
+    { id: 'interview-probe', wann: 'Interviewleitfaden', was: 'Prompt „Probe mit Claude“ griffbereit; Rollenkarte der schwierigen Person im Handout (vorgehen), die Live-Runden laufen zu dritt ohne dich' },
     { id: 'abschluss-interviews', wann: 'Abschluss', was: 'Interview-Editor auf der Abschluss-Seite geöffnet; Datenschutzhinweis für Interviewte (Werkstatt) zum Zeigen bereit' },
   ],
 };
