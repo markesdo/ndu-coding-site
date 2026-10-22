@@ -5,15 +5,16 @@ import { artefaktParsen, type ArtefaktName, type Brief } from './schemas/index.j
 import type { PersonZahlen } from './vertrag.js';
 
 // Felder des Briefs, die an Tag 1 ausgefüllt sein sollen (produktSatz und offene Fragen kommen später).
-const FELDER: ((b: Brief) => boolean)[] = [
-  (b) => !!b.fuerWen.trim(),
-  (b) => !!b.problem.trim(),
-  (b) => !!b.heuteGeloestDurch.trim(),
-  (b) => b.nicht.some((n) => n.trim()),
-  (b) => !!b.outcome.wirGlauben.trim(),
-  (b) => !!b.outcome.wirMerkenEs.trim(),
+// name wie im gerenderten Brief (render/brief.ts); tag-stand.ts nennt damit, was noch fehlt.
+export const BRIEF_TAG1_FELDER: readonly { name: string; ausgefuellt: (b: Brief) => boolean }[] = [
+  { name: 'Für wen?', ausgefuellt: (b) => !!b.fuerWen.trim() },
+  { name: 'Welches Problem?', ausgefuellt: (b) => !!b.problem.trim() },
+  { name: 'Heute gelöst durch', ausgefuellt: (b) => !!b.heuteGeloestDurch.trim() },
+  { name: 'Was macht es NICHT?', ausgefuellt: (b) => b.nicht.some((n) => n.trim()) },
+  { name: 'Wir glauben', ausgefuellt: (b) => !!b.outcome.wirGlauben.trim() },
+  { name: 'Wir merken es', ausgefuellt: (b) => !!b.outcome.wirMerkenEs.trim() },
 ];
-export const BRIEF_FELDER = FELDER.length;
+export const BRIEF_FELDER = BRIEF_TAG1_FELDER.length;
 
 // roh[name]: Inhalt der Datei, null = gibt es nicht, UNLESBAR = kein JSON (z. B. direkt auf GitHub bearbeitet).
 export const UNLESBAR = Symbol('unlesbar');
@@ -34,7 +35,7 @@ export function zaehlen(kuerzel: string, roh: Record<ArtefaktName, unknown | nul
   const leitfaden = parsen('leitfaden');
   return {
     kuerzel,
-    briefFelder: brief ? FELDER.filter((f) => f(brief)).length : 0,
+    briefFelder: brief ? BRIEF_TAG1_FELDER.filter((f) => f.ausgefuellt(brief)).length : 0,
     entscheidungen: entscheidungen?.entscheidungen.length ?? 0,
     annahmen: annahmen?.annahmen.length ?? 0,
     fragen: leitfaden?.fragen.length ?? 0,
