@@ -15,11 +15,23 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Fragen: Wer hat schon eine Produktidee, wer führt weiter?',
       'Rollen klären: Product Owner entscheidet, die anderen denken und interviewen mit.',
     ],
-    ueberleitung: 'Ihr arbeitet auf einem gemeinsamen Miro-Board – ich zeige euch kurz, wie es aufgebaut ist.',
+    ueberleitung: 'Alle Methoden üben wir zuerst an einem Beispiel, das alle kennen: der Kaffeebar.',
     fragen: [
       { frage: 'Darf ich mein Projekt aus dem Coding-Kurs weiterführen?', antwort: 'Ja, laut Handout: neu oder als Weiterführung. Entscheidend ist, dass es ein eigenes digitales Produkt mit einer echten Zielgruppe ist, die man bis Tag 2 interviewen kann.' },
-      { frage: 'Warum die Kaffeebar und nicht gleich unser Produkt?', antwort: 'Am Beispiel, das alle kennen, sieht man die Methode ohne Streit über Inhalte. Danach wendet ihr sie sofort auf euer Produkt an – im selben Frame direkt daneben.' },
       { frage: 'Wie arbeiten wir in den Produkten der anderen mit?', antwort: 'Als Mitglied des Teams: mitdenken, mitinterviewen, Belege prüfen. Entscheiden tut die Product Ownerin bzw. der Product Owner des jeweiligen Produkts.' },
+    ],
+  },
+
+  'kaffeebar': {
+    live: [
+      'Fragen: Wer pendelt morgens mit dem Zug?',
+      '„Die Kaffeebar ist erfunden – aber die Schlange kennt ihr alle.“',
+      'Zweiter Schritt: verzichten oder Automat – das kostet die Inhaberin Kundschaft.',
+      '„Merkt euch die Schlange: Sie begleitet uns bis zum Prototyp.“',
+    ],
+    ueberleitung: 'Ihr arbeitet auf einem gemeinsamen Miro-Board – ich zeige euch kurz, wie es aufgebaut ist.',
+    fragen: [
+      { frage: 'Warum die Kaffeebar und nicht gleich unser Produkt?', antwort: 'Am Beispiel, das alle kennen, sieht man die Methode ohne Streit über Inhalte. Danach wendet ihr sie sofort auf euer Produkt an – im selben Frame direkt daneben.' },
     ],
   },
 
