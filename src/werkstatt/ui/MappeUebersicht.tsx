@@ -10,7 +10,7 @@ import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
-import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, lehrendenSeiteSetzen, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
 
 const TEXT = {
@@ -84,6 +84,12 @@ export default function MappeUebersicht() {
   useEffect(() => {
     if (startLaden.current) void laden();
   }, [laden]);
+
+  // Lehrende: „Mappen der Kohorte“ statt „Meine Mappe“. Studierende sehen den statischen Text der Seite (kein Flackern).
+  const istLehrende = zustand.typ === 'lehrende';
+  useEffect(() => {
+    if (istLehrende) lehrendenSeiteSetzen(document);
+  }, [istLehrende]);
 
   useEffect(() => {
     if (leitfadenOffen) return;
