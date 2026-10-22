@@ -12,7 +12,7 @@ import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import BildText from '../../components/bild/BildText.astro';
 import Video from '../../components/Video.astro';
 import MiroFrame from '../../components/MiroFrame.astro';
-import { ArrowRight, CheckCheck, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Hammer, Heart, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
+import { ArrowRight, CheckCheck, Clock, Coffee, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Hammer, Heart, ListPlus, MessagesSquare, TrainFront, TrendingUp } from '@lucide/astro';
 import MiroLink from '../../components/MiroLink.astro';
 import { TEAM_BOARD } from '../../lib/team-board';
 import FooterNav from '../../components/FooterNav.astro';
@@ -49,7 +49,19 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <h2 id="kickoff">Kick-off</h2>
     <p class="folie-satz">Ihr seid ein Team mit drei Produkten.</p>
     <p>Jede*r ist Product Owner des eigenen Produkts und arbeitet in den anderen beiden mit. Bewertung: Prototyp 70 %, Präsentation 30 %. Alle Methoden: die <a href="/innolab/methoden">Toolbox</a>.</p>
-    <p class="nur-handout">Im Innolab entwickelt ihr ein eigenes digitales Produkt – neu oder als Weiterführung eures Projekts aus dem Coding-Kurs. Die Methoden lernt ihr am Beispiel einer Kaffeebar am Bahnhof, die alle kennen, und wendet sie sofort auf euer Produkt an. Die Toolbox zeigt alle Methoden mit der Frage, die sie beantworten, und dem Artefakt, das dabei entsteht.</p>
+    <p class="nur-handout">Im Innolab entwickelt ihr ein eigenes digitales Produkt – neu oder als Weiterführung eures Projekts aus dem Coding-Kurs. Die Methoden lernt ihr am Beispiel einer Kaffeebar am Bahnhof (nächste Folie), die alle kennen, und wendet sie sofort auf euer Produkt an. Die Toolbox zeigt alle Methoden mit der Frage, die sie beantworten, und dem Artefakt, das dabei entsteht.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="kaffeebar">Unser Beispiel: die Kaffeebar am Bahnhof</h2>
+    <p class="folie-satz">Jede Methode zuerst an der Kaffeebar – dann an eurem Produkt.</p>
+    <Fluss label="Die Kaffeebar: Pendler*innen am Morgen, die Schlange, die Folge" knoten={[
+      { t: 'Hauptbahnhof St. Pölten', sub: 'eine erfundene Kaffeebar in der Halle', icon: Coffee },
+      { t: 'Werktags 7:15–7:45', sub: 'Pendler*innen warten auf den Zug nach Wien', icon: TrainFront },
+      { t: 'Die Schlange', sub: 'ist länger als die Zeit bis zur Abfahrt', icon: Clock },
+    ]} />
+    <p data-schritt>Wer den Zug erreichen will, verzichtet auf Kaffee oder nimmt den Automaten. Die Inhaberin hat das Gefühl, Kundschaft zu verlieren.</p>
+    <p class="nur-handout">Die Kaffeebar kennen alle, deshalb sieht man an ihr die Methode, ohne über Inhalte zu streiten. Sie zieht sich durch den ganzen Kurs: Heute entsteht ihr Problem-Rahmen, an Tag 2 ihre Experience Map und ihr Baum, später Experiment und Prototyp. In jedem Miro-Frame steht sie links, eure Spalte daneben.</p>
   </Folie>
 
   <Folie>
