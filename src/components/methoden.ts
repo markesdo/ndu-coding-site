@@ -533,9 +533,6 @@ export function pruefungInWerkstatt(m: Methode, pfad?: string): boolean {
 
 const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst.';
 
-/** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
- *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. ein Transkript statt aller Interview-Dateien).
- *  Liegt das Ergebnis in der Werkstatt, prüft Claude es dort mit artefakt_pruefen – nie über eine Datei unter docs/. */
 /** ID der abhakbaren Prüfliste (localStorage-Schlüssel in Checklist.astro); mit Stand, wo die Liste vor NDU-28 neu geschrieben wurde. */
 export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `il-${m.slug}-${m.prueflisteStand}` : `il-${m.slug}`);
 
@@ -549,13 +546,67 @@ export function vorarbeitLesen(m: Methode, schonGelesen: (string | undefined)[] 
   return [dateien.join(', '), werkstatt.length ? `aus der Werkstatt ${ausWerkstatt(werkstatt)}` : ''].filter(Boolean);
 }
 
-export function pruefPrompt(m: Methode, pfad?: string): string {
+// So nennt der Prompt, was eingefügt wird: je Datei einmal, mit allen Artefakten darin („Concept Story und Usage Story des
+// Kernablaufs (docs/STORYS.md)“). Nur Dateien im Repo; Werkstatt-Artefakte haben keine, Linear-Artefakte stehen in linear.
+function einzufuegen(ids: readonly string[], ausser: readonly (string | undefined)[] = []): { dateien: string[]; linear: string[] } {
+  const pfade = new Map<string, string[]>();
+  const linear: string[] = [];
+  for (const id of ids) {
+    const a = artefakt(id)!;
+    if (a.lebtIn.includes('linear')) {
+      if (!linear.includes(a.name)) linear.push(a.name);
+      continue;
+    }
+    const p = nurInWerkstatt(a) ? undefined : a.pfad;
+    if (!p || ausser.includes(p)) continue;
+    const namen = pfade.get(p) ?? [];
+    if (!namen.includes(a.name)) pfade.set(p, [...namen, a.name]);
+  }
+  return { dateien: [...pfade].map(([p, namen]) => `${aufzaehlen(namen)} (${p})`), linear };
+}
+
+// Ein pfad, der eine Datei nennt (docs/interviews/I2.md), kein Satz wie „über den Linear-MCP die Issues …“.
+const IST_DATEI = /^[^\s]+\.\w+$/;
+
+/** Gibt es zu dieser Prüfung den Weg ohne Claude Code (Ergebnis als Text in Claude einfügen)? Nur für Ergebnisse in
+ *  Dateien im Repo: Werkstatt-Artefakte haben keine (dort prüft artefakt_pruefen), Linear auch nicht. */
+export function einfuegenMoeglich(m: Methode, pfad?: string): boolean {
+  return pfad ? IST_DATEI.test(pfad) : einzufuegen(m.ergibt).dateien.length > 0;
+}
+
+// Dateien je mit ihren Namen: mit Semikolon getrennt, weil die Namen selbst „und“ enthalten („Origin Story … und Concept Story“).
+const dateiListe = (dateien: string[]) => dateien.join('; ');
+
+/** Was beim Ausweichweg „einfuegen“ als Ergebnis eingefügt wird. Vorarbeit in derselben Datei wie das Ergebnis (Concept
+ *  und Usage Story in docs/STORYS.md) steht beim Ergebnis. ausMiro: das Ergebnis liegt auch auf Miro (nicht bei pfad). */
+function einfuegenErgebnis(m: Methode, pfad?: string) {
+  const ergebnisPfade = pfad ? [pfad] : m.ergibt.map((id) => artefakt(id)!.pfad);
+  const dateien = pfad ? [pfad] : einzufuegen([...m.ergibt, ...m.braucht.filter((id) => ergebnisPfade.includes(artefakt(id)!.pfad))]).dateien;
+  const ausMiro = !pfad && m.ergibt.some((id) => artefakt(id)!.lebtIn.includes('miro'));
+  return { ergebnisPfade, dateien, ausMiro };
+}
+
+/** Hinweis unter dem Prompt zum Einfügen (ClaudePruefung.astro): Miro nur, wo das Ergebnis auch dort liegt (wie im Prompt). */
+export function einfuegenHinweis(m: Methode, pfad?: string): string {
+  const { dateien, ausMiro } = einfuegenErgebnis(m, pfad);
+  const inhalt = dateien.length > 1 ? 'den Inhalt der Dateien aus eurem Repo' : 'den Inhalt der Datei aus eurem Repo';
+  return `Prompt in ein Gespräch mit Claude einfügen, darunter ${inhalt}${ausMiro ? ' oder den Text aus Miro' : ''} – und jeden weiteren Text, den der Prompt zum Abgleich nennt.`;
+}
+
+const REGELN_CHAT = 'Schreib nichts um und formulier keinen Text für mich – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.';
+
+/** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
+ *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. ein Transkript statt aller Interview-Dateien).
+ *  Liegt das Ergebnis in der Werkstatt, prüft Claude es dort mit artefakt_pruefen – nie über eine Datei unter docs/. Sonst
+ *  liest Claude Code die Dateien im Repo und die Werkstatt über den Connector. weg „einfuegen“: der Ausweichweg ohne
+ *  Claude Code – die Person fügt Ergebnis und Vorarbeit-Dateien als Text in Claude ein (einfuegenMoeglich). */
+export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfuegen' = 'standard'): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
   // Mit der festen ID, damit Claude Befunde auch ohne Connector so nennt wie artefakt_pruefen.
   const liste = m.pruefliste.map((p, i) => `${i + 1}. ${p.text} (${p.id})`);
   const werkstattAbgleich = werkstattVorarbeit(m);
 
-  if (pruefungInWerkstatt(m, pfad)) {
+  if (weg === 'standard' && pruefungInWerkstatt(m, pfad)) {
     // Claude (claude.ai mit dem Connector) sieht nur die Mappe; Vorarbeit aus Dateien ließe sich so nicht lesen.
     const dateien = m.braucht.map(quelle).filter((p): p is string => !!p);
     if (dateien.length) throw new Error(`pruefPrompt: Methode „${m.slug}“ prüft in der Werkstatt, braucht aber Dateien: ${dateien.join(', ')}`);
@@ -568,7 +619,29 @@ export function pruefPrompt(m: Methode, pfad?: string): string {
       // Ohne Connector fügen die Studierenden die Texte aus „Für Claude kopieren“ unter den Prompt (ClaudePruefung.astro).
       `Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: ${akkusativListe([...namen, ...werkstattAbgleich])}.`,
       '',
-      `${REGELN_ANFANG} Schreib nichts um und formulier keinen Text für mich – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.`,
+      `${REGELN_ANFANG} ${REGELN_CHAT}`,
+    ].join('\n');
+  }
+
+  if (weg === 'einfuegen') {
+    // Ohne Claude Code: das Ergebnis und die Vorarbeit aus Dateien als Text, die Werkstatt über den Connector.
+    if (!einfuegenMoeglich(m, pfad)) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keinen Weg zum Einfügen`);
+    const { ergebnisPfade, dateien: ergebnis, ausMiro } = einfuegenErgebnis(m, pfad);
+    const vorarbeit = einzufuegen(m.braucht, ergebnisPfade);
+    const inhalt = ergebnis.length > 1 ? 'Inhalt der Dateien' : 'Inhalt der Datei';
+    return [
+      `Unter diese Nachricht füge ich mein Ergebnis ein (${ausMiro ? `${inhalt} oder Text aus Miro` : inhalt}): ${dateiListe(ergebnis)}. Prüf es gegen diese Prüfliste (${m.name}):`,
+      ...liste,
+      ...(vorarbeit.dateien.length ? [`Zum Abgleich füge ich auch ein: ${dateiListe(vorarbeit.dateien)}.`] : []),
+      ...(vorarbeit.linear.length ? [`Aus Linear kopiere ich zum Abgleich ${aufzaehlen(vorarbeit.linear)} dazu (Kennung, Titel und Text jedes Issues).`] : []),
+      ...(werkstattAbgleich.length
+        ? [
+            `Zum Abgleich lies außerdem ${ausWerkstatt(werkstattAbgleich)}.`,
+            'Ohne Werkstatt-Zugang nimm dafür die Texte, die ich aus „Für Claude kopieren“ ebenfalls einfüge.',
+          ]
+        : []),
+      '',
+      `${REGELN_ANFANG} ${REGELN_CHAT}`,
     ].join('\n');
   }
 

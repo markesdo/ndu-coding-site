@@ -1,0 +1,6 @@
+---
+// Hinweis unter einem Prompt für Claude Code, der etwas aus der Werkstatt liest (artefakt_lesen): dafür braucht Claude
+// Code den Werkstatt-Connector. ohne: optional, was ihr ohne Connector stattdessen tut (z. B. einen Text einfügen).
+const { ohne } = Astro.props as { ohne?: string };
+---
+<p class="small muted">Was in der Werkstatt liegt, liest Claude Code über den Werkstatt-Connector: <a href="/innolab/werkstatt/claude#claude-code">Claude Code mit der Werkstatt verbinden</a>.{ohne && ` ${ohne}`}</p>
