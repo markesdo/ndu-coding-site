@@ -41,6 +41,10 @@
 .wk-hinweis { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin: 1rem; padding: .75rem 1rem; border: 1px solid var(--yellow); border-radius: var(--radius); background: var(--yellow-soft); color: var(--fg); }
 .wk-hinweis p { margin: 0; }
 .wk-kopiertext { padding: 0 1rem; }
+.wk-schalter { display: inline-flex; align-items: center; gap: .4rem; font-size: .9rem; color: var(--muted); cursor: pointer; }
+.wk-was-kopiert { padding: .5rem 1rem 0; border-top: 1px solid var(--border); font-size: .9rem; }
+.wk-was-kopiert summary { cursor: pointer; color: var(--muted); }
+.wk-was-kopiert pre { max-height: 30vh; overflow: auto; margin: .5rem 0; padding: .5rem .75rem; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); font-size: .82rem; }
 .wk-kopiertext textarea { width: 100%; }
 @media (max-width: 760px) {
   .wk-dialog { width: 100vw; border-left: 0; }

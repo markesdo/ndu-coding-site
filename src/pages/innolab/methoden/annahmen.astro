@@ -24,7 +24,7 @@ const karte = {
   felder: ['Beleg prüfen, darauf bauen', 'Zuerst testen', 'Abhaken', 'Später prüfen'] as [string, string, string, string],
   hervor: 'or' as const,
 };
-// Red Team über den Connector, ohne ihn mit beiden Artefakten per „Für Claude kopieren“; der Werkzeugname kommt aus dem
+// Red Team über den Connector, ohne ihn mit beiden Artefakten aus „Für Claude kopieren“ (im Gespräch der Prüfung); der Werkzeugname kommt aus dem
 // Vertrag, nicht als Text.
 const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkstatt (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Ohne Werkstatt-Zugang nimm die beiden Texte, die ich unter diese Nachricht einfüge. Wo im Brief steckt eine Annahme, die in der Map fehlt? Zitier höchstens drei Stellen wörtlich und frag mich zu jeder, was wir dort voraussetzen. Formulier die Annahmen nicht für mich – ich entscheide, was in die Map kommt.`;
 ---
@@ -162,7 +162,7 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
   <ClaudePruefung slug="annahmen" />
   <p>Danach ein zweiter Durchgang als Red Team:</p>
   <Prompt label="Red Team · Claude, mit oder ohne Connector">{redTeam}</Prompt>
-  <p class="small muted">Ohne Connector: Prompt einfügen, darunter den Brief und die Annahmen-Map, beide aus „Für Claude kopieren“ im jeweiligen Editor.</p>
+  <p class="small muted">Ohne Connector: den Prompt ins selbe Gespräch wie die Prüfung. Habt ihr dort mit Häkchen bei „Prüf-Prompt mitkopieren“ kopiert und waren Brief und Map gespeichert, stehen beide schon im Gespräch. Sonst fügt ihr darunter ein, was fehlt, je aus „Für Claude kopieren“ ohne Häkchen.</p>
 
   </div>
 

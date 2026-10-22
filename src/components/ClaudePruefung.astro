@@ -39,11 +39,11 @@ const einfuegen = einfuegenMoeglich(m, pfad) ? pruefPrompt(m, pfad, 'einfuegen')
   <details class="fallback">
     <summary>Ohne Claude Code: Text in Claude einfügen</summary>
     <Prompt label="Prüfen lassen · Claude mit Text zum Einfügen" note={einfuegenHinweis(m, pfad)}><Fragment set:text={einfuegen} /></Prompt>
-    {ausWerkstatt && <p class="small muted">Was in der Werkstatt liegt, liest Claude mit dem <a href="/innolab/werkstatt/claude">Werkstatt-Connector</a> selbst; ohne Connector fügt ihr auch diese Texte ein, je aus „Für Claude kopieren“ im Editor.</p>}
+    {ausWerkstatt && <p class="small muted">Was in der Werkstatt liegt, liest Claude mit dem <a href="/innolab/werkstatt/claude">Werkstatt-Connector</a> selbst; ohne Connector fügt ihr auch diese Texte ein, je aus „Für Claude kopieren“ im Editor, dort ohne Häkchen bei „Prüf-Prompt mitkopieren“.</p>}
   </details>
 )}
 {werkstatt && (
-  <p class="small muted">Dafür braucht Claude den Werkstatt-Connector: <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>. Der Prompt geht auch in Claude Code: <a href="/innolab/werkstatt/claude#claude-code">Claude Code mit der Werkstatt verbinden</a>. Ohne Connector fügt ihr den Prompt oben in ein Gespräch mit Claude ein und darunter jeden Text, den der Prompt nennt, je aus „Für Claude kopieren“ im Editor. Der kopierte Text allein reicht nicht: Dann schreibt Claude euer Artefakt um, statt es zu prüfen.</p>
+  <p class="small muted">Dafür braucht Claude den Werkstatt-Connector: <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>. Der Prompt geht auch in Claude Code: <a href="/innolab/werkstatt/claude#claude-code">Claude Code mit der Werkstatt verbinden</a>. Ohne Connector reicht ein Kopieren: „Für Claude kopieren“ im Editor, mit Häkchen bei „Prüf-Prompt mitkopieren“ (so steht es am Anfang). Das kopiert diesen Prompt, darunter euer Artefakt und jeden Text, den der Prompt zum Abgleich nennt; ihr fügt alles in ein neues Gespräch mit Claude ein. Ohne den Prompt reicht der Text nicht: Dann schreibt Claude euer Artefakt um, statt es zu prüfen.</p>
 )}
 
 <style>

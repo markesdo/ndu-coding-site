@@ -89,7 +89,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     },
     fragen: [
       { frage: 'Was sieht Claude über den Connector?', antwort: 'Nur die eigene Mappe, und nur lesend: Alle Werkzeuge sind read-only. Claude prüft, schreibt aber nichts.' },
-      { frage: 'Was, wenn der Connector nicht klappt?', antwort: 'Ohne ihn weiterarbeiten: erst den Prüf-Prompt einfügen, dann den Text aus „Für Claude kopieren“. Nur der kopierte Text allein, und Claude schreibt um, statt zu prüfen.' },
+      { frage: 'Was, wenn der Connector nicht klappt?', antwort: 'Ohne ihn weiterarbeiten: „Für Claude kopieren“ im Editor mit Häkchen bei „Prüf-Prompt mitkopieren“ (Standard) bringt Prüf-Prompt und Text in einem Stück. Ohne Häkchen nur der Text, und Claude schreibt um, statt zu prüfen.' },
     ],
   },
 

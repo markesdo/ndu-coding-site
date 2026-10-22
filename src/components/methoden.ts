@@ -616,7 +616,8 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
       ...liste,
       // artefakt_pruefen liefert die Vorarbeit aus der Mappe selbst mit (nur zum Abgleich).
       ...(werkstattAbgleich.length ? [`Zum Abgleich liefert das Werkzeug auch ${akkusativListe(werkstattAbgleich)} mit.`] : []),
-      // Ohne Connector fügen die Studierenden die Texte aus „Für Claude kopieren“ unter den Prompt (ClaudePruefung.astro).
+      // Ohne Connector kopiert „Für Claude kopieren“ (Schalter „Prüf-Prompt mitkopieren“) genau diesen Prompt samt den
+      // Texten darunter (werkstatt/ui/kopiertext.ts); ohne Schalter fügen die Studierenden sie selbst darunter.
       `Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: ${akkusativListe([...namen, ...werkstattAbgleich])}.`,
       '',
       `${REGELN_ANFANG} ${REGELN_CHAT}`,
