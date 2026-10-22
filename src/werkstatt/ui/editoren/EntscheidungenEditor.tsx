@@ -155,7 +155,8 @@ function Formular({ daten, setze, fehler, serverStand }: FormularProps) {
   );
 }
 
-function Tabelle({ daten }: { daten: Entscheidungen }) {
+// Nur lesend; auch der Leser der Lehrenden-Ansicht zeigt sie (vorschauen.tsx).
+export function Tabelle({ daten }: { daten: Entscheidungen }) {
   if (daten.entscheidungen.length === 0) return <p className="wk-hilfe">Noch keine Entscheidung eingetragen.</p>;
   return (
     <div className="table-scroll">

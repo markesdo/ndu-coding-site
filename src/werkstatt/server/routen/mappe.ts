@@ -14,7 +14,7 @@ import { DateiUnlesbar, internerFehler, wirdEingerichtet } from '../speicher-feh
 import type { Abhaengigkeiten } from '../typen.js';
 
 const KEIN_ZUGRIFF = 'Diese Mappe gehört nicht zu deiner Anmeldung. Schreib Markus.';
-const NUR_STUDIERENDE = 'Als Lehrende*r hast du hier noch keine eigene Mappe.';
+const NUR_STUDIERENDE = 'Als Lehrende*r hast du keine eigene Mappe. Die Mappen der Studierenden findest du unter „Meine Mappe“ (/innolab/mappe).';
 const UNGUELTIG = 'Das lässt sich so nicht speichern. Bitte prüfe die markierten Felder.';
 const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
 const SCHIEF = 'Da ist etwas schiefgegangen. Sag Markus Bescheid.';
@@ -130,7 +130,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
 
   r.get('/', async (c) => {
     const m = c.get('mitgliedschaft');
-    // Lehrende haben kein eigenes Repo; ihre Ansicht auf die Mappen folgt in Phase 2.
+    // Lehrende haben kein eigenes Repo; die Mappen der Kohorte liefert /api/werkstatt/lehrende.
     if (m.rolle !== 'studierende') return json(c, { kohorte: m.kohorte, repo: '', lesezugriff: 'unbekannt', artefakte: [] } satisfies MappeStand);
     const repo = await eigenesRepo(c, true);
     // Best effort: die Mappe lädt auch, wenn GitHub die Einladung nicht beantwortet.

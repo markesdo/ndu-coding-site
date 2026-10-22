@@ -3,7 +3,7 @@ import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
-import { FEHLER_TEXT, LOGIN_HREF, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
+import { FEHLER_TEXT, LEHRENDEN_SEITE, LOGIN_HREF, lehrendenDokumentTitel, lehrendenSeiteSetzen, RUECKKEHR_ABSTAND_MS, adresseOhneFehler, anmeldeFehler, beimOeffnenLaden, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 
 describe('anmeldeFehler', () => {
   it('liefert für die Rücksprünge der Anmeldung den Text (Spec §5)', () => {
@@ -160,5 +160,20 @@ describe('rueckkehrBeobachten', () => {
     dok.dispatchEvent(new Event('visibilitychange'));
     fenster.dispatchEvent(new Event('focus'));
     expect(nachsehen).not.toHaveBeenCalled();
+  });
+});
+
+describe('Seitentexte für Lehrende', () => {
+  it('Fenstertitel: Seitenteil ersetzt, Kurs bleibt', () => {
+    expect(lehrendenDokumentTitel('Meine Mappe · innolab_2026')).toBe('Mappen der Kohorte · innolab_2026');
+    expect(lehrendenDokumentTitel('Meine Mappe')).toBe('Mappen der Kohorte');
+  });
+  it('setzt Überschrift, Lead und Titel; einmal reicht, zweimal ändert nichts', () => {
+    const h1 = { textContent: 'Meine Mappe' };
+    const lead = { textContent: 'Brief, Entscheidungslog …' };
+    const dok = { title: 'Meine Mappe · innolab_2026', querySelector: (s: string) => (s === '[data-mappe-titel]' ? h1 : s === '[data-mappe-lead]' ? lead : null) };
+    lehrendenSeiteSetzen(dok as unknown as Document);
+    lehrendenSeiteSetzen(dok as unknown as Document);
+    expect([h1.textContent, lead.textContent, dok.title]).toStrictEqual([LEHRENDEN_SEITE.titel, LEHRENDEN_SEITE.lead, 'Mappen der Kohorte · innolab_2026']);
   });
 });

@@ -13,6 +13,8 @@ export interface FakeGitCommit {
   message: string;
   author: { name: string; email: string } | null;
   committer: { name: string; email: string } | null;
+  // Zeitpunkt des Commits (ISO) aus der Uhr der Attrappe; bei GitHub committer.date.
+  datum: string;
 }
 
 interface FakeRepo {
@@ -81,8 +83,10 @@ function antwort(status: number, body?: unknown): Response {
 }
 const nichtGefunden = () => antwort(404, { message: 'Not Found' });
 
-export function fakeGithub(opts: { org?: string; installationId?: number } = {}): { fetch: typeof fetch; zustand: FakeGithubZustand } {
+// jetzt: Uhr für die Commit-Zeitpunkte (Standard Date.now).
+export function fakeGithub(opts: { org?: string; installationId?: number; jetzt?: () => number } = {}): { fetch: typeof fetch; zustand: FakeGithubZustand } {
   if (!istLokal(process.env)) throw new Error('fakeGithub nur bei NODE_ENV development oder test');
+  const jetzt = opts.jetzt ?? (() => Date.now());
   let naechsteId = 5001;
   let tokenZaehler = 0;
   let zaehler = 0;
@@ -108,7 +112,8 @@ export function fakeGithub(opts: { org?: string; installationId?: number } = {})
     r.trees.set(sha, new Map(eintraege));
     return sha;
   };
-  const commitAblegen = (r: FakeRepo, c: Omit<FakeGitCommit, 'sha'>) => {
+  const commitAblegen = (r: FakeRepo, ohneDatum: Omit<FakeGitCommit, 'sha' | 'datum'>) => {
+    const c = { ...ohneDatum, datum: new Date(jetzt()).toISOString() };
     // Zähler im Inhalt: zwei Commits mit gleichem Tree und Eltern bleiben verschieden (wie Zeitstempel bei Git).
     const sha = sha1(`commit ${JSON.stringify(c)} ${zaehler++}`);
     r.commits.set(sha, { sha, ...c });
@@ -271,6 +276,19 @@ export function fakeGithub(opts: { org?: string; installationId?: number } = {})
     if (methode === 'GET' && (m = rest.match(/^\/git\/commits\/([0-9a-f]{40})$/))) {
       const c = r.commits.get(m[1]);
       return c ? antwort(200, { sha: c.sha, tree: { sha: c.tree }, parents: c.parents.map((sha) => ({ sha })) }) : nichtGefunden();
+    }
+    // Liste der Commits ab main über den ersten Elternteil; mit path nur die, die diese Datei ändern (wie GitHub).
+    if (methode === 'GET' && rest === '/commits') {
+      if (!sichtbar()) return leer();
+      if ((suche.get('sha') ?? 'main') !== 'main') return nichtGefunden();
+      const pfadFilter = suche.get('path');
+      const proSeite = Math.min(Number(suche.get('per_page') ?? 30), 100);
+      const liste: FakeGitCommit[] = [];
+      for (let c = r.commits.get(r.main!); c && liste.length < proSeite; c = c.parents[0] ? r.commits.get(c.parents[0]) : undefined) {
+        const eltern = c.parents[0] ? r.trees.get(r.commits.get(c.parents[0])!.tree)! : new Map<string, string>();
+        if (pfadFilter === null || r.trees.get(c.tree)!.get(pfadFilter) !== eltern.get(pfadFilter)) liste.push(c);
+      }
+      return antwort(200, liste.map((c) => ({ sha: c.sha, commit: { message: c.message, author: { ...c.author, date: c.datum }, committer: { ...c.committer, date: c.datum } } })));
     }
     if (methode === 'GET' && (m = rest.match(/^\/git\/trees\/([^/]+)$/))) {
       if (!sichtbar()) return leer();

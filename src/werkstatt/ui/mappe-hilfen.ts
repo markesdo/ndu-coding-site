@@ -47,6 +47,27 @@ export function beimOeffnenLaden(rueckmeldung: { neuAnmelden: boolean } | null):
   return rueckmeldung === null || rueckmeldung.neuAnmelden;
 }
 
+/** Überschrift und Lead von /innolab/mappe für Lehrende; Studierende behalten den statischen Text der Seite. */
+export const LEHRENDEN_SEITE = {
+  titel: 'Mappen der Kohorte',
+  lead: 'Was die Studierenden in ihren Mappen gespeichert haben: Stand, Änderungen seit dem letzten Kurstag, Lücken. Nur lesen.',
+} as const;
+
+/** Fenstertitel für Lehrende: der Teil vor „ · “ (Seitentitel aus Layout.astro) wird ersetzt, der Kurs bleibt. */
+export function lehrendenDokumentTitel(alt: string): string {
+  const i = alt.indexOf(' · ');
+  return i < 0 ? LEHRENDEN_SEITE.titel : `${LEHRENDEN_SEITE.titel}${alt.slice(i)}`;
+}
+
+/** Setzt Überschrift, Lead und Fenstertitel der Seite für Lehrende (nur Text, die Elemente markiert mappe.astro). */
+export function lehrendenSeiteSetzen(dok: Pick<Document, 'querySelector' | 'title'>): void {
+  const h1 = dok.querySelector('[data-mappe-titel]');
+  const lead = dok.querySelector('[data-mappe-lead]');
+  if (h1) h1.textContent = LEHRENDEN_SEITE.titel;
+  if (lead) lead.textContent = LEHRENDEN_SEITE.lead;
+  if (!dok.title.startsWith(LEHRENDEN_SEITE.titel)) dok.title = lehrendenDokumentTitel(dok.title);
+}
+
 export const LEITFADEN_SPAETER = 'Öffnet ihr nach dem Mom Test auf der Interview-Seite.';
 
 /** Anker der Überschrift „In der Werkstatt speichern“ direkt vor dem Editor (seiten.test.ts prüft, dass er dort steht). */

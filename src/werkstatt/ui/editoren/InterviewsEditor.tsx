@@ -15,7 +15,8 @@ import './editoren.css';
 // Im Formular darf die Einwilligung noch fehlen (Entwurf); das Schema lässt erst mit Haken speichern.
 type Entwurf = Omit<Interviews, 'interviews'> & { interviews: InterviewEntwurf[] };
 
-function Vorschau({ daten }: { daten: Entwurf }) {
+// Nur lesend; auch der Leser der Lehrenden-Ansicht zeigt sie (vorschauen.tsx).
+export function Vorschau({ daten }: { daten: Entwurf }) {
   const leer = <p className="wk-offen">Noch nichts eingetragen.</p>;
   if (daten.interviews.length === 0) return <p className="wk-offen">Noch kein Interview eingetragen.</p>;
   return (

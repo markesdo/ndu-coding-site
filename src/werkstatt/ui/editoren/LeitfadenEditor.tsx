@@ -12,7 +12,8 @@ import './editoren.css';
 
 const ARTEN = FRAGE_ARTEN.map((a) => ({ wert: a, text: a === 'kern' ? 'Kernfrage' : 'Nachfrage' }));
 
-function Vorschau({ daten }: { daten: Leitfaden }) {
+// Nur lesend; auch der Leser der Lehrenden-Ansicht zeigt sie (vorschauen.tsx).
+export function Vorschau({ daten }: { daten: Leitfaden }) {
   const kern = daten.fragen.filter((f) => f.art === 'kern');
   const nach = daten.fragen.filter((f) => f.art === 'nachfrage');
   const zeile = (f: Frage, i: number) => (

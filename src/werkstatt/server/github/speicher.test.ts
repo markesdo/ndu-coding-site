@@ -36,9 +36,9 @@ function dateien(name: string, daten: unknown): Record<string, string> {
 }
 
 function aufbau(opts: { zeitlimitMs?: number } = {}) {
-  const gh = fakeGithub({ org: kohorte2026.org });
-  gh.zustand.vorlageAnlegen(kohorte2026.vorlage, { 'README.md': '# Vorlage\n', 'AGENTS.md': '# Agenten\n' });
   const uhr = { ms: 1_800_000_000_000 };
+  const gh = fakeGithub({ org: kohorte2026.org, jetzt: () => uhr.ms });
+  gh.zustand.vorlageAnlegen(kohorte2026.vorlage, { 'README.md': '# Vorlage\n', 'AGENTS.md': '# Agenten\n' });
   const cache = mapCache(() => uhr.ms);
   const app = { fetch: gh.fetch, cache, jetzt: () => uhr.ms, schluessel: () => ({ appId: '123456', privateKeyPem: PEM }) };
   const schlafen = vi.fn(async (ms: number) => {
@@ -316,6 +316,56 @@ describe('githubSpeicher.lesen, uebersicht, werkstattJson', () => {
     await s2.lesen(repo, 'brief');
     await s2.lesen(repo, 'annahmen');
     expect(gh.zustand.aufrufe.filter((a) => a.methode === 'GET' && a.pfad === `/repos/ndu-innolab/${repo}`)).toHaveLength(1);
+  });
+});
+
+describe('githubSpeicher.verlauf', () => {
+  it('nur Commits, die mappe/<name>.json ändern, neueste zuerst, mit committer.date; eine Anfrage mit Pfadfilter', async () => {
+    const { gh, s, repo, uhr } = await mitRepo();
+    uhr.ms = Date.parse('2026-10-22T08:00:00Z');
+    await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu');
+    uhr.ms = Date.parse('2026-10-22T09:00:00Z');
+    await s.speichern(repo, 'annahmen', dateien('annahmen', { annahmen: [] }), null, autor, 'Annahmen: neu');
+    uhr.ms = Date.parse('2026-10-23T10:00:00Z');
+    const alt = await s.lesen(repo, 'brief');
+    await s.speichern(repo, 'brief', dateien('brief', { a: 2 }), alt.basisSha, autor, 'Brief: geändert');
+    // Eine Änderung direkt auf GitHub zählt auch (sie ändert die Datei auf main).
+    uhr.ms = Date.parse('2026-10-24T10:00:00Z');
+    gh.zustand.aendernVonAussen(repo, 'mappe/brief.json', '{"a":3}\n');
+
+    const vorher = gh.zustand.aufrufe.length;
+    expect(await s.verlauf(repo, 'brief')).toStrictEqual({
+      zeitpunkte: ['2026-10-24T10:00:00.000Z', '2026-10-23T10:00:00.000Z', '2026-10-22T08:00:00.000Z'],
+      vollstaendig: true,
+    });
+    const aufrufe = gh.zustand.aufrufe.slice(vorher);
+    expect(aufrufe.map((a) => `${a.methode} ${a.pfad}`)).toStrictEqual([`GET /repos/ndu-innolab/${repo}/commits`]);
+    expect(await s.verlauf(repo, 'annahmen')).toStrictEqual({ zeitpunkte: ['2026-10-22T09:00:00.000Z'], vollstaendig: true });
+    expect(await s.verlauf(repo, 'leitfaden')).toStrictEqual({ zeitpunkte: [], vollstaendig: true });
+  });
+
+  it('volle Seite (100) heißt: es kann ältere geben', async () => {
+    const { s, repo } = await mitRepo();
+    let basis: string | null = null;
+    for (let i = 0; i < 101; i++) {
+      const e = await s.speichern(repo, 'brief', dateien('brief', { i }), basis, autor, 'Brief: x');
+      if (!('basisSha' in e)) throw new Error('Commit erwartet');
+      basis = e.basisSha;
+    }
+    const v = await s.verlauf(repo, 'brief');
+    expect(v.zeitpunkte).toHaveLength(100);
+    expect(v.vollstaendig).toBe(false);
+  });
+
+  it('kein Repo → leer; GitHub-Fehler → 502', async () => {
+    const { s } = aufbau();
+    expect(await s.verlauf('2026-niemand', 'brief')).toStrictEqual({ zeitpunkte: [], vollstaendig: true });
+    const r = await mitRepo();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    r.gh.zustand.stoerung = (methode, pfad) => (methode === 'GET' && pfad.endsWith('/commits') ? new Response('{}', { status: 500 }) : undefined);
+    const e = await alsFehler(r.s.verlauf(r.repo, 'brief'));
+    expect([e.status, e.code]).toStrictEqual([502, 'github-fehler']);
+    vi.restoreAllMocks();
   });
 });
 

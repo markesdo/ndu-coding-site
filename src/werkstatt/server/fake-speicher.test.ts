@@ -140,6 +140,33 @@ describe('fakeSpeicher', () => {
     log.mockRestore();
   });
 
+  it('verlauf: Zeitpunkte der Commits dieses Artefakts aus der Uhr, neueste zuerst; volle Seite = vielleicht mehr', async () => {
+    const uhr = { ms: Date.parse('2026-10-22T08:00:00Z') };
+    const s = fakeSpeicher({ jetzt: () => uhr.ms });
+    const { repo } = await s.anlegen(sofie, 8);
+    expect(await s.verlauf(repo, 'brief')).toStrictEqual({ zeitpunkte: [], vollstaendig: true });
+    expect(await s.verlauf('test-niemand', 'brief')).toStrictEqual({ zeitpunkte: [], vollstaendig: true });
+    await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'x');
+    uhr.ms = Date.parse('2026-10-23T08:00:00Z');
+    await s.speichern(repo, 'annahmen', dateien('annahmen', {}), null, autor, 'x');
+    uhr.ms = Date.parse('2026-10-24T08:00:00Z');
+    const alt = await s.lesen(repo, 'brief');
+    await s.speichern(repo, 'brief', dateien('brief', { a: 2 }), alt.basisSha, autor, 'x');
+    expect(await s.verlauf(repo, 'brief')).toStrictEqual({ zeitpunkte: ['2026-10-24T08:00:00.000Z', '2026-10-22T08:00:00.000Z'], vollstaendig: true });
+    expect(await s.verlauf(repo, 'annahmen')).toStrictEqual({ zeitpunkte: ['2026-10-23T08:00:00.000Z'], vollstaendig: true });
+    // commits() bleibt, wie es war (ohne Zeitpunkt).
+    expect(Object.keys(s.commits(repo)[0])).toStrictEqual(['dateien', 'autor', 'nachricht']);
+
+    let basis = (await s.lesen(repo, 'brief')).basisSha;
+    for (let i = 0; i < 98; i++) {
+      const e = await s.speichern(repo, 'brief', dateien('brief', { i }), basis, autor, 'x');
+      if (!('basisSha' in e)) throw new Error('Commit erwartet');
+      basis = e.basisSha;
+    }
+    const v = await s.verlauf(repo, 'brief');
+    expect([v.zeitpunkte.length, v.vollstaendig]).toStrictEqual([100, false]);
+  });
+
   it('verweigert außerhalb von development und test', () => {
     vi.stubEnv('NODE_ENV', 'production');
     expect(() => fakeSpeicher()).toThrow();
