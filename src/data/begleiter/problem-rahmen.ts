@@ -15,7 +15,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
     ueberleitung: 'Beim Problem passiert euch am ehesten der häufigste Fehler – so verbreitet, dass er eine eigene Folie bekommt.',
     kern: [
       {
-        text: 'Discovery hat eine Struktur: Sie beginnt mit einem klaren Outcome, das den Rahmen setzt. Darunter liegt der Raum der Chancen (Bedürfnisse, Schmerzpunkte, Wünsche der Kundschaft) – das ist die Problem-Rahmung, die den Lösungsraum erst öffnet. Erst darunter kommen Lösungen und Annahmentests. Die Wurzel des Opportunity Solution Tree ist das gewünschte Outcome.',
+        text: 'Discovery hat eine Struktur: Sie beginnt mit einem klaren Outcome, der den Rahmen setzt. Darunter liegt der Raum der Chancen (Bedürfnisse, Schmerzpunkte, Wünsche der Kundschaft) – das ist die Problem-Rahmung, die den Lösungsraum erst öffnet. Erst darunter kommen Lösungen und Annahmentests. Die Wurzel des Opportunity Solution Tree ist der gewünschte Outcome.',
         quelle: 'Teresa Torres, Continuous Discovery Habits, S. 26–27',
       },
       {
@@ -128,7 +128,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Erst danach Kaffeebar aufdecken: Wartezeit-Anzeige an der Tür.',
       'Bei Bedarf: Tierheim-Geschichte aus „Zum Erzählen“, nur wenn Zeit ist.',
     ],
-    ueberleitung: 'Der Rahmen hat einen zweiten Teil, das Outcome – und dort passiert euch der zweite typische Fehler.',
+    ueberleitung: 'Der Rahmen hat einen zweiten Teil, den Outcome – und dort passiert euch der zweite typische Fehler.',
     kern: [
       {
         text: 'Wörtlich: „The point of reframing is not to find the “real” problem but, rather, to see if there is a better one to solve.“ Probleme haben meist mehrere Ursachen. Der Aufzug lässt sich auch als Spitzenlast-Problem rahmen (zu viele wollen gleichzeitig fahren) – Lösung: gestaffelte Mittagspausen.',
@@ -191,7 +191,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Falle: Zielzahl schon heute – erst Lernziel, Zahl auf Experiment-Karte.',
     ],
     verstaendnis: {
-      frage: 'Ist „Viele nutzen die Vorbestell-Funktion“ ein gutes Outcome? Warum?',
+      frage: 'Ist „Viele nutzen die Vorbestell-Funktion“ ein guter Outcome? Warum?',
       antwort: 'Nein: Das ist eine Traction-Metrik, sie misst die Nutzung einer Funktion und legt auf eine Lösung fest. Ein Outcome ist geändertes Verhalten, etwa „mehr steigen mit Kaffee in den Zug“.',
       falsch: '„Ja, es misst doch, was Menschen tun“ – aber nur mit einer bestimmten Funktion, das lässt keinen Spielraum für andere Lösungen.',
     },
@@ -254,7 +254,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         '„Alle zu mir holen“ auf T1 · 2. Links die Kaffeebar: in jedem der fünf Felder ein Sticky, von „Pendler*innen nach Wien, 7:15 bis 7:45“ bis zum Outcome „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“.',
         'Jede*r in die eigene Spalte „Produkt von: …“: fünf Felder untereinander – Für wen?, Welches Problem?, Heute gelöst durch, Macht es NICHT, Outcome: Wir merken es, wenn …',
         'Schritt 1 (15 min): ein gelbes Sticky pro Feld in die ersten vier Felder, ganze Sätze, keine Lösung, kein Produktname. Bei „Macht es NICHT“ je Ding ein Sticky, damit es bei einem Gedanken pro Sticky bleibt.',
-        'Schritt 2 (10 min): das Outcome als Sticky ins fünfte Feld, „Wir glauben, dass … Wir merken es, wenn …“.',
+        'Schritt 2 (10 min): den Outcome als Sticky ins fünfte Feld, „Wir glauben, dass … Wir merken es, wenn …“.',
         'Dreierrunde: „Alle zu mir holen“ und Spalte für Spalte vorlesen. Die anderen fragen mündlich; wer etwas festhalten will, kommentiert das Sticky, statt es zu ändern.',
         'Ab Schritt 4 vom Board in die Werkstatt: Die Stickies sind die Vorlage für den Produkt-Brief („Bearbeiten“ im Handout).',
       ],
@@ -329,7 +329,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         quelle: 'Thomas Wedell-Wedellsborg, Are You Solving the Right Problems?, HBR Jan.–Feb. 2017, S. 10',
       },
       {
-        text: 'Ein neues Outcome braucht Zeit zum Lernen, was es bewegt; Sonjas Team wusste anfangs nicht, was es finden würde, und hat die Metrik mit dem Gelernten angepasst. Offene Fragen sind also normal.',
+        text: 'Ein neuer Outcome braucht Zeit zum Lernen, was ihn bewegt; Sonjas Team wusste anfangs nicht, was es finden würde, und hat die Metrik mit dem Gelernten angepasst. Offene Fragen sind also normal.',
         quelle: 'Teresa Torres, Continuous Discovery Habits, S. 43–44',
       },
     ],

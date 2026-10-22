@@ -53,7 +53,7 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
       },
       {
         frage: 'Was zählt als Entscheidung?',
-        antwort: 'Alles, was festlegt, für wen ihr baut, was ihr baut oder bewusst nicht baut – z. B. Zielgruppe, ein „Nicht“ aus dem Brief, das Outcome. Technische Projektregeln bleiben im Repo.',
+        antwort: 'Alles, was festlegt, für wen ihr baut, was ihr baut oder bewusst nicht baut – z. B. Zielgruppe, ein „Nicht“ aus dem Brief, der Outcome. Technische Projektregeln bleiben im Repo.',
       },
     ],
   },
