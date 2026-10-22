@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MAPPE_LEHRENDE, NAV_ROLLE_SKRIPT, ROLLE_KEY, navMappeSetzen, rolleMerken } from './nav-rolle';
+import { MAPPE_LEHRENDE, MAPPE_STUDIERENDE, NAV_ROLLE_SKRIPT, ROLLE_KEY, navMappeSetzen, rolleMerken } from './nav-rolle';
 
 function speicher(start: Record<string, string> = {}) {
   const daten = { ...start };
@@ -21,29 +21,32 @@ function dokument(texte: string[]) {
 describe('rolleMerken', () => {
   it('merkt sich Lehrende', () => {
     const { daten, s } = speicher();
-    rolleMerken(() => s, 'lehrende');
+    rolleMerken(() => s, true);
     expect(daten).toStrictEqual({ [ROLLE_KEY]: 'lehrende' });
   });
   it('Studierende und Abgemeldete löschen den Eintrag, andere Schlüssel bleiben', () => {
-    for (const rolle of ['studierende', null]) {
-      const { daten, s } = speicher({ [ROLLE_KEY]: 'lehrende', anderes: 'x' });
-      rolleMerken(() => s, rolle);
-      expect(daten).toStrictEqual({ anderes: 'x' });
-    }
+    const { daten, s } = speicher({ [ROLLE_KEY]: 'lehrende', anderes: 'x' });
+    rolleMerken(() => s, false);
+    expect(daten).toStrictEqual({ anderes: 'x' });
   });
   it('wirft nicht, wenn der Speicher fehlt oder schreiben wirft', () => {
-    expect(() => rolleMerken(() => { throw new Error('gesperrt'); }, 'lehrende')).not.toThrow();
+    expect(() => rolleMerken(() => { throw new Error('gesperrt'); }, true)).not.toThrow();
     const kaputt = { setItem: () => { throw new Error('voll'); }, removeItem: () => { throw new Error('voll'); } };
-    expect(() => rolleMerken(() => kaputt, 'lehrende')).not.toThrow();
-    expect(() => rolleMerken(() => kaputt, null)).not.toThrow();
+    expect(() => rolleMerken(() => kaputt, true)).not.toThrow();
+    expect(() => rolleMerken(() => kaputt, false)).not.toThrow();
   });
 });
 
 describe('navMappeSetzen', () => {
-  it('setzt alle markierten Menülinks', () => {
-    const { links, dok } = dokument(['Meine Mappe', 'Meine Mappe']);
-    navMappeSetzen(dok as unknown as Document);
+  it('Lehrende: setzt alle markierten Menülinks', () => {
+    const { links, dok } = dokument([MAPPE_STUDIERENDE, MAPPE_STUDIERENDE]);
+    navMappeSetzen(dok as unknown as Document, true);
     expect(links.map((l) => l.textContent)).toStrictEqual([MAPPE_LEHRENDE, MAPPE_LEHRENDE]);
+  });
+  it('Studierende nach gemerktem „lehrende“ (Kontowechsel): zurück auf „Meine Mappe“', () => {
+    const { links, dok } = dokument([MAPPE_LEHRENDE]);
+    navMappeSetzen(dok as unknown as Document, false);
+    expect(links[0].textContent).toBe(MAPPE_STUDIERENDE);
   });
 });
 

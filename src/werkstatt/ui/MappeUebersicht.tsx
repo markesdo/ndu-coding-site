@@ -23,6 +23,12 @@ const TEXT = {
   abmeldenFehlt: 'Abmelden hat nicht geklappt. Deine Entwürfe auf diesem Gerät sind trotzdem gelöscht.',
 } as const;
 
+// Menüeintrag zur Mappe auf dieser Seite setzen und die Rolle für alle anderen Seiten merken.
+function menueRolle(lehrende: boolean): void {
+  rolleMerken(() => localStorage, lehrende);
+  navMappeSetzen(document, lehrende);
+}
+
 const NEUVERSUCHE = 3; // à 3 s: höchstens ~10 s „wird eingerichtet“, dann Knopf (Spec §5)
 
 type Zustand =
@@ -60,8 +66,8 @@ export default function MappeUebersicht() {
     try {
       const ich = await api.ich();
       if (mein !== lauf.current) return;
-      // Rolle fürs Menü auf allen Seiten merken (lib/nav-rolle.ts); abgemeldet oder Studierende: wieder „Meine Mappe“.
-      rolleMerken(() => localStorage, ich?.rolle ?? null);
+      // Menütext und gemerkte Rolle (lib/nav-rolle.ts); abgemeldet oder Studierende: wieder „Meine Mappe“.
+      menueRolle(ich !== null && ich.rolle !== 'studierende');
       if (ich === null) return setZustand({ typ: 'abgemeldet' });
       if (ich.rolle !== 'studierende') {
         setZustand({ typ: 'lehrende', ich });
@@ -75,7 +81,7 @@ export default function MappeUebersicht() {
     } catch (e) {
       if (mein !== lauf.current) return;
       const a = e instanceof ApiError ? e : new ApiError(0, 'unbekannt', TEXT.ladenFehlt);
-      if (a.code === 'nicht-angemeldet') { rolleMerken(() => localStorage, null); return setZustand({ typ: 'abgemeldet' }); }
+      if (a.code === 'nicht-angemeldet') { menueRolle(false); return setZustand({ typ: 'abgemeldet' }); }
       if (a.code === 'wird-eingerichtet') return setZustand({ typ: 'einrichten' });
       if (a.code === 'nicht-freigeschaltet') return setZustand({ typ: 'fehler', text: a.message || TEXT.nichtFreigeschaltet, nochmal: false });
       // Name belegt: Neu versuchen legt nur noch einmal vergeblich an.
@@ -88,12 +94,10 @@ export default function MappeUebersicht() {
     if (startLaden.current) void laden();
   }, [laden]);
 
-  // Lehrende: „Mappen der Kohorte“ statt „Meine Mappe“, auch im Menü. Studierende sehen den statischen Text der Seite (kein Flackern).
+  // Lehrende: „Mappen der Kohorte“ statt „Meine Mappe“. Studierende sehen den statischen Text der Seite (kein Flackern).
   const istLehrende = zustand.typ === 'lehrende';
   useEffect(() => {
-    if (!istLehrende) return;
-    lehrendenSeiteSetzen(document);
-    navMappeSetzen(document);
+    if (istLehrende) lehrendenSeiteSetzen(document);
   }, [istLehrende]);
 
   useEffect(() => {
