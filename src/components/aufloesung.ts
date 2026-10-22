@@ -14,13 +14,17 @@ export function aufloesungAb(text: string): { datum: string; minuten: number } |
   return { datum: m[1], minuten: h * 60 + min };
 }
 
-/** Ist die Auflösung zum Zeitpunkt `jetzt` freigegeben? Ungültiges `ab` bleibt verborgen. */
-/** „am 22.10. um 16:45“ für eine Zeit wie an <Aufloesung ab=…> (JJJJ-MM-TTTHH:MM). */
+/** „am 22.10. um 16:45“ für eine Zeit wie an <Aufloesung ab=…> (JJJJ-MM-TTTHH:MM). Ungültiges `ab` (aufloesungAb) wirft,
+ *  statt eine falsche Uhrzeit zu nennen. */
 export function abText(ab: string): string {
-  const [, monat, tag] = ab.slice(0, 10).split('-');
-  return `am ${tag}.${monat}. um ${ab.slice(11)}`;
+  const ziel = aufloesungAb(ab);
+  if (!ziel) throw new Error(`abText: ungültige Zeit „${ab}“ (erwartet JJJJ-MM-TTTHH:MM)`);
+  const [, monat, tag] = ziel.datum.split('-');
+  const zwei = (n: number) => String(n).padStart(2, '0');
+  return `am ${tag}.${monat}. um ${zwei(Math.floor(ziel.minuten / 60))}:${zwei(ziel.minuten % 60)}`;
 }
 
+/** Ist die Auflösung zum Zeitpunkt `jetzt` freigegeben? Ungültiges `ab` bleibt verborgen. */
 export function aufgeloest(ab: string, jetzt: Date): boolean {
   const ziel = aufloesungAb(ab);
   if (!ziel) return false;

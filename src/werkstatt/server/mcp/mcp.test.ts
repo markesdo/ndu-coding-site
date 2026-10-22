@@ -271,7 +271,7 @@ describe('Werkzeuge', () => {
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
     // Kein markdown: das Artefakt steht nur im Text des Ergebnisses.
-    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
+    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'gesperrt', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
     // Die Arten der Befunde kommen aus verknuepfungen.ts, nicht aus einer zweiten Liste.
     const verkn = tools.find((t) => t.name === MCP_WERKZEUGE.verknuepfungenPruefen)!;
     const befund = (verkn.outputSchema?.properties as { befunde: { items: { properties: { art: { enum: string[] } } } } }).befunde;
@@ -1078,8 +1078,13 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
   }
   const aufdecken = (h: Aufbau, kennung = MOM_TEST_GRUPPE, ms = h.uhr.ms) => h.abh.cache.set(aufgedecktSchluessel(kennung, new Date(ms)), true, 3600);
   const zu = (r: Awaited<ReturnType<Client['callTool']>>) => {
-    for (const p of interview.pruefliste!) expect(JSON.stringify(r), p).not.toContain(p);
+    for (const p of interview.pruefliste!) {
+      expect(text(r), p.id).not.toContain(p.text);
+      expect(text(r), p.id).not.toContain(p.id);
+    }
+    expect(r.structuredContent ?? {}).not.toHaveProperty('pruefliste');
   };
+  const NOCHMAL = (werkzeug: string) => `Sobald Markus die Übung aufgedeckt hat, ruf ${werkzeug} noch einmal auf.`;
 
   it('vor dem Aufdecken: methode_erklaeren(interview) ohne Prüfliste, mit „Kommt nach der Übung“', async () => {
     const { c } = await amKurstag();
@@ -1089,6 +1094,7 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
     expect(r.structuredContent).toMatchObject({ slug: 'interview', prueflisteGesperrt: true, frage: interview.frage });
     expect(text(r)).toContain('Kommt nach der Übung');
     expect(text(r)).toContain('spätestens am 22.10. um 16:45');
+    expect(text(r)).toContain(NOCHMAL(MCP_WERKZEUGE.methodeErklaeren));
     zu(r);
   });
 
@@ -1096,11 +1102,39 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
     const { c } = await amKurstag();
     for (const args of [{ artefakt: 'leitfaden' }, { artefakt: 'leitfaden', pruefpunkt: '2' }]) {
       const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: args });
-      expect(r.isError, JSON.stringify(args)).toBe(true);
-      expect(text(r)).toMatch(/^Kommt nach der Übung/);
+      // Kein Fehlerergebnis (Clients zeigten sonst einen Werkzeugfehler); structuredContent passt zum outputSchema,
+      // sonst hätte der Client hier schon geworfen.
+      expect(r.isError, JSON.stringify(args)).toBeFalsy();
+      expect(r.structuredContent).toMatchObject({ artefakt: 'leitfaden', gesperrt: true, pruefpunkte: [], vorarbeit: [] });
+      expect(r.structuredContent).not.toHaveProperty('vorhanden');
+      expect((r.structuredContent as { anleitung: string }).anleitung).toMatch(/^Kommt nach der Übung/);
+      expect(text(r)).toContain('Kommt nach der Übung');
+      expect(text(r)).toContain(NOCHMAL(MCP_WERKZEUGE.artefaktPruefen));
       expect(text(r)).not.toContain(leitfadenBeispiel.wen);
       zu(r);
     }
+  });
+
+  it('vor dem Aufdecken: Lehrende und Personen ohne Mappe hören bei artefakt_pruefen(leitfaden) den Satz zur Mappe', async () => {
+    const { h } = await amKurstag();
+    const lehrende = await client(h, await accessToken(h, 1000, 'lehrende'));
+    const l = await lehrende.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(l.isError).toBe(true);
+    expect(text(l)).toMatch(/Lehrende-Ansicht/);
+    h.abh.umgebung.zugang.test.studierende.push({ githubId: 1003, kuerzel: 'neu' });
+    const ohne = await client(h, await accessToken(h, 1003));
+    const o = await ohne.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(o.isError).toBe(true);
+    expect(text(o)).toBe(KEINE_MAPPE);
+  });
+
+  it('vor dem Aufdecken: ohne Mappe fragt artefakt_pruefen gar nicht erst nach dem Aufdecken', async () => {
+    const { h } = await amKurstag();
+    h.abh.umgebung.zugang.test.studierende.push({ githubId: 1003, kuerzel: 'neu' });
+    const ohne = await client(h, await accessToken(h, 1003));
+    const get = vi.spyOn(h.abh.cache, 'get');
+    await ohne.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
+    expect(get.mock.calls.filter(([k]) => k.startsWith('aufgedeckt:'))).toStrictEqual([]);
   });
 
   it('vor dem Aufdecken: andere Methoden und Artefakte bleiben offen', async () => {
@@ -1122,6 +1156,8 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
     const p = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
     expect(p.isError).toBeFalsy();
     expect((p.structuredContent as { pruefpunkte: unknown[] }).pruefpunkte).toHaveLength(interview.pruefliste!.length);
+    expect(p.structuredContent).not.toHaveProperty('gesperrt');
+    expect(p.structuredContent).toHaveProperty('vorhanden', true);
   });
 
   it('eine frühere Mom-Test-Übung (eigene Gruppe) oder ein Aufdecken von gestern öffnet sie nicht', async () => {
