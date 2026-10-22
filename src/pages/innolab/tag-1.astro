@@ -194,17 +194,18 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <h2 id="ebenen">Die vier Ebenen bei der Kaffeebar</h2>
     <p class="folie-satz">Oben das Ziel, unten der Test – dazwischen die Kundschaft.</p>
     <div style="overflow-x:auto">
-      <table>
+      <table class="ebenen">
         <thead><tr><th>Ebene</th><th>Was dort steht</th><th>Kaffeebar</th><th>Wann</th></tr></thead>
         <tbody>
           <tr data-schritt><th>Outcome</th><td>Was Menschen anders tun sollen</td><td>Mehr Pendler*innen steigen mit Kaffee in den Zug</td><td>heute</td></tr>
           <tr data-schritt><th>Chancen</th><td>Bedürfnis, Schmerz, Wunsch der Kundschaft – nie eine Lösung</td><td>„Wenn ich anstehe, verpasse ich meinen Zug.“</td><td>Tag 2</td></tr>
-          <tr data-schritt><th>Lösungen</th><td>mehrere pro Chance, damit ihr vergleichen könnt</td><td>App, Express-Theke, Kaffeewagen</td><td>Tag 2–3</td></tr>
+          <tr data-schritt><th>Lösungen</th><td>mehrere pro Chance – <strong>hier steht eure Produktidee</strong></td><td>App, Express-Theke, Kaffeewagen</td><td class="nowrap">Tag 2–3</td></tr>
           <tr data-schritt><th>Annahmen-Tests (Experimente)</th><td>nicht die ganze Idee, sondern was dafür stimmen muss</td><td>Bestellen 3 von 10 per WhatsApp vor?</td><td>Tag 3</td></tr>
         </tbody>
       </table>
     </div>
     <p data-schritt><strong>Prüfstein:</strong> Gibt es mehr als eine Lösung? „Ich will vorbestellen“ ist eine Lösung in Verkleidung.</p>
+    <p class="small muted">Nach {TORRES}, S. 26–27, 92–95.</p>
     <p class="nur-handout">„Wenn ich anstehe, verpasse ich meinen Zug“ lässt App, Express-Theke und Kaffeewagen zu (S. 94). Chancen schreibt ihr so, wie Menschen sie in Interviews sagen würden, nicht aus Sicht des Unternehmens: Niemand sagt „Ich wünsche mir mehr Kaffeebar-Umsatz“ (S. 92). {TORRES}, Kap. 2 und 6.</p>
   </Folie>
 
@@ -409,6 +410,10 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .ob b { color: var(--fg); }
   .vergleich { border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
   @media (max-width: 700px) { .feinde { grid-template-columns: 1fr 1fr; } .ob-vergleich { grid-template-columns: 1fr; } :global(.ob-pfeil) { transform: rotate(90deg); justify-self: center; } }
+  .nowrap { white-space: nowrap; }
+  /* Folie „Die vier Ebenen“: Tabelle, Prüfstein und Quelle passen im Beamer sonst nicht auf eine Höhe. */
+  :global(html[data-beamer]) .ebenen { font-size: .9rem; }
+  :global(html[data-beamer]) .ebenen :is(th, td) { padding-top: .35rem; padding-bottom: .35rem; }
   .miro-knopf { padding: .15rem .7rem; vertical-align: baseline; }
   @media (max-width: 600px) { .miro-tage { grid-template-columns: 1fr 1fr; } }
   /* Im Beamer passt die Folie mit Skizze und fünf Schritten sonst nicht auf eine Bildschirmhöhe: Tag 1 breiter, Skizze kleiner. */
