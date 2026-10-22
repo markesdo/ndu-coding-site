@@ -16,9 +16,10 @@ import Aufloesung from '../../../components/Aufloesung.astro';
 import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import Skala from '../../../components/bild/Skala.astro';
 import { Flag, MapPin, Sparkles } from '@lucide/astro';
+import KAFFEEBAR_LEITFADEN from '../../../werkstatt/beispiele/leitfaden.json';
 // Hinweise an den gesperrten Teilen: Sie gehen auf, sobald Markus aufdeckt; der Knopf bleibt als stiller Ausweg. Jede Übung hat ihre eigene Gruppe
 // (mom-test-…): Markus deckt eine auf, alle sehen nur diese – die Pointen späterer Übungen bleiben zu. Die letzte („ausgraben“)
-// ist in MOM_TEST_GRUPPE, zusammen mit Editor und Vorlage, Probe-Prompt und Prüfliste (nur im Handout) und dem Leitfaden der
+// ist in MOM_TEST_GRUPPE, zusammen mit Editor und Beispiel, Probe-Prompt und Prüfliste (nur im Handout) und dem Leitfaden der
 // Mappe: Mit ihr geht das Material für den Leitfaden-Block auf. Ein Klick der Studierenden öffnet nur den einen Teil.
 const OEFFNET = 'Öffnet sich, sobald Markus es aufdeckt.';
 
@@ -191,32 +192,20 @@ const OEFFNET = 'Öffnet sich, sobald Markus es aufdeckt.';
 
   <div class="nur-handout">
   <h2 id="vorlage">In der Werkstatt speichern</h2>
-  <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={`Editor und Vorlage enthalten die Lösung des Mom Test – öffnet sie erst danach. ${OEFFNET}`} knopf="Editor und Vorlage öffnen">
-  <p>Jede*r speichert den eigenen Leitfaden in der Werkstatt: Ziel, Zielgruppe, Einstieg, Kern- und Nachfragen, Abschluss. Die Vorlage darunter zeigt, wie ein Leitfaden nach dem Mom Test aussieht. Übertragt nur, was zu eurem Produkt passt.</p>
+  <Aufloesung ab={NACH_MOM_TEST} gruppe={MOM_TEST_GRUPPE} fuer="alle" hinweis={`Editor und Beispiel enthalten die Lösung des Mom Test – öffnet sie erst danach. ${OEFFNET}`} knopf="Editor und Beispiel öffnen">
+  <p>Jede*r speichert den eigenen Leitfaden in der Werkstatt: Ziel, Zielgruppe, Einstieg, Kern- und Nachfragen, Abschluss. Das Beispiel darunter zeigt den Leitfaden der Kaffeebar nach dem Mom Test. Eure Fragen schreibt ihr selbst im Editor, für eure Zielgruppe.</p>
   <Bearbeiten artefakt="leitfaden" />
-  <Prompt label="Vorlage · Interviewleitfaden"># Interviewleitfaden — [Produkt]
-
-Ziel: [Forschungsfrage aus eurer riskantesten Annahme – was wollt ihr herausfinden?]
-Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
-
-## Einstieg
-„Danke, dass du dir Zeit nimmst. Ich will verstehen, wie du [Situation] heute erlebst – es gibt keine falschen Antworten. Darf ich das Gespräch aufnehmen? Die Aufnahme bleibt bei mir, aufgeschrieben wird nur, was ohne deinen Namen auskommt.“
-
-## Kernfragen
-1. Erzähl mir vom letzten Mal, als du [Situation].
-2. Was hast du da genau gemacht? Was ist dann passiert?
-3. Was war daran mühsam?
-4. Was hast du schon ausprobiert, um das zu umgehen? Was hat es dich gekostet (Zeit, Geld, Nerven)?
-5. [eigene Frage]
-
-## Nachfragen
-- Warum?
-- Wann war das zuletzt?
-- Und davor?
-- Kannst du mir das zeigen?
-
-## Abschluss
-„Wen sollte ich noch fragen?“</Prompt>
+  <div class="leitfaden-beispiel">
+    <p class="small muted">Beispiel · Leitfaden der Kaffeebar – zum Lesen, nicht zum Kopieren</p>
+    <p><strong>Ziel:</strong> {KAFFEEBAR_LEITFADEN.ziel}</p>
+    <p><strong>Wen:</strong> {KAFFEEBAR_LEITFADEN.wen}</p>
+    <p><strong>Einstieg:</strong> „{KAFFEEBAR_LEITFADEN.einstieg}“</p>
+    <p><strong>Kernfragen</strong></p>
+    <ol>{KAFFEEBAR_LEITFADEN.fragen.filter((f) => f.art === 'kern').map((f) => <li>{f.text}</li>)}</ol>
+    <p><strong>Nachfragen</strong></p>
+    <ul>{KAFFEEBAR_LEITFADEN.fragen.filter((f) => f.art === 'nachfrage').map((f) => <li>{f.text}</li>)}</ul>
+    <p><strong>Abschluss:</strong> „{KAFFEEBAR_LEITFADEN.abschluss}“</p>
+  </div>
   </Aufloesung>
 
   <Callout type="warn" title="Einwilligung und Anonymisierung">
@@ -246,3 +235,10 @@ Wen: [Zielgruppe aus Abschnitt 1, wie ihr sie findet]
 
   <FooterNav prev={{ href: '/innolab/methoden/annahmen', t: 'Annahmen-Map' }} next={{ href: '/innolab/tag-1/abschluss', t: 'Tag 1 · Abschluss' }} />
 </Layout>
+
+<style>
+  /* Beispiel-Leitfaden der Kaffeebar (aus werkstatt/beispiele/leitfaden.json), nur zum Lesen. */
+  .leitfaden-beispiel { border: 1px solid var(--border); border-radius: 8px; padding: .75rem 1rem; margin: 1rem 0; }
+  .leitfaden-beispiel p { margin: .4rem 0; }
+  .leitfaden-beispiel :is(ol, ul) { margin: .2rem 0 .6rem; }
+</style>
