@@ -12,7 +12,7 @@ import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import BildText from '../../components/bild/BildText.astro';
 import Video from '../../components/Video.astro';
 import MiroFrame from '../../components/MiroFrame.astro';
-import { ExternalLink, FileText, Footprints, Grid2x2, Hammer, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
+import { ArrowRight, CheckCheck, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Hammer, Heart, ListPlus, MessagesSquare, TrendingUp } from '@lucide/astro';
 import MiroLink from '../../components/MiroLink.astro';
 import { TEAM_BOARD } from '../../lib/team-board';
 import FooterNav from '../../components/FooterNav.astro';
@@ -123,7 +123,29 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     </BildText>
     <div class="nur-handout">
       <p>Hört ein Team ein Problem, springt es zur ersten Lösung – aus gutem Willen, weil es helfen will. Dann folgt die Frage: „Sollen wir das bauen – ja oder nein?“ Torres nennt das eine <em>Whether-or-not</em>-Entscheidung und hält sie für den häufigsten Fehler von Produktteams (S. 30).</p>
-      <p>Chip und Dan Heath („Decisive“) beschreiben vier Feinde guter Entscheidungen, auf die Torres sich stützt: ein zu enger Blick auf das Problem, die Suche nach Bestätigung (Confirmation Bias), kurzfristige Gefühle – man verliebt sich in die eigene Idee – und Selbstüberschätzung. Der Baum setzt dagegen eine einfache Frage: <em>Welche</em> dieser Chancen ist gerade die wichtigste, und <em>was könnten wir noch</em> bauen? Darum stehen unter einer Chance immer mehrere Lösungen (S. 30–31).</p>
+      <p>Warum das so oft schiefgeht, zeigt die nächste Folie.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vier-feinde">Vier Feinde guter Entscheidungen</h2>
+    <p class="folie-satz">Nicht „ob oder ob nicht“ – vergleichen.</p>
+    <div class="feinde" data-schritt>
+      <div><Crosshair size={22} aria-hidden="true" /><b>Enger Blick</b><span>nur eine Sicht auf das Problem</span></div>
+      <div><CheckCheck size={22} aria-hidden="true" /><b>Bestätigung suchen</b><span>Confirmation Bias</span></div>
+      <div><Heart size={22} aria-hidden="true" /><b>Kurzfristige Gefühle</b><span>verliebt in die eigene Idee</span></div>
+      <div><Crown size={22} aria-hidden="true" /><b>Selbstüberschätzung</b><span>„Das wird ein Erfolg.“</span></div>
+    </div>
+    <div class="ob-vergleich" data-schritt>
+      <div class="ob"><b>Ob oder ob nicht</b><span>„Sollen wir dieses Bedürfnis lösen?“</span><span>„Sollen wir alles stoppen und dieses Feature bauen?“</span></div>
+      <ArrowRight size={28} aria-hidden="true" class="ob-pfeil" />
+      <div class="vergleich"><b>Vergleichen</b><span>„<em>Welches</em> dieser Bedürfnisse ist jetzt das wichtigste?“</span><span>„<em>Was könnten wir noch</em> bauen?“</span></div>
+    </div>
+    <p class="small muted">Vier Feinde nach Chip und Dan Heath, „Decisive“ (2013), zitiert bei {TORRES}, S. 30–31.</p>
+    <div class="nur-handout">
+      <p>Chip und Dan Heath beschreiben in „Decisive“ vier Feinde guter Entscheidungen. Torres überträgt sie auf Produktteams (S. 30): Der erste ist ein zu enger Blick auf das Problem – deshalb rahmt ihr den Chancenraum auf mehrere Arten. Der zweite ist die Suche nach Belegen, die bestätigen, was man schon glaubt (Confirmation Bias); dagegen helfen Gewohnheiten, die auch Gegenbelege sichtbar machen. Der dritte sind kurzfristige Gefühle – im Produktalltag verliebt man sich in die eigene Idee. Der vierte ist Selbstüberschätzung: Man ist sicher, dass die Idee ein Erfolg wird.</p>
+      <p>Von den vielen Gegenmitteln der Heaths nutzt Torres vor allem eines: keine „Whether-or-not“-Entscheidungen. In diese Falle geraten Teams, wenn sie auf ein einzelnes Kundenproblem reagieren („Sollen wir alles stoppen und das lösen?“) oder wenn jemand ein Lieblingsfeature verlangt. Stattdessen vergleicht ihr Optionen: „Welches dieser Bedürfnisse ist jetzt das wichtigste?“, „Was könnten wir noch bauen?“, „Wie könnten wir diese Chance noch angehen?“ Der Baum macht sichtbar, wenn ihr gerade eine Ob-oder-ob-nicht-Frage stellt (S. 30–31).</p>
+      <p>Gegen Selbstüberschätzung hilft das Vergleichen allein nicht. Gute Discovery verhindert Fehlschläge nicht, sie macht sie seltener – ihr handelt nach dem, was ihr heute wisst, und rechnet damit, falsch zu liegen (S. 31).</p>
     </div>
   </Folie>
 
@@ -365,6 +387,16 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   /* Folie „Werkstatt und Claude verbinden“: Knopf zur bebilderten Anleitung und Timer in einer Zeile. */
   .verbinden-unten { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; max-width: none !important; }
   :global(html[data-beamer]) .verbinden-unten > .timer { display: inline-flex; margin-top: 0; }
+  /* Folie „Vier Feinde guter Entscheidungen“: vier Karten, darunter Ob-oder-ob-nicht gegen Vergleichen. */
+  .feinde { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; margin: .75rem 0; }
+  .feinde > div { display: flex; flex-direction: column; gap: .2rem; border: 1px solid var(--border); border-radius: 8px; padding: .6rem .7rem; }
+  .feinde span { color: var(--muted); font-size: .9em; }
+  .ob-vergleich { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; margin: .75rem 0; }
+  .ob-vergleich > div { display: flex; flex-direction: column; gap: .3rem; border-radius: 8px; padding: .6rem .8rem; }
+  .ob { border: 1px dashed var(--border); color: var(--muted); }
+  .ob b { color: var(--fg); }
+  .vergleich { border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  @media (max-width: 700px) { .feinde { grid-template-columns: 1fr 1fr; } .ob-vergleich { grid-template-columns: 1fr; } :global(.ob-pfeil) { transform: rotate(90deg); justify-self: center; } }
   .miro-knopf { padding: .15rem .7rem; vertical-align: baseline; }
   @media (max-width: 600px) { .miro-tage { grid-template-columns: 1fr 1fr; } }
   /* Im Beamer passt die Folie mit Skizze und fünf Schritten sonst nicht auf eine Bildschirmhöhe: Tag 1 breiter, Skizze kleiner. */

@@ -109,21 +109,32 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'was-noch': {
     live: [
       'Fragen: Wer hat zur eigenen Idee schon Alternativen geprüft?',
-      '„Torres nennt ‚ja oder nein?‘ eine Whether-or-not-Entscheidung – für sie vielleicht der häufigste Fehler von Produktteams.“',
-      'Heath nennen: vier Feinde – enger Blick, Bestätigung, Gefühle, Selbstüberschätzung.',
-      'Falle: „Wir wissen schon, welche die beste ist“ – das ist Selbstüberschätzung.',
       '„Drei Lösungen heißt nicht drei bauen: Ihr testet Annahmen über mehrere parallel.“',
+    ],
+    ueberleitung: 'Warum Teams so oft bei einer Lösung hängen bleiben: vier Feinde guter Entscheidungen.',
+    kern: [
+      { text: 'Der Reflex: Wer ein Problem hört, will es lösen – aus guter Absicht. Aber man hinterfragt die Rahmung nicht, verliebt sich in die erste Lösung und vergisst zu fragen „Wie könnten wir das sonst lösen?“. Im Team wird es schlimmer: jede*r springt zur eigenen Lösung, es folgen fruchtlose Meinungskämpfe, am Ende entscheidet die Rolle statt der Zusammenarbeit.', quelle: `${TORRES}, S. 28` },
+    ],
+    fragen: [
+      { frage: 'Heißt drei Lösungen, dass wir drei bauen?', antwort: 'Nein. Ihr testet Annahmen über mehrere Lösungen parallel, damit ihr euch nicht zu früh auf eine festlegt (Torres S. 34). Gebaut wird, was die Tests trägt.' },
+    ],
+  },
+
+  'vier-feinde': {
+    live: [
+      'Karten einzeln durchgehen: Wo seid ihr bei eurer Idee gerade am anfälligsten?',
+      '„Torres nennt ‚ja oder nein?‘ eine Whether-or-not-Entscheidung – für sie vielleicht der häufigste Fehler von Produktteams.“',
+      'Schritt 2: erst links lesen, dann rechts – „Welches?“, „Was noch?“',
+      'Falle: „Wir wissen schon, welche die beste ist“ – das ist Selbstüberschätzung.',
     ],
     ueberleitung: 'Zweiter Nutzen des Baums: Große Chancen lassen sich in kleine zerlegen.',
     kern: [
-      { text: 'Der Reflex: Wer ein Problem hört, will es lösen – aus guter Absicht. Aber man hinterfragt die Rahmung nicht, verliebt sich in die erste Lösung und vergisst zu fragen „Wie könnten wir das sonst lösen?“. Im Team wird es schlimmer: jede*r springt zur eigenen Lösung, es folgen fruchtlose Meinungskämpfe, am Ende entscheidet die Rolle statt der Zusammenarbeit.', quelle: `${TORRES}, S. 28` },
       { text: 'Chip und Dan Heath (Decisive) nennen vier Feinde guter Entscheidungen: (1) das Problem zu eng sehen, (2) Bestätigungsfehler – nur Belege suchen, die die eigene Meinung stützen, (3) kurzfristige Gefühle – im Produkt: sich in Ideen verlieben, (4) Selbstüberschätzung – man ist sicher, dass die Idee ein Erfolg wird.', quelle: `${TORRES}, S. 30` },
       { text: 'Whether-or-not-Entscheidung: „Sollen wir das tun oder nicht?“ – wenn ein einzelner Kundenschmerz auftaucht („Alles stoppen und das beheben?“) oder wenn Stakeholder ihr Lieblingsfeature wollen. Torres: vielleicht der häufigste Fehler von Produkt-Trios.', quelle: `${TORRES}, S. 30` },
       { text: 'Stattdessen Compare-and-contrast: „Welches dieser Kundenbedürfnisse ist gerade am wichtigsten?“ statt „Sollen wir dieses lösen?“; „What else could we build?“ statt Verlieben in die erste Idee (wörtlich geprüft, S. 31).', quelle: `${TORRES}, S. 31` },
       { text: 'Gute Discovery verhindert Scheitern nicht, sie senkt nur die Wahrscheinlichkeit. Die meisten Discovery-Entscheidungen sind umkehrbar – wer testet, kann schnell korrigieren und muss nicht in Analyse-Lähmung verfallen.', quelle: `${TORRES}, S. 31` },
     ],
     fragen: [
-      { frage: 'Heißt drei Lösungen, dass wir drei bauen?', antwort: 'Nein. Ihr testet Annahmen über mehrere Lösungen parallel, damit ihr euch nicht zu früh auf eine festlegt (Torres S. 34). Gebaut wird, was die Tests trägt.' },
       { frage: 'Was, wenn wir schon wissen, welche Lösung die beste ist?', antwort: 'Genau das ist der vierte Feind, Selbstüberschätzung. Dann sollte es leicht sein, zwei Alternativen zu nennen und zu zeigen, warum sie schlechter abschneiden.' },
     ],
   },
