@@ -468,9 +468,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'skateboard': {
     live: [
       'Bild zeigen, fragen: Wer ist oben nach Schritt eins zufrieden?',
-      'Lego Universe gegen Minecraft erzählen: Jahre ohne Skateboard, sechs Tage mit.',
       '„Kniberg sagt lieber ‚früh‘ als ‚minimal‘: Kaum jemand will minimal, aber fast alle wollen früh.“',
-      'Busticket erwähnen: manchmal geht es noch früher als ein Skateboard.',
       'Falle: MVP als „Minimum Releasable Crap“ missverstehen.',
     ],
     ueberleitung: 'Was ist das Skateboard der Kaffeebar?',
@@ -478,15 +476,9 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Die obere Reihe ist für Kniberg „bastardized agile“: in Schritten geliefert, aber ohne Rückkopplung – Big-Bang-Lieferung in Etappen. Unten ist jede Stufe benutzbar; die Kundin ist anfangs kaum zufrieden, aber das Team lernt mit jeder Stufe.', quelle: KNIBERG },
       { text: 'Begriffe statt MVP: Earliest Testable Product (die erste Version, mit der Kundschaft tatsächlich etwas tun kann), Earliest Usable Product (die erste, die frühe Nutzer*innen freiwillig nutzen), Earliest Lovable Product (die erste, die sie lieben, weiterempfehlen und bezahlen würden). Begründung: Kaum jemand will „minimal“, aber fast alle wollen „früh“.', quelle: KNIBERG },
       { text: 'Schlüsselfrage, wörtlich: „What is the cheapest and fastest way we can start learning?“ Davor die Frage: Geht es noch früher als ein Skateboard – etwa ein Busticket? Vielleicht, vielleicht nicht, aber man lernt etwas, wenn man es echten Nutzer*innen in die Hand gibt.', quelle: KNIBERG },
-      { text: 'Spotify (bei Kniberg): erste Version völlig unpoliert, fast keine Funktionen außer dem Abspielen einiger fest eingebauter Songs, ohne Lizenzen und Geschäftsmodell. Erst intern, dann Freunden und Familie gegeben, um zu prüfen, ob sofortiges, flüssiges Streaming technisch möglich ist und ob es Menschen begeistert. Messgröße war, wie viele Millisekunden vom Drücken auf Play bis zur Musik vergehen.', quelle: KNIBERG },
     ],
-    geschichte: {
-      text: 'Kniberg erzählt zwei Gegenbeispiele. Lego Universe: ein Online-Spiel, an dem laut Kniberg rund 250 Menschen vier bis fünf Jahre arbeiteten. Das fertige Spiel war schön, aber nicht so unterhaltsam wie erwartet, und wurde nach etwa zwei Jahren eingestellt – Knibergs Fazit: „There was no skateboard!“ Minecraft dagegen: Die erste öffentliche Version entstand laut Kniberg nach sechs Tagen Programmieren durch eine einzige Person; genau diese Version nennt er das Skateboard.',
-      quelle: `${KNIBERG} (Abschnitte zu Lego und Minecraft; Zahlen nach Kniberg)`,
-    },
     fragen: [
       { frage: 'Ist ein MVP nicht einfach eine schlechte erste Version?', antwort: 'Kniberg warnt genau davor („Minimum Releasable Crap“). Ein Skateboard ist klein, aber es erfüllt den Zweck – von A nach B – und bringt echte Rückmeldung.' },
-      { frage: 'Was ist bei einer Software-Idee das „Busticket“?', antwort: 'Etwas, das das Bedürfnis ohne eigenes Produkt bedient, z. B. ein vorhandenes Werkzeug oder ein Ablauf von Hand. Ihr lernt, ob das Bedürfnis trägt, bevor ihr baut.' },
     ],
   },
 
@@ -498,7 +490,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Fragen: Was wäre das Schild für das eigene Produkt?',
       'Bei Bedarf: Zappos, Schuhe fotografiert statt eingelagert.',
     ],
-    ueberleitung: 'Zum Schluss des Vormittags: wie Design Thinking typischerweise schiefgeht.',
+    ueberleitung: 'Wie das in echten Produkten aussah: Lego Universe, Minecraft, Spotify.',
     kern: [
       { text: 'Knibergs Frage auf die Kaffeebar übertragen: Der billigste, schnellste Weg, mit dem Lernen anzufangen, ist ein Schild an der Theke – die Kursübertragung, nicht Knibergs eigenes Beispiel.', quelle: KNIBERG },
       { text: 'Jede Stufe beantwortet eine eigene Frage: will jemand vorbestellen? → was und wann? → wie oft? Damit passt das MVP zum Test im Baum („Bestellen 3 von 10 per WhatsApp vor?“).', quelle: 'Kursbeispiel (KAFFEEBAR_BAUM, src/components/innolab-beispiel.ts)' },
@@ -509,6 +501,26 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     fragen: [
       { frage: 'Ist ein WhatsApp-Schild nicht unprofessionell?', antwort: 'Es ist ein Test, kein Produkt. Es beantwortet in einer Woche die Frage, die sonst erst die fertige App beantworten würde.' },
       { frage: 'Muss unser Prototyp am Ende eine App sein?', antwort: 'Er muss eine kleine Chance wirklich lösen und benutzbar sein. Wie viel davon Software ist, entscheidet die Annahme, die ihr prüft.' },
+    ],
+  },
+
+  'skateboard-praxis': {
+    live: [
+      'Lego Universe gegen Minecraft erzählen: Jahre ohne Skateboard, sechs Tage mit.',
+      'Spotify: gemessen wurden Millisekunden von „Play“ bis zur Musik.',
+      'Busticket erwähnen: manchmal geht es noch früher als ein Skateboard.',
+      'Fragen: Was wäre euer Busticket?',
+    ],
+    ueberleitung: 'Zum Schluss des Vormittags: wie Design Thinking typischerweise schiefgeht.',
+    kern: [
+      { text: 'Spotify (bei Kniberg): erste Version völlig unpoliert, fast keine Funktionen außer dem Abspielen einiger fest eingebauter Songs, ohne Lizenzen und Geschäftsmodell. Erst intern, dann Freunden und Familie gegeben, um zu prüfen, ob sofortiges, flüssiges Streaming technisch möglich ist und ob es Menschen begeistert. Messgröße war, wie viele Millisekunden vom Drücken auf Play bis zur Musik vergehen.', quelle: KNIBERG },
+    ],
+    geschichte: {
+      text: 'Kniberg erzählt zwei Gegenbeispiele. Lego Universe: ein Online-Spiel, an dem laut Kniberg rund 250 Menschen vier bis fünf Jahre arbeiteten. Das fertige Spiel war schön, aber nicht so unterhaltsam wie erwartet, und wurde nach etwa zwei Jahren eingestellt – Knibergs Fazit: „There was no skateboard!“ Minecraft dagegen: Die erste öffentliche Version entstand laut Kniberg nach sechs Tagen Programmieren durch eine einzige Person; genau diese Version nennt er das Skateboard.',
+      quelle: `${KNIBERG} (Abschnitte zu Lego und Minecraft; Zahlen nach Kniberg)`,
+    },
+    fragen: [
+      { frage: 'Was ist bei einer Software-Idee das „Busticket“?', antwort: 'Etwas, das das Bedürfnis ohne eigenes Produkt bedient, z. B. ein vorhandenes Werkzeug oder ein Ablauf von Hand. Ihr lernt, ob das Bedürfnis trägt, bevor ihr baut.' },
     ],
   },
 
