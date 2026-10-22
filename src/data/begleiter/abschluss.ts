@@ -211,7 +211,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
         quelle: 'Teresa Torres, Continuous Discovery Habits, S. 76–77',
       },
       {
-        text: 'Ein Outcome misst, was sich ändert, nicht was gebaut wird. Torres unterscheidet Business Outcomes, Product Outcomes und Traction Metrics. Ein Produktteam kommt mit einem Product Outcome am weitesten, weil es in seinem eigenen Einflussbereich liegt. Das war der Block am Vormittag.',
+        text: 'Ein Outcome misst, was sich ändert, nicht was gebaut wird. Torres unterscheidet Business Outcomes, Product Outcomes und Traction Metrics. Ein Produktteam kommt mit einem Product Outcome am weitesten, weil er in seinem eigenen Einflussbereich liegt. Das war der Block am Vormittag.',
         quelle: 'Teresa Torres, Continuous Discovery Habits, S. 40',
       },
     ],

@@ -13,7 +13,7 @@ export const briefSchema = z.object({
   nicht: z.array(text('Was es nicht macht'), { error: '„Was es nicht macht“ muss eine Liste sein.' }),
   outcome: z.object(
     { wirGlauben: text('Wir glauben'), wirMerkenEs: text('Wir merken es') },
-    { error: 'Das Outcome braucht „Wir glauben“ und „Wir merken es“.' },
+    { error: 'Der Outcome braucht „Wir glauben“ und „Wir merken es“.' },
   ),
   offeneFragen: z.array(text('Offene Frage'), { error: '„Offene Fragen“ muss eine Liste sein.' }),
 });

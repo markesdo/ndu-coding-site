@@ -328,10 +328,10 @@ export const METHODEN: Methode[] = [
   },
   {
     slug: 'story-map', name: 'Story Map', tag: 3, dauer: 105,
-    frage: 'Was tun Menschen mit eurem Produkt, von Anfang bis Ende – und was baut ihr zuerst, um welches Outcome zu erreichen?',
+    frage: 'Was tun Menschen mit eurem Produkt, von Anfang bis Ende – und was baut ihr zuerst, um welchen Outcome zu erreichen?',
     braucht: ['brief', 'profil', 'valuemap', 'journey', 'annahmen'], ergibt: ['storymap'],
     pruefliste: [
-      { id: 'story-map-rahmen', text: 'Der Rahmen steht da: für wen die Map ist und welches Outcome das Produkt erreichen soll.' },
+      { id: 'story-map-rahmen', text: 'Der Rahmen steht da: für wen die Map ist und welchen Outcome das Produkt erreichen soll.' },
       { id: 'story-map-schritte', text: 'Jeder Schritt ist ein kurzer Verb-Satz aus Sicht der Person, die handelt – kein Bildschirm, kein Feature.' },
       { id: 'story-map-erzaehlbar', text: 'Die Map lässt sich von links nach rechts mit „und dann …“ erzählen, und jede Gruppe, die mitspielt, hat eigene Schritte darin.' },
       { id: 'story-map-alternativen', text: 'Unter den Schritten stehen Alternativen, Details und Fehlerfälle – mindestens eine Antwort auf „Was ist, wenn …?“ pro Aktivität mit Software-Schritten.' },
@@ -379,7 +379,7 @@ export const METHODEN: Methode[] = [
     frage: 'Wie arbeiten wir als drei Scrum-Teams mit denselben drei Personen an drei Produkten?',
     braucht: ['brief'], ergibt: ['team'],
     pruefliste: [
-      { id: 'scrum-produkte', text: 'Für jedes der drei Produkte stehen Product Owner, Linear-Projekt und als Produktziel das Outcome aus dem Produkt-Brief („Wir glauben, dass … Wir merken es, wenn …“), das sagt, was Menschen danach anders tun.' },
+      { id: 'scrum-produkte', text: 'Für jedes der drei Produkte stehen Product Owner, Linear-Projekt und als Produktziel der Outcome aus dem Produkt-Brief („Wir glauben, dass … Wir merken es, wenn …“), der sagt, was Menschen danach anders tun.' },
       { id: 'scrum-rollen', text: 'Alle drei sind Developers in allen drei Produkten; der Scrum Master für Sprint 1 und Sprint 2 ist genannt.' },
       { id: 'scrum-termine', text: 'Sprint 1 und Sprint 2 haben ein Datum für Planning, Review und Retro; das Daily hat Zeit und Ort an Kurstagen und eine Regel für dazwischen.' },
       { id: 'scrum-dod', text: 'Die Definition of Done ist eine Liste von Punkten, die sich im Browser, auf GitHub oder in Supabase prüfen lassen, und gilt für alle drei Produkte.' },

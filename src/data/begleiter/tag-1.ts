@@ -102,8 +102,8 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ],
     ueberleitung: 'Erste Falle, gegen die der Baum hilft: nur eine Lösung im Blick und die Frage „ja oder nein?“.',
     kern: [
-      { text: 'Die Struktur von Discovery: Zuerst ein klares Outcome, das den Rahmen setzt; dann den Opportunity Space entdecken und abbilden – das gibt dem schlecht strukturierten Problem Struktur; dann Lösungen, die diese Chancen adressieren und damit das Outcome bewegen. Visualisiert als Opportunity Solution Tree.', quelle: `${TORRES}, S. 26` },
-      { text: 'Die Ebenen: Wurzel = gewünschtes Outcome (der Geschäftsbedarf, über den das Team Wert für das Unternehmen schafft); darunter Chancen (Bedürfnisse, Schmerzen, Wünsche der Kundschaft, die das Outcome treiben würden); darunter Lösungen; darunter Annahmen-Tests, mit denen man bewertet, welche Lösung Kundenwert so schafft, dass er Geschäftswert treibt.', quelle: `${TORRES}, S. 26–27` },
+      { text: 'Die Struktur von Discovery: Zuerst ein klarer Outcome, der den Rahmen setzt; dann den Opportunity Space entdecken und abbilden – das gibt dem schlecht strukturierten Problem Struktur; dann Lösungen, die diese Chancen adressieren und damit den Outcome bewegen. Visualisiert als Opportunity Solution Tree.', quelle: `${TORRES}, S. 26` },
+      { text: 'Die Ebenen: Wurzel = gewünschter Outcome (der Geschäftsbedarf, über den das Team Wert für das Unternehmen schafft); darunter Chancen (Bedürfnisse, Schmerzen, Wünsche der Kundschaft, die den Outcome treiben würden); darunter Lösungen; darunter Annahmen-Tests, mit denen man bewertet, welche Lösung Kundenwert so schafft, dass er Geschäftswert treibt.', quelle: `${TORRES}, S. 26–27` },
       { text: 'Warum „Opportunities“ statt „Probleme“: Viele Produkte lösen kein Problem, sondern erfüllen Wünsche (Disneyland, Eis, Mountainbiken). Der Begriff umfasst Bedürfnisse, Schmerzpunkte und Wünsche.', quelle: `${TORRES}, S. 24–25` },
       { text: 'Den Weg zum Outcome zu finden ist ein „ill-structured“ (wicked) Problem: viele Lösungen, keine richtige, nur bessere und schlechtere. Ein großer Teil der Arbeit ist, das Problem zu rahmen; gute Problemlöser probieren mehrere Rahmungen aus (David Jonassen).', quelle: `${TORRES}, S. 24–25` },
       { text: 'Die Form des Baums sagt, was als Nächstes dran ist: zu flacher Chancenraum → mehr Interviews; ausufernder → fokussieren; zu wenige Lösungen → Ideensession; zu wenige Tests → mehr testen.', quelle: `${TORRES}, S. 33` },
@@ -113,7 +113,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       quelle: `${TORRES}, S. 25–26`,
     },
     fragen: [
-      { frage: 'Wird der Baum von oben nach unten abgearbeitet?', antwort: 'Meist startet man oben, aber die besten Teams arbeiten auch von unten: Tests verändern Lösungen und den Chancenraum, und mit der Zeit sogar, wie man das Outcome misst (Torres S. 33).' },
+      { frage: 'Wird der Baum von oben nach unten abgearbeitet?', antwort: 'Meist startet man oben, aber die besten Teams arbeiten auch von unten: Tests verändern Lösungen und den Chancenraum, und mit der Zeit sogar, wie man den Outcome misst (Torres S. 33).' },
       { frage: 'Wie groß muss unser Baum werden?', antwort: 'So viel Struktur, dass man das große Bild sieht, nicht so viel, dass man in Details ertrinkt. Der erste Entwurf ist nie fertig; Struktur wird gemacht, verworfen, neu gemacht (Torres S. 91).' },
     ],
   },
@@ -232,12 +232,12 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     },
     ueberleitung: 'Bevor wir eure Wurzel schreiben, ein Warm-up: Wie macht man Toast?',
     kern: [
-      { text: 'Die Wurzel des Baums ist das gewünschte Outcome – der Geschäftsbedarf, über den das Team Wert für das Unternehmen schafft.', quelle: `${TORRES}, S. 26` },
+      { text: 'Die Wurzel des Baums ist der gewünschte Outcome – der Geschäftsbedarf, über den das Team Wert für das Unternehmen schafft.', quelle: `${TORRES}, S. 26` },
       { text: 'Die oberste Ebene der Chancen lässt sich oft direkt aus den Knoten der Experience Map ableiten: unterschiedliche Momente im Erleben der Kundschaft, damit sich Äste nicht überschneiden.', quelle: `${TORRES}, S. 86` },
       { text: 'Der Baum ist kein Einmal-Artefakt: Experience Map und Chancenraum entwickeln sich weiter, je mehr man über die Kundschaft lernt.', quelle: `${TORRES}, S. 49` },
     ],
     fragen: [
-      { frage: 'Woher stammen die Chancen der Kaffeebar, wenn noch niemand interviewt wurde?', antwort: 'Sie sind ein Beispiel für die Form. Bei euch steht heute nur das Outcome; Chancen kommen erst aus echten Interviews in den Baum.' },
+      { frage: 'Woher stammen die Chancen der Kaffeebar, wenn noch niemand interviewt wurde?', antwort: 'Sie sind ein Beispiel für die Form. Bei euch steht heute nur der Outcome; Chancen kommen erst aus echten Interviews in den Baum.' },
     ],
   },
 
@@ -371,31 +371,31 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     kern: [
       { text: 'Motto des Kapitels, wörtlich geprüft: „An outcome is a change in human behavior that drives business results.“ (Josh Seiden, Outcomes Over Output).', quelle: `${TORRES}, S. 37` },
       { text: 'Vom Output- zum Outcome-Denken: Statt Features (Outputs) zählt deren Wirkung auf Kundschaft und Unternehmen (Outcomes). Mit einem Outcome sagt das Unternehmen, welchen Wert das Team schaffen soll, und lässt ihm den Spielraum, die besten Outputs zu finden.', quelle: `${TORRES}, S. 23` },
-      { text: 'Fester Fahrplan kommuniziert falsche Gewissheit; ein Outcome kommuniziert Unsicherheit („Wir müssen dieses Problem lösen, wissen aber nicht, wie am besten“) und erlaubt, Ideen zu verwerfen und umzuschwenken. Ein klares Outcome sagt auch, woran Erfolg gemessen wird; ohne es wird Discovery endlos und frustrierend.', quelle: `${TORRES}, S. 39` },
-      { text: 'Antipattern „Output als Outcome“: „Android-App launchen“ statt „mobile Nutzung steigern“, „Feature-Parität auf dem neuen Tech-Stack“ statt „Kundschaft auf den neuen Stack bringen“. Tipp: Das Outcome sollte eine Zahl sein, auch wenn man noch nicht weiß, wie man sie misst – und man sollte nach der Wirkung fragen.', quelle: `${TORRES}, S. 47–48` },
+      { text: 'Fester Fahrplan kommuniziert falsche Gewissheit; ein Outcome kommuniziert Unsicherheit („Wir müssen dieses Problem lösen, wissen aber nicht, wie am besten“) und erlaubt, Ideen zu verwerfen und umzuschwenken. Ein klarer Outcome sagt auch, woran Erfolg gemessen wird; ohne ihn wird Discovery endlos und frustrierend.', quelle: `${TORRES}, S. 39` },
+      { text: 'Antipattern „Output als Outcome“: „Android-App launchen“ statt „mobile Nutzung steigern“, „Feature-Parität auf dem neuen Tech-Stack“ statt „Kundschaft auf den neuen Stack bringen“. Tipp: Der Outcome sollte eine Zahl sein, auch wenn man noch nicht weiß, wie man sie misst – und man sollte nach der Wirkung fragen.', quelle: `${TORRES}, S. 47–48` },
     ],
     geschichte: {
       text: 'Torres arbeitete mit einem Team, das Studierenden bei der Kurswahl hilft. Sein Outcome: „Mehr Kursbewertungen auf der Plattform“. Auf die Frage, was mehr Bewertungen bewirken, kam: „Mehr Studierende sehen Kurse mit Bewertungen.“ Das stimmt aber nicht unbedingt – wenn sich die Bewertungen auf wenige Kurse ballen oder auf Kurse, die niemand ansieht, ändert sich nichts. Besser war: „Mehr Kursaufrufe, die Bewertungen enthalten.“ Die Lehre: Ein Outcome wird zum echten Outcome, indem man nach seiner Wirkung fragt.',
       quelle: `${TORRES}, S. 48`,
     },
     fragen: [
-      { frage: 'Ist „App veröffentlichen“ nicht auch ein Ziel?', antwort: 'Ein Output. Fragt: Was tun Menschen anders, wenn es die App gibt? Das ist das Outcome – und vielleicht erreicht ihr es ganz ohne App.' },
-      { frage: 'Brauchen wir für das Outcome schon eine Zahl?', antwort: 'Torres rät, das Outcome als Zahl zu denken, auch wenn die Messung noch offen ist (S. 48). Die Zielhöhe kommt später – siehe Lernziel auf der übernächsten Folie.' },
+      { frage: 'Ist „App veröffentlichen“ nicht auch ein Ziel?', antwort: 'Ein Output. Fragt: Was tun Menschen anders, wenn es die App gibt? Das ist der Outcome – und vielleicht erreicht ihr ihn ganz ohne App.' },
+      { frage: 'Brauchen wir für den Outcome schon eine Zahl?', antwort: 'Torres rät, den Outcome als Zahl zu denken, auch wenn die Messung noch offen ist (S. 48). Die Zielhöhe kommt später – siehe Lernziel auf der übernächsten Folie.' },
     ],
   },
 
   'outcome-arten': {
     live: [
       'tails.com erzählen: 90 Tage warten, Interviews zeigen zwei Kündigungsgründe.',
-      '„Ein Product Outcome könnt ihr sofort messen und selbst beeinflussen – darum steht es an der Wurzel eures Baums.“',
+      '„Einen Product Outcome könnt ihr sofort messen und selbst beeinflussen – darum steht er an der Wurzel eures Baums.“',
       '„Will den Umstellungskalender niemand, steckt ein Team mit dieser Traction Metric fest.“',
       'Nachfrage erwarten: Traction Metric passt nur beim Optimieren bewährter Lösungen.',
     ],
-    ueberleitung: 'Dieselben drei Arten bei der Kaffeebar – und warum ein neues Outcome mit einem Lernziel beginnt.',
+    ueberleitung: 'Dieselben drei Arten bei der Kaffeebar – und warum ein neuer Outcome mit einem Lernziel beginnt.',
     kern: [
       { text: 'Business Outcome misst, wie gut das Geschäft vorankommt; Product Outcome, wie gut das Produkt das Geschäft voranbringt; Traction Metric die Nutzung einer bestimmten Funktion oder eines Ablaufs.', quelle: `${TORRES}, S. 40` },
       { text: 'Business Outcomes sind oft nachlaufende Indikatoren: Sie messen, was schon passiert ist, und versetzen Teams in den Reaktionsmodus. Besser sind vorlaufende Indikatoren, die die Richtung vorhersagen.', quelle: `${TORRES}, S. 40` },
-      { text: 'Product Outcomes liegen per Definition im Einflussbereich des Teams; Business Outcomes verlangen Abstimmung über viele Bereiche (bei tails.com auch Support-Zeiten und Preiserhöhungen nach der Probephase). Ein eigenes Product Outcome stärkt Verantwortung – bei geteiltem Ziel schiebt man leicht die Schuld weiter.', quelle: `${TORRES}, S. 40–41` },
+      { text: 'Product Outcomes liegen per Definition im Einflussbereich des Teams; Business Outcomes verlangen Abstimmung über viele Bereiche (bei tails.com auch Support-Zeiten und Preiserhöhungen nach der Probephase). Ein eigener Product Outcome stärkt Verantwortung – bei geteiltem Ziel schiebt man leicht die Schuld weiter.', quelle: `${TORRES}, S. 40–41` },
       { text: 'Traction Metrics engen ein: Wer die Nutzung des Umstellungskalenders misst, setzt voraus, dass der Kalender der richtige Output ist. Sinnvoll nur in zwei Fällen: für junge, unerfahrene Teams (Optimierung als Übung) und zum Optimieren einer bewährten Lösung in einem reifen Produkt – nicht, wenn neue Lösungen entdeckt werden sollen.', quelle: `${TORRES}, S. 41–42` },
     ],
     geschichte: {
@@ -404,7 +404,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     },
     fragen: [
       { frage: 'Ist eine Traction Metric immer schlecht?', antwort: 'Nein. Für die Optimierung einer Lösung, von der man schon weiß, dass die Kundschaft sie nutzt, ist sie passend (Torres S. 42). Für Discovery – also für euch – nicht.' },
-      { frage: 'Woher weiß man, dass das Product Outcome das Business Outcome treibt?', antwort: 'Anfangs ist das eine Annahme. tails.com „glaubte“, dass beide Product Outcomes die Bindung treiben (S. 38); Teams müssen diesen Zusammenhang oft erst durch Discovery herausfinden.' },
+      { frage: 'Woher weiß man, dass der Product Outcome den Business Outcome treibt?', antwort: 'Anfangs ist das eine Annahme. tails.com „glaubte“, dass beide Product Outcomes die Bindung treiben (S. 38); Teams müssen diesen Zusammenhang oft erst durch Discovery herausfinden.' },
     ],
   },
 
@@ -415,11 +415,11 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       '„Bei komplexen Aufgaben schneiden Teams mit Lernziel besser ab als Teams, die sofort eine schwierige Zahl erreichen sollen.“',
       'Ausblick: Schwellen wie „4 von 5“ kommen auf die Experiment-Karte.',
     ],
-    ueberleitung: 'Das Outcome hat noch eine zweite Aufgabe: Es filtert, was überhaupt in den Baum kommt.',
+    ueberleitung: 'Der Outcome hat noch eine zweite Aufgabe: Er filtert, was überhaupt in den Baum kommt.',
     kern: [
       { text: 'Forschung zu Zielen: Spezifische, herausfordernde Ziele wirken bei einfachen Aufgaben. Bei komplexen Aufgaben können sie die Leistung senken, wenn das Team noch keine Strategie hat; dort war „gebt euer Bestes“ besser, und ein anfängliches Lernziel („die Strategien entdecken, die funktionieren könnten“) wirksamer als ein Leistungsziel.', quelle: `${TORRES}, S. 44` },
-      { text: 'Daraus: Bei einem neuen Outcome erst ein Lernziel („die Chancen entdecken, die Nutzung treiben“), dann ein Leistungsziel („Nutzung um 10 % steigern“). S.M.A.R.T.-Ziele passen für Teams, die ihr Outcome schon kennen; man darf mit einem Lernziel starten und sich dorthin vorarbeiten.', quelle: `${TORRES}, S. 44–45` },
-      { text: 'Wer ein Outcome zum ersten Mal bekommt, braucht Zeit zu lernen, was die Zahl bewegt. Jedes Mal, wenn man das Team umbaut oder das Outcome wechselt, zahlt man eine „Lernsteuer“.', quelle: `${TORRES}, S. 43` },
+      { text: 'Daraus: Bei einem neuen Outcome erst ein Lernziel („die Chancen entdecken, die Nutzung treiben“), dann ein Leistungsziel („Nutzung um 10 % steigern“). S.M.A.R.T.-Ziele passen für Teams, die ihren Outcome schon kennen; man darf mit einem Lernziel starten und sich dorthin vorarbeiten.', quelle: `${TORRES}, S. 44–45` },
+      { text: 'Wer einen Outcome zum ersten Mal bekommt, braucht Zeit zu lernen, was die Zahl bewegt. Jedes Mal, wenn man das Team umbaut oder den Outcome wechselt, zahlt man eine „Lernsteuer“.', quelle: `${TORRES}, S. 43` },
       { text: 'Antipatterns: zu viele Outcomes gleichzeitig, Ping-Pong von Quartal zu Quartal, individuelle statt Team-Ziele. Meist wirkt ein Outcome zur Zeit am stärksten.', quelle: `${TORRES}, S. 47` },
     ],
     fragen: [
@@ -438,8 +438,8 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Antipattern „ein Outcome auf Kosten von allem anderen“: Neben dem Hauptziel Gesundheitsmetriken beobachten, z. B. Kundengewinnung zusammen mit Kundenzufriedenheit – Ziel ist, die eine zu steigern, ohne die andere zu verschlechtern.', quelle: `${TORRES}, S. 48` },
     ],
     fragen: [
-      { frage: 'Was machen wir mit Interview-Funden, die nicht zum Outcome passen?', antwort: 'Notieren, aber nicht in den Baum. Sie können für ein anderes Outcome wertvoll sein; im Baum lenken sie ab.' },
-      { frage: 'Warum ein Gegengewicht bei der Kaffeebar?', antwort: 'Ein Vorbestell-Weg könnte die Schlange für alle anderen verlängern. Die Gesundheitsmetrik sorgt dafür, dass ihr das Outcome nicht auf Kosten anderer Kundschaft erreicht (Torres S. 48).' },
+      { frage: 'Was machen wir mit Interview-Funden, die nicht zum Outcome passen?', antwort: 'Notieren, aber nicht in den Baum. Sie können für einen anderen Outcome wertvoll sein; im Baum lenken sie ab.' },
+      { frage: 'Warum ein Gegengewicht bei der Kaffeebar?', antwort: 'Ein Vorbestell-Weg könnte die Schlange für alle anderen verlängern. Die Gesundheitsmetrik sorgt dafür, dass ihr den Outcome nicht auf Kosten anderer Kundschaft erreicht (Torres S. 48).' },
     ],
   },
 
@@ -457,7 +457,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Drucker: Aufgabe eines Unternehmens ist, Bedürfnisse der Gesellschaft in profitable Geschäftschancen zu verwandeln – Kundschaft zu dienen ist der Weg zum Gewinn, kein Gegensatz.', quelle: `${TORRES}, S. 21–22` },
     ],
     geschichte: {
-      text: '2016 deckten mehrere Aufsichtsbehörden Betrug bei der US-Bank Wells Fargo auf: Bankangestellte hatten ohne Wissen der Kundschaft Giro-, Spar- und Kreditkartenkonten eröffnet. Zuerst schob die Bank es auf einzelne Filialmitarbeitende. Bei genauerem Hinsehen zeigte sich: Die Führung setzte die Mitarbeitenden massiv unter Druck, die durchschnittliche Zahl der Konten pro Kunde zu erhöhen – die bekannte Cross-Selling-Strategie war immer aggressiver geworden, mit unerreichbaren Quoten und lukrativen Prämien. Die Folge laut Torres: 185 Millionen Dollar Strafe vom Consumer Financial Protection Bureau und Klagen in Milliardenhöhe. Torres liest das so: Das Outcome war richtig gewählt, aber ohne den Blick auf die Kundschaft.',
+      text: '2016 deckten mehrere Aufsichtsbehörden Betrug bei der US-Bank Wells Fargo auf: Bankangestellte hatten ohne Wissen der Kundschaft Giro-, Spar- und Kreditkartenkonten eröffnet. Zuerst schob die Bank es auf einzelne Filialmitarbeitende. Bei genauerem Hinsehen zeigte sich: Die Führung setzte die Mitarbeitenden massiv unter Druck, die durchschnittliche Zahl der Konten pro Kunde zu erhöhen – die bekannte Cross-Selling-Strategie war immer aggressiver geworden, mit unerreichbaren Quoten und lukrativen Prämien. Die Folge laut Torres: 185 Millionen Dollar Strafe vom Consumer Financial Protection Bureau und Klagen in Milliardenhöhe. Torres liest das so: Der Outcome war richtig gewählt, aber ohne den Blick auf die Kundschaft.',
       quelle: `${TORRES}, S. 21–22`,
     },
     zusatz: [
@@ -533,7 +533,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Ein Prototyp ‚sieht toll aus‘, alle nicken. Ist er damit getestet?',
-      antwort: 'Nein. Ein Test prüft, ob die Lösung das Problem wirklich löst und Menschen ihr Verhalten ändern – also das Outcome, nicht den Eindruck.',
+      antwort: 'Nein. Ein Test prüft, ob die Lösung das Problem wirklich löst und Menschen ihr Verhalten ändern – also den Outcome, nicht den Eindruck.',
       falsch: '„Ja, positives Feedback ist ein Test“ – Zustimmung zu einem schönen Prototyp sagt nichts darüber, ob ihn jemand benutzt.',
     },
     ueberleitung: 'Was ihr heute noch erarbeitet: die Methoden des Tages auf einen Blick.',
@@ -541,7 +541,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Woher die erste Zeile stammt: Die Schritte von Design Thinking „seem like obviously good ideas. But, in practice, what I and most people tend to do is the exact opposite.“ Und später: „There are some predictable ways that design processes fail. […] It’s not the process.“', quelle: `${PATTON}, Kap. 15, Abschnitte „Empathize, Focus, Ideate, Prototype, Test“ und „How to Mess Up a Good Thing“` },
       { text: 'Design Thinking (IDEO, später d.school): Empathize – hingehen, beobachten, mitarbeiten, nicht nur Daten sammeln; Define – gemeinsam Sinn stiften und bestimmte Menschen und Probleme wählen; Ideate – bewusst mehrere Lösungen; Prototype – einfache Papierprototypen; Test – prüfen, ob die Lösung das Problem wirklich löst, nicht ob Fehler drin sind.', quelle: `${PATTON}, Kap. 15, Abschnitt „Empathize, Focus, Ideate, Prototype, Test“` },
       { text: 'Pattons Liste „How to Mess Up a Good Thing“ (zehn Punkte, der Kurs zeigt fünf – eine Kürzung des Kurses): ohne Rahmen für Geschäftsbedarf und Zielkundschaft starten; endlos recherchieren ohne Timebox; gar nicht mit Menschen reden; nicht auf ein Problem fokussieren; nur „echte“ Designer*innen Ideen beitragen lassen; keine Alternativen betrachten; einen schön aussehenden Prototyp bauen, der nicht benutzbar ist („looks really lovely“); sich selbst überzeugen, dass es klappt; Baukosten ignorieren; nach dem Misserfolg Schuldige suchen.', quelle: `${PATTON}, Kap. 15, Abschnitt „How to Mess Up a Good Thing“` },
-      { text: 'Pattons Pointe: Verwechselt Prozess nicht mit Können – es liegt nicht am Prozess. Ein Kernfehler klassischer Designprozesse ist, so lange zu lernen und zu gestalten, dass man an den Lösungen hängt und dann nicht prüft, ob sie das gewünschte Outcome bringen; daher kurze, validierte Lernschleifen (Build-Measure-Learn nach Eric Ries).', quelle: `${PATTON}, Kap. 15, Abschnitte „How to Mess Up a Good Thing“ und „Short Validated Learning Loops“` },
+      { text: 'Pattons Pointe: Verwechselt Prozess nicht mit Können – es liegt nicht am Prozess. Ein Kernfehler klassischer Designprozesse ist, so lange zu lernen und zu gestalten, dass man an den Lösungen hängt und dann nicht prüft, ob sie den gewünschten Outcome bringen; daher kurze, validierte Lernschleifen (Build-Measure-Learn nach Eric Ries).', quelle: `${PATTON}, Kap. 15, Abschnitte „How to Mess Up a Good Thing“ und „Short Validated Learning Loops“` },
     ],
     geschichte: {
       text: 'Patton erzählt von einem potenziellen Kunden, der ihn bat, beim Einführen von Design Thinking zu helfen. Die Firma arbeitete schon agil und machte das gut: Sie lieferte planbar und in hoher Qualität. Gelernt hatte sie aber, wörtlich: „the faster you deliver crap, the more crap you get.“ Freundlicher gesagt: Zwischen der Menge gebauter Software und Outcome bzw. Impact gab es kaum einen Zusammenhang. Patton dachte zuerst: „Ich bin Designer und denke, also mache ich Design Thinking“ – und lag falsch; gemeint war eine bestimmte Arbeitsweise. Die Geschichte schlägt die Brücke zurück zu „Outcome statt Output“.',
