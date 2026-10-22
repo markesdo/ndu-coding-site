@@ -52,7 +52,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Nur schwache Fassung zeigen, Raum fragen, Antworten abwarten, dann aufdecken.',
       'Kaffeebar ist erfunden und begleitet den ganzen Kurs.',
       '„Gibt es mehr als eine Art, das zu lösen? Wenn nein, habt ihr eine verkleidete Lösung.“',
-      'Vorspulen-Beispiel erzählen (geschichte): App zum Vorbestellen ist das Vorspulen.',
+      'Ulwick erzählen (geschichte): Lösung „Lebensmittel online kaufen“, Chance „weniger Zeit zum Laden“.',
       'Falle: Gefühl als Problem („gestresst“) – nach der Ursache fragen.',
     ],
     ueberleitung: 'Was die starke Fassung bringt, seht ihr, wenn wir die möglichen Lösungen darunter aufmalen.',
@@ -71,8 +71,8 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
     ],
     geschichte: {
-      text: 'Torres’ Beispiel aus einem Streaming-Interview: Eine Kundin sagt „Ich wünschte, ich könnte Werbung vorspulen.“ Das klingt wie eine Chance, ist aber ein Lösungswunsch – es gibt genau eine Art, Vorspulen anzubieten, nämlich Vorspulen. Dahinter liegt die eigentliche Chance: „Ich mag keine Werbung.“ Fragt man nun, wie man das angehen könnte, gibt es plötzlich mehrere Wege: unterhaltsamere Werbung wie beim Super Bowl, Vorspulen wie gewünscht, oder ein Abo ohne Werbung. Genau das passiert bei der Kaffeebar: „App zum Vorbestellen“ ist das Vorspulen, die Schlange vor der Abfahrt ist die Werbung, die keiner mag.',
-      quelle: 'Teresa Torres, Continuous Discovery Habits, S. 94–95',
+      text: 'Ulwick beschreibt 2002 in der Harvard Business Review, was passiert, wenn Unternehmen ihre Kundschaft einfach fragen, was sie will: Die Antworten sind Lösungen. „I want to buy groceries on-line“, sagen Kund*innen, oder sie wünschen sich ein Bildtelefon. Die Unternehmen liefern genau das – und sehr oft kauft es dann niemand. Ulwicks Schluss: „Customers should not be trusted to come up with solutions.“ Fragen soll man nach dem Ergebnis, also danach, was ein Produkt für sie leisten soll: weniger Zeit für den Weg zum Laden und zurück, beim Bildtelefon das Gefühl, Menschen beim Telefonieren näher zu sein. Welche Lösung das Ergebnis bringt, entscheidet dann das Team. Bei der Kaffeebar ist „App zum Vorbestellen“ das „Lebensmittel online kaufen“, und „Wenn ich anstehe, verpasse ich meinen Zug“ ist die Zeit für den Weg zum Laden. Ulwick ist dabei strenger als Torres: Er würde gar nicht nach Lösungen fragen; Torres nimmt den Lösungswunsch auf und fragt, was er der Person bringen würde.',
+      quelle: 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Harvard Business Review, Januar 2002, S. 91–92',
     },
     fragen: [
       {
