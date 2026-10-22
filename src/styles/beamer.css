@@ -112,6 +112,8 @@ html[data-beamer] .folie-satz { font-size: 1.6rem; }
 /* Auf Folienseiten trägt die Folie ihren Titel selbst; die klebende „Wo bin ich“-Leiste würde ihn verdecken. */
 html[data-beamer]:has(.folie) .orient { display: none; }
 html[data-beamer] .content :is(ul, ol).gross > li { font-size: 1.25rem; }
+/* .dicht: Schritt-Listen mit langen Schritten, die in 1.25rem nicht auf eine Folie passen (Problem-Rahmen, Interview). */
+html[data-beamer] .content :is(ul, ol).gross.dicht > li { font-size: 1.05rem; margin-bottom: .3rem; }
 
 @media (max-width: 900px) {
   html[data-beamer] .content { padding: 1.25rem 16px 4rem; }
