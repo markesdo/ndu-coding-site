@@ -234,7 +234,10 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
   it('GitHub scheitert beim Lesen einer Mappe: dort fehler, die anderen kommen', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const t = await aufbau({ speicher: (fake) => ({ lesen: async (repo, name) => { if (repo === '2026-sofie') throw new Error('GitHub weg'); return fake.lesen(repo, name); } }) });
-    const a = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
+    const r = await t.holen('/api/werkstatt/lehrende', MARKUS);
+    // Eine kaputte Mappe bricht nie die ganze Antwort ab.
+    expect(r.status).toBe(200);
+    const a = await r.json();
     expect(a.personen[2]).toStrictEqual({ kuerzel: 'sofie', zustand: 'fehler', grund: 'github' });
     expect(a.personen[1]).toMatchObject({ kuerzel: 'lea', zustand: 'bereit' });
   });
@@ -242,7 +245,10 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
   it('GitHub scheitert beim Verlauf: dort fehler, die anderen kommen', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const t = await aufbau({ speicher: (fake) => ({ verlauf: async (repo, name) => { if (repo === '2026-lea') throw new Error('GitHub weg'); return fake.verlauf(repo, name); } }) });
-    const a = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
+    const r = await t.holen('/api/werkstatt/lehrende', MARKUS);
+    // Eine kaputte Mappe bricht nie die ganze Antwort ab.
+    expect(r.status).toBe(200);
+    const a = await r.json();
     expect(a.personen[1]).toStrictEqual({ kuerzel: 'lea', zustand: 'fehler', grund: 'github' });
     expect(a.personen[2]).toMatchObject({ kuerzel: 'sofie', zustand: 'bereit' });
   });
@@ -257,7 +263,10 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
         verlauf: async (repo, name) => { gelesen.push(repo); return fake.verlauf(repo, name); },
       }),
     });
-    const a = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
+    const r = await t.holen('/api/werkstatt/lehrende', MARKUS);
+    // Eine kaputte Mappe bricht nie die ganze Antwort ab.
+    expect(r.status).toBe(200);
+    const a = await r.json();
     expect(a.personen[2]).toStrictEqual({ kuerzel: 'sofie', zustand: 'fehler', grund: 'zuordnung' });
     expect(gelesen).not.toContain('2026-sofie');
     expect(gelesen).toContain('2026-lea');
@@ -266,7 +275,10 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
   it('werkstatt.json aus einer anderen Kohorte: fehler', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const t = await aufbau({ speicher: (fake) => ({ werkstattJson: async (repo) => (repo === '2026-sofie' ? { kohorte: 'test', githubId: 1001 } : fake.werkstattJson(repo)) }) });
-    const a = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
+    const r = await t.holen('/api/werkstatt/lehrende', MARKUS);
+    // Eine kaputte Mappe bricht nie die ganze Antwort ab.
+    expect(r.status).toBe(200);
+    const a = await r.json();
     expect(a.personen[2]).toStrictEqual({ kuerzel: 'sofie', zustand: 'fehler', grund: 'zuordnung' });
   });
 
@@ -274,7 +286,10 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
     const t = await aufbau({ speicher: (fake) => ({ lesen: async (repo, name) => { if (name === 'brief') throw new DateiUnlesbar('mappe/brief.json'); return fake.lesen(repo, name); } }) });
     const alt = await t.fake.lesen('2026-sofie', 'interviews');
     await t.fake.speichern('2026-sofie', 'interviews', { 'mappe/interviews.json': JSON.stringify({ interviews: 'kaputt' }) }, alt.basisSha, AUTOR, 'x');
-    const a = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
+    const r = await t.holen('/api/werkstatt/lehrende', MARKUS);
+    // Eine kaputte Mappe bricht nie die ganze Antwort ab.
+    expect(r.status).toBe(200);
+    const a = await r.json();
     const [brief, , annahmen, , interviews] = SOFIE_(a).artefakte;
     expect(brief).toStrictEqual({ name: 'brief', stand: 'unlesbar', umfang: null, fehlt: [], leer: false, faelligZuTag: 2, commits: 1, mehr: false, zuletzt: '2026-10-21T22:30:00.000Z', markdown: null });
     expect(interviews).toMatchObject({ name: 'interviews', stand: 'unlesbar', umfang: null, markdown: null, commits: 2 });
