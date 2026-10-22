@@ -253,7 +253,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
       'Nach 30 min: alle in die Werkstatt, riskanteste markieren, Prüfliste, Red Team.',
       'Falle: Lösungs-Annahmen und „getan“ für bloß Gesagtes – herumgehen, nachfragen.',
     ],
-    ueberleitung: 'Nach der Übung: Welche Annahme ist bei euch das „schon vor der Ankunft entscheiden“?',
+    ueberleitung: 'Aus Miro in die Werkstatt: So füllt ihr die Map dort aus.',
     uebung: { dauer: '45 min (10 + 10 + 10 + 15)', form: 'allein, dann zu dritt' },
     miro: {
       frame: 'T1 · 3 · Annahmen-Map',
@@ -326,6 +326,20 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
         frage: 'Was, wenn wir uns bei der Einordnung nicht einig sind?',
         antwort: 'Genau dafür ist die Dreierrunde: schieben, kurz begründen, weiter. Relativ statt exakt (Torres S. 130); gibt es echten Streit, ist das ein Hinweis auf fehlenden Beleg.',
       },
+    ],
+  },
+
+  'werkstatt-ausfuellen': {
+    live: [
+      'Eine Zeile pro Sticky; IDs vergibt die Werkstatt.',
+      'Lage in der Matrix folgt aus Wichtig und Beleg.',
+      'Heute meist „noch keiner“ – Beleg-IDs erst nach den Interviews.',
+      'Riskanteste wählen: wird die Forschungsfrage im Leitfaden.',
+    ],
+    ueberleitung: 'Nach der Übung: Welche Annahme ist bei euch das „schon vor der Ankunft entscheiden“?',
+    fragen: [
+      { frage: 'Müssen wir alle Stickies aus Miro übertragen?', antwort: 'Alle, die ihr nach der Dreierrunde noch für Annahmen haltet. Die Werkstatt zeigt, ob alle vier Arten vertreten sind; fehlt eine, sucht ihr dort gezielt nach.' },
+      { frage: 'Was, wenn wir die Lage in der Matrix anders sehen?', antwort: 'Dann stimmt „Wichtig“ oder „Beleg“ nicht. Ändert den Wert, nicht die Position – die Matrix folgt den beiden Feldern.' },
     ],
   },
 
