@@ -1,21 +1,25 @@
 // Lehrenden-Ansicht (Spec §3.7): alle Mappen einer Kohorte nebeneinander. Gemountet unter /api/werkstatt/lehrende;
-// nur für Lehrende genau dieser Kohorte (laut aktueller Zugangsliste), nur lesend.
+// nur für Lehrende genau dieser Kohorte (laut aktueller Zugangsliste). Die Artefakte nur lesend; schreiben dürfen
+// Lehrende nur Feedback in mappe/feedback.json (NDU-35, POST /feedback), nie in ein Artefakt.
 // Wie zahlen.ts: Erst bestätigt werkstatt.json, dass das Repo der gelisteten Person gehört – vorher wird nichts gelesen.
 // Scheitert eine Mappe (GitHub) oder gehört sie jemand anderem, steht dort `fehler`; die anderen kommen trotzdem.
 // Die Matrix trägt nur Stand, Umfang, Verlauf und Lücken; den Inhalt holt der Leser erst beim Öffnen (GET /artefakt).
 // GitHub pro Mappe in der Matrix: werkstatt.json, alle fünf Artefakt-Dateien (Lücken wie verknuepfungen_pruefen im
-// Connector) und je Spalte der Kohorte eine Seite Commit-Liste (bei fünf Artefakten 11). Leser: werkstatt.json + 1 Datei.
+// Connector), feedback.json und je Spalte der Kohorte eine Seite Commit-Liste (bei fünf Artefakten 12).
+// Leser: werkstatt.json + Artefakt + feedback.json.
 import { Hono, type Context } from 'hono';
 import { ARTEFAKTE as KURS_ARTEFAKTE } from '../../../components/methoden.js';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { KOHORTEN, kohorte as kohorteNachId, werkstattArtefakte, type Kohorte } from '../../kohorten/index.js';
+import { feedbackSchreiben, feedbackZaehlen, type Feedback } from '../../feedback.js';
 import { bezugBestimmen, verlaufZaehlen } from '../../lehrende.js';
-import { ARTEFAKT_NAMEN, artefaktParsen, type ArtefaktName } from '../../schemas/index.js';
+import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName } from '../../schemas/index.js';
 import { artefaktStand, faelligBis, faelligZuTag, kurstagBestimmen } from '../../tag-stand.js';
 import { verknuepfungenPruefen, type MappeDaten } from '../../verknuepfungen.js';
-import type { LehrendenAnsicht, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../../vertrag.js';
+import type { FeedbackAntwort, LehrendenAnsicht, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../../vertrag.js';
 import { mitgliedschaften, repoName } from '../../zugang.js';
 import { fehler, json } from '../antwort.js';
+import { feedbackAendern, feedbackHolen } from '../feedback.js';
 import { mitSitzung, type SitzungEnv } from '../sitzung.js';
 import { DateiUnlesbar } from '../speicher-fehler.js';
 import type { Abhaengigkeiten } from '../typen.js';
@@ -34,6 +38,7 @@ const UNBEKANNT = 'Diese Person oder dieses Artefakt gibt es in der Kohorte nich
 const NICHT_LESBAR = 'Diese Mappe lässt sich gerade nicht lesen. Später neu laden.';
 const ZUORDNUNG = 'Das Repo passt nicht zur Zugangsliste. Zugangsliste prüfen.';
 const KEINE_MAPPE = 'Diese Person hat sich noch nicht angemeldet.';
+const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
 
 const nachKuerzel = <T extends { kuerzel: string }>(x: T, y: T) => (x.kuerzel < y.kuerzel ? -1 : x.kuerzel > y.kuerzel ? 1 : 0);
 
@@ -76,7 +81,17 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     return repo;
   }
 
-  function eintrag(name: ArtefaktName, daten: unknown | null | 'unlesbar', verlauf: { zeitpunkte: string[]; vollstaendig: boolean }, seit: string | null, kurstag: number): LehrendenArtefakt {
+  // Feedback nach bestem Bemühen: Scheitert es, fehlen nur die Zahlen (null), die Mappe kommt trotzdem.
+  async function feedbackOderNull(repo: string): Promise<Feedback | null> {
+    try {
+      return await feedbackHolen(abh.speicher, repo);
+    } catch (e) {
+      console.error('werkstatt: Lehrenden-Ansicht – Feedback nicht lesbar –', e instanceof Error ? `${e.name}: ${e.message}` : 'Fehler');
+      return null;
+    }
+  }
+
+  function eintrag(name: ArtefaktName, daten: unknown | null | 'unlesbar', verlauf: { zeitpunkte: string[]; vollstaendig: boolean }, seit: string | null, kurstag: number, fb: Feedback | null): LehrendenArtefakt {
     const zaehlung = verlaufZaehlen(verlauf.zeitpunkte, verlauf.vollstaendig, seit);
     const da = daten !== null && daten !== 'unlesbar';
     // artefaktStand ist je Artefakt typisiert; die Daten hat artefaktParsen für genau dieses geprüft.
@@ -90,6 +105,7 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       faelligZuTag: faelligZuTag(name),
       faellig: faelligBis(kurstag, [name]).length > 0,
       ...zaehlung,
+      feedback: fb ? feedbackZaehlen(fb.eintraege, name) : null,
     };
   }
 
@@ -99,12 +115,13 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       const repo = await eigenesRepo(k, s);
       if (!repo) return { kuerzel, zustand: 'keine-mappe' };
       // Alle fünf Artefakte wie verknuepfungen_pruefen im Connector; Verlauf nur für die Spalten der Kohorte.
-      const [daten, verlaeufe] = await Promise.all([
+      const [daten, verlaeufe, fb] = await Promise.all([
         Promise.all(ARTEFAKT_NAMEN.map(async (n) => [n, (await laden(repo, n)).daten] as const)),
         Promise.all(namen.map((n) => abh.speicher.verlauf(repo, n))),
+        feedbackOderNull(repo),
       ]);
       const m = Object.fromEntries(daten) as unknown as MappeDaten;
-      const artefakte = namen.map((n, i) => eintrag(n, m[n], verlaeufe[i], seit, kurstag));
+      const artefakte = namen.map((n, i) => eintrag(n, m[n], verlaeufe[i], seit, kurstag, fb));
       // ISO-Zeitpunkte aus derselben Quelle: als Text vergleichbar.
       const zuletzt = artefakte.map((a) => a.zuletzt).filter((z): z is string => z !== null).sort().at(-1) ?? null;
       const repoUrl = `https://github.com/${encodeURIComponent(k.org)}/${encodeURIComponent(repo)}`;
@@ -146,14 +163,14 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
 
   // Inhalt eines Artefakts für den Leser: dieselben Prüfungen (Lehrende der Kohorte, Person laut Zugangsliste,
   // werkstatt.json), dann genau eine Datei.
-  r.get('/artefakt', async (c) => {
+  // Gemeinsamer Anfang von Leser und Feedback: Lehrende der Kohorte, Person laut Zugangsliste, Artefakt der Kohorte,
+  // werkstatt.json bestätigt das Repo. Sonst die fertige Fehlerantwort.
+  async function personUndRepo(c: Context<SitzungEnv>, name: string): Promise<Response | { repo: string; n: ArtefaktName }> {
     const erlaubt = kohorteDerAnfrage(c);
     if (!erlaubt) return fehler(c, 403, 'nicht-freigeschaltet', NUR_LEHRENDE);
     const { k } = erlaubt;
-    const name = c.req.query('artefakt') ?? '';
     const person = (abh.umgebung.zugang[k.id]?.studierende ?? []).find((p) => p.kuerzel === c.req.query('person'));
     if (!person || !werkstattArtefakte(k).includes(name as ArtefaktName)) return fehler(c, 404, 'unbekannt', UNBEKANNT);
-    const n = name as ArtefaktName;
     let repo: string | null;
     try {
       repo = await eigenesRepo(k, person);
@@ -162,9 +179,17 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       return e instanceof FalscheZuordnung ? fehler(c, 409, 'konflikt', ZUORDNUNG) : fehler(c, 502, 'github-fehler', NICHT_LESBAR);
     }
     if (!repo) return fehler(c, 404, 'unbekannt', KEINE_MAPPE);
+    return { repo, n: name as ArtefaktName };
+  }
+
+  r.get('/artefakt', async (c) => {
+    const ziel = await personUndRepo(c, c.req.query('artefakt') ?? '');
+    if (ziel instanceof Response) return ziel;
+    const { repo, n } = ziel;
     let gelesen: Awaited<ReturnType<typeof laden>>;
+    let fb: Feedback | null;
     try {
-      gelesen = await laden(repo, n);
+      [gelesen, fb] = await Promise.all([laden(repo, n), feedbackOderNull(repo)]);
     } catch (e) {
       console.error('werkstatt: Lehrenden-Ansicht – Artefakt nicht lesbar –', e instanceof Error ? `${e.name}: ${e.message}` : 'Fehler');
       return fehler(c, 502, 'github-fehler', NICHT_LESBAR);
@@ -175,7 +200,36 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       stand: daten === null ? 'offen' : daten === 'unlesbar' ? 'unlesbar' : 'vorhanden',
       daten: daten === 'unlesbar' ? null : daten,
       roh,
+      feedback: fb ? fb.eintraege.filter((e) => e.artefakt === n) : null,
     };
+    return json(c, antwort);
+  });
+
+  // Feedback schreiben (NDU-35): dieselben Prüfungen wie der Leser, dann ein Commit nur an mappe/feedback.json.
+  // Autor*in im Eintrag und im Commit ist die angemeldete Lehrperson (GitHub-Login aus der Sitzung).
+  r.post('/feedback', async (c) => {
+    let anfrage: unknown;
+    try {
+      anfrage = await c.req.json();
+    } catch {
+      anfrage = null;
+    }
+    const a = istObjekt(anfrage) ? anfrage : {};
+    const ziel = await personUndRepo(c, typeof a.artefakt === 'string' ? a.artefakt : '');
+    if (ziel instanceof Response) return ziel;
+    if (!istObjekt(anfrage)) return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
+    const { repo, n } = ziel;
+    const s = c.get('sitzung');
+    const autor = { name: s.login, email: `${s.githubId}+${s.login}@users.noreply.github.com` };
+    const zeile = typeof a.zeilenId === 'string' && a.zeilenId !== '' ? ` (${a.zeilenId.slice(0, 20)})` : '';
+    const danach = await feedbackAendern(
+      abh.speicher,
+      repo,
+      (f) => feedbackSchreiben(f, { artefakt: n, zeilenId: a.zeilenId, text: a.text, autor: s.login, datum: new Date(abh.jetzt()).toISOString() }),
+      autor,
+      `Feedback von ${s.login}: ${ARTEFAKTE[n].titel}${zeile}`.replace(/[\p{Cc}\p{Cf}]/gu, ' '),
+    );
+    const antwort: FeedbackAntwort = { eintraege: danach.eintraege.filter((e) => e.artefakt === n) };
     return json(c, antwort);
   });
 

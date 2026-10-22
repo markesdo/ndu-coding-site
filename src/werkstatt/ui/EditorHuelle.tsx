@@ -9,6 +9,7 @@ import { METHODEN } from '../../components/methoden.js';
 import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldfehler } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
+import { StudierendenFeedback } from './Feedback.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
 import { darfSpeichern, huelle, ladefehlerHinweis, leererStand, mappeLaden, speicherfehlerHinweis, serverStandNachLaden, serverStandNachSpeichern, speichernErlaubt, versucheNach, statusText, type Ereignis, type HuellenZustand } from './huelle.js';
@@ -382,6 +383,9 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
                 <button type="button" className="wk-knopf" onClick={entwurfVerwerfen}>Entwurf verwerfen</button>
               </div>
             )}
+
+            {/* Feedback der Lehrenden (NDU-35): erst, wenn die eigene Mappe geladen ist; ohne Feedback nichts. */}
+            {daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && zustand !== 'ladefehler' && <StudierendenFeedback name={name} />}
 
             {daten !== null && zustand !== 'laden' && zustand !== 'abgemeldet' && zustand !== 'wird-eingerichtet' && zustand !== 'ladefehler' && (
               <div className="wk-inhalt">

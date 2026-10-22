@@ -31,7 +31,9 @@ const ms = (iso: string) => Date.parse(iso);
 const SOFIE_ = (a: { personen: { kuerzel: string; artefakte?: unknown[]; luecken?: unknown[] }[] }) => a.personen.find((p) => p.kuerzel === 'sofie')! as { artefakte: any[]; luecken: any[] };
 // Standard-Uhr 24.10.2026: der nächste Kurstag mit Termin ist Tag 3 (Tag 2 hat keinen).
 const KURSTAG = 3;
-const offen = (name: ArtefaktName) => ({ name, stand: 'offen', umfang: null, fehlt: [], leer: false, faelligZuTag: faelligZuTag(name), faellig: faelligZuTag(name) <= KURSTAG, commits: 0, mehr: false, zuletzt: null });
+// Noch kein Feedback (NDU-35): alle Zahlen 0.
+const OHNE_FEEDBACK = { offen: 0, erledigt: 0, neu: 0, antworten: 0 };
+const offen = (name: ArtefaktName) => ({ name, stand: 'offen', umfang: null, fehlt: [], leer: false, faelligZuTag: faelligZuTag(name), faellig: faelligZuTag(name) <= KURSTAG, commits: 0, mehr: false, zuletzt: null, feedback: OHNE_FEEDBACK });
 
 async function aufbau(opts: { jetzt?: string; speicher?: (fake: Speicher) => Partial<Speicher> } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: ZUGANG };
@@ -58,7 +60,7 @@ async function aufbau(opts: { jetzt?: string; speicher?: (fake: Speicher) => Par
   const speicher: Speicher = { ...fake, ...(opts.speicher?.(fake) ?? {}) };
   const app = appErstellen(lokaleAbhaengigkeiten({ umgebung, speicher, jetzt: () => uhr.ms }));
   async function holen(pfad: string, s?: Omit<Sitzung, 'exp'>, init: RequestInit = {}) {
-    const headers: Record<string, string> = {};
+    const headers: Record<string, string> = { ...((init.headers as Record<string, string> | undefined) ?? {}) };
     if (s) headers.Cookie = `${COOKIE_WERKSTATT}=${await sitzungErstellen({ ...s, exp: Math.floor(uhr.ms / 1000) + 3600 }, umgebung.sessionSecret)}`;
     return app.request(`${BASIS}${pfad}`, { ...init, headers });
   }
@@ -119,12 +121,16 @@ describe('GET /api/werkstatt/lehrende – wer darf', () => {
     expect(test.personen.map((p: { kuerzel: string }) => p.kuerzel)).toStrictEqual(['tom']);
   });
 
-  it('nur lesend: kein Commit, POST gibt es nicht', async () => {
+  it('nur lesend: kein Commit, POST auf die Matrix gibt es nicht (ohne Origin schon vorher 403 csrf)', async () => {
     const t = await aufbau();
     const vorher = t.fake.commits('2026-sofie').length;
     await t.holen('/api/werkstatt/lehrende', MARKUS);
+    await t.holen('/api/werkstatt/lehrende/artefakt?kohorte=2026&person=sofie&artefakt=brief', MARKUS);
     expect(t.fake.commits('2026-sofie')).toHaveLength(vorher);
-    expect((await t.holen('/api/werkstatt/lehrende', MARKUS, { method: 'POST' })).status).toBe(404);
+    expect((await t.holen('/api/werkstatt/lehrende', MARKUS, { method: 'POST' })).status).toBe(403);
+    const mitOrigin = { method: 'POST', headers: { Origin: BASIS, 'Content-Type': 'application/json' }, body: '{}' };
+    expect((await t.holen('/api/werkstatt/lehrende', MARKUS, mitOrigin)).status).toBe(404);
+    expect((await t.holen('/api/werkstatt/lehrende/artefakt', MARKUS, mitOrigin)).status).toBe(404);
   });
 });
 
@@ -147,7 +153,7 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
       const st = artefaktStand(name, daten[name] as never);
       return {
         name, stand: 'vorhanden', umfang: st.umfang, fehlt: st.fehlt, leer: st.stand === 'leer', faelligZuTag: faelligZuTag(name), faellig: faelligZuTag(name) <= KURSTAG,
-        commits, mehr: false, zuletzt,
+        commits, mehr: false, zuletzt, feedback: OHNE_FEEDBACK,
       };
     };
     const luecken = verknuepfungenPruefen({ brief: daten.brief, entscheidungen: null, leitfaden: null, annahmen: daten.annahmen, interviews: daten.interviews }).befunde;
@@ -297,7 +303,7 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
     expect(r.status).toBe(200);
     const a = await r.json();
     const [brief, , annahmen, , interviews] = SOFIE_(a).artefakte;
-    expect(brief).toStrictEqual({ name: 'brief', stand: 'unlesbar', umfang: null, fehlt: [], leer: false, faelligZuTag: 2, faellig: true, commits: 1, mehr: false, zuletzt: '2026-10-21T22:30:00.000Z' });
+    expect(brief).toStrictEqual({ name: 'brief', stand: 'unlesbar', umfang: null, fehlt: [], leer: false, faelligZuTag: 2, faellig: true, commits: 1, mehr: false, zuletzt: '2026-10-21T22:30:00.000Z', feedback: OHNE_FEEDBACK });
     expect(interviews).toMatchObject({ name: 'interviews', stand: 'unlesbar', umfang: null, commits: 2 });
     expect(annahmen).toMatchObject({ stand: 'vorhanden' });
   });
@@ -312,9 +318,9 @@ describe('GET /api/werkstatt/lehrende/artefakt – Inhalt für den Leser', () =>
     expect(r.status).toBe(200);
     expect(r.headers.get('cache-control')).toBe('no-store');
     const a = await r.json();
-    expect(a).toStrictEqual({ name: 'interviews', stand: 'vorhanden', daten: parsen('interviews', interviewsBeispiel), roh: null });
+    expect(a).toStrictEqual({ name: 'interviews', stand: 'vorhanden', daten: parsen('interviews', interviewsBeispiel), roh: null, feedback: [] });
     expect(a.daten.interviews[0].pseudonym).toBe(interviewsBeispiel.interviews[0].pseudonym);
-    expect(await (await t.holen(pfad('sofie', 'leitfaden'), MARKUS)).json()).toStrictEqual({ name: 'leitfaden', stand: 'offen', daten: null, roh: null });
+    expect(await (await t.holen(pfad('sofie', 'leitfaden'), MARKUS)).json()).toStrictEqual({ name: 'leitfaden', stand: 'offen', daten: null, roh: null, feedback: [] });
   });
 
   it('Studierende 403 (auch für die eigene Mappe), Lehrende einer anderen Kohorte 403, ohne Anmeldung 401', async () => {
@@ -350,8 +356,8 @@ describe('GET /api/werkstatt/lehrende/artefakt – Inhalt für den Leser', () =>
     const alt = await t.fake.lesen('2026-sofie', 'interviews');
     await t.fake.speichern('2026-sofie', 'interviews', { 'mappe/interviews.json': JSON.stringify({ interviews: 'kaputt' }) }, alt.basisSha, AUTOR, 'x');
     const iv = await (await t.holen(pfad('sofie', 'interviews'), MARKUS)).json();
-    expect(iv).toStrictEqual({ name: 'interviews', stand: 'unlesbar', daten: null, roh: JSON.stringify({ interviews: 'kaputt' }, null, 2) });
-    expect(await (await t.holen(pfad('sofie', 'brief'), MARKUS)).json()).toStrictEqual({ name: 'brief', stand: 'unlesbar', daten: null, roh: null });
+    expect(iv).toStrictEqual({ name: 'interviews', stand: 'unlesbar', daten: null, roh: JSON.stringify({ interviews: 'kaputt' }, null, 2), feedback: [] });
+    expect(await (await t.holen(pfad('sofie', 'brief'), MARKUS)).json()).toStrictEqual({ name: 'brief', stand: 'unlesbar', daten: null, roh: null, feedback: [] });
   });
 
   it('GitHub scheitert: 502', async () => {

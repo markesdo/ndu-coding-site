@@ -3,12 +3,14 @@
 import { Hono, type Context } from 'hono';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { MAPPE_LEHRENDE, MAPPE_PFAD } from '../../../lib/nav-rolle.js';
+import { antworten, erledigtSetzen, gesehenSetzen } from '../../feedback.js';
 import { kohorte } from '../../kohorten/index.js';
 import { dateienFuerSpeichern, readmeRendern } from '../../render/index.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName, type Feldfehler } from '../../schemas/index.js';
-import type { ArtefaktAntwort, MappeStand, SpeichernAntwort } from '../../vertrag.js';
+import type { ArtefaktAntwort, FeedbackAntwort, MappeStand, SpeichernAntwort } from '../../vertrag.js';
 import { repoName } from '../../zugang.js';
 import { ApiAusnahme, fehler, json } from '../antwort.js';
+import { feedbackAendern, feedbackHolen } from '../feedback.js';
 import { GithubAusnahme } from '../github/app-token.js';
 import { mitSitzung, type SitzungEnv } from '../sitzung.js';
 import { DateiUnlesbar, internerFehler, wirdEingerichtet } from '../speicher-fehler.js';
@@ -155,6 +157,59 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       throw e instanceof DateiUnlesbar ? unlesbar(name, e) : e;
     }
   }
+
+  // Feedback (NDU-35): vor /:artefakt, sonst wäre „feedback“ ein unbekanntes Artefakt. Nur die eigene Mappe (eigenesRepo
+  // prüft werkstatt.json), nur Studierende. Lehrende schreiben über /api/werkstatt/lehrende/feedback.
+  r.get('/feedback', async (c) => {
+    if (c.get('mitgliedschaft').rolle !== 'studierende') return fehler(c, 403, 'nicht-freigeschaltet', NUR_STUDIERENDE);
+    const repo = await eigenesRepo(c, false);
+    const antwort: FeedbackAntwort = { eintraege: (await feedbackHolen(abh.speicher, repo)).eintraege };
+    return json(c, antwort);
+  });
+
+  // Genau eine Änderung je Anfrage: antworten, erledigt setzen, gesehen. Feedback der Lehrenden ändert hier nur die
+  // Felder erledigt und gesehen (feedback.ts); einen Eintrag von „lehrende“ kann diese Route nie anlegen.
+  r.post('/feedback', async (c) => {
+    const m = c.get('mitgliedschaft');
+    if (m.rolle !== 'studierende' || !m.kuerzel) return fehler(c, 403, 'nicht-freigeschaltet', NUR_STUDIERENDE);
+    const repo = await eigenesRepo(c, false);
+    let anfrage: unknown;
+    try {
+      anfrage = await c.req.json();
+    } catch {
+      return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
+    }
+    if (!istObjekt(anfrage)) return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
+    const a = anfrage;
+    const s = c.get('sitzung');
+    const autor = { name: s.login, email: `${s.githubId}+${s.login}@users.noreply.github.com` };
+    const kuerzel = m.kuerzel;
+    const datum = new Date(abh.jetzt()).toISOString();
+    let aenderung: Parameters<typeof feedbackAendern>[2];
+    let nachricht: string;
+    switch (a.aktion) {
+      case 'antworten':
+        aenderung = (f) => antworten(f, { antwortAuf: a.antwortAuf, text: a.text, autor: kuerzel, datum });
+        nachricht = `Feedback: Antwort auf ${typeof a.antwortAuf === 'string' ? a.antwortAuf : '?'}`;
+        break;
+      case 'erledigt':
+        aenderung = (f) => erledigtSetzen(f, a.id, a.erledigt);
+        nachricht = `Feedback: ${typeof a.id === 'string' ? a.id : '?'} ${a.erledigt === false ? 'wieder offen' : 'erledigt'}`;
+        break;
+      case 'gesehen': {
+        const name = typeof a.artefakt === 'string' ? a.artefakt : '';
+        if (!istArtefaktName(name)) return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
+        aenderung = (f) => gesehenSetzen(f, name);
+        nachricht = `Feedback: ${ARTEFAKTE[name].titel} gelesen`;
+        break;
+      }
+      default:
+        return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
+    }
+    const danach = await feedbackAendern(abh.speicher, repo, aenderung, autor, kurzeNachricht(nachricht));
+    const antwort: FeedbackAntwort = { eintraege: danach.eintraege };
+    return json(c, antwort);
+  });
 
   r.get('/:artefakt', async (c) => {
     const name = artefaktName(c);

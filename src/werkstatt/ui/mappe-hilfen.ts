@@ -67,7 +67,7 @@ export async function ichMitMenue(holen: () => Promise<Ich | null>, dok: Pick<Do
 /** Überschrift und Lead von /innolab/mappe für Lehrende; Studierende behalten den statischen Text der Seite. */
 export const LEHRENDEN_SEITE = {
   titel: MAPPE_LEHRENDE,
-  lead: 'Was die Studierenden in ihren Mappen gespeichert haben: Stand, Änderungen seit dem letzten Kurstag, Lücken. Nur lesen.',
+  lead: 'Was die Studierenden in ihren Mappen gespeichert haben: Stand, Änderungen seit dem letzten Kurstag, Lücken und Feedback. Die Mappen selbst nur lesen.',
 } as const;
 
 /** Fenstertitel für Lehrende: der Teil vor „ · “ (Seitentitel aus Layout.astro) wird ersetzt, der Kurs bleibt. */

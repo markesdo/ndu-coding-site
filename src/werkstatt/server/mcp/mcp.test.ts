@@ -23,6 +23,8 @@ import { MAX_ANFRAGE_BYTES } from './server';
 import type { Cache } from '../typen';
 import { MCP_WERKZEUGE } from '../../vertrag';
 import { BEFUND_ARTEN } from '../../verknuepfungen';
+import { antworten, erledigtSetzen, feedbackSchreiben } from '../../feedback';
+import { feedbackAendern } from '../feedback';
 
 const BASIS = 'http://localhost:4321';
 const MCP = `${BASIS}/api/werkstatt/mcp`;
@@ -271,7 +273,7 @@ describe('Werkzeuge', () => {
     const pruefen = tools.find((t) => t.name === 'artefakt_pruefen')!;
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
     // Kein markdown: das Artefakt steht nur im Text des Ergebnisses.
-    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'gesperrt', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
+    expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'feedback', 'gesperrt', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
     // Die Arten der Befunde kommen aus verknuepfungen.ts, nicht aus einer zweiten Liste.
     const verkn = tools.find((t) => t.name === MCP_WERKZEUGE.verknuepfungenPruefen)!;
     const befund = (verkn.outputSchema?.properties as { befunde: { items: { properties: { art: { enum: string[] } } } } }).befunde;
@@ -1193,5 +1195,102 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
     expect(m.isError).toBeFalsy();
     expect(m.structuredContent).not.toHaveProperty('pruefliste');
     expect(fehler).toHaveBeenCalled();
+  });
+});
+
+// NDU-35: Feedback der Lehrenden kommt mit artefakt_lesen und artefakt_pruefen mit – nur lesend, nie als Prüfbefund.
+describe('Feedback der Lehrenden im Connector', () => {
+  const D = '2026-10-23T09:00:00.000Z';
+  async function mitFeedback(h: Aufbau, repo = 'test-sofie') {
+    await feedbackAendern(h.speicher, repo, (f) => {
+      const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A2', text: 'Woher stammt die Zahl?\n# Keine Überschrift', autor: 'markus', datum: D });
+      const b = feedbackSchreiben(a, { artefakt: 'brief', text: 'Brief: nur hier.', autor: 'markus', datum: D });
+      return erledigtSetzen(antworten(b, { antwortAuf: 'FB1', text: 'Aus der Kassa.', autor: 'sofie', datum: D }), 'FB2', true);
+    }, AUTOR, 'Feedback');
+  }
+
+  it('artefakt_pruefen: eigener Abschnitt mit Zeile, Stand und Antwort; Anleitung: eingehen, nie als Befund; structuredContent.feedback', async () => {
+    const h = await aufbau();
+    await mitFeedback(h);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
+    expect(r.isError).toBeFalsy();
+    const t = text(r);
+    // Zwischen Artefakt (und Vorarbeit) und der Anleitung; der Text der Lehrperson ist ein Zitat und beginnt keine Überschrift.
+    expect(t.split('\n').filter((z) => /^#{1,2} /.test(z))).toStrictEqual(['# Prüfung: Annahmen-Map', '## Prüfpunkte (Annahmen-Map)', '## Artefakt', '## Vorarbeit zum Abgleich: Produkt-Brief (brief)', '## Feedback der Lehrenden (kein Prüfbefund)', '## So antwortest du']);
+    expect(t).toContain('- FB1: markus zu A2, 23.10.2026, offen\n  > Woher stammt die Zahl?\n  > # Keine Überschrift\n  - Antwort von sofie, 23.10.2026:\n    > Aus der Kassa.');
+    expect(t).not.toContain('Brief: nur hier.');
+    const sc = r.structuredContent as { anleitung: string; feedback: unknown };
+    expect(sc.anleitung).toMatch(/nie als eigenen Befund/);
+    expect(sc.anleitung).toMatch(/schreib selbst kein Feedback/);
+    expect(sc.feedback).toStrictEqual([{
+      id: 'FB1', zeile: 'A2', autor: 'markus', datum: '23.10.2026', text: 'Woher stammt die Zahl?\n# Keine Überschrift', erledigt: false,
+      antworten: [{ autor: 'sofie', datum: '23.10.2026', text: 'Aus der Kassa.' }],
+    }]);
+  });
+
+  it('artefakt_lesen: Abschnitt am Ende des Textes, structuredContent bleiben die Daten des Artefakts', async () => {
+    const h = await aufbau();
+    await mitFeedback(h);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'brief' } });
+    // Sofie hat keinen Brief, aber Feedback dazu: Hinweis „noch nicht ausgefüllt“ und das Feedback, erledigt.
+    expect(text(r)).toContain('noch nicht ausgefüllt');
+    expect(text(r)).toContain('- FB2: markus zum ganzen Artefakt, 23.10.2026, erledigt\n  > Brief: nur hier.');
+    const a = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'annahmen' } });
+    expect(a.structuredContent).toStrictEqual(mitText(TEXT_A));
+    expect(text(a)).toContain('## Feedback der Lehrenden (kein Prüfbefund)');
+  });
+
+  it('ohne Feedback: kein Abschnitt, kein feedback-Schlüssel, Anleitung ohne den Satz', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
+    expect(text(r)).not.toContain('Feedback der Lehrenden');
+    expect(Object.keys(r.structuredContent ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
+    expect((r.structuredContent as { anleitung: string }).anleitung).not.toMatch(/Feedback/);
+  });
+
+  it('nur das eigene: Feedback in Jonas’ Mappe erreicht Sofies Token nicht', async () => {
+    const h = await aufbau();
+    await mitFeedback(h, 'test-jonas');
+    const c = await client(h, await accessToken(h, 1001));
+    for (const name of [MCP_WERKZEUGE.artefaktPruefen, MCP_WERKZEUGE.artefaktLesen]) {
+      const r = await c.callTool({ name, arguments: { artefakt: 'annahmen' } });
+      expect(text(r), name).not.toContain('Woher stammt die Zahl?');
+    }
+  });
+
+  it('nur lesend: Lesen schreibt nichts (auch nicht „gesehen“); es gibt kein Werkzeug zum Schreiben', async () => {
+    const h = await aufbau();
+    await mitFeedback(h);
+    const vorher = await h.speicher.feedbackLesen('test-sofie');
+    const commits = h.speicher.commits('test-sofie').length;
+    const c = await client(h, await accessToken(h));
+    await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
+    await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'annahmen' } });
+    expect(h.speicher.commits('test-sofie')).toHaveLength(commits);
+    expect(await h.speicher.feedbackLesen('test-sofie')).toStrictEqual(vorher);
+    const { tools } = await c.listTools();
+    expect(tools.some((t) => /feedback/i.test(t.name))).toBe(false);
+  });
+
+  it('unlesbares Feedback: das Werkzeug läuft, ein Satz statt des Feedbacks', async () => {
+    const h = await aufbau();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await h.speicher.feedbackAendern('test-sofie', () => '{kaputt', AUTOR, 'x');
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
+    expect(r.isError).toBeFalsy();
+    expect(text(r)).toContain('Das Feedback der Lehrenden ließ sich gerade nicht lesen.');
+    expect(r.structuredContent).not.toHaveProperty('feedback');
+  });
+
+  it('Server-Anweisung: auf Feedback eingehen, nie als Prüfbefund, nie selbst schreiben', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    const anweisung = c.getInstructions() ?? '';
+    expect(anweisung).toContain(`${MCP_WERKZEUGE.artefaktLesen} und ${MCP_WERKZEUGE.artefaktPruefen} liefern das Feedback der Lehrenden`);
+    expect(anweisung).toMatch(/nie als eigenen Prüfbefund aus und schreib selbst nie Feedback/);
   });
 });

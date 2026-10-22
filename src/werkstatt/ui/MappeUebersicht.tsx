@@ -1,14 +1,16 @@
 // /innolab/mappe: alle Artefakte der Person mit Stand (vorhanden/offen) und „Bearbeiten“, Rücksprünge der Anmeldung
 // (?fehler=…), Abmelden. Lehrende sehen stattdessen alle Mappen ihrer Kohorte (LehrendenAnsicht, nur lesend).
-import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, RefreshCw } from 'lucide-react';
+import { CircleCheck, CircleDashed, ExternalLink, LogIn, LogOut, MessageSquare, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AUFGEDECKT_MS, aufgedecktHolen } from '../../lib/aufgedeckt.js';
 import { abfrageKette } from '../../lib/kette.js';
 import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
 import { kohorte } from '../kohorten/index.js';
+import type { FeedbackEintrag } from '../feedback.js';
 import type { Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
+import { mappeFeedback } from './feedback-hilfen.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
 import { LEITFADEN_LINK, LEITFADEN_SPAETER, LOGIN_HREF, adresseOhneFehler, lehrendenSeiteSetzen, anmeldeFehler, beimOeffnenLaden, ichMitMenue, leitfadenAbstand, leitfadenFrei, mappeZeilen, repoHinweis, rueckkehrBeobachten } from './mappe-hilfen.js';
 import '../../styles/werkstatt.css';
@@ -46,6 +48,13 @@ export default function MappeUebersicht() {
   const [leitfadenOffen, setLeitfadenOffen] = useState(frei);
   const liste = useRef<HTMLUListElement>(null);
   const lauf = useRef(0);
+  // Feedback der Lehrenden (NDU-35) je Zeile; null = (noch) nicht geladen – dann steht einfach nichts da.
+  const [feedback, setFeedback] = useState<FeedbackEintrag[] | null>(null);
+
+  // Nach bestem Bemühen und neben der Mappe her: scheitert es, fehlt nur der Hinweis.
+  function feedbackLaden(): void {
+    api.feedback().then((r) => setFeedback(r.eintraege), () => {});
+  }
 
   // Angemeldet und geladen: eine alte Meldung aus ?fehler gilt nicht mehr, auch nicht nach dem Neuladen der Seite.
   function meldungErledigt(): void {
@@ -68,6 +77,7 @@ export default function MappeUebersicht() {
       if (mein !== lauf.current) return;
       setVersuche(0);
       setZustand({ typ: 'bereit', ich, stand });
+      feedbackLaden();
       meldungErledigt();
     } catch (e) {
       if (mein !== lauf.current) return;
@@ -158,6 +168,7 @@ export default function MappeUebersicht() {
   // Nur der Stand der Mappe; die Person (ich) bleibt. Scheitert es, übernimmt das volle Laden die Fehleranzeige.
   async function standNeu(): Promise<void> {
     const mein = ++lauf.current;
+    feedbackLaden();
     try {
       const stand = await api.mappe();
       if (mein !== lauf.current) return;
@@ -246,6 +257,15 @@ export default function MappeUebersicht() {
                         {z.vorhanden ? <CircleCheck size={16} aria-hidden="true" /> : <CircleDashed size={16} aria-hidden="true" />}
                         {z.vorhanden ? 'vorhanden' : 'offen'}
                       </span>
+                      {(() => {
+                        const fb = feedback && mappeFeedback(feedback, z.name);
+                        return fb && (
+                          <span className="mappe-feedback" data-werkstatt>
+                            <MessageSquare size={16} aria-hidden="true" /> {fb.text}
+                            {fb.neu > 0 && <span className="fb-neu">{fb.neu} neu</span>}
+                          </span>
+                        );
+                      })()}
                     </div>
                     {z.name === 'leitfaden' && !leitfadenOffen
                       ? <span className="wk-hilfe">{LEITFADEN_SPAETER} <a href={LEITFADEN_LINK}>Zur Interview-Seite</a></span>

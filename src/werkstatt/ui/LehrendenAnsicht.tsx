@@ -1,15 +1,19 @@
-// Lehrenden-Ansicht auf /innolab/mappe (Spec §3.7): Matrix Person × Artefakt, nur lesend. Eine Anfrage holt alles
+// Lehrenden-Ansicht auf /innolab/mappe (Spec §3.7): Matrix Person × Artefakt. Die Mappen nur lesend; im Leser schreiben
+// Lehrende Feedback (NDU-35, Feedback.tsx), nie ins Artefakt. Eine Anfrage holt alles
 // (GET /api/werkstatt/lehrende); der Leser zeigt nur, was schon geladen ist, mit der Vorschau des Editors. Kein Abfragen im Takt (GitHub-Kontingent):
 // Neu laden per Knopf, still beim Zurückkommen in den Tab, wenn die Daten älter als zwei Minuten sind.
 // Beamer: data-werkstatt blendet alles aus (beamer.css); der Leser schließt sich beim Wechsel in den Beamer.
 import {
-  CalendarClock, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleCheck, CircleDashed, CloudOff, ExternalLink, FileWarning, Link2Off, PencilLine, RefreshCw, UserRound, X,
+  CalendarClock, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleCheck, CircleDashed, CloudOff, ExternalLink, FileWarning, Link2Off, MessageSquare, PencilLine, RefreshCw, UserRound, X,
 } from 'lucide-react';
 import { Component, Fragment, useCallback, useEffect, useRef, useState, type ComponentType, type KeyboardEvent, type ReactNode } from 'react';
+import { feedbackZaehlen, type FeedbackEintrag } from '../feedback.js';
 import { ARTEFAKTE, type ArtefaktName } from '../schemas/index.js';
 import type { LehrendenAnsicht as Ansicht, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { VORSCHAUEN } from './editoren/vorschauen.js';
+import { LehrendenFeedback } from './Feedback.js';
+import { zellenFeedback } from './feedback-hilfen.js';
 import {
   STILL_NEU_AB_MS, adresseMitLeser, alleGithubFehler, dateiVerlaufUrl, kurstagText, leserAusAdresse, leserKopf, lueckenJeArtefakt, nachbar, personText,
   spaltenHinweis, standText, tagText, zelle, zellenLabel, zuerstAnsehen, type BereiteMappe, type Leser, type Zelle, type ZellenArt,
@@ -24,7 +28,7 @@ const TEXT = {
   alleGithub: 'GitHub antwortet gerade nicht. In ein paar Minuten neu laden.',
   ohneBezug: 'Noch kein Kurstag vorbei – gezählt wird alles.',
   tagWeg: 'Diesen Kurstag gibt es nicht mehr; die Änderungen zählen wieder seit dem letzten Kurstag.',
-  nurLesen: 'Nur lesen: Ändern können die Studierenden ihre Mappe nur selbst.',
+  nurLesen: 'Die Mappen ändern nur die Studierenden selbst. Im Leser kommt Feedback dazu, nie etwas in die Artefakte.',
   inhaltFehlt: 'Der Inhalt lässt sich gerade nicht laden. Später neu laden.',
   inhaltLaden: 'Lese den Inhalt …',
 } as const;
@@ -53,13 +57,14 @@ function Vorschau({ name, daten }: { name: ArtefaktName; daten: unknown }) {
   return <V daten={daten} />;
 }
 
-function ZellenInhalt({ z }: { z: Zelle }) {
+function ZellenInhalt({ z, feedback }: { z: Zelle; feedback: string | null }) {
   const Icon = ICON[z.art];
   return (
     <>
       <span className="lv-stand"><Icon size={16} aria-hidden="true" /> {z.wort}</span>
       {z.umfang && <span className="lv-umfang">{z.umfang}</span>}
       {z.geaendert && <span className="lv-geaendert"><PencilLine size={14} aria-hidden="true" /> {z.geaendert}</span>}
+      {feedback && <span className="lv-feedback"><MessageSquare size={14} aria-hidden="true" /> {feedback}</span>}
     </>
   );
 }
@@ -218,6 +223,17 @@ export default function LehrendenAnsicht() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offenerSchluessel, geladen]);
 
+  // Nach dem Schreiben: Leser und Zelle zeigen den neuen Stand, ohne die ganze Matrix neu zu laden (GitHub-Kontingent).
+  function feedbackGeschrieben(schluessel: string, person: string, name: ArtefaktName, eintraege: FeedbackEintrag[]) {
+    setInhalt((i) => (i && i.schluessel === schluessel && i.zustand === 'bereit' ? { ...i, inhalt: { ...i.inhalt, feedback: eintraege } } : i));
+    setAnsicht((a) => a && {
+      ...a,
+      personen: a.personen.map((p) => (p.kuerzel === person && p.zustand === 'bereit'
+        ? { ...p, artefakte: p.artefakte.map((x) => (x.name === name ? { ...x, feedback: feedbackZaehlen(eintraege, name) } : x)) }
+        : p)),
+    });
+  }
+
   function oeffnen(person: string, artefakt: ArtefaktName) {
     setLeser({ person, artefakt });
   }
@@ -334,10 +350,11 @@ export default function LehrendenAnsicht() {
                         ? spalten.map((s) => {
                           const a = p.artefakte.find((x) => x.name === s.name)!;
                           const z = zelle(a, ansicht.bezug);
+                          const fb = zellenFeedback(a.feedback);
                           return (
                             <td key={s.name} className={`lv-zelle lv-${z.art}`}>
-                              <button type="button" className="lv-zelle-knopf" aria-label={zellenLabel(p.kuerzel, s.name, z)} onClick={() => oeffnen(p.kuerzel, s.name)}>
-                                <ZellenInhalt z={z} />
+                              <button type="button" className="lv-zelle-knopf" aria-label={zellenLabel(p.kuerzel, s.name, z, fb)} onClick={() => oeffnen(p.kuerzel, s.name)}>
+                                <ZellenInhalt z={z} feedback={fb} />
                               </button>
                             </td>
                           );
@@ -378,11 +395,12 @@ export default function LehrendenAnsicht() {
                       {spalten.map((s) => {
                         const a = p.artefakte.find((x) => x.name === s.name)!;
                         const z = zelle(a, ansicht.bezug);
+                        const fb = zellenFeedback(a.feedback);
                         return (
                           <li key={s.name} className={`lv-zelle lv-${z.art}`}>
-                            <button type="button" className="lv-zelle-knopf" aria-label={zellenLabel(p.kuerzel, s.name, z)} onClick={() => oeffnen(p.kuerzel, s.name)}>
+                            <button type="button" className="lv-zelle-knopf" aria-label={zellenLabel(p.kuerzel, s.name, z, fb)} onClick={() => oeffnen(p.kuerzel, s.name)}>
                               <span className="lv-karte-titel">{kurztitel(s.name)} <span className="lv-faellig">{spaltenHinweis(s)}</span></span>
-                              <ZellenInhalt z={z} />
+                              <ZellenInhalt z={z} feedback={fb} />
                             </button>
                           </li>
                         );
@@ -408,6 +426,7 @@ export default function LehrendenAnsicht() {
           <LeserInhalt
             ansicht={ansicht} p={leserMappe} a={leserArtefakt} wechseln={setLeser} schliessen={() => dialog.current?.close()}
             inhalt={inhalt && inhalt.schluessel === offenerSchluessel ? inhalt : null}
+            feedbackGeschrieben={(eintraege) => offenerSchluessel && feedbackGeschrieben(offenerSchluessel, leserMappe.kuerzel, leserArtefakt.name, eintraege)}
           />
         )}
       </dialog>
@@ -415,8 +434,9 @@ export default function LehrendenAnsicht() {
   );
 }
 
-function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt }: {
+function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt, feedbackGeschrieben }: {
   ansicht: Ansicht; p: BereiteMappe; a: LehrendenArtefakt; wechseln: (l: Leser) => void; schliessen: () => void; inhalt: Inhalt | null;
+  feedbackGeschrieben: (eintraege: FeedbackEintrag[]) => void;
 }) {
   const zurueck = nachbar(ansicht.personen, p.kuerzel, -1);
   const weiter = nachbar(ansicht.personen, p.kuerzel, 1);
@@ -466,7 +486,15 @@ function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt }: {
         </p>
         {(!inhalt || inhalt.zustand === 'laden') && <p className="wk-hilfe" role="status">{TEXT.inhaltLaden}</p>}
         {inhalt?.zustand === 'fehler' && <p className="wk-hinweis" role="alert"><CloudOff size={16} aria-hidden="true" /> {inhalt.text}</p>}
-        {inhalt?.zustand === 'bereit' && <InhaltAnzeige i={inhalt.inhalt} schluessel={inhalt.schluessel} />}
+        {inhalt?.zustand === 'bereit' && (
+          <>
+            <InhaltAnzeige i={inhalt.inhalt} schluessel={inhalt.schluessel} />
+            <LehrendenFeedback
+              key={inhalt.schluessel} kohorte={ansicht.kohorte} person={p.kuerzel} name={a.name} daten={inhalt.inhalt.daten}
+              eintraege={inhalt.inhalt.feedback} geschrieben={feedbackGeschrieben}
+            />
+          </>
+        )}
       </div>
     </div>
   );

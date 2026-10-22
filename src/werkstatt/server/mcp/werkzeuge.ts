@@ -21,6 +21,7 @@ import type { TokenClaims } from '../oauth/routen.js';
 import { mitgliedschaftFinden } from '../sitzung.js';
 import { DateiUnlesbar } from '../speicher-fehler.js';
 import type { Abhaengigkeiten } from '../typen.js';
+import { FEEDBACK_ANLEITUNG, FEEDBACK_AUSGABE, feedbackAusgabe, feedbackFuerClaude, feedbackText } from './feedback.js';
 
 export interface WerkzeugKontext {
   abh: Abhaengigkeiten;
@@ -61,7 +62,7 @@ const UEBERSICHT = {
 
 const LESEN_WERKZEUG = {
   title: 'Artefakt lesen',
-  description: `Liest ein Artefakt aus der eigenen Werkstatt-Mappe der angemeldeten Person: als Markdown und als strukturierte Daten. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Formuliere daraus keinen neuen Artefakttext; ändern kann die Person nur selbst in der Werkstatt. Nur lesen.`,
+  description: `Liest ein Artefakt aus der eigenen Werkstatt-Mappe der angemeldeten Person: als Markdown und als strukturierte Daten. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Formuliere daraus keinen neuen Artefakttext; ändern kann die Person nur selbst in der Werkstatt. Hat eine Lehrperson Feedback dazu geschrieben, steht es am Ende unter „Feedback der Lehrenden“ (kein Prüfbefund; du schreibst selbst keins). Nur lesen.`,
   inputSchema: ARTEFAKT_EINGABE,
   annotations: LESEN,
 };
@@ -75,7 +76,7 @@ const METHODE = {
 
 const PRUEFEN = {
   title: 'Artefakt prüfen',
-  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Nur lesen.`,
+  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Nur lesen.`,
   inputSchema: {
     ...ARTEFAKT_EINGABE,
     pruefpunkt: z
@@ -97,6 +98,7 @@ const PRUEFEN = {
       .array(z.object({ artefakt: ARTEFAKT_ENUM, titel: z.string(), vorhanden: z.boolean() }))
       .describe('Artefakte, die zum Abgleich mitgeliefert werden (im Text unter „Vorarbeit zum Abgleich“).'),
     anleitung: z.string().describe('So antwortest du auf diese Prüfung.'),
+    feedback: FEEDBACK_AUSGABE.optional(),
   },
   annotations: LESEN,
 };
@@ -157,6 +159,8 @@ interface PruefLage {
   // Vorarbeit wurde mitgeliefert / ein Teil davon fehlt oder ist unlesbar.
   vorarbeit: boolean;
   vorarbeitFehlt: boolean;
+  // Es gibt Feedback der Lehrenden zu diesem Artefakt (NDU-35).
+  feedback: boolean;
 }
 
 // So sehen die IDs der Zeilen im geprüften Artefakt aus; der Brief hat keine.
@@ -180,6 +184,7 @@ function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: Prue
     saetze.push('Fehlt Vorarbeit oder ließ sie sich nicht lesen (der Hinweis in ihrem Abschnitt sagt, was davon), sag bei den Prüfpunkten, die sie brauchen, dass du sie nicht abgleichen konntest – und nur bei „noch nicht ausgefüllt“, dass sie fehlt.');
   }
   saetze.push('Kein umformulierter Text. Passt alles, sag das in einem Satz.');
+  if (lage.feedback) saetze.push(FEEDBACK_ANLEITUNG);
   if (fokus) {
     saetze.push(fokus.naechster ? `Frag am Ende, ob als Nächstes ${fokus.naechster.id} drankommen soll.` : 'Das ist der letzte Prüfpunkt der Liste; sag das am Ende.');
   }
@@ -424,9 +429,11 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
 
   server.registerTool(MCP_WERKZEUGE.artefaktLesen, LESEN_WERKZEUG, ({ artefakt }) =>
     sicher(k, async () => {
-      const a = await artefaktHolen(k, artefakt);
-      if (!a) return textErgebnis(nochLeer(k, artefakt));
-      return textErgebnis(a.markdown, a.daten);
+      const repo = await eigeneMappe(k);
+      const [a, fb] = await Promise.all([artefaktHolen(k, artefakt, repo), feedbackFuerClaude(k.abh, repo, artefakt)]);
+      const anhang = feedbackText(fb).join('\n');
+      if (!a) return textErgebnis(nochLeer(k, artefakt) + anhang);
+      return textErgebnis(a.markdown + anhang, a.daten);
     }),
   );
 
@@ -511,12 +518,14 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
           }
         }),
       );
+      const feedbackLesen = feedbackFuerClaude(k.abh, repo, artefakt);
       const a = await artefaktHolen(k, artefakt, repo);
       const vorarbeit = a ? await vorarbeitLesen : [];
+      const fb = await feedbackLesen;
 
       const titel = ARTEFAKTE[artefakt].titel;
       const anleitung = a
-        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => v.inhalt === null) })
+        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => v.inhalt === null), feedback: !!fb?.length })
         : ANLEITUNG_LEER;
       const vorarbeitText = vorarbeit.flatMap((v) => [
         '',
@@ -534,6 +543,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         '## Artefakt',
         a ? eingebettet(a.markdown) : nochLeer(k, artefakt),
         ...vorarbeitText,
+        ...feedbackText(fb),
         '',
         '## So antwortest du',
         anleitung,
@@ -545,6 +555,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         pruefpunkte: pruefpunkte.map(ausgabe),
         vorarbeit: vorarbeit.map((v) => ({ artefakt: v.name, titel: ARTEFAKTE[v.name].titel, vorhanden: v.inhalt !== null })),
         anleitung,
+        ...(fb?.length ? { feedback: feedbackAusgabe(fb) } : {}),
       });
     }),
   );

@@ -7,7 +7,7 @@ import {
 } from './lehrenden-hilfen';
 
 const A = (o: Partial<LehrendenArtefakt> = {}): LehrendenArtefakt => ({
-  name: 'brief', stand: 'vorhanden', umfang: '4 von 6 Feldern', fehlt: [], leer: false, faelligZuTag: 2, faellig: true, commits: 0, mehr: false, zuletzt: '2026-10-21T22:30:00Z', ...o,
+  name: 'brief', stand: 'vorhanden', umfang: '4 von 6 Feldern', fehlt: [], leer: false, faelligZuTag: 2, faellig: true, commits: 0, mehr: false, zuletzt: '2026-10-21T22:30:00Z', feedback: null, ...o,
 });
 const TAG1 = { tag: 1, datum: '2026-10-22' };
 const HEUTE_TAG1 = { tag: 1, titel: 'Rahmen & Verstehen', lage: 'heute' as const };

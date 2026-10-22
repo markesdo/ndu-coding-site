@@ -51,6 +51,19 @@ export interface Speicher {
   lesezugriff(repo: string, githubId: number): Promise<'aktiv' | 'eingeladen'>;
   // null = Repo oder Datei fehlt.
   werkstattJson(repo: string): Promise<{ kohorte: string; githubId: number } | null>;
+  // Feedback (NDU-35, mappe/feedback.json): das geparste JSON, null = Repo oder Datei fehlt. Kaputtes JSON wirft DateiUnlesbar.
+  feedbackLesen(repo: string): Promise<unknown | null>;
+  // Ein Commit, der mappe/feedback.json ändert. aendern bekommt den Stand am Kopf genau des Versuchs, auf dem der Commit
+  // landet (null = Datei fehlt), und liefert den neuen Inhalt oder null (nichts zu ändern, kein Commit); wirft es, wird
+  // nichts geschrieben. Verliert der Commit das Fast-Forward-Rennen (jemand anderes hat inzwischen gespeichert, auch
+  // Feedback), beginnt der nächste Versuch auf dem neuen Kopf: Kein Eintrag geht verloren, und es gibt keinen Konflikt
+  // für die Person (die Datei wird nur ergänzt). Kaputtes JSON wirft DateiUnlesbar.
+  feedbackAendern(
+    repo: string,
+    aendern: (alt: unknown | null) => string | null,
+    autor: { name: string; email: string },
+    nachricht: string,
+  ): Promise<{ commitUrl: string } | { unveraendert: true }>;
 }
 
 export interface GithubIdentitaet {

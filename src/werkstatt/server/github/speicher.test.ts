@@ -9,6 +9,8 @@ import { mapCache } from '../cache';
 import { botIdentitaetGeber, installationTokenGeber } from './app-token';
 import { fakeGithub } from './fake-github';
 import { githubSpeicher } from './speicher';
+import { antworten, erledigtSetzen, feedbackJson, feedbackLeer, feedbackSchreiben, type Feedback } from '../../feedback';
+import { feedbackAendern } from '../feedback';
 
 const { privateKey: PEM } = generateKeyPairSync('rsa', {
   modulusLength: 2048,
@@ -62,6 +64,69 @@ async function mitRepo() {
   const { repo } = await a.s.anlegen(sofie, 1001);
   return { ...a, repo };
 }
+
+// NDU-35: Lehrende und Studierende schreiben dieselbe Datei. Jeder Versuch rechnet auf dem Kopf, auf dem sein Commit
+// landet; verliert er das Fast-Forward-Rennen, rechnet der nächste auf dem neuen Kopf – kein Eintrag geht verloren.
+describe('githubSpeicher.feedbackAendern', () => {
+  const D = '2026-10-23T09:00:00.000Z';
+  const lehrende = (f: Feedback, text: string) => feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A2', text, autor: 'markus', datum: D });
+  const lesen = async (s: ReturnType<typeof aufbau>['s'], repo: string) => (await s.feedbackLesen(repo)) as Feedback;
+
+  it('ein Commit nur an mappe/feedback.json, Autor*in die Person, Committer der Bot; Artefakte bleiben', async () => {
+    const { gh, s, repo } = await mitRepo();
+    await s.speichern(repo, 'annahmen', dateien('annahmen', { annahmen: [] }), null, autor, 'Annahmen: neu');
+    const vorher = gh.zustand.dateien(repo);
+    const erg = await s.feedbackAendern(repo, (alt) => (alt === null ? feedbackJson(lehrende(feedbackLeer(), 'Quelle?')) : null), autor, 'Feedback von markus');
+    expect(erg).toHaveProperty('commitUrl');
+    const nachher = gh.zustand.dateien(repo);
+    const { 'mappe/feedback.json': neu, ...rest } = nachher;
+    expect(rest).toStrictEqual(vorher);
+    expect(JSON.parse(neu).eintraege[0].text).toBe('Quelle?');
+    const c = gh.zustand.commit(repo, gh.zustand.kopf(repo)!);
+    expect([c.message, c.author, c.committer]).toStrictEqual(['Feedback von markus', autor, BOT]);
+  });
+
+  it('nichts zu ändern (null): kein Commit', async () => {
+    const { gh, s, repo } = await mitRepo();
+    const kopf = gh.zustand.kopf(repo);
+    expect(await s.feedbackAendern(repo, () => null, autor, 'x')).toStrictEqual({ unveraendert: true });
+    expect(gh.zustand.kopf(repo)).toBe(kopf);
+  });
+
+  it('Wettlauf: Lehrende schreiben, während die Person „erledigt“ setzt und antwortet – alle Einträge bleiben, keine ID doppelt', async () => {
+    const { gh, s, repo } = await mitRepo();
+    await feedbackAendern(s, repo, (f) => lehrende(f, 'Woher stammt die Zahl?'), autor, 'Feedback');
+    let einmal = true;
+    gh.zustand.vorRefUpdate = (r) => {
+      if (!einmal) return;
+      einmal = false;
+      // Zwischen Commit und Ref-Update der Person speichert die Lehrperson ein zweites Feedback (FB2).
+      const alt = JSON.parse(gh.zustand.dateien(r)['mappe/feedback.json']) as Feedback;
+      gh.zustand.aendernVonAussen(r, 'mappe/feedback.json', feedbackJson(lehrende(alt, 'Und A1?')));
+    };
+    const danach = await feedbackAendern(s, repo, (f) => antworten(erledigtSetzen(f, 'FB1', true), { antwortAuf: 'FB1', text: 'Aus der Kassa.', autor: 'sofie', datum: D }), autor, 'Antwort');
+    expect(gh.zustand.aufrufeVon('PATCH', '/git/refs/heads/main').length).toBeGreaterThanOrEqual(3);
+    const imRepo = await lesen(s, repo);
+    expect(imRepo).toStrictEqual(danach);
+    expect(imRepo.eintraege.map((e) => [e.id, e.von, e.text, e.erledigt ?? false])).toStrictEqual([
+      ['FB1', 'lehrende', 'Woher stammt die Zahl?', true],
+      ['FB2', 'lehrende', 'Und A1?', false],
+      ['FB3', 'studierende', 'Aus der Kassa.', false],
+    ]);
+  });
+
+  it('kaputtes JSON im Repo: nichts geschrieben', async () => {
+    const { gh, s, repo } = await mitRepo();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    gh.zustand.aendernVonAussen(repo, 'mappe/feedback.json', '{kaputt');
+    const kopf = gh.zustand.kopf(repo);
+    const aendern = vi.fn(() => 'neu');
+    await expect(s.feedbackAendern(repo, aendern, autor, 'x')).rejects.toMatchObject({ name: 'ApiAusnahme', pfad: 'mappe/feedback.json' });
+    expect(aendern).not.toHaveBeenCalled();
+    expect(gh.zustand.kopf(repo)).toBe(kopf);
+    vi.restoreAllMocks();
+  });
+});
 
 describe('githubSpeicher.speichern', () => {
   it('speichern schreibt einen commit mit drei dateien', async () => {
