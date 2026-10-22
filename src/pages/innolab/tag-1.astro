@@ -82,10 +82,10 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <p class="folie-satz">Einmal pro Person – danach liest Claude eure Mappe.</p>
     <ol class="gross">
       <li data-schritt><strong>Mappe öffnen:</strong> <a href="/innolab/mappe">Meine Mappe</a>, mit eurem GitHub-Konto anmelden. Sie ist noch leer.</li>
-      <li data-schritt><strong>Connector anlegen:</strong> den Link auf <a href="/innolab/werkstatt/claude">Claude verbinden</a> öffnen, Connect, in GitHub bestätigen, in der Werkstatt „Erlauben“, die Werkzeuge auf „Always allow“.</li>
-      <li data-schritt><strong>Modelltraining aus:</strong> in Claude unter Settings → Privacy „Help improve our AI models“ ausschalten.</li>
+      <li data-schritt><strong>Connector anlegen:</strong> den Link auf <a href="/innolab/werkstatt/claude#connector-anlegen">Claude verbinden</a> öffnen, Connect, in GitHub bestätigen, in der Werkstatt „Erlauben“, die Werkzeuge auf „Always allow“.</li>
+      <li data-schritt><strong>Modelltraining aus:</strong> in Claude unter Settings → Privacy „Help improve our AI models“ ausschalten (<a href="/innolab/werkstatt/claude#datenschutz">mit Bild</a>).</li>
     </ol>
-    <p>Alle drei Schritte zusammen: <Timer minuten={10} /></p>
+    <p class="verbinden-unten"><a class="btn primary" href="/innolab/werkstatt/claude">Anleitung mit Bildern zu jedem Schritt</a> Alle drei Schritte zusammen: <Timer minuten={10} /></p>
     <div class="nur-handout">
       <p>Ab dem Problem-Rahmen haltet ihr jedes Ergebnis in der Werkstatt fest, und gegen Mittag prüft Claude zum ersten Mal. Deshalb richtet ihr beides jetzt ein, nicht erst bei der ersten Prüfung. Die Anleitung mit Bildern zu jedem Schritt steht auf <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>.</p>
       <p>Meldet die Mappe „nicht freigeschaltet“, schreibt Markus euren GitHub-Namen. Klappt der Connector nicht, arbeitet ihr vorerst ohne ihn: Erst den Prüf-Prompt der Methode in ein Gespräch mit Claude einfügen, dann darunter den Text aus „Für Claude kopieren“ im Editor. Nur der kopierte Text allein reicht nicht – dann schreibt Claude euer Artefakt um, statt es zu prüfen.</p>
@@ -362,6 +362,9 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .miro-tage > div { display: flex; flex-direction: column; gap: .25rem; border: 1px dashed var(--border); border-radius: 6px; padding: .4rem; }
   .miro-tage span { border: 1px solid var(--border); border-radius: 4px; padding: .15rem .4rem; }
   .miro-weitere { opacity: .6; }
+  /* Folie „Werkstatt und Claude verbinden“: Knopf zur bebilderten Anleitung und Timer in einer Zeile. */
+  .verbinden-unten { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; max-width: none !important; }
+  :global(html[data-beamer]) .verbinden-unten > .timer { display: inline-flex; margin-top: 0; }
   .miro-knopf { padding: .15rem .7rem; vertical-align: baseline; }
   @media (max-width: 600px) { .miro-tage { grid-template-columns: 1fr 1fr; } }
   /* Im Beamer passt die Folie mit Skizze und fünf Schritten sonst nicht auf eine Bildschirmhöhe: Tag 1 breiter, Skizze kleiner. */
