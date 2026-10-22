@@ -5,6 +5,7 @@
 // Liegt das Ergebnis in der Werkstatt, geht der Prompt an Claude mit dem Werkstatt-Connector (artefakt_pruefen), sonst
 // an Claude Code im Projekt-Repo, das die Werkstatt-Vorarbeit über denselben Connector liest. Darunter, zugeklappt, der
 // Ausweichweg ohne Claude Code: Ergebnis als Text in Claude einfügen (nur für Ergebnisse in Dateien).
+// Direkt unter dem Prompt „Danach“: was ihr mit den Befunden macht (ändern oder lassen + Entscheidungslog).
 import Checklist from './Checklist.astro';
 import ClaudeCodeWerkstatt from './ClaudeCodeWerkstatt.astro';
 import Prompt from './Prompt.astro';
@@ -22,6 +23,15 @@ const einfuegen = einfuegenMoeglich(m, pfad) ? pruefPrompt(m, pfad, 'einfuegen')
 ---
 <Checklist id={pruefChecklisteId(m)} items={m.pruefliste.map((p) => p.text)} ids={m.pruefliste.map((p) => p.id)} />
 <Prompt label={label} note="Erst nachdem ihr die Prüfliste selbst durchgegangen seid. Claude findet, ihr entscheidet."><Fragment set:text={text} /></Prompt>
+<div class="danach">
+  <p><strong>Danach entscheidet ihr</strong> – Claude schreibt nichts um:</p>
+  <ol>
+    <li>Jeden Befund lesen: Claude zitiert die Stelle und stellt eine Frage.</li>
+    <li>Die Frage selbst beantworten, nicht im Chat mit Claude weiterschreiben lassen. Den neuen Text schreibt ihr.</li>
+    <li>Stimmt der Befund, ändert ihr die Stelle selbst{werkstatt ? ' in der Werkstatt („Bearbeiten“, speichern)' : ', dort, wo das Ergebnis liegt (Datei oder Issue)'}. Stimmt er nicht oder ist es bewusst so, bleibt der Text, und ihr schreibt eine Zeile ins <a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>: was ihr lasst und warum, mit Beleg oder „noch keiner“.</li>
+    <li>„Passt alles“: weiter. Nach dem Ändern höchstens einmal neu prüfen lassen.</li>
+  </ol>
+</div>
 {!werkstatt && ausWerkstatt && (
   <ClaudeCodeWerkstatt />
 )}
@@ -35,3 +45,10 @@ const einfuegen = einfuegenMoeglich(m, pfad) ? pruefPrompt(m, pfad, 'einfuegen')
 {werkstatt && (
   <p class="small muted">Dafür braucht Claude den Werkstatt-Connector: <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>. Der Prompt geht auch in Claude Code: <a href="/innolab/werkstatt/claude#claude-code">Claude Code mit der Werkstatt verbinden</a>. Ohne Connector fügt ihr den Prompt oben in ein Gespräch mit Claude ein und darunter jeden Text, den der Prompt nennt, je aus „Für Claude kopieren“ im Editor. Der kopierte Text allein reicht nicht: Dann schreibt Claude euer Artefakt um, statt es zu prüfen.</p>
 )}
+
+<style>
+  .danach { margin: .75rem 0 1rem; }
+  .danach p { margin: 0 0 .3rem; }
+  .danach ol { margin: 0; padding-left: 1.4rem; }
+  .danach li + li { margin-top: .2rem; }
+</style>

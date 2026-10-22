@@ -12,7 +12,7 @@ import Fluss from '../../../components/Fluss.astro';
 import Baum from '../../../components/bild/Baum.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
-import { CircleAlert, Footprints, Hammer, Target, TrendingUp, Users } from '@lucide/astro';
+import { BookText, CircleAlert, Footprints, Hammer, PencilLine, Quote, Scale, Target, TrendingUp, Users } from '@lucide/astro';
 import { KAFFEEBAR_BAUM } from '../../../components/innolab-beispiel';
 
 // Ein Problem ohne Lösung lässt mehrere Lösungen zu (Fehler 1): Wurzel und erste Chance aus dem roten Faden (tag-1.astro),
@@ -114,7 +114,7 @@ const loesungsraum = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: chance.t, kinder: chan
       <li data-schritt><strong>Outcome:</strong> „Wir glauben, dass … Wir merken es, wenn …“ – etwas, das Menschen anders tun und das ihr schon an wenigen Personen beobachten könnt. Keine Funktion, noch keine Zielzahl. <Timer minuten={10} /></li>
       <li data-schritt><strong>Dreierrunde:</strong> Jede*r liest vor. Die anderen fragen nur: „Woran würdest du das merken?“, „Ist das schon eine Lösung?“ und „Gibt es ein besseres Problem – wer hat es nicht, und warum?“ <Timer minuten={15} /></li>
       <li data-schritt><strong>Festhalten</strong> in der Werkstatt: „Bearbeiten“ unter <a href="#werkstatt">In der Werkstatt speichern</a>. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Prüfen:</strong> erst die Prüfliste selbst, dann Claude – beides unter <a href="#pruefen">Prüfen</a>. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Prüfen:</strong> erst die Prüfliste selbst, dann Claude – beides unter <a href="#pruefen">Prüfen</a>. Dann <a href="#nach-claude">entscheidet ihr</a>. <Timer minuten={10} /></li>
     </ol>
   </Folie>
 
@@ -129,6 +129,36 @@ const loesungsraum = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: chance.t, kinder: chan
   </div>
 
   <Folie>
+    <h2 id="nach-claude">Nach der Prüfung: Claude findet, ihr entscheidet</h2>
+    <p class="folie-satz">Claude schreibt nichts um. Den neuen Text schreibt ihr.</p>
+    <Fluss label="Nach der Prüfung: Befund lesen, Frage selbst beantworten, je Befund entscheiden" hervor={[2]} knoten={[
+      { t: 'Befund lesen', sub: 'Claude zitiert die Stelle und stellt eine Frage.', icon: Quote },
+      { t: 'Selbst beantworten', sub: 'allein oder im Team, nicht im Chat mit Claude', icon: PencilLine },
+      { t: 'Je Befund entscheiden', sub: 'ändern oder bewusst lassen', icon: Scale },
+    ]} />
+    <div class="entscheiden" data-schritt>
+      <div class="aendern"><b><PencilLine size={20} aria-hidden="true" /> Stimmt: ändern</b><span>In der Werkstatt „Bearbeiten“, selbst umschreiben, speichern.</span></div>
+      <div class="lassen"><b><BookText size={20} aria-hidden="true" /> Stimmt nicht oder bewusst so: lassen</b><span>Eine Zeile ins Entscheidungslog: was ihr lasst, warum, Beleg oder „noch keiner“.</span></div>
+    </div>
+    <div class="nach-beispiel" data-schritt>
+      <p><span class="eyebrow">Beispiel</span> Im Brief steht „Für wen: Pendler*innen“. Claude: „Ist das eine Situation oder eine Zielgruppe?“</p>
+      <p><b>Ändern:</b> „Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten“ · <b>oder lassen:</b> „Zielgruppe bleibt vorerst breit, weil wir die Uhrzeit erst in den Interviews klären. Beleg: noch keiner.“</p>
+    </div>
+    <p data-schritt>„Passt alles“: weiter. Nach dem Ändern höchstens einmal neu prüfen lassen.</p>
+    <div class="nur-handout">
+      <p>Claude prüft euer Artefakt gegen die Prüfliste und meldet höchstens drei Befunde, die wichtigsten zuerst. Zu jedem zitiert Claude die Stelle und stellt eine Frage. Einen neuen Text schlägt Claude mit Absicht nicht vor: Das Artefakt bleibt eures, und ihr übt die Methode, statt eine Formulierung zu übernehmen.</p>
+      <ol>
+        <li><strong>Jeden Befund lesen:</strong> Welche Stelle zitiert Claude, und was fragt Claude dazu?</li>
+        <li><strong>Die Frage selbst beantworten:</strong> allein oder in der Dreierrunde, nicht im Chat mit Claude. Lasst euch dort keine neue Fassung schreiben – den neuen Text schreibt ihr.</li>
+        <li><strong>Je Befund entscheiden:</strong> Stimmt der Befund, ändert ihr die Stelle in der Werkstatt („Bearbeiten“, speichern). Stimmt er nicht oder habt ihr es bewusst so gelassen, bleibt der Text, und ihr schreibt eine Zeile ins <a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>: was ihr lasst und warum, mit Beleg oder „noch keiner“.</li>
+        <li><strong>„Passt alles“:</strong> Dann seid ihr fertig und macht weiter.</li>
+      </ol>
+      <p>Habt ihr etwas geändert, dürft ihr noch einmal prüfen lassen – höchstens einmal. Sonst dreht ihr euch in einer Schleife, in der Claude immer neue Kleinigkeiten findet.</p>
+      <p>Beispiel aus der Kaffeebar: Im Brief steht bei „Für wen“ nur „Pendler*innen“. Claude fragt: „Ist das eine Situation oder eine Zielgruppe?“ Entweder ihr schärft den Satz selbst zu „Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten“, oder ihr lasst ihn so und haltet im Entscheidungslog fest: „Zielgruppe bleibt vorerst breit, weil wir die Uhrzeit erst in den Interviews klären. Beleg: noch keiner.“</p>
+    </div>
+  </Folie>
+
+  <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
     <p class="folie-satz">Was ist bei euch die Schlange vor der Kaffeebar?</p>
     <p>Der Moment, in dem für eure Zielgruppe heute etwas schiefgeht. Geht er nicht in einen Satz, ist er eine offene Frage für die Interviews – Abschnitt 7.</p>
@@ -136,3 +166,18 @@ const loesungsraum = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: chance.t, kinder: chan
 
   <FooterNav prev={{ href: '/innolab/tag-1', t: 'Tag 1 · Rahmen & Verstehen' }} next={{ href: '/innolab/methoden/entscheidungslog', t: 'Entscheidungslog' }} />
 </Layout>
+
+<style>
+  /* Folie „Nach der Prüfung“: ändern oder lassen, nebeneinander; am Handy untereinander. */
+  .entscheiden { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: .5rem 0; }
+  .entscheiden > div { display: flex; flex-direction: column; gap: .3rem; border-radius: 8px; padding: .6rem .8rem; }
+  .entscheiden b { display: flex; align-items: center; gap: .4rem; }
+  .entscheiden :global(svg) { color: var(--accent); flex: none; }
+  .entscheiden span { color: var(--muted); }
+  .aendern { border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .lassen { border: 1px dashed var(--border); }
+  .nach-beispiel { border-left: 3px solid var(--border); padding-left: .8rem; margin: .5rem 0; }
+  .nach-beispiel p { margin: .2rem 0; }
+  .nach-beispiel .eyebrow { margin: 0 .4rem 0 0; }
+  @media (max-width: 700px) { .entscheiden { grid-template-columns: 1fr; } }
+</style>

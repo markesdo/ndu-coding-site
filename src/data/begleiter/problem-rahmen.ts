@@ -246,7 +246,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Nach 40 min: Werkstatt, Brief speichern, Abschnitt 3 offen, 5 leer.',
       'Nach 50 min: erst Prüfliste selbst, dann Claude.',
     ],
-    ueberleitung: 'Zum Abschluss die Frage, die ihr euch für euer eigenes Produkt stellt.',
+    ueberleitung: 'Und wenn Claudes Befunde da sind: Was macht ihr dann damit?',
     uebung: { dauer: '60 min (15 + 10 + 15 + 10 + 10)', form: 'allein, dann zu dritt reihum, dann jede*r für sich in der Werkstatt' },
     miro: {
       frame: 'T1 · 2 · Problem-Rahmen & Produkt-Brief',
@@ -311,6 +311,33 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       {
         frage: 'Was, wenn mir in der Runde jemand eine bessere Rahmung vorschlägt?',
         antwort: 'Übernehmen ist erlaubt, wenn sie dich überzeugt – und es gehört als Zeile ins Entscheidungslog, mit dem Grund.',
+      },
+    ],
+  },
+
+  'nach-claude': {
+    live: [
+      'Vor dem Prüfen zeigen, nicht erst danach.',
+      '„Claude schreibt nichts um. Den neuen Text schreibt ihr – Claude findet, ihr entscheidet.“',
+      'Kaffeebar-Beispiel: ändern oder lassen plus Zeile im Entscheidungslog.',
+      'Falle: im Chat weiterschreiben lassen und die Fassung von Claude übernehmen.',
+      '„Passt alles“: weiter. Höchstens einmal neu prüfen, sonst Schleife.',
+    ],
+    ueberleitung: 'Zum Abschluss die Frage, die ihr euch für euer eigenes Produkt stellt.',
+    kern: [
+      {
+        text: 'Der Prüf-Prompt verlangt: Stelle zitieren, höchstens drei Befunde, die wichtigsten zuerst; nichts umschreiben, keinen Text formulieren, zu jedem Befund eine Frage; passt alles, ein Satz. Was zurückkommt, ist also nie eine neue Fassung – die Entscheidung bleibt bei den Studierenden. Was sie lassen, kommt mit Grund ins Entscheidungslog, damit das Weglassen eine Entscheidung ist und kein Übersehen.',
+        quelle: 'Kurs: methoden.ts, pruefPrompt (REGELN_ANFANG, REGELN_CHAT); ClaudePruefung.astro („Claude findet, ihr entscheidet“)',
+      },
+    ],
+    fragen: [
+      {
+        frage: 'Schlägt Claude auch Änderungen vor?',
+        antwort: 'Nein, mit Absicht: Claude zitiert und fragt, den Text schreibt ihr. So bleibt das Artefakt eures und ihr lernt die Methode; wer übernimmt, was Claude formuliert, prüft am Ende nur Claude.',
+      },
+      {
+        frage: 'Und wenn ich Claudes Befund für falsch halte?',
+        antwort: 'Dann lasst ihr den Text und schreibt eine Zeile ins Entscheidungslog: was ihr lasst und warum, mit Beleg oder „noch keiner“.',
       },
     ],
   },
