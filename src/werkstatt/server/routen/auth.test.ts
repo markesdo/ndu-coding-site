@@ -289,20 +289,20 @@ describe('Rollen-Cookie fürs Menü', () => {
     const la = await login(a.app);
     const ungueltig = await mitRolle(a.app, 'falsch', la.stateCookie);
     expect(ungueltig.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-ungueltig');
-    expect(rolle(ungueltig)).toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+    expect(rolle(ungueltig) ?? 'kein Rollen-Cookie').toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
 
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const b = appErstellen(lokaleAbhaengigkeiten({ github: { loginUrl: (s) => `https://github.test/?state=${s}`, codeEinloesen: async () => { throw new Error('nein'); } } }));
     const lb = await login(b);
     const fehlgeschlagen = await mitRolle(b, lb.state, lb.stateCookie);
     expect(fehlgeschlagen.headers.get('location')).toBe('/innolab/mappe?fehler=anmeldung-fehlgeschlagen');
-    expect(rolle(fehlgeschlagen)).toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+    expect(rolle(fehlgeschlagen) ?? 'kein Rollen-Cookie').toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
 
     const c = aufbau({ person: { githubId: 777, login: 'fremd' } });
     const lc = await login(c.app);
     const fremd = await mitRolle(c.app, lc.state, lc.stateCookie);
     expect(fremd.headers.get('location')).toBe('/innolab/mappe?fehler=nicht-freigeschaltet');
-    expect(rolle(fremd)).toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
+    expect(rolle(fremd) ?? 'kein Rollen-Cookie').toMatch(/^ndu-werkstatt-rolle=; Max-Age=0; Path=\//);
   });
 
   it('Abmelden löscht das Rollen-Cookie', async () => {
