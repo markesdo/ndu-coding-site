@@ -46,10 +46,12 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
     <Fluss label="Nicht so: der Ablauf aus Sicht der Kaffeebar – Bestellung, Bezahlung, Zubereitung, Ausgabe" knoten={[
       { t: 'Bestellung' }, { t: 'Bezahlung' }, { t: 'Zubereitung' }, { t: 'Ausgabe' },
     ]} />
-    <p class="fluss-titel" data-schritt><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> Aus Sicht der Pendlerin (I2)</p>
-    <Fluss label="So: der Morgen aus Sicht der Pendlerin I2 – Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42" hervor={[3]} knoten={[
-      { t: 'Ankunft 7:31' }, { t: 'acht Leute in der Schlange' }, { t: 'Blick auf die Uhr' }, { t: 'weiter zum Automaten', sub: 'gibt auf' }, { t: 'Zug 7:42' },
-    ]} />
+    <div data-schritt>
+      <p class="fluss-titel"><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> Aus Sicht der Pendlerin (I2)</p>
+      <Fluss label="So: der Morgen aus Sicht der Pendlerin I2 – Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42" hervor={[3]} knoten={[
+        { t: 'Ankunft 7:31' }, { t: 'acht Leute in der Schlange' }, { t: 'Blick auf die Uhr' }, { t: 'weiter zum Automaten', sub: 'gibt auf' }, { t: 'Zug 7:42' },
+      ]} />
+    </div>
     <p>Ihr kennt das vielleicht als <strong>Customer Journey</strong>.</p>
     <p class="small muted">{TORRES}, S. 54.</p>
     <div class="nur-handout">
@@ -146,13 +148,15 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
       { t: 'Anstellen oder Automat', sub: 'Automat → Zug: „?“' },
       { t: 'Im Zug, mit oder ohne Kaffee' },
     ]} />
-    <p class="fluss-titel" data-schritt>Heute: aus fünf Geschichten</p>
-    <Fluss label="Experience Map der Kaffeebar heute: vier Momente, neu ist das Warten auf den Kaffee mit dem Tiefpunkt „Das war ein Fehler.“, Ende im Zug: „Im Zug trink ich ihn dann in Ruhe.“" hervor={[2]} knoten={[
-      { t: '„Ich komme in die Halle.“', sub: 'Umweg: Automat <span style="white-space: nowrap">(I4-3)</span>' },
-      { t: '„Ich stehe an.“', sub: '„Anstellen ist ein Glücksspiel.“ <span style="white-space: nowrap">(I4-2)</span>' },
-      { t: '„Ich warte auf meinen Kaffee.“', sub: 'neu · Tiefpunkt: „Das war ein Fehler.“ <span style="white-space: nowrap">(I3-3)</span>' },
-      { t: '„Ich bin im Zug.“', sub: 'Ende: „… in Ruhe.“ <span style="white-space: nowrap">(I3-5)</span>' },
-    ]} />
+    <div data-schritt>
+      <p class="fluss-titel">Heute: aus fünf Geschichten</p>
+      <Fluss label="Experience Map der Kaffeebar heute: vier Momente, neu ist das Warten auf den Kaffee mit dem Tiefpunkt „Das war ein Fehler.“, Ende im Zug: „Im Zug trink ich ihn dann in Ruhe.“" hervor={[2]} knoten={[
+        { t: '„Ich komme in die Halle.“', sub: 'Umweg: Automat <span style="white-space: nowrap">(I4-3)</span>' },
+        { t: '„Ich stehe an.“', sub: '„Anstellen ist ein Glücksspiel.“ <span style="white-space: nowrap">(I4-2)</span>' },
+        { t: '„Ich warte auf meinen Kaffee.“', sub: 'neu · Tiefpunkt: „Das war ein Fehler.“ <span style="white-space: nowrap">(I3-3)</span>' },
+        { t: '„Ich bin im Zug.“', sub: 'Ende: „… in Ruhe.“ <span style="white-space: nowrap">(I3-5)</span>' },
+      ]} />
+    </div>
     <p class="nur-handout">Die Map von Tag 1 (Miro T1 · 1) ging von „Ankunft am Bahnhof“ über „Blick auf die Schlange“ und „Reicht die Zeit?“ zu „Anstellen“ oder „Zum Automaten“ – der Pfeil zum Automaten mit „?“ – und endete „im Zug, mit oder ohne Kaffee“. Die Geschichten bestätigen, dass die Entscheidung erst in der Halle fällt – 3 von 5 sagen es (I2-4, I3-1, I5-3), bei I1 steht es nur in der Notiz –, und beantworten das „?“: Der Automat ist die Ausweichroute (I1-3, I4-3, I4-4). Neu ist ein Knoten, der auf der alten Map fehlte: das Warten nach dem Bestellen, ohne zu wissen, wie lange – dort liegt der Tiefpunkt. Emotional trägt ihn vor allem I3 (I3-2, I3-3) – der stärkste Ausschlag in einer Geschichte; I2-5 stützt das Warten, nicht den Tiefpunkt. Das Ende ist der Kaffee im Zug: „Im Zug trink ich ihn dann in Ruhe.“ (I3-5). Der Automat ist kein eigener Moment, sondern ein Umweg aus „Ich komme in die Halle“; er gehört als Pfeil auf die Map, damit ihr nicht nur den glatten Weg zeichnet.</p>
   </Folie>
 
