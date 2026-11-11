@@ -31,7 +31,9 @@ export default function VerweisAuswahl({ label, werte, onChange, vorschlaege = [
   };
 
   const zeigeFehler = eigenerFehler ?? fehler;
-  const beschreibt = [hilfe ? `${id}-hilfe` : null, zeigeFehler ? `${id}-fehler` : null, hinweis ? `${id}-hinweis` : null].filter(Boolean).join(' ') || undefined;
+  // Ein Fehler geht vor: dann kein weicher Hinweis daneben.
+  const zeigeHinweis = zeigeFehler ? undefined : hinweis;
+  const beschreibt = [hilfe ? `${id}-hilfe` : null, zeigeFehler ? `${id}-fehler` : null, zeigeHinweis ? `${id}-hinweis` : null].filter(Boolean).join(' ') || undefined;
 
   return (
     <fieldset className="wk-verweise">
@@ -72,7 +74,7 @@ export default function VerweisAuswahl({ label, werte, onChange, vorschlaege = [
         </button>
       </div>
       {zeigeFehler && <p className="wk-fehler" id={`${id}-fehler`}>{zeigeFehler}</p>}
-      {hinweis && <p className="wk-feldhinweis" id={`${id}-hinweis`}>{hinweis}</p>}
+      {zeigeHinweis && <p className="wk-feldhinweis" id={`${id}-hinweis`}>{zeigeHinweis}</p>}
     </fieldset>
   );
 }

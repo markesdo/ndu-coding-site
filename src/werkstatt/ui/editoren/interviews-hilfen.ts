@@ -33,16 +33,25 @@ export function neuesZitat(interviewId: string, vorhandene: readonly { id: strin
 
 export const neueChance = (): Chance => ({ text: '', belege: [] });
 
+const hatZitate = (zitate: readonly { text: string }[]) => zitate.some((z) => z.text.trim() !== '');
+
 /** Tipp unter „Belege“: Ohne Zitat mit Text gibt es keine ID zum Wählen – dann zuerst nach oben zu den Zitaten. */
 export function belegHilfe(zitate: readonly { text: string }[]): string {
-  return zitate.some((z) => z.text.trim() !== '')
+  return hatZitate(zitate)
     ? 'Die Zitat-IDs, die diese Chance stützen – ohne ID kein Beleg.'
     : 'Noch keine Zitate: Trag zuerst oben unter „Zitate“ ein, was die Person wörtlich gesagt hat. Dann kannst du hier ihre IDs wählen.';
 }
 
 export const BELEG_FEHLT = 'Diese Chance hat noch keinen Beleg – wähle mindestens eine Zitat-ID.';
+export const BELEG_FEHLT_OHNE_ZITATE = 'Diese Chance hat noch keinen Beleg – trag zuerst oben Zitate ein, dann wähl ihre ID.';
 
 /** Weicher Hinweis (NDU-56): Chance mit Text, aber ohne Zitat-ID. Eine frische, leere Zeile bleibt ohne Hinweis; speichern geht trotzdem. */
 export function belegFehlt(chance: Chance): boolean {
   return chance.text.trim() !== '' && chance.belege.length === 0;
+}
+
+/** Hinweistext am Feld „Belege“: ohne Zitat mit Text gibt es noch keine ID zum Wählen, also zuerst nach oben zu den Zitaten. */
+export function belegHinweis(chance: Chance, zitate: readonly { text: string }[]): string | undefined {
+  if (!belegFehlt(chance)) return undefined;
+  return hatZitate(zitate) ? BELEG_FEHLT : BELEG_FEHLT_OHNE_ZITATE;
 }
