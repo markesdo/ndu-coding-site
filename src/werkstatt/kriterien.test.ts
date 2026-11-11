@@ -99,7 +99,7 @@ describe('Kriterien-Katalog', () => {
     },
   );
 
-  it('Zusätze passen zum Beispiel: Art von A3, Belege von D4', () => {
+  it('Abgleich mit dem Beispiel: A2, A3, A4, D3, D4', () => {
     const a3 = annahmen.annahmen.find((a) => a.id === 'A3')!;
     const art = kriterium('art-der-annahme')!.paar;
     expect(art.stark.text).toBe(a3.text);
