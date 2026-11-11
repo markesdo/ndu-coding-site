@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { METHODEN } from '../../../components/methoden';
 import { MOM_TEST_GRUPPE } from '../../../components/innolab-zeiten';
@@ -612,13 +613,22 @@ describe('Runde R22', () => {
     const c = await client(h, await accessToken(h));
     // Der Client holt vor dem ersten callTool die Werkzeugliste (für outputSchema); das vorher erledigen.
     await c.listTools();
-    const voll = h.abh.umgebung.zugang;
-    const leer = { test: { lehrende: [], studierende: [] } };
-    // Erster Zugriff = bearerPruefen der Anfrage, jeder weitere = das Werkzeug.
-    let zugriffe = 0;
-    Object.defineProperty(h.abh.umgebung, 'zugang', { configurable: true, get: () => (zugriffe++ === 0 ? voll : leer) });
+    // Den Zugang genau dann entziehen, wenn die tools/call-Anfrage bearerPruefen hinter sich hat und an den
+    // MCP-Transport geht. An die Anfrage gebunden statt an die Reihenfolge der Lesezugriffe: Andere Anfragen
+    // (etwa der SSE-GET, den der Client nach initialized ohne await schickt) ändern nichts daran (NDU-60).
+    const handleRequest = WebStandardStreamableHTTPServerTransport.prototype.handleRequest;
+    let entzogen = false;
+    vi.spyOn(WebStandardStreamableHTTPServerTransport.prototype, 'handleRequest').mockImplementation(async function (this: WebStandardStreamableHTTPServerTransport, req, ...rest) {
+      // Nur POSTs tragen JSON-RPC; ein später SSE-GET hat keinen Körper und geht unverändert durch.
+      const { method } = req.method === 'POST' ? ((await req.clone().json()) as { method?: string }) : {};
+      if (method === 'tools/call') {
+        h.abh.umgebung.zugang = { test: { lehrende: [], studierende: [] } };
+        entzogen = true;
+      }
+      return handleRequest.call(this, req, ...rest);
+    });
     const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'annahmen' } });
-    expect(zugriffe).toBeGreaterThan(1);
+    expect(entzogen).toBe(true);
     expect(r.isError).toBe(true);
     expect(text(r)).toBe('Dein Zugang zur Werkstatt ist nicht mehr aktiv. Frag Markus.');
     expect(lesen).not.toHaveBeenCalled();
