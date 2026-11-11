@@ -11,7 +11,7 @@ import EditorHuelle from '../EditorHuelle.js';
 import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
 import VerweisAuswahl from '../felder/VerweisAuswahl.js';
-import { belegHilfe, neueChance, neuesInterview, neuesZitat, type InterviewEntwurf } from './interviews-hilfen.js';
+import { belegFehlt, belegHilfe, belegHinweis, neueChance, neuesInterview, neuesZitat, type InterviewEntwurf } from './interviews-hilfen.js';
 import './editoren.css';
 
 // Im Formular darf die Einwilligung noch fehlen (Entwurf); das Schema lässt erst mit Haken speichern.
@@ -32,7 +32,7 @@ export function Vorschau({ daten }: { daten: Entwurf }) {
           {iv.einsichten.some((e) => e.trim()) ? <ul>{iv.einsichten.filter((e) => e.trim()).map((e, j) => <li key={j}>{e}</li>)}</ul> : leer}
           <h3>Chancen</h3>
           {iv.chancen.some((c) => c.text.trim())
-            ? <ul>{iv.chancen.filter((c) => c.text.trim()).map((c, j) => <li key={j}>{c.text}{c.belege.length > 0 && <span className="wk-karte-nr"> {c.belege.join(', ')}</span>}</li>)}</ul>
+            ? <ul>{iv.chancen.filter((c) => c.text.trim()).map((c, j) => <li key={j}>{c.text}{belegFehlt(c) ? <span className="wk-offen"> – noch ohne Beleg</span> : <span className="wk-karte-nr"> {c.belege.join(', ')}</span>}</li>)}</ul>
             : leer}
           {!iv.einwilligung && <p className="wk-offen" role="note">Einwilligung fehlt – so wird das Interview nicht gespeichert.</p>}
         </li>
@@ -51,6 +51,23 @@ function Einwilligung({ wert, onChange, fehler }: { wert: boolean; onChange: (ne
       </label>
       {fehler && <p className="wk-fehler" id={`${id}-fehler`}>{fehler}</p>}
     </div>
+  );
+}
+
+// Eine Zeile der Chancen: Text und Belege. Eigene Komponente, damit ein Test die Verdrahtung des Beleg-Hinweises prüfen kann.
+export function ChanceZeile({ chance, setze, nr, zitate, fehler }: {
+  chance: Chance;
+  setze: (neu: Chance) => void;
+  nr: number;
+  zitate: readonly { id: string; text: string }[];
+  fehler: (pfad: string) => string | undefined;
+}) {
+  const vorschlaege = zitate.filter((z) => z.text.trim() !== '').map((z) => ({ id: z.id, text: z.text }));
+  return (
+    <>
+      <Textfeld label={`Chance ${nr + 1}`} mehrzeilig zeilen={2} wert={chance.text} onChange={(text) => setze({ ...chance, text })} fehler={fehler('text')} hinweis={namenHinweis(chance.text)} hilfe={nr === 0 ? 'Bedürfnis, Schmerzpunkt oder Wunsch in den Worten der Person – keine Lösung. Wünscht sie sich eine Funktion: „Was würde dir das bringen?“ Muss kein wörtliches Zitat sein, aber in ihren Worten.' : undefined} />
+      <VerweisAuswahl label="Belege (Zitat-IDs)" werte={chance.belege} onChange={(belege) => setze({ ...chance, belege })} vorschlaege={vorschlaege} hilfe={nr === 0 ? belegHilfe(zitate) : undefined} fehler={fehler('belege') ?? chance.belege.map((_, k) => fehler(`belege.${k}`)).find(Boolean)} hinweis={belegHinweis(chance, zitate)} />
+    </>
   );
 }
 
@@ -77,7 +94,6 @@ export default function InterviewsEditor() {
               fehler={fehler('interviews')}
               zeile={(iv, s, i) => {
                 const f = (pfad: string) => fehler(`interviews.${i}.${pfad}`);
-                const zitatVorschlaege = iv.zitate.filter((z) => z.text.trim() !== '').map((z) => ({ id: z.id, text: z.text }));
                 return (
                   <>
                     <p className="wk-hilfe">ID: <strong>{iv.id}</strong></p>
@@ -109,10 +125,7 @@ export default function InterviewsEditor() {
                       neu={neueChance}
                       fehler={f('chancen')}
                       zeile={(c, sc, j) => (
-                        <>
-                          <Textfeld label={`Chance ${j + 1}`} mehrzeilig zeilen={2} wert={c.text} onChange={(text) => sc({ ...c, text })} fehler={f(`chancen.${j}.text`)} hinweis={namenHinweis(c.text)} hilfe={j === 0 ? 'Bedürfnis, Schmerzpunkt oder Wunsch in den Worten der Person – keine Lösung. Wünscht sie sich eine Funktion: „Was würde dir das bringen?“ Muss kein wörtliches Zitat sein, aber in ihren Worten.' : undefined} />
-                          <VerweisAuswahl label="Belege (Zitat-IDs)" werte={c.belege} onChange={(belege) => sc({ ...c, belege })} vorschlaege={zitatVorschlaege} hilfe={j === 0 ? belegHilfe(iv.zitate) : undefined} fehler={f(`chancen.${j}.belege`) ?? c.belege.map((_, k) => f(`chancen.${j}.belege.${k}`)).find(Boolean)} />
-                        </>
+                        <ChanceZeile chance={c} setze={sc} nr={j} zitate={iv.zitate} fehler={(pfad) => f(`chancen.${j}.${pfad}`)} />
                       )}
                     />
                     <Liste<string>

@@ -11,9 +11,11 @@ interface Props {
   vorschlaege?: readonly { id: string; text: string }[];
   fehler?: string;
   hilfe?: string;
+  // Hinweis, der das Speichern nicht sperrt (z. B. eine Chance ohne Beleg).
+  hinweis?: string;
 }
 
-export default function VerweisAuswahl({ label, werte, onChange, vorschlaege = [], fehler, hilfe }: Props) {
+export default function VerweisAuswahl({ label, werte, onChange, vorschlaege = [], fehler, hilfe, hinweis }: Props) {
   const id = useId();
   const [eingabe, setEingabe] = useState('');
   const [eigenerFehler, setEigenerFehler] = useState<string | null>(null);
@@ -29,7 +31,9 @@ export default function VerweisAuswahl({ label, werte, onChange, vorschlaege = [
   };
 
   const zeigeFehler = eigenerFehler ?? fehler;
-  const beschreibt = [hilfe ? `${id}-hilfe` : null, zeigeFehler ? `${id}-fehler` : null].filter(Boolean).join(' ') || undefined;
+  // Ein Fehler geht vor: dann kein weicher Hinweis daneben.
+  const zeigeHinweis = zeigeFehler ? undefined : hinweis;
+  const beschreibt = [hilfe ? `${id}-hilfe` : null, zeigeFehler ? `${id}-fehler` : null, zeigeHinweis ? `${id}-hinweis` : null].filter(Boolean).join(' ') || undefined;
 
   return (
     <fieldset className="wk-verweise">
@@ -70,6 +74,7 @@ export default function VerweisAuswahl({ label, werte, onChange, vorschlaege = [
         </button>
       </div>
       {zeigeFehler && <p className="wk-fehler" id={`${id}-fehler`}>{zeigeFehler}</p>}
+      {zeigeHinweis && <p className="wk-feldhinweis" id={`${id}-hinweis`}>{zeigeHinweis}</p>}
     </fieldset>
   );
 }
