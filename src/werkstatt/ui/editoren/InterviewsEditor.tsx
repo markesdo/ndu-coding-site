@@ -77,7 +77,7 @@ export default function InterviewsEditor() {
               fehler={fehler('interviews')}
               zeile={(iv, s, i) => {
                 const f = (pfad: string) => fehler(`interviews.${i}.${pfad}`);
-                const zitatVorschlaege = iv.zitate.map((z) => ({ id: z.id, text: z.text }));
+                const zitatVorschlaege = iv.zitate.filter((z) => z.text.trim() !== '').map((z) => ({ id: z.id, text: z.text }));
                 return (
                   <>
                     <p className="wk-hilfe">ID: <strong>{iv.id}</strong></p>
@@ -96,11 +96,11 @@ export default function InterviewsEditor() {
                       zeile={(z, sz, j) => (
                         <>
                           <p className="wk-hilfe">ID: <strong>{z.id}</strong></p>
-                          <Textfeld label={`Zitat ${j + 1}`} mehrzeilig zeilen={2} wert={z.text} onChange={(text) => sz({ ...z, text })} fehler={f(`zitate.${j}.text`) ?? f(`zitate.${j}.id`)} hinweis={namenHinweis(z.text)}  />
+                          <Textfeld label={`Zitat ${j + 1}`} mehrzeilig zeilen={2} wert={z.text} onChange={(text) => sz({ ...z, text })} fehler={f(`zitate.${j}.text`) ?? f(`zitate.${j}.id`)} hinweis={namenHinweis(z.text)} />
                         </>
                       )}
                     />
-                    <Textfeld label="Notizen zur Geschichte" mehrzeilig zeilen={6} wert={iv.notizen} onChange={(notizen) => s({ ...iv, notizen })} fehler={f('notizen')} hinweis={namenHinweis(iv.notizen)} hilfe="Was ist passiert, in welcher Reihenfolge? Kurz, mit Kommas zwischen den Schritten, zum Beispiel „Halle 7:29, sechs Leute in der Schlange, angestellt, gezahlt, gewartet, Zug erreicht“. Daraus werden deine Skizze und später die Experience Map." />
+                    <Textfeld label="Notizen" mehrzeilig zeilen={6} wert={iv.notizen} onChange={(notizen) => s({ ...iv, notizen })} fehler={f('notizen')} hinweis={namenHinweis(iv.notizen)} hilfe="Die Geschichte: Was ist passiert, in welcher Reihenfolge? Kurz, mit Kommas zwischen den Schritten, zum Beispiel „Halle 7:29, sechs Leute in der Schlange, angestellt, gezahlt, gewartet, Zug erreicht“. Daraus werden deine Skizze und später die Experience Map." />
                     <Liste<Chance>
                       label="Chancen"
                       einzahl="Chance"
@@ -111,7 +111,7 @@ export default function InterviewsEditor() {
                       zeile={(c, sc, j) => (
                         <>
                           <Textfeld label={`Chance ${j + 1}`} mehrzeilig zeilen={2} wert={c.text} onChange={(text) => sc({ ...c, text })} fehler={f(`chancen.${j}.text`)} hinweis={namenHinweis(c.text)} hilfe={j === 0 ? 'Bedürfnis, Schmerzpunkt oder Wunsch in den Worten der Person – keine Lösung. Wünscht sie sich eine Funktion: „Was würde dir das bringen?“ Muss kein wörtliches Zitat sein, aber in ihren Worten.' : undefined} />
-                          <VerweisAuswahl label="Belege (Zitat-IDs)" werte={c.belege} onChange={(belege) => sc({ ...c, belege })} vorschlaege={zitatVorschlaege} hilfe={belegHilfe(iv.zitate)} fehler={f(`chancen.${j}.belege`) ?? c.belege.map((_, k) => f(`chancen.${j}.belege.${k}`)).find(Boolean)} />
+                          <VerweisAuswahl label="Belege (Zitat-IDs)" werte={c.belege} onChange={(belege) => sc({ ...c, belege })} vorschlaege={zitatVorschlaege} hilfe={j === 0 ? belegHilfe(iv.zitate) : undefined} fehler={f(`chancen.${j}.belege`) ?? c.belege.map((_, k) => f(`chancen.${j}.belege.${k}`)).find(Boolean)} />
                         </>
                       )}
                     />
@@ -123,7 +123,7 @@ export default function InterviewsEditor() {
                       onChange={(einsichten) => s({ ...iv, einsichten })}
                       neu={() => ''}
                       fehler={f('einsichten')}
-                      zeile={(e, se, j) => <Textfeld label={`Einsicht ${j + 1}`} wert={e} onChange={se} fehler={f(`einsichten.${j}`)} hinweis={namenHinweis(e)}  />}
+                      zeile={(e, se, j) => <Textfeld label={`Einsicht ${j + 1}`} wert={e} onChange={se} fehler={f(`einsichten.${j}`)} hinweis={namenHinweis(e)} />}
                     />
                     <Textfeld label="Einprägsames Zitat" wert={iv.zitat} onChange={(zitat) => s({ ...iv, zitat })} fehler={f('zitat')} hinweis={namenHinweis(iv.zitat)} hilfe="Wähle eines deiner Zitate oben: den Satz, der dich an genau diese Geschichte erinnert." />
                     <Textfeld label="Kurzinfos" mehrzeilig zeilen={2} wert={iv.kurzinfos} onChange={(kurzinfos) => s({ ...iv, kurzinfos })} fehler={f('kurzinfos')} hinweis={namenHinweis(iv.kurzinfos)} hilfe="Zwei, drei Fakten: Welche Art Kund*in war das? Bei jedem Interview dieselben – ohne die Person erkennbar zu machen." />
