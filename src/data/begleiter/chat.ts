@@ -23,5 +23,5 @@ Vorher: Momente aus T2 · 1 als blaue Karten unter euer Outcome (Cmd+D).
 4. Prüfen (5 min): Prüfliste, dann Claude mit einem Bild eures Baums (Prompt auf der Seite unter „Prüfen“).`;
 
 /** Erst-fragen-Folien ohne Handout-Karte: nur die Aufgabe, damit sie im Chat steht, während alle tippen. */
-export const CHAT_NETFLIX = 'Was ist für euch das Wichtigste in dieser Geschichte? Ein Satz – erst tippen, abschicken auf mein Zeichen.';
+export const CHAT_NETFLIX = 'Hört mit eurer Rolle (Produktmanagement, Design oder Entwicklung): Was ist das Wichtigste in dieser Geschichte? Ein Satz – erst tippen, abschicken auf mein Zeichen.';
 export const CHAT_ZWOELF = 'Welche der zwölf Chancen würdet ihr zuerst angehen, und warum? Ein Satz – erst tippen, abschicken auf mein Zeichen.';
