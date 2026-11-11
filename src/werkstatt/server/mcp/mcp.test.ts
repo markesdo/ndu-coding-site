@@ -619,7 +619,8 @@ describe('Runde R22', () => {
     const handleRequest = WebStandardStreamableHTTPServerTransport.prototype.handleRequest;
     let entzogen = false;
     vi.spyOn(WebStandardStreamableHTTPServerTransport.prototype, 'handleRequest').mockImplementation(async function (this: WebStandardStreamableHTTPServerTransport, req, ...rest) {
-      const { method } = (await req.clone().json()) as { method?: string };
+      // Nur POSTs tragen JSON-RPC; ein später SSE-GET hat keinen Körper und geht unverändert durch.
+      const { method } = req.method === 'POST' ? ((await req.clone().json()) as { method?: string }) : {};
       if (method === 'tools/call') {
         h.abh.umgebung.zugang = { test: { lehrende: [], studierende: [] } };
         entzogen = true;
