@@ -7,7 +7,7 @@ import type { Interview } from '../schemas/index.js';
 import { belegeAufloesen, istSynthetisch, type Neu } from './snapshot-hilfen.js';
 
 const Leer = () => <span className="snap-leer">—</span>;
-const NeuMarke = () => <span className="snap-neu-marke">neu</span>;
+export const NeuMarke = () => <span className="snap-neu-marke">neu</span>;
 
 export default function SnapshotAnsicht({ iv, neu }: { iv: Interview; neu?: Neu }) {
   const einsichten = iv.einsichten.filter((e) => e.trim());

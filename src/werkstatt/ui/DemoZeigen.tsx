@@ -1,12 +1,15 @@
 // Zeigen-Modus für die eigene Demo-Mappe der Lehrenden (MappeUebersicht, ?ansicht=demo): dieselbe große Ansicht wie
 // im Leser der Lehrenden (Zeigen.tsx), hier für die eigenen Interviews – etwa um ein Beispiel im Kurs groß zu zeigen.
 // Nur lesen: holt mappe/interviews.json über die eigene Mappe (api.lesen), schreibt nichts. ←/→ blättern, Esc schließt.
+// K öffnet den Kontext: Annahmen-Map und Leitfaden der Demo-Mappe (useKontext, nur die Daten).
 import { Presentation } from 'lucide-react';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { Interview } from '../schemas/index.js';
 import { api, ApiError } from './api.js';
 import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews } from './snapshot-hilfen.js';
 import Zeigen from './Zeigen.js';
+import { istKontextTaste, type KontextName } from './kontext-hilfen.js';
+import { useKontext } from './useKontext.js';
 
 type Stand = { interviews: Interview[]; zeit: number; vorher: Interview[] | null };
 
@@ -21,6 +24,15 @@ export default function DemoZeigen({ person }: { person: string }) {
   const [id, setId] = useState<string | null>(null);
   const [jetzt, setJetzt] = useState(() => Date.now());
   const lauf = useRef(0);
+  const [neu, setNeu] = useState(0);
+  const [kontextOffen, setKontextOffen] = useState(false);
+  const [kontextReiter, setKontextReiter] = useState<KontextName>('annahmen');
+  const kontext = useKontext(offen ? person : null, kontextOffen, String(neu), (name) => api.lesen(name));
+  // Beim Zuklappen Fokus zurück in den Zeigen-Bereich (wie im Leser der Lehrenden), sonst kommen die Tasten nicht an.
+  function kontextUmschalten() {
+    if (kontextOffen) wurzel.current?.focus();
+    setKontextOffen(!kontextOffen);
+  }
 
   async function laden() {
     const mein = ++lauf.current;
@@ -41,6 +53,7 @@ export default function DemoZeigen({ person }: { person: string }) {
   function oeffnen() {
     setStand(null);
     setId(null);
+    setKontextOffen(false);
     setOffen(true);
     void laden();
   }
@@ -63,6 +76,11 @@ export default function DemoZeigen({ person }: { person: string }) {
   const nr = stelleNachId(ivs, id);
 
   function taste(e: KeyboardEvent<HTMLDialogElement>) {
+    if (istKontextTaste(e)) {
+      e.preventDefault();
+      kontextUmschalten();
+      return;
+    }
     const ziel = tastenZiel(e.key, { zeigen: true, personen: [], person, nr, anzahl: ivs.length });
     if (ziel?.art !== 'snapshot') return;
     e.preventDefault();
@@ -83,9 +101,11 @@ export default function DemoZeigen({ person }: { person: string }) {
             personen={[{ kuerzel: person, anzahl: ivs.length }]} person={person} interviews={stand?.interviews ?? null} vorher={stand?.vorher ?? null}
             nr={nr} laedt={laedt} fehler={fehler} stand={stand?.zeit ?? null} jetzt={jetzt}
             meldung={neuMeldung(stand?.vorher ?? null, ivs)} wurzel={wurzel}
+            kontext={kontext} kontextOffen={kontextOffen} kontextReiter={kontextReiter}
+            kontextUmschalten={kontextUmschalten} reiterWaehlen={setKontextReiter}
             personWaehlen={() => {}} nrWaehlen={(i) => ivs[i] && setId(ivs[i].id)}
             blaettern={(r) => ivs.length > 0 && setId(ivs[blaettern(nr, ivs.length, r)].id)}
-            neuLaden={() => void laden()} beenden={() => setOffen(false)}
+            neuLaden={() => { setNeu((n) => n + 1); void laden(); }} beenden={() => setOffen(false)}
           />
         )}
       </dialog>

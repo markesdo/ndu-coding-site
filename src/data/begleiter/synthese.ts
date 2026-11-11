@@ -183,6 +183,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Fragen: Was davon kennt ihr aus Need Finding, was ist neu?',
       'Was ändert sich: Beleg sofort in die Annahmen-Map.',
       'Falle: nur Inhalt, keine Meta-Ebene – Frage 3 und 4 einfordern.',
+      'Im Zeigen-Modus K drücken: Kontext mit Annahmen und Leitfaden der Person.',
     ],
     kern: [
       {

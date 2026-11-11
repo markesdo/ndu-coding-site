@@ -11,6 +11,7 @@ import { artefaktStand } from '../tag-stand';
 import { LeserKoerper, type LeserInhaltProps } from './LehrendenAnsicht';
 import { blaettern, istSynthetisch, neuMeldung, neueEintraege, nichtsNeues, snapshotZahl, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen, zeigenStartPerson } from './snapshot-hilfen';
 import Zeigen, { type ZeigenProps } from './Zeigen';
+import { KONTEXT_LEER } from './kontext-hilfen';
 
 const IVS = KAFFEEBAR.interviews as Interview[];
 const I2 = IVS.find((i) => i.id === 'I2')!;
@@ -179,6 +180,7 @@ describe('Zeigen', () => {
   const props = (x: Partial<ZeigenProps> = {}): ZeigenProps => ({
     personen: [{ kuerzel: 'sofie', anzahl: 5 }, { kuerzel: 'joachim', anzahl: 0 }, { kuerzel: 'hewen', anzahl: 2 }],
     person: 'sofie', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null, stand: Date.UTC(2026, 10, 12, 13, 5), jetzt: Date.UTC(2026, 10, 12, 13, 6), meldung: '',
+    kontext: KONTEXT_LEER, kontextOffen: false, kontextReiter: 'annahmen', kontextUmschalten: () => {}, reiterWaehlen: () => {},
     personWaehlen: () => {}, nrWaehlen: () => {}, blaettern: () => {}, neuLaden: () => {}, beenden: () => {}, ...x,
   });
   const knoepfe = (h: string) => [...h.matchAll(/<button([^>]*)>(.*?)<\/button>/g)].map((m) => [text(m[2]).trim(), m[1].includes(' disabled')]);

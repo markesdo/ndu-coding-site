@@ -1,7 +1,7 @@
 import type { Annahme, Annahmen } from '../schemas/index.js';
 import { belegText, datumAt, einzeilig, zelle } from './format.js';
 
-const ART_TEXT: Record<Annahme['art'], string> = {
+export const ART_TEXT: Record<Annahme['art'], string> = {
   wuenschenswert: 'wünschenswert',
   machbar: 'machbar',
   wirtschaftlich: 'wirtschaftlich',
