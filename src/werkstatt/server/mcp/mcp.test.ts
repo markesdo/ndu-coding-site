@@ -259,7 +259,7 @@ describe('Werkzeuge', () => {
     expect(NICHT_EINORDNEN).toBe('Ordne nichts für die Person ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.');
     // Regel 4 ohne Widerspruch: „jeder Befund endet mit einer Frage“ gilt ohne pruefpunkt, im Fokus die Regel der anleitung.
     expect(anweisung).toContain('ohne pruefpunkt nennst du höchstens drei Befunde');
-    expect(anweisung).toContain('mit pruefpunkt auf; dann nennst du jede betroffene Stelle mit wörtlichem Zitat (und ID, wo eine steht), auch mehr als drei. Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID).');
+    expect(anweisung).toContain('mit pruefpunkt auf. Dann gilt: Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit wörtlichem Zitat (und ID, wo eine steht). Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID).');
     expect(anweisung).not.toMatch(/mit ID und/);
     // NDU-27: zuerst schauen, was da ist; nie das ganze Artefakt zurückkopieren.
     expect(anweisung).toContain(`Anfang des Gesprächs ${MCP_WERKZEUGE.mappeUebersicht}`);
@@ -301,7 +301,7 @@ describe('Werkzeuge', () => {
     expect(pruefen.inputSchema.required).toStrictEqual(['artefakt']);
     expect(pruefen.description).toContain('pruefpunkt');
     // Manche Clients zeigen die Server-Anweisung nicht: die Kernregeln stehen auch in der Beschreibung.
-    expect(pruefen.description).toContain('auch mehr als drei, mit wörtlichem Zitat (und ID, wo eine steht). Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID). Ordne nichts für die Person ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.');
+    expect(pruefen.description).toContain('prüfst du nur diesen einen Punkt. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit wörtlichem Zitat (und ID, wo eine steht). Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID). Ordne nichts für die Person ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.');
   });
 
   it('artefakt_pruefen(annahmen): Markdown + die Prüfpunkte aus methoden.ts mit festen IDs, ohne alte Positions-ID', async () => {
