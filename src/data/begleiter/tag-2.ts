@@ -12,7 +12,6 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
       '„Heute wird aus euren fünf Geschichten ein Baum voller Chancen.“',
       'Fluss zeigen: Snapshots, Map und Baum heute, Ziel-Chance an Tag 3.',
       'Fragen: Wer hat Interviews in der Werkstatt? Sonst bis 14:50 eintragen.',
-      'Online: Chat offen halten, heute schreibt jede*r oft hinein.',
       'Annahmen-Map von Tag 1 öffnen lassen, Belege sofort eintragen.',
     ],
     miro: {
@@ -33,11 +32,12 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 49`,
       },
     ],
-    ueberleitung: 'Bevor wir starten: vier kurze Fragen zu Tag 1, Antworten in den Chat.',
+    ueberleitung: 'Genau das sucht ihr jetzt in euren Snapshots: Warum verdichtet man nach jedem Interview und nicht erst am Ende?',
   },
 
   'rueckblick-outcome': {
     live: [
+      'Online: Chat offen halten, heute schreibt jede*r oft hinein.',
       'Frage stellen, jede*r ein Satz in den Chat, dann aufdecken.',
       '„Gemessen wird, was Menschen anders tun – nicht, was ihr baut.“',
       'Heute: In den Baum kommt nur, was den Outcome bewegt.',
@@ -108,7 +108,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
         quelle: `${MOMTEST}, S. 13, 16`,
       },
     ],
-    ueberleitung: 'Genau das sucht ihr jetzt in euren Snapshots: Warum verdichtet man nach jedem Interview und nicht erst am Ende?',
+    ueberleitung: 'Damit zum Plan für heute: von Geschichten zu Chancen.',
   },
 };
 

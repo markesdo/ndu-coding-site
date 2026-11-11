@@ -29,7 +29,7 @@ const karte = {
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-12">
-    <Block time="14:00–14:15" type="plenum" title="Heute: von Geschichten zu Chancen" href="#heute">Wo ihr steht, was heute entsteht, und vier Fragen zu Tag 1.</Block>
+    <Block time="14:00–14:15" type="plenum" title="Rückblick auf Tag 1, dann: von Geschichten zu Chancen" href="#rueckblick-outcome">Vier Fragen zu Tag 1, dann wo ihr steht und was heute entsteht.</Block>
     <Block time="14:15–15:15" type="uebung" title="Interview-Synthese" href="/innolab/methoden/synthese">Snapshots im Team besprechen: was gesagt wurde, was sich ändert, was ihr überhört habt.</Block>
     <Block time="15:15–15:25" type="pause" title="Pause" />
     <Block time="15:25–16:25" type="uebung" title="Experience Map aus den Geschichten" href="/innolab/methoden/journey-map">Aus fünf Geschichten eine Map; ihre Momente werden die Äste des Baums. Stärkster Moment (Hoch- oder Tiefpunkt) und Ende.</Block>
@@ -39,27 +39,6 @@ const karte = {
   </div>
 
   <hr />
-  <Folie>
-    <h2 id="heute">Heute: von Geschichten zu Chancen</h2>
-    <p class="folie-satz">Drei Artefakte, ein Bild eurer Kundschaft – heute geht ihr bis zum Baum.</p>
-    <Fluss label="Der Weg von Tag 2: Interview-Snapshots, Experience Map, Opportunity Solution Tree; an Tag 3 folgt die Ziel-Chance" hervor={[0, 1, 2]} knoten={[
-      { t: 'Interview-Snapshots', sub: 'eure fünf Geschichten', icon: FileText },
-      { t: 'Experience Map', sub: 'ihre Momente', icon: Route },
-      { t: 'Opportunity Solution Tree', sub: 'Chancen unter dem Outcome', icon: Network },
-      { t: 'Tag 3: Ziel-Chance', sub: 'eine wählen, dann Ideen', icon: Target },
-    ]} />
-    <p data-schritt>Keine Einmal-Übung: Alle drei wachsen mit jedem weiteren Interview.</p>
-    <p data-schritt><strong>Jetzt öffnen:</strong> Werkstatt (Interviews, Annahmen-Map), Miro-Board, eure Snapshot-Skizzen. Noch keine Interviews eingetragen? Bis 14:50 die besten zwei bis drei.</p>
-    <p class="small muted">{TORRES}, S. 49.</p>
-    <div class="nur-handout">
-      <p>An Tag 1 habt ihr den <strong>Outcome</strong> festgelegt. Heute wachsen darunter die <strong>Chancen</strong>. Der Weg folgt Teresa Torres, „Continuous Discovery Habits“ (Kap. 4–8): Snapshots → Experience Map → Baum → Ziel-Chance → Ideen. Jeder Schritt baut auf dem vorigen auf. Heute geht ihr bis zum Baum; mit Ziel-Chance und Ideen, den ersten <strong>Lösungen</strong>, beginnt Tag 3. Das Kundenprofil mit Value Map folgt dort und nutzt dann euren Baum.</p>
-      <p>Torres nennt für diesen Teil drei Artefakte, die dem Team ein gemeinsames Verständnis geben: die Experience Map, die festhält, was ihr über eure Kundschaft wisst (Kap. 4), den Interview-Snapshot, auf dem ihr festhaltet, was ihr in jedem Interview gelernt habt (Kap. 5), und den Opportunity Solution Tree, auf dem ihr die Chancen ordnet (Kap. 6) und vergleicht (Kap. 7). Keines davon ist eine einmalige Übung: Sie entwickeln sich weiter, so wie sich euer Verständnis von der Kundschaft weiterentwickelt ({TORRES}, S. 49). Bei Torres steht die Map am Anfang; ihr habt sie an Tag 1 gezeichnet und zeichnet sie heute aus den Geschichten eurer Snapshots neu.</p>
-      <Callout type="tip" title="An Tag 1 eine Annahme, heute ein Beleg">
-        <p>Haltet die Annahmen-Map von Tag 1 offen. Wenn ein Snapshot eine Annahme stützt oder widerlegt, tragt seine Zitat-IDs sofort in die Spalte „Beleg“ ein. Eine widerlegte Annahme ist ein gutes Ergebnis: Sie hat euch gerade Wochen falscher Arbeit erspart.</p>
-      </Callout>
-    </div>
-  </Folie>
-
   <Folie>
     <h2 id="rueckblick-outcome">Rückblick: Outcome statt Output</h2>
     <p class="folie-satz">Was ist der Unterschied zwischen Output und Outcome?</p>
@@ -117,6 +96,27 @@ const karte = {
     <p class="small muted">{MOMTEST}, S. 13, 16.</p>
     <div class="nur-handout">
       <p>Die zweite Regel des Mom Test: „Ask about specifics in the past instead of generics or opinions about the future“ ({MOMTEST}, S. 13). Dazu zwei Faustregeln: „Opinions are worthless“ und „Anything involving the future is an over-optimistic lie“ (S. 16). Für die Synthese heißt das: Zählt als Beleg, was jemand erzählt hat, nicht was jemand meint. Zum Nachlesen: <a href="/innolab/methoden/interview#antworten">Welche Antwort zählt?</a></p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="heute">Heute: von Geschichten zu Chancen</h2>
+    <p class="folie-satz">Drei Artefakte, ein Bild eurer Kundschaft – heute geht ihr bis zum Baum.</p>
+    <Fluss label="Der Weg von Tag 2: Interview-Snapshots, Experience Map, Opportunity Solution Tree; an Tag 3 folgt die Ziel-Chance" hervor={[0, 1, 2]} knoten={[
+      { t: 'Interview-Snapshots', sub: 'eure fünf Geschichten', icon: FileText },
+      { t: 'Experience Map', sub: 'ihre Momente', icon: Route },
+      { t: 'Opportunity Solution Tree', sub: 'Chancen unter dem Outcome', icon: Network },
+      { t: 'Tag 3: Ziel-Chance', sub: 'eine wählen, dann Ideen', icon: Target },
+    ]} />
+    <p data-schritt>Keine Einmal-Übung: Alle drei wachsen mit jedem weiteren Interview.</p>
+    <p data-schritt><strong>Jetzt öffnen:</strong> Werkstatt (Interviews, Annahmen-Map), Miro-Board, eure Snapshot-Skizzen. Noch keine Interviews eingetragen? Bis 14:50 die besten zwei bis drei.</p>
+    <p class="small muted">{TORRES}, S. 49.</p>
+    <div class="nur-handout">
+      <p>An Tag 1 habt ihr den <strong>Outcome</strong> festgelegt. Heute wachsen darunter die <strong>Chancen</strong>. Der Weg folgt Teresa Torres, „Continuous Discovery Habits“ (Kap. 4–8): Snapshots → Experience Map → Baum → Ziel-Chance → Ideen. Jeder Schritt baut auf dem vorigen auf. Heute geht ihr bis zum Baum; mit Ziel-Chance und Ideen, den ersten <strong>Lösungen</strong>, beginnt Tag 3. Das Kundenprofil mit Value Map folgt dort und nutzt dann euren Baum.</p>
+      <p>Torres nennt für diesen Teil drei Artefakte, die dem Team ein gemeinsames Verständnis geben: die Experience Map, die festhält, was ihr über eure Kundschaft wisst (Kap. 4), den Interview-Snapshot, auf dem ihr festhaltet, was ihr in jedem Interview gelernt habt (Kap. 5), und den Opportunity Solution Tree, auf dem ihr die Chancen ordnet (Kap. 6) und vergleicht (Kap. 7). Keines davon ist eine einmalige Übung: Sie entwickeln sich weiter, so wie sich euer Verständnis von der Kundschaft weiterentwickelt ({TORRES}, S. 49). Bei Torres steht die Map am Anfang; ihr habt sie an Tag 1 gezeichnet und zeichnet sie heute aus den Geschichten eurer Snapshots neu.</p>
+      <Callout type="tip" title="An Tag 1 eine Annahme, heute ein Beleg">
+        <p>Haltet die Annahmen-Map von Tag 1 offen. Wenn ein Snapshot eine Annahme stützt oder widerlegt, tragt seine Zitat-IDs sofort in die Spalte „Beleg“ ein. Eine widerlegte Annahme ist ein gutes Ergebnis: Sie hat euch gerade Wochen falscher Arbeit erspart.</p>
+      </Callout>
     </div>
   </Folie>
 
