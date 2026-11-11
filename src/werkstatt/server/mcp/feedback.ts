@@ -38,8 +38,10 @@ export const FEEDBACK_AUSGABE = z
 
 export type FeedbackAusgabe = z.infer<typeof FEEDBACK_AUSGABE>;
 
+export const FEEDBACK_UNLESBAR = 'Das Feedback der Lehrenden ließ sich gerade nicht lesen.';
+
 // Steht statt feedback im structuredContent, wenn mappe/feedback.json sich nicht lesen ließ.
-export const FEEDBACK_HINWEIS_AUSGABE = z.string().optional().describe('Statt feedback: Das Feedback der Lehrenden ließ sich gerade nicht lesen.');
+export const FEEDBACK_HINWEIS_AUSGABE = z.string().optional().describe(`Statt feedback: ${FEEDBACK_UNLESBAR}`);
 
 /** Die Fäden zu einem Artefakt; null = mappe/feedback.json ließ sich nicht lesen (dann nur ein Satz, das Werkzeug läuft
  *  weiter). Scheitert GitHub, gilt dasselbe: Feedback ist Beigabe, kein Grund für ein Fehlerergebnis. */
@@ -76,8 +78,6 @@ export function feedbackAusgabe(f: readonly FeedbackFaden[]): FeedbackAusgabe {
   });
 }
 
-export const FEEDBACK_UNLESBAR = 'Das Feedback der Lehrenden ließ sich gerade nicht lesen.';
-
 /** Dasselbe wie feedbackText für structuredContent (NDU-52): Claude Code gibt dem Modell bei structuredContent nur das
  *  JSON, nicht den Text. Ohne Feedback kein Schlüssel; unlesbar: der Satz statt des Feedbacks. */
 export function feedbackFelder(f: readonly FeedbackFaden[] | null): { feedback?: FeedbackAusgabe; feedbackHinweis?: string } {
@@ -89,7 +89,7 @@ export function feedbackFelder(f: readonly FeedbackFaden[] | null): { feedback?:
 export function feedbackText(f: readonly FeedbackFaden[] | null): string[] {
   if (f === null) return ['', `## ${FEEDBACK_UEBERSCHRIFT}`, FEEDBACK_UNLESBAR];
   if (f.length === 0) return [];
-  const zeilen = ['', `## ${FEEDBACK_UEBERSCHRIFT}`, 'Was die Lehrenden zu diesem Artefakt angemerkt haben, mit den Antworten der Person. Geh darauf ein, wo es passt; es ist kein Befund der Prüfung, und du schreibst selbst kein Feedback.', ''];
+  const zeilen = ['', `## ${FEEDBACK_UEBERSCHRIFT}`, 'Was die Lehrenden zu diesem Artefakt angemerkt haben, mit den Antworten der Person; wie du damit umgehst, steht in der Anleitung am Ende.', ''];
   for (const a of feedbackAusgabe(f)) {
     const krit = a.kriterium ? `, Kriterium „${a.kriterium}“` : '';
     zeilen.push(`- ${a.id}: ${a.autor}${a.zeile ? ` zu ${a.zeile}` : ' zum ganzen Artefakt'}, ${a.datum}, ${a.erledigt ? 'erledigt' : 'offen'}${krit}`, zitat(a.text, '  '));

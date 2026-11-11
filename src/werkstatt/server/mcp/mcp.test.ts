@@ -278,7 +278,7 @@ describe('Werkzeuge', () => {
     // Das outputSchema beschreibt nur, was der Server liefert; die Befunde schreibt Claude in die Antwort.
     // NDU-52: markdown auch hier, Claude Code gibt dem Modell nur das JSON.
     expect(Object.keys(pruefen.outputSchema?.properties ?? {}).sort()).toStrictEqual([
-      'anleitung', 'artefakt', 'feedback', 'feedbackHinweis', 'gesperrt', 'hinweis', 'markdown', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden',
+      'anleitung', 'artefakt', 'feedback', 'feedbackHinweis', 'gesperrt', 'hinweis', 'markdown', 'methode', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden',
     ]);
     // Jedes Werkzeug mit structuredContent hat ein outputSchema, auch artefakt_lesen (außer methode_erklaeren, ohne Schema).
     expect(tools.filter((t) => !t.outputSchema).map((t) => t.name)).toStrictEqual([MCP_WERKZEUGE.methodeErklaeren]);
@@ -301,7 +301,7 @@ describe('Werkzeuge', () => {
     expect(r.isError).toBeFalsy();
     const sc = r.structuredContent as { artefakt: string; markdown: string; pruefpunkte: { id: string; text: string }[] };
     const liste = METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!;
-    expect(sc.pruefpunkte).toStrictEqual(liste.map((p) => ({ id: p.id, text: p.text })));
+    expect(sc.pruefpunkte).toStrictEqual(liste.map((p, i) => ({ nr: i + 1, id: p.id, text: p.text })));
     expect(sc.pruefpunkte.map((p) => p.id)).toStrictEqual([
       'annahmen-pruefbar', 'annahmen-arten', 'annahmen-wichtig-beleg', 'annahmen-riskanteste', 'annahmen-loesung', 'annahmen-getan-quelle',
     ]);
@@ -346,6 +346,7 @@ describe('Werkzeuge', () => {
         { name: 'interviews', titel: 'Interviews und Snapshots', vorhanden: false },
       ],
       werkstatt: `${BASIS}/innolab/mappe`,
+      anleitung: `Bearbeiten in der Werkstatt: ${BASIS}/innolab/mappe`,
     });
 
     for (const name of ['artefakt_lesen', 'artefakt_pruefen']) {
@@ -378,12 +379,17 @@ describe('Werkzeuge', () => {
     expect(r.isError).toBeFalsy();
     expect(text(r)).toContain('# ');
     expect(text(r)).toContain(TEXT_A);
-    // Ohne Feedback: kein feedback, keine anleitung; die Rohdaten nicht noch einmal neben dem Markdown.
-    expect(r.structuredContent).toStrictEqual({ artefakt: 'annahmen', titel: 'Annahmen-Map', vorhanden: true, markdown: text(r), werkstatt: `${BASIS}/innolab/mappe` });
+    // Ohne Feedback: kein feedback; die Rohdaten nicht noch einmal neben dem Markdown. Text = Markdown + Anleitung.
+    const anleitung = `Ändern kann die Person nur selbst in der Werkstatt: ${BASIS}/innolab/mappe`;
+    const sc = r.structuredContent as { markdown: string };
+    expect(r.structuredContent).toStrictEqual({ artefakt: 'annahmen', titel: 'Annahmen-Map', vorhanden: true, markdown: sc.markdown, werkstatt: `${BASIS}/innolab/mappe`, anleitung });
+    expect(text(r)).toBe(`${sc.markdown}\n\n${anleitung}`);
     const leer = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'leitfaden' } });
+    const hinweis = (leer.structuredContent as { hinweis: string }).hinweis;
     expect(leer.structuredContent).toStrictEqual({
-      artefakt: 'leitfaden', titel: 'Interviewleitfaden', vorhanden: false, hinweis: text(leer), werkstatt: `${BASIS}/innolab/mappe`,
+      artefakt: 'leitfaden', titel: 'Interviewleitfaden', vorhanden: false, hinweis, werkstatt: `${BASIS}/innolab/mappe`, anleitung,
     });
+    expect(text(leer)).toBe(`${hinweis}\n\n${anleitung}`);
     expect(text(leer)).toMatch(/noch nicht ausgefüllt/);
   });
 
@@ -468,7 +474,9 @@ describe('Werkzeuge', () => {
     const u = await c.callTool({ name: 'mappe_uebersicht', arguments: {} });
     expect(u.isError).toBeFalsy();
     expect(u.structuredContent).toMatchObject({ kohorte: 'test', repo: 'test-demo-1000' });
-    expect(text(u)).toContain('Deine Demo-Mappe (Kohorte test, zählt nicht als Mappe der Kohorte):');
+    expect(text(u)).toContain('Deine Demo-Mappe (Kohorte test):');
+    expect((u.structuredContent as { anleitung: string }).anleitung).toContain('Das ist die Demo-Mappe der Lehrperson; sie zählt nicht als Mappe der Kohorte.');
+    expect(text(u)).toContain((u.structuredContent as { anleitung: string }).anleitung);
     expect(text(u)).toContain(`${BASIS}/innolab/mappe?ansicht=demo`);
     for (const [name, args] of [
       ['artefakt_lesen', { artefakt: 'annahmen' }],
@@ -495,11 +503,14 @@ describe('Werkzeuge', () => {
       name: m.name,
       frage: m.frage,
       // Feste IDs wie in artefakt_pruefen, ohne die alte Positions-ID (alt).
-      pruefliste: m.pruefliste!.map((p) => ({ id: p.id, text: p.text })),
+      pruefliste: m.pruefliste!.map((p, i) => ({ nr: i + 1, id: p.id, text: p.text })),
       ki: m.ki,
       quelle: m.quelle,
       link: `${BASIS}/innolab/methoden/interview`,
+      // Was im Text als Zusatz an „Rolle der KI“ und an der Prüfliste stand, steht jetzt in beiden Sichten (NDU-52).
+      anleitung: `Die KI kommt immer erst nach der eigenen Arbeit der Person dran. Mit der Nummer oder ID eines Prüfpunkts prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt.`,
     });
+    expect(text(r).endsWith(`\n\n${(r.structuredContent as { anleitung: string }).anleitung}`)).toBe(true);
     const alles = JSON.stringify(r);
     expect(alles).not.toContain('Ja, total!');
     expect(alles).not.toContain('<');
@@ -719,6 +730,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
       fehlen: ['brief', 'leitfaden'],
       unlesbar: [],
       werkstatt: `${BASIS}/innolab/mappe`,
+      anleitung: `Ändern kann die Person nur selbst in der Werkstatt: ${BASIS}/innolab/mappe`,
     });
     expect(text(r)).toContain('## Fehlende Belege (2)');
     expect(text(r)).not.toContain('## Unbekannte IDs');
@@ -771,10 +783,10 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     r.structuredContent as {
       markdown?: string;
       pruefpunkte: { id: string; text: string }[];
-      vorarbeit: { artefakt: string; titel: string; vorhanden: boolean; markdown?: string; hinweis?: string }[];
+      vorarbeit: { artefakt: string; titel: string; vorhanden: boolean; zweck: string; markdown?: string; hinweis?: string }[];
       anleitung: string;
     };
-  const ohneMarkdown = (r: Awaited<ReturnType<Client['callTool']>>) => sc(r).vorarbeit.map(({ markdown: _m, hinweis: _h, ...v }) => v);
+  const ohneMarkdown = (r: Awaited<ReturnType<Client['callTool']>>) => sc(r).vorarbeit.map(({ markdown: _m, hinweis: _h, zweck: _z, ...v }) => v);
 
   it('leitfaden: Brief und Annahmen-Map kommen mit, getrennt nach dem Artefakt; im Text und in structuredContent', async () => {
     const h = await aufbau();
@@ -897,7 +909,9 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     const liste = METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!;
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: 'annahmen-arten' } });
     expect(r.isError).toBeFalsy();
-    expect(sc(r).pruefpunkte).toStrictEqual([{ id: 'annahmen-arten', text: liste[1].text }]);
+    // Die Nummer bleibt auch im JSON die Position in der ganzen Liste; die Methode steht dabei.
+    expect(sc(r).pruefpunkte).toStrictEqual([{ nr: 2, id: 'annahmen-arten', text: liste[1].text }]);
+    expect(r.structuredContent).toHaveProperty('methode', 'Annahmen-Map');
     expect(sc(r).anleitung).toMatch(/^Prüf nur annahmen-arten\./);
     expect(sc(r).anleitung).toMatch(/auch mehr als drei/);
     expect(sc(r).anleitung).toMatch(/ob als Nächstes annahmen-wichtig-beleg drankommen soll/);
@@ -1152,8 +1166,8 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
     expect(r.structuredContent).not.toHaveProperty('pruefliste');
     expect(r.structuredContent).toMatchObject({ slug: 'interview', prueflisteGesperrt: true, frage: interview.frage });
     // NDU-52: Wann es weitergeht, steht auch im JSON (Claude Code sieht nur das).
-    expect((r.structuredContent as { hinweis: string }).hinweis).toMatch(/^Kommt nach der Übung/);
-    expect(text(r)).toContain((r.structuredContent as { hinweis: string }).hinweis);
+    expect((r.structuredContent as { anleitung: string }).anleitung).toMatch(/Kommt nach der Übung/);
+    expect(text(r)).toContain((r.structuredContent as { anleitung: string }).anleitung);
     expect(text(r)).toContain('Kommt nach der Übung');
     expect(text(r)).toContain('spätestens am 22.10. um 16:45');
     expect(text(r)).toContain(NOCHMAL(MCP_WERKZEUGE.methodeErklaeren));
@@ -1234,7 +1248,7 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
     const { h, c } = await amKurstag();
     await aufdecken(h);
     const m = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'interview' } });
-    expect((m.structuredContent as { pruefliste: unknown[] }).pruefliste).toStrictEqual(interview.pruefliste!.map((p) => ({ id: p.id, text: p.text })));
+    expect((m.structuredContent as { pruefliste: unknown[] }).pruefliste).toStrictEqual(interview.pruefliste!.map((p, i) => ({ nr: i + 1, id: p.id, text: p.text })));
     expect(m.structuredContent).not.toHaveProperty('prueflisteGesperrt');
     const p = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
     expect(p.isError).toBeFalsy();
@@ -1349,9 +1363,10 @@ describe('Feedback der Lehrenden im Connector', () => {
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
     expect(text(r)).not.toContain('Feedback der Lehrenden');
-    expect(Object.keys(r.structuredContent ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'markdown', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
+    expect(Object.keys(r.structuredContent ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'markdown', 'methode', 'pruefpunkte', 'titel', 'vorarbeit', 'vorhanden']);
     const lesen = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'annahmen' } });
-    expect(Object.keys(lesen.structuredContent ?? {}).sort()).toStrictEqual(['artefakt', 'markdown', 'titel', 'vorhanden', 'werkstatt']);
+    expect(Object.keys(lesen.structuredContent ?? {}).sort()).toStrictEqual(['anleitung', 'artefakt', 'markdown', 'titel', 'vorhanden', 'werkstatt']);
+    expect((lesen.structuredContent as { anleitung: string }).anleitung).not.toMatch(/Feedback/);
     expect((r.structuredContent as { anleitung: string }).anleitung).not.toMatch(/Feedback/);
   });
 
@@ -1502,9 +1517,10 @@ describe('Feedback der Lehrenden im Connector', () => {
 // Claude braucht, und keine darf die mögliche Fassung enthalten.
 describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-52)', () => {
   type Ergebnis = Awaited<ReturnType<Client['callTool']>>;
-  // Alle Zeichenketten des JSON, so wie das Modell sie liest (ohne JSON-Escapes für Zeilenumbrüche und Backslashes).
+  // Alle Werte des JSON, so wie das Modell sie liest (ohne JSON-Escapes für Zeilenumbrüche und Backslashes). Nur Werte,
+  // keine Schlüssel: Ein Schlüsselname wie „markdown“ belegt keinen Inhalt.
   const werte = (o: unknown): string[] =>
-    typeof o === 'string' ? [o] : Array.isArray(o) ? o.flatMap(werte) : o && typeof o === 'object' ? Object.entries(o).flatMap(([k, v]) => [k, ...werte(v)]) : [String(o)];
+    typeof o === 'string' ? [o] : Array.isArray(o) ? o.flatMap(werte) : o && typeof o === 'object' ? Object.values(o).flatMap(werte) : [String(o)];
   const claudeCodeSicht = (r: Ergebnis) => (r.structuredContent !== undefined ? werte(r.structuredContent).join('\n') : text(r));
   const sichten = (r: Ergebnis): [string, string][] => [['Text', text(r)], ['structuredContent', claudeCodeSicht(r)]];
   const D = '2026-10-23T09:00:00.000Z';
@@ -1545,7 +1561,9 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
     const brief = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'brief' } });
     const ids = METHODEN.find((m) => m.slug === ARTEFAKTE.brief.slug)!.pruefliste!.map((p) => p.id);
     for (const [sicht, s] of sichten(brief)) {
-      for (const x of [briefBeispiel.problem, ...ids, 'Wessen Problem?', 'Höchstens drei Befunde', 'markdown']) expect(s, `${sicht}: ${x}`).toContain(x);
+      for (const x of [briefBeispiel.problem, ...ids, 'Wessen Problem?', 'Höchstens drei Befunde', 'Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown)']) {
+        expect(s, `${sicht}: ${x}`).toContain(x);
+      }
     }
     const leitfaden = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
     for (const [sicht, s] of sichten(leitfaden)) {
@@ -1598,6 +1616,46 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
     expect((u.structuredContent as { artefakte: { titel: string; vorhanden: boolean }[] }).artefakte.every((a) => a.vorhanden && a.titel)).toBe(true);
   });
 
+  it('eine Quelle: jedes Werkzeug endet im Text mit genau der anleitung aus dem structuredContent', async () => {
+    const { c } = await volleMappe();
+    const aufrufe: [string, Record<string, unknown>][] = [
+      [MCP_WERKZEUGE.mappeUebersicht, {}],
+      [MCP_WERKZEUGE.verknuepfungenPruefen, {}],
+      [MCP_WERKZEUGE.tagStand, {}],
+      [MCP_WERKZEUGE.artefaktPruefen, { artefakt: 'annahmen', pruefpunkt: '2' }],
+      ...ARTEFAKT_NAMEN.flatMap((artefakt): [string, Record<string, unknown>][] => [
+        [MCP_WERKZEUGE.artefaktLesen, { artefakt }],
+        [MCP_WERKZEUGE.artefaktPruefen, { artefakt }],
+        [MCP_WERKZEUGE.methodeErklaeren, { slug: ARTEFAKTE[artefakt].slug }],
+      ]),
+    ];
+    for (const [name, args] of aufrufe) {
+      const r = await c.callTool({ name, arguments: args });
+      const anleitung = (r.structuredContent as { anleitung?: string }).anleitung;
+      expect(anleitung, `${name} ${JSON.stringify(args)}`).toBeTruthy();
+      expect(text(r).endsWith(`\n${anleitung}`), `${name} ${JSON.stringify(args)}`).toBe(true);
+    }
+  });
+
+  it('Regeln, die früher nur im Text standen, stehen in beiden Sichten (Review #321)', async () => {
+    const { c } = await volleMappe();
+    const pruefe = async (name: string, args: Record<string, unknown>, xs: string[]) => {
+      const r = await c.callTool({ name, arguments: args });
+      for (const [sicht, s] of sichten(r)) for (const x of xs) expect(s, `${name} ${sicht}: ${x}`).toContain(x);
+      return r;
+    };
+    await pruefe(MCP_WERKZEUGE.tagStand, {}, ['Das sind nur Zahlen, kein Urteil über die Qualität.', `Inhaltlich prüfen: ${MCP_WERKZEUGE.artefaktPruefen}.`]);
+    await pruefe(MCP_WERKZEUGE.methodeErklaeren, { slug: 'annahmen' }, ['immer erst nach der eigenen Arbeit', `prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt`]);
+    const l = await pruefe(MCP_WERKZEUGE.artefaktPruefen, { artefakt: 'leitfaden' }, ['Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.']);
+    // Der Zweck steht an jeder einzelnen Vorarbeit.
+    expect((l.structuredContent as { vorarbeit: { zweck: string }[] }).vorarbeit.map((v) => v.zweck)).toStrictEqual(Array(2).fill('Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.'));
+    expect(text(l).split('Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.')).toHaveLength(3);
+    // Im Fokus: Nummer in der ganzen Liste und Name der Methode, im Text wie im JSON.
+    const f = await pruefe(MCP_WERKZEUGE.artefaktPruefen, { artefakt: 'annahmen', pruefpunkt: 'annahmen-arten' }, ['Annahmen-Map', 'annahmen-arten']);
+    expect(text(f)).toContain('## Prüfpunkt im Fokus (Annahmen-Map)\n2. annahmen-arten:');
+    expect(f.structuredContent).toMatchObject({ methode: 'Annahmen-Map', pruefpunkte: [{ nr: 2, id: 'annahmen-arten' }] });
+  });
+
   it('Demo-Mappe der Lehrenden: auch im structuredContent als solche erkennbar', async () => {
     const h = await aufbau();
     await h.speicher.anlegen({ kohorte: 'test', rolle: 'lehrende', kuerzel: 'demo-1000' }, 1000);
@@ -1615,6 +1673,7 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
       for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
         const r = await c.callTool({ name, arguments: { artefakt } });
         groessen[`${name}(${artefakt})`] = JSON.stringify(r.structuredContent).length;
+        groessen[`${name}(${artefakt}) Text`] = text(r).length;
       }
     }
     // Ein Token sind im Deutschen grob 3 Zeichen; 32 000 Zeichen JSON bleiben weit unter 25 000 Token.
