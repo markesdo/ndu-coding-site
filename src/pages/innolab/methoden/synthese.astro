@@ -14,7 +14,7 @@ import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
-import { Clock, FileText, Mic, StickyNote } from '@lucide/astro';
+import { CircleCheck, CirclePause, CircleX, Clock, FileStack, FileText, Library, Mic, StickyNote } from '@lucide/astro';
 import { NACH_NETFLIX } from '../../../components/innolab-zeiten';
 import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 
@@ -34,26 +34,28 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   <MethodenKarte slug="synthese" />
 
   <Folie>
-    <h2 id="verschwimmen">Nach fünf Interviews verschwimmen die Geschichten</h2>
-    <p class="folie-satz">Verlasst euch nicht auf euer Gedächtnis: jedes Interview gleich verdichten.</p>
-    <p class="fluss-titel">Erst sammeln, dann auswerten</p>
-    <Fluss label="Im Projekt: 6 bis 12 Interviews führen, dann anhalten, mit Stickies auswerten und einen Bericht schreiben" knoten={[
-      { t: '6–12 Interviews', icon: Mic },
-      { t: 'Anhalten', sub: 'die Geschichten verschwimmen' },
-      { t: 'Stickies, Affinitätsdiagramm', icon: StickyNote },
-      { t: 'Bericht' },
+    <h2 id="verschwimmen">Nach einer Handvoll Interviews verschwimmen die Geschichten</h2>
+    <p class="folie-satz">Verlasst euch nicht auf euer Gedächtnis: ein Snapshot pro Interview.</p>
+    <p class="fluss-titel"><CircleX size={20} aria-hidden="true" class="icon-nein" /> Erst sammeln, dann auswerten</p>
+    <Fluss label="Nicht so: im Projekt 6 bis 12 Interviews führen, dann anhalten, mit Stickies auswerten, am Ende ein Bericht" knoten={[
+      { t: '6–12 Interviews', sub: 'im Projekt', icon: Mic },
+      { t: 'Anhalten', sub: 'erst jetzt auswerten', icon: CirclePause },
+      { t: 'Stickies', sub: 'vielleicht ein Affinitätsdiagramm', icon: StickyNote },
+      { t: 'Bericht', sub: 'am Ende', icon: FileStack },
     ]} />
-    <p class="fluss-titel" data-schritt>Laufend verdichten</p>
-    <Fluss label="Laufend: nach jedem Interview ein Snapshot" hervor={[1, 3]} knoten={[
-      { t: 'Interview 1', icon: Mic },
-      { t: 'Snapshot 1', icon: FileText },
-      { t: 'Interview 2', icon: Mic },
-      { t: 'Snapshot 2', icon: FileText },
-    ]} />
+    <div data-schritt>
+      <p class="fluss-titel"><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> Laufend verdichten</p>
+      <Fluss label="So: nach jedem Interview ein Snapshot; die Sammlung wird euer Nachschlagewerk" hervor={[1, 3]} knoten={[
+        { t: 'Interview', icon: Mic },
+        { t: 'Snapshot', sub: 'eine Seite', icon: FileText },
+        { t: 'nächstes Interview', sub: 'und so weiter', icon: Mic },
+        { t: 'Sammlung', sub: 'euer Nachschlagewerk', icon: Library },
+      ]} />
+    </div>
     <p class="small muted">{TORRES}, S. 67–68, 77.</p>
     <div class="nur-handout">
-      <p>Torres beschreibt, was nach ein paar Interviews passiert: „interviews will start to blur together. You don’t want to rely on your memory to keep your research straight. That’s the job of an interview snapshot.“ Der Snapshot hilft, sich an bestimmte Geschichten zu erinnern und aus jedem einzelnen Interview Chancen und Einsichten zu ziehen ({TORRES}, S. 68). Wer kontinuierlich interviewt, hat keinen Punkt, an dem er anhält und auswertet – darum „synthesize as you go“ (S. 67).</p>
-      <p>Das Gegenteil nennt sie ein Anti-Muster: Im Projekt führt man 6 bis 12 Interviews, hält dann an und wertet mit Stickies, vielleicht einem Affinitätsdiagramm, und einem Bericht aus. Das setzt voraus, dass Interviews einen Anfang und ein Ende haben. Stattdessen: nach jedem Interview verdichten, mit Snapshots (S. 77). Ihr habt genau das gemacht – heute schaut ihr gemeinsam darauf.</p>
+      <p>Torres beschreibt, was nach ein paar Interviews passiert: „interviews will start to blur together. You don’t want to rely on your memory to keep your research straight. That’s the job of an interview snapshot.“ Der Snapshot hilft, sich an bestimmte Geschichten zu erinnern und aus jedem einzelnen Interview Chancen und Einsichten zu ziehen ({TORRES}, S. 68). Die Sammlung der Snapshots wird zum Nachschlagewerk für alles, was ihr über eure Kundschaft wisst (S. 68). Wer kontinuierlich interviewt, hat keinen Punkt, an dem er anhält und auswertet – darum „synthesize as you go“ (S. 67).</p>
+      <p>Das Gegenteil nennt sie ein Anti-Muster: Im Projekt führt man 6 bis 12 Interviews, hält dann an und wertet mit Stickies, vielleicht einem Affinitätsdiagramm, und einem Bericht aus. Das setzt voraus, dass Interviews einen Anfang und ein Ende haben. Stattdessen: nach jedem Interview verdichten, mit Snapshots (S. 77). Das holt ihr heute nach, falls noch nicht geschehen – und schaut gemeinsam darauf.</p>
     </div>
   </Folie>
 
@@ -71,7 +73,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>Torres empfiehlt, nicht fünf Interviews zu sammeln und dann mit Stickies und Affinitätsdiagramm auszuwerten, sondern jedes Gespräch sofort auf einer Seite zu verdichten. Nach ein paar Interviews verschwimmen die Geschichten; der Snapshot hält fest, was genau dieses Gespräch gezeigt hat ({TORRES}, S. 67–70, 77).</p>
+      <p>Torres empfiehlt, nicht 6 bis 12 Interviews zu sammeln und dann mit Stickies und Affinitätsdiagramm auszuwerten, sondern jedes Gespräch auf einer Seite zu verdichten. Nach ein paar Interviews verschwimmen die Geschichten; der Snapshot hält fest, was genau dieses Gespräch gezeigt hat ({TORRES}, S. 67–70, 77).</p>
       <p><strong>Chancen</strong> sind Bedürfnisse, keine Lösungen. Wünscht sich jemand eine Funktion, fragt ihr: „Was würde dir das bringen?“ Die Antwort ist die Chance – sie lässt mehr Lösungen zu als der Wunsch. Chancen müssen keine wörtlichen Zitate sein, aber sie stehen in der Sprache der Kund*innen, nicht in eurer (S. 69–70).</p>
       <p><strong>Einsichten</strong> sind alles, was auffällt, aber kein Bedürfnis ist – etwa ein ungewöhnliches Verhalten. Haltet auch fest, was nur eine Person erzählt: Oft taucht es später bei anderen wieder auf (S. 70). Die <strong>Skizze der Geschichte</strong> zeigt die Momente und ihre Verbindungen wie beim Toast; mit ihr findet ihr später die Muster über alle Geschichten hinweg (S. 70). Ihr zeichnet sie gleich nach dem Gespräch auf Papier und habt sie heute neben euch.</p>
     </div>
@@ -231,7 +233,11 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
 </Layout>
 
 <style>
-  .fluss-titel { margin: 1rem 0 -.75rem; font-weight: 600; }
+  .fluss-titel { display: flex; align-items: center; gap: .4rem; margin: 1rem 0 -.75rem; font-weight: 600; }
+  .fluss-titel :global(.icon-nein) { color: var(--muted); }
+  .fluss-titel :global(.icon-ja) { color: var(--green); }
+  /* Zwei Reihen auf einer Folie: weniger Abstand unter jeder Reihe, sonst passt „verschwimmen“ nicht auf 720p. */
+  .fluss-titel + :global(.fluss) { margin-bottom: .75rem; }
   .geschichte { margin: 1rem 0; padding: .6rem 1rem; border-left: 4px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; line-height: 1.5; }
   /* Snapshot im Aufbau der Vorlage (Torres S. 68): oben Name/Bild, Zitat, Skizze; unten drei Spalten. */
   .snapshot { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); margin: 1rem 0; }
