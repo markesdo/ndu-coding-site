@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 import { CHAT_NETFLIX, CHAT_SYNTHESE } from './chat';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/synthese.astro (Tag 2, 14:05–15:10). Vorwissen: „teilweise“ aus Need
+// Begleiter-Notizen zu src/pages/innolab/methoden/synthese.astro (Tag 2, 14:15–15:15; bis 11.11. 14:05–15:10, 5 min Theorie gingen an den Rückblick auf Tag 1). Vorwissen: „teilweise“ aus Need
 // Finding (vorwissen.ts) – darum zuerst fragen, was bekannt ist, und die Theorie dann knapp halten.
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt; Fitzpatrick wie auf der Seite zitiert.
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
@@ -207,7 +207,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Reihenfolge festlegen, Timer 12 min je Runde neu starten.',
       'Zeit: nach 5 min vom Zeigen ins Besprechen wechseln.',
       'Nach 36 min: weiter zur Folie Festhalten, Timer 8 min dort.',
-      'Fallback: Werkstatt leer? Bis 14:45 die besten 2–3 eintragen.',
+      'Fallback: Werkstatt leer? Bis 14:50 die besten 2–3 eintragen.',
     ],
     uebung: { dauer: '44 min (3 × 12 + 8)', form: 'zu dritt reihum, dann allein' },
     chat: CHAT_SYNTHESE,
@@ -221,7 +221,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Fallback, wenn zu Beginn (14:05) noch keine Interviews in der Werkstatt stehen: Bis 14:45 trägt jede*r die besten zwei bis drei ein – Pseudonym, Datum, Einwilligung, 3–5 wörtliche Zitate mit ID, Chancen mit Beleg-IDs; Kurzinfos, Einsichten, Notizen später. Danach Theorie nur snapshot-i2 und geschichte/warum (7 min), Runden 3 × 5 min (2 zeigen, 3 besprechen), Festhalten 3 min – Ende wie geplant 15:10.',
+        'Fallback, wenn zu Beginn (14:15) noch keine Interviews in der Werkstatt stehen: Bis 14:50 trägt jede*r die besten zwei bis drei ein – Pseudonym, Datum, Einwilligung, 3–5 wörtliche Zitate mit ID, Chancen mit Beleg-IDs; Kurzinfos, Einsichten, Notizen später. Danach Theorie nur snapshot-i2 und geschichte/warum (7 min), Runden 3 × 5 min (2 zeigen, 3 besprechen), Festhalten 3 min – Ende wie geplant 15:15.',
         'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
         'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen.',
         'Runde 2 und 3 genauso, Timer jeweils neu starten.',

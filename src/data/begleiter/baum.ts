@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 import { CHAT_BAUM, CHAT_ZWOELF } from './chat';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 2, 16:30–17:45). Kein Vorwissen eingetragen; der Baum
+// Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 2, 16:35–17:50). Kein Vorwissen eingetragen; der Baum
 // ist seit Tag 1 der rote Faden, heute kommt die Ebene der Chancen dazu.
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 6, S. 78–95).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';

@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 import { CHAT_JOURNEY_MAP } from './chat';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/journey-map.astro (Tag 2, 15:20–16:20). Vorwissen: „unsicher“, als
+// Begleiter-Notizen zu src/pages/innolab/methoden/journey-map.astro (Tag 2, 15:25–16:25). Vorwissen: „unsicher“, als
 // „customer journey“ aus dem Entrepreneur Lab genannt (vorwissen.ts) – zuerst fragen; ist es bekannt, Erleben und Knoten
 // nur streifen und die Zeit für „Momente werden Äste“ und die Übung nutzen.
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt.
