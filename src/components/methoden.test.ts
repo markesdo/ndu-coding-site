@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from './innolab-zeiten';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, einfuegenHinweis, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, VORARBEIT_REGEL, einfuegenHinweis, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -123,12 +123,13 @@ describe('methoden', () => {
   });
 
   // Die Regeln am Ende des Prüf-Prompts sind dieselben Sätze wie in der anleitung von artefakt_pruefen (befundRegel …).
-  it('Prüf-Prompt: jeder Befund mit Prüfpunkt-ID, wörtlichem Zitat mit Zeilen-ID und Frage; Vorarbeit nur zum Abgleich', () => {
+  it('Prüf-Prompt: jeder Befund mit Prüfpunkt-ID, wörtlichem Zitat und Frage; Zeile der Vorarbeit bei Widerspruch oder Lücke', () => {
     const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
     expect(sy.split('\n').at(-1)).toBe(
       'Regeln: Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt. ' +
-        'Beim Zitat nennst du die ID der Zeile, wo sie eine hat (wie I2 oder I2-4). Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht. ' +
-        'Ausnahme: Für synthese-beleg-nachgetragen zitierst du aus der Vorarbeit die betroffene Zeile mit ihrer ID (wie A3). ' +
+        'Steht bei einer Zeile eine ID (wie I2 oder I2-4), nennst du sie beim Zitat; erfinde keine. ' +
+        'Was du zum Abgleich bekommst (die Vorarbeit), prüfst du nicht für sich. Beruht ein Befund auf einem Widerspruch zur Vorarbeit oder einer Lücke darin, ' +
+        'zitierst du zusätzlich die betroffene Zeile der Vorarbeit wörtlich (mit ID, wo eine steht). Steht dort keine solche Zeile, sag das. ' +
         'Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.',
     );
     // Der Brief hat keine Zeilen-IDs und keine Vorarbeit.
@@ -136,27 +137,22 @@ describe('methoden', () => {
       'Regeln: Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt. ' +
         'Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.',
     );
+    // Derselbe Grundsatz auf jedem Weg – Werkstatt, Claude Code im Repo, Bild aus Miro, Einfügen –, nicht nur für einzelne Punkte.
+    const wege = new Set<string>();
     for (const m of METHODEN.filter((x) => x.pruefliste)) {
-      const wege = [pruefPrompt(m), ...(einfuegenMoeglich(m) ? [pruefPrompt(m, undefined, 'einfuegen')] : [])];
-      for (const p of wege) {
-        expect(p, m.slug).toContain('Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt.');
-        expect(p, m.slug).toContain('Schreib nichts um');
-        expect(p.includes('Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht.'), m.slug).toBe(m.braucht.length > 0);
-        // Die Ausnahme genau für die Punkte, die ein Artefakt der Vorarbeit prüfen.
-        for (const q of m.pruefliste!) expect(p.includes(`Für ${q.id} zitierst du aus der Vorarbeit`), q.id).toBe(q.prueft !== undefined);
+      const prompts: [string, string][] = [[pruefungInWerkstatt(m) ? 'werkstatt' : pruefungAufMiro(m) ? 'miro' : 'repo', pruefPrompt(m)]];
+      if (einfuegenMoeglich(m)) prompts.push(['einfuegen', pruefPrompt(m, undefined, 'einfuegen')]);
+      for (const [weg, p] of prompts) {
+        wege.add(weg);
+        const regeln = p.split('\n').at(-1)!;
+        expect(regeln, `${m.slug} ${weg}`).toContain('Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt.');
+        expect(regeln.includes(VORARBEIT_REGEL), `${m.slug} ${weg}`).toBe(m.braucht.length > 0);
+        // Zeilen-IDs nur, wo eine steht – nie eine erfinden; außerhalb der Werkstatt ohne Beispiel.
+        if (weg !== 'werkstatt') expect(regeln, `${m.slug} ${weg}`).toContain('Steht bei einer Zeile eine ID, nennst du sie beim Zitat; erfinde keine.');
+        expect(regeln, `${m.slug} ${weg}`).toMatch(/Schreib nichts um/);
       }
     }
-  });
-
-  it('prueft: ein Prüfpunkt prüft nur ein Artefakt der Vorarbeit seiner Methode', () => {
-    const geprueft = METHODEN.flatMap((m) => (m.pruefliste ?? []).filter((p) => p.prueft).map((p) => [p.id, p.prueft]));
-    expect(geprueft).toStrictEqual([
-      ['synthese-beleg-nachgetragen', 'annahmen'],
-      ['geschaeftsmodell-annahme', 'annahmen'],
-      ['prototyp-spike-lernkarte', 'entscheidungen'],
-      ['backlog-reihenfolge', 'entscheidungen'],
-    ]);
-    for (const m of METHODEN) for (const p of m.pruefliste ?? []) if (p.prueft) expect(m.braucht, p.id).toContain(p.prueft);
+    expect([...wege].sort()).toStrictEqual(['einfuegen', 'miro', 'repo', 'werkstatt']);
   });
 
   it('Prüfpunkt-IDs: eindeutig, <slug>-<thema> ohne Ziffern', () => {

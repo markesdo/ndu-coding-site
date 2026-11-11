@@ -3,7 +3,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { METHODEN } from '../../../components/methoden';
+import { METHODEN, VORARBEIT_FEHLT_ZWECK, VORARBEIT_REGEL, VORARBEIT_ZWECK } from '../../../components/methoden';
 import { MOM_TEST_GRUPPE } from '../../../components/innolab-zeiten';
 import { aufgedecktSchluessel } from '../../../lib/aufgedeckt';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
@@ -252,7 +252,10 @@ describe('Werkzeuge', () => {
     // IDs beim Zitieren, nur aus dem geprüften Artefakt, Fokus auf einen Prüfpunkt.
     expect(anweisung).toContain('Abschnitt „Artefakt“');
     expect(anweisung).toContain('I2-4');
-    expect(anweisung).toContain('aus der Vorarbeit zum Abgleich nur, wo die Anleitung von artefakt_pruefen es für einen Prüfpunkt erlaubt');
+    // Regel 4 und 5 sagen dasselbe wie die Anleitung: Zeile der Vorarbeit nur bei Widerspruch oder Lücke, nie erfunden.
+    expect(anweisung).toContain('wörtlich aus dem Abschnitt „Artefakt“ – beruht er auf einem Widerspruch zur Vorarbeit oder einer Lücke darin, zusätzlich die betroffene Zeile der Vorarbeit – und endet');
+    expect(anweisung).toContain('aus der Vorarbeit zum Abgleich nur die Zeile, auf deren Widerspruch oder Lücke ein Befund beruht, und nie aus Vorarbeit, die nicht mitgeliefert wurde');
+    expect(anweisung).not.toMatch(/zitierst du nie|nur, was wörtlich/);
     expect(anweisung).toContain('pruefpunkt');
     // NDU-27: zuerst schauen, was da ist; nie das ganze Artefakt zurückkopieren.
     expect(anweisung).toContain(`Anfang des Gesprächs ${MCP_WERKZEUGE.mappeUebersicht}`);
@@ -838,11 +841,11 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     expect(sc(r).vorarbeit[0].markdown).toContain(briefBeispiel.problem.slice(0, 40));
     expect(sc(r).vorarbeit[1].markdown).toContain(TEXT_B);
     expect(sc(r).vorarbeit[0].markdown).not.toContain(TEXT_B);
-    expect(sc(r).anleitung).toMatch(/Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht/);
-    expect(sc(r).anleitung).toContain('Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown). Beim Zitat nennst du die ID der Zeile, wo sie eine hat (wie F4).');
-    // Die A-IDs der Vorarbeit sind kein Beispiel für Stellen im Leitfaden; kein Prüfpunkt des Leitfadens prüft die Vorarbeit.
+    expect(sc(r).anleitung).toContain(VORARBEIT_REGEL);
+    expect(sc(r).anleitung).toContain('Zitiere aus dem Abschnitt „Artefakt“ (im JSON: markdown), aus der Vorarbeit nur nach der Regel dazu. Steht bei einer Zeile eine ID (wie F4), nennst du sie beim Zitat; erfinde keine.');
+    // Die A-IDs der Vorarbeit sind kein Beispiel für Stellen im Leitfaden.
     expect(sc(r).anleitung).not.toMatch(/A3/);
-    expect(sc(r).anleitung).not.toMatch(/Ausnahme/);
+    expect(sc(r).vorarbeit.map((v) => v.zweck)).toStrictEqual([VORARBEIT_ZWECK, VORARBEIT_ZWECK]);
     expect(sc(r).anleitung).not.toMatch(/nicht abgleichen/);
   });
 
@@ -894,30 +897,46 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     expect(fehler).toHaveBeenCalled();
   });
 
-  // synthese-beleg-nachgetragen prüft die Annahmen-Map selbst (prueft: 'annahmen'): Dafür muss Claude deren Zeile zitieren dürfen.
-  it('interviews: für synthese-beleg-nachgetragen darf Claude die Zeile der Annahmen-Map zitieren – in Anleitung und Zweck', async () => {
+  // synthese-beleg-nachgetragen prüft, ob die Annahmen-Map die Belege aus den Interviews trägt: Dafür muss Claude die
+  // Zeile der Map zitieren dürfen (A1 „noch keiner“, obwohl I2-4 widerspricht) – im Fokus wie in der ganzen Prüfung.
+  it('interviews: Zeile der Annahmen-Map zitierbar, wo ein Befund auf Widerspruch oder Lücke beruht – nur wenn sie mitkommt', async () => {
     const h = await aufbau();
     await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
     const c = await client(h, await accessToken(h));
-    const AUSNAHME = 'Ausnahme: Für synthese-beleg-nachgetragen zitierst du aus der Vorarbeit die betroffene Zeile mit ihrer ID (wie A3).';
-    const ZWECK_ANNAHMEN = 'Nur zum Abgleich; für synthese-beleg-nachgetragen darfst du die betroffene Zeile mit ihrer ID (wie A3) zitieren.';
-    const ZWECK = 'Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.';
     const zwecke = (r: Awaited<ReturnType<Client['callTool']>>) => sc(r).vorarbeit.map((v) => [v.artefakt, v.zweck]);
 
     const alle = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews' } });
     expect(alle.isError).toBeFalsy();
-    expect(sc(alle).anleitung).toContain(`Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht. ${AUSNAHME}`);
-    expect(text(alle)).toContain(AUSNAHME);
-    expect(zwecke(alle)).toStrictEqual([['leitfaden', ZWECK], ['annahmen', ZWECK_ANNAHMEN]]);
-    expect(text(alle)).toContain(`## Vorarbeit zum Abgleich: Annahmen-Map (annahmen)\n${ZWECK_ANNAHMEN}`);
+    expect(sc(alle).anleitung).toContain(VORARBEIT_REGEL);
+    expect(sc(alle).anleitung).toContain('zitierst du zusätzlich die betroffene Zeile der Vorarbeit wörtlich (mit ID, wo eine steht)');
+    expect(text(alle)).toContain(VORARBEIT_REGEL);
+    // Sofie hat eine Annahmen-Map, aber keinen Leitfaden: nur die Map ist zitierbar.
+    expect(zwecke(alle)).toStrictEqual([['leitfaden', VORARBEIT_FEHLT_ZWECK], ['annahmen', VORARBEIT_ZWECK]]);
+    expect(text(alle)).toContain(`## Vorarbeit zum Abgleich: Annahmen-Map (annahmen)\n${VORARBEIT_ZWECK}`);
 
-    // Im Fokus auf genau diesen Punkt gilt die Ausnahme, bei jedem anderen nicht.
+    // Im Fokus: erst die Aufgabe, dann kein „nur aus dem Artefakt“, das ihr widerspräche.
     const fokus = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews', pruefpunkt: 'synthese-beleg-nachgetragen' } });
-    expect(sc(fokus).anleitung).toContain(AUSNAHME);
-    expect(zwecke(fokus)).toStrictEqual([['leitfaden', ZWECK], ['annahmen', ZWECK_ANNAHMEN]]);
-    const anderer = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews', pruefpunkt: 'synthese-belege' } });
-    expect(sc(anderer).anleitung).not.toMatch(/Ausnahme/);
-    expect(zwecke(anderer)).toStrictEqual([['leitfaden', ZWECK], ['annahmen', ZWECK]]);
+    const a = sc(fokus).anleitung;
+    expect(a.startsWith('Prüf nur synthese-beleg-nachgetragen.')).toBe(true);
+    expect(a).not.toContain('Zitiere nur aus');
+    expect(a).toContain('Zitiere aus dem Abschnitt „Artefakt“ (im JSON: markdown), aus der Vorarbeit nur nach der Regel dazu.');
+    expect(a).toContain(VORARBEIT_REGEL);
+  });
+
+  it('ohne lesbare Vorarbeit: keine Erlaubnis, daraus zu zitieren, und kein Erfinden', async () => {
+    const h = await aufbau();
+    // Kein Leitfaden, und die Annahmen-Map lässt sich gerade nicht lesen (GitHub-Ausfall).
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const echt = h.speicher.lesen.bind(h.speicher);
+    vi.spyOn(h.speicher, 'lesen').mockImplementation((repo, name) => (name === 'annahmen' ? Promise.reject(new GithubAusnahme(500)) : echt(repo, name)));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews' } });
+    expect(r.isError).toBeFalsy();
+    expect(sc(r).vorarbeit.map((v) => [v.vorhanden, v.zweck])).toStrictEqual([[false, VORARBEIT_FEHLT_ZWECK], [false, VORARBEIT_FEHLT_ZWECK]]);
+    expect(sc(r).anleitung).not.toContain(VORARBEIT_REGEL);
+    expect(sc(r).anleitung).toContain('Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown).');
+    expect(sc(r).anleitung).toContain('Daraus zitierst du nichts und erfindest keine Zeile.');
   });
 
   it('brief: Anleitung ohne Zeilen-ID (der Brief hat keine)', async () => {
@@ -925,7 +944,7 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     const c = await client(h, await accessToken(h, 1002));
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'brief' } });
     expect(sc(r).anleitung).toMatch(/Zitiere nur aus dem Abschnitt „Artefakt“ \(im JSON: markdown\)\./);
-    expect(sc(r).anleitung).not.toMatch(/ID der Zeile/);
+    expect(sc(r).anleitung).not.toMatch(/eine ID/);
   });
 
   it('leeres Artefakt: keine Vorarbeit mitgeliefert; Methode ohne Vorarbeit: kein Abschnitt', async () => {
@@ -1604,8 +1623,8 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
     }
     const leitfaden = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'leitfaden' } });
     for (const [sicht, s] of sichten(leitfaden)) {
-      // Das Artefakt und beide Vorarbeiten (Brief, Annahmen-Map), mit der Regel, aus der Vorarbeit nicht zu zitieren.
-      for (const x of [FRAGE_F1, 'F1', briefBeispiel.problem, TEXT_A, 'aus ihr zitierst du nicht']) expect(s, `${sicht}: ${x}`).toContain(x);
+      // Das Artefakt und beide Vorarbeiten (Brief, Annahmen-Map), mit der Regel, wann aus der Vorarbeit zitiert wird.
+      for (const x of [FRAGE_F1, 'F1', briefBeispiel.problem, TEXT_A, VORARBEIT_REGEL]) expect(s, `${sicht}: ${x}`).toContain(x);
     }
     const sc = leitfaden.structuredContent as { markdown: string; vorarbeit: { artefakt: string; markdown?: string }[] };
     // Artefakt und Vorarbeit bleiben getrennt: Die Frage steht nur im Artefakt, das Problem nur in der Vorarbeit.
@@ -1683,10 +1702,10 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
     };
     await pruefe(MCP_WERKZEUGE.tagStand, {}, ['Das sind nur Zahlen, kein Urteil über die Qualität.', `Inhaltlich prüfen: ${MCP_WERKZEUGE.artefaktPruefen}.`]);
     await pruefe(MCP_WERKZEUGE.methodeErklaeren, { slug: 'annahmen' }, ['immer erst nach der eigenen Arbeit', `prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt`]);
-    const l = await pruefe(MCP_WERKZEUGE.artefaktPruefen, { artefakt: 'leitfaden' }, ['Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.']);
+    const l = await pruefe(MCP_WERKZEUGE.artefaktPruefen, { artefakt: 'leitfaden' }, [VORARBEIT_ZWECK]);
     // Der Zweck steht an jeder einzelnen Vorarbeit.
-    expect((l.structuredContent as { vorarbeit: { zweck: string }[] }).vorarbeit.map((v) => v.zweck)).toStrictEqual(Array(2).fill('Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.'));
-    expect(text(l).split('Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.')).toHaveLength(3);
+    expect((l.structuredContent as { vorarbeit: { zweck: string }[] }).vorarbeit.map((v) => v.zweck)).toStrictEqual(Array(2).fill(VORARBEIT_ZWECK));
+    expect(text(l).split(VORARBEIT_ZWECK)).toHaveLength(3);
     // Im Fokus: Nummer in der ganzen Liste und Name der Methode, im Text wie im JSON.
     const f = await pruefe(MCP_WERKZEUGE.artefaktPruefen, { artefakt: 'annahmen', pruefpunkt: 'annahmen-arten' }, ['Annahmen-Map', 'annahmen-arten']);
     expect(text(f)).toContain('## Prüfpunkt im Fokus (Annahmen-Map)\n2. annahmen-arten:');

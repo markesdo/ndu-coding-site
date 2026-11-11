@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
-import { METHODEN, pruefPrompt } from '../../components/methoden.js';
+import { METHODEN, VORARBEIT_REGEL, pruefPrompt } from '../../components/methoden.js';
 import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import brief from '../beispiele/brief.json';
 import { rendern } from '../render/index.js';
@@ -45,13 +45,11 @@ describe('kopierText', () => {
   });
 
   // Dieselben Regeln wie artefakt_pruefen: Wer ohne Connector kopiert, bekommt keine schwächere Prüfung.
-  it('Interviews mit Prüf-Prompt: Regeln wie artefakt_pruefen – Prüfpunkt-ID, Zeilen-ID, Ausnahme für synthese-beleg-nachgetragen', () => {
+  it('Interviews mit Prüf-Prompt: Regeln wie artefakt_pruefen – Prüfpunkt-ID, Zeilen-ID, Zeile der Vorarbeit bei Widerspruch', () => {
     const r = kopierText({ name: 'interviews', markdown: '# Interviews\n', mitPrompt: true, frei: true, vorarbeit: { leitfaden: { markdown: LEITFADEN }, annahmen: { markdown: MAP } } });
     expect(r.text).toContain('Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt.');
-    expect(r.text).toContain('Beim Zitat nennst du die ID der Zeile, wo sie eine hat (wie I2 oder I2-4).');
-    expect(r.text).toContain(
-      'Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht. Ausnahme: Für synthese-beleg-nachgetragen zitierst du aus der Vorarbeit die betroffene Zeile mit ihrer ID (wie A3).',
-    );
+    expect(r.text).toContain('Steht bei einer Zeile eine ID (wie I2 oder I2-4), nennst du sie beim Zitat; erfinde keine.');
+    expect(r.text).toContain(VORARBEIT_REGEL);
     // Die Regeln stehen vor dem Artefakt, nicht darunter.
     expect(r.text.indexOf('Regeln:')).toBeLessThan(r.text.indexOf('# Interviews'));
   });

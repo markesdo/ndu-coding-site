@@ -326,7 +326,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
     ueberleitung: 'Zum Abschluss die Frage, die ihr euch für euer eigenes Produkt stellt.',
     kern: [
       {
-        text: 'Der Prüf-Prompt verlangt: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, wörtlichem Zitat (mit der ID der Zeile) und einer Frage; nichts umschreiben, keinen Text formulieren; passt alles, ein Satz. Was zurückkommt, ist also nie eine neue Fassung – die Entscheidung bleibt bei den Studierenden. Was sie lassen, kommt mit Grund ins Entscheidungslog, damit das Weglassen eine Entscheidung ist und kein Übersehen.',
+        text: 'Der Prüf-Prompt verlangt: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, wörtlichem Zitat und einer Frage; nichts umschreiben, keinen Text formulieren; passt alles, ein Satz. Was zurückkommt, ist also nie eine neue Fassung – die Entscheidung bleibt bei den Studierenden. Was sie lassen, kommt mit Grund ins Entscheidungslog, damit das Weglassen eine Entscheidung ist und kein Übersehen.',
         quelle: 'Kurs: methoden.ts, pruefPrompt (pruefRegeln); ClaudePruefung.astro („Claude findet, ihr entscheidet“)',
       },
     ],
