@@ -468,7 +468,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
             )}
 
             {/* Feedback der Lehrenden (NDU-35): erst, wenn die eigene Mappe geladen ist; ohne Feedback nichts. */}
-            {inhaltSichtbar && <StudierendenFeedback name={name} />}
+            {inhaltSichtbar && <StudierendenFeedback name={name} stand={gespeichert} />}
 
             {inhaltSichtbar && (
               <div className="wk-inhalt">

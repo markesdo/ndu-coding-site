@@ -12,7 +12,7 @@ import { Hono, type Context } from 'hono';
 import { ARTEFAKTE as KURS_ARTEFAKTE } from '../../../components/methoden.js';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { KOHORTEN, kohorte as kohorteNachId, werkstattArtefakte, type Kohorte } from '../../kohorten/index.js';
-import { feedbackSchreiben, feedbackZaehlen, zeilenAuswahl, zeilePasst, type Feedback } from '../../feedback.js';
+import { FASSUNG_ORTE, FeedbackAbgelehnt, fassungErlaubt, fassungTextPruefen, fassungZeilenText, feedbackSchreiben, feedbackZaehlen, zeilenAuswahl, zeilePasst, type Feedback } from '../../feedback.js';
 import { bezugBestimmen, verlaufZaehlen } from '../../lehrende.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName } from '../../schemas/index.js';
 import { artefaktStand, faelligBis, faelligZuTag, kurstagBestimmen } from '../../tag-stand.js';
@@ -21,6 +21,7 @@ import type { FeedbackAntwort, LehrendenAnsicht, LehrendenArtefakt, LehrendenInh
 import { mitgliedschaften, repoName } from '../../zugang.js';
 import { fehler, json } from '../antwort.js';
 import { commitAutor, kurzeNachricht } from '../commit.js';
+import { fassungVersiegeln, feedbackSicht, zeilenStand, type ArtefaktLage } from '../fassung.js';
 import { feedbackAendern, feedbackHolen } from '../feedback.js';
 import { mitSitzung, type SitzungEnv } from '../sitzung.js';
 import { DateiUnlesbar } from '../speicher-fehler.js';
@@ -41,6 +42,7 @@ const NICHT_LESBAR = 'Diese Mappe lässt sich gerade nicht lesen. Später neu la
 const ZUORDNUNG = 'Das Repo passt nicht zur Zugangsliste. Zugangsliste prüfen.';
 const KEINE_MAPPE = 'Diese Person hat sich noch nicht angemeldet.';
 const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
+const FASSUNG_UNLESBAR = 'Das Artefakt passt gerade nicht zum Format der Werkstatt (vielleicht direkt auf GitHub geändert). Eine mögliche Fassung geht erst wieder, wenn es lesbar ist.';
 
 const nachKuerzel = <T extends { kuerzel: string }>(x: T, y: T) => (x.kuerzel < y.kuerzel ? -1 : x.kuerzel > y.kuerzel ? 1 : 0);
 
@@ -197,12 +199,14 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       return fehler(c, 502, 'github-fehler', NICHT_LESBAR);
     }
     const { daten, roh } = gelesen;
+    // Mögliche Fassung (NDU-42): Lehrende sehen den Text und ob er für die Person schon offen ist.
+    const lage = daten === 'unlesbar' ? 'unbekannt' as const : { daten };
     const antwort: LehrendenInhalt = {
       name: n,
       stand: daten === null ? 'offen' : daten === 'unlesbar' ? 'unlesbar' : 'vorhanden',
       daten: daten === 'unlesbar' ? null : daten,
       roh,
-      feedback: fb ? fb.eintraege.filter((e) => e.artefakt === n) : null,
+      feedback: fb ? (await feedbackSicht(abh, repo, fb.eintraege.filter((e) => e.artefakt === n), 'lehrende', { [n]: lage })).eintraege : null,
     };
     return json(c, antwort);
   });
@@ -226,29 +230,56 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     // Zeile mit passender Form (D3, A2 …): Gibt es sie im Artefakt gerade? Geprüft gegen dieselbe Liste wie die Auswahl
     // im Leser (zeilenAuswahl). Falsche Form lehnt feedbackSchreiben mit eigenem Satz ab.
     const zeilenId = typeof a.zeilenId === 'string' && a.zeilenId !== '' ? a.zeilenId : undefined;
+    // Mögliche Fassung (NDU-42): Text und Stelle prüfen, bevor etwas gelesen wird. Die Regel „höchstens eine offene je
+    // Artefakt“ prüft feedbackSchreiben auf dem Stand, auf dem der Commit landet.
+    let fassungText: string | undefined;
+    try {
+      fassungText = fassungTextPruefen(a.fassung);
+    } catch (e) {
+      if (e instanceof FeedbackAbgelehnt) return fehler(c, 422, 'ungueltig', e.message);
+      throw e;
+    }
+    if (fassungText !== undefined && !fassungErlaubt(n, zeilenId)) return fehler(c, 422, 'ungueltig', FASSUNG_ORTE);
+    let daten: unknown = null;
+    // Schon gelesenes Artefakt, damit die Antwort es für die Fassung nicht noch einmal liest.
+    let lage: ArtefaktLage | undefined;
     if (zeilenId !== undefined && zeilePasst(n, zeilenId)) {
-      let daten: unknown;
       try {
-        // Beim Brief stehen die Abschnitte fest: nichts zu lesen.
-        daten = n === 'brief' ? null : (await laden(repo, n)).daten;
+        // Beim Brief stehen die Abschnitte fest: nur für eine Fassung zu lesen (Stand der Zeile).
+        if (n !== 'brief' || fassungText !== undefined) {
+          daten = (await laden(repo, n)).daten;
+          lage = daten === 'unlesbar' ? 'unbekannt' : { daten };
+        }
       } catch (e) {
         console.error('werkstatt: Lehrenden-Feedback – Artefakt nicht lesbar –', e instanceof Error ? `${e.name}: ${e.message}` : 'Fehler');
         return fehler(c, 502, 'github-fehler', NICHT_LESBAR);
       }
+      // Ohne lesbaren Stand der Zeile keine Fassung: Sie wäre sonst entweder nie oder sofort offen. Die Datei ist da, passt
+      // aber nicht zum Format (kaputtes JSON oder Schema) – das ist kein GitHub-Fehler, Warten hilft nicht.
+      if (fassungText !== undefined && daten === 'unlesbar') return fehler(c, 422, 'ungueltig', FASSUNG_UNLESBAR);
       if (!zeilenAuswahl(n, daten === 'unlesbar' ? null : daten).some((z) => z.wert === zeilenId)) {
         return fehler(c, 422, 'ungueltig', `${zeilenId} gibt es in ${ARTEFAKTE[n].titel} gerade nicht (vielleicht inzwischen gelöscht). Neu laden.`);
       }
     }
+    let fassung: { siegel: string; zeilenStand: string } | undefined;
+    if (fassungText !== undefined && zeilenId !== undefined) {
+      fassung = {
+        siegel: await fassungVersiegeln(fassungText, { repo, artefakt: n, zeilenId }, abh.umgebung.tokenKeys),
+        zeilenStand: await zeilenStand(fassungZeilenText(n, daten, zeilenId)),
+      };
+    }
     const s = c.get('sitzung');
     const zeile = zeilenId !== undefined ? ` (${zeilenId.slice(0, 20)})` : '';
+    // Die Commit-Nachricht nennt nie den Text der Fassung (die Person liest die Versionsgeschichte).
     const danach = await feedbackAendern(
       abh.speicher,
       repo,
-      (f) => feedbackSchreiben(f, { artefakt: n, zeilenId: a.zeilenId, kriterium: a.kriterium, text: a.text, autor: s.login, datum: new Date(abh.jetzt()).toISOString() }),
+      (f) => feedbackSchreiben(f, { artefakt: n, zeilenId: a.zeilenId, kriterium: a.kriterium, text: a.text, autor: s.login, datum: new Date(abh.jetzt()).toISOString(), fassung }),
       commitAutor(s),
-      kurzeNachricht(`Feedback von ${s.login}: ${ARTEFAKTE[n].titel}${zeile}`),
+      kurzeNachricht(`Feedback von ${s.login}: ${ARTEFAKTE[n].titel}${zeile}${fassung ? ' mit möglicher Fassung' : ''}`),
     );
-    const antwort: FeedbackAntwort = { eintraege: danach.eintraege.filter((e) => e.artefakt === n) };
+    const sicht = await feedbackSicht(abh, repo, danach.eintraege.filter((e) => e.artefakt === n), 'lehrende', lage ? { [n]: lage } : {});
+    const antwort: FeedbackAntwort = { eintraege: sicht.eintraege };
     return json(c, antwort);
   });
 

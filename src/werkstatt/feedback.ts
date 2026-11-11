@@ -6,6 +6,11 @@
 // auch wenn Lehrende und Studierende gleichzeitig schreiben. Keine Noten, keine Punkte.
 // NDU-41: Feedback der Lehrenden trägt optional ein Kriterium aus dem Katalog (kriterien.ts). Neues optionales Feld, darum
 // weiter feedback@1 (Regel im Werkstatt-Design: neue Felder optional → keine neue Version); alte Dateien bleiben gültig.
+// NDU-42: Feedback der Lehrenden zu einer erlaubten Zeile trägt optional eine „mögliche Fassung“ – versiegelt (fassung,
+// AES-GCM, server/fassung.ts), mit dem Stand der Zeile beim Schreiben (zeilenStand, SHA-256 des normalisierten
+// Zeilentexts) und, sobald die Person sie sehen darf, dem Zeitpunkt (freiSeit). Klartext steht nie in der Datei:
+// Die Person hat Lesezugriff auf ihr Repo, und die Fassung darf sie erst nach eigener Überarbeitung sehen. Ob sie offen
+// ist, rechnet nur der Server (server/fassung.ts); Browser und Connector bekommen nie das Siegel.
 import { z } from 'zod';
 import { KRITERIUM_ID, kriterium as kriteriumAusKatalog, kriteriumPasst } from './kriterien.js';
 import { ARTEFAKT_NAMEN, ARTEFAKTE, type ArtefaktName, type DatenVon } from './schemas/index.js';
@@ -16,6 +21,10 @@ export const FEEDBACK_SCHEMA = 'feedback@1';
 // Lehrende schreiben einen Absatz, Antworten sind kurz.
 export const FEEDBACK_MAX = 1500;
 export const ANTWORT_MAX = 500;
+// Mögliche Fassung (NDU-42): eine Zeile, Form statt Inhalt. Dazu eine Grenze in Bytes (UTF-8), damit das Siegel immer
+// in die Form von feedback@1 passt (FASSUNG_SIEGEL): 300 Zeichen aus Emoji-Folgen wären sonst bis zu einige kB.
+export const FASSUNG_MAX = 300;
+export const FASSUNG_MAX_BYTES = 1200;
 const AUTOR_MAX = 60;
 
 // Abschnitte des Produkt-Briefs (der Brief hat keine Zeilen-IDs); Titel wie die Karten der Vorschau (brief-hilfen.ts).
@@ -46,6 +55,46 @@ export function zeilePasst(artefakt: ArtefaktName, zeilenId: string): boolean {
 /** „A2“ oder beim Brief der Titel des Abschnitts („Welches Problem?“). */
 export function zeilenName(artefakt: ArtefaktName, zeilenId: string): string {
   return artefakt === 'brief' && Object.hasOwn(BRIEF_ABSCHNITTE, zeilenId) ? BRIEF_ABSCHNITTE[zeilenId as BriefAbschnitt] : zeilenId;
+}
+
+// Wo Lehrende eine mögliche Fassung hinterlegen dürfen (NDU-39): Outcome und Problem im Brief, der Wortlaut einer
+// Annahme, eine Leitfaden-Frage. Nie an Interviews und Zitaten (Daten der Person), Entscheidungen, Belegen oder am
+// ganzen Artefakt – dort nur eine Frage.
+const FASSUNG_BRIEF: readonly string[] = ['outcome', 'problem'] satisfies BriefAbschnitt[];
+export const FASSUNG_ORTE = 'Eine mögliche Fassung geht nur an Outcome oder Problem im Brief, an einer Annahme oder an einer Leitfaden-Frage.';
+
+/** Darf an dieser Stelle eine mögliche Fassung stehen? */
+export function fassungErlaubt(artefakt: ArtefaktName, zeilenId: string | undefined): boolean {
+  if (zeilenId === undefined || !zeilePasst(artefakt, zeilenId)) return false;
+  return artefakt === 'brief' ? FASSUNG_BRIEF.includes(zeilenId) : artefakt === 'annahmen' || artefakt === 'leitfaden';
+}
+
+/** Text der Zeile, an der eine Fassung hängt, normalisiert (NFC, Leerraum zu einem Leerzeichen): Nur echte Änderungen
+ *  am Wortlaut zählen, nicht ein zusätzliches Leerzeichen. Beim Outcome beide Felder. null = die Zeile gibt es nicht
+ *  (mehr) oder das Artefakt ist nicht gespeichert; einen noch nicht gespeicherten Brief zählen die Abschnitte als leer
+ *  (sie gibt es immer). daten = mit dem Schema des Editors geprüft. */
+export function fassungZeilenText(artefakt: ArtefaktName, daten: unknown, zeilenId: string): string | null {
+  const norm = (t: string) => t.normalize('NFC').replace(/\s+/g, ' ').trim();
+  if (artefakt === 'brief' && (daten === null || daten === undefined)) daten = { problem: '', outcome: { wirGlauben: '', wirMerkenEs: '' } };
+  if (daten === null || daten === undefined) return null;
+  switch (artefakt) {
+    case 'brief': {
+      const b = daten as DatenVon<'brief'>;
+      if (zeilenId === 'problem') return norm(b.problem);
+      if (zeilenId === 'outcome') return `${norm(b.outcome.wirGlauben)}\n${norm(b.outcome.wirMerkenEs)}`;
+      return null;
+    }
+    case 'annahmen': {
+      const a = (daten as DatenVon<'annahmen'>).annahmen.find((x) => x.id === zeilenId);
+      return a ? norm(a.text) : null;
+    }
+    case 'leitfaden': {
+      const f = (daten as DatenVon<'leitfaden'>).fragen.find((x) => x.id === zeilenId);
+      return f ? norm(f.text) : null;
+    }
+    default:
+      return null;
+  }
 }
 
 export interface ZeilenWahl {
@@ -80,6 +129,10 @@ export function zeilenAuswahl(name: ArtefaktName, daten: unknown): ZeilenWahl[] 
 }
 
 const FEEDBACK_ID = /^FB[1-9][0-9]*$/;
+// Versiegelte Fassung: `f1.<kid>.<base64url>` (server/fassung.ts); Stand der Zeile: `sha256:<64 hex>`. 2000 Zeichen
+// base64url fassen 1500 Bytes: Nonce (12) + FASSUNG_MAX_BYTES (1200) + Tag (16) = 1228.
+export const FASSUNG_SIEGEL = /^f1\.[A-Za-z0-9_-]{1,32}\.[A-Za-z0-9_-]{20,2000}$/;
+export const ZEILEN_STAND = /^sha256:[0-9a-f]{64}$/;
 // Form einer Kriteriums-ID: KRITERIUM_ID aus kriterien.ts. Ob es sie im Katalog gibt und ob sie passt, prüft
 // feedbackSchreiben beim Schreiben, nicht das Lesen: Eine Datei bleibt lesbar, auch wenn der Katalog sich später ändert.
 // Wie das Schema der Beleg-Notiz: Steuer- und Formatzeichen sind nicht erlaubt (U+202E dreht Text um); Zeilenumbrüche
@@ -110,6 +163,11 @@ const eintragSchema = z
     gesehen: z.literal(true).optional(),
     // Nur an Antworten der Studierenden: auf welches Feedback.
     antwortAuf: z.string().regex(FEEDBACK_ID).optional(),
+    // Nur an Feedback der Lehrenden zu einer erlaubten Zeile (NDU-42): versiegelte Fassung, Stand der Zeile beim
+    // Schreiben und, sobald offen, wann die Person sie zum ersten Mal sehen durfte. Form wie FASSUNG_SIEGEL.
+    fassung: z.string().regex(FASSUNG_SIEGEL, { error: 'Fassung: unbekannte Form.' }).optional(),
+    zeilenStand: z.string().regex(ZEILEN_STAND, { error: 'Zeilenstand: unbekannte Form.' }).optional(),
+    freiSeit: z.iso.datetime({ error: 'freiSeit: muss ein ISO-Zeitpunkt sein.' }).optional(),
   })
   .strict()
   .superRefine((e, ctx) => {
@@ -121,6 +179,13 @@ const eintragSchema = z
     if (e.von === 'studierende' && e.antwortAuf === undefined) ctx.addIssue({ code: 'custom', path: ['antwortAuf'], message: 'Eine Antwort braucht antwortAuf.' });
     if (e.von === 'studierende' && (e.erledigt !== undefined || e.gesehen !== undefined)) {
       ctx.addIssue({ code: 'custom', path: ['erledigt'], message: 'erledigt und gesehen gibt es nur am Feedback der Lehrenden.' });
+    }
+    if (e.fassung === undefined) {
+      if (e.zeilenStand !== undefined || e.freiSeit !== undefined) ctx.addIssue({ code: 'custom', path: ['zeilenStand'], message: 'zeilenStand und freiSeit gibt es nur mit einer Fassung.' });
+    } else if (e.von !== 'lehrende' || !fassungErlaubt(e.artefakt, e.zeilenId)) {
+      ctx.addIssue({ code: 'custom', path: ['fassung'], message: 'Eine mögliche Fassung gibt es nur am Feedback der Lehrenden zu einer erlaubten Zeile.' });
+    } else if (e.zeilenStand === undefined) {
+      ctx.addIssue({ code: 'custom', path: ['zeilenStand'], message: 'Eine Fassung braucht den Stand der Zeile.' });
     }
   });
 
@@ -191,11 +256,31 @@ function lehrendenEintrag(f: Feedback, id: unknown): FeedbackEintrag {
 
 const leerWert = (x: unknown) => x === undefined || x === null || x === '';
 
+/** Text einer möglichen Fassung (NDU-42): eine Zeile (Leerraum und Umbrüche werden zu einem Leerzeichen), höchstens
+ *  FASSUNG_MAX Zeichen, ohne Steuerzeichen. undefined = keine Fassung (fehlt oder leer). */
+export function fassungTextPruefen(roh: unknown): string | undefined {
+  if (leerWert(roh)) return undefined;
+  if (typeof roh !== 'string') throw new FeedbackAbgelehnt('Mögliche Fassung: bitte als Text eintragen.');
+  const t = roh.replace(/\s+/g, ' ').trim();
+  if (t === '') return undefined;
+  if (STEUERZEICHEN.test(t)) throw new FeedbackAbgelehnt('Mögliche Fassung: ohne Steuerzeichen.');
+  if (graphemAnzahl(t) > FASSUNG_MAX) throw new FeedbackAbgelehnt(`Mögliche Fassung: höchstens ${FASSUNG_MAX} Zeichen.`);
+  if (new TextEncoder().encode(t).length > FASSUNG_MAX_BYTES) throw new FeedbackAbgelehnt(`Mögliche Fassung: zu lang (höchstens ${FASSUNG_MAX} Zeichen; manche Zeichen wie Emoji zählen mehrfach).`);
+  return t;
+}
+
+/** Offene Fassung zu diesem Artefakt: Feedback der Lehrenden mit Fassung, noch nicht erledigt. Höchstens eine je
+ *  Artefakt (NDU-39: eine Fassung pro Artefakt und Runde; die Runde endet mit „erledigt“). */
+export function offeneFassung<T extends Pick<FeedbackEintrag, 'von' | 'artefakt' | 'erledigt'> & { fassung?: unknown }>(eintraege: readonly T[], artefakt: ArtefaktName): T | undefined {
+  return eintraege.find((x) => x.von === 'lehrende' && x.artefakt === artefakt && x.fassung !== undefined && x.erledigt !== true);
+}
+
 /** Lehrende: neues Feedback zu einem Artefakt, optional zu einer Zeile und optional mit einem Kriterium aus dem Katalog,
- *  das zu Artefakt und (beim Brief) Abschnitt passt. */
+ *  das zu Artefakt und (beim Brief) Abschnitt passt. fassung: schon versiegelt (server/fassung.ts) mit dem Stand der Zeile
+ *  beim Schreiben; nur an erlaubten Zeilen und höchstens eine offene je Artefakt. */
 export function feedbackSchreiben(
   f: Feedback,
-  e: { artefakt: ArtefaktName; zeilenId?: unknown; kriterium?: unknown; text: unknown; autor: string; datum: string },
+  e: { artefakt: ArtefaktName; zeilenId?: unknown; kriterium?: unknown; text: unknown; autor: string; datum: string; fassung?: { siegel: string; zeilenStand: string } },
 ): Feedback {
   const text = textPruefen(e.text, FEEDBACK_MAX);
   const roh = leerWert(e.zeilenId) ? undefined : e.zeilenId;
@@ -213,9 +298,15 @@ export function feedbackSchreiben(
     }
     kriterium = k.id;
   }
+  if (e.fassung !== undefined) {
+    if (!fassungErlaubt(e.artefakt, zeile)) throw new FeedbackAbgelehnt(FASSUNG_ORTE);
+    const offen = offeneFassung(f.eintraege, e.artefakt);
+    if (offen) throw new FeedbackAbgelehnt(`Zu ${ARTEFAKTE[e.artefakt].titel} gibt es schon eine offene mögliche Fassung (${offen.id}). Eine neue geht erst, wenn sie erledigt ist.`);
+  }
   const neu: FeedbackEintrag = {
     id: naechsteId(f), artefakt: e.artefakt, ...(zeile !== undefined ? { zeilenId: zeile } : {}), ...(kriterium !== undefined ? { kriterium } : {}),
     von: 'lehrende', autor: e.autor, text, datum: e.datum,
+    ...(e.fassung !== undefined ? { fassung: e.fassung.siegel, zeilenStand: e.fassung.zeilenStand } : {}),
   };
   return { ...f, eintraege: [...f.eintraege, neu] };
 }
@@ -228,7 +319,10 @@ export function antworten(f: Feedback, e: { antwortAuf: unknown; text: unknown; 
     id: naechsteId(f), artefakt: ziel.artefakt, ...(ziel.zeilenId !== undefined ? { zeilenId: ziel.zeilenId } : {}),
     von: 'studierende', autor: e.autor, text, datum: e.datum, antwortAuf: ziel.id,
   };
-  return { ...f, eintraege: [...f.eintraege, neu] };
+  // Eine Antwort öffnet die mögliche Fassung (NDU-42): gleich im selben Commit vermerken, wann.
+  const freigeben = ziel.fassung !== undefined && ziel.freiSeit === undefined;
+  const eintraege = freigeben ? f.eintraege.map((x) => (x === ziel ? { ...x, freiSeit: e.datum } : x)) : f.eintraege;
+  return { ...f, eintraege: [...eintraege, neu] };
 }
 
 /** Studierende: Feedback der Lehrenden als erledigt markieren oder wieder öffnen. Ändert nur dieses eine Feld;
@@ -237,6 +331,16 @@ export function erledigtSetzen(f: Feedback, id: unknown, erledigt: unknown): Fee
   if (typeof erledigt !== 'boolean') throw new FeedbackAbgelehnt('erledigt muss ja oder nein sein.');
   const ziel = lehrendenEintrag(f, id);
   if ((ziel.erledigt === true) === erledigt) return f;
+  // Solange die Fassung zu ist (nicht frei vermerkt, keine Antwort), geht „erledigt“ nicht: Sonst endete die Runde, ohne
+  // dass die Person selbst überarbeitet hätte. Die Speichern-Route vermerkt freiSeit, sobald die Zeile geändert ist.
+  if (erledigt && ziel.fassung !== undefined && ziel.freiSeit === undefined && !f.eintraege.some((x) => x.von === 'studierende' && x.antwortAuf === ziel.id)) {
+    throw new FeedbackAbgelehnt('Überarbeite zuerst die Zeile oder antworte.');
+  }
+  // Höchstens eine offene Fassung je Artefakt (NDU-42): Wieder öffnen darf keine zweite offene ergeben.
+  if (!erledigt && ziel.fassung !== undefined) {
+    const andere = offeneFassung(f.eintraege.filter((x) => x !== ziel), ziel.artefakt);
+    if (andere) throw new FeedbackAbgelehnt(`${ziel.id} lässt sich gerade nicht wieder öffnen: Zu ${ARTEFAKTE[ziel.artefakt].titel} ist schon eine andere mögliche Fassung offen (${andere.id}). Setz zuerst ${andere.id} auf erledigt.`);
+  }
   return {
     ...f,
     eintraege: f.eintraege.map((x) => {
@@ -255,13 +359,16 @@ export function gesehenSetzen(f: Feedback, artefakt: ArtefaktName): Feedback {
 
 // --- Lesen und Zählen ---------------------------------------------------------------------------------------------
 
-export interface FeedbackFaden {
-  feedback: FeedbackEintrag;
-  antworten: FeedbackEintrag[];
+/** Was Fäden und Zählung von einem Eintrag brauchen: so passen die Einträge der Datei und die der API (vertrag.ts). */
+type FadenTeil = Pick<FeedbackEintrag, 'id' | 'von' | 'artefakt' | 'antwortAuf'>;
+
+export interface FeedbackFaden<T extends FadenTeil = FeedbackEintrag> {
+  feedback: T;
+  antworten: T[];
 }
 
 /** Feedback der Lehrenden zu einem Artefakt mit seinen Antworten, in der Reihenfolge des Schreibens. */
-export function faeden(eintraege: readonly FeedbackEintrag[], artefakt: ArtefaktName): FeedbackFaden[] {
+export function faeden<T extends FadenTeil>(eintraege: readonly T[], artefakt: ArtefaktName): FeedbackFaden<T>[] {
   return eintraege
     .filter((e) => e.von === 'lehrende' && e.artefakt === artefakt)
     .map((feedback) => ({ feedback, antworten: eintraege.filter((a) => a.von === 'studierende' && a.antwortAuf === feedback.id) }));
@@ -277,7 +384,7 @@ export interface FeedbackZahlen {
 }
 
 /** Zählung je Artefakt (Zelle der Lehrenden-Ansicht, Zeile in „Meine Mappe“). */
-export function feedbackZaehlen(eintraege: readonly FeedbackEintrag[], artefakt: ArtefaktName): FeedbackZahlen {
+export function feedbackZaehlen(eintraege: readonly Pick<FeedbackEintrag, 'von' | 'artefakt' | 'erledigt' | 'gesehen'>[], artefakt: ArtefaktName): FeedbackZahlen {
   const fb = eintraege.filter((e) => e.von === 'lehrende' && e.artefakt === artefakt);
   return {
     offen: fb.filter((e) => !e.erledigt).length,
