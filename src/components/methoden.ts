@@ -435,7 +435,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Vasco Duarte, NoEstimates (2016), S. 68–71, 80–88, 97; Ron Jeffries, The Nature of Software Development (2015), S. 37–40; Jeff Patton, User Story Mapping (2014), Kap. 4, 10–12, 16–17; Bill Wake, INVEST (2003); Gegenposition: James Grenning, Planning Poker (2002), und Mike Cohn, Agile Estimating and Planning (2005), S. 51–59; Teilen nach Cohn Kap. 12, S. 121–125',
   },
   {
-    slug: 'sprint', name: 'Sprint', tag: 5, dauer: 105, prueflisteStand: 2,
+    slug: 'sprint', name: 'Sprint', tag: 5, dauer: 115, prueflisteStand: 2,
     frage: 'Was liefern wir in diesem Sprint – und was lernen wir daraus?',
     braucht: ['geschnitten', 'team', 'brief'], ergibt: ['inkrement', 'sprintlog'],
     pruefliste: [
@@ -480,7 +480,7 @@ export const TAGE: { n: number; datum?: string; titel: string; text: string; zus
   { n: 2, datum: '2026-11-12', titel: 'Kunde & Erlebnis', text: 'Snapshots besprechen, Experience Map, Opportunity Solution Tree.' },
   { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, Concept Story, Geschäftsmodell, Experiment-Karte.' },
   { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Scrum und Lego4Scrum, Team und Definition of Done.' },
-  { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning, Pitch – dann wird gebaut.' },
+  { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning mit Störfall, Pitch – dann wird gebaut.' },
   { n: 6, datum: '2026-12-19', titel: 'Bauen & Review', text: 'Fertig bauen, Usability-Tests über Kreuz, Sprint-Review und Retro: Der Prototyp steht.',
     zusatz: { zeit: '14:00–18:00', was: 'Pitch-Probe und Puffer', offen: true } },
   { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
