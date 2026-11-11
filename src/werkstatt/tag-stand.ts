@@ -31,7 +31,7 @@ export interface Kurstag {
   // Aus den Terminen der Kohorte; null = Termin offen.
   datum: string | null;
   lage: TagLage;
-  // Frühere Kurstage, deren Termin noch offen ist (Tag 2 nach der Absage); ihre Artefakte sind mit fällig.
+  // Frühere Kurstage, deren Termin noch offen ist; ihre Artefakte sind mit fällig.
   ohneTermin: number[];
 }
 

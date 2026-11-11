@@ -18,16 +18,21 @@ function laden<N extends ArtefaktName>(name: N): DatenVon<N> {
   return r.daten;
 }
 
-describe('kurstagBestimmen (Termine der Kohorte 2026: Tag 1 am 22.10., Tag 2 offen, Tag 3 am 21.11.)', () => {
+describe('kurstagBestimmen (Termine der Kohorte 2026: Tag 1 am 22.10., Tag 2 am 12.11., Tag 3 am 21.11.)', () => {
   const t = kohorte2026.termine;
+  // Wie bis November: Tag 2 ohne Termin – prüft, dass ein offener Termin nicht verloren geht.
+  const tag2Offen = { ...t, tag2: null };
   it('vor dem ersten Termin: Tag 1 als nächster', () => {
     expect(kurstagBestimmen(t, '2026-10-21')).toMatchObject({ tag: 1, datum: '2026-10-22', lage: 'naechster' });
   });
   it('am Kurstag: heute', () => {
     expect(kurstagBestimmen(t, '2026-10-22')).toMatchObject({ tag: 1, lage: 'heute', titel: TAGE[0].titel });
   });
+  it('nach Tag 1: nächster Termin ist Tag 2 am 12.11.', () => {
+    expect(kurstagBestimmen(t, '2026-10-30')).toStrictEqual({ tag: 2, titel: TAGE[1].titel, datum: '2026-11-12', lage: 'naechster', ohneTermin: [] });
+  });
   it('nach Tag 1, Tag 2 noch ohne Termin: nächster Termin ist Tag 3, Tag 2 steht in ohneTermin', () => {
-    expect(kurstagBestimmen(t, '2026-10-30')).toStrictEqual({ tag: 3, titel: TAGE[2].titel, datum: '2026-11-21', lage: 'naechster', ohneTermin: [2] });
+    expect(kurstagBestimmen(tag2Offen, '2026-10-30')).toStrictEqual({ tag: 3, titel: TAGE[2].titel, datum: '2026-11-21', lage: 'naechster', ohneTermin: [2] });
   });
 
   it('nach Datum, nicht nach Nummer: ein verschobener Tag 2 nach Tag 3 kommt an seinem Termin', () => {
@@ -36,7 +41,7 @@ describe('kurstagBestimmen (Termine der Kohorte 2026: Tag 1 am 22.10., Tag 2 off
     expect(kurstagBestimmen(verschoben, '2026-11-22')).toMatchObject({ tag: 2, datum: '2026-11-25', lage: 'naechster' });
   });
   it('nach dem letzten Termin, Tag 2 weiter offen: vorbei, Tag 2 in ohneTermin', () => {
-    expect(kurstagBestimmen(t, '2027-02-01')).toMatchObject({ tag: 7, lage: 'vorbei', ohneTermin: [2] });
+    expect(kurstagBestimmen(tag2Offen, '2027-02-01')).toMatchObject({ tag: 7, lage: 'vorbei', ohneTermin: [2] });
   });
 
   it('nur Tag 1 datiert und vorbei: Tag 2 ohne Termin ist der nächste', () => {
