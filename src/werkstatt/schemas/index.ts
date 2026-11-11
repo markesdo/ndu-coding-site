@@ -16,6 +16,7 @@ export { type Entscheidungen, type Entscheidung } from './entscheidungen.js';
 export { EINSTIEG_VORLAGE, FRAGE_ARTEN, type Leitfaden, type Frage } from './leitfaden.js';
 export { ANNAHME_ARTEN, TAG1_ARTEN, WICHTIGKEITEN, quadrant, punkt, type Annahmen, type Annahme, type Quadrant } from './annahmen.js';
 export type { Interviews, Interview, Chance } from './interviews.js';
+export { interviewGefuellt } from './interviews.js';
 
 export type ArtefaktDaten = Brief | Entscheidungen | Leitfaden | Annahmen | Interviews;
 

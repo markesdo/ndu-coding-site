@@ -25,9 +25,14 @@ function kaffeebar(): MappeDaten & { [K in ArtefaktName]: DatenVon<K> } {
 }
 
 // Die Kaffeebar hat eine Lücke mit Absicht: A2 und A4 stehen auf „getan“ ohne Quelle (Begleiter: „nachfragen“).
-const KAFFEEBAR_BEFUNDE = ['A2', 'A4'].map((id) => ({
+const GETAN_OHNE_QUELLE = ['A2', 'A4'].map((id) => ({
   art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
 }));
+// Und A1, die riskanteste Annahme, steht auf „noch keiner“, obwohl fünf Interviews gespeichert sind.
+const A1_RISKANTESTE = {
+  art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist eure riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was habt ihr dazu gehört?',
+};
+const KAFFEEBAR_BEFUNDE = [...GETAN_OHNE_QUELLE, A1_RISKANTESTE];
 
 describe('verknuepfungenPruefen', () => {
   it('Kaffeebar: Beleg-IDs aus Entscheidungslog (I2-4, I1 …) werden aufgelöst; Befund nur für „getan“ ohne Quelle', () => {
@@ -71,7 +76,8 @@ describe('verknuepfungenPruefen', () => {
     const v = verknuepfungenPruefen({ ...kaffeebar(), interviews: 'unlesbar' });
     expect(v.unlesbar).toStrictEqual(['interviews']);
     expect(v.geprueft).not.toContain('interviews');
-    expect(v.befunde).toStrictEqual(KAFFEEBAR_BEFUNDE);
+    // Ohne lesbare Interviews lässt sich nicht zählen: kein Befund zur riskantesten Annahme.
+    expect(v.befunde).toStrictEqual(GETAN_OHNE_QUELLE);
   });
 
   it('fehlender Beleg im Entscheidungslog: hohe Stufe ohne IDs und ohne Notiz; mit Notiz still; ersetzte Zeile still', () => {
@@ -116,7 +122,7 @@ describe('verknuepfungenPruefen', () => {
     const m = kaffeebar();
     m.annahmen.annahmen[1].belegIds = ['D2'];
     m.annahmen.annahmen[3].belegIds = ['I2-4', 'D2'];
-    expect(verknuepfungenPruefen(m).befunde).toStrictEqual([]);
+    expect(verknuepfungenPruefen(m).befunde).toStrictEqual([A1_RISKANTESTE]);
   });
 
   it('Annahme „getan“: Interview-Zitat, A- oder F-ID oder eine Entscheidung ohne eigene „getan“-Quelle reichen nicht', () => {
@@ -197,13 +203,13 @@ describe('verknuepfungenPruefen', () => {
     expect(v.befunde.filter((b) => b.art === 'fehlender-beleg')).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A4'));
     const unlesbar = kaffeebar();
     unlesbar.annahmen.annahmen[1].belegIds = ['D2'];
-    expect(verknuepfungenPruefen({ ...unlesbar, entscheidungen: 'unlesbar' }).befunde).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A4'));
+    expect(verknuepfungenPruefen({ ...unlesbar, entscheidungen: 'unlesbar' }).befunde).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort !== 'A2'));
   });
 
   it('Annahme „getan“ mit Beleg-Notiz (Quelle außerhalb der Mappe) ist still, ohne Notiz bleibt der Befund', () => {
     const m = kaffeebar();
     m.annahmen.annahmen[1].belegNotiz = 'Kassendaten September';
-    expect(verknuepfungenPruefen(m).befunde).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A4'));
+    expect(verknuepfungenPruefen(m).befunde).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort !== 'A2'));
   });
 
   it('Annahme „gesagt“ oder „erzählt“: eine Beleg-Notiz allein ersetzt kein Interview', () => {
@@ -232,10 +238,62 @@ describe('verknuepfungenPruefen', () => {
     expect(v.befunde).toStrictEqual([]);
   });
 
-  it('Belegstufe „noch keiner“ ohne IDs ist kein fehlender Beleg', () => {
+  it('Belegstufe „noch keiner“ ohne IDs ist kein fehlender Beleg (nur die riskanteste Annahme wird angesprochen)', () => {
     const m = kaffeebar();
     for (const a of m.annahmen.annahmen) { a.beleg = 'keiner'; a.belegIds = []; }
-    expect(verknuepfungenPruefen(m).befunde).toStrictEqual([]);
+    expect(verknuepfungenPruefen(m).befunde).toStrictEqual([A1_RISKANTESTE]);
+  });
+
+  describe('riskanteste Annahme ohne Beleg', () => {
+    const riskanteste = (m: MappeDaten) => verknuepfungenPruefen(m).befunde.filter((b) => b.art === 'riskanteste-ohne-beleg');
+
+    it('Kaffeebar: A1 ist riskanteste, „noch keiner“, fünf Interviews → ein Befund, der mit einer Frage endet', () => {
+      expect(riskanteste(kaffeebar())).toStrictEqual([A1_RISKANTESTE]);
+    });
+
+    it('still, sobald A1 einen Beleg hat: Stufe, ID oder Notiz', () => {
+      const mitStufe = kaffeebar();
+      Object.assign(mitStufe.annahmen.annahmen[0], { beleg: 'gesagt', belegIds: ['I2-4'] });
+      expect(riskanteste(mitStufe)).toStrictEqual([]);
+      // Stufe „gesagt“ ohne Interview meldet schon „fehlender-beleg“, nicht doppelt.
+      const nurStufe = kaffeebar();
+      nurStufe.annahmen.annahmen[0].beleg = 'gesagt';
+      expect(verknuepfungenPruefen(nurStufe).befunde.filter((b) => b.ort === 'A1').map((b) => b.art)).toStrictEqual(['fehlender-beleg']);
+      const mitId = kaffeebar();
+      mitId.annahmen.annahmen[0].belegIds = ['I3-1'];
+      expect(riskanteste(mitId)).toStrictEqual([]);
+      const mitNotiz = kaffeebar();
+      mitNotiz.annahmen.annahmen[0].belegNotiz = 'Zählung am Bahnsteig';
+      expect(riskanteste(mitNotiz)).toStrictEqual([]);
+    });
+
+    it('still ohne Interviews: nicht gespeichert, leere Liste oder nur leere Snapshots', () => {
+      expect(riskanteste({ ...kaffeebar(), interviews: null })).toStrictEqual([]);
+      const keine = kaffeebar();
+      keine.interviews.interviews = [];
+      expect(riskanteste(keine)).toStrictEqual([]);
+      const leer = kaffeebar();
+      leer.interviews.interviews = leer.interviews.interviews.map((iv) => ({ ...iv, zitat: '', kurzinfos: '', notizen: '', einsichten: [], chancen: [], zitate: [] }));
+      expect(riskanteste(leer)).toStrictEqual([]);
+    });
+
+    it('zählt nur Interviews mit Inhalt; bei einem steht die Einzahl', () => {
+      const m = kaffeebar();
+      m.interviews.interviews = m.interviews.interviews.map((iv, i) => (i === 0 ? iv : { ...iv, zitat: '', kurzinfos: '', notizen: '', einsichten: [], chancen: [], zitate: [] }));
+      expect(riskanteste(m).map((b) => b.text)).toStrictEqual(['A1 ist eure riskanteste Annahme und hat noch keinen Beleg, obwohl 1 Interview gespeichert ist. Was habt ihr dazu gehört?']);
+    });
+
+    it('still, wenn keine riskanteste Annahme markiert ist', () => {
+      const m = kaffeebar();
+      delete m.annahmen.riskanteste;
+      expect(riskanteste(m)).toStrictEqual([]);
+    });
+
+    it('folgt der Markierung: A3 als riskanteste, ebenfalls „noch keiner“', () => {
+      const m = kaffeebar();
+      m.annahmen.riskanteste = 'A3';
+      expect(riskanteste(m).map((b) => b.ort)).toStrictEqual(['A3']);
+    });
   });
 
   it('Chance ohne Zitat als Beleg', () => {
@@ -326,10 +384,13 @@ describe('verknuepfungenText', () => {
       'Nicht lesbar (passt nicht zum Format der Werkstatt, dort neu speichern): Produkt-Brief.',
       '',
       '## Fehlende Belege (2)',
-      ...KAFFEEBAR_BEFUNDE.map((b) => `- ${b.text}`),
+      ...GETAN_OHNE_QUELLE.map((b) => `- ${b.text}`),
       '',
       '## Verwaiste Elemente (5)',
       ...['I1', 'I2', 'I3', 'I4', 'I5'].map((id) => `- ${id} wird weder im Entscheidungslog noch in der Annahmen-Map als Beleg genannt.`),
+      '',
+      '## Riskanteste Annahme ohne Beleg (1)',
+      `- ${A1_RISKANTESTE.text}`,
     ].join('\n'));
   });
 

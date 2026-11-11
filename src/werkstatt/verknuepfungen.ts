@@ -1,7 +1,8 @@
-// Verknüpfungen der Mappe prüfen (deterministisch, ohne KI): unbekannte IDs, fehlende Belege, verwaiste Interviews.
+// Verknüpfungen der Mappe prüfen (deterministisch, ohne KI): unbekannte IDs, fehlende Belege, verwaiste Interviews,
+// riskanteste Annahme ohne Beleg trotz Interviews.
 // Grundlage für das MCP-Werkzeug verknuepfungen_pruefen und später für die Lehrende-Ansicht (Spec §3.4, §3.7).
 import { entscheidungsIds, entscheidungTraegtGetan, ersetztDurch, getanHatEigeneQuelle, getanMitNotiz, getanQuellePruefer } from './belege.js';
-import { ARTEFAKT_NAMEN, ARTEFAKTE, BELEGSTUFE_TEXT, type Annahmen, type ArtefaktName, type Brief, type Entscheidungen, type Interviews, type Leitfaden } from './schemas/index.js';
+import { ARTEFAKT_NAMEN, ARTEFAKTE, BELEGSTUFE_TEXT, interviewGefuellt, type Annahmen, type ArtefaktName, type Brief, type Entscheidungen, type Interviews, type Leitfaden } from './schemas/index.js';
 
 // Je Artefakt: die Daten, null = noch nicht gespeichert, 'unlesbar' = Datei passt nicht zum Schema.
 type Eintrag<T> = T | null | 'unlesbar';
@@ -13,7 +14,7 @@ export interface MappeDaten {
   interviews: Eintrag<Interviews>;
 }
 
-export const BEFUND_ARTEN = ['unbekannte-id', 'fehlender-beleg', 'verwaist'] as const;
+export const BEFUND_ARTEN = ['unbekannte-id', 'fehlender-beleg', 'verwaist', 'riskanteste-ohne-beleg'] as const;
 export type BefundArt = (typeof BEFUND_ARTEN)[number];
 export interface Befund {
   art: BefundArt;
@@ -134,6 +135,16 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?${zusatz}` });
       }
     }
+    // Die riskanteste Annahme hat gar keinen Beleg (Stufe „noch keiner“, keine ID, keine Notiz), obwohl schon Interviews
+    // mit Inhalt gespeichert sind. „verwaist“ sieht das nicht, sobald eine Entscheidung die Interviews nennt. Stufe
+    // „noch keiner“ mit ID oder Notiz zählt nicht: Da liegt etwas, nur die Stufe fehlt. Andere Stufen ohne Beleg meldet
+    // schon „fehlender-beleg“.
+    const { riskanteste } = m.annahmen;
+    const r = m.annahmen.annahmen.find((a) => a.id === riskanteste);
+    const gefuehrt = da(m.interviews) ? m.interviews.interviews.filter(interviewGefuellt).length : 0;
+    if (r && r.beleg === 'keiner' && r.belegIds.length === 0 && r.belegNotiz === undefined && gefuehrt > 0) {
+      befund({ art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: r.id, id: r.id, text: `${r.id} ist eure riskanteste Annahme und hat noch keinen Beleg, obwohl ${gefuehrt === 1 ? '1 Interview gespeichert ist' : `${gefuehrt} Interviews gespeichert sind`}. Was habt ihr dazu gehört?` });
+    }
   }
 
   if (da(m.interviews)) {
@@ -163,6 +174,7 @@ const UEBERSCHRIFT = {
   'unbekannte-id': 'Unbekannte IDs',
   'fehlender-beleg': 'Fehlende Belege',
   verwaist: 'Verwaiste Elemente',
+  'riskanteste-ohne-beleg': 'Riskanteste Annahme ohne Beleg',
 } as const satisfies Record<BefundArt, string>;
 
 /** Markdown fürs Chatfenster: je Art eine Liste, dazu was fehlt oder nicht lesbar war. */

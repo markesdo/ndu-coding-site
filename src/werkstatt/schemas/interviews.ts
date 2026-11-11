@@ -59,4 +59,10 @@ export type Interviews = z.infer<typeof interviewsSchema>;
 export type Interview = Interviews['interviews'][number];
 export type Chance = Interview['chancen'][number];
 
+// Ein Snapshot zählt erst, wenn etwas drinsteht; eine leere Zeile ist noch kein geführtes Interview (tag_stand,
+// verknuepfungen_pruefen).
+const leer = (s: string | undefined) => (s ?? '').trim() === '';
+export const interviewGefuellt = (iv: Interview): boolean =>
+  !leer(iv.zitat) || !leer(iv.kurzinfos) || !leer(iv.notizen) || iv.einsichten.some((e) => !leer(e)) || iv.chancen.some((c) => !leer(c.text)) || iv.zitate.some((z0) => !leer(z0.text));
+
 export const interviewsLeer = (heute: string): Interviews => ({ schema: 'interviews@1', stand: heute, interviews: [] });
