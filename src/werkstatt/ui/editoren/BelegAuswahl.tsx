@@ -50,6 +50,7 @@ export default function BelegAuswahl({ label, zitate, werte, onChange, hilfe, fe
   const gewaehlt = zeilen.filter((z, i) => werte.includes(z.id) && zeilen.findIndex((y) => y.id === z.id) === i);
   // Zähler: beide Zahlen auf derselben Grundlage, den Zitaten mit Text.
   const anzahlGewaehlt = new Set(werte.filter((w) => mitText.some((z) => z.id === w))).size;
+  const anzahlZitate = new Set(mitText.map((z) => z.id)).size;
 
   // Ein Fehler geht vor: dann kein weicher Hinweis daneben.
   const zeigeHinweis = fehler ? undefined : hinweis;
@@ -81,7 +82,7 @@ export default function BelegAuswahl({ label, zitate, werte, onChange, hilfe, fe
       )}
       {hatZeilen && (
         <details className="wk-belege-auswahl" open={offen} onToggle={(e) => setOffen(e.currentTarget.open)}>
-          <summary className="wk-knopf">Zitate auswählen ({anzahlGewaehlt} von {mitText.length} gewählt)</summary>
+          <summary className="wk-knopf">Zitate auswählen ({anzahlGewaehlt} von {anzahlZitate} gewählt)</summary>
           <div className="wk-belege-zeilen">
             {zeilen.map((z, i) => (
               // Index im Schlüssel: Ein Entwurf kann doppelte IDs haben (das Schema meldet sie), React braucht trotzdem eindeutige.

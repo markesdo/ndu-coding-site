@@ -161,7 +161,7 @@ describe('BelegAuswahl: Auswahl einklappbar, Gewähltes immer sichtbar', () => {
   it('doppelte Zitat-ID im Entwurf: in der Liste und im Zähler nur einmal', () => {
     const h = wahl({ zitate: [DREI[1]!, DREI[1]!], werte: ['I6-2'] });
     expect(gewaehlt(h)).toStrictEqual(['I6-2 „Wenn ich auf die Uhr schauen muss, geh ich.“']);
-    expect(summary(h)).toBe('Zitate auswählen (1 von 2 gewählt)');
+    expect(summary(h)).toBe('Zitate auswählen (1 von 1 gewählt)');
   });
 
   it('ohne Belege: Auswahl offen, keine Liste gewählter Zitate', () => {
