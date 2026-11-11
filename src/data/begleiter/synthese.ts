@@ -49,7 +49,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ],
     kern: [
       {
-        text: 'Bild und einprägsames Zitat sind Schlüssel, die die Erinnerung an die Geschichten dieses Interviews öffnen; die Kurzinfos ordnen ein, wie diese Person zu anderen passt. Dann das Herz: Einsichten und Chancen.',
+        text: 'Bild und einprägsames Zitat sind Schlüssel, die die Erinnerung an die Geschichten dieses Interviews öffnen; die Kurzinfos halten fest, welche Art Kund*in das war, und stellen die Geschichten in den richtigen Zusammenhang. Dann das Herz: Einsichten und Chancen.',
         quelle: `${TORRES}, S. 68–69`,
       },
       {
