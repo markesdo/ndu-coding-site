@@ -118,6 +118,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <li data-schritt><strong>Bedürfnis, Schmerzpunkt oder Wunsch</strong> – keine Lösung?</li>
         <li data-schritt>In <strong>mehr als einem</strong> Interview gehört?</li>
         <li data-schritt>Treibt sie euren <strong>Outcome</strong>?</li>
+        <li data-schritt><strong>Dreimal Ja?</strong> Unter den Ast, in dem sie vorkommt. Passt sie unter zwei: genauer fassen.</li>
       </ol>
     </BildText>
     <div class="nur-handout">
@@ -198,7 +199,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <h2 id="vier-muster">Vier weitere Anti-Muster</h2>
     <p class="folie-satz">Zwei Beispiele von Torres, zwei von der Kaffeebar.</p>
     <div class="muster">
-      <div><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Zu breit</strong><span>„Die Oberfläche ist schwer bedienbar.“</span></div>
+      <div><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Hängt an zwei Chancen <small>(zu breit)</small></strong><span>„Die Oberfläche ist schwer bedienbar.“</span></div>
       <div data-schritt><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Nicht konkret</strong><span>„Das ist zu schwer.“</span></div>
       <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Lösung statt Chance <small>(solution in disguise)</small></strong><span>„Per App vorbestellen.“</span></div>
       <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Gefühl statt Ursache</strong><span>„Anstellen ist ein Glücksspiel.“</span></div>
@@ -207,7 +208,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <div class="nur-handout">
       <p>Nach Firmensicht und senkrechter Kette nennt Torres vier weitere Anti-Muster für den ersten Entwurf ({TORRES}, S. 94–95). Zwei Beispiele sind ihre, zwei kommen von der Kaffeebar.</p>
       <ul>
-        <li><strong>Zu breit, hängt an zwei Chancen.</strong> „Die Oberfläche ist schwer bedienbar“ passt unter mehrere Momente. Genauer gefasst wird daraus je eine Chance pro Moment, etwa „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ (S. 88, 94).</li>
+        <li><strong>Hängt an zwei Chancen (zu breit).</strong> Torres begründet es so: „If your top-level opportunities represent distinct moments in time, then no opportunity should have two parents“ (S. 94). „Die Oberfläche ist schwer bedienbar“ passt unter mehrere Momente. Genauer gefasst wird daraus je eine Chance pro Moment, etwa „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ (S. 88, 94).</li>
         <li><strong>Nicht konkret.</strong> „Das ist zu schwer“ ist eine Stimmung; „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam“ ist eine Chance (S. 94).</li>
         <li><strong>Lösung statt Chance.</strong> „Per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1) lässt nur einen Weg zu. Die Chance dahinter, „Ich will den Zug nicht verpassen“, lässt mehrere zu (S. 94–95).</li>
         <li><strong>Gefühl statt Ursache.</strong> „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, verpasse ich meinen Zug“ (S. 95).</li>
@@ -217,8 +218,8 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
-    <p class="folie-satz">Vier Momente, darunter belegte Chancen.</p>
-    <Baum schmal momente knoten={KAFFEEBAR_BAUM_TAG2} label="Opportunity Solution Tree der Kaffeebar nach Tag 2: Outcome, darunter vier Momente, darunter Chancen mit Zitat-IDs" />
+    <p class="folie-satz">Vier oberste Chancen aus den Momenten, darunter belegte Chancen.</p>
+    <Baum schmal momente knoten={KAFFEEBAR_BAUM_TAG2} label="Opportunity Solution Tree der Kaffeebar nach Tag 2: Outcome, darunter vier oberste Chancen aus den Momenten, darunter Chancen mit Zitat-IDs" />
     <p data-schritt><strong>Nicht im Baum:</strong> Chancen, die nur eine Person erzählt hat (I1-4, I4-5, I5-6).</p>
     <div class="nur-handout">
     <p>Im Baum steht nur, was mehr als ein Interview stützt. „Der erste Schluck rettet den Morgen“ (I1-4), „nicht gehetzt im Büro ankommen“ (I4-5) und „für Kolleg*innen mitbestellen“ (I5-6) bleiben auf ihren Snapshots. Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Schnell geht nur der Automat.“ (I1-3, I4-3) · „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2) · „Wann ist mein Kaffee fertig?“ (I2-5, I3-3). Unter „Ich stehe an“ und „Ich warte auf meinen Kaffee“ hängt nur je eine Chance, unter „Ich bin im Zug“ noch keine – Fragen für die nächsten Interviews.</p>
@@ -239,7 +240,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       </ol>
     </BildText>
     <div class="nur-handout">
-      <p>Jedes Produkt hat auf dem Board einen eigenen Baum, von oben nach unten wie bei Torres: Outcome, Momente, Chancen, Teilchancen, ab Tag 3 Lösungen und Annahmen-Tests. Euer Frame heißt „Baum · euer Name“: <MiroLink name="Baum · Sofie · sofie">Baum · Sofie</MiroLink>, <MiroLink name="Baum · Joachim · joachim">Baum · Joachim</MiroLink>, <MiroLink name="Baum · Hewen · chen">Baum · Hewen</MiroLink>. Links daneben steht <MiroLink name="Baum · Beispiel Kaffeebar">Baum · Beispiel Kaffeebar</MiroLink>; Outcome und je eine blaue und gelbe Karte stehen in eurem Baum schon zum Kopieren.</p>
+      <p>Jedes Produkt hat auf dem Board einen eigenen Baum, von oben nach unten wie bei Torres: Outcome, oberste Chancen (eure Momente), Teilchancen, ab Tag 3 Lösungen und Annahmen-Tests. Euer Frame heißt „Baum · euer Name“: <MiroLink name="Baum · Sofie · sofie">Baum · Sofie</MiroLink>, <MiroLink name="Baum · Joachim · joachim">Baum · Joachim</MiroLink>, <MiroLink name="Baum · Hewen · chen">Baum · Hewen</MiroLink>. Links daneben steht <MiroLink name="Baum · Beispiel Kaffeebar">Baum · Beispiel Kaffeebar</MiroLink>; Outcome und je eine blaue und gelbe Karte stehen in eurem Baum schon zum Kopieren.</p>
       <p>Jede Karte hängt mit einer Linie an genau einer Karte darüber. Mit Cmd+D (Windows: Strg+D) dupliziert ihr eine Karte; dann zieht ihr vom blauen Punkt am Rand der oberen Karte eine Linie zur unteren. Die Linie bleibt angeheftet, wenn ihr Karten verschiebt. Was nur eine Person erzählt hat, kommt in den Streifen „Nur in einem Interview“. Der Frame <MiroLink name="T2 · 2 · Opportunity Solution Tree">T2 · 2</MiroLink> bleibt die Anleitung: drei Fragen und Anti-Muster.</p>
     </div>
   </Folie>
