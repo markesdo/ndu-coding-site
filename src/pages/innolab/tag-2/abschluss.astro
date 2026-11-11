@@ -11,12 +11,15 @@ import FooterNav from '../../../components/FooterNav.astro';
 
   <Folie>
     <h2 id="abschluss">Abschluss</h2>
-    <p class="folie-satz">Bevor ihr geht: festhalten, eintragen, pushen.</p>
-    <Checklist id="il-tag2-abschluss" items={[
-      'Interviews und Snapshots in der Werkstatt; <code>JOURNEY.md</code> und <code>BAUM.md</code> im Repo',
+    <p class="folie-satz">Bevor ihr geht: Werkstatt und Miro auf den Stand von heute.</p>
+    {/* -v2: Die Häkchen hängen an der Position (Checklist.astro ohne ids). Seit Map und Baum nur auf Miro liegen
+        (11.11.2026), haben die Punkte eine andere Bedeutung und Reihenfolge – alte Häkchen sollen nicht daran hängen. */}
+    <Checklist id="il-tag2-abschluss-v2" items={[
+      'Interviews mit Snapshot und Zitat-IDs in der Werkstatt',
+      'Experience Map auf Miro (T2 · 1), Momente aus euren Skizzen',
+      'Euer Baum auf Miro (Baum · euer Name): jede Chance mit Zitat-ID, jede Karte mit einer Linie',
       'Belege in der Annahmen-Map der Werkstatt nachgetragen',
       'Eine Zeile pro Entscheidung von heute im Entscheidungslog der Werkstatt',
-      'Committet und gepusht',
     ]} />
     <p data-schritt><strong>Tag 3, 21. November:</strong> Ihr beginnt mit eurem Baum und wählt eine Ziel-Chance.</p>
     <div class="nur-handout">

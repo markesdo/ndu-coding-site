@@ -146,7 +146,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Pro Zeile die drei Fragen an den Raum stellen, Antworten sammeln.',
+        'Pro Zeile die drei Fragen in die Runde stellen, Antworten im Chat oder per Mikro sammeln.',
         'Nach der letzten Zeile den Schritt aufdecken: Dann erscheinen alle Antworten.',
       ],
       aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, verpasse ich den Zug“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): bleiben auf dem Snapshot.',
@@ -263,7 +263,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Timer 12 min: Inventar allein, in „Baum · eigener Name“.',
       'Nach 12 min: Struktur allein, Linien ziehen, Timer 10 min.',
       'Nach 22 min: Gegenlesen mit Checkliste, vier Minuten je Baum.',
-      'Nach 34 min: BAUM.md, Prüfliste, Claude.',
+      'Nach 34 min: Prüfliste, dann Claude mit Bild des Baums.',
     ],
     uebung: { dauer: '39 min (12 + 10 + 12 + 5)', form: 'allein, dann zu dritt reihum' },
     chat: CHAT_BAUM,
@@ -282,7 +282,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Inventar allein (12 min): jede Chance durch die drei Fragen, in „Baum · Name“ unter ihren Moment.',
         'Struktur allein (10 min): Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen, jede Karte per Linie an ein Elternteil.',
         'Gegenlesen reihum (12 min): je Baum vier Minuten, die anderen beiden gehen die Checkliste der sechs Anti-Muster durch (nächste Folie).',
-        'Festhalten und prüfen (5 min): docs/BAUM.md, Prüfliste, Claude.',
+        'Prüfen (5 min): Prüfliste, dann Claude mit einem Bild des Baums aus Miro; eine Datei gibt es nicht.',
       ],
       achten: [
         'Chancen in den Worten der Kundschaft und mit Zitat-IDs aus mindestens zwei Interviews – ohne ID kein Beleg.',

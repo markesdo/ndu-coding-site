@@ -41,7 +41,7 @@ const eigene = href(m.slug) === hier ? undefined : href(m.slug);
       <ul>
         {m.ergibt.map((id) => {
           const a = artefakt(id)!;
-          return <li>{a.name} <span class="muted">· {a.lebtIn.map((o) => ORTE[o]).join(' + ')}{a.pfad && <> · <code>{a.pfad}</code></>}</span></li>;
+          return <li>{a.name} <span class="muted">· {a.lebtIn.map((o) => ORTE[o]).join(' + ')}{a.pfad && <> · <code>{a.pfad}</code></>}{a.miro && !a.pfad && <> · Frame „{a.miro}“</>}</span></li>;
         })}
       </ul>
     </dd>
