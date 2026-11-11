@@ -21,8 +21,8 @@ const optionen = (html: string) => {
 
 describe('Kriterium in der Oberfläche', () => {
   it('Lehrende: Auswahl nur mit den Kriterien, die zum Artefakt passen; ohne passende keine Auswahl', () => {
-    expect(optionen(lehrende('leitfaden'))).toStrictEqual(['meinungsfrage', 'verallgemeinerung']);
-    expect(optionen(lehrende('brief'))).toStrictEqual(['output-statt-outcome', 'outcome-nicht-messbar', 'loesung-im-problem', 'zwei-zielgruppen']);
+    expect(optionen(lehrende('leitfaden'))).toStrictEqual(['meinungsfrage', 'verallgemeinerung', 'suggestivfrage']);
+    expect(optionen(lehrende('brief'))).toStrictEqual(['output-statt-outcome', 'outcome-nicht-messbar', 'loesung-im-problem', 'zielgruppe-zu-vage', 'zwei-zielgruppen']);
     expect(optionen(lehrende('interviews'))).toBeNull();
   });
 
@@ -50,6 +50,12 @@ describe('Kriterium in der Oberfläche', () => {
     const m = lehrende('leitfaden', eintraege('leitfaden', undefined, 'meinungsfrage'));
     expect(m).toContain('„Findest du die Schlange nervig?“</dd>');
     expect(m).not.toContain('für den Katalog formuliert');
+  });
+
+  it('Kursregel steht als eigener Satz bei der Quelle, nur wo es eine gibt', () => {
+    const k = kriterium('beleg-ohne-quelle')!;
+    expect(lehrende('annahmen', eintraege('annahmen', 'A2', k.id))).toContain(`<span class="fb-kursregel">Kursregel: ${k.quelle.kursregel}</span>`);
+    expect(lehrende('brief', eintraege('brief', 'outcome', 'output-statt-outcome'))).not.toContain('Kursregel');
   });
 
   it('ohne Kriterium oder mit unbekanntem: kein Etikett, kein Paar', () => {

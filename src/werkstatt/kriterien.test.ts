@@ -29,11 +29,12 @@ function stehtIn(f: Fassung): boolean {
 const fassungen = KRITERIEN.flatMap((k) => [['schwach', k.paar.schwach], ['stark', k.paar.stark]].map(([seite, f]) => ({ k, seite: seite as string, f: f as Fassung })));
 
 describe('Kriterien-Katalog', () => {
-  it('neun Kriterien mit eindeutiger, stabiler ID', () => {
+  it('13 Kriterien mit eindeutiger, stabiler ID', () => {
     const ids = KRITERIEN.map((k) => k.id);
     expect(ids).toStrictEqual([
-      'output-statt-outcome', 'outcome-nicht-messbar', 'loesung-im-problem', 'art-der-annahme', 'annahme-nicht-pruefbar',
-      'meinungsfrage', 'verallgemeinerung', 'beleg-ohne-quelle', 'zwei-zielgruppen',
+      'output-statt-outcome', 'outcome-nicht-messbar', 'loesung-im-problem', 'zielgruppe-zu-vage', 'zwei-zielgruppen',
+      'art-der-annahme', 'annahme-nicht-pruefbar', 'zwei-annahmen-in-einer', 'beleg-ohne-quelle', 'beleg-ueberschaetzt',
+      'meinungsfrage', 'verallgemeinerung', 'suggestivfrage',
     ]);
     expect(new Set(ids).size).toBe(ids.length);
     expect(kriterium('meinungsfrage')?.name).toBe('Meinungsfrage statt Geschichte');
@@ -85,6 +86,9 @@ describe('Kriterien-Katalog', () => {
     // Zwei Links auf dieselbe Seite sind am Text zu unterscheiden.
     expect(new Set(k.quelle.seiten.map((s) => s.titel)).size).toBe(k.quelle.seiten.length);
     expect(k.quelle.buch).toMatch(/S\. \d/);
+    // Value Proposition Design wird nach PDF-Seite zitiert.
+    if (k.quelle.buch.includes('Value Proposition Design')) expect(k.quelle.buch).toMatch(/Value Proposition Design“ \(2014\), S\. [\d, –]+ \(PDF\)/);
+    if (k.quelle.kursregel !== undefined) expect(k.quelle.kursregel).toMatch(/^\S.*[.!?]$/);
   });
 
   it.each(fassungen.filter((x) => x.f.fundort !== undefined).map((x) => [`${x.k.id} ${x.seite}`, x.f] as const))(
@@ -107,6 +111,22 @@ describe('Kriterien-Katalog', () => {
     const beleg = kriterium('beleg-ohne-quelle')!.paar;
     expect(beleg.stark.text.startsWith(`${d4.entscheidung} — ${d4.grund} — Beleg: ${d4.beleg} (${d4.belegIds.join(', ')}`)).toBe(true);
     expect(beleg.schwach.text).toBe(`${d4.entscheidung} — ${d4.grund} — Beleg: ${d4.beleg}`);
+    // Zu stark eingestuft: dieselbe Zeile, aber „getan“ statt der Stufe, die D4 im Beispiel hat.
+    const ueber = kriterium('beleg-ueberschaetzt')!.paar;
+    expect(d4.beleg).toBe('gesagt');
+    expect(ueber.stark.text).toBe(beleg.stark.text);
+    expect(ueber.schwach.text).toBe(`${d4.entscheidung} — ${d4.grund} — Beleg: getan (${d4.belegIds.join(', ')})`);
+
+    // Zwei Annahmen in einer: die starke ist A2 (machbar), das Geld steht als eigene Annahme A4 (wirtschaftlich).
+    const a2 = annahmen.annahmen.find((a) => a.id === 'A2')!;
+    const a4 = annahmen.annahmen.find((a) => a.id === 'A4')!;
+    const zwei = kriterium('zwei-annahmen-in-einer')!.paar;
+    expect([zwei.stark.text, a2.art, a4.art]).toStrictEqual([a2.text, 'machbar', 'wirtschaftlich']);
+    expect(zwei.stark.zusatz).toBe('Art: machbar; ob es sich rechnet, steht als eigene Annahme A4');
+
+    // Zwei Zielgruppen: die starke Fassung ist die Entscheidung D3, die D1 ersetzt.
+    const d3 = entscheidungen.entscheidungen.find((e) => e.id === 'D3')!;
+    expect([kriterium('zwei-zielgruppen')!.paar.stark.text, d3.ersetzt]).toStrictEqual([d3.entscheidung, 'D1']);
   });
 });
 
@@ -114,14 +134,14 @@ describe('Welche Kriterien passen (NDU-41)', () => {
   const ids = (a: Parameters<typeof kriterienFuer>[0], z?: string) => kriterienFuer(a, z).map((k) => k.id);
 
   it('je Artefakt und Brief-Abschnitt nur die passenden, in der Reihenfolge des Katalogs', () => {
-    expect(ids('brief')).toStrictEqual(['output-statt-outcome', 'outcome-nicht-messbar', 'loesung-im-problem', 'zwei-zielgruppen']);
+    expect(ids('brief')).toStrictEqual(['output-statt-outcome', 'outcome-nicht-messbar', 'loesung-im-problem', 'zielgruppe-zu-vage', 'zwei-zielgruppen']);
     expect(ids('brief', 'outcome')).toStrictEqual(['output-statt-outcome', 'outcome-nicht-messbar']);
     expect(ids('brief', 'problem')).toStrictEqual(['loesung-im-problem']);
-    expect(ids('brief', 'fuerWen')).toStrictEqual(['zwei-zielgruppen']);
+    expect(ids('brief', 'fuerWen')).toStrictEqual(['zielgruppe-zu-vage', 'zwei-zielgruppen']);
     expect(ids('brief', 'nicht')).toStrictEqual([]);
-    expect(ids('annahmen', 'A2')).toStrictEqual(['loesung-im-problem', 'art-der-annahme', 'annahme-nicht-pruefbar', 'beleg-ohne-quelle']);
-    expect(ids('entscheidungen')).toStrictEqual(['annahme-nicht-pruefbar', 'beleg-ohne-quelle']);
-    expect(ids('leitfaden', 'F1')).toStrictEqual(['meinungsfrage', 'verallgemeinerung']);
+    expect(ids('annahmen', 'A2')).toStrictEqual(['art-der-annahme', 'annahme-nicht-pruefbar', 'zwei-annahmen-in-einer', 'beleg-ohne-quelle', 'beleg-ueberschaetzt']);
+    expect(ids('entscheidungen')).toStrictEqual(['annahme-nicht-pruefbar', 'beleg-ohne-quelle', 'beleg-ueberschaetzt']);
+    expect(ids('leitfaden', 'F1')).toStrictEqual(['meinungsfrage', 'verallgemeinerung', 'suggestivfrage']);
     expect(ids('interviews')).toStrictEqual([]);
   });
 
@@ -135,10 +155,13 @@ describe('Welche Kriterien passen (NDU-41)', () => {
 
   it('kriteriumPasst: Artefakt zuerst, Abschnitt nur beim Brief', () => {
     const k = kriterium('loesung-im-problem')!;
-    expect(kriteriumPasst(k, 'annahmen', 'A2')).toBe(true);
     expect(kriteriumPasst(k, 'brief', 'problem')).toBe(true);
     expect(kriteriumPasst(k, 'brief')).toBe(true);
     expect(kriteriumPasst(k, 'brief', 'outcome')).toBe(false);
+    // Nur noch der Brief: Torres S. 94–95 handelt von Chancen, nicht von Annahmen.
+    expect(kriteriumPasst(k, 'annahmen', 'A2')).toBe(false);
     expect(kriteriumPasst(k, 'leitfaden')).toBe(false);
+    const beleg = kriterium('beleg-ohne-quelle')!;
+    expect(kriteriumPasst(beleg, 'annahmen', 'A2') && kriteriumPasst(beleg, 'entscheidungen', 'D4')).toBe(true);
   });
 });

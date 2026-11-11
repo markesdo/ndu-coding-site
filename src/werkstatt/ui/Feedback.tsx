@@ -68,6 +68,7 @@ function KaffeebarPaar({ k }: { k: Kriterium }) {
             ))}
           </ul>
           {k.quelle.buch}
+          {k.quelle.kursregel && <span className="fb-kursregel">Kursregel: {k.quelle.kursregel}</span>}
         </dd>
       </dl>
     </details>
