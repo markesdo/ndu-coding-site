@@ -196,6 +196,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   beispiel: {
     live: [
       'Vier Fragen an I2, Schritt für Schritt aufdecken.',
+      'Erst fragen: Wohin schreibt ihr das? Dann aufdecken.',
       '„Ein Snapshot ist ein Beleg, kein Beweis – A1 rückt erst mit weiteren.“',
       'Fragen: Was hättet ihr I2 noch gefragt?',
     ],

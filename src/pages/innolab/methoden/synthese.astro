@@ -172,13 +172,15 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <h2 id="beispiel">Kaffeebar: I2 im Team besprochen</h2>
     <p class="folie-satz">I2, Pendlerin, Zug 7:42: „Wenn ich auf die Uhr schauen muss, geh ich.“</p>
     <p class="nur-handout"><strong>Geschichte:</strong> Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42. <strong>Kurzinfos:</strong> pendelt täglich nach Wien, holt dreimal pro Woche Kaffee. <strong>Einsicht:</strong> entscheidet erst beim Ankommen. <strong>Chance:</strong> „Wenn ich anstehe, verpasse ich den Zug.“</p>
-    <ul>
-      <li><strong>Gesagt:</strong> Sie geht, sobald sie auf die Uhr schauen muss – nicht erst, wenn es knapp wird.</li>
-      <li data-schritt><strong>Ändert sich:</strong> Die Einsicht widerspricht A1 („entscheiden schon vor der Ankunft“) – ein erster Beleg dagegen.</li>
-      <li data-schritt><strong>Gespräch:</strong> „Erzähl mir vom letzten Morgen …“ brachte die Geschichte; die Frage nach dem Automaten fehlte.</li>
-      <li data-schritt><strong>Überhört:</strong> Warum der Automat? Notlösung oder gut genug? Ins nächste Interview mitnehmen.</li>
+    {/* Der letzte Schritt (leerer Marker) deckt die vier Zeilen „→ wohin“ zugleich auf: .ort ist im Beamer verborgen, bis der
+        Marker gezeigt ist (Stil unten). Außerhalb des Beamers stehen sie gleich da. */}
+    <ul class="orte">
+      <li><strong>Gesagt:</strong> „Ich schau auf die Tafel, dann auf die Schlange, und dann entscheid ich.“ (I2-4)<span class="bsp ort">→ Snapshot: Einsicht „Entscheidet erst beim Ankommen.“ – steht schon</span></li>
+      <li data-schritt><strong>Ändert sich:</strong> Die Einsicht spricht gegen A1 – ein erster Beleg dagegen.<span class="bsp ort">→ Annahmen-Map, A1: Beleg „gesagt“, ID I2-4, Notiz „spricht dagegen“</span></li>
+      <li data-schritt><strong>Gespräch:</strong> F1 „Erzähl mir vom letzten Morgen …“ brachte die Geschichte; beim Automaten (I2-3) nicht nachgefragt.<span class="bsp ort">→ Leitfaden: F1 bleibt</span></li>
+      <li data-schritt><strong>Überhört:</strong> Warum der Automat? Notlösung oder gut genug?<span class="bsp ort">→ Leitfaden, Nachfragen: „Warum der Automat?“</span><span data-schritt class="ort-schritt" aria-hidden="true"></span></li>
     </ul>
-    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis. Den Gegenbeleg I2 tragt ihr bei A1 in der Annahmen-Map ein und schreibt in die Beleg-Notiz „spricht dagegen“ – die Belegstufe sagt nur, wie stark der Beleg ist, nicht in welche Richtung. Nach links rückt eine Annahme nur, wenn die Belege dafür sprechen (Torres, S. 129); spricht er dagegen, bleibt A1 riskant, bis ihr entscheidet. Den Satz der Annahme lasst ihr stehen; was ihr jetzt glaubt, wird eine neue Annahme. Ins Entscheidungslog kommt erst eine Zeile, wenn ihr deshalb etwas ändert – bei der Kaffeebar nach allen fünf Interviews: D4, Vorbestellen vor der Ankunft verworfen.</p>
+    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis. Den Gegenbeleg I2-4 tragt ihr bei A1 in der Annahmen-Map ein und schreibt in die Beleg-Notiz „spricht dagegen“ – die Belegstufe sagt nur, wie stark der Beleg ist, nicht in welche Richtung. Nach links rückt eine Annahme nur, wenn die Belege dafür sprechen (Torres, S. 129); spricht er dagegen, bleibt A1 riskant, bis ihr entscheidet. Den Satz der Annahme lasst ihr stehen; was ihr jetzt glaubt, wird eine neue Annahme. Ins Entscheidungslog kommt erst eine Zeile, wenn ihr deshalb etwas ändert – bei der Kaffeebar nach allen fünf Interviews: D4, Vorbestellen vor der Ankunft verworfen. Jede Antwort hat ihren Ort: Gesagtes steht im Snapshot, der Gegenbeleg I2-4 bei A1 in der Annahmen-Map, die Nachfrage im Leitfaden; ins Log kommt erst eine Zeile, wenn ihr entscheidet.</p>
   </Folie>
 
   <Folie>
@@ -241,6 +243,8 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
 
 <style>
   .bsp { display: block; margin-top: .2rem; font-size: .85em; color: var(--muted); }
+  /* Folie „beispiel“: die Zeilen „→ wohin“ erst mit dem letzten Schritt (Marker .ort-schritt), alle vier zugleich. */
+  :global(html[data-beamer]) .orte:has(.ort-schritt:not(.gezeigt)) .ort { visibility: hidden; }
   .fluss-titel { display: flex; align-items: center; gap: .4rem; margin: 1rem 0 -.75rem; font-weight: 600; }
   .fluss-titel :global(.icon-nein) { color: var(--muted); }
   .fluss-titel :global(.icon-ja) { color: var(--green); }
