@@ -66,8 +66,9 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   wunsch: {
     live: [
-      'Fragen: Welche Funktion hat sich bei euch jemand gewünscht?',
+      'Fragen: Steht in euren Snapshots eine Funktion in der Spalte Chancen?',
       'Fluss von links nach rechts: Wunsch, Nachfrage, Bedürfnis, Lösungen.',
+      'Nicht nachgefragt: Test S. 94 – mehr als ein Weg?',
       '„Das Bedürfnis lässt mehr Lösungen zu als der Wunsch.“',
       'Brücke: „per App vorbestellen“ kommt am Baum wieder.',
     ],
@@ -117,21 +118,23 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     live: [
       'Vor dem Vorlesen Rollen zuteilen: Produktmanagement, Design, Entwicklung.',
       'Geschichte vorlesen, langsam, ohne einzelne Stellen zu betonen.',
-      'Timer 1 min: jede*r schreibt einen Satz in den Chat.',
+      'Studierende öffnen die Seite selbst; Antwort dort eingeben – Aufdecken zeigt alle Sätze.',
+      'Timer 1 min: jede*r tippt einen Satz, noch nicht abschicken.',
       '„Noch nicht abschicken – erst auf mein Zeichen, alle gleichzeitig.“',
       'Falle: Lesart vorgeben oder erklären, worauf eine Rolle achtet.',
     ],
-    uebung: { dauer: '1 min', form: 'allein, ein Satz in den Teams-Chat' },
+    uebung: { dauer: '1 min', form: 'allein, ein Satz auf der Seite (Rückfall: Teams-Chat)' },
     chat: CHAT_NETFLIX,
     ablauf: {
       schritte: [
         'Folie zeigen, die Geschichte vorlesen.',
-        'Rollen zuteilen (nur den Namen: Produktmanagement, Design, Entwicklung). Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
-        'Auf dein Zeichen schicken alle gleichzeitig ab. Dann zur nächsten Folie.',
+        'Rollen zuteilen (nur den Namen: Produktmanagement, Design, Entwicklung). Studierende öffnen die Folie auf ihrem eigenen Gerät, wählen dort ihre Rolle. Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
+        'Auf dein Zeichen schicken alle gleichzeitig ab; der Beamer zeigt „2 von 3 haben geantwortet“. Bis zum Aufdecken kann jede*r noch ändern. Steht auf der Seite „Antwort bitte in den Teams-Chat.“ (Server weg), geht die Runde wie bisher im Chat. Dann zur nächsten Folie.',
       ],
       achten: [
         'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
         'Trifft jemand nicht den Satz aus dem Buch: kein Fehler – Torres schreibt „might“.',
+        'Pro Rolle ein Platz: Wer dieselbe Rolle wählt, überschreibt die Antwort davor (die Seite warnt vorher). Testantworten, Unsinn oder eine Probe mit Aufdecken: auf der Seite ohne Beamer „Runde leeren“. Das löscht die Sätze und nimmt auch das Aufdecken der Buch-Sätze zurück (später einfach erneut aufdecken); danach kann jede*r wieder abschicken, der Text steht noch im Feld. Schon geöffnete Seiten (Beamer) neu laden.',
       ],
     },
     ueberleitung: 'Jetzt abschicken – dann seht ihr, was drei Rollen bei Torres gehört haben.',
@@ -139,7 +142,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   warum: {
     live: [
-      'Alle Sätze aus dem Chat vorlesen, dann Auflösung per Knopf.',
+      'Aufdecken zeigt eure Sätze und die drei aus dem Buch.',
       'Fragen: Hat eure Rolle dasselbe gehört wie im Buch?',
       '„Jede Sicht ist berechtigt – und jede kann zu einer Verbesserung führen.“',
       '„Ihr habt allein interviewt – heute hört das Team nachträglich mit.“',
@@ -152,9 +155,8 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Die Sätze aus dem Chat vorlesen, ohne zu werten.',
-        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags).',
-        'Jede*r vergleicht den eigenen Satz mit dem der eigenen Rolle, dann den Schritt „Jede Sicht ist berechtigt“ aufdecken.',
+        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags). Sie zeigt zuerst „Eure Sätze“ nach Rolle (über die Seite geschickt; Chat-Sätze vorlesen), dann die drei aus dem Buch. Vorlesen, ohne zu werten.',
+        'Jede*r vergleicht den eigenen Satz mit dem der eigenen Rolle, dann den Schritt „Jede Sicht ist berechtigt. Darum gleich reihum“ aufdecken – Überleitung zur Besprechung der Snapshots: Die anderen hören, was ihr überhört.',
       ],
       aufloesung: 'Produktmanagement hört „Unter ‚Beliebt‘ nur Serien“ (Sorge ums Angebot), Design „Wir fanden nicht heraus, wie man nach einem Titel sucht“ (Bedienung), Entwicklung „Fast nur Kinderfilme“ (technischer Weg, verschiedene Nutzer*innen zu erkennen). Jede Sicht ist berechtigt; je unterschiedlicher das Team, desto mehr holt es aus einem Interview.',
     },
@@ -194,6 +196,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   beispiel: {
     live: [
       'Vier Fragen an I2, Schritt für Schritt aufdecken.',
+      'Erst fragen: Wohin schreibt ihr das? Dann aufdecken.',
       '„Ein Snapshot ist ein Beleg, kein Beweis – A1 rückt erst mit weiteren.“',
       'Fragen: Was hättet ihr I2 noch gefragt?',
     ],
@@ -208,8 +211,10 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Schritte unten kopieren und in den Teams-Chat einfügen.',
+      'Teile die Lehrenden-Ansicht, nicht Beamer-Modus; Leser pro Person.',
       'Reihenfolge festlegen, Timer 12 min je Runde neu starten.',
-      'Zeit: nach 5 min vom Zeigen ins Besprechen wechseln.',
+      'Zeit laut ansagen: 5 zeigen · 10 Schreibzeit · 12 Wechsel.',
+      'Nach dem Schreiben: Neu laden, Vorlesen ‚Ich nehme mit …‘.',
       'Nach 36 min: weiter zur Folie Festhalten, Timer 8 min dort.',
       'Fallback: Werkstatt leer? Bis 14:50 die besten 2–3 eintragen.',
       'Werkstatt: erst Zitate, dann Chancen mit Belegen.',
@@ -219,22 +224,21 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     miro: {
       frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
-        'Die Snapshots liegen als Karten mit ID auf T1 · 5 (Kopien aus der Werkstatt); die Person, die zeigt, holt alle an ihre Spalte.',
-        'Was die anderen anders hören, notiert die Person für ihren Snapshot und ändert es in der Werkstatt, nicht auf Miro.',
-        'Fallback (Werkstatt war leer): Es gibt noch keine Karten – die Person zeigt direkt aus der Werkstatt.',
+        'Miro erst in der Pause: Snapshots übertragen.',
       ],
     },
     ablauf: {
       schritte: [
-        'Fallback, wenn zu Beginn (14:15) noch keine Interviews in der Werkstatt stehen: Bis 14:50 trägt jede*r die besten zwei bis drei ein – Pseudonym, Datum, Einwilligung, 3–5 wörtliche Zitate mit ID, Chancen mit Beleg-IDs; Kurzinfos, Einsichten, Notizen später. Danach Theorie nur snapshot-i2 und geschichte/warum (7 min), Runden 3 × 5 min (2 zeigen, 3 besprechen), Festhalten 3 min – Ende wie geplant 15:15.',
+        'Fallback, wenn zu Beginn (14:15) noch keine Interviews in der Werkstatt stehen: Bis 14:50 trägt jede*r die besten zwei bis drei ein – Pseudonym, Datum, Einwilligung, 3–5 wörtliche Zitate mit ID, Chancen mit Beleg-IDs; Kurzinfos, Einsichten, Notizen später. Danach Theorie nur snapshot-i2 und geschichte/warum (7 min), Runden 3 × 5 min (2 zeigen, 2 besprechen, 1 schreiben), Festhalten 3 min – Ende wie geplant 15:15.',
         'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
-        'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen.',
-        'Runde 2 und 3 genauso, Timer jeweils neu starten.',
-        'Festhalten und prüfen (8 min, Folie Festhalten): Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, zwei bis drei Zeilen im Entscheidungslog, dann Prüfliste und Claude.',
+        'Deinen Bildschirm teilen: die Lehrenden-Ansicht der Werkstatt, Interviews der Person, die zeigt (Leser). Kein Wechsel des Präsentierenden, kein Beamer-Modus.',
+        'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen; ab Minute 10 schreibt, wer gezeigt hat, 2 min in der eigenen Werkstatt (Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier).',
+        'Nach dem Schreiben: Ansicht neu laden, die Person liest vor („Ich nehme mit …“). Dann Runde 2 und 3 genauso, Timer jeweils neu starten.',
+        'Festhalten und prüfen (8 min, Folie Festhalten): Stichworte übertragen – Annahmen-Map (Beleg, ID, „spricht dagegen“), Leitfaden (Frage ändern, Nachfrage), Log nur bei einer Entscheidung; dann Claude.',
       ],
       achten: [
         'Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen hören, ist der Grund für die Besprechung (Torres S. 75).',
-        'Belege mit Zitat-ID eintragen, nicht nur „I2“. Jede Chance auf Miro nennt mindestens eine Zitat-ID – ohne ID kein Beleg.',
+        'Belege mit Zitat-ID eintragen, nicht nur „I2“. Jede Chance nennt mindestens eine Zitat-ID – ohne ID kein Beleg. Synthetische Interviews (Pseudonym „Synthetisch“) zählen nie als Beleg.',
         'Wer zeigt, verteidigt nicht – zuhören einfordern.',
         'Streuen die fünf Snapshots in alle Richtungen, über eine engere Zielgruppe im Produkt-Brief sprechen (Mom Test S. 88).',
       ],

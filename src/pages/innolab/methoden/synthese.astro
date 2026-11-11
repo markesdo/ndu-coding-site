@@ -10,12 +10,13 @@ import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
+import Antwortrunde from '../../../components/Antwortrunde.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
 import { CircleCheck, CirclePause, CircleX, Clock, FileStack, FileText, Library, Mic, StickyNote } from '@lucide/astro';
-import { NACH_NETFLIX } from '../../../components/innolab-zeiten';
+import { RUNDEN } from '../../../lib/antworten';
 import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
@@ -81,18 +82,19 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
 
   <Folie>
     <h2 id="wunsch">Wunsch oder Chance?</h2>
-    <p class="folie-satz">Wünscht sich jemand eine Funktion, fragt nach dem Bedürfnis dahinter.</p>
+    <p class="folie-satz">Steht in eurer Spalte Chancen eine Funktion? Dann sucht das Bedürfnis dahinter.</p>
     <Fluss label="Vom Funktionswunsch zur Chance: Wunsch, Nachfrage, Bedürfnis, mehrere Lösungen" hervor={[2]} knoten={[
       { t: '„Ich will den Filmtitel einfach sagen.“', sub: 'ein Wunsch nach einer Funktion' },
-      { t: '„Was würde dir das bringen?“', sub: 'nachfragen' },
+      { t: '„Was würde dir das bringen?“', sub: 'im Interview nachfragen' },
       { t: '„Ich will keinen langen Titel eintippen.“', sub: 'die Chance' },
       { t: 'Sprachsuche oder Autovervollständigen', sub: 'mehr als eine Lösung' },
     ]} />
     <p data-schritt><strong>In den Worten der Kundschaft,</strong> nicht in euren – sonst schreibt ihr aus Sicht der Firma.</p>
-    <p class="small muted">{TORRES}, S. 69–70.</p>
+    <p data-schritt><strong>Nicht nachgefragt?</strong> Dann der Test: Gibt es mehr als einen Weg, diese Chance anzugehen?</p>
+    <p class="small muted">{TORRES}, S. 69–70, 94–95.</p>
     <div class="nur-handout">
       <p>Eine Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch, der im Interview geäußert wurde – als Bedürfnis, nicht als Lösung. Wünscht sich jemand eine bestimmte Funktion, fragt nach dem Warum: „If you had that feature, what would that do for you?“ Torres’ Beispiel: „Ich wünschte, ich könnte den Namen des Films einfach sagen“ ist ein Funktionswunsch. Auf die Nachfrage kommt vielleicht „Ich will keinen langen Filmtitel eintippen“ – das ist das Bedürfnis dahinter. Es öffnet mehr vom Lösungsraum: Sprachsuche wäre eine Lösung, Titel beim Tippen automatisch zu vervollständigen eine andere ({TORRES}, S. 69).</p>
-      <p>Chancen müssen keine wörtlichen Zitate sein, aber sie stehen in den Worten der Kundschaft. So haltet ihr sie aus ihrer Sicht fest und nicht aus Sicht der Firma (S. 70). Am Baum kommt das als erstes Anti-Muster wieder.</p>
+      <p>Chancen müssen keine wörtlichen Zitate sein, aber sie stehen in den Worten der Kundschaft. So haltet ihr sie aus ihrer Sicht fest und nicht aus Sicht der Firma (S. 70). Habt ihr im Interview nicht nachgefragt, hilft beim Schreiben Torres’ Test: Gibt es mehr als einen Weg, diese Chance anzugehen? Wenn nicht, ist es eine Lösung im Gewand einer Chance; sucht die Chance, die im Wunsch steckt – bei „Ich wünschte, ich könnte Werbung vorspulen“ vielleicht schlicht „Ich mag keine Werbung“. Darauf passen mehrere Lösungen: unterhaltsamere Werbung, Vorspulen oder ein Abo ohne Werbung (S. 94–95). Am Baum kommt das als Anti-Muster „Lösung statt Chance“ wieder.</p>
     </div>
   </Folie>
 
@@ -125,20 +127,23 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <h2 id="geschichte">Eine Geschichte – was hört ihr?</h2>
     <p class="folie-satz">Hört mit eurer Rolle: Was ist das Wichtigste? Ein Satz, abschicken erst auf mein Zeichen.</p>
     <blockquote class="geschichte">„Gestern Abend wollten meine Frau und ich nach dem Essen einen Film schauen. Am liebsten auf dem großen Fernseher im Wohnzimmer, der hat den besseren Ton – aber unser Sohn spielte Videospiele, also warteten wir, bis er speichern und ins andere Zimmer wechseln konnte. Währenddessen scrollten wir auf dem iPad durch die Filme bei Netflix. Die meisten Empfehlungen waren Kinderfilme, weil vor allem unsere Kinder das Konto nutzen. Wir probierten ‚Beliebt‘, aber da waren nur Serien. Meine Frau erinnerte sich an einen guten Film, aber wir fanden nicht heraus, wie man nach einem bestimmten Titel sucht. Das war sehr frustrierend.“</blockquote>
-    <p>Rollen: Produktmanagement · Design · Entwicklung – ich teile sie zu. In den Teams-Chat. <Timer minuten={1} /></p>
+    <p>Rollen: Produktmanagement · Design · Entwicklung – ich teile sie zu. Antwort hier auf der Seite (oder im Teams-Chat). <Timer minuten={1} /></p>
+    <Antwortrunde runde="netflix" ansicht="eingabe" />
     <p class="small muted">Nach {TORRES}, S. 75.</p>
   </Folie>
 
   <Folie>
     <h2 id="warum">Warum gemeinsam?</h2>
     <p class="folie-satz">Vergleicht eure Sätze mit dem, was eure Rolle im Buch hört.</p>
-    <Aufloesung ab={NACH_NETFLIX} gruppe="netflix">
-      <ul class="gross">
+    <Aufloesung ab={RUNDEN.netflix.ab} gruppe={RUNDEN.netflix.kennung}>
+      <Antwortrunde runde="netflix" ansicht="antworten" />
+      <p class="ar-buch"><strong>Im Buch</strong></p>
+      <ul class="gross dicht">
         <li><strong>Produktmanagement:</strong> „Unter ‚Beliebt‘ nur Serien“ – sorgt sich, ob das Angebot stimmt.</li>
         <li><strong>Design:</strong> „Wie sucht man einen bestimmten Titel?“ – will die Bedienung verbessern.</li>
         <li><strong>Entwicklung:</strong> „Fast nur Kinderfilme“ – sucht einen technischen Weg, Nutzer*innen zu unterscheiden.</li>
       </ul>
-      <p data-schritt><strong>Jede Sicht ist berechtigt.</strong> Je unterschiedlicher das Team, desto mehr holt es aus einem Interview.</p>
+      <p data-schritt><strong>Jede Sicht ist berechtigt.</strong> <strong>Darum gleich reihum:</strong> Die anderen hören in euren Snapshots, was ihr überhört.</p>
       <p class="small muted">{TORRES}, S. 74–75.</p>
       <div class="nur-handout">
         <p>Teresa Torres erzählt dieselbe Geschichte eines Netflix-Kunden aus drei Blickwinkeln: Produktmanagerin, Designer und Entwicklerin halten jeweils etwas anderes für wichtig, weil sie anderes Vorwissen mitbringen. Jede Sicht ist berechtigt, und jede kann zu einer Verbesserung führen. Je unterschiedlicher das Team, desto mehr holt es aus jedem Interview heraus. Darum interviewt bei ihr das ganze Team, statt eine Person zur „Stimme der Kundin“ zu machen ({TORRES}, S. 74–75).</p>
@@ -167,13 +172,15 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <h2 id="beispiel">Kaffeebar: I2 im Team besprochen</h2>
     <p class="folie-satz">I2, Pendlerin, Zug 7:42: „Wenn ich auf die Uhr schauen muss, geh ich.“</p>
     <p class="nur-handout"><strong>Geschichte:</strong> Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42. <strong>Kurzinfos:</strong> pendelt täglich nach Wien, holt dreimal pro Woche Kaffee. <strong>Einsicht:</strong> entscheidet erst beim Ankommen. <strong>Chance:</strong> „Wenn ich anstehe, verpasse ich den Zug.“</p>
-    <ul>
-      <li><strong>Gesagt:</strong> Sie geht, sobald sie auf die Uhr schauen muss – nicht erst, wenn es knapp wird.</li>
-      <li data-schritt><strong>Ändert sich:</strong> Die Einsicht widerspricht A1 („entscheiden schon vor der Ankunft“) – ein erster Beleg dagegen.</li>
-      <li data-schritt><strong>Gespräch:</strong> „Erzähl mir vom letzten Morgen …“ brachte die Geschichte; die Frage nach dem Automaten fehlte.</li>
-      <li data-schritt><strong>Überhört:</strong> Warum der Automat? Notlösung oder gut genug? Ins nächste Interview mitnehmen.</li>
+    {/* Der letzte Schritt (leerer Marker) deckt die vier Zeilen „→ wohin“ zugleich auf: .ort ist im Beamer verborgen, bis der
+        Marker gezeigt ist (Stil unten). Außerhalb des Beamers stehen sie gleich da. */}
+    <ul class="orte">
+      <li><strong>Gesagt:</strong> „Ich schau auf die Tafel, dann auf die Schlange, und dann entscheid ich.“ (I2-4)<span class="bsp ort">→ Snapshot: Einsicht „Entscheidet erst beim Ankommen.“ – steht schon</span></li>
+      <li data-schritt><strong>Ändert sich:</strong> Die Einsicht spricht gegen A1 – ein erster Beleg dagegen.<span class="bsp ort">→ Annahmen-Map, A1: Beleg „gesagt“, ID I2-4, Notiz „spricht dagegen“</span></li>
+      <li data-schritt><strong>Gespräch:</strong> F1 „Erzähl mir vom letzten Morgen …“ brachte die Geschichte; beim Automaten (I2-3) nicht nachgefragt.<span class="bsp ort">→ Leitfaden: F1 bleibt</span></li>
+      <li data-schritt><strong>Überhört:</strong> Warum der Automat? Notlösung oder gut genug?<span class="bsp ort">→ Leitfaden, Nachfragen: „Warum der Automat?“</span><span data-schritt class="ort-schritt" aria-hidden="true"></span></li>
     </ul>
-    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis. Den Gegenbeleg I2 tragt ihr bei A1 in der Annahmen-Map ein und schreibt in die Beleg-Notiz „spricht dagegen“ – die Belegstufe sagt nur, wie stark der Beleg ist, nicht in welche Richtung. Nach links rückt eine Annahme nur, wenn die Belege dafür sprechen (Torres, S. 129); spricht er dagegen, bleibt A1 riskant, bis ihr entscheidet. Den Satz der Annahme lasst ihr stehen; was ihr jetzt glaubt, wird eine neue Annahme. Ins Entscheidungslog kommt erst eine Zeile, wenn ihr deshalb etwas ändert – bei der Kaffeebar nach allen fünf Interviews: D4, Vorbestellen vor der Ankunft verworfen.</p>
+    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis. Den Gegenbeleg I2-4 tragt ihr bei A1 in der Annahmen-Map ein und schreibt in die Beleg-Notiz „spricht dagegen“ – die Belegstufe sagt nur, wie stark der Beleg ist, nicht in welche Richtung. Nach links rückt eine Annahme nur, wenn die Belege dafür sprechen (Torres, S. 129); spricht er dagegen, bleibt A1 riskant, bis ihr entscheidet. Den Satz der Annahme lasst ihr stehen; was ihr jetzt glaubt, wird eine neue Annahme. Ins Entscheidungslog kommt erst eine Zeile, wenn ihr deshalb etwas ändert – bei der Kaffeebar nach allen fünf Interviews: D4, Vorbestellen vor der Ankunft verworfen. Jede Antwort hat ihren Ort: Gesagtes steht im Snapshot, der Gegenbeleg I2-4 bei A1 in der Annahmen-Map, die Nachfrage im Leitfaden; ins Log kommt erst eine Zeile, wenn ihr entscheidet.</p>
   </Folie>
 
   <Folie>
@@ -181,16 +188,16 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <p class="folie-satz">Reihum: eine Person zeigt ihre Snapshots, die anderen beiden fragen.</p>
     <MiroFrame name="T1 · 5 · Interview-Snapshots (aus der Werkstatt)" />
     <ol class="gross">
-      <li><strong>Zeigen (5 min):</strong> Eine Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen: auf Miro T1 · 5 oder, falls die Karte noch leer ist, per Bildschirm teilen aus der Werkstatt.</li>
-      <li data-schritt><strong>Besprechen (7 min):</strong> Die anderen beiden fragen mit den vier Fragen. Was sie anders hören, notiert ihr für den Snapshot.</li>
+      <li><strong>Zeigen (5 min):</strong> Markus öffnet eure Interviews in der Werkstatt; ihr führt durch einen Snapshot – Zitat, Geschichte, Chancen.</li>
+      <li data-schritt><strong>Besprechen (7 min):</strong> Die anderen fragen mit den vier Fragen. Die letzten 2 min schreibt, wer zeigt: Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier.</li>
       <li data-schritt><strong>Reihum,</strong> drei Runden à 12 Minuten. <Timer minuten={12} /></li>
-      <li data-schritt><strong>Festhalten und prüfen (8 min, nächste Folie):</strong> Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog; dann Prüfliste und Claude.</li>
+      <li data-schritt><strong>Festhalten und prüfen (8 min, nächste Folie):</strong> Stichworte übertragen – Annahmen-Map, Leitfaden, Log nur bei einer Entscheidung; dann Claude.</li>
     </ol>
     <p class="small"><strong>Noch keine Interviews in der Werkstatt?</strong> Zuerst die besten zwei bis drei eintragen: Pseudonym, Einwilligung, 3–5 Zitate mit ID, Chancen.</p>
     <div class="nur-handout">
-      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 15 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75).</p>
+      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 15 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75). In den letzten zwei Minuten jeder Runde schreibt, wer gezeigt hat, in der eigenen Werkstatt: eine neue Chance oder Einsicht direkt in den Snapshot, alles andere als Stichwort auf Papier. Die Stichworte gehören zu den vier Fragen: Frage 1 in den Snapshot; Frage 2 in die Annahmen-Map (Beleg, „spricht dagegen“), ins Log nur bei einer Entscheidung; Frage 3 in den Leitfaden; Frage 4 als Nachfragen in den Leitfaden ({MOMTEST}, S. 102). Synthetische Übungsinterviews tragt ihr wie echte ein (Pseudonym „Synthetisch“) – als Beleg zählen sie nie.</p>
       <p><strong>Hört ihr noch Neues?</strong> Rob Fitzpatrick rät, so lange Gespräche zu führen, bis nichts Neues mehr kommt. Bei einer klar umrissenen Zielgruppe können drei bis fünf reichen; wer nach mehr als zehn Gesprächen noch Ergebnisse bekommt, die in alle Richtungen streuen, hat vermutlich eine zu unscharfe Zielgruppe ({MOMTEST}, S. 88). Streuen eure fünf Snapshots in alle Richtungen, sprecht im Team darüber, ob ihr die Zielgruppe im Produkt-Brief enger fassen solltet.</p>
-      <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:50, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, drei besprechen), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:15. Gezeigt wird dann direkt aus der Werkstatt.</p>
+      <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:50, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, zwei besprechen, eine schreiben), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:15. Gezeigt wird dann direkt aus der Werkstatt.</p>
       <p><strong>Reihenfolge beim Ausfüllen:</strong> zuerst die Zitate (so entstehen die IDs), dann Geschichte, Chancen mit Belegen, Einsichten – einprägsames Zitat und Kurzinfos zuletzt. Im Fallback bis 14:50 nur Zitate und Chancen; den Rest ergänzt ihr später.</p>
       <Prompt label="Für den Teams-Chat">{CHAT_SYNTHESE}</Prompt>
     </div>
@@ -209,7 +216,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   <Folie>
     <h2 id="festhalten">Festhalten: was ändert sich im Log?</h2>
     <p class="folie-satz">Eine Zeile, wenn ihr wegen der Interviews etwas wählt, verwerft, ändert oder bewusst behaltet. <Timer minuten={8} /></p>
-    <p>Snapshots ergänzen · Belege in der Annahmen-Map · 2–3 Log-Zeilen · Prüfliste + Claude (unten unter „<a href="#pruefen">Prüfen</a>“)</p>
+    <p>Annahmen-Map: Beleg, ID, Notiz „spricht dagegen“ · Leitfaden: Frage ändern, Nachfrage dazu · Log: 1–2 Zeilen · Claude: „Prüf meine Verknüpfungen“ (<a href="#pruefen">Prüfen</a>)</p>
     <ul class="gross">
       <li data-schritt><strong>Für wen, Problem:</strong> ändern oder behalten? <span class="muted">wie D3 ersetzt D1</span></li>
       <li data-schritt><strong>Riskanteste Annahme:</strong> was tut ihr darum? <span class="muted">wie D4</span></li>
@@ -236,11 +243,14 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
 
 <style>
   .bsp { display: block; margin-top: .2rem; font-size: .85em; color: var(--muted); }
+  /* Folie „beispiel“: die Zeilen „→ wohin“ erst mit dem letzten Schritt (Marker .ort-schritt), alle vier zugleich. */
+  :global(html[data-beamer]) .orte:has(.ort-schritt:not(.gezeigt)) .ort { visibility: hidden; }
   .fluss-titel { display: flex; align-items: center; gap: .4rem; margin: 1rem 0 -.75rem; font-weight: 600; }
   .fluss-titel :global(.icon-nein) { color: var(--muted); }
   .fluss-titel :global(.icon-ja) { color: var(--green); }
   /* Zwei Reihen auf einer Folie: weniger Abstand unter jeder Reihe, sonst passt „verschwimmen“ nicht auf 720p. */
   .fluss-titel + :global(.fluss) { margin-bottom: .75rem; }
+  .ar-buch { margin: .4rem 0 .2rem; }
   .geschichte { margin: 1rem 0; padding: .6rem 1rem; border-left: 4px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; line-height: 1.5; }
   /* Snapshot im Aufbau der Vorlage (Torres S. 68): oben Name/Bild, Zitat, Skizze; unten drei Spalten. */
   .snapshot { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); margin: 1rem 0; }

@@ -14,6 +14,9 @@ export const AUFGEDECKT_TIMEOUT_MS = 3000;
 /** Höchstens so viele Kennungen fragt eine Seite auf einmal nach. */
 export const MAX_KENNUNGEN = 30;
 
+/** So lange bleibt ein Aufdecken gespeichert (ein Kurstag); auch für die Antwortrunde (lib/antworten.ts). */
+export const AUFGEDECKT_TTL_SEKUNDEN = 18 * 60 * 60;
+
 export const MAX_KENNUNG_LAENGE = 160;
 const STEUERZEICHEN = /[\u0000-\u001f\u007f]/;
 

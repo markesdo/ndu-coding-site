@@ -5,9 +5,7 @@
 import { getCache } from '@vercel/functions';
 import { json, praesentatorAbweisen } from '../src/lib/praesentator-api.js'; // .js-Endung wie in middleware.ts
 import { ohneRuntimeCache } from '../src/lib/runtime-cache.js';
-import { aufgedecktSchluessel, gefragteKennungen, kennungPruefen } from '../src/lib/aufgedeckt.js';
-
-const TTL_SEKUNDEN = 18 * 60 * 60;
+import { AUFGEDECKT_TTL_SEKUNDEN as TTL_SEKUNDEN, aufgedecktSchluessel, gefragteKennungen, kennungPruefen } from '../src/lib/aufgedeckt.js';
 
 export async function GET(request: Request): Promise<Response> {
   if (ohneRuntimeCache()) return json({ fehler: 'Runtime Cache nicht verfügbar' }, 503);
