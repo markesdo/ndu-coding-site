@@ -22,7 +22,8 @@ const bereich = bereichVon(path);
 const kurs = BEREICHE[bereich];
 const anderer = BEREICHE[bereich === 'innolab' ? 'coding' : 'innolab'];
 const nav = NAV[bereich];
-const { title, description = kurs.beschreibung } = Astro.props;
+// beamer={false}: Seite gibt es nie im Beamer (BeamerStart.astro, ohne).
+const { title, description = kurs.beschreibung, beamer = true } = Astro.props;
 // Ersatz-Reihenfolge fürs Blättern im Beamer-Modus, wenn eine Seite keinen FooterNav hat: die Menü-Reihenfolge des Kurses.
 const { vorher, danach } = nachbarn(path);
 // Einträge zur Mappe markieren: Für Lehrende setzt NAV_ROLLE_SKRIPT dort „Mappen der Kohorte“ (Menü und „Weiter: …“).
@@ -38,7 +39,7 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
     <meta name="robots" content="noindex, nofollow" />
     <meta name="ndu-build" content={BUILD} />
     <link rel="preload" href={textSchrift} as="font" type="font/woff2" crossorigin />
-    <BeamerStart />
+    <BeamerStart ohne={!beamer} />
     <script is:inline>
       // Eingeklappte Seitenleiste (Desktop) vor dem ersten Zeichnen.
       try { if (localStorage.getItem('ndu-seitenleiste') === 'zu') document.documentElement.setAttribute('data-leiste-zu', ''); } catch (e) {}

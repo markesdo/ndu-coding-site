@@ -177,3 +177,6 @@ html:not([data-ist-praesentator]) [data-nur-praesentator] { display: none !impor
 /* Werkstatt: Einstieg „Bearbeiten“ und andere persönliche Bedienelemente tragen data-werkstatt – am Beamer weg.
    Hier und nicht in werkstatt.css, weil diese Datei jede Seite lädt, werkstatt.css nur der Editor. */
 html[data-beamer] [data-werkstatt] { display: none; }
+
+/* Seite ohne Beamer (Werkstatt, BeamerStart.astro ohne): kein Knopf „Beamer“. */
+html[data-ohne-beamer] [data-beamer-toggle] { display: none !important; }

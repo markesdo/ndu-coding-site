@@ -6,7 +6,7 @@ import FooterNav from '../../components/FooterNav.astro';
 import MappeUebersicht from '../../werkstatt/ui/MappeUebersicht';
 import { STUDIERENDEN_SEITE } from '../../werkstatt/ui/mappe-hilfen';
 ---
-<Layout title={STUDIERENDEN_SEITE.titel}>
+<Layout title={STUDIERENDEN_SEITE.titel} beamer={false}>
   <span class="eyebrow">Innolab · Werkstatt</span>
   <!-- Für Lehrende tauscht MappeUebersicht Überschrift, Lead und Fenstertitel (lehrendenSeiteSetzen in mappe-hilfen.ts). -->
   <h1 data-mappe-titel>{STUDIERENDEN_SEITE.titel}</h1>
