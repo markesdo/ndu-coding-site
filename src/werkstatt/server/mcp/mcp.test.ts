@@ -3,7 +3,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { METHODEN, VORARBEIT_FEHLT_ZWECK, VORARBEIT_REGEL, VORARBEIT_ZITAT, VORARBEIT_ZWECK, vorarbeitFehltSatz } from '../../../components/methoden';
+import { METHODEN, VORARBEIT_REGEL, VORARBEIT_ZWECK } from '../../../components/methoden';
 import { MOM_TEST_GRUPPE } from '../../../components/innolab-zeiten';
 import { aufgedecktSchluessel } from '../../../lib/aufgedeckt';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
@@ -254,7 +254,7 @@ describe('Werkzeuge', () => {
     // Die Beispiel-IDs kommen aus ZEILEN_ID, nicht von Hand.
     expect(anweisung).toContain('wo sie eine hat (D2, F4, A3, I2, I2-4)');
     // Regel 4 und 5 sagen dasselbe wie die Anleitung (derselbe Satz): Zeile der Vorarbeit nur bei Widerspruch oder Lücke, nie erfunden.
-    expect(anweisung).toContain(`weiterbringt. ${VORARBEIT_ZITAT}`);
+    expect(anweisung).toContain(`weiterbringt. ${VORARBEIT_REGEL}`);
     expect(anweisung).toContain('aus der Vorarbeit zum Abgleich nur nach Regel 4 und nie aus Vorarbeit, die nicht mitgeliefert wurde');
     expect(anweisung).not.toMatch(/zitierst du nie|nur, was wörtlich/);
     expect(anweisung).toContain('pruefpunkt');
@@ -276,10 +276,10 @@ describe('Werkzeuge', () => {
     }
     // Claude Code sieht nur JSON und Schema (NDU-52): Beschreibung und Schema sagen denselben Grundsatz wie die Anleitung.
     const pw = tools.find((t) => t.name === 'artefakt_pruefen')!;
-    expect(pw.description).toContain(VORARBEIT_ZITAT);
+    // Nur ein Verweis auf die Anleitung: stimmt auch, wo es keine Vorarbeit gibt.
+    expect(pw.description).toContain('wörtlichen Zitat aus dem Artefakt und einer Rückfrage. Für die Vorarbeit gilt die Regel in der Anleitung.');
     const md = (pw.outputSchema?.properties as Record<string, { description?: string }>).markdown.description!;
-    expect(md).toContain(VORARBEIT_ZITAT);
-    expect(md).not.toMatch(/Nur daraus zitieren/);
+    expect(md).toBe('Abschnitt „Artefakt“: das geprüfte Artefakt als Markdown; hieraus zitierst du. Für die Vorarbeit gilt die Regel in der Anleitung.');
     // Kein Werkzeug nimmt ein Argument, das ein Repo oder eine Person nennt.
     for (const t of tools) {
       const felder = Object.keys((t.inputSchema.properties ?? {}) as object);
@@ -905,56 +905,62 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
   });
 
   // synthese-beleg-nachgetragen prüft, ob die Annahmen-Map die Belege aus den Interviews trägt: Dafür muss Claude die
-  // Zeile der Map zitieren dürfen (A1 „noch keiner“, obwohl I2-4 widerspricht) – im Fokus wie in der ganzen Prüfung.
-  it('interviews: Zeile der Annahmen-Map zitierbar, wo ein Befund auf Widerspruch oder Lücke beruht – nur wenn sie mitkommt', async () => {
+  // Stelle der Map zitieren dürfen (A1 „noch keiner“, obwohl I2-4 widerspricht).
+  const LEITFADEN_JSON = `${JSON.stringify(leitfadenBeispiel, null, 2)}\n`;
+  it('interviews mit Leitfaden und Annahmen-Map: die Anleitung trägt den Grundsatz einmal, die Vorarbeit verweist darauf', async () => {
     const h = await aufbau();
     await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    await h.speicher.speichern('test-sofie', 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN_JSON }, null, AUTOR, 'Leitfaden');
     const c = await client(h, await accessToken(h));
-    const zwecke = (r: Awaited<ReturnType<Client['callTool']>>) => sc(r).vorarbeit.map((v) => [v.artefakt, v.zweck]);
-
-    const alle = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews' } });
-    expect(alle.isError).toBeFalsy();
-    expect(sc(alle).anleitung).toContain(VORARBEIT_REGEL);
-    expect(sc(alle).anleitung).toContain('zitierst du zusätzlich die betroffene Zeile der Vorarbeit wörtlich (mit ID, wo eine steht)');
-    // Gemischt (Map da, Leitfaden nicht): Die Anleitung nennt, woraus nichts zitiert wird.
-    expect(sc(alle).anleitung).toContain(vorarbeitFehltSatz(['Interviewleitfaden']));
-    expect(sc(alle).anleitung).toContain('Nicht mitgeliefert: Interviewleitfaden – nicht abgleichen, nichts daraus zitieren und keine Zeile erfinden.');
-    expect(text(alle)).toContain(VORARBEIT_REGEL);
-    // Sofie hat eine Annahmen-Map, aber keinen Leitfaden: nur die Map ist zitierbar.
-    expect(zwecke(alle)).toStrictEqual([['leitfaden', VORARBEIT_FEHLT_ZWECK], ['annahmen', VORARBEIT_ZWECK]]);
-    expect(text(alle)).toContain(`## Vorarbeit zum Abgleich: Annahmen-Map (annahmen)\n${VORARBEIT_ZWECK}`);
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews' } });
+    expect(r.isError).toBeFalsy();
+    expect(sc(r).anleitung).toBe(
+      'Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die die Person selbst weiterbringt. ' +
+        'Zitiere aus dem Abschnitt „Artefakt“ (im JSON: markdown), aus der Vorarbeit nur nach der Regel dazu. ' +
+        'Steht bei einer Zeile eine ID (wie I2 oder I2-4), nennst du sie beim Zitat; erfinde keine. ' +
+        'Was du zum Abgleich bekommst (die Vorarbeit), prüfst du nicht für sich. Beruht ein Befund auf einem Widerspruch zur Vorarbeit oder einer Lücke darin, ' +
+        'zitierst du zusätzlich die betroffene Stelle der Vorarbeit wörtlich (mit ID, wo eine steht). Fehlt dir eine Vorarbeit, die du zum Abgleich brauchst, sag das – erfinde keine Zeile. ' +
+        'Kein umformulierter Text. Passt alles, sag das in einem Satz. Ändern kann die Person nur selbst in der Werkstatt: http://localhost:4321/innolab/mappe',
+    );
+    expect(sc(r).vorarbeit.map((v) => [v.artefakt, v.zweck])).toStrictEqual([['leitfaden', 'Zum Abgleich – Regel siehe Anleitung.'], ['annahmen', 'Zum Abgleich – Regel siehe Anleitung.']]);
+    // Der Grundsatz steht im Text genau einmal (in der Anleitung), nicht an jeder Vorarbeit.
+    expect(text(r).split('Was du zum Abgleich bekommst')).toHaveLength(2);
 
     // Im Fokus: erst die Aufgabe, dann kein „nur aus dem Artefakt“, das ihr widerspräche.
     const fokus = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews', pruefpunkt: 'synthese-beleg-nachgetragen' } });
     const a = sc(fokus).anleitung;
     expect(a.startsWith('Prüf nur synthese-beleg-nachgetragen.')).toBe(true);
     expect(a).not.toContain('Zitiere nur aus');
-    expect(a).toContain('Zitiere aus dem Abschnitt „Artefakt“ (im JSON: markdown), aus der Vorarbeit nur nach der Regel dazu.');
     expect(a).toContain(VORARBEIT_REGEL);
   });
 
-  it('ohne lesbare Vorarbeit: keine Erlaubnis, daraus zu zitieren, und kein Erfinden', async () => {
+  it('interviews ohne Leitfaden: die Anleitung nennt ihn; ohne jede lesbare Vorarbeit kein Grundsatz', async () => {
     const h = await aufbau();
-    // Kein Leitfaden, und die Annahmen-Map lässt sich gerade nicht lesen (GitHub-Ausfall).
     await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews' } });
+    expect(sc(r).vorarbeit.map((v) => [v.artefakt, v.zweck])).toStrictEqual([['leitfaden', 'Nicht mitgeliefert – nicht abgleichen, nichts erfinden.'], ['annahmen', 'Zum Abgleich – Regel siehe Anleitung.']]);
+    expect(sc(r).anleitung).toContain(VORARBEIT_REGEL);
+    expect(sc(r).anleitung).toContain('Nicht mitgeliefert: Interviewleitfaden (der Hinweis in ihrem Abschnitt sagt, warum).');
+    expect(sc(r).anleitung).toContain('Erfinde nichts daraus.');
+
+    // Die Annahmen-Map lässt sich gerade auch nicht lesen: nichts zum Abgleich, also nur aus dem Artefakt.
     const echt = h.speicher.lesen.bind(h.speicher);
     vi.spyOn(h.speicher, 'lesen').mockImplementation((repo, name) => (name === 'annahmen' ? Promise.reject(new GithubAusnahme(500)) : echt(repo, name)));
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    const c = await client(h, await accessToken(h));
-    const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews' } });
-    expect(r.isError).toBeFalsy();
-    expect(sc(r).vorarbeit.map((v) => [v.vorhanden, v.zweck])).toStrictEqual([[false, VORARBEIT_FEHLT_ZWECK], [false, VORARBEIT_FEHLT_ZWECK]]);
-    expect(sc(r).anleitung).not.toContain(VORARBEIT_REGEL);
-    expect(sc(r).anleitung).toContain('Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown).');
-    expect(sc(r).anleitung).toContain('Nicht mitgeliefert: Interviewleitfaden und Annahmen-Map – nicht abgleichen, nichts daraus zitieren und keine Zeile erfinden.');
+    const ohne = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews' } });
+    expect(sc(ohne).anleitung).not.toContain(VORARBEIT_REGEL);
+    expect(sc(ohne).anleitung).toContain('Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown).');
+    expect(sc(ohne).anleitung).toContain('Nicht mitgeliefert: Interviewleitfaden, Annahmen-Map');
   });
 
-  it('brief: Anleitung ohne Zeilen-ID (der Brief hat keine)', async () => {
+  it('brief: Anleitung ohne Zeilen-ID und ohne Grundsatz zur Vorarbeit (der Brief hat keine)', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h, 1002));
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'brief' } });
     expect(sc(r).anleitung).toMatch(/Zitiere nur aus dem Abschnitt „Artefakt“ \(im JSON: markdown\)\./);
     expect(sc(r).anleitung).not.toMatch(/eine ID/);
+    expect(sc(r).anleitung).not.toMatch(/Vorarbeit/);
   });
 
   it('leeres Artefakt: keine Vorarbeit mitgeliefert; Methode ohne Vorarbeit: kein Abschnitt', async () => {

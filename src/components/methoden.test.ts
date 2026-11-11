@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from './innolab-zeiten';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, VORARBEIT_REGEL, einfuegenHinweis, zeilenBeispiel, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, einfuegenHinweis, zeilenBeispiel, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -123,42 +123,26 @@ describe('methoden', () => {
   });
 
   // Die Regeln am Ende des Prüf-Prompts sind dieselben Sätze wie in der anleitung von artefakt_pruefen (befundRegel …).
-  it('Prüf-Prompt: jeder Befund mit Prüfpunkt-ID, wörtlichem Zitat und Frage; Zeile der Vorarbeit bei Widerspruch oder Lücke', () => {
-    const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
-    expect(sy.split('\n').at(-1)).toBe(
-      'Regeln: Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt. ' +
-        'Steht bei einer Zeile eine ID (wie I2 oder I2-4), nennst du sie beim Zitat; erfinde keine. ' +
-        'Was du zum Abgleich bekommst (die Vorarbeit), prüfst du nicht für sich. Beruht ein Befund auf einem Widerspruch zur Vorarbeit oder einer Lücke darin, ' +
-        'zitierst du zusätzlich die betroffene Zeile der Vorarbeit wörtlich (mit ID, wo eine steht); steht dort keine solche Zeile, sag das, statt eine zu erfinden. ' +
-        'Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.',
+  it('Prüf-Prompt: jeder Befund mit Prüfpunkt-ID, wörtlichem Zitat und Frage; Stelle der Vorarbeit bei Widerspruch oder Lücke', () => {
+    const regeln = (slug: string) => pruefPrompt(METHODEN.find((m) => m.slug === slug)!).split('\n').at(-1)!;
+    const BEFUNDE = 'Regeln: Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt.';
+    const GRUNDSATZ =
+      'Was du zum Abgleich bekommst (die Vorarbeit), prüfst du nicht für sich. Beruht ein Befund auf einem Widerspruch zur Vorarbeit oder einer Lücke darin, ' +
+      'zitierst du zusätzlich die betroffene Stelle der Vorarbeit wörtlich (mit ID, wo eine steht). Fehlt dir eine Vorarbeit, die du zum Abgleich brauchst, sag das – erfinde keine Zeile.';
+    // Werkstatt mit Vorarbeit (Leitfaden, Annahmen-Map).
+    expect(regeln('synthese')).toBe(
+      `${BEFUNDE} Steht bei einer Zeile eine ID (wie I2 oder I2-4), nennst du sie beim Zitat; erfinde keine. ${GRUNDSATZ} Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.`,
     );
-    // Der Brief hat keine Zeilen-IDs und keine Vorarbeit.
-    expect(pruefPrompt(METHODEN.find((m) => m.slug === 'problem-rahmen')!).split('\n').at(-1)).toBe(
-      'Regeln: Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt. ' +
-        'Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.',
+    // Bild aus Miro mit Vorarbeit aus der Werkstatt: derselbe Grundsatz, ohne Beispiel-ID.
+    expect(pruefungAufMiro(METHODEN.find((m) => m.slug === 'journey-map')!)).toBe(true);
+    expect(regeln('journey-map')).toBe(
+      `${BEFUNDE} Steht bei einer Zeile eine ID, nennst du sie beim Zitat; erfinde keine. ${GRUNDSATZ} Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.`,
     );
-    // Auf jedem Weg – Werkstatt, Claude Code im Repo, Bild aus Miro, Einfügen – steht der Grundsatz genau dann, wenn der
-    // Prompt etwas zum Abgleich nennt.
-    const wege = new Set<string>();
-    const ohne: string[] = [];
-    for (const m of METHODEN.filter((x) => x.pruefliste)) {
-      const prompts: [string, string][] = [[pruefungInWerkstatt(m) ? 'werkstatt' : pruefungAufMiro(m) ? 'miro' : 'repo', pruefPrompt(m)]];
-      if (einfuegenMoeglich(m)) prompts.push(['einfuegen', pruefPrompt(m, undefined, 'einfuegen')]);
-      for (const [weg, p] of prompts) {
-        wege.add(weg);
-        const zeilen = p.split('\n');
-        const regeln = zeilen.at(-1)!;
-        const nenntAbgleich = zeilen.slice(0, -1).some((z) => /zum Abgleich/i.test(z));
-        expect(regeln.includes(VORARBEIT_REGEL), `${m.slug} ${weg}`).toBe(nenntAbgleich);
-        if (!nenntAbgleich) ohne.push(`${m.slug} ${weg}`);
-        expect(regeln, `${m.slug} ${weg}`).toContain('Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt.');
-        // Zeilen-IDs nur, wo eine steht – nie eine erfinden; außerhalb der Werkstatt ohne Beispiel.
-        if (weg !== 'werkstatt') expect(regeln, `${m.slug} ${weg}`).toContain('Steht bei einer Zeile eine ID, nennst du sie beim Zitat; erfinde keine.');
-      }
-    }
-    expect([...wege].sort()).toStrictEqual(['einfuegen', 'miro', 'repo', 'werkstatt']);
-    // Schneiden braucht nur, was es selbst liest (die Issues): kein Abgleich, kein Grundsatz.
-    expect(ohne).toStrictEqual(['problem-rahmen werkstatt', 'schneiden repo']);
+    // Claude Code im Repo ohne Vorarbeit (Schneiden liest nur die Issues) und der Brief: kein Grundsatz.
+    expect(regeln('schneiden')).toBe(`${BEFUNDE} Steht bei einer Zeile eine ID, nennst du sie beim Zitat; erfinde keine. Schreib nichts um, ändere keine Datei und kein Issue. Passt alles, sag das in einem Satz.`);
+    expect(regeln('problem-rahmen')).toBe(`${BEFUNDE} Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.`);
+    // Claude Code im Repo mit Vorarbeit.
+    expect(regeln('experiment')).toContain(GRUNDSATZ);
   });
 
   it('Zeilen-ID-Beispiele: ein Artefakt oder mehrere, ohne doppeltes „oder“', () => {

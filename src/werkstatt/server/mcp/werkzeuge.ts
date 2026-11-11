@@ -8,7 +8,7 @@ import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
 import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
 import { DEMO_HREF } from '../../../lib/nav-rolle.js';
-import { METHODEN, TAGE, VORARBEIT_FEHLT_ZWECK, VORARBEIT_REGEL, VORARBEIT_ZITAT, VORARBEIT_ZWECK, befundRegel, vorarbeitFehltSatz, werkstattVorarbeit, zeilenBeispiel, zeilenIdRegel, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
+import { METHODEN, TAGE, VORARBEIT_FEHLT_ZWECK, VORARBEIT_REGEL, VORARBEIT_ZWECK, befundRegel, werkstattVorarbeit, zeilenBeispiel, zeilenIdRegel, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
@@ -56,6 +56,8 @@ const pruefpunktZeile = (p: PruefpunktAusgabe) => `${p.nr}. ${p.id}: ${p.text}`;
 const WERKSTATT = z.string().describe('Link zur Werkstatt: Ändern kann die Person nur dort.');
 const MARKDOWN = z.string().optional().describe('Das Artefakt als Markdown, wie die Werkstatt es zeigt; fehlt, solange es leer ist.');
 const HINWEIS = z.string().optional().describe('Satz an die Person statt des Artefakts (noch leer).');
+// Beschreibung und Schema verweisen nur auf die Anleitung: Sie stimmen so auch, wo es keine Vorarbeit gibt.
+const VORARBEIT_VERWEIS = 'Für die Vorarbeit gilt die Regel in der Anleitung.';
 const ANLEITUNG = z.string().describe('So gehst du mit diesem Ergebnis um; steht gleichlautend am Ende des Textes.');
 
 const UEBERSICHT = {
@@ -103,7 +105,7 @@ const METHODE = {
 
 const PRUEFEN = {
   title: 'Artefakt prüfen',
-  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt und einer Rückfrage. ${VORARBEIT_ZITAT} Aus Vorarbeit, die nicht mitkommt, zitierst du nichts. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
+  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt und einer Rückfrage. ${VORARBEIT_VERWEIS} Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
   inputSchema: {
     ...ARTEFAKT_EINGABE,
     pruefpunkt: z
@@ -117,7 +119,7 @@ const PRUEFEN = {
     titel: z.string(),
     methode: z.string().describe('Die Methode, deren Prüfliste gilt.'),
     vorhanden: z.boolean().optional().describe('Ob das Artefakt gespeichert ist; fehlt, solange die Prüfliste gesperrt ist.'),
-    markdown: MARKDOWN.describe(`Abschnitt „Artefakt“: das geprüfte Artefakt als Markdown. Hieraus zitierst du. ${VORARBEIT_ZITAT}`),
+    markdown: MARKDOWN.describe(`Abschnitt „Artefakt“: das geprüfte Artefakt als Markdown; hieraus zitierst du. ${VORARBEIT_VERWEIS}`),
     hinweis: HINWEIS,
     gesperrt: z
       .literal(true)
@@ -217,10 +219,9 @@ function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: Prue
   if (id) saetze.push(zeilenIdRegel(id));
   if (lage.vorarbeit) saetze.push(VORARBEIT_REGEL);
   if (lage.vorarbeitFehlt.length) {
+    // Mit Namen: Kommt ein Teil der Vorarbeit mit, wäre „sie“ sonst mehrdeutig.
     saetze.push(
-      'Fehlt Vorarbeit oder ließ sie sich nicht lesen (der Hinweis in ihrem Abschnitt sagt, was davon), sag bei den Prüfpunkten, die sie brauchen, dass du sie nicht abgleichen konntest – und nur bei „noch nicht ausgefüllt“, dass sie fehlt.',
-      // Mit Namen: Kommt ein Teil der Vorarbeit mit, wäre „daraus“ mehrdeutig.
-      vorarbeitFehltSatz(lage.vorarbeitFehlt),
+      `Nicht mitgeliefert: ${lage.vorarbeitFehlt.join(', ')} (der Hinweis in ihrem Abschnitt sagt, warum). Sag bei den Prüfpunkten, die sie brauchen, dass du sie nicht abgleichen konntest – und nur bei „noch nicht ausgefüllt“, dass sie fehlt. Erfinde nichts daraus.`,
     );
   }
   saetze.push('Kein umformulierter Text. Passt alles, sag das in einem Satz.');
