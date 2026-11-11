@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { MIRO_FRAMES } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
+import { anzeige, fremdeSeite, type Zustand } from '../components/begleiter-anzeige';
 import { TAG_1 } from '../data/begleiter/tag';
 import {
-  TAG_1_SEITEN, ablaufBloecke, bloeckeAus, kartenPfade, folieZu, folienAus, folienPlan, hhmm, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie,
+  TAG_1_SEITEN, ablaufBloecke, begleiterFolien, bloeckeAus, folienGruppe, kartenPfade, folieZu, folienAus, folienPlan, hhmm, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie,
   pfadAusGlob, quelleTeile, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, tempo, uebungMinuten, wischErlaubt, type WischKnoten,
 } from './begleiter';
 
@@ -351,5 +352,44 @@ describe('kartenPfade', () => {
     const quellen = Object.fromEntries(['/', '/ideen', '/innolabx', '/innolab', '/innolab/tag-1', '/innolab/methoden/interview', '/innolab/begleiter',
       '/innolab/tag-2', '/innolab/methoden/baum', '/innolab/werkstatt/[id]'].map((p) => [p, '']));
     expect(kartenPfade(quellen)).toStrictEqual(['/innolab', '/innolab/methoden/baum', '/innolab/tag-2']);
+  });
+});
+
+// Was der Begleiter (pages/innolab/begleiter.astro) mit einer Beamer-Position macht: folieZu auf begleiterFolien, dann
+// anzeige/fremdeSeite – dieselben Funktionen wie im Seiten-Skript, mit den echten Seiten und Notizen.
+describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => {
+  const folien = begleiterFolien(quellen, NOTIZEN);
+  const karten = new Set(kartenPfade(quellen));
+  const folgt: Zustand = { index: 0, folgen: true, meldung: 'frage' };
+  const beamer = (pfad: string, anker: string) => {
+    const z = anzeige(folgt, { art: 'position', index: folieZu(folien, pfad, anker) });
+    return { z, karte: fremdeSeite(z, pfad, karten) };
+  };
+  it('Beamer auf experiment#sagen-tun: diese Folie mit ihren live-Stichworten, keine Karte', () => {
+    const { z, karte } = beamer('/innolab/methoden/experiment', 'sagen-tun');
+    expect(karte).toBeNull();
+    expect(z.meldung).toBe('ok');
+    const f = folien[z.index];
+    expect(`${f.pfad}#${f.id}`).toBe('/innolab/methoden/experiment#sagen-tun');
+    expect(NOTIZEN[f.pfad][f.id].live).toStrictEqual(NOTIZEN['/innolab/methoden/experiment']['sagen-tun'].live);
+  });
+  it('folgt Folie für Folie, auch auf Folien der Seite ohne eigene Notiz', () => {
+    const a = beamer('/innolab/methoden/experiment', 'vorher-entscheiden').z.index;
+    expect(beamer('/innolab/methoden/experiment', 'gegen-den-beleg').z.index).toBe(a + 1);
+    expect(folien[beamer('/innolab/methoden/experiment', 'origin-story').z.index].id).toBe('origin-story');
+    expect(folien[beamer('/innolab/tag-5', 'debrief').z.index].id).toBe('debrief');
+  });
+  it('Seite ohne Notizen (baum): weiter die Karte, die letzte Folie bleibt stehen', () => {
+    const { z, karte } = beamer('/innolab/methoden/baum', '');
+    expect(z.meldung).toBe('nicht-tag-1');
+    expect(z.index).toBe(0);
+    expect(karte).toBe('/innolab/methoden/baum');
+  });
+  it('Tag 1 unverändert: dieselben Folien vorn, gleiche Indizes, eine Gruppe', () => {
+    const tag1 = tagFolien(quellen);
+    expect(folien.slice(0, tag1.length)).toStrictEqual(tag1);
+    expect(folien.length).toBeGreaterThan(tag1.length);
+    expect(new Set(tag1.map((f) => folienGruppe(f.pfad)))).toStrictEqual(new Set(['tag-1']));
+    expect(beamer('/innolab/methoden/entscheidungslog', 'beleg-staerke').z.index).toBe(folieZu(tag1, '/innolab/methoden/entscheidungslog', 'beleg-staerke'));
   });
 });
