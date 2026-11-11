@@ -1,0 +1,98 @@
+// Der Kriterien-Katalog hängt am Kaffeebar-Beispiel: Was als wörtlich markiert ist, muss dort stehen. Ändert jemand die
+// Beispieldateien oder Methodenseiten, wird dieser Test rot, statt dass der Katalog still etwas anderes zeigt.
+import { existsSync, readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
+import annahmen from './beispiele/annahmen.json';
+import entscheidungen from './beispiele/entscheidungen.json';
+import { BRIEF_ABSCHNITTE } from './feedback';
+import { KRITERIEN, kriterium, type Fassung } from './kriterien';
+import { ARTEFAKT_NAMEN } from './schemas/index';
+
+const lesen = (pfad: string) => readFileSync(pfad, 'utf8');
+const leerraum = (s: string) => s.replace(/\s+/g, ' ');
+
+// Alle Texte einer JSON-Datei; die Fassung muss genau einer davon sein (nicht nur ein Stück daraus).
+function jsonTexte(x: unknown): string[] {
+  if (typeof x === 'string') return [x];
+  if (Array.isArray(x)) return x.flatMap(jsonTexte);
+  if (x && typeof x === 'object') return Object.values(x).flatMap(jsonTexte);
+  return [];
+}
+
+function stehtIn(f: Fassung): boolean {
+  if (f.fundort === undefined) return false;
+  if (f.fundort.endsWith('.json')) return jsonTexte(JSON.parse(lesen(f.fundort))).includes(f.text);
+  return leerraum(lesen(f.fundort)).includes(leerraum(f.text));
+}
+
+const fassungen = KRITERIEN.flatMap((k) => [['schwach', k.paar.schwach], ['stark', k.paar.stark]].map(([seite, f]) => ({ k, seite: seite as string, f: f as Fassung })));
+
+describe('Kriterien-Katalog', () => {
+  it('neun Kriterien mit eindeutiger, stabiler ID', () => {
+    const ids = KRITERIEN.map((k) => k.id);
+    expect(ids).toStrictEqual([
+      'output-statt-outcome', 'outcome-nicht-messbar', 'loesung-im-problem', 'art-der-annahme', 'annahme-nicht-pruefbar',
+      'meinungsfrage', 'verallgemeinerung', 'beleg-ohne-quelle', 'zwei-zielgruppen',
+    ]);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(kriterium('meinungsfrage')?.name).toBe('Meinungsfrage statt Geschichte');
+    expect(kriterium('gibt-es-nicht')).toBeUndefined();
+  });
+
+  it.each(KRITERIEN.map((k) => [k.id, k] as const))('%s: Name, Artefakte, Abschnitte nur beim Brief', (_, k) => {
+    expect(k.name.trim()).not.toBe('');
+    expect(k.artefakte.length).toBeGreaterThan(0);
+    expect(k.artefakte.every((a) => (ARTEFAKT_NAMEN as readonly string[]).includes(a))).toBe(true);
+    if (k.abschnitte !== undefined) {
+      expect(k.artefakte).toContain('brief');
+      expect(k.abschnitte.length).toBeGreaterThan(0);
+      expect(k.abschnitte.every((a) => Object.hasOwn(BRIEF_ABSCHNITTE, a))).toBe(true);
+    }
+  });
+
+  it.each(KRITERIEN.map((k) => [k.id, k] as const))('%s: Paar mit schwach, stark, warum; schwach ≠ stark', (_, k) => {
+    const { schwach, stark, warum } = k.paar;
+    for (const f of [schwach, stark]) {
+      expect(f.text.trim()).not.toBe('');
+      // Genau eins von beidem: wörtlich gefunden oder für den Katalog formuliert.
+      expect((f.fundort !== undefined) !== (f.formuliert === true)).toBe(true);
+    }
+    expect(stark.fundort).toBeTruthy();
+    expect(`${schwach.text}|${schwach.zusatz ?? ''}`).not.toBe(`${stark.text}|${stark.zusatz ?? ''}`);
+    expect(warum.trim()).toMatch(/[.!?]$/);
+  });
+
+  it.each(KRITERIEN.map((k) => [k.id, k] as const))('%s: Quelle mit Methodenseite (Anker vorhanden) und Buchseite', (_, k) => {
+    expect(k.quelle.seiten.length).toBeGreaterThan(0);
+    for (const s of k.quelle.seiten) {
+      const m = /^\/innolab\/([a-z0-9/-]+)#([a-z0-9-]+)$/.exec(s);
+      expect(m, s).not.toBeNull();
+      const datei = `src/pages/innolab/${m![1]}.astro`;
+      expect(existsSync(datei), datei).toBe(true);
+      expect(lesen(datei), `${s}: Anker fehlt`).toContain(`id="${m![2]}"`);
+    }
+    expect(k.quelle.buch).toMatch(/S\. \d/);
+  });
+
+  it.each(fassungen.filter((x) => x.f.fundort !== undefined).map((x) => [`${x.k.id} ${x.seite}`, x.f] as const))(
+    '%s steht wörtlich im Kaffeebar-Material',
+    (_, f) => {
+      expect(existsSync(f.fundort!), f.fundort).toBe(true);
+      expect(stehtIn(f), `${f.text} fehlt in ${f.fundort}`).toBe(true);
+    },
+  );
+
+  it('Zusätze passen zum Beispiel: Art von A3, Belege von D4', () => {
+    const a3 = annahmen.annahmen.find((a) => a.id === 'A3')!;
+    const art = kriterium('art-der-annahme')!.paar;
+    expect(art.stark.text).toBe(a3.text);
+    expect(art.stark.zusatz).toBe('Art: bedienbar');
+    expect(a3.art).toBe('bedienbar');
+    expect(art.schwach.zusatz).not.toBe(art.stark.zusatz);
+
+    const d4 = entscheidungen.entscheidungen.find((e) => e.id === 'D4')!;
+    const beleg = kriterium('beleg-ohne-quelle')!.paar;
+    expect(beleg.stark.text.startsWith(`${d4.entscheidung} — ${d4.grund} — Beleg: ${d4.beleg} (${d4.belegIds.join(', ')}`)).toBe(true);
+    expect(beleg.schwach.text).toBe(`${d4.entscheidung} — ${d4.grund} — Beleg: ${d4.beleg}`);
+  });
+});
