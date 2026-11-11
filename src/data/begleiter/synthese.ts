@@ -197,7 +197,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Widerlegt I2 die Annahme A1?',
-      antwort: 'Nein, I2 ist ein erster Gegenbeleg – er kommt in die Annahmen-Map. Erst wenn dieselbe Einsicht in weiteren Snapshots wiederkehrt, rückt A1 nach links; eine Zeile im Entscheidungslog kommt erst, wenn ihr deshalb etwas ändert (bei der Kaffeebar D4 nach allen fünf).',
+      antwort: 'Nein, I2 ist ein erster Gegenbeleg – er kommt bei A1 in die Annahmen-Map, mit „spricht dagegen“ in der Beleg-Notiz. Nach links rückt eine Annahme nur mit Belegen dafür (Torres S. 129); eine Zeile im Entscheidungslog kommt erst, wenn ihr deshalb etwas ändert (bei der Kaffeebar D4 nach allen fünf).',
       falsch: '„Ja, A1 ist falsch“ – ein Interview ist ein Beleg, kein Beweis.',
     },
     ueberleitung: 'Jetzt ihr: drei Runden, jede*r zeigt einmal.',
