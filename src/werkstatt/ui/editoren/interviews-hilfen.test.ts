@@ -27,7 +27,7 @@ describe('Interview-Editor: neue Einträge', () => {
 });
 
 describe('Interview-Editor: Tipp unter „Belege“', () => {
-  const MIT = 'Kreuze die Zitate an, die diese Chance stützen – ohne Zitat kein Beleg.';
+  const MIT = 'Kreuze die Zitate an, die diese Chance stützen – ohne Zitat kein Beleg. Ein Zitat darf mehrere Chancen stützen.';
 
   it('ohne Zitate oder nur mit leeren: kein Tipp (der Leerzustand von BelegAuswahl sagt es schon)', () => {
     expect(belegHilfe([])).toBeUndefined();

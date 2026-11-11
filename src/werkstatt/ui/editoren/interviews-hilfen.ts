@@ -51,7 +51,7 @@ const hatZitate = (zitate: readonly { text: string }[]) => zitateMitText(zitate)
 /** Tipp unter „Belege“ (nur an der ersten Chance). Ohne Zitat mit Text kein Tipp: Dann zeigt BelegAuswahl an jeder
  *  Chance den Leerzustand „Noch keine Zitate …“, der dasselbe sagt. */
 export function belegHilfe(zitate: readonly { text: string }[]): string | undefined {
-  return hatZitate(zitate) ? 'Kreuze die Zitate an, die diese Chance stützen – ohne Zitat kein Beleg.' : undefined;
+  return hatZitate(zitate) ? 'Kreuze die Zitate an, die diese Chance stützen – ohne Zitat kein Beleg. Ein Zitat darf mehrere Chancen stützen.' : undefined;
 }
 
 export const BELEG_FEHLT = 'Diese Chance hat noch keinen Beleg – kreuze mindestens ein Zitat an.';
