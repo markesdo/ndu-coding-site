@@ -26,14 +26,20 @@
   position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0;
   width: min(100vw, 76rem); height: 100dvh; max-width: 100vw; max-height: 100dvh;
   border: 0; border-left: 1px solid var(--border); background: var(--bg); color: var(--fg);
+  /* Der Dialog selbst scrollt nie, nur seine Bereiche (Formular, Vorschau, Leser). Absolut positionierte
+     Nur-Leser-Elemente tief im Inhalt machten ihn sonst höher als den Bildschirm; dann scrollte er als Ganzes und
+     Kopf- und Fußleiste („Speichern“) wanderten weg. clip statt hidden: hidden ließe sich per Fokus noch scrollen.
+     position: relative auf den Scrollbereichen hält solche Elemente zusätzlich in ihrem Bereich.
+     Geprüft in werkstatt-css.test.ts. */
+  overflow: clip;
 }
 .wk-dialog::backdrop { background: rgb(0 0 0 / .45); }
 .wk-huelle { display: flex; flex-direction: column; height: 100%; }
 .wk-kopf { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; border-bottom: 1px solid var(--border); }
 .wk-kopf h2 { margin: 0; font-size: 1.15rem; }
 .wk-inhalt { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-.wk-formular { min-width: 0; margin: 0; padding: 1rem; border: 0; overflow-y: auto; }
-.wk-bild { min-width: 0; padding: 1rem; overflow-y: auto; background: var(--bg-2); border-left: 1px solid var(--border); }
+.wk-formular { position: relative; min-width: 0; margin: 0; padding: 1rem; border: 0; overflow-y: auto; }
+.wk-bild { position: relative; min-width: 0; padding: 1rem; overflow-y: auto; background: var(--bg-2); border-left: 1px solid var(--border); }
 .wk-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: .75rem 1rem; border-top: 1px solid var(--border); }
 .wk-fuss .wk-status, .wk-fuss .wk-fehler { margin: 0; }
 .wk-knoepfe { display: flex; flex-wrap: wrap; gap: .5rem; margin-left: auto; }
@@ -154,7 +160,7 @@
 .lv-leser-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; padding: .5rem 1rem; border-bottom: 1px solid var(--border); }
 .lv-leser-personen, .lv-leser-tabs { display: flex; flex-wrap: wrap; gap: .4rem; }
 .wk-wurzel .lv-tab[aria-current="true"] { border-color: var(--fg); font-weight: 600; }
-.lv-leser-inhalt { flex: 1; min-height: 0; overflow-y: auto; padding: 1rem 1.25rem 2rem; }
+.lv-leser-inhalt { position: relative; flex: 1; min-height: 0; overflow-y: auto; padding: 1rem 1.25rem 2rem; }
 .lv-leser-inhalt h3 { display: flex; align-items: center; gap: .3rem; margin: 0 0 .3rem; font-size: 1rem; }
 .lv-leser-befunde, .lv-leser-fehlt { margin: 0 0 1rem; padding: .6rem .9rem; border-left: 3px solid var(--yellow); background: var(--yellow-soft); }
 .lv-leser-befunde h3 svg { color: var(--yellow-ink); }
