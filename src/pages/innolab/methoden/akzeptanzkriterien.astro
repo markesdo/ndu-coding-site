@@ -23,7 +23,7 @@ const EVALS = 'Anthropic, „Define success criteria and build evaluations“ (d
 const GRENZFAELLE = 'Lies Issue [Kennung] über den Linear-MCP. Wir haben zu dritt den Normalfall und unsere Was-wenn-Fälle als Akzeptanzkriterien geschrieben. Nenn höchstens drei Fehler- oder Grenzfälle, die fehlen, jeweils als „Gegeben … wenn … dann …“ mit konkreten Werten, ohne technische Umsetzung. Ändere das Issue nicht – ich entscheide, was hineinkommt.';
 ---
 <Layout title="Akzeptanzkriterien">
-  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
+  <span class="eyebrow">Innolab · Tag 5 · Methode</span>
   <h1>Akzeptanzkriterien</h1>
   <p class="lead">Woran ihr – und Claude – erkennt, dass ein Issue fertig ist: gemeinsam festgelegt, mit echten Werten, mit Fehlerfall und ohne ein Wort zum Wie.</p>
   <Orientierung seite="innolab/methoden/akzeptanzkriterien" leiste={false} />
@@ -117,12 +117,12 @@ Fertig, wenn: mit leerer und mit voller Warteschlange am Handy gezeigt – dafü
     <h2 id="vorgehen">So geht ihr vor (32 min Übung)</h2>
     <p class="folie-satz">Allein den Normalfall, reihum der Workshop, dann Claude und Linear.</p>
     <ol class="gross">
-      <li data-schritt><strong>Normalfall, allein:</strong> je Issue für Sprint 1 ein Szenario mit echten Werten und „Fertig, wenn“. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Normalfall, allein:</strong> je Issue für den Sprint ein Szenario mit echten Werten und „Fertig, wenn“. <Timer minuten={8} /></li>
       <li data-schritt><strong>Story-Workshop, reihum:</strong> sechs Minuten je Product Owner, Rollen wechseln. <Timer minuten={18} /></li>
       <li data-schritt><strong>Claude und Linear:</strong> höchstens drei weitere Grenzfälle; Kriterien ins Issue. <Timer minuten={6} /></li>
     </ol>
     <div class="nur-handout">
-      <p>Davor: Theorie 8 Minuten, Kaffeebar gemeinsam 5 – zusammen 45. Zu 1: für jedes Issue, das in Sprint 1 kommen könnte, ein „Gegeben … wenn … dann …“ mit echten Werten und die Zeile „Fertig, wenn“ als Antwort auf die Demo-Frage. Zu 2: A erzählt ein Issue (Titel, Ziel, Normalfall); B ist Developer, C Tester; A schreibt die Kriterien live auf den Frame. Dann erzählt B, C ist Developer, A Tester; dann C. Pro Runde so viele Issues, wie in sechs Minuten gehen – die riskanten zuerst. Was die anderen nicht verstehen, formuliert ihr um. Patton rechnet für so einen Workshop mehr Zeit; die sechs Minuten pro Person sind eine Kürzung des Kurses. Zu 3: für ein Issue, bei dem die Runde weniger als einen Grenzfall fand, der Prompt unten; dann die Kriterien in die Linear-Beschreibung, unter „Akzeptanzkriterien“.</p>
+      <p>Davor: Theorie 8 Minuten, Kaffeebar gemeinsam 5 – zusammen 45. Zu 1: für jedes Issue, das in den Sprint kommen könnte, ein „Gegeben … wenn … dann …“ mit echten Werten und die Zeile „Fertig, wenn“ als Antwort auf die Demo-Frage. Zu 2: A erzählt ein Issue (Titel, Ziel, Normalfall); B ist Developer, C Tester; A schreibt die Kriterien live auf den Frame. Dann erzählt B, C ist Developer, A Tester; dann C. Pro Runde so viele Issues, wie in sechs Minuten gehen – die riskanten zuerst. Was die anderen nicht verstehen, formuliert ihr um. Patton rechnet für so einen Workshop mehr Zeit; die sechs Minuten pro Person sind eine Kürzung des Kurses. Zu 3: für ein Issue, bei dem die Runde weniger als einen Grenzfall fand, der Prompt unten; dann die Kriterien in die Linear-Beschreibung, unter „Akzeptanzkriterien“.</p>
       <Prompt label="Grenzfälle · Claude Code" note="Erst nach dem Workshop. Claude schlägt vor, ihr entscheidet, was ins Issue kommt.">{GRENZFAELLE}</Prompt>
     </div>
   </Folie>
@@ -154,7 +154,7 @@ Regel (falls nötig):
 Eval: [Eingabe] → [erwartet] · ... · Schwelle: [x] von [y]; nie [harte Grenze]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
-  <ClaudePruefung slug="akzeptanzkriterien" pfad="über den Linear-MCP die Issues, die in Sprint 1 kommen könnten (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)" />
+  <ClaudePruefung slug="akzeptanzkriterien" pfad="über den Linear-MCP die Issues, die in den Sprint kommen könnten (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)" />
   </div>
 
   <Folie>

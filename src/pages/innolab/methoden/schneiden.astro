@@ -21,7 +21,7 @@ const WAKE = 'Bill Wake, „INVEST in Good Stories, and SMART Tasks“ (xp123.co
 const PLAN_CHECK = `Lies Issue [Kennung] über den Linear-MCP, docs/STORY-MAP.md (Slice 1) und aus der Werkstatt meinen Produkt-Brief (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}); ohne Werkstatt-Zugang nimm den Produkt-Brief, den ich unter diese Nachricht einfüge. Mach einen Plan, wie du das Issue umsetzen würdest – baue nichts. Schreib den Plan so, dass ihn jemand ohne Programmierkenntnisse versteht: höchstens sieben Schritte. Sag danach in einem Satz, ob das in einen Durchgang passt, und nenn alles, was du annehmen müsstest, weil es im Issue nicht steht. Ändere das Issue nicht.`;
 ---
 <Layout title="Schneiden statt Schätzen">
-  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
+  <span class="eyebrow">Innolab · Tag 5 · Methode</span>
   <h1>Schneiden statt Schätzen</h1>
   <p class="lead">Ob ein Issue klein genug ist und ob alle dasselbe darunter verstehen – ohne dass ihr Aufwand in Stunden oder Punkten vorhersagen müsst.</p>
   <Orientierung seite="innolab/methoden/schneiden" leiste={false} />
@@ -48,19 +48,19 @@ const PLAN_CHECK = `Lies Issue [Kennung] über den Linear-MCP, docs/STORY-MAP.md
 
   <Folie>
     <h2 id="zaehlen">Zählen statt Punkte</h2>
-    <p class="folie-satz">Sind alle Issues ungefähr gleich klein, zählt ihr Issues – ab Sprint 2 mit gestrigem Wetter.</p>
+    <p class="folie-satz">Sind alle Issues ungefähr gleich klein, zählt ihr Issues.</p>
     <BildText>
       <BuchAbbildung src="/quellen/duarte/run-chart.jpg" alt="Handgezeichnetes Liniendiagramm: senkrecht Stories Delivered, waagrecht 21 Iterationen; die Linie schwankt eng um eine Linie Avg, weit darüber eine Linie Target!!!" quelle={`Gelieferte Stories über 21 Iterationen. ${DUARTE}, Abb. 9, S. 88.`} />
       <ul>
         <li data-schritt><strong>Fertig zählt nur,</strong> was läuft, getestet und abgenommen ist.</li>
         <li data-schritt><strong>Kein Issue größer als ein Durchgang</strong> – zu groß heißt teilen, am besten entlang der Kriterien.</li>
-        <li data-schritt><strong>Sprint 1 knapp,</strong> Sprint 2 so viele, wie in Sprint 1 fertig wurden.</li>
-        <li data-schritt><strong>Ein Spike</strong> ist kein Issue für Sprint 1.</li>
+        <li data-schritt><strong>Den Sprint knapp planen</strong> – ohne Erfahrungswert.</li>
+        <li data-schritt><strong>Ein Spike</strong> ist kein Issue für den Sprint.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
       <p>Zu 1: „RTS, Running-Tested-Stories is the only metric that reliably describes the progress in a software project“ ({DUARTE}, S. 68); bei euch heißt das: fertig nach der Definition of Done. Zu 2: „There should be no ‚huge‘ Stories (e.g. in Scrum: bigger than half a sprint counts as ‚too big‘ and should be split.)“ (S. 69). Sind die Stories klein, sind sie „typically pretty homogeneous in size, which means that you can focus on their value, instead of their cost“ (S. 71); im letzten Schritt seines Wegs zu #NoEstimates: „Simply count Stories and project progress based on how many Stories the project was able to deliver in the past“ (S. 97). Jeffries: „Many teams today are working quite successfully using no detailed estimates at all. … When they need to predict how long things will take, they just count things done“ (S. 38); „Once we become proficient at breaking all features down to approximately the same size, we can manage the project very nicely“ (S. 40). Beide sagen „ungefähr gleich“, nicht „gleich“.</p>
-      <p>Zu 3: Für eine Vorhersage nimmt Duarte „the progress data from 3 to 5 iterations“ (S. 87). Ihr habt zwei Sprints, also ist Zählen bei euch eine Faustregel, keine Vorhersage: Sprint 1 plant ihr knapp, ab Sprint 2 gilt <em>Yesterday’s Weather</em> – „plan to do as much this iteration as you did last iteration“ ({JEFFRIES}, S. 37), wie in <a href="/innolab/methoden/sprint#planning">Sprint Planning</a>. „Planning with ‚stretch goals‘ is destructive“ (S. 39). Zu 4: Ein Spike dient dem Lernen; Patton: „Use stories to describe spikes“ (Kap. 11, „Discover a Minimum Viable Solution“), Wake: ein Spike ist „(time-boxed)“ und liefert „enough information to make a decent estimate“ ({WAKE}). Er gehört nicht in Sprint 1, solange Slice 1 nicht läuft.</p>
+      <p>Zu 3: Für eine Vorhersage nimmt Duarte „the progress data from 3 to 5 iterations“ (S. 87). Ihr habt einen Sprint, also ist Zählen bei euch eine Faustregel, keine Vorhersage: Ihr plant knapp. <em>Yesterday’s Weather</em> – „plan to do as much this iteration as you did last iteration“ ({JEFFRIES}, S. 37) – bräuchte einen Sprint davor, siehe <a href="/innolab/methoden/sprint#planning">Sprint Planning</a>. „Planning with ‚stretch goals‘ is destructive“ (S. 39). Zu 4: Ein Spike dient dem Lernen; Patton: „Use stories to describe spikes“ (Kap. 11, „Discover a Minimum Viable Solution“), Wake: ein Spike ist „(time-boxed)“ und liefert „enough information to make a decent estimate“ ({WAKE}). Er gehört nicht in den Sprint, solange Slice 1 nicht läuft.</p>
       <h3 id="teilen">Zu groß? So teilt ihr</h3>
       <div style="overflow-x:auto">
         <table>
@@ -77,7 +77,7 @@ const PLAN_CHECK = `Lies Issue [Kennung] über den Linear-MCP, docs/STORY-MAP.md
           </tbody>
         </table>
       </div>
-      <p>Jedes Teil bleibt ein senkrechter Schnitt und bekommt mindestens eines der Kriterien, die ihr um 14:30 geschrieben habt – keine neuen. Duarte: „it must be testable and final, i.e. the team can make sure that a particular User Story has been successfully completed according to a Definition of Done“ (S. 84).</p>
+      <p>Jedes Teil bleibt ein senkrechter Schnitt und bekommt mindestens eines der Kriterien, die ihr um 10:35 geschrieben habt – keine neuen. Duarte: „it must be testable and final, i.e. the team can make sure that a particular User Story has been successfully completed according to a Definition of Done“ (S. 84).</p>
     </div>
   </Folie>
 
@@ -91,7 +91,7 @@ const PLAN_CHECK = `Lies Issue [Kennung] über den Linear-MCP, docs/STORY-MAP.md
     </ul>
     <div class="nur-handout">
       <p>Claude Code hat einen Plan-Modus: „Claude reads files and proposes a plan but makes no edits until you approve“. Ihr schaltet ihn mit <kbd>Shift</kbd><kbd>Tab</kbd> ein, bis unten „⏸ plan mode on“ steht (Claude Code Docs, „Common workflows“), und danach genauso wieder aus, bis „auto mode on“ dasteht (<a href="/konzepte/coding-agent">Coding-Agent</a>). „Etwas Externes“ entspricht Cohns Querschnittsthemen und Duartes funktionalen Abhängigkeiten (Tabelle oben). „Höchstens sieben Schritte“ im Prompt ist eine Zahl des Kurses, damit ihr den Plan in einer Minute lesen könnt.</p>
-      <Prompt label="Plan-Check · Claude Code im Plan-Modus" note="Für jedes Issue, das in Sprint 1 kommen könnte. Ob es passt, entscheidet ihr am Plan, nicht Claude mit einem Satz.">{PLAN_CHECK}</Prompt>
+      <Prompt label="Plan-Check · Claude Code im Plan-Modus" note="Für jedes Issue, das in den Sprint kommen könnte. Ob es passt, entscheidet ihr am Plan, nicht Claude mit einem Satz.">{PLAN_CHECK}</Prompt>
       <ClaudeCodeWerkstatt ohne="Ohne Connector fügt ihr den Produkt-Brief unter den Prompt ein, aus „Für Claude kopieren“ im Werkstatt-Editor, ohne Häkchen bei „Prüf-Prompt mitkopieren“." />
     </div>
   </Folie>
@@ -113,7 +113,7 @@ const PLAN_CHECK = `Lies Issue [Kennung] über den Linear-MCP, docs/STORY-MAP.md
       </table>
     </div>
     <div class="nur-handout">
-      <p>Issue 2: Im Backlog-Gespräch blieb die Frage offen, ob sich die Fertig-Zeit nach dem Bestellen noch ändert; der Plan zeigt, dass Claude es sonst selbst entschieden hätte. Die Product Ownerin entscheidet und schreibt unter Nicht im Umfang: „Die Fertig-Zeit wird nur beim Bestellen berechnet.“ Issue 4 wird schmaler und behält seine Nummer: Die Liste der Abfahrten kommt aus einer Tabelle, in die die Bar morgens die Züge der Stunde einträgt – Duartes vorläufiger Speicher, der nach Duarte auch live gehen darf. Neu ist Issue 7, ein Spike: „Gibt es Fahrplandaten mit Gleis, die wir abfragen dürfen?“ – nicht in Sprint 1. Das Risiko, das 4 im Backlog nach oben gebracht hat, ist damit nicht verschwunden, aber entschärft: Slice 1 läuft ohne die Daten, und der Spike klärt die Frage, bevor die echte Quelle gebaut wird. So bleibt die Auswahl im <a href="/innolab/methoden/sprint#planning-beispiel">Sprint Planning</a> bei 1, 2, 3, 4 und 6.</p>
+      <p>Issue 2: Im Backlog-Gespräch blieb die Frage offen, ob sich die Fertig-Zeit nach dem Bestellen noch ändert; der Plan zeigt, dass Claude es sonst selbst entschieden hätte. Die Product Ownerin entscheidet und schreibt unter Nicht im Umfang: „Die Fertig-Zeit wird nur beim Bestellen berechnet.“ Issue 4 wird schmaler und behält seine Nummer: Die Liste der Abfahrten kommt aus einer Tabelle, in die die Bar morgens die Züge der Stunde einträgt – Duartes vorläufiger Speicher, der nach Duarte auch live gehen darf. Neu ist Issue 7, ein Spike: „Gibt es Fahrplandaten mit Gleis, die wir abfragen dürfen?“ – nicht im Sprint. Das Risiko, das 4 im Backlog nach oben gebracht hat, ist damit nicht verschwunden, aber entschärft: Slice 1 läuft ohne die Daten, und der Spike klärt die Frage, bevor die echte Quelle gebaut wird. So bleibt die Auswahl im <a href="/innolab/methoden/sprint#planning-beispiel">Sprint Planning</a> bei 1, 2, 3, 4 und 6.</p>
       <p>Beim Zeigen reihum fragt ein Developer zu Issue 3: „Und wenn zwei denselben Zug haben?“ Die Product Ownerin antwortet: zuerst, wer früher bestellt hat – und ergänzt das als Kriterium. Ohne die Frage hätte Claude die Reihenfolge erfunden. Das ist Pattons What-About-Spiel (Kap. 12).</p>
     </div>
   </Folie>
@@ -122,11 +122,11 @@ const PLAN_CHECK = `Lies Issue [Kennung] über den Linear-MCP, docs/STORY-MAP.md
     <h2 id="vorgehen">So geht ihr vor (20 min Übung)</h2>
     <p class="folie-satz">Allein den Plan prüfen, reihum zeigen, was ihr geteilt habt.</p>
     <ol class="gross">
-      <li data-schritt><strong>Plan-Check, allein:</strong> je Issue für Sprint 1, Ergebnis als Kommentar ins Issue. <Timer minuten={12} /></li>
+      <li data-schritt><strong>Plan-Check, allein:</strong> je Issue für den Sprint, Ergebnis als Kommentar ins Issue. <Timer minuten={12} /></li>
       <li id="zeigen" data-schritt><strong>Geteiltes zeigen, reihum:</strong> je gut zwei Minuten, die anderen prüfen. <Timer minuten={8} /></li>
     </ol>
     <div class="nur-handout">
-      <p>Davor: Theorie 6 Minuten, Kaffeebar gemeinsam 4 – zusammen 30. Zu 1: Plan-Modus an, Prompt oben, für jedes Issue, das in Sprint 1 kommen könnte. Ins Issue kommt ein Kommentar nach der Vorlage unten: „passt“, „geteilt in …“ oder „ergänzt: …“. Was Claude annehmen musste, schreibt ihr als eure Entscheidung ins Issue – als Kriterium oder unter Nicht im Umfang. Zu 2: Jede*r zeigt das Issue, das zu groß war, und seine Teile; die anderen prüfen: Ist jedes Teil senkrecht? Hat jedes ein eigenes Kriterium? Ist der Spike draußen? Und: Könnte ich das bauen lassen und abnehmen, ohne nachzufragen? Was offen bleibt, kommt als Kommentar ins Issue; der Product Owner antwortet bis zum Planning um 16:00. Grenning: „Common ground and differences become evident“ ({GRENNING}, S. 3) – das gilt auch ohne Karten.</p>
+      <p>Davor: Theorie 6 Minuten, Kaffeebar gemeinsam 4 – zusammen 30. Zu 1: Plan-Modus an, Prompt oben, für jedes Issue, das in den Sprint kommen könnte. Ins Issue kommt ein Kommentar nach der Vorlage unten: „passt“, „geteilt in …“ oder „ergänzt: …“. Was Claude annehmen musste, schreibt ihr als eure Entscheidung ins Issue – als Kriterium oder unter Nicht im Umfang. Zu 2: Jede*r zeigt das Issue, das zu groß war, und seine Teile; die anderen prüfen: Ist jedes Teil senkrecht? Hat jedes ein eigenes Kriterium? Ist der Spike draußen? Und: Könnte ich das bauen lassen und abnehmen, ohne nachzufragen? Was offen bleibt, kommt als Kommentar ins Issue; der Product Owner antwortet bis zum Planning um 11:50. Grenning: „Common ground and differences become evident“ ({GRENNING}, S. 3) – das gilt auch ohne Karten.</p>
     </div>
   </Folie>
 
