@@ -142,7 +142,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 87`,
       },
     ],
-    ueberleitung: 'Welche Momente zählen beim Erinnern am meisten? Höhepunkt und Ende.',
+    ueberleitung: 'Welche Momente zählen beim Erinnern am meisten? Der stärkste Moment (Hoch- oder Tiefpunkt) und das Ende.',
   },
 
   'peak-end': {
@@ -166,6 +166,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Obere Reihe: die Map von Tag 1, das „?“ zeigen.',
       'Fragen: Was haben die Geschichten bestätigt, was ist neu?',
       'Aufdecken: das Warten auf den Kaffee – neuer Knoten, Tiefpunkt.',
+      'Fragen: Woran erkennt ihr den Tiefpunkt? – Am Zitat, nicht am Bauchgefühl.',
       '„Der Automat ist ein Umweg, kein eigener Moment.“',
     ],
     verstaendnis: {
@@ -180,7 +181,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Schritte unten kopieren und in den Teams-Chat einfügen.',
       'Timer 10 min: allein, die Map von Tag 1 daneben.',
       'Nach 10 min: zu dritt zeigen, nicht verteidigen.',
-      'Nach 22 min: drei bis fünf Momente, Höhepunkt und Ende.',
+      'Nach 22 min: drei bis fünf Momente, stärkster Moment, Ende.',
       'Nach 30 min: Prüfliste, dann Claude mit Bild der Map.',
     ],
     uebung: { dauer: '35 min (10 + 12 + 8 + 5)', form: 'allein, dann zu dritt' },
@@ -191,7 +192,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         '„Alle zu mir holen“ auf T2 · 1; links die Kaffeebar als Muster.',
         'Allein in der eigenen Spalte: Knoten aus den Skizzen, auf Papier oder gleich auf Miro, die Map von Tag 1 (T1 · 1) daneben.',
         'Zu dritt Spalte für Spalte; Unterschiede zeichnen statt diskutieren.',
-        'Momente markieren, jede*r in der eigenen Spalte: drei bis fünf, Höhepunkt und Ende, je mit Zitat-ID.',
+        'Momente markieren, jede*r in der eigenen Spalte: drei bis fünf, je mit Zitat-ID; stärkster Moment (Hoch- oder Tiefpunkt) und Ende.',
       ],
     },
     ablauf: {
@@ -199,7 +200,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
         'Allein (10 min): Knoten aus den Skizzen beschriften, auf Papier oder gleich in der eigenen Spalte auf T2 · 1, zusammenfügen, die Map von Tag 1 daneben.',
         'Zu dritt (12 min): Jede*r zeigt die eigene Map (Bildschirm teilen), die anderen fragen nach.',
-        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren; jeder Moment mit Zitat-ID.',
+        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft. Jeder Moment mit Zitat-ID: Das Zitat zeigt, was die Person dort denkt, fühlt oder tut. Dann den stärksten Moment (Hoch- oder Tiefpunkt) und das Ende markieren.',
         'Prüfen (5 min): Prüfliste, dann Claude mit einem Bild der Map aus Miro; eine Datei gibt es nicht.',
       ],
       achten: [

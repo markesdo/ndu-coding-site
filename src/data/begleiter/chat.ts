@@ -12,7 +12,7 @@ Noch keine Interviews in der Werkstatt? Bis 14:50 die besten 2–3 eintragen: Ps
 export const CHAT_JOURNEY_MAP = `Experience Map · 35 min · Miro: T2 · 1 · Experience Map
 1. Allein (10 min): Knoten aus euren Skizzen beschriften – auf Papier oder gleich in eurer Spalte auf Miro T2 · 1 –, zur neuen Map zusammenfügen, die Map von Tag 1 daneben.
 2. Zu dritt (12 min): Jede*r zeigt die eigene Map (Bildschirm teilen), die anderen fragen nach – ohne die eigene zu verteidigen.
-3. Momente festlegen (8 min), in eurer Spalte auf Miro T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren; jeder Moment mit Zitat-ID, etwa I2-3.
+3. Momente festlegen (8 min), in eurer Spalte auf Miro T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft. Jeder Moment mit Zitat-ID, etwa I2-3: Das Zitat zeigt, was die Person dort denkt, fühlt oder tut. Dann den stärksten Moment (Hoch- oder Tiefpunkt) und das Ende markieren.
 4. Prüfen (5 min): Prüfliste, dann Claude mit einem Bild eurer Map (Prompt auf der Seite unter „Prüfen“).`;
 
 export const CHAT_BAUM = `Opportunity Solution Tree · 39 min · Miro: euer Baum, „Baum · <euer Name>“ (Beispiel: Baum · Beispiel Kaffeebar)
