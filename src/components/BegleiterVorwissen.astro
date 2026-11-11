@@ -1,0 +1,36 @@
+---
+// Präsentator-Begleiter: Hinweis oben im Live-Block, wenn die Studierenden die Methode schon aus einer anderen LV kennen
+// (data/begleiter/vorwissen.ts, Text aus vorwissenHinweis in lib/begleiter.ts). Nur im Begleiter verwenden, nie auf
+// Seiten für Studierende oder den Beamer.
+import { GraduationCap } from '@lucide/astro';
+import { stichwortForm, vorwissenHinweis } from '../lib/begleiter';
+const { pfad } = Astro.props as { pfad: string };
+const h = vorwissenHinweis(pfad);
+const titel = h ? stichwortForm(h.titel) : null;
+const frage = h ? stichwortForm(h.frage) : null;
+---
+{h && titel && frage && (
+  <aside class="vorwissen" data-vorwissen={h.grad} aria-label="Vorwissen der Studierenden">
+    <GraduationCap size={22} aria-hidden="true" />
+    <div>
+      <p class="titel"><b>{titel.cue}:</b> {titel.rest}</p>
+      <p><b>{frage.cue}:</b> {frage.rest}</p>
+      {h.notiz && <p class="notiz">{h.notiz}</p>}
+    </div>
+  </aside>
+)}
+
+<style>
+  .vorwissen {
+    display: flex; gap: .6rem; align-items: flex-start; margin: 0 0 .8rem; padding: .6rem .8rem;
+    border: 2px solid var(--green); border-radius: var(--radius); background: var(--green-soft); font-size: 1.2rem; line-height: 1.35;
+  }
+  .vorwissen > svg { flex: none; margin-top: .2rem; color: var(--green); }
+  .vorwissen p { margin: 0; }
+  .vorwissen .titel b { color: var(--green); }
+  .vorwissen .notiz { margin-top: .2rem; font-size: 1rem; color: var(--muted); }
+  .vorwissen[data-vorwissen="teilweise"], .vorwissen[data-vorwissen="unsicher"] { border-color: var(--yellow); background: var(--yellow-soft); }
+  .vorwissen[data-vorwissen="unsicher"] { border-style: dashed; }
+  .vorwissen[data-vorwissen="teilweise"] > svg, .vorwissen[data-vorwissen="unsicher"] > svg,
+  .vorwissen[data-vorwissen="teilweise"] .titel b, .vorwissen[data-vorwissen="unsicher"] .titel b { color: var(--yellow-ink); }
+</style>

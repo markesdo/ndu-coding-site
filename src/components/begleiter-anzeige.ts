@@ -24,3 +24,11 @@ export function anzeige(z: Zustand, e: Ereignis): Zustand {
     case 'leer': return { ...z, meldung: 'keine-position' };
   }
 }
+
+/**
+ * Seite außerhalb von Tag 1, deren eigene Karte statt der stehengebliebenen Folie erscheint (karten = kartenPfade aus
+ * lib/begleiter): nur beim Folgen, wenn der Beamer gerade dort steht und es für pfad eine Karte gibt; sonst null.
+ */
+export function fremdeSeite(z: Zustand, beamerPfad: string | null, karten: ReadonlySet<string>): string | null {
+  return z.folgen && z.meldung === 'nicht-tag-1' && beamerPfad !== null && karten.has(beamerPfad) ? beamerPfad : null;
+}

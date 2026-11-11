@@ -3,7 +3,7 @@ import { MIRO_FRAMES } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
 import { TAG_1 } from '../data/begleiter/tag';
 import {
-  TAG_1_SEITEN, ablaufBloecke, bloeckeAus, folieZu, folienAus, folienPlan, hhmm, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie,
+  TAG_1_SEITEN, ablaufBloecke, bloeckeAus, kartenPfade, folieZu, folienAus, folienPlan, hhmm, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie,
   pfadAusGlob, quelleTeile, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, tempo, uebungMinuten, wischErlaubt, type WischKnoten,
 } from './begleiter';
 
@@ -342,5 +342,13 @@ describe('Miro-Frames in den Notizen', () => {
       },
     };
     expect(notizenMitFremdemFrame(notizen, MIRO_FRAMES)).toStrictEqual(['/innolab/tag-1#b: T1 · 9 · Gibt es nicht']);
+  });
+});
+
+describe('kartenPfade', () => {
+  it('nur Innolab-Seiten außerhalb von Tag 1, ohne Begleiter und Routen mit Parametern', () => {
+    const quellen = Object.fromEntries(['/', '/ideen', '/innolabx', '/innolab', '/innolab/tag-1', '/innolab/methoden/interview', '/innolab/begleiter',
+      '/innolab/tag-2', '/innolab/methoden/baum', '/innolab/werkstatt/[id]'].map((p) => [p, '']));
+    expect(kartenPfade(quellen)).toStrictEqual(['/innolab', '/innolab/methoden/baum', '/innolab/tag-2']);
   });
 });

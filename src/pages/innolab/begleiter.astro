@@ -2,6 +2,7 @@
 // Präsentator-Begleiter: auf dem Tablet neben dem Beamer. Zeigt zu einer Folie von Tag 1 oben, was Markus sagt (live),
 // darunter die Vorbereitung. Folgt der Position, die der Beamer-Tab an /api/position meldet (wo-ist.ts); von Hand
 // blättern pausiert das Folgen. Folienliste aus den Seitenquellen (lib/begleiter.ts), Notizen aus data/begleiter/.
+// Oben im Live-Block steht, was die Studierenden schon aus anderen LVs kennen (data/begleiter/vorwissen.ts, nur hier).
 // Eigenes schlankes Gerüst statt Layout.astro: ohne Seitenleiste, Beamer-Modus und „Markus ist bei …“-Knopf.
 // Liegt hinter dem Kurspasswort wie alles unter /innolab; verlinkt nur beim Präsentator (PraesentatorEinstieg.astro).
 import '@fontsource-variable/instrument-sans';
@@ -9,10 +10,13 @@ import '@fontsource-variable/jetbrains-mono';
 import '../../styles/global.css';
 import { CalendarClock, ChevronLeft, ChevronRight, CircleQuestionMark, ExternalLink, Eye, LayoutGrid, Play, Timer, Undo2 } from '@lucide/astro';
 import Quelle from '../../components/BegleiterQuelle.astro';
+import Vorwissen from '../../components/BegleiterVorwissen.astro';
+import { METHODEN } from '../../components/methoden';
 import { NOTIZEN } from '../../data/begleiter';
 import { TAG_1 } from '../../data/begleiter/tag';
-import { ablaufBloecke, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, uebungMinuten } from '../../lib/begleiter';
+import { ablaufBloecke, kartenPfade, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, uebungMinuten } from '../../lib/begleiter';
 import { teamFrameLink } from '../../lib/team-board';
+import { MAPPE_PFAD, MAPPE_STUDIERENDE } from '../../lib/nav-rolle';
 
 // Glob vom Projektwurzel aus (wie in lib/begleiter.test.ts), damit die Schlüssel nicht vom Ordner dieser Datei abhängen.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
@@ -32,6 +36,14 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
 }));
 // Streich-Eintrag der Tageskarte → Index der Folie in seinem Block, damit „(toast)“ dorthin blättert.
 const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => plan[i]?.block === block && (f.id === id || f.unterIds.includes(id)));
+// Jede Innolab-Seite außerhalb von Tag 1 bekommt eine eigene Karte, die erscheint, wenn der Beamer dort steht
+// (fremdeSeite in components/begleiter-anzeige.ts), statt einer veralteten Tag-1-Folie. Titel = Methodenname bzw.
+// Seitentitel; das Vorwissen (falls eingetragen) steht darin auch ohne Folien-Notizen.
+const karten = kartenPfade(quellen).map((pfad) => {
+  const m = METHODEN.find((x) => `/innolab/methoden/${x.slug}` === pfad);
+  // Die Mappe setzt ihren Titel aus einer Konstante, die der Quelltext-Leser nicht sieht.
+  return { pfad, name: m?.name ?? (pfad === MAPPE_PFAD ? MAPPE_STUDIERENDE : seitenName(pfad)), tag: m?.tag ?? null };
+});
 ---
 <!doctype html>
 <html lang="de" data-bereich="innolab">
@@ -113,6 +125,7 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
             </header>
 
             <section class="live" aria-label="Live">
+              <Vorwissen pfad={f.pfad} />
               {n ? (
                 <>
                   <ul class="stichworte">{n.live.map((s) => {
@@ -213,15 +226,30 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
           </article>
         );
       })}
+      {karten.map((m) => (
+        <article data-karte={m.pfad} hidden>
+          <header class="kopf">
+            <p class="seite"><span>Außerhalb von Tag 1{m.tag !== null && ` · Tag ${m.tag}`}</span> <a class="oeffnen" href={m.pfad} target="_blank" rel="noopener" aria-label="Seite öffnen (neuer Tab)" title="Seite öffnen"><ExternalLink size={16} aria-hidden="true" /></a></p>
+            <h1>{m.name}</h1>
+          </header>
+          <section class="live" aria-label="Live">
+            <Vorwissen pfad={m.pfad} />
+            <p class="leer">Zu dieser Seite gibt es noch keine Notizen.</p>
+          </section>
+        </article>
+      ))}
     </main>
 
     <script>
-      import { anzeige, type Ereignis, type Zustand } from '../../components/begleiter-anzeige';
+      import { anzeige, fremdeSeite, type Ereignis, type Zustand } from '../../components/begleiter-anzeige';
       import { folieZu, hhmm, tempo, wischErlaubt, type Folie, type PlanFolie } from '../../lib/begleiter';
       import { abfrageKette, jsonHolen } from '../../lib/kette';
       import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, RUHIG_MS, alterText, naechsteAbfrage, positionPruefen } from '../../lib/position';
 
-      const artikel = [...document.querySelectorAll<HTMLElement>('main > article')];
+      const artikel = [...document.querySelectorAll<HTMLElement>('main > article[data-index]')];
+      // Karten für Seiten außerhalb von Tag 1 (Vorwissen), Schlüssel = Seitenpfad.
+      const karten = new Map([...document.querySelectorAll<HTMLElement>('main > article[data-karte]')].map((a) => [a.dataset.karte!, a]));
+      const kartenPfade = new Set(karten.keys());
       // Folienliste für folieZu: beim Bauen als JSON in die Seite geschrieben (unten, begleiter-folien).
       const folien = JSON.parse(document.getElementById('begleiter-folien')!.textContent!) as Folie[];
       const liste = document.querySelector<HTMLSelectElement>('[data-liste]')!;
@@ -234,6 +262,8 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
 
       let z: Zustand = { index: 0, folgen: true, meldung: 'frage' };
       let beamerTitel = '';
+      let beamerPfad: string | null = null;
+      let gezeigt = artikel[0];
       let fehlerInFolge = 0;
 
       // Kurz im Knopf (passt in eine Zeile), ausführlich für Screenreader und im Tooltip.
@@ -242,10 +272,13 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
         'keine-position': 'Beamer meldet nichts', 'keine-verbindung': 'Keine Verbindung', hand: 'Zum Beamer',
       };
 
-      function zeichnen(vorher: number) {
-        if (z.index !== vorher) {
-          artikel[vorher].hidden = true;
-          artikel[z.index].hidden = false;
+      function zeichnen() {
+        const karte = fremdeSeite(z, beamerPfad, kartenPfade);
+        const ziel = karte ? karten.get(karte)! : artikel[z.index];
+        if (ziel !== gezeigt) {
+          gezeigt.hidden = true;
+          ziel.hidden = false;
+          gezeigt = ziel;
           scrollTo({ top: 0 });
         }
         liste.value = String(z.index);
@@ -353,9 +386,8 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
       }
 
       function melden(e: Ereignis) {
-        const vorher = z.index;
         z = anzeige(z, e);
-        zeichnen(vorher);
+        zeichnen();
       }
 
       const blaettern = (index: number) => melden({ art: 'blaettern', index: Math.max(0, Math.min(artikel.length - 1, index)) });
@@ -374,6 +406,7 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
             if (!p || alt) melden({ art: 'leer' });
             else {
               beamerTitel = p.titel;
+              beamerPfad = p.pfad;
               melden({ art: 'position', index: folieZu(folien, p.pfad, p.anker) });
             }
             return ABFRAGE_MS;
@@ -466,7 +499,7 @@ const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => p
       // Drucken (Vorbereitung): alle Miro-Schritte aufgeklappt.
       addEventListener('beforeprint', () => { for (const d of document.querySelectorAll('details')) d.open = true; });
 
-      zeichnen(0);
+      zeichnen();
       uhrZeichnen();
       wachHalten();
       kette.sofort();
