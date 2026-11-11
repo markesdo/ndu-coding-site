@@ -243,7 +243,7 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
                 <option value="">Ohne Kriterium</option>
                 {kriterien.map((k) => <option key={k.id} value={k.id}>{k.name}</option>)}
               </select>
-              <span id={`${kriteriumId}-h`} className="wk-hilfe">Die Person sieht dazu das Kaffeebar-Paar, keine Fassung für ihren Fall.</span>
+              <span id={`${kriteriumId}-h`} className="wk-hilfe">Die Person sieht dazu das Kaffeebar-Paar aus dem Kursbeispiel.</span>
               {gewaehlt && <KaffeebarPaar k={gewaehlt} />}
             </div>
           )}
@@ -320,8 +320,9 @@ export function Faden({ faden, neu, aendern }: { faden: FeedbackFaden<FeedbackSi
 }
 
 /** Im Editor über dem Formular: Feedback der Lehrenden zu diesem Artefakt. Was beim Öffnen noch nicht gesehen war, steht
- *  als „neu“ da, solange der Editor offen ist; der Server merkt sich gleich, dass es geöffnet wurde. Kein Feedback: nichts. */
-export function StudierendenFeedback({ name }: { name: ArtefaktName }) {
+ *  als „neu“ da, solange der Editor offen ist; der Server merkt sich gleich, dass es geöffnet wurde. Kein Feedback: nichts.
+ *  stand: der gespeicherte Stand des Editors; ändert er sich, lädt eine noch zue mögliche Fassung neu (NDU-42). */
+export function StudierendenFeedback({ name, stand }: { name: ArtefaktName; stand?: unknown }) {
   const [eintraege, setEintraege] = useState<FeedbackSichtEintrag[] | null>(null);
   const [neu, setNeu] = useState<Set<string>>(new Set());
   const [meldung, setMeldung] = useState<string | null>(null);
@@ -345,6 +346,16 @@ export function StudierendenFeedback({ name }: { name: ArtefaktName }) {
     ));
     return () => { gilt = false; };
   }, [name, anwenden]);
+
+  // Nach dem Speichern (stand = gespeicherter Stand des Editors): Hängt eine noch zue Fassung am Feedback, neu laden – hat
+  // die Person die Zeile überarbeitet, gibt der Server sie jetzt frei. Nach bestem Bemühen.
+  const zu = eintraege?.some((e) => e.fassung?.zu) ?? false;
+  useEffect(() => {
+    if (!zu) return;
+    void anwenden(api.feedback()).catch(() => {});
+    // Nur auf einen neuen gespeicherten Stand hin, nicht wenn sich zu ändert.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stand]);
 
   async function aendern(a: Parameters<typeof api.feedbackAendern>[0]): Promise<boolean> {
     setMeldung(null);
