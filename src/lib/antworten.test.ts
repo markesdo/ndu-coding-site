@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  MAX_TEXT, RUNDEN, antwortSchluessel, antwortenGruppieren, eingabePruefen, idPruefen, indexSchluessel, rollePruefen,
+  MAX_TEXT, RUNDEN, absenderHash, absenderIp, absenderSchluessel, antwortSchluessel, laufSchluessel, antwortenGruppieren, eingabePruefen, idPruefen, indexSchluessel, rollePruefen,
   rundePruefen, standBauen, statusText, textBereinigen, texteFrei,
 } from './antworten';
 
@@ -64,10 +64,24 @@ describe('Antwortrunde: Schlüssel und Stand', () => {
   it('Schlüssel pro Wiener Kurstag, Runde und id', () => {
     // 23:30 UTC am 11.11. ist in Wien schon der 12.11.
     const spaet = new Date('2026-11-11T23:30:00Z');
-    expect(antwortSchluessel('netflix', ID, spaet)).toBe(`antwort:2026-11-12:netflix:${ID}`);
-    expect(indexSchluessel('netflix', spaet)).toBe('antworten:2026-11-12:netflix');
-    expect(antwortSchluessel('netflix', ID, new Date('2026-11-12T13:00:00Z'))).toBe(`antwort:2026-11-12:netflix:${ID}`);
+    expect(antwortSchluessel('netflix', ID, spaet)).toBe(`antwort:2026-11-12:netflix:0:${ID}`);
+    expect(indexSchluessel('netflix', spaet)).toBe('antworten:2026-11-12:netflix:0');
+    expect(antwortSchluessel('netflix', ID, new Date('2026-11-12T13:00:00Z'))).toBe(`antwort:2026-11-12:netflix:0:${ID}`);
     expect(antwortSchluessel('netflix', ID, new Date('2026-11-13T13:00:00Z'))).not.toBe(antwortSchluessel('netflix', ID, spaet));
+    // Nach „Runde leeren“ ein neuer Lauf, neue Schlüssel.
+    expect(antwortSchluessel('netflix', ID, spaet, '1763')).toBe(`antwort:2026-11-12:netflix:1763:${ID}`);
+    expect(laufSchluessel('netflix', spaet)).toBe('antworten-lauf:2026-11-12:netflix');
+    expect(absenderSchluessel('netflix', 'h', spaet, '7')).toBe('antworten-ip:2026-11-12:netflix:7:h');
+  });
+
+  it('Absender: x-real-ip von Vercel, sonst erste x-forwarded-for; gehasht, nie im Klartext', async () => {
+    expect(absenderIp(new Headers({ 'x-real-ip': '203.0.113.7', 'x-forwarded-for': '198.51.100.1' }))).toBe('203.0.113.7');
+    expect(absenderIp(new Headers({ 'x-forwarded-for': '198.51.100.1, 10.0.0.1' }))).toBe('198.51.100.1');
+    expect(absenderIp(new Headers())).toBe('unbekannt');
+    const h = await absenderHash('203.0.113.7');
+    expect(h).toMatch(/^[0-9a-f]{24}$/);
+    expect(h).not.toContain('203');
+    expect(await absenderHash('203.0.113.8')).not.toBe(h);
   });
 
   it('frei erst nach dem Aufdecken oder ab der Rückfall-Uhrzeit', () => {

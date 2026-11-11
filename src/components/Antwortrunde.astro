@@ -5,6 +5,7 @@
 // ansicht="antworten": „Eure Sätze“ nach Rolle – gehört in die <Aufloesung gruppe=…> der Runde; der Server gibt die Texte
 // erst nach dem Aufdecken heraus. Fragt nur nach, solange der Block zu sehen ist und der Tab vorn.
 // Fällt die API aus (503, Netz), steht „Antwort bitte in den Teams-Chat.“ da – der Chat bleibt der Rückfall.
+// „Runde leeren“: nur Präsentator, nicht im Beamer – falls jemand die Runde mit Unsinn füllt (api/antworten.ts).
 // Texte immer als textContent, nie als HTML.
 import { RUNDEN } from '../lib/antworten';
 const { runde, ansicht, erwartet = 3 } = Astro.props as { runde: string; ansicht: 'eingabe' | 'antworten'; erwartet?: number };
@@ -36,12 +37,15 @@ const feld = `antwort-${runde}`;
     </div>
   )}
   <p class="small muted ar-status" data-ar-status aria-live="polite"></p>
-  <p class="small ar-rueckfall" data-ar-rueckfall hidden>Antwort bitte in den Teams-Chat.</p>
+  {ansicht === 'eingabe' && <button type="button" class="ar-leeren small" data-ar-leeren data-nur-praesentator>Runde leeren</button>}
+  <p class="small ar-rueckfall" data-ar-rueckfall hidden>{ansicht === 'eingabe' ? 'Antwort bitte in den Teams-Chat.' : 'Eure Sätze stehen im Teams-Chat.'}</p>
 </div>
 <script>
   import { ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, antwortenGruppieren, statusText, type Rolle, type Stand } from '../lib/antworten';
   import { wienerZeit } from './jetzt';
   import { abfrageKette, jsonHolen, zeitlimit } from '../lib/kette';
+  import { PRAESENTATOR_SCHLUESSEL } from '../lib/beamer';
+  import { hinweis } from './hinweis';
 
   const lesen = (k: string): string | null => {
     try { return localStorage.getItem(k); } catch { try { return sessionStorage.getItem(k); } catch { return null; } }
@@ -149,6 +153,21 @@ const feld = `antwort-${runde}`;
     }).observe(box);
     document.addEventListener('visibilitychange', () => { if (!document.hidden && sichtbar) kette.sofort(); });
 
+    q<HTMLButtonElement>('[data-ar-leeren]')?.addEventListener('click', async () => {
+      const key = lesen(PRAESENTATOR_SCHLUESSEL);
+      if (!key || !confirm('Alle Antworten dieser Runde von heute löschen?')) return;
+      try {
+        const r = await fetch('/api/antworten', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'x-presenter-key': key },
+          body: JSON.stringify({ runde, leeren: true }), signal: zeitlimit(ANTWORTEN_TIMEOUT_MS),
+        });
+        hinweis(r.ok && !r.redirected ? 'Runde geleert.' : `Runde nicht geleert (Status ${r.status}).`, 6000);
+      } catch {
+        hinweis('Runde nicht geleert (Netz).', 6000);
+      }
+      kette.sofort();
+    });
+
     form?.addEventListener('submit', async (ev) => {
       ev.preventDefault();
       if (!feld || frei) return;
@@ -188,11 +207,13 @@ const feld = `antwort-${runde}`;
   .ar-zeile { display: flex; gap: .5rem; align-items: flex-start; }
   .ar-zeile textarea { flex: 1; min-width: 0; font: inherit; padding: .35rem .5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: inherit; resize: vertical; }
   .ar-status:empty { display: none; }
+  .ar-leeren { font: inherit; padding: .15rem .6rem; border: 1px solid var(--border); border-radius: 6px; background: none; color: var(--muted); cursor: pointer; }
+  :global(html[data-beamer]) .ar-leeren { display: none; }
   .ar-status, .ar-rueckfall, [data-ar-gesendet] { margin: .3rem 0; }
   .ar-titel { margin: 0 0 .2rem; }
-  .ar-liste { margin: 0 0 .6rem; }
+  .ar-liste { margin: 0 0 .3rem; font-size: .95em; }
   .ar-liste:empty { display: none; }
-  .ar-liste li { overflow-wrap: anywhere; }
+  .ar-liste li { overflow-wrap: anywhere; line-height: 1.35; margin: 0 0 .15rem; }
   /* Markus antwortet nicht selbst; im Beamer nur die Statuszeile. */
   :global(html[data-ist-praesentator]) .ar-eingabe, :global(html[data-beamer]) .ar-eingabe { display: none; }
   @media (max-width: 520px) { .ar-zeile { flex-direction: column; align-items: stretch; } }

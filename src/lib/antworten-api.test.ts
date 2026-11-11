@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { GET, POST } from '../../api/antworten';
 import { aufgedecktSchluessel } from './aufgedeckt';
-import { MAX_ANTWORTEN } from './antworten';
+import { MAX_ANTWORTEN, MAX_IDS_PRO_IP } from './antworten';
 
 // Speicher wie der Runtime Cache; jeder Zugriff braucht etwas Zeit, damit gleichzeitige Antworten wirklich überlappen.
 const daten = vi.hoisted(() => new Map<string, unknown>());
@@ -17,9 +17,11 @@ vi.mock('@vercel/functions', () => {
 
 const URL_API = 'https://kurs.invalid/api/antworten';
 const id = (c: string) => c.repeat(16);
-const senden = (body: unknown) =>
-  POST(new Request(URL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: typeof body === 'string' ? body : JSON.stringify(body) }));
-const antwort = (i: string, rolle: string, text: string) => senden({ runde: 'netflix', rolle, text, id: i });
+const senden = (body: unknown, kopf: Record<string, string> = {}) =>
+  POST(new Request(URL_API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-real-ip': '203.0.113.1', ...kopf }, body: typeof body === 'string' ? body : JSON.stringify(body) }));
+// Jede id kommt standardmäßig von ihrer eigenen IP (wie drei Studierende zu Hause); ip setzt sie ausdrücklich.
+const antwort = (i: string, rolle: string, text: string, ip = `ip-${i}`) => senden({ runde: 'netflix', rolle, text, id: i }, { 'x-real-ip': ip });
+const leeren = (key?: string) => senden({ runde: 'netflix', leeren: true }, key ? { 'x-presenter-key': key } : {});
 const lesen = async (extra = '') => (await GET(new Request(`${URL_API}?runde=netflix${extra}`))).json();
 const aufdecken = () => daten.set(aufgedecktSchluessel('netflix', new Date()), true);
 const spaeter = (ms: number) => vi.setSystemTime(new Date(Date.now() + ms));
@@ -97,6 +99,37 @@ describe('api/antworten', () => {
     await antwort(id('a'), 'design', 'x');
     vi.setSystemTime(new Date('2026-11-19T13:10:00Z'));
     expect((await lesen()).anzahl).toBe(0);
+  });
+
+  it(`höchstens ${MAX_IDS_PRO_IP} ids pro Absender-IP; andere IPs und schon gezählte ids sind nicht betroffen`, async () => {
+    const ids = ['a', 'b', 'c', 'd', 'e'].map(id);
+    for (const i of ids.slice(0, MAX_IDS_PRO_IP)) expect((await antwort(i, 'design', 'x', '198.51.100.9')).status).toBe(200);
+    expect((await antwort(ids[MAX_IDS_PRO_IP], 'design', 'x', '198.51.100.9')).status).toBe(429);
+    expect((await antwort(id('f'), 'design', 'x', '198.51.100.10')).status).toBe(200);
+    spaeter(2500);
+    expect((await antwort(ids[0], 'entwicklung', 'geändert', '198.51.100.9')).status).toBe(200);
+    expect((await lesen()).anzahl).toBe(MAX_IDS_PRO_IP + 1);
+  });
+
+  it('Runde leeren: nur mit Präsentator-Schlüssel; danach zählt nichts mehr, auch die IP-Grenze nicht', async () => {
+    vi.stubEnv('PRESENTER_KEY', 'geheim');
+    for (const c of ['a', 'b', 'c', 'd']) await antwort(id(c), 'design', c, '198.51.100.9');
+    expect((await antwort(id('e'), 'design', 'x', '198.51.100.9')).status).toBe(429);
+    expect((await leeren()).status).toBe(403);
+    expect((await leeren('falsch')).status).toBe(403);
+    expect((await lesen()).anzahl).toBe(4);
+    spaeter(10);
+    expect((await leeren('geheim')).status).toBe(200);
+    expect(await lesen()).toStrictEqual({ anzahl: 0, rollen: { produktmanagement: 0, design: 0, entwicklung: 0 }, frei: false });
+    expect((await antwort(id('e'), 'design', 'neu', '198.51.100.9')).status).toBe(200);
+    expect((await lesen()).anzahl).toBe(1);
+  });
+
+  it('Runde leeren ohne PRESENTER_KEY: 503, nichts geleert', async () => {
+    vi.stubEnv('PRESENTER_KEY', '');
+    await antwort(id('a'), 'design', 'x');
+    expect((await leeren('irgendwas')).status).toBe(503);
+    expect((await lesen()).anzahl).toBe(1);
   });
 
   it('ohne Runtime Cache auf Vercel: 503', async () => {

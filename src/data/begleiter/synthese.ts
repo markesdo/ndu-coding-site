@@ -133,6 +133,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       achten: [
         'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
         'Trifft jemand nicht den Satz aus dem Buch: kein Fehler – Torres schreibt „might“.',
+        'Zählt die Seite mehr Antworten als Studierende (Test, Unsinn): auf der Seite ohne Beamer „Runde leeren“. Wer schon abgeschickt hat und die Folie offen hat, wird von der Seite still neu eingetragen.',
       ],
     },
     ueberleitung: 'Jetzt abschicken – dann seht ihr, was drei Rollen bei Torres gehört haben.',

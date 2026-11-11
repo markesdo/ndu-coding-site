@@ -34,6 +34,8 @@ export const MAX_TEXT = 200;
 export const MAX_ANTWORTEN = 30;
 /** Dieselbe id schreibt höchstens alle 2 s. */
 export const SPERRE_MS = 2000;
+/** Höchstens so viele Browser-ids pro Absender-IP, Runde und Kurstag (Laptop, Handy, privates Fenster). */
+export const MAX_IDS_PRO_IP = 4;
 export const TTL_SEKUNDEN = 18 * 60 * 60;
 /** Größter Body, den der Server liest (200 Zeichen Text plus Felder, großzügig). */
 export const MAX_BODY = 4096;
@@ -83,14 +85,38 @@ export function eingabePruefen(body: unknown): Eingabe | null {
   return { runde: b.runde as string, rolle, text, id };
 }
 
-/** Ein Eintrag pro Runde, Kurstag (Wien) und Browser-id: Jede id schreibt nur ihren eigenen Schlüssel. */
-export function antwortSchluessel(runde: string, id: string, jetzt: Date): string {
-  return `antwort:${wienerZeit(jetzt).datum}:${runde}:${id}`;
+/** Lauf der Runde heute: „Runde leeren“ (Präsentator) setzt ihn neu, alle anderen Schlüssel hängen daran – so ist
+ *  Leeren ein einziges Schreiben, ohne Schlüssel aufzählen zu müssen; der alte Lauf läuft per TTL aus. */
+export function laufSchluessel(runde: string, jetzt: Date): string {
+  return `antworten-lauf:${wienerZeit(jetzt).datum}:${runde}`;
+}
+
+/** Ein Eintrag pro Runde, Kurstag (Wien), Lauf und Browser-id: Jede id schreibt nur ihren eigenen Schlüssel. */
+export function antwortSchluessel(runde: string, id: string, jetzt: Date, lauf = '0'): string {
+  return `antwort:${wienerZeit(jetzt).datum}:${runde}:${lauf}:${id}`;
 }
 
 /** Liste der ids, die heute in dieser Runde geantwortet haben (der Runtime Cache kann keine Schlüssel aufzählen). */
-export function indexSchluessel(runde: string, jetzt: Date): string {
-  return `antworten:${wienerZeit(jetzt).datum}:${runde}`;
+export function indexSchluessel(runde: string, jetzt: Date, lauf = '0'): string {
+  return `antworten:${wienerZeit(jetzt).datum}:${runde}:${lauf}`;
+}
+
+/** ids pro Absender (gehashte IP): Ohne diese Grenze könnte eine angemeldete Person mit selbst erfundenen ids die
+ *  30 Plätze der Runde füllen. */
+export function absenderSchluessel(runde: string, absender: string, jetzt: Date, lauf = '0'): string {
+  return `antworten-ip:${wienerZeit(jetzt).datum}:${runde}:${lauf}:${absender}`;
+}
+
+/** Absender einer Anfrage: auf Vercel setzt die Plattform x-real-ip (bzw. x-forwarded-for) selbst, der Browser kann es
+ *  nicht vorgeben. Fehlt beides (lokal), teilen sich alle einen Eimer. */
+export function absenderIp(headers: Headers): string {
+  return headers.get('x-real-ip')?.trim() || headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unbekannt';
+}
+
+/** IP nicht im Klartext speichern: SHA-256, gekürzt. */
+export async function absenderHash(ip: string): Promise<string> {
+  const d = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`antworten:${ip}`)));
+  return [...d.slice(0, 12)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 export interface Gespeichert { rolle: string | null; text: string; zeit: number }
