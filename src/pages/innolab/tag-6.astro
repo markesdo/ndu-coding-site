@@ -30,7 +30,7 @@ const frage = zusatz.offen ? ' (?)' : '';
 
   <h3 id="nachmittag">Nachmittag {zusatz.zeit}{frage}{zusatz.offen && ' · Termin noch offen'}</h3>
   {zusatz.offen && <Callout type="info" title="Noch nicht bestätigt">
-    <p>Ob es am Nachmittag einen zusätzlichen halben Tag gibt, steht noch nicht fest. Der Kurs funktioniert auch ohne ihn: Euer Prototyp ist um 13 Uhr fertig, und die Pitch-Probe macht ihr dann per Videoanruf untereinander (<a href="#abschluss">Abschluss</a>).</p>
+    <p>Ob es am Nachmittag einen zusätzlichen halben Tag gibt, steht noch nicht fest. Der Kurs funktioniert auch ohne ihn: Euer Prototyp ist um 13 Uhr fertig, und die Pitch-Probe macht ihr dann online mit Markus, an einem eigenen Termin – der Termin folgt (<a href="#abschluss">Abschluss</a>).</p>
   </Callout>}
   <div class="schedule">
     <Block time="14:00–14:20" type="uebung" title="Pitch-Probe" href="#pitch-probe">Zwei Minuten Geschichte, vor den anderen beiden.</Block>
@@ -66,7 +66,7 @@ const frage = zusatz.offen ? ' (?)' : '';
   ]} />
   <p>Bis zur Präsentation:</p>
   <Checklist id="il-tag6-pitch" items={[
-    'Die „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten vor den anderen beiden erzählt – in der Pitch-Probe am Nachmittag oder, falls er entfällt, per Videoanruf untereinander',
+    'Die „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten vor den anderen beiden erzählt – in der Pitch-Probe am Nachmittag oder, falls er entfällt, online mit Markus (Termin folgt)',
     'Bis 21. Dezember, solange Pro läuft: Pitch mit Claude als skeptischem Gegenüber geprobt und mit der Prüfliste geprüft (<a href="/innolab/methoden/pitch#pruefen">Pitch</a>); nach den letzten Tests geht ihr die Liste noch einmal selbst durch',
     'Drei weitere Usability-Tests am fertigen Prototyp, Befunde in <code>docs/TESTS.md</code> – sie ändern nichts mehr am Produkt, sondern gehen als Belege und nächster Schritt in den Pitch',
     '<code>docs/PITCH.md</code> mit Geschichte, Demo, Belegen, Modell',
@@ -79,7 +79,7 @@ const frage = zusatz.offen ? ' (?)' : '';
   <h2 id="nachmittag-inhalt">Am Nachmittag</h2>
   {zusatz.offen && <p><a href="#nachmittag">Termin noch offen</a>: Der Kurs funktioniert auch ohne diesen Nachmittag.</p>}
   <h3 id="pitch-probe">Pitch-Probe</h3>
-  <p>Jede*r erzählt den Teil „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten (<a href="/innolab/methoden/pitch#aufbau">Pitch</a>).</p>
+  <p>Jede*r erzählt den Teil „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten (<a href="/innolab/methoden/pitch#aufbau">Pitch</a>). Entfällt der Nachmittag, macht ihr die Pitch-Probe online mit Markus, an einem eigenen Termin; der Termin folgt.</p>
   <p>Die anderen beiden antworten nur auf zwei Fragen: Gab es eine Krise? Wisst ihr am Ende, welchen Höhepunkt die Demo zeigen muss? Das Lächeln, Lichaws Signal, dass eine Story trägt, kommt erst am Höhepunkt (Donna Lichaw, „The User’s Journey“, 2016, Kap. 7, „Test and Validate“) – darauf achtet ihr, wenn ihr bis Tag 7 den ganzen Pitch mit Demo probt.</p>
   <h3 id="puffer">Puffer</h3>
   <p>Was im Sprint nicht fertig wurde, könnt ihr hier nach der Definition of Done fertig bauen; wer an einem Kurstag gefehlt hat, holt nach.</p>
