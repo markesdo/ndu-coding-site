@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { anzeige, type Zustand } from './begleiter-anzeige';
+import { anzeige, fremdeSeite, type Zustand } from './begleiter-anzeige';
 
 const folgt: Zustand = { index: 2, folgen: true, meldung: 'ok' };
 const vonHand: Zustand = { index: 2, folgen: false, meldung: 'keine-verbindung' };
@@ -30,5 +30,19 @@ describe('anzeige (Begleiter)', () => {
   it('„Dem Beamer folgen“ schaltet das Folgen wieder ein und vergisst die alte Meldung, bis der Beamer antwortet', () => {
     expect(anzeige(vonHand, { art: 'folgen' })).toStrictEqual({ index: 2, folgen: true, meldung: 'frage' });
     expect(anzeige(anzeige(vonHand, { art: 'folgen' }), { art: 'position', index: 4 })).toStrictEqual({ index: 4, folgen: true, meldung: 'ok' });
+  });
+});
+
+describe('fremdeSeite (Karte außerhalb von Tag 1)', () => {
+  const karten = new Set(['/innolab/methoden/synthese']);
+  const draussen = anzeige(folgt, { art: 'position', index: null });
+  it('zeigt die Karte, wenn der Beamer auf einer Seite mit Karte steht', () => {
+    expect(fremdeSeite(draussen, '/innolab/methoden/synthese', karten)).toBe('/innolab/methoden/synthese');
+  });
+  it('keine Karte für eine Seite ohne Karte, von Hand geblättert oder auf Tag 1', () => {
+    expect(fremdeSeite(draussen, '/innolab/methoden/baum', karten)).toBeNull();
+    expect(fremdeSeite({ ...draussen, folgen: false }, '/innolab/methoden/synthese', karten)).toBeNull();
+    expect(fremdeSeite(folgt, '/innolab/methoden/synthese', karten)).toBeNull();
+    expect(fremdeSeite(draussen, null, karten)).toBeNull();
   });
 });

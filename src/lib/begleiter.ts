@@ -2,6 +2,7 @@
 // Beamer-Position (pfad, anker aus /api/position) zur Folie. Ohne DOM, damit testbar; die Seite ist pages/innolab/begleiter.astro.
 import { textAusHtml, ueberschriftAusHtml } from '../components/abschnitt';
 import type { Notiz } from '../data/begleiter/typen';
+import { VORWISSEN, type VorwissenGrad } from '../data/begleiter/vorwissen';
 
 /** satz = erster <p class="folie-satz"> der Folie (steht auf dem Beamer), sonst null. */
 export type Folie = { pfad: string; id: string; titel: string; satz: string | null; unterIds: string[] };
@@ -266,4 +267,24 @@ export function quelleTeile(quelle: string): ({ text: string } | { url: string; 
 export function streichVerweis(eintrag: string): { text: string; id: string | null; zusatz: string } {
   const m = eintrag.match(/^(.*?)\s*\(([a-z0-9-]+)(, [^)]*)?\)\.?$/s);
   return m ? { text: m[1], id: m[2], zusatz: m[3] ?? '' } : { text: eintrag, id: null, zusatz: '' };
+}
+
+/** Hinweis „schon bekannt“ oben im Live-Block: titel mit Stichwort vor dem Doppelpunkt, frage an den Raum, notiz = Antwort der Studierenden. */
+export type VorwissenHinweis = { grad: VorwissenGrad; titel: string; frage: string; notiz: string | null };
+
+/**
+ * Vorwissen zur Seite pfad (/innolab/methoden/<slug>, data/begleiter/vorwissen.ts) als Text für den Begleiter, sonst
+ * null. Regieanweisungen wie in typen.ts: Stichwort vorn, höchstens 12 Wörter.
+ */
+export function vorwissenHinweis(pfad: string): VorwissenHinweis | null {
+  const slug = pfad.match(/^\/innolab\/methoden\/([a-z0-9-]+)$/)?.[1];
+  const v = slug !== undefined && Object.hasOwn(VORWISSEN, slug) ? VORWISSEN[slug] : undefined;
+  if (!v) return null;
+  const lv = `„${v.lv}“`;
+  const text = {
+    bekannt: { titel: `Schon bekannt: aus ${lv}, Theorie kurz halten`, frage: 'Fragen: Was habt ihr dort dazu gemacht?' },
+    teilweise: { titel: `Teilweise bekannt: aus ${lv}, Theorie kurz, Lücken füllen`, frage: 'Fragen: Was davon kennt ihr schon, was fehlt?' },
+    unsicher: { titel: `Vielleicht bekannt: aus ${lv}, kurz nachfragen`, frage: 'Fragen: Kennt ihr das, vielleicht unter anderem Namen?' },
+  }[v.grad];
+  return { grad: v.grad, ...text, notiz: v.notiz ?? null };
 }
