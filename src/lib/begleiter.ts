@@ -269,6 +269,16 @@ export function streichVerweis(eintrag: string): { text: string; id: string | nu
   return m ? { text: m[1], id: m[2], zusatz: m[3] ?? '' } : { text: eintrag, id: null, zusatz: '' };
 }
 
+/**
+ * Innolab-Seiten außerhalb von Tag 1, auf denen der Beamer stehen kann (ohne den Begleiter selbst und ohne Routen mit
+ * Parametern): für jede zeigt der Begleiter eine eigene Karte statt der stehengebliebenen Tag-1-Folie. Sortiert.
+ */
+export function kartenPfade(quellen: Record<string, string>): string[] {
+  return Object.keys(quellen)
+    .filter((p) => (p === '/innolab' || p.startsWith('/innolab/')) && p !== '/innolab/begleiter' && !p.includes('[') && !TAG_1_SEITEN.includes(p))
+    .sort();
+}
+
 /** Hinweis „schon bekannt“ oben im Live-Block: titel mit Stichwort vor dem Doppelpunkt, frage an den Raum, notiz = Antwort der Studierenden. */
 export type VorwissenHinweis = { grad: VorwissenGrad; titel: string; frage: string; notiz: string | null };
 

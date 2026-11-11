@@ -50,17 +50,17 @@ describe('Vorwissen (Begleiter)', () => {
   });
 
   // Nur der Begleiter darf das Vorwissen zeigen: keine Seite für Studierende und nicht der Beamer. Auch lib/begleiter.ts
-  // (vorwissenHinweis) bleibt Begleiter-Dateien vorbehalten.
+  // (vorwissenHinweis) bleibt Begleiter-Dateien vorbehalten; Tests werden nicht ausgeliefert.
   it('nur Begleiter-Dateien importieren das Vorwissen', () => {
     const erlaubt = new Set([
       'src/pages/innolab/begleiter.astro', 'src/components/BegleiterVorwissen.astro', 'src/components/BegleiterQuelle.astro',
-      'src/lib/begleiter.ts', 'src/lib/begleiter.test.ts', 'src/lib/vorwissen.test.ts',
+      'src/lib/begleiter.ts',
     ]);
     const dateien = (ordner: string): string[] => readdirSync(ordner).flatMap((n) => {
       const p = join(ordner, n);
       return statSync(p).isDirectory() ? dateien(p) : [p];
     });
-    const nutzer = (muster: RegExp) => dateien('src').filter((p) => /\.(astro|ts|tsx|js|mjs)$/.test(p) && muster.test(readFileSync(p, 'utf8')));
+    const nutzer = (muster: RegExp) => dateien('src').filter((p) => /\.(astro|ts|tsx|js|mjs)$/.test(p) && !/\.test\.ts$/.test(p) && muster.test(readFileSync(p, 'utf8')));
     expect(nutzer(/data\/begleiter\/vorwissen|BegleiterVorwissen|\bvorwissenHinweis\b|(?:lib|\.)\/begleiter['".]/).filter((p) => !erlaubt.has(p))).toStrictEqual([]);
   });
 });

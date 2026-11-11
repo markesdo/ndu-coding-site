@@ -26,8 +26,8 @@ export function anzeige(z: Zustand, e: Ereignis): Zustand {
 }
 
 /**
- * Seite außerhalb von Tag 1, deren eigene Karte statt der stehengebliebenen Folie erscheint (z. B. Vorwissen zu einer
- * Methode von Tag 2): nur beim Folgen, wenn der Beamer gerade dort steht und es für pfad eine Karte gibt; sonst null.
+ * Seite außerhalb von Tag 1, deren eigene Karte statt der stehengebliebenen Folie erscheint (karten = kartenPfade aus
+ * lib/begleiter): nur beim Folgen, wenn der Beamer gerade dort steht und es für pfad eine Karte gibt; sonst null.
  */
 export function fremdeSeite(z: Zustand, beamerPfad: string | null, karten: ReadonlySet<string>): string | null {
   return z.folgen && z.meldung === 'nicht-tag-1' && beamerPfad !== null && karten.has(beamerPfad) ? beamerPfad : null;

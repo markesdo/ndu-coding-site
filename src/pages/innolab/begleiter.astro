@@ -14,9 +14,9 @@ import Vorwissen from '../../components/BegleiterVorwissen.astro';
 import { METHODEN } from '../../components/methoden';
 import { NOTIZEN } from '../../data/begleiter';
 import { TAG_1 } from '../../data/begleiter/tag';
-import { VORWISSEN } from '../../data/begleiter/vorwissen';
-import { TAG_1_SEITEN, ablaufBloecke, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, uebungMinuten } from '../../lib/begleiter';
+import { ablaufBloecke, kartenPfade, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, uebungMinuten } from '../../lib/begleiter';
 import { teamFrameLink } from '../../lib/team-board';
+import { MAPPE_PFAD, MAPPE_STUDIERENDE } from '../../lib/nav-rolle';
 
 // Glob vom Projektwurzel aus (wie in lib/begleiter.test.ts), damit die Schlüssel nicht vom Ordner dieser Datei abhängen.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
@@ -36,11 +36,14 @@ const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
 }));
 // Streich-Eintrag der Tageskarte → Index der Folie in seinem Block, damit „(toast)“ dorthin blättert.
 const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => plan[i]?.block === block && (f.id === id || f.unterIds.includes(id)));
-// Methoden außerhalb von Tag 1, die die Studierenden schon kennen: je eine eigene Karte, die erscheint, wenn der Beamer
-// dort steht (fremdeSeite in components/begleiter-anzeige.ts), damit das Vorwissen auch ohne Folien-Notizen sichtbar ist.
-const karten = METHODEN.filter((m) => Object.hasOwn(VORWISSEN, m.slug))
-  .map((m) => ({ ...m, pfad: `/innolab/methoden/${m.slug}` }))
-  .filter((m) => !TAG_1_SEITEN.includes(m.pfad));
+// Jede Innolab-Seite außerhalb von Tag 1 bekommt eine eigene Karte, die erscheint, wenn der Beamer dort steht
+// (fremdeSeite in components/begleiter-anzeige.ts), statt einer veralteten Tag-1-Folie. Titel = Methodenname bzw.
+// Seitentitel; das Vorwissen (falls eingetragen) steht darin auch ohne Folien-Notizen.
+const karten = kartenPfade(quellen).map((pfad) => {
+  const m = METHODEN.find((x) => `/innolab/methoden/${x.slug}` === pfad);
+  // Die Mappe setzt ihren Titel aus einer Konstante, die der Quelltext-Leser nicht sieht.
+  return { pfad, name: m?.name ?? (pfad === MAPPE_PFAD ? MAPPE_STUDIERENDE : seitenName(pfad)), tag: m?.tag ?? null };
+});
 ---
 <!doctype html>
 <html lang="de" data-bereich="innolab">
@@ -226,7 +229,7 @@ const karten = METHODEN.filter((m) => Object.hasOwn(VORWISSEN, m.slug))
       {karten.map((m) => (
         <article data-karte={m.pfad} hidden>
           <header class="kopf">
-            <p class="seite"><span>Außerhalb von Tag 1 · Tag {m.tag}</span> <a class="oeffnen" href={m.pfad} target="_blank" rel="noopener" aria-label="Seite öffnen (neuer Tab)" title="Seite öffnen"><ExternalLink size={16} aria-hidden="true" /></a></p>
+            <p class="seite"><span>Außerhalb von Tag 1{m.tag !== null && ` · Tag ${m.tag}`}</span> <a class="oeffnen" href={m.pfad} target="_blank" rel="noopener" aria-label="Seite öffnen (neuer Tab)" title="Seite öffnen"><ExternalLink size={16} aria-hidden="true" /></a></p>
             <h1>{m.name}</h1>
           </header>
           <section class="live" aria-label="Live">

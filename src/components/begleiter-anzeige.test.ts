@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { kartenPfade, quellenAusGlob } from '../lib/begleiter';
 import { anzeige, fremdeSeite, type Zustand } from './begleiter-anzeige';
 
 const folgt: Zustand = { index: 2, folgen: true, meldung: 'ok' };
@@ -34,15 +35,23 @@ describe('anzeige (Begleiter)', () => {
 });
 
 describe('fremdeSeite (Karte außerhalb von Tag 1)', () => {
-  const karten = new Set(['/innolab/methoden/synthese']);
+  // Dieselben Karten wie in pages/innolab/begleiter.astro: alle Innolab-Seiten außerhalb von Tag 1.
+  const karten = new Set(kartenPfade(quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>)));
   const draussen = anzeige(folgt, { art: 'position', index: null });
-  it('zeigt die Karte, wenn der Beamer auf einer Seite mit Karte steht', () => {
-    expect(fremdeSeite(draussen, '/innolab/methoden/synthese', karten)).toBe('/innolab/methoden/synthese');
+  it('zeigt eine Karte für jede Innolab-Seite außerhalb von Tag 1, mit und ohne Vorwissen', () => {
+    for (const pfad of ['/innolab/methoden/synthese', '/innolab/methoden/baum', '/innolab/methoden/journey-map', '/innolab/tag-2', '/innolab/tag-7', '/innolab/methoden', '/innolab']) {
+      expect(fremdeSeite(draussen, pfad, karten), pfad).toBe(pfad);
+    }
   });
-  it('keine Karte für eine Seite ohne Karte, von Hand geblättert oder auf Tag 1', () => {
-    expect(fremdeSeite(draussen, '/innolab/methoden/baum', karten)).toBeNull();
-    expect(fremdeSeite({ ...draussen, folgen: false }, '/innolab/methoden/synthese', karten)).toBeNull();
-    expect(fremdeSeite(folgt, '/innolab/methoden/synthese', karten)).toBeNull();
+  it('keine Karte für Tag-1-Seiten, den Begleiter und Seiten außerhalb des Innolabs', () => {
+    for (const pfad of ['/innolab/tag-1', '/innolab/methoden/interview', '/innolab/tag-1/abschluss', '/innolab/begleiter', '/', '/ideen']) {
+      expect(karten.has(pfad), pfad).toBe(false);
+      expect(fremdeSeite(draussen, pfad, karten), pfad).toBeNull();
+    }
+  });
+  it('keine Karte, wenn von Hand geblättert, auf Tag 1 oder ohne Beamer-Pfad', () => {
+    expect(fremdeSeite({ ...draussen, folgen: false }, '/innolab/methoden/baum', karten)).toBeNull();
+    expect(fremdeSeite(folgt, '/innolab/methoden/baum', karten)).toBeNull();
     expect(fremdeSeite(draussen, null, karten)).toBeNull();
   });
 });
