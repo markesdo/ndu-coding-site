@@ -22,7 +22,7 @@ import type { TokenClaims } from '../oauth/routen.js';
 import { mitgliedschaftFinden } from '../sitzung.js';
 import { DateiUnlesbar } from '../speicher-fehler.js';
 import type { Abhaengigkeiten } from '../typen.js';
-import { FEEDBACK_ANLEITUNG, FEEDBACK_AUSGABE, feedbackAusgabe, feedbackFuerClaude, feedbackText } from './feedback.js';
+import { FEEDBACK_ANLEITUNG, FEEDBACK_AUSGABE, FEEDBACK_HINWEIS_AUSGABE, feedbackFelder, feedbackFuerClaude, feedbackText } from './feedback.js';
 
 export interface WerkzeugKontext {
   abh: Abhaengigkeiten;
@@ -30,6 +30,11 @@ export interface WerkzeugKontext {
   // Öffentliche Origin (origin(c)), für Links.
   origin: string;
 }
+
+// NDU-52: Claude Code gibt dem Modell bei einem Ergebnis mit structuredContent nur dessen JSON, nicht den Text (2.1.322:
+// Textblöcke fallen weg). Claude.ai und andere Clients zeigen womöglich nur den Text. Darum trägt jedes Ergebnis alles,
+// was Claude braucht, in beiden: im Text als Abschnitte, im structuredContent als Felder (markdown, feedback, anleitung,
+// hinweis, werkstatt). Beschreibungen im outputSchema sieht das Modell nicht; was es wissen muss, steht in den Werten.
 
 // Ein Satz an die Person statt eines Ergebnisses (isError, damit kein outputSchema verlangt wird).
 class Hinweis extends Error {}
@@ -46,6 +51,9 @@ const PRUEFPUNKT = z.object({ id: z.string(), text: z.string() });
 const ausgabe = (p: Pruefpunkt) => ({ id: p.id, text: p.text });
 // Eine Zeile der Prüfliste im Text: Position und ID, weil pruefpunkt beides annimmt („5. annahmen-loesung: …“).
 const pruefpunktZeile = (p: { id: string; text: string }, i: number) => `${i + 1}. ${p.id}: ${p.text}`;
+const WERKSTATT = z.string().describe('Link zur Werkstatt: Ändern kann die Person nur dort.');
+const MARKDOWN = z.string().optional().describe('Das Artefakt als Markdown, wie die Werkstatt es zeigt; fehlt, solange es leer ist.');
+const HINWEIS = z.string().optional().describe('Satz an die Person statt des Artefakts (noch leer).');
 
 const UEBERSICHT = {
   title: 'Mappe: Übersicht',
@@ -56,15 +64,29 @@ const UEBERSICHT = {
     kohorte: z.string(),
     repo: z.string(),
     lesezugriff: z.enum(['aktiv', 'eingeladen', 'unbekannt']),
-    artefakte: z.array(z.object({ name: ARTEFAKT_ENUM, vorhanden: z.boolean() })),
+    artefakte: z.array(z.object({ name: ARTEFAKT_ENUM, titel: z.string(), vorhanden: z.boolean() })),
+    demoMappe: z.literal(true).optional().describe('Demo-Mappe einer Lehrperson; zählt nicht als Mappe der Kohorte.'),
+    werkstatt: WERKSTATT,
   },
   annotations: LESEN,
 };
 
 const LESEN_WERKZEUG = {
   title: 'Artefakt lesen',
-  description: `Liest ein Artefakt aus der eigenen Werkstatt-Mappe der angemeldeten Person: als Markdown und als strukturierte Daten. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Formuliere daraus keinen neuen Artefakttext; ändern kann die Person nur selbst in der Werkstatt. Hat eine Lehrperson Feedback dazu geschrieben, steht es am Ende unter „Feedback der Lehrenden“ (kein Prüfbefund; du schreibst selbst keins). Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
+  description: `Liest ein Artefakt aus der eigenen Werkstatt-Mappe der angemeldeten Person als Markdown. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Formuliere daraus keinen neuen Artefakttext; ändern kann die Person nur selbst in der Werkstatt. Hat eine Lehrperson Feedback dazu geschrieben, steht es am Ende unter „Feedback der Lehrenden“ (kein Prüfbefund; du schreibst selbst keins). Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
   inputSchema: ARTEFAKT_EINGABE,
+  // Dasselbe wie der Text (NDU-52); die Rohdaten des Artefakts nicht noch einmal, das Markdown trägt alles mit den IDs.
+  outputSchema: {
+    artefakt: ARTEFAKT_ENUM,
+    titel: z.string(),
+    vorhanden: z.boolean(),
+    markdown: MARKDOWN,
+    hinweis: HINWEIS,
+    feedback: FEEDBACK_AUSGABE.optional(),
+    feedbackHinweis: FEEDBACK_HINWEIS_AUSGABE,
+    anleitung: z.string().optional().describe('So gehst du mit dem Feedback der Lehrenden um; nur, wenn es welches gibt.'),
+    werkstatt: WERKSTATT,
+  },
   annotations: LESEN,
 };
 
@@ -85,21 +107,30 @@ const PRUEFEN = {
       .nullish()
       .describe('Optional: ID eines Prüfpunkts dieses Artefakts (z. B. annahmen-loesung) oder seine Nummer in der Liste (5), um nur diesen Punkt gründlich zu prüfen. Ohne: alle Prüfpunkte.'),
   },
-  // Das Markdown steht nur im Text des Ergebnisses, nicht noch einmal hier (spart Kontext).
+  // Alles aus dem Text auch hier, das Artefakt und die Vorarbeit als Markdown (NDU-52): Claude Code sieht nur das JSON.
   outputSchema: {
     artefakt: ARTEFAKT_ENUM,
     titel: z.string(),
     vorhanden: z.boolean().optional().describe('Ob das Artefakt gespeichert ist; fehlt, solange die Prüfliste gesperrt ist.'),
+    markdown: MARKDOWN.describe('Abschnitt „Artefakt“: das geprüfte Artefakt als Markdown. Nur daraus zitieren.'),
+    hinweis: HINWEIS,
     gesperrt: z
       .literal(true)
       .optional()
       .describe('Die Prüfliste verrät die Lösung einer Übung und ist noch zu: keine Prüfpunkte, nichts prüfen; anleitung sagt, wann es weitergeht.'),
     pruefpunkte: z.array(PRUEFPUNKT).describe('Die zu prüfenden Punkte; mit pruefpunkt nur dieser eine.'),
     vorarbeit: z
-      .array(z.object({ artefakt: ARTEFAKT_ENUM, titel: z.string(), vorhanden: z.boolean() }))
+      .array(z.object({
+        artefakt: ARTEFAKT_ENUM,
+        titel: z.string(),
+        vorhanden: z.boolean(),
+        markdown: z.string().optional().describe('Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.'),
+        hinweis: z.string().optional().describe('Statt markdown: warum sie fehlt.'),
+      }))
       .describe('Artefakte, die zum Abgleich mitgeliefert werden (im Text unter „Vorarbeit zum Abgleich“).'),
     anleitung: z.string().describe('So antwortest du auf diese Prüfung.'),
     feedback: FEEDBACK_AUSGABE.optional(),
+    feedbackHinweis: FEEDBACK_HINWEIS_AUSGABE,
   },
   annotations: LESEN,
 };
@@ -119,6 +150,7 @@ const VERKNUEPFUNGEN = {
     geprueft: z.array(ARTEFAKT_ENUM),
     fehlen: z.array(ARTEFAKT_ENUM).describe('Noch nicht gespeichert.'),
     unlesbar: z.array(ARTEFAKT_ENUM).describe('Passt nicht zum Format der Werkstatt; dort neu speichern.'),
+    werkstatt: WERKSTATT,
   },
   annotations: LESEN,
 };
@@ -149,6 +181,7 @@ const TAG_STAND = {
     faellig: z.array(STAND_SCHEMA).describe('Bis zu diesem Kurstag fällig.'),
     inArbeit: z.array(STAND_SCHEMA).describe('Ab diesem Kurstag in Arbeit, fällig zum nächsten.'),
     entsteht: z.array(z.object({ slug: z.string(), name: z.string() })).describe('Methoden dieses Kurstags.'),
+    werkstatt: WERKSTATT,
   },
   annotations: LESEN,
 };
@@ -179,7 +212,7 @@ function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: Prue
     ? [`Prüf nur ${fokus.punkt.id}. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit einem wörtlichen Zitat; danach eine Rückfrage, die die Person selbst weiterbringt.`]
     : ['Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die die Person selbst weiterbringt.'];
   const id = ID_BEISPIEL[artefakt];
-  saetze.push(`Zitiere nur aus dem Abschnitt „Artefakt“${id ? ` und nenn die ID der Zeile, wo sie eine hat (wie ${id})` : ''}.`);
+  saetze.push(`Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown)${id ? ` und nenn die ID der Zeile, wo sie eine hat (wie ${id})` : ''}.`);
   if (lage.vorarbeit) saetze.push('Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht.');
   if (lage.vorarbeitFehlt) {
     saetze.push('Fehlt Vorarbeit oder ließ sie sich nicht lesen (der Hinweis in ihrem Abschnitt sagt, was davon), sag bei den Prüfpunkten, die sie brauchen, dass du sie nicht abgleichen konntest – und nur bei „noch nicht ausgefüllt“, dass sie fehlt.');
@@ -284,7 +317,7 @@ async function artefaktHolen(k: WerkzeugKontext, name: ArtefaktName, repo?: stri
   const daten = await artefaktLaden(k, repo ?? (await eigeneMappe(k)), name);
   if (daten === null) return null;
   if (daten === 'unlesbar') throw new Hinweis(unpassendeDatei(k, name));
-  return { daten: daten as Record<string, unknown>, markdown: rendern(name, daten) };
+  return { markdown: rendern(name, daten) };
 }
 
 function methodeDaten(k: WerkzeugKontext, m: Methode) {
@@ -429,7 +462,12 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const stand: MappeStand = { kohorte: k.claims.kohorte, repo, lesezugriff: 'unbekannt', artefakte: await k.abh.speicher.uebersicht(repo) };
       const zeilen = stand.artefakte.map((a) => `- ${ARTEFAKTE[a.name].titel} (${a.name}): ${a.vorhanden ? 'gespeichert' : 'noch leer'}`);
       const kopf = k.claims.rolle === 'lehrende' ? `Deine Demo-Mappe (Kohorte ${stand.kohorte}, zählt nicht als Mappe der Kohorte):` : `Deine Mappe (Kohorte ${stand.kohorte}):`;
-      return textErgebnis([kopf, ...zeilen, '', `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`].join('\n'), { ...stand });
+      return textErgebnis([kopf, ...zeilen, '', `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`].join('\n'), {
+        ...stand,
+        artefakte: stand.artefakte.map((a) => ({ name: a.name, titel: ARTEFAKTE[a.name].titel, vorhanden: a.vorhanden })),
+        ...(k.claims.rolle === 'lehrende' ? { demoMappe: true as const } : {}),
+        werkstatt: mappeUrl(k),
+      });
     }),
   );
 
@@ -438,8 +476,16 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const repo = await eigeneMappe(k);
       const [a, fb] = await Promise.all([artefaktHolen(k, artefakt, repo), feedbackFuerClaude(k.abh, repo, artefakt)]);
       const anhang = feedbackText(fb).join('\n');
-      if (!a) return textErgebnis(nochLeer(k, artefakt) + anhang);
-      return textErgebnis(a.markdown + anhang, a.daten);
+      const sc = {
+        artefakt,
+        titel: ARTEFAKTE[artefakt].titel,
+        vorhanden: a !== null,
+        ...(a ? { markdown: a.markdown } : { hinweis: nochLeer(k, artefakt) }),
+        ...feedbackFelder(fb),
+        ...(fb?.length ? { anleitung: FEEDBACK_ANLEITUNG } : {}),
+        werkstatt: mappeUrl(k),
+      };
+      return textErgebnis((a ? a.markdown : nochLeer(k, artefakt)) + anhang, sc);
     }),
   );
 
@@ -449,7 +495,8 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       if (!m) throw new Hinweis(`Diese Methode gibt es nicht. Mögliche Slugs: ${SLUGS.join(', ')}.`);
       if (!(await prueflisteFrei(k, m))) {
         const { pruefliste: _zu, ...d } = methodeDaten(k, m);
-        return textErgebnis(`${methodeText(d)}\n\n${kommtNachDerUebung(m, MCP_WERKZEUGE.methodeErklaeren)}`, { ...d, prueflisteGesperrt: true });
+        const hinweis = kommtNachDerUebung(m, MCP_WERKZEUGE.methodeErklaeren);
+        return textErgebnis(`${methodeText(d)}\n\n${hinweis}`, { ...d, prueflisteGesperrt: true, hinweis });
       }
       const d = methodeDaten(k, m);
       return textErgebnis(methodeText(d), d);
@@ -484,7 +531,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         '',
         `Das sind nur Zahlen, kein Urteil über die Qualität. Inhaltlich prüfen: ${MCP_WERKZEUGE.artefaktPruefen}. Bearbeiten in der Werkstatt: ${mappeUrl(k)}`,
       ];
-      return textErgebnis(zeilen.join('\n'), { kohorte: k.claims.kohorte, heute, ...kt, faellig, inArbeit, entsteht });
+      return textErgebnis(zeilen.join('\n'), { kohorte: k.claims.kohorte, heute, ...kt, faellig, inArbeit, entsteht, werkstatt: mappeUrl(k) });
     }),
   );
 
@@ -559,10 +606,16 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         artefakt,
         titel,
         vorhanden: a !== null,
+        ...(a ? { markdown: a.markdown } : { hinweis: nochLeer(k, artefakt) }),
         pruefpunkte: pruefpunkte.map(ausgabe),
-        vorarbeit: vorarbeit.map((v) => ({ artefakt: v.name, titel: ARTEFAKTE[v.name].titel, vorhanden: v.inhalt !== null })),
+        vorarbeit: vorarbeit.map((v) => ({
+          artefakt: v.name,
+          titel: ARTEFAKTE[v.name].titel,
+          vorhanden: v.inhalt !== null,
+          ...(v.inhalt ? { markdown: v.inhalt.markdown } : { hinweis: v.hinweis ?? ohneAbgleich(v.name, 'noch nicht ausgefüllt') }),
+        })),
         anleitung,
-        ...(fb?.length ? { feedback: feedbackAusgabe(fb) } : {}),
+        ...feedbackFelder(fb),
       });
     }),
   );
@@ -578,7 +631,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       ]);
       const mappe: MappeDaten = { brief, entscheidungen, leitfaden, annahmen, interviews };
       const v = verknuepfungenPruefen(mappe);
-      return textErgebnis(`${verknuepfungenText(v)}\n\nÄndern kann die Person nur selbst in der Werkstatt: ${mappeUrl(k)}`, { ...v });
+      return textErgebnis(`${verknuepfungenText(v)}\n\nÄndern kann die Person nur selbst in der Werkstatt: ${mappeUrl(k)}`, { ...v, werkstatt: mappeUrl(k) });
     }),
   );
 }
