@@ -42,6 +42,14 @@ describe('kopierText', () => {
     const halb = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { annahmen: { markdown: MAP }, brief: 'nicht-gespeichert' } });
     expect(halb.text).not.toContain('# Produkt-Brief');
     expect(halb.fehlt).toStrictEqual([{ name: 'brief', grund: 'nicht-gespeichert' }]);
+    // Wie artefakt_pruefen: Was nicht mitkommt, wird genannt – nichts daraus zitieren, keine Zeile erfinden.
+    expect(halb.text).toContain(VORARBEIT_REGEL);
+    expect(halb.text).toContain('Nicht mitgeliefert: Produkt-Brief – nicht abgleichen, nichts daraus zitieren und keine Zeile erfinden.');
+    expect(voll.text).not.toContain('Nicht mitgeliefert');
+    // Kommt gar keine Vorarbeit mit, fällt die Erlaubnis zum Zitieren daraus weg.
+    const keine = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { annahmen: 'fehler', brief: 'nicht-gespeichert' } });
+    expect(keine.text).not.toContain(VORARBEIT_REGEL);
+    expect(keine.text).toContain('Nicht mitgeliefert: Produkt-Brief und Annahmen-Map – nicht abgleichen, nichts daraus zitieren und keine Zeile erfinden.');
   });
 
   // Dieselben Regeln wie artefakt_pruefen: Wer ohne Connector kopiert, bekommt keine schwächere Prüfung.

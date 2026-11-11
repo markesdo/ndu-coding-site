@@ -3,7 +3,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { METHODEN, VORARBEIT_FEHLT_ZWECK, VORARBEIT_REGEL, VORARBEIT_ZWECK } from '../../../components/methoden';
+import { METHODEN, VORARBEIT_FEHLT_ZWECK, VORARBEIT_REGEL, VORARBEIT_ZITAT, VORARBEIT_ZWECK, vorarbeitFehltSatz } from '../../../components/methoden';
 import { MOM_TEST_GRUPPE } from '../../../components/innolab-zeiten';
 import { aufgedecktSchluessel } from '../../../lib/aufgedeckt';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
@@ -251,10 +251,11 @@ describe('Werkzeuge', () => {
     expect(anweisung).toContain(MCP_WERKZEUGE.verknuepfungenPruefen);
     // IDs beim Zitieren, nur aus dem geprüften Artefakt, Fokus auf einen Prüfpunkt.
     expect(anweisung).toContain('Abschnitt „Artefakt“');
-    expect(anweisung).toContain('I2-4');
-    // Regel 4 und 5 sagen dasselbe wie die Anleitung: Zeile der Vorarbeit nur bei Widerspruch oder Lücke, nie erfunden.
-    expect(anweisung).toContain('wörtlich aus dem Abschnitt „Artefakt“ – beruht er auf einem Widerspruch zur Vorarbeit oder einer Lücke darin, zusätzlich die betroffene Zeile der Vorarbeit – und endet');
-    expect(anweisung).toContain('aus der Vorarbeit zum Abgleich nur die Zeile, auf deren Widerspruch oder Lücke ein Befund beruht, und nie aus Vorarbeit, die nicht mitgeliefert wurde');
+    // Die Beispiel-IDs kommen aus ZEILEN_ID, nicht von Hand.
+    expect(anweisung).toContain('wo sie eine hat (D2, F4, A3, I2, I2-4)');
+    // Regel 4 und 5 sagen dasselbe wie die Anleitung (derselbe Satz): Zeile der Vorarbeit nur bei Widerspruch oder Lücke, nie erfunden.
+    expect(anweisung).toContain(`weiterbringt. ${VORARBEIT_ZITAT}`);
+    expect(anweisung).toContain('aus der Vorarbeit zum Abgleich nur nach Regel 4 und nie aus Vorarbeit, die nicht mitgeliefert wurde');
     expect(anweisung).not.toMatch(/zitierst du nie|nur, was wörtlich/);
     expect(anweisung).toContain('pruefpunkt');
     // NDU-27: zuerst schauen, was da ist; nie das ganze Artefakt zurückkopieren.
@@ -273,6 +274,12 @@ describe('Werkzeuge', () => {
       expect(t.annotations?.readOnlyHint, t.name).toBe(true);
       expect(t.description?.length ?? 0, t.name).toBeGreaterThan(60);
     }
+    // Claude Code sieht nur JSON und Schema (NDU-52): Beschreibung und Schema sagen denselben Grundsatz wie die Anleitung.
+    const pw = tools.find((t) => t.name === 'artefakt_pruefen')!;
+    expect(pw.description).toContain(VORARBEIT_ZITAT);
+    const md = (pw.outputSchema?.properties as Record<string, { description?: string }>).markdown.description!;
+    expect(md).toContain(VORARBEIT_ZITAT);
+    expect(md).not.toMatch(/Nur daraus zitieren/);
     // Kein Werkzeug nimmt ein Argument, das ein Repo oder eine Person nennt.
     for (const t of tools) {
       const felder = Object.keys((t.inputSchema.properties ?? {}) as object);
@@ -909,6 +916,9 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     expect(alle.isError).toBeFalsy();
     expect(sc(alle).anleitung).toContain(VORARBEIT_REGEL);
     expect(sc(alle).anleitung).toContain('zitierst du zusätzlich die betroffene Zeile der Vorarbeit wörtlich (mit ID, wo eine steht)');
+    // Gemischt (Map da, Leitfaden nicht): Die Anleitung nennt, woraus nichts zitiert wird.
+    expect(sc(alle).anleitung).toContain(vorarbeitFehltSatz(['Interviewleitfaden']));
+    expect(sc(alle).anleitung).toContain('Nicht mitgeliefert: Interviewleitfaden – nicht abgleichen, nichts daraus zitieren und keine Zeile erfinden.');
     expect(text(alle)).toContain(VORARBEIT_REGEL);
     // Sofie hat eine Annahmen-Map, aber keinen Leitfaden: nur die Map ist zitierbar.
     expect(zwecke(alle)).toStrictEqual([['leitfaden', VORARBEIT_FEHLT_ZWECK], ['annahmen', VORARBEIT_ZWECK]]);
@@ -936,7 +946,7 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     expect(sc(r).vorarbeit.map((v) => [v.vorhanden, v.zweck])).toStrictEqual([[false, VORARBEIT_FEHLT_ZWECK], [false, VORARBEIT_FEHLT_ZWECK]]);
     expect(sc(r).anleitung).not.toContain(VORARBEIT_REGEL);
     expect(sc(r).anleitung).toContain('Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown).');
-    expect(sc(r).anleitung).toContain('Daraus zitierst du nichts und erfindest keine Zeile.');
+    expect(sc(r).anleitung).toContain('Nicht mitgeliefert: Interviewleitfaden und Annahmen-Map – nicht abgleichen, nichts daraus zitieren und keine Zeile erfinden.');
   });
 
   it('brief: Anleitung ohne Zeilen-ID (der Brief hat keine)', async () => {

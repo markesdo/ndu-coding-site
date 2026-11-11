@@ -110,7 +110,9 @@ export function kopierText(e: KopierEinstellung & { markdown: string }): KopierT
     const v = e.vorarbeit?.[n];
     return v !== undefined && typeof v !== 'string' ? [mitTitel(n, v.markdown)] : [];
   });
-  return { ...plan, text: `${[pruefPrompt(m), mitTitel(e.name, e.markdown), ...da].join('\n\n')}\n` };
+  // Was nicht mitkommt, darf Claude weder abgleichen noch zitieren; der Prompt sagt das (wie artefakt_pruefen).
+  const prompt = pruefPrompt(m, undefined, 'standard', plan.fehlt.map((f) => f.name));
+  return { ...plan, text: `${[prompt, mitTitel(e.name, e.markdown), ...da].join('\n\n')}\n` };
 }
 
 const GRUND: Record<Fehlend['grund'], string> = { 'nicht-gespeichert': 'nicht gespeichert', fehler: 'nicht geladen' };

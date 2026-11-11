@@ -513,28 +513,39 @@ export const WERKSTATT_AKKUSATIV: Record<ArtefaktName, string> = {
 };
 
 /** So sehen die IDs der Zeilen in den Artefakten der Mappe aus; der Brief hat keine. */
-export const ZEILEN_ID: Record<ArtefaktName, string | undefined> = {
-  brief: undefined,
-  entscheidungen: 'D2',
-  leitfaden: 'F4',
-  annahmen: 'A3',
-  interviews: 'I2 oder I2-4',
+export const ZEILEN_ID: Record<ArtefaktName, readonly string[]> = {
+  brief: [],
+  entscheidungen: ['D2'],
+  leitfaden: ['F4'],
+  annahmen: ['A3'],
+  interviews: ['I2', 'I2-4'],
 };
 
-// Regeln für Claude beim Prüfen: eine Quelle für artefakt_pruefen (anleitung) und den Prüf-Prompt (pruefPrompt, auch in
-// „Für Claude kopieren“), damit beide Wege dasselbe verlangen. Angeredet ist Claude; wen meint die Person, die prüfen lässt.
+/** Beispiele für Zeilen-IDs dieser Artefakte, „D2, I2 oder I2-4“; leer, wenn keins welche hat. */
+export function zeilenBeispiel(namen: readonly ArtefaktName[]): string {
+  const ids = [...new Set(namen.flatMap((n) => ZEILEN_ID[n]))];
+  return ids.length < 2 ? ids.join('') : `${ids.slice(0, -1).join(', ')} oder ${ids.at(-1)}`;
+}
+
+// Regeln für Claude beim Prüfen: eine Quelle für artefakt_pruefen (anleitung, zweck, Beschreibungen), die Server-Anweisung
+// und den Prüf-Prompt (pruefPrompt, auch in „Für Claude kopieren“), damit alle Wege dasselbe verlangen. Angeredet ist
+// Claude; wen meint die Person, die prüfen lässt.
 export const befundRegel = (wen: string) =>
   `Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die ${wen} weiterbringt.`;
 export const zeilenIdRegel = (beispiel?: string) => `Steht bei einer Zeile eine ID${beispiel ? ` (wie ${beispiel})` : ''}, nennst du sie beim Zitat; erfinde keine.`;
 // Ein Grundsatz für jeden Prüfpunkt statt einer Liste von Ausnahmen: Die Vorarbeit wird nicht für sich geprüft (die Befunde
 // gehören zum geprüften Ergebnis), ihre Zeile wird aber zitiert, wo ein Befund auf einem Widerspruch zu ihr oder einer
 // Lücke in ihr beruht – etwa ein Beleg aus den Interviews, der in der Annahmen-Map noch fehlt.
-export const VORARBEIT_REGEL =
-  'Was du zum Abgleich bekommst (die Vorarbeit), prüfst du nicht für sich. Beruht ein Befund auf einem Widerspruch zur Vorarbeit oder einer Lücke darin, zitierst du zusätzlich die betroffene Zeile der Vorarbeit wörtlich (mit ID, wo eine steht). Steht dort keine solche Zeile, sag das.';
+export const VORARBEIT_ZITAT =
+  'Beruht ein Befund auf einem Widerspruch zur Vorarbeit oder einer Lücke darin, zitierst du zusätzlich die betroffene Zeile der Vorarbeit wörtlich (mit ID, wo eine steht); steht dort keine solche Zeile, sag das, statt eine zu erfinden.';
+export const VORARBEIT_REGEL = `Was du zum Abgleich bekommst (die Vorarbeit), prüfst du nicht für sich. ${VORARBEIT_ZITAT}`;
 /** Steht bei artefakt_pruefen über jeder mitgelieferten Vorarbeit. */
-export const VORARBEIT_ZWECK = 'Zum Abgleich, nicht für sich prüfen. Zitieren nur, wo ein Befund auf einem Widerspruch hierzu oder einer Lücke hierin beruht.';
+export const VORARBEIT_ZWECK = `Zum Abgleich, nicht für sich prüfen. ${VORARBEIT_ZITAT}`;
+const FEHLT_FOLGE = 'nicht abgleichen, nichts daraus zitieren und keine Zeile erfinden';
 /** Statt VORARBEIT_ZWECK, wenn die Vorarbeit fehlt oder sich nicht lesen ließ. */
-export const VORARBEIT_FEHLT_ZWECK = 'Nicht mitgeliefert: nicht abgleichen, nichts daraus zitieren und keine Zeile erfinden.';
+export const VORARBEIT_FEHLT_ZWECK = `Nicht mitgeliefert: ${FEHLT_FOLGE}.`;
+/** Satz zu Vorarbeit, die fehlt, während andere mitkommt: nennt sie, damit „daraus“ eindeutig ist. */
+export const vorarbeitFehltSatz = (titel: readonly string[]) => `Nicht mitgeliefert: ${aufzaehlen([...titel])} – ${FEHLT_FOLGE}.`;
 
 const nurInWerkstatt = (a: Artefakt) => a.werkstatt !== undefined && !a.lebtIn.includes('repo');
 
@@ -644,10 +655,18 @@ export function einfuegenHinweis(m: Methode, pfad?: string): string {
 const SCHLUSS_CHAT = 'Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.';
 const SCHLUSS_REPO = 'Schreib nichts um, ändere keine Datei und kein Issue. Passt alles, sag das in einem Satz.';
 
-/** Die Regeln am Ende des Prüf-Prompts, aus denselben Sätzen wie die anleitung von artefakt_pruefen. zeilen: Beispiel einer
- *  Zeilen-ID; false, wo das Artefakt keine hat (Brief), ohne: der Satz ohne Beispiel. */
-function pruefRegeln(m: Methode, schluss: string, zeilen?: string | false): string {
-  return ['Regeln:', befundRegel('mich'), zeilen === false ? '' : zeilenIdRegel(zeilen), m.braucht.length ? VORARBEIT_REGEL : '', schluss].filter(Boolean).join(' ');
+/** Die Regeln am Ende des Prüf-Prompts, aus denselben Sätzen wie die anleitung von artefakt_pruefen. mitVorarbeit: Der
+ *  Prompt nennt etwas zum Abgleich. zeilen: Beispiel einer Zeilen-ID; false, wo das Artefakt keine hat (Brief), ohne: der
+ *  Satz ohne Beispiel. fehlt: Titel der Vorarbeit, die nicht mitkommt (kopierter Text ohne Connector). */
+function pruefRegeln(mitVorarbeit: boolean, schluss: string, zeilen?: string | false, fehlt: readonly string[] = []): string {
+  return [
+    'Regeln:',
+    befundRegel('mich'),
+    zeilen === false ? '' : zeilenIdRegel(zeilen),
+    mitVorarbeit ? VORARBEIT_REGEL : '',
+    fehlt.length ? vorarbeitFehltSatz(fehlt) : '',
+    schluss,
+  ].filter(Boolean).join(' ');
 }
 
 /** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
@@ -655,7 +674,7 @@ function pruefRegeln(m: Methode, schluss: string, zeilen?: string | false): stri
  *  Liegt das Ergebnis in der Werkstatt, prüft Claude es dort mit artefakt_pruefen – nie über eine Datei unter docs/. Sonst
  *  liest Claude Code die Dateien im Repo und die Werkstatt über den Connector. weg „einfuegen“: der Ausweichweg ohne
  *  Claude Code – die Person fügt Ergebnis und Vorarbeit-Dateien als Text in Claude ein (einfuegenMoeglich). */
-export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfuegen' = 'standard'): string {
+export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfuegen' = 'standard', fehlt: readonly ArtefaktName[] = []): string {
   if (!m.pruefliste) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keine Prüfliste`);
   // Mit der festen ID, damit Claude Befunde auch ohne Connector so nennt wie artefakt_pruefen.
   const liste = m.pruefliste.map((p, i) => `${i + 1}. ${p.text} (${p.id})`);
@@ -675,7 +694,8 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
       // Texten darunter (werkstatt/ui/kopiertext.ts); ohne Schalter fügen die Studierenden sie selbst darunter.
       `Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: ${akkusativListe([...namen, ...werkstattAbgleich])}.`,
       '',
-      pruefRegeln(m, SCHLUSS_CHAT, aufzaehlen(namen.map((n) => ZEILEN_ID[n]).filter((x): x is string => !!x)) || false),
+      // fehlt: Vorarbeit, die „Für Claude kopieren“ nicht mitkopieren konnte – dafür keine Erlaubnis zum Zitieren.
+      pruefRegeln(werkstattAbgleich.some((n) => !fehlt.includes(n)), SCHLUSS_CHAT, zeilenBeispiel(namen) || false, fehlt.map((n) => WERKSTATT_AKKUSATIV[n].replace(/^mein(e|en)? /, ''))),
     ].join('\n');
   }
 
@@ -694,7 +714,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
           ]
         : []),
       '',
-      pruefRegeln(m, SCHLUSS_CHAT),
+      pruefRegeln(!!miroVorarbeit(m) || vorarbeit.dateien.length > 0 || werkstattAbgleich.length > 0, SCHLUSS_CHAT),
     ].join('\n');
   }
 
@@ -717,7 +737,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
           ]
         : []),
       '',
-      pruefRegeln(m, SCHLUSS_CHAT),
+      pruefRegeln(vorarbeit.dateien.length + vorarbeit.linear.length + werkstattAbgleich.length > 0 || !!miroVorarbeit(m), SCHLUSS_CHAT),
     ].join('\n');
   }
 
@@ -731,6 +751,6 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
     ...liste,
     ...(miroVorarbeit(m) ? [miroVorarbeit(m)] : []),
     '',
-    pruefRegeln(m, SCHLUSS_REPO),
+    pruefRegeln(teile.length > 0 || !!miroVorarbeit(m), SCHLUSS_REPO),
   ].join('\n');
 }
