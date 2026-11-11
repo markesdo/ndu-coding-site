@@ -31,7 +31,7 @@ ${zitate.length ? zitate.join('\n') : 'Noch keine eingetragen.'}
 
 **Stand:** ${datumAt(d.stand)}
 
-Pseudonymisiert. Die Skizze jeder Geschichte liegt auf dem Team-Board in Miro.
+Pseudonymisiert. Die Skizze jeder Geschichte entsteht auf Papier und kommt an Tag 2 mit.
 
 ${teile.length ? teile.join('\n') : 'Noch keine Interviews eingetragen.\n'}`;
 }

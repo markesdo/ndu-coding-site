@@ -20,11 +20,11 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
     ueberleitung: 'Was ihr nach jedem dieser Gespräche festhaltet, zeigt die nächste Folie: der Snapshot.',
     uebung: { dauer: 'bis Tag 2; je Interview 20–30 min plus Snapshot gleich danach', form: 'allein, jede*r für das eigene Produkt' },
     miro: {
-      frame: 'T1 · 5 · Interview-Snapshots (Hausaufgabe)',
+      frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
-        'T1 · 5 kurz auf dem Beamer zeigen: In jeder Spalte „Produkt von: …“ stehen fünf leere Karten untereinander, „I1 · Pseudonym“ bis „I5 · Pseudonym“. Eine Karte pro Interview.',
-        'Links die fertige Kaffeebar-Karte von I2 als Muster. Mehr als fünf Interviews: ganze Karte kopieren.',
-        'Was aufs Board kommt: nur der Snapshot, mit Pseudonym und Bild statt Foto, ohne Namen, Arbeitgeber oder Rohnotizen. Die Überraschungen gehören ins Entscheidungslog der Werkstatt, nicht aufs Board.',
+        'T1 · 5 kurz auf dem Beamer zeigen: Hier landen eure Snapshots als Karten, eine pro Interview, jede mit ihrer ID. Die Studierenden legen sie nicht selbst an; du überträgst sie vor Tag 2 aus der Werkstatt.',
+        'Links die fertige Kaffeebar-Karte von I2 als Muster: So sieht eine übertragene Karte aus.',
+        'Was aufs Board kommt: nur der Snapshot, mit Pseudonym und Bild statt Foto, ohne Namen, Arbeitgeber oder Rohnotizen. Die Karten sind Kopien, Korrekturen nur in der Werkstatt. Die Überraschungen gehören ins Entscheidungslog der Werkstatt, nicht aufs Board.',
       ],
     },
     kern: [
@@ -72,7 +72,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       },
       {
         frage: 'Wohin mit den Notizen?',
-        antwort: 'In den Interview-Editor der Werkstatt, unten auf der Abschluss-Seite: pro Interview Pseudonym (I1 bis I5), Notizen, Zitate mit IDs wie I2-3 und den Snapshot-Text. Aufnahme und Rohnotizen mit Namen bleiben bei dir. Der Snapshot kommt zusätzlich nach Miro (T1 · 5), die Überraschungen als Zeilen ins Entscheidungslog, belegt mit den Zitat-IDs.',
+        antwort: 'In den Interview-Editor der Werkstatt, unten auf der Abschluss-Seite: pro Interview Pseudonym (I1 bis I5), Notizen, Zitate mit IDs wie I2-3 und den Snapshot-Text. Aufnahme und Rohnotizen mit Namen bleiben bei dir. Nur dort eintragen, nicht zusätzlich auf Miro: Die Snapshots kommen vor Tag 2 als Karten in T1 · 5, das übernehme ich. Die Skizze der Geschichte kommt auf Papier und an Tag 2 mit, die Überraschungen als Zeilen ins Entscheidungslog, belegt mit den Zitat-IDs.',
       },
       {
         frage: 'Muss ich aufnehmen?',
@@ -84,7 +84,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
         'Fünf Personen aus der Zielgruppe suchen; am Ende jedes Gesprächs nach weiteren Kontakten fragen.',
         'Vor dem Gespräch die Einwilligung einholen (Aufnahme, Speichern, KI-Auswertung der pseudonymisierten Notizen).',
         'Mit dem Leitfaden von heute fragen: eine Geschichte über das letzte Mal, nicht über Meinungen oder die Zukunft.',
-        'Gleich danach den Snapshot in Miro anlegen (T1 · 5), mit Pseudonym und ohne Foto.',
+        'Gleich danach, am selben Tag, Notizen, Zitate und Snapshot in den Interview-Editor der Werkstatt eintragen, mit Pseudonym und ohne Foto, und die Geschichte auf Papier skizzieren.',
         'Jede Überraschung als eine Zeile ins Entscheidungslog der Werkstatt schreiben und Claude prüfen lassen.',
       ],
       achten: [
@@ -95,7 +95,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       fehler: [
         'Die Idee vorstellen und fragen, ob sie gefällt. Das ist genau das Kochbuch-Gespräch.',
         'Alle fünf Interviews am letzten Abend führen und erst danach die Snapshots schreiben.',
-        'Klarnamen oder Arbeitgeber auf dem Board oder im Entscheidungslog.',
+        'Klarnamen oder Arbeitgeber in den Interviews oder im Entscheidungslog der Werkstatt.',
         'Die Einwilligung nur für die Aufnahme einholen und die KI-Auswertung vergessen.',
       ],
     },
@@ -111,13 +111,12 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
     ueberleitung: 'Bevor ihr rausgeht, schauen wir noch einmal zurück, wie ihr heute zu dieser einen Frage gekommen seid.',
     uebung: { dauer: 'gleich nach jedem Interview', form: 'allein; an Tag 2 im Team besprochen' },
     miro: {
-      frame: 'T1 · 5 · Interview-Snapshots (Hausaufgabe)',
+      frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
         'Die Kaffeebar-Karte links durchgehen: „I2 · Pendlerin, Zug 7:42“, Bild „Uhr“, Zitat „Wenn ich auf die Uhr schauen muss, geh ich.“, die Geschichte als fünf kleine Stickies mit Pfeilen, darunter Kurzinfos, Einsichten und das gelbe Feld Chancen.',
-        'Pro Interview die nächste freie Karte in der eigenen Spalte: „I1 · Pseudonym“ durch das Pseudonym ersetzen, ins Feld „Bild“ ein Bild oder Stichwort statt Foto, ins Feld „Zitat“ den wörtlichen Satz.',
-        'Geschichte als Skizze: das kleine Sticky in der Karte mit Cmd+D bzw. Strg+D kopieren, je eines pro Schritt, Pfeile mit dem Verbindungswerkzeug.',
-        'Kurzinfos, Einsichten und Chancen in die drei Felder darunter; Chancen in den Worten der Person, nicht als Lösung.',
-        'An Tag 2 besprecht ihr die Karten gemeinsam auf dem Board. Notizen, Zitate und Snapshot-Text tragt ihr zusätzlich in den Interview-Editor der Werkstatt ein.',
+        'Sagen, wohin was kommt: Pseudonym, Bild als Stichwort, Zitat, Kurzinfos, Einsichten und Chancen in den Interview-Editor der Werkstatt, Chancen in den Worten der Person, nicht als Lösung. Die Geschichte als Skizze auf Papier.',
+        'Vor Tag 2 überträgst du jeden Snapshot als Karte mit ID (I2, I2-3) hierher. Die Karten sind Kopien: Korrekturen in der Werkstatt, nicht auf dem Board.',
+        'An Tag 2 besprecht ihr die Karten gemeinsam auf dem Board; die Papierskizzen bringen alle mit.',
       ],
     },
     kern: [
@@ -164,9 +163,9 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       schritte: [
         'Direkt nach dem Gespräch: das Pseudonym (I1 bis I5) und ein Bild, das an die Geschichte erinnert.',
         'Ein Zitat wörtlich, das im Kopf geblieben ist.',
-        'Die Geschichte als Skizze aus Knoten und Verbindungen, wie beim Toast am Morgen.',
+        'Die Geschichte als Skizze auf Papier, aus Knoten und Verbindungen, wie beim Toast am Morgen.',
         'Kurzinfos, Einsichten und Chancen, wobei die Chancen als Bedürfnis in ihren Worten stehen.',
-        'Den Snapshot im Frame T1 · 5 auf dem Team-Board ablegen.',
+        'Den Snapshot am selben Tag in der Werkstatt eintragen, nur dort; aufs Board (T1 · 5) überträgst du ihn vor Tag 2.',
       ],
       achten: [
         'Stehen in der Spalte Chancen Lösungen wie „App“, „Vorbestellen“ oder „Anzeige“? Dann fehlt die Frage, was ihnen das bringen würde.',
@@ -175,7 +174,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       ],
       fehler: [
         'Alle fünf Snapshots am Abend vor Tag 2 in einem Rutsch schreiben.',
-        'Ein Foto oder einen Klarnamen auf das Team-Board stellen.',
+        'Ein Foto oder einen Klarnamen in den Snapshot schreiben.',
         'Chancen in der Sprache des Produktteams formulieren statt in der Sprache der Kund*innen.',
         'Einzelfälle weglassen, weil sie „nicht repräsentativ“ sind.',
       ],
@@ -194,7 +193,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       schritte: [
         'Auf dem Board so weit herauszoomen, dass die Tag-1-Spalte von T1 · 1 bis T1 · 4 zu sehen ist, und „Alle zu mir holen“.',
         'Frame für Frame von oben nach unten auf die drei Spalten zeigen: Experience Map, Problem-Rahmen, Annahmen-Map, Leitfaden. Jeder Frame baut auf dem vorigen auf.',
-        'Zum Schluss T1 · 5 darunter: Das kommt bis Tag 2 dazu.',
+        'Zum Schluss T1 · 5 darunter: Hier landen bis Tag 2 eure Snapshots als Karten aus der Werkstatt.',
       ],
     },
     kern: [

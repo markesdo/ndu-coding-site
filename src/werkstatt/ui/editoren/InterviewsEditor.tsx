@@ -1,5 +1,5 @@
 // Editor für Interviews mit Snapshot (Teresa Torres, „Continuous Discovery Habits“, S. 67–70). Ein Eintrag pro
-// Interview; die Skizze der Geschichte bleibt auf Miro. Nur pseudonymisiert – Rohnotizen gehören nicht hierher.
+// Interview; die Skizze der Geschichte entsteht auf Papier und kommt an Tag 2 mit. Nur pseudonymisiert – Rohnotizen gehören nicht hierher.
 import { useId } from 'react';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { namenHinweis } from '../../eigennamen.js';
@@ -64,7 +64,7 @@ export default function InterviewsEditor() {
         const setze = (neu: Entwurf) => setzeRoh(neu as unknown as Interviews);
         return (
           <>
-            <p className="wk-hilfe">Nur pseudonymisiert: keine Namen, Arbeitgeber oder Fotos. Rohnotizen und Aufnahmen bleiben bei dir. Die Skizze der Geschichte zeichnest du auf Miro.</p>
+            <p className="wk-hilfe">Nur pseudonymisiert: keine Namen, Arbeitgeber oder Fotos. Rohnotizen und Aufnahmen bleiben bei dir. Die Skizze der Geschichte zeichnest du gleich nach dem Gespräch auf Papier und bringst sie an Tag 2 mit.</p>
             <Liste<InterviewEntwurf>
               label="Interviews"
               einzahl="Interview"

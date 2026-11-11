@@ -87,7 +87,7 @@ export const TAG_1: TagKarte = {
       ],
     },
     'Hausaufgabe & Abschluss': {
-      lernziel: 'Nach dem Block können alle fünf Interviews mit Einwilligung und Pseudonym planen und nach jedem Gespräch einen Snapshot in Miro (T1 · 5) anlegen.',
+      lernziel: 'Nach dem Block können alle fünf Interviews mit Einwilligung und Pseudonym planen und nach jedem Gespräch einen Snapshot in der Werkstatt eintragen und die Geschichte auf Papier skizzieren.',
       streichen: [
         'Kochbuch-Geschichte weglassen, wenn sie beim Mom Test schon kam (hausaufgabe).',
         'Streaming-Beispiel weglassen, nur die Kaffeebar-Karte I2 (snapshot).',

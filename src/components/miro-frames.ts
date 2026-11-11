@@ -9,7 +9,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T1 · 2 · Problem-Rahmen & Produkt-Brief': '3458764687406008349',
   'T1 · 3 · Annahmen-Map': '3458764687406008351',
   'T1 · 4 · Interviewleitfaden': '3458764687406008350',
-  'T1 · 5 · Interview-Snapshots (Hausaufgabe)': '3458764687728446144',
+  'T1 · 5 · Interview-Snapshots (aus der Werkstatt)': '3458764687728446144',
   'T2 · 1 · Experience Map': '3458764687841241005',
   'T2 · 2 · Opportunity Solution Tree': '3458764687841227908',
   'T3 · 1 · Ziel-Chance': '3458764687841534117',
