@@ -256,7 +256,11 @@ describe('Werkzeuge', () => {
     expect(anweisung).toContain('pruefpunkt');
     // Live-Test 11.11.: Claude sortierte Zitate selbst nach „spricht gegen A1“. Gleicher Satz wie in der anleitung.
     expect(anweisung).toContain(`frag zurück. ${NICHT_EINORDNEN}`);
-    expect(anweisung).toMatch(/sind es mehr als drei, bekommen die drei deutlichsten je eine Frage, die übrigen nennst du nur mit ID und Zitat/);
+    expect(NICHT_EINORDNEN).toBe('Ordne nichts für die Person ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.');
+    // Regel 4 ohne Widerspruch: „jeder Befund endet mit einer Frage“ gilt ohne pruefpunkt, im Fokus die Regel der anleitung.
+    expect(anweisung).toContain('ohne pruefpunkt nennst du höchstens drei Befunde');
+    expect(anweisung).toContain('mit pruefpunkt auf; dann nennst du jede betroffene Stelle mit wörtlichem Zitat (und ID, wo eine steht), auch mehr als drei. Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID).');
+    expect(anweisung).not.toMatch(/mit ID und/);
     // NDU-27: zuerst schauen, was da ist; nie das ganze Artefakt zurückkopieren.
     expect(anweisung).toContain(`Anfang des Gesprächs ${MCP_WERKZEUGE.mappeUebersicht}`);
     expect(anweisung).toContain(MCP_WERKZEUGE.tagStand);
@@ -296,6 +300,8 @@ describe('Werkzeuge', () => {
     expect(Object.keys(pruefen.inputSchema.properties ?? {})).toContain('pruefpunkt');
     expect(pruefen.inputSchema.required).toStrictEqual(['artefakt']);
     expect(pruefen.description).toContain('pruefpunkt');
+    // Manche Clients zeigen die Server-Anweisung nicht: die Kernregeln stehen auch in der Beschreibung.
+    expect(pruefen.description).toContain('auch mehr als drei, mit wörtlichem Zitat (und ID, wo eine steht). Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID). Ordne nichts für die Person ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.');
   });
 
   it('artefakt_pruefen(annahmen): Markdown + die Prüfpunkte aus methoden.ts mit festen IDs, ohne alte Positions-ID', async () => {
@@ -703,7 +709,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const h = await aufbau();
     await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
     const c = await client(h, await accessToken(h));
-    const frage = 'Bei synthese-beleg-nachgetragen: Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).';
+    const frage = 'Bei synthese-beleg-nachgetragen: Nenn Zitate, die bei keiner Annahme als Beleg stehen, aber das Thema einer Annahme berühren (Annahme nur per ID), und frag, ob und wofür oder wogegen sie sprechen. Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist – welche Belegstufe passt?';
     const anleitung = async (pruefpunkt?: string) => {
       const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'interviews', ...(pruefpunkt ? { pruefpunkt } : {}) } });
       expect(r.isError).toBeFalsy();
@@ -946,7 +952,9 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     expect(r.structuredContent).toHaveProperty('methode', 'Annahmen-Map');
     expect(sc(r).anleitung).toMatch(/^Prüf nur annahmen-arten\./);
     expect(sc(r).anleitung).toMatch(/auch mehr als drei/);
-    expect(sc(r).anleitung).toMatch(/Sind es mehr als drei, bekommen die drei deutlichsten je eine Rückfrage, die übrigen nennst du nur mit ID und Zitat\./);
+    // Auch bei bis zu drei Stellen je eine Rückfrage; die ID nur, wo eine steht (der Brief hat keine).
+    expect(sc(r).anleitung).toContain('Prüf nur annahmen-arten. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit wörtlichem Zitat (und ID, wo eine steht). Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID). ');
+    expect(sc(r).anleitung).not.toMatch(/mit ID und/);
     expect(sc(r).anleitung).toContain(NICHT_EINORDNEN);
     expect(sc(r).anleitung).toMatch(/ob als Nächstes annahmen-wichtig-beleg drankommen soll/);
     expect(sc(r).anleitung).not.toMatch(/[Hh]öchstens drei/);

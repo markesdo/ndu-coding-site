@@ -72,7 +72,7 @@ export interface Pruefpunkt {
   id: string;
   alt?: string;
   text: string;
-  /** Was Claude bei diesem Punkt fragt statt selbst einzuordnen (anleitung von artefakt_pruefen und Prüf-Prompt). */
+  /** Was Claude bei diesem Punkt zusätzlich tut und fragt, statt selbst einzuordnen (anleitung von artefakt_pruefen und Prüf-Prompt). */
   frage?: string;
 }
 
@@ -182,7 +182,9 @@ export const METHODEN: Methode[] = [
         id: 'synthese-beleg-nachgetragen',
         alt: 'synthese-5',
         text: 'Jedes Zitat, das für oder gegen eine eurer Annahmen spricht, ist in der Annahmen-Map bei dieser Annahme als Beleg nachgetragen.',
-        frage: 'Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).',
+        // Der Punkt fragt nach Zitaten, die für oder gegen eine Annahme sprechen; welche das sind, entscheidet die Person (NICHT_EINORDNEN).
+        frage:
+          'Nenn Zitate, die bei keiner Annahme als Beleg stehen, aber das Thema einer Annahme berühren (Annahme nur per ID), und frag, ob und wofür oder wogegen sie sprechen. Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist – welche Belegstufe passt?',
       },
     ],
     ki: 'Prüft nach der Besprechung, ob eure Chancen Bedürfnisse sind und keine Lösungen – mit Zitat aus euren Interviews.',
@@ -564,12 +566,16 @@ export function pruefungAufMiro(m: Methode, pfad?: string): boolean {
   return !pfad && m.ergibt.length > 0 && m.ergibt.every((id) => nurAufMiro(artefakt(id)!));
 }
 
-/** Claude ordnet nicht für die Person ein (Live-Test 11.11.: „spricht gegen A1“ statt einer Frage). Gleichlautend in der
- *  Server-Anweisung und der anleitung von artefakt_pruefen; im kopierten Prompt in der Ich-Form (REGELN_ANFANG). */
-export const NICHT_EINORDNEN = 'Ordne nichts für die Person ein: Sag nicht, wofür oder wogegen ein Zitat spricht, sondern frag sie danach.';
+/** Claude ordnet nicht für die Person ein (Live-Test 11.11.: „spricht gegen A1“ statt einer Frage). Eine Quelle: für
+ *  Server-Anweisung, Werkzeugbeschreibung und anleitung von artefakt_pruefen („die Person“), im kopierten Prompt „mich“. */
+const nichtEinordnen = (fuer: string) => `Ordne nichts für ${fuer} ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.`;
+export const NICHT_EINORDNEN = nichtEinordnen('die Person');
 
-const REGELN_ANFANG =
-  'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Ordne nichts für mich ein: Sag nicht, wofür oder wogegen ein Zitat spricht, sondern frag mich danach.';
+/** artefakt_pruefen mit pruefpunkt: jede Stelle, aber höchstens drei Rückfragen (anleitung, Server-Anweisung, Beschreibung). */
+export const FOKUS_STELLEN = 'Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit wörtlichem Zitat (und ID, wo eine steht).';
+export const FOKUS_FRAGEN = 'Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID).';
+
+const REGELN_ANFANG = `Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. ${nichtEinordnen('mich')}`;
 
 /** Die Fragen einzelner Prüfpunkte, je mit ihrer ID („Bei synthese-beleg-nachgetragen: Frag …“). */
 export const pruefFragen = (punkte: readonly Pruefpunkt[]): string[] => punkte.filter((p) => p.frage).map((p) => `Bei ${p.id}: ${p.frage}`);

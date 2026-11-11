@@ -8,7 +8,7 @@ import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
 import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
 import { DEMO_HREF } from '../../../lib/nav-rolle.js';
-import { METHODEN, NICHT_EINORDNEN, TAGE, pruefFragen, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
+import { FOKUS_FRAGEN, FOKUS_STELLEN, METHODEN, NICHT_EINORDNEN, TAGE, pruefFragen, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
@@ -105,7 +105,7 @@ const METHODE = {
 
 const PRUEFEN = {
   title: 'Artefakt prüfen',
-  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
+  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei, mit wörtlichem Zitat (und ID, wo eine steht). ${FOKUS_FRAGEN} ${NICHT_EINORDNEN} Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
   inputSchema: {
     ...ARTEFAKT_EINGABE,
     pruefpunkt: z
@@ -205,8 +205,6 @@ interface PruefLage {
   vorarbeitFehlt: boolean;
   // Es gibt Feedback der Lehrenden zu diesem Artefakt (NDU-35).
   feedback: boolean;
-  // Die geprüften Punkte (mit pruefpunkt nur dieser): ihre Fragen kommen in die anleitung.
-  punkte: readonly Pruefpunkt[];
 }
 
 // So sehen die IDs der Zeilen im geprüften Artefakt aus; der Brief hat keine.
@@ -221,11 +219,10 @@ const ID_BEISPIEL: Record<ArtefaktName, string | undefined> = {
 function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: PruefLage): string[] {
   const { fokus } = lage;
   const saetze = fokus
-    ? [
-        `Prüf nur ${fokus.punkt.id}. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit ID und wörtlichem Zitat. Sind es mehr als drei, bekommen die drei deutlichsten je eine Rückfrage, die übrigen nennst du nur mit ID und Zitat.`,
-      ]
+    ? [`Prüf nur ${fokus.punkt.id}. ${FOKUS_STELLEN} ${FOKUS_FRAGEN}`]
     : ['Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die die Person selbst weiterbringt.'];
-  saetze.push(NICHT_EINORDNEN, ...pruefFragen(lage.punkte));
+  // Die Fragen der geprüften Punkte: mit pruefpunkt nur dieser.
+  saetze.push(NICHT_EINORDNEN, ...pruefFragen(fokus ? [fokus.punkt] : (methodeZu(artefakt).pruefliste ?? [])));
   const id = ID_BEISPIEL[artefakt];
   saetze.push(`Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown)${id ? ` und nenn die ID der Zeile, wo sie eine hat (wie ${id})` : ''}.`);
   if (lage.vorarbeit) saetze.push('Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht.');
@@ -622,7 +619,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const teil = artefaktTeil(k, artefakt, a);
 
       const saetze = a
-        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => !v.vorhanden), feedback: !!fb?.length, punkte: fokus ? [fokus.punkt] : alle })
+        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => !v.vorhanden), feedback: !!fb?.length })
         // Noch leer, aber schon Feedback (etwa zum ganzen Brief): der Satz dazu gilt auch hier.
         : [ANLEITUNG_LEER, ...(fb?.length ? [FEEDBACK_ANLEITUNG] : [])];
       const text = [
