@@ -223,6 +223,74 @@
 .lv-vorschau { max-width: 60rem; }
 .lv-unlesbar-hinweis { display: flex; align-items: center; gap: .35rem; color: var(--yellow-ink); font-weight: 600; }
 
+/* Zeigen-Modus im Leser (Zeigen.tsx, SnapshotAnsicht.tsx): ein Snapshot groß zum Teilen des Bildschirms. Der Dialog
+   füllt den Bildschirm; die Grundschrift wächst mit der Höhe (720p 16 px, 1080p 21 px), alles darunter in em.
+   Aufbau wie Torres’ Vorlage und die Folie snapshot-i2: oben ID, Pseudonym und Zitat, darunter Kurzinfos, Einsichten,
+   Chancen (die breiteste Spalte). Lange Texte brechen um, waagrecht scrollt nichts. */
+.lv-leser-kopf-knoepfe { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; }
+.lv-leser.lv-zeigen { width: 100vw; border-left: 0; }
+.zg { display: flex; flex-direction: column; height: 100%; font-size: clamp(16px, calc(1.5vh + 5px), 22px); }
+.zg:focus { outline: none; }
+.zg-kopf { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.25rem; padding: .5em 1.25em; border-bottom: 1px solid var(--border); }
+.zg-personen { display: flex; flex-wrap: wrap; gap: .4rem; margin-right: auto; }
+.wk-wurzel .zg .wk-knopf { font-size: .85em; min-height: 2.75rem; }
+.wk-wurzel .zg .zg-person[aria-current="true"] { border: 2px solid var(--fg); font-weight: 700; }
+.wk-wurzel .zg .wk-knopf[aria-disabled="true"] { opacity: .45; cursor: progress; }
+.zg-blaettern { display: flex; align-items: center; gap: .4rem; }
+.zg-zaehler { min-width: 9em; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+.zg-laden { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.zg-stand { color: var(--muted); font-size: .85em; }
+.zg-chips { list-style: none; display: flex; gap: .4rem; margin: 0; padding: .5em 1.25em; overflow: hidden; border-bottom: 1px solid var(--border); }
+.zg-chips li { flex: 0 1 auto; min-width: 0; max-width: 24em; }
+.zg-chip {
+  display: block; width: 100%; min-height: 2.75rem; padding: .35em .9em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font: inherit; font-size: .8em; text-align: left; color: var(--fg); background: var(--bg); border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+}
+.zg-chip:hover { border-color: var(--accent); }
+.zg-chip[aria-current="true"] { border: 2px solid var(--accent); background: var(--accent-soft); font-weight: 600; }
+.zg-chip:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.zg-buehne { position: relative; flex: 1; min-height: 0; overflow-y: auto; padding: 1em 1.25em 2em; }
+.zg-buehne .wk-hinweis { margin: 0 0 1em; }
+.zg-leer { font-size: 1.35em; color: var(--muted); }
+.snap { max-width: 90em; margin: 0 auto; }
+.snap-kopf { padding: 0 0 .7em; border-bottom: 1px solid var(--border); }
+.snap-titel {
+  /* Nicht abschneiden: das einprägsame Zitat steht sonst nirgends im Zeigen-Modus. */
+  margin: 0; font-size: 2em; line-height: 1.25; font-weight: 400; overflow-wrap: anywhere;
+}
+.snap-name { font-weight: 700; }
+.snap-zitat { font-family: var(--font); font-style: italic; letter-spacing: 0; }
+.snap-synthetisch { display: inline-block; margin: .5em 0 0; padding: .15em .7em; border: 2px solid var(--yellow); border-radius: var(--radius); background: var(--yellow-soft); color: var(--yellow-ink); font-weight: 700; }
+.snap-spalten { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1fr) minmax(0, 1.5fr); }
+.snap-spalten > div { min-width: 0; padding: .8em 1em; }
+.snap-spalten > div:first-child { padding-left: 0; }
+.snap-spalten > div + div { border-left: 1px solid var(--border); }
+.snap h4 { margin: 0 0 .4em; font-size: 1em; color: var(--muted); }
+.snap-kurzinfos p { margin: 0; font-size: 1.15em; overflow-wrap: anywhere; }
+.snap-einsichten > ul, .snap-chancen > ul { margin: 0; padding-left: 1.1em; font-size: 1.35em; line-height: 1.35; }
+.snap-spalten p { margin: 0; }
+.snap-spalten li { overflow-wrap: anywhere; }
+.snap-einsichten > ul > li + li, .snap-chancen > ul > li + li { margin-top: .55em; }
+/* Belege unter der Chance: 1.1 em der Grundschrift (die Liste steht in 1.35 em), in --fg, nicht gedämpft. */
+.snap-belege { list-style: none; margin: .2em 0 0; padding: 0; font-size: .815em; line-height: 1.35; color: var(--fg); }
+.snap-belege li + li { margin-top: .15em; }
+.snap-id { font-family: var(--mono); font-size: .85em; font-weight: 600; color: var(--muted); }
+.snap-leer { color: var(--muted); }
+.snap-ohne-beleg { font-size: .75em; font-weight: 600; color: var(--yellow-ink); }
+.snap-neu { box-shadow: inset 4px 0 var(--accent); padding-left: .45em; }
+.snap-neu-marke { display: inline-block; padding: 0 .45em; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: .6em; font-weight: 700; font-style: normal; vertical-align: .2em; }
+.snap-mehr { margin-top: .8em; }
+.snap-mehr summary { padding: .5em 0; cursor: pointer; color: var(--muted); font-weight: 600; }
+.snap-mehr summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.snap-notizen { margin: .3em 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 1.1em; }
+.snap-zitate { margin: .3em 0 0; padding-left: 1.1em; font-size: 1.05em; }
+.snap-zitate li { overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .snap-spalten { grid-template-columns: minmax(0, 1fr); }
+  .snap-spalten > div { padding-left: 0; padding-right: 0; }
+  .snap-spalten > div + div { border-left: 0; border-top: 1px solid var(--border); }
+}
+
 /* Feedback (NDU-35, Feedback.tsx): Fäden aus Feedback der Lehrenden und Antworten. „neu“ und „offen“ als Wort mit Symbol,
    nie Farbe allein; keine Noten. Alles mit data-werkstatt: im Beamer weg. */
 .lv-feedback { display: inline-flex; align-items: center; gap: .25rem; color: var(--fg); font-size: .84rem; font-weight: 600; }
