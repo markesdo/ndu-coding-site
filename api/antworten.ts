@@ -4,7 +4,7 @@
 // POST { runde, leeren: true }: nur mit Präsentator-Schlüssel (x-presenter-key) – die Runde von heute neu beginnen.
 // GET ?runde=…[&id=…]: { anzahl, rollen, frei } immer; die Texte (antworten) nur, wenn die Auflösung der Runde heute
 // aufgedeckt ist (Kennung wie <Aufloesung gruppe=…>, Speicher aus api/aufgedeckt.ts) oder ihr `ab` erreicht ist.
-// Grenzen: 30 Antworten pro Runde, 4 ids pro Absender-IP (gehasht), dieselbe id höchstens alle 2 s.
+// Grenzen: 30 Antworten pro Runde, 4 ids pro Absender (IPv4 bzw. IPv6-/64, gehasht), dieselbe id höchstens alle 2 s.
 // Speicher: Vercel Runtime Cache. Er kann keine Schlüssel aufzählen, darum zusätzlich eine Liste der ids (Index). Der Index
 // wird gelesen-geändert-geschrieben; damit zwei gleichzeitige Antworten sich dort nicht verdrängen, prüft der POST nach dem
 // Schreiben nach und trägt sich notfalls neu ein, und die Seite schickt ihre Antwort noch einmal, wenn GET ?id= „eigene:
@@ -95,6 +95,7 @@ export async function POST(request: Request): Promise<Response> {
   if (vorher && jetzt.getTime() - vorher.zeit < SPERRE_MS) return json({ fehler: 'Zu schnell' }, 429);
   const index = indexPruefen(indexRoh);
   const vomAbsender = indexPruefen(ipRoh);
+  const neu = !index.includes(e.id) && !vomAbsender.includes(e.id);
   if (!index.includes(e.id)) {
     if (index.length >= MAX_ANTWORTEN) return json({ fehler: 'Zu viele Antworten' }, 429);
     if (!vomAbsender.includes(e.id) && vomAbsender.length >= MAX_IDS_PRO_IP) return json({ fehler: 'Zu viele Antworten von hier' }, 429);
@@ -104,5 +105,15 @@ export async function POST(request: Request): Promise<Response> {
   await cache.set(schluessel, eintrag, { ttl: TTL_SEKUNDEN, name: NAME });
   // In beide Listen, dann nachsehen: Hat eine gleichzeitige Antwort unsere id überschrieben, noch einmal eintragen.
   await Promise.all([eintragen(cache, ixSchluessel, index, e.id), eintragen(cache, ipSchluessel, vomAbsender, e.id)]);
+  // Gleichzeitige neue ids vom selben Absender haben die Prüfung oben alle bestanden: nachzählen und die eigene notfalls
+  // zurücknehmen. Im Grenzfall nehmen mehrere zugleich zurück – trifft nur, wer viele ids auf einmal schickt.
+  if (neu && indexPruefen(await cache.get(ipSchluessel)).filter((x) => x !== e.id).length >= MAX_IDS_PRO_IP) {
+    const ohne = async (k: string) => {
+      const l = indexPruefen(await cache.get(k));
+      if (l.includes(e.id)) await cache.set(k, l.filter((x) => x !== e.id), { ttl: TTL_SEKUNDEN, name: NAME });
+    };
+    await Promise.all([cache.delete(schluessel), ohne(ixSchluessel), ohne(ipSchluessel)]);
+    return json({ fehler: 'Zu viele Antworten von hier' }, 429);
+  }
   return json({ ok: true });
 }

@@ -110,7 +110,22 @@ export function absenderSchluessel(runde: string, absender: string, jetzt: Date,
 /** Absender einer Anfrage: auf Vercel setzt die Plattform x-real-ip (bzw. x-forwarded-for) selbst, der Browser kann es
  *  nicht vorgeben. Fehlt beides (lokal), teilen sich alle einen Eimer. */
 export function absenderIp(headers: Headers): string {
-  return headers.get('x-real-ip')?.trim() || headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unbekannt';
+  return ipEimer(headers.get('x-real-ip')?.trim() || headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unbekannt');
+}
+
+/** Eimer für die Grenze pro Absender: IPv4 ganz, IPv6 nur das /64-Präfix – ein Anschluss bekommt meist ein ganzes /64 und
+ *  könnte sonst beliebig viele Adressen nehmen. IPv4 in IPv6 (::ffff:1.2.3.4) zählt als IPv4. */
+export function ipEimer(ip: string): string {
+  const a = ip.trim().toLowerCase().replace(/^\[|\]$/g, '').replace(/%.*$/, '');
+  const v4 = a.match(/^(?:0{0,4}:){0,4}:?:ffff:(\d{1,3}(?:\.\d{1,3}){3})$/);
+  if (v4) return v4[1];
+  if (!a.includes(':')) return a;
+  const [kopf, rest] = a.split('::', 2);
+  const vorn = kopf ? kopf.split(':') : [];
+  const hinten = rest === undefined ? [] : rest ? rest.split(':') : [];
+  const teile = rest === undefined ? vorn : [...vorn, ...Array(Math.max(0, 8 - vorn.length - hinten.length)).fill('0'), ...hinten];
+  if (teile.length !== 8 || !teile.every((t) => /^[0-9a-f]{1,4}$/.test(t))) return a;
+  return `${teile.slice(0, 4).map((t) => t.padStart(4, '0')).join(':')}::/64`;
 }
 
 /** IP nicht im Klartext speichern: SHA-256, gekürzt. */

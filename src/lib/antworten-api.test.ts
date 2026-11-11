@@ -11,6 +11,7 @@ vi.mock('@vercel/functions', () => {
     getCache: () => ({
       get: async (k: string) => { await dauer(); return daten.get(k); },
       set: async (k: string, v: unknown) => { await dauer(); daten.set(k, structuredClone(v)); },
+      delete: async (k: string) => { await dauer(); daten.delete(k); },
     }),
   };
 });
@@ -109,6 +110,20 @@ describe('api/antworten', () => {
     spaeter(2500);
     expect((await antwort(ids[0], 'entwicklung', 'geändert', '198.51.100.9')).status).toBe(200);
     expect((await lesen()).anzahl).toBe(MAX_IDS_PRO_IP + 1);
+  });
+
+  it('viele neue ids gleichzeitig vom selben Absender: nach dem Nachzählen höchstens MAX_IDS_PRO_IP', async () => {
+    const ids = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map(id);
+    await Promise.all(ids.map((i) => antwort(i, 'design', 'x', '198.51.100.9')));
+    expect((await lesen()).anzahl).toBeLessThanOrEqual(MAX_IDS_PRO_IP);
+    // Was zurückgenommen wurde, liegt auch nicht mehr als Antwort im Speicher.
+    expect([...daten.keys()].filter((k) => k.startsWith('antwort:')).length).toBeLessThanOrEqual(MAX_IDS_PRO_IP);
+  });
+
+  it('IPv6: ein /64 ist ein Absender', async () => {
+    for (const [i, c] of ['a', 'b', 'c', 'd'].entries()) expect((await antwort(id(c), 'design', 'x', `2001:db8:1:2::${i + 1}`)).status).toBe(200);
+    expect((await antwort(id('e'), 'design', 'x', '2001:db8:1:2:ffff:1:2:3')).status).toBe(429);
+    expect((await antwort(id('f'), 'design', 'x', '2001:db8:1:3::1')).status).toBe(200);
   });
 
   it('Runde leeren: nur mit Präsentator-Schlüssel; danach zählt nichts mehr, auch die IP-Grenze nicht', async () => {

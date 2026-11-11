@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  MAX_TEXT, RUNDEN, absenderHash, absenderIp, absenderSchluessel, antwortSchluessel, laufSchluessel, antwortenGruppieren, eingabePruefen, idPruefen, indexSchluessel, rollePruefen,
+  MAX_TEXT, RUNDEN, absenderHash, absenderIp, ipEimer, absenderSchluessel, antwortSchluessel, laufSchluessel, antwortenGruppieren, eingabePruefen, idPruefen, indexSchluessel, rollePruefen,
   rundePruefen, standBauen, statusText, textBereinigen, texteFrei,
 } from './antworten';
 
@@ -78,10 +78,23 @@ describe('Antwortrunde: Schlüssel und Stand', () => {
     expect(absenderIp(new Headers({ 'x-real-ip': '203.0.113.7', 'x-forwarded-for': '198.51.100.1' }))).toBe('203.0.113.7');
     expect(absenderIp(new Headers({ 'x-forwarded-for': '198.51.100.1, 10.0.0.1' }))).toBe('198.51.100.1');
     expect(absenderIp(new Headers())).toBe('unbekannt');
+    expect(absenderIp(new Headers({ 'x-real-ip': '2001:DB8:1:2:aaaa::1' }))).toBe('2001:0db8:0001:0002::/64');
     const h = await absenderHash('203.0.113.7');
     expect(h).toMatch(/^[0-9a-f]{24}$/);
     expect(h).not.toContain('203');
     expect(await absenderHash('203.0.113.8')).not.toBe(h);
+  });
+
+  it('IPv6 auf /64 gekürzt, IPv4 ganz, IPv4 in IPv6 als IPv4', () => {
+    expect(ipEimer('203.0.113.7')).toBe('203.0.113.7');
+    expect(ipEimer('2001:db8:1:2:3:4:5:6')).toBe('2001:0db8:0001:0002::/64');
+    expect(ipEimer('2001:db8:1:2::9')).toBe('2001:0db8:0001:0002::/64');
+    expect(ipEimer('[2001:db8::1]')).toBe('2001:0db8:0000:0000::/64');
+    expect(ipEimer('fe80::1%en0')).toBe('fe80:0000:0000:0000::/64');
+    expect(ipEimer('::1')).toBe('0000:0000:0000:0000::/64');
+    expect(ipEimer('::ffff:198.51.100.4')).toBe('198.51.100.4');
+    expect(ipEimer('2001:db8:1:3::1')).not.toBe(ipEimer('2001:db8:1:2::1'));
+    expect(ipEimer('kaputt:::x')).toBe('kaputt:::x');
   });
 
   it('frei erst nach dem Aufdecken oder ab der Rückfall-Uhrzeit', () => {
