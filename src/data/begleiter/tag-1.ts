@@ -556,7 +556,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'methoden': {
     live: [
       'Zeit: 11:00 Pause, 11:10 Problem-Rahmen.',
-      '„Bis Tag 2 führt ihr fünf echte Interviews; Notizen nur mit Pseudonym, Snapshot auf Miro, Entscheidungslog nachziehen.“',
+      '„Bis Tag 2 fünf echte Interviews; Snapshot mit Pseudonym in die Werkstatt, Skizze auf Papier, Entscheidungslog nachziehen.“',
       'Fragen offen? In den Parkplatz unter „Start hier“.',
       'Toolbox zeigen, falls jemand fragt, welche Methode welches Artefakt liefert.',
     ],
