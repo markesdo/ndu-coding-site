@@ -13,7 +13,7 @@ import { DateiUnlesbar } from '../speicher-fehler';
 import type { Speicher } from '../typen';
 
 const BASIS = 'http://localhost:4321';
-// Kohorte 2026: Tag 1 am 22.10.2026, Tag 2 ohne Termin, Tag 3 am 21.11.2026 (aus TAGE).
+// Kohorte 2026: Tag 1 am 22.10.2026, Tag 2 am 12.11.2026, Tag 3 am 21.11.2026 (aus TAGE).
 const ZUGANG = {
   '2026': { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }, { githubId: 1003, kuerzel: 'lea' }] },
   test: { lehrende: [1000, 2000], studierende: [{ githubId: 2001, kuerzel: 'tom' }] },
@@ -29,8 +29,8 @@ afterEach(() => vi.restoreAllMocks());
 
 const ms = (iso: string) => Date.parse(iso);
 const SOFIE_ = (a: { personen: { kuerzel: string; artefakte?: unknown[]; luecken?: unknown[] }[] }) => a.personen.find((p) => p.kuerzel === 'sofie')! as { artefakte: any[]; luecken: any[] };
-// Standard-Uhr 24.10.2026: der nächste Kurstag mit Termin ist Tag 3 (Tag 2 hat keinen).
-const KURSTAG = 3;
+// Standard-Uhr 24.10.2026: der nächste Kurstag ist Tag 2 (12.11.).
+const KURSTAG = 2;
 // Noch kein Feedback (NDU-35): alle Zahlen 0.
 const OHNE_FEEDBACK = { offen: 0, erledigt: 0, neu: 0, antworten: 0 };
 const offen = (name: ArtefaktName) => ({ name, stand: 'offen', umfang: null, fehlt: [], leer: false, faelligZuTag: faelligZuTag(name), faellig: faelligZuTag(name) <= KURSTAG, commits: 0, mehr: false, zuletzt: null, feedback: OHNE_FEEDBACK });
@@ -159,7 +159,7 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
     const luecken = verknuepfungenPruefen({ brief: daten.brief, entscheidungen: null, leitfaden: null, annahmen: daten.annahmen, interviews: daten.interviews }).befunde;
     expect(luecken.length).toBeGreaterThan(0);
 
-    expect(a.kurstag).toStrictEqual({ tag: 3, titel: 'Lösung, Story, Prototyp', lage: 'naechster' });
+    expect(a.kurstag).toStrictEqual({ tag: 2, titel: 'Kunde & Erlebnis', lage: 'naechster' });
     expect(a.spalten).toStrictEqual([
       { name: 'brief', faelligZuTag: 2, hausaufgabe: false },
       { name: 'entscheidungen', faelligZuTag: faelligZuTag('entscheidungen'), hausaufgabe: false },
@@ -217,7 +217,7 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
 
     const t = await aufbau({ jetzt: '2026-11-22T09:00:00Z' });
     const spaeter = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
-    expect(spaeter.tage).toStrictEqual([{ tag: 1, datum: '2026-10-22' }, { tag: 3, datum: '2026-11-21' }]);
+    expect(spaeter.tage).toStrictEqual([{ tag: 1, datum: '2026-10-22' }, { tag: 2, datum: '2026-11-12' }, { tag: 3, datum: '2026-11-21' }]);
     expect(spaeter.bezug).toStrictEqual({ tag: 3, datum: '2026-11-21' });
     expect(SOFIE_(spaeter).artefakte[0]).toMatchObject({ name: 'brief', commits: 0, zuletzt: '2026-10-21T22:30:00.000Z' });
 

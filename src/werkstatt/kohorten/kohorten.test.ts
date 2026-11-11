@@ -17,10 +17,9 @@ describe('kohorte2026.termine', () => {
     expect(Object.keys(kohorte2026.termine)).toEqual(TAGE.map((t) => `tag${t.n}`));
     for (const t of TAGE) expect(kohorte2026.termine[`tag${t.n}`], `tag${t.n}`).toBe(t.datum ?? null);
   });
-  it('tag1 ist das Datum aus TAGE, tag2 offen solange TAGE[1] kein Datum hat', () => {
-    expect(kohorte2026.termine.tag1).toBe(TAGE[0].datum);
-    expect(TAGE[1].datum).toBeUndefined();
-    expect(kohorte2026.termine.tag2).toBeNull();
+  it('tag1 und tag2 sind die Daten aus TAGE (Tag 2 am 12.11. nach der Absage im Oktober)', () => {
+    expect(kohorte2026.termine.tag1).toBe('2026-10-22');
+    expect(kohorte2026.termine.tag2).toBe('2026-11-12');
   });
 });
 
