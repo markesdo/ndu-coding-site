@@ -12,6 +12,7 @@ import Baum from '../../../components/bild/Baum.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import MiroLink from '../../../components/MiroLink.astro';
 import { KAFFEEBAR_BAUM_TAG2 } from '../../../components/innolab-beispiel';
 import { Check, CircleCheck, CircleX, X } from '@lucide/astro';
 
@@ -205,17 +206,35 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   </Folie>
 
   <Folie>
+    <h2 id="euer-baum">Euer Baum auf Miro</h2>
+    <p class="folie-satz">Neben der Kaffeebar: „Baum · euer Name“.</p>
+    <MiroFrame name="Baum · Beispiel Kaffeebar" />
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/ost.jpg" alt="Opportunity Solution Tree: oben ein Outcome, darunter mehrere Ebenen von Opportunities, unter einer davon drei Solutions mit je zwei Assumption Tests" quelle={`Opportunity Solution Tree. ${TORRES}, S. 26.`} />
+      <ol>
+        <li data-schritt><strong>Cmd+D:</strong> Karte duplizieren.</li>
+        <li data-schritt>Vom <strong>blauen Punkt</strong> des Elternteils zum Kind ziehen.</li>
+        <li data-schritt><strong>Ein Elternteil</strong> pro Karte.</li>
+      </ol>
+    </BildText>
+    <div class="nur-handout">
+      <p>Jedes Produkt hat auf dem Board einen eigenen Baum, von oben nach unten wie bei Torres: Outcome, Momente, Chancen, Unter-Chancen, ab Tag 3 Lösungen und Annahmen-Tests. Euer Frame heißt „Baum · euer Name“: <MiroLink name="Baum · Sofie · sofie">Baum · Sofie</MiroLink>, <MiroLink name="Baum · Joachim · joachim">Baum · Joachim</MiroLink>, <MiroLink name="Baum · Hewen · chen">Baum · Hewen</MiroLink>. Links daneben steht <MiroLink name="Baum · Beispiel Kaffeebar">Baum · Beispiel Kaffeebar</MiroLink>; Outcome und je eine blaue und gelbe Karte stehen in eurem Baum schon zum Kopieren.</p>
+      <p>Jede Karte hängt mit einer Linie an genau einem Elternteil. Mit Cmd+D (Windows: Strg+D) dupliziert ihr eine Karte; dann zieht ihr vom blauen Punkt am Rand des Elternteils eine Linie zum Kind. Die Linie bleibt angeheftet, wenn ihr Karten verschiebt. Was nur eine Person erzählt hat, kommt in den Streifen „Nur in einem Interview“. Der Frame T2 · 2 bleibt die Anleitung: drei Fragen und Anti-Muster.</p>
+    </div>
+  </Folie>
+
+  <Folie>
     <h2 id="vorgehen">So geht ihr vor (75 min)</h2>
     <p class="folie-satz">Erst allein inventarisieren, dann ordnen, dann gegenlesen.</p>
-    <MiroFrame name="T2 · 2 · Opportunity Solution Tree" />
+    <MiroFrame name="Baum · Beispiel Kaffeebar" />
     <ol class="gross">
-      <li><strong>Inventar, allein:</strong> jede Chance aus euren Snapshots durch die drei Fragen, unter ihren Moment. <Timer minuten={12} /></li>
-      <li data-schritt><strong>Struktur, allein:</strong> Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen. <Timer minuten={10} /></li>
+      <li><strong>Inventar, allein:</strong> jede Chance aus euren Snapshots durch die drei Fragen, in „Baum · euer Name“ unter ihren Moment. <Timer minuten={12} /></li>
+      <li data-schritt><strong>Struktur, allein:</strong> Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen; jede Karte mit einer Linie an ein Elternteil. <Timer minuten={10} /></li>
       <li data-schritt><strong>Gegenlesen, reihum:</strong> Die anderen beiden gehen die Checkliste der sechs Anti-Muster durch (nächste Folie). <Timer minuten={12} /></li>
       <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
     </ol>
     <div class="nur-handout">
-      <p>12 + 10 + 12 + 5 sind 39 Minuten; dazu gut 35 Minuten Theorie und Kaffeebar. Beim Gegenlesen hat jede Person vier Minuten für ihren Baum; die anderen fragen bei jeder Chance „Haben wir das gehört?“ und „Gibt es mehr als einen Weg?“. Was nach dem Gegenlesen offen bleibt, wird eine Frage für die nächsten Interviews. Der Baum entsteht auf Miro und bleibt dort; jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg.</p>
+      <p>12 + 10 + 12 + 5 sind 39 Minuten; dazu gut 35 Minuten Theorie und Kaffeebar. Beim Gegenlesen hat jede Person vier Minuten für ihren Baum; die anderen fragen bei jeder Chance „Haben wir das gehört?“ und „Gibt es mehr als einen Weg?“. Was nach dem Gegenlesen offen bleibt, wird eine Frage für die nächsten Interviews. Der Baum entsteht auf Miro in eurem Frame „Baum · euer Name“ und bleibt dort; jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg.</p>
       <Prompt label="Für den Teams-Chat">{CHAT_BAUM}</Prompt>
     </div>
   </Folie>
@@ -250,7 +269,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/BAUM.md"># Opportunity Solution Tree — [Produkt]
 
-Stand: [Datum] · Miro: [Link zum Frame] · Outcome (aus dem Produkt-Brief): [...]
+Stand: [Datum] · Miro: [Link zu „Baum · euer Name“] · Outcome (aus dem Produkt-Brief): [...]
 
 ## „[Moment 1 aus der Experience Map]“
 - „[Eltern-Chance]“ (ergänzt, wenn niemand sie so gesagt hat)

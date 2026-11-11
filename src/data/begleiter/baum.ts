@@ -225,33 +225,62 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       frage: 'Ist „Ich stehe an“ mit nur einer Chance darunter ein senkrechter Stapel?',
       antwort: 'Noch nicht: Senkrecht heißt, unter einem einzelnen Kind folgt wieder genau ein Kind. Ein Ast mit einer Chance ist ehrlich – mehr haben fünf Interviews nicht hergegeben –, aber ein Hinweis, wonach ihr als Nächstes fragt (Handout; Torres S. 94).',
     },
+    ueberleitung: 'Wo ihr das baut: euer Baum auf Miro.',
+  },
+
+  'euer-baum': {
+    live: [
+      'Zeit: 5 min Torres-Abbildung neben „Baum · Beispiel Kaffeebar“ zeigen.',
+      '„Der Baum von Tag 1 war unsere Vermutung. Die Wurzel bleibt, die Äste kommen aus fünf Interviews.“',
+      '„‚Vorbestellen‘ ist gefallen: 3 von 5 entscheiden erst in der Halle (D4).“',
+      'Zeit: 3 min die drei Griffe vorführen – Cmd+D, Linie ziehen, ein Elternteil.',
+    ],
+    miro: {
+      frame: 'Baum · Beispiel Kaffeebar',
+      schritte: [
+        '„Alle zu mir holen“ auf Baum · Beispiel Kaffeebar; die Folie mit der Torres-Abbildung daneben.',
+        'Ebenen von oben zeigen: Outcome grün, Momente blau, Chancen gelb; Lösungen und Tests kommen an Tag 3.',
+        'Vorführen: Karte mit Cmd+D duplizieren, vom blauen Punkt des Elternteils zum Kind ziehen, Karte verschieben – die Linie geht mit.',
+        'Jede*r öffnet „Baum · eigener Name“: Outcome und je eine blaue und gelbe Karte stehen schon.',
+      ],
+    },
+    kern: [
+      {
+        text: 'Der Baum von oben nach unten: ein Outcome, darunter Chancen über mehrere Ebenen, unter einer Ziel-Chance mehrere Lösungen, unter jeder Lösung Annahmen-Tests.',
+        quelle: `${TORRES}, S. 26–27`,
+      },
+      {
+        text: 'Kaffeebar, Entscheidungslog D4: „Vorbestellen vor der Ankunft verworfen“ – 3 von 5 sagen, sie entscheiden erst in der Halle (Belege I2-4, I3-1, I5-3).',
+        quelle: 'Werkstatt, Beispiel Kaffeebar, Entscheidungslog D4',
+      },
+    ],
     ueberleitung: 'Jetzt euer Baum: Inventar, Struktur, Gegenlesen.',
   },
 
   vorgehen: {
     live: [
       'Schritte unten kopieren und in den Teams-Chat einfügen.',
-      'Timer 12 min: Inventar allein, unter die eigenen Momente.',
-      'Nach 12 min: Struktur allein, Ast für Ast, Timer 10 min.',
+      'Timer 12 min: Inventar allein, in „Baum · eigener Name“.',
+      'Nach 12 min: Struktur allein, Linien ziehen, Timer 10 min.',
       'Nach 22 min: Gegenlesen mit Checkliste, vier Minuten je Baum.',
       'Nach 34 min: BAUM.md, Prüfliste, Claude.',
     ],
     uebung: { dauer: '39 min (12 + 10 + 12 + 5)', form: 'allein, dann zu dritt reihum' },
     chat: CHAT_BAUM,
     miro: {
-      frame: 'T2 · 2 · Opportunity Solution Tree',
+      frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
-        '„Alle zu mir holen“ auf T2 · 2; links die Kaffeebar: Outcome, drei Momente mit ihren Chancen, unten „Nur in einem Interview“.',
-        'Allein in der eigenen Spalte: Momente aus T2 · 1 als oberste Reihe, darunter die Chancen aus den Snapshots.',
-        'Was nur eine Person gesagt hat, ins gelbe Feld „Nur in einem Interview“.',
-        'Gegenlesen: Die anderen kommentieren in fremden Spalten, statt zu verschieben.',
+        'Jede*r arbeitet im eigenen Frame „Baum · Name“ rechts neben der Kaffeebar; T2 · 2 ist nur die Anleitung.',
+        'Momente aus T2 · 1 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
+        'Jede Karte mit einer Linie an genau ein Elternteil; was nur eine Person gesagt hat, in den Streifen „Nur in einem Interview“.',
+        'Gegenlesen: Die anderen kommentieren im fremden Baum, statt zu verschieben.',
       ],
     },
     ablauf: {
       schritte: [
         'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
-        'Inventar allein (12 min): jede Chance durch die drei Fragen, unter ihren Moment.',
-        'Struktur allein (10 min): Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen.',
+        'Inventar allein (12 min): jede Chance durch die drei Fragen, in „Baum · Name“ unter ihren Moment.',
+        'Struktur allein (10 min): Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen, jede Karte per Linie an ein Elternteil.',
         'Gegenlesen reihum (12 min): je Baum vier Minuten, die anderen beiden gehen die Checkliste der sechs Anti-Muster durch (nächste Folie).',
         'Festhalten und prüfen (5 min): docs/BAUM.md, Prüfliste, Claude.',
       ],
@@ -264,6 +293,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Lösungen als Chancen („App“, „Express-Theke“).',
         'Alles aus jedem Snapshot übernehmen, ohne die drei Fragen.',
         'Am perfekten Baum feilen und das Gegenlesen verpassen.',
+        'Karten ohne Linie oder mit zwei Eltern – dann ist die Chance zu breit.',
       ],
     },
     ueberleitung: 'Für das Gegenlesen: die Checkliste auf der nächsten Folie.',
