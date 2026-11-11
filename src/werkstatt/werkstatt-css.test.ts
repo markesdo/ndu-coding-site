@@ -19,7 +19,7 @@ describe('werkstatt.css: Dialog scrollt nicht als Ganzes', () => {
     expect(regel('.wk-dialog')).toMatch(/overflow:\s*clip/);
   });
 
-  it.each(['.wk-formular', '.wk-bild', '.lv-leser-inhalt', '.zg-buehne'])('%s hält absolut positionierte Kinder in seinem Scrollbereich', (s) => {
+  it.each(['.wk-formular', '.wk-bild', '.lv-leser-inhalt', '.zg-buehne', '.zg-kontext'])('%s hält absolut positionierte Kinder in seinem Scrollbereich', (s) => {
     expect(regel(s)).toMatch(/position:\s*relative/);
   });
 });

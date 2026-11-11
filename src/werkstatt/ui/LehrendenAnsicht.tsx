@@ -21,6 +21,8 @@ import {
 import { rueckkehrBeobachten } from './mappe-hilfen.js';
 import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen, zeigenStartPerson } from './snapshot-hilfen.js';
 import Zeigen, { type ZeigenProps } from './Zeigen.js';
+import { istKontextTaste, type KontextName } from './kontext-hilfen.js';
+import { useKontext } from './useKontext.js';
 import type { Interview } from '../schemas/index.js';
 
 const TEXT = {
@@ -144,6 +146,9 @@ export default function LehrendenAnsicht() {
   const [inhaltNeu, setInhaltNeu] = useState(0);
   // Läuft Zeigen, lädt die Rückkehr in den Tab nicht still nach (sonst ändert sich der geteilte Bildschirm von selbst).
   const zeigenLaeuft = useRef(false);
+  // Kontext im Zeigen-Modus (Taste K): beim Start zu; der Reiter bleibt beim Personenwechsel.
+  const [kontextOffen, setKontextOffen] = useState(false);
+  const [kontextReiter, setKontextReiter] = useState<KontextName>('annahmen');
 
   const laden = useCallback(async (w: { kohorte?: string; seit?: number }) => {
     const mein = ++lauf.current;
@@ -272,6 +277,10 @@ export default function LehrendenAnsicht() {
   const zeigenSicht = zeigenAktiv && zeigenStand && zeigenStand.schluessel === offenerSchluessel ? zeigenStand : null;
   const zeigenIvs = zeigenSicht?.interviews ?? [];
   const zeigenNr = stelleNachId(zeigenIvs, zeigenId);
+  // Annahmen-Map und Leitfaden der gezeigten Person: einmal beim Start oder Personenwechsel, wieder bei „Neu laden“.
+  // Aus der Antwort nimmt useKontext nur die geprüften Daten, nie das Feedback.
+  const kontextPerson = zeigenAktiv && ansicht && leser ? `${ansicht.kohorte}/${leser.person}` : null;
+  const kontext = useKontext(kontextPerson, inhaltNeu, (name) => api.lehrendeInhalt(ansicht!.kohorte, leser!.person, name));
 
   // Geladene Interviews übernehmen; derselbe Schlüssel wie zuvor = neu geladen, dann bleibt der alte Stand zum Vergleich.
   useEffect(() => {
@@ -295,6 +304,7 @@ export default function LehrendenAnsicht() {
   function zeigenStarten() {
     setZeigenId(null);
     setZeigenStand(null);
+    setKontextOffen(false);
     setZeigen(true);
   }
 
@@ -313,6 +323,11 @@ export default function LehrendenAnsicht() {
   // ←/→: ohne Zeigen dasselbe Artefakt bei der Nachbarperson (wie bisher), im Zeigen-Modus nur der nächste Snapshot.
   function leserTaste(e: KeyboardEvent<HTMLDialogElement>) {
     if (!ansicht || !leser) return;
+    if (zeigenAktiv && istKontextTaste(e)) {
+      e.preventDefault();
+      setKontextOffen((o) => !o);
+      return;
+    }
     const ziel = tastenZiel(e.key, { zeigen: zeigenAktiv, personen: ansicht.personen, person: leser.person, nr: zeigenNr, anzahl: zeigenIvs.length });
     if (!ziel) return;
     e.preventDefault();
@@ -506,6 +521,7 @@ export default function LehrendenAnsicht() {
             stand: zeigenSicht?.zeit ?? null, jetzt,
             meldung: neuMeldung(zeigenSicht?.vorher ?? null, zeigenSicht?.interviews ?? []),
             wurzel: zeigenWurzel,
+            kontext, kontextOffen, kontextReiter, kontextUmschalten: () => setKontextOffen((o) => !o), reiterWaehlen: setKontextReiter,
             personWaehlen: (k) => { setZeigenId(null); setLeser({ person: k, artefakt: 'interviews' }); },
             nrWaehlen: (i) => zeigenIvs[i] && setZeigenId(zeigenIvs[i].id),
             blaettern: (r) => zeigenIvs.length > 0 && setZeigenId(zeigenIvs[blaettern(zeigenNr, zeigenIvs.length, r)].id),

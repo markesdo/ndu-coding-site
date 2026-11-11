@@ -252,6 +252,48 @@
 .zg-buehne { position: relative; flex: 1; min-height: 0; overflow-y: auto; padding: 1em 1.25em 2em; }
 .zg-buehne .wk-hinweis { margin: 0 0 1em; }
 .zg-leer { font-size: 1.35em; color: var(--muted); }
+/* Kontext (K, KontextPanel.tsx): Annahmen und Leitfaden rechts neben dem Snapshot, je mit eigenem Scrollbereich. */
+.zg-flaeche { display: flex; flex: 1; min-height: 0; }
+.zg-mit-kontext > .zg-buehne { flex: 0 0 63%; container-type: inline-size; }
+.zg-kontext { position: relative; flex: 1; min-width: 0; min-height: 0; overflow-y: auto; border-left: 1px solid var(--border); padding: .75em 1em 2em; font-size: .9em; }
+.zg-reiter { display: flex; gap: .4rem; margin: 0 0 .8em; }
+.zg-reiter-knopf { min-height: 2.5rem; padding: .3em .9em; font: inherit; font-weight: 600; color: var(--fg); background: var(--bg); border: 1px solid var(--border); border-radius: 999px; cursor: pointer; }
+.zg-reiter-knopf[aria-pressed="true"] { border: 2px solid var(--fg); }
+.zg-reiter-knopf:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.zg-kontext-hinweis { margin: 0; color: var(--muted); }
+.zg-annahmen { list-style: none; margin: 0; padding: 0; }
+.zg-annahme { padding: .5em .6em; border: 1px solid transparent; border-radius: var(--radius); }
+.zg-annahme + .zg-annahme { margin-top: .4em; border-top-color: var(--border); }
+.zg-annahme.zg-belegt { border: 2px solid var(--blue); background: var(--blue-soft); }
+.zg-annahme p { margin: 0; overflow-wrap: anywhere; }
+.zg-annahme-kopf { display: flex; flex-wrap: wrap; align-items: center; gap: .2em .5em; }
+.zg-annahme-id { font-family: var(--mono); font-size: .9em; }
+.zg-annahme-text { font-size: 1.1em; line-height: 1.3; }
+.zg-annahme-meta { margin-top: .2em !important; color: var(--muted); font-size: .85em; }
+.zg-annahme-belege { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3em; margin-top: .3em !important; font-size: .85em; }
+.zg-marke { display: inline-block; padding: 0 .5em; border: 1px solid var(--fg); border-radius: 999px; font-size: .8em; font-weight: 700; }
+.zg-marke-beleg { border-color: var(--blue); background: var(--blue); color: var(--bg); }
+.zg-id { padding: 0 .4em; border: 1px solid var(--border); border-radius: 4px; font-family: var(--mono); font-size: .9em; }
+.zg-id-hier { border-color: var(--blue); font-weight: 700; }
+.zg-notiz { font-style: italic; }
+.zg-kontext h4 { margin: 0 0 .3em; font-size: 1em; color: var(--muted); }
+.zg-ziel { margin: 0 0 .9em; }
+.zg-ziel p { margin: 0; font-size: 1.05em; overflow-wrap: anywhere; }
+.zg-fragen { margin: 0 0 .9em; }
+.zg-fragen ul { list-style: none; margin: 0; padding: 0; }
+.zg-fragen li { padding: .2em 0; overflow-wrap: anywhere; line-height: 1.3; }
+.zg-fragen li + li { border-top: 1px solid var(--border); }
+.zg-fragen li.snap-neu, .zg-ziel.snap-neu { padding-left: .45em; }
+@container (max-width: 44em) {
+  .snap-spalten { grid-template-columns: minmax(0, 1fr); }
+  .snap-spalten > div { padding-left: 0; padding-right: 0; }
+  .snap-spalten > div + div { border-left: 0; border-top: 1px solid var(--border); }
+}
+@media (max-width: 38em) {
+  .zg-flaeche.zg-mit-kontext { flex-direction: column; overflow-y: auto; }
+  .zg-mit-kontext > .zg-buehne, .zg-kontext { flex: none; overflow: visible; }
+  .zg-kontext { border-left: 0; border-top: 1px solid var(--border); }
+}
 .snap { max-width: 90em; margin: 0 auto; }
 .snap-kopf { padding: 0 0 .7em; border-bottom: 1px solid var(--border); }
 .snap-titel {
