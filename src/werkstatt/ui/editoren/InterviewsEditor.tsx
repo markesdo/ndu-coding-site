@@ -55,6 +55,11 @@ function Einwilligung({ wert, onChange, fehler }: { wert: boolean; onChange: (ne
 }
 
 // Eine Zeile der Chancen: Text und Belege. Eigene Komponente, damit ein Test die Verdrahtung des Beleg-Hinweises prüfen kann.
+/** Eine Einsicht: zweizeilig wie Chance und Zitat – eine Einsicht ist oft ein ganzer Satz mit Zitat-IDs. */
+export function EinsichtZeile({ wert, setze, nr, fehler }: { wert: string; setze: (neu: string) => void; nr: number; fehler?: string }) {
+  return <Textfeld label={`Einsicht ${nr}`} mehrzeilig zeilen={2} wert={wert} onChange={setze} fehler={fehler} hinweis={namenHinweis(wert)} />;
+}
+
 export function ChanceZeile({ chance, setze, nr, zitate, fehler }: {
   chance: Chance;
   setze: (neu: Chance) => void;
@@ -135,9 +140,9 @@ export default function InterviewsEditor() {
                       onChange={(einsichten) => s({ ...iv, einsichten })}
                       neu={() => ''}
                       fehler={f('einsichten')}
-                      zeile={(e, se, j) => <Textfeld label={`Einsicht ${j + 1}`} wert={e} onChange={se} fehler={f(`einsichten.${j}`)} hinweis={namenHinweis(e)} />}
+                      zeile={(e, se, j) => <EinsichtZeile wert={e} setze={se} nr={j + 1} fehler={f(`einsichten.${j}`)} />}
                     />
-                    <Textfeld label="Einprägsames Zitat" wert={iv.zitat} onChange={(zitat) => s({ ...iv, zitat })} fehler={f('zitat')} hinweis={namenHinweis(iv.zitat)} hilfe="Wähle eines deiner Zitate oben: den Satz, der dich an genau diese Geschichte erinnert." />
+                    <Textfeld label="Einprägsames Zitat" mehrzeilig zeilen={2} wert={iv.zitat} onChange={(zitat) => s({ ...iv, zitat })} fehler={f('zitat')} hinweis={namenHinweis(iv.zitat)} hilfe="Wähle eines deiner Zitate oben: den Satz, der dich an genau diese Geschichte erinnert." />
                     <Textfeld label="Kurzinfos" mehrzeilig zeilen={2} wert={iv.kurzinfos} onChange={(kurzinfos) => s({ ...iv, kurzinfos })} fehler={f('kurzinfos')} hinweis={namenHinweis(iv.kurzinfos)} hilfe="Zwei, drei Fakten: Welche Art Kund*in war das? Bei jedem Interview dieselben – ohne die Person erkennbar zu machen." />
                   </>
                 );

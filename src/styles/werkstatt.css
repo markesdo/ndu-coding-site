@@ -64,6 +64,8 @@
 /* Felder */
 .wk-feld { display: flex; flex-direction: column; gap: .25rem; margin-bottom: 1rem; }
 .wk-feld label, .wk-liste legend, .wk-verweise legend { font-weight: 600; font-size: .95rem; }
+/* Mehrzeilige Felder lassen sich in der Höhe ziehen, wenn ein Text länger wird. */
+.wk-wurzel textarea { resize: vertical; }
 .wk-wurzel input[type="text"], .wk-wurzel textarea, .wk-wurzel select {
   font: inherit; width: 100%; min-height: 2.5rem; padding: .4rem .6rem; box-sizing: border-box;
   border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); color: var(--fg);
