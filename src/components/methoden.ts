@@ -26,6 +26,8 @@ export interface Artefakt {
    *  anders heißt („transkripte“ → leitfaden). Interview-Notizen kommen nie ins App-Repo (öffentlich), nur
    *  pseudonymisiert in die private Mappe (interviews). */
   werkstatt?: ArtefaktName;
+  /** Frame auf dem Miro-Board, wenn das Artefakt nur dort liegt (ohne pfad): Claude prüft es dann an einem Bild des Frames. */
+  miro?: string;
   /** Hausaufgabe zwischen zwei Kurstagen: fällig zu Kurstag bisTag (sonst am Tag nach der Methode), anzahl = so viele
    *  Einträge je Person (tag_stand zählt mit). */
   hausaufgabe?: { bisTag: number; anzahl?: number };
@@ -38,8 +40,9 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'annahmen', name: 'Annahmen-Map', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/annahmen.json', werkstatt: 'annahmen' },
   { id: 'synthese', name: 'Interviews mit Snapshots (pseudonymisiert)', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/interviews.json', werkstatt: 'interviews', hausaufgabe: { bisTag: 2, anzahl: 5 } },
   { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet', lebtIn: ['miro', 'repo'], pfad: 'docs/KUNDENPROFIL.md' },
-  { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro', 'repo'], pfad: 'docs/JOURNEY.md' },
-  { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro', 'repo'], pfad: 'docs/BAUM.md' },
+  // Seit 11.11.2026 nur auf Miro, ohne Datei im Repo (Entscheidung Markus): Map in T2 · 1, jeder Baum im eigenen Frame.
+  { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro'], miro: 'T2 · 1 · Experience Map' },
+  { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro'], miro: 'Baum · euer Name' },
   { id: 'ziel', name: 'Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe', lebtIn: ['miro', 'repo'], pfad: 'docs/ZIEL-CHANCE.md' },
   { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/HMW.md' },
   { id: 'ideen', name: 'Drei Ideen für die Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/IDEEN.md' },
@@ -516,6 +519,18 @@ function quelle(id: string): string | undefined {
   return a.pfad ?? (a.lebtIn.includes('linear') ? LINEAR_QUELLE : undefined);
 }
 
+const nurAufMiro = (a: Artefakt) => a.miro !== undefined && !a.pfad && !a.werkstatt;
+
+/** Artefakte, die nur auf Miro liegen, mit ihrem Frame: „Experience Map … (Frame „T2 · 1 · Experience Map“)“. */
+const miroListe = (ids: readonly string[]) =>
+  aufzaehlen([...new Set(ids)].map((id) => artefakt(id)!).filter(nurAufMiro).map((a) => `${a.name} (Frame „${a.miro}“)`));
+
+/** Vorarbeit, die nur auf Miro liegt: Claude bekommt sie als Bild (Satz für den Prüf-Prompt, sonst leer). */
+function miroVorarbeit(m: Methode): string {
+  const liste = miroListe(m.braucht);
+  return liste ? `Zum Abgleich füge ich auch ein Bild aus Miro ein: ${liste}.` : '';
+}
+
 /** Werkstatt-Artefakt der Vorarbeit: artefakt_pruefen liefert es zum Abgleich mit (jede Zeile in braucht macht jede Prüfung länger). */
 function werkstattQuelle(id: string): ArtefaktName | undefined {
   const a = artefakt(id)!;
@@ -532,6 +547,12 @@ const ausWerkstatt = (namen: ArtefaktName[]) => `${akkusativListe(namen)} (Werkz
 /** Wird das Ergebnis dieser Methode in der Werkstatt geprüft (Connector) statt als Datei im Repo? Mit pfad: immer die Datei. */
 export function pruefungInWerkstatt(m: Methode, pfad?: string): boolean {
   return !pfad && m.ergibt.length > 0 && m.ergibt.every((id) => artefakt(id)?.werkstatt !== undefined);
+}
+
+/** Liegt das Ergebnis dieser Methode nur auf Miro (Experience Map, Baum)? Dann bekommt Claude ein Bild des Frames.
+ *  Mit pfad: immer die Datei. */
+export function pruefungAufMiro(m: Methode, pfad?: string): boolean {
+  return !pfad && m.ergibt.length > 0 && m.ergibt.every((id) => nurAufMiro(artefakt(id)!));
 }
 
 const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst.';
@@ -627,6 +648,25 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
     ].join('\n');
   }
 
+  if (weg === 'standard' && pruefungAufMiro(m, pfad)) {
+    // Claude (claude.ai mit dem Connector) sieht das Bild des Frames und liest die Werkstatt selbst.
+    const vorarbeit = einzufuegen(m.braucht);
+    return [
+      `Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: ${miroListe(m.ergibt)}. Prüf es gegen diese Prüfliste (${m.name}):`,
+      ...liste,
+      ...(miroVorarbeit(m) ? [miroVorarbeit(m)] : []),
+      ...(vorarbeit.dateien.length ? [`Zum Abgleich füge ich auch ein: ${dateiListe(vorarbeit.dateien)}.`] : []),
+      ...(werkstattAbgleich.length
+        ? [
+            `Zum Abgleich lies außerdem ${ausWerkstatt(werkstattAbgleich)}.`,
+            'Ohne Werkstatt-Zugang nimm dafür die Texte, die ich aus „Für Claude kopieren“ ebenfalls einfüge.',
+          ]
+        : []),
+      '',
+      `${REGELN_ANFANG} ${REGELN_CHAT}`,
+    ].join('\n');
+  }
+
   if (weg === 'einfuegen') {
     // Ohne Claude Code: das Ergebnis und die Vorarbeit aus Dateien als Text, die Werkstatt über den Connector.
     if (!einfuegenMoeglich(m, pfad)) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keinen Weg zum Einfügen`);
@@ -637,6 +677,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
       `Unter diese Nachricht füge ich mein Ergebnis ein (${ausMiro ? `${inhalt} oder Text aus Miro` : inhalt}): ${dateiListe(ergebnis)}. Prüf es gegen diese Prüfliste (${m.name}):`,
       ...liste,
       ...(vorarbeit.dateien.length ? [`Zum Abgleich füge ich auch ein: ${dateiListe(vorarbeit.dateien)}.`] : []),
+      ...(miroVorarbeit(m) ? [miroVorarbeit(m)] : []),
       ...(vorarbeit.linear.length ? [`Aus Linear kopiere ich zum Abgleich ${aufzaehlen(vorarbeit.linear)} dazu (Kennung, Titel und Text jedes Issues).`] : []),
       ...(werkstattAbgleich.length
         ? [
@@ -657,6 +698,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
   return [
     `Lies ${pfade.join(' und ')}.${teile.length ? ` Zum Abgleich lies auch ${teile.join(' und ')}.` : ''} Prüf es gegen diese Liste (${m.name}):`,
     ...liste,
+    ...(miroVorarbeit(m) ? [miroVorarbeit(m)] : []),
     '',
     `${REGELN_ANFANG} Schreib nichts um, ändere keine Datei und kein Issue – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.`,
   ].join('\n');

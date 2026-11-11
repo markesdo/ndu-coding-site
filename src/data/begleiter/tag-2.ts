@@ -34,6 +34,10 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
     ueberleitung: 'Wir starten mit euren Snapshots: Warum verdichtet man nach jedem Interview und nicht erst am Ende?',
   },
 
+};
+
+// Begleiter-Notizen zu src/pages/innolab/tag-2/abschluss.astro (eigene Seite nach dem Baum, damit der Abschluss im Beamer am Ende kommt).
+export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
   abschluss: {
     live: [
       'Checkliste Punkt für Punkt, jede*r hakt selbst ab.',

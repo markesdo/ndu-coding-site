@@ -6,7 +6,7 @@ import { NOTIZEN_ENTSCHEIDUNGSLOG } from './entscheidungslog';
 import { NOTIZEN_ANNAHMEN } from './annahmen';
 import { NOTIZEN_INTERVIEW } from './interview';
 import { NOTIZEN_ABSCHLUSS } from './abschluss';
-import { NOTIZEN_TAG_2 } from './tag-2';
+import { NOTIZEN_TAG_2, NOTIZEN_TAG_2_ABSCHLUSS } from './tag-2';
 import { NOTIZEN_SYNTHESE } from './synthese';
 import { NOTIZEN_JOURNEY_MAP } from './journey-map';
 import { NOTIZEN_BAUM } from './baum';
@@ -28,6 +28,7 @@ export const NOTIZEN: Record<string, Record<string, Notiz>> = {
   '/innolab/methoden/synthese': NOTIZEN_SYNTHESE,
   '/innolab/methoden/journey-map': NOTIZEN_JOURNEY_MAP,
   '/innolab/methoden/baum': NOTIZEN_BAUM,
+  '/innolab/tag-2/abschluss': NOTIZEN_TAG_2_ABSCHLUSS,
   '/innolab/methoden/experiment': NOTIZEN_EXPERIMENT,
   '/innolab/methoden/pitch': NOTIZEN_PITCH,
   '/innolab/tag-5': NOTIZEN_TAG_5,

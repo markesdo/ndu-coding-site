@@ -231,10 +231,10 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <li><strong>Inventar, allein:</strong> jede Chance aus euren Snapshots durch die drei Fragen, in „Baum · euer Name“ unter ihren Moment. <Timer minuten={12} /></li>
       <li data-schritt><strong>Struktur, allein:</strong> Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen; jede Karte mit einer Linie an ein Elternteil. <Timer minuten={10} /></li>
       <li data-schritt><strong>Gegenlesen, reihum:</strong> Die anderen beiden gehen die Checkliste der sechs Anti-Muster durch (nächste Folie). <Timer minuten={12} /></li>
-      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
+      <li data-schritt><strong>Prüfen:</strong> Prüfliste, dann Claude mit einem Bild eures Baums. <Timer minuten={5} /></li>
     </ol>
     <div class="nur-handout">
-      <p>12 + 10 + 12 + 5 sind 39 Minuten; dazu gut 35 Minuten Theorie und Kaffeebar. Beim Gegenlesen hat jede Person vier Minuten für ihren Baum; die anderen fragen bei jeder Chance „Haben wir das gehört?“ und „Gibt es mehr als einen Weg?“. Was nach dem Gegenlesen offen bleibt, wird eine Frage für die nächsten Interviews. Der Baum entsteht auf Miro in eurem Frame „Baum · euer Name“ und bleibt dort; jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg.</p>
+      <p>12 + 10 + 12 + 5 sind 39 Minuten; dazu gut 35 Minuten Theorie und Kaffeebar. Beim Gegenlesen hat jede Person vier Minuten für ihren Baum; die anderen fragen bei jeder Chance „Haben wir das gehört?“ und „Gibt es mehr als einen Weg?“. Was nach dem Gegenlesen offen bleibt, wird eine Frage für die nächsten Interviews. Der Baum entsteht auf Miro in eurem Frame „Baum · euer Name“ und bleibt dort, eine Datei dazu gibt es nicht; jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg. Zum Prüfen geht ihr erst die Prüfliste durch und gebt Claude dann ein Bild eures Baums (unten unter „Prüfen“).</p>
       <Prompt label="Für den Teams-Chat">{CHAT_BAUM}</Prompt>
     </div>
   </Folie>
@@ -266,25 +266,6 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
 
   <div class="nur-handout">
-  <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/BAUM.md"># Opportunity Solution Tree — [Produkt]
-
-Stand: [Datum] · Miro: [Link zu „Baum · euer Name“] · Outcome (aus dem Produkt-Brief): [...]
-
-## „[Moment 1 aus der Experience Map]“
-- „[Eltern-Chance]“ (ergänzt, wenn niemand sie so gesagt hat)
-  - „[Chance in den Worten der Kundschaft]“ ([Zitat-IDs aus mindestens zwei Interviews])
-- „[...]“ ([...])
-
-## „[Moment 2]“
-- [...]
-
-## Nur in einem Interview (bleibt auf dem Snapshot)
-- „[...]“ ([Zitat-ID])
-
-## Fragen für die nächsten Interviews
-- [Wo fehlen Geschwister? Was ist noch unklar?]</Prompt>
-
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="baum" />
   </div>
@@ -295,7 +276,7 @@ Stand: [Datum] · Miro: [Link zu „Baum · euer Name“] · Outcome (aus dem Pr
     <p class="nur-handout">Ein voller Ast heißt nur, dass ihr dort viel gehört habt. Ob er der wichtigste ist, klärt Tag 3: Dort vergleicht ihr die Chancen und wählt eine Ziel-Chance.</p>
   </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/journey-map', t: 'Experience Map' }} next={{ href: '/innolab/tag-2#abschluss', t: 'Tag 2 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/journey-map', t: 'Experience Map' }} next={{ href: '/innolab/tag-2/abschluss', t: 'Tag 2 · Abschluss' }} />
 </Layout>
 
 <style>

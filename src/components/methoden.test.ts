@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from './innolab-zeiten';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, einfuegenHinweis, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
+import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, einfuegenHinweis, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -254,9 +254,9 @@ describe('methoden', () => {
 
   it('der Prüf-Prompt nennt das Ergebnis und zum Abgleich die Vorarbeit, jede nur einmal', () => {
     const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!);
-    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch docs\/BAUM\.md, docs\/ZIEL-CHANCE\.md und aus der Werkstatt meine Interviews und Snapshots \(Werkzeug artefakt_lesen\)\./);
-    const jm = pruefPrompt(METHODEN.find((m) => m.slug === 'journey-map')!);
-    expect(jm).toContain('Lies docs/JOURNEY.md. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief und meine Interviews und Snapshots (Werkzeug artefakt_lesen).');
+    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch docs\/ZIEL-CHANCE\.md und aus der Werkstatt meine Interviews und Snapshots \(Werkzeug artefakt_lesen\)\./);
+    // Der Baum liegt nur auf Miro (seit 11.11.2026): Claude Code bekommt ihn als Bild, nicht als Datei.
+    expect(kp).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“).\n');
     // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).
     const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
     expect(sy).toMatch(/^Prüf meine Interviews und Snapshots mit der Werkstatt \(Werkzeug artefakt_pruefen\) gegen diese Prüfliste \(Interview-Synthese\):/);
@@ -268,7 +268,11 @@ describe('methoden', () => {
   it('Ausweichweg „einfügen“: für Ergebnisse in Dateien, nicht für die Werkstatt und nicht für Linear', () => {
     const mitListe = METHODEN.filter((m) => m.pruefliste);
     const ohne = mitListe.filter((m) => !einfuegenMoeglich(m)).map((m) => m.slug);
-    expect(ohne).toStrictEqual([...mitListe.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug), 'backlog', 'akzeptanzkriterien', 'schneiden']);
+    expect(ohne).toStrictEqual([
+      ...mitListe.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug),
+      ...mitListe.filter((m) => pruefungAufMiro(m)).map((m) => m.slug),
+      'backlog', 'akzeptanzkriterien', 'schneiden',
+    ]);
     for (const m of mitListe.filter((x) => einfuegenMoeglich(x))) {
       expect(pruefPrompt(m), m.slug).toMatch(/^Lies /);
       const p = pruefPrompt(m, undefined, 'einfuegen');
@@ -288,14 +292,36 @@ describe('methoden', () => {
     expect(pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, 'docs/X.md', 'einfuegen')).toMatch(/: docs\/X\.md\. Prüf es/);
     // Nur ein Teil (pfad): eine Datei, kein Miro – auch wenn das ganze Ergebnis auf Miro liegt.
     expect(einfuegenHinweis(METHODEN.find((m) => m.slug === 'baum')!, 'docs/X.md')).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
-    expect(einfuegenHinweis(METHODEN.find((m) => m.slug === 'baum')!)).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo oder den Text aus Miro – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
-    // Vorarbeit aus Dateien wird mit eingefügt, Werkstatt-Vorarbeit kommt über den Connector.
-    const baum = pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, undefined, 'einfuegen');
-    expect(baum).toContain('\nZum Abgleich füge ich auch ein: Experience Map mit Momenten (Äste des Baums) (docs/JOURNEY.md).\n');
-    expect(baum).toContain('\nZum Abgleich lies außerdem meinen Produkt-Brief und meine Interviews und Snapshots (Werkzeug artefakt_lesen).\n');
+    expect(einfuegenHinweis(METHODEN.find((m) => m.slug === 'kundenprofil')!)).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo oder den Text aus Miro – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
+    // Vorarbeit aus Dateien wird mit eingefügt, Vorarbeit nur auf Miro als Bild, Werkstatt-Vorarbeit kommt über den Connector.
+    const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!, undefined, 'einfuegen');
+    expect(kp).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe (docs/ZIEL-CHANCE.md).\n');
+    expect(kp).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“).\n');
+    expect(kp).toContain('\nZum Abgleich lies außerdem meine Interviews und Snapshots (Werkzeug artefakt_lesen).\n');
     const hmw = pruefPrompt(METHODEN.find((m) => m.slug === 'hmw')!, undefined, 'einfuegen');
     expect(hmw).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe (docs/ZIEL-CHANCE.md).\n');
     expect(hmw).not.toContain(MCP_WERKZEUGE.artefaktLesen);
+  });
+
+  // Seit 11.11.2026 liegen Experience Map und Baum nur auf Miro, ohne Datei im Repo: Claude prüft ein Bild des Frames.
+  it('Experience Map und Baum: Prüfung an einem Bild aus Miro, nie über eine Datei', () => {
+    expect(METHODEN.filter((m) => pruefungAufMiro(m)).map((m) => m.slug)).toStrictEqual(['journey-map', 'baum']);
+    const jm = pruefPrompt(METHODEN.find((m) => m.slug === 'journey-map')!);
+    expect(jm).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Experience Map mit Momenten \(Äste des Baums\) \(Frame „T2 · 1 · Experience Map“\)\. Prüf es gegen diese Prüfliste \(Experience Map\):\n/);
+    expect(jm).toContain('\nZum Abgleich lies außerdem meinen Produkt-Brief und meine Interviews und Snapshots (Werkzeug artefakt_lesen).\n');
+    expect(jm).not.toContain('Bild aus Miro ein: ');
+    const baum = pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!);
+    expect(baum).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Opportunity Solution Tree \(Chancen unter den Momenten\) \(Frame „Baum · euer Name“\)\./);
+    expect(baum).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Experience Map mit Momenten (Äste des Baums) (Frame „T2 · 1 · Experience Map“).\n');
+    for (const p of [jm, baum]) expect(p).not.toMatch(/^Lies |docs\/|ändere keine Datei/m);
+    expect(() => pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, undefined, 'einfuegen')).toThrow(/keinen Weg zum Einfügen/);
+    // Mit pfad bleibt es eine Datei.
+    expect(pruefungAufMiro(METHODEN.find((m) => m.slug === 'baum')!, 'docs/X.md')).toBe(false);
+    // Kein Prüf-Prompt nennt die alten Dateien.
+    for (const m of METHODEN.filter((x) => x.pruefliste)) {
+      expect(pruefPrompt(m), m.slug).not.toMatch(/JOURNEY\.md|BAUM\.md/);
+      if (einfuegenMoeglich(m)) expect(pruefPrompt(m, undefined, 'einfuegen'), m.slug).not.toMatch(/JOURNEY\.md|BAUM\.md/);
+    }
   });
 
   it('Einfügen: jede Datei einmal, nichts aus Linear; ohne Ergebnis ein Fehler beim Bauen', () => {

@@ -181,7 +181,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Timer 10 min: allein, die Map von Tag 1 daneben.',
       'Nach 10 min: zu dritt zeigen, nicht verteidigen.',
       'Nach 22 min: drei bis fünf Momente, Höhepunkt und Ende.',
-      'Nach 30 min: JOURNEY.md, Prüfliste, Claude.',
+      'Nach 30 min: Prüfliste, dann Claude mit Bild der Map.',
     ],
     uebung: { dauer: '35 min (10 + 12 + 8 + 5)', form: 'allein, dann zu dritt' },
     chat: CHAT_JOURNEY_MAP,
@@ -200,7 +200,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         'Allein (10 min): Knoten aus den Skizzen auf Papier beschriften, zusammenfügen, die Map von Tag 1 daneben.',
         'Zu dritt (12 min): Jede*r zeigt die eigene Map, die anderen fragen nach.',
         'Momente festlegen (8 min): drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren.',
-        'Festhalten und prüfen (5 min): docs/JOURNEY.md, Prüfliste, Claude.',
+        'Prüfen (5 min): Prüfliste, dann Claude mit einem Bild der Map aus Miro; eine Datei gibt es nicht.',
       ],
       achten: [
         'Beim Zeigen: Fragen stellen, auf Unterschiede achten, die eigene Zeichnung nicht verteidigen (Torres S. 55).',
