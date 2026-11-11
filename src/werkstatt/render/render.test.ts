@@ -40,8 +40,8 @@ describe('IDs im gerenderten Text', () => {
 describe('Brief', () => {
   it('Datum österreichisch, Überschriften der Vorlage, Produktsatz offen', () => {
     const s = md('brief');
-    expect(s).toContain('**Stand:** 22.10.2026 — Problem-Rahmen, Innolab Tag 1');
-    expect(s).not.toContain('2026-10-22');
+    expect(s).toContain('**Stand:** 05.11.2026 — Problem-Rahmen, Innolab Tag 1');
+    expect(s).not.toContain('2026-11-05');
     for (const h of ['## 1. Für wen?', '## 2. Welches Problem?', '## 4. Was macht es NICHT?', '## 6. Woran merken wir, dass es funktioniert?', '## 7. Offene Fragen']) {
       expect(s).toContain(h);
     }
