@@ -8,7 +8,7 @@ import type { LehrendenArtefakt, LehrendenMappe } from '../vertrag.js';
 import SnapshotAnsicht from './SnapshotAnsicht';
 import { artefaktStand } from '../tag-stand';
 import { LeserKoerper, type LeserInhaltProps } from './LehrendenAnsicht';
-import { blaettern, istSynthetisch, neuMeldung, neueEintraege, nichtsNeues, snapshotZahl, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen } from './snapshot-hilfen';
+import { blaettern, istSynthetisch, neuMeldung, neueEintraege, nichtsNeues, snapshotZahl, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen, zeigenStartPerson } from './snapshot-hilfen';
 import Zeigen, { type ZeigenProps } from './Zeigen';
 
 const IVS = KAFFEEBAR.interviews as Interview[];
@@ -166,6 +166,10 @@ describe('Hilfen', () => {
     expect(snapshotZahl(null)).toBe(0);
     // An den echten Umfang aus tag-stand gebunden: Ändert sich dessen Wortlaut, fällt das hier auf.
     expect(snapshotZahl(artefaktStand('interviews', KAFFEEBAR as never).umfang)).toBe(zeigbareInterviews(KAFFEEBAR).length);
+    // Start über den Folien-Link (?zeigen=1 ohne Person): erste Person mit Snapshots, sonst die erste bereite.
+    expect(zeigenStartPerson([P[2], P[0]])).toBe('sofie');
+    expect(zeigenStartPerson([P[1], P[2]])).toBe('joachim');
+    expect(zeigenStartPerson([P[1]])).toBeNull();
     expect(zeigenPersonen(P)).toStrictEqual([{ kuerzel: 'sofie', anzahl: 3 }, { kuerzel: 'joachim', anzahl: 0 }, { kuerzel: 'hewen', anzahl: 6 }]);
   });
 });

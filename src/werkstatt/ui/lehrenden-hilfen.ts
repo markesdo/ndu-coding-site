@@ -155,6 +155,13 @@ export interface Leser {
 const istName = (x: string): x is ArtefaktName => (ARTEFAKT_NAMEN as readonly string[]).includes(x);
 
 /** ?person=…&artefakt=… aus der Adresse; null, wenn eins fehlt oder das Artefakt unbekannt ist. */
+export const ZEIGEN_PARAM = 'zeigen';
+
+/** ?zeigen=1: die Seite startet im Zeigen-Modus der Interviews (Link für den Präsentator auf der Synthese-Folie). */
+export function zeigenAusAdresse(suche: string): boolean {
+  return new URLSearchParams(suche).get(ZEIGEN_PARAM) === '1';
+}
+
 export function leserAusAdresse(suche: string): Leser | null {
   const p = new URLSearchParams(suche);
   const person = p.get('person');
@@ -165,6 +172,9 @@ export function leserAusAdresse(suche: string): Leser | null {
 /** Die Adresse mit (oder ohne, leser = null) ?person und ?artefakt; andere Parameter und der Anker bleiben. */
 export function adresseMitLeser(pfad: string, suche: string, hash: string, leser: Leser | null): string {
   const p = new URLSearchParams(suche);
+  // ?zeigen=1 gilt nur beim Öffnen (Link auf der Folie „So geht ihr vor“): danach weg, damit ein Neuladen der Seite
+  // nach „Zeigen beenden“ nicht wieder im Zeigen-Modus landet.
+  p.delete(ZEIGEN_PARAM);
   p.delete('person');
   p.delete('artefakt');
   if (leser) {

@@ -188,7 +188,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <p class="folie-satz">Reihum: eine Person zeigt ihre Snapshots, die anderen beiden fragen.</p>
     <MiroFrame name="T1 · 5 · Interview-Snapshots (aus der Werkstatt)" />
     <ol class="gross">
-      <li><strong>Zeigen (5 min):</strong> Markus öffnet eure Interviews in der Werkstatt; ihr führt durch einen Snapshot – Zitat, Geschichte, Chancen.</li>
+      <li><strong>Zeigen (5 min):</strong> Markus öffnet eure Interviews in der Werkstatt; ihr führt durch einen Snapshot – Zitat, Geschichte, Chancen. <a class="zeigen-link" href="/innolab/mappe?artefakt=interviews&zeigen=1" target="_blank" rel="noopener" data-nur-praesentator>Snapshots zeigen ↗</a></li>
       <li data-schritt><strong>Besprechen (7 min):</strong> Die anderen fragen mit den vier Fragen. Die letzten 2 min schreibt, wer zeigt: Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier.</li>
       <li data-schritt><strong>Reihum,</strong> drei Runden à 12 Minuten. <Timer minuten={12} /></li>
       <li data-schritt><strong>Festhalten und prüfen (8 min, nächste Folie):</strong> Stichworte übertragen – Annahmen-Map, Leitfaden, Log nur bei einer Entscheidung; dann Claude.</li>
@@ -242,6 +242,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
 </Layout>
 
 <style>
+  .zeigen-link { white-space: nowrap; font-weight: 600; }
   .bsp { display: block; margin-top: .2rem; font-size: .85em; color: var(--muted); }
   /* Folie „beispiel“: die Zeilen „→ wohin“ erst mit dem letzten Schritt (Marker .ort-schritt), alle vier zugleich. */
   :global(html[data-beamer]) .orte:has(.ort-schritt:not(.gezeigt)) .ort { visibility: hidden; }
