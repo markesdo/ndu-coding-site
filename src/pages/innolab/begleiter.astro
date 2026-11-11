@@ -8,7 +8,7 @@
 import '@fontsource-variable/instrument-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../../styles/global.css';
-import { CalendarClock, ChevronLeft, ChevronRight, CircleQuestionMark, ExternalLink, Eye, LayoutGrid, Play, Timer, Undo2 } from '@lucide/astro';
+import { CalendarClock, Check, ChevronLeft, ChevronRight, CircleQuestionMark, Copy, ExternalLink, Eye, LayoutGrid, MessageSquare, Play, Timer, Undo2 } from '@lucide/astro';
 import Quelle from '../../components/BegleiterQuelle.astro';
 import Vorwissen from '../../components/BegleiterVorwissen.astro';
 import { METHODEN } from '../../components/methoden';
@@ -166,6 +166,19 @@ const karten = kartenPfade(quellen).map((pfad) => {
                 </>
               ) : (
                 <p class="leer">Zu dieser Folie gibt es noch keine Notizen.</p>
+              )}
+              {n?.chat && (
+                <div class="chat" data-chat>
+                  <div class="chat-kopf">
+                    <h2><MessageSquare size={18} aria-hidden="true" /> Für den Teams-Chat</h2>
+                    <button type="button" class="chat-kopieren" data-chat-kopieren>
+                      <Copy class="ico-copy" size={16} aria-hidden="true" />
+                      <Check class="ico-done" size={16} stroke-width={2.5} aria-hidden="true" />
+                      <span class="copy-text" aria-live="polite">Kopieren</span>
+                    </button>
+                  </div>
+                  <pre class="chat-text">{n.chat}</pre>
+                </div>
               )}
               {(n?.ueberleitung || naechste) && (
                 <div class="weiter">
@@ -516,6 +529,21 @@ const karten = kartenPfade(quellen).map((pfad) => {
       wachHalten();
       kette.sofort();
     </script>
+    <script>
+      // „Für den Teams-Chat“: kopiert den Text der Notiz (Notiz.chat) – wie die Prompt-Karte, mit Rückfall „markiert“.
+      import { kopiereText, kopierMeldung } from '../../lib/kopieren';
+      document.querySelectorAll<HTMLButtonElement>('[data-chat-kopieren]').forEach((knopf) => {
+        const meldung = knopf.querySelector('.copy-text');
+        knopf.addEventListener('click', async () => {
+          const pre = knopf.closest('[data-chat]')?.querySelector('pre');
+          const ergebnis = await kopiereText((pre?.textContent ?? '').trim(), pre);
+          if (meldung) meldung.textContent = kopierMeldung(ergebnis, navigator.platform);
+          knopf.classList.toggle('done', ergebnis === 'kopiert');
+          clearTimeout(Number(knopf.dataset.timer));
+          knopf.dataset.timer = String(setTimeout(() => { if (meldung) meldung.textContent = 'Kopieren'; knopf.classList.remove('done'); }, 1800));
+        });
+      });
+    </script>
     <script type="application/json" id="begleiter-folien" set:html={JSON.stringify(folien).replace(/</g, '\\u003c')} />
 
     <style>
@@ -595,6 +623,14 @@ const karten = kartenPfade(quellen).map((pfad) => {
       .check .falsch { margin: .3rem 0 0; font-size: 1.05rem; }
       .check .falsch span { color: var(--yellow-ink); font-weight: 600; }
       .weiter { margin-top: 1rem; padding: .7rem .9rem; border-left: 4px solid var(--accent); background: var(--bg); border-radius: 4px; }
+      .chat { margin-top: 1rem; padding: .6rem .8rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+      .chat-kopf { display: flex; align-items: center; gap: .5rem; }
+      .chat h2 { display: flex; align-items: center; gap: .4rem; margin: 0; font-size: 1.15rem; color: var(--muted); font-weight: 600; }
+      .chat-kopieren { display: inline-flex; align-items: center; gap: .35rem; margin-left: auto; min-height: 44px; padding: .3rem .8rem; font: inherit; font-size: 1rem; font-weight: 600; color: inherit; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; }
+      .chat-kopieren:hover { border-color: var(--accent); }
+      .chat-kopieren .ico-done, .chat-kopieren.done .ico-copy { display: none; }
+      .chat-kopieren.done .ico-done { display: inline; color: var(--green); }
+      .chat-text { margin: .5rem 0 0; white-space: pre-wrap; font-family: var(--font); font-size: 1rem; line-height: 1.4; max-height: 14rem; overflow: auto; }
       .miro { margin-top: 1rem; padding-top: .8rem; border-top: 1px solid var(--border); }
       .miro h2 { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: 0; font-size: 1.15rem; color: var(--muted); font-weight: 600; }
       .miro h2 a, .miro h2 strong { color: var(--blue); }

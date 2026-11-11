@@ -5,12 +5,14 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import { CHAT_JOURNEY_MAP } from '../../../data/begleiter/chat';
 import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import { CircleCheck, CircleX } from '@lucide/astro';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memories“, Nielsen Norman Group (2018)';
@@ -23,16 +25,65 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
   <MethodenKarte slug="journey-map" />
 
   <Folie>
-    <h2 id="warum">Warum die Map neu zeichnen?</h2>
-    <p class="folie-satz">Die Map von Tag 1 zeigt, was ihr geglaubt habt – nicht, was ist.</p>
+    <h2 id="wofuer">Wofür die Map?</h2>
+    <p class="folie-satz">Ein gemeinsames Bild davon, wie eure Kundschaft es heute erlebt.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Gemeinsam:</strong> drei Sichten in einer Map statt drei Bilder in drei Köpfen.</li>
+      <li data-schritt><strong>Für die Interviews:</strong> Sie zeigt, welche Momente einer Geschichte ihr erfragt.</li>
+      <li data-schritt><strong>Für den Baum:</strong> Ihre Momente werden die obersten Äste.</li>
+    </ul>
+    <p class="small muted">{TORRES}, S. 51, 66, 86.</p>
+    <div class="nur-handout">
+      <p>Teresa Torres beginnt mit einem Trio, in dem jede*r eine eigene Vorstellung davon hat, was die Kundschaft aufhält. Jede*r zeichnet zuerst die eigene Map; zusammen ergeben sie ein reicheres Bild des Chancenraums, als eine Person allein zeichnen könnte. Die gemeinsame Map „will guide your customer interviews, and it will help give structure to the opportunity space. It can and should evolve week over week“ ({TORRES}, S. 51).</p>
+      <p>Im Interview hilft sie, die Geschichte zu verfolgen: auf bestimmte Knoten hören und nach Knoten fragen, die in der Erzählung fehlen (S. 66). Für den Baum ist sie die Struktur: Oft reicht es, jeden Knoten der Map auf die oberste Ebene der Chancen zu legen (S. 86). Ohne gemeinsames Weiterzeichnen laufen die Bilder im Team auseinander, selbst wenn alle dieselben Interviews gehört haben (S. 57).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="erleben">Erleben, nicht Bildschirme</h2>
+    <p class="folie-satz">Zeichnet, wie die Kundschaft es erlebt – nicht euer Produkt.</p>
+    <p class="fluss-titel"><CircleX size={20} aria-hidden="true" class="icon-nein" /> Aus Sicht der Kaffeebar</p>
+    <Fluss label="Nicht so: der Ablauf aus Sicht der Kaffeebar – Bestellung, Bezahlung, Zubereitung, Ausgabe" knoten={[
+      { t: 'Bestellung' }, { t: 'Bezahlung' }, { t: 'Zubereitung' }, { t: 'Ausgabe' },
+    ]} />
+    <p class="fluss-titel" data-schritt><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> Aus Sicht der Pendlerin (I2)</p>
+    <Fluss label="So: der Morgen aus Sicht der Pendlerin I2 – Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42" hervor={[3]} knoten={[
+      { t: 'Ankunft 7:31' }, { t: 'acht Leute in der Schlange' }, { t: 'Blick auf die Uhr' }, { t: 'weiter zum Automaten', sub: 'gibt auf' }, { t: 'Zug 7:42' },
+    ]} />
+    <p>Ihr kennt das vielleicht als <strong>Customer Journey</strong>.</p>
+    <p class="small muted">{TORRES}, S. 54.</p>
+    <div class="nur-handout">
+      <p>Torres: „don’t focus on your product. Instead, draw the experience of your customer.“ Das Trio aus ihrem Beispiel zeichnete keine Abfolge von Bildschirmen seines Antragsformulars, sondern den Ablauf, wie die Kundschaft ihn erlebte: wo sie hängen blieb, was schiefging, wie sie umsteuerte und wo sie schließlich aufgab. Beim Streaming-Beispiel geht es um den weiteren Zusammenhang: Wann und wo spielt Video eine Rolle, wie erfahren Menschen von Inhalten, mit wem schauen sie, welche Hindernisse gibt es ({TORRES}, S. 54)?</p>
+      <p>Bei der Kaffeebar heißt das: nicht Bestellung, Bezahlung, Zubereitung, Ausgabe – das ist der Ablauf hinter der Theke –, sondern der Morgen der Pendlerin, wie I2 ihn erzählt hat, mit der Stelle, an der sie aufgibt. In anderen Lehrveranstaltungen heißt so etwas oft Customer Journey; Torres nennt es „experience map“ (S. 57).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="knoten">Knoten und Verbindungen</h2>
+    <p class="folie-satz">Zeichnen statt beschreiben: Kästchen, Pfeile und Strichmännchen reichen.</p>
     <BildText>
       <BuchAbbildung src="/quellen/torres/experience-map.jpg" alt="Skizze einer Experience Map mit Strichmännchen: von einer Empfehlung über das Suchen bis zum Film und dem Ende, mit einem Abzweig, wenn nichts gefunden wird" quelle={`Experience Map „Wie unterhalten sich Menschen mit Videos?“. ${TORRES}, S. 54.`} />
       <ul>
-        <li data-schritt><strong>Ein Entwurf</strong> aus Vermutungen und offenen Fragen.</li>
-        <li data-schritt><strong>Fehler 1:</strong> so weiterarbeiten, als wäre die Map wahr.</li>
-        <li data-schritt><strong>Fehler 2:</strong> sie nach neuen Interviews nicht anpassen.</li>
+        <li data-schritt><strong>Knoten:</strong> ein Moment, eine Handlung oder ein Ereignis.</li>
+        <li data-schritt><strong>Verbindungen:</strong> wie es weitergeht – auch Schleifen und Abbrüche („?“).</li>
+        <li data-schritt><strong>Kontext:</strong> Was denkt, fühlt, tut die Person dort?</li>
       </ul>
     </BildText>
+    <div class="nur-handout">
+      <p>Die Skizze von Torres beantwortet „Wie unterhalten sich Menschen mit Videos?“: Jemand hört von einer Serie, erzählt anderen davon, sucht sie, findet sie nicht (das Fragezeichen mit den Pfeilen hin und zurück) oder findet den Film – und am Ende steht „The End“ ({TORRES}, S. 54). Zeichnen statt Worte, weil Sprache vage ist: Zwei Menschen können glauben, sie seien sich einig, und doch Verschiedenes meinen. Zeichnen zwingt, konkret zu werden; schön muss es nicht sein (S. 53–55).</p>
+      <p>Ein <strong>Knoten</strong> ist ein bestimmter Zeitpunkt, eine Handlung oder ein Ereignis; <strong>Verbindungen</strong> zeigen, wie es von Knoten zu Knoten weitergeht, auch in Schleifen, etwa wenn jemand bei Netflix nichts findet und zu YouTube wechselt. Zum Schluss kommt an jeden Schritt der <strong>Kontext</strong>: Was denkt, fühlt und tut die Person dort (S. 56)?</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="warum">Warum die Map neu zeichnen?</h2>
+    <p class="folie-satz">Die Map von Tag 1 zeigt, was ihr geglaubt habt – nicht, was ist.</p>
+    <ul class="gross">
+      <li><strong>Ein Entwurf</strong> aus Vermutungen und offenen Fragen.</li>
+      <li data-schritt><strong>Fehler 1:</strong> so weiterarbeiten, als wäre die Map wahr.</li>
+      <li data-schritt><strong>Fehler 2:</strong> sie nach neuen Interviews nicht anpassen.</li>
+    </ul>
+    <p class="small muted">{TORRES}, S. 51, 57.</p>
     <div class="nur-handout">
       <p>Teresa Torres beschreibt die erste Experience Map als Bestandsaufnahme dessen, was das Team zu wissen glaubt: „hunches and possibilities, not truth“. Sie zeigt, wo ihr offene Fragen habt und was die Interviews prüfen sollen ({TORRES}, S. 51). Zwei der Anti-Muster, die sie nennt, betreffen genau diesen Moment: so weiterzumachen, als wäre die Map wahr, und zu vergessen, sie mit dem Gelernten weiterzuentwickeln. Sonst laufen die Bilder im Team auseinander, auch wenn alle dieselben Interviews gehört haben (S. 57).</p>
       <p>Der Umfang bleibt der von Tag 1: Er kommt aus eurem Outcome im Produkt-Brief (S. 52). Gezeichnet wird das Erleben der Menschen, nicht euer Produkt und keine Bildschirmabfolge (S. 54).</p>
@@ -44,7 +95,7 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
     <p class="folie-satz">Welche Knoten tauchen in Geschichte um Geschichte auf?</p>
     <MiroFrame name="T2 · 1 · Experience Map" />
     <ol class="gross">
-      <li data-schritt><strong>Beschriften:</strong> In jeder Skizze eurer Snapshots die Knoten benennen – Momente, Handlungen, Ereignisse.</li>
+      <li><strong>Beschriften:</strong> In jeder Skizze eurer Snapshots die Knoten benennen – Momente, Handlungen, Ereignisse.</li>
       <li data-schritt><strong>Muster suchen:</strong> Was kommt in mehreren Geschichten vor?</li>
       <li data-schritt><strong>Zusammenfügen:</strong> Gleiche Knoten zusammenlegen, ohne Wichtiges wegzuglätten.</li>
       <li data-schritt><strong>Verbinden:</strong> Pfeile – auch Umwege, Schleifen und wo jemand aufgibt.</li>
@@ -84,18 +135,23 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
   </Folie>
 
   <Folie>
-    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
-    <p class="folie-satz">Fünf Geschichten, vier Momente, ein Umweg.</p>
-    <Fluss label="Experience Map der Kaffeebar: vier Momente, Tiefpunkt beim Warten, Ende im Zug" hervor={[2, 3]} knoten={[
-      { t: '„Ich komme in die Halle.“', sub: 'Schlange und Abfahrtstafel, dann die Entscheidung (I2-4, I5-3, I3-4)' },
-      { t: '„Ich stehe an.“', sub: '„Anstellen ist ein Glücksspiel.“ (I4-2)' },
-      { t: '„Ich warte auf meinen Kaffee.“', sub: 'Tiefpunkt: weiß nicht, wie lange (I3-2, I3-3, I2-5)' },
-      { t: '„Ich bin im Zug.“', sub: 'Ende: der erste Schluck (I1-4)' },
+    <h2 id="beispiel">Kaffeebar: Tag 1 → heute</h2>
+    <p class="folie-satz">Fünf Geschichten beantworten das „?“ – und bringen einen neuen Knoten.</p>
+    <p class="fluss-titel">Tag 1: vermutet (Miro T1 · 1)</p>
+    <Fluss label="Experience Map der Kaffeebar von Tag 1: Ankunft am Bahnhof 7:31, Blick auf die Schlange, Reicht die Zeit bis 7:42?, Anstellen oder zum Automaten mit Fragezeichen, im Zug mit oder ohne Kaffee" knoten={[
+      { t: 'Ankunft am Bahnhof, 7:31' },
+      { t: 'Blick auf die Schlange' },
+      { t: 'Reicht die Zeit bis 7:42?' },
+      { t: 'Anstellen oder Automat', sub: 'Automat → Zug: „?“' },
+      { t: 'Im Zug, mit oder ohne Kaffee' },
     ]} />
-    <ul>
-      <li data-schritt><strong>Umweg:</strong> Automat statt Schlange (I4-3) – Notlösung, aber schnell (I1-3).</li>
-      <li data-schritt><strong>Neu gegenüber Tag 1:</strong> das Warten nach dem Bestellen – dort liegt der Tiefpunkt.</li>
-    </ul>
+    <p class="fluss-titel" data-schritt>Heute: aus fünf Geschichten</p>
+    <Fluss label="Experience Map der Kaffeebar heute: vier Momente, neu ist das Warten auf den Kaffee mit dem Tiefpunkt, Ende im Zug" hervor={[2]} knoten={[
+      { t: '„Ich komme in die Halle.“', sub: 'Umweg: Automat <span style="white-space: nowrap">(I4-3)</span>' },
+      { t: '„Ich stehe an.“', sub: '„Anstellen ist ein Glücksspiel.“ <span style="white-space: nowrap">(I4-2)</span>' },
+      { t: '„Ich warte auf meinen Kaffee.“', sub: 'neu · Tiefpunkt <span style="white-space: nowrap">(I3-2, I3-3)</span>' },
+      { t: '„Ich bin im Zug.“', sub: 'Ende: der erste Schluck <span style="white-space: nowrap">(I1-4)</span>' },
+    ]} />
     <p class="nur-handout">Die Map von Tag 1 (Miro T1 · 1) ging von „Ankunft am Bahnhof“ über „Blick auf die Schlange“ und „Reicht die Zeit?“ zu „Anstellen“ oder „Zum Automaten“ – der Pfeil zum Automaten mit „?“ – und endete „im Zug, mit oder ohne Kaffee“. Die Geschichten bestätigen, dass die Entscheidung erst in der Halle fällt – 3 von 5 sagen es (I2-4, I3-1, I5-3), bei I1 steht es nur in der Notiz –, und beantworten das „?“: Der Automat ist die Ausweichroute (I1-3, I4-3, I4-4). Neu ist ein Knoten, der auf der alten Map fehlte: das Warten nach dem Bestellen, ohne zu wissen, wie lange – dort liegt der Tiefpunkt (I3-2, I3-3). Das Ende ist der erste Schluck im Zug (I1-4). Der Automat ist kein eigener Moment, sondern ein Umweg aus „Ich komme in die Halle“; er gehört als Pfeil auf die Map, damit ihr nicht nur den glatten Weg zeichnet.</p>
   </Folie>
 
@@ -104,12 +160,15 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
     <p class="folie-satz">Erst allein, dann zu dritt, dann die Momente festlegen.</p>
     <MiroFrame name="T2 · 1 · Experience Map" />
     <ol class="gross">
-      <li data-schritt><strong>Allein:</strong> Knoten aus euren Snapshot-Skizzen beschriften, zur neuen Map zusammenfügen, die Map von Tag 1 daneben. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Zu dritt:</strong> Jede*r zeigt die eigene Map, die anderen fragen nach – ohne die eigene zu verteidigen. <Timer minuten={15} /></li>
-      <li data-schritt><strong>Momente festlegen:</strong> drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren. <Timer minuten={10} /></li>
+      <li><strong>Allein:</strong> Knoten aus euren Skizzen auf Papier beschriften, zur neuen Map zusammenfügen, die Map von Tag 1 daneben. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Zu dritt:</strong> Jede*r zeigt die eigene Map, die anderen fragen nach – ohne die eigene zu verteidigen. <Timer minuten={12} /></li>
+      <li data-schritt><strong>Momente festlegen:</strong> drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren. <Timer minuten={8} /></li>
       <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
     </ol>
-    <p class="nur-handout">Dazu zehn Minuten Theorie und zehn Minuten Kaffeebar gemeinsam. Beim Zeigen gilt, was Torres für das Teilen der ersten Maps empfiehlt: Fragen stellen, um die andere Sicht zu verstehen, auf die Unterschiede achten, die eigene Zeichnung nicht verteidigen (S. 55). Wo ihr euch über Details streitet, zeichnet den Unterschied, statt ihn zu diskutieren (S. 56–57). Die Map entsteht auf Miro und bleibt dort; jeder Moment und jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg.</p>
+    <div class="nur-handout">
+    <p>10 + 12 + 8 + 5 sind 35 Minuten; dazu gut 20 Minuten Theorie und Kaffeebar gemeinsam. Beim Zeigen gilt, was Torres für das Teilen der ersten Maps empfiehlt: Fragen stellen, um die andere Sicht zu verstehen, auf die Unterschiede achten, die eigene Zeichnung nicht verteidigen (S. 55). Wo ihr euch über Details streitet, zeichnet den Unterschied, statt ihn zu diskutieren (S. 56–57). Die Map entsteht auf Miro und bleibt dort; jeder Moment und jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg.</p>
+    <Prompt label="Für den Teams-Chat">{CHAT_JOURNEY_MAP}</Prompt>
+    </div>
   </Folie>
 
   <div class="nur-handout">
@@ -144,3 +203,9 @@ Stand: [Datum] · Miro: [Link zum Frame] · Grundlage: Snapshots I1–I[n]
 
   <FooterNav prev={{ href: '/innolab/methoden/synthese', t: 'Interview-Synthese' }} next={{ href: '/innolab/methoden/baum', t: 'Opportunity Solution Tree' }} />
 </Layout>
+
+<style>
+  .fluss-titel { display: flex; align-items: center; gap: .4rem; margin: 1rem 0 -.75rem; font-weight: 600; }
+  .fluss-titel :global(.icon-nein) { color: var(--muted); }
+  .fluss-titel :global(.icon-ja) { color: var(--green); }
+</style>

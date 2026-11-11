@@ -4,15 +4,27 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import { CHAT_SYNTHESE } from '../../../data/begleiter/chat';
 import Folie from '../../../components/Folie.astro';
+import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
+import Prompt from '../../../components/Prompt.astro';
+import Aufloesung from '../../../components/Aufloesung.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
+import { Clock, FileText, Mic, StickyNote } from '@lucide/astro';
+import { NACH_NETFLIX } from '../../../components/innolab-zeiten';
+import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
+
+// Der Snapshot von I2 wörtlich aus dem Beispiel der Werkstatt; die Skizze der Geschichte = die Notiz, an den Kommas geteilt.
+const I2 = KAFFEEBAR_INTERVIEWS.interviews.find((i) => i.id === 'I2');
+if (!I2) throw new Error('synthese.astro: Interview I2 fehlt in werkstatt/beispiele/interviews.json');
+const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
 ---
 <Layout title="Interview-Synthese">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
@@ -22,16 +34,26 @@ const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
   <MethodenKarte slug="synthese" />
 
   <Folie>
-    <h2 id="warum">Warum gemeinsam?</h2>
-    <p class="folie-satz">Drei Leute hören in derselben Geschichte drei verschiedene Dinge.</p>
-    <ul>
-      <li data-schritt>„Unter ‚Beliebt‘ waren nur Serien“ – hört, wer sich um das Angebot sorgt.</li>
-      <li data-schritt>„Wir haben den Film nicht gefunden“ – hört, wer an der Bedienung arbeitet.</li>
-      <li data-schritt>„Fast nur Kinderfilme vorgeschlagen“ – hört, wer an den Empfehlungen baut.</li>
-    </ul>
+    <h2 id="verschwimmen">Nach fünf Interviews verschwimmen die Geschichten</h2>
+    <p class="folie-satz">Verlasst euch nicht auf euer Gedächtnis: jedes Interview gleich verdichten.</p>
+    <p class="fluss-titel">Erst sammeln, dann auswerten</p>
+    <Fluss label="Im Projekt: 6 bis 12 Interviews führen, dann anhalten, mit Stickies auswerten und einen Bericht schreiben" knoten={[
+      { t: '6–12 Interviews', icon: Mic },
+      { t: 'Anhalten', sub: 'die Geschichten verschwimmen' },
+      { t: 'Stickies, Affinitätsdiagramm', icon: StickyNote },
+      { t: 'Bericht' },
+    ]} />
+    <p class="fluss-titel" data-schritt>Laufend verdichten</p>
+    <Fluss label="Laufend: nach jedem Interview ein Snapshot" hervor={[1, 3]} knoten={[
+      { t: 'Interview 1', icon: Mic },
+      { t: 'Snapshot 1', icon: FileText },
+      { t: 'Interview 2', icon: Mic },
+      { t: 'Snapshot 2', icon: FileText },
+    ]} />
+    <p class="small muted">{TORRES}, S. 67–68, 77.</p>
     <div class="nur-handout">
-      <p>Teresa Torres erzählt dieselbe Geschichte eines Netflix-Kunden aus drei Blickwinkeln: Produktmanagerin, Designer und Entwicklerin halten jeweils etwas anderes für wichtig, weil sie anderes Vorwissen mitbringen. Jede Sicht ist berechtigt, und jede kann zu einer Verbesserung führen. Je unterschiedlicher das Team, desto mehr holt es aus jedem Interview heraus. Darum interviewt bei ihr das ganze Team, statt eine Person zur „Stimme der Kundin“ zu machen ({TORRES}, S. 74–75).</p>
-      <p>Rob Fitzpatrick nennt das Gegenteil einen <strong>Lern-Engpass</strong>: Eine Person führt alle Gespräche und sagt danach dem Team, was die Kund*innen wollen. „Was ich gelernt habe“ heißt dann in Wahrheit „was ihr tun werdet“ – und „Die Kund*innen haben es gesagt“ sticht jedes Argument ({MOMTEST}, S. 98–99). Ihr habt eure Interviews allein geführt. Die Besprechung heute holt nach, was beim gemeinsamen Interview von selbst passiert wäre.</p>
+      <p>Torres beschreibt, was nach ein paar Interviews passiert: „interviews will start to blur together. You don’t want to rely on your memory to keep your research straight. That’s the job of an interview snapshot.“ Der Snapshot hilft, sich an bestimmte Geschichten zu erinnern und aus jedem einzelnen Interview Chancen und Einsichten zu ziehen ({TORRES}, S. 68). Wer kontinuierlich interviewt, hat keinen Punkt, an dem er anhält und auswertet – darum „synthesize as you go“ (S. 67).</p>
+      <p>Das Gegenteil nennt sie ein Anti-Muster: Im Projekt führt man 6 bis 12 Interviews, hält dann an und wertet mit Stickies, vielleicht einem Affinitätsdiagramm, und einem Bericht aus. Das setzt voraus, dass Interviews einen Anfang und ein Ende haben. Stattdessen: nach jedem Interview verdichten, mit Snapshots (S. 77). Ihr habt genau das gemacht – heute schaut ihr gemeinsam darauf.</p>
     </div>
   </Folie>
 
@@ -42,7 +64,7 @@ const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
     <BildText>
       <BuchAbbildung src="/quellen/torres/interview-snapshot.jpg" alt="Vorlage Interview-Snapshot: Name und Foto, ein einprägsames Zitat, eine kleine Skizze der erzählten Geschichte, darunter drei Spalten: Quick Facts, Insights, Opportunities" quelle={`Interview Snapshot. ${TORRES}, S. 68.`} />
       <ul>
-        <li data-schritt><strong>Bild und Zitat</strong> sind Schlüssel für die Erinnerung an diese eine Geschichte.</li>
+        <li><strong>Bild und Zitat</strong> sind Schlüssel für die Erinnerung an diese eine Geschichte.</li>
         <li data-schritt><strong>Kurzinfos</strong> zeigen, wie diese Person zu den anderen passt.</li>
         <li data-schritt><strong>Einsichten:</strong> auffälliges Verhalten, das (noch) keine Chance ist.</li>
         <li data-schritt><strong>Chancen:</strong> Bedürfnis, Schmerzpunkt oder Wunsch – in den Worten der Person.</li>
@@ -56,10 +78,78 @@ const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
   </Folie>
 
   <Folie>
+    <h2 id="wunsch">Wunsch oder Chance?</h2>
+    <p class="folie-satz">Wünscht sich jemand eine Funktion, fragt nach dem Bedürfnis dahinter.</p>
+    <Fluss label="Vom Funktionswunsch zur Chance: Wunsch, Nachfrage, Bedürfnis, mehrere Lösungen" hervor={[2]} knoten={[
+      { t: '„Ich will den Filmtitel einfach sagen.“', sub: 'ein Wunsch nach einer Funktion' },
+      { t: '„Was würde dir das bringen?“', sub: 'nachfragen' },
+      { t: '„Ich will keinen langen Titel eintippen.“', sub: 'die Chance' },
+      { t: 'Sprachsuche oder Autovervollständigen', sub: 'mehr als eine Lösung' },
+    ]} />
+    <p data-schritt><strong>In den Worten der Kundschaft,</strong> nicht in euren – sonst schreibt ihr aus Sicht der Firma.</p>
+    <p class="small muted">{TORRES}, S. 69–70.</p>
+    <div class="nur-handout">
+      <p>Eine Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch, der im Interview geäußert wurde – als Bedürfnis, nicht als Lösung. Wünscht sich jemand eine bestimmte Funktion, fragt nach dem Warum: „If you had that feature, what would that do for you?“ Torres’ Beispiel: „Ich wünschte, ich könnte den Namen des Films einfach sagen“ ist ein Funktionswunsch. Auf die Nachfrage kommt vielleicht „Ich will keinen langen Filmtitel eintippen“ – das ist das Bedürfnis dahinter. Es öffnet mehr vom Lösungsraum: Sprachsuche wäre eine Lösung, Titel beim Tippen automatisch zu vervollständigen eine andere ({TORRES}, S. 69).</p>
+      <p>Chancen müssen keine wörtlichen Zitate sein, aber sie stehen in den Worten der Kundschaft. So haltet ihr sie aus ihrer Sicht fest und nicht aus Sicht der Firma (S. 70). Am Baum kommt das als erstes Anti-Muster wieder.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="snapshot-i2">Kaffeebar: der Snapshot von I2</h2>
+    <p class="folie-satz">Ein Interview, eine Seite – so sieht es ausgefüllt aus.</p>
+    <div class="snapshot" role="group" aria-label={`Interview-Snapshot ${I2.id} der Kaffeebar`}>
+      <div class="snap-kopf">
+        <div class="snap-name">
+          <strong>{I2.id} · {I2.pseudonym}</strong>
+          <span class="snap-bild"><Clock size={34} aria-hidden="true" /><span>statt Foto</span></span>
+        </div>
+        <p class="snap-zitat">„{I2.zitat}“</p>
+        <ol class="snap-geschichte" aria-label="Skizze der Geschichte">
+          {I2_GESCHICHTE.map((k) => <li>{k}</li>)}
+        </ol>
+      </div>
+      <div class="snap-spalten">
+        <div><b>Kurzinfos</b><p>{I2.kurzinfos}</p></div>
+        <div><b>Einsichten</b><ul>{I2.einsichten.map((e) => <li>{e}</li>)}</ul></div>
+        <div><b>Chancen</b><ul>{I2.chancen.map((c) => <li>„{c.text}“ <span class="muted">({c.belege.join(', ')})</span></li>)}</ul></div>
+      </div>
+    </div>
+    <div class="nur-handout">
+      <p>Aufgebaut wie die Vorlage von Torres ({TORRES}, S. 68): oben Name, Bild, Zitat und die Skizze der Geschichte, darunter Kurzinfos, Einsichten und Chancen. Statt eines Fotos steht ein Bild, das an die Geschichte erinnert – Torres rät dazu, wenn die Interviews anonym bleiben (S. 68–69); bei I2 ist es die Uhr. Das Zitat ist ihr einprägsamster Satz (S. 69). Die Chancen verweisen auf die Zitate, die sie belegen. So steht I2 auch im Beispiel der Werkstatt.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="geschichte">Eine Geschichte – was hört ihr?</h2>
+    <p class="folie-satz">Was ist für euch das Wichtigste? Ein Satz, abschicken erst auf mein Zeichen.</p>
+    <blockquote class="geschichte">„Gestern Abend wollten meine Frau und ich nach dem Essen einen Film schauen. Am liebsten auf dem großen Fernseher im Wohnzimmer, der hat den besseren Ton – aber unser Sohn spielte Videospiele, also warteten wir, bis er speichern und ins andere Zimmer wechseln konnte. Währenddessen scrollten wir auf dem iPad durch die Filme bei Netflix. Die meisten Empfehlungen waren Kinderfilme, weil vor allem unsere Kinder das Konto nutzen. Wir probierten ‚Beliebt‘, aber da waren nur Serien. Meine Frau erinnerte sich an einen guten Film, aber wir fanden nicht heraus, wie man nach einem bestimmten Titel sucht. Das war sehr frustrierend.“</blockquote>
+    <p>In den Teams-Chat, jede*r für sich. <Timer minuten={1} /></p>
+    <p class="small muted">Nach {TORRES}, S. 75.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="warum">Warum gemeinsam?</h2>
+    <p class="folie-satz">Vergleicht eure Sätze im Chat mit drei Rollen aus dem Buch.</p>
+    <Aufloesung ab={NACH_NETFLIX} gruppe="netflix">
+      <ul class="gross">
+        <li><strong>Produkt:</strong> „Unter ‚Beliebt‘ nur Serien“ – sorgt sich, ob das Angebot stimmt.</li>
+        <li><strong>Design:</strong> „Wie sucht man einen bestimmten Titel?“ – will die Bedienung verbessern.</li>
+        <li><strong>Technik:</strong> „Fast nur Kinderfilme“ – sucht einen technischen Weg, Nutzer*innen zu unterscheiden.</li>
+      </ul>
+      <p data-schritt><strong>Jede Sicht ist berechtigt.</strong> Je unterschiedlicher das Team, desto mehr holt es aus einem Interview.</p>
+      <p class="small muted">{TORRES}, S. 74–75.</p>
+      <div class="nur-handout">
+        <p>Teresa Torres erzählt dieselbe Geschichte eines Netflix-Kunden aus drei Blickwinkeln: Produktmanagerin, Designer und Entwicklerin halten jeweils etwas anderes für wichtig, weil sie anderes Vorwissen mitbringen. Jede Sicht ist berechtigt, und jede kann zu einer Verbesserung führen. Je unterschiedlicher das Team, desto mehr holt es aus jedem Interview heraus. Darum interviewt bei ihr das ganze Team, statt eine Person zur „Stimme der Kundin“ zu machen ({TORRES}, S. 74–75).</p>
+        <p>Rob Fitzpatrick nennt das Gegenteil einen <strong>Lern-Engpass</strong>: Eine Person führt alle Gespräche und sagt danach dem Team, was die Kund*innen wollen. „Was ich gelernt habe“ heißt dann in Wahrheit „was ihr tun werdet“ – und „Die Kund*innen haben es gesagt“ sticht jedes Argument ({MOMTEST}, S. 98–99). Ihr habt eure Interviews allein geführt. Die Besprechung heute holt nach, was beim gemeinsamen Interview von selbst passiert wäre.</p>
+      </div>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
     <h2 id="besprechen">Snapshots im Team besprechen</h2>
     <p class="folie-satz">Gemeinsam durchgehen, Überzeugungen anpassen, besser fragen.</p>
     <ol class="gross">
-      <li data-schritt><strong>Was wurde gesagt?</strong> Die wichtigsten Zitate und Aussagen.</li>
+      <li><strong>Was wurde gesagt?</strong> Die wichtigsten Zitate und Aussagen.</li>
       <li data-schritt><strong>Was ändert sich?</strong> Welche Annahme bekommt einen Beleg, welche Frage ist offen?</li>
       <li data-schritt><strong>Wie war das Gespräch?</strong> Welche Fragen haben funktioniert, welche nicht?</li>
       <li data-schritt><strong>Was haben wir überhört?</strong> Signale, denen man hätte nachgehen sollen.</li>
@@ -71,11 +161,11 @@ const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
   </Folie>
 
   <Folie>
-    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <h2 id="beispiel">Kaffeebar: I2 im Team besprochen</h2>
     <p class="folie-satz">I2, Pendlerin, Zug 7:42: „Wenn ich auf die Uhr schauen muss, geh ich.“</p>
     <p class="nur-handout"><strong>Geschichte:</strong> Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42. <strong>Kurzinfos:</strong> pendelt täglich nach Wien, holt dreimal pro Woche Kaffee. <strong>Einsicht:</strong> entscheidet erst beim Ankommen. <strong>Chance:</strong> „Wenn ich anstehe, verpasse ich den Zug.“</p>
     <ul>
-      <li data-schritt><strong>Gesagt:</strong> Sie geht, sobald sie auf die Uhr schauen muss – nicht erst, wenn es knapp wird.</li>
+      <li><strong>Gesagt:</strong> Sie geht, sobald sie auf die Uhr schauen muss – nicht erst, wenn es knapp wird.</li>
       <li data-schritt><strong>Ändert sich:</strong> Die Einsicht widerspricht A1 („entscheiden schon vor der Ankunft“) – ein erster Beleg dagegen.</li>
       <li data-schritt><strong>Gespräch:</strong> „Erzähl mir vom letzten Morgen …“ brachte die Geschichte; die Frage nach dem Automaten fehlte.</li>
       <li data-schritt><strong>Überhört:</strong> Warum der Automat? Notlösung oder gut genug? Ins nächste Interview mitnehmen.</li>
@@ -84,18 +174,21 @@ const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+    <h2 id="vorgehen">So geht ihr vor (65 min)</h2>
     <p class="folie-satz">Reihum: eine Person zeigt ihre Snapshots, die anderen beiden fragen.</p>
     <MiroFrame name="T1 · 5 · Interview-Snapshots (aus der Werkstatt)" />
     <ol class="gross">
-      <li data-schritt><strong>Zeigen (6 min):</strong> Eine Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen.</li>
-      <li data-schritt><strong>Besprechen (8 min):</strong> Die anderen beiden fragen mit den vier Fragen. Was sie anders hören, notiert ihr für den Snapshot.</li>
-      <li data-schritt><strong>Reihum,</strong> drei Runden à 14 Minuten. <Timer minuten={14} /></li>
-      <li data-schritt><strong>Festhalten und prüfen:</strong> Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog; dann Prüfliste und Claude. <Timer minuten={10} /></li>
+      <li><strong>Zeigen (5 min):</strong> Eine Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen.</li>
+      <li data-schritt><strong>Besprechen (7 min):</strong> Die anderen beiden fragen mit den vier Fragen. Was sie anders hören, notiert ihr für den Snapshot.</li>
+      <li data-schritt><strong>Reihum,</strong> drei Runden à 12 Minuten. <Timer minuten={12} /></li>
+      <li data-schritt><strong>Festhalten und prüfen:</strong> Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog; dann Prüfliste und Claude. <Timer minuten={8} /></li>
     </ol>
+    <p class="small"><strong>Noch keine Interviews in der Werkstatt?</strong> Zuerst die besten zwei bis drei eintragen: Pseudonym, Einwilligung, 3–5 Zitate mit ID, Chancen.</p>
     <div class="nur-handout">
-      <p>Drei Runden à 14 Minuten (6 zeigen, 8 besprechen) sind 42 Minuten; dazu zehn Minuten Festhalten und Prüfen und Zeit für die Theorie. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75).</p>
+      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 20 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75).</p>
       <p><strong>Hört ihr noch Neues?</strong> Rob Fitzpatrick rät, so lange Gespräche zu führen, bis nichts Neues mehr kommt. Bei einer klar umrissenen Zielgruppe können drei bis fünf reichen; wer nach mehr als zehn Gesprächen noch Ergebnisse bekommt, die in alle Richtungen streuen, hat vermutlich eine zu unscharfe Zielgruppe ({MOMTEST}, S. 88). Streuen eure fünf Snapshots in alle Richtungen, sprecht im Team darüber, ob ihr die Zielgruppe im Produkt-Brief enger fassen solltet.</p>
+      <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:45, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, drei besprechen), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:10. Gezeigt wird dann direkt aus der Werkstatt.</p>
+      <Prompt label="Für den Teams-Chat">{CHAT_SYNTHESE}</Prompt>
     </div>
   </Folie>
 
@@ -117,3 +210,29 @@ const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
 
   <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/journey-map', t: 'Experience Map' }} />
 </Layout>
+
+<style>
+  .fluss-titel { margin: 1rem 0 -.75rem; font-weight: 600; }
+  .geschichte { margin: 1rem 0; padding: .6rem 1rem; border-left: 4px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; line-height: 1.5; }
+  /* Snapshot im Aufbau der Vorlage (Torres S. 68): oben Name/Bild, Zitat, Skizze; unten drei Spalten. */
+  .snapshot { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); margin: 1rem 0; }
+  .snap-kopf { display: grid; grid-template-columns: minmax(0, 1fr); gap: .75rem; padding: .9rem 1rem; border-bottom: 1px solid var(--border); }
+  .snap-name { display: flex; align-items: center; gap: .75rem; }
+  .snap-bild { display: inline-flex; flex-direction: column; align-items: center; gap: .1rem; padding: .4rem .6rem; border: 1px solid var(--border); border-radius: 6px; color: var(--accent); }
+  .snap-bild span { font-size: .75rem; color: var(--muted); }
+  .snap-zitat { margin: 0; font-size: 1.15rem; font-style: italic; }
+  .snap-geschichte { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem 1.4rem; font-size: .9rem; }
+  .snap-geschichte li { position: relative; padding: .2rem .5rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); }
+  .snap-geschichte li + li::before { content: '→' / ''; position: absolute; left: -1.15rem; color: var(--muted); }
+  .snap-spalten { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .snap-spalten > div { padding: .7rem 1rem; }
+  .snap-spalten > div + div { border-top: 1px solid var(--border); }
+  .snap-spalten p, .snap-spalten ul { margin: .3rem 0 0; }
+  .snap-spalten ul { padding-left: 1.1rem; }
+  @media (min-width: 900px) {
+    .snap-kopf { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
+    .snap-geschichte { grid-column: 1 / -1; }
+    .snap-spalten { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr); }
+    .snap-spalten > div + div { border-top: 0; border-left: 1px solid var(--border); }
+  }
+</style>
