@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  MAX_TEXT, RUNDEN, antwortenGruppieren, eingabePruefen, gesendetGilt, platzSchluessel, rolleBesetzt, rollePruefen,
+  MAX_TEXT, RUNDEN, antwortenGruppieren, eingabePruefen, gesendetGilt, platzSchluessel, rolleBesetzt, rollePruefen, rolleWaehlbar,
   rundePruefen, standBauen, statusText, textBereinigen, textPruefen, texteFrei,
 } from './antworten';
 
@@ -94,6 +94,14 @@ describe('Antwortrunde: Plätze und Stand', () => {
     expect(rolleBesetzt(['design'], 'design', 'design')).toBe(false); // die eigene – ändern erlaubt
     expect(rolleBesetzt(['design'], 'entwicklung', null)).toBe(false);
     expect(rolleBesetzt(['design'], null, null)).toBe(false);
+  });
+
+  it('wählbare Rollen: vor dem Senden die freien, nach dem Senden nur die eigene, nach dem Leeren wieder alle freien', () => {
+    const waehlbar = (vergeben: string[], eigene: string | null) => netflix.rollen.map((r) => r.id).filter((r) => rolleWaehlbar(r, vergeben, eigene));
+    expect(waehlbar([], null)).toStrictEqual(['produktmanagement', 'design', 'entwicklung']);
+    expect(waehlbar(['produktmanagement'], null)).toStrictEqual(['design', 'entwicklung']);
+    expect(waehlbar(['produktmanagement', 'design'], 'design')).toStrictEqual(['design']);
+    expect(waehlbar([], null)).toHaveLength(3); // nach „Runde leeren“: eigeneRolle wieder null
   });
 
   it('Gruppen für „Eure Sätze“ und die Statuszeile', () => {

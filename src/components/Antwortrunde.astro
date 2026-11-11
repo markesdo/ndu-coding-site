@@ -26,7 +26,7 @@ const feld = `antwort-${runde}`;
           {r.rollen.map((x) => <button type="button" class="ar-rolle" data-ar-rolle={x.id} aria-pressed="false">{x.label}<span class="ar-vergeben" data-ar-vergeben hidden> · vergeben</span></button>)}
         </div>
       )}
-      <p class="small muted ar-hinweis">Wählt jede*r eine andere Rolle.</p>
+      <p class="small muted ar-hinweis" data-ar-hinweis>Wählt jede*r eine andere Rolle.</p>
       <form class="ar-form" data-ar-form hidden={r.rollen.length > 0}>
         <label for={feld}>Ein Satz aus deiner Rolle</label>
         <div class="ar-zeile">
@@ -49,7 +49,7 @@ const feld = `antwort-${runde}`;
 </div>
 <script>
   import {
-    ANTWORTEN_FREI_MS, ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, antwortenGruppieren, gesendetGilt, rolleBesetzt, statusText,
+    ANTWORTEN_FREI_MS, ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, antwortenGruppieren, gesendetGilt, rolleBesetzt, rolleWaehlbar, statusText,
     textPruefen, type Rolle, type Stand,
   } from '../lib/antworten';
   import { wienerZeit } from './jetzt';
@@ -128,7 +128,19 @@ const feld = `antwort-${runde}`;
       melden(rolleBesetzt(vergeben, rolle, eigeneRolle) ? BESETZT : '');
     };
     const eigene = eingabe ? eigeneLesen(runde) : null;
+    const hinweisRolle = q('[data-ar-hinweis]');
+    // Nach dem Senden ist die Rolle fest (ein Browser, ein Platz); nach „Runde leeren“ wieder frei.
+    const knoepfeAktualisieren = () => {
+      knoepfe.forEach((k) => {
+        const id = k.dataset.arRolle ?? '';
+        k.querySelector<HTMLElement>('[data-ar-vergeben]')!.hidden = !vergeben.includes(id);
+        k.disabled = !rolleWaehlbar(id, vergeben, eigeneRolle);
+      });
+      const label = rollen.find((r) => r.id === eigeneRolle)?.label;
+      if (hinweisRolle) hinweisRolle.textContent = label ? `Deine Rolle: ${label} – ändern kannst du deinen Satz, nicht die Rolle.` : 'Wählt jede*r eine andere Rolle.';
+    };
     if (eigene) { eigeneRolle = eigene.rolle; rolleWaehlen(eigene.rolle); if (feld) feld.value = eigene.text; if (gesendet) gesendet.hidden = false; }
+    knoepfeAktualisieren();
     knoepfe.forEach((k) => k.addEventListener('click', () => { rolleWaehlen(k.dataset.arRolle ?? null); feld?.focus(); }));
 
     const zeigen = (s: Stand) => {
@@ -137,9 +149,9 @@ const feld = `antwort-${runde}`;
       rueckfall.hidden = true;
       if (eingabe) {
         if (bereich) bereich.hidden = frei;
-        knoepfe.forEach((k) => { k.querySelector<HTMLElement>('[data-ar-vergeben]')!.hidden = !vergeben.includes(k.dataset.arRolle ?? ''); });
         // Nach „Runde leeren“ ist die eigene Rolle frei: „Gesendet“ weg, Text bleibt zum erneuten Abschicken.
         if (eigeneRolle !== null && !gesendetGilt(vergeben, eigeneRolle)) eigeneRolle = null;
+        knoepfeAktualisieren();
         if (gesendet) gesendet.hidden = eigeneRolle === null;
         if (meldung?.textContent === BESETZT && !rolleBesetzt(vergeben, rolle, eigeneRolle)) melden('');
         status.textContent = frei ? 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.' : statusText(s.anzahl, erwartet);
@@ -201,6 +213,7 @@ const feld = `antwort-${runde}`;
           schreiben(eigeneSchluessel(runde), JSON.stringify(e));
           eigeneRolle = e.rolle;
           if (!vergeben.includes(e.rolle)) vergeben = [...vergeben, e.rolle];
+          knoepfeAktualisieren();
           if (gesendet) gesendet.hidden = false;
           melden('');
           a.kette.sofort();
@@ -220,6 +233,7 @@ const feld = `antwort-${runde}`;
   .antwortrunde { margin: .4rem 0; }
   .ar-rollen { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .4rem; }
   .ar-rolle, .ar-senden { font: inherit; padding: .3rem .8rem; border: 1px solid var(--border); border-radius: 8px; background: none; color: inherit; cursor: pointer; }
+  .ar-rolle:disabled { opacity: .45; cursor: not-allowed; }
   .ar-rolle[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); font-weight: 700; }
   .ar-senden { font-weight: 700; border-color: var(--accent); }
   .ar-senden:disabled { opacity: .5; cursor: wait; }

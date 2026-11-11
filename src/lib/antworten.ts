@@ -109,6 +109,12 @@ export function gesendetGilt(vergeben: readonly string[], eigeneRolle: string | 
   return eigeneRolle !== null && vergeben.includes(eigeneRolle);
 }
 
+/** Welche Rolle ist wählbar? Vor dem Senden die freien und die eigene; nach dem Senden nur noch die eigene – sonst hielte
+ *  ein Browser zwei Plätze (der alte bliebe belegt). Nach „Runde leeren“ ist eigeneRolle wieder null (gesendetGilt). */
+export function rolleWaehlbar(rolle: string, vergeben: readonly string[], eigeneRolle: string | null): boolean {
+  return eigeneRolle !== null ? rolle === eigeneRolle : !vergeben.includes(rolle);
+}
+
 /** Hat jemand anderes die gewählte Rolle schon? Belegt und nicht die, die dieser Browser selbst abgeschickt hat. */
 export function rolleBesetzt(vergeben: readonly string[], gewaehlt: string | null, eigeneRolle: string | null): boolean {
   return gewaehlt !== null && vergeben.includes(gewaehlt) && gewaehlt !== eigeneRolle;
