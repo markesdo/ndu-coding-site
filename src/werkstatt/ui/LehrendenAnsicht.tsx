@@ -4,9 +4,9 @@
 // Neu laden per Knopf, still beim Zurückkommen in den Tab, wenn die Daten älter als zwei Minuten sind.
 // Beamer: data-werkstatt blendet alles aus (beamer.css); der Leser schließt sich beim Wechsel in den Beamer.
 import {
-  CalendarClock, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleCheck, CircleDashed, CloudOff, ExternalLink, FileWarning, Link2Off, MessageSquare, PencilLine, RefreshCw, UserRound, X,
+  CalendarClock, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleCheck, CircleDashed, CloudOff, ExternalLink, FileWarning, Link2Off, MessageSquare, PencilLine, Presentation, RefreshCw, UserRound, X,
 } from 'lucide-react';
-import { Component, Fragment, useCallback, useEffect, useRef, useState, type ComponentType, type KeyboardEvent, type ReactNode } from 'react';
+import { Component, Fragment, useCallback, useEffect, useRef, useState, type ComponentType, type KeyboardEvent, type ReactNode, type SyntheticEvent } from 'react';
 import { feedbackZaehlen } from '../feedback.js';
 import { ARTEFAKTE, type ArtefaktName } from '../schemas/index.js';
 import type { LehrendenAnsicht as Ansicht, FeedbackSichtEintrag, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../vertrag.js';
@@ -19,6 +19,9 @@ import {
   spaltenHinweis, standText, tagText, zelle, zellenLabel, zuerstAnsehen, type BereiteMappe, type Leser, type Zelle, type ZellenArt,
 } from './lehrenden-hilfen.js';
 import { rueckkehrBeobachten } from './mappe-hilfen.js';
+import { blaettern, nichtsNeues, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen } from './snapshot-hilfen.js';
+import Zeigen from './Zeigen.js';
+import type { Interview } from '../schemas/index.js';
 
 const TEXT = {
   laden: 'Lese die Mappen der Kohorte …',
@@ -125,6 +128,12 @@ export default function LehrendenAnsicht() {
   const wahlRef = useRef(wahl);
   wahlRef.current = wahl;
   const geladenRef = useRef<number | null>(null);
+  // Zeigen-Modus (Zeigen.tsx): nur für Interviews. Die Stelle merkt sich die Interview-ID (nicht die Nummer), damit
+  // „Neu laden“ beim selben Snapshot bleibt; der Stand hält die zuletzt gezeigten Snapshots, solange neu geladen wird.
+  const [zeigen, setZeigen] = useState(false);
+  const [zeigenId, setZeigenId] = useState<string | null>(null);
+  const [zeigenStand, setZeigenStand] = useState<{ schluessel: string; interviews: Interview[]; zeit: number; vorher: Interview[] | null } | null>(null);
+  const zeigenWurzel = useRef<HTMLDivElement>(null);
 
   const laden = useCallback(async (w: { kohorte?: string; seit?: number }) => {
     const mein = ++lauf.current;
@@ -238,13 +247,54 @@ export default function LehrendenAnsicht() {
     setLeser({ person, artefakt });
   }
 
+  // Zeigen: aktiv nur, solange der Leser die Interviews einer bereiten Mappe zeigt.
+  const zeigenAktiv = zeigen && leser?.artefakt === 'interviews' && !!leserArtefakt;
+  const zeigenSicht = zeigenAktiv && zeigenStand && zeigenStand.schluessel === offenerSchluessel ? zeigenStand : null;
+  const zeigenIvs = zeigenSicht?.interviews ?? [];
+  const zeigenNr = stelleNachId(zeigenIvs, zeigenId);
+
+  // Geladene Interviews übernehmen; derselbe Schlüssel wie zuvor = neu geladen, dann bleibt der alte Stand zum Vergleich.
+  useEffect(() => {
+    if (!zeigen || !inhalt || inhalt.zustand !== 'bereit' || inhalt.schluessel !== offenerSchluessel) return;
+    const interviews = zeigbareInterviews(inhalt.inhalt.daten);
+    setZeigenStand((alt) => ({ schluessel: inhalt.schluessel, interviews, zeit: Date.now(), vorher: alt && alt.schluessel === inhalt.schluessel ? alt.interviews : null }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [zeigen, inhalt]);
+
+  // Fokus: beim Start in den Zeigen-Bereich (sonst kämen ←/→ nicht im Dialog an), beim Beenden zurück auf „Zeigen“.
+  const warZeigen = useRef(false);
+  useEffect(() => {
+    if (zeigenAktiv) zeigenWurzel.current?.focus();
+    else if (warZeigen.current && dialog.current?.open) dialog.current.querySelector<HTMLButtonElement>('.lv-zeigen-knopf')?.focus();
+    warZeigen.current = zeigenAktiv;
+  }, [zeigenAktiv]);
+
+  function zeigenStarten() {
+    setZeigenId(null);
+    setZeigenStand(null);
+    setZeigen(true);
+  }
+
+  function zeigenBeenden() {
+    setZeigen(false);
+    setZeigenStand(null);
+  }
+
+  // Erstes Esc im Zeigen-Modus beendet nur das Zeigen; das nächste schließt den Leser wie bisher.
+  function leserAbbrechen(e: SyntheticEvent<HTMLDialogElement>) {
+    if (!zeigenAktiv) return;
+    e.preventDefault();
+    zeigenBeenden();
+  }
+
+  // ←/→: ohne Zeigen dasselbe Artefakt bei der Nachbarperson (wie bisher), im Zeigen-Modus nur der nächste Snapshot.
   function leserTaste(e: KeyboardEvent<HTMLDialogElement>) {
-    if (!ansicht || !leser || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
-    const ziel = nachbar(ansicht.personen, leser.person, e.key === 'ArrowLeft' ? -1 : 1);
-    if (ziel) {
-      e.preventDefault();
-      setLeser({ person: ziel, artefakt: leser.artefakt });
-    }
+    if (!ansicht || !leser) return;
+    const ziel = tastenZiel(e.key, { zeigen: zeigenAktiv, personen: ansicht.personen, person: leser.person, nr: zeigenNr, anzahl: zeigenIvs.length });
+    if (!ziel) return;
+    e.preventDefault();
+    if (ziel.art === 'person') setLeser({ person: ziel.person, artefakt: leser.artefakt });
+    else setZeigenId(zeigenIvs[ziel.nr].id);
   }
 
   const umschalten = (k: string) => setOffeneLuecken((alt) => {
@@ -421,12 +471,29 @@ export default function LehrendenAnsicht() {
         </div>
       )}
 
-      <dialog ref={dialog} className="wk-dialog lv-leser" aria-labelledby="lv-leser-titel" onClose={() => setLeser(null)} onKeyDown={leserTaste}>
-        {leserMappe && leserArtefakt && (
+      <dialog
+        ref={dialog} className={zeigenAktiv ? 'wk-dialog lv-leser lv-zeigen' : 'wk-dialog lv-leser'} aria-labelledby="lv-leser-titel"
+        onClose={() => { setLeser(null); zeigenBeenden(); }} onCancel={leserAbbrechen} onKeyDown={leserTaste}
+      >
+        {zeigenAktiv && leserMappe ? (
+          <Zeigen
+            personen={zeigenPersonen(ansicht.personen)} person={leserMappe.kuerzel} interviews={zeigenSicht?.interviews ?? null} vorher={zeigenSicht?.vorher ?? null}
+            nr={zeigenNr} laedt={laedt || (inhalt?.schluessel === offenerSchluessel && inhalt.zustand === 'laden')}
+            fehler={(inhalt?.schluessel === offenerSchluessel && inhalt.zustand === 'fehler' ? inhalt.text : null) ?? fehler}
+            stand={zeigenSicht?.zeit ?? null}
+            meldung={zeigenSicht?.vorher && nichtsNeues(zeigenSicht.vorher, zeigenSicht.interviews) ? 'Nichts Neues gespeichert' : ''}
+            wurzel={zeigenWurzel}
+            personWaehlen={(k) => { setZeigenId(null); setLeser({ person: k, artefakt: 'interviews' }); }}
+            nrWaehlen={(i) => zeigenIvs[i] && setZeigenId(zeigenIvs[i].id)}
+            blaettern={(r) => zeigenIvs.length > 0 && setZeigenId(zeigenIvs[blaettern(zeigenNr, zeigenIvs.length, r)].id)}
+            neuLaden={() => void laden(wahl)} beenden={zeigenBeenden}
+          />
+        ) : leserMappe && leserArtefakt && (
           <LeserInhalt
             ansicht={ansicht} p={leserMappe} a={leserArtefakt} wechseln={setLeser} schliessen={() => dialog.current?.close()}
             inhalt={inhalt && inhalt.schluessel === offenerSchluessel ? inhalt : null}
             feedbackGeschrieben={(eintraege) => offenerSchluessel && feedbackGeschrieben(offenerSchluessel, leserMappe.kuerzel, leserArtefakt.name, eintraege)}
+            zeigenStarten={zeigenStarten}
           />
         )}
       </dialog>
@@ -434,10 +501,13 @@ export default function LehrendenAnsicht() {
   );
 }
 
-function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt, feedbackGeschrieben }: {
+function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt, feedbackGeschrieben, zeigenStarten }: {
   ansicht: Ansicht; p: BereiteMappe; a: LehrendenArtefakt; wechseln: (l: Leser) => void; schliessen: () => void; inhalt: Inhalt | null;
-  feedbackGeschrieben: (eintraege: FeedbackSichtEintrag[]) => void;
+  feedbackGeschrieben: (eintraege: FeedbackSichtEintrag[]) => void; zeigenStarten: () => void;
 }) {
+  // „Zeigen“ nur bei Interviews mit mindestens einem Snapshot.
+  const zeigbar = a.name === 'interviews' && inhalt?.zustand === 'bereit' && zeigbareInterviews(inhalt.inhalt.daten).length > 0;
+  const schliessKnopf = <button type="button" className="wk-knopf" onClick={schliessen}><X size={16} aria-hidden="true" /> Schließen</button>;
   const zurueck = nachbar(ansicht.personen, p.kuerzel, -1);
   const weiter = nachbar(ansicht.personen, p.kuerzel, 1);
   const befunde = p.luecken.filter((b) => b.artefakt === a.name);
@@ -448,7 +518,12 @@ function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt, feedbackGesc
           <h2 id="lv-leser-titel">{p.kuerzel} · {titel(a.name)}</h2>
           <p className="wk-hilfe">{leserKopf(a, ansicht.bezug)}</p>
         </div>
-        <button type="button" className="wk-knopf" onClick={schliessen}><X size={16} aria-hidden="true" /> Schließen</button>
+        {zeigbar ? (
+          <span className="lv-leser-kopf-knoepfe">
+            <button type="button" className="wk-knopf lv-zeigen-knopf" onClick={zeigenStarten}><Presentation size={16} aria-hidden="true" /> Zeigen</button>
+            {schliessKnopf}
+          </span>
+        ) : schliessKnopf}
       </header>
       <nav className="lv-leser-nav" aria-label="Andere Mappe oder anderes Artefakt">
         <span className="lv-leser-personen">
