@@ -10,11 +10,16 @@ import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import Aufloesung from '../../../components/Aufloesung.astro';
+import Fluss from '../../../components/Fluss.astro';
+import { ArrowRight, Eye, FlaskConical, Gavel } from '@lucide/astro';
+import { NACH_INTUIT } from '../../../components/innolab-zeiten';
 import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
+const THOMKE = 'Stefan H. Thomke, „The Scientific Mindset“ (2027)';
 const PRE_MORTEM = `Lies docs/EXPERIMENTE.md und aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Stell dir vor, E1 ist gelaufen und hat uns in die Irre geführt. Nenn drei Gründe, warum das passiert sein könnte (zum Beispiel falsches Publikum, eine Schwelle, die zu leicht ist, ein Test, der die ganze Idee statt der Annahme prüft), und je einen kleineren oder genaueren Test. Ändere keine Datei.`;
 ---
 <Layout title="Experiment-Karte & Origin Story">
@@ -75,6 +80,36 @@ const PRE_MORTEM = `Lies docs/EXPERIMENTE.md und aus der Werkstatt meine Annahme
   </Folie>
 
   <Folie>
+    <h2 id="sagen-tun">0 von 20 – und jetzt?</h2>
+    <p class="folie-satz">Was schließt ihr daraus, und was tut ihr als Nächstes?</p>
+    <ul class="gross">
+      <li><strong>Intuit,</strong> Software für Lohnabrechnung: Rund die Hälfte der Interessierten probiert sie 20 Minuten, bevor der Lohn raus muss.</li>
+      <li><strong>Die Freischaltung</strong> dauert Stunden bis Tage.</li>
+      <li><strong>Usability-Studie:</strong> Keine*r der 20 interessiert sich für schnelle Lohnzahlung.</li>
+    </ul>
+    <p>Jede*r für sich, ein Satz. <Timer minuten={1} /></p>
+  </Folie>
+
+  <Folie>
+    <h2 id="sagen-tun-aufloesung">Was Intuit dann tat</h2>
+    <p class="folie-satz">Vergleicht mit euren Sätzen.</p>
+    <Aufloesung ab={NACH_INTUIT} gruppe="intuit">
+      <div class="sagen-tun">
+        <div class="gesagt"><b>Gesagt</b><span class="zahl">0 von 20</span><span>interessiert, in der Usability-Studie</span></div>
+        <ArrowRight size={28} aria-hidden="true" class="sagen-tun-pfeil" />
+        <div class="getan"><b>Getan</b><span class="zahl">58 %</span><span>der neuen Nutzer*innen klicken „Pay employees first“ – die Funktion gibt es noch nicht</span></div>
+      </div>
+      <p data-schritt><strong>Gebaut:</strong> Conversion plus 14 %, Millionen mehr Umsatz.</p>
+      <p data-schritt><strong>Philips:</strong> In der Fokusgruppe wählen Jugendliche Gelb – als Dank nehmen die meisten Schwarz mit.</p>
+      <p class="small muted">{THOMKE}, S. 72.</p>
+      <div class="nur-handout">
+        <p>Ein Entwickler bei Intuit sah, dass etwa die Hälfte der Interessierten das Produkt für kleine Firmen zwanzig Minuten vor dem Zahltag ausprobierte – und alle Anbieter brauchten Stunden oder Tage, um neue Kundschaft freizuschalten. Die Usability-Studie danach ergab: „none of the twenty participants was interested in a fast payroll solution.“ Statt die Idee abzulegen, änderte Intuit die Webseite innerhalb von 24 Stunden: zwei Knöpfe, „Pay employees first“ und „Do set-up first“; wer den ersten klickte, las, dass die Funktion noch nicht fertig sei. „Contrary to the usability test results, this test revealed that 58 percent of new users picked ‚Pay employees first.‘“ Die Funktion wurde gebaut und hob die Conversion um 14 Prozent ({THOMKE}, S. 72).</p>
+        <p>Thomkes Schluss: „testing customers’ actual behavior was more useful than trusting what they say they would prefer.“ Dieselbe Lücke zeigt Philips: In einer Fokusgruppe wählten die meisten Jugendlichen Gelb für einen Ghettoblaster; als Dankeschön durften sie einen mitnehmen, in Gelb oder Schwarz – die meisten nahmen Schwarz (S. 72). Das ist Blands Achse „sagen gegen tun“ aus der Annahmen-Map ({BLAND}, S. 52) und der Grund, warum die Karte eine Handlung misst. Intuits Knopf ist ein Test wie E1 der Kaffeebar weiter unten: Das Angebot steht da, die Funktion noch nicht – und die Seite sagt das.</p>
+      </div>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
     <h2 id="karte">Die Experiment-Karte</h2>
     <p class="folie-satz">Die Schwelle steht fest, bevor der Test läuft.</p>
     <BildText>
@@ -89,6 +124,39 @@ const PRE_MORTEM = `Lies docs/EXPERIMENTE.md und aus der Werkstatt meine Annahme
     <div class="nur-handout">
       <p>Ein gutes Experiment hat vier Teile – Hypothese, Experiment, Messgröße, Kriterium – und legt genau fest, wer getestet wird, wo und womit ({BLAND}, S. 44–46). Im Beispiel der Karte: „16 of the 20 parents“. Torres: „Instead of saying, ‚Some people choose sports,‘ we want to say, ‚At least 3 out of 10 people choose sports.‘ We want to define both how many people we’ll test with and how many people need to exhibit the behavior“ ({TORRES}, S. 136). Die Zahlen sind eine Ermessensfrage – ihr wollt Risiko senken, nicht beweisen (S. 137). Zahlen statt Prozent, genug Kriterien, das richtige Publikum mit dem Pain, und ein Test, der im besten Fall bestehen kann (S. 144–145).</p>
       <p>Warum die Schwelle vorher: Wer sie nach dem Test festlegt, findet immer einen Grund, warum es doch geklappt hat – das ist dieselbe Bestätigungsneigung wie oben (S. 116, 134).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorher-entscheiden">Vorher festlegen, was ihr dann tut</h2>
+    <p class="folie-satz">Gute Ergebnisse glaubt man sofort – schlechte prüft man, bis sie passen.</p>
+    <ol class="baender" aria-label="Drei Ergebnisse, je mit der Handlung, die vor dem Test feststeht">
+      <li class="band-unter" data-schritt><b>Deutlich darunter</b><span>widerlegt</span><span class="tun">→ umschwenken oder verwerfen</span></li>
+      <li class="band-mitte" data-schritt><b>Knapp darunter</b><span>unklar</span><span class="tun">→ weiter testen</span></li>
+      <li class="band-ueber" data-schritt><b>Schwelle erreicht</b><span>gestützt</span><span class="tun">→ stärkerer Test oder nächste Annahme</span></li>
+    </ol>
+    <p data-schritt><strong>Kohl’s:</strong> Die Führung will Möbel. Test in 70 Läden, sechs Monate – der Umsatz sinkt. Gestoppt.</p>
+    <p class="small muted">{THOMKE}, S. 14, 86–87, 103; Befunde nach {BLAND}, S. 63.</p>
+    <div class="nur-handout">
+      <p>Thomkes erste Regel für Experimente: „commit to abide by results“ (S. 85). „Before conducting any test, stakeholders must agree on how they’ll proceed once the results are in. … One way to encourage this discipline is to prepare a decision matrix that links possible outcomes to predetermined actions before any data comes in“ ({THOMKE}, S. 86; wieder S. 116). In seiner Tippliste: „Define specific changes you will make based on the results“ (S. 103). Bei Kohl’s waren viele aus der Führung begeistert von Möbeln im Sortiment; der Test in 70 Läden über sechs Monate zeigte einen Umsatzrückgang, weil die übrigen Waren weniger Fläche hatten – „the initiative was nevertheless scrapped“ (S. 86–87).</p>
+      <p>Warum vorher: „we tend to happily accept ‚good‘ results that confirm our beliefs because they feel right. But we challenge and thoroughly investigate ‚bad‘ results that go against our assumptions“ (S. 14). Thomkes Beispiel: Ein Nutzer hielt das Testwerkzeug für kaputt, weil sein Ergebnis seiner Annahme widersprach – „fix the software and repeat the test until it agreed with his experience!“ (ebd.). Steht die Handlung schon auf der Karte, entscheidet das Ergebnis und nicht die Stimmung danach.</p>
+      <p>Die drei Bänder sind eine Form des Kurses für Thomkes Entscheidungsmatrix. Die Befunde gestützt, widerlegt und unklar und was jeweils folgt, kommen aus Blands Schleife nach dem Test ({BLAND}, S. 63) – dieselben Wörter wie auf der Lernkarte. Wo „knapp darunter“ endet, legt ihr selbst fest, mit Zahlen wie bei der Schwelle.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="gegen-den-beleg">Gegen den Beleg entscheiden – aber offen</h2>
+    <p class="folie-satz">Erlaubt – wenn Beleg und Grund im Entscheidungslog stehen.</p>
+    <Fluss label="Netflix und Grace and Frankie: Test, Entscheidung, Gewinn" knoten={[
+      { t: 'Test', sub: 'Bild nur mit Lily Tomlin bringt mehr Klicks als mit Tomlin und Jane Fonda', icon: FlaskConical },
+      { t: 'Entschieden', sub: 'trotzdem beide – aus Sorge um Fonda und ihren Vertrag', icon: Gavel },
+      { t: 'Gewonnen', sub: 'niemand konnte behaupten, die Kundschaft wolle Fonda', icon: Eye },
+    ]} hervor={[2]} />
+    <p data-schritt><strong>Im <a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>:</strong> die Entscheidung, der Beleg dagegen und der Grund, warum trotzdem.</p>
+    <p class="small muted">{THOMKE}, S. 87, 127.</p>
+    <div class="nur-handout">
+      <p>Netflix testete Werbebilder für die Serie „Grace and Frankie“: Ein Bild nur mit Lily Tomlin brachte mehr Klicks als Bilder mit Tomlin und Jane Fonda. Das Content-Team fürchtete, Fonda vor den Kopf zu stoßen und womöglich ihren Vertrag zu verletzen. Nach heftigen Debatten nahm Netflix Bilder mit beiden, „even though customer data didn’t support the decision. However, the experimental evidence made the decision more transparent. Nobody could argue that Fonda should remain in the promotion because customers preferred it“ ({THOMKE}, S. 127). Thomke lässt solche Ausnahmen ausdrücklich zu: „there might be good reasons for rolling out an initiative even when the anticipated benefits are not supported by the data“ (S. 87).</p>
+      <p>Kohl’s auf der Folie davor und Netflix hier sind die beiden erlaubten Wege: dem Ergebnis folgen oder bewusst dagegen entscheiden. Nicht erlaubt ist der dritte – das Ergebnis umdeuten, bis es passt. Im Entscheidungslog heißt das: Die Zeile nennt den Beleg, der dagegen spricht, mit Stufe und ID (etwa „getan (E1)“), und im Grund steht, warum ihr trotzdem so entscheidet.</p>
     </div>
   </Folie>
 
@@ -142,9 +210,10 @@ Wir glauben, dass Pendler*innen, die beim Betreten der Halle die Schlange sehen,
 Um das zu prüfen, stellen wir an drei Morgen (7:15–7:45) einen Aufsteller mit QR-Code an die Hallentür. Die Seite verspricht „Im Gehen bestellen – bald“ und bittet, den eigenen Zug einzutragen. Bestellen geht noch nicht; das steht auf der Seite.
 Wir messen: wer bei Schlange zum Automaten geht (Strichliste), wer am Aufsteller einen Zug einträgt.
 Wir haben recht, wenn von den ersten 30, die bei Schlange zum Automaten gehen oder einen Zug eintragen, mindestens 10 eintragen.
+Wir entscheiden vorher: ab 10 → Concierge · 5–9 → wiederholen · unter 5 → Wartezeit-Anzeige
 Danach: Wer eingetragen hat, erfährt, wann es losgeht.
 Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt es keine Schlange“)</Prompt>
-    <p class="nur-handout">Gezählt wird beides, weil A5 eine Wahl behauptet: Aufsteller statt Automat. Wer nur Scans zählt, misst, wer sich ohnehin für den Aufsteller interessiert – nicht, wer sich gegen den Automaten entscheidet. Die Strichliste braucht eine Person neben dem Automaten; Torres warnt vor zu wenigen Kriterien und vor Tests, die nicht die Annahme prüfen ({TORRES}, S. 133, 144–145). Ein Eintrag ist ein kleiner Einsatz und darum ein mittlerer Beleg ({BLAND}, S. 52). Besteht E1, wäre der stärkere nächste Test ein Concierge: drei Morgen lang per Nachricht vorbestellen, von Hand zubereitet. Bland nennt so eine Folge für Dienstleistungen: vom Interview über die Landingpage bis zum Concierge (S. 99). Und wer getestet wird, erfährt danach, was dahintersteckt: „Are you experimenting with your customers or on them?“ (S. 86).</p>
+    <p class="nur-handout">Gezählt wird beides, weil A5 eine Wahl behauptet: Aufsteller statt Automat. Wer nur Scans zählt, misst, wer sich ohnehin für den Aufsteller interessiert – nicht, wer sich gegen den Automaten entscheidet. Die Strichliste braucht eine Person neben dem Automaten; Torres warnt vor zu wenigen Kriterien und vor Tests, die nicht die Annahme prüfen ({TORRES}, S. 133, 144–145). Ein Eintrag ist ein kleiner Einsatz und darum ein mittlerer Beleg ({BLAND}, S. 52). Besteht E1, wäre der stärkere nächste Test ein Concierge: drei Morgen lang per Nachricht vorbestellen, von Hand zubereitet. Bland nennt so eine Folge für Dienstleistungen: vom Interview über die Landingpage bis zum Concierge (S. 99). Und wer getestet wird, erfährt danach, was dahintersteckt: „Are you experimenting with your customers or on them?“ (S. 86). Die Zeile „Wir entscheiden vorher“ verbindet jedes Ergebnis mit einer Handlung, bevor gezählt wird ({THOMKE}, S. 86): Ab 10 folgt der Concierge, unter 5 das Umschwenken auf die Wartezeit-Anzeige aus der Zeile darunter, dazwischen derselbe Test noch einmal. Die Grenze bei 5 ist eine Setzung der Kaffeebar, wie die Schwelle selbst.</p>
   </Folie>
 
   <Folie>
@@ -155,7 +224,7 @@ Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt 
       <li data-schritt><strong>Schritte:</strong> vier bis sechs, als gäbe es eure Idee schon. <Timer minuten={3} /></li>
       <li data-schritt><strong>Annahmen:</strong> pro Schritt mindestens zwei, mit Art; dazu die Pre-Mortem-Frage. <Timer minuten={6} /></li>
       <li data-schritt><strong>Map:</strong> Beleg nach rechts, Wichtigkeit nach oben. <Timer minuten={3} /></li>
-      <li data-schritt><strong>Karte E1</strong> für die oberste rechts, Schwelle als x von y. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Karte E1</strong> für die oberste rechts, Schwelle als x von y, Entscheidung vorab. <Timer minuten={6} /></li>
     </ol>
     <div class="nur-handout">
       <p>Dazu zwölf Minuten Theorie und Beispiel. Die Schritte kommen aus Lückensatz und Value Map der gewählten Idee. Bei den Annahmen markiert ihr, welche auch für eure anderen beiden Ideen gelten – geteilte Annahmen sind oft die schnellsten Tests. Die neuen Annahmen tragt ihr mit den nächsten freien IDs in der Werkstatt in eure Annahmen-Map ein, mit Art, Wichtigkeit und Beleg. Unter die Karte kommt je eine Zeile für die anderen beiden Ideen: deren riskanteste Annahme.</p>
@@ -176,6 +245,7 @@ Wir glauben, dass [...].
 Um das zu prüfen, [wer, wo, was].
 Wir messen [Handlung].
 Wir haben recht, wenn [x von y].
+Wir entscheiden vorher: ab [x] → [...] · [von] bis [bis] → [...] · unter [...] → [...]
 Danach erfahren die Testpersonen: [...] · Wir sammeln: [...]
 Falls E1 scheitert: Idee 2 [...] hängt an „[...]“ · Idee 3 [...] hängt an „[...]“
 
@@ -249,7 +319,30 @@ Text (Überschrift · Wertversprechen aus der Value Map · Handlung · Antwort a
     <p class="nur-handout">Habt ihr keinen echten Ort, keine Gruppe, keine Seite mit Besucher*innen, dann lauft E1 als simulierten Moment: Zehn Menschen aus der Zielgruppe sehen den Aufsteller oder die Landingpage als Bild am Handy, in der beschriebenen Situation, und ihr zählt, wer die Handlung wählt ({TORRES}, S. 135, 142–144). Schreibt die Schwelle für diese Form vor dem ersten Gespräch neu, etwa „4 von 10 tippen auf ‚Zug eintragen‘“.</p>
   </Folie>
 
-  <p class="small muted">Nach {TORRES}, Kap. 9–10; {BLAND}; Origin Story nach {LICHAW}, Kap. 4.</p>
+  <p class="small muted">Nach {TORRES}, Kap. 9–10; {BLAND}; Entscheidung vorab, Sagen und Tun nach {THOMKE}, S. 72, 86–87, 127; Origin Story nach {LICHAW}, Kap. 4.</p>
 
   <FooterNav prev={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell-Karten' }} next={{ href: '/innolab/tag-3#abschluss', t: 'Tag 3 · Abschluss' }} />
 </Layout>
+
+<style>
+  /* Folie „sagen-tun“: gesagt gegen getan, je eine große Zahl. */
+  .sagen-tun { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; margin: .75rem 0; }
+  .sagen-tun > div { display: flex; flex-direction: column; gap: .25rem; border-radius: 8px; padding: .6rem .9rem; }
+  .gesagt { border: 1px dashed var(--border); color: var(--muted); }
+  .gesagt b, .getan b { color: var(--fg); }
+  .getan { border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .sagen-tun .zahl { font-size: 2.4rem; font-weight: 700; line-height: 1.1; color: var(--fg); }
+  .getan .zahl { color: var(--accent); }
+  /* Folie „vorher-entscheiden“: drei Ergebnisse, je mit der Handlung, die vorher feststeht. */
+  .baender { list-style: none; margin: 1rem 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+  .baender li { display: flex; flex-direction: column; gap: .25rem; padding: .7rem .9rem; border: 1px solid var(--border); border-radius: 8px; }
+  .baender li span { color: var(--muted); }
+  .baender .tun { color: var(--fg); font-weight: 600; }
+  .band-unter { border-style: dashed !important; }
+  .band-ueber { border-color: var(--accent) !important; background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  :global(html[data-beamer]) .baender li { font-size: 1.15rem; }
+  @media (max-width: 700px) {
+    .sagen-tun, .baender { grid-template-columns: 1fr; }
+    :global(.sagen-tun-pfeil) { transform: rotate(90deg); justify-self: center; }
+  }
+</style>

@@ -219,8 +219,9 @@ describe('Folien von Tag 1 (echte Seiten)', () => {
     expect(folieZu(folien, '/innolab/methoden/problem-rahmen', 'pruefen')).toBe(i);
     expect(folieZu(folien, '/innolab/tag-1', 'ablauf')).toBe(0);
   });
-  it('jede Notiz zeigt auf eine existierende Folie', () => {
-    expect(notizenOhneFolie(folien, NOTIZEN)).toStrictEqual([]);
+  it('jede Notiz zeigt auf eine existierende Folie – auch auf Seiten außerhalb von Tag 1', () => {
+    const alle = Object.entries(quellen).flatMap(([pfad, q]) => folienAus(pfad, q));
+    expect(notizenOhneFolie(alle, NOTIZEN)).toStrictEqual([]);
   });
   it('jede Tag-1-Folie hat eine Notiz mit mindestens einem live-Stichwort', () => {
     const ohne = folien.filter((f) => !NOTIZEN[f.pfad]?.[f.id]?.live?.some((s) => s.trim() !== ''));

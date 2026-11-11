@@ -144,6 +144,10 @@ export const NOTIZEN_ENTSCHEIDUNGSLOG: Record<string, Notiz> = {
         frage: 'Wo kommt „getan“ in unserem Projekt her?',
         antwort: 'Aus Zahlen, die es schon gibt (wie die Kassendaten), oder aus Experimenten ab Tag 3. In den Interviews bis Tag 2 kommt man meist bis „erzählt“.',
       },
+      {
+        frage: 'Und wenn wir bewusst gegen einen Beleg entscheiden wollen?',
+        antwort: 'Erlaubt, aber offen: Die Zeile nennt den Beleg, der dagegen spricht, mit Stufe und ID, und im Grund steht, warum ihr trotzdem so entscheidet. Netflix nahm für „Grace and Frankie“ Bilder mit Tomlin und Fonda, obwohl Tomlin allein mehr Klicks brachte – „the experimental evidence made the decision more transparent“ (Stefan H. Thomke, The Scientific Mindset, S. 127; Ausnahmen erlaubt S. 87). Kasten im Handout unter dieser Folie; als Folie an Tag 3 auf der Experiment-Karte.',
+      },
     ],
   },
 
