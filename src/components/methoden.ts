@@ -74,7 +74,7 @@ export interface Pruefpunkt {
 export interface Methode {
   slug: string;
   name: string;
-  /** Kurstag, an dem die Methode eingeführt wird (1–4; Tag 5 und 6 sind Bautage, Tag 7 die Präsentation – dort kommt nichts Neues dazu). */
+  /** Kurstag, an dem die Methode eingeführt wird (1–5; Tag 6 ist Bautag, Tag 7 die Präsentation – dort kommt nichts Neues dazu). */
   tag: number;
   /** Minuten für Input, Übung und Festhalten zusammen. */
   dauer: number;
@@ -206,7 +206,7 @@ export const METHODEN: Methode[] = [
     ki: 'Liest eure Interviews und sucht die sechs Anti-Muster – mit Zitat aus Baum und Interview.',
   },
   {
-    slug: 'ziel-chance', name: 'Ziel-Chance wählen', tag: 2, dauer: 60,
+    slug: 'ziel-chance', name: 'Ziel-Chance wählen', tag: 3, dauer: 60,
     frage: 'An welcher Chance arbeiten wir als Nächstes – und warum gerade an dieser?',
     braucht: ['brief', 'synthese', 'baum'], ergibt: ['ziel'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 7, S. 96–104; Anthony W. Ulwick, „Turn Customer Input into Innovation“, HBR (2002)',
@@ -220,7 +220,7 @@ export const METHODEN: Methode[] = [
     ki: 'Fragt nach, welche Linse eure Wahl trägt und wo ihr vom gewünschten Ergebnis rückwärts argumentiert.',
   },
   {
-    slug: 'hmw', name: 'How Might We', tag: 2, dauer: 30,
+    slug: 'hmw', name: 'How Might We', tag: 3, dauer: 30,
     frage: 'Welche Frage öffnet für die Ziel-Chance möglichst viele Ideen?',
     braucht: ['ziel'], ergibt: ['chancen'],
     quelle: 'Warren Berger, „The Secret Phrase Top Innovators Use“, HBR Blog Network (2012); Teresa Torres, „Continuous Discovery Habits“ (2021), S. 94–95',
@@ -234,7 +234,7 @@ export const METHODEN: Methode[] = [
     ki: 'Prüft, ob eine Frage eine Lösung vorgibt, zu weit oder zu eng ist und aus Sicht der Kundschaft gestellt ist.',
   },
   {
-    slug: 'ideation', name: 'Ideation', tag: 2, dauer: 90,
+    slug: 'ideation', name: 'Ideation', tag: 3, dauer: 90,
     frage: 'Welche Lösungen gibt es für die Ziel-Chance – und welche drei vergleichen wir?',
     braucht: ['chancen'], ergibt: ['ideen'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 8, S. 106–114',
@@ -268,7 +268,7 @@ export const METHODEN: Methode[] = [
     frage: 'Welche unserer drei Ideen trifft das Profil am besten – und wie genau schafft sie Wert?',
     braucht: ['profil', 'ideen'], ergibt: ['valuemap'],
     pruefliste: [
-      { id: 'value-map-lueckensatz', text: 'Für jede der drei Ideen von Tag 2 steht ein Lückensatz.' },
+      { id: 'value-map-lueckensatz', text: 'Für jede der drei Ideen aus der Ideation steht ein Lückensatz.' },
       { id: 'value-map-segment', text: 'Unter Produkte und Services steht nur, was für dieses Segment gedacht ist.' },
       { id: 'value-map-fit-vergleich', text: 'Der Fit-Vergleich hakt jede Idee gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).' },
       { id: 'value-map-wahl', text: 'Gewählt ist die Idee mit dem besten Fit, mit einem Satz warum.' },
@@ -320,14 +320,14 @@ export const METHODEN: Methode[] = [
       { id: 'experiment-schwelle', text: 'Die Schwelle steht als „x von y“ fest, bevor der Test läuft.' },
       { id: 'experiment-schnellster', text: 'Es ist der schnellste Test dieser Woche, der den stärksten Beleg liefert, den ihr euch leisten könnt.' },
       { id: 'experiment-danach', text: 'Es steht da, was die Testpersonen danach erfahren; die riskanteste Annahme der anderen beiden Ideen steht je als Zeile darunter.' },
-      { id: 'experiment-origin', text: 'Am Abend: Die Origin Story führt zu genau einer Handlung, und diese Handlung ist die Messgröße der Karte.' },
+      { id: 'experiment-origin', text: 'An Tag 4: Die Origin Story führt zu genau einer Handlung, und diese Handlung ist die Messgröße der Karte.' },
       { id: 'experiment-lernkarte', text: 'Nach dem Test: Die Lernkarte nennt die Verlässlichkeit mit Grund und den Befund (gestützt, widerlegt, unklar oder neue Einsicht), bevor sie sagt, was ihr deshalb tut.' },
     ],
     ki: 'Pre-Mortem: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
-    slug: 'story-map', name: 'Story Map', tag: 3, dauer: 105,
+    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 105,
     frage: 'Was tun Menschen mit eurem Produkt, von Anfang bis Ende – und was baut ihr zuerst, um welchen Outcome zu erreichen?',
     braucht: ['brief', 'profil', 'valuemap', 'journey', 'annahmen'], ergibt: ['storymap'],
     pruefliste: [
@@ -343,7 +343,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Read This First, Kap. 1–5, 14',
   },
   {
-    slug: 'usage-story', name: 'Usage Story', tag: 3, dauer: 30,
+    slug: 'usage-story', name: 'Usage Story', tag: 4, dauer: 30,
     frage: 'Wo erlebt die Person im Kernablauf den Wert – und wie schnell ist danach Schluss?',
     braucht: ['annahmen', 'synthese', 'storymap', 'journey', 'profil', 'concept'], ergibt: ['usage'],
     pruefliste: [
@@ -359,7 +359,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2, 5–8',
   },
   {
-    slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 3, dauer: 90, prueflisteStand: 2,
+    slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 4, dauer: 90, prueflisteStand: 2,
     frage: 'Erreichen fünf Menschen mit dem Prototyp den Höhepunkt, ohne dass ihr helft?',
     braucht: ['usage', 'storymap', 'annahmen', 'entscheidungen'], ergibt: ['spike'],
     pruefliste: [
@@ -380,18 +380,18 @@ export const METHODEN: Methode[] = [
     braucht: ['brief'], ergibt: ['team'],
     pruefliste: [
       { id: 'scrum-produkte', text: 'Für jedes der drei Produkte stehen Product Owner, Linear-Projekt und als Produktziel der Outcome aus dem Produkt-Brief („Wir glauben, dass … Wir merken es, wenn …“), der sagt, was Menschen danach anders tun.' },
-      { id: 'scrum-rollen', text: 'Alle drei sind Developers in allen drei Produkten; der Scrum Master für Sprint 1 und Sprint 2 ist genannt.' },
-      { id: 'scrum-termine', text: 'Sprint 1 und Sprint 2 haben ein Datum für Planning, Review und Retro; das Daily hat Zeit und Ort an Kurstagen und eine Regel für dazwischen.' },
+      { id: 'scrum-rollen', text: 'Alle drei sind Developers in allen drei Produkten; der Scrum Master für den Sprint ist genannt.' },
+      { id: 'scrum-termine', text: 'Der Sprint hat ein Datum für Planning, Review und Retro; das Daily hat Zeit und Ort am Kurstag und eine Regel für dazwischen.' },
       { id: 'scrum-dod', text: 'Die Definition of Done ist eine Liste von Punkten, die sich im Browser, auf GitHub oder in Supabase prüfen lassen, und gilt für alle drei Produkte.' },
       { id: 'scrum-dod-messung', text: 'In der Definition of Done steht das Ereignis, das die Outcome-Metrik des Produkt-Briefs misst, mit seinen Feldern – ohne Name und E-Mail.' },
-      { id: 'scrum-abweichungen', text: 'Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, ungleiche Sprintlängen, schriftliches Daily.' },
-      { id: 'scrum-lego', text: 'Unter „Aus Lego4Scrum“ steht je Person eine Sache, die das Team in den echten Sprints anders macht.' },
+      { id: 'scrum-abweichungen', text: 'Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, ein einziger Sprint von einer Woche, schriftliches Daily.' },
+      { id: 'scrum-lego', text: 'Unter „Aus Lego4Scrum“ steht je Person eine Sache, die das Team im echten Sprint anders macht.' },
     ],
     ki: 'Keine Rolle – Scrum lernt ihr im Spiel und im Team.',
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Manifesto for Agile Software Development (2001); Alexey Krivitsky, lego4scrum (2023); Ron Jeffries, The Nature of Software Development (2015)',
   },
   {
-    slug: 'backlog', name: 'Backlog aus Issues', tag: 4, dauer: 60, prueflisteStand: 2,
+    slug: 'backlog', name: 'Backlog aus Issues', tag: 5, dauer: 60, prueflisteStand: 2,
     frage: 'Welche Issues ergeben sich aus dem ersten Slice – und in welcher Reihenfolge?',
     braucht: ['storymap', 'usage', 'spike', 'experimente', 'team', 'entscheidungen'], ergibt: ['issues'],
     pruefliste: [
@@ -406,7 +406,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Kap. 2, 4, 6–12; Bill Wake, INVEST in Good Stories (2003); Mike Cohn, Agile Estimating and Planning (2005), Kap. 9; Ron Jeffries, The Nature of Software Development (2015), S. 13, 36, 84–87; Vasco Duarte, NoEstimates (2016), S. 42–43, 71',
   },
   {
-    slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 4, dauer: 45, prueflisteStand: 2,
+    slug: 'akzeptanzkriterien', name: 'Akzeptanzkriterien', tag: 5, dauer: 45, prueflisteStand: 2,
     frage: 'Woran prüfen wir, dass ein Issue fertig ist – und wie zeigen wir es im Review?',
     braucht: ['issues', 'brief', 'team'], ergibt: ['kriterien'],
     pruefliste: [
@@ -421,37 +421,35 @@ export const METHODEN: Methode[] = [
     quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Kap. 6, 7, 11, 12, 16; Dan North, Introducing BDD (2006); Cucumber, Gherkin Reference; Bill Wake, INVEST (2003); Jeffries (2015), S. 44; Cohn (2005), S. 222; Duarte (2016), S. 70–71; Evals als Ergänzung des Kurses nach Anthropic, Define success criteria and build evaluations',
   },
   {
-    slug: 'schneiden', name: 'Schneiden statt Schätzen', tag: 4, dauer: 30, prueflisteStand: 2,
+    slug: 'schneiden', name: 'Schneiden statt Schätzen', tag: 5, dauer: 30, prueflisteStand: 2,
     frage: 'Passt jedes Issue in einen Durchgang mit Claude – und versteht es das ganze Team?',
     braucht: ['issues', 'kriterien'], ergibt: ['geschnitten'],
     pruefliste: [
-      { id: 'schneiden-plan-check', text: 'Zu jedem Issue für Sprint 1 steht als Kommentar das Ergebnis des Plan-Checks: passt, geteilt in … oder ergänzt um ….' },
+      { id: 'schneiden-plan-check', text: 'Zu jedem Issue, das in den Sprint kommen könnte, steht als Kommentar das Ergebnis des Plan-Checks: passt, geteilt in … oder ergänzt um ….' },
       { id: 'schneiden-ein-durchgang', text: 'Kein Issue braucht mehr als einen Durchgang; was zu groß war, ist geteilt, und jedes Teil ist ein senkrechter Schnitt mit mindestens einem eigenen Akzeptanzkriterium.' },
       { id: 'schneiden-entscheidung', text: 'Was Claude annehmen musste, steht jetzt als eure Entscheidung im Issue – in den Akzeptanzkriterien oder unter Nicht im Umfang.' },
-      { id: 'schneiden-spike', text: 'Ein Teil, das nur dem Lernen dient, heißt Spike, nennt seine Frage und ist nicht für Sprint 1 vorgesehen.' },
+      { id: 'schneiden-spike', text: 'Ein Teil, das nur dem Lernen dient, heißt Spike, nennt seine Frage und ist nicht für den Sprint vorgesehen.' },
       { id: 'schneiden-gesehen', text: 'Die geteilten Issues haben die beiden anderen gesehen; ihre Fragen sind im Issue beantwortet.' },
     ],
     ki: 'Macht im Plan-Modus einen Plan pro Issue, ohne zu bauen, und sagt, was es annehmen müsste – ihr entscheidet, ob es passt.',
     quelle: 'Vasco Duarte, NoEstimates (2016), S. 68–71, 80–88, 97; Ron Jeffries, The Nature of Software Development (2015), S. 37–40; Jeff Patton, User Story Mapping (2014), Kap. 4, 10–12, 16–17; Bill Wake, INVEST (2003); Gegenposition: James Grenning, Planning Poker (2002), und Mike Cohn, Agile Estimating and Planning (2005), S. 51–59; Teilen nach Cohn Kap. 12, S. 121–125',
   },
   {
-    slug: 'sprint', name: 'Sprint', tag: 4, dauer: 150, prueflisteStand: 2,
+    slug: 'sprint', name: 'Sprint', tag: 5, dauer: 105, prueflisteStand: 2,
     frage: 'Was liefern wir in diesem Sprint – und was lernen wir daraus?',
     braucht: ['geschnitten', 'team', 'brief'], ergibt: ['inkrement', 'sprintlog'],
     pruefliste: [
       { id: 'sprint-ziel', text: 'Jedes Produkt hat ein Sprint-Ziel in einem Satz, der sagt, was danach jemand kann – keine Liste von Issues.' },
-      { id: 'sprint-auswahl', text: 'Die ausgewählten Issues stehen mit Kennung und Anzahl da; das Mess-Issue ist in Sprint 1 dabei.' },
-      { id: 'sprint-nicht-mehr', text: 'Ab Sprint 2 sind es nicht mehr Issues, als im Sprint davor nach der Definition of Done fertig wurden.' },
+      { id: 'sprint-auswahl', text: 'Die ausgewählten Issues stehen mit Kennung und Anzahl da; das Mess-Issue ist dabei.' },
       { id: 'sprint-beleg', text: 'Jedes als fertig genannte Issue hat einen Beleg je Akzeptanzkriterium, den Link zum Pull Request und den Namen der prüfenden Person.' },
       { id: 'sprint-review', text: 'Das Review hält fest, ob das Sprint-Ziel erreicht ist, was Tests und Messung ergeben haben und welche Issues zurück in den Backlog gehen.' },
-      { id: 'sprint-retro', text: 'Die Retro von Sprint 1 (Lightning Decision Jam) endet mit einer Maßnahme, einem ersten Schritt, der am selben Tag erledigt wurde, einer verantwortlichen Person und dem Datum der Prüfung.' },
-      { id: 'sprint-retro-kurz', text: 'Die kurze Retro von Sprint 2 hält fest, ob die Maßnahme aus Sprint 1 gewirkt hat und woran man es sieht.' },
+      { id: 'sprint-retro', text: 'Die Retro (Lightning Decision Jam) endet mit einer Maßnahme, einem ersten Schritt, der am selben Tag erledigt wurde, einer verantwortlichen Person und dem Datum der Prüfung.' },
     ],
     ki: 'Baut die Issues als Developer im Rahmen der Definition of Done; prüft, ob die Issues zusammen das Sprint-Ziel erreichen.',
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Ron Jeffries, The Nature of Software Development (2015), Kap. 5–6; AJ&Smart, Lightning Decision Jam (2020)',
   },
   {
-    slug: 'pitch', name: 'Pitch', tag: 4, dauer: 45, prueflisteStand: 2,
+    slug: 'pitch', name: 'Pitch', tag: 5, dauer: 45, prueflisteStand: 2,
     frage: 'Überzeugt das Produkt – mit Belegen und einem sichtbaren Unterschied zu dem, was es heute gibt?',
     braucht: ['brief', 'profil', 'valuemap', 'concept', 'experimente', 'origin', 'geschaeftsmodell', 'usage', 'spike', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
     pruefliste: [
@@ -469,17 +467,22 @@ export const METHODEN: Methode[] = [
   },
 ];
 
-/** Sieben Termine: Tag 1–4 Input und Übung (Tag 2 als halber Tag online), Tag 5 und 6 (halber Tag) nur Bauen – mit den
- *  Scrum-Events, aber ohne neue Methode –, Tag 7 (halber Tag) Präsentation. Dazwischen arbeitet ihr zu Hause; gebaut wird bis Tag 6.
+/** Sieben Termine: Tag 1–5 Input und Übung (Tag 2 als halber Tag online; an Tag 5 beginnt der eine Sprint), Tag 6 (halber
+ *  Tag, online) nur Bauen – mit Tests und Scrum-Events, aber ohne neue Methode –, Tag 7 (halber Tag) Präsentation. Dazwischen
+ *  arbeitet ihr zu Hause; gebaut wird bis Tag 6.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). Ohne datum: Termin folgt
- *  – dann keine Jetzt-Markierung auf der Tagesseite. */
-export const TAGE: { n: number; datum?: string; titel: string; text: string }[] = [
+ *  – dann keine Jetzt-Markierung auf der Tagesseite.
+ *  zusatz: ein weiterer halber Tag am selben Datum, der noch nicht bestätigt ist (offen) – Übersicht und Startseite zeigen
+ *  ihn mit „(?)“; der Kurs muss ohne ihn funktionieren. */
+export interface Zusatztermin { zeit: string; was: string; offen: boolean }
+export const TAGE: { n: number; datum?: string; titel: string; text: string; zusatz?: Zusatztermin }[] = [
   { n: 1, datum: '2026-10-22', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
   { n: 2, datum: '2026-11-12', titel: 'Kunde & Erlebnis', text: 'Snapshots besprechen, Experience Map, Opportunity Solution Tree.' },
-  { n: 3, datum: '2026-11-21', titel: 'Lösung, Story, Prototyp', text: 'Kundenprofil und Value Map, Concept und Usage Story, Story Map, erster Prototyp.' },
-  { n: 4, datum: '2026-11-28', titel: 'Scrum im Team', text: 'Drei Produkte, ein Takt: Scrum und Lego4Scrum, Backlog, Akzeptanzkriterien, Sprint-1-Planning, Pitch.' },
-  { n: 5, datum: '2026-12-12', titel: 'Bauen & Review', text: 'Bauen, Usability-Tests über Kreuz, Sprint-1-Review, Retro, Sprint-2-Planning mit Störfall.' },
-  { n: 6, datum: '2026-12-19', titel: 'Bauen', text: 'Sprint 2 fertig bauen, Review und Retro: Der Prototyp steht.' },
+  { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, Concept Story, Geschäftsmodell, Experiment-Karte.' },
+  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Scrum und Lego4Scrum, Team und Definition of Done.' },
+  { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning, Pitch – dann wird gebaut.' },
+  { n: 6, datum: '2026-12-19', titel: 'Bauen & Review', text: 'Fertig bauen, Usability-Tests über Kreuz, Sprint-Review und Retro: Der Prototyp steht.',
+    zusatz: { zeit: '14:00–18:00', was: 'Pitch-Probe und Puffer', offen: true } },
   { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
 ];
 

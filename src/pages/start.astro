@@ -22,7 +22,8 @@ const coding = [
   { n: 2, datum: '2026-10-09', t: 'Bauen wie ein Profi' },
   { n: 3, datum: '2026-10-15', t: 'Shippen & selbständig werden' },
 ].map((t) => ({ ...t, d: datumKurz(t.datum) }));
-const innolab = TAGE.map((t) => ({ n: t.n, d: t.datum ? datumKurz(t.datum) : 'Termin folgt', t: t.titel }));
+// Ein offener Zusatztermin (TAGE zusatz) steht mit „(?)“ hinter dem Datum.
+const innolab = TAGE.map((t) => ({ n: t.n, d: t.datum ? datumKurz(t.datum) : 'Termin folgt', t: t.titel, z: t.zusatz ? ` + ${t.zusatz.zeit}${t.zusatz.offen ? ' (?)' : ''}` : '' }));
 // Zur Bauzeit entschieden; das Skript unten schaltet zur Laufzeit frei, falls die Seite vor dem Stichtag gebaut wurde.
 const offen = innolabOffen(new Date());
 ---
@@ -58,7 +59,7 @@ const offen = innolabOffen(new Date());
         <a class:list={['kurs', { gesperrt: !offen }]} href={offen ? kursLink('/innolab', '') : undefined} data-kurs="/innolab" role={offen ? undefined : 'link'} aria-disabled={offen ? undefined : 'true'}>
           <span class="kurs-zeit">Oktober 2026 – Jänner 2027 · 7 Tage</span>
           <h2><span class="kurs-chev" aria-hidden="true">›</span> Innolab</h2>
-          <ol class="kurs-tage">{innolab.map((t) => <li><span>Tag {t.n} · {t.d}</span> {t.t}</li>)}</ol>
+          <ol class="kurs-tage">{innolab.map((t) => <li><span>Tag {t.n} · {t.d}{t.z}</span> {t.t}</li>)}</ol>
           <span class="kurs-hinweis" data-hinweis hidden={offen}>Öffnet nach dem Coding-Kurs, am 16. Oktober.</span>
         </a>
       </div>

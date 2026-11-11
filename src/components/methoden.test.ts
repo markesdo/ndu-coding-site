@@ -48,11 +48,11 @@ describe('methoden', () => {
     }
   });
 
-  it('Kurstage laufen aufsteigend von 1 bis 4 – ab Tag 5 wird nur gebaut –, Orte sind bekannt', () => {
+  it('Kurstage laufen aufsteigend von 1 bis 5 – Tag 6 ist nur Bauen, Tag 7 die Präsentation –, Orte sind bekannt', () => {
     const tage = METHODEN.map((m) => m.tag);
     expect(tage).toEqual([...tage].sort((a, b) => a - b));
     expect(tage[0]).toBe(1);
-    for (const t of tage) expect(t).toBeLessThanOrEqual(4);
+    for (const t of tage) expect(t).toBeLessThanOrEqual(5);
     for (const a of ARTEFAKTE) {
       expect(a.lebtIn.length, a.id).toBeGreaterThan(0);
       for (const o of a.lebtIn) expect(Object.keys(ORTE)).toContain(o);
@@ -109,7 +109,8 @@ describe('methoden', () => {
   });
 
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
-    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map', 'baum', 'ziel-chance', 'hmw', 'ideation']);
+    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map', 'baum']);
+    expect(methodenVonTag(6)).toEqual([]);
     expect(methodenVonTag(7)).toEqual([]);
   });
 
@@ -161,7 +162,8 @@ describe('methoden', () => {
       'sprint-ziel', 'sprint-auswahl', 'sprint-nicht-mehr', 'sprint-beleg', 'sprint-review', 'sprint-retro', 'sprint-retro-kurz',
       'pitch-einstieg', 'pitch-demo', 'pitch-belege', 'pitch-gescheitert', 'pitch-outcome', 'pitch-position', 'pitch-pitch-satz', 'pitch-geschaeftsmodell',
     ];
-    const GESTRICHEN: string[] = [];
+    // Ein Sprint statt zwei: kein „gestriges Wetter“ aus Sprint 1 und keine kurze Retro von Sprint 2 mehr.
+    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz'];
     const jetzt = METHODEN.flatMap((m) => m.pruefliste ?? []).map((p) => p.id);
     for (const id of jetzt) expect(VERGEBEN, `${id}: neue ID in VERGEBEN eintragen`).toContain(id);
     for (const id of VERGEBEN) {
