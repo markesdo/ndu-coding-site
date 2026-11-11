@@ -32,12 +32,16 @@ export interface Kriterium {
     warum: string;
   };
   quelle: {
-    /** Methodenseiten mit Anker, z. B. /innolab/methoden/problem-rahmen#fehler-2. */
-    seiten: readonly string[];
+    /** Methodenseiten mit Anker (z. B. /innolab/methoden/problem-rahmen#fehler-2) und Linktext „Seite – Überschrift des
+     *  Ankers“, wörtlich wie auf der Seite (kriterien.test.ts prüft das). So unterscheiden sich zwei Links auf dieselbe Seite. */
+    seiten: readonly { href: string; titel: string }[];
     /** Buch oder Artikel mit Seitenzahl, wie auf der Methodenseite zitiert. */
     buch: string;
   };
 }
+
+/** Form jeder Kriteriums-ID; feedback@1 liest nur diese Form (kriterien.test.ts prüft den ganzen Katalog dagegen). */
+export const KRITERIUM_ID = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 
 const BEISPIELE = 'src/werkstatt/beispiele';
 const SEITEN = 'src/pages/innolab/methoden';
@@ -60,7 +64,13 @@ export const KRITERIEN: readonly Kriterium[] = [
       },
       warum: '500 Downloads sagen nichts darüber, ob jemand seinen Zug erwischt; die starke Fassung beschreibt, was Menschen danach anders tun.',
     },
-    quelle: { seiten: ['/innolab/methoden/problem-rahmen#fehler-2', '/innolab/tag-1#outcome-arten'], buch: `${TORRES}, S. 37–41` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/problem-rahmen#fehler-2', titel: 'Problem-Rahmen & Produkt-Brief – Fehler 2: Der Output steckt im Outcome' },
+        { href: '/innolab/tag-1#outcome-arten', titel: 'Tag 1 – Drei Arten von Zielen' },
+      ],
+      buch: `${TORRES}, S. 37–41`,
+    },
   },
   {
     id: 'outcome-nicht-messbar',
@@ -72,7 +82,13 @@ export const KRITERIEN: readonly Kriterium[] = [
       stark: { text: 'Wenn mehr Pendler*innen morgens mit Kaffee in den Zug steigen – zuerst beobachtet an wenigen Testpersonen.', fundort: `${BEISPIELE}/brief.json` },
       warum: 'Zufriedenheit sieht man niemandem an; ob jemand mit Kaffee in den Zug steigt, lässt sich schon an wenigen Testpersonen beobachten und zählen – eine Zielzahl braucht es dafür noch nicht.',
     },
-    quelle: { seiten: ['/innolab/methoden/problem-rahmen#fehler-2', '/innolab/tag-1#outcome-kaffeebar'], buch: `${TORRES}, S. 37–38, 44` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/problem-rahmen#fehler-2', titel: 'Problem-Rahmen & Produkt-Brief – Fehler 2: Der Output steckt im Outcome' },
+        { href: '/innolab/tag-1#outcome-kaffeebar', titel: 'Tag 1 – Drei Arten von Zielen bei der Kaffeebar' },
+      ],
+      buch: `${TORRES}, S. 37–38, 44`,
+    },
   },
   {
     id: 'loesung-im-problem',
@@ -87,7 +103,13 @@ export const KRITERIEN: readonly Kriterium[] = [
       },
       warum: 'Die schwache Fassung lässt nur eine Lösung zu, die App; die starke beschreibt das Problem und lässt Platz für mehrere – auch für bessere, die erst in den Interviews auftauchen.',
     },
-    quelle: { seiten: ['/innolab/methoden/problem-rahmen#fehler-1', '/innolab/methoden/problem-rahmen#loesungsraum'], buch: `${TORRES}, S. 94–95` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/problem-rahmen#fehler-1', titel: 'Problem-Rahmen & Produkt-Brief – Fehler 1: Die Lösung steckt im Problem' },
+        { href: '/innolab/methoden/problem-rahmen#loesungsraum', titel: 'Problem-Rahmen & Produkt-Brief – Ein Problem, mehrere Lösungen' },
+      ],
+      buch: `${TORRES}, S. 94–95`,
+    },
   },
   {
     id: 'art-der-annahme',
@@ -98,7 +120,12 @@ export const KRITERIEN: readonly Kriterium[] = [
       stark: { text: 'Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können.', zusatz: 'Art: bedienbar', fundort: `${BEISPIELE}/annahmen.json` },
       warum: 'Ob Pendler*innen im Gehen in 20 Sekunden bestellen können, fragt, ob sie damit zurechtkommen (bedienbar), nicht, ob sie es wollen (wünschenswert) – mit der falschen Art überseht ihr eine Art von Risiko.',
     },
-    quelle: { seiten: ['/innolab/methoden/annahmen#arten'], buch: `${BLAND}, S. 32` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/annahmen#arten', titel: 'Annahmen-Map – Vier Arten von Annahmen' },
+      ],
+      buch: `${BLAND}, S. 32`,
+    },
   },
   {
     id: 'annahme-nicht-pruefbar',
@@ -109,7 +136,13 @@ export const KRITERIEN: readonly Kriterium[] = [
       stark: { text: 'Wir glauben, dass Pendler*innen schon vor der Ankunft am Bahnhof entscheiden, ob sie Kaffee holen.', fundort: `${BEISPIELE}/annahmen.json` },
       warum: 'Die schwache Fassung klingt wie eine Tatsache und sagt nicht, woran man es merkt; die starke ist als Annahme markiert und nennt einen Zeitpunkt, den Interviews widerlegen können – bei der Kaffeebar ist genau das passiert (D4).',
     },
-    quelle: { seiten: ['/innolab/methoden/annahmen#beispiel', '/innolab/methoden/experiment#karte'], buch: `${BLAND}, S. 46` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/annahmen#beispiel', titel: 'Annahmen-Map – Am Beispiel: die riskanteste Annahme' },
+        { href: '/innolab/methoden/experiment#karte', titel: 'Experiment-Karte & Origin Story – Die Experiment-Karte' },
+      ],
+      buch: `${BLAND}, S. 46`,
+    },
   },
   {
     id: 'meinungsfrage',
@@ -120,7 +153,13 @@ export const KRITERIEN: readonly Kriterium[] = [
       stark: { text: 'Was hast du gemacht, als die Schlange zu lang war?', fundort: `${SEITEN}/interview.astro` },
       warum: 'Auf eine Meinungsfrage kommt ein höfliches Ja; die starke Fassung fragt nach dem, was jemand an einem echten Morgen getan hat – das ist eine Tatsache, nach der man nachfragen kann.',
     },
-    quelle: { seiten: ['/innolab/methoden/interview#statt-besser', '/innolab/methoden/interview#warum-geschichten'], buch: `${FITZPATRICK}, S. 24–29; ${TORRES}, S. 60–63` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/interview#statt-besser', titel: 'Jobs to be Done & Mom Test – Eure Fragen umschreiben' },
+        { href: '/innolab/methoden/interview#warum-geschichten', titel: 'Jobs to be Done & Mom Test – Warum Meinungsfragen täuschen' },
+      ],
+      buch: `${FITZPATRICK}, S. 24–29; ${TORRES}, S. 60–63`,
+    },
   },
   {
     id: 'verallgemeinerung',
@@ -131,7 +170,13 @@ export const KRITERIEN: readonly Kriterium[] = [
       stark: { text: 'Erzähl mir vom letzten Morgen, an dem du am Bahnhof Kaffee wolltest.', fundort: `${BEISPIELE}/leitfaden.json` },
       warum: '„Was fällt dir schwer?“ fragt nach allen Morgen zugleich, und die Antwort beschreibt das ideale Ich; der letzte Morgen hat eine Uhrzeit, eine Schlange und eine Entscheidung, nach denen man fragen kann.',
     },
-    quelle: { seiten: ['/innolab/methoden/interview#forschungsfrage', '/innolab/methoden/interview#ausgraben'], buch: `${TORRES}, S. 60–61, 64–67; ${FITZPATRICK}, S. 24–29` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/interview#forschungsfrage', titel: 'Jobs to be Done & Mom Test – Was ihr wissen wollt ≠ was ihr fragt' },
+        { href: '/innolab/methoden/interview#ausgraben', titel: 'Jobs to be Done & Mom Test – Die Geschichte ausgraben' },
+      ],
+      buch: `${TORRES}, S. 60–61, 64–67; ${FITZPATRICK}, S. 24–29`,
+    },
   },
   {
     id: 'beleg-ohne-quelle',
@@ -145,7 +190,13 @@ export const KRITERIEN: readonly Kriterium[] = [
       },
       warum: 'Mit den Zitat-IDs kann jede*r nachlesen, wer das gesagt hat; ohne sie bleibt „gesagt“ eine Behauptung – und bei „getan“ nennt die Beleg-Notiz die Quelle, etwa „Kassendaten September“.',
     },
-    quelle: { seiten: ['/innolab/methoden/entscheidungslog#beispiel', '/innolab/methoden/annahmen#beleg'], buch: `${BLAND}, S. 52` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/entscheidungslog#beispiel', titel: 'Entscheidungslog – Am Beispiel: die Kaffeebar am Bahnhof' },
+        { href: '/innolab/methoden/annahmen#beleg', titel: 'Annahmen-Map – Was zählt als Beleg?' },
+      ],
+      buch: `${BLAND}, S. 52`,
+    },
   },
   {
     id: 'zwei-zielgruppen',
@@ -157,7 +208,13 @@ export const KRITERIEN: readonly Kriterium[] = [
       stark: { text: 'Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten', fundort: `${BEISPIELE}/brief.json` },
       warum: 'Pendler*innen kämpfen mit der Zeit bis zur Abfahrt, Büros mit Sammelbestellungen – zwei Gruppen mit zwei Problemen; die starke Fassung nennt eine Gruppe in einer konkreten Situation, sodass der ganze Brief auf dieselben Menschen passt.',
     },
-    quelle: { seiten: ['/innolab/methoden/problem-rahmen#worum', '/innolab/methoden/kundenprofil#fehler'], buch: `${VPD}, S. 78 (PDF)` },
+    quelle: {
+      seiten: [
+        { href: '/innolab/methoden/problem-rahmen#worum', titel: 'Problem-Rahmen & Produkt-Brief – Worum es geht' },
+        { href: '/innolab/methoden/kundenprofil#fehler', titel: 'Kundenprofil – Sechs häufige Fehler' },
+      ],
+      buch: `${VPD}, S. 78 (PDF)`,
+    },
   },
 ];
 
@@ -177,4 +234,11 @@ export function kriteriumPasst(k: Kriterium, artefakt: ArtefaktName, zeilenId?: 
 /** Die Kriterien zur Auswahl, in der Reihenfolge des Katalogs. */
 export function kriterienFuer(artefakt: ArtefaktName, zeilenId?: string): Kriterium[] {
   return KRITERIEN.filter((k) => kriteriumPasst(k, artefakt, zeilenId));
+}
+
+/** Nach einem Wechsel der Zeile in der Auswahl der Lehrenden: das gewählte Kriterium, wenn es noch passt, sonst keins ('').
+ *  So taucht ein verworfenes Kriterium nicht still wieder auf, wenn man zur alten Zeile zurückwechselt. */
+export function kriteriumBehalten(artefakt: ArtefaktName, zeilenId: string | undefined, id: string): string {
+  const k = kriterium(id);
+  return k && kriteriumPasst(k, artefakt, zeilenId) ? id : '';
 }

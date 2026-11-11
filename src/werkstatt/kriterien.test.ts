@@ -5,7 +5,8 @@ import { describe, expect, it } from 'vitest';
 import annahmen from './beispiele/annahmen.json';
 import entscheidungen from './beispiele/entscheidungen.json';
 import { BRIEF_ABSCHNITTE } from './feedback';
-import { KRITERIEN, kriterienFuer, kriterium, kriteriumPasst, type Fassung } from './kriterien';
+import { METHODEN } from '../components/methoden';
+import { KRITERIEN, KRITERIUM_ID, kriterienFuer, kriterium, kriteriumBehalten, kriteriumPasst, type Fassung } from './kriterien';
 import { ARTEFAKT_NAMEN } from './schemas/index';
 
 const lesen = (pfad: string) => readFileSync(pfad, 'utf8');
@@ -35,6 +36,8 @@ describe('Kriterien-Katalog', () => {
       'meinungsfrage', 'verallgemeinerung', 'beleg-ohne-quelle', 'zwei-zielgruppen',
     ]);
     expect(new Set(ids).size).toBe(ids.length);
+    // feedback@1 liest nur diese Form; eine andere ID machte die Datei nach dem Schreiben unlesbar.
+    expect(ids.filter((id) => !KRITERIUM_ID.test(id))).toStrictEqual([]);
     expect(kriterium('meinungsfrage')?.name).toBe('Meinungsfrage statt Geschichte');
     expect(kriterium('gibt-es-nicht')).toBeUndefined();
   });
@@ -62,15 +65,23 @@ describe('Kriterien-Katalog', () => {
     expect(warum.trim()).toMatch(/[.!?]$/);
   });
 
-  it.each(KRITERIEN.map((k) => [k.id, k] as const))('%s: Quelle mit Methodenseite (Anker vorhanden) und Buchseite', (_, k) => {
+  it.each(KRITERIEN.map((k) => [k.id, k] as const))('%s: Quelle mit Methodenseite (Anker vorhanden, Linktext wie die Seite) und Buchseite', (_, k) => {
     expect(k.quelle.seiten.length).toBeGreaterThan(0);
-    for (const s of k.quelle.seiten) {
-      const m = /^\/innolab\/([a-z0-9/-]+)#([a-z0-9-]+)$/.exec(s);
-      expect(m, s).not.toBeNull();
+    for (const { href, titel } of k.quelle.seiten) {
+      const m = /^\/innolab\/([a-z0-9/-]+)#([a-z0-9-]+)$/.exec(href);
+      expect(m, href).not.toBeNull();
       const datei = `src/pages/innolab/${m![1]}.astro`;
       expect(existsSync(datei), datei).toBe(true);
-      expect(lesen(datei), `${s}: Anker fehlt`).toContain(`id="${m![2]}"`);
+      // Linktext: „Seite – Überschrift des Ankers“, beides wörtlich (Name aus methoden.ts bzw. „Tag N“, h2 der Seite).
+      const h2 = new RegExp(`<h2 id="${m![2]}">([^<]*)</h2>`).exec(lesen(datei));
+      expect(h2, `${href}: Anker fehlt`).not.toBeNull();
+      const methode = /^methoden\/(.+)$/.exec(m![1]);
+      const tag = /^tag-(\d+)$/.exec(m![1]);
+      const seite = methode ? METHODEN.find((x) => x.slug === methode[1])?.name : tag ? `Tag ${tag[1]}` : undefined;
+      expect(titel).toBe(`${seite} – ${h2![1]}`);
     }
+    // Zwei Links auf dieselbe Seite sind am Text zu unterscheiden.
+    expect(new Set(k.quelle.seiten.map((s) => s.titel)).size).toBe(k.quelle.seiten.length);
     expect(k.quelle.buch).toMatch(/S\. \d/);
   });
 
@@ -110,6 +121,14 @@ describe('Welche Kriterien passen (NDU-41)', () => {
     expect(ids('entscheidungen')).toStrictEqual(['annahme-nicht-pruefbar', 'beleg-ohne-quelle']);
     expect(ids('leitfaden', 'F1')).toStrictEqual(['meinungsfrage', 'verallgemeinerung']);
     expect(ids('interviews')).toStrictEqual([]);
+  });
+
+  it('kriteriumBehalten: nach einem Wechsel der Zeile bleibt nur ein Kriterium, das noch passt', () => {
+    expect(kriteriumBehalten('brief', 'outcome', 'output-statt-outcome')).toBe('output-statt-outcome');
+    expect(kriteriumBehalten('brief', 'problem', 'output-statt-outcome')).toBe('');
+    expect(kriteriumBehalten('brief', undefined, 'output-statt-outcome')).toBe('output-statt-outcome');
+    expect(kriteriumBehalten('brief', 'outcome', '')).toBe('');
+    expect(kriteriumBehalten('brief', 'outcome', 'gibt-es-nicht')).toBe('');
   });
 
   it('kriteriumPasst: Artefakt zuerst, Abschnitt nur beim Brief', () => {

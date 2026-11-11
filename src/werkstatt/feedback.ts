@@ -7,7 +7,7 @@
 // NDU-41: Feedback der Lehrenden trägt optional ein Kriterium aus dem Katalog (kriterien.ts). Neues optionales Feld, darum
 // weiter feedback@1 (Regel im Werkstatt-Design: neue Felder optional → keine neue Version); alte Dateien bleiben gültig.
 import { z } from 'zod';
-import { kriterium as kriteriumAusKatalog, kriteriumPasst } from './kriterien.js';
+import { KRITERIUM_ID, kriterium as kriteriumAusKatalog, kriteriumPasst } from './kriterien.js';
 import { ARTEFAKT_NAMEN, ARTEFAKTE, type ArtefaktName, type DatenVon } from './schemas/index.js';
 import { graphemAnzahl } from './text.js';
 
@@ -80,9 +80,8 @@ export function zeilenAuswahl(name: ArtefaktName, daten: unknown): ZeilenWahl[] 
 }
 
 const FEEDBACK_ID = /^FB[1-9][0-9]*$/;
-// Form einer Kriteriums-ID (kriterien.ts). Ob es sie im Katalog gibt und ob sie passt, prüft feedbackSchreiben beim
-// Schreiben, nicht das Lesen: Eine Datei bleibt lesbar, auch wenn der Katalog sich später ändert.
-const KRITERIUM_ID = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
+// Form einer Kriteriums-ID: KRITERIUM_ID aus kriterien.ts. Ob es sie im Katalog gibt und ob sie passt, prüft
+// feedbackSchreiben beim Schreiben, nicht das Lesen: Eine Datei bleibt lesbar, auch wenn der Katalog sich später ändert.
 // Wie das Schema der Beleg-Notiz: Steuer- und Formatzeichen sind nicht erlaubt (U+202E dreht Text um); Zeilenumbrüche
 // (\n) und Tab schon, der Joiner in Emoji-Folgen auch.
 const STEUERZEICHEN = /(?![\n\t\p{Join_Control}])[\p{Cc}\p{Cf}\u2028\u2029\u0085]/u;

@@ -49,16 +49,19 @@ const zitat = (text: string, einzug: string) => text.split('\n').map((z) => `${e
 const kriteriumName = (id: string | undefined): string | undefined => (id === undefined ? undefined : kriterium(id)?.name);
 
 export function feedbackAusgabe(f: readonly FeedbackFaden[]): FeedbackAusgabe {
-  return f.map(({ feedback: e, antworten }) => ({
-    id: e.id,
-    ...(e.zeilenId !== undefined ? { zeile: zeilenName(e.artefakt, e.zeilenId) } : {}),
-    ...(kriteriumName(e.kriterium) !== undefined ? { kriterium: kriteriumName(e.kriterium) } : {}),
-    autor: e.autor,
-    datum: tag(e.datum),
-    text: e.text,
-    erledigt: e.erledigt === true,
-    antworten: antworten.map((a) => ({ autor: a.autor, datum: tag(a.datum), text: a.text })),
-  }));
+  return f.map(({ feedback: e, antworten }) => {
+    const krit = kriteriumName(e.kriterium);
+    return {
+      id: e.id,
+      ...(e.zeilenId !== undefined ? { zeile: zeilenName(e.artefakt, e.zeilenId) } : {}),
+      ...(krit !== undefined ? { kriterium: krit } : {}),
+      autor: e.autor,
+      datum: tag(e.datum),
+      text: e.text,
+      erledigt: e.erledigt === true,
+      antworten: antworten.map((a) => ({ autor: a.autor, datum: tag(a.datum), text: a.text })),
+    };
+  });
 }
 
 /** Abschnitt für den Text des Ergebnisses; leer, wenn es kein Feedback gibt. */
