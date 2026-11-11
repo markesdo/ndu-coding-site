@@ -204,7 +204,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ueberleitung: 'So sieht der Baum der Kaffeebar aus – und heute entsteht nur die Wurzel.',
     kern: [
       { text: 'Chancen aus Sicht der Kundschaft formulieren, nicht aus Sicht des Unternehmens. Torres: Niemand würde sagen „Ich hätte gern mehr Streaming-Abos“, wohl aber „Ich will Zugang zu spannenderen Inhalten“. Prüffrage pro Chance: „Haben wir das in Interviews gehört?“ bzw. „Kann ich mir vorstellen, dass jemand das sagt – oder wünschen wir es uns nur?“', quelle: `${TORRES}, S. 91–92` },
-      { text: 'Lösungen in Verkleidung: Kundschaft äußert oft Lösungswünsche, die wie Chancen klingen. Test: „Is there more than one way to address this opportunity?“ (wörtlich geprüft). Gibt es nur einen Weg, ist es keine Chance, sondern eine Lösung – dann die dahinterliegende Chance suchen.', quelle: `${TORRES}, S. 94` },
+      { text: 'Lösung statt Chance: Kundschaft äußert oft Lösungswünsche, die wie Chancen klingen. Test: „Is there more than one way to address this opportunity?“ (wörtlich geprüft). Gibt es nur einen Weg, ist es keine Chance, sondern eine Lösung – dann die dahinterliegende Chance suchen.', quelle: `${TORRES}, S. 94` },
       { text: 'Chancen müssen konkret sein: Themen, Designrichtlinien oder Stimmungen („Das soll einfach sein“, „Das ist zu schwer“) sind zu vage; konkret wäre „Eine Serie zu finden soll einfacher sein“ oder „Ich will auf dem Weg zur Arbeit im Zug schauen“.', quelle: `${TORRES}, S. 94` },
       { text: 'Annahmen-Tests stehen unter den Lösungen: Mit ihnen bewertet man, welche Lösung Kundenwert so schafft, dass er Geschäftswert treibt.', quelle: `${TORRES}, S. 27` },
     ],
@@ -227,7 +227,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Ist ‚Ich will per App vorbestellen‘ eine Chance oder eine Lösung – und woran erkennt ihr das?',
-      antwort: 'Eine Lösung in Verkleidung: Es gibt nur einen Weg, sie umzusetzen. Die Chance dahinter wäre etwa „Wenn ich anstehe, verpasse ich meinen Zug“, die App, Express-Theke und Kaffeewagen zulässt.',
+      antwort: 'Eine Lösung statt einer Chance: Es gibt nur einen Weg, sie umzusetzen. Die Chance dahinter wäre etwa „Wenn ich anstehe, verpasse ich meinen Zug“, die App, Express-Theke und Kaffeewagen zulässt.',
       falsch: '„Eine Chance, weil die Kundschaft es so sagt“ – Kund*innen äußern oft Lösungswünsche; der Prüfstein ist, ob es mehr als eine Lösung gibt.',
     },
     ueberleitung: 'Bevor wir eure Wurzel schreiben, ein Warm-up: Wie macht man Toast?',

@@ -200,7 +200,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <div class="muster">
       <div><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Zu breit</strong><span>„Die Oberfläche ist schwer bedienbar.“</span></div>
       <div data-schritt><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Nicht konkret</strong><span>„Das ist zu schwer.“</span></div>
-      <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Verkleidete Lösung</strong><span>„Per App vorbestellen.“</span></div>
+      <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Lösung statt Chance <small>(solution in disguise)</small></strong><span>„Per App vorbestellen.“</span></div>
       <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Gefühl statt Ursache</strong><span>„Anstellen ist ein Glücksspiel.“</span></div>
     </div>
     <p class="small muted"><BookOpen size={14} aria-hidden="true" /> Beispiel von Torres (S. 88, 94) · <Coffee size={14} aria-hidden="true" /> Kaffeebar (Tag 1, I4-2) · {TORRES}, S. 94–95.</p>
@@ -209,7 +209,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <ul>
         <li><strong>Zu breit, hängt an zwei Chancen.</strong> „Die Oberfläche ist schwer bedienbar“ passt unter mehrere Momente. Genauer gefasst wird daraus je eine Chance pro Moment, etwa „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ (S. 88, 94).</li>
         <li><strong>Nicht konkret.</strong> „Das ist zu schwer“ ist eine Stimmung; „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam“ ist eine Chance (S. 94).</li>
-        <li><strong>Verkleidete Lösung.</strong> „Per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1) lässt nur einen Weg zu. Die Chance dahinter, „Ich will den Zug nicht verpassen“, lässt mehrere zu (S. 94–95).</li>
+        <li><strong>Lösung statt Chance.</strong> „Per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1) lässt nur einen Weg zu. Die Chance dahinter, „Ich will den Zug nicht verpassen“, lässt mehrere zu (S. 94–95).</li>
         <li><strong>Gefühl statt Ursache.</strong> „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, verpasse ich meinen Zug“ (S. 95).</li>
       </ul>
     </div>
@@ -269,7 +269,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <li><strong>Senkrechte Kette:</strong> je nur eine Teilchance untereinander – dasselbe gemeint, oder fehlen Geschwister?</li>
       <li><strong>Hängt an zwei Chancen:</strong> zu breit – pro Moment eine eigene Chance.</li>
       <li><strong>Nicht konkret:</strong> „Das ist zu schwer“ statt „Den Titel einzugeben ist mühsam“.</li>
-      <li><strong>Verkleidete Lösung:</strong> nur ein Weg denkbar?</li>
+      <li><strong>Lösung statt Chance:</strong> nur ein Weg denkbar?</li>
       <li><strong>Gefühl statt Ursache:</strong> „Ich bin frustriert“ – worüber?</li>
     </ol>
     <p class="small muted">{TORRES}, S. 91–95.</p>
@@ -280,7 +280,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <li><strong>Senkrechte Kette.</strong> Eine Chance mit nur einer Teilchance, die wieder nur eine Teilchance hat. Entweder sagen alle dasselbe in anderen Worten – dann eine Chance daraus machen –, oder es fehlen Geschwister. Wisst ihr nicht, welche, fragt in den nächsten Interviews danach.</li>
         <li><strong>Hängt an zwei Chancen.</strong> Wenn die obersten Chancen eigene Zeitpunkte sind, hängt keine Chance an zwei übergeordneten Chancen. Passt eine unter zwei, ist sie zu breit: eine Chance pro Moment.</li>
         <li><strong>Nicht konkret.</strong> Themen, Gestaltungsregeln oder Stimmungen („Das ist zu schwer“) sind keine Chancen; „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam“ schon.</li>
-        <li><strong>Verkleidete Lösungen.</strong> „Ich will Werbung vorspulen können“ lässt nur eine Lösung zu. Die Chance dahinter, „Ich mag keine Werbung“, lässt mehrere zu. Test: Gibt es mehr als einen Weg, sie anzugehen?</li>
+        <li><strong>Lösung statt Chance.</strong> „Ich will Werbung vorspulen können“ lässt nur eine Lösung zu. Die Chance dahinter, „Ich mag keine Werbung“, lässt mehrere zu. Test: Gibt es mehr als einen Weg, sie anzugehen?</li>
         <li><strong>Gefühle als Chancen.</strong> Ein Gefühl zeigt, dass eine Chance in der Nähe ist. Gefühle lassen sich nicht lösen, ihre Ursachen schon – sucht die Ursache.</li>
       </ul>
     </div>
@@ -328,5 +328,6 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .muster strong { display: flex; align-items: center; gap: .45rem; }
   .muster strong :global(svg) { color: var(--muted); flex: none; }
   .muster span { font-size: 1.15rem; font-weight: 600; }
+  .muster small { font-weight: 400; color: var(--muted); }
   .muster + p :global(svg) { vertical-align: -2px; }
 </style>

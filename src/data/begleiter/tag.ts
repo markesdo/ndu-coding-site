@@ -21,7 +21,7 @@ export type TagKarte = {
 export const TAG_1: TagKarte = {
   bloecke: {
     'Kick-off': {
-      lernziel: 'Nach dem Block können alle die vier Ebenen des Opportunity Solution Tree nennen und eine Lösung in Verkleidung von einer Chance unterscheiden.',
+      lernziel: 'Nach dem Block können alle die vier Ebenen des Opportunity Solution Tree nennen und eine Lösung statt Chance erkennen.',
       streichen: [
         'Die vier Feinde guter Entscheidungen nach Heath nur nennen, Folie überspringen (vier-feinde).',
         'Nur den Folien-Satz, ohne Nigel Cross (problem-loesung).',
