@@ -72,6 +72,9 @@ export interface Pruefpunkt {
   id: string;
   alt?: string;
   text: string;
+  /** Prüft dieser Punkt ein Artefakt der Vorarbeit selbst (etwa: in der Annahmen-Map ist der Beleg nachgetragen), steht
+   *  hier dessen ID aus braucht. Nur für solche Punkte darf Claude aus der Vorarbeit zitieren (vorarbeitAusnahme). */
+  prueft?: string;
 }
 
 export interface Methode {
@@ -176,7 +179,7 @@ export const METHODEN: Methode[] = [
       { id: 'synthese-einsichten', alt: 'synthese-3', text: 'Einsichten (auffälliges Verhalten) stehen getrennt von den Chancen.' },
       { id: 'synthese-belege', text: 'Jede Chance nennt mindestens eine Zitat-ID als Beleg.' },
       { id: 'synthese-pseudonym', alt: 'synthese-4', text: 'Kein Eintrag nennt Namen, Arbeitgeber oder etwas, woran man die Person erkennt – nur das Pseudonym.' },
-      { id: 'synthese-beleg-nachgetragen', alt: 'synthese-5', text: 'In der Annahmen-Map ist für jede Annahme, zu der ihr etwas gehört habt, der Beleg nachgetragen.' },
+      { id: 'synthese-beleg-nachgetragen', alt: 'synthese-5', prueft: 'annahmen', text: 'In der Annahmen-Map ist für jede Annahme, zu der ihr etwas gehört habt, der Beleg nachgetragen.' },
     ],
     ki: 'Prüft nach der Besprechung, ob eure Chancen Bedürfnisse sind und keine Lösungen – mit Zitat aus euren Interviews.',
   },
@@ -308,7 +311,7 @@ export const METHODEN: Methode[] = [
       { id: 'geschaeftsmodell-wert', text: 'Bei Wert? steht, wer wofür zahlt – und wie die Kundschaft heute bezahlt.' },
       { id: 'geschaeftsmodell-kosten', text: 'Die wichtigsten Kosten sind als Posten genannt, nicht als „gering“.' },
       { id: 'geschaeftsmodell-muster', text: 'Das gewählte Muster ist benannt, und für jede andere Karte steht, warum sie verworfen wurde.' },
-      { id: 'geschaeftsmodell-annahme', text: 'Die Annahme, an der das Modell hängt, steht in der Annahmen-Map, Art „wirtschaftlich“, mit Wichtigkeit und Beleg – sie sagt, dass der Ertrag die Kosten deckt, nicht bloß, dass Umsatz entsteht.' },
+      { id: 'geschaeftsmodell-annahme', prueft: 'annahmen', text: 'Die Annahme, an der das Modell hängt, steht in der Annahmen-Map, Art „wirtschaftlich“, mit Wichtigkeit und Beleg – sie sagt, dass der Ertrag die Kosten deckt, nicht bloß, dass Umsatz entsteht.' },
       { id: 'geschaeftsmodell-widerspruch', text: 'Nichts im Modell widerspricht der Krise der Concept Story oder einem Pain im Kundenprofil.' },
     ],
     ki: 'Prüft, ob Wer, Was, Wie und Wert zusammenpassen; schlägt keine Muster vor.',
@@ -374,7 +377,7 @@ export const METHODEN: Methode[] = [
       { id: 'prototyp-spike-aufgabe', text: 'Die Aufgabe beschreibt Situation und Ziel, keine Bedienschritte und keine Begriffe aus der Oberfläche.' },
       { id: 'prototyp-spike-trockenlauf', text: 'Ein Trockenlauf mit den anderen beiden ist gelaufen; die Testpersonen danach haben den Pain und kennen das Produkt nicht.' },
       { id: 'prototyp-spike-protokoll', text: 'Pro Testperson steht fest: Höhepunkt ohne Hilfe erreicht, Zeit, wo gehangen, Reaktion am Höhepunkt.' },
-      { id: 'prototyp-spike-lernkarte', text: 'Nach den Tests: Lernkarte mit Verlässlichkeit und Befund (gestützt, widerlegt, unklar oder neue Einsicht), und was ihr deshalb ändert, als Zeile im Entscheidungslog mit U-IDs.' },
+      { id: 'prototyp-spike-lernkarte', prueft: 'entscheidungen', text: 'Nach den Tests: Lernkarte mit Verlässlichkeit und Befund (gestützt, widerlegt, unklar oder neue Einsicht), und was ihr deshalb ändert, als Zeile im Entscheidungslog mit U-IDs.' },
     ],
     ki: 'Baut den Wegwerf-Prototyp – erst nach der Papierskizze und innerhalb der Abnahmekriterien.',
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
@@ -404,7 +407,7 @@ export const METHODEN: Methode[] = [
       { id: 'backlog-titel-ziel', text: 'Jedes Issue hat einen kurzen Titel als Verb-Satz und ein Ziel, das sagt, wer danach was kann und warum.' },
       { id: 'backlog-senkrecht', text: 'Jedes Issue ist ein senkrechter Schnitt: Danach kann jemand etwas, das vorher nicht ging – kein Issue heißt „Datenbank“ oder „Oberfläche“.' },
       { id: 'backlog-nicht-im-umfang', text: 'Unter Nicht im Umfang steht, was ihr bewusst weggelassen habt; offene Fragen stehen unter „Fragen aus dem Gespräch“, nicht als stille Annahmen.' },
-      { id: 'backlog-reihenfolge', text: 'Die Reihenfolge ist begründet: zuerst, was Slice 1 bis zum Höhepunkt der Usage Story braucht, dann das Riskanteste; wo ihr vom Bauchgefühl abweicht, steht eine Zeile im Entscheidungslog.' },
+      { id: 'backlog-reihenfolge', prueft: 'entscheidungen', text: 'Die Reihenfolge ist begründet: zuerst, was Slice 1 bis zum Höhepunkt der Usage Story braucht, dann das Riskanteste; wo ihr vom Bauchgefühl abweicht, steht eine Zeile im Entscheidungslog.' },
       { id: 'backlog-erzaehlt', text: 'Jedes Issue haben die beiden anderen erzählt bekommen; ihre Fragen und eure Antworten stehen im Issue.' },
     ],
     ki: 'Prüft INVEST und ob die Reihenfolge Outcome und Risiko folgt – schlägt keine Issues vor und ändert keins.',
@@ -512,6 +515,42 @@ export const WERKSTATT_AKKUSATIV: Record<ArtefaktName, string> = {
   interviews: 'meine Interviews und Snapshots',
 };
 
+/** So sehen die IDs der Zeilen in den Artefakten der Mappe aus; der Brief hat keine. */
+export const ZEILEN_ID: Record<ArtefaktName, string | undefined> = {
+  brief: undefined,
+  entscheidungen: 'D2',
+  leitfaden: 'F4',
+  annahmen: 'A3',
+  interviews: 'I2 oder I2-4',
+};
+
+// Regeln für Claude beim Prüfen: eine Quelle für artefakt_pruefen (anleitung) und den Prüf-Prompt (pruefPrompt, auch in
+// „Für Claude kopieren“), damit beide Wege dasselbe verlangen. Angeredet ist Claude; wen meint die Person, die prüfen lässt.
+export const befundRegel = (wen: string) =>
+  `Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die ${wen} weiterbringt.`;
+export const zeilenIdRegel = (beispiel?: string) => `Beim Zitat nennst du die ID der Zeile, wo sie eine hat${beispiel ? ` (wie ${beispiel})` : ''}.`;
+export const VORARBEIT_REGEL = 'Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht.';
+
+// Wie die Zeilen der Vorarbeit heißen, die ein Prüfpunkt selbst prüft (A3 bei der Annahmen-Map).
+const geprueftBeispiel = (p: Pruefpunkt) => {
+  const w = p.prueft ? artefakt(p.prueft)?.werkstatt : undefined;
+  return w && ZEILEN_ID[w] ? ` (wie ${ZEILEN_ID[w]})` : '';
+};
+
+/** Ausnahme zu VORARBEIT_REGEL für die Prüfpunkte, die ein Artefakt der Vorarbeit selbst prüfen (prueft); leer ohne solche.
+ *  punkte: was gerade geprüft wird (bei artefakt_pruefen mit pruefpunkt nur dieser eine). */
+export function vorarbeitAusnahme(punkte: readonly Pruefpunkt[]): string {
+  const p = punkte.filter((x) => x.prueft);
+  return p.length ? `Ausnahme: ${p.map((x) => `Für ${x.id} zitierst du aus der Vorarbeit die betroffene Zeile mit ihrer ID${geprueftBeispiel(x)}`).join('; ')}.` : '';
+}
+
+/** Zweck einer Vorarbeit bei artefakt_pruefen, steht über ihr: nur zum Abgleich – außer für Prüfpunkte, die sie selbst prüfen. */
+export function vorarbeitZweck(name: ArtefaktName, punkte: readonly Pruefpunkt[]): string {
+  const p = punkte.filter((x) => x.prueft !== undefined && artefakt(x.prueft)?.werkstatt === name);
+  if (!p.length) return 'Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.';
+  return `Nur zum Abgleich; für ${aufzaehlen(p.map((x) => x.id))} darfst du die betroffene Zeile mit ihrer ID${geprueftBeispiel(p[0])} zitieren.`;
+}
+
 const nurInWerkstatt = (a: Artefakt) => a.werkstatt !== undefined && !a.lebtIn.includes('repo');
 
 /** Datei im Repo oder Linear; nichts für Artefakte, die nur in der Werkstatt liegen (die Mappe ist ein eigenes Repo). */
@@ -556,8 +595,6 @@ export function pruefungInWerkstatt(m: Methode, pfad?: string): boolean {
 export function pruefungAufMiro(m: Methode, pfad?: string): boolean {
   return !pfad && m.ergibt.length > 0 && m.ergibt.every((id) => nurAufMiro(artefakt(id)!));
 }
-
-const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst.';
 
 /** ID der abhakbaren Prüfliste (localStorage-Schlüssel in Checklist.astro); mit Stand, wo die Liste vor NDU-28 neu geschrieben wurde. */
 export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `il-${m.slug}-${m.prueflisteStand}` : `il-${m.slug}`);
@@ -619,7 +656,15 @@ export function einfuegenHinweis(m: Methode, pfad?: string): string {
   return `Prompt in ein Gespräch mit Claude einfügen, darunter ${inhalt}${ausMiro ? ' oder den Text aus Miro' : ''} – und jeden weiteren Text, den der Prompt zum Abgleich nennt.`;
 }
 
-const REGELN_CHAT = 'Schreib nichts um und formulier keinen Text für mich – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.';
+const SCHLUSS_CHAT = 'Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.';
+const SCHLUSS_REPO = 'Schreib nichts um, ändere keine Datei und kein Issue. Passt alles, sag das in einem Satz.';
+
+/** Die Regeln am Ende des Prüf-Prompts, aus denselben Sätzen wie die anleitung von artefakt_pruefen. zeilen: Beispiel einer
+ *  Zeilen-ID; false, wo das Artefakt keine hat (Brief), ohne: der Satz ohne Beispiel. */
+function pruefRegeln(m: Methode, schluss: string, zeilen?: string | false): string {
+  const vorarbeit = m.braucht.length ? [VORARBEIT_REGEL, vorarbeitAusnahme(m.pruefliste ?? [])] : [];
+  return ['Regeln:', befundRegel('mich'), zeilen === false ? '' : zeilenIdRegel(zeilen), ...vorarbeit, schluss].filter(Boolean).join(' ');
+}
 
 /** Prompt „Prüfen lassen“: Claude liest das Ergebnis der Methode und zum Abgleich die Vorarbeit, prüft gegen die
  *  Prüfliste und ändert nichts. pfad: nur einen Teil prüfen (z. B. ein Transkript statt aller Interview-Dateien).
@@ -646,7 +691,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
       // Texten darunter (werkstatt/ui/kopiertext.ts); ohne Schalter fügen die Studierenden sie selbst darunter.
       `Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: ${akkusativListe([...namen, ...werkstattAbgleich])}.`,
       '',
-      `${REGELN_ANFANG} ${REGELN_CHAT}`,
+      pruefRegeln(m, SCHLUSS_CHAT, aufzaehlen(namen.map((n) => ZEILEN_ID[n]).filter((x): x is string => !!x)) || false),
     ].join('\n');
   }
 
@@ -665,7 +710,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
           ]
         : []),
       '',
-      `${REGELN_ANFANG} ${REGELN_CHAT}`,
+      pruefRegeln(m, SCHLUSS_CHAT),
     ].join('\n');
   }
 
@@ -688,7 +733,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
           ]
         : []),
       '',
-      `${REGELN_ANFANG} ${REGELN_CHAT}`,
+      pruefRegeln(m, SCHLUSS_CHAT),
     ].join('\n');
   }
 
@@ -702,6 +747,6 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
     ...liste,
     ...(miroVorarbeit(m) ? [miroVorarbeit(m)] : []),
     '',
-    `${REGELN_ANFANG} Schreib nichts um, ändere keine Datei und kein Issue – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.`,
+    pruefRegeln(m, SCHLUSS_REPO),
   ].join('\n');
 }

@@ -122,6 +122,43 @@ describe('methoden', () => {
     }
   });
 
+  // Die Regeln am Ende des Prüf-Prompts sind dieselben Sätze wie in der anleitung von artefakt_pruefen (befundRegel …).
+  it('Prüf-Prompt: jeder Befund mit Prüfpunkt-ID, wörtlichem Zitat mit Zeilen-ID und Frage; Vorarbeit nur zum Abgleich', () => {
+    const sy = pruefPrompt(METHODEN.find((m) => m.slug === 'synthese')!);
+    expect(sy.split('\n').at(-1)).toBe(
+      'Regeln: Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt. ' +
+        'Beim Zitat nennst du die ID der Zeile, wo sie eine hat (wie I2 oder I2-4). Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht. ' +
+        'Ausnahme: Für synthese-beleg-nachgetragen zitierst du aus der Vorarbeit die betroffene Zeile mit ihrer ID (wie A3). ' +
+        'Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.',
+    );
+    // Der Brief hat keine Zeilen-IDs und keine Vorarbeit.
+    expect(pruefPrompt(METHODEN.find((m) => m.slug === 'problem-rahmen')!).split('\n').at(-1)).toBe(
+      'Regeln: Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt. ' +
+        'Schreib nichts um und formulier keinen Text für mich. Passt alles, sag das in einem Satz.',
+    );
+    for (const m of METHODEN.filter((x) => x.pruefliste)) {
+      const wege = [pruefPrompt(m), ...(einfuegenMoeglich(m) ? [pruefPrompt(m, undefined, 'einfuegen')] : [])];
+      for (const p of wege) {
+        expect(p, m.slug).toContain('Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt.');
+        expect(p, m.slug).toContain('Schreib nichts um');
+        expect(p.includes('Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht.'), m.slug).toBe(m.braucht.length > 0);
+        // Die Ausnahme genau für die Punkte, die ein Artefakt der Vorarbeit prüfen.
+        for (const q of m.pruefliste!) expect(p.includes(`Für ${q.id} zitierst du aus der Vorarbeit`), q.id).toBe(q.prueft !== undefined);
+      }
+    }
+  });
+
+  it('prueft: ein Prüfpunkt prüft nur ein Artefakt der Vorarbeit seiner Methode', () => {
+    const geprueft = METHODEN.flatMap((m) => (m.pruefliste ?? []).filter((p) => p.prueft).map((p) => [p.id, p.prueft]));
+    expect(geprueft).toStrictEqual([
+      ['synthese-beleg-nachgetragen', 'annahmen'],
+      ['geschaeftsmodell-annahme', 'annahmen'],
+      ['prototyp-spike-lernkarte', 'entscheidungen'],
+      ['backlog-reihenfolge', 'entscheidungen'],
+    ]);
+    for (const m of METHODEN) for (const p of m.pruefliste ?? []) if (p.prueft) expect(m.braucht, p.id).toContain(p.prueft);
+  });
+
   it('Prüfpunkt-IDs: eindeutig, <slug>-<thema> ohne Ziffern', () => {
     const alle = METHODEN.flatMap((m) => m.pruefliste ?? []).map((p) => p.id);
     expect(new Set(alle).size).toBe(alle.length);

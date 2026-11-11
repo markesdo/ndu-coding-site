@@ -44,6 +44,18 @@ describe('kopierText', () => {
     expect(halb.fehlt).toStrictEqual([{ name: 'brief', grund: 'nicht-gespeichert' }]);
   });
 
+  // Dieselben Regeln wie artefakt_pruefen: Wer ohne Connector kopiert, bekommt keine schwächere Prüfung.
+  it('Interviews mit Prüf-Prompt: Regeln wie artefakt_pruefen – Prüfpunkt-ID, Zeilen-ID, Ausnahme für synthese-beleg-nachgetragen', () => {
+    const r = kopierText({ name: 'interviews', markdown: '# Interviews\n', mitPrompt: true, frei: true, vorarbeit: { leitfaden: { markdown: LEITFADEN }, annahmen: { markdown: MAP } } });
+    expect(r.text).toContain('Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die mich weiterbringt.');
+    expect(r.text).toContain('Beim Zitat nennst du die ID der Zeile, wo sie eine hat (wie I2 oder I2-4).');
+    expect(r.text).toContain(
+      'Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht. Ausnahme: Für synthese-beleg-nachgetragen zitierst du aus der Vorarbeit die betroffene Zeile mit ihrer ID (wie A3).',
+    );
+    // Die Regeln stehen vor dem Artefakt, nicht darunter.
+    expect(r.text.indexOf('Regeln:')).toBeLessThan(r.text.indexOf('# Interviews'));
+  });
+
   it('Leitfaden vor dem Mom Test: kein Prompt und keine Prüfliste, auch mit Schalter an', () => {
     const r = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: false, vorarbeit: { brief: { markdown: BRIEF }, annahmen: { markdown: MAP } } });
     expect(r).toStrictEqual({ text: LEITFADEN, mitPrompt: false, fehlt: [], laedt: false });

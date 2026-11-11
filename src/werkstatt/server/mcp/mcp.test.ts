@@ -252,7 +252,7 @@ describe('Werkzeuge', () => {
     // IDs beim Zitieren, nur aus dem geprüften Artefakt, Fokus auf einen Prüfpunkt.
     expect(anweisung).toContain('Abschnitt „Artefakt“');
     expect(anweisung).toContain('I2-4');
-    expect(anweisung).toMatch(/Vorarbeit zum Abgleich zitierst du nie/);
+    expect(anweisung).toContain('aus der Vorarbeit zum Abgleich nur, wo die Anleitung von artefakt_pruefen es für einen Prüfpunkt erlaubt');
     expect(anweisung).toContain('pruefpunkt');
     // NDU-27: zuerst schauen, was da ist; nie das ganze Artefakt zurückkopieren.
     expect(anweisung).toContain(`Anfang des Gesprächs ${MCP_WERKZEUGE.mappeUebersicht}`);
@@ -839,9 +839,10 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     expect(sc(r).vorarbeit[1].markdown).toContain(TEXT_B);
     expect(sc(r).vorarbeit[0].markdown).not.toContain(TEXT_B);
     expect(sc(r).anleitung).toMatch(/Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht/);
-    expect(sc(r).anleitung).toMatch(/nur aus dem Abschnitt „Artefakt“ \(im JSON: markdown\) und nenn die ID der Zeile, wo sie eine hat \(wie F4\)/);
-    // Die A-IDs der Vorarbeit sind kein Beispiel für Stellen im Leitfaden.
+    expect(sc(r).anleitung).toContain('Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown). Beim Zitat nennst du die ID der Zeile, wo sie eine hat (wie F4).');
+    // Die A-IDs der Vorarbeit sind kein Beispiel für Stellen im Leitfaden; kein Prüfpunkt des Leitfadens prüft die Vorarbeit.
     expect(sc(r).anleitung).not.toMatch(/A3/);
+    expect(sc(r).anleitung).not.toMatch(/Ausnahme/);
     expect(sc(r).anleitung).not.toMatch(/nicht abgleichen/);
   });
 
@@ -891,6 +892,32 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     expect(text(r)).toContain(ZIEL);
     expect(sc(r).vorarbeit.find((v) => v.artefakt === 'brief')?.vorhanden).toBe(false);
     expect(fehler).toHaveBeenCalled();
+  });
+
+  // synthese-beleg-nachgetragen prüft die Annahmen-Map selbst (prueft: 'annahmen'): Dafür muss Claude deren Zeile zitieren dürfen.
+  it('interviews: für synthese-beleg-nachgetragen darf Claude die Zeile der Annahmen-Map zitieren – in Anleitung und Zweck', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const c = await client(h, await accessToken(h));
+    const AUSNAHME = 'Ausnahme: Für synthese-beleg-nachgetragen zitierst du aus der Vorarbeit die betroffene Zeile mit ihrer ID (wie A3).';
+    const ZWECK_ANNAHMEN = 'Nur zum Abgleich; für synthese-beleg-nachgetragen darfst du die betroffene Zeile mit ihrer ID (wie A3) zitieren.';
+    const ZWECK = 'Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.';
+    const zwecke = (r: Awaited<ReturnType<Client['callTool']>>) => sc(r).vorarbeit.map((v) => [v.artefakt, v.zweck]);
+
+    const alle = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews' } });
+    expect(alle.isError).toBeFalsy();
+    expect(sc(alle).anleitung).toContain(`Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht. ${AUSNAHME}`);
+    expect(text(alle)).toContain(AUSNAHME);
+    expect(zwecke(alle)).toStrictEqual([['leitfaden', ZWECK], ['annahmen', ZWECK_ANNAHMEN]]);
+    expect(text(alle)).toContain(`## Vorarbeit zum Abgleich: Annahmen-Map (annahmen)\n${ZWECK_ANNAHMEN}`);
+
+    // Im Fokus auf genau diesen Punkt gilt die Ausnahme, bei jedem anderen nicht.
+    const fokus = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews', pruefpunkt: 'synthese-beleg-nachgetragen' } });
+    expect(sc(fokus).anleitung).toContain(AUSNAHME);
+    expect(zwecke(fokus)).toStrictEqual([['leitfaden', ZWECK], ['annahmen', ZWECK_ANNAHMEN]]);
+    const anderer = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'interviews', pruefpunkt: 'synthese-belege' } });
+    expect(sc(anderer).anleitung).not.toMatch(/Ausnahme/);
+    expect(zwecke(anderer)).toStrictEqual([['leitfaden', ZWECK], ['annahmen', ZWECK]]);
   });
 
   it('brief: Anleitung ohne Zeilen-ID (der Brief hat keine)', async () => {

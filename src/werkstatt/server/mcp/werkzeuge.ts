@@ -8,7 +8,7 @@ import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
 import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
 import { DEMO_HREF } from '../../../lib/nav-rolle.js';
-import { METHODEN, TAGE, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
+import { METHODEN, TAGE, VORARBEIT_REGEL, ZEILEN_ID, befundRegel, vorarbeitAusnahme, vorarbeitZweck, werkstattVorarbeit, zeilenIdRegel, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
@@ -57,8 +57,6 @@ const WERKSTATT = z.string().describe('Link zur Werkstatt: Ändern kann die Pers
 const MARKDOWN = z.string().optional().describe('Das Artefakt als Markdown, wie die Werkstatt es zeigt; fehlt, solange es leer ist.');
 const HINWEIS = z.string().optional().describe('Satz an die Person statt des Artefakts (noch leer).');
 const ANLEITUNG = z.string().describe('So gehst du mit diesem Ergebnis um; steht gleichlautend am Ende des Textes.');
-// Steht im Text über jeder Vorarbeit und im JSON an jeder Vorarbeit.
-const VORARBEIT_ZWECK = 'Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.';
 
 const UEBERSICHT = {
   title: 'Mappe: Übersicht',
@@ -105,7 +103,7 @@ const METHODE = {
 
 const PRUEFEN = {
   title: 'Artefakt prüfen',
-  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
+  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (aus der Vorarbeit nur, wo die Anleitung es für einen Prüfpunkt erlaubt) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
   inputSchema: {
     ...ARTEFAKT_EINGABE,
     pruefpunkt: z
@@ -200,6 +198,8 @@ const ANLEITUNG_LEER = 'Noch nichts eingetragen. Bitte die Person, es zuerst sel
 interface PruefLage {
   // Mit pruefpunkt: nur dieser Punkt, danach der nächste der Liste (fehlt beim letzten).
   fokus?: { punkt: Pruefpunkt; naechster?: Pruefpunkt };
+  // Was geprüft wird: alle Punkte oder nur der im Fokus (für die Ausnahme zum Zitieren aus der Vorarbeit).
+  punkte: readonly Pruefpunkt[];
   // Vorarbeit wurde mitgeliefert / ein Teil davon fehlt oder ist unlesbar.
   vorarbeit: boolean;
   vorarbeitFehlt: boolean;
@@ -207,23 +207,16 @@ interface PruefLage {
   feedback: boolean;
 }
 
-// So sehen die IDs der Zeilen im geprüften Artefakt aus; der Brief hat keine.
-const ID_BEISPIEL: Record<ArtefaktName, string | undefined> = {
-  brief: undefined,
-  entscheidungen: 'D2',
-  leitfaden: 'F4',
-  annahmen: 'A3',
-  interviews: 'I2 oder I2-4',
-};
-
 function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: PruefLage): string[] {
   const { fokus } = lage;
   const saetze = fokus
     ? [`Prüf nur ${fokus.punkt.id}. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit einem wörtlichen Zitat; danach eine Rückfrage, die die Person selbst weiterbringt.`]
-    : ['Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die die Person selbst weiterbringt.'];
-  const id = ID_BEISPIEL[artefakt];
-  saetze.push(`Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown)${id ? ` und nenn die ID der Zeile, wo sie eine hat (wie ${id})` : ''}.`);
-  if (lage.vorarbeit) saetze.push('Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht.');
+    : [befundRegel('die Person selbst')];
+  saetze.push('Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown).');
+  const id = ZEILEN_ID[artefakt];
+  if (id) saetze.push(zeilenIdRegel(id));
+  // Dieselben Sätze wie im Prüf-Prompt (methoden.ts); die Ausnahme nur für Punkte, die ein Artefakt der Vorarbeit prüfen.
+  if (lage.vorarbeit) saetze.push(...[VORARBEIT_REGEL, vorarbeitAusnahme(lage.punkte)].filter(Boolean));
   if (lage.vorarbeitFehlt) {
     saetze.push('Fehlt Vorarbeit oder ließ sie sich nicht lesen (der Hinweis in ihrem Abschnitt sagt, was davon), sag bei den Prüfpunkten, die sie brauchen, dass du sie nicht abgleichen konntest – und nur bei „noch nicht ausgefüllt“, dass sie fehlt.');
   }
@@ -594,7 +587,8 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       // Datei oder ein GitHub-Ausfall bei der Vorarbeit verhindert die Prüfung nicht, sie steht dann als Hinweis da.
       const vorarbeitLesen = Promise.all(
         werkstattVorarbeit(m).map(async (name) => {
-          const kopf = { artefakt: name, titel: ARTEFAKTE[name].titel, zweck: VORARBEIT_ZWECK };
+          // Steht im Text über der Vorarbeit und im JSON an ihr.
+          const kopf = { artefakt: name, titel: ARTEFAKTE[name].titel, zweck: vorarbeitZweck(name, fokus ? [fokus.punkt] : alle) };
           let hinweis: string;
           try {
             const inhalt = await artefaktHolen(k, name, repo);
@@ -617,7 +611,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const teil = artefaktTeil(k, artefakt, a);
 
       const saetze = a
-        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => !v.vorhanden), feedback: !!fb?.length })
+        ? anleitungPruefen(k, artefakt, { fokus, punkte: fokus ? [fokus.punkt] : alle, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => !v.vorhanden), feedback: !!fb?.length })
         // Noch leer, aber schon Feedback (etwa zum ganzen Brief): der Satz dazu gilt auch hier.
         : [ANLEITUNG_LEER, ...(fb?.length ? [FEEDBACK_ANLEITUNG] : [])];
       const text = [
