@@ -66,8 +66,9 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   wunsch: {
     live: [
-      'Fragen: Welche Funktion hat sich bei euch jemand gewünscht?',
+      'Fragen: Steht in euren Snapshots eine Funktion in der Spalte Chancen?',
       'Fluss von links nach rechts: Wunsch, Nachfrage, Bedürfnis, Lösungen.',
+      'Nicht nachgefragt: Test S. 94 – mehr als ein Weg?',
       '„Das Bedürfnis lässt mehr Lösungen zu als der Wunsch.“',
       'Brücke: „per App vorbestellen“ kommt am Baum wieder.',
     ],
@@ -133,7 +134,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       achten: [
         'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
         'Trifft jemand nicht den Satz aus dem Buch: kein Fehler – Torres schreibt „might“.',
-        'Zählt die Seite mehr Antworten als Studierende (Test, Unsinn): auf der Seite ohne Beamer „Runde leeren“. Wer schon abgeschickt hat und die Folie offen hat, wird von der Seite still neu eingetragen.',
+        'Pro Rolle ein Platz: Wer dieselbe Rolle wählt, überschreibt die Antwort davor. Testantworten oder Unsinn: auf der Seite ohne Beamer „Runde leeren“, dann neu abschicken lassen.',
       ],
     },
     ueberleitung: 'Jetzt abschicken – dann seht ihr, was drei Rollen bei Torres gehört haben.',

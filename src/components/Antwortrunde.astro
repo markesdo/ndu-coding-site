@@ -1,11 +1,13 @@
 ---
 // Antwortrunde (lib/antworten.ts, api/antworten.ts): Studierende schicken einen Satz über die Seite.
-// ansicht="eingabe": Rollen-Knöpfe, Eingabe, Abschicken und „2 von 3 haben geantwortet“. Präsentator und Beamer sehen nur
+// ansicht="eingabe": Rollen-Knöpfe (mit „vergeben“, wenn die Rolle schon geantwortet hat – trotzdem wählbar, um die
+// eigene Antwort zu ändern), Eingabe, Abschicken und „2 von 3 haben geantwortet“. Präsentator und Beamer sehen nur
 // die Statuszeile (Markus antwortet nicht selbst; der Beamer zeigt, was alle sehen).
 // ansicht="antworten": „Eure Sätze“ nach Rolle – gehört in die <Aufloesung gruppe=…> der Runde; der Server gibt die Texte
 // erst nach dem Aufdecken heraus. Fragt nur nach, solange der Block zu sehen ist und der Tab vorn.
 // Fällt die API aus (503, Netz), steht „Antwort bitte in den Teams-Chat.“ da – der Chat bleibt der Rückfall.
-// „Runde leeren“: nur Präsentator, nicht im Beamer – falls jemand die Runde mit Unsinn füllt (api/antworten.ts).
+// Ein Platz pro Rolle (api/antworten.ts): Wer abschickt, überschreibt die Antwort seiner Rolle. Die eigene Antwort merkt
+// sich der Browser nur zum Vorausfüllen. „Runde leeren“: nur Präsentator, nicht im Beamer.
 // Texte immer als textContent, nie als HTML.
 import { RUNDEN } from '../lib/antworten';
 const { runde, ansicht, erwartet = 3 } = Astro.props as { runde: string; ansicht: 'eingabe' | 'antworten'; erwartet?: number };
@@ -18,9 +20,10 @@ const feld = `antwort-${runde}`;
     <div class="ar-eingabe" data-ar-eingabe hidden>
       {r.rollen.length > 0 && (
         <div class="ar-rollen" role="group" aria-label="Deine Rolle">
-          {r.rollen.map((x) => <button type="button" class="ar-rolle" data-ar-rolle={x.id} aria-pressed="false">{x.label}</button>)}
+          {r.rollen.map((x) => <button type="button" class="ar-rolle" data-ar-rolle={x.id} aria-pressed="false">{x.label}<span class="ar-vergeben" data-ar-vergeben hidden> · vergeben</span></button>)}
         </div>
       )}
+      <p class="small muted ar-hinweis">Wählt jede*r eine andere Rolle.</p>
       <form class="ar-form" data-ar-form hidden={r.rollen.length > 0}>
         <label for={feld}>Ein Satz aus deiner Rolle</label>
         <div class="ar-zeile">
@@ -54,21 +57,10 @@ const feld = `antwort-${runde}`;
     try { localStorage.setItem(k, v); return; } catch { /* privat/gesperrt */ }
     try { sessionStorage.setItem(k, v); } catch { /* dann nur für diesen Aufruf */ }
   };
-  const zufall = () => {
-    try { return crypto.randomUUID(); } catch { return [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, '0')).join(''); }
-  };
-  let speicherId: string | null = null;
-  const clientId = () => {
-    if (speicherId) return speicherId;
-    const alt = lesen('ndu-antwort-id');
-    speicherId = alt && /^[A-Za-z0-9_-]{16,64}$/.test(alt) ? alt : zufall();
-    if (speicherId !== alt) schreiben('ndu-antwort-id', speicherId);
-    return speicherId;
-  };
-  type Eigene = { rolle: string | null; text: string };
+  type Eigene = { rolle: string; text: string };
   const eigeneSchluessel = (runde: string) => `ndu-antwort:${runde}:${wienerZeit(new Date()).datum}`;
   const eigeneLesen = (runde: string): Eigene | null => {
-    try { const e = JSON.parse(lesen(eigeneSchluessel(runde)) ?? 'null'); return e && typeof e.text === 'string' ? e : null; } catch { return null; }
+    try { const e = JSON.parse(lesen(eigeneSchluessel(runde)) ?? 'null'); return e && typeof e.text === 'string' && typeof e.rolle === 'string' ? e : null; } catch { return null; }
   };
 
   document.querySelectorAll<HTMLElement>('[data-antwortrunde]').forEach((box) => {
@@ -86,17 +78,16 @@ const feld = `antwort-${runde}`;
     const gesendet = q('[data-ar-gesendet]');
     const liste = q('[data-ar-liste]');
     const knoepfe = [...box.querySelectorAll<HTMLButtonElement>('[data-ar-rolle]')];
-    const istPraesentator = () => document.documentElement.hasAttribute('data-ist-praesentator');
 
     let rolle: string | null = null;
     let frei = false;
-    const eigene = eingabe ? eigeneLesen(runde) : null;
     const rolleWaehlen = (id: string | null) => {
       rolle = id;
       knoepfe.forEach((k) => k.setAttribute('aria-pressed', String(k.dataset.arRolle === id)));
       if (form && id) form.hidden = false;
     };
-    if (eigene) { if (eigene.rolle) rolleWaehlen(eigene.rolle); if (feld) feld.value = eigene.text; if (gesendet) gesendet.hidden = false; }
+    const eigene = eingabe ? eigeneLesen(runde) : null;
+    if (eigene) { rolleWaehlen(eigene.rolle); if (feld) feld.value = eigene.text; if (gesendet) gesendet.hidden = false; }
     knoepfe.forEach((k) => k.addEventListener('click', () => { rolleWaehlen(k.dataset.arRolle ?? null); feld?.focus(); }));
 
     const fehler = (an: boolean) => { rueckfall.hidden = !an; };
@@ -105,6 +96,10 @@ const feld = `antwort-${runde}`;
       fehler(false);
       if (eingabe) {
         if (bereich) bereich.hidden = frei;
+        knoepfe.forEach((k) => {
+          const v = s.vergeben.includes(k.dataset.arRolle ?? '');
+          k.querySelector<HTMLElement>('[data-ar-vergeben]')!.hidden = !v;
+        });
         status.textContent = frei ? 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.' : statusText(s.anzahl, erwartet);
         return;
       }
@@ -113,19 +108,12 @@ const feld = `antwort-${runde}`;
       const gruppen = antwortenGruppieren(rollen, s.antworten ?? []);
       liste.replaceChildren(...gruppen.map((g) => {
         const li = document.createElement('li');
-        if (g.label) { const b = document.createElement('strong'); b.textContent = `${g.label}: `; li.append(b); }
-        li.append(g.texte.map((t) => `„${t}“`).join(' · '));
+        const b = document.createElement('strong');
+        b.textContent = `${g.label}: `;
+        li.append(b, g.texte.map((t) => `„${t}“`).join(' · '));
         return li;
       }));
       status.textContent = gruppen.length ? '' : 'Keine Sätze über die Seite – vielleicht im Teams-Chat.';
-    };
-
-    const senden = async (e: Eigene): Promise<number> => {
-      const r = await fetch('/api/antworten', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ runde, rolle: e.rolle, text: e.text, id: clientId() }), signal: zeitlimit(ANTWORTEN_TIMEOUT_MS),
-      });
-      return r.redirected ? 0 : r.status;
     };
 
     let sichtbar = false;
@@ -134,12 +122,7 @@ const feld = `antwort-${runde}`;
       ruht: () => document.hidden || !sichtbar,
       runde: async () => {
         try {
-          const id = eingabe && !istPraesentator() ? `&id=${encodeURIComponent(clientId())}` : '';
-          const s = (await jsonHolen(`/api/antworten?runde=${encodeURIComponent(runde)}${id}`, ANTWORTEN_TIMEOUT_MS)) as Stand;
-          zeigen(s);
-          // Eigene Antwort fehlt im Server-Stand (gleichzeitige Antwort, Cache geleert): still noch einmal schicken.
-          const meine = eigeneLesen(runde);
-          if (eingabe && !s.frei && s.eigene === false && meine && !istPraesentator()) await senden(meine).catch(() => 0);
+          zeigen((await jsonHolen(`/api/antworten?runde=${encodeURIComponent(runde)}`, ANTWORTEN_TIMEOUT_MS)) as Stand);
         } catch {
           fehler(true);
         }
@@ -173,19 +156,22 @@ const feld = `antwort-${runde}`;
       if (!feld || frei) return;
       const text = feld.value.replace(/\s+/g, ' ').trim();
       if (!text) { feld.focus(); return; }
-      if (rollen.length && !rolle) { status.textContent = 'Bitte zuerst deine Rolle wählen.'; return; }
+      if (!rolle) { status.textContent = 'Bitte zuerst deine Rolle wählen.'; return; }
       const knopf = form.querySelector<HTMLButtonElement>('button[type=submit]');
       if (knopf) knopf.disabled = true;
       const e: Eigene = { rolle, text };
       try {
-        const st = await senden(e);
+        const r = await fetch('/api/antworten', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ runde, ...e }), signal: zeitlimit(ANTWORTEN_TIMEOUT_MS),
+        });
+        const st = r.redirected ? 0 : r.status;
         if (st === 200) {
           schreiben(eigeneSchluessel(runde), JSON.stringify(e));
           if (gesendet) gesendet.hidden = false;
           fehler(false);
           kette.sofort();
         } else if (st === 409) { kette.sofort(); }
-        else if (st === 429) { status.textContent = 'Kurz warten, dann noch einmal abschicken.'; }
         else if (st === 400) { status.textContent = 'Bitte einen Satz mit höchstens 200 Zeichen.'; }
         else fehler(true);
       } catch {
@@ -207,6 +193,8 @@ const feld = `antwort-${runde}`;
   .ar-zeile { display: flex; gap: .5rem; align-items: flex-start; }
   .ar-zeile textarea { flex: 1; min-width: 0; font: inherit; padding: .35rem .5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: inherit; resize: vertical; }
   .ar-status:empty { display: none; }
+  .ar-vergeben { font-weight: 400; color: var(--muted); }
+  .ar-hinweis { margin: 0 0 .4rem; }
   .ar-leeren { font: inherit; padding: .15rem .6rem; border: 1px solid var(--border); border-radius: 6px; background: none; color: var(--muted); cursor: pointer; }
   :global(html[data-beamer]) .ar-leeren { display: none; }
   .ar-status, .ar-rueckfall, [data-ar-gesendet] { margin: .3rem 0; }

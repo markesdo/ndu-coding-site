@@ -1,6 +1,8 @@
 // Antwortrunde: Studierende schicken einen Satz über die Seite statt in den Teams-Chat (api/antworten.ts). Bis zum Aufdecken
-// zählt die Seite nur, wer geantwortet hat; die Texte gibt der Server erst heraus, wenn die Auflösung der Runde für alle offen
-// ist – dieselbe Kennung wie <Aufloesung gruppe=…> (lib/aufgedeckt.ts), also ein Klick des Präsentators für Buch und Sätze.
+// zeigt die Seite nur, welche Rollen geantwortet haben; die Texte gibt der Server erst heraus, wenn die Auflösung der Runde
+// für alle offen ist – dieselbe Kennung wie <Aufloesung gruppe=…> (lib/aufgedeckt.ts), also ein Klick des Präsentators für
+// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (bei Netflix drei) – wer abschickt, überschreibt
+// den Platz seiner Rolle. Keine Client-ids, kein Index, keine Listen: Die Zahl der Schlüssel ist fest, der Text begrenzt.
 // Hier ohne DOM und ohne Vercel, damit testbar. .js-Endungen: api/antworten.ts lädt das per Node-ESM.
 import { aufgeloest } from '../components/aufloesung.js';
 import { wienerZeit } from '../components/jetzt.js';
@@ -12,11 +14,11 @@ export interface Runde {
   kennung: string;
   /** Rückfall wie <Aufloesung ab=…>: ab dann sind die Texte auch ohne Aufdecken frei. */
   ab: string;
-  /** Leer: Runde ohne Rollen (dann kein rolle im POST). */
+  /** Ein Platz pro Rolle. Eine Runde ohne echte Rollen (z. B. „zwoelf“) bekommt Plätze wie „person-1“ … „person-3“. */
   rollen: readonly Rolle[];
 }
 
-/** Erlaubte Runden – nur was hier steht, nimmt der Server an. Weitere Übungen (z. B. „zwoelf“ ohne Rollen) hier eintragen. */
+/** Erlaubte Runden – nur was hier steht, nimmt der Server an. Weitere Übungen hier eintragen. */
 export const RUNDEN: Readonly<Record<string, Runde>> = {
   netflix: {
     kennung: 'netflix',
@@ -30,12 +32,6 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
 };
 
 export const MAX_TEXT = 200;
-/** Höchstens so viele Antworten pro Runde und Kurstag (Kurs: 3 Studierende) – begrenzt Missbrauch. */
-export const MAX_ANTWORTEN = 30;
-/** Dieselbe id schreibt höchstens alle 2 s. */
-export const SPERRE_MS = 2000;
-/** Höchstens so viele Browser-ids pro Absender-IP, Runde und Kurstag (Laptop, Handy, privates Fenster). */
-export const MAX_IDS_PRO_IP = 4;
 export const TTL_SEKUNDEN = 18 * 60 * 60;
 /** Größter Body, den der Server liest (200 Zeichen Text plus Felder, großzügig). */
 export const MAX_BODY = 4096;
@@ -44,7 +40,6 @@ export const ANTWORTEN_MS = 4000;
 /** … und geben eine hängende Anfrage nach so langer Zeit auf. */
 export const ANTWORTEN_TIMEOUT_MS = 3000;
 
-const ID = /^[A-Za-z0-9_-]{16,64}$/;
 // Steuerzeichen (C0, DEL, C1), Zeilen-/Absatztrenner und Richtungs-Steuerzeichen, die Text auf dem Beamer verdrehen könnten.
 const STEUER = /[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028\u2029\u202a-\u202e\u2066-\u2069\ufeff]/g;
 
@@ -52,13 +47,13 @@ export function rundePruefen(roh: unknown): Runde | null {
   return typeof roh === 'string' && Object.hasOwn(RUNDEN, roh) ? RUNDEN[roh] : null;
 }
 
-/** Rolle der Runde, oder null, wenn die Runde keine Rollen hat (dann darf keine kommen). undefined = ungültig. */
-export function rollePruefen(runde: Runde, roh: unknown): string | null | undefined {
-  if (!runde.rollen.length) return roh === undefined || roh === null || roh === '' ? null : undefined;
-  return typeof roh === 'string' && runde.rollen.some((r) => r.id === roh) ? roh : undefined;
+/** Rolle aus der Liste der Runde, sonst null. */
+export function rollePruefen(runde: Runde, roh: unknown): string | null {
+  return typeof roh === 'string' && runde.rollen.some((r) => r.id === roh) ? roh : null;
 }
 
-/** Ein Satz: Zeilenumbrüche (auch U+2028/2029) zu Leerzeichen, Steuerzeichen raus, Leerraum zu einem Leerzeichen, getrimmt; 1–200 Zeichen, sonst null. */
+/** Ein Satz: Zeilenumbrüche (auch U+2028/2029) zu Leerzeichen, Steuerzeichen raus, Leerraum zu einem Leerzeichen,
+ *  getrimmt; 1–200 Zeichen, sonst null. HTML bleibt Text – die Seite setzt es nur als textContent. */
 export function textBereinigen(roh: unknown): string | null {
   if (typeof roh !== 'string') return null;
   const t = roh.replace(/[\r\n\t\u2028\u2029]+/g, ' ').replace(STEUER, '').replace(/\s+/g, ' ').trim();
@@ -66,11 +61,7 @@ export function textBereinigen(roh: unknown): string | null {
   return laenge >= 1 && laenge <= MAX_TEXT ? t : null;
 }
 
-export function idPruefen(roh: unknown): string | null {
-  return typeof roh === 'string' && ID.test(roh) ? roh : null;
-}
-
-export interface Eingabe { runde: string; rolle: string | null; text: string; id: string }
+export interface Eingabe { runde: string; rolle: string; text: string }
 
 /** POST-Body prüfen: alles oder nichts. */
 export function eingabePruefen(body: unknown): Eingabe | null {
@@ -80,71 +71,21 @@ export function eingabePruefen(body: unknown): Eingabe | null {
   if (!runde) return null;
   const rolle = rollePruefen(runde, b.rolle);
   const text = textBereinigen(b.text);
-  const id = idPruefen(b.id);
-  if (rolle === undefined || text === null || id === null) return null;
-  return { runde: b.runde as string, rolle, text, id };
+  if (rolle === null || text === null) return null;
+  return { runde: b.runde as string, rolle, text };
 }
 
-/** Lauf der Runde heute: „Runde leeren“ (Präsentator) setzt ihn neu, alle anderen Schlüssel hängen daran – so ist
- *  Leeren ein einziges Schreiben, ohne Schlüssel aufzählen zu müssen; der alte Lauf läuft per TTL aus. */
-export function laufSchluessel(runde: string, jetzt: Date): string {
-  return `antworten-lauf:${wienerZeit(jetzt).datum}:${runde}`;
+/** Der Platz einer Rolle: pro Runde, Wiener Kurstag und Rolle ein Schlüssel. */
+export function platzSchluessel(runde: string, rolle: string, jetzt: Date): string {
+  return `antwort:${wienerZeit(jetzt).datum}:${runde}:${rolle}`;
 }
 
-/** Ein Eintrag pro Runde, Kurstag (Wien), Lauf und Browser-id: Jede id schreibt nur ihren eigenen Schlüssel. */
-export function antwortSchluessel(runde: string, id: string, jetzt: Date, lauf = '0'): string {
-  return `antwort:${wienerZeit(jetzt).datum}:${runde}:${lauf}:${id}`;
-}
-
-/** Liste der ids, die heute in dieser Runde geantwortet haben (der Runtime Cache kann keine Schlüssel aufzählen). */
-export function indexSchluessel(runde: string, jetzt: Date, lauf = '0'): string {
-  return `antworten:${wienerZeit(jetzt).datum}:${runde}:${lauf}`;
-}
-
-/** ids pro Absender (gehashte IP): Ohne diese Grenze könnte eine angemeldete Person mit selbst erfundenen ids die
- *  30 Plätze der Runde füllen. */
-export function absenderSchluessel(runde: string, absender: string, jetzt: Date, lauf = '0'): string {
-  return `antworten-ip:${wienerZeit(jetzt).datum}:${runde}:${lauf}:${absender}`;
-}
-
-/** Absender einer Anfrage: auf Vercel setzt die Plattform x-real-ip (bzw. x-forwarded-for) selbst, der Browser kann es
- *  nicht vorgeben. Fehlt beides (lokal), teilen sich alle einen Eimer. */
-export function absenderIp(headers: Headers): string {
-  return ipEimer(headers.get('x-real-ip')?.trim() || headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unbekannt');
-}
-
-/** Eimer für die Grenze pro Absender: IPv4 ganz, IPv6 nur das /64-Präfix – ein Anschluss bekommt meist ein ganzes /64 und
- *  könnte sonst beliebig viele Adressen nehmen. IPv4 in IPv6 (::ffff:1.2.3.4) zählt als IPv4. */
-export function ipEimer(ip: string): string {
-  const a = ip.trim().toLowerCase().replace(/^\[|\]$/g, '').replace(/%.*$/, '');
-  const v4 = a.match(/^(?:0{0,4}:){0,4}:?:ffff:(\d{1,3}(?:\.\d{1,3}){3})$/);
-  if (v4) return v4[1];
-  if (!a.includes(':')) return a;
-  const [kopf, rest] = a.split('::', 2);
-  const vorn = kopf ? kopf.split(':') : [];
-  const hinten = rest === undefined ? [] : rest ? rest.split(':') : [];
-  const teile = rest === undefined ? vorn : [...vorn, ...Array(Math.max(0, 8 - vorn.length - hinten.length)).fill('0'), ...hinten];
-  if (teile.length !== 8 || !teile.every((t) => /^[0-9a-f]{1,4}$/.test(t))) return a;
-  return `${teile.slice(0, 4).map((t) => t.padStart(4, '0')).join(':')}::/64`;
-}
-
-/** IP nicht im Klartext speichern: SHA-256, gekürzt. */
-export async function absenderHash(ip: string): Promise<string> {
-  const d = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`antworten:${ip}`)));
-  return [...d.slice(0, 12)].map((b) => b.toString(16).padStart(2, '0')).join('');
-}
-
-export interface Gespeichert { rolle: string | null; text: string; zeit: number }
+export interface Gespeichert { text: string; zeit: number }
 
 export function gespeichertPruefen(roh: unknown): Gespeichert | null {
   if (!roh || typeof roh !== 'object') return null;
   const g = roh as Record<string, unknown>;
-  if (typeof g.text !== 'string' || typeof g.zeit !== 'number' || !(g.rolle === null || typeof g.rolle === 'string')) return null;
-  return { rolle: g.rolle, text: g.text, zeit: g.zeit };
-}
-
-export function indexPruefen(roh: unknown): string[] {
-  return Array.isArray(roh) ? roh.filter((x): x is string => idPruefen(x) !== null) : [];
+  return typeof g.text === 'string' && typeof g.zeit === 'number' ? { text: g.text, zeit: g.zeit } : null;
 }
 
 /** Sind die Texte frei? Wenn die Kennung der Runde heute aufgedeckt ist, spätestens ab runde.ab. Kein Vorrang für den
@@ -153,40 +94,33 @@ export function texteFrei(runde: Runde, aufgedeckt: boolean, jetzt: Date): boole
   return aufgedeckt || aufgeloest(runde.ab, jetzt);
 }
 
-export interface Antwort { rolle: string | null; text: string }
+export interface Antwort { rolle: string; text: string }
 export interface Stand {
+  /** Belegte Plätze (höchstens so viele wie Rollen). */
   anzahl: number;
-  rollen: Record<string, number>;
+  /** Welche Rollen haben geantwortet. */
+  vergeben: string[];
   frei: boolean;
-  /** Nur wenn frei: die Texte, nach Rolle (Reihenfolge der Runde), dann nach Zeit. Nie die ids. */
+  /** Nur wenn frei: die Texte in der Reihenfolge der Rollen. */
   antworten?: Antwort[];
-  /** Nur mit ?id=…: Ist die eigene Antwort gezählt? (Die Seite schickt sonst noch einmal.) */
-  eigene?: boolean;
 }
 
-export function standBauen(runde: Runde, eintraege: readonly (Gespeichert & { id: string })[], frei: boolean, eigeneId?: string | null): Stand {
-  const rollen: Record<string, number> = Object.fromEntries(runde.rollen.map((r) => [r.id, 0]));
-  for (const e of eintraege) if (e.rolle !== null && e.rolle in rollen) rollen[e.rolle]++;
-  const stand: Stand = { anzahl: eintraege.length, rollen, frei };
-  if (frei) {
-    const rang = (r: string | null) => { const i = runde.rollen.findIndex((x) => x.id === r); return i < 0 ? runde.rollen.length : i; };
-    stand.antworten = [...eintraege]
-      .sort((a, b) => rang(a.rolle) - rang(b.rolle) || a.zeit - b.zeit)
-      .map(({ rolle, text }) => ({ rolle, text }));
-  }
-  if (eigeneId) stand.eigene = eintraege.some((e) => e.id === eigeneId);
+/** plaetze: je Rolle der Runde (gleiche Reihenfolge) der gespeicherte Eintrag oder null. */
+export function standBauen(runde: Runde, plaetze: readonly (Gespeichert | null)[], frei: boolean): Stand {
+  const belegt = runde.rollen.map((r, i) => ({ rolle: r.id, g: plaetze[i] ?? null })).filter((x) => x.g !== null);
+  const stand: Stand = { anzahl: belegt.length, vergeben: belegt.map((x) => x.rolle), frei };
+  if (frei) stand.antworten = belegt.map((x) => ({ rolle: x.rolle, text: x.g!.text }));
   return stand;
 }
 
-/** Für „Eure Sätze“: je Rolle (Reihenfolge der Runde) die Texte; Rollen ohne Antwort fehlen. Ohne Rollen: eine Gruppe ohne label. */
-export function antwortenGruppieren(rollen: readonly Rolle[], antworten: readonly Antwort[]): { label: string | null; texte: string[] }[] {
-  if (!rollen.length) return antworten.length ? [{ label: null, texte: antworten.map((a) => a.text) }] : [];
+/** Für „Eure Sätze“: je Rolle (Reihenfolge der Runde) die Texte; Rollen ohne Antwort fehlen. */
+export function antwortenGruppieren(rollen: readonly Rolle[], antworten: readonly Antwort[]): { label: string; texte: string[] }[] {
   return rollen
     .map((r) => ({ label: r.label, texte: antworten.filter((a) => a.rolle === r.id).map((a) => a.text) }))
     .filter((g) => g.texte.length > 0);
 }
 
-/** „2 von 3 haben geantwortet“ – erwartet: Zahl der Kursteilnehmenden (Kurs: 3); mehr Antworten zählen trotzdem. */
+/** „2 von 3 haben geantwortet“ – erwartet: Zahl der Rollen bzw. Kursteilnehmenden. */
 export function statusText(anzahl: number, erwartet: number): string {
   if (anzahl === 0) return 'Noch keine Antworten.';
   const verb = anzahl === 1 ? 'hat' : 'haben';
