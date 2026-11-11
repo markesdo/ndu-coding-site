@@ -67,7 +67,7 @@ export default function InterviewsEditor() {
         return (
           <>
             <p className="wk-hilfe">Nur pseudonymisiert: keine Namen, Arbeitgeber oder Fotos. Rohnotizen und Aufnahmen bleiben bei dir. Die Skizze der Geschichte zeichnest du gleich nach dem Gespräch auf Papier und bringst sie an Tag 2 mit.</p>
-            <p className="wk-hilfe">Reihenfolge beim Ausfüllen: zuerst die Zitate (so entstehen die IDs), dann die Geschichte, Chancen mit Belegen und Einsichten – das einprägsame Zitat und die Kurzinfos zuletzt. Die fertige Ansicht ordnet alles wie bei Torres.</p>
+            <p className="wk-hilfe"><strong>Reihenfolge beim Ausfüllen:</strong> zuerst die Zitate (so entstehen die IDs), dann die Geschichte, Chancen mit Belegen und Einsichten – das einprägsame Zitat und die Kurzinfos zuletzt. Die fertige Ansicht ordnet alles wie bei Torres.</p>
             <Liste<InterviewEntwurf>
               label="Interviews"
               einzahl="Interview"
@@ -87,6 +87,7 @@ export default function InterviewsEditor() {
                     <Einwilligung wert={iv.einwilligung} onChange={(einwilligung) => s({ ...iv, einwilligung })} fehler={f('einwilligung')} />
                     <Liste<{ id: string; text: string }>
                       label="Zitate"
+                      hilfe="Drei bis fünf Sätze wörtlich aus deinen Notizen. Jedes Zitat bekommt eine ID – darauf verweisen deine Chancen und später der Baum."
                       einzahl="Zitat"
                       eintraege={iv.zitate}
                       onChange={(zitate) => s({ ...iv, zitate })}
@@ -95,7 +96,7 @@ export default function InterviewsEditor() {
                       zeile={(z, sz, j) => (
                         <>
                           <p className="wk-hilfe">ID: <strong>{z.id}</strong></p>
-                          <Textfeld label={`Zitat ${j + 1}`} mehrzeilig zeilen={2} wert={z.text} onChange={(text) => sz({ ...z, text })} fehler={f(`zitate.${j}.text`) ?? f(`zitate.${j}.id`)} hinweis={namenHinweis(z.text)} hilfe={j === 0 ? 'Drei bis fünf Sätze wörtlich aus deinen Notizen. Jedes Zitat bekommt eine ID – darauf verweisen deine Chancen und später der Baum.' : undefined} />
+                          <Textfeld label={`Zitat ${j + 1}`} mehrzeilig zeilen={2} wert={z.text} onChange={(text) => sz({ ...z, text })} fehler={f(`zitate.${j}.text`) ?? f(`zitate.${j}.id`)} hinweis={namenHinweis(z.text)}  />
                         </>
                       )}
                     />
@@ -116,12 +117,13 @@ export default function InterviewsEditor() {
                     />
                     <Liste<string>
                       label="Einsichten"
+                      hilfe="Was dir auffällt, aber kein Bedürfnis ist – etwa ein ungewöhnliches Verhalten. Halte auch fest, was nur diese Person erzählt."
                       einzahl="Einsicht"
                       eintraege={iv.einsichten}
                       onChange={(einsichten) => s({ ...iv, einsichten })}
                       neu={() => ''}
                       fehler={f('einsichten')}
-                      zeile={(e, se, j) => <Textfeld label={`Einsicht ${j + 1}`} wert={e} onChange={se} fehler={f(`einsichten.${j}`)} hinweis={namenHinweis(e)} hilfe={j === 0 ? 'Was dir auffällt, aber kein Bedürfnis ist – etwa ein ungewöhnliches Verhalten. Halte auch fest, was nur diese Person erzählt.' : undefined} />}
+                      zeile={(e, se, j) => <Textfeld label={`Einsicht ${j + 1}`} wert={e} onChange={se} fehler={f(`einsichten.${j}`)} hinweis={namenHinweis(e)}  />}
                     />
                     <Textfeld label="Einprägsames Zitat" wert={iv.zitat} onChange={(zitat) => s({ ...iv, zitat })} fehler={f('zitat')} hinweis={namenHinweis(iv.zitat)} hilfe="Wähle eines deiner Zitate oben: den Satz, der dich an genau diese Geschichte erinnert." />
                     <Textfeld label="Kurzinfos" mehrzeilig zeilen={2} wert={iv.kurzinfos} onChange={(kurzinfos) => s({ ...iv, kurzinfos })} fehler={f('kurzinfos')} hinweis={namenHinweis(iv.kurzinfos)} hilfe="Zwei, drei Fakten: Welche Art Kund*in war das? Bei jedem Interview dieselben – ohne die Person erkennbar zu machen." />
