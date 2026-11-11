@@ -4,8 +4,8 @@
 // Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (bei Netflix drei) – wer abschickt, überschreibt
 // den Platz seiner Rolle. Keine Client-ids, kein Index, keine Listen: Die Zahl der Schlüssel ist fest, der Text begrenzt.
 // Hier ohne DOM und ohne Vercel, damit testbar. .js-Endungen: api/antworten.ts lädt das per Node-ESM.
-import { aufgeloest } from '../components/aufloesung.js';
 import { wienerZeit } from '../components/jetzt.js';
+import { AUFGEDECKT_TTL_SEKUNDEN, gruppeFrei } from './aufgedeckt.js';
 import { NACH_NETFLIX } from '../components/innolab-zeiten.js';
 
 export interface Rolle { id: string; label: string }
@@ -31,9 +31,13 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
   },
 };
 
-export const MAX_TEXT = 200;
-export const TTL_SEKUNDEN = 18 * 60 * 60;
-/** Größter Body, den der Server liest (200 Zeichen Text plus Felder, großzügig). */
+/** Höchstens so viele Zeichen pro Satz – drei davon passen auf „warum“ bei 720p. */
+export const MAX_TEXT = 120;
+/** Ein Kurstag, wie das Aufdecken. */
+export const TTL_SEKUNDEN = AUFGEDECKT_TTL_SEKUNDEN;
+/** Antworten nach dem Aufdecken: Die Seite fragt nur noch so oft nach (falls „Runde leeren“ die Runde wieder öffnet). */
+export const ANTWORTEN_FREI_MS = 30_000;
+/** Größter Body, den der Server liest (Text plus Felder, großzügig). */
 export const MAX_BODY = 4096;
 /** Studierende fragen so oft nach, solange die Folie zu sehen ist … */
 export const ANTWORTEN_MS = 4000;
@@ -53,15 +57,21 @@ export function rollePruefen(runde: Runde, roh: unknown): string | null {
 }
 
 /** Ein Satz: Zeilenumbrüche (auch U+2028/2029) zu Leerzeichen, Steuerzeichen raus, Leerraum zu einem Leerzeichen,
- *  getrimmt; 1–200 Zeichen, sonst null. HTML bleibt Text – die Seite setzt es nur als textContent. */
+ *  getrimmt; 1–MAX_TEXT Zeichen, sonst null. HTML bleibt Text – die Seite setzt es nur als textContent. */
 export function textBereinigen(roh: unknown): string | null {
-  if (typeof roh !== 'string') return null;
-  const t = roh.replace(/[\r\n\t\u2028\u2029]+/g, ' ').replace(STEUER, '').replace(/\s+/g, ' ').trim();
-  const laenge = [...t].length;
-  return laenge >= 1 && laenge <= MAX_TEXT ? t : null;
+  const p = textPruefen(roh);
+  return 'text' in p ? p.text : null;
 }
 
-export interface Eingabe { runde: string; rolle: string; text: string }
+/** Wie textBereinigen, mit Grund für die Seite: leer (auch nach dem Bereinigen) oder zu lang. */
+export function textPruefen(roh: unknown): { text: string } | { fehler: 'leer' | 'lang' } {
+  if (typeof roh !== 'string') return { fehler: 'leer' };
+  const t = roh.replace(/[\r\n\t\u2028\u2029]+/g, ' ').replace(STEUER, '').replace(/\s+/g, ' ').trim();
+  const laenge = [...t].length;
+  return laenge < 1 ? { fehler: 'leer' } : laenge > MAX_TEXT ? { fehler: 'lang' } : { text: t };
+}
+
+export interface Eingabe { runde: string; konfig: Runde; rolle: string; text: string }
 
 /** POST-Body prüfen: alles oder nichts. */
 export function eingabePruefen(body: unknown): Eingabe | null {
@@ -72,7 +82,7 @@ export function eingabePruefen(body: unknown): Eingabe | null {
   const rolle = rollePruefen(runde, b.rolle);
   const text = textBereinigen(b.text);
   if (rolle === null || text === null) return null;
-  return { runde: b.runde as string, rolle, text };
+  return { runde: b.runde as string, konfig: runde, rolle, text };
 }
 
 /** Der Platz einer Rolle: pro Runde, Wiener Kurstag und Rolle ein Schlüssel. */
@@ -91,7 +101,17 @@ export function gespeichertPruefen(roh: unknown): Gespeichert | null {
 /** Sind die Texte frei? Wenn die Kennung der Runde heute aufgedeckt ist, spätestens ab runde.ab. Kein Vorrang für den
  *  Präsentator: Der Beamer zeigt, was die Studierenden sehen. */
 export function texteFrei(runde: Runde, aufgedeckt: boolean, jetzt: Date): boolean {
-  return aufgedeckt || aufgeloest(runde.ab, jetzt);
+  return gruppeFrei(runde.kennung, runde.ab, jetzt, aufgedeckt ? [runde.kennung] : []);
+}
+
+/** Gilt „Gesendet“ noch? Nur, wenn die eigene Rolle laut Server belegt ist (nach „Runde leeren“ nicht mehr). */
+export function gesendetGilt(vergeben: readonly string[], eigeneRolle: string | null): boolean {
+  return eigeneRolle !== null && vergeben.includes(eigeneRolle);
+}
+
+/** Hat jemand anderes die gewählte Rolle schon? Belegt und nicht die, die dieser Browser selbst abgeschickt hat. */
+export function rolleBesetzt(vergeben: readonly string[], gewaehlt: string | null, eigeneRolle: string | null): boolean {
+  return gewaehlt !== null && vergeben.includes(gewaehlt) && gewaehlt !== eigeneRolle;
 }
 
 export interface Antwort { rolle: string; text: string }

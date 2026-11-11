@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  MAX_TEXT, RUNDEN, antwortenGruppieren, eingabePruefen, platzSchluessel, rollePruefen, rundePruefen, standBauen,
-  statusText, textBereinigen, texteFrei,
+  MAX_TEXT, RUNDEN, antwortenGruppieren, eingabePruefen, gesendetGilt, platzSchluessel, rolleBesetzt, rollePruefen,
+  rundePruefen, standBauen, statusText, textBereinigen, textPruefen, texteFrei,
 } from './antworten';
 
 const netflix = RUNDEN.netflix;
@@ -23,7 +23,8 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     expect(rollePruefen(netflix, 'design:x')).toBeNull();
   });
 
-  it('Text: getrimmt, Steuer- und Richtungszeichen raus, 1–200 Zeichen', () => {
+  it('Text: getrimmt, Steuer- und Richtungszeichen raus, 1–120 Zeichen', () => {
+    expect(MAX_TEXT).toBe(120);
     expect(textBereinigen('  Nur Serien unter Beliebt.  ')).toBe('Nur Serien unter Beliebt.');
     expect(textBereinigen(`Zeile 1\r\nZeile${String.fromCharCode(0)}2${String.fromCharCode(0x2028)}x${String.fromCharCode(0x202e)}!`)).toBe('Zeile 1 Zeile2 x!');
     expect(textBereinigen('   ')).toBeNull();
@@ -36,11 +37,18 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     expect(textBereinigen('<img src=x onerror=alert(1)>')).toBe('<img src=x onerror=alert(1)>');
   });
 
+  it('Grund für die Seite: leer (auch nach dem Bereinigen) oder zu lang', () => {
+    expect(textPruefen('  ')).toStrictEqual({ fehler: 'leer' });
+    expect(textPruefen(String.fromCharCode(0x202e, 7))).toStrictEqual({ fehler: 'leer' });
+    expect(textPruefen('x'.repeat(121))).toStrictEqual({ fehler: 'lang' });
+    expect(textPruefen(' ok ')).toStrictEqual({ text: 'ok' });
+  });
+
   it('Body: alles oder nichts', () => {
     expect(eingabePruefen({ runde: 'netflix', rolle: 'design', text: ' Suche fehlt ' }))
-      .toStrictEqual({ runde: 'netflix', rolle: 'design', text: 'Suche fehlt' });
+      .toStrictEqual({ runde: 'netflix', konfig: netflix, rolle: 'design', text: 'Suche fehlt' });
     expect(eingabePruefen({ runde: 'netflix', rolle: 'chef', text: 'x' })).toBeNull();
-    expect(eingabePruefen({ runde: 'netflix', rolle: 'design', text: 'x'.repeat(201) })).toBeNull();
+    expect(eingabePruefen({ runde: 'netflix', rolle: 'design', text: 'x'.repeat(121) })).toBeNull();
     expect(eingabePruefen({ runde: 'gibtsnicht', rolle: 'design', text: 'x' })).toBeNull();
     expect(eingabePruefen(null)).toBeNull();
     expect(eingabePruefen('netflix')).toBeNull();
@@ -76,6 +84,16 @@ describe('Antwortrunde: Plätze und Stand', () => {
       { rolle: 'produktmanagement', text: 'Nur Serien' },
       { rolle: 'entwicklung', text: 'Kinderfilme' },
     ]);
+  });
+
+  it('Abgleich mit dem Server: „Gesendet“ nur, solange die eigene Rolle belegt ist; fremd belegte Rolle erkennen', () => {
+    expect(gesendetGilt(['design'], 'design')).toBe(true);
+    expect(gesendetGilt([], 'design')).toBe(false); // nach „Runde leeren“
+    expect(gesendetGilt(['design'], null)).toBe(false);
+    expect(rolleBesetzt(['design'], 'design', null)).toBe(true);
+    expect(rolleBesetzt(['design'], 'design', 'design')).toBe(false); // die eigene – ändern erlaubt
+    expect(rolleBesetzt(['design'], 'entwicklung', null)).toBe(false);
+    expect(rolleBesetzt(['design'], null, null)).toBe(false);
   });
 
   it('Gruppen für „Eure Sätze“ und die Statuszeile', () => {

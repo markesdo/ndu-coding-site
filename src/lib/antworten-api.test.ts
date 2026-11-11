@@ -72,7 +72,7 @@ describe('api/antworten', () => {
 
   it('ungültige Eingaben: 400/413, nichts gespeichert', async () => {
     expect((await antwort('marketing', 'x')).status).toBe(400);
-    expect((await antwort('design', 'x'.repeat(201))).status).toBe(400);
+    expect((await antwort('design', 'x'.repeat(121))).status).toBe(400);
     expect((await antwort('design', '   ')).status).toBe(400);
     expect((await senden({ runde: 'zwoelf', rolle: 'design', text: 'x' })).status).toBe(400);
     expect((await senden('kein json')).status).toBe(400);
@@ -93,6 +93,19 @@ describe('api/antworten', () => {
     expect(await lesen()).toStrictEqual({ anzahl: 0, vergeben: [], frei: false });
     expect((await antwort('design', 'neu')).status).toBe(200);
     expect((await lesen()).anzahl).toBe(1);
+  });
+
+  it('Runde leeren nach dem Aufdecken (Probe): Aufdecken zurückgenommen, Texte wieder verborgen, Senden geht wieder', async () => {
+    vi.stubEnv('PRESENTER_KEY', 'geheim');
+    await antwort('design', 'Probe');
+    aufdecken();
+    expect((await antwort('design', 'zu spät')).status).toBe(409);
+    expect((await leeren()).status).toBe(403);
+    expect((await lesen()).frei).toBe(true); // ohne Schlüssel bleibt es aufgedeckt
+    expect((await leeren('geheim')).status).toBe(200);
+    expect(await lesen()).toStrictEqual({ anzahl: 0, vergeben: [], frei: false });
+    expect((await antwort('design', 'echt')).status).toBe(200);
+    expect(await lesen()).toStrictEqual({ anzahl: 1, vergeben: ['design'], frei: false });
   });
 
   it('Runde leeren ohne PRESENTER_KEY: 503, nichts geleert', async () => {

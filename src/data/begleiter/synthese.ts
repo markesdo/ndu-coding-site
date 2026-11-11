@@ -134,7 +134,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       achten: [
         'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
         'Trifft jemand nicht den Satz aus dem Buch: kein Fehler – Torres schreibt „might“.',
-        'Pro Rolle ein Platz: Wer dieselbe Rolle wählt, überschreibt die Antwort davor. Testantworten oder Unsinn: auf der Seite ohne Beamer „Runde leeren“, dann neu abschicken lassen.',
+        'Pro Rolle ein Platz: Wer dieselbe Rolle wählt, überschreibt die Antwort davor (die Seite warnt vorher). Testantworten, Unsinn oder eine Probe mit Aufdecken: auf der Seite ohne Beamer „Runde leeren“. Das löscht die Sätze und nimmt auch das Aufdecken der Buch-Sätze zurück (später einfach erneut aufdecken); danach kann jede*r wieder abschicken, der Text steht noch im Feld. Schon geöffnete Seiten (Beamer) neu laden.',
       ],
     },
     ueberleitung: 'Jetzt abschicken – dann seht ihr, was drei Rollen bei Torres gehört haben.',

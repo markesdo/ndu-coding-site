@@ -16,7 +16,7 @@ import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
 import { CircleCheck, CirclePause, CircleX, Clock, FileStack, FileText, Library, Mic, StickyNote } from '@lucide/astro';
-import { NACH_NETFLIX } from '../../../components/innolab-zeiten';
+import { RUNDEN } from '../../../lib/antworten';
 import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
@@ -135,7 +135,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   <Folie>
     <h2 id="warum">Warum gemeinsam?</h2>
     <p class="folie-satz">Vergleicht eure Sätze mit dem, was eure Rolle im Buch hört.</p>
-    <Aufloesung ab={NACH_NETFLIX} gruppe="netflix">
+    <Aufloesung ab={RUNDEN.netflix.ab} gruppe={RUNDEN.netflix.kennung}>
       <Antwortrunde runde="netflix" ansicht="antworten" />
       <p class="ar-buch"><strong>Im Buch</strong></p>
       <ul class="gross dicht">
