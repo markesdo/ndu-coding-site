@@ -1,8 +1,10 @@
 // Reine Hilfen für das Feedback (NDU-35) in Lehrenden-Ansicht, Editor und „Meine Mappe“: Zahlen als Text, was „neu“
 // ist. Die Zeilen zur Auswahl stehen in feedback.ts (die Route prüft gegen dieselben). Nur Text und Daten; das
 // Einsetzen macht React. Dazu die Reihenfolge der Anfragen (unten). Keine Noten, keine Punkte.
+import { METHODEN } from '../../components/methoden.js';
 import { tagInWien } from '../../lib/kurswahl.js';
 import { feedbackZaehlen, zeilenName, type FeedbackEintrag, type FeedbackZahlen } from '../feedback.js';
+import type { Kriterium } from '../kriterien.js';
 import { datumAt } from '../render/format.js';
 import type { ArtefaktName } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
@@ -10,6 +12,17 @@ import { ROUTEN } from '../vertrag.js';
 /** „zu A2“, „zu Welches Problem?“ oder „zum ganzen Artefakt“. */
 export function bezugText(e: Pick<FeedbackEintrag, 'artefakt' | 'zeilenId'>): string {
   return e.zeilenId === undefined ? 'zum ganzen Artefakt' : `zu ${zeilenName(e.artefakt, e.zeilenId)}`;
+}
+
+/** Links der Quelle eines Kriteriums (NDU-41): Methodenseite mit ihrem Namen, Tagesseite als „Tag 1“. */
+export function quelleLinks(k: Pick<Kriterium, 'quelle'>): { href: string; titel: string }[] {
+  return k.quelle.seiten.map((href) => {
+    const pfad = href.split('#')[0];
+    const methode = /^\/innolab\/methoden\/([a-z0-9-]+)$/.exec(pfad);
+    const tag = /^\/innolab\/tag-([0-9]+)$/.exec(pfad);
+    const titel = methode ? METHODEN.find((m) => m.slug === methode[1])?.name : tag ? `Tag ${tag[1]}` : undefined;
+    return { href, titel: titel ?? pfad };
+  });
 }
 
 /** „22.10.2026“ (Tag in Wien). */

@@ -208,7 +208,8 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   });
 
   // Feedback schreiben (NDU-35): dieselben Prüfungen wie der Leser, dann ein Commit nur an mappe/feedback.json.
-  // Autor*in im Eintrag und im Commit ist die angemeldete Lehrperson (GitHub-Login aus der Sitzung).
+  // Autor*in im Eintrag und im Commit ist die angemeldete Lehrperson (GitHub-Login aus der Sitzung). Ein Kriterium (NDU-41)
+  // muss es im Katalog geben und zu Artefakt und Abschnitt passen; das prüft feedbackSchreiben (sonst 422 mit Satz).
   r.post('/feedback', async (c) => {
     let anfrage: unknown;
     try {
@@ -243,7 +244,7 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     const danach = await feedbackAendern(
       abh.speicher,
       repo,
-      (f) => feedbackSchreiben(f, { artefakt: n, zeilenId: a.zeilenId, text: a.text, autor: s.login, datum: new Date(abh.jetzt()).toISOString() }),
+      (f) => feedbackSchreiben(f, { artefakt: n, zeilenId: a.zeilenId, kriterium: a.kriterium, text: a.text, autor: s.login, datum: new Date(abh.jetzt()).toISOString() }),
       commitAutor(s),
       kurzeNachricht(`Feedback von ${s.login}: ${ARTEFAKTE[n].titel}${zeile}`),
     );

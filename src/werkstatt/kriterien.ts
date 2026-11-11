@@ -165,3 +165,16 @@ export const KRITERIEN: readonly Kriterium[] = [
 export function kriterium(id: string): Kriterium | undefined {
   return KRITERIEN.find((k) => k.id === id);
 }
+
+/** Passt das Kriterium zu diesem Artefakt und (beim Brief) zum Abschnitt? Ohne Zeile: zum ganzen Artefakt – dann reicht
+ *  das Artefakt. Andere Zeilen-IDs (A2, F1 …) schränken nicht ein. Dieselbe Regel für die Auswahl im Leser und die Route. */
+export function kriteriumPasst(k: Kriterium, artefakt: ArtefaktName, zeilenId?: string): boolean {
+  if (!k.artefakte.includes(artefakt)) return false;
+  if (artefakt === 'brief' && zeilenId !== undefined && k.abschnitte !== undefined) return (k.abschnitte as readonly string[]).includes(zeilenId);
+  return true;
+}
+
+/** Die Kriterien zur Auswahl, in der Reihenfolge des Katalogs. */
+export function kriterienFuer(artefakt: ArtefaktName, zeilenId?: string): Kriterium[] {
+  return KRITERIEN.filter((k) => kriteriumPasst(k, artefakt, zeilenId));
+}

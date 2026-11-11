@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import annahmen from './beispiele/annahmen.json';
 import entscheidungen from './beispiele/entscheidungen.json';
 import { BRIEF_ABSCHNITTE } from './feedback';
-import { KRITERIEN, kriterium, type Fassung } from './kriterien';
+import { KRITERIEN, kriterienFuer, kriterium, kriteriumPasst, type Fassung } from './kriterien';
 import { ARTEFAKT_NAMEN } from './schemas/index';
 
 const lesen = (pfad: string) => readFileSync(pfad, 'utf8');
@@ -94,5 +94,30 @@ describe('Kriterien-Katalog', () => {
     const beleg = kriterium('beleg-ohne-quelle')!.paar;
     expect(beleg.stark.text.startsWith(`${d4.entscheidung} — ${d4.grund} — Beleg: ${d4.beleg} (${d4.belegIds.join(', ')}`)).toBe(true);
     expect(beleg.schwach.text).toBe(`${d4.entscheidung} — ${d4.grund} — Beleg: ${d4.beleg}`);
+  });
+});
+
+describe('Welche Kriterien passen (NDU-41)', () => {
+  const ids = (a: Parameters<typeof kriterienFuer>[0], z?: string) => kriterienFuer(a, z).map((k) => k.id);
+
+  it('je Artefakt und Brief-Abschnitt nur die passenden, in der Reihenfolge des Katalogs', () => {
+    expect(ids('brief')).toStrictEqual(['output-statt-outcome', 'outcome-nicht-messbar', 'loesung-im-problem', 'zwei-zielgruppen']);
+    expect(ids('brief', 'outcome')).toStrictEqual(['output-statt-outcome', 'outcome-nicht-messbar']);
+    expect(ids('brief', 'problem')).toStrictEqual(['loesung-im-problem']);
+    expect(ids('brief', 'fuerWen')).toStrictEqual(['zwei-zielgruppen']);
+    expect(ids('brief', 'nicht')).toStrictEqual([]);
+    expect(ids('annahmen', 'A2')).toStrictEqual(['loesung-im-problem', 'art-der-annahme', 'annahme-nicht-pruefbar', 'beleg-ohne-quelle']);
+    expect(ids('entscheidungen')).toStrictEqual(['annahme-nicht-pruefbar', 'beleg-ohne-quelle']);
+    expect(ids('leitfaden', 'F1')).toStrictEqual(['meinungsfrage', 'verallgemeinerung']);
+    expect(ids('interviews')).toStrictEqual([]);
+  });
+
+  it('kriteriumPasst: Artefakt zuerst, Abschnitt nur beim Brief', () => {
+    const k = kriterium('loesung-im-problem')!;
+    expect(kriteriumPasst(k, 'annahmen', 'A2')).toBe(true);
+    expect(kriteriumPasst(k, 'brief', 'problem')).toBe(true);
+    expect(kriteriumPasst(k, 'brief')).toBe(true);
+    expect(kriteriumPasst(k, 'brief', 'outcome')).toBe(false);
+    expect(kriteriumPasst(k, 'leitfaden')).toBe(false);
   });
 });
