@@ -253,7 +253,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Festhalten und prüfen (5 min): docs/BAUM.md, Prüfliste, Claude.',
       ],
       achten: [
-        'Chancen in den Worten der Kundschaft und mit Zitat-IDs aus mindestens zwei Interviews.',
+        'Chancen in den Worten der Kundschaft und mit Zitat-IDs aus mindestens zwei Interviews – ohne ID kein Beleg.',
         'Passt eine Chance unter zwei Momente, ist sie zu breit (Torres S. 88).',
         'Was offen bleibt, wird eine Frage für die nächsten Interviews.',
       ],

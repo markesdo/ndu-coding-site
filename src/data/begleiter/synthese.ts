@@ -9,6 +9,7 @@ const MOMTEST = 'Rob Fitzpatrick, The Mom Test';
 export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   verschwimmen: {
     live: [
+      'Fragen: Wer hat Interviews schon in der Werkstatt? Sonst Fallback (vorgehen).',
       'Fragen: Wer hat in Need Finding schon Snapshots oder Affinitätsdiagramme gemacht?',
       'Obere Reihe: So laufen Projekte – sammeln, anhalten, Bericht.',
       '„Nach ein paar Interviews verschwimmen die Geschichten – verlasst euch nicht aufs Gedächtnis.“',
@@ -204,17 +205,20 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Reihenfolge festlegen, Timer 12 min je Runde neu starten.',
       'Zeit: nach 5 min vom Zeigen ins Besprechen wechseln.',
       'Nach 36 min: Festhalten in der Werkstatt, Timer 8 min.',
-      'Falle: Wer zeigt, verteidigt – zuhören einfordern.',
+      'Fallback: Werkstatt leer? Bis 14:45 die besten 2–3 eintragen.',
     ],
     uebung: { dauer: '44 min (3 × 12 + 8)', form: 'zu dritt reihum, dann allein' },
     miro: {
+      frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
-        'Den Frame mit den Snapshots (T1 · 5) für alle öffnen; die Person, die zeigt, holt alle an ihre Spalte.',
-        'Was die anderen anders hören, kommt als Sticky an den Snapshot – nicht in fremden Spalten verschieben oder löschen.',
+        'Die Snapshots liegen als Karten mit ID auf T1 · 5 (Kopien aus der Werkstatt); die Person, die zeigt, holt alle an ihre Spalte.',
+        'Was die anderen anders hören, notiert die Person für ihren Snapshot und ändert es in der Werkstatt, nicht auf Miro.',
+        'Fallback (Werkstatt war leer): Es gibt noch keine Karten – die Person zeigt direkt aus der Werkstatt.',
       ],
     },
     ablauf: {
       schritte: [
+        'Fallback, wenn zu Beginn (14:05) noch keine Interviews in der Werkstatt stehen: Bis 14:45 trägt jede*r die besten zwei bis drei ein – Pseudonym, Datum, Einwilligung, 3–5 wörtliche Zitate mit ID, Chancen mit Beleg-IDs; Kurzinfos, Einsichten, Notizen später. Danach Theorie nur snapshot-i2 und geschichte/warum (7 min), Runden 3 × 5 min (2 zeigen, 3 besprechen), Festhalten 3 min – Ende wie geplant 15:10.',
         'Schritte in den Teams-Chat kopieren (Karte „Für den Teams-Chat“ im Handout dieser Folie).',
         'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen.',
         'Runde 2 und 3 genauso, Timer jeweils neu starten.',
@@ -222,7 +226,8 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       ],
       achten: [
         'Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen hören, ist der Grund für die Besprechung (Torres S. 75).',
-        'Belege mit Zitat-ID eintragen, nicht nur „I2“.',
+        'Belege mit Zitat-ID eintragen, nicht nur „I2“. Jede Chance auf Miro nennt mindestens eine Zitat-ID – ohne ID kein Beleg.',
+        'Wer zeigt, verteidigt nicht – zuhören einfordern.',
         'Streuen die fünf Snapshots in alle Richtungen, über eine engere Zielgruppe im Produkt-Brief sprechen (Mom Test S. 88).',
       ],
       fehler: [

@@ -102,7 +102,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   geschichten: {
     live: [
-      'Vier Schritte zeigen, die Snapshot-Skizzen sind der Rohstoff.',
+      'Vier Schritte zeigen, die Skizzen auf Papier sind der Rohstoff.',
       '„Welche Knoten tauchen in Geschichte um Geschichte auf? Das ist eure Map.“',
       'Falle: zu stark zusammenlegen, Umwege und Abbrüche weglassen.',
     ],
@@ -185,7 +185,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       frame: 'T2 · 1 · Experience Map',
       schritte: [
         '„Alle zu mir holen“ auf T2 · 1; links die Kaffeebar als Muster.',
-        'Allein in der eigenen Spalte: Knoten aus den Snapshot-Skizzen, die Map von Tag 1 (T1 · 1) daneben.',
+        'Allein in der eigenen Spalte: Knoten aus den Skizzen auf Papier, die Map von Tag 1 (T1 · 1) daneben.',
         'Zu dritt Spalte für Spalte; Unterschiede zeichnen statt diskutieren.',
         'Momente markieren: drei bis fünf, Tiefpunkt und Ende.',
       ],
@@ -193,7 +193,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Schritte in den Teams-Chat kopieren (Karte „Für den Teams-Chat“ im Handout dieser Folie).',
-        'Allein (10 min): Knoten aus den Snapshot-Skizzen beschriften, zusammenfügen, die Map von Tag 1 daneben.',
+        'Allein (10 min): Knoten aus den Skizzen auf Papier beschriften, zusammenfügen, die Map von Tag 1 daneben.',
         'Zu dritt (12 min): Jede*r zeigt die eigene Map, die anderen fragen nach.',
         'Momente festlegen (8 min): drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren.',
         'Festhalten und prüfen (5 min): docs/JOURNEY.md, Prüfliste, Claude.',
@@ -202,6 +202,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         'Beim Zeigen: Fragen stellen, auf Unterschiede achten, die eigene Zeichnung nicht verteidigen (Torres S. 55).',
         'Streit über Details: den Unterschied zeichnen statt diskutieren (Torres S. 56–57).',
         'Momente in den Worten der Kundschaft („Ich stehe an.“), nicht als Prozessschritt („Warteschlange“).',
+        'Jeder Moment und jede Chance auf Miro nennt mindestens eine Zitat-ID aus der Werkstatt – ohne ID kein Beleg.',
       ],
       fehler: [
         'Die alte Map abhaken statt die Geschichten nachzuzeichnen.',
