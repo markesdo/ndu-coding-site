@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { belegFehlt, belegHilfe, belegHinweis, neuesInterview, neuesZitat } from './interviews-hilfen';
+import { belegFehlt, belegHilfe, belegHinweis, belegUmschalten, neuesInterview, neuesZitat } from './interviews-hilfen';
 
 describe('Interview-Editor: neue Einträge', () => {
   it('neues Interview: nächste freie I-ID, Datum heute, ohne Einwilligung', () => {
@@ -16,15 +16,14 @@ describe('Interview-Editor: neue Einträge', () => {
 });
 
 describe('Interview-Editor: Tipp unter „Belege“', () => {
-  const OHNE = 'Noch keine Zitate: Trag zuerst oben unter „Zitate“ ein, was die Person wörtlich gesagt hat. Dann kannst du hier ihre IDs wählen.';
-  const MIT = 'Die Zitat-IDs, die diese Chance stützen – ohne ID kein Beleg.';
+  const MIT = 'Kreuze die Zitate an, die diese Chance stützen – ohne Zitat kein Beleg.';
 
-  it('ohne Zitate oder nur mit leeren: erst nach oben zu den Zitaten', () => {
-    expect(belegHilfe([])).toBe(OHNE);
-    expect(belegHilfe([{ text: '' }, { text: '   ' }])).toBe(OHNE);
+  it('ohne Zitate oder nur mit leeren: kein Tipp (der Leerzustand von BelegAuswahl sagt es schon)', () => {
+    expect(belegHilfe([])).toBeUndefined();
+    expect(belegHilfe([{ text: '' }, { text: '   ' }])).toBeUndefined();
   });
 
-  it('sobald ein Zitat Text hat: die IDs als Beleg wählen', () => {
+  it('sobald ein Zitat Text hat: Zitate ankreuzen', () => {
     expect(belegHilfe([{ text: '' }, { text: 'Wenn ich auf die Uhr schauen muss, geh ich.' }])).toBe(MIT);
   });
 });
@@ -45,21 +44,48 @@ describe('Interview-Editor: Hinweis „Chance ohne Beleg“ (NDU-56)', () => {
 });
 
 describe('Interview-Editor: Text des Beleg-Hinweises', () => {
-  const MIT_ZITATEN = 'Diese Chance hat noch keinen Beleg – wähle mindestens eine Zitat-ID.';
-  const OHNE_ZITATE = 'Diese Chance hat noch keinen Beleg – trag zuerst oben Zitate ein, dann wähl ihre ID.';
+  const MIT_ZITATEN = 'Diese Chance hat noch keinen Beleg – kreuze mindestens ein Zitat an.';
   const ohneBeleg = { text: 'Will nicht in der Schlange warten.', belege: [] };
 
-  it('mit einem Zitat mit Text: Zitat-ID wählen', () => {
+  it('mit einem Zitat mit Text: Zitat ankreuzen', () => {
     expect(belegHinweis(ohneBeleg, [{ text: '' }, { text: 'Wenn ich auf die Uhr schauen muss, geh ich.' }])).toBe(MIT_ZITATEN);
   });
 
-  it('ohne Zitate oder nur mit leeren: zuerst Zitate eintragen', () => {
-    expect(belegHinweis(ohneBeleg, [])).toBe(OHNE_ZITATE);
-    expect(belegHinweis(ohneBeleg, [{ text: '  ' }])).toBe(OHNE_ZITATE);
+  it('ohne Zitate oder nur mit leeren: kein Hinweis (der Leerzustand von BelegAuswahl sagt es schon)', () => {
+    expect(belegHinweis(ohneBeleg, [])).toBeUndefined();
+    expect(belegHinweis(ohneBeleg, [{ text: '  ' }])).toBeUndefined();
   });
 
   it('kein Hinweis bei leerer Chance oder mit Beleg, auch ohne Zitate', () => {
     expect(belegHinweis({ text: '', belege: [] }, [])).toBeUndefined();
     expect(belegHinweis({ ...ohneBeleg, belege: ['I1-1'] }, [{ text: 'Zitat' }])).toBeUndefined();
+  });
+});
+
+describe('Interview-Editor: Beleg an- und abwählen (belegUmschalten)', () => {
+  const IDS = ['I6-1', 'I6-2', 'I6-3'];
+
+  it('anwählen fügt hinzu', () => {
+    expect(belegUmschalten([], 'I6-2', true, IDS)).toStrictEqual(['I6-2']);
+  });
+
+  it('abwählen entfernt', () => {
+    expect(belegUmschalten(['I6-1', 'I6-2'], 'I6-1', false, IDS)).toStrictEqual(['I6-2']);
+  });
+
+  it('Ergebnis in der Reihenfolge der Zitate, egal in welcher Reihenfolge angekreuzt', () => {
+    expect(belegUmschalten(['I6-3'], 'I6-1', true, IDS)).toStrictEqual(['I6-1', 'I6-3']);
+    expect(belegUmschalten(['I6-3', 'I6-1'], 'I6-2', true, IDS)).toStrictEqual(['I6-1', 'I6-2', 'I6-3']);
+  });
+
+  it('kein Doppelter: schon gewähltes noch einmal anwählen ändert nichts', () => {
+    expect(belegUmschalten(['I6-1', 'I6-2'], 'I6-2', true, IDS)).toStrictEqual(['I6-1', 'I6-2']);
+    expect(belegUmschalten(['I6-2', 'I6-2'], 'I6-1', true, IDS)).toStrictEqual(['I6-1', 'I6-2']);
+  });
+
+  it('Waise (Zitat gibt es nicht mehr) bleibt hinten stehen, bis man sie abwählt', () => {
+    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-1', true, IDS)).toStrictEqual(['I6-1', 'I6-2', 'I6-4']);
+    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-2', false, IDS)).toStrictEqual(['I6-4']);
+    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-4', false, IDS)).toStrictEqual(['I6-2']);
   });
 });

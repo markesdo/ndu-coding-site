@@ -92,6 +92,24 @@
 .wk-verweis-neu { display: flex; gap: .5rem; align-items: stretch; }
 .wk-verweis-neu input { flex: 1; }
 
+/* Belege einer Chance zum Ankreuzen (BelegAuswahl im Interview-Editor): ganzer Zitattext, die ganze Zeile klickbar. */
+.wk-belegwahl { display: grid; gap: .4rem; }
+.wk-belegwahl > legend { margin-bottom: .2rem; }
+.wk-belegwahl > .wk-hilfe, .wk-belegwahl > .wk-fehler, .wk-belegwahl > .wk-feldhinweis { margin: 0; }
+.wk-wurzel .wk-beleg {
+  display: flex; align-items: flex-start; gap: .5rem; min-height: 2.5rem; box-sizing: border-box;
+  padding: .5rem .6rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg);
+  color: var(--fg); line-height: 1.4; cursor: pointer; overflow-wrap: anywhere;
+}
+.wk-wurzel .wk-beleg:hover { border-color: var(--accent); }
+.wk-wurzel .wk-beleg:has(input:checked) { border-color: var(--blue); background: var(--blue-soft); }
+.wk-wurzel .wk-beleg:has(input:focus-visible) { outline: 3px solid var(--blue); outline-offset: 2px; }
+.wk-wurzel .wk-beleg input:focus-visible { outline: none; }
+/* Kästchen so hoch wie die erste Textzeile (1.4em), nicht gestaucht. */
+.wk-wurzel .wk-beleg input { flex-shrink: 0; width: 1.1rem; height: 1.1rem; margin: calc((1.4em - 1.1rem) / 2) 0 0; accent-color: var(--blue); cursor: pointer; }
+.wk-wurzel .wk-beleg .wk-karte-nr { flex-shrink: 0; margin-right: 0; line-height: inherit; }
+.wk-wurzel .wk-beleg-waise { color: var(--muted); border-style: dashed; }
+
 
 /* Lehrenden-Ansicht auf /innolab/mappe (LehrendenAnsicht.tsx): Matrix Person × Artefakt, schmal eine Karte pro Person.
    Symbol und Wort, nie Farbe allein; Schrift auf hellem Grund nie in --yellow (zu wenig Kontrast), sondern --yellow-ink. */

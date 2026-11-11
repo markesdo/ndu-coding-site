@@ -35,23 +35,31 @@ export const neueChance = (): Chance => ({ text: '', belege: [] });
 
 const hatZitate = (zitate: readonly { text: string }[]) => zitate.some((z) => z.text.trim() !== '');
 
-/** Tipp unter „Belege“: Ohne Zitat mit Text gibt es keine ID zum Wählen – dann zuerst nach oben zu den Zitaten. */
-export function belegHilfe(zitate: readonly { text: string }[]): string {
-  return hatZitate(zitate)
-    ? 'Die Zitat-IDs, die diese Chance stützen – ohne ID kein Beleg.'
-    : 'Noch keine Zitate: Trag zuerst oben unter „Zitate“ ein, was die Person wörtlich gesagt hat. Dann kannst du hier ihre IDs wählen.';
+/** Tipp unter „Belege“ (nur an der ersten Chance). Ohne Zitat mit Text kein Tipp: Dann zeigt BelegAuswahl an jeder
+ *  Chance den Leerzustand „Noch keine Zitate …“, der dasselbe sagt. */
+export function belegHilfe(zitate: readonly { text: string }[]): string | undefined {
+  return hatZitate(zitate) ? 'Kreuze die Zitate an, die diese Chance stützen – ohne Zitat kein Beleg.' : undefined;
 }
 
-export const BELEG_FEHLT = 'Diese Chance hat noch keinen Beleg – wähle mindestens eine Zitat-ID.';
-export const BELEG_FEHLT_OHNE_ZITATE = 'Diese Chance hat noch keinen Beleg – trag zuerst oben Zitate ein, dann wähl ihre ID.';
+export const BELEG_FEHLT = 'Diese Chance hat noch keinen Beleg – kreuze mindestens ein Zitat an.';
 
 /** Weicher Hinweis (NDU-56): Chance mit Text, aber ohne Zitat-ID. Eine frische, leere Zeile bleibt ohne Hinweis; speichern geht trotzdem. */
 export function belegFehlt(chance: Chance): boolean {
   return chance.text.trim() !== '' && chance.belege.length === 0;
 }
 
-/** Hinweistext am Feld „Belege“: ohne Zitat mit Text gibt es noch keine ID zum Wählen, also zuerst nach oben zu den Zitaten. */
+/** Hinweistext am Feld „Belege“. Nur, wenn es Zitate zum Ankreuzen gibt: Ohne Zitat mit Text sagt der Leerzustand von
+ *  BelegAuswahl schon „zuerst oben Zitate eintragen, dann ankreuzen“ – ein zweiter Hinweis würde das nur wiederholen. */
 export function belegHinweis(chance: Chance, zitate: readonly { text: string }[]): string | undefined {
-  if (!belegFehlt(chance)) return undefined;
-  return hatZitate(zitate) ? BELEG_FEHLT : BELEG_FEHLT_OHNE_ZITATE;
+  if (!belegFehlt(chance) || !hatZitate(zitate)) return undefined;
+  return BELEG_FEHLT;
+}
+
+/** Ein Zitat als Beleg an- oder abwählen. Ergebnis in der Reihenfolge der Zitate (`zitatIds`), ohne Doppelte;
+ *  Verweise auf Zitate, die es nicht mehr gibt (Waisen), bleiben hinten stehen, bis man sie abwählt. */
+export function belegUmschalten(werte: readonly string[], id: string, an: boolean, zitatIds: readonly string[]): string[] {
+  const gewaehlt = (z: string) => (z === id ? an : werte.includes(z));
+  const zitate = [...new Set(zitatIds)].filter(gewaehlt);
+  const waisen = [...new Set(werte)].filter((w) => !zitatIds.includes(w) && !(w === id && !an));
+  return [...zitate, ...waisen];
 }
