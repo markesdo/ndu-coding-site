@@ -26,10 +26,10 @@ const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas
     <Block time="10:25–10:35" type="pause" title="Pause" />
     <Block time="10:35–11:20" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Zwei Fragen der Confirmation; Story-Workshop reihum: Normalfall, Was-wenn, Demo.</Block>
     <Block time="11:20–11:50" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Wer baut, schätzt; Plan-Check mit Claude, Geteiltes zeigen reihum.</Block>
-    <Block time="11:50–12:20" type="uebung" title="Sprint-Planning" href="/innolab/methoden/sprint#planning">Sprint-Ziel, Auswahl, wer baut was.</Block>
-    <Block time="12:20–13:20" type="pause" title="Mittagspause" />
-    <Block time="13:20–14:05" type="uebung" title="Pitch" href="/innolab/methoden/pitch">Story in vier Teilen, Demo, Belege, Wertkurve und Raster; das Gerüst.</Block>
-    <Block time="14:05–15:30" type="uebung" title="Bauen" href="#bauen">Das Mess-Issue zuerst, Branding, die ersten Issues.</Block>
+    <Block time="11:50–12:30" type="uebung" title="Sprint-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, wer baut was – und eine Karte, die alles ändert.</Block>
+    <Block time="12:30–13:30" type="pause" title="Mittagspause" />
+    <Block time="13:30–14:15" type="uebung" title="Pitch" href="/innolab/methoden/pitch">Story in vier Teilen, Demo, Belege, Wertkurve und Raster; das Gerüst.</Block>
+    <Block time="14:15–15:30" type="uebung" title="Bauen" href="#bauen">Das Mess-Issue zuerst, Branding, die ersten Issues.</Block>
     <Block time="15:30–15:45" type="pause" title="Pause" />
     <Block time="15:45–16:45" type="uebung" title="Bauen" href="#bauen">Issues, Belege, Pull Requests.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss" href="#abschluss">Der Sprint läuft – bis Tag 6.</Block>
@@ -113,6 +113,19 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (Entscheidungs
     <li><a href="/innolab/methoden/pitch">Pitch</a> – Geschichte, Demo, Belege; Wertkurve und Raster nach Kim &amp; Mauborgne</li>
   </ul>
 
+  <h2 id="stoerfall">Sprint-Planning mit Störfall</h2>
+  <p>Ihr plant euren Sprint wie auf der Methodenseite (<a href="/innolab/methoden/sprint#planning">Sprint Planning</a>), zehn Minuten pro Produkt. Danach, mit dem ersten Entwurf auf dem Tisch, zieht jede*r Product Owner eine Störfall-Karte. Solche Karten gibt es in jedem echten Projekt:</p>
+  <ul>
+    <li>Ein Stakeholder will eine Funktion, die ihr im Entscheidungslog ausgeschlossen habt.</li>
+    <li>Eine Person aus dem Team fällt für die Hälfte des Sprints aus.</li>
+    <li>Vor dem ersten Speichern von Daten muss ein Datenschutzhinweis stehen – ab sofort.</li>
+    <li>Ein Testbefund aus dem Debrief heute Morgen stellt euer Sprint-Ziel in Frage.</li>
+  </ul>
+  <p>Als Product Owner entscheidet ihr: annehmen und etwas anderes dafür herausnehmen, eine kleinere Variante, oder begründet ablehnen. Was nicht geht: alles zusätzlich machen. Die Entscheidung steht mit Begründung im Entscheidungslog, das Sprint-Ziel bleibt ein Satz. Für die drei Karten zusammen habt ihr zehn Minuten; erst danach bekommen die Issues das Label <code>Sprint</code>.</p>
+  <Callout type="info" title="Wofür die Störung gut ist">
+    <p>Beim Lego hat Markus die Störungen nach Krivitsky eingebaut: eine mehrdeutige Anforderung, kein Wort zur Integration, einen Product Owner auf Geschäftsreise (Krivitsky, S. 41; <a href="/innolab/methoden/scrum#nachbesprechung">Scrum im Team</a>). Die Karten heute sind ein Zusatz des Kurses, und sie kommen im Planning – dort, wo ein Product Owner sie abfangen kann. Im Sprint selbst gilt: keine Änderungen, die das Sprint-Ziel gefährden (Scrum Guide, S. 7). Genau das ist eure Rolle: Nein sagen können, mit einem Grund.</p>
+  </Callout>
+
   <h2 id="bauen">Bauen</h2>
   <p>Euer Sprint läuft vom Planning heute bis zu Review und Retro an Tag 6 am 19. Dezember – eine Woche, davon heute Nachmittag gemeinsam im Raum. Jede*r baut Issues aus allen drei Produkten, so wie im Planning verteilt. Der Takt ist der aus dem Coding-Kurs – Issue holen, bauen lassen, Belege prüfen, Pull Request –, mit den Team-Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>.</p>
   <Callout type="tip" title="Das Mess-Issue zuerst">
@@ -138,6 +151,7 @@ Stell die drei nebeneinander und sag zu jeder in einem Satz, zu wem sie passt un
     'Was ihr nach den Tests geändert habt, im Entscheidungslog',
     'Linear: Label <code>Sprint</code> an den gewählten Issues',
     '<code>docs/SPRINTS.md</code> mit Sprint-Ziel und Auswahl',
+    'Störfall-Entscheidung im Entscheidungslog',
     'Daily an jedem Arbeitstag als Kommentar in Linear – unsere Abweichung vom Guide, wie in <code>docs/TEAM.md</code>',
     'Jedes Issue nach der Definition of Done; Pull Requests der anderen geprüft',
     '<code>docs/PITCH.md</code> mit Geschichte und Demo-Ablauf aus <code>docs/STORYS.md</code>',
