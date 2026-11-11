@@ -2,63 +2,56 @@
 import Layout from '../../layouts/Layout.astro';
 import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
-import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
-<Layout title="Tag 3 · Lösung, Story, Prototyp">
-  <span class="eyebrow">Innolab · Tag 3 · Samstag, 21. November 2026 · 09:00–17:45</span>
-  <h1>Tag 3 · Lösung, Story, Prototyp</h1>
-  <p class="lead">Aus drei Ideen wird über den Fit ein Spitzenreiter auf Papier, daraus ein Angebot, eine Geschichte mit Höhepunkt, ein geschnittener Plan – und am Abend ein Prototyp, den ihr testen könnt.</p>
+<Layout title="Tag 3 · Lösung & Story">
+  <span class="eyebrow">Innolab · Tag 3 · Samstag, 21. November 2026 · 09:00–17:00</span>
+  <h1>Tag 3 · Lösung & Story</h1>
+  <p class="lead">Aus eurem Baum wird eine Ziel-Chance, aus ihr eine Frage und drei Ideen. Über den Fit wird eine davon zum Spitzenreiter auf Papier – mit einem Angebot, einer Geschichte mit Höhepunkt, einem Geschäftsmodell und einer Karte, die seine riskanteste Annahme testet.</p>
   <Orientierung seite="innolab/tag-3" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-21">
-    <Block time="09:00–10:15" type="uebung" title="Kundenprofil & Value Map (Fit)" href="/innolab/methoden/kundenprofil">Profil aus dem Baum, drei Ideen als Lückensätze, Fit vergleichen, eine Idee ausarbeiten.</Block>
-    <Block time="10:15–10:25" type="pause" title="Pause" />
-    <Block time="10:25–10:55" type="konzept" title="Der Story-Bogen" href="/innolab/methoden/concept-story#story-bogen">Sieben Stationen, A × B = C, flach oder hoch.</Block>
-    <Block time="10:55–11:40" type="uebung" title="Concept Story" href="/innolab/methoden/concept-story#concept-story">Sieben Stationen mit Lichaws Fragen, Flach-Probe, ein Satz.</Block>
-    <Block time="11:40–12:00" type="uebung" title="Geschäftsmodell-Karten" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; eine Runde Muster; die wirtschaftliche Annahme.</Block>
-    <Block time="12:00–12:30" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment">Schritte der Idee, Annahmen, Map, Karte E1 mit Schwelle.</Block>
-    <Block time="12:30–13:30" type="pause" title="Mittagspause" />
-    <Block time="13:30–15:15" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Slice 1 nach Outcome und Lernziel.</Block>
-    <Block time="15:15–15:25" type="pause" title="Pause" />
-    <Block time="15:25–15:55" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Der Kernablauf mit Höhepunkt nahe am Ende.</Block>
-    <Block time="15:55–17:25" type="uebung" title="Prototyp-Spike" href="/innolab/methoden/prototyp-spike">Papier, dann Claude Code; Karte E2, Trockenlauf.</Block>
-    <Block time="17:25–17:45" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie jemand den Wert zum ersten Mal sieht; E1 laufen lassen, fünf Usability-Tests.</Block>
+    <Block time="09:00–10:00" type="uebung" title="Ziel-Chance wählen" href="/innolab/methoden/ziel-chance">Geschwister-Chancen vergleichen; Ulwicks Formel als Gegenprobe.</Block>
+    <Block time="10:00–10:30" type="uebung" title="How Might We" href="/innolab/methoden/hmw">Von der Ziel-Chance zur Frage, die Ideen öffnet.</Block>
+    <Block time="10:30–10:45" type="pause" title="Pause" />
+    <Block time="10:45–12:15" type="uebung" title="Ideation" href="/innolab/methoden/ideation">15 bis 20 Ideen für eine Chance, dann auf drei abstimmen.</Block>
+    <Block time="12:15–13:15" type="pause" title="Mittagspause" />
+    <Block time="13:15–14:30" type="uebung" title="Kundenprofil & Value Map (Fit)" href="/innolab/methoden/kundenprofil">Profil aus dem Baum, drei Ideen als Lückensätze, Fit vergleichen, eine Idee ausarbeiten.</Block>
+    <Block time="14:30–14:40" type="pause" title="Pause" />
+    <Block time="14:40–15:10" type="konzept" title="Der Story-Bogen" href="/innolab/methoden/concept-story#story-bogen">Sieben Stationen, A × B = C, flach oder hoch.</Block>
+    <Block time="15:10–15:55" type="uebung" title="Concept Story" href="/innolab/methoden/concept-story#concept-story">Sieben Stationen mit Lichaws Fragen, Flach-Probe, ein Satz.</Block>
+    <Block time="15:55–16:15" type="uebung" title="Geschäftsmodell-Karten" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; eine Runde Muster; die wirtschaftliche Annahme.</Block>
+    <Block time="16:15–16:45" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment">Schritte der Idee, Annahmen, Map, Karte E1 mit Schwelle.</Block>
+    <Block time="16:45–17:00" type="plenum" title="Abschluss" href="#abschluss">Rückblick, Entscheidungslog, Ausblick auf Tag 4.</Block>
   </div>
 
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
-  <p>Heute werden aus <strong>Lösungen</strong> <strong>Experimente</strong>. Kundenprofil und Value Map zeigen, welche eurer drei Ideen die wichtigsten Pains trifft; die Concept Story, warum das jemanden interessiert; das Geschäftsmodell, wer dafür zahlt; die Story Map, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das am Abend mit echten Menschen.</p>
-  <Callout type="info" title="Ein langer Tag – mit Absicht">
-    <p>Tag 3 endet erst um 17:45. Dafür habt ihr am Abend etwas, das man anklicken kann. Wer bei der Story Map hinterherhängt, kürzt bei der Usage Story auf die Stationen 4 und 5: Krise und Höhepunkt reichen für den Prototyp.</p>
-  </Callout>
+  <p>Heute werden aus <strong>Chancen</strong> <strong>Lösungen</strong> und die ersten <strong>Experimente</strong>. Am Vormittag geht ihr den Weg von Teresa Torres zu Ende, den ihr an Tag 2 begonnen habt: Baum → Ziel-Chance → Ideen. Am Nachmittag zeigen Kundenprofil und Value Map, welche eurer drei Ideen die wichtigsten Pains trifft; die Concept Story, warum das jemanden interessiert; das Geschäftsmodell, wer dafür zahlt; die Experiment-Karte, an welcher Annahme die Idee hängt. Story Map, Usage Story und Prototyp folgen an Tag 4.</p>
 
   <h2 id="methoden">Die Methoden von heute</h2>
   <ul>
+    <li><a href="/innolab/methoden/ziel-chance">Ziel-Chance wählen</a> – vier Linsen nach Torres, Ulwicks Formel als Gegenprobe</li>
+    <li><a href="/innolab/methoden/hmw">How Might We</a> – die Frage zur Ziel-Chance</li>
+    <li><a href="/innolab/methoden/ideation">Ideation</a> – 15 bis 20 Ideen, drei für den Vergleich</li>
     <li><a href="/innolab/methoden/kundenprofil">Kundenprofil</a> – Jobs, Pains, Gains aus eurem Baum, je Spalte geordnet</li>
     <li><a href="/innolab/methoden/value-map">Value Map & Fit</a> – drei Ideen vergleichen, eine ausarbeiten</li>
     <li><a href="/innolab/methoden/concept-story">Concept Story</a> – warum es besser ist als das, was Menschen heute tun</li>
     <li><a href="/innolab/methoden/geschaeftsmodell">Geschäftsmodell-Karten</a> – wer zahlt wofür, und welche Annahme dahintersteckt</li>
-    <li><a href="/innolab/methoden/experiment">Experiment-Karte & Origin Story</a> – Annahmen testen, nicht Ideen</li>
-    <li><a href="/innolab/methoden/story-map">Story Map</a> – der Plan, nach Outcome geschnitten</li>
-    <li><a href="/innolab/methoden/usage-story">Usage Story</a> – der Kernablauf mit Höhepunkt</li>
-    <li><a href="/innolab/methoden/prototyp-spike">Prototyp-Spike & Usability-Test</a> – lernen mit Wegwerf-Code</li>
+    <li><a href="/innolab/methoden/experiment">Experiment-Karte & Origin Story</a> – Annahmen testen, nicht Ideen; die Origin Story folgt am Ende von Tag 4</li>
   </ul>
 
-  <h2 id="abschluss">Abschluss & Hausaufgabe bis Tag 4</h2>
-  <p>Im Abschluss gibt es zehn Minuten Input zur <a href="/innolab/methoden/experiment#origin-story">Origin Story</a> – sie ist der Text für euren Aufsteller oder eure Landingpage und führt zur Handlung, die E1 misst.</p>
-  <Checklist id="il-tag3-hausaufgabe-4" items={[
-    '<code>docs/KUNDENPROFIL.md</code>, <code>VALUE-MAP.md</code>, <code>STORYS.md</code>, <code>EXPERIMENTE.md</code>, <code>STORY-MAP.md</code>, <code>GESCHAEFTSMODELL.md</code> und <code>TESTS.md</code> im Repo',
-    'Im Produkt-Brief der Werkstatt „Was ist das Produkt in einem Satz?“ gefüllt; Slice 1 steht als Stichworte in <code>docs/STORY-MAP.md</code>',
-    'Origin Story als Text für Aufsteller oder Landingpage in <code>docs/STORYS.md</code>; eine Landingpage baut ihr nur, wenn E1 sie braucht',
-    'E1 gelaufen – an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe –, Lernkarte mit Verlässlichkeit in <code>docs/EXPERIMENTE.md</code>',
-    'Fünf Usability-Tests mit Karte E2, Befunde als U1, U2 … und Lernkarte mit Verlässlichkeit in <code>docs/TESTS.md</code>',
-    'Je Lernkarte die Entscheidung als Befund → Handlung (gestützt, widerlegt, unklar oder neue Einsicht → weitermachen, umschwenken oder verwerfen) und was ihr ändert, als Zeilen im Entscheidungslog',
-    'Committet und gepusht (der Spike bleibt in seinem Branch)',
+  <h2 id="abschluss">Abschluss & bis Tag 4</h2>
+  <p>Bevor ihr geht:</p>
+  <Checklist id="il-tag3-abschluss" items={[
+    '<code>docs/ZIEL-CHANCE.md</code>, <code>HMW.md</code>, <code>IDEEN.md</code>, <code>KUNDENPROFIL.md</code>, <code>VALUE-MAP.md</code>, <code>STORYS.md</code> (Concept Story), <code>GESCHAEFTSMODELL.md</code> und <code>EXPERIMENTE.md</code> im Repo',
+    'Im Produkt-Brief der Werkstatt „Was ist das Produkt in einem Satz?“ gefüllt; die neuen Annahmen der Idee in der Annahmen-Map',
+    'Eine Zeile pro Entscheidung von heute im Entscheidungslog der Werkstatt',
+    'Committet und gepusht',
   ]} />
-  <p>An <a href="/innolab/tag-4">Tag 4</a> werdet ihr ein Team: Aus euren Story Maps entstehen drei Backlogs in einem gemeinsamen Linear-Workspace, und ihr arbeitet nach Scrum.</p>
+  <p>An <a href="/innolab/tag-4">Tag 4</a> am 28. November wird aus dem Spitzenreiter ein Plan (Story Map), ein Kernablauf (Usage Story) und ein erster Prototyp, den ihr testen könnt. Am Nachmittag werdet ihr ein Team: Scrum, einmal mit Lego durchgespielt, und eine gemeinsame Definition of Done.</p>
 
-  <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} />
+  <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/ziel-chance', t: 'Ziel-Chance wählen' }} />
 </Layout>
