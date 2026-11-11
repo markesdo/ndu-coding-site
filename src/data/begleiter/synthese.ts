@@ -13,7 +13,8 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Fragen: Wer hat Interviews schon in der Werkstatt? Sonst Fallback (vorgehen).',
       'Fragen: Wer hat in Need Finding schon Snapshots oder Affinitätsdiagramme gemacht?',
       'Obere Reihe: So laufen Projekte – sammeln, anhalten, Bericht.',
-      '„Nach ein paar Interviews verschwimmen die Geschichten – verlasst euch nicht aufs Gedächtnis.“',
+      'Untere Reihe erst nach der Frage aufdecken.',
+      '„Nach einer Handvoll Interviews verschwimmen die Geschichten – verlasst euch nicht aufs Gedächtnis.“',
       'Wenn bekannt: Folie kurz, Affinitätsdiagramm nur als Gegenbild.',
     ],
     verstaendnis: {
