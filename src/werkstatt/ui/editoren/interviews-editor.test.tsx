@@ -138,6 +138,64 @@ describe('BelegAuswahl: Zitate zum Ankreuzen', () => {
   });
 });
 
+const details = (h: string) => /<details class="wk-belege-auswahl"([^>]*)>/.exec(h);
+const gewaehlt = (h: string) => {
+  const liste = /<ul class="wk-belege-gewaehlt"[^>]*>(.*?)<\/ul>/.exec(h)?.[1];
+  return liste === undefined ? undefined : [...liste.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map((m) => text(m[1]!));
+};
+const summary = (h: string) => /<summary>(.*?)<\/summary>/.exec(h)?.[1]?.replace(/<!-- -->/g, '');
+
+describe('BelegAuswahl: Auswahl einklappbar, Gewähltes immer sichtbar', () => {
+  it('ohne Belege: Auswahl offen, keine Liste gewählter Zitate', () => {
+    const h = wahl();
+    expect(details(h)?.[1]).toBe(' open=""');
+    expect(gewaehlt(h)).toBeUndefined();
+  });
+
+  it('mit Belegen: Auswahl zu, darüber genau die gewählten Zitate mit vollem Text', () => {
+    const h = wahl({ werte: ['I6-1', 'I6-3'] });
+    expect(details(h)?.[1]).toBe('');
+    expect(gewaehlt(h)).toStrictEqual([`I6-1 „${LANG}“`, 'I6-3 „Am liebsten hätte ich den Becher schon in der Hand.“']);
+    expect(h.indexOf('wk-belege-gewaehlt')).toBeLessThan(h.indexOf('<details'));
+    // Die Kästchen stecken alle in der Auswahl.
+    const innen = /<details[^>]*>(.*)<\/details>/.exec(h)?.[1] ?? '';
+    expect(zeilen(innen)).toHaveLength(3);
+  });
+
+  it('Waise und leeres Zitat stehen in der Liste der gewählten; die Waise bleibt zum Abwählen in der Auswahl', () => {
+    const h = wahl({ zitate: [{ id: 'I6-1', text: '' }, ...DREI.slice(1)], werte: ['I6-1', 'I6-9'] });
+    expect(gewaehlt(h)).toStrictEqual(['I6-1 (Zitat noch leer)', 'I6-9 – dieses Zitat gibt es nicht mehr']);
+    const innen = /<details[^>]*>(.*)<\/details>/.exec(h)?.[1] ?? '';
+    expect(zeilen(innen).filter((z) => z.includes('checked')).map(text)).toStrictEqual(['I6-1 (Zitat noch leer)', 'I6-9 – dieses Zitat gibt es nicht mehr']);
+  });
+
+  it('mit Fehler: Auswahl offen, auch wenn Belege gewählt sind', () => {
+    expect(details(wahl({ werte: ['I6-1'], fehler: 'Beleg I6-9 ist kein Zitat dieses Interviews.' }))?.[1]).toBe(' open=""');
+  });
+
+  it('Zusammenfassung zählt gewählte gegen Zitate mit Text', () => {
+    expect(summary(wahl({ zitate: [...DREI, { id: 'I6-5', text: ' ' }], werte: ['I6-1', 'I6-2'] }))).toBe('Zitate auswählen (2 von 3 gewählt)');
+    expect(summary(wahl())).toBe('Zitate auswählen (0 von 3 gewählt)');
+  });
+
+  it('ohne Zitate: keine Auswahl, nur der Leerzustand', () => {
+    const h = wahl({ zitate: [] });
+    expect(h).not.toContain('<details');
+    expect(h).toContain('Noch keine Zitate');
+  });
+
+  it('Hilfe, Fehler und Hinweis stehen außerhalb der Auswahl, die Verknüpfung bleibt', () => {
+    const h = wahl({ werte: ['I6-1'], hilfe: 'Kreuze die Zitate an.', hinweis: 'Hinweis.' });
+    const aussen = h.replace(/<details.*<\/details>/, '');
+    expect(aussen).toMatch(/<p class="wk-hilfe" id="[^"]+">Kreuze/);
+    expect(aussen).toMatch(/<p class="wk-feldhinweis" id="[^"]+">Hinweis\.<\/p>/);
+    const ids = (/<fieldset class="wk-verweise wk-belegwahl" aria-describedby="([^"]+)">/.exec(h)?.[1] ?? '').split(' ');
+    expect(ids).toStrictEqual([/<p class="wk-hilfe" id="([^"]+)"/.exec(h)?.[1], /<p class="wk-feldhinweis" id="([^"]+)"/.exec(h)?.[1]]);
+    const f = wahl({ werte: ['I6-1'], fehler: 'Kaputt.' }).replace(/<details.*<\/details>/, '');
+    expect(f).toMatch(/<p class="wk-fehler" id="[^"]+">Kaputt\.<\/p>/);
+  });
+});
+
 describe('Interview-Vorschau: Chance ohne Beleg', () => {
   it('markiert nur die Chance ohne Beleg mit „– noch ohne Beleg“', () => {
     const iv = { ...neuesInterview([], '2026-11-12'), zitate: ZITATE, chancen: [
