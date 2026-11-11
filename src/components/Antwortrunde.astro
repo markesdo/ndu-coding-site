@@ -21,12 +21,12 @@ const feld = `antwort-${runde}`;
 <div class="antwortrunde" data-antwortrunde={runde} data-ansicht={ansicht} data-erwartet={erwartet} data-rollen={JSON.stringify(r.rollen)}>
   {ansicht === 'eingabe' ? (
     <div class="ar-eingabe" data-ar-eingabe hidden>
+      <p class="ar-schritt">Antwort hier auf der Seite: <span data-ar-hinweis>erst deine Rolle wählen, dann einen Satz abschicken.</span></p>
       {r.rollen.length > 0 && (
         <div class="ar-rollen" role="group" aria-label="Deine Rolle">
           {r.rollen.map((x) => <button type="button" class="ar-rolle" data-ar-rolle={x.id} aria-pressed="false">{x.label}<span class="ar-vergeben" data-ar-vergeben hidden> · vergeben</span></button>)}
         </div>
       )}
-      <p class="small muted ar-hinweis" data-ar-hinweis>Wählt jede*r eine andere Rolle.</p>
       <form class="ar-form" data-ar-form hidden={r.rollen.length > 0}>
         <label for={feld}>Ein Satz aus deiner Rolle</label>
         <div class="ar-zeile">
@@ -137,7 +137,7 @@ const feld = `antwort-${runde}`;
         k.disabled = !rolleWaehlbar(id, vergeben, eigeneRolle);
       });
       const label = rollen.find((r) => r.id === eigeneRolle)?.label;
-      if (hinweisRolle) hinweisRolle.textContent = label ? `Deine Rolle: ${label} – ändern kannst du deinen Satz, nicht die Rolle.` : 'Wählt jede*r eine andere Rolle.';
+      if (hinweisRolle) hinweisRolle.textContent = label ? `deine Rolle ist ${label} – ändern kannst du deinen Satz, nicht die Rolle.` : 'erst deine Rolle wählen, dann einen Satz abschicken.';
     };
     if (eigene) { eigeneRolle = eigene.rolle; rolleWaehlen(eigene.rolle); if (feld) feld.value = eigene.text; if (gesendet) gesendet.hidden = false; }
     knoepfeAktualisieren();
@@ -231,18 +231,25 @@ const feld = `antwort-${runde}`;
 </script>
 <style>
   .antwortrunde { margin: .4rem 0; }
-  .ar-rollen { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .4rem; }
-  .ar-rolle, .ar-senden { font: inherit; padding: .3rem .8rem; border: 1px solid var(--border); border-radius: 8px; background: none; color: inherit; cursor: pointer; }
-  .ar-rolle:disabled { opacity: .45; cursor: not-allowed; }
-  .ar-rolle[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); font-weight: 700; }
-  .ar-senden { font-weight: 700; border-color: var(--accent); }
+  /* Eingabe als eigene Fläche, damit sie sich vom Folientext abhebt. */
+  .ar-eingabe { border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 10px; background: var(--bg-2); padding: .8rem 1rem .7rem; }
+  .ar-schritt { margin: 0 0 .6rem; font-weight: 600; }
+  .ar-schritt span { font-weight: 400; color: var(--muted); }
+  .ar-rollen { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: .6rem; }
+  .ar-rolle, .ar-senden { font: inherit; font-weight: 700; min-height: 44px; padding: .5rem 1.2rem; border: 2px solid var(--accent); border-radius: 10px; background: var(--accent-soft); color: var(--fg); cursor: pointer; transition: background-color .12s, color .12s; }
+  .ar-rolle:hover:not(:disabled), .ar-rolle:focus-visible { background: color-mix(in srgb, var(--accent) 35%, var(--bg-2)); }
+  .ar-rolle:focus-visible, .ar-senden:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  /* Gewählt und Abschicken: gefüllt; Hover dunkelt nur leicht ab, damit es nicht wie gesperrt aussieht. */
+  .ar-rolle[aria-pressed='true'], .ar-senden { background: var(--accent); color: var(--on-accent); }
+  .ar-rolle[aria-pressed='true']:hover:not(:disabled), .ar-senden:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 85%, var(--fg)); }
+  .ar-rolle:disabled { opacity: .45; cursor: not-allowed; border-color: var(--border); background: none; color: var(--fg); }
+  .ar-rolle[aria-pressed='true'] .ar-vergeben { color: inherit; }
   .ar-senden:disabled { opacity: .5; cursor: wait; }
   .ar-form label { display: block; font-size: .9rem; margin-bottom: .2rem; }
   .ar-zeile { display: flex; gap: .5rem; align-items: flex-start; }
-  .ar-zeile textarea { flex: 1; min-width: 0; font: inherit; padding: .35rem .5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: inherit; resize: vertical; }
+  .ar-zeile textarea { flex: 1; min-width: 0; font: inherit; padding: .45rem .6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: inherit; resize: vertical; }
   .ar-status:empty { display: none; }
   .ar-vergeben { font-weight: 400; color: var(--muted); }
-  .ar-hinweis { margin: 0 0 .4rem; }
   .ar-leeren { font: inherit; padding: .15rem .6rem; border: 1px solid var(--border); border-radius: 6px; background: none; color: var(--muted); cursor: pointer; }
   :global(html[data-beamer]) .ar-leeren { display: none; }
   .ar-status, .ar-rueckfall, [data-ar-gesendet], .ar-meldung { margin: .3rem 0; }
