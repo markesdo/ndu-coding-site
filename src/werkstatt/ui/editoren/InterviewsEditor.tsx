@@ -84,7 +84,7 @@ export default function InterviewsEditor() {
         return (
           <>
             <p className="wk-hilfe">Nur pseudonymisiert: keine Namen, Arbeitgeber oder Fotos. Rohnotizen und Aufnahmen bleiben bei dir. Die Skizze der Geschichte zeichnest du gleich nach dem Gespräch auf Papier und bringst sie an Tag 2 mit.</p>
-            <p className="wk-hilfe"><strong>Reihenfolge beim Ausfüllen:</strong> zuerst die Zitate (so entstehen die IDs), dann die Geschichte, Chancen mit Belegen und Einsichten – das einprägsame Zitat und die Kurzinfos zuletzt. Die fertige Ansicht ordnet alles wie bei Torres.</p>
+            <p className="wk-hilfe"><strong>Reihenfolge beim Ausfüllen:</strong> zuerst die Zitate (so entstehen die IDs), dann die Geschichte, Chancen mit Belegen und Einsichten – das einprägsame Zitat und die Kurzinfos zuletzt.</p>
             <Liste<InterviewEntwurf>
               label="Interviews"
               einzahl="Interview"

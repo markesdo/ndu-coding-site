@@ -75,6 +75,11 @@
 
 /* Liste mit Zeilen */
 .wk-liste, .wk-verweise { margin: 0 0 1rem; padding: 0; border: 0; min-width: 0; }
+/* Luft: Hinweise direkt in der Hülle (Demo-Mappe, Laden) bekommen den Rand der Hülle; mehrere Hinweise oben im
+   Formular stehen nicht aneinandergeklebt, und vor der ersten Liste bleibt Abstand. */
+.wk-huelle > .wk-hilfe { margin: .6rem 1rem 0; }
+.wk-formular > .wk-hilfe { margin-bottom: .75rem; }
+.wk-formular > .wk-hilfe + .wk-liste { margin-top: 1.25rem; }
 .wk-liste ol { list-style: none; margin: .5rem 0; padding: 0; display: grid; gap: .75rem; }
 .wk-zeile { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; padding: .75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
 .wk-zeile-knoepfe { display: flex; flex-direction: column; gap: .25rem; }
