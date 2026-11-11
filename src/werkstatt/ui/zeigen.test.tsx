@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import KAFFEEBAR from '../beispiele/interviews.json';
 import type { Interview } from '../schemas/index.js';
 import type { LehrendenArtefakt, LehrendenMappe } from '../vertrag.js';
+import DemoZeigen from './DemoZeigen';
 import SnapshotAnsicht from './SnapshotAnsicht';
 import { artefaktStand } from '../tag-stand';
 import { LeserKoerper, type LeserInhaltProps } from './LehrendenAnsicht';
@@ -227,5 +228,15 @@ describe('Zeigen', () => {
 
   it('ohne Interviews: „Noch keine Interviews eingetragen.“', () => {
     expect(text(renderToStaticMarkup(<Zeigen {...props({ interviews: [] })} />))).toContain('Noch keine Interviews eingetragen.');
+  });
+});
+
+describe('DemoZeigen', () => {
+  it('geschlossen: nur der Knopf „Zeigen“, kein Snapshot im Baum', () => {
+    const h = renderToStaticMarkup(<DemoZeigen person="Demo-Mappe" />);
+    expect(text(h)).toContain('Zeigen');
+    expect(h).toContain('data-werkstatt');
+    expect(h).not.toContain('class="zg"');
+    expect(h).not.toContain('class="snap"');
   });
 });

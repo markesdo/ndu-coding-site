@@ -10,6 +10,7 @@ import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
 import { kohorte } from '../kohorten/index.js';
 import type { FeedbackSichtEintrag, Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
+import DemoZeigen from './DemoZeigen.js';
 import { EDITOREN } from './editoren/index.js';
 import { feedbackLader, mappeFeedback } from './feedback-hilfen.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
@@ -283,6 +284,8 @@ export default function MappeUebersicht() {
                           </span>
                         );
                       })()}
+                      {/* Demo-Mappe: die eigenen Snapshots groß zeigen wie im Leser der Lehrenden. */}
+                      {demo && z.name === 'interviews' && z.vorhanden && <DemoZeigen person="Demo-Mappe" />}
                     </div>
                     {z.name === 'leitfaden' && !leitfadenOffen
                       ? <span className="wk-hilfe">{LEITFADEN_SPAETER} <a href={LEITFADEN_LINK}>Zur Interview-Seite</a></span>
