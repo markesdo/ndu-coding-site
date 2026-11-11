@@ -10,6 +10,7 @@ import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
+import Antwortrunde from '../../../components/Antwortrunde.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
@@ -125,7 +126,8 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <h2 id="geschichte">Eine Geschichte – was hört ihr?</h2>
     <p class="folie-satz">Hört mit eurer Rolle: Was ist das Wichtigste? Ein Satz, abschicken erst auf mein Zeichen.</p>
     <blockquote class="geschichte">„Gestern Abend wollten meine Frau und ich nach dem Essen einen Film schauen. Am liebsten auf dem großen Fernseher im Wohnzimmer, der hat den besseren Ton – aber unser Sohn spielte Videospiele, also warteten wir, bis er speichern und ins andere Zimmer wechseln konnte. Währenddessen scrollten wir auf dem iPad durch die Filme bei Netflix. Die meisten Empfehlungen waren Kinderfilme, weil vor allem unsere Kinder das Konto nutzen. Wir probierten ‚Beliebt‘, aber da waren nur Serien. Meine Frau erinnerte sich an einen guten Film, aber wir fanden nicht heraus, wie man nach einem bestimmten Titel sucht. Das war sehr frustrierend.“</blockquote>
-    <p>Rollen: Produktmanagement · Design · Entwicklung – ich teile sie zu. In den Teams-Chat. <Timer minuten={1} /></p>
+    <p>Rollen: Produktmanagement · Design · Entwicklung – ich teile sie zu. Antwort hier auf der Seite (oder im Teams-Chat). <Timer minuten={1} /></p>
+    <Antwortrunde runde="netflix" ansicht="eingabe" />
     <p class="small muted">Nach {TORRES}, S. 75.</p>
   </Folie>
 
@@ -133,12 +135,14 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <h2 id="warum">Warum gemeinsam?</h2>
     <p class="folie-satz">Vergleicht eure Sätze mit dem, was eure Rolle im Buch hört.</p>
     <Aufloesung ab={NACH_NETFLIX} gruppe="netflix">
+      <Antwortrunde runde="netflix" ansicht="antworten" />
+      <p class="ar-buch"><strong>Im Buch</strong></p>
       <ul class="gross">
         <li><strong>Produktmanagement:</strong> „Unter ‚Beliebt‘ nur Serien“ – sorgt sich, ob das Angebot stimmt.</li>
         <li><strong>Design:</strong> „Wie sucht man einen bestimmten Titel?“ – will die Bedienung verbessern.</li>
         <li><strong>Entwicklung:</strong> „Fast nur Kinderfilme“ – sucht einen technischen Weg, Nutzer*innen zu unterscheiden.</li>
       </ul>
-      <p data-schritt><strong>Jede Sicht ist berechtigt.</strong> Je unterschiedlicher das Team, desto mehr holt es aus einem Interview.</p>
+      <p data-schritt><strong>Jede Sicht ist berechtigt.</strong> <strong>Darum gleich reihum:</strong> Die anderen hören in euren Snapshots, was ihr überhört.</p>
       <p class="small muted">{TORRES}, S. 74–75.</p>
       <div class="nur-handout">
         <p>Teresa Torres erzählt dieselbe Geschichte eines Netflix-Kunden aus drei Blickwinkeln: Produktmanagerin, Designer und Entwicklerin halten jeweils etwas anderes für wichtig, weil sie anderes Vorwissen mitbringen. Jede Sicht ist berechtigt, und jede kann zu einer Verbesserung führen. Je unterschiedlicher das Team, desto mehr holt es aus jedem Interview heraus. Darum interviewt bei ihr das ganze Team, statt eine Person zur „Stimme der Kundin“ zu machen ({TORRES}, S. 74–75).</p>
@@ -241,6 +245,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   .fluss-titel :global(.icon-ja) { color: var(--green); }
   /* Zwei Reihen auf einer Folie: weniger Abstand unter jeder Reihe, sonst passt „verschwimmen“ nicht auf 720p. */
   .fluss-titel + :global(.fluss) { margin-bottom: .75rem; }
+  .ar-buch { margin: .4rem 0 .2rem; }
   .geschichte { margin: 1rem 0; padding: .6rem 1rem; border-left: 4px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; line-height: 1.5; }
   /* Snapshot im Aufbau der Vorlage (Torres S. 68): oben Name/Bild, Zitat, Skizze; unten drei Spalten. */
   .snapshot { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); margin: 1rem 0; }

@@ -117,17 +117,18 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     live: [
       'Vor dem Vorlesen Rollen zuteilen: Produktmanagement, Design, Entwicklung.',
       'Geschichte vorlesen, langsam, ohne einzelne Stellen zu betonen.',
-      'Timer 1 min: jede*r schreibt einen Satz in den Chat.',
+      'Studierende öffnen die Seite selbst; Antwort dort eingeben – Aufdecken zeigt alle Sätze.',
+      'Timer 1 min: jede*r tippt einen Satz, noch nicht abschicken.',
       '„Noch nicht abschicken – erst auf mein Zeichen, alle gleichzeitig.“',
       'Falle: Lesart vorgeben oder erklären, worauf eine Rolle achtet.',
     ],
-    uebung: { dauer: '1 min', form: 'allein, ein Satz in den Teams-Chat' },
+    uebung: { dauer: '1 min', form: 'allein, ein Satz auf der Seite (Rückfall: Teams-Chat)' },
     chat: CHAT_NETFLIX,
     ablauf: {
       schritte: [
         'Folie zeigen, die Geschichte vorlesen.',
-        'Rollen zuteilen (nur den Namen: Produktmanagement, Design, Entwicklung). Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
-        'Auf dein Zeichen schicken alle gleichzeitig ab. Dann zur nächsten Folie.',
+        'Rollen zuteilen (nur den Namen: Produktmanagement, Design, Entwicklung). Studierende öffnen die Folie auf ihrem eigenen Gerät, wählen dort ihre Rolle. Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
+        'Auf dein Zeichen schicken alle gleichzeitig ab; der Beamer zeigt „2 von 3 haben geantwortet“. Bis zum Aufdecken kann jede*r noch ändern. Steht auf der Seite „Antwort bitte in den Teams-Chat.“ (Server weg), geht die Runde wie bisher im Chat. Dann zur nächsten Folie.',
       ],
       achten: [
         'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
@@ -139,7 +140,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   warum: {
     live: [
-      'Alle Sätze aus dem Chat vorlesen, dann Auflösung per Knopf.',
+      'Aufdecken zeigt eure Sätze und die drei aus dem Buch.',
       'Fragen: Hat eure Rolle dasselbe gehört wie im Buch?',
       '„Jede Sicht ist berechtigt – und jede kann zu einer Verbesserung führen.“',
       '„Ihr habt allein interviewt – heute hört das Team nachträglich mit.“',
@@ -152,9 +153,8 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Die Sätze aus dem Chat vorlesen, ohne zu werten.',
-        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags).',
-        'Jede*r vergleicht den eigenen Satz mit dem der eigenen Rolle, dann den Schritt „Jede Sicht ist berechtigt“ aufdecken.',
+        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags). Sie zeigt zuerst „Eure Sätze“ nach Rolle (über die Seite geschickt; Chat-Sätze vorlesen), dann die drei aus dem Buch. Vorlesen, ohne zu werten.',
+        'Jede*r vergleicht den eigenen Satz mit dem der eigenen Rolle, dann den Schritt „Jede Sicht ist berechtigt. Darum gleich reihum“ aufdecken – Überleitung zur Besprechung der Snapshots: Die anderen hören, was ihr überhört.',
       ],
       aufloesung: 'Produktmanagement hört „Unter ‚Beliebt‘ nur Serien“ (Sorge ums Angebot), Design „Wir fanden nicht heraus, wie man nach einem Titel sucht“ (Bedienung), Entwicklung „Fast nur Kinderfilme“ (technischer Weg, verschiedene Nutzer*innen zu erkennen). Jede Sicht ist berechtigt; je unterschiedlicher das Team, desto mehr holt es aus einem Interview.',
     },
