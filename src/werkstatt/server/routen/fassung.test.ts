@@ -294,7 +294,7 @@ describe('Befunde aus dem Review (#317)', () => {
   it('300 Zeichen aus Mehrbyte-Graphemen (Flaggen, Familien-Emoji): 422 mit Satz, nie 500', async () => {
     const t = await aufbau();
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    for (const zeichen of ['\u{1F1E6}\u{1F1F9}', '\u{1F468}‍\u{1F469}‍\u{1F467}‍\u{1F466}']) {
+    for (const zeichen of ['\u{1F1E6}\u{1F1F9}', '\u{1F468}\u200D\u{1F469}\u200D\u{1F467}\u200D\u{1F466}']) {
       const r = await t.schreiben(MARKUS, { ...MIT_FASSUNG, fassung: zeichen.repeat(300) });
       expect(r.status, zeichen).toBe(422);
       expect((await r.json()).fehler).toBe('Mögliche Fassung: zu lang (höchstens 300 Zeichen; manche Zeichen wie Emoji zählen mehrfach).');
