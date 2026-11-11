@@ -129,7 +129,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
         quelle: 'Teresa Torres, Continuous Discovery Habits, S. 68–69',
       },
       {
-        text: 'Oben steht ein Zitat, das einen einprägsamen Moment festhält, etwa einen emotionalen Satz oder ein auffälliges Verhalten. Bei bildhafter Sprache die genauen Worte festhalten. Die Kurzinfos ordnen ein, was für ein Kunde das war, damit man sieht, wie sich diese Geschichte von den anderen unterscheidet. Welche Kurzinfos sinnvoll sind, hängt vom Produkt ab.',
+        text: 'Oben steht ein Zitat, das einen einprägsamen Moment festhält, etwa einen emotionalen Satz oder ein auffälliges Verhalten. Bei bildhafter Sprache die genauen Worte festhalten. Die Kurzinfos halten fest, welche Art Kund*in das war, damit man sieht, wie diese Geschichte den anderen ähnelt oder sich von ihnen unterscheidet. Welche Kurzinfos sinnvoll sind, hängt vom Produkt ab.',
         quelle: 'Teresa Torres, Continuous Discovery Habits, S. 69',
       },
       {

@@ -83,7 +83,7 @@ export default function InterviewsEditor() {
                     <Textfeld label="Datum" wert={iv.datum} onChange={(datum) => s({ ...iv, datum })} fehler={f('datum')} hilfe="JJJJ-MM-TT, zum Beispiel 2026-10-23." />
                     <Einwilligung wert={iv.einwilligung} onChange={(einwilligung) => s({ ...iv, einwilligung })} fehler={f('einwilligung')} />
                     <Textfeld label="Einprägsames Zitat" wert={iv.zitat} onChange={(zitat) => s({ ...iv, zitat })} fehler={f('zitat')} hinweis={namenHinweis(iv.zitat)} hilfe="Ein Satz, wörtlich, der dich an diese Geschichte erinnert." />
-                    <Textfeld label="Kurzinfos" mehrzeilig zeilen={2} wert={iv.kurzinfos} onChange={(kurzinfos) => s({ ...iv, kurzinfos })} fehler={f('kurzinfos')} hinweis={namenHinweis(iv.kurzinfos)} hilfe="Was zeigt, wie diese Person zu den anderen passt – ohne sie erkennbar zu machen." />
+                    <Textfeld label="Kurzinfos" mehrzeilig zeilen={2} wert={iv.kurzinfos} onChange={(kurzinfos) => s({ ...iv, kurzinfos })} fehler={f('kurzinfos')} hinweis={namenHinweis(iv.kurzinfos)} hilfe="Zwei, drei Fakten: Welche Art Kund*in war das? Bei jedem Interview dieselben – ohne die Person erkennbar zu machen." />
                     <Liste<string>
                       label="Einsichten"
                       einzahl="Einsicht"
