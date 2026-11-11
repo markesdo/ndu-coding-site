@@ -8,7 +8,7 @@
 // weiter feedback@1 (Regel im Werkstatt-Design: neue Felder optional → keine neue Version); alte Dateien bleiben gültig.
 // NDU-42: Feedback der Lehrenden zu einer erlaubten Zeile trägt optional eine „mögliche Fassung“ – versiegelt (fassung,
 // AES-GCM, server/fassung.ts), mit dem Stand der Zeile beim Schreiben (zeilenStand, SHA-256 des normalisierten
-// Zeilentexts) und, sobald die Person sie sehen darf, dem Zeitpunkt (aufgedecktAm). Klartext steht nie in der Datei:
+// Zeilentexts) und, sobald die Person sie sehen darf, dem Zeitpunkt (freiSeit). Klartext steht nie in der Datei:
 // Die Person hat Lesezugriff auf ihr Repo, und die Fassung darf sie erst nach eigener Überarbeitung sehen. Ob sie offen
 // ist, rechnet nur der Server (server/fassung.ts); Browser und Connector bekommen nie das Siegel.
 import { z } from 'zod';
@@ -167,7 +167,7 @@ const eintragSchema = z
     // Schreiben und, sobald offen, wann die Person sie zum ersten Mal sehen durfte. Form wie FASSUNG_SIEGEL.
     fassung: z.string().regex(FASSUNG_SIEGEL, { error: 'Fassung: unbekannte Form.' }).optional(),
     zeilenStand: z.string().regex(ZEILEN_STAND, { error: 'Zeilenstand: unbekannte Form.' }).optional(),
-    aufgedecktAm: z.iso.datetime({ error: 'aufgedecktAm: muss ein ISO-Zeitpunkt sein.' }).optional(),
+    freiSeit: z.iso.datetime({ error: 'freiSeit: muss ein ISO-Zeitpunkt sein.' }).optional(),
   })
   .strict()
   .superRefine((e, ctx) => {
@@ -181,7 +181,7 @@ const eintragSchema = z
       ctx.addIssue({ code: 'custom', path: ['erledigt'], message: 'erledigt und gesehen gibt es nur am Feedback der Lehrenden.' });
     }
     if (e.fassung === undefined) {
-      if (e.zeilenStand !== undefined || e.aufgedecktAm !== undefined) ctx.addIssue({ code: 'custom', path: ['zeilenStand'], message: 'zeilenStand und aufgedecktAm gibt es nur mit einer Fassung.' });
+      if (e.zeilenStand !== undefined || e.freiSeit !== undefined) ctx.addIssue({ code: 'custom', path: ['zeilenStand'], message: 'zeilenStand und freiSeit gibt es nur mit einer Fassung.' });
     } else if (e.von !== 'lehrende' || !fassungErlaubt(e.artefakt, e.zeilenId)) {
       ctx.addIssue({ code: 'custom', path: ['fassung'], message: 'Eine mögliche Fassung gibt es nur am Feedback der Lehrenden zu einer erlaubten Zeile.' });
     } else if (e.zeilenStand === undefined) {
@@ -320,8 +320,8 @@ export function antworten(f: Feedback, e: { antwortAuf: unknown; text: unknown; 
     von: 'studierende', autor: e.autor, text, datum: e.datum, antwortAuf: ziel.id,
   };
   // Eine Antwort öffnet die mögliche Fassung (NDU-42): gleich im selben Commit vermerken, wann.
-  const aufdecken = ziel.fassung !== undefined && ziel.aufgedecktAm === undefined;
-  const eintraege = aufdecken ? f.eintraege.map((x) => (x === ziel ? { ...x, aufgedecktAm: e.datum } : x)) : f.eintraege;
+  const freigeben = ziel.fassung !== undefined && ziel.freiSeit === undefined;
+  const eintraege = freigeben ? f.eintraege.map((x) => (x === ziel ? { ...x, freiSeit: e.datum } : x)) : f.eintraege;
   return { ...f, eintraege: [...eintraege, neu] };
 }
 
@@ -331,6 +331,11 @@ export function erledigtSetzen(f: Feedback, id: unknown, erledigt: unknown): Fee
   if (typeof erledigt !== 'boolean') throw new FeedbackAbgelehnt('erledigt muss ja oder nein sein.');
   const ziel = lehrendenEintrag(f, id);
   if ((ziel.erledigt === true) === erledigt) return f;
+  // Solange die Fassung zu ist (nicht frei vermerkt, keine Antwort), geht „erledigt“ nicht: Sonst endete die Runde, ohne
+  // dass die Person selbst überarbeitet hätte. Die Speichern-Route vermerkt freiSeit, sobald die Zeile geändert ist.
+  if (erledigt && ziel.fassung !== undefined && ziel.freiSeit === undefined && !f.eintraege.some((x) => x.von === 'studierende' && x.antwortAuf === ziel.id)) {
+    throw new FeedbackAbgelehnt('Überarbeite zuerst die Zeile oder antworte.');
+  }
   // Höchstens eine offene Fassung je Artefakt (NDU-42): Wieder öffnen darf keine zweite offene ergeben.
   if (!erledigt && ziel.fassung !== undefined) {
     const andere = offeneFassung(f.eintraege.filter((x) => x !== ziel), ziel.artefakt);

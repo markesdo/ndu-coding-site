@@ -6,7 +6,7 @@
 // NDU-42: An Outcome/Problem im Brief, einer Annahme oder Leitfaden-Frage können Lehrende eine „mögliche Fassung“ für den
 // Fall der Person hinterlegen. Die Person sieht sie erst, wenn der Server sie freigibt (Zeile selbst überarbeitet oder
 // geantwortet); vorher kommt nur { zu: true } an, nie der Text. Kein Kopierknopf, kein Übernehmen, kein Diff.
-import { Check, ChevronRight, CircleCheck, CircleDot, Coffee, ExternalLink, Lock, LockOpen, MessageSquare, MessageSquareReply, RotateCcw, Send, Tag } from 'lucide-react';
+import { Check, ChevronRight, CircleCheck, CircleDot, Coffee, ExternalLink, Lock, LockOpen, MessageSquare, MessageSquareReply, RotateCcw, Send, Tag, TriangleAlert } from 'lucide-react';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { namenHinweis } from '../eigennamen.js';
 import { ANTWORT_MAX, FASSUNG_MAX, FEEDBACK_MAX, faeden, fassungErlaubt, offeneFassung, zeilenAuswahl, type FeedbackFaden } from '../feedback.js';
@@ -15,7 +15,7 @@ import type { ArtefaktName } from '../schemas/index.js';
 import { graphemAnzahl } from '../text.js';
 import { api, ApiError } from './api.js';
 import type { FassungSicht, FeedbackSichtEintrag } from '../vertrag.js';
-import { bezugText, einzeln, fassungStandText, fassungStuecke, feedbackAenderungen, feedbackDatum, geordnet, neueIds } from './feedback-hilfen.js';
+import { bezugText, einzeln, fassungFeld, fassungStandText, fassungStuecke, feedbackAenderungen, feedbackDatum, geordnet, neueIds } from './feedback-hilfen.js';
 
 const TEXT = {
   fehltLehrende: 'Das Feedback lässt sich gerade nicht lesen. Schreiben geht erst wieder, wenn es lesbar ist.',
@@ -101,20 +101,26 @@ function FassungText({ text }: { text: string }) {
 }
 
 const FASSUNG_UNLESBAR = 'Diese Fassung lässt sich nicht mehr lesen.';
+// Lehrende: Siegel lässt sich nicht öffnen (Schlüssel aus MCP_TOKEN_KEYS gestrichen oder Datei verändert). Deutlich
+// sichtbar, damit niemand eine leere Fassung für „noch nicht geschrieben“ hält.
+const FASSUNG_UNLESBAR_LEHRENDE = 'Diese Fassung lässt sich nicht mehr lesen (Schlüssel gewechselt oder Datei verändert). Die Person sieht sie auch nicht; schreib bei Bedarf ein neues Feedback mit Fassung.';
+export const FASSUNG_ZU = 'Überarbeite zuerst selbst die Zeile – oder antworte, was du ändern würdest. Danach siehst du hier eine mögliche Fassung.';
 
 /** Mögliche Fassung am Feedback (NDU-42). Studierende: zu nur ein Satz (der Text ist nie im Browser), offen ein Kasten.
- *  Lehrende: immer der Text und der Stand (zu, frei, aufgedeckt am …). */
+ *  Lehrende: immer der Text und der Stand (zu, frei, frei seit …). */
 function FassungAnzeige({ f, lehrende }: { f: FassungSicht; lehrende: boolean }) {
   if (lehrende) {
     return (
       <div className="fb-fassung fb-fassung-lehrende">
         <p className="fb-fassung-titel">Mögliche Fassung</p>
-        {f.text !== undefined ? <FassungText text={f.text} /> : <p className="wk-hilfe">{FASSUNG_UNLESBAR}</p>}
+        {f.text !== undefined
+          ? <FassungText text={f.text} />
+          : <p className="fb-fassung-unlesbar" role="alert"><TriangleAlert size={16} aria-hidden="true" /> {FASSUNG_UNLESBAR_LEHRENDE}</p>}
         <p className="fb-fassung-stand wk-hilfe">{f.zu ? <Lock size={14} aria-hidden="true" /> : <LockOpen size={14} aria-hidden="true" />} {fassungStandText(f)}</p>
       </div>
     );
   }
-  if (f.zu) return <p className="fb-fassung-zu"><Lock size={14} aria-hidden="true" /> Überarbeite zuerst selbst – danach siehst du hier eine mögliche Fassung.</p>;
+  if (f.zu) return <p className="fb-fassung-zu"><Lock size={14} aria-hidden="true" /> {FASSUNG_ZU}</p>;
   return (
     <div className="fb-fassung" role="note">
       <p className="fb-fassung-titel"><LockOpen size={14} aria-hidden="true" /> Eine mögliche Fassung, nicht die richtige</p>
@@ -181,12 +187,14 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
   const auswahlId = useId();
   const kriteriumId = useId();
   // Mögliche Fassung (NDU-42): nur an erlaubten Zeilen und solange zu diesem Artefakt keine offene da ist (der Server
-  // prüft beides noch einmal). Text an einer anderen Zeile bleibt im Feld, geht aber nicht mit.
+  // prüft beides noch einmal). Passt die Stelle nach dem Tippen nicht mehr, bleibt der Text stehen und Speichern ist
+  // gesperrt (fassungFeld) – er geht nie still verloren.
   const fassungOrt = fassungErlaubt(name, zeile || undefined);
   const schonOffen = eintraege ? offeneFassung(eintraege, name) : undefined;
-  const fassungMit = fassungOrt && !schonOffen && fassung.trim() !== '';
+  const feld = fassungFeld({ erlaubt: fassungOrt, schonOffen: schonOffen?.id, text: fassung });
+  const fassungMit = feld.mit;
   const fassungId = useId();
-  const leer = text.trim() === '' || graphemAnzahl(text.trim()) > FEEDBACK_MAX || (fassungMit && graphemAnzahl(fassung.replace(/\s+/g, ' ').trim()) > FASSUNG_MAX);
+  const leer = text.trim() === '' || graphemAnzahl(text.trim()) > FEEDBACK_MAX || feld.sperre !== null || (fassungMit && graphemAnzahl(fassung.replace(/\s+/g, ' ').trim()) > FASSUNG_MAX);
 
   async function senden() {
     if (leer || sendet) return;
@@ -248,14 +256,17 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
             </div>
           )}
           <Textfeld label="Feedback" wert={text} setze={setText} max={FEEDBACK_MAX} zeilen={4} />
-          {fassungOrt && (schonOffen
-            ? <p className="wk-hilfe" id={fassungId}><Lock size={14} aria-hidden="true" /> Zu diesem Artefakt gibt es schon eine offene mögliche Fassung ({schonOffen.id}). Eine neue geht erst, wenn sie erledigt ist.</p>
-            : (
-              <div className="fb-fassung-feld">
-                <Textfeld label="Mögliche Fassung (optional, erst sichtbar nach Überarbeitung)" wert={fassung} setze={setFassung} max={FASSUNG_MAX} zeilen={2} />
-                <p className="wk-hilfe">Eine Zeile, Form statt Inhalt. Wo du Fakten raten müsstest, setz eine Lücke wie [Zahl aus deinen Interviews]. Die Person sieht sie erst, wenn sie die Zeile selbst überarbeitet oder geantwortet hat; Claude bekommt sie nie.</p>
-              </div>
-            ))}
+          {fassungOrt && schonOffen && !feld.sperre && (
+            <p className="wk-hilfe" id={fassungId}><Lock size={14} aria-hidden="true" /> Zu diesem Artefakt gibt es schon eine offene mögliche Fassung ({schonOffen.id}). Eine neue geht erst, wenn sie erledigt ist.</p>
+          )}
+          {feld.zeigen && (
+            <div className="fb-fassung-feld">
+              <Textfeld label="Mögliche Fassung (optional, erst sichtbar nach Überarbeitung)" wert={fassung} setze={setFassung} max={FASSUNG_MAX} zeilen={2} />
+              {feld.sperre
+                ? <p className="wk-fehler" role="alert">{feld.sperre}</p>
+                : <p className="wk-hilfe">Eine Zeile, Form statt Inhalt. Wo du Fakten raten müsstest, setz eine Lücke wie [Zahl aus deinen Interviews]. Die Person sieht sie erst, wenn sie die Zeile selbst überarbeitet oder geantwortet hat; Claude bekommt sie nie.</p>}
+            </div>
+          )}
           <p className="wk-hilfe">Nur Feedback, keine Note; das Artefakt selbst bleibt, wie es ist.</p>
           <div className="fb-knoepfe">
             <button type="submit" className="wk-knopf wk-primaer" disabled={leer || sendet} aria-busy={sendet}>
@@ -297,7 +308,8 @@ export function Faden({ faden, neu, aendern }: { faden: FeedbackFaden<FeedbackSi
       <Antworten liste={antworten} />
       <div className="fb-knoepfe">
         <Stand f={f} />
-        <button type="button" className="wk-knopf" disabled={sendet || setzt} aria-busy={setzt} onClick={() => void erledigtEinzeln(() => aendern({ aktion: 'erledigt', id: f.id, erledigt: !f.erledigt }))}>
+        {/* Solange die Fassung zu ist, geht „erledigt“ nicht (der Server lehnt es ab): erst überarbeiten oder antworten. */}
+        <button type="button" className="wk-knopf" disabled={sendet || setzt || (!f.erledigt && f.fassung?.zu === true)} aria-busy={setzt} onClick={() => void erledigtEinzeln(() => aendern({ aktion: 'erledigt', id: f.id, erledigt: !f.erledigt }))}>
           {f.erledigt ? <><RotateCcw size={16} aria-hidden="true" /> Wieder öffnen</> : <><Check size={16} aria-hidden="true" /> Erledigt</>}
         </button>
         {!offen && (
@@ -347,9 +359,9 @@ export function StudierendenFeedback({ name, stand }: { name: ArtefaktName; stan
     return () => { gilt = false; };
   }, [name, anwenden]);
 
-  // Nach dem Speichern (stand = gespeicherter Stand des Editors): Hängt eine noch zue Fassung am Feedback, neu laden – hat
-  // die Person die Zeile überarbeitet, gibt der Server sie jetzt frei. Nach bestem Bemühen.
-  const zu = eintraege?.some((e) => e.fassung?.zu) ?? false;
+  // Nach dem Speichern (stand = gespeicherter Stand des Editors): Hängt an diesem Artefakt eine noch zue Fassung, neu
+  // laden – hat die Person die Zeile überarbeitet, hat die Speichern-Route sie freigegeben. Nach bestem Bemühen.
+  const zu = eintraege?.some((e) => e.artefakt === name && e.fassung?.zu) ?? false;
   useEffect(() => {
     if (!zu) return;
     void anwenden(api.feedback()).catch(() => {});

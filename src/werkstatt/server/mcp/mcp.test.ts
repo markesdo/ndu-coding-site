@@ -1380,21 +1380,21 @@ describe('Feedback der Lehrenden im Connector', () => {
     expect(sc.anleitung).toMatch(/Nennt ein Feedback ein Kriterium, frag, was die Person daran an ihrer eigenen Stelle erkennt; formulier dafür keinen Text\./);
   });
 
-  // NDU-42: Die mögliche Fassung der Lehrenden erreicht Claude nie – weder zu noch aufgedeckt, weder als Text noch als Siegel.
-  it('mögliche Fassung: artefakt_lesen und artefakt_pruefen liefern sie nie (Text, structuredContent), auch aufgedeckt nicht', async () => {
+  // NDU-42: Die mögliche Fassung der Lehrenden erreicht Claude nie – weder zu noch frei, weder als Text noch als Siegel.
+  it('mögliche Fassung: artefakt_lesen und artefakt_pruefen liefern sie nie (Text, structuredContent), auch frei nicht', async () => {
     const h = await aufbau();
     const FASSUNG = 'Wir glauben, dass [Gruppe aus deinen Interviews] morgens vorbestellen.';
     const siegel = await fassungVersiegeln(FASSUNG, { repo: 'test-sofie', artefakt: 'annahmen', zeilenId: 'A1' }, h.abh.umgebung.tokenKeys);
     await feedbackAendern(h.speicher, 'test-sofie', (f) => {
       const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A1', text: 'Wer genau?', autor: 'markus', datum: D, fassung: { siegel, zeilenStand: `sha256:${'0'.repeat(64)}` } });
-      return { ...a, eintraege: a.eintraege.map((e) => ({ ...e, aufgedecktAm: D })) };
+      return { ...a, eintraege: a.eintraege.map((e) => ({ ...e, freiSeit: D })) };
     }, AUTOR, 'Feedback');
     const c = await client(h, await accessToken(h));
     for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
       const r = await c.callTool({ name, arguments: { artefakt: 'annahmen' } });
       const alles = JSON.stringify(r);
       expect(text(r), name).toContain('Wer genau?');
-      for (const x of ['Gruppe aus deinen Interviews', 'morgens vorbestellen', siegel, 'f1.', 'sha256:', 'aufgedecktAm']) expect(alles, `${name}: ${x}`).not.toContain(x);
+      for (const x of ['Gruppe aus deinen Interviews', 'morgens vorbestellen', siegel, 'f1.', 'sha256:', 'freiSeit']) expect(alles, `${name}: ${x}`).not.toContain(x);
     }
   });
 

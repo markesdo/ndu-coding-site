@@ -87,6 +87,7 @@ describe('Lehrende hinterlegen eine mögliche Fassung', () => {
     expect((await t.schreiben(MARKUS, { artefakt: 'brief', zeilenId: 'problem', text: 'Wessen Problem?', fassung: '[Wer] verliert morgens [wie viel Zeit] beim Warten auf Kaffee.' })).status).toBe(200);
     await t.fake.speichern('2026-sofie', 'brief', { 'mappe/brief.json': json(briefBeispiel) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
     // Eine offene je Artefakt: erst erledigt, dann die nächste.
+    await t.aendern({ aktion: 'antworten', antwortAuf: 'FB1', text: 'Meins.' });
     expect((await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(200);
     expect((await t.schreiben(MARKUS, { artefakt: 'brief', zeilenId: 'outcome', text: 'Was ändert sich?', fassung: 'Wir merken es, wenn [Verhalten] …' })).status).toBe(200);
   });
@@ -115,6 +116,7 @@ describe('Lehrende hinterlegen eine mögliche Fassung', () => {
     expect(zweite.status).toBe(422);
     expect((await zweite.json()).fehler).toBe('Zu Annahmen-Map gibt es schon eine offene mögliche Fassung (FB1). Eine neue geht erst, wenn sie erledigt ist.');
     expect((await t.datei() as { eintraege: unknown[] }).eintraege).toHaveLength(1);
+    await t.aendern({ aktion: 'antworten', antwortAuf: 'FB1', text: 'Geschätzt.' });
     expect((await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(200);
     expect((await t.schreiben(MARKUS, { ...MIT_FASSUNG, zeilenId: 'A3' })).status).toBe(200);
   });
@@ -143,40 +145,80 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     await t.annahmeAendern('A3', 'Wir glauben, dass Pendler*innen in 10 Sekunden bestellen.');
     expect((await t.lesen())[0].fassung).toStrictEqual({ zu: true });
     expect((await t.leser()).feedback[0].fassung.zu).toBe(true);
-    // Kein Commit für aufgedecktAm, solange sie zu ist.
-    expect(t.fake.commits('2026-sofie').map((c) => c.nachricht).filter((n) => n.includes('aufgedeckt'))).toStrictEqual([]);
+    // Kein Commit für freiSeit, solange sie zu ist.
+    expect(t.fake.commits('2026-sofie').map((c) => c.nachricht).filter((n) => n.includes('mögliche Fassung zu'))).toStrictEqual([]);
   });
 
-  it('Zeile geändert → offen mit Text; aufgedecktAm wird einmal vermerkt; Lehrende sehen „aufgedeckt am“', async () => {
+  it('Zeile geändert → frei schon beim Speichern (freiSeit im Commit nach dem Speichern), Lesen ohne weiteren Commit', async () => {
     const t = await aufbau();
     await t.schreiben(MARKUS, MIT_FASSUNG);
     await t.annahmeAendern('A2', 'Wir glauben, dass die Bar morgens 25 Bestellungen in 30 Minuten schafft.');
-    t.uhr.ms = SPAETER;
-    // Lehrende vorher: frei, aber noch nicht vermerkt.
-    expect((await t.leser()).feedback[0].fassung).toStrictEqual({ zu: false, text: FASSUNG });
-    const auf = new Date(SPAETER).toISOString();
-    expect((await t.lesen())[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, aufgedecktAm: auf });
-    const vermerkt = t.fake.commits('2026-sofie').filter((c) => c.nachricht === 'Feedback: mögliche Fassung zu FB1 aufgedeckt');
+    const seit = new Date(JETZT).toISOString();
+    const vermerkt = t.fake.commits('2026-sofie').filter((c) => c.nachricht === 'Feedback: mögliche Fassung zu FB1 frei');
     expect(vermerkt).toHaveLength(1);
     expect(vermerkt[0].autor.name).toBe('sofie-x');
     expect(JSON.stringify(vermerkt[0].dateien)).not.toContain('Zahl aus deinen Interviews');
-    // Zweites Lesen: kein weiterer Commit. Zurückgeändert bleibt sie offen.
-    await t.lesen();
+    t.uhr.ms = SPAETER;
+    // Lehrende sehen es gleich, ohne dass die Person ihr Feedback geöffnet hat.
+    expect((await t.leser()).feedback[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: seit });
+    const vorher = t.fake.commits('2026-sofie').length;
+    expect((await t.lesen())[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: seit });
+    expect(t.fake.commits('2026-sofie')).toHaveLength(vorher);
+    // Zurückgeändert bleibt sie frei; ein zweites Speichern vermerkt nichts mehr.
     await t.annahmeAendern('A2', annahmenBeispiel.annahmen[1].text);
-    expect((await t.lesen())[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, aufgedecktAm: auf });
-    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht.includes('aufgedeckt'))).toHaveLength(1);
-    expect((await t.leser()).feedback[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, aufgedecktAm: auf });
+    expect((await t.lesen())[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: seit });
+    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(1);
   });
 
-  it('Antwort → offen in derselben Antwort, aufgedecktAm im Commit der Antwort', async () => {
+  it('Speichern einer anderen Zeile vermerkt nichts', async () => {
+    const t = await aufbau();
+    await t.schreiben(MARKUS, MIT_FASSUNG);
+    await t.annahmeAendern('A3', 'Wir glauben, dass Pendler*innen in 10 Sekunden bestellen.');
+    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(0);
+    expect((await t.datei() as { eintraege: Record<string, unknown>[] }).eintraege[0]).not.toHaveProperty('freiSeit');
+  });
+
+  it('Rückfall: scheitert der Vermerk beim Speichern, holt das Lesen ihn nach (ein Commit), Speichern bleibt geglückt', async () => {
+    let scheitern = true;
+    const t = await aufbau({ speicher: (fake) => ({ feedbackAendern: (repo, aendern, autor, nachricht) => (scheitern && nachricht.includes('mögliche Fassung zu') ? Promise.reject(new Error('GitHub weg')) : fake.feedbackAendern(repo, aendern, autor, nachricht)) }) });
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await t.schreiben(MARKUS, MIT_FASSUNG);
+    await t.annahmeAendern('A2', 'Wir glauben, dass die Bar morgens 25 Bestellungen in 30 Minuten schafft.');
+    expect((await t.datei() as { eintraege: Record<string, unknown>[] }).eintraege[0]).not.toHaveProperty('freiSeit');
+    scheitern = false;
+    t.uhr.ms = SPAETER;
+    const seit = new Date(SPAETER).toISOString();
+    expect((await t.lesen())[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: seit });
+    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht === 'Feedback: mögliche Fassung zu FB1 frei')).toHaveLength(1);
+    expect((await t.datei() as { eintraege: Record<string, unknown>[] }).eintraege[0].freiSeit).toBe(seit);
+  });
+
+  it('Antwort → offen in derselben Antwort, freiSeit im Commit der Antwort', async () => {
     const t = await aufbau();
     await t.schreiben(MARKUS, MIT_FASSUNG);
     t.uhr.ms = SPAETER;
     const r = await t.aendern({ aktion: 'antworten', antwortAuf: 'FB1', text: 'Die 40 ist geschätzt.' });
     expect(r.status).toBe(200);
     const eintraege = (await r.json()).eintraege;
-    expect(eintraege[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, aufgedecktAm: new Date(SPAETER).toISOString() });
-    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht.includes('aufgedeckt'))).toHaveLength(0);
+    expect(eintraege[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: new Date(SPAETER).toISOString() });
+    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(0);
+  });
+
+  it('Lesen liest das Artefakt nur, solange eine Fassung weder frei vermerkt noch beantwortet ist', async () => {
+    const gelesen: string[] = [];
+    const t = await aufbau({ speicher: (fake) => ({ lesen: (repo, name) => { gelesen.push(name); return fake.lesen(repo, name); } }) });
+    await t.schreiben(MARKUS, MIT_FASSUNG);
+    gelesen.length = 0;
+    await t.lesen();
+    expect(gelesen).toStrictEqual(['annahmen']);
+    // Antwort ohne freiSeit (etwa eine Datei von vorher): offen durch die Antwort, kein Lesen nötig.
+    await t.fake.feedbackAendern('2026-sofie', (roh) => {
+      const f = roh as { schema: string; eintraege: Record<string, unknown>[] };
+      return JSON.stringify({ ...f, eintraege: [...f.eintraege, { id: 'FB2', artefakt: 'annahmen', zeilenId: 'A2', von: 'studierende', autor: 'sofie', text: 'ok', datum: new Date(JETZT).toISOString(), antwortAuf: 'FB1' }] });
+    }, { name: 'x', email: 'x@example.invalid' }, 'Antwort von außen');
+    gelesen.length = 0;
+    expect((await t.lesen())[0].fassung.zu).toBe(false);
+    expect(gelesen).toStrictEqual([]);
   });
 
   it('Artefakt gerade nicht lesbar → bleibt zu (lieber zu als zu früh), Feedback kommt trotzdem', async () => {
@@ -190,11 +232,11 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     expect(JSON.parse(roh).eintraege[0].fassung).toStrictEqual({ zu: true });
   });
 
-  it('Studierende können Fassung, Zeilenstand oder aufgedecktAm nicht setzen: zusätzliche Felder werden nie gelesen', async () => {
+  it('Studierende können Fassung, Zeilenstand oder freiSeit nicht setzen: zusätzliche Felder werden nie gelesen', async () => {
     const t = await aufbau();
     await t.schreiben(MARKUS, MIT_FASSUNG);
     const vorher = structuredClone(await t.datei()) as { eintraege: Record<string, unknown>[] };
-    const fremd = { fassung: 'Meine eigene Fassung', zeilenStand: `sha256:${'0'.repeat(64)}`, aufgedecktAm: new Date(JETZT).toISOString() };
+    const fremd = { fassung: 'Meine eigene Fassung', zeilenStand: `sha256:${'0'.repeat(64)}`, freiSeit: new Date(JETZT).toISOString() };
     for (const body of [
       { aktion: 'gesehen', artefakt: 'annahmen', ...fremd },
       { aktion: 'erledigt', id: 'FB1', erledigt: false, ...fremd },
@@ -204,7 +246,7 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     const nachher = (await t.datei()) as { eintraege: Record<string, unknown>[] };
     expect(nachher.eintraege[0].fassung).toBe(vorher.eintraege[0].fassung);
     expect(nachher.eintraege[0].zeilenStand).toBe(vorher.eintraege[0].zeilenStand);
-    expect(nachher.eintraege[0]).not.toHaveProperty('aufgedecktAm');
+    expect(nachher.eintraege[0]).not.toHaveProperty('freiSeit');
     // Die Antwort selbst bekommt keine Fassung (nur die Antwort-Felder).
     await t.aendern({ aktion: 'antworten', antwortAuf: 'FB1', text: 'ok', ...fremd });
     const antwort = ((await t.datei()) as { eintraege: Record<string, unknown>[] }).eintraege[1];
@@ -215,9 +257,28 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
 });
 
 describe('Befunde aus dem Review (#317)', () => {
+  it('„erledigt“ geht nicht, solange die Fassung zu ist (422); nach Überarbeiten oder Antwort schon', async () => {
+    const t = await aufbau();
+    await t.schreiben(MARKUS, MIT_FASSUNG);
+    const r = await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: true });
+    expect(r.status).toBe(422);
+    expect((await r.json()).fehler).toBe('Überarbeite zuerst die Zeile oder antworte.');
+    expect(((await t.datei()) as { eintraege: Record<string, unknown>[] }).eintraege[0]).not.toHaveProperty('erledigt');
+    await t.annahmeAendern('A2', 'Wir glauben, dass die Bar morgens 25 Bestellungen schafft.');
+    expect((await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(200);
+    // Mit Antwort statt Überarbeitung geht es auch; Feedback ohne Fassung nie gesperrt.
+    await t.schreiben(MARKUS, { ...MIT_FASSUNG, artefakt: 'brief', zeilenId: 'problem' });
+    expect((await t.aendern({ aktion: 'erledigt', id: 'FB2', erledigt: true })).status).toBe(422);
+    await t.aendern({ aktion: 'antworten', antwortAuf: 'FB2', text: 'Ich würde die Gruppe enger fassen.' });
+    expect((await t.aendern({ aktion: 'erledigt', id: 'FB2', erledigt: true })).status).toBe(200);
+    await t.schreiben(MARKUS, { artefakt: 'annahmen', text: 'Allgemein.' });
+    expect((await t.aendern({ aktion: 'erledigt', id: 'FB4', erledigt: true })).status).toBe(200);
+  });
+
   it('Wieder öffnen (erledigt → offen) geht nicht, wenn zu diesem Artefakt schon eine andere Fassung offen ist', async () => {
     const t = await aufbau();
     await t.schreiben(MARKUS, MIT_FASSUNG);
+    await t.annahmeAendern('A2', 'Wir glauben, dass die Bar morgens 25 Bestellungen schafft.');
     expect((await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(200);
     expect((await t.schreiben(MARKUS, { ...MIT_FASSUNG, zeilenId: 'A3' })).status).toBe(200);
     const r = await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: false });

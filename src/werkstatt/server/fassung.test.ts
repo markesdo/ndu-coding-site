@@ -7,7 +7,7 @@ import {
   FASSUNG_MAX, FeedbackAbgelehnt, antworten, erledigtSetzen, fassungErlaubt, fassungTextPruefen, fassungZeilenText, feedbackJson, feedbackLeer,
   feedbackParsen, feedbackSchreiben, type Feedback,
 } from '../feedback';
-import { aufgedecktSetzen, fassungFrei, fassungOeffnen, fassungVersiegeln, zeilenStand } from './fassung';
+import { freiSeitSetzen, fassungFrei, fassungOeffnen, fassungVersiegeln, zeilenStand } from './fassung';
 
 const D1 = '2026-11-11T10:00:00.000Z';
 const D2 = '2026-11-12T09:00:00.000Z';
@@ -25,9 +25,9 @@ describe('feedback@1 mit Fassung: Schema', () => {
     expect(feedbackParsen(alt)).toStrictEqual({ ok: true, daten: alt });
   });
 
-  it('Fassung mit Zeilenstand und aufgedecktAm: gültig und unverändert gelesen', () => {
-    const f = aufgedecktSetzen(mitFassung(feedbackLeer()), ['FB1'], D2);
-    expect(f.eintraege[0]).toStrictEqual({ id: 'FB1', artefakt: 'annahmen', zeilenId: 'A2', von: 'lehrende', autor: 'markus', text: 'Woher stammt die 40?', datum: D1, fassung: SIEGEL, zeilenStand: STAND, aufgedecktAm: D2 });
+  it('Fassung mit Zeilenstand und freiSeit: gültig und unverändert gelesen', () => {
+    const f = freiSeitSetzen(mitFassung(feedbackLeer()), ['FB1'], D2);
+    expect(f.eintraege[0]).toStrictEqual({ id: 'FB1', artefakt: 'annahmen', zeilenId: 'A2', von: 'lehrende', autor: 'markus', text: 'Woher stammt die 40?', datum: D1, fassung: SIEGEL, zeilenStand: STAND, freiSeit: D2 });
     expect(feedbackParsen(JSON.parse(feedbackJson(f)))).toStrictEqual({ ok: true, daten: f });
   });
 
@@ -41,7 +41,7 @@ describe('feedback@1 mit Fassung: Schema', () => {
       ['Brief „Für wen?“', [{ ...basis, artefakt: 'brief', zeilenId: 'fuerWen', fassung: SIEGEL, zeilenStand: STAND }]],
       ['ohne Zeilenstand', [{ ...basis, fassung: SIEGEL }]],
       ['Zeilenstand allein', [{ ...basis, zeilenStand: STAND }]],
-      ['aufgedecktAm allein', [{ ...basis, aufgedecktAm: D2 }]],
+      ['freiSeit allein', [{ ...basis, freiSeit: D2 }]],
       ['Klartext', [{ ...basis, fassung: 'Wir glauben, dass [Zahl] …', zeilenStand: STAND }]],
       ['Zeilenstand falsche Form', [{ ...basis, fassung: SIEGEL, zeilenStand: 'abc' }]],
     ];
@@ -70,7 +70,9 @@ describe('Wo eine Fassung stehen darf', () => {
     // Feedback ohne Fassung geht weiter.
     expect(feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A3', text: 'Und hier?', autor: 'markus', datum: D1 }).eintraege).toHaveLength(2);
     expect(mitFassung(f, 'leitfaden', 'F1').eintraege).toHaveLength(2);
-    expect(mitFassung(erledigtSetzen(f, 'FB1', true), 'annahmen', 'A3').eintraege.at(-1)!.fassung).toBe(SIEGEL);
+    expect(mitFassung(erledigtSetzen(freiSeitSetzen(f, ['FB1'], D2), 'FB1', true), 'annahmen', 'A3').eintraege.at(-1)!.fassung).toBe(SIEGEL);
+    // Zu (weder frei noch beantwortet): „erledigt“ abgelehnt.
+    expect(() => erledigtSetzen(f, 'FB1', true)).toThrow('Überarbeite zuerst die Zeile oder antworte.');
   });
 
   it('Text: eine Zeile, höchstens 300 Zeichen, ohne Steuerzeichen; leer = keine Fassung', () => {
@@ -129,16 +131,16 @@ describe('Wann die Fassung offen ist', () => {
     expect(fassungFrei(e, f.eintraege, 'unbekannt')).toBe(false);
   });
 
-  it('Antwort der Person → offen (und aufgedecktAm im selben Commit); aufgedecktAm bleibt offen, auch wenn die Zeile zurückgeändert wird', async () => {
+  it('Antwort der Person → offen (und freiSeit im selben Commit); freiSeit bleibt offen, auch wenn die Zeile zurückgeändert wird', async () => {
     const f = await lage(A2);
     const g = antworten(f, { antwortAuf: 'FB1', text: 'Ich habe nachgezählt.', autor: 'sofie', datum: D2 });
-    expect(g.eintraege[0].aufgedecktAm).toBe(D2);
-    const ohneVermerk = { ...g, eintraege: [{ ...g.eintraege[0], aufgedecktAm: undefined }, g.eintraege[1]] };
+    expect(g.eintraege[0].freiSeit).toBe(D2);
+    const ohneVermerk = { ...g, eintraege: [{ ...g.eintraege[0], freiSeit: undefined }, g.eintraege[1]] };
     expect(fassungFrei(ohneVermerk.eintraege[0], ohneVermerk.eintraege, await zeilenStand(A2))).toBe(true);
     expect(fassungFrei(g.eintraege[0], g.eintraege, await zeilenStand(A2))).toBe(true);
     // Eine Antwort auf ein anderes Feedback öffnet sie nicht.
     const h = antworten(feedbackSchreiben(f, { artefakt: 'annahmen', text: 'Allgemein', autor: 'm', datum: D1 }), { antwortAuf: 'FB2', text: 'ok', autor: 'sofie', datum: D2 });
-    expect(h.eintraege[0].aufgedecktAm).toBeUndefined();
+    expect(h.eintraege[0].freiSeit).toBeUndefined();
     expect(fassungFrei(h.eintraege[0], h.eintraege, await zeilenStand(A2))).toBe(false);
   });
 

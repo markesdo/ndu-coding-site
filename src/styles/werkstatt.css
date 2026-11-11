@@ -208,4 +208,6 @@
 .fb-fassung-titel { display: flex; align-items: center; gap: .35rem; margin: 0 0 .25rem; font-size: .88rem; font-weight: 600; }
 .fb-fassung-text { margin: 0; overflow-wrap: anywhere; }
 .fb-fassung-stand { display: flex; align-items: center; gap: .3rem; margin: .3rem 0 0; }
+.fb-fassung-unlesbar { display: flex; align-items: flex-start; gap: .35rem; margin: 0; color: var(--yellow-ink); font-weight: 600; }
+.fb-fassung-unlesbar svg { flex: none; margin-top: .15em; }
 .fb-luecke { padding: 0 .15em; border-radius: 3px; background: var(--yellow-soft); color: inherit; font-style: italic; }

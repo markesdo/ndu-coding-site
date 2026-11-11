@@ -32,10 +32,33 @@ export function fassungStuecke(text: string): { text: string; luecke: boolean }[
   return stuecke;
 }
 
+export interface FassungFeld {
+  // Feld „Mögliche Fassung“ zeigen.
+  zeigen: boolean;
+  // Text geht mit dem Feedback mit.
+  mit: boolean;
+  // Satz, warum der getippte Text so nicht mitgehen kann; dann ist Speichern gesperrt (nie still verwerfen).
+  sperre: string | null;
+}
+
+/** Feld „Mögliche Fassung“ im Leser der Lehrenden: an erlaubter Zeile ohne offene Fassung zeigen und mitschicken. Steht
+ *  schon Text darin und passt die Stelle nicht (mehr), bleibt das Feld mit Text stehen und Speichern ist gesperrt, bis
+ *  eine erlaubte Zeile gewählt oder das Feld geleert ist. */
+export function fassungFeld(e: { erlaubt: boolean; schonOffen: string | undefined; text: string }): FassungFeld {
+  const geht = e.erlaubt && e.schonOffen === undefined;
+  const getippt = e.text.trim() !== '';
+  if (geht) return { zeigen: true, mit: getippt, sperre: null };
+  if (!getippt) return { zeigen: false, mit: false, sperre: null };
+  const sperre = e.erlaubt
+    ? `Zu diesem Artefakt ist schon eine mögliche Fassung offen (${e.schonOffen}). Leer das Feld, um das Feedback ohne Fassung zu speichern.`
+    : 'Eine mögliche Fassung geht nur an Outcome oder Problem im Brief, an einer Annahme oder an einer Leitfaden-Frage. Wähl eine solche Zeile oder leer das Feld.';
+  return { zeigen: true, mit: false, sperre };
+}
+
 /** Lehrende: Stand einer möglichen Fassung in Worten. */
 export function fassungStandText(f: FassungSicht): string {
   if (f.zu) return 'zu – öffnet sich, wenn die Person die Zeile überarbeitet oder antwortet';
-  if (f.aufgedecktAm) return `aufgedeckt am ${feedbackDatum(f.aufgedecktAm)}`;
+  if (f.freiSeit) return `frei seit ${feedbackDatum(f.freiSeit)}`;
   return 'frei – die Person sieht sie, sobald sie ihr Feedback öffnet';
 }
 

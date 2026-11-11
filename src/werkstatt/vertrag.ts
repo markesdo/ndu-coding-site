@@ -117,16 +117,16 @@ export interface LehrendenInhalt {
 
 // Mögliche Fassung der Lehrenden (NDU-42), wie die API sie zeigt. Studierende: { zu: true } ohne Text, bis sie offen
 // ist (Zeile geändert oder geantwortet); Lehrende: immer mit Text. unlesbar = das Siegel lässt sich nicht mehr öffnen.
-// aufgedecktAm: seit wann die Person sie sehen darf (ISO).
+// freiSeit: seit wann die Person sie sehen darf (ISO).
 export interface FassungSicht {
   zu: boolean;
   text?: string;
   unlesbar?: true;
-  aufgedecktAm?: string;
+  freiSeit?: string;
 }
 
 // Eintrag, wie er zum Browser geht: ohne Siegel und Zeilenstand der Datei, die Fassung als FassungSicht.
-export type FeedbackSichtEintrag = Omit<FeedbackEintrag, 'fassung' | 'zeilenStand' | 'aufgedecktAm'> & { fassung?: FassungSicht };
+export type FeedbackSichtEintrag = Omit<FeedbackEintrag, 'fassung' | 'zeilenStand' | 'freiSeit'> & { fassung?: FassungSicht };
 
 // Feedback (NDU-35). Lehrende: POST /api/werkstatt/lehrende/feedback?kohorte=…&person=…
 export interface FeedbackSchreibenAnfrage {
