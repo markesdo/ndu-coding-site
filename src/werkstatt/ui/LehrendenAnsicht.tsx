@@ -7,9 +7,9 @@ import {
   CalendarClock, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleCheck, CircleDashed, CloudOff, ExternalLink, FileWarning, Link2Off, MessageSquare, PencilLine, RefreshCw, UserRound, X,
 } from 'lucide-react';
 import { Component, Fragment, useCallback, useEffect, useRef, useState, type ComponentType, type KeyboardEvent, type ReactNode } from 'react';
-import { feedbackZaehlen, type FeedbackEintrag } from '../feedback.js';
+import { feedbackZaehlen } from '../feedback.js';
 import { ARTEFAKTE, type ArtefaktName } from '../schemas/index.js';
-import type { LehrendenAnsicht as Ansicht, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../vertrag.js';
+import type { LehrendenAnsicht as Ansicht, FeedbackSichtEintrag, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { VORSCHAUEN } from './editoren/vorschauen.js';
 import { LehrendenFeedback } from './Feedback.js';
@@ -224,7 +224,7 @@ export default function LehrendenAnsicht() {
   }, [offenerSchluessel, geladen]);
 
   // Nach dem Schreiben: Leser und Zelle zeigen den neuen Stand, ohne die ganze Matrix neu zu laden (GitHub-Kontingent).
-  function feedbackGeschrieben(schluessel: string, person: string, name: ArtefaktName, eintraege: FeedbackEintrag[]) {
+  function feedbackGeschrieben(schluessel: string, person: string, name: ArtefaktName, eintraege: FeedbackSichtEintrag[]) {
     setInhalt((i) => (i && i.schluessel === schluessel && i.zustand === 'bereit' ? { ...i, inhalt: { ...i.inhalt, feedback: eintraege } } : i));
     setAnsicht((a) => a && {
       ...a,
@@ -436,7 +436,7 @@ export default function LehrendenAnsicht() {
 
 function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt, feedbackGeschrieben }: {
   ansicht: Ansicht; p: BereiteMappe; a: LehrendenArtefakt; wechseln: (l: Leser) => void; schliessen: () => void; inhalt: Inhalt | null;
-  feedbackGeschrieben: (eintraege: FeedbackEintrag[]) => void;
+  feedbackGeschrieben: (eintraege: FeedbackSichtEintrag[]) => void;
 }) {
   const zurueck = nachbar(ansicht.personen, p.kuerzel, -1);
   const weiter = nachbar(ansicht.personen, p.kuerzel, 1);

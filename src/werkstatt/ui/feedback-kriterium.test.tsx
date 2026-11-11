@@ -2,14 +2,16 @@
 // aufklappbares Kaffeebar-Paar, bei Lehrenden wie bei Studierenden, immer innerhalb von data-werkstatt (Beamer blendet aus).
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { feedbackLeer, feedbackSchreiben, faeden, type FeedbackEintrag } from '../feedback.js';
+import { feedbackLeer, feedbackSchreiben, faeden } from '../feedback.js';
+import type { FeedbackSichtEintrag as FeedbackEintrag } from '../vertrag.js';
 import { kriterium } from '../kriterien.js';
 import type { ArtefaktName } from '../schemas/index.js';
 import { Faden, LehrendenFeedback } from './Feedback';
 
 const D = '2026-11-11T10:00:00.000Z';
 const eintraege = (artefakt: ArtefaktName, zeilenId: string | undefined, krit: string | undefined): FeedbackEintrag[] =>
-  feedbackSchreiben(feedbackLeer(), { artefakt, zeilenId, kriterium: krit, text: 'Was tun Menschen danach anders?', autor: 'markus', datum: D }).eintraege;
+  // Ohne Fassung sind Einträge der Datei und der API gleich.
+  feedbackSchreiben(feedbackLeer(), { artefakt, zeilenId, kriterium: krit, text: 'Was tun Menschen danach anders?', autor: 'markus', datum: D }).eintraege as unknown as FeedbackEintrag[];
 
 const lehrende = (name: ArtefaktName, e: FeedbackEintrag[] = []) =>
   renderToStaticMarkup(<LehrendenFeedback kohorte="2026" person="sofie" name={name} daten={null} eintraege={e} geschrieben={() => {}} />);

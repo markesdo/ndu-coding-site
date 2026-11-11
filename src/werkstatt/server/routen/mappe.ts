@@ -9,10 +9,12 @@ import { antworten, erledigtSetzen, gesehenSetzen } from '../../feedback.js';
 import { kohorte } from '../../kohorten/index.js';
 import { dateienFuerSpeichern, readmeRendern } from '../../render/index.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName, type Feldfehler } from '../../schemas/index.js';
+import type { Feedback } from '../../feedback.js';
 import type { ArtefaktAntwort, FeedbackAntwort, MappeStand, SpeichernAntwort } from '../../vertrag.js';
 import { mappeMitgliedschaft, repoName, type Mitgliedschaft } from '../../zugang.js';
 import { ApiAusnahme, fehler, json } from '../antwort.js';
 import { commitAutor, kurzeNachricht } from '../commit.js';
+import { aufgedecktSetzen, feedbackSicht } from '../fassung.js';
 import { feedbackAendern, feedbackHolen } from '../feedback.js';
 import { GithubAusnahme } from '../github/app-token.js';
 import { mitSitzung, type SitzungEnv } from '../sitzung.js';
@@ -149,14 +151,30 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   // Feedback (NDU-35): vor /:artefakt, sonst wäre „feedback“ ein unbekanntes Artefakt. Nur die eigene Mappe (eigenesRepo
   // prüft werkstatt.json; bei Lehrenden die Demo-Mappe). Feedback in die Mappen der Studierenden schreiben Lehrende über
   // /api/werkstatt/lehrende/feedback.
+  // Was die Person vom Feedback sieht (NDU-42): eine mögliche Fassung erst, wenn sie offen ist (fassung.ts), vorher nur
+  // { zu: true } – nie das Siegel, nie der Text. Ist eine Fassung neu offen, merkt sich der Server den Zeitpunkt
+  // (aufgedecktAm, ein Commit) nach bestem Bemühen; scheitert das, ist sie trotzdem offen und wird beim nächsten Mal vermerkt.
+  async function sichtFuerPerson(c: Context<SitzungEnv>, repo: string, f: Feedback): Promise<FeedbackAntwort> {
+    const sicht = await feedbackSicht(abh, repo, f.eintraege, 'studierende');
+    if (sicht.neuFrei.length === 0) return { eintraege: sicht.eintraege };
+    try {
+      const datum = new Date(abh.jetzt()).toISOString();
+      const danach = await feedbackAendern(abh.speicher, repo, (x) => aufgedecktSetzen(x, sicht.neuFrei, datum), commitAutor(c.get('sitzung')), kurzeNachricht(`Feedback: mögliche Fassung zu ${sicht.neuFrei.join(', ')} aufgedeckt`));
+      return { eintraege: (await feedbackSicht(abh, repo, danach.eintraege, 'studierende')).eintraege };
+    } catch (e) {
+      console.error('werkstatt: aufgedecktAm nicht gespeichert –', ursache(e));
+      return { eintraege: sicht.eintraege };
+    }
+  }
+
   r.get('/feedback', async (c) => {
     const repo = await eigenesRepo(c, false);
-    const antwort: FeedbackAntwort = { eintraege: (await feedbackHolen(abh.speicher, repo)).eintraege };
-    return json(c, antwort);
+    return json(c, await sichtFuerPerson(c, repo, await feedbackHolen(abh.speicher, repo)));
   });
 
   // Genau eine Änderung je Anfrage: antworten, erledigt setzen, gesehen. Feedback der Lehrenden ändert hier nur die
-  // Felder erledigt und gesehen (feedback.ts); einen Eintrag von „lehrende“ kann diese Route nie anlegen.
+  // Felder erledigt und gesehen (feedback.ts); einen Eintrag von „lehrende“ kann diese Route nie anlegen. Fassung und
+  // Zeilenstand setzt keine Aktion: Felder wie fassung oder zeilenStand in der Anfrage liest diese Route nie.
   r.post('/feedback', async (c) => {
     const m = mappeVon(c);
     if (!m.kuerzel) throw internerFehler('feedback: Mappe ohne Kürzel');
@@ -200,8 +218,7 @@ export function mappeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
         return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
     }
     const danach = await feedbackAendern(abh.speicher, repo, aenderung, autor, kurzeNachricht(nachricht));
-    const antwort: FeedbackAntwort = { eintraege: danach.eintraege };
-    return json(c, antwort);
+    return json(c, await sichtFuerPerson(c, repo, danach));
   });
 
   r.get('/:artefakt', async (c) => {

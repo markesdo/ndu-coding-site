@@ -3,6 +3,8 @@
 // kein Werkzeug). Eigene Datei, damit werkzeuge.ts nur an wenigen Stellen wächst.
 // NDU-41: Trägt ein Feedback ein Kriterium aus dem Katalog, kommt nur dessen Name mit – nie das Kaffeebar-Paar, damit
 // Claude keine Fassung zum Übernehmen in der Hand hat.
+// NDU-42: Ebenso nie die mögliche Fassung der Lehrenden (fassung, zeilenStand, aufgedecktAm), weder zu noch aufgedeckt:
+// feedbackAusgabe nimmt nur die unten genannten Felder, nie den ganzen Eintrag.
 import { z } from 'zod';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { faeden, zeilenName, type FeedbackFaden } from '../../feedback.js';

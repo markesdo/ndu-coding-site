@@ -112,8 +112,21 @@ export interface LehrendenInhalt {
   // Leser). Kaputtes JSON liefert der Speicher nicht mit: dann null.
   roh: string | null;
   // Feedback und Antworten zu diesem Artefakt; null = mappe/feedback.json ließ sich nicht lesen (dann auch kein Schreiben).
-  feedback: FeedbackEintrag[] | null;
+  feedback: FeedbackSichtEintrag[] | null;
 }
+
+// Mögliche Fassung der Lehrenden (NDU-42), wie die API sie zeigt. Studierende: { zu: true } ohne Text, bis sie offen
+// ist (Zeile geändert oder geantwortet); Lehrende: immer mit Text. unlesbar = das Siegel lässt sich nicht mehr öffnen.
+// aufgedecktAm: seit wann die Person sie sehen darf (ISO).
+export interface FassungSicht {
+  zu: boolean;
+  text?: string;
+  unlesbar?: true;
+  aufgedecktAm?: string;
+}
+
+// Eintrag, wie er zum Browser geht: ohne Siegel und Zeilenstand der Datei, die Fassung als FassungSicht.
+export type FeedbackSichtEintrag = Omit<FeedbackEintrag, 'fassung' | 'zeilenStand' | 'aufgedecktAm'> & { fassung?: FassungSicht };
 
 // Feedback (NDU-35). Lehrende: POST /api/werkstatt/lehrende/feedback?kohorte=…&person=…
 export interface FeedbackSchreibenAnfrage {
@@ -123,6 +136,8 @@ export interface FeedbackSchreibenAnfrage {
   // ID eines Kriteriums aus dem Katalog (kriterien.ts, NDU-41), passend zu Artefakt und Abschnitt; fehlt = ohne.
   kriterium?: string;
   text: string;
+  // Mögliche Fassung (NDU-42), höchstens FASSUNG_MAX Zeichen, nur an erlaubten Zeilen (fassungErlaubt); fehlt = ohne.
+  fassung?: string;
 }
 
 // Studierende: POST /api/werkstatt/mappe/feedback, genau eine Änderung.
@@ -133,7 +148,7 @@ export type FeedbackAktion =
 
 // Antwort beider Seiten: alle Einträge der Mappe (Lehrende: nur die des Artefakts) nach der Änderung.
 export interface FeedbackAntwort {
-  eintraege: FeedbackEintrag[];
+  eintraege: FeedbackSichtEintrag[];
 }
 
 export type LehrendenMappe =

@@ -8,8 +8,7 @@ import { abfrageKette } from '../../lib/kette.js';
 import { DEMO_HREF, MAPPE_DEMO, MAPPE_LEHRENDE, MAPPE_PFAD } from '../../lib/nav-rolle.js';
 import { MOM_TEST_GRUPPE } from '../../components/innolab-zeiten.js';
 import { kohorte } from '../kohorten/index.js';
-import type { FeedbackEintrag } from '../feedback.js';
-import type { Ich, MappeStand } from '../vertrag.js';
+import type { FeedbackSichtEintrag, Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import { EDITOREN } from './editoren/index.js';
 import { feedbackLader, mappeFeedback } from './feedback-hilfen.js';
@@ -53,7 +52,7 @@ export default function MappeUebersicht() {
   const liste = useRef<HTMLUListElement>(null);
   const lauf = useRef(0);
   // Feedback der Lehrenden (NDU-35) je Zeile; null = (noch) nicht geladen – dann steht einfach nichts da.
-  const [feedback, setFeedback] = useState<FeedbackEintrag[] | null>(null);
+  const [feedback, setFeedback] = useState<FeedbackSichtEintrag[] | null>(null);
 
   // Nach bestem Bemühen und neben der Mappe her: scheitert es, fehlt nur der Hinweis. Wartet auf laufende Änderungen
   // (etwa „gesehen“ aus dem eben geschlossenen Editor); nur die zuletzt gestartete Antwort zählt (feedbackLader).

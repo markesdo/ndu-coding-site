@@ -3,7 +3,8 @@ import annahmenBeispiel from '../beispiele/annahmen.json';
 import entscheidungenBeispiel from '../beispiele/entscheidungen.json';
 import interviewsBeispiel from '../beispiele/interviews.json';
 import leitfadenBeispiel from '../beispiele/leitfaden.json';
-import { antworten, erledigtSetzen, feedbackLeer, feedbackSchreiben, gesehenSetzen, zeilenAuswahl, type Feedback, type FeedbackEintrag } from '../feedback';
+import { antworten, erledigtSetzen, feedbackLeer, feedbackSchreiben, gesehenSetzen, zeilenAuswahl, type Feedback } from '../feedback';
+import type { FeedbackSichtEintrag as FeedbackEintrag } from '../vertrag';
 import { bezugText, einzeln, feedbackDatum, feedbackLader, geordnet, laufendeAenderungen, lehrendeFeedbackPfad, mappeFeedback, neueIds, reihenfolge, zellenFeedback } from './feedback-hilfen';
 import { zelle, zellenLabel } from './lehrenden-hilfen';
 

@@ -3,6 +3,7 @@
 // Einsetzen macht React. Dazu die Reihenfolge der Anfragen (unten). Keine Noten, keine Punkte.
 import { tagInWien } from '../../lib/kurswahl.js';
 import { feedbackZaehlen, zeilenName, type FeedbackEintrag, type FeedbackZahlen } from '../feedback.js';
+import type { FassungSicht, FeedbackSichtEintrag } from '../vertrag.js';
 import { datumAt } from '../render/format.js';
 import type { ArtefaktName } from '../schemas/index.js';
 import { ROUTEN } from '../vertrag.js';
@@ -14,6 +15,29 @@ export function bezugText(e: Pick<FeedbackEintrag, 'artefakt' | 'zeilenId'>): st
 
 /** „22.10.2026“ (Tag in Wien). */
 export const feedbackDatum = (iso: string): string => datumAt(tagInWien(new Date(iso)));
+
+// Lücke in einer möglichen Fassung (NDU-42): eckige Klammern, etwa „[Zahl aus deinen Interviews]“.
+const LUECKE = /\[[^\[\]\n]{1,80}\]/g;
+
+/** Text einer möglichen Fassung in Stücke; Lücken („[…]“) sind markiert, damit die Anzeige sie hervorhebt. */
+export function fassungStuecke(text: string): { text: string; luecke: boolean }[] {
+  const stuecke: { text: string; luecke: boolean }[] = [];
+  let pos = 0;
+  for (const m of text.matchAll(LUECKE)) {
+    if (m.index > pos) stuecke.push({ text: text.slice(pos, m.index), luecke: false });
+    stuecke.push({ text: m[0], luecke: true });
+    pos = m.index + m[0].length;
+  }
+  if (pos < text.length) stuecke.push({ text: text.slice(pos), luecke: false });
+  return stuecke;
+}
+
+/** Lehrende: Stand einer möglichen Fassung in Worten. */
+export function fassungStandText(f: FassungSicht): string {
+  if (f.zu) return 'zu – öffnet sich, wenn die Person die Zeile überarbeitet oder antwortet';
+  if (f.aufgedecktAm) return `aufgedeckt am ${feedbackDatum(f.aufgedecktAm)}`;
+  return 'frei – die Person sieht sie, sobald sie ihr Feedback öffnet';
+}
 
 const mehrzahl = (n: number, eins: string, viele: string) => `${n} ${n === 1 ? eins : viele}`;
 
@@ -28,7 +52,7 @@ export function zellenFeedback(z: FeedbackZahlen | null): string | null {
 }
 
 /** Zeile in „Meine Mappe“: wie viel neu und offen ist; null = kein Feedback. */
-export function mappeFeedback(eintraege: readonly FeedbackEintrag[], name: ArtefaktName): { neu: number; text: string } | null {
+export function mappeFeedback(eintraege: readonly Pick<FeedbackEintrag, 'von' | 'artefakt' | 'erledigt' | 'gesehen'>[], name: ArtefaktName): { neu: number; text: string } | null {
   const z = feedbackZaehlen(eintraege, name);
   if (z.offen + z.erledigt === 0) return null;
   const text = z.offen ? `Feedback: ${z.offen} offen` : `Feedback: ${z.erledigt} erledigt`;
@@ -37,7 +61,7 @@ export function mappeFeedback(eintraege: readonly FeedbackEintrag[], name: Artef
 
 /** Feedback der Lehrenden zu diesem Artefakt, das die Person noch nicht geöffnet hat. Im Editor einmal beim Laden
  *  gemerkt: „neu“ bleibt stehen, solange der Editor offen ist, auch wenn der Server es schon als gesehen führt. */
-export function neueIds(eintraege: readonly FeedbackEintrag[], name: ArtefaktName): Set<string> {
+export function neueIds(eintraege: readonly Pick<FeedbackEintrag, 'id' | 'von' | 'artefakt' | 'gesehen'>[], name: ArtefaktName): Set<string> {
   return new Set(eintraege.filter((e) => e.von === 'lehrende' && e.artefakt === name && !e.gesehen).map((e) => e.id));
 }
 
@@ -90,9 +114,9 @@ export const feedbackAenderungen = laufendeAenderungen();
 
 /** Im Editor: Antworten des Servers (Laden, gesehen, erledigt, Antwort) in der Reihenfolge des Starts übernehmen; jede
  *  Anfrage zählt als laufende Änderung. Eine späte Antwort auf „gesehen“ überschreibt so kein späteres „erledigt“. */
-export function geordnet(setzen: (e: FeedbackEintrag[]) => void, aenderungen: LaufendeAenderungen = feedbackAenderungen) {
+export function geordnet(setzen: (e: FeedbackSichtEintrag[]) => void, aenderungen: LaufendeAenderungen = feedbackAenderungen) {
   const r = reihenfolge();
-  return <T extends { eintraege: FeedbackEintrag[] }>(p: Promise<T>): Promise<T> => {
+  return <T extends { eintraege: FeedbackSichtEintrag[] }>(p: Promise<T>): Promise<T> => {
     const nr = r.start();
     return aenderungen.merken(p).then((x) => {
       if (r.uebernehmen(nr)) setzen(x.eintraege);
@@ -104,7 +128,7 @@ export function geordnet(setzen: (e: FeedbackEintrag[]) => void, aenderungen: La
 /** „Meine Mappe“: Feedback neu laden, erst wenn keine Änderung mehr läuft (sonst stünde nach dem Schließen des Editors
  *  noch „neu“ da, weil „gesehen“ erst gleich ankommt); ältere Antworten fallen weg. Nach bestem Bemühen: scheitert es,
  *  bleibt der alte Stand. */
-export function feedbackLader(holen: () => Promise<FeedbackEintrag[]>, setzen: (e: FeedbackEintrag[]) => void, aenderungen: LaufendeAenderungen = feedbackAenderungen): () => Promise<void> {
+export function feedbackLader(holen: () => Promise<FeedbackSichtEintrag[]>, setzen: (e: FeedbackSichtEintrag[]) => void, aenderungen: LaufendeAenderungen = feedbackAenderungen): () => Promise<void> {
   const r = reihenfolge();
   return async () => {
     const nr = r.start();
