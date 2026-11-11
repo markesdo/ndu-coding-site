@@ -10,8 +10,8 @@ import { rendern } from '../../render/index.js';
 import EditorHuelle from '../EditorHuelle.js';
 import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
-import VerweisAuswahl from '../felder/VerweisAuswahl.js';
-import { belegFehlt, belegHilfe, belegHinweis, neueChance, neuesInterview, neuesZitat, type InterviewEntwurf } from './interviews-hilfen.js';
+import BelegAuswahl from './BelegAuswahl.js';
+import { belegFehlt, belegHilfe, belegHinweis, naechstesZitat, neueChance, neuesInterview, type InterviewEntwurf } from './interviews-hilfen.js';
 import './editoren.css';
 
 // Im Formular darf die Einwilligung noch fehlen (Entwurf); das Schema lässt erst mit Haken speichern.
@@ -62,11 +62,10 @@ export function ChanceZeile({ chance, setze, nr, zitate, fehler }: {
   zitate: readonly { id: string; text: string }[];
   fehler: (pfad: string) => string | undefined;
 }) {
-  const vorschlaege = zitate.filter((z) => z.text.trim() !== '').map((z) => ({ id: z.id, text: z.text }));
   return (
     <>
       <Textfeld label={`Chance ${nr + 1}`} mehrzeilig zeilen={2} wert={chance.text} onChange={(text) => setze({ ...chance, text })} fehler={fehler('text')} hinweis={namenHinweis(chance.text)} hilfe={nr === 0 ? 'Bedürfnis, Schmerzpunkt oder Wunsch in den Worten der Person – keine Lösung. Wünscht sie sich eine Funktion: „Was würde dir das bringen?“ Muss kein wörtliches Zitat sein, aber in ihren Worten.' : undefined} />
-      <VerweisAuswahl label="Belege (Zitat-IDs)" werte={chance.belege} onChange={(belege) => setze({ ...chance, belege })} vorschlaege={vorschlaege} hilfe={nr === 0 ? belegHilfe(zitate) : undefined} fehler={fehler('belege') ?? chance.belege.map((_, k) => fehler(`belege.${k}`)).find(Boolean)} hinweis={belegHinweis(chance, zitate)} />
+      <BelegAuswahl label="Belege (Zitat-IDs)" zitate={zitate} werte={chance.belege} onChange={(belege) => setze({ ...chance, belege })} hilfe={nr === 0 ? belegHilfe(zitate) : undefined} fehler={fehler('belege') ?? chance.belege.map((_, k) => fehler(`belege.${k}`)).find(Boolean)} hinweis={belegHinweis(chance, zitate)} />
     </>
   );
 }
@@ -107,7 +106,7 @@ export default function InterviewsEditor() {
                       einzahl="Zitat"
                       eintraege={iv.zitate}
                       onChange={(zitate) => s({ ...iv, zitate })}
-                      neu={(vorhandene) => neuesZitat(iv.id, vorhandene)}
+                      neu={() => naechstesZitat(iv)}
                       fehler={f('zitate')}
                       zeile={(z, sz, j) => (
                         <>
