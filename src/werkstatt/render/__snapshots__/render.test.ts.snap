@@ -31,10 +31,10 @@ Riskanteste Annahme: A1
 `;
 
 exports[`Snapshots der Kaffeebar-Beispiele > brief 1`] = `
-"**Stand:** 22.10.2026 — Problem-Rahmen, Innolab Tag 1
+"**Stand:** 05.11.2026 — Problem-Rahmen, Innolab Tag 1
 
 ## 1. Für wen?
-Pendler\\*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten
+Pendler\\*innen, die werktags zwischen 7:15 und 7:45 auf ihren festen Morgenzug warten
 
 ## 2. Welches Problem?
 Die Schlange ist morgens länger als die Zeit bis zur Abfahrt. Wer den Zug erreichen will, verzichtet auf Kaffee oder nimmt den Automaten.
@@ -215,7 +215,7 @@ exports[`Snapshots der Kaffeebar-Beispiele > leitfaden 1`] = `
 
 Ziel: Herausfinden, wann und wo Pendler\\*innen entscheiden, ob sie Kaffee holen – schon vor der Ankunft oder erst am Bahnhof.
 
-Wen: Pendler\\*innen, die werktags zwischen 7:15 und 7:45 am Bahnhof auf den Zug nach Wien warten
+Wen: Pendler\\*innen, die werktags zwischen 7:15 und 7:45 am Bahnhof auf ihren festen Morgenzug warten
 
 ## Einstieg
 „Danke, dass du dir Zeit nimmst. Ich will verstehen, wie du Kaffee am Bahnhof heute erlebst – es gibt keine falschen Antworten. Darf ich das Gespräch aufnehmen? Die Aufnahme bleibt bei mir, aufgeschrieben wird nur, was ohne deinen Namen auskommt.“

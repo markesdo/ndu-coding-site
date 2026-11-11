@@ -4,7 +4,10 @@
 // Regeln nutzen. Die Server-Routen schicken nie eine ganze Datei vom Browser durch, sondern rufen genau eine dieser
 // Änderungen auf dem Stand auf, auf dem der Commit landet (Speicher.feedbackAendern) – so bleibt jeder Eintrag erhalten,
 // auch wenn Lehrende und Studierende gleichzeitig schreiben. Keine Noten, keine Punkte.
+// NDU-41: Feedback der Lehrenden trägt optional ein Kriterium aus dem Katalog (kriterien.ts). Neues optionales Feld, darum
+// weiter feedback@1 (Regel im Werkstatt-Design: neue Felder optional → keine neue Version); alte Dateien bleiben gültig.
 import { z } from 'zod';
+import { KRITERIUM_ID, kriterium as kriteriumAusKatalog, kriteriumPasst } from './kriterien.js';
 import { ARTEFAKT_NAMEN, ARTEFAKTE, type ArtefaktName, type DatenVon } from './schemas/index.js';
 import { graphemAnzahl } from './text.js';
 
@@ -77,6 +80,8 @@ export function zeilenAuswahl(name: ArtefaktName, daten: unknown): ZeilenWahl[] 
 }
 
 const FEEDBACK_ID = /^FB[1-9][0-9]*$/;
+// Form einer Kriteriums-ID: KRITERIUM_ID aus kriterien.ts. Ob es sie im Katalog gibt und ob sie passt, prüft
+// feedbackSchreiben beim Schreiben, nicht das Lesen: Eine Datei bleibt lesbar, auch wenn der Katalog sich später ändert.
 // Wie das Schema der Beleg-Notiz: Steuer- und Formatzeichen sind nicht erlaubt (U+202E dreht Text um); Zeilenumbrüche
 // (\n) und Tab schon, der Joiner in Emoji-Folgen auch.
 const STEUERZEICHEN = /(?![\n\t\p{Join_Control}])[\p{Cc}\p{Cf}\u2028\u2029\u0085]/u;
@@ -93,6 +98,8 @@ const eintragSchema = z
     id: z.string().regex(FEEDBACK_ID, { error: 'ID: muss wie FB1 aussehen.' }),
     artefakt: z.enum(ARTEFAKT_NAMEN, { error: 'Artefakt: unbekannt.' }),
     zeilenId: z.string().optional(),
+    // Nur an Feedback der Lehrenden: Kriterium aus dem Katalog (NDU-41).
+    kriterium: z.string().regex(KRITERIUM_ID, { error: 'Kriterium: unbekannte Form.' }).optional(),
     von: z.enum(['lehrende', 'studierende'], { error: 'von: „lehrende“ oder „studierende“.' }),
     autor: z.string().refine((s) => s.trim() !== '' && graphemAnzahl(s) <= AUTOR_MAX && !STEUERZEICHEN.test(s), { error: 'Autor: fehlt oder ist zu lang.' }),
     // Einträge der Studierenden sind kurz; die Datei selbst prüft die längere Grenze, die Route die passende.
@@ -109,6 +116,7 @@ const eintragSchema = z
     if (e.zeilenId !== undefined && !zeilePasst(e.artefakt, e.zeilenId)) {
       ctx.addIssue({ code: 'custom', path: ['zeilenId'], message: `${e.zeilenId} passt nicht zu ${ARTEFAKTE[e.artefakt].titel}.` });
     }
+    if (e.von === 'studierende' && e.kriterium !== undefined) ctx.addIssue({ code: 'custom', path: ['kriterium'], message: 'Ein Kriterium gibt es nur am Feedback der Lehrenden.' });
     if (e.von === 'lehrende' && e.antwortAuf !== undefined) ctx.addIssue({ code: 'custom', path: ['antwortAuf'], message: 'Feedback der Lehrenden antwortet auf nichts.' });
     if (e.von === 'studierende' && e.antwortAuf === undefined) ctx.addIssue({ code: 'custom', path: ['antwortAuf'], message: 'Eine Antwort braucht antwortAuf.' });
     if (e.von === 'studierende' && (e.erledigt !== undefined || e.gesehen !== undefined)) {
@@ -181,18 +189,34 @@ function lehrendenEintrag(f: Feedback, id: unknown): FeedbackEintrag {
   return e;
 }
 
-/** Lehrende: neues Feedback zu einem Artefakt, optional zu einer Zeile. */
+const leerWert = (x: unknown) => x === undefined || x === null || x === '';
+
+/** Lehrende: neues Feedback zu einem Artefakt, optional zu einer Zeile und optional mit einem Kriterium aus dem Katalog,
+ *  das zu Artefakt und (beim Brief) Abschnitt passt. */
 export function feedbackSchreiben(
   f: Feedback,
-  e: { artefakt: ArtefaktName; zeilenId?: unknown; text: unknown; autor: string; datum: string },
+  e: { artefakt: ArtefaktName; zeilenId?: unknown; kriterium?: unknown; text: unknown; autor: string; datum: string },
 ): Feedback {
   const text = textPruefen(e.text, FEEDBACK_MAX);
-  const roh = e.zeilenId === undefined || e.zeilenId === null || e.zeilenId === '' ? undefined : e.zeilenId;
+  const roh = leerWert(e.zeilenId) ? undefined : e.zeilenId;
   if (roh !== undefined && (typeof roh !== 'string' || !zeilePasst(e.artefakt, roh))) {
     throw new FeedbackAbgelehnt(`Diese Zeile gibt es in ${ARTEFAKTE[e.artefakt].titel} so nicht.`);
   }
   const zeile = roh as string | undefined;
-  const neu: FeedbackEintrag = { id: naechsteId(f), artefakt: e.artefakt, ...(zeile !== undefined ? { zeilenId: zeile } : {}), von: 'lehrende', autor: e.autor, text, datum: e.datum };
+  let kriterium: string | undefined;
+  if (!leerWert(e.kriterium)) {
+    const k = typeof e.kriterium === 'string' ? kriteriumAusKatalog(e.kriterium) : undefined;
+    if (!k) throw new FeedbackAbgelehnt('Dieses Kriterium gibt es nicht (mehr). Neu laden.');
+    if (!kriteriumPasst(k, e.artefakt, zeile)) {
+      const wozu = zeile === undefined ? ARTEFAKTE[e.artefakt].titel : e.artefakt === 'brief' ? `„${zeilenName(e.artefakt, zeile)}“` : zeile;
+      throw new FeedbackAbgelehnt(`„${k.name}“ passt nicht zu ${wozu}.`);
+    }
+    kriterium = k.id;
+  }
+  const neu: FeedbackEintrag = {
+    id: naechsteId(f), artefakt: e.artefakt, ...(zeile !== undefined ? { zeilenId: zeile } : {}), ...(kriterium !== undefined ? { kriterium } : {}),
+    von: 'lehrende', autor: e.autor, text, datum: e.datum,
+  };
   return { ...f, eintraege: [...f.eintraege, neu] };
 }
 

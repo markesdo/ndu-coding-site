@@ -346,7 +346,7 @@ describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
 
   it('neue Zeile anfügen, die eine gespeicherte über ersetzt ablöst → 200', async () => {
     const { t, sha } = await gespeichert();
-    const d3 = { id: 'D3', datum: '2026-11-05', entscheidung: 'Auch Linz', grund: 'Interviews', beleg: 'erzaehlt', belegIds: [], ersetzt: 'D1' };
+    const d3 = { id: 'D3', datum: '2026-11-05', entscheidung: 'Zielgruppe: Pendler*innen mit festem Morgenzug, egal wohin', grund: 'Interviews', beleg: 'erzaehlt', belegIds: [], ersetzt: 'D1' };
     const r = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d1, d2, d3] }, basisSha: sha });
     expect(r.status).toBe(200);
     expect(JSON.parse(t.fake.commits(REPO)[1].dateien['mappe/entscheidungen.json']).entscheidungen).toHaveLength(3);
@@ -354,7 +354,7 @@ describe('PUT /api/werkstatt/mappe/entscheidungen – Zeilen bleiben', () => {
 
   it('ersetzt einer gespeicherten Zeile nachträglich ändern → 422', async () => {
     const { t } = await gespeichert();
-    const d3 = { id: 'D3', datum: '2026-11-05', entscheidung: 'Auch Linz', grund: 'Interviews', beleg: 'erzaehlt', belegIds: [], ersetzt: 'D1' };
+    const d3 = { id: 'D3', datum: '2026-11-05', entscheidung: 'Zielgruppe: Pendler*innen mit festem Morgenzug, egal wohin', grund: 'Interviews', beleg: 'erzaehlt', belegIds: [], ersetzt: 'D1' };
     const zwei = await t.speichern('entscheidungen', { daten: { ...basis, entscheidungen: [d1, d2, d3] }, basisSha: (await (await t.holen('/entscheidungen')).json()).basisSha });
     expect(zwei.status).toBe(200);
     const sha = ((await zwei.json()) as { basisSha: string }).basisSha;

@@ -1,10 +1,13 @@
 // Feedback (NDU-35): Fäden aus Feedback der Lehrenden und Antworten der Studierenden. Lehrende schreiben im Leser der
 // Lehrenden-Ansicht (LehrendenFeedback), Studierende sehen es im Editor (StudierendenFeedback), antworten kurz oder
 // setzen „erledigt“. Beides trägt data-werkstatt: Im Beamer-Modus ist es weg (beamer.css). Nur React-Text, nie HTML.
-import { Check, CircleCheck, CircleDot, MessageSquare, MessageSquareReply, RotateCcw, Send } from 'lucide-react';
+// NDU-41: Lehrende wählen optional ein Kriterium aus dem Katalog (nur die, die zu Artefakt und Abschnitt passen); am
+// Feedback steht es als Etikett, aufklappbar das Kaffeebar-Paar – nie eine Fassung für den eigenen Fall.
+import { Check, ChevronRight, CircleCheck, CircleDot, Coffee, ExternalLink, MessageSquare, MessageSquareReply, RotateCcw, Send, Tag } from 'lucide-react';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { namenHinweis } from '../eigennamen.js';
 import { ANTWORT_MAX, FEEDBACK_MAX, faeden, zeilenAuswahl, type FeedbackEintrag, type FeedbackFaden } from '../feedback.js';
+import { kriterienFuer, kriteriumBehalten, kriterium as kriteriumAusKatalog, type Fassung, type Kriterium } from '../kriterien.js';
 import type { ArtefaktName } from '../schemas/index.js';
 import { graphemAnzahl } from '../text.js';
 import { api, ApiError } from './api.js';
@@ -34,6 +37,56 @@ function Textfeld({ label, wert, setze, max, zeilen }: { label: string; wert: st
   );
 }
 
+function FassungZeile({ titel, f }: { titel: string; f: Fassung }) {
+  return (
+    <>
+      <dt>{titel}</dt>
+      <dd>
+        „{f.text}“{f.zusatz && <> · {f.zusatz}</>}
+        {f.formuliert && <span className="wk-hilfe"> (für den Katalog formuliert)</span>}
+      </dd>
+    </>
+  );
+}
+
+/** Kaffeebar-Paar eines Kriteriums zum Aufklappen: schwächer, stärker, warum, Quelle. Die Links öffnen einen neuen Tab,
+ *  damit Editor und Entwurf offen bleiben. Der Pfeil zeigt auf/zu (summary mit flex verliert das Dreieck). */
+function KaffeebarPaar({ k }: { k: Kriterium }) {
+  return (
+    <details className="fb-paar">
+      <summary><ChevronRight size={14} className="fb-paar-pfeil" aria-hidden="true" /><Coffee size={14} aria-hidden="true" /> Am Beispiel Kaffeebar: schwächer und stärker</summary>
+      <dl>
+        <FassungZeile titel="Schwächer" f={k.paar.schwach} />
+        <FassungZeile titel="Stärker" f={k.paar.stark} />
+        <dt>Warum stärker</dt>
+        <dd>{k.paar.warum}</dd>
+        <dt>Quelle</dt>
+        <dd>
+          <ul className="fb-quelle">
+            {k.quelle.seiten.map((l) => (
+              <li key={l.href}><a href={l.href} target="_blank" rel="noreferrer">{l.titel}<ExternalLink size={12} aria-label="öffnet in einem neuen Tab" /></a></li>
+            ))}
+          </ul>
+          {k.quelle.buch}
+          {k.quelle.kursregel && <span className="fb-kursregel">Kursregel: {k.quelle.kursregel}</span>}
+        </dd>
+      </dl>
+    </details>
+  );
+}
+
+/** Etikett und Paar am Feedback. Eine ID, die es im Katalog nicht (mehr) gibt, zeigt nichts. */
+function KriteriumAnzeige({ id }: { id: string | undefined }) {
+  const k = id === undefined ? undefined : kriteriumAusKatalog(id);
+  if (!k) return null;
+  return (
+    <div className="fb-kriterium">
+      <span className="fb-etikett"><Tag size={14} aria-hidden="true" /> Kriterium: {k.name}</span>
+      <KaffeebarPaar k={k} />
+    </div>
+  );
+}
+
 function Eintrag({ e, neu }: { e: FeedbackEintrag; neu?: boolean }) {
   return (
     <>
@@ -42,6 +95,7 @@ function Eintrag({ e, neu }: { e: FeedbackEintrag; neu?: boolean }) {
         {neu && <span className="fb-neu">neu</span>}
       </p>
       <p className="fb-text">{e.text}</p>
+      <KriteriumAnzeige id={e.kriterium} />
     </>
   );
 }
@@ -77,11 +131,17 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
 }) {
   const [text, setText] = useState('');
   const [zeile, setZeile] = useState('');
+  const [krit, setKrit] = useState('');
   const [sendet, setSendet] = useState(false);
   const [meldung, setMeldung] = useState<string | null>(null);
   const zeilen = useMemo(() => zeilenAuswahl(name, daten), [name, daten]);
+  // Nur Kriterien, die zu Artefakt und gewähltem Abschnitt passen. Beim Wechsel der Zeile fällt ein Kriterium weg, das
+  // nicht mehr passt (kriteriumBehalten) – es kommt auch beim Zurückwechseln nicht wieder (der Server lehnte es ab).
+  const kriterien = useMemo(() => kriterienFuer(name, zeile || undefined), [name, zeile]);
+  const gewaehlt = kriterien.find((k) => k.id === krit);
   const liste = eintraege ? faeden(eintraege, name) : [];
   const auswahlId = useId();
+  const kriteriumId = useId();
   const leer = text.trim() === '' || graphemAnzahl(text.trim()) > FEEDBACK_MAX;
 
   async function senden() {
@@ -89,10 +149,11 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
     setSendet(true);
     setMeldung(null);
     try {
-      const r = await api.lehrendeFeedback(kohorte, person, { artefakt: name, ...(zeile ? { zeilenId: zeile } : {}), text });
+      const r = await api.lehrendeFeedback(kohorte, person, { artefakt: name, ...(zeile ? { zeilenId: zeile } : {}), ...(gewaehlt ? { kriterium: gewaehlt.id } : {}), text });
       geschrieben(r.eintraege);
       setText('');
       setZeile('');
+      setKrit('');
       setMeldung('Gespeichert. Die Person sieht es beim nächsten Öffnen als „neu“.');
     } catch (e) {
       setMeldung(fehlerText(e));
@@ -121,11 +182,26 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
         <form className="fb-form" onSubmit={(e) => { e.preventDefault(); void senden(); }}>
           <div className="wk-feld">
             <label htmlFor={auswahlId}>Bezug</label>
-            <select id={auswahlId} value={zeile} onChange={(e) => setZeile(e.target.value)}>
+            <select id={auswahlId} value={zeile} onChange={(e) => {
+              const z = e.target.value;
+              setZeile(z);
+              setKrit((alt) => kriteriumBehalten(name, z || undefined, alt));
+            }}>
               <option value="">Zum ganzen Artefakt</option>
               {zeilen.map((z) => <option key={z.wert} value={z.wert}>zu dieser Zeile: {z.text}</option>)}
             </select>
           </div>
+          {kriterien.length > 0 && (
+            <div className="wk-feld">
+              <label htmlFor={kriteriumId}>Kriterium (optional)</label>
+              <select id={kriteriumId} value={gewaehlt ? gewaehlt.id : ''} onChange={(e) => setKrit(e.target.value)} aria-describedby={`${kriteriumId}-h`}>
+                <option value="">Ohne Kriterium</option>
+                {kriterien.map((k) => <option key={k.id} value={k.id}>{k.name}</option>)}
+              </select>
+              <span id={`${kriteriumId}-h`} className="wk-hilfe">Die Person sieht dazu das Kaffeebar-Paar, keine Fassung für ihren Fall.</span>
+              {gewaehlt && <KaffeebarPaar k={gewaehlt} />}
+            </div>
+          )}
           <Textfeld label="Feedback" wert={text} setze={setText} max={FEEDBACK_MAX} zeilen={4} />
           <p className="wk-hilfe">Nur Feedback, keine Note; das Artefakt selbst bleibt, wie es ist.</p>
           <div className="fb-knoepfe">
@@ -142,7 +218,7 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
 
 // --- Studierende ------------------------------------------------------------------------------------------------------
 
-function Faden({ faden, neu, aendern }: { faden: FeedbackFaden; neu: boolean; aendern: (a: Parameters<typeof api.feedbackAendern>[0]) => Promise<boolean> }) {
+export function Faden({ faden, neu, aendern }: { faden: FeedbackFaden; neu: boolean; aendern: (a: Parameters<typeof api.feedbackAendern>[0]) => Promise<boolean> }) {
   const { feedback: f, antworten } = faden;
   const [offen, setOffen] = useState(false);
   const [text, setText] = useState('');

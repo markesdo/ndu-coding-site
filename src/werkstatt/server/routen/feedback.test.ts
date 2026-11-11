@@ -3,7 +3,9 @@
 // zweier Schreibender gegen GitHub prüft speicher.test.ts.
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
-import { FEEDBACK_PFAD } from '../../feedback';
+import { FEEDBACK_PFAD, feedbackSchreiben } from '../../feedback';
+import { feedbackAendern } from '../feedback';
+import { ApiAusnahme } from '../antwort';
 import { appErstellen } from '../app';
 import { fakeSpeicher } from '../fake-speicher';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
@@ -166,6 +168,86 @@ describe('Lehrende schreiben Feedback', () => {
     expect(await t.lesen(MARKUS)).toStrictEqual([]);
     expect(await t.datei()).toStrictEqual(vorher);
     expect(t.fake.commits('2026-sofie')).toHaveLength(commits);
+  });
+});
+
+// NDU-41: Kriterium aus dem Katalog am Feedback. Schreiben dürfen es nur Lehrende der Kohorte, und nur, wenn es zu
+// Artefakt und Abschnitt passt; Studierende sehen es, können es aber weder setzen noch ändern.
+describe('Feedback mit Kriterium', () => {
+  const OUTCOME = { artefakt: 'brief', zeilenId: 'outcome', kriterium: 'output-statt-outcome', text: 'Was tun Menschen danach anders?' };
+
+  it('Lehrende der Kohorte: Kriterium steht im Eintrag; Leser und eigene Mappe liefern es mit', async () => {
+    const t = await aufbau();
+    const r = await t.schreiben(MARKUS, OUTCOME);
+    expect(r.status).toBe(200);
+    const fb1 = { id: 'FB1', artefakt: 'brief', zeilenId: 'outcome', kriterium: 'output-statt-outcome', von: 'lehrende', autor: 'markus', text: OUTCOME.text, datum: new Date(JETZT).toISOString() };
+    expect(await r.json()).toStrictEqual({ eintraege: [fb1] });
+    expect(await t.datei()).toStrictEqual({ schema: 'feedback@1', eintraege: [fb1] });
+    expect(await t.lesen(SOFIE)).toStrictEqual([fb1]);
+    const leser = await (await t.anfrage('GET', '/api/werkstatt/lehrende/artefakt?kohorte=2026&person=sofie&artefakt=brief', MARKUS)).json();
+    expect(leser.feedback).toStrictEqual([fb1]);
+  });
+
+  it('Kriterium passt nicht zu Artefakt oder Abschnitt, oder gibt es nicht → 422 mit Satz, nichts geschrieben', async () => {
+    const t = await aufbau();
+    const vorher = t.fake.commits('2026-sofie').length;
+    const falle = [
+      [{ ...OUTCOME, zeilenId: 'problem' }, '„Output statt Outcome“ passt nicht zu „Welches Problem?“.'],
+      [{ ...A2, kriterium: 'meinungsfrage' }, '„Meinungsfrage statt Geschichte“ passt nicht zu A2.'],
+      [{ artefakt: 'interviews', kriterium: 'beleg-ohne-quelle', text: 'x' }, '„Beleg ohne Quelle“ passt nicht zu Interviews und Snapshots.'],
+      [{ ...OUTCOME, kriterium: 'gibt-es-nicht' }, 'Dieses Kriterium gibt es nicht (mehr). Neu laden.'],
+      [{ ...OUTCOME, kriterium: 7 }, 'Dieses Kriterium gibt es nicht (mehr). Neu laden.'],
+    ] as const;
+    for (const [body, satz] of falle) {
+      const r = await t.schreiben(MARKUS, body);
+      expect(r.status, JSON.stringify(body)).toBe(422);
+      expect((await r.json()).fehler).toBe(satz);
+    }
+    expect(t.fake.commits('2026-sofie')).toHaveLength(vorher);
+    expect(await t.datei()).toBeNull();
+  });
+
+  it('Lehrende einer anderen Kohorte und Studierende: auch mit passendem Kriterium → 403, nichts geschrieben', async () => {
+    const t = await aufbau();
+    expect((await t.schreiben(ANDERE, OUTCOME)).status).toBe(403);
+    expect((await t.schreiben(SOFIE, OUTCOME)).status).toBe(403);
+    expect((await t.schreiben(JONAS, OUTCOME)).status).toBe(403);
+    expect(await t.datei()).toBeNull();
+  });
+
+  it('nie eine unlesbare Datei schreiben: eine Änderung, die nicht zu feedback@1 passt, wird verworfen (500), die Datei bleibt', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = await aufbau();
+    await t.schreiben(MARKUS, OUTCOME);
+    const vorher = await t.datei();
+    const commits = t.fake.commits('2026-sofie').length;
+    // Wie ein Katalog-Eintrag mit falscher ID-Form: feedbackSchreiben ließe ihn durch, feedback@1 läse ihn nicht.
+    const kaputt = (f: Parameters<typeof feedbackSchreiben>[0]) => {
+      const neu = feedbackSchreiben(f, { artefakt: 'brief', text: 'x', autor: 'markus', datum: new Date(JETZT).toISOString() });
+      return { ...neu, eintraege: neu.eintraege.map((e) => (e.id === 'FB2' ? { ...e, kriterium: 'Output statt Outcome' } : e)) };
+    };
+    const fehler = await feedbackAendern(t.fake, '2026-sofie', kaputt, { name: 'markus', email: 'm@example.invalid' }, 'x').catch((e: unknown) => e);
+    expect(fehler).toBeInstanceOf(ApiAusnahme);
+    expect((fehler as ApiAusnahme).status).toBe(500);
+    expect(await t.datei()).toStrictEqual(vorher);
+    expect(t.fake.commits('2026-sofie')).toHaveLength(commits);
+    expect(log).toHaveBeenCalledWith('werkstatt: feedback: Änderung ergäbe eine Datei, die nicht zu feedback@1 passt');
+  });
+
+  it('Studierende setzen kein Kriterium: nicht an der Antwort, nicht am Feedback der Lehrenden', async () => {
+    const t = await aufbau();
+    await t.schreiben(MARKUS, { ...A2, kriterium: 'beleg-ohne-quelle' });
+    const r = await t.aendern(SOFIE, { aktion: 'antworten', antwortAuf: 'FB1', text: 'Aus der Kassa.', kriterium: 'art-der-annahme' });
+    expect(r.status).toBe(200);
+    const [fb1, fb2] = (await r.json()).eintraege;
+    expect(fb1.kriterium).toBe('beleg-ohne-quelle');
+    expect(fb2).toStrictEqual({ id: 'FB2', artefakt: 'annahmen', zeilenId: 'A2', von: 'studierende', autor: 'sofie', text: 'Aus der Kassa.', datum: new Date(JETZT).toISOString(), antwortAuf: 'FB1' });
+    // Keine Aktion ändert das Kriterium: unbekannte Aktionen → 422; erledigt lässt es stehen.
+    for (const body of [{ aktion: 'kriterium', id: 'FB1', kriterium: 'art-der-annahme' }, { aktion: 'aendern', id: 'FB1', kriterium: null }]) {
+      expect((await t.aendern(SOFIE, body)).status, JSON.stringify(body)).toBe(422);
+    }
+    await t.aendern(SOFIE, { aktion: 'erledigt', id: 'FB1', erledigt: true, kriterium: 'art-der-annahme' });
+    expect(((await t.datei()) as { eintraege: { kriterium?: string }[] }).eintraege.map((e) => e.kriterium)).toStrictEqual(['beleg-ohne-quelle', undefined]);
   });
 });
 

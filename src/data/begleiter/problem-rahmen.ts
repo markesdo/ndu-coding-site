@@ -42,7 +42,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
       {
         frage: 'Wie konkret muss „für wen“ sein?',
-        antwort: 'Eine konkrete Person in einer konkreten Situation, so dass ihr wisst, wen ihr morgen interviewt – wie „Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten“.',
+        antwort: 'Eine konkrete Person in einer konkreten Situation, so dass ihr wisst, wen ihr morgen interviewt – wie „Pendler*innen, die werktags zwischen 7:15 und 7:45 auf ihren festen Morgenzug warten“.',
       },
     ],
   },
