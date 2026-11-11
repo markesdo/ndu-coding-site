@@ -143,9 +143,27 @@ const gewaehlt = (h: string) => {
   const liste = /<ul class="wk-belege-gewaehlt"[^>]*>(.*?)<\/ul>/.exec(h)?.[1];
   return liste === undefined ? undefined : [...liste.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map((m) => text(m[1]!));
 };
-const summary = (h: string) => /<summary>(.*?)<\/summary>/.exec(h)?.[1]?.replace(/<!-- -->/g, '');
+const summary = (h: string) => /<summary[^>]*>(.*?)<\/summary>/.exec(h)?.[1]?.replace(/<!-- -->/g, '');
 
 describe('BelegAuswahl: Auswahl einklappbar, Gewähltes immer sichtbar', () => {
+  it('offen (mit Fehler): keine Liste gewählter Zitate über den Kästchen – die Haken zeigen dasselbe', () => {
+    const h = wahl({ werte: ['I6-1'], fehler: 'Kaputt.' });
+    expect(details(h)?.[1]).toBe(' open=""');
+    expect(gewaehlt(h)).toBeUndefined();
+  });
+
+  it('Zähler: gewählte und alle zählen nur Zitate mit Text; leere und Waisen stehen in der Liste', () => {
+    const h = wahl({ zitate: [{ id: 'I6-1', text: '' }, { id: 'I6-2', text: 'x' }], werte: ['I6-1', 'I6-9'] });
+    expect(summary(h)).toBe('Zitate auswählen (0 von 1 gewählt)');
+    expect(gewaehlt(h)).toStrictEqual(['I6-1 (Zitat noch leer)', 'I6-9 – dieses Zitat gibt es nicht mehr']);
+  });
+
+  it('doppelte Zitat-ID im Entwurf: in der Liste und im Zähler nur einmal', () => {
+    const h = wahl({ zitate: [DREI[1]!, DREI[1]!], werte: ['I6-2'] });
+    expect(gewaehlt(h)).toStrictEqual(['I6-2 „Wenn ich auf die Uhr schauen muss, geh ich.“']);
+    expect(summary(h)).toBe('Zitate auswählen (1 von 2 gewählt)');
+  });
+
   it('ohne Belege: Auswahl offen, keine Liste gewählter Zitate', () => {
     const h = wahl();
     expect(details(h)?.[1]).toBe(' open=""');
