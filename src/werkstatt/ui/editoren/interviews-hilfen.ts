@@ -39,3 +39,10 @@ export function belegHilfe(zitate: readonly { text: string }[]): string {
     ? 'Die Zitat-IDs, die diese Chance stützen – ohne ID kein Beleg.'
     : 'Noch keine Zitate: Trag zuerst oben unter „Zitate“ ein, was die Person wörtlich gesagt hat. Dann kannst du hier ihre IDs wählen.';
 }
+
+export const BELEG_FEHLT = 'Diese Chance hat noch keinen Beleg – wähle mindestens eine Zitat-ID.';
+
+/** Weicher Hinweis (NDU-56): Chance mit Text, aber ohne Zitat-ID. Eine frische, leere Zeile bleibt ohne Hinweis; speichern geht trotzdem. */
+export function belegFehlt(chance: Chance): boolean {
+  return chance.text.trim() !== '' && chance.belege.length === 0;
+}

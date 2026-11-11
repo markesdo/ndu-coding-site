@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { belegHilfe, neuesInterview, neuesZitat } from './interviews-hilfen';
+import { BELEG_FEHLT, belegFehlt, belegHilfe, neuesInterview, neuesZitat } from './interviews-hilfen';
 
 describe('Interview-Editor: neue Einträge', () => {
   it('neues Interview: nächste freie I-ID, Datum heute, ohne Einwilligung', () => {
@@ -26,5 +26,24 @@ describe('Interview-Editor: Tipp unter „Belege“', () => {
 
   it('sobald ein Zitat Text hat: die IDs als Beleg wählen', () => {
     expect(belegHilfe([{ text: '' }, { text: 'Wenn ich auf die Uhr schauen muss, geh ich.' }])).toBe(MIT);
+  });
+});
+
+describe('Interview-Editor: Hinweis „Chance ohne Beleg“ (NDU-56)', () => {
+  it('Chance mit Text und ohne Zitat-ID: Hinweis', () => {
+    expect(belegFehlt({ text: 'Will nicht in der Schlange warten.', belege: [] })).toBe(true);
+  });
+
+  it('frische Zeile ohne Text (auch nur Leerzeichen): kein Hinweis', () => {
+    expect(belegFehlt({ text: '', belege: [] })).toBe(false);
+    expect(belegFehlt({ text: '   ', belege: [] })).toBe(false);
+  });
+
+  it('mit mindestens einer Zitat-ID: kein Hinweis', () => {
+    expect(belegFehlt({ text: 'Will nicht in der Schlange warten.', belege: ['I1-2'] })).toBe(false);
+  });
+
+  it('der Hinweistext', () => {
+    expect(BELEG_FEHLT).toBe('Diese Chance hat noch keinen Beleg – wähle mindestens eine Zitat-ID.');
   });
 });
