@@ -167,12 +167,6 @@ const karten = kartenPfade(quellen).map((pfad) => {
               ) : (
                 <p class="leer">Zu dieser Folie gibt es noch keine Notizen.</p>
               )}
-              {(n?.ueberleitung || naechste) && (
-                <div class="weiter">
-                  {n?.ueberleitung && <p class="ueberleitung">{n.ueberleitung}</p>}
-                  {naechste && <p class="naechste"><span>Als Nächstes:</span> <strong>{naechste.titel}</strong>{naechste.pfad !== f.pfad && ` (${seitenName(naechste.pfad)})`}</p>}
-                </div>
-              )}
               {n?.chat && (
                 <div class="chat" data-chat>
                   <div class="chat-kopf">
@@ -184,6 +178,12 @@ const karten = kartenPfade(quellen).map((pfad) => {
                     </button>
                   </div>
                   <pre class="chat-text">{n.chat}</pre>
+                </div>
+              )}
+              {(n?.ueberleitung || naechste) && (
+                <div class="weiter">
+                  {n?.ueberleitung && <p class="ueberleitung">{n.ueberleitung}</p>}
+                  {naechste && <p class="naechste"><span>Als Nächstes:</span> <strong>{naechste.titel}</strong>{naechste.pfad !== f.pfad && ` (${seitenName(naechste.pfad)})`}</p>}
                 </div>
               )}
               {n?.miro && (
