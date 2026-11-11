@@ -4,6 +4,7 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import { CHAT_SYNTHESE } from '../../../data/begleiter/chat';
 import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
@@ -187,12 +188,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
       <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 20 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75).</p>
       <p><strong>Hört ihr noch Neues?</strong> Rob Fitzpatrick rät, so lange Gespräche zu führen, bis nichts Neues mehr kommt. Bei einer klar umrissenen Zielgruppe können drei bis fünf reichen; wer nach mehr als zehn Gesprächen noch Ergebnisse bekommt, die in alle Richtungen streuen, hat vermutlich eine zu unscharfe Zielgruppe ({MOMTEST}, S. 88). Streuen eure fünf Snapshots in alle Richtungen, sprecht im Team darüber, ob ihr die Zielgruppe im Produkt-Brief enger fassen solltet.</p>
       <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:45, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, drei besprechen), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:10. Gezeigt wird dann direkt aus der Werkstatt.</p>
-      <Prompt label="Für den Teams-Chat">Interview-Synthese · 44 min · Miro: Frame T1 · 5 mit euren Snapshots
-1. Zeigen (5 min): Eine Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen.
-2. Besprechen (7 min): Die anderen beiden fragen: Was wurde gesagt? Was ändert sich? Wie war das Gespräch? Was haben wir überhört? Was sie anders hören, notiert ihr für den Snapshot.
-3. Reihum: drei Runden à 12 Minuten.
-4. Festhalten und prüfen (8 min): Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog; dann Prüfliste und Claude.
-Noch keine Interviews in der Werkstatt? Bis 14:45 die besten 2–3 eintragen: Pseudonym, Datum, Einwilligung, 3–5 Zitate mit ID, Chancen mit Beleg-IDs. Danach Runden à 5 min (2 zeigen, 3 besprechen).</Prompt>
+      <Prompt label="Für den Teams-Chat">{CHAT_SYNTHESE}</Prompt>
     </div>
   </Folie>
 

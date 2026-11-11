@@ -5,6 +5,7 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import { CHAT_BAUM } from '../../../data/begleiter/chat';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
 import Baum from '../../../components/bild/Baum.astro';
@@ -215,11 +216,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     </ol>
     <div class="nur-handout">
       <p>12 + 10 + 12 + 5 sind 39 Minuten; dazu gut 35 Minuten Theorie und Kaffeebar. Beim Gegenlesen hat jede Person vier Minuten für ihren Baum; die anderen fragen bei jeder Chance „Haben wir das gehört?“ und „Gibt es mehr als einen Weg?“. Was nach dem Gegenlesen offen bleibt, wird eine Frage für die nächsten Interviews. Der Baum entsteht auf Miro und bleibt dort; jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg.</p>
-      <Prompt label="Für den Teams-Chat">Opportunity Solution Tree · 39 min · Miro: T2 · 2 · Opportunity Solution Tree
-1. Inventar, allein (12 min): jede Chance aus euren Snapshots durch die drei Fragen – Bedürfnis statt Lösung? In mehr als einem Interview? Treibt sie den Outcome? –, dann unter ihren Moment. Jede Chance nennt mindestens eine Zitat-ID, etwa I2-3.
-2. Struktur, allein (10 min): Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen.
-3. Gegenlesen, reihum (12 min, vier pro Baum): Aus Firmensicht? Senkrecht? Zwei Eltern? Unkonkret? Verkleidete Lösung? Gefühl statt Ursache? Ohne ID kein Beleg.
-4. Festhalten und prüfen (5 min): docs/BAUM.md, dann Prüfliste und Claude.</Prompt>
+      <Prompt label="Für den Teams-Chat">{CHAT_BAUM}</Prompt>
     </div>
   </Folie>
 

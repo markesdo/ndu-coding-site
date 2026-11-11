@@ -5,6 +5,7 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import { CHAT_JOURNEY_MAP } from '../../../data/begleiter/chat';
 import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
@@ -166,11 +167,7 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
     </ol>
     <div class="nur-handout">
     <p>10 + 12 + 8 + 5 sind 35 Minuten; dazu gut 20 Minuten Theorie und Kaffeebar gemeinsam. Beim Zeigen gilt, was Torres für das Teilen der ersten Maps empfiehlt: Fragen stellen, um die andere Sicht zu verstehen, auf die Unterschiede achten, die eigene Zeichnung nicht verteidigen (S. 55). Wo ihr euch über Details streitet, zeichnet den Unterschied, statt ihn zu diskutieren (S. 56–57). Die Map entsteht auf Miro und bleibt dort; jeder Moment und jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg.</p>
-    <Prompt label="Für den Teams-Chat">Experience Map · 35 min · Miro: T2 · 1 · Experience Map
-1. Allein (10 min): Knoten aus euren Skizzen auf Papier beschriften, zur neuen Map zusammenfügen, die Map von Tag 1 daneben.
-2. Zu dritt (12 min): Jede*r zeigt die eigene Map, die anderen fragen nach – ohne die eigene zu verteidigen.
-3. Momente festlegen (8 min): drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren. Jeder Moment nennt mindestens eine Zitat-ID, etwa I2-3.
-4. Festhalten und prüfen (5 min): docs/JOURNEY.md, dann Prüfliste und Claude.</Prompt>
+    <Prompt label="Für den Teams-Chat">{CHAT_JOURNEY_MAP}</Prompt>
     </div>
   </Folie>
 

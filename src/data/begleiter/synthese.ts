@@ -1,4 +1,5 @@
 import type { Notiz } from './typen';
+import { CHAT_NETFLIX, CHAT_SYNTHESE } from './chat';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/synthese.astro (Tag 2, 14:05–15:10). Vorwissen: „teilweise“ aus Need
 // Finding (vorwissen.ts) – darum zuerst fragen, was bekannt ist, und die Theorie dann knapp halten.
@@ -118,6 +119,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Falle: selbst eine Lesart vorgeben („Das Problem ist ja …“).',
     ],
     uebung: { dauer: '1 min', form: 'allein, ein Satz in den Teams-Chat' },
+    chat: CHAT_NETFLIX,
     ablauf: {
       schritte: [
         'Folie zeigen, die Geschichte vorlesen.',
@@ -201,13 +203,14 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Schritte aus dem Handout in den Teams-Chat kopieren.',
+      'Schritte unten kopieren und in den Teams-Chat einfügen.',
       'Reihenfolge festlegen, Timer 12 min je Runde neu starten.',
       'Zeit: nach 5 min vom Zeigen ins Besprechen wechseln.',
       'Nach 36 min: Festhalten in der Werkstatt, Timer 8 min.',
       'Fallback: Werkstatt leer? Bis 14:45 die besten 2–3 eintragen.',
     ],
     uebung: { dauer: '44 min (3 × 12 + 8)', form: 'zu dritt reihum, dann allein' },
+    chat: CHAT_SYNTHESE,
     miro: {
       frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
@@ -219,7 +222,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Fallback, wenn zu Beginn (14:05) noch keine Interviews in der Werkstatt stehen: Bis 14:45 trägt jede*r die besten zwei bis drei ein – Pseudonym, Datum, Einwilligung, 3–5 wörtliche Zitate mit ID, Chancen mit Beleg-IDs; Kurzinfos, Einsichten, Notizen später. Danach Theorie nur snapshot-i2 und geschichte/warum (7 min), Runden 3 × 5 min (2 zeigen, 3 besprechen), Festhalten 3 min – Ende wie geplant 15:10.',
-        'Schritte in den Teams-Chat kopieren (Karte „Für den Teams-Chat“ im Handout dieser Folie).',
+        'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
         'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen.',
         'Runde 2 und 3 genauso, Timer jeweils neu starten.',
         'Festhalten und prüfen (8 min): Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog, dann Prüfliste und Claude.',

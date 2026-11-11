@@ -1,4 +1,5 @@
 import type { Notiz } from './typen';
+import { CHAT_BAUM, CHAT_ZWOELF } from './chat';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 2, 16:30–17:45). Kein Vorwissen eingetragen; der Baum
 // ist seit Tag 1 der rote Faden, heute kommt die Ebene der Chancen dazu.
@@ -33,6 +34,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Falle: eine richtige Antwort andeuten – es gibt keine.',
     ],
     uebung: { dauer: '2 min', form: 'allein, ein Satz in den Teams-Chat' },
+    chat: CHAT_ZWOELF,
     ablauf: {
       schritte: [
         'Folie zeigen, die Liste still lesen lassen.',
@@ -228,13 +230,14 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Schritte aus dem Handout in den Teams-Chat kopieren.',
+      'Schritte unten kopieren und in den Teams-Chat einfügen.',
       'Timer 12 min: Inventar allein, unter die eigenen Momente.',
       'Nach 12 min: Struktur allein, Ast für Ast, Timer 10 min.',
       'Nach 22 min: Gegenlesen mit Checkliste, vier Minuten je Baum.',
       'Nach 34 min: BAUM.md, Prüfliste, Claude.',
     ],
     uebung: { dauer: '39 min (12 + 10 + 12 + 5)', form: 'allein, dann zu dritt reihum' },
+    chat: CHAT_BAUM,
     miro: {
       frame: 'T2 · 2 · Opportunity Solution Tree',
       schritte: [
@@ -246,7 +249,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Schritte in den Teams-Chat kopieren (Karte „Für den Teams-Chat“ im Handout dieser Folie).',
+        'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
         'Inventar allein (12 min): jede Chance durch die drei Fragen, unter ihren Moment.',
         'Struktur allein (10 min): Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen.',
         'Gegenlesen reihum (12 min): je Baum vier Minuten, die anderen beiden gehen die Checkliste der sechs Anti-Muster durch (nächste Folie).',

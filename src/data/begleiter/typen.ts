@@ -14,6 +14,8 @@ export type Notiz = {
   verstaendnis?: { frage: string; antwort: string; falsch?: string };
   /** Ein Satz Überleitung zur nächsten Folie, zum Sagen an die Studierenden („ihr“). */
   ueberleitung?: string;
+  /** Text für den Teams-Chat (online), im Begleiter mit Kopier-Knopf; Übungsfolien zeigen ihn auch im Handout (chat.ts). */
+  chat?: string;
   /** Bei Übungen: Timer-Dauer und Sozialform. */
   uebung?: { dauer?: string; form?: string };
   /** Was in Miro passiert: frame = Name genau wie in <MiroFrame name> (miro-frames.ts), vorschlaege = Zettel für die Kaffeebar-Spalte. */
