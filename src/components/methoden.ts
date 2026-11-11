@@ -182,7 +182,7 @@ export const METHODEN: Methode[] = [
         id: 'synthese-beleg-nachgetragen',
         alt: 'synthese-5',
         text: 'Jedes Zitat, das für oder gegen eine eurer Annahmen spricht, ist in der Annahmen-Map bei dieser Annahme als Beleg nachgetragen.',
-        frage: 'Frag bei jedem Zitat, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).',
+        frage: 'Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).',
       },
     ],
     ki: 'Prüft nach der Besprechung, ob eure Chancen Bedürfnisse sind und keine Lösungen – mit Zitat aus euren Interviews.',

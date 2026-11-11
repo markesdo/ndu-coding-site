@@ -111,7 +111,7 @@ describe('methoden', () => {
   });
 
   it('Prüf-Prompt: jeder Weg ordnet nicht ein; die Frage nach der Belegstufe nur bei der Synthese', () => {
-    const frage = 'Bei synthese-beleg-nachgetragen: Frag bei jedem Zitat, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).';
+    const frage = 'Bei synthese-beleg-nachgetragen: Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).';
     const synthese = METHODEN.find((m) => m.slug === 'synthese')!;
     expect(pruefPrompt(synthese)).toContain(frage);
     expect(pruefPrompt(synthese, 'docs/interviews/I2.md')).toContain(frage);

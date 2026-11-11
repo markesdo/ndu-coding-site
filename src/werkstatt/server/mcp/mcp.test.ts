@@ -703,7 +703,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const h = await aufbau();
     await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
     const c = await client(h, await accessToken(h));
-    const frage = 'Bei synthese-beleg-nachgetragen: Frag bei jedem Zitat, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).';
+    const frage = 'Bei synthese-beleg-nachgetragen: Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).';
     const anleitung = async (pruefpunkt?: string) => {
       const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'interviews', ...(pruefpunkt ? { pruefpunkt } : {}) } });
       expect(r.isError).toBeFalsy();
