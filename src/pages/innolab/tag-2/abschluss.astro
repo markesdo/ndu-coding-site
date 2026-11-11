@@ -1,0 +1,29 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Checklist from '../../../components/Checklist.astro';
+import Folie from '../../../components/Folie.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+---
+<Layout title="Tag 2 · Abschluss">
+  <span class="eyebrow">Innolab · Tag 2 · Abschluss</span>
+  <h1>Tag 2 · Abschluss</h1>
+  <p class="lead">Was ihr heute festhaltet und womit Tag 3 am 21. November beginnt.</p>
+
+  <Folie>
+    <h2 id="abschluss">Abschluss</h2>
+    <p class="folie-satz">Bevor ihr geht: festhalten, eintragen, pushen.</p>
+    <Checklist id="il-tag2-abschluss" items={[
+      'Interviews und Snapshots in der Werkstatt; <code>JOURNEY.md</code> und <code>BAUM.md</code> im Repo',
+      'Belege in der Annahmen-Map der Werkstatt nachgetragen',
+      'Eine Zeile pro Entscheidung von heute im Entscheidungslog der Werkstatt',
+      'Committet und gepusht',
+    ]} />
+    <p data-schritt><strong>Tag 3, 21. November:</strong> Ihr beginnt mit eurem Baum und wählt eine Ziel-Chance.</p>
+    <div class="nur-handout">
+      <p>Am 21. November, nicht früher: Claude Pro neu abschließen und gleich wieder kündigen (<a href="/setup#claude-pro">wie</a>). Der Monat reicht bis zum letzten Bautag am 19. Dezember.</p>
+      <p><a href="/innolab/tag-3">Tag 3</a> am 21. November beginnt mit eurem Baum: Ziel-Chance wählen, How-Might-We-Frage, Ideen. Danach wählt ihr über den Fit eine eurer drei Ideen und macht daraus ein Angebot (Value Map), eine Geschichte (Concept Story) und eine Experiment-Karte; Plan (Story Map) und ersten Prototyp baut ihr an Tag 4.</p>
+    </div>
+  </Folie>
+
+  <FooterNav prev={{ href: '/innolab/methoden/baum', t: 'Opportunity Solution Tree' }} next={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} />
+</Layout>

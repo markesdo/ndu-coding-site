@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
-import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Folie from '../../components/Folie.astro';
 import Fluss from '../../components/Fluss.astro';
@@ -26,7 +25,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <Block time="15:20–16:20" type="uebung" title="Experience Map aus den Geschichten" href="/innolab/methoden/journey-map">Aus fünf Geschichten eine Map; ihre Momente werden die Äste des Baums. Höhepunkt und Ende.</Block>
     <Block time="16:20–16:30" type="pause" title="Pause" />
     <Block time="16:30–17:45" type="uebung" title="Opportunity Solution Tree" href="/innolab/methoden/baum">Chancen aus den Snapshots unter die Momente hängen, ordnen, Anti-Muster prüfen.</Block>
-    <Block time="17:45–18:00" type="plenum" title="Abschluss" href="#abschluss">Rückblick, Entscheidungslog, Ausblick auf Tag 3.</Block>
+    <Block time="17:45–18:00" type="plenum" title="Abschluss" href="/innolab/tag-2/abschluss">Rückblick, Entscheidungslog, Ausblick auf Tag 3.</Block>
   </div>
 
   <hr />
@@ -60,21 +59,6 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <p><a href="/innolab/methoden/ziel-chance">Ziel-Chance wählen</a>, <a href="/innolab/methoden/hmw">How Might We</a> und <a href="/innolab/methoden/ideation">Ideation</a> eröffnen <a href="/innolab/tag-3">Tag 3</a> am 21. November.</p>
   </div>
 
-  <Folie>
-    <h2 id="abschluss">Abschluss</h2>
-    <p class="folie-satz">Bevor ihr geht: festhalten, eintragen, pushen.</p>
-    <Checklist id="il-tag2-abschluss" items={[
-      'Interviews und Snapshots in der Werkstatt; <code>JOURNEY.md</code> und <code>BAUM.md</code> im Repo',
-      'Belege in der Annahmen-Map der Werkstatt nachgetragen',
-      'Eine Zeile pro Entscheidung von heute im Entscheidungslog der Werkstatt',
-      'Committet und gepusht',
-    ]} />
-    <p data-schritt><strong>Tag 3, 21. November:</strong> Ihr beginnt mit eurem Baum und wählt eine Ziel-Chance.</p>
-    <div class="nur-handout">
-      <p>Am 21. November, nicht früher: Claude Pro neu abschließen und gleich wieder kündigen (<a href="/setup#claude-pro">wie</a>). Der Monat reicht bis zum letzten Bautag am 19. Dezember.</p>
-      <p><a href="/innolab/tag-3">Tag 3</a> am 21. November beginnt mit eurem Baum: Ziel-Chance wählen, How-Might-We-Frage, Ideen. Danach wählt ihr über den Fit eine eurer drei Ideen und macht daraus ein Angebot (Value Map), eine Geschichte (Concept Story) und eine Experiment-Karte; Plan (Story Map) und ersten Prototyp baut ihr an Tag 4.</p>
-    </div>
-  </Folie>
 
   <FooterNav prev={{ href: '/innolab/tag-1/abschluss', t: 'Tag 1 · Abschluss' }} next={{ href: '/innolab/methoden/synthese', t: 'Interview-Synthese' }} />
 </Layout>
