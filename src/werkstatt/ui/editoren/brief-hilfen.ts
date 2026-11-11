@@ -2,7 +2,7 @@
 import type { Brief } from '../../schemas/index.js';
 
 export const PRODUKTSATZ_OFFEN = 'Offen – steht nach Tag 3 fest.';
-export const MVP_HINWEIS = 'Kommt aus der Story Map (Tag 3).';
+export const MVP_HINWEIS = 'Kommt aus der Story Map (Tag 4).';
 
 export interface BriefKarte {
   nr: number;

@@ -549,7 +549,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     },
     fragen: [
       { frage: 'Ist Design Thinking dann schlecht?', antwort: 'Nein, Patton ist ausdrücklich dafür. Er kritisiert, wie es oft ausgeführt wird: zu lang, ohne Rahmen, mit nur einer Idee, ohne echten Test.' },
-      { frage: 'Wo im Innolab steht welche Phase?', antwort: 'Heute Rahmen und Verstehen (Entdecken), Tag 2 Chancen auswählen (Definieren), danach Lösungen und Tests.' },
+      { frage: 'Wo im Innolab steht welche Phase?', antwort: 'Heute Rahmen und Verstehen (Entdecken), an Tag 2 Chancen finden und zu Beginn von Tag 3 eine auswählen (Definieren), danach Lösungen und Tests.' },
     ],
   },
 

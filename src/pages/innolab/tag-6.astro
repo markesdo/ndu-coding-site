@@ -28,10 +28,10 @@ const frage = zusatz.offen ? ' (?)' : '';
     <Block time="12:45–13:00" type="plenum" title="Abschluss" href="#abschluss">Was bis zur Präsentation passiert.</Block>
   </div>
 
-  <h3 id="nachmittag">Nachmittag {zusatz.zeit}{frage} · Termin noch offen</h3>
-  <Callout type="info" title="Noch nicht bestätigt">
+  <h3 id="nachmittag">Nachmittag {zusatz.zeit}{frage}{zusatz.offen && ' · Termin noch offen'}</h3>
+  {zusatz.offen && <Callout type="info" title="Noch nicht bestätigt">
     <p>Ob es am Nachmittag einen zusätzlichen halben Tag gibt, steht noch nicht fest. Der Kurs funktioniert auch ohne ihn: Euer Prototyp ist um 13 Uhr fertig, und die Pitch-Probe macht ihr dann per Videoanruf untereinander (<a href="#abschluss">Abschluss</a>).</p>
-  </Callout>
+  </Callout>}
   <div class="schedule">
     <Block time="14:00–14:20" type="uebung" title="Pitch-Probe" href="#pitch-probe">Zwei Minuten Geschichte, vor den anderen beiden.</Block>
     <Block time="14:20–18:00" type="uebung" title="Puffer" href="#puffer">Weiterbauen, was im Sprint nicht fertig wurde; Nachzügler holen auf.</Block>
@@ -45,7 +45,7 @@ const frage = zusatz.offen ? ' (?)' : '';
   <p>Ihr baut jede*r am eigenen Laptop und bleibt dabei in der Teams-Besprechung, Mikrofon stumm. Nutzt den Vormittag für das, was allein zu Hause schwer geht: Issues aus fremden Produkten, bei denen ihr den Product Owner sofort fragen könnt – Mikrofon an, Bildschirm teilen –, und Pull Requests, die jemand gleich prüft. Die Regeln sind dieselben wie bisher (<a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>). Bis 10:45 ist fertig, was im Sprint fertig wird: Wird ein Issue bis dahin nicht fertig, nehmt es lieber zurück, als halb Gebautes live zu lassen – es geht zurück in den Backlog und ins Review.</p>
 
   <h2 id="tests">Usability-Tests über Kreuz</h2>
-  <p>Ihr testet wie beim <a href="/innolab/methoden/prototyp-spike#usability-test">Prototyp-Spike</a> – Aufgabe als Ziel, laut denken, nicht helfen –, diesmal mit dem Inkrement, live am Handy. Testpersonen sind Menschen, die euer Produkt nicht kennen und möglichst zur Zielgruppe passen. Heute seid ihr online: Jede*r Product Owner hat zwei für einen Videoanruf mit geteiltem Bildschirm verabredet.</p>
+  <p>Ihr testet wie beim <a href="/innolab/methoden/prototyp-spike#fuenf">Prototyp-Spike</a> – Aufgabe als Ziel, laut denken, nicht helfen –, diesmal mit dem Inkrement, live am Handy. Testpersonen sind Menschen, die euer Produkt nicht kennen und möglichst zur Zielgruppe passen. Heute seid ihr online: Jede*r Product Owner hat zwei für einen Videoanruf mit geteiltem Bildschirm verabredet.</p>
   <ul>
     <li><strong>Drei Runden à 15 Minuten,</strong> ein Produkt pro Runde, je zwei Testpersonen. Die übrigen drei bis zur Präsentation testet ihr selbst – dann seid ihr wie nach Tag 4 bei fünf.</li>
     <li><strong>Über Kreuz:</strong> Der Product Owner moderiert nicht – wer das eigene Produkt erklärt, hilft zu schnell und verteidigt es. Eine andere Person aus dem Team moderiert, der Product Owner beobachtet und schreibt mit, die dritte notiert Zeiten und wo die Person hängen bleibt.</li>

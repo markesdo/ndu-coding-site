@@ -22,7 +22,7 @@ ${d.produktSatz !== undefined && d.produktSatz.trim() !== '' ? mehrzeilig(d.prod
 ${nicht}
 
 ## 5. Was gehört ins MVP?
-Kommt aus der Story Map (Tag 3).
+Kommt aus der Story Map (Tag 4).
 
 ## 6. Woran merken wir, dass es funktioniert?
 Wir glauben: ${mehrzeilig(d.outcome.wirGlauben)}
