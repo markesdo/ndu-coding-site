@@ -101,11 +101,25 @@ describe('methoden', () => {
       expect(t).not.toMatch(/docs\/|Lies /);
       // Claude ändert in der Werkstatt nichts: kein „ändere keine Datei“, sondern kein eigener Text.
       expect(t).toContain('Schreib nichts um und formulier keinen Text für mich');
+      // Live-Test 11.11.: Claude ordnet Zitate nicht selbst ein, sondern fragt.
+      expect(t).toContain('Ordne nichts für mich ein: Sag nicht, wofür oder wogegen ein Zitat spricht, sondern frag mich danach.');
     }
     expect(METHODEN.filter((m) => pruefungInWerkstatt(m)).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'entscheidungslog', 'annahmen', 'interview', 'synthese']);
     // Mit Pfad bleibt es die Prüfung einer Datei; die Vorarbeit kommt weiter aus der Werkstatt.
     expect(pruefungInWerkstatt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toBe(false);
     expect(pruefPrompt(METHODEN.find((m) => m.slug === 'entscheidungslog')!, 'notizen/alt.md')).toMatch(/^Lies notizen\/alt\.md\. Zum Abgleich lies auch aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
+  });
+
+  it('Prüf-Prompt: jeder Weg ordnet nicht ein; die Frage nach der Belegstufe nur bei der Synthese', () => {
+    const frage = 'Bei synthese-beleg-nachgetragen: Frag bei jedem Zitat, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).';
+    const synthese = METHODEN.find((m) => m.slug === 'synthese')!;
+    expect(pruefPrompt(synthese)).toContain(frage);
+    expect(pruefPrompt(synthese, 'docs/interviews/I2.md')).toContain(frage);
+    for (const m of METHODEN.filter((x) => x.pruefliste)) {
+      const p = pruefPrompt(m);
+      expect(p, m.slug).toMatch(/\nRegeln: Zitier die Stelle, um die es geht\. Nenn höchstens drei Befunde, die wichtigsten zuerst\. Ordne nichts für mich ein: Sag nicht, wofür oder wogegen ein Zitat spricht, sondern frag mich danach\. /);
+      if (m.slug !== 'synthese') expect(p, m.slug).not.toMatch(/Belegstufe/);
+    }
   });
 
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {

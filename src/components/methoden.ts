@@ -72,6 +72,8 @@ export interface Pruefpunkt {
   id: string;
   alt?: string;
   text: string;
+  /** Was Claude bei diesem Punkt fragt statt selbst einzuordnen (anleitung von artefakt_pruefen und Prüf-Prompt). */
+  frage?: string;
 }
 
 export interface Methode {
@@ -176,7 +178,12 @@ export const METHODEN: Methode[] = [
       { id: 'synthese-einsichten', alt: 'synthese-3', text: 'Einsichten (auffälliges Verhalten) stehen getrennt von den Chancen.' },
       { id: 'synthese-belege', text: 'Jede Chance nennt mindestens eine Zitat-ID als Beleg.' },
       { id: 'synthese-pseudonym', alt: 'synthese-4', text: 'Kein Eintrag nennt Namen, Arbeitgeber oder etwas, woran man die Person erkennt – nur das Pseudonym.' },
-      { id: 'synthese-beleg-nachgetragen', alt: 'synthese-5', text: 'Jedes Zitat, das für oder gegen eine eurer Annahmen spricht, ist in der Annahmen-Map bei dieser Annahme als Beleg nachgetragen.' },
+      {
+        id: 'synthese-beleg-nachgetragen',
+        alt: 'synthese-5',
+        text: 'Jedes Zitat, das für oder gegen eine eurer Annahmen spricht, ist in der Annahmen-Map bei dieser Annahme als Beleg nachgetragen.',
+        frage: 'Frag bei jedem Zitat, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist (Belegstufe ‚erzählt‘ oder ‚gesagt‘).',
+      },
     ],
     ki: 'Prüft nach der Besprechung, ob eure Chancen Bedürfnisse sind und keine Lösungen – mit Zitat aus euren Interviews.',
   },
@@ -557,7 +564,18 @@ export function pruefungAufMiro(m: Methode, pfad?: string): boolean {
   return !pfad && m.ergibt.length > 0 && m.ergibt.every((id) => nurAufMiro(artefakt(id)!));
 }
 
-const REGELN_ANFANG = 'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst.';
+/** Claude ordnet nicht für die Person ein (Live-Test 11.11.: „spricht gegen A1“ statt einer Frage). Gleichlautend in der
+ *  Server-Anweisung und der anleitung von artefakt_pruefen; im kopierten Prompt in der Ich-Form (REGELN_ANFANG). */
+export const NICHT_EINORDNEN = 'Ordne nichts für die Person ein: Sag nicht, wofür oder wogegen ein Zitat spricht, sondern frag sie danach.';
+
+const REGELN_ANFANG =
+  'Regeln: Zitier die Stelle, um die es geht. Nenn höchstens drei Befunde, die wichtigsten zuerst. Ordne nichts für mich ein: Sag nicht, wofür oder wogegen ein Zitat spricht, sondern frag mich danach.';
+
+/** Die Fragen einzelner Prüfpunkte, je mit ihrer ID („Bei synthese-beleg-nachgetragen: Frag …“). */
+export const pruefFragen = (punkte: readonly Pruefpunkt[]): string[] => punkte.filter((p) => p.frage).map((p) => `Bei ${p.id}: ${p.frage}`);
+
+// Die Regeln am Ende jedes Prüf-Prompts: Anfang, die Fragen der Prüfpunkte, dann was Claude nicht tut.
+const regeln = (m: Methode, schluss: string) => [REGELN_ANFANG, ...pruefFragen(m.pruefliste ?? []), schluss].join(' ');
 
 /** ID der abhakbaren Prüfliste (localStorage-Schlüssel in Checklist.astro); mit Stand, wo die Liste vor NDU-28 neu geschrieben wurde. */
 export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `il-${m.slug}-${m.prueflisteStand}` : `il-${m.slug}`);
@@ -646,7 +664,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
       // Texten darunter (werkstatt/ui/kopiertext.ts); ohne Schalter fügen die Studierenden sie selbst darunter.
       `Ohne Werkstatt-Zugang nimm stattdessen die Texte, die ich unter diese Nachricht einfüge: ${akkusativListe([...namen, ...werkstattAbgleich])}.`,
       '',
-      `${REGELN_ANFANG} ${REGELN_CHAT}`,
+      regeln(m, REGELN_CHAT),
     ].join('\n');
   }
 
@@ -665,7 +683,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
           ]
         : []),
       '',
-      `${REGELN_ANFANG} ${REGELN_CHAT}`,
+      regeln(m, REGELN_CHAT),
     ].join('\n');
   }
 
@@ -688,7 +706,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
           ]
         : []),
       '',
-      `${REGELN_ANFANG} ${REGELN_CHAT}`,
+      regeln(m, REGELN_CHAT),
     ].join('\n');
   }
 
@@ -702,6 +720,6 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
     ...liste,
     ...(miroVorarbeit(m) ? [miroVorarbeit(m)] : []),
     '',
-    `${REGELN_ANFANG} Schreib nichts um, ändere keine Datei und kein Issue – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.`,
+    regeln(m, 'Schreib nichts um, ändere keine Datei und kein Issue – stell mir zu jedem Befund eine Frage, die mich weiterbringt. Passt alles, sag das in einem Satz.'),
   ].join('\n');
 }

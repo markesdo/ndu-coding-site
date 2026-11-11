@@ -39,6 +39,8 @@ describe('kopierText', () => {
     const voll = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { brief: { markdown: BRIEF }, annahmen: { markdown: MAP } } });
     expect(voll.text).toBe(`${pruefPrompt(methode('interview'))}\n\n${LEITFADEN.trim()}\n\n# Produkt-Brief\n\n${BRIEF.trim()}\n\n${MAP.trim()}\n`);
     expect(voll.fehlt).toStrictEqual([]);
+    // Dieselben Regeln wie artefakt_pruefen: Claude ordnet nicht für die Person ein (Live-Test 11.11.).
+    expect(voll.text).toContain('Ordne nichts für mich ein: Sag nicht, wofür oder wogegen ein Zitat spricht, sondern frag mich danach.');
     const halb = kopierText({ name: 'leitfaden', markdown: LEITFADEN, mitPrompt: true, frei: true, vorarbeit: { annahmen: { markdown: MAP }, brief: 'nicht-gespeichert' } });
     expect(halb.text).not.toContain('# Produkt-Brief');
     expect(halb.fehlt).toStrictEqual([{ name: 'brief', grund: 'nicht-gespeichert' }]);

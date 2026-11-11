@@ -8,7 +8,7 @@ import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
 import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
 import { DEMO_HREF } from '../../../lib/nav-rolle.js';
-import { METHODEN, TAGE, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
+import { METHODEN, NICHT_EINORDNEN, TAGE, pruefFragen, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
@@ -205,6 +205,8 @@ interface PruefLage {
   vorarbeitFehlt: boolean;
   // Es gibt Feedback der Lehrenden zu diesem Artefakt (NDU-35).
   feedback: boolean;
+  // Die geprüften Punkte (mit pruefpunkt nur dieser): ihre Fragen kommen in die anleitung.
+  punkte: readonly Pruefpunkt[];
 }
 
 // So sehen die IDs der Zeilen im geprüften Artefakt aus; der Brief hat keine.
@@ -219,8 +221,11 @@ const ID_BEISPIEL: Record<ArtefaktName, string | undefined> = {
 function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: PruefLage): string[] {
   const { fokus } = lage;
   const saetze = fokus
-    ? [`Prüf nur ${fokus.punkt.id}. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit einem wörtlichen Zitat; danach eine Rückfrage, die die Person selbst weiterbringt.`]
+    ? [
+        `Prüf nur ${fokus.punkt.id}. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit ID und wörtlichem Zitat. Sind es mehr als drei, bekommen die drei deutlichsten je eine Rückfrage, die übrigen nennst du nur mit ID und Zitat.`,
+      ]
     : ['Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die die Person selbst weiterbringt.'];
+  saetze.push(NICHT_EINORDNEN, ...pruefFragen(lage.punkte));
   const id = ID_BEISPIEL[artefakt];
   saetze.push(`Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown)${id ? ` und nenn die ID der Zeile, wo sie eine hat (wie ${id})` : ''}.`);
   if (lage.vorarbeit) saetze.push('Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht.');
@@ -230,7 +235,7 @@ function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: Prue
   saetze.push('Kein umformulierter Text. Passt alles, sag das in einem Satz.');
   if (lage.feedback) saetze.push(FEEDBACK_ANLEITUNG);
   if (fokus) {
-    saetze.push(fokus.naechster ? `Frag am Ende, ob als Nächstes ${fokus.naechster.id} drankommen soll.` : 'Das ist der letzte Prüfpunkt der Liste; sag das am Ende.');
+    saetze.push(fokus.naechster ? `Frag am Ende, ob als Nächstes ${fokus.naechster.id} drankommen soll.` : 'Das ist der letzte Prüfpunkt der Liste; sag das in deinem letzten Absatz und nenn dort den Link zur Werkstatt.');
   }
   saetze.push(aendernNurInDerWerkstatt(k));
   return saetze;
@@ -617,7 +622,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const teil = artefaktTeil(k, artefakt, a);
 
       const saetze = a
-        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => !v.vorhanden), feedback: !!fb?.length })
+        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => !v.vorhanden), feedback: !!fb?.length, punkte: fokus ? [fokus.punkt] : alle })
         // Noch leer, aber schon Feedback (etwa zum ganzen Brief): der Satz dazu gilt auch hier.
         : [ANLEITUNG_LEER, ...(fb?.length ? [FEEDBACK_ANLEITUNG] : [])];
       const text = [
