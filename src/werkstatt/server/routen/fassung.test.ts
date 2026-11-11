@@ -1,6 +1,7 @@
 // NDU-42: mögliche Fassung über die Routen. Lehrende der Kohorte hinterlegen sie an erlaubten Zeilen; die Person sieht
 // sie erst, wenn sie die Zeile selbst geändert oder geantwortet hat – vorher steht der Text in keiner Antwort, auch nicht
 // in der Datei im Repo (die sie lesen kann) und nicht in der Commit-Nachricht. Studierende setzen weder Fassung noch Stand.
+// NDU-44: Auch offen landet sie nie im Text für „Für Claude kopieren“.
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
 import briefBeispiel from '../../beispiele/brief.json';
@@ -9,6 +10,9 @@ import { fakeSpeicher } from '../fake-speicher';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
 import { COOKIE_WERKSTATT, sitzungErstellen, type Sitzung } from '../sitzung';
 import type { Speicher } from '../typen';
+import { rendern } from '../../render/index';
+import { ARTEFAKT_NAMEN, artefaktParsen, type ArtefaktName } from '../../schemas/index';
+import { kopierText, vorarbeitAusAntwort, vorarbeitNamen } from '../../ui/kopiertext';
 
 const BASIS = 'http://localhost:4321';
 const ZUGANG = {
@@ -211,5 +215,38 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     expect(Object.keys(antwort).sort()).toStrictEqual(['antwortAuf', 'artefakt', 'autor', 'datum', 'id', 'text', 'von', 'zeilenId']);
     // Studierende schreiben nie über die Route der Lehrenden.
     expect((await t.schreiben(SOFIE, { ...MIT_FASSUNG, zeilenId: 'A3' })).status).toBe(403);
+  });
+});
+
+// NDU-44: „Für Claude kopieren“ trägt die Fassung nie – auch nicht, wenn sie für die Person offen ist und im Browser steht.
+describe('Kopierter Text für Claude enthält die Fassung nie', () => {
+  it('aufgedeckte Fassung: in der API der Person ja, im kopierten Text (mit und ohne Prüf-Prompt, jedes Artefakt) nie', async () => {
+    const t = await aufbau();
+    await t.fake.speichern('2026-sofie', 'brief', { 'mappe/brief.json': json(briefBeispiel) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
+    await t.schreiben(MARKUS, MIT_FASSUNG);
+    await t.schreiben(MARKUS, { artefakt: 'brief', zeilenId: 'problem', text: 'Wessen Problem?', fassung: 'Pendelnde verlieren morgens [Minuten aus deinen Beobachtungen].' });
+    await t.aendern({ aktion: 'antworten', antwortAuf: 'FB1', text: 'Geschätzt.' });
+    await t.aendern({ aktion: 'antworten', antwortAuf: 'FB2', text: 'Meins.' });
+    // Beide offen: Der Browser der Person hat den Text.
+    const api = await t.lesenRoh();
+    expect(api).toContain('Zahl aus deinen Interviews');
+    expect(api).toContain('Minuten aus deinen Beobachtungen');
+    // Wie der Editor: gespeicherte Daten über die API, Markdown, Vorarbeit, Prompt.
+    const stand: Partial<Record<ArtefaktName, unknown>> = {};
+    for (const n of ARTEFAKT_NAMEN) stand[n] = (await (await t.anfrage('GET', `/api/werkstatt/mappe/${n}`, SOFIE)).json()).daten;
+    const texte: string[] = [];
+    for (const name of ARTEFAKT_NAMEN) {
+      const vorarbeit = Object.fromEntries(vorarbeitNamen(name).map((n) => [n, vorarbeitAusAntwort(n, stand[n])]));
+      const p = stand[name] === null ? null : artefaktParsen(name, stand[name]);
+      const markdown = p && p.ok ? rendern(name, p.daten as never) : '';
+      // Auch das Feedback der Person (mit offener Fassung) liegt dem Aufruf bei, wie es im Editor daneben liegt: Nimmt
+      // kopierText es je auf, darf die Fassung trotzdem nicht mitkommen.
+      const einstellung = { name, markdown, frei: true, vorarbeit, feedback: JSON.parse(api).eintraege };
+      for (const mitPrompt of [true, false]) texte.push(kopierText({ ...einstellung, mitPrompt }).text);
+    }
+    expect(texte.some((x) => x.includes('Wir glauben, dass die Bar morgens 40 Bestellungen'))).toBe(true);
+    for (const x of texte) {
+      for (const v of ['Zahl aus deinen Interviews', 'Bestellungen in 30 Minuten schafft', 'Minuten aus deinen Beobachtungen', 'f1.', 'mögliche Fassung']) expect(x, v).not.toContain(v);
+    }
   });
 });

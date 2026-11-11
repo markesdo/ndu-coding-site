@@ -63,7 +63,7 @@ const UEBERSICHT = {
 
 const LESEN_WERKZEUG = {
   title: 'Artefakt lesen',
-  description: `Liest ein Artefakt aus der eigenen Werkstatt-Mappe der angemeldeten Person: als Markdown und als strukturierte Daten. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Formuliere daraus keinen neuen Artefakttext; ändern kann die Person nur selbst in der Werkstatt. Hat eine Lehrperson Feedback dazu geschrieben, steht es am Ende unter „Feedback der Lehrenden“ (kein Prüfbefund; du schreibst selbst keins). Nur lesen.`,
+  description: `Liest ein Artefakt aus der eigenen Werkstatt-Mappe der angemeldeten Person: als Markdown und als strukturierte Daten. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Formuliere daraus keinen neuen Artefakttext; ändern kann die Person nur selbst in der Werkstatt. Hat eine Lehrperson Feedback dazu geschrieben, steht es am Ende unter „Feedback der Lehrenden“ (kein Prüfbefund; du schreibst selbst keins). Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
   inputSchema: ARTEFAKT_EINGABE,
   annotations: LESEN,
 };
@@ -77,7 +77,7 @@ const METHODE = {
 
 const PRUEFEN = {
   title: 'Artefakt prüfen',
-  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Nur lesen.`,
+  description: `Holt ein Artefakt aus der eigenen Werkstatt-Mappe zusammen mit der Prüfliste seiner Methode (Prüfpunkte mit festen IDs wie annahmen-loesung), der Vorarbeit zum Abgleich (etwa Brief und Annahmen-Map beim Leitfaden) und einer Anleitung. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Danach prüfst du selbst: höchstens drei Befunde, die wichtigsten zuerst, jeder mit Prüfpunkt-ID, einem wörtlichen Zitat aus dem Artefakt (nie aus der Vorarbeit) und einer Rückfrage. Mit pruefpunkt (z. B. annahmen-loesung) prüfst du nur diesen einen Punkt und nennst dafür jede betroffene Stelle, auch mehr als drei. Schreib keinen Artefakttext um und schlag keinen fertigen Text vor; geändert wird nur in der Werkstatt. Ist das Artefakt noch leer, bitte die Person, es erst selbst auszufüllen. Feedback der Lehrenden kommt mit (Abschnitt „Feedback der Lehrenden“): Geh darauf ein, gib es aber nie als eigenen Befund aus und schreib selbst keins. Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
   inputSchema: {
     ...ARTEFAKT_EINGABE,
     pruefpunkt: z

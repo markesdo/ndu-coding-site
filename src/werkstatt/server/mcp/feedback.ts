@@ -3,8 +3,10 @@
 // kein Werkzeug). Eigene Datei, damit werkzeuge.ts nur an wenigen Stellen wächst.
 // NDU-41: Trägt ein Feedback ein Kriterium aus dem Katalog, kommt nur dessen Name mit – nie das Kaffeebar-Paar, damit
 // Claude keine Fassung zum Übernehmen in der Hand hat.
-// NDU-42: Ebenso nie die mögliche Fassung der Lehrenden (fassung, zeilenStand, aufgedecktAm), weder zu noch aufgedeckt:
-// feedbackAusgabe nimmt nur die unten genannten Felder, nie den ganzen Eintrag.
+// NDU-42/NDU-44: Ebenso nie die mögliche Fassung der Lehrenden (fassung, zeilenStand, aufgedecktAm), weder zu noch
+// aufgedeckt, weder als Text noch als Siegel: feedbackAusgabe nimmt nur die unten genannten Felder, nie den ganzen Eintrag,
+// und öffnet nie ein Siegel. Claude erfährt nur, dass es eine gibt (fassungInWerkstatt), damit es auf die Werkstatt
+// verweisen kann – die Regel „Claude schreibt nie Artefakttext“ lässt sich so nicht über die Fassung umgehen.
 import { z } from 'zod';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { faeden, zeilenName, type FeedbackFaden } from '../../feedback.js';
@@ -26,6 +28,10 @@ export const FEEDBACK_AUSGABE = z
     datum: z.string(),
     text: z.string(),
     erledigt: z.boolean(),
+    fassungInWerkstatt: z
+      .literal(true)
+      .optional()
+      .describe('Die Lehrperson hat dazu eine mögliche Fassung hinterlegt. Ihren Text bekommst du nie; die Person sieht sie nur in der Werkstatt am Feedback, sobald sie die Zeile selbst überarbeitet oder geantwortet hat. Sag nur, dass es sie gibt und wo; zitier, umschreib oder errate sie nie.'),
     antworten: z.array(z.object({ autor: z.string(), datum: z.string(), text: z.string() })),
   }))
   .describe('Feedback der Lehrenden zu diesem Artefakt mit den Antworten der Person. Nur zum Eingehen, nie als eigener Befund.');
@@ -61,6 +67,7 @@ export function feedbackAusgabe(f: readonly FeedbackFaden[]): FeedbackAusgabe {
       datum: tag(e.datum),
       text: e.text,
       erledigt: e.erledigt === true,
+      ...(e.fassung !== undefined ? { fassungInWerkstatt: true as const } : {}),
       antworten: antworten.map((a) => ({ autor: a.autor, datum: tag(a.datum), text: a.text })),
     };
   });
@@ -74,11 +81,16 @@ export function feedbackText(f: readonly FeedbackFaden[] | null): string[] {
   for (const a of feedbackAusgabe(f)) {
     const krit = a.kriterium ? `, Kriterium „${a.kriterium}“` : '';
     zeilen.push(`- ${a.id}: ${a.autor}${a.zeile ? ` zu ${a.zeile}` : ' zum ganzen Artefakt'}, ${a.datum}, ${a.erledigt ? 'erledigt' : 'offen'}${krit}`, zitat(a.text, '  '));
+    if (a.fassungInWerkstatt) zeilen.push(`  ${FASSUNG_HINWEIS}`);
     for (const x of a.antworten) zeilen.push(`  - Antwort von ${x.autor}, ${x.datum}:`, zitat(x.text, '    '));
   }
   return zeilen;
 }
 
+/** Steht im Text unter einem Feedback mit möglicher Fassung (NDU-44). Den Text der Fassung kennt Claude nicht. */
+export const FASSUNG_HINWEIS =
+  '(Dazu hat die Lehrperson eine mögliche Fassung in der Werkstatt hinterlegt. Ihr Text kommt hier nie mit; die Person sieht sie in der Werkstatt am Feedback, sobald sie die Zeile selbst überarbeitet oder geantwortet hat. Sag nur, dass es sie gibt und wo – zitier, umschreib oder errate sie nicht.)';
+
 /** Satz für die Anleitung von artefakt_pruefen, nur wenn es Feedback gibt. */
 export const FEEDBACK_ANLEITUNG =
-  `Unter „${FEEDBACK_UEBERSCHRIFT}“ steht, was die Lehrenden angemerkt haben: Geh darauf ein, wo es passt (etwa „Bei A2 hatte deine Lehrperson nach der Quelle gefragt – was hast du dazu herausgefunden?“), aber gib es nie als eigenen Befund oder Prüfpunkt aus, zitier es nicht als Artefakt und schreib selbst kein Feedback. Nennt ein Feedback ein Kriterium, frag, was die Person daran an ihrer eigenen Stelle erkennt; formulier dafür keinen Text.`;
+  `Unter „${FEEDBACK_UEBERSCHRIFT}“ steht, was die Lehrenden angemerkt haben: Geh darauf ein, wo es passt (etwa „Bei A2 hatte deine Lehrperson nach der Quelle gefragt – was hast du dazu herausgefunden?“), aber gib es nie als eigenen Befund oder Prüfpunkt aus, zitier es nicht als Artefakt und schreib selbst kein Feedback. Nennt ein Feedback ein Kriterium, frag, was die Person daran an ihrer eigenen Stelle erkennt; formulier dafür keinen Text. Steht bei einem Feedback, dass die Lehrperson eine mögliche Fassung hinterlegt hat, sag nur, dass es sie gibt und dass die Person sie in der Werkstatt am Feedback findet, sobald sie die Zeile selbst überarbeitet hat; ihren Text kennst du nicht, und du formulierst auch keine eigene.`;

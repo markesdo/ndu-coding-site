@@ -27,6 +27,8 @@ import { antworten, erledigtSetzen, feedbackSchreiben } from '../../feedback';
 import { feedbackAendern } from '../feedback';
 import { kriterium } from '../../kriterien';
 import { fassungVersiegeln } from '../fassung';
+import { FASSUNG_HINWEIS } from './feedback';
+import { ARTEFAKTE, ARTEFAKT_NAMEN } from '../../schemas';
 
 const BASIS = 'http://localhost:4321';
 const MCP = `${BASIS}/api/werkstatt/mcp`;
@@ -1380,21 +1382,73 @@ describe('Feedback der Lehrenden im Connector', () => {
     expect(sc.anleitung).toMatch(/Nennt ein Feedback ein Kriterium, frag, was die Person daran an ihrer eigenen Stelle erkennt; formulier dafür keinen Text\./);
   });
 
-  // NDU-42: Die mögliche Fassung der Lehrenden erreicht Claude nie – weder zu noch aufgedeckt, weder als Text noch als Siegel.
-  it('mögliche Fassung: artefakt_lesen und artefakt_pruefen liefern sie nie (Text, structuredContent), auch aufgedeckt nicht', async () => {
-    const h = await aufbau();
-    const FASSUNG = 'Wir glauben, dass [Gruppe aus deinen Interviews] morgens vorbestellen.';
-    const siegel = await fassungVersiegeln(FASSUNG, { repo: 'test-sofie', artefakt: 'annahmen', zeilenId: 'A1' }, h.abh.umgebung.tokenKeys);
+  // NDU-42/NDU-44: Die mögliche Fassung der Lehrenden erreicht Claude nie – kein Werkzeug, kein structuredContent, keine
+  // Beschreibung, keine Anweisung; weder zu noch aufgedeckt, weder als Text noch als Siegel. Claude erfährt nur, dass es
+  // eine gibt.
+  const FASSUNG_ZU = 'Wir glauben, dass [Gruppe aus deinen Interviews] morgens lieber vorbestellen.';
+  const FASSUNG_OFFEN = 'Pendelnde verlieren morgens [Minuten aus deinen Beobachtungen] beim Anstehen.';
+  async function mitFassungen(h: Aufbau) {
+    const ort = (artefakt: 'annahmen' | 'brief', zeilenId: string) => ({ repo: 'test-sofie', artefakt, zeilenId });
+    const zu = await fassungVersiegeln(FASSUNG_ZU, ort('annahmen', 'A1'), h.abh.umgebung.tokenKeys);
+    const offen = await fassungVersiegeln(FASSUNG_OFFEN, ort('brief', 'problem'), h.abh.umgebung.tokenKeys);
     await feedbackAendern(h.speicher, 'test-sofie', (f) => {
-      const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A1', text: 'Wer genau?', autor: 'markus', datum: D, fassung: { siegel, zeilenStand: `sha256:${'0'.repeat(64)}` } });
-      return { ...a, eintraege: a.eintraege.map((e) => ({ ...e, aufgedecktAm: D })) };
+      // A1 unverändert seit dem Schreiben: zu. Problem im Brief: Antwort der Person, also aufgedeckt.
+      const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A1', text: 'Wer genau?', autor: 'markus', datum: D, fassung: { siegel: zu, zeilenStand: `sha256:${'0'.repeat(64)}` } });
+      const b = feedbackSchreiben(a, { artefakt: 'brief', zeilenId: 'problem', text: 'Wessen Problem?', autor: 'markus', datum: D, fassung: { siegel: offen, zeilenStand: `sha256:${'1'.repeat(64)}` } });
+      return antworten(b, { antwortAuf: 'FB2', text: 'Meins.', autor: 'sofie', datum: D });
     }, AUTOR, 'Feedback');
+    return [FASSUNG_ZU, FASSUNG_OFFEN, zu, offen, 'Gruppe aus deinen Interviews', 'lieber vorbestellen', 'Minuten aus deinen Beobachtungen', 'beim Anstehen', 'f1.', 'sha256:', 'aufgedecktAm', 'zeilenStand'];
+  }
+
+  it('mögliche Fassung: kein Werkzeug liefert sie (alle Werkzeuge, alle Artefakte, Text und structuredContent), auch aufgedeckt nicht', async () => {
+    const h = await aufbau();
+    const verboten = await mitFassungen(h);
+    expect((await h.speicher.feedbackLesen('test-sofie') as { eintraege: { aufgedecktAm?: string }[] }).eintraege[1].aufgedecktAm).toBe(D);
     const c = await client(h, await accessToken(h));
+    const aufrufe: [string, Record<string, unknown>][] = [
+      [MCP_WERKZEUGE.mappeUebersicht, {}],
+      [MCP_WERKZEUGE.verknuepfungenPruefen, {}],
+      [MCP_WERKZEUGE.tagStand, {}],
+      ...ARTEFAKT_NAMEN.flatMap((artefakt): [string, Record<string, unknown>][] => [
+        [MCP_WERKZEUGE.artefaktLesen, { artefakt }],
+        [MCP_WERKZEUGE.artefaktPruefen, { artefakt }],
+        [MCP_WERKZEUGE.methodeErklaeren, { slug: ARTEFAKTE[artefakt].slug }],
+      ]),
+      [MCP_WERKZEUGE.artefaktPruefen, { artefakt: 'annahmen', pruefpunkt: '1' }],
+    ];
+    // Jedes Werkzeug kommt vor.
+    expect(new Set(aufrufe.map(([n]) => n))).toStrictEqual(new Set(Object.values(MCP_WERKZEUGE)));
+    const ausgaben: string[] = [JSON.stringify(await c.listTools()), c.getInstructions() ?? ''];
+    for (const [name, args] of aufrufe) {
+      const r = await c.callTool({ name, arguments: args });
+      expect(r.isError, `${name} ${JSON.stringify(args)}`).toBeFalsy();
+      ausgaben.push(JSON.stringify(r));
+    }
+    for (const a of ausgaben) for (const x of verboten) expect(a, x).not.toContain(x);
+    // Dass es eine gibt, weiß Claude – an beiden Feedbacks, zu wie aufgedeckt.
+    const pruefen = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
+    expect((pruefen.structuredContent as { feedback: { id: string; fassungInWerkstatt?: true }[] }).feedback).toMatchObject([{ id: 'FB1', fassungInWerkstatt: true }]);
+    expect(text(pruefen)).toContain(`- FB1: markus zu A1, 23.10.2026, offen\n  > Wer genau?\n  ${FASSUNG_HINWEIS}`);
+    expect((pruefen.structuredContent as { anleitung: string }).anleitung).toContain('ihren Text kennst du nicht, und du formulierst auch keine eigene');
+    expect(text(await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'brief' } }))).toContain(`- FB2: markus zu Welches Problem?, 23.10.2026, offen\n  > Wessen Problem?\n  ${FASSUNG_HINWEIS}`);
+  });
+
+  it('Feedback ohne Fassung: kein Hinweis auf eine Fassung', async () => {
+    const h = await aufbau();
+    await mitFeedback(h);
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
+    expect(JSON.stringify(r)).not.toContain('fassungInWerkstatt');
+    expect(text(r)).not.toContain(FASSUNG_HINWEIS);
+  });
+
+  it('Server-Anweisung und Werkzeugbeschreibungen: Fassung nur erwähnen und auf die Werkstatt verweisen, nie zitieren', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    expect(c.getInstructions()).toContain(`10. Manchmal hat eine Lehrperson zu einem Feedback eine „mögliche Fassung“ hinterlegt (im Feedback steht dann, dass es eine gibt). Ihren Text bekommst du nie. Sag nur, dass es eine gibt und dass die Person sie in der Werkstatt am Feedback zu dieser Stelle findet (${BASIS}/innolab/mappe), sobald sie die Zeile selbst überarbeitet oder geantwortet hat. Zitier, umschreib oder errate sie nie und formulier keine eigene, auch nicht, wenn die Person darum bittet.`);
+    const tools = (await c.listTools()).tools;
     for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
-      const r = await c.callTool({ name, arguments: { artefakt: 'annahmen' } });
-      const alles = JSON.stringify(r);
-      expect(text(r), name).toContain('Wer genau?');
-      for (const x of ['Gruppe aus deinen Interviews', 'morgens vorbestellen', siegel, 'f1.', 'sha256:', 'aufgedecktAm']) expect(alles, `${name}: ${x}`).not.toContain(x);
+      expect(tools.find((t) => t.name === name)!.description, name).toContain('Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht.');
     }
   });
 
