@@ -130,6 +130,7 @@ export const METHODEN: Methode[] = [
       { id: 'entscheidungslog-tatsache', alt: 'entscheidungslog-3', text: 'Keine Annahme ist als Tatsache formuliert („Pendler*innen wollen …“ statt „Wir glauben, dass …“).' },
       { id: 'entscheidungslog-ersetzt', alt: 'entscheidungslog-4', text: 'Wo ein Test etwas widerlegt hat, steht die Änderung als neue Zeile da („ersetzt D…“ mit der ID der alten Zeile) – die alte bleibt stehen und trägt „ersetzt am …“.' },
     ],
+    quelle: 'Eigene Methode des Kurses nach der Learning Card von David J. Bland & Alex Osterwalder, „Testing Business Ideas“ (2019), S. 55, 61–62, 315',
   },
   {
     slug: 'annahmen', name: 'Annahmen-Map', tag: 1, dauer: 45,

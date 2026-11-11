@@ -195,7 +195,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Widerlegt I2 die Annahme A1?',
-      antwort: 'Nein, I2 ist ein erster Gegenbeleg. Erst wenn dieselbe Einsicht in weiteren Snapshots wiederkehrt, rückt A1 in der Annahmen-Map nach links; im Entscheidungslog steht vorerst nur der Gegenbeleg (I2).',
+      antwort: 'Nein, I2 ist ein erster Gegenbeleg – er kommt in die Annahmen-Map. Erst wenn dieselbe Einsicht in weiteren Snapshots wiederkehrt, rückt A1 nach links; eine Zeile im Entscheidungslog kommt erst, wenn ihr deshalb etwas ändert (bei der Kaffeebar D4 nach allen fünf).',
       falsch: '„Ja, A1 ist falsch“ – ein Interview ist ein Beleg, kein Beweis.',
     },
     ueberleitung: 'Jetzt ihr: drei Runden, jede*r zeigt einmal.',
@@ -206,7 +206,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Schritte unten kopieren und in den Teams-Chat einfügen.',
       'Reihenfolge festlegen, Timer 12 min je Runde neu starten.',
       'Zeit: nach 5 min vom Zeigen ins Besprechen wechseln.',
-      'Nach 36 min: Festhalten in der Werkstatt, Timer 8 min.',
+      'Nach 36 min: weiter zur Folie Festhalten, Timer 8 min dort.',
       'Fallback: Werkstatt leer? Bis 14:45 die besten 2–3 eintragen.',
     ],
     uebung: { dauer: '44 min (3 × 12 + 8)', form: 'zu dritt reihum, dann allein' },
@@ -225,7 +225,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
         'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen.',
         'Runde 2 und 3 genauso, Timer jeweils neu starten.',
-        'Festhalten und prüfen (8 min): Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog, dann Prüfliste und Claude.',
+        'Festhalten und prüfen (8 min, Folie Festhalten): Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, zwei bis drei Zeilen im Entscheidungslog, dann Prüfliste und Claude.',
       ],
       achten: [
         'Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen hören, ist der Grund für die Besprechung (Torres S. 75).',
@@ -242,6 +242,43 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       {
         text: 'So lange Gespräche führen, bis nichts Neues mehr kommt; bei einer klar umrissenen Zielgruppe können drei bis fünf reichen. Streuen die Ergebnisse nach mehr als zehn Gesprächen noch in alle Richtungen, ist die Zielgruppe vermutlich zu unscharf.',
         quelle: `${MOMTEST}, S. 88`,
+      },
+    ],
+    ueberleitung: 'Nach den drei Runden: festhalten, was sich ändert.',
+  },
+
+  festhalten: {
+    live: [
+      'Timer 8 min starten, alle arbeiten allein in der Werkstatt.',
+      '„Eine Zeile pro Entscheidung, nicht pro Interview – zwei, drei reichen heute.“',
+      'Zwei Fragen aufdecken: Für wen und Problem, dann riskanteste Annahme.',
+      'Falle: Gegenbeleg nur ins Log statt in die Annahmen-Map.',
+      'Nach 6 min: reihum je eine Zeile vorlesen, Beleg-Stufe nennen.',
+    ],
+    uebung: { dauer: '8 min', form: 'allein, jede*r im eigenen Log' },
+    verstaendnis: {
+      frage: 'I2 widerspricht eurer riskantesten Annahme. Wohin damit?',
+      antwort: 'In die Annahmen-Map als Beleg (I2-4). Ins Log kommt eine Zeile erst, wenn ihr deshalb etwas tut – verwerfen, ändern oder bewusst weiter prüfen.',
+      falsch: '„Eine Zeile ‚A1 hat Gegenbeleg‘ ins Log“ – das ist ein Stand, er gehört in die Map; das Log hält fest, was ihr darum tut.',
+    },
+    kern: [
+      {
+        text: 'Fitzpatrick, nach einer Reihe von Gesprächen: Notizen und wichtige Zitate mit dem Team durchgehen, „Update your beliefs and plans“, die nächsten drei großen Fragen festlegen. Nach jedem Gespräch soll das Gelernte „on paper and in everyone’s head“ sein; das „leads to better decisions, prevents arguments“.',
+        quelle: `${MOMTEST}, S. 103, 110`,
+      },
+      {
+        text: 'Bland, Learning Card: „We believed that …“, „We observed …“, „From that we learned that …“, „Therefore, we will …“ – die Zeile im Log ist das „Therefore“. Gelerntes hat ein Ablaufdatum, darum wird es in Handlung übersetzt: aufgeben, ändern oder weiter testen.',
+        quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 55, 62',
+      },
+      {
+        text: 'Kaffeebar nach den Interviews: D3 „Zielgruppe: Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin“ ersetzt D1 (Beleg gesagt, I1–I5); D4 „Vorbestellen vor der Ankunft verworfen“ (gesagt, I2-4, I3-1, I5-3; bei I1 nur in der Notiz).',
+        quelle: 'Werkstatt, Beispiel Kaffeebar, entscheidungen.json',
+      },
+    ],
+    fragen: [
+      {
+        frage: 'Und wenn sich nichts geändert hat?',
+        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: eine Zeile, dass Zielgruppe und Problem bleiben, mit den Interview-IDs als Beleg. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
       },
     ],
     ueberleitung: 'Bevor ihr zur Map geht: eine Frage an euer Produkt.',

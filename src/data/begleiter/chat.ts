@@ -6,7 +6,7 @@ export const CHAT_SYNTHESE = `Interview-Synthese · 44 min · Miro: T1 · 5, eur
 1. Zeigen (5 min): Eine Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen.
 2. Besprechen (7 min): Die anderen beiden fragen: Was wurde gesagt? Was ändert sich? Wie war das Gespräch? Was haben wir überhört? Was sie anders hören, notiert ihr für den Snapshot.
 3. Reihum: drei Runden à 12 Minuten.
-4. Festhalten und prüfen (8 min): Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog; dann Prüfliste und Claude.
+4. Festhalten und prüfen (8 min): Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog (eine pro Entscheidung, nicht pro Interview); dann Prüfliste und Claude.
 Noch keine Interviews in der Werkstatt? Bis 14:45 die besten 2–3 eintragen: Pseudonym, Datum, Einwilligung, 3–5 Zitate mit ID, Chancen mit Beleg-IDs. Danach Runden à 5 min (2 zeigen, 3 besprechen).`;
 
 export const CHAT_JOURNEY_MAP = `Experience Map · 35 min · Miro: T2 · 1 · Experience Map

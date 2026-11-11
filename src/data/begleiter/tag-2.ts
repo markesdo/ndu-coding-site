@@ -38,6 +38,30 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 
 // Begleiter-Notizen zu src/pages/innolab/tag-2/abschluss.astro (eigene Seite nach dem Baum, damit der Abschluss im Beamer am Ende kommt).
 export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
+  'log-heute': {
+    live: [
+      'Fragen: Was hat sich durch eure Interviews geändert? Je eine Zeile vorlesen.',
+      'D3 vorlesen: die alte Zeile D1 bleibt, nur „ersetzt am“.',
+      'Zeit: drei Minuten, nicht diskutieren – Rückfragen nach Tag 3.',
+      'Falle: Zeile ohne Beleg-Stufe oder ohne ID.',
+    ],
+    verstaendnis: {
+      frage: 'Warum korrigiert die Kaffeebar D1 nicht einfach?',
+      antwort: 'Weil dann niemand mehr sieht, dass die Zielgruppe geraten war und erst die Interviews sie geschärft haben – genau das zeigt der Pitch an Tag 7. In der Werkstatt lassen sich gespeicherte Zeilen auch nicht ändern, nur ersetzen.',
+      falsch: '„Damit das Log vollständig ist“ – es geht nicht um Vollständigkeit, sondern um den sichtbaren Lernweg.',
+    },
+    kern: [
+      {
+        text: 'Kaffeebar: D3 „Zielgruppe: Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin“, Grund „Alle 5 haben einen festen Zug zwischen 7:20 und 7:50; das Ziel ist verschieden (Wien, Uni) …“, Beleg gesagt (I1–I5), ersetzt D1 („Pendler*innen nach Wien“, Beleg noch keiner).',
+        quelle: 'Werkstatt, Beispiel Kaffeebar, entscheidungen.json',
+      },
+      {
+        text: 'Bland, Learning Card: Der letzte Schritt „Therefore, we will …“ ist die Entscheidung; Pivot heißt, ein Element der Idee deutlich zu ändern, frühere Evidenz kann dann irrelevant werden. D3 ersetzt D1 ist ein kleiner Pivot beim Kundensegment.',
+        quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 55, 61',
+      },
+    ],
+    ueberleitung: 'Und jetzt die Checkliste für heute.',
+  },
   abschluss: {
     live: [
       'Checkliste Punkt für Punkt, jede*r hakt selbst ab.',

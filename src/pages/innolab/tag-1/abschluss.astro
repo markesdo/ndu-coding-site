@@ -15,7 +15,7 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
 <Layout title="Tag 1 · Abschluss">
   <span class="eyebrow">Innolab · Tag 1 · Abschluss</span>
   <h1>Tag 1 · Abschluss</h1>
-  <p class="lead">Was bis Tag 2 passiert: fünf echte Interviews, jedes am selben Tag einmal in die Werkstatt eingetragen, mit Snapshot und Zitat-IDs; die Überraschungen kommen ins Entscheidungslog.</p>
+  <p class="lead">Was bis Tag 2 passiert: fünf echte Interviews, jedes am selben Tag einmal in die Werkstatt eingetragen, mit Snapshot und Zitat-IDs; was die Interviews an Brief oder Annahmen-Map ändern, kommt als Zeile ins Entscheidungslog.</p>
 
   <Folie>
     <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
@@ -23,7 +23,7 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
     <Fluss label="Hausaufgabe: Interview, Eintrag in der Werkstatt, Zeile im Entscheidungslog" knoten={[
       { t: '5 Interviews', sub: 'je 20–30 min, Aufnahme nur mit Einwilligung', icon: Mic },
       { t: 'Werkstatt', sub: 'Notizen, Zitate und Snapshot, pro Interview ein Pseudonym (I1 bis I5); Rohnotizen bleiben bei euch', icon: ScrollText },
-      { t: 'Überraschungen', sub: 'je eine Zeile im Entscheidungslog, in der Werkstatt gespeichert', icon: ClipboardList },
+      { t: 'Was sich ändert', sub: 'je eine Zeile im Entscheidungslog, wenn ihr am Brief oder an der Annahmen-Map etwas ändert', icon: ClipboardList },
     ]} />
     <p>Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett. Vor jedem Gespräch den <a href="/innolab/werkstatt/interview-datenschutz">Datenschutzhinweis</a> zeigen.</p>
     <div class="nur-handout"><Checklist id="il-tag1-hausaufgabe" items={[
@@ -32,7 +32,7 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
       'Notizen pro Interview mit Pseudonym (I1 bis I5), ohne Namen, Arbeitgeber oder Erkennbares. Rohnotizen und Aufnahmen bleiben bei euch, nie im App-Repo.',
       'Gleich nach jedem Interview, am selben Tag: Notizen, Zitate und Snapshot-Text in den Interview-Editor der Werkstatt eintragen (I1 bis I5), mit Pseudonym und ohne Foto. Nur dort, nicht zusätzlich auf Miro.',
       'Die Geschichte gleich danach auf Papier skizzieren, Knoten und Pfeile, und die Skizzen an Tag 2 mitbringen',
-      'Eine Zeile pro Überraschung im Entscheidungslog, in der Werkstatt gespeichert und mit ihren Zitat-IDs belegt, zum Beispiel I2-3 (<a href="/innolab/mappe">Meine Mappe</a>)',
+      'Eine Zeile im Entscheidungslog pro Änderung an Brief oder Annahmen-Map, in der Werkstatt gespeichert und mit ihren Zitat-IDs belegt, zum Beispiel I2-3 (<a href="/innolab/mappe">Meine Mappe</a>); eine Überraschung, die nichts ändert, steht im Snapshot',
       'Claude mit der Werkstatt verbunden (<a href="/innolab/werkstatt/claude">Claude verbinden</a>) und das Entscheidungslog prüfen lassen',
     ]} /></div>
     <div class="nur-handout">
