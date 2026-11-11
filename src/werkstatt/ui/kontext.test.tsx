@@ -8,7 +8,8 @@ import LEITFADEN from '../beispiele/leitfaden.json';
 import type { Annahmen, Interview, Leitfaden } from '../schemas/index.js';
 import type { LehrendenArtefakt, LehrendenInhalt } from '../vertrag.js';
 import {
-  annahmenAus, belegtImInterview, istKontextTaste, KONTEXT_LEER, kontextDaten, leitfadenAus, neueAnnahmen, neuerLeitfaden, neueZeilen, QUADRANT_TEXT, type Kontext,
+  annahmenAus, belegtImInterview, idAusInterview, interviewIds, istKontextTaste, KONTEXT_LEER, kontextDaten, kontextNeuIds, leitfadenAus, meldungMitKontext, mussKontextLaden,
+  neueAnnahmen, neuerLeitfaden, neueZeilen, QUADRANT_TEXT, type Kontext,
 } from './kontext-hilfen';
 import { LeserKoerper, type LeserInhaltProps } from './LehrendenAnsicht';
 import Zeigen, { type ZeigenProps } from './Zeigen';
@@ -40,13 +41,16 @@ const zeile = (h: string, id: string) => zeilen(h).find(([, t]) => t.startsWith(
 
 describe('Kontext-Hilfen', () => {
   it('belegt im Interview: Zitat-ID des Snapshots oder die Interview-ID, sonst nicht', () => {
-    expect(belegtImInterview({ belegIds: ['I2-4'] }, I2)).toBe(true);
-    expect(belegtImInterview({ belegIds: ['I2'] }, I2)).toBe(true);
-    expect(belegtImInterview({ belegIds: ['I3-2', 'D1'] }, I2)).toBe(false);
+    const hier = interviewIds(I2);
+    expect(belegtImInterview({ belegIds: ['I2-4'] }, hier)).toBe(true);
+    expect(belegtImInterview({ belegIds: ['I2'] }, hier)).toBe(true);
+    expect(belegtImInterview({ belegIds: [' I2-4 '] }, hier)).toBe(true);
+    expect(belegtImInterview({ belegIds: ['I3-2', 'D1'] }, hier)).toBe(false);
     // I2-40 ist kein Zitat von I2 (kein Präfixvergleich).
-    expect(belegtImInterview({ belegIds: ['I2-40', 'I22'] }, I2)).toBe(false);
-    expect(belegtImInterview({ belegIds: [] }, I2)).toBe(false);
-    expect(belegtImInterview({ belegIds: ['I2-4'] }, null)).toBe(false);
+    expect(belegtImInterview({ belegIds: ['I2-40', 'I22'] }, hier)).toBe(false);
+    expect(belegtImInterview({ belegIds: [] }, hier)).toBe(false);
+    expect(belegtImInterview({ belegIds: ['I2-4'] }, interviewIds(null))).toBe(false);
+    expect(idAusInterview(' I2-5', hier)).toBe(true);
   });
 
   it('neue Zeilen: erstes Laden nichts; danach neue und geänderte IDs', () => {
@@ -78,6 +82,26 @@ describe('Kontext-Hilfen', () => {
     const antwort = { name: 'annahmen', stand: 'vorhanden', daten: AN, roh: null, feedback: [{ text: 'FEEDBACK-MARKE' }] };
     expect(kontextDaten('annahmen', antwort)).toStrictEqual(AN);
     expect(JSON.stringify(kontextDaten('annahmen', antwort))).not.toContain('FEEDBACK-MARKE');
+  });
+
+  it('sparsam laden: nur offen und nur einmal je Stand', () => {
+    expect(mussKontextLaden(false, null, '0:1')).toBe(false);
+    expect(mussKontextLaden(true, null, '0:1')).toBe(true);
+    expect(mussKontextLaden(true, '0:1', '0:1')).toBe(false);
+    // Neu laden bei offenem Kontext: wieder; bei zugeklapptem erst beim nächsten Öffnen.
+    expect(mussKontextLaden(true, '0:1', '1:1')).toBe(true);
+    expect(mussKontextLaden(false, '0:1', '1:1')).toBe(false);
+  });
+
+  it('Meldung nach Neu laden nennt auch neue Annahmen und Fragen', () => {
+    const lf = { ...LF, fragen: [...LF.fragen, { id: 'F10', text: 'Warum der Automat?', art: 'nachfrage' as const }] };
+    const k = kontext({ annahmen: teil(AN, ANNAHMEN as Annahmen), leitfaden: teil(lf, LF) });
+    expect(kontextNeuIds(k)).toStrictEqual(['A1', 'A3', 'F10']);
+    expect(kontextNeuIds(kontext())).toStrictEqual([]);
+    expect(meldungMitKontext('Nichts Neues gespeichert', ['A1', 'F10'])).toBe('Neu oder geändert: A1, F10');
+    expect(meldungMitKontext('Neu oder geändert: I2', ['A1'])).toBe('Neu oder geändert: I2, A1');
+    expect(meldungMitKontext('Snapshot entfernt', ['A1'])).toBe('Snapshot entfernt · Neu oder geändert: A1');
+    expect(meldungMitKontext('Nichts Neues gespeichert', [])).toBe('Nichts Neues gespeichert');
   });
 
   it('Taste K: nur ohne Strg/Cmd/Alt und nicht beim Tippen', () => {
@@ -168,6 +192,26 @@ describe('Kontext im Zeigen-Modus', () => {
     expect(text(zeigen({ kontext: leer }))).toContain('Noch keine Annahmen eingetragen.');
     expect(text(zeigen({ kontext: leer, kontextReiter: 'leitfaden' }))).toContain('Noch kein Leitfaden.');
     expect(text(zeigen({ kontext: kontext({ annahmen: teil(null) }) }))).toContain('Noch keine Annahmen eingetragen.');
+  });
+
+  it('vor dem ersten Laden (Start, Personenwechsel): „lädt …“, nie „Noch keine …“', () => {
+    for (const kontextReiter of ['annahmen', 'leitfaden'] as const) {
+      const t = text(zeigen({ kontext: KONTEXT_LEER, kontextReiter }));
+      expect(t).not.toContain('Noch keine Annahmen eingetragen.');
+      expect(t).not.toContain('Noch kein Leitfaden.');
+      expect(t).toContain('lädt …');
+    }
+  });
+
+  it('Meldung im Kopf: mit offenem Kontext auch dessen Änderungen, zugeklappt nicht', () => {
+    const k = kontext({ annahmen: teil(AN, ANNAHMEN as Annahmen) });
+    expect(text(zeigen({ kontext: k, meldung: 'Nichts Neues gespeichert' }))).toContain('Neu oder geändert: A1, A3 · Stand');
+    expect(text(zeigen({ kontext: k, meldung: 'Nichts Neues gespeichert', kontextOffen: false }))).toContain('Nichts Neues gespeichert · Stand');
+  });
+
+  it('doppelte Beleg-ID: beide Chips', () => {
+    const a = { ...AN, annahmen: [{ ...AN.annahmen[0], belegIds: ['I2-4', 'I2-4'] }] };
+    expect(zeigen({ kontext: kontext({ annahmen: teil(a) }) }).match(/<span class="zg-id zg-id-hier">I2-4<\/span>/g)).toHaveLength(2);
   });
 
   it('lädt und Fehler: neutral', () => {

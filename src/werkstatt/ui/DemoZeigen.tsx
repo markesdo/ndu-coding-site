@@ -27,7 +27,12 @@ export default function DemoZeigen({ person }: { person: string }) {
   const [neu, setNeu] = useState(0);
   const [kontextOffen, setKontextOffen] = useState(false);
   const [kontextReiter, setKontextReiter] = useState<KontextName>('annahmen');
-  const kontext = useKontext(offen ? person : null, neu, (name) => api.lesen(name));
+  const kontext = useKontext(offen ? person : null, kontextOffen, String(neu), (name) => api.lesen(name));
+  // Beim Zuklappen Fokus zurück in den Zeigen-Bereich (wie im Leser der Lehrenden), sonst kommen die Tasten nicht an.
+  function kontextUmschalten() {
+    if (kontextOffen) wurzel.current?.focus();
+    setKontextOffen(!kontextOffen);
+  }
 
   async function laden() {
     const mein = ++lauf.current;
@@ -73,7 +78,7 @@ export default function DemoZeigen({ person }: { person: string }) {
   function taste(e: KeyboardEvent<HTMLDialogElement>) {
     if (istKontextTaste(e)) {
       e.preventDefault();
-      setKontextOffen((o) => !o);
+      kontextUmschalten();
       return;
     }
     const ziel = tastenZiel(e.key, { zeigen: true, personen: [], person, nr, anzahl: ivs.length });
@@ -97,7 +102,7 @@ export default function DemoZeigen({ person }: { person: string }) {
             nr={nr} laedt={laedt} fehler={fehler} stand={stand?.zeit ?? null} jetzt={jetzt}
             meldung={neuMeldung(stand?.vorher ?? null, ivs)} wurzel={wurzel}
             kontext={kontext} kontextOffen={kontextOffen} kontextReiter={kontextReiter}
-            kontextUmschalten={() => setKontextOffen((o) => !o)} reiterWaehlen={setKontextReiter}
+            kontextUmschalten={kontextUmschalten} reiterWaehlen={setKontextReiter}
             personWaehlen={() => {}} nrWaehlen={(i) => ivs[i] && setId(ivs[i].id)}
             blaettern={(r) => ivs.length > 0 && setId(ivs[blaettern(nr, ivs.length, r)].id)}
             neuLaden={() => { setNeu((n) => n + 1); void laden(); }} beenden={() => setOffen(false)}
