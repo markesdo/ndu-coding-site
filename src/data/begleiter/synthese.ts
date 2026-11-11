@@ -115,22 +115,23 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   geschichte: {
     live: [
+      'Vor dem Vorlesen Rollen zuteilen: Produktmanagement, Design, Entwicklung.',
       'Geschichte vorlesen, langsam, ohne einzelne Stellen zu betonen.',
       'Timer 1 min: jede*r schreibt einen Satz in den Chat.',
       '„Noch nicht abschicken – erst auf mein Zeichen, alle gleichzeitig.“',
-      'Falle: selbst eine Lesart vorgeben („Das Problem ist ja …“).',
+      'Falle: Lesart vorgeben oder erklären, worauf eine Rolle achtet.',
     ],
     uebung: { dauer: '1 min', form: 'allein, ein Satz in den Teams-Chat' },
     chat: CHAT_NETFLIX,
     ablauf: {
       schritte: [
         'Folie zeigen, die Geschichte vorlesen.',
-        'Timer 1 min: Jede*r tippt einen Satz – was ist für sie oder ihn das Wichtigste? Noch nicht abschicken.',
+        'Rollen zuteilen (nur den Namen: Produktmanagement, Design, Entwicklung). Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
         'Auf dein Zeichen schicken alle gleichzeitig ab. Dann zur nächsten Folie.',
       ],
       achten: [
         'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
-        'Auch zwei gleiche Sätze sind ein Ergebnis – nicht kommentieren, erst auflösen.',
+        'Trifft jemand nicht den Satz aus dem Buch: kein Fehler – Torres schreibt „might“.',
       ],
     },
     ueberleitung: 'Jetzt abschicken – dann seht ihr, was drei Rollen bei Torres gehört haben.',
@@ -139,9 +140,10 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   warum: {
     live: [
       'Alle Sätze aus dem Chat vorlesen, dann Auflösung per Knopf.',
-      'Fragen: Wessen Satz passt zu welcher Rolle?',
+      'Fragen: Hat eure Rolle dasselbe gehört wie im Buch?',
       '„Jede Sicht ist berechtigt – und jede kann zu einer Verbesserung führen.“',
       '„Ihr habt allein interviewt – heute hört das Team nachträglich mit.“',
+      '„Jede*r kennt ein anderes Produkt – darum hört ihr Verschiedenes.“',
     ],
     verstaendnis: {
       frage: 'Warum will Torres keine einzelne „Stimme der Kundschaft“ im Team?',
@@ -152,9 +154,9 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       schritte: [
         'Die Sätze aus dem Chat vorlesen, ohne zu werten.',
         'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags).',
-        'Die drei Rollen den Sätzen zuordnen lassen, dann den Schritt „Jede Sicht ist berechtigt“ aufdecken.',
+        'Jede*r vergleicht den eigenen Satz mit dem der eigenen Rolle, dann den Schritt „Jede Sicht ist berechtigt“ aufdecken.',
       ],
-      aufloesung: 'Produkt hört „Unter ‚Beliebt‘ nur Serien“ (Sorge ums Angebot), Design „Wir fanden nicht heraus, wie man nach einem Titel sucht“ (Bedienung), Technik „Fast nur Kinderfilme“ (technischer Weg, verschiedene Nutzer*innen zu erkennen). Jede Sicht ist berechtigt; je unterschiedlicher das Team, desto mehr holt es aus einem Interview.',
+      aufloesung: 'Produktmanagement hört „Unter ‚Beliebt‘ nur Serien“ (Sorge ums Angebot), Design „Wir fanden nicht heraus, wie man nach einem Titel sucht“ (Bedienung), Entwicklung „Fast nur Kinderfilme“ (technischer Weg, verschiedene Nutzer*innen zu erkennen). Jede Sicht ist berechtigt; je unterschiedlicher das Team, desto mehr holt es aus einem Interview.',
     },
     kern: [
       {
