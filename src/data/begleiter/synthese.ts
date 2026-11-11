@@ -1,0 +1,250 @@
+import type { Notiz } from './typen';
+
+// Begleiter-Notizen zu src/pages/innolab/methoden/synthese.astro (Tag 2, 14:05–15:10). Vorwissen: „teilweise“ aus Need
+// Finding (vorwissen.ts) – darum zuerst fragen, was bekannt ist, und die Theorie dann knapp halten.
+// Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt; Fitzpatrick wie auf der Seite zitiert.
+const TORRES = 'Teresa Torres, Continuous Discovery Habits';
+const MOMTEST = 'Rob Fitzpatrick, The Mom Test';
+
+export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
+  verschwimmen: {
+    live: [
+      'Fragen: Wer hat in Need Finding schon Snapshots oder Affinitätsdiagramme gemacht?',
+      'Obere Reihe: So laufen Projekte – sammeln, anhalten, Bericht.',
+      '„Nach ein paar Interviews verschwimmen die Geschichten – verlasst euch nicht aufs Gedächtnis.“',
+      'Wenn bekannt: Folie kurz, Affinitätsdiagramm nur als Gegenbild.',
+    ],
+    verstaendnis: {
+      frage: 'Was ist an „erst alle Interviews führen, dann auswerten“ das Problem?',
+      antwort: 'Nach ein paar Interviews verschwimmen die Geschichten, und man verlässt sich aufs Gedächtnis (S. 68). Außerdem setzt es voraus, dass Interviews einen Anfang und ein Ende haben; wer kontinuierlich interviewt, hat keinen Punkt zum Anhalten (S. 67, 77).',
+      falsch: '„Es dauert länger“ – Torres argumentiert mit dem Erinnern und dem kontinuierlichen Interviewen, nicht mit Zeit.',
+    },
+    kern: [
+      {
+        text: '„After you’ve conducted even a handful of interviews, let alone the dozens you will conduct each year, interviews will start to blur together. You don’t want to rely on your memory to keep your research straight. That’s the job of an interview snapshot.“',
+        quelle: `${TORRES}, S. 68`,
+      },
+      {
+        text: 'Wer kontinuierlich interviewt, hat keinen klaren Punkt, an dem er anhält und auswertet – darum „synthesize as you go“.',
+        quelle: `${TORRES}, S. 67–68`,
+      },
+      {
+        text: 'Anti-Muster „Stopping to synthesize a set of interviews“: Im Projekt 6 bis 12 Interviews, dann Stickies, vielleicht ein Affinitätsdiagramm, am Ende ein Bericht. Das setzt einen Anfang und ein Ende voraus; stattdessen nach jedem Interview mit Snapshots verdichten.',
+        quelle: `${TORRES}, S. 77`,
+      },
+    ],
+    ueberleitung: 'Darum der Snapshot: eine Seite pro Interview, gleich danach.',
+  },
+
+  snapshot: {
+    live: [
+      'Fragen: Wie sahen eure Snapshots aus – alle Felder gefüllt?',
+      'Miro T1 · 5 öffnen, einen echten Snapshot zeigen lassen.',
+      '„Bild und Zitat sind Schlüssel – damit erinnert ihr euch an diese eine Geschichte.“',
+      'Falle: Einsichten und Chancen vermischt.',
+    ],
+    kern: [
+      {
+        text: 'Bild und einprägsames Zitat sind Schlüssel, die die Erinnerung an die Geschichten dieses Interviews öffnen; die Kurzinfos ordnen ein, wie diese Person zu anderen passt. Dann das Herz: Einsichten und Chancen.',
+        quelle: `${TORRES}, S. 68–69`,
+      },
+      {
+        text: 'Einsichten: Interessantes, das kein Bedürfnis, Schmerzpunkt oder Wunsch ist, etwa ein ungewöhnliches Verhalten – „Over time, insights often turn into opportunities.“ Auch Einzelfälle festhalten: Oft wird daraus ein Muster aus mehreren Interviews.',
+        quelle: `${TORRES}, S. 70`,
+      },
+      {
+        text: 'Die Skizze der Geschichte (Knoten und Verbindungen) hilft, sie zu erinnern und zu verstehen, und später, Muster über scheinbar einzigartige Geschichten hinweg zu finden.',
+        quelle: `${TORRES}, S. 70`,
+      },
+    ],
+    ueberleitung: 'Am schwierigsten ist die Spalte Chancen: Ist das ein Wunsch oder ein Bedürfnis?',
+  },
+
+  wunsch: {
+    live: [
+      'Fragen: Welche Funktion hat sich bei euch jemand gewünscht?',
+      'Fluss von links nach rechts: Wunsch, Nachfrage, Bedürfnis, Lösungen.',
+      '„Das Bedürfnis lässt mehr Lösungen zu als der Wunsch.“',
+      'Brücke: „per App vorbestellen“ kommt am Baum wieder.',
+    ],
+    verstaendnis: {
+      frage: 'Eine Interviewte sagt: „Ich will per App vorbestellen.“ Was schreibt ihr in die Spalte Chancen?',
+      antwort: 'Nicht den Wunsch, sondern das Bedürfnis dahinter. Nachfragen: „Was würde dir das bringen?“ Bei der Kaffeebar etwa „Ich will den Zug nicht verpassen“ (so steht es im Handout des Baums). Das Bedürfnis öffnet mehr vom Lösungsraum (S. 69).',
+      falsch: '„Vorbestellen per App“ – das ist eine Lösung.',
+    },
+    kern: [
+      {
+        text: 'Eine Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch aus dem Interview – als Bedürfnis, nicht als Lösung. Bei einem Funktionswunsch fragen: „If you had that feature, what would that do for you?“ Beispiel: „I wish I could just say the name of the movie“ → „I don’t want to have to type out a long movie title.“ Lösungen: Sprachsuche oder Titel beim Tippen vervollständigen.',
+        quelle: `${TORRES}, S. 69`,
+      },
+      {
+        text: 'Chancen müssen keine wörtlichen Zitate sein, aber in den Worten der Kundschaft stehen – so bleiben sie aus ihrer Sicht und nicht aus Sicht der Firma.',
+        quelle: `${TORRES}, S. 70`,
+      },
+    ],
+    ueberleitung: 'So sieht ein ausgefüllter Snapshot aus – I2 von der Kaffeebar.',
+  },
+
+  'snapshot-i2': {
+    live: [
+      'Oben von links nach rechts: Pseudonym, Bild, Zitat, Skizze.',
+      '„Statt Foto die Uhr – sie erinnert an genau diese Geschichte.“',
+      'Fragen: Was ist hier Einsicht, was Chance – und warum?',
+      'Zitat-IDs zeigen: Jede Chance verweist auf ihren Beleg.',
+    ],
+    verstaendnis: {
+      frage: '„Entscheidet erst beim Ankommen“ steht bei Einsichten, nicht bei Chancen. Warum?',
+      antwort: 'Es ist ein auffälliges Verhalten, aber kein Bedürfnis, Schmerzpunkt oder Wunsch. Einsichten halten fest, was auffällt; mit der Zeit werden sie oft zu Chancen (Torres S. 70). Für A1 ist es trotzdem ein Beleg.',
+    },
+    kern: [
+      {
+        text: 'Wenn Interviews anonym bleiben müssen: das Foto weglassen und durch ein Bild ersetzen, das an die Geschichte erinnert – ein Firmenlogo, das Auto, sogar ein Katzen-Meme.',
+        quelle: `${TORRES}, S. 68–69`,
+      },
+      {
+        text: 'Kurzinfos helfen einzuordnen, wie die Geschichten dieses Interviews denen anderer Kund*innen ähneln oder sich unterscheiden.',
+        quelle: `${TORRES}, S. 69`,
+      },
+    ],
+    ueberleitung: 'Euren Snapshot habt ihr allein geschrieben. Was hätten die anderen in derselben Geschichte gehört?',
+  },
+
+  geschichte: {
+    live: [
+      'Geschichte vorlesen, langsam, ohne einzelne Stellen zu betonen.',
+      'Timer 1 min: jede*r schreibt einen Satz in den Chat.',
+      '„Noch nicht abschicken – erst auf mein Zeichen, alle gleichzeitig.“',
+      'Falle: selbst eine Lesart vorgeben („Das Problem ist ja …“).',
+    ],
+    uebung: { dauer: '1 min', form: 'allein, ein Satz in den Teams-Chat' },
+    ablauf: {
+      schritte: [
+        'Folie zeigen, die Geschichte vorlesen.',
+        'Timer 1 min: Jede*r tippt einen Satz – was ist für sie oder ihn das Wichtigste? Noch nicht abschicken.',
+        'Auf dein Zeichen schicken alle gleichzeitig ab. Dann zur nächsten Folie.',
+      ],
+      achten: [
+        'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
+        'Auch zwei gleiche Sätze sind ein Ergebnis – nicht kommentieren, erst auflösen.',
+      ],
+    },
+    ueberleitung: 'Jetzt abschicken – dann seht ihr, was drei Rollen bei Torres gehört haben.',
+  },
+
+  warum: {
+    live: [
+      'Alle Sätze aus dem Chat vorlesen, dann Auflösung per Knopf.',
+      'Fragen: Wessen Satz passt zu welcher Rolle?',
+      '„Jede Sicht ist berechtigt – und jede kann zu einer Verbesserung führen.“',
+      '„Ihr habt allein interviewt – heute hört das Team nachträglich mit.“',
+    ],
+    verstaendnis: {
+      frage: 'Warum will Torres keine einzelne „Stimme der Kundschaft“ im Team?',
+      antwort: 'Wer alle Interviews führt, kann jede Diskussion mit „Das will die Kundschaft“ beenden – das gibt einer Person zu viel Macht. Ziel ist, dass alle die Stimme der Kundschaft sind (S. 74–75). Fitzpatrick nennt das Gegenteil den Lern-Engpass (Mom Test, S. 98–99).',
+      falsch: '„Weil sich eine Person verhören kann“ – es geht um Macht im Team und um verschiedene Sichten.',
+    },
+    ablauf: {
+      schritte: [
+        'Die Sätze aus dem Chat vorlesen, ohne zu werten.',
+        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags).',
+        'Die drei Rollen den Sätzen zuordnen lassen, dann den Schritt „Jede Sicht ist berechtigt“ aufdecken.',
+      ],
+      aufloesung: 'Produkt hört „Unter ‚Beliebt‘ nur Serien“ (Sorge ums Angebot), Design „Wir fanden nicht heraus, wie man nach einem Titel sucht“ (Bedienung), Technik „Fast nur Kinderfilme“ (technischer Weg, verschiedene Nutzer*innen zu erkennen). Jede Sicht ist berechtigt; je unterschiedlicher das Team, desto mehr holt es aus einem Interview.',
+    },
+    kern: [
+      {
+        text: 'Interview Together, Act Together: Ist eine Rolle die „voice of the customer“, sticht sie jede andere Rolle; bei Uneinigkeit hat die andere Person keine Antwort auf „This is what the customer wants“. „The goal is for all team members to be the voice of the customer.“',
+        quelle: `${TORRES}, S. 74–75`,
+      },
+      {
+        text: 'Netflix-Geschichte: Die Produktmanagerin hört „Most popular was all TV shows“ (Angebot), der Designer „We couldn’t figure out how to search for a specific movie title“ (Bedienung), die Entwicklerin „Most of the recommendations were for kids’ movies“ (Nutzer*innen technisch erkennen). „Each perspective is valid and can lead to an important product improvement.“',
+        quelle: `${TORRES}, S. 75`,
+      },
+      {
+        text: 'Lern-Engpass: Eine Person führt die Gespräche und sagt dem Team, was die Kundschaft will; „Die Kund*innen haben es gesagt“ sticht dann jedes Argument.',
+        quelle: `${MOMTEST}, S. 98–99`,
+      },
+    ],
+    ueberleitung: 'Genau das holt ihr jetzt nach: Snapshots im Team besprechen, mit vier Fragen.',
+  },
+
+  besprechen: {
+    live: [
+      '„Die vier Fragen sind euer Raster für jede Runde.“',
+      'Fragen: Was davon kennt ihr aus Need Finding, was ist neu?',
+      'Was ändert sich: Beleg sofort in die Annahmen-Map.',
+      'Falle: nur Inhalt, keine Meta-Ebene – Frage 3 und 4 einfordern.',
+    ],
+    kern: [
+      {
+        text: 'Nach jedem Gespräch geht das Team die Notizen gemeinsam durch und passt Überzeugungen und die drei großen Fragen an: wichtigste Zitate und Aussagen, Probleme im Gespräch, die Meta-Ebene (welche Fragen gingen, welche nicht, welche Signale fehlten). Der Schritt klingt so einfach, dass man ihn gern überspringt.',
+        quelle: `${MOMTEST}, S. 102`,
+      },
+    ],
+    ueberleitung: 'Einmal vorgemacht an I2.',
+  },
+
+  beispiel: {
+    live: [
+      'Vier Fragen an I2, Schritt für Schritt aufdecken.',
+      '„Ein Snapshot ist ein Beleg, kein Beweis – A1 rückt erst mit weiteren.“',
+      'Fragen: Was hättet ihr I2 noch gefragt?',
+    ],
+    verstaendnis: {
+      frage: 'Widerlegt I2 die Annahme A1?',
+      antwort: 'Nein, I2 ist ein erster Gegenbeleg. Erst wenn dieselbe Einsicht in weiteren Snapshots wiederkehrt, rückt A1 in der Annahmen-Map nach links; im Entscheidungslog steht vorerst nur der Gegenbeleg (I2).',
+      falsch: '„Ja, A1 ist falsch“ – ein Interview ist ein Beleg, kein Beweis.',
+    },
+    ueberleitung: 'Jetzt ihr: drei Runden, jede*r zeigt einmal.',
+  },
+
+  vorgehen: {
+    live: [
+      'Schritte aus dem Handout in den Teams-Chat kopieren.',
+      'Reihenfolge festlegen, Timer 12 min je Runde neu starten.',
+      'Zeit: nach 5 min vom Zeigen ins Besprechen wechseln.',
+      'Nach 36 min: Festhalten in der Werkstatt, Timer 8 min.',
+      'Falle: Wer zeigt, verteidigt – zuhören einfordern.',
+    ],
+    uebung: { dauer: '44 min (3 × 12 + 8)', form: 'zu dritt reihum, dann allein' },
+    miro: {
+      schritte: [
+        'Den Frame mit den Snapshots (T1 · 5) für alle öffnen; die Person, die zeigt, holt alle an ihre Spalte.',
+        'Was die anderen anders hören, kommt als Sticky an den Snapshot – nicht in fremden Spalten verschieben oder löschen.',
+      ],
+    },
+    ablauf: {
+      schritte: [
+        'Schritte in den Teams-Chat kopieren (Karte „Für den Teams-Chat“ im Handout dieser Folie).',
+        'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen.',
+        'Runde 2 und 3 genauso, Timer jeweils neu starten.',
+        'Festhalten und prüfen (8 min): Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog, dann Prüfliste und Claude.',
+      ],
+      achten: [
+        'Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen hören, ist der Grund für die Besprechung (Torres S. 75).',
+        'Belege mit Zitat-ID eintragen, nicht nur „I2“.',
+        'Streuen die fünf Snapshots in alle Richtungen, über eine engere Zielgruppe im Produkt-Brief sprechen (Mom Test S. 88).',
+      ],
+      fehler: [
+        'Nur nacherzählen statt die vier Fragen zu stellen.',
+        'Ein Interview als Beweis werten und die Annahme gleich abhaken.',
+      ],
+    },
+    kern: [
+      {
+        text: 'So lange Gespräche führen, bis nichts Neues mehr kommt; bei einer klar umrissenen Zielgruppe können drei bis fünf reichen. Streuen die Ergebnisse nach mehr als zehn Gesprächen noch in alle Richtungen, ist die Zielgruppe vermutlich zu unscharf.',
+        quelle: `${MOMTEST}, S. 88`,
+      },
+    ],
+    ueberleitung: 'Bevor ihr zur Map geht: eine Frage an euer Produkt.',
+  },
+
+  uebertrag: {
+    live: [
+      'Fragen: Welche Annahme von Tag 1 hat heute einen Beleg bekommen?',
+      'Reihum, je ein Satz, mit Zitat-ID.',
+      'Wenn keine: zu nette Interviews oder Fragen zur eigenen Idee?',
+    ],
+    ueberleitung: 'Nach der Pause zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu.',
+  },
+};

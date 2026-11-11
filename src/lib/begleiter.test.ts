@@ -379,11 +379,26 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folien[beamer('/innolab/methoden/experiment', 'origin-story').z.index].id).toBe('origin-story');
     expect(folien[beamer('/innolab/tag-5', 'debrief').z.index].id).toBe('debrief');
   });
-  it('Seite ohne Notizen (baum): weiter die Karte, die letzte Folie bleibt stehen', () => {
-    const { z, karte } = beamer('/innolab/methoden/baum', '');
+  it('Seite ohne Notizen (ziel-chance): weiter die Karte, die letzte Folie bleibt stehen', () => {
+    expect(NOTIZEN['/innolab/methoden/ziel-chance']).toBeUndefined();
+    const { z, karte } = beamer('/innolab/methoden/ziel-chance', '');
     expect(z.meldung).toBe('nicht-tag-1');
     expect(z.index).toBe(0);
-    expect(karte).toBe('/innolab/methoden/baum');
+    expect(karte).toBe('/innolab/methoden/ziel-chance');
+  });
+  // Tag 2 (12.11.): Eröffnung, die drei Methoden, Abschluss – der Begleiter folgt jeder Folie, und jede hat Stichworte.
+  const TAG_2_SEITEN = ['/innolab/tag-2', '/innolab/methoden/synthese', '/innolab/methoden/journey-map', '/innolab/methoden/baum'];
+  it('Tag 2: jede Folie der vier Seiten hat eine Notiz mit mindestens einem live-Stichwort', () => {
+    const tag2 = TAG_2_SEITEN.flatMap((p) => folienAus(p, quellen[p] ?? ''));
+    expect(tag2.length).toBeGreaterThan(30);
+    expect(tag2.filter((f) => !NOTIZEN[f.pfad]?.[f.id]?.live?.some((s) => s.trim() !== '')).map((f) => `${f.pfad}#${f.id}`)).toStrictEqual([]);
+  });
+  it('Tag 2: Seiten in Tagesreihenfolge, Beamer auf synthese#warum zeigt diese Folie', () => {
+    const reihenfolge = [...new Set(folien.map((f) => f.pfad))].filter((p) => TAG_2_SEITEN.includes(p));
+    expect(reihenfolge).toStrictEqual(TAG_2_SEITEN);
+    const { z, karte } = beamer('/innolab/methoden/synthese', 'warum');
+    expect(karte).toBeNull();
+    expect(`${folien[z.index].pfad}#${folien[z.index].id}`).toBe('/innolab/methoden/synthese#warum');
   });
   it('Tag 1 unverändert: dieselben Folien vorn, gleiche Indizes, eine Gruppe', () => {
     const tag1 = tagFolien(quellen);
