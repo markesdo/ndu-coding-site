@@ -463,7 +463,7 @@ export const METHODEN: Methode[] = [
       { id: 'pitch-geschaeftsmodell', text: 'Es steht da, wer zahlt und wofür, an welcher Annahme das Modell hängt – benannt, nicht gerechnet –, und was ihr als Nächstes prüft und warum.' },
     ],
     ki: 'Spielt eine skeptische Investorin; prüft jede Behauptung gegen Lernkarten und Entscheidungslog und verlangt keine Preis- oder Kostenrechnung.',
-    quelle: 'Donna Lichaw, The User’s Journey (2016), Kap. 2, 7; W. Chan Kim & Renée Mauborgne, Blue Ocean Strategy (2005), S. 25–43, 82–93; Marty Cagan, Inspired (2018), S. 151–153, 189–190, 281–282; David J. Bland & Alexander Osterwalder, Testing Business Ideas (2019), S. 52, 56–57, 81',
+    quelle: 'Donna Lichaw, The User’s Journey (2016), Kap. 2, 7; W. Chan Kim & Renée Mauborgne, Blue Ocean Strategy (2005), S. 25–43, 82–93; Marty Cagan, Inspired (2018), S. 151–153, 189–190, 281–282; David J. Bland & Alexander Osterwalder, Testing Business Ideas (2019), S. 52, 56–57, 81; Stefan H. Thomke, The Scientific Mindset (2027), S. 111, 170',
   },
 ];
 
