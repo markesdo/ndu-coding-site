@@ -15,11 +15,11 @@ import { VORSCHAUEN } from './editoren/vorschauen.js';
 import { LehrendenFeedback } from './Feedback.js';
 import { zellenFeedback } from './feedback-hilfen.js';
 import {
-  STILL_NEU_AB_MS, adresseMitLeser, alleGithubFehler, dateiVerlaufUrl, kurstagText, leserAusAdresse, leserKopf, lueckenJeArtefakt, nachbar, personText,
+  STILL_NEU_AB_MS, adresseMitLeser, zeigenAusAdresse, alleGithubFehler, dateiVerlaufUrl, kurstagText, leserAusAdresse, leserKopf, lueckenJeArtefakt, nachbar, personText,
   spaltenHinweis, standText, tagText, zelle, zellenLabel, zuerstAnsehen, type BereiteMappe, type Leser, type Zelle, type ZellenArt,
 } from './lehrenden-hilfen.js';
 import { rueckkehrBeobachten } from './mappe-hilfen.js';
-import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen } from './snapshot-hilfen.js';
+import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen, zeigenStartPerson } from './snapshot-hilfen.js';
 import Zeigen, { type ZeigenProps } from './Zeigen.js';
 import type { Interview } from '../schemas/index.js';
 
@@ -122,7 +122,13 @@ export default function LehrendenAnsicht() {
   const [jetzt, setJetzt] = useState(() => Date.now());
   const [wahl, setWahl] = useState<{ kohorte?: string; seit?: number }>({});
   const [offeneLuecken, setOffeneLuecken] = useState<Set<string>>(new Set());
-  const [leser, setLeser] = useState<Leser | null>(() => leserAusAdresse(location.search));
+  // ?zeigen=1 (Link auf der Folie „So geht ihr vor“): gleich im Zeigen-Modus der Interviews, mit ?person oder der ersten
+  // Person mit Snapshots, sobald die Matrix da ist.
+  const zeigenStart = useRef(zeigenAusAdresse(location.search));
+  const [leser, setLeser] = useState<Leser | null>(() => {
+    const l = leserAusAdresse(location.search);
+    return zeigenStart.current && l ? { person: l.person, artefakt: 'interviews' } : l;
+  });
   const dialog = useRef<HTMLDialogElement>(null);
   const lauf = useRef(0);
   const wahlRef = useRef(wahl);
@@ -130,7 +136,7 @@ export default function LehrendenAnsicht() {
   const geladenRef = useRef<number | null>(null);
   // Zeigen-Modus (Zeigen.tsx): nur für Interviews. Die Stelle merkt sich die Interview-ID (nicht die Nummer), damit
   // „Neu laden“ beim selben Snapshot bleibt; der Stand hält die zuletzt gezeigten Snapshots, solange neu geladen wird.
-  const [zeigen, setZeigen] = useState(false);
+  const [zeigen, setZeigen] = useState(() => zeigenStart.current);
   const [zeigenId, setZeigenId] = useState<string | null>(null);
   const [zeigenStand, setZeigenStand] = useState<{ schluessel: string; interviews: Interview[]; zeit: number; vorher: Interview[] | null } | null>(null);
   const zeigenWurzel = useRef<HTMLDivElement>(null);
@@ -204,10 +210,20 @@ export default function LehrendenAnsicht() {
   const leserMappe = leser && ansicht?.personen.find((p): p is BereiteMappe => p.kuerzel === leser.person && p.zustand === 'bereit');
   const leserArtefakt = leserMappe?.artefakte.find((a) => a.name === leser?.artefakt);
   useEffect(() => {
+    if (!ansicht || !zeigenStart.current) return;
+    zeigenStart.current = false;
+    if (leser) return;
+    const start = zeigenStartPerson(ansicht.personen);
+    if (start) setLeser({ person: start, artefakt: 'interviews' });
+    else setZeigen(false);
+  }, [ansicht, leser]);
+
+  useEffect(() => {
     if (!ansicht) return;
     if (leser && !leserArtefakt) {
       dialog.current?.close();
       setLeser(null);
+      setZeigen(false);
     }
     history.replaceState(history.state, '', adresseMitLeser(location.pathname, location.search, location.hash, leserArtefakt ? leser : null));
     const d = dialog.current;

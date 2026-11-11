@@ -91,6 +91,12 @@ export function snapshotZahl(umfang: string | null): number {
   return m ? Number(m[1]) : 0;
 }
 
+/** Mit wem Zeigen ohne ?person startet: die erste bereite Mappe mit Snapshots, sonst die erste bereite; keine = null. */
+export function zeigenStartPerson(personen: readonly LehrendenMappe[]): string | null {
+  const p = zeigenPersonen(personen);
+  return (p.find((x) => x.anzahl > 0) ?? p[0])?.kuerzel ?? null;
+}
+
 /** Personen-Reiter im Zeigen-Modus: dieselben Mappen in derselben Reihenfolge wie die Personen-Navigation des Lesers
  *  (nur bereite Mappen), mit der Zahl der Snapshots. */
 export function zeigenPersonen(personen: readonly LehrendenMappe[]): { kuerzel: string; anzahl: number }[] {

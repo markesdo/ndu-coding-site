@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Befund } from '../verknuepfungen';
 import type { LehrendenAnsicht, LehrendenArtefakt, LehrendenMappe } from '../vertrag';
 import {
-  adresseMitLeser, alleGithubFehler, anfragePfad, inhaltPfad, dateiVerlaufUrl, kurstagText, leserAusAdresse, leserKopf, lueckenJeArtefakt, nachbar,
+  adresseMitLeser, zeigenAusAdresse, alleGithubFehler, anfragePfad, inhaltPfad, dateiVerlaufUrl, kurstagText, leserAusAdresse, leserKopf, lueckenJeArtefakt, nachbar,
   personText, spaltenHinweis, standText, tagText, vorZeit, zelle, zellenLabel, zuerstAnsehen,
 } from './lehrenden-hilfen';
 
@@ -123,6 +123,11 @@ describe('Leser', () => {
     expect(leserAusAdresse('?person=k2&artefakt=quatsch')).toBeNull();
     expect(leserAusAdresse('?artefakt=brief')).toBeNull();
     expect(adresseMitLeser('/innolab/mappe', '?x=1', '#a', { person: 'k2', artefakt: 'brief' })).toBe('/innolab/mappe?x=1&person=k2&artefakt=brief#a');
+    // ?zeigen=1 gilt nur beim Öffnen: danach aus der Adresse
+    expect(zeigenAusAdresse('?artefakt=interviews&zeigen=1')).toBe(true);
+    expect(zeigenAusAdresse('?zeigen=0')).toBe(false);
+    expect(zeigenAusAdresse('')).toBe(false);
+    expect(adresseMitLeser('/innolab/mappe', '?artefakt=interviews&zeigen=1', '', { person: 'k2', artefakt: 'interviews' })).toBe('/innolab/mappe?person=k2&artefakt=interviews');
     expect(adresseMitLeser('/innolab/mappe', '?person=k2&artefakt=brief', '', null)).toBe('/innolab/mappe');
   });
   it('nachbar überspringt Personen ohne Mappe; am Rand null', () => {
