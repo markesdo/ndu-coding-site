@@ -77,6 +77,15 @@ describe('beamerSchalten', () => {
     expect(r.attrs.get('data-theme')).toBe('light');
     expect(s.daten.get('ndu-beamer')).toBe('1');
   });
+  it('Seite ohne Beamer (Werkstatt): Einschalten tut nichts, auch beim Präsentator; Ausschalten geht', () => {
+    const r = wurzel('data-ist-praesentator', 'data-ohne-beamer');
+    const s = speicher();
+    s.setItem('ndu-beamer', '1');
+    expect(beamerSchalten(r, true, { speicher: s })).toBe(false);
+    expect(r.hasAttribute('data-beamer')).toBe(false);
+    expect(s.daten.get('ndu-beamer')).toBe('1');
+    expect(beamerSchalten(r, false, { speicher: s })).toBe(true);
+  });
   it('/start (hell: false) behält sein Farbschema', () => {
     const r = wurzel('data-ist-praesentator');
     r.setAttribute('data-theme', 'dark');
