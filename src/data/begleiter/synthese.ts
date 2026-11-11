@@ -44,6 +44,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Fragen: Wie sahen eure Snapshots aus – alle Felder gefüllt?',
       'Miro T1 · 5 öffnen, einen echten Snapshot zeigen lassen.',
       '„Bild und Zitat sind Schlüssel – damit erinnert ihr euch an diese eine Geschichte.“',
+      'Vor jedem I2-Beispiel fragen: Was stünde bei I2 da?',
       'Falle: Einsichten und Chancen vermischt.',
     ],
     kern: [
