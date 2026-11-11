@@ -738,7 +738,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
         ...['A2', 'A4'].map((id) => ({
           art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
         })),
-        { art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist eure riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was habt ihr dazu gehört?' },
+        { art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was hast du dazu gehört?' },
       ],
       geprueft: ['entscheidungen', 'annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],

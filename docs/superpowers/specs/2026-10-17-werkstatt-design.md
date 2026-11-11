@@ -211,7 +211,7 @@ Zu jedem Schema gibt es eine **Kaffeebar-Beispieldatei** (gültig, aus den Beisp
 | `artefakt_lesen(artefakt)` | 1 | lesen | gerendertes Markdown plus strukturierte Daten |
 | `methode_erklaeren(slug)` | 1 | lesen | aus `methoden.ts`: Frage, Prüfliste, Rolle der KI, Quelle, Link zur Seite – keine Inhalte aus Auflösungen |
 | `artefakt_pruefen(artefakt)` | 1 | lesen | Artefakt plus Prüfpunkte mit IDs plus Ausgabeformat (`outputSchema`); Claude urteilt |
-| `verknuepfungen_pruefen` | 1b | lesen | unbekannte IDs, fehlende Belege, verwaiste Elemente (deterministisch) |
+| `verknuepfungen_pruefen` | 1b | lesen | unbekannte IDs, fehlende Belege, verwaiste Elemente, riskanteste Annahme ohne Beleg trotz Interviews (deterministisch) |
 | `vorschlag_hinterlegen(artefakt, befunde[])` | 1b | schreiben | speichert Befunde als offene Vorschläge; Server prüft, dass jedes Zitat wörtlich im Artefakt steht; max. 3 je Aufruf, 5 offen je Artefakt |
 
 - Lesewerkzeuge tragen `readOnlyHint: true`.

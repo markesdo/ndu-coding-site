@@ -21,7 +21,7 @@ export interface Befund {
   artefakt: ArtefaktName;
   // Wo: ID der Zeile (D4) oder Feld (Brief · Offene Frage 2, I2 · Chance 1).
   ort: string;
-  // Die unbekannte ID bzw. das verwaiste Element.
+  // Die unbekannte ID, das verwaiste Element bzw. die riskanteste Annahme ohne Beleg.
   id?: string;
   text: string;
 }
@@ -135,15 +135,16 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?${zusatz}` });
       }
     }
-    // Die riskanteste Annahme hat gar keinen Beleg (Stufe „noch keiner“, keine ID, keine Notiz), obwohl schon Interviews
-    // mit Inhalt gespeichert sind. „verwaist“ sieht das nicht, sobald eine Entscheidung die Interviews nennt. Stufe
-    // „noch keiner“ mit ID oder Notiz zählt nicht: Da liegt etwas, nur die Stufe fehlt. Andere Stufen ohne Beleg meldet
-    // schon „fehlender-beleg“.
+    // Die riskanteste Annahme hat gar keinen Beleg (Stufe „noch keiner“, keine auflösbare ID, keine Notiz), obwohl schon
+    // Interviews mit Inhalt gespeichert sind. „verwaist“ sieht das nicht, sobald eine Entscheidung die Interviews nennt.
+    // Stufe „noch keiner“ mit aufgelöster ID oder Notiz zählt nicht: Da liegt etwas, nur die Stufe fehlt. Eine unbekannte
+    // ID ist kein Beleg (dafür steht zusätzlich der Befund zur unbekannten ID); eine ID, die sich nicht prüfen lässt
+    // (Quelle unlesbar), zählt im Zweifel als Beleg. Andere Stufen ohne Beleg meldet schon „fehlender-beleg“.
     const { riskanteste } = m.annahmen;
     const r = m.annahmen.annahmen.find((a) => a.id === riskanteste);
     const gefuehrt = da(m.interviews) ? m.interviews.interviews.filter(interviewGefuellt).length : 0;
-    if (r && r.beleg === 'keiner' && r.belegIds.length === 0 && r.belegNotiz === undefined && gefuehrt > 0) {
-      befund({ art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: r.id, id: r.id, text: `${r.id} ist eure riskanteste Annahme und hat noch keinen Beleg, obwohl ${gefuehrt === 1 ? '1 Interview gespeichert ist' : `${gefuehrt} Interviews gespeichert sind`}. Was habt ihr dazu gehört?` });
+    if (r && r.beleg === 'keiner' && r.belegIds.every((id) => warumUnbekannt(id) !== null) && !r.belegNotiz?.trim() && gefuehrt > 0) {
+      befund({ art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: r.id, id: r.id, text: `${r.id} ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl ${gefuehrt === 1 ? '1 Interview gespeichert ist' : `${gefuehrt} Interviews gespeichert sind`}. Was hast du dazu gehört?` });
     }
   }
 
@@ -184,7 +185,7 @@ export function verknuepfungenText(v: Verknuepfungen): string {
   if (v.fehlen.length) zeilen.push(`Noch nicht gespeichert: ${v.fehlen.map(titel).join(', ')}.`);
   if (v.unlesbar.length) zeilen.push(`Nicht lesbar (passt nicht zum Format der Werkstatt, dort neu speichern): ${v.unlesbar.map(titel).join(', ')}.`);
   if (v.befunde.length === 0) {
-    zeilen.push('', 'Keine Lücken: Jede genannte ID gibt es, jede Belegstufe hat einen Beleg, jedes Interview wird genannt.');
+    zeilen.push('', 'Keine Lücken: Jede genannte ID gibt es, jede Belegstufe hat einen Beleg, jedes Interview wird genannt, und die riskanteste Annahme hat einen Beleg oder es gibt noch keine Interviews.');
     return zeilen.join('\n');
   }
   for (const art of BEFUND_ARTEN) {

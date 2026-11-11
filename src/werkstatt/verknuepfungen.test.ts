@@ -30,7 +30,7 @@ const GETAN_OHNE_QUELLE = ['A2', 'A4'].map((id) => ({
 }));
 // Und A1, die riskanteste Annahme, steht auf „noch keiner“, obwohl fünf Interviews gespeichert sind.
 const A1_RISKANTESTE = {
-  art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist eure riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was habt ihr dazu gehört?',
+  art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was hast du dazu gehört?',
 };
 const KAFFEEBAR_BEFUNDE = [...GETAN_OHNE_QUELLE, A1_RISKANTESTE];
 
@@ -267,6 +267,39 @@ describe('verknuepfungenPruefen', () => {
       expect(riskanteste(mitNotiz)).toStrictEqual([]);
     });
 
+    it('Anrede: duzt die eine Person, wie der Tutor', () => {
+      const [b] = riskanteste(kaffeebar());
+      expect(b?.text).toContain('deine riskanteste Annahme');
+      expect(b?.text.endsWith('Was hast du dazu gehört?')).toBe(true);
+    });
+
+    it('Beleg-Notiz nur aus Leerraum zählt nicht als Beleg (wie bei den anderen Befunden)', () => {
+      const m = kaffeebar();
+      m.annahmen.annahmen[0].belegNotiz = '   ';
+      expect(riskanteste(m)).toStrictEqual([A1_RISKANTESTE]);
+    });
+
+    it('nur aufgelöste IDs zählen als Beleg: I9 gibt es nicht → Befund plus unbekannte ID; A3 gibt es → still', () => {
+      const unbekannt = kaffeebar();
+      unbekannt.annahmen.annahmen[0].belegIds = ['I9'];
+      expect(verknuepfungenPruefen(unbekannt).befunde.filter((b) => b.ort === 'A1').map((b) => [b.art, b.id])).toStrictEqual([
+        ['unbekannte-id', 'I9'], ['riskanteste-ohne-beleg', 'A1'],
+      ]);
+      const bekannt = kaffeebar();
+      bekannt.annahmen.annahmen[0].belegIds = ['A3'];
+      expect(riskanteste(bekannt)).toStrictEqual([]);
+      // Neben einer unbekannten zählt eine aufgelöste ID.
+      const gemischt = kaffeebar();
+      gemischt.annahmen.annahmen[0].belegIds = ['I9', 'I2-4'];
+      expect(riskanteste(gemischt)).toStrictEqual([]);
+    });
+
+    it('ID, die sich nicht prüfen lässt (Entscheidungslog unlesbar), zählt im Zweifel als Beleg', () => {
+      const m = kaffeebar();
+      m.annahmen.annahmen[0].belegIds = ['D1'];
+      expect(riskanteste({ ...m, entscheidungen: 'unlesbar' })).toStrictEqual([]);
+    });
+
     it('still ohne Interviews: nicht gespeichert, leere Liste oder nur leere Snapshots', () => {
       expect(riskanteste({ ...kaffeebar(), interviews: null })).toStrictEqual([]);
       const keine = kaffeebar();
@@ -280,7 +313,7 @@ describe('verknuepfungenPruefen', () => {
     it('zählt nur Interviews mit Inhalt; bei einem steht die Einzahl', () => {
       const m = kaffeebar();
       m.interviews.interviews = m.interviews.interviews.map((iv, i) => (i === 0 ? iv : { ...iv, zitat: '', kurzinfos: '', notizen: '', einsichten: [], chancen: [], zitate: [] }));
-      expect(riskanteste(m).map((b) => b.text)).toStrictEqual(['A1 ist eure riskanteste Annahme und hat noch keinen Beleg, obwohl 1 Interview gespeichert ist. Was habt ihr dazu gehört?']);
+      expect(riskanteste(m).map((b) => b.text)).toStrictEqual(['A1 ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl 1 Interview gespeichert ist. Was hast du dazu gehört?']);
     });
 
     it('still, wenn keine riskanteste Annahme markiert ist', () => {
@@ -396,7 +429,7 @@ describe('verknuepfungenText', () => {
 
   it('ohne Befunde: ein Satz; leere Mappe sagt das', () => {
     expect(verknuepfungenText({ befunde: [], geprueft: [], fehlen: [], unlesbar: [] })).toBe(
-      '# Verknüpfungen der Mappe\n\nGeprüft: nichts, die Mappe ist noch leer.\n\nKeine Lücken: Jede genannte ID gibt es, jede Belegstufe hat einen Beleg, jedes Interview wird genannt.',
+      '# Verknüpfungen der Mappe\n\nGeprüft: nichts, die Mappe ist noch leer.\n\nKeine Lücken: Jede genannte ID gibt es, jede Belegstufe hat einen Beleg, jedes Interview wird genannt, und die riskanteste Annahme hat einen Beleg oder es gibt noch keine Interviews.',
     );
   });
 });

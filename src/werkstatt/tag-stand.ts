@@ -3,6 +3,7 @@
 // die Qualität – das ist Sache von artefakt_pruefen. Reine Funktionen, ohne Speicher, damit testbar.
 import { ARTEFAKTE as KURS_ARTEFAKTE, TAGE, erzeugtVon, methodenVonTag } from '../components/methoden.js';
 import { ARTEFAKTE, interviewGefuellt, type ArtefaktName, type DatenVon } from './schemas/index.js';
+import { leer } from './schemas/gemeinsam.js';
 import { ART_ANZEIGE, fehlendeArten } from './ui/editoren/annahmen-hilfen.js';
 import { BRIEF_TAG1_FELDER } from './statistik.js';
 
@@ -75,7 +76,6 @@ export interface ArtefaktStand {
   fehlt: string[];
 }
 
-const leer = (s: string | undefined) => (s ?? '').trim() === '';
 const anzahl = (n: number, eins: string, viele: string) => `${n} ${n === 1 ? eins : viele}`;
 
 // Umfang und Fehlendes je Artefakt; leer = nichts Eigenes eingetragen.
