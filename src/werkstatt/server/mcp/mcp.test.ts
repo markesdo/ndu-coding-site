@@ -3,7 +3,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { METHODEN } from '../../../components/methoden';
+import { METHODEN, NICHT_EINORDNEN } from '../../../components/methoden';
 import { MOM_TEST_GRUPPE } from '../../../components/innolab-zeiten';
 import { aufgedecktSchluessel } from '../../../lib/aufgedeckt';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
@@ -254,6 +254,13 @@ describe('Werkzeuge', () => {
     expect(anweisung).toContain('I2-4');
     expect(anweisung).toMatch(/Vorarbeit zum Abgleich zitierst du nie/);
     expect(anweisung).toContain('pruefpunkt');
+    // Live-Test 11.11.: Claude sortierte Zitate selbst nach „spricht gegen A1“. Gleicher Satz wie in der anleitung.
+    expect(anweisung).toContain(`frag zurück. ${NICHT_EINORDNEN}`);
+    expect(NICHT_EINORDNEN).toBe('Ordne nichts für die Person ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.');
+    // Regel 4 ohne Widerspruch: „jeder Befund endet mit einer Frage“ gilt ohne pruefpunkt, im Fokus die Regel der anleitung.
+    expect(anweisung).toContain('ohne pruefpunkt nennst du höchstens drei Befunde');
+    expect(anweisung).toContain('mit pruefpunkt auf. Dann gilt: Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit wörtlichem Zitat (und ID, wo eine steht). Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID).');
+    expect(anweisung).not.toMatch(/mit ID und/);
     // NDU-27: zuerst schauen, was da ist; nie das ganze Artefakt zurückkopieren.
     expect(anweisung).toContain(`Anfang des Gesprächs ${MCP_WERKZEUGE.mappeUebersicht}`);
     expect(anweisung).toContain(MCP_WERKZEUGE.tagStand);
@@ -293,6 +300,8 @@ describe('Werkzeuge', () => {
     expect(Object.keys(pruefen.inputSchema.properties ?? {})).toContain('pruefpunkt');
     expect(pruefen.inputSchema.required).toStrictEqual(['artefakt']);
     expect(pruefen.description).toContain('pruefpunkt');
+    // Manche Clients zeigen die Server-Anweisung nicht: die Kernregeln stehen auch in der Beschreibung.
+    expect(pruefen.description).toContain('prüfst du nur diesen einen Punkt. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit wörtlichem Zitat (und ID, wo eine steht). Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID). Ordne nichts für die Person ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.');
   });
 
   it('artefakt_pruefen(annahmen): Markdown + die Prüfpunkte aus methoden.ts mit festen IDs, ohne alte Positions-ID', async () => {
@@ -696,6 +705,25 @@ const speichernJson = (h: Aufbau, repo: string, name: 'entscheidungen' | 'interv
   h.speicher.speichern(repo, name, { [`mappe/${name}.json`]: `${JSON.stringify(daten, null, 2)}\n` }, null, AUTOR, name);
 
 describe('Interviews und Verknüpfungen (Phase 1b)', () => {
+  it('artefakt_pruefen(interviews): Belegstufe erfragen bei synthese-beleg-nachgetragen, ohne und mit Fokus – nur dort', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const c = await client(h, await accessToken(h));
+    const frage = 'Bei synthese-beleg-nachgetragen: Nenn Zitate, die bei keiner Annahme als Beleg stehen, aber das Thema einer Annahme berühren (Annahme nur per ID), und frag, ob und wofür oder wogegen sie sprechen. Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist – welche Belegstufe passt?';
+    const anleitung = async (pruefpunkt?: string) => {
+      const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'interviews', ...(pruefpunkt ? { pruefpunkt } : {}) } });
+      expect(r.isError).toBeFalsy();
+      const a = (r.structuredContent as { anleitung: string }).anleitung;
+      expect(text(r)).toContain(a);
+      return a;
+    };
+    expect(await anleitung()).toContain(frage);
+    const fokus = await anleitung('synthese-beleg-nachgetragen');
+    expect(fokus).toContain(frage);
+    expect(fokus).toContain(NICHT_EINORDNEN);
+    expect(await anleitung('synthese-chance-beduerfnis')).not.toMatch(/Belegstufe/);
+  });
+
   it('artefakt_lesen(interviews): nur Felder des Schemas, ein zusätzliches Namensfeld kommt nie heraus', async () => {
     const h = await aufbau();
     const mitName = structuredClone(interviewsBeispiel) as typeof interviewsBeispiel & { interviews: Record<string, unknown>[] };
@@ -924,6 +952,10 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
     expect(r.structuredContent).toHaveProperty('methode', 'Annahmen-Map');
     expect(sc(r).anleitung).toMatch(/^Prüf nur annahmen-arten\./);
     expect(sc(r).anleitung).toMatch(/auch mehr als drei/);
+    // Auch bei bis zu drei Stellen je eine Rückfrage; die ID nur, wo eine steht (der Brief hat keine).
+    expect(sc(r).anleitung).toContain('Prüf nur annahmen-arten. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit wörtlichem Zitat (und ID, wo eine steht). Zu bis zu drei Stellen – bei mehr den drei deutlichsten – stellst du je eine Rückfrage; die übrigen nennst du nur mit Zitat (und ID). ');
+    expect(sc(r).anleitung).not.toMatch(/mit ID und/);
+    expect(sc(r).anleitung).toContain(NICHT_EINORDNEN);
     expect(sc(r).anleitung).toMatch(/ob als Nächstes annahmen-wichtig-beleg drankommen soll/);
     expect(sc(r).anleitung).not.toMatch(/[Hh]öchstens drei/);
     const t = text(r);
@@ -935,7 +967,8 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
 
     // Der letzte Punkt der Liste, aus methoden.ts statt fest.
     const letzter = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'annahmen', pruefpunkt: liste.at(-1)!.id } });
-    expect(sc(letzter).anleitung).toMatch(/letzte Prüfpunkt/);
+    expect(sc(letzter).anleitung).toMatch(/letzte Prüfpunkt der Liste; sag das in deinem letzten Absatz und nenn dort den Link zur Werkstatt\. Ändern kann die Person nur selbst in der Werkstatt: /);
+    expect(sc(letzter).anleitung.endsWith(`${BASIS}/innolab/mappe`)).toBe(true);
     expect(sc(letzter).anleitung).not.toMatch(/Als Nächstes|als Nächstes/);
   });
 
@@ -1014,6 +1047,7 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
       expect(r.isError, JSON.stringify(args)).toBeFalsy();
       expect(sc(r).pruefpunkte).toHaveLength(METHODEN.find((m) => m.slug === 'annahmen')!.pruefliste!.length);
       expect(sc(r).anleitung).toMatch(/^Höchstens drei Befunde/);
+      expect(sc(r).anleitung).toContain(NICHT_EINORDNEN);
       expect(sc(r).anleitung).not.toMatch(/drankommen/);
     }
   });
