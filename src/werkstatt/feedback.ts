@@ -21,8 +21,10 @@ export const FEEDBACK_SCHEMA = 'feedback@1';
 // Lehrende schreiben einen Absatz, Antworten sind kurz.
 export const FEEDBACK_MAX = 1500;
 export const ANTWORT_MAX = 500;
-// Mögliche Fassung (NDU-42): eine Zeile, Form statt Inhalt.
+// Mögliche Fassung (NDU-42): eine Zeile, Form statt Inhalt. Dazu eine Grenze in Bytes (UTF-8), damit das Siegel immer
+// in die Form von feedback@1 passt (FASSUNG_SIEGEL): 300 Zeichen aus Emoji-Folgen wären sonst bis zu einige kB.
 export const FASSUNG_MAX = 300;
+export const FASSUNG_MAX_BYTES = 1200;
 const AUTOR_MAX = 60;
 
 // Abschnitte des Produkt-Briefs (der Brief hat keine Zeilen-IDs); Titel wie die Karten der Vorschau (brief-hilfen.ts).
@@ -127,7 +129,8 @@ export function zeilenAuswahl(name: ArtefaktName, daten: unknown): ZeilenWahl[] 
 }
 
 const FEEDBACK_ID = /^FB[1-9][0-9]*$/;
-// Versiegelte Fassung: `f1.<kid>.<base64url>` (server/fassung.ts); Stand der Zeile: `sha256:<64 hex>`.
+// Versiegelte Fassung: `f1.<kid>.<base64url>` (server/fassung.ts); Stand der Zeile: `sha256:<64 hex>`. 2000 Zeichen
+// base64url fassen 1500 Bytes: Nonce (12) + FASSUNG_MAX_BYTES (1200) + Tag (16) = 1228.
 export const FASSUNG_SIEGEL = /^f1\.[A-Za-z0-9_-]{1,32}\.[A-Za-z0-9_-]{20,2000}$/;
 export const ZEILEN_STAND = /^sha256:[0-9a-f]{64}$/;
 // Form einer Kriteriums-ID: KRITERIUM_ID aus kriterien.ts. Ob es sie im Katalog gibt und ob sie passt, prüft
@@ -262,6 +265,7 @@ export function fassungTextPruefen(roh: unknown): string | undefined {
   if (t === '') return undefined;
   if (STEUERZEICHEN.test(t)) throw new FeedbackAbgelehnt('Mögliche Fassung: ohne Steuerzeichen.');
   if (graphemAnzahl(t) > FASSUNG_MAX) throw new FeedbackAbgelehnt(`Mögliche Fassung: höchstens ${FASSUNG_MAX} Zeichen.`);
+  if (new TextEncoder().encode(t).length > FASSUNG_MAX_BYTES) throw new FeedbackAbgelehnt(`Mögliche Fassung: zu lang (höchstens ${FASSUNG_MAX} Zeichen; manche Zeichen wie Emoji zählen mehrfach).`);
   return t;
 }
 
@@ -327,6 +331,11 @@ export function erledigtSetzen(f: Feedback, id: unknown, erledigt: unknown): Fee
   if (typeof erledigt !== 'boolean') throw new FeedbackAbgelehnt('erledigt muss ja oder nein sein.');
   const ziel = lehrendenEintrag(f, id);
   if ((ziel.erledigt === true) === erledigt) return f;
+  // Höchstens eine offene Fassung je Artefakt (NDU-42): Wieder öffnen darf keine zweite offene ergeben.
+  if (!erledigt && ziel.fassung !== undefined) {
+    const andere = offeneFassung(f.eintraege.filter((x) => x !== ziel), ziel.artefakt);
+    if (andere) throw new FeedbackAbgelehnt(`${ziel.id} lässt sich gerade nicht wieder öffnen: Zu ${ARTEFAKTE[ziel.artefakt].titel} ist schon eine andere mögliche Fassung offen (${andere.id}). Setz zuerst ${andere.id} auf erledigt.`);
+  }
   return {
     ...f,
     eintraege: f.eintraege.map((x) => {

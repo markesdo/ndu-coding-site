@@ -42,6 +42,7 @@ const NICHT_LESBAR = 'Diese Mappe lässt sich gerade nicht lesen. Später neu la
 const ZUORDNUNG = 'Das Repo passt nicht zur Zugangsliste. Zugangsliste prüfen.';
 const KEINE_MAPPE = 'Diese Person hat sich noch nicht angemeldet.';
 const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
+const FASSUNG_UNLESBAR = 'Das Artefakt passt gerade nicht zum Format der Werkstatt (vielleicht direkt auf GitHub geändert). Eine mögliche Fassung geht erst wieder, wenn es lesbar ist.';
 
 const nachKuerzel = <T extends { kuerzel: string }>(x: T, y: T) => (x.kuerzel < y.kuerzel ? -1 : x.kuerzel > y.kuerzel ? 1 : 0);
 
@@ -253,12 +254,13 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
         console.error('werkstatt: Lehrenden-Feedback – Artefakt nicht lesbar –', e instanceof Error ? `${e.name}: ${e.message}` : 'Fehler');
         return fehler(c, 502, 'github-fehler', NICHT_LESBAR);
       }
+      // Ohne lesbaren Stand der Zeile keine Fassung: Sie wäre sonst entweder nie oder sofort offen. Die Datei ist da, passt
+      // aber nicht zum Format (kaputtes JSON oder Schema) – das ist kein GitHub-Fehler, Warten hilft nicht.
+      if (fassungText !== undefined && daten === 'unlesbar') return fehler(c, 422, 'ungueltig', FASSUNG_UNLESBAR);
       if (!zeilenAuswahl(n, daten === 'unlesbar' ? null : daten).some((z) => z.wert === zeilenId)) {
         return fehler(c, 422, 'ungueltig', `${zeilenId} gibt es in ${ARTEFAKTE[n].titel} gerade nicht (vielleicht inzwischen gelöscht). Neu laden.`);
       }
     }
-    // Ohne lesbaren Stand der Zeile keine Fassung: Sie wäre sonst entweder nie oder sofort offen.
-    if (fassungText !== undefined && daten === 'unlesbar') return fehler(c, 502, 'github-fehler', NICHT_LESBAR);
     let fassung: { siegel: string; zeilenStand: string } | undefined;
     if (fassungText !== undefined && zeilenId !== undefined) {
       fassung = {

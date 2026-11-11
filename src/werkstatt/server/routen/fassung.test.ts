@@ -213,3 +213,46 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     expect((await t.schreiben(SOFIE, { ...MIT_FASSUNG, zeilenId: 'A3' })).status).toBe(403);
   });
 });
+
+describe('Befunde aus dem Review (#317)', () => {
+  it('Wieder öffnen (erledigt → offen) geht nicht, wenn zu diesem Artefakt schon eine andere Fassung offen ist', async () => {
+    const t = await aufbau();
+    await t.schreiben(MARKUS, MIT_FASSUNG);
+    expect((await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(200);
+    expect((await t.schreiben(MARKUS, { ...MIT_FASSUNG, zeilenId: 'A3' })).status).toBe(200);
+    const r = await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: false });
+    expect(r.status).toBe(422);
+    expect((await r.json()).fehler).toBe('FB1 lässt sich gerade nicht wieder öffnen: Zu Annahmen-Map ist schon eine andere mögliche Fassung offen (FB2). Setz zuerst FB2 auf erledigt.');
+    expect(((await t.datei()) as { eintraege: { id: string; erledigt?: true }[] }).eintraege.find((e) => e.id === 'FB1')!.erledigt).toBe(true);
+    // Feedback ohne Fassung lässt sich weiter wieder öffnen.
+    await t.schreiben(MARKUS, { artefakt: 'annahmen', zeilenId: 'A4', text: 'Und hier?' });
+    expect((await t.aendern({ aktion: 'erledigt', id: 'FB3', erledigt: true })).status).toBe(200);
+    expect((await t.aendern({ aktion: 'erledigt', id: 'FB3', erledigt: false })).status).toBe(200);
+  });
+
+  it('300 Zeichen aus Mehrbyte-Graphemen (Flaggen, Familien-Emoji): 422 mit Satz, nie 500', async () => {
+    const t = await aufbau();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    for (const zeichen of ['\u{1F1E6}\u{1F1F9}', '\u{1F468}‍\u{1F469}‍\u{1F467}‍\u{1F466}']) {
+      const r = await t.schreiben(MARKUS, { ...MIT_FASSUNG, fassung: zeichen.repeat(300) });
+      expect(r.status, zeichen).toBe(422);
+      expect((await r.json()).fehler).toBe('Mögliche Fassung: zu lang (höchstens 300 Zeichen; manche Zeichen wie Emoji zählen mehrfach).');
+    }
+    // Knapp darunter geht es und lässt sich lesen.
+    const ok = await t.schreiben(MARKUS, { ...MIT_FASSUNG, fassung: '\u{1F1E6}\u{1F1F9}'.repeat(140) });
+    expect(ok.status).toBe(200);
+    expect((await ok.json()).eintraege[0].fassung.text).toBe('\u{1F1E6}\u{1F1F9}'.repeat(140));
+  });
+
+  it('Artefakt passt nicht zum Format der Werkstatt: Fassung → 422 mit Satz, nicht 502', async () => {
+    const t = await aufbau();
+    await t.fake.speichern('2026-sofie', 'brief', { 'mappe/brief.json': json({ schema: 'brief@1', kaputt: true }) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
+    for (const [artefakt, zeilenId] of [['brief', 'problem'], ['annahmen', 'A2']] as const) {
+      if (artefakt === 'annahmen') await t.fake.speichern('2026-sofie', 'annahmen', { 'mappe/annahmen.json': json({ schema: 'annahmen@1', annahmen: 'kaputt' }) }, (await t.fake.lesen('2026-sofie', 'annahmen')).basisSha, { name: 's', email: 's@example.invalid' }, 'A');
+      const r = await t.schreiben(MARKUS, { artefakt, zeilenId, text: 'Frage?', fassung: FASSUNG });
+      expect(r.status, artefakt).toBe(422);
+      expect((await r.json()).fehler).toBe('Das Artefakt passt gerade nicht zum Format der Werkstatt (vielleicht direkt auf GitHub geändert). Eine mögliche Fassung geht erst wieder, wenn es lesbar ist.');
+    }
+    expect(await t.datei()).toBeNull();
+  });
+});
