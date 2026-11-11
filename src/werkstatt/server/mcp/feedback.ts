@@ -38,6 +38,11 @@ export const FEEDBACK_AUSGABE = z
 
 export type FeedbackAusgabe = z.infer<typeof FEEDBACK_AUSGABE>;
 
+export const FEEDBACK_UNLESBAR = 'Das Feedback der Lehrenden ließ sich gerade nicht lesen.';
+
+// Steht statt feedback im structuredContent, wenn mappe/feedback.json sich nicht lesen ließ.
+export const FEEDBACK_HINWEIS_AUSGABE = z.string().optional().describe(`Statt feedback: ${FEEDBACK_UNLESBAR}`);
+
 /** Die Fäden zu einem Artefakt; null = mappe/feedback.json ließ sich nicht lesen (dann nur ein Satz, das Werkzeug läuft
  *  weiter). Scheitert GitHub, gilt dasselbe: Feedback ist Beigabe, kein Grund für ein Fehlerergebnis. */
 export async function feedbackFuerClaude(abh: Abhaengigkeiten, repo: string, artefakt: ArtefaktName): Promise<FeedbackFaden[] | null> {
@@ -73,11 +78,18 @@ export function feedbackAusgabe(f: readonly FeedbackFaden[]): FeedbackAusgabe {
   });
 }
 
+/** Dasselbe wie feedbackText für structuredContent (NDU-52): Claude Code gibt dem Modell bei structuredContent nur das
+ *  JSON, nicht den Text. Ohne Feedback kein Schlüssel; unlesbar: der Satz statt des Feedbacks. */
+export function feedbackFelder(f: readonly FeedbackFaden[] | null): { feedback?: FeedbackAusgabe; feedbackHinweis?: string } {
+  if (f === null) return { feedbackHinweis: FEEDBACK_UNLESBAR };
+  return f.length ? { feedback: feedbackAusgabe(f) } : {};
+}
+
 /** Abschnitt für den Text des Ergebnisses; leer, wenn es kein Feedback gibt. */
 export function feedbackText(f: readonly FeedbackFaden[] | null): string[] {
-  if (f === null) return ['', `## ${FEEDBACK_UEBERSCHRIFT}`, 'Das Feedback der Lehrenden ließ sich gerade nicht lesen.'];
+  if (f === null) return ['', `## ${FEEDBACK_UEBERSCHRIFT}`, FEEDBACK_UNLESBAR];
   if (f.length === 0) return [];
-  const zeilen = ['', `## ${FEEDBACK_UEBERSCHRIFT}`, 'Was die Lehrenden zu diesem Artefakt angemerkt haben, mit den Antworten der Person. Geh darauf ein, wo es passt; es ist kein Befund der Prüfung, und du schreibst selbst kein Feedback.', ''];
+  const zeilen = ['', `## ${FEEDBACK_UEBERSCHRIFT}`, 'Was die Lehrenden zu diesem Artefakt angemerkt haben, mit den Antworten der Person; wie du damit umgehst, steht in der Anleitung am Ende.', ''];
   for (const a of feedbackAusgabe(f)) {
     const krit = a.kriterium ? `, Kriterium „${a.kriterium}“` : '';
     zeilen.push(`- ${a.id}: ${a.autor}${a.zeile ? ` zu ${a.zeile}` : ' zum ganzen Artefakt'}, ${a.datum}, ${a.erledigt ? 'erledigt' : 'offen'}${krit}`, zitat(a.text, '  '));
@@ -93,4 +105,4 @@ export const FASSUNG_HINWEIS =
 
 /** Satz für die Anleitung von artefakt_pruefen, nur wenn es Feedback gibt. */
 export const FEEDBACK_ANLEITUNG =
-  `Unter „${FEEDBACK_UEBERSCHRIFT}“ steht, was die Lehrenden angemerkt haben: Geh darauf ein, wo es passt (etwa „Bei A2 hatte deine Lehrperson nach der Quelle gefragt – was hast du dazu herausgefunden?“), aber gib es nie als eigenen Befund oder Prüfpunkt aus, zitier es nicht als Artefakt und schreib selbst kein Feedback. Nennt ein Feedback ein Kriterium, frag, was die Person daran an ihrer eigenen Stelle erkennt; formulier dafür keinen Text. Steht bei einem Feedback, dass die Lehrperson eine mögliche Fassung hinterlegt hat, sag nur, dass es sie gibt und dass die Person sie in der Werkstatt am Feedback findet, sobald sie die Zeile selbst überarbeitet hat; ihren Text kennst du nicht, und du formulierst auch keine eigene.`;
+  `Unter „${FEEDBACK_UEBERSCHRIFT}“ (im JSON: feedback) steht, was die Lehrenden angemerkt haben: Geh darauf ein, wo es passt (etwa „Bei A2 hatte deine Lehrperson nach der Quelle gefragt – was hast du dazu herausgefunden?“), aber gib es nie als eigenen Befund oder Prüfpunkt aus, zitier es nicht als Artefakt und schreib selbst kein Feedback. Nennt ein Feedback ein Kriterium, frag, was die Person daran an ihrer eigenen Stelle erkennt; formulier dafür keinen Text. Steht bei einem Feedback, dass die Lehrperson eine mögliche Fassung hinterlegt hat, sag nur, dass es sie gibt und dass die Person sie in der Werkstatt am Feedback findet, sobald sie die Zeile selbst überarbeitet hat; ihren Text kennst du nicht, und du formulierst auch keine eigene.`;

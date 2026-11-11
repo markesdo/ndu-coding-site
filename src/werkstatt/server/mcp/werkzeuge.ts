@@ -22,7 +22,7 @@ import type { TokenClaims } from '../oauth/routen.js';
 import { mitgliedschaftFinden } from '../sitzung.js';
 import { DateiUnlesbar } from '../speicher-fehler.js';
 import type { Abhaengigkeiten } from '../typen.js';
-import { FEEDBACK_ANLEITUNG, FEEDBACK_AUSGABE, feedbackAusgabe, feedbackFuerClaude, feedbackText } from './feedback.js';
+import { FEEDBACK_ANLEITUNG, FEEDBACK_AUSGABE, FEEDBACK_HINWEIS_AUSGABE, feedbackFelder, feedbackFuerClaude, feedbackText } from './feedback.js';
 
 export interface WerkzeugKontext {
   abh: Abhaengigkeiten;
@@ -30,6 +30,12 @@ export interface WerkzeugKontext {
   // Öffentliche Origin (origin(c)), für Links.
   origin: string;
 }
+
+// NDU-52: Claude Code gibt dem Modell bei einem Ergebnis mit structuredContent nur dessen JSON, nicht den Text (2.1.322:
+// Textblöcke fallen weg). Claude.ai und andere Clients zeigen womöglich nur den Text. Darum trägt jedes Ergebnis alles,
+// was Claude braucht, in beiden: Inhalt (Artefakt, Vorarbeit, Feedback, Zahlen) als Abschnitte bzw. Felder, die Regeln
+// für Claude aus einer Quelle (ergebnis(): Ende des Textes = anleitung im JSON). Beschreibungen im outputSchema sieht das
+// Modell nicht; was es wissen muss, steht in den Werten.
 
 // Ein Satz an die Person statt eines Ergebnisses (isError, damit kein outputSchema verlangt wird).
 class Hinweis extends Error {}
@@ -41,11 +47,18 @@ const ARTEFAKT_ENUM = z.enum(ARTEFAKT_NAMEN as [ArtefaktName, ...ArtefaktName[]]
 const ARTEFAKT_LISTE = ARTEFAKT_NAMEN.map((n) => `${n} (${ARTEFAKTE[n].titel})`).join(', ');
 const ARTEFAKT_EINGABE = { artefakt: ARTEFAKT_ENUM.describe(`Welches Artefakt: ${ARTEFAKT_LISTE}.`) };
 const SLUGS = METHODEN.map((m) => m.slug);
-const PRUEFPUNKT = z.object({ id: z.string(), text: z.string() });
-// Was Claude von einem Prüfpunkt sieht: ID und Text, ohne die alte Positions-ID.
-const ausgabe = (p: Pruefpunkt) => ({ id: p.id, text: p.text });
-// Eine Zeile der Prüfliste im Text: Position und ID, weil pruefpunkt beides annimmt („5. annahmen-loesung: …“).
-const pruefpunktZeile = (p: { id: string; text: string }, i: number) => `${i + 1}. ${p.id}: ${p.text}`;
+const PRUEFPUNKT = z.object({ nr: z.number().describe('Position in der Prüfliste; pruefpunkt nimmt sie wie die ID an.'), id: z.string(), text: z.string() });
+type PruefpunktAusgabe = z.infer<typeof PRUEFPUNKT>;
+// Was Claude von einem Prüfpunkt sieht: Position, ID und Text, ohne die alte Positions-ID. pruefpunkt nimmt Nummer und ID an.
+const ausgabe = (p: Pruefpunkt, i: number): PruefpunktAusgabe => ({ nr: i + 1, id: p.id, text: p.text });
+// Dieselbe Zeile im Text: „5. annahmen-loesung: …“.
+const pruefpunktZeile = (p: PruefpunktAusgabe) => `${p.nr}. ${p.id}: ${p.text}`;
+const WERKSTATT = z.string().describe('Link zur Werkstatt: Ändern kann die Person nur dort.');
+const MARKDOWN = z.string().optional().describe('Das Artefakt als Markdown, wie die Werkstatt es zeigt; fehlt, solange es leer ist.');
+const HINWEIS = z.string().optional().describe('Satz an die Person statt des Artefakts (noch leer).');
+const ANLEITUNG = z.string().describe('So gehst du mit diesem Ergebnis um; steht gleichlautend am Ende des Textes.');
+// Steht im Text über jeder Vorarbeit und im JSON an jeder Vorarbeit.
+const VORARBEIT_ZWECK = 'Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.';
 
 const UEBERSICHT = {
   title: 'Mappe: Übersicht',
@@ -56,15 +69,30 @@ const UEBERSICHT = {
     kohorte: z.string(),
     repo: z.string(),
     lesezugriff: z.enum(['aktiv', 'eingeladen', 'unbekannt']),
-    artefakte: z.array(z.object({ name: ARTEFAKT_ENUM, vorhanden: z.boolean() })),
+    artefakte: z.array(z.object({ name: ARTEFAKT_ENUM, titel: z.string(), vorhanden: z.boolean() })),
+    demoMappe: z.literal(true).optional().describe('Demo-Mappe einer Lehrperson; zählt nicht als Mappe der Kohorte.'),
+    werkstatt: WERKSTATT,
+    anleitung: ANLEITUNG,
   },
   annotations: LESEN,
 };
 
 const LESEN_WERKZEUG = {
   title: 'Artefakt lesen',
-  description: `Liest ein Artefakt aus der eigenen Werkstatt-Mappe der angemeldeten Person: als Markdown und als strukturierte Daten. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Formuliere daraus keinen neuen Artefakttext; ändern kann die Person nur selbst in der Werkstatt. Hat eine Lehrperson Feedback dazu geschrieben, steht es am Ende unter „Feedback der Lehrenden“ (kein Prüfbefund; du schreibst selbst keins). Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
+  description: `Liest ein Artefakt aus der eigenen Werkstatt-Mappe der angemeldeten Person als Markdown. Mögliche Artefakte: ${ARTEFAKT_LISTE}. Formuliere daraus keinen neuen Artefakttext; ändern kann die Person nur selbst in der Werkstatt. Hat eine Lehrperson Feedback dazu geschrieben, steht es am Ende unter „Feedback der Lehrenden“ (kein Prüfbefund; du schreibst selbst keins). Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht. Nur lesen.`,
   inputSchema: ARTEFAKT_EINGABE,
+  // Dasselbe wie der Text (NDU-52); die Rohdaten des Artefakts nicht noch einmal, das Markdown trägt alles mit den IDs.
+  outputSchema: {
+    artefakt: ARTEFAKT_ENUM,
+    titel: z.string(),
+    vorhanden: z.boolean(),
+    markdown: MARKDOWN,
+    hinweis: HINWEIS,
+    feedback: FEEDBACK_AUSGABE.optional(),
+    feedbackHinweis: FEEDBACK_HINWEIS_AUSGABE,
+    anleitung: ANLEITUNG,
+    werkstatt: WERKSTATT,
+  },
   annotations: LESEN,
 };
 
@@ -85,21 +113,32 @@ const PRUEFEN = {
       .nullish()
       .describe('Optional: ID eines Prüfpunkts dieses Artefakts (z. B. annahmen-loesung) oder seine Nummer in der Liste (5), um nur diesen Punkt gründlich zu prüfen. Ohne: alle Prüfpunkte.'),
   },
-  // Das Markdown steht nur im Text des Ergebnisses, nicht noch einmal hier (spart Kontext).
+  // Alles aus dem Text auch hier, das Artefakt und die Vorarbeit als Markdown (NDU-52): Claude Code sieht nur das JSON.
   outputSchema: {
     artefakt: ARTEFAKT_ENUM,
     titel: z.string(),
+    methode: z.string().describe('Die Methode, deren Prüfliste gilt.'),
     vorhanden: z.boolean().optional().describe('Ob das Artefakt gespeichert ist; fehlt, solange die Prüfliste gesperrt ist.'),
+    markdown: MARKDOWN.describe('Abschnitt „Artefakt“: das geprüfte Artefakt als Markdown. Nur daraus zitieren.'),
+    hinweis: HINWEIS,
     gesperrt: z
       .literal(true)
       .optional()
       .describe('Die Prüfliste verrät die Lösung einer Übung und ist noch zu: keine Prüfpunkte, nichts prüfen; anleitung sagt, wann es weitergeht.'),
     pruefpunkte: z.array(PRUEFPUNKT).describe('Die zu prüfenden Punkte; mit pruefpunkt nur dieser eine.'),
     vorarbeit: z
-      .array(z.object({ artefakt: ARTEFAKT_ENUM, titel: z.string(), vorhanden: z.boolean() }))
+      .array(z.object({
+        artefakt: ARTEFAKT_ENUM,
+        titel: z.string(),
+        vorhanden: z.boolean(),
+        zweck: z.string(),
+        markdown: z.string().optional(),
+        hinweis: z.string().optional().describe('Statt markdown: warum sie fehlt.'),
+      }))
       .describe('Artefakte, die zum Abgleich mitgeliefert werden (im Text unter „Vorarbeit zum Abgleich“).'),
-    anleitung: z.string().describe('So antwortest du auf diese Prüfung.'),
+    anleitung: ANLEITUNG,
     feedback: FEEDBACK_AUSGABE.optional(),
+    feedbackHinweis: FEEDBACK_HINWEIS_AUSGABE,
   },
   annotations: LESEN,
 };
@@ -119,6 +158,8 @@ const VERKNUEPFUNGEN = {
     geprueft: z.array(ARTEFAKT_ENUM),
     fehlen: z.array(ARTEFAKT_ENUM).describe('Noch nicht gespeichert.'),
     unlesbar: z.array(ARTEFAKT_ENUM).describe('Passt nicht zum Format der Werkstatt; dort neu speichern.'),
+    werkstatt: WERKSTATT,
+    anleitung: ANLEITUNG,
   },
   annotations: LESEN,
 };
@@ -149,6 +190,8 @@ const TAG_STAND = {
     faellig: z.array(STAND_SCHEMA).describe('Bis zu diesem Kurstag fällig.'),
     inArbeit: z.array(STAND_SCHEMA).describe('Ab diesem Kurstag in Arbeit, fällig zum nächsten.'),
     entsteht: z.array(z.object({ slug: z.string(), name: z.string() })).describe('Methoden dieses Kurstags.'),
+    werkstatt: WERKSTATT,
+    anleitung: ANLEITUNG,
   },
   annotations: LESEN,
 };
@@ -173,13 +216,13 @@ const ID_BEISPIEL: Record<ArtefaktName, string | undefined> = {
   interviews: 'I2 oder I2-4',
 };
 
-function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: PruefLage): string {
+function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: PruefLage): string[] {
   const { fokus } = lage;
   const saetze = fokus
     ? [`Prüf nur ${fokus.punkt.id}. Nenn jede Stelle, die dagegen verstößt, auch mehr als drei, jede mit einem wörtlichen Zitat; danach eine Rückfrage, die die Person selbst weiterbringt.`]
     : ['Höchstens drei Befunde, die wichtigsten zuerst. Jeder Befund: Prüfpunkt-ID, ein wörtliches Zitat, eine Rückfrage, die die Person selbst weiterbringt.'];
   const id = ID_BEISPIEL[artefakt];
-  saetze.push(`Zitiere nur aus dem Abschnitt „Artefakt“${id ? ` und nenn die ID der Zeile, wo sie eine hat (wie ${id})` : ''}.`);
+  saetze.push(`Zitiere nur aus dem Abschnitt „Artefakt“ (im JSON: markdown)${id ? ` und nenn die ID der Zeile, wo sie eine hat (wie ${id})` : ''}.`);
   if (lage.vorarbeit) saetze.push('Die Vorarbeit dient nur zum Abgleich; aus ihr zitierst du nicht.');
   if (lage.vorarbeitFehlt) {
     saetze.push('Fehlt Vorarbeit oder ließ sie sich nicht lesen (der Hinweis in ihrem Abschnitt sagt, was davon), sag bei den Prüfpunkten, die sie brauchen, dass du sie nicht abgleichen konntest – und nur bei „noch nicht ausgefüllt“, dass sie fehlt.');
@@ -189,8 +232,8 @@ function anleitungPruefen(k: WerkzeugKontext, artefakt: ArtefaktName, lage: Prue
   if (fokus) {
     saetze.push(fokus.naechster ? `Frag am Ende, ob als Nächstes ${fokus.naechster.id} drankommen soll.` : 'Das ist der letzte Prüfpunkt der Liste; sag das am Ende.');
   }
-  saetze.push(`Ändern kann die Person nur selbst in der Werkstatt: ${mappeUrl(k)}`);
-  return saetze.join(' ');
+  saetze.push(aendernNurInDerWerkstatt(k));
+  return saetze;
 }
 
 // --- Hilfen ---
@@ -213,8 +256,21 @@ const ohneAbgleich = (name: ArtefaktName, was: string) => `${ARTEFAKTE[name].tit
 // und jede Vorarbeit ein Abschnitt bleiben. Text der Person kann keine Überschrift beginnen (zeilenanfang in render/format.ts).
 const eingebettet = (md: string) => md.replace(/^(#{1,6}) /gm, (_, h: string) => `${'#'.repeat(Math.min(h.length + 2, 6))} `);
 
-const textErgebnis = (text: string, structuredContent?: Record<string, unknown>): CallToolResult =>
-  structuredContent ? { content: [{ type: 'text', text }], structuredContent } : { content: [{ type: 'text', text }] };
+const aendernNurInDerWerkstatt = (k: WerkzeugKontext) => `Ändern kann die Person nur selbst in der Werkstatt: ${mappeUrl(k)}`;
+
+// Eine Quelle für beide Sichten: Die Regeln für Claude (saetze) stehen einmal am Ende des Textes – mit ueberschrift als
+// eigener Abschnitt – und gleichlautend als anleitung im structuredContent. So kann keine Regel nur im Text stehen.
+function ergebnis(text: string, sc: Record<string, unknown>, saetze: readonly string[], ueberschrift?: string): CallToolResult {
+  const anleitung = saetze.join(' ');
+  return {
+    content: [{ type: 'text', text: [text, '', ...(ueberschrift ? [ueberschrift] : []), anleitung].join('\n') }],
+    structuredContent: { ...sc, anleitung },
+  };
+}
+
+// Das Artefakt oder, solange es leer ist, der Satz dazu: ein Wert für Text und JSON.
+const artefaktTeil = (k: WerkzeugKontext, name: ArtefaktName, a: { markdown: string } | null): { markdown: string } | { hinweis: string } =>
+  a ? { markdown: a.markdown } : { hinweis: nochLeer(k, name) };
 
 // Sätze für den Chat statt der Sätze der Web-Oberfläche („Seite neu laden“ passt in Claude nicht).
 function chatSatz(k: WerkzeugKontext, e: ApiAusnahme): string {
@@ -284,7 +340,7 @@ async function artefaktHolen(k: WerkzeugKontext, name: ArtefaktName, repo?: stri
   const daten = await artefaktLaden(k, repo ?? (await eigeneMappe(k)), name);
   if (daten === null) return null;
   if (daten === 'unlesbar') throw new Hinweis(unpassendeDatei(k, name));
-  return { daten: daten as Record<string, unknown>, markdown: rendern(name, daten) };
+  return { markdown: rendern(name, daten) };
 }
 
 function methodeDaten(k: WerkzeugKontext, m: Methode) {
@@ -301,11 +357,18 @@ function methodeDaten(k: WerkzeugKontext, m: Methode) {
 
 function methodeText(d: ReturnType<typeof methodeDaten>): string {
   const zeilen = [`# ${d.name}`, '', `Frage: ${d.frage}`, ''];
-  if (d.pruefliste) zeilen.push(`Prüfliste (Nummer oder Prüfpunkt-ID für ${MCP_WERKZEUGE.artefaktPruefen}):`, ...d.pruefliste.map(pruefpunktZeile), '');
-  zeilen.push(`Rolle der KI (immer erst nach der eigenen Arbeit): ${d.ki}`);
+  if (d.pruefliste) zeilen.push('Prüfliste:', ...d.pruefliste.map(pruefpunktZeile), '');
+  zeilen.push(`Rolle der KI: ${d.ki}`);
   if (d.quelle) zeilen.push(`Quelle: ${d.quelle}`);
   zeilen.push(`Methodenseite: ${d.link}`);
   return zeilen.join('\n');
+}
+
+function anleitungMethode(d: ReturnType<typeof methodeDaten>): string[] {
+  return [
+    'Die KI kommt immer erst nach der eigenen Arbeit der Person dran.',
+    ...(d.pruefliste ? [`Mit der Nummer oder ID eines Prüfpunkts prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt.`] : []),
+  ];
 }
 
 // Schreibweise einer Prüfpunkt-Angabe vereinheitlichen: klein, Umlaute wie in den IDs (prüfpunkt -> pruefpunkt), alles
@@ -427,9 +490,19 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
     sicher(k, async () => {
       const repo = await eigeneMappe(k);
       const stand: MappeStand = { kohorte: k.claims.kohorte, repo, lesezugriff: 'unbekannt', artefakte: await k.abh.speicher.uebersicht(repo) };
-      const zeilen = stand.artefakte.map((a) => `- ${ARTEFAKTE[a.name].titel} (${a.name}): ${a.vorhanden ? 'gespeichert' : 'noch leer'}`);
-      const kopf = k.claims.rolle === 'lehrende' ? `Deine Demo-Mappe (Kohorte ${stand.kohorte}, zählt nicht als Mappe der Kohorte):` : `Deine Mappe (Kohorte ${stand.kohorte}):`;
-      return textErgebnis([kopf, ...zeilen, '', `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`].join('\n'), { ...stand });
+      const artefakte = stand.artefakte.map((a) => ({ name: a.name, titel: ARTEFAKTE[a.name].titel, vorhanden: a.vorhanden }));
+      const demo = k.claims.rolle === 'lehrende';
+      const zeilen = artefakte.map((a) => `- ${a.titel} (${a.name}): ${a.vorhanden ? 'gespeichert' : 'noch leer'}`);
+      const saetze = [
+        ...(demo ? ['Das ist die Demo-Mappe der Lehrperson; sie zählt nicht als Mappe der Kohorte.'] : []),
+        `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`,
+      ];
+      return ergebnis([`${demo ? 'Deine Demo-Mappe' : 'Deine Mappe'} (Kohorte ${stand.kohorte}):`, ...zeilen].join('\n'), {
+        ...stand,
+        artefakte,
+        ...(demo ? { demoMappe: true as const } : {}),
+        werkstatt: mappeUrl(k),
+      }, saetze);
     }),
   );
 
@@ -437,9 +510,10 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
     sicher(k, async () => {
       const repo = await eigeneMappe(k);
       const [a, fb] = await Promise.all([artefaktHolen(k, artefakt, repo), feedbackFuerClaude(k.abh, repo, artefakt)]);
-      const anhang = feedbackText(fb).join('\n');
-      if (!a) return textErgebnis(nochLeer(k, artefakt) + anhang);
-      return textErgebnis(a.markdown + anhang, a.daten);
+      const teil = artefaktTeil(k, artefakt, a);
+      const text = ('markdown' in teil ? teil.markdown : teil.hinweis) + feedbackText(fb).join('\n');
+      const sc = { artefakt, titel: ARTEFAKTE[artefakt].titel, vorhanden: a !== null, ...teil, ...feedbackFelder(fb), werkstatt: mappeUrl(k) };
+      return ergebnis(text, sc, [...(fb?.length ? [FEEDBACK_ANLEITUNG] : []), aendernNurInDerWerkstatt(k)]);
     }),
   );
 
@@ -449,10 +523,10 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       if (!m) throw new Hinweis(`Diese Methode gibt es nicht. Mögliche Slugs: ${SLUGS.join(', ')}.`);
       if (!(await prueflisteFrei(k, m))) {
         const { pruefliste: _zu, ...d } = methodeDaten(k, m);
-        return textErgebnis(`${methodeText(d)}\n\n${kommtNachDerUebung(m, MCP_WERKZEUGE.methodeErklaeren)}`, { ...d, prueflisteGesperrt: true });
+        return ergebnis(methodeText(d), { ...d, prueflisteGesperrt: true }, [...anleitungMethode(d), kommtNachDerUebung(m, MCP_WERKZEUGE.methodeErklaeren)]);
       }
       const d = methodeDaten(k, m);
-      return textErgebnis(methodeText(d), d);
+      return ergebnis(methodeText(d), d, anleitungMethode(d));
     }),
   );
 
@@ -481,24 +555,28 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
         ...(faellig.length ? faellig.map(standZeile) : ['Noch nichts aus der Werkstatt-Mappe.']),
         ...(inArbeit.length ? ['', `## Ab Tag ${kt.tag} in Arbeit (fällig zu Tag ${kt.tag + 1})`, ...inArbeit.map(standZeile)] : []),
         ...(entsteht.length ? ['', `## Methoden an Tag ${kt.tag}`, ...entsteht.map((m) => `- ${m.name}`)] : []),
-        '',
-        `Das sind nur Zahlen, kein Urteil über die Qualität. Inhaltlich prüfen: ${MCP_WERKZEUGE.artefaktPruefen}. Bearbeiten in der Werkstatt: ${mappeUrl(k)}`,
       ];
-      return textErgebnis(zeilen.join('\n'), { kohorte: k.claims.kohorte, heute, ...kt, faellig, inArbeit, entsteht });
+      const saetze = [
+        'Das sind nur Zahlen, kein Urteil über die Qualität.',
+        `Inhaltlich prüfen: ${MCP_WERKZEUGE.artefaktPruefen}.`,
+        `Bearbeiten in der Werkstatt: ${mappeUrl(k)}`,
+      ];
+      return ergebnis(zeilen.join('\n'), { kohorte: k.claims.kohorte, heute, ...kt, faellig, inArbeit, entsteht, werkstatt: mappeUrl(k) }, saetze);
     }),
   );
 
   server.registerTool(MCP_WERKZEUGE.artefaktPruefen, PRUEFEN, ({ artefakt, pruefpunkt }) =>
     sicher(k, async () => {
       const m = methodeZu(artefakt);
+      const titel = ARTEFAKTE[artefakt].titel;
       // Zuerst die Mappe: Personen ohne Mappe hören das vor jedem Hinweis zu Sperre oder Prüfpunkt.
       const repo = await eigeneMappe(k);
       // Ohne Prüfliste prüfte Claude mit eigenem Mom-Test-Wissen – das verriete die Übung genauso. Kein Fehlerergebnis:
       // Die Sperre ist kein Ausfall des Werkzeugs, Clients sollen keinen Fehler anzeigen.
       if (!(await prueflisteFrei(k, m, true))) {
-        const titel = ARTEFAKTE[artefakt].titel;
-        const anleitung = kommtNachDerUebung(m, MCP_WERKZEUGE.artefaktPruefen);
-        return textErgebnis([`# Prüfung: ${titel}`, '', anleitung].join('\n'), { artefakt, titel, gesperrt: true, pruefpunkte: [], vorarbeit: [], anleitung });
+        return ergebnis(`# Prüfung: ${titel}`, { artefakt, titel, methode: m.name, gesperrt: true, pruefpunkte: [], vorarbeit: [] }, [
+          kommtNachDerUebung(m, MCP_WERKZEUGE.artefaktPruefen),
+        ]);
       }
       const alle = m.pruefliste ?? [];
       // ChatGPT schickt für ein leeres optionales Argument "" oder null: das heißt „alle Prüfpunkte“.
@@ -506,64 +584,61 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const roh = pruefpunktNormal(pruefpunkt);
       const fokusIndex = roh === undefined ? -1 : pruefpunktFinden(alle, roh, m.slug, artefakt);
       if (roh !== undefined && fokusIndex < 0) {
-        throw new Hinweis(`Den Prüfpunkt „${pruefpunkt!.trim()}“ gibt es für ${ARTEFAKTE[artefakt].titel} nicht. Mögliche Prüfpunkte: ${alle.map((p) => p.id).join(', ')}.`);
+        throw new Hinweis(`Den Prüfpunkt „${pruefpunkt!.trim()}“ gibt es für ${titel} nicht. Mögliche Prüfpunkte: ${alle.map((p) => p.id).join(', ')}.`);
       }
       const fokus = fokusIndex < 0 ? undefined : { punkt: alle[fokusIndex], naechster: alle[fokusIndex + 1] };
-      const pruefpunkte = fokus ? [fokus.punkt] : alle;
+      const punkte = alle.map(ausgabe);
+      const pruefpunkte = fokus ? [punkte[fokusIndex]] : punkte;
 
       // Vorarbeit gleichzeitig mit dem Artefakt lesen, mitgeliefert nur, wenn es etwas zu prüfen gibt. Eine unlesbare
       // Datei oder ein GitHub-Ausfall bei der Vorarbeit verhindert die Prüfung nicht, sie steht dann als Hinweis da.
       const vorarbeitLesen = Promise.all(
-        werkstattVorarbeit(m).map(async (name): Promise<{ name: ArtefaktName; inhalt: Awaited<ReturnType<typeof artefaktHolen>>; hinweis?: string }> => {
+        werkstattVorarbeit(m).map(async (name) => {
+          const kopf = { artefakt: name, titel: ARTEFAKTE[name].titel, zweck: VORARBEIT_ZWECK };
+          let hinweis: string;
           try {
-            return { name, inhalt: await artefaktHolen(k, name, repo) };
+            const inhalt = await artefaktHolen(k, name, repo);
+            if (inhalt) return { ...kopf, vorhanden: true, markdown: inhalt.markdown };
+            hinweis = ohneAbgleich(name, 'noch nicht ausgefüllt');
           } catch (e) {
-            if (e instanceof Hinweis) return { name, inhalt: null, hinweis: e.message };
-            fehlerLoggen('werkstatt-mcp vorarbeit:', e);
-            return { name, inhalt: null, hinweis: ohneAbgleich(name, 'ließ sich gerade nicht lesen') };
+            if (e instanceof Hinweis) hinweis = e.message;
+            else {
+              fehlerLoggen('werkstatt-mcp vorarbeit:', e);
+              hinweis = ohneAbgleich(name, 'ließ sich gerade nicht lesen');
+            }
           }
+          return { ...kopf, vorhanden: false, hinweis };
         }),
       );
       const feedbackLesen = feedbackFuerClaude(k.abh, repo, artefakt);
       const a = await artefaktHolen(k, artefakt, repo);
       const vorarbeit = a ? await vorarbeitLesen : [];
       const fb = await feedbackLesen;
+      const teil = artefaktTeil(k, artefakt, a);
 
-      const titel = ARTEFAKTE[artefakt].titel;
-      const anleitung = a
-        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => v.inhalt === null), feedback: !!fb?.length })
+      const saetze = a
+        ? anleitungPruefen(k, artefakt, { fokus, vorarbeit: vorarbeit.length > 0, vorarbeitFehlt: vorarbeit.some((v) => !v.vorhanden), feedback: !!fb?.length })
         // Noch leer, aber schon Feedback (etwa zum ganzen Brief): der Satz dazu gilt auch hier.
-        : fb?.length ? `${ANLEITUNG_LEER} ${FEEDBACK_ANLEITUNG}` : ANLEITUNG_LEER;
-      const vorarbeitText = vorarbeit.flatMap((v) => [
-        '',
-        `## Vorarbeit zum Abgleich: ${ARTEFAKTE[v.name].titel} (${v.name})`,
-        'Nur zum Abgleich, nicht prüfen und nicht daraus zitieren.',
-        '',
-        v.inhalt ? eingebettet(v.inhalt.markdown) : (v.hinweis ?? ohneAbgleich(v.name, 'noch nicht ausgefüllt')),
-      ]);
+        : [ANLEITUNG_LEER, ...(fb?.length ? [FEEDBACK_ANLEITUNG] : [])];
       const text = [
         `# Prüfung: ${titel}`,
         '',
         fokus ? `## Prüfpunkt im Fokus (${m.name})` : `## Prüfpunkte (${m.name})`,
-        ...(fokus ? [pruefpunktZeile(fokus.punkt, fokusIndex)] : alle.map(pruefpunktZeile)),
+        ...pruefpunkte.map(pruefpunktZeile),
         '',
         '## Artefakt',
-        a ? eingebettet(a.markdown) : nochLeer(k, artefakt),
-        ...vorarbeitText,
+        'markdown' in teil ? eingebettet(teil.markdown) : teil.hinweis,
+        ...vorarbeit.flatMap((v) => [
+          '',
+          `## Vorarbeit zum Abgleich: ${v.titel} (${v.artefakt})`,
+          v.zweck,
+          '',
+          v.markdown !== undefined ? eingebettet(v.markdown) : v.hinweis,
+        ]),
         ...feedbackText(fb),
-        '',
-        '## So antwortest du',
-        anleitung,
       ].join('\n');
-      return textErgebnis(text, {
-        artefakt,
-        titel,
-        vorhanden: a !== null,
-        pruefpunkte: pruefpunkte.map(ausgabe),
-        vorarbeit: vorarbeit.map((v) => ({ artefakt: v.name, titel: ARTEFAKTE[v.name].titel, vorhanden: v.inhalt !== null })),
-        anleitung,
-        ...(fb?.length ? { feedback: feedbackAusgabe(fb) } : {}),
-      });
+      const sc = { artefakt, titel, methode: m.name, vorhanden: a !== null, ...teil, pruefpunkte, vorarbeit, ...feedbackFelder(fb) };
+      return ergebnis(text, sc, saetze, '## So antwortest du');
     }),
   );
   server.registerTool(MCP_WERKZEUGE.verknuepfungenPruefen, VERKNUEPFUNGEN, () =>
@@ -578,7 +653,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       ]);
       const mappe: MappeDaten = { brief, entscheidungen, leitfaden, annahmen, interviews };
       const v = verknuepfungenPruefen(mappe);
-      return textErgebnis(`${verknuepfungenText(v)}\n\nÄndern kann die Person nur selbst in der Werkstatt: ${mappeUrl(k)}`, { ...v });
+      return ergebnis(verknuepfungenText(v), { ...v, werkstatt: mappeUrl(k) }, [aendernNurInDerWerkstatt(k)]);
     }),
   );
 }
