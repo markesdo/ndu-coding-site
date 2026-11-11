@@ -174,6 +174,7 @@ export const METHODEN: Methode[] = [
       { id: 'synthese-snapshot', alt: 'synthese-1', text: 'Jedes Interview hat einen Snapshot mit einprägsamem Zitat, Kurzinfos, Einsichten und Chancen.' },
       { id: 'synthese-chance-beduerfnis', alt: 'synthese-2', text: 'Jede Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch in den Worten der Person – keine Lösung und keine Funktion.' },
       { id: 'synthese-einsichten', alt: 'synthese-3', text: 'Einsichten (auffälliges Verhalten) stehen getrennt von den Chancen.' },
+      { id: 'synthese-belege', text: 'Jede Chance nennt mindestens eine Zitat-ID als Beleg.' },
       { id: 'synthese-pseudonym', alt: 'synthese-4', text: 'Kein Eintrag nennt Namen, Arbeitgeber oder etwas, woran man die Person erkennt – nur das Pseudonym.' },
       { id: 'synthese-beleg-nachgetragen', alt: 'synthese-5', text: 'In der Annahmen-Map ist für jede Annahme, zu der ihr etwas gehört habt, der Beleg nachgetragen.' },
     ],

@@ -141,7 +141,7 @@ describe('methoden', () => {
       'entscheidungslog-felder', 'entscheidungslog-beleg', 'entscheidungslog-tatsache', 'entscheidungslog-ersetzt',
       'annahmen-pruefbar', 'annahmen-arten', 'annahmen-wichtig-beleg', 'annahmen-riskanteste', 'annahmen-loesung', 'annahmen-getan-quelle',
       'interview-ziel', 'interview-zukunft', 'interview-idee', 'interview-letztes-mal', 'interview-heute', 'interview-nachfragen', 'interview-einwilligung',
-      'synthese-snapshot', 'synthese-chance-beduerfnis', 'synthese-einsichten', 'synthese-pseudonym', 'synthese-beleg-nachgetragen',
+      'synthese-snapshot', 'synthese-chance-beduerfnis', 'synthese-einsichten', 'synthese-pseudonym', 'synthese-beleg-nachgetragen', 'synthese-belege',
       'journey-map-geschichten', 'journey-map-erleben', 'journey-map-umwege', 'journey-map-momente-getrennt', 'journey-map-worte-belegt', 'journey-map-hoehepunkt-ende',
       'baum-chance-beduerfnis', 'baum-belegt', 'baum-ein-elternteil', 'baum-kind-teil', 'baum-stapel', 'baum-konkret',
       'ziel-chance-geschwister', 'ziel-chance-blatt', 'ziel-chance-linsen', 'ziel-chance-belegt', 'ziel-chance-ulwick',
@@ -220,7 +220,7 @@ describe('methoden', () => {
       'interview-ziel': /Forschungsfrage/, 'interview-zukunft': /Zukunft/, 'interview-idee': /Idee/, 'interview-letztes-mal': /letzten konkreten Mal/,
       'interview-heute': /heute schon tut/, 'interview-nachfragen': /Nachfragen/, 'interview-einwilligung': /Einwilligung/,
       'synthese-snapshot': /Snapshot/, 'synthese-chance-beduerfnis': /Bedürfnis/, 'synthese-einsichten': /Einsichten/,
-      'synthese-pseudonym': /Pseudonym/, 'synthese-beleg-nachgetragen': /Beleg nachgetragen/,
+      'synthese-pseudonym': /Pseudonym/, 'synthese-beleg-nachgetragen': /Beleg nachgetragen/, 'synthese-belege': /Zitat-ID als Beleg/,
     };
     const werkstatt = METHODEN.filter((m) => pruefungInWerkstatt(m)).flatMap((m) => m.pruefliste ?? []);
     expect(werkstatt.map((p) => p.id).sort()).toStrictEqual(Object.keys(STICHWORT).sort());
