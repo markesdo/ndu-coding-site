@@ -31,6 +31,8 @@ export function beamerSchalten(
   { hell = true, speicher = sichererSpeicher() }: { hell?: boolean; speicher?: Speicher } = {},
 ): boolean {
   if (an && !root.hasAttribute('data-ist-praesentator')) return false;
+  // Seite ohne Beamer (Werkstatt, BeamerStart.astro ohne): nicht einschalten, auch nicht per Taste B.
+  if (an && root.hasAttribute('data-ohne-beamer')) return false;
   root.toggleAttribute('data-beamer', an);
   if (hell) { if (an) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme'); }
   try { if (an) speicher?.setItem(BEAMER_SCHLUESSEL, '1'); else speicher?.removeItem(BEAMER_SCHLUESSEL); } catch {}

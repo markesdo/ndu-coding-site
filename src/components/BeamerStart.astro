@@ -5,13 +5,21 @@
 // Dort merkt sich der Browser die Wahl; ?beamer (oder ?beamer=1) schaltet ein, ?beamer=0 aus. Ohne Schlüssel wird
 // ein gespeicherter Beamer-Modus gelöscht und ?beamer ignoriert – sonst säße man ohne Knopf zum Ausschalten fest.
 // hell: Beamer heißt auch helles Thema (dunkel wird am Projektor grau auf grau); /start hat ein eigenes Farbschema.
-const { hell = true } = Astro.props as { hell?: boolean };
+// ohne: Seite, die es nie im Beamer gibt (Werkstatt /innolab/mappe – dort verstecken sich Editor und Leser im Beamer). Der
+// gemerkte Beamer-Modus bleibt unberührt, damit der Folien-Tab im Beamer bleibt; html[data-ohne-beamer] sperrt das
+// Einschalten (beamerSchalten in lib/beamer.ts) und blendet den Knopf „Beamer“ aus (beamer.css).
+const { hell = true, ohne = false } = Astro.props as { hell?: boolean; ohne?: boolean };
 ---
-<script is:inline define:vars={{ hell }}>
+<script is:inline define:vars={{ hell, ohne }}>
   (function () {
     var root = document.documentElement;
     var praes = false;
     var an = false;
+    if (ohne) {
+      root.setAttribute('data-ohne-beamer', '');
+      try { if (localStorage.getItem('ndu-presenter')) root.setAttribute('data-ist-praesentator', ''); } catch (e) {}
+      return;
+    }
     try {
       praes = !!localStorage.getItem('ndu-presenter');
       if (!praes) localStorage.removeItem('ndu-beamer');
