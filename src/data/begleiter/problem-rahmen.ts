@@ -51,7 +51,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
     live: [
       'Nur schwache Fassung zeigen, Raum fragen, Antworten abwarten, dann aufdecken.',
       'Kaffeebar ist erfunden und begleitet den ganzen Kurs.',
-      '„Gibt es mehr als eine Art, das zu lösen? Wenn nein, habt ihr eine verkleidete Lösung.“',
+      '„Gibt es mehr als eine Art, das zu lösen? Wenn nein, habt ihr eine Lösung statt einer Chance.“',
       'Ulwick erzählen (geschichte): „online einkaufen“ ist Lösung, Ergebnis ist kürzerer Weg.',
       'Falle: Gefühl als Problem („gestresst“) – nach der Ursache fragen.',
     ],
@@ -71,7 +71,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
     ],
     geschichte: {
-      text: 'Ulwick beschreibt 2002 in der Harvard Business Review, was passiert, wenn Unternehmen ihre Kundschaft einfach fragen, was sie will: Die Antworten sind Lösungen. Kund*innen wünschen sich ein Bildtelefon oder sagen sinngemäß „Ich will Lebensmittel online kaufen“ („I want to buy groceries on-line“). Die Unternehmen liefern genau das – und sehr oft kauft es dann niemand. Ulwicks Schluss, sinngemäß: „Kund*innen sollte man nicht zutrauen, Lösungen zu finden“ („Customers should not be trusted to come up with solutions“). Fragen soll man nach dem Ergebnis, das die Kundschaft will (Ulwick: outcome), also danach, was ein Produkt für sie leisten soll: zum Beispiel weniger Zeit für den Weg zum Laden und zurück, beim Bildtelefon das Gefühl, Menschen beim Telefonieren näher zu sein. Dann den Raum fragen: „Wie viele Lösungen gibt es für ‚weniger Zeit für den Weg zum Laden und zurück‘? Mehr als eine – sonst wäre es wieder eine verkleidete Lösung.“ Bei der Kaffeebar ist „App zum Vorbestellen“ das „Lebensmittel online kaufen“; die starke Fassung auf der Folie beschreibt stattdessen, was die Kundschaft erlebt: „Die Schlange ist morgens länger als die Zeit bis zur Abfahrt.“ Ulwick ist dabei strenger als Torres: Er würde gar nicht nach Lösungen fragen. Torres hält den Lösungswunsch fest und fragt im Team, ob es mehr als einen Weg gibt – sonst ist es eine verkleidete Lösung (S. 94–95).',
+      text: 'Ulwick beschreibt 2002 in der Harvard Business Review, was passiert, wenn Unternehmen ihre Kundschaft einfach fragen, was sie will: Die Antworten sind Lösungen. Kund*innen wünschen sich ein Bildtelefon oder sagen sinngemäß „Ich will Lebensmittel online kaufen“ („I want to buy groceries on-line“). Die Unternehmen liefern genau das – und sehr oft kauft es dann niemand. Ulwicks Schluss, sinngemäß: „Kund*innen sollte man nicht zutrauen, Lösungen zu finden“ („Customers should not be trusted to come up with solutions“). Fragen soll man nach dem Ergebnis, das die Kundschaft will (Ulwick: outcome), also danach, was ein Produkt für sie leisten soll: zum Beispiel weniger Zeit für den Weg zum Laden und zurück, beim Bildtelefon das Gefühl, Menschen beim Telefonieren näher zu sein. Dann den Raum fragen: „Wie viele Lösungen gibt es für ‚weniger Zeit für den Weg zum Laden und zurück‘? Mehr als eine – sonst wäre es wieder eine Lösung statt einer Chance.“ Bei der Kaffeebar ist „App zum Vorbestellen“ das „Lebensmittel online kaufen“; die starke Fassung auf der Folie beschreibt stattdessen, was die Kundschaft erlebt: „Die Schlange ist morgens länger als die Zeit bis zur Abfahrt.“ Ulwick ist dabei strenger als Torres: Er würde gar nicht nach Lösungen fragen. Torres hält den Lösungswunsch fest und fragt im Team, ob es mehr als einen Weg gibt – sonst ist es eine Lösung statt einer Chance (S. 94–95).',
       quelle: 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Harvard Business Review, Januar 2002, S. 91–92; Teresa Torres, Continuous Discovery Habits, S. 94–95',
     },
     fragen: [
@@ -100,7 +100,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
         quelle: 'Thomas Wedell-Wedellsborg, Are You Solving the Right Problems?, HBR Jan.–Feb. 2017, S. 2',
       },
       {
-        text: 'Im Opportunity Solution Tree hängen unter jeder Chance mehrere Lösungen; das ist Absicht. Eine Chance mit nur einer möglichen Lösung ist eine verkleidete Lösung.',
+        text: 'Im Opportunity Solution Tree hängen unter jeder Chance mehrere Lösungen; das ist Absicht. Eine Chance mit nur einer möglichen Lösung ist in Wahrheit eine Lösung: Lösung statt Chance.',
         quelle: 'Teresa Torres, Continuous Discovery Habits, S. 26, 95',
       },
       {

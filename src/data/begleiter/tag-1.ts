@@ -163,7 +163,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Kontinuierliches Denken statt Projekt-Denken: Ein sechsmonatiges Wasserfallprojekt in Zwei-Wochen-Sprints zerlegen und „agil“ nennen ist weder agil noch kontinuierlich. Kontinuierlich heißt: jeden Sprint Wert liefern.', quelle: `${TORRES}, S. 29` },
       { text: 'Der Baum zerlegt projektgroße Chancen in kleinere; je tiefer im Baum, desto kleiner. Teams lösen eine Chance nach der anderen, und die vielen kleinen Lösungen lösen nach und nach die große.', quelle: `${TORRES}, S. 29` },
       { text: 'Zweifacher Nutzen des Zerlegens: Man kann Probleme angehen, die sonst unlösbar wirken, und man liefert Wert über die Zeit – statt zu warten, bis das große Problem gelöst ist. Das ist Kern des Agilen Manifests und kontinuierlicher Verbesserung.', quelle: `${TORRES}, S. 85` },
-      { text: 'Geschwister-Chancen gehören zum selben Elternteil, sind aber getrennt lösbar: Wer eine löst, löst die Eltern-Chance teilweise.', quelle: `${TORRES}, S. 83–84` },
+      { text: 'Geschwister-Chancen hängen unter derselben übergeordneten Chance, sind aber getrennt lösbar: Wer eine löst, löst die übergeordnete Chance teilweise.', quelle: `${TORRES}, S. 83–84` },
     ],
     geschichte: {
       text: 'Torres nimmt ein Streaming-Beispiel: „Ist diese Serie gut?“ wirkt auf den ersten Blick wie ein schwieriges Problem. Schaut man genauer hin, entscheiden Menschen ganz unterschiedlich: manche nach dem Genre, andere danach, wer mitspielt – sie haben Lieblingsschauspieler*innen und schauen zuerst auf die Besetzung. So zerfällt die große Frage in kleinere: „Was für eine Serie ist das?“, „Wer spielt mit?“, „Ähnelt sie einer, die ich schon gesehen habe?“, „Wer schaut sie sonst?“. Ein Team könnte mit „Wer spielt mit?“ anfangen, weil es relativ leicht zu lösen ist und viele so auswählen. Das löst die große Frage nicht ganz, aber ein kleines Bedürfnis vollständig – und mit jeder weiteren kleinen Chance wird auch die große kleiner.',
@@ -204,7 +204,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ueberleitung: 'So sieht der Baum der Kaffeebar aus – und heute entsteht nur die Wurzel.',
     kern: [
       { text: 'Chancen aus Sicht der Kundschaft formulieren, nicht aus Sicht des Unternehmens. Torres: Niemand würde sagen „Ich hätte gern mehr Streaming-Abos“, wohl aber „Ich will Zugang zu spannenderen Inhalten“. Prüffrage pro Chance: „Haben wir das in Interviews gehört?“ bzw. „Kann ich mir vorstellen, dass jemand das sagt – oder wünschen wir es uns nur?“', quelle: `${TORRES}, S. 91–92` },
-      { text: 'Lösungen in Verkleidung: Kundschaft äußert oft Lösungswünsche, die wie Chancen klingen. Test: „Is there more than one way to address this opportunity?“ (wörtlich geprüft). Gibt es nur einen Weg, ist es keine Chance, sondern eine Lösung – dann die dahinterliegende Chance suchen.', quelle: `${TORRES}, S. 94` },
+      { text: 'Lösung statt Chance: Kundschaft äußert oft Lösungswünsche, die wie Chancen klingen. Test: „Is there more than one way to address this opportunity?“ (wörtlich geprüft). Gibt es nur einen Weg, ist es keine Chance, sondern eine Lösung – dann die dahinterliegende Chance suchen.', quelle: `${TORRES}, S. 94` },
       { text: 'Chancen müssen konkret sein: Themen, Designrichtlinien oder Stimmungen („Das soll einfach sein“, „Das ist zu schwer“) sind zu vage; konkret wäre „Eine Serie zu finden soll einfacher sein“ oder „Ich will auf dem Weg zur Arbeit im Zug schauen“.', quelle: `${TORRES}, S. 94` },
       { text: 'Annahmen-Tests stehen unter den Lösungen: Mit ihnen bewertet man, welche Lösung Kundenwert so schafft, dass er Geschäftswert treibt.', quelle: `${TORRES}, S. 27` },
     ],
@@ -227,7 +227,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Ist ‚Ich will per App vorbestellen‘ eine Chance oder eine Lösung – und woran erkennt ihr das?',
-      antwort: 'Eine Lösung in Verkleidung: Es gibt nur einen Weg, sie umzusetzen. Die Chance dahinter wäre etwa „Wenn ich anstehe, verpasse ich meinen Zug“, die App, Express-Theke und Kaffeewagen zulässt.',
+      antwort: 'Eine Lösung statt einer Chance: Es gibt nur einen Weg, sie umzusetzen. Die Chance dahinter wäre etwa „Wenn ich anstehe, verpasse ich meinen Zug“, die App, Express-Theke und Kaffeewagen zulässt.',
       falsch: '„Eine Chance, weil die Kundschaft es so sagt“ – Kund*innen äußern oft Lösungswünsche; der Prüfstein ist, ob es mehr als eine Lösung gibt.',
     },
     ueberleitung: 'Bevor wir eure Wurzel schreiben, ein Warm-up: Wie macht man Toast?',
@@ -347,7 +347,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Erst allein, um Gruppendenken zu vermeiden: In Gruppen strengen sich manche weniger an, manche halten sich zurück, und Gruppen bleiben oft auf dem Niveau des schwächsten Mitglieds. Das fühlt sich ineffizient an, ist aber der einfachste Weg zu mehreren Perspektiven.', quelle: `${TORRES}, S. 53` },
       { text: 'Visuell, nicht verbal: Zeichnen externalisiert Denken und macht Lücken sichtbar. Kästchen, Pfeile, Strichmännchen genügen; es geht nicht um Kunst.', quelle: `${TORRES}, S. 53–54` },
       { text: 'Nicht das Produkt zeichnen, sondern das Erleben der Kundschaft: wo sie hängen bleiben, was schiefgeht, wie sie umsteuern, wo sie aufgeben.', quelle: `${TORRES}, S. 54` },
-      { text: 'Perspektiven teilen: reihum zeigen, nachfragen, auf Unterschiede achten, neugierig sein; die eigene Zeichnung nicht verteidigen. Danach zu einer gemeinsamen Map zusammenführen, statt die „beste“ auszuwählen. Antipatterns: endlose Debatten (lieber zeichnen), Wörter statt Bilder, Map als Wahrheit, Map nicht weiterentwickeln.', quelle: `${TORRES}, S. 55–57` },
+      { text: 'Perspektiven teilen: reihum zeigen, nachfragen, auf Unterschiede achten, neugierig sein; die eigene Zeichnung nicht verteidigen. Danach zu einer gemeinsamen Map zusammenführen, statt die „beste“ auszuwählen. Anti-Muster: endlose Debatten (lieber zeichnen), Wörter statt Bilder, Map als Wahrheit, Map nicht weiterentwickeln.', quelle: `${TORRES}, S. 55–57` },
     ],
     geschichte: {
       text: 'Torres coachte ein neues Produkt-Trio mit dem Outcome, mehr Antragsabschlüsse zu erreichen – viele Kund*innen brachen einen langen Antrag ab. Alle drei hatten eigene Vermutungen. Statt im Raum zu diskutieren, zeichnete jede*r zuerst allein; das war unbequem, weil dem Designer Kontext fehlte, die Person aus der Entwicklung kaum Kundenkontakt hatte und die Produktmanagement-Person nur Ahnungen ohne Daten. Beim Vergleich zeigte sich: Das Produktmanagement kannte die bekannten Beschwerden aus Callcenter und Tickets; der Designer, neu im Unternehmen, sah den Prozess von außen und fing Verwirrung und Unsicherheit der Kundschaft ein; die Entwicklung bildete den Ablauf genau ab und zeigte, wie ein falsch ausgefüllter früher Schritt später alles entgleisen lässt. Zusammengeführt ergab das eine reichere Map als jede einzelne – mit Vermutungen, offenen Fragen und dem, was sie in den nächsten Interviews prüfen mussten.',
@@ -372,7 +372,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Motto des Kapitels, wörtlich geprüft: „An outcome is a change in human behavior that drives business results.“ (Josh Seiden, Outcomes Over Output).', quelle: `${TORRES}, S. 37` },
       { text: 'Vom Output- zum Outcome-Denken: Statt Features (Outputs) zählt deren Wirkung auf Kundschaft und Unternehmen (Outcomes). Mit einem Outcome sagt das Unternehmen, welchen Wert das Team schaffen soll, und lässt ihm den Spielraum, die besten Outputs zu finden.', quelle: `${TORRES}, S. 23` },
       { text: 'Fester Fahrplan kommuniziert falsche Gewissheit; ein Outcome kommuniziert Unsicherheit („Wir müssen dieses Problem lösen, wissen aber nicht, wie am besten“) und erlaubt, Ideen zu verwerfen und umzuschwenken. Ein klarer Outcome sagt auch, woran Erfolg gemessen wird; ohne ihn wird Discovery endlos und frustrierend.', quelle: `${TORRES}, S. 39` },
-      { text: 'Antipattern „Output als Outcome“: „Android-App launchen“ statt „mobile Nutzung steigern“, „Feature-Parität auf dem neuen Tech-Stack“ statt „Kundschaft auf den neuen Stack bringen“. Tipp: Der Outcome sollte eine Zahl sein, auch wenn man noch nicht weiß, wie man sie misst – und man sollte nach der Wirkung fragen.', quelle: `${TORRES}, S. 47–48` },
+      { text: 'Anti-Muster „Output als Outcome“: „Android-App launchen“ statt „mobile Nutzung steigern“, „Feature-Parität auf dem neuen Tech-Stack“ statt „Kundschaft auf den neuen Stack bringen“. Tipp: Der Outcome sollte eine Zahl sein, auch wenn man noch nicht weiß, wie man sie misst – und man sollte nach der Wirkung fragen.', quelle: `${TORRES}, S. 47–48` },
     ],
     geschichte: {
       text: 'Torres arbeitete mit einem Team, das Studierenden bei der Kurswahl hilft. Sein Outcome: „Mehr Kursbewertungen auf der Plattform“. Auf die Frage, was mehr Bewertungen bewirken, kam: „Mehr Studierende sehen Kurse mit Bewertungen.“ Das stimmt aber nicht unbedingt – wenn sich die Bewertungen auf wenige Kurse ballen oder auf Kurse, die niemand ansieht, ändert sich nichts. Besser war: „Mehr Kursaufrufe, die Bewertungen enthalten.“ Die Lehre: Ein Outcome wird zum echten Outcome, indem man nach seiner Wirkung fragt.',
@@ -420,7 +420,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Forschung zu Zielen: Spezifische, herausfordernde Ziele wirken bei einfachen Aufgaben. Bei komplexen Aufgaben können sie die Leistung senken, wenn das Team noch keine Strategie hat; dort war „gebt euer Bestes“ besser, und ein anfängliches Lernziel („die Strategien entdecken, die funktionieren könnten“) wirksamer als ein Leistungsziel.', quelle: `${TORRES}, S. 44` },
       { text: 'Daraus: Bei einem neuen Outcome erst ein Lernziel („die Chancen entdecken, die Nutzung treiben“), dann ein Leistungsziel („Nutzung um 10 % steigern“). S.M.A.R.T.-Ziele passen für Teams, die ihren Outcome schon kennen; man darf mit einem Lernziel starten und sich dorthin vorarbeiten.', quelle: `${TORRES}, S. 44–45` },
       { text: 'Wer einen Outcome zum ersten Mal bekommt, braucht Zeit zu lernen, was die Zahl bewegt. Jedes Mal, wenn man das Team umbaut oder den Outcome wechselt, zahlt man eine „Lernsteuer“.', quelle: `${TORRES}, S. 43` },
-      { text: 'Antipatterns: zu viele Outcomes gleichzeitig, Ping-Pong von Quartal zu Quartal, individuelle statt Team-Ziele. Meist wirkt ein Outcome zur Zeit am stärksten.', quelle: `${TORRES}, S. 47` },
+      { text: 'Anti-Muster: zu viele Outcomes gleichzeitig, Ping-Pong von Quartal zu Quartal, individuelle statt Team-Ziele. Meist wirkt ein Outcome zur Zeit am stärksten.', quelle: `${TORRES}, S. 47` },
     ],
     fragen: [
       { frage: 'Ist ein Lernziel nicht zu weich für eine Bewertung?', antwort: 'Es ist der ehrliche Start bei einem neuen Outcome (Torres S. 44). Die messbare Schwelle – etwa „4 von 5“ – kommt auf die Experiment-Karte, sobald ihr wisst, was ihr testet.' },
@@ -435,7 +435,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ],
     ueberleitung: 'Was passiert, wenn das Ziel die Kundschaft vergisst: Wells Fargo.',
     kern: [
-      { text: 'Antipattern „ein Outcome auf Kosten von allem anderen“: Neben dem Hauptziel Gesundheitsmetriken beobachten, z. B. Kundengewinnung zusammen mit Kundenzufriedenheit – Ziel ist, die eine zu steigern, ohne die andere zu verschlechtern.', quelle: `${TORRES}, S. 48` },
+      { text: 'Anti-Muster „ein Outcome auf Kosten von allem anderen“: Neben dem Hauptziel Gesundheitsmetriken beobachten, z. B. Kundengewinnung zusammen mit Kundenzufriedenheit – Ziel ist, die eine zu steigern, ohne die andere zu verschlechtern.', quelle: `${TORRES}, S. 48` },
     ],
     fragen: [
       { frage: 'Was machen wir mit Interview-Funden, die nicht zum Outcome passen?', antwort: 'Notieren, aber nicht in den Baum. Sie können für einen anderen Outcome wertvoll sein; im Baum lenken sie ab.' },

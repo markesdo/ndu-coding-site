@@ -170,24 +170,24 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
       <li data-schritt><strong>Gespräch:</strong> „Erzähl mir vom letzten Morgen …“ brachte die Geschichte; die Frage nach dem Automaten fehlte.</li>
       <li data-schritt><strong>Überhört:</strong> Warum der Automat? Notlösung oder gut genug? Ins nächste Interview mitnehmen.</li>
     </ul>
-    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis: Erst wenn dieselbe Einsicht in weiteren Snapshots wiederkehrt, rückt A1 in der Annahmen-Map nach links. Im Entscheidungslog steht vorerst nur, dass A1 einen ersten Gegenbeleg hat (I2).</p>
+    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis: Erst wenn dieselbe Einsicht in weiteren Snapshots wiederkehrt, rückt A1 in der Annahmen-Map nach links. Den Gegenbeleg I2 tragt ihr dort ein. Ins Entscheidungslog kommt erst eine Zeile, wenn ihr deshalb etwas ändert – bei der Kaffeebar nach allen fünf Interviews: D4, Vorbestellen vor der Ankunft verworfen.</p>
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (65 min)</h2>
+    <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
     <p class="folie-satz">Reihum: eine Person zeigt ihre Snapshots, die anderen beiden fragen.</p>
     <MiroFrame name="T1 · 5 · Interview-Snapshots (aus der Werkstatt)" />
     <ol class="gross">
-      <li><strong>Zeigen (5 min):</strong> Eine Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen.</li>
+      <li><strong>Zeigen (5 min):</strong> Eine Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen: auf Miro T1 · 5 oder, falls die Karte noch leer ist, per Bildschirm teilen aus der Werkstatt.</li>
       <li data-schritt><strong>Besprechen (7 min):</strong> Die anderen beiden fragen mit den vier Fragen. Was sie anders hören, notiert ihr für den Snapshot.</li>
       <li data-schritt><strong>Reihum,</strong> drei Runden à 12 Minuten. <Timer minuten={12} /></li>
-      <li data-schritt><strong>Festhalten und prüfen:</strong> Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog; dann Prüfliste und Claude. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Festhalten und prüfen (8 min, nächste Folie):</strong> Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog; dann Prüfliste und Claude.</li>
     </ol>
     <p class="small"><strong>Noch keine Interviews in der Werkstatt?</strong> Zuerst die besten zwei bis drei eintragen: Pseudonym, Einwilligung, 3–5 Zitate mit ID, Chancen.</p>
     <div class="nur-handout">
-      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 20 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75).</p>
+      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 15 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75).</p>
       <p><strong>Hört ihr noch Neues?</strong> Rob Fitzpatrick rät, so lange Gespräche zu führen, bis nichts Neues mehr kommt. Bei einer klar umrissenen Zielgruppe können drei bis fünf reichen; wer nach mehr als zehn Gesprächen noch Ergebnisse bekommt, die in alle Richtungen streuen, hat vermutlich eine zu unscharfe Zielgruppe ({MOMTEST}, S. 88). Streuen eure fünf Snapshots in alle Richtungen, sprecht im Team darüber, ob ihr die Zielgruppe im Produkt-Brief enger fassen solltet.</p>
-      <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:45, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, drei besprechen), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:10. Gezeigt wird dann direkt aus der Werkstatt.</p>
+      <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:50, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, drei besprechen), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:15. Gezeigt wird dann direkt aus der Werkstatt.</p>
       <Prompt label="Für den Teams-Chat">{CHAT_SYNTHESE}</Prompt>
     </div>
   </Folie>
@@ -201,6 +201,25 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="synthese" />
   </div>
+
+  <Folie>
+    <h2 id="festhalten">Festhalten: was ändert sich im Log?</h2>
+    <p class="folie-satz">Eine Zeile, wenn ihr wegen der Interviews etwas wählt, verwerft, ändert oder bewusst behaltet. <Timer minuten={8} /></p>
+    <p>Snapshots ergänzen · Belege in der Annahmen-Map · 2–3 Log-Zeilen · Prüfliste + Claude (unten unter „<a href="#pruefen">Prüfen</a>“)</p>
+    <ul class="gross">
+      <li data-schritt><strong>Für wen, Problem:</strong> ändern oder behalten? <span class="muted">wie D3 ersetzt D1</span></li>
+      <li data-schritt><strong>Riskanteste Annahme:</strong> was tut ihr darum? <span class="muted">wie D4</span></li>
+    </ul>
+    <p class="small">„… weil …; Beleg: Stufe (ID).“ – <a href="/innolab/methoden/entscheidungslog#wann">Wann eine Zeile?</a></p>
+    <div class="nur-handout">
+      <p>In den acht Minuten Festhalten: Snapshots ergänzen, Belege in der Annahmen-Map nachtragen, dann zwei bis drei Zeilen im Entscheidungslog – nicht eine pro Interview, sondern eine pro Entscheidung. Zwei Fragen helfen:</p>
+      <ul>
+        <li><strong>Für wen und Problem:</strong> Haben die Interviews an Zielgruppe oder Problem im Brief etwas geändert – oder behaltet ihr beides bewusst? Bei der Kaffeebar wurde aus „Pendler*innen nach Wien“ „Pendler*innen mit festem Morgenzug, egal wohin“: D3 ersetzt D1, Beleg „gesagt (I1–I5)“.</li>
+        <li><strong>Riskanteste Annahme:</strong> Was tut ihr, nachdem ihr gehört habt, was dafür oder dagegen spricht – verwerfen, ändern oder weiter prüfen? Bei der Kaffeebar: D4, Vorbestellen vor der Ankunft verworfen, weil drei von fünf erst in der Halle entscheiden (I2-4, I3-1, I5-3). Bleibt es offen, ist auch „weiter prüfen“ eine Entscheidung, mit Beleg „noch keiner“ oder den IDs, die ihr habt.</li>
+      </ul>
+      <p>Satzanfang: „Ich habe … gewählt / verworfen / geändert / behalten, weil …; Beleg: Stufe (ID).“ Warum das Log und wann eine Zeile dazukommt: <a href="/innolab/methoden/entscheidungslog#warum">Entscheidungslog</a>.</p>
+    </div>
+  </Folie>
 
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>

@@ -21,7 +21,7 @@ export type TagKarte = {
 export const TAG_1: TagKarte = {
   bloecke: {
     'Kick-off': {
-      lernziel: 'Nach dem Block können alle die vier Ebenen des Opportunity Solution Tree nennen und eine Lösung in Verkleidung von einer Chance unterscheiden.',
+      lernziel: 'Nach dem Block können alle die vier Ebenen des Opportunity Solution Tree nennen und eine Lösung statt Chance erkennen.',
       streichen: [
         'Die vier Feinde guter Entscheidungen nach Heath nur nennen, Folie überspringen (vier-feinde).',
         'Nur den Folien-Satz, ohne Nigel Cross (problem-loesung).',
@@ -55,9 +55,11 @@ export const TAG_1: TagKarte = {
       ],
     },
     'Entscheidungslog': {
-      lernziel: 'Nach dem Block können alle eine Produktentscheidung als Zeile ins Log eintragen und ehrlich angeben, wie stark der Beleg ist, auch wenn er „noch keiner“ lautet.',
+      lernziel: 'Nach dem Block können alle sagen, wozu das Log da ist (Grund und Lernweg bis zum Pitch), eine Produktentscheidung als Zeile eintragen und ehrlich angeben, wie stark der Beleg ist, auch wenn er „noch keiner“ lautet.',
       streichen: [
-        'Ganz weglassen, kommt in der Annahmen-Map wieder (beleg-staerke).',
+        'Warum-Frage ohne Timer stellen, nur zwei Antworten hören (warum).',
+        'Nur den Satz sagen, Fluss nicht erklären (nutzen).',
+        'Folie zur Beleg-Stärke weglassen, kommt in der Annahmen-Map wieder (beleg-staerke).',
         'Nur D1 → D3 erzählen, D4 weglassen (beispiel).',
         'Nicht reihum: die Frage einmal stellen, Antworten in die Annahmen-Map mitnehmen (uebertrag).',
       ],

@@ -12,7 +12,12 @@ import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Skala from '../../../components/bild/Skala.astro';
 import Zeitleiste from '../../../components/bild/Zeitleiste.astro';
-import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
+import { Calendar, Eye, Lightbulb, ListPlus, MessageSquareQuote, Presentation, SearchCheck, Signpost } from '@lucide/astro';
+
+const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
+const THOMKE = 'Stefan H. Thomke, „The Scientific Mindset“ (2027)';
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
 ---
 <Layout title="Entscheidungslog">
   <span class="eyebrow">Innolab · Tag 1 · Methode</span>
@@ -22,23 +27,85 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
   <MethodenKarte slug="entscheidungslog" />
 
   <Folie>
-    <h2 id="worum">Worum es geht</h2>
-    <p class="folie-satz">Jede Entscheidung braucht einen Beleg – oder ein ehrliches „noch keiner“.</p>
-    <Fluss label="Entscheidungslog: geglaubt, geprüft, geändert" hervor={[1]} knoten={[
-      { t: 'Geglaubt', sub: 'Entscheidung und Grund, Beleg „noch keiner“', icon: Lightbulb },
-      { t: 'Geprüft', sub: 'Interview, Synthese, Experiment oder Zahl', icon: SearchCheck },
-      { t: 'Geändert', sub: 'eine neue Zeile, die alte bleibt stehen', icon: ListPlus },
+    <h2 id="warum">Warum ein Entscheidungslog?</h2>
+    <p class="folie-satz">Ein Satz, ohne nachzuschauen: Warum diese Zielgruppe – und was habt ihr ausgeschlossen? <Timer minuten={2} /></p>
+    <ul class="gross">
+      <li data-schritt><strong>Gründe sind vergessen.</strong></li>
+      <li data-schritt><strong>Gutes glaubt man, Schlechtes erklärt man weg.</strong></li>
+      <li data-schritt><strong>Die lauteste Meinung gewinnt.</strong></li>
+    </ul>
+    <p class="small muted">{THOMKE}, S. 14, 126; {BLAND}, S. 315.</p>
+    <div class="nur-handout">
+      <p>Vergleicht euren Satz danach mit dem Produkt-Brief. Meist fehlt der Grund, fast immer fehlt, was ihr ausgeschlossen habt. Ohne Log passiert dreierlei:</p>
+      <ul>
+        <li><strong>Gründe sind vergessen.</strong> Nach ein paar Wochen weiß niemand mehr, warum der Brief so aussieht. Rob Fitzpatrick rät aus demselben Grund zu Notizen: Sie machen es schwerer, sich selbst etwas vorzumachen, und wer Monate später die Richtung ändert, kann auf sie zurückgreifen, statt neu zu interviewen ({MOMTEST}, S. 105). „Notes are useless if you don’t look at them“ (S. 108) – darum schaut ihr das Log jeden Kurstag an.</li>
+        <li><strong>Gutes glaubt man, Schlechtes erklärt man weg.</strong> „We tend to happily accept ‚good‘ results that confirm our beliefs because they feel right. But we challenge and thoroughly investigate ‚bad‘ results that go against our assumptions“ ({THOMKE}, S. 14; ebenso S. 126). Steht vorher im Log, was ihr glaubt, ist das Umdeuten nachher schwerer.</li>
+        <li><strong>Die lauteste Meinung gewinnt.</strong> Thomke: „Nothing stalls experiments faster than a so-called HiPPO—highest-paid person’s opinion“ (S. 126). Teresa Torres beschreibt, wie Teams das selbst auslösen: Wer nur Schlussfolgerungen zeigt und nicht den Weg dorthin, lädt zu einem Meinungsstreit ein, den er nicht gewinnen kann ({TORRES}, S. 169).</li>
+      </ul>
+      <p>Dazu kommt eine Falle, die David J. Bland unter den typischen Fehlern nennt, „Failure to Learn and Adapt“: Manche Teams testen so viel, dass sie das Entscheiden vergessen. „The goal is not to test and learn. The goal is to decide, based on evidence and insights, to progress from idea to business.“ Gegenmittel sind feste Zeit, um Ergebnisse zu verdichten und die Idee anzupassen, und Rituale ({BLAND}, S. 315). Im Kurs ist das Ritual die Zeile am Ende jedes Kurstags.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="nutzen">Was euch das Log bringt</h2>
+    <p class="folie-satz">Im Jänner erklärt ihr, warum euer Produkt so aussieht – hier wächst die Antwort.</p>
+    <Fluss label="Wo das Entscheidungslog im Kurs wächst: Tag 2 Synthese, Tag 3 Ziel-Chance und Idee, Tag 4 und 5 Lernkarten, Tag 7 Pitch mit Belegen" hervor={[3]} knoten={[
+      { t: 'Tag 2', sub: 'Interviews ändern den Brief', icon: MessageSquareQuote },
+      { t: 'Tag 3', sub: 'Ziel-Chance und Idee gewählt', icon: Signpost },
+      { t: 'Tag 4–5', sub: 'Lernkarte: „darum …“', icon: SearchCheck },
+      { t: 'Tag 7', sub: 'Pitch: eure Belege', icon: Presentation },
     ]} />
-    <p>Eine Zeile: <strong>Datum — Entscheidung — Grund — Beleg</strong></p>
+    <div class="nur-handout">
+      <p>Was ihr davon habt, ganz konkret für diesen Kurs:</p>
+      <ul>
+        <li><strong>Jede Änderung hat ein Warum.</strong> Wer euer Log liest, sieht zu jeder Entscheidung den Grund und worauf er steht.</li>
+        <li><strong>Euer Lernen bleibt sichtbar.</strong> Eine widerlegte Zeile wird nicht gelöscht; sie bekommt „ersetzt am …“, die neue zeigt auf sie. So steht am Ende der Weg von geraten zu belegt da.</li>
+        <li><strong>Die Belege für den Pitch an Tag 7.</strong> Die Pitch-Seite nennt als Quelle für die Belege Lernkarten, Testbefunde und Entscheidungslog (<a href="/innolab/methoden/pitch">Pitch</a>). Torres rät, Stakeholdern nicht nur Schlussfolgerungen zu zeigen, sondern die Arbeit dahinter: „show your work“, mit den Entscheidungspunkten und den Optionen, die ihr erwogen habt ({TORRES}, S. 34, 169–171). Sie meint dort den Opportunity Solution Tree; das Log zeigt dieselben Entscheidungen als Verlauf.</li>
+        <li><strong>Claude prüft, was ohne Beleg dasteht.</strong> Am Ende jedes Kurstags fragt ihr Claude, welche Entscheidung keinen Beleg hat. Claude schreibt keine Zeilen, es zitiert und fragt.</li>
+        <li><strong>Feedback an der richtigen Stelle.</strong> In der Werkstatt kann Feedback der Lehrenden an einer einzelnen Zeile hängen, etwa an D3.</li>
+      </ul>
+      <p>Wo eine Zeile dazukommt, steht auf den Seiten der Tage: nach der <a href="/innolab/methoden/synthese">Synthese</a> an Tag 2, nach der Wahl der <a href="/innolab/methoden/ziel-chance">Ziel-Chance</a> und der Idee (<a href="/innolab/methoden/value-map">Value Map</a>) an Tag 3, nach jeder Lernkarte (<a href="/innolab/methoden/experiment">Experiment-Karte</a>), bei der Reihenfolge im <a href="/innolab/methoden/backlog">Backlog</a> und beim Störfall an <a href="/innolab/tag-5">Tag 5</a>. An Tag 7 fragt die Retro nach einer Entscheidung im Log, die ohne die Methode anders ausgefallen wäre (<a href="/innolab/tag-7">Tag 7</a>).</p>
+      <p>Thomke gibt für jedes Experiment denselben Rat: vorher festlegen, was ihr je nach Ergebnis ändert, und einen Mechanismus schaffen, „to ensure the results are acted on, not ignored“ ({THOMKE}, S. 103; die Entscheidung vorab S. 86). Das Log ist dieser Mechanismus.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="zeile">Eine Zeile, vier Felder</h2>
+    <p class="folie-satz">Jede Entscheidung braucht einen Beleg – oder ein ehrliches „noch keiner“.</p>
+    <Fluss label="Eine Zeile im Entscheidungslog am Beispiel D3 der Kaffeebar: Datum, Entscheidung, Grund, Beleg" hervor={[3]} knoten={[
+      { t: 'Datum', sub: '05.11.', icon: Calendar },
+      { t: 'Entscheidung', sub: 'Zielgruppe: fester Morgenzug', icon: Signpost },
+      { t: 'Grund', sub: 'alle 5 haben einen festen Zug', icon: Lightbulb },
+      { t: 'Beleg', sub: 'gesagt (I1–I5)', icon: SearchCheck },
+    ]} />
     <div class="nur-handout">
       <p>Im Coding-Kurs hat Claude im Repo festgehalten, was im Projekt gilt: Stack, Sprache, Regeln. Das bleibt dort. Im Innolab kommen <strong>Produktentscheidungen</strong> dazu, und die brauchen einen Beleg. Deshalb bekommt jede Zeile eine vierte Spalte, und das Log liegt in der Werkstatt.</p>
       <p>Der Beleg ist ein Interview (I3), ein Zitat daraus (I3-2), ein Experiment (E1) oder eine Zahl. „Noch keiner“ ist kein Makel: Eine Entscheidung ohne Beleg ist eine Annahme, und genau die testet ihr als Nächstes. Widerlegt ein Test etwas, löscht ihr die alte Zeile nicht, sondern schreibt eine neue darunter und vermerkt bei der alten „ersetzt am …“. So sieht man am Ende, was ihr gelernt habt. Das ist der Kern eurer Präsentation.</p>
+      <p><strong>Drei Artefakte, drei Aufgaben.</strong> Die <a href="/innolab/methoden/annahmen">Annahmen-Map</a> zeigt, was ihr gerade glaubt und wie gut es belegt ist – einen Stand. Interviews und ab Tag 3 die Lernkarten zeigen, was ihr beobachtet habt. Das Log hält fest, was ihr darum getan habt – einen Verlauf. Die Kette lautet: Annahme (A…) → Beleg (I… oder E…) → Entscheidung (D…).</p>
+      <p>Das Entscheidungslog ist eine eigene Methode des Kurses. Am nächsten kommt die <strong>Learning Card</strong> von David J. Bland & Alexander Osterwalder: Sie hat ein Feld für das Datum, „Data Reliability“ für die Stärke des Belegs und als letzten Schritt „Therefore, we will …“ ({BLAND}, S. 55). Das Log verdichtet sie auf eine Zeile.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="wann">Wann schreibt ihr eine Zeile?</h2>
+    <p class="folie-satz">Immer wenn ihr etwas wählt, verwerft, ändert oder bewusst behaltet.</p>
+    <Fluss label="Logik der Learning Card: geglaubt, beobachtet, gelernt, darum entschieden – das Letzte ist eure Zeile" hervor={[3]} knoten={[
+      { t: 'Geglaubt', icon: Lightbulb },
+      { t: 'Beobachtet', icon: Eye },
+      { t: 'Gelernt', icon: SearchCheck },
+      { t: 'Darum: eure Zeile', icon: ListPlus },
+    ]} />
+    <p data-schritt><strong>Nach Interviews, nach jedem Test, am Ende jedes Kurstags.</strong></p>
+    <p class="small muted">Nach der Learning Card, {BLAND}, S. 55.</p>
+    <div class="nur-handout">
+      <p>Eine Zeile gehört ins Log, wenn ihr festlegt, für wen ihr baut, was ihr baut oder was bewusst nicht – also etwas wählt, verwerft, ändert oder bewusst behaltet. Ein Satzanfang hilft: „Ich habe … gewählt / verworfen / geändert / behalten, weil …; Beleg: Stufe (ID).“ Kein Protokoll jedes Gesprächs: Eine Überraschung im Interview, die an Brief und Annahmen-Map nichts ändert, braucht keine Zeile. „Bewusst behalten“ zählt mit: Findet Claude beim Prüfen etwas und ihr lasst den Text trotzdem stehen, schreibt ihr eine Zeile, was ihr lasst und warum.</p>
+      <p>Die Logik stammt aus der Learning Card: „We believed that …“ (Hypothese), „We observed …“ (Beobachtung), „From that we learned that …“ (Erkenntnis), „Therefore, we will …“ (Entscheidung und nächste Schritte) ({BLAND}, S. 55). Bland nennt diesen letzten Schritt „Decide“: Was ihr gelernt habt, hat ein Ablaufdatum, also übersetzt ihr es in Handlung – aufgeben, ändern oder weiter testen (S. 61–62). Ein Ritual dafür empfiehlt er gegen die Falle „Failure to Learn and Adapt“ (S. 315); im Kurs sind das fünf Minuten am Ende jedes Kurstags.</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar am Bahnhof</h2>
-    <p class="folie-satz">Die alte Zeile bleibt stehen – so sieht man, was ihr gelernt habt.</p>
+    <p class="folie-satz">Die alte Zeile bleibt stehen – vorgelesen ist das schon euer Pitch.</p>
     <Zeitleiste id="zl-kaffeebar" label="Entscheidungslog der Kaffeebar als Zeitleiste: die Zeile vom 05.11. ersetzt die Zielgruppe vom 22.10., die alte bleibt stehen" eintraege={[
       { datum: '22.10.', t: 'Zielgruppe: Pendler*innen nach Wien, 7:15–7:45', kurz: 'Zielgruppe', grund: 'Inhaberin sieht morgens die längste Schlange', beleg: 'noch keiner' },
       { datum: '22.10.', t: 'Kein Mittagsgeschäft', grund: 'Mittags ist die Bar halb leer', beleg: 'Kassendaten September' },
@@ -46,6 +113,7 @@ import { Lightbulb, ListPlus, SearchCheck } from '@lucide/astro';
       { datum: '05.11.', t: 'Vorbestellen vor der Ankunft verworfen', grund: '3 von 5 sagen, sie entscheiden erst in der Halle', beleg: 'I2-4, I3-1, I5-3; bei I1 nur in der Notiz', schritt: true },
     ]} />
     <div class="nur-handout">
+      <p><strong>Was das Log der Kaffeebar zeigt.</strong> Liest man die vier Zeilen der Reihe nach vor, ist das eine halbe Minute Pitch, ohne ein Wort zu erfinden: „Am 22.10. haben wir auf Pendler*innen nach Wien gesetzt – ohne Beleg, nur weil die Inhaberin dort die längste Schlange sieht. Nach fünf Interviews wissen wir: Es zählt der feste Morgenzug, nicht das Ziel (D3 ersetzt D1). Vorbestellen vor der Ankunft haben wir verworfen, weil drei von fünf erst in der Halle entscheiden (D4). Mittags machen wir nichts, das zeigen die Kassendaten (D2).“ Und es zeigt, was noch offen ist: D4 steht nur auf „gesagt“ – das nächste Experiment muss zeigen, was Pendler*innen tun.</p>
       <p>Die dritte Zeile ersetzt die erste – gelöscht wird die erste trotzdem nicht, sie bekommt nur den Vermerk „ersetzt am …“. Wer das Log liest, sieht: Am Anfang war die Zielgruppe geraten, nach den Interviews war sie belegt. In eurer Mappe sieht das so aus: Hinter „Beleg:“ steht die Stufe, danach in Klammern die IDs, eure Notiz (wie „Kassendaten September“ bei D2) oder beides, getrennt durch Strichpunkt.</p>
       <Prompt label="Beispiel · Entscheidungslog in der Mappe" kopieren={false}>- D1 22.10.2026 — Zielgruppe: Pendler*innen nach Wien, 7:15–7:45 — Inhaberin sieht morgens die längste Schlange — Beleg: noch keiner — ersetzt am 05.11.2026
 - D2 22.10.2026 — Kein Mittagsgeschäft — Mittags ist die Bar halb leer — Beleg: getan (Kassendaten September)
