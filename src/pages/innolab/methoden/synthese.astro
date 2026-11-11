@@ -185,16 +185,16 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <p class="folie-satz">Reihum: eine Person zeigt ihre Snapshots, die anderen beiden fragen.</p>
     <MiroFrame name="T1 · 5 · Interview-Snapshots (aus der Werkstatt)" />
     <ol class="gross">
-      <li><strong>Zeigen (5 min):</strong> Eine Person geht ihre Snapshots durch – Zitat, Geschichte, Chancen: auf Miro T1 · 5 oder, falls die Karte noch leer ist, per Bildschirm teilen aus der Werkstatt.</li>
-      <li data-schritt><strong>Besprechen (7 min):</strong> Die anderen beiden fragen mit den vier Fragen. Was sie anders hören, notiert ihr für den Snapshot.</li>
+      <li><strong>Zeigen (5 min):</strong> Markus öffnet eure Interviews in der Werkstatt; ihr führt durch einen Snapshot – Zitat, Geschichte, Chancen.</li>
+      <li data-schritt><strong>Besprechen (7 min):</strong> Die anderen fragen mit den vier Fragen. Die letzten 2 min schreibt, wer zeigt: Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier.</li>
       <li data-schritt><strong>Reihum,</strong> drei Runden à 12 Minuten. <Timer minuten={12} /></li>
-      <li data-schritt><strong>Festhalten und prüfen (8 min, nächste Folie):</strong> Snapshots in der Werkstatt ergänzen, Belege in der Annahmen-Map, Zeilen im Entscheidungslog; dann Prüfliste und Claude.</li>
+      <li data-schritt><strong>Festhalten und prüfen (8 min, nächste Folie):</strong> Stichworte übertragen – Annahmen-Map, Leitfaden, Log nur bei einer Entscheidung; dann Claude.</li>
     </ol>
     <p class="small"><strong>Noch keine Interviews in der Werkstatt?</strong> Zuerst die besten zwei bis drei eintragen: Pseudonym, Einwilligung, 3–5 Zitate mit ID, Chancen.</p>
     <div class="nur-handout">
-      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 15 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75).</p>
+      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 15 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75). In den letzten zwei Minuten jeder Runde schreibt, wer gezeigt hat, in der eigenen Werkstatt: eine neue Chance oder Einsicht direkt in den Snapshot, alles andere als Stichwort auf Papier. Die Stichworte gehören zu den vier Fragen: Frage 1 in den Snapshot; Frage 2 in die Annahmen-Map (Beleg, „spricht dagegen“), ins Log nur bei einer Entscheidung; Frage 3 in den Leitfaden; Frage 4 als Nachfragen in den Leitfaden ({MOMTEST}, S. 102). Synthetische Übungsinterviews tragt ihr wie echte ein (Pseudonym „Synthetisch“) – als Beleg zählen sie nie.</p>
       <p><strong>Hört ihr noch Neues?</strong> Rob Fitzpatrick rät, so lange Gespräche zu führen, bis nichts Neues mehr kommt. Bei einer klar umrissenen Zielgruppe können drei bis fünf reichen; wer nach mehr als zehn Gesprächen noch Ergebnisse bekommt, die in alle Richtungen streuen, hat vermutlich eine zu unscharfe Zielgruppe ({MOMTEST}, S. 88). Streuen eure fünf Snapshots in alle Richtungen, sprecht im Team darüber, ob ihr die Zielgruppe im Produkt-Brief enger fassen solltet.</p>
-      <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:50, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, drei besprechen), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:15. Gezeigt wird dann direkt aus der Werkstatt.</p>
+      <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:50, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, zwei besprechen, eine schreiben), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:15. Gezeigt wird dann direkt aus der Werkstatt.</p>
       <p><strong>Reihenfolge beim Ausfüllen:</strong> zuerst die Zitate (so entstehen die IDs), dann Geschichte, Chancen mit Belegen, Einsichten – einprägsames Zitat und Kurzinfos zuletzt. Im Fallback bis 14:50 nur Zitate und Chancen; den Rest ergänzt ihr später.</p>
       <Prompt label="Für den Teams-Chat">{CHAT_SYNTHESE}</Prompt>
     </div>
@@ -213,7 +213,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   <Folie>
     <h2 id="festhalten">Festhalten: was ändert sich im Log?</h2>
     <p class="folie-satz">Eine Zeile, wenn ihr wegen der Interviews etwas wählt, verwerft, ändert oder bewusst behaltet. <Timer minuten={8} /></p>
-    <p>Snapshots ergänzen · Belege in der Annahmen-Map · 2–3 Log-Zeilen · Prüfliste + Claude (unten unter „<a href="#pruefen">Prüfen</a>“)</p>
+    <p>Annahmen-Map: Beleg, ID, Notiz „spricht dagegen“ · Leitfaden: Frage ändern, Nachfrage dazu · Log: 1–2 Zeilen · Claude: „Prüf meine Verknüpfungen“ (<a href="#pruefen">Prüfen</a>)</p>
     <ul class="gross">
       <li data-schritt><strong>Für wen, Problem:</strong> ändern oder behalten? <span class="muted">wie D3 ersetzt D1</span></li>
       <li data-schritt><strong>Riskanteste Annahme:</strong> was tut ihr darum? <span class="muted">wie D4</span></li>

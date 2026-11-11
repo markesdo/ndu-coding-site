@@ -120,6 +120,27 @@ describe('api/antworten', () => {
     expect([...daten.keys()].filter((k) => k.startsWith('antwort:')).length).toBeLessThanOrEqual(MAX_IDS_PRO_IP);
   });
 
+  it('id im Index ohne Antwort (zurückgenommen): nicht gezählt, nicht gezeigt', async () => {
+    await antwort(id('a'), 'design', 'bleibt');
+    await antwort(id('b'), 'entwicklung', 'zurückgenommen');
+    const k = [...daten.keys()].find((x) => x.startsWith('antwort:') && x.endsWith(id('b')))!;
+    daten.delete(k);
+    const index = [...daten.entries()].find(([x]) => x.startsWith('antworten:'))![1] as string[];
+    expect(index).toContain(id('b'));
+    expect(await lesen()).toStrictEqual({ anzahl: 1, rollen: { produktmanagement: 0, design: 1, entwicklung: 0 }, frei: false });
+    aufdecken();
+    expect((await lesen()).antworten).toStrictEqual([{ rolle: 'design', text: 'bleibt' }]);
+  });
+
+  it('Zurücknehmen lässt den gemeinsamen Index in Ruhe', async () => {
+    await antwort(id('z'), 'design', 'von woanders', '192.0.2.1');
+    const ix = () => [...daten.entries()].find(([x]) => x.startsWith('antworten:'))![1] as string[];
+    const ids = ['a', 'b', 'c', 'd', 'e', 'f'].map(id);
+    await Promise.all(ids.map((i) => antwort(i, 'design', 'x', '198.51.100.9')));
+    expect(ix()).toContain(id('z'));
+    expect(ix().filter((x) => ids.includes(x))).toHaveLength(ids.length); // nur angehängt, nichts entfernt
+  });
+
   it('IPv6: ein /64 ist ein Absender', async () => {
     for (const [i, c] of ['a', 'b', 'c', 'd'].entries()) expect((await antwort(id(c), 'design', 'x', `2001:db8:1:2::${i + 1}`)).status).toBe(200);
     expect((await antwort(id('e'), 'design', 'x', '2001:db8:1:2:ffff:1:2:3')).status).toBe(429);

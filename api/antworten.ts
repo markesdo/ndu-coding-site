@@ -6,9 +6,10 @@
 // aufgedeckt ist (Kennung wie <Aufloesung gruppe=…>, Speicher aus api/aufgedeckt.ts) oder ihr `ab` erreicht ist.
 // Grenzen: 30 Antworten pro Runde, 4 ids pro Absender (IPv4 bzw. IPv6-/64, gehasht), dieselbe id höchstens alle 2 s.
 // Speicher: Vercel Runtime Cache. Er kann keine Schlüssel aufzählen, darum zusätzlich eine Liste der ids (Index). Der Index
-// wird gelesen-geändert-geschrieben; damit zwei gleichzeitige Antworten sich dort nicht verdrängen, prüft der POST nach dem
-// Schreiben nach und trägt sich notfalls neu ein, und die Seite schickt ihre Antwort noch einmal, wenn GET ?id= „eigene:
-// false“ meldet. Die Antwort selbst liegt unter ihrem eigenen Schlüssel und geht nie verloren.
+// wird nur angehängt (gelesen-ergänzt-geschrieben, nie gekürzt); damit zwei gleichzeitige Antworten sich dort nicht
+// verdrängen, prüft der POST nach dem Schreiben nach und trägt sich notfalls neu ein, und die Seite schickt ihre Antwort
+// noch einmal, wenn GET ?id= „eigene: false“ meldet. Restrisiko: Bei sehr dichtem Gleichzeitig-Schreiben kann eine id
+// trotzdem kurz fehlen, bis die Seite sie neu schickt. Die Antwort selbst liegt unter ihrem eigenen Schlüssel.
 import { getCache } from '@vercel/functions';
 import { json, praesentatorAbweisen } from '../src/lib/praesentator-api.js'; // .js-Endung wie in middleware.ts
 import { ohneRuntimeCache } from '../src/lib/runtime-cache.js';
@@ -107,12 +108,11 @@ export async function POST(request: Request): Promise<Response> {
   await Promise.all([eintragen(cache, ixSchluessel, index, e.id), eintragen(cache, ipSchluessel, vomAbsender, e.id)]);
   // Gleichzeitige neue ids vom selben Absender haben die Prüfung oben alle bestanden: nachzählen und die eigene notfalls
   // zurücknehmen. Im Grenzfall nehmen mehrere zugleich zurück – trifft nur, wer viele ids auf einmal schickt.
+  // Zurücknehmen heißt nur: die eigene Antwort löschen. Den gemeinsamen Index fassen wir nicht an (Lesen-Ändern-Schreiben
+  // könnte die id einer gleichzeitigen Antwort verdrängen); GET zählt ids ohne Antwort nicht. In der Absender-Liste
+  // bleibt die id stehen – sie zählt dort weiter gegen den, der sie geschickt hat.
   if (neu && indexPruefen(await cache.get(ipSchluessel)).filter((x) => x !== e.id).length >= MAX_IDS_PRO_IP) {
-    const ohne = async (k: string) => {
-      const l = indexPruefen(await cache.get(k));
-      if (l.includes(e.id)) await cache.set(k, l.filter((x) => x !== e.id), { ttl: TTL_SEKUNDEN, name: NAME });
-    };
-    await Promise.all([cache.delete(schluessel), ohne(ixSchluessel), ohne(ipSchluessel)]);
+    await cache.delete(schluessel);
     return json({ fehler: 'Zu viele Antworten von hier' }, 429);
   }
   return json({ ok: true });
