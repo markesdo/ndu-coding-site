@@ -118,7 +118,7 @@
   display: flex; align-items: flex-start; gap: .5rem; padding: .3rem .6rem; overflow-wrap: anywhere;
   border-left: 3px solid var(--blue); background: var(--blue-soft); border-radius: 0 var(--radius) var(--radius) 0;
 }
-.wk-wurzel .wk-belege-gewaehlt li.wk-beleg-waise { border-left-style: dashed; border-left-color: var(--border); background: none; }
+.wk-wurzel .wk-belege-gewaehlt li.wk-beleg-waise { border: 0; border-left: 3px dashed var(--border); background: none; }
 .wk-wurzel .wk-belege-gewaehlt .wk-karte-nr { flex-shrink: 0; margin-right: 0; line-height: inherit; }
 /* Auswahl einklappbar: Die Zusammenfassung sieht aus wie ein Knopf (.wk-knopf), mit Pfeil für auf/zu. */
 .wk-wurzel .wk-belege-auswahl > summary {
@@ -139,7 +139,7 @@
 /* Schmal (Handy): Die Zeile steckt in zwei Listen mit Rand und Knopfspalte; der Text bekommt dann die ganze Breite
    unter Kästchen und ID, statt in einer schmalen Spalte daneben. */
 @media (max-width: 760px) {
-  .wk-wurzel .wk-beleg { flex-wrap: wrap; row-gap: .2rem; }
+  .wk-wurzel .wk-beleg, .wk-wurzel .wk-belege-gewaehlt li { flex-wrap: wrap; row-gap: .2rem; }
   .wk-wurzel .wk-beleg-text { flex-basis: 100%; }
 }
 
