@@ -130,9 +130,14 @@ async function accessToken(h: Aufbau, githubId = 1001, rolle: 'studierende' | 'l
   return ((await r.json()) as { access_token: string }).access_token;
 }
 
-async function client(h: Aufbau, token: string): Promise<Client> {
+// offen: sammelt jede Anfrage des Clients, damit ein Test auf die wartet, die der Client nebenher schickt.
+async function client(h: Aufbau, token: string, offen?: Set<Promise<Response>>): Promise<Client> {
   const transport = new StreamableHTTPClientTransport(new URL(MCP), {
-    fetch: async (url, init) => h.app.request(url, init),
+    fetch: (url, init) => {
+      const p = Promise.resolve(h.app.request(url, init));
+      offen?.add(p);
+      return p;
+    },
     requestInit: { headers: { Authorization: `Bearer ${token}` } },
   });
   const c = new Client({ name: 'test', version: '1.0.0' });
@@ -609,9 +614,14 @@ describe('Runde R22', () => {
   it('Zugang zwischen bearerPruefen und Werkzeug entzogen -> „nicht mehr aktiv“', async () => {
     const h = await aufbau();
     const lesen = vi.spyOn(h.speicher, 'lesen');
-    const c = await client(h, await accessToken(h));
+    const offen = new Set<Promise<Response>>();
+    const c = await client(h, await accessToken(h), offen);
     // Der Client holt vor dem ersten callTool die Werkzeugliste (für outputSchema); das vorher erledigen.
     await c.listTools();
+    // Nach initialized öffnet der Client ohne await einen SSE-Strom (GET, hier 405). Auch der läuft durch
+    // bearerPruefen; käme er erst nach dem Umstellen unten an, zählte sein Zugriff als erster (NDU-60).
+    await Promise.allSettled(offen);
+    expect(offen.size).toBe(4); // initialize, initialized, GET, tools/list
     const voll = h.abh.umgebung.zugang;
     const leer = { test: { lehrende: [], studierende: [] } };
     // Erster Zugriff = bearerPruefen der Anfrage, jeder weitere = das Werkzeug.
