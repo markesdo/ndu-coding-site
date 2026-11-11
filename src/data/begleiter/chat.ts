@@ -18,8 +18,8 @@ export const CHAT_JOURNEY_MAP = `Experience Map · 35 min · Miro: T2 · 1 · Ex
 export const CHAT_BAUM = `Opportunity Solution Tree · 39 min · Miro: euer Baum, „Baum · <euer Name>“ (Beispiel: Baum · Beispiel Kaffeebar)
 Vorher: Momente aus T2 · 1 als blaue Karten unter euer Outcome (Cmd+D).
 1. Inventar, allein (12 min): jede Chance aus euren Snapshots durch die drei Fragen – Bedürfnis statt Lösung? In mehr als einem Interview? Treibt sie den Outcome? –, dann als gelbe Karte in „Baum · <euer Name>“ unter ihren Moment. Jede Chance nennt mindestens eine Zitat-ID, etwa I2-3. Einzelfälle (nur eine Person) in den Streifen „Nur in einem Interview“.
-2. Struktur, allein (10 min): Ast für Ast gruppieren, Eltern ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen. Jede Karte mit einer Linie an genau ein Elternteil: Cmd+D dupliziert, vom blauen Punkt des Elternteils zum Kind ziehen.
-3. Gegenlesen, reihum (12 min, vier pro Baum): Aus Firmensicht? Senkrecht? Zwei Eltern? Unkonkret? Verkleidete Lösung? Gefühl statt Ursache? Ohne ID kein Beleg.
+2. Struktur, allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen. Jede Karte hängt mit einer Linie an genau einer Karte darüber: Cmd+D dupliziert, vom blauen Punkt der oberen Karte zur unteren ziehen.
+3. Gegenlesen, reihum (12 min, vier pro Baum): Aus Firmensicht? Senkrechte Kette? Hängt an zwei Chancen? Nicht konkret? Verkleidete Lösung? Gefühl statt Ursache? Ohne ID kein Beleg.
 4. Prüfen (5 min): Prüfliste, dann Claude mit einem Bild eures Baums (Prompt auf der Seite unter „Prüfen“).`;
 
 /** Erst-fragen-Folien ohne Handout-Karte: nur die Aufgabe, damit sie im Chat steht, während alle tippen. */

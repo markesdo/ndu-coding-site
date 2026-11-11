@@ -57,12 +57,12 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   warum: {
     live: [
       'Mit den Chat-Sätzen verbinden: Wer stockte beim Vergleichen?',
-      '„Eine flache Liste mischt Eltern, Kinder und Geschwister.“',
+      '„Eine flache Liste mischt übergeordnete Chancen, Teilchancen und Geschwister.“',
       'Beispiel Flugzeug und Zug: ähnlich, aber offline, Steckdose, Netz.',
     ],
     verstaendnis: {
       frage: 'Warum lassen sich „Ich finde nichts zum Schauen“ und „Mir sind die Folgen ausgegangen“ schlecht gegeneinander priorisieren?',
-      antwort: 'Das zweite ist ein Grund – aber nicht der einzige – für das erste. Sie sind nicht unterscheidbar, sondern Eltern und Kind (S. 82).',
+      antwort: 'Das zweite ist ein Grund – aber nicht der einzige – für das erste. Sie sind nicht unterscheidbar, sondern übergeordnete Chance und Teilchance (S. 82).',
       falsch: '„Weil beide gleich wichtig sind“ – es geht um ihre Beziehung, nicht um ihre Wichtigkeit.',
     },
     kern: [
@@ -71,22 +71,22 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 82`,
       },
       {
-        text: 'Bäume zeigen zwei Beziehungen: Eltern und Kinder (ein Kind ist eine Teilmenge der Eltern-Chance) und Geschwister.',
+        text: 'Bäume zeigen zwei Beziehungen: übergeordnete Chance und Teilchance („a child opportunity (or sub-opportunity) is a subset of a parent opportunity“) und Geschwister.',
         quelle: `${TORRES}, S. 82`,
       },
     ],
-    ueberleitung: 'Der Baum zeigt beides: Eltern und Kinder, Geschwister.',
+    ueberleitung: 'Der Baum zeigt beides: übergeordnete Chancen und Teilchancen, Geschwister.',
   },
 
   'eltern-kind': {
     live: [
-      'Abbildung: das Kind ist ein Grund, nicht der einzige.',
+      'Abbildung: die Teilchance ist ein Grund, nicht der einzige.',
       'Fragen: Welche anderen Gründe füllen die Fragezeichen?',
       '„Geschwister sind ähnlich, aber eines lässt sich ohne das andere lösen.“',
     ],
     kern: [
       {
-        text: '„I can’t find anything to watch“ ist die Eltern-Chance von „I’m out of episodes of my favorite shows“. Die Frage „What are some other reasons …?“ bringt Geschwister: „I can’t figure out how to search for a specific show“, „The show I was watching is no longer available“. Geschwister sind ähnlich, aber getrennt lösbar; wer ein Kind löst, löst die Eltern-Chance zum Teil.',
+        text: '„I can’t find anything to watch“ ist die übergeordnete Chance von „I’m out of episodes of my favorite shows“. Die Frage „What are some other reasons …?“ bringt Geschwister: „I can’t figure out how to search for a specific show“, „The show I was watching is no longer available“. Geschwister sind ähnlich, aber getrennt lösbar; wer eine Teilchance löst, löst die übergeordnete Chance zum Teil.',
         quelle: `${TORRES}, S. 82–83`,
       },
     ],
@@ -96,7 +96,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   'gross-loesbar': {
     live: [
       'Fragen: Wie würdet ihr „Ist diese Serie gut?“ lösen?',
-      'Aufdecken: die vier Kinder – Menschen wählen Serien verschieden.',
+      'Aufdecken: die vier Teilchancen – Menschen wählen Serien verschieden.',
       '„Erst ‚Wer spielt mit?‘: klein, schnell geliefert, ein Bedürfnis ganz gelöst.“',
       'Brücke zu Tag 1: Wert nach und nach liefern.',
       'Wenn hinten: überspringen, Kern steht im Handout.',
@@ -107,7 +107,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Menschen lösen „Is this show any good?“ verschieden: nach der Art der Serie, nach den Schauspieler*innen. Daraus werden lösbarere Kinder: „What type of show is this?“, „Who is in this show?“, „Is this show similar to another show I’ve watched?“, „Who else is watching this show?“',
+        text: 'Menschen lösen „Is this show any good?“ verschieden: nach der Art der Serie, nach den Schauspieler*innen. Daraus werden lösbarere Teilchancen: „What type of show is this?“, „Who is in this show?“, „Is this show similar to another show I’ve watched?“, „Who else is watching this show?“',
         quelle: `${TORRES}, S. 84–85`,
       },
       {
@@ -163,14 +163,14 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   struktur: {
     live: [
-      'Abbildung: Flugzeug und Zug bekommen „unterwegs schauen“ als Eltern.',
-      '„Ergänzte Eltern sind erlaubt – sie folgen aus den Kindern.“',
+      'Abbildung: Flugzeug und Zug bekommen „unterwegs schauen“ darüber.',
+      '„Ergänzte übergeordnete Chancen sind erlaubt – sie folgen aus den Teilchancen.“',
       'Fragen: Wie lange darf der erste Baum dauern?',
       'Erwartet: nicht 30 Minuten, aber auch nicht stundenlang feilen.',
     ],
     kern: [
       {
-        text: 'Ast für Ast: Ähnliches gruppieren. Geschwister bekommen eine Eltern-Chance, die man ergänzen darf, wenn sie nicht gesagt wurde; was dasselbe meint, wird eine Chance („Entering a show name into the search box is hard“). Mini-Bäume weiter gruppieren, bis sie unter dem Moment hängen.',
+        text: 'Ast für Ast: Ähnliches gruppieren. Geschwister bekommen eine übergeordnete Chance, die man ergänzen darf, wenn sie nicht gesagt wurde; was dasselbe meint, wird eine Chance („Entering a show name into the search box is hard“). Mini-Bäume weiter gruppieren, bis sie unter dem Moment hängen.',
         quelle: `${TORRES}, S. 89–91`,
       },
       {
@@ -178,22 +178,22 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 91`,
       },
     ],
-    ueberleitung: 'Zwei Fehler seht ihr euch jetzt an, die anderen vier prüft ihr beim Gegenlesen.',
+    ueberleitung: 'Jetzt die Anti-Muster: zwei ausführlich, vier im Überblick.',
   },
 
   firmensicht: {
     live: [
       'Fragen: Wer würde „mehr Streaming-Abos“ je so sagen?',
-      '„Haben wir das gehört? Bei ergänzten Eltern: Kann ich mir vorstellen, dass jemand das sagt?“',
+      '„Haben wir das gehört? Bei ergänzten übergeordneten Chancen: Kann ich mir vorstellen, dass jemand das sagt?“',
       'Kaffeebar-Probe: „mehr Umsatz am Morgen“ wäre Firmensicht.',
     ],
     verstaendnis: {
       frage: 'Woran erkennt ihr eine Chance aus Firmensicht?',
-      antwort: 'Niemand aus der Zielgruppe würde sie so sagen. Test: Haben wir das in Interviews gehört? Bei ergänzten Eltern: Kann ich mir vorstellen, dass jemand das sagt – oder wünschen wir es uns nur (S. 92)?',
+      antwort: 'Niemand aus der Zielgruppe würde sie so sagen. Test: Haben wir das in Interviews gehört? Bei ergänzten übergeordneten Chancen: Kann ich mir vorstellen, dass jemand das sagt – oder wünschen wir es uns nur (S. 92)?',
     },
     kern: [
       {
-        text: '„No customer would ever say, ‚I wish I had more streaming-entertainment subscriptions.‘ But they might say, ‚I want access to more compelling content.‘ Review each opportunity on your tree and ask, ‚Have we heard this in interviews?‘“ Für ergänzte Eltern: „Can I imagine a customer saying this?“',
+        text: '„No customer would ever say, ‚I wish I had more streaming-entertainment subscriptions.‘ But they might say, ‚I want access to more compelling content.‘ Review each opportunity on your tree and ask, ‚Have we heard this in interviews?‘“ Für ergänzte übergeordnete Chancen: „Can I imagine a customer saying this?“',
         quelle: `${TORRES}, S. 91–92`,
       },
     ],
@@ -202,15 +202,44 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   senkrecht: {
     live: [
-      'Abbildung: ein Stapel, kein Baum.',
+      'Abbildung: eine Kette, kein Baum.',
       'Fragen: Sagen die drei dasselbe, oder fehlen Geschwister?',
       '„Wisst ihr nicht, welche fehlen? Zettel ‚Nächstes Interview: …‘ neben die Karte.“',
       'Wenn hinten: überspringen, steht auf der Checkliste (anti-muster).',
     ],
     kern: [
       {
-        text: 'Senkrechte Chancen: ein Elternteil mit einem Kind, das wieder nur ein Kind hat. Zwei Ursachen: Mehrere Interviews sagen dasselbe in anderen Worten – dann eine Chance daraus machen und den Rest streichen. Oder Geschwister fehlen: Löst jedes Kind die Eltern nur zum Teil, die fehlenden ergänzen; unbekannt, dann die Eltern-Chance in den nächsten Interviews erkunden.',
+        text: 'Senkrechte Kette („vertical opportunities“): eine Chance mit nur einer Teilchance, die wieder nur eine Teilchance hat. Zwei Ursachen: Mehrere Interviews sagen dasselbe in anderen Worten – dann eine Chance daraus machen und den Rest streichen. Oder Geschwister fehlen: Löst jede Teilchance die übergeordnete Chance nur zum Teil, die fehlenden ergänzen; unbekannt, dann die übergeordnete Chance in den nächsten Interviews erkunden.',
         quelle: `${TORRES}, S. 93–94`,
+      },
+    ],
+    ueberleitung: 'Vier weitere Anti-Muster, je mit einem Beispiel.',
+  },
+
+  'vier-muster': {
+    live: [
+      'Fragen: Was stimmt an jedem Beispiel nicht?',
+      'Aufdecken: Karte für Karte, dann die bessere Fassung sagen (Handout).',
+      'Falle: „Glücksspiel“ als Einzelfall abtun – I4-2 stützt eine belegte Chance.',
+      'Wenn hinten: überspringen, steht auf der Checkliste (anti-muster).',
+    ],
+    verstaendnis: {
+      frage: 'Warum kommt „Anstellen ist ein Glücksspiel“ nicht so in den Baum?',
+      antwort: 'Es ist ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, verpasse ich meinen Zug“ (I2-2, I3-4, I4-2; Torres S. 95).',
+      falsch: '„Weil es nur eine Person gesagt hat“ – I4-2 stützt eine Chance, die drei Interviews belegen.',
+    },
+    kern: [
+      {
+        text: 'Zu breit: „If you are finding that an opportunity should ladder up to more than one parent, it’s framed too broadly. Get more specific. Define one opportunity for each moment in time …“ Beispiel von S. 88: „The interface is hard to use“ wird zu „I can’t figure out how to find a specific show that I have in mind“, „I don’t like entering a show name using the remote“, „I can’t remember what episode I watched last“.',
+        quelle: `${TORRES}, S. 88, 94`,
+      },
+      {
+        text: 'Nicht konkret: „I wish this was easy to use“, „This is too hard“, „I want to do everything on the go“ sind Themen, Gestaltungsregeln oder Stimmungen; konkreter: „I wish finding a show to watch was easier“, „Entering a movie title using the remote is hard“, „I want to watch shows on my train commute“.',
+        quelle: `${TORRES}, S. 94`,
+      },
+      {
+        text: 'Verkleidete Lösung, Test: „Is there more than one way to address this opportunity?“ Kaffeebar: „Per App vorbestellen“ (Snapshot-Beispiel Tag 1) ist eine Lösung, dahinter „Ich will den Zug nicht verpassen“ (Folie drei-fragen). Gefühl: „We can’t fix feelings“, ihre Ursache schon. Kaffeebar: „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl, die Ursache „Wenn ich anstehe, verpasse ich meinen Zug“ (Folie beispiel).',
+        quelle: `${TORRES}, S. 94–95; Kaffeebar: baum.astro, drei-fragen und beispiel`,
       },
     ],
     ueberleitung: 'So sieht der Baum der Kaffeebar nach fünf Interviews aus.',
@@ -224,8 +253,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       '„Unter ‚Ich bin im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
     ],
     verstaendnis: {
-      frage: 'Ist „Ich stehe an“ mit nur einer Chance darunter ein senkrechter Stapel?',
-      antwort: 'Noch nicht: Senkrecht heißt, unter einem einzelnen Kind folgt wieder genau ein Kind. Ein Ast mit einer Chance ist ehrlich – mehr haben fünf Interviews nicht hergegeben –, aber ein Hinweis, wonach ihr als Nächstes fragt (Handout; Torres S. 94).',
+      frage: 'Ist „Ich stehe an“ mit nur einer Chance darunter eine senkrechte Kette?',
+      antwort: 'Noch nicht: Senkrecht heißt, unter der einzigen Teilchance folgt wieder genau eine. Ein Ast mit einer Chance ist ehrlich – mehr haben fünf Interviews nicht hergegeben –, aber ein Hinweis, wonach ihr als Nächstes fragt (Handout; Torres S. 94).',
     },
     ueberleitung: 'Wo ihr das baut: euer Baum auf Miro.',
   },
@@ -235,7 +264,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Zeit: 5 min Torres-Abbildung neben „Baum · Beispiel Kaffeebar“ zeigen.',
       '„Der Baum von Tag 1 war unsere Vermutung. Die Wurzel bleibt, die Äste kommen aus fünf Interviews.“',
       '„‚Vorbestellen‘ ist gefallen: 3 von 5 entscheiden erst in der Halle (D4).“',
-      'Zeit: 3 min die drei Griffe vorführen – Cmd+D, Linie ziehen, ein Elternteil.',
+      'Zeit: 3 min Griffe vorführen – Cmd+D, Linie ziehen, eine Karte darüber.',
       'Hewen: zuerst den Outcome wählen, dann die Momente darunter.',
     ],
     miro: {
@@ -243,7 +272,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       schritte: [
         '„Alle zu mir holen“ auf Baum · Beispiel Kaffeebar; die Folie mit der Torres-Abbildung daneben.',
         'Ebenen von oben zeigen: Outcome grün, Momente blau, Chancen gelb; Lösungen und Tests kommen an Tag 3.',
-        'Vorführen: Karte mit Cmd+D duplizieren, vom blauen Punkt des Elternteils zum Kind ziehen, Karte verschieben – die Linie geht mit.',
+        'Vorführen: Karte mit Cmd+D duplizieren, vom blauen Punkt der oberen Karte zur unteren ziehen, Karte verschieben – die Linie geht mit.',
         'Jede*r öffnet „Baum · eigener Name“: Outcome und je eine blaue und gelbe Karte stehen schon.',
       ],
     },
@@ -275,7 +304,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       schritte: [
         'Jede*r arbeitet im eigenen Frame „Baum · Name“ rechts neben der Kaffeebar; T2 · 2 ist nur die Anleitung.',
         'Momente aus T2 · 1 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
-        'Jede Karte mit einer Linie an genau ein Elternteil; was nur eine Person gesagt hat, in den Streifen „Nur in einem Interview“.',
+        'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat, in den Streifen „Nur in einem Interview“.',
         'Gegenlesen: Die anderen kommentieren im fremden Baum, statt zu verschieben.',
       ],
     },
@@ -283,7 +312,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       schritte: [
         'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
         'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance durch die drei Fragen, in „Baum · Name“ unter ihren Moment; Einzelfälle in den Streifen „Nur in einem Interview“.',
-        'Struktur allein (10 min): Ast für Ast gruppieren, Eltern ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an ein Elternteil; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
+        'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
         'Gegenlesen reihum (12 min, Timer auf der Folie Anti-Muster): je Baum vier Minuten, die anderen beiden gehen die Checkliste der sechs Anti-Muster durch.',
         'Prüfen (5 min): Prüfliste, dann Claude mit einem Bild des Baums aus Miro; eine Datei gibt es nicht.',
       ],
@@ -296,7 +325,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Lösungen als Chancen („App“, „Express-Theke“).',
         'Alles aus jedem Snapshot übernehmen, ohne die drei Fragen.',
         'Am perfekten Baum feilen und das Gegenlesen verpassen.',
-        'Karten ohne Linie oder mit zwei Eltern – dann ist die Chance zu breit.',
+        'Karten ohne Linie oder an zwei Chancen – dann ist die Chance zu breit.',
       ],
     },
     ueberleitung: 'Für das Gegenlesen: die Checkliste auf der nächsten Folie.',
@@ -306,12 +335,12 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Timer 12 min hier starten, Folie stehen lassen.',
       'Pro Baum vier Minuten, dann wechseln.',
-      'Punkte 1 und 2 sind bekannt, 3 bis 6 kurz erklären.',
+      'Folie vier-muster übersprungen? Dann 3 bis 6 kurz erklären.',
       'Falle: Gefühl als Chance – nach der Ursache fragen.',
     ],
     kern: [
       {
-        text: 'Mehrere Eltern: Sind die obersten Chancen eigene Zeitpunkte, hat keine Chance zwei Eltern; sonst ist sie zu breit. Nicht konkret: Themen, Gestaltungsregeln, Stimmungen („This is too hard“) sind keine Chancen, „Entering a movie title using the remote is hard“ schon.',
+        text: 'Hängt an zwei Chancen: Sind die obersten Chancen eigene Zeitpunkte, hängt keine Chance an zwei übergeordneten Chancen; sonst ist sie zu breit. Nicht konkret: Themen, Gestaltungsregeln, Stimmungen („This is too hard“) sind keine Chancen, „Entering a movie title using the remote is hard“ schon.',
         quelle: `${TORRES}, S. 94`,
       },
       {

@@ -17,7 +17,7 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
 <Layout title="Ziel-Chance wählen">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Ziel-Chance wählen</h1>
-  <p class="lead">Ihr arbeitet an einer Chance zur Zeit. Welche das ist, entscheidet ihr, indem ihr Geschwister miteinander vergleicht – durch vier Linsen, ohne Punkteschema. Ulwicks Formel rechnet ihr als Gegenprobe.</p>
+  <p class="lead">Ihr arbeitet an einer Chance (opportunity) zur Zeit. Welche das ist, entscheidet ihr, indem ihr Geschwister (siblings: Teilchancen derselben Chance) miteinander vergleicht – durch vier Linsen, ohne Punkteschema. Ulwicks Formel rechnet ihr als Gegenprobe.</p>
   <Orientierung seite="innolab/methoden/ziel-chance" leiste={false} />
   <MethodenKarte slug="ziel-chance" />
 
@@ -27,7 +27,7 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
     <ul class="gross">
       <li data-schritt><strong>Build Trap:</strong> Erfolg an ausgelieferten Features messen statt an ihrer Wirkung.</li>
       <li data-schritt><strong>Strategie</strong> entsteht im Chancenraum: welche Chance, für wen.</li>
-      <li data-schritt><strong>Eine Ziel-Chance</strong>, mehrere Lösungen dafür – Wert in kleinen Schritten.</li>
+      <li data-schritt><strong>Eine Ziel-Chance</strong> (target opportunity), mehrere Lösungen dafür – Wert in kleinen Schritten.</li>
     </ul>
     <div class="nur-handout">
       <p>Teresa Torres zitiert Melissa Perri: Die „Build Trap“ ist, Erfolg an Outputs statt Outcomes zu messen. Die meisten Gespräche über Produkte finden im Lösungsraum statt – Roadmaps, Backlogs, Releases. Produktstrategie entsteht aber im Chancenraum, aus den Entscheidungen, welche Outcomes, welche Kundschaft und welche Chancen ein Team verfolgt ({TORRES}, S. 96–97).</p>
@@ -37,18 +37,18 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
 
   <Folie>
     <h2 id="baum">Den Baum hinunter</h2>
-    <p class="folie-satz">Geschwister vergleichen, einen Ast wählen, bis zum Blatt.</p>
+    <p class="folie-satz">Geschwister vergleichen, einen Ast wählen, bis zum Blatt (leaf).</p>
     <MiroFrame name="T2 · 2 · Opportunity Solution Tree" />
     <BildText>
-      <BuchAbbildung src="/quellen/torres/ziel-chance.jpg" alt="Baum mit Outcome oben; die beiden obersten Chancen sind als Gruppe umrahmt („Assess & Prioritize“), dann die Kinder der gewählten Chance, dann deren Kinder, beschriftet „This is a leaf node“" quelle={`Ebene für Ebene vergleichen. ${TORRES}, S. 98.`} />
+      <BuchAbbildung src="/quellen/torres/ziel-chance.jpg" alt="Baum mit Outcome oben; die beiden obersten Chancen sind als Gruppe umrahmt („Assess & Prioritize“), dann die Teilchancen der gewählten Chance, dann deren Teilchancen, beschriftet „This is a leaf node“" quelle={`Ebene für Ebene vergleichen. ${TORRES}, S. 98.`} />
       <ul>
         <li data-schritt><strong>Nicht fragen</strong> „Sollen wir das machen?“ – sondern: Welche dieser Geschwister zuerst?</li>
         <li data-schritt><strong>Ast gewählt:</strong> Die anderen Äste dürft ihr vorerst ignorieren.</li>
-        <li data-schritt><strong>Wiederholen</strong>, bis die Chance keine Kinder mehr hat: ein Blatt.</li>
+        <li data-schritt><strong>Wiederholen</strong>, bis unter der Chance keine Teilchance mehr hängt: ein Blatt.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>„Sollen wir diese Chance verfolgen?“ ist eine Ob-oder-ob-nicht-Frage: Sie macht anfällig für Bestätigungsfehler und vergisst die Opportunitätskosten. Torres vergleicht deshalb immer eine Gruppe von Geschwistern miteinander – zuerst die obersten Chancen, bei uns die Momente der Experience Map. Ist die Struktur gut, liegt die wirkungsvollste Chance unter dem gewählten Ast, und alle anderen Äste fallen für diese Entscheidung weg. Dann dasselbe mit den Kindern, bis ihr bei einem Blatt ankommt, einer Chance ohne Kinder. Ein Blatt ist nicht unbedingt leicht; es heißt nur, dass ihr noch keine Teil-Chancen darunter kennt ({TORRES}, S. 98–99).</p>
+      <p>„Sollen wir diese Chance verfolgen?“ ist eine Ob-oder-ob-nicht-Frage: Sie macht anfällig für Bestätigungsfehler und vergisst die Opportunitätskosten. Torres vergleicht deshalb immer eine Gruppe von Geschwistern miteinander – zuerst die obersten Chancen, bei uns die Momente der Experience Map. Ist die Struktur gut, liegt die wirkungsvollste Chance unter dem gewählten Ast, und alle anderen Äste fallen für diese Entscheidung weg. Dann dasselbe mit den Teilchancen, bis ihr bei einem Blatt ankommt, einer Chance ohne Teilchancen. Ein Blatt ist nicht unbedingt leicht; es heißt nur, dass ihr noch keine Teilchancen darunter kennt ({TORRES}, S. 98–99).</p>
     </div>
   </Folie>
 
@@ -120,7 +120,7 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
     <MiroFrame name="T3 · 1 · Ziel-Chance" />
     <ol class="gross">
       <li data-schritt><strong>Ast wählen, allein:</strong> die Momente durch die vier Linsen, je ein Satz. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Bis zum Blatt:</strong> dasselbe mit den Kindern des gewählten Asts. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Bis zum Blatt:</strong> dasselbe mit den Teilchancen des gewählten Asts. <Timer minuten={5} /></li>
       <li data-schritt><strong>Ulwick:</strong> Geschwister als Outcome-Sätze, Wichtigkeit und Zufriedenheit schätzen, rechnen. <Timer minuten={10} /></li>
       <li data-schritt><strong>Zu dritt:</strong> Jede*r begründet die Wahl – stimmen Linsen und Formel überein? <Timer minuten={15} /></li>
       <li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum markieren, eine Zeile im Entscheidungslog. <Timer minuten={5} /></li>
