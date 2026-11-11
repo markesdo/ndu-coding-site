@@ -21,6 +21,7 @@ import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
+const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 
 // Der Snapshot von I2 wörtlich aus dem Beispiel der Werkstatt; die Skizze der Geschichte = die Notiz, an den Kommas geteilt.
 const I2 = KAFFEEBAR_INTERVIEWS.interviews.find((i) => i.id === 'I2');
@@ -215,28 +216,27 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   </div>
 
   <Folie>
-    <h2 id="festhalten">Festhalten: was ändert sich im Log?</h2>
-    <p class="folie-satz">Eine Zeile, wenn ihr wegen der Interviews etwas wählt, verwerft, ändert oder bewusst behaltet. <Timer minuten={8} /></p>
-    <p>Annahmen-Map: Beleg, ID, Notiz „spricht dagegen“ · Leitfaden: Frage ändern, Nachfrage dazu · Log: 1–2 Zeilen · Claude: „Prüf meine Verknüpfungen“ (<a href="#pruefen">Prüfen</a>)</p>
+    <h2 id="festhalten">Festhalten: eine Entscheidung ins Log</h2>
+    <p class="folie-satz">Was tut ihr nach den Interviews mit eurer riskantesten Annahme? Alle für sich, eine Zeile. <Timer minuten={8} /></p>
     <ul class="gross">
-      <li data-schritt><strong>Für wen, Problem:</strong> ändern oder behalten? <span class="muted">wie D3 ersetzt D1</span></li>
-      <li data-schritt><strong>Riskanteste Annahme:</strong> was tut ihr darum? <span class="muted">wie D4</span></li>
+      <li data-schritt>Riskanteste Annahme in der Annahmen-Map markieren.</li>
+      <li data-schritt>Eine Zeile im Log: verwerfen, ändern oder weiter prüfen.</li>
+      <li data-schritt>Nur synthetische Interviews? Beleg bleibt „noch keiner“, die Zeile heißt „weiter prüfen“.</li>
     </ul>
-    <p class="small">„… weil …; Beleg: Stufe (ID).“ – <a href="/innolab/methoden/entscheidungslog#wann">Wann eine Zeile?</a></p>
+    <p class="small">Kaffeebar D4: „Vorbestellen vor der Ankunft verworfen, weil 3 von 5 sagen, sie entscheiden erst in der Halle; Beleg: gesagt (I2-4, I3-1, I5-3).“ – <a href="/innolab/methoden/entscheidungslog#wann">Wann eine Zeile?</a></p>
     <div class="nur-handout">
-      <p>In den acht Minuten Festhalten: Snapshots ergänzen, Belege in der Annahmen-Map nachtragen, dann zwei bis drei Zeilen im Entscheidungslog – nicht eine pro Interview, sondern eine pro Entscheidung. Zwei Fragen helfen:</p>
-      <ul>
-        <li><strong>Für wen und Problem:</strong> Haben die Interviews an Zielgruppe oder Problem im Brief etwas geändert – oder behaltet ihr beides bewusst? Bei der Kaffeebar wurde aus „Pendler*innen nach Wien“ „Pendler*innen mit festem Morgenzug, egal wohin“: D3 ersetzt D1, Beleg „gesagt (I1–I5)“.</li>
-        <li><strong>Riskanteste Annahme:</strong> Was tut ihr, nachdem ihr gehört habt, was dafür oder dagegen spricht – verwerfen, ändern oder weiter prüfen? Bei der Kaffeebar: D4, Vorbestellen vor der Ankunft verworfen, weil drei von fünf erst in der Halle entscheiden (I2-4, I3-1, I5-3). Bleibt es offen, ist auch „weiter prüfen“ eine Entscheidung, mit Beleg „noch keiner“ oder den IDs, die ihr habt.</li>
-      </ul>
-      <p>Satzanfang: „Ich habe … gewählt / verworfen / geändert / behalten, weil …; Beleg: Stufe (ID).“ Warum das Log und wann eine Zeile dazukommt: <a href="/innolab/methoden/entscheidungslog#warum">Entscheidungslog</a>.</p>
+      <p>Map und Leitfaden habt ihr in den Runden ergänzt. Jetzt geht es nur ums Log: eine Zeile zur riskantesten Annahme. Eine zweite Zeile nur, wenn die Interviews Zielgruppe oder Problem im Brief geändert haben – bei der Kaffeebar wurde aus „Pendler*innen nach Wien“ „Pendler*innen mit festem Morgenzug, egal wohin“: D3 ersetzt D1, Beleg „gesagt (I1–I5)“.</p>
+      <p>Für die riskanteste Annahme gibt es drei Wege: verwerfen, ändern oder weiter prüfen. David J. Bland nennt diesen Schritt „Decide“: Was ihr gelernt habt, hat ein Ablaufdatum, also übersetzt ihr es in Handlung ({BLAND}, S. 61–62); auf der Learning Card ist das „Therefore, we will …“ (S. 55). Auch „weiter prüfen“ ist eine Entscheidung.</p>
+      <p>Satzanfang (Kursregel): „Ich habe … gewählt / verworfen / geändert / behalten, weil …; Beleg: Stufe (ID).“ Wann eine Zeile dazukommt, ist ebenfalls eine Regel des Kurses: <a href="/innolab/methoden/entscheidungslog#wann">Entscheidungslog</a>.</p>
+      <p>Synthetische Interviews zählen nicht als Beleg, auch nicht im Grund. Ehrlich sieht die Zeile dann so aus: „Riskanteste Annahme: A1 gewählt, weiter prüfen in echten Interviews, weil das Produkt daran hängt und noch nichts dafür oder dagegen spricht; Beleg: noch keiner.“</p>
+      <p>Wer fertig ist: Claude „Prüf meine Verknüpfungen“ (<a href="#pruefen">Prüfen</a>).</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-    <p class="folie-satz">Welche Annahme von Tag 1 hat heute einen Beleg bekommen – dafür oder dagegen?</p>
-    <p class="nur-handout">Wenn keine: Waren die Interviews zu nett, oder habt ihr nach eurer Idee gefragt statt nach vergangenem Verhalten? Als Nächstes zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu – ihre Momente werden die Äste eures Baums.</p>
+    <p class="folie-satz">Lest eure Zeile vor: Entscheidung, Grund, Beleg-Stufe. Reihum, je ein Satz.</p>
+    <p class="nur-handout">„Beleg: noch keiner“ ist eine gültige Antwort – sie sagt, was ihr als Nächstes prüfen müsst. Haben eure echten Interviews nichts für oder gegen die Annahme ergeben: Waren sie zu nett, oder habt ihr nach eurer Idee gefragt statt nach vergangenem Verhalten? Als Nächstes zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu – ihre Momente werden die Äste eures Baums.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/journey-map', t: 'Experience Map' }} />

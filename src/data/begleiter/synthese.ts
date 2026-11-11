@@ -260,10 +260,11 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   festhalten: {
     live: [
       'Timer 8 min starten, alle arbeiten allein in der Werkstatt.',
-      '„Eine Zeile pro Entscheidung, nicht pro Interview – zwei, drei reichen heute.“',
-      'Zwei Fragen aufdecken: Für wen und Problem, dann riskanteste Annahme.',
+      'Minute 1: riskanteste Annahme markieren – „sehr wichtig, kaum belegt“ (Tag 1).',
+      '„Eine Zeile reicht.“',
+      'Zweite Zeile nur bei neuer Zielgruppe oder neuem Problem.',
       'Falle: Gegenbeleg nur ins Log statt in die Annahmen-Map.',
-      'Nach 6 min: reihum je eine Zeile vorlesen, Beleg-Stufe nennen.',
+      'Falle: synthetisches Zitat als Beleg oder im Grund – zählt nie.',
     ],
     uebung: { dauer: '8 min', form: 'allein, jede*r im eigenen Log' },
     verstaendnis: {
@@ -288,17 +289,17 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Und wenn sich nichts geändert hat?',
-        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: eine Zeile, dass Zielgruppe und Problem bleiben, mit den Interview-IDs als Beleg. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
+        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: eine Zeile, dass Zielgruppe und Problem bleiben, mit den IDs echter Interviews als Beleg. Wer nur synthetische Interviews hat, kann nichts bewusst behalten: Die Zeile heißt „weiter prüfen“, Beleg „noch keiner“. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
       },
     ],
-    ueberleitung: 'Bevor ihr zur Map geht: eine Frage an euer Produkt.',
+    ueberleitung: 'Dann reihum: jede*r liest die eigene Zeile vor.',
   },
 
   uebertrag: {
     live: [
-      'Fragen: Welche Annahme von Tag 1 hat heute einen Beleg bekommen?',
-      'Reihum, je ein Satz, mit Zitat-ID.',
-      'Wenn keine: zu nette Interviews oder Fragen zur eigenen Idee?',
+      'Reihum: jede*r liest die eigene Zeile vor – Entscheidung, Grund, Beleg-Stufe.',
+      '„Beleg: noch keiner“ gilt – die Zeile heißt dann „weiter prüfen“.',
+      'Echte Interviews ohne Beleg: zu nett oder nach der Idee gefragt?',
     ],
     ueberleitung: 'Nach der Pause zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu.',
   },

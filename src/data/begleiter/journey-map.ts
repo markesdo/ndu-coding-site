@@ -124,7 +124,8 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   momente: {
     live: [
-      'Abbildung: vier Momente des Streaming-Beispiels als oberste Äste.',
+      'Reihe oben: vier Momente der Experience Map, jeder wird ein Ast.',
+      'Kreis oben ist kein Moment, sondern das Outcome (Wurzel).',
       '„Keine Überschneidung: Sonst könnt ihr nicht an einer Chance nach der anderen arbeiten.“',
       'Fragen: Welche drei bis fünf Momente hat die Kaffeebar?',
     ],
@@ -147,7 +148,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   'peak-end': {
     live: [
-      'Fragen: Welchen Durchgang würdet ihr wiederholen?',
+      'Erst fragen: Welchen Durchgang würdet ihr wiederholen? Dann aufdecken.',
       'Aufdecken: Die meisten wählen den längeren – er endet besser.',
       '„Markiert den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
       'Klarstellen: Die Regel kommt von NN/g, nicht von Torres.',
