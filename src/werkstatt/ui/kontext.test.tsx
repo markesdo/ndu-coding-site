@@ -209,12 +209,13 @@ describe('Kontext im Leser der Lehrenden: nie Feedback, Lücken oder roher Text'
   it.each(['annahmen', 'leitfaden'] as const)('Reiter %s: Daten der Person ja, Feedback/Lücken/roh nein', (reiter) => {
     const h = renderToStaticMarkup(<LeserKoerper zeigen={props({ kontext: k, kontextReiter: reiter })} lesen={lesen} />);
     expect(h).toContain('zg-kontext');
-    if (reiter === 'annahmen') expect(text(h)).toContain('spricht dagegen');
-    else expect(text(h)).toContain('Noch kein Leitfaden.');
     expect(h).not.toContain('FEEDBACK-MARKE');
     expect(h).not.toContain('LUECKE-MARKE');
     expect(h).not.toContain('FEHLT-MARKE');
     expect(h).not.toContain('ROH-MARKE');
     expect(h).not.toMatch(/class="fb|href=/);
+    // Gegenprobe: die Daten der Person stehen da.
+    if (reiter === 'annahmen') expect(text(h)).toContain('A1');
+    else expect(text(h)).toContain('Noch kein Leitfaden.');
   });
 });
