@@ -176,7 +176,7 @@ export const METHODEN: Methode[] = [
       { id: 'synthese-einsichten', alt: 'synthese-3', text: 'Einsichten (auffälliges Verhalten) stehen getrennt von den Chancen.' },
       { id: 'synthese-belege', text: 'Jede Chance nennt mindestens eine Zitat-ID als Beleg.' },
       { id: 'synthese-pseudonym', alt: 'synthese-4', text: 'Kein Eintrag nennt Namen, Arbeitgeber oder etwas, woran man die Person erkennt – nur das Pseudonym.' },
-      { id: 'synthese-beleg-nachgetragen', alt: 'synthese-5', text: 'In der Annahmen-Map ist für jede Annahme, zu der ihr etwas gehört habt, der Beleg nachgetragen.' },
+      { id: 'synthese-beleg-nachgetragen', alt: 'synthese-5', text: 'Jedes Zitat, das für oder gegen eine eurer Annahmen spricht, ist in der Annahmen-Map bei dieser Annahme als Beleg nachgetragen.' },
     ],
     ki: 'Prüft nach der Besprechung, ob eure Chancen Bedürfnisse sind und keine Lösungen – mit Zitat aus euren Interviews.',
   },
