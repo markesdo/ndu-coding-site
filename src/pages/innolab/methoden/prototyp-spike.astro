@@ -15,7 +15,7 @@ const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 ---
 <Layout title="Prototyp-Spike & Usability-Test">
-  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
+  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Prototyp-Spike & Usability-Test</h1>
   <p class="lead">Papier, dann ein klickbarer Wegwerf-Prototyp für genau die Usage Story – und eine zweite Experiment-Karte: Erreichen fünf Menschen den Höhepunkt, ohne dass ihr helft?</p>
   <Orientierung seite="innolab/methoden/prototyp-spike" leiste={false} />
@@ -49,7 +49,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>Jakob Nielsen: Fünf Testpersonen finden etwa 85 % der Usability-Probleme; „After the fifth user, you are wasting your time by observing the same findings repeatedly but not learning much new.“ Besser drei Runden mit je fünf als eine mit fünfzehn – bei euch: jetzt, dann an Tag 5 über Kreuz („Why You Only Need to Test with 5 Users“, NN/g 2000).</p>
+      <p>Jakob Nielsen: Fünf Testpersonen finden etwa 85 % der Usability-Probleme; „After the fifth user, you are wasting your time by observing the same findings repeatedly but not learning much new.“ Besser drei Runden mit je fünf als eine mit fünfzehn – bei euch: jetzt, dann an Tag 6 über Kreuz („Why You Only Need to Test with 5 Users“, NN/g 2000).</p>
       <p>Laut denken: „Recruit representative users. Give them representative tasks to perform. Shut up and let the users do the talking“ (Nielsen, „Thinking Aloud: The #1 Usability Tool“, NN/g 2012). Die Aufgabe beschreibt eine Situation und ein Ziel, gibt alle nötigen Informationen und verrät nicht, wo man klickt (Marieke McCloskey, „Turn User Goals into Task Scenarios for Usability Testing“, NN/g 2014): „Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“ – nicht „Scanne den Code und tippe auf Bestellen“.</p>
       <p>Bland für den Papier-Test: Erklärt, dass ihr Feedback zum Prototyp sucht; eine Person führt, eine schreibt mit; vorher intern testen, ob der Ablauf funktioniert („Test it internally to make sure the flow works“); danach: „Where did they get stuck or confused? What did they get excited about?“ ({BLAND}, S. 183–184).</p>
     </div>
@@ -58,7 +58,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="karte-e2">Auch dieser Test hat eine Karte</h2>
     <p class="folie-satz">Annahme, Messgröße, Schwelle – bevor die erste Person testet.</p>
-    <Prompt label="Beispiel · Experiment-Karte E2">E2 · A3 (bedienbar) · läuft bis Tag 4
+    <Prompt label="Beispiel · Experiment-Karte E2">E2 · A3 (bedienbar) · läuft bis Tag 5
 Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können.
 Um das zu prüfen, geben wir fünf Pendler*innen den Klick-Prototyp am Handy mit der Aufgabe:
   „Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“
@@ -100,7 +100,7 @@ Wir haben recht, wenn 4 von 5 den Höhepunkt ohne Hilfe erreichen.</Prompt>
   <div class="nur-handout">
   <Prompt label="Spike · Claude Code">Leg einen neuen Branch spike/[name] an. Bau darin einen klickbaren Wegwerf-Prototyp für genau diesen Ablauf aus docs/STORYS.md, Abschnitt Usage Story. Halte dich an meine Skizzen im angehängten Foto und an die Abnahmekriterien in docs/TESTS.md; wenn die Zeit nicht reicht, zuerst den Höhepunkt-Bildschirm. Nur Oberfläche: Daten im Speicher, keine Datenbank, kein Login, keine Bezahlung. Der Höhepunkt der Usage Story muss als eigener Bildschirm sichtbar sein. Schreib oben in die Startseite „Prototyp – nicht echt“. Zeig mir die Seite lokal; Issues und Backlog fasst du nicht an.</Prompt>
   <Callout type="warn" title="Der Spike bleibt im Branch">
-    <p>Der Spike wird nicht in <code>main</code> gemergt. An Tag 4 schreibt ihr aus dem, was ihr gelernt habt, saubere Issues – und Claude baut sie richtig. Für Tests am Handy deployt ihr ihn als Vercel-Vorschau.</p>
+    <p>Der Spike wird nicht in <code>main</code> gemergt. An Tag 5 schreibt ihr aus dem, was ihr gelernt habt, saubere Issues – und Claude baut sie richtig. Für Tests am Handy deployt ihr ihn als Vercel-Vorschau.</p>
   </Callout>
 
   <h2 id="vorlage">Vorlage</h2>
@@ -109,7 +109,7 @@ Wir haben recht, wenn 4 von 5 den Höhepunkt ohne Hilfe erreichen.</Prompt>
 Prototyp: Branch spike/[name] · Vorschau: [Link] · Papierskizzen: [Foto]
 Abnahmekriterien: [...] · Zeitbox: bis [Uhrzeit] · Nicht enthalten: [...]
 
-## E2 · A[n] (bedienbar) · läuft bis Tag 4
+## E2 · A[n] (bedienbar) · läuft bis Tag 5
 Wir glauben, dass [...].
 Um das zu prüfen, geben wir fünf [Zielgruppe] den Prototyp am Handy mit der Aufgabe:
   „[Situation, Ziel – ohne Bedienschritte]“
@@ -149,5 +149,5 @@ Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
 
   <p class="small muted">Nach {BLAND}, S. 182–185, 236–239, 306–309; Jakob Nielsen, NN/g (2000, 2012); Marieke McCloskey, NN/g (2014); {TORRES}, S. 140, 145.</p>
 
-  <FooterNav prev={{ href: '/innolab/methoden/usage-story', t: 'Usage Story' }} next={{ href: '/innolab/tag-3#abschluss', t: 'Tag 3 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/usage-story', t: 'Usage Story' }} next={{ href: '/innolab/methoden/scrum', t: 'Scrum im Team' }} />
 </Layout>

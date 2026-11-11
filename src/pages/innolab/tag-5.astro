@@ -4,72 +4,146 @@ import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
+import Prompt from '../../components/Prompt.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Folie from '../../components/Folie.astro';
+import Timer from '../../components/Timer.astro';
+import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
+import BildText from '../../components/bild/BildText.astro';
+
+const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 ---
-<Layout title="Tag 5 · Bauen & Review">
+<Layout title="Tag 5 · Backlog & Sprint">
   <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00</span>
-  <h1>Tag 5 · Bauen & Review</h1>
-  <p class="lead">Ein Bautag: am Vormittag Sprint 1 fertig bauen, am Nachmittag mit Menschen testen, Review und Retro, dann Sprint 2 planen – mit einer Störung.</p>
+  <h1>Tag 5 · Backlog & Sprint</h1>
+  <p class="lead">Der letzte Tag mit neuen Methoden: Ihr entscheidet nach euren Tests, baut Backlogs, die jede*r im Team abarbeiten kann, plant euren Sprint und legt das Gerüst für euren Pitch. Am Nachmittag wird gebaut.</p>
   <Orientierung seite="innolab/tag-5" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-12-12">
-    <Block time="09:00–09:15" type="plenum" title="Daily" href="/innolab/methoden/sprint#daily">Am Sprint-Ziel entlang, je Produkt.</Block>
-    <Block time="09:15–10:30" type="uebung" title="Bauen · Sprint 1" href="#bauen">Letzte Issues fertig, Belege, Abnahme.</Block>
-    <Block time="10:30–10:45" type="pause" title="Pause" />
-    <Block time="10:45–12:00" type="uebung" title="Bauen · Sprint 1" href="#bauen">Live, am Handy, nach der Definition of Done.</Block>
-    <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:45" type="uebung" title="Usability-Tests über Kreuz" href="#tests">Drei Runden, ein Produkt pro Runde.</Block>
-    <Block time="13:45–14:15" type="plenum" title="Sprint-1-Review" href="/innolab/methoden/sprint#review">Ziel, Demo, Tests und Messung, Backlog.</Block>
-    <Block time="14:15–14:45" type="uebung" title="Retro: Lightning Decision Jam" href="/innolab/methoden/sprint#retro">Eine Maßnahme für Sprint 2.</Block>
-    <Block time="14:45–15:00" type="pause" title="Pause" />
-    <Block time="15:00–15:30" type="uebung" title="Sprint-2-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, eine Karte, die alles ändert.</Block>
-    <Block time="15:30–16:30" type="uebung" title="Bauen · Sprint 2" href="#bauen">Mit der Maßnahme aus der Retro.</Block>
-    <Block time="16:30–16:50" type="uebung" title="Pitch-Probe" href="#pitch-probe">Zwei Minuten Geschichte, vor den anderen beiden.</Block>
-    <Block time="16:50–17:00" type="plenum" title="Abschluss" href="#abschluss">Was bis Tag 6 passiert.</Block>
+    <Block time="09:00–09:25" type="plenum" title="Test-Debrief" href="#debrief">Lernkarten E1 und E2: was der Beleg getan hat, dann die Entscheidung.</Block>
+    <Block time="09:25–10:25" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, Reihenfolge nach Outcome und Risiko; reihum erzählen, nach Linear.</Block>
+    <Block time="10:25–10:35" type="pause" title="Pause" />
+    <Block time="10:35–11:20" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Zwei Fragen der Confirmation; Story-Workshop reihum: Normalfall, Was-wenn, Demo.</Block>
+    <Block time="11:20–11:50" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Wer baut, schätzt; Plan-Check mit Claude, Geteiltes zeigen reihum.</Block>
+    <Block time="11:50–12:20" type="uebung" title="Sprint-Planning" href="/innolab/methoden/sprint#planning">Sprint-Ziel, Auswahl, wer baut was.</Block>
+    <Block time="12:20–13:20" type="pause" title="Mittagspause" />
+    <Block time="13:20–14:05" type="uebung" title="Pitch" href="/innolab/methoden/pitch">Story in vier Teilen, Demo, Belege, Wertkurve und Raster; das Gerüst.</Block>
+    <Block time="14:05–15:30" type="uebung" title="Bauen" href="#bauen">Das Mess-Issue zuerst, Branding, die ersten Issues.</Block>
+    <Block time="15:30–15:45" type="pause" title="Pause" />
+    <Block time="15:45–16:45" type="uebung" title="Bauen" href="#bauen">Issues, Belege, Pull Requests.</Block>
+    <Block time="16:45–17:00" type="plenum" title="Abschluss" href="#abschluss">Der Sprint läuft – bis Tag 6.</Block>
   </div>
 
   <hr />
-  <h2 id="faden">Liefern und wieder lernen</h2>
-  <p>Heute kommt keine neue Methode dazu. Was ihr gebaut habt, testet ihr mit Menschen, die es nicht kennen – mit derselben Methode wie den Prototyp an Tag 3. Was die Tests zeigen, ändert im Review euren Backlog. Das ist der Unterschied zwischen einem Team, das Issues abarbeitet, und einem, das ein Produkt entwickelt.</p>
+  <Folie>
+    <h2 id="debrief">Test-Debrief: erst der Beleg, dann die Entscheidung</h2>
+    <p class="folie-satz">Gestützt, widerlegt, unklar oder neu – erst dann: weitermachen, umschwenken, verwerfen.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/bland/entscheiden.jpg" alt="Zwei Kreise, Business Design und Test, verbunden über eine Raute „Decide“. Daran vier Befunde: Evidence Supports Hypothesis – nächste Hypothese oder derselbe Test stärker; Evidence Refutes Hypothesis – Kill, Pivot; Unclear Insight – Continue testing; New Insight – Kill, Pivot, Persevere" quelle={`Entscheiden nach dem Test. ${BLAND}, S. 63.`} />
+      <ul>
+        <li data-schritt><strong>Lernkarte vorlesen:</strong> geglaubt, beobachtet, gelernt – mit Verlässlichkeit.</li>
+        <li data-schritt><strong>Stützt der Beleg:</strong> nächste Annahme oder derselbe Test stärker.</li>
+        <li data-schritt><strong>Unklar:</strong> weiter testen. <strong>Widerlegt:</strong> umschwenken oder verwerfen.</li>
+        <li data-schritt><strong>Ihr empfehlt,</strong> die anderen beiden und Markus fragen je einmal, ihr entscheidet.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Bland trennt zwei Dinge, die man leicht vermischt: was der Beleg mit der Annahme gemacht hat, und was ihr deshalb tut. Die Schleife auf S. 63 kennt vier Befunde – „Evidence Supports Hypothesis“: „Test next critical hypothesis“ oder „Same hypothesis, next experiment, higher fidelity“; „Evidence Refutes Hypothesis“: „Kill“, „Pivot“; „Unclear Insight“: „Continue testing“; „New Insight“: „Kill“, „Pivot“, „Persevere“ ({BLAND}, S. 63). Die drei Entscheidungen definiert er so: Weitermachen ist „the decision to continue testing an idea based on evidence and insights. You persevere by further testing the same hypothesis with a stronger experiment, or by moving on to your next important hypothesis.“ Umschwenken ist „the decision to make a significant change to one or more elements of your ideas, value proposition, or business model“. Verwerfen ist „the decision to kill an idea based on evidence and insights“ (S. 61). Wer „weitermachen“ sagt, ohne den Befund zu nennen, lässt offen, ob die Annahme bestätigt ist oder nur noch nicht widerlegt.</p>
+      <p><strong>Verlässlichkeit.</strong> Die Lernkarte hat neben der Beobachtung ein Feld „Data Reliability“ mit drei Stufen (S. 55); wir schreiben dafür schwach, mittel oder stark – und warum. Maßstab sind Blands vier Fragen (Meinung oder Tatsache, sagen oder tun, Labor oder echt, kleiner oder großer Einsatz, S. 52) und die Zahl der Datenpunkte (S. 56). Wer nur Interviews oder Befragungen hat, ist „Not Really Confident“ (S. 57). Ein Usability-Test mit fünf Personen zeigt, was sie tun – aber im Test; ein Eintrag am Aufsteller ist eine echte Situation – aber ein kleiner Einsatz. Beides ist bestenfalls mittel.</p>
+      <p><strong>Was ihr mitbringt.</strong> Die Lernkarten E1 (<code>docs/EXPERIMENTE.md</code>) und E2 (<code>docs/TESTS.md</code>) habt ihr zu Hause gefüllt. Fehlen dort noch zwei Zeilen, ergänzt sie vor 9:00: „Verlässlichkeit: schwach / mittel / stark – weil …“ unter der Beobachtung, und „Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: …“ statt der bloßen Entscheidung. Das Auswerten selbst war eure Arbeit zu Hause – bei Bland das „Weekly Learning“: „Have a conversation to interpret the evidence and turn it into action“ (S. 76). Hier ist das „Monthly Stakeholder Review“ im Kleinen: eine Zusammenfassung – „It’s important not to overwhelm the attendees with detailed breakdowns of every experiment“ – und eure Empfehlung: „Make your recommendation to Stakeholders on whether you should pivot, persevere, or kill the new business idea“ (S. 80). Bei Bland empfiehlt das Team, und ist das Gremium ein Geldgeber, entscheidet es in der Sitzung (S. 81); bei uns entscheidet die Product Ownerin selbst – eine Abweichung des Kurses: Ihr empfehlt, die anderen beiden und Markus fragen je einmal nach, dann bestätigt oder ändert ihr die Zeile im Entscheidungslog.</p>
+      <Prompt label="Beispiel · Lernkarten der Kaffeebar">Lernkarte E1 · A5
+Wir glaubten, dass Pendler*innen, die beim Betreten der Halle die Schlange sehen, am Aufsteller bestellen, statt zum Automaten zu gehen.
+Wir haben beobachtet: 8 von 30 trugen einen Zug ein, 22 gingen zum Automaten (Schwelle: 10 von 30).
+Verlässlichkeit: mittel – echte Situation, aber ein kleiner Einsatz.
+Daraus lernen wir: Es gibt sie, aber weniger als gedacht; offen ist, ob es am Aufsteller an der Tür liegt oder an der Idee.
+Beleg: unklar → darum: weiter testen – derselbe Test, Aufsteller an der Schlange statt an der Tür, Schwelle bleibt 10 von 30. Spitzenreiter bleibt.
+
+Lernkarte E2 · A3
+Wir glaubten, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können.
+Wir haben beobachtet: 4 von 5 erreichten den Höhepunkt ohne Hilfe (U1); alle fünf hingen beim Eintippen des Zugs (U2).
+Verlässlichkeit: mittel – sie haben es getan, aber im Test.
+Daraus lernen wir: Bedienbar ja – die Uhrzeit ist die Hürde.
+Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (Entscheidungslog, U2).</Prompt>
+      <p>E2 und U1–U3 stehen auf der Seite <a href="/innolab/methoden/prototyp-spike#beispiel">Prototyp-Spike</a>; die Zahl bei E1 ist ausgedacht wie die Testbefunde dort. Nach der Karte ist E1 nicht bestanden: 8 sind weniger als 10. Widerlegt ist A5 damit nicht eindeutig – der Aufsteller stand an der Tür, nicht dort, wo die Schlange beginnt. Darum „unklar“. Die Schwelle bleibt, wo sie war: Wer sie jetzt senkt, damit E1 besteht, macht genau den Fehler, vor dem die <a href="/innolab/methoden/experiment#karte-e1">Experiment-Karte</a> warnt. Wären es 2 von 30 gewesen, hieße der Befund „widerlegt“ – dann käme die nächste Folie.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="umschwenken">Umschwenken: die Lösung wechseln, die Belege prüfen</h2>
+    <p class="folie-satz">Kundin und Problem bleiben – die Idee wechselt, und ein Teil der Belege gilt weiter.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Drei Arten:</strong> Kundschaft wechseln, Problem wechseln oder Lösung wechseln.</li>
+      <li data-schritt><strong>Bei euch meist die Lösung:</strong> Idee 2 aus der Zeile unter eurer Karte E1.</li>
+      <li data-schritt><strong>Was weiter gilt:</strong> Interviews, Kundenprofil, die geteilte Annahme. <strong>Neu zu testen:</strong> die riskanteste Annahme der neuen Idee.</li>
+      <li data-schritt><strong>Die Story Map</strong> ändert ihr gleich danach, im Backlog-Block.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>„A pivot often means that some of your earlier evidence may be irrelevant to your new trajectory. It usually requires retesting elements of your business model that you’ve already tested“ ({BLAND}, S. 61). Die drei Arten: „The three major types of pivots we witness are based on the customer, problem, and solution. You can stick with the customer, pivot on the problem. You can stick with the problem and pivot on customer. You can stick with customer and problem, and pivot on the solution“ (S. 80).</p>
+      <p>Bei der Kaffeebar hieße umschwenken: weiter Pendler*innen, weiter „Ich weiß nicht, ob es sich ausgeht“ (P1) – aber die Wartezeit-Anzeige an der Hallentür statt „Im Gehen bestellen“. Weiter gilt, was alle drei Ideen teilen: die Interviews, das Kundenprofil und die geteilte Annahme, die ihr zuerst getestet habt (<a href="/innolab/methoden/experiment#spitzenreiter">Experiment-Karte</a>). Nicht mehr gilt, was nur der Spitzenreiter brauchte – A5 und die Zählung aus E1. Neu zu testen ist die Annahme, an der die Wartezeit-Anzeige hängt: A6. Die Story Map und Slice 1 zieht ihr dann neu, bevor um 9:25 die Issues entstehen.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="debrief-ablauf">So läuft der Debrief (25 min)</h2>
+    <p class="folie-satz">Reihum sechs Minuten je Product Ownerin, dann steht die Zeile im Log.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Rahmen:</strong> die beiden Folien davor. <Timer minuten={3} /></li>
+      <li data-schritt><strong>Reihum, je Person:</strong> E1, E2, Empfehlung, drei Rückfragen. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Festhalten, allein:</strong> Zeile im Entscheidungslog, Stichwort für die Story Map. <Timer minuten={4} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Zu 2, dreimal hintereinander: Lernkarte E1 mit Verlässlichkeit und Befund (2 Minuten) – Lernkarte E2 (1) – eure Empfehlung: Welche der drei Ideen stützt der Beleg jetzt, und was ändert sich an der Story Map? (1) – je eine Rückfrage der anderen beiden und von Markus (2). E1 fragt, ob der Spitzenreiter seine riskanteste Annahme überstanden hat; E2, wie viele den Höhepunkt ohne Hilfe erreicht haben und welcher Befund euch überrascht hat. Zu 3: Die Entscheidung steht als Zeile im Entscheidungslog in der Werkstatt, mit Befund und Befund-IDs als Beleg („Beleg: unklar – E1 8 von 30; weiter testen“). Was sich an der Story Map ändert, notiert ihr als Stichwort für den Backlog-Block um 9:25.</p>
+    </div>
+  </Folie>
+
+  <h2 id="faden">Vom Entdecken zum Liefern</h2>
+  <p>Bis Tag 4 habt ihr herausgefunden, <em>was</em> ihr bauen solltet, und euch als Team aufgestellt. Ab heute geht es darum, es <em>gemeinsam</em> zu liefern – so, wie Produktteams in Unternehmen arbeiten. Das Entdecken hört dabei nicht auf: Euer Sprint endet an Tag 6 mit einem Review, in dem ihr wieder lernt.</p>
+  <Callout type="tip" title="Drei Produkte, ein Takt">
+    <p>Jede*r ist Product Owner des eigenen Produkts und Developer in allen dreien – drei Scrum-Teams mit denselben drei Personen. Ihr baut also auch Issues, die ihr nicht geschrieben habt. Deshalb müssen eure Issues und Kriterien ohne Rückfrage verständlich sein – das ist der Test für heute Vormittag.</p>
+  </Callout>
+  <p>Heute ist ein dichter Tag, weil danach keine neue Methode mehr kommt: Tag 6 ist ein Bau-Vormittag, Tag 7 die Präsentation.</p>
+
+  <h2 id="methoden">Die Methoden von heute</h2>
+  <ul>
+    <li><a href="/innolab/methoden/backlog">Backlog aus Issues</a> – drei Cs, INVEST, Reihenfolge nach Outcome und Risiko</li>
+    <li><a href="/innolab/methoden/akzeptanzkriterien">Akzeptanzkriterien</a> – zwei Fragen, Gegeben/Wenn/Dann mit echten Werten, Story-Workshop</li>
+    <li><a href="/innolab/methoden/schneiden">Schneiden statt Schätzen</a> – Planning Poker als Gegenposition, Zählen, Plan-Check mit Claude</li>
+    <li><a href="/innolab/methoden/sprint">Sprint</a> – Issue als Spezifikation, Planning, Daily, Review, Retro</li>
+    <li><a href="/innolab/methoden/pitch">Pitch</a> – Geschichte, Demo, Belege; Wertkurve und Raster nach Kim &amp; Mauborgne</li>
+  </ul>
 
   <h2 id="bauen">Bauen</h2>
-  <p>Jede*r arbeitet an Issues aus allen drei Produkten, so wie im Planning verteilt, nach den Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>. Bis 12:00 ist fertig, was in Sprint 1 fertig wird: Was dann noch offen ist, geht zurück in den Backlog und ins Review.</p>
-
-  <h2 id="tests">Usability-Tests über Kreuz</h2>
-  <p>Ihr testet wie beim <a href="/innolab/methoden/prototyp-spike#usability-test">Prototyp-Spike</a> – Aufgabe als Ziel, laut denken, nicht helfen –, diesmal mit dem Inkrement, live am Handy. Testpersonen sind Menschen, die euer Produkt nicht kennen und möglichst zur Zielgruppe passen. An einem Samstag kommen sie nicht von selbst vorbei: Jede*r Product Owner bringt zwei mit oder verabredet sie für einen Videoanruf mit geteiltem Bildschirm.</p>
-  <ul>
-    <li><strong>Drei Runden à 15 Minuten,</strong> ein Produkt pro Runde, je zwei Testpersonen. Die übrigen drei bis zur Präsentation testet ihr selbst – dann seid ihr wie an Tag 3 bei fünf.</li>
-    <li><strong>Über Kreuz:</strong> Der Product Owner moderiert nicht – wer das eigene Produkt erklärt, hilft zu schnell und verteidigt es. Eine andere Person aus dem Team moderiert, der Product Owner beobachtet und schreibt mit, die dritte notiert Zeiten und wo die Person hängen bleibt.</li>
-    <li><strong>Befunde</strong> kommen mit fortlaufenden IDs in <code>docs/TESTS.md</code> (wer bei U3 aufgehört hat, macht mit U4 weiter) und gehen ins Review.</li>
-  </ul>
-
-  <h2 id="stoerfall">Sprint-2-Planning mit Störfall</h2>
-  <p>Ihr plant Sprint 2 wie Sprint 1 (<a href="/innolab/methoden/sprint#planning">Sprint Planning</a>), mit zwei Unterschieden: Ihr habt jetzt einen Erfahrungswert – und Sprint 2 dauert nur eine Woche: etwa halb so viele Issues, wie in Sprint 1 fertig wurden. Und nach dem ersten Entwurf zieht jeder Product Owner eine Störfall-Karte. Solche Karten gibt es in jedem echten Projekt:</p>
-  <ul>
-    <li>Ein Stakeholder will eine Funktion, die ihr im Entscheidungslog ausgeschlossen habt.</li>
-    <li>Eine Person aus dem Team fällt für die Hälfte des Sprints aus.</li>
-    <li>Vor dem ersten Speichern von Daten muss ein Datenschutzhinweis stehen – ab sofort.</li>
-    <li>Ein Testbefund von heute stellt euer Sprint-Ziel in Frage.</li>
-  </ul>
-  <p>Als Product Owner entscheidet ihr: annehmen und etwas anderes dafür herausnehmen, eine kleinere Variante, oder begründet ablehnen. Was nicht geht: alles zusätzlich machen. Die Entscheidung steht mit Begründung im Entscheidungslog, das Sprint-Ziel bleibt ein Satz.</p>
-  <Callout type="info" title="Wofür die Störung gut ist">
-    <p>Beim Lego hat Markus die Störungen nach Krivitsky eingebaut: eine mehrdeutige Anforderung, kein Wort zur Integration, einen Product Owner auf Geschäftsreise (Krivitsky, S. 41; <a href="/innolab/methoden/scrum#nachbesprechung">Scrum im Team</a>). Die Karten heute sind ein Zusatz des Kurses, und sie kommen im Planning – dort, wo ein Product Owner sie abfangen kann. Im Sprint selbst gilt: keine Änderungen, die das Sprint-Ziel gefährden (Scrum Guide, S. 7). Genau das ist eure Rolle: Nein sagen können, mit einem Grund.</p>
+  <p>Euer Sprint läuft vom Planning heute bis zu Review und Retro an Tag 6 am 19. Dezember – eine Woche, davon heute Nachmittag gemeinsam im Raum. Jede*r baut Issues aus allen drei Produkten, so wie im Planning verteilt. Der Takt ist der aus dem Coding-Kurs – Issue holen, bauen lassen, Belege prüfen, Pull Request –, mit den Team-Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>.</p>
+  <Callout type="tip" title="Das Mess-Issue zuerst">
+    <p>Baut das Issue, das das Mess-Ereignis einführt, als eines der ersten. Jedes Issue danach prüft ihr gleich mit: Kommt das Ereignis nach dem Merge noch an?</p>
   </Callout>
-  <p>Sprint 2 dauert eine Woche, bis zum Ende von Tag 6 am 19. Dezember. Was dann live ist, ist euer Prototyp – plant das Sprint-Ziel so, dass euer Produkt damit vorzeigbar ist.</p>
+  <h3 id="branding">Ein Gesicht für euer Produkt</h3>
+  <p>Bevor das erste Issue mit Oberfläche gebaut wird, wählt jede*r als Product Owner ein Branding für das eigene Produkt. In Claude Design legt ihr dafür ein Design-System aus eurem Repo an, wie in <a href="/tag-3#uebung-9-a">Coding-Tag 3, Übung 9a</a>, und schickt im Chat dieses System diesen Prompt:</p>
+  <Prompt label="Branding in drei Richtungen" note="Statt der Klammer euer Produkt in einem Satz aus dem Produkt-Brief in der Werkstatt, die Zielgruppe aus dem Kundenprofil und das Gefühl am Höhepunkt eurer Usage Story.">Entwickle für unsere App ein Branding in drei Richtungen, die sich deutlich voneinander unterscheiden. Ausgangspunkt: [Produkt in einem Satz, für wen, und welches Gefühl es auslösen soll]. Der Name der App bleibt.
 
-  <h2 id="pitch-probe">Pitch-Probe</h2>
-  <p>Jede*r erzählt den Teil „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten (<a href="/innolab/methoden/pitch#aufbau">Pitch</a>).</p>
-  <p>Die anderen beiden antworten nur auf zwei Fragen: Gab es eine Krise? Wisst ihr am Ende, welchen Höhepunkt die Demo zeigen muss? Das Lächeln, Lichaws Signal, dass eine Story trägt, kommt erst am Höhepunkt (Donna Lichaw, „The User’s Journey“, 2016, Kap. 7, „Test and Validate“) – darauf achtet ihr, wenn ihr bis Tag 7 den ganzen Pitch mit Demo probt.</p>
+Jede Richtung bekommt:
+– eine Idee in einem Satz und drei Stichworte zur Haltung
+– ein einfaches Logo, das auch klein als App-Symbol funktioniert
+– eine Farbpalette mit Haupt-, Akzent- und Statusfarben; Text mit mindestens 4,5:1 Kontrast
+– eine Schriftpaarung aus frei nutzbaren Schriften (Google Fonts)
+– den Ton der Texte, gezeigt an drei Beispielen: ein Button, eine leere Liste, eine Fehlermeldung
+– denselben wichtigsten Screen unserer App im neuen Look, auf dem Handy
+
+Stell die drei nebeneinander und sag zu jeder in einem Satz, zu wem sie passt und was sie riskiert. Wenn ich eine gewählt habe, bau unser Design-System danach um – mit Farben nach Zweck, allen Zuständen jeder Komponente und sichtbarem Tastatur-Fokus.</Prompt>
+  <p class="small">Zeigt die drei Richtungen eurem Team, bevor ihr wählt – die anderen bauen eure Issues mit. Die Wahl kommt als Zeile ins Entscheidungslog der Werkstatt.</p>
 
   <h2 id="abschluss">Abschluss & bis Tag 6</h2>
-  <Checklist id="il-tag5-sprint2" items={[
-    'Review und Retro von Sprint 1 in <code>docs/SPRINTS.md</code>, Testbefunde in <code>docs/TESTS.md</code>',
-    'Sprint 2 geplant, Label <code>Sprint 2</code> in Linear, Störfall-Entscheidung im Entscheidungslog',
-    'Belege aus Review und Tests in <code>docs/PITCH.md</code> ergänzt',
-    'Daily an jedem Arbeitstag als Kommentar in Linear',
+  <Checklist id="il-tag5-sprint" items={[
+    'Was ihr nach den Tests geändert habt, im Entscheidungslog',
+    'Linear: Label <code>Sprint</code> an den gewählten Issues',
+    '<code>docs/SPRINTS.md</code> mit Sprint-Ziel und Auswahl',
+    'Daily an jedem Arbeitstag als Kommentar in Linear – unsere Abweichung vom Guide, wie in <code>docs/TEAM.md</code>',
+    'Jedes Issue nach der Definition of Done; Pull Requests der anderen geprüft',
+    '<code>docs/PITCH.md</code> mit Geschichte und Demo-Ablauf aus <code>docs/STORYS.md</code>',
+    'Zwei Testpersonen für Tag 6 verabredet – per Videoanruf, denn Tag 6 ist online',
   ]} />
-  <p><a href="/innolab/tag-6">Tag 6</a> ist ein Bau-Vormittag.</p>
+  <p><a href="/innolab/tag-6">Tag 6</a> ist ein Bau-Vormittag, online: fertig bauen, mit Menschen testen, dann Review und Retro. Was um 13 Uhr läuft, ist euer Prototyp.</p>
 
-  <FooterNav prev={{ href: '/innolab/tag-4', t: 'Tag 4 · Scrum im Team' }} next={{ href: '/innolab/tag-6', t: 'Tag 6 · Bauen' }} />
+  <FooterNav prev={{ href: '/innolab/tag-4', t: 'Tag 4 · Prototyp & Scrum' }} next={{ href: '/innolab/methoden/backlog', t: 'Backlog aus Issues' }} />
 </Layout>

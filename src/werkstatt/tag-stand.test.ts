@@ -9,7 +9,7 @@ import { kohorte2026 } from './kohorten/2026';
 import { ARTEFAKT_NAMEN, artefaktParsen, type ArtefaktName, type DatenVon } from './schemas/index';
 import { rendern } from './render/index';
 import { BRIEF_TAG1_FELDER } from './statistik';
-import { artefaktStand, faelligBis, faelligZuTag, inArbeitAn, INTERVIEWS_SOLL, kurstagBestimmen } from './tag-stand';
+import { artefaktStand, entstehtAn, faelligBis, faelligZuTag, inArbeitAn, INTERVIEWS_SOLL, kurstagBestimmen } from './tag-stand';
 
 const roh = { brief, entscheidungen, leitfaden, annahmen, interviews } as const;
 function laden<N extends ArtefaktName>(name: N): DatenVon<N> {
@@ -71,6 +71,15 @@ describe('Fälligkeit', () => {
       expect(faelligZuTag(n), n).toBeGreaterThanOrEqual(1);
       expect(faelligZuTag(n), n).toBeLessThanOrEqual(TAGE.at(-1)!.n);
     }
+  });
+
+  // tag_stand nennt unter „Methoden an Tag n“ den Kursplan nach der Verschiebung (Tag 2 als halber Tag, ein Sprint).
+  it('Methoden je Kurstag: Tag 2 endet mit dem Baum, Tag 3 beginnt mit der Ziel-Chance, Tag 5 bringt Backlog bis Pitch, Tag 6 nichts Neues', () => {
+    expect(entstehtAn(2).map((m) => m.slug)).toStrictEqual(['synthese', 'journey-map', 'baum']);
+    expect(entstehtAn(3).map((m) => m.slug)).toStrictEqual(['ziel-chance', 'hmw', 'ideation', 'kundenprofil', 'value-map', 'concept-story', 'geschaeftsmodell', 'experiment']);
+    expect(entstehtAn(4).map((m) => m.slug)).toStrictEqual(['story-map', 'usage-story', 'prototyp-spike', 'scrum']);
+    expect(entstehtAn(5).map((m) => m.slug)).toStrictEqual(['backlog', 'akzeptanzkriterien', 'schneiden', 'sprint', 'pitch']);
+    expect(entstehtAn(6)).toStrictEqual([]);
   });
 });
 
