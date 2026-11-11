@@ -36,10 +36,12 @@ describe('Kriterien-Katalog', () => {
       'meinungsfrage', 'verallgemeinerung', 'beleg-ohne-quelle', 'zwei-zielgruppen',
     ]);
     expect(new Set(ids).size).toBe(ids.length);
-    // feedback@1 liest nur diese Form; eine andere ID machte die Datei nach dem Schreiben unlesbar.
-    expect(ids.filter((id) => !KRITERIUM_ID.test(id))).toStrictEqual([]);
     expect(kriterium('meinungsfrage')?.name).toBe('Meinungsfrage statt Geschichte');
     expect(kriterium('gibt-es-nicht')).toBeUndefined();
+  });
+
+  it('jede ID hat die Form, die feedback@1 liest (sonst wäre die Datei nach dem Schreiben unlesbar)', () => {
+    expect(KRITERIEN.map((k) => k.id).filter((id) => !KRITERIUM_ID.test(id))).toStrictEqual([]);
   });
 
   it.each(KRITERIEN.map((k) => [k.id, k] as const))('%s: Name, Artefakte, Abschnitte nur beim Brief', (_, k) => {
