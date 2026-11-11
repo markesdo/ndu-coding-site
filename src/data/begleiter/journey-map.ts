@@ -151,7 +151,6 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Erst fragen: Welchen Durchgang würdet ihr wiederholen? Dann aufdecken.',
       'Aufdecken: Die meisten wählen den längeren – er endet besser.',
       '„Markiert den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
-      'Klarstellen: Die Regel kommt von NN/g, nicht von Torres.',
     ],
     kern: [
       {
