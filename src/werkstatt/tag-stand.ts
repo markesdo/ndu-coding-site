@@ -2,7 +2,8 @@
 // fällig, und was ist davon noch leer oder dünn? Wie statistik.ts nur Zählen und Fehlendes benennen, kein Urteil über
 // die Qualität – das ist Sache von artefakt_pruefen. Reine Funktionen, ohne Speicher, damit testbar.
 import { ARTEFAKTE as KURS_ARTEFAKTE, TAGE, erzeugtVon, methodenVonTag } from '../components/methoden.js';
-import { ARTEFAKTE, type ArtefaktName, type DatenVon } from './schemas/index.js';
+import { ARTEFAKTE, interviewGefuellt, type ArtefaktName, type DatenVon } from './schemas/index.js';
+import { leer } from './schemas/gemeinsam.js';
 import { ART_ANZEIGE, fehlendeArten } from './ui/editoren/annahmen-hilfen.js';
 import { BRIEF_TAG1_FELDER } from './statistik.js';
 
@@ -75,7 +76,6 @@ export interface ArtefaktStand {
   fehlt: string[];
 }
 
-const leer = (s: string | undefined) => (s ?? '').trim() === '';
 const anzahl = (n: number, eins: string, viele: string) => `${n} ${n === 1 ? eins : viele}`;
 
 // Umfang und Fehlendes je Artefakt; leer = nichts Eigenes eingetragen.
@@ -125,14 +125,11 @@ const ZAEHLEN: { [N in ArtefaktName]: (d: DatenVon<N>) => { leer: boolean; umfan
     return { leer: leer(d.ziel) && leer(d.wen) && leer(d.abschluss) && kern + nach === 0, umfang: `${anzahl(kern, 'Kernfrage', 'Kernfragen')}, ${anzahl(nach, 'Nachfrage', 'Nachfragen')}`, fehlt };
   },
   interviews: (d) => {
-    // Ein Snapshot zählt erst, wenn etwas drinsteht; eine leere Zeile ist noch kein geführtes Interview.
-    const gefuellt = (iv: (typeof d.interviews)[number]) =>
-      !leer(iv.zitat) || !leer(iv.kurzinfos) || !leer(iv.notizen) || iv.einsichten.some((e) => !leer(e)) || iv.chancen.some((c) => !leer(c.text)) || iv.zitate.some((z) => !leer(z.text));
-    const n = d.interviews.filter(gefuellt).length;
+    const n = d.interviews.filter(interviewGefuellt).length;
     const fehlt = [
       ...(n < INTERVIEWS_SOLL ? [`noch ${INTERVIEWS_SOLL - n} von ${INTERVIEWS_SOLL} Interviews offen`] : []),
       ...d.interviews.flatMap((iv) => {
-        if (!gefuellt(iv)) return [`${iv.id} noch leer`];
+        if (!interviewGefuellt(iv)) return [`${iv.id} noch leer`];
         const ohne = [
           ...(leer(iv.zitat) ? ['Zitat'] : []),
           ...(leer(iv.kurzinfos) ? ['Kurzinfos'] : []),

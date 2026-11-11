@@ -25,6 +25,9 @@ export const belegstufe = z.enum(BELEGSTUFEN, {
 });
 
 // Pflichtfeld als Text; leer ist erlaubt (Entwürfe), Prüflisten-Hinweise sind keine Schemafehler.
+// Leer heißt: nichts außer Leerraum (Interview mit Inhalt, tag_stand).
+export const leer = (s: string | undefined): boolean => (s ?? '').trim() === '';
+
 export const text = (feld: string) => z.string({ error: `${feld}: bitte als Text eintragen.` });
 
 export const schemaKennung = <N extends string>(name: N) =>

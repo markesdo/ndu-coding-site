@@ -2,7 +2,7 @@
 // Snapshot-Felder nach Teresa Torres, „Continuous Discovery Habits“ (2021), S. 67–70: Zitat, Kurzinfos, Einsichten,
 // Chancen. Die Skizze der Geschichte entsteht auf Papier und kommt an Tag 2 mit. Nur pseudonymisiert: Rohnotizen und Aufnahmen kommen nie hierher.
 import { z } from 'zod';
-import { doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam.js';
+import { leer, doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam.js';
 
 // Zitat-ID: Interview-Nummer und laufende Nummer (I2-4).
 const ZITAT_ID = /^I([1-9][0-9]*)-[1-9][0-9]*$/;
@@ -58,5 +58,10 @@ export const interviewsSchema = z.object({
 export type Interviews = z.infer<typeof interviewsSchema>;
 export type Interview = Interviews['interviews'][number];
 export type Chance = Interview['chancen'][number];
+
+// Ein Snapshot zählt erst, wenn etwas drinsteht; eine leere Zeile ist noch kein geführtes Interview (tag_stand,
+// verknuepfungen_pruefen).
+export const interviewGefuellt = (iv: Interview): boolean =>
+  !leer(iv.zitat) || !leer(iv.kurzinfos) || !leer(iv.notizen) || iv.einsichten.some((e) => !leer(e)) || iv.chancen.some((c) => !leer(c.text)) || iv.zitate.some((z0) => !leer(z0.text));
 
 export const interviewsLeer = (heute: string): Interviews => ({ schema: 'interviews@1', stand: heute, interviews: [] });

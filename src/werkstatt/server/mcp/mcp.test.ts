@@ -759,11 +759,15 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBeFalsy();
     // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
-    // Einzige Lücke: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle.
+    // Lücken: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle; A1, die riskanteste, hat trotz fünf Interviews
+    // noch keinen Beleg (neue Befundart, muss durchs Ausgabeschema).
     expect(r.structuredContent).toStrictEqual({
-      befunde: ['A2', 'A4'].map((id) => ({
-        art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
-      })),
+      befunde: [
+        ...['A2', 'A4'].map((id) => ({
+          art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
+        })),
+        { art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was hast du dazu gehört?' },
+      ],
       geprueft: ['entscheidungen', 'annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],
       unlesbar: [],
@@ -771,6 +775,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
       anleitung: `Ändern kann die Person nur selbst in der Werkstatt: ${BASIS}/innolab/mappe`,
     });
     expect(text(r)).toContain('## Fehlende Belege (2)');
+    expect(text(r)).toContain('## Riskanteste Annahme ohne Beleg (1)');
     expect(text(r)).not.toContain('## Unbekannte IDs');
     expect(text(r)).toContain('Ändern kann die Person nur selbst');
     expect(text(r)).toContain(`${BASIS}/innolab/mappe`);
