@@ -76,7 +76,8 @@ const frage = zusatz.offen ? ' (?)' : '';
   ]} />
 
   <hr />
-  <h2 id="nachmittag-inhalt">Am Nachmittag{frage}</h2>
+  <h2 id="nachmittag-inhalt">Am Nachmittag</h2>
+  {zusatz.offen && <p><a href="#nachmittag">Termin noch offen</a>: Der Kurs funktioniert auch ohne diesen Nachmittag.</p>}
   <h3 id="pitch-probe">Pitch-Probe</h3>
   <p>Jede*r erzählt den Teil „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten (<a href="/innolab/methoden/pitch#aufbau">Pitch</a>).</p>
   <p>Die anderen beiden antworten nur auf zwei Fragen: Gab es eine Krise? Wisst ihr am Ende, welchen Höhepunkt die Demo zeigen muss? Das Lächeln, Lichaws Signal, dass eine Story trägt, kommt erst am Höhepunkt (Donna Lichaw, „The User’s Journey“, 2016, Kap. 7, „Test and Validate“) – darauf achtet ihr, wenn ihr bis Tag 7 den ganzen Pitch mit Demo probt.</p>
