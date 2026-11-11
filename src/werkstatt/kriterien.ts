@@ -122,7 +122,7 @@ export const KRITERIEN: readonly Kriterium[] = [
     abschnitte: ['fuerWen'],
     paar: {
       schwach: { text: 'Kaffeetrinker*innen', fundort: `${SEITEN}/problem-rahmen.astro` },
-      stark: { text: 'Pendler*innen, die werktags zwischen 7:15 und 7:45 auf den Zug nach Wien warten', fundort: `${BEISPIELE}/brief.json` },
+      stark: { text: 'Pendler*innen, die werktags zwischen 7:15 und 7:45 auf ihren festen Morgenzug warten', fundort: `${BEISPIELE}/brief.json` },
       warum: '„Kaffeetrinker*innen“ sind fast alle – wen ihr wo trefft und was sie gemeinsam haben, sagt das nicht; die starke Fassung nennt Menschen in einer konkreten Situation, mit Ort und Uhrzeit, und damit auch, wo ihr sie für Interviews findet.',
     },
     quelle: {
