@@ -99,6 +99,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Aufdecken: die vier Kinder – Menschen wählen Serien verschieden.',
       '„Erst ‚Wer spielt mit?‘: klein, schnell geliefert, ein Bedürfnis ganz gelöst.“',
       'Brücke zu Tag 1: Wert nach und nach liefern.',
+      'Wenn hinten: überspringen, Kern steht im Handout.',
     ],
     verstaendnis: {
       frage: 'Ist „Wer spielt mit?“ zu lösen nicht zu wenig, wenn die Frage „Ist diese Serie gut?“ lautet?',
@@ -203,7 +204,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Abbildung: ein Stapel, kein Baum.',
       'Fragen: Sagen die drei dasselbe, oder fehlen Geschwister?',
-      '„Wisst ihr nicht, welche fehlen? Dann ist das die Frage fürs nächste Interview.“',
+      '„Wisst ihr nicht, welche fehlen? Zettel ‚Nächstes Interview: …‘ neben die Karte.“',
+      'Wenn hinten: überspringen, steht auf der Checkliste (anti-muster).',
     ],
     kern: [
       {
@@ -234,6 +236,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       '„Der Baum von Tag 1 war unsere Vermutung. Die Wurzel bleibt, die Äste kommen aus fünf Interviews.“',
       '„‚Vorbestellen‘ ist gefallen: 3 von 5 entscheiden erst in der Halle (D4).“',
       'Zeit: 3 min die drei Griffe vorführen – Cmd+D, Linie ziehen, ein Elternteil.',
+      'Hewen: zuerst den Outcome wählen, dann die Momente darunter.',
     ],
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
@@ -260,9 +263,9 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Schritte unten kopieren und in den Teams-Chat einfügen.',
-      'Timer 12 min: Inventar allein, in „Baum · eigener Name“.',
+      'Timer 12 min: erst Momente als blaue Karten, dann Inventar.',
       'Nach 12 min: Struktur allein, Linien ziehen, Timer 10 min.',
-      'Nach 22 min: Gegenlesen mit Checkliste, vier Minuten je Baum.',
+      'Nach 22 min: weiter zur Checkliste, Timer 12 min dort.',
       'Nach 34 min: Prüfliste, dann Claude mit Bild des Baums.',
     ],
     uebung: { dauer: '39 min (12 + 10 + 12 + 5)', form: 'allein, dann zu dritt reihum' },
@@ -279,9 +282,9 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
-        'Inventar allein (12 min): jede Chance durch die drei Fragen, in „Baum · Name“ unter ihren Moment.',
-        'Struktur allein (10 min): Ast für Ast gruppieren, Eltern ergänzen, Dubletten zusammenlegen, jede Karte per Linie an ein Elternteil.',
-        'Gegenlesen reihum (12 min): je Baum vier Minuten, die anderen beiden gehen die Checkliste der sechs Anti-Muster durch (nächste Folie).',
+        'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance durch die drei Fragen, in „Baum · Name“ unter ihren Moment; Einzelfälle in den Streifen „Nur in einem Interview“.',
+        'Struktur allein (10 min): Ast für Ast gruppieren, Eltern ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an ein Elternteil; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
+        'Gegenlesen reihum (12 min, Timer auf der Folie Anti-Muster): je Baum vier Minuten, die anderen beiden gehen die Checkliste der sechs Anti-Muster durch.',
         'Prüfen (5 min): Prüfliste, dann Claude mit einem Bild des Baums aus Miro; eine Datei gibt es nicht.',
       ],
       achten: [
@@ -301,7 +304,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   'anti-muster': {
     live: [
-      'Folie stehen lassen, solange alle gegenlesen.',
+      'Timer 12 min hier starten, Folie stehen lassen.',
       'Pro Baum vier Minuten, dann wechseln.',
       'Punkte 1 und 2 sind bekannt, 3 bis 6 kurz erklären.',
       'Falle: Gefühl als Chance – nach der Ursache fragen.',

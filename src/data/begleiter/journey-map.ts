@@ -13,7 +13,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     live: [
       'Fragen: Wer kennt Customer Journey aus dem Entrepreneur Lab?',
       'Wenn bekannt: nur den Unterschied betonen – Momente werden Äste.',
-      '„Die Map ist euer gemeinsames Bild: Sie führt durch Interviews und ordnet den Baum.“',
+      '„Die Map ist euer Bild der Kundschaft: Sie führt durch Interviews und ordnet den Baum.“',
       'Hewen: Outcome bestätigen lassen – Outcome, kein Output (Torres S. 47).',
       'Fragen: Joachim – „Was tun die Menschen danach anders?“',
     ],
@@ -189,17 +189,17 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       frame: 'T2 · 1 · Experience Map',
       schritte: [
         '„Alle zu mir holen“ auf T2 · 1; links die Kaffeebar als Muster.',
-        'Allein in der eigenen Spalte: Knoten aus den Skizzen auf Papier, die Map von Tag 1 (T1 · 1) daneben.',
+        'Allein in der eigenen Spalte: Knoten aus den Skizzen, auf Papier oder gleich auf Miro, die Map von Tag 1 (T1 · 1) daneben.',
         'Zu dritt Spalte für Spalte; Unterschiede zeichnen statt diskutieren.',
-        'Momente markieren: drei bis fünf, Tiefpunkt und Ende.',
+        'Momente markieren, jede*r in der eigenen Spalte: drei bis fünf, Höhepunkt und Ende, je mit Zitat-ID.',
       ],
     },
     ablauf: {
       schritte: [
         'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
-        'Allein (10 min): Knoten aus den Skizzen auf Papier beschriften, zusammenfügen, die Map von Tag 1 daneben.',
-        'Zu dritt (12 min): Jede*r zeigt die eigene Map, die anderen fragen nach.',
-        'Momente festlegen (8 min): drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren.',
+        'Allein (10 min): Knoten aus den Skizzen beschriften, auf Papier oder gleich in der eigenen Spalte auf T2 · 1, zusammenfügen, die Map von Tag 1 daneben.',
+        'Zu dritt (12 min): Jede*r zeigt die eigene Map (Bildschirm teilen), die anderen fragen nach.',
+        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft; Höhepunkt und Ende markieren; jeder Moment mit Zitat-ID.',
         'Prüfen (5 min): Prüfliste, dann Claude mit einem Bild der Map aus Miro; eine Datei gibt es nicht.',
       ],
       achten: [

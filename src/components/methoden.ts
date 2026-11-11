@@ -195,7 +195,7 @@ export const METHODEN: Methode[] = [
     ki: 'Liest eure Interviews und fragt, welche Geschichte in der Map fehlt und wo sich Momente überschneiden.',
   },
   {
-    slug: 'baum', name: 'Opportunity Solution Tree', tag: 2, dauer: 65,
+    slug: 'baum', name: 'Opportunity Solution Tree', tag: 2, dauer: 75,
     frage: 'Welche Chancen aus den Interviews gehören unter welchen Moment – und wie hängen sie zusammen?',
     braucht: ['brief', 'synthese', 'journey'], ergibt: ['baum'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 6, S. 78–95',
