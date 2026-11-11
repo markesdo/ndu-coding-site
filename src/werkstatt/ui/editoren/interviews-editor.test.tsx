@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import type { Chance } from '../../schemas/index.js';
 import BelegAuswahl from './BelegAuswahl';
-import { ChanceZeile, Vorschau } from './InterviewsEditor';
+import { ChanceZeile, EinsichtZeile, Vorschau } from './InterviewsEditor';
 import { neuesInterview } from './interviews-hilfen';
 
 const HINWEIS = 'Diese Chance hat noch keinen Beleg – kreuze mindestens ein Zitat an.';
@@ -147,5 +147,16 @@ describe('Interview-Vorschau: Chance ohne Beleg', () => {
     const h = renderToStaticMarkup(<Vorschau daten={{ interviews: [iv] } as Parameters<typeof Vorschau>[0]['daten']} />);
     const punkte = [...h.matchAll(/<li>(.*?)<\/li>/g)].map((m) => m[1]!.replace(/<[^>]+>/g, ''));
     expect(punkte).toStrictEqual(['Ohne Beleg. – noch ohne Beleg', 'Mit Beleg. I1-1']);
+  });
+});
+
+describe('EinsichtZeile', () => {
+  it('ist zweizeilig, damit ein ganzer Satz mit Zitat-IDs sichtbar bleibt', () => {
+    const satz = 'Entscheidet erst in der Halle, nach Blick auf Tafel und Schlange; hat eine feste Grenze von sechs Leuten (I6-1, I6-8).';
+    const html = renderToStaticMarkup(<EinsichtZeile wert={satz} setze={() => {}} nr={1} />);
+    expect(html).toContain('<textarea');
+    expect(html).toContain('rows="2"');
+    expect(html).not.toContain('type="text"');
+    expect(html).toContain(satz);
   });
 });
