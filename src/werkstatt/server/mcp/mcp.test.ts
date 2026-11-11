@@ -25,6 +25,7 @@ import { MCP_WERKZEUGE } from '../../vertrag';
 import { BEFUND_ARTEN } from '../../verknuepfungen';
 import { antworten, erledigtSetzen, feedbackSchreiben } from '../../feedback';
 import { feedbackAendern } from '../feedback';
+import { kriterium } from '../../kriterien';
 
 const BASIS = 'http://localhost:4321';
 const MCP = `${BASIS}/api/werkstatt/mcp`;
@@ -1348,6 +1349,34 @@ describe('Feedback der Lehrenden im Connector', () => {
     expect(r.isError).toBeFalsy();
     expect(text(r)).toContain('Das Feedback der Lehrenden ließ sich gerade nicht lesen.');
     expect(r.structuredContent).not.toHaveProperty('feedback');
+  });
+
+  // NDU-41: Kriterium am Feedback – Claude bekommt nur den Namen, nie das Kaffeebar-Paar (keine Fassung zum Übernehmen).
+  it('Kriterium: Name in Text und structuredContent, das Kaffeebar-Paar nie; ohne Kriterium kein Schlüssel', async () => {
+    const h = await aufbau();
+    await feedbackAendern(h.speicher, 'test-sofie', (f) => {
+      const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A3', kriterium: 'art-der-annahme', text: 'Welche Art ist das?', autor: 'markus', datum: D });
+      const b = feedbackSchreiben(a, { artefakt: 'annahmen', text: 'Ohne Kriterium.', autor: 'markus', datum: D });
+      // Ein Kriterium, das der Katalog nicht (mehr) kennt: Die Datei bleibt lesbar, Claude bekommt keinen Namen.
+      return { ...b, eintraege: [...b.eintraege, { id: 'FB3', artefakt: 'annahmen' as const, kriterium: 'frueher-mal', von: 'lehrende' as const, autor: 'markus', text: 'Alt.', datum: D }] };
+    }, AUTOR, 'Feedback');
+    const c = await client(h, await accessToken(h));
+    const paar = kriterium('art-der-annahme')!.paar;
+    for (const name of [MCP_WERKZEUGE.artefaktPruefen, MCP_WERKZEUGE.artefaktLesen]) {
+      const r = await c.callTool({ name, arguments: { artefakt: 'annahmen' } });
+      const t = text(r);
+      expect(t, name).toContain('- FB1: markus zu A3, 23.10.2026, offen, Kriterium „Art der Annahme passt nicht“\n  > Welche Art ist das?');
+      expect(t, name).toContain('- FB2: markus zum ganzen Artefakt, 23.10.2026, offen\n');
+      expect(t, name).toContain('- FB3: markus zum ganzen Artefakt, 23.10.2026, offen\n');
+      expect(t, name).not.toContain('frueher-mal');
+      for (const x of [paar.warum, paar.schwach.zusatz!, 'Kaffeebar']) expect(t, name).not.toContain(x);
+    }
+    const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
+    const sc = r.structuredContent as { feedback: { id: string; kriterium?: string }[]; anleitung: string };
+    expect(sc.feedback.map((x) => [x.id, x.kriterium])).toStrictEqual([['FB1', 'Art der Annahme passt nicht'], ['FB2', undefined], ['FB3', undefined]]);
+    expect(sc.feedback[1]).not.toHaveProperty('kriterium');
+    expect(JSON.stringify(sc)).not.toContain(paar.warum);
+    expect(sc.anleitung).toMatch(/Nennt ein Feedback ein Kriterium, frag, was die Person daran an ihrer eigenen Stelle erkennt; formulier dafür keinen Text\./);
   });
 
   it('Server-Anweisung: auf Feedback eingehen, nie als Prüfbefund, nie selbst schreiben', async () => {

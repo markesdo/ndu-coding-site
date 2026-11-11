@@ -1,9 +1,12 @@
 // Feedback der Lehrenden im Connector (NDU-35), nur lesend: artefakt_lesen und artefakt_pruefen liefern es mit.
 // Claude geht darauf ein, gibt es aber nie als eigenen Prüfbefund aus und schreibt selbst nie Feedback (es gibt dafür
 // kein Werkzeug). Eigene Datei, damit werkzeuge.ts nur an wenigen Stellen wächst.
+// NDU-41: Trägt ein Feedback ein Kriterium aus dem Katalog, kommt nur dessen Name mit – nie das Kaffeebar-Paar, damit
+// Claude keine Fassung zum Übernehmen in der Hand hat.
 import { z } from 'zod';
 import { tagInWien } from '../../../lib/kurswahl.js';
 import { faeden, zeilenName, type FeedbackFaden } from '../../feedback.js';
+import { kriterium } from '../../kriterien.js';
 import { datumAt } from '../../render/format.js';
 import type { ArtefaktName } from '../../schemas/index.js';
 import { feedbackHolen } from '../feedback.js';
@@ -16,6 +19,7 @@ export const FEEDBACK_AUSGABE = z
   .array(z.object({
     id: z.string(),
     zeile: z.string().optional().describe('Zeilen-ID (A2, I2-4) oder Abschnitt des Briefs; fehlt = zum ganzen Artefakt.'),
+    kriterium: z.string().optional().describe('Name des Kriteriums, das die Lehrperson gewählt hat (z. B. „Output statt Outcome“); fehlt = ohne Kriterium.'),
     autor: z.string(),
     datum: z.string(),
     text: z.string(),
@@ -41,10 +45,14 @@ const tag = (iso: string) => datumAt(tagInWien(new Date(iso)));
 // Text der Lehrenden und der Person als Zitat, Zeile für Zeile: So beginnt er nie eine Überschrift oder Liste.
 const zitat = (text: string, einzug: string) => text.split('\n').map((z) => `${einzug}> ${z}`).join('\n');
 
+// Name aus dem Katalog; eine ID, die es dort nicht (mehr) gibt, fällt weg.
+const kriteriumName = (id: string | undefined): string | undefined => (id === undefined ? undefined : kriterium(id)?.name);
+
 export function feedbackAusgabe(f: readonly FeedbackFaden[]): FeedbackAusgabe {
   return f.map(({ feedback: e, antworten }) => ({
     id: e.id,
     ...(e.zeilenId !== undefined ? { zeile: zeilenName(e.artefakt, e.zeilenId) } : {}),
+    ...(kriteriumName(e.kriterium) !== undefined ? { kriterium: kriteriumName(e.kriterium) } : {}),
     autor: e.autor,
     datum: tag(e.datum),
     text: e.text,
@@ -59,7 +67,8 @@ export function feedbackText(f: readonly FeedbackFaden[] | null): string[] {
   if (f.length === 0) return [];
   const zeilen = ['', `## ${FEEDBACK_UEBERSCHRIFT}`, 'Was die Lehrenden zu diesem Artefakt angemerkt haben, mit den Antworten der Person. Geh darauf ein, wo es passt; es ist kein Befund der Prüfung, und du schreibst selbst kein Feedback.', ''];
   for (const a of feedbackAusgabe(f)) {
-    zeilen.push(`- ${a.id}: ${a.autor}${a.zeile ? ` zu ${a.zeile}` : ' zum ganzen Artefakt'}, ${a.datum}, ${a.erledigt ? 'erledigt' : 'offen'}`, zitat(a.text, '  '));
+    const krit = a.kriterium ? `, Kriterium „${a.kriterium}“` : '';
+    zeilen.push(`- ${a.id}: ${a.autor}${a.zeile ? ` zu ${a.zeile}` : ' zum ganzen Artefakt'}, ${a.datum}, ${a.erledigt ? 'erledigt' : 'offen'}${krit}`, zitat(a.text, '  '));
     for (const x of a.antworten) zeilen.push(`  - Antwort von ${x.autor}, ${x.datum}:`, zitat(x.text, '    '));
   }
   return zeilen;
@@ -67,4 +76,4 @@ export function feedbackText(f: readonly FeedbackFaden[] | null): string[] {
 
 /** Satz für die Anleitung von artefakt_pruefen, nur wenn es Feedback gibt. */
 export const FEEDBACK_ANLEITUNG =
-  `Unter „${FEEDBACK_UEBERSCHRIFT}“ steht, was die Lehrenden angemerkt haben: Geh darauf ein, wo es passt (etwa „Bei A2 hatte deine Lehrperson nach der Quelle gefragt – was hast du dazu herausgefunden?“), aber gib es nie als eigenen Befund oder Prüfpunkt aus, zitier es nicht als Artefakt und schreib selbst kein Feedback.`;
+  `Unter „${FEEDBACK_UEBERSCHRIFT}“ steht, was die Lehrenden angemerkt haben: Geh darauf ein, wo es passt (etwa „Bei A2 hatte deine Lehrperson nach der Quelle gefragt – was hast du dazu herausgefunden?“), aber gib es nie als eigenen Befund oder Prüfpunkt aus, zitier es nicht als Artefakt und schreib selbst kein Feedback. Nennt ein Feedback ein Kriterium, frag, was die Person daran an ihrer eigenen Stelle erkennt; formulier dafür keinen Text.`;

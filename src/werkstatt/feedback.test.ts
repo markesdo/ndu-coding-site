@@ -119,3 +119,62 @@ describe('Lesen und Zählen', () => {
     expect(fa.map((x) => [x.feedback.id, x.antworten.map((a) => a.id)])).toStrictEqual([['FB1', ['FB4']], ['FB2', []]]);
   });
 });
+
+// NDU-41: optionales Kriterium aus dem Katalog an Feedback der Lehrenden, weiter feedback@1.
+describe('Kriterium am Feedback', () => {
+  const mit = (f: Feedback, artefakt: 'annahmen' | 'brief' | 'leitfaden', zeilenId: string | undefined, kriterium: unknown) =>
+    feedbackSchreiben(f, { artefakt, zeilenId, kriterium, text: 'Schau dir das Paar an.', autor: 'markus', datum: D1 });
+
+  it('alte feedback@1-Datei (NDU-35, ohne Kriterium) bleibt gültig und unverändert', () => {
+    // Wortwörtlich wie eine Datei, die die Werkstatt vor NDU-41 geschrieben hat.
+    const alt = JSON.parse(`{
+  "schema": "feedback@1",
+  "eintraege": [
+    { "id": "FB1", "artefakt": "annahmen", "zeilenId": "A2", "von": "lehrende", "autor": "markus", "text": "Woher stammt die Zahl?", "datum": "${D1}", "gesehen": true, "erledigt": true },
+    { "id": "FB2", "artefakt": "annahmen", "zeilenId": "A2", "von": "studierende", "autor": "sofie", "text": "Aus der Kassa.", "datum": "${D2}", "antwortAuf": "FB1" },
+    { "id": "FB3", "artefakt": "brief", "von": "lehrende", "autor": "markus", "text": "Klarer Rahmen.", "datum": "${D2}" }
+  ]
+}`);
+    const p = feedbackParsen(alt);
+    expect(p).toStrictEqual({ ok: true, daten: alt });
+    // Weiterschreiben auf der alten Datei: bleibt feedback@1, alte Einträge Wort für Wort.
+    const neu = mit((p as { daten: Feedback }).daten, 'brief', 'outcome', 'output-statt-outcome');
+    expect(neu.schema).toBe('feedback@1');
+    expect(neu.eintraege.slice(0, 3)).toStrictEqual(alt.eintraege);
+    expect(feedbackParsen(JSON.parse(feedbackJson(neu)))).toStrictEqual({ ok: true, daten: neu });
+  });
+
+  it('feedbackSchreiben speichert die ID des Kriteriums; ohne Kriterium fehlt der Schlüssel ganz', () => {
+    const f = mit(feedbackLeer(), 'brief', 'outcome', 'output-statt-outcome');
+    expect(f.eintraege[0]).toStrictEqual({ id: 'FB1', artefakt: 'brief', zeilenId: 'outcome', kriterium: 'output-statt-outcome', von: 'lehrende', autor: 'markus', text: 'Schau dir das Paar an.', datum: D1 });
+    for (const leer of [undefined, null, '']) expect(mit(feedbackLeer(), 'brief', 'outcome', leer).eintraege[0]).not.toHaveProperty('kriterium');
+  });
+
+  it('Kriterium muss es geben und zu Artefakt und Brief-Abschnitt passen', () => {
+    // Zum ganzen Brief passt jedes Brief-Kriterium, zu einem Abschnitt nur seine.
+    expect(mit(feedbackLeer(), 'brief', undefined, 'zwei-zielgruppen').eintraege[0].kriterium).toBe('zwei-zielgruppen');
+    expect(mit(feedbackLeer(), 'annahmen', 'A3', 'art-der-annahme').eintraege[0].kriterium).toBe('art-der-annahme');
+    expect(() => mit(feedbackLeer(), 'brief', 'problem', 'output-statt-outcome')).toThrow('„Output statt Outcome“ passt nicht zu „Welches Problem?“.');
+    expect(() => mit(feedbackLeer(), 'annahmen', 'A2', 'meinungsfrage')).toThrow('„Meinungsfrage statt Geschichte“ passt nicht zu A2.');
+    expect(() => mit(feedbackLeer(), 'leitfaden', undefined, 'zwei-zielgruppen')).toThrow('„Zwei Zielgruppen in einer“ passt nicht zu Interviewleitfaden.');
+    for (const falsch of ['gibt-es-nicht', 'toString', '__proto__', 42, ['meinungsfrage'], { id: 'meinungsfrage' }]) {
+      expect(() => mit(feedbackLeer(), 'leitfaden', undefined, falsch), String(falsch)).toThrow(FeedbackAbgelehnt);
+    }
+  });
+
+  it('Antworten erben kein Kriterium; im Schema gibt es das Kriterium nur am Feedback der Lehrenden', () => {
+    const f = antworten(mit(feedbackLeer(), 'annahmen', 'A3', 'art-der-annahme'), { antwortAuf: 'FB1', text: 'Stimmt.', autor: 'sofie', datum: D2 });
+    expect(f.eintraege[1]).not.toHaveProperty('kriterium');
+    const antwortMitKriterium = structuredClone(f);
+    (antwortMitKriterium.eintraege[1] as { kriterium?: string }).kriterium = 'art-der-annahme';
+    expect(feedbackParsen(antwortMitKriterium).ok).toBe(false);
+  });
+
+  it('Lesen prüft nur die Form: ein Kriterium, das der Katalog nicht (mehr) kennt, macht die Datei nicht unlesbar', () => {
+    const roh = { schema: 'feedback@1', eintraege: [{ id: 'FB1', artefakt: 'brief', kriterium: 'frueher-mal', von: 'lehrende', autor: 'm', text: 't', datum: D1 }] };
+    expect(feedbackParsen(roh).ok).toBe(true);
+    for (const form of ['Output statt Outcome', 'a b', '', '-a', 'A-b', 42]) {
+      expect(feedbackParsen({ ...roh, eintraege: [{ ...roh.eintraege[0], kriterium: form }] }).ok, String(form)).toBe(false);
+    }
+  });
+});

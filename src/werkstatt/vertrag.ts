@@ -120,6 +120,8 @@ export interface FeedbackSchreibenAnfrage {
   artefakt: ArtefaktName;
   // Zeilen-ID (A2, I2-4) oder beim Brief der Abschnitt (problem); fehlt = zum ganzen Artefakt.
   zeilenId?: string;
+  // ID eines Kriteriums aus dem Katalog (kriterien.ts, NDU-41), passend zu Artefakt und Abschnitt; fehlt = ohne.
+  kriterium?: string;
   text: string;
 }
 
