@@ -16,3 +16,7 @@ export const MOM_TEST_GRUPPE = 'mom-test';
 /** Rückfall für die Intuit-Auflösung an Tag 3 (Experiment-Karte, Folie „sagen-tun“): Ende des Kurstags. Aufgedeckt wird
  *  per Klick des Präsentators wie beim Toast; eine Uhrzeit mitten am Tag öffnete sie bei Verspätung vor der Übung. */
 export const NACH_INTUIT = '2026-11-21T17:00';
+
+/** Rückfall für die Netflix-Auflösung an Tag 2 (Interview-Synthese, Folie „warum“): Ende des Kurstags. Aufgedeckt wird
+ *  per Klick des Präsentators wie beim Toast; vorher sollen alle ihren eigenen Satz in den Chat geschrieben haben. */
+export const NACH_NETFLIX = '2026-11-12T18:00';
