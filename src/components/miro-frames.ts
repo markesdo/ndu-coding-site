@@ -5,6 +5,10 @@
 // die Zahl hinter moveToWidget=).
 export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'Start hier · So arbeitet ihr auf diesem Board': '3458764687728125024',
+  'Baum · Beispiel Kaffeebar': '3458764690142652321',
+  'Baum · Sofie · sofie': '3458764690142652322',
+  'Baum · Joachim · joachim': '3458764690142652323',
+  'Baum · Hewen · chen': '3458764690142652324',
   'T1 · 1 · Experience Map': '3458764687728125026',
   'T1 · 2 · Problem-Rahmen & Produkt-Brief': '3458764687406008349',
   'T1 · 3 · Annahmen-Map': '3458764687406008351',

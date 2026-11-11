@@ -13,6 +13,13 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
       'Online: Chat offen halten, heute schreibt jede*r oft hinein.',
       'Annahmen-Map von Tag 1 öffnen lassen, Belege sofort eintragen.',
     ],
+    miro: {
+      frame: 'Baum · Beispiel Kaffeebar',
+      schritte: [
+        'Kurz zeigen: Rechts neben Start hier stehen die Bäume, einer pro Produkt („Baum · Name“).',
+        'Heute wachsen dort Momente und Chancen; T2 · 2 bleibt die Anleitung.',
+      ],
+    },
     verstaendnis: {
       frage: 'Warum zeichnen wir die Experience Map heute neu, obwohl es sie seit Tag 1 gibt?',
       antwort: 'Die Map von Tag 1 war ein Entwurf aus Vermutungen. Torres: Die drei Artefakte sind keine Einmal-Übung, sie entwickeln sich weiter, so wie das Verständnis der Kundschaft wächst (S. 49). Heute kommen fünf echte Geschichten dazu.',
@@ -32,7 +39,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
       'Checkliste Punkt für Punkt, jede*r hakt selbst ab.',
       'Fragen: Welche Annahme von Tag 1 steht jetzt anders da?',
       'Entscheidungslog: eine Zeile pro Entscheidung, auch „noch keiner“ als Beleg.',
-      '„Tag 3 am 21. November beginnt mit eurem Baum: Ihr wählt eine Ziel-Chance.“',
+      '„Tag 3 am 21. November beginnt in eurem Baum auf Miro: Ihr wählt eine Ziel-Chance.“',
       'Erinnern: Claude Pro erst am 21. November neu abschließen.',
     ],
     ueberleitung: 'Danke für heute – bis zum 21. November.',
