@@ -11,7 +11,8 @@ const NeuMarke = () => <span className="snap-neu-marke">neu</span>;
 
 export default function SnapshotAnsicht({ iv, neu }: { iv: Interview; neu?: Neu }) {
   const einsichten = iv.einsichten.filter((e) => e.trim());
-  const chancen = iv.chancen.filter((c) => c.text.trim());
+  // Auch eine Chance ohne Text, aber mit Belegen: sonst verschwänden ihre Belege still.
+  const chancen = iv.chancen.filter((c) => c.text.trim() || c.belege.length > 0);
   const zitate = iv.zitate.filter((z) => z.text.trim());
   const titel = `${iv.id} · ${iv.pseudonym.trim() || '—'}`;
   return (
@@ -24,8 +25,8 @@ export default function SnapshotAnsicht({ iv, neu }: { iv: Interview; neu?: Neu 
         {istSynthetisch(iv) && <p className="snap-synthetisch">Synthetisch – zählt nicht als Beleg</p>}
       </div>
       <div className="snap-spalten">
-        <div className="snap-kurzinfos">
-          <h4>Kurzinfos</h4>
+        <div className={neu?.kurzinfos ? 'snap-kurzinfos snap-neu' : 'snap-kurzinfos'}>
+          <h4>Kurzinfos{neu?.kurzinfos && <> <NeuMarke /></>}</h4>
           <p>{iv.kurzinfos.trim() || <Leer />}</p>
         </div>
         <div className="snap-einsichten">
@@ -40,7 +41,7 @@ export default function SnapshotAnsicht({ iv, neu }: { iv: Interview; neu?: Neu 
             <ul>
               {chancen.map((c, i) => (
                 <li key={i} className={neu?.chancen.has(c.text.trim()) ? 'snap-neu' : undefined}>
-                  {c.text}{neu?.chancen.has(c.text.trim()) && <> <NeuMarke /></>}
+                  {c.text.trim() ? c.text : <Leer />}{neu?.chancen.has(c.text.trim()) && <> <NeuMarke /></>}
                   {c.belege.length === 0
                     ? <span className="snap-ohne-beleg"> – noch ohne Beleg</span>
                     : (
@@ -48,7 +49,8 @@ export default function SnapshotAnsicht({ iv, neu }: { iv: Interview; neu?: Neu 
                         {belegeAufloesen(c, iv.zitate).map((b, j) => (
                           <li key={j}>
                             <span className="snap-id">{b.id}</span>{' '}
-                            {b.text === null ? <span className="snap-leer">(unbekannt)</span> : `„${b.text}“`}
+                            {b.text === null ? <span className="snap-leer">(unbekannt)</span>
+                              : b.text.trim() ? `„${b.text}“` : <span className="snap-leer">(Zitat noch ohne Text)</span>}
                           </li>
                         ))}
                       </ul>

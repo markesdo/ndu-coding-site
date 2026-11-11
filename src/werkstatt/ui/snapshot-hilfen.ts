@@ -52,18 +52,36 @@ export function nichtsNeues(vorher: readonly Interview[], nachher: readonly Inte
   return JSON.stringify(vorher) === JSON.stringify(nachher);
 }
 
-export type Neu = { einsichten: ReadonlySet<string>; chancen: ReadonlySet<string> };
+/** Meldung nach „Neu laden“: ohne früheren Stand nichts; sonst „Nichts Neues gespeichert“ oder welche Snapshots neu
+ *  oder geändert sind – auch, wenn die Änderung im gezeigten Snapshot nicht markiert ist (Notizen, Zitate, andere IDs). */
+export function neuMeldung(vorher: readonly Interview[] | null, nachher: readonly Interview[]): string {
+  if (vorher === null) return '';
+  if (nichtsNeues(vorher, nachher)) return 'Nichts Neues gespeichert';
+  const ids = nachher.filter((iv) => {
+    const alt = vorher.find((v) => v.id === iv.id);
+    return !alt || JSON.stringify(alt) !== JSON.stringify(iv);
+  }).map((iv) => iv.id);
+  const weg = vorher.length - nachher.filter((iv) => vorher.some((v) => v.id === iv.id)).length;
+  if (ids.length > 0) return `Neu oder geändert: ${ids.join(', ')}`;
+  return weg > 0 ? 'Snapshot entfernt' : 'Geändert';
+}
 
-/** Einsichten und Chancen, die seit dem letzten Laden dazugekommen oder geändert sind (Vergleich über den Text,
- *  im Interview mit derselben ID). Ohne früheren Stand nichts; ein neues Interview ist ganz neu. */
+export type Neu = { einsichten: ReadonlySet<string>; chancen: ReadonlySet<string>; kurzinfos: boolean };
+
+const belegSchluessel = (belege: readonly string[]) => [...belege].sort().join(',');
+
+/** Was seit dem letzten Laden im Interview mit derselben ID dazugekommen oder geändert ist: Einsichten (Text), Chancen
+ *  (Text oder Belege – ein nachgetragener Beleg markiert die Chance) und Kurzinfos. Ohne früheren Stand nichts; ein
+ *  neues Interview ist ganz neu. */
 export function neueEintraege(vorher: readonly Interview[] | null, iv: Interview): Neu {
-  if (vorher === null) return { einsichten: new Set(), chancen: new Set() };
+  if (vorher === null) return { einsichten: new Set(), chancen: new Set(), kurzinfos: false };
   const alt = vorher.find((v) => v.id === iv.id);
   const altE = new Set(alt?.einsichten.map((e) => e.trim()) ?? []);
-  const altC = new Set(alt?.chancen.map((c) => c.text.trim()) ?? []);
+  const altC = new Map(alt?.chancen.map((c) => [c.text.trim(), belegSchluessel(c.belege)]) ?? []);
   return {
     einsichten: new Set(iv.einsichten.map((e) => e.trim()).filter((e) => e && !altE.has(e))),
-    chancen: new Set(iv.chancen.map((c) => c.text.trim()).filter((c) => c && !altC.has(c))),
+    chancen: new Set(iv.chancen.filter((c) => altC.get(c.text.trim()) !== belegSchluessel(c.belege)).map((c) => c.text.trim())),
+    kurzinfos: !!iv.kurzinfos.trim() && (alt?.kurzinfos.trim() ?? '') !== iv.kurzinfos.trim(),
   };
 }
 

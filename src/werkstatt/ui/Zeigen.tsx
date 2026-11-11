@@ -5,10 +5,9 @@
 import { ChevronLeft, ChevronRight, CloudOff, RefreshCw, X } from 'lucide-react';
 import type { Ref } from 'react';
 import type { Interview } from '../schemas/index.js';
+import { standText } from './lehrenden-hilfen.js';
 import SnapshotAnsicht from './SnapshotAnsicht.js';
 import { neueEintraege } from './snapshot-hilfen.js';
-
-const UHR = new Intl.DateTimeFormat('de-AT', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Vienna' });
 
 export interface ZeigenProps {
   personen: readonly { kuerzel: string; anzahl: number }[];
@@ -21,6 +20,8 @@ export interface ZeigenProps {
   laedt: boolean;
   fehler: string | null;
   stand: number | null;
+  // Uhr der Lehrendenansicht (zählt jede Minute weiter) für „Stand HH:MM“ bzw. „Stand vor N Min.“.
+  jetzt: number;
   meldung: string;
   wurzel?: Ref<HTMLDivElement>;
   personWaehlen: (kuerzel: string) => void;
@@ -63,7 +64,7 @@ export default function Zeigen(p: ZeigenProps) {
         </div>
         <div className="zg-laden">
           <span className="zg-stand" role="status">
-            {p.laedt ? 'lädt …' : p.meldung ? `${p.meldung} · Stand ${p.stand !== null ? UHR.format(p.stand) : '–'}` : p.stand !== null ? `Stand ${UHR.format(p.stand)}` : ''}
+            {p.laedt ? 'lädt …' : [p.meldung, p.stand !== null ? standText(p.stand, p.jetzt) : ''].filter(Boolean).join(' · ')}
           </span>
           {/* aria-disabled statt disabled: ein gesperrter Knopf verlöre den Fokus, dann kämen ←/→ nicht mehr im Dialog an. */}
           <button type="button" className="wk-knopf" aria-disabled={p.laedt} onClick={() => !p.laedt && p.neuLaden()}>

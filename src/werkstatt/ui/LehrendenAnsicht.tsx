@@ -19,8 +19,8 @@ import {
   spaltenHinweis, standText, tagText, zelle, zellenLabel, zuerstAnsehen, type BereiteMappe, type Leser, type Zelle, type ZellenArt,
 } from './lehrenden-hilfen.js';
 import { rueckkehrBeobachten } from './mappe-hilfen.js';
-import { blaettern, nichtsNeues, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen } from './snapshot-hilfen.js';
-import Zeigen from './Zeigen.js';
+import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen } from './snapshot-hilfen.js';
+import Zeigen, { type ZeigenProps } from './Zeigen.js';
 import type { Interview } from '../schemas/index.js';
 
 const TEXT = {
@@ -134,6 +134,10 @@ export default function LehrendenAnsicht() {
   const [zeigenId, setZeigenId] = useState<string | null>(null);
   const [zeigenStand, setZeigenStand] = useState<{ schluessel: string; interviews: Interview[]; zeit: number; vorher: Interview[] | null } | null>(null);
   const zeigenWurzel = useRef<HTMLDivElement>(null);
+  // „Neu laden“ im Zeigen-Modus: nur die offene Datei frisch, nicht die ganze Matrix (GitHub-Kontingent).
+  const [inhaltNeu, setInhaltNeu] = useState(0);
+  // Läuft Zeigen, lädt die Rückkehr in den Tab nicht still nach (sonst ändert sich der geteilte Bildschirm von selbst).
+  const zeigenLaeuft = useRef(false);
 
   const laden = useCallback(async (w: { kohorte?: string; seit?: number }) => {
     const mein = ++lauf.current;
@@ -176,7 +180,7 @@ export default function LehrendenAnsicht() {
   // Zurück im Tab: still neu, wenn die Daten älter als zwei Minuten sind.
   useEffect(() => rueckkehrBeobachten(document, window, () => {
     const g = geladenRef.current;
-    if (g !== null && Date.now() - g > STILL_NEU_AB_MS) void laden(wahlRef.current);
+    if (g !== null && Date.now() - g > STILL_NEU_AB_MS && !zeigenLaeuft.current) void laden(wahlRef.current);
   }), [laden]);
 
   // Nur die Anzeige „Stand vor N Min.“ weiterzählen, nichts laden.
@@ -230,7 +234,7 @@ export default function LehrendenAnsicht() {
     );
     return () => { gilt = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offenerSchluessel, geladen]);
+  }, [offenerSchluessel, geladen, inhaltNeu]);
 
   // Nach dem Schreiben: Leser und Zelle zeigen den neuen Stand, ohne die ganze Matrix neu zu laden (GitHub-Kontingent).
   function feedbackGeschrieben(schluessel: string, person: string, name: ArtefaktName, eintraege: FeedbackSichtEintrag[]) {
@@ -264,8 +268,11 @@ export default function LehrendenAnsicht() {
   // Fokus: beim Start in den Zeigen-Bereich (sonst kämen ←/→ nicht im Dialog an), beim Beenden zurück auf „Zeigen“.
   const warZeigen = useRef(false);
   useEffect(() => {
+    zeigenLaeuft.current = zeigenAktiv;
     if (zeigenAktiv) zeigenWurzel.current?.focus();
-    else if (warZeigen.current && dialog.current?.open) dialog.current.querySelector<HTMLButtonElement>('.lv-zeigen-knopf')?.focus();
+    // Lädt der Leser noch (Esc während „Neu laden“), gibt es „Zeigen“ nicht: dann der erste Knopf im Leser, damit ←/→
+    // weiter im Dialog ankommen.
+    else if (warZeigen.current && dialog.current?.open) dialog.current.querySelector<HTMLButtonElement>('.lv-zeigen-knopf, button')?.focus();
     warZeigen.current = zeigenAktiv;
   }, [zeigenAktiv]);
 
@@ -475,36 +482,44 @@ export default function LehrendenAnsicht() {
         ref={dialog} className={zeigenAktiv ? 'wk-dialog lv-leser lv-zeigen' : 'wk-dialog lv-leser'} aria-labelledby="lv-leser-titel"
         onClose={() => { setLeser(null); zeigenBeenden(); }} onCancel={leserAbbrechen} onKeyDown={leserTaste}
       >
-        {zeigenAktiv && leserMappe ? (
-          <Zeigen
-            personen={zeigenPersonen(ansicht.personen)} person={leserMappe.kuerzel} interviews={zeigenSicht?.interviews ?? null} vorher={zeigenSicht?.vorher ?? null}
-            nr={zeigenNr} laedt={laedt || (inhalt?.schluessel === offenerSchluessel && inhalt.zustand === 'laden')}
-            fehler={(inhalt?.schluessel === offenerSchluessel && inhalt.zustand === 'fehler' ? inhalt.text : null) ?? fehler}
-            stand={zeigenSicht?.zeit ?? null}
-            meldung={zeigenSicht?.vorher && nichtsNeues(zeigenSicht.vorher, zeigenSicht.interviews) ? 'Nichts Neues gespeichert' : ''}
-            wurzel={zeigenWurzel}
-            personWaehlen={(k) => { setZeigenId(null); setLeser({ person: k, artefakt: 'interviews' }); }}
-            nrWaehlen={(i) => zeigenIvs[i] && setZeigenId(zeigenIvs[i].id)}
-            blaettern={(r) => zeigenIvs.length > 0 && setZeigenId(zeigenIvs[blaettern(zeigenNr, zeigenIvs.length, r)].id)}
-            neuLaden={() => void laden(wahl)} beenden={zeigenBeenden}
-          />
-        ) : leserMappe && leserArtefakt && (
-          <LeserInhalt
-            ansicht={ansicht} p={leserMappe} a={leserArtefakt} wechseln={setLeser} schliessen={() => dialog.current?.close()}
-            inhalt={inhalt && inhalt.schluessel === offenerSchluessel ? inhalt : null}
-            feedbackGeschrieben={(eintraege) => offenerSchluessel && feedbackGeschrieben(offenerSchluessel, leserMappe.kuerzel, leserArtefakt.name, eintraege)}
-            zeigenStarten={zeigenStarten}
-          />
-        )}
+        <LeserKoerper
+          zeigen={zeigenAktiv && leserMappe ? {
+            personen: zeigenPersonen(ansicht.personen), person: leserMappe.kuerzel, interviews: zeigenSicht?.interviews ?? null, vorher: zeigenSicht?.vorher ?? null,
+            nr: zeigenNr, laedt: laedt || (inhalt?.schluessel === offenerSchluessel && inhalt.zustand === 'laden'),
+            fehler: (inhalt?.schluessel === offenerSchluessel && inhalt.zustand === 'fehler' ? inhalt.text : null) ?? fehler,
+            stand: zeigenSicht?.zeit ?? null, jetzt,
+            meldung: neuMeldung(zeigenSicht?.vorher ?? null, zeigenSicht?.interviews ?? []),
+            wurzel: zeigenWurzel,
+            personWaehlen: (k) => { setZeigenId(null); setLeser({ person: k, artefakt: 'interviews' }); },
+            nrWaehlen: (i) => zeigenIvs[i] && setZeigenId(zeigenIvs[i].id),
+            blaettern: (r) => zeigenIvs.length > 0 && setZeigenId(zeigenIvs[blaettern(zeigenNr, zeigenIvs.length, r)].id),
+            neuLaden: () => setInhaltNeu((n) => n + 1), beenden: zeigenBeenden,
+          } : null}
+          lesen={ansicht && leserMappe && leserArtefakt ? {
+            ansicht, p: leserMappe, a: leserArtefakt, wechseln: setLeser, schliessen: () => dialog.current?.close(),
+            inhalt: inhalt && inhalt.schluessel === offenerSchluessel ? inhalt : null,
+            feedbackGeschrieben: (eintraege) => offenerSchluessel && feedbackGeschrieben(offenerSchluessel, leserMappe.kuerzel, leserArtefakt.name, eintraege),
+            zeigenStarten,
+          } : null}
+        />
       </dialog>
     </section>
   );
 }
 
-function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt, feedbackGeschrieben, zeigenStarten }: {
+export type LeserInhaltProps = {
   ansicht: Ansicht; p: BereiteMappe; a: LehrendenArtefakt; wechseln: (l: Leser) => void; schliessen: () => void; inhalt: Inhalt | null;
   feedbackGeschrieben: (eintraege: FeedbackSichtEintrag[]) => void; zeigenStarten: () => void;
-}) {
+};
+
+/** Inhalt des Leser-Dialogs: im Zeigen-Modus NUR Zeigen – Feedback, Lücken, „Was noch fehlt“ und Repo-Links des Lesers
+ *  hängen dann nicht im Baum und können nicht auf dem geteilten Bildschirm landen (zeigen.test.tsx prüft das). */
+export function LeserKoerper({ zeigen, lesen }: { zeigen: ZeigenProps | null; lesen: LeserInhaltProps | null }) {
+  if (zeigen) return <Zeigen {...zeigen} />;
+  return lesen ? <LeserInhalt {...lesen} /> : null;
+}
+
+function LeserInhalt({ ansicht, p, a, wechseln, schliessen, inhalt, feedbackGeschrieben, zeigenStarten }: LeserInhaltProps) {
   // „Zeigen“ nur bei Interviews mit mindestens einem Snapshot.
   const zeigbar = a.name === 'interviews' && inhalt?.zustand === 'bereit' && zeigbareInterviews(inhalt.inhalt.daten).length > 0;
   const schliessKnopf = <button type="button" className="wk-knopf" onClick={schliessen}><X size={16} aria-hidden="true" /> Schließen</button>;

@@ -255,8 +255,8 @@
 .snap { max-width: 90em; margin: 0 auto; }
 .snap-kopf { padding: 0 0 .7em; border-bottom: 1px solid var(--border); }
 .snap-titel {
+  /* Nicht abschneiden: das einprägsame Zitat steht sonst nirgends im Zeigen-Modus. */
   margin: 0; font-size: 2em; line-height: 1.25; font-weight: 400; overflow-wrap: anywhere;
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden;
 }
 .snap-name { font-weight: 700; }
 .snap-zitat { font-family: var(--font); font-style: italic; letter-spacing: 0; }

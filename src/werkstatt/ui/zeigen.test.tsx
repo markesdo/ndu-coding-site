@@ -6,7 +6,9 @@ import KAFFEEBAR from '../beispiele/interviews.json';
 import type { Interview } from '../schemas/index.js';
 import type { LehrendenArtefakt, LehrendenMappe } from '../vertrag.js';
 import SnapshotAnsicht from './SnapshotAnsicht';
-import { blaettern, istSynthetisch, neueEintraege, nichtsNeues, snapshotZahl, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen } from './snapshot-hilfen';
+import { artefaktStand } from '../tag-stand';
+import { LeserKoerper, type LeserInhaltProps } from './LehrendenAnsicht';
+import { blaettern, istSynthetisch, neuMeldung, neueEintraege, nichtsNeues, snapshotZahl, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen } from './snapshot-hilfen';
 import Zeigen, { type ZeigenProps } from './Zeigen';
 
 const IVS = KAFFEEBAR.interviews as Interview[];
@@ -32,6 +34,18 @@ describe('SnapshotAnsicht', () => {
     const iv = { ...I2, chancen: [{ text: 'Ich will wissen, wann er fertig ist.', belege: ['I2-9', 'I2-5'] }] };
     const t = text(html(iv));
     expect(t).toContain('I2-9 (unbekannt)');
+    expect(t).toContain('I2-5 „Am liebsten wüsste ich einfach, wann er fertig ist.“');
+  });
+
+  it('Beleg auf ein Zitat ohne Text: Hinweis statt „„““', () => {
+    const iv = { ...I2, chancen: [{ text: 'Wissen, wann er fertig ist.', belege: ['I2-1'] }], zitate: [{ id: 'I2-1', text: ' ' }] };
+    const t = text(html(iv));
+    expect(t).toContain('I2-1 (Zitat noch ohne Text)');
+    expect(t).not.toContain('„ “');
+  });
+
+  it('Chance ohne Text, aber mit Belegen: bleibt mit ihren Belegen sichtbar', () => {
+    const t = text(html({ ...I2, chancen: [{ text: '', belege: ['I2-5'] }] }));
     expect(t).toContain('I2-5 „Am liebsten wüsste ich einfach, wann er fertig ist.“');
   });
 
@@ -117,6 +131,25 @@ describe('Hilfen', () => {
     expect(nichtsNeues(IVS, [...IVS.slice(0, 4), { ...IVS[4], einsichten: [...IVS[4].einsichten, 'Neu'] }])).toBe(false);
   });
 
+  it('nachgetragener Beleg markiert die Chance, geänderte Kurzinfos die Kurzinfos', () => {
+    const c0 = I2.chancen[0];
+    const vorher = [{ ...I2, kurzinfos: 'alt', chancen: [{ ...c0, belege: [] }, ...I2.chancen.slice(1)] }];
+    const n = neueEintraege(vorher, I2);
+    expect([...n.chancen]).toStrictEqual([c0.text.trim()]);
+    expect(n.kurzinfos).toBe(true);
+    expect(neueEintraege([I2], I2)).toStrictEqual({ einsichten: new Set(), chancen: new Set(), kurzinfos: false });
+    const h = renderToStaticMarkup(<SnapshotAnsicht iv={I2} neu={n} />);
+    expect(h).toContain('class="snap-kurzinfos snap-neu"');
+  });
+
+  it('Meldung nach Neu laden: nichts, nichts Neues oder welche Snapshots', () => {
+    expect(neuMeldung(null, IVS)).toBe('');
+    expect(neuMeldung(IVS, structuredClone(IVS))).toBe('Nichts Neues gespeichert');
+    const anders = IVS.map((iv) => (iv.id === 'I4' ? { ...iv, notizen: iv.notizen + ' Nachtrag.' } : iv));
+    expect(neuMeldung(IVS, [...anders, { ...I2, id: 'I6' }])).toBe('Neu oder geändert: I4, I6');
+    expect(neuMeldung(IVS, IVS.slice(1))).toBe('Snapshot entfernt');
+  });
+
   it('neue Einträge: ohne früheren Stand keine; neues Interview ganz', () => {
     expect(neueEintraege(null, I2).chancen.size).toBe(0);
     expect([...neueEintraege([], I2).chancen]).toStrictEqual(I2.chancen.map((c) => c.text));
@@ -131,6 +164,8 @@ describe('Hilfen', () => {
 
   it('Personen-Reiter: bereite Mappen in Reihenfolge mit Zahl der Snapshots', () => {
     expect(snapshotZahl(null)).toBe(0);
+    // An den echten Umfang aus tag-stand gebunden: Ändert sich dessen Wortlaut, fällt das hier auf.
+    expect(snapshotZahl(artefaktStand('interviews', KAFFEEBAR as never).umfang)).toBe(zeigbareInterviews(KAFFEEBAR).length);
     expect(zeigenPersonen(P)).toStrictEqual([{ kuerzel: 'sofie', anzahl: 3 }, { kuerzel: 'joachim', anzahl: 0 }, { kuerzel: 'hewen', anzahl: 6 }]);
   });
 });
@@ -138,7 +173,7 @@ describe('Hilfen', () => {
 describe('Zeigen', () => {
   const props = (x: Partial<ZeigenProps> = {}): ZeigenProps => ({
     personen: [{ kuerzel: 'sofie', anzahl: 5 }, { kuerzel: 'joachim', anzahl: 0 }, { kuerzel: 'hewen', anzahl: 2 }],
-    person: 'sofie', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null, stand: Date.UTC(2026, 10, 12, 13, 5), meldung: '',
+    person: 'sofie', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null, stand: Date.UTC(2026, 10, 12, 13, 5), jetzt: Date.UTC(2026, 10, 12, 13, 6), meldung: '',
     personWaehlen: () => {}, nrWaehlen: () => {}, blaettern: () => {}, neuLaden: () => {}, beenden: () => {}, ...x,
   });
   const knoepfe = (h: string) => [...h.matchAll(/<button([^>]*)>(.*?)<\/button>/g)].map((m) => [text(m[2]).trim(), m[1].includes(' disabled')]);
@@ -154,8 +189,28 @@ describe('Zeigen', () => {
     expect(h).toMatch(/aria-current="true">I2 · „Wenn ich auf die Uhr schauen muss, geh ich\.“/);
   });
 
-  it('zeigt nur den Snapshot: kein Feedback, keine Lücken, keine Repo-Links', () => {
-    const h = renderToStaticMarkup(<Zeigen {...props()} />);
+  // Der Leser-Dialog (LeserKoerper in LehrendenAnsicht): Läuft Zeigen, hängt vom Leser nichts im Baum.
+  const artefakt: LehrendenArtefakt = { name: 'interviews', stand: 'vorhanden', umfang: '5 von 5 Snapshots', fehlt: ['FEHLT-MARKE'], leer: false, faelligZuTag: 2, faellig: true, commits: 1, mehr: false, zuletzt: null, feedback: null };
+  const lesen: LeserInhaltProps = {
+    ansicht: { kohorte: 'k', bezug: null, personen: [] } as never,
+    p: { kuerzel: 'sofie', zustand: 'bereit', repo: 'x/sofie', repoUrl: 'https://github.com/x/sofie', artefakte: [artefakt], luecken: [{ artefakt: 'interviews', text: 'LUECKE-MARKE' }] } as never,
+    a: artefakt,
+    inhalt: { schluessel: 'k/sofie/interviews', zustand: 'bereit', inhalt: { name: 'interviews', stand: 'vorhanden', daten: KAFFEEBAR, roh: null, feedback: [] } },
+    wechseln: () => {}, schliessen: () => {}, feedbackGeschrieben: () => {}, zeigenStarten: () => {},
+  };
+
+  it('Leser ohne Zeigen: Lücken, „Was noch fehlt“, Repo-Link und Feedback stehen da (Gegenprobe)', () => {
+    const h = renderToStaticMarkup(<LeserKoerper zeigen={null} lesen={lesen} />);
+    expect(h).toContain('LUECKE-MARKE');
+    expect(h).toContain('FEHLT-MARKE');
+    expect(h).toContain('href="https://github.com/x/sofie"');
+    expect(h).toMatch(/class="fb/);
+  });
+
+  it('Leser im Zeigen-Modus: nur der Snapshot – kein Feedback, keine Lücken, keine Repo-Links', () => {
+    const h = renderToStaticMarkup(<LeserKoerper zeigen={props()} lesen={lesen} />);
+    expect(h).not.toContain('LUECKE-MARKE');
+    expect(h).not.toContain('FEHLT-MARKE');
     expect(h).not.toMatch(/class="fb|lv-leser-befunde|lv-leser-fehlt|lv-links|href=/);
     expect(h.match(/class="snap"/g)).toHaveLength(1);
   });
