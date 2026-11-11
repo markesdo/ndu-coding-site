@@ -190,6 +190,13 @@
 .fb-kriterium { display: grid; gap: .3rem; margin: 0 0 .4rem; }
 .fb-etikett { display: inline-flex; align-items: center; gap: .3rem; justify-self: start; padding: .1rem .55rem; border: 1px solid var(--blue); border-radius: 999px; font-size: .85rem; font-weight: 600; }
 .fb-paar summary { display: inline-flex; align-items: center; gap: .3rem; min-height: 44px; cursor: pointer; color: var(--muted); }
+.fb-paar summary { list-style: none; }
+.fb-paar summary::-webkit-details-marker { display: none; }
+.fb-paar-pfeil { flex: none; transition: transform .15s; }
+.fb-paar[open] .fb-paar-pfeil { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) { .fb-paar-pfeil { transition: none; } }
+.fb-quelle { list-style: none; margin: 0 0 .2rem; padding: 0; }
+.fb-quelle svg { margin-left: .2em; vertical-align: -.1em; }
 .fb-paar dl { display: grid; grid-template-columns: max-content 1fr; gap: .3rem .75rem; margin: .2rem 0 .4rem; font-size: .92rem; }
 .fb-paar dt { font-weight: 600; }
 .fb-paar dd { margin: 0; overflow-wrap: anywhere; }

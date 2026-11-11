@@ -3,15 +3,15 @@
 // setzen „erledigt“. Beides trägt data-werkstatt: Im Beamer-Modus ist es weg (beamer.css). Nur React-Text, nie HTML.
 // NDU-41: Lehrende wählen optional ein Kriterium aus dem Katalog (nur die, die zu Artefakt und Abschnitt passen); am
 // Feedback steht es als Etikett, aufklappbar das Kaffeebar-Paar – nie eine Fassung für den eigenen Fall.
-import { Check, CircleCheck, CircleDot, Coffee, MessageSquare, MessageSquareReply, RotateCcw, Send, Tag } from 'lucide-react';
+import { Check, ChevronRight, CircleCheck, CircleDot, Coffee, ExternalLink, MessageSquare, MessageSquareReply, RotateCcw, Send, Tag } from 'lucide-react';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { namenHinweis } from '../eigennamen.js';
 import { ANTWORT_MAX, FEEDBACK_MAX, faeden, zeilenAuswahl, type FeedbackEintrag, type FeedbackFaden } from '../feedback.js';
-import { kriterienFuer, kriterium as kriteriumAusKatalog, type Fassung, type Kriterium } from '../kriterien.js';
+import { kriterienFuer, kriteriumBehalten, kriterium as kriteriumAusKatalog, type Fassung, type Kriterium } from '../kriterien.js';
 import type { ArtefaktName } from '../schemas/index.js';
 import { graphemAnzahl } from '../text.js';
 import { api, ApiError } from './api.js';
-import { bezugText, einzeln, feedbackAenderungen, feedbackDatum, geordnet, neueIds, quelleLinks } from './feedback-hilfen.js';
+import { bezugText, einzeln, feedbackAenderungen, feedbackDatum, geordnet, neueIds } from './feedback-hilfen.js';
 
 const TEXT = {
   fehltLehrende: 'Das Feedback lässt sich gerade nicht lesen. Schreiben geht erst wieder, wenn es lesbar ist.',
@@ -49,11 +49,12 @@ function FassungZeile({ titel, f }: { titel: string; f: Fassung }) {
   );
 }
 
-/** Kaffeebar-Paar eines Kriteriums zum Aufklappen: schwächer, stärker, warum, Quelle. */
+/** Kaffeebar-Paar eines Kriteriums zum Aufklappen: schwächer, stärker, warum, Quelle. Die Links öffnen einen neuen Tab,
+ *  damit Editor und Entwurf offen bleiben. Der Pfeil zeigt auf/zu (summary mit flex verliert das Dreieck). */
 function KaffeebarPaar({ k }: { k: Kriterium }) {
   return (
     <details className="fb-paar">
-      <summary><Coffee size={14} aria-hidden="true" /> Am Beispiel Kaffeebar: schwächer und stärker</summary>
+      <summary><ChevronRight size={14} className="fb-paar-pfeil" aria-hidden="true" /><Coffee size={14} aria-hidden="true" /> Am Beispiel Kaffeebar: schwächer und stärker</summary>
       <dl>
         <FassungZeile titel="Schwächer" f={k.paar.schwach} />
         <FassungZeile titel="Stärker" f={k.paar.stark} />
@@ -61,7 +62,12 @@ function KaffeebarPaar({ k }: { k: Kriterium }) {
         <dd>{k.paar.warum}</dd>
         <dt>Quelle</dt>
         <dd>
-          {quelleLinks(k).map((l, i) => <span key={l.href}>{i > 0 && ' · '}<a href={l.href}>{l.titel}</a></span>)}; {k.quelle.buch}
+          <ul className="fb-quelle">
+            {k.quelle.seiten.map((l) => (
+              <li key={l.href}><a href={l.href} target="_blank" rel="noreferrer">{l.titel}<ExternalLink size={12} aria-label="öffnet in einem neuen Tab" /></a></li>
+            ))}
+          </ul>
+          {k.quelle.buch}
         </dd>
       </dl>
     </details>
@@ -128,8 +134,8 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
   const [sendet, setSendet] = useState(false);
   const [meldung, setMeldung] = useState<string | null>(null);
   const zeilen = useMemo(() => zeilenAuswahl(name, daten), [name, daten]);
-  // Nur Kriterien, die zu Artefakt und gewähltem Abschnitt passen; passt das gewählte nach einem Wechsel der Zeile nicht
-  // mehr, gilt es nicht mehr (der Server lehnte es ab).
+  // Nur Kriterien, die zu Artefakt und gewähltem Abschnitt passen. Beim Wechsel der Zeile fällt ein Kriterium weg, das
+  // nicht mehr passt (kriteriumBehalten) – es kommt auch beim Zurückwechseln nicht wieder (der Server lehnte es ab).
   const kriterien = useMemo(() => kriterienFuer(name, zeile || undefined), [name, zeile]);
   const gewaehlt = kriterien.find((k) => k.id === krit);
   const liste = eintraege ? faeden(eintraege, name) : [];
@@ -175,7 +181,11 @@ export function LehrendenFeedback({ kohorte, person, name, daten, eintraege, ges
         <form className="fb-form" onSubmit={(e) => { e.preventDefault(); void senden(); }}>
           <div className="wk-feld">
             <label htmlFor={auswahlId}>Bezug</label>
-            <select id={auswahlId} value={zeile} onChange={(e) => setZeile(e.target.value)}>
+            <select id={auswahlId} value={zeile} onChange={(e) => {
+              const z = e.target.value;
+              setZeile(z);
+              setKrit((alt) => kriteriumBehalten(name, z || undefined, alt));
+            }}>
               <option value="">Zum ganzen Artefakt</option>
               {zeilen.map((z) => <option key={z.wert} value={z.wert}>zu dieser Zeile: {z.text}</option>)}
             </select>

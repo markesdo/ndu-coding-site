@@ -2,7 +2,7 @@
 // die Aufrufer vorher; hier nur Schema, Commit und die Sätze für die Person.
 import { FeedbackAbgelehnt, feedbackJson, feedbackParsen, type Feedback } from '../feedback.js';
 import { ApiAusnahme } from './antwort.js';
-import { DateiUnlesbar } from './speicher-fehler.js';
+import { DateiUnlesbar, internerFehler } from './speicher-fehler.js';
 import type { Speicher } from './typen.js';
 
 export const FEEDBACK_UNLESBAR = 'Das Feedback dieser Mappe lässt sich nicht lesen (vielleicht direkt auf GitHub geändert). Schreib Markus.';
@@ -49,8 +49,15 @@ export async function feedbackAendern(
       (roh) => {
         const alt = parsen(roh);
         const neu = aenderung(alt);
+        if (neu === alt) {
+          danach = neu;
+          return null;
+        }
+        // Nie eine Datei schreiben, die sich danach nicht mehr lesen ließe (etwa eine Kriteriums-ID, die nicht zur Form
+        // in feedback@1 passt): dann bliebe für Lehrende und Studierende nur „lässt sich nicht lesen“.
+        if (!feedbackParsen(neu).ok) throw internerFehler('feedback: Änderung ergäbe eine Datei, die nicht zu feedback@1 passt');
         danach = neu;
-        return neu === alt ? null : feedbackJson(neu);
+        return feedbackJson(neu);
       },
       autor,
       nachricht,

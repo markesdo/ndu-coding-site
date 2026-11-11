@@ -6,7 +6,6 @@ import { feedbackLeer, feedbackSchreiben, faeden, type FeedbackEintrag } from '.
 import { kriterium } from '../kriterien.js';
 import type { ArtefaktName } from '../schemas/index.js';
 import { Faden, LehrendenFeedback } from './Feedback';
-import { quelleLinks } from './feedback-hilfen.js';
 
 const D = '2026-11-11T10:00:00.000Z';
 const eintraege = (artefakt: ArtefaktName, zeilenId: string | undefined, krit: string | undefined): FeedbackEintrag[] =>
@@ -39,7 +38,7 @@ describe('Kriterium in der Oberfläche', () => {
       expect(html).toContain(`„${k.paar.schwach.text}“<span class="wk-hilfe"> (für den Katalog formuliert)</span>`);
       expect(html).toContain(`„${k.paar.stark.text}“</dd>`);
       expect(html).toContain(k.paar.warum);
-      expect(html).toContain('<a href="/innolab/methoden/problem-rahmen#fehler-2">Problem-Rahmen &amp; Produkt-Brief</a>');
+      expect(html).toContain('<a href="/innolab/methoden/problem-rahmen#fehler-2" target="_blank" rel="noreferrer">Problem-Rahmen &amp; Produkt-Brief – Fehler 2: Der Output steckt im Outcome<svg');
       expect(html).toContain('Continuous Discovery Habits');
     }
   });
@@ -59,16 +58,19 @@ describe('Kriterium in der Oberfläche', () => {
     expect(lehrende('brief', alt)).not.toContain('fb-kriterium');
   });
 
+  it('Quelle: jeder Link öffnet einen neuen Tab und hat einen eigenen Text; summary trägt den Auf/zu-Pfeil', () => {
+    const html = lehrende('brief', eintraege('brief', 'problem', 'loesung-im-problem'));
+    const links = [...html.matchAll(/<a href="(\/innolab\/[^"]+)"([^>]*)>([^<]*)</g)];
+    expect(links.map((l) => l[1])).toStrictEqual(['/innolab/methoden/problem-rahmen#fehler-1', '/innolab/methoden/problem-rahmen#loesungsraum']);
+    expect(links.every((l) => l[2] === ' target="_blank" rel="noreferrer"')).toBe(true);
+    expect(new Set(links.map((l) => l[3])).size).toBe(2);
+    expect(html).toMatch(/<summary><svg[^>]*class="[^"]*fb-paar-pfeil/);
+  });
+
   it('Beamer: alles Feedback samt Paar liegt in einem Bereich mit data-werkstatt', () => {
     const html = lehrende('brief', eintraege('brief', 'outcome', 'output-statt-outcome'));
     expect(html.startsWith('<section class="fb" data-werkstatt="')).toBe(true);
     expect(html.indexOf('fb-paar')).toBeGreaterThan(0);
   });
 
-  it('quelleLinks: Methodenseite mit Namen, Tagesseite als „Tag 1“', () => {
-    expect(quelleLinks(kriterium('output-statt-outcome')!)).toStrictEqual([
-      { href: '/innolab/methoden/problem-rahmen#fehler-2', titel: 'Problem-Rahmen & Produkt-Brief' },
-      { href: '/innolab/tag-1#outcome-arten', titel: 'Tag 1' },
-    ]);
-  });
 });

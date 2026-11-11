@@ -3,7 +3,9 @@
 // zweier Schreibender gegen GitHub prüft speicher.test.ts.
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import annahmenBeispiel from '../../beispiele/annahmen.json';
-import { FEEDBACK_PFAD } from '../../feedback';
+import { FEEDBACK_PFAD, feedbackSchreiben } from '../../feedback';
+import { feedbackAendern } from '../feedback';
+import { ApiAusnahme } from '../antwort';
 import { appErstellen } from '../app';
 import { fakeSpeicher } from '../fake-speicher';
 import { lokaleAbhaengigkeiten, lokaleUmgebung } from '../lokal';
@@ -211,6 +213,25 @@ describe('Feedback mit Kriterium', () => {
     expect((await t.schreiben(SOFIE, OUTCOME)).status).toBe(403);
     expect((await t.schreiben(JONAS, OUTCOME)).status).toBe(403);
     expect(await t.datei()).toBeNull();
+  });
+
+  it('nie eine unlesbare Datei schreiben: eine Änderung, die nicht zu feedback@1 passt, wird verworfen (500), die Datei bleibt', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = await aufbau();
+    await t.schreiben(MARKUS, OUTCOME);
+    const vorher = await t.datei();
+    const commits = t.fake.commits('2026-sofie').length;
+    // Wie ein Katalog-Eintrag mit falscher ID-Form: feedbackSchreiben ließe ihn durch, feedback@1 läse ihn nicht.
+    const kaputt = (f: Parameters<typeof feedbackSchreiben>[0]) => {
+      const neu = feedbackSchreiben(f, { artefakt: 'brief', text: 'x', autor: 'markus', datum: new Date(JETZT).toISOString() });
+      return { ...neu, eintraege: neu.eintraege.map((e) => (e.id === 'FB2' ? { ...e, kriterium: 'Output statt Outcome' } : e)) };
+    };
+    const fehler = await feedbackAendern(t.fake, '2026-sofie', kaputt, { name: 'markus', email: 'm@example.invalid' }, 'x').catch((e: unknown) => e);
+    expect(fehler).toBeInstanceOf(ApiAusnahme);
+    expect((fehler as ApiAusnahme).status).toBe(500);
+    expect(await t.datei()).toStrictEqual(vorher);
+    expect(t.fake.commits('2026-sofie')).toHaveLength(commits);
+    expect(log).toHaveBeenCalledWith('werkstatt: feedback: Änderung ergäbe eine Datei, die nicht zu feedback@1 passt');
   });
 
   it('Studierende setzen kein Kriterium: nicht an der Antwort, nicht am Feedback der Lehrenden', async () => {
