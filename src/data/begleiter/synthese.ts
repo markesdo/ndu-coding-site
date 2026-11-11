@@ -210,6 +210,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Zeit: nach 5 min vom Zeigen ins Besprechen wechseln.',
       'Nach 36 min: weiter zur Folie Festhalten, Timer 8 min dort.',
       'Fallback: Werkstatt leer? Bis 14:50 die besten 2–3 eintragen.',
+      'Werkstatt: erst Zitate, dann Chancen mit Belegen.',
     ],
     uebung: { dauer: '44 min (3 × 12 + 8)', form: 'zu dritt reihum, dann allein' },
     chat: CHAT_SYNTHESE,

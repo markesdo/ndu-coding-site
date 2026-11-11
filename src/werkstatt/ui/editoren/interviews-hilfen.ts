@@ -32,3 +32,10 @@ export function neuesZitat(interviewId: string, vorhandene: readonly { id: strin
 }
 
 export const neueChance = (): Chance => ({ text: '', belege: [] });
+
+/** Tipp unter „Belege“: Ohne Zitat mit Text gibt es keine ID zum Wählen – dann zuerst nach oben zu den Zitaten. */
+export function belegHilfe(zitate: readonly { text: string }[]): string {
+  return zitate.some((z) => z.text.trim() !== '')
+    ? 'Die Zitat-IDs, die diese Chance stützen – ohne ID kein Beleg.'
+    : 'Noch keine Zitate: Trag zuerst oben unter „Zitate“ ein, was die Person wörtlich gesagt hat. Dann kannst du hier ihre IDs wählen.';
+}

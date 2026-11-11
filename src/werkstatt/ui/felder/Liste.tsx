@@ -14,9 +14,11 @@ interface Props<T> {
   /** Felder einer Zeile. `setze` ersetzt den Eintrag. */
   zeile: (eintrag: T, setze: (neu: T) => void, index: number) => ReactNode;
   fehler?: string;
+  /** Hinweis unter der Überschrift, auch wenn die Liste noch leer ist. */
+  hilfe?: string;
 }
 
-export default function Liste<T>({ label, einzahl, eintraege, onChange, neu, zeile, fehler }: Props<T>) {
+export default function Liste<T>({ label, einzahl, eintraege, onChange, neu, zeile, fehler, hilfe }: Props<T>) {
   const id = useId();
   // Eigene, vom Inhalt unabhängige Schlüssel (nicht die editierbare ID): Beim Tippen in ein ID-Feld bleibt die Zeile dieselbe.
   const zaehler = useRef({ n: 0 });
@@ -35,8 +37,9 @@ export default function Liste<T>({ label, einzahl, eintraege, onChange, neu, zei
     onChange(kopie);
   };
   return (
-    <fieldset className="wk-liste" aria-describedby={fehler ? `${id}-fehler` : undefined}>
+    <fieldset className="wk-liste" aria-describedby={[hilfe ? `${id}-hilfe` : null, fehler ? `${id}-fehler` : null].filter(Boolean).join(' ') || undefined}>
       <legend>{label}</legend>
+      {hilfe && <p className="wk-hilfe" id={`${id}-hilfe`}>{hilfe}</p>}
       {eintraege.length === 0 && <p className="wk-hilfe">Noch kein Eintrag.</p>}
       <ol>
         {eintraege.map((e, i) => (
