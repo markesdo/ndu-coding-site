@@ -196,6 +196,7 @@
 .fb-paar[open] .fb-paar-pfeil { transform: rotate(90deg); }
 @media (prefers-reduced-motion: reduce) { .fb-paar-pfeil { transition: none; } }
 .fb-quelle { list-style: none; margin: 0 0 .2rem; padding: 0; }
+.fb-kursregel { display: block; margin-top: .2rem; }
 .fb-quelle svg { margin-left: .2em; vertical-align: -.1em; }
 .fb-paar dl { display: grid; grid-template-columns: max-content 1fr; gap: .3rem .75rem; margin: .2rem 0 .4rem; font-size: .92rem; }
 .fb-paar dt { font-weight: 600; }
