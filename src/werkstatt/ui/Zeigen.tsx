@@ -6,7 +6,7 @@
 import { ChevronLeft, ChevronRight, CloudOff, PanelRight, RefreshCw, X } from 'lucide-react';
 import type { Ref } from 'react';
 import type { Interview } from '../schemas/index.js';
-import type { Kontext, KontextName } from './kontext-hilfen.js';
+import { kontextNeuIds, meldungMitKontext, type Kontext, type KontextName } from './kontext-hilfen.js';
 import KontextPanel from './KontextPanel.js';
 import { standText } from './lehrenden-hilfen.js';
 import SnapshotAnsicht from './SnapshotAnsicht.js';
@@ -44,6 +44,8 @@ export default function Zeigen(p: ZeigenProps) {
   const ivs = p.interviews ?? [];
   const m = ivs.length;
   const iv = m > 0 ? ivs[Math.min(p.nr, m - 1)] : null;
+  // Nach „Neu laden“ nennt die Meldung auch, was im offenen Kontext neu ist (zu: wird er nicht mitgeladen).
+  const meldung = p.kontextOffen ? meldungMitKontext(p.meldung, kontextNeuIds(p.kontext)) : p.meldung;
   return (
     <div className="zg" tabIndex={-1} ref={p.wurzel}>
       <header className="zg-kopf">
@@ -73,7 +75,7 @@ export default function Zeigen(p: ZeigenProps) {
         </div>
         <div className="zg-laden">
           <span className="zg-stand" role="status">
-            {p.laedt ? 'lädt …' : [p.meldung, p.stand !== null ? standText(p.stand, p.jetzt) : ''].filter(Boolean).join(' · ')}
+            {p.laedt ? 'lädt …' : [meldung, p.stand !== null ? standText(p.stand, p.jetzt) : ''].filter(Boolean).join(' · ')}
           </span>
           {/* aria-disabled statt disabled: ein gesperrter Knopf verlöre den Fokus, dann kämen ←/→ nicht mehr im Dialog an. */}
           <button type="button" className="wk-knopf" aria-disabled={p.laedt} onClick={() => !p.laedt && p.neuLaden()}>

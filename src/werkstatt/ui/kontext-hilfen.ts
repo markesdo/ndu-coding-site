@@ -42,12 +42,17 @@ export function kontextDaten<N extends KontextName>(name: N, antwort: { daten: u
 const [ol, or, ul, ur] = ANNAHMEN_ACHSEN.felder;
 export const QUADRANT_TEXT: Record<Quadrant, string> = { ol, or, ul, ur };
 
-/** Stützt sich die Annahme auf dieses Interview? Eine Beleg-ID ist ein Zitat des Snapshots (I2-4) oder das Interview
- *  selbst (I2). */
-export function belegtImInterview(a: Pick<Annahme, 'belegIds'>, iv: Pick<Interview, 'id' | 'zitate'> | null): boolean {
-  if (!iv) return false;
-  const ids = new Set([iv.id, ...iv.zitate.map((z) => z.id)].map((x) => x.trim()));
-  return a.belegIds.some((b) => ids.has(b.trim()));
+/** IDs, die auf dieses Interview zeigen: das Interview selbst (I2) und seine Zitate (I2-4); ohne Interview keine. */
+export function interviewIds(iv: Pick<Interview, 'id' | 'zitate'> | null): ReadonlySet<string> {
+  return new Set(iv ? [iv.id, ...iv.zitate.map((z) => z.id)].map((x) => x.trim()) : []);
+}
+
+/** Ist diese Beleg-ID eine aus dem Interview (interviewIds)? Eine Quelle für Zeile und Chip. */
+export const idAusInterview = (id: string, hier: ReadonlySet<string>): boolean => hier.has(id.trim());
+
+/** Stützt sich die Annahme auf das Interview? hier = interviewIds(iv) – exakt, kein Präfixvergleich. */
+export function belegtImInterview(a: Pick<Annahme, 'belegIds'>, hier: ReadonlySet<string>): boolean {
+  return a.belegIds.some((b) => idAusInterview(b, hier));
 }
 
 /** IDs der Zeilen, die seit dem letzten Laden dazugekommen oder geändert sind. vorher null = erstes Laden: keine. */
@@ -72,6 +77,27 @@ export function neuerLeitfaden(teil: KontextTeil<Leitfaden>['stand']): { fragen:
   const alt = teil.vorher.daten;
   const fragen: readonly Frage[] | null = alt ? alt.fragen : [];
   return { fragen: neueZeilen(fragen, teil.daten.fragen), ziel: !!teil.daten.ziel.trim() && (alt?.ziel.trim() ?? '') !== teil.daten.ziel.trim() };
+}
+
+/** Laden, sparsam (GitHub-Kontingent): nur bei offenem Kontext und nur, wenn für diesen Stand (neu: Zähler von
+ *  „Neu laden“) noch nicht geladen wurde. geladenMit null = für diese Person noch nie. */
+export function mussKontextLaden(offen: boolean, geladenMit: string | null, neu: string): boolean {
+  return offen && geladenMit !== neu;
+}
+
+/** IDs, die im Kontext seit dem letzten Laden neu oder geändert sind (A…, dann F…; „Ziel“, wenn es sich geändert hat). */
+export function kontextNeuIds(k: Kontext): string[] {
+  const lf = neuerLeitfaden(k.leitfaden.stand);
+  return [...neueAnnahmen(k.annahmen.stand), ...(lf.ziel ? ['Ziel'] : []), ...lf.fragen];
+}
+
+/** Meldung nach „Neu laden“ um Änderungen im Kontext ergänzt, im selben Format wie neuMeldung. */
+export function meldungMitKontext(meldung: string, ids: readonly string[]): string {
+  if (ids.length === 0) return meldung;
+  const PRAEFIX = 'Neu oder geändert: ';
+  if (meldung.startsWith(PRAEFIX)) return `${meldung}, ${ids.join(', ')}`;
+  if (meldung === 'Nichts Neues gespeichert') return PRAEFIX + ids.join(', ');
+  return [meldung, PRAEFIX + ids.join(', ')].filter(Boolean).join(' · ');
 }
 
 /** Taste K schaltet den Kontext um – nicht beim Tippen in Feldern und nicht mit Strg/Cmd/Alt (Kurzbefehle des Browsers). */

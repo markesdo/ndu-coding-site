@@ -277,10 +277,26 @@ export default function LehrendenAnsicht() {
   const zeigenSicht = zeigenAktiv && zeigenStand && zeigenStand.schluessel === offenerSchluessel ? zeigenStand : null;
   const zeigenIvs = zeigenSicht?.interviews ?? [];
   const zeigenNr = stelleNachId(zeigenIvs, zeigenId);
-  // Annahmen-Map und Leitfaden der gezeigten Person: einmal beim Start oder Personenwechsel, wieder bei „Neu laden“.
-  // Aus der Antwort nimmt useKontext nur die geprüften Daten, nie das Feedback.
+  // Annahmen-Map und Leitfaden der gezeigten Person: erst, wenn der Kontext offen ist; wieder bei „Neu laden“ oder neu
+  // geladener Matrix (bei zugeklapptem Kontext erst beim nächsten Öffnen). Aus der Antwort nimmt useKontext nur die
+  // geprüften Daten, nie das Feedback. Abgemeldet (401/403): wie beim Inhalt des Lesers.
   const kontextPerson = zeigenAktiv && ansicht && leser ? `${ansicht.kohorte}/${leser.person}` : null;
-  const kontext = useKontext(kontextPerson, inhaltNeu, (name) => api.lehrendeInhalt(ansicht!.kohorte, leser!.person, name));
+  const kontext = useKontext(
+    kontextPerson, kontextOffen, `${inhaltNeu}:${geladen}`,
+    (name) => api.lehrendeInhalt(ansicht!.kohorte, leser!.person, name),
+    (e) => {
+      if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+        entziehen();
+        setFehler(e.message || TEXT.ladenFehlt);
+      }
+    },
+  );
+  // Beim Zuklappen den Fokus zurück in den Zeigen-Bereich: Lag er im Panel, fiele er sonst auf body, und ←/→, Esc und
+  // K kämen nicht mehr im Dialog an.
+  function kontextUmschalten() {
+    if (kontextOffen) zeigenWurzel.current?.focus();
+    setKontextOffen(!kontextOffen);
+  }
 
   // Geladene Interviews übernehmen; derselbe Schlüssel wie zuvor = neu geladen, dann bleibt der alte Stand zum Vergleich.
   useEffect(() => {
@@ -325,7 +341,7 @@ export default function LehrendenAnsicht() {
     if (!ansicht || !leser) return;
     if (zeigenAktiv && istKontextTaste(e)) {
       e.preventDefault();
-      setKontextOffen((o) => !o);
+      kontextUmschalten();
       return;
     }
     const ziel = tastenZiel(e.key, { zeigen: zeigenAktiv, personen: ansicht.personen, person: leser.person, nr: zeigenNr, anzahl: zeigenIvs.length });
@@ -521,7 +537,7 @@ export default function LehrendenAnsicht() {
             stand: zeigenSicht?.zeit ?? null, jetzt,
             meldung: neuMeldung(zeigenSicht?.vorher ?? null, zeigenSicht?.interviews ?? []),
             wurzel: zeigenWurzel,
-            kontext, kontextOffen, kontextReiter, kontextUmschalten: () => setKontextOffen((o) => !o), reiterWaehlen: setKontextReiter,
+            kontext, kontextOffen, kontextReiter, kontextUmschalten, reiterWaehlen: setKontextReiter,
             personWaehlen: (k) => { setZeigenId(null); setLeser({ person: k, artefakt: 'interviews' }); },
             nrWaehlen: (i) => zeigenIvs[i] && setZeigenId(zeigenIvs[i].id),
             blaettern: (r) => zeigenIvs.length > 0 && setZeigenId(zeigenIvs[blaettern(zeigenNr, zeigenIvs.length, r)].id),

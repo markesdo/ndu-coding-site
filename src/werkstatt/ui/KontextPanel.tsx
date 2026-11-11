@@ -7,7 +7,7 @@ import { CloudOff } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { ART_TEXT } from '../render/annahmen.js';
 import { BELEGSTUFE_TEXT, quadrant, type Annahmen, type Interview, type Leitfaden } from '../schemas/index.js';
-import { belegtImInterview, neueAnnahmen, neuerLeitfaden, QUADRANT_TEXT, type Kontext, type KontextName, type KontextTeil } from './kontext-hilfen.js';
+import { belegtImInterview, idAusInterview, interviewIds, neueAnnahmen, neuerLeitfaden, QUADRANT_TEXT, type Kontext, type KontextName, type KontextTeil } from './kontext-hilfen.js';
 import { NeuMarke } from './SnapshotAnsicht.js';
 
 export interface KontextPanelProps {
@@ -46,9 +46,11 @@ function Teil<T extends Annahmen | Leitfaden>({ teil, leer, children }: {
   teil: KontextTeil<T>; leer: string; children: (d: T, s: NonNullable<KontextTeil<T>['stand']>) => ReactNode;
 }) {
   const s = teil.stand;
+  // Noch nichts geladen: „lädt …“ (auch im ersten Bild nach Start oder Personenwechsel, bevor das Laden beginnt) –
+  // „Noch keine …“ erst, wenn feststeht, dass nichts da ist; sonst blitzt es beim Wechsel auf dem geteilten Bildschirm.
   if (!s) {
     if (teil.fehler) return <p className="zg-kontext-hinweis"><CloudOff size={16} aria-hidden="true" /> Lässt sich gerade nicht laden.</p>;
-    return <p className="zg-kontext-hinweis">{teil.laedt ? 'lädt …' : leer}</p>;
+    return <p className="zg-kontext-hinweis">lädt …</p>;
   }
   const istLeer = !s.daten || ('annahmen' in s.daten ? s.daten.annahmen.length === 0 : !s.daten.ziel.trim() && s.daten.fragen.length === 0);
   return (
@@ -60,11 +62,11 @@ function Teil<T extends Annahmen | Leitfaden>({ teil, leer, children }: {
 }
 
 function AnnahmenListe({ d, neu, iv }: { d: Annahmen; neu: ReadonlySet<string>; iv: Interview | null }) {
-  const hier = new Set(iv ? [iv.id, ...iv.zitate.map((z) => z.id)] : []);
+  const hier = interviewIds(iv);
   return (
     <ul className="zg-annahmen">
       {d.annahmen.map((a) => {
-        const belegt = belegtImInterview(a, iv);
+        const belegt = belegtImInterview(a, hier);
         const klassen = ['zg-annahme', belegt && 'zg-belegt', neu.has(a.id) && 'snap-neu'].filter(Boolean).join(' ');
         return (
           <li key={a.id} className={klassen}>
@@ -80,8 +82,8 @@ function AnnahmenListe({ d, neu, iv }: { d: Annahmen; neu: ReadonlySet<string>; 
             </p>
             {(a.belegIds.some((b) => b.trim()) || a.belegNotiz?.trim()) && (
               <p className="zg-annahme-belege">
-                {a.belegIds.filter((b) => b.trim()).map((b) => (
-                  <span key={b} className={hier.has(b.trim()) ? 'zg-id zg-id-hier' : 'zg-id'}>{b}</span>
+                {a.belegIds.filter((b) => b.trim()).map((b, i) => (
+                  <span key={i} className={idAusInterview(b, hier) ? 'zg-id zg-id-hier' : 'zg-id'}>{b}</span>
                 ))}
                 {a.belegNotiz?.trim() && <span className="zg-notiz">{a.belegNotiz}</span>}
               </p>
