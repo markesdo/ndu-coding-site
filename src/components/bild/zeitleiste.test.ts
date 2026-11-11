@@ -5,7 +5,7 @@ const zeile = (t: string, ersetzt?: number) => ({ datum: '22.10.', t, grund: 'g'
 
 describe('ersetzungen (Zeitleiste)', () => {
   it('ordnet jeder ersetzten Zeile die ersetzende zu', () => {
-    expect(ersetzungen([zeile('Wien'), zeile('Mittag'), zeile('Wien und Linz', 0), zeile('Vorbestellen')])).toStrictEqual({ 0: 2 });
+    expect(ersetzungen([zeile('Wien'), zeile('Mittag'), zeile('Morgenzug, egal wohin', 0), zeile('Vorbestellen')])).toStrictEqual({ 0: 2 });
   });
 
   it('ohne Ersetzungen bleibt die Zuordnung leer', () => {
