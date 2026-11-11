@@ -1,6 +1,6 @@
 ---
-// Präsentator-Begleiter: auf dem Tablet neben dem Beamer. Zeigt zu einer Folie von Tag 1 oben, was Markus sagt (live),
-// darunter die Vorbereitung. Folgt der Position, die der Beamer-Tab an /api/position meldet (wo-ist.ts); von Hand
+// Präsentator-Begleiter: auf dem Tablet neben dem Beamer. Zeigt zu einer Folie von Tag 1 – und zu jeder Folie einer
+// späteren Seite, zu der es Notizen gibt (experiment, pitch, tag-5 …) – oben, was Markus sagt (live), darunter die Vorbereitung. Folgt der Position, die der Beamer-Tab an /api/position meldet (wo-ist.ts); von Hand
 // blättern pausiert das Folgen. Folienliste aus den Seitenquellen (lib/begleiter.ts), Notizen aus data/begleiter/.
 // Oben im Live-Block steht, was die Studierenden schon aus anderen LVs kennen (data/begleiter/vorwissen.ts, nur hier).
 // Eigenes schlankes Gerüst statt Layout.astro: ohne Seitenleiste, Beamer-Modus und „Markus ist bei …“-Knopf.
@@ -14,26 +14,38 @@ import Vorwissen from '../../components/BegleiterVorwissen.astro';
 import { METHODEN } from '../../components/methoden';
 import { NOTIZEN } from '../../data/begleiter';
 import { TAG_1 } from '../../data/begleiter/tag';
-import { ablaufBloecke, kartenPfade, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, uebungMinuten } from '../../lib/begleiter';
+import { TAG_1_SEITEN, ablaufBloecke, begleiterFolien, folienGruppe, kartenPfade, folienPlan, hhmm, kurstagAus, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, uebungMinuten } from '../../lib/begleiter';
 import { teamFrameLink } from '../../lib/team-board';
 import { MAPPE_PFAD, MAPPE_STUDIERENDE } from '../../lib/nav-rolle';
 
 // Glob vom Projektwurzel aus (wie in lib/begleiter.test.ts), damit die Schlüssel nicht vom Ordner dieser Datei abhängen.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
-const folien = tagFolien(quellen);
+const tag1 = tagFolien(quellen);
 // Ohne Folien wäre die Seite leer und das Folgen sinnlos – lieber den Build abbrechen.
-if (folien.length === 0) throw new Error('Begleiter: keine Folien von Tag 1 gefunden (Glob oder Seitenpfade geändert?)');
+if (tag1.length === 0) throw new Error('Begleiter: keine Folien von Tag 1 gefunden (Glob oder Seitenpfade geändert?)');
+// Tag 1 vorn (Indizes wie bisher), dahinter die Folien der späteren Seiten mit Notizen: Der Beamer wird dort Folie für
+// Folie verfolgt, Blättern und Liste reichen über alle. Zeitplan und Tageskarte gelten nur für Tag 1.
+const folien = begleiterFolien(quellen, NOTIZEN);
 // Soll-Zeit je Folie aus dem Ablauf von Tag 1 (Übungen mit ihrer Dauer); Kurstag, damit „vorn/hinten“ nur an dem Tag erscheint.
 // Ohne Ablauf (Quelle fehlt oder keine Blöcke) bricht ablaufBloecke den Build ab.
 const ablauf = quellen['/innolab/tag-1'];
 const bloecke = ablaufBloecke(ablauf);
 const minutenJe = folien.map((f) => uebungMinuten(NOTIZEN[f.pfad]?.[f.id]?.uebung?.dauer));
-const plan = folienPlan(folien, bloecke, (i) => minutenJe[i]);
+const plan = [...folienPlan(tag1, bloecke, (i) => minutenJe[i]), ...folien.slice(tag1.length).map(() => null)];
 const kurstag = kurstagAus(ablauf ?? '');
 const seitenName = (pfad: string) => seitenLabel(pfad, quellen[pfad] ?? '');
-const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => ({
-  pfad, name: seitenName(pfad), folien: folien.map((f, i) => ({ ...f, i })).filter((f) => f.pfad === pfad),
-}));
+// Liste: je Seite eine Gruppe; spätere Seiten mit ihrem Kurstag, damit sie sich von Tag 1 abheben.
+const tagVon = (pfad: string) => METHODEN.find((x) => `/innolab/methoden/${x.slug}` === pfad)?.tag ?? null;
+const gruppen = [...new Set(folien.map((f) => f.pfad))].map((pfad) => {
+  const tag = TAG_1_SEITEN.includes(pfad) ? null : tagVon(pfad);
+  return { pfad, name: tag === null ? seitenName(pfad) : `${seitenName(pfad)} (Tag ${tag})`, folien: folien.map((f, i) => ({ ...f, i })).filter((f) => f.pfad === pfad) };
+});
+// Nummer „n/m“ und „Als Nächstes“ innerhalb von Tag 1 bzw. innerhalb der späteren Seite.
+const nummer = folien.map((f, i) => {
+  const g = folienGruppe(f.pfad);
+  const alle = folien.flatMap((x, j) => (folienGruppe(x.pfad) === g ? [j] : []));
+  return { nr: alle.indexOf(i) + 1, von: alle.length };
+});
 // Streich-Eintrag der Tageskarte → Index der Folie in seinem Block, damit „(toast)“ dorthin blättert.
 const folieImBlock = (block: string, id: string) => folien.findIndex((f, i) => plan[i]?.block === block && (f.id === id || f.unterIds.includes(id)));
 // Jede Innolab-Seite außerhalb von Tag 1 bekommt eine eigene Karte, die erscheint, wenn der Beamer dort steht
@@ -63,7 +75,7 @@ const karten = kartenPfade(quellen).map((pfad) => {
       <select data-liste aria-label="Folie wählen">
         {gruppen.map((g) => (
           <optgroup label={g.name}>
-            {g.folien.map((f) => <option value={f.i}>{f.i + 1}. {f.titel}</option>)}
+            {g.folien.map((f) => <option value={f.i}>{nummer[f.i].nr}. {f.titel}</option>)}
           </optgroup>
         ))}
       </select>
@@ -114,12 +126,12 @@ const karten = kartenPfade(quellen).map((pfad) => {
     <main>
       {folien.map((f, i) => {
         const n = NOTIZEN[f.pfad]?.[f.id];
-        const naechste = folien[i + 1];
+        const naechste = folien[i + 1] && folienGruppe(folien[i + 1].pfad) === folienGruppe(f.pfad) ? folien[i + 1] : undefined;
         const frameLink = n?.miro?.frame ? teamFrameLink(n.miro.frame) : null;
         return (
           <article data-index={i} hidden={i !== 0} data-plan-folie={plan[i] ? JSON.stringify(plan[i]) : undefined}>
             <header class="kopf">
-              <p class="seite"><span class="nr">{i + 1}/{folien.length}</span> <span data-plan-text>{seitenName(f.pfad)}</span> <a class="oeffnen" href={`${f.pfad}#${f.id}`} target="_blank" rel="noopener" aria-label="Folie öffnen (neuer Tab)" title="Folie öffnen"><ExternalLink size={16} aria-hidden="true" /></a></p>
+              <p class="seite"><span class="nr">{nummer[i].nr}/{nummer[i].von}</span> <span data-plan-text>{seitenName(f.pfad)}</span> <a class="oeffnen" href={`${f.pfad}#${f.id}`} target="_blank" rel="noopener" aria-label="Folie öffnen (neuer Tab)" title="Folie öffnen"><ExternalLink size={16} aria-hidden="true" /></a></p>
               <h1>{f.titel}</h1>
               {f.satz && <p class="satz">{f.satz}</p>}
             </header>
@@ -268,7 +280,7 @@ const karten = kartenPfade(quellen).map((pfad) => {
 
       // Kurz im Knopf (passt in eine Zeile), ausführlich für Screenreader und im Tooltip.
       const KURZ: Record<string, string> = {
-        frage: 'Frage den Beamer …', ok: 'Folgt dem Beamer', 'nicht-tag-1': 'Beamer nicht auf Tag 1',
+        frage: 'Frage den Beamer …', ok: 'Folgt dem Beamer', 'nicht-tag-1': 'Seite ohne Notizen',
         'keine-position': 'Beamer meldet nichts', 'keine-verbindung': 'Keine Verbindung', hand: 'Zum Beamer',
       };
 
@@ -288,7 +300,7 @@ const karten = kartenPfade(quellen).map((pfad) => {
           : {
                 frage: 'Frage den Beamer …',
                 ok: 'Folgt dem Beamer',
-                'nicht-tag-1': `Beamer ist nicht auf Tag 1${beamerTitel ? `: ${beamerTitel}` : ''}`,
+                'nicht-tag-1': `Beamer zeigt eine Seite ohne Folien-Notizen${beamerTitel ? `: ${beamerTitel}` : ''}`,
                 'keine-position': 'Beamer meldet nichts',
                 'keine-verbindung': 'Keine Verbindung zum Beamer, die letzte Folie bleibt stehen',
               }[z.meldung];

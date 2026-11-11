@@ -1,5 +1,6 @@
 // Präsentator-Begleiter (/innolab/begleiter): welche Folie gezeigt wird und was die Statuszeile sagt. Ohne DOM, damit
-// testbar. Folgen an: jede Beamer-Meldung zählt (Index nur bei einer Tag-1-Folie, sonst bleibt die letzte stehen).
+// testbar. Folgen an: jede Beamer-Meldung zählt (Index bei einer Folie von Tag 1 oder einer späteren Seite mit Notizen,
+// lib/begleiter begleiterFolien; sonst bleibt die letzte stehen, und fremdeSeite zeigt die Karte der Seite).
 // Folgen aus (von Hand geblättert): Beamer-Meldungen ändern nichts, bis „Dem Beamer folgen“ gedrückt wird.
 
 /** frage = noch keine Antwort seit dem Laden bzw. seit „Dem Beamer folgen“. */

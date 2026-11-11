@@ -87,9 +87,28 @@ export function tagFolien(quellen: Record<string, string>): Folie[] {
   return TAG_1_SEITEN.flatMap((pfad) => folienAus(pfad, quellen[pfad] ?? ''));
 }
 
+/** Seiten außerhalb von Tag 1, zu denen es Notizen gibt (data/begleiter/index.ts), in der Reihenfolge der Notizen. */
+export function notizSeiten(notizen: Record<string, Record<string, Notiz>>): string[] {
+  return Object.keys(notizen).filter((p) => !TAG_1_SEITEN.includes(p));
+}
+
 /**
- * Index der Folie zur Beamer-Position: h2-id oder Unter-Anker. Leerer oder unbekannter Anker auf einer Seite des Tages →
- * erste Folie dieser Seite; Seite nicht im Tag → null.
+ * Folien des Begleiters: zuerst Tag 1 wie bisher (gleiche Indizes, gleiche Reihenfolge), dahinter alle Folien jeder
+ * Seite außerhalb von Tag 1, zu der es Notizen gibt – auch Folien dieser Seiten ohne eigene Notiz, damit der Begleiter
+ * dort Folie für Folie folgt. Seiten ohne Notizen fehlen; für sie zeigt der Begleiter ihre Karte (kartenPfade).
+ */
+export function begleiterFolien(quellen: Record<string, string>, notizen: Record<string, Record<string, Notiz>>): Folie[] {
+  return [...tagFolien(quellen), ...notizSeiten(notizen).flatMap((pfad) => folienAus(pfad, quellen[pfad] ?? ''))];
+}
+
+/** Gruppe einer Folie für Nummer und „Als Nächstes“: Tag 1 als Ganzes, sonst die Seite. */
+export function folienGruppe(pfad: string): string {
+  return TAG_1_SEITEN.includes(pfad) ? 'tag-1' : pfad;
+}
+
+/**
+ * Index der Folie zur Beamer-Position: h2-id oder Unter-Anker. Leerer oder unbekannter Anker auf einer Seite der Liste →
+ * erste Folie dieser Seite; Seite nicht in der Liste → null.
  */
 export function folieZu(folien: Folie[], pfad: string, anker: string): number | null {
   const ersteDerSeite = folien.findIndex((f) => f.pfad === pfad);

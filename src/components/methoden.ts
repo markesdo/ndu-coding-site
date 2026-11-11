@@ -317,14 +317,14 @@ export const METHODEN: Methode[] = [
       { id: 'experiment-annahmen-arten', text: 'Die Annahmen kommen aus den Schritten der gewählten Idee und decken alle fünf Arten ab; jede ist so formuliert, dass ihr sie braucht, und konkret genug, um sie zu beobachten.' },
       { id: 'experiment-eine-annahme', text: 'Die Karte testet genau eine Annahme – die oberste rechts in der Annahmen-Map – und nennt ihre ID und Art.' },
       { id: 'experiment-wer-wo-was', text: 'Die Karte sagt genau, wer, wo und was; gemessen wird eine Handlung, keine Meinung.' },
-      { id: 'experiment-schwelle', text: 'Die Schwelle steht als „x von y“ fest, bevor der Test läuft.' },
+      { id: 'experiment-schwelle', text: 'Die Schwelle steht als „x von y“ fest, bevor der Test läuft – und mit ihr, was ihr bei welchem Ergebnis tut: Schwelle erreicht, knapp darunter, deutlich darunter.' },
       { id: 'experiment-schnellster', text: 'Es ist der schnellste Test dieser Woche, der den stärksten Beleg liefert, den ihr euch leisten könnt.' },
       { id: 'experiment-danach', text: 'Es steht da, was die Testpersonen danach erfahren; die riskanteste Annahme der anderen beiden Ideen steht je als Zeile darunter.' },
       { id: 'experiment-origin', text: 'An Tag 4: Die Origin Story führt zu genau einer Handlung, und diese Handlung ist die Messgröße der Karte.' },
       { id: 'experiment-lernkarte', text: 'Nach dem Test: Die Lernkarte nennt die Verlässlichkeit mit Grund und den Befund (gestützt, widerlegt, unklar oder neue Einsicht), bevor sie sagt, was ihr deshalb tut.' },
     ],
     ki: 'Pre-Mortem: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
-    quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Origin Story nach Donna Lichaw, Kap. 4',
+    quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
     slug: 'story-map', name: 'Story Map', tag: 4, dauer: 105,
@@ -463,7 +463,7 @@ export const METHODEN: Methode[] = [
       { id: 'pitch-geschaeftsmodell', text: 'Es steht da, wer zahlt und wofür, an welcher Annahme das Modell hängt – benannt, nicht gerechnet –, und was ihr als Nächstes prüft und warum.' },
     ],
     ki: 'Spielt eine skeptische Investorin; prüft jede Behauptung gegen Lernkarten und Entscheidungslog und verlangt keine Preis- oder Kostenrechnung.',
-    quelle: 'Donna Lichaw, The User’s Journey (2016), Kap. 2, 7; W. Chan Kim & Renée Mauborgne, Blue Ocean Strategy (2005), S. 25–43, 82–93; Marty Cagan, Inspired (2018), S. 151–153, 189–190, 281–282; David J. Bland & Alexander Osterwalder, Testing Business Ideas (2019), S. 52, 56–57, 81',
+    quelle: 'Donna Lichaw, The User’s Journey (2016), Kap. 2, 7; W. Chan Kim & Renée Mauborgne, Blue Ocean Strategy (2005), S. 25–43, 82–93; Marty Cagan, Inspired (2018), S. 151–153, 189–190, 281–282; David J. Bland & Alexander Osterwalder, Testing Business Ideas (2019), S. 52, 56–57, 81; Stefan H. Thomke, The Scientific Mindset (2027), S. 111, 170',
   },
 ];
 

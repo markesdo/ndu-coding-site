@@ -17,9 +17,10 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 const BOS = 'W. Chan Kim & Renée Mauborgne, „Blue Ocean Strategy“ (2005)';
 const CAGAN = 'Marty Cagan, „Inspired“ (2. Aufl. 2018)';
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
+const THOMKE = 'Stefan H. Thomke, „The Scientific Mindset“ (2027)';
 // Dieselbe Vorarbeit, die auch die Prüfung liest (methoden.ts, braucht der Methode „pitch“).
 const HINTERGRUND = vorarbeitLesen(METHODEN.find((m) => m.slug === 'pitch')!, ['docs/PITCH.md']).join(' und ');
-const INVESTORIN = `Lies docs/PITCH.md und zum Hintergrund ${HINTERGRUND}. Du bist eine skeptische Investorin, die schon viele Pitches gehört hat. Stell mir fünf Fragen, eine nach der anderen, und warte jeweils auf meine Antwort. Frag dort nach, wo eine Behauptung keinen Beleg hat, wo eine Zahl klein ist, wo ich sicherer klinge, als meine Lernkarten es sind, oder wo das Geschäftsmodell an einer Annahme hängt, die ich nicht benenne. Verlang keine Preis- oder Kostenrechnung – frag, ob die Annahme benannt ist und wie ich sie prüfen würde. Bewerte meine Antworten erst am Ende, in drei Sätzen. Ändere keine Datei.`;
+const INVESTORIN = `Lies docs/PITCH.md und zum Hintergrund ${HINTERGRUND}. Du bist eine skeptische Investorin, die schon viele Pitches gehört hat. Stell mir fünf Fragen, eine nach der anderen, und warte jeweils auf meine Antwort. Frag dort nach, wo eine Behauptung keinen Beleg hat, wo eine Zahl klein ist, wo ich sicherer klinge, als meine Lernkarten es sind, oder wo das Geschäftsmodell an einer Annahme hängt, die ich nicht benenne. Frag bei mindestens einer Zahl: Wäre das auch ohne mein Produkt passiert? Verlang keine Preis- oder Kostenrechnung – frag, ob die Annahme benannt ist und wie ich sie prüfen würde. Bewerte meine Antworten erst am Ende, in drei Sätzen. Ändere keine Datei.`;
 
 // Wertkurve der Kaffeebar. Jeder Faktor ist ein Angebot; die Stufe sagt, wie viel davon geboten wird (Kim & Mauborgne,
 // S. 27): 0 keins · 1 niedrig · 2 mittel · 3 hoch; null = nicht erhoben (nicht erfinden). Herleitung in der Tabelle im Handout.
@@ -68,7 +69,7 @@ const ARIA = 'Wertkurve der Kaffeebar mit sieben Angeboten. ' + KURVEN.map((k) =
       <ol>
         <li data-schritt><strong>Geschichte, 2 min:</strong> Exposition bis Krise, aus der Concept Story.</li>
         <li data-schritt><strong>Demo, 4 min:</strong> der Höhepunkt, aus der Usage Story.</li>
-        <li data-schritt><strong>Belege, 4 min:</strong> der Wert, bewiesen – die fallende Handlung.</li>
+        <li data-schritt><strong>Belege, 4 min:</strong> der Wert, belegt – die fallende Handlung.</li>
         <li data-schritt><strong>Position, Modell, nächster Schritt, 2 min:</strong> das Ende, mit dem einen Bild.</li>
       </ol>
     </BildText>
@@ -104,12 +105,14 @@ const ARIA = 'Wertkurve der Kaffeebar mit sieben Angeboten. ' + KURVEN.map((k) =
         <li data-schritt><strong>Zahl, Personen, Zeitraum:</strong> „5 von 6, drei Personen, zwei Morgen“ statt „83 %“.</li>
         <li data-schritt><strong>Sicherheit benennen:</strong> fünf Tests im Labor sind ein mittlerer Beleg, kein starker.</li>
         <li data-schritt><strong>Mindestens eine Annahme, die gefallen ist</strong> – sie zeigt, dass ihr getestet habt.</li>
+        <li data-schritt><strong>Die Gegenfrage:</strong> Wäre das auch ohne euer Produkt passiert?</li>
       </ul>
     </BildText>
     <div class="nur-handout">
       <p>„Die Nutzer*innen lieben es“ ist keine Aussage. „4 von 5 haben den Höhepunkt ohne Hilfe erreicht (U1)“ ist eine. Jede Behauptung über Menschen bekommt eine ID – ein Zitat, einen Testbefund, eine Zahl aus der Messung. Kleine Zahlen sind kein Makel, wenn ihr sie als das nennt, was sie sind: „5 von 6 Abholungen vor der Abfahrt, drei Personen an zwei Morgen“ ist ehrlich, „83 % Erfolgsquote“ verschweigt, dass es sechs Fälle waren.</p>
       <p>Wie sicher ein Beleg ist, misst Bland an vier Fragen: Meinung oder Tatsache, sagen oder tun, Laborsituation oder echt, kleiner oder großer Einsatz – „When people are aware that you are testing something, they may behave differently than in a real world setting“ ({BLAND}, S. 52). Dazu kommen die Zahl der Datenpunkte und die Zahl der Experimente: „Five quotes from personal customer interviews is obviously weaker than 100 quotes. However, those same quotes are likely to be more accurate than 100 data points in an anonymous customer survey“ (S. 56). Wer nur Interviews hat, ist nach Bland „Not Really Confident“; „Very Confident“ erst mit mehreren Experimenten, darunter „a call-to-action test that produced very strong evidence“ (S. 57). Das Wort auf euren Lernkarten – schwach, mittel, stark – sagt ihr im Pitch mit (siehe <a href="/innolab/tag-5#debrief">Test-Debrief</a>).</p>
       <p>Warum eine gefallene Annahme hineingehört: Cagan rät, „not just the things that went well, but share the problems, too“ ({CAGAN}, S. 152, Nr. 4), und „Be the undisputed expert on your users and customers“ (Nr. 7). Bland empfiehlt Startups, Investoren auf dem Laufenden zu halten, „even if that means sharing your struggles“ ({BLAND}, S. 81).</p>
+      <p>Die Gegenfrage stellt Thomke an jede Zahl, die eine Wirkung behauptet: „Would sales have increased if we had not offered a coupon?“ ({THOMKE}, S. 111). Sein Beispiel aus der Praxis: Bei Microsoft Office schlossen zwei Teams aus Beobachtungsdaten, ihre neue Profi-Funktion senke die Abwanderung – aber wer solche Funktionen ausprobiert, nutzt Office ohnehin viel und bleibt sowieso; auch wer Fehlermeldungen bekommt, wandert seltener ab (S. 113). Darum sagt ihr „belegt“, nicht „bewiesen“: „The scientific method is not about proving things“ (S. 170). Die Gegenfrage beantwortet ihr im Pitch selbst, bevor das Publikum sie stellt – mit einem Satz dazu, was ihr verglichen habt, oder ehrlich, dass der Vergleich noch fehlt.</p>
     </div>
   </Folie>
 
@@ -270,7 +273,7 @@ Das Bild, 30 Sekunden: Gegenüber Theke und Automat: weg mit dem Bestellen an de
 Wer zahlt wofür: Kaffee zum normalen Preis, Gebäck als Angebot in der Bestellung. Hängt an: A2 (40 Bestellungen in 30 Minuten) und A4 (ohne weitere Kraft) – benannt, nicht gerechnet.
 Nächster Test: eine Woche mit echter Bar, gemessen an Abholungen pro Morgen – weil ohne diese Kapazität weder die Fertig-Zeit noch das Modell trägt.
 Letzter Satz: „Anders als Automat und Schlange: Gewissheit statt Glücksspiel.“</Prompt>
-    <p>Ausgedacht sind die Zahlen bei E1 und bei „Gemessen“, wie die Testbefunde U1–U3 – an der Form erkennt ihr, wie eure aussehen sollten. Die Zählung bei A1 folgt den Interviews: I2-4, I3-1 und I5-3 sagen, dass die Entscheidung erst beim Blick auf Halle, Tafel oder Schlange fällt; bei I1 steht es in Einsicht und Notiz („Schaut erst auf die Schlange, dann auf die Uhr“), nicht im Zitat. Alle drei Zitate sind Aussagen über das eigene Verhalten, keine erzählten Ereignisse – darum „schwach“. Die Fertig-Zeit folgt der Kursregel aus A2: 4 Minuten, plus etwa 1 Minute je offener Bestellung davor; ohne offene Bestellung um 7:27 also 7:31. Wie es mit E1 weitergeht, steht im <a href="/innolab/tag-5#debrief">Test-Debrief</a>.</p>
+    <p>Ausgedacht sind die Zahlen bei E1 und bei „Gemessen“, wie die Testbefunde U1–U3 – an der Form erkennt ihr, wie eure aussehen sollten. Die Zählung bei A1 folgt den Interviews: I2-4, I3-1 und I5-3 sagen, dass die Entscheidung erst beim Blick auf Halle, Tafel oder Schlange fällt; bei I1 steht es in Einsicht und Notiz („Schaut erst auf die Schlange, dann auf die Uhr“), nicht im Zitat. Alle drei Zitate sind Aussagen über das eigene Verhalten, keine erzählten Ereignisse – darum „schwach“. Die Fertig-Zeit folgt der Kursregel aus A2: 4 Minuten, plus etwa 1 Minute je offener Bestellung davor; ohne offene Bestellung um 7:27 also 7:31. Wie es mit E1 weitergeht, steht im <a href="/innolab/tag-5#debrief">Test-Debrief</a>. Warum „Gemessen“ noch kein Beleg ist, sagt die Gegenfrage: Hätten die drei ihren Zug auch ohne Gleis-1-Express erwischt? Ohne einen Vergleich – Morgen ohne Bestellung im Gehen – bleibt das offen ({THOMKE}, S. 111).</p>
     </div>
   </Folie>
 
