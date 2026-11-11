@@ -150,7 +150,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Warum will Torres keine einzelne „Stimme der Kundschaft“ im Team?',
-      antwort: 'Wer alle Interviews führt, kann jede Diskussion mit „Das will die Kundschaft“ beenden – das gibt einer Person zu viel Macht. Ziel ist, dass alle die Stimme der Kundschaft sind (S. 74–75). Fitzpatrick nennt das Gegenteil den Lern-Engpass (Mom Test, S. 98–99).',
+      antwort: 'Wer alle Interviews führt, kann jede Diskussion mit „Das will die Kundschaft“ beenden – das gibt einer Person zu viel Macht. Ziel ist, dass alle die Stimme der Kundschaft sind (S. 74–75). Fitzpatrick nennt das Gegenteil den Lern-Engpass (Mom Test, S. 99–100).',
       falsch: '„Weil sich eine Person verhören kann“ – es geht um Macht im Team und um verschiedene Sichten.',
     },
     ablauf: {
@@ -171,7 +171,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       },
       {
         text: 'Lern-Engpass: Eine Person führt die Gespräche und sagt dem Team, was die Kundschaft will; „Die Kund*innen haben es gesagt“ sticht dann jedes Argument.',
-        quelle: `${MOMTEST}, S. 98–99`,
+        quelle: `${MOMTEST}, S. 99–100`,
       },
     ],
     ueberleitung: 'Genau das holt ihr jetzt nach: Snapshots im Team besprechen, mit vier Fragen.',
@@ -188,7 +188,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     kern: [
       {
         text: 'Nach jedem Gespräch geht das Team die Notizen gemeinsam durch und passt Überzeugungen und die drei großen Fragen an: wichtigste Zitate und Aussagen, Probleme im Gespräch, die Meta-Ebene (welche Fragen gingen, welche nicht, welche Signale fehlten). Der Schritt klingt so einfach, dass man ihn gern überspringt.',
-        quelle: `${MOMTEST}, S. 102`,
+        quelle: `${MOMTEST}, S. 103`,
       },
     ],
     ueberleitung: 'Einmal vorgemacht an I2.',
@@ -235,13 +235,13 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         'Deinen Bildschirm teilen: die Lehrenden-Ansicht der Werkstatt, Interviews der Person, die zeigt (Leser). Kein Wechsel des Präsentierenden, kein Beamer-Modus.',
         'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen; ab Minute 10 schreibt, wer gezeigt hat, 2 min in der eigenen Werkstatt (Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier).',
         'Nach dem Schreiben: Ansicht neu laden, die Person liest vor („Ich nehme mit …“). Dann Runde 2 und 3 genauso, Timer jeweils neu starten.',
-        'Festhalten und prüfen (8 min, Folie Festhalten): Stichworte übertragen – Annahmen-Map (Beleg, ID, „spricht dagegen“), Leitfaden (Frage ändern, Nachfrage), Log nur bei einer Entscheidung; dann Claude.',
+        'Festhalten (8 min, Folie Festhalten): riskanteste Annahme in der Annahmen-Map markieren, eine Zeile ins Log – verwerfen, ändern oder weiter prüfen. Map und Leitfaden sind schon in den 2 min jeder Runde ergänzt.',
       ],
       achten: [
         'Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen hören, ist der Grund für die Besprechung (Torres S. 75).',
         'Belege mit Zitat-ID eintragen, nicht nur „I2“. Jede Chance nennt mindestens eine Zitat-ID – ohne ID kein Beleg. Synthetische Interviews (Pseudonym „Synthetisch“) zählen nie als Beleg.',
         'Wer zeigt, verteidigt nicht – zuhören einfordern.',
-        'Streuen die fünf Snapshots in alle Richtungen, über eine engere Zielgruppe im Produkt-Brief sprechen (Mom Test S. 88).',
+        'Streuen die fünf Snapshots in alle Richtungen, über eine engere Zielgruppe im Produkt-Brief sprechen (Mom Test S. 89).',
       ],
       fehler: [
         'Nur nacherzählen statt die vier Fragen zu stellen.',
@@ -251,7 +251,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     kern: [
       {
         text: 'So lange Gespräche führen, bis nichts Neues mehr kommt; bei einer klar umrissenen Zielgruppe können drei bis fünf reichen. Streuen die Ergebnisse nach mehr als zehn Gesprächen noch in alle Richtungen, ist die Zielgruppe vermutlich zu unscharf.',
-        quelle: `${MOMTEST}, S. 88`,
+        quelle: `${MOMTEST}, S. 89`,
       },
     ],
     ueberleitung: 'Nach den drei Runden: festhalten, was sich ändert.',
