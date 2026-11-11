@@ -21,19 +21,32 @@ export function neuesInterview(vorhandene: readonly { id: string }[], heute: str
   };
 }
 
-/** Neues Zitat in Interview `interviewId`: I2-1, I2-2 … nach der höchsten vorhandenen Nummer dieses Interviews. */
-export function neuesZitat(interviewId: string, vorhandene: readonly { id: string }[]): { id: string; text: string } {
+/** Neues Zitat in Interview `interviewId`: I2-1, I2-2 … nach der höchsten Nummer dieses Interviews. Mitgezählt werden
+ *  auch IDs, auf die eine Chance noch als Beleg verweist (`belege`): Sonst bekäme ein neues Zitat nach dem Löschen des
+ *  letzten die alte ID und wäre still als Beleg einer alten Chance angekreuzt. */
+export function neuesZitat(interviewId: string, vorhandene: readonly { id: string }[], belege: readonly string[] = []): { id: string; text: string } {
   const praefix = `${interviewId}-`;
-  const max = vorhandene.reduce((m, z) => {
-    const n = z.id.startsWith(praefix) ? Number(z.id.slice(praefix.length)) : 0;
+  const max = [...vorhandene.map((z) => z.id), ...belege].reduce((m, id) => {
+    const n = id.startsWith(praefix) ? Number(id.slice(praefix.length)) : 0;
     return Number.isSafeInteger(n) && n > m ? n : m;
   }, 0);
   return { id: `${praefix}${max + 1}`, text: '' };
 }
 
+/** Neues Zitat für den Knopf „Zitat hinzufügen“: zählt die Zitate und alle Belege der Chancen dieses Interviews mit. */
+export const naechstesZitat = (iv: { id: string; zitate: readonly { id: string }[]; chancen: readonly Chance[] }) =>
+  neuesZitat(iv.id, iv.zitate, iv.chancen.flatMap((c) => c.belege));
+
 export const neueChance = (): Chance => ({ text: '', belege: [] });
 
-const hatZitate = (zitate: readonly { text: string }[]) => zitate.some((z) => z.text.trim() !== '');
+/** Zitate, die man als Beleg ankreuzen kann: die mit Text. */
+export const zitateMitText = <Z extends { text: string }>(zitate: readonly Z[]): Z[] => zitate.filter((z) => z.text.trim() !== '');
+
+/** Belege, deren Zitat es im Interview gar nicht gibt (wie im Schema: ein Zitat mit leerem Text gibt es noch). Ohne Doppelte. */
+export const waisen = (werte: readonly string[], zitate: readonly { id: string }[]): string[] =>
+  [...new Set(werte)].filter((w) => !zitate.some((z) => z.id === w));
+
+const hatZitate = (zitate: readonly { text: string }[]) => zitateMitText(zitate).length > 0;
 
 /** Tipp unter „Belege“ (nur an der ersten Chance). Ohne Zitat mit Text kein Tipp: Dann zeigt BelegAuswahl an jeder
  *  Chance den Leerzustand „Noch keine Zitate …“, der dasselbe sagt. */
@@ -55,11 +68,14 @@ export function belegHinweis(chance: Chance, zitate: readonly { text: string }[]
   return BELEG_FEHLT;
 }
 
-/** Ein Zitat als Beleg an- oder abwählen. Ergebnis in der Reihenfolge der Zitate (`zitatIds`), ohne Doppelte;
- *  Verweise auf Zitate, die es nicht mehr gibt (Waisen), bleiben hinten stehen, bis man sie abwählt. */
-export function belegUmschalten(werte: readonly string[], id: string, an: boolean, zitatIds: readonly string[]): string[] {
-  const gewaehlt = (z: string) => (z === id ? an : werte.includes(z));
-  const zitate = [...new Set(zitatIds)].filter(gewaehlt);
-  const waisen = [...new Set(werte)].filter((w) => !zitatIds.includes(w) && !(w === id && !an));
-  return [...zitate, ...waisen];
+/** Ein Zitat als Beleg an- oder abwählen, ohne die übrigen Belege umzusortieren. Abwählen entfernt nur diese ID.
+ *  Anwählen setzt sie vor den ersten Beleg, dessen Zitat weiter hinten steht (sonst ans Ende); die Reihenfolge der
+ *  anderen bleibt, wie sie ist, Waisen eingeschlossen. Schon gewählt: keine Änderung, kein Doppelter. */
+export function belegUmschalten(werte: readonly string[], id: string, an: boolean, zitate: readonly { id: string }[]): string[] {
+  if (!an) return werte.filter((w) => w !== id);
+  if (werte.includes(id)) return [...werte];
+  const pos = (w: string) => zitate.findIndex((z) => z.id === w);
+  const eigene = pos(id);
+  const davor = eigene < 0 ? -1 : werte.findIndex((w) => pos(w) > eigene);
+  return davor < 0 ? [...werte, id] : [...werte.slice(0, davor), id, ...werte.slice(davor)];
 }

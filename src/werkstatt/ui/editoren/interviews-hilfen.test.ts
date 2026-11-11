@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { belegFehlt, belegHilfe, belegHinweis, belegUmschalten, neuesInterview, neuesZitat } from './interviews-hilfen';
+import { belegFehlt, belegHilfe, belegHinweis, belegUmschalten, naechstesZitat, neuesInterview, neuesZitat, waisen, zitateMitText } from './interviews-hilfen';
 
 describe('Interview-Editor: neue Einträge', () => {
   it('neues Interview: nächste freie I-ID, Datum heute, ohne Einwilligung', () => {
@@ -12,6 +12,17 @@ describe('Interview-Editor: neue Einträge', () => {
   it('neues Zitat zählt nur die Zitate dieses Interviews weiter', () => {
     expect(neuesZitat('I2', [{ id: 'I2-1' }, { id: 'I2-3' }, { id: 'I12-9' }])).toStrictEqual({ id: 'I2-4', text: '' });
     expect(neuesZitat('I2', [])).toStrictEqual({ id: 'I2-1', text: '' });
+  });
+
+  it('überspringt IDs, auf die eine Chance noch verweist: letztes Zitat gelöscht, neues bekommt nicht dessen ID', () => {
+    // I2-3 war das letzte Zitat und ist Beleg einer Chance; nach dem Löschen sind nur I2-1 und I2-2 übrig.
+    expect(neuesZitat('I2', [{ id: 'I2-1' }, { id: 'I2-2' }], ['I2-1', 'I2-3'])).toStrictEqual({ id: 'I2-4', text: '' });
+    expect(neuesZitat('I2', [], ['I2-2', 'I12-9'])).toStrictEqual({ id: 'I2-3', text: '' });
+  });
+
+  it('naechstesZitat (Knopf „Zitat hinzufügen“) zählt die Belege aller Chancen des Interviews mit', () => {
+    const iv = { ...neuesInterview([], '2026-11-12'), id: 'I2', zitate: [{ id: 'I2-1', text: 'Ja.' }], chancen: [{ text: 'A', belege: ['I2-1'] }, { text: 'B', belege: ['I2-2'] }] };
+    expect(naechstesZitat(iv)).toStrictEqual({ id: 'I2-3', text: '' });
   });
 });
 
@@ -63,29 +74,41 @@ describe('Interview-Editor: Text des Beleg-Hinweises', () => {
 });
 
 describe('Interview-Editor: Beleg an- und abwählen (belegUmschalten)', () => {
-  const IDS = ['I6-1', 'I6-2', 'I6-3'];
+  const ZITATE = [{ id: 'I6-1' }, { id: 'I6-2' }, { id: 'I6-3' }];
 
   it('anwählen fügt hinzu', () => {
-    expect(belegUmschalten([], 'I6-2', true, IDS)).toStrictEqual(['I6-2']);
+    expect(belegUmschalten([], 'I6-2', true, ZITATE)).toStrictEqual(['I6-2']);
   });
 
-  it('abwählen entfernt', () => {
-    expect(belegUmschalten(['I6-1', 'I6-2'], 'I6-1', false, IDS)).toStrictEqual(['I6-2']);
+  it('abwählen entfernt nur diese ID, die anderen bleiben in ihrer Reihenfolge', () => {
+    expect(belegUmschalten(['I6-3', 'I6-1', 'I6-2'], 'I6-1', false, ZITATE)).toStrictEqual(['I6-3', 'I6-2']);
   });
 
-  it('Ergebnis in der Reihenfolge der Zitate, egal in welcher Reihenfolge angekreuzt', () => {
-    expect(belegUmschalten(['I6-3'], 'I6-1', true, IDS)).toStrictEqual(['I6-1', 'I6-3']);
-    expect(belegUmschalten(['I6-3', 'I6-1'], 'I6-2', true, IDS)).toStrictEqual(['I6-1', 'I6-2', 'I6-3']);
+  it('anwählen setzt die ID an ihre Zitat-Stelle, ohne die vorhandenen umzusortieren', () => {
+    expect(belegUmschalten(['I6-3'], 'I6-1', true, ZITATE)).toStrictEqual(['I6-1', 'I6-3']);
+    expect(belegUmschalten(['I6-1'], 'I6-3', true, ZITATE)).toStrictEqual(['I6-1', 'I6-3']);
+    // Vorhandene, unsortierte Liste: I6-3 vor I6-1 bleibt so; I6-2 kommt vor den ersten Beleg mit späterem Zitat.
+    expect(belegUmschalten(['I6-3', 'I6-1'], 'I6-2', true, ZITATE)).toStrictEqual(['I6-2', 'I6-3', 'I6-1']);
   });
 
   it('kein Doppelter: schon gewähltes noch einmal anwählen ändert nichts', () => {
-    expect(belegUmschalten(['I6-1', 'I6-2'], 'I6-2', true, IDS)).toStrictEqual(['I6-1', 'I6-2']);
-    expect(belegUmschalten(['I6-2', 'I6-2'], 'I6-1', true, IDS)).toStrictEqual(['I6-1', 'I6-2']);
+    expect(belegUmschalten(['I6-2', 'I6-1'], 'I6-2', true, ZITATE)).toStrictEqual(['I6-2', 'I6-1']);
   });
 
-  it('Waise (Zitat gibt es nicht mehr) bleibt hinten stehen, bis man sie abwählt', () => {
-    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-1', true, IDS)).toStrictEqual(['I6-1', 'I6-2', 'I6-4']);
-    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-2', false, IDS)).toStrictEqual(['I6-4']);
-    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-4', false, IDS)).toStrictEqual(['I6-2']);
+  it('Waise bleibt an ihrer Stelle stehen, bis man sie abwählt', () => {
+    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-1', true, ZITATE)).toStrictEqual(['I6-4', 'I6-1', 'I6-2']);
+    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-3', true, ZITATE)).toStrictEqual(['I6-4', 'I6-2', 'I6-3']);
+    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-2', false, ZITATE)).toStrictEqual(['I6-4']);
+    expect(belegUmschalten(['I6-4', 'I6-2'], 'I6-4', false, ZITATE)).toStrictEqual(['I6-2']);
+  });
+});
+
+describe('Interview-Editor: Zitate mit Text und Waisen (eine Quelle für Editor und Hinweise)', () => {
+  it('zitateMitText: nur Zitate mit Text', () => {
+    expect(zitateMitText([{ id: 'I6-1', text: ' ' }, { id: 'I6-2', text: 'Ja.' }])).toStrictEqual([{ id: 'I6-2', text: 'Ja.' }]);
+  });
+
+  it('waisen: nur Belege ohne Zitat dieser ID – ein Zitat mit leerem Text gibt es noch (wie im Schema)', () => {
+    expect(waisen(['I6-1', 'I6-4', 'I6-4'], [{ id: 'I6-1', text: '' }])).toStrictEqual(['I6-4']);
   });
 });

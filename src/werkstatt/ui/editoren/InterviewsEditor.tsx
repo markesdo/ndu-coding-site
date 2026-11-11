@@ -11,7 +11,7 @@ import EditorHuelle from '../EditorHuelle.js';
 import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
 import BelegAuswahl from './BelegAuswahl.js';
-import { belegFehlt, belegHilfe, belegHinweis, neueChance, neuesInterview, neuesZitat, type InterviewEntwurf } from './interviews-hilfen.js';
+import { belegFehlt, belegHilfe, belegHinweis, naechstesZitat, neueChance, neuesInterview, type InterviewEntwurf } from './interviews-hilfen.js';
 import './editoren.css';
 
 // Im Formular darf die Einwilligung noch fehlen (Entwurf); das Schema lässt erst mit Haken speichern.
@@ -106,7 +106,7 @@ export default function InterviewsEditor() {
                       einzahl="Zitat"
                       eintraege={iv.zitate}
                       onChange={(zitate) => s({ ...iv, zitate })}
-                      neu={(vorhandene) => neuesZitat(iv.id, vorhandene)}
+                      neu={() => naechstesZitat(iv)}
                       fehler={f('zitate')}
                       zeile={(z, sz, j) => (
                         <>

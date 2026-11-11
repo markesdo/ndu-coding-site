@@ -109,11 +109,12 @@
 .wk-wurzel .wk-beleg input { flex-shrink: 0; width: 1.1rem; height: 1.1rem; margin: calc((1.4em - 1.1rem) / 2) 0 0; accent-color: var(--blue); cursor: pointer; }
 .wk-wurzel .wk-beleg .wk-karte-nr { flex-shrink: 0; margin-right: 0; line-height: inherit; }
 .wk-wurzel .wk-beleg-waise { color: var(--muted); border-style: dashed; }
+.wk-wurzel .wk-beleg-leer { color: var(--muted); font-style: italic; }
 /* Schmal (Handy): Die Zeile steckt in zwei Listen mit Rand und Knopfspalte; der Text bekommt dann die ganze Breite
    unter Kästchen und ID, statt in einer schmalen Spalte daneben. */
 @media (max-width: 760px) {
   .wk-wurzel .wk-beleg { flex-wrap: wrap; row-gap: .2rem; }
-  .wk-wurzel .wk-beleg > span:last-child { flex-basis: 100%; }
+  .wk-wurzel .wk-beleg-text { flex-basis: 100%; }
 }
 
 

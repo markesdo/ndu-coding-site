@@ -15,7 +15,7 @@ describe('Interview-Editor: Belege der Chance zum Ankreuzen', () => {
   it('ChanceZeile zeigt die Zitate des Interviews mit Text als Kästchen, die gewählten angekreuzt', () => {
     const h = zeile({ text: 'Will nicht warten.', belege: ['I1-1'] });
     expect(h).toContain('class="wk-verweise wk-belegwahl"');
-    expect(h).toMatch(/<label class="wk-beleg"><input type="checkbox" checked=""\/><span class="wk-karte-nr">I1-1<\/span><span>„Wenn ich auf die Uhr schauen muss, geh ich\.“<\/span><\/label>/);
+    expect(h).toMatch(/<label class="wk-beleg"><input type="checkbox" checked=""\/><span class="wk-karte-nr">I1-1<\/span><span class="wk-beleg-text">„Wenn ich auf die Uhr schauen muss, geh ich\.“<\/span><\/label>/);
   });
 
   it('ohne Zitate: nur der Leerzustand, kein zweiter Hinweis, der dasselbe sagt', () => {
@@ -82,7 +82,8 @@ describe('BelegAuswahl: Zitate zum Ankreuzen', () => {
   it('ohne Zitat mit Text: Leerzustand statt Zeilen', () => {
     const h = wahl({ zitate: [{ id: 'I6-1', text: ' ' }] });
     expect(zeilen(h)).toStrictEqual([]);
-    expect(h).toContain('<p class="wk-hilfe">Noch keine Zitate: Trag zuerst oben unter „Zitate“ ein, was die Person wörtlich gesagt hat. Dann kannst du sie hier ankreuzen.</p>');
+    expect(h).toMatch(/<p class="wk-hilfe" id="[^"]+">Noch keine Zitate/);
+    expect(h).toContain('Noch keine Zitate: Trag zuerst oben unter „Zitate“ ein, was die Person wörtlich gesagt hat. Dann kannst du sie hier ankreuzen.</p>');
     expect(wahl()).not.toContain('Noch keine Zitate');
   });
 
@@ -92,12 +93,48 @@ describe('BelegAuswahl: Zitate zum Ankreuzen', () => {
     expect(z.map((x) => x.includes('checked'))).toStrictEqual([true, false, false, true]);
   });
 
-  it('Fehler ersetzt den Hinweis; beschrieben wird das Fieldset', () => {
-    const h = wahl({ fehler: 'Beleg I6-9 ist kein Zitat dieses Interviews.', hinweis: 'Diese Chance hat noch keinen Beleg – kreuze mindestens ein Zitat an.' });
-    expect(h).toContain('Beleg I6-9 ist kein Zitat dieses Interviews.');
+  it('Fehler ersetzt den Hinweis; das Fieldset nennt Hilfe und Fehler, nicht den Hinweis', () => {
+    const h = wahl({ hilfe: 'Kreuze die Zitate an.', fehler: 'Beleg I6-9 ist kein Zitat dieses Interviews.', hinweis: 'Diese Chance hat noch keinen Beleg – kreuze mindestens ein Zitat an.' });
+    const ids = (/<fieldset class="wk-verweise wk-belegwahl" aria-describedby="([^"]+)">/.exec(h)?.[1] ?? '').split(' ');
+    const fehlerId = /<p class="wk-fehler" id="([^"]+)">Beleg I6-9/.exec(h)?.[1];
+    const hilfeId = /<p class="wk-hilfe" id="([^"]+)">Kreuze/.exec(h)?.[1];
+    expect(ids).toStrictEqual([hilfeId, fehlerId]);
+    expect(ids.some((x) => x.endsWith('-hinweis'))).toBe(false);
     expect(h).not.toContain('wk-feldhinweis');
-    const ids = /<fieldset class="wk-verweise wk-belegwahl" aria-describedby="([^"]+)">/.exec(h)?.[1];
-    expect(h).toContain(`<p class="wk-fehler" id="${ids}">`);
+  });
+
+  it('mit Fehler: jedes Kästchen ist ungültig markiert und mit dem Fehler verknüpft', () => {
+    const h = wahl({ werte: ['I6-4'], fehler: 'I6-4 gibt es in I6 nicht.' });
+    const fehlerId = /<p class="wk-fehler" id="([^"]+)">/.exec(h)?.[1];
+    const kaestchen = [...h.matchAll(/<input type="checkbox"[^>]*>/g)].map((m) => m[0]);
+    expect(kaestchen).toHaveLength(4);
+    for (const k of kaestchen) {
+      expect(k).toContain('aria-invalid="true"');
+      expect(k).toContain(`aria-describedby="${fehlerId}"`);
+    }
+    expect(wahl()).not.toContain('aria-invalid');
+  });
+
+  it('Leerzustand ist mit dem Fieldset verknüpft', () => {
+    const h = wahl({ zitate: [] });
+    const leerId = /<p class="wk-hilfe" id="([^"]+)">Noch keine Zitate/.exec(h)?.[1];
+    expect(leerId).toBeTruthy();
+    expect(h).toContain(`<fieldset class="wk-verweise wk-belegwahl" aria-describedby="${leerId}">`);
+  });
+
+  it('gewähltes Zitat mit leerem Text: Zeile „(Zitat noch leer)“, angekreuzt, keine Waise', () => {
+    const z = zeilen(wahl({ zitate: [{ id: 'I6-1', text: '' }, ...DREI.slice(1)], werte: ['I6-1'] }));
+    expect(z.map(text)).toStrictEqual(['I6-1 (Zitat noch leer)', 'I6-2 „Wenn ich auf die Uhr schauen muss, geh ich.“', 'I6-3 „Am liebsten hätte ich den Becher schon in der Hand.“']);
+    expect(z.map((x) => x.includes('checked'))).toStrictEqual([true, false, false]);
+    expect(z[0]).toContain('wk-beleg-leer');
+  });
+
+  it('leeres, nicht gewähltes Zitat: keine Zeile', () => {
+    expect(zeilen(wahl({ zitate: [{ id: 'I6-1', text: '' }, ...DREI.slice(1)] })).map(text)).toHaveLength(2);
+  });
+
+  it('doppelte Zitat-IDs im Entwurf: beide Zeilen, ohne Absturz', () => {
+    expect(zeilen(wahl({ zitate: [DREI[1]!, DREI[1]!] })).map(text)).toStrictEqual(['I6-2 „Wenn ich auf die Uhr schauen muss, geh ich.“', 'I6-2 „Wenn ich auf die Uhr schauen muss, geh ich.“']);
   });
 });
 
