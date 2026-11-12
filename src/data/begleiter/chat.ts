@@ -3,11 +3,12 @@
 // Quelle, damit Begleiter und Handout nicht auseinanderlaufen (begleiter-chat.test.ts).
 
 export const CHAT_SYNTHESE = `Interview-Synthese · 44 min · Werkstatt: Interviews
-1. Zeigen (5 min): Markus öffnet eure Interviews in der Werkstatt; ihr führt durch einen Snapshot – Zitat, Geschichte, Chancen.
-2. Besprechen (7 min): Die anderen fragen mit den vier Fragen (Was wurde gesagt? Was ändert sich? Wie war das Gespräch? Was haben wir überhört?). Die letzten 2 min schreibt, wer zeigt: Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier.
-3. Reihum: drei Runden à 12 Minuten.
+Drei Runden à 12 Minuten: eine Person zeigt, zwei fragen.
+1. Wählen und zeigen (5 min): Vor eurer Runde den Snapshot wählen, der am meisten für oder gegen eure riskanteste Annahme spricht. ID laut sagen („I2, bitte“), dann durchführen: Zitat, Geschichte, Chancen. Die anderen notieren Fragen.
+2. Besprechen (5 min): Fragen 2–4. Frage 2 (Was ändert sich?) und Frage 4 (Was haben wir überhört?): die anderen zuerst; Frage 3 (Wie war das Gespräch?) beginnt, wer zeigt.
+3. Schreiben (2 min): Wer zeigt, trägt genau eine Chance oder Einsicht in den Snapshot ein (Synthese-Seite, „In der Werkstatt speichern“); alles Weitere als Stichwort auf Papier, F2, F3 oder F4 davor. Nach 12 Minuten Wechsel.
 4. Festhalten (8 min), allein: Stichworte vom Papier übertragen (Belege in die Annahmen-Map, Nachfragen in den Leitfaden), dann eine Zeile im Log zur riskantesten Annahme – verworfen, geändert oder bewusst behalten, mit Grund. Nur synthetische Interviews: Beleg „noch keiner“. Wer fertig ist: Claude „Prüf meine Verknüpfungen“.
-Noch keine Interviews in der Werkstatt? Bis 14:50 die besten 2–3 eintragen, in dieser Reihenfolge: Pseudonym, Datum, Einwilligung, 3–5 Zitate mit ID, Chancen mit Beleg-IDs. Danach Runden à 5 min (2 zeigen, 2 besprechen, 1 schreiben).`;
+Interviews erst heute eingetragen? Bis 14:50 die besten 2–3 eintragen: Pseudonym, Datum, Einwilligung, 3–5 Zitate mit ID, Chancen mit Beleg-IDs. Dann Runden à 5 min: 2 zeigen · 2 Frage 2 · 1 schreiben (Frage 3 nur kurz, Frage 4 entfällt). Nur synthetische Interviews („Synthetisch“): ohne Frage 3, nie als Beleg.`;
 
 export const CHAT_JOURNEY_MAP = `Experience Map · 35 min · Miro: T2 · 1 · Experience Map
 1. Allein (10 min): Knoten aus euren Skizzen beschriften – auf Papier oder gleich in eurer Spalte auf Miro T2 · 1 –, zur neuen Map zusammenfügen, die Map von Tag 1 daneben.
