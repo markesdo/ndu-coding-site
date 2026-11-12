@@ -273,21 +273,15 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Jetzt alle: Snapshot wählen, ID merken (1 min).',
-      'Reihenfolge: Sofie → Joachim → Hewen. Timer 5 min je Runde.',
-      'Minute 0: „[Name] zeigt – ID, Zitat, eine Chance.“',
-      'Minute 2: „Stopp. Frage 2 – die anderen zuerst.“ Frage 3 kurz.',
-      'Minute 4: „Beleg zur riskantesten Annahme – speichern auf Ansage.“',
-      'Minute 4:45: „Speichern!“ – dann einmal Neu laden.',
-      'Minute 5: „Wechsel. [Nächste], welche ID?“',
-      'Frage 4 entfällt heute; 3 × 12 min passt nicht bis 15:15.',
-      'Kontext ab Minute 2 offen lassen; Minute 4:45 einmal Neu laden.',
-      'Wer zuhört: laut sagen, wer zeigt, schreibt mit.',
-      'Hewen: in der Runde A2; A1 oder A2 erst beim Festhalten.',
-      'Falle: wer zeigt, verteidigt – bei Frage 2 zuhören.',
-      'Nach drei Runden: weiter zu Festhalten, Timer 3 min dort.',
+      'Vorab: alle wählen einen Snapshot zur riskantesten Annahme. Reihenfolge Sofie, Joachim, Hewen.',
+      'Start: Timer 5 min, Chip anklicken. „[Name] zeigt: ID, Zitat, eine Chance.“',
+      'Nach 2 min: K drücken, offen lassen. „Frage 2 – die anderen zuerst.“',
+      'Nach 4 min: „Schreiben: Zitat-ID zur riskantesten Annahme, stützt oder dagegen.“',
+      'Kurz vor 5 min: „Speichern!“ – dann einmal Neu laden.',
+      'Nach 5 min: „Wechsel. [Name], welche ID?“ Timer neu starten.',
+      'Falle: wer zeigt, verteidigt – bei Frage 2 erst zuhören lassen.',
     ],
-    uebung: { dauer: '19 min ab 14:50 (1 + 3 × 5 + 3)', form: 'zu dritt reihum, dann allein' },
+    uebung: { dauer: '16 min (1 wählen + 3 × 5)', form: 'zu dritt reihum: eine Person zeigt, zwei fragen nach' },
     miro: {
       frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
@@ -296,16 +290,11 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Zeitplan heute (12.11.: Snapshot zuerst): 14:15–14:22 verschwimmen, snapshot, wunsch nur zeigen, snapshot-i2 ausführlich; die Frage auf verschwimmen entfällt (oder eine Person antwortet). Ca. 14:22–14:50 Folie noch-keine für alle (Interviews und Skizzen auf T1 · 5). Ab 14:50 geschichte/warum (ca. 5 min), besprechen nur zeigen, Proberunde (beispiel) knapp, dann 1 min Snapshot wählen, 3 × 5 min Runden (bis ca. 15:13), Festhalten 3 min (mit Vorführen bis ca. 15:10), Übertrag ein Satz je Person – Ende 15:15. 3 × 12 min (36 min) passen nicht zwischen 14:50 und 15:15, darum die kurzen Runden: 2 zeigen · 2 Frage 2 (Frage 3 nur kurz, Frage 4 entfällt) · 1 schreiben. Ansagen je Runde: 0:00 „ID, Zitat, eine Chance“ · 2:00 „Frage 2, die anderen zuerst“ (Frage 3 kurz) · 4:00 „Schreiben“ (derselbe eine Eintrag in der Annahmen-Map, sonst beim Festhalten) · 4:45 „Speichern!“ · 5:00 „Wechsel“.',
-        'Fallback – nur synthetische Interviews (Pseudonym „Synthetisch“): Frage 3 entfällt, weil es kein echtes Gespräch gab; nichts zählt als Beleg, also kein Eintrag in der Annahmen-Map. Stattdessen in der Schreibzeit eine Frage im Leitfaden ändern oder ergänzen – sie erscheint im Kontext (Reiter Leitfaden) als „neu“. Das ist unabhängig vom Zeitplan: Echte Interviews, die erst heute eingetragen wurden, streifen Frage 3 kurz.',
-        'Bildschirm teilen: Werkstatt im Zeigen-Modus, Interviews der Person, die zeigt („Snapshots zeigen ↗“ auf der Folie, nur in deiner Ansicht). Kein Beamer-Modus, kein Wechsel des Präsentierenden. Die Studierenden haben die Synthese-Seite auf dem eigenen Gerät offen (wie in der Antwortrunde); die Links auf den Folien (Annahmen-Map ↗, Leitfaden ↗, Interviews ↗, Log ↗) öffnen in einem neuen Tab direkt den Editor in der eigenen Mappe.',
-        'Vor Runde 1 (ca. 1 min): „Jetzt alle drei: in euren Interviews den Snapshot wählen, der am stärksten für oder gegen eure riskanteste Annahme spricht – ID merken.“ Alle wählen gleichzeitig; die Zeile „Jetzt, alle drei“ auf der Folie verlinkt den Editor der Interviews. Die Zeit sagst du an („2“, „4“, bei 4:45 „Speichern“) – den Timer sehen die Studierenden auf ihren Geräten nicht.',
-        'Reihenfolge Sofie → Joachim → Hewen. Hewen bleibt in der Runde bei A2; A1 oder A2 erst beim Festhalten.',
-        '0:00–2:00 Zeigen (Frage 1): Ansage „[Name] zeigt – ID, Zitat, eine Chance.“ Timer 5 min starten, ID hören, den Chip (I1 … In) anklicken – der Snapshot steht. Falls die Fragenleiste da ist: Taste 1.',
-        '2:00 Frage 2: „Stopp. Frage 2 – die anderen zuerst.“ K drücken, Kontext, Reiter Annahmen – und das Panel ab jetzt offen lassen: „neu“ vergleicht mit dem letzten Laden; wer es erst bei Minute 4:45 zum ersten Mal öffnet, sieht nichts markiert. Frage 3 nur kurz, wer gezeigt hat, zuerst (Reiter Leitfaden). Falls die Fragenleiste da ist: Taste 2, dann 3.',
-        'Frage 4 entfällt heute. Wer etwas Überhörtes bemerkt, notiert es; es kommt nach dem Kurs, vor Tag 3, in den Leitfaden. F blendet die Fragenleiste ein oder aus.',
-        '4:00–4:45 Schreiben: „Beleg zur riskantesten Annahme – speichern auf Ansage.“ Eintrag bei der riskantesten Annahme: Feld „Beleg-IDs“ die Zitat-ID (I2-4), Feld „Beleg (Notiz …)“ „stützt“ oder „spricht dagegen“. Bei Minute 4:45 (Timer-Minute, nicht Uhrzeit) „Speichern!“ ansagen (die Werkstatt speichert nicht von selbst), dann einmal „Neu laden“ – im Kontext, Reiter Annahmen, steht der Eintrag dann als „neu“. Zeigt nichts „neu“: „nach dem Kurs nachtragen“ sagen und weitergeben, nicht suchen.',
-        '5:00 Wechsel: „Wechsel. [Nächste], welche ID?“ Timer neu starten. Nach drei Runden (15 min) zur Folie Festhalten, Timer 3 min dort: heute nur eine Zeile ins Log zur riskantesten Annahme – verworfen, geändert oder bewusst behalten, mit Grund – und speichern. Notizen übertragen (Chance oder Einsicht in den Snapshot, Leitfaden, Beleg in der Annahmen-Map prüfen) ist Hausaufgabe vor Tag 3.',
+        'Vorab (1 min): Werkstatt im Zeigen-Modus teilen („Snapshots zeigen ↗“ auf der Folie). Alle wählen den Snapshot, der am stärksten für oder gegen die riskanteste Annahme spricht, und merken die ID. Hewen nimmt A2, falls die riskanteste noch offen ist.',
+        '0–2 Zeigen (Frage 1): Timer starten, ID hören, Chip (I1 … In) anklicken. Wer zeigt: ID, Zitat, eine Chance. Steht im Snapshot noch keine Chance, sagt die Person eine mündlich.',
+        '2–4 Besprechen: K öffnet den Kontext, Reiter Annahmen; das Panel bleibt offen, sonst ist nach dem Neu-Laden nichts als „neu“ markiert. Frage 2 stellen die anderen zuerst; Frage 3 nur kurz, wer gezeigt hat, zuerst (Reiter Leitfaden). Frage 4 entfällt.',
+        '4–5 Schreiben: ein Eintrag in der Annahmen-Map bei der riskantesten Annahme – Feld „Beleg-IDs“ die Zitat-ID (I2-4, nicht nur I2), Feld „Beleg (Notiz …)“ „stützt“ oder „spricht dagegen“. Kurz vor Minute 5 „Speichern!“ ansagen, dann einmal Neu laden. Zeigt nichts „neu“: „nach dem Kurs nachtragen“ sagen und weitergehen, nicht suchen.',
+        'Nur synthetische Interviews: kein Beleg, kein Eintrag in der Annahmen-Map, Frage 3 entfällt – stattdessen in Minute 4–5 eine Frage im Leitfaden ändern und speichern.',
       ],
       achten: [
         'Rollenkarte – wer zeigt: Vor Runde 1, alle zugleich, den Snapshot wählen; in der eigenen Runde die ID laut sagen. 0–2 durch den Snapshot führen (Frage 1): ID, Zitat, eine Chance. 2–4 bei Frage 2 erst zuhören, nicht verteidigen (Kursregel, abgeleitet aus Torres S. 74–75); bei Frage 3, nur kurz, zuerst antworten. 2–4 schreibt in die eigenen Notizen mit, was die anderen laut sagen. 4–4:45 genau ein Eintrag: in der Annahmen-Map bei der riskantesten Annahme (für sie ist der Snapshot gewählt) die Zitat-ID und „stützt“ oder „spricht dagegen“ – speichern auf Ansage, Minute 4:45. Berührt Frage 2 eine andere Annahme: eigene Notizen, nach dem Kurs nachtragen. Alles andere in die eigenen Notizen, für die Hausaufgabe vor Tag 3. Nur synthetisch: stattdessen eine Frage im Leitfaden ändern.',
@@ -330,7 +319,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         quelle: `${MOMTEST}, S. 89`,
       },
     ],
-    ueberleitung: 'Nach den drei Runden: festhalten, was sich ändert.',
+    ueberleitung: 'Drei Runden sind durch – jetzt haltet ihr fest, was sich für euch ändert.',
   },
 
   festhalten: {
