@@ -162,12 +162,41 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 87`,
       },
     ],
-    ueberleitung: 'An der Kaffeebar: erst die Skizzen beschriften und zählen, dann die Map.',
+    ueberleitung: 'An der Kaffeebar: Welche Stickies der fünf Skizzen gehören zusammen?',
+  },
+
+  gruppieren: {
+    live: [
+      'Fragen: Welche Stickies meinen denselben Moment? Ruft die IDs.',
+      'Aufdecken: Farben und Buchstaben – vier Gruppen, Rest grau.',
+      'Fragen: Wie würdet ihr diese Gruppe nennen?',
+      'Fragen: Wohin gehört I3-4 – Halle oder Anstehen?',
+      'Fragen: Was bleibt grau, und warum?',
+    ],
+    verstaendnis: {
+      frage: 'Die Halle hat sechs Stickies. Warum zählt sie „3 von 5“?',
+      antwort: 'Gezählt werden Geschichten, nicht Stickies: I2 bringt drei Stickies (I2-4, I2-1, I2-2), dazu I3-1 und I5-3; die Notiz von I1 zeigt ihr, zählt aber nicht.',
+    },
+    kern: [
+      {
+        text: 'Jeden Knoten der Skizzen beschriften, dann Muster suchen: „What nodes are showing up in story after story?“ Die häufigsten Knoten werden zur Map zusammengefügt („stitch the most common nodes together“).',
+        quelle: `${TORRES}, S. 87`,
+      },
+      {
+        text: '„Collapse similar nodes together“ – aber „not generalizing so much that you lose key detail“.',
+        quelle: `${TORRES}, S. 56`,
+      },
+      {
+        text: 'Die Spaltennamen stehen in keiner Skizze: Ähnliche Knoten zusammenschieben, der Gruppe einen Namen geben – maßgeblich ist derselbe Moment der Geschichte, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot. Gezählt werden Geschichten, nicht Stickies, nur mit Zitat; Notizen zählen nicht. Ankunftssätze (I1-1, I4-1, I5-1) bleiben grau: Hintergrund, kein erzählter Moment. I3-4 ist ein Grenzfall: Die Stelle in der Geschichte entscheidet (nach dem Ankommen, beim Entschluss, sich anzustellen → Anstehen). „Im Zug“ trägt nur I3, bleibt aber Gruppe: dort endet die Geschichte. I2-1/I2-2/I2-4 in einer Rasterzelle ist selbst Zusammenlegen.',
+        quelle: 'Kursregel',
+      },
+    ],
+    ueberleitung: 'Sortiert sieht das so aus: Gruppen werden Spalten, darunter die Zählung – dann die Map.',
   },
 
   beispiel: {
     live: [
-      'Spaltenköpfe = Beschriften: ein Name für denselben Knoten.',
+      'Spaltenköpfe = die Gruppennamen von der Folie davor.',
       'Fragen: Welche Spalte ist in beiden Reihen gefüllt? Zählen lassen.',
       'Aufdecken: Zählzeile – I1, I4, I5 stehen im Handout.',
       'Zusammengelegt: Anstehen und Warten – kein Zitat erzählt das Anstehen.',
@@ -185,9 +214,11 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
+      'Check: Skizzen in allen Spalten auf T2 · 1? Sonst jetzt kopieren.',
       'Prüfliste kurz als Ziel zeigen (30 s), bevor alle starten.',
-      'Timer 12 min: Skizzen auf T1 · 5, Marken, Tag-1-Map daneben.',
-      'Fragen: Wer hat noch keine Skizze? Erst dort zeichnen.',
+      'Skizzen liegen als Kopie in jeder Spalte – gleich gruppieren.',
+      'Timer 12 min: zusammenschieben, benennen, zählen, verbinden; Tag-1-Map zum Vergleich.',
+      'Fragen: Fehlt eine Skizze? Fotoskizze selbst kopieren.',
       'Nach 12 min: reihum Spalte auf T2 · 1 zeigen, nicht verteidigen.',
       'Nach 22 min: drei bis fünf Momente, Marken übertragen.',
       'Je Moment ein Zitat mit Gefühl, Gefühlswort fett.',
@@ -198,14 +229,15 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       frame: 'T2 · 1 · Experience Map',
       schritte: [
         '„Alle zu mir holen“ auf T2 · 1; links die Kaffeebar als Muster.',
-        'Allein: Skizzen im Feld „Geschichte als Skizze“ der Snapshot-Karten auf T1 · 5 – Knoten beschriften, stärksten Moment und Ende markieren, in der eigenen Spalte auf T2 · 1 zusammenfügen; die Map von Tag 1 (T1 · 1) daneben. Wer noch keine Skizze hat, zeichnet sie zuerst dort (Zettel und Pfeile aus den Werkstatt-Notizen, höchstens drei Geschichten).',
+        'In der Pause kopiert Markus die Skizzen (Stickies und Pfeile) aus T1 · 5 in die Spalten auf T2 · 1, Zone „Schritt 1: Gleiches zusammenlegen“; Foto-Skizzen kopiert, wer sie gemacht hat.',
+        'Allein in der eigenen Spalte auf T2 · 1: Gleiches zusammenschieben und benennen, zählen, zur Map verbinden, Marken mitnehmen; die Map von Tag 1 (T1 · 1) zum Vergleich. Wer noch keine Skizze hat, zeichnet sie zuerst (Zettel und Pfeile aus den Werkstatt-Notizen, höchstens drei Geschichten).',
         'Zu dritt Spalte für Spalte, alle schauen auf dem Board mit (kein Bildschirm teilen); fragen, nicht verteidigen.',
         'Momente festlegen, jede*r in der eigenen Spalte: Überschneidendes zusammenlegen; drei bis fünf, je ein Zitat mit ID, Gefühlswort fett; Marken mit Zahl übertragen, etwa „Tief · I3-3 · 2 von 5“.',
       ],
     },
     ablauf: {
       schritte: [
-        'Allein (12 min): Skizzen auf T1 · 5 (Feld „Geschichte als Skizze“, meist schon aus dem Synthese-Block) – Knoten beschriften, in jeder Skizze den stärksten Moment und das Ende markieren, in der eigenen Spalte auf T2 · 1 zusammenfügen, die Map von Tag 1 daneben. Fehlt eine Skizze, zuerst dort zeichnen: Zettel und Pfeile aus den Werkstatt-Notizen, höchstens drei Geschichten.',
+        'Allein (12 min): Die Skizzen liegen als Kopie in der eigenen Spalte auf T2 · 1 (Markus kopiert sie in der Pause aus T1 · 5, Stickies und Pfeile; eine Foto-Skizze kopiert, wer sie gemacht hat). Gleiches zusammenschieben und benennen, zählen (Geschichten, nicht Stickies), zur Map verbinden, Marken (stärkster Moment, Ende) mitnehmen; die Map von Tag 1 (T1 · 1) zum Vergleich. Fehlt eine Skizze, zuerst zeichnen: Zettel und Pfeile aus den Werkstatt-Notizen, höchstens drei Geschichten.',
         'Zu dritt (10 min): Reihum die eigene Spalte auf T2 · 1 zeigen – alle schauen auf dem Board mit; die anderen fragen nach.',
         'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: Knoten prüfen, Überschneidendes zusammenlegen (Torres S. 56, 86–87); drei bis fünf, in den Worten der Kundschaft. Jeder Moment mit einem Zitat mit ID, möglichst einem, in dem die Person Gefühl zeigt, das Gefühlswort fett; erzählt niemand ein Gefühl: „Gefühl: nicht erzählt“ (Frage fürs nächste Interview). Das Gefühl bleibt am Moment, kein eigener Knoten, keine Chance (Torres S. 56, 95; fett statt Smiley ist Kursregel). Dann die Marken übertragen, je mit der Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt: „Tief · I3-3 · 2 von 5“, „Ende · I3-5 · 1 von 5“ (N von M: in N von M Geschichten; M = alle eigenen Geschichten, bei drei synthetischen: von 3). Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
         'Prüfen (5 min, eigene Folie): Prüfliste allein, dann Claude mit einem Bild der eigenen Spalte aus Miro; eine Datei gibt es nicht. Schritte unter „Prüfen“ im Handout.',

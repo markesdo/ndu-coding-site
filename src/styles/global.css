@@ -25,6 +25,9 @@
   --yellow-soft: #fdf1d8;
   --purple: #6d3fc2;
   --purple-soft: #ede6fb;
+  /* Vierte Gruppenfarbe neben Blau, Gelb, Lila (Experience Map, Folie „gruppieren“): weder Rosa (Tief) noch Grün (Ende). */
+  --cyan: #0e6f8a;
+  --cyan-soft: #ddf1f7;
   --code-bg: #f1efe9;
   --radius: 6px;
   --max: 860px;
@@ -57,6 +60,8 @@
     --yellow-soft: #3a2d14;
     --purple: #b092f5;
     --purple-soft: #28203d;
+    --cyan: #6cd0ea;
+    --cyan-soft: #14303a;
     --code-bg: #24242c;
   }
 }
@@ -66,7 +71,7 @@
   --blue: #7aa2ff; --blue-soft: #1c2740;
   --green: #5fcf8a; --green-soft: #15301f; --yellow: #e8b45a; --yellow-ink: #e8b45a; --yellow-soft: #3a2d14;
   --pink: #ff9cc2; --pink-soft: #3d1a29;
-  --purple: #b092f5; --purple-soft: #28203d; --code-bg: #24242c;
+  --purple: #b092f5; --purple-soft: #28203d; --cyan: #6cd0ea; --cyan-soft: #14303a; --code-bg: #24242c;
 }
 /* Innolab (html[data-bereich="innolab"], Layout.astro): Laborgrün statt Koralle, sonst alles gleich.
    Auf Hell trägt das dunkle Grün auch --accent – Komponenten zeichnen damit Linien und Icons auf hellem Grund,

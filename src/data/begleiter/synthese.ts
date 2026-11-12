@@ -370,12 +370,13 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Reihum: jede*r liest die eigene Zeile vor – Entscheidung, Grund, Beleg-Stufe.',
       '„Beleg: noch keiner“ gilt – im Grund steht dann: in echten Interviews prüfen.',
       'Echte Interviews ohne Beleg: zu nett oder nach der Idee gefragt?',
-      'Pause: Claude ‚Übertrag die Snapshots‘ – vor der Experience Map.',
+      'Pause: Claude – ‚Übertrag die Snapshots und kopier die Skizzen‘.',
     ],
     miro: {
       frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
         'In der Pause: Snapshots übertragen, vor der Experience Map.',
+        'Dann die Skizzen jeder*s Studierenden (Stickies und Pfeile) aus T1 · 5 in die eigene Spalte auf T2 · 1 kopieren, Zone „Schritt 1: Gleiches zusammenlegen“; Foto-Skizzen kopiert, wer sie gemacht hat.',
       ],
     },
     ueberleitung: 'Nach der Pause zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu.',

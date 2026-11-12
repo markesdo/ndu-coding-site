@@ -12,6 +12,7 @@ import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import { CircleCheck, CircleX, CornerDownRight } from '@lucide/astro';
 import { METHODEN } from '../../../components/methoden';
+import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memories“, Nielsen Norman Group (2018)';
@@ -20,6 +21,49 @@ const PRUEFLISTE = METHODEN.find((m) => m.slug === 'journey-map')?.pruefliste;
 if (!PRUEFLISTE?.length) throw new Error('journey-map.astro: Methode „journey-map“ oder ihre Prüfliste fehlt in methoden.ts');
 const PRUEF_KURZ = PRUEFLISTE.map((p) => p.kurz ?? p.text);
 const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less: Adding a Better End“, Psychological Science 4 (1993), S. 401–405';
+// Folie „gruppieren“: die fünf Kaffeebar-Skizzen wie auf Miro T1 · 5, Stickies in Erzählreihenfolge. Ohne id = Notiz
+// (gestrichelt, zählt nicht); g = Gruppe, aus der im Raster der Folie „beispiel“ eine Spalte wird; ohne g = grau,
+// bleibt im Snapshot. Gezählt werden Geschichten, nicht Stickies.
+type GruppeId = 'a' | 'b' | 'c' | 'd';
+type Sticky = { t: string; id?: string; g?: GruppeId; marke?: 'tief' | 'ende' };
+const GRUPPEN: { g: GruppeId; name: string }[] = [
+  { g: 'a', name: 'Halle: schauen, entscheiden' },
+  { g: 'b', name: 'Umweg: Automat' },
+  { g: 'c', name: 'Anstehen und Warten' },
+  { g: 'd', name: 'Im Zug' },
+];
+const SKIZZEN: { i: string; stickies: Sticky[] }[] = [
+  { i: 'I2', stickies: [
+    { t: 'Tafel, Schlange', id: 'I2-4', g: 'a' }, { t: '8 Leute: das wird nix', id: 'I2-1', g: 'a', marke: 'tief' },
+    { t: 'Blick auf die Uhr', id: 'I2-2', g: 'a' }, { t: 'Zum Automaten', id: 'I2-3', g: 'b' }, { t: 'Zug 7:42', g: 'd' },
+  ] },
+  { i: 'I3', stickies: [
+    { t: 'wie es ausschaut', id: 'I3-1', g: 'a' }, { t: 'unter 5 Leuten: anstellen', id: 'I3-4', g: 'c' },
+    { t: 'Ich warte', id: 'I3-2', g: 'c' }, { t: 'Das war ein Fehler', id: 'I3-3', g: 'c', marke: 'tief' },
+    { t: 'Im Zug, in Ruhe', id: 'I3-5', g: 'd', marke: 'ende' },
+  ] },
+  { i: 'I1', stickies: [
+    { t: 'immer knapp dran', id: 'I1-1' }, { t: 'Schlange, dann Uhr', g: 'a' },
+    { t: 'Automat: Notlösung', id: 'I1-3', g: 'b' }, { t: 'erster Schluck: Morgen gerettet', id: 'I1-4' },
+  ] },
+  { i: 'I4', stickies: [
+    { t: 'um 7:28 da', id: 'I4-1' }, { t: 'Anstellen? Glücksspiel', id: 'I4-2' },
+    { t: 'zum Automaten', id: 'I4-3', g: 'b' }, { t: 'Dann halt die Brühe', id: 'I4-4', g: 'b', marke: 'tief' },
+  ] },
+  { i: 'I5', stickies: [
+    { t: '10 Min. vor Abfahrt', id: 'I5-1' }, { t: 'Halle: wie voll?', id: 'I5-3', g: 'a' },
+    { t: 'Bestellungen der Kolleg*innen', id: 'I5-4' }, { t: 'Warten: zu lang', id: 'I5-6', g: 'c', marke: 'tief' },
+    { t: '4 Becher tragen', id: 'I5-5' },
+  ] },
+];
+// Jede Zitat-ID muss im Kaffeebar-Beispiel der Werkstatt stehen, sonst bricht der Build ab.
+const ZITAT_IDS = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
+const fremd = SKIZZEN.flatMap((s) => s.stickies.flatMap((st) => (st.id && !ZITAT_IDS.has(st.id) ? [st.id] : [])));
+if (fremd.length) throw new Error(`journey-map.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${fremd.join(', ')}`);
+const gruppeName = (g: GruppeId) => GRUPPEN.find((x) => x.g === g)?.name ?? '';
+const buchstabe = (g: GruppeId) => g.toUpperCase();
+// Geschichten je Gruppe: nur Stickies mit Zitat, je Geschichte einmal.
+const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st) => st.g === g && st.id)).length;
 ---
 <Layout title="Experience Map">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
@@ -89,7 +133,7 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
     <ol class="gross">
       <li><strong>Beschriften:</strong> In jeder Skizze die Schlüsselmomente benennen – das sind eure Knoten.</li>
       <li data-schritt><strong>Muster suchen:</strong> Welche Knoten kommen in mehreren Geschichten vor?</li>
-      <li data-schritt><strong>Zusammenfügen:</strong> Die häufigsten Knoten zu einer Map – Ähnliches zusammenlegen, ohne wichtige Details zu verlieren.</li>
+      <li data-schritt><strong>Zusammenlegen und benennen:</strong> Ähnliche Knoten bekommen einen Namen; die häufigsten werden die Map.</li>
       <li data-schritt><strong>Verbinden:</strong> Pfeile – auch Wiederholungen, Schleifen und wo jemand aufgibt.</li>
     </ol>
     <p class="small muted">{TORRES}, S. 86–87 (Schritte 1–3), S. 56 (Zusammenlegen, Verbindungen).</p>
@@ -149,8 +193,54 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
   </Folie>
 
   <Folie>
+    <h2 id="gruppieren">Kaffeebar: Gleiches zusammenlegen</h2>
+    <p class="folie-satz">Welche Stickies meinen denselben Moment?</p>
+    <div class="gruppen">
+      <div class="skizzen">
+        {SKIZZEN.map((s) => (
+          <div class="skizze">
+            <span class="skizze-i">{s.i}</span>
+            <ol class="stickies" aria-label={`Skizze ${s.i}, Stickies in der Reihenfolge der Geschichte`}>
+              {s.stickies.map((st) => (
+                <li class:list={['sticky', st.g && `gruppiert g-${st.g}`, { notiz: !st.id }]}>
+                  {st.g && <span class="g-buchstabe" aria-hidden="true">{buchstabe(st.g)}</span>}
+                  <span>{st.t}</span>
+                  {!st.id ? <span class="id">Notiz</span>
+                    : st.marke ? <span class={`pill ${st.marke}`}>{st.marke === 'tief' ? 'Tief' : 'Ende'} · {st.id}</span>
+                    : <span class="id">{st.id}</span>}
+                  <span class="sr-only">{st.g ? `(Gruppe ${buchstabe(st.g)}: ${gruppeName(st.g)})` : '(grau: bleibt im Snapshot)'}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </div>
+      <p data-schritt class="gruppen-an small muted">Gleiche Farbe, gleicher Buchstabe: derselbe Moment der Geschichte.</p>
+      <div data-schritt class="gruppen-legende-block">
+        <ul class="gruppen-legende">
+          {GRUPPEN.map(({ g, name }) => <li class={`gruppiert g-${g}`}><span class="g-buchstabe" aria-hidden="true">{buchstabe(g)}</span> {name}</li>)}
+          <li class="grau">grau: bleibt im Snapshot</li>
+        </ul>
+        <p class="regel"><strong>Gleicher Moment in der Geschichte, nicht gleiche Worte.</strong> Den Namen gebt ihr.</p>
+      </div>
+    </div>
+    <p class="small muted">{TORRES}, S. 56, 87.</p>
+    <div class="nur-handout">
+      <p>Die Spaltennamen stehen in keiner Skizze. Sie entstehen, wenn ihr ähnliche Knoten zusammenlegt ({TORRES}, S. 56) und der Gruppe einen Namen gebt: Maßgeblich ist, dass die Stickies denselben Moment der Geschichte meinen, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot (S. 87: ‚the most common nodes‘). Gezählt werden Geschichten, nicht Stickies, und nur, was ein Zitat trägt; Notizen zeigt ihr, zählt sie aber nicht. Stickies zusammenschieben ist die Arbeitsweise dieses Kurses.</p>
+      <ul>
+        {GRUPPEN.map(({ g, name }) => {
+          const zitate = SKIZZEN.flatMap((s) => s.stickies.filter((st) => st.g === g && st.id).map((st) => st.id));
+          const notizen = SKIZZEN.filter((s) => s.stickies.some((st) => st.g === g && !st.id)).map((s) => s.i);
+          return <li><strong>{buchstabe(g)} · {name}:</strong> {zitate.join(', ')}{notizen.length > 0 && `; Notiz ${notizen.join(', ')} (zählt nicht)`} – {geschichtenIn(g)} von 5.</li>;
+        })}
+      </ul>
+      <p>Die Ankunftssätze I1-1, I4-1 und I5-1 bleiben grau: Sie beschreiben den Hintergrund, keinen erzählten Moment. Ebenso I1-4 (ein Hochpunkt ohne Platz in der Abfolge), I4-2 (eine Meinung übers Anstellen) und I5-4, I5-5 (nur in einer Geschichte). I3-4 ist ein Grenzfall zwischen Halle und Anstehen: Es entscheidet die Stelle des Stickys in der Geschichte – hier nach dem Ankommen, wo I3 beschließt, sich anzustellen, darum Anstehen und Warten. „Im Zug“ trägt nur eine Geschichte (I3-5), bleibt aber eine Gruppe: Dort endet die Geschichte, und das Ende markiert ihr ohnehin; der Zug steht auch in der Notiz zu I2. Dass I2-4, I2-2 und I2-1 im Raster der nächsten Folie in einer Zelle stehen („Tafel, Schlange, Uhr“), ist selbst ein Beispiel für Zusammenlegen: drei Stickies, ein Moment, eine Geschichte – darum bleibt es bei 3 von 5.</p>
+    </div>
+  </Folie>
+
+  <Folie>
     <h2 id="beispiel">Kaffeebar: von den Skizzen zur Map</h2>
-    <p class="folie-satz">Skizzen beschriften, zählen – dann erst die Map.</p>
+    <p class="folie-satz">Sortiert: Gruppen als Spalten, zählen – dann die Map.</p>
     <div data-schritt class="beispiel-block">
       <div class="table-scroll">
       <table class="raster">
@@ -221,13 +311,13 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
       </ol>
     </div>
     <div class="nur-handout">
-      <p>Die Map von Tag 1 (Miro T1 · 1) ging von „Ankunft am Bahnhof, 7:31“ über „Blick auf die Schlange“ und „Reicht die Zeit bis 7:42?“ zu „Anstellen“ oder „Zum Automaten“ – der Pfeil vom Automaten zum Zug mit „?“ – und endete „im Zug, mit oder ohne Kaffee“. Heute beschriftet ihr zuerst die Skizzen. Beschriften heißt: Denselben Knoten erzählt jede Geschichte mit anderen Worten – I2 schaut „auf die Tafel, dann auf die Schlange“ (I2-4), I3 schaut, „wie es ausschaut“ (I3-1), I5 entscheidet, „wenn ich die Halle seh“ (I5-3). Ihr gebt ihm einen gemeinsamen Namen, hier „Halle: schauen, entscheiden“. Diese Namen sind die Spalten des Rasters; jede Geschichte ist eine Zeile, jede Zelle trägt die Worte der Person mit Zitat-ID. Erzählt eine Geschichte den Knoten nicht, bleibt die Zelle leer; steht er nur in der Notiz, schreibt ihr das dazu. Auf der Folie stehen I2 und I3, die anderen drei sind genauso beschriftet:</p>
+      <p>Die Map von Tag 1 (Miro T1 · 1) ging von „Ankunft am Bahnhof, 7:31“ über „Blick auf die Schlange“ und „Reicht die Zeit bis 7:42?“ zu „Anstellen“ oder „Zum Automaten“ – der Pfeil vom Automaten zum Zug mit „?“ – und endete „im Zug, mit oder ohne Kaffee“. Heute legt ihr zuerst zusammen (Folie davor): Denselben Knoten erzählt jede Geschichte mit anderen Worten – I2 schaut „auf die Tafel, dann auf die Schlange“ (I2-4), I3 schaut, „wie es ausschaut“ (I3-1), I5 entscheidet, „wenn ich die Halle seh“ (I5-3). Ihr gebt ihm einen gemeinsamen Namen, hier „Halle: schauen, entscheiden“. Diese Namen sind die Spalten des Rasters; jede Geschichte ist eine Zeile, jede Zelle trägt die Worte der Person mit Zitat-ID. Erzählt eine Geschichte den Knoten nicht, bleibt die Zelle leer; steht er nur in der Notiz, schreibt ihr das dazu. Auf der Folie stehen I2 und I3, die anderen drei sind genauso beschriftet:</p>
       <ul>
         <li><strong>I1:</strong> Halle nur in der Notiz („Schaut erst auf die Schlange, dann auf die Uhr.“) · Umweg: „Der Automat ist halt Notlösung, aber er ist schnell.“ (I1-3) · Anstehen und Warten: – · Zug: –.</li>
         <li><strong>I4:</strong> Halle klingt nur an („Ich bin um 7:28 da, das reicht nie für die Schlange.“, I4-1) · Umweg: „Meistens ist es der Automat.“ (I4-3), „Dann halt die Brühe.“ (I4-4), Tief · I4-4 · Anstehen und Warten: – („Anstellen ist ein Glücksspiel.“, I4-2, ist eine Meinung, kein erzählter Moment; laut Notiz steht er selten an) · Zug: –.</li>
         <li><strong>I5:</strong> Halle: „Das entscheid ich, wenn ich die Halle seh.“ (I5-3) · Umweg: – · Anstehen und Warten: „Bei mehreren Bestellungen wird mir das Warten zu lang.“ (I5-6), Tief · I5-6 · Zug: –.</li>
       </ul>
-      <p>Dann zählt ihr Spalte für Spalte, in wie vielen Geschichten der Knoten vorkommt – die letzte Zeile, „Geschichten mit diesem Knoten“. Halle: 3 von 5 (I2-4, I3-1, I5-3); bei I1 und I4 steht es nur in der Notiz oder klingt in I4-1 an. Automat: 3 von 5 (I1-3, I2-3, I4-3). Anstehen und Warten: 2 von 5 (I3-2, I5-6). Zug: 1 von 5 (I3-5); bei I2 steht der Zug nur in der Notiz. Der Automat ist die Ausweichroute und beantwortet das „?“ von Tag 1; er ist kein eigener Moment, sondern ein Umweg, der in der Halle beginnt, und gehört als Pfeil auf die Map. Das Raster gibt ihm trotzdem eine eigene Spalte, weil er einen eigenen Pfeil bekommt. Neu ist das Warten, ohne zu wissen, wie lange. Anstehen und Warten nach dem Bestellen überschneiden sich in den Geschichten (I3-3 lässt offen, ob er schon bestellt hatte; das Anstehen erzählt kein Zitat, es steht nur in der Notiz zu I3) – darum ein Moment: „Ich stehe an und warte auf meinen Kaffee.“ So sieht der Schritt ‚Überschneidendes zusammenlegen‘ aus. I2-5 („Am liebsten wüsste ich einfach, wann er fertig ist.“) ist ein Wunsch, kein erzählter Moment – I2 geht an diesem Morgen zum Automaten; das Zitat stützt eine Chance, nicht den Knoten.</p>
+      <p>Dann zählt ihr Spalte für Spalte, in wie vielen Geschichten der Knoten vorkommt – die letzte Zeile, „Geschichten mit diesem Knoten“. Halle: 3 von 5 (I2-4, I3-1, I5-3); bei I1 und I4 steht es nur in der Notiz oder klingt in I4-1 an. Automat: 3 von 5 (I1-3, I2-3, I4-3). Anstehen und Warten: 2 von 5 (I3-2, I5-6). Zug: 1 von 5 (I3-5); bei I2 steht der Zug nur in der Notiz. Der Automat ist die Ausweichroute und beantwortet das „?“ von Tag 1; er ist kein eigener Moment, sondern ein Umweg, der in der Halle beginnt, und gehört als Pfeil auf die Map. Das Raster gibt ihm trotzdem eine eigene Spalte, weil er einen eigenen Pfeil bekommt. Neu ist das Warten, ohne zu wissen, wie lange. Anstehen und Warten nach dem Bestellen überschneiden sich in den Geschichten (I3-3 lässt offen, ob er schon bestellt hatte; das Anstehen selbst erzählt kein Zitat – I3-4 nennt nur seine Regel, wann er sich anstellt, und die Notiz zu I3 sagt dasselbe) – darum ein Moment: „Ich stehe an und warte auf meinen Kaffee.“ So sieht der Schritt ‚Überschneidendes zusammenlegen‘ aus. I2-5 („Am liebsten wüsste ich einfach, wann er fertig ist.“) ist ein Wunsch, kein erzählter Moment – I2 geht an diesem Morgen zum Automaten; das Zitat stützt eine Chance, nicht den Knoten.</p>
       <p>Den Tiefpunkt markiert ihr zuerst in jeder Geschichte: I2-1 beim Blick auf die Schlange in der Halle, I4-4 („Dann halt die Brühe.“) über den Automatenkaffee, also auf dem Umweg, I3-3 und I5-6 beim Anstehen und Warten. Je Moment gezählt: Die Halle trägt einen Tiefpunkt, der Umweg einen, das Anstehen und Warten zwei. Auf die Map kommt darum ein Tief mit Zahl, am Moment, auf den die meisten Tiefpunkte zeigen: ‚Tief · I3-3 · 2 von 5‘. I2-1 bleibt das Tief der Halle und I4-4 das Tief des Umwegs – beides Marken ihrer eigenen Geschichte, im Raster ohne Zahl; auf die Map kommen sie nicht – am Umweg steht nur das Zitat. Das Ende erzählt nur I3: ‚Ende · I3-5 · 1 von 5‘. Darum zwei Zählungen: ‚Geschichten mit diesem Knoten: 3 von 5‘ zählt, in wie vielen Geschichten ein Knoten vorkommt; die Zahl an der Marke (‚Tief · I3-3 · 2 von 5‘) zählt, in wie vielen Geschichten der Tiefpunkt oder das Ende dort liegt. An jedem Moment steht ein Zitat, in dem die Person Gefühl zeigt, das Gefühlswort fett. Hochpunkte gibt es auch – „Wenn der erste Schluck passt, ist der Morgen gerettet.“ (I1-4), „Das ist schön.“ (I3-6) –, aber ohne eigenen Knoten oder schwächer als der Tiefpunkt derselben Geschichte; sie stehen darum nicht auf der Map. Torres benennt die Momente neutral (Liste S. 87) und formuliert erst die obersten Chancen in Ich-Form (Abbildung S. 87); hier stehen die Momente schon in den Worten der Kundschaft.</p>
     </div>
   </Folie>
@@ -237,14 +327,14 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
     <p class="folie-satz">Erst allein, dann zu dritt, dann die Momente festlegen.</p>
     <MiroFrame name="T2 · 1 · Experience Map" />
     <ol class="gross dicht">
-      <li><strong>Allein:</strong> Skizzen auf T1 · 5 – Knoten beschriften, stärksten Moment und Ende markieren, in eurer Spalte auf T2 · 1 zusammenfügen; die Map von Tag 1 daneben. <Timer minuten={12} /></li>
+      <li><strong>Allein:</strong> Eure Skizzen liegen als Kopie in eurer Spalte auf T2 · 1 – Gleiches zusammenschieben und benennen, zählen, zur Map verbinden, Marken mitnehmen; die Map von Tag 1 (T1 · 1) zum Vergleich. <Timer minuten={12} /></li>
       <li data-schritt><strong>Zu dritt:</strong> Reihum die eigene Spalte auf T2 · 1 zeigen – alle schauen auf dem Board mit; die anderen fragen nach, ohne die eigene Map zu verteidigen. <Timer minuten={10} /></li>
       <li data-schritt><strong>Momente festlegen:</strong> Überschneidendes zusammenlegen; drei bis fünf in den Worten der Kundschaft, je ein Zitat mit ID – möglichst mit Gefühl, Gefühlswort fett. Marken: <span class="nw">‚Tief · I3-3 · 2 von 5‘</span>. <Timer minuten={8} /></li>
       <li data-schritt><strong>Prüfen (5 min, nächste Folie):</strong> Prüfliste allein, dann Claude mit einem Bild eurer Spalte – so geht’s unter <a href="#pruefen">Prüfen</a>.</li>
     </ol>
     <div class="small muted nvm">N von M: in N von M Geschichten (M = alle eure Geschichten, bei drei synthetischen: von 3).</div>
     <div class="nur-handout">
-    <p>12 + 10 + 8 + 5 sind 35 Minuten; dazu gut 20 Minuten Theorie und Kaffeebar gemeinsam. Alle Maps liegen auf demselben Board, jede*r in der eigenen Spalte von T2 · 1; zum Zeigen teilt niemand den Bildschirm, alle schauen auf dem Board mit. Bei Torres teilt ein Trio seine Maps, um eine gemeinsame Map für ein Produkt zu bauen (S. 55–56). Ihr habt drei Produkte und fügt nichts zusammen; wir übernehmen nur die Regeln fürs Zeigen: fragen, auf Unterschiede achten, nicht verteidigen (S. 55). Die anderen kennen eure Kundschaft nicht – sie sehen aber, wo ein Knoten euer Produkt zeigt, wo der Umweg fehlt und wo sich Momente überschneiden. Überschneidendes zusammenlegen folgt Torres: ähnliche Knoten zusammenlegen (S. 56), Momente ohne Überschneidung (S. 86–87). Torres hängt an jeden Schritt den Kontext – was die Person denkt, fühlt, tut, möglichst als Bild ({TORRES}, S. 56). Hier trägt das Zitat diesen Kontext: Wählt je Moment das Zitat, in dem die Person selbst Gefühl zeigt, und setzt das Gefühlswort fett. Die Marken tragen die Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt; zeigen gleich viele Geschichten auf zwei Momente, markiert ihr beide, je mit Zahl. Erzählt niemand ein Gefühl, schreibt ‚Gefühl: nicht erzählt‘ – das ist eine Frage für das nächste Interview. Das Gefühl bleibt am Moment und wird kein eigener Knoten und keine Chance (S. 95). Fett statt Smiley ist eine Regel dieses Kurses. Drei bis fünf ist ein Richtwert dieses Kurses; Torres’ Beispiel hat vier Momente (S. 87). Der Tiefpunkt bleibt ein Moment („Ich stehe an und warte auf meinen Kaffee.“), kein Gefühl („Ich bin gestresst“) – ein Gefühl zeigt auf eine Ursache (S. 95). Die Map entsteht auf Miro in eurer Spalte von T2 · 1 und bleibt dort, eine Datei dazu gibt es nicht; jeder Moment und jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg. Zum Prüfen geht ihr erst die Prüfliste durch und gebt Claude dann ein Bild eurer Map (unten unter „Prüfen“).</p>
+    <p>In der Pause kopiert Markus eure Skizzen von T1 · 5 in eure Spalte auf T2 · 1 (Zone „Schritt 1: Gleiches zusammenlegen“), Stickies und Pfeile; eine Skizze als Foto kopiert, wer sie gemacht hat. 12 + 10 + 8 + 5 sind 35 Minuten; dazu gut 20 Minuten Theorie und Kaffeebar gemeinsam. Alle Maps liegen auf demselben Board, jede*r in der eigenen Spalte von T2 · 1; zum Zeigen teilt niemand den Bildschirm, alle schauen auf dem Board mit. Bei Torres teilt ein Trio seine Maps, um eine gemeinsame Map für ein Produkt zu bauen (S. 55–56). Ihr habt drei Produkte und fügt nichts zusammen; wir übernehmen nur die Regeln fürs Zeigen: fragen, auf Unterschiede achten, nicht verteidigen (S. 55). Die anderen kennen eure Kundschaft nicht – sie sehen aber, wo ein Knoten euer Produkt zeigt, wo der Umweg fehlt und wo sich Momente überschneiden. Überschneidendes zusammenlegen folgt Torres: ähnliche Knoten zusammenlegen (S. 56), Momente ohne Überschneidung (S. 86–87). Torres hängt an jeden Schritt den Kontext – was die Person denkt, fühlt, tut, möglichst als Bild ({TORRES}, S. 56). Hier trägt das Zitat diesen Kontext: Wählt je Moment das Zitat, in dem die Person selbst Gefühl zeigt, und setzt das Gefühlswort fett. Die Marken tragen die Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt; zeigen gleich viele Geschichten auf zwei Momente, markiert ihr beide, je mit Zahl. Erzählt niemand ein Gefühl, schreibt ‚Gefühl: nicht erzählt‘ – das ist eine Frage für das nächste Interview. Das Gefühl bleibt am Moment und wird kein eigener Knoten und keine Chance (S. 95). Fett statt Smiley ist eine Regel dieses Kurses. Drei bis fünf ist ein Richtwert dieses Kurses; Torres’ Beispiel hat vier Momente (S. 87). Der Tiefpunkt bleibt ein Moment („Ich stehe an und warte auf meinen Kaffee.“), kein Gefühl („Ich bin gestresst“) – ein Gefühl zeigt auf eine Ursache (S. 95). Die Map entsteht auf Miro in eurer Spalte von T2 · 1 und bleibt dort, eine Datei dazu gibt es nicht; jeder Moment und jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg. Zum Prüfen geht ihr erst die Prüfliste durch und gebt Claude dann ein Bild eurer Map (unten unter „Prüfen“).</p>
     </div>
   </Folie>
 
@@ -320,6 +410,38 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
     .map > li + li::before { content: '↓' / ''; left: 50%; top: -1.4rem; }
     .raster { table-layout: auto; min-width: 34rem; }
   }
+  /* Folie „gruppieren“: fünf Skizzen als Reihen von Stickies. Schritt 1 (.gruppen-an) färbt sie nach Gruppe, die
+     übrigen werden grau; im Handout (kein Beamer) sind die Farben gleich da. Farbe trägt nie allein: Buchstabe A–D. */
+  .g-a { --g: var(--blue); --g-soft: var(--blue-soft); }
+  .g-b { --g: var(--yellow-ink); --g-soft: var(--yellow-soft); }
+  .g-c { --g: var(--purple); --g-soft: var(--purple-soft); }
+  .g-d { --g: var(--cyan); --g-soft: var(--cyan-soft); }
+  .skizzen { display: flex; flex-direction: column; gap: .5rem; margin: .4rem 0 0; }
+  .skizze { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); align-items: center; }
+  .skizze-i { font-family: var(--mono); font-weight: 700; font-size: .9rem; }
+  .stickies { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+  :global(.content) .stickies > li { margin: 0; }
+  .sticky { position: relative; display: inline-flex; align-items: baseline; gap: .3rem; padding: .2rem .42rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .8rem; line-height: 1.25; white-space: nowrap; transition: background-color .2s, border-color .2s, opacity .2s; }
+  .sticky + .sticky::before { content: '→' / ''; position: absolute; left: -.85rem; color: var(--muted); }
+  .sticky.notiz { border-style: dashed; border-color: var(--muted); }
+  .sticky .id { color: var(--muted); font-size: .9em; }
+  .sticky .pill { font-size: .85em; line-height: 1.2; padding: .05rem .35rem; }
+  .g-buchstabe { font-family: var(--mono); font-weight: 700; font-size: .85em; color: var(--g); }
+  /* Am Sticky als Eckmarke, ohne eigenen Platz: Beim Aufdecken verschiebt sich nichts. */
+  .sticky .g-buchstabe { visibility: hidden; position: absolute; top: -.5rem; left: -.35rem; font-size: .6rem; line-height: 1; padding: .1rem .22rem; border-radius: 3px; background: var(--g); color: var(--bg-2); }
+  /* Gruppen sichtbar: im Handout immer, im Beamer ab dem ersten Schritt. */
+  :global(html:not([data-beamer])) .sticky.gruppiert,
+  .gruppen:has(.gruppen-an.gezeigt) .sticky.gruppiert { background: var(--g-soft); border-color: var(--g); }
+  :global(html:not([data-beamer])) .sticky .g-buchstabe,
+  .gruppen:has(.gruppen-an.gezeigt) .sticky .g-buchstabe { visibility: visible; }
+  :global(html:not([data-beamer])) .sticky:not(.gruppiert),
+  .gruppen:has(.gruppen-an.gezeigt) .sticky:not(.gruppiert) { background: var(--code-bg); color: var(--muted); opacity: .6; }
+  .gruppen-an { margin: .5rem 0 0; }
+  .gruppen-legende { list-style: none; margin: .45rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem .5rem; font-size: .8rem; }
+  :global(.content) .gruppen-legende > li { margin: 0; padding: .15rem .45rem; border-radius: var(--radius); }
+  .gruppen-legende .gruppiert { background: var(--g-soft); border: 1px solid var(--g); font-weight: 600; }
+  .gruppen-legende .grau { background: var(--code-bg); color: var(--muted); }
+  .regel { margin: .55rem 0 0; max-width: none; }
   /* Folie „momente“: die vier Momente aus Torres' Experience Map über der Abbildung, ein Schritt pro Ast. */
   .momente-reihe { list-style: none; margin: 0 0 .5rem; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.3rem; font-size: .85rem; line-height: 1.25; }
   .momente-reihe li { position: relative; display: flex; align-items: center; justify-content: center; text-align: center; padding: .35rem .4rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-2); }
