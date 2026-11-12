@@ -377,7 +377,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       schritte: [
         'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
-        'Gegenlesen reihum (12 min, Timer auf der Folie Anti-Muster): je Baum vier Minuten, Sofie, Joachim, Hewen. 1 min still lesen; wer als Nächstes dran ist, nimmt die Anti-Muster 1–3, die dritte Person 4–6. Je eine Karte zeigen, Nummer nennen, fragen. Wem der Baum gehört, antwortet in einem Satz und entscheidet laut: ändern, Zettel „Nächstes Interview: …“ oder lassen (Kursformat; Fragen statt urteilen nach Torres S. 55).',
+        'Gegenlesen reihum (12 min, Timer auf der Folie Anti-Muster): je Baum vier Minuten, Sofie, Joachim, Hewen. 1 min still lesen; wer in der Runde Sofie → Joachim → Hewen → Sofie als Nächstes kommt, nimmt die Anti-Muster 1–3, die dritte Person 4–6. Je eine Karte zeigen, Nummer nennen, fragen. Wem der Baum gehört, antwortet in einem Satz und entscheidet laut: ändern, Zettel „Nächstes Interview: …“ oder lassen (Kursformat; Fragen statt urteilen nach Torres S. 55).',
         'Prüfen (5 min): erst die Funde vom Gegenlesen einarbeiten, dann Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 3.',
       ],
       achten: [
@@ -399,7 +399,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Timer 12 min starten; Reihenfolge Sofie, Joachim, Hewen.',
       'Je Baum: alle in den Frame holen, 1 min still lesen.',
-      'Nächste*r sucht Muster 1–3, die dritte Person 4–6; je eine Karte.',
+      'Wem der Baum gehört: ein Satz, bei welchem Ast unsicher.',
+      'Runde S → J → H → S: Nächste*r 1–3, dritte Person 4–6.',
       'Zeigen, Nummer nennen, fragen – keinen Ersatztext vorschlagen.',
       '„Nicht verteidigen. Sag laut: ändern, Zettel oder lassen.“',
       'Bei 8:00 und 4:00 Rest: wechseln, auch mitten im Satz.',
