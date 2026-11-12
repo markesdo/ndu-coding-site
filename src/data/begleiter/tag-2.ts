@@ -194,7 +194,7 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
         quelle: 'Kursablauf Innolab, Tag 2',
       },
     ],
-    ueberleitung: 'An Tag 3 seht ihr, was daraus wird. Jetzt die Checkliste für heute.',
+    ueberleitung: 'Jetzt die Checkliste für heute.',
   },
   abschluss: {
     live: [
