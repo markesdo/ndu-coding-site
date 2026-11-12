@@ -1,12 +1,12 @@
 // Antwortrunde: Studierende schicken einen Satz über die Seite (api/antworten.ts; Rückfall: reihum laut). Bis zum Aufdecken
 // zeigt die Seite nur, welche Rollen geantwortet haben; die Texte gibt der Server erst heraus, wenn die Auflösung der Runde
 // für alle offen ist – dieselbe Kennung wie <Aufloesung gruppe=…> (lib/aufgedeckt.ts), also ein Klick des Präsentators für
-// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (bei Netflix drei) – wer abschickt, überschreibt
+// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (bei Netflix und „zwoelf“ je drei) – wer abschickt, überschreibt
 // den Platz seiner Rolle. Keine Client-ids, kein Index, keine Listen: Die Zahl der Schlüssel ist fest, der Text begrenzt.
 // Hier ohne DOM und ohne Vercel, damit testbar. .js-Endungen: api/antworten.ts lädt das per Node-ESM.
 import { wienerZeit } from '../components/jetzt.js';
 import { AUFGEDECKT_TTL_SEKUNDEN, gruppeFrei } from './aufgedeckt.js';
-import { NACH_NETFLIX } from '../components/innolab-zeiten.js';
+import { NACH_NETFLIX, NACH_ZWOELF } from '../components/innolab-zeiten.js';
 
 export interface Rolle { id: string; label: string }
 export interface Runde {
@@ -14,21 +14,23 @@ export interface Runde {
   kennung: string;
   /** Rückfall wie <Aufloesung ab=…>: ab dann sind die Texte auch ohne Aufdecken frei. */
   ab: string;
-  /** Ein Platz pro Rolle. Eine Runde ohne echte Rollen (z. B. „zwoelf“) bekommt Plätze wie „person-1“ … „person-3“. */
+  /** Ein Platz pro Rolle. Eine Runde ohne echte Rollen bekäme Plätze wie „person-1“ … „person-3“. */
   rollen: readonly Rolle[];
 }
 
+/** Die drei Rollen aus Torres' Netflix-Beispiel (S. 75); Tag 2 nutzt sie für beide Runden. */
+const DREI_ROLLEN: readonly Rolle[] = [
+  { id: 'produktmanagement', label: 'Produktmanagement' },
+  { id: 'design', label: 'Design' },
+  { id: 'entwicklung', label: 'Entwicklung' },
+];
+
 /** Erlaubte Runden – nur was hier steht, nimmt der Server an. Weitere Übungen hier eintragen. */
 export const RUNDEN: Readonly<Record<string, Runde>> = {
-  netflix: {
-    kennung: 'netflix',
-    ab: NACH_NETFLIX,
-    rollen: [
-      { id: 'produktmanagement', label: 'Produktmanagement' },
-      { id: 'design', label: 'Design' },
-      { id: 'entwicklung', label: 'Entwicklung' },
-    ],
-  },
+  /** Tag 2, Synthese: Was hört eure Rolle in der Netflix-Geschichte? */
+  netflix: { kennung: 'netflix', ab: NACH_NETFLIX, rollen: DREI_ROLLEN },
+  /** Tag 2, Baum: Welche der zwölf Chancen zuerst? Nummer und ein Satz, aufgedeckt auf „warum“. */
+  zwoelf: { kennung: 'zwoelf', ab: NACH_ZWOELF, rollen: DREI_ROLLEN },
 };
 
 /** Höchstens so viele Zeichen pro Satz – drei davon passen auf „warum“ bei 720p. */

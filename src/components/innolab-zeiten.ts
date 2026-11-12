@@ -20,3 +20,7 @@ export const NACH_INTUIT = '2026-11-21T17:00';
 /** Rückfall für die Netflix-Auflösung an Tag 2 (Interview-Synthese, Folie „warum“): Ende des Kurstags. Aufgedeckt wird
  *  per Klick des Präsentators wie beim Toast; vorher sollen alle ihren eigenen Satz abgeschickt haben. */
 export const NACH_NETFLIX = '2026-11-12T18:00';
+
+/** Rückfall für die Antwortrunde „Zwölf Chancen“ an Tag 2 (Baum, Folie „warum“): Ende des Kurstags. Aufgedeckt wird per
+ *  Klick des Präsentators wie bei Netflix; vorher sollen alle ihre Nummer mit Satz abgeschickt haben. */
+export const NACH_ZWOELF = '2026-11-12T18:00';

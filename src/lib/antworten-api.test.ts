@@ -70,11 +70,28 @@ describe('api/antworten', () => {
     expect([...daten.keys()].filter((k) => k.startsWith('antwort:'))).toHaveLength(3);
   });
 
+  it('Runde „zwoelf“ (Baum) getrennt von Netflix: eigene Plätze, eigenes Aufdecken', async () => {
+    const zwoelf = (rolle: string, text: string) => senden({ runde: 'zwoelf', rolle, text });
+    const zwoelfLesen = async () => (await GET(new Request(`${URL_API}?runde=zwoelf`))).json();
+    vi.setSystemTime(new Date('2026-11-12T15:40:00Z')); // 16:40 Wien, Baum läuft
+    expect((await antwort('design', 'Netflix-Satz')).status).toBe(200);
+    expect((await zwoelf('design', '3 – die Suche')).status).toBe(200);
+    expect((await zwoelf('entwicklung', '11 – schnell gebaut')).status).toBe(200);
+    aufdecken(); // Netflix aufgedeckt – „zwoelf“ bleibt zu
+    expect(await zwoelfLesen()).toStrictEqual({ anzahl: 2, vergeben: ['design', 'entwicklung'], frei: false });
+    expect((await lesen()).antworten).toStrictEqual([{ rolle: 'design', text: 'Netflix-Satz' }]);
+    daten.set(aufgedecktSchluessel('zwoelf', new Date()), true);
+    expect((await zwoelfLesen()).antworten).toStrictEqual([
+      { rolle: 'design', text: '3 – die Suche' },
+      { rolle: 'entwicklung', text: '11 – schnell gebaut' },
+    ]);
+  });
+
   it('ungültige Eingaben: 400/413, nichts gespeichert', async () => {
     expect((await antwort('marketing', 'x')).status).toBe(400);
     expect((await antwort('design', 'x'.repeat(121))).status).toBe(400);
     expect((await antwort('design', '   ')).status).toBe(400);
-    expect((await senden({ runde: 'zwoelf', rolle: 'design', text: 'x' })).status).toBe(400);
+    expect((await senden({ runde: 'gibtsnicht', rolle: 'design', text: 'x' })).status).toBe(400);
     expect((await senden('kein json')).status).toBe(400);
     expect((await senden({ runde: 'netflix', rolle: 'design', text: 'x', pad: 'x'.repeat(5000) })).status).toBe(413);
     expect((await GET(new Request(`${URL_API}?runde=gibtsnicht`))).status).toBe(400);
