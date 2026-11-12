@@ -123,6 +123,11 @@ export const ANTWORTEN_FREI_MS = 30_000;
 export const MAX_BODY = 4096;
 /** Studierende fragen so oft nach, solange die Folie zu sehen ist … */
 export const ANTWORTEN_MS = 4000;
+
+/** Event auf document nach jeder Abfrage einer Runde (Antwortrunde.astro), einmal pro Ergebnis: Folien können darauf
+ *  reagieren, ohne selbst zu fragen (z. B. „warum“ in baum.astro markiert gewählte Nummern). texte nur nach dem Aufdecken. */
+export const ANTWORTRUNDE_STAND = 'antwortrunde:stand';
+export interface AntwortrundeStand { runde: string; frei: boolean; texte: string[] }
 /** … und geben eine hängende Anfrage nach so langer Zeit auf. */
 export const ANTWORTEN_TIMEOUT_MS = 3000;
 

@@ -78,7 +78,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Fragen, ob eure drei Chancen auf derselben Ebene stehen, dann den letzten Satz aufdecken.',
       ],
       achten: [
-        'Nur sortieren, was Torres sortiert: 10 und 11 nicht unter 9 hängen – ihre Teilchancen von 9 sind anders formuliert (S. 84–85). 4, 6, 8 und 10 bleiben offen.',
+        'Falle: 9 und 11 stehen nur zum Größenvergleich nebeneinander – keine Gruppe, 11 hängt nicht unter 9.',
+        'Nur sortieren, was Torres sortiert: ihre Teilchancen von 9 sind anders formuliert (S. 84–85); 4, 6, 8 und 10 bleiben offen.',
         'Wer 4, 6, 8 oder 10 gewählt hat: „Die sortiert Torres nicht – woran würdest du erkennen, wozu sie gehört?“ (Kursfrage, nicht einsortieren).',
       ],
       aufloesung: 'Meist nicht: 1 ist übergeordnet, 2, 3 und 5 sind Teilchancen davon, 7 und 12 Geschwister. Ihr habt Verschiedenartiges verglichen. Torres: „It’s hard to answer these questions when prioritizing opportunities of different shapes and sizes against each other“ (S. 82).',
