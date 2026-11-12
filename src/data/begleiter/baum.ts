@@ -163,9 +163,10 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   'drei-fragen': {
     live: [
-      'Zeile für Zeile: alle beantworten die drei Fragen laut.',
-      'Erst nach der letzten Zeile aufdecken.',
-      'Fragen: Was steckt hinter „per App vorbestellen“?',
+      'Pro Zeile: eine Person beantwortet die drei Fragen laut.',
+      'Beim ersten Nein: „Stopp“ – die Zeile ist fertig.',
+      'Die anderen: dafür oder dagegen? Erst dann die Zeile aufdecken.',
+      'Zeile 1 vor dem Aufdecken: Was steckt hinter „per App vorbestellen“?',
       '„Nur bei einer Person? Ins Feld ‚Nur in einem Interview‘ – kann wiederkommen.“',
       'Mehrmals: dasselbe Bedürfnis im zweiten Interview, auch anders formuliert.',
     ],
@@ -176,8 +177,11 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Pro Zeile die drei Fragen in die Runde stellen, Antworten laut sammeln.',
-        'Nach der letzten Zeile den Schritt aufdecken: Dann erscheinen alle Antworten.',
+        'Pro Zeile führt eine Person, reihum: die drei Fragen der Reihe nach laut beantworten, beim ersten Nein stoppen, dann sagen, wohin die Zeile kommt.',
+        'Die anderen zwei sagen „dafür“ oder „dagegen“. Erst dann den Schritt aufdecken: Die Antworten dieser Zeile erscheinen.',
+        'Zeile 1: vor dem Aufdecken fragen, welches Bedürfnis hinter der Lösung steckt. Zeile 2 ist dann dieses Bedürfnis, neu geprüft.',
+        'Zeilen 4 und 5 gehen schnell: Es reicht, wohin die Zeile kommt, mit einem Satz Begründung.',
+        'Letzter Schritt: Das Ergebnis erscheint. Überleiten zu den eigenen Snapshots.',
       ],
       aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, verpasse ich den Zug“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): ins Feld „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
     },
@@ -195,7 +199,27 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 88, 90, 94–95`,
       },
     ],
-    ueberleitung: 'Was durchkommt, wird jetzt geordnet: Ast für Ast.',
+    ueberleitung: 'Was durchkommt, wird jetzt geordnet. Gruppiert habt ihr schon einmal – bei der Map.',
+  },
+
+  'map-baum': {
+    live: [
+      'Frag: Haben wir das nicht schon bei der Map gemacht?',
+      'Map: derselbe Moment. Baum: dasselbe Bedürfnis oder Geschwister.',
+      'Aufdecken: Kaffeebar-Zeile, dann I4-2 – dasselbe Zitat, andere Frage.',
+    ],
+    verstaendnis: {
+      frage: 'Auf der Experience Map habt ihr schon gruppiert. Was ist beim Baum anders?',
+      antwort: 'Auf der Map legt ihr Knoten zusammen, die denselben Moment der Geschichte meinen, über alle Geschichten (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe meint, wird eine Chance; Geschwister bekommen eine übergeordnete Chance (S. 89–90). Kaffeebar: „Anstellen ist ein Glücksspiel.“ (I4-2) blieb auf der Map grau, im Baum belegt es „Wenn ich anstehe, verpasse ich meinen Zug.“',
+      falsch: '„Dasselbe wie vorhin, nur mit anderen Karten“ – die Map fragt nach dem Moment, der Baum nach dem Bedürfnis. Neu ist die Ebene darüber: die übergeordnete Chance.',
+    },
+    kern: [
+      {
+        text: 'Gegenüberstellung des Kurses: Map gruppiert Knoten nach demselben Moment über alle Geschichten; Baum gruppiert Chancen innerhalb eines Astes nach demselben Bedürfnis oder als Geschwister unter einer übergeordneten Chance.',
+        quelle: `${TORRES}, S. 56, 87, 89–90; Gegenüberstellung: Kurs`,
+      },
+    ],
+    ueberleitung: 'Jetzt Ast für Ast: Geschwister finden, übergeordnete Chance ergänzen.',
   },
 
   struktur: {
