@@ -163,7 +163,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
           <div class="skizze">
             <span class="skizze-i">{s.i}</span>
             <ol class="stickies" aria-label={`Skizze ${s.i}, Stickies in der Reihenfolge der Geschichte`}>
-              {s.stickies.map((st, k) => (
+              {s.stickies.map((st) => (
                 <li>
                   <span class:list={['sticky', st.g && `gruppiert g-${st.g}`, { notiz: st.notiz }]}>
                     {st.g && <span class="g-buchstabe" aria-hidden="true">{buchstabe(st.g)}</span>}
@@ -173,14 +173,13 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
                       : <span class="id">{st.id}</span>}
                     <span class="sr-only">{st.g ? `(Gruppe ${buchstabe(st.g)}: ${gruppeName(st.g)})` : '(grau: bleibt im Snapshot)'}</span>
                   </span>
-                  {k < s.stickies.length - 1 && <span class="pfeil" aria-hidden="true">→</span>}
                 </li>
               ))}
             </ol>
           </div>
         ))}
       </div>
-      <p data-schritt class="gruppen-an small muted">Gleiche Farbe, gleicher Buchstabe: derselbe Moment der Geschichte.</p>
+      <p data-schritt class="gruppen-an sr-only">Gleiche Farbe, gleicher Buchstabe: derselbe Moment der Geschichte.</p>
       <div data-schritt class="gruppen-legende-block">
         <ul class="gruppen-legende">
           {GRUPPEN.map(({ g, name }) => <li class={`gruppiert g-${g}`}><span class="g-buchstabe" aria-hidden="true">{buchstabe(g)}</span> {name}</li>)}
@@ -375,34 +374,34 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
   .g-b { --g: var(--yellow-ink); --g-soft: var(--yellow-soft); }
   .g-c { --g: var(--purple); --g-soft: var(--purple-soft); }
   .g-d { --g: var(--cyan); --g-soft: var(--cyan-soft); }
-  .skizzen { display: flex; flex-direction: column; gap: .5rem; margin: .4rem 0 0; }
-  .skizze { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); align-items: center; }
-  .skizze-i { font-family: var(--mono); font-weight: 700; font-size: .9rem; }
-  .stickies { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem .45rem; }
-  /* Der Pfeil hängt am Ende des Stickys davor: Bricht die Reihe um, beginnt die neue Zeile mit einem Sticky. */
-  :global(.content) .stickies > li { margin: 0; display: inline-flex; align-items: center; gap: .45rem; max-width: 100%; }
-  .pfeil { color: var(--muted); }
-  .sticky { position: relative; display: inline-flex; align-items: baseline; gap: .3rem; padding: .2rem .42rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .8rem; line-height: 1.25; white-space: nowrap; transition: background-color .2s, border-color .2s, opacity .2s; }
+  /* Jede Geschichte ein Band mit Haarlinie: Umbrüche innerhalb einer Geschichte liegen enger als der Abstand zur nächsten. */
+  .skizzen { display: flex; flex-direction: column; margin: .4rem 0 0; }
+  .skizze { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); align-items: start; padding: .3rem 0; }
+  .skizze + .skizze { border-top: 1px solid var(--border); }
+  .skizze-i { font-family: var(--mono); font-weight: 700; font-size: .9rem; padding-top: .1rem; }
+  .stickies { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; row-gap: .25rem; }
+  /* Der Pfeil steht vor dem Sticky: Bricht die Reihe um, beginnt die neue Zeile mit „→“, keiner hängt am Zeilenende. */
+  :global(.content) .stickies > li { margin: 0; display: inline-flex; align-items: center; max-width: 100%; }
+  .stickies > li + li::before { content: '→' / ''; margin: 0 .25rem; color: var(--muted); }
+  .sticky { position: relative; display: inline-flex; align-items: center; gap: .25rem; padding: .1rem .35rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .82rem; line-height: 1.25; white-space: nowrap; transition: background-color .2s, border-color .2s, opacity .2s; }
   .sticky.notiz { border-style: dashed; border-color: var(--muted); }
-  .sticky .id { color: var(--muted); font-size: .9em; }
-  .sticky .pill { font-size: .85em; line-height: 1.2; padding: .05rem .35rem; }
+  .sticky .id { color: var(--muted); font-size: .72rem; }
+  .sticky .pill { font-size: .72rem; line-height: 1.2; padding: .05rem .35rem; }
   .g-buchstabe { font-family: var(--mono); font-weight: 700; font-size: .85em; color: var(--g); }
-  /* Am Sticky als Eckmarke, ohne eigenen Platz: Beim Aufdecken verschiebt sich nichts. */
-  .sticky .g-buchstabe { visibility: hidden; position: absolute; top: -.5rem; left: -.35rem; font-size: .6rem; line-height: 1; padding: .1rem .22rem; border-radius: 3px; background: var(--g); color: var(--bg-2); }
-  /* Gruppen sichtbar: im Handout immer, im Beamer ab dem ersten Schritt. */
+  /* Buchstabe als kleines Quadrat vorn im Sticky; vor dem Aufdecken nur unsichtbar, damit sich kein Umbruch verschiebt. */
+  .sticky .g-buchstabe { visibility: hidden; flex: none; display: inline-grid; place-items: center; width: 1rem; height: 1rem; font-size: .65rem; line-height: 1; border-radius: 3px; background: var(--g); color: var(--bg-2); }
+  /* Gruppen sichtbar: im Handout immer, im Beamer ab dem ersten Schritt (.gruppen-an, nur für Screenreader sichtbar). */
   :global(html:not([data-beamer])) .sticky.gruppiert,
   .gruppen:has(.gruppen-an.gezeigt) .sticky.gruppiert { background: var(--g-soft); border-color: var(--g); }
   :global(html:not([data-beamer])) .sticky .g-buchstabe,
   .gruppen:has(.gruppen-an.gezeigt) .sticky .g-buchstabe { visibility: visible; }
   :global(html:not([data-beamer])) .sticky:not(.gruppiert),
   .gruppen:has(.gruppen-an.gezeigt) .sticky:not(.gruppiert) { background: var(--code-bg); color: var(--muted); }
-  .gruppen-an { margin: .5rem 0 0; }
   /* Schmal (Handy, Container statt Fenster): Text im Sticky darf umbrechen, die ID bleibt beisammen. */
   .gruppen { container: gruppen / inline-size; }
   @container gruppen (max-width: 560px) {
-    .skizze { grid-template-columns: 1.9rem minmax(0, 1fr); align-items: start; }
-    .skizze-i { padding-top: .25rem; }
-    .sticky { white-space: normal; flex-wrap: wrap; row-gap: .1rem; }
+    .skizze { grid-template-columns: 1.9rem minmax(0, 1fr); }
+    .sticky { min-width: 0; white-space: normal; flex-wrap: wrap; row-gap: .1rem; }
     .sticky .id, .sticky .pill { white-space: nowrap; }
   }
   .gruppen-legende { list-style: none; margin: .45rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem .5rem; font-size: .8rem; }
