@@ -34,7 +34,7 @@ const karte = {
     <Block time="14:00–14:15" type="plenum" title="Claude-Check, Rückblick auf Tag 1, dann: von Geschichten zu Chancen" href="#claude-check">Connector prüfen, vier Fragen zu Tag 1, dann wo ihr steht und was heute entsteht.</Block>
     <Block time="14:15–15:15" type="uebung" title="Interview-Synthese" href="/innolab/methoden/synthese">Snapshots im Team besprechen: was gesagt wurde, was sich ändert, was ihr überhört habt.</Block>
     <Block time="15:15–15:25" type="pause" title="Pause" />
-    <Block time="15:25–16:25" type="uebung" title="Experience Map aus den Geschichten" href="/innolab/methoden/journey-map">Aus fünf Geschichten eine Map; ihre Momente werden die Äste des Baums. Stärkster Moment (Hoch- oder Tiefpunkt) und Ende.</Block>
+    <Block time="15:25–16:25" type="uebung" title="Experience Map aus den Geschichten" href="/innolab/methoden/journey-map">Aus euren Geschichten eine Map; ihre Momente werden die Äste des Baums. Stärkster Moment und Ende markiert, mit Zitat-ID und Zahl.</Block>
     <Block time="16:25–16:35" type="pause" title="Pause" />
     <Block time="16:35–17:50" type="uebung" title="Opportunity Solution Tree" href="/innolab/methoden/baum">Chancen aus den Snapshots unter die Momente hängen, ordnen, Anti-Muster prüfen.</Block>
     <Block time="17:50–18:00" type="plenum" title="Abschluss" href="/innolab/tag-2/abschluss">Entscheidungslog, Checkliste, Ausblick auf Tag 3.</Block>
@@ -44,12 +44,13 @@ const karte = {
   <Folie>
     <h2 id="claude-check">Claude startklar? (2 min)</h2>
     <p class="folie-satz">Ohne Abo geht’s auch – mit einem Connector.</p>
+    <p><Timer minuten={2} /></p>
     <ol class="gross">
       <li data-schritt><strong>Nachsehen:</strong> in claude.ai unten links am Eingabefeld „+“ → Connectors. Steht {CONNECTOR_NAME} dort und ist an? Im Free-Plan geht genau ein eigener Connector – das muss die Werkstatt sein.</li>
       <li data-schritt><strong>Fehlt sie:</strong> neu verbinden mit dem Knopf „Werkstatt mit Claude verbinden“ auf <a href="/innolab/werkstatt/claude#connector-anlegen">Claude verbinden</a>.</li>
       <li data-schritt><strong>Probe:</strong> „Was steht in meiner Mappe?“ – liest Claude eure Mappe, passt alles.</li>
     </ol>
-    <p data-schritt>Klappt es nicht: Der Prüf-Prompt geht auch ohne Connector – „Für Claude kopieren“ in der Werkstatt. <Timer minuten={2} /></p>
+    <p data-schritt>Klappt es nicht: Der Prüf-Prompt geht auch ohne Connector – <span style="white-space: nowrap">„Für Claude kopieren“</span> in der Werkstatt.</p>
     <div class="nur-handout">
       <p>Eure Pro-Abos aus dem Oktober sind wahrscheinlich ausgelaufen. Im Free-Plan gehen Connectors und Bilder hochladen weiter, aber nur ein eigener Connector – steht dort schon ein anderer, entfernt ihn und verbindet die Werkstatt –, und das Nutzungslimit ist enger. Claude Code braucht ein bezahltes Abo: Wo eine Seite euch zu Claude Code schickt, nehmt den Weg „Ohne Claude Code: Text in Claude einfügen“. Quelle: Claude Help Center, <a href="https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp">Get started with custom connectors using remote MCP</a>.</p>
     </div>
