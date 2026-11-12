@@ -21,6 +21,7 @@ import {
 import { rueckkehrBeobachten } from './mappe-hilfen.js';
 import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen, zeigenStartPerson } from './snapshot-hilfen.js';
 import Zeigen, { type ZeigenProps } from './Zeigen.js';
+import { fragenTaste } from './fragen-leiste.js';
 import { istKontextTaste, type KontextName } from './kontext-hilfen.js';
 import { useKontext } from './useKontext.js';
 import type { Interview } from '../schemas/index.js';
@@ -149,6 +150,15 @@ export default function LehrendenAnsicht() {
   // Kontext im Zeigen-Modus (Taste K): beim Start zu; der Reiter bleibt beim Personenwechsel.
   const [kontextOffen, setKontextOffen] = useState(false);
   const [kontextReiter, setKontextReiter] = useState<KontextName>('annahmen');
+  // Fragen-Leiste (1–4, F): beim Start Frage 1 und eingeblendet; die Frage bleibt bei Snapshot- und Personenwechsel
+  // (die Runde geht Frage für Frage), erst ein neues „Zeigen“ fängt wieder bei Frage 1 an.
+  const [frage, setFrage] = useState(0);
+  const [fragenOffen, setFragenOffen] = useState(true);
+  // Beim Ausblenden Fokus zurück in den Zeigen-Bereich: Lag er auf einem der Knöpfe 1–4, fiele er sonst auf body.
+  function fragenUmschalten() {
+    if (fragenOffen) zeigenWurzel.current?.focus();
+    setFragenOffen(!fragenOffen);
+  }
 
   const laden = useCallback(async (w: { kohorte?: string; seit?: number }) => {
     const mein = ++lauf.current;
@@ -321,6 +331,8 @@ export default function LehrendenAnsicht() {
     setZeigenId(null);
     setZeigenStand(null);
     setKontextOffen(false);
+    setFrage(0);
+    setFragenOffen(true);
     setZeigen(true);
   }
 
@@ -342,6 +354,13 @@ export default function LehrendenAnsicht() {
     if (zeigenAktiv && istKontextTaste(e)) {
       e.preventDefault();
       kontextUmschalten();
+      return;
+    }
+    const f = zeigenAktiv ? fragenTaste(e) : null;
+    if (f) {
+      e.preventDefault();
+      if (f.art === 'umschalten') fragenUmschalten();
+      else { setFrage(f.nr); setFragenOffen(true); }
       return;
     }
     const ziel = tastenZiel(e.key, { zeigen: zeigenAktiv, personen: ansicht.personen, person: leser.person, nr: zeigenNr, anzahl: zeigenIvs.length });
@@ -538,6 +557,7 @@ export default function LehrendenAnsicht() {
             meldung: neuMeldung(zeigenSicht?.vorher ?? null, zeigenSicht?.interviews ?? []),
             wurzel: zeigenWurzel,
             kontext, kontextOffen, kontextReiter, kontextUmschalten, reiterWaehlen: setKontextReiter,
+            frage, fragenOffen, frageWaehlen: setFrage, fragenUmschalten,
             personWaehlen: (k) => { setZeigenId(null); setLeser({ person: k, artefakt: 'interviews' }); },
             nrWaehlen: (i) => zeigenIvs[i] && setZeigenId(zeigenIvs[i].id),
             blaettern: (r) => zeigenIvs.length > 0 && setZeigenId(zeigenIvs[blaettern(zeigenNr, zeigenIvs.length, r)].id),

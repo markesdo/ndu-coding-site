@@ -1,13 +1,15 @@
 // Zeigen-Modus für die eigene Demo-Mappe der Lehrenden (MappeUebersicht, ?ansicht=demo): dieselbe große Ansicht wie
 // im Leser der Lehrenden (Zeigen.tsx), hier für die eigenen Interviews – etwa um ein Beispiel im Kurs groß zu zeigen.
 // Nur lesen: holt mappe/interviews.json über die eigene Mappe (api.lesen), schreibt nichts. ←/→ blättern, Esc schließt.
-// K öffnet den Kontext: Annahmen-Map und Leitfaden der Demo-Mappe (useKontext, nur die Daten).
+// K öffnet den Kontext: Annahmen-Map und Leitfaden der Demo-Mappe (useKontext, nur die Daten). 1–4 und F: Fragen-Leiste
+// wie im Leser der Lehrenden (beim Öffnen Frage 1, eingeblendet).
 import { Presentation } from 'lucide-react';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { Interview } from '../schemas/index.js';
 import { api, ApiError } from './api.js';
 import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews } from './snapshot-hilfen.js';
 import Zeigen from './Zeigen.js';
+import { fragenTaste } from './fragen-leiste.js';
 import { istKontextTaste, type KontextName } from './kontext-hilfen.js';
 import { useKontext } from './useKontext.js';
 
@@ -27,6 +29,13 @@ export default function DemoZeigen({ person }: { person: string }) {
   const [neu, setNeu] = useState(0);
   const [kontextOffen, setKontextOffen] = useState(false);
   const [kontextReiter, setKontextReiter] = useState<KontextName>('annahmen');
+  const [frage, setFrage] = useState(0);
+  const [fragenOffen, setFragenOffen] = useState(true);
+  // Beim Ausblenden Fokus zurück in den Zeigen-Bereich (Knöpfe 1–4 verschwinden), wie im Leser der Lehrenden.
+  function fragenUmschalten() {
+    if (fragenOffen) wurzel.current?.focus();
+    setFragenOffen(!fragenOffen);
+  }
   const kontext = useKontext(offen ? person : null, kontextOffen, String(neu), (name) => api.lesen(name));
   // Beim Zuklappen Fokus zurück in den Zeigen-Bereich (wie im Leser der Lehrenden), sonst kommen die Tasten nicht an.
   function kontextUmschalten() {
@@ -54,6 +63,8 @@ export default function DemoZeigen({ person }: { person: string }) {
     setStand(null);
     setId(null);
     setKontextOffen(false);
+    setFrage(0);
+    setFragenOffen(true);
     setOffen(true);
     void laden();
   }
@@ -81,6 +92,13 @@ export default function DemoZeigen({ person }: { person: string }) {
       kontextUmschalten();
       return;
     }
+    const f = fragenTaste(e);
+    if (f) {
+      e.preventDefault();
+      if (f.art === 'umschalten') fragenUmschalten();
+      else { setFrage(f.nr); setFragenOffen(true); }
+      return;
+    }
     const ziel = tastenZiel(e.key, { zeigen: true, personen: [], person, nr, anzahl: ivs.length });
     if (ziel?.art !== 'snapshot') return;
     e.preventDefault();
@@ -103,6 +121,7 @@ export default function DemoZeigen({ person }: { person: string }) {
             meldung={neuMeldung(stand?.vorher ?? null, ivs)} wurzel={wurzel}
             kontext={kontext} kontextOffen={kontextOffen} kontextReiter={kontextReiter}
             kontextUmschalten={kontextUmschalten} reiterWaehlen={setKontextReiter}
+            frage={frage} fragenOffen={fragenOffen} frageWaehlen={setFrage} fragenUmschalten={fragenUmschalten}
             personWaehlen={() => {}} nrWaehlen={(i) => ivs[i] && setId(ivs[i].id)}
             blaettern={(r) => ivs.length > 0 && setId(ivs[blaettern(nr, ivs.length, r)].id)}
             neuLaden={() => { setNeu((n) => n + 1); void laden(); }} beenden={() => setOffen(false)}

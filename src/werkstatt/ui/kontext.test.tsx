@@ -32,6 +32,7 @@ const props = (x: Partial<ZeigenProps> = {}): ZeigenProps => ({
   personen: [{ kuerzel: 'sofie', anzahl: 5 }], person: 'sofie', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null,
   stand: Date.UTC(2026, 10, 12, 13, 5), jetzt: Date.UTC(2026, 10, 12, 13, 6), meldung: '',
   kontext: kontext(), kontextOffen: true, kontextReiter: 'annahmen', kontextUmschalten: () => {}, reiterWaehlen: () => {},
+  frage: 0, fragenOffen: true, frageWaehlen: () => {}, fragenUmschalten: () => {},
   personWaehlen: () => {}, nrWaehlen: () => {}, blaettern: () => {}, neuLaden: () => {}, beenden: () => {}, ...x,
 });
 const zeigen = (x: Partial<ZeigenProps> = {}) => renderToStaticMarkup(<Zeigen {...props(x)} />);
