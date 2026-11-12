@@ -294,6 +294,16 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         'Höchstens drei Befunde, je mit Zitat und Frage; die Frage selbst beantworten.',
       ],
     },
+    ueberleitung: 'Befunde da? Dann: Was macht ihr damit?',
+  },
+
+  'nach-pruefen': {
+    live: [
+      'Ein Befund reicht; der Rest ist Hausaufgabe bis Tag 3.',
+      'Befund ist Vermutung: am Zitat prüfen, ob er stimmt.',
+      'Nachfragen nur nach Belegen, nie nach Formulierungen.',
+      'Lassen ist erlaubt – mit Zeile im Log.',
+    ],
     ueberleitung: 'Zum Schluss des Blocks: eine Frage an eure Map.',
   },
 
@@ -301,6 +311,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     live: [
       'Fragen: Was steht jetzt auf eurer Map, das an Tag 1 fehlte?',
       'Reihum, je ein Knoten.',
+      'Reihum: Befund und Entscheidung, je ein Satz.',
       'Wenn nichts: Geschichten nachgezeichnet oder alte Map abgehakt?',
       'Ist-Zeit notieren.',
     ],
