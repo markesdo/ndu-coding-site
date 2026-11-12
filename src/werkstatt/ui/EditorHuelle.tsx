@@ -11,6 +11,7 @@ import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldf
 import { DEMO_HREF, MAPPE_DEMO } from '../../lib/nav-rolle.js';
 import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
+import { adresseOhneBearbeiten, direktOeffnen, mitBearbeiten } from './bearbeiten-link.js';
 import { StudierendenFeedback } from './Feedback.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
@@ -57,6 +58,9 @@ function mitkopierenLesen(): boolean {
 function mitkopierenSichern(an: boolean): void {
   try { localStorage.setItem(MITKOPIEREN_SCHLUESSEL, an ? '1' : '0'); } catch { /* bleibt nur für diesen Aufruf */ }
 }
+// Direktlink (?bearbeiten=…, bearbeiten-link.ts): höchstens eine Hülle je Seitenaufruf öffnet sich von selbst.
+let direktVerbraucht = false;
+
 const istPraesentator = () => typeof document !== 'undefined' && document.documentElement.hasAttribute('data-ist-praesentator');
 
 export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild, formular, alsMarkdown }: EditorHuelleProps<N>) {
@@ -92,6 +96,9 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const [aelterEntwurf, setAelterEntwurf] = useState<DatenVon<N> | null>(null);
   // Stand des Servers (ohne Entwurf) für das Formular.
   const [gespeichert, setGespeichert] = useState<DatenVon<N> | null>(null);
+  // Von selbst geöffnet (Direktlink): Der Parameter ist dann schon aus der Adresse; der Anmelde-Link im Dialog hängt ihn
+  // wieder an, damit der Editor nach der Anmeldung aufgeht.
+  const [direkt, setDirekt] = useState(false);
 
   // Aktueller Stand für asynchrone Abläufe (Zustand in React-State wäre dort veraltet).
   const z = useRef<HuellenZustand>('laden');
@@ -199,6 +206,18 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
       titelRef.current?.focus();
     }
   }, [offen]);
+
+  // Direktlink: Die Hülle hängt erst im DOM, wenn die Seite die Mappe (oder den Editor) zeigt. Dann einmal öffnen und den
+  // Parameter im selben Zug aus der Adresse nehmen: Neuladen und Zurück öffnen nicht noch einmal, auch wenn die Hülle
+  // gleich wieder verschwindet.
+  useEffect(() => {
+    if (direktVerbraucht || !direktOeffnen(location.search, name, document.documentElement.hasAttribute('data-beamer'))) return;
+    direktVerbraucht = true;
+    history.replaceState(history.state, '', adresseOhneBearbeiten(location.pathname, location.search, location.hash));
+    setDirekt(true);
+    oeffnen();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // „Wird eingerichtet“: alle 3 s neu versuchen, nach ~10 s gibt der Knopf das Heft zurück.
   useEffect(() => {
@@ -350,7 +369,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   }
 
   const zurueck = typeof location === 'undefined' ? '/' : location.pathname + location.search + location.hash;
-  const loginHref = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(zurueck)}`;
+  const loginHref = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(direkt ? mitBearbeiten(zurueck, name) : zurueck)}`;
 
   function entwurfUebernehmen(): void {
     if (aelterEntwurf === null) return;

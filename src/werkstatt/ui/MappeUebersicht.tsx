@@ -11,6 +11,7 @@ import { kohorte } from '../kohorten/index.js';
 import type { FeedbackSichtEintrag, Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import DemoZeigen from './DemoZeigen.js';
+import { adresseOhneBearbeiten, bearbeitenAusAdresse, bearbeitenBleibt, BEARBEITEN_PARAM } from './bearbeiten-link.js';
 import { EDITOREN } from './editoren/index.js';
 import { feedbackLader, mappeFeedback } from './feedback-hilfen.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
@@ -132,6 +133,16 @@ export default function MappeUebersicht() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leitfadenOffen]);
 
+  // Direktlink (?bearbeiten=…): Den Parameter verbraucht der Editor in der eigenen Mappe. Wo keiner ihn verbraucht
+  // (Leser der Lehrenden, Fehler, unbekannter Wert, Leitfaden noch zu), kommt er sofort aus der Adresse; abgemeldet bleibt
+  // er für den Rücksprung nach der Anmeldung.
+  useEffect(() => {
+    if (!new URLSearchParams(location.search).has(BEARBEITEN_PARAM)) return;
+    const sicht = zustand.typ === 'einrichten' ? 'einrichten' : zustand.typ;
+    if (bearbeitenBleibt(location.search, sicht, (n) => n !== 'leitfaden' || leitfadenOffen)) return;
+    history.replaceState(history.state, '', adresseOhneBearbeiten(location.pathname, location.search, location.hash));
+  }, [zustand.typ, leitfadenOffen]);
+
   // „Wird eingerichtet“: alle 3 s neu versuchen, nach ~10 s gibt der Knopf das Heft zurück.
   useEffect(() => {
     if (zustand.typ !== 'einrichten' || versuche >= NEUVERSUCHE) return;
@@ -205,7 +216,7 @@ export default function MappeUebersicht() {
   );
 
   const anmelden = (
-    <a className="wk-knopf wk-primaer" href={loginHref(wahl.current)}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
+    <a className="wk-knopf wk-primaer" href={loginHref(wahl.current, bearbeitenAusAdresse(location.search))}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
   );
 
   function inhalt() {

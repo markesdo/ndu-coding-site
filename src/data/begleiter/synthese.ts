@@ -10,7 +10,7 @@ const MOMTEST = 'Rob Fitzpatrick, The Mom Test';
 export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   verschwimmen: {
     live: [
-      'Fragen: Wer hat Interviews schon in der Werkstatt? Sonst Fallback (vorgehen).',
+      'Fragen: Wer hat Interviews schon in der Werkstatt? Sonst Folie noch-keine.',
       'Fragen: Wer hat in Need Finding schon Snapshots oder Affinitätsdiagramme gemacht?',
       'Obere Reihe: So laufen Projekte – sammeln, anhalten, Bericht.',
       'Untere Reihe erst nach der Frage aufdecken.',
@@ -228,6 +228,24 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ueberleitung: 'Jetzt ihr: drei Runden, jede*r zeigt einmal.',
   },
 
+  'noch-keine': {
+    live: [
+      'Zeit: 14:15 noch keine Interviews in der Werkstatt? Dann diese Folie.',
+      'Timer 35 min starten: Eintragen bis 14:50.',
+      '„Der Link öffnet euren Interviews-Editor direkt – speichern nicht vergessen.“',
+      'Wer schon Interviews hat: weiter mit vorgehen.',
+      'Ab 14:50 Runden à 5 min: zeigen, Frage 2, schreiben.',
+    ],
+    uebung: { dauer: 'bis 14:50 (35 min ab 14:15)', form: 'allein, jede*r in den eigenen Interviews' },
+    ablauf: {
+      schritte: [
+        'Nur zeigen, wenn um 14:15 noch keine Interviews in der Werkstatt stehen (Frage auf verschwimmen). Ablauf und Ansagen der kurzen Runden: Begleiter vorgehen, Fallback 1.',
+        'Der Link „Interviews ↗“ öffnet /innolab/mappe?bearbeiten=interviews in einem neuen Tab: Nach dem Laden der Mappe geht der Editor der Interviews von selbst auf. Wer nicht angemeldet ist, meldet sich an und landet danach im Editor.',
+      ],
+    },
+    ueberleitung: 'Um 14:50 geht es mit den Runden weiter – erst die Kaffeebar, dann ihr.',
+  },
+
   vorgehen: {
     live: [
       'Reihenfolge: Sofie → Joachim → Hewen. Timer 12 min je Runde.',
@@ -235,7 +253,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Minute 5: „Stopp. Frage 2 – die anderen zuerst.“',
       'Minute 7: „Frage 3 – [Name] zuerst.“',
       'Minute 8,5: „Frage 4 – die anderen.“ Zum Schluss: „Noch etwas für [Name]?“',
-      'Minute 10: „Zitat-ID und Notiz in die Map – speichern bis Minute 11:30.“',
+      'Minute 10: „Ein Beleg in die Map – speichern bis Minute 11:30.“',
       'Minute 12: „Wechsel. [Nächste], welche ID?“',
       'Fallback: 0 ID, Chance · 2 Frage 2 · 4 Eintrag · 5 Wechsel.',
       'Kontext ab Minute 5 offen lassen; Minute 11:30 einmal Neu laden.',
@@ -254,15 +272,15 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Fallback 1 – Interviews erst heute eingetragen (gilt immer, wenn zu Beginn, 14:15, noch keine Interviews in der Werkstatt stehen): Bis 14:50 trägt jede*r die besten zwei bis drei ein – Pseudonym, Datum, Einwilligung, 3–5 wörtliche Zitate mit ID, Chancen mit Beleg-IDs; Kurzinfos, Einsichten, Notizen später. Danach Theorie nur snapshot-i2 und geschichte/warum (7 min), Runden 3 × 5 min (2 zeigen · 2 Frage 2, Frage 3 nur kurz, Frage 4 entfällt · 1 schreiben), Festhalten 3 min, Übertrag ein Satz je Person – Ende wie geplant 15:15. Ansagen je Runde: 0:00 „ID, Zitat, eine Chance“ · 2:00 „Frage 2, die anderen zuerst“ (Frage 3 kurz) · 4:00 „Schreiben“ (derselbe eine Eintrag in der Annahmen-Map, ca. 1 min, sonst beim Festhalten) · 5:00 „Wechsel“.',
+        'Fallback 1 – Interviews erst heute eingetragen (gilt immer, wenn zu Beginn, 14:15, noch keine Interviews in der Werkstatt stehen; dafür die Folie noch-keine davor): Bis 14:50 trägt jede*r die besten zwei bis drei ein – Pseudonym, Datum, Einwilligung, 3–5 wörtliche Zitate mit ID, Chancen mit Beleg-IDs; Kurzinfos, Einsichten, Notizen später. Danach Theorie nur snapshot-i2 und geschichte/warum (7 min), Runden 3 × 5 min (2 zeigen · 2 Frage 2, Frage 3 nur kurz, Frage 4 entfällt · 1 schreiben), Festhalten 3 min, Übertrag ein Satz je Person – Ende wie geplant 15:15. Ansagen je Runde: 0:00 „ID, Zitat, eine Chance“ · 2:00 „Frage 2, die anderen zuerst“ (Frage 3 kurz) · 4:00 „Schreiben“ (derselbe eine Eintrag in der Annahmen-Map, ca. 1 min, sonst beim Festhalten) · 5:00 „Wechsel“.',
         'Fallback 2 – nur synthetische Interviews (Pseudonym „Synthetisch“): Frage 3 entfällt, weil es kein echtes Gespräch gab; nichts zählt als Beleg, also kein Eintrag in der Annahmen-Map. Stattdessen in der Schreibzeit eine Frage im Leitfaden ändern oder ergänzen – sie erscheint im Kontext (Reiter Leitfaden) als „neu“. Das ist unabhängig vom Zeitplan: Echte Interviews, die erst heute eingetragen wurden, streifen Frage 3 kurz.',
-        'Bildschirm teilen: Werkstatt im Zeigen-Modus, Interviews der Person, die zeigt („Snapshots zeigen ↗“ auf der Folie, nur in deiner Ansicht). Kein Beamer-Modus, kein Wechsel des Präsentierenden. Die Studierenden haben die Synthese-Seite auf dem eigenen Gerät offen (wie in der Antwortrunde); die Links auf den Folien sind für sie klickbar.',
+        'Bildschirm teilen: Werkstatt im Zeigen-Modus, Interviews der Person, die zeigt („Snapshots zeigen ↗“ auf der Folie, nur in deiner Ansicht). Kein Beamer-Modus, kein Wechsel des Präsentierenden. Die Studierenden haben die Synthese-Seite auf dem eigenen Gerät offen (wie in der Antwortrunde); die Links auf den Folien (Annahmen-Map ↗, Leitfaden ↗, Interviews ↗, Log ↗) öffnen in einem neuen Tab direkt den Editor in der eigenen Mappe.',
         'Reihenfolge Sofie → Joachim → Hewen. Hewen bleibt in der Runde bei A2; A1 oder A2 erst beim Festhalten.',
         '0:00–5:00 Zeigen (Frage 1): Ansage „[Name] zeigt – welche ID? Frage 1, fünf Minuten.“ Timer 12 min starten, ID hören, den Chip (I1 … In) anklicken – der Snapshot steht. Falls die Fragenleiste da ist: Taste 1.',
         '5:00 Frage 2: „Stopp. Frage 2 – die anderen zuerst.“ K drücken, Kontext, Reiter Annahmen – und das Panel ab jetzt offen lassen: „neu“ vergleicht mit dem letzten Laden; wer es erst bei Minute 11:30 zum ersten Mal öffnet, sieht nichts markiert. Falls die Fragenleiste da ist: Taste 2.',
         '7:00 Frage 3: „Frage 3 – [Name] zuerst.“ Im Kontext Reiter Leitfaden. Falls die Fragenleiste da ist: Taste 3.',
         '8:30 Frage 4: „Frage 4 – die anderen.“ „Alle Zitate“ (und Notizen) öffnen. Falls die Fragenleiste da ist: Taste 4; F blendet die Leiste ein oder aus. Die Besprechung schließen mit „Noch etwas für [Name]?“',
-        '10:00–11:30 Schreiben: „Zitat-ID und Notiz in die Map – speichern bis Minute 11:30.“ (Die Werkstatt speichert nicht von selbst.) Bei Minute 11:30 (Timer-Minute, nicht Uhrzeit) einmal „Neu laden“ – im Kontext, Reiter Annahmen, steht der Eintrag dann als „neu“. Zeigt nichts „neu“: „kommt in Festhalten“ sagen und weitergeben, nicht suchen.',
+        '10:00–11:30 Schreiben: „Ein Beleg in die Map – speichern bis Minute 11:30.“ (Die Werkstatt speichert nicht von selbst.) Bei Minute 11:30 (Timer-Minute, nicht Uhrzeit) einmal „Neu laden“ – im Kontext, Reiter Annahmen, steht der Eintrag dann als „neu“. Zeigt nichts „neu“: „kommt in Festhalten“ sagen und weitergeben, nicht suchen.',
         '12:00 Wechsel: „Wechsel. [Nächste], welche ID?“ Timer neu starten. Nach drei Runden (36 min) zur Folie Festhalten, Timer 8 min dort: erst die eigenen Notizen übertragen – Chance oder Einsicht in den Snapshot, Leitfaden (Frage ändern, Nachfrage), Beleg in der Annahmen-Map prüfen –, dann eine Zeile ins Log zur riskantesten Annahme: verworfen, geändert oder bewusst behalten, mit Grund.',
         'Schritte für den Kurs-Chat: Kasten „Für den Teams-Chat“ hier im Begleiter (dieselbe Karte steht im Handout).',
       ],
@@ -295,7 +313,10 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   festhalten: {
     live: [
       'Timer 8 min starten, alle arbeiten allein in der Werkstatt.',
-      'Erst Notizen übertragen: Snapshot, Leitfaden, Beleg prüfen (nur echte Interviews).',
+      'Tabelle von oben: übertragen, prüfen, eine Zeile ins Log.',
+      'Vorführen (ca. 1 min): Demo-Log, D5 „behalten“ live schreiben.',
+      '„Drei Arten: verworfen (D4), geändert (D3), bewusst behalten (D5).“',
+      'Links öffnen den Editor direkt; in jedem Editor speichern.',
       'Nur synthetisch: geänderte Leitfaden-Frage prüfen, nie synthetisches Zitat als Beleg.',
       'Riskanteste ist vorgemerkt (aus der Forschungsfrage) – passt sie noch?',
       'Hewen: A1 oder A2?',
@@ -305,6 +326,16 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Falle: synthetisches Zitat als Beleg oder im Grund – zählt nie.',
     ],
     uebung: { dauer: '8 min', form: 'allein, jede*r im eigenen Log' },
+    ablauf: {
+      schritte: [
+        'Vorführen: eine Log-Zeile (ca. 1 min), vor dem Timer. Zuerst zeigen, was im Log der Demo-Mappe schon steht: D4 verworfen – „Vorbestellen vor der Ankunft verworfen“, Grund „3 von 5 sagen, sie entscheiden erst in der Halle“, Beleg gesagt (I2-4, I3-1, I5-3). D3 geändert – „Zielgruppe: Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin“, ersetzt D1, Beleg gesagt (I1–I5).',
+        'Dann live die dritte Art, bewusst behalten: /innolab/mappe?ansicht=demo&bearbeiten=entscheidungen öffnet den Log-Editor deiner Demo-Mappe direkt. „Neue Entscheidung“ → neue Zeile D5, Datum steht schon auf heute. Entscheidung (D5): „A3 bewusst behalten: Bestellen im Gehen bleibt als Annahme“. Grund (D5): „Kein Interview sagt etwas dazu; wir prüfen es mit einem Test, nicht mit Interviews.“ Beleg (D5): „noch keiner“ (voreingestellt), Beleg-IDs leer lassen. Speichern.',
+        'Warum A3: „Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können“ (bedienbar, mittel, Beleg noch keiner) – kein Zitat der Kaffeebar berührt das Bestellen im Gehen; „behalten“ ist darum ehrlich.',
+      ],
+      achten: [
+        'Das Log hängt nur an: Gespeichert bleibt D5 in der Demo-Mappe stehen und lässt sich nicht mehr löschen (nur ersetzen). Vorher genau so eintippen; D5 bleibt dann als Beispiel für „behalten“. Steht schon eine D5 im Demo-Log, heißt die neue Zeile anders – dann die ID im Satz anpassen.',
+      ],
+    },
     verstaendnis: {
       frage: 'I2 widerspricht eurer riskantesten Annahme. Wohin damit?',
       antwort: 'In die Annahmen-Map als Beleg (I2-4). Ins Log kommt eine Zeile erst, wenn ihr deshalb etwas entscheidet – verworfen, geändert oder bewusst behalten.',
