@@ -233,6 +233,11 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     live: [
       'Immer zeigen: bis 14:50 Interviews eintragen, Skizze ins Feld auf T1 · 5.',
       'Timer 25 min starten (oder bis 14:50).',
+      'Zuerst reihum: Wie viele Interviews habt ihr dabei – Notizen, Aufnahme?',
+      'Mindestens zwei in die Werkstatt, das dritte als Hausaufgabe.',
+      'Keine Notizen? Fallback-Transkript, als „Synthetisch“ eintragen – nie Beleg.',
+      'Link auf dem eigenen Gerät klicken, nicht im Teams-Bild.',
+      'Karten auf T1 · 5 noch leer: ID-Sticky verbindet Skizze und Interview.',
       '„Der Link öffnet euren Interviews-Editor direkt – speichern nicht vergessen.“',
       '„Karte 1 ist euer Interview mit der kleinsten ID; Sticky mit der ID dazu.“',
       '„Nur Stickies und Pfeile oder ein Foto – keine Formen, keine Textfelder.“',
@@ -245,6 +250,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       schritte: [
         'Immer zeigen, für alle, gleich nach der Proberunde (beispiel): Wer noch keine Interviews hat, trägt die besten zwei bis drei ein; alle legen zu jedem Interview die Skizze ins Feld „Geschichte als Skizze“ ihrer Karte auf T1 · 5. Karte n = n-tes Interview nach ID (höchstens fünf; überzählige Karten gehen auf die Vorlage zurück), darum ein Sticky mit der ID zur Skizze und nur Interviews skizzieren, die in der Werkstatt stehen. Foto nur ohne Namen, Arbeitgeber oder Erkennbares, sonst nachzeichnen. Nur Stickies, Pfeile oder ein Bild: Eine Form oder ein Textfeld in der Spalte lässt das Skript die ganze Spalte auslassen (spalte_pruefen). Der Übertrag in der Pause füllt nur die Textfelder und lässt die Skizzen stehen. Zeitplan und Ansagen der Runden ab 14:50: Begleiter vorgehen.',
         'Der Link „Interviews ↗“ öffnet /innolab/mappe?bearbeiten=interviews in einem neuen Tab: Nach dem Laden der Mappe geht der Editor der Interviews von selbst auf. Wer nicht angemeldet ist, meldet sich an und landet danach im Editor.',
+        'Heute hatte bis 13:10 niemand Interviews in der Werkstatt. Darum zuerst die Abfrage reihum; Ziel sind mindestens zwei Interviews pro Person bis 14:50, das dritte bis Tag 3. Wer keine Notizen dabei hat, nimmt das eigene Fallback-Transkript (Kursordner fallback-interviews/, je Person eins mit Hinweisen; Markus gibt es vorab weiter) und trägt es als „Synthetisch“ ein – es dient zum Üben der Methode und zählt nie als Beleg. Die Karten auf T1 · 5 bleiben bis zur Pause leer; Markus überträgt die Werkstatt-Texte um 15:15, das Sticky mit der ID verbindet die Skizze mit dem Interview.',
       ],
     },
     ueberleitung: 'Um 14:50 geht es mit den Runden weiter: Snapshot wählen, dann reihum.',
