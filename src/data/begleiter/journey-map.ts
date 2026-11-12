@@ -121,9 +121,8 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Erst fragen: Welchen Durchgang würdet ihr wiederholen?',
       'Aufdecken: Die meisten wählen den längeren – er endet besser.',
       '„Markiert in jeder Geschichte den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
-      'Marke: Wort, Zitat-ID, Zahl – „Tief · I3-3 – Tief in 2 von 5“.',
-      '„Knoten in“ zählt Vorkommen, „Tief in“ zählt Tiefpunkte.',
-      'Bei Gleichstand markiert ihr beide.',
+      'Marke: Wort, Zitat-ID, Zahl – „Tief · I3-3 · 2 von 5“.',
+      '„2 von 5“: in zwei Geschichten liegt der Tiefpunkt hier.',
     ],
     kern: [
       {
@@ -135,7 +134,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: KAHNEMAN,
       },
       {
-        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen (bei Gleichstand beide), mit der Zahl dazu („Tief · I3-3 – Tief in 2 von 5“; anders als „Knoten in 3 von 5“, das zählt Vorkommen). M = alle eigenen Geschichten (bei drei synthetischen: von 3). Marke als Wort mit Zitat-ID und Zahl, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
+        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen, mit der Zahl dazu („Tief · I3-3 · 2 von 5“ = in zwei Geschichten liegt der Tiefpunkt dort; anders als „Geschichten mit diesem Knoten: 3 von 5“, das zählt Vorkommen). N von M: in N von M Geschichten, M = alle eigenen Geschichten (bei drei synthetischen: von 3). Marke als Wort mit Zitat-ID und Zahl, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
         quelle: `${TORRES}, S. 57, 95; Kursregel`,
       },
     ],
@@ -163,17 +162,17 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 87`,
       },
     ],
-    ueberleitung: 'An der Kaffeebar: erst zwei Skizzen beschriften und zählen, dann die Map.',
+    ueberleitung: 'An der Kaffeebar: erst die Skizzen beschriften und zählen, dann die Map.',
   },
 
   beispiel: {
     live: [
-      'Aufdecken: zwei Skizzen, I2 und I3, Knoten mit Zitat-ID.',
-      'Fragen: Welcher Knoten steht in beiden Reihen? Zählen lassen, nicht vorsagen.',
-      'Aufdecken: Zählung, dann die Map – neu ist das Warten.',
+      'Spaltenköpfe = Beschriften: ein Name für denselben Knoten.',
+      'Fragen: Welche Spalte ist in beiden Reihen gefüllt? Zählen lassen.',
+      'Aufdecken: Zählzeile – I1, I4, I5 stehen im Handout.',
       'Zusammengelegt: Anstehen und Warten – kein Zitat erzählt das Anstehen.',
-      'Gleichstand beim Tief: Halle (I2-1, I4-4) und Warten (I3-3, I5-6) – beide markiert.',
-      'Fragen: Woran erkennt ihr den Tiefpunkt? – Am Zitat, nicht am Bauchgefühl.',
+      'Ein Tief auf der Map: Warten, I3-3 und I5-6.',
+      'I4-4 gilt dem Automatenkaffee – Tief des Umwegs.',
       '„Der Automat ist ein Umweg – die Antwort auf das ‚?‘ von Tag 1.“',
     ],
     verstaendnis: {
@@ -199,14 +198,14 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         '„Alle zu mir holen“ auf T2 · 1; links die Kaffeebar als Muster.',
         'Allein in der eigenen Spalte: Knoten aus den Skizzen beschriften, in jeder Skizze stärksten Moment und Ende markieren, auf Papier oder gleich auf Miro, die Map von Tag 1 (T1 · 1) daneben.',
         'Zu dritt Spalte für Spalte, alle schauen auf dem Board mit (kein Bildschirm teilen); fragen, nicht verteidigen.',
-        'Momente festlegen, jede*r in der eigenen Spalte: Überschneidendes zusammenlegen; drei bis fünf, je ein Zitat mit ID, Gefühlswort fett; Marken mit Zahl übertragen, etwa „Tief · I3-3 – Tief in 2 von 5“.',
+        'Momente festlegen, jede*r in der eigenen Spalte: Überschneidendes zusammenlegen; drei bis fünf, je ein Zitat mit ID, Gefühlswort fett; Marken mit Zahl übertragen, etwa „Tief · I3-3 · 2 von 5“.',
       ],
     },
     ablauf: {
       schritte: [
         'Allein (12 min): Knoten aus den Skizzen beschriften, in jeder Skizze den stärksten Moment und das Ende markieren, auf Papier oder gleich in der eigenen Spalte auf T2 · 1 zusammenfügen, die Map von Tag 1 daneben.',
         'Zu dritt (10 min): Reihum die eigene Spalte auf T2 · 1 zeigen – alle schauen auf dem Board mit; die anderen fragen nach.',
-        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: Knoten prüfen, Überschneidendes zusammenlegen (Torres S. 56, 86–87); drei bis fünf, in den Worten der Kundschaft. Jeder Moment mit einem Zitat mit ID, möglichst einem, in dem die Person Gefühl zeigt, das Gefühlswort fett; erzählt niemand ein Gefühl: „Gefühl: nicht erzählt“ (Frage fürs nächste Interview). Das Gefühl bleibt am Moment, kein eigener Knoten, keine Chance (Torres S. 56, 95; fett statt Smiley ist Kursregel). Dann die Marken übertragen, je mit der Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt: „Tief · I3-3 – Tief in 2 von 5“, „Ende · I3-5 – Ende in 1 von 5“. Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
+        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: Knoten prüfen, Überschneidendes zusammenlegen (Torres S. 56, 86–87); drei bis fünf, in den Worten der Kundschaft. Jeder Moment mit einem Zitat mit ID, möglichst einem, in dem die Person Gefühl zeigt, das Gefühlswort fett; erzählt niemand ein Gefühl: „Gefühl: nicht erzählt“ (Frage fürs nächste Interview). Das Gefühl bleibt am Moment, kein eigener Knoten, keine Chance (Torres S. 56, 95; fett statt Smiley ist Kursregel). Dann die Marken übertragen, je mit der Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt: „Tief · I3-3 · 2 von 5“, „Ende · I3-5 · 1 von 5“ (N von M: in N von M Geschichten; M = alle eigenen Geschichten, bei drei synthetischen: von 3). Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
         'Prüfen (5 min, eigene Folie): Prüfliste allein, dann Claude mit einem Bild der eigenen Spalte aus Miro; eine Datei gibt es nicht. Schritte unter „Prüfen“ im Handout.',
       ],
       achten: [

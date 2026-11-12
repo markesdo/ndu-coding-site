@@ -16,6 +16,9 @@
   --blue-soft: #e4ebfc;
   --green: #1b6f3f;
   --green-soft: #e1f5e9;
+  /* Rosa wie Miros light_pink-Zettel (Marke „Tief“ auf der Experience Map); --pink ist Schrift auf --pink-soft. */
+  --pink: #9c1c4e;
+  --pink-soft: #fde2ec;
   /* --yellow bleibt die Flächen-/Rahmenfarbe (API-Schicht), Schrift auf Gelb nimmt --yellow-ink. */
   --yellow: #b7791f;
   --yellow-ink: #8a5a12;
@@ -47,6 +50,8 @@
     --blue-soft: #1c2740;
     --green: #5fcf8a;
     --green-soft: #15301f;
+    --pink: #ff9cc2;
+    --pink-soft: #3d1a29;
     --yellow: #e8b45a;
     --yellow-ink: #e8b45a;
     --yellow-soft: #3a2d14;
@@ -60,6 +65,7 @@
   --accent: #ff6a4d; --accent-ink: #ff8266; --on-accent: #16161a; --accent-soft: #3a1f19; --eyebrow-bg: #2c1d1a;
   --blue: #7aa2ff; --blue-soft: #1c2740;
   --green: #5fcf8a; --green-soft: #15301f; --yellow: #e8b45a; --yellow-ink: #e8b45a; --yellow-soft: #3a2d14;
+  --pink: #ff9cc2; --pink-soft: #3d1a29;
   --purple: #b092f5; --purple-soft: #28203d; --code-bg: #24242c;
 }
 /* Innolab (html[data-bereich="innolab"], Layout.astro): Laborgrün statt Koralle, sonst alles gleich.
