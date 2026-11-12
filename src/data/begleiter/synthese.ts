@@ -235,7 +235,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         'Deinen Bildschirm teilen: die Lehrenden-Ansicht der Werkstatt, Interviews der Person, die zeigt (Leser). Kein Wechsel des Präsentierenden, kein Beamer-Modus.',
         'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen; ab Minute 10 schreibt, wer gezeigt hat, 2 min in der eigenen Werkstatt (Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier).',
         'Nach dem Schreiben: Ansicht neu laden, die Person liest vor („Ich nehme mit …“). Dann Runde 2 und 3 genauso, Timer jeweils neu starten.',
-        'Festhalten (8 min, Folie Festhalten): riskanteste Annahme in der Annahmen-Map markieren, eine Zeile ins Log – verwerfen, ändern oder weiter prüfen. Map und Leitfaden sind schon in den 2 min jeder Runde ergänzt.',
+        'Festhalten (8 min, Folie Festhalten): erst die Stichworte vom Papier übertragen – Annahmen-Map (Beleg, ID, „spricht dagegen“), Leitfaden (Frage ändern, Nachfrage) –, dann eine Zeile ins Log zur riskantesten Annahme: verworfen, geändert oder bewusst behalten, mit Grund.',
       ],
       achten: [
         'Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen hören, ist der Grund für die Besprechung (Torres S. 75).',
@@ -260,7 +260,9 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   festhalten: {
     live: [
       'Timer 8 min starten, alle arbeiten allein in der Werkstatt.',
-      'Minute 1: riskanteste Annahme markieren – „sehr wichtig, kaum belegt“ (Tag 1).',
+      'Erst Stichworte vom Papier übertragen: Map, dann Leitfaden.',
+      'Riskanteste ist vorgemerkt (aus der Forschungsfrage) – passt sie noch?',
+      'Hewen: A1 oder A2?',
       '„Eine Zeile reicht.“',
       'Zweite Zeile nur bei neuer Zielgruppe oder neuem Problem.',
       'Falle: Gegenbeleg nur ins Log statt in die Annahmen-Map.',
@@ -269,7 +271,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     uebung: { dauer: '8 min', form: 'allein, jede*r im eigenen Log' },
     verstaendnis: {
       frage: 'I2 widerspricht eurer riskantesten Annahme. Wohin damit?',
-      antwort: 'In die Annahmen-Map als Beleg (I2-4). Ins Log kommt eine Zeile erst, wenn ihr deshalb etwas tut – verwerfen, ändern oder bewusst weiter prüfen.',
+      antwort: 'In die Annahmen-Map als Beleg (I2-4). Ins Log kommt eine Zeile erst, wenn ihr deshalb etwas entscheidet – verworfen, geändert oder bewusst behalten.',
       falsch: '„Eine Zeile ‚A1 hat Gegenbeleg‘ ins Log“ – das ist ein Stand, er gehört in die Map; das Log hält fest, was ihr darum tut.',
     },
     kern: [
@@ -289,7 +291,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Und wenn sich nichts geändert hat?',
-        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: eine Zeile, dass Zielgruppe und Problem bleiben, mit den IDs echter Interviews als Beleg. Wer nur synthetische Interviews hat, kann nichts bewusst behalten: Die Zeile heißt „weiter prüfen“, Beleg „noch keiner“. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
+        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: eine Zeile, dass Zielgruppe und Problem bleiben, mit den IDs echter Interviews als Beleg. Wer nur synthetische Interviews hat, behält ebenfalls bewusst, aber mit Beleg „noch keiner“ und dem nächsten Schritt im Grund: in echten Interviews prüfen. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
       },
     ],
     ueberleitung: 'Dann reihum: jede*r liest die eigene Zeile vor.',
@@ -298,7 +300,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Reihum: jede*r liest die eigene Zeile vor – Entscheidung, Grund, Beleg-Stufe.',
-      '„Beleg: noch keiner“ gilt – die Zeile heißt dann „weiter prüfen“.',
+      '„Beleg: noch keiner“ gilt – im Grund steht dann: in echten Interviews prüfen.',
       'Echte Interviews ohne Beleg: zu nett oder nach der Idee gefragt?',
     ],
     ueberleitung: 'Nach der Pause zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu.',

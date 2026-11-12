@@ -2,11 +2,17 @@
 // Abbildung aus einer Kursquelle (Buch, Artikel) mit Quellenangabe. Die Bilder liegen in public/quellen/ und damit hinter
 // dem Kurspasswort (middleware.ts gibt nur /_astro/* frei) – deshalb als <img src> und nicht über astro:assets importiert.
 // hochkant: schmale, hohe Abbildung (z. B. ein senkrechter Stapel) – nicht über ihre Breite hinaus vergrößern.
+// Slot „marke“: Beschriftung über dem Bild (absolut positioniert, Prozent beziehen sich auf das Bild, nicht auf die Bildunterschrift).
+const marke = Astro.slots.has('marke');
 const { src, alt, quelle, breit = false, schmal = false, hochkant = false } = Astro.props as { src: string; alt: string; quelle: string; breit?: boolean; schmal?: boolean; hochkant?: boolean };
 if (!src.startsWith('/quellen/')) throw new Error(`BuchAbbildung: Bilder gehören nach public/quellen/ (hinter dem Passwort), war ${src}`);
 ---
 <figure class:list={['buch-abbildung', { breit, schmal, hochkant }]}>
-  <img src={src} alt={alt} loading="lazy" decoding="async" />
+  {marke ? (
+    <div class="bild-rahmen"><img src={src} alt={alt} loading="lazy" decoding="async" /><slot name="marke" /></div>
+  ) : (
+    <img src={src} alt={alt} loading="lazy" decoding="async" />
+  )}
   <figcaption class="small muted">{quelle}</figcaption>
 </figure>
 
@@ -18,6 +24,8 @@ if (!src.startsWith('/quellen/')) throw new Error(`BuchAbbildung: Bilder gehöre
   /* Die Abbildungen sind grau auf weiß gedruckt: auch im dunklen Modus auf weißem Grund lassen, sonst verschwinden die Linien. */
   .buch-abbildung img { display: block; width: 100%; height: auto; background: #fff; border-radius: 6px; padding: .5rem; box-sizing: border-box; border: 1px solid var(--border, #ddd); }
   .buch-abbildung figcaption { margin-top: .4rem; }
+  /* So breit wie das Bild selbst, auch wenn es im Beamer über max-height schmaler wird. */
+  .bild-rahmen { position: relative; width: fit-content; max-width: 100%; }
   /* Im Beamer passt die Abbildung samt Überschrift auf den Bildschirm (1280×720). */
   :global(html[data-beamer]) .buch-abbildung img { max-height: calc(100vh - 17rem); width: auto; max-width: 100%; }
 </style>

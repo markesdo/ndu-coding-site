@@ -6,7 +6,7 @@ export const CHAT_SYNTHESE = `Interview-Synthese · 44 min · Werkstatt: Intervi
 1. Zeigen (5 min): Markus öffnet eure Interviews in der Werkstatt; ihr führt durch einen Snapshot – Zitat, Geschichte, Chancen.
 2. Besprechen (7 min): Die anderen fragen mit den vier Fragen (Was wurde gesagt? Was ändert sich? Wie war das Gespräch? Was haben wir überhört?). Die letzten 2 min schreibt, wer zeigt: Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier.
 3. Reihum: drei Runden à 12 Minuten.
-4. Festhalten (8 min), allein: riskanteste Annahme in der Annahmen-Map markieren, eine Zeile im Log – verwerfen, ändern oder weiter prüfen. Nur synthetische Interviews: Beleg „noch keiner“, die Zeile heißt „weiter prüfen“. Wer fertig ist: Claude „Prüf meine Verknüpfungen“.
+4. Festhalten (8 min), allein: Stichworte vom Papier übertragen (Belege in die Annahmen-Map, Nachfragen in den Leitfaden), dann eine Zeile im Log zur riskantesten Annahme – verworfen, geändert oder bewusst behalten, mit Grund. Nur synthetische Interviews: Beleg „noch keiner“. Wer fertig ist: Claude „Prüf meine Verknüpfungen“.
 Noch keine Interviews in der Werkstatt? Bis 14:50 die besten 2–3 eintragen, in dieser Reihenfolge: Pseudonym, Datum, Einwilligung, 3–5 Zitate mit ID, Chancen mit Beleg-IDs. Danach Runden à 5 min (2 zeigen, 2 besprechen, 1 schreiben).`;
 
 export const CHAT_JOURNEY_MAP = `Experience Map · 35 min · Miro: T2 · 1 · Experience Map

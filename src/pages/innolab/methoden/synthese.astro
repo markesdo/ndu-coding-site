@@ -193,11 +193,11 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
       <li><strong>Zeigen (5 min):</strong> Markus öffnet eure Interviews in der Werkstatt; ihr führt durch einen Snapshot – Zitat, Geschichte, Chancen. <a class="zeigen-link" href="/innolab/mappe?artefakt=interviews&zeigen=1" target="_blank" rel="noopener" data-nur-praesentator>Snapshots zeigen ↗</a></li>
       <li data-schritt><strong>Besprechen (7 min):</strong> Die anderen fragen mit den vier Fragen. Die letzten 2 min schreibt, wer zeigt: Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier.</li>
       <li data-schritt><strong>Reihum,</strong> drei Runden à 12 Minuten. <Timer minuten={12} /></li>
-      <li data-schritt><strong>Festhalten (8 min, nächste Folie):</strong> riskanteste Annahme markieren, eine Zeile ins Log.</li>
+      <li data-schritt><strong>Festhalten (8 min, nächste Folie):</strong> Stichworte übertragen, eine Zeile ins Log.</li>
     </ol>
     <p class="small"><strong>Noch keine Interviews in der Werkstatt?</strong> Zuerst die besten zwei bis drei eintragen: Pseudonym, Einwilligung, 3–5 Zitate mit ID, Chancen.</p>
     <div class="nur-handout">
-      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und Prüfen und gut 15 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75). In den letzten zwei Minuten jeder Runde schreibt, wer gezeigt hat, in der eigenen Werkstatt: eine neue Chance oder Einsicht direkt in den Snapshot, alles andere als Stichwort auf Papier. Die Stichworte gehören zu den vier Fragen: Frage 1 in den Snapshot; Frage 2 in die Annahmen-Map (Beleg, „spricht dagegen“), ins Log nur bei einer Entscheidung; Frage 3 in den Leitfaden; Frage 4 als Nachfragen in den Leitfaden ({MOMTEST}, S. 103). Synthetische Übungsinterviews tragt ihr wie echte ein (Pseudonym „Synthetisch“) – als Beleg zählen sie nie.</p>
+      <p>Drei Runden à 12 Minuten (5 zeigen, 7 besprechen) sind 36 Minuten; dazu acht Minuten Festhalten und gut 15 Minuten Theorie und Kaffeebar. Den Timer startet ihr in jeder Runde neu. Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen in der Geschichte hören, ist genau der Grund für die Besprechung ({TORRES}, S. 75). In den letzten zwei Minuten jeder Runde schreibt, wer gezeigt hat, in der eigenen Werkstatt: eine neue Chance oder Einsicht direkt in den Snapshot, alles andere als Stichwort auf Papier. Die Stichworte gehören zu den vier Fragen: Frage 1 in den Snapshot; Frage 2 in die Annahmen-Map (Beleg, „spricht dagegen“), ins Log nur bei einer Entscheidung; Frage 3 in den Leitfaden; Frage 4 als Nachfragen in den Leitfaden ({MOMTEST}, S. 103). Synthetische Übungsinterviews tragt ihr wie echte ein (Pseudonym „Synthetisch“) – als Beleg zählen sie nie.</p>
       <p><strong>Hört ihr noch Neues?</strong> Rob Fitzpatrick rät, so lange Gespräche zu führen, bis nichts Neues mehr kommt. Bei einer klar umrissenen Zielgruppe können drei bis fünf reichen; wer nach mehr als zehn Gesprächen noch Ergebnisse bekommt, die in alle Richtungen streuen, hat vermutlich eine zu unscharfe Zielgruppe ({MOMTEST}, S. 89). Streuen eure fünf Snapshots in alle Richtungen, sprecht im Team darüber, ob ihr die Zielgruppe im Produkt-Brief enger fassen solltet.</p>
       <p><strong>Noch keine Interviews in der Werkstatt?</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:50, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf drei mal fünf Minuten (zwei zeigen, zwei besprechen, eine schreiben), dazu drei Minuten Festhalten; der Block endet trotzdem um 15:15. Gezeigt wird dann direkt aus der Werkstatt.</p>
       <p><strong>Reihenfolge beim Ausfüllen:</strong> zuerst die Zitate (so entstehen die IDs), dann Geschichte, Chancen mit Belegen, Einsichten – einprägsames Zitat und Kurzinfos zuletzt. Im Fallback bis 14:50 nur Zitate und Chancen; den Rest ergänzt ihr später.</p>
@@ -216,19 +216,20 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   </div>
 
   <Folie>
-    <h2 id="festhalten">Festhalten: eine Entscheidung ins Log</h2>
-    <p class="folie-satz">Was tut ihr nach den Interviews mit eurer riskantesten Annahme? Alle für sich, eine Zeile. <Timer minuten={8} /></p>
+    <h2 id="festhalten">Festhalten: übertragen, dann eine Zeile ins Log</h2>
+    <p class="folie-satz">Erst die Stichworte vom Papier, dann eine Zeile zur riskantesten Annahme. Alle für sich. <Timer minuten={8} /></p>
     <ul class="gross">
-      <li data-schritt>Riskanteste Annahme in der Annahmen-Map markieren.</li>
-      <li data-schritt>Eine Zeile im Log: verwerfen, ändern oder weiter prüfen.</li>
-      <li data-schritt>Nur synthetische Interviews? Beleg bleibt „noch keiner“, die Zeile heißt „weiter prüfen“.</li>
+      <li data-schritt>Stichworte übertragen: Belege in die Annahmen-Map, Nachfragen in den Leitfaden.</li>
+      <li data-schritt>Riskanteste Annahme prüfen – passt sie noch? <span class="small muted zeiger">Annahmen-Map → Bearbeiten → „Riskanteste Annahme“</span></li>
+      <li data-schritt>Eine Zeile im Log: verworfen, geändert oder bewusst behalten – mit Grund.</li>
+      <li data-schritt>Nur synthetische Interviews? Beleg bleibt „noch keiner“: behalten und in echten Interviews prüfen.</li>
     </ul>
     <p class="small">Kaffeebar D4: „Vorbestellen vor der Ankunft verworfen, weil 3 von 5 sagen, sie entscheiden erst in der Halle; Beleg: gesagt (I2-4, I3-1, I5-3).“ – <a href="/innolab/methoden/entscheidungslog#wann">Wann eine Zeile?</a></p>
     <div class="nur-handout">
-      <p>Map und Leitfaden habt ihr in den Runden ergänzt. Jetzt geht es nur ums Log: eine Zeile zur riskantesten Annahme. Eine zweite Zeile nur, wenn die Interviews Zielgruppe oder Problem im Brief geändert haben – bei der Kaffeebar wurde aus „Pendler*innen nach Wien“ „Pendler*innen mit festem Morgenzug, egal wohin“: D3 ersetzt D1, Beleg „gesagt (I1–I5)“.</p>
-      <p>Für die riskanteste Annahme gibt es drei Wege: verwerfen, ändern oder weiter prüfen. David J. Bland nennt diesen Schritt „Decide“: Was ihr gelernt habt, hat ein Ablaufdatum, also übersetzt ihr es in Handlung ({BLAND}, S. 61–62); auf der Learning Card ist das „Therefore, we will …“ (S. 55). Auch „weiter prüfen“ ist eine Entscheidung.</p>
+      <p>In den Runden sind Stichworte auf Papier entstanden. Die übertragt jede*r jetzt für sich: was sich bei Frage 2 ändert, als Beleg mit ID in die Annahmen-Map (spricht er dagegen, „spricht dagegen“ in die Notiz); was bei Frage 3 und 4 herauskam, als geänderte Frage oder Nachfrage in den Leitfaden. Dann folgt eine Zeile im Log zur riskantesten Annahme. Sie ist schon vorgemerkt, aus eurer Forschungsfrage; prüft, ob sie nach den Interviews noch passt. Eine zweite Zeile nur, wenn die Interviews Zielgruppe oder Problem im Brief geändert haben – bei der Kaffeebar wurde aus „Pendler*innen nach Wien“ „Pendler*innen mit festem Morgenzug, egal wohin“: D3 ersetzt D1, Beleg „gesagt (I1–I5)“.</p>
+      <p>David J. Bland nennt diesen Schritt „Decide“: Was ihr gelernt habt, hat ein Ablaufdatum, also übersetzt ihr es in Handlung – aufgeben, ändern oder weiter testen ({BLAND}, S. 61–62); auf der Learning Card ist das „Therefore, we will …“ (S. 55). Im Log heißen die drei Wege verworfen, geändert und behalten. Wer weiter testet, behält die Annahme bewusst und schreibt den nächsten Schritt in den Grund.</p>
       <p>Satzanfang (Kursregel): „Ich habe … gewählt / verworfen / geändert / behalten, weil …; Beleg: Stufe (ID).“ Wann eine Zeile dazukommt, ist ebenfalls eine Regel des Kurses: <a href="/innolab/methoden/entscheidungslog#wann">Entscheidungslog</a>.</p>
-      <p>Synthetische Interviews zählen nicht als Beleg, auch nicht im Grund. Ehrlich sieht die Zeile dann so aus: „Riskanteste Annahme: A1 gewählt, weiter prüfen in echten Interviews, weil das Produkt daran hängt und noch nichts dafür oder dagegen spricht; Beleg: noch keiner.“</p>
+      <p>Synthetische Interviews zählen nicht als Beleg, auch nicht im Grund. Ehrlich sieht die Zeile dann etwa so aus, mit eurer eigenen Annahme: „Riskanteste Annahme A1 bewusst behalten, weil das Produkt daran hängt und noch kein echtes Interview dafür oder dagegen spricht; nächster Schritt: in echten Interviews prüfen; Beleg: noch keiner.“</p>
       <p>Wer fertig ist: Claude „Prüf meine Verknüpfungen“ (<a href="#pruefen">Prüfen</a>).</p>
     </div>
   </Folie>
@@ -244,6 +245,8 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
 
 <style>
   .zeigen-link { white-space: nowrap; font-weight: 600; }
+  /* Folie „festhalten“: Weg zum Feld in der Werkstatt, eigene Zeile unter dem Punkt. */
+  .zeiger { display: block; }
   .bsp { display: block; margin-top: .2rem; font-size: .85em; color: var(--muted); }
   /* Folie „beispiel“: die Zeilen „→ wohin“ erst mit dem letzten Schritt (Marker .ort-schritt), alle vier zugleich. */
   :global(html[data-beamer]) .orte:has(.ort-schritt:not(.gezeigt)) .ort { visibility: hidden; }

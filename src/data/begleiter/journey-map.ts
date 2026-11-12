@@ -148,7 +148,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   'peak-end': {
     live: [
-      'Erst fragen: Welchen Durchgang würdet ihr wiederholen? Dann aufdecken.',
+      'Erst fragen: Welchen Durchgang würdet ihr wiederholen?',
       'Aufdecken: Die meisten wählen den längeren – er endet besser.',
       '„Markiert den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
     ],
