@@ -156,6 +156,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
 
   <Folie>
     <h2 id="gruppieren">Kaffeebar: Gleiches zusammenlegen</h2>
+    <MiroFrame name="T2 · 1 · Experience Map" />
     <p class="folie-satz kompakt">Auf Miro, T2 · 1, Spalte Kaffeebar: Schiebt zusammen, was denselben Moment meint – Namen als Sticky, Geschichten zählen. <Timer minuten={4} /></p>
     <div class="gruppen">
       {/* Steht vor den Skizzen, damit die Färbung ohne :has auskommt (.gruppen-an.gezeigt ~ .skizzen). */}
@@ -193,7 +194,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
     </div>
     <p class="small muted">{TORRES}, S. 56, 87.</p>
     <div class="nur-handout">
-      <p>Erst gruppiert ihr selbst: Die 23 Stickies der fünf Kaffeebar-Skizzen liegen auf Miro (T2 · 1, Spalte Kaffeebar), danach zeigt die Folie eine Lösung. Jede*r verschiebt nur die eigenen Geschichten: I1 und I2 · I3 und I4 · I5 und die Namen.</p>
+      <p>Erst gruppiert ihr selbst: Die 23 Stickies der fünf Kaffeebar-Skizzen liegen auf Miro (T2 · 1, Spalte Kaffeebar), danach zeigt die Folie eine Lösung. Damit niemand dieselben Stickies zieht, teilt Markus die Kaffeebar-Geschichten auf: je zwei pro Person (I1 und I2 · I3 und I4 · I5 und die Namen); jede*r verschiebt nur die zugeteilten.</p>
       <p>Die Spaltennamen stehen in keiner Skizze. Sie entstehen, wenn ihr ähnliche Knoten zusammenlegt ({TORRES}, S. 56) und der Gruppe einen Namen gebt: Maßgeblich ist, dass die Stickies denselben Moment der Geschichte meinen, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot (S. 87: ‚the most common nodes‘). Gezählt werden Geschichten, nicht Stickies, und nur, was ein Zitat trägt; Notizen zeigt ihr, zählt sie aber nicht. Stickies zusammenschieben ist die Arbeitsweise dieses Kurses.</p>
       <ul>
         {GRUPPEN.map(({ g, name }) => {

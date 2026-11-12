@@ -176,7 +176,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Fragen: Wie würdet ihr diese Gruppe nennen?',
       'Fragen: Warum bleibt „Glücksspiel“ grau?',
     ],
-    uebung: { dauer: '4 min', form: 'zu dritt, jede*r die eigenen Geschichten' },
+    uebung: { dauer: '4 min', form: 'zu dritt, je zwei zugeteilte Kaffeebar-Geschichten' },
     miro: {
       frame: 'T2 · 1 · Experience Map',
       schritte: [
