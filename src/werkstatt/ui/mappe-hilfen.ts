@@ -4,6 +4,7 @@ import { AUFGEDECKT_MS, abfrageAbstand, gruppeFrei } from '../../lib/aufgedeckt.
 import { ANSICHT_DEMO, ANSICHT_PARAM, DEMO_HREF, MAPPE_DEMO, MAPPE_LEHRENDE, MAPPE_PFAD, MAPPE_STUDIERENDE, navMappeSetzen } from '../../lib/nav-rolle.js';
 import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
 import { ROUTEN, type Ich, type MappeStand } from '../vertrag.js';
+import { mitBearbeiten } from './bearbeiten-link.js';
 
 /** Texte zu ?fehler=… – die Anmeldung (routen/auth.ts) springt damit auf /innolab/mappe zurück. */
 export const FEHLER_TEXT = {
@@ -127,8 +128,10 @@ export const LEITFADEN_LINK = `/innolab/methoden/${ARTEFAKTE.leitfaden.slug}#${E
 export const LOGIN_HREF = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(MAPPE_PFAD)}`;
 
 /** Anmelden aus der gewählten Ansicht: aus der Demo-Mappe zurück in die Demo-Mappe (DEMO_HREF, ein fester Pfad der
- *  eigenen Seite – sichererPfad in routen/auth.ts lässt ihn durch), sonst LOGIN_HREF. */
-export function loginHref(wahl: LehrendenWahl): string {
+ *  eigenen Seite – sichererPfad in routen/auth.ts lässt ihn durch), sonst LOGIN_HREF. Kam man über einen Direktlink
+ *  (?bearbeiten=…, bearbeiten-link.ts), nimmt der Rücksprung ihn mit: Nach der Anmeldung öffnet sich der Editor. */
+export function loginHref(wahl: LehrendenWahl, bearbeiten: ArtefaktName | null = null): string {
+  if (bearbeiten !== null) return `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(mitBearbeiten(wahl === 'demo' ? DEMO_HREF : MAPPE_PFAD, bearbeiten))}`;
   return wahl === 'demo' ? `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(DEMO_HREF)}` : LOGIN_HREF;
 }
 

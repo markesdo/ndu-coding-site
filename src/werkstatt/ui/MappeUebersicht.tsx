@@ -11,6 +11,7 @@ import { kohorte } from '../kohorten/index.js';
 import type { FeedbackSichtEintrag, Ich, MappeStand } from '../vertrag.js';
 import { api, ApiError } from './api.js';
 import DemoZeigen from './DemoZeigen.js';
+import { bearbeitenAusAdresse } from './bearbeiten-link.js';
 import { EDITOREN } from './editoren/index.js';
 import { feedbackLader, mappeFeedback } from './feedback-hilfen.js';
 import LehrendenAnsicht from './LehrendenAnsicht.js';
@@ -205,7 +206,7 @@ export default function MappeUebersicht() {
   );
 
   const anmelden = (
-    <a className="wk-knopf wk-primaer" href={loginHref(wahl.current)}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
+    <a className="wk-knopf wk-primaer" href={loginHref(wahl.current, bearbeitenAusAdresse(location.search))}><LogIn size={16} aria-hidden="true" /> Mit GitHub anmelden</a>
   );
 
   function inhalt() {
