@@ -28,6 +28,8 @@ export interface Artefakt {
   werkstatt?: ArtefaktName;
   /** Frame auf dem Miro-Board, wenn das Artefakt nur dort liegt (ohne pfad): Claude prüft es dann an einem Bild des Frames. */
   miro?: string;
+  /** Im Miro-Frame hat jede Person eine eigene Spalte (gemeinsamer Frame): aufs Bild kommt dann die eigene Spalte. */
+  miroSpalte?: boolean;
   /** Hausaufgabe zwischen zwei Kurstagen: fällig zu Kurstag bisTag (sonst am Tag nach der Methode), anzahl = so viele
    *  Einträge je Person (tag_stand zählt mit). */
   hausaufgabe?: { bisTag: number; anzahl?: number };
@@ -41,7 +43,7 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'synthese', name: 'Interviews mit Snapshots (pseudonymisiert)', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/interviews.json', werkstatt: 'interviews', hausaufgabe: { bisTag: 2, anzahl: 5 } },
   { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet', lebtIn: ['miro', 'repo'], pfad: 'docs/KUNDENPROFIL.md' },
   // Seit 11.11.2026 nur auf Miro, ohne Datei im Repo (Entscheidung Markus): Map in T2 · 1, jeder Baum im eigenen Frame.
-  { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro'], miro: 'T2 · 1 · Experience Map' },
+  { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro'], miro: 'T2 · 1 · Experience Map', miroSpalte: true },
   { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro'], miro: 'Baum · euer Name' },
   { id: 'ziel', name: 'Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe', lebtIn: ['miro', 'repo'], pfad: 'docs/ZIEL-CHANCE.md' },
   { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/HMW.md' },
@@ -72,6 +74,8 @@ export interface Pruefpunkt {
   id: string;
   alt?: string;
   text: string;
+  /** Kurzform für eine Folie (z. B. „Prüfen“ der Experience Map); nur Anzeige, nie im Prompt. */
+  kurz?: string;
   /** Was Claude bei diesem Punkt zusätzlich tut und fragt, statt selbst einzuordnen (anleitung von artefakt_pruefen und Prüf-Prompt). */
   frage?: string;
 }
@@ -195,12 +199,12 @@ export const METHODEN: Methode[] = [
     braucht: ['brief', 'synthese'], ergibt: ['journey'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), S. 50–57, 86–87; Lexie Kane, „The Peak–End Rule“, Nielsen Norman Group (2018)',
     pruefliste: [
-      { id: 'journey-map-geschichten', text: 'Die Map ist aus den Geschichten eurer Interviews gebaut: Jeder Knoten lässt sich mindestens einer Geschichte zuordnen.' },
-      { id: 'journey-map-erleben', text: 'Sie zeigt, was die Menschen erleben – nicht euer Produkt und keine Bildschirmabfolge.' },
-      { id: 'journey-map-umwege', text: 'Sie zeigt auch Umwege, Schleifen und Abbrüche, nicht nur den glatten Weg.' },
-      { id: 'journey-map-momente-getrennt', text: 'Die Momente überschneiden sich nicht: Jeder ist ein eigener Zeitpunkt.' },
-      { id: 'journey-map-worte-belegt', text: 'Jeder Moment steht in den Worten der Kundschaft und ist mit Zitat-IDs belegt.' },
-      { id: 'journey-map-hoehepunkt-ende', text: 'Der stärkste Moment und das Ende sind markiert.' },
+      { id: 'journey-map-geschichten', text: 'Die Map ist aus den Geschichten eurer Interviews gebaut: Jeder Knoten lässt sich mindestens einer Geschichte zuordnen.', kurz: 'Aus den Geschichten gebaut – jeder Knoten hat eine Geschichte' },
+      { id: 'journey-map-erleben', text: 'Sie zeigt, was die Menschen erleben – nicht euer Produkt und keine Bildschirmabfolge.', kurz: 'Erleben, nicht euer Produkt' },
+      { id: 'journey-map-umwege', text: 'Sie zeigt auch Umwege, Wiederholungen, Schleifen und Abbrüche, nicht nur den glatten Weg.', kurz: 'Umwege, Wiederholungen, Schleifen, Abbrüche' },
+      { id: 'journey-map-momente-getrennt', text: 'Die Momente überschneiden sich nicht: Jeder ist ein eigener Zeitpunkt.', kurz: 'Momente überschneiden sich nicht' },
+      { id: 'journey-map-worte-belegt', text: 'Jeder Moment steht in den Worten der Kundschaft und ist mit Zitat-IDs belegt.', kurz: 'In den Worten der Kundschaft, mit Zitat-ID' },
+      { id: 'journey-map-hoehepunkt-ende', text: 'Der stärkste Moment und das Ende sind markiert, je als Wort mit Zitat-ID am Moment und der Zahl der Geschichten (etwa ‚Tief · I3-3 – 2 von 5‘).', kurz: 'Stärkster Moment und Ende markiert: ‚Tief · I3-3 – 2 von 5‘' },
     ],
     ki: 'Liest eure Interviews und fragt, welche Geschichte in der Map fehlt und wo sich Momente überschneiden.',
   },
@@ -535,6 +539,12 @@ const nurAufMiro = (a: Artefakt) => a.miro !== undefined && !a.pfad && !a.werkst
 /** Artefakte, die nur auf Miro liegen, mit ihrem Frame: „Experience Map … (Frame „T2 · 1 · Experience Map“)“. */
 const miroListe = (ids: readonly string[]) =>
   aufzaehlen([...new Set(ids)].map((id) => artefakt(id)!).filter(nurAufMiro).map((a) => `${a.name} (Frame „${a.miro}“)`));
+
+/** Vorarbeit, die nur auf Miro liegt und als zweites Bild zum Abgleich mitgeht – dieselbe Liste wie im Prüf-Prompt. */
+export const miroVorarbeitArtefakte = (m: Methode): Artefakt[] => [...new Set(m.braucht)].map((id) => artefakt(id)!).filter(nurAufMiro);
+
+/** Was aufs Bildschirmfoto kommt: „eure Spalte im Frame „…““ oder „euren Frame „…““. */
+export const miroBildAusschnitt = (a: Artefakt): string => (a.miroSpalte ? `eure Spalte im Frame „${a.miro}“` : `euren Frame „${a.miro}“`);
 
 /** Vorarbeit, die nur auf Miro liegt: Claude bekommt sie als Bild (Satz für den Prüf-Prompt, sonst leer). */
 function miroVorarbeit(m: Methode): string {
