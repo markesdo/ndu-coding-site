@@ -79,9 +79,9 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     });
     expect(eingabeTexte(netflix)).toStrictEqual(EINGABE_STANDARD);
     expect(eingabeTexte(zwoelf)).toStrictEqual({
-      label: 'Drei Nummern (1/2, 7/12, 9/11) und ein Satz: Welches Paar fiel am schwersten?',
+      label: 'Drei Nummern (1 oder 2, 7 oder 12, 9 oder 11) und ein Satz: Welches Paar fiel am schwersten?',
       hinweis: 'erst einen Platz wählen, dann Nummern und Satz abschicken.',
-      platzhalter: 'z. B. 2, 7, 11 – bei 9/11 …',
+      platzhalter: 'z. B. 2, 7, 11 – bei 9 oder 11 …',
       wahl: 'Dein Platz',
       wahlFehlt: 'Bitte zuerst einen Platz wählen.',
       wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',

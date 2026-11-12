@@ -42,7 +42,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       schritte: [
         'Folie zeigen, die Liste still lesen lassen.',
         'Alle öffnen die Folie auf dem eigenen Gerät und wählen einen freien Platz (Platz 1–3, ohne Bedeutung). Timer 2 min: Jede*r entscheidet drei Paare – 1 oder 2, 7 oder 12, 9 oder 11 –, tippt die drei Nummern und einen Satz zu dem Paar, das am schwersten fiel, und schickt ab. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
-        'Erst wenn alle drei abgeschickt haben, zur nächsten Folie: Dort deckst du alle drei gleichzeitig auf. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r Nummer und Satz laut.',
+        'Erst wenn alle drei abgeschickt haben, zur nächsten Folie: Dort deckst du alle drei gleichzeitig auf. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r die drei Nummern und den Satz laut.',
       ],
       achten: [
         'Wer „weiß ich nicht“ schreiben will: trotzdem entscheiden, den Zweifel in den Satz – genau den beschreibt Torres („I don’t know how to compare“, S. 82).',
@@ -80,7 +80,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Platz; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten. Eure Nummern leuchten in der Sortierung auf (Nummer am Satzanfang; doppelt gewählt: ×2).',
-        'Schritt für Schritt aufdecken, je Schritt ein Paar: Wer 1 gewählt hat – „Und welchen Teil davon zuerst?“; wer 2 – „Damit ist 1 nur zum Teil gelöst“ (S. 83). 7 oder 12 – „Hängt an den Bedingungen: offline, Steckdose“ (S. 82). Wer 11 – „Immer das Leichte zuerst?“; wer 9 – „Wo fangt ihr an?“ (S. 82, 84–85). Zuletzt 4 · 6 · 8 · 10.',
+        'Schritt für Schritt aufdecken, je Schritt ein Paar: Wer 1 gewählt hat – „Und welchen Teil davon zuerst?“; wer 2 – „Ein Grund für 1, aber nicht der einzige“ (S. 82). 7 oder 12 – „Hängt an den Bedingungen: offline, Steckdose“ (S. 82). Wer 11 – „Immer das Leichte zuerst?“; wer 9 – „Wo fangt ihr an?“ (S. 82, 84–85). Zuletzt 4 · 6 · 8 · 10.',
         'Fragen: Bei welchem Paar habt ihr zwei Gleichartige verglichen? Dann den letzten Satz aufdecken.',
       ],
       achten: [

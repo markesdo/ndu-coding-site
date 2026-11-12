@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { gewaehltSchluessel, gewaehltZaehlen, nummernAus } from './gewaehlt';
+import { ZWOELF_PAARE, gewaehltSchluessel, gewaehltZaehlen, jePaarEine, nummernAus } from './gewaehlt';
 
 describe('Gewählte Nummern („zwoelf“)', () => {
   it('eine Nummer am Satzanfang, 1 bis 12', () => {
@@ -9,15 +9,19 @@ describe('Gewählte Nummern („zwoelf“)', () => {
     expect(nummernAus('11, leicht')).toStrictEqual([11]);
   });
 
-  it('Aufzählung am Satzanfang: Komma, „und“, „&“, „/“, „+“, Leerzeichen', () => {
+  it('Aufzählung am Satzanfang: Komma, Semikolon, Punkt, „und“, „&“, „+“, Leerzeichen', () => {
     expect(nummernAus('7 und 12 – unterwegs')).toStrictEqual([7, 12]);
     expect(nummernAus('1, 2 – weil …')).toStrictEqual([1, 2]);
-    expect(nummernAus('3/5 – Suche')).toStrictEqual([3, 5]);
+    expect(nummernAus('2; 7; 11 – schwer')).toStrictEqual([2, 7, 11]);
+    expect(nummernAus('2. 7. 11.')).toStrictEqual([2, 7, 11]);
+    // Ein Schrägstrich beendet die Liste.
+    expect(nummernAus('3/5 – Suche')).toStrictEqual([3]);
     expect(nummernAus('9 & 11: groß gegen klein')).toStrictEqual([9, 11]);
     expect(nummernAus('2 + 3, weil')).toStrictEqual([2, 3]);
     expect(nummernAus('4 6 – egal')).toStrictEqual([4, 6]);
     expect(nummernAus('1, 2 und 3 – alles')).toStrictEqual([1, 2, 3]);
-    // Drei Paare (Platzhalter der Runde): Die Liste endet am Gedankenstrich, „9/11“ später im Satz zählt nicht.
+    // Drei Paare (Platzhalter der Runde): Die Liste endet am Gedankenstrich, Nummern später im Satz zählen nicht.
+    expect(nummernAus('2, 7, 11 – bei 9 oder 11 …')).toStrictEqual([2, 7, 11]);
     expect(nummernAus('2, 7, 11 – bei 9/11 …')).toStrictEqual([2, 7, 11]);
     // Dieselbe Nummer zählt pro Satz einmal; ungültige in der Aufzählung fallen weg.
     expect(nummernAus('3, 3 und 3')).toStrictEqual([3]);
@@ -43,6 +47,19 @@ describe('Gewählte Nummern („zwoelf“)', () => {
       .toStrictEqual([[3, 3], [11, 1]]);
     expect([...gewaehltZaehlen(['7 und 12 – unterwegs', '12 – Zug'])]).toStrictEqual([[7, 1], [12, 2]]);
     expect(gewaehltZaehlen([]).size).toBe(0);
+  });
+
+  it('je Paar eine Nummer (1 oder 2, 7 oder 12, 9 oder 11), die erste zählt; andere Nummern bleiben', () => {
+    const paare = (t: string) => jePaarEine(nummernAus(t), ZWOELF_PAARE);
+    expect(paare('2, 7, 11 9 oder 11 war schwer')).toStrictEqual([2, 7, 11]);
+    expect(paare('1 2 7')).toStrictEqual([1, 7]);
+    expect(paare('2; 7; 11')).toStrictEqual([2, 7, 11]);
+    expect(paare('2. 7. 11.')).toStrictEqual([2, 7, 11]);
+    expect(paare('12, 7, 4')).toStrictEqual([12, 4]);
+    expect(jePaarEine([4, 6, 8, 10], ZWOELF_PAARE)).toStrictEqual([4, 6, 8, 10]);
+    expect([...gewaehltZaehlen(['1 2 7', '2, 12, 9'], ZWOELF_PAARE)]).toStrictEqual([[1, 1], [7, 1], [2, 1], [12, 1], [9, 1]]);
+    // Ohne Paare zählt alles.
+    expect([...gewaehltZaehlen(['1 2 7'])]).toStrictEqual([[1, 1], [2, 1], [7, 1]]);
   });
 
   it('Schlüssel: gleich bei gleicher Zählung, unabhängig von der Reihenfolge', () => {

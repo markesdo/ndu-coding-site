@@ -43,7 +43,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   </Folie>
 
   <Folie>
-    <h2 id="zwoelf">Zwölf Chancen – welche zuerst?</h2>
+    <h2 id="zwoelf">Zwölf Chancen, drei Paare</h2>
     <p class="folie-satz">Drei Paare aus der Liste: Welche jeweils zuerst?</p>
     <ol class="zwoelf">
       <li>Ich finde nichts zum Schauen.</li>
@@ -61,7 +61,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     </ol>
     <p class="breit">Jede*r für sich: <strong>1 oder 2? 7 oder 12? 9 oder 11?</strong> Drei Nummern – und ein Satz zu dem Paar, das euch am schwersten fiel. Aufgedeckt wird gemeinsam. <Timer minuten={2} /></p>
     <Antwortrunde runde="zwoelf" ansicht="eingabe" />
-    <p class="small muted">Liste und Paare nach {TORRES}, S. 81–82; dass ihr euch entscheiden müsst, ist eine Übung dieses Kurses.</p>
+    <p class="small muted">Nach {TORRES}, S. 81–82; die Wahl ist eine Übung dieses Kurses.</p>
   </Folie>
 
   <Folie>
@@ -100,7 +100,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <p class="small muted">{TORRES}, S. 81–85.</p>
       <div class="nur-handout">
         <p>Sortiert ist nur, was Torres selbst sortiert: 2, 3 und 5 sind Gründe für 1 (S. 82–83); 7 und 12 sind Geschwister unter der ergänzten Chance „Ich will meine Serien unterwegs schauen“ (S. 84); 9 nennt sie groß und schwer, 11 leicht (S. 82). Zu 4, 6, 8 und 10 sagt sie nichts; sie bleiben unsortiert. Einen fertigen Baum aller zwölf gibt es im Buch nicht. Dass der Baum beim Bewerten und Priorisieren hilft, steht auf S. 85.</p>
-        <p>Die drei Paare der Übung vergleicht Torres selbst (S. 82): Bei 1 und 2 schreibt sie „I don’t know how to compare“, bei 7 und 12 „how do I prioritize them against each other?“, bei 9 und 11 „Should we always prioritize easy over hard?“. Eine richtige Wahl nennt sie nicht. Später beginnt sie selbst mit einer leichten Teilchance von 9 (S. 85) – das Leichte zuerst geht, wenn man sieht, wovon es ein Teil ist.</p>
+        <p>Die drei Paare der Übung vergleicht Torres selbst (S. 82): Bei 1 und 2 schreibt sie „I don’t know how to compare“, bei 7 und 12 „how do I prioritize them against each other?“, bei 9 und 11 „Should we always prioritize easy over hard?“. Eine richtige Wahl nennt sie nicht.</p>
         <p>Teresa Torres beginnt Kapitel 6 mit dieser Liste, wie sie viele Teams als „Opportunity Backlog“ führen. Das ist besser als nur eine Chance auf einmal, aber eine flache Liste lässt sich schwer priorisieren: Chancen haben verschiedene Formen und Größen, manche hängen zusammen, andere sind Teilmengen von anderen ({TORRES}, S. 81). Flugzeug und Zug klingen gleich, bringen aber verschiedene Bedingungen mit: im Flugzeug vielleicht ganz offline, im Zug mit mobilen Daten; im Flugzeug vielleicht eine Steckdose, im Zug nicht (S. 82). Und wer immer das Leichte zuerst nimmt, kommt nie zu den schweren Problemen, mit denen man sich von der Konkurrenz abheben und den Outcome wirklich treiben könnte (S. 82). Unser Job ist auch nicht, jede gehörte Chance zu erfüllen, sondern die, die unseren Outcome treiben (S. 80).</p>
       </div>
     </Aufloesung>
@@ -336,12 +336,12 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 <script>
   // „warum“: gewählte Nummern markieren, sobald die Runde „zwoelf“ aufgedeckt ist (Stand kommt von Antwortrunde.astro).
   import { ANTWORTRUNDE_STAND, type AntwortrundeStand } from '../../../lib/antworten';
-  import { gewaehltMarkieren, gewaehltSchluessel, gewaehltZaehlen } from '../../../lib/gewaehlt';
+  import { ZWOELF_PAARE, gewaehltMarkieren, gewaehltSchluessel, gewaehltZaehlen } from '../../../lib/gewaehlt';
   let zuletzt: string | null = null;
   document.addEventListener(ANTWORTRUNDE_STAND, (e) => {
     const d = (e as CustomEvent<AntwortrundeStand>).detail;
     if (d?.runde !== 'zwoelf') return;
-    const z = gewaehltZaehlen(d.frei ? d.texte : []);
+    const z = gewaehltZaehlen(d.frei ? d.texte : [], ZWOELF_PAARE);
     const k = gewaehltSchluessel(z);
     if (k === zuletzt) return;
     zuletzt = k;

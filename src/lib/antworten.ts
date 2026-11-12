@@ -87,14 +87,14 @@ const PLATZ_WAHL = {
 export const RUNDEN: Readonly<Record<string, Runde>> = {
   /** Tag 2, Synthese: Was hört eure Rolle in der Netflix-Geschichte? */
   netflix: { kennung: 'netflix', ab: NACH_NETFLIX, rollen: DREI_ROLLEN },
-  /** Tag 2, Baum: drei Paare aus den zwölf Chancen (1/2, 7/12, 9/11, Torres S. 82) – je eine Nummer und ein Satz zum
+  /** Tag 2, Baum: drei Paare aus den zwölf Chancen (1 oder 2, 7 oder 12, 9 oder 11; Torres S. 82) – je eine Nummer und ein Satz zum
    *  schwersten Paar, aufgedeckt auf „warum“. Drei neutrale Plätze. */
   zwoelf: {
     kennung: 'zwoelf', ab: NACH_ZWOELF, rollen: DREI_PLAETZE,
     eingabe: {
-      label: 'Drei Nummern (1/2, 7/12, 9/11) und ein Satz: Welches Paar fiel am schwersten?',
+      label: 'Drei Nummern (1 oder 2, 7 oder 12, 9 oder 11) und ein Satz: Welches Paar fiel am schwersten?',
       hinweis: 'erst einen Platz wählen, dann Nummern und Satz abschicken.',
-      platzhalter: 'z. B. 2, 7, 11 – bei 9/11 …',
+      platzhalter: 'z. B. 2, 7, 11 – bei 9 oder 11 …',
       ...PLATZ_WAHL,
     },
   },
