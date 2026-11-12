@@ -157,7 +157,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
   <Folie>
     <h2 id="gruppieren">Kaffeebar: Gleiches zusammenlegen</h2>
     <MiroFrame name="T2 · 1 · Experience Map" />
-    <p class="folie-satz kompakt">Auf Miro, T2 · 1, Spalte Kaffeebar: Schiebt zusammen, was denselben Moment meint – Namen als Sticky, Geschichten zählen. <Timer minuten={4} /></p>
+    <p class="folie-satz kompakt">Zu dritt auf Miro, T2 · 1, Kaffeebar, Schritt 1: Eine*r schiebt, alle entscheiden. <Timer minuten={5} /></p>
     <div class="gruppen">
       {/* Steht vor den Skizzen, damit die Färbung ohne :has auskommt (.gruppen-an.gezeigt ~ .skizzen). */}
       <p data-schritt class="gruppen-an small muted">Gleiche Farbe, gleicher Buchstabe: derselbe Moment der Geschichte.</p>
@@ -194,7 +194,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
     </div>
     <p class="small muted">{TORRES}, S. 56, 87.</p>
     <div class="nur-handout">
-      <p>Erst gruppiert ihr selbst: Die 23 Stickies der fünf Kaffeebar-Skizzen liegen auf Miro (T2 · 1, Spalte Kaffeebar), danach zeigt die Folie eine Lösung. Damit niemand dieselben Stickies zieht, teilt Markus die Kaffeebar-Geschichten auf: je zwei pro Person (I1 und I2 · I3 und I4 · I5 und die Namen); jede*r verschiebt nur die zugeteilten.</p>
+      <p>Erst gruppiert ihr selbst: Die 23 Stickies der fünf Kaffeebar-Skizzen liegen auf Miro (T2 · 1, Spalte Kaffeebar), danach zeigt die Folie eine Lösung. Die Übungsrunde macht ihr zu dritt, weil die Kaffeebar euer einziges gemeinsames Produkt ist: Torres lässt ein Team seine Maps gemeinsam zusammenführen, statt die beste auszuwählen ({TORRES}, S. 55–56: ‚focus on synthesizing your work together rather than choosing the “best” drawing‘). ‚Eine*r schiebt, alle entscheiden‘ ist eine Regel dieses Kurses: Die anderen schlagen als Frage vor („Derselbe Moment?“), Namen-Stickies erst, wenn alle einverstanden sind, Zweifelsfälle liegen lassen. An eurem eigenen Produkt arbeitet ihr danach allein. Die Zitat-IDs zählen in der Reihenfolge, in der ihr die Zitate eingetragen habt – nicht in der Reihenfolge der Geschichte. Die Skizze folgt der Geschichte: I2 beginnt mit I2-4.</p>
       <p>Die Spaltennamen stehen in keiner Skizze. Sie entstehen, wenn ihr ähnliche Knoten zusammenlegt ({TORRES}, S. 56) und der Gruppe einen Namen gebt: Maßgeblich ist, dass die Stickies denselben Moment der Geschichte meinen, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot (S. 87: ‚the most common nodes‘). Gezählt werden Geschichten, nicht Stickies, und nur, was ein Zitat trägt; Notizen zeigt ihr, zählt sie aber nicht. Stickies zusammenschieben ist die Arbeitsweise dieses Kurses.</p>
       <ul>
         {GRUPPEN.map(({ g, name }) => {
@@ -203,7 +203,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
           return <li><strong>{buchstabe(g)} · {name}:</strong> {zitate.join(', ')}{notizen.length > 0 && `; Notiz ${notizen.join(', ')} (zählt nicht)`} – {zaehlung(g)}.</li>;
         })}
       </ul>
-      <p>Die Ankunftssätze I1-1, I4-1 und I5-1 bleiben grau: Sie beschreiben den Hintergrund, keinen erzählten Moment. Ebenso I1-4 (ein Hochpunkt ohne Platz in der Abfolge), I5-4 und I5-5 (nur in einer Geschichte). I3-4 („Bei mehr als fünf Leuten lass ich es.“) und I4-2 („Anstellen ist ein Glücksspiel.“) sind eine Regel und eine Meinung übers Anstehen, keine erzählten Momente – sie stehen nicht auf der Skizze und bleiben im Snapshot. Dass I3 sich anstellt, steht nur in der Notiz („Stellt sich trotzdem an, wenn weniger als fünf Leute warten.“); darum ist der Sticky gestrichelt und zählt nicht. „Im Zug“ trägt nur eine Geschichte (I3-5), bleibt aber eine Gruppe: Dort endet die Geschichte, und das Ende markiert ihr ohnehin; der Zug steht auch in der Notiz zu I2. Dass I2-4, I2-2 und I2-1 im Raster der nächsten Folie in einer Zelle stehen („Tafel, Schlange, Uhr“), ist selbst ein Beispiel für Zusammenlegen: drei Stickies, ein Moment, eine Geschichte – darum bleibt es bei {zaehlung('a')}.</p>
+      <p>Die Ankunftssätze I1-1, I4-1 und I5-1 bleiben grau: Sie beschreiben den Hintergrund, keinen erzählten Moment. Ebenso I1-4 (ein Hochpunkt ohne Platz in der Abfolge), I5-4 und I5-5 (nur in einer Geschichte). I3-4 („Bei mehr als fünf Leuten lass ich es.“) und I4-2 („Anstellen ist ein Glücksspiel.“) sind eine Regel und eine Meinung übers Anstehen, keine erzählten Momente – sie stehen nicht auf der Skizze und bleiben im Snapshot. Dass I3 sich anstellt, steht nur in der Notiz („Stellt sich trotzdem an, wenn weniger als fünf Leute warten.“); darum ist der Sticky gestrichelt und zählt nicht. „Im Zug“ trägt nur eine Geschichte (I3-5), bleibt aber eine Gruppe: Dort endet die Geschichte, und das Ende markiert ihr ohnehin; der Zug steht auch in der Notiz zu I2. Dass I2-4, I2-1 und I2-2 im Raster der nächsten Folie in einer Zelle stehen („Tafel, Schlange · 8 Leute · Uhr“, in der Reihenfolge der Geschichte), ist selbst ein Beispiel für Zusammenlegen: drei Stickies, ein Moment, eine Geschichte – darum bleibt es bei {zaehlung('a')}.</p>
     </div>
   </Folie>
 
@@ -223,7 +223,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
         <tbody>
           <tr>
             <th scope="row">I2</th>
-            <td>Tafel, Schlange, Uhr <span class="id">I2-4, I2-2</span> <span class="pill tief">Tief · I2-1</span></td>
+            <td>Tafel, Schlange <span class="id">I2-4</span> · <span class="nw">8 Leute</span> <span class="pill tief">Tief · I2-1</span> · <span class="nw">Uhr <span class="id">I2-2</span></span></td>
             <td>„… gedrückt, ohne nachzudenken.“ <span class="id">I2-3</span></td>
             <td class="leer" aria-label="nicht erzählt">–</td>
             <td class="muted">nur in der Notiz</td>
