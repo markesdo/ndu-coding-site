@@ -190,7 +190,7 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 64–65`,
       },
       {
-        text: 'Übung am eigenen Kurs: drei Sätze, keine Interviews. Der Kurs ist das Produkt; was daraus wird (Map, Baum, eine Änderung), zeigt Markus an Tag 3. Kursentscheidung, keine Buchquelle.',
+        text: 'Übung am eigenen Kurs: drei Sätze, keine Interviews. Der Kurs ist das Produkt. Kursentscheidung, keine Buchquelle.',
         quelle: 'Kursablauf Innolab, Tag 2',
       },
     ],

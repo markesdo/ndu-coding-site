@@ -462,7 +462,13 @@ describe('methoden', () => {
       von: Number(m[1]) * 60 + Number(m[2]), bis: Number(m[3]) * 60 + Number(m[4]), titel: m[5], href: m[6] ?? '',
     }));
 
-  it('der Ablauf jeder Tagesseite ist lückenlos: Jeder Block beginnt, wo der vorige endet, und endet zur Zeit im Seitenkopf', () => {
+  /** Beginn und Ende des Kurstags aus dem Seitenkopf (eyebrow „… · 09:00–17:30“), in Minuten seit Mitternacht. */
+  const kopfzeit = (n: number) => {
+    const m = tagesseite(n).match(/class="eyebrow">[^<]*?(\d{2}):(\d{2})–(\d{2}):(\d{2})/);
+    return m ? [Number(m[1]) * 60 + Number(m[2]), Number(m[3]) * 60 + Number(m[4])] : null;
+  };
+
+  it('der Ablauf jeder Tagesseite ist lückenlos und füllt genau die Zeit im Seitenkopf', () => {
     for (const t of TAGE) {
       const b = bloecke(t.n);
       expect(b.length, `tag-${t.n}`).toBeGreaterThan(3);
@@ -470,15 +476,44 @@ describe('methoden', () => {
         expect(x.bis, `tag-${t.n}: ${x.titel}`).toBeGreaterThan(x.von);
         if (i > 0) expect(x.von, `tag-${t.n}: ${x.titel} schließt nicht an ${b[i - 1].titel} an`).toBe(b[i - 1].bis);
       }
+      expect(kopfzeit(t.n), `tag-${t.n}: Zeit im Seitenkopf`).toStrictEqual([b[0].von, b.at(-1)!.bis]);
     }
     // Rahmen der Tage nach dem Plan vom 12.11.2026 (Beginn, Ende in Minuten): Tag 6 ganztägig, Tag 7 am 16.01. von 9 bis 12.
-    const rahmen = (n: number) => [bloecke(n)[0].von, bloecke(n).at(-1)!.bis];
-    expect(rahmen(3)).toStrictEqual([9 * 60, 17 * 60 + 30]);
-    expect(rahmen(4)).toStrictEqual([9 * 60, 17 * 60 + 30]);
-    expect(rahmen(5)).toStrictEqual([9 * 60, 17 * 60]);
-    expect(rahmen(6)).toStrictEqual([9 * 60, 18 * 60]);
-    expect(rahmen(7)).toStrictEqual([9 * 60, 12 * 60]);
+    expect(kopfzeit(3)).toStrictEqual([9 * 60, 17 * 60 + 30]);
+    expect(kopfzeit(4)).toStrictEqual([9 * 60, 17 * 60 + 30]);
+    expect(kopfzeit(5)).toStrictEqual([9 * 60, 17 * 60]);
+    expect(kopfzeit(6)).toStrictEqual([9 * 60, 18 * 60]);
+    expect(kopfzeit(7)).toStrictEqual([9 * 60, 12 * 60]);
     expect(bloecke(6).find((x) => x.titel === 'Mittagspause')).toMatchObject({ von: 13 * 60, bis: 14 * 60 });
+  });
+
+  it('„Weiter“ führt an jedem Kurstag ab Tag 2 durch alle Blöcke des Tages (FooterNav-Kette) und „Zurück“ denselben Weg zurück', () => {
+    const seite = (pfad: string) => readFileSync(new URL(`../pages${pfad.split('#')[0]}.astro`, import.meta.url), 'utf8');
+    const ziel = (pfad: string, richtung: 'prev' | 'next') => seite(pfad).match(new RegExp(`<FooterNav[^>]*?\\b${richtung}=\\{\\{\\s*href:\\s*'([^']+)'`))?.[1];
+    const m = (slug: string) => `/innolab/methoden/${slug}`;
+    // Je Kurstag: Start, die Stationen in Kursreihenfolge, zuletzt das Ziel, an dem die Kette den Tag verlässt oder zur Tagesseite zurückkehrt.
+    const ketten: string[][] = [
+      ['/innolab/tag-2', m('synthese'), m('journey-map'), '/innolab/tag-2/abschluss', '/innolab/tag-3'],
+      ['/innolab/tag-3', m('baum'), m('ziel-chance'), m('hmw'), m('ideation'), m('kundenprofil'), m('value-map'), m('concept-story'), '/innolab/tag-3#abschluss'],
+      ['/innolab/tag-4', m('geschaeftsmodell'), m('experiment'), m('story-map'), m('usage-story'), m('prototyp-spike'), m('scrum')],
+      ['/innolab/tag-5', m('scrum#team'), m('backlog'), m('akzeptanzkriterien'), m('schneiden'), m('sprint'), '/innolab/tag-5#stoerfall'],
+      ['/innolab/tag-6', '/innolab/tag-7', '/innolab'],
+      [m('pitch'), '/innolab/tag-6#pitch-probe'],
+    ];
+    for (const kette of ketten) {
+      for (let i = 0; i + 1 < kette.length; i++) expect(ziel(kette[i], 'next'), `Weiter von ${kette[i]}`).toBe(kette[i + 1]);
+    }
+    // Zurück: jede Station zeigt auf die davor (Anker der Tagesseite zählen als die Tagesseite).
+    const ohneAnker = (p?: string) => p?.replace(/#(debrief|review-retro)$/, '');
+    for (const [hier, davor] of [
+      [m('journey-map'), m('synthese')], ['/innolab/tag-2/abschluss', m('journey-map')],
+      [m('baum'), '/innolab/tag-3'], [m('ziel-chance'), m('baum')], [m('concept-story'), m('value-map')],
+      [m('geschaeftsmodell'), '/innolab/tag-4'], [m('experiment'), m('geschaeftsmodell')], [m('story-map'), m('experiment')],
+      [m('scrum'), '/innolab/tag-5'], [m('backlog'), m('scrum#team')], [m('sprint'), m('schneiden')],
+      [m('pitch'), '/innolab/tag-6'],
+    ]) expect(ohneAnker(ziel(hier, 'prev')), `Zurück von ${hier}`).toBe(davor);
+    // Scrum steht an zwei Tagen: Der FooterNav am Seitenende gehört zu Tag 5; an Tag 4 führt der Hinweis vor #team zum Abschluss.
+    expect(seite(m('scrum'))).toMatch(/Ab hier: Tag 5[\s\S]*?href="\/innolab\/tag-4#abschluss"[\s\S]*?<h2 id="team">/);
   });
 
   it('jede Methode ab Tag 2 steht im Ablauf ihres Kurstags mit so vielen Minuten, wie sie dauert', () => {

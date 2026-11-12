@@ -24,7 +24,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <Block time="15:45–16:00" type="pause" title="Pause" />
     <Block time="16:00–16:45" type="uebung" title="Pitch" href="/innolab/methoden/pitch">Story in vier Teilen, Demo, Belege, Wertkurve und Raster; das Gerüst.</Block>
     <Block time="16:45–17:05" type="uebung" title="Pitch-Probe" href="#pitch-probe">Zwei Minuten Geschichte, vor den anderen beiden.</Block>
-    <Block time="17:05–17:45" type="uebung" title="Puffer" href="#puffer">Fertig bauen, was im Sprint offen blieb; am Pitch weiterschreiben; Nachzügler holen auf.</Block>
+    <Block time="17:05–17:45" type="uebung" title="Puffer" href="#puffer">Am Pitch weiterschreiben, Testnotizen auswerten, Linear aufräumen – gebaut wird nicht mehr.</Block>
     <Block time="17:45–18:00" type="plenum" title="Abschluss" href="#abschluss">Was bis zur Präsentation passiert.</Block>
   </div>
 
@@ -53,11 +53,12 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Gleich danach erzählt jede*r den Teil „Geschichte“ in zwei Minuten (<a href="/innolab/methoden/pitch#aufbau">Pitch</a>) – eure Concept Story aus <code>docs/STORYS.md</code>, die ihr danach in <code>docs/PITCH.md</code> übernehmt.</p>
   <p>Die anderen beiden antworten nur auf zwei Fragen: Gab es eine Krise? Wisst ihr am Ende, welchen Höhepunkt die Demo zeigen muss? Das Lächeln, Lichaws Signal, dass eine Story trägt, kommt erst am Höhepunkt (Donna Lichaw, „The User’s Journey“, 2016, Kap. 7, „Test and Validate“) – darauf achtet ihr, wenn ihr bis Tag 7 den ganzen Pitch mit Demo probt.</p>
   <h3 id="puffer">Puffer</h3>
-  <p>Was im Sprint nicht fertig wurde, könnt ihr hier nach der Definition of Done fertig bauen; wer an einem Kurstag gefehlt hat, holt nach. Wer fertig ist, schreibt am Pitch weiter: Geschichte und Demo-Ablauf aus <code>docs/STORYS.md</code> in <code>docs/PITCH.md</code>.</p>
+  <p>Gebaut wird hier nicht mehr: Der Sprint endete um 13:00, und was bis dahin nicht fertig war, steht im Backlog. Die Zeit gehört dem, was nach Review und Retro offen ist: am Pitch weiterschreiben – Geschichte und Demo-Ablauf aus <code>docs/STORYS.md</code> in <code>docs/PITCH.md</code> –, die Notizen aus den Tests auswerten und als Befunde in <code>docs/TESTS.md</code> festhalten, Linear aufräumen: Was zurück in den Backlog ging, verliert das Label <code>Sprint</code>.</p>
 
   <h2 id="abschluss">Abschluss & bis zur Präsentation</h2>
-  <p>Jede*r sagt in einem Satz, wie nah das eigene Produkt am Sprint-Ziel ist. Damit ist der Prototyp fertig. Bis zur Präsentation am 16. Jänner baut ihr nichts mehr, ihr bereitet den Pitch vor. Euer Pro-Monat läuft noch bis etwa 28. Dezember – was ihr dafür mit Claude machen wollt, macht ihr in diesen Tagen. Wer danach weiterbauen will, braucht ein eigenes Abo; für den Kurs ist das nicht nötig. Bis zur Präsentation gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
-  <Checklist id="il-tag6-review-retro" items={[
+  <p>Jede*r sagt in einem Satz, wie nah das eigene Produkt am Sprint-Ziel ist. Der Prototyp ist der Stand von 13:00, den ihr im Review gezeigt habt. Bis zur Präsentation am 16. Jänner baut ihr nichts mehr, ihr bereitet den Pitch vor. Euer Pro-Monat läuft noch bis etwa 28. Dezember – was ihr dafür mit Claude machen wollt, macht ihr in diesen Tagen. Wer danach weiterbauen will, braucht ein eigenes Abo; für den Kurs ist das nicht nötig. Bis zur Präsentation gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
+  {/* -v2 (beide Listen): Häkchen je Position; seit 12.11.2026 mit dem Pitch-Gerüst von heute, ohne die Pitch-Probe als Hausaufgabe. */}
+  <Checklist id="il-tag6-review-retro-v2" items={[
     'Review und Retro gelaufen, jedes Issue nach der Definition of Done geprüft',
     '<code>docs/SPRINTS.md</code>: Review (Ziel erreicht, fertig, offen, Tests und Messung) und Retro (Maßnahme, erster Schritt, verantwortlich)',
     'Testbefunde in <code>docs/TESTS.md</code>, Belege aus Review und Tests in <code>docs/PITCH.md</code>',
@@ -65,7 +66,7 @@ import FooterNav from '../../components/FooterNav.astro';
     'Committet und gepusht, Produktions-URL läuft am Handy',
   ]} />
   <p>Bis zur Präsentation:</p>
-  <Checklist id="il-tag6-pitch" items={[
+  <Checklist id="il-tag6-pitch-v2" items={[
     'Bis etwa 28. Dezember, solange Pro läuft: Pitch mit Claude als skeptischem Gegenüber geprobt und mit der Prüfliste geprüft (<a href="/innolab/methoden/pitch#pruefen">Pitch</a>); nach den letzten Tests geht ihr die Liste noch einmal selbst durch',
     'Drei weitere Usability-Tests am fertigen Prototyp, Befunde in <code>docs/TESTS.md</code> – sie ändern nichts mehr am Produkt, sondern gehen als Belege und nächster Schritt in den Pitch',
     '<code>docs/PITCH.md</code> mit Geschichte, Demo, Belegen, Modell',
