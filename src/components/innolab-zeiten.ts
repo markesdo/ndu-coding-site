@@ -30,6 +30,7 @@ export const NACH_NETFLIX = ENDE_TAG_2;
 export const NACH_ZWOELF = ENDE_TAG_2;
 
 
-/** Rückfall für die Antwortrunde „Rückblick“ am Ende von Tag 2 (Abschluss, Folie „rueckblick“): Ende des Tages.
- *  Aufgedeckt wird per Klick des Präsentators auf derselben Folie, wenn alle drei abgeschickt haben. */
-export const NACH_RUECKBLICK_TAG_2 = ENDE_TAG_2;
+/** Antwortrunde „Rückblick“ am Ende von Tag 2 (Abschluss, Folie „rueckblick“): Im Raum wird nicht aufgedeckt, Markus
+ *  dankt nur. Ab 19 Uhr (Kursende 18 Uhr plus eine Stunde Puffer, falls es später wird) sind die Texte lesbar, damit
+ *  Markus sie noch am selben Abend sichert; die Eingabe ist dann zu. */
+export const NACH_RUECKBLICK_TAG_2 = '2026-11-12T19:00';

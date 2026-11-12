@@ -37,6 +37,12 @@ export interface EingabeTexte {
   wahlFest: string;
   /** Statuszeile der Eingabe nach dem Aufdecken – wo die Sätze stehen. */
   aufgedeckt: string;
+  /** Zeile nach dem Senden – bis wann man noch ändern kann. */
+  gesendet: string;
+  /** Rückfall in der Eingabe, wenn die API ausfällt (503, Netz). */
+  rueckfall: string;
+  /** Meldung, wenn jemand nach dem Schließen der Runde noch abschickt (409 „aufgedeckt“). */
+  zuSpaet: string;
 }
 
 /** Texte der Eingabe, wenn die Runde keine eigenen hat (Netflix). */
@@ -49,6 +55,9 @@ export const EINGABE_STANDARD: Readonly<EingabeTexte> = {
   wahlBesetzt: 'Diese Rolle hat schon jemand – wählt eine andere.',
   wahlFest: 'deine Rolle ist {label} – ändern kannst du deine Antwort, nicht die Rolle.',
   aufgedeckt: 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.',
+  gesendet: 'Gesendet – du kannst bis zum Aufdecken noch ändern.',
+  rueckfall: 'Antwort bitte laut sagen.',
+  zuSpaet: 'Schon aufgedeckt – Senden geht nicht mehr.',
 };
 
 /** Hinweis nach dem Senden mit dem Namen des eigenen Platzes. */
@@ -99,7 +108,7 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
     },
   },
   /** Tag 2, Abschluss: Rückblick auf den Kurs als Produkt – ein Satz „Hoch:“/„Tief:“ zum stärksten Moment des Tages.
-   *  Drei neutrale Plätze statt Rollen; Eingabe und Auflösung auf derselben Folie. Soll die Runde an einem späteren
+   *  Drei neutrale Plätze statt Rollen; nur Eingabe, im Raum wird nicht aufgedeckt (Markus liest nach dem Kurs). Soll die Runde an einem späteren
    *  Kurstag wiederkommen, reicht ein neues ab: Die Plätze hängen schon am Wiener Kurstag (platzSchluessel). */
   rueckblick: {
     kennung: 'rueckblick', ab: NACH_RUECKBLICK_TAG_2,
@@ -109,7 +118,11 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
       hinweis: 'erst einen Platz wählen, dann deinen Satz abschicken.',
       platzhalter: 'Tief: … – ich habe gerade …',
       ...PLATZ_WAHL,
-      aufgedeckt: 'Aufgedeckt – eure Sätze stehen darunter.',
+      aufgedeckt: 'Danke – die Runde ist zu. Eure Sätze liest Markus nach dem Kurs.',
+      gesendet: 'Gesendet – du kannst bis 19 Uhr noch ändern.',
+      // Server weg: nicht laut sammeln, einfach weiter (Markus, 12.11.2026).
+      rueckfall: 'Geht gerade nicht – kein Problem, weiter geht’s.',
+      zuSpaet: 'Die Runde ist zu – danke fürs Mitmachen.',
     },
   },
 };
