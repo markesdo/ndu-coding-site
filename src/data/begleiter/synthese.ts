@@ -117,7 +117,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   geschichte: {
     live: [
-      'Vor dem Vorlesen Rollen zuteilen: Produktmanagement, Design, Entwicklung.',
+      'Rollen wählen sie selbst: Wer zuerst laut nennt, hat sie.',
       'Geschichte vorlesen, langsam, ohne einzelne Stellen zu betonen.',
       'Studierende öffnen die Seite selbst; Antwort dort eingeben – Aufdecken zeigt alle Sätze.',
       'Timer 1 min: jede*r tippt einen Satz, noch nicht abschicken.',
@@ -129,7 +129,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Folie zeigen, die Geschichte vorlesen.',
-        'Rollen zuteilen (nur den Namen: Produktmanagement, Design, Entwicklung). Studierende öffnen die Folie auf ihrem eigenen Gerät, wählen dort ihre Rolle. Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
+        'Rollen wählen die Studierenden selbst: Wer eine zuerst laut nennt, hat sie (nur den Namen: Produktmanagement, Design, Entwicklung). Studierende öffnen die Folie auf ihrem eigenen Gerät, wählen dort ihre Rolle. Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
         'Auf dein Zeichen schicken alle gleichzeitig ab; der Beamer zeigt „2 von 3 haben geantwortet“. Bis zum Aufdecken kann jede*r noch ändern. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r den Satz reihum laut. Dann zur nächsten Folie.',
       ],
       achten: [
