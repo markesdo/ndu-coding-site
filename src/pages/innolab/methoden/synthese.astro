@@ -215,7 +215,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
   <div class="nur-handout">
   <h2 id="werkstatt">In der Werkstatt speichern</h2>
   <p>Pro Interview ein Eintrag: Pseudonym, Einwilligung, der Snapshot (Zitat, Kurzinfos, Einsichten, Chancen), pseudonymisierte Notizen und wörtliche Zitate mit ID (I2-1, I2-2 …). Chancen verweisen auf die Zitate, die sie belegen. Darum tragt ihr im Editor zuerst die Zitate ein – erst dann gibt es ihre IDs. Die Skizze der Geschichte bleibt auf Papier, Rohnotizen und Aufnahmen bleiben bei euch.</p>
-  <p>Auf Miro (Frame T1 · 5) liegen eure Snapshots als Karten, jede mit ihrer ID (I2, I2-3). Die Karten sind Kopien aus der Werkstatt: Ändert den Text dort, nicht auf Miro; Markus überträgt ihn neu. Jede Chance, die ihr auf Miro festhaltet, nennt mindestens eine Zitat-ID. Ohne ID kein Beleg.</p>
+  <p>Auf Miro (Frame T1 · 5) liegen eure Snapshots als Karten, jede mit ihrer ID (I2, I2-3). Die Karten sind Kopien aus der Werkstatt: Ändert den Text dort, nicht auf Miro; Markus überträgt sie in der Pause nach dem Synthese-Block neu. Jede Chance, die ihr auf Miro festhaltet, nennt mindestens eine Zitat-ID. Ohne ID kein Beleg.</p>
   <Bearbeiten artefakt="interviews" />
 
   <h2 id="pruefen">Prüfen</h2>
@@ -245,6 +245,7 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
     <p class="folie-satz">Lest eure Zeile vor: Entscheidung, Grund, Beleg-Stufe. Reihum, je ein Satz.</p>
     <p class="nur-handout">„Beleg: noch keiner“ ist eine gültige Antwort – sie sagt, was ihr als Nächstes prüfen müsst. Haben eure echten Interviews nichts für oder gegen die Annahme ergeben: Waren sie zu nett, oder habt ihr nach eurer Idee gefragt statt nach vergangenem Verhalten? Als Nächstes zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu – ihre Momente werden die Äste eures Baums.</p>
+    <p class="small muted">Pause: Markus überträgt eure Snapshots nach Miro <span class="ganz">(T1 · 5) – danach Experience Map.</span></p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/journey-map', t: 'Experience Map' }} />
@@ -252,6 +253,8 @@ const I2_GESCHICHTE = I2.notizen.replace(/\.$/, '').split(', ');
 
 <style>
   .zeigen-link { white-space: nowrap; font-weight: 600; }
+  /* Folie „uebertrag“: Frame und „Experience Map“ nicht trennen. */
+  .ganz { white-space: nowrap; }
   /* Folie „festhalten“: Weg zum Feld in der Werkstatt, eigene Zeile unter dem Punkt. */
   .zeiger { display: block; }
   .bsp { display: block; margin-top: .2rem; font-size: .85em; color: var(--muted); }

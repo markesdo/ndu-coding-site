@@ -216,6 +216,11 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         'Bei Zeitnot (Interviews erst heute eingetragen): die Proberunde ersetzt das Vorlesen dieser Folie.',
       ],
       achten: [
+        'Lösung Frage 1 – Was wurde gesagt? Merkzitat I2-2 „Wenn ich auf die Uhr schauen muss, geh ich.“; I2-1 „Acht Leute vor mir, da hab ich gleich gewusst, das wird nix.“; I2-4 „Ich schau auf die Tafel, dann auf die Schlange, und dann entscheid ich.“ → Im Snapshot steht schon die Einsicht „Entscheidet erst beim Ankommen.“',
+        'Lösung Frage 2 – Was ändert sich? A1, die riskanteste („… schon vor der Ankunft am Bahnhof entscheiden …“), wackelt: I2-4 spricht dagegen. Noch herausfinden: Entscheiden die anderen auch erst in der Halle? → nächste Interviews (bei der Kaffeebar kam das mit I3-1 und I5-3, daraus später D4). Ein Interview ist ein Beleg, kein Beweis.',
+        'Lösung Frage 3 – Wie war das Gespräch? F1 „Erzähl mir vom letzten Morgen …“ brachte die Geschichte (Ankunft 7:31, acht Leute, Blick auf die Uhr, Automat, Zug 7:42). Nicht funktioniert: beim Automaten (I2-3) nicht nachgefragt, obwohl die Nachfrage F6 „Warum?“ im Leitfaden steht. → Leitfaden: F1 bleibt.',
+        'Lösung Frage 4 – Was haben wir überhört? I2-3 „Ich hab dann am Automaten gedrückt, ohne nachzudenken.“ – Warum der Automat? Notlösung oder gut genug? → Leitfaden, Nachfrage „Warum der Automat?“',
+        'Lösung Eintrag (Schreibzeit): Annahmen-Map → A1: Beleg „gesagt“, Beleg-ID I2-4, Notiz „spricht dagegen“ → Speichern; im Zeigen-Modus „Neu laden“.',
         'Warum I2 und nicht I1: Bei I1 steht der Widerspruch zu A1 nur in den Notizen („Schaut erst auf die Schlange, dann auf die Uhr“), ohne Zitat-ID – kein Beleg zum Eintragen.',
         'Vorbereitung: vor dem Kurs in der Demo-Mappe anmelden und Speichern testen; A1 hat noch keine Beleg-ID (Ausgangslage). Nach dem Kurs den Eintrag entfernen oder als Beispiel lassen.',
       ],
@@ -333,7 +338,14 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Reihum: jede*r liest die eigene Zeile vor – Entscheidung, Grund, Beleg-Stufe.',
       '„Beleg: noch keiner“ gilt – im Grund steht dann: in echten Interviews prüfen.',
       'Echte Interviews ohne Beleg: zu nett oder nach der Idee gefragt?',
+      'Pause: Claude ‚Übertrag die Snapshots‘ – vor der Experience Map.',
     ],
+    miro: {
+      frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
+      schritte: [
+        'In der Pause: Snapshots übertragen, vor der Experience Map.',
+      ],
+    },
     ueberleitung: 'Nach der Pause zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu.',
   },
 };
