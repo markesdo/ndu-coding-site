@@ -93,7 +93,7 @@
       "kurzinfos": "Pendelt an vier Tagen, bestellt oft für Kolleg*innen mit.",
       "einsichten": ["Entscheidet beim Betreten der Halle.", "Bestellt für Kolleg*innen per Nachricht mit (Einzelfall)."],
       "chancen": [
-        { "text": "Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.", "belege": ["I5-6"] }
+        { "text": "Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.", "belege": ["I5-4", "I5-6"] }
       ],
       "notizen": "Kommt meist zehn Minuten vor Abfahrt. Schaut, wie voll es ist, und entscheidet dann.",
       "zitate": [
