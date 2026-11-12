@@ -3,6 +3,10 @@ import Layout from '../../../layouts/Layout.astro';
 import Checklist from '../../../components/Checklist.astro';
 import Folie from '../../../components/Folie.astro';
 import FooterNav from '../../../components/FooterNav.astro';
+import Antwortrunde from '../../../components/Antwortrunde.astro';
+import Aufloesung from '../../../components/Aufloesung.astro';
+import Timer from '../../../components/Timer.astro';
+import { RUNDEN } from '../../../lib/antworten';
 ---
 <Layout title="Tag 2 · Abschluss">
   <span class="eyebrow">Innolab · Tag 2 · Abschluss</span>
@@ -16,6 +20,20 @@ import FooterNav from '../../../components/FooterNav.astro';
     <p class="small">Warum und wann: <a href="/innolab/methoden/entscheidungslog#warum">Entscheidungslog</a></p>
     <div class="nur-handout">
       <p>Die Zeile der Kaffeebar ist gekürzt; ganz steht sie im <a href="/innolab/methoden/entscheidungslog#beispiel">Beispiel auf der Methodenseite</a>. D1 („Pendler*innen nach Wien“, Beleg „noch keiner“) bleibt stehen und bekommt „ersetzt am 05.11.“ – so sieht man später, dass die Zielgruppe geraten war, bis die Interviews sie geschärft haben. Eure Zeilen von heute stehen schon seit der Synthese im Log; hier lest ihr je eine vor.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="rueckblick">Rückblick: der Kurs als Produkt</h2>
+    <p class="folie-satz">Dein stärkster Moment heute: Was hast du da gerade gemacht?</p>
+    <p>Ein Satz, beginnt mit ‚Hoch:‘ oder ‚Tief:‘. Platz wählen, abschicken. <Timer minuten={2} /></p>
+    <Antwortrunde runde="rueckblick" ansicht="eingabe" />
+    <Aufloesung ab={RUNDEN.rueckblick.ab} gruppe={RUNDEN.rueckblick.kennung}>
+      <Antwortrunde runde="rueckblick" ansicht="antworten" />
+    </Aufloesung>
+    <p class="nach-runde">An Tag 3 seht ihr, was daraus wird: Map, Baum, eine Änderung.</p>
+    <div class="nur-handout">
+      <p>Wir fragen nach Konkretem aus der Vergangenheit statt nach Meinungen (Rob Fitzpatrick, ‚The Mom Test‘, S. 13, 16) und nach einem bestimmten Moment (Teresa Torres, Continuous Discovery Habits, S. 64–65). Übung am eigenen Kurs – drei Sätze, keine Interviews. An Tag 3 zeigen wir, was daraus wird.</p>
     </div>
   </Folie>
 
@@ -45,4 +63,6 @@ import FooterNav from '../../../components/FooterNav.astro';
 <style>
   .log-zeile { margin: 1.25rem 0; padding: .8rem 1rem; border-left: 4px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; font-family: var(--mono); font-size: .95rem; line-height: 1.5; hyphens: manual; }
   :global(html[data-beamer]) .log-zeile { font-size: 1.15rem; }
+  /* Abstand zum Knopf „Auflösung zeigen“ bzw. zu „Eure Sätze“. */
+  .nach-runde { margin-top: 1rem; }
 </style>

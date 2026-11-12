@@ -11,6 +11,7 @@ const KAHNEMAN = 'Daniel Kahneman u. a., When More Pain Is Preferred to Less: Ad
 export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
   wofuer: {
     live: [
+      'Strich: jemand fragt ‚Wo sind wir?‘ oder nach einem Link.',
       'Fragen: Wer kennt Customer Journey aus dem Entrepreneur Lab?',
       'Wenn bekannt: nur den Unterschied betonen – Momente werden Äste.',
       '„Die Map ist euer Bild der Kundschaft: Sie führt durch Interviews und ordnet den Baum.“',
@@ -302,6 +303,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Fragen: Was steht jetzt auf eurer Map, das an Tag 1 fehlte?',
       'Reihum, je ein Knoten.',
       'Wenn nichts: Geschichten nachgezeichnet oder alte Map abgehakt?',
+      'Ist-Zeit notieren.',
     ],
     ueberleitung: 'Nach der Pause werden eure Momente die obersten Äste des Baums.',
   },

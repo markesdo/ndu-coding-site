@@ -1,19 +1,21 @@
 // Antwortrunde – Vercel-Funktion wie api/aufgedeckt.ts, hinter dem Kurspasswort (middleware.ts); Logik in lib/antworten.ts.
-// POST { runde, rolle, text }: alle Angemeldeten, kein Präsentator-Schlüssel. Schreibt den festen Platz der Rolle für heute
-// (wer zuletzt schickt, gilt). Nach dem Aufdecken nimmt der Server nichts mehr an (409).
+// POST { runde, rolle, text, geraet }: alle Angemeldeten, kein Präsentator-Schlüssel. Schreibt den festen Platz der Rolle
+// für heute. geraet ist eine anonyme Zufallskennung des Browsers: Hat ein anderer Browser den Platz schon, 409 mit
+// grund „besetzt“ (die erste Antwort bleibt); derselbe Browser überschreibt. Nach dem Aufdecken 409 mit grund „aufgedeckt“.
 // POST { runde, leeren: true }: nur mit Präsentator-Schlüssel (x-presenter-key) – die Plätze der Runde von heute löschen
 // und ihr Aufdecken von heute zurücknehmen (nach einer Probe ist die Runde wieder offen; Aufdecken geht erneut).
 // GET ?runde=…: { anzahl, vergeben, frei } immer; die Texte (antworten) nur, wenn die Auflösung der Runde heute aufgedeckt
 // ist (Kennung wie <Aufloesung gruppe=…>, Speicher aus api/aufgedeckt.ts) oder ihr `ab` erreicht ist.
 // Speicher: Vercel Runtime Cache, ein Schlüssel pro Runde, Kurstag und Rolle – kein Lesen-Ändern-Schreiben, keine Listen.
-// Restrisiko: Wer angemeldet ist, kann die Antwort einer Rolle überschreiben (Kurspasswort, 3 Studierende, Leeren, Chat).
+// Restrisiko: Prüfen und Schreiben sind getrennt – zwei POSTs im selben Augenblick auf denselben Platz: der letzte gilt.
+// Ohne Kennung (Seite von vor dem Update) hält ein Eintrag den Platz nicht. Wer die Kennung fälscht, ist angemeldet (Kurspasswort).
 // Ein POST, der im selben Augenblick wie das Aufdecken ankommt, kann noch durchrutschen (Prüfen, dann Schreiben) – harmlos.
 import { getCache } from '@vercel/functions';
 import { json, praesentatorAbweisen } from '../src/lib/praesentator-api.js'; // .js-Endung wie in middleware.ts
 import { ohneRuntimeCache } from '../src/lib/runtime-cache.js';
 import { aufgedecktSchluessel } from '../src/lib/aufgedeckt.js';
 import {
-  MAX_BODY, TTL_SEKUNDEN, eingabePruefen, gespeichertPruefen, platzSchluessel, rundePruefen, standBauen, texteFrei,
+  MAX_BODY, TTL_SEKUNDEN, eingabePruefen, gespeichertPruefen, platzBesetzt, platzSchluessel, rundePruefen, standBauen, texteFrei,
   type Gespeichert, type Runde,
 } from '../src/lib/antworten.js';
 
@@ -62,8 +64,12 @@ export async function POST(request: Request): Promise<Response> {
   const e = eingabePruefen(body);
   if (!e) return json({ fehler: 'Ungültige Antwort' }, 400);
   const cache = getCache();
-  if (await frei(cache, e.konfig, jetzt)) return json({ fehler: 'Schon aufgedeckt' }, 409);
-  const eintrag: Gespeichert = { text: e.text, zeit: jetzt.getTime() };
-  await cache.set(platzSchluessel(e.runde, e.rolle, jetzt), eintrag, { ttl: TTL_SEKUNDEN, name: 'antworten' });
+  if (await frei(cache, e.konfig, jetzt)) return json({ fehler: 'Schon aufgedeckt', grund: 'aufgedeckt' }, 409);
+  const schluessel = platzSchluessel(e.runde, e.rolle, jetzt);
+  if (platzBesetzt(gespeichertPruefen(await cache.get(schluessel)), e.geraet)) {
+    return json({ fehler: 'Platz schon vergeben', grund: 'besetzt' }, 409);
+  }
+  const eintrag: Gespeichert = { text: e.text, zeit: jetzt.getTime(), geraet: e.geraet };
+  await cache.set(schluessel, eintrag, { ttl: TTL_SEKUNDEN, name: 'antworten' });
   return json({ ok: true });
 }
