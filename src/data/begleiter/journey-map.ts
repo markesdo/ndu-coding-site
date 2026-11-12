@@ -170,7 +170,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Fragen: Welche Stickies meinen denselben Moment? Ruft die IDs.',
       'Aufdecken: Farben und Buchstaben – vier Gruppen, Rest grau.',
       'Fragen: Wie würdet ihr diese Gruppe nennen?',
-      'Fragen: Wohin gehört I3-4 – Halle oder Anstehen?',
+      'Fragen: Warum bleibt „Glücksspiel“ grau?',
       'Fragen: Was bleibt grau, und warum?',
     ],
     verstaendnis: {
@@ -187,7 +187,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 56`,
       },
       {
-        text: 'Die Spaltennamen stehen in keiner Skizze: Ähnliche Knoten zusammenschieben, der Gruppe einen Namen geben – maßgeblich ist derselbe Moment der Geschichte, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot. Gezählt werden Geschichten, nicht Stickies, nur mit Zitat; Notizen zählen nicht. Ankunftssätze (I1-1, I4-1, I5-1) bleiben grau: Hintergrund, kein erzählter Moment. I3-4 ist ein Grenzfall: Die Stelle in der Geschichte entscheidet (nach dem Ankommen, beim Entschluss, sich anzustellen → Anstehen). „Im Zug“ trägt nur I3, bleibt aber Gruppe: dort endet die Geschichte. I2-1/I2-2/I2-4 in einer Rasterzelle ist selbst Zusammenlegen.',
+        text: 'Die Spaltennamen stehen in keiner Skizze: Ähnliche Knoten zusammenschieben, der Gruppe einen Namen geben – maßgeblich ist derselbe Moment der Geschichte, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot. Gezählt werden Geschichten, nicht Stickies, nur mit Zitat; Notizen zählen nicht. Ankunftssätze (I1-1, I4-1, I5-1) bleiben grau: Hintergrund, kein erzählter Moment. I3-4 und I4-2 sind Regel und Meinung übers Anstehen, keine erzählten Momente: grau. Dass I3 sich anstellt, steht nur in der Notiz (gestrichelt, zählt nicht). „Im Zug“ trägt nur I3, bleibt aber Gruppe: dort endet die Geschichte. I2-1/I2-2/I2-4 in einer Rasterzelle ist selbst Zusammenlegen.',
         quelle: 'Kursregel',
       },
     ],

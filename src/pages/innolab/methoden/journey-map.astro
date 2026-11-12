@@ -13,6 +13,7 @@ import MiroFrame from '../../../components/MiroFrame.astro';
 import { CircleCheck, CircleX, CornerDownRight } from '@lucide/astro';
 import { METHODEN } from '../../../components/methoden';
 import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
+import { GRUPPEN, SKIZZEN, buchstabe, gruppeName, skizzenFehler, zaehlung } from '../../../data/kaffeebar-skizzen';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memories“, Nielsen Norman Group (2018)';
@@ -21,49 +22,10 @@ const PRUEFLISTE = METHODEN.find((m) => m.slug === 'journey-map')?.pruefliste;
 if (!PRUEFLISTE?.length) throw new Error('journey-map.astro: Methode „journey-map“ oder ihre Prüfliste fehlt in methoden.ts');
 const PRUEF_KURZ = PRUEFLISTE.map((p) => p.kurz ?? p.text);
 const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less: Adding a Better End“, Psychological Science 4 (1993), S. 401–405';
-// Folie „gruppieren“: die fünf Kaffeebar-Skizzen wie auf Miro T1 · 5, Stickies in Erzählreihenfolge. Ohne id = Notiz
-// (gestrichelt, zählt nicht); g = Gruppe, aus der im Raster der Folie „beispiel“ eine Spalte wird; ohne g = grau,
-// bleibt im Snapshot. Gezählt werden Geschichten, nicht Stickies.
-type GruppeId = 'a' | 'b' | 'c' | 'd';
-type Sticky = { t: string; id?: string; g?: GruppeId; marke?: 'tief' | 'ende' };
-const GRUPPEN: { g: GruppeId; name: string }[] = [
-  { g: 'a', name: 'Halle: schauen, entscheiden' },
-  { g: 'b', name: 'Umweg: Automat' },
-  { g: 'c', name: 'Anstehen und Warten' },
-  { g: 'd', name: 'Im Zug' },
-];
-const SKIZZEN: { i: string; stickies: Sticky[] }[] = [
-  { i: 'I2', stickies: [
-    { t: 'Tafel, Schlange', id: 'I2-4', g: 'a' }, { t: '8 Leute: das wird nix', id: 'I2-1', g: 'a', marke: 'tief' },
-    { t: 'Blick auf die Uhr', id: 'I2-2', g: 'a' }, { t: 'Zum Automaten', id: 'I2-3', g: 'b' }, { t: 'Zug 7:42', g: 'd' },
-  ] },
-  { i: 'I3', stickies: [
-    { t: 'wie es ausschaut', id: 'I3-1', g: 'a' }, { t: 'unter 5 Leuten: anstellen', id: 'I3-4', g: 'c' },
-    { t: 'Ich warte', id: 'I3-2', g: 'c' }, { t: 'Das war ein Fehler', id: 'I3-3', g: 'c', marke: 'tief' },
-    { t: 'Im Zug, in Ruhe', id: 'I3-5', g: 'd', marke: 'ende' },
-  ] },
-  { i: 'I1', stickies: [
-    { t: 'immer knapp dran', id: 'I1-1' }, { t: 'Schlange, dann Uhr', g: 'a' },
-    { t: 'Automat: Notlösung', id: 'I1-3', g: 'b' }, { t: 'erster Schluck: Morgen gerettet', id: 'I1-4' },
-  ] },
-  { i: 'I4', stickies: [
-    { t: 'um 7:28 da', id: 'I4-1' }, { t: 'Anstellen? Glücksspiel', id: 'I4-2' },
-    { t: 'zum Automaten', id: 'I4-3', g: 'b' }, { t: 'Dann halt die Brühe', id: 'I4-4', g: 'b', marke: 'tief' },
-  ] },
-  { i: 'I5', stickies: [
-    { t: '10 Min. vor Abfahrt', id: 'I5-1' }, { t: 'Halle: wie voll?', id: 'I5-3', g: 'a' },
-    { t: 'Bestellungen der Kolleg*innen', id: 'I5-4' }, { t: 'Warten: zu lang', id: 'I5-6', g: 'c', marke: 'tief' },
-    { t: '4 Becher tragen', id: 'I5-5' },
-  ] },
-];
-// Jede Zitat-ID muss im Kaffeebar-Beispiel der Werkstatt stehen, sonst bricht der Build ab.
+// Folien „gruppieren“ und „beispiel“: Skizzen, Gruppen und Zählung aus einer Quelle (data/kaffeebar-skizzen.ts).
 const ZITAT_IDS = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
-const fremd = SKIZZEN.flatMap((s) => s.stickies.flatMap((st) => (st.id && !ZITAT_IDS.has(st.id) ? [st.id] : [])));
-if (fremd.length) throw new Error(`journey-map.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${fremd.join(', ')}`);
-const gruppeName = (g: GruppeId) => GRUPPEN.find((x) => x.g === g)?.name ?? '';
-const buchstabe = (g: GruppeId) => g.toUpperCase();
-// Geschichten je Gruppe: nur Stickies mit Zitat, je Geschichte einmal.
-const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st) => st.g === g && st.id)).length;
+const SKIZZEN_FEHLER = skizzenFehler(SKIZZEN, ZITAT_IDS);
+if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen: ${SKIZZEN_FEHLER.join('; ')}`);
 ---
 <Layout title="Experience Map">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
@@ -133,10 +95,10 @@ const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st
     <ol class="gross">
       <li><strong>Beschriften:</strong> In jeder Skizze die Schlüsselmomente benennen – das sind eure Knoten.</li>
       <li data-schritt><strong>Muster suchen:</strong> Welche Knoten kommen in mehreren Geschichten vor?</li>
-      <li data-schritt><strong>Zusammenlegen und benennen:</strong> Ähnliche Knoten bekommen einen Namen; die häufigsten werden die Map.</li>
+      <li data-schritt><strong>Zusammenlegen:</strong> Ähnliche Knoten zusammen, ohne wichtige Details zu verlieren; die häufigsten werden die Map. Jede Gruppe bekommt einen Namen (Kursregel).</li>
       <li data-schritt><strong>Verbinden:</strong> Pfeile – auch Wiederholungen, Schleifen und wo jemand aufgibt.</li>
     </ol>
-    <p class="small muted">{TORRES}, S. 86–87 (Schritte 1–3), S. 56 (Zusammenlegen, Verbindungen).</p>
+    <p class="small muted">{TORRES}, S. 86–87 (Schritte 1–3), S. 56 (Zusammenlegen, Verbindungen); Gruppennamen: Kursregel.</p>
     <div class="nur-handout">
       <p>Torres nennt zwei Wege zur Struktur des Chancenraums: die Schritte der Experience Map – oder, wenn die Map noch keine klaren Momente hat, die Zeichnungen aus den Interviews. Dann beschriftet ihr die Knoten jeder Geschichte, sucht die Knoten, die in Geschichte um Geschichte auftauchen, und fügt die häufigsten zu einer Map zusammen, die eure gesammelten Geschichten abbildet ({TORRES}, S. 86–87).</p>
       <p>Wie ihr zusammenfügt, führt Torres auf S. 87 nicht aus. Wir übernehmen dafür ihre Regeln für die gemeinsame Map aus Kapitel 4 (S. 56): Ein <strong>Knoten</strong> ist ein Zeitpunkt, eine Handlung oder ein Ereignis, eine <strong>Verbindung</strong> zeigt, wie es weitergeht. Ähnliche Knoten dürft ihr zusammenlegen, aber nicht so weit verallgemeinern, dass wichtige Details verloren gehen. Zeichnet nicht nur den glatten Weg: wo Schritte wiederholt werden, wo jemand aus Frust aufgibt, wo es in Schleifen zurückgeht. Zum Schluss kommt der Kontext an jeden Schritt: Was denkt, fühlt, tut die Person dort? (S. 56)</p>
@@ -201,14 +163,17 @@ const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st
           <div class="skizze">
             <span class="skizze-i">{s.i}</span>
             <ol class="stickies" aria-label={`Skizze ${s.i}, Stickies in der Reihenfolge der Geschichte`}>
-              {s.stickies.map((st) => (
-                <li class:list={['sticky', st.g && `gruppiert g-${st.g}`, { notiz: !st.id }]}>
-                  {st.g && <span class="g-buchstabe" aria-hidden="true">{buchstabe(st.g)}</span>}
-                  <span>{st.t}</span>
-                  {!st.id ? <span class="id">Notiz</span>
-                    : st.marke ? <span class={`pill ${st.marke}`}>{st.marke === 'tief' ? 'Tief' : 'Ende'} · {st.id}</span>
-                    : <span class="id">{st.id}</span>}
-                  <span class="sr-only">{st.g ? `(Gruppe ${buchstabe(st.g)}: ${gruppeName(st.g)})` : '(grau: bleibt im Snapshot)'}</span>
+              {s.stickies.map((st, k) => (
+                <li>
+                  <span class:list={['sticky', st.g && `gruppiert g-${st.g}`, { notiz: st.notiz }]}>
+                    {st.g && <span class="g-buchstabe" aria-hidden="true">{buchstabe(st.g)}</span>}
+                    <span>{st.t}</span>
+                    {st.notiz ? <span class="id">Notiz</span>
+                      : st.marke ? <span class={`pill ${st.marke}`}>{st.marke === 'tief' ? 'Tief' : 'Ende'} · {st.id}</span>
+                      : <span class="id">{st.id}</span>}
+                    <span class="sr-only">{st.g ? `(Gruppe ${buchstabe(st.g)}: ${gruppeName(st.g)})` : '(grau: bleibt im Snapshot)'}</span>
+                  </span>
+                  {k < s.stickies.length - 1 && <span class="pfeil" aria-hidden="true">→</span>}
                 </li>
               ))}
             </ol>
@@ -230,11 +195,11 @@ const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st
       <ul>
         {GRUPPEN.map(({ g, name }) => {
           const zitate = SKIZZEN.flatMap((s) => s.stickies.filter((st) => st.g === g && st.id).map((st) => st.id));
-          const notizen = SKIZZEN.filter((s) => s.stickies.some((st) => st.g === g && !st.id)).map((s) => s.i);
-          return <li><strong>{buchstabe(g)} · {name}:</strong> {zitate.join(', ')}{notizen.length > 0 && `; Notiz ${notizen.join(', ')} (zählt nicht)`} – {geschichtenIn(g)} von 5.</li>;
+          const notizen = SKIZZEN.filter((s) => s.stickies.some((st) => st.g === g && st.notiz)).map((s) => s.i);
+          return <li><strong>{buchstabe(g)} · {name}:</strong> {zitate.join(', ')}{notizen.length > 0 && `; Notiz ${notizen.join(', ')} (zählt nicht)`} – {zaehlung(g)}.</li>;
         })}
       </ul>
-      <p>Die Ankunftssätze I1-1, I4-1 und I5-1 bleiben grau: Sie beschreiben den Hintergrund, keinen erzählten Moment. Ebenso I1-4 (ein Hochpunkt ohne Platz in der Abfolge), I4-2 (eine Meinung übers Anstellen) und I5-4, I5-5 (nur in einer Geschichte). I3-4 ist ein Grenzfall zwischen Halle und Anstehen: Es entscheidet die Stelle des Stickys in der Geschichte – hier nach dem Ankommen, wo I3 beschließt, sich anzustellen, darum Anstehen und Warten. „Im Zug“ trägt nur eine Geschichte (I3-5), bleibt aber eine Gruppe: Dort endet die Geschichte, und das Ende markiert ihr ohnehin; der Zug steht auch in der Notiz zu I2. Dass I2-4, I2-2 und I2-1 im Raster der nächsten Folie in einer Zelle stehen („Tafel, Schlange, Uhr“), ist selbst ein Beispiel für Zusammenlegen: drei Stickies, ein Moment, eine Geschichte – darum bleibt es bei 3 von 5.</p>
+      <p>Die Ankunftssätze I1-1, I4-1 und I5-1 bleiben grau: Sie beschreiben den Hintergrund, keinen erzählten Moment. Ebenso I1-4 (ein Hochpunkt ohne Platz in der Abfolge), I5-4 und I5-5 (nur in einer Geschichte). I3-4 („Bei mehr als fünf Leuten lass ich es.“) und I4-2 („Anstellen ist ein Glücksspiel.“) sind eine Regel und eine Meinung übers Anstehen, keine erzählten Momente – sie stehen nicht auf der Skizze und bleiben im Snapshot. Dass I3 sich anstellt, steht nur in der Notiz („Stellt sich trotzdem an, wenn weniger als fünf Leute warten.“); darum ist der Sticky gestrichelt und zählt nicht. „Im Zug“ trägt nur eine Geschichte (I3-5), bleibt aber eine Gruppe: Dort endet die Geschichte, und das Ende markiert ihr ohnehin; der Zug steht auch in der Notiz zu I2. Dass I2-4, I2-2 und I2-1 im Raster der nächsten Folie in einer Zelle stehen („Tafel, Schlange, Uhr“), ist selbst ein Beispiel für Zusammenlegen: drei Stickies, ein Moment, eine Geschichte – darum bleibt es bei {zaehlung('a')}.</p>
     </div>
   </Folie>
 
@@ -248,10 +213,7 @@ const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st
         <thead>
           <tr>
             <td></td>
-            <th scope="col">Halle: schauen, entscheiden</th>
-            <th scope="col">Umweg: Automat</th>
-            <th scope="col">Anstehen und Warten</th>
-            <th scope="col">Im Zug</th>
+            {GRUPPEN.map(({ name }) => <th scope="col">{name}</th>)}
           </tr>
         </thead>
         <tbody>
@@ -271,10 +233,7 @@ const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st
           </tr>
           <tr data-schritt class="zaehlzeile">
             <th scope="row"><strong>Geschichten mit diesem Knoten</strong></th>
-            <td>3 von 5</td>
-            <td>3 von 5</td>
-            <td>2 von 5</td>
-            <td>1 von 5</td>
+            {GRUPPEN.map(({ g }) => <td>{zaehlung(g)}</td>)}
           </tr>
         </tbody>
       </table>
@@ -419,10 +378,11 @@ const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st
   .skizzen { display: flex; flex-direction: column; gap: .5rem; margin: .4rem 0 0; }
   .skizze { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); align-items: center; }
   .skizze-i { font-family: var(--mono); font-weight: 700; font-size: .9rem; }
-  .stickies { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
-  :global(.content) .stickies > li { margin: 0; }
+  .stickies { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem .45rem; }
+  /* Der Pfeil hängt am Ende des Stickys davor: Bricht die Reihe um, beginnt die neue Zeile mit einem Sticky. */
+  :global(.content) .stickies > li { margin: 0; display: inline-flex; align-items: center; gap: .45rem; max-width: 100%; }
+  .pfeil { color: var(--muted); }
   .sticky { position: relative; display: inline-flex; align-items: baseline; gap: .3rem; padding: .2rem .42rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .8rem; line-height: 1.25; white-space: nowrap; transition: background-color .2s, border-color .2s, opacity .2s; }
-  .sticky + .sticky::before { content: '→' / ''; position: absolute; left: -.85rem; color: var(--muted); }
   .sticky.notiz { border-style: dashed; border-color: var(--muted); }
   .sticky .id { color: var(--muted); font-size: .9em; }
   .sticky .pill { font-size: .85em; line-height: 1.2; padding: .05rem .35rem; }
@@ -435,8 +395,16 @@ const geschichtenIn = (g: GruppeId) => SKIZZEN.filter((s) => s.stickies.some((st
   :global(html:not([data-beamer])) .sticky .g-buchstabe,
   .gruppen:has(.gruppen-an.gezeigt) .sticky .g-buchstabe { visibility: visible; }
   :global(html:not([data-beamer])) .sticky:not(.gruppiert),
-  .gruppen:has(.gruppen-an.gezeigt) .sticky:not(.gruppiert) { background: var(--code-bg); color: var(--muted); opacity: .6; }
+  .gruppen:has(.gruppen-an.gezeigt) .sticky:not(.gruppiert) { background: var(--code-bg); color: var(--muted); }
   .gruppen-an { margin: .5rem 0 0; }
+  /* Schmal (Handy, Container statt Fenster): Text im Sticky darf umbrechen, die ID bleibt beisammen. */
+  .gruppen { container: gruppen / inline-size; }
+  @container gruppen (max-width: 560px) {
+    .skizze { grid-template-columns: 1.9rem minmax(0, 1fr); align-items: start; }
+    .skizze-i { padding-top: .25rem; }
+    .sticky { white-space: normal; flex-wrap: wrap; row-gap: .1rem; }
+    .sticky .id, .sticky .pill { white-space: nowrap; }
+  }
   .gruppen-legende { list-style: none; margin: .45rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem .5rem; font-size: .8rem; }
   :global(.content) .gruppen-legende > li { margin: 0; padding: .15rem .45rem; border-radius: var(--radius); }
   .gruppen-legende .gruppiert { background: var(--g-soft); border: 1px solid var(--g); font-weight: 600; }
