@@ -246,13 +246,13 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   beispiel: {
     live: [
       'Momente oben, darunter nur Chancen aus mindestens zwei Interviews.',
-      'Fragen: Sind die zwei Chancen unter dem Warte-Moment Geschwister?',
+      'Fragen: Sind die zwei Zeit-Chancen in der Halle Geschwister?',
       'Aufdecken: Was nur eine Person sagte, bleibt draußen.',
       '„Unter ‚Ich bin im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
     ],
     verstaendnis: {
-      frage: 'Unter „Ich stehe an und warte auf meinen Kaffee.“ hängen „Wenn ich anstehe, verpasse ich meinen Zug.“ und „Wann ist mein Kaffee fertig?“. Sind das Geschwister?',
-      antwort: 'Ja: Die Sorge, beim Anstehen den Zug zu verpassen, und nicht zu wissen, wann der Kaffee fertig ist, sind zwei verschiedene Bedürfnisse im selben Moment. Das eine kann erfüllt sein, ohne dass das andere erfüllt ist (Handout). Der leere Ast „Ich bin im Zug“ ist keine senkrechte Kette, aber eine Frage fürs nächste Interview.',
+      frage: 'Sind „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, verpasse ich meinen Zug.“ Geschwister?',
+      antwort: 'Ja: Man kann das eine erfüllen, ohne das andere zu erfüllen – beide sind eigene Bedürfnisse in der Halle (Torres S. 83). Unter dem Warte-Moment hängt nur „Wann ist mein Kaffee fertig?“: noch keine senkrechte Kette (S. 94), aber eine Frage fürs nächste Interview.',
     },
     ueberleitung: 'Wo ihr das baut: euer Baum auf Miro.',
   },

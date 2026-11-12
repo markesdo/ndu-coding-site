@@ -19,10 +19,10 @@ export const KAFFEEBAR_BAUM: Knoten = { t: 'Mehr Pendler*innen steigen morgens m
 export const KAFFEEBAR_BAUM_TAG2: Knoten = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den Zug', kinder: [
   { t: '„Ich komme in die Halle und entscheide.“', kinder: [
     { t: '„Geht sich ein Kaffee noch aus?“' },
+    { t: '„Wenn ich anstehe, verpasse ich meinen Zug.“' },
     { t: '„Schnell geht nur der Automat.“' },
   ] },
   { t: '„Ich stehe an und warte auf meinen Kaffee.“', kinder: [
-    { t: '„Wenn ich anstehe, verpasse ich meinen Zug.“' },
     { t: '„Wann ist mein Kaffee fertig?“' },
   ] },
   { t: '„Ich bin im Zug.“' },
