@@ -72,16 +72,16 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     expect(netflix.rollen.map((r) => r.id)).toStrictEqual(['produktmanagement', 'design', 'entwicklung']);
   });
 
-  it('Texte der Eingabe: Netflix wie bisher, „zwoelf“ fragt nach der Nummer, ohne „Rolle“', () => {
+  it('Texte der Eingabe: Netflix wie bisher, „zwoelf“ fragt nach drei Nummern, ohne „Rolle“', () => {
     expect(eingabeTexte(netflix)).toStrictEqual({
       label: 'Ein Satz aus deiner Rolle', hinweis: 'erst deine Rolle wählen, dann einen Satz abschicken.', platzhalter: '',
       ...ROLLEN_WAHL,
     });
     expect(eingabeTexte(netflix)).toStrictEqual(EINGABE_STANDARD);
     expect(eingabeTexte(zwoelf)).toStrictEqual({
-      label: 'Nummer und ein Satz: welche zuerst und warum',
-      hinweis: 'erst einen Platz wählen, dann Nummer und Satz abschicken.',
-      platzhalter: 'z. B. 3 – weil …',
+      label: 'Drei Nummern (1 oder 2, 7 oder 12, 9 oder 11) und ein Satz: Welches Paar fiel am schwersten?',
+      hinweis: 'erst einen Platz wählen, dann Nummern und Satz abschicken.',
+      platzhalter: 'z. B. 2, 7, 11 – bei 9 oder 11 …',
       wahl: 'Dein Platz',
       wahlFehlt: 'Bitte zuerst einen Platz wählen.',
       wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
