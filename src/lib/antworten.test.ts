@@ -185,9 +185,10 @@ describe('Antwortrunde: Plätze und Stand', () => {
     expect(texteFrei(netflix, false, new Date('2026-11-12T22:59:00Z'))).toBe(true); // 23:59 Wien = NACH_NETFLIX
   });
 
-  it('Rückfall-Uhrzeiten: Netflix und „zwoelf“ Ende von Tag 2 (Verspätung schließt nichts), Rückblick 19 Uhr (Kursende plus Puffer)', () => {
+  it('Rückfall-Uhrzeiten: Netflix Ende von Tag 2, „zwoelf“ Ende von Tag 3 (Verspätung schließt nichts), Rückblick 19 Uhr (Kursende plus Puffer)', () => {
     expect(netflix.ab).toBe('2026-11-12T23:59');
-    expect(zwoelf.ab).toBe(netflix.ab);
+    // Der Baum eröffnet seit 12.11. Tag 3 (21.11.): Seine Runde darf nicht schon am Ende von Tag 2 aufgehen.
+    expect(zwoelf.ab).toBe('2026-11-21T23:59');
     // Rückblick: kein Aufdecken im Raum, lesbar ab 19 Uhr Wien (eine Stunde nach Kursende), nicht erst um Mitternacht.
     expect(rueckblick.ab).toBe('2026-11-12T19:00');
   });
@@ -204,11 +205,13 @@ describe('Antwortrunde: Plätze und Stand', () => {
   });
 
   it('„zwoelf“: zu bis zum eigenen Aufdecken oder bis zum Ende des Kurstags – Netflix aufdecken öffnet sie nicht', () => {
-    const imBlock = new Date('2026-11-12T15:40:00Z'); // 16:40 Wien, Baum läuft
+    const imBlock = new Date('2026-11-21T08:40:00Z'); // 9:40 Wien an Tag 3, Baum läuft
     expect(texteFrei(zwoelf, false, imBlock)).toBe(false);
     expect(texteFrei(zwoelf, true, imBlock)).toBe(true);
-    expect(texteFrei(zwoelf, false, new Date('2026-11-12T17:30:00Z'))).toBe(false); // 18:30 Wien, Tag 2 verspätet
-    expect(texteFrei(zwoelf, false, new Date('2026-11-12T22:59:00Z'))).toBe(true); // 23:59 Wien = NACH_ZWOELF
+    // Der Baum ist von Tag 2 auf Tag 3 gewandert: Das Ende von Tag 2 öffnet die Runde nicht mehr.
+    expect(texteFrei(zwoelf, false, new Date('2026-11-12T22:59:00Z'))).toBe(false);
+    expect(texteFrei(zwoelf, false, new Date('2026-11-21T17:30:00Z'))).toBe(false); // 18:30 Wien, Tag 3 verspätet
+    expect(texteFrei(zwoelf, false, new Date('2026-11-21T22:59:00Z'))).toBe(true); // 23:59 Wien = NACH_ZWOELF
   });
 
   it('nach gemeldetem Aufdecken nur die eigene Runde sofort neu fragen', () => {

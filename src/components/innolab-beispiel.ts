@@ -13,7 +13,7 @@ export const KAFFEEBAR_BAUM: Knoten = { t: 'Mehr Pendler*innen steigen morgens m
   { t: '„Geht sich ein Kaffee noch aus?“', kinder: [{ t: 'Wartezeit an der Tür' }] },
 ] };
 
-// Der Baum der Kaffeebar nach Tag 2 (Torres Kap. 6): oberste Ebene = die drei Momente der Experience Map (journey-map.astro), darunter die Chancen
+// Der Baum der Kaffeebar nach den Interviews (Torres Kap. 6; im Kurs seit 12.11. an Tag 3, der Name TAG2 ist geblieben): oberste Ebene = die drei Momente der Experience Map (journey-map.astro), darunter die Chancen
 // aus den Interview-Snapshots, die mehr als ein Interview stützt (S. 88). Belege (Zitat-IDs) stehen auf baum.astro.
 // Darstellen mit <Baum momente …>.
 export const KAFFEEBAR_BAUM_TAG2: Knoten = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den Zug', kinder: [

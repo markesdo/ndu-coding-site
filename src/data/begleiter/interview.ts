@@ -283,7 +283,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       '„Woran messt ihr die Stärke: wie begeistert jemand klingt, oder was die Antwort die Person kostet?“',
       '10-Millionen-Geschichte erzählen: „I would definitely buy that“ für Commitment gehalten.',
       '„Bei ‚Letzte Woche zweimal den Zug verpasst‘: Was würdet ihr jetzt nachfragen?“',
-      '„Commitment bekommt ihr nicht im Interview, sondern in Experimenten an Tag 3.“',
+      '„Commitment bekommt ihr nicht im Interview, sondern in Experimenten an Tag 4.“',
     ],
     ueberleitung: 'Warum ist „Würde ich sicher nutzen“ so wertlos, selbst wenn die Person es ehrlich meint?',
     uebung: { dauer: '2 min', form: 'alle zusammen die vier Antworten sortieren' },
@@ -316,7 +316,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       },
       {
         frage: 'Kann ich im Interview schon nach Commitment fragen?',
-        antwort: 'Kleine Formen ja, etwa „Wen sollte ich noch fragen?“, das ist eine Vorstellung, also Ruf (Mom Test, S. 22, 66). Vorbestellung und Geld kommen in den Experimenten an Tag 3.',
+        antwort: 'Kleine Formen ja, etwa „Wen sollte ich noch fragen?“, das ist eine Vorstellung, also Ruf (Mom Test, S. 22, 66). Vorbestellung und Geld kommen in den Experimenten an Tag 4.',
       },
       {
         frage: 'Wie ist das in den Kaffeebar-Beispielinterviews?',

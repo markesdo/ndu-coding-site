@@ -26,8 +26,8 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 
   heute: {
     live: [
-      '„Heute wird aus euren fünf Geschichten ein Baum voller Chancen.“',
-      'Fluss zeigen: Snapshots, Map und Baum heute, Ziel-Chance an Tag 3.',
+      '„Heute wird aus euren fünf Geschichten eine Experience Map – und an Tag 3 daraus ein Baum voller Chancen.“',
+      'Fluss zeigen: Snapshots und Map heute, Baum und Ziel-Chance an Tag 3.',
       'Ansage: bis 14:50 Interviews nachtragen, Skizzen auf T1 · 5.',
       'Annahmen-Map von Tag 1 öffnen lassen, Belege sofort eintragen.',
     ],
@@ -129,7 +129,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
   },
 };
 
-// Begleiter-Notizen zu src/pages/innolab/tag-2/abschluss.astro (eigene Seite nach dem Baum, damit der Abschluss im Beamer am Ende kommt).
+// Begleiter-Notizen zu src/pages/innolab/tag-2/abschluss.astro (eigene Seite nach der Experience Map, damit der Abschluss im Beamer am Ende kommt).
 export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
   'log-heute': {
     live: [
@@ -201,14 +201,14 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
       'Checkliste Punkt für Punkt, jede*r hakt selbst ab.',
       'Fragen: Welche Annahme von Tag 1 steht jetzt anders da?',
       'Entscheidungslog: eine Zeile pro Entscheidung, auch „noch keiner“ als Beleg.',
-      '„Tag 3 am 21. November beginnt in eurem Baum auf Miro: Ihr wählt eine Ziel-Chance.“',
-      'Erinnern: Claude Pro erst am 21. November neu abschließen.',
+      '„Tag 3 am 21. November beginnt mit dem Opportunity Solution Tree; danach wählt ihr eine Ziel-Chance.“',
+      'Erinnern: Claude Pro erst am 28. November neu abschließen.',
     ],
     ueberleitung: 'Danke für heute – bis zum 21. November.',
     fragen: [
       {
-        frage: 'Müssen Map und Baum bis Tag 3 fertig sein?',
-        antwort: 'Nein. Struktur wird gemacht, verworfen und neu gemacht; macht so viel, wie ihr gerade wisst, der Baum wächst mit jedem Interview (Torres S. 91). Für Tag 3 reicht ein Baum mit belegten Chancen unter den Momenten.',
+        frage: 'Muss die Map bis Tag 3 fertig sein?',
+        antwort: 'Nein. Struktur wird gemacht, verworfen und neu gemacht; macht so viel, wie ihr gerade wisst, Map und Baum wachsen mit jedem Interview (Torres S. 91). Für Tag 3 reicht eine Map, deren Momente aus euren Geschichten kommen; der Baum entsteht dort.',
       },
     ],
   },

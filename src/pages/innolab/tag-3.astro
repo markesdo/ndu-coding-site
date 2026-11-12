@@ -2,56 +2,62 @@
 import Layout from '../../layouts/Layout.astro';
 import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
+import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="Tag 3 · Lösung & Story">
-  <span class="eyebrow">Innolab · Tag 3 · Samstag, 21. November 2026 · 09:00–17:00</span>
+  <span class="eyebrow">Innolab · Tag 3 · Samstag, 21. November 2026 · 09:00–17:30</span>
   <h1>Tag 3 · Lösung & Story</h1>
-  <p class="lead">Aus eurem Baum wird eine Ziel-Chance, aus ihr eine Frage und drei Ideen. Über den Fit wird eine davon zum Spitzenreiter auf Papier – mit einem Angebot, einer Geschichte mit Höhepunkt, einem Geschäftsmodell und einer Karte, die seine riskanteste Annahme testet.</p>
+  <p class="lead">Aus den Momenten eurer Experience Map wächst ein Baum voller Chancen. Aus ihm wird eine Ziel-Chance, aus ihr eine Frage und drei Ideen. Über den Fit wird eine davon zum Spitzenreiter auf Papier – mit einem Angebot und einer Geschichte mit Höhepunkt.</p>
   <Orientierung seite="innolab/tag-3" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-21">
-    <Block time="09:00–10:00" type="uebung" title="Ziel-Chance wählen" href="/innolab/methoden/ziel-chance">Geschwister-Chancen vergleichen; Ulwicks Formel als Gegenprobe.</Block>
-    <Block time="10:00–10:30" type="uebung" title="How Might We" href="/innolab/methoden/hmw">Von der Ziel-Chance zur Frage, die Ideen öffnet.</Block>
-    <Block time="10:30–10:45" type="pause" title="Pause" />
-    <Block time="10:45–12:15" type="uebung" title="Ideation" href="/innolab/methoden/ideation">15 bis 20 Ideen für eine Chance, dann auf drei abstimmen.</Block>
-    <Block time="12:15–13:15" type="pause" title="Mittagspause" />
-    <Block time="13:15–14:30" type="uebung" title="Kundenprofil & Value Map (Fit)" href="/innolab/methoden/kundenprofil">Profil aus dem Baum, drei Ideen als Lückensätze, Fit vergleichen, eine Idee ausarbeiten.</Block>
+    <Block time="09:00–09:05" type="plenum" title="Rückblick auf Tag 2" href="#faden">Was aus dem Rückblick von Tag 2 wird; wo ihr steht: Die Experience Map ist da, heute wächst daraus der Baum.</Block>
+    <Block time="09:05–10:20" type="uebung" title="Opportunity Solution Tree" href="/innolab/methoden/baum">Chancen aus den Snapshots unter die Momente hängen, ordnen, Anti-Muster prüfen.</Block>
+    <Block time="10:20–10:30" type="pause" title="Pause" />
+    <Block time="10:30–11:30" type="uebung" title="Ziel-Chance wählen" href="/innolab/methoden/ziel-chance">Geschwister-Chancen vergleichen; Ulwicks Formel als Gegenprobe.</Block>
+    <Block time="11:30–12:00" type="uebung" title="How Might We" href="/innolab/methoden/hmw">Von der Ziel-Chance zur Frage, die Ideen öffnet.</Block>
+    <Block time="12:00–13:00" type="pause" title="Mittagspause" />
+    <Block time="13:00–14:30" type="uebung" title="Ideation" href="/innolab/methoden/ideation">15 bis 20 Ideen für eine Chance, dann auf drei abstimmen.</Block>
     <Block time="14:30–14:40" type="pause" title="Pause" />
-    <Block time="14:40–15:10" type="konzept" title="Der Story-Bogen" href="/innolab/methoden/concept-story#story-bogen">Sieben Stationen, A × B = C, flach oder hoch.</Block>
-    <Block time="15:10–15:55" type="uebung" title="Concept Story" href="/innolab/methoden/concept-story#concept-story">Sieben Stationen mit Lichaws Fragen, Flach-Probe, ein Satz.</Block>
-    <Block time="15:55–16:15" type="uebung" title="Geschäftsmodell-Karten" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; eine Runde Muster; die wirtschaftliche Annahme.</Block>
-    <Block time="16:15–16:45" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment">Schritte der Idee, Annahmen, Map, Karte E1 mit Schwelle.</Block>
-    <Block time="16:45–17:00" type="plenum" title="Abschluss" href="#abschluss">Rückblick, Entscheidungslog, Ausblick auf Tag 4.</Block>
+    <Block time="14:40–15:55" type="uebung" title="Kundenprofil & Value Map (Fit)" href="/innolab/methoden/kundenprofil">Profil aus dem Baum, drei Ideen als Lückensätze, Fit vergleichen, eine Idee ausarbeiten.</Block>
+    <Block time="15:55–16:00" type="pause" title="Pause" />
+    <Block time="16:00–16:30" type="konzept" title="Der Story-Bogen" href="/innolab/methoden/concept-story#story-bogen">Sieben Stationen, A × B = C, flach oder hoch.</Block>
+    <Block time="16:30–17:15" type="uebung" title="Concept Story" href="/innolab/methoden/concept-story#concept-story">Sieben Stationen mit Lichaws Fragen, Flach-Probe, ein Satz.</Block>
+    <Block time="17:15–17:30" type="plenum" title="Abschluss" href="#abschluss">Rückblick, Entscheidungslog, Ausblick auf Tag 4.</Block>
   </div>
 
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
-  <p>Heute werden aus <strong>Chancen</strong> <strong>Lösungen</strong> und die ersten <strong>Experimente</strong>. Am Vormittag geht ihr den Weg von Teresa Torres zu Ende, den ihr an Tag 2 begonnen habt: Baum → Ziel-Chance → Ideen. Am Nachmittag zeigen Kundenprofil und Value Map, welche eurer drei Ideen die wichtigsten Pains trifft; die Concept Story, warum das jemanden interessiert; das Geschäftsmodell, wer dafür zahlt; die Experiment-Karte, an welcher Annahme die Idee hängt. Story Map, Usage Story und Prototyp folgen an Tag 4.</p>
+  <p>Heute werden aus <strong>Chancen</strong> <strong>Lösungen</strong>. Tag 2 endete nach der Experience Map; ihre Momente sind die Äste eures Baums. Ihr geht den Weg von Teresa Torres zu Ende, den ihr an Tag 2 begonnen habt: Baum → Ziel-Chance → Ideen. Danach zeigen Kundenprofil und Value Map, welche eurer drei Ideen die wichtigsten Pains trifft, und die Concept Story, warum das jemanden interessiert. Wer dafür zahlt (Geschäftsmodell) und an welcher Annahme die Idee hängt (Experiment-Karte), klärt ihr zu Beginn von Tag 4; dort folgen auch Story Map, Usage Story und Prototyp.</p>
+  <Callout type="info" title="Heute noch ohne Claude Pro">
+    <p>Claude Pro schließt ihr erst am Morgen von Tag 4 neu ab (<a href="/setup#claude-pro">wie</a>), denn Claude Code braucht ihr zum ersten Mal für den Prototyp. Heute reicht Claude im Free-Plan: Den Baum prüft Claude an einem Bild aus Miro. Wo eine Seite „Prüfen lassen · Claude Code“ anbietet, nehmt ihr den Weg „Ohne Claude Code: Text in Claude einfügen“. Die Dateien in <code>docs/</code> legt ihr in VS Code an; committen und pushen geht dort über <em>Source Control</em>.</p>
+  </Callout>
 
   <h2 id="methoden">Die Methoden von heute</h2>
   <ul>
+    <li><a href="/innolab/methoden/baum">Opportunity Solution Tree</a> – Chancen unter die Momente, geordnet und gegengelesen</li>
     <li><a href="/innolab/methoden/ziel-chance">Ziel-Chance wählen</a> – vier Linsen nach Torres, Ulwicks Formel als Gegenprobe</li>
     <li><a href="/innolab/methoden/hmw">How Might We</a> – die Frage zur Ziel-Chance</li>
     <li><a href="/innolab/methoden/ideation">Ideation</a> – 15 bis 20 Ideen, drei für den Vergleich</li>
     <li><a href="/innolab/methoden/kundenprofil">Kundenprofil</a> – Jobs, Pains, Gains aus eurem Baum, je Spalte geordnet</li>
     <li><a href="/innolab/methoden/value-map">Value Map & Fit</a> – drei Ideen vergleichen, eine ausarbeiten</li>
     <li><a href="/innolab/methoden/concept-story">Concept Story</a> – warum es besser ist als das, was Menschen heute tun</li>
-    <li><a href="/innolab/methoden/geschaeftsmodell">Geschäftsmodell-Karten</a> – wer zahlt wofür, und welche Annahme dahintersteckt</li>
-    <li><a href="/innolab/methoden/experiment">Experiment-Karte & Origin Story</a> – Annahmen testen, nicht Ideen; die Origin Story folgt am Ende von Tag 4</li>
   </ul>
 
   <h2 id="abschluss">Abschluss & bis Tag 4</h2>
   <p>Bevor ihr geht:</p>
   <Checklist id="il-tag3-abschluss" items={[
-    '<code>docs/ZIEL-CHANCE.md</code>, <code>HMW.md</code>, <code>IDEEN.md</code>, <code>KUNDENPROFIL.md</code>, <code>VALUE-MAP.md</code>, <code>STORYS.md</code> (Concept Story), <code>GESCHAEFTSMODELL.md</code> und <code>EXPERIMENTE.md</code> im Repo',
-    'Im Produkt-Brief der Werkstatt „Was ist das Produkt in einem Satz?“ gefüllt; die neuen Annahmen der Idee in der Annahmen-Map',
+    'Euer Baum auf Miro (Baum · euer Name): jede Chance mit Zitat-ID, jede Karte mit einer Linie',
+    '<code>docs/ZIEL-CHANCE.md</code>, <code>HMW.md</code>, <code>IDEEN.md</code>, <code>KUNDENPROFIL.md</code>, <code>VALUE-MAP.md</code> und <code>STORYS.md</code> (Concept Story) im Repo',
+    'Im Produkt-Brief der Werkstatt „Was ist das Produkt in einem Satz?“ gefüllt; die fallende Handlung der Concept Story als Annahme in der Annahmen-Map',
     'Eine Zeile pro Entscheidung von heute im Entscheidungslog der Werkstatt',
     'Committet und gepusht',
   ]} />
-  <p>An <a href="/innolab/tag-4">Tag 4</a> am 28. November wird aus dem Spitzenreiter ein Plan (Story Map), ein Kernablauf (Usage Story) und ein erster Prototyp, den ihr testen könnt. Am Nachmittag werdet ihr ein Team: Scrum, einmal mit Lego durchgespielt, und eine gemeinsame Definition of Done.</p>
+  <p><a href="/innolab/tag-4">Tag 4</a> am 28. November beginnt mit dem Geschäftsmodell und der Experiment-Karte: wer zahlt, und an welcher Annahme der Spitzenreiter hängt. Dann wird aus ihm ein Plan (Story Map), ein Kernablauf (Usage Story) und ein erster Prototyp, den ihr testen könnt. Am Nachmittag spielt ihr Scrum einmal mit Lego durch.</p>
+  <p><strong>Claude Pro:</strong> am Morgen des 28. November neu abschließen und gleich wieder kündigen, nicht früher (<a href="/setup#claude-pro">wie</a>). An Tag 4 braucht ihr Claude Code.</p>
 
-  <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/ziel-chance', t: 'Ziel-Chance wählen' }} />
+  <FooterNav prev={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} next={{ href: '/innolab/methoden/baum', t: 'Opportunity Solution Tree' }} />
 </Layout>

@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/pitch (Tag 5, 13:20–14:05) – vorerst nur die zwei Folien, die Thomke geändert hat.
+// Begleiter-Notizen zu /innolab/methoden/pitch (Tag 6, 16:00–16:45; bis 12.11. für Tag 5 geplant) – vorerst nur die zwei Folien, die Thomke geändert hat.
 // Der Begleiter zeigt bisher nur Tag 1; die Notizen stehen bereit, der Test prüft die ids.
 const THOMKE = 'Stefan H. Thomke, The Scientific Mindset';
 

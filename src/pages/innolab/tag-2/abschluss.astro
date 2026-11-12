@@ -9,7 +9,7 @@ import Timer from '../../../components/Timer.astro';
 <Layout title="Tag 2 · Abschluss">
   <span class="eyebrow">Innolab · Tag 2 · Abschluss</span>
   <h1>Tag 2 · Abschluss</h1>
-  <p class="lead">Was ihr heute festhaltet und womit Tag 3 am 21. November beginnt.</p>
+  <p class="lead">Was ihr nach Tag 2 festhaltet und womit Tag 3 am 21. November beginnt.</p>
 
   <Folie>
     <h2 id="log-heute">Was haben die Interviews geändert?</h2>
@@ -34,25 +34,24 @@ import Timer from '../../../components/Timer.astro';
 
   <Folie>
     <h2 id="abschluss">Abschluss</h2>
-    <p class="folie-satz">Bevor ihr geht: Werkstatt und Miro auf den Stand von heute.</p>
-    {/* -v2: Die Häkchen hängen an der Position (Checklist.astro ohne ids). Seit Map und Baum nur auf Miro liegen
-        (11.11.2026), haben die Punkte eine andere Bedeutung und Reihenfolge – alte Häkchen sollen nicht daran hängen. */}
-    <Checklist id="il-tag2-abschluss-v2" items={[
+    <p class="folie-satz">Bis Tag 3: Werkstatt und Miro auf den Stand von Tag 2.</p>
+    {/* -v3: Die Häkchen hängen an der Position (Checklist.astro ohne ids). Seit 12.11.2026 ohne den Baum (er eröffnet
+        Tag 3), davor -v2 (Map und Baum nur auf Miro) – alte Häkchen sollen nicht an verschobenen Punkten hängen. */}
+    <Checklist id="il-tag2-abschluss-v3" items={[
       'Interviews mit Snapshot und Zitat-IDs in der Werkstatt',
       'Experience Map auf Miro (T2 · 1), Momente aus euren Skizzen',
-      'Euer Baum auf Miro (Baum · euer Name): jede Chance mit Zitat-ID, jede Karte mit einer Linie',
       'Belege in der Annahmen-Map der Werkstatt nachgetragen',
       'Eine Zeile pro Entscheidung von heute im Entscheidungslog der Werkstatt',
     ]} />
-    <p data-schritt><strong>Tag 3, 21. November:</strong> Ihr beginnt mit eurem Baum und wählt eine Ziel-Chance.</p>
-    <p data-schritt>Claude Pro erst am 21. November neu abschließen.</p>
+    <p data-schritt><strong>Tag 3, 21. November:</strong> Ihr beginnt mit dem Opportunity Solution Tree und wählt eine Ziel-Chance.</p>
+    <p data-schritt>Claude Pro erst am 28. November neu abschließen, am Morgen von Tag 4.</p>
     <div class="nur-handout">
-      <p>Am 21. November, nicht früher: Claude Pro neu abschließen und gleich wieder kündigen (<a href="/setup#claude-pro">wie</a>). Der Monat reicht bis zum letzten Bautag am 19. Dezember.</p>
-      <p><a href="/innolab/tag-3">Tag 3</a> am 21. November beginnt mit eurem Baum: Ziel-Chance wählen, How-Might-We-Frage, Ideen. Danach wählt ihr über den Fit eine eurer drei Ideen und macht daraus ein Angebot (Value Map), eine Geschichte (Concept Story) und eine Experiment-Karte; Plan (Story Map) und ersten Prototyp baut ihr an Tag 4.</p>
+      <p>Am 28. November, nicht früher: Claude Pro neu abschließen und gleich wieder kündigen (<a href="/setup#claude-pro">wie</a>). Claude Code braucht ihr zum ersten Mal an Tag 4; der Monat reicht dann bis etwa 28. Dezember – über Tag 4, Tag 5 und den Bautag am 19. Dezember hinaus.</p>
+      <p><a href="/innolab/tag-3">Tag 3</a> am 21. November beginnt mit dem <a href="/innolab/methoden/baum">Opportunity Solution Tree</a>: Chancen aus euren Snapshots unter die Momente eurer Experience Map. Dann wählt ihr eine Ziel-Chance, formuliert die How-Might-We-Frage und sammelt Ideen. Danach wählt ihr über den Fit eine eurer drei Ideen und macht daraus ein Angebot (Value Map) und eine Geschichte (Concept Story). Geschäftsmodell und Experiment-Karte eröffnen Tag 4; dort baut ihr auch Plan (Story Map) und ersten Prototyp.</p>
     </div>
   </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/baum', t: 'Opportunity Solution Tree' }} next={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/journey-map', t: 'Experience Map' }} next={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} />
 </Layout>
 
 <style>
