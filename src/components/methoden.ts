@@ -204,7 +204,7 @@ export const METHODEN: Methode[] = [
       { id: 'journey-map-umwege', text: 'Sie zeigt auch Umwege, Wiederholungen, Schleifen und Abbrüche, nicht nur den glatten Weg.', kurz: 'Umwege, Wiederholungen, Schleifen, Abbrüche' },
       { id: 'journey-map-momente-getrennt', text: 'Die Momente überschneiden sich nicht: Jeder ist ein eigener Zeitpunkt.', kurz: 'Momente überschneiden sich nicht' },
       { id: 'journey-map-worte-belegt', text: 'Jeder Moment steht in den Worten der Kundschaft und ist mit Zitat-IDs belegt.', kurz: 'In den Worten der Kundschaft, mit Zitat-ID' },
-      { id: 'journey-map-hoehepunkt-ende', text: 'Der stärkste Moment und das Ende sind markiert, je als Wort mit Zitat-ID am Moment und der Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt (etwa ‚Tief · I3-3 · 2 von 5‘).', kurz: 'Stärkster Moment und Ende markiert: ‚Tief · I3-3 · 2 von 5‘' },
+      { id: 'journey-map-hoehepunkt-ende', text: 'Stärkster Moment und Ende sind markiert, je als Wort mit Zitat-ID an dem Moment, in dem sie liegen (etwa ‚Tief · I3-3‘, ‚Ende · I3-5‘).', kurz: 'Stärkster Moment und Ende markiert: ‚Tief · I3-3‘' },
     ],
     ki: 'Liest eure Interviews und fragt, welche Geschichte in der Map fehlt und wo sich Momente überschneiden.',
   },
