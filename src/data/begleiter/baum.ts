@@ -29,7 +29,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Liste nicht erklären, alle lesen still.',
       'Timer 2 min: still überlegen, dann reihum laut, je ein Satz.',
-      'Dann vorlesen: Wer hat wie verglichen?',
+      'Dann fragen: Wer hat wie verglichen?',
       'Falle: eine richtige Antwort andeuten – es gibt keine.',
     ],
     uebung: { dauer: '2 min', form: 'allein, dann reihum laut, je ein Satz' },
