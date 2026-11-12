@@ -1,15 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import {
-  MAX_TEXT, RUNDEN, antwortenGruppieren, eingabePruefen, gesendetGilt, platzSchluessel, rolleBesetzt, rollePruefen, rolleWaehlbar,
+  EINGABE_STANDARD, MAX_TEXT, RUNDEN, antwortenGruppieren, betrifftRunde, eingabePruefen, eingabeTexte, gesendetGilt, platzSchluessel, rolleBesetzt, rollePruefen, rolleWaehlbar,
   rundePruefen, standBauen, statusText, textBereinigen, textPruefen, texteFrei,
 } from './antworten';
 
 const netflix = RUNDEN.netflix;
+const zwoelf = RUNDEN.zwoelf;
 
 describe('Antwortrunde: Eingabe prüfen', () => {
   it('Runde nur aus der Liste des Servers', () => {
     expect(rundePruefen('netflix')).toBe(netflix);
-    expect(rundePruefen('zwoelf')).toBeNull();
+    expect(rundePruefen('zwoelf')).toBe(zwoelf);
+    expect(Object.keys(RUNDEN)).toEqual(expect.arrayContaining(['netflix', 'zwoelf']));
+    expect(rundePruefen('zwölf')).toBeNull();
     expect(rundePruefen('toString')).toBeNull();
     expect(rundePruefen('__proto__')).toBeNull();
     expect(rundePruefen(1)).toBeNull();
@@ -44,6 +47,30 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     expect(textPruefen(' ok ')).toStrictEqual({ text: 'ok' });
   });
 
+  it('Runde „zwoelf“ (Baum): eigene Kennung, dieselben drei Rollen wie Netflix', () => {
+    expect(zwoelf.kennung).toBe('zwoelf');
+    expect(zwoelf.rollen.map((r) => r.id)).toStrictEqual(['produktmanagement', 'design', 'entwicklung']);
+    expect(rollePruefen(zwoelf, 'entwicklung')).toBe('entwicklung');
+    expect(rollePruefen(zwoelf, 'person-1')).toBeNull();
+    expect(eingabePruefen({ runde: 'zwoelf', rolle: 'design', text: ' 3 – Suche fehlt ' }))
+      .toStrictEqual({ runde: 'zwoelf', konfig: zwoelf, rolle: 'design', text: '3 – Suche fehlt' });
+    expect(eingabePruefen({ runde: 'zwoelf', rolle: 'design', text: 'x'.repeat(121) })).toBeNull();
+  });
+
+  it('Texte der Eingabe: Netflix wie bisher, „zwoelf“ fragt nach der Nummer', () => {
+    expect(eingabeTexte(netflix)).toStrictEqual({
+      label: 'Ein Satz aus deiner Rolle', hinweis: 'erst deine Rolle wählen, dann einen Satz abschicken.', platzhalter: '',
+    });
+    expect(eingabeTexte(netflix)).toStrictEqual(EINGABE_STANDARD);
+    expect(eingabeTexte(zwoelf)).toStrictEqual({
+      label: 'Nummer und ein Satz aus deiner Rolle',
+      hinweis: 'erst deine Rolle wählen, dann Nummer und Satz abschicken.',
+      platzhalter: 'z. B. 3 – weil …',
+    });
+    // Teilweise eigene Texte: der Rest kommt vom Standard.
+    expect(eingabeTexte({ ...zwoelf, eingabe: { label: 'X' } })).toStrictEqual({ ...EINGABE_STANDARD, label: 'X' });
+  });
+
   it('Body: alles oder nichts', () => {
     expect(eingabePruefen({ runde: 'netflix', rolle: 'design', text: ' Suche fehlt ' }))
       .toStrictEqual({ runde: 'netflix', konfig: netflix, rolle: 'design', text: 'Suche fehlt' });
@@ -62,13 +89,36 @@ describe('Antwortrunde: Plätze und Stand', () => {
     expect(platzSchluessel('netflix', 'design', spaet)).toBe('antwort:2026-11-12:netflix:design');
     expect(platzSchluessel('netflix', 'design', new Date('2026-11-12T13:00:00Z'))).toBe('antwort:2026-11-12:netflix:design');
     expect(platzSchluessel('netflix', 'design', new Date('2026-11-13T13:00:00Z'))).toBe('antwort:2026-11-13:netflix:design');
+    // Eigene Plätze pro Runde: „zwoelf“ überschreibt die Netflix-Sätze nicht.
+    expect(platzSchluessel('zwoelf', 'design', spaet)).toBe('antwort:2026-11-12:zwoelf:design');
   });
 
   it('frei erst nach dem Aufdecken oder ab der Rückfall-Uhrzeit', () => {
     const vorher = new Date('2026-11-12T13:30:00Z'); // 14:30 Wien
     expect(texteFrei(netflix, false, vorher)).toBe(false);
     expect(texteFrei(netflix, true, vorher)).toBe(true);
-    expect(texteFrei(netflix, false, new Date('2026-11-12T17:00:00Z'))).toBe(true); // 18:00 Wien = NACH_NETFLIX
+    expect(texteFrei(netflix, false, new Date('2026-11-12T17:00:00Z'))).toBe(false); // 18:00 Wien: Kursende, noch zu
+    expect(texteFrei(netflix, false, new Date('2026-11-12T22:59:00Z'))).toBe(true); // 23:59 Wien = NACH_NETFLIX
+  });
+
+  it('Rückfall beider Runden: Ende von Tag 2, nicht Kursende – Verspätung schließt die Eingabe nicht', () => {
+    expect(netflix.ab).toBe('2026-11-12T23:59');
+    expect(zwoelf.ab).toBe(netflix.ab);
+  });
+
+  it('„zwoelf“: zu bis zum eigenen Aufdecken oder bis zum Ende des Kurstags – Netflix aufdecken öffnet sie nicht', () => {
+    const imBlock = new Date('2026-11-12T15:40:00Z'); // 16:40 Wien, Baum läuft
+    expect(texteFrei(zwoelf, false, imBlock)).toBe(false);
+    expect(texteFrei(zwoelf, true, imBlock)).toBe(true);
+    expect(texteFrei(zwoelf, false, new Date('2026-11-12T17:30:00Z'))).toBe(false); // 18:30 Wien, Tag 2 verspätet
+    expect(texteFrei(zwoelf, false, new Date('2026-11-12T22:59:00Z'))).toBe(true); // 23:59 Wien = NACH_ZWOELF
+  });
+
+  it('nach gemeldetem Aufdecken nur die eigene Runde sofort neu fragen', () => {
+    expect(betrifftRunde(zwoelf, 'zwoelf')).toBe(true);
+    expect(betrifftRunde(netflix, 'zwoelf')).toBe(false);
+    expect(betrifftRunde(zwoelf, '/innolab/methoden/baum:Auflösung zeigen')).toBe(false);
+    expect(betrifftRunde(zwoelf, undefined)).toBe(false);
   });
 
   const plaetze = [{ text: 'Nur Serien', zeit: 3 }, null, { text: 'Kinderfilme', zeit: 1 }];

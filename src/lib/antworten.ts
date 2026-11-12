@@ -1,12 +1,12 @@
 // Antwortrunde: Studierende schicken einen Satz über die Seite (api/antworten.ts; Rückfall: reihum laut). Bis zum Aufdecken
 // zeigt die Seite nur, welche Rollen geantwortet haben; die Texte gibt der Server erst heraus, wenn die Auflösung der Runde
 // für alle offen ist – dieselbe Kennung wie <Aufloesung gruppe=…> (lib/aufgedeckt.ts), also ein Klick des Präsentators für
-// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (bei Netflix drei) – wer abschickt, überschreibt
+// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (bei Netflix und „zwoelf“ je drei) – wer abschickt, überschreibt
 // den Platz seiner Rolle. Keine Client-ids, kein Index, keine Listen: Die Zahl der Schlüssel ist fest, der Text begrenzt.
 // Hier ohne DOM und ohne Vercel, damit testbar. .js-Endungen: api/antworten.ts lädt das per Node-ESM.
 import { wienerZeit } from '../components/jetzt.js';
 import { AUFGEDECKT_TTL_SEKUNDEN, gruppeFrei } from './aufgedeckt.js';
-import { NACH_NETFLIX } from '../components/innolab-zeiten.js';
+import { NACH_NETFLIX, NACH_ZWOELF } from '../components/innolab-zeiten.js';
 
 export interface Rolle { id: string; label: string }
 export interface Runde {
@@ -14,20 +14,52 @@ export interface Runde {
   kennung: string;
   /** Rückfall wie <Aufloesung ab=…>: ab dann sind die Texte auch ohne Aufdecken frei. */
   ab: string;
-  /** Ein Platz pro Rolle. Eine Runde ohne echte Rollen (z. B. „zwoelf“) bekommt Plätze wie „person-1“ … „person-3“. */
+  /** Ein Platz pro Rolle. Eine Runde ohne echte Rollen bekäme Plätze wie „person-1“ … „person-3“. */
   rollen: readonly Rolle[];
+  /** Eigene Texte fürs Eingabefeld; fehlt etwas, gilt EINGABE_STANDARD. */
+  eingabe?: Partial<EingabeTexte>;
 }
+
+export interface EingabeTexte {
+  /** Beschriftung des Felds. */
+  label: string;
+  /** Hinweis vor der Rollenwahl, hinter „Antwort hier auf der Seite:“. */
+  hinweis: string;
+  /** Platzhalter im Feld; leer = keiner. */
+  platzhalter: string;
+}
+
+/** Texte der Eingabe, wenn die Runde keine eigenen hat (Netflix). */
+export const EINGABE_STANDARD: Readonly<EingabeTexte> = {
+  label: 'Ein Satz aus deiner Rolle',
+  hinweis: 'erst deine Rolle wählen, dann einen Satz abschicken.',
+  platzhalter: '',
+};
+
+/** Texte der Eingabe für eine Runde: eigene, sonst EINGABE_STANDARD. Die Seite setzt sie nur als Text. */
+export function eingabeTexte(runde: Runde): EingabeTexte {
+  return { ...EINGABE_STANDARD, ...runde.eingabe };
+}
+
+/** Die drei Rollen aus Torres' Netflix-Beispiel (S. 75); Tag 2 nutzt sie für beide Runden. */
+const DREI_ROLLEN: readonly Rolle[] = [
+  { id: 'produktmanagement', label: 'Produktmanagement' },
+  { id: 'design', label: 'Design' },
+  { id: 'entwicklung', label: 'Entwicklung' },
+];
 
 /** Erlaubte Runden – nur was hier steht, nimmt der Server an. Weitere Übungen hier eintragen. */
 export const RUNDEN: Readonly<Record<string, Runde>> = {
-  netflix: {
-    kennung: 'netflix',
-    ab: NACH_NETFLIX,
-    rollen: [
-      { id: 'produktmanagement', label: 'Produktmanagement' },
-      { id: 'design', label: 'Design' },
-      { id: 'entwicklung', label: 'Entwicklung' },
-    ],
+  /** Tag 2, Synthese: Was hört eure Rolle in der Netflix-Geschichte? */
+  netflix: { kennung: 'netflix', ab: NACH_NETFLIX, rollen: DREI_ROLLEN },
+  /** Tag 2, Baum: Welche der zwölf Chancen zuerst? Nummer und ein Satz, aufgedeckt auf „warum“. */
+  zwoelf: {
+    kennung: 'zwoelf', ab: NACH_ZWOELF, rollen: DREI_ROLLEN,
+    eingabe: {
+      label: 'Nummer und ein Satz aus deiner Rolle',
+      hinweis: 'erst deine Rolle wählen, dann Nummer und Satz abschicken.',
+      platzhalter: 'z. B. 3 – weil …',
+    },
   },
 };
 
@@ -102,6 +134,12 @@ export function gespeichertPruefen(roh: unknown): Gespeichert | null {
  *  Präsentator: Der Beamer zeigt, was die Studierenden sehen. */
 export function texteFrei(runde: Runde, aufgedeckt: boolean, jetzt: Date): boolean {
   return gruppeFrei(runde.kennung, runde.ab, jetzt, aufgedeckt ? [runde.kennung] : []);
+}
+
+/** Hat der Präsentator gerade die Auflösung dieser Runde aufgedeckt (Event AUFGEDECKT_GEMELDET, detail = Kennung)? Dann
+ *  sofort neu fragen: Die Abfrage beim Öffnen kam vor dem gespeicherten Aufdecken an und sähe sonst 4 s lang „zu“. */
+export function betrifftRunde(runde: Pick<Runde, 'kennung'>, gemeldet: unknown): boolean {
+  return typeof gemeldet === 'string' && gemeldet === runde.kennung;
 }
 
 /** Gilt „Gesendet“ noch? Nur, wenn die eigene Rolle laut Server belegt ist (nach „Runde leeren“ nicht mehr). */

@@ -10,27 +10,28 @@
 // Ein Platz pro Rolle (api/antworten.ts): Wer abschickt, überschreibt die Antwort seiner Rolle. Die eigene Antwort merkt
 // sich der Browser nur zum Vorausfüllen. „Runde leeren“: nur Präsentator, nicht im Beamer.
 // Texte immer als textContent, nie als HTML.
-import { MAX_TEXT, RUNDEN } from '../lib/antworten';
+import { MAX_TEXT, RUNDEN, eingabeTexte } from '../lib/antworten';
 const { runde, ansicht } = Astro.props as { runde: string; ansicht: 'eingabe' | 'antworten' };
 const r = RUNDEN[runde];
 if (!r) throw new Error(`Antwortrunde: unbekannte runde="${runde}"`);
 // „2 von 3 haben geantwortet“: ein Platz pro Rolle.
 const erwartet = r.rollen.length;
 const feld = `antwort-${runde}`;
+const texte = eingabeTexte(r);
 ---
-<div class="antwortrunde" data-antwortrunde={runde} data-ansicht={ansicht} data-erwartet={erwartet} data-rollen={JSON.stringify(r.rollen)}>
+<div class="antwortrunde" data-antwortrunde={runde} data-kennung={r.kennung} data-hinweis={texte.hinweis} data-ansicht={ansicht} data-erwartet={erwartet} data-rollen={JSON.stringify(r.rollen)}>
   {ansicht === 'eingabe' ? (
     <div class="ar-eingabe" data-ar-eingabe hidden>
-      <p class="ar-schritt">Antwort hier auf der Seite: <span data-ar-hinweis>erst deine Rolle wählen, dann einen Satz abschicken.</span></p>
+      <p class="ar-schritt">Antwort hier auf der Seite: <span data-ar-hinweis>{texte.hinweis}</span></p>
       {r.rollen.length > 0 && (
         <div class="ar-rollen" role="group" aria-label="Deine Rolle">
           {r.rollen.map((x) => <button type="button" class="ar-rolle" data-ar-rolle={x.id} aria-pressed="false">{x.label}<span class="ar-vergeben" data-ar-vergeben hidden> · vergeben</span></button>)}
         </div>
       )}
       <form class="ar-form" data-ar-form hidden={r.rollen.length > 0}>
-        <label for={feld}>Ein Satz aus deiner Rolle</label>
+        <label for={feld}>{texte.label}</label>
         <div class="ar-zeile">
-          <textarea id={feld} rows="2" maxlength={MAX_TEXT} required data-ar-text></textarea>
+          <textarea id={feld} rows="2" maxlength={MAX_TEXT} required placeholder={texte.platzhalter || undefined} data-ar-text></textarea>
           <button type="submit" class="ar-senden">Abschicken</button>
         </div>
       </form>
@@ -49,12 +50,13 @@ const feld = `antwort-${runde}`;
 </div>
 <script>
   import {
-    ANTWORTEN_FREI_MS, ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, antwortenGruppieren, gesendetGilt, rolleBesetzt, rolleWaehlbar, statusText,
+    ANTWORTEN_FREI_MS, ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, antwortenGruppieren, betrifftRunde, gesendetGilt, rolleBesetzt, rolleWaehlbar, statusText,
     textPruefen, type Rolle, type Stand,
   } from '../lib/antworten';
   import { wienerZeit } from './jetzt';
   import { abfrageKette, jsonHolen, zeitlimit, type Kette } from '../lib/kette';
   import { PRAESENTATOR_SCHLUESSEL } from '../lib/beamer';
+  import { AUFGEDECKT_GEMELDET } from '../lib/aufgedeckt';
   import { hinweis } from './hinweis';
 
   const lesen = (k: string): string | null => {
@@ -94,6 +96,9 @@ const feld = `antwort-${runde}`;
     a = { bloecke, kette };
     abfragen.set(runde, a);
     document.addEventListener('visibilitychange', () => { if (!document.hidden && bloecke.some((b) => b.sichtbar)) kette.sofort(); });
+    // Präsentator hat aufgedeckt und der Server hat es gespeichert: gleich neu fragen statt bis zu 4 s „zu“ zu zeigen.
+    const kennung = document.querySelector<HTMLElement>(`[data-antwortrunde="${CSS.escape(runde)}"]`)?.dataset.kennung ?? '';
+    document.addEventListener(AUFGEDECKT_GEMELDET, (e) => { if (betrifftRunde({ kennung }, (e as CustomEvent).detail)) kette.sofort(); });
     return a;
   };
 
@@ -137,7 +142,7 @@ const feld = `antwort-${runde}`;
         k.disabled = !rolleWaehlbar(id, vergeben, eigeneRolle);
       });
       const label = rollen.find((r) => r.id === eigeneRolle)?.label;
-      if (hinweisRolle) hinweisRolle.textContent = label ? `deine Rolle ist ${label} – ändern kannst du deinen Satz, nicht die Rolle.` : 'erst deine Rolle wählen, dann einen Satz abschicken.';
+      if (hinweisRolle) hinweisRolle.textContent = label ? `deine Rolle ist ${label} – ändern kannst du deine Antwort, nicht die Rolle.` : (box.dataset.hinweis ?? '');
     };
     if (eigene) { eigeneRolle = eigene.rolle; rolleWaehlen(eigene.rolle); if (feld) feld.value = eigene.text; if (gesendet) gesendet.hidden = false; }
     knoepfeAktualisieren();

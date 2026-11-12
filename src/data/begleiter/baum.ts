@@ -28,19 +28,22 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   zwoelf: {
     live: [
       'Liste nicht erklären, alle lesen still.',
-      'Timer 2 min: still überlegen, dann reihum laut, je ein Satz.',
-      'Dann fragen: Wer hat wie verglichen?',
+      'Rollen wie bei Netflix; alle antworten auf der eigenen Seite.',
+      'Timer 2 min: Nummer und Satz, aus der Rolle.',
+      'Noch nicht aufdecken – erst alle drei abgeschickt.',
       'Falle: eine richtige Antwort andeuten – es gibt keine.',
     ],
-    uebung: { dauer: '2 min', form: 'allein, dann reihum laut, je ein Satz' },
+    uebung: { dauer: '2 min', form: 'allein, Nummer und ein Satz auf der Seite; dann gemeinsam aufdecken (Rückfall: laut)' },
     ablauf: {
       schritte: [
         'Folie zeigen, die Liste still lesen lassen.',
-        'Timer 2 min: Jede*r überlegt still, welche Chance zuerst und warum.',
-        'Dann reihum laut, je ein Satz; zuhören, nicht werten. Dann zur nächsten Folie.',
+        'Alle öffnen die Folie auf dem eigenen Gerät und wählen ihre Rolle wie bei Netflix (Produktmanagement, Design, Entwicklung). Timer 2 min: Jede*r tippt die Nummer der Chance, die sie oder er zuerst angehen würde, und einen Satz, warum – aus der eigenen Rolle – und schickt ab. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
+        'Erst wenn alle drei abgeschickt haben, zur nächsten Folie: Dort deckst du alle drei gleichzeitig auf. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r Nummer und Satz laut.',
       ],
       achten: [
         'Wer „Wer ist dieser Schauspieler?“ nimmt, weil leicht: genau die Frage, die Torres stellt – immer das Leichte vor dem Schweren?',
+        'Nicht werten und nicht nachfragen, bevor aufgedeckt ist – sonst passen die anderen ihre Antwort an.',
+        'Pro Rolle ein Platz wie bei Netflix; Testantworten: auf der Seite ohne Beamer „Runde leeren“.',
       ],
     },
     kern: [
@@ -49,19 +52,31 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 81–82`,
       },
     ],
-    ueberleitung: 'Wenn euch der Vergleich schwerfiel: Genau das ist der Punkt.',
+    ueberleitung: 'Alle drei abgeschickt? Dann decken wir gemeinsam auf – und sortieren die zwölf.',
   },
 
   warum: {
     live: [
-      'Mit den Sätzen aus der Runde verbinden: Wer stockte beim Vergleichen?',
-      '„Eine flache Liste mischt übergeordnete Chancen, Teilchancen und Geschwister.“',
-      'Beispiel Flugzeug und Zug: ähnlich, aber offline, Steckdose, Netz.',
+      'Aufdecken, dann eure drei Nummern in der Sortierung zeigen.',
+      'Fragen: Stehen eure drei Chancen auf derselben Ebene?',
+      '„Eine Liste mischt Großes, Kleines und Verwandtes.“',
+      'Falle: 4, 6, 8, 10 einsortieren – Torres tut es nicht.',
     ],
     verstaendnis: {
       frage: 'Warum lassen sich „Ich finde nichts zum Schauen“ und „Mir sind die Folgen ausgegangen“ schlecht gegeneinander priorisieren?',
       antwort: 'Das zweite ist ein Grund – aber nicht der einzige – für das erste. Sie sind nicht unterscheidbar, sondern übergeordnete Chance und Teilchance (S. 82).',
       falsch: '„Weil beide gleich wichtig sind“ – es geht um ihre Beziehung, nicht um ihre Wichtigkeit.',
+    },
+    ablauf: {
+      schritte: [
+        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Rolle; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten.',
+        'Schritt für Schritt aufdecken: 1 mit 2, 3 und 5; dann 7 und 12 unter „unterwegs schauen“; dann 9 und 11. Bei jedem Schritt: Wessen Nummer steht hier?',
+        'Fragen, ob eure drei Chancen auf derselben Ebene stehen, dann den letzten Satz aufdecken.',
+      ],
+      achten: [
+        'Nur sortieren, was Torres sortiert: 10 und 11 nicht unter 9 hängen – ihre Teilchancen von 9 sind anders formuliert (S. 84–85). 4, 6, 8 und 10 bleiben offen.',
+      ],
+      aufloesung: 'Meist nicht: 1 ist übergeordnet, 2, 3 und 5 sind Teilchancen davon, 7 und 12 Geschwister. Ihr habt Verschiedenartiges verglichen. Torres: „It’s hard to answer these questions when prioritizing opportunities of different shapes and sizes against each other“ (S. 82).',
     },
     kern: [
       {
@@ -69,16 +84,20 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 82`,
       },
       {
-        text: 'Bäume zeigen zwei Beziehungen: übergeordnete Chance und Teilchance („a child opportunity (or sub-opportunity) is a subset of a parent opportunity“) und Geschwister.',
-        quelle: `${TORRES}, S. 82`,
+        text: 'Bäume zeigen zwei Beziehungen: übergeordnete Chance und Teilchance („a child opportunity (or sub-opportunity) is a subset of a parent opportunity“) und Geschwister. „I’m out of episodes …“ ist „one reason—but not the only reason“ für „I can’t find anything to watch“; „I can’t figure out how to search for a specific show“ und „The show I was watching is no longer available“ kommen „as siblings“ dazu.',
+        quelle: `${TORRES}, S. 82–83`,
+      },
+      {
+        text: '„I want to watch my shows on my flight“ und „… on my train commute“ hängen unter der übergeordneten Chance „I want to watch my shows on the go“: jeder Kontext ein eigenes Bedürfnis, die Ähnlichkeit bleibt sichtbar. Und: „the tree structure is going to be invaluable when it comes time to assessing and prioritizing opportunities.“',
+        quelle: `${TORRES}, S. 84–85`,
       },
     ],
-    ueberleitung: 'Der Baum zeigt beides: übergeordnete Chancen und Teilchancen, Geschwister.',
+    ueberleitung: 'Torres’ Bild dazu: oben „Ich finde nichts zum Schauen“, darunter die Gründe.',
   },
 
   'eltern-kind': {
     live: [
-      'Abbildung: die Teilchance ist ein Grund, nicht der einzige.',
+      'Abbildung: der erste Mini-Baum von eben, wie Torres ihn zeichnet.',
       'Fragen: Welche anderen Gründe füllen die Fragezeichen?',
       '„Geschwister sind ähnlich, aber eines lässt sich ohne das andere lösen.“',
     ],
