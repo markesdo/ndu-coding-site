@@ -208,7 +208,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 56`,
       },
       {
-        text: 'Die Spaltennamen stehen in keiner Skizze: Ähnliche Knoten zusammenschieben, der Gruppe einen Namen geben – maßgeblich ist derselbe Moment der Geschichte, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot. Gezählt werden Geschichten, nicht Stickies, nur mit Zitat; Notizen zählen nicht. Ankunftssätze (I1-1, I4-1, I5-1) bleiben grau: Hintergrund, kein erzählter Moment. I3-4 und I4-2 sind Regel und Meinung übers Anstehen, keine erzählten Momente: grau. Dass I3 sich anstellt, steht nur in der Notiz (gestrichelt, zählt nicht). „Im Zug“ trägt nur I3, bleibt aber Gruppe: dort endet die Geschichte. I2-1/I2-2/I2-4 in einer Rasterzelle ist selbst Zusammenlegen.',
+        text: 'Die Spaltennamen stehen in keiner Skizze: Ähnliche Knoten zusammenschieben, der Gruppe einen Namen geben – maßgeblich ist derselbe Moment der Geschichte, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot (Kursregel, aus Torres S. 87 gefolgert) – Ausnahme: das Ende, auch bei Torres ein eigener Moment. Gezählt werden Geschichten, nicht Stickies, nur mit Zitat; Notizen zählen nicht. Ankunftssätze (I1-1, I4-1, I5-1) bleiben grau: Hintergrund, kein erzählter Moment. I3-4 und I4-2 sind Regel und Meinung übers Anstehen, keine erzählten Momente: grau. Dass I3 sich anstellt, steht nur in der Notiz (gestrichelt, zählt nicht). „Im Zug“ trägt nur I3, bleibt aber Gruppe: dort endet die Geschichte. I2-1/I2-2/I2-4 in einer Rasterzelle ist selbst Zusammenlegen.',
         quelle: 'Kursregel',
       },
     ],
@@ -219,8 +219,8 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     live: [
       'Spaltenköpfe = die Gruppennamen von der Folie davor.',
       'Zählzeile kennt ihr von Deckel 1 – nur kurz zeigen.',
-      'Fragen: Wo liegt der Tiefpunkt von I2, von I3? Dorthin die Marke.',
-      'Aufdecken: Zählzeile – I1, I4, I5 stehen im Handout.',
+      'Zeigen: Die Tief-Pills im Raster wandern auf die Map.',
+      'Aufdecken: Map – Tief-Marken mit IDs, keine Zahl.',
       'Zusammengelegt: Anstehen und Warten – kein Zitat erzählt das Anstehen.',
       'Tief-Marken: Halle I2-1, Umweg I4-4, Warten I3-3 und I5-6.',
       'I4-4 gilt dem Automatenkaffee – Tief des Umwegs.',
