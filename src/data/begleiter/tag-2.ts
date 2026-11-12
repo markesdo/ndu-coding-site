@@ -28,7 +28,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
     live: [
       '„Heute wird aus euren fünf Geschichten ein Baum voller Chancen.“',
       'Fluss zeigen: Snapshots, Map und Baum heute, Ziel-Chance an Tag 3.',
-      'Fragen: Wer hat Interviews in der Werkstatt? Sonst bis 14:50 eintragen.',
+      'Ansage: bis 14:50 Interviews nachtragen, Skizzen auf T1 · 5.',
       'Annahmen-Map von Tag 1 öffnen lassen, Belege sofort eintragen.',
     ],
     miro: {

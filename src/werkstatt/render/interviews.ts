@@ -31,7 +31,7 @@ ${zitate.length ? zitate.join('\n') : 'Noch keine eingetragen.'}
 
 **Stand:** ${datumAt(d.stand)}
 
-Pseudonymisiert. Die Skizze jeder Geschichte entsteht auf Papier und kommt an Tag 2 mit.
+Pseudonymisiert. Die Skizze jeder Geschichte entsteht auf Papier; an Tag 2 kommt sie auf die Snapshot-Karte auf Miro (T1 · 5).
 
 ${teile.length ? teile.join('\n') : 'Noch keine Interviews eingetragen.\n'}`;
 }
