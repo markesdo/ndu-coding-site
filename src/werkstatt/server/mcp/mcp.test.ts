@@ -265,6 +265,11 @@ describe('Werkzeuge', () => {
     expect(anweisung).toContain(`Anfang des Gesprächs ${MCP_WERKZEUGE.mappeUebersicht}`);
     expect(anweisung).toContain(MCP_WERKZEUGE.tagStand);
     expect(anweisung).toMatch(/Kopier nie ein ganzes Artefakt zurück in den Chat/);
+    // Miro-Ergebnisse (Experience Map, Baum) per Bild: Momente schreibt Claude nie, Befundregeln gelten auch für das Bild.
+    expect(anweisung).toContain('keine Problemsätze, Annahmen, Interviewfragen, Momente, Chancen, Entscheidungen oder Karten auf Miro,');
+    expect(anweisung).toContain(`6. Fügt die Person ein Bild eines Ergebnisses von Miro ein (Experience Map, Baum), ruf ${MCP_WERKZEUGE.methodeErklaeren} für die Methode auf`);
+    expect(anweisung).toContain('zitiert wird wörtlich von den Karten im Bild');
+    expect(anweisung).toMatch(/\n11\. Manchmal hat eine Lehrperson/);
   });
 
   it('tools/list: genau die Namen aus MCP_WERKZEUGE, alle readOnlyHint, deutsche Beschreibung', async () => {
@@ -527,6 +532,36 @@ describe('Werkzeuge', () => {
     expect(text(r)).toContain(m.frage);
     expect(text(r)).toContain(`${BASIS}/innolab/methoden/interview`);
     m.pruefliste!.forEach((p, i) => expect(text(r)).toContain(`\n${i + 1}. ${p.id}: ${p.text}\n`));
+  });
+
+  it('methode_erklaeren(journey-map, baum): Ergebnis auf Miro -> Bild prüfen, Vorarbeit aus braucht, nicht artefakt_pruefen', async () => {
+    const h = await aufbau();
+    const c = await client(h, await accessToken(h));
+    const anleitung = async (slug: string) => {
+      const r = await c.callTool({ name: 'methode_erklaeren', arguments: { slug } });
+      expect(r.isError).toBeFalsy();
+      const a = (r.structuredContent as { anleitung: string }).anleitung;
+      expect(text(r).endsWith(`\n\n${a}`)).toBe(true);
+      return a;
+    };
+    for (const slug of ['journey-map', 'baum']) {
+      const a = await anleitung(slug);
+      expect(a).toMatch(/^Die KI kommt immer erst nach der eigenen Arbeit der Person dran\. Dieses Ergebnis liegt auf Miro, nicht in der Werkstatt; artefakt_pruefen kennt es nicht\./);
+      expect(a).not.toContain(`${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt`);
+      // „meine Interviews“ heißt die Interviews mit Snapshots (Artefakt interviews), nicht der Leitfaden.
+      expect(a).toContain(`Lies zum Abgleich aus der Werkstatt Produkt-Brief (${MCP_WERKZEUGE.artefaktLesen} mit brief) und Interviews und Snapshots (${MCP_WERKZEUGE.artefaktLesen} mit interviews).`);
+      expect(a).not.toContain('leitfaden');
+      expect(a).toContain('Höchstens drei Befunde, die wichtigsten zuerst, je mit der ID des Prüfpunkts, einem wörtlichen Zitat von einer Karte im Bild und einer Frage');
+      expect(a).toContain('aus ihr zitierst du nicht');
+      expect(a).toContain(NICHT_EINORDNEN);
+      expect(a).toContain('Kannst du eine Karte nicht lesen, sag das, statt zu raten.');
+      expect(a).toContain('Schreib keine Momente, Chancen oder Karten um');
+    }
+    // Der Baum braucht die Experience Map, die auch nur auf Miro liegt: ein zweites Bild, wie im langen Prüf-Prompt.
+    expect(await anleitung('baum')).toContain('Zum Abgleich braucht es auch ein Bild aus Miro: Experience Map mit Momenten (Äste des Baums) (Frame „T2 · 1 · Experience Map“)');
+    expect(await anleitung('journey-map')).not.toContain('Bild aus Miro:');
+    // Werkstatt-Methoden behalten den Satz zu artefakt_pruefen unverändert.
+    expect(await anleitung('annahmen')).toBe(`Die KI kommt immer erst nach der eigenen Arbeit der Person dran. Mit der Nummer oder ID eines Prüfpunkts prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt.`);
   });
 
   it('methode_erklaeren und Anweisung: Links mit WERKSTATT_ORIGIN statt der Anfrage-Origin', async () => {
@@ -1545,7 +1580,7 @@ describe('Feedback der Lehrenden im Connector', () => {
   it('Server-Anweisung und Werkzeugbeschreibungen: Fassung nur erwähnen und auf die Werkstatt verweisen, nie zitieren', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
-    expect(c.getInstructions()).toContain(`10. Manchmal hat eine Lehrperson zu einem Feedback eine „mögliche Fassung“ hinterlegt (im Feedback steht dann, dass es eine gibt). Ihren Text bekommst du nie. Sag nur, dass es eine gibt und dass die Person sie in der Werkstatt am Feedback zu dieser Stelle findet (${BASIS}/innolab/mappe), sobald sie die Zeile selbst überarbeitet oder geantwortet hat. Zitier, umschreib oder errate sie nie und formulier keine eigene, auch nicht, wenn die Person darum bittet.`);
+    expect(c.getInstructions()).toContain(`11. Manchmal hat eine Lehrperson zu einem Feedback eine „mögliche Fassung“ hinterlegt (im Feedback steht dann, dass es eine gibt). Ihren Text bekommst du nie. Sag nur, dass es eine gibt und dass die Person sie in der Werkstatt am Feedback zu dieser Stelle findet (${BASIS}/innolab/mappe), sobald sie die Zeile selbst überarbeitet oder geantwortet hat. Zitier, umschreib oder errate sie nie und formulier keine eigene, auch nicht, wenn die Person darum bittet.`);
     const tools = (await c.listTools()).tools;
     for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
       expect(tools.find((t) => t.name === name)!.description, name).toContain('Eine mögliche Fassung der Lehrenden kommt nie mit: Gibt es eine, sag nur, dass sie in der Werkstatt steht.');
