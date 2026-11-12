@@ -163,7 +163,7 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
       'Nicht rechtfertigen, nicht nach Bewertung fragen.',
       'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
     ],
-    uebung: { dauer: '2 min', form: 'allein, Platz wählen, ein Satz auf der Seite; nicht aufdecken, danken (Rückfall: laut)' },
+    uebung: { dauer: '2 min', form: 'allein, Platz wählen, ein Satz auf der Seite; nicht aufdecken, danken (Rückfall: einfach weiter)' },
     ablauf: {
       schritte: [
         'Frage vorlesen: „Dein stärkster Moment heute: Was hast du da gerade gemacht?“ Nicht erklären, keine Beispiele.',
@@ -174,7 +174,7 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
       achten: [
         'Es ist ein Rückblick auf den Kurs, keine Bewertung: nicht rechtfertigen, nicht erklären, warum etwas so lief.',
         'Keine Namen nennen, Plätze nicht deuten – wer was schrieb, ist egal.',
-        'Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r den Satz reihum laut und du schreibst mit.',
+        'Server weg? Einfach weiter – nicht laut sammeln. Auf der Seite steht dann „Geht gerade nicht – kein Problem, weiter geht’s.“',
       ],
       fehler: [
         'Nach Meinungen fragen („Wie fandet ihr heute?“) – das ist genau die Frage, die der Mom Test verbietet.',

@@ -15,6 +15,8 @@ const ROLLEN_WAHL = {
   wahlBesetzt: 'Diese Rolle hat schon jemand – wählt eine andere.',
   wahlFest: 'deine Rolle ist {label} – ändern kannst du deine Antwort, nicht die Rolle.',
   aufgedeckt: 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.',
+  gesendet: 'Gesendet – du kannst bis zum Aufdecken noch ändern.',
+  rueckfall: 'Antwort bitte laut sagen.',
 };
 
 describe('Antwortrunde: Eingabe prüfen', () => {
@@ -87,6 +89,8 @@ describe('Antwortrunde: Eingabe prüfen', () => {
       wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
       wahlFest: 'du hast {label} – ändern kannst du deine Antwort, nicht den Platz.',
       aufgedeckt: ROLLEN_WAHL.aufgedeckt,
+      gesendet: ROLLEN_WAHL.gesendet,
+      rueckfall: ROLLEN_WAHL.rueckfall,
     });
     expect(Object.values(eingabeTexte(zwoelf)).filter((x) => /Rolle/.test(x))).toStrictEqual([]);
     // Teilweise eigene Texte: der Rest kommt vom Standard.
@@ -114,6 +118,9 @@ describe('Antwortrunde: Eingabe prüfen', () => {
       wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
       wahlFest: 'du hast {label} – ändern kannst du deine Antwort, nicht den Platz.',
       aufgedeckt: 'Danke – die Runde ist zu. Eure Sätze liest Markus nach dem Kurs.',
+      // Kein Aufdecken im Raum: ändern bis 18:15; Server weg – einfach weiter, nicht laut sammeln.
+      gesendet: 'Gesendet – du kannst bis 18:15 noch ändern.',
+      rueckfall: 'Geht gerade nicht – kein Problem, weiter geht’s.',
     });
     expect(Object.values(t).filter((x) => /Rolle/.test(x))).toStrictEqual([]);
     expect(wahlFestText(t, 'Platz 2')).toBe('du hast Platz 2 – ändern kannst du deine Antwort, nicht den Platz.');

@@ -37,6 +37,10 @@ export interface EingabeTexte {
   wahlFest: string;
   /** Statuszeile der Eingabe nach dem Aufdecken – wo die Sätze stehen. */
   aufgedeckt: string;
+  /** Zeile nach dem Senden – bis wann man noch ändern kann. */
+  gesendet: string;
+  /** Rückfall in der Eingabe, wenn die API ausfällt (503, Netz). */
+  rueckfall: string;
 }
 
 /** Texte der Eingabe, wenn die Runde keine eigenen hat (Netflix). */
@@ -49,6 +53,8 @@ export const EINGABE_STANDARD: Readonly<EingabeTexte> = {
   wahlBesetzt: 'Diese Rolle hat schon jemand – wählt eine andere.',
   wahlFest: 'deine Rolle ist {label} – ändern kannst du deine Antwort, nicht die Rolle.',
   aufgedeckt: 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.',
+  gesendet: 'Gesendet – du kannst bis zum Aufdecken noch ändern.',
+  rueckfall: 'Antwort bitte laut sagen.',
 };
 
 /** Hinweis nach dem Senden mit dem Namen des eigenen Platzes. */
@@ -110,6 +116,9 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
       platzhalter: 'Tief: … – ich habe gerade …',
       ...PLATZ_WAHL,
       aufgedeckt: 'Danke – die Runde ist zu. Eure Sätze liest Markus nach dem Kurs.',
+      gesendet: 'Gesendet – du kannst bis 18:15 noch ändern.',
+      // Server weg: nicht laut sammeln, einfach weiter (Markus, 12.11.2026).
+      rueckfall: 'Geht gerade nicht – kein Problem, weiter geht’s.',
     },
   },
 };

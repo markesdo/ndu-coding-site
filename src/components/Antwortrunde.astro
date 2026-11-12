@@ -6,7 +6,7 @@
 // ansicht="antworten": „Eure Sätze“ nach Rolle – gehört in die <Aufloesung gruppe=…> der Runde; der Server gibt die Texte
 // erst nach dem Aufdecken heraus. Fragt nur nach, solange der Block zu sehen ist und der Tab vorn.
 // Eine Abfrage pro Seite und Runde (beide Ansichten teilen sie), nur solange ein Block zu sehen ist; nach dem Aufdecken
-// nur noch alle 30 s (öffnet „Runde leeren“ die Runde wieder, kommt die Eingabe zurück). Fällt die API aus (503, Netz), steht „Antwort bitte laut sagen.“ da – reihum laut bleibt der Rückfall.
+// nur noch alle 30 s (öffnet „Runde leeren“ die Runde wieder, kommt die Eingabe zurück). Fällt die API aus (503, Netz), steht der Rückfall der Runde da (Standard „Antwort bitte laut sagen.“, eingabeTexte).
 // Ein Platz pro Rolle (api/antworten.ts): Wer abschickt, überschreibt die Antwort seiner Rolle. Die eigene Antwort merkt
 // sich der Browser nur zum Vorausfüllen. „Runde leeren“: nur Präsentator, nicht im Beamer.
 // Texte immer als textContent, nie als HTML. Nach jeder Abfrage meldet die Runde ihren Stand einmal als Event
@@ -37,7 +37,7 @@ const texte = eingabeTexte(r);
         </div>
       </form>
       <p class="small ar-meldung" data-ar-meldung role="status" aria-live="polite"></p>
-      <p class="small" data-ar-gesendet hidden>Gesendet – du kannst bis zum Aufdecken noch ändern.</p>
+      <p class="small" data-ar-gesendet hidden>{texte.gesendet}</p>
     </div>
   ) : (
     <div class="ar-antworten">
@@ -47,7 +47,7 @@ const texte = eingabeTexte(r);
   )}
   <p class="small muted ar-status" data-ar-status aria-live="polite"></p>
   {ansicht === 'eingabe' && <button type="button" class="ar-leeren small" data-ar-leeren data-nur-praesentator>Runde leeren</button>}
-  <p class="small ar-rueckfall" data-ar-rueckfall hidden>{ansicht === 'eingabe' ? 'Antwort bitte laut sagen.' : 'Sagt eure Sätze laut, reihum.'}</p>
+  <p class="small ar-rueckfall" data-ar-rueckfall hidden>{ansicht === 'eingabe' ? texte.rueckfall : 'Sagt eure Sätze laut, reihum.'}</p>
 </div>
 <script>
   import {
