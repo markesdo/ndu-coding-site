@@ -189,7 +189,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         'Übungsrunde zu dritt auf Miro, 5 min (Timer auf der Folie); nicht eingreifen.',
         'Schritt 1 aufdecken: Farben und Buchstaben – vier Gruppen, Rest grau.',
         'Schritt 2 aufdecken: Legende mit den Gruppennamen.',
-        'Besprechen: Wo weicht eure Gruppierung ab – und warum? Abweichung ist kein Fehler; begründen lassen. Fragen: Welche Stickies meinen denselben Moment (IDs nennen lassen)? Wie würdet ihr diese Gruppe nennen? Warum bleibt „Glücksspiel“ grau?',
+        'Besprechen: Wo weicht eure Gruppierung ab – und warum? Abweichung ist kein Fehler; begründen lassen. Fragen: Welche Stickies meinen denselben Moment (IDs nennen lassen)? Wie würdet ihr diese Gruppe nennen? Warum bleibt „Glücksspiel“ grau? Und: Warum beginnt I2 mit I2-4? (IDs zählen die Eintragung, nicht die Geschichte.)',
         'Auf Miro Deckel 1 (Gruppen-Lösung) abheben.',
         'Nach der Raster-Folie auf Miro Deckel 2 (fertige Map, Zone 2) abheben.',
       ],
