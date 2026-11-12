@@ -158,20 +158,18 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
   },
   rueckblick: {
     live: [
-      'Timer 2 min, dann aufdecken.',
-      'Eine Nachfrage laut: ‚Was war kurz davor?‘ Antwort mitschreiben.',
+      'Timer 2 min: Platz wählen, Satz abschicken.',
+      'Nicht aufdecken – nur danken.',
       'Nicht rechtfertigen, nicht nach Bewertung fragen.',
       'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
-      'Gleich nach dem Aufdecken: Claude – ‚Sichere die Rückblick-Antworten‘.',
     ],
-    uebung: { dauer: '2 min', form: 'allein, Platz wählen, ein Satz auf der Seite; dann gemeinsam aufdecken (Rückfall: laut)' },
+    uebung: { dauer: '2 min', form: 'allein, Platz wählen, ein Satz auf der Seite; nicht aufdecken, danken (Rückfall: laut)' },
     ablauf: {
       schritte: [
         'Frage vorlesen: „Dein stärkster Moment heute: Was hast du da gerade gemacht?“ Nicht erklären, keine Beispiele.',
         'Alle öffnen die Folie auf dem eigenen Gerät, wählen einen freien Platz (Platz 1–3, ohne Bedeutung) und schicken einen Satz ab, der mit „Hoch:“ oder „Tief:“ beginnt. Timer 2 min. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
-        'Wenn alle drei abgeschickt haben (oder der Timer abläuft): „Auflösung zeigen“ auf derselben Folie – die drei Sätze erscheinen darunter.',
-        'Zu einem Satz eine Nachfrage laut: „Was war kurz davor?“ Die Antwort mitschreiben, nicht kommentieren.',
-        'Gleich nach dem Aufdecken Claude die Antworten sichern lassen – noch heute, vor Mitternacht, danach sind sie weg (ein Platz pro Wiener Kurstag). Dann Satz zu Tag 3 sagen und zur Checkliste.',
+        'Nach dem Timer: danken, nichts aufdecken. Die Sätze liest Markus nach 18:15 und sichert sie (rueckblick/2026-11-12-tag2.md).',
+        'Dann den Danke-Satz und den Satz zu Tag 3 aufdecken und zur Checkliste.',
       ],
       achten: [
         'Es ist ein Rückblick auf den Kurs, keine Bewertung: nicht rechtfertigen, nicht erklären, warum etwas so lief.',

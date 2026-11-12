@@ -4,9 +4,7 @@ import Checklist from '../../../components/Checklist.astro';
 import Folie from '../../../components/Folie.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Antwortrunde from '../../../components/Antwortrunde.astro';
-import Aufloesung from '../../../components/Aufloesung.astro';
 import Timer from '../../../components/Timer.astro';
-import { RUNDEN } from '../../../lib/antworten';
 ---
 <Layout title="Tag 2 · Abschluss">
   <span class="eyebrow">Innolab · Tag 2 · Abschluss</span>
@@ -28,12 +26,10 @@ import { RUNDEN } from '../../../lib/antworten';
     <p class="folie-satz">Dein stärkster Moment heute: Was hast du da gerade gemacht?</p>
     <p>Ein Satz, beginnt mit ‚Hoch:‘ oder ‚Tief:‘. Platz wählen, abschicken. <Timer minuten={2} /></p>
     <Antwortrunde runde="rueckblick" ansicht="eingabe" />
-    <Aufloesung ab={RUNDEN.rueckblick.ab} gruppe={RUNDEN.rueckblick.kennung}>
-      <Antwortrunde runde="rueckblick" ansicht="antworten" />
-    </Aufloesung>
+    <p data-schritt>Danke fürs Mitmachen – eure Sätze lesen wir nach dem Kurs.</p>
     <p class="nach-runde">An Tag 3 seht ihr, was daraus wird: Map, Baum, eine Änderung.</p>
     <div class="nur-handout">
-      <p>Wir fragen nach Konkretem aus der Vergangenheit statt nach Meinungen (Rob Fitzpatrick, ‚The Mom Test‘, S. 13, 16) und nach einem bestimmten Moment (Teresa Torres, Continuous Discovery Habits, S. 64–65). Übung am eigenen Kurs – drei Sätze, keine Interviews. An Tag 3 zeigen wir, was daraus wird.</p>
+      <p>Wir fragen nach Konkretem aus der Vergangenheit statt nach Meinungen (Rob Fitzpatrick, ‚The Mom Test‘, S. 13, 16) und nach einem bestimmten Moment (Teresa Torres, Continuous Discovery Habits, S. 64–65). Übung am eigenen Kurs – drei Sätze, keine Interviews. Die Sätze werden nicht im Raum aufgedeckt; Markus liest sie nach dem Kurs. An Tag 3 zeigen wir, was daraus wird.</p>
     </div>
   </Folie>
 

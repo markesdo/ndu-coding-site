@@ -99,7 +99,7 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
     },
   },
   /** Tag 2, Abschluss: Rückblick auf den Kurs als Produkt – ein Satz „Hoch:“/„Tief:“ zum stärksten Moment des Tages.
-   *  Drei neutrale Plätze statt Rollen; Eingabe und Auflösung auf derselben Folie. Soll die Runde an einem späteren
+   *  Drei neutrale Plätze statt Rollen; nur Eingabe, im Raum wird nicht aufgedeckt (Markus liest nach dem Kurs). Soll die Runde an einem späteren
    *  Kurstag wiederkommen, reicht ein neues ab: Die Plätze hängen schon am Wiener Kurstag (platzSchluessel). */
   rueckblick: {
     kennung: 'rueckblick', ab: NACH_RUECKBLICK_TAG_2,
@@ -109,7 +109,7 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
       hinweis: 'erst einen Platz wählen, dann deinen Satz abschicken.',
       platzhalter: 'Tief: … – ich habe gerade …',
       ...PLATZ_WAHL,
-      aufgedeckt: 'Aufgedeckt – eure Sätze stehen darunter.',
+      aufgedeckt: 'Danke – die Runde ist zu. Eure Sätze liest Markus nach dem Kurs.',
     },
   },
 };
