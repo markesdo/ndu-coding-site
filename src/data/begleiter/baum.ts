@@ -246,13 +246,13 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   beispiel: {
     live: [
       'Momente oben, darunter nur Chancen aus mindestens zwei Interviews.',
-      'Fragen: Ist „Ich stehe an“ mit nur einer Chance senkrecht?',
+      'Fragen: Sind die zwei Chancen unter „Anstehen und Warten“ Geschwister?',
       'Aufdecken: Was nur eine Person sagte, bleibt draußen.',
       '„Unter ‚Ich bin im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
     ],
     verstaendnis: {
-      frage: 'Ist „Ich stehe an“ mit nur einer Chance darunter eine senkrechte Kette?',
-      antwort: 'Noch nicht: Senkrecht heißt, unter der einzigen Teilchance folgt wieder genau eine. Ein Ast mit einer Chance ist ehrlich – mehr haben fünf Interviews nicht hergegeben –, aber ein Hinweis, wonach ihr als Nächstes fragt (Handout; Torres S. 94).',
+      frage: 'Anstehen und Warten sind ein Moment. Sind „Wenn ich anstehe, verpasse ich meinen Zug“ und „Wann ist mein Kaffee fertig?“ darunter trotzdem Geschwister?',
+      antwort: 'Ja: Eine kürzere Schlange sagt nicht, wann der Kaffee fertig ist, und eine Fertig-Zeit macht die Schlange nicht kürzer. Jede löst den Moment nur zum Teil, man kann sie getrennt angehen (Handout). Der leere Ast „Ich bin im Zug“ ist keine senkrechte Kette, aber eine Frage fürs nächste Interview.',
     },
     ueberleitung: 'Wo ihr das baut: euer Baum auf Miro.',
   },
