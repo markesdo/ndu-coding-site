@@ -60,24 +60,26 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   warum: {
     live: [
-      'Aufdecken, dann eure drei Nummern in der Sortierung zeigen.',
+      'Aufdecken, Sätze vorlesen.',
+      'Bei jedem Schritt: Wessen Nummer? Welcher Grund – leicht, häufig, groß?',
       'Fragen: Stehen eure drei Chancen auf derselben Ebene?',
       '„Eine Liste mischt Großes, Kleines und Verwandtes.“',
       'Falle: 4, 6, 8, 10 einsortieren – Torres tut es nicht.',
     ],
     verstaendnis: {
       frage: 'Warum lassen sich „Ich finde nichts zum Schauen“ und „Mir sind die Folgen ausgegangen“ schlecht gegeneinander priorisieren?',
-      antwort: 'Das zweite ist ein Grund – aber nicht der einzige – für das erste. Sie sind nicht unterscheidbar, sondern übergeordnete Chance und Teilchance (S. 82).',
+      antwort: 'Das zweite ist ein Grund – aber nicht der einzige – für das erste. Sie stehen nicht nebeneinander („not distinct“), sondern als übergeordnete Chance und Teilchance (S. 82–83).',
       falsch: '„Weil beide gleich wichtig sind“ – es geht um ihre Beziehung, nicht um ihre Wichtigkeit.',
     },
     ablauf: {
       schritte: [
-        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Platz; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten.',
-        'Schritt für Schritt aufdecken: 1 mit 2, 3 und 5; dann 7 und 12 unter „unterwegs schauen“; dann 9 und 11. Bei jedem Schritt: Wessen Nummer steht hier?',
+        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Platz; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten. Eure Nummern leuchten in der Sortierung auf (Nummer am Satzanfang; doppelt gewählt: ×2).',
+        'Schritt für Schritt aufdecken: 1 mit 2, 3 und 5; dann 7 und 12 unter „unterwegs schauen“; dann 9 und 11 nebeneinander; zuletzt 4 · 6 · 8 · 10. Bei jedem Schritt: Wessen Nummer steht hier – und was war euer Grund (leicht, häufig, groß)?',
         'Fragen, ob eure drei Chancen auf derselben Ebene stehen, dann den letzten Satz aufdecken.',
       ],
       achten: [
         'Nur sortieren, was Torres sortiert: 10 und 11 nicht unter 9 hängen – ihre Teilchancen von 9 sind anders formuliert (S. 84–85). 4, 6, 8 und 10 bleiben offen.',
+        'Wer 4, 6, 8 oder 10 gewählt hat: „Die sortiert Torres nicht – woran würdest du erkennen, wozu sie gehört?“ (Kursfrage, nicht einsortieren).',
       ],
       aufloesung: 'Meist nicht: 1 ist übergeordnet, 2, 3 und 5 sind Teilchancen davon, 7 und 12 Geschwister. Ihr habt Verschiedenartiges verglichen. Torres: „It’s hard to answer these questions when prioritizing opportunities of different shapes and sizes against each other“ (S. 82).',
     },

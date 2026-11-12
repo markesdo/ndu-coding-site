@@ -69,28 +69,32 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <p class="folie-satz">Dieselben zwölf, sortiert: Was habt ihr verglichen?</p>
     <Aufloesung ab={RUNDEN.zwoelf.ab} gruppe={RUNDEN.zwoelf.kennung}>
       <Antwortrunde runde="zwoelf" ansicht="antworten" />
-      <div class="mini-baeume">
-        <div class="mini-baum" data-schritt>
-          <p class="mini-eltern"><b>1</b> Ich finde nichts zum Schauen.</p>
-          <ul>
-            <li><b>2</b> Folgen ausgegangen</li>
-            <li><b>3</b> Suche nach einer Serie</li>
-            <li><b>5</b> Serie nicht mehr da</li>
-          </ul>
-          <p class="mini-text">je ein Grund dafür – nicht der einzige</p>
+      <div class="mini-gewaehlt" data-gewaehlt="zwoelf">
+        <div class="mini-baeume">
+          <div class="mini-baum" data-schritt>
+            <p class="mini-eltern"><b>1</b> Ich finde nichts zum Schauen.</p>
+            <ul>
+              <li><b>2</b> Folgen ausgegangen</li>
+              <li><b>3</b> Suche nach einer Serie</li>
+              <li><b>5</b> Serie nicht mehr da</li>
+            </ul>
+            <p class="mini-text">je ein Grund dafür – nicht der einzige</p>
+          </div>
+          <div class="mini-baum" data-schritt>
+            <p class="mini-eltern"><b class="plus">+</b> unterwegs schauen <span class="muted">(ergänzt)</span></p>
+            <ul>
+              <li><b>7</b> im Flugzeug</li>
+              <li><b>12</b> auf der Zugfahrt</li>
+            </ul>
+            <p class="mini-text">ähnlich, nicht gleich</p>
+          </div>
+          <div class="mini-baum mini-flach" data-schritt>
+            <p><b>9</b> Ist diese Serie gut? <span class="muted">groß, schwer</span></p>
+            <p><b>11</b> Wer ist dieser Schauspieler? <span class="muted">leicht</span></p>
+            <p class="mini-text">Immer das Leichte zuerst?</p>
+          </div>
         </div>
-        <div class="mini-baum" data-schritt>
-          <p class="mini-eltern"><span class="muted">ergänzt:</span> Ich will meine Serien unterwegs schauen.</p>
-          <ul>
-            <li><b>7</b> im Flugzeug</li>
-            <li><b>12</b> auf der Zugfahrt</li>
-          </ul>
-          <p class="mini-text">ähnlich, nicht gleich</p>
-        </div>
-      </div>
-      <div data-schritt>
-        <p class="mini-gross"><b>9</b> Ist diese Serie gut? – groß. <b>11</b> Wer ist dieser Schauspieler? – leicht. <strong>Immer das Leichte zuerst?</strong></p>
-        <p class="small muted">4 · 6 · 8 · 10: bei Torres nicht einsortiert.</p>
+        <p class="small muted mini-rest" data-schritt><b>4</b> · <b>6</b> · <b>8</b> · <b>10</b>: sortiert Torres nicht.</p>
       </div>
       <p class="breit" data-schritt><strong>Eine Liste mischt Großes, Kleines und Verwandtes – erst der Baum macht es vergleichbar.</strong></p>
       <p class="small muted">{TORRES}, S. 81–85.</p>
@@ -333,18 +337,26 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .zwoelf li { break-inside: avoid; margin-bottom: .15rem; }
   /* „warum“: zwei Mini-Bäume nach Torres (S. 82–84), nebeneinander; die Nummern verweisen auf die Liste der Folie davor. */
   .mini-baeume { display: grid; gap: .4rem 1.5rem; margin: .3rem 0; }
-  @media (min-width: 900px) { .mini-baeume { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .mini-baeume { grid-template-columns: 1fr 1fr 1fr; } }
   .mini-baum p { margin: 0; }
   .mini-baum ul { list-style: none; margin: .2rem 0 .2rem 1.2rem; padding-left: .8rem; border-left: 2px solid var(--border); }
   .mini-baum li { margin: 0; line-height: 1.35; }
   .mini-baum b { display: inline-block; min-width: 1.4em; }
-  .mini-baum b, .mini-gross b { color: var(--accent); }
+  .mini-baum b, .mini-rest b { color: var(--accent); }
+  .mini-baum b.plus { color: var(--muted); }
+  .mini-flach p + p { margin-top: .1rem; }
+  .mini-rest { margin: .3rem 0 0; }
+  .mini-rest b { font-weight: 700; }
+  /* Gewählte Nummern (lib/gewaehlt.ts, nach dem Aufdecken): gefüllter Chip; „×2“ kommt per Skript dazu. */
+  .mini-gewaehlt b.gewaehlt { background: var(--accent); color: var(--on-accent); border-radius: 4px; text-align: center; padding: 0 .15em; }
+  .mini-rest b.gewaehlt { display: inline-block; min-width: 1.4em; }
+  .mini-gewaehlt :global(.gewaehlt-anzahl) { font-size: .75em; font-weight: 700; color: var(--accent); margin: 0 .25em 0 .1em; }
   /* Volle Breite statt 36em (global.css, Zeilenlänge), damit „zwoelf“ und „warum“ bei 720p passen: je ein Selektor für den
      Absatz direkt in der Folie und für den in der Auflösung, jeweils um html spezifischer als die globale Regel. */
   :global(html .content > .inner > .folie) > p.breit, :global(html [data-aufloesung-inhalt]) > p.breit { max-width: none; }
-  .mini-text { font-size: .85rem; color: var(--muted); font-style: italic; }
-  .mini-gross { margin: .3rem 0 0; }
-  .mini-gross + p { margin-top: 0; }
+  /* Notiz unter den Teilchancen: eingerückt wie die Liste (1.2rem + .8rem); im flachen Block 9/11 ohne Einzug. */
+  .mini-text { font-size: .85rem; color: var(--muted); margin-left: 2rem; }
+  .mini-flach .mini-text { margin-left: 0; margin-top: .2rem; }
   .drei-fragen { width: 100%; border-collapse: collapse; margin: .5rem 0; font-size: .9rem; line-height: 1.3; }
   .drei-fragen th, .drei-fragen td { padding: .3rem .45rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
   .drei-fragen td:first-child { width: 40%; }

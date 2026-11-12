@@ -9,7 +9,8 @@
 // nur noch alle 30 s (öffnet „Runde leeren“ die Runde wieder, kommt die Eingabe zurück). Fällt die API aus (503, Netz), steht „Antwort bitte laut sagen.“ da – reihum laut bleibt der Rückfall.
 // Ein Platz pro Rolle (api/antworten.ts): Wer abschickt, überschreibt die Antwort seiner Rolle. Die eigene Antwort merkt
 // sich der Browser nur zum Vorausfüllen. „Runde leeren“: nur Präsentator, nicht im Beamer.
-// Texte immer als textContent, nie als HTML.
+// Texte immer als textContent, nie als HTML. Nach dem Aufdecken markiert die Ansicht „antworten“ die Nummern am Satzanfang in
+// jedem Bereich [data-gewaehlt=<runde>] der Seite (lib/gewaehlt.ts; „zwoelf“ auf der Folie „warum“).
 import { MAX_TEXT, RUNDEN, eingabeTexte } from '../lib/antworten';
 const { runde, ansicht } = Astro.props as { runde: string; ansicht: 'eingabe' | 'antworten' };
 const r = RUNDEN[runde];
@@ -58,6 +59,7 @@ const texte = eingabeTexte(r);
   import { PRAESENTATOR_SCHLUESSEL } from '../lib/beamer';
   import { AUFGEDECKT_GEMELDET } from '../lib/aufgedeckt';
   import { hinweis } from './hinweis';
+  import { gewaehltMarkieren, gewaehltZaehlen } from '../lib/gewaehlt';
 
   const lesen = (k: string): string | null => {
     try { return localStorage.getItem(k); } catch { try { return sessionStorage.getItem(k); } catch { return null; } }
@@ -177,6 +179,7 @@ const texte = eingabeTexte(r);
         return;
       }
       if (!liste) return;
+      gewaehltMarkieren(document, runde, gewaehltZaehlen(frei ? (s.antworten ?? []).map((x) => x.text) : []));
       if (!frei) { liste.replaceChildren(); status.textContent = `${statusText(s.anzahl, erwartet)} Die Sätze erscheinen nach dem Aufdecken.`; return; }
       const gruppen = antwortenGruppieren(rollen, s.antworten ?? []);
       liste.replaceChildren(...gruppen.map((g) => {
@@ -186,7 +189,7 @@ const texte = eingabeTexte(r);
         li.append(b, g.texte.map((t) => `„${t}“`).join(' · '));
         return li;
       }));
-      status.textContent = gruppen.length ? '' : 'Keine Sätze über die Seite – dann reihum laut.';
+      status.textContent = gruppen.length ? '' : 'Noch keine Sätze auf der Seite – sagt sie reihum laut.';
     };
     const a = abfrage(runde);
     const block: Block = { el: box, sichtbar: false, zeigen, fehler: () => { rueckfall.hidden = false; } };
