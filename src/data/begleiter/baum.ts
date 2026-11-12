@@ -216,7 +216,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     kern: [
       {
         text: 'Gegenüberstellung des Kurses: Map gruppiert Knoten nach demselben Moment über alle Geschichten; Baum gruppiert Chancen innerhalb eines Astes nach demselben Bedürfnis oder als Geschwister unter einer übergeordneten Chance.',
-        quelle: `${TORRES}, S. 56, 87, 89–90; Gegenüberstellung: Kurs`,
+        quelle: `${TORRES}, S. 56, 83, 86–90; Gegenüberstellung: Kurs`,
       },
     ],
     ueberleitung: 'Jetzt Ast für Ast: Geschwister finden, übergeordnete Chance ergänzen.',
