@@ -167,11 +167,11 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Erst nach der letzten Zeile aufdecken.',
       'Fragen: Was steckt hinter „per App vorbestellen“?',
       '„Nur bei einer Person? In den Streifen – kann wiederkommen.“',
-      '„Mehrmals“: dasselbe Bedürfnis im zweiten Interview – auch als Zitat.',
+      'Mehrmals: dasselbe Bedürfnis im zweiten Interview, auch anders formuliert.',
     ],
     verstaendnis: {
       frage: '„Wenn der erste Schluck passt, ist der Morgen gerettet“ klingt wichtig. Warum kommt es nicht in den Baum?',
-      antwort: 'Nur I1 hat es erzählt (I1-4); die zweite Frage, in mehr als einem Interview gehört, ist ein Nein. Es bleibt auf dem Snapshot – oft taucht so etwas später bei anderen wieder auf (S. 70, 88).',
+      antwort: 'Nur I1 hat es erzählt (I1-4); die zweite Frage, in mehr als einem Interview gehört, ist ein Nein. Es kommt in den Streifen „Nur in einem Interview“ (bei Torres: bleibt auf dem Snapshot) – oft taucht so etwas später bei anderen wieder auf (S. 70, 88).',
       falsch: '„Weil es den Outcome nicht treibt“ – darüber entscheidet erst Frage 3, und die stellt sich hier nicht mehr.',
     },
     ablauf: {
@@ -179,7 +179,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Pro Zeile die drei Fragen in die Runde stellen, Antworten laut sammeln.',
         'Nach der letzten Zeile den Schritt aufdecken: Dann erscheinen alle Antworten.',
       ],
-      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, verpasse ich den Zug“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): in den Streifen ‚Nur in einem Interview‘ (bei Torres: bleiben auf dem Snapshot).',
+      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, verpasse ich den Zug“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): in den Streifen „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
     },
     kern: [
       {
