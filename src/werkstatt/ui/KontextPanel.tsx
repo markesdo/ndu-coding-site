@@ -1,5 +1,5 @@
 // Kontext im Zeigen-Modus (Zeigen.tsx, Taste K): Annahmen-Map und Interviewleitfaden der Person neben dem Snapshot,
-// damit die Gruppe Frage 2 („Welche Annahme bekommt einen Beleg?“) und 3/4 („Welche Fragen haben funktioniert, was
+// damit die Gruppe Frage 2 („Welche Annahme wird gestützt, welche wackelt?“) und 3/4 („Welche Fragen haben funktioniert, was
 // haben wir überhört?“) am selben Bildschirm beantwortet. Liegt außerhalb des Snapshots (Torres’ Vorlage bleibt, wie
 // sie ist). Bekommt nur die geprüften Daten der Person (kontext-hilfen.ts): kein Feedback, keine Lücken, keine Zahlen,
 // keine Warnungen. Nur Text, nie HTML oder rohe Dateien aus der Mappe.

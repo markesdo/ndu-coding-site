@@ -181,7 +181,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     live: [
       '„Die vier Fragen sind euer Raster für jede Runde.“',
       'Fragen: Was davon kennt ihr aus Need Finding, was ist neu?',
-      'Was ändert sich: Beleg sofort in die Annahmen-Map.',
+      'Was ändert sich: gestützt, wackelt oder noch offen? Mit Zitat-ID notieren.',
       'Falle: nur Inhalt, keine Meta-Ebene – Frage 3 und 4 einfordern.',
       'Im Zeigen-Modus K drücken: Kontext mit Annahmen und Leitfaden der Person.',
     ],
