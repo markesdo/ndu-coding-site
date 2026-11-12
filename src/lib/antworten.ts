@@ -1,7 +1,7 @@
 // Antwortrunde: Studierende schicken einen Satz über die Seite (api/antworten.ts; Rückfall: reihum laut). Bis zum Aufdecken
 // zeigt die Seite nur, welche Rollen geantwortet haben; die Texte gibt der Server erst heraus, wenn die Auflösung der Runde
 // für alle offen ist – dieselbe Kennung wie <Aufloesung gruppe=…> (lib/aufgedeckt.ts), also ein Klick des Präsentators für
-// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (je drei; „rueckblick“ hat neutrale Plätze statt Rollen) – wer abschickt, überschreibt
+// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (je drei; „zwoelf“ und „rueckblick“ haben neutrale Plätze statt Rollen) – wer abschickt, überschreibt
 // den Platz seiner Rolle. Keine Client-ids, kein Index, keine Listen: Die Zahl der Schlüssel ist fest, der Text begrenzt.
 // Hier ohne DOM und ohne Vercel, damit testbar. .js-Endungen: api/antworten.ts lädt das per Node-ESM.
 import { wienerZeit } from '../components/jetzt.js';
@@ -61,24 +61,40 @@ export function eingabeTexte(runde: Runde): EingabeTexte {
   return { ...EINGABE_STANDARD, ...runde.eingabe };
 }
 
-/** Die drei Rollen aus Torres' Netflix-Beispiel (S. 75); Tag 2 nutzt sie für beide Runden. */
+/** Die drei Rollen aus Torres' Netflix-Beispiel (S. 75); nur die Netflix-Runde nutzt sie. */
 const DREI_ROLLEN: readonly Rolle[] = [
   { id: 'produktmanagement', label: 'Produktmanagement' },
   { id: 'design', label: 'Design' },
   { id: 'entwicklung', label: 'Entwicklung' },
 ];
 
+/** Drei neutrale Plätze statt Rollen („zwoelf“, „rueckblick“): Wer welchen Platz nimmt, bedeutet nichts. */
+const DREI_PLAETZE: readonly Rolle[] = [
+  { id: 'p1', label: 'Platz 1' },
+  { id: 'p2', label: 'Platz 2' },
+  { id: 'p3', label: 'Platz 3' },
+];
+
+/** Wie die Wahl bei neutralen Plätzen heißt – ohne „Rolle“. */
+const PLATZ_WAHL = {
+  wahl: 'Dein Platz',
+  wahlFehlt: 'Bitte zuerst einen Platz wählen.',
+  wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
+  wahlFest: 'du hast {label} – ändern kannst du deine Antwort, nicht den Platz.',
+} as const;
+
 /** Erlaubte Runden – nur was hier steht, nimmt der Server an. Weitere Übungen hier eintragen. */
 export const RUNDEN: Readonly<Record<string, Runde>> = {
   /** Tag 2, Synthese: Was hört eure Rolle in der Netflix-Geschichte? */
   netflix: { kennung: 'netflix', ab: NACH_NETFLIX, rollen: DREI_ROLLEN },
-  /** Tag 2, Baum: Welche der zwölf Chancen zuerst? Nummer und ein Satz, aufgedeckt auf „warum“. */
+  /** Tag 2, Baum: Welche der zwölf Chancen zuerst? Nummer und ein Satz, aufgedeckt auf „warum“. Drei neutrale Plätze. */
   zwoelf: {
-    kennung: 'zwoelf', ab: NACH_ZWOELF, rollen: DREI_ROLLEN,
+    kennung: 'zwoelf', ab: NACH_ZWOELF, rollen: DREI_PLAETZE,
     eingabe: {
-      label: 'Nummer und ein Satz aus deiner Rolle',
-      hinweis: 'erst deine Rolle wählen, dann Nummer und Satz abschicken.',
+      label: 'Nummer und ein Satz: welche zuerst und warum',
+      hinweis: 'erst einen Platz wählen, dann Nummer und Satz abschicken.',
       platzhalter: 'z. B. 3 – weil …',
+      ...PLATZ_WAHL,
     },
   },
   /** Tag 2, Abschluss: Rückblick auf den Kurs als Produkt – ein Satz „Hoch:“/„Tief:“ zum stärksten Moment des Tages.
@@ -86,19 +102,12 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
    *  Kurstag wiederkommen, reicht ein neues ab: Die Plätze hängen schon am Wiener Kurstag (platzSchluessel). */
   rueckblick: {
     kennung: 'rueckblick', ab: NACH_RUECKBLICK_TAG_2,
-    rollen: [
-      { id: 'p1', label: 'Platz 1' },
-      { id: 'p2', label: 'Platz 2' },
-      { id: 'p3', label: 'Platz 3' },
-    ],
+    rollen: DREI_PLAETZE,
     eingabe: {
       label: 'Ein Satz, beginnt mit ‚Hoch:‘ oder ‚Tief:‘',
       hinweis: 'erst einen Platz wählen, dann deinen Satz abschicken.',
       platzhalter: 'Tief: … – ich habe gerade …',
-      wahl: 'Dein Platz',
-      wahlFehlt: 'Bitte zuerst einen Platz wählen.',
-      wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
-      wahlFest: 'du hast {label} – ändern kannst du deine Antwort, nicht den Platz.',
+      ...PLATZ_WAHL,
       aufgedeckt: 'Aufgedeckt – eure Sätze stehen darunter.',
     },
   },

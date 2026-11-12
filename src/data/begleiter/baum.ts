@@ -30,8 +30,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   zwoelf: {
     live: [
       'Liste nicht erklären, alle lesen still.',
-      'Rollen wie bei Netflix; alle antworten auf der eigenen Seite.',
-      'Timer 2 min: Nummer und Satz, aus der Rolle.',
+      'Freien Platz wählen (ohne Bedeutung); alle antworten auf der eigenen Seite.',
+      'Timer 2 min: Nummer und Satz – welche zuerst und warum.',
       'Noch nicht aufdecken – erst alle drei abgeschickt.',
       'Falle: eine richtige Antwort andeuten – es gibt keine.',
       'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
@@ -40,13 +40,13 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Folie zeigen, die Liste still lesen lassen.',
-        'Alle öffnen die Folie auf dem eigenen Gerät und wählen ihre Rolle wie bei Netflix (Produktmanagement, Design, Entwicklung). Timer 2 min: Jede*r tippt die Nummer der Chance, die sie oder er zuerst angehen würde, und einen Satz, warum – aus der eigenen Rolle – und schickt ab. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
+        'Alle öffnen die Folie auf dem eigenen Gerät und wählen einen freien Platz (Platz 1–3, ohne Bedeutung). Timer 2 min: Jede*r tippt die Nummer der Chance, die sie oder er zuerst angehen würde, und einen Satz, warum, und schickt ab. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
         'Erst wenn alle drei abgeschickt haben, zur nächsten Folie: Dort deckst du alle drei gleichzeitig auf. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r Nummer und Satz laut.',
       ],
       achten: [
         'Wer „Wer ist dieser Schauspieler?“ nimmt, weil leicht: genau die Frage, die Torres stellt – immer das Leichte vor dem Schweren?',
         'Nicht werten und nicht nachfragen, bevor aufgedeckt ist – sonst passen die anderen ihre Antwort an.',
-        'Pro Rolle ein Platz wie bei Netflix; Testantworten: auf der Seite ohne Beamer „Runde leeren“.',
+        'Drei Plätze, je einer pro Person; Testantworten: auf der Seite ohne Beamer „Runde leeren“.',
       ],
     },
     kern: [
@@ -72,7 +72,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Rolle; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten.',
+        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Platz; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten.',
         'Schritt für Schritt aufdecken: 1 mit 2, 3 und 5; dann 7 und 12 unter „unterwegs schauen“; dann 9 und 11. Bei jedem Schritt: Wessen Nummer steht hier?',
         'Fragen, ob eure drei Chancen auf derselben Ebene stehen, dann den letzten Satz aufdecken.',
       ],
