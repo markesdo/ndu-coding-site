@@ -1,7 +1,8 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Chance } from '../../schemas/index.js';
 import BelegAuswahl from './BelegAuswahl';
+import IdZeile, { ANSAGE_MS, ANZEIGE_MS, IdZeileAnsicht, kopierAblauf } from './IdKopieren';
 import { ChanceZeile, EinsichtZeile, Vorschau } from './InterviewsEditor';
 import { neuesInterview } from './interviews-hilfen';
 
@@ -234,5 +235,116 @@ describe('EinsichtZeile', () => {
     expect(html).toContain('rows="2"');
     expect(html).not.toContain('type="text"');
     expect(html).toContain(satz);
+  });
+});
+
+describe('ID-Zeile: Zitat-ID kopieren', () => {
+  afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); });
+  const knopf = (h: string) => /<button[^>]*class="wk-id-kopieren"[^>]*>/.exec(h)?.[0] ?? '';
+  const ansicht = (ergebnis: 'kopiert' | 'markiert' | null, plattform = 'MacIntel') =>
+    renderToStaticMarkup(<IdZeileAnsicht art="Zitat" id="I1-1" ergebnis={ergebnis} plattform={plattform} onKopieren={() => {}} />);
+  const mitZwischenablage = (writeText: () => Promise<void>) => vi.stubGlobal('navigator', { clipboard: { writeText } });
+
+  it('Knopf neben der ID: type="button", deutscher Name mit der ID, Ansage-Bereich leer', () => {
+    const h = renderToStaticMarkup(<IdZeile art="Zitat" id="I1-1" />);
+    expect(h).toContain('ID: <strong>I1-1</strong>');
+    expect(knopf(h)).toContain('type="button"');
+    expect(knopf(h)).toContain('aria-label="Zitat-ID I1-1 kopieren"');
+    expect(h).toMatch(/<svg[^>]*lucide-copy[^>]*aria-hidden="true"/);
+    expect(h).toContain('<span class="wk-id-meldung" aria-live="polite"></span>');
+  });
+
+  it('Interview-ID: eigener Name', () => {
+    expect(knopf(renderToStaticMarkup(<IdZeile art="Interview" id="I1" />))).toContain('aria-label="Interview-ID I1 kopieren"');
+  });
+
+  it('kopiert: Häkchen, „Kopiert“ in Grün-Klasse', () => {
+    const h = ansicht('kopiert');
+    expect(h).toMatch(/<svg[^>]*lucide-check[^>]*>/);
+    expect(h).not.toMatch(/lucide-copy/);
+    expect(h).toContain('<span class="wk-id-meldung wk-id-kopiert" aria-live="polite">Kopiert</span>');
+  });
+
+  it('nur markiert: Kopier-Symbol bleibt, Meldung mit Tastenkürzel, nicht grün', () => {
+    const h = ansicht('markiert');
+    expect(h).toMatch(/lucide-copy/);
+    expect(h).not.toMatch(/lucide-check/);
+    expect(h).toContain('<span class="wk-id-meldung wk-id-markiert" aria-live="polite">Markiert – mit ⌘C kopieren</span>');
+    expect(ansicht('markiert', 'Win32')).toContain('>Markiert – mit Strg+C kopieren</span>');
+  });
+
+  it('Anzeigedauer: „Kopiert“ 1,5 s, „Markiert“ 4 s', () => {
+    expect(ANZEIGE_MS).toStrictEqual({ kopiert: 1500, markiert: 4000 });
+  });
+
+  it('Ablauf: kopiert genau die ID, Ansage erst leer, dann „kopiert“, nach 1,5 s wieder leer', async () => {
+    vi.useFakeTimers();
+    const writeText = vi.fn(async () => {});
+    mitZwischenablage(writeText);
+    const gesetzt: (string | null)[] = [];
+    await kopierAblauf((e) => gesetzt.push(e), () => true).kopieren('I1-1', null);
+    expect(writeText).toHaveBeenCalledTimes(1);
+    expect(writeText).toHaveBeenCalledWith('I1-1');
+    expect(gesetzt).toStrictEqual([null]);
+    vi.advanceTimersByTime(ANSAGE_MS);
+    expect(gesetzt).toStrictEqual([null, 'kopiert']);
+    vi.advanceTimersByTime(ANZEIGE_MS.kopiert - 1);
+    expect(gesetzt).toStrictEqual([null, 'kopiert']);
+    vi.advanceTimersByTime(1);
+    expect(gesetzt).toStrictEqual([null, 'kopiert', null]);
+  });
+
+  it('Ablauf: Zwischenablage verweigert oder fehlt → „markiert“, 4 s sichtbar', async () => {
+    vi.useFakeTimers();
+    for (const nav of [{ clipboard: { writeText: async () => { throw new Error('NotAllowedError'); } } }, {}]) {
+      vi.stubGlobal('navigator', nav);
+      const gesetzt: (string | null)[] = [];
+      await kopierAblauf((e) => gesetzt.push(e), () => true).kopieren('I1-1', null);
+      vi.advanceTimersByTime(ANSAGE_MS + ANZEIGE_MS.markiert - 1);
+      expect(gesetzt).toStrictEqual([null, 'markiert']);
+      vi.advanceTimersByTime(1);
+      expect(gesetzt).toStrictEqual([null, 'markiert', null]);
+    }
+  });
+
+  it('zweites Kopieren während der Anzeige: Ansage wird geleert und neu gesetzt, alte Frist zählt nicht', async () => {
+    vi.useFakeTimers();
+    mitZwischenablage(async () => {});
+    const gesetzt: (string | null)[] = [];
+    const a = kopierAblauf((e) => gesetzt.push(e), () => true);
+    await a.kopieren('I1-1', null);
+    vi.advanceTimersByTime(ANSAGE_MS + 1000);
+    await a.kopieren('I1-1', null);
+    expect(gesetzt).toStrictEqual([null, 'kopiert', null]);
+    vi.advanceTimersByTime(ANSAGE_MS);
+    expect(gesetzt).toStrictEqual([null, 'kopiert', null, 'kopiert']);
+    vi.advanceTimersByTime(ANZEIGE_MS.kopiert - 1);
+    expect(gesetzt).toStrictEqual([null, 'kopiert', null, 'kopiert']);
+  });
+
+  it('Zeile gelöscht, bevor die Zwischenablage antwortet: nichts wird mehr gesetzt, kein Timer', async () => {
+    vi.useFakeTimers();
+    let freigeben!: () => void;
+    mitZwischenablage(() => new Promise<void>((r) => { freigeben = r; }));
+    let steht = true;
+    const gesetzt: (string | null)[] = [];
+    const lauf = kopierAblauf((e) => gesetzt.push(e), () => steht).kopieren('I1-1', null);
+    steht = false;
+    freigeben();
+    await lauf;
+    expect(vi.getTimerCount()).toBe(0);
+    expect(gesetzt).toStrictEqual([]);
+  });
+
+  it('Zeile gelöscht während der Anzeige: stopp räumt die Timer ab', async () => {
+    vi.useFakeTimers();
+    mitZwischenablage(async () => {});
+    const gesetzt: (string | null)[] = [];
+    const a = kopierAblauf((e) => gesetzt.push(e), () => true);
+    await a.kopieren('I1-1', null);
+    a.stopp();
+    expect(vi.getTimerCount()).toBe(0);
+    vi.advanceTimersByTime(10_000);
+    expect(gesetzt).toStrictEqual([null]);
   });
 });

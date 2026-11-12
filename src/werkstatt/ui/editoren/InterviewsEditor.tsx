@@ -11,6 +11,7 @@ import EditorHuelle from '../EditorHuelle.js';
 import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
 import BelegAuswahl from './BelegAuswahl.js';
+import IdZeile from './IdKopieren.js';
 import { belegFehlt, belegHilfe, belegHinweis, naechstesZitat, neueChance, neuesInterview, type InterviewEntwurf } from './interviews-hilfen.js';
 import './editoren.css';
 
@@ -100,7 +101,7 @@ export default function InterviewsEditor() {
                 const f = (pfad: string) => fehler(`interviews.${i}.${pfad}`);
                 return (
                   <>
-                    <p className="wk-hilfe">ID: <strong>{iv.id}</strong></p>
+                    <IdZeile art="Interview" id={iv.id} />
                     {f('id') && <p className="wk-fehler">{f('id')}</p>}
                     <Textfeld label="Pseudonym" wert={iv.pseudonym} onChange={(pseudonym) => s({ ...iv, pseudonym })} fehler={f('pseudonym')} hinweis={namenHinweis(iv.pseudonym)} hilfe="Etwas, das dich an die Person erinnert, zum Beispiel „Pendlerin, Zug 7:42“ – kein Name." />
                     <Textfeld label="Datum" wert={iv.datum} onChange={(datum) => s({ ...iv, datum })} fehler={f('datum')} hilfe="JJJJ-MM-TT, zum Beispiel 2026-10-23." />
@@ -115,7 +116,7 @@ export default function InterviewsEditor() {
                       fehler={f('zitate')}
                       zeile={(z, sz, j) => (
                         <>
-                          <p className="wk-hilfe">ID: <strong>{z.id}</strong></p>
+                          <IdZeile art="Zitat" id={z.id} />
                           <Textfeld label={`Zitat ${j + 1}`} mehrzeilig zeilen={2} wert={z.text} onChange={(text) => sz({ ...z, text })} fehler={f(`zitate.${j}.text`) ?? f(`zitate.${j}.id`)} hinweis={namenHinweis(z.text)} />
                         </>
                       )}
