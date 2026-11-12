@@ -319,9 +319,24 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         quelle: `${MOMTEST}, S. 89`,
       },
     ],
-    ueberleitung: 'Drei Runden sind durch – jetzt haltet ihr fest, was sich für euch ändert.',
+    ueberleitung: 'Drei Runden sind durch – vorher kurz: euer zweites Feedback, diesmal zu den Snapshots.',
   },
 
+  'feedback-snapshots': {
+    live: [
+      'Ansage: zweites Feedback liegt bei „Interviews und Snapshots“.',
+      'Mappe neu laden, Zeile Interviews und Snapshots: „1 neu“.',
+      'Am Ende jedes Feedbacks steht eine Frage – direkt dort antworten.',
+      'Wer das Leitfaden-Feedback noch nicht geöffnet hat: dort auch „1 neu“.',
+    ],
+    ablauf: {
+      schritte: [
+        '12.11.2026: Je ein zweites Feedback der Lehrenden an „Interviews und Snapshots“ (Sofie, Joachim, Hewen; Commit „Feedback von markesdo: Interviews und Snapshots“). Aufbau: Was gut ist, Fürs nächste Mal, eine Frage mit Zitat-ID.',
+        'In der Lehrendenansicht steht je Feedback „noch nicht geöffnet“ oder „geöffnet“.',
+      ],
+    },
+    ueberleitung: 'Jetzt haltet ihr fest, was sich für euch ändert.',
+  },
   festhalten: {
     live: [
       'Timer 3 min starten, alle arbeiten allein in der Werkstatt.',
