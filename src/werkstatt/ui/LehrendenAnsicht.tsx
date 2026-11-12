@@ -21,7 +21,7 @@ import {
 import { rueckkehrBeobachten } from './mappe-hilfen.js';
 import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews, zeigenPersonen, zeigenStartPerson } from './snapshot-hilfen.js';
 import Zeigen, { type ZeigenProps } from './Zeigen.js';
-import { fragenTaste } from './fragen-leiste.js';
+import { fokusInFragenWahl, fragenTaste } from './fragen-leiste.js';
 import { istKontextTaste, type KontextName } from './kontext-hilfen.js';
 import { useKontext } from './useKontext.js';
 import type { Interview } from '../schemas/index.js';
@@ -154,9 +154,9 @@ export default function LehrendenAnsicht() {
   // (die Runde geht Frage für Frage), erst ein neues „Zeigen“ fängt wieder bei Frage 1 an.
   const [frage, setFrage] = useState(0);
   const [fragenOffen, setFragenOffen] = useState(true);
-  // Beim Ausblenden Fokus zurück in den Zeigen-Bereich: Lag er auf einem der Knöpfe 1–4, fiele er sonst auf body.
+  // Beim Ausblenden Fokus zurück in den Zeigen-Bereich, nur wenn er auf einem der Knöpfe 1–4 lag (fokusInFragenWahl).
   function fragenUmschalten() {
-    if (fragenOffen) zeigenWurzel.current?.focus();
+    if (fragenOffen && fokusInFragenWahl(document.activeElement)) zeigenWurzel.current?.focus();
     setFragenOffen(!fragenOffen);
   }
 

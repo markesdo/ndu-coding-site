@@ -7,7 +7,7 @@
 import { ChevronLeft, ChevronRight, CloudOff, EyeOff, MessageCircleQuestion, PanelRight, RefreshCw, X } from 'lucide-react';
 import type { Ref } from 'react';
 import type { Interview } from '../schemas/index.js';
-import { FRAGEN, frageText } from './fragen-leiste.js';
+import { FRAGEN, frageStelle, frageText } from './fragen-leiste.js';
 import { kontextNeuIds, meldungMitKontext, type Kontext, type KontextName } from './kontext-hilfen.js';
 import KontextPanel from './KontextPanel.js';
 import { standText } from './lehrenden-hilfen.js';
@@ -121,12 +121,16 @@ export default function Zeigen(p: ZeigenProps) {
   );
 }
 
-// Eine Zeile unter Snapshot und Kontext. Der Knopf zum Aus- und Einblenden bleibt dasselbe Element (letztes Kind),
-// damit der Fokus beim Umschalten nicht auf body fällt (sonst kämen ←/→, Esc, K, 1–4 und F nicht mehr im Dialog an).
-function FragenLeiste({ frage, offen, waehlen, umschalten }: { frage: number; offen: boolean; waehlen: (nr: number) => void; umschalten: () => void }) {
+// Eine Zeile unter Snapshot und Kontext (eigener Bereich, kein <footer>: sonst eine zweite contentinfo-Landmarke).
+// Der Knopf zum Aus- und Einblenden bleibt dasselbe Element (letztes Kind), damit der Fokus beim Umschalten nicht auf
+// body fällt (sonst kämen ←/→, Esc, K, 1–4 und F nicht mehr im Dialog an); verschwinden beim Ausblenden die Knöpfe
+// 1–4 mit dem Fokus darauf, holt ihn fragenUmschalten (LehrendenAnsicht/DemoZeigen) zurück. Beides prüft nur der
+// Browser-Test werkzeuge/e2e/zeigen-fragen.mjs im Kursordner (das Projekt hat kein jsdom).
+function FragenLeiste({ frage: roh, offen, waehlen, umschalten }: { frage: number; offen: boolean; waehlen: (nr: number) => void; umschalten: () => void }) {
+  const frage = frageStelle(roh);
   const t = frageText(frage);
   return (
-    <footer className={offen ? 'zg-leiste' : 'zg-leiste zg-leiste-zu'} aria-label="Frage der Besprechung">
+    <div role="region" className={offen ? 'zg-leiste' : 'zg-leiste zg-leiste-zu'} aria-label="Frage der Besprechung">
       {offen && (
         <div className="zg-leiste-nr" role="group" aria-label="Frage wählen (Tasten 1 bis 4)">
           {FRAGEN.map((_, i) => (
@@ -143,6 +147,6 @@ function FragenLeiste({ frage, offen, waehlen, umschalten }: { frage: number; of
       >
         {offen ? <EyeOff size={18} aria-hidden="true" /> : <><MessageCircleQuestion size={18} aria-hidden="true" /> Fragen (F)</>}
       </button>
-    </footer>
+    </div>
   );
 }

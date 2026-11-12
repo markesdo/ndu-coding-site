@@ -9,7 +9,7 @@ import type { Interview } from '../schemas/index.js';
 import { api, ApiError } from './api.js';
 import { blaettern, neuMeldung, stelleNachId, tastenZiel, zeigbareInterviews } from './snapshot-hilfen.js';
 import Zeigen from './Zeigen.js';
-import { fragenTaste } from './fragen-leiste.js';
+import { fokusInFragenWahl, fragenTaste } from './fragen-leiste.js';
 import { istKontextTaste, type KontextName } from './kontext-hilfen.js';
 import { useKontext } from './useKontext.js';
 
@@ -31,9 +31,9 @@ export default function DemoZeigen({ person }: { person: string }) {
   const [kontextReiter, setKontextReiter] = useState<KontextName>('annahmen');
   const [frage, setFrage] = useState(0);
   const [fragenOffen, setFragenOffen] = useState(true);
-  // Beim Ausblenden Fokus zurück in den Zeigen-Bereich (Knöpfe 1–4 verschwinden), wie im Leser der Lehrenden.
+  // Beim Ausblenden Fokus zurück in den Zeigen-Bereich, nur wenn er auf einem der Knöpfe 1–4 lag (fokusInFragenWahl).
   function fragenUmschalten() {
-    if (fragenOffen) wurzel.current?.focus();
+    if (fragenOffen && fokusInFragenWahl(document.activeElement)) wurzel.current?.focus();
     setFragenOffen(!fragenOffen);
   }
   const kontext = useKontext(offen ? person : null, kontextOffen, String(neu), (name) => api.lesen(name));

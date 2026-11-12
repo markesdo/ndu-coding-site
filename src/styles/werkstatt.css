@@ -286,7 +286,7 @@
 .zg-fragen li.snap-neu, .zg-ziel.snap-neu { padding-left: .45em; }
 /* Fragen-Leiste (Zeigen.tsx, 1–4 und F): eine Zeile unten, unter Snapshot und Kontext. Eigene Zeile im Spaltenlayout
    von .zg (flex: none), die Fläche darüber wird kleiner und scrollt – nichts liegt über dem Inhalt. Grundschrift wie
-   der Snapshot; wird es schmal (Zoom 175 %, Handy), bricht die Frage um (höchstens drei Zeilen), statt abzuschneiden. */
+   der Snapshot; wird es schmal (Zoom 175 %, Handy), bricht die Frage ganz um (nie abgeschnitten, auch nicht „→ Wo“). */
 .zg-leiste { flex: none; display: flex; align-items: center; gap: .4rem .75rem; padding: .4em 1.25em; border-top: 1px solid var(--border); background: var(--bg); }
 .zg-leiste-nr { display: flex; flex: none; gap: .3rem; }
 .zg-leiste-knopf {
@@ -298,7 +298,6 @@
 .zg-leiste-knopf:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 .zg-leiste-text {
   flex: 1; min-width: 0; margin: 0; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; hyphens: manual;
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden;
 }
 .wk-wurzel .zg .zg-leiste-schalter { flex: none; margin-left: auto; }
 .zg-leiste-zu { padding-top: .2em; padding-bottom: .2em; }

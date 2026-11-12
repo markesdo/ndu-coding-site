@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import KAFFEEBAR from '../beispiele/interviews.json';
 import type { Interview } from '../schemas/index.js';
 import DemoZeigen from './DemoZeigen';
-import { FRAGEN, fragenTaste, frageText } from './fragen-leiste';
+import { FRAGEN, fokusInFragenWahl, frageStelle, fragenTaste, frageText } from './fragen-leiste';
 import { KONTEXT_LEER } from './kontext-hilfen';
 import { LeserKoerper } from './LehrendenAnsicht';
 import Zeigen, { type ZeigenProps } from './Zeigen';
@@ -20,8 +20,8 @@ const props = (x: Partial<ZeigenProps> = {}): ZeigenProps => ({
   personWaehlen: () => {}, nrWaehlen: () => {}, blaettern: () => {}, neuLaden: () => {}, beenden: () => {}, ...x,
 });
 const zeigen = (x: Partial<ZeigenProps> = {}) => renderToStaticMarkup(<Zeigen {...props(x)} />);
-/** Die Leiste: alles ab <footer class="zg-leiste"> bis </footer>; null, wenn es keine gibt. */
-const leiste = (h: string) => h.match(/<footer class="zg-leiste[^"]*"[^>]*>.*?<\/footer>/)?.[0] ?? null;
+/** Die Leiste (letztes Kind von .zg): ab <div role="region" class="zg-leiste…"> bis zum Ende; null, wenn es keine gibt. */
+const leiste = (h: string) => { const i = h.indexOf('<div role="region" class="zg-leiste'); return i < 0 ? null : h.slice(i); };
 const frageIn = (h: string) => text(h.match(/<p class="zg-leiste-text"[^>]*>(.*?)<\/p>/)?.[1] ?? '');
 
 const WORTLAUT = [
@@ -46,6 +46,20 @@ describe('Fragen der Besprechung', () => {
     expect(['1', '2', '3', '4'].map((key) => fragenTaste({ key }))).toStrictEqual([0, 1, 2, 3].map((nr) => ({ art: 'frage', nr })));
     expect(fragenTaste({ key: 'f' })).toStrictEqual({ art: 'umschalten' });
     expect(fragenTaste({ key: 'F' })).toStrictEqual({ art: 'umschalten' });
+  });
+
+  it('gehaltene Taste (repeat) zählt nicht: F flackert nicht, 1–4 auch nicht', () => {
+    expect(fragenTaste({ key: 'f', repeat: true })).toBeNull();
+    expect(fragenTaste({ key: 'F', repeat: true })).toBeNull();
+    expect(fragenTaste({ key: '3', repeat: true })).toBeNull();
+    expect(fragenTaste({ key: 'f', repeat: false })).toStrictEqual({ art: 'umschalten' });
+  });
+
+  it('Fokus beim Ausblenden: nur aus der Knopfgruppe 1–4 zurückholen', () => {
+    const el = (in1bis4: boolean) => ({ closest: (s: string) => (in1bis4 && s === '.zg-leiste-nr' ? {} : null) });
+    expect(fokusInFragenWahl(el(true))).toBe(true);
+    expect(fokusInFragenWahl(el(false))).toBe(false);
+    expect(fokusInFragenWahl(null)).toBe(false);
   });
 
   it('andere Tasten bleiben bei ihren Handlern: 0, 5, K, ←/→, Esc', () => {
@@ -99,10 +113,25 @@ describe('Fragen-Leiste im Zeigen-Modus', () => {
   it('unter Snapshot und Kontext, nicht darin (eigene Zeile unten)', () => {
     const h = zeigen({ kontextOffen: true });
     const flaeche = h.indexOf('class="zg-flaeche');
-    const fuss = h.indexOf('<footer class="zg-leiste');
+    const fuss = h.indexOf('<div role="region" class="zg-leiste');
     expect(flaeche).toBeGreaterThan(0);
     expect(fuss).toBeGreaterThan(h.indexOf('id="zg-kontext"'));
-    expect(h.endsWith('</footer></div>')).toBe(true);
+    expect(h.endsWith('</button></div></div>')).toBe(true);
+  });
+
+  it('eigener Bereich mit Namen, kein <footer> (keine zweite contentinfo-Landmarke)', () => {
+    const h = zeigen();
+    expect(h).not.toContain('<footer');
+    expect(leiste(h)).toMatch(/^<div role="region" class="zg-leiste" aria-label="Frage der Besprechung">/);
+  });
+
+  it('Stelle außerhalb 0–3: einmal begrenzt, Text und gedrückter Knopf passen zusammen', () => {
+    expect([-1, 0, 2, 3, 7, 2.6, Number.NaN].map(frageStelle)).toStrictEqual([0, 0, 2, 3, 3, 2, 0]);
+    for (const [frage, n] of [[7, 4], [-2, 1]] as const) {
+      const h = zeigen({ frage });
+      expect(frageIn(h)).toBe(WORTLAUT[n - 1]);
+      expect([...leiste(h)!.matchAll(/aria-pressed="true"[^>]*>(\d)</g)].map((m) => m[1])).toStrictEqual([String(n)]);
+    }
   });
 
   it('außerhalb von Zeigen keine Leiste: Leser ohne Zeigen und Demo zu', () => {

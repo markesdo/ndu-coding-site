@@ -100,7 +100,7 @@ export function meldungMitKontext(meldung: string, ids: readonly string[]): stri
   return [meldung, PRAEFIX + ids.join(', ')].filter(Boolean).join(' · ');
 }
 
-export type ZeigenTastenEreignis = { key: string; ctrlKey?: boolean; metaKey?: boolean; altKey?: boolean; target?: EventTarget | null };
+export type ZeigenTastenEreignis = { key: string; repeat?: boolean; ctrlKey?: boolean; metaKey?: boolean; altKey?: boolean; target?: EventTarget | null };
 
 /** Buchstaben- und Zifferntasten im Zeigen-Modus (K, F, 1–4): nicht beim Tippen in Feldern und nicht mit Strg/Cmd/Alt
  *  (Kurzbefehle des Browsers). */
