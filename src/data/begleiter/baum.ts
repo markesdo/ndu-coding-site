@@ -186,6 +186,14 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         text: 'Die drei Fragen: „Is this opportunity framed as a customer need, pain point, or desire and not a solution?“ – „Is this opportunity unique to this customer, or have we seen it in more than one interview?“ – „If we address this opportunity, will it drive our desired outcome?“',
         quelle: `${TORRES}, S. 88`,
       },
+      {
+        text: 'Der Streifen „Nur in einem Interview“ ist ein Ablagefeld unten in jedem Baum-Rahmen auf Miro. Dorthin kommt jede Chance, die nur eine Person erzählt hat – als Karte mit Zitat-ID, damit sie nicht verloren geht. Erzählt im nächsten Interview jemand dasselbe Bedürfnis, auch anders formuliert, wandert die Karte in den Baum, unter ihren Moment. Bei Torres bleiben solche Chancen einfach auf dem Snapshot; der Streifen macht sie im Baum sichtbar (Kursformat).',
+        quelle: `${TORRES}, S. 70, 88; Streifen: Kursformat`,
+      },
+      {
+        text: '„Lösung → Bedürfnis dahinter neu prüfen“ am Beispiel „Per App vorbestellen“: Erst die Probe „Is there more than one way to address this opportunity?“ – hier gibt es nur einen Weg, die App; also eine Lösung. Dann das Bedürfnis dahinter suchen („uncover the implied opportunity“): Wozu vorbestellen? „Ich will den Zug nicht verpassen.“ Dieses Bedürfnis geht neu durch die drei Fragen: Bedürfnis – ja; in mehr als einem Interview – ja, I2, I3 und I4 erzählen es; treibt den Outcome – ja. Es steht schon im Baum als „Wenn ich anstehe, verpasse ich meinen Zug.“ – also keine neue Karte, sondern zusammenlegen. Gegenprobe: Für das Bedürfnis gibt es mehrere Wege, etwa Vorbestellen, eine Wartezeit-Anzeige oder eine Express-Ausgabe (Beispiele der Kaffeebar).',
+        quelle: `${TORRES}, S. 88, 90, 94`,
+      },
     ],
     ueberleitung: 'Was durchkommt, wird jetzt geordnet: Ast für Ast.',
   },
