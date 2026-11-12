@@ -95,7 +95,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   geschichten: {
     live: [
-      'Vier Schritte zeigen, die Skizzen auf Papier sind der Rohstoff.',
+      'Vier Schritte zeigen; Rohstoff: die Skizzen auf den Karten in T1 · 5.',
       '„Welche Knoten tauchen in Geschichte um Geschichte auf? Das ist eure Map.“',
       'Falle: zu stark zusammenlegen; Wiederholungen, Abbrüche weglassen; Einzelfälle auf die Map.',
     ],

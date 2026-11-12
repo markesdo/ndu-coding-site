@@ -1,6 +1,6 @@
 // Interviews mit Snapshot (Hausaufgabe nach Tag 1): eine Datei für alle Gespräche einer Person.
 // Snapshot-Felder nach Teresa Torres, „Continuous Discovery Habits“ (2021), S. 67–70: Zitat, Kurzinfos, Einsichten,
-// Chancen. Die Skizze der Geschichte entsteht auf Papier und kommt an Tag 2 mit. Nur pseudonymisiert: Rohnotizen und Aufnahmen kommen nie hierher.
+// Chancen. Die Skizze der Geschichte entsteht auf Papier und kommt an Tag 2 auf die Snapshot-Karte auf Miro (T1 · 5), nicht hierher. Nur pseudonymisiert: Rohnotizen und Aufnahmen kommen nie hierher.
 import { z } from 'zod';
 import { leer, doppelteIds, isoDatum, schemaKennung, text, zeilenId } from './gemeinsam.js';
 

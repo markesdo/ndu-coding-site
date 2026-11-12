@@ -1,5 +1,5 @@
 // Editor für Interviews mit Snapshot (Teresa Torres, „Continuous Discovery Habits“, S. 67–70). Ein Eintrag pro
-// Interview; die Skizze der Geschichte entsteht auf Papier und kommt an Tag 2 mit. Nur pseudonymisiert – Rohnotizen gehören nicht hierher.
+// Interview; die Skizze der Geschichte entsteht auf Papier und kommt an Tag 2 auf die Snapshot-Karte auf Miro (T1 · 5). Nur pseudonymisiert – Rohnotizen gehören nicht hierher.
 // Das Formular folgt der Arbeitsreihenfolge (Zitate zuerst, weil Chancen auf ihre IDs verweisen); Vorschau und Markdown
 // behalten Torres’ Anordnung des Snapshots (S. 68).
 import { useId } from 'react';
@@ -87,7 +87,7 @@ export default function InterviewsEditor() {
         const setze = (neu: Entwurf) => setzeRoh(neu as unknown as Interviews);
         return (
           <>
-            <p className="wk-hilfe">Nur pseudonymisiert: keine Namen, Arbeitgeber oder Fotos. Rohnotizen und Aufnahmen bleiben bei dir. Die Skizze der Geschichte zeichnest du gleich nach dem Gespräch auf Papier und bringst sie an Tag 2 mit.</p>
+            <p className="wk-hilfe">Nur pseudonymisiert: keine Namen, Arbeitgeber oder Fotos. Rohnotizen und Aufnahmen bleiben bei dir. Die Skizze der Geschichte zeichnest du gleich nach dem Gespräch auf Papier; an Tag 2 kommt sie auf deine Snapshot-Karte auf Miro (T1 · 5).</p>
             <p className="wk-hilfe"><strong>Reihenfolge beim Ausfüllen:</strong> zuerst die Zitate (so entstehen die IDs), dann die Geschichte, Chancen mit Belegen und Einsichten – das einprägsame Zitat und die Kurzinfos zuletzt.</p>
             <Liste<InterviewEntwurf>
               label="Interviews"
