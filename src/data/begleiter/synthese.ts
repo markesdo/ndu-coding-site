@@ -229,12 +229,14 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   'noch-keine': {
     live: [
       'Zeit: 14:15 noch keine Interviews in der Werkstatt? Dann diese Folie.',
-      'Timer 35 min starten: Eintragen bis 14:50.',
+      'Timer 35 min starten.',
+      'Bis 14:50: Interviews eintragen, Skizze ins Feld auf T1 · 5.',
       '„Der Link öffnet euren Interviews-Editor direkt – speichern nicht vergessen.“',
-      'Wer schon Interviews hat: Pause bis 14:50, dann alle gemeinsam.',
+      '„Skizze: Foto hineinziehen oder mit Stickies und Pfeilen nachzeichnen.“',
+      'Wer beides schon hat: Pause bis 14:50, dann alle gemeinsam.',
       'Ab 14:50 Runden à 5 min: zeigen, Frage 2, schreiben.',
     ],
-    uebung: { dauer: 'bis 14:50 (35 min ab 14:15)', form: 'allein, jede*r in den eigenen Interviews' },
+    uebung: { dauer: 'bis 14:50 (35 min ab 14:15)', form: 'allein, jede*r in den eigenen Interviews und der eigenen Spalte auf T1 · 5' },
     ablauf: {
       schritte: [
         'Nur zeigen, wenn um 14:15 noch keine Interviews in der Werkstatt stehen (Frage auf verschwimmen). Ablauf und Ansagen der kurzen Runden: Begleiter vorgehen, Fallback 1.',
