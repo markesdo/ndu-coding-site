@@ -187,7 +187,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 88`,
       },
       {
-        text: 'Das Feld „Nur in einem Interview“ ist eine Ablage unten in jedem Baum-Rahmen auf Miro. Dorthin kommt jede Chance, die nur eine Person erzählt hat – als Karte mit Zitat-ID, damit sie nicht verloren geht. Erzählt ein weiteres Interview dasselbe Bedürfnis – ein schon geführtes oder ein späteres, auch anders formuliert –, wandert die Karte in den Baum, unter ihren Moment. Bei Torres bleiben solche Chancen einfach auf dem Snapshot; das Feld macht sie im Baum sichtbar (Kursformat).',
+        text: 'Das Feld „Nur in einem Interview“ ist eine Ablage unten rechts in jedem Baum-Rahmen auf Miro. Dorthin kommt jede Chance, die nur eine Person erzählt hat – als Karte mit Zitat-ID, damit sie nicht verloren geht. Erzählt ein weiteres Interview dasselbe Bedürfnis – ein schon geführtes oder ein späteres, auch anders formuliert –, wandert die Karte in den Baum, unter ihren Moment. Bei Torres bleiben solche Chancen einfach auf dem Snapshot; das Feld macht sie im Baum sichtbar (Kursformat).',
         quelle: `${TORRES}, S. 70; Feld „Nur in einem Interview“: Kursformat`,
       },
       {
