@@ -112,7 +112,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 69`,
       },
     ],
-    ueberleitung: 'Jetzt ihr: bis 14:50 eure eigenen Snapshots – Interviews und Skizzen.',
+    ueberleitung: 'Vorher kurz: euer Feedback zu den Interviews liegt in der Werkstatt.',
   },
 
   geschichte: {
@@ -229,6 +229,20 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ueberleitung: 'Jetzt ihr: Snapshot wählen, dann drei Runden.',
   },
 
+  feedback: {
+    live: [
+      'Ansage: Feedback liegt beim Interviewleitfaden in der Werkstatt.',
+      'Mappe neu laden, Zeile Interviewleitfaden: „1 neu“.',
+      'Lesen geht nebenher; antworten oder erledigt bis Tag 3.',
+    ],
+    ablauf: {
+      schritte: [
+        '12.11.2026: Je ein Feedback der Lehrenden am Interviewleitfaden (Sofie, Joachim, Hewen; Commit „Feedback von markesdo: Interviewleitfaden“). Aufbau: Was gut ist, Fürs nächste Mal, eine Frage zur riskantesten Annahme.',
+        'In der Lehrendenansicht steht pro Feedback „noch nicht geöffnet“ oder „geöffnet“ – so siehst du, wer es gelesen hat.',
+      ],
+    },
+    ueberleitung: 'Jetzt ihr: bis 14:50 eure eigenen Snapshots – Interviews und Skizzen.',
+  },
   'noch-keine': {
     live: [
       'Immer zeigen: bis 14:50 Interviews eintragen, Skizze ins Feld auf T1 · 5.',
