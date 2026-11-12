@@ -47,4 +47,6 @@
 .wk-wurzel .wk-id-kopieren::after { content: ""; position: absolute; inset: -.3rem; }
 .wk-wurzel .wk-id-kopieren:hover { color: var(--accent-ink); border-color: var(--border); background: var(--code-bg); }
 .wk-wurzel .wk-id-kopieren:focus-visible { color: var(--accent-ink); outline: 3px solid var(--blue); outline-offset: 2px; }
-.wk-wurzel .wk-id-meldung { font-size: .85rem; color: var(--green); }
+.wk-wurzel .wk-id-meldung { font-size: .85rem; color: var(--muted); }
+.wk-wurzel .wk-id-meldung.wk-id-kopiert { color: var(--green); }
+.wk-wurzel .wk-id-meldung.wk-id-markiert { color: var(--yellow-ink); }
