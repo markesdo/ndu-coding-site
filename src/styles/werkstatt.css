@@ -284,6 +284,27 @@
 .zg-fragen li { padding: .2em 0; overflow-wrap: anywhere; line-height: 1.3; }
 .zg-fragen li + li { border-top: 1px solid var(--border); }
 .zg-fragen li.snap-neu, .zg-ziel.snap-neu { padding-left: .45em; }
+/* Fragen-Leiste (Zeigen.tsx, 1–4 und F): eine Zeile unten, unter Snapshot und Kontext. Eigene Zeile im Spaltenlayout
+   von .zg (flex: none), die Fläche darüber wird kleiner und scrollt – nichts liegt über dem Inhalt. Grundschrift wie
+   der Snapshot; wird es schmal (Zoom 175 %, Handy), bricht die Frage ganz um (nie abgeschnitten, auch nicht „→ Wo“). */
+.zg-leiste { flex: none; display: flex; align-items: center; gap: .4rem .75rem; padding: .4em 1.25em; border-top: 1px solid var(--border); background: var(--bg); }
+.zg-leiste-nr { display: flex; flex: none; gap: .3rem; }
+.zg-leiste-knopf {
+  min-width: 2.5rem; min-height: 2.5rem; padding: 0 .5em; font: inherit; font-size: .85em; font-weight: 600; font-variant-numeric: tabular-nums;
+  color: var(--fg); background: var(--bg); border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+}
+.zg-leiste-knopf:hover { border-color: var(--accent); }
+.zg-leiste-knopf[aria-pressed="true"] { border: 2px solid var(--accent); background: var(--accent-soft); }
+.zg-leiste-knopf:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.zg-leiste-text {
+  flex: 1; min-width: 0; margin: 0; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; hyphens: manual;
+}
+.wk-wurzel .zg .zg-leiste-schalter { flex: none; margin-left: auto; }
+.zg-leiste-zu { padding-top: .2em; padding-bottom: .2em; }
+@media (max-width: 38em) {
+  .zg-leiste { flex-wrap: wrap; padding: .4em .75em; }
+  .zg-leiste-text { order: 3; flex-basis: 100%; }
+}
 @container (max-width: 44em) {
   .snap-spalten { grid-template-columns: minmax(0, 1fr); }
   .snap-spalten > div { padding-left: 0; padding-right: 0; }

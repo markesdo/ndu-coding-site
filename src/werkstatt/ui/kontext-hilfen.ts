@@ -100,11 +100,17 @@ export function meldungMitKontext(meldung: string, ids: readonly string[]): stri
   return [meldung, PRAEFIX + ids.join(', ')].filter(Boolean).join(' · ');
 }
 
-/** Taste K schaltet den Kontext um – nicht beim Tippen in Feldern und nicht mit Strg/Cmd/Alt (Kurzbefehle des Browsers). */
-export function istKontextTaste(e: { key: string; ctrlKey?: boolean; metaKey?: boolean; altKey?: boolean; target?: EventTarget | null }): boolean {
-  if (e.key !== 'k' && e.key !== 'K') return false;
+export type ZeigenTastenEreignis = { key: string; repeat?: boolean; ctrlKey?: boolean; metaKey?: boolean; altKey?: boolean; target?: EventTarget | null };
+
+/** Buchstaben- und Zifferntasten im Zeigen-Modus (K, F, 1–4): nicht beim Tippen in Feldern und nicht mit Strg/Cmd/Alt
+ *  (Kurzbefehle des Browsers). */
+export function zeigenTasteFrei(e: ZeigenTastenEreignis): boolean {
   if (e.ctrlKey || e.metaKey || e.altKey) return false;
   const t = e.target as { tagName?: string; isContentEditable?: boolean } | null | undefined;
-  if (t && (t.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName ?? ''))) return false;
-  return true;
+  return !(t && (t.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName ?? '')));
+}
+
+/** Taste K schaltet den Kontext um (zeigenTasteFrei). */
+export function istKontextTaste(e: ZeigenTastenEreignis): boolean {
+  return (e.key === 'k' || e.key === 'K') && zeigenTasteFrei(e);
 }

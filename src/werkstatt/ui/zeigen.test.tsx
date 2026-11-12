@@ -181,6 +181,7 @@ describe('Zeigen', () => {
     personen: [{ kuerzel: 'sofie', anzahl: 5 }, { kuerzel: 'joachim', anzahl: 0 }, { kuerzel: 'hewen', anzahl: 2 }],
     person: 'sofie', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null, stand: Date.UTC(2026, 10, 12, 13, 5), jetzt: Date.UTC(2026, 10, 12, 13, 6), meldung: '',
     kontext: KONTEXT_LEER, kontextOffen: false, kontextReiter: 'annahmen', kontextUmschalten: () => {}, reiterWaehlen: () => {},
+    frage: 0, fragenOffen: true, frageWaehlen: () => {}, fragenUmschalten: () => {},
     personWaehlen: () => {}, nrWaehlen: () => {}, blaettern: () => {}, neuLaden: () => {}, beenden: () => {}, ...x,
   });
   const knoepfe = (h: string) => [...h.matchAll(/<button([^>]*)>(.*?)<\/button>/g)].map((m) => [text(m[2]).trim(), m[1].includes(' disabled')]);

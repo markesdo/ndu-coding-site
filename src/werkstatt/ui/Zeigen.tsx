@@ -1,11 +1,13 @@
 // Zeigen-Modus im Leser der Lehrenden: die Snapshots einer Person groß, einer nach dem anderen, zum Teilen des
 // Bildschirms (Teams). Eigene Komponente, die nur Snapshots kennt: Feedback der Lehrenden, Lücken, „Was noch fehlt“
 // und Links ins Repo hängen hier nie im Baum und können so nicht auf dem geteilten Bildschirm landen.
-// Zustand, Laden und Tasten (←/→, Esc, K) liegen in LehrendenAnsicht.tsx bzw. DemoZeigen.tsx; das hier zeichnet nur.
+// Zustand, Laden und Tasten (←/→, Esc, K, 1–4, F) liegen in LehrendenAnsicht.tsx bzw. DemoZeigen.tsx; das hier zeichnet nur.
 // Der Kontext (K, KontextPanel) bekommt nur die geprüften Daten von Annahmen-Map und Leitfaden, nie Feedback.
-import { ChevronLeft, ChevronRight, CloudOff, PanelRight, RefreshCw, X } from 'lucide-react';
+// Unten die Fragen-Leiste (1–4, F): fester Kursinhalt aus fragen-leiste.ts, nie Daten aus der Mappe.
+import { ChevronLeft, ChevronRight, CloudOff, EyeOff, MessageCircleQuestion, PanelRight, RefreshCw, X } from 'lucide-react';
 import type { Ref } from 'react';
 import type { Interview } from '../schemas/index.js';
+import { FRAGEN, frageStelle, frageText } from './fragen-leiste.js';
 import { kontextNeuIds, meldungMitKontext, type Kontext, type KontextName } from './kontext-hilfen.js';
 import KontextPanel from './KontextPanel.js';
 import { standText } from './lehrenden-hilfen.js';
@@ -32,6 +34,11 @@ export interface ZeigenProps {
   kontextReiter: KontextName;
   kontextUmschalten: () => void;
   reiterWaehlen: (r: KontextName) => void;
+  // Fragen-Leiste unten (Tasten 1–4 und F): welche Frage (ab 0) und ob eingeblendet.
+  frage: number;
+  fragenOffen: boolean;
+  frageWaehlen: (nr: number) => void;
+  fragenUmschalten: () => void;
   wurzel?: Ref<HTMLDivElement>;
   personWaehlen: (kuerzel: string) => void;
   nrWaehlen: (nr: number) => void;
@@ -109,6 +116,37 @@ export default function Zeigen(p: ZeigenProps) {
         </div>
         {p.kontextOffen && <KontextPanel kontext={p.kontext} reiter={p.kontextReiter} reiterWaehlen={p.reiterWaehlen} iv={iv} />}
       </div>
+      <FragenLeiste frage={p.frage} offen={p.fragenOffen} waehlen={p.frageWaehlen} umschalten={p.fragenUmschalten} />
+    </div>
+  );
+}
+
+// Eine Zeile unter Snapshot und Kontext (eigener Bereich, kein <footer>: sonst eine zweite contentinfo-Landmarke).
+// Der Knopf zum Aus- und Einblenden bleibt dasselbe Element (letztes Kind), damit der Fokus beim Umschalten nicht auf
+// body fällt (sonst kämen ←/→, Esc, K, 1–4 und F nicht mehr im Dialog an); verschwinden beim Ausblenden die Knöpfe
+// 1–4 mit dem Fokus darauf, holt ihn fragenUmschalten (LehrendenAnsicht/DemoZeigen) zurück. Beides prüft nur der
+// Browser-Test werkzeuge/e2e/zeigen-fragen.mjs im Kursordner (das Projekt hat kein jsdom).
+function FragenLeiste({ frage: roh, offen, waehlen, umschalten }: { frage: number; offen: boolean; waehlen: (nr: number) => void; umschalten: () => void }) {
+  const frage = frageStelle(roh);
+  const t = frageText(frage);
+  return (
+    <div role="region" className={offen ? 'zg-leiste' : 'zg-leiste zg-leiste-zu'} aria-label="Frage der Besprechung">
+      {offen && (
+        <div className="zg-leiste-nr" role="group" aria-label="Frage wählen (Tasten 1 bis 4)">
+          {FRAGEN.map((_, i) => (
+            <button key={i} type="button" className="zg-leiste-knopf" aria-pressed={frage === i} aria-label={`Frage ${i + 1}`} aria-keyshortcuts={String(i + 1)} onClick={() => waehlen(i)}>
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
+      {offen && <p className="zg-leiste-text" title={t}>{t}</p>}
+      <button
+        type="button" className={offen ? 'wk-knopf wk-icon zg-leiste-schalter' : 'wk-knopf zg-leiste-schalter'} aria-expanded={offen} aria-keyshortcuts="F"
+        aria-label={offen ? 'Fragen ausblenden (F)' : undefined} title={offen ? 'Fragen ausblenden (F)' : undefined} onClick={umschalten}
+      >
+        {offen ? <EyeOff size={18} aria-hidden="true" /> : <><MessageCircleQuestion size={18} aria-hidden="true" /> Fragen (F)</>}
+      </button>
     </div>
   );
 }
