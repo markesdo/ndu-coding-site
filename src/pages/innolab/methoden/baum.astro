@@ -163,17 +163,37 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <table class="drei-fragen">
       <thead><tr><th>Aus den Snapshots</th><th>1 · Bedürfnis?</th><th>2 · Mehrmals?</th><th>3 · Outcome?</th><th>Also</th></tr></thead>
       <tbody>
-        <tr><td>„Per App vorbestellen.“</td><td class="antwort"><X size={20} aria-label="nein" /></td><td class="antwort">–</td><td class="antwort">–</td><td class="antwort">Lösung; dahinter „Zug nicht verpassen“ → neu prüfen</td></tr>
-        <tr><td>„Wenn ich anstehe, verpasse ich den Zug.“</td><td class="antwort"><Check size={20} aria-label="ja" /></td><td class="antwort"><Check size={20} aria-label="ja" /> I2, I3, I4</td><td class="antwort"><Check size={20} aria-label="ja" /></td><td class="antwort"><strong>in den Baum</strong></td></tr>
-        <tr><td>„Ich will wissen, wann mein Kaffee fertig ist.“</td><td class="antwort"><Check size={20} aria-label="ja" /></td><td class="antwort"><Check size={20} aria-label="ja" /> I2, I3</td><td class="antwort"><Check size={20} aria-label="ja" /></td><td class="antwort"><strong>in den Baum</strong></td></tr>
-        <tr><td>„Wenn der erste Schluck passt, ist der Morgen gerettet.“</td><td class="antwort"><Check size={20} aria-label="ja" /></td><td class="antwort"><X size={20} aria-label="nein" /> nur I1</td><td class="antwort">–</td><td class="antwort">ins Feld „Nur in einem Interview“</td></tr>
-        <tr><td>„Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.“</td><td class="antwort"><Check size={20} aria-label="ja" /></td><td class="antwort"><X size={20} aria-label="nein" /> nur I5</td><td class="antwort">–</td><td class="antwort">ins Feld „Nur in einem Interview“</td></tr>
+        <tr><td>„Per App vorbestellen.“</td><td class="antwort" data-schritt><X size={20} aria-label="nein" /></td><td class="antwort">–</td><td class="antwort">–</td><td class="antwort">Lösung; dahinter „Zug nicht verpassen“ → neu prüfen</td></tr>
+        <tr><td>„Wenn ich anstehe, verpasse ich den Zug.“</td><td class="antwort" data-schritt><Check size={20} aria-label="ja" /></td><td class="antwort"><Check size={20} aria-label="ja" /> I2, I3, I4</td><td class="antwort"><Check size={20} aria-label="ja" /></td><td class="antwort"><strong>in den Baum</strong></td></tr>
+        <tr><td>„Ich will wissen, wann mein Kaffee fertig ist.“</td><td class="antwort" data-schritt><Check size={20} aria-label="ja" /></td><td class="antwort"><Check size={20} aria-label="ja" /> I2, I3</td><td class="antwort"><Check size={20} aria-label="ja" /></td><td class="antwort"><strong>in den Baum</strong></td></tr>
+        <tr><td>„Wenn der erste Schluck passt, ist der Morgen gerettet.“</td><td class="antwort" data-schritt><Check size={20} aria-label="ja" /></td><td class="antwort"><X size={20} aria-label="nein" /> nur I1</td><td class="antwort">–</td><td class="antwort">ins Feld „Nur in einem Interview“</td></tr>
+        <tr><td>„Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.“</td><td class="antwort" data-schritt><Check size={20} aria-label="ja" /></td><td class="antwort"><X size={20} aria-label="nein" /> nur I5</td><td class="antwort">–</td><td class="antwort">ins Feld „Nur in einem Interview“</td></tr>
       </tbody>
     </table>
-    <p class="drei-fragen-aufdecken" data-schritt><strong>Aufgedeckt:</strong> zwei in den Baum, zwei ins Feld „Nur in einem Interview“, eine ist eine Lösung. Gleich macht ihr dasselbe mit euren Snapshots – ohne Tabelle, als Karten.</p>
+    <p data-schritt><strong>Ergebnis:</strong> zwei in den Baum, zwei ins Feld „Nur in einem Interview“, eine ist eine Lösung. Gleich macht ihr dasselbe mit euren Snapshots – ohne Tabelle, als Karten.</p>
     <p class="small muted">Fragen nach {TORRES}, S. 88.</p>
     <div class="nur-handout">
       <p>Die Chancen stehen so in den Snapshots der Kaffeebar (Werkstatt, Beispiel I1–I5); „per App vorbestellen“ ist der Wunsch vom Snapshot-Beispiel an Tag 1. Belege: „Wenn ich anstehe, verpasse ich meinen Zug“ (I2-2, I3-4, I4-2), „Wann ist mein Kaffee fertig?“ (I2-5, I3-3), der erste Schluck (I1-4), mitbestellen (I5-6). Was durch Frage 1 oder 2 fällt, braucht Frage 3 nicht mehr. Was nur eine Person erzählt hat, kommt ins Feld „Nur in einem Interview“ (Kursformat; bei Torres bleibt es auf dem Snapshot) und kann in späteren Interviews wiederkommen ({TORRES}, S. 70). Den fertigen Baum der Kaffeebar seht ihr weiter unten.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="map-baum">Schon gemacht? Map und Baum</h2>
+    <p class="folie-satz">Beide Male wird gruppiert – mit einer anderen Frage.</p>
+    <table class="vergleich">
+      <thead><tr><th scope="col"></th><th scope="col">Experience Map: Gleiches zusammenlegen</th><th scope="col">Baum: Struktur Ast für Ast</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Was</th><td>Knoten: was in der Geschichte passiert</td><td>Chancen: Bedürfnis, Schmerzpunkt, Wunsch</td></tr>
+        <tr><th scope="row">Frage</th><td>Derselbe Moment der Geschichte?</td><td>Dasselbe, anders gesagt – oder Geschwister?</td></tr>
+        <tr><th scope="row">Wo</th><td>über alle Geschichten</td><td>in einem Ast, unter einem Moment</td></tr>
+        <tr><th scope="row">Ergebnis</th><td>Momente in der Abfolge, ohne Überschneidung</td><td>übergeordnete Chance, darunter Geschwister</td></tr>
+        <tr data-schritt><th scope="row">Kaffeebar</th><td>u. a. I2-4, I3-1, I5-3 → Moment „Ich komme in die Halle und entscheide.“</td><td>darunter drei Chancen, ohne Reihenfolge</td></tr>
+      </tbody>
+    </table>
+    <p data-schritt>„Anstellen ist ein Glücksspiel.“ (I4-2): auf der Map grau, im Baum Beleg für die Ursache „Wenn ich anstehe, verpasse ich meinen Zug.“ – dasselbe Zitat, andere Frage.</p>
+    <p class="small muted">Gegenüberstellung: Kurs; {TORRES}, S. 56, 83, 86–90.</p>
+    <div class="nur-handout">
+      <p>Auf der Experience Map habt ihr schon gruppiert – aber Knoten, mit der Frage, ob sie denselben Moment der Geschichte meinen (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe Bedürfnis meint, wird eine Chance; was ähnlich, aber nicht gleich ist, sind Geschwister unter einer übergeordneten Chance, die ihr ergänzen dürft (S. 89–90). Torres stellt die beiden Schritte nicht nebeneinander; die Gegenüberstellung ist eine Hilfe dieses Kurses. Auf der Map stehen die Momente in der Abfolge der Geschichte, ohne Überschneidung (S. 86–87); im Baum gibt es unter einem Moment keine Reihenfolge, nur „ist ein Teil von“ (S. 83).</p>
     </div>
   </Folie>
 
@@ -381,8 +401,14 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .drei-fragen td.antwort:last-child { white-space: normal; }
   .drei-fragen th { font-size: .75rem; color: var(--muted); white-space: nowrap; }
   .drei-fragen td.antwort :global(svg) { vertical-align: -4px; }
-  /* Im Beamer erst die Fragen stellen, dann mit dem Schritt darunter alle Antworten aufdecken. */
-  :global(html[data-beamer] .folie:has(.drei-fragen-aufdecken:not(.gezeigt))) .drei-fragen td.antwort { visibility: hidden; }
+  /* Im Beamer Zeile für Zeile: Der Schritt sitzt auf der ersten Antwortzelle, die übrigen Antworten der Zeile folgen ihr. */
+  :global(html[data-beamer]) .drei-fragen td.antwort[data-schritt]:not(.gezeigt) ~ td.antwort { visibility: hidden; }
+  /* „map-baum“: Map und Baum nebeneinander, Zeilenköpfe links (wie .drei-fragen). */
+  .vergleich { width: 100%; border-collapse: collapse; margin: .5rem 0; font-size: .9rem; line-height: 1.3; }
+  .vergleich th, .vergleich td { padding: .3rem .45rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+  .vergleich thead th { font-size: .8rem; }
+  .vergleich th[scope='row'] { font-size: .75rem; color: var(--muted); white-space: nowrap; font-weight: 600; }
+  .vergleich td { width: 45%; }
   .gegen { display: grid; gap: 1rem; margin: 1rem 0; }
   @media (min-width: 900px) { .gegen { grid-template-columns: 1fr 1fr; } }
   .gegen > div { display: flex; flex-direction: column; gap: .4rem; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
