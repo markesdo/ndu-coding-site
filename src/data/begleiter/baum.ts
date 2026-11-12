@@ -166,7 +166,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Zeile für Zeile: alle beantworten die drei Fragen laut.',
       'Erst nach der letzten Zeile aufdecken.',
       'Fragen: Was steckt hinter „per App vorbestellen“?',
-      '„Nur bei einer Person? Bleibt auf dem Snapshot, kann wiederkommen.“',
+      '„Nur bei einer Person? In den Streifen – kann wiederkommen.“',
       '„Mehrmals“: dasselbe Bedürfnis im zweiten Interview – auch als Zitat.',
     ],
     verstaendnis: {
