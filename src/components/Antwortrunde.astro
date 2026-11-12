@@ -9,7 +9,8 @@
 // nur noch alle 30 s (öffnet „Runde leeren“ die Runde wieder, kommt die Eingabe zurück). Fällt die API aus (503, Netz), steht „Antwort bitte laut sagen.“ da – reihum laut bleibt der Rückfall.
 // Ein Platz pro Rolle (api/antworten.ts): Wer abschickt, überschreibt die Antwort seiner Rolle. Die eigene Antwort merkt
 // sich der Browser nur zum Vorausfüllen. „Runde leeren“: nur Präsentator, nicht im Beamer.
-// Texte immer als textContent, nie als HTML.
+// Texte immer als textContent, nie als HTML. Nach jeder Abfrage meldet die Runde ihren Stand einmal als Event
+// ANTWORTRUNDE_STAND auf document (lib/antworten.ts) – Folien reagieren darauf, ohne selbst zu fragen.
 import { MAX_TEXT, RUNDEN, eingabeTexte } from '../lib/antworten';
 const { runde, ansicht } = Astro.props as { runde: string; ansicht: 'eingabe' | 'antworten' };
 const r = RUNDEN[runde];
@@ -50,8 +51,8 @@ const texte = eingabeTexte(r);
 </div>
 <script>
   import {
-    ANTWORTEN_FREI_MS, ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, antwortenGruppieren, betrifftRunde, gesendetGilt, rolleBesetzt, rolleWaehlbar, statusText,
-    textPruefen, wahlFestText, type EingabeTexte, type Rolle, type Stand,
+    ANTWORTEN_FREI_MS, ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, ANTWORTRUNDE_STAND, antwortenGruppieren, betrifftRunde, gesendetGilt, rolleBesetzt, rolleWaehlbar, statusText,
+    textPruefen, wahlFestText, type AntwortrundeStand, type EingabeTexte, type Rolle, type Stand,
   } from '../lib/antworten';
   import { wienerZeit } from './jetzt';
   import { abfrageKette, jsonHolen, zeitlimit, type Kette } from '../lib/kette';
@@ -97,6 +98,8 @@ const texte = eingabeTexte(r);
         try {
           const s = (await jsonHolen(`/api/antworten?runde=${encodeURIComponent(runde)}`, ANTWORTEN_TIMEOUT_MS)) as Stand;
           bloecke.forEach((b) => b.zeigen(s));
+          const detail: AntwortrundeStand = { runde, frei: s.frei, texte: s.frei ? (s.antworten ?? []).map((x) => x.text) : [] };
+          document.dispatchEvent(new CustomEvent(ANTWORTRUNDE_STAND, { detail }));
           return s.frei ? ANTWORTEN_FREI_MS : ANTWORTEN_MS;
         } catch {
           bloecke.forEach((b) => b.fehler());
@@ -186,7 +189,7 @@ const texte = eingabeTexte(r);
         li.append(b, g.texte.map((t) => `„${t}“`).join(' · '));
         return li;
       }));
-      status.textContent = gruppen.length ? '' : 'Keine Sätze über die Seite – dann reihum laut.';
+      status.textContent = gruppen.length ? '' : 'Noch keine Sätze auf der Seite – sagt sie reihum laut.';
     };
     const a = abfrage(runde);
     const block: Block = { el: box, sichtbar: false, zeigen, fehler: () => { rueckfall.hidden = false; } };
