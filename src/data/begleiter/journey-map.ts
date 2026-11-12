@@ -123,6 +123,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       '„Markiert in jeder Geschichte den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
       'Marke: Wort, Zitat-ID, Zahl – „Tief · I3-3 – Tief in 2 von 5“.',
       '„Knoten in“ zählt Vorkommen, „Tief in“ zählt Tiefpunkte.',
+      'Bei Gleichstand markiert ihr beide.',
     ],
     kern: [
       {
@@ -134,7 +135,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: KAHNEMAN,
       },
       {
-        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen, mit der Zahl dazu („Tief · I3-3 – Tief in 2 von 5“; anders als „Knoten in 3 von 5“, das zählt Vorkommen). M = alle eigenen Geschichten (bei drei synthetischen: von 3). Marke als Wort mit Zitat-ID und Zahl, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
+        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen (bei Gleichstand beide), mit der Zahl dazu („Tief · I3-3 – Tief in 2 von 5“; anders als „Knoten in 3 von 5“, das zählt Vorkommen). M = alle eigenen Geschichten (bei drei synthetischen: von 3). Marke als Wort mit Zitat-ID und Zahl, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
         quelle: `${TORRES}, S. 57, 95; Kursregel`,
       },
     ],
@@ -171,6 +172,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Fragen: Welcher Knoten steht in beiden Reihen? Zählen lassen, nicht vorsagen.',
       'Aufdecken: Zählung, dann die Map – neu ist das Warten.',
       'Zusammengelegt: Anstehen und Warten – kein Zitat erzählt das Anstehen.',
+      'Gleichstand beim Tief: Halle (I2-1, I4-4) und Warten (I3-3, I5-6) – beide markiert.',
       'Fragen: Woran erkennt ihr den Tiefpunkt? – Am Zitat, nicht am Bauchgefühl.',
       '„Der Automat ist ein Umweg – die Antwort auf das ‚?‘ von Tag 1.“',
     ],
