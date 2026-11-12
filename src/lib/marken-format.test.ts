@@ -5,7 +5,7 @@ import { NOTIZEN_JOURNEY_MAP } from '../data/begleiter/journey-map';
 
 // Experience Map: Marken haben eine Form – „Tief · I3-3 · 2 von 5“, „Ende · I3-5 · 1 von 5“ (im Raster je Geschichte
 // ohne Zahl: „Tief · I2-1“). Die alte Doppelform „Tief · I3-3 – Tief in 2 von 5“ darf nirgends zurückkommen.
-const ALT = / – (Tief|Ende) in |(Tief|Ende) in \d von|(Tief|Ende) · I\d-\d – /g;
+const ALT = / – (Tief|Ende) in |(Tief|Ende) in \d+ von|(Tief|Ende) · I\d+-\d+ – /g;
 const quelle = (pfad: string) => readFileSync(new URL(pfad, import.meta.url), 'utf8');
 const pruefliste = METHODEN.find((m) => m.slug === 'journey-map')?.pruefliste ?? [];
 

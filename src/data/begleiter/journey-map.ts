@@ -134,7 +134,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: KAHNEMAN,
       },
       {
-        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen, mit der Zahl dazu („Tief · I3-3 · 2 von 5“ = in zwei Geschichten liegt der Tiefpunkt dort; anders als „Geschichten mit diesem Knoten: 3 von 5“, das zählt Vorkommen). N von M: in N von M Geschichten, M = alle eigenen Geschichten (bei drei synthetischen: von 3). Marke als Wort mit Zitat-ID und Zahl, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
+        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen (zeigen gleich viele auf zwei Momente: beide, je mit Zahl), mit der Zahl dazu („Tief · I3-3 · 2 von 5“ = in zwei Geschichten liegt der Tiefpunkt dort; anders als „Geschichten mit diesem Knoten: 3 von 5“, das zählt Vorkommen). N von M: in N von M Geschichten, M = alle eigenen Geschichten (bei drei synthetischen: von 3). Marke als Wort mit Zitat-ID und Zahl, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
         quelle: `${TORRES}, S. 57, 95; Kursregel`,
       },
     ],
@@ -173,6 +173,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Zusammengelegt: Anstehen und Warten – kein Zitat erzählt das Anstehen.',
       'Ein Tief auf der Map: Warten, I3-3 und I5-6.',
       'I4-4 gilt dem Automatenkaffee – Tief des Umwegs.',
+      'Fragen: Woran erkennt ihr den Tiefpunkt? – Am Zitat, nicht am Bauchgefühl.',
       '„Der Automat ist ein Umweg – die Antwort auf das ‚?‘ von Tag 1.“',
     ],
     verstaendnis: {

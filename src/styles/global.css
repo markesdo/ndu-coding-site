@@ -318,6 +318,9 @@ kbd { font-family: var(--mono); font-size: .85em; border: 1px solid var(--border
 .pill.demo { background: var(--purple-soft); color: var(--purple); }
 .pill.konzept { background: var(--blue-soft); color: var(--blue); }
 .pill.uebung { background: var(--green-soft); color: var(--green); }
+/* Marken der Experience Map: „Tief“ rosa, „Ende“ grün wie die Miro-Zettel (light_pink, light_green); das Wort steht immer dabei. */
+.pill.tief { background: var(--pink-soft); color: var(--pink); }
+.pill.ende { background: var(--green-soft); color: var(--green); }
 .pill.pause { background: var(--code-bg); color: var(--muted); }
 .pill.plenum { background: var(--yellow-soft); color: var(--yellow-ink); }
 /* Schwierigkeit eines Issues (Tag 3, Team-Sprint) */
