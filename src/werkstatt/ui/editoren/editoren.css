@@ -35,3 +35,16 @@
 .wk-wurzel .wk-legende { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: .4rem; }
 .wk-wurzel .wk-legende li { padding: .2rem .6rem; border-radius: var(--radius); font-size: .85rem; }
 .wk-wurzel .wk-annahmen-text { padding-left: 1.1rem; font-size: .9rem; }
+
+/* ID-Zeile mit Kopier-Knopf (Interviews): klein wie die Kopier-Knöpfe im Text, Trefferfläche größer als das Symbol. */
+.wk-wurzel .wk-id-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: .1rem .35rem; }
+.wk-wurzel .wk-id-zeile strong { font-family: var(--mono); }
+.wk-wurzel .wk-id-kopieren {
+  display: inline-grid; place-items: center; position: relative; flex: none;
+  width: 1.75rem; height: 1.75rem; padding: 0; border: 1px solid transparent; border-radius: var(--radius);
+  background: none; color: var(--muted); cursor: pointer; font: inherit;
+}
+.wk-wurzel .wk-id-kopieren::after { content: ""; position: absolute; inset: -.3rem; }
+.wk-wurzel .wk-id-kopieren:hover { color: var(--accent-ink); border-color: var(--border); background: var(--code-bg); }
+.wk-wurzel .wk-id-kopieren:focus-visible { color: var(--accent-ink); outline: 3px solid var(--blue); outline-offset: 2px; }
+.wk-wurzel .wk-id-meldung { font-size: .85rem; color: var(--green); }

@@ -1,7 +1,8 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Chance } from '../../schemas/index.js';
 import BelegAuswahl from './BelegAuswahl';
+import IdZeile, { IdZeileAnsicht, idKopieren } from './IdKopieren';
 import { ChanceZeile, EinsichtZeile, Vorschau } from './InterviewsEditor';
 import { neuesInterview } from './interviews-hilfen';
 
@@ -234,5 +235,63 @@ describe('EinsichtZeile', () => {
     expect(html).toContain('rows="2"');
     expect(html).not.toContain('type="text"');
     expect(html).toContain(satz);
+  });
+});
+
+describe('ID-Zeile: Zitat-ID kopieren', () => {
+  afterEach(() => vi.unstubAllGlobals());
+  const knopf = (h: string) => /<button[^>]*class="wk-id-kopieren"[^>]*>/.exec(h)?.[0] ?? '';
+
+  it('Knopf neben der ID: type="button", deutscher Name mit der ID, Ansage-Bereich leer', () => {
+    const h = renderToStaticMarkup(<IdZeile art="Zitat" id="I1-1" />);
+    expect(h).toContain('ID: <strong>I1-1</strong>');
+    expect(knopf(h)).toContain('type="button"');
+    expect(knopf(h)).toContain('aria-label="Zitat-ID I1-1 kopieren"');
+    expect(h).toMatch(/<svg[^>]*lucide-copy[^>]*aria-hidden="true"/);
+    expect(h).toContain('<span class="wk-id-meldung" aria-live="polite"></span>');
+  });
+
+  it('Interview-ID: eigener Name', () => {
+    expect(knopf(renderToStaticMarkup(<IdZeile art="Interview" id="I1" />))).toContain('aria-label="Interview-ID I1 kopieren"');
+  });
+
+  it('Klick kopiert genau die ID und meldet „kopiert“', async () => {
+    const writeText = vi.fn(async () => {});
+    vi.stubGlobal('navigator', { clipboard: { writeText } });
+    expect(await idKopieren('I1-1', null)).toBe('kopiert');
+    expect(writeText).toHaveBeenCalledTimes(1);
+    expect(writeText).toHaveBeenCalledWith('I1-1');
+  });
+
+  it('Zwischenablage verweigert: „Zum Kopieren markiert“', async () => {
+    vi.stubGlobal('navigator', { clipboard: { writeText: vi.fn(async () => { throw new Error('NotAllowedError'); }) } });
+    expect(await idKopieren('I1-1', null)).toBe('Zum Kopieren markiert');
+  });
+
+  it('Zwischenablage fehlt ganz: „Zum Kopieren markiert“', async () => {
+    vi.stubGlobal('navigator', {});
+    expect(await idKopieren('I1-1', null)).toBe('Zum Kopieren markiert');
+  });
+
+  it('nach dem Kopieren: Häkchen statt Kopier-Symbol, „kopiert“ im Ansage-Bereich', () => {
+    const h = renderToStaticMarkup(<IdZeileAnsicht art="Zitat" id="I1-1" meldung="kopiert" onKopieren={() => {}} />);
+    expect(h).toMatch(/<svg[^>]*lucide-check[^>]*>/);
+    expect(h).not.toMatch(/lucide-copy/);
+    expect(h).toContain('<span class="wk-id-meldung" aria-live="polite">kopiert</span>');
+  });
+
+  it('nur markiert: Kopier-Symbol bleibt, Meldung sagt es', () => {
+    const h = renderToStaticMarkup(<IdZeileAnsicht art="Zitat" id="I1-1" meldung="Zum Kopieren markiert" onKopieren={() => {}} />);
+    expect(h).toMatch(/lucide-copy/);
+    expect(h).not.toMatch(/lucide-check/);
+    expect(h).toContain('aria-live="polite">Zum Kopieren markiert</span>');
+  });
+
+  it('der Knopf ruft beim Klick das Kopieren auf', () => {
+    const onKopieren = vi.fn();
+    const el = IdZeileAnsicht({ art: 'Zitat', id: 'I1-1', meldung: '', onKopieren });
+    const btn = (el.props.children as React.ReactElement[]).find((c) => (c as React.ReactElement<{ className?: string }>)?.props?.className === 'wk-id-kopieren') as React.ReactElement<{ onClick: () => void }>;
+    btn.props.onClick();
+    expect(onKopieren).toHaveBeenCalledTimes(1);
   });
 });
