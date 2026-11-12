@@ -1,12 +1,12 @@
 // Antwortrunde: Studierende schicken einen Satz über die Seite (api/antworten.ts; Rückfall: reihum laut). Bis zum Aufdecken
 // zeigt die Seite nur, welche Rollen geantwortet haben; die Texte gibt der Server erst heraus, wenn die Auflösung der Runde
 // für alle offen ist – dieselbe Kennung wie <Aufloesung gruppe=…> (lib/aufgedeckt.ts), also ein Klick des Präsentators für
-// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (bei Netflix und „zwoelf“ je drei) – wer abschickt, überschreibt
+// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (je drei; „rueckblick“ hat neutrale Plätze statt Rollen) – wer abschickt, überschreibt
 // den Platz seiner Rolle. Keine Client-ids, kein Index, keine Listen: Die Zahl der Schlüssel ist fest, der Text begrenzt.
 // Hier ohne DOM und ohne Vercel, damit testbar. .js-Endungen: api/antworten.ts lädt das per Node-ESM.
 import { wienerZeit } from '../components/jetzt.js';
 import { AUFGEDECKT_TTL_SEKUNDEN, gruppeFrei } from './aufgedeckt.js';
-import { NACH_NETFLIX, NACH_ZWOELF } from '../components/innolab-zeiten.js';
+import { NACH_NETFLIX, NACH_RUECKBLICK_TAG_2, NACH_ZWOELF } from '../components/innolab-zeiten.js';
 
 export interface Rolle { id: string; label: string }
 export interface Runde {
@@ -27,6 +27,16 @@ export interface EingabeTexte {
   hinweis: string;
   /** Platzhalter im Feld; leer = keiner. */
   platzhalter: string;
+  /** Wie die Plätze heißen (aria-label der Knöpfe): „Deine Rolle“, bei neutralen Plätzen „Dein Platz“. */
+  wahl: string;
+  /** Meldung, wenn noch kein Platz gewählt ist. */
+  wahlFehlt: string;
+  /** Meldung, wenn jemand anderes den gewählten Platz schon hat. */
+  wahlBesetzt: string;
+  /** Hinweis nach dem Senden, {label} = Name des eigenen Platzes. */
+  wahlFest: string;
+  /** Statuszeile der Eingabe nach dem Aufdecken – wo die Sätze stehen. */
+  aufgedeckt: string;
 }
 
 /** Texte der Eingabe, wenn die Runde keine eigenen hat (Netflix). */
@@ -34,7 +44,17 @@ export const EINGABE_STANDARD: Readonly<EingabeTexte> = {
   label: 'Ein Satz aus deiner Rolle',
   hinweis: 'erst deine Rolle wählen, dann einen Satz abschicken.',
   platzhalter: '',
+  wahl: 'Deine Rolle',
+  wahlFehlt: 'Bitte zuerst deine Rolle wählen.',
+  wahlBesetzt: 'Diese Rolle hat schon jemand – wählt eine andere.',
+  wahlFest: 'deine Rolle ist {label} – ändern kannst du deine Antwort, nicht die Rolle.',
+  aufgedeckt: 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.',
 };
+
+/** Hinweis nach dem Senden mit dem Namen des eigenen Platzes. */
+export function wahlFestText(texte: Pick<EingabeTexte, 'wahlFest'>, label: string): string {
+  return texte.wahlFest.replace('{label}', label);
+}
 
 /** Texte der Eingabe für eine Runde: eigene, sonst EINGABE_STANDARD. Die Seite setzt sie nur als Text. */
 export function eingabeTexte(runde: Runde): EingabeTexte {
@@ -59,6 +79,27 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
       label: 'Nummer und ein Satz aus deiner Rolle',
       hinweis: 'erst deine Rolle wählen, dann Nummer und Satz abschicken.',
       platzhalter: 'z. B. 3 – weil …',
+    },
+  },
+  /** Tag 2, Abschluss: Rückblick auf den Kurs als Produkt – ein Satz „Hoch:“/„Tief:“ zum stärksten Moment des Tages.
+   *  Drei neutrale Plätze statt Rollen; Eingabe und Auflösung auf derselben Folie. Soll die Runde an einem späteren
+   *  Kurstag wiederkommen, reicht ein neues ab: Die Plätze hängen schon am Wiener Kurstag (platzSchluessel). */
+  rueckblick: {
+    kennung: 'rueckblick', ab: NACH_RUECKBLICK_TAG_2,
+    rollen: [
+      { id: 'p1', label: 'Platz 1' },
+      { id: 'p2', label: 'Platz 2' },
+      { id: 'p3', label: 'Platz 3' },
+    ],
+    eingabe: {
+      label: 'Ein Satz, beginnt mit ‚Hoch:‘ oder ‚Tief:‘',
+      hinweis: 'erst einen Platz wählen, dann deinen Satz abschicken.',
+      platzhalter: 'Tief: … – ich habe gerade …',
+      wahl: 'Dein Platz',
+      wahlFehlt: 'Bitte zuerst einen Platz wählen.',
+      wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
+      wahlFest: 'du hast {label} – ändern kannst du deine Antwort, nicht den Platz.',
+      aufgedeckt: 'Aufgedeckt – eure Sätze stehen darunter.',
     },
   },
 };

@@ -137,6 +137,7 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
       'D3 vorlesen: die alte Zeile D1 bleibt, nur „ersetzt am“.',
       'Zeit: drei Minuten, nicht diskutieren – Rückfragen nach Tag 3.',
       'Falle: Zeile ohne Beleg-Stufe oder ohne ID.',
+      'Ist-Zeit notieren.',
     ],
     verstaendnis: {
       frage: 'Warum korrigiert die Kaffeebar D1 nicht einfach?',
@@ -153,7 +154,50 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
         quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 55, 61',
       },
     ],
-    ueberleitung: 'Und jetzt die Checkliste für heute.',
+    ueberleitung: 'Bevor ihr abhakt, ein Blick zurück auf den Tag: euer stärkster Moment.',
+  },
+  rueckblick: {
+    live: [
+      'Timer 2 min, dann aufdecken.',
+      'Eine Nachfrage laut: ‚Was war kurz davor?‘',
+      'Antwort auf die Nachfrage mitschreiben.',
+      'Nicht rechtfertigen, nicht nach Bewertung fragen.',
+      'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
+      'Danach: Claude – ‚Sichere die Rückblick-Antworten‘.',
+    ],
+    uebung: { dauer: '2 min', form: 'allein, Platz wählen, ein Satz auf der Seite; dann gemeinsam aufdecken (Rückfall: laut)' },
+    ablauf: {
+      schritte: [
+        'Frage vorlesen: „Dein stärkster Moment heute: Was hast du da gerade gemacht?“ Nicht erklären, keine Beispiele.',
+        'Alle öffnen die Folie auf dem eigenen Gerät, wählen einen freien Platz (Platz 1–3, ohne Bedeutung) und schicken einen Satz ab, der mit „Hoch:“ oder „Tief:“ beginnt. Timer 2 min. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
+        'Wenn alle drei abgeschickt haben (oder der Timer abläuft): „Auflösung zeigen“ auf derselben Folie – die drei Sätze erscheinen darunter.',
+        'Zu einem Satz eine Nachfrage laut: „Was war kurz davor?“ Die Antwort mitschreiben, nicht kommentieren.',
+        'Satz zu Tag 3 sagen, dann zur Checkliste. Nach dem Kurs: Claude die Antworten sichern lassen.',
+      ],
+      achten: [
+        'Es ist ein Rückblick auf den Kurs, keine Bewertung: nicht rechtfertigen, nicht erklären, warum etwas so lief.',
+        'Keine Namen nennen; die Plätze sind neutral.',
+        'Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r den Satz reihum laut und du schreibst mit.',
+      ],
+      fehler: [
+        'Nach Meinungen fragen („Wie fandet ihr heute?“) – das ist genau die Frage, die der Mom Test verbietet.',
+      ],
+    },
+    kern: [
+      {
+        text: 'Mom Test, Regel 2: „Ask about specifics in the past instead of generics or opinions about the future“; Faustregel: „Opinions are worthless.“ Darum fragt die Folie nach dem, was jemand gerade gemacht hat, nicht danach, wie der Tag war.',
+        quelle: `${MOMTEST}, S. 13, 16`,
+      },
+      {
+        text: 'Torres: „Memories about recent instances are more reliable than our generalizations about our own behavior or our answers to direct questions.“ Statt nach Kriterien fragt man nach einem bestimmten Moment – hier dem stärksten des Tages.',
+        quelle: `${TORRES}, S. 64–65`,
+      },
+      {
+        text: 'Übung am eigenen Kurs: drei Sätze, keine Interviews. Der Kurs ist das Produkt; was daraus wird (Map, Baum, eine Änderung), zeigt Markus an Tag 3. Kursentscheidung, keine Buchquelle.',
+        quelle: 'Kursablauf Innolab, Tag 2',
+      },
+    ],
+    ueberleitung: 'An Tag 3 seht ihr, was daraus wird. Jetzt die Checkliste für heute.',
   },
   abschluss: {
     live: [

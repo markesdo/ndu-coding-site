@@ -8,6 +8,8 @@ const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 export const NOTIZEN_BAUM: Record<string, Notiz> = {
   'nur-outcome': {
     live: [
+      'Ist-Zeit notieren.',
+      'Strich: jemand fragt ‚Wo sind wir?‘ oder nach einem Link.',
       '„Aus einer Geschichte kommen Dutzende Chancen – euer Job sind die, die den Outcome treiben.“',
       'Abbildung von Tag 1 wiedererkennen lassen.',
       'Fragen: Wie heißt euer Outcome im Produkt-Brief?',
@@ -32,6 +34,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Timer 2 min: Nummer und Satz, aus der Rolle.',
       'Noch nicht aufdecken – erst alle drei abgeschickt.',
       'Falle: eine richtige Antwort andeuten – es gibt keine.',
+      'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
     ],
     uebung: { dauer: '2 min', form: 'allein, Nummer und ein Satz auf der Seite; dann gemeinsam aufdecken (Rückfall: laut)' },
     ablauf: {

@@ -1,11 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import {
   EINGABE_STANDARD, MAX_TEXT, RUNDEN, antwortenGruppieren, betrifftRunde, eingabePruefen, eingabeTexte, gesendetGilt, platzSchluessel, rolleBesetzt, rollePruefen, rolleWaehlbar,
-  rundePruefen, standBauen, statusText, textBereinigen, textPruefen, texteFrei,
+  rundePruefen, standBauen, statusText, textBereinigen, textPruefen, texteFrei, wahlFestText,
 } from './antworten';
 
 const netflix = RUNDEN.netflix;
 const zwoelf = RUNDEN.zwoelf;
+const rueckblick = RUNDEN.rueckblick;
+
+// Wie die Rollen-Wahl heißt (Netflix, „zwoelf“).
+const ROLLEN_WAHL = {
+  wahl: 'Deine Rolle',
+  wahlFehlt: 'Bitte zuerst deine Rolle wählen.',
+  wahlBesetzt: 'Diese Rolle hat schon jemand – wählt eine andere.',
+  wahlFest: 'deine Rolle ist {label} – ändern kannst du deine Antwort, nicht die Rolle.',
+  aufgedeckt: 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.',
+};
 
 describe('Antwortrunde: Eingabe prüfen', () => {
   it('Runde nur aus der Liste des Servers', () => {
@@ -60,15 +70,44 @@ describe('Antwortrunde: Eingabe prüfen', () => {
   it('Texte der Eingabe: Netflix wie bisher, „zwoelf“ fragt nach der Nummer', () => {
     expect(eingabeTexte(netflix)).toStrictEqual({
       label: 'Ein Satz aus deiner Rolle', hinweis: 'erst deine Rolle wählen, dann einen Satz abschicken.', platzhalter: '',
+      ...ROLLEN_WAHL,
     });
     expect(eingabeTexte(netflix)).toStrictEqual(EINGABE_STANDARD);
     expect(eingabeTexte(zwoelf)).toStrictEqual({
       label: 'Nummer und ein Satz aus deiner Rolle',
       hinweis: 'erst deine Rolle wählen, dann Nummer und Satz abschicken.',
       platzhalter: 'z. B. 3 – weil …',
+      ...ROLLEN_WAHL,
     });
     // Teilweise eigene Texte: der Rest kommt vom Standard.
     expect(eingabeTexte({ ...zwoelf, eingabe: { label: 'X' } })).toStrictEqual({ ...EINGABE_STANDARD, label: 'X' });
+  });
+
+  it('Runde „rueckblick“ (Abschluss Tag 2): drei neutrale Plätze statt Rollen, eigene Texte ohne „Rolle“', () => {
+    expect(rundePruefen('rueckblick')).toBe(rueckblick);
+    expect(rueckblick.kennung).toBe('rueckblick');
+    expect(rueckblick.rollen).toStrictEqual([
+      { id: 'p1', label: 'Platz 1' }, { id: 'p2', label: 'Platz 2' }, { id: 'p3', label: 'Platz 3' },
+    ]);
+    expect(rollePruefen(rueckblick, 'p3')).toBe('p3');
+    expect(rollePruefen(rueckblick, 'design')).toBeNull();
+    expect(eingabePruefen({ runde: 'rueckblick', rolle: 'p2', text: ' Tief: Link gesucht ' }))
+      .toStrictEqual({ runde: 'rueckblick', konfig: rueckblick, rolle: 'p2', text: 'Tief: Link gesucht' });
+    expect(eingabePruefen({ runde: 'rueckblick', rolle: 'p1', text: 'x'.repeat(121) })).toBeNull();
+    const t = eingabeTexte(rueckblick);
+    expect(t).toStrictEqual({
+      label: 'Ein Satz, beginnt mit ‚Hoch:‘ oder ‚Tief:‘',
+      hinweis: 'erst einen Platz wählen, dann deinen Satz abschicken.',
+      platzhalter: 'Tief: … – ich habe gerade …',
+      wahl: 'Dein Platz',
+      wahlFehlt: 'Bitte zuerst einen Platz wählen.',
+      wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
+      wahlFest: 'du hast {label} – ändern kannst du deine Antwort, nicht den Platz.',
+      aufgedeckt: 'Aufgedeckt – eure Sätze stehen darunter.',
+    });
+    expect(Object.values(t).filter((x) => /Rolle/.test(x))).toStrictEqual([]);
+    expect(wahlFestText(t, 'Platz 2')).toBe('du hast Platz 2 – ändern kannst du deine Antwort, nicht den Platz.');
+    expect(wahlFestText(eingabeTexte(netflix), 'Design')).toBe('deine Rolle ist Design – ändern kannst du deine Antwort, nicht die Rolle.');
   });
 
   it('Body: alles oder nichts', () => {
@@ -104,6 +143,17 @@ describe('Antwortrunde: Plätze und Stand', () => {
   it('Rückfall beider Runden: Ende von Tag 2, nicht Kursende – Verspätung schließt die Eingabe nicht', () => {
     expect(netflix.ab).toBe('2026-11-12T23:59');
     expect(zwoelf.ab).toBe(netflix.ab);
+    expect(rueckblick.ab).toBe(netflix.ab);
+  });
+
+  it('„rueckblick“: eigene Plätze und eigenes Aufdecken – andere Runden öffnen sie nicht', () => {
+    const imAbschluss = new Date('2026-11-12T16:55:00Z'); // 17:55 Wien
+    expect(platzSchluessel('rueckblick', 'p1', imAbschluss)).toBe('antwort:2026-11-12:rueckblick:p1');
+    expect(texteFrei(rueckblick, false, imAbschluss)).toBe(false);
+    expect(texteFrei(rueckblick, true, imAbschluss)).toBe(true);
+    expect(texteFrei(rueckblick, false, new Date('2026-11-12T22:59:00Z'))).toBe(true); // 23:59 Wien = ENDE_TAG_2
+    expect(betrifftRunde(rueckblick, 'zwoelf')).toBe(false);
+    expect(betrifftRunde(rueckblick, 'rueckblick')).toBe(true);
   });
 
   it('„zwoelf“: zu bis zum eigenen Aufdecken oder bis zum Ende des Kurstags – Netflix aufdecken öffnet sie nicht', () => {

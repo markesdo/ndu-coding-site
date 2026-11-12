@@ -9,6 +9,7 @@ const MOMTEST = 'Rob Fitzpatrick, The Mom Test';
 export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   verschwimmen: {
     live: [
+      'Strich: jemand fragt ‚Wo sind wir?‘ oder nach einem Link.',
       'Ansage: Theorie kurz, ab ca. 14:25 alle Interviews und Skizzen.',
       'Heute Frage überspringen oder eine Person antworten lassen.',
       'Fragen: Wer hat in Need Finding schon Snapshots oder Affinitätsdiagramme gemacht?',
@@ -122,6 +123,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Timer 1 min: jede*r tippt einen Satz, noch nicht abschicken.',
       '„Noch nicht abschicken – erst auf mein Zeichen, alle gleichzeitig.“',
       'Falle: Lesart vorgeben oder erklären, worauf eine Rolle achtet.',
+      'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
     ],
     uebung: { dauer: '1 min', form: 'allein, ein Satz auf der Seite (Rückfall: laut)' },
     ablauf: {
@@ -371,6 +373,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       '„Beleg: noch keiner“ gilt – im Grund steht dann: in echten Interviews prüfen.',
       'Echte Interviews ohne Beleg: zu nett oder nach der Idee gefragt?',
       'Pause: Claude – ‚Übertrag die Snapshots und kopier die Skizzen‘.',
+      'Ist-Zeit notieren.',
     ],
     miro: {
       frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',

@@ -28,3 +28,8 @@ export const NACH_NETFLIX = ENDE_TAG_2;
 /** Rückfall für die Antwortrunde „Zwölf Chancen“ an Tag 2 (Baum, Folie „warum“): Ende des Tages. Aufgedeckt wird per
  *  Klick des Präsentators wie bei Netflix; vorher sollen alle ihre Nummer mit Satz abgeschickt haben. */
 export const NACH_ZWOELF = ENDE_TAG_2;
+
+
+/** Rückfall für die Antwortrunde „Rückblick“ am Ende von Tag 2 (Abschluss, Folie „rueckblick“): Ende des Tages.
+ *  Aufgedeckt wird per Klick des Präsentators auf derselben Folie, wenn alle drei abgeschickt haben. */
+export const NACH_RUECKBLICK_TAG_2 = ENDE_TAG_2;
