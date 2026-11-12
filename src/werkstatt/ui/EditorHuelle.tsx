@@ -11,7 +11,7 @@ import { ARTEFAKTE, artefaktParsen, type ArtefaktName, type DatenVon, type Feldf
 import { DEMO_HREF, MAPPE_DEMO } from '../../lib/nav-rolle.js';
 import { ROUTEN } from '../vertrag.js';
 import { api, ApiError } from './api.js';
-import { adresseOhneBearbeiten, bearbeitenAusAdresse, direktOeffnen } from './bearbeiten-link.js';
+import { adresseOhneBearbeiten, direktOeffnen, mitBearbeiten } from './bearbeiten-link.js';
 import { StudierendenFeedback } from './Feedback.js';
 import Fehlergrenze, { Ausfuehren } from './Fehlergrenze.js';
 import { entwurfLaden, entwurfLoeschen, entwurfNachCommitLoeschen, entwurfNormalisieren, entwurfSichern, startStand } from './entwurf.js';
@@ -96,7 +96,8 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   const [aelterEntwurf, setAelterEntwurf] = useState<DatenVon<N> | null>(null);
   // Stand des Servers (ohne Entwurf) für das Formular.
   const [gespeichert, setGespeichert] = useState<DatenVon<N> | null>(null);
-  // Von selbst geöffnet (Direktlink): Der Parameter bleibt, bis die Mappe geladen oder der Dialog zu ist.
+  // Von selbst geöffnet (Direktlink): Der Parameter ist dann schon aus der Adresse; der Anmelde-Link im Dialog hängt ihn
+  // wieder an, damit der Editor nach der Anmeldung aufgeht.
   const [direkt, setDirekt] = useState(false);
 
   // Aktueller Stand für asynchrone Abläufe (Zustand in React-State wäre dort veraltet).
@@ -206,22 +207,17 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
     }
   }, [offen]);
 
-  // Direktlink: Die Hülle hängt erst im DOM, wenn die Seite die Mappe (oder den Editor) zeigt. Dann einmal öffnen.
+  // Direktlink: Die Hülle hängt erst im DOM, wenn die Seite die Mappe (oder den Editor) zeigt. Dann einmal öffnen und den
+  // Parameter im selben Zug aus der Adresse nehmen: Neuladen und Zurück öffnen nicht noch einmal, auch wenn die Hülle
+  // gleich wieder verschwindet.
   useEffect(() => {
     if (direktVerbraucht || !direktOeffnen(location.search, name, document.documentElement.hasAttribute('data-beamer'))) return;
     direktVerbraucht = true;
+    history.replaceState(history.state, '', adresseOhneBearbeiten(location.pathname, location.search, location.hash));
     setDirekt(true);
     oeffnen();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Den Parameter entfernen, sobald geladen ist (oder der Dialog zu): Neuladen und Zurück öffnen nicht noch einmal.
-  // Abgemeldet bleibt er stehen – „Mit GitHub anmelden“ nimmt die Adresse samt Parameter als Rücksprung mit.
-  useEffect(() => {
-    if (!direkt || (offen && (zustand === 'laden' || zustand === 'abgemeldet'))) return;
-    setDirekt(false);
-    if (bearbeitenAusAdresse(location.search) !== null) history.replaceState(history.state, '', adresseOhneBearbeiten(location.pathname, location.search, location.hash));
-  }, [direkt, offen, zustand]);
 
   // „Wird eingerichtet“: alle 3 s neu versuchen, nach ~10 s gibt der Knopf das Heft zurück.
   useEffect(() => {
@@ -373,7 +369,7 @@ export default function EditorHuelle<N extends ArtefaktName>({ name, titel, bild
   }
 
   const zurueck = typeof location === 'undefined' ? '/' : location.pathname + location.search + location.hash;
-  const loginHref = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(zurueck)}`;
+  const loginHref = `${ROUTEN.login.pfad}?weiter=${encodeURIComponent(direkt ? mitBearbeiten(zurueck, name) : zurueck)}`;
 
   function entwurfUebernehmen(): void {
     if (aelterEntwurf === null) return;

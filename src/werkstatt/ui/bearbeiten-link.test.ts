@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { sichererPfad } from '../../lib/kurszugang.js';
 import { ARTEFAKT_NAMEN } from '../schemas/index.js';
-import { adresseOhneBearbeiten, bearbeitenAusAdresse, bearbeitenHref, direktOeffnen, mitBearbeiten } from './bearbeiten-link.js';
+import { adresseOhneBearbeiten, bearbeitenAusAdresse, bearbeitenBleibt, bearbeitenHref, direktOeffnen, mitBearbeiten } from './bearbeiten-link.js';
 import { LOGIN_HREF, loginHref } from './mappe-hilfen.js';
 
 describe('bearbeitenAusAdresse', () => {
@@ -49,5 +49,24 @@ describe('direktOeffnen', () => {
     expect(direktOeffnen('?bearbeiten=annahmen', 'leitfaden', false)).toBe(false);
     expect(direktOeffnen('?bearbeiten=annahmen', 'annahmen', true)).toBe(false);
     expect(direktOeffnen('?bearbeiten=quatsch', 'annahmen', false)).toBe(false);
+  });
+});
+
+describe('bearbeitenBleibt', () => {
+  it('bleibt, solange ein Editor ihn noch verbrauchen kann (laden, einrichten, abgemeldet, eigene Mappe)', () => {
+    for (const sicht of ['laden', 'einrichten', 'abgemeldet', 'bereit'] as const) expect(bearbeitenBleibt('?bearbeiten=annahmen', sicht), sicht).toBe(true);
+  });
+  it('weg im Leser der Lehrenden und bei Fehlern', () => {
+    expect(bearbeitenBleibt('?bearbeiten=annahmen', 'lehrende')).toBe(false);
+    expect(bearbeitenBleibt('?bearbeiten=annahmen', 'fehler')).toBe(false);
+  });
+  it('weg bei unbekanntem Wert, auch abgemeldet', () => {
+    expect(bearbeitenBleibt('?bearbeiten=quatsch', 'abgemeldet')).toBe(false);
+    expect(bearbeitenBleibt('?bearbeiten=quatsch', 'bereit')).toBe(false);
+  });
+  it('weg in der eigenen Mappe, wenn der Editor dort nicht steht (Leitfaden vor dem Mom Test)', () => {
+    const ohneLeitfaden = (n: string) => n !== 'leitfaden';
+    expect(bearbeitenBleibt('?bearbeiten=leitfaden', 'bereit', ohneLeitfaden)).toBe(false);
+    expect(bearbeitenBleibt('?bearbeiten=annahmen', 'bereit', ohneLeitfaden)).toBe(true);
   });
 });

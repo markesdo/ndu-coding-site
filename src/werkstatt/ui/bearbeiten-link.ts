@@ -32,6 +32,20 @@ export function mitBearbeiten(pfad: string, name: ArtefaktName | null): string {
   return u.pathname + u.search + u.hash;
 }
 
+/** Was /innolab/mappe gerade zeigt (MappeUebersicht). */
+export type MappeSicht = 'laden' | 'abgemeldet' | 'einrichten' | 'bereit' | 'lehrende' | 'fehler';
+
+/** Darf ?bearbeiten in der Adresse der Mappe stehen bleiben? Nur ein bekannter Wert, und nur solange noch ein Editor
+ *  ihn verbrauchen kann: beim Laden, im Einrichten, abgemeldet (für den Rücksprung nach der Anmeldung) und in der
+ *  eigenen Mappe, deren Editor ihn beim Öffnen selbst entfernt. Leser der Lehrenden, Fehler oder ein Editor, der gar
+ *  nicht dasteht (Leitfaden vor dem Mom Test): sofort weg. */
+export function bearbeitenBleibt(suche: string, sicht: MappeSicht, editorDa: (name: ArtefaktName) => boolean = () => true): boolean {
+  const name = bearbeitenAusAdresse(suche);
+  if (name === null) return false;
+  if (sicht === 'bereit') return editorDa(name);
+  return sicht === 'laden' || sicht === 'abgemeldet' || sicht === 'einrichten';
+}
+
 /** Öffnet die Hülle von selbst? Nur der passende Editor, nicht im Beamer (dort wäre der Dialog unsichtbar). */
 export function direktOeffnen(suche: string, name: ArtefaktName, beamer: boolean): boolean {
   return !beamer && bearbeitenAusAdresse(suche) === name;
