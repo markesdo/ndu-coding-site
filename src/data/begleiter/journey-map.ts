@@ -1,5 +1,4 @@
 import type { Notiz } from './typen';
-import { CHAT_JOURNEY_MAP } from './chat';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/journey-map.astro (Tag 2, 15:25–16:25). Vorwissen: „unsicher“, als
 // „customer journey“ aus dem Entrepreneur Lab genannt (vorwissen.ts) – zuerst fragen; ist es bekannt, Erleben und Knoten
@@ -178,14 +177,12 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Schritte unten kopieren und in den Teams-Chat einfügen.',
       'Timer 10 min: allein, die Map von Tag 1 daneben.',
       'Nach 10 min: zu dritt zeigen, nicht verteidigen.',
       'Nach 22 min: drei bis fünf Momente, stärkster Moment, Ende.',
       'Nach 30 min: Prüfliste, dann Claude mit Bild der Map.',
     ],
     uebung: { dauer: '35 min (10 + 12 + 8 + 5)', form: 'allein, dann zu dritt' },
-    chat: CHAT_JOURNEY_MAP,
     miro: {
       frame: 'T2 · 1 · Experience Map',
       schritte: [
@@ -197,7 +194,6 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
         'Allein (10 min): Knoten aus den Skizzen beschriften, auf Papier oder gleich in der eigenen Spalte auf T2 · 1, zusammenfügen, die Map von Tag 1 daneben.',
         'Zu dritt (12 min): Jede*r zeigt die eigene Map (Bildschirm teilen), die anderen fragen nach.',
         'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft. Jeder Moment mit Zitat-ID: Das Zitat zeigt, was die Person dort denkt, fühlt oder tut. Dann den stärksten Moment (Hoch- oder Tiefpunkt) und das Ende markieren.',

@@ -1,5 +1,4 @@
 import type { Notiz } from './typen';
-import { CHAT_NETFLIX, CHAT_SYNTHESE } from './chat';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/synthese.astro (Tag 2, 14:15–15:15; bis 11.11. 14:05–15:10, 5 min Theorie gingen an den Rückblick auf Tag 1). Vorwissen: „teilweise“ aus Need
 // Finding (vorwissen.ts) – darum zuerst fragen, was bekannt ist, und die Theorie dann knapp halten.
@@ -123,13 +122,12 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       '„Noch nicht abschicken – erst auf mein Zeichen, alle gleichzeitig.“',
       'Falle: Lesart vorgeben oder erklären, worauf eine Rolle achtet.',
     ],
-    uebung: { dauer: '1 min', form: 'allein, ein Satz auf der Seite (Rückfall: Teams-Chat)' },
-    chat: CHAT_NETFLIX,
+    uebung: { dauer: '1 min', form: 'allein, ein Satz auf der Seite (Rückfall: laut)' },
     ablauf: {
       schritte: [
         'Folie zeigen, die Geschichte vorlesen.',
         'Rollen zuteilen (nur den Namen: Produktmanagement, Design, Entwicklung). Studierende öffnen die Folie auf ihrem eigenen Gerät, wählen dort ihre Rolle. Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
-        'Auf dein Zeichen schicken alle gleichzeitig ab; der Beamer zeigt „2 von 3 haben geantwortet“. Bis zum Aufdecken kann jede*r noch ändern. Steht auf der Seite „Antwort bitte in den Teams-Chat.“ (Server weg), geht die Runde wie bisher im Chat. Dann zur nächsten Folie.',
+        'Auf dein Zeichen schicken alle gleichzeitig ab; der Beamer zeigt „2 von 3 haben geantwortet“. Bis zum Aufdecken kann jede*r noch ändern. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r den Satz reihum laut. Dann zur nächsten Folie.',
       ],
       achten: [
         'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
@@ -155,7 +153,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags). Sie zeigt zuerst „Eure Sätze“ nach Rolle (über die Seite geschickt; Chat-Sätze vorlesen), dann die drei aus dem Buch. Vorlesen, ohne zu werten.',
+        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags). Sie zeigt zuerst „Eure Sätze“ nach Rolle (über die Seite geschickt; fehlt einer, reihum laut), dann die drei aus dem Buch. Vorlesen, ohne zu werten.',
         'Jede*r vergleicht den eigenen Satz mit dem der eigenen Rolle, dann den Schritt „Jede Sicht ist berechtigt. Darum gleich reihum“ aufdecken – Überleitung zur Besprechung der Snapshots: Die anderen hören, was ihr überhört.',
       ],
       aufloesung: 'Produktmanagement hört „Unter ‚Beliebt‘ nur Serien“ (Sorge ums Angebot), Design „Wir fanden nicht heraus, wie man nach einem Titel sucht“ (Bedienung), Entwicklung „Fast nur Kinderfilme“ (technischer Weg, verschiedene Nutzer*innen zu erkennen). Jede Sicht ist berechtigt; je unterschiedlicher das Team, desto mehr holt es aus einem Interview.',
@@ -263,7 +261,6 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Nach drei Runden: weiter zu Festhalten, Timer 8 min dort.',
     ],
     uebung: { dauer: '44 min (3 × 12 + 8)', form: 'zu dritt reihum, dann allein' },
-    chat: CHAT_SYNTHESE,
     miro: {
       frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
@@ -282,7 +279,6 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         '8:30 Frage 4: „Frage 4 – die anderen.“ „Alle Zitate“ (und Notizen) öffnen. Falls die Fragenleiste da ist: Taste 4; F blendet die Leiste ein oder aus. Die Besprechung schließen mit „Noch etwas für [Name]?“',
         '10:00–11:30 Schreiben: „Ein Beleg in die Map – speichern bis Minute 11:30.“ (Die Werkstatt speichert nicht von selbst.) Bei Minute 11:30 (Timer-Minute, nicht Uhrzeit) einmal „Neu laden“ – im Kontext, Reiter Annahmen, steht der Eintrag dann als „neu“. Zeigt nichts „neu“: „kommt in Festhalten“ sagen und weitergeben, nicht suchen.',
         '12:00 Wechsel: „Wechsel. [Nächste], welche ID?“ Timer neu starten. Nach drei Runden (36 min) zur Folie Festhalten, Timer 8 min dort: erst die eigenen Notizen übertragen – Chance oder Einsicht in den Snapshot, Leitfaden (Frage ändern, Nachfrage), Beleg in der Annahmen-Map prüfen –, dann eine Zeile ins Log zur riskantesten Annahme: verworfen, geändert oder bewusst behalten, mit Grund.',
-        'Schritte für den Kurs-Chat: Kasten „Für den Teams-Chat“ hier im Begleiter (dieselbe Karte steht im Handout).',
       ],
       achten: [
         'Rollenkarte – wer zeigt: Vorher den Snapshot wählen, ID laut sagen. 0–5 durch den Snapshot führen (Frage 1). 5–10 bei Frage 2 und 4 erst zuhören, nicht verteidigen (Kursregel, abgeleitet aus Torres S. 74–75); bei Frage 3 zuerst antworten. 5–10 schreibt in die eigenen Notizen mit, was die anderen laut sagen. 10–11:30 genau ein Eintrag: in der Annahmen-Map bei der Annahme aus Frage 2 die Zitat-ID und „stützt“ oder „spricht dagegen“ – speichern bis Minute 11:30. Alles andere in die eigenen Notizen, fürs Festhalten. Nur synthetisch: stattdessen eine Frage im Leitfaden ändern.',

@@ -4,11 +4,9 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import FooterNav from '../../../components/FooterNav.astro';
-import { CHAT_SYNTHESE } from '../../../data/begleiter/chat';
 import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
-import Prompt from '../../../components/Prompt.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
 import Antwortrunde from '../../../components/Antwortrunde.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
@@ -257,7 +255,6 @@ const D4_SATZ = `${D4.entscheidung}, weil ${D4.grund}; Beleg: ${D4.beleg} (${D4.
       <p><strong>Interviews erst heute eingetragen? (Kursregel, Folie „Noch keine Interviews in der Werkstatt?“)</strong> Dann tragt ihr zu Beginn des Blocks, bis 14:50, die besten zwei bis drei Interviews ein – auf dem kürzesten Weg: Pseudonym, Datum, Einwilligung, drei bis fünf wörtliche Zitate mit ID (I1-1, I1-2 …) und die Chancen mit den IDs, die sie belegen. Kurzinfos, Einsichten und Notizen ergänzt ihr später. Die Theorie wird dann kurz, und die Runden schrumpfen auf fünf Minuten: zwei zeigen, zwei für Frage 2 (Was ändert sich?), Frage 3 (Wie war das Gespräch?) nur kurz, eine schreiben: derselbe eine Eintrag in der Annahmen-Map, in etwa einer Minute, sonst beim Festhalten. Frage 4 entfällt. Danach drei Minuten Festhalten, und beim Übertrag sagt jede*r nur einen Satz; der Block endet trotzdem um 15:15.</p>
       <p><strong>Nur synthetische Interviews? (Kursregel)</strong> Synthetische Übungsinterviews tragt ihr wie echte ein, mit dem Pseudonym „Synthetisch“. In der Runde entfällt Frage 3: Es gab kein echtes Gespräch, dessen Fragen ihr prüfen könntet. Das gilt nur für synthetische Interviews, nicht für echte, die ihr erst heute eingetragen habt. Als Beleg zählen synthetische Interviews nie: Niemand aus eurer Zielgruppe hat das erlebt oder gesagt – sie zeigen, wie ihr fragt, nicht, was eure Kundschaft tut. Darum gibt es auch keinen Eintrag in der Annahmen-Map. Stattdessen ändert ihr in der Schreibzeit eine Frage in eurem Leitfaden oder ergänzt eine (Link „Leitfaden ↗“ unter der Tabelle) und speichert – sie erscheint im Kontext als „neu“.</p>
       <p><strong>Reihenfolge beim Ausfüllen:</strong> zuerst die Zitate (so entstehen die IDs), dann Geschichte, Chancen mit Belegen, Einsichten – einprägsames Zitat und Kurzinfos zuletzt. Wer bis 14:50 nachträgt, füllt nur Zitate und Chancen; den Rest ergänzt ihr später.</p>
-      <Prompt label="Für den Teams-Chat">{CHAT_SYNTHESE}</Prompt>
     </div>
   </Folie>
 

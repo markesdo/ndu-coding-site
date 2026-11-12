@@ -1,5 +1,4 @@
 import type { Notiz } from './typen';
-import { CHAT_BAUM, CHAT_ZWOELF } from './chat';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 2, 16:35–17:50). Kein Vorwissen eingetragen; der Baum
 // ist seit Tag 1 der rote Faden, heute kommt die Ebene der Chancen dazu.
@@ -29,17 +28,16 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   zwoelf: {
     live: [
       'Liste nicht erklären, alle lesen still.',
-      'Timer 2 min: ein Satz in den Chat, abschicken auf dein Zeichen.',
+      'Timer 2 min: still überlegen, dann reihum laut, je ein Satz.',
       'Dann vorlesen: Wer hat wie verglichen?',
       'Falle: eine richtige Antwort andeuten – es gibt keine.',
     ],
-    uebung: { dauer: '2 min', form: 'allein, ein Satz in den Teams-Chat' },
-    chat: CHAT_ZWOELF,
+    uebung: { dauer: '2 min', form: 'allein, dann reihum laut, je ein Satz' },
     ablauf: {
       schritte: [
         'Folie zeigen, die Liste still lesen lassen.',
-        'Timer 2 min: Jede*r tippt, welche Chance zuerst und warum – noch nicht abschicken.',
-        'Auf dein Zeichen abschicken, Sätze vorlesen, nicht werten. Dann zur nächsten Folie.',
+        'Timer 2 min: Jede*r überlegt still, welche Chance zuerst und warum.',
+        'Dann reihum laut, je ein Satz; zuhören, nicht werten. Dann zur nächsten Folie.',
       ],
       achten: [
         'Wer „Wer ist dieser Schauspieler?“ nimmt, weil leicht: genau die Frage, die Torres stellt – immer das Leichte vor dem Schweren?',
@@ -56,7 +54,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   warum: {
     live: [
-      'Mit den Chat-Sätzen verbinden: Wer stockte beim Vergleichen?',
+      'Mit den Sätzen aus der Runde verbinden: Wer stockte beim Vergleichen?',
       '„Eine flache Liste mischt übergeordnete Chancen, Teilchancen und Geschwister.“',
       'Beispiel Flugzeug und Zug: ähnlich, aber offline, Steckdose, Netz.',
     ],
@@ -147,7 +145,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Pro Zeile die drei Fragen in die Runde stellen, Antworten im Chat oder per Mikro sammeln.',
+        'Pro Zeile die drei Fragen in die Runde stellen, Antworten laut sammeln.',
         'Nach der letzten Zeile den Schritt aufdecken: Dann erscheinen alle Antworten.',
       ],
       aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, verpasse ich den Zug“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): bleiben auf dem Snapshot.',
@@ -291,14 +289,12 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Schritte unten kopieren und in den Teams-Chat einfügen.',
       'Timer 12 min: erst Momente als blaue Karten, dann Inventar.',
       'Nach 12 min: Struktur allein, Linien ziehen, Timer 10 min.',
       'Nach 22 min: weiter zur Checkliste, Timer 12 min dort.',
       'Nach 34 min: Prüfliste, dann Claude mit Bild des Baums.',
     ],
     uebung: { dauer: '39 min (12 + 10 + 12 + 5)', form: 'allein, dann zu dritt reihum' },
-    chat: CHAT_BAUM,
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
@@ -310,7 +306,6 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Schritte in den Teams-Chat kopieren (Kasten „Für den Teams-Chat“ hier im Begleiter; dieselbe Karte steht im Handout).',
         'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance durch die drei Fragen, in „Baum · Name“ unter ihren Moment; Einzelfälle in den Streifen „Nur in einem Interview“.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
         'Gegenlesen reihum (12 min, Timer auf der Folie Anti-Muster): je Baum vier Minuten, die anderen beiden gehen die Checkliste der sechs Anti-Muster durch.',
