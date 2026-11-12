@@ -6,11 +6,12 @@
 // an Claude Code im Projekt-Repo, das die Werkstatt-Vorarbeit über denselben Connector liest. Darunter, zugeklappt, der
 // Ausweichweg ohne Claude Code: Ergebnis als Text in Claude einfügen (nur für Ergebnisse in Dateien). Liegt das Ergebnis
 // nur auf Miro (Experience Map, Baum), geht der Prompt mit einem Bild des Frames an Claude mit dem Werkstatt-Connector.
-// Direkt unter dem Prompt „Danach“: was ihr mit den Befunden macht (ändern oder lassen + Entscheidungslog).
+// Direkt unter dem Prompt „Danach“: was ihr mit den Befunden macht (danachEntscheiden in methoden.ts; Nachfragen nach
+// Belegen nur beim Prüfen auf Miro).
 import Checklist from './Checklist.astro';
 import ClaudeCodeWerkstatt from './ClaudeCodeWerkstatt.astro';
 import Prompt from './Prompt.astro';
-import { METHODEN, artefakt, einfuegenHinweis, einfuegenMoeglich, miroBildAusschnitt, miroVorarbeitArtefakte, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, werkstattVorarbeit } from './methoden';
+import { METHODEN, artefakt, danachEntscheiden, einfuegenHinweis, einfuegenMoeglich, miroBildAusschnitt, miroVorarbeitArtefakte, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, werkstattVorarbeit } from './methoden';
 
 // pfad: wenn nur ein Teil des Artefakts geprüft wird (z. B. ein Transkript statt aller Interview-Dateien).
 const { slug, pfad } = Astro.props as { slug: string; pfad?: string };
@@ -45,10 +46,7 @@ const miroZweit = miro ? miroVorarbeitArtefakte(m) : [];
 <div class="danach">
   <p><strong>Danach entscheidet ihr</strong> – Claude schreibt nichts um:</p>
   <ol>
-    <li>Jeden Befund lesen: Claude zitiert die Stelle und stellt eine Frage.</li>
-    <li>Die Frage selbst beantworten, nicht im Chat mit Claude weiterschreiben lassen. Den neuen Text schreibt ihr.</li>
-    <li>Stimmt der Befund, ändert ihr die Stelle selbst{werkstatt ? ' in der Werkstatt („Bearbeiten“, speichern)' : miro ? ' auf Miro' : ', dort, wo das Ergebnis liegt (Datei oder Issue)'}. Stimmt er nicht oder ist es bewusst so, bleibt der Text, und ihr schreibt eine Zeile ins <a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>: was ihr lasst und warum, mit Beleg oder „noch keiner“.</li>
-    <li>„Passt alles“: weiter. Nach dem Ändern höchstens einmal neu prüfen lassen.</li>
+    {danachEntscheiden(m, pfad).map((t) => <li set:html={t} />)}
   </ol>
 </div>
 {!werkstatt && !miro && ausWerkstatt && (

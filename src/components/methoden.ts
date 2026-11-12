@@ -576,6 +576,34 @@ export function pruefungAufMiro(m: Methode, pfad?: string): boolean {
   return !pfad && m.ergibt.length > 0 && m.ergibt.every((id) => nurAufMiro(artefakt(id)!));
 }
 
+/** Nachfrage an Claude nach einem Befund: nur nach Belegen, nie nach einer Formulierung. */
+export const NACHFRAGE_BELEGE = 'Nachfragen nur nach Belegen, eine pro Befund: „Zeig mir die Interviewstelle zu diesem Befund.“ oder „Welche Zitate aus meinen anderen Interviews berühren diesen Moment? Nur zeigen, nicht einordnen.“';
+
+/** „Danach entscheidet ihr“ unter dem Prüf-Prompt (ClaudePruefung.astro): je Punkt ein HTML-Text. Die Nachfrage nach
+ *  Belegen steht nur beim Prüfen auf Miro (Experience Map, Baum): Bei artefakt_pruefen zitiert Claude die Vorarbeit
+ *  zum Abgleich nie (Server-Anweisung, Regel 5) – dort würde die Nachfrage dagegen laufen. */
+export function danachEntscheiden(m: Methode, pfad?: string): string[] {
+  const log = '<a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>';
+  const lassen = `Stimmt er nicht oder ist es bewusst so: lassen und eine Zeile ins ${log} – was ihr lasst und warum, mit Beleg oder „noch keiner“.`;
+  if (pruefungAufMiro(m, pfad)) {
+    return [
+      'Gibt Claude Befunde: im Kurs einen wählen, den wichtigsten. Die Frage selbst in einem Satz beantworten.',
+      'Ein Befund ist eine Vermutung, kein Urteil: Prüft an euren Zitaten, ob er stimmt.',
+      `${NACHFRAGE_BELEGE} Den neuen Text schreibt ihr selbst – Claude formuliert nichts.`,
+      `Stimmt er: selbst auf Miro ändern. ${lassen}`,
+      'Die übrigen Befunde bis Tag 3; nach dem Ändern höchstens einmal neu prüfen lassen.',
+      '„Passt alles“: weiter.',
+    ];
+  }
+  const ort = pruefungInWerkstatt(m, pfad) ? 'in der Werkstatt („Bearbeiten“, speichern)' : 'dort, wo das Ergebnis liegt (Datei oder Issue)';
+  return [
+    'Einen Befund nach dem anderen: die Frage selbst in einem Satz beantworten, nicht im Chat mit Claude weiterschreiben lassen. Den neuen Text schreibt ihr.',
+    'Ein Befund ist eine Vermutung, kein Urteil: Prüft an eurem Ergebnis und euren Belegen, ob er stimmt.',
+    `Stimmt er: selbst ändern, ${ort}. ${lassen}`,
+    '„Passt alles“: weiter. Nach dem Ändern höchstens einmal neu prüfen lassen.',
+  ];
+}
+
 /** Claude ordnet nicht für die Person ein (Live-Test 11.11.: „spricht gegen A1“ statt einer Frage). Eine Quelle: für
  *  Server-Anweisung, Werkzeugbeschreibung und anleitung von artefakt_pruefen („die Person“), im kopierten Prompt „mich“. */
 const nichtEinordnen = (fuer: string) => `Ordne nichts für ${fuer} ein: Zeig die Stelle und frag, wofür oder wogegen sie spricht – sag es nicht selbst.`;

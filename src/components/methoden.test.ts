@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from '../werkstatt/schemas/index.js';
 import { MCP_WERKZEUGE } from '../werkstatt/vertrag.js';
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from './innolab-zeiten';
-import { ARTEFAKTE, METHODEN, ORTE, TAGE, WERKSTATT_AKKUSATIV, einfuegenHinweis, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
+import { type Methode, ARTEFAKTE, METHODEN, NACHFRAGE_BELEGE, ORTE, TAGE, WERKSTATT_AKKUSATIV, danachEntscheiden, einfuegenHinweis, einfuegenMoeglich, erzeugtVon, methodenVonTag, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, vorarbeitLesen } from './methoden';
 
 const artefaktIds = ARTEFAKTE.map((a) => a.id);
 const slugs = METHODEN.map((m) => m.slug);
@@ -315,6 +315,34 @@ describe('methoden', () => {
     const hmw = pruefPrompt(METHODEN.find((m) => m.slug === 'hmw')!, undefined, 'einfuegen');
     expect(hmw).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe (docs/ZIEL-CHANCE.md).\n');
     expect(hmw).not.toContain(MCP_WERKZEUGE.artefaktLesen);
+  });
+
+  // „Danach entscheidet ihr“ (ClaudePruefung.astro): Nachfragen nach Belegen nur beim Prüfen auf Miro. Bei
+  // artefakt_pruefen zitiert Claude die Vorarbeit nie (Server-Anweisung, Regel 5), darum dort keine Nachfrage.
+  it('Danach: Nachfrage nach Belegen nur bei Experience Map und Baum, nicht in Werkstatt oder Repo', () => {
+    const methode = (slug: string) => METHODEN.find((m) => m.slug === slug)!;
+    const text = (m: Methode, pfad?: string) => danachEntscheiden(m, pfad).join('\n');
+    for (const slug of ['journey-map', 'baum']) {
+      const d = text(methode(slug));
+      expect(d, slug).toContain(NACHFRAGE_BELEGE);
+      expect(d, slug).toContain('schreibt ihr selbst');
+      expect(d, slug).toMatch(/„Passt alles“: weiter/);
+      expect(d, slug).toContain('auf Miro ändern');
+    }
+    expect(pruefungInWerkstatt(methode('annahmen'))).toBe(true);
+    expect(text(methode('annahmen'))).toContain('in der Werkstatt („Bearbeiten“, speichern)');
+    // Außerhalb von Miro (auch Hausaufgaben-Prüfungen): keine Nachfrage, keine Aufteilung „im Kurs“.
+    const ohneMiro = METHODEN.filter((m) => m.pruefliste && !pruefungAufMiro(m));
+    expect(ohneMiro.length).toBeGreaterThan(5);
+    for (const m of ohneMiro) {
+      expect(text(m), m.slug).not.toMatch(/Nachfragen|Interviewstelle|Zeig mir/);
+      expect(text(m), m.slug).not.toMatch(/im Kurs|Kurstag/i);
+      expect(text(m), m.slug).toMatch(/„Passt alles“: weiter/);
+    }
+    // Nur ein Teil (pfad): Datei, also auch keine Nachfrage.
+    expect(text(methode('baum'), 'docs/X.md')).not.toContain(NACHFRAGE_BELEGE);
+    // Jede Fassung behält den Weg ins Entscheidungslog.
+    for (const m of METHODEN.filter((x) => x.pruefliste)) expect(text(m), m.slug).toContain('<a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>');
   });
 
   // Seit 11.11.2026 liegen Experience Map und Baum nur auf Miro, ohne Datei im Repo: Claude prüft ein Bild des Frames.
