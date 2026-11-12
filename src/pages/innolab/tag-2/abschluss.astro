@@ -31,7 +31,7 @@ import { RUNDEN } from '../../../lib/antworten';
     <Aufloesung ab={RUNDEN.rueckblick.ab} gruppe={RUNDEN.rueckblick.kennung}>
       <Antwortrunde runde="rueckblick" ansicht="antworten" />
     </Aufloesung>
-    <p>An Tag 3 seht ihr, was daraus wird: Map, Baum, eine Änderung.</p>
+    <p class="nach-runde">An Tag 3 seht ihr, was daraus wird: Map, Baum, eine Änderung.</p>
     <div class="nur-handout">
       <p>Wir fragen nach Konkretem aus der Vergangenheit statt nach Meinungen (Rob Fitzpatrick, ‚The Mom Test‘, S. 13, 16) und nach einem bestimmten Moment (Teresa Torres, Continuous Discovery Habits, S. 64–65). Übung am eigenen Kurs – drei Sätze, keine Interviews. An Tag 3 zeigen wir, was daraus wird.</p>
     </div>
@@ -63,4 +63,6 @@ import { RUNDEN } from '../../../lib/antworten';
 <style>
   .log-zeile { margin: 1.25rem 0; padding: .8rem 1rem; border-left: 4px solid var(--accent); background: var(--bg-2); border-radius: 0 var(--radius) var(--radius) 0; font-family: var(--mono); font-size: .95rem; line-height: 1.5; hyphens: manual; }
   :global(html[data-beamer]) .log-zeile { font-size: 1.15rem; }
+  /* Abstand zum Knopf „Auflösung zeigen“ bzw. zu „Eure Sätze“. */
+  .nach-runde { margin-top: 1rem; }
 </style>
