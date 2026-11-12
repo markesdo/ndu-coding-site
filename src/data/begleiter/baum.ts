@@ -226,8 +226,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   senkrecht: {
     live: [
       'Abbildung: eine Kette, kein Baum.',
-      'Fragen: Sagen die drei dasselbe, oder fehlen Geschwister?',
-      '„Wisst ihr nicht, welche fehlen? Zettel ‚Nächstes Interview: …‘ neben die Karte.“',
+      'Frag den Raum (Box unten): erst „dasselbe?“, dann „fehlen Geschwister?“.',
+      'Zettel „Nächstes Interview: …“ ist Kursregel; Torres: in Interviews erkunden.',
       'Wenn hinten: überspringen, steht auf der Checkliste (anti-muster).',
     ],
     kern: [
@@ -236,6 +236,11 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 93–94`,
       },
     ],
+    verstaendnis: {
+      frage: 'Was prüft ihr bei Torres’ Kette – und in welcher Reihenfolge?',
+      antwort: 'Erst: Sagen die Stufen dasselbe in anderen Worten? Dann zu einer Chance zusammenfassen. Sonst: Löst jede Stufe die darüber nur zum Teil? Dann fehlen Geschwister (S. 93–94). Welcher Fall die Abbildung ist, sagt Torres nicht. Unsere Lesart: „Is this show any good?“ und „Will I like this show?“ sagen fast dasselbe; „I don\'t like it when I start a show and it isn\'t good.“ löst die mittlere nur zum Teil – Geschwister wie „Who is in this show?“ (S. 84–85) fehlen.',
+      falsch: '„Es fehlen Geschwister“ als einzige Prüfung – zuerst kommt die Frage, ob die Stufen dasselbe sagen.',
+    },
     ueberleitung: 'Vier weitere Anti-Muster, je mit einem Beispiel.',
   },
 
