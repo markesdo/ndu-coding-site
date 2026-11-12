@@ -168,31 +168,30 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   gruppieren: {
     live: [
-      'Miro T2 · 1, Kaffeebar, Übungsrunde – Timer 4 min.',
-      'Verteilen: I1 und I2 · I3 und I4 · I5 plus Namen.',
-      'Nicht eingreifen; Grenzfälle liegen lassen.',
-      'Aufdecken: Wo weicht eure Gruppierung ab – und warum?',
-      'Abweichung ist kein Fehler; begründen lassen.',
-      'Fragen: Welche Stickies meinen denselben Moment? IDs nennen lassen.',
-      'Fragen: Wie würdet ihr diese Gruppe nennen?',
-      'Fragen: Warum bleibt „Glücksspiel“ grau?',
+      'Hand bestimmen: schiebt nur, schlägt nicht vor.',
+      'Timer 5 min; ich greife nicht ein.',
+      'Vorschläge als Frage: „Derselbe Moment?“',
+      'Zweifelsfälle liegen lassen, nicht ausdiskutieren.',
+      'Aufdecken: Wo weicht ihr ab – und warum?',
     ],
-    uebung: { dauer: '4 min', form: 'zu dritt, je zwei zugeteilte Kaffeebar-Geschichten' },
+    uebung: { dauer: '5 min', form: 'zu dritt, eine*r schiebt, alle entscheiden' },
     miro: {
       frame: 'T2 · 1 · Experience Map',
       schritte: [
-        'Spalte Kaffeebar, Zone „Übungsrunde Kaffeebar – Schritt 1“: die 23 Stickies liegen bereit, die fertige Map ist abgedeckt.',
-        'Verteilen: I1 und I2 · I3 und I4 · I5 und die Namen.',
-        'Nach der Raster-Folie („beispiel“): die graue Abdeckung „Auflösung – noch zu“ in Zone 2 der Spalte Kaffeebar abheben.',
+        'Spalte Kaffeebar, Zone „Übungsrunde Kaffeebar – Schritt 1“: die 23 Stickies liegen bereit, darunter Deckel 1 (Gruppen-Lösung); die fertige Map liegt unter Deckel 2 in Zone 2.',
+        'Nach dem Aufdecken auf der Folie: Deckel 1 abheben.',
+        'Nach der Raster-Folie („beispiel“): Deckel 2 in Zone 2 der Spalte Kaffeebar abheben.',
       ],
     },
     ablauf: {
       schritte: [
-        'Übungsrunde auf Miro, 4 min (Timer auf der Folie).',
+        'Hand bestimmen: Wer sonst viel redet, schiebt – schiebt nur, schlägt nicht vor. Die anderen schlagen als Frage vor („Derselbe Moment?“); Namen-Stickies erst, wenn alle einverstanden sind; Zweifelsfälle liegen lassen.',
+        'Übungsrunde zu dritt auf Miro, 5 min (Timer auf der Folie); nicht eingreifen.',
         'Schritt 1 aufdecken: Farben und Buchstaben – vier Gruppen, Rest grau.',
         'Schritt 2 aufdecken: Legende mit den Gruppennamen.',
-        'Besprechen: Wo weicht eure Gruppierung ab – und warum? Begründen lassen.',
-        'Nach der Raster-Folie auf Miro die Abdeckung „Auflösung – noch zu“ (Zone 2) abheben.',
+        'Besprechen: Wo weicht eure Gruppierung ab – und warum? Abweichung ist kein Fehler; begründen lassen. Fragen: Welche Stickies meinen denselben Moment (IDs nennen lassen)? Wie würdet ihr diese Gruppe nennen? Warum bleibt „Glücksspiel“ grau?',
+        'Auf Miro Deckel 1 (Gruppen-Lösung) abheben.',
+        'Nach der Raster-Folie auf Miro Deckel 2 (fertige Map, Zone 2) abheben.',
       ],
     },
     verstaendnis: {
