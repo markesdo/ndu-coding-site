@@ -245,7 +245,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Warum kommt „Anstellen ist ein Glücksspiel“ nicht so in den Baum?',
-      antwort: 'Es ist ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, verpasse ich meinen Zug“ (I2-2, I3-4, I4-1, I4-2; Torres S. 95).',
+      antwort: 'Es ist ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, verpasse ich meinen Zug“ (I2-2, I3-4, I4-2; Torres S. 95).',
       falsch: '„Weil es nur eine Person gesagt hat“ – I4-2 stützt eine Chance, die drei Interviews belegen.',
     },
     kern: [
