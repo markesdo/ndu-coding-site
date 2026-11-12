@@ -10,7 +10,7 @@
 import Checklist from './Checklist.astro';
 import ClaudeCodeWerkstatt from './ClaudeCodeWerkstatt.astro';
 import Prompt from './Prompt.astro';
-import { METHODEN, einfuegenHinweis, einfuegenMoeglich, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, werkstattVorarbeit } from './methoden';
+import { ARTEFAKTE, METHODEN, einfuegenHinweis, einfuegenMoeglich, pruefChecklisteId, pruefPrompt, pruefungAufMiro, pruefungInWerkstatt, werkstattVorarbeit } from './methoden';
 
 // pfad: wenn nur ein Teil des Artefakts geprüft wird (z. B. ein Transkript statt aller Interview-Dateien).
 const { slug, pfad } = Astro.props as { slug: string; pfad?: string };
@@ -22,8 +22,25 @@ const miro = pruefungAufMiro(m, pfad);
 const ausWerkstatt = werkstattVorarbeit(m).length > 0;
 const label = werkstatt ? 'Prüfen lassen · Claude mit der Werkstatt' : miro ? 'Prüfen lassen · Claude mit Bild aus Miro' : 'Prüfen lassen · Claude Code';
 const einfuegen = einfuegenMoeglich(m, pfad) ? pruefPrompt(m, pfad, 'einfuegen') : null;
+// Miro: was aufs Bild kommt. Die Experience Map hat eine Spalte pro Person im gemeinsamen Frame, der Baum einen Frame pro Person.
+const miroFrame = miro ? ARTEFAKTE.find((a) => a.id === m.ergibt[0])?.miro : undefined;
+const miroBild = m.slug === 'journey-map' ? `eure Spalte im Frame „${miroFrame}“` : `euren Frame „${miroFrame}“`;
 ---
 <Checklist id={pruefChecklisteId(m)} items={m.pruefliste.map((p) => p.text)} ids={m.pruefliste.map((p) => p.id)} />
+{miro && (
+  <div class="so-gehts">
+    <p><strong>So geht’s (5 Minuten):</strong></p>
+    <ol>
+      <li>Die Prüfliste oben selbst abhaken.</li>
+      <li>Auf Miro {miroBild} so heranzoomen, dass jede Karte lesbar ist.</li>
+      <li>Bildschirmfoto in die Zwischenablage: Cmd+Ctrl+Shift+4, Bereich aufziehen. Ein großer Frame darf zwei Bilder brauchen.</li>
+      <li>Unten beim Prompt „{label}“ auf „Kopieren“ klicken.</li>
+      <li>In claude.ai ein neues Gespräch öffnen und prüfen, dass der Werkstatt-Connector an ist (über „+“ → Connectors; eingerichtet unter <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>). Prompt mit Cmd+V einfügen, das Bild mit Cmd+V darunter, absenden.</li>
+      <li>Claude nennt höchstens drei Befunde, je mit Zitat und Frage. Dann weiter wie unten unter „Danach entscheidet ihr“.</li>
+    </ol>
+    <p class="small muted">Die Werkstatt liest Claude mit dem Connector selbst; ohne Connector fügt ihr diese Texte ein, je aus „Für Claude kopieren“ im Editor, dort ohne Häkchen bei „Prüf-Prompt mitkopieren“.</p>
+  </div>
+)}
 <Prompt label={label} note="Erst nachdem ihr die Prüfliste selbst durchgegangen seid. Claude findet, ihr entscheidet."><Fragment set:text={text} /></Prompt>
 <div class="danach">
   <p><strong>Danach entscheidet ihr</strong> – Claude schreibt nichts um:</p>
@@ -44,9 +61,6 @@ const einfuegen = einfuegenMoeglich(m, pfad) ? pruefPrompt(m, pfad, 'einfuegen')
     {ausWerkstatt && <p class="small muted">Was in der Werkstatt liegt, liest Claude mit dem <a href="/innolab/werkstatt/claude">Werkstatt-Connector</a> selbst; ohne Connector fügt ihr auch diese Texte ein, je aus „Für Claude kopieren“ im Editor, dort ohne Häkchen bei „Prüf-Prompt mitkopieren“.</p>}
   </details>
 )}
-{miro && (
-  <p class="small muted">Das Bild: den Frame auf Miro so weit heranzoomen, dass jede Karte lesbar ist, mit Cmd+Shift+4 ein Bildschirmfoto machen und ins Gespräch mit Claude ziehen; ein großer Frame darf zwei Bilder brauchen. Die Werkstatt liest Claude mit dem <a href="/innolab/werkstatt/claude">Werkstatt-Connector</a> selbst; ohne Connector fügt ihr diese Texte ein, je aus „Für Claude kopieren“ im Editor, dort ohne Häkchen bei „Prüf-Prompt mitkopieren“.</p>
-)}
 {werkstatt && (
   <p class="small muted">Dafür braucht Claude den Werkstatt-Connector: <a href="/innolab/werkstatt/claude">Claude mit der Werkstatt verbinden</a>. Der Prompt geht auch in Claude Code: <a href="/innolab/werkstatt/claude#claude-code">Claude Code mit der Werkstatt verbinden</a>. Ohne Connector reicht ein Kopieren: „Für Claude kopieren“ im Editor, mit Häkchen bei „Prüf-Prompt mitkopieren“ (so steht es am Anfang). Das kopiert diesen Prompt, darunter euer Artefakt und jeden Text, den der Prompt zum Abgleich nennt; ihr fügt alles in ein neues Gespräch mit Claude ein. Ohne den Prompt reicht der Text nicht: Dann schreibt Claude euer Artefakt um, statt es zu prüfen.</p>
 )}
@@ -56,4 +70,8 @@ const einfuegen = einfuegenMoeglich(m, pfad) ? pruefPrompt(m, pfad, 'einfuegen')
   .danach p { margin: 0 0 .3rem; }
   .danach ol { margin: 0; padding-left: 1.4rem; }
   .danach li + li { margin-top: .2rem; }
+  .so-gehts { margin: .75rem 0 1rem; }
+  .so-gehts p { margin: 0 0 .3rem; }
+  .so-gehts ol { margin: 0 0 .5rem; padding-left: 1.4rem; }
+  .so-gehts li + li { margin-top: .2rem; }
 </style>

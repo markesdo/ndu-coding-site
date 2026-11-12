@@ -72,6 +72,8 @@ export interface Pruefpunkt {
   id: string;
   alt?: string;
   text: string;
+  /** Kurzform für eine Folie (z. B. „Prüfen“ der Experience Map); nur Anzeige, nie im Prompt. */
+  kurz?: string;
   /** Was Claude bei diesem Punkt zusätzlich tut und fragt, statt selbst einzuordnen (anleitung von artefakt_pruefen und Prüf-Prompt). */
   frage?: string;
 }
@@ -195,12 +197,12 @@ export const METHODEN: Methode[] = [
     braucht: ['brief', 'synthese'], ergibt: ['journey'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), S. 50–57, 86–87; Lexie Kane, „The Peak–End Rule“, Nielsen Norman Group (2018)',
     pruefliste: [
-      { id: 'journey-map-geschichten', text: 'Die Map ist aus den Geschichten eurer Interviews gebaut: Jeder Knoten lässt sich mindestens einer Geschichte zuordnen.' },
-      { id: 'journey-map-erleben', text: 'Sie zeigt, was die Menschen erleben – nicht euer Produkt und keine Bildschirmabfolge.' },
-      { id: 'journey-map-umwege', text: 'Sie zeigt auch Umwege, Schleifen und Abbrüche, nicht nur den glatten Weg.' },
-      { id: 'journey-map-momente-getrennt', text: 'Die Momente überschneiden sich nicht: Jeder ist ein eigener Zeitpunkt.' },
-      { id: 'journey-map-worte-belegt', text: 'Jeder Moment steht in den Worten der Kundschaft und ist mit Zitat-IDs belegt.' },
-      { id: 'journey-map-hoehepunkt-ende', text: 'Der stärkste Moment und das Ende sind markiert.' },
+      { id: 'journey-map-geschichten', text: 'Die Map ist aus den Geschichten eurer Interviews gebaut: Jeder Knoten lässt sich mindestens einer Geschichte zuordnen.', kurz: 'Aus den Geschichten gebaut – jeder Knoten hat eine Geschichte' },
+      { id: 'journey-map-erleben', text: 'Sie zeigt, was die Menschen erleben – nicht euer Produkt und keine Bildschirmabfolge.', kurz: 'Erleben, nicht euer Produkt' },
+      { id: 'journey-map-umwege', text: 'Sie zeigt auch Umwege, Wiederholungen, Schleifen und Abbrüche, nicht nur den glatten Weg.', kurz: 'Umwege, Wiederholungen, Schleifen, Abbrüche' },
+      { id: 'journey-map-momente-getrennt', text: 'Die Momente überschneiden sich nicht: Jeder ist ein eigener Zeitpunkt.', kurz: 'Momente überschneiden sich nicht' },
+      { id: 'journey-map-worte-belegt', text: 'Jeder Moment steht in den Worten der Kundschaft und ist mit Zitat-IDs belegt.', kurz: 'In den Worten der Kundschaft, mit Zitat-ID' },
+      { id: 'journey-map-hoehepunkt-ende', text: 'Der stärkste Moment und das Ende sind markiert, je als Wort mit Zitat-ID am Moment (etwa ‚Tief · I3-3‘); trägt ihn nur eine Geschichte, steht die Zahl dabei.', kurz: 'Stärkster Moment und Ende markiert: ‚Tief · I3-3‘' },
     ],
     ki: 'Liest eure Interviews und fragt, welche Geschichte in der Map fehlt und wo sich Momente überschneiden.',
   },

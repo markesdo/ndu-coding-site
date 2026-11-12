@@ -6,6 +6,7 @@ import type { Notiz } from './typen';
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt.
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 const KANE = 'Lexie Kane, The Peak–End Rule: How Impressions Become Memories, Nielsen Norman Group (2018)';
+const KAHNEMAN = 'Daniel Kahneman u. a., When More Pain Is Preferred to Less: Adding a Better End, Psychological Science 4 (1993), S. 401–405';
 
 export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
   wofuer: {
@@ -15,6 +16,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       '„Die Map ist euer Bild der Kundschaft: Sie führt durch Interviews und ordnet den Baum.“',
       'Hewen: Outcome bestätigen lassen – Outcome, kein Output (Torres S. 47).',
       'Fragen: Joachim – „Was tun die Menschen danach anders?“',
+      'Fragen: Was auf eurer Map von Tag 1 war nur vermutet?',
     ],
     verstaendnis: {
       frage: 'Wofür braucht ihr die Map, wenn ihr schon fünf Snapshots habt?',
@@ -33,6 +35,14 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       {
         text: 'Für den Baum: „Oftentimes this is as simple as mapping each node in your experience map to the top level of opportunities on your opportunity solution tree.“',
         quelle: `${TORRES}, S. 86`,
+      },
+      {
+        text: 'Neu zeichnen: Die erste gemeinsame Map enthielt „hunches and possibilities, not truth“ – aber sie machte sichtbar, was das Team zu wissen glaubte, wo es offene Fragen hatte und was die Interviews prüfen sollten.',
+        quelle: `${TORRES}, S. 51`,
+      },
+      {
+        text: 'Anti-Muster: „Moving forward as if your map is true“ und „Forgetting to refine and evolve your map as you learn more“ – sonst gehen die Sichten auseinander, selbst bei denselben Quelldaten.',
+        quelle: `${TORRES}, S. 57`,
       },
     ],
     ueberleitung: 'Erst die Frage, was überhaupt auf die Map gehört.',
@@ -80,33 +90,14 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 56`,
       },
     ],
-    ueberleitung: 'Eure Map von Tag 1 war genau so gezeichnet – aber aus Vermutungen.',
-  },
-
-  warum: {
-    live: [
-      'Fragen: Was auf eurer Map von Tag 1 war nur vermutet?',
-      '„Eine Map fühlt sich schnell wahr an – sie ist ein Entwurf.“',
-      'Fehler 2 betonen: sonst laufen die Bilder im Team auseinander.',
-    ],
-    kern: [
-      {
-        text: 'Die erste gemeinsame Map enthielt „hunches and possibilities, not truth“ – aber sie machte sichtbar, was das Team zu wissen glaubte, wo es offene Fragen hatte und was die Interviews prüfen sollten.',
-        quelle: `${TORRES}, S. 51`,
-      },
-      {
-        text: 'Anti-Muster: „Moving forward as if your map is true“ und „Forgetting to refine and evolve your map as you learn more“ – sonst gehen die Sichten auseinander, selbst bei denselben Quelldaten.',
-        quelle: `${TORRES}, S. 57`,
-      },
-    ],
-    ueberleitung: 'Neu zeichnet ihr sie diesmal aus euren Geschichten.',
+    ueberleitung: 'Eure Map von Tag 1 war so gezeichnet, aber aus Vermutungen – jetzt zeichnet ihr sie aus euren Geschichten.',
   },
 
   geschichten: {
     live: [
       'Vier Schritte zeigen, die Skizzen auf Papier sind der Rohstoff.',
       '„Welche Knoten tauchen in Geschichte um Geschichte auf? Das ist eure Map.“',
-      'Falle: zu stark zusammenlegen, Umwege und Abbrüche weglassen.',
+      'Falle: zu stark zusammenlegen; Wiederholungen, Abbrüche weglassen; Einzelfälle auf die Map.',
     ],
     kern: [
       {
@@ -114,11 +105,15 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 86–87`,
       },
       {
+        text: 'Wie zusammengefügt wird, steht auf S. 87 nicht; wir nehmen die Regeln der gemeinsamen Map aus Kap. 4. Ohne eigene Skizzen (synthetische Ersatz-Transkripte): erst jede Geschichte skizzieren, „the nodes and the links that make up the story“, höchstens drei, Map mit „Synthetisch“ markieren.',
+        quelle: `${TORRES}, S. 56, 70; Kursregel`,
+      },
+      {
         text: 'Ähnliche Knoten zusammenlegen, aber nicht so verallgemeinern, dass wichtige Details verloren gehen; nicht nur den glatten Weg zeichnen, sondern auch Wiederholungen, Abbrüche aus Frust und Schleifen.',
         quelle: `${TORRES}, S. 56`,
       },
     ],
-    ueberleitung: 'Aus den Knoten werden die Momente – und die tragen den Baum.',
+    ueberleitung: 'Was markiert ihr in jeder Geschichte? Den stärksten Moment und das Ende.',
   },
 
   momente: {
@@ -142,31 +137,40 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 87`,
       },
     ],
-    ueberleitung: 'Welche Momente zählen beim Erinnern am meisten? Der stärkste Moment (Hoch- oder Tiefpunkt) und das Ende.',
+    ueberleitung: 'An der Kaffeebar: erst zwei Skizzen beschriften und zählen, dann die Map.',
   },
 
   'peak-end': {
     live: [
       'Erst fragen: Welchen Durchgang würdet ihr wiederholen?',
       'Aufdecken: Die meisten wählen den längeren – er endet besser.',
-      '„Markiert den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
+      '„Markiert in jeder Geschichte den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
+      'Marke: Wort + Zitat-ID am Moment, etwa „Tief · I3-3“ – Kursregel.',
     ],
     kern: [
       {
-        text: 'Peak-End-Regel: Intensive Momente und das Ende eines Erlebnisses zählen beim späteren Urteil am meisten. Versuch von Kahneman, Fredrickson, Schreiber und Redelmeier (1993): 60 s bei 14 °C gegen dieselben 60 s plus 30 s bei 15 °C; laut NN/g wählten 80 % den zweiten Durchgang zur Wiederholung. „last impressions are lasting impressions“.',
+        text: 'Peak-End-Regel: Intensive Momente und das Ende eines Erlebnisses zählen beim späteren Urteil am meisten. Versuch von Kahneman, Fredrickson, Schreiber und Redelmeier (1993): „last impressions are lasting impressions“.',
         quelle: KANE,
       },
+      {
+        text: '32 Studenten; 60 s bei 14 °C gegen dieselben 60 s plus 30 s, in denen das Wasser langsam auf etwa 15 °C stieg („still painful but distinctly less so for most subjects“, S. 401). 22 von 32 (69 %) wählten den längeren Durchgang zur Wiederholung; von den 21 mit spürbar weniger Schmerz am Ende 17 (81 %), die übrigen 11 teilten sich 6 zu 5 (S. 403).',
+        quelle: KAHNEMAN,
+      },
+      {
+        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen; trägt ihn nur eine, die Zahl dazu („1 von 5“). Marke als Wort mit Zitat-ID, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
+        quelle: `${TORRES}, S. 57, 95; Kursregel`,
+      },
     ],
-    ueberleitung: 'An der Kaffeebar: Was hat sich gegenüber Tag 1 geändert?',
+    ueberleitung: 'Aus den Knoten werden die Momente – und die tragen den Baum.',
   },
 
   beispiel: {
     live: [
-      'Obere Reihe: die Map von Tag 1, das „?“ zeigen.',
-      'Fragen: Was haben die Geschichten bestätigt, was ist neu?',
-      'Aufdecken: das Warten auf den Kaffee – neuer Knoten, Tiefpunkt.',
+      'Aufdecken: zwei Skizzen, I2 und I3, Knoten mit Zitat-ID.',
+      'Fragen: Welcher Knoten steht in beiden Reihen? Zählen lassen, nicht vorsagen.',
+      'Aufdecken: Zählung, dann die Map – neu ist das Warten.',
       'Fragen: Woran erkennt ihr den Tiefpunkt? – Am Zitat, nicht am Bauchgefühl.',
-      '„Der Automat ist ein Umweg, kein eigener Moment.“',
+      '„Der Automat ist ein Umweg – die Antwort auf das ‚?‘ von Tag 1.“',
     ],
     verstaendnis: {
       frage: 'Warum ist der Automat kein eigener Moment auf der Map?',
@@ -177,27 +181,28 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Timer 10 min: allein, die Map von Tag 1 daneben.',
-      'Nach 10 min: zu dritt zeigen, nicht verteidigen.',
-      'Nach 22 min: drei bis fünf Momente, stärkster Moment, Ende.',
-      'Nach 30 min: Prüfliste, dann Claude mit Bild der Map.',
+      'Prüfliste kurz als Ziel zeigen (30 s), bevor alle starten.',
+      'Timer 12 min: allein, Marken in jeder Skizze, Tag-1-Map daneben.',
+      'Nach 12 min: reihum Spalte auf T2 · 1 zeigen, nicht verteidigen.',
+      'Nach 22 min: drei bis fünf Momente, Marken übertragen.',
+      'Marke = Wort + Zitat-ID, keine Emojis; Smileys auf Papier ok.',
     ],
-    uebung: { dauer: '35 min (10 + 12 + 8 + 5)', form: 'allein, dann zu dritt' },
+    uebung: { dauer: '35 min (12 + 10 + 8 + 5)', form: 'allein, dann zu dritt' },
     miro: {
       frame: 'T2 · 1 · Experience Map',
       schritte: [
         '„Alle zu mir holen“ auf T2 · 1; links die Kaffeebar als Muster.',
-        'Allein in der eigenen Spalte: Knoten aus den Skizzen, auf Papier oder gleich auf Miro, die Map von Tag 1 (T1 · 1) daneben.',
-        'Zu dritt Spalte für Spalte; Unterschiede zeichnen statt diskutieren.',
-        'Momente markieren, jede*r in der eigenen Spalte: drei bis fünf, je mit Zitat-ID; stärkster Moment (Hoch- oder Tiefpunkt) und Ende.',
+        'Allein in der eigenen Spalte: Knoten aus den Skizzen beschriften, in jeder Skizze stärksten Moment und Ende markieren, auf Papier oder gleich auf Miro, die Map von Tag 1 (T1 · 1) daneben.',
+        'Zu dritt Spalte für Spalte, alle schauen auf dem Board mit (kein Bildschirm teilen); Unterschiede zeichnen statt diskutieren.',
+        'Momente festlegen, jede*r in der eigenen Spalte: drei bis fünf, je mit Zitat-ID; Marken übertragen, etwa „Tief · I3-3“, „Ende · I3-5“.',
       ],
     },
     ablauf: {
       schritte: [
-        'Allein (10 min): Knoten aus den Skizzen beschriften, auf Papier oder gleich in der eigenen Spalte auf T2 · 1, zusammenfügen, die Map von Tag 1 daneben.',
-        'Zu dritt (12 min): Jede*r zeigt die eigene Map (Bildschirm teilen), die anderen fragen nach.',
-        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft. Jeder Moment mit Zitat-ID: Das Zitat zeigt, was die Person dort denkt, fühlt oder tut. Dann den stärksten Moment (Hoch- oder Tiefpunkt) und das Ende markieren.',
-        'Prüfen (5 min): Prüfliste, dann Claude mit einem Bild der Map aus Miro; eine Datei gibt es nicht.',
+        'Allein (12 min): Knoten aus den Skizzen beschriften, in jeder Skizze den stärksten Moment und das Ende markieren, auf Papier oder gleich in der eigenen Spalte auf T2 · 1 zusammenfügen, die Map von Tag 1 daneben.',
+        'Zu dritt (10 min): Reihum die eigene Spalte auf T2 · 1 zeigen – alle schauen auf dem Board mit; die anderen fragen nach.',
+        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft. Jeder Moment mit Zitat-ID: Das Zitat zeigt, was die Person dort denkt, fühlt oder tut. Dann die Marken übertragen: „Tief · I3-3“, „Ende · I3-5“; trägt den stärksten Moment nur eine Geschichte, die Zahl dazu („1 von 5“). Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
+        'Prüfen (5 min, eigene Folie): Prüfliste allein, dann Claude mit einem Bild der eigenen Spalte aus Miro; eine Datei gibt es nicht. Schritte unter „Prüfen“ im Handout.',
       ],
       achten: [
         'Beim Zeigen: Fragen stellen, auf Unterschiede achten, die eigene Zeichnung nicht verteidigen (Torres S. 55).',
@@ -207,8 +212,26 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       ],
       fehler: [
         'Die alte Map abhaken statt die Geschichten nachzuzeichnen.',
-        'Nur den glatten Weg zeichnen, ohne Umwege und Abbrüche.',
+        'Nur den glatten Weg zeichnen, ohne Umwege, Wiederholungen und Abbrüche.',
+        'Marken als Emoji oder eigener Knoten statt Wort mit Zitat-ID am Moment.',
         'Momente, die sich überschneiden.',
+      ],
+    },
+    ueberleitung: 'Nach 30 Minuten: prüfen – erst ihr, dann Claude.',
+  },
+
+  'pruefen-folie': {
+    live: [
+      'Folie zeigen, wenn die 5 Minuten starten; Prüfliste zuerst.',
+      'Prüfen 5 min: Prüfliste, Foto der Spalte, Prompt, Claude mit Connector.',
+      '„Claude fragt, ihr entscheidet – ändern auf Miro oder Zeile ins Log.“',
+    ],
+    ablauf: {
+      schritte: [
+        'Prüfliste allein abhaken (auf der Seite unter „Prüfen“).',
+        'Spalte auf T2 · 1 heranzoomen, Bildschirmfoto mit Cmd+Ctrl+Shift+4 in die Zwischenablage.',
+        'Prompt „Prüfen lassen · Claude mit Bild aus Miro“ kopieren, in claude.ai mit Werkstatt-Connector einfügen, Bild darunter, absenden.',
+        'Höchstens drei Befunde, je mit Zitat und Frage; die Frage selbst beantworten.',
       ],
     },
     ueberleitung: 'Zum Schluss des Blocks: eine Frage an eure Map.',
