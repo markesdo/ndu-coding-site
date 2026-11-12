@@ -8,7 +8,7 @@ import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
 import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
 import { DEMO_HREF } from '../../../lib/nav-rolle.js';
-import { FOKUS_FRAGEN, FOKUS_STELLEN, METHODEN, NICHT_EINORDNEN, TAGE, artefakt as kursArtefakt, pruefFragen, pruefungAufMiro, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
+import { FOKUS_FRAGEN, FOKUS_STELLEN, METHODEN, NICHT_EINORDNEN, TAGE, artefakt as kursArtefakt, pruefFragen, pruefungAufMiro, pruefungInWerkstatt, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
@@ -369,20 +369,24 @@ function methodeText(d: ReturnType<typeof methodeDaten>): string {
 function anleitungMethode(d: ReturnType<typeof methodeDaten>, m: Methode): string[] {
   const anfang = 'Die KI kommt immer erst nach der eigenen Arbeit der Person dran.';
   if (!d.pruefliste) return [anfang];
-  if (!pruefungAufMiro(m)) return [anfang, `Mit der Nummer oder ID eines Prüfpunkts prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt.`];
-  return [anfang, ...anleitungMiro(m)];
+  // artefakt_pruefen kennt nur die Werkstatt-Mappe; Ergebnisse im Repo oder in Linear prüft der Prüf-Prompt der Methodenseite.
+  if (pruefungInWerkstatt(m)) return [anfang, `Mit der Nummer oder ID eines Prüfpunkts prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt.`];
+  if (pruefungAufMiro(m)) return [anfang, ...anleitungMiro(m)];
+  return [anfang];
 }
 
 // Ergebnis nur auf Miro (Experience Map, Baum): artefakt_pruefen kennt es nicht. Claude prüft das eingefügte Bild wie mit dem
 // langen Prüf-Prompt (pruefPrompt, Zweig Miro): dieselbe Vorarbeit aus braucht, dieselben Regeln, Zitate nur von den Karten.
 function anleitungMiro(m: Methode): string[] {
+  // Filter wie nurAufMiro/miroListe in components/methoden.ts (dort nicht exportiert); aufzaehlen unten ebenso.
   const werkstatt = werkstattVorarbeit(m).map((n) => `${ARTEFAKTE[n].titel} (${MCP_WERKZEUGE.artefaktLesen} mit ${n})`);
   const miro = [...new Set(m.braucht)]
     .map((id) => kursArtefakt(id)!)
     .filter((a) => a.miro !== undefined && !a.pfad && !a.werkstatt)
     .map((a) => `${a.name} (Frame „${a.miro}“)`);
   return [
-    `Dieses Ergebnis liegt auf Miro, nicht in der Werkstatt; ${MCP_WERKZEUGE.artefaktPruefen} kennt es nicht. Prüf das Bild, das die Person einfügt, gegen diese Prüfliste; ohne Bild bitte sie darum.`,
+    `Dieses Ergebnis liegt auf Miro, nicht in der Werkstatt; ${MCP_WERKZEUGE.artefaktPruefen} kennt es nicht.`,
+    'Will die Person ihr Ergebnis prüfen lassen: Prüf das Bild, das sie einfügt, gegen diese Prüfliste; ohne Bild bitte sie darum.',
     ...(werkstatt.length ? [`Lies zum Abgleich aus der Werkstatt ${aufzaehlen(werkstatt)}.`] : []),
     ...(miro.length ? [`Zum Abgleich braucht es auch ein Bild aus Miro: ${aufzaehlen(miro)}; fehlt es, bitte die Person darum.`] : []),
     'Höchstens drei Befunde, die wichtigsten zuerst, je mit der ID des Prüfpunkts, einem wörtlichen Zitat von einer Karte im Bild und einer Frage, die die Person selbst weiterbringt; die Vorarbeit dient nur zum Abgleich, aus ihr zitierst du nicht. Passt alles, sag das in einem Satz.',
