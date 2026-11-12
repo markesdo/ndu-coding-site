@@ -310,8 +310,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Was steht jetzt auf eurer Map, das an Tag 1 fehlte?',
-      'Reihum, je ein Knoten.',
-      'Reihum: Befund und Entscheidung, je ein Satz.',
+      'Reihum: ein neuer Knoten, euer Befund und eure Entscheidung – je ein Satz.',
       'Wenn nichts: Geschichten nachgezeichnet oder alte Map abgehakt?',
       'Ist-Zeit notieren.',
     ],

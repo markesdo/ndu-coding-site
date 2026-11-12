@@ -587,19 +587,20 @@ export function danachEntscheiden(m: Methode, pfad?: string): string[] {
   const lassen = `Stimmt er nicht oder ist es bewusst so: lassen und eine Zeile ins ${log} – was ihr lasst und warum, mit Beleg oder „noch keiner“.`;
   if (pruefungAufMiro(m, pfad)) {
     return [
-      'Im Kurs: einen Befund wählen, den wichtigsten. Die Frage selbst in einem Satz beantworten.',
+      'Gibt Claude Befunde: im Kurs einen wählen, den wichtigsten. Die Frage selbst in einem Satz beantworten.',
       'Ein Befund ist eine Vermutung, kein Urteil: Prüft an euren Zitaten, ob er stimmt.',
-      NACHFRAGE_BELEGE,
+      `${NACHFRAGE_BELEGE} Den neuen Text schreibt ihr selbst – Claude formuliert nichts.`,
       `Stimmt er: selbst auf Miro ändern. ${lassen}`,
       'Die übrigen Befunde bis Tag 3; nach dem Ändern höchstens einmal neu prüfen lassen.',
+      '„Passt alles“: weiter.',
     ];
   }
   const ort = pruefungInWerkstatt(m, pfad) ? 'in der Werkstatt („Bearbeiten“, speichern)' : 'dort, wo das Ergebnis liegt (Datei oder Issue)';
   return [
-    'Im Kurs: einen Befund wählen, den wichtigsten. Die Frage selbst in einem Satz beantworten, nicht im Chat mit Claude weiterschreiben lassen. Den neuen Text schreibt ihr.',
+    'Einen Befund nach dem anderen: die Frage selbst in einem Satz beantworten, nicht im Chat mit Claude weiterschreiben lassen. Den neuen Text schreibt ihr.',
     'Ein Befund ist eine Vermutung, kein Urteil: Prüft an eurem Ergebnis und euren Belegen, ob er stimmt.',
     `Stimmt er: selbst ändern, ${ort}. ${lassen}`,
-    '„Passt alles“: weiter. Die übrigen Befunde nach dem Kurstag; nach dem Ändern höchstens einmal neu prüfen lassen.',
+    '„Passt alles“: weiter. Nach dem Ändern höchstens einmal neu prüfen lassen.',
   ];
 }
 
