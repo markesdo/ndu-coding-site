@@ -69,6 +69,10 @@ export async function aufgedecktHolen(kennungen: readonly string[]): Promise<str
   return Array.isArray(d.offen) ? d.offen.filter((k): k is string => typeof k === 'string') : [];
 }
 
+/** Event auf document, sobald der Server ein Aufdecken gespeichert hat (detail: Kennung); Aufloesung.astro schickt es,
+ *  Antwortrunde.astro fragt dann sofort nach den Texten. */
+export const AUFGEDECKT_GEMELDET = 'aufgedeckt-gemeldet';
+
 export const NICHT_GEMELDET = 'Aufdecken nicht an die Studierenden gemeldet – Seite neu laden oder /praesentator prüfen.';
 export const SCHLUESSEL_FALSCH = 'Präsentator-Schlüssel stimmt nicht – auf /praesentator neu anmelden.';
 export const KENNUNG_UNGUELTIG = 'Kennung ungültig – bitte Markus/Code prüfen.';

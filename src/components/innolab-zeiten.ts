@@ -17,10 +17,14 @@ export const MOM_TEST_GRUPPE = 'mom-test';
  *  per Klick des Präsentators wie beim Toast; eine Uhrzeit mitten am Tag öffnete sie bei Verspätung vor der Übung. */
 export const NACH_INTUIT = '2026-11-21T17:00';
 
-/** Rückfall für die Netflix-Auflösung an Tag 2 (Interview-Synthese, Folie „warum“): Ende des Kurstags. Aufgedeckt wird
- *  per Klick des Präsentators wie beim Toast; vorher sollen alle ihren eigenen Satz abgeschickt haben. */
-export const NACH_NETFLIX = '2026-11-12T18:00';
+/** Ende von Tag 2 (12.11.) als später Rückfall für die Antwortrunden des Tages: bewusst Mitternacht statt Kursende 18:00,
+ *  damit eine Verspätung die Eingabe nicht mitten in der Übung schließt und die Auflösung nicht vorzeitig öffnet. */
+export const ENDE_TAG_2 = '2026-11-12T23:59';
 
-/** Rückfall für die Antwortrunde „Zwölf Chancen“ an Tag 2 (Baum, Folie „warum“): Ende des Kurstags. Aufgedeckt wird per
+/** Rückfall für die Netflix-Auflösung an Tag 2 (Interview-Synthese, Folie „warum“): Ende des Tages. Aufgedeckt wird
+ *  per Klick des Präsentators wie beim Toast; vorher sollen alle ihren eigenen Satz abgeschickt haben. */
+export const NACH_NETFLIX = ENDE_TAG_2;
+
+/** Rückfall für die Antwortrunde „Zwölf Chancen“ an Tag 2 (Baum, Folie „warum“): Ende des Tages. Aufgedeckt wird per
  *  Klick des Präsentators wie bei Netflix; vorher sollen alle ihre Nummer mit Satz abgeschickt haben. */
-export const NACH_ZWOELF = '2026-11-12T18:00';
+export const NACH_ZWOELF = ENDE_TAG_2;

@@ -69,7 +69,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst 18:00, Ende des Kurstags). Sie zeigt zuerst „Eure Sätze“ nach Rolle; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten.',
+        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Rolle; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten.',
         'Schritt für Schritt aufdecken: 1 mit 2, 3 und 5; dann 7 und 12 unter „unterwegs schauen“; dann 9 und 11. Bei jedem Schritt: Wessen Nummer steht hier?',
         'Fragen, ob eure drei Chancen auf derselben Ebene stehen, dann den letzten Satz aufdecken.',
       ],

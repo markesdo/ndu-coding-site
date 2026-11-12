@@ -89,7 +89,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         </div>
       </div>
       <div data-schritt>
-        <p class="mini-gross breit"><b>9</b> Ist diese Serie gut? – groß. <b>11</b> Wer ist dieser Schauspieler? – leicht. <strong>Immer das Leichte zuerst?</strong></p>
+        <p class="mini-gross"><b>9</b> Ist diese Serie gut? – groß. <b>11</b> Wer ist dieser Schauspieler? – leicht. <strong>Immer das Leichte zuerst?</strong></p>
         <p class="small muted">4 · 6 · 8 · 10: bei Torres nicht einsortiert.</p>
       </div>
       <p class="breit" data-schritt><strong>Eine Liste mischt Großes, Kleines und Verwandtes – erst der Baum macht es vergleichbar.</strong></p>
@@ -339,8 +339,9 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .mini-baum li { margin: 0; line-height: 1.35; }
   .mini-baum b { display: inline-block; min-width: 1.4em; }
   .mini-baum b, .mini-gross b { color: var(--accent); }
-  /* Volle Breite statt 36em ([data-aufloesung-inhalt] > p, global.css), damit „warum“ bei 720p passt. */
-  .breit, :global([data-aufloesung-inhalt]) > p.breit { max-width: none; }
+  /* Volle Breite statt 36em (global.css, Zeilenlänge), damit „zwoelf“ und „warum“ bei 720p passen: je ein Selektor für den
+     Absatz direkt in der Folie und für den in der Auflösung, jeweils um html spezifischer als die globale Regel. */
+  :global(html .content > .inner > .folie) > p.breit, :global(html [data-aufloesung-inhalt]) > p.breit { max-width: none; }
   .mini-text { font-size: .85rem; color: var(--muted); font-style: italic; }
   .mini-gross { margin: .3rem 0 0; }
   .mini-gross + p { margin-top: 0; }
