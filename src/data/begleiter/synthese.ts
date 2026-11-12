@@ -231,7 +231,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Zeit: 14:15 noch keine Interviews in der Werkstatt? Dann diese Folie.',
       'Timer 35 min starten: Eintragen bis 14:50.',
       '„Der Link öffnet euren Interviews-Editor direkt – speichern nicht vergessen.“',
-      'Wer schon Interviews hat: weiter mit vorgehen.',
+      'Wer schon Interviews hat: Pause bis 14:50, dann alle gemeinsam.',
       'Ab 14:50 Runden à 5 min: zeigen, Frage 2, schreiben.',
     ],
     uebung: { dauer: 'bis 14:50 (35 min ab 14:15)', form: 'allein, jede*r in den eigenen Interviews' },
