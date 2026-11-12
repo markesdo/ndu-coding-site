@@ -2,7 +2,6 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { METHODEN } from './methoden';
 import { NOTIZEN } from '../data/begleiter';
-import { CHAT_BAUM } from '../data/begleiter/chat';
 import { TAG_1 } from '../data/begleiter/tag';
 
 // Begriffe am Opportunity Solution Tree, wie Produktleute sie sagen: übergeordnete Chance, Teilchance, Geschwister –
@@ -16,22 +15,21 @@ describe('Begriffe am Opportunity Solution Tree', () => {
     expect(quelle(datei).match(ALT) ?? []).toStrictEqual([]);
   });
 
-  it('Prüflisten von Baum und Ziel-Chance, Begleiter-Notizen zum Baum und Chat-Text auch nicht', () => {
+  it('Prüflisten von Baum und Ziel-Chance, Begleiter-Notizen zum Baum auch nicht', () => {
     const texte = [
       ...METHODEN.filter((m) => m.slug === 'baum' || m.slug === 'ziel-chance').flatMap((m) => (m.pruefliste ?? []).map((p) => p.text)),
       JSON.stringify(NOTIZEN['/innolab/methoden/baum']),
-      CHAT_BAUM,
     ];
     expect(texte.flatMap((t) => t.match(ALT) ?? [])).toStrictEqual([]);
   });
 
   // Das Anti-Muster „solution in disguise“ heißt „Lösung statt Chance“, nicht „verkleidete Lösung“ (Markus 11.11.).
-  it('nirgends „verkleidete Lösung“ oder „Lösung in Verkleidung“: Seiten, Begleiter, Tageskarte, Chat', () => {
+  it('nirgends „verkleidete Lösung“ oder „Lösung in Verkleidung“: Seiten, Begleiter, Tageskarte', () => {
     const VERKLEIDET = /[Vv]erkleid\w*/g;
     const texte = [
       ...['baum', 'hmw', 'problem-rahmen', 'ziel-chance'].map((s) => quelle(`../pages/innolab/methoden/${s}.astro`)),
       quelle('../pages/innolab/tag-1.astro'),
-      JSON.stringify(NOTIZEN), JSON.stringify(TAG_1), CHAT_BAUM,
+      JSON.stringify(NOTIZEN), JSON.stringify(TAG_1),
     ];
     expect(texte.flatMap((t) => t.match(VERKLEIDET) ?? [])).toStrictEqual([]);
   });

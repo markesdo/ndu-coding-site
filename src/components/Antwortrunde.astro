@@ -6,7 +6,7 @@
 // ansicht="antworten": „Eure Sätze“ nach Rolle – gehört in die <Aufloesung gruppe=…> der Runde; der Server gibt die Texte
 // erst nach dem Aufdecken heraus. Fragt nur nach, solange der Block zu sehen ist und der Tab vorn.
 // Eine Abfrage pro Seite und Runde (beide Ansichten teilen sie), nur solange ein Block zu sehen ist; nach dem Aufdecken
-// nur noch alle 30 s (öffnet „Runde leeren“ die Runde wieder, kommt die Eingabe zurück). Fällt die API aus (503, Netz), steht „Antwort bitte in den Teams-Chat.“ da – der Chat bleibt der Rückfall.
+// nur noch alle 30 s (öffnet „Runde leeren“ die Runde wieder, kommt die Eingabe zurück). Fällt die API aus (503, Netz), steht „Antwort bitte laut sagen.“ da – reihum laut bleibt der Rückfall.
 // Ein Platz pro Rolle (api/antworten.ts): Wer abschickt, überschreibt die Antwort seiner Rolle. Die eigene Antwort merkt
 // sich der Browser nur zum Vorausfüllen. „Runde leeren“: nur Präsentator, nicht im Beamer.
 // Texte immer als textContent, nie als HTML.
@@ -45,7 +45,7 @@ const feld = `antwort-${runde}`;
   )}
   <p class="small muted ar-status" data-ar-status aria-live="polite"></p>
   {ansicht === 'eingabe' && <button type="button" class="ar-leeren small" data-ar-leeren data-nur-praesentator>Runde leeren</button>}
-  <p class="small ar-rueckfall" data-ar-rueckfall hidden>{ansicht === 'eingabe' ? 'Antwort bitte in den Teams-Chat.' : 'Eure Sätze stehen im Teams-Chat.'}</p>
+  <p class="small ar-rueckfall" data-ar-rueckfall hidden>{ansicht === 'eingabe' ? 'Antwort bitte laut sagen.' : 'Sagt eure Sätze laut, reihum.'}</p>
 </div>
 <script>
   import {
@@ -167,7 +167,7 @@ const feld = `antwort-${runde}`;
         li.append(b, g.texte.map((t) => `„${t}“`).join(' · '));
         return li;
       }));
-      status.textContent = gruppen.length ? '' : 'Keine Sätze über die Seite – vielleicht im Teams-Chat.';
+      status.textContent = gruppen.length ? '' : 'Keine Sätze über die Seite – dann reihum laut.';
     };
     const a = abfrage(runde);
     const block: Block = { el: box, sichtbar: false, zeigen, fehler: () => { rueckfall.hidden = false; } };

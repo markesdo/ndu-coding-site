@@ -37,8 +37,8 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 
   'rueckblick-outcome': {
     live: [
-      'Online: Chat offen halten, heute schreibt jede*r oft hinein.',
-      'Frage stellen, jede*r ein Satz in den Chat, dann aufdecken.',
+      'Online: Antworten heute reihum laut, ohne Chat.',
+      'Frage stellen, reihum laut, je ein Satz, dann aufdecken.',
       '„Gemessen wird, was Menschen anders tun – nicht, was ihr baut.“',
       'Heute: In den Baum kommt nur, was den Outcome bewegt.',
     ],
@@ -58,7 +58,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 
   'rueckblick-rahmen': {
     live: [
-      'Frage stellen: Zielgruppe in einem Satz in den Chat, ohne Lösung.',
+      'Frage stellen: Zielgruppe reihum laut, je ein Satz, ohne Lösung.',
       'Aufdecken: Kaffeebar-Brief, „fester Morgenzug“ seit D3.',
       'Falle: Lösung im Problem („brauchen eine App“).',
       'Entscheidungslog nur zeigen, nicht erklären – kommt in der Synthese.',
@@ -78,7 +78,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 
   'rueckblick-annahmen': {
     live: [
-      'Frage stellen, je eine Annahme in den Chat, mit Grund.',
+      'Frage stellen: reihum laut, je eine Annahme mit Grund.',
       'Aufdecken: oben rechts – sehr wichtig, kein Beleg.',
       '„Eure Interviews waren der erste Test eurer riskantesten Annahme.“',
       'Heute: Zitat-IDs als Beleg in die Annahmen-Map.',
@@ -99,7 +99,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
   'rueckblick-mom-test': {
     live: [
       'Bekannt aus Need Finding: nur diese eine Frage, nicht erklären.',
-      'Antwort in den Chat, dann aufdecken.',
+      'Reihum laut, je ein Satz, dann aufdecken.',
       'Heute: als Beleg zählt Erzähltes, nicht Gemeintes.',
     ],
     kern: [
