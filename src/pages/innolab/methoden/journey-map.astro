@@ -156,31 +156,33 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
 
   <Folie>
     <h2 id="gruppieren">Kaffeebar: Gleiches zusammenlegen</h2>
-    <p class="folie-satz">Welche Stickies meinen denselben Moment?</p>
+    <p class="folie-satz kompakt">Auf Miro, T2 · 1, Spalte Kaffeebar: Schiebt zusammen, was denselben Moment meint – Namen als Sticky, Geschichten zählen. <Timer minuten={4} /></p>
     <div class="gruppen">
+      {/* Steht vor den Skizzen, damit die Färbung ohne :has auskommt (.gruppen-an.gezeigt ~ .skizzen). */}
+      <p data-schritt class="gruppen-an small muted">Gleiche Farbe, gleicher Buchstabe: derselbe Moment der Geschichte.</p>
       <div class="skizzen">
         {SKIZZEN.map((s) => (
           <div class="skizze">
             <span class="skizze-i">{s.i}</span>
             <ol class="stickies" aria-label={`Skizze ${s.i}, Stickies in der Reihenfolge der Geschichte`}>
-              {s.stickies.map((st, k) => (
+              {s.stickies.map((st) => (
                 <li>
                   <span class:list={['sticky', st.g && `gruppiert g-${st.g}`, { notiz: st.notiz }]}>
-                    {st.g && <span class="g-buchstabe" aria-hidden="true">{buchstabe(st.g)}</span>}
-                    <span>{st.t}</span>
-                    {st.notiz ? <span class="id">Notiz</span>
-                      : st.marke ? <span class={`pill ${st.marke}`}>{st.marke === 'tief' ? 'Tief' : 'Ende'} · {st.id}</span>
-                      : <span class="id">{st.id}</span>}
+                    <span class="g-buchstabe" aria-hidden="true">{st.g ? buchstabe(st.g) : ''}</span>
+                    <span class="sticky-text">
+                      <span>{st.t}</span>
+                      {st.notiz ? <span class="id">Notiz</span>
+                        : st.marke ? <span class={`pill ${st.marke}`}>{st.marke === 'tief' ? 'Tief' : 'Ende'} · {st.id}</span>
+                        : <span class="id">{st.id}</span>}
+                    </span>
                     <span class="sr-only">{st.g ? `(Gruppe ${buchstabe(st.g)}: ${gruppeName(st.g)})` : '(grau: bleibt im Snapshot)'}</span>
                   </span>
-                  {k < s.stickies.length - 1 && <span class="pfeil" aria-hidden="true">→</span>}
                 </li>
               ))}
             </ol>
           </div>
         ))}
       </div>
-      <p data-schritt class="gruppen-an small muted">Gleiche Farbe, gleicher Buchstabe: derselbe Moment der Geschichte.</p>
       <div data-schritt class="gruppen-legende-block">
         <ul class="gruppen-legende">
           {GRUPPEN.map(({ g, name }) => <li class={`gruppiert g-${g}`}><span class="g-buchstabe" aria-hidden="true">{buchstabe(g)}</span> {name}</li>)}
@@ -191,6 +193,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
     </div>
     <p class="small muted">{TORRES}, S. 56, 87.</p>
     <div class="nur-handout">
+      <p>Erst gruppiert ihr selbst: Die 23 Stickies der fünf Kaffeebar-Skizzen liegen auf Miro (T2 · 1, Spalte Kaffeebar), danach zeigt die Folie eine Lösung. Jede*r verschiebt nur die eigenen Geschichten: I1 und I2 · I3 und I4 · I5 und die Namen.</p>
       <p>Die Spaltennamen stehen in keiner Skizze. Sie entstehen, wenn ihr ähnliche Knoten zusammenlegt ({TORRES}, S. 56) und der Gruppe einen Namen gebt: Maßgeblich ist, dass die Stickies denselben Moment der Geschichte meinen, nicht dieselben Worte. Was nur in einer Geschichte vorkommt, bleibt im Snapshot (S. 87: ‚the most common nodes‘). Gezählt werden Geschichten, nicht Stickies, und nur, was ein Zitat trägt; Notizen zeigt ihr, zählt sie aber nicht. Stickies zusammenschieben ist die Arbeitsweise dieses Kurses.</p>
       <ul>
         {GRUPPEN.map(({ g, name }) => {
@@ -375,36 +378,47 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
   .g-b { --g: var(--yellow-ink); --g-soft: var(--yellow-soft); }
   .g-c { --g: var(--purple); --g-soft: var(--purple-soft); }
   .g-d { --g: var(--cyan); --g-soft: var(--cyan-soft); }
-  .skizzen { display: flex; flex-direction: column; gap: .5rem; margin: .4rem 0 0; }
-  .skizze { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); align-items: center; }
-  .skizze-i { font-family: var(--mono); font-weight: 700; font-size: .9rem; }
-  .stickies { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem .45rem; }
-  /* Der Pfeil hängt am Ende des Stickys davor: Bricht die Reihe um, beginnt die neue Zeile mit einem Sticky. */
-  :global(.content) .stickies > li { margin: 0; display: inline-flex; align-items: center; gap: .45rem; max-width: 100%; }
-  .pfeil { color: var(--muted); }
-  .sticky { position: relative; display: inline-flex; align-items: baseline; gap: .3rem; padding: .2rem .42rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .8rem; line-height: 1.25; white-space: nowrap; transition: background-color .2s, border-color .2s, opacity .2s; }
+  /* Jede Geschichte ein Band mit Haarlinie: Umbrüche innerhalb einer Geschichte liegen enger als der Abstand zur nächsten. */
+  .skizzen { display: flex; flex-direction: column; margin: .4rem 0 0; }
+  .skizze { display: grid; grid-template-columns: 1.9rem minmax(0, 1fr); align-items: start; padding: .3rem 0; }
+  .skizze + .skizze { border-top: 1px solid var(--border); }
+  .skizze-i { font-family: var(--mono); font-weight: 700; font-size: .9rem; padding-top: .1rem; }
+  .stickies { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; row-gap: .25rem; }
+  /* Der Pfeil steht vor dem Sticky: Bricht die Reihe um, beginnt die neue Zeile mit „→“, keiner hängt am Zeilenende. */
+  :global(.content) .stickies > li { margin: 0; display: inline-flex; align-items: center; max-width: 100%; }
+  .stickies > li + li::before { content: '→'; content: '→' / ''; margin: 0 .18rem; color: var(--muted); }
+  .sticky { display: inline-flex; align-items: center; gap: .2rem; padding: .1rem .3rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .8rem; line-height: 1.25; white-space: nowrap; transition: background-color .2s, border-color .2s, opacity .2s; }
   .sticky.notiz { border-style: dashed; border-color: var(--muted); }
-  .sticky .id { color: var(--muted); font-size: .9em; }
-  .sticky .pill { font-size: .85em; line-height: 1.2; padding: .05rem .35rem; }
+  .sticky .id { color: var(--muted); font-size: .72rem; }
+  .sticky .pill { font-size: .72rem; line-height: 1.2; padding: .05rem .35rem; }
   .g-buchstabe { font-family: var(--mono); font-weight: 700; font-size: .85em; color: var(--g); }
-  /* Am Sticky als Eckmarke, ohne eigenen Platz: Beim Aufdecken verschiebt sich nichts. */
-  .sticky .g-buchstabe { visibility: hidden; position: absolute; top: -.5rem; left: -.35rem; font-size: .6rem; line-height: 1; padding: .1rem .22rem; border-radius: 3px; background: var(--g); color: var(--bg-2); }
-  /* Gruppen sichtbar: im Handout immer, im Beamer ab dem ersten Schritt. */
+  .sticky-text { display: inline-flex; align-items: baseline; gap: .25rem; min-width: 0; }
+  /* Jeder Sticky hat vorn denselben Platz für den Buchstaben, auch die grauen (bleibt dort leer): Vor dem Aufdecken
+     verrät der Platz nichts, beim Aufdecken verschiebt sich nichts. */
+  .sticky .g-buchstabe { visibility: hidden; flex: none; display: inline-grid; place-items: center; width: .9rem; height: .9rem; font-size: .6rem; line-height: 1; border-radius: 3px; background: var(--g, transparent); color: var(--bg-2); }
+  /* Gruppen sichtbar: im Handout immer, im Beamer ab dem ersten Schritt. Die Bildunterschrift .gruppen-an steht vor
+     den Skizzen, deshalb reicht der Geschwister-Selektor; im Beamer ist sie nur für Screenreader da. */
   :global(html:not([data-beamer])) .sticky.gruppiert,
-  .gruppen:has(.gruppen-an.gezeigt) .sticky.gruppiert { background: var(--g-soft); border-color: var(--g); }
-  :global(html:not([data-beamer])) .sticky .g-buchstabe,
-  .gruppen:has(.gruppen-an.gezeigt) .sticky .g-buchstabe { visibility: visible; }
+  .gruppen-an.gezeigt ~ .skizzen .sticky.gruppiert { background: var(--g-soft); border-color: var(--g); }
+  :global(html:not([data-beamer])) .sticky.gruppiert .g-buchstabe,
+  .gruppen-an.gezeigt ~ .skizzen .sticky.gruppiert .g-buchstabe { visibility: visible; }
   :global(html:not([data-beamer])) .sticky:not(.gruppiert),
-  .gruppen:has(.gruppen-an.gezeigt) .sticky:not(.gruppiert) { background: var(--code-bg); color: var(--muted); }
-  .gruppen-an { margin: .5rem 0 0; }
-  /* Schmal (Handy, Container statt Fenster): Text im Sticky darf umbrechen, die ID bleibt beisammen. */
+  .gruppen-an.gezeigt ~ .skizzen .sticky:not(.gruppiert) { background: var(--code-bg); color: var(--muted); }
+  .gruppen-an { margin: .4rem 0 0; }
+  :global(html[data-beamer]) .gruppen-an { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  /* Schmal (Handy, Container statt Fenster): Text im Sticky darf umbrechen, die ID bleibt beisammen, der Buchstabe
+     bleibt vorn neben dem Text. */
   .gruppen { container: gruppen / inline-size; }
   @container gruppen (max-width: 560px) {
-    .skizze { grid-template-columns: 1.9rem minmax(0, 1fr); align-items: start; }
-    .skizze-i { padding-top: .25rem; }
-    .sticky { white-space: normal; flex-wrap: wrap; row-gap: .1rem; }
+    .skizze { grid-template-columns: 1.9rem minmax(0, 1fr); }
+    .sticky { min-width: 0; white-space: normal; align-items: flex-start; }
+    .sticky .g-buchstabe { margin-top: .05rem; }
+    .sticky-text { flex-wrap: wrap; row-gap: .1rem; }
     .sticky .id, .sticky .pill { white-space: nowrap; }
   }
+  /* Folie „gruppieren“: der Auftrag zur Übungsrunde ist der Kernsatz, kleiner gesetzt, damit bei 720p alles passt. */
+  .folie-satz.kompakt { max-width: none; }
+  :global(html[data-beamer]) .folie-satz.kompakt { font-size: 1.2rem; margin-bottom: .3rem; }
   .gruppen-legende { list-style: none; margin: .45rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem .5rem; font-size: .8rem; }
   :global(.content) .gruppen-legende > li { margin: 0; padding: .15rem .45rem; border-radius: var(--radius); }
   .gruppen-legende .gruppiert { background: var(--g-soft); border: 1px solid var(--g); font-weight: 600; }
