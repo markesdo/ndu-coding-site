@@ -73,13 +73,14 @@ describe('Fälligkeit', () => {
     }
   });
 
-  // tag_stand nennt unter „Methoden an Tag n“ den Kursplan nach der Verschiebung (Tag 2 als halber Tag, ein Sprint).
-  it('Methoden je Kurstag: Tag 2 endet mit dem Baum, Tag 3 beginnt mit der Ziel-Chance, Tag 5 bringt Backlog bis Pitch, Tag 6 nichts Neues', () => {
-    expect(entstehtAn(2).map((m) => m.slug)).toStrictEqual(['synthese', 'journey-map', 'baum']);
-    expect(entstehtAn(3).map((m) => m.slug)).toStrictEqual(['ziel-chance', 'hmw', 'ideation', 'kundenprofil', 'value-map', 'concept-story', 'geschaeftsmodell', 'experiment']);
-    expect(entstehtAn(4).map((m) => m.slug)).toStrictEqual(['story-map', 'usage-story', 'prototyp-spike', 'scrum']);
-    expect(entstehtAn(5).map((m) => m.slug)).toStrictEqual(['backlog', 'akzeptanzkriterien', 'schneiden', 'sprint', 'pitch']);
-    expect(entstehtAn(6)).toStrictEqual([]);
+  // tag_stand nennt unter „Methoden an Tag n“ den Kursplan vom 12.11.2026 (Tag 2 endete nach der Experience Map, ein Sprint).
+  it('Methoden je Kurstag: Tag 2 endet mit der Experience Map, Tag 3 beginnt mit dem Baum, Tag 4 mit Geschäftsmodell und Experiment-Karte, Tag 6 bringt nur den Pitch', () => {
+    expect(entstehtAn(2).map((m) => m.slug)).toStrictEqual(['synthese', 'journey-map']);
+    expect(entstehtAn(3).map((m) => m.slug)).toStrictEqual(['baum', 'ziel-chance', 'hmw', 'ideation', 'kundenprofil', 'value-map', 'concept-story']);
+    expect(entstehtAn(4).map((m) => m.slug)).toStrictEqual(['geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike', 'scrum']);
+    expect(entstehtAn(5).map((m) => m.slug)).toStrictEqual(['backlog', 'akzeptanzkriterien', 'schneiden', 'sprint']);
+    expect(entstehtAn(6).map((m) => m.slug)).toStrictEqual(['pitch']);
+    expect(entstehtAn(7)).toStrictEqual([]);
   });
 });
 

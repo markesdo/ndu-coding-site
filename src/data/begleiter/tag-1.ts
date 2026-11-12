@@ -199,7 +199,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       'Werbung-Beispiel erzählen: „Werbung vorspulen“ ist Lösung, Chance ist „keine Werbung mögen“.',
       '„Schreibt Chancen so, wie Menschen sie im Interview sagen würden – niemand sagt ‚Ich wünsche mir mehr Kaffeebar-Umsatz‘.“',
       'Falle: zu vage Chancen wie „Das soll einfach sein“.',
-      '„Getestet wird nicht die ganze Idee, sondern das, was dafür stimmen muss – mehr an Tag 3.“',
+      '„Getestet wird nicht die ganze Idee, sondern das, was dafür stimmen muss – mehr an Tag 4.“',
     ],
     ueberleitung: 'So sieht der Baum der Kaffeebar aus – und heute entsteht nur die Wurzel.',
     kern: [

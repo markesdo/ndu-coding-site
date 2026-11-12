@@ -2,50 +2,41 @@
 import Layout from '../../layouts/Layout.astro';
 import Orientierung from '../../components/Orientierung.astro';
 import Block from '../../components/Block.astro';
-import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
-import { TAGE } from '../../components/methoden';
-
-// Der Nachmittag steht in TAGE als zusatz; solange er offen ist, zeigt die Seite ihn mit „(?)“.
-const zusatz = TAGE.find((t) => t.n === 6)!.zusatz!;
-const frage = zusatz.offen ? ' (?)' : '';
 ---
 <Layout title="Tag 6 · Bauen & Review">
-  <span class="eyebrow">Innolab · Tag 6 · Samstag, 19. Dezember 2026 · 09:00–13:00 · online in Teams</span>
+  <span class="eyebrow">Innolab · Tag 6 · Samstag, 19. Dezember 2026 · 09:00–18:00 · online in Teams</span>
   <h1>Tag 6 · Bauen & Review</h1>
-  <p class="lead">Online, in einer Teams-Besprechung; die Einladung kommt per E-Mail. Der letzte Bautag: fertig bauen, mit Menschen testen, den Sprint mit Review und Retro abschließen. Was heute um 13 Uhr läuft, ist euer Prototyp.</p>
+  <p class="lead">Online, in einer Teams-Besprechung; die Einladung kommt per E-Mail. Der letzte Bautag, ein ganzer Tag mit Mittagspause von 13 bis 14 Uhr: am Vormittag fertig bauen, am Nachmittag mit Menschen testen und den Sprint mit Review und Retro abschließen. Was heute um 13 Uhr läuft, ist euer Prototyp. Danach folgt die letzte Methode des Kurses: der Pitch, mit einer ersten Probe.</p>
   <Orientierung seite="innolab/tag-6" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-12-19">
-    <Block time="09:00–09:15" type="plenum" title="Daily" href="/innolab/methoden/sprint#daily">Am Sprint-Ziel entlang, je Produkt: Was fehlt bis 10:45?</Block>
+    <Block time="09:00–09:15" type="plenum" title="Daily" href="/innolab/methoden/sprint#daily">Am Sprint-Ziel entlang, je Produkt: Was fehlt bis 13:00?</Block>
     <Block time="09:15–10:45" type="uebung" title="Bauen" href="#bauen">Letzte Issues, Belege, Reviews über Kreuz.</Block>
     <Block time="10:45–11:00" type="pause" title="Pause" />
-    <Block time="11:00–11:45" type="uebung" title="Usability-Tests über Kreuz" href="#tests">Drei Runden, ein Produkt pro Runde.</Block>
-    <Block time="11:45–12:15" type="plenum" title="Sprint-Review" href="#review-retro">Ziel, Inkrement am Handy, Tests und Messung, Backlog.</Block>
-    <Block time="12:15–12:45" type="uebung" title="Retro: Lightning Decision Jam" href="/innolab/methoden/sprint#retro">Eine Maßnahme, der erste Schritt noch heute.</Block>
-    <Block time="12:45–13:00" type="plenum" title="Abschluss" href="#abschluss">Was bis zur Präsentation passiert.</Block>
-  </div>
-
-  <h3 id="nachmittag">Nachmittag {zusatz.zeit}{frage}{zusatz.offen && ' · Termin noch offen'}</h3>
-  {zusatz.offen && <Callout type="info" title="Noch nicht bestätigt">
-    <p>Ob es am Nachmittag einen zusätzlichen halben Tag gibt, steht noch nicht fest. Der Kurs funktioniert auch ohne ihn: Euer Prototyp ist um 13 Uhr fertig, und die Pitch-Probe macht ihr dann online mit Markus, an einem eigenen Termin – der Termin folgt (<a href="#abschluss">Abschluss</a>).</p>
-  </Callout>}
-  <div class="schedule">
-    <Block time="14:00–14:20" type="uebung" title="Pitch-Probe" href="#pitch-probe">Zwei Minuten Geschichte, vor den anderen beiden.</Block>
-    <Block time="14:20–18:00" type="uebung" title="Puffer" href="#puffer">Weiterbauen, was im Sprint nicht fertig wurde; Nachzügler holen auf.</Block>
+    <Block time="11:00–13:00" type="uebung" title="Bauen" href="#bauen">Fertig bauen; was bis 13:00 nicht fertig ist, geht zurück in den Backlog.</Block>
+    <Block time="13:00–14:00" type="pause" title="Mittagspause" />
+    <Block time="14:00–14:45" type="uebung" title="Usability-Tests über Kreuz" href="#tests">Drei Runden, ein Produkt pro Runde.</Block>
+    <Block time="14:45–15:15" type="plenum" title="Sprint-Review" href="#review-retro">Ziel, Inkrement am Handy, Tests und Messung, Backlog.</Block>
+    <Block time="15:15–15:45" type="uebung" title="Retro: Lightning Decision Jam" href="/innolab/methoden/sprint#retro">Eine Maßnahme, der erste Schritt noch heute.</Block>
+    <Block time="15:45–16:00" type="pause" title="Pause" />
+    <Block time="16:00–16:45" type="uebung" title="Pitch" href="/innolab/methoden/pitch">Story in vier Teilen, Demo, Belege, Wertkurve und Raster; das Gerüst.</Block>
+    <Block time="16:45–17:05" type="uebung" title="Pitch-Probe" href="#pitch-probe">Zwei Minuten Geschichte, vor den anderen beiden.</Block>
+    <Block time="17:05–17:45" type="uebung" title="Puffer" href="#puffer">Am Pitch weiterschreiben, Testnotizen auswerten, Linear aufräumen – gebaut wird nicht mehr.</Block>
+    <Block time="17:45–18:00" type="plenum" title="Abschluss" href="#abschluss">Was bis zur Präsentation passiert.</Block>
   </div>
 
   <hr />
   <h2 id="faden">Liefern und wieder lernen</h2>
-  <p>Heute kommt keine neue Methode dazu. Was ihr gebaut habt, testet ihr mit Menschen, die es nicht kennen – mit derselben Methode wie den Prototyp nach Tag 4. Was die Tests zeigen, ändert im Review euren Backlog. Das ist der Unterschied zwischen einem Team, das Issues abarbeitet, und einem, das ein Produkt entwickelt.</p>
+  <p>Bis zur Retro kommt keine neue Methode dazu. Was ihr gebaut habt, testet ihr mit Menschen, die es nicht kennen – mit derselben Methode wie den Prototyp nach Tag 4. Was die Tests zeigen, ändert im Review euren Backlog. Das ist der Unterschied zwischen einem Team, das Issues abarbeitet, und einem, das ein Produkt entwickelt. Danach folgt die letzte Methode des Kurses, der <a href="/innolab/methoden/pitch">Pitch</a>: Er steht am Ende, weil er die Belege aus Review und Tests von heute braucht.</p>
 
   <h2 id="bauen">Bauen</h2>
-  <p>Ihr baut jede*r am eigenen Laptop und bleibt dabei in der Teams-Besprechung, Mikrofon stumm. Nutzt den Vormittag für das, was allein zu Hause schwer geht: Issues aus fremden Produkten, bei denen ihr den Product Owner sofort fragen könnt – Mikrofon an, Bildschirm teilen –, und Pull Requests, die jemand gleich prüft. Die Regeln sind dieselben wie bisher (<a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>). Bis 10:45 ist fertig, was im Sprint fertig wird: Wird ein Issue bis dahin nicht fertig, nehmt es lieber zurück, als halb Gebautes live zu lassen – es geht zurück in den Backlog und ins Review.</p>
+  <p>Ihr baut jede*r am eigenen Laptop und bleibt dabei in der Teams-Besprechung, Mikrofon stumm. Nutzt den Vormittag für das, was allein zu Hause schwer geht: Issues aus fremden Produkten, bei denen ihr den Product Owner sofort fragen könnt – Mikrofon an, Bildschirm teilen –, und Pull Requests, die jemand gleich prüft. Die Regeln sind dieselben wie bisher (<a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>). Bis 13:00 ist fertig, was im Sprint fertig wird: Wird ein Issue bis dahin nicht fertig, nehmt es lieber zurück, als halb Gebautes live zu lassen – es geht zurück in den Backlog und ins Review.</p>
 
   <h2 id="tests">Usability-Tests über Kreuz</h2>
-  <p>Ihr testet wie beim <a href="/innolab/methoden/prototyp-spike#fuenf">Prototyp-Spike</a> – Aufgabe als Ziel, laut denken, nicht helfen –, diesmal mit dem Inkrement, live am Handy. Testpersonen sind Menschen, die euer Produkt nicht kennen und möglichst zur Zielgruppe passen. Heute seid ihr online: Jede*r Product Owner hat zwei für einen Videoanruf mit geteiltem Bildschirm verabredet.</p>
+  <p>Ihr testet wie beim <a href="/innolab/methoden/prototyp-spike#fuenf">Prototyp-Spike</a> – Aufgabe als Ziel, laut denken, nicht helfen –, diesmal mit dem Inkrement, live am Handy. Testpersonen sind Menschen, die euer Produkt nicht kennen und möglichst zur Zielgruppe passen. Heute seid ihr online: Jede*r Product Owner hat zwei für einen Videoanruf mit geteiltem Bildschirm verabredet, zwischen 14:00 und 14:45.</p>
   <ul>
     <li><strong>Drei Runden à 15 Minuten,</strong> ein Produkt pro Runde, je zwei Testpersonen. Die übrigen drei bis zur Präsentation testet ihr selbst – dann seid ihr wie nach Tag 4 bei fünf.</li>
     <li><strong>Über Kreuz:</strong> Der Product Owner moderiert nicht – wer das eigene Produkt erklärt, hilft zu schnell und verteidigt es. Eine andere Person aus dem Team moderiert, der Product Owner beobachtet und schreibt mit, die dritte notiert Zeiten und wo die Person hängen bleibt.</li>
@@ -56,33 +47,33 @@ const frage = zusatz.offen ? ' (?)' : '';
   <p><strong>Review (30 Minuten):</strong> Zehn Minuten pro Produkt, wie unter <a href="/innolab/methoden/sprint#review">Sprint Review</a>. Jeder Product Owner sagt, ob das Sprint-Ziel erreicht ist; das Inkrement wird auf der Produktions-URL am Handy gezeigt, gegen die Definition of Done – was sie nicht erfüllt, steht wieder im Backlog. Dazu die Tests von heute und die Messung: wie viele Ereignisse, von wie vielen Personen, seit wann. Teilt dazu den Bildschirm des Handys in Teams, so wie an <a href="/innolab/tag-7#technik">Tag 7</a> – eine gute Probe dafür. Was offen bleibt, gehört in den Pitch: als nächster Schritt.</p>
   <p><strong>Retro (30 Minuten):</strong> ein Lightning Decision Jam, wie unter <a href="/innolab/methoden/sprint#retro">Retrospektive</a>; der Scrum Master moderiert. Am Ende steht eine Maßnahme mit erstem Schritt und verantwortlicher Person in <code>docs/SPRINTS.md</code>.</p>
 
+  <h2 id="pitch">Pitch</h2>
+  <p>Nach der Pause folgt die Methode <a href="/innolab/methoden/pitch">Pitch</a>: erst die Theorie mit den Abbildungen aus den Quellen, dann die Kaffeebar gemeinsam, dann euer eigenes Gerüst – Wertkurve und Raster auf Miro, Belege und Position in <code>docs/PITCH.md</code>. Die Belege aus Review und Tests von heute tragt ihr dabei gleich ein.</p>
+  <h3 id="pitch-probe">Pitch-Probe</h3>
+  <p>Gleich danach erzählt jede*r den Teil „Geschichte“ in zwei Minuten (<a href="/innolab/methoden/pitch#aufbau">Pitch</a>) – eure Concept Story aus <code>docs/STORYS.md</code>, die ihr danach in <code>docs/PITCH.md</code> übernehmt.</p>
+  <p>Die anderen beiden antworten nur auf zwei Fragen: Gab es eine Krise? Wisst ihr am Ende, welchen Höhepunkt die Demo zeigen muss? Das Lächeln, Lichaws Signal, dass eine Story trägt, kommt erst am Höhepunkt (Donna Lichaw, „The User’s Journey“, 2016, Kap. 7, „Test and Validate“) – darauf achtet ihr, wenn ihr bis Tag 7 den ganzen Pitch mit Demo probt.</p>
+  <h3 id="puffer">Puffer</h3>
+  <p>Gebaut wird hier nicht mehr: Der Sprint endete um 13:00, und was bis dahin nicht fertig war, steht im Backlog. Die Zeit gehört dem, was nach Review und Retro offen ist: am Pitch weiterschreiben – Geschichte und Demo-Ablauf aus <code>docs/STORYS.md</code> in <code>docs/PITCH.md</code> –, die Notizen aus den Tests auswerten und als Befunde in <code>docs/TESTS.md</code> festhalten, Linear aufräumen: Was zurück in den Backlog ging, verliert das Label <code>Sprint</code>.</p>
+
   <h2 id="abschluss">Abschluss & bis zur Präsentation</h2>
-  <p>Jede*r sagt in einem Satz, wie nah das eigene Produkt am Sprint-Ziel ist. Damit ist der Prototyp fertig. Bis zur Präsentation baut ihr nichts mehr, ihr bereitet den Pitch vor – außer im <a href="#puffer">Puffer am Nachmittag</a>, falls er stattfindet. Euer Pro-Monat läuft noch bis etwa 21. Dezember – was ihr dafür mit Claude machen wollt, macht ihr in diesen Tagen. Wer danach weiterbauen will, braucht ein eigenes Abo; für den Kurs ist das nicht nötig. Bis zur Präsentation gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
-  <Checklist id="il-tag6-review-retro" items={[
+  <p>Jede*r sagt in einem Satz, wie nah das eigene Produkt am Sprint-Ziel ist. Der Prototyp ist der Stand von 13:00, den ihr im Review gezeigt habt. Bis zur Präsentation am 16. Jänner baut ihr nichts mehr, ihr bereitet den Pitch vor. Euer Pro-Monat läuft noch bis etwa 28. Dezember – was ihr dafür mit Claude machen wollt, macht ihr in diesen Tagen. Wer danach weiterbauen will, braucht ein eigenes Abo; für den Kurs ist das nicht nötig. Bis zur Präsentation gibt es einen Online-Check-in mit Markus und Louis; der Termin folgt.</p>
+  {/* -v2 (beide Listen): Häkchen je Position; seit 12.11.2026 mit dem Pitch-Gerüst von heute, ohne die Pitch-Probe als Hausaufgabe. */}
+  <Checklist id="il-tag6-review-retro-v2" items={[
     'Review und Retro gelaufen, jedes Issue nach der Definition of Done geprüft',
     '<code>docs/SPRINTS.md</code>: Review (Ziel erreicht, fertig, offen, Tests und Messung) und Retro (Maßnahme, erster Schritt, verantwortlich)',
     'Testbefunde in <code>docs/TESTS.md</code>, Belege aus Review und Tests in <code>docs/PITCH.md</code>',
+    'Wertkurve und Raster auf Miro; in <code>docs/PITCH.md</code> das Gerüst mit Position, Modell und nächstem Schritt; die „Geschichte“ in der Pitch-Probe erzählt',
     'Committet und gepusht, Produktions-URL läuft am Handy',
   ]} />
   <p>Bis zur Präsentation:</p>
-  <Checklist id="il-tag6-pitch" items={[
-    'Die „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten vor den anderen beiden erzählt – in der Pitch-Probe am Nachmittag oder, falls er entfällt, online mit Markus (Termin folgt)',
-    'Bis 21. Dezember, solange Pro läuft: Pitch mit Claude als skeptischem Gegenüber geprobt und mit der Prüfliste geprüft (<a href="/innolab/methoden/pitch#pruefen">Pitch</a>); nach den letzten Tests geht ihr die Liste noch einmal selbst durch',
+  <Checklist id="il-tag6-pitch-v2" items={[
+    'Bis etwa 28. Dezember, solange Pro läuft: Pitch mit Claude als skeptischem Gegenüber geprobt und mit der Prüfliste geprüft (<a href="/innolab/methoden/pitch#pruefen">Pitch</a>); nach den letzten Tests geht ihr die Liste noch einmal selbst durch',
     'Drei weitere Usability-Tests am fertigen Prototyp, Befunde in <code>docs/TESTS.md</code> – sie ändern nichts mehr am Produkt, sondern gehen als Belege und nächster Schritt in den Pitch',
     '<code>docs/PITCH.md</code> mit Geschichte, Demo, Belegen, Modell',
     'Pitch noch einmal laut geprobt',
     'Demo-Daten vorbereitet, Bildschirmaufnahme als Plan B',
     'Für die Kurs-Retro an Tag 7: Welche Methode hat euch am meisten verändert, welche würdet ihr beim nächsten Produkt weglassen – und warum?',
   ]} />
-
-  <hr />
-  <h2 id="nachmittag-inhalt">Am Nachmittag</h2>
-  {zusatz.offen && <p><a href="#nachmittag">Termin noch offen</a>: Der Kurs funktioniert auch ohne diesen Nachmittag.</p>}
-  <h3 id="pitch-probe">Pitch-Probe</h3>
-  <p>Jede*r erzählt den Teil „Geschichte“ aus <code>docs/PITCH.md</code> in zwei Minuten (<a href="/innolab/methoden/pitch#aufbau">Pitch</a>). Entfällt der Nachmittag, macht ihr die Pitch-Probe online mit Markus, an einem eigenen Termin; der Termin folgt.</p>
-  <p>Die anderen beiden antworten nur auf zwei Fragen: Gab es eine Krise? Wisst ihr am Ende, welchen Höhepunkt die Demo zeigen muss? Das Lächeln, Lichaws Signal, dass eine Story trägt, kommt erst am Höhepunkt (Donna Lichaw, „The User’s Journey“, 2016, Kap. 7, „Test and Validate“) – darauf achtet ihr, wenn ihr bis Tag 7 den ganzen Pitch mit Demo probt.</p>
-  <h3 id="puffer">Puffer</h3>
-  <p>Was im Sprint nicht fertig wurde, könnt ihr hier nach der Definition of Done fertig bauen; wer an einem Kurstag gefehlt hat, holt nach.</p>
 
   <FooterNav prev={{ href: '/innolab/tag-5', t: 'Tag 5 · Backlog & Sprint' }} next={{ href: '/innolab/tag-7', t: 'Tag 7 · Präsentation' }} />
 </Layout>

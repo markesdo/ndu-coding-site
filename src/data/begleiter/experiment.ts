@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 3, 16:15–16:45) – vorerst nur die Folien aus Thomke und die,
+// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 09:20–09:50; bis 12.11. für Tag 3 geplant) – vorerst nur die Folien aus Thomke und die,
 // die sich dafür geändert haben. Der Begleiter zeigt bisher nur Tag 1; die Notizen stehen bereit, der Test prüft die ids.
 // Thomke: gedruckte Seiten aus quellen/thomke/text.txt (=====PAGE n=====).
 const THOMKE = 'Stefan H. Thomke, The Scientific Mindset';
@@ -47,7 +47,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     ueberleitung: 'Darum misst eure Karte eine Handlung, keine Meinung – so sieht sie aus.',
     ablauf: {
       schritte: [
-        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 17:00, Ende des Kurstags).',
+        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 17:30, Ende des Kurstags).',
         'Gesagt gegen getan zeigen, dann Gebaut und Philips aufdecken.',
         'Die eigenen Sätze mit der Auflösung vergleichen lassen: Wer hätte die Idee abgelegt, wer hätte wie getestet?',
       ],

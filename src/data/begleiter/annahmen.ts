@@ -60,7 +60,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
       'Wichtig erklären: Ist sie falsch, wird alles andere egal.',
       'Falle: Achse anders als in manchen Vorlagen, „kein Beleg“ rechts.',
       'Nur die zwei, drei Annahmen ganz oben rechts testen, nicht den Quadranten.',
-      '„Heute geht es um Kundschaft und Problem; Lösungs-Annahmen kommen an Tag 3 in eine eigene Map.“',
+      '„Heute geht es um Kundschaft und Problem; Lösungs-Annahmen kommen an Tag 4 in eine eigene Map.“',
     ],
     ueberleitung: 'Damit ihr beim Sammeln keine Art von Risiko überseht, gibt es vier Arten von Annahmen.',
     kern: [
@@ -92,7 +92,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
       },
       {
         frage: 'Warum heute keine Annahmen über die Lösung?',
-        antwort: 'Lösungs-Annahmen (bestellt jemand im Gehen, rechnet es sich) lassen sich im Interview kaum prüfen. Die kommen an Tag 3 in eine eigene Map pro Idee (Torres Kap. 9–10); heute zählt, was die Interviews bis Tag 2 klären können.',
+        antwort: 'Lösungs-Annahmen (bestellt jemand im Gehen, rechnet es sich) lassen sich im Interview kaum prüfen. Die kommen an Tag 4 in eine eigene Map pro Idee (Torres Kap. 9–10); heute zählt, was die Interviews bis Tag 2 klären können.',
       },
       {
         frage: 'Ist die Achse nicht gespiegelt gegenüber anderen Vorlagen?',
@@ -153,7 +153,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
       '„Ist ‚Ich würde dort Kaffee holen‘ ein Beleg? Und ‚Letzten Dienstag habe ich dort Kaffee geholt‘?“',
       'New Coke für Testsituation gegen echte Situation, siehe Zusatz.',
       'Werkstatt-Skala nennen: noch keiner – gesagt – erzählt – getan.',
-      '„Eure Interviews bringen eine Annahme höchstens auf ‚erzählt‘ – ‚getan‘ zeigen erst Experimente ab Tag 3.“',
+      '„Eure Interviews bringen eine Annahme höchstens auf ‚erzählt‘ – ‚getan‘ zeigen erst Experimente ab Tag 4.“',
     ],
     ueberleitung: 'Wie das zusammen aussieht, zeigt euch die Map der Kaffeebar.',
     kern: [
@@ -221,8 +221,8 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
         quelle: 'Kurs-Beispieldaten src/werkstatt/beispiele/brief.json',
       },
       {
-        text: 'A2 liegt oben links. Blands Regel dafür: den Beleg mit dem Team teilen und hinterfragen, ob er wirklich trägt (S. 38). In der Beispieldatei steht „getan“, aber keine Quelle – genau so ein Fall, bei dem man nachfragt. Auch A4 (wirtschaftlich, „getan“) nennt keine Quelle, darum meldet Claude bei verknuepfungen_pruefen A2 und A4. Inhaltlich meinte „getan“ bei A4 den heutigen Betrieb; an Tag 3 (Geschäftsmodell) wird A4 mit den Kosten vor Augen neu eingeschätzt.',
-        quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 38; annahmen.json; Methodenseite Geschäftsmodell (Tag 3)',
+        text: 'A2 liegt oben links. Blands Regel dafür: den Beleg mit dem Team teilen und hinterfragen, ob er wirklich trägt (S. 38). In der Beispieldatei steht „getan“, aber keine Quelle – genau so ein Fall, bei dem man nachfragt. Auch A4 (wirtschaftlich, „getan“) nennt keine Quelle, darum meldet Claude bei verknuepfungen_pruefen A2 und A4. Inhaltlich meinte „getan“ bei A4 den heutigen Betrieb; an Tag 4 (Geschäftsmodell) wird A4 mit den Kosten vor Augen neu eingeschätzt.',
+        quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 38; annahmen.json; Methodenseite Geschäftsmodell (Tag 4)',
       },
       {
         text: 'Forschungsfrage und Interviewfrage sind verschieden: Die Forschungsfrage („Wann und wo entscheiden Pendler*innen, ob sie Kaffee holen?“) fragt man nicht direkt. Gefragt wird nach einem konkreten vergangenen Morgen – Mom-Test-Regel „specifics in the past“.',
@@ -368,7 +368,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
       },
       {
         frage: 'Unsere riskanteste Annahme ist eine Lösungs-Annahme. Was jetzt?',
-        antwort: 'Fragen, welche Annahme über Kundschaft oder Problem darunter liegt – die prüft ihr im Interview; die Lösungs-Annahme kommt an Tag 3 in ein Experiment.',
+        antwort: 'Fragen, welche Annahme über Kundschaft oder Problem darunter liegt – die prüft ihr im Interview; die Lösungs-Annahme kommt an Tag 4 in ein Experiment.',
       },
     ],
   },

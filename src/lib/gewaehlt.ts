@@ -1,4 +1,4 @@
-// Gewählte Nummern („Zwölf Chancen“, Tag 2 Baum): Nach dem Aufdecken markiert die Folie „warum“ die Nummern, die in den
+// Gewählte Nummern („Zwölf Chancen“, Tag 3 Baum): Nach dem Aufdecken markiert die Folie „warum“ die Nummern, die in den
 // Sätzen der Runde stehen. Es zählen nur Nummern ganz am Anfang des Satzes – eine oder eine Aufzählung, getrennt durch
 // Komma, Semikolon, Punkt, „und“, „&“, „+“ oder Leerzeichen („3 – weil …“, „7 und 12 – …“, „1, 2: …“, „2; 7; 11“, „2. 7. 11.“);
 // ein Schrägstrich beendet die Liste („3/5“ zählt nur 3). „Nr. 3“ oder

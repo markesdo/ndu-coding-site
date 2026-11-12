@@ -20,10 +20,10 @@ const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)'
 const KRIVITSKY = 'Alexey Krivitsky, „lego4scrum“, deutsche Ausgabe (2023)';
 const MANIFEST = 'Manifesto for Agile Software Development (2001), agilemanifesto.org';
 
-// Lego4Scrum 15:00–16:20 laut tag-4.astro: Review 1 endet nach Minute 43 (15:43), die Nachbesprechung beginnt nach Minute 75 (16:15).
-const AB_LEGO = '2026-11-28T15:00';
-const NACH_REVIEW_1 = '2026-11-28T15:43';
-const NACH_LEGO = '2026-11-28T16:15';
+// Lego4Scrum 15:50–17:10 laut tag-4.astro: Review 1 endet nach Minute 43 (16:33), die Nachbesprechung beginnt nach Minute 75 (17:05).
+const AB_LEGO = '2026-11-28T15:50';
+const NACH_REVIEW_1 = '2026-11-28T16:33';
+const NACH_LEGO = '2026-11-28T17:05';
 ---
 <Layout title="Scrum im Team">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
@@ -46,7 +46,7 @@ const NACH_LEGO = '2026-11-28T16:15';
     </BildText>
     <div class="nur-handout">
       <p>„Many projects plan with activity-based phases: Analysis, Design, Coding, and finally Testing.“ Selbst wenn die Analyse pünktlich fertig ist, sagt das nichts über Entwurf und Code: „Until we begin to see the software, we can’t really tell how well we’re doing“ ({JEFFRIES}, S. 20). „The activity-based product is a monolith.“ Daraus folgt: „Instead, let’s plan for multiple releases from the very beginning“ (S. 22). Und: „A project that delivers feature by feature is more predictable“ (S. 23).</p>
-      <p>Ihr erlebt das bis Tag 5 im Kleinen: E1 und die Usability-Tests mit dem Prototyp von heute Vormittag zeigen euch nach wenigen Tagen etwas, worauf ein Wasserfall bis zur Testphase gewartet hätte. Was es bei euch war, sagt ihr an Tag 5 im Debrief.</p>
+      <p>Ihr erlebt das bis Tag 5 im Kleinen: E1 und die Usability-Tests mit dem Prototyp von heute zeigen euch nach wenigen Tagen etwas, worauf ein Wasserfall bis zur Testphase gewartet hätte. Was es bei euch war, sagt ihr an Tag 5 im Debrief.</p>
     </div>
   </Folie>
 
@@ -145,7 +145,7 @@ const NACH_LEGO = '2026-11-28T16:15';
       <li data-schritt><strong>Die Definition of Done</strong> beschreibt, wann ein Inkrement die nötige Qualität hat.</li>
       <li data-schritt><strong>Ohne Firmenstandard</strong> schreibt das Team sie selbst – passend zum Produkt.</li>
       <li data-schritt><strong>„Done“ oder „not done“</strong> – nichts dazwischen.</li>
-      <li data-schritt><strong>Bei uns gehört die Messung dazu</strong> – das schreibt ihr um 16:20.</li>
+      <li data-schritt><strong>Bei uns gehört die Messung dazu</strong> – das schreibt ihr an Tag 5.</li>
     </ul>
     <div class="nur-handout">
       <p>„The Definition of Done is a formal description of the state of the Increment when it meets the quality measures required for the product.“ „If a Product Backlog item does not meet the Definition of Done, it cannot be released or even presented at the Sprint Review. Instead, it returns to the Product Backlog for future consideration.“ Gibt es keinen Standard der Organisation, „the Scrum Team must create a Definition of Done appropriate for the product“ ({GUIDE}, S. 12).</p>
@@ -196,7 +196,7 @@ const NACH_LEGO = '2026-11-28T16:15';
     </ul>
     <div class="nur-handout">
       <p><strong>Produktziel</strong> im Wortlaut des Briefs: „Wir glauben, dass Pendler*innen morgens Kaffee bekommen, ohne ihren Zug zu riskieren. Wir merken es, wenn mehr von ihnen mit Kaffee in den Zug steigen.“</p>
-      <p><strong>Produkt:</strong> Im Gehen bestellen, mit Abfahrtszeit, abholen an der Express-Ausgabe (Value Map, Tag 3). <strong>Produktziel:</strong> der Outcome-Satz aus dem Produkt-Brief (<a href="/innolab/methoden/problem-rahmen">Problem-Rahmen</a>) – er beschreibt, wie es nach dem Produkt sein soll, und daran misst sich jeder Sprint. <strong>Product Owner:</strong> die Product Ownerin der Kaffeebar; Developers sind alle drei. <strong>Product Backlog:</strong> 1 Getränk wählen und bestellen · 2 Abfahrtszeit angeben und Fertig-Zeit sehen · 3 Bar sieht Bestellungen nach Abfahrt sortiert · 4 Zug aus einer Liste der nächsten Abfahrten wählen (U2) · 5 Abholnummer am Bildschirm der Ausgabe · 6 Bar markiert Bestellung als abgeholt, das Ereignis wird gespeichert (aus der Definition of Done, 16:20). Wie die Issues entstehen, kommt an Tag 5 in <a href="/innolab/methoden/backlog">Backlog aus Issues</a>. <strong>Stakeholder im Review:</strong> Markus und Louis, dazu die Testpersonen aus den Usability-Tests an Tag 6. <strong>Sprint-Ziel:</strong> ein Satz, der sagt, was danach jemand kann – nicht die Liste der Issues. <strong>Definition of Done:</strong> siehe <a href="#dod">unten</a>.</p>
+      <p><strong>Produkt:</strong> Im Gehen bestellen, mit Abfahrtszeit, abholen an der Express-Ausgabe (Value Map, Tag 3). <strong>Produktziel:</strong> der Outcome-Satz aus dem Produkt-Brief (<a href="/innolab/methoden/problem-rahmen">Problem-Rahmen</a>) – er beschreibt, wie es nach dem Produkt sein soll, und daran misst sich jeder Sprint. <strong>Product Owner:</strong> die Product Ownerin der Kaffeebar; Developers sind alle drei. <strong>Product Backlog:</strong> 1 Getränk wählen und bestellen · 2 Abfahrtszeit angeben und Fertig-Zeit sehen · 3 Bar sieht Bestellungen nach Abfahrt sortiert · 4 Zug aus einer Liste der nächsten Abfahrten wählen (U2) · 5 Abholnummer am Bildschirm der Ausgabe · 6 Bar markiert Bestellung als abgeholt, das Ereignis wird gespeichert (aus der Definition of Done, Tag 5). Wie die Issues entstehen, kommt an Tag 5 in <a href="/innolab/methoden/backlog">Backlog aus Issues</a>. <strong>Stakeholder im Review:</strong> Markus und Louis, dazu die Testpersonen aus den Usability-Tests an Tag 6. <strong>Sprint-Ziel:</strong> ein Satz, der sagt, was danach jemand kann – nicht die Liste der Issues. <strong>Definition of Done:</strong> siehe <a href="#dod">unten</a>.</p>
     </div>
   </Folie>
 
@@ -208,7 +208,7 @@ const NACH_LEGO = '2026-11-28T16:15';
       <li data-schritt><strong>Ein Stakeholder:</strong> wer sollte im Review sitzen, außer Markus und Louis?</li>
       <li data-schritt><strong>Die anderen beiden</strong> fragen je einmal nach. <Timer minuten={5} /></li>
     </ul>
-    <p class="nur-handout">Das Produktziel ist die Verpflichtung des Product Backlogs ({GUIDE}, S. 10–11). Euer Outcome aus Tag 1 hat genau diese Form: ein künftiger Zustand, an dem sich der Backlog ausrichtet. Wer keinen Stakeholder außerhalb des Teams findet, hat für das Review an Tag 5 niemanden, der das Inkrement mit frischen Augen sieht.</p>
+    <p class="nur-handout">Das Produktziel ist die Verpflichtung des Product Backlogs ({GUIDE}, S. 10–11). Euer Outcome aus Tag 1 hat genau diese Form: ein künftiger Zustand, an dem sich der Backlog ausrichtet. Wer keinen Stakeholder außerhalb des Teams findet, hat für das Review an Tag 6 niemanden, der das Inkrement mit frischen Augen sieht.</p>
   </Folie>
 
   <Folie>
@@ -251,7 +251,7 @@ const NACH_LEGO = '2026-11-28T16:15';
       <li data-schritt><strong>Danach:</strong> Wie fühlt sich das an? Fragt nach.</li>
     </ul>
     <div class="nur-handout">
-      <Aufloesung ab={AB_LEGO} hinweis="Die Vision erzählt Markus zu Beginn des Spiels; hier steht sie ab 15:00." knopf="Vision zeigen">
+      <Aufloesung ab={AB_LEGO} hinweis="Die Vision erzählt Markus zu Beginn des Spiels; hier steht sie ab 15:50." knopf="Vision zeigen">
         <p><strong>Vision: Bahnhofsviertel Gleis 1</strong></p>
         <p>Wir bauen das Viertel rund um einen kleinen Bahnhof, an dem jeden Morgen tausende Menschen umsteigen. Bisher ist er nur ein Durchgang. Wir wollen einen Ort daraus machen, an dem man gern ein paar Minuten bleibt, ohne je den Zug zu verpassen.</p>
         <ul>
@@ -317,7 +317,7 @@ const NACH_LEGO = '2026-11-28T16:15';
       </BildText>
       <div class="nur-handout">
         <p>„Normalerweise springe ich auf einen Tisch in der Mitte des Raumes und rufe: ‚Wo ist meine Stadt?!!‘“ ({KRIVITSKY}, S. 96) – wir fragen es für unser Viertel: „Wo ist mein Bahnhofsviertel?“ Die Teams merken, dass der Product Owner „eine einzige Stadt möchte, nicht nur eine Sammlung einzelner nicht integrierter, nicht getesteter, nicht ausgerichteter Elemente“. Das nachträgliche Zusammensetzen kostet „etwa 25% der Sprintdauer“. „Interessanterweise werden 19 von 20 Teams beim ersten Sprint nicht integriert, unabhängig davon, wie viele Folien Du der Klasse zu den Konzepten Integration, Definition von Fertig, Inkrementen usw. gezeigt hast“ (S. 96).</p>
-        <p>Darum gab es vorher keine Definition of Done: „Ich möchte, dass die Teams scheitern und verstehen, warum sie in jedem Projekt eine gute DoD brauchen“ (S. 46). Und das Review ist kein Abnahmetermin: „Inspect und Adapt (nicht prüfen und akzeptieren)“ – je mehr alle gemeinsam auf das Inkrement schauen, desto besser (S. 97). Aus den Fragen des Product Owners entstehen neue Karten fürs Backlog (S. 98). Für die echten Produkte schreibt ihr die Definition of Done um 16:20 – mit dem, was euch heute gefehlt hat.</p>
+        <p>Darum gab es vorher keine Definition of Done: „Ich möchte, dass die Teams scheitern und verstehen, warum sie in jedem Projekt eine gute DoD brauchen“ (S. 46). Und das Review ist kein Abnahmetermin: „Inspect und Adapt (nicht prüfen und akzeptieren)“ – je mehr alle gemeinsam auf das Inkrement schauen, desto besser (S. 97). Aus den Fragen des Product Owners entstehen neue Karten fürs Backlog (S. 98). Für die echten Produkte schreibt ihr die Definition of Done an Tag 5 – mit dem, was euch heute gefehlt hat.</p>
       </div>
     </Aufloesung>
   </Folie>
@@ -327,7 +327,7 @@ const NACH_LEGO = '2026-11-28T16:15';
     <p class="folie-satz">Die drei Sprints an der Wand nachzeichnen – dann zwei Fragen.</p>
     <ul class="gross">
       <li data-schritt><strong>Was hat uns trotz allem geholfen,</strong> am Ende etwas zu bauen?</li>
-      <li data-schritt><strong>Was davon nehmt ihr in eure drei Produkte mit?</strong> Ein Zettel pro Person – er kommt um 16:20 in <code>docs/TEAM.md</code>. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Was davon nehmt ihr in eure drei Produkte mit?</strong> Ein Zettel pro Person – hebt ihn auf, er kommt an Tag 5 in <code>docs/TEAM.md</code>. <Timer minuten={5} /></li>
     </ul>
     <Aufloesung ab={NACH_LEGO} hinweis="Was Markus absichtlich eingebaut hat, erscheint nach dem dritten Sprint." knopf="Zeigen (nach dem Spiel)">
       <p><strong>Was Markus absichtlich eingebaut hat</strong> – Krivitsky nennt es „Design for Failure“: „Wenn deine Teams im ersten lego4scrum Sprint nicht auf die Schnauze fallen, machst du etwas falsch“ ({KRIVITSKY}, S. 41).</p>
@@ -345,19 +345,23 @@ const NACH_LEGO = '2026-11-28T16:15';
     </Aufloesung>
   </Folie>
 
+  <Callout type="info" title="Ab hier: Tag 5">
+    <p>Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief (09:25–10:05). Bringt eure Zettel aus der Lego-Nachbesprechung mit. An Tag 4 geht es von hier weiter zum <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.</p>
+  </Callout>
+
   <Folie>
     <h2 id="team">Euer Team aufstellen</h2>
     <p class="folie-satz">Je Produkt ein Product Owner und ein Produktziel – alle drei sind überall Developers.</p>
     <MiroFrame name="T4 · 2 · Teamaufstellung & DoD" />
     <ol class="gross">
-      <li data-schritt><strong>Aus dem Lego:</strong> Was hätte euch im ersten Review gerettet? Drei Stichworte an die Tafel. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Aus dem Lego an Tag 4:</strong> Was hätte euch im ersten Review gerettet? Drei Stichworte an die Tafel. <Timer minuten={5} /></li>
       <li data-schritt><strong>Reihum:</strong> Produkt, Product Owner, Produktziel, Linear-Projekt; Scrum Master für den Sprint; die Abweichungen. <Timer minuten={10} /></li>
       <li data-schritt><strong>Definition of Done,</strong> eine für alle drei Produkte. <Timer minuten={15} /></li>
       <li data-schritt><strong>Mess-Ereignis je Produkt</strong> als Mess-Issue in Stichworten; Collaborator einladen. <Timer minuten={10} /></li>
     </ol>
     <div class="nur-handout">
       <p>Zu 1: Die Stichworte werden Zeilen der Definition of Done – sie kommen aus eurer eigenen Erfahrung, nicht aus einer Vorlage ({KRIVITSKY}, S. 46, 96). Zu 2: Jede*r ist Product Owner des eigenen Produkts und entscheidet dort über Produktziel, Backlog und Reihenfolge ({GUIDE}, S. 5–6). Alle drei sind Developers in allen drei Produkten: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente. Den Scrum Master für den Sprint lost ihr. Linear: ein Team, ein Projekt pro Produkt, ein Label für den Sprint (<code>Sprint</code>); eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>). Die Abweichungen vom Guide übernehmt ihr als eigenen Abschnitt in <code>docs/TEAM.md</code>. Zu 3 und 4: siehe nächste Folie. Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein (<a href="/innolab/methoden/sprint#spec">Sprint</a>).</p>
-      <p>Der Sprint: vom Planning an Tag 5 (12. Dezember) bis zu Review und Retro an Tag 6 (19. Dezember). Am 7. Jänner präsentiert ihr euer Produkt den Stakeholdern.</p>
+      <p>Der Sprint: vom Planning heute (Tag 5, 12. Dezember) bis zu Review und Retro an Tag 6 (19. Dezember). Am 16. Jänner präsentiert ihr euer Produkt den Stakeholdern.</p>
     </div>
   </Folie>
   <Callout type="info" title="Daily zwischen den Kurstagen">
@@ -377,18 +381,18 @@ const NACH_LEGO = '2026-11-28T16:15';
     </ol>
     <div class="nur-handout">
       <p>Ohne die vierte Zeile könnt ihr nach dem Sprint nur sagen, dass etwas gebaut ist – nicht, ob es wirkt. Ein Ereignis ist eine Zeile in einer Tabelle <code>ereignisse</code> in Supabase: was passiert ist, wann, und eine zufällige Kennung pro Gerät. Bei der Kaffeebar tippt die Bar bei der Übergabe auf „abgeholt“; gespeichert werden Abholzeit, Abfahrtszeit und die Kennung des Geräts. Liegt die Abholzeit vor der Abfahrt, zählt der Tag für das Produktziel: mehr Pendler*innen mit Kaffee im Zug. Nebenbei zeigen die Zeilen pro halbe Stunde, ob die Bar 40 Bestellungen in 30 Minuten schafft (A2) – ein Zusatz des Kurses, kein Teil der Definition of Done.</p>
-      <p>Was ihr <strong>nicht</strong> speichert, gehört dazu: kein Name, keine E-Mail, und sagt euren Testpersonen, dass ihr messt. Bei der Kaffeebar hängt das an A7 (ethisch): „Sie sind einverstanden, dass wir ihre Abfahrtszeit kennen“ (<a href="/innolab/methoden/experiment#beispiel">Experiment-Karte</a>). Das Ereignis einzuführen ist ein eigenes Issue, das Mess-Issue – bei der Kaffeebar Issue 6: „Bar markiert Bestellung als abgeholt; das Ereignis abgeholt wird gespeichert“ – Quelle: die Definition of Done. Ausformuliert wird es an Tag 5 im Backlog, mit Akzeptanzkriterien wie jedes andere. Ab dann gilt für jedes Issue: Nach dem Merge kommt das Ereignis noch an.</p>
+      <p>Was ihr <strong>nicht</strong> speichert, gehört dazu: kein Name, keine E-Mail, und sagt euren Testpersonen, dass ihr messt. Bei der Kaffeebar hängt das an A7 (ethisch): „Sie sind einverstanden, dass wir ihre Abfahrtszeit kennen“ (<a href="/innolab/methoden/experiment#beispiel">Experiment-Karte</a>). Das Ereignis einzuführen ist ein eigenes Issue, das Mess-Issue – bei der Kaffeebar Issue 6: „Bar markiert Bestellung als abgeholt; das Ereignis abgeholt wird gespeichert“ – Quelle: die Definition of Done. Ausformuliert wird es gleich danach im Backlog, mit Akzeptanzkriterien wie jedes andere. Ab dann gilt für jedes Issue: Nach dem Merge kommt das Ereignis noch an.</p>
       <p>Eine Mess-Zeile ist eine Definition of Done „appropriate for the product“ ({GUIDE}, S. 12): Euer Produkt soll einen Outcome bewirken, also gehört dessen Messung zur Qualität des Inkrements.</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (175 min)</h2>
-    <p class="folie-satz">Theorie mit der Kaffeebar, Lego, dann euer Team.</p>
+    <p class="folie-satz">Theorie mit der Kaffeebar und Lego an Tag 4, euer Team an Tag 5.</p>
     <ol class="gross">
-      <li data-schritt><strong>Agil &amp; Scrum (13:55–14:50):</strong> acht Folien, die Kaffeebar in Scrum-Begriffen, euer Produktziel reihum.</li>
-      <li data-schritt><strong>Lego4Scrum (15:00–16:20):</strong> Vision, Produkt an der Wand, drei Sprints, Nachbesprechung.</li>
-      <li data-schritt><strong>Teamaufstellung &amp; Definition of Done (16:20–17:00):</strong> <code>docs/TEAM.md</code> in jedem der drei Repos.</li>
+      <li data-schritt><strong>Agil &amp; Scrum (Tag 4, 14:45–15:40):</strong> acht Folien, die Kaffeebar in Scrum-Begriffen, euer Produktziel reihum.</li>
+      <li data-schritt><strong>Lego4Scrum (Tag 4, 15:50–17:10):</strong> Vision, Produkt an der Wand, drei Sprints, Nachbesprechung.</li>
+      <li data-schritt><strong>Teamaufstellung &amp; Definition of Done (Tag 5, 09:25–10:05):</strong> <code>docs/TEAM.md</code> in jedem der drei Repos.</li>
     </ol>
     <p class="nur-handout">Agil &amp; Scrum: 35 Minuten Theorie, 15 Minuten Kaffeebar gemeinsam, 5 Minuten reihum. Lego4Scrum: 80 Minuten, Ablauf und Kürzungen oben unter <a href="#lego">Warum Lego</a>. Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
   </Folie>
@@ -437,6 +441,6 @@ Developers: alle drei in allen drei Produkten · Scrum Master: [Name]
 
   <p class="small muted">Nach {GUIDE}; {MANIFEST}; {JEFFRIES}, Kap. 3 und 5; {KRIVITSKY}.</p>
 
-  <FooterNav prev={{ href: '/innolab/methoden/prototyp-spike', t: 'Prototyp-Spike & Usability-Test' }} next={{ href: '/innolab/tag-4#abschluss', t: 'Tag 4 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/tag-5#debrief', t: 'Tag 5 · Test-Debrief' }} next={{ href: '/innolab/methoden/backlog', t: 'Backlog aus Issues' }} />
 </Layout>
 

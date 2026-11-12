@@ -13,14 +13,14 @@ import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
-import { KAFFEEBAR_BAUM_TAG2 } from '../../../components/innolab-beispiel';
+import { KAFFEEBAR_BAUM_INTERVIEWS } from '../../../components/innolab-beispiel';
 import { RUNDEN } from '../../../lib/antworten';
 import { BookOpen, Check, CircleCheck, CircleX, Coffee, X } from '@lucide/astro';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 ---
 <Layout title="Opportunity Solution Tree">
-  <span class="eyebrow">Innolab · Tag 2 · Methode</span>
+  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Opportunity Solution Tree</h1>
   <p class="lead">Aus fünf Interviews kommen Dutzende Chancen (opportunities). Der Baum ordnet sie unter die Momente eurer Experience Map, damit ihr sie vergleichen könnt – statt auf die erstbeste zu springen.</p>
   <Orientierung seite="innolab/methoden/baum" leiste={false} />
@@ -270,7 +270,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">Drei oberste Chancen aus den Momenten, darunter belegte Chancen.</p>
-    <Baum schmal momente knoten={KAFFEEBAR_BAUM_TAG2} label="Opportunity Solution Tree der Kaffeebar nach Tag 2: Outcome, darunter drei oberste Chancen aus den Momenten der Experience Map (Ich komme in die Halle und entscheide; Ich stehe an und warte auf meinen Kaffee; Ich bin im Zug), darunter Chancen mit Zitat-IDs" />
+    <Baum schmal momente knoten={KAFFEEBAR_BAUM_INTERVIEWS} label="Opportunity Solution Tree der Kaffeebar nach den Interviews: Outcome, darunter drei oberste Chancen aus den Momenten der Experience Map (Ich komme in die Halle und entscheide; Ich stehe an und warte auf meinen Kaffee; Ich bin im Zug), darunter Chancen mit Zitat-IDs" />
     <p data-schritt><strong>Nicht im Baum:</strong> Chancen, die nur eine Person erzählt hat – I1, I4, I5 je eine.</p>
     <div class="nur-handout">
     <p>Im Baum steht nur, was mehr als ein Interview stützt. „Der erste Schluck rettet den Morgen“ (I1-4), „nicht gehetzt im Büro ankommen“ (I4-5) und „für Kolleg*innen mitbestellen“ (I5-4, I5-6) bleiben auf ihren Snapshots. Belege unter „Ich komme in die Halle und entscheide.“: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2) · „Schnell geht nur der Automat.“ (I1-3, I4-3); unter „Ich stehe an und warte auf meinen Kaffee.“: „Wann ist mein Kaffee fertig?“ (I2-5, I3-3). Unter „Ich komme in die Halle und entscheide.“ hängen drei Chancen, unter „Ich stehe an und warte auf meinen Kaffee.“ eine, unter „Ich bin im Zug.“ noch keine.</p>
@@ -292,7 +292,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       </ol>
     </BildText>
     <div class="nur-handout">
-      <p>Jedes Produkt hat auf dem Board einen eigenen Baum, von oben nach unten wie bei Torres: Outcome, oberste Chancen (eure Momente), Chancen, darunter weitere Teilchancen, ab Tag 3 Lösungen und Annahmen-Tests. Jede Karte ist eine Teilchance der Karte darüber; die Reihe „Weitere Teilchancen“ füllt sich, wenn sich eine Chance in Interviews weiter aufteilt (Torres S. 91). Euer Frame heißt „Baum · euer Name“: <MiroLink name="Baum · Sofie · sofie">Baum · Sofie</MiroLink>, <MiroLink name="Baum · Joachim · joachim">Baum · Joachim</MiroLink>, <MiroLink name="Baum · Hewen · chen">Baum · Hewen</MiroLink>. Links daneben steht <MiroLink name="Baum · Beispiel Kaffeebar">Baum · Beispiel Kaffeebar</MiroLink>; Outcome und je eine blaue und gelbe Karte stehen in eurem Baum schon zum Kopieren.</p>
+      <p>Jedes Produkt hat auf dem Board einen eigenen Baum, von oben nach unten wie bei Torres: Outcome, oberste Chancen (eure Momente), Chancen, darunter weitere Teilchancen, später Lösungen und Annahmen-Tests. Jede Karte ist eine Teilchance der Karte darüber; die Reihe „Weitere Teilchancen“ füllt sich, wenn sich eine Chance in Interviews weiter aufteilt (Torres S. 91). Euer Frame heißt „Baum · euer Name“: <MiroLink name="Baum · Sofie · sofie">Baum · Sofie</MiroLink>, <MiroLink name="Baum · Joachim · joachim">Baum · Joachim</MiroLink>, <MiroLink name="Baum · Hewen · chen">Baum · Hewen</MiroLink>. Links daneben steht <MiroLink name="Baum · Beispiel Kaffeebar">Baum · Beispiel Kaffeebar</MiroLink>; Outcome und je eine blaue und gelbe Karte stehen in eurem Baum schon zum Kopieren.</p>
       <p>Jede Karte hängt mit einer Linie an genau einer Karte darüber. Mit Cmd+D (Windows: Strg+D) dupliziert ihr eine Karte; dann zieht ihr vom blauen Punkt am Rand der oberen Karte eine Linie zur unteren. Die Linie bleibt angeheftet, wenn ihr Karten verschiebt. Was nur eine Person erzählt hat, kommt ins Feld „Nur in einem Interview“. Der Frame <MiroLink name="T2 · 2 · Opportunity Solution Tree">T2 · 2</MiroLink> bleibt die Anleitung: drei Fragen und Anti-Muster.</p>
     </div>
   </Folie>
@@ -350,10 +350,10 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
     <p class="folie-satz">Welcher Ast eures Baums ist der vollste – und ist das auch der wichtigste?</p>
-    <p class="nur-handout">Ein voller Ast heißt nur, dass ihr dort viel gehört habt. Ob er der wichtigste ist, klärt Tag 3: Dort vergleicht ihr die Chancen und wählt eine Ziel-Chance.</p>
+    <p class="nur-handout">Ein voller Ast heißt nur, dass ihr dort viel gehört habt. Ob er der wichtigste ist, klärt der nächste Block: Dort vergleicht ihr die Chancen und wählt eine Ziel-Chance.</p>
   </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/journey-map', t: 'Experience Map' }} next={{ href: '/innolab/tag-2/abschluss', t: 'Tag 2 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} next={{ href: '/innolab/methoden/ziel-chance', t: 'Ziel-Chance wählen' }} />
 </Layout>
 
 <script>

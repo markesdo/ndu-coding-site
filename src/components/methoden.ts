@@ -83,7 +83,9 @@ export interface Pruefpunkt {
 export interface Methode {
   slug: string;
   name: string;
-  /** Kurstag, an dem die Methode eingeführt wird (1–5; Tag 6 ist Bautag, Tag 7 die Präsentation – dort kommt nichts Neues dazu). */
+  /** Kurstag, an dem die Methode eingeführt wird (1–6; an Tag 6 nur noch der Pitch, nach dem Sprint; Tag 7 ist die
+   *  Präsentation – dort kommt nichts Neues dazu). Ausnahme „scrum“: Agil und Lego4Scrum an Tag 4, Teamaufstellung und
+   *  Definition of Done (Artefakt team) zu Beginn von Tag 5. */
   tag: number;
   /** Minuten für Input, Übung und Festhalten zusammen. */
   dauer: number;
@@ -209,7 +211,7 @@ export const METHODEN: Methode[] = [
     ki: 'Liest eure Interviews und fragt, welche Geschichte in der Map fehlt und wo sich Momente überschneiden.',
   },
   {
-    slug: 'baum', name: 'Opportunity Solution Tree', tag: 2, dauer: 75,
+    slug: 'baum', name: 'Opportunity Solution Tree', tag: 3, dauer: 75,
     frage: 'Welche Chancen aus den Interviews gehören unter welchen Moment – und wie hängen sie zusammen?',
     braucht: ['brief', 'synthese', 'journey'], ergibt: ['baum'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 6, S. 78–95',
@@ -313,7 +315,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2–4, 6–8',
   },
   {
-    slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 3, dauer: 20,
+    slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 4, dauer: 20,
     frage: 'Wer zahlt wofür – und welche Annahme steckt dahinter?',
     braucht: ['profil', 'valuemap', 'concept', 'annahmen', 'brief'], ergibt: ['geschaeftsmodell'],
     pruefliste: [
@@ -328,7 +330,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 115–118; Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128',
   },
   {
-    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 3, dauer: 40, prueflisteStand: 2,
+    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 4, dauer: 40, prueflisteStand: 2,
     frage: 'An welcher Annahme hängt der Spitzenreiter – und wie prüfen wir sie diese Woche?',
     braucht: ['annahmen', 'ideen', 'valuemap', 'concept', 'geschaeftsmodell'], ergibt: ['experimente', 'origin'],
     pruefliste: [
@@ -467,7 +469,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Ron Jeffries, The Nature of Software Development (2015), Kap. 5–6; AJ&Smart, Lightning Decision Jam (2020)',
   },
   {
-    slug: 'pitch', name: 'Pitch', tag: 5, dauer: 45, prueflisteStand: 2,
+    slug: 'pitch', name: 'Pitch', tag: 6, dauer: 45, prueflisteStand: 2,
     frage: 'Überzeugt das Produkt – mit Belegen und einem sichtbaren Unterschied zu dem, was es heute gibt?',
     braucht: ['brief', 'profil', 'valuemap', 'concept', 'experimente', 'origin', 'geschaeftsmodell', 'usage', 'spike', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
     pruefliste: [
@@ -485,23 +487,22 @@ export const METHODEN: Methode[] = [
   },
 ];
 
-/** Sieben Termine: Tag 1–5 Input und Übung (Tag 2 als halber Tag online; an Tag 5 beginnt der eine Sprint), Tag 6 (halber
- *  Tag, online) nur Bauen – mit Tests und Scrum-Events, aber ohne neue Methode –, Tag 7 (halber Tag) Präsentation. Dazwischen
- *  arbeitet ihr zu Hause; gebaut wird bis Tag 6.
+/** Sieben Termine: Tag 1–5 Input und Übung (Tag 2 als halber Tag online; an Tag 5 beginnt der eine Sprint), Tag 6 (ganzer
+ *  Tag, online, 9–18 Uhr) Bauen, Tests und Scrum-Events, am Nachmittag der Pitch als letzte Methode, Tag 7 (halber Tag,
+ *  online) Präsentation. Dazwischen arbeitet ihr zu Hause; gebaut wird bis Tag 6.
+ *  Stand 12.11.2026 (Entscheidung Markus): Tag 2 endete nach der Experience Map; der Baum eröffnet Tag 3, Geschäftsmodell
+ *  und Experiment-Karte eröffnen Tag 4, Teamaufstellung und Definition of Done folgen an Tag 5 nach dem Debrief, der Pitch
+ *  an Tag 6; Tag 7 liegt am 16.01.2027.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). Ohne datum: Termin folgt
- *  – dann keine Jetzt-Markierung auf der Tagesseite.
- *  zusatz: ein weiterer halber Tag am selben Datum, der noch nicht bestätigt ist (offen) – Übersicht und Startseite zeigen
- *  ihn mit „(?)“; der Kurs muss ohne ihn funktionieren. */
-export interface Zusatztermin { zeit: string; was: string; offen: boolean }
-export const TAGE: { n: number; datum?: string; titel: string; text: string; zusatz?: Zusatztermin }[] = [
+ *  – dann keine Jetzt-Markierung auf der Tagesseite. */
+export const TAGE: { n: number; datum?: string; titel: string; text: string }[] = [
   { n: 1, datum: '2026-10-22', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
-  { n: 2, datum: '2026-11-12', titel: 'Kunde & Erlebnis', text: 'Snapshots besprechen, Experience Map, Opportunity Solution Tree.' },
-  { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, Concept Story, Geschäftsmodell, Experiment-Karte.' },
-  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Scrum und Lego4Scrum, Team und Definition of Done.' },
-  { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning mit Störfall, Pitch – dann wird gebaut.' },
-  { n: 6, datum: '2026-12-19', titel: 'Bauen & Review', text: 'Fertig bauen, Usability-Tests über Kreuz, Sprint-Review und Retro: Der Prototyp steht.',
-    zusatz: { zeit: '14:00–18:00', was: 'Pitch-Probe und Puffer', offen: true } },
-  { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
+  { n: 2, datum: '2026-11-12', titel: 'Kunde & Erlebnis', text: 'Snapshots besprechen, Experience Map.' },
+  { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Opportunity Solution Tree, Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, Concept Story.' },
+  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Geschäftsmodell und Experiment-Karte; Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Scrum und Lego4Scrum.' },
+  { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Team und Definition of Done, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning mit Störfall – dann wird gebaut.' },
+  { n: 6, datum: '2026-12-19', titel: 'Bauen & Review', text: 'Fertig bauen, Usability-Tests über Kreuz, Sprint-Review und Retro: Der Prototyp steht. Danach der Pitch mit Probe.' },
+  { n: 7, datum: '2027-01-16', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
 ];
 
 export const artefakt = (id: string): Artefakt | undefined => ARTEFAKTE.find((a) => a.id === id);
@@ -591,7 +592,7 @@ export function danachEntscheiden(m: Methode, pfad?: string): string[] {
       'Ein Befund ist eine Vermutung, kein Urteil: Prüft an euren Zitaten, ob er stimmt.',
       `${NACHFRAGE_BELEGE} Den neuen Text schreibt ihr selbst – Claude formuliert nichts.`,
       `Stimmt er: selbst auf Miro ändern. ${lassen}`,
-      'Die übrigen Befunde bis Tag 3; nach dem Ändern höchstens einmal neu prüfen lassen.',
+      `Die übrigen Befunde bis Tag ${m.tag + 1}; nach dem Ändern höchstens einmal neu prüfen lassen.`,
       '„Passt alles“: weiter.',
     ];
   }

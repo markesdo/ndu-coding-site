@@ -316,6 +316,6 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Wenn nichts: Geschichten nachgezeichnet oder alte Map abgehakt?',
       'Ist-Zeit notieren.',
     ],
-    ueberleitung: 'Nach der Pause werden eure Momente die obersten Äste des Baums.',
+    ueberleitung: 'An Tag 3 werden eure Momente die obersten Äste des Baums.',
   },
 };

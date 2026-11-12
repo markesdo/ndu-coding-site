@@ -48,11 +48,13 @@ describe('methoden', () => {
     }
   });
 
-  it('Kurstage laufen aufsteigend von 1 bis 5 – Tag 6 ist nur Bauen, Tag 7 die Präsentation –, Orte sind bekannt', () => {
+  it('Kurstage laufen aufsteigend von 1 bis 6 – an Tag 6 kommt nur noch der Pitch dazu, Tag 7 ist die Präsentation –, Orte sind bekannt', () => {
     const tage = METHODEN.map((m) => m.tag);
     expect(tage).toEqual([...tage].sort((a, b) => a - b));
     expect(tage[0]).toBe(1);
-    for (const t of tage) expect(t).toBeLessThanOrEqual(5);
+    for (const t of tage) expect(t).toBeLessThanOrEqual(6);
+    // Tag 6 ist Bautag: Die einzige Methode dort ist der Pitch, nach Review und Retro.
+    expect(METHODEN.filter((m) => m.tag === 6).map((m) => m.slug)).toStrictEqual(['pitch']);
     for (const a of ARTEFAKTE) {
       expect(a.lebtIn.length, a.id).toBeGreaterThan(0);
       for (const o of a.lebtIn) expect(Object.keys(ORTE)).toContain(o);
@@ -123,8 +125,10 @@ describe('methoden', () => {
   });
 
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
-    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map', 'baum']);
-    expect(methodenVonTag(6)).toEqual([]);
+    // Plan seit 12.11.2026: Tag 2 endete nach der Experience Map, der Baum eröffnet Tag 3.
+    expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map']);
+    expect(methodenVonTag(3)[0].slug).toBe('baum');
+    expect(methodenVonTag(6).map((m) => m.slug)).toEqual(['pitch']);
     expect(methodenVonTag(7)).toEqual([]);
   });
 
@@ -449,5 +453,89 @@ describe('methoden', () => {
       const kurstage = [...readFileSync(url, 'utf8').matchAll(/data-kurstag="([^"]+)"/g)].map((m) => m[1]);
       expect(kurstage, `tag-${t.n}`).toStrictEqual(t.datum ? [t.datum] : []);
     }
+  });
+
+  const tagesseite = (n: number) => readFileSync(new URL(`../pages/innolab/tag-${n}.astro`, import.meta.url), 'utf8');
+  /** Blöcke des Ablaufs einer Tagesseite: Zeiten in Minuten seit Mitternacht, Titel und Ziel. */
+  const bloecke = (n: number) =>
+    [...tagesseite(n).matchAll(/<Block time="(\d{2}):(\d{2})–(\d{2}):(\d{2})"[^>]*?title="([^"]+)"(?:[^>]*?href="([^"]+)")?/g)].map((m) => ({
+      von: Number(m[1]) * 60 + Number(m[2]), bis: Number(m[3]) * 60 + Number(m[4]), titel: m[5], href: m[6] ?? '',
+    }));
+
+  /** Beginn und Ende des Kurstags aus dem Seitenkopf (eyebrow „… · 09:00–17:30“), in Minuten seit Mitternacht. */
+  const kopfzeit = (n: number) => {
+    const m = tagesseite(n).match(/class="eyebrow">[^<]*?(\d{2}):(\d{2})–(\d{2}):(\d{2})/);
+    return m ? [Number(m[1]) * 60 + Number(m[2]), Number(m[3]) * 60 + Number(m[4])] : null;
+  };
+
+  it('der Ablauf jeder Tagesseite ist lückenlos und füllt genau die Zeit im Seitenkopf', () => {
+    for (const t of TAGE) {
+      const b = bloecke(t.n);
+      expect(b.length, `tag-${t.n}`).toBeGreaterThan(3);
+      for (const [i, x] of b.entries()) {
+        expect(x.bis, `tag-${t.n}: ${x.titel}`).toBeGreaterThan(x.von);
+        if (i > 0) expect(x.von, `tag-${t.n}: ${x.titel} schließt nicht an ${b[i - 1].titel} an`).toBe(b[i - 1].bis);
+      }
+      expect(kopfzeit(t.n), `tag-${t.n}: Zeit im Seitenkopf`).toStrictEqual([b[0].von, b.at(-1)!.bis]);
+    }
+    // Rahmen der Tage nach dem Plan vom 12.11.2026 (Beginn, Ende in Minuten): Tag 6 ganztägig, Tag 7 am 16.01. von 9 bis 12.
+    expect(kopfzeit(3)).toStrictEqual([9 * 60, 17 * 60 + 30]);
+    expect(kopfzeit(4)).toStrictEqual([9 * 60, 17 * 60 + 30]);
+    expect(kopfzeit(5)).toStrictEqual([9 * 60, 17 * 60]);
+    expect(kopfzeit(6)).toStrictEqual([9 * 60, 18 * 60]);
+    expect(kopfzeit(7)).toStrictEqual([9 * 60, 12 * 60]);
+    expect(bloecke(6).find((x) => x.titel === 'Mittagspause')).toMatchObject({ von: 13 * 60, bis: 14 * 60 });
+  });
+
+  it('„Weiter“ führt an jedem Kurstag ab Tag 2 durch alle Blöcke des Tages (FooterNav-Kette) und „Zurück“ denselben Weg zurück', () => {
+    const seite = (pfad: string) => readFileSync(new URL(`../pages${pfad.split('#')[0]}.astro`, import.meta.url), 'utf8');
+    const ziel = (pfad: string, richtung: 'prev' | 'next') => seite(pfad).match(new RegExp(`<FooterNav[^>]*?\\b${richtung}=\\{\\{\\s*href:\\s*'([^']+)'`))?.[1];
+    const m = (slug: string) => `/innolab/methoden/${slug}`;
+    // Je Kurstag: Start, die Stationen in Kursreihenfolge, zuletzt das Ziel, an dem die Kette den Tag verlässt oder zur Tagesseite zurückkehrt.
+    const ketten: string[][] = [
+      ['/innolab/tag-2', m('synthese'), m('journey-map'), '/innolab/tag-2/abschluss', '/innolab/tag-3'],
+      ['/innolab/tag-3', m('baum'), m('ziel-chance'), m('hmw'), m('ideation'), m('kundenprofil'), m('value-map'), m('concept-story'), '/innolab/tag-3#abschluss'],
+      ['/innolab/tag-4', m('geschaeftsmodell'), m('experiment'), m('story-map'), m('usage-story'), m('prototyp-spike'), m('scrum')],
+      ['/innolab/tag-5', m('scrum#team'), m('backlog'), m('akzeptanzkriterien'), m('schneiden'), m('sprint'), '/innolab/tag-5#stoerfall'],
+      ['/innolab/tag-6', '/innolab/tag-7', '/innolab'],
+      [m('pitch'), '/innolab/tag-6#pitch-probe'],
+    ];
+    for (const kette of ketten) {
+      for (let i = 0; i + 1 < kette.length; i++) expect(ziel(kette[i], 'next'), `Weiter von ${kette[i]}`).toBe(kette[i + 1]);
+    }
+    // Zurück: jede Station zeigt auf die davor (Anker der Tagesseite zählen als die Tagesseite).
+    const ohneAnker = (p?: string) => p?.replace(/#(debrief|review-retro)$/, '');
+    for (const [hier, davor] of [
+      [m('journey-map'), m('synthese')], ['/innolab/tag-2/abschluss', m('journey-map')],
+      [m('baum'), '/innolab/tag-3'], [m('ziel-chance'), m('baum')], [m('concept-story'), m('value-map')],
+      [m('geschaeftsmodell'), '/innolab/tag-4'], [m('experiment'), m('geschaeftsmodell')], [m('story-map'), m('experiment')],
+      [m('scrum'), '/innolab/tag-5'], [m('backlog'), m('scrum#team')], [m('sprint'), m('schneiden')],
+      [m('pitch'), '/innolab/tag-6'],
+    ]) expect(ohneAnker(ziel(hier, 'prev')), `Zurück von ${hier}`).toBe(davor);
+    // Scrum steht an zwei Tagen: Der FooterNav am Seitenende gehört zu Tag 5; an Tag 4 führt der Hinweis vor #team zum Abschluss.
+    expect(seite(m('scrum'))).toMatch(/Ab hier: Tag 5[\s\S]*?href="\/innolab\/tag-4#abschluss"[\s\S]*?<h2 id="team">/);
+  });
+
+  it('jede Methode ab Tag 2 steht im Ablauf ihres Kurstags mit so vielen Minuten, wie sie dauert', () => {
+    // Methoden, die sich einen Block teilen oder über mehrere Blöcke laufen: Ziele der Blöcke und der Kurstag, an dem sie stehen.
+    const minuten = (n: number, slug: string) =>
+      bloecke(n).filter((x) => x.href.startsWith(`/innolab/methoden/${slug}`)).reduce((summe, x) => summe + (x.bis - x.von), 0);
+    for (const m of METHODEN.filter((x) => x.tag >= 2 && x.tag <= 6)) {
+      expect(tagesseite(m.tag), `${m.slug} fehlt auf tag-${m.tag}`).toContain(`/innolab/methoden/${m.slug}`);
+    }
+    // Die Methoden, die am 12.11.2026 den Tag gewechselt haben, mit ihrer vollen Dauer am neuen Tag – und nicht mehr am alten.
+    for (const [slug, neu, alt] of [['baum', 3, 2], ['geschaeftsmodell', 4, 3], ['pitch', 6, 5]] as const) {
+      const m = METHODEN.find((x) => x.slug === slug)!;
+      expect(m.tag, slug).toBe(neu);
+      expect(minuten(neu, slug), slug).toBe(m.dauer);
+      expect(minuten(alt, slug), slug).toBe(0);
+    }
+    // Experiment-Karte: 30 Minuten zu Beginn von Tag 4, die Origin Story (10 Minuten Input) im Abschluss desselben Tags.
+    expect(minuten(4, 'experiment')).toBe(30);
+    expect(minuten(3, 'experiment')).toBe(0);
+    // Scrum: Agil und Lego an Tag 4, Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
+    expect(minuten(4, 'scrum')).toBe(55 + 80);
+    expect(bloecke(5).find((x) => x.href === '/innolab/methoden/scrum#team')).toMatchObject({ von: 9 * 60 + 25, bis: 10 * 60 + 5 });
+    expect(minuten(4, 'scrum') + minuten(5, 'scrum')).toBe(METHODEN.find((x) => x.slug === 'scrum')!.dauer);
   });
 });

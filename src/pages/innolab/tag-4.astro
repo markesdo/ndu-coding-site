@@ -7,55 +7,62 @@ import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
 ---
 <Layout title="Tag 4 · Prototyp & Scrum">
-  <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:20</span>
+  <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:30</span>
   <h1>Tag 4 · Prototyp & Scrum</h1>
-  <p class="lead">Am Vormittag wird aus dem Spitzenreiter ein geschnittener Plan, ein Kernablauf mit Höhepunkt und ein Prototyp, den ihr testen könnt. Am Nachmittag spielt ihr Scrum einmal mit Lego durch und stellt euch als Team für drei Produkte auf.</p>
+  <p class="lead">Der Tag beginnt mit dem Geschäftsmodell und der Karte, die die riskanteste Annahme eures Spitzenreiters testet. Dann wird aus ihm ein geschnittener Plan, ein Kernablauf mit Höhepunkt und ein Prototyp, den ihr testen könnt. Am Nachmittag spielt ihr Scrum einmal mit Lego durch.</p>
   <Orientierung seite="innolab/tag-4" />
+  <Callout type="warn" title="Vor 9:00: Claude Pro neu abschließen">
+    <p>Heute braucht ihr Claude Code: für das Pre-Mortem der Experiment-Karte und für den Prototyp. Schließt Claude Pro heute Morgen mit demselben Konto neu ab und kündigt gleich wieder (<a href="/setup#claude-pro">wie</a>). Der Monat läuft dann bis etwa 28. Dezember – über Tag 5 und Tag 6 hinaus.</p>
+  </Callout>
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-28">
-    <Block time="09:00–10:45" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Slice 1 nach Outcome und Lernziel.</Block>
-    <Block time="10:45–10:55" type="pause" title="Pause" />
-    <Block time="10:55–11:25" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Der Kernablauf mit Höhepunkt nahe am Ende.</Block>
-    <Block time="11:25–12:55" type="uebung" title="Prototyp-Spike" href="/innolab/methoden/prototyp-spike">Papier, dann Claude Code; Karte E2, Trockenlauf.</Block>
-    <Block time="12:55–13:55" type="pause" title="Mittagspause" />
-    <Block time="13:55–14:50" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#agil">Wasserfall, Agiles Manifest, Scrum nach dem Guide, wo wir abweichen; die Kaffeebar in Scrum-Begriffen.</Block>
-    <Block time="14:50–15:00" type="pause" title="Pause" />
-    <Block time="15:00–16:20" type="uebung" title="Lego4Scrum" href="/innolab/methoden/scrum#lego">Eine Vision, das Produkt an der Wand, drei Sprints.</Block>
-    <Block time="16:20–17:00" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Produktziele, Rollen, Linear; „fertig“ aus dem Lego und mit Mess-Ereignis.</Block>
-    <Block time="17:00–17:20" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie jemand den Wert zum ersten Mal sieht; E1 laufen lassen, fünf Usability-Tests.</Block>
+    <Block time="09:00–09:20" type="uebung" title="Geschäftsmodell-Karten" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; eine Runde Muster; die wirtschaftliche Annahme.</Block>
+    <Block time="09:20–09:50" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment">Schritte der Idee, Annahmen, Map, Karte E1 mit Schwelle.</Block>
+    <Block time="09:50–10:00" type="pause" title="Pause" />
+    <Block time="10:00–11:45" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Slice 1 nach Outcome und Lernziel.</Block>
+    <Block time="11:45–12:15" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Der Kernablauf mit Höhepunkt nahe am Ende.</Block>
+    <Block time="12:15–13:15" type="pause" title="Mittagspause" />
+    <Block time="13:15–14:45" type="uebung" title="Prototyp-Spike" href="/innolab/methoden/prototyp-spike">Papier, dann Claude Code; Karte E2, Trockenlauf.</Block>
+    <Block time="14:45–15:40" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#agil">Wasserfall, Agiles Manifest, Scrum nach dem Guide, wo wir abweichen; die Kaffeebar in Scrum-Begriffen.</Block>
+    <Block time="15:40–15:50" type="pause" title="Pause" />
+    <Block time="15:50–17:10" type="uebung" title="Lego4Scrum" href="/innolab/methoden/scrum#lego">Eine Vision, das Produkt an der Wand, drei Sprints.</Block>
+    <Block time="17:10–17:30" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie jemand den Wert zum ersten Mal sieht; E1 laufen lassen, fünf Usability-Tests.</Block>
   </div>
 
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
-  <p>Heute werden aus der <strong>Lösung</strong> <strong>Experimente</strong>, die man anklicken kann. Die Story Map zeigt, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das nach dem Kurstag mit echten Menschen, und E1 läuft daneben. Am Nachmittag beginnt der Schritt vom Entdecken zum Liefern: Ihr stellt euch als Team auf, so wie Produktteams in Unternehmen arbeiten. Das Entdecken hört dabei nicht auf: Euer Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
+  <p>Heute werden aus der <strong>Lösung</strong> <strong>Experimente</strong>. Das Geschäftsmodell zeigt, wer für euren Spitzenreiter zahlt; die Experiment-Karte, an welcher Annahme er hängt – daraus wird E1. Die Story Map zeigt, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das nach dem Kurstag mit echten Menschen, und E1 läuft daneben. Am Nachmittag beginnt der Schritt vom Entdecken zum Liefern: Ihr lernt Scrum kennen, so wie Produktteams in Unternehmen arbeiten, und spielt es mit Lego durch. Als Team für eure drei Produkte stellt ihr euch zu Beginn von Tag 5 auf. Das Entdecken hört dabei nicht auf: Euer Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
   <Callout type="info" title="Wenn die Story Map länger dauert">
     <p>Wer bei der Story Map hinterherhängt, kürzt bei der Usage Story auf die Stationen 4 und 5: Krise und Höhepunkt reichen für den Prototyp.</p>
   </Callout>
 
   <h2 id="methoden">Die Methoden von heute</h2>
   <ul>
+    <li><a href="/innolab/methoden/geschaeftsmodell">Geschäftsmodell-Karten</a> – wer zahlt wofür, und welche Annahme dahintersteckt</li>
+    <li><a href="/innolab/methoden/experiment">Experiment-Karte & Origin Story</a> – Annahmen testen, nicht Ideen; die Origin Story folgt im Abschluss</li>
     <li><a href="/innolab/methoden/story-map">Story Map</a> – der Plan, nach Outcome geschnitten</li>
     <li><a href="/innolab/methoden/usage-story">Usage Story</a> – der Kernablauf mit Höhepunkt</li>
     <li><a href="/innolab/methoden/prototyp-spike">Prototyp-Spike & Usability-Test</a> – lernen mit Wegwerf-Code</li>
-    <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Agil und Scrum, Lego4Scrum, Teamaufstellung mit Definition of Done</li>
-    <li><a href="/innolab/methoden/experiment#origin-story">Origin Story</a> – der zweite Teil der Experiment-Karte von Tag 3</li>
+    <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Agil und Scrum, Lego4Scrum; Teamaufstellung und Definition of Done folgen an Tag 5</li>
   </ul>
 
   <h2 id="abschluss">Abschluss & Hausaufgabe bis Tag 5</h2>
   <p>Im Abschluss gibt es zehn Minuten Input zur <a href="/innolab/methoden/experiment#origin-story">Origin Story</a> – sie ist der Text für euren Aufsteller oder eure Landingpage und führt zur Handlung, die E1 misst. Bis Tag 5 sind es zwei Wochen: Lasst E1 laufen und testet euren Prototyp mit fünf Menschen.</p>
-  <Checklist id="il-tag4-hausaufgabe-5" items={[
+  {/* -v2: Häkchen je Position; seit 12.11.2026 mit Geschäftsmodell und Karte E1, ohne docs/TEAM.md. */}
+  <Checklist id="il-tag4-hausaufgabe-5-v2" items={[
+    '<code>docs/GESCHAEFTSMODELL.md</code> und <code>EXPERIMENTE.md</code> (Karte E1) im Repo; die neuen Annahmen der Idee in der Annahmen-Map der Werkstatt',
     '<code>docs/STORY-MAP.md</code>, <code>STORYS.md</code> (Usage Story) und <code>TESTS.md</code> im Repo; Slice 1 steht als Stichworte in <code>docs/STORY-MAP.md</code>',
     'Origin Story als Text für Aufsteller oder Landingpage in <code>docs/STORYS.md</code>; eine Landingpage baut ihr nur, wenn E1 sie braucht',
     'E1 gelaufen – an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe –, Lernkarte mit Verlässlichkeit in <code>docs/EXPERIMENTE.md</code>',
     'Fünf Usability-Tests mit Karte E2, Befunde als U1, U2 … und Lernkarte mit Verlässlichkeit in <code>docs/TESTS.md</code>',
     'Je Lernkarte die Entscheidung als Befund → Handlung (gestützt, widerlegt, unklar oder neue Einsicht → weitermachen, umschwenken oder verwerfen) und was ihr ändert, als Zeilen im Entscheidungslog',
-    '<code>docs/TEAM.md</code> in allen drei Repos, mit Produktzielen, Rollen, Sprint, Abweichungen vom Scrum Guide und Definition of Done samt Mess-Ereignis',
-    'Linear: ein Team, ein Projekt pro Produkt, Verweis in <code>docs/BACKLOG.md</code>',
+    'Euer Zettel aus der Lego-Nachbesprechung aufgehoben – er kommt an Tag 5 in <code>docs/TEAM.md</code>',
+    'Linear eingerichtet: ein Team, ein Projekt pro Produkt, Verweis in <code>docs/BACKLOG.md</code> (<a href="/innolab/methoden/scrum#team">wie</a>); Rollen und Definition of Done folgen an Tag 5',
     'Die anderen beiden als Collaborator in eurem GitHub-Repo',
     'Committet und gepusht (der Spike bleibt in seinem Branch)',
   ]} />
-  <p><a href="/innolab/tag-5">Tag 5</a> am 12. Dezember beginnt mit dem Test-Debrief: Was haben E1 und eure Tests gezeigt? Danach entstehen aus euren Story Maps drei Backlogs in Linear, ihr plant den Sprint und legt das Gerüst für euren Pitch. Am Nachmittag wird gebaut.</p>
+  <p><a href="/innolab/tag-5">Tag 5</a> am 12. Dezember beginnt mit dem Test-Debrief: Was haben E1 und eure Tests gezeigt? Danach stellt ihr euch als Team auf und schreibt eure Definition of Done. Aus euren Story Maps entstehen drei Backlogs in Linear, und ihr plant den Sprint. Am Nachmittag wird gebaut.</p>
 
-  <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} next={{ href: '/innolab/methoden/story-map', t: 'Story Map' }} />
+  <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} next={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell-Karten' }} />
 </Layout>

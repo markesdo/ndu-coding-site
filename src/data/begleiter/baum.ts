@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 2, 16:35–17:50). Kein Vorwissen eingetragen; der Baum
-// ist seit Tag 1 der rote Faden, heute kommt die Ebene der Chancen dazu.
+// Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 3, 09:05–10:20; bis 12.11. für Tag 2 geplant). Kein
+// Vorwissen eingetragen; der Baum ist seit Tag 1 der rote Faden, heute kommt die Ebene der Chancen dazu.
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 6, S. 78–95).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 
@@ -211,7 +211,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     verstaendnis: {
       frage: 'Auf der Experience Map habt ihr schon gruppiert. Was ist beim Baum anders?',
       antwort: 'Auf der Map legt ihr Knoten zusammen, die denselben Moment der Geschichte meinen, über alle Geschichten (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe meint, wird eine Chance; Geschwister bekommen eine übergeordnete Chance (S. 89–90). Kaffeebar: „Anstellen ist ein Glücksspiel.“ (I4-2) blieb auf der Map grau, im Baum belegt es „Wenn ich anstehe, verpasse ich meinen Zug.“',
-      falsch: '„Dasselbe wie vorhin, nur mit anderen Karten“ – die Map fragt nach dem Moment, der Baum nach dem Bedürfnis. Neu ist die Ebene darüber: die übergeordnete Chance.',
+      falsch: '„Dasselbe wie bei der Experience Map, nur mit anderen Karten“ – die Map fragt nach dem Moment, der Baum nach dem Bedürfnis. Neu ist die Ebene darüber: die übergeordnete Chance.',
     },
     kern: [
       {
@@ -337,7 +337,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
         '„Alle zu mir holen“ auf Baum · Beispiel Kaffeebar; die Folie mit der Torres-Abbildung daneben.',
-        'Ebenen von oben zeigen: Outcome grün, Momente blau, Chancen gelb; Lösungen und Tests kommen an Tag 3.',
+        'Ebenen von oben zeigen: Outcome grün, Momente blau, Chancen gelb; Lösungen und Tests kommen später.',
         'Vorführen: Karte mit Cmd+D duplizieren, vom blauen Punkt der oberen Karte zur unteren ziehen, Karte verschieben – die Linie geht mit.',
         'Jede*r öffnet „Baum · eigener Name“: Outcome und je eine blaue und gelbe Karte stehen schon.',
       ],
@@ -378,7 +378,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
         'Gegenlesen reihum (12 min, Timer auf der Folie Anti-Muster): je Baum vier Minuten, Sofie, Joachim, Hewen. 1 min still lesen; wer in der Runde Sofie → Joachim → Hewen → Sofie als Nächstes kommt, nimmt die Anti-Muster 1–3, die dritte Person 4–6. Je eine Karte zeigen, Nummer nennen, fragen. Wem der Baum gehört, antwortet in einem Satz und entscheidet laut: ändern, Zettel „Nächstes Interview: …“ oder lassen (Kursformat; Fragen statt urteilen nach Torres S. 55).',
-        'Prüfen (5 min): erst die Funde vom Gegenlesen einarbeiten, dann Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 3.',
+        'Prüfen (5 min): erst die Funde vom Gegenlesen einarbeiten, dann Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 4.',
       ],
       achten: [
         'Chancen in den Worten der Kundschaft und mit Zitat-IDs aus mindestens zwei Interviews – ohne ID kein Beleg.',
@@ -430,8 +430,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Fragen: Welcher Ast ist der vollste – und ist das der wichtigste?',
       '„Voll heißt nur: Dort habt ihr viel gehört.“',
-      'Ausblick: Vergleichen und eine Ziel-Chance wählen an Tag 3.',
+      'Ausblick: Vergleichen und eine Ziel-Chance wählen – gleich im nächsten Block.',
     ],
-    ueberleitung: 'Jetzt zum Abschluss des Tages.',
+    ueberleitung: 'Nach der Pause: die Ziel-Chance.',
   },
 };
