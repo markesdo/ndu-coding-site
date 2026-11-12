@@ -116,6 +116,30 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     ueberleitung: 'Was markiert ihr in jeder Geschichte? Den stärksten Moment und das Ende.',
   },
 
+  'peak-end': {
+    live: [
+      'Erst fragen: Welchen Durchgang würdet ihr wiederholen?',
+      'Aufdecken: Die meisten wählen den längeren – er endet besser.',
+      '„Markiert in jeder Geschichte den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
+      'Marke: Wort, Zitat-ID, Zahl – „Tief · I3-3 – 2 von 5“, Kursregel.',
+    ],
+    kern: [
+      {
+        text: 'Peak-End-Regel: Intensive Momente und das Ende eines Erlebnisses zählen beim späteren Urteil am meisten. Versuch von Kahneman, Fredrickson, Schreiber und Redelmeier (1993): „last impressions are lasting impressions“.',
+        quelle: KANE,
+      },
+      {
+        text: '32 Studenten; 60 s bei 14 °C gegen dieselben 60 s plus 30 s, in denen das Wasser langsam auf etwa 15 °C stieg („still painful but distinctly less so for most subjects“, S. 401). 22 von 32 (69 %) wählten den längeren Durchgang zur Wiederholung; von den 21 mit spürbar weniger Schmerz am Ende 17 (81 %), die übrigen 11 teilten sich 6 zu 5 (S. 403).',
+        quelle: KAHNEMAN,
+      },
+      {
+        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen, mit der Zahl dazu („Tief · I3-3 – 2 von 5“). Marke als Wort mit Zitat-ID und Zahl, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
+        quelle: `${TORRES}, S. 57, 95; Kursregel`,
+      },
+    ],
+    ueberleitung: 'Aus den Knoten werden die Momente – und die tragen den Baum.',
+  },
+
   momente: {
     live: [
       'Reihe oben: vier Momente der Experience Map, jeder wird ein Ast.',
@@ -138,30 +162,6 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       },
     ],
     ueberleitung: 'An der Kaffeebar: erst zwei Skizzen beschriften und zählen, dann die Map.',
-  },
-
-  'peak-end': {
-    live: [
-      'Erst fragen: Welchen Durchgang würdet ihr wiederholen?',
-      'Aufdecken: Die meisten wählen den längeren – er endet besser.',
-      '„Markiert in jeder Geschichte den stärksten Moment und das Ende – im Guten wie im Schlechten.“',
-      'Marke: Wort + Zitat-ID am Moment, etwa „Tief · I3-3“ – Kursregel.',
-    ],
-    kern: [
-      {
-        text: 'Peak-End-Regel: Intensive Momente und das Ende eines Erlebnisses zählen beim späteren Urteil am meisten. Versuch von Kahneman, Fredrickson, Schreiber und Redelmeier (1993): „last impressions are lasting impressions“.',
-        quelle: KANE,
-      },
-      {
-        text: '32 Studenten; 60 s bei 14 °C gegen dieselben 60 s plus 30 s, in denen das Wasser langsam auf etwa 15 °C stieg („still painful but distinctly less so for most subjects“, S. 401). 22 von 32 (69 %) wählten den längeren Durchgang zur Wiederholung; von den 21 mit spürbar weniger Schmerz am Ende 17 (81 %), die übrigen 11 teilten sich 6 zu 5 (S. 403).',
-        quelle: KAHNEMAN,
-      },
-      {
-        text: 'Stärkster Moment = die Stelle, an der die Person im Zitat am deutlichsten Gefühl zeigt. Erst je Geschichte, dann auf der Map der Moment, auf den die meisten zeigen; trägt ihn nur eine, die Zahl dazu („1 von 5“). Marke als Wort mit Zitat-ID, kein Emoji, kein eigener Knoten – das Gefühl ist ein Wegweiser zur Ursache (Torres S. 95); Smileys auf Papier ok (S. 57). Am Zitat festmachen und zählen ist Kursregel, nicht Quelle.',
-        quelle: `${TORRES}, S. 57, 95; Kursregel`,
-      },
-    ],
-    ueberleitung: 'Aus den Knoten werden die Momente – und die tragen den Baum.',
   },
 
   beispiel: {
@@ -194,14 +194,14 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
         '„Alle zu mir holen“ auf T2 · 1; links die Kaffeebar als Muster.',
         'Allein in der eigenen Spalte: Knoten aus den Skizzen beschriften, in jeder Skizze stärksten Moment und Ende markieren, auf Papier oder gleich auf Miro, die Map von Tag 1 (T1 · 1) daneben.',
         'Zu dritt Spalte für Spalte, alle schauen auf dem Board mit (kein Bildschirm teilen); Unterschiede zeichnen statt diskutieren.',
-        'Momente festlegen, jede*r in der eigenen Spalte: drei bis fünf, je mit Zitat-ID; Marken übertragen, etwa „Tief · I3-3“, „Ende · I3-5“.',
+        'Momente festlegen, jede*r in der eigenen Spalte: drei bis fünf, je mit Zitat-ID; Marken mit Zahl übertragen, etwa „Tief · I3-3 – 2 von 5“.',
       ],
     },
     ablauf: {
       schritte: [
         'Allein (12 min): Knoten aus den Skizzen beschriften, in jeder Skizze den stärksten Moment und das Ende markieren, auf Papier oder gleich in der eigenen Spalte auf T2 · 1 zusammenfügen, die Map von Tag 1 daneben.',
         'Zu dritt (10 min): Reihum die eigene Spalte auf T2 · 1 zeigen – alle schauen auf dem Board mit; die anderen fragen nach.',
-        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft. Jeder Moment mit Zitat-ID: Das Zitat zeigt, was die Person dort denkt, fühlt oder tut. Dann die Marken übertragen: „Tief · I3-3“, „Ende · I3-5“; trägt den stärksten Moment nur eine Geschichte, die Zahl dazu („1 von 5“). Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
+        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft. Jeder Moment mit Zitat-ID: Das Zitat zeigt, was die Person dort denkt, fühlt oder tut. Dann die Marken übertragen, je mit der Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt: „Tief · I3-3 – 2 von 5“, „Ende · I3-5 – 1 von 5“. Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
         'Prüfen (5 min, eigene Folie): Prüfliste allein, dann Claude mit einem Bild der eigenen Spalte aus Miro; eine Datei gibt es nicht. Schritte unter „Prüfen“ im Handout.',
       ],
       achten: [
@@ -223,14 +223,15 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
   'pruefen-folie': {
     live: [
       'Folie zeigen, wenn die 5 Minuten starten; Prüfliste zuerst.',
-      'Prüfen 5 min: Prüfliste, Foto der Spalte, Prompt, Claude mit Connector.',
+      'Prüfen 5 min: Prüfliste, Prompt einfügen, dann Foto, Cmd+V, senden.',
       '„Claude fragt, ihr entscheidet – ändern auf Miro oder Zeile ins Log.“',
     ],
     ablauf: {
       schritte: [
         'Prüfliste allein abhaken (auf der Seite unter „Prüfen“).',
-        'Spalte auf T2 · 1 heranzoomen, Bildschirmfoto mit Cmd+Ctrl+Shift+4 in die Zwischenablage.',
-        'Prompt „Prüfen lassen · Claude mit Bild aus Miro“ kopieren, in claude.ai mit Werkstatt-Connector einfügen, Bild darunter, absenden.',
+        'Prompt „Prüfen lassen · Claude mit Bild aus Miro“ kopieren, in claude.ai (Werkstatt-Connector an) einfügen, noch nicht senden.',
+        'Erst dann die Spalte auf T2 · 1 heranzoomen, Bildschirmfoto mit Cmd+Ctrl+Shift+4 – sonst überschreibt „Kopieren“ das Bild in der Zwischenablage.',
+        'In claude.ai Cmd+V, das Bild hängt unter dem Prompt; absenden.',
         'Höchstens drei Befunde, je mit Zitat und Frage; die Frage selbst beantworten.',
       ],
     },

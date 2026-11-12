@@ -16,7 +16,9 @@ import { METHODEN } from '../../../components/methoden';
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memories“, Nielsen Norman Group (2018)';
 // Folie „Prüfen“: die Kurzformen der Prüfliste aus methoden.ts, damit Folie und Checkliste nicht auseinanderlaufen.
-const PRUEF_KURZ = (METHODEN.find((m) => m.slug === 'journey-map')?.pruefliste ?? []).map((p) => p.kurz ?? p.text);
+const PRUEFLISTE = METHODEN.find((m) => m.slug === 'journey-map')?.pruefliste;
+if (!PRUEFLISTE?.length) throw new Error('journey-map.astro: Methode „journey-map“ oder ihre Prüfliste fehlt in methoden.ts');
+const PRUEF_KURZ = PRUEFLISTE.map((p) => p.kurz ?? p.text);
 const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less: Adding a Better End“, Psychological Science 4 (1993), S. 401–405';
 ---
 <Layout title="Experience Map">
@@ -109,7 +111,7 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
     <div class="nur-handout">
       <p>Die Peak-End-Regel ist ein Denkfehler beim Erinnern: Intensive Momente (die Spitzen) und das Ende eines Erlebnisses zählen beim späteren Urteil am meisten ({KANE}). Der Artikel beschreibt den Versuch von Daniel Kahneman, Barbara Fredrickson, Charles Schreiber und Donald Redelmeier („When More Pain Is Preferred to Less: Adding a Better End“, 1993): 32 Studenten hielten eine Hand in kaltes Wasser, einmal 60 Sekunden bei 14 °C, einmal dieselben 60 Sekunden und danach 30 Sekunden, in denen das Wasser langsam auf etwa 15 °C erwärmt wurde – „still painful but distinctly less so for most subjects“ ({KAHNEMAN}, S. 401). Vor die Wahl gestellt, welchen Durchgang sie wiederholen, wählten 22 von 32 (69 %) den längeren – obwohl er länger unangenehm war, weil er etwas besser endete. Von den 21, die am Ende weniger Schmerz spürten, waren es 17 (81 %); die 11 ohne diese Abnahme teilten sich 6 zu 5 (S. 403).</p>
       <p>Für eure Map heißt das: Schaut, wo die Geschichten am stärksten ausschlagen, im Guten wie im Schlechten, und wie sie enden. Das NN/g-Team rät, negative Spitzen ernst zu nehmen (Verwirrung, Frust) und auf ein gutes Ende zu achten – „last impressions are lasting impressions“. Die Experience Map selbst stammt nicht aus diesem Artikel; die Regel ist der Grund, warum ihr den stärksten Moment (Hoch oder Tief) und das Ende markiert.</p>
-      <p>Stärkster Moment heißt: die Stelle, an der die Person im Zitat selbst am deutlichsten Gefühl zeigt, im Guten oder im Schlechten. Die Regel gilt für das Erleben einer Person; sucht ihn darum zuerst in jeder Geschichte und markiert auf der Map den Moment, auf den die meisten Geschichten zeigen. Trägt ihn nur eine, schreibt die Zahl dazu (etwa ‚1 von 5‘). Die Marke ist ein Wort mit Zitat-ID am Moment, etwa ‚Tief · I3-3‘ oder ‚Ende · I3-5‘ – kein Emoji und kein eigener Knoten: Das Gefühl ist ein Wegweiser zur Ursache ({TORRES}, S. 95). Smileys in der Papierskizze sind in Ordnung (S. 57). Am Zitat festmachen und zählen ist eine Regel dieses Kurses; sie steht in keiner der beiden Quellen.</p>
+      <p>Stärkster Moment heißt: die Stelle, an der die Person im Zitat selbst am deutlichsten Gefühl zeigt, im Guten oder im Schlechten. Die Regel gilt für das Erleben einer Person; sucht ihn darum zuerst in jeder Geschichte und markiert auf der Map den Moment, auf den die meisten Geschichten zeigen. Die Marke ist ein Wort mit Zitat-ID am Moment und der Zahl der Geschichten, deren Tiefpunkt (oder Ende) dort liegt, etwa ‚Tief · I3-3 – 2 von 5‘ oder ‚Ende · I3-5 – 1 von 5‘ – kein Emoji und kein eigener Knoten: Das Gefühl ist ein Wegweiser zur Ursache ({TORRES}, S. 95). Smileys in der Papierskizze sind in Ordnung (S. 57). Am Zitat festmachen und zählen ist eine Regel dieses Kurses; sie steht in keiner der beiden Quellen.</p>
     </div>
   </Folie>
 
@@ -163,19 +165,19 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
         <li>Im Zug, in Ruhe <span class="marke">Ende · I3-5</span></li>
       </ol>
     </div>
-    <p data-schritt class="zaehlung"><strong>Gezählt:</strong> Entscheidung in der Halle <span class="nw">3 von 5 (I2-4, I3-1, I5-3)</span> · Automat <span class="nw">3 von 5 (I1-3, I2-3, I4-3)</span> · Warten auf den Kaffee <span class="nw">3 von 5 (I2-5, I3-2, I5-6)</span></p>
+    <p data-schritt class="zaehlung"><strong>Gezählt, Geschichten mit diesem Knoten:</strong> Entscheidung in der <span class="nw">Halle 3 von 5 (I2-4, I3-1, I5-3)</span> · Automat <span class="nw">3 von 5 (I1-3, I2-3, I4-3)</span> · Warten auf den <span class="nw">Kaffee 2 von 5 (I3-2, I5-6)</span></p>
     <div data-schritt>
       <p class="fluss-titel">Heute: aus fünf Geschichten</p>
-      <Fluss label="Experience Map der Kaffeebar heute: Ich komme in die Halle und entscheide (Umweg Automat zum Zug, 3 von 5), ich stehe an (2 von 5), ich warte auf meinen Kaffee (nach dem Bestellen, Tief I3-3, 2 von 5, auch I5-6), ich bin im Zug (Ende I3-5, 1 von 5)" hervor={[2]} knoten={[
+      <Fluss label="Experience Map der Kaffeebar heute: Ich komme in die Halle und entscheide (Umweg Automat zum Zug, 3 von 5), ich stehe an (2 von 5), ich warte auf meinen Kaffee (nach dem Bestellen, Tief I3-3, Tiefpunkt in 2 von 5 Geschichten, auch I5-6), ich bin im Zug (Ende I3-5, 1 von 5)" hervor={[2]} knoten={[
         { t: '„Ich komme in die Halle und entscheide.“', sub: '<span style="white-space: nowrap">↘ Automat → Zug</span> <span style="white-space: nowrap">(3 von 5)</span>' },
         { t: '„Ich stehe an.“', sub: '2 von 5 <span style="white-space: nowrap">(I3, I5)</span>' },
-        { t: '„Ich warte auf meinen Kaffee.“', sub: 'nach dem Bestellen · Tief · I3-3 <span style="white-space: nowrap">(2 von 5,</span> <span style="white-space: nowrap">auch I5-6)</span>' },
-        { t: '„Ich bin im Zug.“', sub: 'Ende · I3-5 <span style="white-space: nowrap">(1 von 5)</span>' },
+        { t: '„Ich warte auf meinen Kaffee.“', sub: 'nach dem Bestellen · Tief · I3-3 – Tiefpunkt in <span style="white-space: nowrap">2 von 5</span> <span style="white-space: nowrap">(auch I5-6)</span>' },
+        { t: '„Ich bin im Zug.“', sub: 'Ende · I3-5 – <span style="white-space: nowrap">1 von 5</span>' },
       ]} />
     </div>
     <div class="nur-handout">
       <p>Die Map von Tag 1 (Miro T1 · 1) ging von „Ankunft am Bahnhof, 7:31“ über „Blick auf die Schlange“ und „Reicht die Zeit bis 7:42?“ zu „Anstellen“ oder „Zum Automaten“ – der Pfeil vom Automaten zum Zug mit „?“ – und endete „im Zug, mit oder ohne Kaffee“. Heute beschriftet ihr zuerst die Skizzen, hier I2 und I3, jeden Knoten mit Zitat-ID. Bei I2 zeigt sich das deutlichste Gefühl bei den acht Leuten in der Schlange („das wird nix“, I2-1); ihr Ende, der Zug um 7:42, steht nur in der Notiz und bekommt darum keine Marke. Bei I3 ist es das Warten („Das war ein Fehler.“, I3-3), das Ende der Kaffee im Zug (I3-5).</p>
-      <p>Dann zählt ihr über alle fünf Geschichten. Die Entscheidung fällt in der Halle: 3 von 5 sagen es (I2-4, I3-1, I5-3); bei I1 und I4 steht es nur in der Notiz oder klingt in I4-1 an. Der Automat ist die Ausweichroute und beantwortet das „?“ von Tag 1 (I1-3, I2-3, I4-3, dazu I4-4); er ist kein eigener Moment, sondern ein Umweg aus der Halle und gehört als Pfeil auf die Map. Angestellt wird nach den Notizen bei I3 und I5 (2 von 5). Neu ist das Warten nach dem Bestellen, ohne zu wissen, wie lange (I2-5, I3-2, I5-6). Dass I3-3 („Einmal stand ich da …“) nach dem Bestellen spielt, ist eine Lesart – das Zitat sagt es nicht; I2-5 und I5-6 meinen klar die Zeit nach dem Bestellen, und I5-6 stützt den Tiefpunkt. Den Tiefpunkt markiert ihr zuerst in jeder Geschichte: I2-1 in der Halle, I3-3 und I5-6 beim Warten, I4-4 („Dann halt die Brühe.“) am Automaten. Auf die Map kommt das Tief an den Moment, auf den die meisten dieser Tiefpunkte zeigen – das Warten, 2 von 5; I2-1 und I4-4 bleiben Tiefpunkte ihrer eigenen Geschichten. Hochpunkte gibt es auch – „Wenn der erste Schluck passt, ist der Morgen gerettet.“ (I1-4), „Das ist schön.“ (I3-6) –, aber ohne eigenen Knoten oder schwächer als der Tiefpunkt derselben Geschichte; sie stehen darum nicht auf der Map. Torres benennt die Momente neutral (Liste S. 87) und formuliert erst die obersten Chancen in Ich-Form (Abbildung S. 87); hier stehen die Momente schon in den Worten der Kundschaft.</p>
+      <p>Dann zählt ihr über alle fünf Geschichten. Die Entscheidung fällt in der Halle: 3 von 5 sagen es (I2-4, I3-1, I5-3); bei I1 und I4 steht es nur in der Notiz oder klingt in I4-1 an. Der Automat ist die Ausweichroute und beantwortet das „?“ von Tag 1 (I1-3, I2-3, I4-3, dazu I4-4); er ist kein eigener Moment, sondern ein Umweg aus der Halle und gehört als Pfeil auf die Map. Angestellt wird nach den Notizen bei I3 und I5 (2 von 5). Neu ist das Warten nach dem Bestellen, ohne zu wissen, wie lange: 2 von 5 erzählen davon (I3-2, I5-6). I2-5 („Am liebsten wüsste ich einfach, wann er fertig ist.“) ist ein Wunsch, kein erzählter Moment – I2 geht an diesem Morgen zum Automaten; das Zitat stützt eine Chance, nicht den Knoten. Dass I3-3 („Einmal stand ich da …“) nach dem Bestellen spielt, ist eine Lesart – das Zitat sagt es nicht; I5-6 meint klar die Zeit nach dem Bestellen. Den Tiefpunkt markiert ihr zuerst in jeder Geschichte: I2-1 in der Halle, I3-3 und I5-6 beim Warten, I4-4 („Dann halt die Brühe.“) am Automaten. Auf die Map kommt das Tief an den Moment, auf den die meisten dieser Tiefpunkte zeigen – das Warten, Tiefpunkt in 2 von 5. Die Zählzeile zählt etwas anderes: in wie vielen Geschichten ein Knoten vorkommt; die Zahl an der Marke zählt, in wie vielen Geschichten der Tiefpunkt dort liegt. I2-1 und I4-4 bleiben Tiefpunkte ihrer eigenen Geschichten. Hochpunkte gibt es auch – „Wenn der erste Schluck passt, ist der Morgen gerettet.“ (I1-4), „Das ist schön.“ (I3-6) –, aber ohne eigenen Knoten oder schwächer als der Tiefpunkt derselben Geschichte; sie stehen darum nicht auf der Map. Torres benennt die Momente neutral (Liste S. 87) und formuliert erst die obersten Chancen in Ich-Form (Abbildung S. 87); hier stehen die Momente schon in den Worten der Kundschaft.</p>
     </div>
   </Folie>
 
@@ -186,7 +188,7 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
     <ol class="gross">
       <li><strong>Allein:</strong> Knoten beschriften, in jeder Skizze stärksten Moment und Ende markieren, zur neuen Map zusammenfügen – die Map von Tag 1 daneben. <Timer minuten={12} /></li>
       <li data-schritt><strong>Zu dritt:</strong> Reihum die eigene Spalte auf T2 · 1 zeigen – alle schauen auf dem Board mit; die anderen fragen nach, ohne die eigene Map zu verteidigen. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Momente festlegen:</strong> drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft, je mit Zitat-ID: Was denkt, fühlt, tut die Person? Übertragt die Marken auf die Map: ‚Tief · I3-3‘, ‚Ende · I3-5‘. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Momente festlegen:</strong> drei bis fünf, ohne Überschneidung, in den Worten der Kundschaft, je mit Zitat-ID: Was denkt, fühlt, tut die Person? Übertragt die Marken mit Zahl auf die Map: ‚Tief · I3-3 – 2 von 5‘. <Timer minuten={8} /></li>
       <li data-schritt><strong>Prüfen (5 min, nächste Folie):</strong> Prüfliste allein, dann Claude mit einem Bild eurer Spalte – so geht’s unter <a href="#pruefen">Prüfen</a>.</li>
     </ol>
     <div class="nur-handout">
@@ -200,8 +202,8 @@ const KAHNEMAN = 'Daniel Kahneman u. a., „When More Pain Is Preferred to Less:
     <ul class="gross">
       {PRUEF_KURZ.map((t) => <li>{t}</li>)}
     </ul>
-    <p data-schritt><strong>Dann Claude:</strong> Foto eurer Spalte (Cmd+Ctrl+Shift+4) · Prompt kopieren · beides in claude.ai mit Werkstatt-Connector. <a href="#pruefen">So geht’s ↗</a></p>
-    <p class="nur-handout">Die sechs Punkte sind die Prüfliste dieser Methode in Kurzform; abhaken und den Prompt kopieren könnt ihr direkt darunter unter „Prüfen“.</p>
+    <p data-schritt><strong>Dann Claude:</strong> Prompt kopieren und in claude.ai einfügen (<span style="white-space: nowrap">Werkstatt-Connector</span> an) · Foto eurer Spalte (Cmd+Ctrl+Shift+4) · Cmd+V · senden. <a href="#pruefen">So geht’s ↗</a></p>
+    <p class="nur-handout">Die Punkte sind die Prüfliste dieser Methode in Kurzform; abhaken und den Prompt kopieren könnt ihr direkt darunter unter „Prüfen“.</p>
   </Folie>
 
   <div class="nur-handout">
