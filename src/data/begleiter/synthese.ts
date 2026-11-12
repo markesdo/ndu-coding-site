@@ -112,7 +112,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 69`,
       },
     ],
-    ueberleitung: 'Euren Snapshot habt ihr allein geschrieben. Was hätten die anderen in derselben Geschichte gehört?',
+    ueberleitung: 'Jetzt ihr: bis 14:50 eure eigenen Snapshots – Interviews und Skizzen.',
   },
 
   geschichte: {
@@ -214,7 +214,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         'K → Reiter Annahmen; Frage 2: eine Person sagt „I2-4 spricht gegen A1“.',
         'Frage 3 nur kurz (Reiter Leitfaden); Frage 4 entfällt heute.',
         'Eintrag vorführen: zweiter Tab, Demo-Mappe → Annahmen-Map → A1: Beleg-ID I2-4, Notiz „spricht dagegen“, Speichern. Zurück in Zeigen „Neu laden“ → A1 steht als „neu“ und hervorgehoben.',
-        'Heute knapp (danach bis 14:50 Interviews und Skizzen): die Proberunde ersetzt das Vorlesen dieser Folie.',
+        'Heute knapp (danach gleich die Runden): die Proberunde ersetzt das Vorlesen dieser Folie.',
       ],
       achten: [
         'Lösung Frage 1 – Was wurde gesagt? Merkzitat I2-2 „Wenn ich auf die Uhr schauen muss, geh ich.“; I2-1 „Acht Leute vor mir, da hab ich gleich gewusst, das wird nix.“; I2-4 „Ich schau auf die Tafel, dann auf die Schlange, und dann entscheid ich.“ → Im Snapshot steht schon die Einsicht „Entscheidet erst beim Ankommen.“',
@@ -226,7 +226,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         'Vorbereitung: vor dem Kurs in der Demo-Mappe anmelden und Speichern testen; A1 hat noch keine Beleg-ID (Ausgangslage). Nach dem Kurs den Eintrag entfernen oder als Beispiel lassen.',
       ],
     },
-    ueberleitung: 'Jetzt ihr: bis 14:50 Interviews und Skizzen, dann drei Runden.',
+    ueberleitung: 'Jetzt ihr: Snapshot wählen, dann drei Runden.',
   },
 
   'noch-keine': {
@@ -246,15 +246,15 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Wer beides schon hat: Pause bis 14:50, dann alle gemeinsam.',
       'Ab 14:50 Runden à 5 min: zeigen, Frage 2, schreiben.',
     ],
-    uebung: { dauer: 'bis 14:50 (ca. 25 min, nach der Proberunde)', form: 'allein, jede*r in den eigenen Interviews und der eigenen Spalte auf T1 · 5' },
+    uebung: { dauer: 'bis 14:50 (ca. 28 min, gleich nach dem Snapshot von I2)', form: 'allein, jede*r in den eigenen Interviews und der eigenen Spalte auf T1 · 5' },
     ablauf: {
       schritte: [
-        'Immer zeigen, für alle, gleich nach der Proberunde (beispiel): Wer noch keine Interviews hat, trägt mindestens zwei ein; alle legen zu jedem Interview die Skizze ins Feld „Geschichte als Skizze“ ihrer Karte auf T1 · 5. Karte n = n-tes Interview nach ID (höchstens fünf; überzählige Karten gehen auf die Vorlage zurück), darum ein Sticky mit der ID zur Skizze und nur Interviews skizzieren, die in der Werkstatt stehen. Foto nur ohne Namen, Arbeitgeber oder Erkennbares, sonst nachzeichnen. Nur Stickies, Pfeile oder ein Bild: Eine Form oder ein Textfeld in der Spalte lässt das Skript die ganze Spalte auslassen (spalte_pruefen). Der Übertrag in der Pause füllt nur die Textfelder und lässt die Skizzen stehen. Zeitplan und Ansagen der Runden ab 14:50: Begleiter vorgehen.',
+        'Immer zeigen, für alle, gleich nach dem Snapshot von I2 (snapshot-i2): Wer noch keine Interviews hat, trägt mindestens zwei ein; alle legen zu jedem Interview die Skizze ins Feld „Geschichte als Skizze“ ihrer Karte auf T1 · 5. Karte n = n-tes Interview nach ID (höchstens fünf; überzählige Karten gehen auf die Vorlage zurück), darum ein Sticky mit der ID zur Skizze und nur Interviews skizzieren, die in der Werkstatt stehen. Foto nur ohne Namen, Arbeitgeber oder Erkennbares, sonst nachzeichnen. Nur Stickies, Pfeile oder ein Bild: Eine Form oder ein Textfeld in der Spalte lässt das Skript die ganze Spalte auslassen (spalte_pruefen). Der Übertrag in der Pause füllt nur die Textfelder und lässt die Skizzen stehen. Zeitplan und Ansagen der Runden ab 14:50: Begleiter vorgehen.',
         'Der Link „Interviews ↗“ öffnet /innolab/mappe?bearbeiten=interviews in einem neuen Tab: Nach dem Laden der Mappe geht der Editor der Interviews von selbst auf. Wer nicht angemeldet ist, meldet sich an und landet danach im Editor.',
         '12.11.2026: Bis 13:10 hatte niemand Interviews in der Werkstatt. Darum zuerst die Abfrage reihum; Ziel bis 14:50 sind mindestens zwei Interviews pro Person, die übrigen echten Interviews (bis fünf) bis Tag 3. Wer keine Notizen dabei hat, nimmt die eigene Fallback-Datei (Kursordner fallback-interviews/, je Person eine mit drei synthetischen Interviews und Hinweisen; vor 14:00 weitergeben): Pseudonym „Synthetisch 1“ bis „Synthetisch 3“, Kurzinfos beginnen mit „SYNTHETISCH –“, Einwilligung trotzdem anhaken. Sie dienen zum Üben, zählen nie als Beleg und werden bis Tag 3 durch echte Interviews ersetzt. Die Karten auf T1 · 5 bleiben bis zur Pause leer; Markus überträgt die Werkstatt-Texte um 15:15, das Sticky mit der ID verbindet die Skizze mit dem Interview.',
       ],
     },
-    ueberleitung: 'Um 14:50 geht es mit den Runden weiter: Snapshot wählen, dann reihum.',
+    ueberleitung: 'Euren Snapshot habt ihr allein geschrieben. Was hätten die anderen in derselben Geschichte gehört?',
   },
 
   vorgehen: {
@@ -282,7 +282,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Zeitplan heute: 14:15–14:25 Theorie gekürzt wie im alten Fallback – nur snapshot-i2 und geschichte/warum ausführlich, verschwimmen, snapshot, wunsch und besprechen nur zeigen; die Frage auf verschwimmen entfällt (oder eine Person antwortet). Dann die Proberunde (beispiel) im 5-Minuten-Format, ca. 14:25–14:50 Folie noch-keine für alle (Interviews und Skizzen auf T1 · 5). Ab 14:50: 1 min Snapshot wählen, 3 × 5 min Runden (bis ca. 15:06), Festhalten 3 min (mit Vorführen bis ca. 15:10), Übertrag ein Satz je Person – Ende 15:15. 3 × 12 min (36 min) passen nicht zwischen 14:50 und 15:15, darum die kurzen Runden: 2 zeigen · 2 Frage 2 (Frage 3 nur kurz, Frage 4 entfällt) · 1 schreiben. Ansagen je Runde: 0:00 „ID, Zitat, eine Chance“ · 2:00 „Frage 2, die anderen zuerst“ (Frage 3 kurz) · 4:00 „Schreiben“ (derselbe eine Eintrag in der Annahmen-Map, sonst beim Festhalten) · 4:45 „Speichern!“ · 5:00 „Wechsel“.',
+        'Zeitplan heute (12.11.: Snapshot zuerst): 14:15–14:22 verschwimmen, snapshot, wunsch nur zeigen, snapshot-i2 ausführlich; die Frage auf verschwimmen entfällt (oder eine Person antwortet). Ca. 14:22–14:50 Folie noch-keine für alle (Interviews und Skizzen auf T1 · 5). Ab 14:50 geschichte/warum (ca. 5 min), besprechen nur zeigen, Proberunde (beispiel) knapp, dann 1 min Snapshot wählen, 3 × 5 min Runden (bis ca. 15:13), Festhalten 3 min (mit Vorführen bis ca. 15:10), Übertrag ein Satz je Person – Ende 15:15. 3 × 12 min (36 min) passen nicht zwischen 14:50 und 15:15, darum die kurzen Runden: 2 zeigen · 2 Frage 2 (Frage 3 nur kurz, Frage 4 entfällt) · 1 schreiben. Ansagen je Runde: 0:00 „ID, Zitat, eine Chance“ · 2:00 „Frage 2, die anderen zuerst“ (Frage 3 kurz) · 4:00 „Schreiben“ (derselbe eine Eintrag in der Annahmen-Map, sonst beim Festhalten) · 4:45 „Speichern!“ · 5:00 „Wechsel“.',
         'Fallback – nur synthetische Interviews (Pseudonym „Synthetisch“): Frage 3 entfällt, weil es kein echtes Gespräch gab; nichts zählt als Beleg, also kein Eintrag in der Annahmen-Map. Stattdessen in der Schreibzeit eine Frage im Leitfaden ändern oder ergänzen – sie erscheint im Kontext (Reiter Leitfaden) als „neu“. Das ist unabhängig vom Zeitplan: Echte Interviews, die erst heute eingetragen wurden, streifen Frage 3 kurz.',
         'Bildschirm teilen: Werkstatt im Zeigen-Modus, Interviews der Person, die zeigt („Snapshots zeigen ↗“ auf der Folie, nur in deiner Ansicht). Kein Beamer-Modus, kein Wechsel des Präsentierenden. Die Studierenden haben die Synthese-Seite auf dem eigenen Gerät offen (wie in der Antwortrunde); die Links auf den Folien (Annahmen-Map ↗, Leitfaden ↗, Interviews ↗, Log ↗) öffnen in einem neuen Tab direkt den Editor in der eigenen Mappe.',
         'Vor Runde 1 (ca. 1 min): „Jetzt alle drei: in euren Interviews den Snapshot wählen, der am stärksten für oder gegen eure riskanteste Annahme spricht – ID merken.“ Alle wählen gleichzeitig; die Zeile „Jetzt, alle drei“ auf der Folie verlinkt den Editor der Interviews. Die Zeit sagst du an („2“, „4“, bei 4:45 „Speichern“) – den Timer sehen die Studierenden auf ihren Geräten nicht.',
