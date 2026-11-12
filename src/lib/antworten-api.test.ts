@@ -75,15 +75,15 @@ describe('api/antworten', () => {
     const zwoelfLesen = async () => (await GET(new Request(`${URL_API}?runde=zwoelf`))).json();
     vi.setSystemTime(new Date('2026-11-12T15:40:00Z')); // 16:40 Wien, Baum läuft
     expect((await antwort('design', 'Netflix-Satz')).status).toBe(200);
-    expect((await zwoelf('design', '3 – die Suche')).status).toBe(200);
-    expect((await zwoelf('entwicklung', '11 – schnell gebaut')).status).toBe(200);
+    expect((await zwoelf('p1', '3 – die Suche')).status).toBe(200);
+    expect((await zwoelf('p2', '11 – schnell gebaut')).status).toBe(200);
     aufdecken(); // Netflix aufgedeckt – „zwoelf“ bleibt zu
-    expect(await zwoelfLesen()).toStrictEqual({ anzahl: 2, vergeben: ['design', 'entwicklung'], frei: false });
+    expect(await zwoelfLesen()).toStrictEqual({ anzahl: 2, vergeben: ['p1', 'p2'], frei: false });
     expect((await lesen()).antworten).toStrictEqual([{ rolle: 'design', text: 'Netflix-Satz' }]);
     daten.set(aufgedecktSchluessel('zwoelf', new Date()), true);
     expect((await zwoelfLesen()).antworten).toStrictEqual([
-      { rolle: 'design', text: '3 – die Suche' },
-      { rolle: 'entwicklung', text: '11 – schnell gebaut' },
+      { rolle: 'p1', text: '3 – die Suche' },
+      { rolle: 'p2', text: '11 – schnell gebaut' },
     ]);
   });
 

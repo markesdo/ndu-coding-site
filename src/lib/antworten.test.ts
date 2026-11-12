@@ -8,7 +8,7 @@ const netflix = RUNDEN.netflix;
 const zwoelf = RUNDEN.zwoelf;
 const rueckblick = RUNDEN.rueckblick;
 
-// Wie die Rollen-Wahl heißt (Netflix, „zwoelf“).
+// Wie die Rollen-Wahl heißt (nur Netflix).
 const ROLLEN_WAHL = {
   wahl: 'Deine Rolle',
   wahlFehlt: 'Bitte zuerst deine Rolle wählen.',
@@ -57,28 +57,38 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     expect(textPruefen(' ok ')).toStrictEqual({ text: 'ok' });
   });
 
-  it('Runde „zwoelf“ (Baum): eigene Kennung, dieselben drei Rollen wie Netflix', () => {
+  it('Runde „zwoelf“ (Baum): eigene Kennung, drei neutrale Plätze statt der Netflix-Rollen', () => {
     expect(zwoelf.kennung).toBe('zwoelf');
-    expect(zwoelf.rollen.map((r) => r.id)).toStrictEqual(['produktmanagement', 'design', 'entwicklung']);
-    expect(rollePruefen(zwoelf, 'entwicklung')).toBe('entwicklung');
+    expect(zwoelf.rollen).toStrictEqual([
+      { id: 'p1', label: 'Platz 1' }, { id: 'p2', label: 'Platz 2' }, { id: 'p3', label: 'Platz 3' },
+    ]);
+    expect(rollePruefen(zwoelf, 'p3')).toBe('p3');
+    expect(rollePruefen(zwoelf, 'design')).toBeNull();
     expect(rollePruefen(zwoelf, 'person-1')).toBeNull();
-    expect(eingabePruefen({ runde: 'zwoelf', rolle: 'design', text: ' 3 – Suche fehlt ' }))
-      .toStrictEqual({ runde: 'zwoelf', konfig: zwoelf, rolle: 'design', text: '3 – Suche fehlt', geraet: null });
-    expect(eingabePruefen({ runde: 'zwoelf', rolle: 'design', text: 'x'.repeat(121) })).toBeNull();
+    expect(eingabePruefen({ runde: 'zwoelf', rolle: 'p2', text: ' 3 – Suche fehlt ' }))
+      .toStrictEqual({ runde: 'zwoelf', konfig: zwoelf, rolle: 'p2', text: '3 – Suche fehlt', geraet: null });
+    expect(eingabePruefen({ runde: 'zwoelf', rolle: 'p2', text: 'x'.repeat(121) })).toBeNull();
+    // Netflix behält die Rollen.
+    expect(netflix.rollen.map((r) => r.id)).toStrictEqual(['produktmanagement', 'design', 'entwicklung']);
   });
 
-  it('Texte der Eingabe: Netflix wie bisher, „zwoelf“ fragt nach der Nummer', () => {
+  it('Texte der Eingabe: Netflix wie bisher, „zwoelf“ fragt nach der Nummer, ohne „Rolle“', () => {
     expect(eingabeTexte(netflix)).toStrictEqual({
       label: 'Ein Satz aus deiner Rolle', hinweis: 'erst deine Rolle wählen, dann einen Satz abschicken.', platzhalter: '',
       ...ROLLEN_WAHL,
     });
     expect(eingabeTexte(netflix)).toStrictEqual(EINGABE_STANDARD);
     expect(eingabeTexte(zwoelf)).toStrictEqual({
-      label: 'Nummer und ein Satz aus deiner Rolle',
-      hinweis: 'erst deine Rolle wählen, dann Nummer und Satz abschicken.',
+      label: 'Nummer und ein Satz: welche zuerst und warum',
+      hinweis: 'erst einen Platz wählen, dann Nummer und Satz abschicken.',
       platzhalter: 'z. B. 3 – weil …',
-      ...ROLLEN_WAHL,
+      wahl: 'Dein Platz',
+      wahlFehlt: 'Bitte zuerst einen Platz wählen.',
+      wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
+      wahlFest: 'du hast {label} – ändern kannst du deine Antwort, nicht den Platz.',
+      aufgedeckt: ROLLEN_WAHL.aufgedeckt,
     });
+    expect(Object.values(eingabeTexte(zwoelf)).filter((x) => /Rolle/.test(x))).toStrictEqual([]);
     // Teilweise eigene Texte: der Rest kommt vom Standard.
     expect(eingabeTexte({ ...zwoelf, eingabe: { label: 'X' } })).toStrictEqual({ ...EINGABE_STANDARD, label: 'X' });
   });
@@ -154,7 +164,7 @@ describe('Antwortrunde: Plätze und Stand', () => {
     expect(platzSchluessel('netflix', 'design', new Date('2026-11-12T13:00:00Z'))).toBe('antwort:2026-11-12:netflix:design');
     expect(platzSchluessel('netflix', 'design', new Date('2026-11-13T13:00:00Z'))).toBe('antwort:2026-11-13:netflix:design');
     // Eigene Plätze pro Runde: „zwoelf“ überschreibt die Netflix-Sätze nicht.
-    expect(platzSchluessel('zwoelf', 'design', spaet)).toBe('antwort:2026-11-12:zwoelf:design');
+    expect(platzSchluessel('zwoelf', 'p1', spaet)).toBe('antwort:2026-11-12:zwoelf:p1');
   });
 
   it('frei erst nach dem Aufdecken oder ab der Rückfall-Uhrzeit', () => {
