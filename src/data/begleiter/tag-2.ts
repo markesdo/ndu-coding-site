@@ -168,8 +168,8 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
       schritte: [
         'Frage vorlesen: „Dein stärkster Moment heute: Was hast du da gerade gemacht?“ Nicht erklären, keine Beispiele.',
         'Alle öffnen die Folie auf dem eigenen Gerät, wählen einen freien Platz (Platz 1–3, ohne Bedeutung) und schicken einen Satz ab, der mit „Hoch:“ oder „Tief:“ beginnt. Timer 2 min. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
-        'Nach dem Timer: danken, nichts aufdecken. Die Sätze liest Markus nach 18:15 und sichert sie (rueckblick/2026-11-12-tag2.md).',
-        'Dann den Danke-Satz und den Satz zu Tag 3 aufdecken und zur Checkliste.',
+        'Nach dem Timer: danken, nichts aufdecken. Ab 19 Uhr liest Markus die Sätze und sichert sie noch heute vor Mitternacht (rueckblick/2026-11-12-tag2.md) – danach sind sie weg.',
+        'Dann den Danke-Satz aufdecken und zur Checkliste.',
       ],
       achten: [
         'Es ist ein Rückblick auf den Kurs, keine Bewertung: nicht rechtfertigen, nicht erklären, warum etwas so lief.',

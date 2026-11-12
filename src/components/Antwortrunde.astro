@@ -243,7 +243,7 @@ const texte = eingabeTexte(r);
           // „besetzt“: Ein anderer Browser hat den Platz zuerst belegt – Text bleibt im Feld, anderen Platz wählen.
           const grund = ((await r.json().catch(() => null)) as { grund?: unknown } | null)?.grund;
           if (grund === 'besetzt') { if (!vergeben.includes(e.rolle)) vergeben = [...vergeben, e.rolle]; knoepfeAktualisieren(); melden(BESETZT); }
-          else melden('Schon aufgedeckt – Senden geht nicht mehr.');
+          else melden(texte.zuSpaet ?? '');
           a.kette.sofort();
         }
         else if (st === 400) { melden(`Bitte einen Satz mit höchstens ${feld.maxLength} Zeichen.`); }

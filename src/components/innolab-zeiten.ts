@@ -31,6 +31,6 @@ export const NACH_ZWOELF = ENDE_TAG_2;
 
 
 /** Antwortrunde „Rückblick“ am Ende von Tag 2 (Abschluss, Folie „rueckblick“): Im Raum wird nicht aufgedeckt, Markus
- *  dankt nur. Ab Kursende (18:15, mit Puffer) sind die Texte lesbar, damit Markus sie nach dem Kurs sichert; die Eingabe
- *  ist dann zu. */
-export const NACH_RUECKBLICK_TAG_2 = '2026-11-12T18:15';
+ *  dankt nur. Ab 19 Uhr (Kursende 18 Uhr plus eine Stunde Puffer, falls es später wird) sind die Texte lesbar, damit
+ *  Markus sie noch am selben Abend sichert; die Eingabe ist dann zu. */
+export const NACH_RUECKBLICK_TAG_2 = '2026-11-12T19:00';

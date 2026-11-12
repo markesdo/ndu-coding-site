@@ -17,6 +17,7 @@ const ROLLEN_WAHL = {
   aufgedeckt: 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.',
   gesendet: 'Gesendet – du kannst bis zum Aufdecken noch ändern.',
   rueckfall: 'Antwort bitte laut sagen.',
+  zuSpaet: 'Schon aufgedeckt – Senden geht nicht mehr.',
 };
 
 describe('Antwortrunde: Eingabe prüfen', () => {
@@ -91,6 +92,7 @@ describe('Antwortrunde: Eingabe prüfen', () => {
       aufgedeckt: ROLLEN_WAHL.aufgedeckt,
       gesendet: ROLLEN_WAHL.gesendet,
       rueckfall: ROLLEN_WAHL.rueckfall,
+      zuSpaet: ROLLEN_WAHL.zuSpaet,
     });
     expect(Object.values(eingabeTexte(zwoelf)).filter((x) => /Rolle/.test(x))).toStrictEqual([]);
     // Teilweise eigene Texte: der Rest kommt vom Standard.
@@ -118,9 +120,10 @@ describe('Antwortrunde: Eingabe prüfen', () => {
       wahlBesetzt: 'Diesen Platz hat schon jemand – wählt einen anderen.',
       wahlFest: 'du hast {label} – ändern kannst du deine Antwort, nicht den Platz.',
       aufgedeckt: 'Danke – die Runde ist zu. Eure Sätze liest Markus nach dem Kurs.',
-      // Kein Aufdecken im Raum: ändern bis 18:15; Server weg – einfach weiter, nicht laut sammeln.
-      gesendet: 'Gesendet – du kannst bis 18:15 noch ändern.',
+      // Kein Aufdecken im Raum: ändern bis 19 Uhr; Server weg – einfach weiter, nicht laut sammeln.
+      gesendet: 'Gesendet – du kannst bis 19 Uhr noch ändern.',
       rueckfall: 'Geht gerade nicht – kein Problem, weiter geht’s.',
+      zuSpaet: 'Die Runde ist zu – danke fürs Mitmachen.',
     });
     expect(Object.values(t).filter((x) => /Rolle/.test(x))).toStrictEqual([]);
     expect(wahlFestText(t, 'Platz 2')).toBe('du hast Platz 2 – ändern kannst du deine Antwort, nicht den Platz.');
@@ -182,11 +185,11 @@ describe('Antwortrunde: Plätze und Stand', () => {
     expect(texteFrei(netflix, false, new Date('2026-11-12T22:59:00Z'))).toBe(true); // 23:59 Wien = NACH_NETFLIX
   });
 
-  it('Rückfall beider Runden: Ende von Tag 2, nicht Kursende – Verspätung schließt die Eingabe nicht', () => {
+  it('Rückfall-Uhrzeiten: Netflix und „zwoelf“ Ende von Tag 2 (Verspätung schließt nichts), Rückblick 19 Uhr (Kursende plus Puffer)', () => {
     expect(netflix.ab).toBe('2026-11-12T23:59');
     expect(zwoelf.ab).toBe(netflix.ab);
-    // Rückblick: kein Aufdecken im Raum, lesbar ab Kursende (18:15 Wien), nicht erst um Mitternacht.
-    expect(rueckblick.ab).toBe('2026-11-12T18:15');
+    // Rückblick: kein Aufdecken im Raum, lesbar ab 19 Uhr Wien (eine Stunde nach Kursende), nicht erst um Mitternacht.
+    expect(rueckblick.ab).toBe('2026-11-12T19:00');
   });
 
   it('„rueckblick“: eigene Plätze und eigenes Aufdecken – andere Runden öffnen sie nicht', () => {
@@ -194,8 +197,8 @@ describe('Antwortrunde: Plätze und Stand', () => {
     expect(platzSchluessel('rueckblick', 'p1', imAbschluss)).toBe('antwort:2026-11-12:rueckblick:p1');
     expect(texteFrei(rueckblick, false, imAbschluss)).toBe(false);
     expect(texteFrei(rueckblick, true, imAbschluss)).toBe(true);
-    expect(texteFrei(rueckblick, false, new Date('2026-11-12T17:14:00Z'))).toBe(false); // 18:14 Wien
-    expect(texteFrei(rueckblick, false, new Date('2026-11-12T17:15:00Z'))).toBe(true); // 18:15 Wien = NACH_RUECKBLICK_TAG_2
+    expect(texteFrei(rueckblick, false, new Date('2026-11-12T17:59:00Z'))).toBe(false); // 18:59 Wien, Eingabe noch offen
+    expect(texteFrei(rueckblick, false, new Date('2026-11-12T18:00:00Z'))).toBe(true); // 19:00 Wien = NACH_RUECKBLICK_TAG_2
     expect(betrifftRunde(rueckblick, 'zwoelf')).toBe(false);
     expect(betrifftRunde(rueckblick, 'rueckblick')).toBe(true);
   });

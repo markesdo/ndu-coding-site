@@ -41,6 +41,8 @@ export interface EingabeTexte {
   gesendet: string;
   /** Rückfall in der Eingabe, wenn die API ausfällt (503, Netz). */
   rueckfall: string;
+  /** Meldung, wenn jemand nach dem Schließen der Runde noch abschickt (409 „aufgedeckt“). */
+  zuSpaet: string;
 }
 
 /** Texte der Eingabe, wenn die Runde keine eigenen hat (Netflix). */
@@ -55,6 +57,7 @@ export const EINGABE_STANDARD: Readonly<EingabeTexte> = {
   aufgedeckt: 'Aufgedeckt – eure Sätze stehen auf der nächsten Folie.',
   gesendet: 'Gesendet – du kannst bis zum Aufdecken noch ändern.',
   rueckfall: 'Antwort bitte laut sagen.',
+  zuSpaet: 'Schon aufgedeckt – Senden geht nicht mehr.',
 };
 
 /** Hinweis nach dem Senden mit dem Namen des eigenen Platzes. */
@@ -116,9 +119,10 @@ export const RUNDEN: Readonly<Record<string, Runde>> = {
       platzhalter: 'Tief: … – ich habe gerade …',
       ...PLATZ_WAHL,
       aufgedeckt: 'Danke – die Runde ist zu. Eure Sätze liest Markus nach dem Kurs.',
-      gesendet: 'Gesendet – du kannst bis 18:15 noch ändern.',
+      gesendet: 'Gesendet – du kannst bis 19 Uhr noch ändern.',
       // Server weg: nicht laut sammeln, einfach weiter (Markus, 12.11.2026).
       rueckfall: 'Geht gerade nicht – kein Problem, weiter geht’s.',
+      zuSpaet: 'Die Runde ist zu – danke fürs Mitmachen.',
     },
   },
 };
