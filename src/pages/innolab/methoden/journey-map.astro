@@ -112,7 +112,19 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
     <h2 id="momente">Momente werden Äste</h2>
     <p class="folie-satz">Jeder Ast ist ein eigener Zeitpunkt – ohne Überschneidung.</p>
     <BildText>
-      <BuchAbbildung src="/quellen/torres/aeste-momente.jpg" alt="Baum mit dem Outcome „Increase viewing minutes“ oben und vier Ästen darunter: „I need something to do.“, „I'm not sure what to watch.“, „I'm watching a show.“, „My show ended.“" quelle={`Oberste Chancen aus den Momenten der Experience Map. ${TORRES}, S. 87.`} />
+      <div class="aeste">
+        <ol class="momente-reihe" aria-label="Die vier Momente der Experience Map bei Torres: Entscheiden, etwas zu schauen; Auswählen; Schauen; Ende. Jeder Moment wird ein Ast.">
+          <li>Entscheiden, etwas zu schauen</li>
+          <li>Auswählen</li>
+          <li>Schauen</li>
+          <li>Ende</li>
+        </ol>
+        <div class="bild-outcome">
+          <BuchAbbildung src="/quellen/torres/aeste-momente.jpg" alt="Baum mit dem Outcome „Increase viewing minutes“ oben und vier Ästen darunter, einer pro Moment der Experience Map: „I need something to do.“, „I'm not sure what to watch.“, „I'm watching a show.“, „My show ended.“" quelle={`Jeder Moment der Experience Map wird ein Ast, eine oberste Chance. ${TORRES}, S. 87.`}>
+            <span slot="marke" class="outcome-marke" aria-hidden="true">← Outcome</span>
+          </BuchAbbildung>
+        </div>
+      </div>
       <ul>
         <li data-schritt><strong>Ein Moment pro Ast</strong>, in der Reihenfolge der Geschichte.</li>
         <li data-schritt><strong>Keine Überschneidung</strong>, sonst lässt sich nicht eine Chance nach der anderen bearbeiten.</li>
@@ -121,16 +133,18 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
     </BildText>
     <div class="nur-handout">
       <p>Ziel ist, den Chancenraum nach unterscheidbaren Momenten zu ordnen, damit sich die Äste nicht überschneiden. Oft reicht es, jeden Knoten der Experience Map auf die oberste Ebene des Baums zu legen. Im Streaming-Beispiel werden aus vier Momenten – sich entscheiden, etwas zu schauen; etwas auswählen; schauen; das Ende – vier oberste Chancen (S. 86–87). Ohne Überschneidung könnt ihr an einer Chance arbeiten, ohne alle anderen mitzuziehen (S. 86). Im nächsten Block hängt ihr die Chancen aus euren Snapshots unter diese Äste. Torres nennt diese Äste „top-level opportunities“: Aus jedem Moment formuliert ihr eine oberste Chance, die diesen Moment wiedergibt – in der Abbildung in Ich-Form, etwa „My show ended.“ (S. 87, 91). Der Ast ist also selbst schon eine Chance, keine eigene Ebene über den Chancen.</p>
+      <p>Die vier Schritte über der Abbildung sind die Momente aus Torres’ Experience Map; jeder wird eine oberste Chance (S. 86–87). Der Kreis oben, „Increase viewing minutes“, ist kein Moment, sondern das Outcome – die Wurzel des Baums.</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="peak-end">Stärkster Moment und Ende</h2>
     <p class="folie-satz">Erinnert wird der stärkste Moment und das Ende – nicht der Durchschnitt.</p>
-    <Fluss label="Kälteversuch, Durchgang 1: 60 Sekunden bei 14 Grad, dann Hand raus" knoten={[{ t: 'Durchgang 1', sub: '60 s bei 14 °C' }, { t: 'Ende', sub: 'Hand raus' }]} />
-    <Fluss label="Kälteversuch, Durchgang 2: 60 Sekunden bei 14 Grad, dann 30 Sekunden bei 15 Grad" hervor={[1]} knoten={[{ t: 'Durchgang 2', sub: '60 s bei 14 °C' }, { t: '+ 30 s bei 15 °C', sub: 'etwas weniger unangenehm' }]} />
-    <p data-schritt><strong>Die meisten</strong> wollten Durchgang 2 wiederholen – den längeren. Markiert darum auf eurer Map den stärksten Moment – Hoch- oder Tiefpunkt – und das Ende.</p>
-    <p class="small muted">{KANE} – nicht aus Torres.</p>
+    <p class="versuch">Kälteversuch (Kahneman u. a., 1993): Hand in kaltes Wasser, alle machen beide Durchgänge. Dann die Frage: Welchen würdet ihr wiederholen?</p>
+    <Fluss label="Kälteversuch, Durchgang 1: 60 Sekunden bei 14 Grad, Ende: Hand raus am kältesten Punkt" knoten={[{ t: 'Durchgang 1', sub: '60 s bei 14 °C' }, { t: 'Ende', sub: 'Hand raus – am kältesten Punkt' }]} />
+    <Fluss label="Kälteversuch, Durchgang 2: 60 Sekunden bei 14 Grad, Ende: noch 30 Sekunden bei 15 Grad, etwas wärmer, weniger unangenehm" hervor={[1]} knoten={[{ t: 'Durchgang 2', sub: '60 s bei 14 °C' }, { t: 'Ende: + 30 s bei 15 °C', sub: 'etwas wärmer, weniger unangenehm' }]} />
+    <p data-schritt><strong>Die meisten</strong> wählten Durchgang 2 – obwohl er 30 s länger unangenehm war. Erinnert wird das bessere Ende. Markiert darum auf eurer Map den stärksten Moment – Hoch- oder Tiefpunkt – und das Ende.</p>
+    <p class="small muted">{KANE}</p>
     <div class="nur-handout">
       <p>Die Peak-End-Regel ist ein Denkfehler beim Erinnern: Intensive Momente (die Spitzen) und das Ende eines Erlebnisses zählen beim späteren Urteil am meisten ({KANE}). Der Artikel beschreibt den Versuch von Daniel Kahneman, Barbara Fredrickson, Charles Schreiber und Donald Redelmeier („When More Pain Is Preferred to Less: Adding a Better End“, 1993): Teilnehmende hielten eine Hand in kaltes Wasser, einmal 60 Sekunden bei 14 °C, einmal dieselben 60 Sekunden und danach 30 Sekunden bei 15 °C. Vor die Wahl gestellt, welchen Durchgang sie wiederholen, wählten laut NN/g 80 % den zweiten – obwohl er länger unangenehm war, weil er etwas besser endete.</p>
       <p>Für eure Map heißt das: Schaut, wo die Geschichten am stärksten ausschlagen, im Guten wie im Schlechten, und wie sie enden. Das NN/g-Team rät, negative Spitzen ernst zu nehmen (Verwirrung, Frust) und auf ein gutes Ende zu achten – „last impressions are lasting impressions“. Die Experience Map selbst stammt nicht aus diesem Artikel; die Regel ist der Grund, warum ihr den stärksten Moment (Hoch- oder Tiefpunkt) und das Ende markiert.</p>
@@ -194,4 +208,25 @@ const KANE = 'Lexie Kane, „The Peak–End Rule: How Impressions Become Memorie
   .fluss-titel { display: flex; align-items: center; gap: .4rem; margin: 1rem 0 -.75rem; font-weight: 600; }
   .fluss-titel :global(.icon-nein) { color: var(--muted); }
   .fluss-titel :global(.icon-ja) { color: var(--green); }
+  /* Folie „peak-end“: der Aufbau des Versuchs vor den beiden Reihen. */
+  .versuch { margin: .75rem 0 0; max-width: none; }
+  .versuch ~ :global(.fluss) { margin: .75rem 0; }
+  /* Folie „momente“: die vier Momente aus Torres' Experience Map über der Abbildung, ein Schritt pro Ast. */
+  .momente-reihe { list-style: none; margin: 0 0 .5rem; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.3rem; font-size: .85rem; line-height: 1.25; }
+  .momente-reihe li { position: relative; display: flex; align-items: center; justify-content: center; text-align: center; padding: .35rem .4rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-2); }
+  .momente-reihe li + li::before { content: '→' / ''; position: absolute; left: -1.05rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
+  .aeste { container: aeste / inline-size; }
+  .aeste .momente-reihe { padding: 0; }
+  .aeste .momente-reihe li + li { margin-top: 0; }
+  /* Schmal (Handy): zwei mal zwei, ohne Pfeil am Zeilenanfang. */
+  @container aeste (max-width: 400px) {
+    .momente-reihe { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: .5rem; }
+    .momente-reihe li:nth-child(3)::before { content: none; }
+  }
+  .bild-outcome :global(.buch-abbildung) { margin: 0; }
+  /* Neben dem obersten Kreis („Increase viewing minutes“, rechte Kante bei gut 60 % der Bildbreite, Mitte bei gut 20 % der Höhe): kein Moment, die Wurzel. */
+  .outcome-marke { position: absolute; left: 63%; top: 22%; transform: translateY(-50%); white-space: nowrap; font-size: .9rem; font-weight: 600; color: var(--accent); }
+  /* Im Beamer: Platz für die Reihe der Momente. */
+  :global(html[data-beamer]) .bild-outcome :global(.buch-abbildung img) { max-height: calc(100vh - 22rem); }
+  :global(html[data-beamer]) .momente-reihe li { font-size: .85rem; line-height: 1.25; }
 </style>

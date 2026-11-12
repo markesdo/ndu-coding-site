@@ -150,7 +150,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Warum will Torres keine einzelne „Stimme der Kundschaft“ im Team?',
-      antwort: 'Wer alle Interviews führt, kann jede Diskussion mit „Das will die Kundschaft“ beenden – das gibt einer Person zu viel Macht. Ziel ist, dass alle die Stimme der Kundschaft sind (S. 74–75). Fitzpatrick nennt das Gegenteil den Lern-Engpass (Mom Test, S. 98–99).',
+      antwort: 'Wer alle Interviews führt, kann jede Diskussion mit „Das will die Kundschaft“ beenden – das gibt einer Person zu viel Macht. Ziel ist, dass alle die Stimme der Kundschaft sind (S. 74–75). Fitzpatrick nennt das Gegenteil den Lern-Engpass (Mom Test, S. 99–100).',
       falsch: '„Weil sich eine Person verhören kann“ – es geht um Macht im Team und um verschiedene Sichten.',
     },
     ablauf: {
@@ -171,7 +171,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       },
       {
         text: 'Lern-Engpass: Eine Person führt die Gespräche und sagt dem Team, was die Kundschaft will; „Die Kund*innen haben es gesagt“ sticht dann jedes Argument.',
-        quelle: `${MOMTEST}, S. 98–99`,
+        quelle: `${MOMTEST}, S. 99–100`,
       },
     ],
     ueberleitung: 'Genau das holt ihr jetzt nach: Snapshots im Team besprechen, mit vier Fragen.',
@@ -181,14 +181,14 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     live: [
       '„Die vier Fragen sind euer Raster für jede Runde.“',
       'Fragen: Was davon kennt ihr aus Need Finding, was ist neu?',
-      'Was ändert sich: Beleg sofort in die Annahmen-Map.',
+      'Was ändert sich: gestützt, wackelt oder noch offen? Mit Zitat-ID notieren.',
       'Falle: nur Inhalt, keine Meta-Ebene – Frage 3 und 4 einfordern.',
       'Im Zeigen-Modus K drücken: Kontext mit Annahmen und Leitfaden der Person.',
     ],
     kern: [
       {
         text: 'Nach jedem Gespräch geht das Team die Notizen gemeinsam durch und passt Überzeugungen und die drei großen Fragen an: wichtigste Zitate und Aussagen, Probleme im Gespräch, die Meta-Ebene (welche Fragen gingen, welche nicht, welche Signale fehlten). Der Schritt klingt so einfach, dass man ihn gern überspringt.',
-        quelle: `${MOMTEST}, S. 102`,
+        quelle: `${MOMTEST}, S. 103`,
       },
     ],
     ueberleitung: 'Einmal vorgemacht an I2.',
@@ -235,13 +235,13 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         'Deinen Bildschirm teilen: die Lehrenden-Ansicht der Werkstatt, Interviews der Person, die zeigt (Leser). Kein Wechsel des Präsentierenden, kein Beamer-Modus.',
         'Reihenfolge festlegen. Runde 1: 5 min zeigen (Zitat, Geschichte, Chancen), 7 min besprechen mit den vier Fragen; ab Minute 10 schreibt, wer gezeigt hat, 2 min in der eigenen Werkstatt (Chance oder Einsicht in den Snapshot, der Rest als Stichwort auf Papier).',
         'Nach dem Schreiben: Ansicht neu laden, die Person liest vor („Ich nehme mit …“). Dann Runde 2 und 3 genauso, Timer jeweils neu starten.',
-        'Festhalten und prüfen (8 min, Folie Festhalten): Stichworte übertragen – Annahmen-Map (Beleg, ID, „spricht dagegen“), Leitfaden (Frage ändern, Nachfrage), Log nur bei einer Entscheidung; dann Claude.',
+        'Festhalten (8 min, Folie Festhalten): erst die Stichworte vom Papier übertragen – Annahmen-Map (Beleg, ID, „spricht dagegen“), Leitfaden (Frage ändern, Nachfrage) –, dann eine Zeile ins Log zur riskantesten Annahme: verworfen, geändert oder bewusst behalten, mit Grund.',
       ],
       achten: [
         'Wer zeigt, verteidigt nicht, sondern hört zu: Was die anderen hören, ist der Grund für die Besprechung (Torres S. 75).',
         'Belege mit Zitat-ID eintragen, nicht nur „I2“. Jede Chance nennt mindestens eine Zitat-ID – ohne ID kein Beleg. Synthetische Interviews (Pseudonym „Synthetisch“) zählen nie als Beleg.',
         'Wer zeigt, verteidigt nicht – zuhören einfordern.',
-        'Streuen die fünf Snapshots in alle Richtungen, über eine engere Zielgruppe im Produkt-Brief sprechen (Mom Test S. 88).',
+        'Streuen die fünf Snapshots in alle Richtungen, über eine engere Zielgruppe im Produkt-Brief sprechen (Mom Test S. 89).',
       ],
       fehler: [
         'Nur nacherzählen statt die vier Fragen zu stellen.',
@@ -251,7 +251,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     kern: [
       {
         text: 'So lange Gespräche führen, bis nichts Neues mehr kommt; bei einer klar umrissenen Zielgruppe können drei bis fünf reichen. Streuen die Ergebnisse nach mehr als zehn Gesprächen noch in alle Richtungen, ist die Zielgruppe vermutlich zu unscharf.',
-        quelle: `${MOMTEST}, S. 88`,
+        quelle: `${MOMTEST}, S. 89`,
       },
     ],
     ueberleitung: 'Nach den drei Runden: festhalten, was sich ändert.',
@@ -260,15 +260,18 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   festhalten: {
     live: [
       'Timer 8 min starten, alle arbeiten allein in der Werkstatt.',
-      '„Eine Zeile pro Entscheidung, nicht pro Interview – zwei, drei reichen heute.“',
-      'Zwei Fragen aufdecken: Für wen und Problem, dann riskanteste Annahme.',
+      'Erst Stichworte vom Papier übertragen: Map, dann Leitfaden.',
+      'Riskanteste ist vorgemerkt (aus der Forschungsfrage) – passt sie noch?',
+      'Hewen: A1 oder A2?',
+      '„Eine Zeile reicht.“',
+      'Zweite Zeile nur bei neuer Zielgruppe oder neuem Problem.',
       'Falle: Gegenbeleg nur ins Log statt in die Annahmen-Map.',
-      'Nach 6 min: reihum je eine Zeile vorlesen, Beleg-Stufe nennen.',
+      'Falle: synthetisches Zitat als Beleg oder im Grund – zählt nie.',
     ],
     uebung: { dauer: '8 min', form: 'allein, jede*r im eigenen Log' },
     verstaendnis: {
       frage: 'I2 widerspricht eurer riskantesten Annahme. Wohin damit?',
-      antwort: 'In die Annahmen-Map als Beleg (I2-4). Ins Log kommt eine Zeile erst, wenn ihr deshalb etwas tut – verwerfen, ändern oder bewusst weiter prüfen.',
+      antwort: 'In die Annahmen-Map als Beleg (I2-4). Ins Log kommt eine Zeile erst, wenn ihr deshalb etwas entscheidet – verworfen, geändert oder bewusst behalten.',
       falsch: '„Eine Zeile ‚A1 hat Gegenbeleg‘ ins Log“ – das ist ein Stand, er gehört in die Map; das Log hält fest, was ihr darum tut.',
     },
     kern: [
@@ -288,17 +291,17 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Und wenn sich nichts geändert hat?',
-        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: eine Zeile, dass Zielgruppe und Problem bleiben, mit den Interview-IDs als Beleg. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
+        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: eine Zeile, dass Zielgruppe und Problem bleiben, mit den IDs echter Interviews als Beleg. Wer nur synthetische Interviews hat, behält ebenfalls bewusst, aber mit Beleg „noch keiner“ und dem nächsten Schritt im Grund: in echten Interviews prüfen. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
       },
     ],
-    ueberleitung: 'Bevor ihr zur Map geht: eine Frage an euer Produkt.',
+    ueberleitung: 'Dann reihum: jede*r liest die eigene Zeile vor.',
   },
 
   uebertrag: {
     live: [
-      'Fragen: Welche Annahme von Tag 1 hat heute einen Beleg bekommen?',
-      'Reihum, je ein Satz, mit Zitat-ID.',
-      'Wenn keine: zu nette Interviews oder Fragen zur eigenen Idee?',
+      'Reihum: jede*r liest die eigene Zeile vor – Entscheidung, Grund, Beleg-Stufe.',
+      '„Beleg: noch keiner“ gilt – im Grund steht dann: in echten Interviews prüfen.',
+      'Echte Interviews ohne Beleg: zu nett oder nach der Idee gefragt?',
     ],
     ueberleitung: 'Nach der Pause zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu.',
   },
