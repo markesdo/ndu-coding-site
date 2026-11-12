@@ -198,7 +198,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       schritte: [
         '„Alle zu mir holen“ auf T2 · 1; links die Kaffeebar als Muster.',
         'Allein in der eigenen Spalte: Knoten aus den Skizzen beschriften, in jeder Skizze stärksten Moment und Ende markieren, auf Papier oder gleich auf Miro, die Map von Tag 1 (T1 · 1) daneben.',
-        'Zu dritt Spalte für Spalte; fragen, nicht verteidigen.',
+        'Zu dritt Spalte für Spalte, alle schauen auf dem Board mit (kein Bildschirm teilen); fragen, nicht verteidigen.',
         'Momente festlegen, jede*r in der eigenen Spalte: Überschneidendes zusammenlegen; drei bis fünf, je ein Zitat mit ID, Gefühlswort fett; Marken mit Zahl übertragen, etwa „Tief · I3-3 – Tief in 2 von 5“.',
       ],
     },
@@ -206,7 +206,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       schritte: [
         'Allein (12 min): Knoten aus den Skizzen beschriften, in jeder Skizze den stärksten Moment und das Ende markieren, auf Papier oder gleich in der eigenen Spalte auf T2 · 1 zusammenfügen, die Map von Tag 1 daneben.',
         'Zu dritt (10 min): Reihum die eigene Spalte auf T2 · 1 zeigen – alle schauen auf dem Board mit; die anderen fragen nach.',
-        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: Knoten prüfen, Überschneidendes zusammenlegen; drei bis fünf, in den Worten der Kundschaft. Jeder Moment mit einem Zitat mit ID, möglichst einem, in dem die Person Gefühl zeigt, das Gefühlswort fett; erzählt niemand ein Gefühl: „Gefühl: nicht erzählt“ (Frage fürs nächste Interview). Das Gefühl bleibt am Moment, kein eigener Knoten, keine Chance (Torres S. 56, 95; fett statt Smiley ist Kursregel). Dann die Marken übertragen, je mit der Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt: „Tief · I3-3 – Tief in 2 von 5“, „Ende · I3-5 – Ende in 1 von 5“. Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
+        'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: Knoten prüfen, Überschneidendes zusammenlegen (Torres S. 56, 86–87); drei bis fünf, in den Worten der Kundschaft. Jeder Moment mit einem Zitat mit ID, möglichst einem, in dem die Person Gefühl zeigt, das Gefühlswort fett; erzählt niemand ein Gefühl: „Gefühl: nicht erzählt“ (Frage fürs nächste Interview). Das Gefühl bleibt am Moment, kein eigener Knoten, keine Chance (Torres S. 56, 95; fett statt Smiley ist Kursregel). Dann die Marken übertragen, je mit der Zahl der Geschichten, deren Tiefpunkt oder Ende dort liegt: „Tief · I3-3 – Tief in 2 von 5“, „Ende · I3-5 – Ende in 1 von 5“. Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
         'Prüfen (5 min, eigene Folie): Prüfliste allein, dann Claude mit einem Bild der eigenen Spalte aus Miro; eine Datei gibt es nicht. Schritte unter „Prüfen“ im Handout.',
       ],
       achten: [
