@@ -20,6 +20,9 @@ describe('kohorte2026.termine', () => {
   it('tag1 und tag2 sind die Daten aus TAGE (Tag 2 am 12.11. nach der Absage im Oktober)', () => {
     expect(kohorte2026.termine.tag1).toBe('2026-10-22');
     expect(kohorte2026.termine.tag2).toBe('2026-11-12');
+    // Plan vom 12.11.2026: Tag 6 bleibt am 19.12. (ganzer Tag), die Präsentation liegt am 16.01.2027 statt am 07.01.
+    expect(kohorte2026.termine.tag6).toBe('2026-12-19');
+    expect(kohorte2026.termine.tag7).toBe('2027-01-16');
   });
 });
 

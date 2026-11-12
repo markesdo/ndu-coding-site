@@ -501,7 +501,7 @@ export const TAGE: { n: number; datum?: string; titel: string; text: string; zus
   { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning mit Störfall, Pitch – dann wird gebaut.' },
   { n: 6, datum: '2026-12-19', titel: 'Bauen & Review', text: 'Fertig bauen, Usability-Tests über Kreuz, Sprint-Review und Retro: Der Prototyp steht.',
     zusatz: { zeit: '14:00–18:00', was: 'Pitch-Probe und Puffer', offen: true } },
-  { n: 7, datum: '2027-01-07', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
+  { n: 7, datum: '2027-01-16', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
 ];
 
 export const artefakt = (id: string): Artefakt | undefined => ARTEFAKTE.find((a) => a.id === id);
