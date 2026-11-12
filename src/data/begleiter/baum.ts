@@ -236,6 +236,11 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 93–94`,
       },
     ],
+    verstaendnis: {
+      frage: 'Welche der beiden Ursachen zeigt Torres’ Abbildung: dasselbe in anderen Worten oder fehlende Geschwister?',
+      antwort: 'Torres sagt es nicht – unsere Lesart: beides. „Is this show any good?“ und „Will I like this show?“ sagen fast dasselbe und lassen sich zusammenfassen. „I don’t like it when I start a show and it isn’t good.“ löst „Will I like this show?“ nur zum Teil – Geschwister fehlen, etwa Empfehlungen oder Kritiken.',
+      falsch: '„Eine Kette ist in Ordnung, wenn jede Stufe stimmt.“ – Torres nennt sie ein Anti-Muster (S. 93–94).',
+    },
     ueberleitung: 'Vier weitere Anti-Muster, je mit einem Beispiel.',
   },
 
