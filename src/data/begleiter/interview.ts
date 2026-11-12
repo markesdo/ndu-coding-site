@@ -439,7 +439,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       antwort: 'Freundlich zurück zum konkreten Fall: „Und an diesem Morgen?“ Die Verallgemeinerung zeigt das ideale Ich, erst das konkrete Mal zeigt, was passiert ist.',
       falsch: '„Was holst du dir denn normalerweise?“ Das bleibt in der Verallgemeinerung; sie fühlt sich wie eine Abkürzung zum echten Bedürfnis an, ist aber keine (Torres, S. 66).',
     },
-    ueberleitung: 'Nach der Pause schreibt ihr euren eigenen Leitfaden und probt ihn zweimal, mit Claude und mit mir.',
+    ueberleitung: 'Damit ihr die Geschichte später wörtlich habt: aufnehmen und verschriftlichen.',
     kern: [
       {
         text: 'Auf eine kurze Frage kommt eine kurze Antwort, weil wir im Gespräch ein Hin und Her zu gleichen Teilen erwarten („50/50 back-and-forth“). Am wirksamsten: vorher ankündigen, dass ihr die ganze Geschichte mit allen Details hören wollt und am Ende nachfragt.',
@@ -476,6 +476,41 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
         antwort: 'Dann ist das auch ein Ergebnis, vielleicht kommt die Situation seltener vor als gedacht. Nicht erzwingen, mitnehmen, was sie erzählt (Torres, S. 67).',
       },
     ],
+  },
+
+  'aufnehmen': {
+    live: [
+      '„Ein Zitat ist erst ein Zitat, wenn es auf der Aufnahme zu hören ist.“',
+      'Einwilligung zweimal: Datenschutzhinweis zeigen, dann noch einmal auf der Aufnahme.',
+      'Teams und Zoom nicht aufzeichnen lassen: Aufnahme liegt in deren Cloud.',
+      'noScribe läuft offline; Zitate an der Aufnahme nachhören (Dialekt).',
+      'Nur die bereinigte Fassung in die Werkstatt.',
+    ],
+    kern: [
+      {
+        text: 'Wörtliche Zitate aufschreiben und in Anführungszeichen setzen, damit klar ist, was wörtlich ist.',
+        quelle: 'Rob Fitzpatrick, The Mom Test, S. 105',
+      },
+      {
+        text: 'Aufnahmen hat Fitzpatrick kaum genutzt, weil er darin nichts wiederfand; Leute lassen sich aber erstaunlich gern aufnehmen, wenn man fragt („is it cool if I record this …“).',
+        quelle: 'Rob Fitzpatrick, The Mom Test, S. 107–108',
+      },
+      {
+        text: 'Spricht jemand anschaulich, die genauen Worte festhalten.',
+        quelle: 'Teresa Torres, Continuous Discovery Habits, S. 69',
+      },
+    ],
+    fragen: [
+      {
+        frage: 'Darf ich die Aufnahme Claude geben, damit es transkribiert?',
+        antwort: 'Nein. Der Datenschutzhinweis verspricht: keine KI im Netz, kein Online-Dienst. noScribe läuft auf eurem Mac ohne Internet; Claude bekommt nur die bereinigte Fassung.',
+      },
+      {
+        frage: 'Was, wenn die Person nicht aufgenommen werden will?',
+        antwort: 'Dann schreibt ihr mit, so wörtlich wie möglich, und markiert Wörtliches mit Anführungszeichen; alles andere ist Zusammenfassung (Fitzpatrick, S. 105).',
+      },
+    ],
+    ueberleitung: 'Nach der Pause schreibt ihr euren eigenen Leitfaden und probt ihn zweimal, mit Claude und mit mir.',
   },
 
   'vorgehen': {
