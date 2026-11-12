@@ -166,12 +166,12 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Zeile für Zeile: alle beantworten die drei Fragen laut.',
       'Erst nach der letzten Zeile aufdecken.',
       'Fragen: Was steckt hinter „per App vorbestellen“?',
-      '„Nur bei einer Person? In den Streifen – kann wiederkommen.“',
+      '„Nur bei einer Person? Ins Feld ‚Nur in einem Interview‘ – kann wiederkommen.“',
       'Mehrmals: dasselbe Bedürfnis im zweiten Interview, auch anders formuliert.',
     ],
     verstaendnis: {
       frage: '„Wenn der erste Schluck passt, ist der Morgen gerettet“ klingt wichtig. Warum kommt es nicht in den Baum?',
-      antwort: 'Nur I1 hat es erzählt (I1-4); die zweite Frage, in mehr als einem Interview gehört, ist ein Nein. Es kommt in den Streifen „Nur in einem Interview“ (bei Torres: bleibt auf dem Snapshot) – oft taucht so etwas später bei anderen wieder auf (S. 70, 88).',
+      antwort: 'Nur I1 hat es erzählt (I1-4); die zweite Frage, in mehr als einem Interview gehört, ist ein Nein. Es kommt ins Feld „Nur in einem Interview“ (bei Torres: bleibt auf dem Snapshot) – oft taucht so etwas später bei anderen wieder auf (S. 70, 88).',
       falsch: '„Weil es den Outcome nicht treibt“ – darüber entscheidet erst Frage 3, und die stellt sich hier nicht mehr.',
     },
     ablauf: {
@@ -179,7 +179,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Pro Zeile die drei Fragen in die Runde stellen, Antworten laut sammeln.',
         'Nach der letzten Zeile den Schritt aufdecken: Dann erscheinen alle Antworten.',
       ],
-      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, verpasse ich den Zug“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): in den Streifen „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
+      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, verpasse ich den Zug“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): ins Feld „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
     },
     kern: [
       {
@@ -187,8 +187,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 88`,
       },
       {
-        text: 'Der Streifen „Nur in einem Interview“ ist ein Ablagefeld unten in jedem Baum-Rahmen auf Miro. Dorthin kommt jede Chance, die nur eine Person erzählt hat – als Karte mit Zitat-ID, damit sie nicht verloren geht. Erzählt ein weiteres Interview dasselbe Bedürfnis – ein schon geführtes oder ein späteres, auch anders formuliert –, wandert die Karte in den Baum, unter ihren Moment. Bei Torres bleiben solche Chancen einfach auf dem Snapshot; der Streifen macht sie im Baum sichtbar (Kursformat).',
-        quelle: `${TORRES}, S. 70; Streifen: Kursformat`,
+        text: 'Das Feld „Nur in einem Interview“ ist eine Ablage unten in jedem Baum-Rahmen auf Miro. Dorthin kommt jede Chance, die nur eine Person erzählt hat – als Karte mit Zitat-ID, damit sie nicht verloren geht. Erzählt ein weiteres Interview dasselbe Bedürfnis – ein schon geführtes oder ein späteres, auch anders formuliert –, wandert die Karte in den Baum, unter ihren Moment. Bei Torres bleiben solche Chancen einfach auf dem Snapshot; das Feld macht sie im Baum sichtbar (Kursformat).',
+        quelle: `${TORRES}, S. 70; Feld „Nur in einem Interview“: Kursformat`,
       },
       {
         text: '„Lösung → Bedürfnis dahinter neu prüfen“ am Beispiel „Per App vorbestellen“ (erste Zeile der Tabelle): Erst die Probe „Is there more than one way to address this opportunity?“ – hier gibt es nur einen Weg, die App; also eine Lösung. Dann das Bedürfnis dahinter suchen („uncover the implied opportunity“): Wozu vorbestellen? „Ich will den Zug nicht verpassen.“ Dieses Bedürfnis geht neu durch die drei Fragen: Bedürfnis – ja; in mehr als einem Interview – ja, I2, I3 und I4 erzählen es; treibt den Outcome – ja. Es kommt also in den Baum – und ist dasselbe wie die nächste Zeile, „Wenn ich anstehe, verpasse ich den Zug.“: eine Karte, nicht zwei. Gegenprobe: Für dieses Bedürfnis gibt es mehrere Wege – im Kaffeebar-Baum von Tag 1 hängen darunter Vorbestellen per App, Express-Theke und Kaffeewagen am Bahnsteig (Vorbestellen ist später verworfen, D4). „An opportunity should have more than one potential solution.“',
@@ -337,7 +337,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Nach 12 min: Struktur allein, Linien ziehen, Timer 10 min.',
       'Nach 22 min: weiter zur Checkliste, Timer 12 min dort.',
       'Nach 34 min: Prüfliste, dann Claude mit Bild des Baums.',
-      'Wenige Interviews: voller Streifen, dünner Baum – das ist normal.',
+      'Wenige Interviews: volles Feld „Nur in einem Interview“, dünner Baum – normal.',
     ],
     uebung: { dauer: '39 min (12 + 10 + 12 + 5)', form: 'allein, dann zu dritt reihum' },
     miro: {
@@ -345,13 +345,13 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       schritte: [
         'Jede*r arbeitet im eigenen Frame „Baum · Name“ rechts neben der Kaffeebar; T2 · 2 ist nur die Anleitung.',
         'Momente aus T2 · 1 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
-        'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat, in den Streifen „Nur in einem Interview“.',
+        'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat, ins Feld „Nur in einem Interview“.',
         'Gegenlesen: Die anderen kommentieren im fremden Baum, statt zu verschieben.',
       ],
     },
     ablauf: {
       schritte: [
-        'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → Streifen „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
+        'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
         'Gegenlesen reihum (12 min, Timer auf der Folie Anti-Muster): je Baum vier Minuten, die anderen beiden gehen die Checkliste der sechs Anti-Muster durch.',
         'Prüfen (5 min): Prüfliste, dann Claude mit einem Bild des Baums aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 3.',
