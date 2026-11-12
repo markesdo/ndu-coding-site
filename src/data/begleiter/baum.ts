@@ -31,20 +31,21 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Liste nicht erklären, alle lesen still.',
       'Freien Platz wählen (ohne Bedeutung); alle antworten auf der eigenen Seite.',
-      'Timer 2 min: Nummer und Satz – welche zuerst und warum.',
+      'Timer 2 min: 1 oder 2, 7 oder 12, 9 oder 11.',
+      'Dazu ein Satz: Welches Paar fiel am schwersten?',
       'Noch nicht aufdecken – erst alle drei abgeschickt.',
-      'Falle: eine richtige Antwort andeuten – es gibt keine.',
+      'Falle: eine richtige Wahl andeuten – Torres nennt keine.',
       'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
     ],
-    uebung: { dauer: '2 min', form: 'allein, Nummer und ein Satz auf der Seite; dann gemeinsam aufdecken (Rückfall: laut)' },
+    uebung: { dauer: '2 min', form: 'allein, drei Nummern und ein Satz auf der Seite; dann gemeinsam aufdecken (Rückfall: laut)' },
     ablauf: {
       schritte: [
         'Folie zeigen, die Liste still lesen lassen.',
-        'Alle öffnen die Folie auf dem eigenen Gerät und wählen einen freien Platz (Platz 1–3, ohne Bedeutung). Timer 2 min: Jede*r tippt die Nummer der Chance, die sie oder er zuerst angehen würde, und einen Satz, warum, und schickt ab. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
+        'Alle öffnen die Folie auf dem eigenen Gerät und wählen einen freien Platz (Platz 1–3, ohne Bedeutung). Timer 2 min: Jede*r entscheidet drei Paare – 1 oder 2, 7 oder 12, 9 oder 11 –, tippt die drei Nummern und einen Satz zu dem Paar, das am schwersten fiel, und schickt ab. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
         'Erst wenn alle drei abgeschickt haben, zur nächsten Folie: Dort deckst du alle drei gleichzeitig auf. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r Nummer und Satz laut.',
       ],
       achten: [
-        'Wer „Wer ist dieser Schauspieler?“ nimmt, weil leicht: genau die Frage, die Torres stellt – immer das Leichte vor dem Schweren?',
+        'Wer „weiß ich nicht“ schreiben will: trotzdem entscheiden, den Zweifel in den Satz – genau den beschreibt Torres („I don’t know how to compare“, S. 82).',
         'Nicht werten und nicht nachfragen, bevor aufgedeckt ist – sonst passen die anderen ihre Antwort an.',
         'Drei Plätze, je einer pro Person; Testantworten: auf der Seite ohne Beamer „Runde leeren“.',
       ],
@@ -54,17 +55,22 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         text: 'Die zwölf Chancen aus dem Streaming-Beispiel, wie sie viele Teams als Opportunity Backlog führen. Besser als eine Chance allein, aber eine flache Liste ist schwer zu priorisieren: „opportunities come in different shapes and sizes. Some opportunities are interrelated, while others are subsets of others.“',
         quelle: `${TORRES}, S. 81–82`,
       },
+      {
+        text: 'Die drei Paare sind die, die Torres selbst vergleicht: 1 und 2, 7 und 12, 9 und 11. Die erzwungene Wahl ist eine Übung dieses Kurses.',
+        quelle: `${TORRES}, S. 82; Kursregel`,
+      },
     ],
     ueberleitung: 'Alle drei abgeschickt? Dann decken wir gemeinsam auf – und sortieren die zwölf.',
   },
 
   warum: {
     live: [
-      'Aufdecken, Sätze vorlesen.',
-      'Bei jedem Schritt: Wessen Nummer? Welcher Grund – leicht, häufig, groß?',
-      'Fragen: Stehen eure drei Chancen auf derselben Ebene?',
+      'Aufdecken, Sätze vorlesen: Welches Paar fiel am schwersten?',
+      '1 oder 2: Teil gegen Ganzes – kein Entweder-oder.',
+      '7 oder 12: Geschwister – ähnlich, nicht gleich.',
+      '9 oder 11: groß gegen leicht – immer das Leichte zuerst?',
       '„Eine Liste mischt Großes, Kleines und Verwandtes.“',
-      'Falle: 4, 6, 8, 10 einsortieren – Torres tut es nicht.',
+      'Falle: eine Wahl richtig nennen; 4, 6, 8, 10 einsortieren.',
     ],
     verstaendnis: {
       frage: 'Warum lassen sich „Ich finde nichts zum Schauen“ und „Mir sind die Folgen ausgegangen“ schlecht gegeneinander priorisieren?',
@@ -74,15 +80,14 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Platz; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten. Eure Nummern leuchten in der Sortierung auf (Nummer am Satzanfang; doppelt gewählt: ×2).',
-        'Schritt für Schritt aufdecken: 1 mit 2, 3 und 5; dann 7 und 12 unter „unterwegs schauen“; dann 9 und 11 nebeneinander; zuletzt 4 · 6 · 8 · 10. Bei jedem Schritt: Wessen Nummer steht hier – und was war euer Grund (leicht, häufig, groß)?',
-        'Fragen, ob eure drei Chancen auf derselben Ebene stehen, dann den letzten Satz aufdecken.',
+        'Schritt für Schritt aufdecken, je Schritt ein Paar: Wer 1 gewählt hat – „Und welchen Teil davon zuerst?“; wer 2 – „Damit ist 1 nur zum Teil gelöst“ (S. 83). 7 oder 12 – „Hängt an den Bedingungen: offline, Steckdose“ (S. 82). Wer 11 – „Immer das Leichte zuerst?“; wer 9 – „Wo fangt ihr an?“ (S. 82, 84–85). Zuletzt 4 · 6 · 8 · 10.',
+        'Fragen: Bei welchem Paar habt ihr zwei Gleichartige verglichen? Dann den letzten Satz aufdecken.',
       ],
       achten: [
         'Falle: 9 und 11 stehen nur zum Größenvergleich nebeneinander – keine Gruppe, 11 hängt nicht unter 9.',
         'Nur sortieren, was Torres sortiert: ihre Teilchancen von 9 sind anders formuliert (S. 84–85); 4, 6, 8 und 10 bleiben offen.',
-        'Wer 4, 6, 8 oder 10 gewählt hat: „Die sortiert Torres nicht – woran würdest du erkennen, wozu sie gehört?“ (Kursfrage, nicht einsortieren).',
       ],
-      aufloesung: 'Meist nicht: 1 ist übergeordnet, 2, 3 und 5 sind Teilchancen davon, 7 und 12 Geschwister. Ihr habt Verschiedenartiges verglichen. Torres: „It’s hard to answer these questions when prioritizing opportunities of different shapes and sizes against each other“ (S. 82).',
+      aufloesung: 'Nur bei 7 und 12 – Geschwister unter einer ergänzten Chance. 1 und 2 sind Ganzes und Teil, 9 und 11 verschieden groß. Torres: „It’s hard to answer these questions when prioritizing opportunities of different shapes and sizes against each other“ (S. 82).',
     },
     kern: [
       {

@@ -17,6 +17,8 @@ describe('Gewählte Nummern („zwoelf“)', () => {
     expect(nummernAus('2 + 3, weil')).toStrictEqual([2, 3]);
     expect(nummernAus('4 6 – egal')).toStrictEqual([4, 6]);
     expect(nummernAus('1, 2 und 3 – alles')).toStrictEqual([1, 2, 3]);
+    // Drei Paare (Platzhalter der Runde): Die Liste endet am Gedankenstrich, „9/11“ später im Satz zählt nicht.
+    expect(nummernAus('2, 7, 11 – bei 9/11 …')).toStrictEqual([2, 7, 11]);
     // Dieselbe Nummer zählt pro Satz einmal; ungültige in der Aufzählung fallen weg.
     expect(nummernAus('3, 3 und 3')).toStrictEqual([3]);
     expect(nummernAus('1, 13 – halb')).toStrictEqual([1]);
