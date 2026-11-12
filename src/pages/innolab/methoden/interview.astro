@@ -179,6 +179,25 @@ const probe = `Wir proben mein Interview. Lies meinen Produkt-Brief aus der Werk
   </Folie>
 
   <Folie>
+    <h2 id="aufnehmen">Aufnehmen und verschriftlichen</h2>
+    <p class="folie-satz">Ein Zitat ist erst ein Zitat, wenn es auf der Aufnahme zu hören ist.</p>
+    <ol class="gross dicht">
+      <li data-schritt><strong>Fragen und aufnehmen:</strong> Datenschutzhinweis zeigen, Aufnahme starten, Einwilligung noch einmal auf der Aufnahme.</li>
+      <li data-schritt><strong>Zuhören statt mitschreiben:</strong> nur Stichworte und die Uhrzeit starker Stellen.</li>
+      <li data-schritt><strong>Am selben Tag offline verschriftlichen:</strong> <a href="https://github.com/kaixxx/noScribe" target="_blank" rel="noopener">noScribe ↗</a> auf eurem Mac, mit Sprechererkennung.</li>
+      <li data-schritt><strong>Pseudonymisieren und nachhören:</strong> Namen, Arbeitgeber, Orte raus; jedes Zitat, das ihr verwendet, an der Aufnahme prüfen.</li>
+      <li data-schritt><strong>Nur die bereinigte Fassung in die Werkstatt.</strong> Aufnahme und Rohtranskript am Kursende löschen.</li>
+    </ol>
+    <p class="small muted">Wörtlich mit Anführungszeichen: Rob Fitzpatrick, „The Mom Test“ (2013), S. 105. Die genauen Worte festhalten: Teresa Torres, „Continuous Discovery Habits“ (2021), S. 69.</p>
+    <div class="nur-handout">
+      <p>Nehmt jedes Interview auf, wenn die Person zustimmt. Zeigt vorher den <a href="/innolab/werkstatt/interview-datenschutz">Datenschutzhinweis</a>, startet die Aufnahme und fragt die Einwilligung noch einmal so, dass sie auf der Aufnahme ist. Legt das Handy zwischen euch auf den Tisch, Flugmodus an; die Aufnahme-App synchronisiert nicht in eine Cloud (bei den Sprachmemos iCloud ausschalten). Online-Gespräche nehmt ihr lokal auf, nicht mit der Aufzeichnung von Teams oder Zoom: Deren Aufnahmen und Transkripte liegen in der Cloud des Anbieters.</p>
+      <p>Während des Gesprächs notiert ihr nur Stichworte und die Uhrzeit starker Stellen; so hört ihr zu, statt zu tippen. Am selben Tag verschriftlicht ihr die Aufnahme auf eurem Mac mit noScribe: kostenlos, Open Source, läuft ohne Internet und trennt die Sprecher*innen. Die Aufnahme geht an keinen Online-Dienst und nicht an Claude. Im Transkript ersetzt ihr Namen, Arbeitgeber und Orte; die Person heißt nur noch nach ihrem Pseudonym. Dateinamen tragen nur Pseudonym und Datum, etwa <code>I2_2026-11-19.m4a</code>.</p>
+      <p>Jedes Zitat, das ihr in den Snapshot übernehmt, hört ihr an der Stelle noch einmal nach: Die Software verhört sich, besonders bei Dialekt. Wörtliches steht in Anführungszeichen, alles andere ist eure Zusammenfassung und gehört in die Notizen. In die Werkstatt kommt nur die bereinigte Fassung; das volle Transkript bleibt bei euch. Aufnahme und Rohtranskript löscht ihr am Kursende, bei Widerruf sofort.</p>
+      <p>Rob Fitzpatrick rät, wörtliche Zitate in Anführungszeichen zu setzen, damit ihr später wisst, was wörtlich ist (S. 105). Aufnahmen hat er selbst kaum genutzt, weil er darin nichts wiederfand; die meisten Leute lassen sich aber gern aufnehmen, wenn ihr fragt (S. 107–108). Ein durchsuchbares Transkript löst genau das. Teresa Torres: Spricht jemand anschaulich, haltet die genauen Worte fest (S. 69).</p>
+    </div>
+  </Folie>
+
+  <Folie>
     <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
     <p class="folie-satz">Erst schreiben, dann proben – mit Claude und miteinander.</p>
     <MiroFrame name="T1 · 4 · Interviewleitfaden" />
@@ -221,7 +240,7 @@ const probe = `Wir proben mein Interview. Lies meinen Produkt-Brief aus der Werk
   </Aufloesung>
 
   <Callout type="warn" title="Einwilligung und Anonymisierung">
-    <p>Nehmt nur mit Einwilligung auf. Die Aufnahme und eure Notizen bleiben bei euch und kommen nie ins App-Repo, das ist öffentlich. Jedes Interview bekommt ein Pseudonym, I1 bis I5; das sind später die Zitat-IDs. In den Notizen stehen keine Namen, Arbeitgeber oder andere Angaben, an denen man die Person erkennt. Bevor ihr Notizen Claude gebt, müssen sie so bereinigt sein.</p>
+    <p>Nehmt nur mit Einwilligung auf. Die Aufnahme und eure Notizen bleiben bei euch und kommen nie ins App-Repo, das ist öffentlich. Jedes Interview bekommt ein Pseudonym, I1 bis I5; das sind später die Zitat-IDs. In den Notizen stehen keine Namen, Arbeitgeber oder andere Angaben, an denen man die Person erkennt. Bevor ihr Notizen Claude gebt, müssen sie so bereinigt sein. Die Aufnahme verschriftlicht ihr offline auf eurem Mac (<a href="#aufnehmen">Aufnehmen und verschriftlichen</a>).</p>
     <p>Vor dem Gespräch zeigt ihr den <a href="/innolab/werkstatt/interview-datenschutz">Datenschutzhinweis für Interviewte</a> am Handy oder ausgedruckt: Aufnahme nur mit Einwilligung, Pseudonym, private Mappe, Auswertung mit KI, Widerruf.</p>
   </Callout>
 
