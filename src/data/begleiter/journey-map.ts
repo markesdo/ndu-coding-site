@@ -167,12 +167,33 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
 
   gruppieren: {
     live: [
-      'Fragen: Welche Stickies meinen denselben Moment? Ruft die IDs.',
-      'Aufdecken: Farben und Buchstaben – vier Gruppen, Rest grau.',
+      'Miro T2 · 1, Kaffeebar, Übungsrunde – Timer 4 min.',
+      'Verteilen: I1 und I2 · I3 und I4 · I5 plus Namen.',
+      'Nicht eingreifen; Grenzfälle liegen lassen.',
+      'Aufdecken: Wo weicht eure Gruppierung ab – und warum?',
+      'Abweichung ist kein Fehler; begründen lassen.',
+      'Fragen: Welche Stickies meinen denselben Moment? IDs nennen lassen.',
       'Fragen: Wie würdet ihr diese Gruppe nennen?',
       'Fragen: Warum bleibt „Glücksspiel“ grau?',
-      'Fragen: Was bleibt grau, und warum?',
     ],
+    uebung: { dauer: '4 min', form: 'zu dritt, jede*r die eigenen Geschichten' },
+    miro: {
+      frame: 'T2 · 1 · Experience Map',
+      schritte: [
+        'Spalte Kaffeebar, Zone „Übungsrunde Kaffeebar – Schritt 1“: die 23 Stickies liegen bereit, die fertige Map ist abgedeckt.',
+        'Verteilen: I1 und I2 · I3 und I4 · I5 und die Namen.',
+        'Nach der Raster-Folie („beispiel“): die graue Abdeckung „Auflösung – noch zu“ in Zone 2 der Spalte Kaffeebar abheben.',
+      ],
+    },
+    ablauf: {
+      schritte: [
+        'Übungsrunde auf Miro, 4 min (Timer auf der Folie).',
+        'Schritt 1 aufdecken: Farben und Buchstaben – vier Gruppen, Rest grau.',
+        'Schritt 2 aufdecken: Legende mit den Gruppennamen.',
+        'Besprechen: Wo weicht eure Gruppierung ab – und warum? Begründen lassen.',
+        'Nach der Raster-Folie auf Miro die Abdeckung „Auflösung – noch zu“ (Zone 2) abheben.',
+      ],
+    },
     verstaendnis: {
       frage: 'Die Halle hat sechs Stickies. Warum zählt sie „3 von 5“?',
       antwort: 'Gezählt werden Geschichten, nicht Stickies: I2 bringt drei Stickies (I2-4, I2-1, I2-2), dazu I3-1 und I5-3; die Notiz von I1 zeigt ihr, zählt aber nicht.',
@@ -198,6 +219,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     live: [
       'Spaltenköpfe = die Gruppennamen von der Folie davor.',
       'Fragen: Welche Spalte ist in beiden Reihen gefüllt? Zählen lassen.',
+      'Erst eure Zahlen nennen lassen, dann aufdecken.',
       'Aufdecken: Zählzeile – I1, I4, I5 stehen im Handout.',
       'Zusammengelegt: Anstehen und Warten – kein Zitat erzählt das Anstehen.',
       'Ein Tief auf der Map: Warten, I3-3 und I5-6.',
