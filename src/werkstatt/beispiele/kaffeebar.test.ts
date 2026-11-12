@@ -29,3 +29,17 @@ describe('Kaffeebar-Beispiel', () => {
     expect(treffer).toStrictEqual([]);
   });
 });
+
+describe('Kaffeebar-Beispiel: Belege der Chance „mitbestellen“', () => {
+  // I5-4 trägt „für Kolleg*innen“, I5-6 „ohne lange zu warten“ – Werkstatt-Beispiel und Baum-Seite nennen beide.
+  const chance = interviews.interviews.flatMap((iv) => iv.chancen ?? []).find((c) => c.text.includes('Kolleg*innen mitbestellen'));
+  it('Werkstatt-Beispiel belegt sie mit I5-4 und I5-6', () => {
+    expect(chance?.belege).toStrictEqual(['I5-4', 'I5-6']);
+  });
+  it('die Baum-Seite nennt dieselben IDs', () => {
+    const seite = readFileSync('src/pages/innolab/methoden/baum.astro', 'utf8');
+    const treffer = [...seite.matchAll(/mitbestellen“? \((I[^)]*)\)/g)].map((m) => m[1]);
+    expect(treffer.length).toBeGreaterThan(0);
+    expect(treffer.every((ids) => ids === 'I5-4, I5-6')).toBe(true);
+  });
+});
