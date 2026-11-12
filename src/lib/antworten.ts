@@ -144,7 +144,14 @@ export function textPruefen(roh: unknown): { text: string } | { fehler: 'leer' |
   return laenge < 1 ? { fehler: 'leer' } : laenge > MAX_TEXT ? { fehler: 'lang' } : { text: t };
 }
 
-export interface Eingabe { runde: string; konfig: Runde; rolle: string; text: string }
+/** Anonyme Kennung eines Browsers (zufällig, im localStorage; kein Name, kein Konto): Sie hält einen belegten Platz für
+ *  den, der ihn zuerst belegt hat. Fehlt sie (Seite von vor dem Update), gilt null; ein ungültiger Wert ist undefined. */
+export function geraetPruefen(roh: unknown): string | null | undefined {
+  if (roh === undefined || roh === null) return null;
+  return typeof roh === 'string' && /^[A-Za-z0-9_-]{8,64}$/.test(roh) ? roh : undefined;
+}
+
+export interface Eingabe { runde: string; konfig: Runde; rolle: string; text: string; geraet: string | null }
 
 /** POST-Body prüfen: alles oder nichts. */
 export function eingabePruefen(body: unknown): Eingabe | null {
@@ -154,8 +161,9 @@ export function eingabePruefen(body: unknown): Eingabe | null {
   if (!runde) return null;
   const rolle = rollePruefen(runde, b.rolle);
   const text = textBereinigen(b.text);
-  if (rolle === null || text === null) return null;
-  return { runde: b.runde as string, konfig: runde, rolle, text };
+  const geraet = geraetPruefen(b.geraet);
+  if (rolle === null || text === null || geraet === undefined) return null;
+  return { runde: b.runde as string, konfig: runde, rolle, text, geraet };
 }
 
 /** Der Platz einer Rolle: pro Runde, Wiener Kurstag und Rolle ein Schlüssel. */
@@ -163,12 +171,20 @@ export function platzSchluessel(runde: string, rolle: string, jetzt: Date): stri
   return `antwort:${wienerZeit(jetzt).datum}:${runde}:${rolle}`;
 }
 
-export interface Gespeichert { text: string; zeit: number }
+/** geraet: wer den Platz belegt hat (anonyme Kennung); geht nie an die Seite zurück (standBauen). */
+export interface Gespeichert { text: string; zeit: number; geraet?: string | null }
 
 export function gespeichertPruefen(roh: unknown): Gespeichert | null {
   if (!roh || typeof roh !== 'object') return null;
   const g = roh as Record<string, unknown>;
-  return typeof g.text === 'string' && typeof g.zeit === 'number' ? { text: g.text, zeit: g.zeit } : null;
+  if (typeof g.text !== 'string' || typeof g.zeit !== 'number') return null;
+  return { text: g.text, zeit: g.zeit, geraet: typeof g.geraet === 'string' ? g.geraet : null };
+}
+
+/** Hat ein anderer Browser diesen Platz schon? Dann weist der Server ab (409, grund „besetzt“), die erste Antwort bleibt.
+ *  Derselbe Browser darf seine Antwort überschreiben. Ein Eintrag ohne Kennung (alte Seite) hält den Platz nicht. */
+export function platzBesetzt(vorher: Gespeichert | null, geraet: string | null): boolean {
+  return Boolean(vorher?.geraet) && vorher!.geraet !== geraet;
 }
 
 /** Sind die Texte frei? Wenn die Kennung der Runde heute aufgedeckt ist, spätestens ab runde.ab. Kein Vorrang für den

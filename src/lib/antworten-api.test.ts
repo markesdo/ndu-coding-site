@@ -87,6 +87,23 @@ describe('api/antworten', () => {
     ]);
   });
 
+  it('neutrale Plätze („rueckblick“): ein anderer Browser bekommt 409 „besetzt“, die erste Antwort bleibt; derselbe überschreibt', async () => {
+    const rb = (geraet: string | undefined, text: string) => senden({ runde: 'rueckblick', rolle: 'p1', text, ...(geraet ? { geraet } : {}) });
+    const rbLesen = async () => (await GET(new Request(`${URL_API}?runde=rueckblick`))).json();
+    vi.setSystemTime(new Date('2026-11-12T16:55:00Z')); // 17:55 Wien, Abschluss
+    expect((await rb('browser-a1', 'Hoch: erste')).status).toBe(200);
+    const fremd = await rb('browser-b2', 'Tief: zweite');
+    expect(fremd.status).toBe(409);
+    expect(await fremd.json()).toStrictEqual({ fehler: 'Platz schon vergeben', grund: 'besetzt' });
+    expect((await rb(undefined, 'Tief: ohne Kennung')).status).toBe(409);
+    expect((await rb('browser-a1', 'Hoch: erste, geändert')).status).toBe(200);
+    daten.set(aufgedecktSchluessel('rueckblick', new Date()), true);
+    const s = await rbLesen();
+    expect(s).toStrictEqual({ anzahl: 1, vergeben: ['p1'], frei: true, antworten: [{ rolle: 'p1', text: 'Hoch: erste, geändert' }] });
+    // Nach dem Aufdecken: 409 mit eigenem Grund.
+    expect(await (await rb('browser-a1', 'zu spät')).json()).toStrictEqual({ fehler: 'Schon aufgedeckt', grund: 'aufgedeckt' });
+  });
+
   it('ungültige Eingaben: 400/413, nichts gespeichert', async () => {
     expect((await antwort('marketing', 'x')).status).toBe(400);
     expect((await antwort('design', 'x'.repeat(121))).status).toBe(400);

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   EINGABE_STANDARD, MAX_TEXT, RUNDEN, antwortenGruppieren, betrifftRunde, eingabePruefen, eingabeTexte, gesendetGilt, platzSchluessel, rolleBesetzt, rollePruefen, rolleWaehlbar,
-  rundePruefen, standBauen, statusText, textBereinigen, textPruefen, texteFrei, wahlFestText,
+  geraetPruefen, platzBesetzt, rundePruefen, standBauen, statusText, textBereinigen, textPruefen, texteFrei, wahlFestText,
 } from './antworten';
 
 const netflix = RUNDEN.netflix;
@@ -63,7 +63,7 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     expect(rollePruefen(zwoelf, 'entwicklung')).toBe('entwicklung');
     expect(rollePruefen(zwoelf, 'person-1')).toBeNull();
     expect(eingabePruefen({ runde: 'zwoelf', rolle: 'design', text: ' 3 – Suche fehlt ' }))
-      .toStrictEqual({ runde: 'zwoelf', konfig: zwoelf, rolle: 'design', text: '3 – Suche fehlt' });
+      .toStrictEqual({ runde: 'zwoelf', konfig: zwoelf, rolle: 'design', text: '3 – Suche fehlt', geraet: null });
     expect(eingabePruefen({ runde: 'zwoelf', rolle: 'design', text: 'x'.repeat(121) })).toBeNull();
   });
 
@@ -92,7 +92,7 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     expect(rollePruefen(rueckblick, 'p3')).toBe('p3');
     expect(rollePruefen(rueckblick, 'design')).toBeNull();
     expect(eingabePruefen({ runde: 'rueckblick', rolle: 'p2', text: ' Tief: Link gesucht ' }))
-      .toStrictEqual({ runde: 'rueckblick', konfig: rueckblick, rolle: 'p2', text: 'Tief: Link gesucht' });
+      .toStrictEqual({ runde: 'rueckblick', konfig: rueckblick, rolle: 'p2', text: 'Tief: Link gesucht', geraet: null });
     expect(eingabePruefen({ runde: 'rueckblick', rolle: 'p1', text: 'x'.repeat(121) })).toBeNull();
     const t = eingabeTexte(rueckblick);
     expect(t).toStrictEqual({
@@ -110,9 +110,34 @@ describe('Antwortrunde: Eingabe prüfen', () => {
     expect(wahlFestText(eingabeTexte(netflix), 'Design')).toBe('deine Rolle ist Design – ändern kannst du deine Antwort, nicht die Rolle.');
   });
 
+  it('anonyme Browser-Kennung: optional (alte Seite), sonst 8–64 Zeichen aus A–Z, a–z, 0–9, _ und -', () => {
+    expect(geraetPruefen(undefined)).toBeNull();
+    expect(geraetPruefen(null)).toBeNull();
+    expect(geraetPruefen('a1b2c3d4-e5f6')).toBe('a1b2c3d4-e5f6');
+    expect(geraetPruefen('kurz')).toBeUndefined();
+    expect(geraetPruefen('x'.repeat(65))).toBeUndefined();
+    expect(geraetPruefen('<script>xx')).toBeUndefined();
+    expect(geraetPruefen(12345678)).toBeUndefined();
+    expect(eingabePruefen({ runde: 'rueckblick', rolle: 'p1', text: 'Hoch: x', geraet: 'abcdefgh' }))
+      .toStrictEqual({ runde: 'rueckblick', konfig: rueckblick, rolle: 'p1', text: 'Hoch: x', geraet: 'abcdefgh' });
+    expect(eingabePruefen({ runde: 'rueckblick', rolle: 'p1', text: 'Hoch: x', geraet: 'kurz' })).toBeNull();
+  });
+
+  it('Platz besetzt nur, wenn ein anderer Browser ihn mit Kennung hält', () => {
+    const von = (geraet: string | null) => ({ text: 'x', zeit: 1, geraet });
+    expect(platzBesetzt(null, 'aaaaaaaa')).toBe(false);
+    expect(platzBesetzt(von('aaaaaaaa'), 'aaaaaaaa')).toBe(false);
+    expect(platzBesetzt(von('aaaaaaaa'), 'bbbbbbbb')).toBe(true);
+    expect(platzBesetzt(von('aaaaaaaa'), null)).toBe(true);
+    expect(platzBesetzt(von(null), 'bbbbbbbb')).toBe(false);
+    // Die Kennung geht nie an die Seite: standBauen gibt nur Rolle und Text heraus.
+    expect(standBauen(rueckblick, [von('aaaaaaaa'), null, null], true))
+      .toStrictEqual({ anzahl: 1, vergeben: ['p1'], frei: true, antworten: [{ rolle: 'p1', text: 'x' }] });
+  });
+
   it('Body: alles oder nichts', () => {
     expect(eingabePruefen({ runde: 'netflix', rolle: 'design', text: ' Suche fehlt ' }))
-      .toStrictEqual({ runde: 'netflix', konfig: netflix, rolle: 'design', text: 'Suche fehlt' });
+      .toStrictEqual({ runde: 'netflix', konfig: netflix, rolle: 'design', text: 'Suche fehlt', geraet: null });
     expect(eingabePruefen({ runde: 'netflix', rolle: 'chef', text: 'x' })).toBeNull();
     expect(eingabePruefen({ runde: 'netflix', rolle: 'design', text: 'x'.repeat(121) })).toBeNull();
     expect(eingabePruefen({ runde: 'gibtsnicht', rolle: 'design', text: 'x' })).toBeNull();

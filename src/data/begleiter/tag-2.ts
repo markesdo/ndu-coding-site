@@ -133,11 +133,11 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
   'log-heute': {
     live: [
+      'Ist-Zeit notieren.',
       'Fragen: Was hat sich durch eure Interviews geändert? Je eine Zeile vorlesen.',
       'D3 vorlesen: die alte Zeile D1 bleibt, nur „ersetzt am“.',
       'Zeit: drei Minuten, nicht diskutieren – Rückfragen nach Tag 3.',
       'Falle: Zeile ohne Beleg-Stufe oder ohne ID.',
-      'Ist-Zeit notieren.',
     ],
     verstaendnis: {
       frage: 'Warum korrigiert die Kaffeebar D1 nicht einfach?',
@@ -159,11 +159,10 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
   rueckblick: {
     live: [
       'Timer 2 min, dann aufdecken.',
-      'Eine Nachfrage laut: ‚Was war kurz davor?‘',
-      'Antwort auf die Nachfrage mitschreiben.',
+      'Eine Nachfrage laut: ‚Was war kurz davor?‘ Antwort mitschreiben.',
       'Nicht rechtfertigen, nicht nach Bewertung fragen.',
       'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
-      'Danach: Claude – ‚Sichere die Rückblick-Antworten‘.',
+      'Gleich nach dem Aufdecken: Claude – ‚Sichere die Rückblick-Antworten‘.',
     ],
     uebung: { dauer: '2 min', form: 'allein, Platz wählen, ein Satz auf der Seite; dann gemeinsam aufdecken (Rückfall: laut)' },
     ablauf: {
@@ -172,11 +171,11 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
         'Alle öffnen die Folie auf dem eigenen Gerät, wählen einen freien Platz (Platz 1–3, ohne Bedeutung) und schicken einen Satz ab, der mit „Hoch:“ oder „Tief:“ beginnt. Timer 2 min. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
         'Wenn alle drei abgeschickt haben (oder der Timer abläuft): „Auflösung zeigen“ auf derselben Folie – die drei Sätze erscheinen darunter.',
         'Zu einem Satz eine Nachfrage laut: „Was war kurz davor?“ Die Antwort mitschreiben, nicht kommentieren.',
-        'Satz zu Tag 3 sagen, dann zur Checkliste. Nach dem Kurs: Claude die Antworten sichern lassen.',
+        'Gleich nach dem Aufdecken Claude die Antworten sichern lassen – noch heute, vor Mitternacht, danach sind sie weg (ein Platz pro Wiener Kurstag). Dann Satz zu Tag 3 sagen und zur Checkliste.',
       ],
       achten: [
         'Es ist ein Rückblick auf den Kurs, keine Bewertung: nicht rechtfertigen, nicht erklären, warum etwas so lief.',
-        'Keine Namen nennen; die Plätze sind neutral.',
+        'Keine Namen nennen, Plätze nicht deuten – wer was schrieb, ist egal.',
         'Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r den Satz reihum laut und du schreibst mit.',
       ],
       fehler: [

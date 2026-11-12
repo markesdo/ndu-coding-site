@@ -19,7 +19,7 @@ const erwartet = r.rollen.length;
 const feld = `antwort-${runde}`;
 const texte = eingabeTexte(r);
 ---
-<div class="antwortrunde" data-antwortrunde={runde} data-kennung={r.kennung} data-texte={JSON.stringify(texte)} data-ansicht={ansicht} data-erwartet={erwartet} data-rollen={JSON.stringify(r.rollen)}>
+<div class="antwortrunde" data-antwortrunde={runde} data-kennung={r.kennung} data-texte={ansicht === 'eingabe' ? JSON.stringify(texte) : undefined} data-ansicht={ansicht} data-erwartet={erwartet} data-rollen={JSON.stringify(r.rollen)}>
   {ansicht === 'eingabe' ? (
     <div class="ar-eingabe" data-ar-eingabe hidden>
       <p class="ar-schritt">Antwort hier auf der Seite: <span data-ar-hinweis>{texte.hinweis}</span></p>
@@ -50,7 +50,7 @@ const texte = eingabeTexte(r);
 </div>
 <script>
   import {
-    ANTWORTEN_FREI_MS, ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, EINGABE_STANDARD, antwortenGruppieren, betrifftRunde, gesendetGilt, rolleBesetzt, rolleWaehlbar, statusText,
+    ANTWORTEN_FREI_MS, ANTWORTEN_MS, ANTWORTEN_TIMEOUT_MS, antwortenGruppieren, betrifftRunde, gesendetGilt, rolleBesetzt, rolleWaehlbar, statusText,
     textPruefen, wahlFestText, type EingabeTexte, type Rolle, type Stand,
   } from '../lib/antworten';
   import { wienerZeit } from './jetzt';
@@ -67,6 +67,17 @@ const texte = eingabeTexte(r);
     try { sessionStorage.setItem(k, v); } catch { /* dann nur für diesen Aufruf */ }
   };
   type Eigene = { rolle: string; text: string };
+  // Anonyme Kennung dieses Browsers (zufällig, kein Name): Der Server hält damit einen Platz für den, der ihn zuerst belegt
+  // hat, und lässt nur ihn überschreiben (api/antworten.ts). Ohne Speicher gilt sie für diesen Seitenaufruf.
+  const GERAET_SCHLUESSEL = 'ndu-antwort-geraet';
+  let geraetFluechtig: string | null = null;
+  const geraet = (): string => {
+    const da = lesen(GERAET_SCHLUESSEL);
+    if (da && /^[A-Za-z0-9_-]{8,64}$/.test(da)) return da;
+    geraetFluechtig ??= crypto.randomUUID();
+    schreiben(GERAET_SCHLUESSEL, geraetFluechtig);
+    return geraetFluechtig;
+  };
   const eigeneSchluessel = (runde: string) => `ndu-antwort:${runde}:${wienerZeit(new Date()).datum}`;
   const eigeneLesen = (runde: string): Eigene | null => {
     try { const e = JSON.parse(lesen(eigeneSchluessel(runde)) ?? 'null'); return e && typeof e.text === 'string' && typeof e.rolle === 'string' ? e : null; } catch { return null; }
@@ -108,8 +119,9 @@ const texte = eingabeTexte(r);
     const eingabe = box.dataset.ansicht === 'eingabe';
     const erwartet = Number(box.dataset.erwartet) || 3;
     const rollen = JSON.parse(box.dataset.rollen ?? '[]') as Rolle[];
-    // Texte der Runde (eingabeTexte): Rolle oder neutraler Platz, und wo die Sätze nach dem Aufdecken stehen.
-    const texte: EingabeTexte = { ...EINGABE_STANDARD, ...JSON.parse(box.dataset.texte ?? '{}') };
+    // Texte der Runde, vom Server vollständig gesetzt (eingabeTexte), nur in der Eingabe: Rolle oder neutraler Platz, und
+    // wo die Sätze nach dem Aufdecken stehen. Die Ansicht „antworten“ braucht sie nicht.
+    const texte = JSON.parse(box.dataset.texte ?? '{}') as Partial<EingabeTexte>;
     const q = <T extends HTMLElement>(s: string) => box.querySelector<T>(s);
     const status = q('[data-ar-status]')!;
     const rueckfall = q('[data-ar-rueckfall]')!;
@@ -121,7 +133,7 @@ const texte = eingabeTexte(r);
     const liste = q('[data-ar-liste]');
     const knoepfe = [...box.querySelectorAll<HTMLButtonElement>('[data-ar-rolle]')];
     const melden = (t: string) => { if (meldung) meldung.textContent = t; };
-    const BESETZT = texte.wahlBesetzt;
+    const BESETZT = texte.wahlBesetzt ?? '';
 
     let rolle: string | null = null;
     let frei = false;
@@ -144,7 +156,7 @@ const texte = eingabeTexte(r);
         k.disabled = !rolleWaehlbar(id, vergeben, eigeneRolle);
       });
       const label = rollen.find((r) => r.id === eigeneRolle)?.label;
-      if (hinweisRolle) hinweisRolle.textContent = label ? wahlFestText(texte, label) : texte.hinweis;
+      if (hinweisRolle) hinweisRolle.textContent = label && texte.wahlFest ? wahlFestText({ wahlFest: texte.wahlFest }, label) : (texte.hinweis ?? '');
     };
     if (eigene) { eigeneRolle = eigene.rolle; rolleWaehlen(eigene.rolle); if (feld) feld.value = eigene.text; if (gesendet) gesendet.hidden = false; }
     knoepfeAktualisieren();
@@ -161,7 +173,7 @@ const texte = eingabeTexte(r);
         knoepfeAktualisieren();
         if (gesendet) gesendet.hidden = eigeneRolle === null;
         if (meldung?.textContent === BESETZT && !rolleBesetzt(vergeben, rolle, eigeneRolle)) melden('');
-        status.textContent = frei ? texte.aufgedeckt : statusText(s.anzahl, erwartet);
+        status.textContent = frei ? (texte.aufgedeckt ?? '') : statusText(s.anzahl, erwartet);
         return;
       }
       if (!liste) return;
@@ -205,7 +217,7 @@ const texte = eingabeTexte(r);
       if (!feld || frei) return; // nach dem Aufdecken nichts mehr schicken
       const p = textPruefen(feld.value);
       if ('fehler' in p) { melden(p.fehler === 'leer' ? 'Bitte einen Satz eingeben.' : `Bitte höchstens ${feld.maxLength} Zeichen.`); feld.focus(); return; }
-      if (!rolle) { melden(texte.wahlFehlt); return; }
+      if (!rolle) { melden(texte.wahlFehlt ?? ''); return; }
       if (rolleBesetzt(vergeben, rolle, eigeneRolle)) { melden(BESETZT); return; }
       const knopf = form.querySelector<HTMLButtonElement>('button[type=submit]');
       if (knopf) knopf.disabled = true;
@@ -213,7 +225,7 @@ const texte = eingabeTexte(r);
       try {
         const r = await fetch('/api/antworten', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ runde, ...e }), signal: zeitlimit(ANTWORTEN_TIMEOUT_MS),
+          body: JSON.stringify({ runde, ...e, geraet: geraet() }), signal: zeitlimit(ANTWORTEN_TIMEOUT_MS),
         });
         const st = r.redirected ? 0 : r.status;
         if (st === 200) {
@@ -224,7 +236,13 @@ const texte = eingabeTexte(r);
           if (gesendet) gesendet.hidden = false;
           melden('');
           a.kette.sofort();
-        } else if (st === 409) { melden('Schon aufgedeckt – Senden geht nicht mehr.'); a.kette.sofort(); }
+        } else if (st === 409) {
+          // „besetzt“: Ein anderer Browser hat den Platz zuerst belegt – Text bleibt im Feld, anderen Platz wählen.
+          const grund = ((await r.json().catch(() => null)) as { grund?: unknown } | null)?.grund;
+          if (grund === 'besetzt') { if (!vergeben.includes(e.rolle)) vergeben = [...vergeben, e.rolle]; knoepfeAktualisieren(); melden(BESETZT); }
+          else melden('Schon aufgedeckt – Senden geht nicht mehr.');
+          a.kette.sofort();
+        }
         else if (st === 400) { melden(`Bitte einen Satz mit höchstens ${feld.maxLength} Zeichen.`); }
         else { melden('Nicht gesendet.'); rueckfall.hidden = false; }
       } catch {
