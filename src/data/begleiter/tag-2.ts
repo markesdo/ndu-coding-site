@@ -10,8 +10,8 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
   'claude-check': {
     live: [
       'Pro-Abos vermutlich aus: Free-Plan, nur ein eigener Connector.',
-      'Reihum laut: Connector da und an?',
-      'Probe: alle fragen „Was steht in meiner Mappe?“',
+      'Alle klicken den Probe-Link auf der Folie und schicken ab.',
+      'Reihum laut: Liest Claude eure Mappe? Sonst Connector prüfen.',
       'Wer hängt: Ausweg „Für Claude kopieren“, weiter.',
     ],
     uebung: { dauer: '2 min', form: 'alle gleichzeitig, Antworten reihum laut' },
