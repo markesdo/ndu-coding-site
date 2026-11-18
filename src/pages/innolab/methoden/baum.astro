@@ -6,7 +6,6 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
-import Antwortrunde from '../../../components/Antwortrunde.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
 import Baum from '../../../components/bild/Baum.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
@@ -39,6 +38,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     </BildText>
     <div class="nur-handout">
       <p>„A single customer story might elicit dozens of opportunities.“ Teams, die ihrer Kundschaft dienen wollen, springen leicht von einer Chance zur nächsten und reagieren auf jedes Bedürfnis, das sie hören. Torres hält dagegen: „our job is not to address every customer opportunity. Our job is to address customer opportunities that drive our desired outcome.“ So entsteht Wert für das Geschäft und für die Kundschaft; das hält das Produkt auf Dauer tragfähig und nicht nur im Moment begehrt. Zuerst kommen die Chancen mit der größten Wirkung auf den Outcome – und dafür braucht es erst eine Bestandsaufnahme ({TORRES}, S. 80). Die Abbildung kennt ihr von Tag 1 (S. 27).</p>
+      <p>Torres eröffnet das Kapitel mit einem Team, dem das Geschäft über Nacht wegbrach. Ahmed Guijous Team bei der Seera Group verlor im März 2020 seine Hotelbuchungen, interviewte Gastgeber*innen und Gäste von Istrahas (Anwesen, die man tageweise für Treffen mietet) und ordnete die Chancen beider Seiten auf je einem Baum. Nach wenigen Wochen hatte es eine neue Marktchance und eine Produktstrategie ({TORRES}, S. 78–79). Dafür ist der Baum da: „Mapping the opportunity space is how we give structure to the ill-structured problem of reaching our desired outcome“ (S. 80).</p>
     </div>
   </Folie>
 
@@ -59,8 +59,8 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <li>Wer ist dieser Schauspieler?</li>
       <li>Ich will meine Serien auf der Zugfahrt zur Arbeit schauen.</li>
     </ol>
-    <p class="breit">Jede*r für sich: <strong>1 oder 2? 7 oder 12? 9 oder 11?</strong> Drei Nummern – und ein Satz zu dem Paar, das euch am schwersten fiel. Aufgedeckt wird gemeinsam. <Timer minuten={2} /></p>
-    <Antwortrunde runde="zwoelf" ansicht="eingabe" />
+    <p class="breit">Jede*r für sich: <strong>1 oder 2? 7 oder 12? 9 oder 11?</strong> <Timer minuten={2} /></p>
+    <p class="breit" data-schritt>Dann reihum laut: drei Nummern – und ein Satz zu dem Paar, das euch am schwersten fiel.</p>
     <p class="small muted">Nach {TORRES}, S. 81–82.</p>
   </Folie>
 
@@ -68,8 +68,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <h2 id="warum">Warum ein Baum statt einer Liste?</h2>
     <p class="folie-satz">Dieselben zwölf, sortiert: Lässt sich das überhaupt vergleichen?</p>
     <Aufloesung ab={RUNDEN.zwoelf.ab} gruppe={RUNDEN.zwoelf.kennung}>
-      <Antwortrunde runde="zwoelf" ansicht="antworten" />
-      <div class="mini-gewaehlt" data-gewaehlt="zwoelf">
+      <div>
         <div class="mini-baeume">
           <div class="mini-baum" data-schritt>
             <p class="mini-eltern"><b>1</b> Ich finde nichts zum Schauen.</p>
@@ -94,12 +93,12 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
             <p class="mini-text">groß gegen leicht – keine Gruppe. Immer das Leichte zuerst?</p>
           </div>
         </div>
-        <p class="small muted mini-rest" data-schritt><b>4</b> · <b>6</b> · <b>8</b> · <b>10</b>: sortiert Torres nicht.</p>
+        <p class="small muted mini-rest" data-schritt><b>4</b> · <b>6</b> · <b>8</b> · <b>10</b>: kommen gleich – unter ihrem Moment.</p>
       </div>
       <p class="breit" data-schritt><strong>Eine Liste mischt Großes, Kleines und Verwandtes – erst der Baum macht es vergleichbar.</strong></p>
       <p class="small muted">{TORRES}, S. 81–85.</p>
       <div class="nur-handout">
-        <p>Sortiert ist nur, was Torres selbst sortiert: 2, 3 und 5 sind Gründe für 1 (S. 82–83); 7 und 12 sind Geschwister unter der ergänzten Chance „Ich will meine Serien unterwegs schauen“ (S. 84); 9 nennt sie groß und schwer, 11 leicht (S. 82). Zu 4, 6, 8 und 10 sagt sie nichts; sie bleiben unsortiert. Einen fertigen Baum aller zwölf gibt es im Buch nicht. Dass der Baum beim Bewerten und Priorisieren hilft, steht auf S. 85.</p>
+        <p>Sortiert ist nur, was Torres selbst sortiert: 2, 3 und 5 sind Gründe für 1 (S. 82–83); 7 und 12 sind Geschwister unter der ergänzten Chance „Ich will meine Serien unterwegs schauen“ (S. 84); 9 nennt sie groß und schwer, 11 leicht (S. 82). Zu 4, 6, 8 und 10 sagt sie im Text nichts. In der Abbildung auf S. 89 hängen sie unter ihren Momenten: 4 und 10 unter „I’m not sure what to watch.“, 8 unter „I’m watching a show.“, 6 unter „My show ended.“ – ihr seht sie gleich auf der Folie „Inventar“. Einen fertig strukturierten Baum aller zwölf gibt es im Buch nicht. Dass der Baum beim Bewerten und Priorisieren hilft, steht auf S. 85.</p>
         <p>Die drei Paare der Übung vergleicht Torres selbst (S. 82): Bei 1 und 2 schreibt sie „I don’t know how to compare“, bei 7 und 12 „how do I prioritize them against each other?“, bei 9 und 11 „Should we always prioritize easy over hard?“. Eine richtige Wahl nennt sie nicht.</p>
         <p>Teresa Torres beginnt Kapitel 6 mit dieser Liste, wie sie viele Teams als „Opportunity Backlog“ führen. Das ist besser als nur eine Chance auf einmal, aber eine flache Liste lässt sich schwer priorisieren: Chancen haben verschiedene Formen und Größen, manche hängen zusammen, andere sind Teilmengen von anderen ({TORRES}, S. 81). Flugzeug und Zug klingen gleich, bringen aber verschiedene Bedingungen mit: im Flugzeug vielleicht ganz offline, im Zug mit mobilen Daten; im Flugzeug vielleicht eine Steckdose, im Zug nicht (S. 82). Und wer immer das Leichte zuerst nimmt, kommt nie zu den schweren Problemen, mit denen man sich von der Konkurrenz abheben und den Outcome wirklich treiben könnte (S. 82). Unser Job ist auch nicht, jede gehörte Chance zu erfüllen, sondern die, die unseren Outcome treiben (S. 80).</p>
       </div>
@@ -122,20 +121,36 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     </div>
   </Folie>
 
-  <Folie>
+  <div class="nur-handout">
     <h2 id="gross-loesbar">Groß wird lösbar</h2>
-    <p class="folie-satz">Wer die Teilchancen löst, löst nach und nach die große Chance.</p>
+    <p>Wer die Teilchancen löst, löst nach und nach die große Chance.</p>
     <BildText>
       <BuchAbbildung src="/quellen/torres/gross-loesbar.jpg" alt="Baum: „Is this show any good?“ oben, darunter vier Teilchancen: „What type of show is this?“, „Who is in this show?“, „Is this show similar to another show I’ve watched?“, „Who else is watching this show?“" quelle={`Eine große Chance zerfällt in kleinere. ${TORRES}, S. 85.`} />
       <ul>
         <li><strong>„Ist diese Serie gut?“</strong> – groß, kaum zu lösen.</li>
-        <li data-schritt><strong>Kleinere Teilchancen:</strong> „Wer spielt mit?“ ist recht leicht zu lösen.</li>
-        <li data-schritt><strong>Wert nach und nach</strong> liefern, statt auf die große Lösung zu warten.</li>
+        <li><strong>Kleinere Teilchancen:</strong> „Wer spielt mit?“ ist recht leicht zu lösen.</li>
+        <li><strong>Wert nach und nach</strong> liefern, statt auf die große Lösung zu warten.</li>
+      </ul>
+    </BildText>
+    <p>So zerfällt eine große, kaum lösbare Chance wie „Ist diese Serie gut?“ in kleinere: Welche Art Serie ist das? Wer spielt mit? Ähnelt sie einer Serie, die ich schon gesehen habe? Wer schaut sie noch? Torres kommt darauf, weil Menschen das Problem verschieden lösen: Manche wählen nach der Art der Serie, andere nach den Schauspieler*innen ({TORRES}, S. 84–85).</p>
+    <p>Das hat zwei Vorteile: Unlösbares wird lösbar, und ihr könnt Wert nach und nach liefern, statt auf die Lösung des großen Problems zu warten. „Wer spielt mit?“ ist recht leicht zu lösen und für viele ein Kriterium; das löst die große Chance nicht ganz, aber ein kleineres Bedürfnis vollständig. Mit der Zeit sind so viele kleine gelöst, dass auch die große gelöst ist (S. 85). Den Gedanken kennt ihr von Tag 1 (S. 29); heute baut ihr ihn in euren eigenen Baum.</p>
+  </div>
+
+  <Folie>
+    <h2 id="oberste-ebene">Oben hängen eure Momente</h2>
+    <p class="folie-satz">Jeder Moment eurer Experience Map wird ein Ast – ohne Überschneidung.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/torres/aeste-momente.jpg" alt="Baum mit dem Outcome „Increase viewing minutes“ oben und vier Ästen darunter, einer pro Moment der Experience Map: „I need something to do.“, „I'm not sure what to watch.“, „I'm watching a show.“, „My show ended.“" quelle={`Vier Momente, vier oberste Chancen. ${TORRES}, S. 87.`}>
+        <span slot="marke" class="outcome-marke" aria-hidden="true">← Outcome</span>
+      </BuchAbbildung>
+      <ul>
+        <li><strong>Von Tag 2:</strong> eure drei bis fünf Momente – jeder wird eine blaue Karte unter dem Outcome.</li>
+        <li data-schritt><strong>Ohne Überschneidung:</strong> Sonst zieht jede Chance die anderen mit.</li>
+        <li data-schritt><strong>Kaffeebar:</strong> drei Momente, drei Äste – Halle, Anstehen und Warten, Zug.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>So zerfällt eine große, kaum lösbare Chance wie „Ist diese Serie gut?“ in kleinere: Welche Art Serie ist das? Wer spielt mit? Ähnelt sie einer Serie, die ich schon gesehen habe? Wer schaut sie noch? Torres kommt darauf, weil Menschen das Problem verschieden lösen: Manche wählen nach der Art der Serie, andere nach den Schauspieler*innen ({TORRES}, S. 84–85).</p>
-      <p>Das hat zwei Vorteile: Unlösbares wird lösbar, und ihr könnt Wert nach und nach liefern, statt auf die Lösung des großen Problems zu warten. „Wer spielt mit?“ ist recht leicht zu lösen und für viele ein Kriterium; das löst die große Chance nicht ganz, aber ein kleineres Bedürfnis vollständig. Mit der Zeit sind so viele kleine gelöst, dass auch die große gelöst ist (S. 85). Den Gedanken kennt ihr von Tag 1 (S. 29); heute baut ihr ihn in euren eigenen Baum.</p>
+      <p>Bevor ihr Chancen sammelt, braucht der Baum Äste, die sich nicht überschneiden: „We need each opportunity to be distinct from every other opportunity. If there’s overlap, then we can’t work on one at a time.“ Überschneiden sich die Äste, verhaken sich die Chancen, und ihr müsst an allen zugleich arbeiten ({TORRES}, S. 86). Torres nennt zwei Wege zu solchen Ästen: die Schritte der Experience Map oder die Schlüsselmomente aus den gezeichneten Interview-Geschichten (S. 86–87). Oft genügt der erste: „Oftentimes this is as simple as mapping each node in your experience map to the top level of opportunities on your opportunity solution tree“ (S. 86). Im Streaming-Beispiel werden aus vier Momenten vier oberste Chancen in Ich-Form, etwa „I’m not sure what to watch.“ (Abbildung S. 87). Eure Momente habt ihr an Tag 2 festgelegt (T2 · 1); heute werden sie die blauen Karten unter eurem Outcome. Bei der Kaffeebar sind es drei: „Ich komme in die Halle und entscheide.“, „Ich stehe an und warte auf meinen Kaffee.“, „Ich bin im Zug.“ Der Automat ist auf der Map ein Umweg, kein eigener Moment.</p>
     </div>
   </Folie>
 
@@ -144,7 +159,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <p class="folie-satz">Nicht jede Chance kommt in den Baum.</p>
     <MiroFrame name="Baum · Beispiel Kaffeebar" />
     <BildText>
-      <BuchAbbildung src="/quellen/torres/inventar.jpg" alt="Oben vier Momente als Kreise, darunter eine Linie und viele Chancen-Kreise, jeweils unter ihren Moment sortiert" quelle={`Chancen unter den Momenten. ${TORRES}, S. 89.`} />
+      <BuchAbbildung src="/quellen/torres/inventar.jpg" alt="Oben die vier Momente als Kreise: „I need something to do.“, „I'm not sure what to watch.“, „I'm watching a show.“, „My show ended.“ Darunter eine Linie und elf Kreise mit den Chancen aus der Liste der zwölf, jeweils unter ihrem Moment" quelle={`Elf der zwölf Chancen von vorhin, unter den vier Momenten. ${TORRES}, S. 89.`} />
       <ol>
         <li data-schritt><strong>Bedürfnis, Schmerzpunkt oder Wunsch</strong> – keine Lösung?</li>
         <li data-schritt>In <strong>mehr als einem</strong> Interview gehört?</li>
@@ -154,6 +169,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     </BildText>
     <div class="nur-handout">
       <p>Mit den Ästen aus der Experience Map geht ihr jeden Snapshot durch. Eine Chance kommt in den Baum, wenn alle drei Fragen mit Ja beantwortet sind; zunächst hängt ihr sie einfach unter den Moment, in dem sie vorkommt. Passt sie unter mehr als einen Ast, ist sie zu breit: Formuliert sie genauer, notfalls als eigene Chance für jeden Moment. „Die Oberfläche ist schwer bedienbar“ wird so zu „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ ({TORRES}, S. 88). Was nur eine Person erzählt hat, bleibt auf ihrem Snapshot – es kann in späteren Interviews wiederkommen (S. 70); in eurem Baum kommt es ins Feld „Nur in einem Interview“ (das Feld ist ein Format dieses Kurses; bei Torres bleibt es auf dem Snapshot).</p>
+      <p>Die Abbildung ist Torres’ eigenes Inventar: Elf der zwölf Chancen von der Liste (S. 81) hängen unter den vier Momenten von S. 87, noch ohne Struktur innerhalb der Äste. „Is this show any good?“ (9) liegt unter „I’m not sure what to watch.“, „Who is that actor?“ (11) unter „I’m watching a show.“ – das Paar aus der Übung gehört zu zwei verschiedenen Momenten. „I can’t find anything to watch.“ (1) fehlt in der Abbildung; warum, sagt Torres nicht. Unsere Lesart: Als übergeordnete Chance von 2, 3 und 5 (S. 83) kommt sie erst beim Strukturieren dazu.</p>
     </div>
   </Folie>
 
@@ -170,16 +186,16 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <tr><td>„Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.“</td><td class="antwort" data-schritt><Check size={20} aria-label="ja" /></td><td class="antwort"><X size={20} aria-label="nein" /> nur I5</td><td class="antwort">–</td><td class="antwort">ins Feld „Nur in einem Interview“</td></tr>
       </tbody>
     </table>
-    <p data-schritt><strong>Ergebnis:</strong> zwei in den Baum, zwei ins Feld „Nur in einem Interview“, eine ist eine Lösung. Gleich macht ihr dasselbe mit euren Snapshots – ohne Tabelle, als Karten.</p>
+    <p class="breit" data-schritt><strong>Ergebnis:</strong> zwei in den Baum, zwei ins Feld „Nur in einem Interview“, eine ist eine Lösung. Gleich macht ihr dasselbe mit euren Snapshots – ohne Tabelle, als Karten.</p>
     <p class="small muted">Fragen nach {TORRES}, S. 88.</p>
     <div class="nur-handout">
       <p>Die Chancen stehen so in den Snapshots der Kaffeebar (Werkstatt, Beispiel I1–I5); „per App vorbestellen“ ist der Wunsch vom Snapshot-Beispiel an Tag 1. Belege: „Wenn ich anstehe, verpasse ich meinen Zug“ (I2-2, I3-4, I4-2), „Wann ist mein Kaffee fertig?“ (I2-5, I3-3), der erste Schluck (I1-4), mitbestellen (I5-4, I5-6). Was durch Frage 1 oder 2 fällt, braucht Frage 3 nicht mehr. Was nur eine Person erzählt hat, kommt ins Feld „Nur in einem Interview“ (Kursformat; bei Torres bleibt es auf dem Snapshot) und kann in späteren Interviews wiederkommen ({TORRES}, S. 70). Den fertigen Baum der Kaffeebar seht ihr weiter unten.</p>
     </div>
   </Folie>
 
-  <Folie>
+  <div class="nur-handout">
     <h2 id="map-baum">Schon gemacht? Map und Baum</h2>
-    <p class="folie-satz">Beide Male wird gruppiert – mit einer anderen Frage.</p>
+    <p>Beide Male wird gruppiert – mit einer anderen Frage.</p>
     <table class="vergleich">
       <thead><tr><th scope="col"></th><th scope="col">Experience Map: Gleiches zusammenlegen</th><th scope="col">Baum: Struktur Ast für Ast</th></tr></thead>
       <tbody>
@@ -187,15 +203,13 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <tr><th scope="row">Frage</th><td>Derselbe Moment der Geschichte?</td><td>Dasselbe, anders gesagt – oder Geschwister?</td></tr>
         <tr><th scope="row">Wo</th><td>über alle Geschichten</td><td>in einem Ast, unter einem Moment</td></tr>
         <tr><th scope="row">Ergebnis</th><td>Momente in der Abfolge, ohne Überschneidung</td><td>übergeordnete Chance, darunter Geschwister</td></tr>
-        <tr data-schritt><th scope="row">Kaffeebar</th><td>u. a. I2-4, I3-1, I5-3 → Moment „Ich komme in die Halle und entscheide.“</td><td>darunter drei Chancen, ohne Reihenfolge</td></tr>
+        <tr><th scope="row">Kaffeebar</th><td>u. a. I2-4, I3-1, I5-3 → Moment „Ich komme in die Halle und entscheide.“</td><td>darunter drei Chancen, ohne Reihenfolge</td></tr>
       </tbody>
     </table>
-    <p data-schritt>„Anstellen ist ein Glücksspiel.“ (I4-2): auf der Map grau, im Baum Beleg für die Ursache „Wenn ich anstehe, verpasse ich meinen Zug.“ – dasselbe Zitat, andere Frage.</p>
+    <p>„Anstellen ist ein Glücksspiel.“ (I4-2): auf der Map grau, im Baum Beleg für die Ursache „Wenn ich anstehe, verpasse ich meinen Zug.“ – dasselbe Zitat, andere Frage.</p>
     <p class="small muted">Gegenüberstellung: Kurs; {TORRES}, S. 56, 83, 86–90.</p>
-    <div class="nur-handout">
-      <p>Auf der Experience Map habt ihr schon gruppiert – aber Knoten, mit der Frage, ob sie denselben Moment der Geschichte meinen (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe Bedürfnis meint, wird eine Chance; was ähnlich, aber nicht gleich ist, sind Geschwister unter einer übergeordneten Chance, die ihr ergänzen dürft (S. 89–90). Torres stellt die beiden Schritte nicht nebeneinander; die Gegenüberstellung ist eine Hilfe dieses Kurses. Auf der Map stehen die Momente in der Abfolge der Geschichte, ohne Überschneidung (S. 86–87); im Baum gibt es unter einem Moment keine Reihenfolge, nur „ist ein Teil von“ (S. 83).</p>
-    </div>
-  </Folie>
+    <p>Auf der Experience Map habt ihr schon gruppiert – aber Knoten, mit der Frage, ob sie denselben Moment der Geschichte meinen (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe Bedürfnis meint, wird eine Chance; was ähnlich, aber nicht gleich ist, sind Geschwister unter einer übergeordneten Chance, die ihr ergänzen dürft (S. 89–90). Torres stellt die beiden Schritte nicht nebeneinander; die Gegenüberstellung ist eine Hilfe dieses Kurses. Auf der Map stehen die Momente in der Abfolge der Geschichte, ohne Überschneidung (S. 86–87); im Baum gibt es unter einem Moment keine Reihenfolge, nur „ist ein Teil von“ (S. 83).</p>
+  </div>
 
   <Folie>
     <h2 id="struktur">Struktur: Ast für Ast</h2>
@@ -206,12 +220,34 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <li><strong>Geschwister?</strong> Eine übergeordnete Chance suchen – oder ergänzen und mit „(ergänzt)“ beschriften.</li>
         <li data-schritt><strong>Dasselbe, anders gesagt?</strong> Zu einer Chance zusammenlegen.</li>
         <li data-schritt>Mini-Bäume weiter gruppieren, bis sie unter dem Moment hängen.</li>
-        <li data-schritt><strong>Genug Struktur:</strong> nicht in 30 Minuten fertig, nicht stundenlang feilen.</li>
+        <li data-schritt><strong>Erster Entwurf:</strong> nicht fertig, nicht perfekt – der Baum wächst mit jedem Interview.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
       <p>Arbeitet einen Ast nach dem anderen. Geschwister wie „im Flugzeug schauen“ und „im Zug schauen“ bekommen eine gemeinsame übergeordnete Chance („unterwegs schauen“). Wurde sie nicht ausdrücklich gesagt, dürft ihr sie ergänzen, weil sie aus den Teilchancen folgt; auf der Karte schreibt ihr dann „(ergänzt)“ dazu, damit man es von Gehörtem unterscheidet (Prüfliste). Zwei Sätze, die dasselbe meinen („Den Titel mit der Fernbedienung einzugeben ist mühsam“, „Buchstaben auswählen ist schwer“), legt ihr zusammen ({TORRES}, S. 89–90). Dann sucht ihr Geschwister unter den übergeordneten Chancen der Mini-Bäume, bis eine Reihe von Geschwistern zum Moment hinaufführt (S. 90–91).</p>
       <p>Der Baum sieht einfach aus und verlangt doch kritisches Denken: Ist jede Chance richtig gefasst, wisst ihr, was sie meint, kann sie den Outcome treiben? Torres warnt vor beiden Fehlern – den ersten Baum in einer halben Stunde für fertig zu halten und stundenlang am perfekten Baum zu feilen. Macht so viel, wie ihr gerade wisst; der Baum wächst mit jedem Interview (S. 91).</p>
+      <p>„This isn’t a one-and-done exercise.“ Und: „You don’t have to do all of this work in your first draft“ ({TORRES}, S. 91). Heute habt ihr für Inventar und Struktur 22 Minuten, weniger als die halbe Stunde, die Torres für zu kurz hält. Das ist Absicht: Es entsteht ein erster Entwurf, den ihr nach dem Gegenlesen und bis Tag 4 überarbeitet. Die Form des Baums zeigt, was als Nächstes dran ist: „If our opportunity space is too shallow, it can guide us to do more customer interviews“ (S. 33).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Kaffeebar: Struktur, gemeinsam</h2>
+    <p class="folie-satz">Drei Fragen an den Baum – reihum laut, dann aufdecken.</p>
+    <MiroFrame name="Baum · Beispiel Kaffeebar" />
+    <ol class="baum-fragen gross">
+      <li>„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ (I3-2, I3-3) – unter welchen Moment? <span class="baum-antwort" data-schritt>Passt unter zwei, also zu breit: in der Halle „Geht sich ein Kaffee noch aus?“, beim Warten „Wann ist mein Kaffee fertig?“.</span></li>
+      <li>„Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, verpasse ich meinen Zug.“ – dasselbe oder Geschwister? <span class="baum-antwort" data-schritt>Geschwister: Das eine lässt sich lösen, ohne das andere zu lösen.</span></li>
+      <li>Fehlt über den drei Chancen in der Halle eine übergeordnete Chance? <span class="baum-antwort" data-schritt>Nein: Sie führen schon zum Moment hinauf.</span></li>
+    </ol>
+    <p data-schritt><strong>Nicht im Baum:</strong> Chancen, die nur eine Person erzählt hat – I1, I4, I5 je eine.</p>
+    <p class="small muted">Nach {TORRES}, S. 83, 88, 90–91.</p>
+    <div class="nur-handout">
+      <p>Den Baum seht ihr auf Miro im Frame „Baum · Beispiel Kaffeebar“, hier zum Nachlesen:</p>
+      <Baum schmal momente knoten={KAFFEEBAR_BAUM_INTERVIEWS} label="Opportunity Solution Tree der Kaffeebar nach den Interviews: Outcome, darunter drei oberste Chancen aus den Momenten der Experience Map (Ich komme in die Halle und entscheide; Ich stehe an und warte auf meinen Kaffee; Ich bin im Zug), darunter Chancen mit Zitat-IDs" />
+      <p>Im Baum steht nur, was mehr als ein Interview stützt. „Der erste Schluck rettet den Morgen“ (I1-4), „nicht gehetzt im Büro ankommen“ (I4-5) und „für Kolleg*innen mitbestellen“ (I5-4, I5-6) bleiben auf ihren Snapshots. Belege unter „Ich komme in die Halle und entscheide.“: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2) · „Schnell geht nur der Automat.“ (I1-3, I4-3); unter „Ich stehe an und warte auf meinen Kaffee.“: „Wann ist mein Kaffee fertig?“ (I2-5, I3-3). Unter „Ich komme in die Halle und entscheide.“ hängen drei Chancen, unter „Ich stehe an und warte auf meinen Kaffee.“ eine, unter „Ich bin im Zug.“ noch keine.</p>
+      <p>„Wenn ich anstehe, verpasse ich meinen Zug.“ hängt am Moment in der Halle: Alle drei Zitate (I2-2, I3-4, I4-2) fallen bei der Entscheidung, nicht in der Schlange ({TORRES}, S. 88). „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, verpasse ich meinen Zug.“ sind Geschwister: Man kann das eine Bedürfnis erfüllen, ohne das andere zu erfüllen (S. 83). Eine einzelne Teilchance wie „Wann ist mein Kaffee fertig?“ ist noch keine senkrechte Kette (S. 94), aber ein Hinweis auf fehlende Geschwister – eine Frage fürs nächste Interview.</p>
+      <p>Wünscht sich jemand „per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1), ist die Chance dahinter „Ich will den Zug nicht verpassen“ – sie steckt schon in „Wenn ich anstehe, verpasse ich meinen Zug“. „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl; die Ursache dahinter ist dieselbe Chance. Dass unter „Ich bin im Zug“ nichts hängt, ist hier ehrlich: Vom Zug erzählt nur I3 (I3-5), mehr haben fünf Interviews nicht hergegeben. Ein leerer Ast ist keine senkrechte Kette, aber ein Hinweis, wonach ihr als Nächstes fragt.</p>
+      <p>Aus der Chance in I3s Snapshot, „Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ (I3-2, I3-3), werden im Baum zwei: eine in der Halle, eine beim Warten. Das folgt Torres’ Regel, eine Chance, die unter mehr als einen Ast passt, je Moment eigens zu fassen ({TORRES}, S. 88). Welches Zitat zu welchem Moment gehört, ist die Lesart dieses Kurses, nicht Torres: I3-2 („Ich weiß nie, wie lange das dauert.“) steht auf der Map von Tag 2 beim Anstehen und Warten; im Baum belegt es die Entscheidung in der Halle (unsere Lesart). Über den drei Chancen in der Halle fehlt keine übergeordnete Chance: Geschwister gruppiert ihr so lange, bis eine Reihe von ihnen zum Moment hinaufführt (S. 90–91) – hier tun sie das schon.</p>
     </div>
   </Folie>
 
@@ -229,22 +265,18 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     </div>
   </Folie>
 
-  <Folie>
+  <div class="nur-handout">
     <h2 id="senkrecht">Senkrechte Kette</h2>
-    <p class="folie-satz">Eine Chance, darunter nur eine Teilchance, darunter wieder nur eine – dafür gibt es zwei Gründe.</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/torres/vertikal.jpg" alt="Senkrechte Kette aus drei Chancen ohne Geschwister: „Is this show any good?“, darunter „Will I like this show?“, darunter „I don't like it when I start a show and it isn't good.“" quelle={`Senkrechte Chancen. ${TORRES}, S. 93.`} hochkant />
-      <ul>
-        <li><strong>Dasselbe in anderen Worten?</strong> Zu einer Chance zusammenfassen.</li>
-        <li data-schritt><strong>Löst jede Teilchance die Chance darüber nur zum Teil?</strong> Dann fehlen Geschwister – ergänzen.</li>
-        <li data-schritt><strong>Wisst ihr nicht, welche?</strong> In den nächsten Interviews erkunden – bei uns als Zettel „Nächstes Interview: …“ neben der Karte (Kursregel).</li>
-      </ul>
-    </BildText>
-    <div class="nur-handout">
-      <p>Senkrechte Chancen sind eine Chance mit nur einer Teilchance, die wieder nur eine Teilchance hat – eine senkrechte Kette einzelner Chancen. Torres nennt zwei Ursachen: Entweder sagen mehrere Interviews dasselbe in anderen Worten – dann fasst ihr es zu einer Chance zusammen und streicht den Rest. Oder es fehlen Geschwister: Löst jede Teilchance die übergeordnete Chance nur zum Teil, sucht die fehlenden und tragt sie ein; wisst ihr nicht, welche fehlen, erkundet die übergeordnete Chance in den nächsten Interviews ({TORRES}, S. 93–94). Was ihr fragen wollt, notiert ihr als Zettel „Nächstes Interview: …“ direkt neben der Karte in eurem Baum – so steht es auch auf dem Bild, das Claude beim Prüfen bekommt. Der Zettel ist eine Regel dieses Kurses; Torres sagt nur, die übergeordnete Chance in den nächsten Interviews zu erkunden.</p>
-      <p>Bei der Kaffeebar hängt unter „Ich stehe an und warte auf meinen Kaffee.“ nur eine Chance: „Wann ist mein Kaffee fertig?“. Das ist der erste Schritt, aber noch nicht das Anti-Muster – senkrecht wird es erst, wenn unter dieser einen Teilchance wieder nur eine hängt (S. 94). Es ist ein Hinweis auf fehlende Geschwister, die ihr in den nächsten Interviews erkundet.</p>
-    </div>
-  </Folie>
+    <p>Eine Chance, darunter nur eine Teilchance, darunter wieder nur eine – dafür gibt es zwei Gründe.</p>
+    <BuchAbbildung src="/quellen/torres/vertikal.jpg" alt="Senkrechte Kette aus drei Chancen ohne Geschwister: „Is this show any good?“, darunter „Will I like this show?“, darunter „I don't like it when I start a show and it isn't good.“" quelle={`Senkrechte Chancen. ${TORRES}, S. 93.`} hochkant />
+    <ul>
+      <li><strong>Dasselbe in anderen Worten?</strong> Zu einer Chance zusammenfassen.</li>
+      <li><strong>Löst jede Teilchance die Chance darüber nur zum Teil?</strong> Dann fehlen Geschwister – ergänzen.</li>
+      <li><strong>Wisst ihr nicht, welche?</strong> In den nächsten Interviews erkunden – bei uns als Zettel „Nächstes Interview: …“ neben der Karte (Kursregel).</li>
+    </ul>
+    <p>Senkrechte Chancen sind eine Chance mit nur einer Teilchance, die wieder nur eine Teilchance hat – eine senkrechte Kette einzelner Chancen. Torres nennt zwei Ursachen: Entweder sagen mehrere Interviews dasselbe in anderen Worten – dann fasst ihr es zu einer Chance zusammen und streicht den Rest. Oder es fehlen Geschwister: Löst jede Teilchance die übergeordnete Chance nur zum Teil, sucht die fehlenden und tragt sie ein; wisst ihr nicht, welche fehlen, erkundet die übergeordnete Chance in den nächsten Interviews ({TORRES}, S. 93–94). Was ihr fragen wollt, notiert ihr als Zettel „Nächstes Interview: …“ direkt neben der Karte in eurem Baum – so steht es auch auf dem Bild, das Claude beim Prüfen bekommt. Der Zettel ist eine Regel dieses Kurses; Torres sagt nur, die übergeordnete Chance in den nächsten Interviews zu erkunden.</p>
+    <p>Bei der Kaffeebar hängt unter „Ich stehe an und warte auf meinen Kaffee.“ nur eine Chance: „Wann ist mein Kaffee fertig?“. Das ist der erste Schritt, aber noch nicht das Anti-Muster – senkrecht wird es erst, wenn unter dieser einen Teilchance wieder nur eine hängt (S. 94). Es ist ein Hinweis auf fehlende Geschwister, die ihr in den nächsten Interviews erkundet.</p>
+  </div>
 
   <Folie>
     <h2 id="vier-muster">Vier weitere Anti-Muster</h2>
@@ -260,22 +292,10 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <p>Nach Firmensicht und senkrechter Kette nennt Torres vier weitere Anti-Muster für den ersten Entwurf ({TORRES}, S. 94–95). Zwei Beispiele sind ihre, zwei kommen von der Kaffeebar.</p>
       <ul>
         <li><strong>Hängt an zwei Chancen (zu breit).</strong> Torres begründet es so: „If your top-level opportunities represent distinct moments in time, then no opportunity should have two parents“ (S. 94). „Die Oberfläche ist schwer bedienbar“ passt unter mehrere Momente. Genauer gefasst wird daraus je eine Chance pro Moment, etwa „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ (S. 88, 94).</li>
-        <li><strong>Nicht konkret.</strong> „Das ist zu schwer“ ist eine Stimmung; „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam“ ist eine Chance (S. 94).</li>
+        <li><strong>Nicht konkret.</strong> Themen, Gestaltungsregeln oder Stimmungen sind keine Chancen; Torres’ Beispiele sind „Das ist zu schwer“, „Ich wünschte, das wäre leicht zu bedienen“ und „Ich will alles unterwegs machen“. „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam“ ist eine Chance (S. 94).</li>
         <li><strong>Lösung statt Chance.</strong> „Per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1) lässt nur einen Weg zu. Die Chance dahinter, „Ich will den Zug nicht verpassen“, lässt mehrere zu (S. 94–95).</li>
         <li><strong>Gefühl statt Ursache.</strong> „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, verpasse ich meinen Zug“ (S. 95).</li>
       </ul>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
-    <p class="folie-satz">Drei oberste Chancen aus den Momenten, darunter belegte Chancen.</p>
-    <Baum schmal momente knoten={KAFFEEBAR_BAUM_INTERVIEWS} label="Opportunity Solution Tree der Kaffeebar nach den Interviews: Outcome, darunter drei oberste Chancen aus den Momenten der Experience Map (Ich komme in die Halle und entscheide; Ich stehe an und warte auf meinen Kaffee; Ich bin im Zug), darunter Chancen mit Zitat-IDs" />
-    <p data-schritt><strong>Nicht im Baum:</strong> Chancen, die nur eine Person erzählt hat – I1, I4, I5 je eine.</p>
-    <div class="nur-handout">
-    <p>Im Baum steht nur, was mehr als ein Interview stützt. „Der erste Schluck rettet den Morgen“ (I1-4), „nicht gehetzt im Büro ankommen“ (I4-5) und „für Kolleg*innen mitbestellen“ (I5-4, I5-6) bleiben auf ihren Snapshots. Belege unter „Ich komme in die Halle und entscheide.“: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2) · „Schnell geht nur der Automat.“ (I1-3, I4-3); unter „Ich stehe an und warte auf meinen Kaffee.“: „Wann ist mein Kaffee fertig?“ (I2-5, I3-3). Unter „Ich komme in die Halle und entscheide.“ hängen drei Chancen, unter „Ich stehe an und warte auf meinen Kaffee.“ eine, unter „Ich bin im Zug.“ noch keine.</p>
-    <p>„Wenn ich anstehe, verpasse ich meinen Zug.“ hängt am Moment in der Halle: Alle drei Zitate (I2-2, I3-4, I4-2) fallen bei der Entscheidung, nicht in der Schlange ({TORRES}, S. 88). „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, verpasse ich meinen Zug.“ sind Geschwister: Man kann das eine Bedürfnis erfüllen, ohne das andere zu erfüllen (S. 83). Eine einzelne Teilchance wie „Wann ist mein Kaffee fertig?“ ist noch keine senkrechte Kette (S. 94), aber ein Hinweis auf fehlende Geschwister – eine Frage fürs nächste Interview.</p>
-    <p>Wünscht sich jemand „per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1), ist die Chance dahinter „Ich will den Zug nicht verpassen“ – sie steckt schon in „Wenn ich anstehe, verpasse ich meinen Zug“. „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl; die Ursache dahinter ist dieselbe Chance. Dass unter „Ich bin im Zug“ nichts hängt, ist hier ehrlich: Vom Zug erzählt nur I3 (I3-5), mehr haben fünf Interviews nicht hergegeben. Ein leerer Ast ist keine senkrechte Kette, aber ein Hinweis, wonach ihr als Nächstes fragt.</p>
     </div>
   </Folie>
 
@@ -309,7 +329,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     </ol>
     <div class="nur-handout">
       <p>Vor dem Inventar holt ihr die Momente eurer Experience Map aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D dupliziert). Übergeordnete Chancen, die ihr für die Struktur ergänzt, beschriftet ihr mit „(ergänzt)“; was nur eine Person erzählt hat, kommt ins Feld „Nur in einem Interview“. Den Timer fürs Gegenlesen startet ihr auf der nächsten Folie, damit die Checkliste dabei stehen bleibt.</p>
-      <p>12 + 10 + 12 + 5 sind 39 Minuten; dazu gut 35 Minuten Theorie und Kaffeebar.</p>
+      <p>12 + 10 + 12 + 5 sind 39 Minuten; dazu 36 Minuten Theorie und Kaffeebar.</p>
       <p>Beim Gegenlesen ist jeder Baum vier Minuten dran, in der Reihenfolge Sofie, Joachim, Hewen. Alle gehen in den Frame; wem der Baum gehört, sagt in einem Satz, bei welchem Ast sie oder er unsicher ist. Die anderen zwei lesen eine Minute still: Wer in der Runde Sofie → Joachim → Hewen → Sofie als Nächstes kommt, sucht nach den Anti-Mustern 1 bis 3, die dritte Person nach 4 bis 6 – bei Sofies Baum also Joachim 1–3 und Hewen 4–6, bei Hewens Baum Sofie 1–3 und Joachim 4–6. Dann zeigt jede*r auf eine Karte, nennt die Nummer, liest die Karte vor und stellt die Frage der Checkliste – ohne einen besseren Text vorzuschlagen. Weil ihr die Interviews der anderen nicht kennt, heißt die erste Frage bei euch „Wo hast du das gehört?“; bei einer Karte mit „(ergänzt)“ fragt ihr stattdessen mit Torres „Kann ich mir vorstellen, dass das jemand sagt?“ (S. 92). Ihr antwortet in einem Satz, ohne den Baum zu verteidigen, und entscheidet laut: ändern (gleich beim Prüfen), grauer Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Fragen statt urteilen und nicht verteidigen beschreibt Torres für die Experience Map (S. 55); Gegenlesen, vier Minuten und die drei Entscheidungen sind Regeln dieses Kurses. Die Anleitung steht auf Miro links neben jedem Baum als Tafel.</p>
       <p>Vier der sechs Prüfpunkte kennt ihr vom Gegenlesen; neu sind die Belege (Zitat-IDs aus mehr als einem Interview) und ob jede Teilchance ein Teil der Chance darüber ist. Was nach dem Gegenlesen offen bleibt, wird eine Frage für die nächsten Interviews. Der Baum entsteht auf Miro in eurem Frame „Baum · euer Name“ und bleibt dort, eine Datei dazu gibt es nicht; jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg. Zum Prüfen geht ihr erst die Prüfliste durch und gebt Claude dann ein Bildschirmfoto eures Frames (unten unter „Prüfen“).</p>
     </div>
@@ -356,21 +376,6 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} next={{ href: '/innolab/methoden/ziel-chance', t: 'Ziel-Chance wählen' }} />
 </Layout>
 
-<script>
-  // „warum“: gewählte Nummern markieren, sobald die Runde „zwoelf“ aufgedeckt ist (Stand kommt von Antwortrunde.astro).
-  import { ANTWORTRUNDE_STAND, type AntwortrundeStand } from '../../../lib/antworten';
-  import { ZWOELF_PAARE, gewaehltMarkieren, gewaehltSchluessel, gewaehltZaehlen } from '../../../lib/gewaehlt';
-  let zuletzt: string | null = null;
-  document.addEventListener(ANTWORTRUNDE_STAND, (e) => {
-    const d = (e as CustomEvent<AntwortrundeStand>).detail;
-    if (d?.runde !== 'zwoelf') return;
-    const z = gewaehltZaehlen(d.frei ? d.texte : [], ZWOELF_PAARE);
-    const k = gewaehltSchluessel(z);
-    if (k === zuletzt) return;
-    zuletzt = k;
-    gewaehltMarkieren(document, 'zwoelf', z);
-  });
-</script>
 <style>
   .zwoelf { columns: 2; column-gap: 2.5rem; margin: 1rem 0; padding-left: 1.6rem; }
   .zwoelf li { break-inside: avoid; margin-bottom: .15rem; }
@@ -387,10 +392,6 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .mini-flach p + p { margin-top: .1rem; }
   .mini-rest { margin: .3rem 0 0; }
   .mini-rest b { font-weight: 700; }
-  /* Gewählte Nummern (lib/gewaehlt.ts, nach dem Aufdecken): gefüllter Chip; „×2“ kommt per Skript dazu. */
-  .mini-gewaehlt b.gewaehlt { background: var(--accent); color: var(--on-accent); border-radius: 4px; text-align: center; padding: 0 .15em; }
-  .mini-rest b.gewaehlt { display: inline-block; min-width: 1.4em; }
-  .mini-gewaehlt :global(.gewaehlt-anzahl) { font-size: .75em; font-weight: 700; color: var(--accent); margin: 0 .25em 0 .1em; }
   /* Volle Breite statt 36em (global.css, Zeilenlänge), damit „zwoelf“ und „warum“ bei 720p passen: je ein Selektor für den
      Absatz direkt in der Folie und für den in der Auflösung, jeweils um html spezifischer als die globale Regel. */
   :global(html .content > .inner > .folie) > p.breit, :global(html [data-aufloesung-inhalt]) > p.breit { max-width: none; }
@@ -406,6 +407,16 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   .drei-fragen td.antwort :global(svg) { vertical-align: -4px; }
   /* Im Beamer Zeile für Zeile: Der Schritt sitzt auf der ersten Antwortzelle, die übrigen Antworten der Zeile folgen ihr. */
   :global(html[data-beamer]) .drei-fragen td.antwort[data-schritt]:not(.gezeigt) ~ td.antwort { visibility: hidden; }
+  /* „oberste-ebene“: „← Outcome“ neben dem obersten Kreis der Abbildung (wie journey-map.astro, Folie momente). */
+  .outcome-marke { position: absolute; left: 63%; top: 22%; transform: translateY(-50%); white-space: nowrap; font-size: .9rem; font-weight: 600; color: var(--accent); }
+  /* „beispiel“: drei Fragen, die Antwort darunter (im Beamer erst nach dem Schritt). */
+  .baum-fragen { margin: .5rem 0; padding-left: 1.6rem; }
+  /* Im Beamer volle Breite für die Listen (.gross; beamer.css will das auch, verliert aber gegen die 36em aus global.css),
+     damit „beispiel“, „vorgehen“ und „anti-muster“ bei 720p passen. */
+  :global(html[data-beamer] .content > .inner > .folie) > ol.gross { max-width: none; }
+  /* „eltern-kind“: zweizeiliger Folien-Satz und zweizeilige Bildunterschrift – die Abbildung etwas niedriger, damit 720p passt. */
+  :global(html[data-beamer] .folie:has(> h2#eltern-kind) .buch-abbildung img) { max-height: calc(100vh - 18rem); }
+  .baum-antwort { display: block; color: var(--accent); }
   /* „map-baum“: Map und Baum nebeneinander, Zeilenköpfe links (wie .drei-fragen). */
   .vergleich { width: 100%; border-collapse: collapse; margin: .5rem 0; font-size: .9rem; line-height: 1.3; }
   .vergleich th, .vergleich td { padding: .3rem .45rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }

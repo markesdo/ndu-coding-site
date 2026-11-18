@@ -10,18 +10,22 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Ist-Zeit notieren.',
       'Strich: jemand fragt ‚Wo sind wir?‘ oder nach einem Link.',
+      'Seera erzählen: Geschäft bricht ein, zwei Bäume, neue Strategie in Wochen.',
       '„Aus einer Geschichte kommen Dutzende Chancen – euer Job sind die, die den Outcome treiben.“',
-      'Abbildung von Tag 1 wiedererkennen lassen.',
       'Fragen: Wie heißt euer Outcome im Produkt-Brief?',
     ],
+    geschichte: {
+      text: 'Torres eröffnet das Kapitel mit Ahmed Guijou, Product Director bei der Seera Group. März 2020: Saudi-Arabien, Heimat der meisten Kund*innen, schließt die Grenzen, das Geschäft mit Hotelbuchungen bricht über Nacht ein. Zugleich buchen Kund*innen häufiger Istrahas – große Anwesen mit Außenbereich, Grill und Pool, die man tageweise für Treffen in der Nähe mietet; das wusste das Team aus früheren Interviews. Es interviewt Gastgeber*innen und Gäste und findet auf beiden Seiten zahllose Chancen. „Rather than getting overwhelmed, they started mapping out the needs of each group on respective opportunity solution trees.“ Ein paar Wochen sammelt und sortiert das Team, bis Muster sichtbar werden; mit jedem Interview ändert sich die Struktur. Dann vergleicht es: Wo überschneiden sich die Bedürfnisse beider Seiten, was kann die Konkurrenz gut, wo sind Lücken? In wenigen Wochen kommt es vom eingebrochenen Geschäft zu einer neuen Marktchance und einer Produktstrategie. „That’s the power of opportunity mapping.“',
+      quelle: `${TORRES}, S. 78–79`,
+    },
     kern: [
       {
         text: '„A single customer story might elicit dozens of opportunities.“ – „our job is not to address every customer opportunity. Our job is to address customer opportunities that drive our desired outcome. This is how we create value for our business while creating value for our customers.“ Zuerst die Chancen mit der größten Wirkung auf den Outcome; dafür erst eine Bestandsaufnahme.',
         quelle: `${TORRES}, S. 80`,
       },
       {
-        text: 'Die Abbildung „Only include opportunities that are relevant to your outcome“ stand auf Tag 1.',
-        quelle: `${TORRES}, S. 27`,
+        text: 'Die Abbildung „Only include opportunities that are relevant to your outcome“ stand auf Tag 1. Wofür der Baum da ist: „Mapping the opportunity space is how we give structure to the ill-structured problem of reaching our desired outcome.“',
+        quelle: `${TORRES}, S. 27, 80`,
       },
     ],
     ueberleitung: 'Welche zuerst? Probiert es an zwölf Chancen.',
@@ -30,24 +34,21 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   zwoelf: {
     live: [
       'Liste nicht erklären, alle lesen still.',
-      'Freien Platz wählen (ohne Bedeutung); alle antworten auf der eigenen Seite.',
-      'Timer 2 min: 1 oder 2, 7 oder 12, 9 oder 11.',
-      'Dazu ein Satz: Welches Paar fiel am schwersten?',
-      'Noch nicht aufdecken – erst alle drei abgeschickt.',
+      'Timer 2 min: drei Paare, jede*r für sich.',
+      'Reihum laut: drei Nummern und ein Satz zum schwersten Paar.',
+      'Mitschreiben: wer welche Nummer, für die nächste Folie.',
       'Falle: eine richtige Wahl andeuten – Torres nennt keine.',
-      'Antwortrunde: wie viele von 3 ohne Nachhelfen?',
     ],
-    uebung: { dauer: '2 min', form: 'allein, drei Nummern und ein Satz auf der Seite; dann gemeinsam aufdecken (Rückfall: laut)' },
+    uebung: { dauer: '2 min + 1 min reihum', form: 'allein entscheiden, dann reihum laut: drei Nummern und ein Satz' },
     ablauf: {
       schritte: [
         'Folie zeigen, die Liste still lesen lassen.',
-        'Alle öffnen die Folie auf dem eigenen Gerät und wählen einen freien Platz (Platz 1–3, ohne Bedeutung). Timer 2 min: Jede*r entscheidet drei Paare – 1 oder 2, 7 oder 12, 9 oder 11 –, tippt die drei Nummern und einen Satz zu dem Paar, das am schwersten fiel, und schickt ab. Der Beamer zeigt nur „2 von 3 haben geantwortet“.',
-        'Erst wenn alle drei abgeschickt haben, zur nächsten Folie: Dort deckst du alle drei gleichzeitig auf. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r die drei Nummern und den Satz laut.',
+        'Timer 2 min: Jede*r entscheidet für sich drei Paare – 1 oder 2, 7 oder 12, 9 oder 11 – und überlegt sich einen Satz zu dem Paar, das am schwersten fiel. Nichts tippen.',
+        'Schritt aufdecken, dann reihum laut: Jede*r sagt die drei Nummern und den Satz. Du notierst die Nummern, damit du auf der nächsten Folie sagen kannst, wer was gewählt hat.',
       ],
       achten: [
-        'Wer „weiß ich nicht“ schreiben will: trotzdem entscheiden, den Zweifel in den Satz – genau den beschreibt Torres („I don’t know how to compare“, S. 82).',
-        'Nicht werten und nicht nachfragen, bevor aufgedeckt ist – sonst passen die anderen ihre Antwort an.',
-        'Drei Plätze, je einer pro Person; Testantworten: auf der Seite ohne Beamer „Runde leeren“.',
+        'Wer „weiß ich nicht“ sagen will: trotzdem entscheiden, den Zweifel in den Satz – genau den beschreibt Torres („I don’t know how to compare“, S. 82).',
+        'Nicht werten und nicht nachfragen, bis alle drei gesprochen haben – sonst passen die anderen ihre Antwort an.',
       ],
     },
     kern: [
@@ -60,17 +61,16 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 82; Kursregel`,
       },
     ],
-    ueberleitung: 'Alle drei abgeschickt? Dann decken wir gemeinsam auf – und sortieren die zwölf.',
+    ueberleitung: 'Alle drei gehört? Dann sortieren wir die zwölf.',
   },
 
   warum: {
     live: [
-      'Aufdecken, Sätze vorlesen: Welches Paar fiel am schwersten?',
       '1 oder 2: Teil gegen Ganzes – kein Entweder-oder.',
       '7 oder 12: Geschwister – ähnlich, nicht gleich.',
       '9 oder 11: groß gegen leicht – immer das Leichte zuerst?',
       '„Eine Liste mischt Großes, Kleines und Verwandtes.“',
-      'Falle: eine Wahl richtig nennen; 4, 6, 8, 10 einsortieren.',
+      'Falle: eine Wahl richtig nennen; 4, 6, 8, 10 kommen beim Inventar.',
     ],
     verstaendnis: {
       frage: 'Warum lassen sich „Ich finde nichts zum Schauen“ und „Mir sind die Folgen ausgegangen“ schlecht gegeneinander priorisieren?',
@@ -79,13 +79,13 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Platz; fehlt einer, laut sagen lassen. Vorlesen, ohne zu werten. Eure Nummern leuchten in der Sortierung auf (Nummer am Satzanfang; doppelt gewählt: ×2).',
-        'Schritt für Schritt aufdecken, je Schritt ein Paar: Wer 1 gewählt hat – „Und welchen Teil davon zuerst?“; wer 2 – „Ein Grund für 1, aber nicht der einzige“ (S. 82). 7 oder 12 – „Hängt an den Bedingungen: offline, Steckdose“ (S. 82). Wer 11 – „Immer das Leichte zuerst?“; wer 9 – „Wo fangt ihr an?“ (S. 82, 84–85). Zuletzt 4 · 6 · 8 · 10.',
+        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Die Sätze von eben nicht wiederholen; deine Notizen, wer was gewählt hat, reichen.',
+        'Schritt für Schritt aufdecken, je Schritt ein Paar: Wer 1 gewählt hat – „Und welchen Teil davon zuerst?“; wer 2 – „Ein Grund für 1, aber nicht der einzige“ (S. 82). 7 oder 12 – „Hängt an den Bedingungen: offline, Steckdose“ (S. 82). Wer 11 – „Immer das Leichte zuerst?“; wer 9 – „Wo fangt ihr an?“ (S. 82, 84–85). Zuletzt 4 · 6 · 8 · 10: kommen auf der Folie inventar.',
         'Fragen: Bei welchem Paar habt ihr zwei Gleichartige verglichen? Dann den letzten Satz aufdecken.',
       ],
       achten: [
-        'Falle: 9 und 11 stehen nur zum Größenvergleich nebeneinander – keine Gruppe, 11 hängt nicht unter 9.',
-        'Nur sortieren, was Torres sortiert: ihre Teilchancen von 9 sind anders formuliert (S. 84–85); 4, 6, 8 und 10 bleiben offen.',
+        'Falle: 9 und 11 stehen nur zum Größenvergleich nebeneinander – keine Gruppe, 11 hängt nicht unter 9; in der Abbildung S. 89 stehen sie unter verschiedenen Momenten.',
+        'Nur sortieren, was Torres sortiert: Ihre Teilchancen von 9 sind anders formuliert (S. 84–85); 4, 6, 8 und 10 hängt sie erst in der Abbildung S. 89 unter Momente (Folie inventar).',
       ],
       aufloesung: 'Nur bei 7 und 12 – Geschwister unter einer ergänzten Chance. 1 und 2 sind Ganzes und Teil, 9 und 11 verschieden groß. Torres: „It’s hard to answer these questions when prioritizing opportunities of different shapes and sizes against each other“ (S. 82).',
     },
@@ -118,40 +118,56 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 82–83`,
       },
     ],
-    ueberleitung: 'Was bringt euch das? Große Chancen werden lösbar.',
+    ueberleitung: 'Bevor Chancen hängen, braucht der Baum Äste: eure Momente.',
   },
 
-  'gross-loesbar': {
+  'oberste-ebene': {
     live: [
-      'Fragen: Wie würdet ihr „Ist diese Serie gut?“ lösen?',
-      'Aufdecken: die vier Teilchancen – Menschen wählen Serien verschieden.',
-      '„Erst ‚Wer spielt mit?‘: klein, schnell geliefert, ein Bedürfnis ganz gelöst.“',
-      'Brücke zu Tag 1: Wert nach und nach liefern.',
-      'Wenn hinten: überspringen, Kern steht im Handout.',
+      'Abbildung von Tag 2 wiedererkennen lassen: vier Momente, vier Äste.',
+      'Fragen: Wie heißen eure Momente auf T2 · 1?',
+      '„Überschneiden sich die Äste, müsst ihr an allen Chancen zugleich arbeiten.“',
+      'Aufdecken: Kaffeebar – drei Momente, der Automat ist ein Umweg.',
+      'Bei Bedarf: „Schon gemacht?“ – Map: Moment, Baum: Bedürfnis.',
     ],
     verstaendnis: {
-      frage: 'Ist „Wer spielt mit?“ zu lösen nicht zu wenig, wenn die Frage „Ist diese Serie gut?“ lautet?',
-      antwort: 'Es löst die große Chance nicht ganz, aber ein kleineres Bedürfnis vollständig – und liefert sofort Wert. Mit der Zeit sind so viele kleine gelöst, dass auch die große gelöst ist (S. 85).',
+      frage: 'Warum dürfen sich die Äste nicht überschneiden?',
+      antwort: 'Sonst lässt sich nicht an einer Chance nach der anderen arbeiten: Die Chancen verhaken sich, und man muss an allen zugleich arbeiten (S. 86). Darum sind die obersten Chancen eigene Zeitpunkte.',
+      falsch: '„Damit der Baum ordentlich aussieht“ – es geht darum, eine Chance einzeln bearbeiten zu können.',
     },
     kern: [
       {
-        text: 'Menschen lösen „Is this show any good?“ verschieden: nach der Art der Serie, nach den Schauspieler*innen. Daraus werden lösbarere Teilchancen: „What type of show is this?“, „Who is in this show?“, „Is this show similar to another show I’ve watched?“, „Who else is watching this show?“',
-        quelle: `${TORRES}, S. 84–85`,
+        text: '„We need each opportunity to be distinct from every other opportunity. If there’s overlap, then we can’t work on one at a time.“ Zwei Wege zu solchen Ästen: die Schritte der Experience Map oder die Schlüsselmomente aus den gezeichneten Geschichten. „Oftentimes this is as simple as mapping each node in your experience map to the top level of opportunities on your opportunity solution tree.“',
+        quelle: `${TORRES}, S. 86`,
       },
       {
-        text: 'Der Wert ist zweifach: Scheinbar Unlösbares wird lösbar, und Wert lässt sich nach und nach liefern – „at the heart of the Agile manifesto“. „Who is in this show?“ ist recht leicht und für viele ein Kriterium; so liefert man schnell.',
-        quelle: `${TORRES}, S. 85`,
+        text: 'Streaming: aus „Deciding to watch something“, „Choosing something to watch“, „Watching something“, „The end of the watching experience“ werden vier oberste Chancen. „the key is to make sure there is no overlap between the moments in time.“',
+        quelle: `${TORRES}, S. 87`,
+      },
+      {
+        text: 'Kaffeebar: drei Momente der Experience Map – Halle, Anstehen und Warten, Zug; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente auf T2 · 1.',
+        quelle: 'journey-map.astro, Folien beispiel und vorgehen',
       },
     ],
-    ueberleitung: 'Jetzt der Weg zum eigenen Baum: erst das Inventar.',
+    fragen: [
+      {
+        frage: 'Bei Bedarf – „Haben wir das nicht schon bei der Map gemacht?“ Was ist beim Baum anders? (Handout: „Schon gemacht? Map und Baum“)',
+        antwort: 'Auf der Map legt ihr Knoten zusammen, die denselben Moment der Geschichte meinen, über alle Geschichten (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe meint, wird eine Chance; Geschwister bekommen eine übergeordnete Chance (S. 89–90). Kaffeebar: „Anstellen ist ein Glücksspiel.“ (I4-2) blieb auf der Map grau, im Baum belegt es „Wenn ich anstehe, verpasse ich meinen Zug.“ Häufig falsch: „Dasselbe wie bei der Map, nur mit anderen Karten“ – die Map fragt nach dem Moment, der Baum nach dem Bedürfnis; neu ist die Ebene darüber, die übergeordnete Chance.',
+      },
+    ],
+    ueberleitung: 'Die Äste stehen. Jetzt kommen die Chancen darunter – aber nicht jede.',
   },
 
   inventar: {
     live: [
+      'Fragen: Wo hängen 4, 6, 8, 10 – und 9, 11?',
       'Drei Fragen langsam vorlesen, jede einzeln.',
       '„Alle drei Ja – erst dann kommt die Chance in den Baum.“',
       'Falle: zu breite Chance, die unter zwei Momente passt.',
     ],
+    verstaendnis: {
+      frage: 'Unter welchen Momenten hängen „Ist diese Serie gut?“ (9) und „Wer ist dieser Schauspieler?“ (11)?',
+      antwort: '9 unter „I’m not sure what to watch.“, 11 unter „I’m watching a show.“ – zwei verschiedene Momente (Abbildung S. 89). 4 und 10 hängen beim Auswählen, 8 beim Schauen, 6 am Ende.',
+    },
     kern: [
       {
         text: 'Für jede Chance aus den Snapshots: Bedürfnis, Schmerzpunkt oder Wunsch und keine Lösung? In mehr als einem Interview gehört? Treibt sie den Outcome? Alle drei Ja: unter den Ast, in dem sie vorkommt. Passt sie unter mehr als einen, ist sie zu breit – „The interface is hard to use“ wird zu mehreren genaueren Chancen.',
@@ -168,7 +184,6 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Die anderen: dafür oder dagegen? Erst dann die Zeile aufdecken.',
       'Zeile 1 vor dem Aufdecken: Was steckt hinter „per App vorbestellen“?',
       '„Nur bei einer Person? Ins Feld ‚Nur in einem Interview‘ – kann wiederkommen.“',
-      'Mehrmals: dasselbe Bedürfnis im zweiten Interview, auch anders formuliert.',
     ],
     verstaendnis: {
       frage: '„Wenn der erste Schluck passt, ist der Morgen gerettet“ klingt wichtig. Warum kommt es nicht in den Baum?',
@@ -196,30 +211,10 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       },
       {
         text: '„Lösung → Bedürfnis dahinter neu prüfen“ am Beispiel „Per App vorbestellen“ (erste Zeile der Tabelle): Erst die Probe „Is there more than one way to address this opportunity?“ – hier gibt es nur einen Weg, die App; also eine Lösung. Dann das Bedürfnis dahinter suchen („uncover the implied opportunity“): Wozu vorbestellen? „Ich will den Zug nicht verpassen.“ Dieses Bedürfnis geht neu durch die drei Fragen: Bedürfnis – ja; in mehr als einem Interview – ja, I2, I3 und I4 erzählen es; treibt den Outcome – ja. Es kommt also in den Baum – und ist dasselbe wie die nächste Zeile, „Wenn ich anstehe, verpasse ich den Zug.“: eine Karte, nicht zwei. Gegenprobe: Für dieses Bedürfnis gibt es mehrere Wege – im Kaffeebar-Baum von Tag 1 hängen darunter Vorbestellen per App, Express-Theke und Kaffeewagen am Bahnsteig (Vorbestellen ist später verworfen, D4). „An opportunity should have more than one potential solution.“',
-        quelle: `${TORRES}, S. 88, 90, 94–95`,
+        quelle: `${TORRES}, S. 88, 94–95`,
       },
     ],
-    ueberleitung: 'Was durchkommt, wird jetzt geordnet. Gruppiert habt ihr schon einmal – bei der Map.',
-  },
-
-  'map-baum': {
-    live: [
-      'Frag: Haben wir das nicht schon bei der Map gemacht?',
-      'Map: derselbe Moment. Baum: dasselbe Bedürfnis oder Geschwister.',
-      'Aufdecken: Kaffeebar-Zeile, dann I4-2 – dasselbe Zitat, andere Frage.',
-    ],
-    verstaendnis: {
-      frage: 'Auf der Experience Map habt ihr schon gruppiert. Was ist beim Baum anders?',
-      antwort: 'Auf der Map legt ihr Knoten zusammen, die denselben Moment der Geschichte meinen, über alle Geschichten (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe meint, wird eine Chance; Geschwister bekommen eine übergeordnete Chance (S. 89–90). Kaffeebar: „Anstellen ist ein Glücksspiel.“ (I4-2) blieb auf der Map grau, im Baum belegt es „Wenn ich anstehe, verpasse ich meinen Zug.“',
-      falsch: '„Dasselbe wie bei der Experience Map, nur mit anderen Karten“ – die Map fragt nach dem Moment, der Baum nach dem Bedürfnis. Neu ist die Ebene darüber: die übergeordnete Chance.',
-    },
-    kern: [
-      {
-        text: 'Gegenüberstellung des Kurses: Map gruppiert Knoten nach demselben Moment über alle Geschichten; Baum gruppiert Chancen innerhalb eines Astes nach demselben Bedürfnis oder als Geschwister unter einer übergeordneten Chance.',
-        quelle: `${TORRES}, S. 56, 83, 86–90; Gegenüberstellung: Kurs`,
-      },
-    ],
-    ueberleitung: 'Jetzt Ast für Ast: Geschwister finden, übergeordnete Chance ergänzen.',
+    ueberleitung: 'Was durchkommt, wird jetzt geordnet – Ast für Ast.',
   },
 
   struktur: {
@@ -227,7 +222,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Abbildung: Flugzeug und Zug bekommen „unterwegs schauen“ darüber.',
       '„Ergänzte übergeordnete Chancen sind erlaubt – sie folgen aus den Teilchancen.“',
       'Fragen: Wie lange darf der erste Baum dauern?',
-      'Erwartet: nicht 30 Minuten, aber auch nicht stundenlang feilen.',
+      '„Heute 22 Minuten: ein erster Entwurf, der mit jedem Interview wächst.“',
     ],
     kern: [
       {
@@ -235,18 +230,57 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 89–91`,
       },
       {
-        text: '„If you do your first tree in 30 minutes and think you are done, you are probably not thinking hard enough.“ Das Gegenteil, stundenlang am perfekten Baum zu feilen, ist auch falsch. „Do just enough to capture what you currently know.“',
-        quelle: `${TORRES}, S. 91`,
+        text: '„If you do your first tree in 30 minutes and think you are done, you are probably not thinking hard enough.“ Das Gegenteil, stundenlang am perfekten Baum zu feilen, ist auch falsch. „Do just enough to capture what you currently know.“ Und: „This isn’t a one-and-done exercise.“ – „You don’t have to do all of this work in your first draft.“ Heute 12 + 10 Minuten für Inventar und Struktur: ein erster Entwurf, überarbeitet nach dem Gegenlesen und bis Tag 4.',
+        quelle: `${TORRES}, S. 91; Zeitplan: Kurs`,
       },
     ],
-    ueberleitung: 'Jetzt die Anti-Muster: zwei ausführlich, vier im Überblick.',
+    ueberleitung: 'Probieren wir das an der Kaffeebar.',
+  },
+
+  beispiel: {
+    live: [
+      'Zeit: 4 min; pro Frage antwortet eine Person laut, reihum.',
+      'Fragen: I3s Chance „… ob es sich ausgeht“ – unter welchen Moment?',
+      'Fragen: „Geht sich ein Kaffee aus?“ und „Zug verpassen“ – dasselbe oder Geschwister?',
+      'Fragen: Fehlt über den drei Chancen in der Halle eine übergeordnete Chance?',
+      '„Unter ‚Ich bin im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
+    ],
+    uebung: { dauer: '4 min', form: 'zu dritt, reihum laut; erst antworten, dann aufdecken' },
+    miro: {
+      frame: 'Baum · Beispiel Kaffeebar',
+      schritte: [
+        '„Alle zu mir holen“ auf Baum · Beispiel Kaffeebar: Der Baum steht dort, die drei Fragen auf der Folie.',
+      ],
+    },
+    ablauf: {
+      schritte: [
+        'Pro Frage antwortet eine Person laut mit Begründung; die anderen zwei sagen „dafür“ oder „dagegen“. Erst dann den Schritt aufdecken.',
+        'Nach Frage 3 den letzten Schritt aufdecken: Was nur eine Person sagte, hängt nicht im Baum.',
+      ],
+      achten: [
+        'Welches Zitat zu welchem Moment gehört, ist Lesart des Kurses: Auf der Map von Tag 2 steht I3-2 in der Spalte „Anstehen und Warten“.',
+        'Keine übergeordnete Chance erfinden: Der Kaffeebar-Baum hat keine ergänzte Karte.',
+      ],
+      aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I3-2), Warten „Wann ist mein Kaffee fertig?“ (I3-3; Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein, die drei führen schon zum Moment hinauf (S. 90–91).',
+    },
+    verstaendnis: {
+      frage: 'Sind „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, verpasse ich meinen Zug.“ Geschwister?',
+      antwort: 'Ja: Man kann das eine erfüllen, ohne das andere zu erfüllen – beide sind eigene Bedürfnisse in der Halle (Torres S. 83). Unter dem Warte-Moment hängt nur „Wann ist mein Kaffee fertig?“: noch keine senkrechte Kette (S. 94), aber eine Frage fürs nächste Interview.',
+    },
+    kern: [
+      {
+        text: '„If it seems like it could live under more than one branch, reframe the opportunity to be more specific.“ Notfalls eine Chance je Moment. Geschwister gruppieren, bis eine Reihe zum Moment hinaufführt.',
+        quelle: `${TORRES}, S. 88, 90–91`,
+      },
+    ],
+    ueberleitung: 'Bevor ihr baut: die Anti-Muster, die im ersten Entwurf fast immer stecken.',
   },
 
   firmensicht: {
     live: [
       'Fragen: Wer würde „mehr Streaming-Abos“ je so sagen?',
       '„Haben wir das gehört? Bei ergänzten übergeordneten Chancen: Kann ich mir vorstellen, dass jemand das sagt?“',
-      'Kaffeebar-Probe: „mehr Umsatz am Morgen“ wäre Firmensicht.',
+      'Kaffeebar-Probe: „Ich wünsche mir mehr Kaffeebar-Umsatz“ (Tag 1) wäre Firmensicht.',
     ],
     verstaendnis: {
       frage: 'Woran erkennt ihr eine Chance aus Firmensicht?',
@@ -258,27 +292,6 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 91–92`,
       },
     ],
-    ueberleitung: 'Der zweite Fehler zeigt sich an der Form des Baums.',
-  },
-
-  senkrecht: {
-    live: [
-      'Abbildung: eine Kette, kein Baum.',
-      'Frag den Raum (Box unten): erst „dasselbe?“, dann „fehlen Geschwister?“.',
-      'Zettel „Nächstes Interview: …“ ist Kursregel; Torres: in Interviews erkunden.',
-      'Wenn hinten: überspringen, steht auf der Checkliste (anti-muster).',
-    ],
-    kern: [
-      {
-        text: 'Senkrechte Kette („vertical opportunities“): eine Chance mit nur einer Teilchance, die wieder nur eine Teilchance hat. Zwei Ursachen: Mehrere Interviews sagen dasselbe in anderen Worten – dann eine Chance daraus machen und den Rest streichen. Oder Geschwister fehlen: Löst jede Teilchance die übergeordnete Chance nur zum Teil, die fehlenden ergänzen; unbekannt, dann die übergeordnete Chance in den nächsten Interviews erkunden.',
-        quelle: `${TORRES}, S. 93–94`,
-      },
-    ],
-    verstaendnis: {
-      frage: 'Was prüft ihr bei Torres’ Kette – und in welcher Reihenfolge?',
-      antwort: 'Erst: Sagen die Stufen dasselbe in anderen Worten? Dann zu einer Chance zusammenfassen. Sonst: Löst jede Stufe die darüber nur zum Teil? Dann fehlen Geschwister (S. 93–94). Welcher Fall die Abbildung ist, sagt Torres nicht. Unsere Lesart: „Is this show any good?“ und „Will I like this show?“ sagen fast dasselbe; „I don\'t like it when I start a show and it isn\'t good.“ löst die mittlere nur zum Teil – Geschwister wie „Who is in this show?“ (S. 84–85) fehlen.',
-      falsch: '„Es fehlen Geschwister“ als einzige Prüfung – zuerst kommt die Frage, ob die Stufen dasselbe sagen.',
-    },
     ueberleitung: 'Vier weitere Anti-Muster, je mit einem Beispiel.',
   },
 
@@ -287,6 +300,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Fragen: Was stimmt an jedem Beispiel nicht?',
       'Aufdecken: Karte für Karte, dann die bessere Fassung sagen (Handout).',
       'Falle: „Glücksspiel“ als Einzelfall abtun – I4-2 stützt eine belegte Chance.',
+      'Bei Bedarf: senkrechte Kette – Checkliste Nr. 2, Abbildung im Handout.',
       'Wenn hinten: überspringen, steht auf der Checkliste (anti-muster).',
     ],
     verstaendnis: {
@@ -308,26 +322,12 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 94–95; Kaffeebar: baum.astro, drei-fragen und beispiel`,
       },
     ],
-    ueberleitung: 'So sieht der Baum der Kaffeebar nach fünf Interviews aus.',
-  },
-
-  beispiel: {
-    live: [
-      'Momente oben, darunter nur Chancen aus mindestens zwei Interviews.',
-      'Fragen: Sind die zwei Zeit-Chancen in der Halle Geschwister?',
-      'Aufdecken: Was nur eine Person sagte, bleibt draußen.',
-      '„Unter ‚Ich bin im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
-    ],
-    verstaendnis: {
-      frage: 'Sind „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, verpasse ich meinen Zug.“ Geschwister?',
-      antwort: 'Ja: Man kann das eine erfüllen, ohne das andere zu erfüllen – beide sind eigene Bedürfnisse in der Halle (Torres S. 83). Unter dem Warte-Moment hängt nur „Wann ist mein Kaffee fertig?“: noch keine senkrechte Kette (S. 94), aber eine Frage fürs nächste Interview.',
-    },
     ueberleitung: 'Wo ihr das baut: euer Baum auf Miro.',
   },
 
   'euer-baum': {
     live: [
-      'Zeit: 5 min Torres-Abbildung neben „Baum · Beispiel Kaffeebar“ zeigen.',
+      'Zeit: 1 min Ebenen an der Torres-Abbildung zeigen: Outcome, Momente, Chancen.',
       '„Der Baum von Tag 1 war unsere Vermutung. Die Wurzel bleibt, die Äste kommen aus fünf Interviews.“',
       '„‚Vorbestellen‘ ist gefallen: 3 von 5 entscheiden erst in der Halle (D4).“',
       'Zeit: 3 min Griffe vorführen – Cmd+D, Linie ziehen, eine Karte darüber.',
@@ -397,15 +397,11 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   'anti-muster': {
     live: [
-      'Timer 12 min starten; Reihenfolge Sofie, Joachim, Hewen.',
-      'Je Baum: alle in den Frame holen, 1 min still lesen.',
-      'Wem der Baum gehört: ein Satz, bei welchem Ast unsicher.',
+      'Timer 12 min; Sofie, Joachim, Hewen; je Baum 1 min still lesen.',
       'Runde S → J → H → S: Nächste*r 1–3, dritte Person 4–6.',
       'Zeigen, Nummer nennen, fragen – keinen Ersatztext vorschlagen.',
       '„Nicht verteidigen. Sag laut: ändern, Zettel oder lassen.“',
       'Bei 8:00 und 4:00 Rest: wechseln, auch mitten im Satz.',
-      'Folie vier-muster übersprungen? Dann 3 bis 6 kurz erklären.',
-      'Falle: Gefühl als Chance – nach der Ursache fragen.',
     ],
     kern: [
       {
@@ -418,6 +414,10 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       },
     ],
     fragen: [
+      {
+        frage: 'Bei Bedarf – senkrechte Kette (Handout, Abbildung S. 93): Was prüft ihr, und in welcher Reihenfolge?',
+        antwort: 'Erst: Sagen die Stufen dasselbe in anderen Worten? Dann zu einer Chance zusammenfassen. Sonst: Löst jede Stufe die darüber nur zum Teil? Dann fehlen Geschwister (S. 93–94). Welcher Fall die Abbildung ist, sagt Torres nicht. Unsere Lesart: „Is this show any good?“ und „Will I like this show?“ sagen fast dasselbe; „I don\'t like it when I start a show and it isn\'t good.“ löst die mittlere nur zum Teil – Geschwister wie „Who is in this show?“ (S. 84–85) fehlen. Häufig falsch: nur „Es fehlen Geschwister“ prüfen – zuerst kommt die Frage, ob die Stufen dasselbe sagen.',
+      },
       {
         frage: 'Was ist an „Ich will Werbung vorspulen“ falsch?',
         antwort: 'Es lässt nur eine Lösung zu, ist also eine Lösung statt einer Chance. Die Chance dahinter, „Ich mag keine Werbung“, lässt mehrere zu (Torres S. 94–95).',
