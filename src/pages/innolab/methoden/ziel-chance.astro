@@ -6,10 +6,15 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
+import Fluss from '../../../components/Fluss.astro';
+import Callout from '../../../components/Callout.astro';
 import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import Baum from '../../../components/bild/Baum.astro';
+import Matrix2x2 from '../../../components/bild/Matrix2x2.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import { KAFFEEBAR_BAUM_INTERVIEWS } from '../../../components/innolab-beispiel';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Harvard Business Review, Januar 2002';
@@ -24,51 +29,112 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
   <Folie>
     <h2 id="warum">Eine Chance zur Zeit</h2>
     <p class="folie-satz">„Ihr seid nie nur ein Feature vom Erfolg entfernt – und werdet es nie sein.“</p>
+    {/* Dieselbe Reihe steht auf hmw.astro#rahmen, dort mit hervor={[2]}. */}
+    <Fluss label="Vom Baum zur Idee: Baum, Ziel-Chance, How-Might-We-Frage, Ideation" hervor={[1]} knoten={[
+      { t: 'Baum', sub: 'viele Chancen, geordnet' },
+      { t: 'Ziel-Chance', sub: 'eine – ein Blatt' },
+      { t: 'How Might We', sub: 'eine Frage dazu' },
+      { t: 'Ideation', sub: '15 bis 20 Ideen, drei gehen weiter' },
+    ]} />
     <ul class="gross">
-      <li data-schritt><strong>Ziel-Chance</strong> (target opportunity): die eine Chance im Baum, für die ihr als Nächstes mehrere Lösungen sucht – immer ein Blatt (leaf).</li>
       <li data-schritt><strong>Build Trap:</strong> Erfolg an ausgelieferten Features messen statt an ihrer Wirkung.</li>
-      <li data-schritt><strong>Strategie</strong> entsteht im Chancenraum: welche Chance, für wen – eine nach der anderen, Wert in kleinen Schritten.</li>
+      <li data-schritt><strong>Eine zur Zeit:</strong> Raum, mehrere Lösungen zu vergleichen – und Wert in kleinen Schritten.</li>
     </ul>
     <div class="nur-handout">
+      <p>Torres beginnt das Kapitel mit einer Szene: Sie steht auf der Bühne der Davies Symphony Hall in San Francisco, letzter Vortrag des Tages bei „Mind the Product“. „You are never one feature away from success…“ – der Saal jubelt. Sie wartet, bis es still ist: „…and you never will be.“ (Teresa Torres, „Continuous Discovery Habits“, 2021, S. 96). Ihr Punkt: „Product strategy happens in the opportunity space.“ (S. 97).</p>
+      <p>Drei Gründe für eine Chance zur Zeit (S. 97–98): Ihr liefert Wert nach und nach, statt zu viel auf einmal und zu spät. Ihr habt Raum, mehrere Lösungen für dieselbe Chance zu vergleichen. Und ihr begrenzt die laufende Arbeit wie bei Kanban: Eine Literaturübersicht der Universität Oulu fand bei Software-Teams mit Kanban bessere Qualität, verlässlichere Lieferung und weniger Beschwerden – „limiting work in progress was a key component of this success“ (S. 98).</p>
       <p>Teresa Torres zitiert Melissa Perri: Die „Build Trap“ ist, Erfolg an Outputs statt Outcomes zu messen. Die meisten Gespräche über Produkte finden im Lösungsraum statt – Roadmaps, Backlogs, Releases. Produktstrategie entsteht aber im Chancenraum, aus den Entscheidungen, welche Outcomes, welche Kundschaft und welche Chancen ein Team verfolgt ({TORRES}, S. 96–97).</p>
       <p>Die Ziel-Chance ist die eine Chance, für die ihr als Nächstes Lösungen sucht. Torres wählt dafür immer ein Blatt, also eine Chance, unter der (noch) keine Teilchance hängt: „You always want to choose a leaf-node opportunity“ (S. 99). Wer an vielen Chancen zugleich arbeitet, liefert wie im Wasserfall zu viel auf einmal und zu spät. Eine Chance zur Zeit lässt Raum, mehrere Lösungen dafür zu vergleichen, und entspricht dem Kanban-Prinzip, die laufende Arbeit zu begrenzen (S. 97–98).</p>
     </div>
   </Folie>
 
   <Folie>
+    <h2 id="ob-oder-welche">Nicht ob – sondern welche</h2>
+    <p class="folie-satz">„Sollen wir das machen?“ führt zu schlechten Entscheidungen – vergleicht stattdessen.</p>
+    <div class="gegenueber">
+      <Callout type="warn" title="Ob oder ob nicht – was ist daran schwach?"><p>„Sollen wir ‚Wenn ich anstehe, verpasse ich meinen Zug.‘ angehen?“</p></Callout>
+      <div data-schritt><Callout type="tip" title="Welche zuerst"><p>„Welche dieser drei Chancen in der Halle ist jetzt am wichtigsten?“</p></Callout></div>
+    </div>
+    <p data-schritt><strong>Bestätigungsfehler</strong> und <strong>vergessene Opportunitätskosten</strong> – darum immer eine Gruppe von Geschwistern gegeneinander.</p>
+    <p class="nur-handout">Torres übernimmt von Chip und Dan Heath („Decisive“) den Rat, „whether or not“-Entscheidungen zu vermeiden: Wer auf ein Bedürfnis nach dem anderen reagiert, fragt jedes Mal „Should we stop everything and fix this problem?“ – „This is perhaps the most common mistake product trios make.“ ({TORRES}, S. 30). Stattdessen: „Which of these customer needs is most important for us to address right now?“ (S. 31). Beim Priorisieren heißt das: nie „Should we pursue this opportunity?“, denn „That’s a ‚whether or not‘ question that leads to poor decisions“ – sie macht anfällig für Bestätigungsfehler und lässt die Opportunitätskosten vergessen (S. 99). Die Kaffeebar-Sätze sind unser Beispiel.</p>
+  </Folie>
+
+  <Folie>
     <h2 id="baum">Den Baum hinunter</h2>
     <p class="folie-satz">Geschwister vergleichen, einen Ast wählen, bis zum Blatt.</p>
-    <MiroFrame name="Baum · Beispiel Kaffeebar" />
     <BildText>
       <BuchAbbildung src="/quellen/torres/ziel-chance.jpg" alt="Baum mit Outcome oben; die beiden obersten Chancen sind als Gruppe umrahmt („Assess & Prioritize“), dann die Teilchancen der gewählten Chance, dann deren Teilchancen, beschriftet „This is a leaf node“" quelle={`Ebene für Ebene vergleichen. ${TORRES}, S. 98.`} />
       <ul>
-        <li data-schritt><strong>Nicht fragen</strong> „Sollen wir das machen?“ – sondern: Welche dieser Geschwister zuerst?</li>
+        <li data-schritt><strong>Oberste Ebene zuerst:</strong> bei euch die Momente der Experience Map.</li>
         <li data-schritt><strong>Ast gewählt:</strong> Die anderen Äste dürft ihr vorerst ignorieren.</li>
-        <li data-schritt><strong>Wiederholen</strong>, bis unter der Chance keine Teilchance mehr hängt: ein Blatt.</li>
+        <li data-schritt><strong>Wiederholen</strong> bis zum Blatt – einer Chance ohne Teilchance.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
       <p>„Sollen wir diese Chance verfolgen?“ ist eine Ob-oder-ob-nicht-Frage: Sie macht anfällig für Bestätigungsfehler und vergisst die Opportunitätskosten. Torres vergleicht deshalb immer eine Gruppe von Geschwistern miteinander – zuerst die obersten Chancen, bei uns die Momente der Experience Map. Ist die Struktur gut, liegt die wirkungsvollste Chance unter dem gewählten Ast, und alle anderen Äste fallen für diese Entscheidung weg. Dann dasselbe mit den Teilchancen, bis ihr bei einem Blatt ankommt, einer Chance ohne Teilchancen. Ein Blatt ist nicht unbedingt leicht; es heißt nur, dass ihr noch keine Teilchancen darunter kennt ({TORRES}, S. 98–99).</p>
+      <p>Eine einzige Entscheidung auf der obersten Ebene erspart euch, alle anderen Äste zu bewerten: „That’s the power of the tree structure.“ (S. 99)</p>
     </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="bauchwahl">Welcher Ast zuerst?</h2>
+    <p class="folie-satz">Drei Momente der Kaffeebar – wählt einen, mit einem Satz warum.</p>
+    <Baum schmal momente knoten={KAFFEEBAR_BAUM_INTERVIEWS} label="Baum der Kaffeebar nach fünf Interviews: Outcome, darunter die drei Momente (Ich komme in die Halle und entscheide; Ich stehe an und warte auf meinen Kaffee; Ich bin im Zug), darunter ihre Chancen" />
+    <p>Reihum, laut: ein Moment, ein Satz warum. Keine Auflösung – die kommt auf den nächsten zwei Folien.</p>
+    <p class="nur-handout">Die Wahl der Kaffeebar steht auf der Folie <a href="#beispiel">„Am Beispiel“</a>.</p>
   </Folie>
 
   <Folie>
     <h2 id="linsen">Vier Linsen</h2>
     <p class="folie-satz">Jede Linse zeigt die Wirkung aus einem anderen Blickwinkel.</p>
-    <ol class="gross">
-      <li data-schritt><strong>Größe:</strong> Wie viele sind betroffen – und wie oft?</li>
-      <li data-schritt><strong>Markt:</strong> Muss man das haben, oder hebt es euch ab? Welche Trends?</li>
-      <li data-schritt><strong>Eigene Lage:</strong> Passt es zu Ziel und Werten? Was könnt ihr besonders gut?</li>
-      <li data-schritt><strong>Kundschaft:</strong> Wie wichtig ist es – und wie zufrieden sind sie mit dem, was es heute gibt?</li>
-    </ol>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Linse</th><th>Frage</th><th>Beispiel bei Torres (S. 100–101)</th></tr></thead>
+        <tbody>
+          <tr data-schritt><th>Größe</th><td>Wie viele sind betroffen – und wie oft?</td><td>Alle, aber selten, ist etwas anderes als einige, aber ständig.</td></tr>
+          <tr data-schritt><th>Markt</th><td>Pflicht (table stakes) oder Unterscheidung? Welche Trends?</td><td>Immer mehr kündigen ihr Kabelfernsehen: Dann zählt „I want to watch live sports“.</td></tr>
+          <tr data-schritt><th>Eigene Lage</th><td>Passt es zu Ziel und Werten? Was könnt ihr besonders gut?</td><td>„Google might choose to address an opportunity that Apple would never touch.“</td></tr>
+          <tr data-schritt><th>Kundschaft</th><td>Wie wichtig – und wie zufrieden mit dem, was es heute gibt?</td><td>Vorrang hat, was wichtig ist und schlecht gelöst.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-schritt><strong>Eure Gründe von eben:</strong> Welche Linse war das?</p>
     <div class="nur-handout">
       <p>Torres' vier Gruppen von Kriterien ({TORRES}, S. 99–101):</p>
       <ul>
         <li><strong>Opportunity Sizing:</strong> Wie viele Kund*innen betrifft die Chance, wie oft? Nicht genau messen, sondern Geschwister grob gegeneinander schätzen – aus Daten, Support-Anfragen, kleinen Umfragen oder euren Snapshots. „Wie viele“ und „wie oft“ auseinanderhalten: Alle, aber selten, ist etwas anderes als einige, aber ständig.</li>
-        <li><strong>Marktfaktoren:</strong> Manche Chancen sind Pflicht („table stakes“), andere heben euch vom Wettbewerb ab. Dazu äußere Trends, Chancen wie Risiken.</li>
-        <li><strong>Unternehmensfaktoren:</strong> Passt die Chance zu Vision, Mission und Zielen, widerspricht sie euren Werten? Was kostet sie an Überzeugungsarbeit? Wo liegen eure Stärken? Für euch heißt das: euer Produkt-Brief und was ihr drei könnt.</li>
+        <li><strong>Marktfaktoren:</strong> Manche Chancen sind Pflicht („table stakes“), andere heben euch vom Wettbewerb ab. Dazu äußere Trends, Chancen wie Risiken. „A missing table stake could torpedo sales, while a strategic differentiator could open up new customer segments.“ (S. 100)</li>
+        <li><strong>Unternehmensfaktoren:</strong> Passt die Chance zu Vision, Mission und Zielen, widerspricht sie euren Werten? Was kostet sie an Überzeugungsarbeit? Wo liegen eure Stärken? „Google might choose to address an opportunity that Apple would never touch.“ (S. 100) Für euch heißt das: euer Produkt-Brief und was ihr drei könnt.</li>
         <li><strong>Kundenfaktoren:</strong> Wie wichtig ist die Chance der Kundschaft, und wie zufrieden ist sie mit heutigen Lösungen? Vorrang hat, was wichtig ist und schlecht gelöst. Torres nennt als Quelle dieser Matrix Dan Olsen („The Lean Product Playbook“) und Chen et al. (2007).</li>
       </ul>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
+    <p class="folie-satz">Ast „Ich komme in die Halle und entscheide.“, Blatt „Geht sich ein Kaffee noch aus?“</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Linse</th><th>Vorn liegt</th><th>Warum</th></tr></thead>
+        <tbody>
+          <tr data-schritt><th>Größe</th><td>unentschieden</td><td>„Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) und „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2): je drei Interviews.</td></tr>
+          <tr data-schritt><th>Markt</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Das Zugrisiko deckt der Automat schon ab (I1-3, I4-3), das Nichtwissen niemand.</td></tr>
+          <tr data-schritt><th>Eigene Lage</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Die Bar kennt ihre Wartezeit; eine kürzere Schlange bräuchte mehr Personal (unsere Annahme).</td></tr>
+          <tr data-schritt><th>Kundschaft</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Wichtig, und heute schätzen sie nach Augenschein oder lassen es (I2-4, I5-2).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p data-schritt><strong>Kein Sieger bei der Größe</strong> – Markt und eigene Lage geben den Ausschlag. Entschieden hat das Gespräch.</p>
+    <div class="nur-handout">
+      <p>Verglichen wurden zuerst die drei Momente. „Ich komme in die Halle und entscheide.“ gewinnt bei der Größe (dort fällt bei den meisten die Entscheidung) und bei der Kundschaft (sie entscheiden ohne zu wissen, ob es reicht, und schätzen nach Augenschein oder lassen es). Unter dem Ast stehen drei Geschwister; „Geht sich ein Kaffee noch aus?“ ist ein Blatt und wird die Ziel-Chance.</p>
+      <p><strong>Zuerst der Ast.</strong></p>
+      <ul>
+        <li><strong>Größe:</strong> Drei von fünf sagen, sie entscheiden erst in der Halle (I2-4, I3-1, I5-3), bei I1 steht es in der Notiz – jeden Morgen.</li>
+        <li><strong>Markt:</strong> Der Automat steht daneben und ist schnell (I1-3, I4-3).</li>
+        <li><strong>Eigene Lage:</strong> Die Bar kennt ihre Wartezeit, der Automat nicht.</li>
+        <li><strong>Kundschaft:</strong> wichtig, denn sie entscheiden blind (I3-2); heute schätzen sie nach Augenschein oder lassen es (I2-4, I5-2).</li>
+      </ul>
+      <p>Die meisten Tief-Marken der Map liegen beim Anstehen und Warten (I3-3, I5-6), je eine in der Halle (I2-1) und auf dem Umweg (I4-4). Ein Gefühl ist ein Wegweiser zur Ursache ({TORRES}, S. 95): Hinter I3-3 steht, nicht zu wissen, wie lange es dauert (I3-2). Dieses Nichtwissen ist im Baum je Moment eine eigene Chance (S. 88): beim Warten „Wann ist mein Kaffee fertig?“, in der Halle „Geht sich ein Kaffee noch aus?“. In der Halle trifft es mehr Geschichten, und dort fällt die Entscheidung. Darum liegt die Ziel-Chance dort und nicht am Moment mit den meisten Marken (unsere Lesart).</p>
     </div>
   </Folie>
 
@@ -80,7 +146,27 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
       <li data-schritt>Kein klarer Sieger? Normal. Die Linsen <strong>füttern das Gespräch</strong>.</li>
       <li data-schritt>Eine Formel täuscht eine einzig richtige Antwort vor – und ihr hört auf zu denken.</li>
     </ul>
-    <p class="nur-handout">Torres warnt ausdrücklich davor, jede Chance pro Linse zu bewerten und nach Summe zu sortieren: Das kostet viel Arbeit, steckt voller Annahmen und führt nicht zu besseren Entscheidungen. Wer eine unscharfe Entscheidung in eine Formel verwandelt, behandelt ein schlecht strukturiertes Problem wie ein gut strukturiertes, glaubt an die eine richtige Antwort und folgt nur noch den Zahlen. Besser: datengestützt, aber subjektiv vergleichen und Raum für Zweifel lassen – mit Karl Weick die Balance zwischen Wissen und Zweifel, damit ihr später umsteuert, wenn ihr falsch lagt ({TORRES}, S. 101–102).</p>
+    <div class="nur-handout">
+      <p>Torres warnt ausdrücklich davor, jede Chance pro Linse zu bewerten und nach Summe zu sortieren: Das kostet viel Arbeit, steckt voller Annahmen und führt nicht zu besseren Entscheidungen. Wer eine unscharfe Entscheidung in eine Formel verwandelt, behandelt ein schlecht strukturiertes Problem wie ein gut strukturiertes, glaubt an die eine richtige Antwort und folgt nur noch den Zahlen. Besser: datengestützt, aber subjektiv vergleichen und Raum für Zweifel lassen – mit Karl Weick die Balance zwischen Wissen und Zweifel, damit ihr später umsteuert, wenn ihr falsch lagt ({TORRES}, S. 101–102).</p>
+      <p>„When we turn a subjective, messy decision into a quantitative math formula, we are treating an ill-structured problem as if it were a well-structured problem.“ (S. 102). Und: „There may not be a clear winner, and that’s okay.“ – „Use the lenses to fuel your conversation.“ (S. 101).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="ulwick-outcomes">Ulwick: nach dem Ergebnis fragen, nicht nach der Lösung</h2>
+    <p class="folie-satz">„Customers only know what they have experienced.“</p>
+    <Fluss label="Vom Wunsch zum Outcome-Satz: Wunsch, Warum, Richtung und Maßeinheit, Outcome-Satz, bestätigen lassen" hervor={[3]} knoten={[
+      { t: 'Wunsch', sub: '„easy to maneuver“' },
+      { t: 'Warum?', sub: 'schnell durch gewundene Gefäße kommen' },
+      { t: 'Richtung + Maßeinheit', sub: 'minimize · time' },
+      { t: 'Outcome-Satz', sub: '„minimize the time it takes to maneuver through a winding vessel“' },
+      { t: 'Bestätigen lassen', sub: 'Trifft es das?' },
+    ]} />
+    <p data-schritt><strong>Jet Ski:</strong> Gefragt, was besser werden soll, wünschten sich die Fahrer*innen Polster zum Stehen. Den Sitz bauten andere.</p>
+    <div class="nur-handout">
+      <p>Anthony Ulwick: Wer Kund*innen nach Lösungen fragt, bekommt, was sie schon kennen. Kawasaki beherrschte den Markt für Wassersport-Fahrzeuge und fragte, was die Fahrt auf dem Jet Ski verbessern würde. Die Antwort: mehr Polster an den Seiten, damit das Stehen bequemer wird. Nach einem Sitz fragte niemand. Kawasaki lieferte die Polster; andere Hersteller entwickelten Modelle zum Sitzen und verdrängten Kawasaki von der Spitze (Anthony W. Ulwick, „Turn Customer Input into Innovation“, Harvard Business Review, Januar 2002, S. 92–93). Zweites Beispiel: Mitte der 1980er ergaben Marktstudien von Ford, Chrysler und GM, dass die Kundschaft Becherhalter wollte. Japanische Hersteller hatten sie seit Jahren; als die amerikanischen nachzogen, gewann keiner einen Vorsprung – die Kundschaft sagte nur: „it’s about time.“ (S. 93).</p>
+      <p>Ulwicks Ausweg: nach Outcomes fragen – was das Produkt für die Menschen leisten soll. „What form the solutions take should be up to you, and you alone.“ (S. 92). Im Interview übersetzt die Moderation jeden Wunsch in einen Satz mit Richtung (minimize, increase) und Maßeinheit (time, number, frequency) und lässt ihn bestätigen. Kardiolog*innen wollten einen Ballon, der „easy to maneuver“ ist; auf die Frage warum sagten sie, sie wollten schnell durch gewundene Gefäße kommen. Daraus wurde „minimize the time it takes to maneuver through a winding vessel“ (S. 95). Denselben Schritt kennt ihr von den Snapshots: „If you had that feature, what would that do for you?“ (Torres, S. 69).</p>
+    </div>
   </Folie>
 
   <Folie>
@@ -96,40 +182,64 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>Anthony Ulwick beschreibt 2002, wie der Medizintechnik-Hersteller Cordis seine Angioplastie-Ballons neu ausrichtete. Kund*innen sollen nicht nach Lösungen gefragt werden – die kennen nur, was sie schon erlebt haben –, sondern nach Outcomes: was ein Produkt für sie leisten soll. Ein Moderator übersetzt Wünsche wie „leicht zu steuern“ in Sätze mit Richtung und Maßeinheit („minimize the time it takes to maneuver through a winding vessel“). Rund 30 Interviews sammeln die Outcomes, eine quantitative Umfrage bewertet sie ({ULWICK}, S. 92–96).</p>
+      <p>Ulwicks Fall ist der Medizintechnik-Hersteller Cordis: Rund 30 Interviews sammelten die Outcomes seiner Angioplastie-Ballons, eine quantitative Umfrage bewertete sie ({ULWICK}, S. 94–96).</p>
       <p>Die Formel im Kasten „The Opportunity Algorithm“: Wichtigkeit plus der Teil der Wichtigkeit, den heutige Lösungen nicht erfüllen; die Klammer wird nie negativ, Überzufriedenheit senkt die Wichtigkeit nicht. Gegen reine Lückenanalyse: Die Outcomes 2 und 5 haben beide eine Lücke von 4,1, aber Werte von 12,4 und 9,2, weil das wichtigere vorgeht. Ulwick nennt das Ergebnis „highly accurate“ und sagt, Unternehmen beseitigten damit das Raten (S. 96–97). Torres nimmt dieselben zwei Fragen als Kundenlinse – und rechnet bewusst nicht.</p>
+      <p>Cordis wählte „minimize the recurrence of a blockage“ als größte Chance, setzte sich 20 % Restenose als Ziel und entwickelte den Stent. Der Marktanteil bei Angioplastie-Ballons in den USA stieg von unter 1 % auf fast 10 % (S. 96–97).</p>
     </div>
   </Folie>
 
   <Folie>
-    <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
-    <p class="folie-satz">Ast „Ich komme in die Halle und entscheide.“, Blatt „Geht sich ein Kaffee noch aus?“</p>
+    <h2 id="beispiel-ulwick">Kaffeebar: dieselben Geschwister als Rechnung</h2>
+    <p class="folie-satz">Die zwei Fragen der Kundenlinse, diesmal mit Zahlen – geschätzt, nicht erhoben.</p>
+    <Matrix2x2 label="Kundenlinse der Kaffeebar: nach oben wichtiger, nach rechts zufriedener mit heute; oben links, wichtig und schlecht gelöst, liegt „Geht sich ein Kaffee noch aus?“"
+      x={{ label: 'Zufriedenheit mit heute', links: 'niedrig', rechts: 'hoch' }}
+      y={{ label: 'Wichtigkeit', unten: 'niedrig', oben: 'hoch' }}
+      hervor="ol"
+      felder={['wichtig, schlecht gelöst', 'wichtig, gut gelöst', '', '']}
+      punkte={[
+        { t: '„Geht sich ein Kaffee noch aus?“', x: .2, y: .9, hervor: true },
+        { t: '„Wenn ich anstehe, verpasse ich meinen Zug.“', x: .6, y: .9 },
+        { t: '„Schnell geht nur der Automat.“', x: .5, y: .6 },
+      ]} />
     <ul>
-      <li data-schritt><strong>Größe:</strong> Drei von fünf sagen, sie entscheiden erst in der Halle (I2-4, I3-1, I5-3), bei I1 steht es in der Notiz – jeden Morgen.</li>
-      <li data-schritt><strong>Markt:</strong> Der Automat steht daneben und ist schnell (I1-3, I4-3).</li>
-      <li data-schritt><strong>Eigene Lage:</strong> Die Bar kennt ihre Wartezeit, der Automat nicht.</li>
-      <li data-schritt><strong>Kundschaft:</strong> wichtig, denn sie entscheiden blind (I3-2); heute raten oder verzichten sie (I2-1, I5-2).</li>
-      <li data-schritt><strong>Ulwick, geschätzt</strong> (W + (W − Z)):<ul><li>„Geht sich ein Kaffee noch aus?“ 9 + (9 − 2) = 16</li><li>„Wenn ich anstehe, verpasse ich meinen Zug.“ 9 + (9 − 6) = 12</li><li>„Schnell geht nur der Automat.“ 6 + (6 − 5) = 7</li></ul></li>
+      <li data-schritt>„Geht sich ein Kaffee noch aus?“ 9 + (9 − 2) = 16</li>
+      <li data-schritt>„Wenn ich anstehe, verpasse ich meinen Zug.“ 9 + (9 − 6) = 12</li>
+      <li data-schritt>„Schnell geht nur der Automat.“ 6 + (6 − 5) = 7</li>
     </ul>
     <div class="nur-handout">
-      <p>Verglichen wurden zuerst die drei Momente. „Ich komme in die Halle und entscheide.“ gewinnt bei der Größe (dort fällt bei den meisten die Entscheidung) und bei der Kundschaft (sie entscheiden ohne zu wissen, ob es reicht, und raten oder verzichten). Unter dem Ast stehen drei Geschwister; „Geht sich ein Kaffee noch aus?“ ist ein Blatt und wird die Ziel-Chance.</p>
-      <p>Die meisten Tief-Marken der Map liegen beim Anstehen und Warten (I3-3, I5-6), je eine in der Halle (I2-1) und auf dem Umweg (I4-4). Ein Gefühl ist ein Wegweiser zur Ursache ({TORRES}, S. 95): Hinter I3-3 steht, nicht zu wissen, wie lange es dauert (I3-2). Dieses Nichtwissen ist im Baum je Moment eine eigene Chance (S. 88): beim Warten „Wann ist mein Kaffee fertig?“, in der Halle „Geht sich ein Kaffee noch aus?“. In der Halle trifft es mehr Geschichten, und dort fällt die Entscheidung. Darum liegt die Ziel-Chance dort und nicht am Moment mit den meisten Marken (unsere Lesart).</p>
-      <p>Die Outcome-Sätze nach Ulwick, je mit Richtung und Maßeinheit ({ULWICK}, S. 95): „Minimiere die Zeit, bis ich weiß, ob sich ein Kaffee bis zur Abfahrt ausgeht“ (Wichtigkeit 9, Zufriedenheit 2), „Minimiere das Risiko, wegen des Kaffees meinen Zug zu verpassen“ (9 und 6) und „Minimiere die Zeit bis zu einem Kaffee, der mir schmeckt“ (6 und 5). Die Werte sind unsere Schätzung aus fünf Snapshots, keine Umfrage. Der Zug geht vor (I2-2, I3-4, I4-2) – darum bei beiden ersten Sätzen Wichtigkeit 9. Den Zug schützen sie heute selbst: Sie gehen oder folgen einer festen Regel (I2-2, I3-4) – darum Zufriedenheit 6. Genau dieses Verzichten auf Verdacht ist aber der Schmerz der Ziel-Chance (I5-2): Sie wissen nicht, ob es gereicht hätte – darum dort Zufriedenheit 2. „Wenn ich anstehe, verpasse ich meinen Zug.“ stützen so viele Interviews wie die Ziel-Chance (je drei). Den Unterschied machen die anderen Linsen ({TORRES}, S. 100–101): Das Zugrisiko deckt der Automat schon ab, das Nichtwissen niemand (Markt); die Bar kennt ihre Wartezeit, eine kürzere Schlange bräuchte mehr Personal (Eigene Lage, unsere Annahme); und ungelöst ist heute das Nichtwissen, nicht das Verpassen (Kundschaft).</p>
+      <p>Die Outcome-Sätze nach Ulwick, je mit Richtung und Maßeinheit ({ULWICK}, S. 95): „Minimiere die Zeit, bis ich weiß, ob sich ein Kaffee bis zur Abfahrt ausgeht“ (Wichtigkeit 9, Zufriedenheit 2), „Minimiere das Risiko, wegen des Kaffees meinen Zug zu verpassen“ (9 und 6) und „Minimiere die Zeit bis zu einem Kaffee, der mir schmeckt“ (6 und 5). Die Werte sind unsere Schätzung aus fünf Snapshots, keine Umfrage. Der Zug geht vor (I2-2, I3-4, I4-2) – darum bei beiden ersten Sätzen Wichtigkeit 9. Den Zug schützen sie heute selbst: Sie gehen oder folgen einer festen Regel (I2-2, I3-4) – darum Zufriedenheit 6. Bei der Ziel-Chance lassen sie den Kaffee, sobald es voll ist (I5-2, I3-4); ob es gereicht hätte, erfahren sie nicht (unsere Lesart) – darum dort Zufriedenheit 2. „Wenn ich anstehe, verpasse ich meinen Zug.“ stützen so viele Interviews wie die Ziel-Chance (je drei). Den Unterschied machen die anderen Linsen ({TORRES}, S. 100–101): Das Zugrisiko deckt der Automat schon ab, das Nichtwissen niemand (Markt); die Bar kennt ihre Wartezeit, eine kürzere Schlange bräuchte mehr Personal (Eigene Lage, unsere Annahme); und ungelöst ist heute das Nichtwissen, nicht das Verpassen (Kundschaft).</p>
+      <p>Die Matrix ist unsere Darstellung; Torres beschreibt dieselben zwei Fragen als Kundenlinse (S. 101, Fußnote 31), Ulwick rechnet damit (S. 96–97).</p>
     </div>
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (60 min)</h2>
+    <h2 id="zweiwegtuer">Eine Tür, durch die ihr zurückkönnt</h2>
+    <p class="folie-satz">Die Ziel-Chance ist eine umkehrbare Entscheidung – wählt und lernt.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Einwegtür:</strong> schwer umkehrbar – langsam und vorsichtig entscheiden.</li>
+      <li data-schritt><strong>Zweiwegtür:</strong> umkehrbar – schneller lernen durch Handeln als durch Nachdenken.</li>
+      <li data-schritt>Wer eine Entscheidung für <strong>umkehrbar</strong> hält, prüft sie danach kritischer.</li>
+      <li data-schritt><strong>Darum heute mit Uhr:</strong> 30 Minuten, dann steht die Wahl.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Torres greift Jeff Bezos' Unterscheidung zwischen schwer und leicht umkehrbaren Entscheidungen auf (Brief an die Aktionär*innen 2015). Eine Ziel-Chance zu wählen ist trotz ihrer Bedeutung eine Zweiwegtür: Ihr verpflichtet euch nur, sie in den nächsten Tagen weiter zu erkunden. Zeigt sich, dass sie weniger wichtig ist oder die Lösungen schwerer sind als gedacht, wählt ihr eine andere. In Studien von Lottie Bullens und Kolleg*innen sahen Menschen, die eine Entscheidung für umkehrbar hielten, danach eher deren Schwächen und die Stärken der Alternativen – wer sie für endgültig hielt, nur noch das Gute an der eigenen Wahl ({TORRES}, S. 102–103).</p>
+      <p>Ihr legt euch nicht fest, die Chance zu lösen: „You are simply committing to exploring it further with your discovery work.“ (S. 103). Gegen das Aufschieben hilft eine Frist: „Give yourself an hour or two or, at most, a day or two.“ (S. 104).</p>
+      <p>Drei Anti-Muster: die Entscheidung aufschieben, bis mehr Daten da sind (lieber zeitlich begrenzen); nur eine Linse benutzen; vom gewünschten Ergebnis rückwärts argumentieren (S. 104).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
     <p class="folie-satz">Erst die Linsen, dann die Formel, dann vergleichen.</p>
     <MiroFrame name="T3 · 1 · Ziel-Chance" />
     <ol class="gross">
-      <li data-schritt><strong>Ast wählen, allein:</strong> die Momente durch die vier Linsen, je ein Satz. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Bis zum Blatt:</strong> dasselbe mit den Teilchancen des gewählten Asts. <Timer minuten={5} /></li>
-      <li data-schritt><strong>Ulwick:</strong> Geschwister als Outcome-Sätze, Wichtigkeit und Zufriedenheit schätzen, rechnen. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Zu dritt:</strong> Jede*r begründet die Wahl – stimmen Linsen und Formel überein? <Timer minuten={15} /></li>
-      <li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum markieren, eine Zeile im Entscheidungslog. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Ast wählen, allein:</strong> die Momente durch die vier Linsen, je ein Satz. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Bis zum Blatt:</strong> dasselbe mit den Teilchancen des gewählten Asts. <Timer minuten={4} /></li>
+      <li data-schritt><strong>Ulwick:</strong> die Geschwister als Outcome-Sätze (Richtung + Maßeinheit), Wichtigkeit und Zufriedenheit schätzen, rechnen. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Zu dritt, je drei Minuten:</strong> Wahl begründen – stimmen Linsen und Formel überein? <Timer minuten={9} /></li>
+      <li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum markieren, eine Zeile im Entscheidungslog. <Timer minuten={3} /></li>
     </ol>
-    <p class="nur-handout">Dazu zehn Minuten Theorie und fünf Minuten Kaffeebar. Die Wahl ist zeitlich begrenzt: Torres empfiehlt, die Entscheidung zu terminieren, statt auf mehr Daten zu warten ({TORRES}, S. 104).</p>
+    <p class="nur-handout">Dazu gut 20 Minuten Theorie mit der Kaffeebar. <code>docs/ZIEL-CHANCE.md</code> füllt ihr im Raum so weit, wie ihr kommt; den Rest und die Prüfung mit Claude bis Tag 4. Die Wahl ist zeitlich begrenzt: Torres empfiehlt, die Entscheidung zu terminieren, statt auf mehr Daten zu warten ({TORRES}, S. 104).</p>
   </Folie>
 
   <Folie>
@@ -142,20 +252,6 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
       <li data-schritt><strong>Gemeinsam:</strong> Beide fragen nach Bedürfnissen, nicht nach Lösungen.</li>
     </ul>
     <p class="nur-handout">Ulwick sammelt Outcomes in rund 30 Interviews und bewertet sie in einer quantitativen Umfrage ({ULWICK}, S. 95–96); erst dann trägt die Rechnung. Mit fünf Interviews pro Produkt rechnet ihr mit eigenen Schätzungen – genau die Lage, in der Torres vor dem „Mathematisieren“ warnt ({TORRES}, S. 101–102). Einig sind sich beide im Ausgangspunkt: Kund*innen liefern Bedürfnisse, nicht Lösungen (Ulwick S. 92, Torres S. 69). Habt ihr später eine größere Zielgruppe und eine Umfrage, ist Ulwicks Formel ein Werkzeug, das ihr kennt.</p>
-  </Folie>
-
-  <Folie>
-    <h2 id="zweiwegtuer">Eine Tür, durch die ihr zurückkönnt</h2>
-    <p class="folie-satz">Die Ziel-Chance ist eine umkehrbare Entscheidung – wählt und lernt.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Einwegtür:</strong> schwer umkehrbar – langsam und vorsichtig entscheiden.</li>
-      <li data-schritt><strong>Zweiwegtür:</strong> umkehrbar – schneller lernen durch Handeln als durch Nachdenken.</li>
-      <li data-schritt>Wer eine Entscheidung für <strong>umkehrbar</strong> hält, prüft sie danach kritischer.</li>
-    </ul>
-    <div class="nur-handout">
-      <p>Torres greift Jeff Bezos' Unterscheidung zwischen schwer und leicht umkehrbaren Entscheidungen auf (Brief an die Aktionär*innen 2015). Eine Ziel-Chance zu wählen ist trotz ihrer Bedeutung eine Zweiwegtür: Ihr verpflichtet euch nur, sie in den nächsten Tagen weiter zu erkunden. Zeigt sich, dass sie weniger wichtig ist oder die Lösungen schwerer sind als gedacht, wählt ihr eine andere. In Studien von Lottie Bullens und Kolleg*innen sahen Menschen, die eine Entscheidung für umkehrbar hielten, danach eher deren Schwächen und die Stärken der Alternativen – wer sie für endgültig hielt, nur noch das Gute an der eigenen Wahl ({TORRES}, S. 102–103).</p>
-      <p>Drei Anti-Muster: die Entscheidung aufschieben, bis mehr Daten da sind (lieber zeitlich begrenzen); nur eine Linse benutzen; vom gewünschten Ergebnis rückwärts argumentieren (S. 104).</p>
-    </div>
   </Folie>
 
   <div class="nur-handout">

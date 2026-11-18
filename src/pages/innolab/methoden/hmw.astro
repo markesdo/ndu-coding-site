@@ -9,9 +9,12 @@ import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import BildText from '../../../components/bild/BildText.astro';
 
 const BERGER = 'Warren Berger, „The Secret Phrase Top Innovators Use“, HBR Blog Network (17.09.2012)';
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+const WW = 'Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“, Harvard Business Review, Jan.–Feb. 2017';
 ---
 <Layout title="How Might We">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
@@ -19,6 +22,46 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <p class="lead">Aus der Ziel-Chance wird eine Frage, auf die es viele Antworten gibt – die Brücke zur Ideation.</p>
   <Orientierung seite="innolab/methoden/hmw" leiste={false} />
   <MethodenKarte slug="hmw" />
+
+  <Folie>
+    <h2 id="rahmen">Die Frage legt fest, welche Ideen kommen</h2>
+    <p class="folie-satz">Jede Frage öffnet einen Lösungsraum – und lässt andere geschlossen.</p>
+    {/* Dieselbe Reihe steht auf ziel-chance.astro#warum, dort mit hervor={[1]}. */}
+    <Fluss label="Vom Baum zur Idee: Baum, Ziel-Chance, How-Might-We-Frage, Ideation" hervor={[2]} knoten={[
+      { t: 'Baum', sub: 'viele Chancen, geordnet' },
+      { t: 'Ziel-Chance', sub: 'eine – ein Blatt' },
+      { t: 'How Might We', sub: 'eine Frage dazu' },
+      { t: 'Ideation', sub: '15 bis 20 Ideen, drei gehen weiter' },
+    ]} />
+    <BildText>
+      <BuchAbbildung src="/quellen/hbr/reframing.png" alt="Oben: Problem „Der Aufzug ist zu langsam“ führt zu Lösungen, die ihn schneller machen – neuer Aufzug, stärkerer Motor, besserer Algorithmus. Darunter, neu gerahmt: „Das Warten nervt“ führt zu „das Warten soll sich kürzer anfühlen“ – Spiegel, Musik, Desinfektionsspender" quelle="Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“, Harvard Business Review, Jan.–Feb. 2017, S. 2." />
+      <ul>
+        <li data-schritt><strong>Frage 1:</strong> „Wie könnten wir den Aufzug schneller machen?“ → neuer Aufzug, stärkerer Motor, besserer Algorithmus</li>
+        <li data-schritt><strong>Frage 2:</strong> „Wie könnten wir das Warten kürzer wirken lassen?“ → Spiegel, Musik, Desinfektionsspender</li>
+      </ul>
+    </BildText>
+    <p class="small muted">Die beiden Wie-könnten-Fragen sind unsere Formulierung; Rahmen und Lösungen stehen in der Abbildung.</p>
+    <p class="nur-handout">Den Aufzug kennt ihr von Tag 1. Wedell-Wedellsborg nennt die Lösungen, die an derselben Sicht auf das Problem hängen, einen Lösungsraum: „a cluster of solutions that share assumptions about what the problem is“ ({WW}, S. 2). Neue Lösungen kommen fast immer aus einer anderen Fassung des Problems (S. 1), und schon einzelne Wörter verschieben sie: „Pay close attention to the wording, because even seemingly inconsequential word choices can surface a new perspective on the problem.“ (S. 7). Eine How-Might-We-Frage ist so eine Fassung: Sie entscheidet, welche Ideen am Nachmittag überhaupt entstehen können. Darum schreibt ihr mehrere und wählt eine. Der Artikel selbst behandelt How Might We nicht; die Verbindung ist unsere.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="coast">Coast statt grüner Streifen</h2>
+    <p class="folie-satz">Sechs Kopien, keine besser – welche Frage hat das Team gestellt?</p>
+    <Fluss label="Der erste Versuch: Irish Spring, sechs Kopien, keine besser" knoten={[
+      { t: 'Irish Spring', sub: 'grüner Streifen, verspricht Erfrischung' },
+      { t: 'Sechs Kopien', sub: 'ein halbes Dutzend eigene Streifenseifen' },
+      { t: 'Ergebnis', sub: 'keine besser' },
+    ]} />
+    <div data-schritt>
+      <Fluss label="Die neue Frage: Warum, Kundensicht, neue Frage, Coast" hervor={[2]} knoten={[
+        { t: 'Warum?', sub: 'Warum noch eine grüne Streifenseife?' },
+        { t: 'Kundensicht', sub: 'Es geht ums Erfrischtsein, nicht um Streifen.' },
+        { t: 'Neue Frage', sub: '„How might we create a more refreshing soap of our own?“' },
+        { t: 'Coast', sub: 'Hunderte Ideen, eine neue Marke' },
+      ]} />
+    </div>
+    <p class="nur-handout">Procter & Gamble wollte gegen Irish Spring von Colgate-Palmolive antreten, eine grün gestreifte Seife, die Erfrischung verspricht, und testete ein halbes Dutzend eigener Streifenseifen – keine war besser. Die Frage war falsch: „How can we make a better green-stripe bar?“ Basadur stellte erst Warum-Fragen und lenkte den Blick vom Konkurrenzprodukt auf die Kundschaft: Ihr ging es nie um grüne Streifen, sondern darum, sich erfrischt zu fühlen. Aus „How might we create a more refreshing soap of our own?“ entstanden in wenigen Stunden Hunderte Ideen, das Thema Küste und die Seife Coast, eine erfolgreiche eigene Marke ({BERGER}, S. 2). Bei euch ist dieser Schritt schon getan: Eure Ziel-Chance steht in den Worten der Kundschaft.</p>
+  </Folie>
 
   <Folie>
     <h2 id="warum">Warum „könnten“?</h2>
@@ -30,20 +73,8 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     ]} />
     <div class="nur-handout">
       <p>Die Frageform stammt von Min Basadur, der sie in den frühen 1970ern bei Procter & Gamble einsetzte; über IDEO, Google und Facebook wurde sie verbreitet. Basadur: Wer fragt „Wie können wir …?“ oder „Wie sollen wir …?“, urteilt schon – können wir das wirklich, sollen wir? Mit „might“ wird das Urteil aufgeschoben; es entstehen freier mehr Optionen. Tim Brown (IDEO) gibt jedem Wort eine Rolle: „How“ setzt voraus, dass es Lösungen gibt, „Might“ erlaubt Ideen, die vielleicht nicht funktionieren, „We“ heißt, dass ihr gemeinsam auf den Ideen der anderen aufbaut ({BERGER}, S. 1). Im Deutschen trägt der Konjunktiv das „might“: „Wie <em>könnten</em> wir …?“ statt „Wie können wir …?“.</p>
+      <p>Tim Brown war selbst skeptisch – „I was skeptical at first; it sounds a bit Californian.“ ({BERGER}, S. 2).</p>
     </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="coast">Coast statt grüner Streifen</h2>
-    <p class="folie-satz">Die falsche Frage liefert Kopien; die richtige kommt aus der Sicht der Kundschaft.</p>
-    <Fluss label="Vom Kopieren zur neuen Seife: falsche Frage, Warum, Kundensicht, neue Frage, Coast" hervor={[3]} knoten={[
-      { t: 'Kopien', sub: 'sechs Streifenseifen, keine besser als Irish Spring' },
-      { t: 'Warum?', sub: 'Warum noch eine grüne Streifenseife?' },
-      { t: 'Kundensicht', sub: 'Es geht ums Erfrischtsein, nicht um Streifen.' },
-      { t: 'Neue Frage', sub: '„How might we create a more refreshing soap of our own?“' },
-      { t: 'Coast', sub: 'Hunderte Ideen, eine neue Marke' },
-    ]} />
-    <p class="nur-handout">Procter & Gamble wollte gegen Irish Spring von Colgate-Palmolive antreten, eine grün gestreifte Seife, die Erfrischung verspricht, und testete ein halbes Dutzend eigener Streifenseifen – keine war besser. Die Frage war falsch: „How can we make a better green-stripe bar?“ Basadur stellte erst Warum-Fragen und lenkte den Blick vom Konkurrenzprodukt auf die Kundschaft: Ihr ging es nie um grüne Streifen, sondern darum, sich erfrischt zu fühlen. Aus „How might we create a more refreshing soap of our own?“ entstanden in wenigen Stunden Hunderte Ideen, das Thema Küste und die Seife Coast, eine erfolgreiche eigene Marke ({BERGER}, S. 2). Bei euch ist dieser Schritt schon getan: Eure Ziel-Chance steht in den Worten der Kundschaft.</p>
   </Folie>
 
   <Folie>
@@ -55,36 +86,61 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       { t: 'Frage', sub: '„How might we address ‚I don’t like commercials‘?“' },
       { t: 'Optionen', sub: 'bessere Werbung · vorspulen · Abo ohne Werbung' },
     ]} />
-    <p class="nur-handout">Teresa Torres zeigt den Schritt am Anti-Muster „Lösung statt Chance“ (solution in disguise): „Ich will Werbung vorspulen können“ lässt nur eine Antwort zu. Die Chance dahinter, „Ich mag keine Werbung“, öffnet erst mit der Frage „How might we address ‚I don’t like commercials‘?“ mehrere Optionen – unterhaltsamere Werbung, Vorspulen oder ein Abo ohne Werbung. Ihr Test: Gibt es mehr als einen Weg, die Chance anzugehen? ({TORRES}, S. 94–95). Darum fragt ihr nach eurer Ziel-Chance, nicht nach einer Funktion.</p>
+    <p data-schritt><strong>Grundform nach Torres:</strong> „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“</p>
+    <div class="nur-handout">
+      <p>Teresa Torres zeigt den Schritt am Anti-Muster „Lösung statt Chance“ (solution in disguise): „Ich will Werbung vorspulen können“ lässt nur eine Antwort zu. Die Chance dahinter, „Ich mag keine Werbung“, öffnet erst mit der Frage „How might we address ‚I don’t like commercials‘?“ mehrere Optionen – unterhaltsamere Werbung, Vorspulen oder ein Abo ohne Werbung. Ihr Test: Gibt es mehr als einen Weg, die Chance anzugehen? ({TORRES}, S. 94–95). Darum fragt ihr nach eurer Ziel-Chance, nicht nach einer Funktion.</p>
+      <p>Torres’ Frage hat eine feste Form: „How might we address ‚I don’t like commercials‘?“ – die Chance steht wörtlich darin (S. 94). Damit beginnt ihr. Schon in Kapitel 2 fragt sie so nach weiteren Lösungen: „How else might we address this opportunity?“ (S. 31).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="bauen">So baut ihr die Frage</h2>
+    <p class="folie-satz">Erst die Grundform, dann zwei Varianten, dann die Probe.</p>
+    <Fluss label="Die Frage bauen am Beispiel der Kaffeebar: Ziel-Chance, Grundform, Varianten, Probe" hervor={[2]} knoten={[
+      { t: 'Ziel-Chance', sub: '„Geht sich ein Kaffee noch aus?“' },
+      { t: 'Grundform', sub: '„Wie könnten wir ‚Geht sich ein Kaffee noch aus?‘ angehen?“' },
+      { t: 'Varianten', sub: 'Warum? → eine Stufe weiter · Person und Moment nennen → genauer' },
+      { t: 'Probe', sub: 'mehr als ein Weg? · Sweet Spot? · „könnten“?' },
+    ]} />
+    <ul>
+      <li data-schritt><strong>Genauer (H1):</strong> „Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</li>
+      <li data-schritt><strong>Weiter (H2):</strong> „Wie könnten wir dafür sorgen, dass Pendler*innen auch dann zu ihrem Kaffee kommen, wenn es voll ist?“</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Drei Schritte, zusammengesetzt aus Torres und Berger (die Reihenfolge ist Kursformat). <strong>Grundform:</strong> die Ziel-Chance wörtlich in Torres’ Frage ({TORRES}, S. 94). <strong>Varianten:</strong> Basadur brachte das Team mit Warum-Fragen zu ehrgeizigeren Fragen – „Why are we trying so hard to make another green-striped soap?“ – und in die Sicht der Kundschaft ({BERGER}, S. 2). Fragt also bei eurer Chance: Warum will die Person das? Die zweite Variante nennt Person und Moment (Kursformat). <strong>Probe:</strong> Gibt es mehr als einen Weg (Torres, S. 94–95)? Ehrgeizig, aber erreichbar (Brown bei Berger, S. 2)? Und steht „könnten“ da, nicht „können“ oder „sollen“ (Basadur bei Berger, S. 1)?</p>
+      <p>Kaffeebar: H2 kommt aus der Warum-Frage. Warum wollen sie wissen, ob es sich ausgeht? Weil sie den Kaffee wollen und ihn lassen, wenn es voll ist: „Wenn es voll ist, lass ich es.“ (I5-2), „Bei mehr als fünf Leuten lass ich es.“ (I3-4). H2 ist ein Vorschlag für das Beispiel, kein Zitat.</p>
+    </div>
   </Folie>
 
   <Folie>
     <h2 id="sweet-spot">Der Sweet Spot</h2>
-    <p class="folie-satz">Nicht zu weit, nicht zu eng – ehrgeizig, aber erreichbar.</p>
-    <div style="overflow-x:auto">
-      <table>
-        <thead><tr><th></th><th>Zur Ziel-Chance „Geht sich ein Kaffee noch aus?“</th></tr></thead>
-        <tbody>
-          <tr data-schritt><th>Zu weit</th><td>Wie könnten wir den Morgen von Pendler*innen schöner machen?</td></tr>
-          <tr data-schritt><th>Zu eng</th><td>Wie könnten wir die Zahl derer, die vor der Schlange umkehren, um 10 % senken?</td></tr>
-          <tr data-schritt><th>Lösung drin</th><td>Wie könnten wir eine Ampel mit der Wartezeit über die Theke hängen?</td></tr>
-          <tr data-schritt><th>Passt · H1</th><td>Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="nur-handout">Tim Brown: Die Frageform passt zu Herausforderungen, die ehrgeizig und doch erreichbar sind. Zu weit wäre „How might we solve world hunger?“, zu eng „How might we increase profits by 5 percent next quarter?“. Die richtige Frage zu finden ist selbst ein Prozess: „You need to find the sweet spot“ ({BERGER}, S. 2). Die dritte Zeile scheitert an Torres' Test: Eine Ampel ist eine Lösung, es gibt nur einen Weg, sie zu bauen (S. 94).</p>
+    <p class="folie-satz">Vier Fragen zur selben Ziel-Chance – welche passt, und was stimmt an den anderen nicht?</p>
+    <ol class="gross" type="A">
+      <li>Wie könnten wir eine Ampel mit der Wartezeit an die Hallentür hängen?</li>
+      <li>Wie könnten wir den Morgen von Pendler*innen schöner machen?</li>
+      <li>Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?</li>
+      <li>Wie könnten wir die Zahl derer, die bei voller Halle auf den Kaffee verzichten, bis nächsten Monat um 10 % senken?</li>
+    </ol>
+    <p>Reihum, laut: Jede*r nimmt eine Frage und sagt, was daran nicht stimmt.</p>
+    <ul>
+      <li data-schritt><strong>A</strong> · Lösung drin</li>
+      <li data-schritt><strong>B</strong> · zu weit</li>
+      <li data-schritt><strong>C</strong> · passt (H1)</li>
+      <li data-schritt><strong>D</strong> · zu eng</li>
+    </ul>
+    <p class="nur-handout">Tim Brown: Die Frageform passt zu Herausforderungen, die ehrgeizig und doch erreichbar sind. Zu weit wäre „How might we solve world hunger?“, zu eng „How might we increase profits by 5 percent next quarter?“. Die richtige Frage zu finden ist selbst ein Prozess: „You need to find the sweet spot“ ({BERGER}, S. 2). Frage A scheitert an Torres' Test: Eine Ampel ist eine Lösung, es gibt nur einen Weg, sie zu bauen (S. 94).</p>
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
+    <h2 id="vorgehen">So geht ihr vor (15 min)</h2>
     <p class="folie-satz">Mehrere Fragen zur Ziel-Chance, dann eine wählen.</p>
     <MiroFrame name="T3 · 2 · How Might We" />
     <ol class="gross">
-      <li data-schritt><strong>Allein:</strong> drei Fragen zu eurer Ziel-Chance, jede beginnt mit „Wie könnten wir …“. <Timer minuten={8} /></li>
-      <li data-schritt><strong>Zu dritt:</strong> Vorlesen. Die anderen prüfen: Sweet Spot? Mehr als ein Weg? <Timer minuten={8} /></li>
-      <li data-schritt><strong>Wählen und festhalten:</strong> eine Frage, mit einem Satz warum. <Timer minuten={4} /></li>
+      <li data-schritt><strong>Allein:</strong> die Grundform und zwei Varianten zu eurer Ziel-Chance – eine weiter, eine genauer. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Zu dritt, je zwei Minuten:</strong> Vorlesen. Die anderen prüfen: Mehr als ein Weg? Sweet Spot? <Timer minuten={6} /></li>
+      <li data-schritt><strong>Wählen und festhalten:</strong> eine Frage, mit einem Satz warum. <Timer minuten={3} /></li>
     </ol>
-    <p class="nur-handout">Dazu zehn Minuten Theorie mit der Kaffeebar. Die gewählte Frage nehmt ihr in die Ideation mit: Alle Ideen dort beantworten sie.</p>
+    <p class="nur-handout">Dazu gut zehn Minuten Theorie mit der Kaffeebar. Die gewählte Frage nehmt ihr in die Ideation mit: Alle Ideen dort beantworten sie.</p>
   </Folie>
 
   <div class="nur-handout">
