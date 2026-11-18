@@ -71,7 +71,8 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
   // NEU – Auflösung
   kontext: {
     live: [
-      'Aufdecken: Mittwochnachmittag mit Kindern, Samstagabend zu zweit, allein zur Recherche.',
+      'Aufdecken: Mittwochnachmittag mit Kindern, Samstagabend zu zweit.',
+      'Bei Bedarf: dritter Anlass im Buch – allein zur Recherche.',
       'Mit den Fragen vergleichen, die alle eben genannt haben.',
       '„Dieselbe Person, andere Jobs – je nach Anlass.“',
       'Brücke Kaffeebar: werktags 7:15–7:45 ist ein Anlass, kein Steckbrief.',
