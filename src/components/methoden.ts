@@ -243,7 +243,7 @@ export const METHODEN: Methode[] = [
     slug: 'hmw', name: 'How Might We', tag: 3, dauer: 30,
     frage: 'Welche Frage öffnet für die Ziel-Chance möglichst viele Ideen?',
     braucht: ['ziel'], ergibt: ['chancen'],
-    quelle: 'Warren Berger, „The Secret Phrase Top Innovators Use“, HBR Blog Network (2012); Teresa Torres, „Continuous Discovery Habits“ (2021), S. 94–95',
+    quelle: 'Warren Berger, „The Secret Phrase Top Innovators Use“, HBR Blog Network (2012), S. 1–2; Teresa Torres, „Continuous Discovery Habits“ (2021), S. 31, 94–95; Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“, Harvard Business Review (2017), S. 1–2, 7',
     pruefliste: [
       { id: 'hmw-wie-koennten', text: 'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an eurer Ziel-Chance.' },
       { id: 'hmw-loesung', text: 'Keine Lösung steckt drin: Es gibt mehr als einen Weg, die Frage zu beantworten.' },
@@ -312,7 +312,7 @@ export const METHODEN: Methode[] = [
       { id: 'concept-story-ende', text: 'Das Ende nennt das Ziel der Person und ein messbares Ziel des Geschäfts; jede Behauptung trägt eine J-, P-, G- oder Zitat-ID.' },
     ],
     ki: 'Prüft, ob die Story Krise und Höhepunkt hat oder nur eine Linie ist; schreibt sie nicht um.',
-    quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2–4, 6–8',
+    quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 1–4, 6–8',
   },
   {
     slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 4, dauer: 20,
