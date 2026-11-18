@@ -399,9 +399,9 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Timer 12 min; Sofie, Joachim, Hewen; je Baum 1 min still lesen.',
       'Runde S → J → H → S: Nächste*r 1–3, dritte Person 4–6.',
-      'Zeigen, Nummer nennen, fragen – keinen Ersatztext vorschlagen.',
-      '„Nicht verteidigen. Sag laut: ändern, Zettel oder lassen.“',
+      '„Zeigt, nennt die Nummer, fragt. Nicht verteidigen: ändern, Zettel oder lassen.“',
       'Bei 8:00 und 4:00 Rest: wechseln, auch mitten im Satz.',
+      'Folie vier-muster übersprungen? Dann 3 bis 6 kurz erklären.',
     ],
     kern: [
       {
