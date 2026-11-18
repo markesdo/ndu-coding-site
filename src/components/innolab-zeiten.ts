@@ -25,10 +25,14 @@ export const ENDE_TAG_2 = '2026-11-12T23:59';
  *  per Klick des Präsentators wie beim Toast; vorher sollen alle ihren eigenen Satz abgeschickt haben. */
 export const NACH_NETFLIX = ENDE_TAG_2;
 
+/** Ende von Tag 3 (21.11.) als später Rückfall für die Auflösungen des Tages (Baum, Ideation, Kundenprofil, Value Map):
+ *  Mitternacht wie bei ENDE_TAG_2. Aufgedeckt wird per Klick des Präsentators. */
+export const ENDE_TAG_3 = '2026-11-21T23:59';
+
 /** Rückfall für die Antwortrunde „Zwölf Chancen“ an Tag 3 (Baum, Folie „warum“; der Baum eröffnet seit 12.11. Tag 3):
  *  Ende des Tages, Mitternacht wie bei ENDE_TAG_2. Aufgedeckt wird per Klick des Präsentators wie bei Netflix; vorher
  *  sollen alle ihre Nummer mit Satz abgeschickt haben. */
-export const NACH_ZWOELF = '2026-11-21T23:59';
+export const NACH_ZWOELF = ENDE_TAG_3;
 
 
 /** Antwortrunde „Rückblick“ am Ende von Tag 2 (Abschluss, Folie „rueckblick“): Im Raum wird nicht aufgedeckt, Markus
