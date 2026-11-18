@@ -11,6 +11,7 @@ import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
+import { ENDE_TAG_3 } from '../../../components/innolab-zeiten';
 
 // VPD-Seiten sind überall Seiten der PDF-Ausgabe (quellen/vpd/text.txt), nicht der gedruckten Ausgabe.
 const VPD = 'Alexander Osterwalder, Yves Pigneur, Greg Bernarda, Alan Smith, „Value Proposition Design“ (2014, Seiten der PDF-Ausgabe)';
@@ -44,31 +45,27 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
     <h2 id="jane">Das ist Jane. Was bietet ihr ihr an?</h2>
     <p class="folie-satz">So kennt ein Kinobetreiber seine Kundin.</p>
     <BildText>
-      <BuchAbbildung src="/quellen/vpd/jane.png" alt="Illustration einer winkenden Frau mit Kinokarten, daneben ihr Steckbrief: Jane Moviegoer, 20–30 Jahre, obere Mittelschicht, 100.000 Dollar im Jahr, verheiratet, zwei Kinder; mag Actionfilme, Popcorn und Limo, steht nicht gern an, kauft Tickets online, geht einmal im Monat" quelle={`Psychodemografisches Profil. ${VPD_KURZ}, S. 129 (PDF).`} />
+      <BuchAbbildung src="/quellen/vpd/jane.png" alt="Illustration einer winkenden Frau mit einem Popcornbecher, daneben ihr Steckbrief: Jane Moviegoer, 20–30 Jahre, obere Mittelschicht, 100.000 Dollar im Jahr, verheiratet, zwei Kinder; mag Actionfilme, Popcorn und Limo, steht nicht gern an, kauft Tickets online, geht einmal im Monat" quelle={`Psychodemografisches Profil. ${VPD_KURZ}, S. 129 (PDF).`} />
       <ul>
-        <li>20–30 Jahre · obere Mittelschicht · 100.000 $ im Jahr</li>
-        <li>verheiratet, zwei Kinder</li>
-        <li>mag Actionfilme · mag Popcorn und Limo</li>
-        <li>steht nicht gern an · kauft Tickets online</li>
-        <li>geht einmal im Monat ins Kino</li>
+        <li>20–30 Jahre · obere Mittelschicht · 100.000 $ im Jahr · verheiratet, zwei Kinder</li>
+        <li>mag Actionfilme, Popcorn und Limo · steht nicht gern an · kauft Tickets online · einmal im Monat im Kino</li>
+        <li><strong>Reihum, je ein Satz:</strong> Was bietet ihr Jane an? Und was müsstet ihr dafür noch wissen?</li>
       </ul>
     </BildText>
-    <p class="breit"><strong>Reihum, je ein Satz:</strong> Was bietet ihr Jane an? Und was müsstet ihr dafür noch wissen?</p>
     <p class="nur-handout">Das Buch erklärt den Canvas an einem zweiten Beispiel: Der Besitzer einer Kinokette will neue Angebote entwerfen. Er könnte bei den Merkmalen anfangen – größere Leinwände, neue Bildtechnik, Snacks –, aber: „those only really matter if customers care about them“ ({VPD}, S. 127). Üblich wäre ein psychodemografisches Profil wie das von Jane Moviegoer (S. 128–129). Was es nicht sagt, zeigt die nächste Folie.</p>
   </Folie>
 
   <Folie>
     <h2 id="kontext">Dieselbe Jane, drei Anlässe</h2>
     <p class="folie-satz">Mit dem Anlass ändern sich die Jobs.</p>
-    <Aufloesung ab="2026-11-21T23:59">
-      <BildText>
+    <Aufloesung ab={ENDE_TAG_3}>
+      <div class="zwei-bilder">
         <BuchAbbildung src="/quellen/vpd/kontext-kinder.png" alt="Jane mit zwei Kindern unter einem Regenschirm, darunter ihr Kundenprofil mit Haftnotizen (occupy kids, noise in the room, kids are happy and calm) und der Kontext: The kids’ afternoon off – Mittwochnachmittag, mit den Kindern, nach der Schule und vor dem Abendessen" quelle={`Kindernachmittag. ${VPD_KURZ}, S. 131 (PDF).`} />
         <BuchAbbildung src="/quellen/vpd/kontext-date.png" alt="Jane mit ihrem Partner, darunter ihr Kundenprofil mit Haftnotizen (connect with each other, waiting in line, not intimate enough, leads to great conversation) und der Kontext: Date night – Samstagabend, mit Partner, Kinder betreut" quelle={`Date Night. ${VPD_KURZ}, S. 132 (PDF).`} />
-      </BildText>
-      <p class="breit" data-schritt><strong>Dritter Anlass im Buch:</strong> eigene Recherche – jederzeit, allein, muss mitschreiben können.</p>
-      <p class="breit" data-schritt><strong>Kaffeebar:</strong> Pendler*innen, werktags 7:15–7:45 – ein Anlass, kein Steckbrief.</p>
+      </div>
+      <p data-schritt><strong>Kaffeebar:</strong> Pendler*innen, werktags 7:15–7:45 – ein Anlass, kein Steckbrief.</p>
     </Aufloesung>
-    <p class="nur-handout">„Priorities change depending on a customer’s context.“ ({VPD}, S. 130). Dieselbe Kinogängerin hat am Mittwochnachmittag mit den Kindern andere Jobs als am Samstagabend zu zweit oder allein bei einer Recherche (S. 131–133). Darum rät das Buch, den Kontext bei Bedarf ins Profil zu schreiben: Er schränkt später ein, welches Angebot passt (S. 131). Und es rät, das Profil breit zu halten: „A (potential) customer exists independently of your value proposition.“ (S. 128). Bei der Kaffeebar steht der Anlass in der Kopfzeile: Pendler*innen, werktags 7:15–7:45 (Bezug dieses Kurses).</p>
+    <p class="nur-handout">„Priorities change depending on a customer’s context.“ ({VPD}, S. 130). Dieselbe Kinogängerin hat am Mittwochnachmittag mit den Kindern andere Jobs als am Samstagabend zu zweit oder allein bei einer Recherche, für die sie jederzeit ins Kino geht und mitschreiben können muss (S. 131–133). Darum rät das Buch, den Kontext bei Bedarf ins Profil zu schreiben: Er schränkt später ein, welches Angebot passt (S. 131). Und es rät, das Profil breit zu halten: „A (potential) customer exists independently of your value proposition.“ (S. 128). Bei der Kaffeebar steht der Anlass in der Kopfzeile: Pendler*innen, werktags 7:15–7:45 (Bezug dieses Kurses).</p>
   </Folie>
 
   <Folie>
@@ -184,3 +181,10 @@ Stand: [Datum] · Grundlage: Baum und Ziel-Chance (docs/BAUM.md, docs/ZIEL-CHANC
 
   <FooterNav prev={{ href: '/innolab/methoden/ideation', t: 'Ideation' }} next={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} />
 </Layout>
+
+<style>
+  /* Zwei gleich breite Abbildungen nebeneinander (Folie kontext), schmal untereinander. */
+  .zwei-bilder { display: grid; gap: 1.5rem; margin: 1rem 0; }
+  @media (min-width: 900px) { .zwei-bilder { grid-template-columns: 1fr 1fr; } }
+  .zwei-bilder > :global(.buch-abbildung) { margin: 0; max-width: none; }
+</style>

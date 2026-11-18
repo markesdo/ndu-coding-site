@@ -38,8 +38,8 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
   jane: {
     live: [
       'Steckbrief zeigen, nichts dazu sagen.',
-      'Reihum, je ein Satz: Was bietet ihr Jane an?',
-      'Dann reihum: Was müsstet ihr dafür noch wissen?',
+      'Reihum, je ein Satz: „Was bietet ihr Jane an?“',
+      'Dann reihum: „Was müsstet ihr dafür noch wissen?“',
       'Falle: die Antwort „Kontext“ vorwegnehmen.',
     ],
     uebung: { dauer: '2 min', form: 'zu dritt, reihum laut, zwei Runden' },
@@ -72,7 +72,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
   kontext: {
     live: [
       'Aufdecken: Mittwochnachmittag mit Kindern, Samstagabend zu zweit, allein zur Recherche.',
-      'Eure Fragen von eben damit vergleichen.',
+      'Mit den Fragen vergleichen, die alle eben genannt haben.',
       '„Dieselbe Person, andere Jobs – je nach Anlass.“',
       'Brücke Kaffeebar: werktags 7:15–7:45 ist ein Anlass, kein Steckbrief.',
       'Fragen: In welchem Anlass steckt euer Segment?',

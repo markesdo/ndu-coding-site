@@ -37,30 +37,31 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   'erste-ideen': {
     live: [
       'Frage H1 vorlesen, nichts erklären.',
+      'Freie Fläche oder Papier – Kaffeebar-Spalte noch nicht zeigen.',
       'Timer 2 min: allein, ein Sticky pro Idee, durchnummeriert.',
       'Nach 2 min: reihum nur die erste Idee vorlesen.',
       'Falle: schon jetzt kommentieren oder werten.',
-      'Stickies bleiben in der Kaffeebar-Spalte liegen.',
+      'Danach: Stickies aller in die Kaffeebar-Spalte legen.',
     ],
     uebung: { dauer: '2 min + 1 min reihum', form: 'allein, dann reihum laut: nur Idee Nr. 1' },
     miro: {
       frame: 'T3 · 3 · Ideation',
       schritte: [
-        '„Alle zu mir holen“ auf die Kaffeebar-Spalte von T3 · 3.',
-        'Jede*r legt eigene Stickies in „Ideen“, in der Reihenfolge des Einfalls nummeriert (1, 2, 3 …).',
-        'Nichts verschieben, nichts gruppieren – die Nummern braucht ihr auf der nächsten Folie.',
+        'Die zwei Minuten laufen auf einer freien Fläche neben den Frames oder auf Papier: In der Kaffeebar-Spalte von T3 · 3 liegen schon Ideen des Beispiels, sie würden die Antworten vorwegnehmen.',
+        'Jede*r schreibt eigene Stickies, in der Reihenfolge des Einfalls nummeriert (1, 2, 3 …). Nichts verschieben, nichts gruppieren – die Nummern braucht es auf der nächsten Folie.',
+        'Erst nach der Runde: „Alle zu mir holen“ auf die Kaffeebar-Spalte; die Stickies aller kommen in „Ideen“ dazu.',
       ],
-      vorschlaege: ['Ampel an der Tür', 'Bestellungen nach Abfahrtszeit aufrufen', 'Kaffee per Drohne'],
+      vorschlaege: ['Ampel an der Hallentür', 'Bestellungen nach Abfahrtszeit aufrufen', 'Kaffee per Drohne'],
     },
     ablauf: {
       schritte: [
         'H1 vorlesen: „Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“',
-        'Timer 2 min, alle schreiben still. Die Nummer auf dem Sticky ist die Reihenfolge des Einfalls.',
+        'Timer 2 min, alle schreiben still, auf einer freien Fläche oder auf Papier. Die Nummer auf dem Sticky ist die Reihenfolge des Einfalls.',
         'Reihum: Jede*r liest nur Idee Nr. 1 vor. Kein Kommentar.',
       ],
       achten: [
         'Die Nummern sind der Punkt der Übung – ohne sie fehlt der Vergleich in der Auflösung.',
-        'Die drei Stickies, die schon in der Spalte liegen, zählen nicht mit; wer dieselbe Idee hat, schreibt sie trotzdem.',
+        'Die Kaffeebar-Spalte zeigt schon drei Ideen des Beispiels (die Vorschläge unten). Sie bleibt bis nach der Runde zu; wer danach dieselbe Idee dort findet, legt die eigene trotzdem dazu.',
       ],
       aufloesung: 'Kommt auf der nächsten Folie: erste Ideen vergleichen, dann die Nummer der ungewöhnlichsten Idee nennen.',
     },
@@ -354,7 +355,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
 
   beispiel: {
     live: [
-      'Eure Stickies von vorhin zählen zu den 18.',
+      '„Im Beispiel wurden es 18 Ideen – eure von vorhin kommen dazu.“',
       'Aussortiert: Becher mit Deckel, mehr Sitzplätze – gut, andere Chance.',
       'Fragen: Welche drei Arten von Idee seht ihr?',
       'Aufdecken: Anzeige, Bestellweg, anderer Ort.',
@@ -434,7 +435,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Fragen: Sind eure drei wirklich verschieden – oder Löwe, Tiger, Puma?',
       'Reihum: je Idee ein Wort für ihre Art.',
       'Bei drei Varianten: eine Idee anderer Art aus der Liste holen.',
-      'Ausblick: Nach der Pause kommen die drei neben euer Kundenprofil.',
+      'Ausblick: Nach der Pause kommen die drei neben das eigene Kundenprofil.',
     ],
     kern: [
       {

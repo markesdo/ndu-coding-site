@@ -58,7 +58,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Bei B und D nach der ID fragen: Welchen Pain, welchen Gain im Profil der Kaffeebar trifft der Zettel?',
         'Es ist in Ordnung, wenn ein Zettel Pain und Gain zugleich trifft (S. 103).',
       ],
-      aufloesung: 'A und C sind Produkte & Services (Schaufenster). B ist ein Schmerzlinderer für P1, D ein Gewinnerzeuger für G1. Der zweithäufigste Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
+      aufloesung: 'A und C sind Produkte & Services (Schaufenster). B ist ein Schmerzlinderer für P1, D ein Gewinnerzeuger für G1. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
     },
     kern: [
       {
@@ -77,7 +77,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Lückensatz vorlesen, Lücken mit dem Finger zeigen.',
       '„Ein Satz pro Idee – er zwingt euch zu sagen, wie sie Wert schafft.“',
-      'Job, Pain, Gain kommen aus eurem Profil, mit ID.',
+      '„Job, Pain und Gain kommen aus eurem Profil, mit ID.“',
       'Falle: am ersten Satz feilen – drei rohe Sätze sind das Ziel.',
     ],
     verstaendnis: {
@@ -141,7 +141,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Drei Lückensätze vorlesen, Tabelle noch leer.',
       'Reihum: Welche Idee trifft am meisten – und welchen Eintrag nicht?',
-      'Zeile für Zeile aufdecken, mit euren Antworten vergleichen.',
+      'Zeile für Zeile aufdecken, mit den Antworten aller vergleichen.',
       'Das „?“ beim Kaffeewagen: eine Annahme, kein Kreuz.',
       '„Bewusst offen“ zeigen: J2, J3, G2, G3, P4.',
     ],
@@ -167,7 +167,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Abbildung von unten nach oben: Papier, Markt, Bank.',
       '„Heute erreicht ihr Stufe 1 – mehr nicht.“',
-      'Stufe 2 sind eure Tests ab Tag 4.',
+      '„Stufe 2 sind eure Tests ab Tag 4.“',
       'Die Wahl ist umkehrbar: Die anderen zwei Ideen bleiben liegen.',
       'Wenn hinten: nur Stufe 1 und der Satz zur Umkehrbarkeit.',
     ],
@@ -232,7 +232,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
-      'Reihum: der oberste Eintrag, den eure Idee nicht trifft.',
+      'Reihum: jede*r nennt den obersten Eintrag, den die eigene Idee verfehlt.',
       '„Wenige Pains, die aber extrem gut.“',
       'Ausblick: Nach der Pause die Geschichte dazu – der Story-Bogen.',
     ],

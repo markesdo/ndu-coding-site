@@ -12,6 +12,7 @@ import MiroFrame from '../../../components/MiroFrame.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
 import Baum from '../../../components/bild/Baum.astro';
 import { KAFFEEBAR_BAUM } from '../../../components/innolab-beispiel';
+import { ENDE_TAG_3 } from '../../../components/innolab-zeiten';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 // Unter der Ziel-Chance der Kaffeebar drei leere Plätze: Die Ideation füllt sie (wie Torres' „?“ auf baum#eltern-kind).
@@ -35,10 +36,9 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
   <Folie>
     <h2 id="erste-ideen">Zwei Minuten: Ideen für die Kaffeebar</h2>
     <p class="folie-satz">„Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</p>
-    <MiroFrame name="T3 · 3 · Ideation" />
-    <p class="breit">Jede*r für sich: so viele Ideen wie möglich, ein Sticky pro Idee, in der Reihenfolge nummeriert. <Timer minuten={2} /></p>
+    <p class="breit">Jede*r für sich, auf einer freien Fläche oder auf Papier: so viele Ideen wie möglich, ein Sticky pro Idee, in der Reihenfolge nummeriert. <Timer minuten={2} /></p>
     <p class="breit" data-schritt><strong>Reihum:</strong> nur eure Idee Nr. 1.</p>
-    <p class="nur-handout">Eine Übung dieses Kurses, bevor die Theorie kommt. Eure Stickies bleiben in der Kaffeebar-Spalte liegen und zählen später zu den Ideen des Beispiels.</p>
+    <p class="nur-handout">Eine Übung dieses Kurses, bevor die Theorie kommt. Ihr schreibt auf einer freien Fläche oder auf Papier, denn in der Kaffeebar-Spalte auf Miro liegen schon Ideen des Beispiels. Danach kommen eure Stickies dort dazu.</p>
   </Folie>
 
   <Folie>
@@ -48,7 +48,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
       <li>Wie ähnlich waren eure ersten Ideen?</li>
       <li>Welche Nummer trägt eure ungewöhnlichste?</li>
     </ul>
-    <Aufloesung ab="2026-11-21T23:59">
+    <Aufloesung ab={ENDE_TAG_3}>
       <Fluss label="Verlauf einer Ideensammlung: erste Ideen schnell und naheliegend, mehr Ideen vielfältiger, gegen Ende die originellsten" hervor={[2]} knoten={[
         { t: 'Erste Ideen', sub: 'schnell und naheliegend' },
         { t: 'Mehr Ideen', sub: 'viele Ideen werden vielfältiger und origineller' },
@@ -70,7 +70,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
       </table>
     </div>
     <p class="breit" data-schritt><strong>Allein entstehen mehr, vielfältigere und originellere Ideen als in der Gruppe.</strong></p>
-    <ul class="gross">
+    <ul class="gross dicht">
       <li data-schritt><strong>Trittbrettfahren:</strong> In der Gruppe strengt man sich weniger an.</li>
       <li data-schritt><strong>Anpassung:</strong> Frühe Ideen geben den Ton vor, man zensiert sich.</li>
       <li data-schritt><strong>Blockieren:</strong> Wer wartet, bis er dran ist, vergisst die eigene Idee.</li>
@@ -158,7 +158,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
     <div style="overflow-x:auto">
       <table>
         <tbody>
-          <tr><th>eine Idee, drei Formen</th><td>Ampel an der Tür · Anzeige neben der Abfahrtstafel · Wartezeit in der Bahn-App</td></tr>
+          <tr><th>eine Idee, drei Formen</th><td>Ampel an der Hallentür · Anzeige neben der Abfahrtstafel · Wartezeit in der Bahn-App</td></tr>
           <tr data-schritt><th>drei Arten von Idee</th><td>Anzeige · Bestellweg · anderer Ort</td></tr>
         </tbody>
       </table>
@@ -170,19 +170,19 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">H1: „Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</p>
     <ul class="gross">
-      <li data-schritt><strong>18 Ideen</strong> – eure von vorhin zählen dazu. Darunter Ampel an der Tür, Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen), Express-Kasse wie im Supermarkt, Kaffee per Drohne.</li>
+      <li data-schritt><strong>18 Ideen</strong> im Beispiel; eure von vorhin kommen dazu. Darunter Ampel an der Hallentür, Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen), Express-Kasse wie im Supermarkt, Kaffee per Drohne.</li>
       <li data-schritt><strong>Aussortiert:</strong> „Becher mit Deckel, der nicht verschüttet“, „mehr Sitzplätze“ – gut, aber nicht für diese Chance.</li>
       <li data-schritt><strong>Drei nach dem Punkten:</strong> Wartezeit an der Hallentür · Im Gehen bestellen, mit Abfahrtszeit · Kaffeewagen am Bahnsteig.</li>
     </ul>
-    <p class="nur-handout">Die drei sind absichtlich verschieden: eine Anzeige, ein Bestellweg, ein anderer Ort. Varianten derselben Idee (Ampel an der Tür, Anzeige neben der Abfahrtstafel, Wartezeit in der Bahn-App) sind zusammengefasst – Torres warnt davor, nur Varianten einer Idee in die Auswahl zu nehmen (S. 114). Welche weitergeht, entscheidet sich im nächsten Block, wenn ihr für jede der drei eine Value Map zeichnet und den Fit vergleicht. Im weiteren Beispiel ist es „Im Gehen bestellen“; warum, zeigt die <a href="/innolab/methoden/value-map">Value Map</a>.</p>
+    <p class="nur-handout">Die drei sind absichtlich verschieden: eine Anzeige, ein Bestellweg, ein anderer Ort. Varianten derselben Idee (Ampel an der Hallentür, Anzeige neben der Abfahrtstafel, Wartezeit in der Bahn-App) sind zusammengefasst – Torres warnt davor, nur Varianten einer Idee in die Auswahl zu nehmen (S. 114). Welche weitergeht, entscheidet sich im nächsten Block, wenn ihr für jede der drei eine Value Map zeichnet und den Fit vergleicht. Im weiteren Beispiel ist es „Im Gehen bestellen“; warum, zeigt die <a href="/innolab/methoden/value-map">Value Map</a>.</p>
   </Folie>
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
-    <p class="folie-satz">Zwei Runden allein und teilen, dann auswählen – für jedes der drei Produkte.</p>
+    <p class="folie-satz">Zwei Runden allein und teilen, dann auswählen.</p>
     <MiroFrame name="T3 · 3 · Ideation" />
-    <p class="breit"><strong>Zuerst reihum:</strong> eigene Ziel-Chance und Frage vorlesen, ein Satz zur Situation.</p>
-    <ol class="gross">
+    <ol class="gross dicht">
+      <li><strong>Zuerst reihum:</strong> Ziel-Chance, Frage, ein Satz zur Situation.</li>
       <li data-schritt><strong>Allein:</strong> Ideen zu allen drei HMW-Fragen, ein Sticky pro Idee. <Timer minuten={12} /></li>
       <li data-schritt><strong>Teilen:</strong> pro Produkt vier Minuten erklären und weiterspinnen. <Timer minuten={12} /></li>
       <li data-schritt><strong>Wieder allein</strong> – wer feststeckt: Analogien, extreme Nutzer*innen, Claude. <Timer minuten={8} /></li>
