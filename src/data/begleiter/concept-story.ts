@@ -3,8 +3,8 @@ import type { Notiz } from './typen';
 // Begleiter-Notizen zu src/pages/innolab/methoden/concept-story.astro (Tag 3, 16:00–16:30 Story-Bogen, 16:30–17:15 Übung).
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
 // selbst kommt an Tag 4 (usage-story.astro), heute geht es um den Bogen dahinter.
-// Wenn hinten, in dieser Reihenfolge streichen: facetime, baut-mit, drei-storys (ein Satz); im zweiten Block slack (nur
-// Krise und Höhepunkt), dann ein-satz (erst in Schritt 4).
+// Wenn hinten, in dieser Reihenfolge streichen: facetime, baut-mit, drei-storys (ein Satz); im zweiten Block slack (zügig
+// durch 1–3, bei Krise und Höhepunkt halten), dann ein-satz (erst in Schritt 4).
 // Lichaw liegt als EPUB vor: Quellen mit Kapitel + Abschnitt statt Seite.
 const LICHAW = 'Donna Lichaw, The User’s Journey';
 
@@ -43,7 +43,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Ist das nicht einfach Storytelling fürs Marketing?',
-        antwort: 'Nein. Lichaw: „concept stories don’t just help you figure out how to talk about a product, but how to build the product“ (Kap. 3, Supporting the Story). Dazu kommt gleich eine eigene Folie.',
+        antwort: 'Nein. Lichaw: „concept stories don’t just help you figure out how to talk about a product, but how to build the product“ (Kap. 3, Supporting the Story). Dazu kommt später eine eigene Folie.',
       },
     ],
     ueberleitung: 'Probiert den Bogen gleich aus – an einem einzigen Bild.',
@@ -327,7 +327,6 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       '„Das ist die Rechnung, die jemand in Sekunden macht, wenn er von euch hört.“',
       'Abbildung von links lesen, nur bis zur Hürde.',
       'Krise = Konkurrenz: Produkt, heutiger Weg, Widerstand gegen Neues.',
-      'Alle öffnen die Seite am eigenen Gerät – Vorlage steht dort.',
     ],
     verstaendnis: {
       frage: 'Was steht in der Krise, wenn es kein Konkurrenzprodukt gibt?',
@@ -387,7 +386,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Fragen: Was muss der Höhepunkt jetzt auflösen? Reihum, laut.',
       'Aufdecken: alles an einem Ort – und überall.',
       '„Leichter als E-Mail wäre die Linie gewesen.“',
-      'Wenn hinten: nur Krise und Höhepunkt zeigen.',
+      'Wenn hinten: zügig durch 1–3, bei Krise und Höhepunkt halten.',
     ],
     verstaendnis: {
       frage: 'Was muss der Höhepunkt bei Slack auflösen?',
@@ -448,7 +447,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   woher: {
     live: [
       '„Ihr erfindet nichts. Fast jede Station steht schon in euren Dateien.“',
-      'Tabelle zeilenweise: Station, Frage, Quelle bei euch.',
+      'Tabelle Zeile für Zeile: wo jede*r die Station schon findet.',
       'Betonen: Nur Station 6 ist neu – und eine Annahme.',
       'Fragen: Welche Station ist bei euch am dünnsten belegt?',
       'Falle: Krise aus dem Kopf – sie steht in den Interviews.',
