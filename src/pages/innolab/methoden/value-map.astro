@@ -10,8 +10,10 @@ import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import Aufloesung from '../../../components/Aufloesung.astro';
 
-const VPD = 'Alexander Osterwalder, Yves Pigneur, Greg Bernarda, Alan Smith, „Value Proposition Design“ (2014)';
+// VPD-Seiten sind überall Seiten der PDF-Ausgabe (quellen/vpd/text.txt), nicht der gedruckten Ausgabe.
+const VPD = 'Alexander Osterwalder, Yves Pigneur, Greg Bernarda, Alan Smith, „Value Proposition Design“ (2014, Seiten der PDF-Ausgabe)';
 const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
 ---
 <Layout title="Value Map & Fit">
@@ -24,24 +26,58 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
   <Folie>
     <h2 id="value-map">Die Value Map</h2>
     <p class="folie-satz">Pains und Gains hat die Kundschaft – Schmerzlinderer und Gewinnerzeuger entscheidet ihr.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Produkte & Services:</strong> was ihr diesem Segment anbietet, wie ein Schaufenster.</li>
-      <li data-schritt><strong>Schmerzlinderer:</strong> wie genau sie einen bestimmten Pain verringern.</li>
-      <li data-schritt><strong>Gewinnerzeuger:</strong> wie genau sie einen bestimmten Gain schaffen.</li>
-      <li data-schritt><strong>Nicht alles:</strong> Gute Angebote lösen wenige Pains extrem gut.</li>
-    </ul>
+    <BildText>
+      <BuchAbbildung src="/quellen/vpd/value-map-buch.png" alt="Value Map des Buchs: links gelbe Haftnotizen mit den Produkten (Book, Value Proposition Canvas, exclusive online companion, Web app, online course), um das Geschenk grüne Haftnotizen mit Wirkungen (helps shape ideas, minimizes risk of (big) failure, step-by-step instructions to get started und weitere)" quelle={`Value Map des Buchs. ${VPD_KURZ}, S. 93 (PDF).`} />
+      <ul>
+        <li data-schritt><strong>Gelb:</strong> was es gibt – wie im Schaufenster.</li>
+        <li data-schritt><strong>Grün:</strong> was es bewirkt – Schmerzlinderer und Gewinnerzeuger.</li>
+        <li data-schritt><strong>Nicht alles:</strong> wenige Pains, die aber extrem gut.</li>
+      </ul>
+    </BildText>
     <div class="nur-handout">
       <p>Die Value Map zerlegt ein Wertversprechen in Produkte und Services, Schmerzlinderer und Gewinnerzeuger ({VPD}, S. 49). Schmerzlinderer beschreiben, wie genau das Angebot bestimmte Pains verringert; ihr braucht nicht für jeden Pain einen – das schafft kein Angebot. Gute Angebote konzentrieren sich auf wenige Pains, die sie extrem gut lindern (S. 86–87). Der Unterschied zum Profil: Über Schmerzlinderer und Gewinnerzeuger entscheidet ihr, über Jobs, Pains und Gains die Kundschaft (S. 103).</p>
       <p>Häufige Fehler: alle eigenen Produkte aufzählen statt nur die für dieses Segment; Produkte in die Felder für Schmerzlinderer und Gewinnerzeuger schreiben; Schmerzlinderer, die zu keinem Pain im Profil passen; der Versuch, alle Pains und Gains zu lösen (S. 105).</p>
+      <p>Die Abbildung zeigt, wie das Buch sein eigenes Angebot kartiert: links die Produkte, daneben, was sie bewirken. Zu beiden Wirkungsfeldern steht dort: „Don’t add products or services here.“ ({VPD}, S. 93)</p>
     </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="produkt-wirkung">Produkt oder Wirkung?</h2>
+    <p class="folie-satz">Vier Zettel der Kaffeebar – in welches Feld?</p>
+    <ol class="gross" type="A">
+      <li>QR-Code an der Hallentür</li>
+      <li>Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist</li>
+      <li>Express-Ausgabe mit drei Standardgetränken</li>
+      <li>Der Kaffee steht bereit, wenn man an der Ausgabe ankommt</li>
+    </ol>
+    <p class="breit">Reihum, je ein Zettel: Produkte & Services, Schmerzlinderer oder Gewinnerzeuger?</p>
+    <Aufloesung ab="2026-11-21T23:59">
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Zettel</th><th>Feld</th></tr></thead>
+          <tbody>
+            <tr><td>A QR-Code an der Hallentür</td><td>Produkte & Services</td></tr>
+            <tr><td>B Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist</td><td>Schmerzlinderer (P1)</td></tr>
+            <tr><td>C Express-Ausgabe mit drei Standardgetränken</td><td>Produkte & Services</td></tr>
+            <tr><td>D Der Kaffee steht bereit, wenn man an der Ausgabe ankommt</td><td>Gewinnerzeuger (G1)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="breit"><strong>Die Probe:</strong> Steht es im Schaufenster – oder sagt es, was sich für die Kundschaft ändert?</p>
+    </Aufloesung>
+    <p class="nur-handout">Die Probe: Steht es im Schaufenster, ist es ein Produkt. Sagt es, was sich für die Kundschaft ändert, ist es ein Schmerzlinderer oder Gewinnerzeuger – das Buch nennt als Beispiele „helps save time“ und „well-designed“. Produkte in diese beiden Felder zu schreiben ist einer der vier häufigen Fehler ({VPD}, S. 105). Die vier Zettel stammen aus der Value Map der Kaffeebar weiter unten.</p>
   </Folie>
 
   <Folie>
     <h2 id="ad-libs">Drei Ideen, drei Sätze</h2>
     <p class="folie-satz">Ein Lückensatz pro Idee macht sichtbar, wie sie Wert schafft.</p>
-    <p class="gross" data-schritt>„Unser <strong>[Angebot]</strong> hilft <strong>[Segment]</strong>, die <strong>[Job]</strong> wollen, indem es <strong>[Pain]</strong> verringert und <strong>[Gain]</strong> ermöglicht – anders als <strong>[Alternative]</strong>.“</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/vpd/ad-lib.png" alt="Lückensatz des Buchs: Our … help(s) … who want to … by … and … – die Lücken als Symbole des Canvas; darunter das ausgefüllte Beispiel: our book help(s) business professionals who wants to improve or build a business by avoiding making stuff nobody wants and creating clear indicators to measure progress" quelle={`Ad-lib. ${VPD_KURZ}, S. 184 (PDF).`} />
+      <p class="gross" data-schritt>„Unser <strong>[Angebot]</strong> hilft <strong>[Segment]</strong>, die <strong>[Job]</strong> wollen, indem es <strong>[Pain]</strong> verringert und <strong>[Gain]</strong> ermöglicht – anders als <strong>[Alternative]</strong>.“</p>
+    </BildText>
     <div class="nur-handout">
-      <p>Osterwalder empfiehlt, mehrere Richtungen schnell als Prototypen zu skizzieren, bevor man eine ausarbeitet: als Serviettenskizze, als Lückensatz („Ad-lib“) oder als kurzen Canvas. Der Lückensatz zwingt dazu, genau zu benennen, wie eine Idee Wert schafft; im Buch steht er auf Englisch: „Our [products and services] help(s) [customer segment] who want to [jobs to be done] by [verb, e.g. reducing, avoiding] [a customer pain] and [verb, e.g. increasing, enabling] [a customer gain]“, optional mit „unlike [competing value proposition]“ ({VPD}, S. 157–159, 183–184 PDF). Eure drei Ideen aus der Ideation sind genau solche Alternativen.</p>
+      <p>Osterwalder empfiehlt, mehrere Richtungen schnell als Prototypen zu skizzieren, bevor man eine ausarbeitet: als Serviettenskizze, als Lückensatz („Ad-lib“) oder als kurzen Canvas ({VPD}, S. 157–159). Der Lückensatz zwingt dazu, genau zu benennen, wie eine Idee Wert schafft. Im Buch beginnt er mit „Our … help(s) … who want to … by … and …“; die Lücken sind Symbole des Canvas, darunter klein beschriftet: „products and services“, „customer segment“, „jobs to be done“, ein eigenes Verb (etwa „reducing, avoiding“) und noch ein eigenes Verb (etwa „increasing, enabling“). Als Tipp steht dabei, am Anfang oder Ende „unlike“ mit einem „competing value proposition“ anzufügen (S. 184). Die deutsche Fassung auf der Folie ergänzt nach den beiden Verben, worauf sie sich beziehen: einen Pain und einen Gain aus eurem Profil.</p>
+      <p>Das Buch empfiehlt, drei bis fünf Richtungen so zu skizzieren („Prototype three to five different directions by filling out the blanks in the ad-lib below.“, S. 183) und sich nicht früh festzulegen: „Don’t fall in love with first ideas— create alternatives.“ (S. 165). Für frühe Prototypen gilt ein sichtbarer Timer und höchstens 5 bis 15 Minuten (S. 161). Eure drei Ideen aus der Ideation sind genau solche Alternativen.</p>
     </div>
   </Folie>
 
@@ -49,14 +85,18 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
     <h2 id="fit">Fit prüfen</h2>
     <p class="folie-satz">Abhaken, was getroffen ist – ein Kreuz, wo nicht.</p>
     <BildText>
-      <BuchAbbildung src="/quellen/vpd/fit.png" alt="Links die Value Map als Quadrat mit Geschenk, Pille und Diagramm, rechts das Kundenprofil als Kreis mit Gesicht, dazwischen ein roter Kreis „Fit“ und Pfeile von links nach rechts" quelle={`Fit. ${VPD_KURZ}, S. 108 (PDF).`} />
+      <BuchAbbildung src="/quellen/vpd/fit-buch.png" alt="Value Map und Kundenprofil des Buchs nebeneinander, voller Haftnotizen; fast jede trägt einen schwarzen Haken, einige Jobs, Pains und Gains im Profil ein rotes Kreuz" quelle={`Fit? Die Prüfung des Buchs an sich selbst. ${VPD_KURZ}, S. 109 (PDF).`} />
       <ul>
         <li data-schritt><strong>✓</strong> Ein Schmerzlinderer oder Gewinnerzeuger trifft einen Job, Pain oder Gain.</li>
         <li data-schritt><strong>✗</strong> Was das Angebot nicht trifft.</li>
         <li data-schritt><strong>Fit:</strong> wichtige Jobs, extreme Pains, unverzichtbare Gains – oben im Profil.</li>
       </ul>
     </BildText>
-    <p class="nur-handout">Fit entsteht, wenn Kund*innen von einem Wertversprechen begeistert sind, weil es wichtige Jobs adressiert, extreme Pains lindert und unverzichtbare Gains schafft ({VPD}, S. 108). Geprüft wird Eintrag für Eintrag: Haken an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; Kreuze an das, was offen bleibt (S. 110, 112). Ihr vergleicht so die drei Lückensätze am selben Profil – und nehmt die mit dem besten Fit weiter.</p>
+    <div class="nur-handout">
+      <BuchAbbildung src="/quellen/vpd/fit.png" alt="Links die Value Map als Quadrat mit Geschenk, Pille und Diagramm, rechts das Kundenprofil als Kreis mit Gesicht, dazwischen ein roter Kreis „Fit“ und Pfeile von links nach rechts" quelle={`Fit. ${VPD_KURZ}, S. 108 (PDF).`} />
+      <p>Fit entsteht, wenn Kund*innen von einem Wertversprechen begeistert sind, weil es wichtige Jobs adressiert, extreme Pains lindert und unverzichtbare Gains schafft ({VPD}, S. 108). Urteilen wird am Ende die Kundschaft: „Your customers are the judge, jury, and executioner of your value proposition.“ (S. 109). Geprüft wird Eintrag für Eintrag: Haken an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; Kreuze an das, was offen bleibt (S. 110, 112). Die Abbildung auf der Folie zeigt, wie das Buch so sein eigenes Wertversprechen prüft (S. 109). Ihr vergleicht so die drei Lückensätze am selben Profil – und nehmt die mit dem besten Fit weiter.</p>
+      <p>Kreuze sind erlaubt: „Don’t worry if you haven’t checked all pains/gains–you can’t satisfy them all.“ Umgekehrt gilt: „If a pain reliever or gain creator doesn’t fit anything, it may not be creating customer value.“ ({VPD}, S. 113).</p>
+    </div>
   </Folie>
 
   <Folie>
@@ -75,7 +115,12 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
-    <p class="folie-satz">Drei Lückensätze am selben Profil – einer trifft am meisten.</p>
+    <p class="folie-satz">Drei Lückensätze, ein Profil – welche Idee trifft am meisten?</p>
+    <ul class="gross dicht">
+      <li><strong>Wartezeit an der Hallentür</strong> – beendet das Raten vor der Schlange.</li>
+      <li><strong>Im Gehen bestellen, mit Abfahrtszeit</strong> – erspart das Anstehen und zeigt beim Bestellen, ob der Kaffee vor der Abfahrt fertig ist.</li>
+      <li><strong>Kaffeewagen am Bahnsteig</strong> – bringt den Kaffee dorthin, wo sie warten.</li>
+    </ul>
     <div style="overflow-x:auto">
       <table>
         <thead><tr><th>Idee</th><th>J1 Kaffee besorgen</th><th>P1 ausgehen?</th><th>P2 Schlange</th><th>P3 wann fertig?</th><th>G1 vor dem Zug</th></tr></thead>
@@ -100,11 +145,11 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
     <ol class="gross">
       <li data-schritt><strong>Lückensätze:</strong> für jede eurer drei Ideen einen. <Timer minuten={8} /></li>
       <li data-schritt><strong>Fit vergleichen:</strong> ✓ und ✗ gegen die obersten Einträge eures Profils. <Timer minuten={7} /></li>
-      <li data-schritt><strong>Zu dritt:</strong> Jede*r zeigt die Wahl; die anderen fragen nach den Kreuzen. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Value Map</strong> für die gewählte Idee, mit Verweis auf J-, P- und G-IDs. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
+      <li data-schritt><strong>Zu dritt:</strong> Jede*r zeigt die Wahl; die anderen fragen nach den Kreuzen. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Value Map</strong> für die gewählte Idee, mit Verweis auf J-, P- und G-IDs. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={3} /></li>
     </ol>
-    <p class="nur-handout">Dazu fünf Minuten Theorie. Die Wahl kommt als Zeile ins Entscheidungslog, mit dem Fit als Beleg und dem Hinweis, dass er auf Papier steht. Was ihr mit „?“ markiert habt, wird später eine Annahme für die Experiment-Karte.</p>
+    <p class="nur-handout">Dazu elf Minuten Theorie mit der Kaffeebar. Die Wahl kommt als Zeile ins Entscheidungslog, mit dem Fit als Beleg und dem Hinweis, dass er auf Papier steht. Was ihr mit „?“ markiert habt, wird später eine Annahme für die Experiment-Karte. Die Prüfung mit Claude macht ihr bis Tag 4, wenn die Zeit nicht reicht.</p>
   </Folie>
 
   <div class="nur-handout">

@@ -9,8 +9,13 @@ import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import Aufloesung from '../../../components/Aufloesung.astro';
+import Baum from '../../../components/bild/Baum.astro';
+import { KAFFEEBAR_BAUM } from '../../../components/innolab-beispiel';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+// Unter der Ziel-Chance der Kaffeebar drei leere Plätze: Die Ideation füllt sie (wie Torres' „?“ auf baum#eltern-kind).
+const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaffee noch aus?“', kinder: [{ t: '?' }, { t: '?' }, { t: '?' }] }] };
 ---
 <Layout title="Ideation">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
@@ -20,19 +25,51 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <MethodenKarte slug="ideation" />
 
   <Folie>
+    <h2 id="vergleich">Drei Ideen statt einer Lieblingsidee</h2>
+    <p class="folie-satz">„Was könnten wir sonst noch bauen?“</p>
+    <Baum knoten={DREI_PLAETZE} hervor={2} label="Baum der Kaffeebar: Outcome, darunter die Ziel-Chance „Geht sich ein Kaffee noch aus?“, darunter drei leere Plätze mit Fragezeichen für Lösungen" />
+    <p class="breit" data-schritt><strong>Nicht:</strong> Sollen wir das bauen? – <strong>Sondern:</strong> Welche von dreien trifft die Chance am besten?</p>
+    <p class="nur-handout">Am Vormittag habt ihr Chancen gegeneinander abgewogen, statt bei einer einzelnen „ja oder nein“ zu fragen. Dasselbe gilt jetzt für Lösungen. Torres nennt „Should we do this or not?“ eine „whether or not“-Entscheidung und setzt den Vergleich dagegen: „Instead of falling in love with our first idea, we’ll ask, “What else could we build?”“ ({TORRES}, S. 30–31). Das Kapitel zur Ideation hat genau dieses Ziel: „work with sets of solutions rather than fixating on your favorite solution“ (S. 105). Am Ende stehen drei Ideen und eine Frage: „Which of these three ideas best delivers on our target opportunity?“ (S. 113). Eure Idee von Tag 1 darf eine der drei sein – wenn sie sich im Vergleich hält.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="erste-ideen">Zwei Minuten: Ideen für die Kaffeebar</h2>
+    <p class="folie-satz">„Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</p>
+    <MiroFrame name="T3 · 3 · Ideation" />
+    <p class="breit">Jede*r für sich: so viele Ideen wie möglich, ein Sticky pro Idee, in der Reihenfolge nummeriert. <Timer minuten={2} /></p>
+    <p class="breit" data-schritt><strong>Reihum:</strong> nur eure Idee Nr. 1.</p>
+    <p class="nur-handout">Eine Übung dieses Kurses, bevor die Theorie kommt. Eure Stickies bleiben in der Kaffeebar-Spalte liegen und zählen später zu den Ideen des Beispiels.</p>
+  </Folie>
+
+  <Folie>
     <h2 id="menge">Menge führt zu Qualität</h2>
     <p class="folie-satz">Die erste Idee ist selten die beste.</p>
     <ul class="gross">
-      <li data-schritt><strong>Viele Ideen</strong> werden vielfältiger und origineller.</li>
-      <li data-schritt><strong>Die originellsten</strong> kommen gegen Ende, nicht am Anfang.</li>
-      <li data-schritt>Darum die Schleife <strong>länger offen halten</strong> als bequem.</li>
+      <li>Wie ähnlich waren eure ersten Ideen?</li>
+      <li>Welche Nummer trägt eure ungewöhnlichste?</li>
     </ul>
-    <p class="nur-handout">Teresa Torres fasst die Kreativitätsforschung zusammen: Gemessen wird Kreativität an der Zahl der Ideen, an ihrer Vielfalt und an ihrer Originalität, und die Zahl hängt mit den anderen beiden zusammen. Je mehr Ideen, desto vielfältiger und neuer werden sie; die originellsten entstehen eher gegen Ende einer Sitzung. Viele Teams haben trotzdem nur ein, zwei Lösungen pro Chance – jede Menge erste Ideen zu vielen Chancen. Nicht jede Chance braucht eine innovative Lösung („Passwort vergessen“ muss niemand neu erfinden), aber bei strategischen Chancen lohnt es sich ({TORRES}, S. 107).</p>
+    <Aufloesung ab="2026-11-21T23:59">
+      <Fluss label="Verlauf einer Ideensammlung: erste Ideen schnell und naheliegend, mehr Ideen vielfältiger, gegen Ende die originellsten" hervor={[2]} knoten={[
+        { t: 'Erste Ideen', sub: 'schnell und naheliegend' },
+        { t: 'Mehr Ideen', sub: 'viele Ideen werden vielfältiger und origineller' },
+        { t: 'Gegen Ende', sub: 'die originellsten – darum die Schleife länger offen halten als bequem' },
+      ]} />
+    </Aufloesung>
+    <p class="nur-handout">Das Motto des Kapitels stammt von Leigh Thompson: „Creative teams know that quantity is the best predictor of quality.“ ({TORRES}, S. 106). Teresa Torres fasst die Kreativitätsforschung zusammen: Gemessen wird Kreativität an der Zahl der Ideen, an ihrer Vielfalt und an ihrer Originalität, und die Zahl hängt mit den anderen beiden zusammen. Je mehr Ideen, desto vielfältiger und neuer werden sie; die originellsten entstehen eher gegen Ende einer Sitzung. Viele Teams haben trotzdem nur ein, zwei Lösungen pro Chance – jede Menge erste Ideen zu vielen Chancen. Nicht jede Chance braucht eine innovative Lösung („Passwort vergessen“ muss niemand neu erfinden), aber bei strategischen Chancen lohnt es sich ({TORRES}, S. 107). Torres berichtet eine Tendenz („tend to“), kein Gesetz – wenn eure beste Idee in den zwei Minuten früh kam, widerlegt das nichts.</p>
   </Folie>
 
   <Folie>
     <h2 id="brainstorming">Das Problem mit Brainstorming</h2>
-    <p class="folie-satz">Allein entstehen mehr, vielfältigere und originellere Ideen als in der Gruppe.</p>
+    <p class="folie-satz">Bunte Zettelwand oder fensterloser Raum – woran denkt ihr bei Brainstorming?</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Eine Gruppe im Raum</th><th>Gleich viele Einzelne, jede*r für sich</th></tr></thead>
+        <tbody>
+          <tr data-schritt><td>weniger Ideen</td><td><strong>mehr, vielfältigere, originellere Ideen</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="breit" data-schritt><strong>Allein entstehen mehr, vielfältigere und originellere Ideen als in der Gruppe.</strong></p>
     <ul class="gross">
       <li data-schritt><strong>Trittbrettfahren:</strong> In der Gruppe strengt man sich weniger an.</li>
       <li data-schritt><strong>Anpassung:</strong> Frühe Ideen geben den Ton vor, man zensiert sich.</li>
@@ -40,9 +77,23 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <li data-schritt><strong>Nach unten angleichen:</strong> Die Gruppe sinkt auf das schwächste Mitglied.</li>
     </ul>
     <div class="nur-handout">
+      <p>Bei „Brainstorming“ denken die einen an eine lebhafte Gruppe vor einer Wand voller bunter Zettel, die anderen an einen fensterlosen Besprechungsraum, in dem wenige Ideen rufen und der Rest sich langweilt ({TORRES}, S. 106).</p>
       <p>Brainstorming stammt von Alex Osborn („Applied Imagination“, 1953) mit vier Regeln: Menge zählt, Urteil aufschieben, ungewöhnliche Ideen begrüßen, Ideen kombinieren. Jahrzehntelang verglichen Forschende Gruppen mit gleich vielen Einzelnen: Die Einzelnen hatten mehr, vielfältigere und originellere Ideen. Gründe sind „social loafing“, Gruppenanpassung, „production blocking“ und „downward norm setting“ ({TORRES}, S. 108–109).</p>
-      <p>Dass Gruppen sich trotzdem für produktiver halten, nennen Bernard Nijstad und Kolleg*innen die „Illusion der Gruppenproduktivität“: In der Gruppe bleibt man seltener stecken und fühlt sich deshalb besser – die Einzelnen müssen sich mehr anstrengen und kommen doch weiter (S. 109).</p>
     </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="illusion">Warum es sich trotzdem gut anfühlt</h2>
+    <p class="folie-satz">Wenn Einzelne mehr liefern – warum schwören so viele auf Brainstorming?</p>
+    <div style="overflow-x:auto" data-schritt>
+      <table>
+        <thead><tr><th>In der Gruppe</th><th>Allein</th></tr></thead>
+        <tbody>
+          <tr><td>seltener festgesteckt → fühlt sich produktiv an</td><td>öfter festgesteckt → <strong>mehr, vielfältigere, originellere Ideen</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nur-handout">Bernard Nijstad und Kolleg*innen nennen das „the illusion of group productivity“: Gruppen überschätzen ihre Leistung und sind zufriedener mit ihrer Arbeit, obwohl sie weniger liefern. Der Grund: In der Gruppe helfen die Ideen der anderen über die Momente hinweg, in denen einem nichts einfällt. Einzelne haben mehr solcher Momente, müssen sich mehr anstrengen – und kommen trotzdem weiter. „Working in a group feels easier, so we think we must be performing at a higher level.“ ({TORRES}, S. 109)</p>
   </Folie>
 
   <Folie>
@@ -55,44 +106,71 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       { t: 'Teilen', sub: 'wiederholen, bis es reicht' },
       { t: '15–20 Ideen', sub: 'für eine Ziel-Chance' },
     ]} />
-    <p class="nur-handout">Runa Korde und Paul Paulus zeigten, dass der Wechsel zwischen Ideen allein und Teilen in der Gruppe die Ideen der nächsten Einzelrunde verbessert: Fremde Ideen regen neue an, entwickelt wird trotzdem allein ({TORRES}, S. 110). Torres' Ablauf: die Ziel-Chance gemeinsam vergegenwärtigen, allein Ideen sammeln, teilen (Ideen erklären, Fragen zulassen, weiterspinnen), wiederholen – bis 15 bis 20 Ideen für diese eine Chance stehen (S. 112). Ideation ist der eine Schritt, den sie ausdrücklich mit dem ganzen Team empfiehlt: Je unterschiedlicher die Leute, desto unterschiedlicher die Ideen (S. 114). Bei euch heißt das: Alle drei denken für alle drei Produkte mit.</p>
+    <p class="nur-handout">Runa Korde und Paul Paulus zeigten, dass der Wechsel zwischen Ideen allein und Teilen in der Gruppe die Ideen der nächsten Einzelrunde verbessert: Fremde Ideen regen neue an, entwickelt wird trotzdem allein: „They never ideated as a group, but they received the benefit of hearing each other’s ideas.“ ({TORRES}, S. 110). Torres' Ablauf: die Ziel-Chance gemeinsam vergegenwärtigen, allein Ideen sammeln, teilen (Ideen erklären, Fragen zulassen, weiterspinnen), wiederholen – bis 15 bis 20 Ideen für diese eine Chance stehen (S. 112). Ideation ist der eine Schritt, den sie ausdrücklich mit dem ganzen Team empfiehlt: Je unterschiedlicher die Leute, desto unterschiedlicher die Ideen (S. 114). Bei euch heißt das: Alle drei denken für alle drei Produkte mit. Bevor ihr beginnt, liest jede*r die eigene Ziel-Chance und Frage vor und sagt, in welcher Situation sie auftritt – wer für ein fremdes Produkt mitdenkt, braucht den Kontext (S. 112, 114).</p>
   </Folie>
 
   <Folie>
     <h2 id="festgefahren">Wenn ihr feststeckt</h2>
-    <p class="folie-satz">Feststecken gehört dazu – und es gibt Wege heraus.</p>
+    <p class="folie-satz">Feststecken passiert allen – ihr seid nicht schlecht im Ideenfinden.</p>
     <ul class="gross">
-      <li data-schritt><strong>Pause</strong> machen: Das Gehirn arbeitet weiter (Inkubation).</li>
-      <li data-schritt><strong>Analoge Produkte:</strong> Wer löst ein ähnliches Problem, auch ganz woanders?</li>
-      <li data-schritt><strong>Extreme Nutzer*innen:</strong> Was bräuchte jemand, der das zum ersten Mal macht – oder täglich?</li>
-      <li data-schritt><strong>Wilde Ideen</strong> zulassen: Sie verbessern die machbaren.</li>
+      <li data-schritt><strong>Pause</strong> · drüber schlafen: Das Gehirn arbeitet weiter (Inkubation).</li>
+      <li data-schritt><strong>Analoge Produkte</strong> · Klette → Klettverschluss: Wer löst ein ähnliches Problem, auch ganz woanders?</li>
+      <li data-schritt><strong>Extreme Nutzer*innen</strong> · zum ersten Mal, jeden Tag: Was bräuchten sie?</li>
+      <li data-schritt><strong>Zauberstab</strong> · alles ist möglich: Wilde Ideen verbessern die machbaren.</li>
     </ul>
     <div class="nur-handout">
-      <p>Jede*r bleibt irgendwann stecken; das ist kein Zeichen, unkreativ zu sein. Torres empfiehlt Pausen und Ortswechsel, weil das Gehirn weiterarbeitet, wenn man aufhört, bewusst nachzudenken. Dann der Blick zur Konkurrenz und weiter: Welche anderen Branchen haben ein ähnliches Problem gelöst? Klettverschluss entstand aus einer Klette in der Socke. Dazu die Bedürfnisse extremer Nutzer*innen und wilde Ideen – mit einem Zauberstab ist alles möglich, und wilde Ideen lassen sich mit machbaren mischen ({TORRES}, S. 110–112).</p>
+      <p>Jede*r bleibt irgendwann stecken; das ist kein Zeichen, unkreativ zu sein: „You aren’t bad at generating ideas. You are creative.“ ({TORRES}, S. 110). Torres empfiehlt Pausen und Ortswechsel, weil das Gehirn weiterarbeitet, wenn man aufhört, bewusst nachzudenken. Dann der Blick zur Konkurrenz und weiter: Welche anderen Branchen haben ein ähnliches Problem gelöst? Klettverschluss entstand aus einer Klette in der Socke. Dazu die Bedürfnisse extremer Nutzer*innen und wilde Ideen – mit einem Zauberstab ist alles möglich, und wilde Ideen lassen sich mit machbaren mischen ({TORRES}, S. 110–112).</p>
       <p>Im Kurs ist Claude eine Hilfe beim Feststecken, nach euren eigenen Runden: als Quelle für analoge Produkte und extreme Nutzer*innen. Ideen von Claude kennzeichnet ihr als solche.</p>
     </div>
   </Folie>
 
   <Folie>
+    <h2 id="analogien">Wer löst so ein Problem schon?</h2>
+    <p class="folie-satz">„Who else has to solve a problem like this?“</p>
+    <p class="breit"><strong>Torres:</strong> Jobbörse – Recruiter*innen bewerten Kandidat*innen ← Online-Shop: Produkte bewerten · Reiseportal: Hotel wählen · Versicherung: Policen vergleichen</p>
+    <p class="breit"><strong>Kaffeebar:</strong> Wer muss Menschen noch sagen, ob sich etwas vor einer Abfahrt ausgeht?</p>
+    <ul class="gross">
+      <li data-schritt><strong>Flughafen:</strong> Boarding-Gruppen nach Abflugzeit → Bestellungen nach Abfahrtszeit aufrufen</li>
+      <li data-schritt><strong>Supermarkt:</strong> Express-Kasse – passt weniger genau, steht aber auch unter den 18 Ideen</li>
+    </ul>
+    <p class="nur-handout">Erst zur Konkurrenz schauen, dann weiter: „What other industries have solved similar problems?“ Torres' Beispiel ist eine Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft. Sie kann sich ansehen, wie Online-Shops beim Bewerten von Produkten helfen, Reiseportale beim Wählen eines Hotels und Versicherungen beim Vergleich von Policen – Branchen, die nichts miteinander zu tun haben und doch ein ähnliches Problem lösen ({TORRES}, S. 111). Je weiter weg die Branche, desto eher findet ihr Ideen einer anderen Art (S. 114). Bei der Kaffeebar kommen so zwei der 18 Ideen zustande: Aufruf nach Abfahrtszeit wie beim Boarding und die Express-Kasse aus dem Supermarkt.</p>
+  </Folie>
+
+  <Folie>
     <h2 id="auswahl">Von 20 auf drei</h2>
     <p class="folie-satz">Ideen entwickelt man besser allein, bewertet sie aber besser gemeinsam.</p>
-    <ol class="gross">
-      <li data-schritt><strong>Aussortieren:</strong> Löst die Idee die Ziel-Chance – wenigstens zum Teil?</li>
-      <li data-schritt><strong>Punkten:</strong> drei Punkte pro Person; einziges Kriterium: Wie gut trifft sie die Ziel-Chance?</li>
-      <li data-schritt><strong>Klarer Sieger?</strong> Beiseitelegen. Sonst kurz werben, neu punkten – bis drei stehen.</li>
-      <li data-schritt><strong>Begeisterung:</strong> Jede der drei hat eine Fürsprecher*in.</li>
-    </ol>
+    <Fluss label="Auswahl: 15 bis 20 Ideen, aussortieren, punkten, drei Ideen mit je einer Fürsprecher*in" hervor={[3]} knoten={[
+      { t: '15–20 Ideen', sub: 'allein und geteilt gesammelt' },
+      { t: 'Aussortieren', sub: 'Löst sie die Ziel-Chance – wenigstens zum Teil?' },
+      { t: 'Punkten', sub: 'drei Punkte je Person; einziges Kriterium: Wie gut trifft sie die Ziel-Chance?' },
+      { t: 'Drei Ideen', sub: 'jede mit Fürsprecher*in' },
+    ]} />
+    <p class="breit" data-schritt><strong>Klarer Sieger?</strong> Beiseitelegen. Sonst kurz werben, neu punkten – bis drei stehen.</p>
     <div class="nur-handout">
-      <p>Zuerst fragt ihr bei jeder Idee: Löst sie die Ziel-Chance? Teilweise reicht. Ideen, die das nicht tun, fliegen raus – auch glänzende, die vielleicht irgendwann gut wären; sonst macht ihr die strategische Wahl der Ziel-Chance rückgängig (S. 112–114). Dann „Dot-Voting“: drei Punkte pro Person, beliebig verteilt. Bewertet wird nur, wie gut eine Idee die Ziel-Chance trifft – nicht, wie cool sie ist, und schwierige oder unmögliche Ideen werden nicht ausgeschlossen. Gibt es nach einer Runde keinen klaren Sieger, wirbt jede*r kurz für die eigenen Punkte, ohne lange Debatte, dann wird neu gepunktet. Am Ende ein kurzer Check: Jede*r ist von mindestens einer Idee begeistert, jede Idee hat eine Fürsprecher*in (S. 113).</p>
-      <p>Warum drei und nicht eine? Torres will einen echten Vergleich: Welche der drei erfüllt die Ziel-Chance am besten? Das entscheiden später Annahmentests und Prototypen, nicht eine Abstimmung (S. 113). Bei euch folgt dieser Vergleich gleich nach der Pause.</p>
+      <p>Zuerst fragt ihr bei jeder Idee: Löst sie die Ziel-Chance? Teilweise reicht. Ideen, die das nicht tun, fliegen raus – auch glänzende, die vielleicht irgendwann gut wären; sonst macht ihr die strategische Wahl der Ziel-Chance rückgängig (S. 112–114). Dann „Dot-Voting“: drei Punkte pro Person, beliebig verteilt. Bewertet wird nur, wie gut eine Idee die Ziel-Chance trifft – nicht, wie cool sie ist, und schwierige oder unmögliche Ideen werden nicht ausgeschlossen. Gibt es nach einer Runde keinen klaren Sieger, wirbt jede*r kurz für die eigenen Punkte, ohne lange Debatte, dann wird neu gepunktet. Am Ende ein kurzer Check: Jede*r ist von mindestens einer Idee begeistert, jede Idee hat eine Fürsprecher*in (S. 113). Torres sagt es so: „You aren’t voting for the coolest, shiniest ideas.“ – und „we don’t want to dot-vote to select one idea“ (S. 113).</p>
+      <p>Warum drei und nicht eine? Torres will einen echten Vergleich: Welche der drei erfüllt die Ziel-Chance am besten? Das entscheiden später Annahmentests und Prototypen, nicht eine Abstimmung: „Which of these three ideas best delivers on our target opportunity?“ (S. 113). Bei euch folgt dieser Vergleich gleich nach der Pause.</p>
     </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="varianten">Löwen, Tiger, Pumas</h2>
+    <p class="folie-satz">Drei Varianten derselben Idee sind kein Vergleich.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <tbody>
+          <tr><th>eine Idee, drei Formen</th><td>Ampel an der Tür · Anzeige neben der Abfahrtstafel · Wartezeit in der Bahn-App</td></tr>
+          <tr data-schritt><th>drei Arten von Idee</th><td>Anzeige · Bestellweg · anderer Ort</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nur-handout">Wer möglichst viele Tiere aufzählen soll, bleibt schnell in einer Familie: „once we identify lions and tigers, we might add pumas, cheetahs, and snow leopards“. Zum Sammeln ist das in Ordnung. In die Auswahl der drei gehört so viel Verschiedenheit wie möglich ({TORRES}, S. 114).</p>
   </Folie>
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">H1: „Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</p>
     <ul class="gross">
-      <li data-schritt><strong>18 Ideen</strong>, darunter Ampel an der Tür, Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen), Express-Kasse wie im Supermarkt, Kaffee per Drohne.</li>
+      <li data-schritt><strong>18 Ideen</strong> – eure von vorhin zählen dazu. Darunter Ampel an der Tür, Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen), Express-Kasse wie im Supermarkt, Kaffee per Drohne.</li>
       <li data-schritt><strong>Aussortiert:</strong> „Becher mit Deckel, der nicht verschüttet“, „mehr Sitzplätze“ – gut, aber nicht für diese Chance.</li>
       <li data-schritt><strong>Drei nach dem Punkten:</strong> Wartezeit an der Hallentür · Im Gehen bestellen, mit Abfahrtszeit · Kaffeewagen am Bahnsteig.</li>
     </ul>
@@ -103,15 +181,16 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
     <p class="folie-satz">Zwei Runden allein und teilen, dann auswählen – für jedes der drei Produkte.</p>
     <MiroFrame name="T3 · 3 · Ideation" />
+    <p class="breit"><strong>Zuerst reihum:</strong> eigene Ziel-Chance und Frage vorlesen, ein Satz zur Situation.</p>
     <ol class="gross">
       <li data-schritt><strong>Allein:</strong> Ideen zu allen drei HMW-Fragen, ein Sticky pro Idee. <Timer minuten={12} /></li>
       <li data-schritt><strong>Teilen:</strong> pro Produkt vier Minuten erklären und weiterspinnen. <Timer minuten={12} /></li>
-      <li data-schritt><strong>Wieder allein</strong> – wer feststeckt: Analogien, extreme Nutzer*innen, Claude. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Teilen</strong>, bis jedes Produkt 15 bis 20 Ideen hat. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Wieder allein</strong> – wer feststeckt: Analogien, extreme Nutzer*innen, Claude. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Teilen</strong>, bis jedes Produkt 15 bis 20 Ideen hat. <Timer minuten={8} /></li>
       <li data-schritt><strong>Auswählen:</strong> pro Produkt aussortieren, punkten, drei Ideen. <Timer minuten={15} /></li>
-      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={5} /></li>
+      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={4} /></li>
     </ol>
-    <p class="nur-handout">Dazu 15 Minuten Theorie und 5 Minuten Kaffeebar; die übrigen Minuten sind Puffer. Torres rät, Ideen nicht nur in einer Sitzung zu sammeln (S. 114): Was euch über Nacht einfällt, kommt dazu.</p>
+    <p class="nur-handout">Dazu 28 Minuten Theorie mit der Kaffeebar; zwei Minuten sind Puffer. Torres rät, Ideen nicht nur in einer Sitzung zu sammeln (S. 114): Was euch über Nacht einfällt, kommt dazu.</p>
   </Folie>
 
   <div class="nur-handout">
