@@ -49,7 +49,7 @@ describe('Kaffeebar-Beispiel: Chance „Wenn ich anstehe, reicht mir die Zeit ni
   // „Ich will den Zug nicht verpassen“ bleibt als Bedürfnis hinter dem Tag-1-Wunsch „per App vorbestellen“.
   it('die Baum-Seite belegt sie überall mit I2-2, I3-4, I4-1', () => {
     const seite = readFileSync('src/pages/innolab/methoden/baum.astro', 'utf8');
-    const treffer = [...seite.matchAll(/reicht mir die Zeit nicht\.?“? \((I[^)]*)\)/g)].map((m) => m[1]);
+    const treffer = [...seite.matchAll(/(?:reicht mir die Zeit nicht\.?“?|Alle drei Zitate) \((I[^)]*)\)/g)].map((m) => m[1]);
     expect(treffer.length).toBeGreaterThan(0);
     expect(treffer.filter((ids) => ids !== 'I2-2, I3-4, I4-1')).toStrictEqual([]);
   });
