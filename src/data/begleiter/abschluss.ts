@@ -148,7 +148,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Wie sieht ein guter Snapshot konkret aus?',
-        antwort: 'Zeig das Werkstatt-Beispiel I2: Pseudonym „Pendlerin, Zug 7:42“. Zitat „Wenn ich auf die Uhr schauen muss, geh ich.“ (I2-2). Kurzinfos „Pendelt täglich nach Wien. Holt dreimal pro Woche Kaffee.“ Einsicht „Entscheidet erst beim Ankommen.“ Chancen „Wenn ich anstehe, verpasse ich den Zug.“ und „Ich will wissen, wann mein Kaffee fertig ist.“ (I2-5).',
+        antwort: 'Zeig das Werkstatt-Beispiel I2: Pseudonym „Pendlerin, Zug 7:42“. Zitat „Wenn ich auf die Uhr schauen muss, geh ich.“ (I2-2). Kurzinfos „Pendelt täglich nach Wien. Holt dreimal pro Woche Kaffee.“ Einsicht „Entscheidet erst beim Ankommen.“ Chancen „Wenn ich anstehe, reicht mir die Zeit nicht.“ und „Ich will wissen, wann mein Kaffee fertig ist.“ (I2-5).',
       },
       {
         frage: 'Was, wenn nur eine Person etwas sagt? Zählt das?',

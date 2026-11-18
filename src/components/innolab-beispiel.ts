@@ -5,7 +5,7 @@
 import type { Knoten } from './bild/Baum.astro';
 
 export const KAFFEEBAR_BAUM: Knoten = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den Zug', kinder: [
-  { t: '„Wenn ich anstehe, verpasse ich meinen Zug.“', kinder: [
+  { t: '„Wenn ich anstehe, reicht mir die Zeit nicht.“', kinder: [
     { t: 'Vorbestellen per App', kinder: [{ t: 'Bestellen 3 von 10 per WhatsApp vor?' }] },
     { t: 'Express-Theke' },
     { t: 'Kaffeewagen am Bahnsteig' },
@@ -19,7 +19,7 @@ export const KAFFEEBAR_BAUM: Knoten = { t: 'Mehr Pendler*innen steigen morgens m
 export const KAFFEEBAR_BAUM_INTERVIEWS: Knoten = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den Zug', kinder: [
   { t: '„Ich komme in die Halle und entscheide.“', kinder: [
     { t: '„Geht sich ein Kaffee noch aus?“' },
-    { t: '„Wenn ich anstehe, verpasse ich meinen Zug.“' },
+    { t: '„Wenn ich anstehe, reicht mir die Zeit nicht.“' },
     { t: '„Schnell geht nur der Automat.“' },
   ] },
   { t: '„Ich stehe an und warte auf meinen Kaffee.“', kinder: [

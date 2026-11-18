@@ -43,3 +43,19 @@ describe('Kaffeebar-Beispiel: Belege der Chance „mitbestellen“', () => {
     expect(treffer.every((ids) => ids === 'I5-4, I5-6')).toBe(true);
   });
 });
+
+describe('Kaffeebar-Beispiel: Chance „Wenn ich anstehe, reicht mir die Zeit nicht.“', () => {
+  // Kein Zitat in I2-2, I3-4, I4-2 erzählt vom Zug; was drei Interviews wörtlich sagen, ist: Die Zeit reicht nicht (I4-1).
+  // „Ich will den Zug nicht verpassen“ bleibt als Bedürfnis hinter dem Tag-1-Wunsch „per App vorbestellen“.
+  it('die Baum-Seite belegt sie überall mit I2-2, I3-4, I4-1', () => {
+    const seite = readFileSync('src/pages/innolab/methoden/baum.astro', 'utf8');
+    const treffer = [...seite.matchAll(/reicht mir die Zeit nicht\.?“? \((I[^)]*)\)/g)].map((m) => m[1]);
+    expect(treffer.length).toBeGreaterThan(0);
+    expect(treffer.filter((ids) => ids !== 'I2-2, I3-4, I4-1')).toStrictEqual([]);
+  });
+  it('die alte Fassung „verpasse ich den/meinen Zug“ steht nirgends mehr', () => {
+    const orte = [...dateien(SEITEN, '.astro'), ...dateien('src/data/begleiter', '.ts'), ...dateien('src/components', '.ts'), ...dateien(BEISPIELE, '.json')];
+    const treffer = orte.filter((f) => /verpasse ich (den|meinen) Zug/.test(readFileSync(f, 'utf8')));
+    expect(treffer).toStrictEqual([]);
+  });
+});

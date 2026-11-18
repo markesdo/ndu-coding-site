@@ -31,7 +31,7 @@
       "kurzinfos": "Pendelt täglich nach Wien. Holt dreimal pro Woche Kaffee.",
       "einsichten": ["Entscheidet erst beim Ankommen."],
       "chancen": [
-        { "text": "Wenn ich anstehe, verpasse ich den Zug.", "belege": ["I2-2"] },
+        { "text": "Wenn ich anstehe, reicht mir die Zeit nicht.", "belege": ["I2-2"] },
         { "text": "Ich will wissen, wann mein Kaffee fertig ist.", "belege": ["I2-5"] }
       ],
       "notizen": "Ankunft 7:31, acht Leute in der Schlange, Blick auf die Uhr, weiter zum Automaten, Zug 7:42.",
