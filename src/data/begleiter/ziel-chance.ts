@@ -180,7 +180,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Kaffeebar: Verglichen wurden zuerst die drei Momente, dann die drei Geschwister unter „Ich komme in die Halle und entscheide.“ Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2), „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1), „Schnell geht nur der Automat.“ (I1-3, I4-3).',
+        text: 'Kaffeebar: Verglichen wurden zuerst die drei Momente, dann die drei Geschwister unter „Ich komme in die Halle und entscheide.“ Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2), „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1), „Schnell geht nur der Automat.“ (I1-3, I4-3 – bei I4-3 unsere Lesart).',
         quelle: 'Werkstatt, Beispiel Kaffeebar; baum.astro, Folie beispiel',
       },
       {

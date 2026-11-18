@@ -198,7 +198,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Zeilen 4 und 5 gehen schnell: Es reicht, wohin die Zeile kommt, mit einem Satz Begründung.',
         'Letzter Schritt: Das Ergebnis erscheint. Überleiten zu den eigenen Snapshots.',
       ],
-      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, reicht mir die Zeit nicht“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): ins Feld „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
+      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, reicht mir die Zeit nicht“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2; I3 in unserer Lesart): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): ins Feld „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
     },
     kern: [
       {
@@ -210,7 +210,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 70; Feld „Nur in einem Interview“: Kursformat`,
       },
       {
-        text: '„Lösung → Bedürfnis dahinter neu prüfen“ am Beispiel „Per App vorbestellen“ (erste Zeile der Tabelle): Erst die Probe „Is there more than one way to address this opportunity?“ – hier gibt es nur einen Weg, die App; also eine Lösung. Dann das Bedürfnis dahinter suchen („uncover the implied opportunity“): Wozu vorbestellen? „Ich will den Zug nicht verpassen.“ Dieses Bedürfnis geht neu durch die drei Fragen: Bedürfnis – ja; in mehr als einem Interview – wörtlich vom Zug erzählt nur I3 (I3-3), aber I2, I3 und I4 sagen, dass die Zeit fürs Anstehen nicht reicht (I2-2, I3-4, I4-1); treibt den Outcome – ja. Es kommt also in den Baum, in den Worten der Interviews – das ist die nächste Zeile, „Wenn ich anstehe, reicht mir die Zeit nicht.“: eine Karte, nicht zwei. Gegenprobe: Für dieses Bedürfnis gibt es mehrere Wege – im Kaffeebar-Baum von Tag 1 hängen darunter Vorbestellen per App, Express-Theke und Kaffeewagen am Bahnsteig (Vorbestellen ist später verworfen, D4). „An opportunity should have more than one potential solution.“',
+        text: '„Lösung → Bedürfnis dahinter neu prüfen“ am Beispiel „Per App vorbestellen“ (erste Zeile der Tabelle): Erst die Probe „Is there more than one way to address this opportunity?“ – hier gibt es nur einen Weg, die App; also eine Lösung. Dann das Bedürfnis dahinter suchen („uncover the implied opportunity“): Wozu vorbestellen? „Ich will den Zug nicht verpassen.“ Dieses Bedürfnis geht neu durch die drei Fragen: Bedürfnis – ja; in mehr als einem Interview – wörtlich vom Zug erzählt nur I3 (I3-3); dass die Zeit fürs Anstehen nicht reicht, sagt I4 fast wörtlich (I4-1), I2 schaut auf die Uhr und geht (I2-2), I3 hat eine Regel für die Schlange (I3-4); treibt den Outcome – ja. Es kommt also in den Baum, in den Worten der Interviews – das ist die nächste Zeile, „Wenn ich anstehe, reicht mir die Zeit nicht.“: eine Karte, nicht zwei. Gegenprobe: Für dieses Bedürfnis gibt es mehrere Wege – im Kaffeebar-Baum von Tag 1 hängen darunter Vorbestellen per App, Express-Theke und Kaffeewagen am Bahnsteig (Vorbestellen ist später verworfen, D4). „An opportunity should have more than one potential solution.“',
         quelle: `${TORRES}, S. 88, 94–95`,
       },
     ],
