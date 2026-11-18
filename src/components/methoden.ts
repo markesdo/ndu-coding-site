@@ -312,7 +312,7 @@ export const METHODEN: Methode[] = [
       { id: 'concept-story-ende', text: 'Das Ende nennt das Ziel der Person und ein messbares Ziel des Geschäfts; jede Behauptung trägt eine J-, P-, G- oder Zitat-ID.' },
     ],
     ki: 'Prüft, ob die Story Krise und Höhepunkt hat oder nur eine Linie ist; schreibt sie nicht um.',
-    quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2–4, 6–8',
+    quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 1–4, 6–8',
   },
   {
     slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 4, dauer: 20,
