@@ -116,9 +116,9 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
     live: [
       'Fluss am Beispiel durchgehen: Chance, Grundform, Varianten, Probe.',
       'Fragen: Warum will jemand wissen, ob es sich ausgeht?',
-      'Aufdecken: H1 genauer, H2 weiter.',
+      'Aufdecken: H1 genauer, H2 weiter, dann die Falle.',
       '„Eine Variante weiter, eine genauer – dann habt ihr drei zum Vergleichen.“',
-      'Falle: beim Weiterfragen in die Nachbar-Chance rutschen.',
+      'Aufdecken: Falle – H2 rutscht in die Nachbar-Chance, darum H1.',
     ],
     verstaendnis: {
       frage: 'Wozu drei Fragen, wenn ihr am Ende eine nehmt?',
@@ -138,7 +138,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 94–95; ${BERGER}, S. 1–2`,
       },
       {
-        text: 'Kaffeebar: H1 ist die Frage, mit der die Ideation am Nachmittag arbeitet. H2 („… auch dann zu ihrem Kaffee kommen, wenn es voll ist“) kommt aus der Warum-Frage und nimmt I5-2 beim Wort: „Wenn es voll ist, lass ich es.“ Dazu I3-4: „Bei mehr als fünf Leuten lass ich es.“',
+        text: 'Kaffeebar: H1 ist die Frage, mit der die Ideation am Nachmittag arbeitet. H2 („… auch dann zu ihrem Kaffee kommen, wenn es voll ist“) kommt aus der Warum-Frage und nimmt I5-2 beim Wort: „Wenn es voll ist, lass ich es.“ Dazu I3-4: „Bei mehr als fünf Leuten lass ich es.“ H2 ist das Beispiel für die Falle beim Weiterfragen: Sie reicht in die Nachbar-Chance „Wenn ich anstehe, verpasse ich meinen Zug.“ hinein – darum wählt die Kaffeebar H1 (unsere Lesart).',
         quelle: 'ideation.astro, Folie beispiel; Werkstatt, Beispiel Kaffeebar (I5-2, I3-4)',
       },
     ],
@@ -158,7 +158,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
   'sweet-spot': {
     live: [
       'Vier Fragen still lesen lassen.',
-      'Reihum, laut: eine Frage wählen, sagen, was nicht stimmt.',
+      'Reihum, laut: je eine Frage, die vierte nimmst du.',
       'Aufdecken: A Lösung drin, B zu weit, C passt, D zu eng.',
       'B gegen H2: H2 nennt Moment und Kaffee, B keins.',
       'Fragen: Wie viele Wege gibt es zur Ampel?',
@@ -208,7 +208,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
       achten: [
         'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an der Ziel-Chance.',
         'Aus Sicht der Kundschaft, nicht des Produkts.',
-        'Die weitere Variante bleibt bei derselben Chance.',
+        'Die weitere Variante bleibt bei derselben Chance. Rutscht sie in eine Nachbar-Chance (wie H2 der Kaffeebar), ist sie ein Hinweis, nicht die Wahl.',
       ],
       fehler: [
         'Lösung in der Frage („… per App …“).',

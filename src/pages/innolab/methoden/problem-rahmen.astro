@@ -11,6 +11,7 @@ import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Baum from '../../../components/bild/Baum.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
+import { REFRAMING_ALT } from '../../../components/bild/abbildungen';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import { BookText, CircleAlert, Footprints, Hammer, PencilLine, Quote, Scale, Target, TrendingUp, Users } from '@lucide/astro';
 import { KAFFEEBAR_BAUM } from '../../../components/innolab-beispiel';
@@ -64,7 +65,7 @@ const loesungsraum = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: chance.t, kinder: chan
   <Folie>
     <h2 id="reframing">Gibt es ein besseres Problem?</h2>
     <p class="folie-satz">Wer das Problem neu rahmt, findet Lösungen, an die vorher niemand dachte.</p>
-    <BuchAbbildung src="/quellen/hbr/reframing.png" alt="Oben: Problem „Der Aufzug ist zu langsam“ führt zu Lösungen, die ihn schneller machen – neuer Aufzug, stärkerer Motor, besserer Algorithmus. Darunter, neu gerahmt: „Das Warten nervt“ führt zu „das Warten soll sich kürzer anfühlen“ – Spiegel, Musik, Desinfektionsspender" quelle="Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“, Harvard Business Review, Jan.–Feb. 2017, S. 2." />
+    <BuchAbbildung src="/quellen/hbr/reframing.png" alt={REFRAMING_ALT} quelle="Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“, Harvard Business Review, Jan.–Feb. 2017, S. 2." />
     <p data-schritt><strong>Kaffeebar:</strong> „Die Schlange ist zu lang“ → Express-Theke, App, Kaffeewagen. Neu gerahmt: „Geht sich ein Kaffee bis zur Abfahrt aus?“ → eine Anzeige der Wartezeit an der Tür.</p>
     <div class="nur-handout">
       <p>Die Mieter*innen eines Bürohauses beschweren sich über den langsamen Aufzug. Fast alle denken sofort an Lösungen, die ihn schneller machen. Die Hausverwaltung hängt Spiegel neben den Aufzug – die Beschwerden hören auf, weil die Wartenden sich selbst ansehen. Der Spiegel löst nicht das gestellte Problem, sondern ein anderes, besseres. Wedell-Wedellsborg betont: Die erste Sicht ist nicht falsch. Es geht nicht darum, das „echte“ Problem zu finden, sondern zu prüfen, ob es ein besseres gibt.</p>

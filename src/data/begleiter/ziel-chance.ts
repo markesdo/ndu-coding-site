@@ -263,7 +263,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     live: [
       'Tabelle lesen lassen: Welche Zeile ist die größte Chance?',
       'Formel an Zeile 1 vorrechnen: 9,5 + (9,5 − 3,2) = 15,8.',
-      'Fragen: Zeile 2 und 5 haben dieselbe Lücke – warum 12,4 gegen 9,2?',
+      'Fragen: Zeile 2 und 5, gleiche Lücke – warum 12,4 gegen 9,2?',
       '„Die Klammer wird nie negativ: Zu zufrieden gibt es nicht.“',
       'Bei Bedarf: Cordis-Ergebnis erzählen – Stent, Marktanteil.',
     ],
@@ -273,7 +273,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       falsch: '4,5 – so rechnet, wer die Klammer negativ werden lässt.',
     },
     geschichte: {
-      text: 'Cordis, Medizintechnik aus Florida: 1993 unter 1 % Marktanteil bei Angioplastie-Ballons. Rund 30 Interviews mit Kardiolog*innen, Pflegekräften und Verwaltung sammeln die Outcomes, eine Umfrage bewertet sie. Die größte Chance: „minimize the recurrence of a blockage“ – wichtig und kaum erfüllt. Cordis setzt sich 20 % Restenose als Ziel und entwickelt den Stent. 1994–95 kommen zwölf neue Katheter, der US-Marktanteil steigt auf fast 10 %, der Umsatz von 223 auf 443 Millionen Dollar; 1996 kauft Johnson & Johnson die Firma.',
+      text: 'Cordis, Medizintechnik aus Florida: 1993 unter 1 % Marktanteil bei Angioplastie-Ballons. Rund 30 Interviews mit Kardiolog*innen, Pflegekräften und Verwaltung sammeln die Outcomes, eine Umfrage bewertet sie. Die größte Chance: „minimize the recurrence of a blockage“ – wichtig und kaum erfüllt. Cordis setzt sich 20 % Restenose als Ziel und entwickelt den Stent. 1994–95 kommen zwölf neue Katheter, der Marktanteil in der interventionellen Kardiologie in den USA steigt von unter 1 % auf fast 10 %, der Umsatz von 223 auf 443 Millionen Dollar; 1996 kauft Johnson & Johnson die Firma.',
       quelle: `${ULWICK}, S. 94–97`,
     },
     kern: [
@@ -295,12 +295,12 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Aufdecken: drei Rechnungen – 16, 12, 7.',
       'Fragen: Woher kommen diese Zahlen?',
       'Erwartet: geschätzt aus fünf Snapshots – keine Umfrage.',
-      'Falle: jetzt schon über die Formel urteilen – das kommt nach der Übung.',
+      'Falle: jetzt über die Formel urteilen – das kommt nach der Übung.',
     ],
     kern: [
       {
         text: 'Outcome-Sätze der Kaffeebar: „Minimiere die Zeit, bis ich weiß, ob sich ein Kaffee bis zur Abfahrt ausgeht“ (W 9, Z 2), „Minimiere das Risiko, wegen des Kaffees meinen Zug zu verpassen“ (9, 6), „Minimiere die Zeit bis zu einem Kaffee, der mir schmeckt“ (6, 5). Der Zug geht vor (I2-2, I3-4, I4-2), darum zweimal Wichtigkeit 9; den Zug schützen sie heute selbst, darum Zufriedenheit 6; bei der Ziel-Chance lassen sie den Kaffee, sobald es voll ist (I5-2, I3-4) – ungelöst, darum 2.',
-        quelle: 'ziel-chance.astro, Folie beispiel (Handout); Form der Sätze: Ulwick, S. 95',
+        quelle: 'ziel-chance.astro, Folie beispiel-ulwick (Handout); Form der Sätze: Ulwick, S. 95',
       },
       {
         text: 'Die Matrix ist die Kundenlinse von Torres (wichtig, schlecht gelöst zuerst) mit Ulwicks Zahlen – unsere Darstellung, um zu zeigen, dass beide dieselben zwei Fragen stellen.',
@@ -344,7 +344,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Timer 8 min: Momente durch vier Linsen, je ein Satz.',
       'Nach 8 min: Teilchancen des Asts bis zum Blatt, Timer 4 min.',
       'Nach 12 min: Outcome-Sätze, schätzen, rechnen, Timer 6 min.',
-      'Nach 18 min: zu dritt, je 3 min – Linsen und Formel einig?',
+      'Nach 18 min: zu dritt, je 3 min, Linsen und Formel einig?',
       'Nach 27 min: Ziel-Chance im Baum markieren, Zeile ins Log.',
       'Falle: von der Lieblingsidee rückwärts begründen.',
       'Wenn hinten: Ulwick nur für die zwei stärksten Geschwister.',
