@@ -138,14 +138,14 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 94–95; ${BERGER}, S. 1–2`,
       },
       {
-        text: 'Kaffeebar: H1 ist die Frage, mit der die Ideation am Nachmittag arbeitet. H2 („… auch dann zu ihrem Kaffee kommen, wenn es voll ist“) kommt aus der Warum-Frage und nimmt I5-2 beim Wort: „Wenn es voll ist, lass ich es.“ Dazu I3-4: „Bei mehr als fünf Leuten lass ich es.“ H2 ist das Beispiel für die Falle beim Weiterfragen: Sie reicht in die Nachbar-Chance „Wenn ich anstehe, verpasse ich meinen Zug.“ hinein – darum wählt die Kaffeebar H1 (unsere Lesart).',
+        text: 'Kaffeebar: H1 ist die Frage, mit der die Ideation am Nachmittag arbeitet. H2 („… auch dann zu ihrem Kaffee kommen, wenn es voll ist“) kommt aus der Warum-Frage und nimmt I5-2 beim Wort: „Wenn es voll ist, lass ich es.“ Dazu I3-4: „Bei mehr als fünf Leuten lass ich es.“ H2 ist das Beispiel für die Falle beim Weiterfragen: Sie reicht in die Nachbar-Chance „Wenn ich anstehe, reicht mir die Zeit nicht.“ hinein – darum wählt die Kaffeebar H1 (unsere Lesart).',
         quelle: 'ideation.astro, Folie beispiel; Werkstatt, Beispiel Kaffeebar (I5-2, I3-4)',
       },
     ],
     fragen: [
       {
         frage: 'Auf „Warum will jemand wissen, ob es sich ausgeht?“ kommt: „Weil der Zug vorgeht.“ Und jetzt?',
-        antwort: 'Das ist die Nachbar-Chance „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2). Für H2 weiterfragen: Sie wollen den Kaffee und lassen ihn, wenn es voll ist (I5-2, I3-4). H2 reicht damit schon in die Nachbar-Chance hinein – darum nimmt die Kaffeebar H1 (unsere Lesart).',
+        antwort: 'Das ist die Nachbar-Chance „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1). Für H2 weiterfragen: Sie wollen den Kaffee und lassen ihn, wenn es voll ist (I5-2, I3-4). H2 reicht damit schon in die Nachbar-Chance hinein – darum nimmt die Kaffeebar H1 (unsere Lesart).',
       },
       {
         frage: 'Ist der Outcome-Satz nach Ulwick nicht schon die Frage?',

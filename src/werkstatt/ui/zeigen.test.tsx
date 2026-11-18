@@ -28,7 +28,7 @@ describe('SnapshotAnsicht', () => {
 
   it('Belege mit dem Text des Zitats', () => {
     const h = html(I2);
-    expect(text(h)).toContain('Wenn ich anstehe, verpasse ich den Zug.I2-2 „Wenn ich auf die Uhr schauen muss, geh ich.“');
+    expect(text(h)).toContain('Wenn ich anstehe, reicht mir die Zeit nicht.I2-2 „Wenn ich auf die Uhr schauen muss, geh ich.“');
     expect(text(h)).toContain('I2-5 „Am liebsten wüsste ich einfach, wann er fertig ist.“');
   });
 

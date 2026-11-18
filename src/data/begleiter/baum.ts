@@ -151,7 +151,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Bei Bedarf – „Haben wir das nicht schon bei der Map gemacht?“ Was ist beim Baum anders? (Handout: „Schon gemacht? Map und Baum“)',
-        antwort: 'Auf der Map legt ihr Knoten zusammen, die denselben Moment der Geschichte meinen, über alle Geschichten (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe meint, wird eine Chance; Geschwister bekommen eine übergeordnete Chance (S. 89–90). Kaffeebar: „Anstellen ist ein Glücksspiel.“ (I4-2) blieb auf der Map grau, im Baum belegt es „Wenn ich anstehe, verpasse ich meinen Zug.“ Häufig falsch: „Dasselbe wie bei der Map, nur mit anderen Karten“ – die Map fragt nach dem Moment, der Baum nach dem Bedürfnis; neu ist die Ebene darüber, die übergeordnete Chance.',
+        antwort: 'Auf der Map legt ihr Knoten zusammen, die denselben Moment der Geschichte meinen, über alle Geschichten (S. 56, 87). Im Baum ordnet ihr Chancen innerhalb eines Astes: Was dasselbe meint, wird eine Chance; Geschwister bekommen eine übergeordnete Chance (S. 89–90). Kaffeebar: „Ich bin um 7:28 da, das reicht nie für die Schlange.“ (I4-1) blieb auf der Map grau, im Baum belegt es „Wenn ich anstehe, reicht mir die Zeit nicht.“ Häufig falsch: „Dasselbe wie bei der Map, nur mit anderen Karten“ – die Map fragt nach dem Moment, der Baum nach dem Bedürfnis; neu ist die Ebene darüber, die übergeordnete Chance.',
       },
     ],
     ueberleitung: 'Die Äste stehen. Jetzt kommen die Chancen darunter – aber nicht jede.',
@@ -198,7 +198,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Zeilen 4 und 5 gehen schnell: Es reicht, wohin die Zeile kommt, mit einem Satz Begründung.',
         'Letzter Schritt: Das Ergebnis erscheint. Überleiten zu den eigenen Snapshots.',
       ],
-      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, verpasse ich den Zug“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2, I3): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): ins Feld „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
+      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, reicht mir die Zeit nicht“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2; I3 in unserer Lesart): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): ins Feld „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
     },
     kern: [
       {
@@ -210,7 +210,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 70; Feld „Nur in einem Interview“: Kursformat`,
       },
       {
-        text: '„Lösung → Bedürfnis dahinter neu prüfen“ am Beispiel „Per App vorbestellen“ (erste Zeile der Tabelle): Erst die Probe „Is there more than one way to address this opportunity?“ – hier gibt es nur einen Weg, die App; also eine Lösung. Dann das Bedürfnis dahinter suchen („uncover the implied opportunity“): Wozu vorbestellen? „Ich will den Zug nicht verpassen.“ Dieses Bedürfnis geht neu durch die drei Fragen: Bedürfnis – ja; in mehr als einem Interview – ja, I2, I3 und I4 erzählen es; treibt den Outcome – ja. Es kommt also in den Baum – und ist dasselbe wie die nächste Zeile, „Wenn ich anstehe, verpasse ich den Zug.“: eine Karte, nicht zwei. Gegenprobe: Für dieses Bedürfnis gibt es mehrere Wege – im Kaffeebar-Baum von Tag 1 hängen darunter Vorbestellen per App, Express-Theke und Kaffeewagen am Bahnsteig (Vorbestellen ist später verworfen, D4). „An opportunity should have more than one potential solution.“',
+        text: '„Lösung → Bedürfnis dahinter neu prüfen“ am Beispiel „Per App vorbestellen“ (erste Zeile der Tabelle): Erst die Probe „Is there more than one way to address this opportunity?“ – hier gibt es nur einen Weg, die App; also eine Lösung. Dann das Bedürfnis dahinter suchen („uncover the implied opportunity“): Wozu vorbestellen? „Ich will den Zug nicht verpassen.“ Dieses Bedürfnis geht neu durch die drei Fragen: Bedürfnis – ja; in mehr als einem Interview – wörtlich vom Zug erzählt nur I3 (I3-3); dass die Zeit fürs Anstehen nicht reicht, sagt I4 fast wörtlich (I4-1), I2 schaut auf die Uhr und geht (I2-2), I3 hat eine Regel für die Schlange (I3-4); treibt den Outcome – ja. Es kommt also in den Baum, in den Worten der Interviews – das ist die nächste Zeile, „Wenn ich anstehe, reicht mir die Zeit nicht.“: eine Karte, nicht zwei. Gegenprobe: Für dieses Bedürfnis gibt es mehrere Wege – im Kaffeebar-Baum von Tag 1 hängen darunter Vorbestellen per App, Express-Theke und Kaffeewagen am Bahnsteig (Vorbestellen ist später verworfen, D4). „An opportunity should have more than one potential solution.“',
         quelle: `${TORRES}, S. 88, 94–95`,
       },
     ],
@@ -241,7 +241,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Zeit: 4 min; pro Frage antwortet eine Person laut, reihum.',
       'Fragen: I3s Chance „… ob es sich ausgeht“ – unter welchen Moment?',
-      'Fragen: „Geht sich ein Kaffee aus?“ und „Zug verpassen“ – dasselbe oder Geschwister?',
+      'Fragen: „Geht sich ein Kaffee aus?“ und „Zeitnot“ – dasselbe oder Geschwister?',
       'Fragen: Fehlt über den drei Chancen in der Halle eine übergeordnete Chance?',
       '„Unter ‚Ich bin im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
     ],
@@ -264,7 +264,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I3-2), Warten „Wann ist mein Kaffee fertig?“ (I3-3; Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein, die drei führen schon zum Moment hinauf (S. 90–91).',
     },
     verstaendnis: {
-      frage: 'Sind „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, verpasse ich meinen Zug.“ Geschwister?',
+      frage: 'Sind „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, reicht mir die Zeit nicht.“ Geschwister?',
       antwort: 'Ja: Man kann das eine erfüllen, ohne das andere zu erfüllen – beide sind eigene Bedürfnisse in der Halle (Torres S. 83). Unter dem Warte-Moment hängt nur „Wann ist mein Kaffee fertig?“: noch keine senkrechte Kette (S. 94), aber eine Frage fürs nächste Interview.',
     },
     kern: [
@@ -299,14 +299,14 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Fragen: Was stimmt an jedem Beispiel nicht?',
       'Aufdecken: Karte für Karte, dann die bessere Fassung sagen (Handout).',
-      'Falle: „Glücksspiel“ als Einzelfall abtun – I4-2 stützt eine belegte Chance.',
+      'Falle: „Glücksspiel“ als Einzelfall abtun – die Ursache nennt I4 selbst (I4-1).',
       'Bei Bedarf: senkrechte Kette – Checkliste Nr. 2, Abbildung im Handout.',
       'Wenn hinten: überspringen, steht auf der Checkliste (anti-muster).',
     ],
     verstaendnis: {
       frage: 'Warum kommt „Anstellen ist ein Glücksspiel“ nicht so in den Baum?',
-      antwort: 'Es ist ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, verpasse ich meinen Zug“ (I2-2, I3-4, I4-2; Torres S. 95).',
-      falsch: '„Weil es nur eine Person gesagt hat“ – I4-2 stützt eine Chance, die drei Interviews belegen.',
+      antwort: 'Es ist ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, reicht mir die Zeit nicht“ (I2-2, I3-4, I4-1; Torres S. 95).',
+      falsch: '„Weil es nur eine Person gesagt hat“ – die Ursache dahinter belegen drei Interviews, I4 selbst mit I4-1.',
     },
     kern: [
       {
@@ -318,7 +318,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 94`,
       },
       {
-        text: 'Lösung statt Chance, Test: „Is there more than one way to address this opportunity?“ Kaffeebar: „Per App vorbestellen“ (Snapshot-Beispiel Tag 1) ist eine Lösung, dahinter „Ich will den Zug nicht verpassen“ (Folie drei-fragen). Gefühl: „We can’t fix feelings“, ihre Ursache schon. Kaffeebar: „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl, die Ursache „Wenn ich anstehe, verpasse ich meinen Zug“ (Folie beispiel).',
+        text: 'Lösung statt Chance, Test: „Is there more than one way to address this opportunity?“ Kaffeebar: „Per App vorbestellen“ (Snapshot-Beispiel Tag 1) ist eine Lösung, dahinter „Ich will den Zug nicht verpassen“ (Folie drei-fragen). Gefühl: „We can’t fix feelings“, ihre Ursache schon. Kaffeebar: „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl, die Ursache „Wenn ich anstehe, reicht mir die Zeit nicht“ (I4-1; Folie beispiel).',
         quelle: `${TORRES}, S. 94–95; Kaffeebar: baum.astro, drei-fragen und beispiel`,
       },
     ],

@@ -174,13 +174,13 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Falle: die Tabelle als Punkteschema lesen – es sind Sätze, keine Punkte.',
     ],
     verstaendnis: {
-      frage: 'Zugrisiko und Nichtwissen stützen gleich viele Interviews. Warum gewinnt das Nichtwissen?',
-      antwort: 'Wegen der anderen Linsen: Das Zugrisiko deckt der Automat schon ab, das Nichtwissen niemand (Markt); die Bar kennt ihre Wartezeit (eigene Lage); ungelöst ist heute das Nichtwissen (Kundschaft).',
+      frage: 'Zeitnot und Nichtwissen stützen gleich viele Interviews. Warum gewinnt das Nichtwissen?',
+      antwort: 'Wegen der anderen Linsen: Die Zeitnot deckt der Automat schon ab, das Nichtwissen niemand (Markt); die Bar kennt ihre Wartezeit (eigene Lage); ungelöst ist heute das Nichtwissen (Kundschaft).',
       falsch: '„Weil es mehr Leute betrifft“ – bei der Größe liegen beide gleich.',
     },
     kern: [
       {
-        text: 'Kaffeebar: Verglichen wurden zuerst die drei Momente, dann die drei Geschwister unter „Ich komme in die Halle und entscheide.“ Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2), „Wenn ich anstehe, verpasse ich meinen Zug.“ (I2-2, I3-4, I4-2), „Schnell geht nur der Automat.“ (I1-3, I4-3).',
+        text: 'Kaffeebar: Verglichen wurden zuerst die drei Momente, dann die drei Geschwister unter „Ich komme in die Halle und entscheide.“ Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2), „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1), „Schnell geht nur der Automat.“ (I1-3, I4-3 – bei I4-3 unsere Lesart).',
         quelle: 'Werkstatt, Beispiel Kaffeebar; baum.astro, Folie beispiel',
       },
       {
@@ -299,7 +299,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     ],
     kern: [
       {
-        text: 'Outcome-Sätze der Kaffeebar: „Minimiere die Zeit, bis ich weiß, ob sich ein Kaffee bis zur Abfahrt ausgeht“ (W 9, Z 2), „Minimiere das Risiko, wegen des Kaffees meinen Zug zu verpassen“ (9, 6), „Minimiere die Zeit bis zu einem Kaffee, der mir schmeckt“ (6, 5). Der Zug geht vor (I2-2, I3-4, I4-2), darum zweimal Wichtigkeit 9; den Zug schützen sie heute selbst, darum Zufriedenheit 6; bei der Ziel-Chance lassen sie den Kaffee, sobald es voll ist (I5-2, I3-4) – ungelöst, darum 2.',
+        text: 'Outcome-Sätze der Kaffeebar: „Minimiere die Zeit, bis ich weiß, ob sich ein Kaffee bis zur Abfahrt ausgeht“ (W 9, Z 2), „Minimiere das Risiko, dass mir beim Anstehen die Zeit bis zur Abfahrt ausgeht“ (9, 6), „Minimiere die Zeit bis zu einem Kaffee, der mir schmeckt“ (6, 5). Die Abfahrt geht vor (I2-2, I3-4, I4-1), darum zweimal Wichtigkeit 9; vor der Zeitnot schützen sie sich heute selbst (I2-2, I3-4), darum Zufriedenheit 6; bei der Ziel-Chance lassen sie den Kaffee, sobald es voll ist (I5-2, I3-4) – ungelöst, darum 2.',
         quelle: 'ziel-chance.astro, Folie beispiel-ulwick (Handout); Form der Sätze: Ulwick, S. 95',
       },
       {

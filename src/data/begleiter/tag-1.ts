@@ -227,7 +227,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Ist ‚Ich will per App vorbestellen‘ eine Chance oder eine Lösung – und woran erkennt ihr das?',
-      antwort: 'Eine Lösung statt einer Chance: Es gibt nur einen Weg, sie umzusetzen. Die Chance dahinter wäre etwa „Wenn ich anstehe, verpasse ich meinen Zug“, die App, Express-Theke und Kaffeewagen zulässt.',
+      antwort: 'Eine Lösung statt einer Chance: Es gibt nur einen Weg, sie umzusetzen. Die Chance dahinter wäre etwa „Wenn ich anstehe, reicht mir die Zeit nicht“, die App, Express-Theke und Kaffeewagen zulässt.',
       falsch: '„Eine Chance, weil die Kundschaft es so sagt“ – Kund*innen äußern oft Lösungswünsche; der Prüfstein ist, ob es mehr als eine Lösung gibt.',
     },
     ueberleitung: 'Bevor wir eure Wurzel schreiben, ein Warm-up: Wie macht man Toast?',
