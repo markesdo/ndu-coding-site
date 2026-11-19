@@ -264,7 +264,6 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     live: [
       'Tabelle lesen lassen: Welche Zeile ist die größte Chance?',
       'Formel an Zeile 1 vorrechnen: 9,5 + (9,5 − 3,2) = 15,8.',
-      'Fragen: Zeile 2 und 5, gleiche Lücke – warum 12,4 gegen 9,2?',
       '„Die Klammer wird nie negativ: Zu zufrieden gibt es nicht.“',
       'Bei Bedarf: Cordis-Ergebnis erzählen – Stent, Marktanteil.',
       'Aufdecken: Bedingung – rund 30 Interviews plus Umfrage.',

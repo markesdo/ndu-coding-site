@@ -125,7 +125,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     live: [
       '„Die Hauptfigur ist die Person am anderen Ende – die, die es erlebt.“',
       'Abbildung: jede Linie eine Figur, ein eigener Weg.',
-      'Brücke: Segment aus dem Kundenprofil von vorhin.',
+      'Brücke: Segment aus dem Kundenprofil vom Vormittag.',
       'Falle: das Produkt oder das Team als Held erzählen.',
       'Wenn hinten: ein Satz, weiter.',
     ],

@@ -302,7 +302,7 @@ export const METHODEN: Methode[] = [
   {
     slug: 'concept-story', name: 'Concept Story', tag: 3, dauer: 75,
     frage: 'Warum versteht jemand in Sekunden, dass euer Produkt besser ist als das, was er heute tut?',
-    braucht: ['annahmen', 'synthese', 'profil', 'valuemap'], ergibt: ['concept'],
+    braucht: ['annahmen', 'synthese', 'profil', 'ideen', 'valuemap'], ergibt: ['concept'],
     pruefliste: [
       { id: 'concept-story-stationen', text: 'Alle sieben Stationen sind gefüllt; die Exposition beschreibt die Welt der Zielgruppe, was darin gut ist, und ihr großes Ziel – nicht das Produkt.' },
       { id: 'concept-story-produkt', text: 'Die steigende Handlung nennt Namen und Art des Produkts in einem Satz.' },
