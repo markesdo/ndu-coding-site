@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/hmw.astro (Tag 3, 11:30–12:00).
+// Begleiter-Notizen zu src/pages/innolab/methoden/hmw.astro (Tag 3, 13:00–13:30; seit 19.11. nach Kundenprofil und Mittagspause).
 // Kürzen, wenn hinten (in dieser Reihenfolge): warum, rahmen, sweet-spot.
 // Vorwissen: „bekannt“ aus Need Finding / Market Research (vorwissen.ts).
 // Berger = Blogausdruck S. 1–2 (quellen/berger/text.txt). Torres = gedruckte Seiten. Wedell-Wedellsborg = PDF-Seiten 1–10.
@@ -189,7 +189,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
       'Herumgehen, kein fester 1:1: auf eine Frage zeigen, fragen.',
       'Nach 12 min: eine Frage wählen, ein Satz warum.',
       'Falle: Ersatzfragen vorschlagen – nur fragen, was nicht stimmt.',
-      '„Die gewählte Frage nehmt ihr nach der Mittagspause in die Ideation mit.“',
+      '„Die gewählte Frage nehmt ihr nach fünf Minuten Pause in die Ideation mit.“',
     ],
     uebung: { dauer: '15 min (7 + 5 + 3)', form: 'allein, Markus geht herum' },
     miro: {
@@ -226,7 +226,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
       'Reihum: gewählte Frage vorlesen, zwei Wege dazu nennen.',
       'Fragen: Fällt euch nur ein Weg ein?',
       '„Dann steckt die Lösung schon in der Frage.“',
-      'Ausblick: Nach der Pause 15 bis 20 Ideen zu dieser Frage.',
+      'Ausblick: Nach fünf Minuten Pause 15 bis 20 Ideen zu dieser Frage.',
     ],
     kern: [
       {
@@ -234,6 +234,6 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 94–95; ${BERGER}, S. 2`,
       },
     ],
-    ueberleitung: 'Mittagspause – um 13:00 geht es mit der Ideation weiter.',
+    ueberleitung: 'Fünf Minuten Pause – um 13:35 geht es mit der Ideation weiter.',
   },
 };

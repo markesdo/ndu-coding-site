@@ -1,7 +1,8 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/ziel-chance.astro (Tag 3, 10:40–11:30; bis 19.11. 10:30–11:30).
-// Kürzen, wenn hinten (in dieser Reihenfolge): bauchwahl, ulwick-outcomes, zweiwegtuer, warum, vorgehen Schritt 3.
+// Kürzen, wenn hinten (in dieser Reihenfolge): bauchwahl, ulwick-outcomes, zweiwegtuer, warum.
+// Seit 19.11. (Markus): Ulwick nur als Theorie – Outcomes statt Lösungen und die Formel als Gegenposition; gerechnet wird nicht.
 // Vorwissen: „bekannt“ aus Need Finding / Market Research (vorwissen.ts).
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 7, S. 96–104; Kap. 2, S. 30–31).
 // Ulwick-Seiten = gedruckte HBR-Seiten 91–97 (quellen/ulwick/text.txt).
@@ -256,16 +257,17 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         antwort: 'Nein. Der Outcome im Brief ist, was Menschen mit eurem Produkt anders tun (Torres, S. 40). Ulwicks „desired outcome“ ist, was die Kundschaft erreichen will – näher an dem, was im Baum Chance heißt (Ulwick, S. 92; Einordnung: unsere).',
       },
     ],
-    ueberleitung: 'Hat man solche Sätze, lässt sich rechnen.',
+    ueberleitung: 'Hat man solche Sätze, ließe sich rechnen – das ist Ulwicks Formel.',
   },
 
   ulwick: {
     live: [
       'Tabelle lesen lassen: Welche Zeile ist die größte Chance?',
       'Formel an Zeile 1 vorrechnen: 9,5 + (9,5 − 3,2) = 15,8.',
-      'Fragen: Zeile 2 und 5, gleiche Lücke – warum 12,4 gegen 9,2?',
       '„Die Klammer wird nie negativ: Zu zufrieden gibt es nicht.“',
       'Bei Bedarf: Cordis-Ergebnis erzählen – Stent, Marktanteil.',
+      'Aufdecken: Bedingung – rund 30 Interviews plus Umfrage.',
+      '„Mit fünf Interviews wären es Schätzungen: Heute rechnen wir nicht.“',
     ],
     verstaendnis: {
       frage: 'Wichtigkeit 6,5, Zufriedenheit 8,5 – welcher Wert?',
@@ -285,28 +287,14 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         text: '„the amount in parentheses can never be less than zero“ – hohe Zufriedenheit mindert die Wichtigkeit nicht. Die Werte unterscheiden sich je Segment. Schlusssatz des Kastens: Wer so priorisiert, beseitige auch das Raten („the guesswork“).',
         quelle: `${ULWICK}, S. 96–97`,
       },
-    ],
-    ueberleitung: 'Dieselbe Rechnung für die drei Geschwister der Kaffeebar.',
-  },
-
-  'beispiel-ulwick': {
-    live: [
-      'Matrix zeigen: oben links ist wichtig und schlecht gelöst.',
-      'Aufdecken: drei Rechnungen – 16, 12, 7.',
-      'Fragen: Woher kommen diese Zahlen?',
-      'Erwartet: geschätzt aus fünf Snapshots – keine Umfrage.',
-      'Falle: jetzt über die Formel urteilen – das kommt nach der Übung.',
-    ],
-    kern: [
       {
-        text: 'Outcome-Sätze der Kaffeebar: „Minimiere die Zeit, bis ich weiß, ob sich ein Kaffee bis zur Abfahrt ausgeht“ (W 9, Z 2), „Minimiere das Risiko, dass mir beim Anstehen die Zeit bis zur Abfahrt ausgeht“ (9, 6), „Minimiere die Zeit bis zu einem Kaffee, der mir schmeckt“ (6, 5). Die Abfahrt geht vor (I2-2, I3-4, I4-1), darum zweimal Wichtigkeit 9; vor der Zeitnot schützen sie sich heute selbst (I2-2, I3-4), darum Zufriedenheit 6; bei der Ziel-Chance lassen sie den Kaffee, sobald es voll ist (I5-2, I3-4) – ungelöst, darum 2.',
-        quelle: 'ziel-chance.astro, Folie beispiel-ulwick (Handout); Form der Sätze: Ulwick, S. 95',
-      },
-      {
-        text: 'Die Matrix ist die Kundenlinse von Torres (wichtig, schlecht gelöst zuerst) mit Ulwicks Zahlen – unsere Darstellung, um zu zeigen, dass beide dieselben zwei Fragen stellen.',
-        quelle: `${TORRES}, S. 101; ${ULWICK}, S. 96; Darstellung: Kurs`,
+        text: 'Bedingung: mit rund 30 Teilnehmenden über 96 % der Outcomes erfasst; bewertet wird danach in einer quantitativen Umfrage. Torres warnt vor dem Mathematisieren einer unscharfen Entscheidung.',
+        quelle: `${ULWICK}, S. 95–96; ${TORRES}, S. 101–102`,
       },
     ],
+    ablauf: {
+      aufloesung: 'Ulwicks Rechnung trägt erst mit Outcomes aus rund 30 Interviews und einer quantitativen Bewertung; mit fünf Interviews wären es eigene Schätzungen, und genau davor warnt Torres. Darum entscheiden heute die vier Linsen. Beide stimmen im Ausgangspunkt überein: Kund*innen liefern Bedürfnisse, nicht Lösungen. Mit größerer Zielgruppe und Umfrage ist die Formel ein Werkzeug, das ihr kennt.',
+    },
     ueberleitung: 'Bevor ihr selbst wählt: Wie endgültig ist diese Entscheidung?',
   },
 
@@ -343,13 +331,13 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     live: [
       'Timer 8 min: Momente durch vier Linsen, je ein Satz.',
       'Nach 8 min: Teilchancen des Asts bis zum Blatt, Timer 4 min.',
-      'Nach 12 min: Outcome-Sätze, schätzen, rechnen, Timer 6 min.',
-      'Nach 18 min: schriftlich begründen; 1:1 je 3 min: Joachim, Sofie, Hewen.',
+      'Nach 12 min: schriftlich begründen, Timer 15 min.',
+      '1:1 dabei je 3 min: Joachim, Sofie, Hewen.',
       'Nach 27 min: Ziel-Chance im Baum markieren, Zeile ins Log.',
       'Falle: von der Lieblingsidee rückwärts begründen.',
-      'Wenn hinten: Ulwick nur für die zwei stärksten Geschwister.',
+      'Wenn hinten: Begründen kürzen, Festhalten nicht.',
     ],
-    uebung: { dauer: '30 min (8 + 4 + 6 + 9 + 3)', form: 'allein, Markus je 3 min' },
+    uebung: { dauer: '30 min (8 + 4 + 15 + 3)', form: 'allein, Markus je 3 min' },
     miro: {
       frame: 'T3 · 1 · Ziel-Chance',
       schritte: [
@@ -363,21 +351,19 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       schritte: [
         'Ast wählen, allein (8 min): die Momente gegeneinander, pro Linse ein Satz – wer liegt vorn und warum. Größe und Kundschaft mit Zitat-IDs.',
         'Bis zum Blatt (4 min): dasselbe mit den Teilchancen des gewählten Asts. Hängt nur eine Chance darunter, ist sie das Blatt.',
-        'Ulwick (6 min): die verglichenen Geschwister als Outcome-Sätze mit Richtung und Maßeinheit, Wichtigkeit und Zufriedenheit 1–10 schätzen, rechnen.',
-        'Begründen, schriftlich (9 min): drei Sätze in docs/ZIEL-CHANCE.md – die Wahl, die Linse, die sie trägt, und ob Linsen und Formel übereinstimmen. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
+        'Begründen, schriftlich (15 min, seit 19.11. mit den 6 min der früheren Ulwick-Rechnung): drei Sätze in docs/ZIEL-CHANCE.md – die Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
         'Festhalten (3 min): Ziel-Chance im Baum markieren, eine Zeile ins Entscheidungslog mit Beleg.',
       ],
       achten: [
         'Verglichen werden Geschwister – nie eine Chance allein mit „Sollen wir?“ (S. 99).',
         'Alle vier Linsen, je ein Satz; Größe und Kundschaft mit Zitat-ID.',
-        'Die Zahlen sind Schätzungen. Wer lange an einer Zahl hängt: schätzen und weiter.',
+        'Wer lange an einem Satz hängt: grob vergleichen und weiter (S. 101).',
         'Nur echte Belege aus der eigenen Mappe; Synthetisches trägt keine Linse.',
       ],
       fehler: [
         'Nur die Kundenlinse benutzen (S. 104).',
         'Eine Chance mit Teilchancen darunter als Ziel-Chance nehmen.',
-        'Outcome-Satz mit Lösung darin („… per App …“).',
-        'Die Rechnung entscheiden lassen, ohne die Linsen aufgeschrieben zu haben.',
+        'Eine Linse mit Lösung darin begründen („… per App …“).',
       ],
     },
     kern: [
@@ -386,46 +372,13 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 104`,
       },
     ],
-    ueberleitung: 'Zwei Wege, eine Wahl: Was hat bei euch entschieden?',
-  },
-
-  aufloesung: {
-    live: [
-      'Reihum: Linsen und Formel – einig oder nicht?',
-      'Fragen: Hätte jemand anderes eure Chance gleich geschätzt?',
-      'Aufdecken: Ulwicks Bedingung – Umfrage, nicht fünf Interviews.',
-      '„Die Zahl ersetzt nicht das Abwägen. Sie kann es aber anstoßen.“',
-      'Gemeinsam: Beide fragen nach Bedürfnissen, nicht nach Lösungen.',
-    ],
-    verstaendnis: {
-      frage: 'Unter welcher Bedingung trägt Ulwicks Rechnung?',
-      antwort: 'Wenn die Outcomes in rund 30 Interviews gesammelt und danach in einer quantitativen Umfrage bewertet wurden (S. 95–96). Mit fünf Interviews sind es eigene Schätzungen.',
-      falsch: '„Wenn man genau genug schätzt“ – es fehlen die Daten, nicht die Sorgfalt.',
-    },
-    ablauf: {
-      aufloesung: 'Mit fünf Interviews und eigenen Schätzungen fehlt Ulwicks Voraussetzung; genau davor warnt Torres. Beide stimmen im Ausgangspunkt überein: Kund*innen liefern Bedürfnisse, nicht Lösungen. Mit größerer Zielgruppe und Umfrage ist die Formel ein Werkzeug, das ihr kennt.',
-    },
-    kern: [
-      {
-        text: 'Ulwick: mit rund 30 Teilnehmenden über 96 % der Outcomes erfasst; bewertet wird danach in einer quantitativen Umfrage.',
-        quelle: `${ULWICK}, S. 95–96`,
-      },
-      {
-        text: 'Torres warnt vor dem Mathematisieren einer unscharfen Entscheidung; die Linsen sollen das Gespräch füttern.',
-        quelle: `${TORRES}, S. 101–102`,
-      },
-      {
-        text: 'Gemeinsamer Ausgangspunkt: Bedürfnis statt Lösung festhalten.',
-        quelle: `${ULWICK}, S. 92; ${TORRES}, S. 69`,
-      },
-    ],
     ueberleitung: 'Eine letzte Frage an eure Wahl.',
   },
 
   uebertrag: {
     live: [
       'Frage vorlesen, zehn Sekunden still.',
-      'Reihum: ein Satz, ehrlich.',
+      'Allein: ein Satz in docs/ZIEL-CHANCE.md, ehrlich.',
       '„Passt die Ziel-Chance genau zur Idee von Tag 1? Dann prüft die Linsen noch einmal.“',
       'Ausblick: Aus der Ziel-Chance wird jetzt eine Frage.',
     ],

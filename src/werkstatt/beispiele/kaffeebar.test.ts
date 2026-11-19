@@ -55,10 +55,10 @@ describe('Kaffeebar-Beispiel: Chance „Wenn ich anstehe, reicht mir die Zeit ni
     expect(treffer.filter((ids) => ids !== 'I2-2, I3-4, I4-1')).toStrictEqual([]);
   });
   it('Kursseiten und Notizen zu Baum, Ziel-Chance und HMW belegen sie mit I4-1, nicht I4-2', () => {
-    // Die Belegreihe der Chance (Baum, Ulwick-Sätze, „gegen …“ bei der Größe, Nachbar-Chance bei HMW).
+    // Die Belegreihe der Chance (Baum, „gegen …“ bei der Größe, Nachbar-Chance bei HMW; die Ulwick-Rechnung der Kaffeebar ist seit 19.11. gestrichen).
     const orte = ['baum', 'ziel-chance', 'hmw'].flatMap((n) => [`${SEITEN}/methoden/${n}.astro`, `src/data/begleiter/${n}.ts`]);
     const treffer = orte.flatMap((f) => [...readFileSync(f, 'utf8').matchAll(/I2-2, I3-4, I4-\d+/g)].map((m) => `${f}: ${m[0]}`));
-    expect(treffer.length).toBeGreaterThanOrEqual(9);
+    expect(treffer.length).toBeGreaterThanOrEqual(7);
     expect(treffer.filter((t) => !t.endsWith('I4-1'))).toStrictEqual([]);
   });
   it('die alte Fassung „verpasse ich den/meinen Zug“ steht nirgends mehr', () => {

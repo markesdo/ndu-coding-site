@@ -16,11 +16,12 @@ import { ENDE_TAG_3 } from '../../../components/innolab-zeiten';
 // VPD-Seiten sind überall Seiten der PDF-Ausgabe (quellen/vpd/text.txt), nicht der gedruckten Ausgabe.
 const VPD = 'Alexander Osterwalder, Yves Pigneur, Greg Bernarda, Alan Smith, „Value Proposition Design“ (2014, Seiten der PDF-Ausgabe)';
 const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
+const TORRES_KURZ = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 ---
 <Layout title="Value Map & Fit">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Value Map & Fit</h1>
-  <p class="lead">Drei Ideen aus der Ideation, ein Profil: Welche trifft die wichtigsten Jobs, die extremsten Pains und die unverzichtbarsten Gains? Die mit dem besten Fit auf Papier geht weiter.</p>
+  <p class="lead">Drei Lückensätze aus der Ideation, ein Profil vom Vormittag: Welche Idee trifft die wichtigsten Jobs, die extremsten Pains und die unverzichtbarsten Gains? Sie wird euer Spitzenreiter auf Papier – ihr arbeitet ihre Value Map aus und prüft den Fit. Die anderen beiden bleiben offen.</p>
   <Orientierung seite="innolab/methoden/value-map" leiste={false} />
   <MethodenKarte slug="value-map" />
 
@@ -60,19 +61,6 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
   </Folie>
 
   <Folie>
-    <h2 id="ad-libs">Drei Ideen, drei Sätze</h2>
-    <p class="folie-satz">Ein Lückensatz pro Idee macht sichtbar, wie sie Wert schafft.</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/vpd/ad-lib.png" alt="Lückensatz des Buchs: Our … help(s) … who want to … by … and … – die Lücken als Symbole des Canvas; darunter das ausgefüllte Beispiel: our book help(s) business professionals who wants to improve or build a business by avoiding making stuff nobody wants and creating clear indicators to measure progress" quelle={`Ad-lib. ${VPD_KURZ}, S. 184 (PDF).`} />
-      <p class="gross" data-schritt>„Unser <strong>[Angebot]</strong> hilft <strong>[Segment]</strong>, die <strong>[Job]</strong> wollen, indem es <strong>[Pain]</strong> verringert und <strong>[Gain]</strong> ermöglicht – anders als <strong>[Alternative]</strong>.“</p>
-    </BildText>
-    <div class="nur-handout">
-      <p>Osterwalder empfiehlt, mehrere Richtungen schnell als Prototypen zu skizzieren, bevor man eine ausarbeitet: als Serviettenskizze, als Lückensatz („Ad-lib“) oder als kurzen Canvas ({VPD}, S. 157–159). Der Lückensatz zwingt dazu, genau zu benennen, wie eine Idee Wert schafft. Im Buch beginnt er mit „Our … help(s) … who want to … by … and …“; die Lücken sind Symbole des Canvas, darunter klein beschriftet: „products and services“, „customer segment“, „jobs to be done“, ein eigenes Verb (etwa „reducing, avoiding“) und noch ein eigenes Verb (etwa „increasing, enabling“). Als Tipp steht dabei, am Anfang oder Ende „unlike“ mit einem „competing value proposition“ anzufügen (S. 184). Die deutsche Fassung auf der Folie ergänzt nach den beiden Verben, worauf sie sich beziehen: einen Pain und einen Gain aus eurem Profil.</p>
-      <p>Das Buch empfiehlt, drei bis fünf Richtungen so zu skizzieren („Prototype three to five different directions by filling out the blanks in the ad-lib below.“, S. 183) und sich nicht früh festzulegen: „Don’t fall in love with first ideas— create alternatives.“ (S. 165). Für frühe Prototypen gilt ein sichtbarer Timer und höchstens 5 bis 15 Minuten (S. 161). Eure drei Ideen aus der Ideation sind genau solche Alternativen.</p>
-    </div>
-  </Folie>
-
-  <Folie>
     <h2 id="fit">Fit prüfen</h2>
     <p class="folie-satz">Abhaken, was getroffen ist – ein Kreuz, wo nicht.</p>
     <BildText>
@@ -85,7 +73,7 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
     </BildText>
     <div class="nur-handout">
       <BuchAbbildung src="/quellen/vpd/fit.png" alt="Links die Value Map als Quadrat mit Geschenk, Pille und Diagramm, rechts das Kundenprofil als Kreis mit Gesicht, dazwischen ein roter Kreis „Fit“ und Pfeile von links nach rechts" quelle={`Fit. ${VPD_KURZ}, S. 108 (PDF).`} />
-      <p>Fit entsteht, wenn Kund*innen von einem Wertversprechen begeistert sind, weil es wichtige Jobs adressiert, extreme Pains lindert und unverzichtbare Gains schafft ({VPD}, S. 108). Urteilen wird am Ende die Kundschaft: „Your customers are the judge, jury, and executioner of your value proposition.“ (S. 109). Geprüft wird Eintrag für Eintrag: Haken an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; Kreuze an das, was offen bleibt (S. 110, 112). Die Abbildung auf der Folie zeigt, wie das Buch so sein eigenes Wertversprechen prüft (S. 109). Das Buch prüft so eine ausgearbeitete Value Map: „Bring in the Value Proposition Map and Customer Segment Profile you completed earlier.“ (S. 112). Den Vergleich der drei Lückensätze davor gibt es im Buch so nicht – er ist eine Regel dieses Kurses; das Buch sagt nur, dass man mehrere Alternativen entwirft, um die mit dem besten Fit zu finden (S. 117), und sie schnell skizziert und vergleicht (S. 161). Auch das „?“ für „wissen wir nicht“ ist eine Kursregel; das Buch kennt nur Haken und Kreuze (S. 110, 112).</p>
+      <p>Fit entsteht, wenn Kund*innen von einem Wertversprechen begeistert sind, weil es wichtige Jobs adressiert, extreme Pains lindert und unverzichtbare Gains schafft ({VPD}, S. 108). Urteilen wird am Ende die Kundschaft: „Your customers are the judge, jury, and executioner of your value proposition.“ (S. 109). Geprüft wird Eintrag für Eintrag: Haken an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; Kreuze an das, was offen bleibt (S. 110, 112). Die Abbildung auf der Folie zeigt, wie das Buch so sein eigenes Wertversprechen prüft (S. 109). Das Buch prüft so eine ausgearbeitete Value Map: „Bring in the Value Proposition Map and Customer Segment Profile you completed earlier.“ (S. 112). Den Vergleich der drei Lückensätze davor gibt es im Buch so nicht – er ist eine Regel dieses Kurses; das Buch sagt, dass man mehrere Alternativen entwirft, um die mit dem besten Fit zu finden (S. 117), und dass man unter mehreren Alternativen wählen muss, bevor man sie in der echten Welt testet – auch wenn am Ende die Kundschaft urteilt (S. 347–348). Sein Werkzeug dafür ist eine Kriterien-Tabelle, nicht unser ✓ ✗ ?. Auch das „?“ für „wissen wir nicht“ ist eine Kursregel; das Buch kennt nur Haken und Kreuze (S. 110, 112). Jedes „?“ – aus dem Ideen-Vergleich aller drei Ideen und aus dem Fit – wird an Tag 4 eine Annahme.</p>
       <p>Kreuze sind erlaubt: „Don’t worry if you haven’t checked all pains/gains–you can’t satisfy them all.“ Umgekehrt gilt: „If a pain reliever or gain creator doesn’t fit anything, it may not be creating customer value.“ ({VPD}, S. 113).</p>
     </div>
   </Folie>
@@ -101,12 +89,12 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
         <li data-schritt><strong>3 Business Model Fit:</strong> wenn es sich trägt – die Geschäftsmodell-Karten nach der Concept Story.</li>
       </ul>
     </BildText>
-    <p class="nur-handout">Problem-Solution Fit heißt: Ihr habt Belege, dass der Kundschaft bestimmte Jobs, Pains und Gains wichtig sind, und ein Wertversprechen, das sie adressiert. Ob sie sich für dieses Wertversprechen interessiert, ist noch nicht belegt – der Fit existiert vor allem auf Papier. Nächster Schritt: Belege sammeln oder neu entwerfen. Product-Market Fit zeigt sich erst, wenn das Angebot Wert schafft und Zuspruch findet; Business Model Fit, wenn es sich in ein tragfähiges Geschäftsmodell einbetten lässt ({VPD}, S. 115–118). Die Wahl heute ist deshalb umkehrbar: Scheitert die Idee in den Tests, sind die anderen beiden noch da.</p>
+    <p class="nur-handout">Problem-Solution Fit heißt: Ihr habt Belege, dass der Kundschaft bestimmte Jobs, Pains und Gains wichtig sind, und ein Wertversprechen, das sie adressiert. Ob sie sich für dieses Wertversprechen interessiert, ist noch nicht belegt – der Fit existiert vor allem auf Papier. Nächster Schritt: Belege sammeln oder neu entwerfen. Product-Market Fit zeigt sich erst, wenn das Angebot Wert schafft und Zuspruch findet; Business Model Fit, wenn es sich in ein tragfähiges Geschäftsmodell einbetten lässt ({VPD}, S. 115–118). Die Wahl heute ist deshalb umkehrbar: Scheitert die Idee in den Tests, sind die anderen beiden noch da. Torres ginge weiter: Sie wählt nicht eine Idee auf Papier, sondern testet Annahmen über alle drei und lässt die Tests aussieben – „we will use prototyping and assumption testing to whittle our set down from three to one“ ({TORRES_KURZ}, S. 113; auch S. 130, 134). Dass ihr heute einen Spitzenreiter wählt, folgt dem Buch von Osterwalder, weil Story Map und Prototyp an Tag 4 eine Idee brauchen; an Tag 4 bleiben die anderen beiden mit ihren riskantesten Annahmen im Blick (Experiment-Karte).</p>
   </Folie>
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
-    <p class="folie-satz">Drei Lückensätze – welche Idee trifft am meisten?</p>
+    <p class="folie-satz">Drei Lückensätze aus der Ideation – welche wird der Spitzenreiter?</p>
     <ul class="gross dicht">
       <li><strong>Wartezeit an der Hallentür</strong> – beendet das Raten vor der Schlange.</li>
       <li><strong>Im Gehen bestellen</strong> – kein Anstehen, Fertig-Zeit schon beim Bestellen.</li>
@@ -124,7 +112,7 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
     </div>
     <p data-schritt><strong>Spitzenreiter auf Papier:</strong> Im Gehen bestellen. Fit seiner Value Map: trifft J1, P1, P2, P3, G1 – ✗ J2, J3, G2, G3, P4 – ? J4.</p>
     <div class="nur-handout">
-      <p>Die Lückensätze: „Unsere <em>Wartezeit-Anzeige an der Hallentür</em> hilft Pendler*innen, die auf dem Weg zum Zug Kaffee besorgen wollen, indem sie das Raten vor der Schlange beendet.“ – „Unser <em>Bestellen im Gehen</em> hilft …, indem es das Anstehen erspart und beim Bestellen zeigt, ob der Kaffee vor der Abfahrt fertig ist – anders als der Automat.“ – „Unser <em>Kaffeewagen am Bahnsteig</em> hilft …, indem er den Kaffee dorthin bringt, wo sie warten.“ Das „?“ beim Kaffeewagen ist eine Annahme: Gibt es am Bahnsteig keine Schlange? Sie käme in die Annahmen-Map, wenn diese Idee weiterginge.</p>
+      <p>Die Lückensätze aus der Ideation: „Unsere <em>Wartezeit-Anzeige an der Hallentür</em> hilft Pendler*innen, die auf dem Weg zum Zug Kaffee besorgen wollen (J1), indem sie das Raten vor der Schlange beendet (P1).“ – „Unser <em>Bestellen im Gehen</em> hilft Pendler*innen, die auf dem Weg zum Zug Kaffee besorgen wollen (J1), indem es beim Bestellen zeigt, ob der Kaffee vor der Abfahrt fertig ist (P1), und ihn bereitstellt, wenn man an der Ausgabe ankommt (G1) – anders als der Automat.“ – „Unser <em>Kaffeewagen am Bahnsteig</em> hilft …, indem er den Kaffee dorthin bringt, wo sie warten (P1), und man ihn vor dem Zug in der Hand hat (G1).“ Das „?“ beim Kaffeewagen ist eine Annahme: Gibt es am Bahnsteig keine Schlange? Sie käme in die Annahmen-Map, wenn diese Idee weiterginge.</p>
       <p>Die volle Value Map für „Im Gehen bestellen“, je Spalte geordnet, Unverzichtbares oben ({VPD}, S. 102). Die Reihenfolge folgt dem Profil: Was den wichtigsten Job, den extremsten Pain oder den unverzichtbarsten Gain trifft, steht oben. <strong>Produkte</strong> – 1. QR-Code an der Hallentür, Bestellung im Browser ohne App (an ihr hängen alle drei Schmerzlinderer); 2. Express-Ausgabe mit drei Standardgetränken (an ihr hängt der Gewinnerzeuger). <strong>Schmerzlinderer</strong> – 1. beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist (P1, der extremste Pain); 2. statt anzustehen, bestellt man in 20 Sekunden im Gehen (P2); 3. man sieht, wann er fertig ist (P3). <strong>Gewinnerzeuger</strong> – der Kaffee steht bereit, wenn man an der Ausgabe ankommt (G1, der unverzichtbarste Gain).</p>
       <p>Der Fit nach dem Buch, an dieser Value Map ({VPD}, S. 110–112): Jeder der drei Schmerzlinderer und der Gewinnerzeuger bekommt ein ✓; sie treffen P1, P2, P3 und G1. Den Job J1 trifft das Angebot über seine Produkte: Bestellen im Gehen und die Express-Ausgabe sind der Weg, auf dem Zug Kaffee zu besorgen. Getroffen sind damit J1, P1, P2, P3 und G1. Ein ✗ bekommen, was offen bleibt: J2 und J3 (nicht gehetzt in den Tag, nicht gehetzt im Büro – höchstens indirekt), G2 (in Ruhe im Zug trinken), G3 (die Barista kennt die Bestellung), P4 (Automat als Notlösung – das Angebot ist schneller als die Schlange, aber kein Schmerzlinderer dieser Value Map nennt den Automaten; ob man ihn noch braucht, zeigt erst der Test). Ein „?“ (Kursregel) bekommt J4 „Anstehen und bezahlen“: Das Anstehen entfällt, ob man im Browser auch bezahlt, sagt diese Value Map nicht.</p>
     </div>
@@ -132,38 +120,33 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (45 min)</h2>
-    <p class="folie-satz">Drei Lückensätze, eine Idee wählen, Value Map, Fit prüfen.</p>
+    <p class="folie-satz">Spitzenreiter wählen, Value Map ordnen, Fit prüfen.</p>
+    <p class="wozu"><strong>Wozu?</strong> Damit ihr wisst, welche Idee ihr heute ausarbeitet – und seht, was sie oben im Profil trifft und was offen bleibt.</p>
     <MiroFrame name="T3 · 4 · Kundenprofil & Value Map" />
     <ol class="gross">
-      <li data-schritt><strong>Lückensätze:</strong> für jede eurer drei Ideen einen. <Timer minuten={8} /></li>
-      <li data-schritt><strong>Vergleichen und wählen</strong> (Kursregel): ✓ ✗ ? je Idee, dann eine wählen. <Timer minuten={4} /></li>
-      <li data-schritt><strong>Value Map</strong> der gewählten Idee, mit IDs; dann ordnen. <Timer minuten={12} /></li>
-      <li data-schritt><strong>Fit prüfen:</strong> ✓ an die Value Map, ✗ an Offenes im Profil. <Timer minuten={4} /></li>
-      <li data-schritt><strong>Kreuze befragen</strong> (Kursregel): Was müsste stimmen? <Timer minuten={3} /></li>
-      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={3} /></li>
+      <li data-schritt><strong>Vergleichen und wählen</strong> (Kursregel): ✓ ✗ ? je Lückensatz – Spitzenreiter auf Papier, die anderen beiden bleiben offen. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Value Map</strong> des Spitzenreiters, mit IDs; dann ordnen. <Timer minuten={20} /></li>
+      <li data-schritt><strong>Fit prüfen:</strong> ✓ an die Value Map, ✗ an Offenes im Profil – jedes ? wird an Tag 4 eine Annahme. <Timer minuten={7} /></li>
+      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={4} /></li>
     </ol>
-    <p class="nur-handout">Profil, Value Map und Fit entstehen in eurem Canvas-Frame „T3 · 4 · Canvas · euer Name“: alle Stickies auf die Skalen, je Spalte das Wichtigste oben, dort prüft ihr auch den Fit (S. 76, 102, 110–113). In T3 · 4 stehen die Lückensätze, das Feld „Ideen vergleichen und wählen (Kursregel)“ und „Kreuze befragen“; den Fit nach dem Buch prüft ihr im Canvas-Frame. Im Einzelnen: Vergleichen heißt ✓, ✗ oder ? je Idee gegen die obersten Einträge eures Profils. Die Value Map trägt J-, P- und G-IDs und wird je Spalte geordnet, Unverzichtbares oben. Beim Fit bekommt jeder Schmerzlinderer und Gewinnerzeuger, der etwas trifft, ein ✓; Jobs, Pains und Gains, die offen bleiben, ein ✗. Kreuze befragen macht ihr allein: zu jedem ✗ und ? ein Satz, was stimmen müsste. Markus fragt bei jeder und jedem nach einem Kreuz. Dazu elf Minuten Theorie mit der Kaffeebar. Die Wahl kommt als Zeile ins Entscheidungslog, mit dem Fit als Beleg und dem Hinweis, dass er auf Papier steht. Was ihr mit „?“ markiert habt, wird später eine Annahme für die Experiment-Karte. Die Prüfung mit Claude macht ihr bis Tag 4, wenn die Zeit nicht reicht.</p>
+    <p class="nur-handout">Den Ideen-Vergleich macht ihr in T3 · 4 (Feld „Ideen vergleichen und wählen“); Value Map und Fit entstehen in eurem Canvas-Frame „T3 · 4 · Canvas · euer Name“: alle Stickies auf die Skalen, je Spalte das Wichtigste oben, dort prüft ihr auch den Fit ({VPD}, S. 76, 102, 110–113). Im Einzelnen: Vergleichen heißt ✓, ✗ oder ? je Lückensatz gegen die obersten Einträge eures Profils; die Lückensätze bringt ihr aus der Ideation mit (<code>docs/IDEEN.md</code>). Die Value Map trägt J-, P- und G-IDs und wird je Spalte geordnet, Unverzichtbares oben. Beim Fit bekommt jeder Schmerzlinderer und Gewinnerzeuger, der etwas trifft, ein ✓; Jobs, Pains und Gains, die offen bleiben, ein ✗. Markus geht ab Minute 5 von Canvas zu Canvas und fragt bei jeder und jedem nach einem Kreuz. Dazu neun Minuten Theorie mit der Kaffeebar. Die Wahl kommt als Zeile ins Entscheidungslog, mit dem Fit als Beleg und dem Hinweis, dass er auf Papier steht. Alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – sammelt ihr in <code>docs/VALUE-MAP.md</code>; an Tag 4 werden sie Annahmen für die Experiment-Karte. Die Prüfung mit Claude macht ihr bis Tag 4, wenn die Zeit nicht reicht.</p>
   </Folie>
 
   <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
   <Prompt label="Vorlage · docs/VALUE-MAP.md"># Value Map — [Produkt]
 
-Stand: [Datum] · Ideen aus docs/IDEEN.md · Profil: docs/KUNDENPROFIL.md
-
-## Drei Lückensätze
-1. Unser [Angebot] hilft [Segment], die [Job] wollen, indem es [Pain] verringert und [Gain] ermöglicht – anders als [Alternative].
-2. [...]
-3. [...]
+Stand: [Datum] · Lückensätze: docs/IDEEN.md · Profil: docs/KUNDENPROFIL.md
 
 ## Ideen vergleichen (Kursregel)
 | Idee | [oberster Job] | [P1] | [P2] | [G1] |
 |---|---|---|---|---|
 | [...] | ✓ / ✗ / ? | | | |
 
-## Gewählt: [Idee] – weil [ein Satz]
+## Spitzenreiter auf Papier: [Idee] – weil [ein Satz]
+Die anderen beiden bleiben offen: [Idee], [Idee]
 
-## Value Map der gewählten Idee
+## Value Map des Spitzenreiters
 - Produkte & Services: [...] (unverzichtbarste oben)
 - Schmerzlinderer: [wie genau] (P…) (unverzichtbarste oben)
 - Gewinnerzeuger: [wie genau] (G…) (unverzichtbarste oben)
@@ -172,7 +155,9 @@ Stand: [Datum] · Ideen aus docs/IDEEN.md · Profil: docs/KUNDENPROFIL.md
 - ✓ Schmerzlinderer und Gewinnerzeuger, die etwas treffen: [… → P…/G…/J…]
 - ✗ offen im Profil: [J…, P…, G…]
 - ? unklar (Kursregel): [J…, P…, G…]
-- Kreuze befragt: [✗ oder ? – was müsste stimmen?]</Prompt>
+
+## Offene „?“ aller drei Ideen (werden an Tag 4 Annahmen)
+- [Idee]: [J…/P…/G…] – [was wissen wir nicht?]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="value-map" />
@@ -184,5 +169,5 @@ Stand: [Datum] · Ideen aus docs/IDEEN.md · Profil: docs/KUNDENPROFIL.md
     <p class="nur-handout">Gute Wertversprechen lösen die Pains, die zählen, und das extrem gut (S. 86–87, 103). Wenn eure Idee vor allem die unteren Einträge trifft, ist eine der anderen beiden vielleicht die bessere.</p>
   </Folie>
 
-  <FooterNav prev={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} next={{ href: '/innolab/methoden/concept-story', t: 'Concept Story' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/ideation', t: 'Ideation' }} next={{ href: '/innolab/methoden/concept-story', t: 'Concept Story' }} />
 </Layout>

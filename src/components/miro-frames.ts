@@ -21,7 +21,8 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T3 · 2 · How Might We': '3458764687841534441',
   'T3 · 3 · Ideation': '3458764687841681125',
   'T3 · 4 · Kundenprofil & Value Map': '3458764687841769171',
-  'T3 · 5 · Annahmen der Idee': '3458764687894872786',
+  // Bis 19.11.2026 „T3 · 5 · Annahmen der Idee“; genutzt wird der Frame an Tag 4 (experiment.astro), darum T4 · 0.
+  'T4 · 0 · Annahmen der Idee': '3458764687894872786',
   'T4 · 1 · Story Map': '3458764687894872787',
   'T4 · 2 · Teamaufstellung & DoD': '3458764687968670113',
   'T5 · 1 · Backlog-Reihenfolge': '3458764687968819129',
