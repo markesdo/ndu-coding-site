@@ -16,15 +16,15 @@ import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 import { zaehlung } from '../../../data/kaffeebar-skizzen';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
-// Die Auflösungen der Folien 4 bis 8 öffnen sich gemeinsam, wenn Markus nach der Runde auf Folie „drei-anlaeufe“
-// aufdeckt; ENDE_TAG_3 ist nur der späte Rückfall.
+// Die Auflösungen der Folien 4 bis 8 öffnen sich gemeinsam, wenn Markus nach der Runde auf Folie „anlauf-a“
+// (die erste der Gruppe, Folie nach „drei-anlaeufe“) aufdeckt; ENDE_TAG_3 ist nur der späte Rückfall.
 const GRUPPE = 'map-anlaeufe';
 // Folie „warum-nochmal“: nur Outcome und die drei Momente (oberste Ebene) des Kaffeebar-Baums.
 const NUR_MOMENTE = { t: KAFFEEBAR_BAUM_INTERVIEWS.t, kinder: (KAFFEEBAR_BAUM_INTERVIEWS.kinder ?? []).map((k) => ({ t: k.t })) };
 // Folie „zusammen“: Ablauf (oben) + Gefühl (unten) = Moment. Momente, Zitate, IDs und Zählung wie auf
 // journey-map.astro#beispiel; die Schritte und Gefühle sind die Anläufe A und B von Folie „drei-anlaeufe“.
 const ZUSAMMEN = [
-  { schritte: ['Schlange ansehen', 'auf die Uhr schauen'], gefuehl: 'Zeitdruck', moment: '„Ich komme in die Halle und entscheide.“', zitat: 'das wird nix', nach: '.', id: 'I2-1', g: 'a', marke: 'Tief · I2-1', art: 'tief' },
+  { schritte: ['In die Halle kommen', 'Schlange ansehen', 'auf die Uhr schauen'], gefuehl: 'Zeitdruck', moment: '„Ich komme in die Halle und entscheide.“', zitat: 'das wird nix', nach: '.', id: 'I2-1', g: 'a', marke: 'Tief · I2-1', art: 'tief' },
   { schritte: ['anstellen', 'warten'], gefuehl: 'Frust', moment: '„Ich stehe an und warte auf meinen Kaffee.“', zitat: 'Das war ein Fehler.', nach: '', id: 'I3-3', g: 'c', marke: 'Tief · I3-3 · I5-6', art: 'tief' },
   { schritte: ['einsteigen'], gefuehl: 'Ruhe', moment: '„Ich bin im Zug.“', zitat: 'in Ruhe', nach: '.', id: 'I3-5', g: 'd', marke: 'Ende · I3-5', art: 'ende' },
 ] as const;
@@ -162,7 +162,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
           </li>
         ))}
       </ol>
-      <p class="rest small muted" data-schritt><span class="chip grau">In die Halle kommen</span> <span class="chip grau">Kaffee nehmen</span> <span class="chip grau">zum Bahnsteig</span> kein Gefühl, kein Zitat → bleibt im Snapshot.</p>
+      <p class="rest small muted" data-schritt><span class="chip grau">Kaffee nehmen</span> <span class="chip grau">zum Bahnsteig</span> kein Gefühl, kein Zitat → bleibt im Snapshot.</p>
       <p class="pointe" data-schritt>Aus acht Schritten und drei Gefühlen: drei Momente.</p>
       <div class="nur-handout">
         <p>Die Momente, Zitate und Zählungen sind die der fertigen Kaffeebar-Map (<a href="/innolab/methoden/journey-map#beispiel">Experience Map, Beispiel</a>). Schritte ohne Gefühl und ohne Zitat werden kein Moment; sie bleiben im Snapshot. Ein Gefühl, zu dem kein Schritt gehört, ist eine Frage für das nächste Interview: Wann war das?</p>
@@ -220,7 +220,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <MiroFrame name="T2 · 1 · Experience Map" />
     <ol class="gross dicht">
       <li>Schritt und Gefühl zum selben Zeitpunkt zusammenlegen – was ohne Gefühl und Zitat bleibt, bleibt im Snapshot.</li>
-      <li>Je Moment ein Zitat mit ID, Gefühlswort fett, ‚N von 3‘.</li>
+      <li>Je Moment ein Zitat mit ID, Gefühlswort fett, ‚N von 3‘. Mehrere Zitate? Das, das den Moment erzählt und Gefühl zeigt; die anderen IDs hinter die Zahl.</li>
       <li>Umweg oder Schleife als Pfeil. Marken: <span class="nw">‚Tief · ID‘</span>, <span class="nw">‚Ende · ID‘</span>.</li>
       <li>Ohne Zitat: graue Karte, ‚0 von 3‘.</li>
     </ol>

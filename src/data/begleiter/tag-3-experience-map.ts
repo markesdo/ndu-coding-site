@@ -33,7 +33,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
       'Anläufe verteilen: A, B, C – je eine Person.',
       'Timer 4 min: still schauen, dann reihum laut, zwei Sätze.',
       'Keine Hinweise geben; die vier Bausteine stehen unten.',
-      'Danach „Auflösung zeigen“: öffnet die nächsten fünf Folien.',
+      'Dann weiter: „Auflösung zeigen“ liegt auf der nächsten Folie.',
     ],
     uebung: { dauer: '4 min', form: 'allein, dann reihum laut' },
     ablauf: {
@@ -44,6 +44,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   },
   'anlauf-a': {
     live: [
+      'Hier „Auflösung zeigen“: öffnet Folien 4 bis 8.',
       'Bilanz zeigen: tut ja, sonst nichts.',
       'Fragen: Wo würde die Pendlerin umkehren?',
       'Falle: „Ablauf ist falsch“ – er ist das halbe Material.',
