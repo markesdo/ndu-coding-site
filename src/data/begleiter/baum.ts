@@ -222,7 +222,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Abbildung: Flugzeug und Zug bekommen „unterwegs schauen“ darüber.',
       '„Ergänzte übergeordnete Chancen sind erlaubt – sie folgen aus den Teilchancen.“',
       'Fragen: Wie lange darf der erste Baum dauern?',
-      '„Heute 22 Minuten: ein erster Entwurf, der mit jedem Interview wächst.“',
+      '„Heute 19 Minuten: ein erster Entwurf, der mit jedem Interview wächst.“',
     ],
     kern: [
       {

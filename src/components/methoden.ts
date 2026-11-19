@@ -490,7 +490,7 @@ export const METHODEN: Methode[] = [
 /** Sieben Termine: Tag 1–5 Input und Übung (Tag 2 als halber Tag online; an Tag 5 beginnt der eine Sprint), Tag 6 (ganzer
  *  Tag, online, 9–18 Uhr) Bauen, Tests und Scrum-Events, am Nachmittag der Pitch als letzte Methode, Tag 7 (halber Tag,
  *  online) Präsentation. Dazwischen arbeitet ihr zu Hause; gebaut wird bis Tag 6.
- *  Stand 12.11.2026 (Entscheidung Markus): Tag 2 endete nach der Experience Map; der Baum eröffnet Tag 3, Geschäftsmodell
+ *  Stand 12.11.2026 (Entscheidung Markus): Tag 2 endete nach der Experience Map; Tag 3 beginnt mit „Experience Map nachschärfen“ (tag-3/experience-map), dann der Baum; Geschäftsmodell
  *  und Experiment-Karte eröffnen Tag 4, Teamaufstellung und Definition of Done folgen an Tag 5 nach dem Debrief, der Pitch
  *  an Tag 6; Tag 7 liegt am 16.01.2027.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). Ohne datum: Termin folgt

@@ -201,7 +201,7 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
       'Checkliste Punkt für Punkt, jede*r hakt selbst ab.',
       'Fragen: Welche Annahme von Tag 1 steht jetzt anders da?',
       'Entscheidungslog: eine Zeile pro Entscheidung, auch „noch keiner“ als Beleg.',
-      '„Tag 3 am 21. November beginnt mit dem Opportunity Solution Tree; danach wählt ihr eine Ziel-Chance.“',
+      '„Tag 3 beginnt mit euren Momenten, dann Baum und Ziel-Chance.“',
       'Erinnern: Claude Pro erst am 28. November neu abschließen.',
     ],
     ueberleitung: 'Danke für heute – bis zum 21. November.',
