@@ -42,7 +42,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     },
     ueberleitung: 'Zuerst A: der Ablauf.',
   },
-  'nur-ablauf': {
+  'anlauf-a': {
     live: [
       'Bilanz zeigen: tut ja, sonst nichts.',
       'Fragen: Wo würde die Pendlerin umkehren?',
@@ -53,7 +53,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     ],
     ueberleitung: 'B hat das Gegenteil: nur Gefühle.',
   },
-  'nur-gefuehle': {
+  'anlauf-b': {
     live: [
       'Bilanz zeigen: fühlt ja, sonst nichts.',
       'Fragen: Wann genug Zeitdruck, dass jemand geht?',
@@ -70,7 +70,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     ],
     ueberleitung: 'C klingt sachlich – aber wer spricht da?',
   },
-  'worte-beleg': {
+  'anlauf-c': {
     live: [
       'Links gegen rechts: Deutung gegen Worte der Kundschaft.',
       'Belegprobe: Zitat zählt, Notiz nicht, Meinung nicht.',
@@ -79,7 +79,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     ],
     ueberleitung: 'Was allen drei Anläufen fehlt.',
   },
-  'umweg-tief-ende': {
+  'was-allen-fehlt': {
     live: [
       'Fertige Kaffeebar-Map zeigen: Umweg, Tief, Ende.',
       'Graue Karte: zählt nicht, ist die nächste Interviewfrage.',
