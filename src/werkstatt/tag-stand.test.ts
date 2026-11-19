@@ -74,7 +74,7 @@ describe('Fälligkeit', () => {
   });
 
   // tag_stand nennt unter „Methoden an Tag n“ den Kursplan vom 12.11.2026 (Tag 2 endete nach der Experience Map, ein Sprint).
-  it('Methoden je Kurstag: Tag 2 endet mit der Experience Map, Tag 3 beginnt mit dem Baum, Tag 4 mit Geschäftsmodell und Experiment-Karte, Tag 6 bringt nur den Pitch', () => {
+  it('Methoden je Kurstag: Tag 2 endet mit der Experience Map, Tag 3 beginnt (nach dem Nachschärfen der Map) mit dem Baum, Tag 4 mit Geschäftsmodell und Experiment-Karte, Tag 6 bringt nur den Pitch', () => {
     expect(entstehtAn(2).map((m) => m.slug)).toStrictEqual(['synthese', 'journey-map']);
     expect(entstehtAn(3).map((m) => m.slug)).toStrictEqual(['baum', 'ziel-chance', 'hmw', 'ideation', 'kundenprofil', 'value-map', 'concept-story']);
     expect(entstehtAn(4).map((m) => m.slug)).toStrictEqual(['geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike', 'scrum']);

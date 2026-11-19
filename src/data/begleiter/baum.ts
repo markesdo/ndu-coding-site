@@ -124,7 +124,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   'oberste-ebene': {
     live: [
       'Abbildung von Tag 2 wiedererkennen lassen: vier Momente, vier Äste.',
-      'Fragen: Wie heißen eure Momente auf T2 · 1?',
+      'Fragen: Wie heißen eure Momente auf T3 · 0?',
       '„Überschneiden sich die Äste, müsst ihr an allen Chancen zugleich arbeiten.“',
       'Aufdecken: Kaffeebar – drei Momente, der Automat ist ein Umweg.',
       'Bei Bedarf: „Schon gemacht?“ – Map: Moment, Baum: Bedürfnis.',
@@ -144,7 +144,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 87`,
       },
       {
-        text: 'Kaffeebar: drei Momente der Experience Map – Halle, Anstehen und Warten, Zug; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente auf T2 · 1.',
+        text: 'Kaffeebar: drei Momente der Experience Map – Halle, Anstehen und Warten, Zug; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente, nachgeschärft auf T3 · 0 (Stand Tag 2: T2 · 1).',
         quelle: 'journey-map.astro, Folien beispiel und vorgehen',
       },
     ],
@@ -369,14 +369,14 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
         'Jede*r arbeitet im eigenen Frame „Baum · Name“ rechts neben der Kaffeebar; T2 · 2 ist nur die Anleitung.',
-        'Momente aus T2 · 1 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
+        'Momente aus der eigenen Zeile auf T3 · 0 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
         'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat, ins Feld „Nur in einem Interview“.',
         'Selbst prüfen: jede*r im eigenen Frame, die Checkliste der Folie Anti-Muster daneben; Markus geht von Baum zu Baum.',
       ],
     },
     ablauf: {
       schritte: [
-        'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
+        'Inventar allein (12 min): zuerst die Momente aus der eigenen Zeile auf T3 · 0 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
         'Selbst prüfen allein (9 min, Timer auf der Folie Anti-Muster): den eigenen Baum Karte für Karte mit den sechs Anti-Mustern durchgehen; je Fund entscheiden: ändern, Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Markus kommt ab Minute 10 der Übung je etwa fünf Minuten an jeden Baum (Sofie → Joachim → Hewen), zeigt auf eine Karte und fragt, ohne umzuschreiben. Torres lässt das Team den eigenen Baum befragen (S. 92); allein prüfen und die fünf Minuten sind Kursformat, weil jede*r ein eigenes Produkt hat.',
         'Claude (4 min): Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 4.',

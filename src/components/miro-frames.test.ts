@@ -31,6 +31,12 @@ describe('MIRO_FRAMES', () => {
     for (const name of [...Object.keys(MIRO_FRAMES), ...MIRO_FRAMES_OHNE_ID]) expect(namen, name).toContain(name);
   });
 
+  // Erinnerung: Ab Tag 3 (21.11.2026) braucht T3 · 0 seine ID, sonst ist die Pille am Beamer nur Text.
+  it('am Kurstag ist kein Frame mehr ohne ID', () => {
+    if (Date.now() < Date.parse('2026-11-21T00:00:00+01:00')) return;
+    expect(MIRO_FRAMES_OHNE_ID).toStrictEqual([]);
+  });
+
   it('ein Frame ohne ID steht nicht zugleich mit ID in der Karte', () => {
     for (const name of MIRO_FRAMES_OHNE_ID) expect(Object.keys(MIRO_FRAMES), name).not.toContain(name);
   });
