@@ -205,7 +205,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Ich kenne das Produkt der anderen kaum – was soll ich da beitragen?',
-        antwort: 'Genau deshalb: Wer weiter weg ist, bringt andere Ideen (S. 114). Dafür liest jede*r zu Beginn die eigene Ziel-Chance und HMW-Frage vor und sagt in einem Satz, in welcher Situation sie auftritt.',
+        antwort: 'Ihr spendet nur, zwei Minuten still je Produkt: Wer weiter weg ist, bringt andere Ideen (S. 114). Den Kontext dafür gibt der Satz zu Beginn, in dem jede*r Ziel-Chance, HMW-Frage und Situation nennt.',
       },
     ],
     ueberleitung: 'Allein Ideen sammeln heißt auch: Irgendwann fällt euch nichts mehr ein.',

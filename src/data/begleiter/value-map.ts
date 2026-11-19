@@ -211,7 +211,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Lückensätze (8 min): je Idee ein Satz; Job, Pain und Gain mit ID aus dem eigenen Profil.',
-        'Fit vergleichen (7 min): jede Idee gegen die obersten Einträge – ✓, ✗ oder ?.',
+        'Fit vergleichen (7 min): jede Idee gegen die obersten Einträge – ✓, ✗ oder ?; dann eine Idee wählen, ein Satz warum.',
         'Kreuze befragen, allein (4 min): zu jedem ✗ und ? der gewählten Idee ein Satz: Was müsste stimmen? Markus fragt bei jeder Person nach einem Kreuz (Hewen, Joachim, Sofie, je gut zwei Minuten, bis in die Value Map hinein). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Value Map (12 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger der gewählten Idee, je mit P- oder G-ID; „bewusst offen“ dazuschreiben.',
         'Festhalten (3 min): docs/VALUE-MAP.md; eine Zeile ins Entscheidungslog: gewählt, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',

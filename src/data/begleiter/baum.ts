@@ -331,7 +331,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       '„Der Baum von Tag 1 war unsere Vermutung. Die Wurzel bleibt, die Äste kommen aus fünf Interviews.“',
       '„‚Vorbestellen‘ ist gefallen: 3 von 5 entscheiden erst in der Halle (D4).“',
       'Zeit: 3 min Griffe vorführen – Cmd+D, Linie ziehen, eine Karte darüber.',
-      'Hewen: zuerst den Outcome wählen, dann die Momente darunter.',
+      'Wer noch keinen Outcome hat: zuerst Outcome, dann Momente darunter.',
     ],
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
@@ -361,7 +361,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Nach 12 min: Struktur allein, Linien ziehen, Timer 10 min.',
       'Nach 22 min: weiter zur Checkliste, selbst prüfen, Timer 9 min.',
       'Nach 31 min: Prüfliste, dann Claude mit Bildschirmfoto.',
-      '1:1 ab Minute 10, je 5 min: Hewen, Joachim, Sofie.',
+      '1:1 ab Übungsminute 10, je 5 min: Sofie → Joachim → Hewen.',
       'Wenige Interviews: volles Feld „Nur in einem Interview“, dünner Baum – normal.',
     ],
     uebung: { dauer: '35 min (12 + 10 + 9 + 4)', form: 'allein, Markus je 5 min am Baum' },
@@ -378,7 +378,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       schritte: [
         'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
-        'Selbst prüfen allein (9 min, Timer auf der Folie Anti-Muster): den eigenen Baum Karte für Karte mit den sechs Anti-Mustern durchgehen; je Fund entscheiden: ändern, Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Markus kommt ab Minute 10 des Blocks je fünf Minuten an jeden Baum (Hewen, Joachim, Sofie – Hewen zuerst wegen Outcome und Chancen), zeigt auf eine Karte und fragt, ohne umzuschreiben. Torres lässt das Team den eigenen Baum befragen (S. 92); allein prüfen und die fünf Minuten sind Kursformat, weil jede*r ein eigenes Produkt hat.',
+        'Selbst prüfen allein (9 min, Timer auf der Folie Anti-Muster): den eigenen Baum Karte für Karte mit den sechs Anti-Mustern durchgehen; je Fund entscheiden: ändern, Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Markus kommt ab Minute 10 der Übung je etwa fünf Minuten an jeden Baum (Sofie → Joachim → Hewen), zeigt auf eine Karte und fragt, ohne umzuschreiben. Torres lässt das Team den eigenen Baum befragen (S. 92); allein prüfen und die fünf Minuten sind Kursformat, weil jede*r ein eigenes Produkt hat.',
         'Claude (4 min): Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 4.',
       ],
       achten: [

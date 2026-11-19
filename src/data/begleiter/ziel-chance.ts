@@ -392,9 +392,9 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
   aufloesung: {
     live: [
       'Reihum: Linsen und Formel – einig oder nicht?',
-      'Fragen: Hätten die anderen zwei eure Chance gleich geschätzt?',
+      'Fragen: Hätte jemand anderes eure Chance gleich geschätzt?',
       'Aufdecken: Ulwicks Bedingung – Umfrage, nicht fünf Interviews.',
-      '„Die Zahl ersetzt nicht das Gespräch. Sie kann es aber anstoßen.“',
+      '„Die Zahl ersetzt nicht das Abwägen. Sie kann es aber anstoßen.“',
       'Gemeinsam: Beide fragen nach Bedürfnissen, nicht nach Lösungen.',
     ],
     verstaendnis: {
