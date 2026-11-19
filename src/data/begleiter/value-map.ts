@@ -143,7 +143,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Reihum: Welche Idee trifft am meisten – und welchen Eintrag nicht?',
       'Zeile für Zeile aufdecken, mit den Antworten aller vergleichen.',
       'Das „?“ beim Kaffeewagen: eine Annahme, kein Kreuz.',
-      'Letzte Zeile: Fit der gewählten Value Map nach dem Buch – trifft J1, P1, P2, P3, G1, ✗ an J2, J3, G2, G3, P4; im Handout geordnet, Unverzichtbares oben.',
+      'Letzte Zeile: Fit nach dem Buch – trifft J1, P1–P3, G1.',
     ],
     uebung: { dauer: '1 min vor dem Aufdecken', form: 'zu dritt, reihum laut: eine Zahl, ein Eintrag' },
     verstaendnis: {
@@ -237,7 +237,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
-      'Allein: jede*r markiert am eigenen Canvas den obersten Eintrag, den die eigene Idee verfehlt; Markus fragt beim Rundgang nach.',
+      'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
       'Ausblick: Nach der Pause die Geschichte dazu – der Story-Bogen.',
     ],
