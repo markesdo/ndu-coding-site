@@ -186,7 +186,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 117`,
       },
     ],
-    ueberleitung: 'Jetzt ihr: drei Sätze, ein Vergleich, eine Map.',
+    ueberleitung: 'Jetzt ihr: drei Sätze, eine Wahl, eine geordnete Map, der Fit.',
   },
 
   vorgehen: {
@@ -204,7 +204,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'T3 · 4, eigene Spalte: „Drei Lückensätze“, darunter „Fit: ✓ ✗ ?“ als Ideen-Vergleich (Kursregel), darunter „Kreuze befragen“.',
+        'T3 · 4, eigene Spalte: „Drei Lückensätze“, darunter das Feld „Fit: ✓ ✗ ?“ – der Ideen-Vergleich (Kursregel) –, darunter „Kreuze befragen“.',
         'Die drei Ideen aus „Drei für den Vergleich in T3 · 4“ (Frame T3 · 3) herüberduplizieren.',
         'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map der gewählten Idee ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
         'Fit im Canvas-Frame: ✓ an Schmerzlinderer und Gewinnerzeuger, ✗ an offene Jobs, Pains und Gains; Kreuze befragen zurück in T3 · 4.',
@@ -216,7 +216,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Vergleichen und wählen (4 min, Kursregel): jede Idee gegen die obersten Einträge – ✓, ✗ oder ?; dann eine Idee wählen, ein Satz warum.',
         'Value Map (12 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger der gewählten Idee, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102).',
         'Fit prüfen (4 min): ✓ an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt (VPD S. 110–113).',
-        'Kreuze befragen, allein (3 min, Kursregel): zu jedem ✗ und ? ein Satz: Was müsste stimmen? Markus fragt bei jeder Person nach einem Kreuz (Hewen, Joachim, Sofie, je gut zwei Minuten). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Kreuze befragen, allein (3 min, Kursregel): zu jedem ✗ und ? ein Satz: Was müsste stimmen? Markus fragt schon ab Minute 12 bei jeder Person nach einem Kreuz aus dem Vergleich (Hewen, Joachim, Sofie, je gut zwei Minuten, durch Value Map und Fit hindurch). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Festhalten (3 min): docs/VALUE-MAP.md; eine Zeile ins Entscheidungslog: gewählt, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',
       ],
       achten: [

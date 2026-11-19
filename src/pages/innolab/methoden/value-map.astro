@@ -141,7 +141,7 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
       <li data-schritt><strong>Kreuze befragen</strong> (Kursregel): Was müsste stimmen? <Timer minuten={3} /></li>
       <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={3} /></li>
     </ol>
-    <p class="nur-handout">Profil, Value Map und Fit entstehen in eurem Canvas-Frame „T3 · 4 · Canvas · euer Name“: alle Stickies auf die Skalen, je Spalte das Wichtigste oben, dort prüft ihr auch den Fit (S. 76, 102, 110–113). In T3 · 4 stehen die Lückensätze, „Ideen vergleichen und wählen“ und „Kreuze befragen“. Im Einzelnen: Vergleichen heißt ✓, ✗ oder ? je Idee gegen die obersten Einträge eures Profils. Die Value Map trägt J-, P- und G-IDs und wird je Spalte geordnet, Unverzichtbares oben. Beim Fit bekommt jeder Schmerzlinderer und Gewinnerzeuger, der etwas trifft, ein ✓; Jobs, Pains und Gains, die offen bleiben, ein ✗. Kreuze befragen macht ihr allein: zu jedem ✗ und ? ein Satz, was stimmen müsste. Markus fragt bei jeder und jedem nach einem Kreuz. Dazu elf Minuten Theorie mit der Kaffeebar. Die Wahl kommt als Zeile ins Entscheidungslog, mit dem Fit als Beleg und dem Hinweis, dass er auf Papier steht. Was ihr mit „?“ markiert habt, wird später eine Annahme für die Experiment-Karte. Die Prüfung mit Claude macht ihr bis Tag 4, wenn die Zeit nicht reicht.</p>
+    <p class="nur-handout">Profil, Value Map und Fit entstehen in eurem Canvas-Frame „T3 · 4 · Canvas · euer Name“: alle Stickies auf die Skalen, je Spalte das Wichtigste oben, dort prüft ihr auch den Fit (S. 76, 102, 110–113). In T3 · 4 stehen die Lückensätze, das Feld „Fit: ✓ ✗ ?“ für den Ideen-Vergleich (Kursregel) und „Kreuze befragen“; den Fit nach dem Buch prüft ihr im Canvas-Frame. Im Einzelnen: Vergleichen heißt ✓, ✗ oder ? je Idee gegen die obersten Einträge eures Profils. Die Value Map trägt J-, P- und G-IDs und wird je Spalte geordnet, Unverzichtbares oben. Beim Fit bekommt jeder Schmerzlinderer und Gewinnerzeuger, der etwas trifft, ein ✓; Jobs, Pains und Gains, die offen bleiben, ein ✗. Kreuze befragen macht ihr allein: zu jedem ✗ und ? ein Satz, was stimmen müsste. Markus fragt bei jeder und jedem nach einem Kreuz. Dazu elf Minuten Theorie mit der Kaffeebar. Die Wahl kommt als Zeile ins Entscheidungslog, mit dem Fit als Beleg und dem Hinweis, dass er auf Papier steht. Was ihr mit „?“ markiert habt, wird später eine Annahme für die Experiment-Karte. Die Prüfung mit Claude macht ihr bis Tag 4, wenn die Zeit nicht reicht.</p>
   </Folie>
 
   <div class="nur-handout">
@@ -166,7 +166,12 @@ Stand: [Datum] · Ideen aus docs/IDEEN.md · Profil: docs/KUNDENPROFIL.md
 - Produkte & Services: [...] (unverzichtbarste oben)
 - Schmerzlinderer: [wie genau] (P…) (unverzichtbarste oben)
 - Gewinnerzeuger: [wie genau] (G…) (unverzichtbarste oben)
-- Bewusst offen: [J…, P…, G…]</Prompt>
+- Bewusst offen: [J…, P…, G…]
+
+## Fit der Value Map (VPD S. 110–113)
+- ✓ Schmerzlinderer und Gewinnerzeuger, die etwas treffen: [… → P…/G…/J…]
+- ✗ offen im Profil: [J…, P…, G…]
+- Kreuze befragt: [✗ oder ? – was müsste stimmen?]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="value-map" />

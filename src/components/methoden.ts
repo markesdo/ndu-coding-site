@@ -48,7 +48,7 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'ziel', name: 'Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe', lebtIn: ['miro', 'repo'], pfad: 'docs/ZIEL-CHANCE.md' },
   { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/HMW.md' },
   { id: 'ideen', name: 'Drei Ideen für die Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/IDEEN.md' },
-  { id: 'valuemap', name: 'Value Map der gewählten Idee mit Fit-Vergleich', lebtIn: ['miro', 'repo'], pfad: 'docs/VALUE-MAP.md' },
+  { id: 'valuemap', name: 'Value Map der gewählten Idee mit Ideen-Vergleich und Fit', lebtIn: ['miro', 'repo'], pfad: 'docs/VALUE-MAP.md' },
   { id: 'concept', name: 'Concept Story', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
   { id: 'experimente', name: 'Experiment-Karten', lebtIn: ['repo'], pfad: 'docs/EXPERIMENTE.md' },
   { id: 'origin', name: 'Origin Story als Landingpage-Text', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
@@ -296,7 +296,7 @@ export const METHODEN: Methode[] = [
       { id: 'value-map-geordnet', text: 'Produkte und Services, Schmerzlinderer und Gewinnerzeuger sind je für sich geordnet: das Unverzichtbare oben.' },
       { id: 'value-map-adressiert', text: 'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was bewusst offen bleibt, ist markiert.' },
     ],
-    ki: 'Markiert Schmerzlinderer, die zu keinem Pain passen, und fragt nach jedem ✓ im Fit-Vergleich.',
+    ki: 'Markiert Schmerzlinderer, die zu keinem Pain passen, und fragt nach jedem ✓ im Ideen-Vergleich und im Fit der Value Map.',
     quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 157–159 (PDF)',
   },
   {
