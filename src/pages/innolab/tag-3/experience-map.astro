@@ -24,9 +24,9 @@ const NUR_MOMENTE = { t: KAFFEEBAR_BAUM_INTERVIEWS.t, kinder: (KAFFEEBAR_BAUM_IN
 // Folie „zusammen“: Ablauf (oben) + Gefühl (unten) = Moment. Momente, Zitate, IDs und Zählung wie auf
 // journey-map.astro#beispiel; die Schritte und Gefühle sind die Anläufe A und B von Folie „drei-anlaeufe“.
 const ZUSAMMEN = [
-  { schritte: ['Schlange ansehen', 'auf die Uhr schauen'], gefuehl: 'Zeitdruck', moment: '„Ich komme in die Halle und entscheide.“', zitat: 'das wird nix', id: 'I2-1', g: 'a', marke: 'Tief · I2-1', art: 'tief' },
-  { schritte: ['anstellen', 'warten'], gefuehl: 'Frust', moment: '„Ich stehe an und warte auf meinen Kaffee.“', zitat: 'Das war ein Fehler.', id: 'I3-3', g: 'c', marke: 'Tief · I3-3 · I5-6', art: 'tief' },
-  { schritte: ['einsteigen'], gefuehl: 'Ruhe', moment: '„Ich bin im Zug.“', zitat: 'in Ruhe', id: 'I3-5', g: 'd', marke: 'Ende · I3-5', art: 'ende' },
+  { schritte: ['Schlange ansehen', 'auf die Uhr schauen'], gefuehl: 'Zeitdruck', moment: '„Ich komme in die Halle und entscheide.“', zitat: 'das wird nix', nach: '.', id: 'I2-1', g: 'a', marke: 'Tief · I2-1', art: 'tief' },
+  { schritte: ['anstellen', 'warten'], gefuehl: 'Frust', moment: '„Ich stehe an und warte auf meinen Kaffee.“', zitat: 'Das war ein Fehler.', nach: '', id: 'I3-3', g: 'c', marke: 'Tief · I3-3 · I5-6', art: 'tief' },
+  { schritte: ['einsteigen'], gefuehl: 'Ruhe', moment: '„Ich bin im Zug.“', zitat: 'in Ruhe', nach: '.', id: 'I3-5', g: 'd', marke: 'Ende · I3-5', art: 'ende' },
 ] as const;
 // Folie „worte-beleg“: ein Zitat, eine Notiz, eine Meinung – Texte wörtlich aus dem Werkstatt-Beispiel.
 const ZITATE = new Map(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => [z.id, z.text] as const)));
@@ -34,7 +34,7 @@ const NOTIZ_I1 = KAFFEEBAR_INTERVIEWS.interviews.find((iv) => iv.id === 'I1')?.n
 const NOTIZ_SATZ = 'Schaut erst auf die Schlange, dann auf die Uhr.';
 const fehlt = [...ZUSAMMEN.map((z) => z.id), 'I2-1', 'I4-2', 'I5-6'].filter((id) => !ZITATE.has(id));
 if (fehlt.length) throw new Error(`tag-3/experience-map.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${fehlt.join(', ')}`);
-const nichtImZitat = ZUSAMMEN.filter((z) => !ZITATE.get(z.id)!.includes(z.zitat)).map((z) => z.id);
+const nichtImZitat = ZUSAMMEN.filter((z) => !ZITATE.get(z.id)!.includes(z.zitat + z.nach)).map((z) => z.id);
 if (nichtImZitat.length) throw new Error(`tag-3/experience-map.astro: Zitatausschnitt steht nicht im Zitat: ${nichtImZitat.join(', ')}`);
 if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro: Notiz zu I1 hat sich geändert');
 ---
@@ -76,8 +76,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
       <section class="anlauf">
         <p class="anlauf-name">A</p>
         <ol class="anlauf-fluss" aria-label="Anlauf A: acht Schritte von In die Halle kommen bis einsteigen">
-          <li>In die Halle kommen</li><li>Schlange ansehen</li><li>auf die Uhr schauen</li><li>anstellen</li>
-          <li>warten</li><li>Kaffee nehmen</li><li>zum Bahnsteig</li><li>einsteigen</li>
+          {['In die Halle kommen', 'Schlange ansehen', 'auf die Uhr schauen', 'anstellen', 'warten', 'Kaffee nehmen', 'zum Bahnsteig', 'einsteigen'].map((t) => <li><span>{t}</span></li>)}
         </ol>
       </section>
       <section class="anlauf">
@@ -156,7 +155,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
             <span class="z-pfeil" aria-hidden="true">↓</span>
             <span class="karte">
               <strong>{z.moment}</strong>
-              <span>„… <b>{z.zitat}</b>“ <span class="id">{z.id}</span></span>
+              <span>„… <b>{z.zitat}</b>{z.nach}“ <span class="id">{z.id}</span></span>
               <span class="zaehl">{zaehlung(z.g)}</span>
               <span class={`pill ${z.art}`}>{z.marke}</span>
             </span>
@@ -201,18 +200,17 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <h2 id="umweg-tief-ende">Was allen dreien fehlt: Umweg, Tief, Ende</h2>
     <p class="folie-satz">Wo kehrt jemand um, wo ist es am schlimmsten – und wie geht es aus?</p>
     <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
-      <p class="pointe">Die Map zeigt auch, wo jemand umkehrt, aufgibt – und wie es ausgeht.</p>
       <KaffeebarMap />
-      <ul class="gross dicht">
+      <ul class="gross dicht nach-map">
         <li data-schritt><CornerDownRight size={20} aria-hidden="true" /> Umweg und Schleife als Pfeil.</li>
         <li data-schritt>Marke am Moment: <span class="nw">‚Tief · I4-4‘</span>, <span class="nw">‚Ende · I3-5‘</span>.</li>
         <li data-schritt>Kein Zitat? Graue Karte – sie zählt nicht, bleibt aber sichtbar, etwa <span class="chip grau">Ende? – nicht erzählt</span></li>
         <li data-schritt>Passt ein Zitat unter zwei Momente, sind es einer – oder ihr trennt schärfer.</li>
       </ul>
-      <p class="small muted">{TORRES}, S. 56, 86–87; stärkster Moment und Ende: <a href="/innolab/methoden/journey-map#peak-end">Peak-End</a>.</p>
+      <p class="small muted">{TORRES}, S. 56, 86–87.</p>
     </Aufloesung>
     <div class="nur-handout">
-      <p>Die Kaffeebar-Map hat ihren Umweg (Automat → Zug), ihre Tiefpunkte und ein erzähltes Ende (I3-5). Erzählt bei euch niemand, wie es ausging, legt ihr eine graue Karte „Ende? – nicht erzählt“ hin: Sie zählt nicht, ist aber die nächste Interviewfrage. Momente ohne Überschneidung, damit jeder Ast eine eigene Chance trägt ({TORRES}, S. 86–87).</p>
+      <p>Die Map zeigt auch, wo jemand umkehrt, aufgibt – und wie es ausgeht. Warum stärkster Moment und Ende: <a href="/innolab/methoden/journey-map#peak-end">Peak-End</a>. Die Kaffeebar-Map hat ihren Umweg (Automat → Zug), ihre Tiefpunkte und ein erzähltes Ende (I3-5). Erzählt bei euch niemand, wie es ausging, legt ihr eine graue Karte „Ende? – nicht erzählt“ hin: Sie zählt nicht, ist aber die nächste Interviewfrage. Momente ohne Überschneidung, damit jeder Ast eine eigene Chance trägt ({TORRES}, S. 86–87).</p>
     </div>
   </Folie>
 
@@ -248,6 +246,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
 <style>
   .nw { white-space: nowrap; }
   .id { color: var(--muted); white-space: nowrap; font-size: .9em; }
+  .nach-map { margin-top: .9rem; }
   .pointe { font-weight: 700; font-size: 1.1rem; max-width: none; margin: .4rem 0 .6rem; }
   /* Folie „bausteine“: vier Kacheln, verbunden mit „+“. */
   .bausteine { list-style: none; margin: 1.2rem 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.6rem; }
@@ -260,9 +259,8 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
   .anlauf-name { margin: 0 0 .3rem; font-family: var(--mono); font-weight: 700; font-size: 1rem; }
   .anlauf-fluss { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .2rem; }
   :global(.content) .anlauf-fluss > li { margin: 0; display: inline-flex; align-items: center; }
-  .anlauf-fluss > li > :first-child, .anlauf-fluss > li { white-space: nowrap; }
-  .anlauf-fluss > li { padding: .1rem .35rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
-  .anlauf-fluss > li + li::before { content: '→' / ''; margin-right: .3rem; color: var(--muted); }
+  .anlauf-fluss > li > span { padding: .1rem .35rem; white-space: nowrap; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+  .anlauf-fluss > li + li::before { content: '→' / ''; margin-right: .2rem; color: var(--muted); }
   .anlauf-karten { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
   :global(.content) .anlauf-karten > li { margin: 0; padding: .3rem .5rem; border-radius: var(--radius); background: var(--yellow-soft); border: 1px solid var(--yellow-ink); }
   .anlauf-kopf { margin: .3rem 0 .2rem; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
