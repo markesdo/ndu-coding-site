@@ -162,11 +162,11 @@ describe('methoden', () => {
       'synthese-snapshot', 'synthese-chance-beduerfnis', 'synthese-einsichten', 'synthese-pseudonym', 'synthese-beleg-nachgetragen', 'synthese-belege',
       'journey-map-geschichten', 'journey-map-erleben', 'journey-map-umwege', 'journey-map-momente-getrennt', 'journey-map-worte-belegt', 'journey-map-hoehepunkt-ende',
       'baum-chance-beduerfnis', 'baum-belegt', 'baum-ein-elternteil', 'baum-kind-teil', 'baum-stapel', 'baum-konkret',
-      'ziel-chance-geschwister', 'ziel-chance-blatt', 'ziel-chance-linsen', 'ziel-chance-belegt', 'ziel-chance-ulwick',
+      'ziel-chance-geschwister', 'ziel-chance-blatt', 'ziel-chance-linsen', 'ziel-chance-belegt', 'ziel-chance-ulwick', 'ziel-chance-begruendung',
       'hmw-wie-koennten', 'hmw-loesung', 'hmw-reichweite', 'hmw-kundensicht', 'hmw-auswahl',
       'ideation-menge', 'ideation-aussortiert', 'ideation-drei', 'ideation-verschieden', 'ideation-claude',
       'kundenprofil-segment', 'kundenprofil-jobs', 'kundenprofil-sozial-emotional', 'kundenprofil-konkret', 'kundenprofil-produkt', 'kundenprofil-ziel-chance', 'kundenprofil-geordnet',
-      'value-map-lueckensatz', 'value-map-segment', 'value-map-fit-vergleich', 'value-map-wahl', 'value-map-wirkung', 'value-map-adressiert',
+      'value-map-lueckensatz', 'value-map-segment', 'value-map-fit-vergleich', 'value-map-wahl', 'value-map-wirkung', 'value-map-geordnet', 'value-map-adressiert', 'value-map-fragezeichen',
       'concept-story-stationen', 'concept-story-produkt', 'concept-story-krise', 'concept-story-hoehepunkt', 'concept-story-linie', 'concept-story-fallend', 'concept-story-ende',
       'geschaeftsmodell-verweise', 'geschaeftsmodell-wert', 'geschaeftsmodell-kosten', 'geschaeftsmodell-muster', 'geschaeftsmodell-annahme', 'geschaeftsmodell-widerspruch',
       'experiment-annahmen-arten', 'experiment-eine-annahme', 'experiment-wer-wo-was', 'experiment-schwelle', 'experiment-schnellster', 'experiment-danach', 'experiment-origin', 'experiment-lernkarte',
@@ -181,7 +181,8 @@ describe('methoden', () => {
       'pitch-einstieg', 'pitch-demo', 'pitch-belege', 'pitch-gescheitert', 'pitch-outcome', 'pitch-position', 'pitch-pitch-satz', 'pitch-geschaeftsmodell',
     ];
     // Ein Sprint statt zwei: kein „gestriges Wetter“ aus Sprint 1 und keine kurze Retro von Sprint 2 mehr.
-    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz'];
+    // 19.11.2026: Ulwick nur noch Theorie (keine Rechnung); der Lückensatz gehört seitdem zur Ideation (ideation-drei).
+    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz', 'ziel-chance-ulwick', 'value-map-lueckensatz'];
     const jetzt = METHODEN.flatMap((m) => m.pruefliste ?? []).map((p) => p.id);
     for (const id of jetzt) expect(VERGEBEN, `${id}: neue ID in VERGEBEN eintragen`).toContain(id);
     for (const id of VERGEBEN) {
@@ -313,11 +314,11 @@ describe('methoden', () => {
     expect(einfuegenHinweis(METHODEN.find((m) => m.slug === 'kundenprofil')!)).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo oder den Text aus Miro – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
     // Vorarbeit aus Dateien wird mit eingefügt, Vorarbeit nur auf Miro als Bild, Werkstatt-Vorarbeit kommt über den Connector.
     const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!, undefined, 'einfuegen');
-    expect(kp).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe (docs/ZIEL-CHANCE.md).\n');
+    expect(kp).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen (docs/ZIEL-CHANCE.md).\n');
     expect(kp).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“).\n');
     expect(kp).toContain('\nZum Abgleich lies außerdem meine Interviews und Snapshots (Werkzeug artefakt_lesen).\n');
     const hmw = pruefPrompt(METHODEN.find((m) => m.slug === 'hmw')!, undefined, 'einfuegen');
-    expect(hmw).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen und Ulwick-Gegenprobe (docs/ZIEL-CHANCE.md).\n');
+    expect(hmw).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen (docs/ZIEL-CHANCE.md).\n');
     expect(hmw).not.toContain(MCP_WERKZEUGE.artefaktLesen);
   });
 
@@ -494,7 +495,7 @@ describe('methoden', () => {
     // Je Kurstag: Start, die Stationen in Kursreihenfolge, zuletzt das Ziel, an dem die Kette den Tag verlässt oder zur Tagesseite zurückkehrt.
     const ketten: string[][] = [
       ['/innolab/tag-2', m('synthese'), m('journey-map'), '/innolab/tag-2/abschluss', '/innolab/tag-3'],
-      ['/innolab/tag-3', '/innolab/tag-3/experience-map', m('baum'), m('ziel-chance'), m('hmw'), m('ideation'), m('kundenprofil'), m('value-map'), m('concept-story'), '/innolab/tag-3#abschluss'],
+      ['/innolab/tag-3', '/innolab/tag-3/experience-map', m('baum'), m('ziel-chance'), m('kundenprofil'), m('hmw'), m('ideation'), m('value-map'), m('concept-story'), '/innolab/tag-3#abschluss'],
       ['/innolab/tag-4', m('geschaeftsmodell'), m('experiment'), m('story-map'), m('usage-story'), m('prototyp-spike'), m('scrum')],
       ['/innolab/tag-5', m('scrum#team'), m('backlog'), m('akzeptanzkriterien'), m('schneiden'), m('sprint'), '/innolab/tag-5#stoerfall'],
       ['/innolab/tag-6', '/innolab/tag-7', '/innolab'],

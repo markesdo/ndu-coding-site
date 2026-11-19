@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/kundenprofil.astro (Tag 3, 14:40–15:10).
+// Begleiter-Notizen zu src/pages/innolab/methoden/kundenprofil.astro (Tag 3, 11:30–12:00; seit 19.11. vor HMW und Ideation, damit das Profil ohne Ideen im Kopf entsteht – VPD S. 78–79).
 // Vorwissen: Kundenprofil „bekannt“ aus Entrepreneur Lab & Prototyping (vorwissen.ts) – Theorie zu Jobs, Pains, Gains kurz,
 // dafür das, was hier anders ist: Belege aus dem Baum, Kontext, konkret statt vage.
 // VPD-Seiten = Seitenzahlen der PDF-Ausgabe, wie in quellen/vpd/text.txt (nicht die der gedruckten Ausgabe).
@@ -28,7 +28,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Wir kennen das Profil schon – warum noch einmal?',
-        antwort: 'Weil ihr es diesmal nicht aus dem Kopf füllt, sondern aus fünf Interviews, und weil es heute einen Zweck hat: drei Ideen daran zu messen.',
+        antwort: 'Weil ihr es diesmal nicht aus dem Kopf füllt, sondern aus fünf Interviews, und weil es heute einen Zweck hat: Am Nachmittag messt ihr drei Ideen daran.',
       },
     ],
     ueberleitung: 'Bevor ihr füllt: Lernt eine Kundin kennen.',
@@ -180,7 +180,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       'Abbildung: wichtigste Zettel oben.',
       'Jede Spalte für sich: Wichtigkeit, Schwere, Relevanz.',
       '„Ihr dürft mit eurer Einschätzung anfangen – die Interviews prüfen sie.“',
-      'Bei Bedarf: Ulwicks Formel war die Gegenprobe am Vormittag; hier ohne.',
+      'Bei Bedarf: Ulwick war die Gegenposition; hier ohne Formel.',
     ],
     kern: [
       {
@@ -224,24 +224,24 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     live: [
       'Timer 7 min: Ziel-Chance und Ast als Pains, mit Zitat-IDs.',
       'Nach 7 min: Gains aus den Snapshots, ein sozialer oder emotionaler Job.',
-      'Nach 14 min: je Spalte ordnen, dann Fehlerliste auf der nächsten Folie.',
-      'Falle: beim Schreiben schon an die drei Ideen denken.',
+      'Nach 14 min: alles auf die Skalen, ordnen, dann die Fehlerliste.',
+      'Falle: an eine Lösung denken – Ideen gibt es noch keine.',
       'Wenn hinten: Ordnen auf die obersten drei je Spalte beschränken.',
     ],
     uebung: { dauer: '18 min (7 + 7 + 4)', form: 'allein, jede*r für das eigene Produkt' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'Jede*r arbeitet in der eigenen Spalte, Abschnitt „Jobs · Pains · Gains, je Spalte geordnet“.',
-        'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und als Pains ablegen; Zitat-IDs bleiben dran.',
-        'Wichtigstes nach oben schieben; Segment und Anlass als Überschrift.',
+        'Jede*r arbeitet im eigenen Canvas-Frame „T3 · 4 · Canvas · Name“ (Link oben in der eigenen Spalte von T3 · 4).',
+        'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und als Pains in den Kreis legen; Zitat-IDs bleiben dran.',
+        'Dann alle Stickies auf die drei Skalen rechts unten schieben, je Spalte das Wichtigste oben (VPD S. 76); Segment und Anlass als Überschrift.',
       ],
     },
     ablauf: {
       schritte: [
         'Übernehmen (7 min): Ziel-Chance als P1, ihr Ast als weitere Pains, mit Zitat-IDs; Jobs aus Tag 1.',
         'Ergänzen (7 min): Gains aus den Snapshots, so konkret wie die Zitate; mindestens ein sozialer oder emotionaler Job.',
-        'Ordnen und prüfen (4 min): jede Spalte für sich, Wichtigstes oben; dann die sechs Fehler durchgehen.',
+        'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; dann die sechs Fehler durchgehen.',
       ],
       achten: [
         'Ein Segment, ein Anlass – wer zwei hat, wählt das Segment der Ziel-Chance.',
@@ -261,7 +261,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     live: [
       'Nicht vortragen: Liste bleibt während des Ordnens stehen.',
       'Jede*r hakt still am eigenen Profil ab.',
-      'Fragen: Welchen der sechs habt ihr bei euch gefunden? Reihum einer.',
+      'Allein: welchen der sechs im eigenen Profil? Markus fragt nach.',
       '„Vergesst kurz euer Angebot – beschreibt die Menschen.“',
     ],
     kern: [
@@ -274,6 +274,6 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
         quelle: `${VPD}, S. 79`,
       },
     ],
-    ueberleitung: 'Das Profil steht. Jetzt kommen eure drei Ideen daneben.',
+    ueberleitung: 'Das Profil steht. Nach der Mittagspause sucht ihr Ideen – und messt sie an diesem Profil.',
   },
 };

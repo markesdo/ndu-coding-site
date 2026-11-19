@@ -1,8 +1,10 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/ideation.astro (Tag 3, 13:00–14:30). Kein Vorwissen eingetragen.
+// Begleiter-Notizen zu src/pages/innolab/methoden/ideation.astro (Tag 3, 13:35–15:05; seit 19.11. nach dem Kundenprofil, endet mit den Lückensätzen). Kein Vorwissen eingetragen.
+// VPD-Seiten = Seitenzahlen der PDF-Ausgabe, wie in quellen/vpd/text.txt.
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 8, S. 106–114; dazu S. 30–31 und S. 105).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
+const VPD = 'Osterwalder u. a., Value Proposition Design';
 
 export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   // NEU
@@ -295,7 +297,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Kein klarer Sieger: kurz werben, neu punkten.',
       'Falle: nach „machbar“ oder „cool“ punkten.',
       'Bei euch: jede*r wählt die drei allein – Kursregel.',
-      '„Wir wählen drei, nicht eine. Die eine entscheidet der Vergleich danach.“',
+      '„Wir wählen drei, nicht eine. Nach der Pause wird eine davon Spitzenreiter auf Papier.“',
     ],
     verstaendnis: {
       frage: 'Eine Idee ist großartig, löst aber eure Ziel-Chance nicht. Was passiert mit ihr?',
@@ -326,8 +328,8 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         antwort: 'Torres: „Groups tend to evaluate ideas better than individuals because groups have a wider breadth of experience to draw on.“ (S. 113). Bei euch hat jede*r ein eigenes Produkt und kennt allein die Kundschaft dazu; darum wählt ihr allein, mit Torres’ einzigem Kriterium: Wie gut trifft die Idee die Ziel-Chance? Das ist eine Regel dieses Kurses.',
       },
       {
-        frage: 'Bei Torres entscheiden Tests zwischen den dreien. Warum bei uns die Value Map?',
-        antwort: 'Der Fit auf Papier ist im Kurs der erste, billige Vergleich; er ersetzt die Tests nicht. Die Annahmen der gewählten Idee testet ihr ab Tag 4. Das ist eine Entscheidung dieses Kurses.',
+        frage: 'Bei Torres entscheiden Tests zwischen den dreien. Warum bei uns ein Spitzenreiter?',
+        antwort: 'Story Map und Prototyp an Tag 4 brauchen eine Idee; das Buch von Osterwalder sieht vor, vor dem Test unter Alternativen zu wählen (VPD S. 347–348). Der Vergleich der Lückensätze ersetzt die Tests nicht: Die anderen beiden bleiben offen, ihre „?“ gehen mit in Tag 4. Das ist eine Entscheidung dieses Kurses.',
       },
     ],
     ueberleitung: 'Eine Falle beim Auswählen hat mit Raubkatzen zu tun.',
@@ -376,6 +378,36 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: 'Werkstatt, Beispiel Kaffeebar, Entscheidungslog D4; QR-Code an der Hallentür: value-map.astro, Folie beispiel',
       },
     ],
+    ueberleitung: 'Aus jeder der drei wird ein Satz – gegen euer Profil.',
+  },
+
+  'ad-libs': {
+    live: [
+      'Lückensatz vorlesen, Lücken mit dem Finger zeigen.',
+      '„Ein Satz pro Idee – er zwingt euch zu sagen, wie sie Wert schafft.“',
+      '„Job, Pain und Gain kommen aus eurem Profil vom Vormittag, mit ID.“',
+      'Kaffeebar-Satz zeigen: J1, P1, G1 – anders als der Automat.',
+      'Falle: am ersten Satz feilen – drei rohe Sätze sind das Ziel.',
+    ],
+    verstaendnis: {
+      frage: 'Woher kommen Job, Pain und Gain im Lückensatz?',
+      antwort: 'Aus dem Kundenprofil vom Vormittag, am besten aus den obersten Einträgen. Neu ist im Satz nur das Angebot und wie es wirkt.',
+      falsch: '„Die überlegen wir uns passend zur Idee“ – dann beschreibt das Profil das Angebot und nicht die Kundschaft.',
+    },
+    kern: [
+      {
+        text: 'Ad-libs sind neben Serviettenskizze und Canvas eine der Prototyp-Techniken, um verschiedene Richtungen schnell zu erkunden, bevor man eine ausarbeitet. „Prototype three to five different directions by filling out the blanks in the ad-lib below.“',
+        quelle: `${VPD}, S. 156–159, 183`,
+      },
+      {
+        text: 'Die Lücken laut Abbildung: products and services – customer segment – jobs to be done – eigenes Verb (z. B. reducing, avoiding) – eigenes Verb (z. B. increasing, enabling); als Tipp am Anfang oder Ende: unlike – competing value proposition.',
+        quelle: `${VPD}, S. 184 (Beschriftungen aus der Abbildung)`,
+      },
+      {
+        text: 'Prototyp-Regeln, die hier gelten: „Don’t fall in love with first ideas— create alternatives.“ Und für frühe Prototypen: „Spend a maximum of 5 to 15 minutes on sketching out your early prototypes.“, mit sichtbarem Timer.',
+        quelle: `${VPD}, S. 165 und S. 161`,
+      },
+    ],
     ueberleitung: 'Jetzt ihr: drei Produkte, drei Fragen.',
   },
 
@@ -386,17 +418,18 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Nach 16 min: Ideen-Spende still, je Produkt 2 min.',
       'Nach 22 min: wieder allein, 18 min; Auswege und Claude erlaubt.',
       '1:1 in dieser Runde, je 4 min: Sofie, Hewen, Joachim.',
-      'Nach 40 min: auswählen allein, 15 min.',
-      'Nach 55 min: IDEEN.md, drei Ideen mit je einem Satz warum.',
+      'Nach 40 min: auswählen allein, 7 min.',
+      'Nach 47 min: Lückensätze gegen das Profil, 8 min.',
+      'Nach 55 min: IDEEN.md, drei Ideen als Lückensätze.',
     ],
-    uebung: { dauer: '59 min (16 + 6 + 18 + 15 + 4)', form: 'allein, dazwischen eine stille Ideen-Spende' },
+    uebung: { dauer: '59 min (16 + 6 + 18 + 7 + 8 + 4)', form: 'allein, dazwischen eine stille Ideen-Spende' },
     miro: {
       frame: 'T3 · 3 · Ideation',
       schritte: [
         'Jede*r hat eine Spalte für das eigene Produkt; bei der Ideen-Spende legen die anderen Stickies in „Ideen“ dazu.',
         'Ein Sticky pro Idee, eigene Farbe je Person; Ideen von Claude mit „(Claude)“.',
-        'Auswählen allein: Was die Ziel-Chance nicht löst, in „Aussortiert“; die drei mit je einem Satz warum.',
-        'Die drei Gewählten in „Drei für den Vergleich in T3 · 4“.',
+        'Auswählen allein: Was die Ziel-Chance nicht löst, in „Aussortiert“.',
+        'Die drei Gewählten als Lückensätze in „Drei für den Vergleich in T3 · 4“.',
       ],
     },
     ablauf: {
@@ -405,8 +438,9 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         'Allein (16 min): Ideen zur eigenen HMW-Frage, ein Sticky pro Idee, in die eigene Spalte.',
         'Ideen-Spende, still (6 min): je Produkt 2 Minuten – die zwei anderen legen Ideen-Stickies an die Frage, ohne Diskussion; wem das Produkt gehört, liest nur mit. Kursformat statt Torres’ Teilen-Runde, weil jede*r ein eigenes Produkt hat.',
         'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
-        'Auswählen allein (15 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art, je ein Satz warum. Torres punktet im Team (S. 113); allein wählen ist Kursregel.',
-        'Festhalten (4 min): docs/IDEEN.md mit den drei Ideen, „Aussortiert“ und der Liste; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
+        'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); allein wählen ist Kursregel.',
+        'Lückensätze (8 min): je Idee ein Satz, Job, Pain und Gain mit ID aus dem eigenen Profil vom Vormittag (VPD S. 183–184).',
+        'Festhalten (4 min): docs/IDEEN.md mit den drei Lückensätzen, „Aussortiert“ und der Liste; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
       ],
       achten: [
         'Bei der Ideen-Spende wird nicht diskutiert und nicht bewertet – nur Stickies legen.',
@@ -433,9 +467,9 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Sind eure drei wirklich verschieden – oder Löwe, Tiger, Puma?',
-      'Reihum: je Idee ein Wort für ihre Art.',
+      'Allein: je Idee ein Wort für ihre Art notieren.',
       'Bei drei Varianten: eine Idee anderer Art aus der Liste holen.',
-      'Ausblick: Nach der Pause kommen die drei neben das eigene Kundenprofil.',
+      'Ausblick: Nach der Pause wird einer der drei Lückensätze Spitzenreiter.',
     ],
     kern: [
       {
@@ -443,6 +477,6 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 114`,
       },
     ],
-    ueberleitung: 'Nach der Pause: Welche der drei trifft, was eurer Kundschaft am wichtigsten ist?',
+    ueberleitung: 'Nach der Pause: Welcher Lückensatz trifft, was eurer Kundschaft am wichtigsten ist?',
   },
 };

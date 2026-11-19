@@ -55,15 +55,49 @@ describe('Kaffeebar-Beispiel: Chance „Wenn ich anstehe, reicht mir die Zeit ni
     expect(treffer.filter((ids) => ids !== 'I2-2, I3-4, I4-1')).toStrictEqual([]);
   });
   it('Kursseiten und Notizen zu Baum, Ziel-Chance und HMW belegen sie mit I4-1, nicht I4-2', () => {
-    // Die Belegreihe der Chance (Baum, Ulwick-Sätze, „gegen …“ bei der Größe, Nachbar-Chance bei HMW).
+    // Die Belegreihe der Chance (Baum, „gegen …“ bei der Größe, Nachbar-Chance bei HMW; die Ulwick-Rechnung der Kaffeebar ist seit 19.11. gestrichen).
     const orte = ['baum', 'ziel-chance', 'hmw'].flatMap((n) => [`${SEITEN}/methoden/${n}.astro`, `src/data/begleiter/${n}.ts`]);
     const treffer = orte.flatMap((f) => [...readFileSync(f, 'utf8').matchAll(/I2-2, I3-4, I4-\d+/g)].map((m) => `${f}: ${m[0]}`));
-    expect(treffer.length).toBeGreaterThanOrEqual(9);
+    expect(treffer.length).toBeGreaterThanOrEqual(7);
     expect(treffer.filter((t) => !t.endsWith('I4-1'))).toStrictEqual([]);
   });
   it('die alte Fassung „verpasse ich den/meinen Zug“ steht nirgends mehr', () => {
     const orte = [...dateien(SEITEN, '.astro'), ...dateien('src/data/begleiter', '.ts'), ...dateien('src/components', '.ts'), ...dateien(BEISPIELE, '.json')];
     const treffer = orte.filter((f) => /verpasse ich (den|meinen) Zug/.test(readFileSync(f, 'utf8')));
     expect(treffer).toStrictEqual([]);
+  });
+});
+
+describe('Kaffeebar-Beispiel: Fit der Value Map „Im Gehen bestellen“', () => {
+  // Der Fit nach dem Buch (VPD S. 110–112) markiert jeden Eintrag des Kaffeebar-Profils: getroffen (✓ an der Value Map),
+  // ✗ oder „?“. Was das Profil auf kundenprofil.astro nennt (J1–J4, P1–P4, G1–G3), muss im Fit-Absatz der Value Map
+  // genau einmal eingeordnet sein – sonst passt das Beispiel nicht mehr zum Profil.
+  const abschnitt = (datei: string, id: string): string => {
+    const seite = readFileSync(datei, 'utf8');
+    const start = seite.indexOf(`id="${id}"`);
+    return seite.slice(start, seite.indexOf('</Folie>', start));
+  };
+  const profilIds = [...new Set([...abschnitt('src/pages/innolab/methoden/kundenprofil.astro', 'beispiel').matchAll(/\b[JPG][1-9]\b/g)].map((m) => m[0]))].sort();
+  const fit = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').split('Der Fit nach dem Buch')[1]?.split('</p>')[0] ?? '';
+  // Feste Marken im Fit-Absatz: „Getroffen sind damit …“, „Ein ✗ bekommen …“, „Ein „?“ …“. Fehlt eine, schlägt der Test mit Namen fehl.
+  const teil = (von: string, bis?: string): string => {
+    expect(fit, `Marke „${von}“ fehlt im Fit-Absatz`).toContain(von);
+    const rest = fit.split(von)[1] ?? '';
+    return bis ? (rest.split(bis)[0] ?? '') : rest;
+  };
+  const ids = (s: string): string[] => s.match(/\b[JPG][1-9]\b/g) ?? [];
+  const getroffen = ids(teil('Getroffen sind damit', 'Ein ✗ bekommen'));
+  const kreuz = ids(teil('Ein ✗ bekommen', 'Ein „?“'));
+  const frage = ids(teil('Ein „?“'));
+
+  it('jeder Profil-Eintrag ist genau einmal eingeordnet: getroffen, ✗ oder „?“', () => {
+    expect([...getroffen, ...kreuz, ...frage].sort()).toStrictEqual(profilIds);
+  });
+  it('die Folie nennt dieselben getroffenen und offenen Einträge wie das Handout', () => {
+    const folie = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').match(/Fit seiner Value Map: trifft ([^–]+)– ✗ ([^–]+)– \? ([^<]+)<\/p>/);
+    expect(folie, 'Folienzeile „Fit seiner Value Map: trifft … – ✗ … – ? …“ fehlt').not.toBeNull();
+    expect(ids(folie?.[1] ?? '')).toStrictEqual(getroffen);
+    expect(ids(folie?.[2] ?? '')).toStrictEqual(kreuz);
+    expect(ids(folie?.[3] ?? '')).toStrictEqual(frage);
   });
 });
