@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/tag-3/experience-map.astro (Tag 3, 09:00–09:25): die Experience Map vor dem
-// Baum nachschärfen. Folien 1–8 (Kaffeebar) in etwa 10 Minuten, dann 15 Minuten Durchgang am eigenen Material der
+// Baum nachschärfen. Folien 1–9 (Kaffeebar, Momente finden) in etwa 10–12 Minuten, dann 15 Minuten Durchgang am eigenen Material der
 // Studierenden auf Miro (T3 · 0). Die drei Anläufe der Kaffeebar sind ausgedacht; Momente, Zitate und Zählung wie
 // journey-map#beispiel. Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt.
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
@@ -9,7 +9,7 @@ const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   'warum-nochmal': {
     live: [
-      'Ist-Zeit notieren; Folien 1–8 in zehn Minuten.',
+      'Ist-Zeit notieren; Folien 1–9 in gut zehn Minuten.',
       '„Der schwerste Schritt der Methode: Aus Geschichten werden Momente.“',
     ],
     kern: [
@@ -41,7 +41,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   },
   'anlauf-a': {
     live: [
-      'Hier „Auflösung zeigen“: öffnet Folien 4 bis 8.',
+      'Hier „Auflösung zeigen“: öffnet Folien 4 bis 9.',
       'Bilanz: tut ja, sonst nichts. Der Ablauf ist das halbe Material.',
     ],
     kern: [
@@ -71,6 +71,19 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     live: ['Fertige Kaffeebar-Map: Umweg, Tief, Ende; graue Karte zählt nicht.'],
     kern: [
       { text: 'Momente ohne Überschneidung, damit man an einer Chance arbeiten kann, ohne alle anderen mitzuziehen.', quelle: `${TORRES}, S. 86` },
+    ],
+    ueberleitung: 'Wie findet man die Momente? Vom stärksten Moment aus.',
+  },
+  'vom-tief-aus': {
+    live: [
+      'Eine Minute: Anker setzen, dann „davor? danach?“ bis zum Ende der Geschichte.',
+      'Drei Fragen aufdecken: Zeitpunkt oder Thema? Gefühl → Auslöser? Dasselbe Vorhaben?',
+      'Zwölf Fragen und Test-Tabelle stehen im Handout – nicht vorlesen.',
+    ],
+    kern: [
+      { text: 'Im Interview führt die Zeitleiste: „What happened first?“, „What happened next?“, „What happened before that?“', quelle: `${TORRES}, S. 66` },
+      { text: 'Zu breit? „Where did this pain point show up in your customer’s story?“', quelle: `${TORRES}, S. 88` },
+      { text: 'Ein Gefühl ist ein Wegweiser: nicht das Gefühl festhalten, sondern seine Ursache (bei Torres für Chancen; für Momente übertragen).', quelle: `${TORRES}, S. 95` },
     ],
     ueberleitung: 'Jetzt euer eigenes Material, Schritt für Schritt.',
   },

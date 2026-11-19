@@ -402,7 +402,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   it('Tag 3: experience-map steht vor dem Baum, jede Folie hat eine Notiz mit mindestens einem live-Stichwort', () => {
     const pfad = '/innolab/tag-3/experience-map';
     const seite = folienAus(pfad, quellen[pfad] ?? '');
-    expect(seite).toHaveLength(10);
+    expect(seite).toHaveLength(11);
     expect(seite.filter((f) => !NOTIZEN[pfad]?.[f.id]?.live?.some((s) => s.trim() !== '')).map((f) => `${f.pfad}#${f.id}`)).toStrictEqual([]);
     const reihe = [...new Set(folien.map((f) => f.pfad))];
     expect(reihe.indexOf(pfad) + 1).toBe(reihe.indexOf('/innolab/methoden/baum'));

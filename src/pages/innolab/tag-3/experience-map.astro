@@ -16,7 +16,7 @@ import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 import { zaehlung } from '../../../data/kaffeebar-skizzen';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
-// Die Auflösungen der Folien 4 bis 8 öffnen sich gemeinsam, wenn Markus nach der Runde auf Folie „anlauf-a“
+// Die Auflösungen der Folien 4 bis 9 (anlauf-a bis vom-tief-aus) öffnen sich gemeinsam, wenn Markus nach der Runde auf Folie „anlauf-a“
 // (die erste der Gruppe, Folie nach „drei-anlaeufe“) aufdeckt; ENDE_TAG_3 ist nur der späte Rückfall.
 const GRUPPE = 'map-anlaeufe';
 // Folie „warum-nochmal“: nur Outcome und die drei Momente (oberste Ebene) des Kaffeebar-Baums.
@@ -32,7 +32,11 @@ const ZUSAMMEN = [
 const ZITATE = new Map(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => [z.id, z.text] as const)));
 const NOTIZ_I1 = KAFFEEBAR_INTERVIEWS.interviews.find((iv) => iv.id === 'I1')?.notizen ?? '';
 const NOTIZ_SATZ = 'Schaut erst auf die Schlange, dann auf die Uhr.';
-const fehlt = [...ZUSAMMEN.map((z) => z.id), 'I2-1', 'I4-2', 'I5-6'].filter((id) => !ZITATE.has(id));
+const fehlt = [...ZUSAMMEN.map((z) => z.id), 'I2-1', 'I4-2', 'I5-6', 'I2-2', 'I2-4', 'I2-5', 'I3-3', 'I4-3'].filter((id) => !ZITATE.has(id));
+// Folie „vom-tief-aus“ (Handout): wörtlich zitierte Sätze müssen im Werkstatt-Beispiel stehen.
+const HANDOUT_ZITATE = { 'I2-5': 'Am liebsten wüsste ich einfach, wann er fertig ist.', 'I4-2': 'Anstellen ist ein Glücksspiel.', 'I4-3': 'Meistens ist es der Automat.' } as const;
+const handoutFalsch = Object.entries(HANDOUT_ZITATE).filter(([id, text]) => ZITATE.get(id) !== text).map(([id]) => id);
+if (handoutFalsch.length) throw new Error(`tag-3/experience-map.astro: Handout-Zitat weicht vom Werkstatt-Beispiel ab: ${handoutFalsch.join(', ')}`);
 if (fehlt.length) throw new Error(`tag-3/experience-map.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${fehlt.join(', ')}`);
 const nichtImZitat = ZUSAMMEN.filter((z) => !ZITATE.get(z.id)!.includes(z.zitat + z.nach)).map((z) => z.id);
 if (nichtImZitat.length) throw new Error(`tag-3/experience-map.astro: Zitatausschnitt steht nicht im Zitat: ${nichtImZitat.join(', ')}`);
@@ -66,6 +70,8 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <p class="small muted">Knoten und Kontext: {TORRES}, S. 56. Zitat mit ID, Zählung, drei bis fünf Momente: Kursregel.</p>
     <div class="nur-handout">
       <p>Torres beschreibt einen Knoten als „a distinct moment in time, an action, or an event“ und hängt an jeden Schritt den Kontext: Was denkt, fühlt, tut die Person dort ({TORRES}, S. 56)? Dass jeder Moment ein Zitat mit ID trägt und gezählt wird, in wie vielen Geschichten er vorkommt („N von M“), ist das Format dieses Kurses – so lässt sich jeder Ast später auf eine Geschichte zurückführen.</p>
+      <p>Drei bis fünf Momente steht so nicht im Buch; Torres nennt die Zahl in ihrem Buchclub zu Kapitel 6 („identify 3-5 distinct moments in time to serve as your top-level opportunities“, <a href="https://www.producttalk.org/cdh-book-club-april-2026-2/">Product Talk, Buchclub</a>). Im Buch hat ihr Beispiel vier Momente ({TORRES}, S. 87).</p>
+      <p><strong>Was ist eine Geschichte?</strong> Ein konkretes Erlebnis, das die Person erzählt – was an einem bestimmten Mal tatsächlich passiert ist. Torres fragt danach mit „Tell me about the last time …“ ({TORRES}, S. 64). Eine Geschichte ist nicht dasselbe wie ein Interview: Ein Interview kann mehrere Geschichten enthalten – oder keine, wenn die Person nur Meinungen äußert oder allgemeine Fragen beantwortet („Worauf achtest du …?“). Meist trägt ein Snapshot eine Geschichte; gezählt wird, in wie vielen erzählten Geschichten ein Moment vorkommt, nicht wie viele Personen eine Frage beantwortet haben.</p>
     </div>
   </Folie>
 
@@ -215,6 +221,64 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
   </Folie>
 
   <Folie>
+    <h2 id="vom-tief-aus">Momente finden: davor, danach</h2>
+    <p class="folie-satz">Fangt beim stärksten Moment eurer Skizze an und fragt euch durch die Geschichte.</p>
+    <div class="davor-danach" aria-label="Vom stärksten Moment aus: was davor passiert ist, was danach – am Rand, was nicht erzählt wurde">
+      <span class="chip grau">nicht erzählt?</span>
+      <span class="dd-pfeil" aria-hidden="true">←</span>
+      <span class="dd-karte">davor?</span>
+      <span class="dd-pfeil" aria-hidden="true">←</span>
+      <span class="dd-karte dd-anker">Tief · ID</span>
+      <span class="dd-pfeil" aria-hidden="true">→</span>
+      <span class="dd-karte">danach?</span>
+      <span class="dd-pfeil" aria-hidden="true">→</span>
+      <span class="chip grau">nicht erzählt?</span>
+    </div>
+    <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
+      <ul class="gross dicht">
+        <li data-schritt>Zeitpunkt oder Thema? Ein Thema taucht an mehreren Stellen auf.</li>
+        <li data-schritt>Ein Gefühl? Sucht den Augenblick, der es auslöst.</li>
+        <li data-schritt>Derselbe Moment heißt: dasselbe Vorhaben, nicht dieselben Worte.</li>
+      </ul>
+      <p class="small muted">{TORRES}, S. 66, 88, 95; Stickdorn u. a., „This Is Service Design Doing“ (Methodenseite „Mapping Journeys“); Indi Young.</p>
+      <div class="nur-handout">
+        <p>Die Momente zu finden ist der schwerste Schritt. Fangt nicht mit einer Vorlage an, sondern an einem Anker: dem stärksten Moment eurer Skizze, oft dem Tief. Von dort fragt ihr „Was ist direkt davor passiert? Was danach?“, bis die Geschichte endet (Torres fragt im Interview genauso: „What happened first?“, „What happened next?“, „What happened before that?“, {TORRES}, S. 66; vom wichtigsten Schritt aus nach vorn und hinten: Stickdorn u. a., <a href="https://www.thisisservicedesigndoing.com/methods/mapping-journeys">Methodenseite „Mapping Journeys“</a>). Zum Schluss prüft ihr Anfang, Mitte und Ende: Fehlt ein Teil, legt ihr eine graue Karte „nicht erzählt“ hin – das ist die Frage fürs nächste Interview.</p>
+        <p><strong>Zwölf Fragen an eine Karte</strong> – in dieser Reihenfolge:</p>
+        <ol>
+          <li><strong>Erzählt oder Gewohnheit?</strong> Ist das an einem bestimmten Mal passiert, oder sagt die Person „meistens / immer“? Eine Gewohnheit zeigt ihr; sie stützt einen Moment nur, wenn sie an einer Stelle der Geschichte steht – wie „Meistens ist es der Automat.“ (I4-3) am Umweg zum Automaten. Steht sie an keiner Stelle, ist sie eine Meinung (Torres steuert bei „I usually …“ zurück zum konkreten Fall, {TORRES}, S. 66).</li>
+          <li>Wo in der Geschichte taucht das auf? ({TORRES}, S. 88: „Where did this pain point show up in your customer’s story?“)</li>
+          <li>Was ist direkt davor passiert? Was danach? ({TORRES}, S. 66)</li>
+          <li>Was hat die Person dort getan, entschieden oder bemerkt? (Knoten: „a distinct moment in time, an action, or an event“, {TORRES}, S. 56)</li>
+          <li>Hat sich hier geändert, was die Person tut oder vorhat? (Stufengrenze, nach Stickdorn, <a href="https://www.smaply.com/blog/customer-journey-stages">Smaply-Blog</a>)</li>
+          <li>Zeitpunkt oder Thema? Ein Thema taucht an mehreren Stellen der Geschichte auf. (abgeleitet aus {TORRES}, S. 88)</li>
+          <li>Ein Gefühl: Was ist in dem Augenblick passiert, der es ausgelöst hat? (Torres: ein Gefühl ist ein Wegweiser zur Ursache – bei ihr für Chancen, hier auf Momente übertragen, {TORRES}, S. 95)</li>
+          <li>Steht das so in der Geschichte, oder ist es eure Interviewfrage? (Kursregel)</li>
+          <li>Was wollte die Person in diesem Augenblick erreichen – ist das in der anderen Geschichte dasselbe? (Indi Young: zusammen gehört, worauf die Aufmerksamkeit gerichtet ist, nicht dieselben Worte, <a href="https://alistapart.com/article/a-new-way-to-listen">„A New Way to Listen“</a>)</li>
+          <li>Gleiche Situation, gleiches Vorhaben: zwei Momente oder einer? (Stickdorn, Smaply-Blog; {TORRES}, S. 86)</li>
+          <li>Passt ein Zitat unter zwei Momente? Dann ist es einer – oder ihr trennt schärfer. ({TORRES}, S. 86–88)</li>
+          <li>Würde die Person den Moment so nennen? ({TORRES}, S. 92: „Can I imagine a customer saying this?“)</li>
+        </ol>
+        <p><strong>Ist das ein Moment?</strong> An der Kaffeebar:</p>
+        <table>
+          <thead><tr><th>Karte</th><th>Moment?</th><th>Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td>Zeitpunkt, erzählt</td><td>ja</td><td>„Ich komme in die Halle und entscheide.“ (I2-4, I2-1)</td></tr>
+            <tr><td>Ablaufschritt</td><td>nein</td><td>„Kaffee nehmen“: nichts entschieden, kein Zitat – bleibt im Snapshot</td></tr>
+            <tr><td>Gefühl</td><td>nein</td><td>„Zeitdruck“ – wann? Beim Blick auf die Uhr in der Halle (I2-2)</td></tr>
+            <tr><td>Thema</td><td>nein</td><td>„Wartezeit“: liegt in der Halle (I2-1) und beim Anstehen (I3-3) – zwei Momente</td></tr>
+            <tr><td>Eure Frage</td><td>nein</td><td>eine Karte im Wortlaut des Leitfadens, etwa „Wie entscheidest du dich?“ (ausgedacht)</td></tr>
+            <tr><td>Lösung, Wunsch</td><td>nein</td><td>„Am liebsten wüsste ich einfach, wann er fertig ist.“ (I2-5) – eine Chance unter einem Moment</td></tr>
+            <tr><td>Meinung</td><td>nein</td><td>„Anstellen ist ein Glücksspiel.“ (I4-2)</td></tr>
+            <tr><td>Zusammenfassung</td><td>nein</td><td>„Viele entscheiden sich aus Zeitmangel gegen die Kaffeebar.“ (Anlauf C)</td></tr>
+          </tbody>
+        </table>
+        <p>Antworten auf allgemeine Fragen enthalten keine Momente. Fehlt die Geschichte, ist das die Frage fürs nächste Interview ({TORRES}, S. 66–67).</p>
+        <p>Warum keine feste Vorlage (etwa „vorher – suchen – entscheiden – danach“ oder die Job Map nach Ulwick)? Sie gibt Kästchen vor, die ihr dann füllt – statt die Momente in den Geschichten zu finden. Mit dünnen Interviews ergibt der Weg vom Anker aus weniger Momente und mehr graue Karten; das ist der ehrliche Stand. Weiter lesen: <a href="https://www.nngroup.com/articles/journey-mapping-101/">Nielsen Norman Group, „Journey Mapping 101“</a> (Phasen statt Schritt-für-Schritt-Protokoll).</p>
+      </div>
+    </Aufloesung>
+  </Folie>
+
+  <Folie>
     <h2 id="eure-map">So entsteht eure Map – Schritt für Schritt</h2>
     <p class="folie-satz">Ihr habt an Tag 2 den ersten Versuch gemacht. Jetzt gehen wir ihn an eurem eigenen Material Schritt für Schritt durch. <Timer minuten={15} /></p>
     <MiroFrame name="T3 · 0 · So entsteht eure Map" />
@@ -246,6 +310,11 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
 
 <style>
   .nw { white-space: nowrap; }
+  /* Folie „vom-tief-aus“: Anker in der Mitte, davor/danach, am Rand „nicht erzählt?“. */
+  .davor-danach { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .6rem; margin: 1.4rem 0 1rem; }
+  .dd-karte { display: inline-flex; align-items: center; justify-content: center; min-width: 8rem; min-height: 4.5rem; padding: .5rem .8rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-weight: 600; font-size: 1.05rem; }
+  .dd-anker { border-color: var(--accent); border-width: 2px; }
+  .dd-pfeil { color: var(--muted); font-weight: 700; font-size: 1.3rem; }
   .id { color: var(--muted); white-space: nowrap; font-size: .9em; }
   .nach-map { margin-top: .9rem; }
   .pointe { font-weight: 700; font-size: 1.1rem; max-width: none; margin: .4rem 0 .6rem; }
