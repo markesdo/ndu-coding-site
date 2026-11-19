@@ -261,7 +261,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     live: [
       'Nicht vortragen: Liste bleibt während des Ordnens stehen.',
       'Jede*r hakt still am eigenen Profil ab.',
-      'Fragen: Welchen der sechs habt ihr bei euch gefunden? Reihum einer.',
+      'Allein: Welchen der sechs findet ihr im eigenen Profil? Markus fragt beim Rundgang nach einem.',
       '„Vergesst kurz euer Angebot – beschreibt die Menschen.“',
     ],
     kern: [

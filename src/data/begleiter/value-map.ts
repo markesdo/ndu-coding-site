@@ -143,7 +143,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Reihum: Welche Idee trifft am meisten – und welchen Eintrag nicht?',
       'Zeile für Zeile aufdecken, mit den Antworten aller vergleichen.',
       'Das „?“ beim Kaffeewagen: eine Annahme, kein Kreuz.',
-      '„Bewusst offen“ zeigen: J2, J3, G2, G3, P4.',
+      'Letzte Zeile: Fit der gewählten Value Map nach dem Buch – trifft J1, P1, P2, P3, G1, ✗ an J2, J3, G2, G3, P4; im Handout geordnet, Unverzichtbares oben.',
     ],
     uebung: { dauer: '1 min vor dem Aufdecken', form: 'zu dritt, reihum laut: eine Zahl, ein Eintrag' },
     verstaendnis: {
@@ -152,8 +152,8 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Kaffeebar: drei Lückensätze am selben Profil. „Im Gehen bestellen“ trifft J1, P1, P2, P3 und G1; die Anzeige an der Hallentür nur J1 und P1; der Kaffeewagen J1, P1 und G1, P2 offen als „?“. Bewusst offen bleiben J2, J3, G2, G3, P4.',
-        quelle: 'value-map.astro, Folie beispiel',
+        text: 'Kaffeebar: drei Lückensätze am selben Profil. „Im Gehen bestellen“ trifft J1, P1, P2, P3 und G1; die Anzeige an der Hallentür nur J1 und P1; der Kaffeewagen J1, P1 und G1, P2 offen als „?“. Die Value Map von „Im Gehen bestellen“ ist nach dem Profil geordnet (P1-Linderer oben); im Fit nach dem Buch bekommen ihre drei Schmerzlinderer und der Gewinnerzeuger ein ✓, J2, J3, G2, G3 und P4 ein ✗, J4 ein „?“ (Kursregel).',
+        quelle: 'value-map.astro, Folie beispiel (Handout)',
       },
       {
         text: 'Wertversprechen heißt wählen: „Realize that great value propositions are about making choices regarding which jobs, pains, and gains to address and which to forgo.“',
@@ -237,7 +237,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
-      'Reihum: jede*r nennt den obersten Eintrag, den die eigene Idee verfehlt.',
+      'Allein: jede*r markiert am eigenen Canvas den obersten Eintrag, den die eigene Idee verfehlt; Markus fragt beim Rundgang nach.',
       '„Wenige Pains, die aber extrem gut.“',
       'Ausblick: Nach der Pause die Geschichte dazu – der Story-Bogen.',
     ],

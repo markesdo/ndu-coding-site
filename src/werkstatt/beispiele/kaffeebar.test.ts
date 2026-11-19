@@ -67,3 +67,28 @@ describe('Kaffeebar-Beispiel: Chance „Wenn ich anstehe, reicht mir die Zeit ni
     expect(treffer).toStrictEqual([]);
   });
 });
+
+describe('Kaffeebar-Beispiel: Fit der Value Map „Im Gehen bestellen“', () => {
+  // Der Fit nach dem Buch (VPD S. 110–112) markiert jeden Eintrag des Kaffeebar-Profils: getroffen (✓ an der Value Map),
+  // ✗ oder „?“. Was das Profil auf kundenprofil.astro nennt (J1–J4, P1–P4, G1–G3), muss im Fit-Absatz der Value Map
+  // genau einmal eingeordnet sein – sonst passt das Beispiel nicht mehr zum Profil.
+  const abschnitt = (datei: string, id: string): string => {
+    const seite = readFileSync(datei, 'utf8');
+    const start = seite.indexOf(`id="${id}"`);
+    return seite.slice(start, seite.indexOf('</Folie>', start));
+  };
+  const profilIds = [...new Set([...abschnitt('src/pages/innolab/methoden/kundenprofil.astro', 'beispiel').matchAll(/\b[JPG][1-9]\b/g)].map((m) => m[0]))].sort();
+  const fit = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').split('Der Fit nach dem Buch')[1]?.split('</p>')[0] ?? '';
+  const getroffen = (fit.split('getroffen')[0] ?? '').match(/\b[JPG][1-9]\b/g) ?? [];
+  const kreuz = (fit.split('Ein ✗ bekommen')[1]?.split('Ein „?“')[0] ?? '').match(/\b[JPG][1-9]\b/g) ?? [];
+  const frage = (fit.split('Ein „?“')[1] ?? '').match(/\b[JPG][1-9]\b/g) ?? [];
+
+  it('jeder Profil-Eintrag ist genau einmal eingeordnet: getroffen, ✗ oder „?“', () => {
+    expect([...getroffen, ...kreuz, ...frage].sort()).toStrictEqual(profilIds);
+  });
+  it('die Folie nennt dieselben getroffenen und offenen Einträge wie das Handout', () => {
+    const folie = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').match(/Fit seiner Value Map: trifft ([^–]+)– ✗ ([^<]+)<\/p>/);
+    expect(folie?.[1].match(/\b[JPG][1-9]\b/g)).toStrictEqual(getroffen);
+    expect(folie?.[2].match(/\b[JPG][1-9]\b/g)).toStrictEqual(kreuz);
+  });
+});
