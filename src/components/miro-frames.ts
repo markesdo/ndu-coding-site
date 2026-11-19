@@ -16,6 +16,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T1 · 5 · Interview-Snapshots (aus der Werkstatt)': '3458764687728446144',
   'T2 · 1 · Experience Map': '3458764687841241005',
   'T2 · 2 · Opportunity Solution Tree': '3458764687841227908',
+  'T3 · 0 · So entsteht eure Map': '3458764691038487324',
   'T3 · 1 · Ziel-Chance': '3458764687841534117',
   'T3 · 2 · How Might We': '3458764687841534441',
   'T3 · 3 · Ideation': '3458764687841681125',
@@ -29,6 +30,4 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
 
 // PLATZHALTER: Frames, die auf dem Board noch angelegt werden und deren ID noch fehlt. Die Pille bleibt Text, bis die ID
 // oben in MIRO_FRAMES steht – dann den Namen hier streichen (der Test verlangt, dass ein Name nur an einer Stelle steht).
-export const MIRO_FRAMES_OHNE_ID: readonly string[] = [
-  'T3 · 0 · So entsteht eure Map',
-];
+export const MIRO_FRAMES_OHNE_ID: readonly string[] = [];
