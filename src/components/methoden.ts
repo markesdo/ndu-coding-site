@@ -290,9 +290,10 @@ export const METHODEN: Methode[] = [
     pruefliste: [
       { id: 'value-map-lueckensatz', text: 'Für jede der drei Ideen aus der Ideation steht ein Lückensatz.' },
       { id: 'value-map-segment', text: 'Unter Produkte und Services steht nur, was für dieses Segment gedacht ist.' },
-      { id: 'value-map-fit-vergleich', text: 'Der Fit-Vergleich hakt jede Idee gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).' },
+      { id: 'value-map-fit-vergleich', text: 'Der Ideen-Vergleich (Kursregel) hakt jede Idee gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).' },
       { id: 'value-map-wahl', text: 'Gewählt ist die Idee mit dem besten Fit, mit einem Satz warum.' },
       { id: 'value-map-wirkung', text: 'Bei Schmerzlinderern und Gewinnerzeugern stehen keine Produkte, sondern was sie bewirken – mit der ID des Pains oder Gains.' },
+      { id: 'value-map-geordnet', text: 'Produkte und Services, Schmerzlinderer und Gewinnerzeuger sind je für sich geordnet: das Unverzichtbare oben.' },
       { id: 'value-map-adressiert', text: 'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was bewusst offen bleibt, ist markiert.' },
     ],
     ki: 'Markiert Schmerzlinderer, die zu keinem Pain passen, und fragt nach jedem ✓ im Fit-Vergleich.',

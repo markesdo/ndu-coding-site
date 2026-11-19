@@ -192,34 +192,38 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Timer 8 min: drei Lückensätze, roh.',
-      'Nach 8 min: Haken, Kreuze, Fragezeichen gegen die obersten Einträge.',
-      'Nach 15 min: Kreuze befragen allein, Timer 4 min.',
-      'Nach 19 min: Value Map der gewählten Idee, Timer 12 min.',
-      '1:1 ab Minute 15, je 2,5 min: Hewen, Joachim, Sofie.',
+      'Nach 8 min: Ideen vergleichen, wählen – Timer 4 min.',
+      'Nach 12 min: Value Map im Canvas-Frame, ordnen – Timer 12 min.',
+      'Nach 24 min: Fit prüfen wie im Buch, Timer 4 min.',
+      'Nach 28 min: Kreuze befragen allein, Timer 3 min.',
+      '1:1 ab Minute 12, je 2,5 min: Hewen, Joachim, Sofie.',
       'Nach 31 min: VALUE-MAP.md und eine Zeile ins Entscheidungslog.',
       'Wenn hinten: Value Map nur mit je einem Schmerzlinderer und Gewinnerzeuger.',
     ],
-    uebung: { dauer: '34 min (8 + 7 + 4 + 12 + 3)', form: 'allein, Markus fragt je nach einem Kreuz' },
+    uebung: { dauer: '34 min (8 + 4 + 12 + 4 + 3 + 3)', form: 'allein, Markus fragt je nach einem Kreuz' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'Eigene Spalte: „Drei Lückensätze“, darunter „Fit: ✓ ✗ ?“, darunter „Value Map der gewählten Idee“.',
+        'T3 · 4, eigene Spalte: „Drei Lückensätze“, darunter „Fit: ✓ ✗ ?“ als Ideen-Vergleich (Kursregel), darunter „Kreuze befragen“.',
         'Die drei Ideen aus „Drei für den Vergleich in T3 · 4“ (Frame T3 · 3) herüberduplizieren.',
-        'Kreuze befragen: je ✗ und ? ein kleiner Zettel „Was müsste stimmen?“ daneben; Markus geht von Spalte zu Spalte.',
+        'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map der gewählten Idee ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
+        'Fit im Canvas-Frame: ✓ an Schmerzlinderer und Gewinnerzeuger, ✗ an offene Jobs, Pains und Gains; Kreuze befragen zurück in T3 · 4.',
       ],
     },
     ablauf: {
       schritte: [
         'Lückensätze (8 min): je Idee ein Satz; Job, Pain und Gain mit ID aus dem eigenen Profil.',
-        'Fit vergleichen (7 min): jede Idee gegen die obersten Einträge – ✓, ✗ oder ?; dann eine Idee wählen, ein Satz warum.',
-        'Kreuze befragen, allein (4 min): zu jedem ✗ und ? der gewählten Idee ein Satz: Was müsste stimmen? Markus fragt bei jeder Person nach einem Kreuz (Hewen, Joachim, Sofie, je gut zwei Minuten, bis in die Value Map hinein). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
-        'Value Map (12 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger der gewählten Idee, je mit P- oder G-ID; „bewusst offen“ dazuschreiben.',
+        'Vergleichen und wählen (4 min, Kursregel): jede Idee gegen die obersten Einträge – ✓, ✗ oder ?; dann eine Idee wählen, ein Satz warum.',
+        'Value Map (12 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger der gewählten Idee, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102).',
+        'Fit prüfen (4 min): ✓ an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt (VPD S. 110–113).',
+        'Kreuze befragen, allein (3 min, Kursregel): zu jedem ✗ und ? ein Satz: Was müsste stimmen? Markus fragt bei jeder Person nach einem Kreuz (Hewen, Joachim, Sofie, je gut zwei Minuten). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Festhalten (3 min): docs/VALUE-MAP.md; eine Zeile ins Entscheidungslog: gewählt, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',
       ],
       achten: [
         'Gewählt wird nach den obersten Einträgen, nicht nach der Zahl der Haken.',
         'Jedes „?“ ist eine Annahme und wird später eine Zeile in der Annahmen-Map.',
         'Bei Schmerzlinderern steht eine Wirkung, kein Produkt.',
+        'Der Vergleich der Lückensätze ersetzt nicht den Fit am Ende: Das Buch prüft die ausgearbeitete Value Map (S. 112).',
       ],
       fehler: [
         'Die Lieblingsidee bekommt großzügig Haken, die anderen strenge Kreuze.',

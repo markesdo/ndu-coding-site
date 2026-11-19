@@ -224,7 +224,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     live: [
       'Timer 7 min: Ziel-Chance und Ast als Pains, mit Zitat-IDs.',
       'Nach 7 min: Gains aus den Snapshots, ein sozialer oder emotionaler Job.',
-      'Nach 14 min: je Spalte ordnen, dann Fehlerliste auf der nächsten Folie.',
+      'Nach 14 min: alles auf die Skalen, ordnen, dann die Fehlerliste.',
       'Falle: beim Schreiben schon an die drei Ideen denken.',
       'Wenn hinten: Ordnen auf die obersten drei je Spalte beschränken.',
     ],
@@ -232,16 +232,16 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'Jede*r arbeitet in der eigenen Spalte, Abschnitt „Jobs · Pains · Gains, je Spalte geordnet“.',
-        'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und als Pains ablegen; Zitat-IDs bleiben dran.',
-        'Wichtigstes nach oben schieben; Segment und Anlass als Überschrift.',
+        'Jede*r arbeitet im eigenen Canvas-Frame „T3 · 4 · Canvas · Name“ (Link oben in der eigenen Spalte von T3 · 4).',
+        'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und als Pains in den Kreis legen; Zitat-IDs bleiben dran.',
+        'Dann alle Stickies auf die drei Skalen rechts unten schieben, je Spalte das Wichtigste oben (VPD S. 76); Segment und Anlass als Überschrift.',
       ],
     },
     ablauf: {
       schritte: [
         'Übernehmen (7 min): Ziel-Chance als P1, ihr Ast als weitere Pains, mit Zitat-IDs; Jobs aus Tag 1.',
         'Ergänzen (7 min): Gains aus den Snapshots, so konkret wie die Zitate; mindestens ein sozialer oder emotionaler Job.',
-        'Ordnen und prüfen (4 min): jede Spalte für sich, Wichtigstes oben; dann die sechs Fehler durchgehen.',
+        'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; dann die sechs Fehler durchgehen.',
       ],
       achten: [
         'Ein Segment, ein Anlass – wer zwei hat, wählt das Segment der Ziel-Chance.',
