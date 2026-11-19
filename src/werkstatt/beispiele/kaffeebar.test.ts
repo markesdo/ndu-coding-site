@@ -79,16 +79,25 @@ describe('Kaffeebar-Beispiel: Fit der Value Map „Im Gehen bestellen“', () =>
   };
   const profilIds = [...new Set([...abschnitt('src/pages/innolab/methoden/kundenprofil.astro', 'beispiel').matchAll(/\b[JPG][1-9]\b/g)].map((m) => m[0]))].sort();
   const fit = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').split('Der Fit nach dem Buch')[1]?.split('</p>')[0] ?? '';
-  const getroffen = (fit.split('getroffen')[0] ?? '').match(/\b[JPG][1-9]\b/g) ?? [];
-  const kreuz = (fit.split('Ein ✗ bekommen')[1]?.split('Ein „?“')[0] ?? '').match(/\b[JPG][1-9]\b/g) ?? [];
-  const frage = (fit.split('Ein „?“')[1] ?? '').match(/\b[JPG][1-9]\b/g) ?? [];
+  // Feste Marken im Fit-Absatz: „Getroffen sind damit …“, „Ein ✗ bekommen …“, „Ein „?“ …“. Fehlt eine, schlägt der Test mit Namen fehl.
+  const teil = (von: string, bis?: string): string => {
+    expect(fit, `Marke „${von}“ fehlt im Fit-Absatz`).toContain(von);
+    const rest = fit.split(von)[1] ?? '';
+    return bis ? (rest.split(bis)[0] ?? '') : rest;
+  };
+  const ids = (s: string): string[] => s.match(/\b[JPG][1-9]\b/g) ?? [];
+  const getroffen = ids(teil('Getroffen sind damit', 'Ein ✗ bekommen'));
+  const kreuz = ids(teil('Ein ✗ bekommen', 'Ein „?“'));
+  const frage = ids(teil('Ein „?“'));
 
   it('jeder Profil-Eintrag ist genau einmal eingeordnet: getroffen, ✗ oder „?“', () => {
     expect([...getroffen, ...kreuz, ...frage].sort()).toStrictEqual(profilIds);
   });
   it('die Folie nennt dieselben getroffenen und offenen Einträge wie das Handout', () => {
-    const folie = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').match(/Fit seiner Value Map: trifft ([^–]+)– ✗ ([^<]+)<\/p>/);
-    expect(folie?.[1].match(/\b[JPG][1-9]\b/g)).toStrictEqual(getroffen);
-    expect(folie?.[2].match(/\b[JPG][1-9]\b/g)).toStrictEqual(kreuz);
+    const folie = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').match(/Fit seiner Value Map: trifft ([^–]+)– ✗ ([^–]+)– \? ([^<]+)<\/p>/);
+    expect(folie, 'Folienzeile „Fit seiner Value Map: trifft … – ✗ … – ? …“ fehlt').not.toBeNull();
+    expect(ids(folie?.[1] ?? '')).toStrictEqual(getroffen);
+    expect(ids(folie?.[2] ?? '')).toStrictEqual(kreuz);
+    expect(ids(folie?.[3] ?? '')).toStrictEqual(frage);
   });
 });

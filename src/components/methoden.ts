@@ -294,7 +294,7 @@ export const METHODEN: Methode[] = [
       { id: 'value-map-wahl', text: 'Gewählt ist die Idee mit dem besten Fit, mit einem Satz warum.' },
       { id: 'value-map-wirkung', text: 'Bei Schmerzlinderern und Gewinnerzeugern stehen keine Produkte, sondern was sie bewirken – mit der ID des Pains oder Gains.' },
       { id: 'value-map-geordnet', text: 'Produkte und Services, Schmerzlinderer und Gewinnerzeuger sind je für sich geordnet: das Unverzichtbare oben.' },
-      { id: 'value-map-adressiert', text: 'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was bewusst offen bleibt, ist markiert.' },
+      { id: 'value-map-adressiert', text: 'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was offen bleibt, trägt im Fit ein ✗ oder ?.' },
     ],
     ki: 'Markiert Schmerzlinderer, die zu keinem Pain passen, und fragt nach jedem ✓ im Ideen-Vergleich und im Fit der Value Map.',
     quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 157–159 (PDF)',
