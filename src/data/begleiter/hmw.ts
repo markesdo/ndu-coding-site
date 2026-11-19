@@ -184,25 +184,26 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Timer 6 min: Grundform plus zwei Varianten, allein.',
-      'Nach 6 min: zu dritt, je 2 min – vorlesen, zwei Proben.',
+      'Timer 7 min: Grundform plus zwei Varianten, allein.',
+      'Nach 7 min: zwei Proben allein – je Frage zwei Wege notieren.',
+      'Herumgehen, kein fester 1:1: auf eine Frage zeigen, fragen.',
       'Nach 12 min: eine Frage wählen, ein Satz warum.',
       'Falle: Ersatzfragen vorschlagen – nur fragen, was nicht stimmt.',
       '„Die gewählte Frage nehmt ihr nach der Mittagspause in die Ideation mit.“',
     ],
-    uebung: { dauer: '15 min (6 + 6 + 3)', form: 'allein, dann zu dritt reihum' },
+    uebung: { dauer: '15 min (7 + 5 + 3)', form: 'allein, Markus geht herum' },
     miro: {
       frame: 'T3 · 2 · How Might We',
       schritte: [
         'Jede*r schreibt die drei Fragen als Zettel in die eigene Spalte, die Ziel-Chance darüber.',
-        'Beim Vorlesen: „Alle zu mir holen“; die anderen zeigen mit dem Cursor, verschieben nichts.',
+        'Bei den Proben: die zwei Wege je Frage als kleine Zettel neben die Frage.',
         'Die gewählte Frage markieren; sie steht auch in docs/HMW.md.',
       ],
     },
     ablauf: {
       schritte: [
-        'Allein (6 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante weiter (Warum will die Person das?) und eine genauer (Person und Moment).',
-        'Zu dritt (6 min, je 2): alle drei vorlesen. Die anderen prüfen laut: Mehr als ein Weg? Sweet Spot?',
+        'Allein (7 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante weiter (Warum will die Person das?) und eine genauer (Person und Moment).',
+        'Zwei Proben, allein (5 min): zu jeder Frage zwei verschiedene Wege notieren. Fällt nur einer ein, steckt die Lösung schon in der Frage (Torres S. 94: „Is there more than one way to address this …?“). Dann: zu weit oder zu eng – Sweet Spot? Kursformat statt Vorlesen zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Wählen und festhalten (3 min): eine Frage, ein Satz warum, in docs/HMW.md.',
       ],
       achten: [

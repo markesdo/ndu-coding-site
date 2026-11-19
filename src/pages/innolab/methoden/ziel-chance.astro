@@ -231,25 +231,25 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
-    <p class="folie-satz">Erst die Linsen, dann die Formel, dann vergleichen.</p>
+    <p class="folie-satz">Linsen, Formel, dann schriftlich begründen.</p>
     <MiroFrame name="T3 · 1 · Ziel-Chance" />
     <ol class="gross">
       <li data-schritt><strong>Ast wählen, allein:</strong> die Momente durch die vier Linsen, je ein Satz. <Timer minuten={8} /></li>
       <li data-schritt><strong>Bis zum Blatt:</strong> dasselbe mit den Teilchancen des gewählten Asts. <Timer minuten={4} /></li>
-      <li data-schritt><strong>Ulwick:</strong> die Geschwister als Outcome-Sätze (Richtung + Maßeinheit), Wichtigkeit und Zufriedenheit schätzen, rechnen. <Timer minuten={6} /></li>
-      <li data-schritt><strong>Zu dritt, je drei Minuten:</strong> Wahl begründen – stimmen Linsen und Formel überein? <Timer minuten={9} /></li>
+      <li data-schritt><strong>Ulwick:</strong> Geschwister als Outcome-Sätze, Wichtigkeit und Zufriedenheit schätzen, rechnen. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Begründen, schriftlich:</strong> Wahl, tragende Linse, Linsen und Formel einig? <Timer minuten={9} /></li>
       <li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum markieren, eine Zeile im Entscheidungslog. <Timer minuten={3} /></li>
     </ol>
-    <p class="nur-handout">Dazu gut 20 Minuten Theorie mit der Kaffeebar. <code>docs/ZIEL-CHANCE.md</code> füllt ihr im Raum so weit, wie ihr kommt; den Rest und die Prüfung mit Claude bis Tag 4. Die Wahl ist zeitlich begrenzt: Torres empfiehlt, die Entscheidung zu terminieren, statt auf mehr Daten zu warten ({TORRES}, S. 104).</p>
+    <p class="nur-handout">Begründen heißt: drei Sätze in <code>docs/ZIEL-CHANCE.md</code> – eure Wahl, die Linse, die sie trägt, und ob Linsen und Formel übereinstimmen. Währenddessen kommt Markus zu jeder und jedem für drei Minuten und fragt, welche Linse fehlt. Torres beschreibt dafür eine Debatte im Team über den eigenen Baum ({TORRES}, S. 101); weil jede*r von euch ein eigenes Produkt hat, ersetzen Schreiben und das Gespräch mit Markus die Runde zu dritt (Kursformat). Dazu 20 Minuten Theorie mit der Kaffeebar. <code>docs/ZIEL-CHANCE.md</code> füllt ihr im Raum so weit, wie ihr kommt; den Rest und die Prüfung mit Claude bis Tag 4. Die Wahl ist zeitlich begrenzt: Torres empfiehlt, die Entscheidung zu terminieren, statt auf mehr Daten zu warten ({TORRES}, S. 104).</p>
   </Folie>
 
   <Folie>
     <h2 id="aufloesung">Linsen oder Formel?</h2>
-    <p class="folie-satz">Was hat eure Rechnung entschieden – und was das Gespräch?</p>
+    <p class="folie-satz">Was hat eure Rechnung entschieden – und was eure Begründung?</p>
     <ul class="gross">
       <li data-schritt><strong>Ulwicks Bedingung</strong> fehlt: keine Umfrage, nur fünf Interviews – eure Zahlen sind Schätzungen.</li>
-      <li data-schritt><strong>Gleiche Zahlen, anderes Bild?</strong> Drei Leute schätzen dieselbe Chance verschieden.</li>
-      <li data-schritt><strong>Torres:</strong> Die Zahl ersetzt nicht das Gespräch über die vier Linsen.</li>
+      <li data-schritt><strong>Wer schätzt?</strong> Eine andere Person hätte dieselbe Chance anders geschätzt.</li>
+      <li data-schritt><strong>Torres:</strong> Die Zahl ersetzt nicht das Abwägen der vier Linsen.</li>
       <li data-schritt><strong>Gemeinsam:</strong> Beide fragen nach Bedürfnissen, nicht nach Lösungen.</li>
     </ul>
     <p class="nur-handout">Ulwick sammelt Outcomes in rund 30 Interviews und bewertet sie in einer quantitativen Umfrage ({ULWICK}, S. 95–96); erst dann trägt die Rechnung. Mit fünf Interviews pro Produkt rechnet ihr mit eigenen Schätzungen – genau die Lage, in der Torres vor dem „Mathematisieren“ warnt ({TORRES}, S. 101–102). Einig sind sich beide im Ausgangspunkt: Kund*innen liefern Bedürfnisse, nicht Lösungen (Ulwick S. 92, Torres S. 69). Habt ihr später eine größere Zielgruppe und eine Umfrage, ist Ulwicks Formel ein Werkzeug, das ihr kennt.</p>
@@ -278,7 +278,12 @@ Stand: [Datum]
 |---|---|---|---|
 | [Minimiere …] | [1–10] | [1–10] | [W + max(W − Z, 0)] |
 
-Stimmt die Rechnung mit der Wahl überein? [ein Satz]</Prompt>
+Stimmt die Rechnung mit der Wahl überein? [ein Satz]
+
+## Begründung
+- Wahl: [ein Satz]
+- Tragende Linse: [ein Satz]
+- Linsen und Formel einig? [ein Satz]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="ziel-chance" />

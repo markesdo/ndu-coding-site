@@ -187,7 +187,7 @@ describe('Antwortrunde: Plätze und Stand', () => {
 
   it('Rückfall-Uhrzeiten: Netflix Ende von Tag 2, „zwoelf“ Ende von Tag 3 (Verspätung schließt nichts), Rückblick 19 Uhr (Kursende plus Puffer)', () => {
     expect(netflix.ab).toBe('2026-11-12T23:59');
-    // Der Baum eröffnet seit 12.11. Tag 3 (21.11.): Seine Runde darf nicht schon am Ende von Tag 2 aufgehen.
+    // Der Baum folgt an Tag 3 (21.11.) direkt auf „Experience Map nachschärfen“: Seine Runde darf nicht schon am Ende von Tag 2 aufgehen.
     expect(zwoelf.ab).toBe('2026-11-21T23:59');
     // Rückblick: kein Aufdecken im Raum, lesbar ab 19 Uhr Wien (eine Stunde nach Kursende), nicht erst um Mitternacht.
     expect(rueckblick.ab).toBe('2026-11-12T19:00');

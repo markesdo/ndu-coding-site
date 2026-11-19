@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { METHODEN } from '../components/methoden';
 import { NOTIZEN_JOURNEY_MAP } from '../data/begleiter/journey-map';
+import { NOTIZEN_TAG_3_EXPERIENCE_MAP } from '../data/begleiter/tag-3-experience-map';
 
 // Experience Map: Marken haben eine Form – Wort mit Zitat-ID am Moment, ohne Zahl: „Tief · I3-3“, „Ende · I3-5“;
 // mehrere Geschichten im selben Moment: mehrere IDs („Tief · I3-3 · I5-6“). Gezählt wird nur das Vorkommen der Knoten
@@ -19,6 +20,12 @@ describe('Experience Map: eine Markenform', () => {
 
   it('ziel-chance.astro ohne alte Markenform', () => {
     expect(quelle('../pages/innolab/methoden/ziel-chance.astro').match(ALT) ?? []).toStrictEqual([]);
+  });
+
+  it('KaffeebarMap.astro und Tag-3-Experience-Map ohne alte Markenform', () => {
+    expect(quelle('../components/KaffeebarMap.astro').match(ALT) ?? []).toStrictEqual([]);
+    expect(quelle('../pages/innolab/tag-3/experience-map.astro').match(ALT) ?? []).toStrictEqual([]);
+    expect(JSON.stringify(NOTIZEN_TAG_3_EXPERIENCE_MAP).match(ALT) ?? []).toStrictEqual([]);
   });
 
   it('Begleiter journey-map ohne alte Markenform', () => {

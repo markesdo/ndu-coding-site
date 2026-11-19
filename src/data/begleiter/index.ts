@@ -9,6 +9,7 @@ import { NOTIZEN_ABSCHLUSS } from './abschluss';
 import { NOTIZEN_TAG_2, NOTIZEN_TAG_2_ABSCHLUSS } from './tag-2';
 import { NOTIZEN_SYNTHESE } from './synthese';
 import { NOTIZEN_JOURNEY_MAP } from './journey-map';
+import { NOTIZEN_TAG_3_EXPERIENCE_MAP } from './tag-3-experience-map';
 import { NOTIZEN_BAUM } from './baum';
 import { NOTIZEN_ZIEL_CHANCE } from './ziel-chance';
 import { NOTIZEN_HMW } from './hmw';
@@ -33,6 +34,7 @@ export const NOTIZEN: Record<string, Record<string, Notiz>> = {
   '/innolab/tag-2': NOTIZEN_TAG_2,
   '/innolab/methoden/synthese': NOTIZEN_SYNTHESE,
   '/innolab/methoden/journey-map': NOTIZEN_JOURNEY_MAP,
+  '/innolab/tag-3/experience-map': NOTIZEN_TAG_3_EXPERIENCE_MAP,
   '/innolab/methoden/baum': NOTIZEN_BAUM,
   '/innolab/methoden/ziel-chance': NOTIZEN_ZIEL_CHANCE,
   '/innolab/methoden/hmw': NOTIZEN_HMW,

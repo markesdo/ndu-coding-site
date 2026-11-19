@@ -180,7 +180,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Fluss von links lesen: allein, teilen, allein, teilen.',
       '„Ihr hört die Ideen der anderen – aber neue Ideen schreibt jede*r allein.“',
       'Teilen heißt: erklären, nachfragen, weiterspinnen – nicht bewerten.',
-      'Alle drei denken für alle drei Produkte mit.',
+      'Bei euch: allein entwickeln, einmal still Ideen spenden.',
       'Falle: Die Teilen-Runde wird zum Gruppen-Brainstorming.',
     ],
     verstaendnis: {
@@ -205,7 +205,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Ich kenne das Produkt der anderen kaum – was soll ich da beitragen?',
-        antwort: 'Genau deshalb: Wer weiter weg ist, bringt andere Ideen (S. 114). Dafür liest jede*r zu Beginn die eigene Ziel-Chance und HMW-Frage vor und sagt in einem Satz, in welcher Situation sie auftritt.',
+        antwort: 'Ihr spendet nur, zwei Minuten still je Produkt: Wer weiter weg ist, bringt andere Ideen (S. 114). Den Kontext dafür gibt der Satz zu Beginn, in dem jede*r Ziel-Chance, HMW-Frage und Situation nennt.',
       },
     ],
     ueberleitung: 'Allein Ideen sammeln heißt auch: Irgendwann fällt euch nichts mehr ein.',
@@ -294,6 +294,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Drei Punkte je Person, frei verteilt – auch alle auf eine.',
       'Kein klarer Sieger: kurz werben, neu punkten.',
       'Falle: nach „machbar“ oder „cool“ punkten.',
+      'Bei euch: jede*r wählt die drei allein – Kursregel.',
       '„Wir wählen drei, nicht eine. Die eine entscheidet der Vergleich danach.“',
     ],
     verstaendnis: {
@@ -321,8 +322,8 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     ],
     fragen: [
       {
-        frage: 'Zu dritt sind das nur neun Punkte – reicht das?',
-        antwort: 'Ja. Torres beschreibt genau diesen Fall: mehrere Ideen mit ein, zwei Stimmen, keine mit drei oder mehr – dann kurz werben und neu punkten (S. 113).',
+        frage: 'Torres punktet im Team. Warum wählt ihr allein?',
+        antwort: 'Torres: „Groups tend to evaluate ideas better than individuals because groups have a wider breadth of experience to draw on.“ (S. 113). Bei euch hat jede*r ein eigenes Produkt und kennt allein die Kundschaft dazu; darum wählt ihr allein, mit Torres’ einzigem Kriterium: Wie gut trifft die Idee die Ziel-Chance? Das ist eine Regel dieses Kurses.',
       },
       {
         frage: 'Bei Torres entscheiden Tests zwischen den dreien. Warum bei uns die Value Map?',
@@ -381,43 +382,42 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Zuerst reihum: eigene Ziel-Chance und HMW-Frage vorlesen, ein Satz Kontext.',
-      'Timer 12 min: allein, Ideen zu allen drei Fragen.',
-      'Nach 12 min: teilen, vier Minuten je Produkt.',
-      'Nach 24 min: wieder allein, 8 min; Auswege und Claude erlaubt.',
-      'Nach 32 min: teilen, 8 min; Ideen je Produkt zählen.',
-      'Nach 40 min: auswählen, fünf Minuten je Produkt.',
-      'Nach 55 min: IDEEN.md, drei Ideen mit Fürsprecher*in.',
+      'Timer 16 min: allein, Ideen zur eigenen Frage.',
+      'Nach 16 min: Ideen-Spende still, je Produkt 2 min.',
+      'Nach 22 min: wieder allein, 18 min; Auswege und Claude erlaubt.',
+      '1:1 in dieser Runde, je 4 min: Sofie, Hewen, Joachim.',
+      'Nach 40 min: auswählen allein, 15 min.',
+      'Nach 55 min: IDEEN.md, drei Ideen mit je einem Satz warum.',
     ],
-    uebung: { dauer: '59 min (12 + 12 + 8 + 8 + 15 + 4)', form: 'allein und zu dritt im Wechsel, für alle drei Produkte' },
+    uebung: { dauer: '59 min (16 + 6 + 18 + 15 + 4)', form: 'allein, dazwischen eine stille Ideen-Spende' },
     miro: {
       frame: 'T3 · 3 · Ideation',
       schritte: [
-        'Jede*r hat eine Spalte für das eigene Produkt; in „Ideen“ schreiben alle drei mit.',
+        'Jede*r hat eine Spalte für das eigene Produkt; bei der Ideen-Spende legen die anderen Stickies in „Ideen“ dazu.',
         'Ein Sticky pro Idee, eigene Farbe je Person; Ideen von Claude mit „(Claude)“.',
-        'Auswählen: Was die Ziel-Chance nicht löst, in „Aussortiert“; Punkte als Punkt-Sticker oder Zahl auf dem Sticky.',
+        'Auswählen allein: Was die Ziel-Chance nicht löst, in „Aussortiert“; die drei mit je einem Satz warum.',
         'Die drei Gewählten in „Drei für den Vergleich in T3 · 4“.',
       ],
     },
     ablauf: {
       schritte: [
         'Vor dem Timer (1 min): Jede*r liest die eigene Ziel-Chance und HMW-Frage vor und sagt in einem Satz, in welcher Situation sie auftritt (Torres Schritt 1, S. 112; Kontext teilen, S. 114).',
-        'Allein (12 min): Ideen zu allen drei Fragen, ein Sticky pro Idee, jeweils in die Spalte des Produkts.',
-        'Teilen (12 min): vier Minuten je Produkt. Wem das Produkt gehört, hört zuerst die Ideen der anderen; erklären, nachfragen, weiterspinnen – nicht bewerten.',
-        'Wieder allein (8 min): angeregt von den anderen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude.',
-        'Teilen (8 min): neue Ideen erklären; je Produkt zählen – Ziel 15 bis 20.',
-        'Auswählen (15 min, fünf je Produkt): aussortieren, je drei Punkte, bei Gleichstand kurz werben und neu punkten, Check: jede Idee hat eine Fürsprecher*in.',
+        'Allein (16 min): Ideen zur eigenen HMW-Frage, ein Sticky pro Idee, in die eigene Spalte.',
+        'Ideen-Spende, still (6 min): je Produkt 2 Minuten – die zwei anderen legen Ideen-Stickies an die Frage, ohne Diskussion; wem das Produkt gehört, liest nur mit. Kursformat statt Torres’ Teilen-Runde, weil jede*r ein eigenes Produkt hat.',
+        'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
+        'Auswählen allein (15 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art, je ein Satz warum. Torres punktet im Team (S. 113); allein wählen ist Kursregel.',
         'Festhalten (4 min): docs/IDEEN.md mit den drei Ideen, „Aussortiert“ und der Liste; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
       ],
       achten: [
-        'In den Teilen-Runden entstehen keine neuen Stickies in der Gruppe – was einfällt, kommt in die nächste Allein-Runde.',
+        'Bei der Ideen-Spende wird nicht diskutiert und nicht bewertet – nur Stickies legen.',
         'Unter 15 Ideen bei einem Produkt: nicht strecken, sondern über Nacht ergänzen (Torres S. 114: nicht nur eine Sitzung).',
-        'Punkten nur nach „trifft die Ziel-Chance“, nicht nach Aufwand.',
+        'Wählen nur nach „trifft die Ziel-Chance“, nicht nach Aufwand.',
         'Die drei Gewählten sind drei Arten von Idee, keine Varianten.',
       ],
       fehler: [
         'Schon in der ersten Allein-Runde bewerten oder Stickies der anderen kommentieren.',
-        'Das eigene Produkt bekommt alle Ideen, die der anderen kaum welche.',
-        'Die Idee von Tag 1 wird ohne Punkte durchgewinkt.',
+        'Bei der Spende kommentieren statt Ideen legen.',
+        'Die Idee von Tag 1 wird ohne Prüfung gegen die Ziel-Chance durchgewinkt.',
         'Aussortierte Ideen werden gelöscht statt getrennt abgelegt.',
       ],
     },

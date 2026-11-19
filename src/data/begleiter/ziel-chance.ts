@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/ziel-chance.astro (Tag 3, 10:30–11:30).
+// Begleiter-Notizen zu src/pages/innolab/methoden/ziel-chance.astro (Tag 3, 10:40–11:30; bis 19.11. 10:30–11:30).
 // Kürzen, wenn hinten (in dieser Reihenfolge): bauchwahl, ulwick-outcomes, zweiwegtuer, warum, vorgehen Schritt 3.
 // Vorwissen: „bekannt“ aus Need Finding / Market Research (vorwissen.ts).
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 7, S. 96–104; Kap. 2, S. 30–31).
@@ -344,19 +344,19 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Timer 8 min: Momente durch vier Linsen, je ein Satz.',
       'Nach 8 min: Teilchancen des Asts bis zum Blatt, Timer 4 min.',
       'Nach 12 min: Outcome-Sätze, schätzen, rechnen, Timer 6 min.',
-      'Nach 18 min: zu dritt, je 3 min, Linsen und Formel einig?',
+      'Nach 18 min: schriftlich begründen; 1:1 je 3 min: Joachim, Sofie, Hewen.',
       'Nach 27 min: Ziel-Chance im Baum markieren, Zeile ins Log.',
       'Falle: von der Lieblingsidee rückwärts begründen.',
       'Wenn hinten: Ulwick nur für die zwei stärksten Geschwister.',
     ],
-    uebung: { dauer: '30 min (8 + 4 + 6 + 9 + 3)', form: 'allein, dann zu dritt reihum' },
+    uebung: { dauer: '30 min (8 + 4 + 6 + 9 + 3)', form: 'allein, Markus je 3 min' },
     miro: {
       frame: 'T3 · 1 · Ziel-Chance',
       schritte: [
         'Jede*r arbeitet am eigenen Baum („Baum · Name“); T3 · 1 ist die Anleitung mit den vier Linsen.',
         'Pro Linse ein Satz als Zettel neben die verglichenen Geschwister, mit Zitat-ID bei Größe und Kundschaft.',
         'Die Ziel-Chance im Baum markieren (ein Blatt).',
-        'Zu dritt: „Alle zu mir holen“ auf den Baum, der dran ist.',
+        'Beim Begründen: Markus geht zum Baum, an dem er gerade fragt; die anderen schreiben weiter.',
       ],
     },
     ablauf: {
@@ -364,7 +364,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         'Ast wählen, allein (8 min): die Momente gegeneinander, pro Linse ein Satz – wer liegt vorn und warum. Größe und Kundschaft mit Zitat-IDs.',
         'Bis zum Blatt (4 min): dasselbe mit den Teilchancen des gewählten Asts. Hängt nur eine Chance darunter, ist sie das Blatt.',
         'Ulwick (6 min): die verglichenen Geschwister als Outcome-Sätze mit Richtung und Maßeinheit, Wichtigkeit und Zufriedenheit 1–10 schätzen, rechnen.',
-        'Zu dritt (9 min, je 3): Wahl in einem Satz, dann die Linse, die sie trägt. Die anderen fragen: Stimmen Linsen und Formel überein? Welche Linse fehlt?',
+        'Begründen, schriftlich (9 min): drei Sätze in docs/ZIEL-CHANCE.md – die Wahl, die Linse, die sie trägt, und ob Linsen und Formel übereinstimmen. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
         'Festhalten (3 min): Ziel-Chance im Baum markieren, eine Zeile ins Entscheidungslog mit Beleg.',
       ],
       achten: [
@@ -392,9 +392,9 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
   aufloesung: {
     live: [
       'Reihum: Linsen und Formel – einig oder nicht?',
-      'Fragen: Hätten die anderen zwei eure Chance gleich geschätzt?',
+      'Fragen: Hätte jemand anderes eure Chance gleich geschätzt?',
       'Aufdecken: Ulwicks Bedingung – Umfrage, nicht fünf Interviews.',
-      '„Die Zahl ersetzt nicht das Gespräch. Sie kann es aber anstoßen.“',
+      '„Die Zahl ersetzt nicht das Abwägen. Sie kann es aber anstoßen.“',
       'Gemeinsam: Beide fragen nach Bedürfnissen, nicht nach Lösungen.',
     ],
     verstaendnis: {

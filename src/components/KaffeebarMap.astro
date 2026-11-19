@@ -1,0 +1,55 @@
+---
+// Die fertige Experience Map der Kaffeebar: drei Momente, unter dem ersten der Umweg über den Automaten, Marken an
+// ihrem Moment. Einmal für alle Seiten (journey-map.astro#beispiel, tag-3/experience-map.astro#was-allen-fehlt), damit
+// die beiden Folien nicht auseinanderlaufen. Zitate und IDs wie in werkstatt/beispiele/interviews.json.
+import { CornerDownRight } from '@lucide/astro';
+---
+<div class="kaffeebar-map">
+  <ol class="map" aria-label="Experience Map der Kaffeebar, drei Momente. Erstens: Ich komme in die Halle und entscheide, Zitat I2-1: das wird nix, Tief I2-1; von dort ein Umweg über den Automaten zum Zug, Zitat I4-4: Dann halt die Brühe, Tief I4-4. Zweitens: Ich stehe an und warte auf meinen Kaffee, Zitat I3-3: Das war ein Fehler, Tief I3-3 und I5-6. Drittens: Ich bin im Zug, Zitat I3-5: in Ruhe, Ende I3-5.">
+    <li>
+      <div class="karte">
+        <strong>„Ich komme in die Halle und entscheide.“</strong>
+        <span>„… <b>das wird nix</b>.“ <span class="id">I2-1</span></span>
+        <span class="pill tief">Tief · I2-1</span>
+      </div>
+      <div class="umweg">
+        <span class="umweg-titel"><CornerDownRight size={18} aria-hidden="true" /> Umweg: Automat → Zug</span>
+        <span>„<b>Dann halt die Brühe.</b>“ <span class="id">I4-4</span></span>
+        <span class="pill tief">Tief · I4-4</span>
+      </div>
+    </li>
+    <li>
+      <div class="karte">
+        <strong>„Ich stehe an und warte auf meinen Kaffee.“</strong>
+        <span>„… <b>Das war ein Fehler.</b>“ <span class="id">I3-3</span></span>
+        <span class="pill tief">Tief · I3-3 · I5-6</span>
+      </div>
+    </li>
+    <li>
+      <div class="karte">
+        <strong>„Ich bin im Zug.“</strong>
+        <span>„… <b>in Ruhe</b>.“ <span class="id">I3-5</span></span>
+        <span class="pill ende">Ende · I3-5</span>
+      </div>
+    </li>
+  </ol>
+</div>
+
+<style>
+  .kaffeebar-map { container: kaffeebar-map / inline-size; }
+  .map { list-style: none; margin: .45rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; font-size: .85rem; line-height: 1.3; }
+  .map > li { position: relative; margin: 0; display: flex; flex-direction: column; gap: .45rem; }
+  .map > li + li::before { content: '→' / ''; position: absolute; left: -1.5rem; top: 1.4rem; color: var(--muted); font-size: 1.1rem; }
+  .karte { display: flex; flex-direction: column; align-items: flex-start; gap: .3rem; padding: .55rem .7rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+  .karte strong { font-size: .95rem; line-height: 1.25; }
+  .map .id { color: var(--muted); white-space: nowrap; font-size: .9em; }
+  /* Marken (.pill.tief / .pill.ende, global.css) an den Karten: so groß wie die IDs daneben. */
+  .map .pill { white-space: nowrap; font-size: .85em; line-height: 1.2; padding: .1rem .4rem; }
+  .umweg { display: flex; flex-direction: column; gap: .2rem; margin-left: 1rem; padding: .35rem .6rem; border: 1px dashed var(--muted); border-radius: var(--radius); font-size: .9em; }
+  .umweg-titel { display: flex; align-items: center; gap: .3rem; font-weight: 600; color: var(--muted); }
+  /* Schmale Spalte (Container, nicht Fenster – die Seitenleiste zählt mit): Karten untereinander. */
+  @container kaffeebar-map (max-width: 700px) {
+    .map { grid-template-columns: 1fr; gap: 1.6rem; }
+    .map > li + li::before { content: '↓' / ''; left: 50%; top: -1.4rem; }
+  }
+</style>

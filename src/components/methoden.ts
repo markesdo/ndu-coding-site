@@ -211,7 +211,7 @@ export const METHODEN: Methode[] = [
     ki: 'Liest eure Interviews und fragt, welche Geschichte in der Map fehlt und wo sich Momente überschneiden.',
   },
   {
-    slug: 'baum', name: 'Opportunity Solution Tree', tag: 3, dauer: 75,
+    slug: 'baum', name: 'Opportunity Solution Tree', tag: 3, dauer: 65,
     frage: 'Welche Chancen aus den Interviews gehören unter welchen Moment – und wie hängen sie zusammen?',
     braucht: ['brief', 'synthese', 'journey'], ergibt: ['baum'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 6, S. 78–95',
@@ -226,7 +226,7 @@ export const METHODEN: Methode[] = [
     ki: 'Liest eure Interviews und sucht die sechs Anti-Muster – mit Zitat aus Baum und Interview.',
   },
   {
-    slug: 'ziel-chance', name: 'Ziel-Chance wählen', tag: 3, dauer: 60,
+    slug: 'ziel-chance', name: 'Ziel-Chance wählen', tag: 3, dauer: 50,
     frage: 'An welcher Chance arbeiten wir als Nächstes – und warum gerade an dieser?',
     braucht: ['brief', 'synthese', 'baum'], ergibt: ['ziel'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 7, S. 96–104; Anthony W. Ulwick, „Turn Customer Input into Innovation“, HBR (2002)',
@@ -235,7 +235,7 @@ export const METHODEN: Methode[] = [
       { id: 'ziel-chance-blatt', text: 'Die Ziel-Chance ist ein Blatt: Unter ihr hängt keine Teilchance mehr.' },
       { id: 'ziel-chance-linsen', text: 'Zu jeder der vier Linsen steht ein Satz: Größe, Markt, eigene Lage, Kundschaft.' },
       { id: 'ziel-chance-belegt', text: 'Größe und Kundschaft sind mit Zitat-IDs aus den Interviews belegt.' },
-      { id: 'ziel-chance-ulwick', text: 'Die Ulwick-Rechnung steht als geschätzte Gegenprobe daneben; entschieden hat das Gespräch, nicht die Zahl.' },
+      { id: 'ziel-chance-ulwick', text: 'Die Ulwick-Rechnung steht als geschätzte Gegenprobe daneben; entschieden hat die Begründung mit den vier Linsen, nicht die Zahl.' },
     ],
     ki: 'Fragt nach, welche Linse eure Wahl trägt und wo ihr vom gewünschten Ergebnis rückwärts argumentiert.',
   },
@@ -259,10 +259,10 @@ export const METHODEN: Methode[] = [
     braucht: ['chancen'], ergibt: ['ideen'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 8, S. 106–114',
     pruefliste: [
-      { id: 'ideation-menge', text: 'Für die Ziel-Chance stehen 15 bis 20 Ideen, entstanden im Wechsel von allein und geteilt.' },
+      { id: 'ideation-menge', text: 'Für die Ziel-Chance stehen 15 bis 20 Ideen, allein entstanden und um gespendete Ideen ergänzt.' },
       { id: 'ideation-aussortiert', text: 'Ideen, die die Ziel-Chance nicht lösen, sind aussortiert und stehen getrennt.' },
       { id: 'ideation-drei', text: 'Genau drei Ideen gehen weiter; bei jeder steht, warum sie die Ziel-Chance trifft.' },
-      { id: 'ideation-verschieden', text: 'Die drei sind verschieden und keine Varianten derselben Idee; jede hat eine Fürsprecher*in.' },
+      { id: 'ideation-verschieden', text: 'Die drei sind verschiedene Arten von Idee, keine Varianten derselben Idee.' },
       { id: 'ideation-claude', text: 'Ideen von Claude sind als solche markiert.' },
     ],
     ki: 'Nach der ersten eigenen Runde, wenn ihr feststeckt: analoge Produkte aus anderen Branchen und extreme Nutzer*innen.',
@@ -490,7 +490,7 @@ export const METHODEN: Methode[] = [
 /** Sieben Termine: Tag 1–5 Input und Übung (Tag 2 als halber Tag online; an Tag 5 beginnt der eine Sprint), Tag 6 (ganzer
  *  Tag, online, 9–18 Uhr) Bauen, Tests und Scrum-Events, am Nachmittag der Pitch als letzte Methode, Tag 7 (halber Tag,
  *  online) Präsentation. Dazwischen arbeitet ihr zu Hause; gebaut wird bis Tag 6.
- *  Stand 12.11.2026 (Entscheidung Markus): Tag 2 endete nach der Experience Map; der Baum eröffnet Tag 3, Geschäftsmodell
+ *  Stand 12.11.2026 (Entscheidung Markus): Tag 2 endete nach der Experience Map; Tag 3 beginnt mit „Experience Map nachschärfen“ (tag-3/experience-map), dann der Baum; Geschäftsmodell
  *  und Experiment-Karte eröffnen Tag 4, Teamaufstellung und Definition of Done folgen an Tag 5 nach dem Debrief, der Pitch
  *  an Tag 6; Tag 7 liegt am 16.01.2027.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). Ohne datum: Termin folgt

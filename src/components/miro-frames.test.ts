@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { MIRO_FRAMES } from './miro-frames';
+import { MIRO_FRAMES, MIRO_FRAMES_OHNE_ID } from './miro-frames';
 
 const SEITEN = fileURLToPath(new URL('../pages', import.meta.url));
 const dateien = (d: string): string[] => readdirSync(d).flatMap((n) => {
@@ -23,12 +23,22 @@ describe('MIRO_FRAMES', () => {
   it('jeder Frame-Name aus den Seiten steht in der Karte – ein Tippfehler fällt hier auf', () => {
     for (const { p, tag } of aufrufe) {
       const name = /name="([^"]+)"/.exec(tag)![1];
-      expect(Object.keys(MIRO_FRAMES), `${p}: ${name}`).toContain(name);
+      expect([...Object.keys(MIRO_FRAMES), ...MIRO_FRAMES_OHNE_ID], `${p}: ${name}`).toContain(name);
     }
   });
 
   it('jeder Eintrag der Karte wird auf einer Seite benutzt – sonst ist er tot oder der Name auf der Seite falsch', () => {
-    for (const name of Object.keys(MIRO_FRAMES)) expect(namen, name).toContain(name);
+    for (const name of [...Object.keys(MIRO_FRAMES), ...MIRO_FRAMES_OHNE_ID]) expect(namen, name).toContain(name);
+  });
+
+  // Erinnerung: Ab Tag 3 (21.11.2026) braucht T3 · 0 seine ID, sonst ist die Pille am Beamer nur Text.
+  it('am Kurstag ist kein Frame mehr ohne ID', () => {
+    if (Date.now() < Date.parse('2026-11-21T00:00:00+01:00')) return;
+    expect(MIRO_FRAMES_OHNE_ID).toStrictEqual([]);
+  });
+
+  it('ein Frame ohne ID steht nicht zugleich mit ID in der Karte', () => {
+    for (const name of MIRO_FRAMES_OHNE_ID) expect(Object.keys(MIRO_FRAMES), name).not.toContain(name);
   });
 
   it('Frame-IDs sind Zahlen und kommen nur einmal vor', () => {

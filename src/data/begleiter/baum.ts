@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 3, 09:05–10:20; bis 12.11. für Tag 2 geplant). Kein
+// Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 3, 09:25–10:30; bis 12.11. für Tag 2 geplant, bis 19.11. 09:05–10:20). Kein
 // Vorwissen eingetragen; der Baum ist seit Tag 1 der rote Faden, heute kommt die Ebene der Chancen dazu.
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 6, S. 78–95).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
@@ -124,7 +124,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   'oberste-ebene': {
     live: [
       'Abbildung von Tag 2 wiedererkennen lassen: vier Momente, vier Äste.',
-      'Fragen: Wie heißen eure Momente auf T2 · 1?',
+      'Fragen: Wie heißen eure Momente auf T3 · 0?',
       '„Überschneiden sich die Äste, müsst ihr an allen Chancen zugleich arbeiten.“',
       'Aufdecken: Kaffeebar – drei Momente, der Automat ist ein Umweg.',
       'Bei Bedarf: „Schon gemacht?“ – Map: Moment, Baum: Bedürfnis.',
@@ -144,7 +144,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 87`,
       },
       {
-        text: 'Kaffeebar: drei Momente der Experience Map – Halle, Anstehen und Warten, Zug; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente auf T2 · 1.',
+        text: 'Kaffeebar: drei Momente der Experience Map – Halle, Anstehen und Warten, Zug; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente, nachgeschärft auf T3 · 0 (Stand Tag 2: T2 · 1).',
         quelle: 'journey-map.astro, Folien beispiel und vorgehen',
       },
     ],
@@ -230,7 +230,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 89–91`,
       },
       {
-        text: '„If you do your first tree in 30 minutes and think you are done, you are probably not thinking hard enough.“ Das Gegenteil, stundenlang am perfekten Baum zu feilen, ist auch falsch. „Do just enough to capture what you currently know.“ Und: „This isn’t a one-and-done exercise.“ – „You don’t have to do all of this work in your first draft.“ Heute 12 + 10 Minuten für Inventar und Struktur: ein erster Entwurf, überarbeitet nach dem Gegenlesen und bis Tag 4.',
+        text: '„If you do your first tree in 30 minutes and think you are done, you are probably not thinking hard enough.“ Das Gegenteil, stundenlang am perfekten Baum zu feilen, ist auch falsch. „Do just enough to capture what you currently know.“ Und: „This isn’t a one-and-done exercise.“ – „You don’t have to do all of this work in your first draft.“ Heute 12 + 10 Minuten für Inventar und Struktur: ein erster Entwurf, überarbeitet nach dem Prüfen und bis Tag 4.',
         quelle: `${TORRES}, S. 91; Zeitplan: Kurs`,
       },
     ],
@@ -331,7 +331,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       '„Der Baum von Tag 1 war unsere Vermutung. Die Wurzel bleibt, die Äste kommen aus fünf Interviews.“',
       '„‚Vorbestellen‘ ist gefallen: 3 von 5 entscheiden erst in der Halle (D4).“',
       'Zeit: 3 min Griffe vorführen – Cmd+D, Linie ziehen, eine Karte darüber.',
-      'Hewen: zuerst den Outcome wählen, dann die Momente darunter.',
+      'Wer noch keinen Outcome hat: zuerst Outcome, dann Momente darunter.',
     ],
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
@@ -352,33 +352,34 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: 'Werkstatt, Beispiel Kaffeebar, Entscheidungslog D4',
       },
     ],
-    ueberleitung: 'Jetzt euer Baum: Inventar, Struktur, Gegenlesen.',
+    ueberleitung: 'Jetzt euer Baum: Inventar, Struktur, selbst prüfen.',
   },
 
   vorgehen: {
     live: [
       'Timer 12 min: erst Momente als blaue Karten, dann Inventar.',
       'Nach 12 min: Struktur allein, Linien ziehen, Timer 10 min.',
-      'Nach 22 min: weiter zur Checkliste, dort Ablauf ansagen, Timer 12 min.',
-      'Nach 34 min: Funde einarbeiten, Prüfliste, dann Claude mit Bildschirmfoto.',
+      'Nach 22 min: weiter zur Checkliste, selbst prüfen, Timer 9 min.',
+      'Nach 31 min: Prüfliste, dann Claude mit Bildschirmfoto.',
+      '1:1 ab Übungsminute 10, je 5 min: Sofie → Joachim → Hewen.',
       'Wenige Interviews: volles Feld „Nur in einem Interview“, dünner Baum – normal.',
     ],
-    uebung: { dauer: '39 min (12 + 10 + 12 + 5)', form: 'allein, dann zu dritt reihum' },
+    uebung: { dauer: '35 min (12 + 10 + 9 + 4)', form: 'allein, Markus je 5 min am Baum' },
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
         'Jede*r arbeitet im eigenen Frame „Baum · Name“ rechts neben der Kaffeebar; T2 · 2 ist nur die Anleitung.',
-        'Momente aus T2 · 1 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
+        'Momente aus der eigenen Zeile auf T3 · 0 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
         'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat, ins Feld „Nur in einem Interview“.',
-        'Gegenlesen: „Alle zu mir holen“ auf den Baum, der dran ist; die anderen zeigen mit dem Cursor und fragen laut, verschieben nichts.',
+        'Selbst prüfen: jede*r im eigenen Frame, die Checkliste der Folie Anti-Muster daneben; Markus geht von Baum zu Baum.',
       ],
     },
     ablauf: {
       schritte: [
-        'Inventar allein (12 min): zuerst die Momente aus T2 · 1 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
+        'Inventar allein (12 min): zuerst die Momente aus der eigenen Zeile auf T3 · 0 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
-        'Gegenlesen reihum (12 min, Timer auf der Folie Anti-Muster): je Baum vier Minuten, Sofie, Joachim, Hewen. 1 min still lesen; wer in der Runde Sofie → Joachim → Hewen → Sofie als Nächstes kommt, nimmt die Anti-Muster 1–3, die dritte Person 4–6. Je eine Karte zeigen, Nummer nennen, fragen. Wem der Baum gehört, antwortet in einem Satz und entscheidet laut: ändern, Zettel „Nächstes Interview: …“ oder lassen (Kursformat; Fragen statt urteilen nach Torres S. 55).',
-        'Prüfen (5 min): erst die Funde vom Gegenlesen einarbeiten, dann Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 4.',
+        'Selbst prüfen allein (9 min, Timer auf der Folie Anti-Muster): den eigenen Baum Karte für Karte mit den sechs Anti-Mustern durchgehen; je Fund entscheiden: ändern, Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Markus kommt ab Minute 10 der Übung je etwa fünf Minuten an jeden Baum (Sofie → Joachim → Hewen), zeigt auf eine Karte und fragt, ohne umzuschreiben. Torres lässt das Team den eigenen Baum befragen (S. 92); allein prüfen und die fünf Minuten sind Kursformat, weil jede*r ein eigenes Produkt hat.',
+        'Claude (4 min): Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 4.',
       ],
       achten: [
         'Chancen in den Worten der Kundschaft und mit Zitat-IDs aus mindestens zwei Interviews – ohne ID kein Beleg.',
@@ -388,19 +389,19 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       fehler: [
         'Lösungen als Chancen („App“, „Express-Theke“).',
         'Alles aus jedem Snapshot übernehmen, ohne die drei Fragen.',
-        'Am perfekten Baum feilen und das Gegenlesen verpassen.',
+        'Am perfekten Baum feilen und das Selbstprüfen verpassen.',
         'Karten ohne Linie oder an zwei Chancen – dann ist die Chance zu breit.',
       ],
     },
-    ueberleitung: 'Für das Gegenlesen: die Checkliste auf der nächsten Folie.',
+    ueberleitung: 'Zum Selbstprüfen: die Checkliste auf der nächsten Folie.',
   },
 
   'anti-muster': {
     live: [
-      'Timer 12 min; Sofie, Joachim, Hewen; je Baum 1 min still lesen.',
-      'Runde S → J → H → S: Nächste*r 1–3, dritte Person 4–6.',
-      '„Zeigt, nennt die Nummer, fragt. Nicht verteidigen: ändern, Zettel oder lassen.“',
-      'Bei 8:00 und 4:00 Rest: wechseln, auch mitten im Satz.',
+      'Timer 9 min; jede*r prüft den eigenen Baum, Karte für Karte.',
+      '„Je Fund: ändern, Zettel oder lassen – mit Grund.“',
+      'Erstes Muster mit Torres: Haben wir das gehört – welche ID?',
+      '1:1 läuft weiter: wer noch fehlt, kommt jetzt dran.',
       'Folie vier-muster übersprungen? Dann 3 bis 6 kurz erklären.',
     ],
     kern: [
