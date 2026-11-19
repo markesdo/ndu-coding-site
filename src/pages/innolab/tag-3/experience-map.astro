@@ -16,7 +16,7 @@ import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 import { zaehlung } from '../../../data/kaffeebar-skizzen';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
-// Die Auflösungen der Folien 4 bis 8 öffnen sich gemeinsam, wenn Markus nach der Runde auf Folie „anlauf-a“
+// Die Auflösungen der Folien 4 bis 9 (anlauf-a bis vom-tief-aus) öffnen sich gemeinsam, wenn Markus nach der Runde auf Folie „anlauf-a“
 // (die erste der Gruppe, Folie nach „drei-anlaeufe“) aufdeckt; ENDE_TAG_3 ist nur der späte Rückfall.
 const GRUPPE = 'map-anlaeufe';
 // Folie „warum-nochmal“: nur Outcome und die drei Momente (oberste Ebene) des Kaffeebar-Baums.
@@ -32,7 +32,11 @@ const ZUSAMMEN = [
 const ZITATE = new Map(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => [z.id, z.text] as const)));
 const NOTIZ_I1 = KAFFEEBAR_INTERVIEWS.interviews.find((iv) => iv.id === 'I1')?.notizen ?? '';
 const NOTIZ_SATZ = 'Schaut erst auf die Schlange, dann auf die Uhr.';
-const fehlt = [...ZUSAMMEN.map((z) => z.id), 'I2-1', 'I4-2', 'I5-6'].filter((id) => !ZITATE.has(id));
+const fehlt = [...ZUSAMMEN.map((z) => z.id), 'I2-1', 'I4-2', 'I5-6', 'I2-2', 'I2-4', 'I2-5', 'I3-3', 'I4-3'].filter((id) => !ZITATE.has(id));
+// Folie „vom-tief-aus“ (Handout): wörtlich zitierte Sätze müssen im Werkstatt-Beispiel stehen.
+const HANDOUT_ZITATE = { 'I2-5': 'Am liebsten wüsste ich einfach, wann er fertig ist.', 'I4-2': 'Anstellen ist ein Glücksspiel.', 'I4-3': 'Meistens ist es der Automat.' } as const;
+const handoutFalsch = Object.entries(HANDOUT_ZITATE).filter(([id, text]) => ZITATE.get(id) !== text).map(([id]) => id);
+if (handoutFalsch.length) throw new Error(`tag-3/experience-map.astro: Handout-Zitat weicht vom Werkstatt-Beispiel ab: ${handoutFalsch.join(', ')}`);
 if (fehlt.length) throw new Error(`tag-3/experience-map.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${fehlt.join(', ')}`);
 const nichtImZitat = ZUSAMMEN.filter((z) => !ZITATE.get(z.id)!.includes(z.zitat + z.nach)).map((z) => z.id);
 if (nichtImZitat.length) throw new Error(`tag-3/experience-map.astro: Zitatausschnitt steht nicht im Zitat: ${nichtImZitat.join(', ')}`);
@@ -66,7 +70,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <p class="small muted">Knoten und Kontext: {TORRES}, S. 56. Zitat mit ID, Zählung, drei bis fünf Momente: Kursregel.</p>
     <div class="nur-handout">
       <p>Torres beschreibt einen Knoten als „a distinct moment in time, an action, or an event“ und hängt an jeden Schritt den Kontext: Was denkt, fühlt, tut die Person dort ({TORRES}, S. 56)? Dass jeder Moment ein Zitat mit ID trägt und gezählt wird, in wie vielen Geschichten er vorkommt („N von M“), ist das Format dieses Kurses – so lässt sich jeder Ast später auf eine Geschichte zurückführen.</p>
-      <p>Drei bis fünf Momente steht so nicht im Buch; Torres nennt die Zahl in ihrem Buchclub zu Kapitel 6 („identify 3-5 distinct moments in time to serve as your top-level opportunities“, <a href="https://www.producttalk.org/cdh-book-club-april-2026-2.md">Product Talk, Buchclub</a>). Im Buch hat ihr Beispiel vier Momente ({TORRES}, S. 87).</p>
+      <p>Drei bis fünf Momente steht so nicht im Buch; Torres nennt die Zahl in ihrem Buchclub zu Kapitel 6 („identify 3-5 distinct moments in time to serve as your top-level opportunities“, <a href="https://www.producttalk.org/cdh-book-club-april-2026-2/">Product Talk, Buchclub</a>). Im Buch hat ihr Beispiel vier Momente ({TORRES}, S. 87).</p>
       <p><strong>Was ist eine Geschichte?</strong> Ein konkretes Erlebnis, das die Person erzählt – was an einem bestimmten Mal tatsächlich passiert ist. Torres fragt danach mit „Tell me about the last time …“ ({TORRES}, S. 64). Eine Geschichte ist nicht dasselbe wie ein Interview: Ein Interview kann mehrere Geschichten enthalten – oder keine, wenn die Person nur Meinungen äußert oder allgemeine Fragen beantwortet („Worauf achtest du …?“). Meist trägt ein Snapshot eine Geschichte; gezählt wird, in wie vielen erzählten Geschichten ein Moment vorkommt, nicht wie viele Personen eine Frage beantwortet haben.</p>
     </div>
   </Folie>
@@ -247,7 +251,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
           <li>Was hat die Person dort getan, entschieden oder bemerkt? (Knoten: „a distinct moment in time, an action, or an event“, {TORRES}, S. 56)</li>
           <li>Hat sich hier geändert, was die Person tut oder vorhat? (Stufengrenze, nach Stickdorn, <a href="https://www.smaply.com/blog/customer-journey-stages">Smaply-Blog</a>)</li>
           <li>Zeitpunkt oder Thema? Ein Thema taucht an mehreren Stellen der Geschichte auf. (abgeleitet aus {TORRES}, S. 88)</li>
-          <li>Ein Gefühl: Was ist in dem Augenblick passiert, der es ausgelöst hat? (Gefühl als Wegweiser zur Ursache, {TORRES}, S. 95)</li>
+          <li>Ein Gefühl: Was ist in dem Augenblick passiert, der es ausgelöst hat? (Torres: ein Gefühl ist ein Wegweiser zur Ursache – bei ihr für Chancen, hier auf Momente übertragen, {TORRES}, S. 95)</li>
           <li>Steht das so in der Geschichte, oder ist es eure Interviewfrage? (Kursregel)</li>
           <li>Was wollte die Person in diesem Augenblick erreichen – ist das in der anderen Geschichte dasselbe? (Indi Young: zusammen gehört, worauf die Aufmerksamkeit gerichtet ist, nicht dieselben Worte, <a href="https://alistapart.com/article/a-new-way-to-listen">„A New Way to Listen“</a>)</li>
           <li>Gleiche Situation, gleiches Vorhaben: zwei Momente oder einer? (Stickdorn, Smaply-Blog; {TORRES}, S. 86)</li>
@@ -261,7 +265,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
             <tr><td>Zeitpunkt, erzählt</td><td>ja</td><td>„Ich komme in die Halle und entscheide.“ (I2-4, I2-1)</td></tr>
             <tr><td>Ablaufschritt</td><td>nein</td><td>„Kaffee nehmen“: nichts entschieden, kein Zitat – bleibt im Snapshot</td></tr>
             <tr><td>Gefühl</td><td>nein</td><td>„Zeitdruck“ – wann? Beim Blick auf die Uhr in der Halle (I2-2)</td></tr>
-            <tr><td>Thema</td><td>nein</td><td>„Wartezeit“: liegt in der Halle (I2-1) und beim Anstehen (I3-2) – zwei Momente</td></tr>
+            <tr><td>Thema</td><td>nein</td><td>„Wartezeit“: liegt in der Halle (I2-1) und beim Anstehen (I3-3) – zwei Momente</td></tr>
             <tr><td>Eure Frage</td><td>nein</td><td>eine Karte im Wortlaut des Leitfadens, etwa „Wie entscheidest du dich?“ (ausgedacht)</td></tr>
             <tr><td>Lösung, Wunsch</td><td>nein</td><td>„Am liebsten wüsste ich einfach, wann er fertig ist.“ (I2-5) – eine Chance unter einem Moment</td></tr>
             <tr><td>Meinung</td><td>nein</td><td>„Anstellen ist ein Glücksspiel.“ (I4-2)</td></tr>

@@ -41,7 +41,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   },
   'anlauf-a': {
     live: [
-      'Hier „Auflösung zeigen“: öffnet Folien 4 bis 8.',
+      'Hier „Auflösung zeigen“: öffnet Folien 4 bis 9.',
       'Bilanz: tut ja, sonst nichts. Der Ablauf ist das halbe Material.',
     ],
     kern: [
@@ -83,7 +83,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     kern: [
       { text: 'Im Interview führt die Zeitleiste: „What happened first?“, „What happened next?“, „What happened before that?“', quelle: `${TORRES}, S. 66` },
       { text: 'Zu breit? „Where did this pain point show up in your customer’s story?“', quelle: `${TORRES}, S. 88` },
-      { text: 'Ein Gefühl ist ein Wegweiser zur Ursache, kein eigener Knoten.', quelle: `${TORRES}, S. 95` },
+      { text: 'Ein Gefühl ist ein Wegweiser: nicht das Gefühl festhalten, sondern seine Ursache (bei Torres für Chancen; für Momente übertragen).', quelle: `${TORRES}, S. 95` },
     ],
     ueberleitung: 'Jetzt euer eigenes Material, Schritt für Schritt.',
   },
