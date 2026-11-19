@@ -94,7 +94,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   'in-den-baum': {
     live: [
       'Kurz, jede*r für sich: zwei Momente ein Zeitpunkt?',
-      'Weiter zum Baum: Momente werden die blauen Karten.',
+      'Weiter zum Baum: Momente von T3 · 0 werden blaue Karten.',
     ],
     ueberleitung: 'Die Momente stehen – jetzt wächst der Baum.',
   },

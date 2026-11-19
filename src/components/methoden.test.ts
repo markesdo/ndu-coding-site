@@ -125,7 +125,7 @@ describe('methoden', () => {
   });
 
   it('methodenVonTag liefert die Methoden eines Tags in Kursreihenfolge', () => {
-    // Plan seit 12.11.2026: Tag 2 endete nach der Experience Map, der Baum eröffnet Tag 3.
+    // Plan seit 12.11.2026: Tag 2 endete nach der Experience Map; Tag 3 beginnt (seit 19.11.) mit „Experience Map nachschärfen“, dann der Baum.
     expect(methodenVonTag(2).map((m) => m.slug)).toEqual(['synthese', 'journey-map']);
     expect(methodenVonTag(3)[0].slug).toBe('baum');
     expect(methodenVonTag(6).map((m) => m.slug)).toEqual(['pitch']);
