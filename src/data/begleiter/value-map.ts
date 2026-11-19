@@ -204,7 +204,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'T3 · 4, eigene Spalte: „Drei Lückensätze“, darunter das Feld „Fit: ✓ ✗ ?“ – der Ideen-Vergleich (Kursregel) –, darunter „Kreuze befragen“.',
+        'T3 · 4, eigene Spalte: „Drei Lückensätze“, darunter „Ideen vergleichen und wählen (Kursregel)“, darunter „Kreuze befragen (Kursregel)“.',
         'Die drei Ideen aus „Drei für den Vergleich in T3 · 4“ (Frame T3 · 3) herüberduplizieren.',
         'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map der gewählten Idee ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
         'Fit im Canvas-Frame: ✓ an Schmerzlinderer und Gewinnerzeuger, ✗ an offene Jobs, Pains und Gains; Kreuze befragen zurück in T3 · 4.',
