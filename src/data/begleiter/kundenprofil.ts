@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/kundenprofil.astro (Tag 3, 14:40–15:10).
+// Begleiter-Notizen zu src/pages/innolab/methoden/kundenprofil.astro (Tag 3, 11:30–12:00; seit 19.11. vor HMW und Ideation, damit das Profil ohne Ideen im Kopf entsteht – VPD S. 78–79).
 // Vorwissen: Kundenprofil „bekannt“ aus Entrepreneur Lab & Prototyping (vorwissen.ts) – Theorie zu Jobs, Pains, Gains kurz,
 // dafür das, was hier anders ist: Belege aus dem Baum, Kontext, konkret statt vage.
 // VPD-Seiten = Seitenzahlen der PDF-Ausgabe, wie in quellen/vpd/text.txt (nicht die der gedruckten Ausgabe).
@@ -28,7 +28,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Wir kennen das Profil schon – warum noch einmal?',
-        antwort: 'Weil ihr es diesmal nicht aus dem Kopf füllt, sondern aus fünf Interviews, und weil es heute einen Zweck hat: drei Ideen daran zu messen.',
+        antwort: 'Weil ihr es diesmal nicht aus dem Kopf füllt, sondern aus fünf Interviews, und weil es heute einen Zweck hat: Am Nachmittag messt ihr drei Ideen daran.',
       },
     ],
     ueberleitung: 'Bevor ihr füllt: Lernt eine Kundin kennen.',
@@ -180,7 +180,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       'Abbildung: wichtigste Zettel oben.',
       'Jede Spalte für sich: Wichtigkeit, Schwere, Relevanz.',
       '„Ihr dürft mit eurer Einschätzung anfangen – die Interviews prüfen sie.“',
-      'Bei Bedarf: Ulwicks Formel war die Gegenprobe am Vormittag; hier ohne.',
+      'Bei Bedarf: Ulwick war die Gegenposition; hier ohne Formel.',
     ],
     kern: [
       {
@@ -225,7 +225,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       'Timer 7 min: Ziel-Chance und Ast als Pains, mit Zitat-IDs.',
       'Nach 7 min: Gains aus den Snapshots, ein sozialer oder emotionaler Job.',
       'Nach 14 min: alles auf die Skalen, ordnen, dann die Fehlerliste.',
-      'Falle: beim Schreiben schon an die drei Ideen denken.',
+      'Falle: an eine Lösung denken – Ideen gibt es noch keine.',
       'Wenn hinten: Ordnen auf die obersten drei je Spalte beschränken.',
     ],
     uebung: { dauer: '18 min (7 + 7 + 4)', form: 'allein, jede*r für das eigene Produkt' },
@@ -274,6 +274,6 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
         quelle: `${VPD}, S. 79`,
       },
     ],
-    ueberleitung: 'Das Profil steht. Jetzt kommen eure drei Ideen daneben.',
+    ueberleitung: 'Das Profil steht. Nach der Mittagspause sucht ihr Ideen – und messt sie an diesem Profil.',
   },
 };

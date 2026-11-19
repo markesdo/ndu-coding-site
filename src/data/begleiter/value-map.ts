@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/value-map.astro (Tag 3, 15:10–15:55). Kein Vorwissen eingetragen.
+// Begleiter-Notizen zu src/pages/innolab/methoden/value-map.astro (Tag 3, 15:15–16:00; seit 19.11. nach der Ideation, die Lückensätze kommen von dort). Kein Vorwissen eingetragen.
 // VPD-Seiten = Seitenzahlen der PDF-Ausgabe, wie in quellen/vpd/text.txt (nicht die der gedruckten Ausgabe).
 const VPD = 'Osterwalder u. a., Value Proposition Design';
 
@@ -70,36 +70,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: 'value-map.astro, Folie beispiel (Handout)',
       },
     ],
-    ueberleitung: 'Für eine ganze Map pro Idee fehlt die Zeit. Das Buch hat eine Abkürzung.',
-  },
-
-  'ad-libs': {
-    live: [
-      'Lückensatz vorlesen, Lücken mit dem Finger zeigen.',
-      '„Ein Satz pro Idee – er zwingt euch zu sagen, wie sie Wert schafft.“',
-      '„Job, Pain und Gain kommen aus eurem Profil, mit ID.“',
-      'Falle: am ersten Satz feilen – drei rohe Sätze sind das Ziel.',
-    ],
-    verstaendnis: {
-      frage: 'Woher kommen Job, Pain und Gain im Lückensatz?',
-      antwort: 'Aus dem Kundenprofil von eben, am besten aus den obersten Einträgen. Neu ist im Satz nur das Angebot und wie es wirkt.',
-      falsch: '„Die überlegen wir uns passend zur Idee“ – dann beschreibt das Profil das Angebot und nicht die Kundschaft.',
-    },
-    kern: [
-      {
-        text: 'Ad-libs sind neben Serviettenskizze und Canvas eine der Prototyp-Techniken, um verschiedene Richtungen schnell zu erkunden, bevor man eine ausarbeitet. „Prototype three to five different directions by filling out the blanks in the ad-lib below.“',
-        quelle: `${VPD}, S. 156–159, 183`,
-      },
-      {
-        text: 'Die Lücken laut Abbildung: products and services – customer segment – jobs to be done – eigenes Verb (z. B. reducing, avoiding) – eigenes Verb (z. B. increasing, enabling); als Tipp am Anfang oder Ende: unlike – competing value proposition.',
-        quelle: `${VPD}, S. 184 (Beschriftungen aus der Abbildung)`,
-      },
-      {
-        text: 'Prototyp-Regeln, die hier gelten: „Don’t fall in love with first ideas— create alternatives.“ Und für frühe Prototypen: „Spend a maximum of 5 to 15 minutes on sketching out your early prototypes.“, mit sichtbarem Timer.',
-        quelle: `${VPD}, S. 165 und S. 161`,
-      },
-    ],
-    ueberleitung: 'Drei Sätze, ein Profil. Wie vergleicht ihr sie?',
+    ueberleitung: 'Und wie prüft ihr, ob eine Map trifft?',
   },
 
   fit: {
@@ -186,51 +157,53 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 117`,
       },
     ],
-    ueberleitung: 'Jetzt ihr: drei Sätze, eine Wahl, eine geordnete Map, der Fit.',
+    ueberleitung: 'Jetzt ihr: Spitzenreiter wählen, seine Map ordnen, den Fit prüfen.',
   },
 
   vorgehen: {
     live: [
-      'Timer 8 min: drei Lückensätze, roh.',
-      'Nach 8 min: Ideen vergleichen, wählen – Timer 4 min.',
-      'Nach 12 min: Value Map im Canvas-Frame, ordnen – Timer 12 min.',
-      'Nach 24 min: Fit prüfen wie im Buch, Timer 4 min.',
-      'Nach 28 min: Kreuze befragen allein, Timer 3 min.',
-      '1:1 ab Minute 12, je 2,5 min: Hewen, Joachim, Sofie.',
-      'Nach 31 min: VALUE-MAP.md und eine Zeile ins Entscheidungslog.',
+      'Wozu vorlesen: wissen, was ihr heute ausarbeitet – und was offen bleibt.',
+      'Timer 5 min: drei Lückensätze aus der Ideation vergleichen, Spitzenreiter wählen.',
+      'Nach 5 min: Value Map im Canvas-Frame, ordnen – Timer 20 min.',
+      '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
+      'Nach 25 min: Fit prüfen wie im Buch, Timer 7 min.',
+      'Nach 32 min: VALUE-MAP.md mit allen „?“, Zeile ins Log.',
       'Wenn hinten: Value Map nur mit je einem Schmerzlinderer und Gewinnerzeuger.',
     ],
-    uebung: { dauer: '34 min (8 + 4 + 12 + 4 + 3 + 3)', form: 'allein, Markus fragt je nach einem Kreuz' },
+    uebung: { dauer: '36 min (5 + 20 + 7 + 4)', form: 'allein, Markus fragt je nach einem Kreuz' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'T3 · 4, eigene Spalte: „Drei Lückensätze“, darunter „Ideen vergleichen und wählen (Kursregel)“, darunter „Kreuze befragen (Kursregel)“.',
-        'Die drei Ideen aus „Drei für den Vergleich in T3 · 4“ (Frame T3 · 3) herüberduplizieren.',
-        'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map der gewählten Idee ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
-        'Fit im Canvas-Frame: ✓ an Schmerzlinderer und Gewinnerzeuger, ✗ an offene Jobs, Pains und Gains; Kreuze befragen zurück in T3 · 4.',
+        'T3 · 4, eigene Spalte: „Ideen vergleichen und wählen (Kursregel)“ – die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils.',
+        'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map des Spitzenreiters ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
+        'Fit im Canvas-Frame: ✓ an Schmerzlinderer und Gewinnerzeuger, ✗ an offene Jobs, Pains und Gains, „?“ wo ihr es nicht wisst.',
       ],
     },
     ablauf: {
       schritte: [
-        'Lückensätze (8 min): je Idee ein Satz; Job, Pain und Gain mit ID aus dem eigenen Profil.',
-        'Vergleichen und wählen (4 min, Kursregel): jede Idee gegen die obersten Einträge – ✓, ✗ oder ?; dann eine Idee wählen, ein Satz warum.',
-        'Value Map (12 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger der gewählten Idee, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102).',
-        'Fit prüfen (4 min): ✓ an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt (VPD S. 110–113).',
-        'Kreuze befragen, allein (3 min, Kursregel): zu jedem ✗ und ? ein Satz: Was müsste stimmen? Markus fragt schon ab Minute 12 bei jeder Person nach einem Kreuz aus dem Vergleich (Hewen, Joachim, Sofie, je gut zwei Minuten, durch Value Map und Fit hindurch). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
-        'Festhalten (3 min): docs/VALUE-MAP.md; eine Zeile ins Entscheidungslog: gewählt, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',
+        'Vergleichen und wählen (5 min, Kursregel): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
+        'Value Map (20 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger des Spitzenreiters, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem Kreuz aus dem Vergleich. Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Fit prüfen (7 min): ✓ an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt; „?“ wo ihr es nicht wisst (Kursregel; VPD S. 110–113).',
+        'Festhalten (4 min): docs/VALUE-MAP.md mit Spitzenreiter, Value Map, Fit und allen „?“ der drei Ideen; eine Zeile ins Entscheidungslog: Spitzenreiter, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',
       ],
       achten: [
         'Gewählt wird nach den obersten Einträgen, nicht nach der Zahl der Haken.',
-        'Jedes „?“ ist eine Annahme und wird später eine Zeile in der Annahmen-Map.',
+        'Jedes „?“ wird an Tag 4 eine Annahme – auch die der beiden anderen Ideen.',
         'Bei Schmerzlinderern steht eine Wirkung, kein Produkt.',
         'Der Vergleich der Lückensätze ersetzt nicht den Fit am Ende: Das Buch prüft die ausgearbeitete Value Map (S. 112).',
       ],
       fehler: [
         'Die Lieblingsidee bekommt großzügig Haken, die anderen strenge Kreuze.',
         'Das Profil wird nachträglich an die Idee angepasst.',
-        'Alles abgehakt, nichts „bewusst offen“.',
+        'Alles abgehakt, nichts offen.',
       ],
     },
+    kern: [
+      {
+        text: 'Wählen vor dem Test ist im Buch vorgesehen: „choose among several alternatives before you test them in the real world“ – auch wenn am Ende die Kundschaft urteilt. Torres würde dagegen drei Ideen in die Annahmentests nehmen: „we will use prototyping and assumption testing to whittle our set down from three to one“.',
+        quelle: `${VPD}, S. 347–348; Torres, Continuous Discovery Habits, S. 113`,
+      },
+    ],
     ueberleitung: 'Zum Schluss ein Blick auf eure Wahl.',
   },
 
@@ -239,7 +212,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
       'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
-      'Ausblick: Nach der Pause die Geschichte dazu – der Story-Bogen.',
+      'Ausblick: gleich die Geschichte dazu – der Story-Bogen.',
     ],
     kern: [
       {
@@ -247,6 +220,6 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 86–87, 103`,
       },
     ],
-    ueberleitung: 'Fünf Minuten Pause, dann: Warum sollte das jemanden interessieren?',
+    ueberleitung: 'Direkt weiter: Warum sollte das jemanden interessieren?',
   },
 };
