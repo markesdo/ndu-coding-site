@@ -396,6 +396,15 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(karte).toBeNull();
     expect(`${folien[z.index].pfad}#${folien[z.index].id}`).toBe('/innolab/methoden/hmw#bauen');
   });
+  // Tag 3, 09:00–09:25: Experience Map nachschärfen – vor dem Baum, jede Folie mit Stichworten.
+  it('Tag 3: experience-map steht vor dem Baum, jede Folie hat eine Notiz mit mindestens einem live-Stichwort', () => {
+    const pfad = '/innolab/tag-3/experience-map';
+    const seite = folienAus(pfad, quellen[pfad] ?? '');
+    expect(seite).toHaveLength(10);
+    expect(seite.filter((f) => !NOTIZEN[pfad]?.[f.id]?.live?.some((s) => s.trim() !== '')).map((f) => `${f.pfad}#${f.id}`)).toStrictEqual([]);
+    const reihe = [...new Set(folien.map((f) => f.pfad))];
+    expect(reihe.indexOf(pfad) + 1).toBe(reihe.indexOf('/innolab/methoden/baum'));
+  });
   // Tag 2 (12.11.): Eröffnung, die drei Methoden, Abschluss – der Begleiter folgt jeder Folie, und jede hat Stichworte.
   const TAG_2_SEITEN = ['/innolab/tag-2', '/innolab/methoden/synthese', '/innolab/methoden/journey-map', '/innolab/methoden/baum', '/innolab/tag-2/abschluss'];
   it('Tag 2: jede Folie der vier Seiten hat eine Notiz mit mindestens einem live-Stichwort', () => {

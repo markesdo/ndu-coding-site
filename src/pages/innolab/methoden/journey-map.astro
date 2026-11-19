@@ -10,7 +10,8 @@ import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
-import { CircleCheck, CircleX, CornerDownRight } from '@lucide/astro';
+import KaffeebarMap from '../../../components/KaffeebarMap.astro';
+import { CircleCheck, CircleX } from '@lucide/astro';
 import { METHODEN } from '../../../components/methoden';
 import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 import { GRUPPEN, SKIZZEN, buchstabe, gruppeName, skizzenFehler, zaehlung } from '../../../data/kaffeebar-skizzen';
@@ -151,6 +152,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
       <p>Ziel ist, den Chancenraum nach unterscheidbaren Momenten zu ordnen, damit sich die Äste nicht überschneiden. Oft reicht es, jeden Knoten der Experience Map auf die oberste Ebene des Baums zu legen. Im Streaming-Beispiel werden aus vier Momenten – sich entscheiden, etwas zu schauen; etwas auswählen; schauen; das Ende – vier oberste Chancen (S. 86–87). Ohne Überschneidung könnt ihr an einer Chance arbeiten, ohne alle anderen mitzuziehen (S. 86). An Tag 3 hängt ihr die Chancen aus euren Snapshots unter diese Äste. Torres nennt diese Äste „top-level opportunities“: Aus jedem Moment formuliert ihr eine oberste Chance, die diesen Moment wiedergibt – in der Abbildung in Ich-Form, etwa „My show ended.“ (S. 87, 91). Der Ast ist also selbst schon eine Chance, keine eigene Ebene über den Chancen.</p>
       <p>Die vier Schritte über der Abbildung sind die Momente aus Torres’ Experience Map; jeder wird eine oberste Chance (S. 86–87). Der Kreis oben, „Increase viewing minutes“, ist kein Moment, sondern das Outcome – die Wurzel des Baums.</p>
       <p>Torres trennt Knoten und Momente nicht: ‚key moment (or node)‘ (S. 87). Was sie beschreibt: ähnliche Knoten zusammenlegen, ohne wichtige Details zu verlieren (S. 56), und Momente ohne Überschneidung (S. 86–87). Was sie nicht beschreibt: wie aus den sechs Knoten ihrer Beispiel-Map (S. 56) die vier Momente werden (S. 87). Nur ‚Momente festlegen‘ als eigener Schritt ist eine Regel dieses Kurses.</p>
+      <p>Kurz: Ein Moment ist, <strong>was die Person tut</strong> + <strong>wie es sich anfühlt</strong> (Kontext, {TORRES}, S. 56) + <strong>ein Zitat mit ID</strong> + <strong>N von M</strong> Geschichten (Kursregel). Ein Ablauf ohne Gefühl oder ein Gefühl ohne Zeitpunkt ist noch kein Moment – mehr dazu in <a href="/innolab/tag-3/experience-map">Tag 3 · Experience Map nachschärfen</a>.</p>
     </div>
   </Folie>
 
@@ -246,34 +248,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
     </div>
     <div data-schritt class="beispiel-block">
       <p class="fluss-titel map-titel">Die Map: drei Momente <span class="map-legende">Tief · ID = dort liegt der Tiefpunkt dieser Geschichte.</span></p>
-      <ol class="map" aria-label="Experience Map der Kaffeebar, drei Momente. Erstens: Ich komme in die Halle und entscheide, Zitat I2-1: das wird nix, Tief I2-1; von dort ein Umweg über den Automaten zum Zug, Zitat I4-4: Dann halt die Brühe, Tief I4-4. Zweitens: Ich stehe an und warte auf meinen Kaffee, Zitat I3-3: Das war ein Fehler, Tief I3-3 und I5-6. Drittens: Ich bin im Zug, Zitat I3-5: in Ruhe, Ende I3-5.">
-        <li>
-          <div class="karte">
-            <strong>„Ich komme in die Halle und entscheide.“</strong>
-            <span>„… <b>das wird nix</b>.“ <span class="id">I2-1</span></span>
-            <span class="pill tief">Tief · I2-1</span>
-          </div>
-          <div class="umweg">
-            <span class="umweg-titel"><CornerDownRight size={18} aria-hidden="true" /> Umweg: Automat → Zug</span>
-            <span>„<b>Dann halt die Brühe.</b>“ <span class="id">I4-4</span></span>
-            <span class="pill tief">Tief · I4-4</span>
-          </div>
-        </li>
-        <li>
-          <div class="karte">
-            <strong>„Ich stehe an und warte auf meinen Kaffee.“</strong>
-            <span>„… <b>Das war ein Fehler.</b>“ <span class="id">I3-3</span></span>
-            <span class="pill tief">Tief · I3-3 · I5-6</span>
-          </div>
-        </li>
-        <li>
-          <div class="karte">
-            <strong>„Ich bin im Zug.“</strong>
-            <span>„… <b>in Ruhe</b>.“ <span class="id">I3-5</span></span>
-            <span class="pill ende">Ende · I3-5</span>
-          </div>
-        </li>
-      </ol>
+      <KaffeebarMap />
     </div>
     <div class="nur-handout">
       <p>Die Map von Tag 1 (Miro T1 · 1) ging von „Ankunft am Bahnhof, 7:31“ über „Blick auf die Schlange“ und „Reicht die Zeit bis 7:42?“ zu „Anstellen“ oder „Zum Automaten“ – der Pfeil vom Automaten zum Zug mit „?“ – und endete „im Zug, mit oder ohne Kaffee“. Heute legt ihr zuerst zusammen (Folie davor): Denselben Knoten erzählt jede Geschichte mit anderen Worten – I2 schaut „auf die Tafel, dann auf die Schlange“ (I2-4), I3 schaut, „wie es ausschaut“ (I3-1), I5 entscheidet, „wenn ich die Halle seh“ (I5-3). Ihr gebt ihm einen gemeinsamen Namen, hier „Halle: schauen, entscheiden“. Diese Namen sind die Spalten des Rasters; jede Geschichte ist eine Zeile, jede Zelle trägt die Worte der Person mit Zitat-ID. Erzählt eine Geschichte den Knoten nicht, bleibt die Zelle leer; steht er nur in der Notiz, schreibt ihr das dazu. Auf der Folie stehen I2 und I3, die anderen drei sind genauso beschriftet:</p>
@@ -300,6 +275,7 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
     <div class="small muted nvm">N von M: in N von M Geschichten kommt der Knoten vor (bei drei synthetischen: von 3).</div>
     <div class="nur-handout">
     <p>In der Pause kopiert Markus eure Skizzen von T1 · 5 in eure Spalte auf T2 · 1 (Zone „Schritt 1: Gleiches zusammenlegen“), Stickies und Pfeile; eine Skizze als Foto kopiert, wer sie gemacht hat. 12 + 10 + 8 + 5 sind 35 Minuten; dazu gut 20 Minuten Theorie und Kaffeebar gemeinsam. Alle Maps liegen auf demselben Board, jede*r in der eigenen Spalte von T2 · 1; zum Zeigen teilt niemand den Bildschirm, alle schauen auf dem Board mit. Bei Torres teilt ein Trio seine Maps, um eine gemeinsame Map für ein Produkt zu bauen (S. 55–56). Ihr habt drei Produkte und fügt nichts zusammen; wir übernehmen nur die Regeln fürs Zeigen: fragen, auf Unterschiede achten, nicht verteidigen (S. 55). Die anderen kennen eure Kundschaft nicht – sie sehen aber, wo ein Knoten euer Produkt zeigt, wo der Umweg fehlt und wo sich Momente überschneiden. Überschneidendes zusammenlegen folgt Torres: ähnliche Knoten zusammenlegen (S. 56), Momente ohne Überschneidung (S. 86–87). Torres hängt an jeden Schritt den Kontext – was die Person denkt, fühlt, tut, möglichst als Bild ({TORRES}, S. 56). Hier trägt das Zitat diesen Kontext: Wählt je Moment das Zitat, in dem die Person selbst Gefühl zeigt, und setzt das Gefühlswort fett. Die Marken (stärkster Moment, Ende) wandern mit ihrer Zitat-ID an den Moment, in dem sie liegen; liegen mehrere im selben Moment, stehen dort mehrere IDs. Gezählt wird nur das Vorkommen: in N von M Geschichten kommt der Knoten vor (M = alle eure Geschichten, bei drei synthetischen: von 3). Erzählt niemand ein Gefühl, schreibt ‚Gefühl: nicht erzählt‘ – das ist eine Frage für das nächste Interview. Das Gefühl bleibt am Moment und wird kein eigener Knoten und keine Chance (S. 95). Fett statt Smiley ist eine Regel dieses Kurses. Drei bis fünf ist ein Richtwert dieses Kurses; Torres’ Beispiel hat vier Momente (S. 87). Der Tiefpunkt bleibt ein Moment („Ich stehe an und warte auf meinen Kaffee.“), kein Gefühl („Ich bin gestresst“) – ein Gefühl zeigt auf eine Ursache (S. 95). Die Map entsteht auf Miro in eurer Spalte von T2 · 1 und bleibt dort, eine Datei dazu gibt es nicht; jeder Moment und jede Chance darauf nennt mindestens eine Zitat-ID aus der Werkstatt, etwa I2-3. Ohne ID kein Beleg. Zum Prüfen geht ihr erst die Prüfliste durch und gebt Claude dann ein Bild eurer Map (unten unter „Prüfen“).</p>
+    <p>Nur Ablauf oder nur Gefühle auf der Map? → <a href="/innolab/tag-3/experience-map">Tag 3 · Experience Map nachschärfen</a>.</p>
     </div>
   </Folie>
 
@@ -370,21 +346,10 @@ if (SKIZZEN_FEHLER.length) throw new Error(`journey-map.astro: Kaffeebar-Skizzen
   .marke-form { margin: .3rem 0 .6rem; font-size: .9rem; color: var(--muted); }
   /* Folie „vorgehen“: N von M in voller Breite – div statt p, global.css begrenzt Absätze auf Folien auf 36em. */
   .nvm { margin-top: .2rem; }
-  /* Marken (.pill.tief / .pill.ende, global.css) im Raster und an den Karten: so groß wie die IDs daneben. */
-  .raster .pill, .map .pill { white-space: nowrap; font-size: .85em; line-height: 1.2; padding: .1rem .4rem; }
-  /* Folie „beispiel“: die Map – drei Momente als Karten, unter dem ersten der Umweg (gestrichelt). */
-  .map { list-style: none; margin: .45rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; font-size: .85rem; line-height: 1.3; }
-  .map > li { position: relative; margin: 0; display: flex; flex-direction: column; gap: .45rem; }
-  .map > li + li::before { content: '→' / ''; position: absolute; left: -1.5rem; top: 1.4rem; color: var(--muted); font-size: 1.1rem; }
-  .karte { display: flex; flex-direction: column; align-items: flex-start; gap: .3rem; padding: .55rem .7rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
-  .karte strong { font-size: .95rem; line-height: 1.25; }
-  .map .id { color: var(--muted); white-space: nowrap; font-size: .9em; }
-  .umweg { display: flex; flex-direction: column; gap: .2rem; margin-left: 1rem; padding: .35rem .6rem; border: 1px dashed var(--muted); border-radius: var(--radius); font-size: .9em; }
-  .umweg-titel { display: flex; align-items: center; gap: .3rem; font-weight: 600; color: var(--muted); }
-  /* Schmale Spalte (Container, nicht Fenster – die Seitenleiste zählt mit): Karten untereinander, das Raster scrollt in .table-scroll. */
+  /* Marken (.pill.tief / .pill.ende, global.css) im Raster: so groß wie die IDs daneben (die Map: KaffeebarMap.astro). */
+  .raster .pill { white-space: nowrap; font-size: .85em; line-height: 1.2; padding: .1rem .4rem; }
+  /* Schmale Spalte (Container, nicht Fenster – die Seitenleiste zählt mit): Das Raster scrollt in .table-scroll. */
   @container beispiel (max-width: 700px) {
-    .map { grid-template-columns: 1fr; gap: 1.6rem; }
-    .map > li + li::before { content: '↓' / ''; left: 50%; top: -1.4rem; }
     .raster { table-layout: auto; min-width: 34rem; }
   }
   /* Folie „gruppieren“: fünf Skizzen als Reihen von Stickies. Schritt 1 (.gruppen-an) färbt sie nach Gruppe, die

@@ -494,7 +494,7 @@ describe('methoden', () => {
     // Je Kurstag: Start, die Stationen in Kursreihenfolge, zuletzt das Ziel, an dem die Kette den Tag verlässt oder zur Tagesseite zurückkehrt.
     const ketten: string[][] = [
       ['/innolab/tag-2', m('synthese'), m('journey-map'), '/innolab/tag-2/abschluss', '/innolab/tag-3'],
-      ['/innolab/tag-3', m('baum'), m('ziel-chance'), m('hmw'), m('ideation'), m('kundenprofil'), m('value-map'), m('concept-story'), '/innolab/tag-3#abschluss'],
+      ['/innolab/tag-3', '/innolab/tag-3/experience-map', m('baum'), m('ziel-chance'), m('hmw'), m('ideation'), m('kundenprofil'), m('value-map'), m('concept-story'), '/innolab/tag-3#abschluss'],
       ['/innolab/tag-4', m('geschaeftsmodell'), m('experiment'), m('story-map'), m('usage-story'), m('prototyp-spike'), m('scrum')],
       ['/innolab/tag-5', m('scrum#team'), m('backlog'), m('akzeptanzkriterien'), m('schneiden'), m('sprint'), '/innolab/tag-5#stoerfall'],
       ['/innolab/tag-6', '/innolab/tag-7', '/innolab'],
@@ -507,7 +507,7 @@ describe('methoden', () => {
     const ohneAnker = (p?: string) => p?.replace(/#(debrief|review-retro)$/, '');
     for (const [hier, davor] of [
       [m('journey-map'), m('synthese')], ['/innolab/tag-2/abschluss', m('journey-map')],
-      [m('baum'), '/innolab/tag-3'], [m('ziel-chance'), m('baum')], [m('concept-story'), m('value-map')],
+      ['/innolab/tag-3/experience-map', '/innolab/tag-3'], [m('baum'), '/innolab/tag-3/experience-map'], [m('ziel-chance'), m('baum')], [m('concept-story'), m('value-map')],
       [m('geschaeftsmodell'), '/innolab/tag-4'], [m('experiment'), m('geschaeftsmodell')], [m('story-map'), m('experiment')],
       [m('scrum'), '/innolab/tag-5'], [m('backlog'), m('scrum#team')], [m('sprint'), m('schneiden')],
       [m('pitch'), '/innolab/tag-6'],

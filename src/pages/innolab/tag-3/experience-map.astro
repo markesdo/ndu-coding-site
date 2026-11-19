@@ -1,0 +1,303 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Orientierung from '../../../components/Orientierung.astro';
+import FooterNav from '../../../components/FooterNav.astro';
+import Folie from '../../../components/Folie.astro';
+import Fluss from '../../../components/Fluss.astro';
+import Timer from '../../../components/Timer.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+import Aufloesung from '../../../components/Aufloesung.astro';
+import KaffeebarMap from '../../../components/KaffeebarMap.astro';
+import Baum from '../../../components/bild/Baum.astro';
+import { CircleCheck, CircleX, CornerDownRight, Footprints, Heart, Quote, Users } from '@lucide/astro';
+import { KAFFEEBAR_BAUM_INTERVIEWS } from '../../../components/innolab-beispiel';
+import { ENDE_TAG_3 } from '../../../components/innolab-zeiten';
+import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
+import { zaehlung } from '../../../data/kaffeebar-skizzen';
+
+const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+// Die Auflösungen der Folien 4 bis 8 öffnen sich gemeinsam, wenn Markus nach der Runde auf Folie „drei-anlaeufe“
+// aufdeckt; ENDE_TAG_3 ist nur der späte Rückfall.
+const GRUPPE = 'map-anlaeufe';
+// Folie „warum-nochmal“: nur Outcome und die drei Momente (oberste Ebene) des Kaffeebar-Baums.
+const NUR_MOMENTE = { t: KAFFEEBAR_BAUM_INTERVIEWS.t, kinder: (KAFFEEBAR_BAUM_INTERVIEWS.kinder ?? []).map((k) => ({ t: k.t })) };
+// Folie „zusammen“: Ablauf (oben) + Gefühl (unten) = Moment. Momente, Zitate, IDs und Zählung wie auf
+// journey-map.astro#beispiel; die Schritte und Gefühle sind die Anläufe A und B von Folie „drei-anlaeufe“.
+const ZUSAMMEN = [
+  { schritte: ['Schlange ansehen', 'auf die Uhr schauen'], gefuehl: 'Zeitdruck', moment: '„Ich komme in die Halle und entscheide.“', zitat: 'das wird nix', id: 'I2-1', g: 'a', marke: 'Tief · I2-1', art: 'tief' },
+  { schritte: ['anstellen', 'warten'], gefuehl: 'Frust', moment: '„Ich stehe an und warte auf meinen Kaffee.“', zitat: 'Das war ein Fehler.', id: 'I3-3', g: 'c', marke: 'Tief · I3-3 · I5-6', art: 'tief' },
+  { schritte: ['einsteigen'], gefuehl: 'Ruhe', moment: '„Ich bin im Zug.“', zitat: 'in Ruhe', id: 'I3-5', g: 'd', marke: 'Ende · I3-5', art: 'ende' },
+] as const;
+// Folie „worte-beleg“: ein Zitat, eine Notiz, eine Meinung – Texte wörtlich aus dem Werkstatt-Beispiel.
+const ZITATE = new Map(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => [z.id, z.text] as const)));
+const NOTIZ_I1 = KAFFEEBAR_INTERVIEWS.interviews.find((iv) => iv.id === 'I1')?.notizen ?? '';
+const NOTIZ_SATZ = 'Schaut erst auf die Schlange, dann auf die Uhr.';
+const fehlt = [...ZUSAMMEN.map((z) => z.id), 'I2-1', 'I4-2', 'I5-6'].filter((id) => !ZITATE.has(id));
+if (fehlt.length) throw new Error(`tag-3/experience-map.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${fehlt.join(', ')}`);
+const nichtImZitat = ZUSAMMEN.filter((z) => !ZITATE.get(z.id)!.includes(z.zitat)).map((z) => z.id);
+if (nichtImZitat.length) throw new Error(`tag-3/experience-map.astro: Zitatausschnitt steht nicht im Zitat: ${nichtImZitat.join(', ')}`);
+if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro: Notiz zu I1 hat sich geändert');
+---
+<Layout title="Tag 3 · Experience Map nachschärfen">
+  <span class="eyebrow">Innolab · Tag 3 · 09:00–09:25</span>
+  <h1>Experience Map nachschärfen</h1>
+  <p class="lead">Bevor der Baum wächst: Was ein Moment braucht – an drei Anläufen der Kaffeebar, dann an eurer eigenen Map.</p>
+  <Orientierung seite="innolab/tag-3/experience-map" leiste={false} />
+
+  <Folie>
+    <h2 id="warum-nochmal">Heute werden eure Momente zu Ästen</h2>
+    <p class="folie-satz">Der Baum trägt nur, wenn oben drei bis fünf Momente stehen.</p>
+    <Baum schmal momente knoten={NUR_MOMENTE} label="Baum der Kaffeebar: Outcome, darunter die drei Momente der Experience Map als oberste Äste (Ich komme in die Halle und entscheide; Ich stehe an und warte auf meinen Kaffee; Ich bin im Zug)" />
+    <p class="small muted">{TORRES}, S. 86–87.</p>
+    <div class="nur-handout">
+      <p>Jeder Moment der Experience Map wird eine oberste Chance des Baums ({TORRES}, S. 86–87). Sind die Momente unklar – nur Schritte, nur Gefühle, Momente, die sich überschneiden –, sind es die Äste auch, und jede Chance darunter hängt im Ungefähren. Darum schärft ihr die Map, bevor ihr die Chancen aus den Snapshots unter die Momente hängt.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="bausteine">Was ein Moment braucht</h2>
+    <p class="folie-satz">Ein Moment ist ein Zeitpunkt der Geschichte – mit dem, was die Person dort tut und fühlt.</p>
+    <ol class="bausteine" aria-label="Ein Moment: was die Person tut, plus wie es sich anfühlt, plus Zitat mit ID, plus N von M Geschichten">
+      <li data-schritt><Footprints size={28} aria-hidden="true" /> <span>Was tut die Person?</span></li>
+      <li data-schritt><Heart size={28} aria-hidden="true" /> <span>Wie fühlt es sich an?</span></li>
+      <li data-schritt><Quote size={28} aria-hidden="true" /> <span>Zitat mit ID</span></li>
+      <li data-schritt><Users size={28} aria-hidden="true" /> <span>N von M Geschichten</span></li>
+    </ol>
+    <p class="small muted">Knoten und Kontext: {TORRES}, S. 56. Zitat mit ID, Zählung, drei bis fünf Momente: Kursregel.</p>
+    <div class="nur-handout">
+      <p>Torres beschreibt einen Knoten als „a distinct moment in time, an action, or an event“ und hängt an jeden Schritt den Kontext: Was denkt, fühlt, tut die Person dort ({TORRES}, S. 56)? Dass jeder Moment ein Zitat mit ID trägt und gezählt wird, in wie vielen Geschichten er vorkommt („N von M“), ist das Format dieses Kurses – so lässt sich jeder Ast später auf eine Geschichte zurückführen.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="drei-anlaeufe">Drei Anläufe an der Kaffeebar: Was fehlt?</h2>
+    <p class="folie-satz">Jede*r nimmt eine Map und sagt reihum: Was zeigt sie, was fehlt ihr? <Timer minuten={4} /></p>
+    <div class="anlaeufe">
+      <section class="anlauf">
+        <p class="anlauf-name">A</p>
+        <ol class="anlauf-fluss" aria-label="Anlauf A: acht Schritte von In die Halle kommen bis einsteigen">
+          <li>In die Halle kommen</li><li>Schlange ansehen</li><li>auf die Uhr schauen</li><li>anstellen</li>
+          <li>warten</li><li>Kaffee nehmen</li><li>zum Bahnsteig</li><li>einsteigen</li>
+        </ol>
+      </section>
+      <section class="anlauf">
+        <p class="anlauf-name">B</p>
+        <ul class="anlauf-karten" aria-label="Anlauf B: drei Karten ohne Pfeile">
+          <li>Zeitdruck</li><li>Frust</li><li>Ruhe</li>
+        </ul>
+      </section>
+      <section class="anlauf">
+        <p class="anlauf-name">C</p>
+        <div class="anlauf-c">
+          <p class="anlauf-kopf">Problem</p>
+          <ul class="anlauf-karten">
+            <li>Die Pendler*innen prüfen die Wartezeit.</li>
+            <li>Viele entscheiden sich aus Zeitmangel gegen die Kaffeebar.</li>
+          </ul>
+          <p class="anlauf-kopf">Ausweichen</p>
+          <ul class="anlauf-karten">
+            <li>Die Pendler*innen weichen auf Alternativen aus.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <p class="mini-bausteine small muted"><Footprints size={16} aria-hidden="true" /> tut · <Heart size={16} aria-hidden="true" /> fühlt · <Quote size={16} aria-hidden="true" /> Zitat mit ID · <Users size={16} aria-hidden="true" /> N von M</p>
+    <div class="nur-handout">
+      <p>Die drei Anläufe sind ausgedacht, aus dem Material der Kaffeebar gebaut, und zeigen Fehler, die beim Bauen einer Map oft passieren. Jede*r bekommt einen Anlauf und sagt in zwei Sätzen, was er zeigt und was ihm fehlt – gemessen an den vier Bausteinen der Folie davor. Erst danach kommt die Auflösung.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="nur-ablauf">A: nur Ablauf</h2>
+    <p class="folie-satz">Acht Schritte – wo ist hier ein Moment?</p>
+    <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
+      <p class="pointe">Ein Flussbild zeigt, was passiert – nicht, wie es erlebt wird.</p>
+      <p class="bilanz"><span class="ja"><CircleCheck size={20} aria-hidden="true" /> tut</span> <span class="nein"><CircleX size={20} aria-hidden="true" /> fühlt</span> <span class="nein"><CircleX size={20} aria-hidden="true" /> Zitat</span> <span class="nein"><CircleX size={20} aria-hidden="true" /> N von M</span></p>
+      <ul class="gross">
+        <li data-schritt>Acht Schritte, alle gleich wichtig – keiner sticht heraus.</li>
+        <li data-schritt>Nur der glatte Weg: Der Automat fehlt.</li>
+        <li data-schritt>Kein Zitat – niemand kann nachprüfen, wer das erzählt hat.</li>
+      </ul>
+      <p class="small muted">{TORRES}, S. 56 („Don’t just map out the happy path.“).</p>
+    </Aufloesung>
+    <div class="nur-handout">
+      <p>Ein Ablauf ist ein guter Anfang: Er zeigt die Reihenfolge. Zum Moment wird ein Schritt erst, wenn dort etwas passiert, das die Person erlebt – und ein Zitat das trägt. Torres warnt ausdrücklich davor, nur den glatten Weg zu zeichnen; Wiederholungen, Umwege und Abbrüche gehören auf die Map ({TORRES}, S. 56).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="nur-gefuehle">B: nur Gefühle</h2>
+    <p class="folie-satz">Drei Gefühle – wann und wobei?</p>
+    <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
+      <p class="pointe">Ein Gefühl ohne Zeitpunkt ist noch kein Moment.</p>
+      <p class="bilanz"><span class="nein"><CircleX size={20} aria-hidden="true" /> tut</span> <span class="ja"><CircleCheck size={20} aria-hidden="true" /> fühlt</span> <span class="nein"><CircleX size={20} aria-hidden="true" /> Zitat</span> <span class="nein"><CircleX size={20} aria-hidden="true" /> N von M</span></p>
+      <ul class="gross">
+        <li data-schritt>Wann? Wobei? – Das Gefühl braucht den Schritt, an dem es entsteht.</li>
+        <li data-schritt>Ohne Pfeile keine Geschichte.</li>
+        <li data-schritt>Ein Gefühl als Ast: Darunter passt jede Chance – und keine.</li>
+      </ul>
+      <p class="small muted">{TORRES}, S. 56.</p>
+    </Aufloesung>
+    <div class="nur-handout">
+      <p>Gefühle sind wertvoll: Sie zeigen, wo es weh tut. Sie gehören aber an den Schritt, an dem sie entstehen, als Kontext (S. 56) – nicht als eigener Knoten. Ein Gefühl als Ast im Baum ist zu allgemein: „Frust“ kann alles heißen; die Prüfliste des Baums fragt genau danach (keine Chance als Gefühl ohne Ursache).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="zusammen">A + B: Schritt und Gefühl werden ein Moment</h2>
+    <p class="folie-satz">Legt Ablauf und Gefühle übereinander: Was gehört zum selben Zeitpunkt?</p>
+    <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
+      <ol class="zusammen" aria-label="Aus Ablauf und Gefühlen werden drei Momente der Kaffeebar">
+        {ZUSAMMEN.map((z) => (
+          <li data-schritt>
+            <span class="z-schritte">{z.schritte.map((s) => <span class="chip">{s}</span>)}</span>
+            <span class="z-plus" aria-hidden="true">+</span>
+            <span class="chip gefuehl">{z.gefuehl}</span>
+            <span class="z-pfeil" aria-hidden="true">↓</span>
+            <span class="karte">
+              <strong>{z.moment}</strong>
+              <span>„… <b>{z.zitat}</b>“ <span class="id">{z.id}</span></span>
+              <span class="zaehl">{zaehlung(z.g)}</span>
+              <span class={`pill ${z.art}`}>{z.marke}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+      <p class="rest small muted" data-schritt><span class="chip grau">In die Halle kommen</span> <span class="chip grau">Kaffee nehmen</span> <span class="chip grau">zum Bahnsteig</span> kein Gefühl, kein Zitat → bleibt im Snapshot.</p>
+      <p class="pointe" data-schritt>Aus acht Schritten und drei Gefühlen: drei Momente.</p>
+    </Aufloesung>
+    <div class="nur-handout">
+      <p>Die Momente, Zitate und Zählungen sind die der fertigen Kaffeebar-Map (<a href="/innolab/methoden/journey-map#beispiel">Experience Map, Beispiel</a>). Schritte ohne Gefühl und ohne Zitat werden kein Moment; sie bleiben im Snapshot. Ein Gefühl, zu dem kein Schritt gehört, ist eine Frage für das nächste Interview: Wann war das?</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="worte-beleg">C: Zusammenfassung statt Stimme</h2>
+    <p class="folie-satz">Wer spricht auf der Karte – die Kundschaft oder ihr?</p>
+    <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
+      <p class="pointe">Ein Moment steht in den Worten der Kundschaft – und ein Zitat trägt ihn.</p>
+      <div class="gegenueber">
+        <p><CircleX size={20} aria-hidden="true" class="icon-nein" /> „Viele entscheiden sich aus Zeitmangel gegen die Kaffeebar.“</p>
+        <p><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> <strong>„Ich komme in die Halle und entscheide.“</strong> <span class="id">I2-1</span></p>
+      </div>
+      <ul class="belegprobe" data-schritt>
+        <li class="beleg-zitat">„{ZITATE.get('I2-1')}“ <span class="id">I2-1</span> <em>Zitat: zählt</em></li>
+        <li class="beleg-notiz">„{NOTIZ_SATZ}“ <em>Notiz: zählt nicht</em></li>
+        <li class="beleg-meinung">„{ZITATE.get('I4-2')}“ <span class="id">I4-2</span> <em>Meinung, kein erzählter Moment</em></li>
+      </ul>
+      <ul class="gross dicht">
+        <li data-schritt>Gezählt werden Geschichten, nicht Stickies – und nur, was ein Zitat trägt.</li>
+        <li data-schritt>Die ID muss tragen, was auf der Karte steht.</li>
+        <li data-schritt>Eure eigene Frage ist kein Beleg.</li>
+      </ul>
+      <p class="small muted">Zählung und Zitat-ID: Kursregel.</p>
+    </Aufloesung>
+    <div class="nur-handout">
+      <p>Eine Zusammenfassung in der dritten Person („Viele …“, „Die Pendler*innen …“) klingt sachlich, ist aber eure Deutung. Auf die Map kommt der Moment in den Worten der Person, mit dem Zitat, das ihn trägt. Notizen zeigt ihr gestrichelt, zählt sie aber nicht. Eine Meinung („Anstellen ist ein Glücksspiel.“) ist kein erzählter Moment. Und was ihr im Interview gefragt habt, belegt nichts: Beleg ist, was die Person geantwortet hat.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="umweg-tief-ende">Was allen dreien fehlt: Umweg, Tief, Ende</h2>
+    <p class="folie-satz">Wo kehrt jemand um, wo ist es am schlimmsten – und wie geht es aus?</p>
+    <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
+      <p class="pointe">Die Map zeigt auch, wo jemand umkehrt, aufgibt – und wie es ausgeht.</p>
+      <KaffeebarMap />
+      <ul class="gross dicht">
+        <li data-schritt><CornerDownRight size={20} aria-hidden="true" /> Umweg und Schleife als Pfeil.</li>
+        <li data-schritt>Marke am Moment: <span class="nw">‚Tief · I4-4‘</span>, <span class="nw">‚Ende · I3-5‘</span>.</li>
+        <li data-schritt>Kein Zitat? Graue Karte – sie zählt nicht, bleibt aber sichtbar, etwa <span class="chip grau">Ende? – nicht erzählt</span></li>
+        <li data-schritt>Passt ein Zitat unter zwei Momente, sind es einer – oder ihr trennt schärfer.</li>
+      </ul>
+      <p class="small muted">{TORRES}, S. 56, 86–87; stärkster Moment und Ende: <a href="/innolab/methoden/journey-map#peak-end">Peak-End</a>.</p>
+    </Aufloesung>
+    <div class="nur-handout">
+      <p>Die Kaffeebar-Map hat ihren Umweg (Automat → Zug), ihre Tiefpunkte und ein erzähltes Ende (I3-5). Erzählt bei euch niemand, wie es ausging, legt ihr eine graue Karte „Ende? – nicht erzählt“ hin: Sie zählt nicht, ist aber die nächste Interviewfrage. Momente ohne Überschneidung, damit jeder Ast eine eigene Chance trägt ({TORRES}, S. 86–87).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="eure-map">Jetzt eure Map: drei bis fünf Momente</h2>
+    <p class="folie-satz">Nehmt, was ihr habt – Ablauf, Gefühle, Gruppen – und baut daraus eure Momente. <Timer minuten={12} /></p>
+    <MiroFrame name="T2 · 1 · Experience Map" />
+    <ol class="gross dicht">
+      <li>Schritt und Gefühl zum selben Zeitpunkt zusammenlegen – was ohne Gefühl und Zitat bleibt, bleibt im Snapshot.</li>
+      <li>Je Moment ein Zitat mit ID, Gefühlswort fett, ‚N von 3‘.</li>
+      <li>Umweg oder Schleife als Pfeil. Marken: <span class="nw">‚Tief · ID‘</span>, <span class="nw">‚Ende · ID‘</span>.</li>
+      <li>Ohne Zitat: graue Karte, ‚0 von 3‘.</li>
+    </ol>
+    <p class="small muted">Das Startbeispiel in eurer Spalte dürft ihr nehmen, ändern oder liegen lassen.</p>
+    <div class="nur-handout">
+      <p>Jede*r arbeitet allein in der eigenen Spalte von T2 · 1, Markus geht herum und fragt nach. Was ihr an Tag 2 gebaut habt, ist das Material: ein Ablauf liefert die Schritte, eine Reihe Gefühle den Kontext, Gruppen die Zählung. Bei drei Interviews ist M = 3.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="in-den-baum">Eure Momente, laut</h2>
+    <p class="folie-satz">Reihum: Nennt eure drei bis fünf Momente – sie werden die blauen Karten eures Baums.</p>
+    <p data-schritt class="gross">Die anderen hören auf eines: Überschneiden sich zwei?</p>
+    <p><a href="/innolab/methoden/baum">Weiter: Opportunity Solution Tree</a></p>
+    <div class="nur-handout">
+      <p>Je Person eine Minute: Momente in der Reihenfolge der Geschichte vorlesen. Wer zuhört, stellt höchstens eine Frage: „Sind X und Y ein Zeitpunkt oder zwei?“ Danach holt ihr die Momente als blaue Karten in euren Baum.</p>
+    </div>
+  </Folie>
+
+  <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} next={{ href: '/innolab/methoden/baum', t: 'Opportunity Solution Tree' }} />
+</Layout>
+
+<style>
+  .nw { white-space: nowrap; }
+  .id { color: var(--muted); white-space: nowrap; font-size: .9em; }
+  .pointe { font-weight: 700; font-size: 1.1rem; max-width: none; margin: .4rem 0 .6rem; }
+  /* Folie „bausteine“: vier Kacheln, verbunden mit „+“. */
+  .bausteine { list-style: none; margin: 1.2rem 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.6rem; }
+  :global(.content) .bausteine > li { position: relative; margin: 0; display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: 1rem .6rem; text-align: center; font-weight: 600; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+  .bausteine > li :global(svg) { color: var(--accent); }
+  .bausteine > li + li::before { content: '+' / ''; position: absolute; left: -1.15rem; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--muted); }
+  /* Folie „drei-anlaeufe“: drei Felder nebeneinander, am Handy untereinander. */
+  .anlaeufe { container: anlaeufe / inline-size; display: grid; grid-template-columns: 1.1fr .7fr 1.2fr; gap: 1rem; margin: .8rem 0 .4rem; }
+  .anlauf { border: 1px solid var(--border); border-radius: var(--radius); padding: .5rem .7rem; font-size: .85rem; line-height: 1.3; }
+  .anlauf-name { margin: 0 0 .3rem; font-family: var(--mono); font-weight: 700; font-size: 1rem; }
+  .anlauf-fluss { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .2rem; }
+  :global(.content) .anlauf-fluss > li { margin: 0; display: inline-flex; align-items: center; }
+  .anlauf-fluss > li > :first-child, .anlauf-fluss > li { white-space: nowrap; }
+  .anlauf-fluss > li { padding: .1rem .35rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+  .anlauf-fluss > li + li::before { content: '→' / ''; margin-right: .3rem; color: var(--muted); }
+  .anlauf-karten { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+  :global(.content) .anlauf-karten > li { margin: 0; padding: .3rem .5rem; border-radius: var(--radius); background: var(--yellow-soft); border: 1px solid var(--yellow-ink); }
+  .anlauf-kopf { margin: .3rem 0 .2rem; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .anlauf-c .anlauf-kopf:first-child { margin-top: 0; }
+  .mini-bausteine { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; margin: .3rem 0 0; }
+  @media (max-width: 760px) { .anlaeufe { grid-template-columns: 1fr; } }
+  /* Folien 4–5: Bilanz der vier Bausteine. */
+  .bilanz { display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin: .2rem 0 .6rem; max-width: none; font-weight: 600; }
+  .bilanz span { display: inline-flex; align-items: center; gap: .25rem; }
+  .bilanz .ja { color: var(--green); }
+  .bilanz .nein { color: var(--muted); }
+  /* Folie „zusammen“: je Moment eine Spalte – Schritte + Gefühl, darunter die Karte. */
+  .chip { display: inline-block; padding: .1rem .4rem; margin: .1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .85rem; white-space: nowrap; }
+  .chip.gefuehl { background: var(--yellow-soft); border-color: var(--yellow-ink); font-weight: 600; }
+  .chip.grau { background: var(--code-bg); color: var(--muted); border-style: dashed; }
+  .zusammen { list-style: none; margin: .6rem 0 .4rem; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; }
+  :global(.content) .zusammen > li { margin: 0; display: flex; flex-direction: column; align-items: center; gap: .2rem; text-align: center; }
+  .z-schritte { display: flex; flex-wrap: wrap; justify-content: center; }
+  .z-plus, .z-pfeil { color: var(--muted); font-weight: 700; }
+  .karte { display: flex; flex-direction: column; align-items: flex-start; gap: .25rem; width: 100%; padding: .5rem .7rem; text-align: left; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .85rem; line-height: 1.3; }
+  .karte strong { font-size: .95rem; line-height: 1.25; }
+  .karte .zaehl { font-weight: 600; }
+  .karte .pill { white-space: nowrap; font-size: .85em; line-height: 1.2; padding: .1rem .4rem; }
+  .rest { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem; max-width: none; }
+  @media (max-width: 760px) { .zusammen { grid-template-columns: 1fr; } }
+  /* Folie „worte-beleg“: Zusammenfassung gegen Moment, darunter die Belegprobe. */
+  .gegenueber { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .gegenueber p { display: flex; align-items: flex-start; gap: .4rem; margin: 0; padding: .5rem .7rem; border: 1px solid var(--border); border-radius: var(--radius); max-width: none; }
+  .gegenueber :global(.icon-nein) { color: var(--muted); flex: none; margin-top: .15rem; }
+  .gegenueber :global(.icon-ja) { color: var(--green); flex: none; margin-top: .15rem; }
+  .belegprobe { list-style: none; margin: .6rem 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; font-size: .85rem; }
+  :global(.content) .belegprobe > li { margin: 0; padding: .35rem .55rem; border-radius: var(--radius); border: 1px solid var(--border); }
+  .belegprobe em { display: block; font-style: normal; font-weight: 700; font-size: .8rem; }
+  .beleg-zitat { background: var(--yellow-soft); border-color: var(--yellow-ink) !important; }
+  .beleg-notiz { background: var(--code-bg); border-style: dashed !important; color: var(--muted); }
+  .beleg-meinung { background: var(--code-bg); color: var(--muted); }
+  @media (max-width: 760px) { .gegenueber { grid-template-columns: 1fr; } .bausteine { grid-template-columns: repeat(2, minmax(0, 1fr)); } .bausteine > li:nth-child(3)::before { content: none; } }
+</style>

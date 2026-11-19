@@ -211,7 +211,7 @@ export const METHODEN: Methode[] = [
     ki: 'Liest eure Interviews und fragt, welche Geschichte in der Map fehlt und wo sich Momente überschneiden.',
   },
   {
-    slug: 'baum', name: 'Opportunity Solution Tree', tag: 3, dauer: 75,
+    slug: 'baum', name: 'Opportunity Solution Tree', tag: 3, dauer: 65,
     frage: 'Welche Chancen aus den Interviews gehören unter welchen Moment – und wie hängen sie zusammen?',
     braucht: ['brief', 'synthese', 'journey'], ergibt: ['baum'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 6, S. 78–95',
@@ -226,7 +226,7 @@ export const METHODEN: Methode[] = [
     ki: 'Liest eure Interviews und sucht die sechs Anti-Muster – mit Zitat aus Baum und Interview.',
   },
   {
-    slug: 'ziel-chance', name: 'Ziel-Chance wählen', tag: 3, dauer: 60,
+    slug: 'ziel-chance', name: 'Ziel-Chance wählen', tag: 3, dauer: 50,
     frage: 'An welcher Chance arbeiten wir als Nächstes – und warum gerade an dieser?',
     braucht: ['brief', 'synthese', 'baum'], ergibt: ['ziel'],
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 7, S. 96–104; Anthony W. Ulwick, „Turn Customer Input into Innovation“, HBR (2002)',

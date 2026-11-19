@@ -73,10 +73,12 @@ describe('Kennungen der Seiten', () => {
 
 // Eine Gruppe öffnet sich beim Aufdecken für alle zugleich. Über zwei Folien hinweg verriete sie die Pointe einer späteren
 // Übung – erlaubt nur, wo es gewollt ist: Toast (Video + Erklärung auf der Folgefolie) und MOM_TEST_GRUPPE (letzte
-// Mom-Test-Übung „ausgraben“ + Material im Handout, das nicht auf einer Folie steht).
+// Mom-Test-Übung „ausgraben“ + Material im Handout, das nicht auf einer Folie steht) und die drei Anläufe an Tag 3
+// (Experience Map nachschärfen: eine Übung auf „drei-anlaeufe“, ihre Auflösung auf den fünf Folien danach).
 const GRUPPE_UEBER_FOLIEN: Record<string, string[]> = {
   '../pages/innolab/tag-1.astro': ['toast'],
   '../pages/innolab/methoden/interview.astro': ['{MOM_TEST_GRUPPE}'],
+  '../pages/innolab/tag-3/experience-map.astro': ['{GRUPPE}'],
 };
 /** Gruppen einer Seite → in welchen Folien (Index, -1 = außerhalb) ihre Auflösungen stehen. */
 function gruppenOrte(quelle: string): Map<string, Set<number>> {

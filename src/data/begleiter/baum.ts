@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 3, 09:05–10:20; bis 12.11. für Tag 2 geplant). Kein
+// Begleiter-Notizen zu src/pages/innolab/methoden/baum.astro (Tag 3, 09:25–10:30; bis 12.11. für Tag 2 geplant, bis 19.11. 09:05–10:20). Kein
 // Vorwissen eingetragen; der Baum ist seit Tag 1 der rote Faden, heute kommt die Ebene der Chancen dazu.
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 6, S. 78–95).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
@@ -357,13 +357,13 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Timer 12 min: erst Momente als blaue Karten, dann Inventar.',
-      'Nach 12 min: Struktur allein, Linien ziehen, Timer 10 min.',
-      'Nach 22 min: weiter zur Checkliste, dort Ablauf ansagen, Timer 12 min.',
-      'Nach 34 min: Funde einarbeiten, Prüfliste, dann Claude mit Bildschirmfoto.',
+      'Timer 10 min: erst Momente als blaue Karten, dann Inventar.',
+      'Nach 10 min: Struktur allein, Linien ziehen, Timer 9 min.',
+      'Nach 19 min: weiter zur Checkliste, dort Ablauf ansagen, Timer 12 min.',
+      'Nach 31 min: Funde einarbeiten, Prüfliste, dann Claude mit Bildschirmfoto.',
       'Wenige Interviews: volles Feld „Nur in einem Interview“, dünner Baum – normal.',
     ],
-    uebung: { dauer: '39 min (12 + 10 + 12 + 5)', form: 'allein, dann zu dritt reihum' },
+    uebung: { dauer: '35 min (10 + 9 + 12 + 4)', form: 'allein, dann zu dritt reihum' },
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
