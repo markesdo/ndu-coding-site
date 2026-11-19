@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MIRO_FRAMES } from '../components/miro-frames';
+import { MIRO_FRAMES, MIRO_FRAMES_OHNE_ID } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
 import { anzeige, fremdeSeite, type Zustand } from '../components/begleiter-anzeige';
 import { TAG_1 } from '../data/begleiter/tag';
@@ -333,7 +333,9 @@ describe('Tageskarte', () => {
 
 describe('Miro-Frames in den Notizen', () => {
   it('jeder genannte Frame existiert auf dem Team-Board', () => {
-    expect(notizenMitFremdemFrame(NOTIZEN, MIRO_FRAMES)).toStrictEqual([]);
+    // Frames, die auf dem Board noch angelegt werden (miro-frames.ts, Platzhalter ohne ID), gelten als bekannt.
+    const bekannt = { ...MIRO_FRAMES, ...Object.fromEntries(MIRO_FRAMES_OHNE_ID.map((n) => [n, ''])) };
+    expect(notizenMitFremdemFrame(NOTIZEN, bekannt)).toStrictEqual([]);
   });
   it('erkennt einen unbekannten Frame-Namen', () => {
     const notizen = {
@@ -404,6 +406,18 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(seite.filter((f) => !NOTIZEN[pfad]?.[f.id]?.live?.some((s) => s.trim() !== '')).map((f) => `${f.pfad}#${f.id}`)).toStrictEqual([]);
     const reihe = [...new Set(folien.map((f) => f.pfad))];
     expect(reihe.indexOf(pfad) + 1).toBe(reihe.indexOf('/innolab/methoden/baum'));
+  });
+  // 19.11. (Markus): Die eigene Map geht Markus mit jeder Person auf T3 · 0 durch, 15 min (3 × 5); die Kaffeebar-Folien
+  // davor in etwa 10 min (darin die 4-min-Übung); der Block bleibt 09:00–09:25.
+  it('Tag 3: experience-map – Durchgang 15 min auf T3 · 0, Übungen passen in den 25-min-Block', () => {
+    const pfad = '/innolab/tag-3/experience-map';
+    const n = NOTIZEN[pfad] ?? {};
+    expect(uebungMinuten(n['eure-map']?.uebung?.dauer)).toBe(15);
+    expect(n['eure-map']?.miro?.frame).toBe('T3 · 0 · So entsteht eure Map');
+    expect(quellen[pfad]).toContain('<MiroFrame name="T3 · 0 · So entsteht eure Map" />');
+    const summe = Object.values(n).reduce((a, x) => a + (uebungMinuten(x.uebung?.dauer) ?? 0), 0);
+    // 4 (drei Anläufe) + 15 (Durchgang); die übrigen Kaffeebar-Folien brauchen gut 6 min.
+    expect(summe).toBeLessThanOrEqual(25 - 6);
   });
   // Tag 2 (12.11.): Eröffnung, die drei Methoden, Abschluss – der Begleiter folgt jeder Folie, und jede hat Stichworte.
   const TAG_2_SEITEN = ['/innolab/tag-2', '/innolab/methoden/synthese', '/innolab/methoden/journey-map', '/innolab/methoden/baum', '/innolab/tag-2/abschluss'];

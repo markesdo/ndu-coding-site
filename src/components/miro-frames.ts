@@ -26,3 +26,9 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T5 · 1 · Backlog-Reihenfolge': '3458764687968819129',
   'T5 · 2 · Wertkurve & ERRC': '3458764687968975610',
 };
+
+// PLATZHALTER: Frames, die auf dem Board noch angelegt werden und deren ID noch fehlt. Die Pille bleibt Text, bis die ID
+// oben in MIRO_FRAMES steht – dann den Namen hier streichen (der Test verlangt, dass ein Name nur an einer Stelle steht).
+export const MIRO_FRAMES_OHNE_ID: readonly string[] = [
+  'T3 · 0 · So entsteht eure Map',
+];
