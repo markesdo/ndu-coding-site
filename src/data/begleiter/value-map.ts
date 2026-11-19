@@ -193,26 +193,27 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Timer 8 min: drei Lückensätze, roh.',
       'Nach 8 min: Haken, Kreuze, Fragezeichen gegen die obersten Einträge.',
-      'Nach 15 min: zu dritt, je Person gut zweieinhalb Minuten.',
-      'Nach 23 min: Value Map der gewählten Idee, mit IDs.',
+      'Nach 15 min: Kreuze befragen allein, Timer 4 min.',
+      'Nach 19 min: Value Map der gewählten Idee, Timer 12 min.',
+      '1:1 ab Minute 15, je 2,5 min: Hewen, Joachim, Sofie.',
       'Nach 31 min: VALUE-MAP.md und eine Zeile ins Entscheidungslog.',
       'Wenn hinten: Value Map nur mit je einem Schmerzlinderer und Gewinnerzeuger.',
     ],
-    uebung: { dauer: '34 min (8 + 7 + 8 + 8 + 3)', form: 'allein, in der Mitte zu dritt reihum' },
+    uebung: { dauer: '34 min (8 + 7 + 4 + 12 + 3)', form: 'allein, Markus fragt je nach einem Kreuz' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
         'Eigene Spalte: „Drei Lückensätze“, darunter „Fit: ✓ ✗ ?“, darunter „Value Map der gewählten Idee“.',
         'Die drei Ideen aus „Drei für den Vergleich in T3 · 4“ (Frame T3 · 3) herüberduplizieren.',
-        'Zu dritt: „Alle zu mir holen“ auf die Spalte, die dran ist; die anderen zeigen mit dem Cursor auf ein Kreuz und fragen.',
+        'Kreuze befragen: je ✗ und ? ein kleiner Zettel „Was müsste stimmen?“ daneben; Markus geht von Spalte zu Spalte.',
       ],
     },
     ablauf: {
       schritte: [
         'Lückensätze (8 min): je Idee ein Satz; Job, Pain und Gain mit ID aus dem eigenen Profil.',
         'Fit vergleichen (7 min): jede Idee gegen die obersten Einträge – ✓, ✗ oder ?.',
-        'Zu dritt (8 min): Jede*r zeigt die Wahl in einem Satz; die anderen fragen nach einem Kreuz und einem Fragezeichen.',
-        'Value Map (8 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger der gewählten Idee, je mit P- oder G-ID; „bewusst offen“ dazuschreiben.',
+        'Kreuze befragen, allein (4 min): zu jedem ✗ und ? der gewählten Idee ein Satz: Was müsste stimmen? Markus fragt bei jeder Person nach einem Kreuz (Hewen, Joachim, Sofie, je gut zwei Minuten, bis in die Value Map hinein). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Value Map (12 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger der gewählten Idee, je mit P- oder G-ID; „bewusst offen“ dazuschreiben.',
         'Festhalten (3 min): docs/VALUE-MAP.md; eine Zeile ins Entscheidungslog: gewählt, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',
       ],
       achten: [

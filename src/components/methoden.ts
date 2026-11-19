@@ -262,7 +262,7 @@ export const METHODEN: Methode[] = [
       { id: 'ideation-menge', text: 'Für die Ziel-Chance stehen 15 bis 20 Ideen, entstanden im Wechsel von allein und geteilt.' },
       { id: 'ideation-aussortiert', text: 'Ideen, die die Ziel-Chance nicht lösen, sind aussortiert und stehen getrennt.' },
       { id: 'ideation-drei', text: 'Genau drei Ideen gehen weiter; bei jeder steht, warum sie die Ziel-Chance trifft.' },
-      { id: 'ideation-verschieden', text: 'Die drei sind verschieden und keine Varianten derselben Idee; jede hat eine Fürsprecher*in.' },
+      { id: 'ideation-verschieden', text: 'Die drei sind verschieden und keine Varianten derselben Idee; zu jeder steht ein Satz, warum sie die Ziel-Chance trifft.' },
       { id: 'ideation-claude', text: 'Ideen von Claude sind als solche markiert.' },
     ],
     ki: 'Nach der ersten eigenen Runde, wenn ihr feststeckt: analoge Produkte aus anderen Branchen und extreme Nutzer*innen.',

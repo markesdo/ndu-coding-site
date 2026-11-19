@@ -94,11 +94,12 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   'eure-map': {
     live: [
       'Timer 12 min: allein in der eigenen Spalte auf T2 · 1.',
-      'Herumgehen: auf die Stelle zeigen und fragen, nichts umschreiben.',
+      '1:1: Sofie 7 min, Joachim 4, Hewen 4.',
+      'Auf die Stelle zeigen und fragen, nichts umschreiben.',
       'Fragen: Welcher Schritt gehört zu diesem Gefühl?',
       'Nach 10 min: Je Moment ein Zitat mit ID?',
     ],
-    uebung: { dauer: '12 min', form: 'allein, Markus geht herum' },
+    uebung: { dauer: '12 min', form: 'allein, Markus 1:1 der Reihe nach' },
     miro: {
       frame: 'T2 · 1 · Experience Map',
       schritte: [
@@ -106,15 +107,16 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
         'Je Moment ein Zitat mit ID und ‚N von 3‘; ohne Zitat graue Karte.',
       ],
     },
-    ueberleitung: 'Reihum: eure Momente, laut.',
+    ueberleitung: 'Letzter Blick, jede*r für sich: ein Zeitpunkt oder zwei?',
   },
   'in-den-baum': {
     live: [
-      'Reihum, je eine Minute: Momente in Reihenfolge vorlesen.',
-      'Höchstens eine Frage pro Person: ein Zeitpunkt oder zwei?',
+      'Jede*r für sich: Momente in Reihenfolge lesen.',
+      '„Passt ein Zitat unter zwei Momente? Dann ist es einer.“',
+      '1:1 zu Ende führen, wer noch nicht dran war.',
       'Weiter zum Baum: Momente werden die blauen Karten.',
     ],
-    uebung: { dauer: '3 min', form: 'reihum laut' },
+    uebung: { dauer: '3 min', form: 'allein, Selbstprüfung' },
     ueberleitung: 'Die Momente stehen – jetzt wächst der Baum.',
   },
 };
