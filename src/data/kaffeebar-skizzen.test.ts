@@ -1,7 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import KAFFEEBAR_INTERVIEWS from '../werkstatt/beispiele/interviews.json';
 import { NOTIZEN_JOURNEY_MAP } from './begleiter/journey-map';
-import { GRUPPEN, SKIZZEN, skizzenFehler, zaehlung, type Skizze } from './kaffeebar-skizzen';
+import { GRUPPEN, SKIZZEN, skizzenFehler, zaehlung, zitatIdsIn, type Skizze } from './kaffeebar-skizzen';
+
+// Tag 3, experience-map#zusammen: Ein Moment ist eine Sammlung von Zitaten – unter jeder Karte die IDs der Gruppe.
+describe('zitatIdsIn', () => {
+  it('liefert die Zitat-IDs der Gruppe in Skizzen-Reihenfolge, ohne Notizen und ohne ungruppierte', () => {
+    expect(zitatIdsIn('a')).toStrictEqual(['I2-4', 'I2-1', 'I2-2', 'I3-1', 'I5-3']);
+    expect(zitatIdsIn('c')).toStrictEqual(['I3-2', 'I3-3', 'I5-6']);
+    expect(zitatIdsIn('d')).toStrictEqual(['I3-5']);
+  });
+  it('Notiz mit Gruppe bleibt draußen', () => {
+    expect(zitatIdsIn('c', [{ i: 'I9', stickies: [{ t: 'Notiz', notiz: true, g: 'c' }, { t: 'Zitat', id: 'I9-1', g: 'c' }] }])).toStrictEqual(['I9-1']);
+  });
+});
 
 const IDS = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
 
