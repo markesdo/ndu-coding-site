@@ -239,10 +239,10 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Nach Frage 3 den letzten Schritt aufdecken: Einmal gehört und treibt den Outcome → im Baum mit „1 von 5“ (mitbestellen); treibt ihn nicht → bleibt im Snapshot (erster Schluck, gehetzt im Büro).',
       ],
       achten: [
-        'Welches Zitat zu welchem Moment gehört, ist Lesart des Kurses: Auf der Map von Tag 2 steht I3-2 in der Spalte „Anstehen und Warten“.',
+        'Jede Karte trägt die ID ihrer Stelle: I3-1 in der Halle, I3-2 und I3-3 beim Warten (wie auf der Map von Tag 2). Die Zuordnung ist Lesart des Kurses.',
         'Nicht ohne Teilchancen erfinden – ergänzen nur über Geschwistern; der Kaffeebar-Baum braucht keine.',
       ],
-      aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I3-2), Warten „Wann ist mein Kaffee fertig?“ (I3-3; Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein – der Moment ‚Halle‘ fasst sie schon zusammen, eine Ebene dazwischen wäre doppelt (S. 90–91).',
+      aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I3-1), Warten „Wann ist mein Kaffee fertig?“ (I3-2, I3-3; Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein – der Moment ‚Halle‘ fasst sie schon zusammen, eine Ebene dazwischen wäre doppelt (S. 90–91).',
     },
     verstaendnis: {
       frage: 'Sind „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, reicht mir die Zeit nicht.“ Geschwister?',
@@ -373,6 +373,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Passt eine Chance unter zwei Momente, ist sie zu breit (Torres S. 88, 94).',
         'Was offen bleibt, wird eine Frage für die nächsten Interviews.',
         'Wenige Interviews: viele Karten mit „1 von N“ – normal, die Zahl kommt drauf.',
+        'Grauer Moment (niemand hat ihn erzählt): kommt blau in den Baum, als „Name · 0 von 3 · (nicht erzählt)“. Darunter nur Karten mit echter Zitat-ID; sonst ein grauer Zettel „Nächstes Interview: …“.',
         'Ein Zitat ist noch keine Chance: fragen, was die Person hier braucht (Torres S. 69, 88) – für Momente ohne Karte.',
         'Die Sätze auf den gelben Karten im Streifen „Ungeprüft“ stammen aus den Snapshots (Feld „Chancen“), von den Lehrenden am 19.11. überarbeitet. Die Studierenden dürfen sie in eigene Worte fassen.',
       ],

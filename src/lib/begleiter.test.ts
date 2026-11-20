@@ -569,6 +569,17 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(inventar).toContain('<p class="zitat-chance">Moment ohne Karte? Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?</p>');
     expect(NOTIZEN[pfad]?.vorgehen?.live).toContain('„Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?“');
   });
+  // Entscheidung 21 (20.11. spät): I3-2 fiel nur beim Anstehen und Warten. Die Halle-Chance „Geht sich ein Kaffee noch aus?“
+  // trägt I2-4, I3-1, I5-2 (3 von 5), die Warten-Chance „Wann ist mein Kaffee fertig?“ I2-5, I3-2, I3-3 (2 von 5).
+  it('Tag 3: Kaffeebar – die Halle-Chance trägt nirgends I3-2, die Warten-Chance schon', () => {
+    const texte = ['/innolab/methoden/baum', '/innolab/methoden/ziel-chance'].flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
+    const halle = texte.flatMap((s) => [...s.matchAll(/Geht sich ein Kaffee noch aus\?“(?:'\s*:\s*\[|\s*\()([^)\]]*)/g)].map((m) => m[1])).filter((ids) => /I\d-\d/.test(ids));
+    expect(halle.length).toBeGreaterThan(2);
+    expect(halle.filter((ids) => ids.includes('I3-2'))).toStrictEqual([]);
+    expect(halle.filter((ids) => ids.includes('I3-1')).length).toBe(halle.length);
+    expect(quellen['/innolab/methoden/baum']).toContain("'„Wann ist mein Kaffee fertig?“': ['I2-5', 'I3-2', 'I3-3'],");
+    expect(quellen['/innolab/methoden/ziel-chance']).toContain('Je drei Interviews: I2-4, I3-1, I5-2 gegen I2-2, I3-4, I4-1.');
+  });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
   // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.
   it('Tag 3: Kaffeebar-Momente als Tätigkeitsnamen auf experience-map, baum und ziel-chance', () => {
