@@ -281,7 +281,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       '„Das erste iPhone hatte aufwendige Animation – aber kein Kopieren und Einfügen.“',
       'Fragen: Warum diese Reihenfolge?',
       '„Die Story sagt nicht nur, wie ihr redet, sondern was ihr baut.“',
-      'Brücke: an Tag 4 schneidet die Story den Prototyp.',
+      'Brücke: Eine geschriebene Story schneidet später den Prototyp.',
     ],
     verstaendnis: {
       frage: 'Warum Animation vor Kopieren und Einfügen?',
@@ -294,7 +294,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 3, Supporting the Story`,
       },
       {
-        text: '„Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out.“ Der Bezug zur Story Map an Tag 4 ist ein Übertrag des Kurses.',
+        text: '„Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out.“ Der Bezug zur Story Map ist ein Übertrag des Kurses.',
         quelle: `${LICHAW}, Kap. 8, Stories Are Character-Driven; Kursregel`,
       },
     ],
