@@ -16,12 +16,11 @@ import MiroFrame from '../../../components/MiroFrame.astro';
 import { KAFFEEBAR_BAUM_INTERVIEWS } from '../../../components/innolab-beispiel';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
-const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Harvard Business Review, Januar 2002';
 ---
 <Layout title="Ziel-Chance wählen">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
   <h1>Ziel-Chance wählen</h1>
-  <p class="lead">Ihr arbeitet an einer Chance (opportunity) zur Zeit. Welche das ist, entscheidet ihr, indem ihr Geschwister (siblings: Teilchancen derselben Chance) miteinander vergleicht – durch vier Linsen, ohne Punkteschema. Ulwicks Formel lernt ihr als Gegenposition kennen – gerechnet wird heute nicht.</p>
+  <p class="lead">Ihr arbeitet an einer Chance (opportunity) zur Zeit. Welche das ist, entscheidet ihr, indem ihr Geschwister (siblings: Teilchancen derselben Chance) miteinander vergleicht – durch vier Linsen, ohne Punkteschema.</p>
   <Orientierung seite="innolab/methoden/ziel-chance" leiste={false} />
   <MethodenKarte slug="ziel-chance" />
 
@@ -151,43 +150,6 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
   </Folie>
 
   <Folie>
-    <h2 id="ulwick-outcomes">Ulwick: nach dem Ergebnis fragen, nicht nach der Lösung</h2>
-    <p class="folie-satz">„Customers only know what they have experienced.“</p>
-    <Fluss label="Vom Wunsch zum Outcome-Satz: Wunsch, Warum, Richtung und Maßeinheit, Outcome-Satz, bestätigen lassen" hervor={[3]} knoten={[
-      { t: 'Wunsch', sub: '„easy to maneuver“' },
-      { t: 'Warum?', sub: 'schnell durch gewundene Gefäße kommen' },
-      { t: 'Richtung + Maßeinheit', sub: 'minimize · time' },
-      { t: 'Outcome-Satz', sub: '„minimize the time it takes to maneuver through a winding vessel“' },
-      { t: 'Bestätigen lassen', sub: 'Trifft es das?' },
-    ]} />
-    <p data-schritt><strong>Jet Ski:</strong> Gefragt, was besser werden soll, wünschten sich die Fahrer*innen Polster zum Stehen. Den Sitz bauten andere.</p>
-    <div class="nur-handout">
-      <p>Anthony Ulwick: Wer Kund*innen nach Lösungen fragt, bekommt, was sie schon kennen. Kawasaki beherrschte den Markt für Wassersport-Fahrzeuge und fragte, was die Fahrt auf dem Jet Ski verbessern würde. Die Antwort: mehr Polster an den Seiten, damit das Stehen bequemer wird. Nach einem Sitz fragte niemand. Kawasaki lieferte die Polster; andere Hersteller entwickelten Modelle zum Sitzen und verdrängten Kawasaki von der Spitze ({ULWICK}, S. 92–93). Zweites Beispiel: Mitte der 1980er ergaben Marktstudien von Ford, Chrysler und GM, dass die Kundschaft Becherhalter wollte. Japanische Hersteller hatten sie seit Jahren; als die amerikanischen nachzogen, gewann keiner einen Vorsprung – die Kundschaft sagte nur: „it’s about time.“ (S. 93).</p>
-      <p>Ulwicks Ausweg: nach Outcomes fragen – was das Produkt für die Menschen leisten soll. „What form the solutions take should be up to you, and you alone.“ (S. 92). Im Interview übersetzt die Moderation jeden Wunsch in einen Satz mit Richtung (minimize, increase) und Maßeinheit (time, number, frequency) und lässt ihn bestätigen. Kardiolog*innen wollten einen Ballon, der „easy to maneuver“ ist; auf die Frage warum sagten sie, sie wollten schnell durch gewundene Gefäße kommen. Daraus wurde „minimize the time it takes to maneuver through a winding vessel“ (S. 95). Denselben Schritt kennt ihr von den Snapshots: „If you had that feature, what would that do for you?“ ({TORRES}, S. 69).</p>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="ulwick">Die Gegenposition: Ulwicks Formel</h2>
-    <p class="folie-satz">Dieselbe Frage als Rechnung – mit rund 30 Interviews und einer Umfrage.</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/ulwick/cordis-opportunity-scores.png" alt="Tabelle „Cordis's Angioplasty Balloon Market-Opportunity Scores“: sechs Outcomes von Kardiolog*innen mit Wichtigkeit, Zufriedenheit und Opportunity-Wert, zum Beispiel Restenose 9,5 / 3,2 / 15,8" quelle="Opportunity-Werte bei Cordis. Ulwick, HBR (2002), S. 97." />
-      <ul>
-        <li data-schritt><strong>Wichtigkeit + max(Wichtigkeit − Zufriedenheit, 0)</strong>: 9,5 + (9,5 − 3,2) = 15,8.</li>
-        <li data-schritt><strong>Ulwicks Bedingung:</strong> Outcomes aus rund 30 Interviews, bewertet in einer Umfrage.</li>
-        <li data-schritt><strong>Torres:</strong> Eine unscharfe Entscheidung als Formel – dann hört ihr auf zu denken.</li>
-        <li data-schritt><strong>Darum heute:</strong> vier Linsen, keine Rechnung. Gemeinsam ist beiden: Bedürfnis statt Lösung.</li>
-      </ul>
-    </BildText>
-    <div class="nur-handout">
-      <p>Ulwicks Fall ist der Medizintechnik-Hersteller Cordis: Rund 30 Interviews sammelten die Outcomes seiner Angioplastie-Ballons, eine quantitative Umfrage bewertete sie ({ULWICK}, S. 94–96).</p>
-      <p>Die Formel im Kasten „The Opportunity Algorithm“: Wichtigkeit plus der Teil der Wichtigkeit, den heutige Lösungen nicht erfüllen; die Klammer wird nie negativ, Überzufriedenheit senkt die Wichtigkeit nicht. Gegen reine Lückenanalyse: Die Outcomes 2 und 5 haben beide eine Lücke von 4,1, aber Werte von 12,4 und 9,2, weil das wichtigere vorgeht. Ulwick nennt das Ergebnis „highly accurate“ und sagt, Unternehmen beseitigten damit das Raten (S. 96–97). Torres nimmt dieselben zwei Fragen als Kundenlinse – und rechnet bewusst nicht.</p>
-      <p>Cordis wählte „minimize the recurrence of a blockage“ als größte Chance, setzte sich 20 % Restenose als Ziel und entwickelte den Stent (S. 96–97). 1993 hatte Cordis weniger als 1 % des Markts für Angioplastie-Ballons (S. 94); nach zwölf neuen Kathetern in den Jahren 1994 und 1995 wuchs sein Marktanteil in der interventionellen Kardiologie in den USA von unter 1 % auf fast 10 % (S. 97).</p>
-      <p>Warum ihr heute nicht rechnet: Erst mit den Outcomes aus rund 30 Interviews und einer quantitativen Bewertung trägt die Rechnung ({ULWICK}, S. 95–96). Mit fünf Interviews pro Produkt wären eure Zahlen eigene Schätzungen – genau die Lage, in der Torres vor dem Mathematisieren warnt: „When we turn a subjective, messy decision into a quantitative math formula, we are treating an ill-structured problem as if it were a well-structured problem.“ ({TORRES}, S. 102). Einig sind sich beide im Ausgangspunkt: Kund*innen liefern Bedürfnisse, nicht Lösungen (Ulwick S. 92, Torres S. 69). Habt ihr später eine größere Zielgruppe und eine Umfrage, ist Ulwicks Formel ein Werkzeug, das ihr kennt. Dass heute nicht gerechnet wird, ist eine Entscheidung dieses Kurses.</p>
-    </div>
-  </Folie>
-
-  <Folie>
     <h2 id="zweiwegtuer">Eine Tür, durch die ihr zurückkönnt</h2>
     <p class="folie-satz">Die Ziel-Chance ist eine umkehrbare Entscheidung – wählt und lernt.</p>
     <ul class="gross">
@@ -214,7 +176,7 @@ const ULWICK = 'Anthony W. Ulwick, „Turn Customer Input into Innovation“, Ha
       <li data-schritt><strong>Begründen, schriftlich:</strong> Wahl, tragende Linse, welche Linse dagegen spricht. <Timer minuten={15} /></li>
       <li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum markieren, eine Zeile im Entscheidungslog. <Timer minuten={3} /></li>
     </ol>
-    <p class="nur-handout">Begründen heißt: drei Sätze in <code>docs/ZIEL-CHANCE.md</code> – eure Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Währenddessen kommt Markus zu jeder und jedem für drei Minuten und fragt, welche Linse fehlt. Torres beschreibt dafür eine Debatte im Team über den eigenen Baum ({TORRES}, S. 101); weil jede*r von euch ein eigenes Produkt hat, ersetzen Schreiben und das Gespräch mit Markus die Runde zu dritt (Kursformat). Dazu gut 15 Minuten Theorie mit der Kaffeebar; die Minuten, die seit dem 19.11. ohne Ulwick-Rechnung frei sind, gehen ins Begründen (6 min) und als Puffer an den Block (etwa 4 min). <code>docs/ZIEL-CHANCE.md</code> füllt ihr im Raum so weit, wie ihr kommt; den Rest und die Prüfung mit Claude bis Tag 4. Die Wahl ist zeitlich begrenzt: Torres empfiehlt, die Entscheidung zu terminieren, statt auf mehr Daten zu warten ({TORRES}, S. 104).</p>
+    <p class="nur-handout">Begründen heißt: drei Sätze in <code>docs/ZIEL-CHANCE.md</code> – eure Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Währenddessen kommt Markus zu jeder und jedem für drei Minuten und fragt, welche Linse fehlt. Torres beschreibt dafür eine Debatte im Team über den eigenen Baum ({TORRES}, S. 101); weil jede*r von euch ein eigenes Produkt hat, ersetzen Schreiben und das Gespräch mit Markus die Runde zu dritt (Kursformat). Dazu etwa 12 Minuten Theorie mit der Kaffeebar; die übrigen rund 8 Minuten des Blocks sind Puffer. <code>docs/ZIEL-CHANCE.md</code> füllt ihr im Raum so weit, wie ihr kommt; den Rest und die Prüfung mit Claude bis Tag 4. Die Wahl ist zeitlich begrenzt: Torres empfiehlt, die Entscheidung zu terminieren, statt auf mehr Daten zu warten ({TORRES}, S. 104).</p>
   </Folie>
 
   <div class="nur-handout">

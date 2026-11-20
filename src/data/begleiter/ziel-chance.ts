@@ -1,13 +1,11 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/ziel-chance.astro (Tag 3, 10:40–11:30; bis 19.11. 10:30–11:30).
-// Kürzen, wenn hinten (in dieser Reihenfolge): bauchwahl, ulwick-outcomes, zweiwegtuer, warum.
-// Seit 19.11. (Markus): Ulwick nur als Theorie – Outcomes statt Lösungen und die Formel als Gegenposition; gerechnet wird nicht.
+// Kürzen, wenn hinten (in dieser Reihenfolge): bauchwahl, zweiwegtuer, warum.
+// Zeit im Block (50 min): Übung 30 min, Theorie etwa 12 min, Rest Puffer.
 // Vorwissen: „bekannt“ aus Need Finding / Market Research (vorwissen.ts).
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 7, S. 96–104; Kap. 2, S. 30–31).
-// Ulwick-Seiten = gedruckte HBR-Seiten 91–97 (quellen/ulwick/text.txt).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
-const ULWICK = 'Anthony W. Ulwick, Turn Customer Input into Innovation, HBR Januar 2002';
 
 export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
   warum: {
@@ -149,7 +147,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 100–101`,
       },
       {
-        text: 'Kundschaft: wie wichtig, wie zufrieden mit heutigen Lösungen; Vorrang hat wichtig und schlecht gelöst. Torres nennt als Quelle der Matrix Dan Olsen und Chen et al. (2007), nicht Ulwick.',
+        text: 'Kundschaft: wie wichtig, wie zufrieden mit heutigen Lösungen; Vorrang hat wichtig und schlecht gelöst. Torres nennt als Quelle der Matrix Dan Olsen und Chen et al. (2007).',
         quelle: `${TORRES}, S. 101, Fußnote 31`,
       },
     ],
@@ -197,7 +195,6 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Zitat vorlesen, kurz stehen lassen.',
       'Fragen: Was verliert ihr, wenn ihr Punkte vergebt?',
       '„Die Linsen füttern euer Gespräch. Sie ersetzen es nicht.“',
-      'Ankündigen: Gleich kommt jemand, der genau das Gegenteil sagt.',
     ],
     verstaendnis: {
       frage: 'Was ist nach Torres falsch daran, jede Chance pro Linse zu bepunkten und zu summieren?',
@@ -213,88 +210,6 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 102`,
       },
     ],
-    ueberleitung: 'Die Gegenposition kommt von Anthony Ulwick – und beginnt mit einem Jet Ski.',
-  },
-
-  'ulwick-outcomes': {
-    live: [
-      'Jet Ski erzählen: gefragt, Polster geliefert, den Sitz bauten andere.',
-      'Fragen: Was hätte Kawasaki stattdessen fragen sollen?',
-      'Fluss zeigen: vom Wunsch über „Warum?“ zum Satz.',
-      '„Ein Outcome-Satz hat eine Richtung und eine Maßeinheit.“',
-      'Wenn hinten: nur den Fluss, Jet Ski in einem Satz.',
-    ],
-    geschichte: {
-      text: 'Kawasaki beherrschte den Markt für Wassersport-Fahrzeuge und fragte die Fahrer*innen, was die Fahrt auf dem Jet Ski verbessern würde. Die wünschten sich mehr Polster an den Seiten, damit das Stehen bequemer wird. Nach einem Sitz fragte niemand. Kawasaki lieferte, was gewünscht war; andere Hersteller entwickelten Modelle zum Sitzen und verdrängten Kawasaki von der Spitze – eine Firma, die für Motorräder bekannt ist, auf denen niemand steht.',
-      quelle: `${ULWICK}, S. 92–93`,
-    },
-    verstaendnis: {
-      frage: 'Macht aus „Am liebsten wüsste ich einfach, wann er fertig ist.“ (I2-5) einen Outcome-Satz.',
-      antwort: 'Zum Beispiel „Minimiere die Zeit, bis ich weiß, wann mein Kaffee fertig ist“: Richtung (minimiere) plus Maßeinheit (Zeit), ohne Lösung (S. 95).',
-      falsch: '„Eine Anzeige mit der Wartezeit“ – das ist eine Lösung.',
-    },
-    kern: [
-      {
-        text: '„Customers only know what they have experienced.“ Niemand hätte nach Mikrowelle, Klettverschluss oder Post-it gefragt. Wer nach Lösungen fragt, wird zur Bedienung am Fast-Food-Schalter, die Bestellungen abarbeitet. „What form the solutions take should be up to you, and you alone.“',
-        quelle: `${ULWICK}, S. 92`,
-      },
-      {
-        text: 'Becherhalter: Mitte der 1980er wünschte sich die Kundschaft von Ford, Chrysler und GM Becherhalter. Japanische Hersteller hatten sie seit Jahren; als die amerikanischen nachzogen, gewann keiner einen Vorsprung – die Kundschaft sagte nur: „it’s about time.“',
-        quelle: `${ULWICK}, S. 93`,
-      },
-      {
-        text: 'So entsteht ein Outcome-Satz: Die Moderation nimmt einen Wunsch („easy to maneuver“), fragt warum (schnell durch gewundene Gefäße kommen) und schreibt ihn mit Art der Verbesserung (minimize, increase) und Maßeinheit (time, number, frequency): „minimize the time it takes to maneuver through a winding vessel“. Dann bestätigen lassen. Ohne Lösungen und ohne unscharfe Wörter wie „easy“, „reliable“.',
-        quelle: `${ULWICK}, S. 95`,
-      },
-      {
-        text: 'Derselbe Griff wie bei den Snapshots an Tag 2: „If you had that feature, what would that do for you?“',
-        quelle: `${TORRES}, S. 69`,
-      },
-    ],
-    fragen: [
-      {
-        frage: 'Ist ein Outcome-Satz dasselbe wie unser Outcome im Produkt-Brief?',
-        antwort: 'Nein. Der Outcome im Brief ist, was Menschen mit eurem Produkt anders tun (Torres, S. 40). Ulwicks „desired outcome“ ist, was die Kundschaft erreichen will – näher an dem, was im Baum Chance heißt (Ulwick, S. 92; Einordnung: unsere).',
-      },
-    ],
-    ueberleitung: 'Hat man solche Sätze, ließe sich rechnen – das ist Ulwicks Formel.',
-  },
-
-  ulwick: {
-    live: [
-      'Tabelle lesen lassen: Welche Zeile ist die größte Chance?',
-      'Formel an Zeile 1 vorrechnen: 9,5 + (9,5 − 3,2) = 15,8.',
-      '„Die Klammer wird nie negativ: Zu zufrieden gibt es nicht.“',
-      'Bei Bedarf: Cordis-Ergebnis erzählen – Stent, Marktanteil.',
-      'Aufdecken: Bedingung – rund 30 Interviews plus Umfrage.',
-      '„Mit fünf Interviews wären es Schätzungen: Heute rechnen wir nicht.“',
-    ],
-    verstaendnis: {
-      frage: 'Wichtigkeit 6,5, Zufriedenheit 8,5 – welcher Wert?',
-      antwort: '6,5. Die Klammer wäre −2, wird aber nie kleiner als null (S. 96–97).',
-      falsch: '4,5 – so rechnet, wer die Klammer negativ werden lässt.',
-    },
-    geschichte: {
-      text: 'Cordis, Medizintechnik aus Florida: 1993 unter 1 % Marktanteil bei Angioplastie-Ballons. Rund 30 Interviews mit Kardiolog*innen, Pflegekräften und Verwaltung sammeln die Outcomes, eine Umfrage bewertet sie. Die größte Chance: „minimize the recurrence of a blockage“ – wichtig und kaum erfüllt. Cordis setzt sich 20 % Restenose als Ziel und entwickelt den Stent. 1994–95 kommen zwölf neue Katheter, der Marktanteil in der interventionellen Kardiologie in den USA steigt von unter 1 % auf fast 10 %, der Umsatz von 223 auf 443 Millionen Dollar; 1996 kauft Johnson & Johnson die Firma.',
-      quelle: `${ULWICK}, S. 94–97`,
-    },
-    kern: [
-      {
-        text: 'Kasten „The Opportunity Algorithm“: Importance + (Importance − Satisfaction) = Opportunity, beide auf einer Skala von 1 bis 10 aus einer quantitativen Umfrage. Ulwick: Die Formel liefere „highly accurate“ Ergebnisse. Gegen reine Lückenanalyse: Outcomes 2 und 5, Lücke je 4,1, Werte 12,4 und 9,2.',
-        quelle: `${ULWICK}, S. 96`,
-      },
-      {
-        text: '„the amount in parentheses can never be less than zero“ – hohe Zufriedenheit mindert die Wichtigkeit nicht. Die Werte unterscheiden sich je Segment. Schlusssatz des Kastens: Wer so priorisiert, beseitige auch das Raten („the guesswork“).',
-        quelle: `${ULWICK}, S. 96–97`,
-      },
-      {
-        text: 'Bedingung: mit rund 30 Teilnehmenden über 96 % der Outcomes erfasst; bewertet wird danach in einer quantitativen Umfrage. Torres warnt vor dem Mathematisieren einer unscharfen Entscheidung.',
-        quelle: `${ULWICK}, S. 95–96; ${TORRES}, S. 101–102`,
-      },
-    ],
-    ablauf: {
-      aufloesung: 'Ulwicks Rechnung trägt erst mit Outcomes aus rund 30 Interviews und einer quantitativen Bewertung; mit fünf Interviews wären es eigene Schätzungen, und genau davor warnt Torres. Darum entscheiden heute die vier Linsen. Beide stimmen im Ausgangspunkt überein: Kund*innen liefern Bedürfnisse, nicht Lösungen. Mit größerer Zielgruppe und Umfrage ist die Formel ein Werkzeug, das ihr kennt.',
-    },
     ueberleitung: 'Bevor ihr selbst wählt: Wie endgültig ist diese Entscheidung?',
   },
 
@@ -350,7 +265,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       schritte: [
         'Ast wählen, allein (8 min): die Momente gegeneinander, pro Linse ein Satz – wer liegt vorn und warum. Größe und Kundschaft mit Zitat-IDs.',
         'Bis zum Blatt (4 min): dasselbe mit den Teilchancen des gewählten Asts. Hängt nur eine Chance darunter, ist sie das Blatt.',
-        'Begründen, schriftlich (15 min, seit 19.11. mit den 6 min der früheren Ulwick-Rechnung): drei Sätze in docs/ZIEL-CHANCE.md – die Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
+        'Begründen, schriftlich (15 min): drei Sätze in docs/ZIEL-CHANCE.md – die Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
         'Festhalten (3 min): Ziel-Chance im Baum markieren, eine Zeile ins Entscheidungslog mit Beleg.',
       ],
       achten: [

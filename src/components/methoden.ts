@@ -229,7 +229,7 @@ export const METHODEN: Methode[] = [
     slug: 'ziel-chance', name: 'Ziel-Chance wählen', tag: 3, dauer: 50,
     frage: 'An welcher Chance arbeiten wir als Nächstes – und warum gerade an dieser?',
     braucht: ['brief', 'synthese', 'baum'], ergibt: ['ziel'],
-    quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 7, S. 96–104; Anthony W. Ulwick, „Turn Customer Input into Innovation“, HBR (2002), als Gegenposition',
+    quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 7, S. 96–104',
     pruefliste: [
       { id: 'ziel-chance-geschwister', text: 'Verglichen wurden Geschwister miteinander – nicht jede Chance einzeln mit „Sollen wir das machen?“.' },
       { id: 'ziel-chance-blatt', text: 'Die Ziel-Chance ist ein Blatt: Unter ihr hängt keine Teilchance mehr.' },

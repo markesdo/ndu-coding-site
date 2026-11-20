@@ -180,7 +180,6 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       'Abbildung: wichtigste Zettel oben.',
       'Jede Spalte für sich: Wichtigkeit, Schwere, Relevanz.',
       '„Ihr dürft mit eurer Einschätzung anfangen – die Interviews prüfen sie.“',
-      'Bei Bedarf: Ulwick war die Gegenposition; hier ohne Formel.',
     ],
     kern: [
       {
