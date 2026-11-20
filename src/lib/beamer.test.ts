@@ -30,6 +30,12 @@ describe('ersteFolieAbstand', () => {
   it('Beamer aus: kein Abstand', () => {
     expect(ersteFolieAbstand({ beamer: false, fensterHoehe: 720, folieOben: 400 })).toBe(0);
   });
+  it('Seitenkopf rastet 8 px tiefer ein (1728 × 1117): Falz liegt 8 px tiefer', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 1117, folieOben: 450, kopfOben: 8 })).toBe(675);
+  });
+  it('negativer kopfOben zählt als 0', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400, kopfOben: -5 })).toBe(320);
+  });
 });
 
 // Ersatz für document.documentElement und localStorage (vitest läuft hier ohne DOM).

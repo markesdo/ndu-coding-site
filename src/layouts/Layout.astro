@@ -132,22 +132,38 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
       const ersteFolie = document.querySelector<HTMLElement>('[data-folie]');
       function falzSetzen() {
         if (!ersteFolie) return;
+        // Erst die echte Kopfleistenhöhe setzen: Mit dem Vorgabewert (48 px) rastet der Seitenkopf sonst ein paar Pixel zu tief ein.
+        hoeheMessen();
         const vorher = ersteFolie.getBoundingClientRect().top;
         ersteFolie.style.marginTop = '';
         const beamer = root.hasAttribute('data-beamer');
-        const abstand = ersteFolieAbstand({ beamer, fensterHoehe: innerHeight, folieOben: ersteFolie.getBoundingClientRect().top + scrollY });
+        // Erster Bildschirm = Rastpunkt des Seitenkopfs (.content, scroll-padding = Höhe der Kopfleiste; beamer.css).
+        const inhalt = document.querySelector('.content');
+        const kopfOben = inhalt ? inhalt.getBoundingClientRect().top + scrollY - (topbar?.getBoundingClientRect().height ?? 0) : 0;
+        const mass = () => ({ beamer, fensterHoehe: innerHeight, folieOben: ersteFolie.getBoundingClientRect().top + scrollY, kopfOben });
+        const abstand = ersteFolieAbstand(mass());
         if (abstand > 0) {
           ersteFolie.style.marginTop = `${(parseFloat(getComputedStyle(ersteFolie).marginTop) || 0) + abstand}px`;
           // Fällt der Rand mit dem des Elements davor zusammen, reicht er nicht ganz: Rest nachlegen.
-          const fehlt = ersteFolieAbstand({ beamer, fensterHoehe: innerHeight, folieOben: ersteFolie.getBoundingClientRect().top + scrollY });
+          const fehlt = ersteFolieAbstand(mass());
           if (fehlt > 0) ersteFolie.style.marginTop = `${parseFloat(ersteFolie.style.marginTop) + fehlt}px`;
         }
         // Steht man schon bei Folie 1 oder weiter (etwa nach einem Sprung per #anker), bleibt die Ansicht, wo sie war.
         const verschoben = ersteFolie.getBoundingClientRect().top - vorher;
         if (verschoben !== 0 && vorher < (topbar?.getBoundingClientRect().height ?? 0) + 4) scrollBy({ top: verschoben, behavior: 'instant' as ScrollBehavior });
       }
+      // Beim Laden rastet der Seitenkopf ein, bevor die Kopfleiste gemessen ist (Vorgabe 48 px): Ist sie höher (1728 × 1117:
+      // 56 px), steht die Seite danach ein paar Pixel tiefer, und Folie 1 ragt in den ersten Bildschirm. Ohne #anker
+      // gehört der Kopf an den Anfang.
+      const kopfAnDenAnfang = () => {
+        if (root.hasAttribute('data-beamer') && !location.hash && scrollY > 0 && scrollY < (topbar?.getBoundingClientRect().height ?? 0)) scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+      };
       if (ersteFolie) {
         falzSetzen();
+        kopfAnDenAnfang();
+        // Das Einrasten läuft weich und kann noch laufen: nach dem Laden, am Ende des Einrastens und kurz danach noch einmal.
+        addEventListener('load', () => { kopfAnDenAnfang(); setTimeout(kopfAnDenAnfang, 400); }, { once: true });
+        addEventListener('scrollend', kopfAnDenAnfang, { once: true });
         addEventListener('resize', falzSetzen);
         const inner = document.querySelector('.content .inner');
         if (inner) new ResizeObserver(falzSetzen).observe(inner);

@@ -72,9 +72,11 @@ export function dieserTabMeldet(fuehrender: string | null, ich: string): boolean
 
 /** Abstand über der ersten Folie im Beamer (Layout.astro): so viel, dass sie genau an der Falz beginnt, am unteren Rand
  *  des ersten Bildschirms. Der Seitenkopf wird so zum Titelbild, und das erste → zeigt Folie 1 ganz, statt sie ein
- *  zweites Mal anzuspringen. folieOben = Oberkante der Folie im Dokument ohne diesen Abstand. 0, wenn der Beamer aus ist
- *  oder die Folie ohnehin an oder unter der Falz beginnt. */
-export function ersteFolieAbstand({ beamer, fensterHoehe, folieOben }: { beamer: boolean; fensterHoehe: number; folieOben: number }): number {
+ *  zweites Mal anzuspringen. folieOben = Oberkante der Folie im Dokument ohne diesen Abstand. kopfOben = wo der erste
+ *  Bildschirm beginnt: Der Seitenkopf ist ein Rastpunkt (beamer.css, .content mit scroll-padding unter der Kopfleiste),
+ *  liegt er tiefer als die Kopfleiste hoch ist, rastet die Seite beim Laden ein paar Pixel tiefer ein. 0, wenn der Beamer
+ *  aus ist oder die Folie ohnehin an oder unter der Falz beginnt. */
+export function ersteFolieAbstand({ beamer, fensterHoehe, folieOben, kopfOben = 0 }: { beamer: boolean; fensterHoehe: number; folieOben: number; kopfOben?: number }): number {
   if (!beamer) return 0;
-  return Math.max(0, Math.ceil(fensterHoehe - folieOben));
+  return Math.max(0, Math.ceil(Math.max(0, kopfOben) + fensterHoehe - folieOben));
 }
