@@ -1,5 +1,36 @@
 import { describe, expect, it } from 'vitest';
-import { beamerSchalten, einstieg, klickAktion, praesentatorAngemeldet, type Seitenart, type Speicher, type Wurzel } from './beamer';
+import { beamerSchalten, dieserTabMeldet, einstieg, ersteFolieAbstand, klickAktion, praesentatorAngemeldet, type Seitenart, type Speicher, type Wurzel } from './beamer';
+
+// Zwei Beamer-Tabs mit Schlüssel: Nur der zuletzt benutzte meldet (wo-ist.ts), sonst springt der Zähler im Begleiter.
+describe('dieserTabMeldet', () => {
+  it('zuletzt benutzter Tab meldet, der andere schweigt', () => {
+    expect(dieserTabMeldet('tab-a', 'tab-a')).toBe(true);
+    expect(dieserTabMeldet('tab-a', 'tab-b')).toBe(false);
+  });
+  it('Wechsel: nach Benutzung von B meldet nur noch B', () => {
+    expect([dieserTabMeldet('tab-b', 'tab-a'), dieserTabMeldet('tab-b', 'tab-b')]).toStrictEqual([false, true]);
+  });
+  it('noch kein Tab festgelegt: jeder meldet', () => {
+    expect(dieserTabMeldet(null, 'tab-a')).toBe(true);
+  });
+});
+
+// Erste Folie im Beamer genau an der Falz: Seitenkopf = Titelbild, das erste → zeigt Folie 1 ganz.
+describe('ersteFolieAbstand', () => {
+  it('kurzer Seitenkopf: Abstand bis zur Falz', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400 })).toBe(320);
+  });
+  it('Bruchteile runden auf, damit die Folie nicht 1 px in den ersten Bildschirm ragt', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400.4 })).toBe(320);
+  });
+  it('Folie beginnt schon unter der Falz oder genau an ihr: kein Abstand', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 900 })).toBe(0);
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 720 })).toBe(0);
+  });
+  it('Beamer aus: kein Abstand', () => {
+    expect(ersteFolieAbstand({ beamer: false, fensterHoehe: 720, folieOben: 400 })).toBe(0);
+  });
+});
 
 // Ersatz für document.documentElement und localStorage (vitest läuft hier ohne DOM).
 function wurzel(...attrs: string[]): Wurzel & { attrs: Map<string, string> } {

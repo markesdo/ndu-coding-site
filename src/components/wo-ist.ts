@@ -6,7 +6,7 @@
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftOberkanten, ueberschriftVon } from './abschnitt';
 import { abfrageKette, jsonHolen, zeitlimit } from '../lib/kette';
 import { hinweis } from './hinweis';
-import { PRAESENTATOR_SCHLUESSEL, beamerSchalten } from '../lib/beamer';
+import { FUEHRENDER_TAB, PRAESENTATOR_SCHLUESSEL, beamerSchalten, dieserTabMeldet } from '../lib/beamer';
 import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
 const KEY = PRAESENTATOR_SCHLUESSEL;
@@ -107,6 +107,24 @@ function praesentator() {
   let sperreBis = 0;
   let fehler = false;
 
+  // Mehrere Tabs im Beamer-Modus mit Schlüssel: Nur der zuletzt benutzte meldet (lib/beamer.ts, dieserTabMeldet).
+  // Wird ein Tab wieder benutzt, meldet er sofort, auch wenn er dieselbe Position vor weniger als 60 s gesendet hat –
+  // inzwischen kann ein anderer Tab sie auf dem Server überschrieben haben.
+  const ICH = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+  const fuehren = () => {
+    try {
+      if (localStorage.getItem(FUEHRENDER_TAB) === ICH) return;
+      localStorage.setItem(FUEHRENDER_TAB, ICH);
+      gesendet = '';
+    } catch {}
+  };
+  const meldeIch = (): boolean => { try { return dieserTabMeldet(localStorage.getItem(FUEHRENDER_TAB), ICH); } catch { return true; } };
+  for (const t of ['focus', 'keydown', 'pointerdown']) addEventListener(t, fuehren, true);
+  addEventListener('pageshow', () => { if (document.hasFocus()) fuehren(); });
+  // Seite verlassen (blättern, Tab schließen): Platz freigeben, damit ein übrig gebliebener Beamer-Tab weitermeldet.
+  addEventListener('pagehide', () => { try { if (localStorage.getItem(FUEHRENDER_TAB) === ICH) localStorage.removeItem(FUEHRENDER_TAB); } catch {} });
+  if (document.hasFocus()) fuehren();
+
   // Live-Schalter: nur wo der Schlüssel liegt. live = sendet, wartet = nur im Beamer-Modus, fehler = letzte Meldung gescheitert.
   const knoepfe = [...document.querySelectorAll<HTMLButtonElement>('[data-praesentator]')];
   const TITEL = {
@@ -152,6 +170,7 @@ function praesentator() {
     zeichnen();
     const key = lies();
     if (!key || pausiert() || !root.hasAttribute('data-beamer') || document.visibilityState !== 'visible') return;
+    if (!meldeIch()) return;
     const jetzt = Date.now();
     const pos = jetzigePosition();
     const s = JSON.stringify(pos);

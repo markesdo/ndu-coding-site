@@ -58,3 +58,23 @@ export function klickAktion({ praesentator, beamer, seite }: Lage): { an: boolea
   if (beamer) return { an: false, hell };
   return praesentator ? { an: true, hell } : null;
 }
+
+/** localStorage: Kennung des zuletzt benutzten Tabs (wo-ist.ts, gesetzt bei focus, keydown, pointerdown). Nur er meldet
+ *  seine Position an /api/position – sonst überschreiben sich zwei Beamer-Tabs mit Schlüssel gegenseitig, und der Zähler
+ *  im Begleiter springt zwischen ihren Folien hin und her. */
+export const FUEHRENDER_TAB = 'ndu-beamer-tab';
+
+/** Darf dieser Tab seine Position melden? Ja, wenn er zuletzt benutzt wurde. Steht noch keiner fest (oder hat sich der
+ *  letzte beim Verlassen der Seite abgemeldet), meldet jeder – bis der nächste Tastendruck oder Klick einen festlegt. */
+export function dieserTabMeldet(fuehrender: string | null, ich: string): boolean {
+  return fuehrender === null || fuehrender === ich;
+}
+
+/** Abstand über der ersten Folie im Beamer (Layout.astro): so viel, dass sie genau an der Falz beginnt, am unteren Rand
+ *  des ersten Bildschirms. Der Seitenkopf wird so zum Titelbild, und das erste → zeigt Folie 1 ganz, statt sie ein
+ *  zweites Mal anzuspringen. folieOben = Oberkante der Folie im Dokument ohne diesen Abstand. 0, wenn der Beamer aus ist
+ *  oder die Folie ohnehin an oder unter der Falz beginnt. */
+export function ersteFolieAbstand({ beamer, fensterHoehe, folieOben }: { beamer: boolean; fensterHoehe: number; folieOben: number }): number {
+  if (!beamer) return 0;
+  return Math.max(0, Math.ceil(fensterHoehe - folieOben));
+}

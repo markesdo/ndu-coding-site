@@ -99,7 +99,7 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
       </main>
     </div>
     <script>
-      import { beamerSchalten } from '../lib/beamer';
+      import { beamerSchalten, ersteFolieAbstand } from '../lib/beamer';
       import { aktuelleFolie, tasteSteuertFolien, tastenZiel, timerFuerT, weiter as folieWeiter, zurueck as folieZurueck } from '../components/folien';
       const btn = document.getElementById('menu-btn');
       const sb = document.getElementById('sidebar');
@@ -118,12 +118,40 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
         sb?.classList.remove('open');
       };
       // aria-pressed und Kopfleistenhöhe folgen dem Attribut – egal, wer umschaltet (auch PraesentatorEinstieg, wo-ist.ts).
-      new MutationObserver(() => { sync(); hoeheMessen(); }).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
+      new MutationObserver(() => { sync(); hoeheMessen(); falzSetzen(); }).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
 
       // Klebende Kopfleiste: Höhe für Schrittleiste und Sprungziele (beamer.css, --topbar-h).
       const topbar = document.querySelector<HTMLElement>('.topbar');
       const hoeheMessen = () => { if (topbar) root.style.setProperty('--topbar-h', `${Math.round(topbar.getBoundingClientRect().height)}px`); };
       if (topbar) new ResizeObserver(hoeheMessen).observe(topbar);
+
+      // Erste Folie im Beamer genau an die Falz (lib/beamer.ts, ersteFolieAbstand): Eine Folie ist dort mindestens so hoch
+      // wie der Bildschirm, Inhalt mittig (beamer.css). Bei kurzem Seitenkopf stünde Folie 1 sonst angeschnitten im ersten
+      // Bildschirm, und das erste → zeigte sie noch einmal. So ist der Kopf ein Titelbild, → führt auf Folie 1.
+      // Neu gemessen beim Laden, bei Größenänderung, beim Umschalten des Beamers und wenn der Inhalt seine Höhe ändert.
+      const ersteFolie = document.querySelector<HTMLElement>('[data-folie]');
+      function falzSetzen() {
+        if (!ersteFolie) return;
+        const vorher = ersteFolie.getBoundingClientRect().top;
+        ersteFolie.style.marginTop = '';
+        const beamer = root.hasAttribute('data-beamer');
+        const abstand = ersteFolieAbstand({ beamer, fensterHoehe: innerHeight, folieOben: ersteFolie.getBoundingClientRect().top + scrollY });
+        if (abstand > 0) {
+          ersteFolie.style.marginTop = `${(parseFloat(getComputedStyle(ersteFolie).marginTop) || 0) + abstand}px`;
+          // Fällt der Rand mit dem des Elements davor zusammen, reicht er nicht ganz: Rest nachlegen.
+          const fehlt = ersteFolieAbstand({ beamer, fensterHoehe: innerHeight, folieOben: ersteFolie.getBoundingClientRect().top + scrollY });
+          if (fehlt > 0) ersteFolie.style.marginTop = `${parseFloat(ersteFolie.style.marginTop) + fehlt}px`;
+        }
+        // Steht man schon bei Folie 1 oder weiter (etwa nach einem Sprung per #anker), bleibt die Ansicht, wo sie war.
+        const verschoben = ersteFolie.getBoundingClientRect().top - vorher;
+        if (verschoben !== 0 && vorher < (topbar?.getBoundingClientRect().height ?? 0) + 4) scrollBy({ top: verschoben, behavior: 'instant' as ScrollBehavior });
+      }
+      if (ersteFolie) {
+        falzSetzen();
+        addEventListener('resize', falzSetzen);
+        const inner = document.querySelector('.content .inner');
+        if (inner) new ResizeObserver(falzSetzen).observe(inner);
+      }
 
       // Blättern: Ziel ist der FooterNav der Seite (Lernreihenfolge); ohne FooterNav die Menü-Reihenfolge.
       const weiter = document.querySelector<HTMLAnchorElement>('.beamer-weiter');
