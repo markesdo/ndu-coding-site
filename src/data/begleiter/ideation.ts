@@ -200,14 +200,14 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 112`,
       },
       {
-        text: 'Ideation ist die eine Übung, die Torres mit dem ganzen Team empfiehlt: „The more diversity in the group, the more diverse ideas you’ll generate.“ Voraussetzung: Ziel-Chance und Kontext der Kundschaft vorher teilen.',
+        text: 'Ideation ist die eine Übung, die Torres mit dem ganzen Team empfiehlt: „The more diversity in the group, the more diverse ideas you’ll generate.“ Voraussetzung: Ziel-Chance und Kontext der Kundschaft vorher teilen – hier still, oben in der Spalte (Kursregel).',
         quelle: `${TORRES}, S. 114`,
       },
     ],
     fragen: [
       {
         frage: 'Ich kenne das Produkt der anderen kaum – was soll ich da beitragen?',
-        antwort: 'Ihr spendet nur, zwei Minuten still je Produkt: Wer weiter weg ist, bringt andere Ideen (S. 114). Den Kontext dafür gibt der Satz zu Beginn, in dem jede*r Ziel-Chance, HMW-Frage und Situation nennt.',
+        antwort: 'Ihr spendet nur, zwei Minuten still je Produkt: Wer weiter weg ist, bringt andere Ideen (S. 114). Den Kontext gibt die Spalte auf T3 · 3: Ziel-Chance, HMW-Frage und ein Satz zur Situation stehen oben – zuerst lesen.',
       },
     ],
     ueberleitung: 'Allein Ideen sammeln heißt auch: Irgendwann fällt euch nichts mehr ein.',
@@ -433,7 +433,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Allein (16 min): Ideen zur eigenen HMW-Frage, ein Sticky pro Idee, in die eigene Spalte.',
+        'Allein (16 min): Ziel-Chance, HMW-Frage und einen Satz zur Situation oben in die eigene Spalte, dann Ideen, ein Sticky pro Idee.',
         'Ideen-Spende, still (6 min): je Produkt 2 Minuten – die zwei anderen legen Ideen-Stickies an die Frage, ohne Diskussion; wem das Produkt gehört, liest nur mit. Kursformat statt Torres’ Teilen-Runde, weil jede*r ein eigenes Produkt hat.',
         'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
         'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); allein wählen ist Kursregel.',

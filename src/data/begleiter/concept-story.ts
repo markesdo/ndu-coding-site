@@ -497,24 +497,23 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     live: [
       'Zeit: Start spätestens 16:47, sonst Schritt 2 mündlich.',
       'Nach 12 min: Flach-Probe – eine Zeile unter die Story.',
-      'Nach 15 min: 1:1, je 3 min – 2 erzählen, 1 antworten.',
-      'Nur drei Antworten: Krise? Höhepunkt? Wo gelächelt?',
-      'Die anderen schärfen inzwischen ihre Stationen.',
+      'Nach 15 min: reihum erzählen, zwei Minuten, eine Minute Antworten.',
+      'Fragen: Krise? Höhepunkt? Wo habt ihr gelächelt?',
       'Nach 24 min: committen, Satz in den Brief, Station 6 als Annahme.',
     ],
-    uebung: { dauer: '28 min (12 + 3 + 9 + 4)', form: 'allein schreiben, dann 1:1 mit Markus erzählen, dann allein festhalten' },
+    uebung: { dauer: '28 min (12 + 3 + 9 + 4)', form: 'allein schreiben, dann reihum laut erzählen, dann allein festhalten' },
     ablauf: {
       schritte: [
         'Schritt 1 (12 min, allein): Vorlage aus dem Handout nach docs/STORYS.md, sieben Stationen mit je ein, zwei Sätzen und IDs.',
         'Schritt 2 (3 min): die einfache Lösung als eine Zeile darunter – Problem, Produkt, Ende.',
-        'Schritt 3 (9 min, 1:1): Markus kommt zu jeder Person, je 3 Minuten – höchstens zwei Minuten erzählen, dann antwortet Markus eine Minute nur auf drei Fragen: Krise? Höhepunkt? Wo gelächelt? Die anderen schärfen inzwischen ihre Stationen. Kursformat statt Erzählrunde, weil jede*r ein eigenes Produkt hat.',
+        'Schritt 3 (9 min, reihum): jede*r erzählt höchstens zwei Minuten; die anderen antworten nur auf drei Fragen.',
         'Schritt 4 (4 min): Story committen, Satz in Abschnitt 3 des Produkt-Briefs, fallende Handlung in die Annahmen-Map.',
       ],
       achten: [
         'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',
         'Krise nennt mindestens eine heutige Alternative mit Zitat-ID und einen inneren Widerstand.',
         'Station 6 ist ein Gedanke, keine Handlung.',
-        'Beim Erzählen aufs Gesicht gegenüber achten: Kommt am Höhepunkt ein Lächeln?',
+        'Beim Erzählen aufs Gesicht der anderen achten: Lächelt jemand am Höhepunkt?',
       ],
       fehler: [
         'Die Story beginnt mit dem Produkt statt mit der Person.',
@@ -525,7 +524,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Das Lächeln am Höhepunkt: Auf Lichaws Storylines steht meist „one key smiley face scribbled on it, usually in the same place: the climax“. In Tests kam es mit Sätzen wie „Oh, that was neat“ oder „Ah, I get it.“ Die drei Fragen im 1:1 sind eine Kürzung des Kurses.',
+        text: 'Das Lächeln am Höhepunkt: Auf Lichaws Storylines steht meist „one key smiley face scribbled on it, usually in the same place: the climax“. In Tests kam es mit Sätzen wie „Oh, that was neat“ oder „Ah, I get it.“ Die drei Fragen der Runde sind eine Kürzung des Kurses.',
         quelle: `${LICHAW}, Kap. 6, Use the Smile Test; Kap. 7, Test and Validate; Kursregel`,
       },
       {
@@ -545,7 +544,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Eure einfache Lösung – was hat eure Story mehr?',
-      'Allein, still: ein Satz unter die eigene Story.',
+      'Reihum, laut, je ein Satz.',
       'Falle: „schneller“ oder „leichter“ – nach der Alternative fragen.',
       '„Warum würden eure Interviewten bei dem bleiben, was sie heute tun?“',
       'Zeit: 17:15 Abschluss.',
