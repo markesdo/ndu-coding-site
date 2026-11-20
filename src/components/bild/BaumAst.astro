@@ -2,14 +2,14 @@
 // Ein Ast von Baum.astro: Knoten plus Kinder, rekursiv über Astro.self. Die Ebene ergibt sich aus der Tiefe.
 import type { Knoten } from './Baum.astro';
 import { baumEbene } from './baum-ebene';
-const { knoten, hervor, ebene = 0, momente = false } = Astro.props as { knoten: Knoten; hervor?: number; ebene?: number; momente?: boolean };
-const { name, klasse, stufe } = baumEbene(ebene, momente);
+const { knoten, hervor, ebene = 0, momente = false, miro = false } = Astro.props as { knoten: Knoten; hervor?: number; ebene?: number; momente?: boolean; miro?: boolean };
+const { name, klasse, stufe } = baumEbene(ebene, momente, miro);
 const leise = hervor !== undefined && hervor !== stufe;
 ---
 <li class:list={['baum-ast', klasse, { leise }]}>
   <span class="baum-knoten"><small>{name}</small>{knoten.t}</span>
   {knoten.kinder?.length ? (
-    <ul class="baum-kinder">{knoten.kinder.map((k) => <Astro.self knoten={k} hervor={hervor} ebene={ebene + 1} momente={momente} />)}</ul>
+    <ul class="baum-kinder">{knoten.kinder.map((k) => <Astro.self knoten={k} hervor={hervor} ebene={ebene + 1} momente={momente} miro={miro} />)}</ul>
   ) : null}
 </li>
 

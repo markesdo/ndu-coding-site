@@ -5,12 +5,13 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
-import Baum from '../../../components/bild/Baum.astro';
+import Baum, { type Knoten } from '../../../components/bild/Baum.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import { KAFFEEBAR_BAUM_INTERVIEWS } from '../../../components/innolab-beispiel';
+import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
 import { BookOpen, Check, CircleCheck, CircleX, Coffee, X } from '@lucide/astro';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
@@ -36,6 +37,28 @@ const MINI_BAEUME = [
   { nr: 2, eltern: 'unterwegs schauen', ergaenzt: true, kinder: ['7', '12'], nummern: [7, 12], kurz: 'Geschwister', text: 'ähnlich, aber einzeln lösbar.', label: 'Mini-Baum: oben „unterwegs schauen“, ergänzt, darunter 7 und 12' },
   { nr: 3, eltern: '9', kinder: ['Wer spielt mit?', 'Welche Art Serie?', '…'], nummern: [9], kurz: 'Groß wird lösbar', text: '9 zerfällt in kleinere Chancen, etwa ‚Wer spielt mit?‘.', label: 'Mini-Baum: 9 oben, darunter „Wer spielt mit?“, „Welche Art Serie?“ und weitere' },
 ] as const;
+// Folie „euer-baum“: der Kaffeebar-Baum in den Farben von Miro (Moment blau, Chance gelb), jede Chance mit „X von 5“.
+// Die Zahl kommt aus den Belegen (wie im Handout von „beispiel“): Geschichten = verschiedene Interviews unter den IDs.
+const BELEGE: Record<string, string[]> = {
+  '„Geht sich ein Kaffee noch aus?“': ['I2-4', 'I3-2', 'I5-2'],
+  '„Wenn ich anstehe, reicht mir die Zeit nicht.“': ['I2-2', 'I3-4', 'I4-1'],
+  '„Schnell geht nur der Automat.“': ['I1-3', 'I4-3'],
+  '„Wann ist mein Kaffee fertig?“': ['I2-5', 'I3-3'],
+  '„Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.“': ['I5-4', 'I5-6'],
+};
+const ZITAT_IDS = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
+const M_INTERVIEWS = KAFFEEBAR_INTERVIEWS.interviews.length;
+const mitZahl = (k: Knoten, tiefe = 0): Knoten => {
+  const kinder = k.kinder?.map((c) => mitZahl(c, tiefe + 1));
+  if (tiefe < 2) return { t: k.t, ...(kinder ? { kinder } : {}) };
+  const ids = BELEGE[k.t];
+  if (!ids) throw new Error(`baum.astro: Belege fehlen für ${k.t}`);
+  const fremd = ids.filter((id) => !ZITAT_IDS.has(id));
+  if (fremd.length) throw new Error(`baum.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${fremd.join(', ')}`);
+  const x = new Set(ids.map((id) => id.split('-')[0])).size;
+  return { t: `${k.t} · ${x} von ${M_INTERVIEWS}`, ...(kinder ? { kinder } : {}) };
+};
+const KAFFEEBAR_BAUM_MIRO = mitZahl(KAFFEEBAR_BAUM_INTERVIEWS);
 if (ZWOELF.length !== 12) throw new Error('baum.astro: Die Liste hat nicht zwölf Chancen');
 if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new Error('baum.astro: Mini-Baum verweist auf eine Nummer außerhalb der Liste');
 ---
@@ -153,7 +176,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
       <BuchAbbildung src="/quellen/torres/inventar.jpg" alt="Oben die vier Momente als Kreise: „I need something to do.“, „I'm not sure what to watch.“, „I'm watching a show.“, „My show ended.“ Darunter eine Linie und elf Kreise mit den Chancen aus der Liste der zwölf, jeweils unter ihrem Moment" quelle={`Elf der zwölf Chancen von vorhin, unter den vier Momenten. ${TORRES}, S. 89.`} />
       <div class="inventar-fragen">
         <ol>
-          <li data-schritt><strong>Bedürfnis, Schmerzpunkt oder Wunsch</strong> – keine Lösung? Nein → bleibt auf dem Snapshot.</li>
+          <li data-schritt><strong>Bedürfnis, Schmerzpunkt oder Wunsch</strong> – keine Lösung? Lösung → Bedürfnis dahinter formulieren, neu prüfen. Sonst Nein → bleibt auf dem Snapshot.</li>
           <li data-schritt><strong>In wie vielen Interviews gehört?</strong> → „X von N“ auf die Karte. „1 von 3“: einmal gehört, noch kein Muster – im nächsten Interview zuerst danach fragen.</li>
           <li data-schritt>Treibt sie euren <strong>Outcome</strong>? Nein → bleibt auf dem Snapshot.</li>
         </ol>
@@ -161,7 +184,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
       </div>
     </BildText>
     <div class="nur-handout">
-      <p>Mit den Ästen aus der Experience Map geht ihr jeden Snapshot durch und stellt jeder Chance drei Fragen. Torres nimmt eine Chance auf, wenn alle drei mit Ja beantwortet sind ({TORRES}, S. 88). Bei euch sortieren nur Frage 1 und Frage 3 aus; was dort ein Nein bekommt, bleibt auf dem Snapshot – das ist unsere Lesart, Torres sagt nicht, was mit solchen Chancen geschieht (S. 70, 88). Ist eine Chance eine Lösung, prüft ihr das Bedürfnis dahinter neu (S. 94). Frage 2 fragt bei euch nicht, ob, sondern in wie vielen Interviews ihr die Chance gehört habt; die Antwort ist eine Zahl, „X von N“, N = eure echten Interviews. Interviews mit dem Pseudonym „Synthetisch“ zählen dabei nicht: weder als Zitat-ID noch für X oder N. Dann hängt ihr die Chance unter den Moment, in dem sie vorkommt. Passt sie unter mehr als einen Ast, ist sie zu breit: Formuliert sie genauer, notfalls als eigene Chance für jeden Moment. „Die Oberfläche ist schwer bedienbar“ wird so zu „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ ({TORRES}, S. 88).</p>
+      <p>Mit den Ästen aus der Experience Map geht ihr jeden Snapshot durch und stellt jeder Chance drei Fragen. Torres nimmt eine Chance auf, wenn alle drei mit Ja beantwortet sind ({TORRES}, S. 88). Bei euch sortieren nur Frage 1 und Frage 3 aus. Ist eine Chance eine Lösung, fragt ihr wie Torres „If you had that feature, what would that do for you?“ und formuliert das Bedürfnis dahinter (S. 69); es geht neu durch die Fragen (S. 94). Was sonst bei Frage 1 ein Nein bekommt – eine Meinung, eine Tatsache ohne Bedürfnis – oder bei Frage 3, bleibt auf dem Snapshot; das ist unsere Lesart, Torres sagt nicht, was mit solchen Chancen geschieht (S. 70, 88). Frage 2 fragt bei euch nicht, ob, sondern in wie vielen Interviews ihr die Chance gehört habt; die Antwort ist eine Zahl, „X von N“, N = eure echten Interviews. Interviews mit dem Pseudonym „Synthetisch“ zählen dabei nicht: weder als Zitat-ID noch für X oder N. Dann hängt ihr die Chance unter den Moment, in dem sie vorkommt. Passt sie unter mehr als einen Ast, ist sie zu breit: Formuliert sie genauer, notfalls als eigene Chance für jeden Moment. „Die Oberfläche ist schwer bedienbar“ wird so zu „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ ({TORRES}, S. 88).</p>
       <p><strong>Warum zählen statt aussortieren?</strong> Torres sortiert im Inventar aus (S. 88) und zählt erst, wenn sie Geschwister vergleicht: „How many customers are affected and how often?“ – grob geschätzt, auch anhand der Interview-Snapshots (S. 99–100). Ihr zieht diese Zahl auf die Karte vor. Ihr Team interviewt jede Woche weiter (S. 72), und was nur eine Person erzählt hat, taucht oft in weiteren Interviews wieder auf (S. 70). Ihr habt drei Interviews: Mit Torres’ Filter bliebe zu wenig, um den Baum zu strukturieren. Darum bleibt die Chance im Baum, und die Zahl zeigt, wie viel sie trägt. „1 von 3“ heißt: einmal gehört, noch kein Muster – im nächsten Interview fragt ihr zuerst danach. Die Zahl braucht ihr im nächsten Block wieder, wenn ihr die Chancen nach ihrer Größe vergleicht.</p>
       <p><strong>Die Karte:</strong> der Satz in den Worten der Kundschaft, die Zitat-IDs – eine je Interview genügt – und „X von N“. Eine übergeordnete Chance, die ihr für die Struktur ergänzt, trägt keine ID, sondern „(ergänzt)“ (S. 90).</p>
       <p>Die Abbildung ist Torres’ eigenes Inventar: Elf der zwölf Chancen von der Liste (S. 81) hängen unter den vier Momenten von S. 87, noch ohne Struktur innerhalb der Äste. „Is this show any good?“ (9) liegt unter „I’m not sure what to watch.“, „Who is that actor?“ (11) unter „I’m watching a show.“ – bei ihr liegen 9 und 11 also unter zwei verschiedenen Momenten. „I can’t find anything to watch.“ (1) fehlt in der Abbildung; warum, sagt Torres nicht. Unsere Lesart: Als übergeordnete Chance von 2, 3 und 5 (S. 83) kommt sie erst beim Strukturieren dazu.</p>
@@ -309,15 +332,19 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
     <h2 id="euer-baum">Euer Baum auf Miro</h2>
     <p class="folie-satz">Unter eurer Map von T3 · 0: „Baum · euer Name“.</p>
     <MiroFrame name="Baum · Beispiel Kaffeebar" />
-    <BildText>
-      <BuchAbbildung src="/quellen/torres/ost.jpg" alt="Opportunity Solution Tree: oben ein Outcome, darunter mehrere Ebenen von Opportunities, unter einer davon drei Solutions mit je zwei Assumption Tests" quelle={`Opportunity Solution Tree. ${TORRES}, S. 26.`} />
-      <ol>
-        <li data-schritt><strong>Cmd+D:</strong> Karte duplizieren.</li>
-        <li data-schritt>Vom <strong>blauen Punkt</strong> der oberen Karte zur unteren ziehen.</li>
-        <li data-schritt>Jede Karte hängt an <strong>genau einer</strong> Karte darüber.</li>
-        <li data-schritt><strong>Frage 2 zählt</strong>, sie sortiert nicht aus: „X von N“ auf jede Karte.</li>
+    <div class="euer-baum">
+      <ol class="gross dicht">
+        <li><strong>Wo:</strong> „Baum · euer Name“, unter eurer Map von T3 · 0 – <MiroLink name="Baum · Sofie · sofie">Sofie</MiroLink> · <MiroLink name="Baum · Joachim · joachim">Joachim</MiroLink> · <MiroLink name="Baum · Hewen · chen">Hewen</MiroLink></li>
+        <li data-schritt><strong>Schon da:</strong> Outcome (grün) und Vorlagen: Moment (blau), Chance (gelb), Nächstes Interview (grau).</li>
+        <li data-schritt><strong>Neue Karte:</strong> Vorlage anklicken, Cmd+D – die Farbe kommt mit.</li>
+        <li data-schritt><strong>Verbinden:</strong> vom blauen Punkt der oberen Karte zur unteren ziehen. Jede Karte hängt an genau einer darüber.</li>
+        <li data-schritt><strong>Gelbe Karte:</strong> Satz der Kundschaft · Zitat-IDs · „X von N“ – auch „1 von 3“ kommt in den Baum.</li>
       </ol>
-    </BildText>
+      <figure class="euer-baum-bild">
+        <Baum momente miro knoten={KAFFEEBAR_BAUM_MIRO} label="Kaffeebar-Baum: Outcome, darunter die Momente Halle: entscheiden, Anstehen und Warten, Im Zug; darunter die Chancen mit ihrer Zahl" />
+        <figcaption class="small muted">Kaffeebar-Baum (ausgedacht).</figcaption>
+      </figure>
+    </div>
     <div class="nur-handout">
       <p>Jedes Produkt hat auf dem Board einen eigenen Baum, von oben nach unten wie bei Torres: Outcome, oberste Chancen (eure Momente), Chancen, darunter weitere Teilchancen, später Lösungen und Annahmen-Tests. Jede Karte ist eine Teilchance der Karte darüber; die Reihe „Weitere Teilchancen“ füllt sich, wenn sich eine Chance in Interviews weiter aufteilt (Torres S. 91). Euer Frame heißt „Baum · euer Name“: <MiroLink name="Baum · Sofie · sofie">Baum · Sofie</MiroLink>, <MiroLink name="Baum · Joachim · joachim">Baum · Joachim</MiroLink>, <MiroLink name="Baum · Hewen · chen">Baum · Hewen</MiroLink>; er liegt direkt unter eurer Map von T3 · 0. Das Beispiel <MiroLink name="Baum · Beispiel Kaffeebar">Baum · Beispiel Kaffeebar</MiroLink> steht weit links davon; Outcome und je eine blaue und gelbe Karte stehen in eurem Baum schon zum Kopieren.</p>
       <p>Jede Karte hängt mit einer Linie an genau einer Karte darüber. Mit Cmd+D (Windows: Strg+D) dupliziert ihr eine Karte; dann zieht ihr vom blauen Punkt am Rand der oberen Karte eine Linie zur unteren. Die Linie bleibt angeheftet, wenn ihr Karten verschiebt. Was nur eine Person erzählt hat und den Outcome treibt, bleibt im Baum und trägt „1 von N“ – einmal gehört, noch kein Muster. Die Anleitung steht auf Miro neben eurem Baum; für die drei Fragen gilt die Reihenfolge der Folie „Inventar“.</p>
@@ -428,6 +455,15 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
   .drei-fragen td.antwort :global(svg) { vertical-align: -4px; }
   /* Im Beamer Zeile für Zeile: Der Schritt sitzt auf der ersten Antwortzelle, die übrigen Antworten der Zeile folgen ihr. */
   :global(html[data-beamer]) .drei-fragen td.antwort[data-schritt]:not(.gezeigt) ~ td.antwort { visibility: hidden; }
+  /* „euer-baum“: fünf Zeilen links, rechts der Kaffeebar-Baum klein in Miro-Farben. */
+  .euer-baum { display: grid; gap: 1rem 1.5rem; align-items: start; }
+  @media (min-width: 900px) { .euer-baum { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); } }
+  .euer-baum > ol { margin: 0; }
+  .euer-baum-bild { margin: 0; }
+  .euer-baum-bild :global(.baum) { margin: 0; }
+  :global(html[data-beamer]) .euer-baum-bild :global(.baum-knoten) { min-width: 3rem; max-width: 4.6rem; padding: .2rem .25rem; font-size: .55rem; line-height: 1.2; }
+  :global(html[data-beamer]) .euer-baum-bild :global(.baum-ast) { padding-left: .15rem; padding-right: .15rem; }
+  .euer-baum-bild figcaption { margin-top: .3rem; text-align: right; }
   .inventar-fragen ol { margin: 0; }
   .inventar-fragen > p { margin: .7rem 0 0; }
   /* „oberste-ebene“: „← Outcome“ neben dem obersten Kreis der Abbildung (wie journey-map.astro, Folie momente). */

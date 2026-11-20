@@ -137,6 +137,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Fragen: Wo hängen 4, 6, 8, 10 – und 9, 11?',
       'Drei Fragen langsam vorlesen; dann der Schritt: unter den Moment.',
+      'Frage 1: Lösung → Bedürfnis dahinter formulieren, neu prüfen.',
       '„Torres sortiert hier aus. Ihr zählt: X von N.“',
       '„1 von 3: einmal gehört, noch kein Muster – zuerst nachfragen.“',
     ],
@@ -150,7 +151,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 88`,
       },
       {
-        text: 'Bei den Studierenden: Frage 1 und 3 sortieren aus (Nein → bleibt auf dem Snapshot), Frage 2 wird eine Zahl, „X von N“ auf der Karte („Synthetisch“ zählt nicht). Herleitung: Torres zählt erst beim Sizing („How many customers are affected and how often?“, S. 99–100), nicht im Inventar (S. 88); ihr Team interviewt jede Woche weiter (S. 72), Einmaliges kommt oft wieder (S. 70). Mit drei Interviews bliebe nach dem Filter zu wenig zum Strukturieren. „1 von 3“ = einmal gehört, noch kein Muster: im nächsten Interview zuerst danach fragen. Karte: Satz der Kundschaft, Zitat-IDs (eine je Interview genügt), „X von N“; „(ergänzt)“ ohne ID (S. 90).',
+        text: 'Bei den Studierenden: Frage 1 und 3 sortieren aus – Lösung → Bedürfnis dahinter formulieren („If you had that feature, what would that do for you?“, S. 69), neu prüfen; Meinung, Tatsache ohne Bedürfnis oder Outcome-Nein → bleibt auf dem Snapshot, Frage 2 wird eine Zahl, „X von N“ auf der Karte („Synthetisch“ zählt nicht). Herleitung: Torres zählt erst beim Sizing („How many customers are affected and how often?“, S. 99–100), nicht im Inventar (S. 88); ihr Team interviewt jede Woche weiter (S. 72), Einmaliges kommt oft wieder (S. 70). Mit drei Interviews bliebe nach dem Filter zu wenig zum Strukturieren. „1 von 3“ = einmal gehört, noch kein Muster: im nächsten Interview zuerst danach fragen. Karte: Satz der Kundschaft, Zitat-IDs (eine je Interview genügt), „X von N“; „(ergänzt)“ ohne ID (S. 90).',
         quelle: `${TORRES}, S. 70, 72, 88, 90, 99–100`,
       },
     ],
@@ -312,19 +313,21 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   'euer-baum': {
     live: [
-      'Zeit: 1 min Ebenen an der Torres-Abbildung zeigen: Outcome, Momente, Chancen.',
+      'Zeit: 1 min Ebenen am Kaffeebar-Baum zeigen: Outcome, Momente, Chancen.',
       '„Der Baum von Tag 1 war unsere Vermutung. Die Wurzel bleibt, die Äste kommen aus fünf Interviews.“',
       '„‚Vorbestellen‘ ist gefallen: 3 von 5 entscheiden erst in der Halle (D4).“',
-      'Zeit: 3 min Griffe vorführen – Cmd+D, Linie ziehen, eine Karte darüber.',
+      'Zeit: 3 min Griffe vorführen – Vorlage, Cmd+D, Linie ziehen.',
+      'Vorher testen: Klick auf den blauen Punkt legt evtl. eine Kopie an.',
       'Wer noch keinen Outcome hat: zuerst Outcome, dann Momente darunter.',
     ],
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
-        '„Alle zu mir holen“ auf Baum · Beispiel Kaffeebar; die Folie mit der Torres-Abbildung daneben.',
+        '„Alle zu mir holen“ auf Baum · Beispiel Kaffeebar; die Folie mit dem Kaffeebar-Baum daneben.',
         'Ebenen von oben zeigen: Outcome grün, Momente blau, Chancen gelb; Lösungen und Tests kommen später.',
         'Vorführen: Karte mit Cmd+D duplizieren, vom blauen Punkt der oberen Karte zur unteren ziehen, Karte verschieben – die Linie geht mit.',
-        'Jede*r öffnet „Baum · eigener Name“: Outcome und je eine blaue und gelbe Karte stehen schon.',
+        'Jede*r öffnet „Baum · eigener Name“: Outcome (grün) und Vorlagen blau, gelb, grau stehen schon.',
+        'Vor dem Kurs testen: Ein Klick (statt Ziehen) auf den blauen Punkt legt in Miro meist eine verbundene Kopie in derselben Farbe an – unter einem blauen Moment entstünde eine blaue Karte.',
       ],
     },
     kern: [

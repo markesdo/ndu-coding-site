@@ -525,6 +525,20 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(n.vorgehen?.uebung?.dauer).toBe('35 min (12 + 10 + 13)');
     expect([q, JSON.stringify(n)].flatMap((s) => s.match(/Claude|Bildschirmfoto|Nur in einem Interview|T2 · 2/g) ?? [])).toStrictEqual([]);
   });
+  // Entscheidung 17 (20.11. spät): „euer-baum“ – fünf Zeilen (wo, schon da, neue Karte, verbinden, gelbe Karte), Kaffeebar-Baum in
+  // Miro-Farben statt Torres S. 26; der alte Punkt „Frage 2 markiert/zählt“ ist weg. Dazu: inventar Frage 1 – Lösung → Bedürfnis dahinter.
+  it('Tag 3: baum#euer-baum – fünf Handgriffe, Kaffeebar-Baum statt S. 26; inventar Frage 1 mit Lösungs-Ausgang', () => {
+    const q = quellen['/innolab/methoden/baum'] ?? '';
+    const folie = q.slice(q.indexOf('id="euer-baum"'), q.indexOf('id="vorgehen"'));
+    const zeilen = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
+    expect((zeilen.match(/<li[ >]/g) ?? []).length).toBe(5);
+    expect([...zeilen.matchAll(/<strong>([^<]+):<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Wo', 'Schon da', 'Neue Karte', 'Verbinden', 'Gelbe Karte']);
+    expect(folie.match(/ost\.jpg|S\. 26|Frage 2 (zählt|markiert)/g) ?? []).toStrictEqual([]);
+    expect(folie).toContain('<Baum momente miro knoten={KAFFEEBAR_BAUM_MIRO}');
+    expect(folie).toContain('Kaffeebar-Baum (ausgedacht).');
+    const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
+    expect(inventar).toContain('Lösung → Bedürfnis dahinter formulieren, neu prüfen. Sonst Nein → bleibt auf dem Snapshot.');
+  });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
   // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.
   it('Tag 3: Kaffeebar-Momente als Tätigkeitsnamen auf experience-map, baum und ziel-chance', () => {
