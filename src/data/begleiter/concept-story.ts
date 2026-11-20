@@ -455,7 +455,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     verstaendnis: {
       frage: 'Welche Station schreibt ihr ganz neu?',
       antwort: 'Die fallende Handlung: was die Person nach dem Hören denkt. Alles andere kommt aus Kundenprofil, Value Map, Interviews und Produkt-Brief.',
-      falsch: '„Den Höhepunkt“ – er steht als Schmerzlinderer und Gewinnerzeuger in der Value Map.',
+      falsch: '„Den Höhepunkt“ – er steht als Pain Reliever und Gain Creator in der Value Map.',
     },
     kern: [
       {
