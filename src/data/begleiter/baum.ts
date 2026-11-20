@@ -284,7 +284,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   'vier-muster': {
     live: [
       'Fragen: Was stimmt an jedem Beispiel nicht?',
-      'Aufdecken: Karte für Karte, dann die bessere Fassung sagen (Handout).',
+      'Aufdecken: Karte für Karte; die bessere Fassung steht jeweils darunter.',
       'Falle: „Glücksspiel“ als Einzelfall abtun – die Ursache nennt I4 selbst (I4-1).',
       'Bei Bedarf: senkrechte Kette – Checkliste Nr. 2, Abbildung im Handout.',
       'Wenn hinten: überspringen, steht auf der Checkliste (anti-muster).',
@@ -296,8 +296,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Zu breit: „If you are finding that an opportunity should ladder up to more than one parent, it’s framed too broadly. Get more specific. Define one opportunity for each moment in time …“ Beispiel von S. 88: „The interface is hard to use“ wird zu „I can’t figure out how to find a specific show that I have in mind“, „I don’t like entering a show name using the remote“, „I can’t remember what episode I watched last“.',
-        quelle: `${TORRES}, S. 88, 94`,
+        text: 'Zu breit: „If you are finding that an opportunity should ladder up to more than one parent, it’s framed too broadly. Get more specific. Define one opportunity for each moment in time …“ Kaffeebar: „Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ (I3-2, I3-3) wird zu „Geht sich ein Kaffee noch aus?“ (Halle) und „Wann ist mein Kaffee fertig?“ (Warten), wie auf beispiel.',
+        quelle: `${TORRES}, S. 88, 94; Kaffeebar: baum.astro, beispiel`,
       },
       {
         text: 'Nicht konkret: „I wish this was easy to use“, „This is too hard“, „I want to do everything on the go“ sind Themen, Gestaltungsregeln oder Stimmungen; konkreter: „I wish finding a show to watch was easier“, „Entering a movie title using the remote is hard“, „I want to watch shows on my train commute“.',

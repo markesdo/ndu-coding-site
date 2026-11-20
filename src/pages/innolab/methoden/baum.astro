@@ -48,6 +48,12 @@ const BELEGE: Record<string, string[]> = {
 };
 const ZITAT_IDS = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
 const M_INTERVIEWS = KAFFEEBAR_INTERVIEWS.interviews.length;
+// Folie „vier-muster“: Kaffeebar-Beispiele mit Zitat-IDs; I4-2 wird wörtlich gezeigt.
+const ZITAT_TEXT = new Map(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => [z.id, z.text] as const)));
+const MUSTER_IDS = ['I3-2', 'I3-3', 'I4-1', 'I4-2'];
+const musterFehlt = MUSTER_IDS.filter((id) => !ZITAT_TEXT.has(id));
+if (musterFehlt.length) throw new Error(`baum.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${musterFehlt.join(', ')}`);
+if (ZITAT_TEXT.get('I4-2') !== 'Anstellen ist ein Glücksspiel.') throw new Error('baum.astro: I4-2 ist nicht mehr „Anstellen ist ein Glücksspiel.“');
 const mitZahl = (k: Knoten, tiefe = 0): Knoten => {
   const kinder = k.kinder?.map((c) => mitZahl(c, tiefe + 1));
   if (tiefe < 2) return { t: k.t, ...(kinder ? { kinder } : {}) };
@@ -309,18 +315,18 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
 
   <Folie>
     <h2 id="vier-muster">Vier weitere Anti-Muster</h2>
-    <p class="folie-satz">Zwei Beispiele von Torres, zwei von der Kaffeebar.</p>
+    <p class="folie-satz">Ein Beispiel von Torres, drei von der Kaffeebar – je mit besserer Fassung.</p>
     <div class="muster">
-      <div><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Hängt an zwei Chancen <small>(zu breit)</small></strong><span>„Die Oberfläche ist schwer bedienbar.“</span></div>
-      <div data-schritt><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Nicht konkret</strong><span>„Das ist zu schwer.“</span></div>
-      <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Lösung statt Chance <small>(solution in disguise)</small></strong><span>„Per App vorbestellen.“</span></div>
-      <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Gefühl statt Ursache</strong><span>„Anstellen ist ein Glücksspiel.“</span></div>
+      <div><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Hängt an zwei Chancen <small>(zu breit)</small></strong><span>„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ <small>I3-2, I3-3</small></span><em class="besser">→ besser: „Geht sich ein Kaffee noch aus?“ (Halle) · „Wann ist mein Kaffee fertig?“ (Warten)</em></div>
+      <div data-schritt><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Nicht konkret</strong><span>„Das ist zu schwer.“</span><em class="besser">→ besser: „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam.“</em></div>
+      <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Lösung statt Chance <small>(solution in disguise)</small></strong><span>„Per App vorbestellen.“</span><em class="besser">→ besser: „Ich will den Zug nicht verpassen.“</em></div>
+      <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Gefühl statt Ursache</strong><span>„{ZITAT_TEXT.get('I4-2')}“ <small>I4-2</small></span><em class="besser">→ besser: „Wenn ich anstehe, reicht mir die Zeit nicht.“ <small>I4-1</small></em></div>
     </div>
-    <p class="small muted"><BookOpen size={14} aria-hidden="true" /> Beispiel von Torres (S. 88, 94) · <Coffee size={14} aria-hidden="true" /> Kaffeebar (Tag 1, I4-2) · {TORRES}, S. 94–95.</p>
+    <p class="small muted"><BookOpen size={14} aria-hidden="true" /> Beispiel von Torres (S. 94) · <Coffee size={14} aria-hidden="true" /> Kaffeebar (Tag 1; I3-2, I3-3, I4-1, I4-2) · {TORRES}, S. 88, 94–95.</p>
     <div class="nur-handout">
-      <p>Nach Firmensicht und senkrechter Kette nennt Torres vier weitere Anti-Muster für den ersten Entwurf ({TORRES}, S. 94–95). Zwei Beispiele sind ihre, zwei kommen von der Kaffeebar.</p>
+      <p>Nach Firmensicht und senkrechter Kette nennt Torres vier weitere Anti-Muster für den ersten Entwurf ({TORRES}, S. 94–95). Ein Beispiel ist ihres, drei kommen von der Kaffeebar; zu jedem steht die bessere Fassung.</p>
       <ul>
-        <li><strong>Hängt an zwei Chancen (zu breit).</strong> Torres begründet es so: „If your top-level opportunities represent distinct moments in time, then no opportunity should have two parents“ (S. 94). „Die Oberfläche ist schwer bedienbar“ passt unter mehrere Momente. Genauer gefasst wird daraus je eine Chance pro Moment, etwa „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ (S. 88, 94).</li>
+        <li><strong>Hängt an zwei Chancen (zu breit).</strong> Torres begründet es so: „If your top-level opportunities represent distinct moments in time, then no opportunity should have two parents“ (S. 94). Bei der Kaffeebar passt „Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ (I3-2, I3-3) unter zwei Momente. Genauer gefasst wird daraus je eine Chance pro Moment: in der Halle „Geht sich ein Kaffee noch aus?“, beim Warten „Wann ist mein Kaffee fertig?“ (S. 88, 94; wie auf der Folie „Kaffeebar: Struktur, gemeinsam“).</li>
         <li><strong>Nicht konkret.</strong> Themen, Gestaltungsregeln oder Stimmungen sind keine Chancen; Torres’ Beispiele sind „Das ist zu schwer“, „Ich wünschte, das wäre leicht zu bedienen“ und „Ich will alles unterwegs machen“. „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam“ ist eine Chance (S. 94).</li>
         <li><strong>Lösung statt Chance.</strong> „Per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1) lässt nur einen Weg zu. Das Bedürfnis dahinter, „Ich will den Zug nicht verpassen“, lässt mehrere zu (S. 94–95).</li>
         <li><strong>Gefühl statt Ursache.</strong> „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl. Gefühle lassen sich nicht lösen, ihre Ursache schon: „Wenn ich anstehe, reicht mir die Zeit nicht“ – I4 nennt sie selbst (I4-1; S. 95).</li>
@@ -491,12 +497,14 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
   .gegen-ja { border-color: var(--green) !important; }
   .gegen-ja :global(svg) { color: var(--green); }
   /* Vier weitere Anti-Muster: je Karte Name mit Herkunft (Buch = Torres, Tasse = Kaffeebar) und ein Beispiel. */
-  .muster { display: grid; gap: 1rem; margin: 1rem 0; }
+  .muster { display: grid; gap: .7rem; margin: .7rem 0; }
   @media (min-width: 900px) { .muster { grid-template-columns: 1fr 1fr; } }
-  .muster > div { display: flex; flex-direction: column; gap: .4rem; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+  .muster > div { display: flex; flex-direction: column; gap: .25rem; padding: .6rem .85rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
   .muster strong { display: flex; align-items: center; gap: .45rem; }
   .muster strong :global(svg) { color: var(--muted); flex: none; }
-  .muster span { font-size: 1.15rem; font-weight: 600; }
+  .muster span { font-size: 1.1rem; font-weight: 600; }
   .muster small { font-weight: 400; color: var(--muted); }
+  .muster .besser { font-style: normal; font-size: .95rem; color: var(--green); }
+  .muster .besser small { font-size: .85em; }
   .muster + p :global(svg) { vertical-align: -2px; }
 </style>

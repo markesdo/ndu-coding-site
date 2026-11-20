@@ -539,6 +539,23 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
     expect(inventar).toContain('Lösung → Bedürfnis dahinter formulieren, neu prüfen. Sonst Nein → bleibt auf dem Snapshot.');
   });
+  // Entscheidung 18 (20.11. spät): „vier-muster“ – Karte 1 mit dem Kaffeebar-Beispiel aus „beispiel“ statt „Die Oberfläche ist
+  // schwer bedienbar.“ (bei Torres S. 88, nicht S. 94), jede Karte mit „→ besser:“.
+  it('Tag 3: baum#vier-muster – ein Torres-Beispiel, drei Kaffeebar-Beispiele, je mit besserer Fassung', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const folie = q.slice(q.indexOf('id="vier-muster"'), q.indexOf('id="euer-baum"'));
+    expect(folie).toContain('Ein Beispiel von Torres, drei von der Kaffeebar – je mit besserer Fassung.');
+    expect(folie.match(/→ besser:/g) ?? []).toHaveLength(4);
+    expect(folie.match(/Oberfläche ist schwer bedienbar/g) ?? []).toStrictEqual([]);
+    expect(JSON.stringify(NOTIZEN[pfad]?.['vier-muster']).match(/interface is hard to use|Oberfläche/g) ?? []).toStrictEqual([]);
+    // Karte 1 übernimmt die Antwort von „beispiel“ wörtlich.
+    const beispiel = q.slice(q.indexOf('id="beispiel"'), q.indexOf('id="firmensicht"'));
+    for (const t of ['„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“', '„Geht sich ein Kaffee noch aus?“', '„Wann ist mein Kaffee fertig?“']) {
+      expect(beispiel).toContain(t);
+      expect(folie).toContain(t);
+    }
+  });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
   // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.
   it('Tag 3: Kaffeebar-Momente als Tätigkeitsnamen auf experience-map, baum und ziel-chance', () => {
