@@ -178,7 +178,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     live: [
       'Zitat vorlesen, kurz stehen lassen.',
       'Fragen: Was verliert ihr, wenn ihr Punkte vergebt?',
-      '„Die Linsen füttern euer Gespräch. Sie ersetzen es nicht.“',
+      '„Die Linsen liefern Gründe. Entscheiden und begründen müsst ihr selbst.“',
     ],
     verstaendnis: {
       frage: 'Was ist nach Torres falsch daran, jede Chance pro Linse zu bepunkten und zu summieren?',
