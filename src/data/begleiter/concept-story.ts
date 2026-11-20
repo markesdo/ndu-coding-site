@@ -1,10 +1,11 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/concept-story.astro (Tag 3, 16:00–16:30 Story-Bogen, 16:30–17:15 Übung).
+// Begleiter-Notizen zu src/pages/innolab/methoden/concept-story.astro (Tag 3, 16:00–16:30 Story-Bogen; seit 20.11.2026
+// nur Theorie – die Übung entfällt, 16:30–17:15 ist Puffer für die Übungen des Tages).
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
 // selbst kommt an Tag 4 (usage-story.astro), heute geht es um den Bogen dahinter.
-// Wenn hinten, in dieser Reihenfolge streichen: facetime, baut-mit, drei-storys (ein Satz); im zweiten Block slack (zügig
-// durch 1–3, bei Krise und Höhepunkt halten), dann ein-satz (erst in Schritt 4).
+// Wenn hinten, in dieser Reihenfolge streichen: facetime, baut-mit, drei-storys (ein Satz), slack (zügig durch 1–3, bei
+// Krise und Höhepunkt halten), dann ein-satz.
 // Lichaw liegt als EPUB vor: Quellen mit Kapitel + Abschnitt statt Seite.
 const LICHAW = 'Donna Lichaw, The User’s Journey';
 
@@ -146,7 +147,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Wir haben mehrere Segmente. Mehrere Storys?',
-        antwort: 'Heute eine: für das Segment eures Kundenprofils. Lichaw: Unterscheiden sich die Storys stark, getrennt entwerfen; meist reicht eine mit notierten Unterschieden (Kap. 3, Falling Action, Hinweis „Different strokes for different personas?“).',
+        antwort: 'Eine: für das Segment eures Kundenprofils. Lichaw: Unterscheiden sich die Storys stark, getrennt entwerfen; meist reicht eine mit notierten Unterschieden (Kap. 3, Falling Action, Hinweis „Different strokes for different personas?“).',
       },
     ],
     ueberleitung: 'Eine Figur und ein Ziel reichen noch nicht. Probe an einer Geschichte, die ihr kennt.',
@@ -297,7 +298,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 8, Stories Are Character-Driven; Kursregel`,
       },
     ],
-    ueberleitung: 'Lichaw kennt drei Arten von Storys. Heute schreibt ihr die erste.',
+    ueberleitung: 'Lichaw kennt drei Arten von Storys. Heute geht es um die erste.',
   },
 
   'drei-storys': {
@@ -306,7 +307,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Heute nur Concept; Origin und Usage, mit Storyboard, an Tag 4.',
       'Exposition betonen: einmal schreiben, dreimal verwenden.',
       'Wenn hinten: nur den ersten Satz, dann weiter.',
-      'Zeit: 16:30 beginnt die Übung.',
+      'Zeit: 16:30 endet der Block, danach Puffer.',
     ],
     kern: [
       {
@@ -480,9 +481,9 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     live: [
       'Muster zeigen, Kaffeebar-Satz vorlesen.',
       '„Der Satz ist die Story in klein: Figur, Problem, Produkt, Krise, Höhepunkt.“',
-      'Kommt in Schritt 4, in Abschnitt 3 des Produkt-Briefs.',
       'Falle: mit dem Satz anfangen – erst die sieben Stationen.',
-      'Wenn hinten: erst in Schritt 4 zeigen.',
+      '„Heute bleibt es Theorie – eine eigene Story schreibt ihr heute nicht.“',
+      'Zeit: 16:30 Puffer, 17:15 Abschluss.',
     ],
     kern: [
       {
@@ -490,70 +491,6 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 7, Elevator Pitch`,
       },
     ],
-    ueberleitung: 'Jetzt eure Story: 28 Minuten, vier Schritte.',
-  },
-
-  vorgehen: {
-    live: [
-      'Zeit: Start spätestens 16:47, sonst Schritt 2 mündlich.',
-      'Nach 12 min: Flach-Probe – eine Zeile unter die Story.',
-      'Nach 15 min: reihum erzählen, zwei Minuten, eine Minute Antworten.',
-      'Fragen: Krise? Höhepunkt? Wo habt ihr gelächelt?',
-      'Nach 24 min: committen, Satz in den Brief, Station 6 als Annahme.',
-    ],
-    uebung: { dauer: '28 min (12 + 3 + 9 + 4)', form: 'allein schreiben, dann reihum laut erzählen, dann allein festhalten' },
-    ablauf: {
-      schritte: [
-        'Schritt 1 (12 min, allein): Vorlage aus dem Handout nach docs/STORYS.md, sieben Stationen mit je ein, zwei Sätzen und IDs.',
-        'Schritt 2 (3 min): die einfache Lösung als eine Zeile darunter – Problem, Produkt, Ende.',
-        'Schritt 3 (9 min, reihum): jede*r erzählt höchstens zwei Minuten; die anderen antworten nur auf drei Fragen.',
-        'Schritt 4 (4 min): Story committen, Satz in Abschnitt 3 des Produkt-Briefs, fallende Handlung in die Annahmen-Map.',
-      ],
-      achten: [
-        'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',
-        'Krise nennt mindestens eine heutige Alternative mit Zitat-ID und einen inneren Widerstand.',
-        'Station 6 ist ein Gedanke, keine Handlung.',
-        'Beim Erzählen aufs Gesicht der anderen achten: Lächelt jemand am Höhepunkt?',
-      ],
-      fehler: [
-        'Die Story beginnt mit dem Produkt statt mit der Person.',
-        'Der Höhepunkt ist „schneller“ oder „leichter“ – dann fehlt die Krise.',
-        'Die Krise ist erfunden statt aus den Interviews.',
-        'Beim Erzählen wird die Idee diskutiert statt die drei Fragen beantwortet.',
-      ],
-    },
-    kern: [
-      {
-        text: 'Das Lächeln am Höhepunkt: Auf Lichaws Storylines steht meist „one key smiley face scribbled on it, usually in the same place: the climax“. In Tests kam es mit Sätzen wie „Oh, that was neat“ oder „Ah, I get it.“ Die drei Fragen der Runde sind eine Kürzung des Kurses.',
-        quelle: `${LICHAW}, Kap. 6, Use the Smile Test; Kap. 7, Test and Validate; Kursregel`,
-      },
-      {
-        text: '„Squiggly lines on a piece of paper or a whiteboard are cheap. Not having a storyline or losing your thread is expensive.“',
-        quelle: `${LICHAW}, Kap. 7 (Einleitung)`,
-      },
-    ],
-    fragen: [
-      {
-        frage: 'Dürfen wir den Bogen zeichnen statt schreiben?',
-        antwort: 'Ja, zusätzlich. Lichaw empfiehlt, am Anfang alles sichtbar auf einen Bogen zu legen (Kap. 7, Einleitung). Abgegeben wird der Text in docs/STORYS.md.',
-      },
-    ],
-    ueberleitung: 'Zum Schluss eine Frage an jede Story.',
-  },
-
-  uebertrag: {
-    live: [
-      'Fragen: Eure einfache Lösung – was hat eure Story mehr?',
-      'Reihum, laut, je ein Satz.',
-      'Falle: „schneller“ oder „leichter“ – nach der Alternative fragen.',
-      '„Warum würden eure Interviewten bei dem bleiben, was sie heute tun?“',
-      'Zeit: 17:15 Abschluss.',
-    ],
-    kern: [
-      {
-        text: 'Die Probe: die einfache neben die großartige Lösung stellen. „A concept without a conflict and a resulting climax is a flat story—literally just a line.“ „Leicht zu bedienen“ trägt nur, wenn Schwierigkeit das Problem ist.',
-        quelle: `${LICHAW}, Kap. 3, What Is a Concept Story?; Climax/Resolution; Mapping a Concept Story`,
-      },
-    ],
+    ueberleitung: 'Damit endet die Theorie. Bis 17:15 holt ihr nach, was vom Tag offen ist.',
   },
 };
