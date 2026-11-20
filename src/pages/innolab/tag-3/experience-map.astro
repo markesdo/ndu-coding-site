@@ -42,6 +42,8 @@ const ZITATE = new Map(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate
 const NOTIZ_I1 = KAFFEEBAR_INTERVIEWS.interviews.find((iv) => iv.id === 'I1')?.notizen ?? '';
 const NOTIZ_SATZ = 'Schaut erst auf die Schlange, dann auf die Uhr.';
 const IDS_HALLE = zitatIdsIn('a');
+// ID-Zeile „I2-4 · I2-1 · … → 3 von 5“ in Stücken, die nie mitten in einer ID umbrechen (flex-wrap, .ids).
+const idZeile = (g: Parameters<typeof zitatIdsIn>[0]) => [...zitatIdsIn(g).map((id, i, a) => (i < a.length - 1 ? `${id} · ` : `${id} `)), `→ ${zaehlung(g)}`];
 const gezeigt = [
   ...ZUSAMMEN.flatMap((z) => [z.id, ...zitatIdsIn(z.g)]), ...EINZELSTIMMEN,
   'I2-1', 'I4-2', 'I5-6', 'I2-2', 'I2-4', 'I2-5', 'I3-3', 'I4-3',
@@ -194,14 +196,14 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
             <span class="karte">
               <strong>{z.moment}</strong>
               <span>„… <b>{z.zitat}</b>{z.nach}“ <span class="id">{z.id}</span></span>
-              <span class="ids">{zitatIdsIn(z.g).join(' · ')} → <b>{zaehlung(z.g)}</b></span>
+              <span class="ids">{idZeile(z.g).map((t) => <span>{t}</span>)}</span>
               <span class={`pill ${z.art}`}>{z.marke}</span>
             </span>
           </li>
         ))}
       </ol>
       <p class="rest small muted" data-schritt><span class="chip grau">Kaffee nehmen</span> <span class="chip grau">zum Bahnsteig</span> nur Einzelstimmen ({EINZELSTIMMEN.join(', ')}) → bleiben im Snapshot.</p>
-      <p class="pointe" data-schritt>Schritte und Gefühl zeigen den Zeitpunkt. Die Zitate darunter machen ihn zum Moment.</p>
+      <p class="pointe z-pointe" data-schritt>Schritte und Gefühl zeigen den Zeitpunkt. Die Zitate darunter machen ihn zum Moment.</p>
       <div class="nur-handout">
         <p>Die Momente, Zitate und Zählungen sind die der fertigen Kaffeebar-Map (<a href="/innolab/methoden/journey-map#beispiel">Experience Map, Beispiel</a>). Unter jeder Karte stehen alle Zitat-IDs, die der Moment bündelt; daraus ergibt sich die Zählung. „Ich bin im Zug“ steht in einer Geschichte und bleibt als erzähltes Ende. Zu „Kaffee nehmen“ und „zum Bahnsteig“ gibt es nur Einzelstimmen ohne Gefühl am Schritt; sie werden kein Moment und bleiben im Snapshot. Ein Gefühl, zu dem kein Schritt gehört, ist eine Frage für das nächste Interview: Wann war das?</p>
       </div>
@@ -215,7 +217,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
       <p class="pointe">Ein Moment heißt, wie die Kundschaft ihn erlebt – und die Zitate darunter belegen ihn.</p>
       <div class="gegenueber">
         <p><CircleX size={20} aria-hidden="true" class="icon-nein" /> „Viele entscheiden sich aus Zeitmangel gegen die Kaffeebar.“</p>
-        <p><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> <span><strong>„Ich komme in die Halle und entscheide.“</strong> <span class="id">{IDS_HALLE.join(' · ')} → {zaehlung('a')}</span></span></p>
+        <p><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> <span><strong>„Ich komme in die Halle und entscheide.“</strong> <span class="ids">{idZeile('a').map((t) => <span>{t}</span>)}</span></span></p>
       </div>
       <ul class="belegprobe" data-schritt>
         <li class="beleg-zitat">„{ZITATE.get('I2-1')}“ <span class="id">I2-1</span> <em>Zitat aus der Geschichte: gehört darunter</em></li>
@@ -373,7 +375,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
   :global(.content) .anlauf-karten > li { margin: 0; padding: .3rem .5rem; border-radius: var(--radius); background: var(--yellow-soft); border: 1px solid var(--yellow-ink); }
   .anlauf-kopf { margin: .3rem 0 .2rem; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
   .anlauf-c .anlauf-kopf:first-child { margin-top: 0; }
-  .pruefzeile { display: flex; flex-wrap: wrap; gap: .2rem .8rem; margin: auto 0 0; padding-top: .5rem; max-width: none; font-weight: 600; color: var(--muted); }
+  .pruefzeile { display: flex; flex-wrap: wrap; gap: .2rem .55rem; margin: auto 0 0; padding-top: .5rem; max-width: none; font-weight: 600; color: var(--muted); }
   .pruefzeile span { display: inline-flex; align-items: center; gap: .25rem; }
   .ausgedacht { margin: .2rem 0 0; }
   @media (max-width: 760px) { .anlaeufe { grid-template-columns: 1fr; } }
@@ -386,28 +388,34 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
   .chip { display: inline-block; padding: .1rem .4rem; margin: .1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .85rem; white-space: nowrap; }
   .chip.gefuehl { background: var(--yellow-soft); border-color: var(--yellow-ink); font-weight: 600; }
   .chip.grau { background: var(--code-bg); color: var(--muted); border-style: dashed; }
-  .zusammen { list-style: none; margin: .6rem 0 .4rem; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; }
+  .zusammen { list-style: none; margin: .3rem 0 .2rem; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; }
   :global(.content) .zusammen > li { margin: 0; display: flex; flex-direction: column; align-items: center; gap: .2rem; text-align: center; }
   .z-schritte { display: flex; flex-wrap: wrap; justify-content: center; }
   .z-plus, .z-pfeil { color: var(--muted); font-weight: 700; }
   .karte { display: flex; flex-direction: column; align-items: flex-start; gap: .25rem; width: 100%; padding: .5rem .7rem; text-align: left; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: .85rem; line-height: 1.3; }
   .karte strong { font-size: .95rem; line-height: 1.25; }
-  .karte .ids { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
-  .karte .ids b { color: var(--fg); }
+  .ids { display: flex; flex-wrap: wrap; column-gap: .35em; font-family: var(--mono); font-size: .78rem; color: var(--muted); }
+  .ids > span { white-space: nowrap; }
+  .ids > span:last-child { font-weight: 700; color: var(--fg); }
   .karte .pill { white-space: nowrap; font-size: .85em; line-height: 1.2; padding: .1rem .4rem; }
-  .rest { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem; max-width: none; }
+  .rest { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .4rem; max-width: none; margin: .2rem 0; }
+  /* In der Auflösung begrenzt global.css Absätze auf 36em; Restzeile und Pointe dürfen die ganze Breite nehmen. */
+  :global([data-aufloesung-inhalt]) > p.rest, :global([data-aufloesung-inhalt]) > p.pointe { max-width: none; }
+  /* Pointe kleiner, damit sie nicht unter den Schritt-Hinweis unten rechts läuft. */
+  .z-pointe { font-size: 1rem; }
+  .z-schritte .chip { margin: .1rem .05rem; padding: .1rem .3rem; }
   @media (max-width: 760px) { .zusammen { grid-template-columns: 1fr; } }
   /* Folie „anlauf-c“: Zusammenfassung gegen Moment, darunter die Belegprobe. */
   .gegenueber { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .gegenueber p { display: flex; align-items: flex-start; gap: .4rem; margin: 0; padding: .5rem .7rem; border: 1px solid var(--border); border-radius: var(--radius); max-width: none; }
   .gegenueber :global(.icon-nein) { color: var(--muted); flex: none; margin-top: .15rem; }
   .gegenueber :global(.icon-ja) { color: var(--green); flex: none; margin-top: .15rem; }
-  .gegenueber .id { white-space: normal; }
-  .belegprobe { list-style: none; margin: .6rem 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; font-size: .85rem; }
+  .gegenueber .ids { margin-top: .2rem; }
+  .belegprobe { list-style: none; margin: .6rem 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; font-size: .85rem; }
   :global(.content) .belegprobe > li { margin: 0; padding: .35rem .55rem; border-radius: var(--radius); border: 1px solid var(--border); }
   .belegprobe em { display: block; font-style: normal; font-weight: 700; font-size: .8rem; }
   .beleg-zitat { background: var(--yellow-soft); border-color: var(--yellow-ink) !important; }
   .beleg-notiz { background: var(--code-bg); border-style: dashed !important; color: var(--muted); }
   .beleg-meinung { background: var(--code-bg); color: var(--muted); }
-  @media (max-width: 760px) { .gegenueber { grid-template-columns: 1fr; } .bausteine { gap: .8rem; } .bausteine > li + li::before { content: none; } }
+  @media (max-width: 760px) { .gegenueber, .belegprobe { grid-template-columns: 1fr; } .bausteine { gap: .8rem; } .bausteine > li + li::before { content: none; } }
 </style>
