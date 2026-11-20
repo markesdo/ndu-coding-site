@@ -91,10 +91,10 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     live: [
       'Timer 15 min: je Person ca. 5 min auf T3 · 0.',
       'Reihenfolge Sofie → Joachim → Hewen.',
-      'Je Zeile: Schritt 1, zusammenlegen, zählen, Momente, Map.',
+      'Je Frame: Schritt 1, zusammenlegen, zählen, Momente, Map.',
       'Zeigen und fragen, nichts umschreiben; die Person entscheidet.',
     ],
-    uebung: { dauer: '15 min (3 × 5)', form: 'Markus geht jede Zeile auf T3 · 0 durch' },
+    uebung: { dauer: '15 min (3 × 5)', form: 'Markus geht jeden Frame T3 · 0 durch' },
     miro: {
       frame: 'T3 · 0 · So entsteht eure Map - Sofie',
       schritte: [
