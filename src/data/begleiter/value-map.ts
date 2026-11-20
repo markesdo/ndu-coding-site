@@ -212,7 +212,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
       'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
-      'Ausblick: gleich die Geschichte dazu – der Story-Bogen.',
+      'Ausblick: gleich der Story-Bogen – heute als Theorie.',
     ],
     kern: [
       {

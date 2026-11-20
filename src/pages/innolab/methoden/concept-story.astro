@@ -2,11 +2,9 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
-import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
-import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import Fluss from '../../../components/Fluss.astro';
@@ -100,7 +98,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
       <li data-schritt><strong>Figur und Ziel</strong> sind da – nichts steht dazwischen.</li>
       <li data-schritt><strong>Ohne Konflikt:</strong> keine Geschichte, nur Dinge, die passieren.</li>
     </ul>
-    <p class="nur-handout">Lichaws Gegenprobe: „Once upon a time, there was a wooden doll named Pinocchio. He wanted to become a real human boy. So he went out, bought some magic, and transformed into a boy. The end.“ Figur und Ziel sind da, trotzdem ist es keine Geschichte: „Stories wouldn’t be stories without conflict. They would be a series of events—stuff happening.“ Jede Figur und jedes Ziel braucht eine Kraft, die dagegen wirkt; erst sie macht das Ende lohnend ({LICHAW}, Kap. 8, Conflict Is Key). Für eure Story heißt das: Die Kraft dagegen müsst ihr nicht erfinden. Sie steht in euren Interviews.</p>
+    <p class="nur-handout">Lichaws Gegenprobe: „Once upon a time, there was a wooden doll named Pinocchio. He wanted to become a real human boy. So he went out, bought some magic, and transformed into a boy. The end.“ Figur und Ziel sind da, trotzdem ist es keine Geschichte: „Stories wouldn’t be stories without conflict. They would be a series of events—stuff happening.“ Jede Figur und jedes Ziel braucht eine Kraft, die dagegen wirkt; erst sie macht das Ende lohnend ({LICHAW}, Kap. 8, Conflict Is Key). Für eine Concept Story zu eurem Produkt heißt das: Die Kraft dagegen müsst ihr nicht erfinden. Sie steht in euren Interviews.</p>
   </Folie>
 
   <Folie>
@@ -160,9 +158,9 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     ]} />
     <ul class="gross">
       <li data-schritt><strong>Nicht nur Pitch:</strong> Die Story sagt, was das Produkt können muss.</li>
-      <li data-schritt><strong>An Tag 4:</strong> Was eure Story nicht stützt, kommt nicht in den Prototyp.</li>
+      <li data-schritt><strong>Für euch:</strong> Was eine Concept Story nicht stützt, gehört nicht in den Prototyp.</li>
     </ul>
-    <p class="nur-handout">Die Concept Story ist kein Werbetext. Beim ersten iPhone bestimmte sie die Anforderungen: Das Gerät kam mit aufwendiger Animation, aber ohne Kopieren und Einfügen. Der Touchscreen musste sich leicht bedienen lassen, sonst wäre der Höhepunkt („works like magic“) nicht eingelöst worden; dafür brauchte es die Animation. „Animation supported the story. Cut-and-paste did not.“ Lichaws Schluss: „concept stories don’t just help you figure out how to talk about a product, but how to build the product“ ({LICHAW}, Kap. 3, Supporting the Story). Als Faustregel: „Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out“ (Kap. 8, Stories Are Character-Driven). Übertrag des Kurses: An Tag 4 schneidet ihr mit der Story Map den ersten Slice – eure Concept Story ist dafür der Maßstab.</p>
+    <p class="nur-handout">Die Concept Story ist kein Werbetext. Beim ersten iPhone bestimmte sie die Anforderungen: Das Gerät kam mit aufwendiger Animation, aber ohne Kopieren und Einfügen. Der Touchscreen musste sich leicht bedienen lassen, sonst wäre der Höhepunkt („works like magic“) nicht eingelöst worden; dafür brauchte es die Animation. „Animation supported the story. Cut-and-paste did not.“ Lichaws Schluss: „concept stories don’t just help you figure out how to talk about a product, but how to build the product“ ({LICHAW}, Kap. 3, Supporting the Story). Als Faustregel: „Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out“ (Kap. 8, Stories Are Character-Driven). Übertrag des Kurses: Wenn ihr mit der Story Map den ersten Slice schneidet, ist eine geschriebene Concept Story dafür der Maßstab.</p>
   </Folie>
 
   <Folie>
@@ -210,7 +208,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
 
   <Folie>
     <h2 id="slack">Lichaws Beispiel: Slack</h2>
-    <p class="folie-satz">Dieselben Fragen, die ihr gleich beantwortet.</p>
+    <p class="folie-satz">Lichaws Fragen, einmal vollständig beantwortet.</p>
     <BildText>
       <BuchAbbildung src="/quellen/lichaw/slack.jpg" alt="Bogen: Busy professional als Foto mit „I need to communicate and collaborate.“, Problem „Communicating and collaborating is still a pain.“, Schachtel Slack „A way to communicate and collaborate“, Hürde mit Email, IM, Product-management tools, Travel, Glühbirne am Gipfel mit Efficient, Seamless, Searchable, Lightweight, danach „I want to try this!“ und am Ende lächelnd „I can communicate and collaborate.“" quelle={`Die Concept Story von Slack. ${LICHAW_KURZ}, Abb. 3.7.`} />
       <div>
@@ -270,10 +268,9 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
         </tbody>
       </table>
     </div>
-    <p data-schritt>Öffnet diese Seite auf eurem Gerät: Die Vorlage für <code>docs/STORYS.md</code> steht unten.</p>
     <div class="nur-handout">
       <p>Die Tabelle ausführlich. <strong>1 Exposition:</strong> Wer ist eure Zielkundschaft, was ist gut in ihrer Welt, was ist ihr großes Ziel? Aus <code>KUNDENPROFIL.md</code>: Segment, Jobs (J…), Gains (G…). <strong>2 Auslöser:</strong> Welches Problem, welcher Pain? Eure Ziel-Chance, im Profil P1. <strong>3 Steigende Handlung:</strong> Wie heißt das Produkt, was für eine Art Produkt ist es? Aus <code>VALUE-MAP.md</code>: das Produkt des Spitzenreiters. <strong>4 Krise:</strong> Wie sieht die Konkurrenz aus, welche inneren Hürden gibt es? Aus den Interviews: was die Menschen heute tun, mit Zitat-IDs; dazu das „anders als …“ eures Lückensatzes. <strong>5 Höhepunkt:</strong> Was löst Problem und Widerstand, was unterscheidet euch? Aus der Value Map: Pain Relievers und Gain Creators. <strong>6 Fallende Handlung:</strong> Was sollen Menschen danach denken, fühlen, sich vorstellen? Neu – ein Gedanke, als Annahme in die Annahmen-Map. <strong>7 Ende:</strong> Was passiert, wenn das Ziel erreicht ist, und woran merkt das Geschäft, dass es auf dem richtigen Weg ist? Ein Gain (G…) und euer Outcome aus dem Produkt-Brief, mit Messgröße – bei der Kaffeebar die Wurzel des Baums (Outcome, Kaffeebar-Baum): „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“.</p>
-      <p>Die mittlere Spalte sind Lichaws Fragen, auf der Folie gekürzt ({LICHAW}, Kap. 3, Mapping a Concept Story), etwa „What’s good in her world as it relates to your product or service?“, „What mental hurdles might keep her from adopting your solution?“, „What do you want people to think, feel, or envision after learning about your product?“ und am Ende „How will you know you’re on the right path?“. Die rechte Spalte ist die Zuordnung des Kurses: wo die Antwort in euren Unterlagen schon steht. Lichaw verlangt genau das: „Stories are not something that you make up“ – „Stories for products come from data“ (Kap. 6, Einleitung). Neu schreibt ihr nur Station 6, und die ist eine Hypothese, die ihr prüft (Kap. 3, Falling Action).</p>
+      <p>Die mittlere Spalte sind Lichaws Fragen, auf der Folie gekürzt ({LICHAW}, Kap. 3, Mapping a Concept Story), etwa „What’s good in her world as it relates to your product or service?“, „What mental hurdles might keep her from adopting your solution?“, „What do you want people to think, feel, or envision after learning about your product?“ und am Ende „How will you know you’re on the right path?“. Die rechte Spalte ist die Zuordnung des Kurses: wo die Antwort in euren Unterlagen schon steht. Lichaw verlangt genau das: „Stories are not something that you make up“ – „Stories for products come from data“ (Kap. 6, Einleitung). Wenn ihr eure Concept Story schreibt, ist nur Station 6 neu, und die ist eine Hypothese, die ihr prüft (Kap. 3, Falling Action).</p>
     </div>
   </Folie>
 
@@ -282,28 +279,12 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <p class="folie-satz">Die Story, so kurz wie eine Liftfahrt.</p>
     <p class="gross" data-schritt>„Für <strong>[Zielgruppe]</strong> mit <strong>[Pain]</strong> ist <strong>[Name]</strong> ein <strong>[Art]</strong>, das <strong>[Nutzen]</strong>. Anders als <strong>[Alternative]</strong>: <strong>[Unterschied]</strong>.“</p>
     <p data-schritt>„Für Pendler*innen, die nicht wissen, ob sich der Kaffee vor der Abfahrt ausgeht, ist Gleis-1-Express eine Bestellung per QR-Code, die beim Bestellen sagt, ob er vor dem Zug fertig ist. Anders als Automat und Schlange: Gewissheit statt Glücksspiel.“</p>
-    <p class="nur-handout">Lichaws Elevator Pitch (nach dem Format aus <em>Gamestorming</em>): „For [target customer] who has [customer need], [product name] is a [market category] that [one key benefit]. Unlike [competition], the product [unique differentiator].“ Er bildet die Concept Story ab: Zielkunde = Hauptfigur, Bedürfnis = Auslöser, Name, Art und Nutzen = steigende Handlung, Konkurrenz = Krise, Unterschied = Höhepunkt ({LICHAW}, Kap. 7). Dieser Satz füllt Abschnitt 3 eures Produkt-Briefs; der Lückensatz aus der Ideation bleibt euer Arbeitsmittel.</p>
-  </Folie>
-
-  <Folie>
-    <h2 id="vorgehen">So geht ihr vor (28 min)</h2>
-    <p class="folie-satz">Stationen, Flach-Probe, erzählen.</p>
-    <p class="wozu"><strong>Wozu?</strong> Damit jemand in Sekunden versteht, warum euer Angebot besser ist als das, was er heute tut.</p>
-    <ol class="gross">
-      <li data-schritt><strong>Sieben Stationen, allein:</strong> Vorlage in <code>docs/STORYS.md</code>; je ein, zwei Sätze, jede Behauptung mit J-, P-, G- oder Zitat-ID. Station 6 ist ein Gedanke in „…“. <Timer minuten={12} /></li>
-      <li data-schritt><strong>Flach-Probe:</strong> eine Zeile darunter – Problem → Produkt → Ende. Was hat eure Story mehr? <Timer minuten={3} /></li>
-      <li data-schritt><strong>Erzählen, reihum:</strong> 2 min erzählen, 1 min Antworten: Krise? Höhepunkt? Gelächelt? <Timer minuten={9} /></li>
-      <li data-schritt><strong>Festhalten:</strong> Story committen, Satz in den Produkt-Brief, Station 6 in die Annahmen-Map. <Timer minuten={4} /></li>
-    </ol>
-    <div class="nur-handout">
-      <p>Dazu 17 Minuten Theorie und Beispiel. Zu Schritt 1: Lichaws Fragen je Station und wo die Antworten bei euch schon stehen, zeigt die Tabelle oben (<a href="#woher">Woher kommt jede Station?</a>; {LICHAW}, Kap. 3, Mapping a Concept Story).</p>
-      <p>Zu Schritt 3: Jede*r erzählt die Story in höchstens zwei Minuten, dann eine Minute Antworten. Die anderen antworten nur auf drei Fragen: Gab es eine Krise? Gab es einen Höhepunkt, der sie auflöst? Wo habt ihr gelächelt? Das Lächeln zur richtigen Zeit ist Lichaws Signal, dass eine Story trägt (Kap. 6, Smile Test; Kap. 7). Die drei Fragen sind eine Kürzung des Kurses.</p>
-      <p>Zu Schritt 4: <code>docs/STORYS.md</code>, Abschnitt „Concept Story“; der Satz in Abschnitt 3 des Produkt-Briefs; die fallende Handlung als Annahme in die Annahmen-Map – an der Experiment-Karte nach dem Geschäftsmodell wählt ihr die riskanteste.</p>
-    </div>
+    <p class="nur-handout">Lichaws Elevator Pitch (nach dem Format aus <em>Gamestorming</em>): „For [target customer] who has [customer need], [product name] is a [market category] that [one key benefit]. Unlike [competition], the product [unique differentiator].“ Er bildet die Concept Story ab: Zielkunde = Hauptfigur, Bedürfnis = Auslöser, Name, Art und Nutzen = steigende Handlung, Konkurrenz = Krise, Unterschied = Höhepunkt ({LICHAW}, Kap. 7). Wenn ihr eure Concept Story schreibt, gehört dieser Satz in Abschnitt 3 eures Produkt-Briefs; der Lückensatz aus der Ideation bleibt euer Arbeitsmittel.</p>
   </Folie>
 
   <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
+  <p>An Tag 3 ist die Concept Story Theorie; eine eigene schreibt ihr an diesem Tag nicht. Die Vorlage zeigt, wie eine geschriebene Concept Story aussieht.</p>
   <Prompt label="Vorlage · docs/STORYS.md"># Storys — [Produkt]
 
 Stand: [Datum] · Profil: docs/KUNDENPROFIL.md · Value Map: docs/VALUE-MAP.md
@@ -320,16 +301,7 @@ Stand: [Datum] · Profil: docs/KUNDENPROFIL.md · Value Map: docs/VALUE-MAP.md
 Einfache Lösung (zur Probe): [Problem] → [Produkt] → [Ende]. Was hat die Story mehr?
 
 Ein Satz: Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Anders als [Alternative]: [Unterschied].</Prompt>
-
-  <h2 id="pruefen">Prüfen</h2>
-  <ClaudePruefung slug="concept-story" />
   </div>
-
-  <Folie>
-    <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-    <p class="folie-satz">Was ist eure einfache Lösung – und was hat eure Story mehr?</p>
-    <p class="nur-handout">Wenn ihr gegenüber der Linie nur „schneller“ oder „leichter“ habt, fehlt die Krise: Welche Alternative nutzen eure Interviewten heute, und warum würden sie bei ihr bleiben? Erst wenn ihr das beantworten könnt, hat der Höhepunkt etwas aufzulösen.</p>
-  </Folie>
 
   <p class="small muted">Nach {LICHAW}, Kap. 1–4, 6–8.</p>
 

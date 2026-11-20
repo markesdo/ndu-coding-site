@@ -300,7 +300,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 347–348 (PDF)',
   },
   {
-    slug: 'concept-story', name: 'Concept Story', tag: 3, dauer: 75,
+    slug: 'concept-story', name: 'Concept Story', tag: 3, dauer: 30,
     frage: 'Warum versteht jemand in Sekunden, dass euer Produkt besser ist als das, was er heute tut?',
     braucht: ['annahmen', 'synthese', 'profil', 'ideen', 'valuemap'], ergibt: ['concept'],
     pruefliste: [
