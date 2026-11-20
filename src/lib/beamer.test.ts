@@ -21,7 +21,7 @@ describe('ersteFolieAbstand', () => {
     expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400 })).toBe(320);
   });
   it('Bruchteile runden auf, damit die Folie nicht 1 px in den ersten Bildschirm ragt', () => {
-    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400.4 })).toBe(320);
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400.6 })).toBe(320);
   });
   it('Folie beginnt schon unter der Falz oder genau an ihr: kein Abstand', () => {
     expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 900 })).toBe(0);
