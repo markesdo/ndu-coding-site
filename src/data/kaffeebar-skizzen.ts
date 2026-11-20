@@ -41,11 +41,6 @@ export const SKIZZEN: Skizze[] = [
 export const gruppeName = (g: GruppeId) => GRUPPEN.find((x) => x.g === g)?.name ?? '';
 export const buchstabe = (g: GruppeId) => g.toUpperCase();
 
-/** Alle Zitat-IDs, die eine Gruppe bündelt, in der Reihenfolge der Skizzen (Notizen haben keine ID und fehlen). Daraus
- *  ergibt sich die Zählung: Tag 3, experience-map.astro#zusammen zeigt sie als ID-Zeile unter jedem Moment. */
-export const zitatIdsIn = (g: GruppeId, skizzen: Skizze[] = SKIZZEN): string[] =>
-  skizzen.flatMap((s) => s.stickies.filter((st) => st.g === g && st.id && !st.notiz).map((st) => st.id!));
-
 /** Geschichten je Gruppe: nur Stickies mit Zitat, je Geschichte einmal. */
 export const geschichtenIn = (g: GruppeId, skizzen: Skizze[] = SKIZZEN) =>
   skizzen.filter((s) => s.stickies.some((st) => st.g === g && st.id)).length;

@@ -432,6 +432,20 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(JSON.stringify(NOTIZEN[pfad]).match(/Kursregel/g) ?? []).toStrictEqual([]);
     expect(quellen[pfad]).toContain('Buchclub-Leitfaden zu Kapitel 6');
   });
+  // 20.11. spät (Markus, Punkt 9): Momentkarte = Name + Zählung. Kein Beispielzitat, keine ID-Liste auf den Karten von
+  // „zusammen“, keine Prüffrage nach Zitat-IDs unter zwei Momenten; „Welche Zitate gehören hierher?“ gehört zum Zusammenlegen.
+  it('Tag 3: experience-map – Moment = Name + Zählung, keine Zitate oder IDs auf der Momentkarte', () => {
+    const pfad = '/innolab/tag-3/experience-map';
+    const q = quellen[pfad] ?? '';
+    const zusammen = q.slice(q.indexOf('id="zusammen"'), q.indexOf('id="anlauf-c"'));
+    const karte = zusammen.match(/class="karte"[\s\S]*?<\/span>\s*<\/li>/)?.[0] ?? '';
+    expect(karte).toContain('{zaehlung(z.g)}');
+    expect(karte.match(/<b>|class="id"|class="ids"|z\.zitat|z\.id\b/g) ?? []).toStrictEqual([]);
+    expect(q.match(/Zitat-ID unter zwei Momenten|darunter alle Zitat-IDs/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('<span>erzählt in N von M Geschichten</span>');
+    expect(q).toMatch(/<strong>Zusammenlegen:<\/strong>[^<]*welche Zitate gehören hierher\?/);
+    expect(JSON.stringify(NOTIZEN[pfad]).match(/Zitat-ID unter zwei|dieser IDs/g) ?? []).toStrictEqual([]);
+  });
   // Tag 2 (12.11.): Eröffnung, die drei Methoden, Abschluss – der Begleiter folgt jeder Folie, und jede hat Stichworte.
   const TAG_2_SEITEN = ['/innolab/tag-2', '/innolab/methoden/synthese', '/innolab/methoden/journey-map', '/innolab/methoden/baum', '/innolab/tag-2/abschluss'];
   it('Tag 2: jede Folie der vier Seiten hat eine Notiz mit mindestens einem live-Stichwort', () => {

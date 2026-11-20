@@ -3,8 +3,8 @@ import type { Notiz } from './typen';
 // Begleiter-Notizen zu src/pages/innolab/tag-3/experience-map.astro (Tag 3, 09:00–09:25): die Experience Map vor dem
 // Baum nachschärfen. Folien 1–8 (Kaffeebar) in etwa 10–12 Minuten, die Auflösung (Folien 4–8) in knapp 5; Folie 9
 // („Momente finden“) am Beamer überspringen und erst am ersten Frame öffnen. Dann 15 Minuten Durchgang am eigenen Material
-// der Studierenden auf Miro (T3 · 0). Ein Moment = Bezeichnung aus Sicht der Kundschaft + die Zitat-IDs, die er bündelt
-// (tut · fühlt · belegt). Die drei Anläufe der Kaffeebar sind ausgedacht; Momente, Zitate und Zählung wie
+// der Studierenden auf Miro (T3 · 0). Ein Moment = Name aus Sicht der Kundschaft + Zählung „N von M“ (tut · fühlt ·
+// belegt); die Zitate mit IDs bleiben in der Zähltabelle (Entscheidung 20.11. spät, Punkt 9). Die drei Anläufe der Kaffeebar sind ausgedacht; Momente, Zitate und Zählung wie
 // journey-map#beispiel. Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt.
 // Welcher Moment je Person im Durchgang dran ist, steht nicht hier (Repo öffentlich, Analysen der Studierenden privat).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
@@ -25,9 +25,9 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   bausteine: {
     live: [
       'Kacheln zügig aufdecken, je ein Satz: tut, fühlt, belegt.',
-      '„Ein Moment bündelt Zitate: ein Name aus Sicht der Kundschaft, darunter alle IDs.“',
+      '„Ein Moment: ein Name aus Sicht der Kundschaft und die Zahl der Geschichten.“',
       'Torres: Knoten und Kontext (S. 56), Muster über Geschichten (S. 87).',
-      'IDs und Zählung: so im Kurs, damit jeder Ast nachprüfbar bleibt.',
+      'Zahl am Moment: so im Kurs; Zitate bleiben in der Zähltabelle.',
     ],
     kern: [
       { text: 'Knoten: „a distinct moment in time, an action, or an event“. Kontext an jedem Schritt: Was denkt, fühlt, tut die Person dort?', quelle: `${TORRES}, S. 56` },
@@ -48,7 +48,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
       achten: [
         'Erkennt jemand die eigene Map wieder: notieren lassen und im Durchgang auf T3 · 0 aufgreifen; hier bei der Kaffeebar bleiben.',
       ],
-      aufloesung: 'A hat nur Schritte, B nur Gefühle, C fasst in der dritten Person zusammen. „Frust“ gehört zu „anstellen, warten“. Allen fehlen die Belege (Zitat-IDs, N von M), Umweg, Tief und Ende.',
+      aufloesung: 'A hat nur Schritte, B nur Gefühle, C fasst in der dritten Person zusammen. „Frust“ gehört zu „anstellen, warten“. Allen fehlen die Zählung (N von M), Umweg, Tief und Ende.',
     },
     ueberleitung: 'Vergleicht mit eurem Blick von eben. Zuerst A: der Ablauf.',
   },
@@ -73,7 +73,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     live: [
       'Frust-Antwort von eben aufgreifen: anstellen, warten.',
       'Spalte 2 zuerst zeigen, dann 1 und 3.',
-      'Karte 1: „Fünf IDs, drei Geschichten. Die Arbeit: Welche Zitate gehören hierher?“',
+      '„Drei von fünf Geschichten erzählen ihn. Auf die Karte: Name und Zahl.“',
       'Restzeile nur zeigen, nicht besprechen.',
     ],
     ueberleitung: 'C klingt sachlich – aber wer spricht da?',
@@ -81,16 +81,16 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   'anlauf-c': {
     live: [
       '„Wer spricht da?“ Dann: „Viele“ gegen „3 von 5“.',
-      'Belegprobe zeigen: Zitat gehört darunter, Notiz und Meinung nicht.',
+      'Belegprobe zeigen: Zitat zählt, Notiz und Meinung nicht.',
       'Nur Punkt 1 sprechen; Punkt 2 und 3 stehen lassen.',
-      '„Zitat fehlt“ nur hier sagen, bei A und B nicht.',
+      '„Zählung fehlt“ nur hier sagen, bei A und B nicht.',
     ],
     ueberleitung: 'Was allen drei Anläufen fehlt.',
   },
   'was-allen-fehlt': {
     live: [
       'Map zeigen, ein Satz: Umweg, Tief, Ende.',
-      'Map zeigt je ein Beispielzitat; ID-Listen standen auf „A und B übereinander“.',
+      'Map zeigt noch je ein Zitat; eure Karten tragen Name und Zahl.',
       'Punkt 4 betonen: „Steht ein Zitat unter zwei Momenten, überschneiden sie sich.“',
       'Graue Karte nur erwähnen.',
     ],
@@ -117,8 +117,8 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     live: [
       'Timer 15 min: je Person ca. 5 min auf T3 · 0.',
       'Reihenfolge Sofie → Joachim → Hewen.',
-      'Je Frame ein Moment, nicht alle fünf Schritte: „Welche Zitate gehören hierher?“',
-      'Dann: „Steht eine dieser IDs noch unter einem zweiten Moment?“',
+      'Je Frame eine Spalte, beim Zusammenlegen: „Welche Zitate gehören hierher?“',
+      'Dann Schritt 4: „Wie heißt der Moment? Derselbe Name wie die Spalte.“',
       'Zeigen und fragen, nichts umschreiben; die Person entscheidet.',
     ],
     uebung: { dauer: '15 min (3 × 5)', form: 'Markus geht jeden Frame T3 · 0 durch' },
@@ -126,7 +126,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
       frame: 'T3 · 0 · So entsteht eure Map - Sofie',
       schritte: [
         'Ein Frame je Person, über dem eigenen Baum; der Link oben führt zu Sofie, Joachim und Hewen liegen rechts daneben.',
-        'Je Frame ein Moment: „Welche Zitate gehören hierher?“, dann die IDs gegen die anderen Momente prüfen.',
+        'Je Frame eine Spalte: „Welche Zitate gehören hierher?“, dann die Momentkarte: Name wie die Spalte und „N von M“.',
         '„Alle zu mir holen“ auf den Frame, der dran ist.',
       ],
     },
@@ -134,7 +134,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   },
   'in-den-baum': {
     live: [
-      'Kurz, jede*r für sich: Steht eine Zitat-ID unter zwei Momenten?',
+      'Kurz, jede*r für sich: zwei Momente ein Zeitpunkt?',
       'Weiter zum Baum: Momente von T3 · 0 werden blaue Karten.',
     ],
     ueberleitung: 'Die Momente stehen – jetzt wächst der Baum.',
