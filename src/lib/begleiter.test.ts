@@ -561,9 +561,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const pfad = '/innolab/methoden/baum';
     const q = quellen[pfad] ?? '';
     const vorgehen = q.slice(q.indexOf('id="vorgehen"'), q.indexOf('id="anti-muster"'));
-    // Entscheidung 20: Die Chancen liegen vorab im Streifen „ungeprüft“ im Baum-Frame.
-    expect(vorgehen).toContain('Eure Chancen liegen im Streifen „ungeprüft“ unten im Frame: jede durch die drei Fragen → unter ihren Moment, Gleiches zusammenlegen, „X von 3“. Was liegen bleibt, bleibt im Snapshot.');
-    expect(q).toContain('und unten eure Chancen im Streifen „ungeprüft“.</li>');
+    // Entscheidung 20: Die Chancen liegen vorab im Streifen „Ungeprüft“ im Baum-Frame.
+    expect(vorgehen).toContain('Eure Chancen liegen im Streifen „Ungeprüft“ unten im Frame: jede durch die drei Fragen → unter ihren Moment, Gleiches zusammenlegen, „X von 3“. Was liegen bleibt, bleibt im Snapshot.');
+    expect(q).toContain('und unten eure Chancen im Streifen „Ungeprüft“.</li>');
     expect(JSON.stringify(NOTIZEN[pfad]?.vorgehen?.ablauf)).toContain('Ansage 9:25');
     const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
     expect(inventar).toContain('<p class="zitat-chance">Moment ohne Karte? Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?</p>');

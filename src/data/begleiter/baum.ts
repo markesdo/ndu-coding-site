@@ -345,7 +345,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Timer 12 min: Momente blau, dann Karten aus dem Streifen „ungeprüft“.',
+      'Timer 12 min: Momente blau, dann Karten aus dem Streifen „Ungeprüft“.',
       'Nach 12 min: Struktur, Timer 10 min.',
       '1:1 schon während Struktur, je 5 min: Sofie → Joachim → Hewen.',
       'Nach 22 min: selbst prüfen mit der Checkliste, Timer 13 min.',
@@ -374,7 +374,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Was offen bleibt, wird eine Frage für die nächsten Interviews.',
         'Wenige Interviews: viele Karten mit „1 von N“ – normal, die Zahl kommt drauf.',
         'Ein Zitat ist noch keine Chance: fragen, was die Person hier braucht (Torres S. 69, 88) – für Momente ohne Karte.',
-        'Die Sätze auf den gelben Karten im Streifen „ungeprüft“ stammen aus den Snapshots (Feld „Chancen“), von den Lehrenden am 19.11. überarbeitet. Die Studierenden dürfen sie in eigene Worte fassen.',
+        'Die Sätze auf den gelben Karten im Streifen „Ungeprüft“ stammen aus den Snapshots (Feld „Chancen“), von den Lehrenden am 19.11. überarbeitet. Die Studierenden dürfen sie in eigene Worte fassen.',
       ],
       fehler: [
         'Lösungen als Chancen („App“, „Express-Theke“).',
