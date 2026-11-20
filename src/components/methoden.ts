@@ -217,7 +217,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 6, S. 78–95',
     pruefliste: [
       { id: 'baum-chance-beduerfnis', text: 'Jede Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch in den Worten der Kundschaft – keine Lösung.' },
-      { id: 'baum-belegt', text: 'Jede gehörte Chance im Baum ist mit Zitat-IDs aus mehr als einem Interview belegt; ergänzte übergeordnete Chancen sind als ergänzt markiert, Einzelfälle stehen getrennt.' },
+      { id: 'baum-belegt', text: 'Jede gehörte Chance im Baum nennt mindestens eine Zitat-ID und zeigt, wie viele der echten Interviews sie tragen („X von N“, etwa „2 von 3“ oder „1 von 3“); Interviews mit dem Pseudonym „Synthetisch“ zählen weder als Zitat-ID noch für diese Zahl; ergänzte übergeordnete Chancen sind als ergänzt markiert.' },
       { id: 'baum-ein-elternteil', text: 'Jede Chance hängt unter genau einer obersten Chance (einem Moment der Experience Map); keine hängt an zwei Chancen.' },
       { id: 'baum-kind-teil', text: 'Eine Teilchance ist ein Teil der Chance darüber; Geschwister lassen sich einzeln lösen.' },
       { id: 'baum-stapel', text: 'Keine senkrechte Kette: Wo unter einer Chance nur eine Teilchance hängt, ist notiert, wonach ihr als Nächstes fragt.' },
@@ -288,15 +288,15 @@ export const METHODEN: Methode[] = [
     frage: 'Welche unserer drei Ideen arbeiten wir heute aus – und wie genau schafft sie Wert?',
     braucht: ['profil', 'ideen'], ergibt: ['valuemap'],
     pruefliste: [
-      { id: 'value-map-segment', text: 'Unter Produkte und Services steht nur, was für dieses Segment gedacht ist.' },
+      { id: 'value-map-segment', text: 'Unter Products and Services steht nur, was für dieses Segment gedacht ist.' },
       { id: 'value-map-fit-vergleich', text: 'Der Ideen-Vergleich (Kursregel) hakt die drei Lückensätze gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).' },
       { id: 'value-map-wahl', text: 'Der Spitzenreiter auf Papier ist gewählt, mit einem Satz warum; die anderen beiden bleiben offen.' },
-      { id: 'value-map-wirkung', text: 'Bei Schmerzlinderern und Gewinnerzeugern stehen keine Produkte, sondern was sie bewirken – mit der ID des Pains oder Gains.' },
-      { id: 'value-map-geordnet', text: 'Produkte und Services, Schmerzlinderer und Gewinnerzeuger sind je für sich geordnet: das Unverzichtbare oben.' },
+      { id: 'value-map-wirkung', text: 'Bei Pain Relievers und Gain Creators stehen keine Produkte, sondern was sie bewirken – mit der ID des Pains oder Gains.' },
+      { id: 'value-map-geordnet', text: 'Products and Services, Pain Relievers und Gain Creators sind je für sich geordnet: das Unverzichtbare oben.' },
       { id: 'value-map-adressiert', text: 'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was offen bleibt, trägt im Fit ein ✗ oder ?.' },
       { id: 'value-map-fragezeichen', text: 'Die „?“ aller drei Ideen stehen gesammelt da – sie werden an Tag 4 Annahmen.' },
     ],
-    ki: 'Markiert Schmerzlinderer, die zu keinem Pain passen, und fragt nach jedem ✓ im Ideen-Vergleich und im Fit der Value Map.',
+    ki: 'Markiert Pain Relievers, die zu keinem Pain passen, und fragt nach jedem ✓ im Ideen-Vergleich und im Fit der Value Map.',
     quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 347–348 (PDF)',
   },
   {

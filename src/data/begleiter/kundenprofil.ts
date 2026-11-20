@@ -150,7 +150,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Pains konkret machen: Sagt jemand, das Anstehen sei Zeitverschwendung, fragt nach, ab wie vielen Minuten – und notiert „wasting more than x minutes standing in line“. Wer weiß, woran die Kundschaft misst, entwirft bessere Schmerzlinderer.',
+        text: 'Pains konkret machen: Sagt jemand, das Anstehen sei Zeitverschwendung, fragt nach, ab wie vielen Minuten – und notiert „wasting more than x minutes standing in line“. Wer weiß, woran die Kundschaft misst, entwirft bessere Pain Relievers.',
         quelle: `${VPD}, S. 58`,
       },
       {

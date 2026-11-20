@@ -9,21 +9,21 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Abbildung: die Value Map des Buchs über sich selbst.',
       'Gelb links: was es gibt. Grün: was es bewirkt.',
-      '„Pains und Gains hat die Kundschaft. Schmerzlinderer und Gewinnerzeuger entscheidet ihr.“',
+      '„Pains und Gains hat die Kundschaft. Pain Relievers und Gain Creators entscheidet ihr.“',
       'Nicht alles lindern – wenige Pains, die aber extrem gut.',
     ],
     verstaendnis: {
       frage: 'Worüber entscheidet ihr – und worüber die Kundschaft?',
-      antwort: 'Ihr entscheidet (entwerft), wie ihr Wert schafft: Produkte, Schmerzlinderer, Gewinnerzeuger. Welche Jobs, Pains und Gains es gibt, entscheidet die Kundschaft (S. 103).',
+      antwort: 'Ihr entscheidet (entwerft), wie ihr Wert schafft: Products & Services, Pain Relievers, Gain Creators. Welche Jobs, Pains und Gains es gibt, entscheidet die Kundschaft (S. 103).',
       falsch: '„Wir entscheiden, welche Pains wichtig sind“ – ihr wählt nur aus, welche ihr angeht.',
     },
     kern: [
       {
-        text: 'Produkte und Services sind schlicht die Liste dessen, was ihr anbietet: „all the items your customers can see in your shop window“. Sie schaffen nicht allein Wert, nur im Verhältnis zu einem Segment und seinen Jobs, Pains und Gains.',
+        text: 'Products & Services sind schlicht die Liste dessen, was ihr anbietet: „all the items your customers can see in your shop window“. Sie schaffen nicht allein Wert, nur im Verhältnis zu einem Segment und seinen Jobs, Pains und Gains.',
         quelle: `${VPD}, S. 83`,
       },
       {
-        text: 'Schmerzlinderer beschreiben, wie genau das Angebot bestimmte Pains verringert; nicht für jeden Pain – das schafft kein Wertversprechen. Gewinnerzeuger ebenso für Gains.',
+        text: 'Pain Relievers beschreiben, wie genau das Angebot bestimmte Pains verringert; nicht für jeden Pain – das schafft kein Wertversprechen. Gain Creators ebenso für Gains.',
         quelle: `${VPD}, S. 86–87, 89`,
       },
       {
@@ -43,7 +43,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Vier Zettel der Kaffeebar, reihum je einer: welches Feld?',
       'Erst alle vier beantworten lassen, dann aufdecken.',
-      'A und C: Produkte. B: Schmerzlinderer P1. D: Gewinnerzeuger G1.',
+      'A, C: Products & Services. B: Pain Reliever P1. D: Gain Creator G1.',
       'Probe: Steht es im Schaufenster – oder sagt es, was sich ändert?',
       'Wenn hinten: nur B und A, als Paar.',
     ],
@@ -51,18 +51,18 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Vier Zettel zeigen: A „QR-Code an der Hallentür“, B „Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist“, C „Express-Ausgabe mit drei Standardgetränken“, D „Der Kaffee steht bereit, wenn man an der Ausgabe ankommt“.',
-        'Reihum: je ein Zettel, ein Feld (Produkte & Services, Schmerzlinderer, Gewinnerzeuger), ein Halbsatz warum.',
+        'Reihum: je ein Zettel, ein Feld (Products & Services, Pain Relievers, Gain Creators), ein Halbsatz warum.',
         'Aufdecken und vergleichen.',
       ],
       achten: [
         'Bei B und D nach der ID fragen: Welchen Pain, welchen Gain im Profil der Kaffeebar trifft der Zettel?',
         'Es ist in Ordnung, wenn ein Zettel Pain und Gain zugleich trifft (S. 103).',
       ],
-      aufloesung: 'A und C sind Produkte & Services (Schaufenster). B ist ein Schmerzlinderer für P1, D ein Gewinnerzeuger für G1. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
+      aufloesung: 'A und C sind Products & Services (Schaufenster). B ist ein Pain Reliever für P1, D ein Gain Creator für G1. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
     },
     kern: [
       {
-        text: 'Schmerzlinderer und Gewinnerzeuger sind Erklärungen oder Eigenschaften, die die Wertschöpfung ausdrücklich machen; die Beispiele des Buchs: „helps save time“ und „well-designed“.',
+        text: 'Pain Relievers und Gain Creators sind Erklärungen oder Eigenschaften, die die Wertschöpfung ausdrücklich machen; die Beispiele des Buchs: „helps save time“ und „well-designed“.',
         quelle: `${VPD}, S. 105`,
       },
       {
@@ -91,7 +91,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 108–109`,
       },
       {
-        text: 'Haken zeigen, was Schmerzlinderer und Gewinnerzeuger treffen; „Xs show which jobs, pains, and gains the value proposition does not address.“',
+        text: 'Haken zeigen, was Pain Relievers und Gain Creators treffen; „Xs show which jobs, pains, and gains the value proposition does not address.“',
         quelle: `${VPD}, S. 110`,
       },
       {
@@ -123,7 +123,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Kaffeebar: drei Lückensätze am selben Profil. „Im Gehen bestellen“ trifft J1, P1, P2, P3 und G1; die Anzeige an der Hallentür nur J1 und P1; der Kaffeewagen J1, P1 und G1, P2 offen als „?“. Die Value Map von „Im Gehen bestellen“ ist nach dem Profil geordnet (P1-Linderer oben); im Fit nach dem Buch bekommen ihre drei Schmerzlinderer und der Gewinnerzeuger ein ✓, J2, J3, G2, G3 und P4 ein ✗, J4 ein „?“ (Kursregel).',
+        text: 'Kaffeebar: drei Lückensätze am selben Profil. „Im Gehen bestellen“ trifft J1, P1, P2, P3 und G1; die Anzeige an der Hallentür nur J1 und P1; der Kaffeewagen J1, P1 und G1, P2 offen als „?“. Die Value Map von „Im Gehen bestellen“ ist nach dem Profil geordnet (der Pain Reliever zu P1 oben); im Fit nach dem Buch bekommen ihre drei Pain Relievers und der Gain Creator ein ✓, J2, J3, G2, G3 und P4 ein ✗, J4 ein „?“ (Kursregel).',
         quelle: 'value-map.astro, Folie beispiel (Handout)',
       },
       {
@@ -168,7 +168,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
       'Nach 25 min: Fit prüfen wie im Buch, Timer 7 min.',
       'Nach 32 min: VALUE-MAP.md mit allen „?“, Zeile ins Log.',
-      'Wenn hinten: Value Map nur mit je einem Schmerzlinderer und Gewinnerzeuger.',
+      'Wenn hinten: Value Map nur mit einem Pain Reliever, einem Gain Creator.',
     ],
     uebung: { dauer: '36 min (5 + 20 + 7 + 4)', form: 'allein, Markus fragt je nach einem Kreuz' },
     miro: {
@@ -176,20 +176,20 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       schritte: [
         'T3 · 4, eigene Spalte: „Ideen vergleichen und wählen (Kursregel)“ – die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils.',
         'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map des Spitzenreiters ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
-        'Fit im Canvas-Frame: ✓ an Schmerzlinderer und Gewinnerzeuger, ✗ an offene Jobs, Pains und Gains, „?“ wo ihr es nicht wisst.',
+        'Fit im Canvas-Frame: ✓ an Pain Relievers und Gain Creators, ✗ an offene Jobs, Pains und Gains, „?“ wo ihr es nicht wisst.',
       ],
     },
     ablauf: {
       schritte: [
         'Vergleichen und wählen (5 min, Kursregel): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Value Map (20 min): Produkte & Services, Schmerzlinderer, Gewinnerzeuger des Spitzenreiters, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem Kreuz aus dem Vergleich. Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
-        'Fit prüfen (7 min): ✓ an jeden Schmerzlinderer und Gewinnerzeuger, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt; „?“ wo ihr es nicht wisst (Kursregel; VPD S. 110–113).',
+        'Value Map (20 min): Products & Services, Pain Relievers, Gain Creators des Spitzenreiters, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem Kreuz aus dem Vergleich. Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Fit prüfen (7 min): ✓ an jeden Pain Reliever und Gain Creator, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt; „?“ wo ihr es nicht wisst (Kursregel; VPD S. 110–113).',
         'Festhalten (4 min): docs/VALUE-MAP.md mit Spitzenreiter, Value Map, Fit und allen „?“ der drei Ideen; eine Zeile ins Entscheidungslog: Spitzenreiter, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',
       ],
       achten: [
         'Gewählt wird nach den obersten Einträgen, nicht nach der Zahl der Haken.',
         'Jedes „?“ wird an Tag 4 eine Annahme – auch die der beiden anderen Ideen.',
-        'Bei Schmerzlinderern steht eine Wirkung, kein Produkt.',
+        'Bei Pain Relievers steht eine Wirkung, kein Produkt.',
         'Der Vergleich der Lückensätze ersetzt nicht den Fit am Ende: Das Buch prüft die ausgearbeitete Value Map (S. 112).',
       ],
       fehler: [
