@@ -545,7 +545,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Eure einfache Lösung – was hat eure Story mehr?',
-      'Reihum, laut, je ein Satz.',
+      'Allein, still: ein Satz unter die eigene Story.',
       'Falle: „schneller“ oder „leichter“ – nach der Alternative fragen.',
       '„Warum würden eure Interviewten bei dem bleiben, was sie heute tun?“',
       'Zeit: 17:15 Abschluss.',
