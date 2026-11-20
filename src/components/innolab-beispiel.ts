@@ -14,7 +14,7 @@ export const KAFFEEBAR_BAUM: Knoten = { t: 'Mehr Pendler*innen steigen morgens m
 ] };
 
 // Der Baum der Kaffeebar nach den Interviews (Torres Kap. 6): oberste Ebene = die drei Momente der Experience Map (journey-map.astro), darunter die Chancen
-// aus den Interview-Snapshots, die mehr als ein Interview stützt (S. 88). Belege (Zitat-IDs) stehen auf baum.astro.
+// aus den Interview-Snapshots, die mehr als ein Interview stützt (Torres’ Regel, S. 88; für die Bäume der Studierenden gilt die Kursregel auf baum.astro). Belege (Zitat-IDs) stehen auf baum.astro.
 // Darstellen mit <Baum momente …>.
 export const KAFFEEBAR_BAUM_INTERVIEWS: Knoten = { t: 'Mehr Pendler*innen steigen morgens mit Kaffee in den Zug', kinder: [
   { t: '„Ich komme in die Halle und entscheide.“', kinder: [
