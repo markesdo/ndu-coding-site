@@ -579,6 +579,11 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(halle.filter((ids) => ids.includes('I3-1')).length).toBe(halle.length);
     expect(quellen['/innolab/methoden/baum']).toContain("'„Wann ist mein Kaffee fertig?“': ['I2-5', 'I3-2', 'I3-3'],");
     expect(quellen['/innolab/methoden/ziel-chance']).toContain('Je drei Interviews: I2-4, I3-1, I5-2 gegen I2-2, I3-4, I4-1.');
+    // „Sie entscheiden erst in der Halle“ belegt I5-3 („Das entscheid ich, wenn ich die Halle seh.“), nicht I5-2 („Wenn es voll ist,
+    // lass ich es.“ – Beleg der Halle-Chance). Überall dieselben drei IDs.
+    const halleBelege = texte.flatMap((s) => [...s.matchAll(/entscheiden erst in der Halle \((?:Belege )?([^)]*)\)|u\. a\. ([^→]*)→ Moment „Halle: entscheiden“/g)].map((m) => (m[1] ?? m[2] ?? '').trim())).filter((ids) => /I\d-\d/.test(ids));
+    expect(halleBelege.length).toBeGreaterThanOrEqual(3);
+    expect([...new Set(halleBelege)]).toStrictEqual(['I2-4, I3-1, I5-3']);
   });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
   // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.

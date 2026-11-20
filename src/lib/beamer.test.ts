@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { beamerSchalten, darfFuehren, dieserTabMeldet, einstieg, ersteFolieAbstand, klickAktion, kopfAnDenAnfang, praesentatorAngemeldet, type Seitenart, type Speicher, type Wurzel } from './beamer';
+import { FUEHRUNG_FRIST_MS, beamerSchalten, darfFuehren, dieserTabMeldet, einstieg, fuehrungLesen, fuehrungSchreiben, ersteFolieAbstand, klickAktion, kopfAnDenAnfang, praesentatorAngemeldet, type Seitenart, type Speicher, type Wurzel } from './beamer';
 
 // Nur ein Tab, der melden kann, darf die Führung übernehmen (Code-Review 21.11.: Begleiter-Tab stahl sie dem Beamer).
 describe('darfFuehren', () => {
@@ -31,16 +31,28 @@ describe('kopfAnDenAnfang', () => {
 });
 
 // Zwei Beamer-Tabs mit Schlüssel: Nur der zuletzt benutzte meldet (wo-ist.ts), sonst springt der Zähler im Begleiter.
-describe('dieserTabMeldet', () => {
-  it('zuletzt benutzter Tab meldet, der andere schweigt', () => {
-    expect(dieserTabMeldet('tab-a', 'tab-a')).toBe(true);
-    expect(dieserTabMeldet('tab-a', 'tab-b')).toBe(false);
+describe('dieserTabMeldet (Pacht mit Herzschlag)', () => {
+  const t = 1_000_000;
+  it('frische Pacht: der Führer meldet, der andere schweigt', () => {
+    const pacht = fuehrungSchreiben('tab-a', t);
+    expect(dieserTabMeldet(pacht, 'tab-a', t + 500)).toBe(true);
+    expect(dieserTabMeldet(pacht, 'tab-b', t + 500)).toBe(false);
   });
-  it('Wechsel: nach Benutzung von B meldet nur noch B', () => {
-    expect([dieserTabMeldet('tab-b', 'tab-a'), dieserTabMeldet('tab-b', 'tab-b')]).toStrictEqual([false, true]);
+  it('noch frisch an der Frist: kein Wechsel hin und her', () => {
+    expect(dieserTabMeldet(fuehrungSchreiben('tab-a', t), 'tab-b', t + FUEHRUNG_FRIST_MS)).toBe(false);
   });
-  it('noch kein Tab festgelegt: jeder meldet', () => {
-    expect(dieserTabMeldet(null, 'tab-a')).toBe(true);
+  it('alte Pacht (Führer abgestürzt, geschlossen, Beamer aus): frei für den anderen', () => {
+    expect(dieserTabMeldet(fuehrungSchreiben('tab-a', t), 'tab-b', t + FUEHRUNG_FRIST_MS + 1)).toBe(true);
+  });
+  it('eigene Pacht gilt immer', () => {
+    expect(dieserTabMeldet(fuehrungSchreiben('tab-a', t), 'tab-a', t + 60_000)).toBe(true);
+  });
+  it('keine oder unlesbare Pacht: frei', () => {
+    expect(dieserTabMeldet(null, 'tab-a', t)).toBe(true);
+    expect(dieserTabMeldet('tab-b', 'tab-a', t)).toBe(true); // alte Form ohne JSON
+    expect(dieserTabMeldet('{"id":3,"ts":"x"}', 'tab-a', t)).toBe(true);
+    expect(fuehrungLesen('{kaputt')).toBeNull();
+    expect(fuehrungLesen(fuehrungSchreiben('tab-a', t))).toStrictEqual({ id: 'tab-a', ts: t });
   });
 });
 

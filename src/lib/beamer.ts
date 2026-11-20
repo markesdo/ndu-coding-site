@@ -59,16 +59,37 @@ export function klickAktion({ praesentator, beamer, seite }: Lage): { an: boolea
   return praesentator ? { an: true, hell } : null;
 }
 
-/** localStorage: Kennung des zuletzt benutzten Tabs (wo-ist.ts, gesetzt bei focus, keydown, pointerdown). Nur er meldet
- *  seine Position an /api/position – sonst überschreiben sich zwei Beamer-Tabs mit Schlüssel gegenseitig, und der Zähler
- *  im Begleiter springt zwischen ihren Folien hin und her. */
+/** localStorage: die Führung unter den Beamer-Tabs als Pacht {id, ts} (JSON; wo-ist.ts). Nur der führende Tab meldet seine
+ *  Position an /api/position – sonst überschreiben sich zwei Beamer-Tabs mit Schlüssel gegenseitig, und der Zähler im
+ *  Begleiter springt zwischen ihren Folien hin und her. Der Führer erneuert ts jede Sekunde, solange er melden kann; hört er
+ *  auf (abgestürzt, geschlossen, Beamer aus, pausiert, verborgen), ist die Pacht nach FUEHRUNG_FRIST_MS frei. */
 export const FUEHRENDER_TAB = 'ndu-beamer-tab';
+/** So lange gilt eine Pacht ohne Erneuerung (der Führer erneuert jede Sekunde). */
+export const FUEHRUNG_FRIST_MS = 4000;
 
-/** Darf dieser Tab seine Position melden? Ja, wenn er zuletzt benutzt wurde. Steht noch keiner fest, meldet jeder – bis
- *  der nächste Tastendruck oder Klick einen festlegt. Beim Verlassen einer Seite bleibt der Eintrag stehen: Die neue Seite
- *  im selben Tab übernimmt ihn beim Laden (Fokus); sonst meldete in der Lücke ein anderer Beamer-Tab seine alte Position. */
-export function dieserTabMeldet(fuehrender: string | null, ich: string): boolean {
-  return fuehrender === null || fuehrender === ich;
+export type Fuehrung = { id: string; ts: number };
+
+/** Pacht lesen; alles, was nicht {id: string, ts: number} ist, gilt als keine Pacht. */
+export function fuehrungLesen(roh: string | null): Fuehrung | null {
+  if (!roh) return null;
+  try {
+    const f = JSON.parse(roh) as unknown;
+    if (f && typeof f === 'object' && typeof (f as Fuehrung).id === 'string' && Number.isFinite((f as Fuehrung).ts)) return { id: (f as Fuehrung).id, ts: (f as Fuehrung).ts };
+  } catch {}
+  return null;
+}
+
+export function fuehrungSchreiben(ich: string, jetzt: number): string {
+  return JSON.stringify({ id: ich, ts: jetzt } satisfies Fuehrung);
+}
+
+/** Darf dieser Tab seine Position melden? Ja, wenn er die Pacht hält – oder wenn sie frei ist: keine, unlesbar oder älter
+ *  als FUEHRUNG_FRIST_MS (dann übernimmt er sie). Eine frische Pacht eines anderen Tabs bleibt: Die Tabs wechseln nicht hin
+ *  und her; übernommen wird nur nach Stille oder bei eigener Benutzung (focus, keydown, pointerdown). Beim Seitenwechsel
+ *  bleibt die Pacht stehen, die neue Seite im selben Tab übernimmt sie beim Laden. */
+export function dieserTabMeldet(roh: string | null, ich: string, jetzt: number): boolean {
+  const f = fuehrungLesen(roh);
+  return !f || f.id === ich || jetzt - f.ts > FUEHRUNG_FRIST_MS;
 }
 
 /** Darf dieser Tab die Führung übernehmen? Nur, wenn er auch melden kann: Präsentator-Schlüssel da, Beamer-Modus an, nicht

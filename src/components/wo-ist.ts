@@ -6,7 +6,7 @@
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftOberkanten, ueberschriftVon } from './abschnitt';
 import { abfrageKette, jsonHolen, zeitlimit } from '../lib/kette';
 import { hinweis } from './hinweis';
-import { FUEHRENDER_TAB, PRAESENTATOR_SCHLUESSEL, beamerSchalten, darfFuehren, dieserTabMeldet } from '../lib/beamer';
+import { FUEHRENDER_TAB, PRAESENTATOR_SCHLUESSEL, beamerSchalten, darfFuehren, dieserTabMeldet, fuehrungLesen, fuehrungSchreiben } from '../lib/beamer';
 import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
 const KEY = PRAESENTATOR_SCHLUESSEL;
@@ -113,16 +113,20 @@ function praesentator() {
   // stehen; die neue Seite im selben Tab übernimmt ihn beim Laden. Wird ein Tab Führer, meldet er nach frischen 1,5 s
   // Ruhe sofort, auch wenn er dieselbe Position vor weniger als 60 s gesendet hat – inzwischen kann ein anderer Tab
   // sie auf dem Server überschrieben haben.
+  // Die Führung ist eine Pacht {id, ts}: Der Führer erneuert ts jede Sekunde (unten im Takt), solange er melden kann; hört er
+  // auf, ist sie nach FUEHRUNG_FRIST_MS frei, und ein anderer meldefähiger Tab übernimmt sie im eigenen Takt.
   const ICH = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+  const pachtRoh = (): string | null => { try { return localStorage.getItem(FUEHRENDER_TAB); } catch { return null; } };
+  const meinePacht = () => fuehrungLesen(pachtRoh())?.id === ICH;
+  const pachten = () => { try { localStorage.setItem(FUEHRENDER_TAB, fuehrungSchreiben(ICH, Date.now())); } catch {} };
+  const kannMelden = () => darfFuehren({ schluessel: lies(), beamer: root.hasAttribute('data-beamer'), pausiert: pausiert() });
+  // Übernehmen (bei Benutzung oder wenn die Pacht frei ist): danach frische 1,5 s Ruhe, dann sofort melden.
+  const uebernehmen = () => { pachten(); gesendet = ''; kandidat = ''; };
   const fuehren = () => {
-    if (!darfFuehren({ schluessel: lies(), beamer: root.hasAttribute('data-beamer'), pausiert: pausiert() })) return;
-    try {
-      if (localStorage.getItem(FUEHRENDER_TAB) === ICH) return;
-      localStorage.setItem(FUEHRENDER_TAB, ICH);
-      gesendet = ''; kandidat = '';
-    } catch {}
+    if (!kannMelden() || meinePacht()) return;
+    uebernehmen();
   };
-  const meldeIch = (): boolean => { try { return dieserTabMeldet(localStorage.getItem(FUEHRENDER_TAB), ICH); } catch { return true; } };
+  const freigeben = () => { try { if (meinePacht()) localStorage.removeItem(FUEHRENDER_TAB); } catch {} };
   for (const t of ['focus', 'keydown', 'pointerdown']) addEventListener(t, fuehren, true);
   addEventListener('pageshow', () => { if (document.hasFocus()) fuehren(); });
   // Beamer in einem Tab mit Fokus eingeschaltet: dieser Tab führt.
@@ -174,8 +178,13 @@ function praesentator() {
   setInterval(async () => {
     zeichnen();
     const key = lies();
-    if (!key || pausiert() || !root.hasAttribute('data-beamer') || document.visibilityState !== 'visible') return;
-    if (!meldeIch()) return;
+    if (!key || pausiert() || !root.hasAttribute('data-beamer') || document.visibilityState !== 'visible') {
+      // Kann nicht melden: Pacht sofort freigeben (Beamer aus, pausiert, abgemeldet), verborgen nur nicht mehr erneuern.
+      if (!kannMelden()) freigeben();
+      return;
+    }
+    if (!dieserTabMeldet(pachtRoh(), ICH, Date.now())) return;
+    if (meinePacht()) pachten(); else uebernehmen();
     const jetzt = Date.now();
     const pos = jetzigePosition();
     const s = JSON.stringify(pos);
