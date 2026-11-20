@@ -223,7 +223,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   uebertrag: {
     live: [
-      'Reihum: gewählte Frage vorlesen, zwei Wege dazu nennen.',
+      'Allein, still: zur gewählten Frage zwei Wege notieren.',
       'Fragen: Fällt euch nur ein Weg ein?',
       '„Dann steckt die Lösung schon in der Frage.“',
       'Ausblick: Nach fünf Minuten Pause 15 bis 20 Ideen zu dieser Frage.',

@@ -413,7 +413,6 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Zuerst reihum: eigene Ziel-Chance und HMW-Frage vorlesen, ein Satz Kontext.',
       'Timer 16 min: allein, Ideen zur eigenen Frage.',
       'Nach 16 min: Ideen-Spende still, je Produkt 2 min.',
       'Nach 22 min: wieder allein, 18 min; Auswege und Claude erlaubt.',
@@ -434,7 +433,6 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Vor dem Timer (1 min): Jede*r liest die eigene Ziel-Chance und HMW-Frage vor und sagt in einem Satz, in welcher Situation sie auftritt (Torres Schritt 1, S. 112; Kontext teilen, S. 114).',
         'Allein (16 min): Ideen zur eigenen HMW-Frage, ein Sticky pro Idee, in die eigene Spalte.',
         'Ideen-Spende, still (6 min): je Produkt 2 Minuten – die zwei anderen legen Ideen-Stickies an die Frage, ohne Diskussion; wem das Produkt gehört, liest nur mit. Kursformat statt Torres’ Teilen-Runde, weil jede*r ein eigenes Produkt hat.',
         'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
