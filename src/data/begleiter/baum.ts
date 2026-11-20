@@ -222,6 +222,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Zeit: 4 min; jede Frage an alle, kurze Pause, eine Antwort.',
       'Fragen: I3s Chance „… ob es sich ausgeht“ – unter welchen Moment?',
+      '„Die Zitate bleiben – umgeschrieben wird der Satz auf der Karte. Jedes Zitat geht dorthin, wo es gesagt wurde.“',
       'Fragen: „Geht sich ein Kaffee aus?“ und „Zeitnot“ – dasselbe oder Geschwister?',
       'Fragen: Fehlt über den drei Chancen in der Halle eine übergeordnete Chance?',
       '„Unter ‚Im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
@@ -242,7 +243,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Jede Karte trägt die ID ihrer Stelle: I3-1 in der Halle, I3-2 und I3-3 beim Warten (wie auf der Map von Tag 2). Die Zuordnung ist Lesart des Kurses.',
         'Nicht ohne Teilchancen erfinden – ergänzen nur über Geschwistern; der Kaffeebar-Baum braucht keine.',
       ],
-      aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I3-1), Warten „Wann ist mein Kaffee fertig?“ (I3-2, I3-3; Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein – der Moment ‚Halle‘ fasst sie schon zusammen, eine Ebene dazwischen wäre doppelt (S. 90–91).',
+      aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I2-4, I3-1, I5-2), Warten „Wann ist mein Kaffee fertig?“ (I2-5, I3-2, I3-3); die Zitate bleiben, neu ist der Satz auf der Karte (Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein – der Moment ‚Halle‘ fasst sie schon zusammen, eine Ebene dazwischen wäre doppelt (S. 90–91).',
     },
     verstaendnis: {
       frage: 'Sind „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, reicht mir die Zeit nicht.“ Geschwister?',
@@ -252,6 +253,10 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       {
         text: '„If it seems like it could live under more than one branch, reframe the opportunity to be more specific.“ Notfalls eine Chance je Moment. Geschwister gruppieren, bis eine Reihe zum Moment hinaufführt.',
         quelle: `${TORRES}, S. 88, 90–91`,
+      },
+      {
+        text: 'Eine Chance ist kein Zitat, sondern ein Satz in den Worten der Kundschaft; die Zitate sind ihre Belege. „Opportunities don’t need to be exact quotes, but you should frame them using your customer’s words.“ Probe (bei Torres für ergänzte Chancen): „Can I imagine a customer saying this?“',
+        quelle: `${TORRES}, S. 70, 92`,
       },
     ],
     ueberleitung: 'Bevor ihr baut: die Anti-Muster, die im ersten Entwurf fast immer stecken.',
@@ -296,7 +301,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Zu breit: „If you are finding that an opportunity should ladder up to more than one parent, it’s framed too broadly. Get more specific. Define one opportunity for each moment in time …“ Kaffeebar: „Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ (I3-2, I3-3) wird zu „Geht sich ein Kaffee noch aus?“ (Halle) und „Wann ist mein Kaffee fertig?“ (Warten), wie auf beispiel.',
+        text: 'Zu breit: „If you are finding that an opportunity should ladder up to more than one parent, it’s framed too broadly. Get more specific. Define one opportunity for each moment in time …“ Kaffeebar: „Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ (I3-2, I3-3) wird zu „Geht sich ein Kaffee noch aus?“ (Halle · I2-4, I3-1, I5-2) und „Wann ist mein Kaffee fertig?“ (Warten · I2-5, I3-2, I3-3), wie auf beispiel.',
         quelle: `${TORRES}, S. 88, 94; Kaffeebar: baum.astro, beispiel`,
       },
       {

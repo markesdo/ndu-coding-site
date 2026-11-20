@@ -12,6 +12,7 @@ import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import { KAFFEEBAR_BAUM_INTERVIEWS } from '../../../components/innolab-beispiel';
 import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
+import { MOMENTNAMEN } from '../../../data/kaffeebar-skizzen';
 import { BookOpen, Check, CircleCheck, CircleX, Coffee, X } from '@lucide/astro';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
@@ -65,6 +66,22 @@ const mitZahl = (k: Knoten, tiefe = 0): Knoten => {
   return { t: `${k.t} · ${x} von ${M_INTERVIEWS}`, ...(kinder ? { kinder } : {}) };
 };
 const KAFFEEBAR_BAUM_MIRO = mitZahl(KAFFEEBAR_BAUM_INTERVIEWS);
+// Folien „beispiel“ (Antwort 1) und „vier-muster“ (Karte 1): die zu breite Chance aus I3s Snapshot und die zwei besseren Karten.
+// Die besseren Karten tragen die IDs aus BELEGE, wie im Baum (Entscheidung 23, 21.11.): Die Zitate bleiben, umgeschrieben wird der Satz.
+const ZU_BREIT = { t: '„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“', ids: ['I3-2', 'I3-3'] };
+const BESSER = [
+  { t: '„Geht sich ein Kaffee noch aus?“', moment: 'Halle', ort: 'in der Halle', ast: MOMENTNAMEN.a },
+  { t: '„Wann ist mein Kaffee fertig?“', moment: 'Warten', ort: 'beim Warten', ast: MOMENTNAMEN.c },
+].map((b) => ({ ...b, ids: BELEGE[b.t] ?? [] }));
+for (const b of BESSER) {
+  if (!b.ids.length) throw new Error(`baum.astro: Belege fehlen für ${b.t}`);
+  const fremd = b.ids.filter((id) => !ZITAT_IDS.has(id));
+  if (fremd.length) throw new Error(`baum.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${fremd.join(', ')}`);
+  const ast = KAFFEEBAR_BAUM_INTERVIEWS.kinder?.find((k) => k.t === b.ast);
+  if (!ast?.kinder?.some((k) => k.t === b.t)) throw new Error(`baum.astro: ${b.t} hängt nicht unter „${b.ast}“`);
+}
+const breitFremd = ZU_BREIT.ids.filter((id) => !ZITAT_IDS.has(id));
+if (breitFremd.length) throw new Error(`baum.astro: Zitat-IDs fehlen in werkstatt/beispiele/interviews.json: ${breitFremd.join(', ')}`);
 if (ZWOELF.length !== 12) throw new Error('baum.astro: Die Liste hat nicht zwölf Chancen');
 if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new Error('baum.astro: Mini-Baum verweist auf eine Nummer außerhalb der Liste');
 ---
@@ -261,7 +278,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
     <p class="folie-satz">Drei Fragen an den Baum – jede an alle, dann aufdecken.</p>
     <MiroFrame name="Baum · Beispiel Kaffeebar" />
     <ol class="baum-fragen gross">
-      <li>„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ (I3-2, I3-3) – unter welchen Moment? <span class="baum-antwort" data-schritt>Passt unter zwei, also zu breit: in der Halle „Geht sich ein Kaffee noch aus?“, beim Warten „Wann ist mein Kaffee fertig?“.</span></li>
+      <li>{ZU_BREIT.t} ({ZU_BREIT.ids.join(', ')}) – unter welchen Moment? <span class="baum-antwort" data-schritt data-besser>Passt unter zwei, also zu breit: {BESSER.map((b, i) => <>{i > 0 && ', '}{b.ort} {b.t} <small class="ids">{b.ids.join(', ')}</small></>)}.</span></li>
       <li>„Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, reicht mir die Zeit nicht.“ – dasselbe oder Geschwister? <span class="baum-antwort" data-schritt>Geschwister: Das eine lässt sich lösen, ohne das andere zu lösen.</span></li>
       <li>Fehlt über den drei Chancen in der Halle eine übergeordnete Chance? <span class="baum-antwort" data-schritt>Nein: Der Moment ‚Halle‘ fasst sie schon zusammen – eine Ebene dazwischen wäre doppelt.</span></li>
     </ol>
@@ -319,7 +336,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
     <h2 id="vier-muster">Vier weitere Anti-Muster</h2>
     <p class="folie-satz">Ein Beispiel von Torres, drei von der Kaffeebar – je mit besserer Fassung.</p>
     <div class="muster">
-      <div><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Hängt an zwei Chancen <small>(zu breit)</small></strong><span>„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ <small>I3-2, I3-3</small></span><em class="besser">→ besser: „Geht sich ein Kaffee noch aus?“ (Halle) · „Wann ist mein Kaffee fertig?“ (Warten)</em></div>
+      <div><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Hängt an zwei Chancen <small>(zu breit)</small></strong><span>{ZU_BREIT.t} <small>{ZU_BREIT.ids.join(', ')}</small></span><em class="besser" data-besser>→ besser: {BESSER.map((b, i) => <>{i > 0 && ' · '}{b.t} <small class="ids">({b.moment} · {b.ids.join(', ')})</small></>)}</em></div>
       <div data-schritt><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Nicht konkret</strong><span>„Das ist zu schwer.“</span><em class="besser">→ besser: „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam.“</em></div>
       <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Lösung statt Chance <small>(solution in disguise)</small></strong><span>„Per App vorbestellen.“</span><em class="besser">→ besser: „Ich will den Zug nicht verpassen.“</em></div>
       <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Gefühl statt Ursache</strong><span>„{ZITAT_TEXT.get('I4-2')}“ <small>I4-2</small></span><em class="besser">→ besser: „Wenn ich anstehe, reicht mir die Zeit nicht.“ <small>I4-1</small></em></div>
@@ -487,6 +504,9 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
   /* „eltern-kind“: zweizeiliger Folien-Satz und zweizeilige Bildunterschrift – die Abbildung etwas niedriger, damit 720p passt. */
   :global(html[data-beamer] .folie:has(> h2#eltern-kind) .buch-abbildung img) { max-height: calc(100vh - 18rem); }
   .baum-antwort { display: block; color: var(--accent); }
+  .baum-antwort .ids { font-size: .8em; color: var(--muted); }
+  /* „beispiel“ und „vier-muster“: Moment und IDs einer besseren Karte bleiben in einer Zeile. */
+  .ids { white-space: nowrap; }
   /* „map-baum“: Map und Baum nebeneinander, Zeilenköpfe links (wie .drei-fragen). */
   .vergleich { width: 100%; border-collapse: collapse; margin: .5rem 0; font-size: .9rem; line-height: 1.3; }
   .vergleich th, .vergleich td { padding: .3rem .45rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }

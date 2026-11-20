@@ -3,6 +3,7 @@ import { MIRO_FRAMES, MIRO_FRAMES_OHNE_ID } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
 import { anzeige, fremdeSeite, type Zustand } from '../components/begleiter-anzeige';
 import { TAG_1 } from '../data/begleiter/tag';
+import KAFFEEBAR_INTERVIEWS from '../werkstatt/beispiele/interviews.json';
 import {
   TAG_1_SEITEN, ablaufBloecke, begleiterFolien, bloeckeAus, folienGruppe, kartenPfade, folieZu, folienAus, folienPlan, hhmm, kurstagAus, layoutTitel, notizenMitFremdemFrame, notizenOhneFolie,
   pfadAusGlob, quelleTeile, quellenAusGlob, seitenLabel, stichwortForm, streichVerweis, tagFolien, tempo, uebungMinuten, wischErlaubt, type WischKnoten,
@@ -549,12 +550,41 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folie.match(/→ besser:/g) ?? []).toHaveLength(4);
     expect(folie.match(/Oberfläche ist schwer bedienbar/g) ?? []).toStrictEqual([]);
     expect(JSON.stringify(NOTIZEN[pfad]?.['vier-muster']).match(/interface is hard to use|Oberfläche/g) ?? []).toStrictEqual([]);
-    // Karte 1 übernimmt die Antwort von „beispiel“ wörtlich.
+    // Karte 1 übernimmt die Antwort von „beispiel“ wörtlich: Beide Folien zeigen dieselben Konstanten.
     const beispiel = q.slice(q.indexOf('id="beispiel"'), q.indexOf('id="firmensicht"'));
-    for (const t of ['„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“', '„Geht sich ein Kaffee noch aus?“', '„Wann ist mein Kaffee fertig?“']) {
+    for (const t of ['{ZU_BREIT.t}', '{BESSER.map(']) {
       expect(beispiel).toContain(t);
       expect(folie).toContain(t);
     }
+    expect(q).toContain("const ZU_BREIT = { t: '„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“', ids: ['I3-2', 'I3-3'] };");
+  });
+  // Entscheidung 23 (21.11. früh): Die besseren Karten tragen ihre Zitat-IDs, aus BELEGE wie im Baum – Halle ohne I3-2.
+  it('Tag 3: baum#beispiel und #vier-muster – die besseren Karten tragen genau die IDs aus BELEGE', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const vorspann = q.slice(0, q.indexOf('\n---', 4));
+    const start = vorspann.indexOf('const BELEGE');
+    const belege: Record<string, string[]> = Object.fromEntries([...vorspann.slice(start, vorspann.indexOf('};', start)).matchAll(/'(„[^']*“)': \[([^\]]*)\]/g)]
+      .map((m) => [m[1], [...m[2].matchAll(/'([^']+)'/g)].map((x) => x[1])]));
+    const anfang = vorspann.indexOf('const BESSER');
+    const besser = vorspann.slice(anfang, vorspann.indexOf('].map(', anfang));
+    const karten = [...besser.matchAll(/t: '(„[^']*“)', moment: '([^']+)'/g)].map((m) => ({ t: m[1], moment: m[2], ids: belege[m[1]] }));
+    expect(karten).toStrictEqual([
+      { t: '„Geht sich ein Kaffee noch aus?“', moment: 'Halle', ids: ['I2-4', 'I3-1', 'I5-2'] },
+      { t: '„Wann ist mein Kaffee fertig?“', moment: 'Warten', ids: ['I2-5', 'I3-2', 'I3-3'] },
+    ]);
+    expect(vorspann).toContain('].map((b) => ({ ...b, ids: BELEGE[b.t] ?? [] }));');
+    // Jede ID steht in den Kaffeebar-Interviews (die Seite prüft das zusätzlich beim Bauen).
+    const ids = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
+    expect(karten.flatMap((k) => k.ids ?? []).filter((id) => !ids.has(id))).toStrictEqual([]);
+    // Beide Folien zeigen die IDs jeder besseren Karte, klein wie die übrigen IDs.
+    const beispiel = q.slice(q.indexOf('id="beispiel"'), q.indexOf('id="firmensicht"'));
+    const muster = q.slice(q.indexOf('id="vier-muster"'), q.indexOf('id="euer-baum"'));
+    expect(beispiel.match(/<span class="baum-antwort" data-schritt data-besser>.*<\/span>/)?.[0]).toContain('{b.t} <small class="ids">{b.ids.join(\', \')}</small>');
+    expect(muster.match(/<em class="besser" data-besser>.*<\/em>/)?.[0]).toContain('{b.t} <small class="ids">({b.moment} · {b.ids.join(\', \')})</small>');
+    // Begleiter: Die Zitate bleiben, umgeschrieben wird der Satz (Torres S. 70; Probe S. 92).
+    expect(NOTIZEN[pfad]?.beispiel?.live).toContain('„Die Zitate bleiben – umgeschrieben wird der Satz auf der Karte. Jedes Zitat geht dorthin, wo es gesagt wurde.“');
+    expect(JSON.stringify(NOTIZEN[pfad]?.beispiel?.kern)).toContain('Opportunities don’t need to be exact quotes, but you should frame them using your customer’s words.');
   });
   // Entscheidung 19 (20.11. spät): Woher die Chancen kommen (Werkstatt, Feld „Chancen“) und dass ein Zitat noch keine Chance ist.
   it('Tag 3: baum – vorgehen nennt die Quelle der Chancen, inventar: „Ein Zitat ist noch keine Chance“', () => {
