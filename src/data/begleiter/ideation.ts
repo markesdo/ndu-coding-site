@@ -429,7 +429,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         'Jede*r hat eine Spalte für das eigene Produkt; bei der Ideen-Spende legen die anderen Stickies in „Ideen“ dazu.',
         'Ein Sticky pro Idee, eigene Farbe je Person; Ideen von Claude mit „(Claude)“.',
         'Auswählen allein: Was die Ziel-Chance nicht löst, in „Aussortiert“.',
-        'Die drei Gewählten als Lückensätze in „Drei für den Vergleich in T3 · 4“.',
+        'Die drei Gewählten als Lückensätze in „Drei Ideen als Lückensätze“ (T3 · 3).',
       ],
     },
     ablauf: {
