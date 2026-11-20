@@ -217,7 +217,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Teresa Torres, „Continuous Discovery Habits“ (2021), Kap. 6, S. 78–95',
     pruefliste: [
       { id: 'baum-chance-beduerfnis', text: 'Jede Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch in den Worten der Kundschaft – keine Lösung.' },
-      { id: 'baum-belegt', text: 'Jede gehörte Chance im Baum ist mit Zitat-IDs aus mehr als einem Interview belegt; ergänzte übergeordnete Chancen sind als ergänzt markiert, Einzelfälle stehen getrennt.' },
+      { id: 'baum-belegt', text: 'Jede gehörte Chance im Baum nennt mindestens eine Zitat-ID und zeigt, wie viele Interviews sie tragen („2 von 3“, „1 von 3“); ergänzte übergeordnete Chancen sind als ergänzt markiert.' },
       { id: 'baum-ein-elternteil', text: 'Jede Chance hängt unter genau einer obersten Chance (einem Moment der Experience Map); keine hängt an zwei Chancen.' },
       { id: 'baum-kind-teil', text: 'Eine Teilchance ist ein Teil der Chance darüber; Geschwister lassen sich einzeln lösen.' },
       { id: 'baum-stapel', text: 'Keine senkrechte Kette: Wo unter einer Chance nur eine Teilchance hängt, ist notiert, wonach ihr als Nächstes fragt.' },

@@ -161,7 +161,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Fragen: Wo hängen 4, 6, 8, 10 – und 9, 11?',
       'Drei Fragen langsam vorlesen, jede einzeln.',
-      '„Alle drei Ja – erst dann kommt die Chance in den Baum.“',
+      '„Frage 2 markiert nur: ‚1 von 3‘ bleibt im Baum, mit Zahl.“',
       'Falle: zu breite Chance, die unter zwei Momente passt.',
     ],
     verstaendnis: {
@@ -170,8 +170,12 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Für jede Chance aus den Snapshots: Bedürfnis, Schmerzpunkt oder Wunsch und keine Lösung? In mehr als einem Interview gehört? Treibt sie den Outcome? Alle drei Ja: unter den Ast, in dem sie vorkommt. Passt sie unter mehr als einen, ist sie zu breit – „The interface is hard to use“ wird zu mehreren genaueren Chancen.',
+        text: 'Für jede Chance aus den Snapshots: Bedürfnis, Schmerzpunkt oder Wunsch und keine Lösung? In mehr als einem Interview gehört? Treibt sie den Outcome? Bei Torres: alle drei Ja, dann unter den Ast, in dem sie vorkommt. Passt sie unter mehr als einen, ist sie zu breit – „The interface is hard to use“ wird zu mehreren genaueren Chancen.',
         quelle: `${TORRES}, S. 88`,
+      },
+      {
+        text: 'Kursregel für die Bäume der Studierenden: In den Baum kommt, was ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch ist, den Outcome treibt und mindestens eine Zitat-ID trägt. Frage 2 markiert, sie filtert nicht: Auf jeder Karte steht, wie viele Interviews sie tragen („2 von 3“, „1 von 3“). Grund: Torres setzt laufendes Interviewen voraus, mindestens eine Person pro Woche (S. 71–72); was nur eine Person erzählt hat, bleibt bei ihr auf dem Snapshot und taucht oft später in mehreren Interviews wieder auf (S. 70). Mit drei Interviews bliebe mit dem Filter kaum etwas zum Vergleichen. Ehrlich wird der Baum durch die sichtbare Zahl, nicht durchs Weglassen. „1 von 3“ wird zuerst in den nächsten Interviews wieder abgehört oder an Tag 4 als Annahme im Experiment geprüft.',
+        quelle: `Kursregel; ${TORRES}, S. 70, 71–72, 88`,
       },
     ],
     ueberleitung: 'Probieren wir es live an der Kaffeebar.',
@@ -183,11 +187,11 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Beim ersten Nein: „Stopp“ – die Zeile ist fertig.',
       'Die anderen: dafür oder dagegen? Erst dann die Zeile aufdecken.',
       'Zeile 1 vor dem Aufdecken: Was steckt hinter „per App vorbestellen“?',
-      '„Nur bei einer Person? Ins Feld ‚Nur in einem Interview‘ – kann wiederkommen.“',
+      '„Kaffeebar: ins Feld, wie bei Torres. Bei euch: ‚1 von 3‘, im Baum.“',
     ],
     verstaendnis: {
       frage: '„Wenn der erste Schluck passt, ist der Morgen gerettet“ klingt wichtig. Warum kommt es nicht in den Baum?',
-      antwort: 'Nur I1 hat es erzählt (I1-4); die zweite Frage, in mehr als einem Interview gehört, ist ein Nein. Es kommt ins Feld „Nur in einem Interview“ (bei Torres: bleibt auf dem Snapshot) – oft taucht so etwas später bei anderen wieder auf (S. 70, 88).',
+      antwort: 'Nur I1 hat es erzählt (I1-4); die zweite Frage, in mehr als einem Interview gehört, ist ein Nein. Es kommt ins Feld „Nur in einem Interview“ (bei Torres: bleibt auf dem Snapshot) – oft taucht so etwas später bei anderen wieder auf (S. 70, 88). So filtert Torres; in den Bäumen der Studierenden bliebe es im Baum, markiert mit der Zahl der Interviews (Kursregel).',
       falsch: '„Weil es den Outcome nicht treibt“ – darüber entscheidet erst Frage 3, und die stellt sich hier nicht mehr.',
     },
     ablauf: {
@@ -198,7 +202,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Zeilen 4 und 5 gehen schnell: Es reicht, wohin die Zeile kommt, mit einem Satz Begründung.',
         'Letzter Schritt: Das Ergebnis erscheint. Überleiten zu den eigenen Snapshots.',
       ],
-      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, reicht mir die Zeit nicht“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2; I3 in unserer Lesart): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): ins Feld „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot).',
+      aufloesung: '„Per App vorbestellen“: Lösung, dahinter „Ich will den Zug nicht verpassen“. „Wenn ich anstehe, reicht mir die Zeit nicht“ (I2, I3, I4) und „Wann ist mein Kaffee fertig?“ (I2; I3 in unserer Lesart): in den Baum. Erster Schluck (nur I1) und Mitbestellen (nur I5): ins Feld „Nur in einem Interview“ (bei Torres: bleiben auf dem Snapshot). Überleiten: In den eigenen Bäumen bleibt „1 von 3“ im Baum, mit der Zahl auf der Karte (Kursregel).',
     },
     kern: [
       {
@@ -206,8 +210,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 88`,
       },
       {
-        text: 'Das Feld „Nur in einem Interview“ ist eine Ablage unten rechts in jedem Baum-Rahmen auf Miro. Dorthin kommt jede Chance, die nur eine Person erzählt hat – als Karte mit Zitat-ID, damit sie nicht verloren geht. Erzählt ein weiteres Interview dasselbe Bedürfnis – ein schon geführtes oder ein späteres, auch anders formuliert –, wandert die Karte in den Baum, unter ihren Moment. Bei Torres bleiben solche Chancen einfach auf dem Snapshot; das Feld macht sie im Baum sichtbar (Kursformat).',
-        quelle: `${TORRES}, S. 70; Feld „Nur in einem Interview“: Kursformat`,
+        text: 'Das Feld „Nur in einem Interview“ ist eine Ablage unten rechts in jedem Baum-Rahmen auf Miro. Im Beispiel Kaffeebar liegt dort jede Chance, die nur eine Person erzählt hat – als Karte mit Zitat-ID, damit sie nicht verloren geht. Erzählt ein weiteres Interview dasselbe Bedürfnis – ein schon geführtes oder ein späteres, auch anders formuliert –, wandert die Karte in den Baum, unter ihren Moment. Bei Torres bleiben solche Chancen einfach auf dem Snapshot; das Feld macht sie im Baum sichtbar (Kursformat). In den Bäumen der Studierenden bleibt das Feld leer: Dort bleibt eine solche Chance im Baum, markiert mit „1 von 3“ (Kursregel).',
+        quelle: `${TORRES}, S. 70; Feld „Nur in einem Interview“: Kursformat; „1 von 3“ im Baum: Kursregel`,
       },
       {
         text: '„Lösung → Bedürfnis dahinter neu prüfen“ am Beispiel „Per App vorbestellen“ (erste Zeile der Tabelle): Erst die Probe „Is there more than one way to address this opportunity?“ – hier gibt es nur einen Weg, die App; also eine Lösung. Dann das Bedürfnis dahinter suchen („uncover the implied opportunity“): Wozu vorbestellen? „Ich will den Zug nicht verpassen.“ Dieses Bedürfnis geht neu durch die drei Fragen: Bedürfnis – ja; in mehr als einem Interview – wörtlich vom Zug erzählt nur I3 (I3-3); dass die Zeit fürs Anstehen nicht reicht, sagt I4 fast wörtlich (I4-1), I2 schaut auf die Uhr und geht (I2-2), I3 hat eine Regel für die Schlange (I3-4); treibt den Outcome – ja. Es kommt also in den Baum, in den Worten der Interviews – das ist die nächste Zeile, „Wenn ich anstehe, reicht mir die Zeit nicht.“: eine Karte, nicht zwei. Gegenprobe: Für dieses Bedürfnis gibt es mehrere Wege – im Kaffeebar-Baum von Tag 1 hängen darunter Vorbestellen per App, Express-Theke und Kaffeewagen am Bahnsteig (Vorbestellen ist später verworfen, D4). „An opportunity should have more than one potential solution.“',
@@ -362,7 +366,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Nach 22 min: weiter zur Checkliste, selbst prüfen, Timer 9 min.',
       'Nach 31 min: Prüfliste, dann Claude mit Bildschirmfoto.',
       '1:1 ab Übungsminute 10, je 5 min: Sofie → Joachim → Hewen.',
-      'Wenige Interviews: volles Feld „Nur in einem Interview“, dünner Baum – normal.',
+      'Drei Interviews: viele Karten mit „1 von 3“ – normal, Zahl drauf.',
     ],
     uebung: { dauer: '35 min (12 + 10 + 9 + 4)', form: 'allein, Markus je 5 min am Baum' },
     miro: {
@@ -370,19 +374,19 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       schritte: [
         'Jede*r arbeitet im eigenen Frame „Baum · Name“ rechts neben der Kaffeebar; T2 · 2 ist nur die Anleitung.',
         'Momente aus der eigenen Zeile auf T3 · 0 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
-        'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat, ins Feld „Nur in einem Interview“.',
+        'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat, bleibt im Baum, markiert mit „1 von 3“; das Feld „Nur in einem Interview“ bleibt leer.',
         'Selbst prüfen: jede*r im eigenen Frame, die Checkliste der Folie Anti-Muster daneben; Markus geht von Baum zu Baum.',
       ],
     },
     ablauf: {
       schritte: [
-        'Inventar allein (12 min): zuerst die Momente aus der eigenen Zeile auf T3 · 0 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Ja → gelbe Karte mit Zitat-IDs unter ihren Moment; nur ein Interview → ins Feld „Nur in einem Interview“; Lösung → Bedürfnis dahinter neu prüfen.',
+        'Inventar allein (12 min): zuerst die Momente aus der eigenen Zeile auf T3 · 0 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Bedürfnis und treibt den Outcome → gelbe Karte unter ihren Moment, mit Zitat-IDs und der Zahl der Interviews („2 von 3“, „1 von 3“); nur ein Interview → bleibt im Baum, markiert „1 von 3“ (Kursregel); Lösung → Bedürfnis dahinter neu prüfen.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
         'Selbst prüfen allein (9 min, Timer auf der Folie Anti-Muster): den eigenen Baum Karte für Karte mit den sechs Anti-Mustern durchgehen; je Fund entscheiden: ändern, Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Markus kommt ab Minute 10 der Übung je etwa fünf Minuten an jeden Baum (Sofie → Joachim → Hewen), zeigt auf eine Karte und fragt, ohne umzuschreiben. Torres lässt das Team den eigenen Baum befragen (S. 92); allein prüfen und die fünf Minuten sind Kursformat, weil jede*r ein eigenes Produkt hat.',
         'Claude (4 min): Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 4.',
       ],
       achten: [
-        'Chancen in den Worten der Kundschaft und mit Zitat-IDs aus mindestens zwei Interviews – ohne ID kein Beleg.',
+        'Chancen in den Worten der Kundschaft, mit mindestens einer Zitat-ID und der Zahl der Interviews („2 von 3“, „1 von 3“) – ohne ID kein Beleg.',
         'Passt eine Chance unter zwei Momente, ist sie zu breit (Torres S. 88).',
         'Was offen bleibt, wird eine Frage für die nächsten Interviews.',
       ],
