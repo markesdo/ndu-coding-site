@@ -432,6 +432,20 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(JSON.stringify(NOTIZEN[pfad]).match(/Kursregel/g) ?? []).toStrictEqual([]);
     expect(quellen[pfad]).toContain('Buchclub-Leitfaden zu Kapitel 6');
   });
+  // 20.11. (Markus, Entscheidung 8): Auf dem Baum werden „zwoelf“ (Übung „Welche jeweils zuerst?“, Reihum, Timer) und „warum“
+  // (Auflösung) eine Folie „Liste oder Baum?“ – Anker #warum bleibt, keine Übung, keine Auflösung, kein Timer.
+  it('Tag 3: baum – „Liste oder Baum?“ ersetzt zwoelf und warum, ohne Übung', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    expect(folienAus(pfad, q).map((f) => f.id).slice(0, 3)).toStrictEqual(['nur-outcome', 'warum', 'eltern-kind']);
+    const folie = q.slice(q.indexOf('id="warum"'), q.indexOf('id="eltern-kind"'));
+    expect(folie).toContain('Liste oder Baum?</h2>');
+    expect(folie).toContain('Die Liste zeigt Einträge. Der Baum zeigt, was zusammengehört.');
+    expect(folie.match(/<Timer|<Aufloesung|reihum/gi) ?? []).toStrictEqual([]);
+    expect(Object.keys(NOTIZEN[pfad] ?? {}).filter((k) => k === 'zwoelf')).toStrictEqual([]);
+    expect(NOTIZEN[pfad]?.warum?.uebung).toBeUndefined();
+    expect(NOTIZEN[pfad]?.warum?.ueberleitung).toBe('Woher kommen die Teilchancen?');
+  });
   // 20.11. spät (Markus, Punkt 9): Momentkarte = Name + Zählung. Kein Beispielzitat, keine ID-Liste auf den Karten von
   // „zusammen“, keine Prüffrage nach Zitat-IDs unter zwei Momenten; „Welche Zitate gehören hierher?“ gehört zum Zusammenlegen.
   it('Tag 3: experience-map – Moment = Name + Zählung, keine Zitate oder IDs auf der Momentkarte', () => {

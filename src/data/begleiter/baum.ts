@@ -28,49 +28,17 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 27, 80`,
       },
     ],
-    ueberleitung: 'Welche zuerst? Probiert es an zwölf Chancen.',
+    ueberleitung: 'Zwölf Chancen als Liste – was zeigt der Baum, das die Liste versteckt?',
   },
 
-  zwoelf: {
-    live: [
-      'Liste nicht erklären, alle lesen still.',
-      'Timer 2 min: drei Paare, jede*r für sich.',
-      'Reihum laut: drei Nummern und ein Satz zum schwersten Paar.',
-      'Mitschreiben: wer welche Nummer, für die nächste Folie.',
-      'Falle: eine richtige Wahl andeuten – Torres nennt keine.',
-    ],
-    uebung: { dauer: '2 min + 1 min reihum', form: 'allein entscheiden, dann reihum laut: drei Nummern und ein Satz' },
-    ablauf: {
-      schritte: [
-        'Folie zeigen, die Liste still lesen lassen.',
-        'Timer 2 min: Jede*r entscheidet für sich drei Paare – 1 oder 2, 7 oder 12, 9 oder 11 – und überlegt sich einen Satz zu dem Paar, das am schwersten fiel. Nichts tippen.',
-        'Schritt aufdecken, dann reihum laut: Jede*r sagt die drei Nummern und den Satz. Du notierst die Nummern, damit du auf der nächsten Folie sagen kannst, wer was gewählt hat.',
-      ],
-      achten: [
-        'Wer „weiß ich nicht“ sagen will: trotzdem entscheiden, den Zweifel in den Satz – genau den beschreibt Torres („I don’t know how to compare“, S. 82).',
-        'Nicht werten und nicht nachfragen, bis alle drei gesprochen haben – sonst passen die anderen ihre Antwort an.',
-      ],
-    },
-    kern: [
-      {
-        text: 'Die zwölf Chancen aus dem Streaming-Beispiel, wie sie viele Teams als Opportunity Backlog führen. Besser als eine Chance allein, aber eine flache Liste ist schwer zu priorisieren: „opportunities come in different shapes and sizes. Some opportunities are interrelated, while others are subsets of others.“',
-        quelle: `${TORRES}, S. 81–82`,
-      },
-      {
-        text: 'Die drei Paare sind die, die Torres selbst vergleicht: 1 und 2, 7 und 12, 9 und 11. Die erzwungene Wahl ist eine Übung dieses Kurses.',
-        quelle: `${TORRES}, S. 82; Kursregel`,
-      },
-    ],
-    ueberleitung: 'Alle drei gehört? Dann sortieren wir die zwölf.',
-  },
-
+  // 20.11. (Markus, Entscheidung 8): „zwoelf“ und „warum“ sind eine Folie „Liste oder Baum?“ – ohne Übung, ohne Reihum, ohne Timer.
   warum: {
     live: [
-      '1 oder 2: Teil gegen Ganzes – kein Entweder-oder.',
-      '7 oder 12: Geschwister – ähnlich, nicht gleich.',
-      '9 oder 11: groß gegen leicht – immer das Leichte zuerst?',
-      '„Eine Liste mischt Großes, Kleines und Verwandtes.“',
-      'Falle: eine Wahl richtig nennen; 4, 6, 8, 10 kommen beim Inventar.',
+      'Liste kurz stehen lassen, dann drei Klicks, je ein Satz.',
+      '① Teil vom Ganzen: 2 ist ein Grund, nicht der einzige.',
+      '② Geschwister: 7 und 12 unter „unterwegs schauen“, ergänzt.',
+      '③ Groß wird lösbar: 9 zerfällt in kleinere Chancen.',
+      'Pointe aufdecken: „Die Liste zeigt Einträge. Der Baum zeigt, was zusammengehört.“',
     ],
     verstaendnis: {
       frage: 'Warum lassen sich „Ich finde nichts zum Schauen“ und „Mir sind die Folgen ausgegangen“ schlecht gegeneinander priorisieren?',
@@ -79,31 +47,30 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Auflösung per Knopf „Auflösung zeigen“ auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Die Sätze von eben nicht wiederholen; deine Notizen, wer was gewählt hat, reichen.',
-        'Schritt für Schritt aufdecken, je Schritt ein Paar: Wer 1 gewählt hat – „Und welchen Teil davon zuerst?“; wer 2 – „Ein Grund für 1, aber nicht der einzige“ (S. 82). 7 oder 12 – „Hängt an den Bedingungen: offline, Steckdose“ (S. 82). Wer 11 – „Immer das Leichte zuerst?“; wer 9 – „Wo fangt ihr an?“ (S. 82, 84–85). Zuletzt 4 · 6 · 8 · 10: kommen auf der Folie inventar.',
-        'Fragen: Bei welchem Paar habt ihr zwei Gleichartige verglichen? Dann den letzten Satz aufdecken.',
+        'Folie zeigen, die Liste kurz still lesen lassen. Keine Übung, keine Runde.',
+        'Drei Klicks, je ein Mini-Baum; links leuchten seine Nummern auf. Je Baum der Satz darunter.',
+        'Vierter Klick: die Pointe, fett.',
       ],
       achten: [
-        'Falle: 9 und 11 stehen nur zum Größenvergleich nebeneinander – keine Gruppe, 11 hängt nicht unter 9; in der Abbildung S. 89 stehen sie unter verschiedenen Momenten.',
-        'Nur sortieren, was Torres sortiert: Ihre Teilchancen von 9 sind anders formuliert (S. 84–85); 4, 6, 8 und 10 hängt sie erst in der Abbildung S. 89 unter Momente (Folie inventar).',
+        'Mini-Baum ③ vereinfacht: Torres’ Teilchance heißt „Who is in this show?“ (S. 84–85), 11 lautet „Who is that actor?“; in ihrer Abbildung S. 89 hängt 11 unter einem anderen Moment als 9. Fragt jemand: so sagen.',
+        'Nur sortieren, was Torres sortiert: 4, 6, 8 und 10 hängt sie erst in der Abbildung S. 89 unter Momente (Folie inventar).',
       ],
-      aufloesung: 'Nur bei 7 und 12 – Geschwister unter einer ergänzten Chance. 1 und 2 sind Ganzes und Teil, 9 und 11 verschieden groß. Torres: „It’s hard to answer these questions when prioritizing opportunities of different shapes and sizes against each other“ (S. 82).',
     },
     kern: [
       {
-        text: '„Is this show any good?“ wirkt groß und schwer, „Who is that actor?“ leicht. „Should we always prioritize easy over hard?“ – „The opportunity space is too complex to manage as a flat list.“',
-        quelle: `${TORRES}, S. 82`,
+        text: 'Eine flache Liste ist schwer zu priorisieren: „opportunities come in different shapes and sizes. Some opportunities are interrelated, while others are subsets of others.“ – „The opportunity space is too complex to manage as a flat list.“',
+        quelle: `${TORRES}, S. 81–82`,
       },
       {
         text: 'Bäume zeigen zwei Beziehungen: übergeordnete Chance und Teilchance („a child opportunity (or sub-opportunity) is a subset of a parent opportunity“) und Geschwister. „I’m out of episodes …“ ist „one reason—but not the only reason“ für „I can’t find anything to watch“; „I can’t figure out how to search for a specific show“ und „The show I was watching is no longer available“ kommen „as siblings“ dazu.',
         quelle: `${TORRES}, S. 82–83`,
       },
       {
-        text: '„I want to watch my shows on my flight“ und „… on my train commute“ hängen unter der übergeordneten Chance „I want to watch my shows on the go“: jeder Kontext ein eigenes Bedürfnis, die Ähnlichkeit bleibt sichtbar. Und: „the tree structure is going to be invaluable when it comes time to assessing and prioritizing opportunities.“',
-        quelle: `${TORRES}, S. 84–85`,
+        text: '„I want to watch my shows on my flight“ und „… on my train commute“ hängen unter der übergeordneten Chance „I want to watch my shows on the go“: jeder Kontext ein eigenes Bedürfnis, die Ähnlichkeit bleibt sichtbar. „Is this show any good?“ zerfällt in „What type of show is this?“, „Who is in this show?“ und weitere. Ergänzte übergeordnete Chancen sind erlaubt (S. 90).',
+        quelle: `${TORRES}, S. 84–85, 90`,
       },
     ],
-    ueberleitung: 'Torres’ Bild dazu: oben „Ich finde nichts zum Schauen“, darunter die Gründe.',
+    ueberleitung: 'Woher kommen die Teilchancen?',
   },
 
   'eltern-kind': {
@@ -111,11 +78,16 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Abbildung: der erste Mini-Baum von eben, wie Torres ihn zeichnet.',
       'Fragen: Welche anderen Gründe füllen die Fragezeichen?',
       '„Geschwister sind ähnlich, aber eines lässt sich ohne das andere lösen.“',
+      'Woher? Aus den Interviews, mit ID; Ergänztes markiert (S. 88, 90).',
     ],
     kern: [
       {
         text: '„I can’t find anything to watch“ ist die übergeordnete Chance von „I’m out of episodes of my favorite shows“. Die Frage „What are some other reasons …?“ bringt Geschwister: „I can’t figure out how to search for a specific show“, „The show I was watching is no longer available“. Geschwister sind ähnlich, aber getrennt lösbar; wer eine Teilchance löst, löst die übergeordnete Chance zum Teil.',
         quelle: `${TORRES}, S. 82–83`,
+      },
+      {
+        text: 'Woher Teilchancen kommen: aus dem Inventar der Interviews („the opportunities you have heard in your customer interviews“, S. 88), bei uns mit Zitat-ID. Übergeordnete Chancen, die so nicht fielen, dürfen ergänzt werden (S. 90); Probe „Can I imagine a customer saying this?“ (S. 92). Fehlende Geschwister unklar: in den nächsten Interviews die übergeordnete Chance erkunden (S. 94).',
+        quelle: `${TORRES}, S. 83, 88, 90, 92, 94`,
       },
     ],
     ueberleitung: 'Bevor Chancen hängen, braucht der Baum Äste: eure Momente.',
@@ -127,7 +99,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Fragen: Wie heißen eure Momente auf T3 · 0?',
       '„Überschneiden sich die Äste, müsst ihr an allen Chancen zugleich arbeiten.“',
       'Aufdecken: Kaffeebar – drei Momente, der Automat ist ein Umweg.',
-      'Bei Bedarf: „Schon gemacht?“ – Map: Moment, Baum: Bedürfnis.',
+      'Aufdecken: Moment = Zeitpunkt, Chance = Bedürfnis, das dort gehört wird.',
     ],
     verstaendnis: {
       frage: 'Warum dürfen sich die Äste nicht überschneiden?',
@@ -142,6 +114,10 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       {
         text: 'Streaming: aus „Deciding to watch something“, „Choosing something to watch“, „Watching something“, „The end of the watching experience“ werden vier oberste Chancen. „the key is to make sure there is no overlap between the moments in time.“',
         quelle: `${TORRES}, S. 87`,
+      },
+      {
+        text: 'Moment oder Chance: Moment = Zeitpunkt der Geschichte, oberste Ebene (S. 86–87); Chance = Bedürfnis, Schmerzpunkt oder Wunsch, der dort gehört wird (S. 69, 88). Torres verwischt es selbst: Moment „Choosing something to watch“ (S. 87), oberste Chance in der Abbildung „I’m not sure what to watch.“ (Abb. S. 87, auch S. 89).',
+        quelle: `${TORRES}, S. 69, 86–89`,
       },
       {
         text: 'Kaffeebar: drei Momente der Experience Map – Halle, Anstehen und Warten, Zug; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente, nachgeschärft auf T3 · 0 (Stand Tag 2: T2 · 1).',

@@ -1,12 +1,12 @@
 // Antwortrunde: Studierende schicken einen Satz über die Seite (api/antworten.ts; Rückfall: reihum laut). Bis zum Aufdecken
 // zeigt die Seite nur, welche Rollen geantwortet haben; die Texte gibt der Server erst heraus, wenn die Auflösung der Runde
 // für alle offen ist – dieselbe Kennung wie <Aufloesung gruppe=…> (lib/aufgedeckt.ts), also ein Klick des Präsentators für
-// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (je drei; „zwoelf“ und „rueckblick“ haben neutrale Plätze statt Rollen) – wer abschickt, überschreibt
+// Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (je drei; „rueckblick“ hat neutrale Plätze statt Rollen) – wer abschickt, überschreibt
 // den Platz seiner Rolle. Keine Client-ids, kein Index, keine Listen: Die Zahl der Schlüssel ist fest, der Text begrenzt.
 // Hier ohne DOM und ohne Vercel, damit testbar. .js-Endungen: api/antworten.ts lädt das per Node-ESM.
 import { wienerZeit } from '../components/jetzt.js';
 import { AUFGEDECKT_TTL_SEKUNDEN, gruppeFrei } from './aufgedeckt.js';
-import { NACH_NETFLIX, NACH_RUECKBLICK_TAG_2, NACH_ZWOELF } from '../components/innolab-zeiten.js';
+import { NACH_NETFLIX, NACH_RUECKBLICK_TAG_2 } from '../components/innolab-zeiten.js';
 
 export interface Rolle { id: string; label: string }
 export interface Runde {
@@ -77,7 +77,7 @@ const DREI_ROLLEN: readonly Rolle[] = [
   { id: 'entwicklung', label: 'Entwicklung' },
 ];
 
-/** Drei neutrale Plätze statt Rollen („zwoelf“, „rueckblick“): Wer welchen Platz nimmt, bedeutet nichts. */
+/** Drei neutrale Plätze statt Rollen („rueckblick“): Wer welchen Platz nimmt, bedeutet nichts. */
 const DREI_PLAETZE: readonly Rolle[] = [
   { id: 'p1', label: 'Platz 1' },
   { id: 'p2', label: 'Platz 2' },
@@ -96,17 +96,7 @@ const PLATZ_WAHL = {
 export const RUNDEN: Readonly<Record<string, Runde>> = {
   /** Tag 2, Synthese: Was hört eure Rolle in der Netflix-Geschichte? */
   netflix: { kennung: 'netflix', ab: NACH_NETFLIX, rollen: DREI_ROLLEN },
-  /** Tag 3, Baum: drei Paare aus den zwölf Chancen (1 oder 2, 7 oder 12, 9 oder 11; Torres S. 82) – je eine Nummer und ein Satz zum
-   *  schwersten Paar, aufgedeckt auf „warum“. Drei neutrale Plätze. */
-  zwoelf: {
-    kennung: 'zwoelf', ab: NACH_ZWOELF, rollen: DREI_PLAETZE,
-    eingabe: {
-      label: 'Drei Nummern (1 oder 2, 7 oder 12, 9 oder 11) und ein Satz: Welches Paar fiel am schwersten?',
-      hinweis: 'erst einen Platz wählen, dann Nummern und Satz abschicken.',
-      platzhalter: 'z. B. 2, 7, 11 – bei 9 oder 11 …',
-      ...PLATZ_WAHL,
-    },
-  },
+  // Tag 3, Baum: Die Runde „zwoelf“ (drei Paare aus den zwölf Chancen) ist seit 20.11. gestrichen – „warum“ ist jetzt die Folie „Liste oder Baum?“.
   /** Tag 2, Abschluss: Rückblick auf den Kurs als Produkt – ein Satz „Hoch:“/„Tief:“ zum stärksten Moment des Tages.
    *  Drei neutrale Plätze statt Rollen; nur Eingabe, im Raum wird nicht aufgedeckt (Markus liest nach dem Kurs). Soll die Runde an einem späteren
    *  Kurstag wiederkommen, reicht ein neues ab: Die Plätze hängen schon am Wiener Kurstag (platzSchluessel). */

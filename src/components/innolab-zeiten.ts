@@ -29,10 +29,6 @@ export const NACH_NETFLIX = ENDE_TAG_2;
  *  Mitternacht wie bei ENDE_TAG_2. Aufgedeckt wird per Klick des Präsentators. */
 export const ENDE_TAG_3 = '2026-11-21T23:59';
 
-/** Rückfall für die Antwortrunde „Zwölf Chancen“ an Tag 3 (Baum, Folie „warum“; seit 19.11. kommt davor „Experience Map nachschärfen“, 09:00–09:25):
- *  Ende des Tages, Mitternacht wie bei ENDE_TAG_2. Aufgedeckt wird per Klick des Präsentators wie bei Netflix; vorher
- *  sollen alle ihre Nummer mit Satz abgeschickt haben. */
-export const NACH_ZWOELF = ENDE_TAG_3;
 
 
 /** Antwortrunde „Rückblick“ am Ende von Tag 2 (Abschluss, Folie „rueckblick“): Im Raum wird nicht aufgedeckt, Markus

@@ -6,17 +6,39 @@ import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
-import Aufloesung from '../../../components/Aufloesung.astro';
 import Baum from '../../../components/bild/Baum.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import { KAFFEEBAR_BAUM_INTERVIEWS } from '../../../components/innolab-beispiel';
-import { RUNDEN } from '../../../lib/antworten';
 import { BookOpen, Check, CircleCheck, CircleX, Coffee, X } from '@lucide/astro';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
+// Folie „warum“ (Liste oder Baum?): die zwölf Chancen aus Torres’ Streaming-Beispiel (S. 81–82), deutsch, in ihrer Reihenfolge.
+// Die Nummern bleiben: inventar und der Begleiter verweisen darauf.
+const ZWOELF = [
+  'Ich finde nichts zum Schauen.',
+  'Mir sind die Folgen meiner Lieblingsserien ausgegangen.',
+  'Ich weiß nicht, wie ich nach einer bestimmten Serie suche.',
+  'Ich weiß nicht, wann eine neue Staffel kommt.',
+  'Die Serie, die ich geschaut habe, gibt es nicht mehr.',
+  'Ich bin eingeschlafen, und mehrere Folgen liefen weiter.',
+  'Ich will meine Serien im Flugzeug schauen.',
+  'Ich will den Vorspann überspringen.',
+  'Ist diese Serie gut?',
+  'Ich will wissen, was meine Freund*innen schauen.',
+  'Wer ist dieser Schauspieler?',
+  'Ich will meine Serien auf der Zugfahrt zur Arbeit schauen.',
+];
+// Drei gezeichnete Mini-Bäume, je ein Klick; nummern = was in der Liste aufleuchtet (CSS, .liste-baum). Wortlaut: Entscheidung 20.11.
+const MINI_BAEUME = [
+  { nr: 1, eltern: '1', kinder: ['2', '3', '5'], nummern: [1, 2, 3, 5], kurz: 'Teil vom Ganzen', text: '2 ist ein Grund für 1 – nicht der einzige.', label: 'Mini-Baum: 1 oben, darunter 2, 3 und 5' },
+  { nr: 2, eltern: 'unterwegs schauen', ergaenzt: true, kinder: ['7', '12'], nummern: [7, 12], kurz: 'Geschwister', text: 'ähnlich, aber einzeln lösbar.', label: 'Mini-Baum: oben „unterwegs schauen“, ergänzt, darunter 7 und 12' },
+  { nr: 3, eltern: '9', kinder: ['11', '…'], nummern: [9, 11], kurz: 'Groß wird lösbar', text: '9 zerfällt in kleinere Chancen, eine davon ist 11.', label: 'Mini-Baum: 9 oben, darunter 11 und weitere' },
+] as const;
+if (ZWOELF.length !== 12) throw new Error('baum.astro: Die Liste hat nicht zwölf Chancen');
+if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new Error('baum.astro: Mini-Baum verweist auf eine Nummer außerhalb der Liste');
 ---
 <Layout title="Opportunity Solution Tree">
   <span class="eyebrow">Innolab · Tag 3 · Methode</span>
@@ -43,66 +65,31 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   </Folie>
 
   <Folie>
-    <h2 id="zwoelf">Zwölf Chancen, drei Paare</h2>
-    <p class="folie-satz">Drei Paare aus der Liste: Welche jeweils zuerst?</p>
-    <ol class="zwoelf">
-      <li>Ich finde nichts zum Schauen.</li>
-      <li>Mir sind die Folgen meiner Lieblingsserien ausgegangen.</li>
-      <li>Ich weiß nicht, wie ich nach einer bestimmten Serie suche.</li>
-      <li>Ich weiß nicht, wann eine neue Staffel kommt.</li>
-      <li>Die Serie, die ich geschaut habe, gibt es nicht mehr.</li>
-      <li>Ich bin eingeschlafen, und mehrere Folgen liefen weiter.</li>
-      <li>Ich will meine Serien im Flugzeug schauen.</li>
-      <li>Ich will den Vorspann überspringen.</li>
-      <li>Ist diese Serie gut?</li>
-      <li>Ich will wissen, was meine Freund*innen schauen.</li>
-      <li>Wer ist dieser Schauspieler?</li>
-      <li>Ich will meine Serien auf der Zugfahrt zur Arbeit schauen.</li>
-    </ol>
-    <p class="breit">Jede*r für sich: <strong>1 oder 2? 7 oder 12? 9 oder 11?</strong> Dazu ein Satz zu dem Paar, das euch am schwersten fiel. <Timer minuten={2} /></p>
-    <p class="breit" data-schritt>Dann reihum laut: drei Nummern und euer Satz.</p>
-    <p class="small muted">Nach {TORRES}, S. 81–82.</p>
-  </Folie>
-
-  <Folie>
-    <h2 id="warum">Warum ein Baum statt einer Liste?</h2>
-    <p class="folie-satz">Dieselben zwölf, sortiert: Lässt sich das überhaupt vergleichen?</p>
-    <Aufloesung ab={RUNDEN.zwoelf.ab} gruppe={RUNDEN.zwoelf.kennung}>
-      <div>
-        <div class="mini-baeume">
-          <div class="mini-baum" data-schritt>
-            <p class="mini-eltern"><b>1</b> Ich finde nichts zum Schauen.</p>
-            <ul>
-              <li><b>2</b> Folgen ausgegangen</li>
-              <li><b>3</b> Suche nach einer Serie</li>
-              <li><b>5</b> Serie nicht mehr da</li>
-            </ul>
-            <p class="mini-text">je ein Grund für 1, nicht der einzige – Teil gegen Ganzes</p>
+    <h2 id="warum">Liste oder Baum?</h2>
+    <p class="folie-satz">Dieselben zwölf Chancen. Was die Liste versteckt, zeigt der Baum.</p>
+    <div class="liste-baum">
+      <ol class="zwoelf" aria-label="Die zwölf Chancen als Liste">
+        {ZWOELF.map((t, i) => <li data-nr={i + 1} data-licht={MINI_BAEUME.filter((b) => (b.nummern as readonly number[]).includes(i + 1)).map((b) => b.nr).join(' ') || undefined}>{t}</li>)}
+      </ol>
+      <div class="mini-baeume">
+        {MINI_BAEUME.map((b) => (
+          <div class="mini-baum" data-schritt data-baum={b.nr}>
+            <div class="mb-zeichnung" role="img" aria-label={b.label}>
+              <span class:list={['mb-knoten', { 'mb-ergaenzt': b.ergaenzt }]}>{b.eltern}{b.ergaenzt && <em> ergänzt</em>}</span>
+              <span class="mb-kinder">{b.kinder.map((k) => <span class="mb-knoten">{k}</span>)}</span>
+            </div>
+            <p class="mb-text"><strong>{b.kurz}:</strong> {b.text}</p>
           </div>
-          <div class="mini-baum" data-schritt>
-            <p class="mini-eltern"><b class="plus">+</b> unterwegs schauen <span class="muted">(ergänzt)</span></p>
-            <ul>
-              <li><b>7</b> im Flugzeug</li>
-              <li><b>12</b> auf der Zugfahrt</li>
-            </ul>
-            <p class="mini-text">ähnlich, nicht gleich – beide zugleich?</p>
-          </div>
-          <div class="mini-baum mini-flach" data-schritt>
-            <p><b>9</b> Ist diese Serie gut? <span class="muted">groß, schwer</span></p>
-            <p><b>11</b> Wer ist dieser Schauspieler? <span class="muted">leicht</span></p>
-            <p class="mini-text">groß gegen leicht – keine Gruppe. Immer das Leichte zuerst?</p>
-          </div>
-        </div>
-        <p class="small muted mini-rest" data-schritt><b>4</b> · <b>6</b> · <b>8</b> · <b>10</b>: kommen gleich – unter ihrem Moment.</p>
+        ))}
       </div>
-      <p class="breit" data-schritt><strong>Eine Liste mischt Großes, Kleines und Verwandtes – erst der Baum macht es vergleichbar.</strong></p>
-      <p class="small muted">{TORRES}, S. 81–85.</p>
-      <div class="nur-handout">
-        <p>Sortiert ist nur, was Torres selbst sortiert: 2, 3 und 5 sind Gründe für 1 (S. 82–83); 7 und 12 sind Geschwister unter der ergänzten Chance „Ich will meine Serien unterwegs schauen“ (S. 84); 9 nennt sie groß und schwer, 11 leicht (S. 82). Zu 4, 6, 8 und 10 sagt sie im Text nichts. In der Abbildung auf S. 89 hängen sie unter ihren Momenten: 4 und 10 unter „I’m not sure what to watch.“, 8 unter „I’m watching a show.“, 6 unter „My show ended.“ – ihr seht sie gleich auf der Folie „Inventar“. Einen fertig strukturierten Baum aller zwölf gibt es im Buch nicht. Dass der Baum beim Bewerten und Priorisieren hilft, steht auf S. 85.</p>
-        <p>Die drei Paare der Übung vergleicht Torres selbst (S. 82): Bei 1 und 2 schreibt sie „I don’t know how to compare“, bei 7 und 12 „how do I prioritize them against each other?“, bei 9 und 11 „Should we always prioritize easy over hard?“. Eine richtige Wahl nennt sie nicht.</p>
-        <p>Teresa Torres beginnt Kapitel 6 mit dieser Liste, wie sie viele Teams als „Opportunity Backlog“ führen. Das ist besser als nur eine Chance auf einmal, aber eine flache Liste lässt sich schwer priorisieren: Chancen haben verschiedene Formen und Größen, manche hängen zusammen, andere sind Teilmengen von anderen ({TORRES}, S. 81). Flugzeug und Zug klingen gleich, bringen aber verschiedene Bedingungen mit: im Flugzeug vielleicht ganz offline, im Zug mit mobilen Daten; im Flugzeug vielleicht eine Steckdose, im Zug nicht (S. 82). Und wer immer das Leichte zuerst nimmt, kommt nie zu den schweren Problemen, mit denen man sich von der Konkurrenz abheben und den Outcome wirklich treiben könnte (S. 82). Unser Job ist auch nicht, jede gehörte Chance zu erfüllen, sondern die, die unseren Outcome treiben (S. 80).</p>
-      </div>
-    </Aufloesung>
+    </div>
+    <p class="breit pointe-baum" data-schritt><strong>Die Liste zeigt Einträge. Der Baum zeigt, was zusammengehört.</strong></p>
+    <p class="small muted">{TORRES}, S. 81–85; ergänzte übergeordnete Chance: S. 90.</p>
+    <div class="nur-handout">
+      <p>Teresa Torres beginnt Kapitel 6 mit dieser Liste, wie sie viele Teams als „Opportunity Backlog“ führen. Das ist besser als nur eine Chance auf einmal, aber eine flache Liste lässt sich schwer priorisieren: Chancen haben verschiedene Formen und Größen, manche hängen zusammen, andere sind Teilmengen von anderen ({TORRES}, S. 81). Ein Baum zeigt zwei Beziehungen, übergeordnete Chance und Teilchance sowie Geschwister (S. 82).</p>
+      <p>① 2, 3 und 5 sind Gründe für 1, jeder ein Grund, aber nicht der einzige (S. 82–83). ② 7 und 12 klingen gleich, bringen aber verschiedene Bedingungen mit: im Flugzeug vielleicht ganz offline, im Zug mit mobilen Daten; im Flugzeug vielleicht eine Steckdose, im Zug nicht (S. 82). Torres hängt beide unter „I want to watch my shows on the go“ (S. 84); so eine übergeordnete Chance dürft ihr ergänzen, auch wenn sie in keinem Interview wörtlich fiel (S. 90). ③ „Is this show any good?“ wirkt groß und schwer, „Who is that actor?“ leicht (S. 82). Torres zerlegt die große Chance in kleinere: „What type of show is this?“, „Who is in this show?“, „Is this show similar to another show I’ve watched?“, „Who else is watching this show?“ (S. 84–85). Mit 11 am nächsten verwandt ist „Who is in this show?“; in ihrer Abbildung auf S. 89 hängt Torres 11 allerdings unter einen anderen Moment als 9.</p>
+      <p>Zu 4, 6, 8 und 10 sagt sie im Text nichts; in der Abbildung auf S. 89 hängen sie unter ihren Momenten – ihr seht sie auf der Folie „Inventar“. Einen fertig strukturierten Baum aller zwölf gibt es im Buch nicht. Dass der Baum beim Bewerten und Priorisieren hilft, steht auf S. 85: Wer immer das Leichte zuerst nimmt, kommt nie zu den schweren Problemen, mit denen man sich von der Konkurrenz abheben könnte (S. 82).</p>
+    </div>
   </Folie>
 
   <Folie>
@@ -114,10 +101,12 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <li data-schritt><strong>Teilchance:</strong> ein Grund für die übergeordnete Chance (parent opportunity) – aber nicht der einzige.</li>
         <li data-schritt><strong>Geschwister (siblings):</strong> Teilchancen derselben Chance – ähnlich, aber einzeln lösbar.</li>
         <li data-schritt>Jede gelöste Teilchance löst die übergeordnete Chance <strong>zum Teil</strong>.</li>
+        <li data-schritt><strong>Woher?</strong> Aus euren Interviews, mit Zitat-ID. Eine übergeordnete Chance dürft ihr ergänzen – markiert.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
       <p>Die Abbildung ist der erste Mini-Baum der Folie davor, wie Torres ihn zeichnet. Die Frage „Was sind andere Gründe?“ füllt die Fragezeichen, bei ihr mit 3 und 5. Geschwister sind einander ähnlich, weil sie unter derselben übergeordneten Chance hängen, aber verschieden genug, dass sich eines ohne das andere lösen lässt ({TORRES}, S. 82–83).</p>
+      <p><strong>Woher kommen Teilchancen?</strong> Aus den Interviews: Das Inventar sammelt die Chancen, die ihr gehört habt („the opportunities you have heard in your customer interviews“, {TORRES}, S. 88), bei euch jede mit Zitat-ID. Torres sucht weitere Gründe mit der Frage „What are some other reasons our customers say, ‚I can’t find anything to watch‘?“ (S. 83). Eine übergeordnete Chance, die so in keinem Interview fiel, dürft ihr ergänzen, wenn die Teilchancen sie nahelegen (S. 90); ihr markiert sie mit „(ergänzt)“ und prüft sie mit „Can I imagine a customer saying this?“ (S. 92). Fehlen Geschwister und wisst ihr nicht, welche, erkundet ihr die übergeordnete Chance in den nächsten Interviews (S. 94).</p>
     </div>
   </Folie>
 
@@ -147,10 +136,12 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <li><strong>Von Tag 2:</strong> eure drei bis fünf Momente – jeder wird eine blaue Karte unter dem Outcome.</li>
         <li data-schritt><strong>Ohne Überschneidung:</strong> Sonst zieht jede Chance die anderen mit.</li>
         <li data-schritt><strong>Kaffeebar:</strong> drei Momente, drei Äste – Halle, Anstehen und Warten, Zug.</li>
+        <li data-schritt><strong>Moment oder Chance?</strong> Moment = Zeitpunkt der Geschichte (oben). Chance = Bedürfnis, Schmerzpunkt oder Wunsch, den ihr dort hört.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
       <p>Bevor ihr Chancen sammelt, braucht der Baum Äste, die sich nicht überschneiden: „We need each opportunity to be distinct from every other opportunity. If there’s overlap, then we can’t work on one at a time.“ Überschneiden sich die Äste, verhaken sich die Chancen, und ihr müsst an allen zugleich arbeiten ({TORRES}, S. 86). Torres nennt zwei Wege zu solchen Ästen: die Schritte der Experience Map oder die Schlüsselmomente aus den gezeichneten Interview-Geschichten (S. 86–87). Oft genügt der erste: „Oftentimes this is as simple as mapping each node in your experience map to the top level of opportunities on your opportunity solution tree“ (S. 86). Im Streaming-Beispiel werden aus vier Momenten vier oberste Chancen in Ich-Form, etwa „I’m not sure what to watch.“ (Abbildung S. 87). Eure Momente habt ihr an Tag 2 festgelegt (T2 · 1) und heute früh nachgeschärft (eure Zeile auf T3 · 0); jetzt werden sie die blauen Karten unter eurem Outcome. Bei der Kaffeebar sind es drei: „Ich komme in die Halle und entscheide.“, „Ich stehe an und warte auf meinen Kaffee.“, „Ich bin im Zug.“ Der Automat ist auf der Map ein Umweg, kein eigener Moment.</p>
+      <p><strong>Moment oder Chance?</strong> Ein Moment ist ein Zeitpunkt der Geschichte und bildet die oberste Ebene (S. 86–87). Eine Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch, den ihr in den Interviews an diesem Moment hört (S. 69, 88). Torres’ eigene Beschriftungen verwischen das: Aus dem Moment „Choosing something to watch“ (S. 87) wird in ihrer Abbildung die oberste Chance „I’m not sure what to watch.“ (Abbildung S. 87), und auch in der Abbildung auf S. 89 stehen oben diese Ich-Sätze. Bei euch heißt die blaue Karte so wie der Moment auf T3 · 0; die Bedürfnisse hängen darunter.</p>
     </div>
   </Folie>
 
@@ -170,7 +161,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <div class="nur-handout">
       <p>Mit den Ästen aus der Experience Map geht ihr jeden Snapshot durch. Bei Torres kommt eine Chance in den Baum, wenn alle drei Fragen mit Ja beantwortet sind. In euren Bäumen gilt eine Kursregel: Eine Chance kommt hinein, wenn sie ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch ist (keine Lösung), den Outcome treibt und mindestens eine Zitat-ID trägt. Frage 2 sortiert nicht aus, sie markiert: Auf jeder Karte steht „X von N“, also wie viele eurer N echten Interviews sie tragen, bei drei Interviews etwa „2 von 3“ oder „1 von 3“. Interviews mit dem Pseudonym „Synthetisch“ zählen dabei nicht: weder als Zitat-ID noch für X oder N. Zunächst hängt ihr die Chance einfach unter den Moment, in dem sie vorkommt. Passt sie unter mehr als einen Ast, ist sie zu breit: Formuliert sie genauer, notfalls als eigene Chance für jeden Moment. „Die Oberfläche ist schwer bedienbar“ wird so zu „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ ({TORRES}, S. 88).</p>
       <p><strong>Warum markieren statt aussortieren? (Kursregel)</strong> Torres setzt voraus, dass ihr laufend weiter interviewt, mindestens eine Person pro Woche ({TORRES}, S. 71–72). Wer so arbeitet, kann warten: Was nur eine Person erzählt hat, bleibt auf ihrem Snapshot und taucht oft später in mehreren Interviews wieder auf (S. 70); in den Baum kommt es erst dann (S. 88). Ihr habt drei bis fünf Interviews und führt nicht jede Woche ein weiteres. Mit dem Filter bliebe in euren Bäumen kaum etwas zum Vergleichen übrig. Darum bleibt bei euch jede Chance mit Zitat-ID im Baum, und die Zahl auf der Karte zeigt, wie viel sie trägt. Ehrlich wird der Baum durch die sichtbare Zahl, nicht durchs Weglassen. Was nur ein Interview trägt („1 von N“), hört ihr in den nächsten Interviews als Erstes noch einmal ab, oder ihr prüft es an Tag 4 als Annahme im Experiment. Das Feld „Nur in einem Interview“ in eurem Frame auf Miro bleibt leer.</p>
-      <p>Die Abbildung ist Torres’ eigenes Inventar: Elf der zwölf Chancen von der Liste (S. 81) hängen unter den vier Momenten von S. 87, noch ohne Struktur innerhalb der Äste. „Is this show any good?“ (9) liegt unter „I’m not sure what to watch.“, „Who is that actor?“ (11) unter „I’m watching a show.“ – das Paar aus der Übung gehört zu zwei verschiedenen Momenten. „I can’t find anything to watch.“ (1) fehlt in der Abbildung; warum, sagt Torres nicht. Unsere Lesart: Als übergeordnete Chance von 2, 3 und 5 (S. 83) kommt sie erst beim Strukturieren dazu.</p>
+      <p>Die Abbildung ist Torres’ eigenes Inventar: Elf der zwölf Chancen von der Liste (S. 81) hängen unter den vier Momenten von S. 87, noch ohne Struktur innerhalb der Äste. „Is this show any good?“ (9) liegt unter „I’m not sure what to watch.“, „Who is that actor?“ (11) unter „I’m watching a show.“ – bei ihr liegen 9 und 11 also unter zwei verschiedenen Momenten. „I can’t find anything to watch.“ (1) fehlt in der Abbildung; warum, sagt Torres nicht. Unsere Lesart: Als übergeordnete Chance von 2, 3 und 5 (S. 83) kommt sie erst beim Strukturieren dazu.</p>
     </div>
   </Folie>
 
@@ -379,27 +370,37 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 </Layout>
 
 <style>
-  .zwoelf { columns: 2; column-gap: 2.5rem; margin: 1rem 0; padding-left: 1.6rem; }
-  .zwoelf li { break-inside: avoid; margin-bottom: .15rem; }
-  /* „warum“: drei Spalten – zwei Mini-Bäume nach Torres (S. 82–84) und der flache Block 9/11 (S. 82); die Nummern
-     verweisen auf die Liste der Folie davor. */
-  .mini-baeume { display: grid; gap: .4rem 1.5rem; margin: .3rem 0; }
-  @media (min-width: 900px) { .mini-baeume { grid-template-columns: 1fr 1fr 1fr; } }
+  /* „warum“ (Liste oder Baum?): links die zwölf, klein und nummeriert; rechts drei gezeichnete Mini-Bäume, je ein Schritt. */
+  .liste-baum { display: grid; gap: 1rem 2rem; margin: .6rem 0; }
+  @media (min-width: 900px) { .liste-baum { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: start; } }
+  .zwoelf { margin: 0; padding-left: 1.8rem; font-size: .85rem; line-height: 1.3; }
+  :global(.content) .zwoelf > li { margin: 0 0 .1rem; padding: 0 .3rem; border-radius: var(--radius); transition: background-color .2s; }
+  .zwoelf > li::marker { font-family: var(--mono); font-weight: 700; color: var(--muted); }
+  /* Aufleuchten: Nur solange ein Mini-Baum der zuletzt aufgedeckte ist, leuchten seine Nummern links (Beamer, .gezeigt). */
+  /* Welche Nummern zu welchem Baum gehören, steht an der Nummer (data-licht, aus MINI_BAEUME.nummern). */
+  .liste-baum:has(.mini-baum[data-baum="1"].gezeigt):not(:has(.mini-baum[data-baum="2"].gezeigt)) .zwoelf > li[data-licht~="1"],
+  .liste-baum:has(.mini-baum[data-baum="2"].gezeigt):not(:has(.mini-baum[data-baum="3"].gezeigt)) .zwoelf > li[data-licht~="2"],
+  .liste-baum:has(.mini-baum[data-baum="3"].gezeigt) .zwoelf > li[data-licht~="3"] { background: var(--yellow-soft); box-shadow: inset 3px 0 0 var(--yellow-ink); }
+  .mini-baeume { display: flex; flex-direction: column; gap: .7rem; }
+  .mini-baum { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: .3rem 1rem; align-items: center; }
   .mini-baum p { margin: 0; }
-  .mini-baum ul { list-style: none; margin: .2rem 0 .2rem 1.2rem; padding-left: .8rem; border-left: 2px solid var(--border); }
-  .mini-baum li { margin: 0; line-height: 1.35; }
-  .mini-baum b { display: inline-block; min-width: 1.4em; }
-  .mini-baum b, .mini-rest b { color: var(--accent); }
-  .mini-baum b.plus { color: var(--muted); }
-  .mini-flach p + p { margin-top: .1rem; }
-  .mini-rest { margin: .3rem 0 0; }
-  .mini-rest b { font-weight: 700; }
-  /* Volle Breite statt 36em (global.css, Zeilenlänge), damit „zwoelf“ und „warum“ bei 720p passen: je ein Selektor für den
-     Absatz direkt in der Folie und für den in der Auflösung, jeweils um html spezifischer als die globale Regel. */
-  :global(html .content > .inner > .folie) > p.breit, :global(html [data-aufloesung-inhalt]) > p.breit { max-width: none; }
-  /* Notiz unter den Teilchancen: eingerückt wie die Liste (1.2rem + .8rem); im flachen Block 9/11 ohne Einzug. */
-  .mini-baum .mini-text { font-size: .85rem; color: var(--muted); margin-left: 2rem; }
-  .mini-baum.mini-flach .mini-text { margin-left: 0; margin-top: .2rem; }
+  .mb-zeichnung { display: flex; flex-direction: column; align-items: center; }
+  .mb-knoten { display: inline-flex; align-items: center; justify-content: center; min-width: 2.1rem; padding: .1rem .4rem; border: 1.5px solid var(--accent); border-radius: var(--radius); background: var(--bg-2); font-family: var(--mono); font-weight: 700; font-size: .9rem; line-height: 1.3; }
+  .mb-ergaenzt { border-style: dashed; border-color: var(--muted); color: var(--muted); font-family: inherit; font-weight: 600; font-size: .8rem; }
+  .mb-ergaenzt em { font-style: italic; font-weight: 400; margin-left: .25em; }
+  /* Linien: senkrecht unter der übergeordneten Chance, waagrecht über den Teilchancen, senkrecht zu jeder Teilchance. */
+  .mb-kinder { position: relative; display: flex; gap: .5rem; margin-top: .9rem; }
+  .mb-kinder::before { content: ''; position: absolute; left: 50%; top: -.9rem; height: .45rem; border-left: 1.5px solid var(--muted); }
+  .mb-kinder > .mb-knoten { position: relative; }
+  .mb-kinder > .mb-knoten::before { content: ''; position: absolute; left: 50%; top: -.45rem; height: .45rem; border-left: 1.5px solid var(--muted); }
+  .mb-kinder > .mb-knoten::after { content: ''; position: absolute; top: -.45rem; left: -.25rem; right: -.25rem; border-top: 1.5px solid var(--muted); }
+  .mb-kinder > .mb-knoten:first-child::after { left: 50%; }
+  .mb-kinder > .mb-knoten:last-child::after { right: 50%; }
+  .mb-kinder > .mb-knoten:only-child::after { content: none; }
+  .mb-text { font-size: .95rem; line-height: 1.35; }
+  /* Volle Breite statt 36em (global.css, Zeilenlänge), damit die Pointe bei 720p in eine Zeile passt. */
+  :global(html .content > .inner > .folie) > p.breit { max-width: none; }
+  .pointe-baum { margin: .5rem 0 .2rem; font-size: 1.05rem; }
   .drei-fragen { width: 100%; border-collapse: collapse; margin: .5rem 0; font-size: .9rem; line-height: 1.3; }
   .drei-fragen th, .drei-fragen td { padding: .3rem .45rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
   .drei-fragen td:first-child { width: 40%; }
