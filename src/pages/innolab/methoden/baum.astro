@@ -336,7 +336,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
     <h2 id="vier-muster">Vier weitere Anti-Muster</h2>
     <p class="folie-satz">Ein Beispiel von Torres, drei von der Kaffeebar – je mit besserer Fassung.</p>
     <div class="muster">
-      <div><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Hängt an zwei Chancen <small>(zu breit)</small></strong><span>{ZU_BREIT.t} <small>{ZU_BREIT.ids.join(', ')}</small></span><em class="besser" data-besser>→ besser: {BESSER.map((b, i) => <>{i > 0 && ' · '}{b.t} ({b.moment} · <small class="ids">{b.ids.join(', ')}</small>)</>)}</em></div>
+      <div><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Hängt an zwei Chancen <small>(zu breit)</small></strong><span>{ZU_BREIT.t} <small>{ZU_BREIT.ids.join(', ')}</small></span><em class="besser" data-besser>→ besser: {BESSER.map((b, i) => <>{i > 0 && ' · '}{b.t} <small class="ids">({b.moment} · {b.ids.join(', ')})</small></>)}</em></div>
       <div data-schritt><strong><BookOpen size={20} aria-label="Beispiel von Torres" /> Nicht konkret</strong><span>„Das ist zu schwer.“</span><em class="besser">→ besser: „Einen Filmtitel mit der Fernbedienung einzugeben ist mühsam.“</em></div>
       <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Lösung statt Chance <small>(solution in disguise)</small></strong><span>„Per App vorbestellen.“</span><em class="besser">→ besser: „Ich will den Zug nicht verpassen.“</em></div>
       <div data-schritt><strong><Coffee size={20} aria-label="Beispiel Kaffeebar" /> Gefühl statt Ursache</strong><span>„{ZITAT_TEXT.get('I4-2')}“ <small>I4-2</small></span><em class="besser">→ besser: „Wenn ich anstehe, reicht mir die Zeit nicht.“ <small>I4-1</small></em></div>
@@ -505,6 +505,8 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
   :global(html[data-beamer] .folie:has(> h2#eltern-kind) .buch-abbildung img) { max-height: calc(100vh - 18rem); }
   .baum-antwort { display: block; color: var(--accent); }
   .baum-antwort .ids { font-size: .8em; color: var(--muted); }
+  /* „beispiel“ und „vier-muster“: Moment und IDs einer besseren Karte bleiben in einer Zeile. */
+  .ids { white-space: nowrap; }
   /* „map-baum“: Map und Baum nebeneinander, Zeilenköpfe links (wie .drei-fragen). */
   .vergleich { width: 100%; border-collapse: collapse; margin: .5rem 0; font-size: .9rem; line-height: 1.3; }
   .vergleich th, .vergleich td { padding: .3rem .45rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }

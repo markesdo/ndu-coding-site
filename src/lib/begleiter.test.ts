@@ -581,7 +581,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const beispiel = q.slice(q.indexOf('id="beispiel"'), q.indexOf('id="firmensicht"'));
     const muster = q.slice(q.indexOf('id="vier-muster"'), q.indexOf('id="euer-baum"'));
     expect(beispiel.match(/<span class="baum-antwort" data-schritt data-besser>.*<\/span>/)?.[0]).toContain('{b.t} <small class="ids">{b.ids.join(\', \')}</small>');
-    expect(muster.match(/<em class="besser" data-besser>.*<\/em>/)?.[0]).toContain('{b.t} ({b.moment} · <small class="ids">{b.ids.join(\', \')}</small>)');
+    expect(muster.match(/<em class="besser" data-besser>.*<\/em>/)?.[0]).toContain('{b.t} <small class="ids">({b.moment} · {b.ids.join(\', \')})</small>');
     // Begleiter: Die Zitate bleiben, umgeschrieben wird der Satz (Torres S. 70; Probe S. 92).
     expect(NOTIZEN[pfad]?.beispiel?.live).toContain('„Die Zitate bleiben – umgeschrieben wird der Satz auf der Karte. Jedes Zitat geht dorthin, wo es gesagt wurde.“');
     expect(JSON.stringify(NOTIZEN[pfad]?.beispiel?.kern)).toContain('Opportunities don’t need to be exact quotes, but you should frame them using your customer’s words.');
