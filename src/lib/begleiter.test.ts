@@ -450,6 +450,26 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(drei).toContain("kinder: ['Wer spielt mit?', 'Welche Art Serie?', '…'], nummern: [9],");
     expect(drei).toContain("text: '9 zerfällt in kleinere Chancen, etwa ‚Wer spielt mit?‘.'");
   });
+  // Entscheidung 12 (20.11. spät): Inventar – Frage 2 zählt („X von N“), Frage 1 und 3 sortieren aus, dann unter den Moment;
+  // kein „Kursregel“, kein vierter Punkt. Die Kaffeebar-Demo läuft mit derselben Regel: erster Schluck Outcome nein, mitbestellen ja.
+  it('Tag 3: baum – Inventar zählt statt filtert, Kaffeebar-Demo mit derselben Regel', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    expect(q.match(/Kursregel/g) ?? []).toStrictEqual([]);
+    expect(JSON.stringify(NOTIZEN[pfad]).match(/Kursregel/g) ?? []).toStrictEqual([]);
+    const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
+    const fragen = inventar.slice(inventar.indexOf('<ol>'), inventar.indexOf('</ol>'));
+    expect(fragen.match(/<li/g) ?? []).toHaveLength(3);
+    expect(fragen).toContain('<strong>In wie vielen Interviews gehört?</strong> → „X von N“ auf die Karte.');
+    expect(inventar).toContain('<strong>Dann:</strong> unter den Moment, in dem sie vorkommt');
+    expect(inventar.match(/1 und 3 Ja/g) ?? []).toStrictEqual([]);
+    const demo = q.slice(q.indexOf('id="drei-fragen"'), q.indexOf('id="map-baum"'));
+    const zeile = (t: string) => demo.split('<tr>').find((z) => z.includes(t)) ?? '';
+    expect(zeile('erste Schluck')).toContain('<td class="antwort">bleibt auf dem Snapshot</td>');
+    expect(zeile('mitbestellen')).toContain('<strong>in den Baum</strong>, „1 von 5“');
+    expect(demo.match(/Nur in einem Interview/g) ?? []).toStrictEqual([]);
+    expect(quellen['/innolab/tag-3/experience-map']).toContain('Miro, T3 · 0: <MiroLink name="T3 · 0 · So entsteht eure Map - Kaffeebar">Beispiel: Kaffeebar</MiroLink> · <MiroLink name="T3 · 0 · So entsteht eure Map - Sofie">');
+  });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
   // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.
   it('Tag 3: Kaffeebar-Momente als Tätigkeitsnamen auf experience-map, baum und ziel-chance', () => {
