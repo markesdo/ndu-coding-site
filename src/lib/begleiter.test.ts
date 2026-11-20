@@ -393,7 +393,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const seiten = ['/innolab/methoden/ziel-chance', '/innolab/methoden/hmw'];
     const tag3 = seiten.flatMap((p) => folienAus(p, quellen[p] ?? ''));
     // Seit 20.11.2026 ganz ohne Ulwick (nach beispiel-ulwick und aufloesung auch ulwick-outcomes und ulwick gestrichen): 18 Folien.
-    expect(tag3.length).toBeGreaterThanOrEqual(18);
+    expect(tag3).toHaveLength(18);
+    expect(tag3.filter((f) => /ulwick/i.test(f.id)).map((f) => f.id)).toStrictEqual([]);
     expect(tag3.filter((f) => !NOTIZEN[f.pfad]?.[f.id]?.live?.some((s) => s.trim() !== '')).map((f) => `${f.pfad}#${f.id}`)).toStrictEqual([]);
     const { z, karte } = beamer('/innolab/methoden/hmw', 'bauen');
     expect(karte).toBeNull();
