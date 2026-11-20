@@ -236,15 +236,16 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <p class="folie-satz">Was fehlt allen drei Anläufen noch?</p>
     <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
       <KaffeebarMap namen="taetigkeit" />
+      {/* Jeder Punkt deckt im Beamer seinen Teil der Map mit auf: data-schritt="x" ↔ data-teil="x" in KaffeebarMap.astro. */}
       <ul class="gross dicht nach-map">
-        <li data-schritt><CornerDownRight size={20} aria-hidden="true" /> Umweg und Schleife als Pfeil.</li>
-        <li data-schritt>Marke am Moment: <span class="nw">‚Tief · I2-1‘</span>, <span class="nw">‚Ende · I3-5‘</span>.</li>
-        <li data-schritt>Kein Zitat? Graue Karte – sie zählt nicht, bleibt aber sichtbar, etwa <span class="chip grau">Ende? – nicht erzählt</span></li>
-        <li data-schritt>Passt ein Zitat unter zwei Momente, sind es einer – oder ihr trennt schärfer.</li>
+        <li data-schritt="umweg"><CornerDownRight size={20} aria-hidden="true" /> Umweg und Schleife: als Pfeil.</li>
+        <li data-schritt="marken">Tief und Ende: markieren – wo tut es am meisten weh, wie geht es aus?</li>
+        <li data-schritt="grau">Nicht erzählt: graue Karte – zählt 0, ist eure nächste Interviewfrage.</li>
+        <li data-schritt="grenze">Überschneidung: Passt ein Sticky unter zwei Momente? Fragt: Wann in der Geschichte? Sonst überschneiden sie sich – zusammenlegen oder schärfer trennen.</li>
       </ul>
-      <p class="small muted">Umweg und Schleife: {TORRES}, S. 56. Ohne Überschneidung: S. 86–87; Zitat unter zwei Momenten: abgeleitet aus S. 87–88. Marken und graue Karte: Format dieses Kurses (Peak-End).</p>
+      <p class="small muted">Umweg und Schleife: {TORRES}, S. 56. Ohne Überschneidung: S. 86–87; die Frage „Wann in der Geschichte?“: abgeleitet aus S. 87–88. Marken und graue Karte: Format dieses Kurses – stärkster Moment und Ende prägen, wie ein Erlebnis in Erinnerung bleibt (Peak-End); was fehlt, fragt ihr im nächsten Interview nach.</p>
       <div class="nur-handout">
-        <p>Die Map zeigt auch, wo jemand umkehrt, aufgibt – und wie es ausgeht. Warum stärkster Moment und Ende: <a href="/innolab/methoden/journey-map#peak-end">Peak-End</a>. Die Kaffeebar-Map hat ihren Umweg (Automat → Zug), ihre Tiefpunkte und ein erzähltes Ende (I3-5). Erzählt bei euch niemand, wie es ausging, legt ihr eine graue Karte „Ende? – nicht erzählt“ hin: Sie zählt nicht, ist aber die nächste Interviewfrage. Die Momente dürfen sich nicht überschneiden, sonst lässt sich an keiner Chance einzeln arbeiten ({TORRES}, S. 86–87).</p>
+        <p>Auf der Map steht jeder Moment mit Name und Zählung, wie auf euren Karten; die Zitate mit IDs bleiben in der Zähltabelle. Dazu zeigt die Map, wo jemand umkehrt oder ausweicht – und wie es ausgeht. Warum stärkster Moment und Ende: <a href="/innolab/methoden/journey-map#peak-end">Peak-End</a>. Die Kaffeebar-Map hat ihren Umweg (Automat → Zug), ihre Tiefpunkte und ein erzähltes Ende ({MOMENTNAMEN.d}, {zaehlung('d')}). Erzählt bei euch niemand, wie es ausging, legt ihr eine graue Karte „Ende? – nicht erzählt“ hin: Sie zählt 0, ist aber die nächste Interviewfrage. Die Momente dürfen sich nicht überschneiden, sonst lässt sich an keiner Chance einzeln arbeiten ({TORRES}, S. 86–87). Passt ein Sticky unter zwei Momente, fragt ihr: Wann in der Geschichte passiert das? Gibt es keinen Unterschied, legt ihr die beiden zusammen, sonst trennt ihr sie schärfer.</p>
       </div>
     </Aufloesung>
   </Folie>
