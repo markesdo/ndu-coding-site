@@ -345,7 +345,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Timer 12 min: erst Momente als blaue Karten, dann Inventar.',
+      'Timer 12 min: Momente blau, dann Karten aus dem Streifen „ungeprüft“.',
       'Nach 12 min: Struktur, Timer 10 min.',
       '1:1 schon während Struktur, je 5 min: Sofie → Joachim → Hewen.',
       'Nach 22 min: selbst prüfen mit der Checkliste, Timer 13 min.',
@@ -363,6 +363,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
+        'Ansage 9:25: „Eure Chancen aus den Snapshots liegen als gelbe Karten unten in eurem Baum – so, wie sie in der Werkstatt stehen. Geprüft sind sie nicht.“ – „Zwei Karten sagen dasselbe? Zusammenlegen, beide IDs auf eine Karte, dann zählen.“ – „Ein Moment ohne Karte? Schaut in die Zitate darunter. Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?“',
         'Inventar allein (12 min): zuerst die Momente aus dem eigenen Frame T3 · 0 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Lösung → Bedürfnis dahinter neu prüfen; in wie vielen Interviews gehört → „X von N“; treibt den Outcome nicht → bleibt auf dem Snapshot; sonst gelbe Karte unter ihren Moment, mit Zitat-IDs (eine je Interview genügt) und „X von N“ – auch „1 von N“.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen nur über Geschwistern ergänzen (Rezept: Folie firmensicht) und mit „(ergänzt)“ beschriften, ohne ID und Zahl, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte. Markus beginnt jetzt die Runde an den Bäumen (je etwa fünf Minuten).',
         'Selbst prüfen allein (13 min, Timer auf der Folie oder der Checkliste): den eigenen Baum Karte für Karte mit den sechs Anti-Mustern durchgehen; je Fund entscheiden: ändern, Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Markus beendet seine Runde (je etwa fünf Minuten, Sofie → Joachim → Hewen), zeigt auf eine Karte und fragt, ohne umzuschreiben. Torres lässt das Team den eigenen Baum befragen (S. 92); allein prüfen und die fünf Minuten sind Kursformat, weil jede*r ein eigenes Produkt hat.',
@@ -372,7 +373,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Passt eine Chance unter zwei Momente, ist sie zu breit (Torres S. 88, 94).',
         'Was offen bleibt, wird eine Frage für die nächsten Interviews.',
         'Wenige Interviews: viele Karten mit „1 von N“ – normal, die Zahl kommt drauf.',
-        'Ein Zitat ist noch keine Chance: fragen, was die Person hier braucht (Torres S. 69, 88); Quelle der Chancen ist das Feld „Chancen“ der Snapshots in der Werkstatt.',
+        'Ein Zitat ist noch keine Chance: fragen, was die Person hier braucht (Torres S. 69, 88) – für Momente ohne Karte.',
+        'Die Sätze auf den gelben Karten im Streifen „ungeprüft“ stammen aus den Snapshots (Feld „Chancen“), von den Lehrenden am 19.11. überarbeitet. Die Studierenden dürfen sie in eigene Worte fassen.',
       ],
       fehler: [
         'Lösungen als Chancen („App“, „Express-Theke“).',

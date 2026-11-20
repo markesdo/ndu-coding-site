@@ -561,9 +561,12 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const pfad = '/innolab/methoden/baum';
     const q = quellen[pfad] ?? '';
     const vorgehen = q.slice(q.indexOf('id="vorgehen"'), q.indexOf('id="anti-muster"'));
-    expect(vorgehen).toContain('Chancen aus euren Snapshots (Werkstatt, Feld ‚Chancen‘) durch die drei Fragen → gelb unter ihren Moment.');
+    // Entscheidung 20: Die Chancen liegen vorab im Streifen „ungeprüft“ im Baum-Frame.
+    expect(vorgehen).toContain('Eure Chancen liegen im Streifen „ungeprüft“ unten im Frame: jede durch die drei Fragen → unter ihren Moment, Gleiches zusammenlegen, „X von 3“. Was liegen bleibt, bleibt im Snapshot.');
+    expect(q).toContain('und unten eure Chancen im Streifen „ungeprüft“.</li>');
+    expect(JSON.stringify(NOTIZEN[pfad]?.vorgehen?.ablauf)).toContain('Ansage 9:25');
     const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
-    expect(inventar).toContain('<p class="zitat-chance">Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?</p>');
+    expect(inventar).toContain('<p class="zitat-chance">Moment ohne Karte? Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?</p>');
     expect(NOTIZEN[pfad]?.vorgehen?.live).toContain('„Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?“');
   });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
