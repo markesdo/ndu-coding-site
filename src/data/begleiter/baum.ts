@@ -345,9 +345,9 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Timer 12 min: Momente blau, dann Karten aus dem Streifen „Ungeprüft“.',
-      'Nach 12 min: Struktur, Timer 10 min.',
-      '1:1 schon während Struktur, je 5 min: Sofie → Joachim → Hewen.',
+      'Kurz an jeden Baum: grüne Karte – Produkt-Outcome, zählbar, trägt Frage 3?',
+      'Timer 12 min: Momente blau (du gehst rum), dann Karten aus „Ungeprüft“.',
+      'Nach 12 min: Struktur, Timer 10 min; dann 1:1 je 5 min.',
       'Nach 22 min: selbst prüfen mit der Checkliste, Timer 13 min.',
       '„Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?“',
     ],
@@ -372,6 +372,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Gelbe Chancenkarten: Worte der Kundschaft, Zitat-IDs (eine je Interview genügt), „X von N“ („Synthetisch“ zählt nicht); „(ergänzt)“ ohne ID und Zahl.',
         'Passt eine Chance unter zwei Momente, ist sie zu breit (Torres S. 88, 94).',
         'Was offen bleibt, wird eine Frage für die nächsten Interviews.',
+        'Vor dem Inventar, während die Momente blau werden, kurz an jeden Baum der Reihe nach: die grüne Karte prüfen – Produkt-Outcome, nicht Geschäftszahl; zählbar; lässt sich Frage 3 („Treibt sie euren Outcome?“) damit beantworten? Auf Miro steht ein Vorschlag – die Studierenden formulieren ihn um.',
         'Wenige Interviews: viele Karten mit „1 von N“ – normal, die Zahl kommt drauf.',
         'Grauer Moment (niemand hat ihn erzählt): kommt blau in den Baum, als „Name · 0 von 3 · (nicht erzählt)“. Darunter nur Karten mit echter Zitat-ID; sonst ein grauer Zettel „Nächstes Interview: …“.',
         'Ein Zitat ist noch keine Chance: fragen, was die Person hier braucht (Torres S. 69, 88) – für Momente ohne Karte.',
