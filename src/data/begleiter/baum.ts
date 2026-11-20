@@ -36,7 +36,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     live: [
       'Liste kurz stehen lassen, dann drei Klicks, je ein Satz.',
       '① Teil vom Ganzen: 2 ist ein Grund, nicht der einzige.',
-      '② Geschwister: 7 und 12 unter „unterwegs schauen“, ergänzt.',
+      '② Geschwister: 7 und 12 unter „unterwegs schauen“ (ergänzt).',
       '③ Groß wird lösbar: 9 zerfällt in kleinere Chancen.',
       'Pointe aufdecken: „Die Liste zeigt Einträge. Der Baum zeigt, was zusammengehört.“',
     ],
@@ -159,9 +159,9 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   'drei-fragen': {
     live: [
-      'Pro Zeile: eine Person beantwortet die drei Fragen laut.',
+      'Du führst Zeile für Zeile; jede Frage an alle, wer zuerst antwortet.',
       'Frage 2 zählt nur; Frage 1 oder 3 Nein: Zeile fertig.',
-      'Die anderen: dafür oder dagegen? Erst dann die Zeile aufdecken.',
+      'Niemanden aufrufen. Dann die Zeile aufdecken.',
       'Zeile 1 vor dem Aufdecken: Was steckt hinter „per App vorbestellen“?',
       '„Erster Schluck: Outcome nein. Mitbestellen: Outcome ja, mit 1 von 5.“',
     ],
@@ -172,8 +172,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Pro Zeile führt eine Person, reihum: die drei Fragen der Reihe nach laut beantworten – Frage 2 als Zahl –, bei einem Nein in Frage 1 oder 3 stoppen, dann sagen, wohin die Zeile kommt.',
-        'Die anderen zwei sagen „dafür“ oder „dagegen“. Erst dann den Schritt aufdecken: Die Antworten dieser Zeile erscheinen.',
+        'Du führst Zeile für Zeile und stellst jede Frage an alle – Frage 2 als Zahl. Wer zuerst antwortet, antwortet; niemanden aufrufen. Bei einem Nein in Frage 1 oder 3 ist die Zeile fertig: kurz sagen lassen, wohin sie kommt.',
+        'Erst dann den Schritt aufdecken: Die Antworten dieser Zeile erscheinen.',
         'Zeile 1: vor dem Aufdecken fragen, welches Bedürfnis hinter der Lösung steckt. Zeile 2 ist dann dieses Bedürfnis, neu geprüft.',
         'Zeilen 4 und 5: beide „1 von 5“; Frage 3 entscheidet – erster Schluck nein, mitbestellen ja.',
         'Letzter Schritt: Das Ergebnis erscheint. Überleiten zu den eigenen Snapshots.',
@@ -239,7 +239,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       ],
       achten: [
         'Welches Zitat zu welchem Moment gehört, ist Lesart des Kurses: Auf der Map von Tag 2 steht I3-2 in der Spalte „Anstehen und Warten“.',
-        'Keine übergeordnete Chance erfinden: Der Kaffeebar-Baum hat keine ergänzte Karte.',
+        'Nicht ohne Teilchancen erfinden – ergänzen nur über Geschwistern; der Kaffeebar-Baum braucht keine.',
       ],
       aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I3-2), Warten „Wann ist mein Kaffee fertig?“ (I3-3; Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein – der Moment ‚Halle‘ fasst sie schon zusammen, eine Ebene dazwischen wäre doppelt (S. 90–91).',
     },
@@ -259,7 +259,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
   firmensicht: {
     live: [
       'Fragen: Wer würde „mehr Streaming-Abos“ je so sagen?',
-      '„Haben wir das gehört? Bei ergänzten übergeordneten Chancen: Kann ich mir vorstellen, dass jemand das sagt?“',
+      'Rezept zügig: nötig? folgt aus Teilchancen? Kundensatz? Bedürfnis? nicht zu breit? (ergänzt).',
+      'Beispiel Torres: Flugzeug und Zug → „unterwegs schauen“ (ergänzt).',
       'Kaffeebar-Probe: „Ich wünsche mir mehr Kaffeebar-Umsatz“ (Tag 1) wäre Firmensicht.',
     ],
     verstaendnis: {
@@ -270,6 +271,10 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       {
         text: '„No customer would ever say, ‚I wish I had more streaming-entertainment subscriptions.‘ But they might say, ‚I want access to more compelling content.‘ Review each opportunity on your tree and ask, ‚Have we heard this in interviews?‘“ Für ergänzte übergeordnete Chancen: „Can I imagine a customer saying this?“',
         quelle: `${TORRES}, S. 91–92`,
+      },
+      {
+        text: 'Selbst ergänzen: „it’s fine to go ahead and add it, as it’s implied by the other two opportunities“ (S. 90). Sechs Schritte: nur über Geschwistern ohne gemeinsame Karte (S. 90–91); folgt aus den Teilchancen, jede löst sie nur zum Teil (S. 94); „Can I imagine a customer saying this?“ (S. 92); Bedürfnis, keine Lösung (S. 94); nicht zu breit – „on the go“ (S. 90) statt „everything on the go“ (S. 94); „(ergänzt)“, ohne ID und Zählung (so im Kurs).',
+        quelle: `${TORRES}, S. 90–92, 94`,
       },
     ],
     ueberleitung: 'Vier weitere Anti-Muster, je mit einem Beispiel.',
@@ -357,7 +362,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Inventar allein (12 min): zuerst die Momente aus dem eigenen Frame T3 · 0 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Lösung → Bedürfnis dahinter neu prüfen; in wie vielen Interviews gehört → „X von N“; treibt den Outcome nicht → bleibt auf dem Snapshot; sonst gelbe Karte unter ihren Moment, mit Zitat-IDs (eine je Interview genügt) und „X von N“ – auch „1 von N“.',
-        'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen ergänzen und mit „(ergänzt)“ beschriften, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
+        'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen nur über Geschwistern ergänzen (Rezept: Folie firmensicht) und mit „(ergänzt)“ beschriften, ohne ID und Zahl, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte.',
         'Selbst prüfen allein (9 min, Timer auf der Folie Anti-Muster): den eigenen Baum Karte für Karte mit den sechs Anti-Mustern durchgehen; je Fund entscheiden: ändern, Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Markus kommt ab Minute 10 der Übung je etwa fünf Minuten an jeden Baum (Sofie → Joachim → Hewen), zeigt auf eine Karte und fragt, ohne umzuschreiben. Torres lässt das Team den eigenen Baum befragen (S. 92); allein prüfen und die fünf Minuten sind Kursformat, weil jede*r ein eigenes Produkt hat.',
         'Claude (4 min): Prüfliste, dann Claude mit einem Bildschirmfoto des eigenen Frames aus Miro; eine Datei gibt es nicht. Einen Befund wählen, die Frage selbst beantworten: ändern auf Miro oder lassen, Zeile ins Log; der Rest bis Tag 4.',
       ],

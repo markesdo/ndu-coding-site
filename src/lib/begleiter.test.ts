@@ -477,6 +477,39 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(JSON.stringify(NOTIZEN[pfad]?.beispiel).match(/reihum/gi) ?? []).toStrictEqual([]);
     expect(quellen['/innolab/tag-3/experience-map']).toContain('Miro, T3 · 0: <MiroLink name="T3 · 0 · So entsteht eure Map - Kaffeebar">Beispiel: Kaffeebar</MiroLink> · <MiroLink name="T3 · 0 · So entsteht eure Map - Sofie">');
   });
+  // Entscheidung 14 (20.11. spät): firmensicht bleibt Anti-Muster 1 und bekommt ein Rezept für die eigene übergeordnete
+  // Chance; „(ergänzt)“ überall in dieser Form, ohne ID und Zählung; auf „Liste oder Baum?“ gestrichelt, nicht grau.
+  it('Tag 3: baum – Rezept für die ergänzte übergeordnete Chance, „(ergänzt)“ einheitlich', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const folie = q.slice(q.indexOf('id="firmensicht"'), q.indexOf('id="senkrecht"'));
+    expect(folie).toContain('Aus Sicht der Kundschaft, nicht der Firma</h2>');
+    const rezept = folie.slice(folie.indexOf('<div class="rezept"'), folie.indexOf('</div>', folie.indexOf('<div class="rezept"')));
+    expect(rezept.match(/<li>/g) ?? []).toHaveLength(6);
+    expect(rezept).toContain('<li><strong>„(ergänzt)“</strong> – ohne ID, ohne Zählung.</li>');
+    expect(q).toContain('{b.ergaenzt && <em> (ergänzt)</em>}');
+    expect(q.match(/\.mb-ergaenzt \{[^}]*color: var\(--muted\)/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('mit welcher ID (außer „(ergänzt)“)?');
+    expect(q).toContain('mit „(ergänzt)“, ohne ID und Zahl; jede Karte an genau eine darüber.');
+    expect(JSON.stringify(NOTIZEN[pfad]).match(/Keine übergeordnete Chance erfinden/g) ?? []).toStrictEqual([]);
+  });
+  // Entscheidung 15 (20.11. spät): Kein Reihum an der Kaffeebar – Baum „drei-fragen“ und „beispiel“, Ziel-Chance „bauchwahl“:
+  // Fragen an alle, still wählen und zugleich Hand heben; niemand wird aufgerufen.
+  it('Tag 3: kein „reihum“ auf baum#drei-fragen, baum#beispiel und ziel-chance#bauchwahl, auch nicht im Begleiter', () => {
+    const folie = (pfad: string, id: string) => {
+      const q = quellen[pfad] ?? '';
+      const a = q.indexOf(`id="${id}"`);
+      return q.slice(a, q.indexOf('<Folie', a));
+    };
+    const stellen = [
+      folie('/innolab/methoden/baum', 'drei-fragen'), folie('/innolab/methoden/baum', 'beispiel'), folie('/innolab/methoden/ziel-chance', 'bauchwahl'),
+      JSON.stringify(NOTIZEN['/innolab/methoden/baum']?.['drei-fragen']), JSON.stringify(NOTIZEN['/innolab/methoden/baum']?.beispiel),
+      JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance']?.bauchwahl),
+    ];
+    expect(stellen.every((s) => s.length > 50)).toBe(true);
+    expect(stellen.flatMap((s) => s.match(/reihum/gi) ?? [])).toStrictEqual([]);
+    expect(folie('/innolab/methoden/ziel-chance', 'bauchwahl')).toContain('Wer will seinen Grund sagen?');
+  });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
   // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.
   it('Tag 3: Kaffeebar-Momente als Tätigkeitsnamen auf experience-map, baum und ziel-chance', () => {
