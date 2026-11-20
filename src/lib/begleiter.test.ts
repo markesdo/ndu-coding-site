@@ -490,7 +490,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(q).toContain('{b.ergaenzt && <em> (ergänzt)</em>}');
     expect(q.match(/\.mb-ergaenzt \{[^}]*color: var\(--muted\)/g) ?? []).toStrictEqual([]);
     expect(q).toContain('mit welcher ID (außer „(ergänzt)“)?');
-    expect(q).toContain('mit „(ergänzt)“, ohne ID und Zahl; jede Karte an genau eine darüber.');
+    expect(q).toContain('übergeordnete Chance nach dem Rezept oben rechts im Frame.');
     expect(JSON.stringify(NOTIZEN[pfad]).match(/Keine übergeordnete Chance erfinden/g) ?? []).toStrictEqual([]);
   });
   // Entscheidung 15 (20.11. spät): Kein Reihum an der Kaffeebar – Baum „drei-fragen“ und „beispiel“, Ziel-Chance „bauchwahl“:
@@ -509,6 +509,21 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(stellen.every((s) => s.length > 50)).toBe(true);
     expect(stellen.flatMap((s) => s.match(/reihum/gi) ?? [])).toStrictEqual([]);
     expect(folie('/innolab/methoden/ziel-chance', 'bauchwahl')).toContain('Wer will seinen Grund sagen?');
+  });
+  // Entscheidung 16 (20.11. spät): „vorgehen“ in drei Schritten (12 + 10 + 13 = 35 min), ohne Claude-Schritt; auf der
+  // Baum-Seite und im Begleiter keine Claude-/Bildschirmfoto-Prüfung mehr, kein Feld „Nur in einem Interview“, kein T2 · 2 als Anleitung.
+  it('Tag 3: baum#vorgehen – drei Schritte, 35 min, ohne Claude', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const folie = q.slice(q.indexOf('id="vorgehen"'), q.indexOf('id="anti-muster"'));
+    const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
+    expect(schritte.match(/<li/g) ?? []).toHaveLength(3);
+    expect([...schritte.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([12, 10, 13]);
+    expect(folie).toContain('<p>Markus kommt zu jedem Baum.</p>');
+    const n = NOTIZEN[pfad] ?? {};
+    expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(35);
+    expect(n.vorgehen?.uebung?.dauer).toBe('35 min (12 + 10 + 13)');
+    expect([q, JSON.stringify(n)].flatMap((s) => s.match(/Claude|Bildschirmfoto|Nur in einem Interview|T2 · 2/g) ?? [])).toStrictEqual([]);
   });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
   // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.

@@ -15,7 +15,6 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T1 · 4 · Interviewleitfaden': '3458764687406008350',
   'T1 · 5 · Interview-Snapshots (aus der Werkstatt)': '3458764687728446144',
   'T2 · 1 · Experience Map': '3458764687841241005',
-  'T2 · 2 · Opportunity Solution Tree': '3458764687841227908',
   // Ein Frame je Person (seit 20.11.2026); der gemeinsame Frame „T3 · 0 · So entsteht eure Map“ ist vom Board gelöscht.
   // Beispiel Kaffeebar (seit 20.11.2026 spät): derselbe Weg am Material der Kaffeebar, Momentnamen wie MOMENTNAMEN.
   'T3 · 0 · So entsteht eure Map - Kaffeebar': '3458764691140169696',
