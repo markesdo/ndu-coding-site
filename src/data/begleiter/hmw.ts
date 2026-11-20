@@ -147,10 +147,6 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
         frage: 'Auf „Warum will jemand wissen, ob es sich ausgeht?“ kommt: „Weil der Zug vorgeht.“ Und jetzt?',
         antwort: 'Das ist die Nachbar-Chance „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1). Für H2 weiterfragen: Sie wollen den Kaffee und lassen ihn, wenn es voll ist (I5-2, I3-4). H2 reicht damit schon in die Nachbar-Chance hinein – darum nimmt die Kaffeebar H1 (unsere Lesart).',
       },
-      {
-        frage: 'Ist der Outcome-Satz nach Ulwick nicht schon die Frage?',
-        antwort: 'Fast: Beide sind frei von Lösungen. Der Outcome-Satz ist zum Bewerten gebaut, mit Richtung und Maßeinheit (Ulwick, S. 95); die Frage soll Ideen öffnen. Wer eine Zielzahl hineinschreibt, landet bei Browns zu enger Frage (Berger, S. 2). Die Gegenüberstellung ist unsere.',
-      },
     ],
     ueberleitung: 'Jetzt die Probe – an vier Fragen zur Kaffeebar.',
   },
