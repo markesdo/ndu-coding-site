@@ -230,11 +230,11 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     ],
     uebung: { dauer: '18 min (7 + 7 + 4)', form: 'allein, jede*r für das eigene Produkt' },
     miro: {
-      frame: 'T3 · 4 · Kundenprofil & Value Map',
+      frame: 'T3 · 4 · Canvas · Sofie',
       schritte: [
-        'Jede*r arbeitet im eigenen Canvas-Frame „T3 · 4 · Canvas · Name“ (Link oben in der eigenen Spalte von T3 · 4).',
+        'Jede*r arbeitet im eigenen Canvas-Frame „T3 · 4 · Canvas · Name“, rechte Hälfte (Links auf der Folie; der Link oben führt zu Sofie, Joachim und Hewen liegen darunter).',
         'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und als Pains in den Kreis legen; Zitat-IDs bleiben dran.',
-        'Dann alle Stickies auf die drei Skalen rechts unten schieben, je Spalte das Wichtigste oben (VPD S. 76); Segment und Anlass als Überschrift.',
+        'Dann alle Stickies auf die drei Skalen rechts unten schieben, je Spalte das Wichtigste oben (VPD S. 76), dann nummerieren (J1 …, P1 …, G1 …); Segment und Anlass als Überschrift.',
       ],
     },
     ablauf: {

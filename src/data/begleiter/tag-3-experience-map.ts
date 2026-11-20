@@ -96,10 +96,11 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     ],
     uebung: { dauer: '15 min (3 × 5)', form: 'Markus geht jede Zeile auf T3 · 0 durch' },
     miro: {
-      frame: 'T3 · 0 · So entsteht eure Map',
+      frame: 'T3 · 0 · So entsteht eure Map - Sofie',
       schritte: [
-        'Eine Zeile je Person: Schritt 1 → zusammenlegen → zählen → Momente → Map.',
-        '„Alle zu mir holen“ auf die Zeile, die dran ist.',
+        'Ein Frame je Person, über dem eigenen Baum; der Link oben führt zu Sofie, Joachim und Hewen liegen rechts daneben.',
+        'Je Frame: Schritt 1 → zusammenlegen → zählen → Momente → Map.',
+        '„Alle zu mir holen“ auf den Frame, der dran ist.',
       ],
     },
     ueberleitung: 'Eure Momente werden die obersten Äste.',

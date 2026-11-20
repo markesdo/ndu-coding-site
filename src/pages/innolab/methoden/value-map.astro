@@ -10,6 +10,7 @@ import Timer from '../../../components/Timer.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import MiroLink from '../../../components/MiroLink.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
 import { ENDE_TAG_3 } from '../../../components/innolab-zeiten';
 
@@ -124,11 +125,12 @@ const TORRES_KURZ = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <p class="wozu"><strong>Wozu?</strong> Damit ihr wisst, welche Idee ihr heute ausarbeitet – und seht, was sie oben im Profil trifft und was offen bleibt.</p>
     <MiroFrame name="T3 · 4 · Kundenprofil & Value Map" />
     <ol class="gross">
-      <li data-schritt><strong>Vergleichen und wählen</strong> (Kursregel): ✓ ✗ ? je Lückensatz – Spitzenreiter auf Papier, die anderen beiden bleiben offen. <Timer minuten={5} /></li>
-      <li data-schritt><strong>Value Map</strong> des Spitzenreiters, mit IDs; dann ordnen. <Timer minuten={20} /></li>
+      <li data-schritt><strong>In T3 · 4: vergleichen und wählen</strong> (Kursregel): ✓ ✗ ? je Lückensatz – Spitzenreiter auf Papier, die anderen beiden bleiben offen. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Zurück in euren Canvas, linke Hälfte: Quadrat.</strong> Value Map des Spitzenreiters, mit IDs; dann ordnen. <Timer minuten={20} /></li>
       <li data-schritt><strong>Fit prüfen:</strong> ✓ an die Value Map, ✗ an Offenes im Profil – jedes ? wird an Tag 4 eine Annahme. <Timer minuten={7} /></li>
       <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={4} /></li>
     </ol>
+    <p class="small">Miro, euer Canvas ab Schritt 2: <MiroLink name="T3 · 4 · Canvas · Sofie">Sofie</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Joachim">Joachim</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Hewen">Hewen</MiroLink></p>
     <p class="nur-handout">Den Ideen-Vergleich macht ihr in T3 · 4 (Feld „Ideen vergleichen und wählen“); Value Map und Fit entstehen in eurem Canvas-Frame „T3 · 4 · Canvas · euer Name“: alle Stickies auf die Skalen, je Spalte das Wichtigste oben, dort prüft ihr auch den Fit ({VPD}, S. 76, 102, 110–113). Im Einzelnen: Vergleichen heißt ✓, ✗ oder ? je Lückensatz gegen die obersten Einträge eures Profils; die Lückensätze bringt ihr aus der Ideation mit (<code>docs/IDEEN.md</code>). Die Value Map trägt J-, P- und G-IDs und wird je Spalte geordnet, Unverzichtbares oben. Beim Fit bekommt jeder Pain Reliever und Gain Creator, der etwas trifft, ein ✓; Jobs, Pains und Gains, die offen bleiben, ein ✗. Markus geht ab Minute 5 von Canvas zu Canvas und fragt bei jeder und jedem nach einem Kreuz. Dazu neun Minuten Theorie mit der Kaffeebar. Die Wahl kommt als Zeile ins Entscheidungslog, mit dem Fit als Beleg und dem Hinweis, dass er auf Papier steht. Alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – sammelt ihr in <code>docs/VALUE-MAP.md</code>; an Tag 4 werden sie Annahmen für die Experiment-Karte. Die Prüfung mit Claude macht ihr bis Tag 4, wenn die Zeit nicht reicht.</p>
   </Folie>
 

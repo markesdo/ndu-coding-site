@@ -372,7 +372,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
-        'Jede*r arbeitet im eigenen Frame „Baum · Name“ rechts neben der Kaffeebar; T2 · 2 ist nur die Anleitung.',
+        'Jede*r arbeitet im eigenen Frame „Baum · Name“, direkt unter der eigenen Map von T3 · 0 (Links auf der Folie); T2 · 2 ist nur die Anleitung.',
         'Momente aus der eigenen Zeile auf T3 · 0 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-ID.',
         'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat, bleibt im Baum, markiert mit „1 von N“; das Feld „Nur in einem Interview“ bleibt leer.',
         'Selbst prüfen: jede*r im eigenen Frame, die Checkliste der Folie Anti-Muster daneben; Markus geht von Baum zu Baum.',

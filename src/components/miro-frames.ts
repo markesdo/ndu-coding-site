@@ -16,11 +16,18 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T1 · 5 · Interview-Snapshots (aus der Werkstatt)': '3458764687728446144',
   'T2 · 1 · Experience Map': '3458764687841241005',
   'T2 · 2 · Opportunity Solution Tree': '3458764687841227908',
-  'T3 · 0 · So entsteht eure Map': '3458764691038487324',
+  // Ein Frame je Person (seit 20.11.2026); der gemeinsame Frame „T3 · 0 · So entsteht eure Map“ ist vom Board gelöscht.
+  'T3 · 0 · So entsteht eure Map - Sofie': '3458764691108606799',
+  'T3 · 0 · So entsteht eure Map - Joachim': '3458764691110920808',
+  'T3 · 0 · So entsteht eure Map - Hewen': '3458764691111287267',
   'T3 · 1 · Ziel-Chance': '3458764687841534117',
   'T3 · 2 · How Might We': '3458764687841534441',
   'T3 · 3 · Ideation': '3458764687841681125',
   'T3 · 4 · Kundenprofil & Value Map': '3458764687841769171',
+  // Canvas je Person: vormittags Kundenprofil (rechte Hälfte, Kreis), nachmittags Value Map (linke Hälfte, Quadrat).
+  'T3 · 4 · Canvas · Sofie': '3458764691039197393',
+  'T3 · 4 · Canvas · Joachim': '3458764691039197394',
+  'T3 · 4 · Canvas · Hewen': '3458764691039197395',
   // Bis 19.11.2026 „T3 · 5 · Annahmen der Idee“; genutzt wird der Frame an Tag 4 (experiment.astro), darum T4 · 0.
   'T4 · 0 · Annahmen der Idee': '3458764687894872786',
   'T4 · 1 · Story Map': '3458764687894872787',
