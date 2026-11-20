@@ -95,11 +95,11 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   'oberste-ebene': {
     live: [
-      'Abbildung von Tag 2 wiedererkennen lassen: vier Momente, vier Äste.',
-      'Fragen: Wie heißen eure Momente auf T3 · 0?',
+      'Blaue Karte = Momentname von T3 · 0, kein Satz der Kundschaft.',
+      'Bildunterschrift: Torres schreibt Momente als Kundensätze – dieselben vier Zeitpunkte.',
       '„Überschneiden sich die Äste, müsst ihr an allen Chancen zugleich arbeiten.“',
       'Aufdecken: Kaffeebar – drei Momente, der Automat ist ein Umweg.',
-      'Aufdecken: Moment = Zeitpunkt, Chance = Bedürfnis, das dort gehört wird.',
+      'Aufdecken: Moment = wann; Chance = was die Person dann bewegt.',
     ],
     verstaendnis: {
       frage: 'Warum dürfen sich die Äste nicht überschneiden?',
@@ -116,8 +116,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 87`,
       },
       {
-        text: 'Moment oder Chance: Moment = Zeitpunkt der Geschichte, oberste Ebene (S. 86–87); Chance = Bedürfnis, Schmerzpunkt oder Wunsch, der dort gehört wird (S. 69, 88). Torres verwischt es selbst: Moment „Choosing something to watch“ (S. 87), oberste Chance in der Abbildung „I’m not sure what to watch.“ (Abb. S. 87, auch S. 89).',
-        quelle: `${TORRES}, S. 69, 86–89`,
+        text: 'Moment = wann, oberste Ebene (S. 86–87); Chance = was die Person dann bewegt (S. 69, 88). Torres schreibt ihre Momente in der Abbildung als Sätze der Kundschaft – Moment „Choosing something to watch“, Karte „I’m not sure what to watch.“, derselbe Zeitpunkt (S. 87). Eigene Formulierungen, keine Zitate: „Opportunities don’t need to be exact quotes, but you should frame them using your customer’s words“ (S. 70); Probe „Can I imagine a customer saying this?“ (S. 92). Bei uns oben der Momentname, Kundensätze ab den Chancen.',
+        quelle: `${TORRES}, S. 69–70, 86–89, 92`,
       },
       {
         text: 'Kaffeebar: drei Momente der Experience Map – Halle, Anstehen und Warten, Zug; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente, nachgeschärft auf T3 · 0 (Stand Tag 2: T2 · 1).',

@@ -446,6 +446,16 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(NOTIZEN[pfad]?.warum?.uebung).toBeUndefined();
     expect(NOTIZEN[pfad]?.warum?.ueberleitung).toBe('Woher kommen die Teilchancen?');
   });
+  // 20.11. spät (Markus, Entscheidung 10): Oben hängt der Momentname von heute früh (T3 · 0), kein Satz der Kundschaft; die
+  // Bildunterschrift „Vier Momente, vier oberste Chancen“ wird erklärt (Torres’ eigene Sätze, S. 70 wörtlich).
+  it('Tag 3: baum#oberste-ebene – Momentname von T3 · 0, Moment = wann, Chance = was die Person dann bewegt', () => {
+    const q = quellen['/innolab/methoden/baum'] ?? '';
+    const folie = q.slice(q.indexOf('id="oberste-ebene"'), q.indexOf('id="inventar"'));
+    expect(folie.match(/Von Tag 2:/g) ?? []).toStrictEqual([]);
+    expect(folie).toContain('<strong>Von heute früh (T3 · 0):</strong>');
+    expect(folie).toContain('Moment = wann (oben). Chance = was die Person dann bewegt (darunter).');
+    expect(folie).toContain('„Opportunities don’t need to be exact quotes, but you should frame them using your customer’s words“ (S. 70)');
+  });
   // 20.11. spät (Markus, Punkt 9): Momentkarte = Name + Zählung. Kein Beispielzitat, keine ID-Liste auf den Karten von
   // „zusammen“, keine Prüffrage nach Zitat-IDs unter zwei Momenten; „Welche Zitate gehören hierher?“ gehört zum Zusammenlegen.
   it('Tag 3: experience-map – Moment = Name + Zählung, keine Zitate oder IDs auf der Momentkarte', () => {
