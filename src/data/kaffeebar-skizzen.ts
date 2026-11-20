@@ -13,6 +13,15 @@ export const GRUPPEN: { g: GruppeId; name: string }[] = [
   { g: 'd', name: 'Im Zug' },
 ];
 
+/** Namen der drei Momente auf den Tag-3-Folien und im Kaffeebar-Baum: Tätigkeit aus Sicht der Kundschaft, wie die Spalte
+ *  beim Zählen (Miro „T3 · 0 · So entsteht eure Map - Kaffeebar“). Halle gekürzt, damit er auf eine Karte passt; die
+ *  anderen sind die Gruppennamen. Der Umweg (b) ist kein Moment. Entscheidung 20.11. spät (Punkt 11). */
+export const MOMENTNAMEN = {
+  a: 'Halle: entscheiden',
+  c: GRUPPEN.find((x) => x.g === 'c')!.name,
+  d: GRUPPEN.find((x) => x.g === 'd')!.name,
+} as const satisfies Partial<Record<GruppeId, string>>;
+
 export const SKIZZEN: Skizze[] = [
   { i: 'I2', stickies: [
     { t: 'Tafel, Schlange', id: 'I2-4', g: 'a' }, { t: '8 Leute: das wird nix', id: 'I2-1', g: 'a', marke: 'tief' },

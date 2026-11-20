@@ -1,5 +1,83 @@
 import { describe, expect, it } from 'vitest';
-import { beamerSchalten, einstieg, klickAktion, praesentatorAngemeldet, type Seitenart, type Speicher, type Wurzel } from './beamer';
+import { FUEHRUNG_FRIST_MS, beamerSchalten, darfFuehren, dieserTabMeldet, einstieg, fuehrungLesen, fuehrungSchreiben, ersteFolieAbstand, klickAktion, kopfAnDenAnfang, praesentatorAngemeldet, type Seitenart, type Speicher, type Wurzel } from './beamer';
+
+// Nur ein Tab, der melden kann, darf die Führung übernehmen (Code-Review 21.11.: Begleiter-Tab stahl sie dem Beamer).
+describe('darfFuehren', () => {
+  it('Schlüssel, Beamer an, nicht pausiert: ja', () => {
+    expect(darfFuehren({ schluessel: 'k', beamer: true, pausiert: false })).toBe(true);
+  });
+  it('ohne Schlüssel, ohne Beamer oder pausiert: nein', () => {
+    expect(darfFuehren({ schluessel: null, beamer: true, pausiert: false })).toBe(false);
+    expect(darfFuehren({ schluessel: 'k', beamer: false, pausiert: false })).toBe(false);
+    expect(darfFuehren({ schluessel: 'k', beamer: true, pausiert: true })).toBe(false);
+  });
+});
+
+// Kopf nach dem Laden an den Anfang – aber nie gegen eine eigene Bewegung.
+describe('kopfAnDenAnfang', () => {
+  const lage = { beamer: true, anker: false, scrollY: 8, kopfleiste: 56, beruehrt: false };
+  it('ein paar Pixel tief eingerastet, unberührt: zurück an den Anfang', () => {
+    expect(kopfAnDenAnfang(lage)).toBe(true);
+  });
+  it('schon gescrollt, geklickt oder getippt: bleibt', () => {
+    expect(kopfAnDenAnfang({ ...lage, beruehrt: true })).toBe(false);
+  });
+  it('mit #anker, ohne Beamer, ganz oben oder weiter als die Kopfleiste: bleibt', () => {
+    expect(kopfAnDenAnfang({ ...lage, anker: true })).toBe(false);
+    expect(kopfAnDenAnfang({ ...lage, beamer: false })).toBe(false);
+    expect(kopfAnDenAnfang({ ...lage, scrollY: 0 })).toBe(false);
+    expect(kopfAnDenAnfang({ ...lage, scrollY: 56 })).toBe(false);
+  });
+});
+
+// Zwei Beamer-Tabs mit Schlüssel: Nur der zuletzt benutzte meldet (wo-ist.ts), sonst springt der Zähler im Begleiter.
+describe('dieserTabMeldet (Pacht mit Herzschlag)', () => {
+  const t = 1_000_000;
+  it('frische Pacht: der Führer meldet, der andere schweigt', () => {
+    const pacht = fuehrungSchreiben('tab-a', t);
+    expect(dieserTabMeldet(pacht, 'tab-a', t + 500)).toBe(true);
+    expect(dieserTabMeldet(pacht, 'tab-b', t + 500)).toBe(false);
+  });
+  it('noch frisch an der Frist: kein Wechsel hin und her', () => {
+    expect(dieserTabMeldet(fuehrungSchreiben('tab-a', t), 'tab-b', t + FUEHRUNG_FRIST_MS)).toBe(false);
+  });
+  it('alte Pacht (Führer abgestürzt, geschlossen, Beamer aus): frei für den anderen', () => {
+    expect(dieserTabMeldet(fuehrungSchreiben('tab-a', t), 'tab-b', t + FUEHRUNG_FRIST_MS + 1)).toBe(true);
+  });
+  it('eigene Pacht gilt immer', () => {
+    expect(dieserTabMeldet(fuehrungSchreiben('tab-a', t), 'tab-a', t + 60_000)).toBe(true);
+  });
+  it('keine oder unlesbare Pacht: frei', () => {
+    expect(dieserTabMeldet(null, 'tab-a', t)).toBe(true);
+    expect(dieserTabMeldet('tab-b', 'tab-a', t)).toBe(true); // alte Form ohne JSON
+    expect(dieserTabMeldet('{"id":3,"ts":"x"}', 'tab-a', t)).toBe(true);
+    expect(fuehrungLesen('{kaputt')).toBeNull();
+    expect(fuehrungLesen(fuehrungSchreiben('tab-a', t))).toStrictEqual({ id: 'tab-a', ts: t });
+  });
+});
+
+// Erste Folie im Beamer genau an der Falz: Seitenkopf = Titelbild, das erste → zeigt Folie 1 ganz.
+describe('ersteFolieAbstand', () => {
+  it('kurzer Seitenkopf: Abstand bis zur Falz', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400 })).toBe(320);
+  });
+  it('Bruchteile runden auf, damit die Folie nicht 1 px in den ersten Bildschirm ragt', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400.6 })).toBe(320);
+  });
+  it('Folie beginnt schon unter der Falz oder genau an ihr: kein Abstand', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 900 })).toBe(0);
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 720 })).toBe(0);
+  });
+  it('Beamer aus: kein Abstand', () => {
+    expect(ersteFolieAbstand({ beamer: false, fensterHoehe: 720, folieOben: 400 })).toBe(0);
+  });
+  it('Seitenkopf rastet 8 px tiefer ein (1728 × 1117): Falz liegt 8 px tiefer', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 1117, folieOben: 450, kopfOben: 8 })).toBe(675);
+  });
+  it('negativer kopfOben zählt als 0', () => {
+    expect(ersteFolieAbstand({ beamer: true, fensterHoehe: 720, folieOben: 400, kopfOben: -5 })).toBe(320);
+  });
+});
 
 // Ersatz für document.documentElement und localStorage (vitest läuft hier ohne DOM).
 function wurzel(...attrs: string[]): Wurzel & { attrs: Map<string, string> } {

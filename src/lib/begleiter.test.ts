@@ -410,16 +410,218 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(reihe.indexOf(pfad) + 1).toBe(reihe.indexOf('/innolab/methoden/baum'));
   });
   // 19.11. (Markus): Die eigene Map geht Markus mit jeder Person auf T3 · 0 durch, 15 min (3 × 5); die Kaffeebar-Folien
-  // davor in etwa 10 min (darin die 4-min-Übung); der Block bleibt 09:00–09:25.
+  // davor in etwa 10 min; der Block bleibt 09:00–09:25. 20.11. (Markus, Entwurf E2): drei Anläufe still in 2 min, dann
+  // eine offene Frage an alle (1 min, von uebungMinuten nicht mitgezählt, steckt in den gut 6 min).
   it('Tag 3: experience-map – Durchgang 15 min auf T3 · 0, Übungen passen in den 25-min-Block', () => {
     const pfad = '/innolab/tag-3/experience-map';
     const n = NOTIZEN[pfad] ?? {};
+    expect(uebungMinuten(n['drei-anlaeufe']?.uebung?.dauer)).toBe(2);
+    expect(quellen[pfad]).toContain('<Timer minuten={2} />');
     expect(uebungMinuten(n['eure-map']?.uebung?.dauer)).toBe(15);
     expect(n['eure-map']?.miro?.frame).toBe('T3 · 0 · So entsteht eure Map - Sofie');
     for (const name of ['Sofie', 'Joachim', 'Hewen']) expect(quellen[pfad]).toContain(`<MiroLink name="T3 · 0 · So entsteht eure Map - ${name}">${name}</MiroLink>`);
     const summe = Object.values(n).reduce((a, x) => a + (uebungMinuten(x.uebung?.dauer) ?? 0), 0);
-    // 4 (drei Anläufe) + 15 (Durchgang); die übrigen Kaffeebar-Folien brauchen gut 6 min.
+    // 2 (drei Anläufe, still) + 15 (Durchgang); die offene Frage und die übrigen Kaffeebar-Folien brauchen gut 6 min.
     expect(summe).toBeLessThanOrEqual(25 - 6);
+  });
+  // 20.11. (Markus): „Drei bis fünf“ stammt aus Torres’ Buchclub-Leitfaden, IDs und Zählung sind Format dieses Kurses –
+  // auf Folie und im Begleiter steht der Grund, kein Etikett „Kursregel“.
+  it('Tag 3: experience-map – kein Etikett „Kursregel“ auf der Seite und im Begleiter', () => {
+    const pfad = '/innolab/tag-3/experience-map';
+    expect(quellen[pfad]?.match(/Kursregel/g) ?? []).toStrictEqual([]);
+    expect(JSON.stringify(NOTIZEN[pfad]).match(/Kursregel/g) ?? []).toStrictEqual([]);
+    expect(quellen[pfad]).toContain('Buchclub-Leitfaden zu Kapitel 6');
+  });
+  // 20.11. (Markus, Entscheidung 8): Auf dem Baum werden „zwoelf“ (Übung „Welche jeweils zuerst?“, Reihum, Timer) und „warum“
+  // (Auflösung) eine Folie „Liste oder Baum?“ – Anker #warum bleibt, keine Übung, keine Auflösung, kein Timer.
+  it('Tag 3: baum – „Liste oder Baum?“ ersetzt zwoelf und warum, ohne Übung', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    expect(folienAus(pfad, q).map((f) => f.id).slice(0, 3)).toStrictEqual(['nur-outcome', 'warum', 'eltern-kind']);
+    const folie = q.slice(q.indexOf('id="warum"'), q.indexOf('id="eltern-kind"'));
+    expect(folie).toContain('Liste oder Baum?</h2>');
+    expect(folie).toContain('Die Liste zeigt Einträge. Der Baum zeigt, was zusammengehört.');
+    expect(folie.match(/<Timer|<Aufloesung|reihum/gi) ?? []).toStrictEqual([]);
+    expect(Object.keys(NOTIZEN[pfad] ?? {}).filter((k) => k === 'zwoelf')).toStrictEqual([]);
+    expect(NOTIZEN[pfad]?.warum?.uebung).toBeUndefined();
+    expect(NOTIZEN[pfad]?.warum?.ueberleitung).toBe('Woher kommen die Teilchancen?');
+    // Entscheidung 11: Mini-Baum ③ wie Torres S. 84–85 – 9 zerfällt in „Wer spielt mit?“, „Welche Art Serie?“ …; 11 leuchtet nicht mit.
+    const drei = q.match(/\{ nr: 3,[^\n]*\}/)?.[0] ?? '';
+    expect(drei).toContain("kinder: ['Wer spielt mit?', 'Welche Art Serie?', '…'], nummern: [9],");
+    expect(drei).toContain("text: '9 zerfällt in kleinere Chancen, etwa ‚Wer spielt mit?‘.'");
+  });
+  // Entscheidung 12 (20.11. spät): Inventar – Frage 2 zählt („X von N“), Frage 1 und 3 sortieren aus, dann unter den Moment;
+  // kein „Kursregel“, kein vierter Punkt. Die Kaffeebar-Demo läuft mit derselben Regel: erster Schluck Outcome nein, mitbestellen ja.
+  it('Tag 3: baum – Inventar zählt statt filtert, Kaffeebar-Demo mit derselben Regel', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    expect(q.match(/Kursregel/g) ?? []).toStrictEqual([]);
+    expect(JSON.stringify(NOTIZEN[pfad]).match(/Kursregel/g) ?? []).toStrictEqual([]);
+    const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
+    const fragen = inventar.slice(inventar.indexOf('<ol>'), inventar.indexOf('</ol>'));
+    expect(fragen.match(/<li/g) ?? []).toHaveLength(3);
+    expect(fragen).toContain('<strong>In wie vielen Interviews gehört?</strong> → „X von N“ auf die Karte.');
+    expect(inventar).toContain('<strong>Dann:</strong> unter den Moment, in dem sie vorkommt');
+    expect(inventar.match(/1 und 3 Ja/g) ?? []).toStrictEqual([]);
+    const demo = q.slice(q.indexOf('id="drei-fragen"'), q.indexOf('id="map-baum"'));
+    const zeile = (t: string) => demo.split('<tr>').find((z) => z.includes(t)) ?? '';
+    expect(zeile('erste Schluck')).toContain('<td class="antwort">bleibt auf dem Snapshot</td>');
+    expect(zeile('mitbestellen')).toContain('<strong>in den Baum</strong>, „1 von 5“');
+    expect(demo.match(/Nur in einem Interview/g) ?? []).toStrictEqual([]);
+    // Entscheidung 13: „beispiel“ ohne Reihum, Antwort 3 und Schlusszeile im beschlossenen Wortlaut.
+    const beispiel = q.slice(q.indexOf('id="beispiel"'), q.indexOf('id="firmensicht"'));
+    expect(beispiel).toContain('Drei Fragen an den Baum – jede an alle, dann aufdecken.');
+    expect(beispiel.match(/reihum/gi) ?? []).toStrictEqual([]);
+    expect(beispiel).toContain('Nein: Der Moment ‚Halle‘ fasst sie schon zusammen – eine Ebene dazwischen wäre doppelt.');
+    expect(beispiel).toContain('<strong>Einmal gehört, treibt den Outcome:</strong> in den Baum mit ‚1 von 5‘ (mitbestellen). <strong>Treibt ihn nicht:</strong> bleibt im Snapshot (erster Schluck, gehetzt im Büro).');
+    expect(JSON.stringify(NOTIZEN[pfad]?.beispiel).match(/reihum/gi) ?? []).toStrictEqual([]);
+    expect(quellen['/innolab/tag-3/experience-map']).toContain('Miro, T3 · 0: <MiroLink name="T3 · 0 · So entsteht eure Map - Kaffeebar">Beispiel: Kaffeebar</MiroLink> · <MiroLink name="T3 · 0 · So entsteht eure Map - Sofie">');
+  });
+  // Entscheidung 14 (20.11. spät): firmensicht bleibt Anti-Muster 1 und bekommt ein Rezept für die eigene übergeordnete
+  // Chance; „(ergänzt)“ überall in dieser Form, ohne ID und Zählung; auf „Liste oder Baum?“ gestrichelt, nicht grau.
+  it('Tag 3: baum – Rezept für die ergänzte übergeordnete Chance, „(ergänzt)“ einheitlich', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const folie = q.slice(q.indexOf('id="firmensicht"'), q.indexOf('id="senkrecht"'));
+    expect(folie).toContain('Aus Sicht der Kundschaft, nicht der Firma</h2>');
+    const rezept = folie.slice(folie.indexOf('<div class="rezept"'), folie.indexOf('</div>', folie.indexOf('<div class="rezept"')));
+    expect(rezept.match(/<li>/g) ?? []).toHaveLength(6);
+    expect(rezept).toContain('<li><strong>„(ergänzt)“</strong> – ohne ID, ohne Zählung.</li>');
+    expect(q).toContain('{b.ergaenzt && <em> (ergänzt)</em>}');
+    expect(q.match(/\.mb-ergaenzt \{[^}]*color: var\(--muted\)/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('mit welcher ID (außer „(ergänzt)“)?');
+    expect(q).toContain('übergeordnete Chance nach dem Rezept oben rechts im Frame.');
+    expect(JSON.stringify(NOTIZEN[pfad]).match(/Keine übergeordnete Chance erfinden/g) ?? []).toStrictEqual([]);
+  });
+  // Entscheidung 15 (20.11. spät): Kein Reihum an der Kaffeebar – Baum „drei-fragen“ und „beispiel“, Ziel-Chance „bauchwahl“:
+  // Fragen an alle, still wählen und zugleich Hand heben; niemand wird aufgerufen.
+  it('Tag 3: kein „reihum“ auf baum#drei-fragen, baum#beispiel und ziel-chance#bauchwahl, auch nicht im Begleiter', () => {
+    const folie = (pfad: string, id: string) => {
+      const q = quellen[pfad] ?? '';
+      const a = q.indexOf(`id="${id}"`);
+      return q.slice(a, q.indexOf('<Folie', a));
+    };
+    const stellen = [
+      folie('/innolab/methoden/baum', 'drei-fragen'), folie('/innolab/methoden/baum', 'beispiel'), folie('/innolab/methoden/ziel-chance', 'bauchwahl'),
+      JSON.stringify(NOTIZEN['/innolab/methoden/baum']?.['drei-fragen']), JSON.stringify(NOTIZEN['/innolab/methoden/baum']?.beispiel),
+      JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance']?.bauchwahl),
+    ];
+    expect(stellen.every((s) => s.length > 50)).toBe(true);
+    expect(stellen.flatMap((s) => s.match(/reihum/gi) ?? [])).toStrictEqual([]);
+    expect(folie('/innolab/methoden/ziel-chance', 'bauchwahl')).toContain('Wer will seinen Grund sagen?');
+  });
+  // Entscheidung 16 (20.11. spät): „vorgehen“ in drei Schritten (12 + 10 + 13 = 35 min), ohne Claude-Schritt; auf der
+  // Baum-Seite und im Begleiter keine Claude-/Bildschirmfoto-Prüfung mehr, kein Feld „Nur in einem Interview“, kein T2 · 2 als Anleitung.
+  it('Tag 3: baum#vorgehen – drei Schritte, 35 min, ohne Claude', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const folie = q.slice(q.indexOf('id="vorgehen"'), q.indexOf('id="anti-muster"'));
+    const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
+    expect(schritte.match(/<li/g) ?? []).toHaveLength(3);
+    expect([...schritte.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([12, 10, 13]);
+    expect(folie).toContain('<p>Markus kommt zu jedem Baum.</p>');
+    const n = NOTIZEN[pfad] ?? {};
+    expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(35);
+    expect(n.vorgehen?.uebung?.dauer).toBe('35 min (12 + 10 + 13)');
+    expect([q, JSON.stringify(n)].flatMap((s) => s.match(/Claude|Bildschirmfoto|Nur in einem Interview|T2 · 2/g) ?? [])).toStrictEqual([]);
+  });
+  // Entscheidung 17 (20.11. spät): „euer-baum“ – fünf Zeilen (wo, schon da, neue Karte, verbinden, gelbe Karte), Kaffeebar-Baum in
+  // Miro-Farben statt Torres S. 26; der alte Punkt „Frage 2 markiert/zählt“ ist weg. Dazu: inventar Frage 1 – Lösung → Bedürfnis dahinter.
+  it('Tag 3: baum#euer-baum – fünf Handgriffe, Kaffeebar-Baum statt S. 26; inventar Frage 1 mit Lösungs-Ausgang', () => {
+    const q = quellen['/innolab/methoden/baum'] ?? '';
+    const folie = q.slice(q.indexOf('id="euer-baum"'), q.indexOf('id="vorgehen"'));
+    const zeilen = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
+    expect((zeilen.match(/<li[ >]/g) ?? []).length).toBe(5);
+    expect([...zeilen.matchAll(/<strong>([^<]+):<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Wo', 'Schon da', 'Neue Karte', 'Verbinden', 'Gelbe Karte']);
+    expect(folie.match(/ost\.jpg|S\. 26|Frage 2 (zählt|markiert)/g) ?? []).toStrictEqual([]);
+    expect(folie).toContain('<Baum momente miro knoten={KAFFEEBAR_BAUM_MIRO}');
+    expect(folie).toContain('Kaffeebar-Baum (ausgedacht).');
+    const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
+    expect(inventar).toContain('Lösung → Bedürfnis dahinter formulieren, neu prüfen. Sonst Nein → bleibt auf dem Snapshot.');
+  });
+  // Entscheidung 18 (20.11. spät): „vier-muster“ – Karte 1 mit dem Kaffeebar-Beispiel aus „beispiel“ statt „Die Oberfläche ist
+  // schwer bedienbar.“ (bei Torres S. 88, nicht S. 94), jede Karte mit „→ besser:“.
+  it('Tag 3: baum#vier-muster – ein Torres-Beispiel, drei Kaffeebar-Beispiele, je mit besserer Fassung', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const folie = q.slice(q.indexOf('id="vier-muster"'), q.indexOf('id="euer-baum"'));
+    expect(folie).toContain('Ein Beispiel von Torres, drei von der Kaffeebar – je mit besserer Fassung.');
+    expect(folie.match(/→ besser:/g) ?? []).toHaveLength(4);
+    expect(folie.match(/Oberfläche ist schwer bedienbar/g) ?? []).toStrictEqual([]);
+    expect(JSON.stringify(NOTIZEN[pfad]?.['vier-muster']).match(/interface is hard to use|Oberfläche/g) ?? []).toStrictEqual([]);
+    // Karte 1 übernimmt die Antwort von „beispiel“ wörtlich.
+    const beispiel = q.slice(q.indexOf('id="beispiel"'), q.indexOf('id="firmensicht"'));
+    for (const t of ['„Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“', '„Geht sich ein Kaffee noch aus?“', '„Wann ist mein Kaffee fertig?“']) {
+      expect(beispiel).toContain(t);
+      expect(folie).toContain(t);
+    }
+  });
+  // Entscheidung 19 (20.11. spät): Woher die Chancen kommen (Werkstatt, Feld „Chancen“) und dass ein Zitat noch keine Chance ist.
+  it('Tag 3: baum – vorgehen nennt die Quelle der Chancen, inventar: „Ein Zitat ist noch keine Chance“', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const vorgehen = q.slice(q.indexOf('id="vorgehen"'), q.indexOf('id="anti-muster"'));
+    // Entscheidung 20: Die Chancen liegen vorab im Streifen „Ungeprüft“ im Baum-Frame.
+    expect(vorgehen).toContain('Eure Chancen liegen im Streifen „Ungeprüft“ unten im Frame: jede durch die drei Fragen → unter ihren Moment, Gleiches zusammenlegen, „X von 3“. Was liegen bleibt, bleibt im Snapshot.');
+    expect(q).toContain('und unten eure Chancen im Streifen „Ungeprüft“.</li>');
+    expect(JSON.stringify(NOTIZEN[pfad]?.vorgehen?.ablauf)).toContain('Ansage 9:25');
+    const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
+    expect(inventar).toContain('<p class="zitat-chance">Moment ohne Karte? Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?</p>');
+    expect(NOTIZEN[pfad]?.vorgehen?.live).toContain('„Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?“');
+    // 9:25: zuerst die grüne Karte an jedem Baum prüfen (Produkt-Outcome, zählbar, Frage 3) – ohne Namen im Live-Stichwort.
+    expect(NOTIZEN[pfad]?.vorgehen?.live[0]).toBe('Kurz an jeden Baum: grüne Karte – Produkt-Outcome, zählbar, trägt Frage 3?');
+    expect(JSON.stringify(NOTIZEN[pfad]?.vorgehen?.ablauf?.achten)).toContain('Produkt-Outcome, nicht Geschäftszahl; zählbar; lässt sich Frage 3');
+    expect(NOTIZEN[pfad]?.vorgehen?.live.length).toBeLessThanOrEqual(5);
+    expect(NOTIZEN[pfad]?.vorgehen?.live.join(' ').match(/Sofie|Joachim|Hewen/g) ?? []).toStrictEqual([]);
+  });
+  // Entscheidung 21 (20.11. spät): I3-2 fiel nur beim Anstehen und Warten. Die Halle-Chance „Geht sich ein Kaffee noch aus?“
+  // trägt I2-4, I3-1, I5-2 (3 von 5), die Warten-Chance „Wann ist mein Kaffee fertig?“ I2-5, I3-2, I3-3 (2 von 5).
+  it('Tag 3: Kaffeebar – die Halle-Chance trägt nirgends I3-2, die Warten-Chance schon', () => {
+    const texte = ['/innolab/methoden/baum', '/innolab/methoden/ziel-chance'].flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
+    const halle = texte.flatMap((s) => [...s.matchAll(/Geht sich ein Kaffee noch aus\?“(?:'\s*:\s*\[|\s*\()([^)\]]*)/g)].map((m) => m[1])).filter((ids) => /I\d-\d/.test(ids));
+    expect(halle.length).toBeGreaterThan(2);
+    expect(halle.filter((ids) => ids.includes('I3-2'))).toStrictEqual([]);
+    expect(halle.filter((ids) => ids.includes('I3-1')).length).toBe(halle.length);
+    expect(quellen['/innolab/methoden/baum']).toContain("'„Wann ist mein Kaffee fertig?“': ['I2-5', 'I3-2', 'I3-3'],");
+    expect(quellen['/innolab/methoden/ziel-chance']).toContain('Je drei Interviews: I2-4, I3-1, I5-2 gegen I2-2, I3-4, I4-1.');
+    // „Sie entscheiden erst in der Halle“ belegt I5-3 („Das entscheid ich, wenn ich die Halle seh.“), nicht I5-2 („Wenn es voll ist,
+    // lass ich es.“ – Beleg der Halle-Chance). Überall dieselben drei IDs.
+    const halleBelege = texte.flatMap((s) => [...s.matchAll(/entscheiden erst in der Halle \((?:Belege )?([^)]*)\)|u\. a\. ([^→]*)→ Moment „Halle: entscheiden“/g)].map((m) => (m[1] ?? m[2] ?? '').trim())).filter((ids) => /I\d-\d/.test(ids));
+    expect(halleBelege.length).toBeGreaterThanOrEqual(3);
+    expect([...new Set(halleBelege)]).toStrictEqual(['I2-4, I3-1, I5-3']);
+  });
+  // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
+  // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.
+  it('Tag 3: Kaffeebar-Momente als Tätigkeitsnamen auf experience-map, baum und ziel-chance', () => {
+    const SAETZE = /Ich komme in die Halle und entscheide|Ich stehe an und warte auf meinen Kaffee|Ich bin im Zug/g;
+    const seiten = ['/innolab/tag-3/experience-map', '/innolab/methoden/baum', '/innolab/methoden/ziel-chance'];
+    expect(seiten.flatMap((p) => [...(quellen[p] ?? '').matchAll(SAETZE)].map((m) => `${p}: ${m[0]}`))).toStrictEqual([]);
+    expect(seiten.flatMap((p) => JSON.stringify(NOTIZEN[p] ?? {}).match(SAETZE) ?? [])).toStrictEqual([]);
+    expect(quellen['/innolab/tag-3/experience-map']).toContain('<KaffeebarMap namen="taetigkeit" />');
+  });
+  // 20.11. spät (Markus, Entscheidung 10): Oben hängt der Momentname von heute früh (T3 · 0), kein Satz der Kundschaft; die
+  // Bildunterschrift „Vier Momente, vier oberste Chancen“ wird erklärt (Torres’ eigene Sätze, S. 70 wörtlich).
+  it('Tag 3: baum#oberste-ebene – Momentname von T3 · 0, Moment = wann, Chance = was die Person dann bewegt', () => {
+    const q = quellen['/innolab/methoden/baum'] ?? '';
+    const folie = q.slice(q.indexOf('id="oberste-ebene"'), q.indexOf('id="inventar"'));
+    expect(folie.match(/Von Tag 2:/g) ?? []).toStrictEqual([]);
+    expect(folie).toContain('<strong>Von heute früh (T3 · 0):</strong>');
+    expect(folie).toContain('Moment = wann (oben). Chance = was die Person dann bewegt (darunter).');
+    expect(folie).toContain('„Opportunities don’t need to be exact quotes, but you should frame them using your customer’s words“ (S. 70)');
+  });
+  // 20.11. spät (Markus, Punkt 9): Momentkarte = Name + Zählung. Kein Beispielzitat, keine ID-Liste auf den Karten von
+  // „zusammen“, keine Prüffrage nach Zitat-IDs unter zwei Momenten; „Welche Zitate gehören hierher?“ gehört zum Zusammenlegen.
+  it('Tag 3: experience-map – Moment = Name + Zählung, keine Zitate oder IDs auf der Momentkarte', () => {
+    const pfad = '/innolab/tag-3/experience-map';
+    const q = quellen[pfad] ?? '';
+    const zusammen = q.slice(q.indexOf('id="zusammen"'), q.indexOf('id="anlauf-c"'));
+    const karte = zusammen.match(/class="karte"[\s\S]*?<\/span>\s*<\/li>/)?.[0] ?? '';
+    expect(karte).toContain('{zaehlung(z.g)}');
+    expect(karte.match(/<b>|class="id"|class="ids"|z\.zitat|z\.id\b/g) ?? []).toStrictEqual([]);
+    expect(q.match(/Zitat-ID unter zwei Momenten|darunter alle Zitat-IDs/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('<span>erzählt in N von M Geschichten</span>');
+    expect(q).toMatch(/<strong>Zusammenlegen:<\/strong>[^<]*welche Zitate gehören hierher\?/);
+    expect(JSON.stringify(NOTIZEN[pfad]).match(/Zitat-ID unter zwei|dieser IDs/g) ?? []).toStrictEqual([]);
   });
   // Tag 2 (12.11.): Eröffnung, die drei Methoden, Abschluss – der Begleiter folgt jeder Folie, und jede hat Stichworte.
   const TAG_2_SEITEN = ['/innolab/tag-2', '/innolab/methoden/synthese', '/innolab/methoden/journey-map', '/innolab/methoden/baum', '/innolab/tag-2/abschluss'];

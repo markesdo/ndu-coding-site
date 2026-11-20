@@ -92,21 +92,22 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
 
   bauchwahl: {
     live: [
-      'Reihum, laut: ein Moment, ein Satz warum.',
-      'Zeit: 30 Sekunden pro Person, nicht diskutieren.',
+      'Still wählen, dann alle zugleich Hand heben: Halle, Anstehen, Zug.',
+      'Offen: „Wer will seinen Grund sagen?“ Nicht diskutieren.',
       'Mitschreiben: pro Antwort ein Stichwort zum Grund.',
       'Falle: eine Wahl richtig nennen – die Auflösung kommt gleich.',
       'Wenn hinten: überspringen, bei den Linsen einmal fragen.',
     ],
-    uebung: { dauer: '2 min', form: 'reihum laut, ein Satz pro Person' },
+    uebung: { dauer: '2 min', form: 'still wählen, alle zugleich Hand heben, dann eine offene Frage nach Gründen' },
     ablauf: {
       schritte: [
         'Baum der Kaffeebar zeigen, die drei Momente vorlesen.',
-        'Reihum: Jede*r nennt einen Moment und einen Satz, warum dieser zuerst.',
+        'Jede*r wählt still einen Moment. Dann heben alle zugleich die Hand: Halle, Anstehen, Zug – du zählst laut mit.',
+        'Eine offene Frage: „Wer will seinen Grund sagen?“ Niemanden aufrufen, nicht diskutieren.',
         'Pro Antwort ein Stichwort notieren (z. B. „trifft die meisten“, „den Automaten gibt es schon“). Auf der nächsten Folie ordnest du sie den Linsen zu.',
       ],
       achten: [
-        'Nicht werten. Wer sich einer Vorrednerin anschließt, braucht trotzdem einen eigenen Grund.',
+        'Nicht werten. Wer etwas sagt, sagt den eigenen Grund – auch bei gleicher Wahl.',
         'Drei gleiche Gründe sind auch ein Befund: Dann fehlen drei Linsen.',
       ],
       aufloesung: 'Keine richtige Wahl. Die Gründe sind fast immer Linsen: wie viele (Größe), was es schon gibt (Markt), was die Bar kann (eigene Lage), wie sehr es schmerzt (Kundschaft). Die Wahl der Kaffeebar kommt auf der Folie „Am Beispiel“.',
@@ -179,7 +180,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Kaffeebar: Verglichen wurden zuerst die drei Momente, dann die drei Geschwister unter „Ich komme in die Halle und entscheide.“ Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2), „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1), „Schnell geht nur der Automat.“ (I1-3, I4-3 – bei I4-3 unsere Lesart).',
+        text: 'Kaffeebar: Verglichen wurden zuerst die drei Momente, dann die drei Geschwister unter „Halle: entscheiden“. Belege: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-1, I5-2), „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1), „Schnell geht nur der Automat.“ (I1-3, I4-3 – bei I4-3 unsere Lesart).',
         quelle: 'Werkstatt, Beispiel Kaffeebar; baum.astro, Folie beispiel',
       },
       {

@@ -3,8 +3,9 @@
 // Chancen, nur anders eingefärbt; alles darunter rückt eine Ebene tiefer, bis „Experiment“ (alles Tiefere bleibt Experiment).
 const NAMEN = ['Outcome', 'Chance', 'Lösung', 'Experiment'] as const;
 
-export function baumEbene(tiefe: number, momente: boolean): { name: string; klasse: string; stufe: number | null } {
-  if (momente && tiefe === 1) return { name: 'Oberste Chance', klasse: 'em', stufe: null };
+// miro: Beschriftung wie auf dem Board – die oberste Ebene heißt „Moment“ (Farben setzt Baum.astro, .baum-miro).
+export function baumEbene(tiefe: number, momente: boolean, miro = false): { name: string; klasse: string; stufe: number | null } {
+  if (momente && tiefe === 1) return { name: miro ? 'Moment' : 'Oberste Chance', klasse: 'em', stufe: null };
   const stufe = Math.min(momente && tiefe > 1 ? tiefe - 1 : tiefe, 3);
   return { name: NAMEN[stufe], klasse: `e${stufe}`, stufe };
 }

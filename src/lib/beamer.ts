@@ -58,3 +58,59 @@ export function klickAktion({ praesentator, beamer, seite }: Lage): { an: boolea
   if (beamer) return { an: false, hell };
   return praesentator ? { an: true, hell } : null;
 }
+
+/** localStorage: die Führung unter den Beamer-Tabs als Pacht {id, ts} (JSON; wo-ist.ts). Nur der führende Tab meldet seine
+ *  Position an /api/position – sonst überschreiben sich zwei Beamer-Tabs mit Schlüssel gegenseitig, und der Zähler im
+ *  Begleiter springt zwischen ihren Folien hin und her. Der Führer erneuert ts jede Sekunde, solange er melden kann; hört er
+ *  auf (abgestürzt, geschlossen, Beamer aus, pausiert, verborgen), ist die Pacht nach FUEHRUNG_FRIST_MS frei. */
+export const FUEHRENDER_TAB = 'ndu-beamer-tab';
+/** So lange gilt eine Pacht ohne Erneuerung (der Führer erneuert jede Sekunde). */
+export const FUEHRUNG_FRIST_MS = 4000;
+
+export type Fuehrung = { id: string; ts: number };
+
+/** Pacht lesen; alles, was nicht {id: string, ts: number} ist, gilt als keine Pacht. */
+export function fuehrungLesen(roh: string | null): Fuehrung | null {
+  if (!roh) return null;
+  try {
+    const f = JSON.parse(roh) as unknown;
+    if (f && typeof f === 'object' && typeof (f as Fuehrung).id === 'string' && Number.isFinite((f as Fuehrung).ts)) return { id: (f as Fuehrung).id, ts: (f as Fuehrung).ts };
+  } catch {}
+  return null;
+}
+
+export function fuehrungSchreiben(ich: string, jetzt: number): string {
+  return JSON.stringify({ id: ich, ts: jetzt } satisfies Fuehrung);
+}
+
+/** Darf dieser Tab seine Position melden? Ja, wenn er die Pacht hält – oder wenn sie frei ist: keine, unlesbar oder älter
+ *  als FUEHRUNG_FRIST_MS (dann übernimmt er sie). Eine frische Pacht eines anderen Tabs bleibt: Die Tabs wechseln nicht hin
+ *  und her; übernommen wird nur nach Stille oder bei eigener Benutzung (focus, keydown, pointerdown). Beim Seitenwechsel
+ *  bleibt die Pacht stehen, die neue Seite im selben Tab übernimmt sie beim Laden. */
+export function dieserTabMeldet(roh: string | null, ich: string, jetzt: number): boolean {
+  const f = fuehrungLesen(roh);
+  return !f || f.id === ich || jetzt - f.ts > FUEHRUNG_FRIST_MS;
+}
+
+/** Darf dieser Tab die Führung übernehmen? Nur, wenn er auch melden kann: Präsentator-Schlüssel da, Beamer-Modus an, nicht
+ *  pausiert. Sonst nähme ein Begleiter- oder normaler Tab im selben Browser dem Beamer-Tab die Führung, und der schwiege. */
+export function darfFuehren({ schluessel, beamer, pausiert }: { schluessel: string | null; beamer: boolean; pausiert: boolean }): boolean {
+  return Boolean(schluessel) && beamer && !pausiert;
+}
+
+/** Seitenkopf nach dem Laden an den Anfang (Layout.astro)? Nur im Beamer, ohne #anker, wenn die Seite ein paar Pixel tief
+ *  eingerastet ist (weniger als die Kopfleiste) – und nur, solange niemand selbst gescrollt, geklickt oder getippt hat. */
+export function kopfAnDenAnfang({ beamer, anker, scrollY, kopfleiste, beruehrt }: { beamer: boolean; anker: boolean; scrollY: number; kopfleiste: number; beruehrt: boolean }): boolean {
+  return beamer && !anker && !beruehrt && scrollY > 0 && scrollY < kopfleiste;
+}
+
+/** Abstand über der ersten Folie im Beamer (Layout.astro): so viel, dass sie genau an der Falz beginnt, am unteren Rand
+ *  des ersten Bildschirms. Der Seitenkopf wird so zum Titelbild, und das erste → zeigt Folie 1 ganz, statt sie ein
+ *  zweites Mal anzuspringen. folieOben = Oberkante der Folie im Dokument ohne diesen Abstand. kopfOben = wo der erste
+ *  Bildschirm beginnt: Der Seitenkopf ist ein Rastpunkt (beamer.css, .content mit scroll-padding unter der Kopfleiste),
+ *  liegt er tiefer als die Kopfleiste hoch ist, rastet die Seite beim Laden ein paar Pixel tiefer ein. 0, wenn der Beamer
+ *  aus ist oder die Folie ohnehin an oder unter der Falz beginnt. */
+export function ersteFolieAbstand({ beamer, fensterHoehe, folieOben, kopfOben = 0 }: { beamer: boolean; fensterHoehe: number; folieOben: number; kopfOben?: number }): number {
+  if (!beamer) return 0;
+  return Math.max(0, Math.ceil(Math.max(0, kopfOben) + fensterHoehe - folieOben));
+}

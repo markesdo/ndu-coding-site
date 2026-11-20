@@ -70,23 +70,6 @@ describe('api/antworten', () => {
     expect([...daten.keys()].filter((k) => k.startsWith('antwort:'))).toHaveLength(3);
   });
 
-  it('Runde „zwoelf“ (Baum) getrennt von Netflix: eigene Plätze, eigenes Aufdecken', async () => {
-    const zwoelf = (rolle: string, text: string) => senden({ runde: 'zwoelf', rolle, text });
-    const zwoelfLesen = async () => (await GET(new Request(`${URL_API}?runde=zwoelf`))).json();
-    vi.setSystemTime(new Date('2026-11-12T15:40:00Z')); // 16:40 Wien, Baum läuft
-    expect((await antwort('design', 'Netflix-Satz')).status).toBe(200);
-    expect((await zwoelf('p1', '3 – die Suche')).status).toBe(200);
-    expect((await zwoelf('p2', '11 – schnell gebaut')).status).toBe(200);
-    aufdecken(); // Netflix aufgedeckt – „zwoelf“ bleibt zu
-    expect(await zwoelfLesen()).toStrictEqual({ anzahl: 2, vergeben: ['p1', 'p2'], frei: false });
-    expect((await lesen()).antworten).toStrictEqual([{ rolle: 'design', text: 'Netflix-Satz' }]);
-    daten.set(aufgedecktSchluessel('zwoelf', new Date()), true);
-    expect((await zwoelfLesen()).antworten).toStrictEqual([
-      { rolle: 'p1', text: '3 – die Suche' },
-      { rolle: 'p2', text: '11 – schnell gebaut' },
-    ]);
-  });
-
   it('neutrale Plätze („rueckblick“): ein anderer Browser bekommt 409 „besetzt“, die erste Antwort bleibt; derselbe überschreibt', async () => {
     const rb = (geraet: string | undefined, text: string) => senden({ runde: 'rueckblick', rolle: 'p1', text, ...(geraet ? { geraet } : {}) });
     const rbLesen = async () => (await GET(new Request(`${URL_API}?runde=rueckblick`))).json();

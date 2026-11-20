@@ -1,7 +1,24 @@
 import { describe, expect, it } from 'vitest';
 import KAFFEEBAR_INTERVIEWS from '../werkstatt/beispiele/interviews.json';
 import { NOTIZEN_JOURNEY_MAP } from './begleiter/journey-map';
-import { GRUPPEN, SKIZZEN, skizzenFehler, zaehlung, type Skizze } from './kaffeebar-skizzen';
+import { GRUPPEN, MOMENTNAMEN, SKIZZEN, skizzenFehler, zaehlung, type Skizze } from './kaffeebar-skizzen';
+import { KAFFEEBAR_BAUM_INTERVIEWS } from '../components/innolab-beispiel';
+
+// Entscheidung 11 (20.11. spät): Momentnamen = Spaltennamen beim Zählen (Halle gekürzt), auch oben im Kaffeebar-Baum.
+describe('MOMENTNAMEN', () => {
+  it('Halle gekürzt, Anstehen und Warten und Im Zug wie die Gruppen', () => {
+    expect(MOMENTNAMEN).toStrictEqual({ a: 'Halle: entscheiden', c: 'Anstehen und Warten', d: 'Im Zug' });
+    expect(GRUPPEN.filter(({ g }) => g === 'c' || g === 'd').map((x) => x.name)).toStrictEqual([MOMENTNAMEN.c, MOMENTNAMEN.d]);
+  });
+  it('der Kaffeebar-Baum trägt oben die Momentnamen, keine Ich-Sätze', () => {
+    expect((KAFFEEBAR_BAUM_INTERVIEWS.kinder ?? []).map((k) => k.t)).toStrictEqual([MOMENTNAMEN.a, MOMENTNAMEN.c, MOMENTNAMEN.d]);
+  });
+  // Entscheidung 13: „mitbestellen“ (I5, 1 von 5) treibt den Outcome und hängt unter „Anstehen und Warten“.
+  it('unter „Anstehen und Warten“ hängen „Wann ist mein Kaffee fertig?“ und „mitbestellen“', () => {
+    const warten = (KAFFEEBAR_BAUM_INTERVIEWS.kinder ?? []).find((k) => k.t === MOMENTNAMEN.c);
+    expect((warten?.kinder ?? []).map((k) => k.t)).toStrictEqual(['„Wann ist mein Kaffee fertig?“', '„Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.“']);
+  });
+});
 
 const IDS = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
 
