@@ -89,9 +89,9 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   },
   'was-allen-fehlt': {
     live: [
-      'Map zeigen, ein Satz: Umweg, Tief, Ende.',
-      'Map zeigt noch je ein Zitat; eure Karten tragen Name und Zahl.',
-      'Punkt 4 betonen: „Steht ein Zitat unter zwei Momenten, überschneiden sie sich.“',
+      'Map zeigen: drei Momente, je Name und Zahl.',
+      'Vier Klicks, jeder zeigt seine Antwort auf der Map.',
+      'Punkt 4 betonen: „Wann in der Geschichte?“ trennt die Momente.',
       'Graue Karte nur erwähnen.',
     ],
     kern: [

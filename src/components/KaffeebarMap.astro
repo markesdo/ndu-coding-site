@@ -2,15 +2,52 @@
 // Die fertige Experience Map der Kaffeebar: drei Momente, unter dem ersten der Umweg über den Automaten, Marken an
 // ihrem Moment. Einmal für alle Seiten (journey-map.astro#beispiel, tag-3/experience-map.astro#was-allen-fehlt), damit
 // die beiden Folien nicht auseinanderlaufen. Zitate und IDs wie in werkstatt/beispiele/interviews.json.
-// namen: „saetze“ (Tag 2, wie damals: Ich-Sätze) oder „taetigkeit“ (Tag 3 seit 20.11.: Name wie die Spalte beim Zählen,
-// MOMENTNAMEN). Nur die Anzeige wechselt; Tag 2 bleibt, wie er unterrichtet wurde.
+// namen: „saetze“ (Tag 2, wie damals: Ich-Sätze, Zitat und ID je Moment) oder „taetigkeit“ (Tag 3): eigene Fassung, je
+// Moment nur Name (MOMENTNAMEN, wie die Spalte beim Zählen) und Zählung (zaehlung aus den Skizzen) – kein Zitat, keine ID
+// (Entscheidung 21.11., Punkt 22). Tag 2 bleibt Zeichen für Zeichen, wie er unterrichtet wurde.
+// Tag 3 baut sich im Beamer mit den Punkten darunter auf (tag-3/experience-map.astro#was-allen-fehlt): Ein Teil mit
+// data-teil="x" bleibt verborgen, solange in derselben Folie der Punkt [data-schritt="x"] noch nicht gezeigt ist.
+// umweg → Umweg-Karte, marken → Tief/Ende, grau → graue Karte, grenze → Halle und Anstehen hervorgehoben.
 import { CornerDownRight } from '@lucide/astro';
-import { MOMENTNAMEN } from '../data/kaffeebar-skizzen';
+import { MOMENTNAMEN, zaehlung } from '../data/kaffeebar-skizzen';
 const { namen = 'saetze' } = Astro.props as { namen?: 'saetze' | 'taetigkeit' };
 const SAETZE = { a: 'Ich komme in die Halle und entscheide.', c: 'Ich stehe an und warte auf meinen Kaffee.', d: 'Ich bin im Zug.' };
-const name = (g: 'a' | 'c' | 'd') => (namen === 'taetigkeit' ? MOMENTNAMEN[g] : `„${SAETZE[g]}“`);
-const vorlesen = (g: 'a' | 'c' | 'd') => (namen === 'taetigkeit' ? MOMENTNAMEN[g] : SAETZE[g].replace(/\.$/, ''));
+// Nur Tag 2: Ich-Sätze.
+const name = (g: 'a' | 'c' | 'd') => `„${SAETZE[g]}“`;
+const vorlesen = (g: 'a' | 'c' | 'd') => SAETZE[g].replace(/\.$/, '');
 ---
+{namen === 'taetigkeit' ? (
+<div class="kaffeebar-map tag-3">
+  <ol class="map" aria-label={`Experience Map der Kaffeebar, drei Momente. Erstens: ${MOMENTNAMEN.a}, ${zaehlung('a')}, Tief; von dort ein Umweg über den Automaten zum Zug, Tief. Zweitens: ${MOMENTNAMEN.c}, ${zaehlung('c')}, Tief. Drittens: ${MOMENTNAMEN.d}, ${zaehlung('d')}, Ende. Am Rand eine graue Karte: Ende? – nicht erzählt.`}>
+    <li>
+      <div class="karte" data-moment="a" data-teil="grenze">
+        <strong>{MOMENTNAMEN.a}</strong>
+        <span class="zahl">{zaehlung('a')}</span>
+        <span class="pill tief" data-teil="marken">Tief</span>
+      </div>
+      <div class="umweg" data-teil="umweg">
+        <span class="umweg-titel"><CornerDownRight size={18} aria-hidden="true" /> Umweg: Automat → Zug</span>
+        <span class="pill tief" data-teil="marken">Tief</span>
+      </div>
+    </li>
+    <li>
+      <div class="karte" data-moment="c" data-teil="grenze">
+        <strong>{MOMENTNAMEN.c}</strong>
+        <span class="zahl">{zaehlung('c')}</span>
+        <span class="pill tief" data-teil="marken">Tief</span>
+      </div>
+    </li>
+    <li>
+      <div class="karte" data-moment="d">
+        <strong>{MOMENTNAMEN.d}</strong>
+        <span class="zahl">{zaehlung('d')}</span>
+        <span class="pill ende" data-teil="marken">Ende</span>
+      </div>
+      <span class="chip grau" data-teil="grau">Ende? – nicht erzählt</span>
+    </li>
+  </ol>
+</div>
+) : (
 <div class="kaffeebar-map">
   <ol class="map" aria-label={`Experience Map der Kaffeebar, drei Momente. Erstens: ${vorlesen('a')}, Zitat I2-1: das wird nix, Tief I2-1; von dort ein Umweg über den Automaten zum Zug, Zitat I4-4: Dann halt die Brühe, Tief I4-4. Zweitens: ${vorlesen('c')}, Zitat I3-3: Das war ein Fehler, Tief I3-3 und I5-6. Drittens: ${vorlesen('d')}, Zitat I3-5: in Ruhe, Ende I3-5.`}>
     <li>
@@ -41,6 +78,7 @@ const vorlesen = (g: 'a' | 'c' | 'd') => (namen === 'taetigkeit' ? MOMENTNAMEN[g
     </li>
   </ol>
 </div>
+)}
 
 <style>
   .kaffeebar-map { container: kaffeebar-map / inline-size; }
@@ -54,6 +92,18 @@ const vorlesen = (g: 'a' | 'c' | 'd') => (namen === 'taetigkeit' ? MOMENTNAMEN[g
   .map .pill { white-space: nowrap; font-size: .85em; line-height: 1.2; padding: .1rem .4rem; }
   .umweg { display: flex; flex-direction: column; gap: .2rem; margin-left: 1rem; padding: .35rem .6rem; border: 1px dashed var(--muted); border-radius: var(--radius); font-size: .9em; }
   .umweg-titel { display: flex; align-items: center; gap: .3rem; font-weight: 600; color: var(--muted); }
+  /* Tag 3: Karte = Name + Zählung; am Rand die graue Karte (Stil wie .chip.grau auf tag-3/experience-map.astro). */
+  .tag-3 .zahl { font-weight: 700; white-space: nowrap; }
+  .tag-3 .chip.grau { align-self: flex-end; display: inline-block; padding: .1rem .4rem; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--code-bg); color: var(--muted); white-space: nowrap; }
+  .tag-3 .karte { transition: box-shadow .2s, border-color .2s; }
+  .tag-3 .umweg { align-items: flex-start; }
+  /* Beamer: Teil x erst mit dem Punkt [data-schritt="x"] derselben Folie (sonst – Handout, Seite – ist alles sichtbar). */
+  :global(html[data-beamer] [data-folie]:has([data-schritt="umweg"]:not(.gezeigt))) .tag-3 [data-teil="umweg"],
+  :global(html[data-beamer] [data-folie]:has([data-schritt="marken"]:not(.gezeigt))) .tag-3 [data-teil="marken"],
+  :global(html[data-beamer] [data-folie]:has([data-schritt="grau"]:not(.gezeigt))) .tag-3 [data-teil="grau"] { visibility: hidden; }
+  /* Punkt 4 (Überschneidung): die Grenze Halle | Anstehen – beide Karten und der Pfeil dazwischen in der Akzentfarbe. */
+  :global(html[data-beamer] [data-folie]:has([data-schritt="grenze"].gezeigt)) .tag-3 [data-teil="grenze"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+  :global(html[data-beamer] [data-folie]:has([data-schritt="grenze"].gezeigt)) .tag-3 .map > li:nth-child(2)::before { color: var(--accent); font-weight: 700; }
   /* Schmale Spalte (Container, nicht Fenster – die Seitenleiste zählt mit): Karten untereinander. */
   @container kaffeebar-map (max-width: 700px) {
     .map { grid-template-columns: 1fr; gap: 1.6rem; }
