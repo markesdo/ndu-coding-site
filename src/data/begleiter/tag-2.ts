@@ -35,7 +35,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
         'Kurz zeigen: Rechts neben Start hier stehen die Bäume, einer pro Produkt („Baum · Name“).',
-        'Heute wachsen dort Momente und Chancen; T2 · 2 bleibt die Anleitung.',
+        'Heute wachsen dort Momente und Chancen; die Anleitung steht auf Miro neben dem Baum.',
       ],
     },
     verstaendnis: {

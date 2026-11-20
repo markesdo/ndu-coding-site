@@ -6,7 +6,7 @@
 import { abschnittName, aktiverAbschnitt, pfadOhneSchraegstrich, seitenName, ueberschriftOberkanten, ueberschriftVon } from './abschnitt';
 import { abfrageKette, jsonHolen, zeitlimit } from '../lib/kette';
 import { hinweis } from './hinweis';
-import { FUEHRENDER_TAB, PRAESENTATOR_SCHLUESSEL, beamerSchalten, dieserTabMeldet } from '../lib/beamer';
+import { FUEHRENDER_TAB, PRAESENTATOR_SCHLUESSEL, beamerSchalten, darfFuehren, dieserTabMeldet } from '../lib/beamer';
 import { ABFRAGE_MS, ABFRAGE_TIMEOUT_MS, alterText, naechsteAbfrage, nochmalLoeschen, positionHref, type Position } from '../lib/position';
 
 const KEY = PRAESENTATOR_SCHLUESSEL;
@@ -108,21 +108,25 @@ function praesentator() {
   let fehler = false;
 
   // Mehrere Tabs im Beamer-Modus mit Schlüssel: Nur der zuletzt benutzte meldet (lib/beamer.ts, dieserTabMeldet).
-  // Wird ein Tab wieder benutzt, meldet er sofort, auch wenn er dieselbe Position vor weniger als 60 s gesendet hat –
-  // inzwischen kann ein anderer Tab sie auf dem Server überschrieben haben.
+  // Führen darf nur ein Tab, der melden kann (darfFuehren: Schlüssel, Beamer an, nicht pausiert) – sonst nähme ein
+  // Begleiter- oder normaler Tab im selben Browser dem Beamer die Führung. Beim Verlassen der Seite bleibt der Eintrag
+  // stehen; die neue Seite im selben Tab übernimmt ihn beim Laden. Wird ein Tab Führer, meldet er nach frischen 1,5 s
+  // Ruhe sofort, auch wenn er dieselbe Position vor weniger als 60 s gesendet hat – inzwischen kann ein anderer Tab
+  // sie auf dem Server überschrieben haben.
   const ICH = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
   const fuehren = () => {
+    if (!darfFuehren({ schluessel: lies(), beamer: root.hasAttribute('data-beamer'), pausiert: pausiert() })) return;
     try {
       if (localStorage.getItem(FUEHRENDER_TAB) === ICH) return;
       localStorage.setItem(FUEHRENDER_TAB, ICH);
-      gesendet = '';
+      gesendet = ''; kandidat = '';
     } catch {}
   };
   const meldeIch = (): boolean => { try { return dieserTabMeldet(localStorage.getItem(FUEHRENDER_TAB), ICH); } catch { return true; } };
   for (const t of ['focus', 'keydown', 'pointerdown']) addEventListener(t, fuehren, true);
   addEventListener('pageshow', () => { if (document.hasFocus()) fuehren(); });
-  // Seite verlassen (blättern, Tab schließen): Platz freigeben, damit ein übrig gebliebener Beamer-Tab weitermeldet.
-  addEventListener('pagehide', () => { try { if (localStorage.getItem(FUEHRENDER_TAB) === ICH) localStorage.removeItem(FUEHRENDER_TAB); } catch {} });
+  // Beamer in einem Tab mit Fokus eingeschaltet: dieser Tab führt.
+  new MutationObserver(() => { if (document.hasFocus()) fuehren(); }).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
   if (document.hasFocus()) fuehren();
 
   // Live-Schalter: nur wo der Schlüssel liegt. live = sendet, wartet = nur im Beamer-Modus, fehler = letzte Meldung gescheitert.
@@ -156,6 +160,7 @@ function praesentator() {
     if (pausiert()) {
       pausieren(false);
       gesendet = ''; sperreBis = 0; fehler = false; // sofort wieder senden, sobald die Position steht
+      fuehren();
       hinweis('Live – die Studierenden sehen wieder, wo du bist.');
     } else {
       pausieren(true);

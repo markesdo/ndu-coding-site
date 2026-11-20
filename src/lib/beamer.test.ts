@@ -1,5 +1,34 @@
 import { describe, expect, it } from 'vitest';
-import { beamerSchalten, dieserTabMeldet, einstieg, ersteFolieAbstand, klickAktion, praesentatorAngemeldet, type Seitenart, type Speicher, type Wurzel } from './beamer';
+import { beamerSchalten, darfFuehren, dieserTabMeldet, einstieg, ersteFolieAbstand, klickAktion, kopfAnDenAnfang, praesentatorAngemeldet, type Seitenart, type Speicher, type Wurzel } from './beamer';
+
+// Nur ein Tab, der melden kann, darf die Führung übernehmen (Code-Review 21.11.: Begleiter-Tab stahl sie dem Beamer).
+describe('darfFuehren', () => {
+  it('Schlüssel, Beamer an, nicht pausiert: ja', () => {
+    expect(darfFuehren({ schluessel: 'k', beamer: true, pausiert: false })).toBe(true);
+  });
+  it('ohne Schlüssel, ohne Beamer oder pausiert: nein', () => {
+    expect(darfFuehren({ schluessel: null, beamer: true, pausiert: false })).toBe(false);
+    expect(darfFuehren({ schluessel: 'k', beamer: false, pausiert: false })).toBe(false);
+    expect(darfFuehren({ schluessel: 'k', beamer: true, pausiert: true })).toBe(false);
+  });
+});
+
+// Kopf nach dem Laden an den Anfang – aber nie gegen eine eigene Bewegung.
+describe('kopfAnDenAnfang', () => {
+  const lage = { beamer: true, anker: false, scrollY: 8, kopfleiste: 56, beruehrt: false };
+  it('ein paar Pixel tief eingerastet, unberührt: zurück an den Anfang', () => {
+    expect(kopfAnDenAnfang(lage)).toBe(true);
+  });
+  it('schon gescrollt, geklickt oder getippt: bleibt', () => {
+    expect(kopfAnDenAnfang({ ...lage, beruehrt: true })).toBe(false);
+  });
+  it('mit #anker, ohne Beamer, ganz oben oder weiter als die Kopfleiste: bleibt', () => {
+    expect(kopfAnDenAnfang({ ...lage, anker: true })).toBe(false);
+    expect(kopfAnDenAnfang({ ...lage, beamer: false })).toBe(false);
+    expect(kopfAnDenAnfang({ ...lage, scrollY: 0 })).toBe(false);
+    expect(kopfAnDenAnfang({ ...lage, scrollY: 56 })).toBe(false);
+  });
+});
 
 // Zwei Beamer-Tabs mit Schlüssel: Nur der zuletzt benutzte meldet (wo-ist.ts), sonst springt der Zähler im Begleiter.
 describe('dieserTabMeldet', () => {

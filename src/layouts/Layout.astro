@@ -99,7 +99,7 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
       </main>
     </div>
     <script>
-      import { beamerSchalten, ersteFolieAbstand } from '../lib/beamer';
+      import { beamerSchalten, ersteFolieAbstand, kopfAnDenAnfang as kopfZurueck } from '../lib/beamer';
       import { aktuelleFolie, tasteSteuertFolien, tastenZiel, timerFuerT, weiter as folieWeiter, zurueck as folieZurueck } from '../components/folien';
       const btn = document.getElementById('menu-btn');
       const sb = document.getElementById('sidebar');
@@ -155,8 +155,11 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
       // Beim Laden rastet der Seitenkopf ein, bevor die Kopfleiste gemessen ist (Vorgabe 48 px): Ist sie höher (1728 × 1117:
       // 56 px), steht die Seite danach ein paar Pixel tiefer, und Folie 1 ragt in den ersten Bildschirm. Ohne #anker
       // gehört der Kopf an den Anfang.
+      // Nur solange niemand selbst gescrollt, geklickt oder getippt hat (lib/beamer.ts, kopfAnDenAnfang).
+      let beruehrt = false;
+      for (const t of ['wheel', 'keydown', 'pointerdown', 'touchstart']) addEventListener(t, () => { beruehrt = true; }, { capture: true, passive: true, once: true });
       const kopfAnDenAnfang = () => {
-        if (root.hasAttribute('data-beamer') && !location.hash && scrollY > 0 && scrollY < (topbar?.getBoundingClientRect().height ?? 0)) scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+        if (kopfZurueck({ beamer: root.hasAttribute('data-beamer'), anker: Boolean(location.hash), scrollY, kopfleiste: topbar?.getBoundingClientRect().height ?? 0, beruehrt })) scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
       };
       if (ersteFolie) {
         falzSetzen();

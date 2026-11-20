@@ -64,10 +64,23 @@ export function klickAktion({ praesentator, beamer, seite }: Lage): { an: boolea
  *  im Begleiter springt zwischen ihren Folien hin und her. */
 export const FUEHRENDER_TAB = 'ndu-beamer-tab';
 
-/** Darf dieser Tab seine Position melden? Ja, wenn er zuletzt benutzt wurde. Steht noch keiner fest (oder hat sich der
- *  letzte beim Verlassen der Seite abgemeldet), meldet jeder – bis der nächste Tastendruck oder Klick einen festlegt. */
+/** Darf dieser Tab seine Position melden? Ja, wenn er zuletzt benutzt wurde. Steht noch keiner fest, meldet jeder – bis
+ *  der nächste Tastendruck oder Klick einen festlegt. Beim Verlassen einer Seite bleibt der Eintrag stehen: Die neue Seite
+ *  im selben Tab übernimmt ihn beim Laden (Fokus); sonst meldete in der Lücke ein anderer Beamer-Tab seine alte Position. */
 export function dieserTabMeldet(fuehrender: string | null, ich: string): boolean {
   return fuehrender === null || fuehrender === ich;
+}
+
+/** Darf dieser Tab die Führung übernehmen? Nur, wenn er auch melden kann: Präsentator-Schlüssel da, Beamer-Modus an, nicht
+ *  pausiert. Sonst nähme ein Begleiter- oder normaler Tab im selben Browser dem Beamer-Tab die Führung, und der schwiege. */
+export function darfFuehren({ schluessel, beamer, pausiert }: { schluessel: string | null; beamer: boolean; pausiert: boolean }): boolean {
+  return Boolean(schluessel) && beamer && !pausiert;
+}
+
+/** Seitenkopf nach dem Laden an den Anfang (Layout.astro)? Nur im Beamer, ohne #anker, wenn die Seite ein paar Pixel tief
+ *  eingerastet ist (weniger als die Kopfleiste) – und nur, solange niemand selbst gescrollt, geklickt oder getippt hat. */
+export function kopfAnDenAnfang({ beamer, anker, scrollY, kopfleiste, beruehrt }: { beamer: boolean; anker: boolean; scrollY: number; kopfleiste: number; beruehrt: boolean }): boolean {
+  return beamer && !anker && !beruehrt && scrollY > 0 && scrollY < kopfleiste;
 }
 
 /** Abstand über der ersten Folie im Beamer (Layout.astro): so viel, dass sie genau an der Falz beginnt, am unteren Rand
