@@ -341,9 +341,8 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     miro: {
       frame: 'T3 · 1 · Ziel-Chance',
       schritte: [
-        'Jede*r arbeitet am eigenen Baum („Baum · Name“); T3 · 1 ist die Anleitung mit den vier Linsen.',
-        'Pro Linse ein Satz als Zettel neben die verglichenen Geschwister, mit Zitat-ID bei Größe und Kundschaft.',
-        'Die Ziel-Chance im Baum markieren (ein Blatt).',
+        'Jede*r schreibt in der eigenen Spalte von T3 · 1: je Linse ein Satz ins Feld „Vier Linsen“, mit Zitat-ID bei Größe und Kundschaft.',
+        'Im eigenen Baum („Baum · Name“) nur der Stern: die Ziel-Chance markieren (ein Blatt).',
         'Beim Begründen: Markus geht zum Baum, an dem er gerade fragt; die anderen schreiben weiter.',
       ],
     },

@@ -31,7 +31,8 @@ describe('MIRO_FRAMES', () => {
     for (const name of [...Object.keys(MIRO_FRAMES), ...MIRO_FRAMES_OHNE_ID]) expect(namen, name).toContain(name);
   });
 
-  // Erinnerung: Ab Tag 3 (21.11.2026) braucht T3 · 0 seine ID, sonst ist die Pille am Beamer nur Text.
+  // Ab Tag 3 (21.11.2026) darf kein Platzhalter mehr offen sein: Ein Frame ohne ID ist am Beamer nur Text. Ob eine ID auf dem
+  // Board noch lebt, prüft kein Test (kein Miro-Zugriff) – die geteilte T3 · 0 wurde gelöscht und durch drei Frames je Person ersetzt.
   it('am Kurstag ist kein Frame mehr ohne ID', () => {
     if (Date.now() < Date.parse('2026-11-21T00:00:00+01:00')) return;
     expect(MIRO_FRAMES_OHNE_ID).toStrictEqual([]);

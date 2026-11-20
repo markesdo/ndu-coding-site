@@ -414,8 +414,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const pfad = '/innolab/tag-3/experience-map';
     const n = NOTIZEN[pfad] ?? {};
     expect(uebungMinuten(n['eure-map']?.uebung?.dauer)).toBe(15);
-    expect(n['eure-map']?.miro?.frame).toBe('T3 · 0 · So entsteht eure Map');
-    expect(quellen[pfad]).toContain('<MiroFrame name="T3 · 0 · So entsteht eure Map" />');
+    expect(n['eure-map']?.miro?.frame).toBe('T3 · 0 · So entsteht eure Map - Sofie');
+    for (const name of ['Sofie', 'Joachim', 'Hewen']) expect(quellen[pfad]).toContain(`<MiroLink name="T3 · 0 · So entsteht eure Map - ${name}">${name}</MiroLink>`);
     const summe = Object.values(n).reduce((a, x) => a + (uebungMinuten(x.uebung?.dauer) ?? 0), 0);
     // 4 (drei Anläufe) + 15 (Durchgang); die übrigen Kaffeebar-Folien brauchen gut 6 min.
     expect(summe).toBeLessThanOrEqual(25 - 6);

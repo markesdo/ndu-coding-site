@@ -5,7 +5,7 @@ import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Fluss from '../../../components/Fluss.astro';
 import Timer from '../../../components/Timer.astro';
-import MiroFrame from '../../../components/MiroFrame.astro';
+import MiroLink from '../../../components/MiroLink.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
 import KaffeebarMap from '../../../components/KaffeebarMap.astro';
 import Baum from '../../../components/bild/Baum.astro';
@@ -282,7 +282,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <h2 id="eure-map">So entsteht eure Map – Schritt für Schritt</h2>
     <p class="folie-satz">Euer Versuch von Tag 2, Schritt für Schritt. <Timer minuten={15} /></p>
     <p class="wozu"><strong>Wozu?</strong> Damit oben in eurem Baum drei bis fünf Momente stehen, unter die ihr Chancen hängen könnt.</p>
-    <MiroFrame name="T3 · 0 · So entsteht eure Map" />
+    <p class="small miro-zeile">Miro, T3 · 0: <MiroLink name="T3 · 0 · So entsteht eure Map - Sofie">Sofie</MiroLink> · <MiroLink name="T3 · 0 · So entsteht eure Map - Joachim">Joachim</MiroLink> · <MiroLink name="T3 · 0 · So entsteht eure Map - Hewen">Hewen</MiroLink></p>
     <ol class="gross dicht">
       <li><strong>Schritt 1:</strong> eure Snapshot-Skizzen, eine Zeile je Interview.</li>
       <li><strong>Zusammenlegen:</strong> derselbe Moment der Geschichte, nicht dieselben Worte.</li>
@@ -292,7 +292,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     </ol>
     <p class="small muted">Mehrere Zitate? Das, das den Moment erzählt und Gefühl zeigt; die anderen IDs hinter die Zahl.</p>
     <div class="nur-handout">
-      <p>Auf Miro, Frame „T3 · 0 · So entsteht eure Map“, hat jede*r eine Zeile mit dem eigenen Material von Tag 2. Markus geht sie mit jeder und jedem durch, je etwa fünf Minuten: von den Skizzen aus Schritt 1 über das Zusammenlegen und Zählen bis zu den Momenten und der verbundenen Map. Der Weg ist bei allen derselbe, nur das Material ist ein anderes. Bei drei Interviews ist M = 3; ein Moment ohne Zitat bekommt eine graue Karte, ‚0 von 3‘.</p>
+      <p>Auf Miro hat jede*r einen eigenen Frame „T3 · 0 · So entsteht eure Map - euer Name“ mit dem eigenen Material von Tag 2. Markus geht sie mit jeder und jedem durch, je etwa fünf Minuten: von den Skizzen aus Schritt 1 über das Zusammenlegen und Zählen bis zu den Momenten und der verbundenen Map. Der Weg ist bei allen derselbe, nur das Material ist ein anderes. Bei drei Interviews ist M = 3; ein Moment ohne Zitat bekommt eine graue Karte, ‚0 von 3‘.</p>
     </div>
   </Folie>
 
@@ -302,7 +302,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <p data-schritt class="gross">Vorher ein letzter Blick: Sind zwei davon derselbe Zeitpunkt?</p>
     <p><a href="/innolab/methoden/baum">Weiter: Opportunity Solution Tree</a></p>
     <div class="nur-handout">
-      <p>Jede*r für sich: die Momente in der Reihenfolge der Geschichte lesen und bei jedem Paar fragen, ob es ein Zeitpunkt ist oder zwei. Passt ein Zitat unter beide, legt ihr sie zusammen oder trennt schärfer. Dann holt ihr die Momente aus eurer Zeile auf T3 · 0 als blaue Karten unter den Outcome eures Baums.</p>
+      <p>Jede*r für sich: die Momente in der Reihenfolge der Geschichte lesen und bei jedem Paar fragen, ob es ein Zeitpunkt ist oder zwei. Passt ein Zitat unter beide, legt ihr sie zusammen oder trennt schärfer. Dann holt ihr die Momente aus eurem Frame T3 · 0 als blaue Karten unter den Outcome eures Baums.</p>
     </div>
   </Folie>
 
