@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/ziel-chance.astro (Tag 3, 10:40–11:30; bis 19.11. 10:30–11:30).
-// Kürzen, wenn hinten (in dieser Reihenfolge): bauchwahl, zweiwegtuer, warum.
+// Kürzen, wenn hinten (in dieser Reihenfolge): zweiwegtuer, warum.
 // Zeit im Block (50 min): Übung 30 min, Theorie etwa 12 min, Rest Puffer.
 // Vorwissen: „bekannt“ aus Need Finding / Market Research (vorwissen.ts).
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 7, S. 96–104; Kap. 2, S. 30–31).
@@ -15,7 +15,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Bühne erzählen: Jubel nach dem ersten Halbsatz, dann der zweite.',
       '„Heute wählt ihr eine Chance. Nicht die beste für immer – die nächste.“',
       'Fluss zeigen: Baum, Ziel-Chance, Frage, Ideen.',
-      'Wenn hinten: nur Zitat und Fluss, die zwei Punkte weglassen.',
+      'Wenn hinten: nur Zitat und Fluss, die drei Punkte weglassen.',
     ],
     geschichte: {
       text: 'Torres steht auf der Bühne der Davies Symphony Hall in San Francisco, letzter Vortrag des Tages bei Mind the Product, danach nur noch die Party. Sie will dem Saal einen Satz mitgeben: „You are never one feature away from success…“ – der Saal jubelt. Sie ist nicht fertig, wartet, bis es still ist: „…and you never will be.“ Sie weiß, dass die Leute das hören müssen – und dass es nicht reicht, es zu sagen.',
@@ -87,44 +87,27 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 99`,
       },
     ],
-    ueberleitung: 'Probiert es an der Kaffeebar – erst aus dem Bauch.',
+    ueberleitung: 'Probiert es an der Kaffeebar: drei Äste.',
   },
 
   bauchwahl: {
     live: [
-      'Still wählen, dann alle zugleich Hand heben: Halle, Anstehen, Zug.',
-      'Offen: „Wer will seinen Grund sagen?“ Nicht diskutieren.',
-      'Mitschreiben: pro Antwort ein Stichwort zum Grund.',
-      'Falle: eine Wahl richtig nennen – die Auflösung kommt gleich.',
-      'Wenn hinten: überspringen, bei den Linsen einmal fragen.',
+      'Baum zeigen, die drei Momente vorlesen.',
+      'Nicht abstimmen lassen: Welcher Ast zuerst, beantworten gleich die vier Linsen.',
+      'Wenn hinten: Folie überspringen, Baum bei „Am Beispiel“ mündlich nennen.',
     ],
-    uebung: { dauer: '2 min', form: 'still wählen, alle zugleich Hand heben, dann eine offene Frage nach Gründen' },
-    ablauf: {
-      schritte: [
-        'Baum der Kaffeebar zeigen, die drei Momente vorlesen.',
-        'Jede*r wählt still einen Moment. Dann heben alle zugleich die Hand: Halle, Anstehen, Zug – du zählst laut mit.',
-        'Eine offene Frage: „Wer will seinen Grund sagen?“ Niemanden aufrufen, nicht diskutieren.',
-        'Pro Antwort ein Stichwort notieren (z. B. „trifft die meisten“, „den Automaten gibt es schon“). Auf der nächsten Folie ordnest du sie den Linsen zu.',
-      ],
-      achten: [
-        'Nicht werten. Wer etwas sagt, sagt den eigenen Grund – auch bei gleicher Wahl.',
-        'Drei gleiche Gründe sind auch ein Befund: Dann fehlen drei Linsen.',
-      ],
-      aufloesung: 'Keine richtige Wahl. Die Gründe sind fast immer Linsen: wie viele (Größe), was es schon gibt (Markt), was die Bar kann (eigene Lage), wie sehr es schmerzt (Kundschaft). Die Wahl der Kaffeebar kommt auf der Folie „Am Beispiel“.',
-    },
     kern: [
       {
-        text: 'Die Mini-Übung ist Kursformat. Sie bereitet Torres’ Punkt vor, dass jede Gruppe von Kriterien eine eigene Linse auf die Wirkung ist („a different lens through which to view impact“).',
-        quelle: `${TORRES}, S. 101; Mini-Übung: Kursformat`,
+        text: 'Welcher Ast zuerst? Torres vergleicht die Geschwister durch vier Gruppen von Kriterien; jede ist „a different lens through which to view impact“.',
+        quelle: `${TORRES}, S. 99–101`,
       },
     ],
-    ueberleitung: 'Eure Gründe hatten etwas gemeinsam: Jede*r hat durch eine Linse geschaut.',
+    ueberleitung: 'Vier Linsen, durch die ihr die drei Äste vergleicht.',
   },
 
   linsen: {
     live: [
       'Aufdecken: Linse für Linse, je Torres’ Beispiel dazu.',
-      'Nach der vierten: Stichworte von eben zuordnen – welche Linse fehlte?',
       '„Wie viele“ und „wie oft“ getrennt fragen.',
       'Eigene Lage für alle: Produkt-Brief und was jede*r kann.',
       'Falle: nur die Kundenlinse nutzen – alle vier.',

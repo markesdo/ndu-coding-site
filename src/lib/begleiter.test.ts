@@ -495,7 +495,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(JSON.stringify(NOTIZEN[pfad]).match(/Keine übergeordnete Chance erfinden/g) ?? []).toStrictEqual([]);
   });
   // Entscheidung 15 (20.11. spät): Kein Reihum an der Kaffeebar – Baum „drei-fragen“ und „beispiel“, Ziel-Chance „bauchwahl“:
-  // Fragen an alle, still wählen und zugleich Hand heben; niemand wird aufgerufen.
+  // Fragen an alle, niemand wird aufgerufen. Entscheidung 26 (21.11.): „bauchwahl“ ganz ohne Abstimmung – welcher Ast
+  // zuerst, beantworten die vier Linsen (Torres S. 99–101).
   it('Tag 3: kein „reihum“ auf baum#drei-fragen, baum#beispiel und ziel-chance#bauchwahl, auch nicht im Begleiter', () => {
     const folie = (pfad: string, id: string) => {
       const q = quellen[pfad] ?? '';
@@ -509,7 +510,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     ];
     expect(stellen.every((s) => s.length > 50)).toBe(true);
     expect(stellen.flatMap((s) => s.match(/reihum/gi) ?? [])).toStrictEqual([]);
-    expect(folie('/innolab/methoden/ziel-chance', 'bauchwahl')).toContain('Wer will seinen Grund sagen?');
+    const bauchwahl = [folie('/innolab/methoden/ziel-chance', 'bauchwahl'), JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance']?.bauchwahl)];
+    expect(bauchwahl.flatMap((s) => s.match(/Wer will seinen Grund sagen|Hand heben/g) ?? [])).toStrictEqual([]);
+    expect(bauchwahl[0]).toContain('<p class="folie-satz">Drei Äste, drei Momente. Welcher zuerst, beantworten die vier Linsen.</p>');
   });
   // Entscheidung 16 (20.11. spät): „vorgehen“ in drei Schritten (12 + 10 + 13 = 35 min), ohne Claude-Schritt; auf der
   // Baum-Seite und im Begleiter keine Claude-/Bildschirmfoto-Prüfung mehr, kein Feld „Nur in einem Interview“, kein T2 · 2 als Anleitung.
