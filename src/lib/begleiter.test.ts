@@ -468,6 +468,13 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(zeile('erste Schluck')).toContain('<td class="antwort">bleibt auf dem Snapshot</td>');
     expect(zeile('mitbestellen')).toContain('<strong>in den Baum</strong>, „1 von 5“');
     expect(demo.match(/Nur in einem Interview/g) ?? []).toStrictEqual([]);
+    // Entscheidung 13: „beispiel“ ohne Reihum, Antwort 3 und Schlusszeile im beschlossenen Wortlaut.
+    const beispiel = q.slice(q.indexOf('id="beispiel"'), q.indexOf('id="firmensicht"'));
+    expect(beispiel).toContain('Drei Fragen an den Baum – jede an alle, dann aufdecken.');
+    expect(beispiel.match(/reihum/gi) ?? []).toStrictEqual([]);
+    expect(beispiel).toContain('Nein: Der Moment ‚Halle‘ fasst sie schon zusammen – eine Ebene dazwischen wäre doppelt.');
+    expect(beispiel).toContain('<strong>Einmal gehört, treibt den Outcome:</strong> in den Baum mit ‚1 von 5‘ (mitbestellen). <strong>Treibt ihn nicht:</strong> bleibt im Snapshot (erster Schluck, gehetzt im Büro).');
+    expect(JSON.stringify(NOTIZEN[pfad]?.beispiel).match(/reihum/gi) ?? []).toStrictEqual([]);
     expect(quellen['/innolab/tag-3/experience-map']).toContain('Miro, T3 · 0: <MiroLink name="T3 · 0 · So entsteht eure Map - Kaffeebar">Beispiel: Kaffeebar</MiroLink> · <MiroLink name="T3 · 0 · So entsteht eure Map - Sofie">');
   });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der

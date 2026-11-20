@@ -219,13 +219,13 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
 
   beispiel: {
     live: [
-      'Zeit: 4 min; pro Frage antwortet eine Person laut, reihum.',
+      'Zeit: 4 min; jede Frage an alle, kurze Pause, eine Antwort.',
       'Fragen: I3s Chance „… ob es sich ausgeht“ – unter welchen Moment?',
       'Fragen: „Geht sich ein Kaffee aus?“ und „Zeitnot“ – dasselbe oder Geschwister?',
       'Fragen: Fehlt über den drei Chancen in der Halle eine übergeordnete Chance?',
       '„Unter ‚Im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
     ],
-    uebung: { dauer: '4 min', form: 'zu dritt, reihum laut; erst antworten, dann aufdecken' },
+    uebung: { dauer: '4 min', form: 'jede Frage an alle, eine Antwort, dann aufdecken' },
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
@@ -234,18 +234,18 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Pro Frage antwortet eine Person laut mit Begründung; die anderen zwei sagen „dafür“ oder „dagegen“. Erst dann den Schritt aufdecken.',
-        'Nach Frage 3 den letzten Schritt aufdecken: Was nur eine Person sagte, hängt nicht im Baum.',
+        'Jede Frage an alle stellen, kurze Pause, eine Antwort nehmen – niemanden aufrufen. Dann den Schritt aufdecken.',
+        'Nach Frage 3 den letzten Schritt aufdecken: Einmal gehört und treibt den Outcome → im Baum mit „1 von 5“ (mitbestellen); treibt ihn nicht → bleibt im Snapshot (erster Schluck, gehetzt im Büro).',
       ],
       achten: [
         'Welches Zitat zu welchem Moment gehört, ist Lesart des Kurses: Auf der Map von Tag 2 steht I3-2 in der Spalte „Anstehen und Warten“.',
         'Keine übergeordnete Chance erfinden: Der Kaffeebar-Baum hat keine ergänzte Karte.',
       ],
-      aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I3-2), Warten „Wann ist mein Kaffee fertig?“ (I3-3; Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein, die drei führen schon zum Moment hinauf (S. 90–91).',
+      aufloesung: '1: zu breit, pro Moment eine Chance – Halle „Geht sich ein Kaffee noch aus?“ (I3-2), Warten „Wann ist mein Kaffee fertig?“ (I3-3; Torres S. 88). 2: Geschwister – das eine lässt sich lösen, ohne das andere zu lösen (S. 83). 3: nein – der Moment ‚Halle‘ fasst sie schon zusammen, eine Ebene dazwischen wäre doppelt (S. 90–91).',
     },
     verstaendnis: {
       frage: 'Sind „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, reicht mir die Zeit nicht.“ Geschwister?',
-      antwort: 'Ja: Man kann das eine erfüllen, ohne das andere zu erfüllen – beide sind eigene Bedürfnisse in der Halle (Torres S. 83). Unter dem Warte-Moment hängt nur „Wann ist mein Kaffee fertig?“: noch keine senkrechte Kette (S. 94), aber eine Frage fürs nächste Interview.',
+      antwort: 'Ja: Man kann das eine erfüllen, ohne das andere zu erfüllen – beide sind eigene Bedürfnisse in der Halle (Torres S. 83). Unter dem Warte-Moment hängen „Wann ist mein Kaffee fertig?“ und „mitbestellen“ (1 von 5): Geschwister, keine senkrechte Kette (S. 94).',
     },
     kern: [
       {

@@ -13,6 +13,11 @@ describe('MOMENTNAMEN', () => {
   it('der Kaffeebar-Baum trägt oben die Momentnamen, keine Ich-Sätze', () => {
     expect((KAFFEEBAR_BAUM_INTERVIEWS.kinder ?? []).map((k) => k.t)).toStrictEqual([MOMENTNAMEN.a, MOMENTNAMEN.c, MOMENTNAMEN.d]);
   });
+  // Entscheidung 13: „mitbestellen“ (I5, 1 von 5) treibt den Outcome und hängt unter „Anstehen und Warten“.
+  it('unter „Anstehen und Warten“ hängen „Wann ist mein Kaffee fertig?“ und „mitbestellen“', () => {
+    const warten = (KAFFEEBAR_BAUM_INTERVIEWS.kinder ?? []).find((k) => k.t === MOMENTNAMEN.c);
+    expect((warten?.kinder ?? []).map((k) => k.t)).toStrictEqual(['„Wann ist mein Kaffee fertig?“', '„Ich will für Kolleg*innen mitbestellen, ohne lange zu warten.“']);
+  });
 });
 
 const IDS = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
