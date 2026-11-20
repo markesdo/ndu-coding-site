@@ -2,13 +2,20 @@
 // Die fertige Experience Map der Kaffeebar: drei Momente, unter dem ersten der Umweg über den Automaten, Marken an
 // ihrem Moment. Einmal für alle Seiten (journey-map.astro#beispiel, tag-3/experience-map.astro#was-allen-fehlt), damit
 // die beiden Folien nicht auseinanderlaufen. Zitate und IDs wie in werkstatt/beispiele/interviews.json.
+// namen: „saetze“ (Tag 2, wie damals: Ich-Sätze) oder „taetigkeit“ (Tag 3 seit 20.11.: Name wie die Spalte beim Zählen,
+// MOMENTNAMEN). Nur die Anzeige wechselt; Tag 2 bleibt, wie er unterrichtet wurde.
 import { CornerDownRight } from '@lucide/astro';
+import { MOMENTNAMEN } from '../data/kaffeebar-skizzen';
+const { namen = 'saetze' } = Astro.props as { namen?: 'saetze' | 'taetigkeit' };
+const SAETZE = { a: 'Ich komme in die Halle und entscheide.', c: 'Ich stehe an und warte auf meinen Kaffee.', d: 'Ich bin im Zug.' };
+const name = (g: 'a' | 'c' | 'd') => (namen === 'taetigkeit' ? MOMENTNAMEN[g] : `„${SAETZE[g]}“`);
+const vorlesen = (g: 'a' | 'c' | 'd') => (namen === 'taetigkeit' ? MOMENTNAMEN[g] : SAETZE[g].replace(/\.$/, ''));
 ---
 <div class="kaffeebar-map">
-  <ol class="map" aria-label="Experience Map der Kaffeebar, drei Momente. Erstens: Ich komme in die Halle und entscheide, Zitat I2-1: das wird nix, Tief I2-1; von dort ein Umweg über den Automaten zum Zug, Zitat I4-4: Dann halt die Brühe, Tief I4-4. Zweitens: Ich stehe an und warte auf meinen Kaffee, Zitat I3-3: Das war ein Fehler, Tief I3-3 und I5-6. Drittens: Ich bin im Zug, Zitat I3-5: in Ruhe, Ende I3-5.">
+  <ol class="map" aria-label={`Experience Map der Kaffeebar, drei Momente. Erstens: ${vorlesen('a')}, Zitat I2-1: das wird nix, Tief I2-1; von dort ein Umweg über den Automaten zum Zug, Zitat I4-4: Dann halt die Brühe, Tief I4-4. Zweitens: ${vorlesen('c')}, Zitat I3-3: Das war ein Fehler, Tief I3-3 und I5-6. Drittens: ${vorlesen('d')}, Zitat I3-5: in Ruhe, Ende I3-5.`}>
     <li>
       <div class="karte">
-        <strong>„Ich komme in die Halle und entscheide.“</strong>
+        <strong>{name('a')}</strong>
         <span>„… <b>das wird nix</b>.“ <span class="id">I2-1</span></span>
         <span class="pill tief">Tief · I2-1</span>
       </div>
@@ -20,14 +27,14 @@ import { CornerDownRight } from '@lucide/astro';
     </li>
     <li>
       <div class="karte">
-        <strong>„Ich stehe an und warte auf meinen Kaffee.“</strong>
+        <strong>{name('c')}</strong>
         <span>„… <b>Das war ein Fehler.</b>“ <span class="id">I3-3</span></span>
         <span class="pill tief">Tief · I3-3 · I5-6</span>
       </div>
     </li>
     <li>
       <div class="karte">
-        <strong>„Ich bin im Zug.“</strong>
+        <strong>{name('d')}</strong>
         <span>„… <b>in Ruhe</b>.“ <span class="id">I3-5</span></span>
         <span class="pill ende">Ende · I3-5</span>
       </div>

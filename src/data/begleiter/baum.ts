@@ -52,7 +52,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Vierter Klick: die Pointe, fett.',
       ],
       achten: [
-        'Mini-Baum ③ vereinfacht: Torres’ Teilchance heißt „Who is in this show?“ (S. 84–85), 11 lautet „Who is that actor?“; in ihrer Abbildung S. 89 hängt 11 unter einem anderen Moment als 9. Fragt jemand: so sagen.',
+        'Mini-Baum ③ wie Torres S. 84–85 (Abb. S. 85): „Who is in this show?“, „What type of show is this?“. 11 leuchtet nicht mit – er hängt bei ihr unter einem anderen Moment („I’m watching a show.“, Abb. S. 89).',
         'Nur sortieren, was Torres sortiert: 4, 6, 8 und 10 hängt sie erst in der Abbildung S. 89 unter Momente (Folie inventar).',
       ],
     },
@@ -120,7 +120,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 69–70, 86–89, 92`,
       },
       {
-        text: 'Kaffeebar: drei Momente der Experience Map – Halle, Anstehen und Warten, Zug; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente, nachgeschärft auf T3 · 0 (Stand Tag 2: T2 · 1).',
+        text: 'Kaffeebar: drei Momente der Experience Map – „Halle: entscheiden“, „Anstehen und Warten“, „Im Zug“; der Automat ist ein Umweg, kein Moment. Die Studierenden haben drei bis fünf eigene Momente, nachgeschärft auf T3 · 0 (Stand Tag 2: T2 · 1).',
         quelle: 'journey-map.astro, Folien beispiel und vorgehen',
       },
     ],
@@ -223,7 +223,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Fragen: I3s Chance „… ob es sich ausgeht“ – unter welchen Moment?',
       'Fragen: „Geht sich ein Kaffee aus?“ und „Zeitnot“ – dasselbe oder Geschwister?',
       'Fragen: Fehlt über den drei Chancen in der Halle eine übergeordnete Chance?',
-      '„Unter ‚Ich bin im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
+      '„Unter ‚Im Zug‘ hängt noch nichts – eine Frage fürs nächste Interview.“',
     ],
     uebung: { dauer: '4 min', form: 'zu dritt, reihum laut; erst antworten, dann aufdecken' },
     miro: {

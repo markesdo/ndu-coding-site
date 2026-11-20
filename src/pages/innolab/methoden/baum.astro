@@ -35,7 +35,7 @@ const ZWOELF = [
 const MINI_BAEUME = [
   { nr: 1, eltern: '1', kinder: ['2', '3', '5'], nummern: [1, 2, 3, 5], kurz: 'Teil vom Ganzen', text: '2 ist ein Grund für 1 – nicht der einzige.', label: 'Mini-Baum: 1 oben, darunter 2, 3 und 5' },
   { nr: 2, eltern: 'unterwegs schauen', ergaenzt: true, kinder: ['7', '12'], nummern: [7, 12], kurz: 'Geschwister', text: 'ähnlich, aber einzeln lösbar.', label: 'Mini-Baum: oben „unterwegs schauen“, ergänzt, darunter 7 und 12' },
-  { nr: 3, eltern: '9', kinder: ['11', '…'], nummern: [9, 11], kurz: 'Groß wird lösbar', text: '9 zerfällt in kleinere Chancen, eine davon ist 11.', label: 'Mini-Baum: 9 oben, darunter 11 und weitere' },
+  { nr: 3, eltern: '9', kinder: ['Wer spielt mit?', 'Welche Art Serie?', '…'], nummern: [9], kurz: 'Groß wird lösbar', text: '9 zerfällt in kleinere Chancen, etwa ‚Wer spielt mit?‘.', label: 'Mini-Baum: 9 oben, darunter „Wer spielt mit?“, „Welche Art Serie?“ und weitere' },
 ] as const;
 if (ZWOELF.length !== 12) throw new Error('baum.astro: Die Liste hat nicht zwölf Chancen');
 if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new Error('baum.astro: Mini-Baum verweist auf eine Nummer außerhalb der Liste');
@@ -76,7 +76,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
           <div class="mini-baum" data-schritt data-baum={b.nr}>
             <div class="mb-zeichnung" role="img" aria-label={b.label}>
               <span class:list={['mb-knoten', { 'mb-ergaenzt': b.ergaenzt }]}>{b.eltern}{b.ergaenzt && <em> ergänzt</em>}</span>
-              <span class="mb-kinder">{b.kinder.map((k) => <span class="mb-knoten">{k}</span>)}</span>
+              <span class="mb-kinder">{b.kinder.map((k) => <span class:list={['mb-knoten', { 'mb-text-knoten': !/^[0-9…]+$/.test(k) }]}>{k}</span>)}</span>
             </div>
             <p class="mb-text"><strong>{b.kurz}:</strong> {b.text}</p>
           </div>
@@ -87,7 +87,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
     <p class="small muted">{TORRES}, S. 81–85; ergänzte übergeordnete Chance: S. 90.</p>
     <div class="nur-handout">
       <p>Teresa Torres beginnt Kapitel 6 mit dieser Liste, wie sie viele Teams als „Opportunity Backlog“ führen. Das ist besser als nur eine Chance auf einmal, aber eine flache Liste lässt sich schwer priorisieren: Chancen haben verschiedene Formen und Größen, manche hängen zusammen, andere sind Teilmengen von anderen ({TORRES}, S. 81). Ein Baum zeigt zwei Beziehungen, übergeordnete Chance und Teilchance sowie Geschwister (S. 82).</p>
-      <p>① 2, 3 und 5 sind Gründe für 1, jeder ein Grund, aber nicht der einzige (S. 82–83). ② 7 und 12 klingen gleich, bringen aber verschiedene Bedingungen mit: im Flugzeug vielleicht ganz offline, im Zug mit mobilen Daten; im Flugzeug vielleicht eine Steckdose, im Zug nicht (S. 82). Torres hängt beide unter „I want to watch my shows on the go“ (S. 84); so eine übergeordnete Chance dürft ihr ergänzen, auch wenn sie in keinem Interview wörtlich fiel (S. 90). ③ „Is this show any good?“ wirkt groß und schwer, „Who is that actor?“ leicht (S. 82). Torres zerlegt die große Chance in kleinere: „What type of show is this?“, „Who is in this show?“, „Is this show similar to another show I’ve watched?“, „Who else is watching this show?“ (S. 84–85). Mit 11 am nächsten verwandt ist „Who is in this show?“; in ihrer Abbildung auf S. 89 hängt Torres 11 allerdings unter einen anderen Moment als 9.</p>
+      <p>① 2, 3 und 5 sind Gründe für 1, jeder ein Grund, aber nicht der einzige (S. 82–83). ② 7 und 12 klingen gleich, bringen aber verschiedene Bedingungen mit: im Flugzeug vielleicht ganz offline, im Zug mit mobilen Daten; im Flugzeug vielleicht eine Steckdose, im Zug nicht (S. 82). Torres hängt beide unter „I want to watch my shows on the go“ (S. 84); so eine übergeordnete Chance dürft ihr ergänzen, auch wenn sie in keinem Interview wörtlich fiel (S. 90). ③ „Is this show any good?“ wirkt groß und schwer, „Who is that actor?“ leicht (S. 82). Torres zerlegt die große Chance in kleinere: „What type of show is this?“, „Who is in this show?“, „Is this show similar to another show I’ve watched?“, „Who else is watching this show?“ (S. 84–85). „Who is that actor?“ (11) hängt bei Torres unter einem anderen Moment als 9 (Abbildung S. 89: „I’m watching a show.“).</p>
       <p>Zu 4, 6, 8 und 10 sagt sie im Text nichts; in der Abbildung auf S. 89 hängen sie unter ihren Momenten – ihr seht sie auf der Folie „Inventar“. Einen fertig strukturierten Baum aller zwölf gibt es im Buch nicht. Dass der Baum beim Bewerten und Priorisieren hilft, steht auf S. 85: Wer immer das Leichte zuerst nimmt, kommt nie zu den schweren Problemen, mit denen man sich von der Konkurrenz abheben könnte (S. 82).</p>
     </div>
   </Folie>
@@ -135,12 +135,12 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
       <ul>
         <li><strong>Von heute früh (T3 · 0):</strong> eure drei bis fünf Momente – je eine blaue Karte unter dem Outcome, mit dem Namen des Moments.</li>
         <li data-schritt><strong>Ohne Überschneidung:</strong> Sonst zieht jede Chance die anderen mit.</li>
-        <li data-schritt><strong>Kaffeebar:</strong> drei Momente, drei Äste – Halle, Anstehen und Warten, Zug.</li>
+        <li data-schritt><strong>Kaffeebar:</strong> drei Momente, drei Äste – „Halle: entscheiden“, „Anstehen und Warten“, „Im Zug“.</li>
         <li data-schritt><strong>Moment oder Chance?</strong> Moment = wann (oben). Chance = was die Person dann bewegt (darunter).</li>
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>Bevor ihr Chancen sammelt, braucht der Baum Äste, die sich nicht überschneiden: „We need each opportunity to be distinct from every other opportunity. If there’s overlap, then we can’t work on one at a time.“ Überschneiden sich die Äste, verhaken sich die Chancen, und ihr müsst an allen zugleich arbeiten ({TORRES}, S. 86). Torres nennt zwei Wege zu solchen Ästen: die Schritte der Experience Map oder die Schlüsselmomente aus den gezeichneten Interview-Geschichten (S. 86–87). Oft genügt der erste: „Oftentimes this is as simple as mapping each node in your experience map to the top level of opportunities on your opportunity solution tree“ (S. 86). Eure Momente habt ihr an Tag 2 festgelegt (T2 · 1) und heute früh nachgeschärft (T3 · 0); jetzt werden sie die blauen Karten unter eurem Outcome. Auf jeder steht der Name des Moments: eine Tätigkeit aus Sicht der Kundschaft, derselbe Name wie die Spalte beim Zählen – kein Satz der Kundschaft. Bei der Kaffeebar sind es drei Äste: Halle, Anstehen und Warten, Zug. Der Automat ist auf der Map ein Umweg, kein eigener Moment.</p>
+      <p>Bevor ihr Chancen sammelt, braucht der Baum Äste, die sich nicht überschneiden: „We need each opportunity to be distinct from every other opportunity. If there’s overlap, then we can’t work on one at a time.“ Überschneiden sich die Äste, verhaken sich die Chancen, und ihr müsst an allen zugleich arbeiten ({TORRES}, S. 86). Torres nennt zwei Wege zu solchen Ästen: die Schritte der Experience Map oder die Schlüsselmomente aus den gezeichneten Interview-Geschichten (S. 86–87). Oft genügt der erste: „Oftentimes this is as simple as mapping each node in your experience map to the top level of opportunities on your opportunity solution tree“ (S. 86). Eure Momente habt ihr an Tag 2 festgelegt (T2 · 1) und heute früh nachgeschärft (T3 · 0); jetzt werden sie die blauen Karten unter eurem Outcome. Auf jeder steht der Name des Moments: eine Tätigkeit aus Sicht der Kundschaft, derselbe Name wie die Spalte beim Zählen – kein Satz der Kundschaft. Bei der Kaffeebar sind es drei Äste: „Halle: entscheiden“, „Anstehen und Warten“, „Im Zug“. Der Automat ist auf der Map ein Umweg, kein eigener Moment.</p>
       <p><strong>Vier Momente, vier oberste Chancen?</strong> Torres benennt ihre Momente als Tätigkeiten, etwa „Choosing something to watch“ (S. 87), und schreibt sie in der Abbildung darunter als Sätze der Kundschaft, etwa „I’m not sure what to watch.“ Es sind dieselben vier Zeitpunkte (S. 87). Die Sätze sind ihre eigenen Formulierungen, keine Zitate: „Opportunities don’t need to be exact quotes, but you should frame them using your customer’s words“ (S. 70); prüfen lässt sich das mit „Can I imagine a customer saying this?“ (S. 92). Bei euch bleibt oben der Name des Moments. Die Sätze der Kundschaft beginnen eine Ebene tiefer, bei den Chancen – auch dort keine wörtlichen Zitate.</p>
       <p><strong>Moment oder Chance?</strong> Ein Moment sagt, wann: ein Zeitpunkt der Geschichte, die oberste Ebene (S. 86–87). Eine Chance sagt, was die Person dann bewegt: ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch, den ihr in den Interviews an diesem Moment hört (S. 69, 88). In der Abbildung auf S. 89 stehen oben wieder Torres’ Sätze der Kundschaft; bei euch steht dort der Name des Moments.</p>
     </div>
@@ -196,7 +196,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
         <tr><th scope="row">Frage</th><td>Derselbe Moment der Geschichte?</td><td>Dasselbe, anders gesagt – oder Geschwister?</td></tr>
         <tr><th scope="row">Wo</th><td>über alle Geschichten</td><td>in einem Ast, unter einem Moment</td></tr>
         <tr><th scope="row">Ergebnis</th><td>Momente in der Abfolge, ohne Überschneidung</td><td>übergeordnete Chance, darunter Geschwister</td></tr>
-        <tr><th scope="row">Kaffeebar</th><td>u. a. I2-4, I3-1, I5-3 → Moment „Ich komme in die Halle und entscheide.“</td><td>darunter drei Chancen, ohne Reihenfolge</td></tr>
+        <tr><th scope="row">Kaffeebar</th><td>u. a. I2-4, I3-1, I5-3 → Moment „Halle: entscheiden“</td><td>darunter drei Chancen, ohne Reihenfolge</td></tr>
       </tbody>
     </table>
     <p>„Ich bin um 7:28 da, das reicht nie für die Schlange.“ (I4-1): auf der Map grau, im Baum Beleg für „Wenn ich anstehe, reicht mir die Zeit nicht.“ – dasselbe Zitat, andere Frage.</p>
@@ -236,10 +236,10 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
     <p class="small muted">Nach {TORRES}, S. 83, 88, 90–91.</p>
     <div class="nur-handout">
       <p>Den Baum seht ihr auf Miro im Frame „Baum · Beispiel Kaffeebar“, hier zum Nachlesen:</p>
-      <Baum schmal momente knoten={KAFFEEBAR_BAUM_INTERVIEWS} label="Opportunity Solution Tree der Kaffeebar nach den Interviews: Outcome, darunter drei oberste Chancen aus den Momenten der Experience Map (Ich komme in die Halle und entscheide; Ich stehe an und warte auf meinen Kaffee; Ich bin im Zug), darunter Chancen mit Zitat-IDs" />
-      <p>Im Baum der Kaffeebar steht nach Torres’ Regel nur, was mehr als ein Interview stützt. „Der erste Schluck rettet den Morgen“ (I1-4), „nicht gehetzt im Büro ankommen“ (I4-5) und „für Kolleg*innen mitbestellen“ (I5-4, I5-6) bleiben auf ihren Snapshots. Belege unter „Ich komme in die Halle und entscheide.“: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1) · „Schnell geht nur der Automat.“ (I1-3, I4-3 – bei I4-3 unsere Lesart: Sie nennt den Automaten, nicht das Tempo); unter „Ich stehe an und warte auf meinen Kaffee.“: „Wann ist mein Kaffee fertig?“ (I2-5, I3-3 – bei I3-3 unsere Lesart). Unter „Ich komme in die Halle und entscheide.“ hängen drei Chancen, unter „Ich stehe an und warte auf meinen Kaffee.“ eine, unter „Ich bin im Zug.“ noch keine.</p>
+      <Baum schmal momente knoten={KAFFEEBAR_BAUM_INTERVIEWS} label="Opportunity Solution Tree der Kaffeebar nach den Interviews: Outcome, darunter drei oberste Chancen aus den Momenten der Experience Map (Halle: entscheiden; Anstehen und Warten; Im Zug), darunter Chancen mit Zitat-IDs" />
+      <p>Im Baum der Kaffeebar steht nach Torres’ Regel nur, was mehr als ein Interview stützt. „Der erste Schluck rettet den Morgen“ (I1-4), „nicht gehetzt im Büro ankommen“ (I4-5) und „für Kolleg*innen mitbestellen“ (I5-4, I5-6) bleiben auf ihren Snapshots. Belege unter „Halle: entscheiden“: „Geht sich ein Kaffee noch aus?“ (I2-4, I3-2, I5-2) · „Wenn ich anstehe, reicht mir die Zeit nicht.“ (I2-2, I3-4, I4-1) · „Schnell geht nur der Automat.“ (I1-3, I4-3 – bei I4-3 unsere Lesart: Sie nennt den Automaten, nicht das Tempo); unter „Anstehen und Warten“: „Wann ist mein Kaffee fertig?“ (I2-5, I3-3 – bei I3-3 unsere Lesart). Unter „Halle: entscheiden“ hängen drei Chancen, unter „Anstehen und Warten“ eine, unter „Im Zug“ noch keine.</p>
       <p>„Wenn ich anstehe, reicht mir die Zeit nicht.“ hängt am Moment in der Halle: Alle drei Zitate (I2-2, I3-4, I4-1) fallen bei der Entscheidung, nicht in der Schlange ({TORRES}, S. 88). „Geht sich ein Kaffee noch aus?“ und „Wenn ich anstehe, reicht mir die Zeit nicht.“ sind Geschwister: Man kann das eine Bedürfnis erfüllen, ohne das andere zu erfüllen (S. 83). Eine einzelne Teilchance wie „Wann ist mein Kaffee fertig?“ ist noch keine senkrechte Kette (S. 94), aber ein Hinweis auf fehlende Geschwister – eine Frage fürs nächste Interview.</p>
-      <p>Wünscht sich jemand „per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1), ist das Bedürfnis dahinter „Ich will den Zug nicht verpassen“. Wörtlich vom Zug erzählt nur I3 (I3-3). Im Baum steht die Chance darum als „Wenn ich anstehe, reicht mir die Zeit nicht.“: I4 sagt es fast wörtlich (I4-1), I2 schaut auf die Uhr und geht (I2-2), I3 hat eine Regel für die Schlange (I3-4). „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl; die Ursache dahinter ist dieselbe Chance (I4-1). Dass unter „Ich bin im Zug“ nichts hängt, ist hier ehrlich: Von diesem Moment, der Fahrt selbst, erzählt nur I3 (I3-5), mehr haben fünf Interviews nicht hergegeben. Ein leerer Ast ist keine senkrechte Kette, aber ein Hinweis, wonach ihr als Nächstes fragt.</p>
+      <p>Wünscht sich jemand „per App vorbestellen“ (das Beispiel vom Snapshot an Tag 1), ist das Bedürfnis dahinter „Ich will den Zug nicht verpassen“. Wörtlich vom Zug erzählt nur I3 (I3-3). Im Baum steht die Chance darum als „Wenn ich anstehe, reicht mir die Zeit nicht.“: I4 sagt es fast wörtlich (I4-1), I2 schaut auf die Uhr und geht (I2-2), I3 hat eine Regel für die Schlange (I3-4). „Anstellen ist ein Glücksspiel“ (I4-2) ist eher ein Gefühl; die Ursache dahinter ist dieselbe Chance (I4-1). Dass unter „Im Zug“ nichts hängt, ist hier ehrlich: Von diesem Moment, der Fahrt selbst, erzählt nur I3 (I3-5), mehr haben fünf Interviews nicht hergegeben. Ein leerer Ast ist keine senkrechte Kette, aber ein Hinweis, wonach ihr als Nächstes fragt.</p>
       <p>Aus der Chance in I3s Snapshot, „Ich weiß nicht, ob es sich bis zur Abfahrt ausgeht.“ (I3-2, I3-3), werden im Baum zwei: eine in der Halle, eine beim Warten. Das folgt Torres’ Regel, eine Chance, die unter mehr als einen Ast passt, je Moment eigens zu fassen ({TORRES}, S. 88). Welches Zitat zu welchem Moment gehört, ist die Lesart dieses Kurses, nicht Torres: I3-2 („Ich weiß nie, wie lange das dauert.“) steht auf der Map von Tag 2 beim Anstehen und Warten; im Baum belegt es die Entscheidung in der Halle (unsere Lesart). Über den drei Chancen in der Halle fehlt keine übergeordnete Chance: Geschwister gruppiert ihr so lange, bis eine Reihe von ihnen zum Moment hinaufführt (S. 90–91) – hier tun sie das schon.</p>
     </div>
   </Folie>
@@ -268,7 +268,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
       <li><strong>Wisst ihr nicht, welche?</strong> In den nächsten Interviews erkunden – bei uns als Zettel „Nächstes Interview: …“ neben der Karte (Kursregel).</li>
     </ul>
     <p>Senkrechte Chancen sind eine Chance mit nur einer Teilchance, die wieder nur eine Teilchance hat – eine senkrechte Kette einzelner Chancen. Torres nennt zwei Ursachen: Entweder sagen mehrere Interviews dasselbe in anderen Worten – dann fasst ihr es zu einer Chance zusammen und streicht den Rest. Oder es fehlen Geschwister: Löst jede Teilchance die übergeordnete Chance nur zum Teil, sucht die fehlenden und tragt sie ein; wisst ihr nicht, welche fehlen, erkundet die übergeordnete Chance in den nächsten Interviews ({TORRES}, S. 93–94). Was ihr fragen wollt, notiert ihr als Zettel „Nächstes Interview: …“ direkt neben der Karte in eurem Baum – so steht es auch auf dem Bild, das Claude beim Prüfen bekommt. Der Zettel ist eine Regel dieses Kurses; Torres sagt nur, die übergeordnete Chance in den nächsten Interviews zu erkunden.</p>
-    <p>Bei der Kaffeebar hängt unter „Ich stehe an und warte auf meinen Kaffee.“ nur eine Chance: „Wann ist mein Kaffee fertig?“. Das ist der erste Schritt, aber noch nicht das Anti-Muster – senkrecht wird es erst, wenn unter dieser einen Teilchance wieder nur eine hängt (S. 94). Es ist ein Hinweis auf fehlende Geschwister, die ihr in den nächsten Interviews erkundet.</p>
+    <p>Bei der Kaffeebar hängt unter „Anstehen und Warten“ nur eine Chance: „Wann ist mein Kaffee fertig?“. Das ist der erste Schritt, aber noch nicht das Anti-Muster – senkrecht wird es erst, wenn unter dieser einen Teilchance wieder nur eine hängt (S. 94). Es ist ein Hinweis auf fehlende Geschwister, die ihr in den nächsten Interviews erkundet.</p>
   </div>
 
   <Folie>
@@ -383,19 +383,24 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
   .liste-baum:has(.mini-baum[data-baum="2"].gezeigt):not(:has(.mini-baum[data-baum="3"].gezeigt)) .zwoelf > li[data-licht~="2"],
   .liste-baum:has(.mini-baum[data-baum="3"].gezeigt) .zwoelf > li[data-licht~="3"] { background: var(--yellow-soft); box-shadow: inset 3px 0 0 var(--yellow-ink); }
   .mini-baeume { display: flex; flex-direction: column; gap: .7rem; }
-  .mini-baum { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: .3rem .9rem; align-items: center; }
+  .mini-baum { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); gap: .3rem .9rem; align-items: center; }
   .mini-baum p { margin: 0; }
   .mb-zeichnung { display: flex; flex-direction: column; align-items: center; }
   .mb-knoten { display: inline-flex; align-items: center; justify-content: center; min-width: 2.1rem; padding: .1rem .4rem; border: 1.5px solid var(--accent); border-radius: var(--radius); background: var(--bg-2); font-family: var(--mono); font-weight: 700; font-size: .9rem; line-height: 1.3; }
   .mb-ergaenzt { border-style: dashed; border-color: var(--muted); color: var(--muted); font-family: inherit; font-weight: 600; font-size: .8rem; }
   .mb-ergaenzt em { font-style: italic; font-weight: 400; margin-left: .25em; }
   /* Linien: senkrecht unter der übergeordneten Chance, waagrecht über den Teilchancen, senkrecht zu jeder Teilchance. */
-  /* Gleich breite Teilchancen: Die waagrechte Linie läuft von der Mitte der ersten zur Mitte der letzten (je 1.2rem vom Rand). */
-  .mb-kinder { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 2.4rem; gap: .5rem; margin-top: .9rem; }
-  .mb-kinder > .mb-knoten { position: relative; min-width: 0; }
+  /* Linien: senkrecht unter der übergeordneten Chance; waagrecht je Teilchance über ihre Breite plus halbe Lücke (bei der
+     ersten und letzten nur bis zur Mitte); senkrecht zu jeder Teilchance. Funktioniert auch für verschieden breite Knoten. */
+  .mb-kinder { position: relative; display: flex; align-items: flex-start; gap: .5rem; margin-top: .9rem; }
+  .mb-kinder > .mb-knoten { position: relative; min-width: 2.1rem; }
   .mb-kinder::before { content: ''; position: absolute; left: 50%; top: -.9rem; height: .45rem; border-left: 1.5px solid var(--muted); }
-  .mb-kinder::after { content: ''; position: absolute; top: -.45rem; left: 1.2rem; right: 1.2rem; border-top: 1.5px solid var(--muted); }
   .mb-kinder > .mb-knoten::before { content: ''; position: absolute; left: 50%; top: calc(-.45rem - 1.5px); height: calc(.45rem + 1.5px); border-left: 1.5px solid var(--muted); }
+  .mb-kinder > .mb-knoten::after { content: ''; position: absolute; top: calc(-.45rem - 1.5px); left: calc(-.25rem - 1px); right: calc(-.25rem - 1px); border-top: 1.5px solid var(--muted); }
+  .mb-kinder > .mb-knoten:first-child::after { left: 50%; }
+  .mb-kinder > .mb-knoten:last-child::after { right: 50%; }
+  .mb-kinder > .mb-knoten:only-child::after { content: none; }
+  .mb-text-knoten { font-family: inherit; font-weight: 600; font-size: .72rem; line-height: 1.2; max-width: 4.8rem; text-align: center; white-space: normal; }
   .mb-text { font-size: .95rem; line-height: 1.35; }
   /* Volle Breite statt 36em (global.css, Zeilenlänge), damit die Pointe bei 720p in eine Zeile passt. */
   :global(html .content > .inner > .folie) > p.breit { max-width: none; }

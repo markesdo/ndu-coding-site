@@ -13,7 +13,7 @@ import { CircleCheck, CircleX, CornerDownRight, Footprints, Heart, Quote, Square
 import { KAFFEEBAR_BAUM_INTERVIEWS } from '../../../components/innolab-beispiel';
 import { ENDE_TAG_3 } from '../../../components/innolab-zeiten';
 import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
-import { SKIZZEN, geschichtenIn, zaehlung, type GruppeId } from '../../../data/kaffeebar-skizzen';
+import { MOMENTNAMEN, SKIZZEN, geschichtenIn, zaehlung, type GruppeId } from '../../../data/kaffeebar-skizzen';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 // „Drei bis fünf“ steht nicht im Buch, sondern in Torres’ Buchclub-Leitfaden zu Kapitel 6 (Product Talk, 2026).
@@ -31,9 +31,9 @@ const BAUSTEINE = ['tut', 'fühlt', 'belegt'] as const;
 // ID); Momente und Zählung wie auf journey-map.astro#beispiel, die Zahl aus den Skizzen (zaehlung). Die Schritte und Gefühle
 // sind die Anläufe A und B von Folie „drei-anlaeufe“. Die Zitate mit IDs bleiben in der Zähltabelle.
 const ZUSAMMEN = [
-  { schritte: ['In die Halle kommen', 'Schlange ansehen', 'auf die Uhr schauen'], gefuehl: 'Zeitdruck', moment: '„Ich komme in die Halle und entscheide.“', g: 'a', marke: 'Tief', art: 'tief' },
-  { schritte: ['anstellen', 'warten'], gefuehl: 'Frust', moment: '„Ich stehe an und warte auf meinen Kaffee.“', g: 'c', marke: 'Tief', art: 'tief' },
-  { schritte: ['einsteigen'], gefuehl: 'Ruhe', moment: '„Ich bin im Zug.“', g: 'd', marke: 'Ende', art: 'ende' },
+  { schritte: ['In die Halle kommen', 'Schlange ansehen', 'auf die Uhr schauen'], gefuehl: 'Zeitdruck', moment: MOMENTNAMEN.a, g: 'a', marke: 'Tief', art: 'tief' },
+  { schritte: ['anstellen', 'warten'], gefuehl: 'Frust', moment: MOMENTNAMEN.c, g: 'c', marke: 'Tief', art: 'tief' },
+  { schritte: ['einsteigen'], gefuehl: 'Ruhe', moment: MOMENTNAMEN.d, g: 'd', marke: 'Ende', art: 'ende' },
 ] as const;
 // Marken wie in den Skizzen: Tief/Ende steht dort an einem Sticky der Gruppe.
 const markeFehlt = ZUSAMMEN.filter((z) => !SKIZZEN.some((s) => s.stickies.some((st) => st.g === z.g && st.marke === z.art))).map((z) => z.g);
@@ -61,10 +61,10 @@ if (markeFehlt.length) throw new Error(`tag-3/experience-map.astro: Marke Tief/E
 // Restzeile: Einzelstimmen stehen in den Skizzen, aber in keiner Gruppe.
 const einzelGruppiert = EINZELSTIMMEN.filter((id) => !SKIZZEN.some((s) => s.stickies.some((st) => st.id === id && !st.g)));
 if (einzelGruppiert.length) throw new Error(`tag-3/experience-map.astro: Einzelstimme fehlt in den Skizzen oder hat eine Gruppe: ${einzelGruppiert.join(', ')}`);
-// Texte, die Zahlen aus den Skizzen nennen: „fünf Zitate, drei Geschichten“ (anlauf-c), „Ich bin im Zug“ in einer Geschichte (zusammen),
+// Texte, die Zahlen aus den Skizzen nennen: „fünf Zitate, drei Geschichten“ (anlauf-c), „Im Zug“ in einer Geschichte (zusammen),
 // der Automat in drei von fünf Geschichten (Begleiter anlauf-a).
 if (idsIn('a').length !== 5 || geschichtenIn('a') !== 3) throw new Error('tag-3/experience-map.astro: „fünf Zitate, drei Geschichten“ stimmt nicht mehr');
-if (geschichtenIn('d') !== 1) throw new Error('tag-3/experience-map.astro: „Ich bin im Zug“ steht nicht mehr in genau einer Geschichte');
+if (geschichtenIn('d') !== 1) throw new Error('tag-3/experience-map.astro: „Im Zug“ steht nicht mehr in genau einer Geschichte');
 if (zaehlung('b') !== '3 von 5' || !['I1-3', 'I2-3', 'I4-3'].every((id) => idsIn('b').includes(id))) throw new Error('tag-3/experience-map.astro: Automat nicht mehr in I1-3, I2-3, I4-3 (3 von 5)');
 if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro: Notiz zu I1 hat sich geändert');
 ---
@@ -77,7 +77,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
   <Folie>
     <h2 id="warum-nochmal">Heute werden eure Momente zu Ästen</h2>
     <p class="folie-satz">Jeder Moment eurer Map wird ein oberster Ast: drei bis fünf Momente, die sich nicht überschneiden.</p>
-    <Baum schmal momente knoten={NUR_MOMENTE} label="Baum der Kaffeebar: Outcome, darunter die drei Momente der Experience Map als oberste Äste (Ich komme in die Halle und entscheide; Ich stehe an und warte auf meinen Kaffee; Ich bin im Zug)" />
+    <Baum schmal momente knoten={NUR_MOMENTE} label="Baum der Kaffeebar: Outcome, darunter die drei Momente der Experience Map als oberste Äste (Halle: entscheiden; Anstehen und Warten; Im Zug)" />
     <p class="small muted">{TORRES}, S. 86–87; drei bis fünf: Torres, Buchclub-Leitfaden zu Kapitel 6 („Ch. 6: Mapping the Opportunity Space“, <a href={BUCHCLUB}>producttalk.org</a>, 2026).</p>
     <div class="nur-handout">
       <p>Jeder Moment der Experience Map wird eine oberste Chance des Baums ({TORRES}, S. 86–87). Sind die Momente unklar, sind es die Äste auch, und jede Chance darunter hängt im Ungefähren. Darum schärft ihr die Map, bevor ihr die Chancen aus den Snapshots unter die Momente hängt.</p>
@@ -200,7 +200,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
       <p class="rest small muted" data-schritt><span class="chip grau">Kaffee nehmen</span> <span class="chip grau">zum Bahnsteig</span> nur Einzelstimmen → bleiben im Snapshot.</p>
       <p class="pointe z-pointe" data-schritt>Schritte und Gefühl zeigen den Zeitpunkt. Die Zahl sagt, wie viele Geschichten ihn erzählen.</p>
       <div class="nur-handout">
-        <p>Die Momente, Zitate und Zählungen sind die der fertigen Kaffeebar-Map (<a href="/innolab/methoden/journey-map#beispiel">Experience Map, Beispiel</a>). Auf jeder Karte stehen nur der Name und die Zahl der Geschichten, die den Moment erzählen; welche Zitate dazugehören, steht in der Zähltabelle. „Ich bin im Zug“ steht in einer Geschichte und bleibt als erzähltes Ende. Zu „Kaffee nehmen“ und „zum Bahnsteig“ gibt es nur Einzelstimmen (I1-4, I5-5) ohne Gefühl am Schritt; sie werden kein Moment und bleiben im Snapshot. Ein Gefühl, zu dem kein Schritt gehört, ist eine Frage für das nächste Interview: Wann war das?</p>
+        <p>Die Momente, Zitate und Zählungen sind die der fertigen Kaffeebar-Map (<a href="/innolab/methoden/journey-map#beispiel">Experience Map, Beispiel</a>). Auf jeder Karte stehen nur der Name und die Zahl der Geschichten, die den Moment erzählen; welche Zitate dazugehören, steht in der Zähltabelle. „Im Zug“ steht in einer Geschichte und bleibt als erzähltes Ende. Zu „Kaffee nehmen“ und „zum Bahnsteig“ gibt es nur Einzelstimmen (I1-4, I5-5) ohne Gefühl am Schritt; sie werden kein Moment und bleiben im Snapshot. Ein Gefühl, zu dem kein Schritt gehört, ist eine Frage für das nächste Interview: Wann war das?</p>
       </div>
     </Aufloesung>
   </Folie>
@@ -212,7 +212,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
       <p class="pointe">Ein Moment heißt, wie die Kundschaft ihn erlebt – und gezählt wird, wie viele Geschichten ihn erzählen.</p>
       <div class="gegenueber">
         <p><CircleX size={20} aria-hidden="true" class="icon-nein" /> „Viele entscheiden sich aus Zeitmangel gegen die Kaffeebar.“</p>
-        <p><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> <span><strong>„Ich komme in die Halle und entscheide.“</strong> <span class="zaehl">{zaehlung('a')}</span></span></p>
+        <p><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> <span><strong>{MOMENTNAMEN.a}</strong> <span class="zaehl">{zaehlung('a')}</span></span></p>
       </div>
       <ul class="belegprobe" data-schritt>
         <li class="beleg-zitat">„{ZITATE.get('I2-1')}“ <span class="id">I2-1</span> <em>Zitat aus der Geschichte: zählt</em></li>
@@ -226,7 +226,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
       </ul>
       <p class="small muted">Muster über Geschichten: {TORRES}, S. 87. Worte der Kundschaft: S. 70 (dort für Chancen). N von M: Format dieses Kurses; die Zitate mit IDs bleiben in der Zähltabelle.</p>
       <div class="nur-handout">
-        <p>Eine Zusammenfassung in der dritten Person („Viele …“, „Die Pendler*innen …“) klingt sachlich, ist aber eure Deutung. Auf die Map kommt der Moment so, wie die Person ihn erlebt, mit der Zahl der Geschichten, die ihn erzählen. Die Ich-Form ist Format dieses Kurses: Die Worte der Kundschaft verlangt Torres für Chancen (S. 70, 92); ihre eigenen Momente benennt sie knapp, etwa „Deciding to watch something“ ({TORRES}, S. 87). Notizen zeigt ihr gestrichelt, zählt sie aber nicht. Eine Meinung („Anstellen ist ein Glücksspiel.“) steht an keiner Stelle der Geschichte. Und was ihr im Interview gefragt habt, belegt nichts: Beleg ist, was die Person geantwortet hat.</p>
+        <p>Eine Zusammenfassung in der dritten Person („Viele …“, „Die Pendler*innen …“) klingt sachlich, ist aber eure Deutung. Auf die Map kommt der Moment so, wie die Person ihn erlebt: als Tätigkeit aus ihrer Sicht, knapp benannt wie bei Torres („Deciding to watch something“, {TORRES}, S. 87), mit der Zahl der Geschichten, die ihn erzählen. Die Worte der Kundschaft verlangt Torres für Chancen (S. 70, 92). Notizen zeigt ihr gestrichelt, zählt sie aber nicht. Eine Meinung („Anstellen ist ein Glücksspiel.“) steht an keiner Stelle der Geschichte. Und was ihr im Interview gefragt habt, belegt nichts: Beleg ist, was die Person geantwortet hat.</p>
       </div>
     </Aufloesung>
   </Folie>
@@ -235,7 +235,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <h2 id="was-allen-fehlt">Was fehlt allen dreien?</h2>
     <p class="folie-satz">Was fehlt allen drei Anläufen noch?</p>
     <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
-      <KaffeebarMap />
+      <KaffeebarMap namen="taetigkeit" />
       <ul class="gross dicht nach-map">
         <li data-schritt><CornerDownRight size={20} aria-hidden="true" /> Umweg und Schleife als Pfeil.</li>
         <li data-schritt>Marke am Moment: <span class="nw">‚Tief · I2-1‘</span>, <span class="nw">‚Ende · I3-5‘</span>.</li>
@@ -291,7 +291,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
         <table>
           <thead><tr><th>Karte</th><th>Moment?</th><th>Beispiel</th></tr></thead>
           <tbody>
-            <tr><td>Zeitpunkt, erzählt</td><td>ja</td><td>„Ich komme in die Halle und entscheide.“ (I2-4, I2-1)</td></tr>
+            <tr><td>Zeitpunkt, erzählt</td><td>ja</td><td>„Halle: entscheiden“ (I2-4, I2-1)</td></tr>
             <tr><td>Ablaufschritt</td><td>nein</td><td>„Kaffee nehmen“: nichts entschieden, nur eine Einzelstimme (I1-4) – bleibt im Snapshot</td></tr>
             <tr><td>Gefühl</td><td>nein</td><td>„Zeitdruck“ – wann? Beim Blick auf die Uhr in der Halle (I2-2)</td></tr>
             <tr><td>Thema</td><td>nein</td><td>„Wartezeit“: liegt in der Halle (I2-1) und beim Anstehen (I3-3) – zwei Momente</td></tr>

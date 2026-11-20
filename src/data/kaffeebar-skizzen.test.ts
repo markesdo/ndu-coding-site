@@ -1,7 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import KAFFEEBAR_INTERVIEWS from '../werkstatt/beispiele/interviews.json';
 import { NOTIZEN_JOURNEY_MAP } from './begleiter/journey-map';
-import { GRUPPEN, SKIZZEN, skizzenFehler, zaehlung, type Skizze } from './kaffeebar-skizzen';
+import { GRUPPEN, MOMENTNAMEN, SKIZZEN, skizzenFehler, zaehlung, type Skizze } from './kaffeebar-skizzen';
+import { KAFFEEBAR_BAUM_INTERVIEWS } from '../components/innolab-beispiel';
+
+// Entscheidung 11 (20.11. spät): Momentnamen = Spaltennamen beim Zählen (Halle gekürzt), auch oben im Kaffeebar-Baum.
+describe('MOMENTNAMEN', () => {
+  it('Halle gekürzt, Anstehen und Warten und Im Zug wie die Gruppen', () => {
+    expect(MOMENTNAMEN).toStrictEqual({ a: 'Halle: entscheiden', c: 'Anstehen und Warten', d: 'Im Zug' });
+    expect(GRUPPEN.filter(({ g }) => g === 'c' || g === 'd').map((x) => x.name)).toStrictEqual([MOMENTNAMEN.c, MOMENTNAMEN.d]);
+  });
+  it('der Kaffeebar-Baum trägt oben die Momentnamen, keine Ich-Sätze', () => {
+    expect((KAFFEEBAR_BAUM_INTERVIEWS.kinder ?? []).map((k) => k.t)).toStrictEqual([MOMENTNAMEN.a, MOMENTNAMEN.c, MOMENTNAMEN.d]);
+  });
+});
 
 const IDS = new Set(KAFFEEBAR_INTERVIEWS.interviews.flatMap((iv) => iv.zitate.map((z) => z.id)));
 

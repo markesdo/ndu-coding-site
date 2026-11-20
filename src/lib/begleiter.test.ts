@@ -445,6 +445,19 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(Object.keys(NOTIZEN[pfad] ?? {}).filter((k) => k === 'zwoelf')).toStrictEqual([]);
     expect(NOTIZEN[pfad]?.warum?.uebung).toBeUndefined();
     expect(NOTIZEN[pfad]?.warum?.ueberleitung).toBe('Woher kommen die Teilchancen?');
+    // Entscheidung 11: Mini-Baum ③ wie Torres S. 84–85 – 9 zerfällt in „Wer spielt mit?“, „Welche Art Serie?“ …; 11 leuchtet nicht mit.
+    const drei = q.match(/\{ nr: 3,[^\n]*\}/)?.[0] ?? '';
+    expect(drei).toContain("kinder: ['Wer spielt mit?', 'Welche Art Serie?', '…'], nummern: [9],");
+    expect(drei).toContain("text: '9 zerfällt in kleinere Chancen, etwa ‚Wer spielt mit?‘.'");
+  });
+  // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
+  // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.
+  it('Tag 3: Kaffeebar-Momente als Tätigkeitsnamen auf experience-map, baum und ziel-chance', () => {
+    const SAETZE = /Ich komme in die Halle und entscheide|Ich stehe an und warte auf meinen Kaffee|Ich bin im Zug/g;
+    const seiten = ['/innolab/tag-3/experience-map', '/innolab/methoden/baum', '/innolab/methoden/ziel-chance'];
+    expect(seiten.flatMap((p) => [...(quellen[p] ?? '').matchAll(SAETZE)].map((m) => `${p}: ${m[0]}`))).toStrictEqual([]);
+    expect(seiten.flatMap((p) => JSON.stringify(NOTIZEN[p] ?? {}).match(SAETZE) ?? [])).toStrictEqual([]);
+    expect(quellen['/innolab/tag-3/experience-map']).toContain('<KaffeebarMap namen="taetigkeit" />');
   });
   // 20.11. spät (Markus, Entscheidung 10): Oben hängt der Momentname von heute früh (T3 · 0), kein Satz der Kundschaft; die
   // Bildunterschrift „Vier Momente, vier oberste Chancen“ wird erklärt (Torres’ eigene Sätze, S. 70 wörtlich).
