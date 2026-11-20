@@ -187,11 +187,13 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
           <li data-schritt>Treibt sie euren <strong>Outcome</strong>? Nein → bleibt auf dem Snapshot.</li>
         </ol>
         <p data-schritt><strong>Dann:</strong> unter den Moment, in dem sie vorkommt – passt sie unter zwei, genauer fassen.</p>
+        <p class="zitat-chance">Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?</p>
       </div>
     </BildText>
     <div class="nur-handout">
       <p>Mit den Ästen aus der Experience Map geht ihr jeden Snapshot durch und stellt jeder Chance drei Fragen. Torres nimmt eine Chance auf, wenn alle drei mit Ja beantwortet sind ({TORRES}, S. 88). Bei euch sortieren nur Frage 1 und Frage 3 aus. Ist eine Chance eine Lösung, fragt ihr wie Torres „If you had that feature, what would that do for you?“ und formuliert das Bedürfnis dahinter (S. 69); es geht neu durch die Fragen (S. 94). Was sonst bei Frage 1 ein Nein bekommt – eine Meinung, eine Tatsache ohne Bedürfnis – oder bei Frage 3, bleibt auf dem Snapshot; das ist unsere Lesart, Torres sagt nicht, was mit solchen Chancen geschieht (S. 70, 88). Frage 2 fragt bei euch nicht, ob, sondern in wie vielen Interviews ihr die Chance gehört habt; die Antwort ist eine Zahl, „X von N“, N = eure echten Interviews. Interviews mit dem Pseudonym „Synthetisch“ zählen dabei nicht: weder als Zitat-ID noch für X oder N. Dann hängt ihr die Chance unter den Moment, in dem sie vorkommt. Passt sie unter mehr als einen Ast, ist sie zu breit: Formuliert sie genauer, notfalls als eigene Chance für jeden Moment. „Die Oberfläche ist schwer bedienbar“ wird so zu „Ich finde eine bestimmte Serie nicht“ oder „Ich weiß nicht mehr, welche Folge ich zuletzt gesehen habe“ ({TORRES}, S. 88).</p>
       <p><strong>Warum zählen statt aussortieren?</strong> Torres sortiert im Inventar aus (S. 88) und zählt erst, wenn sie Geschwister vergleicht: „How many customers are affected and how often?“ – grob geschätzt, auch anhand der Interview-Snapshots (S. 99–100). Ihr zieht diese Zahl auf die Karte vor. Ihr Team interviewt jede Woche weiter (S. 72), und was nur eine Person erzählt hat, taucht oft in weiteren Interviews wieder auf (S. 70). Ihr habt drei Interviews: Mit Torres’ Filter bliebe zu wenig, um den Baum zu strukturieren. Darum bleibt die Chance im Baum, und die Zahl zeigt, wie viel sie trägt. „1 von 3“ heißt: einmal gehört, noch kein Muster – im nächsten Interview fragt ihr zuerst danach. Die Zahl braucht ihr im nächsten Block wieder, wenn ihr die Chancen nach ihrer Größe vergleicht.</p>
+      <p><strong>Ein Zitat ist noch keine Chance.</strong> Eine Chance ist ein Bedürfnis, ein Schmerzpunkt oder ein Wunsch, den ihr im Interview gehört habt ({TORRES}, S. 69, 88); das Zitat ist der Beleg dafür. Fragt darum bei jedem Zitat: Was braucht die Person hier? Die Antwort, in ihren Worten, kommt auf die Karte, das Zitat als ID darunter.</p>
       <p><strong>Die Karte:</strong> der Satz in den Worten der Kundschaft, die Zitat-IDs – eine je Interview genügt – und „X von N“. Eine übergeordnete Chance, die ihr für die Struktur ergänzt, trägt keine ID, sondern „(ergänzt)“ (S. 90).</p>
       <p>Die Abbildung ist Torres’ eigenes Inventar: Elf der zwölf Chancen von der Liste (S. 81) hängen unter den vier Momenten von S. 87, noch ohne Struktur innerhalb der Äste. „Is this show any good?“ (9) liegt unter „I’m not sure what to watch.“, „Who is that actor?“ (11) unter „I’m watching a show.“ – bei ihr liegen 9 und 11 also unter zwei verschiedenen Momenten. „I can’t find anything to watch.“ (1) fehlt in der Abbildung; warum, sagt Torres nicht. Unsere Lesart: Als übergeordnete Chance von 2, 3 und 5 (S. 83) kommt sie erst beim Strukturieren dazu.</p>
     </div>
@@ -363,7 +365,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
     <p class="wozu"><strong>Wozu?</strong> Damit ihr Chancen vergleichen könnt, die auf derselben Ebene liegen – statt zwölf Zettel in einer Liste.</p>
     <p class="small miro-zeile">Miro, euer Baum: <MiroLink name="Baum · Sofie · sofie">Sofie</MiroLink> · <MiroLink name="Baum · Joachim · joachim">Joachim</MiroLink> · <MiroLink name="Baum · Hewen · chen">Hewen</MiroLink></p>
     <ol class="gross">
-      <li><strong>Inventar:</strong> Momente aus T3 · 0 blau unter den Outcome. Jede Chance durch die drei Fragen → gelb unter ihren Moment. <Timer minuten={12} /></li>
+      <li><strong>Inventar:</strong> Momente aus T3 · 0 blau unter den Outcome. Chancen aus euren Snapshots (Werkstatt, Feld ‚Chancen‘) durch die drei Fragen → gelb unter ihren Moment. <Timer minuten={12} /></li>
       <li data-schritt><strong>Struktur:</strong> Ast für Ast ordnen, Gleiches zusammenlegen, übergeordnete Chance nach dem Rezept oben rechts im Frame. <Timer minuten={10} /></li>
       <li data-schritt><strong>Selbst prüfen:</strong> die sechs Anti-Muster, Karte für Karte. Je Fund: ändern, grauer Zettel „Nächstes Interview: …“ oder lassen. <Timer minuten={13} /></li>
     </ol>
@@ -471,7 +473,10 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
   :global(html[data-beamer]) .euer-baum-bild :global(.baum-ast) { padding-left: .15rem; padding-right: .15rem; }
   .euer-baum-bild figcaption { margin-top: .3rem; text-align: right; }
   .inventar-fragen ol { margin: 0; }
+  /* Seit der Zeile „Ein Zitat ist noch keine Chance“ etwas kleiner, damit die Folie bei 720p passt. */
+  :global(html[data-beamer] .folie:has(> h2#inventar) .bild-text) { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
   .inventar-fragen > p { margin: .7rem 0 0; }
+  .inventar-fragen > p.zitat-chance { margin-top: .4rem; font-size: .9rem; font-style: italic; color: var(--muted); }
   /* „oberste-ebene“: „← Outcome“ neben dem obersten Kreis der Abbildung (wie journey-map.astro, Folie momente). */
   .outcome-marke { position: absolute; left: 63%; top: 22%; transform: translateY(-50%); white-space: nowrap; font-size: .9rem; font-weight: 600; color: var(--accent); }
   /* „beispiel“: drei Fragen, die Antwort darunter (im Beamer erst nach dem Schritt). */

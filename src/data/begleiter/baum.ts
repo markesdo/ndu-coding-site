@@ -349,7 +349,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
       'Nach 12 min: Struktur, Timer 10 min.',
       '1:1 schon während Struktur, je 5 min: Sofie → Joachim → Hewen.',
       'Nach 22 min: selbst prüfen mit der Checkliste, Timer 13 min.',
-      'Wenige Interviews: viele Karten mit „1 von N“ – normal, Zahl drauf.',
+      '„Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?“',
     ],
     uebung: { dauer: '35 min (12 + 10 + 13)', form: 'allein, Markus je 5 min am Baum, ab der Struktur' },
     miro: {
@@ -371,6 +371,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         'Gelbe Chancenkarten: Worte der Kundschaft, Zitat-IDs (eine je Interview genügt), „X von N“ („Synthetisch“ zählt nicht); „(ergänzt)“ ohne ID und Zahl.',
         'Passt eine Chance unter zwei Momente, ist sie zu breit (Torres S. 88, 94).',
         'Was offen bleibt, wird eine Frage für die nächsten Interviews.',
+        'Wenige Interviews: viele Karten mit „1 von N“ – normal, die Zahl kommt drauf.',
+        'Ein Zitat ist noch keine Chance: fragen, was die Person hier braucht (Torres S. 69, 88); Quelle der Chancen ist das Feld „Chancen“ der Snapshots in der Werkstatt.',
       ],
       fehler: [
         'Lösungen als Chancen („App“, „Express-Theke“).',

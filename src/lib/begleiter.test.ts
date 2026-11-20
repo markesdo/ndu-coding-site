@@ -556,6 +556,16 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
       expect(folie).toContain(t);
     }
   });
+  // Entscheidung 19 (20.11. spät): Woher die Chancen kommen (Werkstatt, Feld „Chancen“) und dass ein Zitat noch keine Chance ist.
+  it('Tag 3: baum – vorgehen nennt die Quelle der Chancen, inventar: „Ein Zitat ist noch keine Chance“', () => {
+    const pfad = '/innolab/methoden/baum';
+    const q = quellen[pfad] ?? '';
+    const vorgehen = q.slice(q.indexOf('id="vorgehen"'), q.indexOf('id="anti-muster"'));
+    expect(vorgehen).toContain('Chancen aus euren Snapshots (Werkstatt, Feld ‚Chancen‘) durch die drei Fragen → gelb unter ihren Moment.');
+    const inventar = q.slice(q.indexOf('id="inventar"'), q.indexOf('id="drei-fragen"'));
+    expect(inventar).toContain('<p class="zitat-chance">Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?</p>');
+    expect(NOTIZEN[pfad]?.vorgehen?.live).toContain('„Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?“');
+  });
   // Entscheidung 11: An Tag 3 heißen die Kaffeebar-Momente wie die Spalten beim Zählen, keine Ich-Sätze – auf der
   // Experience Map (auch KaffeebarMap), im Baum und auf Ziel-Chance. Tag 2 und Tag 4 bleiben, wie sie unterrichtet wurden.
   it('Tag 3: Kaffeebar-Momente als Tätigkeitsnamen auf experience-map, baum und ziel-chance', () => {
