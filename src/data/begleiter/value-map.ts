@@ -97,7 +97,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
 
   fit: {
     live: [
-      'Abbildung: Quadrat links – Value Map. Kreis rechts – Profil.',
+      'Abbildung: links Value Map, jeder Zettel geprüft, auch Produkte. Rechts Profil.',
       'Klick 1: Zettel vorlesen, offen fragen: Was trifft er? P1.',
       '„Ein Zettel, eine ID, zwei Haken – links und rechts.“',
       'Klick 2: Rest rechts – Kreuz, oder Fragezeichen mit Frage.',
