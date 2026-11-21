@@ -795,7 +795,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const warum = folie('warum');
     expect(warum).toContain('<p class="folie-satz">„Wie können wir …?“ oder „Wie könnten wir …?“ – was ändert der Konjunktiv?</p>');
     expect(warum).toContain('<li><strong>könnten</strong> – Was wäre möglich? – geprüft wird später.</li>');
-    expect(warum.match(/sollen/g) ?? []).toStrictEqual([]);
+    expect(warum.match(/sollen/gi) ?? []).toStrictEqual([]);
     const bruecke = folie('bruecke');
     expect(bruecke).toContain("sub: '„Wie könnten wir ‚Ich mag keine Werbung‘ angehen?“'");
     expect(bruecke.match(/How might we|commercials/g) ?? []).toStrictEqual([]);
