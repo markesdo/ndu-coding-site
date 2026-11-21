@@ -821,4 +821,12 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(q.match(/H3|H\[n\]/g) ?? []).toStrictEqual([]);
     expect(q).toContain('Dort fragt ihr es am Job (Osterwalder u. a., „Value Proposition Design“, S. 80), hier an der Chance');
   });
+  // Runde 16 (21.11.): Ideation ohne Etikett „Kursregel“ – wo der Kurs von Torres abweicht, steht der Grund.
+  it('Tag 3: ideation ohne „Kursregel“ und „Regel dieses Kurses“, auch nicht im Begleiter', () => {
+    const q = quellen['/innolab/methoden/ideation'] ?? '';
+    const texte = [q, JSON.stringify(NOTIZEN['/innolab/methoden/ideation'] ?? {})];
+    expect(texte.every((x) => x.length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/Kursregel|Regel dieses Kurses/g) ?? [])).toStrictEqual([]);
+    expect(q).toContain('allein aus, weil ihr drei Produkte habt.</p>');
+  });
 });

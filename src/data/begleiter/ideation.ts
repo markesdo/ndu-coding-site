@@ -70,7 +70,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     kern: [
       {
         text: 'Die Zwei-Minuten-Runde ist eine Übung dieses Kurses, keine Methode aus dem Buch. Sie stellt den Befund nach, den Torres berichtet: erste Ideen sind selten die besten, die originellsten kommen spät.',
-        quelle: `Kursregel; Befund: ${TORRES}, S. 107`,
+        quelle: `Übung dieses Kurses; Befund: ${TORRES}, S. 107`,
       },
     ],
     ueberleitung: 'Jetzt schaut auf eure Nummern.',
@@ -200,7 +200,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 112`,
       },
       {
-        text: 'Ideation ist die eine Übung, die Torres mit dem ganzen Team empfiehlt: „The more diversity in the group, the more diverse ideas you’ll generate.“ Voraussetzung: Ziel-Chance und Kontext der Kundschaft vorher teilen – hier still, oben in der Spalte (Kursregel).',
+        text: 'Ideation ist die eine Übung, die Torres mit dem ganzen Team empfiehlt: „The more diversity in the group, the more diverse ideas you’ll generate.“ Voraussetzung: Ziel-Chance und Kontext der Kundschaft vorher teilen – hier still, oben in der Spalte, weil wer spendet, den Kontext braucht (S. 112, 114).',
         quelle: `${TORRES}, S. 114`,
       },
     ],
@@ -242,7 +242,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Dürfen wir Claude gleich am Anfang fragen?',
-        antwort: 'Nein, erst nach der ersten Runde allein – sonst geben Claudes Ideen den Ton vor wie die ersten Wortmeldungen in einer Gruppe (S. 108). Danach als Quelle für analoge Produkte und extreme Nutzer*innen; Ideen von Claude werden markiert. Das ist eine Regel dieses Kurses, nicht von Torres.',
+        antwort: 'Nein, erst nach der ersten Runde allein – sonst geben Claudes Ideen den Ton vor wie die ersten Wortmeldungen in einer Gruppe (S. 108). Danach als Quelle für analoge Produkte und extreme Nutzer*innen; Ideen von Claude werden markiert. Über Claude sagt Torres das nicht; der Grund ist derselbe wie bei Gruppen.',
       },
     ],
     ueberleitung: 'Den Ausweg über analoge Produkte üben wir einmal gemeinsam.',
@@ -296,7 +296,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Drei Punkte je Person, frei verteilt – auch alle auf eine.',
       'Kein klarer Sieger: kurz werben, neu punkten.',
       'Falle: nach „machbar“ oder „cool“ punkten.',
-      'Bei euch: jede*r wählt die drei allein – Kursregel.',
+      'Bei euch: jede*r wählt allein – drei Produkte, drei Kundschaften.',
       '„Wir wählen drei, nicht eine. Nach der Pause wird eine davon Spitzenreiter auf Papier.“',
     ],
     verstaendnis: {
@@ -325,7 +325,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Torres punktet im Team. Warum wählt ihr allein?',
-        antwort: 'Torres: „Groups tend to evaluate ideas better than individuals because groups have a wider breadth of experience to draw on.“ (S. 113). Bei euch hat jede*r ein eigenes Produkt und kennt allein die Kundschaft dazu; darum wählt ihr allein, mit Torres’ einzigem Kriterium: Wie gut trifft die Idee die Ziel-Chance? Das ist eine Regel dieses Kurses.',
+        antwort: 'Torres: „Groups tend to evaluate ideas better than individuals because groups have a wider breadth of experience to draw on.“ (S. 113). Bei euch hat jede*r ein eigenes Produkt und kennt allein die Kundschaft dazu; darum wählt ihr allein, mit Torres’ einzigem Kriterium: Wie gut trifft die Idee die Ziel-Chance?',
       },
       {
         frage: 'Bei Torres entscheiden Tests zwischen den dreien. Warum bei uns ein Spitzenreiter?',
@@ -436,7 +436,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         'Allein (16 min): Ziel-Chance, HMW-Frage und einen Satz zur Situation oben in die eigene Spalte, dann Ideen, ein Sticky pro Idee.',
         'Ideen-Spende, still (6 min): je Produkt 2 Minuten – die zwei anderen legen Ideen-Stickies an die Frage, ohne Diskussion; wem das Produkt gehört, liest nur mit. Kursformat statt Torres’ Teilen-Runde, weil jede*r ein eigenes Produkt hat.',
         'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
-        'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); allein wählen ist Kursregel.',
+        'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); bei euch wählt jede*r allein, weil nur ihr die eigene Kundschaft kennt.',
         'Lückensätze (8 min): je Idee ein Satz, Job, Pain und Gain mit ID aus dem eigenen Profil vom Vormittag (VPD S. 183–184).',
         'Festhalten (4 min): die drei Lückensätze, „Aussortiert“ und die Liste in der eigenen Spalte in T3 · 3; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
       ],
