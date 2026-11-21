@@ -783,7 +783,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const folie = q.slice(a, q.indexOf('</Folie>', a));
     expect(folie).toContain('id="vorgehen">So geht ihr vor (36 min)</h2>');
     expect(folie).toContain('<p class="folie-satz">Spitzenreiter wählen, Value Map füllen und ordnen, Fit prüfen.</p>');
-    const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
+    const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>')).replaceAll('&nbsp;', ' '); // &nbsp; hält am Beamer die Feldnummer am Feldnamen
     const timer = [...schritte.matchAll(/<li data-schritt>.*?<Timer minuten=\{(\d+)\} \/><\/li>/g)].map((m) => Number(m[1]));
     expect(timer).toStrictEqual([5, 20, 7, 4]);
     expect(timer.reduce((x, y) => x + y, 0)).toBe(36);
@@ -791,7 +791,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folie).toContain('Produkte bekommen im Quadrat keine ID');
     expect(folie).toContain('Dazu neun Minuten Theorie mit der Kaffeebar.');
     expect([q, JSON.stringify(n)].flatMap((x) => x.match(/jeder Zettel mit (P- oder G-)?ID|je mit P- oder G-ID|zeigt erst der Test/g) ?? [])).toStrictEqual([]);
-    expect(q).toContain('Die Value Map schreibt aus und ergänzt – jeder grüne Zettel mit P- oder G-ID.</p>');
+    expect(q).toContain('Die Value Map schreibt aus und ergänzt – jeder grüne Zettel mit <span style="white-space:nowrap">P- oder G-ID</span>.</p>');
     const fit = q.slice(q.indexOf('id="fit-kaffeebar"'), q.indexOf('</tbody>', q.indexOf('id="fit-kaffeebar"')));
     expect([...fit.matchAll(/<tr data-schritt><td>Products & Services · ([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><\/tr>/g)].map((m) => m.slice(1))).toStrictEqual([
       ['QR-Code an der Hallentür, Bestellung im Browser ohne App', 'J1 Kaffee besorgen', '✓'],
