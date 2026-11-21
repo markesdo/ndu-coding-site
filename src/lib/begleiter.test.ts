@@ -1023,6 +1023,11 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(fit).toContain('<p class="folie-satz">Erst links, dann rechts, dann von oben lesen.</p>');
     expect([...fit.matchAll(/<tr data-schritt><td><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['1 Links, Zettel für Zettel:', '2 Rechts, was übrig ist:', '3 Von oben lesen:']);
     expect(fit).toContain('<p class="small vm-fit-fuss">✓ trifft · ✗ trifft nicht · ? wissen wir nicht.');
+    // 21.11.: Der Punkt „Links, das Quadrat“ sagt, dass jeder Zettel geprüft wird, auch die Produkte (Abbildung S. 109: Haken auch
+    // an den gelben Produkten). Welche ID ein Produkt bekommt, zeigt fit-kaffeebar; wer nichts trifft, wird gestrichen – auch ein
+    // Produkt. Im Punkt statt in Schritt 1, weil die Tabellenspalte sonst über 1280 × 720 hinausläuft.
+    expect(fit).toContain('<li><strong>Links, das Quadrat:</strong> eure Value Map. Geprüft wird jeder Zettel, auch die Produkte. ✓ heißt:');
+    expect(fit.match(/Produkte nur, wenn|sie treffen Jobs/g) ?? []).toStrictEqual([]);
     // Code-Review 21.11.: J4 ist halb getroffen (Anstehen über P2) – darum „?“; höchstes ✗ wie auf fit-kaffeebar-rechts.
     expect(fit).toContain('<td>Kein Zettel links nennt G2; J4 nur halb (Anstehen über P2) → ?</td>');
     expect(fit).toContain('Höchstes ✗: J2 und G2 – bewusst?');
