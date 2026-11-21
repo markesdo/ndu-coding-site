@@ -422,7 +422,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       '1:1 in dieser Runde, je 4 min: Sofie, Hewen, Joachim.',
       'Nach 40 min: auswählen allein, 7 min.',
       'Nach 47 min: Lückensätze gegen das Profil, 8 min.',
-      'Nach 55 min: drei Ideen als Lückensätze in T3 · 3.',
+      'Nach 55 min: Feld „Drei Ideen als Lückensätze“ in T3 · 3 gefüllt?',
     ],
     uebung: { dauer: '59 min (16 + 6 + 18 + 7 + 8 + 4)', form: 'allein, dazwischen eine stille Ideen-Spende' },
     miro: {
@@ -440,8 +440,8 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         'Ideen-Spende, still (6 min): je Produkt 2 Minuten – die zwei anderen legen Ideen-Stickies an die Frage, ohne Diskussion; wem das Produkt gehört, liest nur mit. Kursformat statt Torres’ Teilen-Runde, weil jede*r ein eigenes Produkt hat.',
         'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
         'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); bei euch wählt jede*r allein, weil nur ihr die eigene Kundschaft kennt.',
-        'Lückensätze (8 min): je Idee ein Satz, Job, Pain und Gain mit ID aus dem eigenen Profil vom Vormittag (VPD S. 183–184).',
-        'Festhalten (4 min): die drei Lückensätze, „Aussortiert“ und die Liste in der eigenen Spalte in T3 · 3; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
+        'Lückensätze (8 min): je Idee ein Satz ins Feld „Drei Ideen als Lückensätze“ der eigenen Spalte in T3 · 3, Job, Pain und Gain mit ID aus dem eigenen Profil vom Vormittag (VPD S. 183–184).',
+        'Festhalten (4 min): drei Sätze im Feld „Drei Ideen als Lückensätze“, „Aussortiert“ gefüllt, die Liste in der eigenen Spalte in T3 · 3; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
       ],
       achten: [
         'Bei der Ideen-Spende wird nicht diskutiert und nicht bewertet – nur Stickies legen.',

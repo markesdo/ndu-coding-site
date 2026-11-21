@@ -58,29 +58,29 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       { text: '„Pain relievers describe how exactly your products and services alleviate specific customer pains.“ Verb und Pain im Satz sind das in Rohform – Lesart dieses Kurses. Gain Creators ebenso.', quelle: `${VPD}, S. 86, 89` },
       { text: 'Ad-libs „Pinpoint how different alternatives create value“; der Canvas: „Flesh out possible directions“. Der Canvas entsteht für die gewählte Richtung.', quelle: `${VPD}, S. 158–159, 182` },
     ],
-    ueberleitung: 'Weitere Zettel: In welches Feld gehören sie?',
+    ueberleitung: 'Zwei Zettel kommen dazu. In welches Feld gehören sie?',
   },
 
   'produkt-wirkung': {
     live: [
       'Allein still: welches Feld für jeden Zettel? Dann zugleich zeigen.',
-      'Erst alle vier beantworten lassen, dann aufdecken.',
-      'A, C: Products & Services. B: Pain Reliever P1. D: Gain Creator G1.',
+      'Erst beide beantworten lassen, dann aufdecken.',
+      'A: Products & Services. B: Pain Reliever P2.',
       'Probe: Steht es im Schaufenster – oder sagt es, was sich ändert?',
-      'Wenn hinten: nur B und A, als Paar.',
+      'Wenn hinten: nur aufdecken und die Probe sagen.',
     ],
-    uebung: { dauer: '2 min', form: 'allein still zuordnen, dann je Zettel alle zugleich zeigen (1, 2 oder 3 Finger); niemand wird aufgerufen' },
+    uebung: { dauer: '1 min', form: 'allein still zuordnen, dann je Zettel alle zugleich zeigen (1, 2 oder 3 Finger); niemand wird aufgerufen' },
     ablauf: {
       schritte: [
-        'Vier Zettel zeigen: A „QR-Code an der Hallentür“, B „Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist“, C „Express-Ausgabe mit drei Standardgetränken“, D „Der Kaffee steht bereit, wenn man an der Ausgabe ankommt“.',
-        'Allein still: alle vier Zettel einem Feld zuordnen (Products & Services, Pain Relievers, Gain Creators). Dann je Zettel alle zugleich zeigen: 1, 2 oder 3 Finger. Eine offene Frage an alle: Wer sagt in einem Halbsatz, warum? Niemanden aufrufen.',
+        'Zwei Zettel zeigen, die der Lückensatz nicht nennt: A „Express-Ausgabe mit drei Standardgetränken“, B „Statt anzustehen: in 20 Sekunden im Gehen bestellen“.',
+        'Allein still: beide Zettel einem Feld zuordnen (Products & Services, Pain Relievers, Gain Creators). Dann je Zettel alle zugleich zeigen: 1, 2 oder 3 Finger. Eine offene Frage an alle: Wer sagt in einem Halbsatz, warum? Niemanden aufrufen.',
         'Aufdecken und vergleichen.',
       ],
       achten: [
-        'Bei B und D nach der ID fragen: Welchen Pain, welchen Gain im Profil der Kaffeebar trifft der Zettel?',
+        'Bei B nach der ID fragen: Welchen Pain im Profil der Kaffeebar trifft der Zettel?',
         'Es ist in Ordnung, wenn ein Zettel Pain und Gain zugleich trifft (S. 103).',
       ],
-      aufloesung: 'A und C sind Products & Services (Schaufenster). B ist ein Pain Reliever für P1, D ein Gain Creator für G1. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
+      aufloesung: 'A ist ein Product & Service (Schaufenster). B ist ein Pain Reliever für P2. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
     },
     kern: [
       {
@@ -88,7 +88,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 105`,
       },
       {
-        text: 'Die vier Zettel stammen aus der ausgearbeiteten Value Map der Kaffeebar für „Im Gehen bestellen“.',
+        text: 'Die zwei Zettel stammen aus der ausgearbeiteten Value Map der Kaffeebar für „Im Gehen bestellen“; der Lückensatz nennt sie nicht.',
         quelle: 'value-map.astro, Folie beispiel (Handout)',
       },
     ],
@@ -196,7 +196,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Wozu vorlesen: wissen, was ihr heute ausarbeitet – und was offen bleibt.',
-      'Timer 5 min: drei Lückensätze aus der Ideation vergleichen, Spitzenreiter wählen.',
+      'Timer 5 min: Lückensätze aus T3 · 3 kopieren, vergleichen, Spitzenreiter wählen.',
       'Nach 5 min: Value Map aus dem Lückensatz, ergänzen – Timer 20 min.',
       '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
       'Nach 25 min: Fit in drei Schritten, Timer 7 min.',

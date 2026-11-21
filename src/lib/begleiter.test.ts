@@ -924,4 +924,19 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(id).toContain('<strong>Mit diesen drei Sätzen geht ihr in den nächsten Block:</strong>');
     expect([id, JSON.stringify(NOTIZEN['/innolab/methoden/ideation'] ?? {})].flatMap((x) => x.match(/18 Ideen|der 18\b|aus 18|Express-Kasse wie im Supermarkt/g) ?? [])).toStrictEqual([]);
   });
+  // Entscheidungen 62 und 63 (21.11.): produkt-wirkung mit zwei Zetteln, die der Satz nicht nennt; der Ort der Lückensätze
+  // (T3 · 3, Feld „Drei Ideen als Lückensätze“) steht auf den Folien, kopiert wird nach T3 · 4.
+  it('Tag 3: produkt-wirkung mit zwei Zetteln, Ort der Lückensätze auf ideation und value-map', () => {
+    const vm = quellen['/innolab/methoden/value-map'] ?? '';
+    const id = quellen['/innolab/methoden/ideation'] ?? '';
+    const a = vm.indexOf('id="produkt-wirkung"');
+    const pw = vm.slice(a, vm.indexOf('</Folie>', a));
+    expect(pw.match(/<li>/g) ?? []).toHaveLength(2);
+    expect(pw).toContain('<li>Statt anzustehen: in 20 Sekunden im Gehen bestellen</li>');
+    expect(pw).toContain('<strong>B:</strong> Pain Reliever (P2)');
+    expect(pw).toContain('<strong>Die Probe:</strong>');
+    expect(vm).toContain('eure drei Lückensätze aus T3 · 3 auf die Stickies kopieren');
+    expect(id).toContain('<li data-schritt><strong>Lückensätze:</strong> je Idee einer, ins Feld „Drei Ideen als Lückensätze“ eurer Spalte – J-, P-, G-ID aus eurem Canvas.');
+    expect(id).toContain('<Prompt label="Vorlage · eure Spalte in T3 · 3, Feld ‚Drei Ideen als Lückensätze‘">');
+  });
 });
