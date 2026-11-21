@@ -810,6 +810,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     // Ein Satz statt drei: die Regel steht nicht doppelt, und „aus dem Bauch“ verbietet keine Vermutungen.
     expect(folie.match(/Einträge ohne Zitat dürfen ins Profil|nicht aus dem Bauch kommt|Das Buch erlaubt auch/g) ?? []).toStrictEqual([]);
     expect(n.vorgehen?.ablauf?.achten).toContain('Pains, die nicht im Baum stehen, dürfen dazu – mit „?“.');
+    // Entscheidung 74 (21.11.): mit job-arten dauert die Theorie etwa 13 Minuten.
+    expect(folie).toContain('Dazu etwa 13 Minuten Theorie mit Jane und der Kaffeebar.');
     expect(folie.match(/einen der sechs Fehler bei euch markieren/g) ?? []).toStrictEqual([]);
     expect(n.vorgehen?.live).toContain('Wer in 4 min nicht durchkommt: zuerst „zu vage“, „eigenes Angebot“.');
     expect(JSON.stringify(n.vorgehen).match(/Kein Eintrag ohne Zitat|einen Fehler markieren|einen der sechs Fehler/g) ?? []).toStrictEqual([]);
