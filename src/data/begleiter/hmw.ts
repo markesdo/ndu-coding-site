@@ -66,10 +66,21 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   warum: {
     live: [
-      'Kurz, weil bekannt: drei Wörter, drei Rollen.',
+      'Kurz, weil bekannt: erst der Vergleich, dann drei Rollen.',
       'Fragen: Was ändert sich, wenn dort „können“ steht?',
-      '„Im Deutschen trägt der Konjunktiv das might: könnten, nicht können.“',
-      'Wenn hinten: in einem Satz, dann weiter.',
+      'Im Deutschen trägt der Konjunktiv das might – unsere Übertragung.',
+      'Wenn hinten: nur der erste Klick, dann weiter.',
+    ],
+    verstaendnis: {
+      frage: 'Was ändert sich, wenn dort „können“ steht?',
+      antwort: 'Die Frage prüft dann schon, ob es geht. Mit „könnten“ wird erst gesammelt und später geurteilt (Basadur bei Berger, S. 1).',
+      falsch: '„Könnten“ allein macht die Frage gut – eine Lösung im Kostüm bleibt eine (siehe coast).',
+    },
+    fragen: [
+      {
+        frage: 'Wer ist „wir“, wenn ich allein arbeite?',
+        antwort: 'Bei Brown das Team im Raum. Bei euch: ihr als die, die bauen, und in der Ideation die zwei, die euch Ideen spenden. Kurslesart.',
+      },
     ],
     kern: [
       {
@@ -77,7 +88,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
         quelle: `${BERGER}, S. 1`,
       },
       {
-        text: 'Tim Brown (IDEO): „The ‚how‘ part assumes there are solutions out there — it provides creative confidence“; „might“ erlaubt Ideen, die funktionieren oder nicht; „we“ heißt gemeinsam, auf den Ideen der anderen aufbauend.',
+        text: 'Tim Brown (IDEO): „The ‚how‘ part assumes there are solutions out there — it provides creative confidence“; „might“ erlaubt Ideen, die funktionieren oder nicht; „we“ heißt gemeinsam (bei Brown: das Team), auf den Ideen der anderen aufbauend.',
         quelle: `${BERGER}, S. 1`,
       },
       {
@@ -85,14 +96,16 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
         quelle: `${BERGER}, S. 2`,
       },
     ],
-    ueberleitung: 'Wie kommt ihr von eurer Chance zu so einer Frage? Torres zeigt den Schritt.',
+    ueberleitung: 'Wie kommt ihr von eurer Chance zu so einer Frage? Torres zeigt, warum die Chance in die Frage gehört.',
   },
 
   bruecke: {
     live: [
-      'Fluss von links: Wunsch, Chance, Frage, Optionen.',
+      'Reihe 1 zeigen: Lösungswunsch, ein Weg.',
       'Fragen: Wie viele Wege gibt es zu „Werbung vorspulen“?',
-      'Aufdecken: Grundform – die Chance steht wörtlich in der Frage.',
+      'Aufdecken: Frage an die Chance – drei Wege.',
+      'Kennt ihr von Tag 1 – neu ist heute die Frage.',
+      'Aufdecken: eure erste Frage – die Chance steht wörtlich darin.',
       '„Damit habt ihr eure erste Frage schon – noch bevor ihr nachdenkt.“',
     ],
     verstaendnis: {
@@ -101,7 +114,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: '„I wish I could fast-forward through commercials“ ist ein Lösungswunsch. Dahinter: „I don’t like commercials.“ Erst die Frage „How might we address ‚I don’t like commercials‘?“ bringt mehrere Optionen: unterhaltsamere Werbung, Vorspulen, ein Abo ohne Werbung. „An opportunity should have more than one potential solution.“',
+        text: '„I wish I could fast-forward through commercials“ ist ein Lösungswunsch. Dahinter: „I don’t like commercials.“ Erst die Frage „How might we address ‚I don’t like commercials‘?“ bringt mehrere Optionen: unterhaltsamere Werbung, Vorspulen, ein Abo ohne Werbung. „An opportunity should have more than one potential solution.“ Torres benutzt die Frage als Test für Chancen und schreibt „Maybe it’s as simple as“: „Ich mag keine Werbung“ ist Illustration, keine Ziel-Chance (kein Moment, vgl. „Opportunities are not specific“, S. 94).',
         quelle: `${TORRES}, S. 94–95`,
       },
       {

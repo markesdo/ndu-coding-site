@@ -787,4 +787,21 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(coast).not.toContain("t: 'Ergebnis'");
     expect(coast).toContain('<p data-schritt><strong>Bei euch ist der Warum-Schritt schon getan: Eure Ziel-Chance steht in den Worten der Kundschaft.</strong></p>');
   });
+  // Entscheidungen 42 und 43 (21.11.): `warum` vergleicht können/könnten, „sollen“ nur im Handout; `bruecke` stellt Lösungswunsch
+  // und Frage an die Chance gegeneinander, auf Deutsch; die Grundform lautet auf `bruecke`, `bauen` und in der Vorlage gleich.
+  it('Tag 3: hmw#warum und hmw#bruecke – Vergleich, deutsche Frage, Grundform gleichlautend', () => {
+    const q = quellen['/innolab/methoden/hmw'] ?? '';
+    const folie = (id: string) => { const a = q.indexOf(`id="${id}"`); return q.slice(a, q.indexOf('<div class="nur-handout">', a)); };
+    const warum = folie('warum');
+    expect(warum).toContain('<p class="folie-satz">„Wie können wir …?“ oder „Wie könnten wir …?“ – was ändert der Konjunktiv?</p>');
+    expect(warum).toContain('<li><strong>könnten</strong> – Was wäre möglich? – geprüft wird später.</li>');
+    expect(warum.match(/sollen/g) ?? []).toStrictEqual([]);
+    const bruecke = folie('bruecke');
+    expect(bruecke).toContain("sub: '„Wie könnten wir ‚Ich mag keine Werbung‘ angehen?“'");
+    expect(bruecke.match(/How might we|commercials/g) ?? []).toStrictEqual([]);
+    expect(bruecke).toContain('<p data-schritt><strong>Eure erste Frage:</strong> „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“</p>');
+    expect(q.match(/Grundform nach Torres|feste Form/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('die Grundform „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“, ist Kursformat.');
+    expect(NOTIZEN['/innolab/methoden/hmw']?.warum?.ueberleitung).toBe('Wie kommt ihr von eurer Chance zu so einer Frage? Torres zeigt, warum die Chance in die Frage gehört.');
+  });
 });

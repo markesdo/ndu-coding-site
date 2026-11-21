@@ -66,31 +66,37 @@ const WW = 'Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“
 
   <Folie>
     <h2 id="warum">Warum „könnten“?</h2>
-    <p class="folie-satz">„Können“ und „sollen“ urteilen schon – „könnten“ schiebt das Urteil auf.</p>
-    <Fluss label="How Might We: drei Wörter, drei Rollen" knoten={[
-      { t: 'Wie', sub: 'Es gibt Lösungen – das gibt Zuversicht.' },
-      { t: 'könnten', sub: 'Ideen dürfen auch nicht funktionieren.' },
-      { t: 'wir', sub: 'gemeinsam, auf den Ideen der anderen aufbauend' },
-    ]} />
+    <p class="folie-satz">„Wie können wir …?“ oder „Wie könnten wir …?“ – was ändert der Konjunktiv?</p>
+    <ul class="gross" data-schritt>
+      <li><strong>können</strong> – Geht das überhaupt? – die Frage prüft schon.</li>
+      <li><strong>könnten</strong> – Was wäre möglich? – geprüft wird später.</li>
+    </ul>
+    <p data-schritt><strong>Wie</strong> – es gibt Lösungen · <strong>könnten</strong> – eine Idee darf auch scheitern · <strong>wir</strong> – ihr und alle, die euch Ideen spenden</p>
     <div class="nur-handout">
-      <p>Die Frageform stammt von Min Basadur, der sie in den frühen 1970ern bei Procter & Gamble einsetzte; über IDEO, Google und Facebook wurde sie verbreitet. Basadur: Wer fragt „Wie können wir …?“ oder „Wie sollen wir …?“, urteilt schon – können wir das wirklich, sollen wir? Mit „might“ wird das Urteil aufgeschoben; es entstehen freier mehr Optionen. Tim Brown (IDEO) gibt jedem Wort eine Rolle: „How“ setzt voraus, dass es Lösungen gibt, „Might“ erlaubt Ideen, die vielleicht nicht funktionieren, „We“ heißt, dass ihr gemeinsam auf den Ideen der anderen aufbaut ({BERGER}, S. 1). Im Deutschen trägt der Konjunktiv das „might“: „Wie <em>könnten</em> wir …?“ statt „Wie können wir …?“.</p>
+      <p>Die Frageform stammt von Min Basadur, der sie in den frühen 1970ern bei Procter & Gamble einsetzte; über IDEO, Google und Facebook wurde sie verbreitet. Basadur: Wer „How can we …?“ oder „How should we …?“ fragt, legt ein Urteil in die Frage – „Can we really do it? And should we?“ Mit „might“ wird das Urteil aufgeschoben: „you’re able to defer judgment, which helps people to create options more freely“ ({BERGER}, S. 1). Tim Brown (IDEO) gibt jedem Wort eine Rolle: „How“ setzt voraus, dass es Lösungen gibt, und macht Mut. „Might“ erlaubt Ideen, die funktionieren oder nicht – beides ist in Ordnung. „We“ heißt, dass ein Team die Frage gemeinsam angeht und auf den Ideen der anderen aufbaut (S. 1).</p>
+      <p>Die deutsche Fassung ist unsere Übertragung: „Wie <em>könnten</em> wir …?“ Der Konjunktiv trägt das „might“. Er fragt nicht, ob ihr etwas könnt, sondern was möglich wäre. „Wie können wir …?“ und „Wie sollten wir …?“ tragen dieselben Urteile wie „can“ und „should“.</p>
+      <p>Bei euch arbeitet jede*r am eigenen Produkt. „Wir“ sind die, die das Produkt bauen – und in der Ideation die zwei anderen, die still Ideen an eure Frage spenden. Schreibt die Frage darum so, dass jemand sie versteht, der euer Produkt nicht kennt. Geurteilt wird erst, wenn ihr aus den Ideen drei auswählt.</p>
       <p>Tim Brown war selbst skeptisch – „I was skeptical at first; it sounds a bit Californian.“ ({BERGER}, S. 2).</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="bruecke">Von der Chance zur Frage</h2>
-    <p class="folie-satz">Die Frage zielt auf die Chance, nicht auf eine Lösung.</p>
-    <Fluss label="Torres: Lösungswunsch, Chance dahinter, How-might-we-Frage, mehrere Optionen" hervor={[2]} knoten={[
+    <p class="folie-satz">Fragt nach der Chance – dann gibt es mehr als einen Weg.</p>
+    <Fluss label="Lösungswunsch: ein Weg" knoten={[
       { t: 'Lösungswunsch', sub: '„Ich will Werbung vorspulen können.“' },
-      { t: 'Chance', sub: '„Ich mag keine Werbung.“' },
-      { t: 'Frage', sub: '„How might we address ‚I don’t like commercials‘?“' },
-      { t: 'Optionen', sub: 'bessere Werbung · vorspulen · Abo ohne Werbung' },
+      { t: 'Ein Weg', sub: 'Vorspulen anbieten' },
     ]} />
-    <p data-schritt><strong>Grundform nach Torres:</strong> „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“</p>
+    <div data-schritt>
+      <Fluss label="Frage an die Chance: drei Wege" hervor={[0]} knoten={[
+        { t: 'Frage an die Chance', sub: '„Wie könnten wir ‚Ich mag keine Werbung‘ angehen?“' },
+        { t: 'Drei Wege', sub: 'bessere Werbung · vorspulen · Abo ohne Werbung' },
+      ]} />
+    </div>
+    <p data-schritt><strong>Eure erste Frage:</strong> „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“</p>
     <div class="nur-handout">
-      <p>Teresa Torres zeigt den Schritt am Anti-Muster „Lösung statt Chance“ (solution in disguise): „Ich will Werbung vorspulen können“ lässt nur eine Antwort zu. Die Chance dahinter, „Ich mag keine Werbung“, öffnet erst mit der Frage „How might we address ‚I don’t like commercials‘?“ mehrere Optionen – unterhaltsamere Werbung, Vorspulen oder ein Abo ohne Werbung. Ihr Test: Gibt es mehr als einen Weg, die Chance anzugehen? ({TORRES}, S. 94–95). Darum fragt ihr nach eurer Ziel-Chance, nicht nach einer Funktion.</p>
-      <p>Torres’ Frage hat eine feste Form: „How might we address ‚I don’t like commercials‘?“ – die Chance steht wörtlich darin (S. 94). Damit beginnt ihr. Schon in Kapitel 2 fragt sie so nach weiteren Lösungen: „How else might we address this opportunity?“ (S. 31).</p>
+      <p>Teresa Torres zeigt am Anti-Muster „Lösung statt Chance“ (solution in disguise), warum die Chance in die Frage gehört: Zu „Ich will Werbung vorspulen können“ gibt es nur einen Weg – „the only way to allow people to fast-forward through commercials is to offer a fast-forward solution“. Die Chance dahinter, „Ich mag keine Werbung“, öffnet mit der Frage „How might we address ‚I don’t like commercials‘?“ mehrere Optionen – unterhaltsamere Werbung, Vorspulen oder ein Abo ohne Werbung ({TORRES}, S. 94–95). Die deutsche Fassung auf der Folie ist unsere Übersetzung. Darum fragt ihr nach eurer Ziel-Chance, nicht nach einer Funktion.</p>
+      <p>Torres stellt die Frage einmal, als Test, ob eine Chance mehr als eine Lösung zulässt (S. 94). Dass ihr eure Ziel-Chance wörtlich in dieselbe Frage setzt, die Grundform „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“, ist Kursformat. Das Beispiel kennt ihr von Tag 1 und vom Baum; dort prüfte der Test die Chance, heute prüft er eure Frage. Die Grundform besteht die Probe fast immer, weil eure Ziel-Chance sie schon bestanden hat; aufpassen müsst ihr bei der genaueren Variante. Schon in Kapitel 2 fragt Torres so nach weiteren Lösungen: „How else might we address this opportunity?“ (S. 31).</p>
     </div>
   </Folie>
 
