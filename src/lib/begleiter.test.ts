@@ -617,6 +617,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(halle.filter((ids) => ids.includes('I3-1')).length).toBe(halle.length);
     expect(quellen['/innolab/methoden/baum']).toContain("'„Wann ist mein Kaffee fertig?“': ['I2-5', 'I3-2', 'I3-3'],");
     expect(quellen['/innolab/methoden/ziel-chance']).toContain('<td>3 von 5 gegen 3 von 5 („Wenn ich anstehe …“: I2-2, I3-4, I4-1)</td>');
+    // Entscheidung 32 (21.11.): Im Kundenprofil ist die Halle-Chance P1 – mit denselben IDs wie im Baum.
+    expect(quellen['/innolab/methoden/kundenprofil']).toContain('<td>P1 Nicht wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht (I2-4, I3-1, I5-2)</td>');
     // „Sie entscheiden erst in der Halle“ belegt I5-3 („Das entscheid ich, wenn ich die Halle seh.“), nicht I5-2 („Wenn es voll ist,
     // lass ich es.“ – Beleg der Halle-Chance). Überall dieselben drei IDs.
     const halleBelege = texte.flatMap((s) => [...s.matchAll(/entscheiden erst in der Halle \((?:Belege )?([^)]*)\)|u\. a\. ([^→]*)→ Moment „Halle: entscheiden“/g)].map((m) => (m[1] ?? m[2] ?? '').trim())).filter((ids) => /I\d-\d/.test(ids));
@@ -676,5 +678,21 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folien.length).toBeGreaterThan(tag1.length);
     expect(new Set(tag1.map((f) => folienGruppe(f.pfad)))).toStrictEqual(new Set(['tag-1']));
     expect(beamer('/innolab/methoden/entscheidungslog', 'beleg-staerke').z.index).toBe(folieZu(tag1, '/innolab/methoden/entscheidungslog', 'beleg-staerke'));
+  });
+  // Entscheidungen 30 und 31 (21.11.): Tag 3 ohne Entscheidungslog und ohne docs/ZIEL-CHANCE.md – die Begründung steht im
+  // Feld „Begründen“ auf Miro T3 · 1, Schritt 4 ist nur der Stern im Baum. Die Zweiwegtür ist als Bild erzählt.
+  it('Tag 3: Ziel-Chance ohne Entscheidungslog und ohne docs/ZIEL-CHANCE.md, Begründung auf T3 · 1', () => {
+    const zc = quellen['/innolab/methoden/ziel-chance'] ?? '';
+    const texte = [zc, JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance'] ?? {}), quellen['/innolab/tag-3'] ?? '',
+      quellen['/innolab/methoden/kundenprofil'] ?? '', quellen['/innolab/methoden/hmw'] ?? ''];
+    expect(texte.every((t) => t.length > 1000)).toBe(true);
+    expect(texte.flatMap((t) => t.match(/Entscheidungslog|ZIEL-CHANCE\.md|ins Log/g) ?? [])).toStrictEqual([]);
+    expect(zc).toContain('<li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum mit dem Stern markieren. <Timer minuten={3} /></li>');
+    expect(zc).toContain('<Prompt label="Vorlage · Feld ‚Begründen‘ auf T3 · 1">');
+    expect(quellen['/innolab/tag-3']).toContain('Feld „Begründen“ auf T3 · 1');
+    const tuer = zc.slice(zc.indexOf('id="zweiwegtuer"'), zc.indexOf('id="vorgehen"'));
+    expect(tuer).toContain('id="zweiwegtuer">Einwegtür oder Zweiwegtür?</h2>');
+    expect(tuer.match(/<li data-schritt>/g) ?? []).toHaveLength(4);
+    expect(tuer.match(/Darum heute mit Uhr|schneller lernen/g) ?? []).toStrictEqual([]);
   });
 });

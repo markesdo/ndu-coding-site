@@ -27,7 +27,7 @@ import FooterNav from '../../components/FooterNav.astro';
     <Block time="15:15–16:00" type="uebung" title="Value Map & Fit" href="/innolab/methoden/value-map">Drei Lückensätze vergleichen, Spitzenreiter wählen, seine Value Map ordnen und den Fit prüfen.</Block>
     <Block time="16:00–16:30" type="konzept" title="Der Story-Bogen" href="/innolab/methoden/concept-story#story-bogen">Sieben Stationen, A × B = C, flach oder hoch – heute nur Theorie.</Block>
     <Block time="16:30–17:15" type="uebung" title="Puffer">Nachholen, was vom Tag offen ist: Baum, Ziel-Chance, Kundenprofil, Value Map.</Block>
-    <Block time="17:15–17:30" type="plenum" title="Abschluss" href="#abschluss">Rückblick, Entscheidungslog, Ausblick auf Tag 4.</Block>
+    <Block time="17:15–17:30" type="plenum" title="Abschluss" href="#abschluss">Rückblick, Ausblick auf Tag 4.</Block>
   </div>
 
   <hr />
@@ -53,14 +53,15 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Bevor ihr geht:</p>
   {/* -v3: Die Häkchen hängen an der Position (Checklist.astro ohne ids). Seit 12.11.2026 mit dem Baum, ohne Geschäftsmodell
       und Experiment-Karte (-v2); seit 20.11.2026 ohne Concept Story, die an Tag 3 nur Theorie ist (-v3) – alte Häkchen
-      sollen nicht an verschobenen Punkten hängen. */}
-  <Checklist id="il-tag3-abschluss-v3" items={[
+      sollen nicht an verschobenen Punkten hängen. Seit 21.11.2026 Ziel-Chance auf Miro (T3 · 1) statt als Datei und
+      ohne Log-Zeile (-v4). */}
+  <Checklist id="il-tag3-abschluss-v4" items={[
     'Euer Baum auf Miro (Baum · euer Name): jede Chance mit Zitat-ID, jede Karte mit einer Linie',
-    '<code>docs/ZIEL-CHANCE.md</code> (so weit wie im Raum geschafft), <code>KUNDENPROFIL.md</code>, <code>HMW.md</code>, <code>IDEEN.md</code> und <code>VALUE-MAP.md</code> im Repo',
-    'Eine Zeile pro Entscheidung von heute im Entscheidungslog der Werkstatt',
+    'Ziel-Chance: Stern im Baum, Feld „Begründen“ auf T3 · 1 (so weit wie im Raum geschafft)',
+    '<code>KUNDENPROFIL.md</code>, <code>HMW.md</code>, <code>IDEEN.md</code> und <code>VALUE-MAP.md</code> im Repo',
     'Committet und gepusht',
   ]} />
-  <p><strong>Bis Tag 4:</strong> <code>docs/ZIEL-CHANCE.md</code> fertig schreiben und mit Claude prüfen (<a href="/innolab/methoden/ziel-chance#pruefen">Prüfen</a>) – im Raum reicht die Zeit dafür nicht.</p>
+  <p><strong>Bis Tag 4:</strong> das Feld „Begründen“ auf T3 · 1 fertig schreiben und mit Claude prüfen (<a href="/innolab/methoden/ziel-chance#pruefen">Prüfen</a>) – im Raum reicht die Zeit dafür nicht.</p>
   <p><a href="/innolab/tag-4">Tag 4</a> am 28. November beginnt mit dem Geschäftsmodell und der Experiment-Karte: wer zahlt, und an welcher Annahme der Spitzenreiter hängt. Dann wird aus ihm ein Plan (Story Map), ein Kernablauf (Usage Story) und ein erster Prototyp, den ihr testen könnt. Am Nachmittag spielt ihr Scrum einmal mit Lego durch.</p>
   <p><strong>Claude Pro:</strong> am Morgen des 28. November neu abschließen und gleich wieder kündigen, nicht früher (<a href="/setup#claude-pro">wie</a>). An Tag 4 braucht ihr Claude Code gleich am Vormittag.</p>
 

@@ -199,11 +199,12 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
 
   zweiwegtuer: {
     live: [
-      'Zwei Türen erklären: Bezos’ Stufe 1 und Stufe 2.',
-      'Fragen: Welche Tür ist eure Ziel-Chance?',
-      '„Ihr verpflichtet euch nur, sie die nächsten Tage weiter zu erkunden.“',
+      'Bild erzählen: Tür = Entscheidung, dahinter die Folgen.',
+      'Einwegtür kein Zurück, Zweiwegtür umdrehen; Herkunft Bezos.',
+      'Fragen, vor Zeile 3: Welche Tür ist eure Ziel-Chance?',
+      '„Ihr verpflichtet euch nur, sie die nächsten Tage oder Wochen weiter zu erkunden.“',
       'Bullens erzählen: Wer umkehren kann, sieht die Schwächen der Wahl.',
-      'Wenn hinten: ein Satz dazu auf der Folie „So geht ihr vor“.',
+      'Wenn hinten: überspringen, bei „So geht ihr vor“: Die Wahl ist umkehrbar.',
     ],
     verstaendnis: {
       frage: 'Warum sollt ihr die Wahl als umkehrbar sehen – auch wenn ihr sie nicht umkehren wollt?',
@@ -211,11 +212,11 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Bezos, Brief an die Aktionär*innen 2015: Stufe 1 schwer umkehrbar – langsam und vorsichtig; Stufe 2 leicht umkehrbar – schnell, ohne auf perfekte Daten zu warten. Torres’ Bild: Einweg- und Zweiwegtür. Man lernt mehr, wenn man durchgeht und schaut, als wenn man sich die andere Seite vorstellt.',
+        text: 'Bezos, Brief an die Aktionär*innen 2015: Stufe 1 schwer umkehrbar – langsam und vorsichtig; Stufe 2 leicht umkehrbar – schnell, ohne auf perfekte Daten zu warten. Bild nach Bezos (Brief an die Aktionär*innen 2015), bei Torres S. 102–103: Einweg- und Zweiwegtür. Man lernt mehr, wenn man durchgeht und schaut, als wenn man sich die andere Seite vorstellt.',
         quelle: `${TORRES}, S. 102–103`,
       },
       {
-        text: 'Die Ziel-Chance ist eine Zweiwegtür: „You are not committing to addressing that opportunity. You are simply committing to exploring it further with your discovery work.“ Lottie Bullens und Kolleg*innen (Universität Amsterdam): Bei umkehrbaren Entscheidungen sehen Menschen danach eher die Schwächen ihrer Wahl und die Stärken der Alternativen; bei endgültigen nur das Gute an der eigenen.',
+        text: 'Die Ziel-Chance ist eine Zweiwegtür: „You are not committing to addressing that opportunity. You are simply committing to exploring it further with your discovery work.“ Lottie Bullens und Kolleg*innen (Universität Amsterdam): Bei umkehrbaren Entscheidungen sehen Menschen danach eher die Schwächen ihrer Wahl und die Stärken der Alternativen; bei endgültigen nur das Gute an der eigenen und das Schlechte an den Alternativen.',
         quelle: `${TORRES}, S. 103, Fußnote 34`,
       },
       {
@@ -232,7 +233,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Nach 8 min: Teilchancen des Asts bis zum Blatt, Timer 4 min.',
       'Nach 12 min: schriftlich begründen, Timer 15 min.',
       '1:1 dabei je 3 min: Joachim, Sofie, Hewen.',
-      'Nach 27 min: Ziel-Chance im Baum markieren, Zeile ins Log.',
+      'Nach 27 min: Ziel-Chance im Baum mit dem Stern markieren.',
       'Falle: von der Lieblingsidee rückwärts begründen.',
       'Wenn hinten: Begründen kürzen, Festhalten nicht.',
     ],
@@ -249,8 +250,8 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       schritte: [
         'Ast wählen, allein (8 min): die Momente gegeneinander, pro Linse ein Satz – wer liegt vorn und warum. Größe und Kundschaft mit Zitat-IDs.',
         'Bis zum Blatt (4 min): dasselbe mit den Teilchancen des gewählten Asts. Hängt nur eine Chance darunter, ist sie das Blatt.',
-        'Begründen, schriftlich (15 min): drei Sätze in docs/ZIEL-CHANCE.md – die Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
-        'Festhalten (3 min): Ziel-Chance im Baum markieren, eine Zeile ins Entscheidungslog mit Beleg.',
+        'Begründen, schriftlich (15 min): drei Sätze ins Feld „Begründen“ der eigenen Spalte auf T3 · 1 – die Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
+        'Festhalten (3 min): Ziel-Chance im Baum mit dem Stern markieren.',
       ],
       achten: [
         'Verglichen werden Geschwister – nie eine Chance allein mit „Sollen wir?“ (S. 99).',
@@ -276,7 +277,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Frage vorlesen, zehn Sekunden still.',
-      'Allein: ein Satz in docs/ZIEL-CHANCE.md, ehrlich.',
+      'Allein: ein ehrlicher Satz ins Feld „Begründen“ auf T3 · 1.',
       '„Passt die Ziel-Chance genau zur Idee von Tag 1? Dann prüft die Linsen noch einmal.“',
       'Ausblick: Aus der Ziel-Chance wird jetzt eine Frage.',
     ],

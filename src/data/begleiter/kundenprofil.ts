@@ -221,6 +221,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
+      'Zuerst oben im Canvas: Segment und Anlass, eine Zeile.',
       'Timer 7 min: Ziel-Chance und Ast als Pains, mit Zitat-IDs.',
       'Nach 7 min: Gains aus den Snapshots, ein sozialer oder emotionaler Job.',
       'Nach 14 min: alles auf die Skalen, ordnen, dann die Fehlerliste.',
@@ -238,12 +239,13 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Übernehmen (7 min): Ziel-Chance als P1, ihr Ast als weitere Pains, mit Zitat-IDs; Jobs aus Tag 1.',
+        'Übernehmen (7 min): zuerst oben in den Canvas eine Zeile mit Segment und Anlass (wie bei der Kaffeebar), dann die Ziel-Chance als P1, ihr Ast als weitere Pains, mit Zitat-IDs; Jobs aus Tag 1.',
         'Ergänzen (7 min): Gains aus den Snapshots, so konkret wie die Zitate; mindestens ein sozialer oder emotionaler Job.',
         'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; dann die sechs Fehler durchgehen.',
       ],
       achten: [
         'Ein Segment, ein Anlass – wer zwei hat, wählt das Segment der Ziel-Chance.',
+        'Keine erfundene Kundin, keine Persona: Das Segment sind die Interviewten aus dem Produkt-Brief (VPD S. 72 „Select customer segment“).',
         'Kein Eintrag ohne Zitat-ID; was vermutet ist, bekommt ein „?“.',
         'Kein Eintrag beschreibt das eigene Produkt: „proceed like an anthropologist and “forget” what you are offering“ (S. 79).',
       ],
