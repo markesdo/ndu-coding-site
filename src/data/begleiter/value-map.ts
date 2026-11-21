@@ -198,12 +198,12 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Wozu vorlesen: wissen, was ihr heute ausarbeitet – und was offen bleibt.',
       'Timer 5 min: Lückensätze aus T3 · 3 kopieren, vergleichen, Spitzenreiter wählen.',
       'Nach 5 min: Value Map – Satz, Profil von oben, Skalen. Timer 20.',
-      '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
+      '1:1 ab Minute 5: ✗ des Spitzenreiters oben – bewusst in Kauf, warum?',
       'Nach 25 min: Fit in drei Schritten, Timer 7 min.',
       'Nach 32 min: alle „?“ ins Feld auf T3 · 4.',
       'Wenn hinten: Value Map nur mit einem Pain Reliever, einem Gain Creator.',
     ],
-    uebung: { dauer: '36 min (5 + 20 + 7 + 4)', form: 'allein; Markus fragt je nach einem ✗: bewusst verzichtet – und warum?' },
+    uebung: { dauer: '36 min (5 + 20 + 7 + 4)', form: 'allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum?' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
@@ -215,7 +215,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Vergleichen und wählen (5 min): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Value Map (20 min), Richtwert 3 + 12 + 5: a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit P- oder G-ID, kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID; c) alle Zettel auf die Skalen links unten, Unverzichtbares oben (VPD S. 99–102, 105). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum? (VPD S. 105–106, 110, 113). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Value Map (20 min), Richtwert 3 + 12 + 5: a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit P- oder G-ID, kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID; c) alle Zettel auf die Skalen links unten, Unverzichtbares oben (VPD S. 99–102, 105). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Fit prüfen (7 min): links Zettel für Zettel – trifft er etwas, ✓ mit ID und ✓ am Eintrag rechts; rechts ✗ an das, was übrig ist, „?“ wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); von oben lesen: oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
         'Festhalten (4 min): alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. Claude-Prüfung bis Tag 4.',
       ],

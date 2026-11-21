@@ -758,14 +758,19 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     for (const p of ['/innolab/methoden/baum', '/innolab/methoden/ideation']) expect(JSON.stringify(NOTIZEN[p] ?? {}).match(/Entscheidungslog|\(D\d\)/g) ?? [], p).toStrictEqual([]);
   });
   // Entscheidung 38 (21.11.) und „kein Reihum“: Value Map ohne Kursregel-Etikett, ohne Entscheidungslog, ohne docs-Dateien,
-  // ohne Reihum; die Frage beim 1:1 ist das bewusst offene ✗ oben im Profil.
+  // ohne Reihum; die Frage beim 1:1 ist das ✗ des Spitzenreiters oben im Profil.
   it('Tag 3: value-map ohne Kursregel, Entscheidungslog, docs-Dateien und Reihum', () => {
     const q = quellen['/innolab/methoden/value-map'] ?? '';
     const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
     const texte = [q, JSON.stringify(n)];
     expect(texte.every((x) => x.length > 1000)).toBe(true);
     expect(texte.flatMap((x) => x.match(/Kursregel|Entscheidungslog|ins Log|docs\/(IDEEN|VALUE-MAP|KUNDENPROFIL)\.md|reihum|nach einem Kreuz/gi) ?? [])).toStrictEqual([]);
-    expect(q).toContain('Markus fragt bei jeder Person nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum?');
+    // Entscheidung 68 (21.11.): 1:1 ab Minute 5, die Frage zielt auf das ✗ des Spitzenreiters aus dem Vergleich der Lückensätze.
+    expect(q).toContain('Ab Minute 5 geht Markus von Canvas zu Canvas und fragt bei jeder Person: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ Gemeint ist das ✗ aus dem Vergleich der drei Lückensätze.');
+    expect(n.vorgehen?.ablauf?.schritte?.[1]).toContain('Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“');
+    expect(n.vorgehen?.uebung?.form).toBe('allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum?');
+    expect(n.vorgehen?.live).toContain('1:1 ab Minute 5: ✗ des Spitzenreiters oben – bewusst in Kauf, warum?');
+    expect(texte.flatMap((x) => x.match(/Verzichtet ihr bewusst darauf|bewusst verzichtet – und warum/g) ?? [])).toStrictEqual([]);
     expect(q).toContain('<li data-schritt><strong>Festhalten:</strong> alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. <Timer minuten={4} /></li>');
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(36);
   });
