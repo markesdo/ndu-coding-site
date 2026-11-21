@@ -30,6 +30,9 @@ export interface Artefakt {
   miro?: string;
   /** Im Miro-Frame hat jede Person eine eigene Spalte (gemeinsamer Frame): aufs Bild kommt dann die eigene Spalte. */
   miroSpalte?: boolean;
+  /** Ein Teil des Ergebnisses liegt in einem zweiten Frame (je Person eine Spalte darin): ein eigenes Bild. Feld = Name
+   *  des Felds in dieser Spalte, z. B. der Ideen-Vergleich der Value Map in T3 · 4. */
+  miroAuch?: { frame: string; feld: string };
   /** Hausaufgabe zwischen zwei Kurstagen: fällig zu Kurstag bisTag (sonst am Tag nach der Methode), anzahl = so viele
    *  Einträge je Person (tag_stand zählt mit). */
   hausaufgabe?: { bisTag: number; anzahl?: number };
@@ -50,7 +53,8 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'ziel', name: 'Ziel-Chance mit vier Linsen', lebtIn: ['miro'], miro: 'T3 · 1 · Ziel-Chance', miroSpalte: true },
   { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro'], miro: 'T3 · 2 · How Might We', miroSpalte: true },
   { id: 'ideen', name: 'Drei Ideen für die Ziel-Chance, je als Lückensatz', lebtIn: ['miro'], miro: 'T3 · 3 · Ideation', miroSpalte: true },
-  { id: 'valuemap', name: 'Spitzenreiter mit Value Map und Fit', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · euer Name' },
+  // Value Map und Fit im Canvas; der Ideen-Vergleich mit den „?“ im gemeinsamen Frame T3 · 4 (Prüfpunkte value-map-fit-vergleich, -wahl, -fragezeichen).
+  { id: 'valuemap', name: 'Spitzenreiter mit Value Map und Fit', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · euer Name', miroAuch: { frame: 'T3 · 4 · Kundenprofil & Value Map', feld: 'Ideen vergleichen und wählen' } },
   { id: 'concept', name: 'Concept Story', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
   { id: 'experimente', name: 'Experiment-Karten', lebtIn: ['repo'], pfad: 'docs/EXPERIMENTE.md' },
   { id: 'origin', name: 'Origin Story als Landingpage-Text', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
@@ -291,7 +295,7 @@ export const METHODEN: Methode[] = [
     braucht: ['profil', 'ideen'], ergibt: ['valuemap'],
     pruefliste: [
       { id: 'value-map-segment', text: 'Unter Products and Services steht nur, was für dieses Segment gedacht ist.' },
-      { id: 'value-map-fit-vergleich', text: 'Der Ideen-Vergleich (Kursregel) hakt die drei Lückensätze gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).' },
+      { id: 'value-map-fit-vergleich', text: 'Der Ideen-Vergleich hakt die drei Lückensätze gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).' },
       { id: 'value-map-wahl', text: 'Der Spitzenreiter auf Papier ist gewählt, mit einem Satz warum; die anderen beiden bleiben offen.' },
       { id: 'value-map-wirkung', text: 'Bei Pain Relievers und Gain Creators stehen keine Produkte, sondern was sie bewirken – mit der ID des Pains oder Gains.' },
       { id: 'value-map-geordnet', text: 'Products and Services, Pain Relievers und Gain Creators sind je für sich geordnet: das Unverzichtbare oben.' },
@@ -540,20 +544,58 @@ function quelle(id: string): string | undefined {
 
 const nurAufMiro = (a: Artefakt) => a.miro !== undefined && !a.pfad && !a.werkstatt;
 
-/** Artefakte, die nur auf Miro liegen, mit ihrem Frame: „Experience Map … (Frame „T2 · 1 · Experience Map“)“. */
-const miroListe = (ids: readonly string[]) =>
-  aufzaehlen([...new Set(ids)].map((id) => artefakt(id)!).filter(nurAufMiro).map((a) => `${a.name} (Frame „${a.miro}“)`));
+/** Ein Bildschirmfoto aus Miro: wo (ort, für den Prompt), was aufs Bild kommt (ausschnitt, für die Schritte) und welche
+ *  Artefakte darauf stehen. Zwei Artefakte im selben Frame (Kundenprofil und Value Map im Canvas) sind ein Bild. */
+export interface MiroBild { schluessel: string; ort: string; ausschnitt: string; namen: string[] }
 
-/** Vorarbeit, die nur auf Miro liegt und als zweites Bild zum Abgleich mitgeht – dieselbe Liste wie im Prüf-Prompt. */
-export const miroVorarbeitArtefakte = (m: Methode): Artefakt[] => [...new Set(m.braucht)].map((id) => artefakt(id)!).filter(nurAufMiro);
+/** Bilder der Artefakte, die nur auf Miro liegen – je Ort eins, in der Reihenfolge der ids. */
+export function miroBilder(ids: readonly string[]): MiroBild[] {
+  const bilder: MiroBild[] = [];
+  const dazu = (b: Omit<MiroBild, 'namen'>, name: string) => {
+    const da = bilder.find((x) => x.schluessel === b.schluessel);
+    if (da) { if (!da.namen.includes(name)) da.namen.push(name); } else bilder.push({ ...b, namen: [name] });
+  };
+  for (const a of [...new Set(ids)].map((id) => artefakt(id)!).filter(nurAufMiro)) {
+    dazu({ schluessel: a.miro!, ort: `Frame „${a.miro}“`, ausschnitt: a.miroSpalte ? `eure Spalte im Frame „${a.miro}“` : `euren Frame „${a.miro}“` }, a.name);
+    if (a.miroAuch) {
+      const { frame, feld } = a.miroAuch;
+      dazu({ schluessel: `${frame}#${feld}`, ort: `Feld „${feld}“ im Frame „${frame}“`, ausschnitt: `eure Spalte im Feld „${feld}“ im Frame „${frame}“` }, a.name);
+    }
+  }
+  return bilder;
+}
 
-/** Was aufs Bildschirmfoto kommt: „eure Spalte im Frame „…““ oder „euren Frame „…““. */
+/** Bilder des Ergebnisses einer Methode (auf Miro). */
+export const miroErgebnisBilder = (m: Methode): MiroBild[] => miroBilder(m.ergibt);
+
+/** Vorarbeit auf Miro als weitere Bilder – ohne Orte, die schon auf einem Bild des Ergebnisses sind (das Kundenprofil steht
+ *  im selben Canvas wie die Value Map). */
+export function miroVorarbeitBilder(m: Methode): MiroBild[] {
+  const schon = new Set(miroBilder(m.ergibt).map((b) => b.schluessel));
+  return miroBilder(m.braucht).filter((b) => !schon.has(b.schluessel));
+}
+
+/** „Kundenprofil … und Spitzenreiter … (Frame „T3 · 4 · Canvas · euer Name“)“ – je Bild die Namen und der Ort. */
+const bildListe = (bilder: MiroBild[]) => aufzaehlen(bilder.map((b) => `${aufzaehlen(b.namen)} (${b.ort})`));
+
+const ZAHLWORT = ['ein', 'zwei', 'drei', 'vier', 'fünf'];
+const anzahlBilder = (n: number) => (n === 1 ? 'ein Bild' : `${ZAHLWORT[n - 1] ?? n} Bilder`);
+
+/** Ergebnis auf Miro im Prompt: je Artefakt die Orte („… (Frame „X“ und Feld „Y“ im Frame „Z“)“). */
+function miroErgebnisSatz(m: Methode): string {
+  const bilder = miroErgebnisBilder(m);
+  const je = [...new Set(m.ergibt)].map((id) => artefakt(id)!).filter(nurAufMiro)
+    .map((a) => `${a.name} (${aufzaehlen(bilder.filter((b) => b.namen.includes(a.name)).map((b) => b.ort))})`);
+  return `Unter diese Nachricht füge ich ${anzahlBilder(bilder.length)} meines Ergebnisses aus Miro ein: ${aufzaehlen(je)}.`;
+}
+
+/** Was aufs Bildschirmfoto kommt: „eure Spalte im Frame „…““ oder „euren Frame „…““ (Hauptframe des Artefakts). */
 export const miroBildAusschnitt = (a: Artefakt): string => (a.miroSpalte ? `eure Spalte im Frame „${a.miro}“` : `euren Frame „${a.miro}“`);
 
-/** Vorarbeit, die nur auf Miro liegt: Claude bekommt sie als Bild (Satz für den Prüf-Prompt, sonst leer). */
+/** Vorarbeit, die nur auf Miro liegt: Claude bekommt sie als Bild(er) (Satz für den Prüf-Prompt, sonst leer). */
 function miroVorarbeit(m: Methode): string {
-  const liste = miroListe(m.braucht);
-  return liste ? `Zum Abgleich füge ich auch ein Bild aus Miro ein: ${liste}.` : '';
+  const bilder = miroVorarbeitBilder(m);
+  return bilder.length ? `Zum Abgleich füge ich auch ${anzahlBilder(bilder.length)} aus Miro ein: ${bildListe(bilder)}.` : '';
 }
 
 /** Werkstatt-Artefakt der Vorarbeit: artefakt_pruefen liefert es zum Abgleich mit (jede Zeile in braucht macht jede Prüfung länger). */
@@ -590,11 +632,12 @@ export function danachEntscheiden(m: Methode, pfad?: string): string[] {
   const log = '<a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>';
   const lassen = `Stimmt er nicht oder ist es bewusst so: lassen und eine Zeile ins ${log} – was ihr lasst und warum, mit Beleg oder „noch keiner“.`;
   if (pruefungAufMiro(m, pfad)) {
+    // Ergebnisse auf Miro: kein Entscheidungslog (seit 21.11.2026 für diesen Kurs stillgelegt, Entscheidung 30).
     return [
       'Gibt Claude Befunde: im Kurs einen wählen, den wichtigsten. Die Frage selbst in einem Satz beantworten.',
       'Ein Befund ist eine Vermutung, kein Urteil: Prüft an euren Zitaten, ob er stimmt.',
       `${NACHFRAGE_BELEGE} Den neuen Text schreibt ihr selbst – Claude formuliert nichts.`,
-      `Stimmt er: selbst auf Miro ändern. ${lassen}`,
+      'Stimmt er: selbst auf Miro ändern. Stimmt er nicht oder ist es bewusst so: lassen – und in einem Satz sagen können, warum.',
       `Die übrigen Befunde bis Tag ${m.tag + 1}; nach dem Ändern höchstens einmal neu prüfen lassen.`,
       '„Passt alles“: weiter.',
     ];
@@ -720,7 +763,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
     // Claude (claude.ai mit dem Connector) sieht das Bild des Frames und liest die Werkstatt selbst.
     const vorarbeit = einzufuegen(m.braucht);
     return [
-      `Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: ${miroListe(m.ergibt)}. Prüf es gegen diese Prüfliste (${m.name}):`,
+      `${miroErgebnisSatz(m)} Prüf es gegen diese Prüfliste (${m.name}):`,
       ...liste,
       ...(miroVorarbeit(m) ? [miroVorarbeit(m)] : []),
       ...(vorarbeit.dateien.length ? [`Zum Abgleich füge ich auch ein: ${dateiListe(vorarbeit.dateien)}.`] : []),

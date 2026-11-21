@@ -620,7 +620,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(halle.filter((ids) => ids.includes('I3-2'))).toStrictEqual([]);
     expect(halle.filter((ids) => ids.includes('I3-1')).length).toBe(halle.length);
     expect(quellen['/innolab/methoden/baum']).toContain("'„Wann ist mein Kaffee fertig?“': ['I2-5', 'I3-2', 'I3-3'],");
-    expect(quellen['/innolab/methoden/ziel-chance']).toContain('<td>3 von 5 gegen 3 von 5 („Wenn ich anstehe …“: I2-2, I3-4, I4-1)</td>');
+    // Code-Review 21.11.: beide Seiten mit IDs, damit der Gleichstand lesbar ist.
+    expect(quellen['/innolab/methoden/ziel-chance']).toContain('<td>„Geht sich …“: I2-4, I3-1, I5-2 gegen „Wenn ich anstehe …“: I2-2, I3-4, I4-1 – je 3 von 5</td>');
     // Entscheidung 32 (21.11.): Im Kundenprofil ist die Halle-Chance P1 – mit denselben IDs wie im Baum.
     expect(quellen['/innolab/methoden/kundenprofil']).toContain('<td>P1 Nicht wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht (I2-4, I3-1, I5-2)</td>');
     // „Sie entscheiden erst in der Halle“ belegt I5-3 („Das entscheid ich, wenn ich die Halle seh.“), nicht I5-2 („Wenn es voll ist,
@@ -692,7 +693,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(texte.every((t) => t.length > 1000)).toBe(true);
     expect(texte.flatMap((t) => t.match(/Entscheidungslog|ZIEL-CHANCE\.md|ins Log/g) ?? [])).toStrictEqual([]);
     expect(zc).toContain('<li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum mit dem Stern markieren. <Timer minuten={3} /></li>');
-    expect(zc).toContain('<Prompt label="Vorlage · Feld ‚Begründen‘ auf T3 · 1">');
+    expect(zc).toContain('<Prompt label="Vorlage · eure Spalte in T3 · 1">');
     expect(quellen['/innolab/tag-3']).toContain('Feld „Begründen“ auf T3 · 1');
     const tuer = zc.slice(zc.indexOf('id="zweiwegtuer"'), zc.indexOf('id="vorgehen"'));
     expect(tuer).toContain('id="zweiwegtuer">Einwegtür oder Zweiwegtür?</h2>');
@@ -828,5 +829,12 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(texte.every((x) => x.length > 1000)).toBe(true);
     expect(texte.flatMap((x) => x.match(/Kursregel|Regel dieses Kurses/g) ?? [])).toStrictEqual([]);
     expect(q).toContain('allein aus, weil ihr drei Produkte habt.</p>');
+  });
+  // Code-Review 21.11.: Tag 4 und 5 zeigen für Kundenprofil und Value Map auf Miro, nicht auf docs-Dateien.
+  it('Tag 4+: Vorlagen und Handouts nennen Kundenprofil und Value Map auf Miro, keine docs-Datei', () => {
+    const seiten = ['concept-story', 'experiment', 'geschaeftsmodell', 'pitch', 'story-map'].map((s) => `/innolab/methoden/${s}`);
+    expect(seiten.every((p) => (quellen[p] ?? '').length > 1000)).toBe(true);
+    expect(seiten.flatMap((p) => (quellen[p] ?? '').match(/(KUNDENPROFIL|VALUE-MAP)\.md/g) ?? [])).toStrictEqual([]);
+    expect(quellen['/innolab/methoden/experiment']).toContain('auf Miro im Feld „Ideen vergleichen und wählen“ (T3 · 4) gesammelt habt');
   });
 });
