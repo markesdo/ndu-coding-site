@@ -886,4 +886,21 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(schritte).toContain('Eure Idee von Tag 1 darf als ein Sticky dazu – ohne Vorsprung.');
     expect(NOTIZEN['/innolab/methoden/ideation']?.vorgehen?.live).toContain('Idee von Tag 1: ein Sticky unter vielen, kein Vorsprung.');
   });
+  // Entscheidung 57 (21.11.): Fit prüfen in drei Schritten an der Kaffeebar; Reihenfolge fit → beispiel → fit-kaffeebar →
+  // drei-fits → vorgehen, passend zu den Überleitungen im Begleiter.
+  it('Tag 3: value-map – Folie fit-kaffeebar mit Selbstkontrolle, Reihenfolge der Folien, Schritt 3', () => {
+    const q = quellen['/innolab/methoden/value-map'] ?? '';
+    const ids = [...q.matchAll(/<h2 id="([^"]+)"/g)].map((m) => m[1]);
+    const reihe = ['fit', 'beispiel', 'fit-kaffeebar', 'drei-fits', 'vorgehen'];
+    expect(ids.filter((id) => reihe.includes(id))).toStrictEqual(reihe);
+    const a = q.indexOf('id="fit-kaffeebar"');
+    const fk = q.slice(a, q.indexOf('<div class="nur-handout">', a));
+    expect(fk).toContain('<p class="small">Selbstkontrolle: Rechts trägt jeder Zettel genau ein Zeichen. Links hat jeder ✓ eine ID.</p>');
+    expect(fk).toContain('<tr data-schritt><td>Gegenprobe (Kurs-Beispiel) · Treuepunkte ab der zehnten Bestellung</td>');
+    expect(fk).toContain('<td>Pain Reliever · Statt anzustehen: in 20 Sekunden im Gehen bestellen</td>');
+    expect(q).toContain('<strong>Fit prüfen:</strong> links Zettel für Zettel ✓ mit ID – rechts ✓, ✗ oder ? an jeden Eintrag – von oben lesen.');
+    const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    expect(n['fit-kaffeebar']?.live.some((l) => l.startsWith('Wenn hinten:'))).toBe(true);
+    expect(n.beispiel?.ueberleitung).toBe('Spitzenreiter gewählt. Jetzt der Fit seiner Value Map, Schritt für Schritt.');
+  });
 });

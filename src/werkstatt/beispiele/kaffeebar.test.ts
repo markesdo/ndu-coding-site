@@ -78,7 +78,8 @@ describe('Kaffeebar-Beispiel: Fit der Value Map „Im Gehen bestellen“', () =>
     return seite.slice(start, seite.indexOf('</Folie>', start));
   };
   const profilIds = [...new Set([...abschnitt('src/pages/innolab/methoden/kundenprofil.astro', 'beispiel').matchAll(/\b[JPG][1-9]\b/g)].map((m) => m[0]))].sort();
-  const fit = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').split('Der Fit nach dem Buch')[1]?.split('</p>')[0] ?? '';
+  // Seit Entscheidung 57 (21.11.) steht der Fit auf der eigenen Folie fit-kaffeebar.
+  const fit = abschnitt('src/pages/innolab/methoden/value-map.astro', 'fit-kaffeebar').split('Der Fit nach dem Buch')[1]?.split('</p>')[0] ?? '';
   // Feste Marken im Fit-Absatz: „Getroffen sind damit …“, „Ein ✗ bekommen …“, „Ein „?“ …“. Fehlt eine, schlägt der Test mit Namen fehl.
   const teil = (von: string, bis?: string): string => {
     expect(fit, `Marke „${von}“ fehlt im Fit-Absatz`).toContain(von);
@@ -94,10 +95,13 @@ describe('Kaffeebar-Beispiel: Fit der Value Map „Im Gehen bestellen“', () =>
     expect([...getroffen, ...kreuz, ...frage].sort()).toStrictEqual(profilIds);
   });
   it('die Folie nennt dieselben getroffenen und offenen Einträge wie das Handout', () => {
-    const folie = abschnitt('src/pages/innolab/methoden/value-map.astro', 'beispiel').match(/Fit seiner Value Map: trifft ([^–]+)– ✗ ([^–]+)– \? ([^<]+)<\/p>/);
-    expect(folie, 'Folienzeile „Fit seiner Value Map: trifft … – ✗ … – ? …“ fehlt').not.toBeNull();
-    expect(ids(folie?.[1] ?? '')).toStrictEqual(getroffen);
-    expect(ids(folie?.[2] ?? '')).toStrictEqual(kreuz);
-    expect(ids(folie?.[3] ?? '')).toStrictEqual(frage);
+    const folie = abschnitt('src/pages/innolab/methoden/value-map.astro', 'fit-kaffeebar');
+    // Tabelle: jede Zeile mit ✓ nennt in Spalte „trifft“ den getroffenen Eintrag; Schritt 2 nennt ✗ und „?“.
+    const tabelle = [...folie.matchAll(/<tr data-schritt><td>[^<]*<\/td><td>([^<]*)<\/td><td>✓<\/td><\/tr>/g)].flatMap((m) => ids(m[1]));
+    expect(tabelle.sort()).toStrictEqual([...getroffen].sort());
+    const rechts = folie.match(/<strong>2 Rechts, was übrig ist:<\/strong> ✗ ([^–]+)– <strong>\?<\/strong> ([^<]+)<\/p>/);
+    expect(rechts, 'Folienzeile „2 Rechts, was übrig ist: ✗ … – ? …“ fehlt').not.toBeNull();
+    expect(ids(rechts?.[1] ?? '').sort()).toStrictEqual([...kreuz].sort());
+    expect(ids(rechts?.[2] ?? '')).toStrictEqual(frage);
   });
 });
