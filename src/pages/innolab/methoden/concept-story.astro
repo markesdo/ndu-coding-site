@@ -315,4 +315,8 @@ Ein Satz: Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Ander
   /* woher: sieben Zeilen plus Kopf passen nur mit engeren Zeilen auf eine Beamer-Folie (1280×720). */
   :global(html[data-beamer]) .woher :is(th, td) { padding-block: .3rem; }
   .woher th[scope="row"] { white-space: nowrap; }
+  /* story-bogen: sieben Punkte neben dem Bogen passen bei 1280×720 nur mit breiterer Textspalte (Entscheidung 66). */
+  @media (min-width: 900px) {
+    :global(html[data-beamer] [data-folie]:has(#story-bogen) .bild-text) { grid-template-columns: minmax(0, .85fr) minmax(0, 1.3fr); }
+  }
 </style>
