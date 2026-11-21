@@ -285,7 +285,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: 'ideation.astro, Folie beispiel',
       },
     ],
-    ueberleitung: 'Angenommen, es sind 18 Ideen. Wie werden daraus drei?',
+    ueberleitung: 'Angenommen, es sind viele Ideen. Wie werden daraus drei?',
   },
 
   auswahl: {
@@ -353,15 +353,15 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       text: 'Wer möglichst viele Tierarten aufzählen soll, landet schnell in einer Familie: „once we identify lions and tigers, we might add pumas, cheetahs, and snow leopards“. Viele Einträge, eine Kategorie.',
       quelle: `${TORRES}, S. 114`,
     },
-    ueberleitung: 'So wurden bei der Kaffeebar aus 18 Ideen diese drei.',
+    ueberleitung: 'So wurden bei der Kaffeebar aus vielen Ideen diese drei.',
   },
 
   beispiel: {
     live: [
-      '„Im Beispiel wurden es 18 Ideen – eure von vorhin kommen dazu.“',
+      '„Im Beispiel kommen eure Ideen von vorhin dazu.“',
       'Aussortiert: Becher mit Deckel, mehr Sitzplätze – gut, andere Chance.',
       'Drei nach dem Punkten: die drei von eben.',
-      'Fragen: Welche der 18 ist nur eine Form einer der drei?',
+      'Fragen: Welche Idee ist nur eine Form einer der drei?',
       'Bei Bedarf: „Im Gehen bestellen“ ist nicht das verworfene Vorbestellen (Tag 1).',
     ],
     verstaendnis: {
@@ -370,7 +370,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Kaffeebar: 18 Ideen zu H1; aussortiert, was die Ziel-Chance nicht löst; drei nach dem Punkten: Wartezeit an der Hallentür (Anzeige), Im Gehen bestellen mit Abfahrtszeit (Bestellweg), Kaffeewagen am Bahnsteig (anderer Ort). Varianten der Anzeige sind zusammengefasst.',
+        text: 'Kaffeebar: Ideen zu H1; aussortiert, was die Ziel-Chance nicht löst; drei nach dem Punkten: Wartezeit an der Hallentür (Anzeige), Im Gehen bestellen mit Abfahrtszeit (Bestellweg), Kaffeewagen am Bahnsteig (anderer Ort). Varianten der Anzeige sind zusammengefasst.',
         quelle: `ideation.astro, Folie beispiel; Regel: ${TORRES}, S. 112–114`,
       },
       {
@@ -384,10 +384,12 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   'ad-libs': {
     live: [
       'Lückensatz vorlesen, Lücken mit dem Finger zeigen.',
+      'Symbole: vier Lücken sind euer Profil – die erste ist eure Idee.',
       '„Ein Satz pro Idee – er zwingt euch zu sagen, wie sie Wert schafft.“',
       '„Job, Pain und Gain kommen aus eurem Profil vom Vormittag, mit ID.“',
       'Kaffeebar-Satz zeigen: J1, P1, G1 – anders als der Automat.',
       'Falle: am ersten Satz feilen – drei rohe Sätze sind das Ziel.',
+      'Linke Hälfte: nächster Block, nur für den Spitzenreiter.',
     ],
     verstaendnis: {
       frage: 'Woher kommen Job, Pain und Gain im Lückensatz?',
@@ -477,6 +479,6 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 114`,
       },
     ],
-    ueberleitung: 'Nach der Pause: Welcher Lückensatz trifft, was eurer Kundschaft am wichtigsten ist?',
+    ueberleitung: 'Nach der Pause: Ihr vergleicht eure drei Sätze, wählt einen – und aus ihm wird die linke Hälfte eures Canvas.',
   },
 };

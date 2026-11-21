@@ -35,10 +35,32 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 93`,
       },
     ],
-    ueberleitung: 'Produkt oder Wirkung – das verwechselt fast jede*r. Probiert es.',
+    ueberleitung: 'Und woher nehmt ihr diese Zettel? Aus eurem Satz.',
   },
 
   // NEU – erst machen
+  'vom-satz': {
+    live: [
+      'Satz 2 vorlesen – der Spitzenreiter von eben.',
+      'Vor jedem Klick offen fragen: In welches Feld gehört dieser Teil?',
+      '„Der Halbsatz vor (P1) ist euer erster Pain Reliever.“',
+      'Die Idee wird ausgeschrieben: was im Schaufenster steht.',
+      '„Ein Satz, ein Pain, ein Gain – die Map ergänzt.“',
+      'Wenn hinten: nur Zeile Pain Reliever, dann letzter Klick.',
+    ],
+    verstaendnis: {
+      frage: 'Was aus eurem Lückensatz kommt nicht in die linke Hälfte?',
+      antwort: 'Segment, Job und Alternative. Segment und Job stehen rechts im Profil; die Alternative hat im Canvas kein Feld.',
+      falsch: '„Der Job wird ein Produkt“ – der Job bleibt rechts; das Produkt trifft ihn.',
+    },
+    kern: [
+      { text: 'Lückensatz: nur „Our ___“ zeigt auf das Quadrat („products and services“); die Lücken für Pain und Gain zeigen auf das Profil, je mit eigenem Verb.', quelle: `${VPD}, S. 184 (aus der Abbildung)` },
+      { text: '„Pain relievers describe how exactly your products and services alleviate specific customer pains.“ Verb und Pain im Satz sind das in Rohform – Lesart dieses Kurses. Gain Creators ebenso.', quelle: `${VPD}, S. 86, 89` },
+      { text: 'Ad-libs „Pinpoint how different alternatives create value“; der Canvas: „Flesh out possible directions“. Der Canvas entsteht für die gewählte Richtung.', quelle: `${VPD}, S. 158–159, 182` },
+    ],
+    ueberleitung: 'Weitere Zettel: In welches Feld gehören sie?',
+  },
+
   'produkt-wirkung': {
     live: [
       'Allein still: welches Feld für jeden Zettel? Dann zugleich zeigen.',
@@ -135,7 +157,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 105`,
       },
     ],
-    ueberleitung: 'Spitzenreiter gewählt. Jetzt der Fit seiner Value Map, Schritt für Schritt.',
+    ueberleitung: 'Spitzenreiter gewählt. Nur für ihn kommt jetzt die linke Hälfte.',
   },
 
   'fit-kaffeebar': {
@@ -168,40 +190,14 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         antwort: '✗: Die Value Map sagt dazu nichts oder ihr verzichtet. ?: Ihr könnt es erst entscheiden, wenn ihr etwas herausgefunden habt – schreibt die Frage dazu.',
       },
     ],
-    ueberleitung: 'Spitzenreiter auf Papier, Fit auf Papier. Was heißt „auf Papier“?',
-  },
-
-  'drei-fits': {
-    live: [
-      'Abbildung von unten nach oben: Papier, Markt, Bank.',
-      '„Heute erreicht ihr Stufe 1 – mehr nicht.“',
-      '„Stufe 2 sind eure Tests ab Tag 4.“',
-      'Die Wahl ist umkehrbar: Die anderen zwei Ideen bleiben liegen.',
-      'Wenn hinten: nur Stufe 1 und der Satz zur Umkehrbarkeit.',
-    ],
-    verstaendnis: {
-      frage: 'Was ist nach heute belegt – und was nicht?',
-      antwort: 'Belegt (durch die Interviews): Der Kundschaft sind bestimmte Jobs, Pains und Gains wichtig. Nicht belegt: dass sie sich für euer Wertversprechen interessiert. „The fit you achieve is not yet proven and exists mainly on paper.“ (S. 117)',
-      falsch: '„Die Idee mit dem besten Fit ist bestätigt“ – bestätigt ist nur das Problem, nicht die Lösung.',
-    },
-    kern: [
-      {
-        text: 'Drei Stufen: Problem-Solution Fit („On Paper“), Product-Market Fit („In the Market“), Business Model Fit („In the Bank“).',
-        quelle: `${VPD}, S. 115–118`,
-      },
-      {
-        text: 'Problem-Solution Fit: Belege, dass der Kundschaft bestimmte Jobs, Pains und Gains wichtig sind, und ein Wertversprechen dazu – man entwirft mehrere Alternativen und sucht die mit dem besten Fit. „The fit you achieve is not yet proven and exists mainly on paper.“ Nächster Schritt: Belege für das Wertversprechen sammeln oder neu entwerfen.',
-        quelle: `${VPD}, S. 117`,
-      },
-    ],
-    ueberleitung: 'Jetzt ihr: Spitzenreiter wählen, seine Map ordnen, den Fit prüfen.',
+    ueberleitung: 'Jetzt ihr: Spitzenreiter wählen, seine Map aus dem Satz bauen, den Fit prüfen.',
   },
 
   vorgehen: {
     live: [
       'Wozu vorlesen: wissen, was ihr heute ausarbeitet – und was offen bleibt.',
       'Timer 5 min: drei Lückensätze aus der Ideation vergleichen, Spitzenreiter wählen.',
-      'Nach 5 min: Value Map im Canvas-Frame, ordnen – Timer 20 min.',
+      'Nach 5 min: Value Map aus dem Lückensatz, ergänzen – Timer 20 min.',
       '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
       'Nach 25 min: Fit in drei Schritten, Timer 7 min.',
       'Nach 32 min: alle „?“ ins Feld auf T3 · 4.',
@@ -251,12 +247,17 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
       'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
+      'Aufdecken: Fit auf Papier ist kein Beweis – getestet wird ab Tag 4.',
       'Ausblick: gleich der Story-Bogen – heute als Theorie.',
     ],
     kern: [
       {
         text: 'Gute Wertversprechen konzentrieren sich auf wenige Pains, die sie extrem gut lindern; die besten adressieren, was der Kundschaft am wichtigsten ist.',
         quelle: `${VPD}, S. 86–87, 103`,
+      },
+      {
+        text: 'Drei Stufen: Problem-Solution Fit („On Paper“), Product-Market Fit („In the Market“), Business Model Fit („In the Bank“). „The fit you achieve is not yet proven and exists mainly on paper.“ Die Folie dazu steht seit 21.11. nur im Handout (Entscheidung 58).',
+        quelle: `${VPD}, S. 115–118`,
       },
     ],
     ueberleitung: 'Direkt weiter: Warum sollte das jemanden interessieren?',

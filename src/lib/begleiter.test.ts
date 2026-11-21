@@ -886,13 +886,13 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(schritte).toContain('Eure Idee von Tag 1 darf als ein Sticky dazu – ohne Vorsprung.');
     expect(NOTIZEN['/innolab/methoden/ideation']?.vorgehen?.live).toContain('Idee von Tag 1: ein Sticky unter vielen, kein Vorsprung.');
   });
-  // Entscheidung 57 (21.11.): Fit prüfen in drei Schritten an der Kaffeebar; Reihenfolge fit → beispiel → fit-kaffeebar →
-  // drei-fits → vorgehen, passend zu den Überleitungen im Begleiter.
+  // Entscheidung 57 (21.11.): Fit prüfen in drei Schritten an der Kaffeebar. Reihenfolge seit Entscheidung 58: beispiel →
+  // value-map → vom-satz → produkt-wirkung → fit → fit-kaffeebar → vorgehen; drei-fits nur noch im Handout von uebertrag.
   it('Tag 3: value-map – Folie fit-kaffeebar mit Selbstkontrolle, Reihenfolge der Folien, Schritt 3', () => {
     const q = quellen['/innolab/methoden/value-map'] ?? '';
     const ids = [...q.matchAll(/<h2 id="([^"]+)"/g)].map((m) => m[1]);
-    const reihe = ['fit', 'beispiel', 'fit-kaffeebar', 'drei-fits', 'vorgehen'];
-    expect(ids.filter((id) => reihe.includes(id))).toStrictEqual(reihe);
+    const reihe = ['beispiel', 'value-map', 'vom-satz', 'produkt-wirkung', 'fit', 'fit-kaffeebar', 'vorgehen', 'uebertrag'];
+    expect(ids).toStrictEqual([...reihe.slice(0, 7), 'vorlage', 'pruefen', 'uebertrag']);
     const a = q.indexOf('id="fit-kaffeebar"');
     const fk = q.slice(a, q.indexOf('<div class="nur-handout">', a));
     expect(fk).toContain('<p class="small">Selbstkontrolle: Rechts trägt jeder Zettel genau ein Zeichen. Links hat jeder ✓ eine ID.</p>');
@@ -901,6 +901,27 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(q).toContain('<strong>Fit prüfen:</strong> links Zettel für Zettel ✓ mit ID – rechts ✓, ✗ oder ? an jeden Eintrag – von oben lesen.');
     const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
     expect(n['fit-kaffeebar']?.live.some((l) => l.startsWith('Wenn hinten:'))).toBe(true);
-    expect(n.beispiel?.ueberleitung).toBe('Spitzenreiter gewählt. Jetzt der Fit seiner Value Map, Schritt für Schritt.');
+    expect(n.beispiel?.ueberleitung).toBe('Spitzenreiter gewählt. Nur für ihn kommt jetzt die linke Hälfte.');
+  });
+  // Entscheidungen 58–61 (21.11.): Brücke vom Lückensatz zur Value Map, Lückensatz mit ID-Slots, korrigierte Kaffeebar-Sätze,
+  // ideation#beispiel ohne „18 Ideen“ und ohne Express-Kasse.
+  it('Tag 3: vom-satz, drei-fits im Handout, Lückensatz-Vorlage mit IDs, korrigierter Satz 3, keine „18 Ideen“', () => {
+    const vm = quellen['/innolab/methoden/value-map'] ?? '';
+    const id = quellen['/innolab/methoden/ideation'] ?? '';
+    const a = vm.indexOf('id="vom-satz"');
+    const vom = vm.slice(a, vm.indexOf('</Folie>', a));
+    expect(vom).toContain('<p class="breit" data-schritt><strong>Der Satz ist der Anfang:</strong> ein Pain, ein Gain.');
+    expect(vom).toContain('<tr data-schritt><td>… zeigt, ob der Kaffee vor der Abfahrt fertig ist (P1)</td><td>→ Pain Reliever</td>');
+    expect(vm).toContain('<p class="small vm-legende">✓ trifft · ✗ trifft nicht · ? wissen wir nicht</p>');
+    expect(vm).toContain('<h3 id="drei-fits">');
+    expect(vm.match(/<h2 id="drei-fits"/g) ?? []).toStrictEqual([]);
+    expect(vm).toContain('indem er die Frage erübrigt, ob es sich noch ausgeht (P1), und ihnen den Kaffee in die Hand gibt, bevor der Zug einfährt (G1) – anders als der Automat.');
+    expect(vm).toContain('indem sie das Raten vor der Schlange beendet (P1) – anders als der Automat.');
+    expect(vm.match(/dorthin bringt, wo sie warten|hilft …, indem/g) ?? []).toStrictEqual([]);
+    expect(NOTIZEN['/innolab/methoden/value-map']?.['drei-fits']).toBeUndefined();
+    expect(id).toContain('die <strong>[Job]</strong> wollen (J…), indem es <strong>[Pain]</strong> [verringert] (P…) und <strong>[Gain]</strong> [ermöglicht] (G…)');
+    expect(id).toContain('(„G –“)');
+    expect(id).toContain('<strong>Mit diesen drei Sätzen geht ihr in den nächsten Block:</strong>');
+    expect([id, JSON.stringify(NOTIZEN['/innolab/methoden/ideation'] ?? {})].flatMap((x) => x.match(/18 Ideen|der 18\b|aus 18|Express-Kasse wie im Supermarkt/g) ?? [])).toStrictEqual([]);
   });
 });
