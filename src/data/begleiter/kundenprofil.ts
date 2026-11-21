@@ -290,6 +290,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
         'Aufgabe → Job: Steht unter den Chancen ein „Ich muss …“ oder „Ich will …“, ist das ein Job, kein Pain (VPD S. 54).',
         'Momente der Map sind keine Jobs; höchstens ein unterstützender Job unten auf der Skala (VPD S. 55).',
         'Keine erfundene Kundin, keine Persona: Das Segment sind die Interviewten aus dem Produkt-Brief (VPD S. 72 „Select customer segment“).',
+        'Pains, die nicht im Baum stehen, dürfen dazu – mit „?“.',
         'Ohne Zitat erlaubt, mit „?“: eine Vermutung fürs nächste Interview. Beim Ordnen stehen belegte Einträge im Zweifel über Vermutungen (VPD S. 65, 67).',
         'Kein Eintrag beschreibt das eigene Produkt: „proceed like an anthropologist and “forget” what you are offering“ (S. 79).',
       ],

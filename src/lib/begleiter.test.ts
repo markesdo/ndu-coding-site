@@ -806,7 +806,10 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const folie = q.slice(a, q.indexOf('</Folie>', a));
     expect(folie).toContain('<p class="folie-satz">Aus Baum und Interviews füllen, dann ergänzen, was ihr vermutet (mit „?“) – je Spalte ordnen.</p>');
     expect(folie).toContain('<li data-schritt><strong>Ordnen und prüfen:</strong> Skalen, je Spalte, oberste drei nummerieren (J1, P1, G1); dann die sechs Fehler durchgehen (nächste Folie) – was ihr findet, korrigiert ihr gleich. <Timer minuten={4} /></li>');
-    expect(folie).toContain('Einträge ohne Zitat dürfen ins Profil, mit „?“ – sie sind Vermutungen, die ihr im nächsten Interview prüft ({VPD}, S. 65, 67). Beim Ordnen stehen belegte Einträge im Zweifel über Vermutungen.');
+    expect(folie).toContain('Zuerst füllt ihr das Profil aus dem, was ihr habt: Baum und Interviews, mit Zitat-IDs – so beruht es auf Belegen und nicht auf dem Bauch. Dann ergänzt ihr, was ihr vermutet, mit „?“: Das Buch erlaubt, mit Vermutungen zu beginnen, solange ihr sie prüft ({VPD}, S. 65, 67). Jedes „?“ ist eine Frage fürs nächste Interview. Beim Ordnen stehen belegte Einträge im Zweifel über Vermutungen.');
+    // Ein Satz statt drei: die Regel steht nicht doppelt, und „aus dem Bauch“ verbietet keine Vermutungen.
+    expect(folie.match(/Einträge ohne Zitat dürfen ins Profil|nicht aus dem Bauch kommt|Das Buch erlaubt auch/g) ?? []).toStrictEqual([]);
+    expect(n.vorgehen?.ablauf?.achten).toContain('Pains, die nicht im Baum stehen, dürfen dazu – mit „?“.');
     expect(folie.match(/einen der sechs Fehler bei euch markieren/g) ?? []).toStrictEqual([]);
     expect(n.vorgehen?.live).toContain('Wer in 4 min nicht durchkommt: zuerst „zu vage“, „eigenes Angebot“.');
     expect(JSON.stringify(n.vorgehen).match(/Kein Eintrag ohne Zitat|einen Fehler markieren|einen der sechs Fehler/g) ?? []).toStrictEqual([]);
