@@ -37,24 +37,10 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
   // NEU – erst machen
   jane: {
     live: [
-      'Steckbrief zeigen, nichts dazu sagen.',
-      'Reihum, je ein Satz: „Was bietet ihr Jane an?“',
-      'Dann reihum: „Was müsstet ihr dafür noch wissen?“',
-      'Falle: die Antwort „Kontext“ vorwegnehmen.',
+      'Steckbrief zeigen, Titelfrage stellen – keine Antworten sammeln.',
+      'Gleich weiter: „Was fehlt euch, um das zu beantworten?“',
+      'Die nächste Folie zeigt es.',
     ],
-    uebung: { dauer: '2 min', form: 'zu dritt, reihum laut, zwei Runden' },
-    ablauf: {
-      schritte: [
-        'Folie zeigen: Jane Moviegoer, wie ein Kinobetreiber sie üblicherweise beschreibt.',
-        'Runde 1 reihum: ein Angebot für Jane in einem Satz.',
-        'Runde 2 reihum: eine Sache, die ihr wissen müsstet, um zu sagen, ob das Angebot trifft.',
-      ],
-      achten: [
-        'Die Angebote dürfen naheliegend sein (größere Leinwand, Snacks, Online-Tickets) – genau so beginnt der Kinobetreiber im Buch.',
-        'Fällt „mit wem geht sie?“ oder „warum geht sie?“: festhalten, das ist die nächste Folie.',
-      ],
-      aufloesung: 'Nächste Folie: Dieselbe Jane hat je nach Anlass andere Jobs, Pains und Gains – der Steckbrief sagt davon nichts.',
-    },
     kern: [
       {
         text: 'Der Besitzer einer Kinokette will neue Wertversprechen entwerfen. Er könnte bei den Merkmalen beginnen – neueste Leinwände, Bildtechnik, Snacks, Events –, aber: „those only really matter if customers care about them“.',
@@ -112,7 +98,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
 
   profil: {
     live: [
-      'Vorwissen nutzen: reihum je ein Feld erklären lassen.',
+      'Vorwissen nutzen: Wer erklärt ein Feld? Frage an alle.',
       'Nur ergänzen: soziale und emotionale Jobs, unterstützende Jobs.',
       '„Jobs in den Worten der Kundschaft – eure Zitate liefern sie.“',
       'Zeit: höchstens anderthalb Minuten.',

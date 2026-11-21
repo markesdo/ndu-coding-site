@@ -711,4 +711,15 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const profil = q.slice(q.indexOf('id="profil"'), q.indexOf('<div class="nur-handout">', q.indexOf('id="profil"')));
     expect(profil).toContain('<li data-schritt><strong>Pains:</strong> schlechte Ergebnisse, Hindernisse, Risiken.</li>');
   });
+  // Entscheidung 35 (21.11.): Kundenprofil ohne Reihum – `jane` ohne Übung (Titelfrage rhetorisch), `profil` mit Frage an alle.
+  it('Tag 3: kein „reihum“ auf der Kundenprofil-Seite und in ihren Notizen; jane ohne Übung', () => {
+    const q = quellen['/innolab/methoden/kundenprofil'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/kundenprofil'] ?? {};
+    const texte = [q, JSON.stringify(n)];
+    expect(texte.every((t) => t.length > 1000)).toBe(true);
+    expect(texte.flatMap((t) => t.match(/reihum/gi) ?? [])).toStrictEqual([]);
+    expect(n.jane?.uebung).toBeUndefined();
+    expect(n.jane?.ablauf).toBeUndefined();
+    expect(n.jane?.kern?.length).toBe(2);
+  });
 });
