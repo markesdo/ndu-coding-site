@@ -1003,6 +1003,27 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folie('beispiel')).toContain('<MiroLink name="T3 · 3 · Ideation">T3 · 3 · Ideation, Spalte Kaffeebar</MiroLink>');
     expect(MIRO_FRAMES['T3 · 3 · Ideation']).toBeTruthy();
   });
+  // Quellen-Vergleich (21.11.): Varianten erkennt man am Weg und an den Annahmen, nicht an gleichen Profil-Einträgen
+  // (Torres S. 120, 136); die Vorlage hat die Spalten der Folie; VPD S. 182 belegt „nur eine Idee bekommt einen Canvas“.
+  it('Tag 3: Ideen-Vergleich quellentreu – Varianten, Spalten der Vorlage, Werkzeuge des Buchs', () => {
+    const id = quellen['/innolab/methoden/ideation'] ?? '';
+    const vm = quellen['/innolab/methoden/value-map'] ?? '';
+    const folie = (q: string, f: string) => { const a = q.indexOf(`id="${f}"`); return q.slice(a, q.indexOf('</Folie>', a)); };
+    const va = folie(id, 'varianten');
+    expect(va.match(/treffen dieselben Einträge eures Profils|nichts zu unterscheiden/g) ?? []).toStrictEqual([]);
+    expect(va).toContain('„I want to watch live sports“');
+    expect(va).toContain('(S. 120)');
+    expect(va).toContain('(S. 136). Daraus liest dieser Kurs:');
+    expect(va).toContain('Ein Beispiel dieses Kurses, nicht von Torres: Bei der Kaffeebar');
+    const kopf = [...folie(vm, 'beispiel').matchAll(/<th>((?:J|P|G)\d)[^<]*<\/th>/g)].map((m) => m[1]);
+    expect(kopf).toStrictEqual(['J1', 'P1', 'P2', 'P3', 'G1']);
+    expect(vm).toContain(`| Idee | ${kopf.join(' | ')} | Frage zu ? |\n|---|---|---|---|---|---|---|\n`);
+    expect(vm).toContain('„to come up with the ones that produce the best fit“ (S. 117)');
+    expect(vm).toContain('die zehn Fragen (Abschnitt „Making Choices“, S. 292–293), Dotmocracy (S. 341–347) und eine Kriterien-Tabelle (S. 346, 348–354)');
+    expect(vm.match(/Sein Werkzeug dafür ist eine Kriterien-Tabelle/g) ?? []).toStrictEqual([]);
+    expect(vm).toContain('for the one napkin sketch out of their three that got most votes“ ({VPD}, S. 182)');
+    expect(vm).toContain('Dass ihr stattdessen mit ✓ ✗ ? gegen euer Profil wählt, ist eine Regel dieses Kurses');
+  });
   // Entscheidung 56 (21.11.): Die Idee von Tag 1 steht auf dem Beamer – ein Sticky unter vielen, ohne Vorsprung.
   it('Tag 3: ideation#vorgehen – Idee von Tag 1 als ein Sticky, ohne Vorsprung', () => {
     const q = quellen['/innolab/methoden/ideation'] ?? '';
