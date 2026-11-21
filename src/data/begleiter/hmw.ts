@@ -127,10 +127,11 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   bauen: {
     live: [
-      'Fluss am Beispiel durchgehen: Chance, Grundform, Varianten, Probe.',
+      'Zeile für Zeile: Grundform, Person und Moment, ein Warum höher.',
       'Fragen: Warum will jemand wissen, ob es sich ausgeht?',
-      'Aufdecken: H1 genauer, H2 weiter, dann die Falle.',
-      '„Eine Variante weiter, eine genauer – dann habt ihr drei zum Vergleichen.“',
+      'Aufdecken: H1 mit Person und Moment, H2 ein Warum höher.',
+      '„Eine mit Person und Moment, eine ein Warum höher – drei zum Vergleichen.“',
+      'Das Warum kennt ihr vom Kundenprofil – die Antwort steht bei euren Jobs.',
       'Aufdecken: Falle – H2 rutscht in die Nachbar-Chance, darum H1.',
     ],
     verstaendnis: {
@@ -139,11 +140,11 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Grundform: die Ziel-Chance wörtlich in „How might we address ‚…‘?“.',
+        text: 'Grundform: die Ziel-Chance wörtlich in „How might we address ‚…‘?“. Einsetzen der Ziel-Chance: Kursformat.',
         quelle: `${TORRES}, S. 94`,
       },
       {
-        text: 'Weiter fragen: Basadur ließ eine Reihe ehrgeizigerer Fragen stellen, mit Warum-Fragen davor und dem Wechsel in die Sicht der Kundschaft. Die Variante „genauer“ (Person und Moment nennen) und die Reihenfolge der drei Schritte sind Kursformat.',
+        text: 'Weiter fragen: Basadur ließ eine Reihe ehrgeizigerer Fragen stellen, mit Warum-Fragen davor und dem Wechsel in die Sicht der Kundschaft. Die Variante „mit Person und Moment“, das Warum an der Chance statt am Vorhaben des Teams und die Reihenfolge der drei Fragen sind Kursformat.',
         quelle: `${BERGER}, S. 2; Schritte: Kursformat`,
       },
       {
@@ -211,14 +212,14 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Allein (7 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante weiter (Warum will die Person das?) und eine genauer (Person und Moment).',
+        'Allein (7 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante mit Person und Moment (Wer, in welchem Moment?) und eine ein Warum höher (Warum will die Person das?).',
         'Zwei Proben, allein (5 min): zu jeder Frage zwei verschiedene Wege notieren. Fällt nur einer ein, steckt die Lösung schon in der Frage (Torres S. 94: „Is there more than one way to address this …?“). Dann: zu weit oder zu eng – Sweet Spot? Kursformat statt Vorlesen zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Wählen und festhalten (3 min): eine Frage, ein Satz warum, in der eigenen Spalte in T3 · 2.',
       ],
       achten: [
         'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an der Ziel-Chance.',
         'Aus Sicht der Kundschaft, nicht des Produkts.',
-        'Die weitere Variante bleibt bei derselben Chance. Rutscht sie in eine Nachbar-Chance (wie H2 der Kaffeebar), ist sie ein Hinweis, nicht die Wahl.',
+        'Die Variante „ein Warum höher“ bleibt bei derselben Chance. Rutscht sie in eine Nachbar-Chance (wie H2 der Kaffeebar), ist sie ein Hinweis, nicht die Wahl.',
       ],
       fehler: [
         'Lösung in der Frage („… per App …“).',

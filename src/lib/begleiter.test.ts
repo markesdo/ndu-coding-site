@@ -804,4 +804,19 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(q).toContain('die Grundform „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“, ist Kursformat.');
     expect(NOTIZEN['/innolab/methoden/hmw']?.warum?.ueberleitung).toBe('Wie kommt ihr von eurer Chance zu so einer Frage? Torres zeigt, warum die Chance in die Frage gehört.');
   });
+  // Entscheidung 44 (21.11.): `bauen` als drei Fragen mit sprechenden Etiketten statt „genauer/weiter“; die Probe steht nur
+  // auf `sweet-spot`; die Grundform lautet wie auf `bruecke`.
+  it('Tag 3: hmw#bauen – Grundform, mit Person und Moment, ein Warum höher; kein genauer/weiter', () => {
+    const q = quellen['/innolab/methoden/hmw'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/hmw'] ?? {};
+    const a = q.indexOf('id="bauen"');
+    const bauen = q.slice(a, q.indexOf('<div class="nur-handout">', a));
+    expect(bauen).toContain('<li data-schritt><strong>Grundform:</strong> „Wie könnten wir ‚Geht sich ein Kaffee noch aus?‘ angehen?“</li>');
+    expect(bauen).toContain('<li data-schritt><strong>Mit Person und Moment (H1):</strong> Wer, in welchem Moment? –');
+    expect(bauen).toContain('<li data-schritt><strong>Ein Warum höher (H2):</strong> Warum will die Person das? –');
+    expect(bauen.match(/Probe|Sweet Spot|<Fluss/g) ?? []).toStrictEqual([]);
+    expect([q, JSON.stringify(n)].flatMap((x) => x.match(/Genauer \(H1\)|Weiter \(H2\)|eine weiter, eine genauer|H1 genauer|H2 weiter\b|Stufe weiter|Variante weiter|„genauer“/g) ?? [])).toStrictEqual([]);
+    expect(q).toContain('- H1 (Grundform): Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?');
+    expect(q).toContain('Dort fragt ihr es am Job (Osterwalder u. a., „Value Proposition Design“, S. 80), hier an der Chance');
+  });
 });
