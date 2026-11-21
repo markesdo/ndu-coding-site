@@ -1081,7 +1081,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(pw).toContain('<li>Statt anzustehen: in 20 Sekunden im Gehen bestellen</li>');
     expect(pw).toContain('<strong>B:</strong> Pain Reliever (P2)');
     expect(pw).toContain('<strong>Die Probe:</strong>');
-    expect(vm).toContain('drei Lückensätze aus T3 · 3 auf die Stickies; je Satz ✓ ✗ ? zu J1, P1, P2, G1');
+    // Wählen vergleicht gegen dieselben fünf Einträge wie `beispiel` und Miro (J1, P1, P2, P3, G1).
+    expect(vm).toContain('drei Lückensätze aus T3 · 3 auf die Stickies; je Satz ✓ ✗ ? zu J1, P1, P2, P3, G1;');
+    expect(vm).toContain('<thead><tr><th>Idee</th><th>J1 Kaffee besorgen</th><th>P1 ausgehen?</th><th>P2 Schlange</th><th>P3 wann fertig?</th><th>G1 vor dem Zug</th></tr></thead>');
     expect(id).toContain('<li data-schritt><strong>Lückensätze:</strong> je Idee einer, ins Feld „Drei Ideen als Lückensätze“ eurer Spalte – J-, P-, G-ID aus eurem Canvas.');
     expect(id).toContain('<Prompt label="Vorlage · eure Spalte in T3 · 3, Feld ‚Drei Ideen als Lückensätze‘">');
   });
