@@ -143,7 +143,7 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
     <p class="folie-satz">Wessen Profil, dann aus Baum und Snapshots füllen, je Spalte ordnen.</p>
     <p class="wozu"><strong>Wozu?</strong> Damit ihr eure Ideen am Nachmittag an etwas messen könnt, das nicht von ihnen abhängt.</p>
     <p class="small miro-zeile">Miro, euer Canvas: <MiroLink name="T3 · 4 · Canvas · Sofie">Sofie</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Joachim">Joachim</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Hewen">Hewen</MiroLink></p>
-    <ol class="gross dicht">
+    <ol class="gross dicht kp-schritte">
       <li data-schritt><strong>Wessen Profil?</strong> Oben in den Canvas eine Zeile: Segment und Anlass – aus „Für wen?“ in eurem Brief; passen eure drei Interviews dazu? <Timer minuten={2} /></li>
       <li data-schritt><strong>Pains aus dem Baum:</strong> Ziel-Chance zuerst, dann die anderen Chancen, mit Zitat-IDs. Ist eine Chance ein Wunsch, kommt sie zu den Gains. <Timer minuten={5} /></li>
       <li data-schritt><strong>Ergänzen:</strong> Gains aus den Snapshots, konkret; mindestens ein sozialer oder emotionaler Job. <Timer minuten={7} /></li>
@@ -199,4 +199,8 @@ Stand: [Datum] · Grundlage: Baum auf Miro (Baum · euer Name), Ziel-Chance (Mir
   /* „beispiel“ im Beamer: drei gleich breite Spalten, sonst quetscht der Browser die Jobs und die Tabelle wird höher als die Folie. */
   :global(html[data-beamer]) .kp-beispiel table { table-layout: fixed; width: 100%; }
   :global(html[data-beamer]) .kp-beispiel thead th { width: 33.33%; }
+  /* „kontext“ im Beamer: Seit der Zeile „Und bei euch?“ (21.11.) braucht die Folie mehr Platz – die Abbildungen etwas niedriger. */
+  :global(html[data-beamer] .folie) .zwei-bilder :global(.buch-abbildung img) { max-height: 36vh; width: auto; max-width: 100%; }
+  /* „vorgehen“ im Beamer: vier Schritte mit Timer, etwas enger, damit sie bei 1280×720 ohne Scrollen passen. */
+  :global(html[data-beamer]) .kp-schritte > li { margin-bottom: .1rem; line-height: 1.4; }
 </style>
