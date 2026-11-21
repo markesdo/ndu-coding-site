@@ -114,14 +114,14 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <table>
         <thead><tr><th>Linse</th><th>Vorn liegt</th><th>Warum</th></tr></thead>
         <tbody>
-          <tr data-schritt><th>Größe</th><td>unentschieden</td><td>Je drei Interviews: I2-4, I3-1, I5-2 gegen I2-2, I3-4, I4-1.</td></tr>
+          <tr data-schritt><th>Größe</th><td>unentschieden</td><td>3 von 5 gegen 3 von 5 („Wenn ich anstehe …“: I2-2, I3-4, I4-1)</td></tr>
           <tr data-schritt><th>Markt</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Die Zeitnot deckt der Automat schon ab (I1-3, I4-3), das Nichtwissen niemand.</td></tr>
           <tr data-schritt><th>Eigene Lage</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Die Bar kennt ihre Wartezeit; eine kürzere Schlange bräuchte mehr Personal (unsere Annahme).</td></tr>
           <tr data-schritt><th>Kundschaft</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Wichtig, und heute schätzen sie nach Augenschein oder lassen es (I2-4, I5-2).</td></tr>
         </tbody>
       </table>
     </div>
-    <p data-schritt><strong>Kein Sieger bei der Größe</strong> – Markt und eigene Lage geben den Ausschlag. Entschieden hat das Gespräch.</p>
+    <p data-schritt><strong>Kein Sieger bei der Größe</strong> – Markt und eigene Lage geben den Ausschlag.</p>
     <div class="nur-handout">
       <p>Verglichen wurden zuerst die drei Momente. „Halle: entscheiden“ gewinnt bei der Größe (dort fällt bei den meisten die Entscheidung) und bei der Kundschaft (sie entscheiden ohne zu wissen, ob es reicht, und schätzen nach Augenschein oder lassen es). Unter dem Ast stehen drei Geschwister; „Geht sich ein Kaffee noch aus?“ ist ein Blatt und wird die Ziel-Chance.</p>
       <p><strong>Zuerst der Ast.</strong></p>
@@ -137,7 +137,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <Folie>
     <h2 id="kein-punkteschema">Kein Punkteschema</h2>
-    <p class="folie-satz">„Don't do this. This is a messy, subjective decision, and you want to keep it that way.“</p>
+    <p class="folie-satz">„Punkte je Linse vergeben und summieren? ‚Don't do this. This is a messy, subjective decision, and you want to keep it that way.‘“</p>
     <ul class="gross">
       <li data-schritt>Vergleicht <strong>relativ</strong>, Geschwister gegen Geschwister – keine absoluten Werte.</li>
       <li data-schritt>Kein klarer Sieger? Normal. Die Linsen liefern <strong>Gründe</strong> – entscheiden und begründen müsst ihr selbst.</li>
@@ -220,4 +220,10 @@ Stand: [Datum]
      etwas schmalere Knoten, damit alle drei Äste (auch „Im Zug“) ohne waagrechtes Scrollen zu sehen sind. */
   :global(html[data-beamer] .folie:has(> h2#bauchwahl) .baum-knoten) { max-width: 7.4rem; min-width: 5rem; font-size: .75rem; padding: .25rem .4rem; }
   :global(html[data-beamer] .folie:has(> h2#bauchwahl) .baum-ast) { padding-left: .25rem; padding-right: .25rem; }
+  /* „beispiel“: Die Tabelle lief im Beamer rechts aus dem Bild (21.11., Kundschaft-Zeile). Feste Spaltenbreiten und Umbruch
+     halten sie in der Folienbreite, egal wie breit der Text in einer Zelle ist. */
+  :global(html[data-beamer] .folie:has(> h2#beispiel) table) { table-layout: fixed; width: 100%; }
+  :global(html[data-beamer] .folie:has(> h2#beispiel) :is(th, td)) { overflow-wrap: break-word; }
+  :global(html[data-beamer] .folie:has(> h2#beispiel) thead th:nth-child(1)) { width: 14%; }
+  :global(html[data-beamer] .folie:has(> h2#beispiel) thead th:nth-child(2)) { width: 26%; }
 </style>

@@ -123,7 +123,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 99–100`,
       },
       {
-        text: 'Markt: Pflicht oder Unterscheidung – „A missing table stake could torpedo sales, while a strategic differentiator could open up new customer segments.“ Dazu Trends: Wegen der „cord-cutters“ könnte der Streaming-Dienst „I want to watch live sports“ vorziehen.',
+        text: 'Markt: Was haben andere schon? Muss es sein, um mitzuspielen – oder hebt es euch ab? „A missing table stake could torpedo sales, while a strategic differentiator could open up new customer segments.“ Dazu Trends: Wegen der „cord-cutters“ könnte der Streaming-Dienst „I want to watch live sports“ vorziehen.',
         quelle: `${TORRES}, S. 100`,
       },
       {
@@ -152,7 +152,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     live: [
       'Erst der Ast: Halle, weil dort die meisten entscheiden.',
       'Aufdecken: Zeile für Zeile, je vorher fragen: Wer liegt vorn?',
-      'Größe: unentschieden – je drei Interviews.',
+      'Größe: unentschieden – 3 von 5 gegen 3 von 5.',
       '„Kein Sieger bei der Größe. Markt und eigene Lage geben den Ausschlag.“',
       'Falle: die Tabelle als Punkteschema lesen – es sind Sätze, keine Punkte.',
     ],
