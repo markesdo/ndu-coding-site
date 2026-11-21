@@ -668,7 +668,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   // 21.11. (Entscheidung 65): Gezählt werden Interviews, nicht Geschichten – „N von M Interviews“, auf keiner Seite und in
   // keinem Begleiter mehr „von M Geschichten“ oder „Gezählt werden Geschichten“.
   it('Zählung: keine Seite und kein Begleiter zählt Geschichten statt Interviews', () => {
-    const ALT = /\b(?:[A-Z]|\d+|eine[mr]?|zwei|drei|vier|fünf|sechs) von (?:[A-Z]|\d+|drei|vier|fünf|sechs) Geschichten|Gezählt werden Geschichten|M = (?:alle )?(?:eure|eigenen) Geschichten/g;
+    const ALT = /\b(?:[A-Z]|\d+|eine[mr]?|zwei|drei|vier|fünf|sechs) von (?:[A-Z]|\d+|drei|vier|fünf|sechs) Geschichten|Gezählt werden Geschichten|M = (?:alle )?(?:eure|eigenen) Geschichten|Zahl der Geschichten|wie vielen? Geschichten|Geschichten mit (?:diesem Knoten|Zitat)/g;
     const texte: Record<string, string> = {
       ...quellen,
       begleiter: JSON.stringify(NOTIZEN),

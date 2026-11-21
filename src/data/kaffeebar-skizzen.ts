@@ -51,11 +51,11 @@ export const gruppeName = (g: GruppeId) => GRUPPEN.find((x) => x.g === g)?.name 
 export const buchstabe = (g: GruppeId) => g.toUpperCase();
 
 /** Interviews je Gruppe (eine Skizze je Interview): nur Stickies mit Zitat, je Skizze einmal. */
-export const geschichtenIn = (g: GruppeId, skizzen: Skizze[] = SKIZZEN) =>
+export const interviewsIn = (g: GruppeId, skizzen: Skizze[] = SKIZZEN) =>
   skizzen.filter((s) => s.stickies.some((st) => st.g === g && st.id)).length;
 
 /** „3 von 5“: Interviews der Gruppe von allen Skizzen. */
-export const zaehlung = (g: GruppeId, skizzen: Skizze[] = SKIZZEN) => `${geschichtenIn(g, skizzen)} von ${skizzen.length}`;
+export const zaehlung = (g: GruppeId, skizzen: Skizze[] = SKIZZEN) => `${interviewsIn(g, skizzen)} von ${skizzen.length}`;
 
 /**
  * Fehler in den Skizzen: Notiz mit Zitat-ID, Zitat-Sticky ohne ID, ID fehlt im Werkstatt-Beispiel oder gehört zu einer
