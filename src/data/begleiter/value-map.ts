@@ -163,7 +163,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   'fit-kaffeebar': {
     live: [
       'Tabelle zeilenweise: Zettel links vorlesen, offen fragen „Was trifft er?“, dann aufdecken.',
-      'Produkt-Zeile: J1 kommt über das Produkt, nicht über einen Pain Reliever.',
+      'Produkt-Zeilen: J1 kommt über die Produkte, nicht über einen Pain Reliever.',
       'Gegenprobe: trifft nichts – kein Haken, streichen.',
       'Schritt 2: Was rechts übrig ist, bekommt ✗ oder ?.',
       'Schritt 3: von oben lesen – höchstes Kreuz bewusst? Frage im 1:1.',
@@ -197,7 +197,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Wozu vorlesen: wissen, was ihr heute ausarbeitet – und was offen bleibt.',
       'Timer 5 min: Lückensätze aus T3 · 3 kopieren, vergleichen, Spitzenreiter wählen.',
-      'Nach 5 min: Value Map aus dem Lückensatz, ergänzen – Timer 20 min.',
+      'Nach 5 min: Value Map – Satz, Profil von oben, Skalen. Timer 20.',
       '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
       'Nach 25 min: Fit in drei Schritten, Timer 7 min.',
       'Nach 32 min: alle „?“ ins Feld auf T3 · 4.',
@@ -208,14 +208,14 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
         'T3 · 4, eigene Spalte: „Ideen vergleichen und wählen“ – die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils.',
-        'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map des Spitzenreiters ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
+        'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map des Spitzenreiters ins Quadrat (die drei Platzhalter überschreiben), dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
         'Fit auf den Skalen: links ✓ mit ID an jeden Zettel, der etwas trifft; rechts ✓, ✗ oder ? an jeden Eintrag, als letzte Zeile im Sticky; dann von oben lesen.',
       ],
     },
     ablauf: {
       schritte: [
         'Vergleichen und wählen (5 min): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Value Map (20 min): Products & Services, Pain Relievers, Gain Creators des Spitzenreiters, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum? (VPD S. 105–106, 110, 113). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Value Map (20 min), Richtwert 3 + 12 + 5: a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit P- oder G-ID, kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID; c) alle Zettel auf die Skalen links unten, Unverzichtbares oben (VPD S. 99–102, 105). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum? (VPD S. 105–106, 110, 113). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Fit prüfen (7 min): links Zettel für Zettel – trifft er etwas, ✓ mit ID und ✓ am Eintrag rechts; rechts ✗ an das, was übrig ist, „?“ wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); von oben lesen: oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
         'Festhalten (4 min): alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. Claude-Prüfung bis Tag 4.',
       ],
@@ -225,12 +225,15 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Bei Pain Relievers steht eine Wirkung, kein Produkt.',
         'Der Vergleich der Lückensätze ersetzt nicht den Fit am Ende: Das Buch prüft die ausgearbeitete Value Map (S. 112).',
         'Rechts trägt am Ende jeder Zettel ein Zeichen.',
+        'Produkte tragen im Quadrat keine ID; die J-ID kommt beim Fit.',
+        'Kein Zettel zu jedem Pain – die Kaffeebar hat sechs Zettel, als Beispiel, nicht als Regel.',
       ],
       fehler: [
         'Die Lieblingsidee bekommt großzügig Haken, die anderen strenge Kreuze.',
         'Das Profil wird nachträglich an die Idee angepasst.',
         'Alles abgehakt, nichts offen.',
         'Ein Pain Reliever ohne ID bekommt trotzdem einen Haken.',
+        'Ein Produkt bekommt eine erfundene P-ID.',
       ],
     },
     kern: [

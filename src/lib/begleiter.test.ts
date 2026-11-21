@@ -769,6 +769,33 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(q).toContain('<li data-schritt><strong>Festhalten:</strong> alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. <Timer minuten={4} /></li>');
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(36);
   });
+  // Entscheidung 67 (21.11.): Value Map füllen – Titel = Summe der Timer (36 min), Schritt 2 nennt Felder, Reihenfolge, IDs und
+  // Skalen; Produkte tragen im Quadrat keine ID, darum nirgends „jeder Zettel mit P- oder G-ID“; fit-kaffeebar mit zwei Produkt-Zeilen.
+  it('Tag 3: value-map#vorgehen – 36 min, Schritt 2 ausgeschrieben, nur grüne Zettel mit P- oder G-ID', () => {
+    const q = quellen['/innolab/methoden/value-map'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    const a = q.indexOf('id="vorgehen"');
+    const folie = q.slice(a, q.indexOf('</Folie>', a));
+    expect(folie).toContain('id="vorgehen">So geht ihr vor (36 min)</h2>');
+    expect(folie).toContain('<p class="folie-satz">Spitzenreiter wählen, Value Map füllen und ordnen, Fit prüfen.</p>');
+    const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
+    const timer = [...schritte.matchAll(/<li data-schritt>.*?<Timer minuten=\{(\d+)\} \/><\/li>/g)].map((m) => Number(m[1]));
+    expect(timer).toStrictEqual([5, 20, 7, 4]);
+    expect(timer.reduce((x, y) => x + y, 0)).toBe(36);
+    expect(schritte).toContain('<li data-schritt><strong>Euer Canvas, Quadrat links – Value Map des Spitzenreiters:</strong> aus dem Lückensatz, dann ergänzen: 1 Products & Services · 2 Pain Relievers, je Zettel eine P-ID · 3 Gain Creators, je Zettel eine G-ID. Zuletzt alles auf die Skalen, Unverzichtbares oben. <Timer minuten={20} /></li>');
+    expect(folie).toContain('Produkte bekommen im Quadrat keine ID');
+    expect(folie).toContain('Dazu neun Minuten Theorie mit der Kaffeebar.');
+    expect([q, JSON.stringify(n)].flatMap((x) => x.match(/jeder Zettel mit (P- oder G-)?ID|je mit P- oder G-ID|zeigt erst der Test/g) ?? [])).toStrictEqual([]);
+    expect(q).toContain('Die Value Map schreibt aus und ergänzt – jeder grüne Zettel mit P- oder G-ID.</p>');
+    const fit = q.slice(q.indexOf('id="fit-kaffeebar"'), q.indexOf('</tbody>', q.indexOf('id="fit-kaffeebar"')));
+    expect([...fit.matchAll(/<tr data-schritt><td>Products & Services · ([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><\/tr>/g)].map((m) => m.slice(1))).toStrictEqual([
+      ['QR-Code an der Hallentür, Bestellung im Browser ohne App', 'J1 Kaffee besorgen', '✓'],
+      ['Express-Ausgabe mit drei Standardgetränken', 'J1 Kaffee besorgen', '✓'],
+    ]);
+    // Wortlaut der Produkte wie auf `vom-satz`.
+    expect(q).toContain('<td>QR-Code an der Hallentür, Bestellung im Browser ohne App · Express-Ausgabe mit drei Standardgetränken</td>');
+    expect(q).toContain('P4 (Automat als Notlösung – kein Zettel links nennt den Automaten).');
+  });
   // Entscheidung 39 (21.11.): Tag 3 liegt ganz auf Miro – keine Datei in docs/ auf den Seiten und in den Notizen von Tag 3,
   // kein Callout zu docs/, Commit und Source Control.
   it('Tag 3: keine docs-Dateien auf den Seiten und in den Notizen von Tag 3', () => {
