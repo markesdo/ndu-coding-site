@@ -250,14 +250,14 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       schritte: [
         'Ast wählen, allein (8 min): die Momente gegeneinander, pro Linse ein Satz – wer liegt vorn und warum. Größe und Kundschaft mit Zitat-IDs.',
         'Bis zum Blatt (4 min): dasselbe mit den Teilchancen des gewählten Asts. Hängt nur eine Chance darunter, ist sie das Blatt.',
-        'Begründen, schriftlich (15 min): drei Sätze ins Feld „Begründen“ der eigenen Spalte auf T3 · 1 – die Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
+        'Begründen, schriftlich (15 min): drei Sätze ins Feld „Begründen“ der eigenen Spalte auf T3 · 1 – die Wahl, die Linse, die den Ausschlag gibt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
         'Festhalten (3 min): Ziel-Chance im Baum mit dem Stern markieren.',
       ],
       achten: [
         'Verglichen werden Geschwister – nie eine Chance allein mit „Sollen wir?“ (S. 99).',
         'Alle vier Linsen, je ein Satz; Größe und Kundschaft mit Zitat-ID.',
         'Wer lange an einem Satz hängt: grob vergleichen und weiter (S. 101).',
-        'Nur echte Belege aus der eigenen Mappe; Synthetisches trägt keine Linse.',
+        'Nur echte Belege aus der eigenen Mappe; Synthetisches ist für keine Linse ein Beleg.',
       ],
       fehler: [
         'Nur die Kundenlinse benutzen (S. 104).',

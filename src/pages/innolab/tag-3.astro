@@ -5,6 +5,7 @@ import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Fluss from '../../components/Fluss.astro';
 ---
 <Layout title="Tag 3 · Lösung & Story">
   <span class="eyebrow">Innolab · Tag 3 · Samstag, 21. November 2026 · 09:00–17:30</span>
@@ -33,6 +34,15 @@ import FooterNav from '../../components/FooterNav.astro';
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
   <p>Heute werden aus <strong>Chancen</strong> <strong>Lösungen</strong>. Tag 2 endete nach der Experience Map; ihre Momente sind die Äste eures Baums. Zuerst schärft ihr die Momente eurer Map nach (<a href="/innolab/tag-3/experience-map">Experience Map nachschärfen</a>). Dann geht ihr den Weg von Teresa Torres weiter, den ihr an Tag 2 begonnen habt: Baum → Ziel-Chance. Bevor ihr Ideen sucht, schreibt ihr das Kundenprofil – so beschreibt es die Menschen und nicht eure Ideen. Danach HMW und Ideation; die drei Ideen schreibt ihr als Lückensätze gegen dieses Profil. Die Value Map zeigt, welche davon heute euer Spitzenreiter auf Papier wird und was ihr Fit offen lässt. Die Concept Story – warum das jemanden interessiert – lernt ihr heute als Theorie kennen; eine eigene schreibt ihr heute noch nicht. Wer dafür zahlt (Geschäftsmodell) und an welcher Annahme die Idee hängt (Experiment-Karte), klärt ihr zu Beginn von Tag 4; dort folgen auch Story Map, Usage Story und Prototyp.</p>
+  {/* Derselbe Nachmittagspfad wie auf hmw.astro#rahmen (Entscheidung 45). */}
+  <Fluss label="Der Nachmittag: Ziel-Chance, Frage, 15 bis 20 Ideen, drei Lückensätze, Value Map und Fit" knoten={[
+      { t: 'Ziel-Chance', sub: 'was ihr lösen wollt' },
+      { t: 'Frage', sub: 'öffnet mehr als einen Weg' },
+      { t: '15–20 Ideen', sub: 'Menge vor Urteil' },
+      { t: 'Drei Lückensätze', sub: 'am Profil vergleichbar' },
+      { t: 'Value Map & Fit', sub: 'eine ausarbeiten und prüfen' },
+  ]} />
+  <p class="small muted">Die Frage öffnet, die Ziel-Chance entscheidet: Gesammelt wird zur Frage, aussortiert und gewählt an der Ziel-Chance ({'Teresa Torres, „Continuous Discovery Habits“ (2021)'}, S. 112–114; die Frage als Start ist Kursformat).</p>
   <Callout type="info" title="Heute noch ohne Claude Pro">
     <p>Claude Pro schließt ihr erst am Morgen von Tag 4 neu ab (<a href="/setup#claude-pro">wie</a>), denn Claude Code braucht ihr zum ersten Mal an Tag 4: für das Pre-Mortem der Experiment-Karte um 9:20, danach für den Prototyp. Heute reicht Claude im Free-Plan: Alles von heute liegt auf Miro, und Claude prüft es an einem Bild aus Miro.</p>
   </Callout>

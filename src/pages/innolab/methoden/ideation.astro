@@ -43,7 +43,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
     <h2 id="erste-ideen">Zwei Minuten: Ideen für die Kaffeebar</h2>
     <p class="folie-satz">„Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</p>
     <p class="breit">Jede*r für sich, auf einer freien Fläche oder auf Papier: so viele Ideen wie möglich, ein Sticky pro Idee, in der Reihenfolge nummeriert. <Timer minuten={2} /></p>
-    <p class="breit" data-schritt><strong>Reihum:</strong> nur eure Idee Nr. 1.</p>
+    <p class="breit" data-schritt><strong>Dann alle zugleich:</strong> eure Idee Nr. 1 in die Kaffeebar-Spalte.</p>
     <p class="nur-handout">Eine Übung dieses Kurses, bevor die Theorie kommt. Ihr schreibt auf einer freien Fläche oder auf Papier, denn in der Kaffeebar-Spalte auf Miro liegen schon Ideen des Beispiels. Danach kommen eure Stickies dort dazu.</p>
   </Folie>
 
@@ -151,6 +151,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
       { t: 'Punkten', sub: 'drei Punkte je Person; einziges Kriterium: Wie gut trifft sie die Ziel-Chance?' },
       { t: 'Drei Ideen', sub: 'jede mit Fürsprecher*in' },
     ]} />
+    <p class="breit" data-schritt><strong>Die Frage öffnet, die Ziel-Chance entscheidet:</strong> Gesammelt wird zur Frage, aussortiert und gewählt an der Ziel-Chance.</p>
     <p class="breit" data-schritt><strong>Klarer Sieger?</strong> Beiseitelegen. Sonst kurz werben, neu punkten – bis drei stehen.</p>
     <p class="small muted" data-schritt>Bei euch wählt jede*r die drei fürs eigene Produkt allein aus, weil ihr drei Produkte habt.</p>
     <div class="nur-handout">
@@ -200,13 +201,13 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
+    <h2 id="vorgehen">So geht ihr vor (59 min)</h2>
     <p class="folie-satz">Allein, Spende, allein, drei Lückensätze.</p>
     <p class="wozu"><strong>Wozu?</strong> Damit ihr drei verschiedene Ideen vergleichen könnt, statt eure erste zu verteidigen.</p>
     <MiroFrame name="T3 · 3 · Ideation" />
-    <ol class="gross dicht">
+    <ol class="gross dicht id-schritte">
       <li data-schritt><strong>Allein:</strong> Ziel-Chance, Frage und ein Satz zur Situation oben in eure Spalte; dann Ideen, ein Sticky pro Idee. <Timer minuten={16} /></li>
-      <li data-schritt><strong>Ideen-Spende, still:</strong> je Produkt 2 Minuten – die anderen legen Ideen-Stickies an die Frage, ohne Diskussion. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Ideen-Spende, still:</strong> je Produkt 2 Minuten – erst Ziel-Chance, Frage und Situation lesen, dann Ideen-Stickies an die Frage legen, ohne Diskussion. <Timer minuten={6} /></li>
       <li data-schritt><strong>Wieder allein</strong> bis 15–20 Ideen; feststecken: Analogien, Extreme, Claude. <Timer minuten={18} /></li>
       <li data-schritt><strong>Auswählen, allein:</strong> aussortieren, drei verschiedene Ideen. <Timer minuten={7} /></li>
       <li data-schritt><strong>Lückensätze:</strong> je Idee einer, mit J-, P-, G-ID aus eurem Profil im Canvas. <Timer minuten={8} /></li>
@@ -232,7 +233,7 @@ Ziel-Chance: „[...]“ · Frage: [Grundform / H1 / H2] – [Wie könnten wir �
 Profil: T3 · 4 · Canvas · euer Name
 
 ## Drei Ideen als Lückensätze
-1. **[Titel]** – Unser [Angebot] hilft [Segment], die [Job, J…] wollen, indem es [Pain, P…] verringert und [Gain, G…] ermöglicht – anders als [Alternative]. · Beantwortet: [Grundform / H1 / H2]
+1. **[Titel]** – Unser [Angebot] hilft [Segment], die [Job, J…] wollen, indem es [Pain, P…] verringert und [Gain, G…] ermöglicht – anders als [Alternative].
 2. **[...]** – [...]
 3. **[...]** – [...]
 
@@ -254,3 +255,11 @@ Profil: T3 · 4 · Canvas · euer Name
 
   <FooterNav prev={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} next={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} />
 </Layout>
+
+<style>
+  /* „vorgehen“ im Beamer: sechs Schritte mit Timer – volle Folienbreite statt 36em und kleinere Timer, sonst ist die Liste
+     bei 1280×720 höher als die Folie (wie kundenprofil und value-map). */
+  :global(html[data-beamer] .content .folie) > ol.id-schritte { max-width: none; }
+  :global(html[data-beamer]) .id-schritte > li { margin-bottom: .1rem; line-height: 1.4; }
+  :global(html[data-beamer]) .id-schritte :global(.timer) { font-size: 1rem; }
+</style>

@@ -27,13 +27,18 @@ const WW = 'Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“
   <Folie>
     <h2 id="rahmen">Die Frage legt fest, welche Ideen kommen</h2>
     <p class="folie-satz">Jede Frage öffnet einen Lösungsraum – und lässt andere geschlossen.</p>
-    {/* Dieselbe Reihe steht auf ziel-chance.astro#warum, dort mit hervor={[1]}. */}
-    <Fluss label="Vom Baum zur Idee: Baum, Ziel-Chance, How-Might-We-Frage, Ideation" hervor={[2]} knoten={[
-      { t: 'Baum', sub: 'viele Chancen, geordnet' },
-      { t: 'Ziel-Chance', sub: 'eine – ein Blatt' },
-      { t: 'How Might We', sub: 'eine Frage dazu' },
-      { t: 'Ideation', sub: '15 bis 20 Ideen, drei gehen weiter' },
+    {/* Der Nachmittagspfad (Entscheidung 45, 21.11.): dieselbe Reihe steht auf tag-3.astro#faden. ziel-chance.astro#warum zeigt
+        den Vormittag (Baum bis Ideation). */}
+    <div class="hmw-pfad">
+    <Fluss label="Der Nachmittag: Ziel-Chance, Frage, 15 bis 20 Ideen, drei Lückensätze, Value Map und Fit" hervor={[1]} knoten={[
+      { t: 'Ziel-Chance', sub: 'was ihr lösen wollt' },
+      { t: 'Frage', sub: 'öffnet mehr als einen Weg' },
+      { t: '15–20 Ideen', sub: 'Menge vor Urteil' },
+      { t: 'Drei Lückensätze', sub: 'am Profil vergleichbar' },
+      { t: 'Value Map & Fit', sub: 'eine ausarbeiten und prüfen' },
     ]} />
+    </div>
+    <div class="hmw-rahmen-bild">
     <BildText>
       <BuchAbbildung src="/quellen/hbr/reframing.png" alt={REFRAMING_ALT} quelle={`${WW}, S. 2.`} />
       <ul>
@@ -41,6 +46,7 @@ const WW = 'Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“
         <li data-schritt><strong>Frage 2:</strong> „Wie könnten wir das Warten kürzer wirken lassen?“</li>
       </ul>
     </BildText>
+    </div>
     <p class="nur-handout">Den Aufzug kennt ihr von Tag 1. Frage 1 führt zu neuem Aufzug, stärkerem Motor, besserem Algorithmus, Frage 2 zu Spiegeln, Musik, Desinfektionsspendern. Die beiden Wie-könnten-Fragen sind unsere Formulierung; Rahmen und Lösungen stehen in der Abbildung. Wedell-Wedellsborg nennt die Lösungen, die an derselben Sicht auf das Problem hängen, einen Lösungsraum: „a cluster of solutions that share assumptions about what the problem is“ ({WW}, S. 2). Neue Lösungen kommen fast immer aus einer anderen Fassung des Problems (S. 1), und schon einzelne Wörter verschieben sie: „Pay close attention to the wording, because even seemingly inconsequential word choices can surface a new perspective on the problem.“ (S. 7). Eine How-Might-We-Frage ist so eine Fassung: Sie entscheidet, welche Ideen am Nachmittag überhaupt entstehen können. Darum schreibt ihr mehrere und wählt eine. Der Artikel selbst behandelt How Might We nicht; die Verbindung ist unsere.</p>
   </Folie>
 
@@ -137,7 +143,7 @@ const WW = 'Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“
       <li data-schritt><strong>Zwei Proben, allein:</strong> zu jeder Frage zwei verschiedene Wege notieren – fällt euch nur einer ein, steckt die Lösung drin. Zu weit oder zu eng? <Timer minuten={5} /></li>
       <li data-schritt><strong>Wählen und festhalten:</strong> eine Frage, mit einem Satz warum. <Timer minuten={3} /></li>
     </ol>
-    <p class="nur-handout">Dazu gut zehn Minuten Theorie mit der Kaffeebar. Die gewählte Frage nehmt ihr in die Ideation mit: Alle Ideen dort beantworten sie.</p>
+    <p class="nur-handout">Dazu gut zehn Minuten Theorie mit der Kaffeebar. Die gewählte Frage nehmt ihr in die Ideation mit: Zu ihr sammelt ihr dort eure Ideen; ausgewählt wird an der Ziel-Chance.</p>
   </Folie>
 
   <div class="nur-handout">
@@ -163,8 +169,19 @@ Ziel-Chance (aus Miro, T3 · 1): „[...]“
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
     <p class="folie-satz">Gibt es mehr als einen Weg, eure Frage zu beantworten?</p>
+    <p data-schritt><strong>Mit dieser Frage geht ihr in die Ideation:</strong> Sie steht oben in eurer Spalte, ihr und die zwei anderen sammelt Ideen dazu.</p>
     <p class="nur-handout">Wenn nicht, steckt die Lösung schon in der Frage (Torres S. 94). Und ist sie ehrgeizig, aber erreichbar (Brown bei Berger)? Mit der gewählten Frage geht es in die Ideation.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} next={{ href: '/innolab/methoden/ideation', t: 'Ideation' }} />
 </Layout>
+
+<style>
+  /* „rahmen“ im Beamer: Seit dem Nachmittagspfad (fünf Knoten, Entscheidung 45) ist die Abbildung etwas niedriger, damit die
+     Folie bei 1280×720 ohne Scrollen passt. */
+  :global(html[data-beamer] .folie) .hmw-rahmen-bild :global(.buch-abbildung img) { max-height: 24vh; width: auto; max-width: 100%; }
+  :global(html[data-beamer]) .hmw-pfad :global(.fluss) { margin: .75rem 0; }
+  :global(html[data-beamer]) .hmw-pfad :global(.fluss-reihe) { gap: 1.6rem; }
+  :global(html[data-beamer]) .hmw-pfad :global(.fluss-reihe li) { padding: .6rem .5rem; }
+  :global(html[data-beamer]) .hmw-pfad :global(.fluss-reihe li + li::before) { left: -1.25rem; }
+</style>

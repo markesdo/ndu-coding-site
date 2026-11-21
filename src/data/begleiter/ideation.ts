@@ -41,11 +41,11 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Frage H1 vorlesen, nichts erklären.',
       'Freie Fläche oder Papier – Kaffeebar-Spalte noch nicht zeigen.',
       'Timer 2 min: allein, ein Sticky pro Idee, durchnummeriert.',
-      'Nach 2 min: reihum nur die erste Idee vorlesen.',
+      'Nach 2 min: alle zugleich Nr. 1 in die Kaffeebar-Spalte, kein Kommentar.',
       'Falle: schon jetzt kommentieren oder werten.',
-      'Danach: Stickies aller in die Kaffeebar-Spalte legen.',
+      'Danach: die übrigen Stickies dazulegen.',
     ],
-    uebung: { dauer: '2 min + 1 min reihum', form: 'allein, dann reihum laut: nur Idee Nr. 1' },
+    uebung: { dauer: '2 min + 1 min', form: 'allein, dann alle zugleich zeigen' },
     miro: {
       frame: 'T3 · 3 · Ideation',
       schritte: [
@@ -59,7 +59,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       schritte: [
         'H1 vorlesen: „Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“',
         'Timer 2 min, alle schreiben still, auf einer freien Fläche oder auf Papier. Die Nummer auf dem Sticky ist die Reihenfolge des Einfalls.',
-        'Reihum: Jede*r liest nur Idee Nr. 1 vor. Kein Kommentar.',
+        'Dann alle zugleich: Idee Nr. 1 in die Kaffeebar-Spalte. Kein Kommentar, niemand wird aufgerufen.',
       ],
       achten: [
         'Die Nummern sind der Punkt der Übung – ohne sie fehlt der Vergleich in der Auflösung.',
@@ -119,7 +119,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
 
   brainstorming: {
     live: [
-      'Fragen: Brainstorming – bunte Zettelwand oder fensterloser Raum? Reihum ein Wort.',
+      'Fragen: Brainstorming – bunte Zettelwand oder fensterloser Raum? Frage an alle.',
       'Osborn 1953: vier Regeln, die alle kennen.',
       'Aufdecken: Gruppe gegen gleich viele Einzelne – Einzelne gewinnen.',
       'Vier Gründe einzeln aufdecken, je ein Satz.',
@@ -154,7 +154,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   // NEU
   illusion: {
     live: [
-      'Frage stehen lassen, reihum eine Vermutung.',
+      'Frage stehen lassen, an alle: Wer hat eine Vermutung?',
       'Aufdecken: In der Gruppe steckt man seltener fest.',
       '„Es fühlt sich leichter an – also halten wir es für besser.“',
       'Brücke: Den Vorteil der Gruppe wollen wir trotzdem haben.',
@@ -252,13 +252,13 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   analogien: {
     live: [
       'Torres’ Beispiel: Jobbörse schaut auf Shops, Reiseportale, Versicherungen.',
-      'Fragen: Wer sagt Menschen, ob sich etwas vor Abfahrt ausgeht? Reihum.',
+      'Fragen: Wer sagt Menschen, ob sich etwas vor Abfahrt ausgeht?',
       'Antworten als Stickies in die Kaffeebar-Spalte.',
       'Aufdecken: Flughafen, Supermarkt – zwei Ideen der Kaffeebar.',
       'Falle: nur Cafés und Bäckereien nennen – weiter weg suchen.',
       'Express-Kasse passt weniger genau – zweite, schwächere Analogie.',
     ],
-    uebung: { dauer: '2 min', form: 'zu dritt, reihum laut; du schreibst die Stickies' },
+    uebung: { dauer: '2 min', form: 'Frage an alle, niemand wird aufgerufen; du schreibst die Stickies' },
     miro: {
       frame: 'T3 · 3 · Ideation',
       schritte: [

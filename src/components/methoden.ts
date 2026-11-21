@@ -241,9 +241,9 @@ export const METHODEN: Methode[] = [
       { id: 'ziel-chance-blatt', text: 'Die Ziel-Chance ist ein Blatt: Unter ihr hängt keine Teilchance mehr.' },
       { id: 'ziel-chance-linsen', text: 'Zu jeder der vier Linsen steht ein Satz: Größe, Markt, eigene Lage, Kundschaft.' },
       { id: 'ziel-chance-belegt', text: 'Größe und Kundschaft sind mit Zitat-IDs aus den Interviews belegt.' },
-      { id: 'ziel-chance-begruendung', text: 'Die Begründung nennt die Linse, die die Wahl trägt, und die Linse, die dagegen spricht.' },
+      { id: 'ziel-chance-begruendung', text: 'Die Begründung nennt die Linse, die den Ausschlag gibt, und die Linse, die dagegen spricht.' },
     ],
-    ki: 'Fragt nach, welche Linse eure Wahl trägt und wo ihr vom gewünschten Ergebnis rückwärts argumentiert.',
+    ki: 'Fragt nach, welche Linse bei eurer Wahl den Ausschlag gibt und wo ihr vom gewünschten Ergebnis rückwärts argumentiert.',
   },
   {
     slug: 'kundenprofil', name: 'Kundenprofil', tag: 3, dauer: 30,

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { METHODEN } from '../components/methoden';
 import { MIRO_FRAMES, MIRO_FRAMES_OHNE_ID } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
 import { anzeige, fremdeSeite, type Zustand } from '../components/begleiter-anzeige';
@@ -836,5 +837,28 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(seiten.every((p) => (quellen[p] ?? '').length > 1000)).toBe(true);
     expect(seiten.flatMap((p) => (quellen[p] ?? '').match(/(KUNDENPROFIL|VALUE-MAP)\.md/g) ?? [])).toStrictEqual([]);
     expect(quellen['/innolab/methoden/experiment']).toContain('auf Miro im Feld „Ideen vergleichen und wählen“ (T3 · 4) gesammelt habt');
+  });
+  // Entscheidungen 45–47 (21.11.): Pfad HMW → Ideation sichtbar; Ideation ohne Reihum, Titel = Summe der Timer;
+  // Ziel-Chance mit „Ausschlaggebend“ / „Spricht dagegen“ statt „tragende Linse“.
+  it('Tag 3: Pfad zur Ideation, Ideation ohne Reihum mit 59 min, Ziel-Chance ohne „tragend“', () => {
+    const hmw = quellen['/innolab/methoden/hmw'] ?? '';
+    const id = quellen['/innolab/methoden/ideation'] ?? '';
+    const t3 = quellen['/innolab/tag-3'] ?? '';
+    const pfad = "{ t: 'Ziel-Chance', sub: 'was ihr lösen wollt' },";
+    expect([hmw, t3].map((x) => x.includes(pfad) && x.includes("{ t: 'Value Map & Fit', sub: 'eine ausarbeiten und prüfen' },"))).toStrictEqual([true, true]);
+    expect(hmw).toContain('<p data-schritt><strong>Mit dieser Frage geht ihr in die Ideation:</strong> Sie steht oben in eurer Spalte, ihr und die zwei anderen sammelt Ideen dazu.</p>');
+    expect(id).toContain('<strong>Die Frage öffnet, die Ziel-Chance entscheidet:</strong> Gesammelt wird zur Frage, aussortiert und gewählt an der Ziel-Chance.');
+    expect(id).toContain('erst Ziel-Chance, Frage und Situation lesen, dann Ideen-Stickies an die Frage legen');
+    expect([hmw, id].flatMap((x) => x.match(/Alle Ideen dort beantworten sie|Beantwortet:/g) ?? [])).toStrictEqual([]);
+    const ni = NOTIZEN['/innolab/methoden/ideation'] ?? {};
+    expect([id, JSON.stringify(ni)].flatMap((x) => x.match(/reihum/gi) ?? [])).toStrictEqual([]);
+    const vorgehen = id.slice(id.indexOf('id="vorgehen"'), id.indexOf('</ol>', id.indexOf('id="vorgehen"')));
+    const timer = [...vorgehen.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
+    expect(vorgehen).toContain(`So geht ihr vor (${timer} min)</h2>`);
+    expect(uebungMinuten(ni.vorgehen?.uebung?.dauer)).toBe(timer);
+    const zc = quellen['/innolab/methoden/ziel-chance'] ?? '';
+    const pl = METHODEN.find((m) => m.slug === 'ziel-chance')!.pruefliste!.map((p) => p.text).join(' ');
+    expect([zc, JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance'] ?? {}), pl].flatMap((x) => x.match(/tragend|die sie trägt|Wahl trägt/gi) ?? [])).toStrictEqual([]);
+    expect(zc).toContain('- Ausschlaggebend: [Linse – ein Satz]\n- Spricht dagegen: [Linse – ein Satz]');
   });
 });
