@@ -78,8 +78,11 @@ describe('Kaffeebar-Beispiel: Fit der Value Map „Im Gehen bestellen“', () =>
     return seite.slice(start, seite.indexOf('</Folie>', start));
   };
   const profilIds = [...new Set([...abschnitt('src/pages/innolab/methoden/kundenprofil.astro', 'beispiel').matchAll(/\b[JPG][1-9]\b/g)].map((m) => m[0]))].sort();
-  // Seit Entscheidung 57 (21.11.) steht der Fit auf der eigenen Folie fit-kaffeebar.
-  const fit = abschnitt('src/pages/innolab/methoden/value-map.astro', 'fit-kaffeebar').split('Der Fit nach dem Buch')[1]?.split('</p>')[0] ?? '';
+  // Seit Entscheidung 57 (21.11.) steht der Fit auf eigenen Folien: Schritt 1 auf fit-kaffeebar (getroffen), Schritt 2 auf
+  // fit-kaffeebar-rechts (✗ und „?“, Entscheidung 76). Der Fit-Absatz ist der erste Handout-Absatz beider Folien zusammen.
+  const vm = 'src/pages/innolab/methoden/value-map.astro';
+  const handout = (id: string, ab: string): string => abschnitt(vm, id).split(ab)[1]?.split('</p>')[0] ?? '';
+  const fit = `${handout('fit-kaffeebar', 'Der Fit nach dem Buch')} Ein ✗ bekommen${handout('fit-kaffeebar-rechts', 'Ein ✗ bekommen')}`;
   // Feste Marken im Fit-Absatz: „Getroffen sind damit …“, „Ein ✗ bekommen …“, „Ein „?“ …“. Fehlt eine, schlägt der Test mit Namen fehl.
   const teil = (von: string, bis?: string): string => {
     expect(fit, `Marke „${von}“ fehlt im Fit-Absatz`).toContain(von);
@@ -95,19 +98,22 @@ describe('Kaffeebar-Beispiel: Fit der Value Map „Im Gehen bestellen“', () =>
     expect([...getroffen, ...kreuz, ...frage].sort()).toStrictEqual(profilIds);
   });
   it('die Folie nennt dieselben getroffenen und offenen Einträge wie das Handout', () => {
-    const folie = abschnitt('src/pages/innolab/methoden/value-map.astro', 'fit-kaffeebar');
-    // Tabelle: jede Zeile mit ✓ nennt in Spalte „trifft“ den getroffenen Eintrag; Schritt 2 nennt ✗ und „?“.
+    const folie = abschnitt(vm, 'fit-kaffeebar');
+    // Tabelle (Feld · Zettel · trifft · Zeichen): jede Zeile mit ✓ nennt in Spalte „trifft“ den getroffenen Eintrag.
     // Nur Products & Services dürfen denselben Eintrag mehrfach treffen (beide Produkte → J1, Entscheidung 67): dort zählt die
     // Menge. Pain Relievers und Gain Creators treffen je einen eigenen Eintrag – dort zählt jede Zeile.
-    const zeilen = [...folie.matchAll(/<tr data-schritt><td>([^<]*)<\/td><td>([^<]*)<\/td><td>✓<\/td><\/tr>/g)];
-    const produkt = (m: RegExpMatchArray) => m[1].startsWith('Products & Services · ');
+    const zeilen = [...folie.matchAll(/<tr data-schritt><td>([^<]*)<\/td><td>[^<]*<\/td><td>([^<]*)<\/td><td>✓<\/td><\/tr>/g)];
+    expect(zeilen).toHaveLength(6);
+    const produkt = (m: RegExpMatchArray) => m[1] === 'Products & Services';
     const ausProdukten = [...new Set(zeilen.filter(produkt).flatMap((m) => ids(m[2])))];
     const ausWirkungen = zeilen.filter((m) => !produkt(m)).flatMap((m) => ids(m[2]));
     expect(ausProdukten).toStrictEqual(['J1']);
     expect([...ausProdukten, ...ausWirkungen].sort()).toStrictEqual([...getroffen].sort());
-    const rechts = folie.match(/<strong>2 Rechts, was übrig ist:<\/strong> ✗ ([^–]+)– <strong>\?<\/strong> ([^<]+)<\/p>/);
-    expect(rechts, 'Folienzeile „2 Rechts, was übrig ist: ✗ … – ? …“ fehlt').not.toBeNull();
-    expect(ids(rechts?.[1] ?? '').sort()).toStrictEqual([...kreuz].sort());
-    expect(ids(rechts?.[2] ?? '')).toStrictEqual(frage);
+    // fit-kaffeebar-rechts: Tabelle Eintrag · getroffen von · Zeichen · warum – je Zeichen dieselben IDs wie im Handout.
+    const rechts = [...abschnitt(vm, 'fit-kaffeebar-rechts').matchAll(/<tr data-schritt><td>([^<]*)<\/td><td>[^<]*<\/td><td>([✓✗?])<\/td>/g)];
+    const zeichen = (z: string) => rechts.filter((m) => m[2] === z).flatMap((m) => ids(m[1])).sort();
+    expect(zeichen('✓')).toStrictEqual([...getroffen].sort());
+    expect(zeichen('✗')).toStrictEqual([...kreuz].sort());
+    expect(zeichen('?')).toStrictEqual(frage);
   });
 });

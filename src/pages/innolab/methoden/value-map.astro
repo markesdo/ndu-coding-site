@@ -59,14 +59,14 @@ const TORRES_KURZ = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <BildText>
       <BuchAbbildung src="/quellen/vpd/value-map-buch.png" alt="Value Map des Buchs: links gelbe Haftnotizen mit den Produkten (Book, Value Proposition Canvas, exclusive online companion, Web app, online course), um das Geschenk grüne Haftnotizen mit Wirkungen (helps shape ideas, minimizes risk of (big) failure, step-by-step instructions to get started und weitere)" quelle={`Value Map des Buchs. ${VPD_KURZ}, S. 93 (PDF).`} />
       <ul>
-        <li data-schritt><strong>Gelb:</strong> was es gibt – wie im Schaufenster.</li>
+        <li data-schritt><strong>Gelb:</strong> was ihr anbietet – was im Schaufenster läge.</li>
         <li data-schritt><strong>Grün:</strong> was es bewirkt – Pain Relievers und Gain Creators.</li>
         <li data-schritt><strong>Nicht alles:</strong> wenige Pains, die aber extrem gut.</li>
       </ul>
     </BildText>
     </div>
     <div class="nur-handout">
-      <p>Die Value Map zerlegt ein Wertversprechen in Products & Services, Pain Relievers und Gain Creators ({VPD}, S. 49). Pain Relievers beschreiben, wie genau das Angebot bestimmte Pains verringert; ihr braucht nicht für jeden Pain einen – das schafft kein Angebot. Gute Angebote konzentrieren sich auf wenige Pains, die sie extrem gut lindern (S. 86–87). Der Unterschied zum Profil: Über Pain Relievers und Gain Creators entscheidet ihr, über Jobs, Pains und Gains die Kundschaft (S. 103).</p>
+      <p>Die Value Map zerlegt ein Wertversprechen in Products & Services, Pain Relievers und Gain Creators ({VPD}, S. 49). Die Übung des Buchs spricht von einer „existing value proposition“ (S. 99), weil sie auch bestehende Geschäfte abdeckt; bei euch ist es das geplante Angebot des Spitzenreiters, noch nicht gebaut – das, was im Schaufenster läge (S. 83, 639). Pain Relievers beschreiben, wie genau das Angebot bestimmte Pains verringert; ihr braucht nicht für jeden Pain einen – das schafft kein Angebot. Gute Angebote konzentrieren sich auf wenige Pains, die sie extrem gut lindern (S. 86–87). Der Unterschied zum Profil: Über Pain Relievers und Gain Creators entscheidet ihr, über Jobs, Pains und Gains die Kundschaft (S. 103).</p>
       <p>Am Ende ordnet ihr auch die Value Map: Products & Services, Pain Relievers und Gain Creators je für sich danach, wie unverzichtbar sie für die Kundschaft sind – „Rank by order of importance“ ({VPD}, S. 102; zur Relevanz S. 85, 87, 91). Auf Miro geht das auf den drei Skalen unter dem Quadrat in eurem Canvas-Frame.</p>
       <p>Häufige Fehler: alle eigenen Produkte aufzählen statt nur die für dieses Segment; Produkte in die Felder für Pain Relievers und Gain Creators schreiben; Pain Relievers, die zu keinem Pain im Profil passen; der Versuch, alle Pains und Gains zu lösen (S. 105).</p>
       <p>Die Abbildung zeigt, wie das Buch sein eigenes Angebot kartiert: links die Produkte, daneben, was sie bewirken. Zu beiden Wirkungsfeldern steht dort: „Don’t add products or services here.“ ({VPD}, S. 93)</p>
@@ -108,16 +108,29 @@ const TORRES_KURZ = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <Folie>
     <h2 id="fit">Fit prüfen</h2>
-    <p class="folie-satz">Abhaken, was getroffen ist – ein Kreuz, wo nicht.</p>
+    <p class="folie-satz">Erst links, dann rechts, dann von oben lesen.</p>
+    <div class="vm-fit-bild">
     <BildText>
       <BuchAbbildung src="/quellen/vpd/fit-buch.png" alt="Value Map und Kundenprofil des Buchs nebeneinander, voller Haftnotizen; fast jede trägt einen schwarzen Haken, einige Jobs, Pains und Gains im Profil ein rotes Kreuz" quelle={`Fit? Die Prüfung des Buchs an sich selbst. ${VPD_KURZ}, S. 109 (PDF).`} />
       <ul>
-        <li data-schritt><strong>✓ links:</strong> Dieser Pain Reliever oder Gain Creator trifft einen Job, Pain oder Gain.</li>
-        <li data-schritt><strong>✓ oder ✗ rechts:</strong> getroffen – oder das Angebot trifft es nicht. Kreuze sind erlaubt.</li>
-        <li data-schritt><strong>Fit:</strong> Die Haken stehen oben im Profil – wichtige Jobs, extreme Pains, unverzichtbare Gains.</li>
+        <li><strong>Links, das Quadrat:</strong> eure Value Map. ✓ heißt: Dieser Zettel trifft etwas. Ein ✗ gibt es links nicht.</li>
+        <li><strong>Rechts, der Kreis:</strong> das Kundenprofil. ✓ getroffen, ✗ nicht getroffen. Kreuze sind erlaubt.</li>
       </ul>
     </BildText>
+    </div>
+    <div class="vm-fit-schritte" style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Schritt</th><th>Links · Value Map</th><th>Rechts · Kundenprofil</th></tr></thead>
+        <tbody>
+          <tr data-schritt><td><strong>1 Links, Zettel für Zettel:</strong> Was trifft er? ID dazu, ✓ auf beide.</td><td>Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist <strong>(P1) ✓</strong></td><td>→ P1 Nicht wissen, ob es sich ausgeht <strong>✓</strong></td></tr>
+          <tr data-schritt><td><strong>2 Rechts, was übrig ist:</strong> ✗ – oder ? mit Frage.</td><td>Kein Zettel links nennt G2 oder J4.</td><td>G2 Den Kaffee in Ruhe im Zug trinken <strong>✗</strong> · J4 Anstehen und bezahlen <strong>?</strong></td></tr>
+          <tr data-schritt><td><strong>3 Von oben lesen:</strong> Wichtige Jobs, extreme Pains, unverzichtbare Gains getroffen?</td><td></td><td>J1 ✓ · P1 ✓ · G1 ✓ – Fit auf Papier. Höchstes ✗: J2 – bewusst?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small vm-fit-fuss">✓ trifft · ✗ trifft nicht · ? wissen wir nicht.</p>
     <div class="nur-handout">
+      <p>Ihr prüft in drei Schritten. Erstens links, Zettel für Zettel: Was trifft dieser Zettel im Profil? Ihr schreibt die ID dazu und setzt ein ✓ – auf den Zettel und auf den Eintrag, den er trifft. Das Buch: „Go through Pain Relievers and Gain Creators one by one, and check to see whether they fit a customer job, pain, or gain. Put a check mark on each one that does.“ ({VPD}, S. 112). Trifft ein Zettel nichts, bekommt er kein ✓; er schafft vermutlich keinen Wert (S. 113) – streichen oder umformulieren. Ein ✗ gibt es links nicht. Zweitens rechts, was übrig ist: Jeder Job, Pain und Gain ohne ✓ bekommt ein ✗ – „Xs show which jobs, pains, and gains the value proposition does not address“ (S. 110) – oder ein „?“. Das „?“ ist ein Zeichen dieses Kurses: Es steht dort, wo ihr ✓ oder ✗ nicht entscheiden könnt, ohne etwas herauszufinden, mit der Frage in einem Halbsatz. Drittens von oben lesen: Fit heißt, dass wichtige Jobs, extreme Pains und unverzichtbare Gains getroffen sind (S. 108), nicht, dass viele Haken stehen. Ein ✗ oben ist erlaubt, wenn ihr bewusst verzichtet – „which to forgo“ (S. 105). Die beiden Haken bedeuten Verschiedenes: links „dieser Zettel trifft etwas“, rechts „dieser Eintrag ist getroffen“. Auf Miro prüft ihr unten auf den Skalen, weil dort oben steht, was am meisten zählt; das Zeichen schreibt ihr als letzte Zeile in den Sticky.</p>
       <BuchAbbildung src="/quellen/vpd/fit.png" alt="Links die Value Map als Quadrat mit Geschenk, Pille und Diagramm, rechts das Kundenprofil als Kreis mit Gesicht, dazwischen ein roter Kreis „Fit“ und Pfeile von links nach rechts" quelle={`Fit. ${VPD_KURZ}, S. 108 (PDF).`} />
       <p>Fit entsteht, wenn Kund*innen von einem Wertversprechen begeistert sind, weil es wichtige Jobs adressiert, extreme Pains lindert und unverzichtbare Gains schafft ({VPD}, S. 108). Urteilen wird am Ende die Kundschaft: „Your customers are the judge, jury, and executioner of your value proposition.“ (S. 109). Geprüft wird Eintrag für Eintrag: Haken an jeden Pain Reliever und Gain Creator, der einen Job, Pain oder Gain trifft; Kreuze an das, was offen bleibt (S. 110, 112). Die Abbildung auf der Folie zeigt, wie das Buch so sein eigenes Wertversprechen prüft (S. 109). Das Buch prüft so eine ausgearbeitete Value Map: „Bring in the Value Proposition Map and Customer Segment Profile you completed earlier.“ (S. 112). Den Vergleich der drei Lückensätze davor gibt es im Buch so nicht – er ist eine Regel dieses Kurses; das Buch sagt, dass man mehrere Alternativen entwirft, um die mit dem besten Fit zu finden (S. 117), und dass man unter mehreren Alternativen wählen muss, bevor man sie in der echten Welt testet – auch wenn am Ende die Kundschaft urteilt (S. 347–348). Sein Werkzeug dafür ist eine Kriterien-Tabelle, nicht unser ✓ ✗ ?. Das „?“ für „wissen wir nicht“ steht nicht im Buch, das nur Haken und Kreuze kennt (S. 110, 112): Es markiert, was ihr erst herausfinden müsst. Jedes „?“ – aus dem Ideen-Vergleich aller drei Ideen und aus dem Fit – wird an Tag 4 eine Annahme.</p>
       <p>In der Abbildung trägt jeder Zettel ein Zeichen: links Haken an dem, was etwas trifft, rechts an jedem Job, Pain und Gain entweder ein Haken oder ein Kreuz (aus der Abbildung gelesen, S. 109; Bedeutung S. 110). Linien zieht das Buch nicht. Bei euch zeigt die ID auf dem Zettel links, was er trifft.</p>
@@ -127,43 +140,69 @@ const TORRES_KURZ = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <Folie>
     <h2 id="fit-kaffeebar">Fit prüfen: die Kaffeebar</h2>
-    <p class="folie-satz">Links Zettel für Zettel – dann rechts, was übrig ist.</p>
-    <p class="breit" data-schritt><strong>1 Links, Zettel für Zettel:</strong> Was trifft er im Profil? ID dazu, ✓ auf den Zettel, ✓ auf den Eintrag rechts.</p>
+    <p class="folie-satz">Schritt 1: links, Zettel für Zettel.</p>
+    <p class="breit"><strong>1 Links, Zettel für Zettel:</strong> Was trifft er im Profil? ID dazu, ✓ auf den Zettel, ✓ auf den Eintrag rechts.</p>
     <div class="vm-fit" style="overflow-x:auto">
       <table>
-        <thead><tr><th>Value Map (links)</th><th>trifft</th><th>Zeichen</th></tr></thead>
+        <thead><tr><th>Feld</th><th>Zettel (links)</th><th>trifft</th><th>Zeichen</th></tr></thead>
         <tbody>
-          <tr data-schritt><td>Pain Reliever · Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist</td><td>P1 ausgehen?</td><td>✓</td></tr>
-          <tr data-schritt><td>Pain Reliever · Statt anzustehen: in 20 Sekunden im Gehen bestellen</td><td>P2 Schlange</td><td>✓</td></tr>
-          <tr data-schritt><td>Pain Reliever · Man sieht, wann der Kaffee fertig ist</td><td>P3 wann fertig?</td><td>✓</td></tr>
-          <tr data-schritt><td>Gain Creator · Der Kaffee steht bereit, wenn man an der Ausgabe ankommt</td><td>G1 vor dem Zug</td><td>✓</td></tr>
-          <tr data-schritt><td>Products & Services · QR-Code an der Hallentür, Bestellung im Browser ohne App</td><td>J1 Kaffee besorgen</td><td>✓</td></tr>
-          <tr data-schritt><td>Products & Services · Express-Ausgabe mit drei Standardgetränken</td><td>J1 Kaffee besorgen</td><td>✓</td></tr>
-          <tr data-schritt><td>Gegenprobe (Kurs-Beispiel) · Treuepunkte ab der zehnten Bestellung</td><td>nichts</td><td>kein ✓ – streichen</td></tr>
+          <tr data-schritt><td>Pain Reliever</td><td>Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist</td><td>P1 ausgehen?</td><td>✓</td></tr>
+          <tr data-schritt><td>Pain Reliever</td><td>Statt anzustehen: in 20 Sekunden im Gehen bestellen</td><td>P2 Schlange</td><td>✓</td></tr>
+          <tr data-schritt><td>Pain Reliever</td><td>Man sieht, wann der Kaffee fertig ist</td><td>P3 wann fertig?</td><td>✓</td></tr>
+          <tr data-schritt><td>Gain Creator</td><td>Der Kaffee steht bereit, wenn man an der Ausgabe ankommt</td><td>G1 vor dem Zug</td><td>✓</td></tr>
+          <tr data-schritt><td>Products & Services</td><td>QR-Code an der Hallentür, Bestellung im Browser ohne App</td><td>J1 Kaffee besorgen</td><td>✓</td></tr>
+          <tr data-schritt><td>Products & Services</td><td>Express-Ausgabe mit drei Standardgetränken</td><td>J1 Kaffee besorgen</td><td>✓</td></tr>
+          <tr data-schritt><td>Gegenprobe (Kurs-Beispiel)</td><td>Treuepunkte ab der zehnten Bestellung</td><td>nichts</td><td>kein ✓</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="breit" data-schritt><strong>2 Rechts, was übrig ist:</strong> ✗ J2 · J3 · P4 · G2 · G3 – <strong>?</strong> J4: Bezahlen sie im Gehen im Browser?</p>
-    <p class="breit" data-schritt><strong>3 Von oben lesen:</strong> J1, P1, G1 getroffen. Höchstes ✗: J2 und G2 – bewusst? Zum Beispiel: Wir nehmen ihnen das Raten vor der Abfahrt, Ruhe am ganzen Morgen versprechen wir nicht.</p>
+    <p class="breit" data-schritt><strong>Trifft ein Zettel nichts:</strong> kein ✓ – streichen oder umformulieren. Ein ✗ gibt es links nicht.</p>
+    <div class="nur-handout">
+      <p>Der Fit nach dem Buch, an der Value Map von „Im Gehen bestellen“ ({VPD}, S. 109–112): Jeder der drei Pain Relievers und der Gain Creator bekommt ein ✓ und trifft P1, P2, P3 und G1; diese vier Einträge bekommen rechts ebenfalls ein ✓. J1 trifft das Angebot über seine Produkte – Bestellen im Gehen und die Express-Ausgabe sind der Weg, auf dem Weg zum Zug Kaffee zu besorgen; darum steht die ID J1 am Produkt (Abbildung S. 109, Note S. 110). Getroffen sind damit J1, P1, P2, P3 und G1.</p>
+      <p>Die Zeile „Treuepunkte“ ist ein Beispiel dieses Kurses; in der Value Map der Kaffeebar steht sie nicht. Trifft ein Zettel links nichts, schafft er vermutlich keinen Wert (S. 113): streichen oder umformulieren.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="fit-kaffeebar-rechts">Fit prüfen: die Kaffeebar, rechts</h2>
+    <p class="folie-satz">Schritt 2 und 3: rechts, was übrig ist – dann von oben lesen.</p>
+    <p class="breit"><strong>2 Rechts, was übrig ist:</strong> ✗ – oder ? mit Frage. Jeder Eintrag bekommt ein Zeichen.</p>
+    <div class="vm-fit-rechts" style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Eintrag (rechts)</th><th>getroffen von</th><th>Zeichen</th><th>warum</th></tr></thead>
+        <tbody>
+          <tr data-schritt><td>J1 · P1 · P2 · P3 · G1</td><td>den sechs Zetteln aus Schritt 1</td><td>✓</td><td>steht schon – ihre ID steht links</td></tr>
+          <tr data-schritt><td>J2 Den Arbeitstag nicht gehetzt beginnen · J3 Im Büro nicht als die*der Gehetzte ankommen</td><td>kein Zettel</td><td>✗</td><td>höchstens indirekt</td></tr>
+          <tr data-schritt><td>G2 Den Kaffee in Ruhe im Zug trinken</td><td>kein Zettel</td><td>✗</td><td>kein Zettel links trägt G2</td></tr>
+          <tr data-schritt><td>G3 Die Barista kennt die übliche Bestellung</td><td>kein Zettel</td><td>✗</td><td>kein Zettel links trägt G3</td></tr>
+          <tr data-schritt><td>P4 Schnell geht nur der Automat, und der ist eine Notlösung</td><td>kein Zettel</td><td>✗</td><td>kein Zettel links nennt den Automaten</td></tr>
+          <tr data-schritt><td>J4 Anstehen und bezahlen</td><td>Anstehen: P2-Zettel · Bezahlen: offen</td><td>?</td><td>Zahlen sie lieber bar an der Ausgabe – oder vorher online?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="breit" data-schritt><strong>3 Von oben lesen:</strong> J1, P1, G1 getroffen – Fit auf Papier. Höchstes ✗: J2 und G2 – bewusst?</p>
+    <p class="breit" data-schritt><strong>Zum Beispiel:</strong> Wir nehmen ihnen das Raten vor der Abfahrt, Ruhe am ganzen Morgen versprechen wir nicht.</p>
     <p class="small">Selbstkontrolle: Rechts trägt jeder Zettel genau ein Zeichen. Links hat jeder ✓ eine ID.</p>
     <div class="nur-handout">
-      <p>Der Fit nach dem Buch, an der Value Map von „Im Gehen bestellen“ ({VPD}, S. 109–112): Jeder der drei Pain Relievers und der Gain Creator bekommt ein ✓ und trifft P1, P2, P3 und G1; diese vier Einträge bekommen rechts ebenfalls ein ✓. J1 trifft das Angebot über seine Produkte – Bestellen im Gehen und die Express-Ausgabe sind der Weg, auf dem Weg zum Zug Kaffee zu besorgen; darum steht die ID J1 am Produkt (Abbildung S. 109, Note S. 110). Getroffen sind damit J1, P1, P2, P3 und G1. Ein ✗ bekommen, was offen bleibt: J2 und J3 (nicht gehetzt in den Tag, nicht gehetzt im Büro – höchstens indirekt), G2 (in Ruhe im Zug trinken), G3 (die Barista kennt die Bestellung), P4 (Automat als Notlösung – kein Zettel links nennt den Automaten). Ein „?“ bekommt J4 „Anstehen und bezahlen“: Das Anstehen entfällt; ob Pendler*innen im Gehen im Browser bezahlen, wissen wir nicht.</p>
-      <p>Die Zeile „Treuepunkte“ und der Satz zum Verzicht auf J2 und G2 sind Beispiele dieses Kurses; in der Value Map der Kaffeebar stehen sie nicht. Die drei Schritte: Erstens links jeden Pain Reliever und Gain Creator einzeln – „Go through Pain Relievers and Gain Creators one by one“ (S. 112). Zweitens rechts ein ✗ an alles, was übrig ist (S. 110). Drittens von oben lesen: Fit heißt, dass wichtige Jobs, extreme Pains und unverzichtbare Gains getroffen sind (S. 108), nicht, dass viele Haken stehen. Ein ✗ oben ist erlaubt, wenn ihr bewusst verzichtet – „which to forgo“ (S. 105). Trifft ein Zettel links nichts, schafft er vermutlich keinen Wert (S. 113): streichen oder umformulieren. Das „?“ ist ein Zeichen dieses Kurses: Es steht dort, wo ihr ✓ oder ✗ nicht entscheiden könnt, ohne etwas herauszufinden, mit der Frage in einem Halbsatz.</p>
+      <p>Ein ✗ bekommen, was offen bleibt: J2 und J3 (nicht gehetzt in den Tag, nicht gehetzt im Büro – höchstens indirekt), G2 (in Ruhe im Zug trinken), G3 (die Barista kennt die Bestellung), P4 (Automat als Notlösung – kein Zettel links nennt den Automaten). Ein „?“ bekommt J4 „Anstehen und bezahlen“: Das Anstehen entfällt; ob Pendler*innen lieber bar an der Ausgabe zahlen oder vorher online, wissen wir nicht.</p>
+      <p>Der Satz zum Verzicht auf J2 und G2 ist ein Beispiel dieses Kurses. Fertig seid ihr rechts, wenn jeder Zettel genau ein Zeichen trägt ({VPD}, S. 110, 113).</p>
     </div>
   </Folie>
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (36 min)</h2>
-    <p class="folie-satz">Spitzenreiter wählen, Value Map füllen und ordnen, Fit prüfen.</p>
+    <p class="folie-satz">Einmal T3 · 4, dann nur noch euer Canvas: wählen, füllen, ordnen, prüfen.</p>
     <p class="wozu"><strong>Wozu?</strong> Damit ihr wisst, welche Idee ihr heute ausarbeitet – und seht, was sie oben im Profil trifft und was offen bleibt.</p>
     <MiroFrame name="T3 · 4 · Kundenprofil & Value Map" />
     <ol class="gross dicht vm-schritte">
-      <li data-schritt><strong>In T3 · 4: vergleichen und wählen:</strong> eure drei Lückensätze aus T3 · 3 auf die Stickies kopieren, ✓ ✗ ? je Satz – Spitzenreiter auf Papier, die anderen beiden bleiben offen. <Timer minuten={5} /></li>
-      <li data-schritt><strong>Euer Canvas, Quadrat links – Value Map des Spitzenreiters:</strong> aus dem Lückensatz, dann ergänzen: 1&nbsp;Products & Services · 2&nbsp;Pain Relievers, je Zettel eine P-ID · 3&nbsp;Gain Creators, je Zettel eine G-ID. Zuletzt alles auf die Skalen, Unverzichtbares oben. <Timer minuten={20} /></li>
-      <li data-schritt><strong>Fit prüfen:</strong> links Zettel für Zettel ✓ mit ID – rechts ✓, ✗ oder ? an jeden Eintrag – von oben lesen. <Timer minuten={7} /></li>
-      <li data-schritt><strong>Festhalten:</strong> alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. <Timer minuten={4} /></li>
+      <li data-schritt><strong>T3 · 4, euer Feld – wählen:</strong> drei Lückensätze aus T3 · 3 auf die Stickies; je Satz ✓ ✗ ? zu J1, P1, P2, G1; Spitzenreiter-Sticky ausfüllen. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Euer Canvas, Quadrat – füllen:</strong> den Sticky mit dem Satz des Spitzenreiters mitnehmen. Aus dem Satz, dann aus dem Profil von oben: Products & Services ohne ID · Pain Relievers mit P-ID · Gain Creators mit G-ID. <em class="vm-bsp">Kaffeebar: „… ob der Kaffee vor der Abfahrt fertig ist (P1)“.</em> <Timer minuten={15} /></li>
+      <li data-schritt><strong>Skalen links – ordnen:</strong> alle Zettel aus dem Quadrat auf die drei Skalen, Unverzichtbares oben. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Skalen – Fit prüfen:</strong> Links, Zettel für Zettel: ✓ auf den Zettel und auf den Eintrag, den er trifft. Rechts, was übrig ist: ✗ oder ? mit Frage. Von oben lesen. <em class="vm-bsp">Kaffeebar: G2 ✗ · J4 ?</em> <Timer minuten={9} /></li>
+      <li data-schritt><strong>Festhalten und prüfen:</strong> rechts ein Zeichen je Zettel · links jeder ✓ mit ID · jedes ? mit Frage. Die ? bleiben, wo sie stehen – an Tag 4 werden sie Annahmen. <Timer minuten={2} /></li>
     </ol>
+    <p class="small vm-legende-vorgehen">✓ trifft · ✗ trifft nicht · ? wissen wir nicht – beim Vergleich am Satz, beim Fit am Zettel.</p>
     <p class="small">Miro, euer Canvas ab Schritt 2: <MiroLink name="T3 · 4 · Canvas · Sofie">Sofie</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Joachim">Joachim</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Hewen">Hewen</MiroLink></p>
-    <p class="nur-handout">Den Ideen-Vergleich macht ihr in T3 · 4 (Feld „Ideen vergleichen und wählen“); Value Map und Fit entstehen in eurem Canvas-Frame „T3 · 4 · Canvas · euer Name“: alle Stickies auf die Skalen, je Spalte das Wichtigste oben, dort prüft ihr auch den Fit ({VPD}, S. 76, 102, 110–113). Im Einzelnen: Vergleichen heißt ✓, ✗ oder ? je Lückensatz gegen die obersten Einträge eures Profils; die Lückensätze bringt ihr aus der Ideation mit (eure Spalte in T3 · 3). Die Value Map füllt ihr in der Reihenfolge des Buchs: erst Products & Services, dann Pain Relievers, dann Gain Creators, ein Zettel je Wirkung ({VPD}, S. 99–101). Die ersten drei Zettel stehen in eurem Lückensatz. Danach geht ihr euer Profil von oben durch: Wo euer Angebot etwas bewirkt, schreibt ihr einen Zettel mit der P- oder G-ID; wo nicht, keinen – das wird beim Fit ein ✗ (S. 105–106). Produkte bekommen im Quadrat keine ID; trifft eines direkt einen Job, kommt die J-ID beim Fit dazu. Zuletzt schiebt ihr alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (S. 102). Leitfragen zu den drei Feldern liegen in T3 · 4. Beim Fit geht ihr links Zettel für Zettel durch: Was er trifft, bekommt rechts ein ✓, er selbst ein ✓ mit ID. Danach bekommt rechts jeder übrige Job, Pain und Gain ein ✗ oder ein ?. Zum Schluss lest ihr von oben: Sind eure obersten Einträge getroffen, und auf welches ✗ verzichtet ihr bewusst? Das Zeichen schreibt ihr als letzte Zeile in den Sticky. Ab Minute 5 geht Markus von Canvas zu Canvas und fragt bei jeder Person: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“. Gemeint ist das ✗ aus dem Vergleich der drei Lückensätze. Ein Wertversprechen heißt auswählen, nicht alles abdecken ({VPD}, S. 105–106, 110, 113). Dazu neun Minuten Theorie mit der Kaffeebar. Alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – kommen ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen für die Experiment-Karte. Die Prüfung mit Claude macht ihr bis Tag 4, wenn die Zeit nicht reicht.</p>
+    <p class="nur-handout">Ihr seid einmal in T3 · 4, in eurem Feld „Ideen vergleichen und wählen“, und danach nur noch in eurem Canvas-Frame „T3 · 4 · Canvas · euer Name“. Den Sticky mit dem Satz eures Spitzenreiters kopiert ihr und legt ihn links neben das Quadrat. <strong>Wählen:</strong> ✓, ✗ oder ? je Lückensatz gegen die obersten Einträge eures Profils; die Lückensätze bringt ihr aus der Ideation mit (eure Spalte in T3 · 3). Bei der Kaffeebar wird Satz 2, „Im Gehen bestellen“, der Spitzenreiter. <strong>Füllen:</strong> in der Reihenfolge des Buchs, erst Products & Services, dann Pain Relievers, dann Gain Creators, ein Zettel je Wirkung ({VPD}, S. 99–101). Die ersten drei Zettel stehen in eurem Lückensatz. Danach geht ihr euer Profil von oben durch: Wo euer Angebot etwas bewirkt, schreibt ihr einen Zettel mit der P- oder G-ID; wo nicht, keinen – das wird beim Fit ein ✗ (S. 105–106). Produkte bekommen im Quadrat keine ID; trifft eines direkt einen Job, kommt die J-ID beim Fit dazu. Leitfragen zu den drei Feldern liegen in T3 · 4. <strong>Ordnen:</strong> alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (S. 102) – bei der Kaffeebar steht der P1-Zettel ganz oben. <strong>Fit prüfen:</strong> links, Zettel für Zettel – was ein Zettel trifft, bekommt rechts ein ✓, er selbst ein ✓ mit ID; rechts, was übrig ist, bekommt ein ✗ oder ein ?; dann lest ihr von oben: Sind eure obersten Einträge getroffen, und auf welches ✗ verzichtet ihr bewusst? Das Zeichen schreibt ihr als letzte Zeile in den Sticky (S. 76, 110–113). <strong>Festhalten und prüfen:</strong> rechts ein Zeichen je Zettel, links jeder ✓ mit ID, jedes ? mit Frage. Die „?“ bleiben, wo sie entstanden sind: die aus dem Vergleich am Satz in eurem Feld in T3 · 4, die aus dem Fit am Zettel auf den Skalen. Jedes hat eine Frage; an Tag 4 werden sie Annahmen für die Experiment-Karte. Nicht verwechseln: Ein „?“ an einem Profil-Eintrag vom Vormittag heißt „ohne Zitat, Vermutung“; ein „?“ als eigene Zeile mit Frage heißt „wissen wir nicht“ – im Vergleich wie im Fit. Ab Minute 5 geht Markus von Canvas zu Canvas und fragt bei jeder Person: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“. Gemeint ist das ✗ aus dem Vergleich der drei Lückensätze. Ein Wertversprechen heißt auswählen, nicht alles abdecken ({VPD}, S. 105–106, 110, 113). Dazu neun Minuten Theorie mit der Kaffeebar. Die Prüfung mit Claude macht ihr bis Tag 4, wenn die Zeit nicht reicht.</p>
   </Folie>
 
   <div class="nur-handout">
@@ -223,18 +262,35 @@ Die anderen beiden bleiben offen: [Idee], [Idee]
 </Layout>
 
 <style>
-  /* „vorgehen“ im Beamer: vier Schritte mit Timer, seit „Festhalten“ ausgeschrieben ist (21.11.): volle Folienbreite statt
-     36em, kleinere Timer – sonst ist die Liste bei 1280×720 höher als die Folie. */
+  /* „vorgehen“ im Beamer: fünf Schritte mit Timer und Kaffeebar-Beispiel (Entscheidung 76): volle Folienbreite statt 36em,
+     kleinere Timer – sonst ist die Liste bei 1280×720 höher als die Folie. */
   :global(html[data-beamer] .content .folie) > ol.vm-schritte { max-width: none; }
   :global(html[data-beamer]) .vm-schritte > li { margin-bottom: .1rem; line-height: 1.4; }
   :global(html[data-beamer]) .vm-schritte :global(.timer) { font-size: 1rem; }
-  /* „fit-kaffeebar“ im Beamer: drei Schrittzeilen, sechs Tabellenzeilen und die Selbstkontrolle – kompakte Tabelle, damit alles
-     bei 1280×720 ohne Scrollen passt. */
-  :global(html[data-beamer]) .vm-fit table { font-size: .85rem; table-layout: fixed; width: 100%; margin: .4rem 0 .6rem; }
-  :global(html[data-beamer]) .vm-fit :is(th, td) { padding: .25rem .5rem; line-height: 1.3; }
-  :global(html[data-beamer]) .vm-fit thead th:nth-child(1) { width: 64%; }
-  :global(html[data-beamer]) .vm-fit thead th:nth-child(2) { width: 22%; }
-  :global(html[data-beamer] .folie:has(> h2#fit-kaffeebar) > p) { max-width: none; margin: .3rem 0; }
+  :global(html[data-beamer]) .vm-bsp { color: var(--muted); }
+  /* Fünf Schritte: flachere Timer-Knöpfe, Legende über die volle Breite. */
+  :global(html[data-beamer]) .vm-schritte :global(.timer-knopf) { padding: .05rem .6rem; }
+  :global(html[data-beamer] .content .folie) > ol.vm-schritte { margin-bottom: .3rem; }
+  :global(html[data-beamer] .folie:has(> h2#vorgehen) > p:is(.small, .wozu)) { max-width: none; margin: .2rem 0 0; }
+  /* „fit“ im Beamer: Abbildung niedrig, darunter die drei Schritte als kompakte Tabelle (Spalten wie der Canvas). */
+  :global(html[data-beamer] .folie) .vm-fit-bild :global(.buch-abbildung img) { max-height: 22vh; width: auto; max-width: 100%; }
+  :global(html[data-beamer]) .vm-fit-bild li { font-size: 1rem; line-height: 1.3; }
+  :global(html[data-beamer]) .vm-fit-schritte table { font-size: .85rem; table-layout: fixed; width: 100%; margin: .3rem 0 .2rem; }
+  :global(html[data-beamer]) .vm-fit-schritte :is(th, td) { padding: .25rem .5rem; line-height: 1.3; }
+  :global(html[data-beamer]) .vm-fit-schritte thead th:nth-child(1) { width: 30%; }
+  :global(html[data-beamer]) .vm-fit-schritte thead th:nth-child(2) { width: 33%; }
+  :global(html[data-beamer]) .vm-fit-fuss { margin: 0; }
+  /* „fit-kaffeebar“ (Schritt 1) und „fit-kaffeebar-rechts“ (Schritt 2 und 3) im Beamer: kompakte Tabellen mit eigenen Spalten,
+     damit beide bei 1280×720 ohne Scrollen passen; keine automatische Silbentrennung („Ra-ten“). */
+  :global(html[data-beamer]) :is(.vm-fit, .vm-fit-rechts) table { font-size: .85rem; table-layout: fixed; width: 100%; margin: .4rem 0 .6rem; }
+  :global(html[data-beamer]) :is(.vm-fit, .vm-fit-rechts) :is(th, td) { padding: .25rem .5rem; line-height: 1.3; }
+  :global(html[data-beamer]) .vm-fit thead th:nth-child(1) { width: 17%; }
+  :global(html[data-beamer]) .vm-fit thead th:nth-child(2) { width: 49%; }
+  :global(html[data-beamer]) .vm-fit thead th:nth-child(3) { width: 20%; }
+  :global(html[data-beamer]) .vm-fit-rechts thead th:nth-child(1) { width: 38%; }
+  :global(html[data-beamer]) .vm-fit-rechts thead th:nth-child(2) { width: 20%; }
+  :global(html[data-beamer]) .vm-fit-rechts thead th:nth-child(3) { width: 8%; }
+  :global(html[data-beamer] .folie:is(:has(> h2#fit-kaffeebar), :has(> h2#fit-kaffeebar-rechts)) > p) { max-width: none; margin: .3rem 0; hyphens: manual; }
   /* „vom-satz“ im Beamer: Satz und drei Zeilen Tabelle kompakt, damit die Folie bei 1280×720 ohne Scrollen passt. */
   :global(html[data-beamer] .folie:has(> h2#vom-satz) > p) { max-width: none; margin: .35rem 0; }
   :global(html[data-beamer]) .vm-satz table { font-size: .9rem; table-layout: fixed; width: 100%; margin: .4rem 0 .6rem; }

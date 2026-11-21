@@ -842,31 +842,46 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(n.vorgehen?.uebung?.form).toBe('allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum? Ohne ✗ oben: Was bleibt oben offen?');
     expect(n.vorgehen?.live).toContain('1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.');
     expect(n.vorgehen?.live).toContain('Frage: ✗ des Spitzenreiters oben bewusst? Sonst: Was bleibt oben offen?');
-    expect(n.vorgehen?.live).toContain('Nach 5 min: Satz, Profil von oben, Skalen – Timer 20 min.');
     expect(texte.flatMap((x) => x.match(/Verzichtet ihr bewusst darauf|bewusst verzichtet – und warum/g) ?? [])).toStrictEqual([]);
-    expect(q).toContain('<li data-schritt><strong>Festhalten:</strong> alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. <Timer minuten={4} /></li>');
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(36);
   });
-  // Entscheidung 67 (21.11.): Value Map füllen – Titel = Summe der Timer (36 min), Schritt 2 nennt Felder, Reihenfolge, IDs und
-  // Skalen; Produkte tragen im Quadrat keine ID, darum nirgends „jeder Zettel mit P- oder G-ID“; fit-kaffeebar mit zwei Produkt-Zeilen.
-  it('Tag 3: value-map#vorgehen – 36 min, Schritt 2 ausgeschrieben, nur Pain Reliever und Gain Creator mit P- oder G-ID', () => {
+  // Entscheidungen 67 und 76 (21.11.): fünf Schritte (Option B), Titel = Summe der Timer (36 min), je Schritt Ort und Name
+  // (wählen · füllen · ordnen · Fit prüfen · Festhalten und prüfen), Legende; die „?“ bleiben, wo sie entstehen – kein Sammeln im Feld.
+  // Produkte tragen im Quadrat keine ID, darum nirgends „jeder Zettel mit P- oder G-ID“; fit-kaffeebar mit zwei Produkt-Zeilen.
+  it('Tag 3: value-map#vorgehen – fünf Schritte, 36 min, Legende, „?“ bleiben stehen, nur Pain Reliever und Gain Creator mit P- oder G-ID', () => {
     const q = quellen['/innolab/methoden/value-map'] ?? '';
     const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
     const a = q.indexOf('id="vorgehen"');
     const folie = q.slice(a, q.indexOf('</Folie>', a));
     expect(folie).toContain('id="vorgehen">So geht ihr vor (36 min)</h2>');
-    expect(folie).toContain('<p class="folie-satz">Spitzenreiter wählen, Value Map füllen und ordnen, Fit prüfen.</p>');
-    const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>')).replaceAll('&nbsp;', ' '); // &nbsp; hält am Beamer die Feldnummer am Feldnamen
+    expect(folie).toContain('<p class="folie-satz">Einmal T3 · 4, dann nur noch euer Canvas: wählen, füllen, ordnen, prüfen.</p>');
+    const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
     const timer = [...schritte.matchAll(/<li data-schritt>.*?<Timer minuten=\{(\d+)\} \/><\/li>/g)].map((m) => Number(m[1]));
-    expect(timer).toStrictEqual([5, 20, 7, 4]);
+    expect(timer).toStrictEqual([5, 15, 5, 9, 2]);
     expect(timer.reduce((x, y) => x + y, 0)).toBe(36);
-    expect(schritte).toContain('<li data-schritt><strong>Euer Canvas, Quadrat links – Value Map des Spitzenreiters:</strong> aus dem Lückensatz, dann ergänzen: 1 Products & Services · 2 Pain Relievers, je Zettel eine P-ID · 3 Gain Creators, je Zettel eine G-ID. Zuletzt alles auf die Skalen, Unverzichtbares oben. <Timer minuten={20} /></li>');
+    expect([...schritte.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual([
+      'T3 · 4, euer Feld – wählen:', 'Euer Canvas, Quadrat – füllen:', 'Skalen links – ordnen:', 'Skalen – Fit prüfen:', 'Festhalten und prüfen:',
+    ]);
+    expect(schritte).toContain('<li data-schritt><strong>Euer Canvas, Quadrat – füllen:</strong> den Sticky mit dem Satz des Spitzenreiters mitnehmen. Aus dem Satz, dann aus dem Profil von oben: Products & Services ohne ID · Pain Relievers mit P-ID · Gain Creators mit G-ID.');
+    expect(schritte).toContain('<li data-schritt><strong>Festhalten und prüfen:</strong> rechts ein Zeichen je Zettel · links jeder ✓ mit ID · jedes ? mit Frage. Die ? bleiben, wo sie stehen – an Tag 4 werden sie Annahmen. <Timer minuten={2} /></li>');
+    expect(folie).toContain('<p class="small vm-legende-vorgehen">✓ trifft · ✗ trifft nicht · ? wissen wir nicht – beim Vergleich am Satz, beim Fit am Zettel.</p>');
+    // Kaffeebar-Beispiele bei Füllen und Fit prüfen; die zu Wählen und Ordnen stehen aus Platzgründen im Handout (1280×720).
+    expect([...schritte.matchAll(/<em class="vm-bsp">(Kaffeebar:[^<]+)<\/em>/g)].map((m) => m[1])).toStrictEqual(['Kaffeebar: „… ob der Kaffee vor der Abfahrt fertig ist (P1)“.', 'Kaffeebar: G2 ✗ · J4 ?']);
+    expect(folie).toContain('Bei der Kaffeebar wird Satz 2, „Im Gehen bestellen“, der Spitzenreiter.');
+    expect(folie).toContain('bei der Kaffeebar steht der P1-Zettel ganz oben.');
+    // Die „?“ bleiben, wo sie entstehen: nirgends mehr „alle ? ins Feld“ oder „gesammelt“ – Seite, Begleiter, Tag 3, Tag 4, Prüfliste.
+    const sammeln = /alle „?\?“[^.]*ins Feld|„\?“ ins Feld|ins Feld auf T3 · 4|gesammelt habt|stehen gesammelt|alle „\?“ im Feld/g;
+    const orte = [q, JSON.stringify(n), quellen['/innolab/tag-3'] ?? '', quellen['/innolab/methoden/experiment'] ?? '', JSON.stringify(METHODEN.find((m) => m.slug === 'value-map'))];
+    expect(orte.flatMap((x) => x.match(sammeln) ?? [])).toStrictEqual([]);
+    expect(folie).toContain('Die „?“ bleiben, wo sie entstanden sind: die aus dem Vergleich am Satz in eurem Feld in T3 · 4, die aus dem Fit am Zettel auf den Skalen.');
+    expect(n.vorgehen?.uebung?.dauer).toBe('36 min (5 + 15 + 5 + 9 + 2)');
+    expect((n.vorgehen?.ablauf?.schritte ?? []).map((x) => x.split(' (')[0])).toStrictEqual(['Wählen', 'Füllen', 'Ordnen', 'Fit prüfen', 'Festhalten und prüfen']);
     expect(folie).toContain('Produkte bekommen im Quadrat keine ID');
     expect(folie).toContain('Dazu neun Minuten Theorie mit der Kaffeebar.');
     expect([q, JSON.stringify(n)].flatMap((x) => x.match(/jeder (grüne )?Zettel mit (P- oder G-)?ID|je mit P- oder G-ID|zeigt erst der Test/g) ?? [])).toStrictEqual([]);
     expect(q).toContain('Die Value Map schreibt aus und ergänzt – jeder Pain Reliever und Gain Creator mit <span style="white-space:nowrap">P- oder G-ID</span>.</p>');
     const fit = q.slice(q.indexOf('id="fit-kaffeebar"'), q.indexOf('</tbody>', q.indexOf('id="fit-kaffeebar"')));
-    expect([...fit.matchAll(/<tr data-schritt><td>Products & Services · ([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><\/tr>/g)].map((m) => m.slice(1))).toStrictEqual([
+    expect([...fit.matchAll(/<tr data-schritt><td>Products & Services<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><\/tr>/g)].map((m) => m.slice(1))).toStrictEqual([
       ['QR-Code an der Hallentür, Bestellung im Browser ohne App', 'J1 Kaffee besorgen', '✓'],
       ['Express-Ausgabe mit drei Standardgetränken', 'J1 Kaffee besorgen', '✓'],
     ]);
@@ -946,7 +961,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const seiten = ['concept-story', 'experiment', 'geschaeftsmodell', 'pitch', 'story-map'].map((s) => `/innolab/methoden/${s}`);
     expect(seiten.every((p) => (quellen[p] ?? '').length > 1000)).toBe(true);
     expect(seiten.flatMap((p) => (quellen[p] ?? '').match(/(KUNDENPROFIL|VALUE-MAP)\.md/g) ?? [])).toStrictEqual([]);
-    expect(quellen['/innolab/methoden/experiment']).toContain('auf Miro im Feld „Ideen vergleichen und wählen“ (T3 · 4) gesammelt habt');
+    expect(quellen['/innolab/methoden/experiment']).toContain('Erste Kandidaten für Annahmen sind die „?“ von Tag 3 auf Miro: am Satz im Feld „Ideen vergleichen und wählen“ (T3 · 4), aus dem Ideen-Vergleich aller drei Ideen, und am Zettel in eurem Canvas, aus dem Fit.');
   });
   // Entscheidungen 45–47 (21.11.): Pfad HMW → Ideation sichtbar; Ideation ohne Reihum, Titel = Summe der Timer;
   // Ziel-Chance mit „Ausschlaggebend“ / „Spricht dagegen“ statt „tragende Linse“.
@@ -995,21 +1010,43 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(schritte).toContain('Eure Idee von Tag 1 darf als ein Sticky dazu – ohne Vorsprung.');
     expect(NOTIZEN['/innolab/methoden/ideation']?.vorgehen?.live).toContain('Idee von Tag 1: ein Sticky unter vielen, kein Vorsprung.');
   });
-  // Entscheidung 57 (21.11.): Fit prüfen in drei Schritten an der Kaffeebar. Reihenfolge seit Entscheidung 58: beispiel →
-  // value-map → vom-satz → produkt-wirkung → fit → fit-kaffeebar → vorgehen; drei-fits nur noch im Handout von uebertrag.
-  it('Tag 3: value-map – Folie fit-kaffeebar mit Selbstkontrolle, Reihenfolge der Folien, Schritt 3', () => {
+  // Entscheidungen 57, 75 und 76 (21.11.): Fit prüfen in drei Schritten. `fit` = das Verfahren mit je einem Zettel, `fit-kaffeebar`
+  // = Schritt 1 (links), `fit-kaffeebar-rechts` = Schritt 2 und 3. Reihenfolge: beispiel → value-map → vom-satz → produkt-wirkung →
+  // fit → fit-kaffeebar → fit-kaffeebar-rechts → vorgehen; drei-fits nur noch im Handout von uebertrag.
+  it('Tag 3: value-map – Fit in drei Folien, Reihenfolge, Schrittnamen gleich, J4 im Miro-Wortlaut', () => {
     const q = quellen['/innolab/methoden/value-map'] ?? '';
     const ids = [...q.matchAll(/<h2 id="([^"]+)"/g)].map((m) => m[1]);
-    const reihe = ['beispiel', 'value-map', 'vom-satz', 'produkt-wirkung', 'fit', 'fit-kaffeebar', 'vorgehen', 'uebertrag'];
-    expect(ids).toStrictEqual([...reihe.slice(0, 7), 'vorlage', 'pruefen', 'uebertrag']);
-    const a = q.indexOf('id="fit-kaffeebar"');
-    const fk = q.slice(a, q.indexOf('<div class="nur-handout">', a));
-    expect(fk).toContain('<p class="small">Selbstkontrolle: Rechts trägt jeder Zettel genau ein Zeichen. Links hat jeder ✓ eine ID.</p>');
-    expect(fk).toContain('<tr data-schritt><td>Gegenprobe (Kurs-Beispiel) · Treuepunkte ab der zehnten Bestellung</td>');
-    expect(fk).toContain('<td>Pain Reliever · Statt anzustehen: in 20 Sekunden im Gehen bestellen</td>');
-    expect(q).toContain('<strong>Fit prüfen:</strong> links Zettel für Zettel ✓ mit ID – rechts ✓, ✗ oder ? an jeden Eintrag – von oben lesen.');
+    expect(ids).toStrictEqual(['beispiel', 'value-map', 'vom-satz', 'produkt-wirkung', 'fit', 'fit-kaffeebar', 'fit-kaffeebar-rechts', 'vorgehen', 'vorlage', 'pruefen', 'uebertrag']);
+    const folie = (id: string) => { const a = q.indexOf(`id="${id}"`); return q.slice(a, q.indexOf('<div class="nur-handout">', a)); };
+    const fit = folie('fit');
+    expect(fit).toContain('<p class="folie-satz">Erst links, dann rechts, dann von oben lesen.</p>');
+    expect([...fit.matchAll(/<tr data-schritt><td><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['1 Links, Zettel für Zettel:', '2 Rechts, was übrig ist:', '3 Von oben lesen:']);
+    expect(fit).toContain('<p class="small vm-fit-fuss">✓ trifft · ✗ trifft nicht · ? wissen wir nicht.');
+    const fk = folie('fit-kaffeebar');
+    expect(fk).toContain('<p class="folie-satz">Schritt 1: links, Zettel für Zettel.</p>');
+    expect(fk).toContain('<thead><tr><th>Feld</th><th>Zettel (links)</th><th>trifft</th><th>Zeichen</th></tr></thead>');
+    expect(fk.match(/<tr data-schritt>/g) ?? []).toHaveLength(7);
+    expect(fk).toContain('<tr data-schritt><td>Gegenprobe (Kurs-Beispiel)</td><td>Treuepunkte ab der zehnten Bestellung</td><td>nichts</td><td>kein ✓</td></tr>');
+    expect(fk).toContain('<td>Pain Reliever</td><td>Statt anzustehen: in 20 Sekunden im Gehen bestellen</td>');
+    expect(fk).toContain('<p class="breit" data-schritt><strong>Trifft ein Zettel nichts:</strong> kein ✓ – streichen oder umformulieren. Ein ✗ gibt es links nicht.</p>');
+    const fr = folie('fit-kaffeebar-rechts');
+    expect(fr).toContain('id="fit-kaffeebar-rechts">Fit prüfen: die Kaffeebar, rechts</h2>');
+    expect(fr).toContain('<thead><tr><th>Eintrag (rechts)</th><th>getroffen von</th><th>Zeichen</th><th>warum</th></tr></thead>');
+    expect(fr).toContain('<p class="small">Selbstkontrolle: Rechts trägt jeder Zettel genau ein Zeichen. Links hat jeder ✓ eine ID.</p>');
+    // Dieselben drei Schrittnamen auf fit, den beiden Kaffeebar-Folien und in vorgehen Schritt 4.
+    for (const name of ['1 Links, Zettel für Zettel:', '2 Rechts, was übrig ist:', '3 Von oben lesen:']) expect(fk + fr, name).toContain(`<strong>${name}</strong>`);
+    expect(q).toContain('<strong>Skalen – Fit prüfen:</strong> Links, Zettel für Zettel: ✓ auf den Zettel und auf den Eintrag, den er trifft. Rechts, was übrig ist: ✗ oder ? mit Frage. Von oben lesen.');
+    // J4 im Wortlaut von Miro, auf Folie und im Handout; die alte Frage nirgends.
+    expect(fr).toContain('<td>J4 Anstehen und bezahlen</td><td>Anstehen: P2-Zettel · Bezahlen: offen</td><td>?</td><td>Zahlen sie lieber bar an der Ausgabe – oder vorher online?</td>');
+    expect(q).toContain('ob Pendler*innen lieber bar an der Ausgabe zahlen oder vorher online, wissen wir nicht.');
     const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    expect([q, JSON.stringify(n)].flatMap((x) => x.match(/im Gehen im Browser|Bezahlen sie im Gehen/g) ?? [])).toStrictEqual([]);
     expect(n['fit-kaffeebar']?.live.some((l) => l.startsWith('Wenn hinten:'))).toBe(true);
+    expect(n['fit-kaffeebar-rechts']?.live.some((l) => l.startsWith('Wenn hinten:'))).toBe(true);
+    for (const k of ['fit', 'fit-kaffeebar', 'fit-kaffeebar-rechts']) expect(n[k]?.live.length ?? 0, k).toBeLessThanOrEqual(5);
+    // Schaufenster (Entscheidung 76.3).
+    expect(q).toContain('<li data-schritt><strong>Gelb:</strong> was ihr anbietet – was im Schaufenster läge.</li>');
+    expect(q).toContain('„existing value proposition“ (S. 99)');
     expect(n.beispiel?.ueberleitung).toBe('Spitzenreiter gewählt. Nur für ihn kommt jetzt die linke Hälfte.');
   });
   // Entscheidungen 58–61 (21.11.): Brücke vom Lückensatz zur Value Map, Lückensatz mit ID-Slots, korrigierte Kaffeebar-Sätze,
@@ -1044,7 +1081,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(pw).toContain('<li>Statt anzustehen: in 20 Sekunden im Gehen bestellen</li>');
     expect(pw).toContain('<strong>B:</strong> Pain Reliever (P2)');
     expect(pw).toContain('<strong>Die Probe:</strong>');
-    expect(vm).toContain('eure drei Lückensätze aus T3 · 3 auf die Stickies kopieren');
+    expect(vm).toContain('drei Lückensätze aus T3 · 3 auf die Stickies; je Satz ✓ ✗ ? zu J1, P1, P2, G1');
     expect(id).toContain('<li data-schritt><strong>Lückensätze:</strong> je Idee einer, ins Feld „Drei Ideen als Lückensätze“ eurer Spalte – J-, P-, G-ID aus eurem Canvas.');
     expect(id).toContain('<Prompt label="Vorlage · eure Spalte in T3 · 3, Feld ‚Drei Ideen als Lückensätze‘">');
   });
@@ -1052,7 +1089,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   it('Tag 3: Checkliste mit Ideen-Vergleich (T3 · 4), Methodenkarte mit miroAuch', () => {
     const q = quellen['/innolab/tag-3'] ?? '';
     expect(q).toContain('<Checklist id="il-tag3-abschluss-v6"');
-    expect(q).toContain("'Ideen-Vergleich und alle „?“ im Feld „Ideen vergleichen und wählen“ (T3 · 4)',");
+    expect(q).toContain("'Ideen-Vergleich mit seinen „?“ im Feld „Ideen vergleichen und wählen“ (T3 · 4); die „?“ aus dem Fit am Zettel in eurem Canvas',");
     const karte = readFileSync('src/components/MethodenKarte.astro', 'utf8');
     expect(karte).toContain('{a.miroAuch && <> · Feld „{a.miroAuch.feld}“ im Frame „{a.miroAuch.frame}“</>}');
   });
