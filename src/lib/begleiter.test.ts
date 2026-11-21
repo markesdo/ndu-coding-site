@@ -878,4 +878,12 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folie('beispiel')).toContain('<MiroLink name="T3 · 3 · Ideation">T3 · 3 · Ideation, Spalte Kaffeebar</MiroLink>');
     expect(MIRO_FRAMES['T3 · 3 · Ideation']).toBeTruthy();
   });
+  // Entscheidung 56 (21.11.): Die Idee von Tag 1 steht auf dem Beamer – ein Sticky unter vielen, ohne Vorsprung.
+  it('Tag 3: ideation#vorgehen – Idee von Tag 1 als ein Sticky, ohne Vorsprung', () => {
+    const q = quellen['/innolab/methoden/ideation'] ?? '';
+    const a = q.indexOf('id="vorgehen"');
+    const schritte = q.slice(a, q.indexOf('</ol>', a));
+    expect(schritte).toContain('Eure Idee von Tag 1 darf als ein Sticky dazu – ohne Vorsprung.');
+    expect(NOTIZEN['/innolab/methoden/ideation']?.vorgehen?.live).toContain('Idee von Tag 1: ein Sticky unter vielen, kein Vorsprung.');
+  });
 });

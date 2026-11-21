@@ -414,6 +414,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Timer 16 min: allein, Ideen zur eigenen Frage.',
+      'Idee von Tag 1: ein Sticky unter vielen, kein Vorsprung.',
       'Nach 16 min: Ideen-Spende still, je Produkt 2 min.',
       'Nach 22 min: wieder allein, 18 min; Auswege und Claude erlaubt.',
       '1:1 in dieser Runde, je 4 min: Sofie, Hewen, Joachim.',
