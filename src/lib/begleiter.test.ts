@@ -695,4 +695,20 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(tuer.match(/<li data-schritt>/g) ?? []).toHaveLength(4);
     expect(tuer.match(/Darum heute mit Uhr|schneller lernen/g) ?? []).toStrictEqual([]);
   });
+  // Entscheidung 34 (21.11.): Kundenprofil `konkret` – drei Proben mit je einer Nachfrage. Die Kaffeebar-Zeile bleibt offen:
+  // I5-2 nennt keine Zahl, die Zahl hat nur I3-4 (eine andere Person), und „P2“ kennt auf dieser Folie noch niemand.
+  it('Tag 3: kundenprofil#konkret – Nachfrage-Spalte, Kaffeebar offen, kein P2; profil ohne „mehr als x Minuten“', () => {
+    const q = quellen['/innolab/methoden/kundenprofil'] ?? '';
+    const konkret = q.slice(q.indexOf('id="konkret"'), q.indexOf('<Folie', q.indexOf('id="konkret"')));
+    const beamer = konkret.slice(0, konkret.indexOf('<div class="nur-handout">'));
+    expect(konkret).toContain('id="konkret">Konkret, kein Spiegelbild, ein Warum weiter</h2>');
+    expect(beamer).toContain('<thead><tr><th>zuerst notiert</th><th>Nachfrage</th><th>im Profil</th></tr></thead>');
+    expect(beamer.match(/<tr data-schritt><td><strong>(Vage|Gespiegelt|Oberflächlich|Kaffeebar):<\/strong>/g) ?? []).toHaveLength(4);
+    expect(beamer).toContain('<td><strong>Kaffeebar:</strong> „Wenn es voll ist, lass ich es.“ (I5-2)</td><td>Ab wie vielen Leuten?</td><td>offen – Frage fürs nächste Interview</td>');
+    expect(beamer).toContain('<p data-schritt>Eine Zahl gibt es bei einer anderen Person: „Bei mehr als fünf Leuten lass ich es.“ (I3-4)</p>');
+    expect([konkret, JSON.stringify(NOTIZEN['/innolab/methoden/kundenprofil']?.konkret)].flatMap((t) => t.match(/zusammen ergeben sie P2|– P2\b/g) ?? [])).toStrictEqual([]);
+    expect(beamer.match(/\bP2\b/g) ?? []).toStrictEqual([]);
+    const profil = q.slice(q.indexOf('id="profil"'), q.indexOf('<div class="nur-handout">', q.indexOf('id="profil"')));
+    expect(profil).toContain('<li data-schritt><strong>Pains:</strong> schlechte Ergebnisse, Hindernisse, Risiken.</li>');
+  });
 });

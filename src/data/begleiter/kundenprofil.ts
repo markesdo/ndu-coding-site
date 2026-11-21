@@ -138,15 +138,15 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
   // NEU
   konkret: {
     live: [
-      'Fragen: Ab wie vielen Minuten ist Warten für euch Zeitverschwendung?',
-      'Aufdecken: „mehr als x Minuten“ statt „Zeitverschwendung“.',
-      'Gehalt: Erhöhung und Kürzung sind nur Spiegelbilder.',
-      'Besser: Hindernis und Risiko als Pains.',
-      'Kaffeebar: „voll“ (I5-2) und „mehr als fünf Leute“ (I3-4) – zwei Interviews.',
+      'Zeile 1 zeigen, fragen: Was würdet ihr die Person als Nächstes fragen?',
+      'Gehalt: Erhöhung und Kürzung sind dieselbe Aussage. Besser: Betrag, Hindernis, Risiko.',
+      'Fremdsprache: zweimal Warum – und landet beim Job aus Zeile 2.',
+      'Kaffeebar: I5 sagt „voll“. Niemand hat nachgefragt. Die Zahl hat nur I3.',
+      'Falle: die Zahl von I3 als Präzisierung von I5 verkaufen.',
     ],
     verstaendnis: {
       frage: 'Gain „schneller Kaffee“, Pain „langsamer Kaffee“ – was fehlt?',
-      antwort: 'Beides ist dieselbe Aussage, einmal umgedreht, und ohne Maß. Besser: ein Pain, der ein Hindernis oder Risiko benennt, und ein Maß, an dem die Kundschaft selbst misst (S. 58, 80).',
+      antwort: 'Beides ist dieselbe Aussage, einmal umgedreht, und ohne Maß. Besser: ein Pain, der ein Hindernis oder Risiko benennt, ein Maß, an dem die Kundschaft selbst misst, und ein eigenes Zitat für den Gain (S. 58, 80).',
     },
     kern: [
       {
@@ -158,11 +158,11 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
         quelle: `${VPD}, S. 80`,
       },
       {
-        text: '„Ask “why” several times until you really understand your customers’ jobs to be done.“ Beispiel: Warum eine Fremdsprache lernen? „Maybe because the “real” customer job to be done is to improve his CV.“ Und warum das? Um mehr zu verdienen.',
+        text: '„Ask “why” several times until you really understand your customers’ jobs to be done.“ Beispiel: Warum eine Fremdsprache lernen? „Maybe because the “real” customer job to be done is to improve his CV.“ Und warum das? Um mehr zu verdienen. VPD formuliert die Antworten mit „Maybe“ und „ask yourself“ – die Leiter ist dort eine Vermutung des Teams.',
         quelle: `${VPD}, S. 80`,
       },
       {
-        text: 'Kaffeebar: „Wenn es voll ist, lass ich es.“ (I5-2) und „Bei mehr als fünf Leuten lass ich es.“ (I3-4) sind zwei Personen. Das Maß für P2 („mehr als fünf Leute“) kommt aus I3-4, nicht aus einer präzisierten Aussage von I5.',
+        text: 'Kaffeebar: „Wenn es voll ist, lass ich es.“ (I5-2) und „Bei mehr als fünf Leuten lass ich es.“ (I3-4) sind zwei Personen. I5-2 ist Beleg für P1, nicht für P2; das Maß in P2 kommt allein aus I3-4. I2-1 nennt eine andere Zahl („Acht Leute vor mir“).',
         quelle: 'Werkstatt, Beispiel Kaffeebar, Interviews I3 und I5; kundenprofil.astro, Folie beispiel',
       },
     ],
@@ -170,6 +170,10 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       {
         frage: 'In unseren Interviews hat niemand eine Zahl genannt. Was dann?',
         antwort: 'Dann schreibt ihr den Pain so konkret, wie das Zitat es hergibt, und notiert die fehlende Zahl als Frage fürs nächste Interview. Keine Zahl erfinden.',
+      },
+      {
+        frage: 'Darf ich die Zahl aus einem anderen Interview nehmen?',
+        antwort: 'Ja, mit ihrer ID und als Aussage dieser einen Person. Für alle anderen bleibt es eine Frage.',
       },
     ],
     ueberleitung: 'Nicht alles im Profil ist gleich wichtig.',
