@@ -762,10 +762,56 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(timer).toStrictEqual([2, 5, 4, 3, 4]);
     expect(timer.reduce((a, b) => a + b, 0)).toBe(18);
     expect(schritte).toContain('<li data-schritt><strong>Wessen Profil?</strong>');
-    expect(schritte).toContain('<li data-schritt><strong>Jobs aus den Snapshots:</strong> Welche Aufgabe wollte die Person in ihrer Geschichte erledigen? Mit Zitat-ID. Dann einmal „Warum?“: der soziale oder emotionale Job dahinter – ohne Zitat ein „?“.');
+    expect(schritte).toContain('<li data-schritt><strong>Jobs aus den Snapshots:</strong> Welche Aufgabe wollte die Person in ihrer Geschichte erledigen? Mit Zitat-ID – oder ohne, dann mit „?“ als Vermutung. Dann einmal „Warum?“: der soziale oder emotionale Job dahinter – ohne Zitat ein „?“.');
     expect(q.match(/aus den Momenten eurer Map|Jeder Moment ist ein Job/g) ?? []).toStrictEqual([]);
     expect(n.vorgehen?.uebung?.dauer).toBe('18 min (2 + 5 + 4 + 3 + 4)');
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(18);
+  });
+  // Entscheidung 70 (21.11.): neue Folie `job-arten` direkt nach `profil` – Tabelle Art · Probe · Im Buch · Kaffeebar, je Zeile ein Klick,
+  // letzter Klick J1 → warum? → J2; Kaffeebar-Jobs wortgleich mit `beispiel`. `profil` nennt die Arten nicht mehr.
+  it('Tag 3: kundenprofil#job-arten – nach profil, Tabelle mit drei Arten, Warum-Zeile, Begleiter', () => {
+    const q = quellen['/innolab/methoden/kundenprofil'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/kundenprofil'] ?? {};
+    const ids = [...q.matchAll(/<h2 id="([^"]+)"/g)].map((m) => m[1]);
+    expect(ids.slice(ids.indexOf('profil'), ids.indexOf('profil') + 3)).toStrictEqual(['profil', 'job-arten', 'konkret']);
+    const a = q.indexOf('id="job-arten"');
+    const folie = q.slice(a, q.indexOf('<div class="nur-handout">', a));
+    expect(folie).toContain('id="job-arten">Drei Arten von Jobs</h2>');
+    expect(folie).toContain('<p class="folie-satz">Erledigen, dastehen, sich fühlen.</p>');
+    expect(folie).toContain('<div class="kp-job-arten"');
+    expect(folie).toContain('<thead><tr><th>Art</th><th>Probe</th><th>Im Buch</th><th>Kaffeebar</th></tr></thead>');
+    const zeilen = [...folie.matchAll(/<tr data-schritt><td><strong>([^<]+)<\/strong><\/td><td>[^<]+<\/td><td>[^<]+<\/td><td>([^<]+)<\/td><\/tr>/g)].map((m) => [m[1], m[2]]);
+    expect(zeilen).toStrictEqual([
+      ['Funktional', 'J1 Auf dem Weg zum Zug Kaffee besorgen (I2-4, I5-3)'],
+      ['Sozial', 'J3 Im Büro nicht als die*der Gehetzte ankommen (I4-5)'],
+      ['Emotional', 'J2 Den Arbeitstag nicht gehetzt beginnen (I1-1, I4-5)'],
+    ]);
+    // Wortlaut und Zitat-IDs wie auf `beispiel` (dort steht die Art zwischen Job und IDs).
+    const beispiel = q.slice(q.indexOf('id="beispiel"'), q.indexOf('</tbody>', q.indexOf('id="beispiel"')));
+    for (const [art, job] of zeilen) {
+      const [text, belege] = job.split(' (');
+      expect(beispiel).toContain(`<td>${text} · ${art.toLowerCase()} (${belege}</td>`);
+    }
+    expect(folie).toContain('<p data-schritt><strong>Vom einen zum anderen:</strong> Kaffee besorgen (J1) – warum? Um den Arbeitstag nicht gehetzt zu beginnen (J2).</p>');
+    expect(q).toContain('<li data-schritt><strong>Jobs:</strong> was jemand erledigen will – in den Worten der Kundschaft.</li>');
+    expect(n['job-arten']?.verstaendnis?.frage).toBe('„Ich will pünktlich sein“ – emotionaler Job oder Gain?');
+    expect(n.beispiel?.live?.[0]).toBe('J1–J3 nicht vorlesen (job-arten).');
+  });
+  // Entscheidungen 71–73 (21.11.): `vorgehen` Schritt 5 geht die sechs Fehler durch; Einträge ohne Zitat sind erlaubt, mit „?“;
+  // der Folien-Satz nennt das Ergänzen; Prüfpunkt kundenprofil-ziel-chance lässt „?“ zu.
+  it('Tag 3: kundenprofil#vorgehen – Schritt 5 sechs Fehler, ohne Zitat mit „?“, Folien-Satz', () => {
+    const q = quellen['/innolab/methoden/kundenprofil'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/kundenprofil'] ?? {};
+    const a = q.indexOf('id="vorgehen"');
+    const folie = q.slice(a, q.indexOf('</Folie>', a));
+    expect(folie).toContain('<p class="folie-satz">Aus Baum und Interviews füllen, dann ergänzen, was ihr vermutet (mit „?“) – je Spalte ordnen.</p>');
+    expect(folie).toContain('<li data-schritt><strong>Ordnen und prüfen:</strong> Skalen, je Spalte, oberste drei nummerieren (J1, P1, G1); dann die sechs Fehler durchgehen (nächste Folie) – was ihr findet, korrigiert ihr gleich. <Timer minuten={4} /></li>');
+    expect(folie).toContain('Einträge ohne Zitat dürfen ins Profil, mit „?“ – sie sind Vermutungen, die ihr im nächsten Interview prüft ({VPD}, S. 65, 67). Beim Ordnen stehen belegte Einträge im Zweifel über Vermutungen.');
+    expect(folie.match(/einen der sechs Fehler bei euch markieren/g) ?? []).toStrictEqual([]);
+    expect(n.vorgehen?.live).toContain('Wer in 4 min nicht durchkommt: zuerst „zu vage“, „eigenes Angebot“.');
+    expect(JSON.stringify(n.vorgehen).match(/Kein Eintrag ohne Zitat|einen Fehler markieren|einen der sechs Fehler/g) ?? []).toStrictEqual([]);
+    const pp = METHODEN.find((m) => m.slug === 'kundenprofil')!.pruefliste!.find((x) => x.id === 'kundenprofil-ziel-chance')!;
+    expect(pp.text).toBe('Die Ziel-Chance steht als Pain im Profil; jeder Eintrag verweist auf Zitat-IDs aus den Interviews oder trägt ein „?“ (Vermutung).');
   });
   // Entscheidung 37 (21.11.): Tag 3 ohne Dateien im Repo – die Abschluss-Checkliste zeigt auf die Miro-Frames, ohne Commit.
   it('Tag 3: Abschluss-Checkliste ohne docs-Dateien und ohne „Committet und gepusht“', () => {

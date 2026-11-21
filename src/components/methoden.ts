@@ -255,7 +255,7 @@ export const METHODEN: Methode[] = [
       { id: 'kundenprofil-sozial-emotional', text: 'Neben funktionalen Jobs steht mindestens ein sozialer oder emotionaler.' },
       { id: 'kundenprofil-konkret', text: 'Pains und Gains sind konkret: „mehr als fünf Leute in der Schlange“ statt „zu voll“.' },
       { id: 'kundenprofil-produkt', text: 'Kein Eintrag beschreibt euer Produkt oder eure Lösung.' },
-      { id: 'kundenprofil-ziel-chance', text: 'Die Ziel-Chance steht als Pain im Profil; jeder Eintrag verweist auf Zitat-IDs aus den Interviews.' },
+      { id: 'kundenprofil-ziel-chance', text: 'Die Ziel-Chance steht als Pain im Profil; jeder Eintrag verweist auf Zitat-IDs aus den Interviews oder trägt ein „?“ (Vermutung).' },
       { id: 'kundenprofil-geordnet', text: 'Jede Spalte ist für sich geordnet: Jobs nach Wichtigkeit, Pains nach Schwere, Gains nach Relevanz.' },
     ],
     ki: 'Prüft gegen die häufigen Fehler: vermischte Segmente, Jobs mit Ergebnissen verwechselt, vage Pains, nur funktionale Jobs.',
