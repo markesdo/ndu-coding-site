@@ -610,7 +610,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   // Entscheidung 21 (20.11. spät): I3-2 fiel nur beim Anstehen und Warten. Die Halle-Chance „Geht sich ein Kaffee noch aus?“
   // trägt I2-4, I3-1, I5-2 (3 von 5), die Warten-Chance „Wann ist mein Kaffee fertig?“ I2-5, I3-2, I3-3 (2 von 5).
   it('Tag 3: Kaffeebar – die Halle-Chance trägt nirgends I3-2, die Warten-Chance schon', () => {
-    const texte = ['/innolab/methoden/baum', '/innolab/methoden/ziel-chance'].flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
+    // Entscheidung 37 (21.11.): auch die Experience Map (Tag 2) nennt die Halle-Chance mit I3-1.
+    const texte = ['/innolab/methoden/baum', '/innolab/methoden/ziel-chance', '/innolab/methoden/journey-map'].flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
+    expect(quellen['/innolab/methoden/journey-map']).toContain('„Geht sich ein Kaffee noch aus?“ (I2-4, I3-1, I5-2)');
     const halle = texte.flatMap((s) => [...s.matchAll(/Geht sich ein Kaffee noch aus\?“(?:'\s*:\s*\[|\s*\()([^)\]]*)/g)].map((m) => m[1])).filter((ids) => /I\d-\d/.test(ids));
     expect(halle.length).toBeGreaterThan(2);
     expect(halle.filter((ids) => ids.includes('I3-2'))).toStrictEqual([]);
@@ -737,5 +739,14 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(schritte).toContain('<li data-schritt><strong>Wessen Profil?</strong>');
     expect(n.vorgehen?.uebung?.dauer).toBe('18 min (2 + 5 + 7 + 4)');
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(18);
+  });
+  // Entscheidung 37 (21.11.): Tag 3 ohne Dateien im Repo – die Abschluss-Checkliste zeigt auf die Miro-Frames, ohne Commit.
+  it('Tag 3: Abschluss-Checkliste ohne docs-Dateien und ohne „Committet und gepusht“', () => {
+    const q = quellen['/innolab/tag-3'] ?? '';
+    const liste = q.slice(q.indexOf('<Checklist id="il-tag3-abschluss'), q.indexOf(']} />', q.indexOf('<Checklist id="il-tag3-abschluss')));
+    expect(liste).toContain('<Checklist id="il-tag3-abschluss-v5"');
+    expect(liste.match(/\.md\b|im Repo|Committet|gepusht/g) ?? []).toStrictEqual([]);
+    expect(liste).toContain('T3 · 4 · Canvas · euer Name');
+    expect(JSON.stringify(NOTIZEN['/innolab/methoden/baum'] ?? {}).match(/Entscheidungslog/g) ?? []).toStrictEqual([]);
   });
 });

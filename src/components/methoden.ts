@@ -30,6 +30,8 @@ export interface Artefakt {
   miro?: string;
   /** Im Miro-Frame hat jede Person eine eigene Spalte (gemeinsamer Frame): aufs Bild kommt dann die eigene Spalte. */
   miroSpalte?: boolean;
+  /** Die Datei unter pfad schreibt (noch) niemand: Prüf-Prompts späterer Methoden lesen sie nicht zum Abgleich. */
+  keinAbgleich?: boolean;
   /** Hausaufgabe zwischen zwei Kurstagen: fällig zu Kurstag bisTag (sonst am Tag nach der Methode), anzahl = so viele
    *  Einträge je Person (tag_stand zählt mit). */
   hausaufgabe?: { bisTag: number; anzahl?: number };
@@ -45,7 +47,8 @@ export const ARTEFAKTE: Artefakt[] = [
   // Seit 11.11.2026 nur auf Miro, ohne Datei im Repo (Entscheidung Markus): Map in T2 · 1, jeder Baum im eigenen Frame.
   { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro'], miro: 'T2 · 1 · Experience Map', miroSpalte: true },
   { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro'], miro: 'Baum · euer Name' },
-  { id: 'ziel', name: 'Ziel-Chance mit vier Linsen', lebtIn: ['miro', 'repo'], pfad: 'docs/ZIEL-CHANCE.md' },
+  // keinAbgleich seit 21.11.2026 (Entscheidung 37): Die Begründung steht auf Miro T3 · 1, docs/ZIEL-CHANCE.md legt niemand an.
+  { id: 'ziel', name: 'Ziel-Chance mit vier Linsen', lebtIn: ['miro', 'repo'], pfad: 'docs/ZIEL-CHANCE.md', keinAbgleich: true },
   { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro', 'repo'], pfad: 'docs/HMW.md' },
   { id: 'ideen', name: 'Drei Ideen für die Ziel-Chance, je als Lückensatz', lebtIn: ['miro', 'repo'], pfad: 'docs/IDEEN.md' },
   { id: 'valuemap', name: 'Spitzenreiter mit Value Map und Fit', lebtIn: ['miro', 'repo'], pfad: 'docs/VALUE-MAP.md' },
@@ -530,6 +533,9 @@ export const WERKSTATT_AKKUSATIV: Record<ArtefaktName, string> = {
 const nurInWerkstatt = (a: Artefakt) => a.werkstatt !== undefined && !a.lebtIn.includes('repo');
 
 /** Datei im Repo oder Linear; nichts für Artefakte, die nur in der Werkstatt liegen (die Mappe ist ein eigenes Repo). */
+/** Vorarbeit, die ein Prüf-Prompt zum Abgleich liest – ohne Artefakte mit keinAbgleich. */
+const zumAbgleich = (m: Methode): string[] => m.braucht.filter((id) => !artefakt(id)!.keinAbgleich);
+
 function quelle(id: string): string | undefined {
   const a = artefakt(id)!;
   if (nurInWerkstatt(a)) return undefined;
@@ -631,7 +637,7 @@ export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `i
  *  Für Prompts, die dieselbe Vorarbeit lesen sollen wie die Prüfung (etwa die skeptische Investorin beim Pitch). */
 export function vorarbeitLesen(m: Methode, schonGelesen: (string | undefined)[] = []): string[] {
   const gelesen = new Set(schonGelesen);
-  const dateien = [...new Set(m.braucht.map(quelle).filter((p): p is string => !!p && !gelesen.has(p)))];
+  const dateien = [...new Set(zumAbgleich(m).map(quelle).filter((p): p is string => !!p && !gelesen.has(p)))];
   const werkstatt = werkstattVorarbeit(m);
   return [dateien.join(', '), werkstatt.length ? `aus der Werkstatt ${ausWerkstatt(werkstatt)}` : ''].filter(Boolean);
 }
@@ -698,7 +704,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
 
   if (weg === 'standard' && pruefungInWerkstatt(m, pfad)) {
     // Claude (claude.ai mit dem Connector) sieht nur die Mappe; Vorarbeit aus Dateien ließe sich so nicht lesen.
-    const dateien = m.braucht.map(quelle).filter((p): p is string => !!p);
+    const dateien = zumAbgleich(m).map(quelle).filter((p): p is string => !!p);
     if (dateien.length) throw new Error(`pruefPrompt: Methode „${m.slug}“ prüft in der Werkstatt, braucht aber Dateien: ${dateien.join(', ')}`);
     const namen = m.ergibt.map((id) => artefakt(id)!.werkstatt!);
     return [
@@ -716,7 +722,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
 
   if (weg === 'standard' && pruefungAufMiro(m, pfad)) {
     // Claude (claude.ai mit dem Connector) sieht das Bild des Frames und liest die Werkstatt selbst.
-    const vorarbeit = einzufuegen(m.braucht);
+    const vorarbeit = einzufuegen(zumAbgleich(m));
     return [
       `Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: ${miroListe(m.ergibt)}. Prüf es gegen diese Prüfliste (${m.name}):`,
       ...liste,
@@ -737,7 +743,7 @@ export function pruefPrompt(m: Methode, pfad?: string, weg: 'standard' | 'einfue
     // Ohne Claude Code: das Ergebnis und die Vorarbeit aus Dateien als Text, die Werkstatt über den Connector.
     if (!einfuegenMoeglich(m, pfad)) throw new Error(`pruefPrompt: Methode „${m.slug}“ hat keinen Weg zum Einfügen`);
     const { ergebnisPfade, dateien: ergebnis, ausMiro } = einfuegenErgebnis(m, pfad);
-    const vorarbeit = einzufuegen(m.braucht, ergebnisPfade);
+    const vorarbeit = einzufuegen(zumAbgleich(m), ergebnisPfade);
     const inhalt = ergebnis.length > 1 ? 'Inhalt der Dateien' : 'Inhalt der Datei';
     return [
       `Unter diese Nachricht füge ich mein Ergebnis ein (${ausMiro ? `${inhalt} oder Text aus Miro` : inhalt}): ${dateiListe(ergebnis)}. Prüf es gegen diese Prüfliste (${m.name}):`,

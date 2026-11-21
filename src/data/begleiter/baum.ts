@@ -341,8 +341,8 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 26–27`,
       },
       {
-        text: 'Kaffeebar, Entscheidungslog D4: „Vorbestellen vor der Ankunft verworfen“ – 3 von 5 sagen, sie entscheiden erst in der Halle (Belege I2-4, I3-1, I5-3).',
-        quelle: 'Werkstatt, Beispiel Kaffeebar, Entscheidungslog D4',
+        text: 'Kaffeebar, Tag 1: Vorbestellen verworfen – 3 von 5 sagen, sie entscheiden erst in der Halle (Belege I2-4, I3-1, I5-3).',
+        quelle: 'Werkstatt, Beispiel Kaffeebar, Tag 1',
       },
     ],
     ueberleitung: 'Jetzt euer Baum: Inventar, Struktur, selbst prüfen.',

@@ -273,7 +273,8 @@ describe('methoden', () => {
 
   it('der Prüf-Prompt nennt das Ergebnis und zum Abgleich die Vorarbeit, jede nur einmal', () => {
     const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!);
-    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch docs\/ZIEL-CHANCE\.md und aus der Werkstatt meine Interviews und Snapshots \(Werkzeug artefakt_lesen\)\./);
+    // Entscheidung 37 (21.11.2026): docs/ZIEL-CHANCE.md legt niemand an (Begründung auf Miro T3 · 1) – kein Abgleich damit.
+    expect(kp).toMatch(/^Lies docs\/KUNDENPROFIL\.md\. Zum Abgleich lies auch aus der Werkstatt meine Interviews und Snapshots \(Werkzeug artefakt_lesen\)\./);
     // Der Baum liegt nur auf Miro (seit 11.11.2026): Claude Code bekommt ihn als Bild, nicht als Datei.
     expect(kp).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“).\n');
     // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).
@@ -314,12 +315,18 @@ describe('methoden', () => {
     expect(einfuegenHinweis(METHODEN.find((m) => m.slug === 'kundenprofil')!)).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo oder den Text aus Miro – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
     // Vorarbeit aus Dateien wird mit eingefügt, Vorarbeit nur auf Miro als Bild, Werkstatt-Vorarbeit kommt über den Connector.
     const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!, undefined, 'einfuegen');
-    expect(kp).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen (docs/ZIEL-CHANCE.md).\n');
     expect(kp).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“).\n');
     expect(kp).toContain('\nZum Abgleich lies außerdem meine Interviews und Snapshots (Werkzeug artefakt_lesen).\n');
     const hmw = pruefPrompt(METHODEN.find((m) => m.slug === 'hmw')!, undefined, 'einfuegen');
-    expect(hmw).toContain('\nZum Abgleich füge ich auch ein: Ziel-Chance mit vier Linsen (docs/ZIEL-CHANCE.md).\n');
+    expect(hmw).not.toContain('Zum Abgleich füge ich auch ein:');
     expect(hmw).not.toContain(MCP_WERKZEUGE.artefaktLesen);
+    // Kein Prüf-Prompt liest docs/ZIEL-CHANCE.md zum Abgleich – nur die Ziel-Chance selbst prüft ihr Ergebnis.
+    for (const m of METHODEN.filter((x) => x.pruefliste && x.slug !== 'ziel-chance')) {
+      for (const weg of ['standard', 'einfuegen'] as const) {
+        if (weg === 'einfuegen' && !einfuegenMoeglich(m)) continue;
+        expect(pruefPrompt(m, undefined, weg), `${m.slug} ${weg}`).not.toContain('ZIEL-CHANCE.md');
+      }
+    }
   });
 
   // „Danach entscheidet ihr“ (ClaudePruefung.astro): Nachfragen nach Belegen nur beim Prüfen auf Miro. Bei
