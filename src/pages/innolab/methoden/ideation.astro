@@ -11,6 +11,7 @@ import Timer from '../../../components/Timer.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
+import Callout from '../../../components/Callout.astro';
 import Baum from '../../../components/bild/Baum.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
@@ -43,7 +44,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
     <h2 id="erste-ideen">Zwei Minuten: Ideen für die Kaffeebar</h2>
     <p class="folie-satz">„Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</p>
     <p class="breit">Jede*r für sich, auf einer freien Fläche oder auf Papier: so viele Ideen wie möglich, ein Sticky pro Idee, in der Reihenfolge nummeriert. <Timer minuten={2} /></p>
-    <p class="breit" data-schritt><strong>Reihum:</strong> nur eure Idee Nr. 1.</p>
+    <p class="breit" data-schritt><strong>Dann alle zugleich:</strong> eure Idee Nr. 1 in die Kaffeebar-Spalte.</p>
     <p class="nur-handout">Eine Übung dieses Kurses, bevor die Theorie kommt. Ihr schreibt auf einer freien Fläche oder auf Papier, denn in der Kaffeebar-Spalte auf Miro liegen schon Ideen des Beispiels. Danach kommen eure Stickies dort dazu.</p>
   </Folie>
 
@@ -112,7 +113,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
       { t: 'Teilen', sub: 'wiederholen, bis es reicht' },
       { t: '15–20 Ideen', sub: 'für eine Ziel-Chance' },
     ]} />
-    <p class="nur-handout">Runa Korde und Paul Paulus zeigten, dass der Wechsel zwischen Ideen allein und Teilen in der Gruppe die Ideen der nächsten Einzelrunde verbessert: Fremde Ideen regen neue an, entwickelt wird trotzdem allein: „They never ideated as a group, but they received the benefit of hearing each other’s ideas.“ ({TORRES}, S. 110). Torres' Ablauf: die Ziel-Chance gemeinsam vergegenwärtigen, allein Ideen sammeln, teilen (Ideen erklären, Fragen zulassen, weiterspinnen), wiederholen – bis 15 bis 20 Ideen für diese eine Chance stehen (S. 112). Ideation ist der eine Schritt, den sie ausdrücklich mit dem ganzen Team empfiehlt: Je unterschiedlicher die Leute, desto unterschiedlicher die Ideen (S. 114). Bei euch hat jede*r ein eigenes Produkt. Darum entwickelt ihr allein für euer Produkt, und die anderen spenden einmal still Ideen an eure Frage (Ideen-Spende); erklärt und weitergesponnen wird nicht. Das ist eine Regel dieses Kurses. Wer einem fremden Produkt Ideen spendet, braucht den Kontext (S. 112, 114): Darum stehen Ziel-Chance, Frage und ein Satz zur Situation oben in eurer Spalte, und wer spendet, liest sie zuerst – still statt einer Vorstellungsrunde (Kursregel).</p>
+    <p class="nur-handout">Runa Korde und Paul Paulus zeigten, dass der Wechsel zwischen Ideen allein und Teilen in der Gruppe die Ideen der nächsten Einzelrunde verbessert: Fremde Ideen regen neue an, entwickelt wird trotzdem allein: „They never ideated as a group, but they received the benefit of hearing each other’s ideas.“ ({TORRES}, S. 110). Torres' Ablauf: die Ziel-Chance gemeinsam vergegenwärtigen, allein Ideen sammeln, teilen (Ideen erklären, Fragen zulassen, weiterspinnen), wiederholen – bis 15 bis 20 Ideen für diese eine Chance stehen (S. 112). Ideation ist der eine Schritt, den sie ausdrücklich mit dem ganzen Team empfiehlt: Je unterschiedlicher die Leute, desto unterschiedlicher die Ideen (S. 114). Bei euch hat jede*r ein eigenes Produkt. Darum entwickelt ihr allein für euer Produkt, und die anderen spenden einmal still Ideen an eure Frage (Ideen-Spende); erklärt und weitergesponnen wird nicht. Wer einem fremden Produkt Ideen spendet, braucht den Kontext (S. 112, 114): Darum stehen Ziel-Chance, Frage und ein Satz zur Situation oben in eurer Spalte, und wer spendet, liest sie zuerst – still statt einer Vorstellungsrunde.</p>
   </Folie>
 
   <Folie>
@@ -132,14 +133,30 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
 
   <Folie>
     <h2 id="analogien">Wer löst so ein Problem schon?</h2>
-    <p class="folie-satz">„Who else has to solve a problem like this?“</p>
-    <p class="breit"><strong>Torres:</strong> Jobbörse – Recruiter*innen bewerten Kandidat*innen ← Online-Shop: Produkte bewerten · Reiseportal: Hotel wählen · Versicherung: Policen vergleichen</p>
-    <p class="breit"><strong>Kaffeebar:</strong> Wer muss Menschen noch sagen, ob sich etwas vor einer Abfahrt ausgeht?</p>
-    <ul class="gross">
-      <li data-schritt><strong>Flughafen:</strong> Boarding-Gruppen nach Abflugzeit → Bestellungen nach Abfahrtszeit aufrufen</li>
-      <li data-schritt><strong>Supermarkt:</strong> Express-Kasse – passt weniger genau, steht aber auch unter den 18 Ideen</li>
-    </ul>
-    <p class="nur-handout">Erst zur Konkurrenz schauen, dann weiter: „What other industries have solved similar problems?“ Torres' Beispiel ist eine Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft. Sie kann sich ansehen, wie Online-Shops beim Bewerten von Produkten helfen, Reiseportale beim Wählen eines Hotels und Versicherungen beim Vergleich von Policen – Branchen, die nichts miteinander zu tun haben und doch ein ähnliches Problem lösen ({TORRES}, S. 111). Je weiter weg die Branche, desto eher findet ihr Ideen einer anderen Art (S. 114). Bei der Kaffeebar kommen so zwei der 18 Ideen zustande: Aufruf nach Abfahrtszeit wie beim Boarding und die Express-Kasse aus dem Supermarkt.</p>
+    <p class="folie-satz">Ähnlich muss das Problem sein, nicht die Branche.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Problem</th><th>Wer löst so etwas schon?</th><th>Idee für uns</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Jobbörse:</strong> Recruiter*innen bewerten Kandidat*innen</td>
+            <td>Online-Shop: Produkte bewerten · Reiseportal: Hotel wählen · Versicherung: Policen darstellen</td>
+            <td class="muted">nachsehen, wie sie es lösen</td>
+          </tr>
+          <tr>
+            <td><strong>Kaffeebar:</strong> In der Schlange hat jede*r eine andere Abfahrt</td>
+            <td data-schritt>Flughafen: Boarding ruft in Gruppen auf</td>
+            <td data-schritt><strong>Bestellungen nach Abfahrtszeit aufrufen</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Kaffeebar:</strong> Beim Betreten weiß niemand, wie lange es dauert</td>
+            <td data-schritt>Flughafen: Wartezeit an der Sicherheitskontrolle</td>
+            <td data-schritt><strong>Wartezeit an der Hallentür</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nur-handout">Erst zur Konkurrenz schauen, dann weiter: „What other industries have solved similar problems?“ Torres' Beispiel ist eine Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft. Sie kann sich ansehen, wie Online-Shops beim Bewerten von Produkten helfen, Reiseportale beim Wählen eines Hotels und wie Versicherungen verschiedene Policen darstellen – Branchen, die nichts miteinander zu tun haben und doch ein ähnliches Problem lösen ({TORRES}, S. 111). Ihre Frage zum Mitnehmen: „Who else has to solve a problem like this?“ – und dann nachsehen, wie sie es lösen („and then investigate how they solve it“, S. 114). Je weiter weg die Branche, desto eher findet ihr Ideen einer anderen Art (S. 114). Bei der Kaffeebar kommen so zwei Ideen zustande, die auch auf der Folie „Am Beispiel“ stehen: Bestellungen in Gruppen aufrufen wie beim Boarding, und die Wartezeit an der Hallentür anzeigen wie an der Sicherheitskontrolle. Die Problem-Sätze der Kaffeebar-Zeilen sind unsere Formulierung.</p>
   </Folie>
 
   <Folie>
@@ -151,69 +168,78 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
       { t: 'Punkten', sub: 'drei Punkte je Person; einziges Kriterium: Wie gut trifft sie die Ziel-Chance?' },
       { t: 'Drei Ideen', sub: 'jede mit Fürsprecher*in' },
     ]} />
+    <p class="breit" data-schritt><strong>Die Frage öffnet, die Ziel-Chance entscheidet:</strong> Gesammelt wird zur Frage, aussortiert und gewählt an der Ziel-Chance.</p>
     <p class="breit" data-schritt><strong>Klarer Sieger?</strong> Beiseitelegen. Sonst kurz werben, neu punkten – bis drei stehen.</p>
-    <p class="small muted" data-schritt>Bei euch wählt jede*r die drei fürs eigene Produkt allein aus: Kursregel, weil ihr drei Produkte habt.</p>
+    <p class="small muted" data-schritt>Bei euch wählt jede*r die drei fürs eigene Produkt allein aus, weil ihr drei Produkte habt.</p>
     <div class="nur-handout">
       <p>Zuerst fragt ihr bei jeder Idee: Löst sie die Ziel-Chance? Teilweise reicht. Ideen, die das nicht tun, fliegen raus – auch glänzende, die vielleicht irgendwann gut wären; sonst macht ihr die strategische Wahl der Ziel-Chance rückgängig (S. 112–114). Dann „Dot-Voting“: drei Punkte pro Person, beliebig verteilt. Bewertet wird nur, wie gut eine Idee die Ziel-Chance trifft – nicht, wie cool sie ist, und schwierige oder unmögliche Ideen werden nicht ausgeschlossen. Gibt es nach einer Runde keinen klaren Sieger, wirbt jede*r kurz für die eigenen Punkte, ohne lange Debatte, dann wird neu gepunktet. Am Ende ein kurzer Check: Jede*r ist von mindestens einer Idee begeistert, jede Idee hat eine Fürsprecher*in (S. 113). Torres sagt es so: „You aren’t voting for the coolest, shiniest ideas.“ – und „we don’t want to dot-vote to select one idea“ (S. 113).</p>
       <p>Warum drei und nicht eine? Torres will einen echten Vergleich: Welche der drei erfüllt die Ziel-Chance am besten? Das entscheiden später Annahmentests und Prototypen, nicht eine Abstimmung: „Which of these three ideas best delivers on our target opportunity?“ (S. 113). Bei euch kommt nach der Pause zuerst ein Vergleich auf Papier: Die drei Lückensätze gegen euer Profil bestimmen einen Spitzenreiter, für den ihr die Value Map zeichnet. Das ersetzt Torres’ Tests nicht – die anderen beiden bleiben offen, und ihre offenen Fragen gehen mit in Tag 4.</p>
-      <p>Torres lässt im Team punkten: „Groups tend to evaluate ideas better than individuals because groups have a wider breadth of experience to draw on.“ (S. 113). Bei euch kennt nur ihr selbst die Kundschaft eures Produkts. Darum wählt jede*r die drei Ideen für das eigene Produkt allein aus – eine Regel dieses Kurses, die von Torres abweicht. Das Kriterium bleibt ihres: Wie gut trifft die Idee die Ziel-Chance? Statt der Fürsprecher*in schreibt ihr jede der drei als Lückensatz gegen euer Profil (nächste Folien).</p>
+      <p>Torres lässt im Team punkten: „Groups tend to evaluate ideas better than individuals because groups have a wider breadth of experience to draw on.“ (S. 113). Bei euch kennt nur ihr selbst die Kundschaft eures Produkts. Darum wählt jede*r die drei Ideen für das eigene Produkt allein aus – anders als bei Torres. Das Kriterium bleibt ihres: Wie gut trifft die Idee die Ziel-Chance? Statt der Fürsprecher*in schreibt ihr jede der drei als Lückensatz gegen euer Profil (nächste Folien).</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="varianten">Löwen, Tiger, Pumas</h2>
-    <p class="folie-satz">Drei Varianten derselben Idee sind kein Vergleich.</p>
-    <div style="overflow-x:auto">
-      <table>
-        <tbody>
-          <tr><th>eine Idee, drei Formen</th><td>Ampel an der Hallentür · Anzeige neben der Abfahrtstafel · Wartezeit in der Bahn-App</td></tr>
-          <tr data-schritt><th>drei Arten von Idee</th><td>Anzeige · Bestellweg · anderer Ort</td></tr>
-        </tbody>
-      </table>
+    <p class="folie-satz">Wählt drei Ideen verschiedener Art – drei Varianten derselben Idee sind kein Vergleich.</p>
+    <div class="gegenueber">
+      <Callout type="warn" title="Eine Idee, drei Formen">
+        <p>Ampel an der Hallentür<br />Anzeige neben der Abfahrtstafel<br />Wartezeit in der Bahn-App</p>
+      </Callout>
+      <div data-schritt><Callout type="tip" title="Drei Ideen, drei Wege">
+        <p><strong>Wartezeit an der Hallentür</strong> – beendet das Raten vor der Schlange<br /><strong>Im Gehen bestellen</strong> – kein Anstehen, Fertig-Zeit schon beim Bestellen<br /><strong>Kaffeewagen am Bahnsteig</strong> – Kaffee dort, wo sie warten</p>
+      </Callout></div>
     </div>
-    <p class="nur-handout">Wer möglichst viele Tiere aufzählen soll, bleibt schnell in einer Familie: „once we identify lions and tigers, we might add pumas, cheetahs, and snow leopards“. Zum Sammeln ist das in Ordnung. In die Auswahl der drei gehört so viel Verschiedenheit wie möglich ({TORRES}, S. 114).</p>
+    <p class="breit" data-schritt><strong>Probe:</strong> Löst jede der drei die Ziel-Chance auf einem anderen Weg?</p>
+    <p class="nur-handout">Wer möglichst viele Tiere aufzählen soll, bleibt schnell bei den Katzen: „once we identify lions and tigers, we might add pumas, cheetahs, and snow leopards“. Zum Sammeln ist das in Ordnung, es bringt mehr Ideen. Für die Auswahl der drei gilt: „you want as much diversity as possible“ – sucht bewusst nach Ideen einer anderen Art ({TORRES}, S. 114). Der Grund: Die drei sind ein Vergleichsset – „Which of these three ideas best delivers on our target opportunity?“ (S. 113). Drei Formen derselben Idee treffen dieselben Einträge eures Profils; der Vergleich nach der Pause hätte dann nichts zu unterscheiden. Bei der Kaffeebar wären Ampel, Anzeige neben der Abfahrtstafel und Wartezeit in der Bahn-App so ein Set: dreimal dieselbe Auskunft an anderer Stelle. Die Probe: Löst jede der drei die Ziel-Chance auf einem anderen Weg?</p>
   </Folie>
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">H1: „Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“</p>
     <ul class="gross">
-      <li data-schritt><strong>18 Ideen</strong> im Beispiel; eure von vorhin kommen dazu. Darunter Ampel an der Hallentür, Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen), Express-Kasse wie im Supermarkt, Kaffee per Drohne.</li>
+      <li data-schritt><strong>Ideen im Beispiel</strong>; eure von vorhin kommen dazu. Darunter Ampel an der Hallentür, Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen), Kaffee per Drohne.</li>
       <li data-schritt><strong>Aussortiert:</strong> „Becher mit Deckel, der nicht verschüttet“, „mehr Sitzplätze“ – gut, aber nicht für diese Chance.</li>
       <li data-schritt><strong>Drei nach dem Punkten:</strong> Wartezeit an der Hallentür · Im Gehen bestellen, mit Abfahrtszeit · Kaffeewagen am Bahnsteig.</li>
     </ul>
+    <p class="small">Miro: <MiroLink name="T3 · 3 · Ideation">T3 · 3 · Ideation, Spalte Kaffeebar</MiroLink></p>
     <p class="nur-handout">Die drei sind absichtlich verschieden: eine Anzeige, ein Bestellweg, ein anderer Ort. Varianten derselben Idee (Ampel an der Hallentür, Anzeige neben der Abfahrtstafel, Wartezeit in der Bahn-App) sind zusammengefasst – Torres warnt davor, nur Varianten einer Idee in die Auswahl zu nehmen (S. 114). Jede der drei wird ein Lückensatz gegen das Profil der Kaffeebar (nächste Folie). Welche Spitzenreiter wird, entscheidet sich im nächsten Block: Ihr vergleicht die drei Sätze mit den obersten Einträgen des Profils, und nur der Spitzenreiter bekommt eine Value Map. Im weiteren Beispiel ist es „Im Gehen bestellen“; warum, zeigt die <a href="/innolab/methoden/value-map">Value Map</a>.</p>
   </Folie>
 
   <Folie>
     <h2 id="ad-libs">Drei Ideen, drei Sätze</h2>
-    <p class="folie-satz">Ein Lückensatz pro Idee – gegen euer Profil vom Vormittag.</p>
+    <p class="folie-satz">Ein Lückensatz pro Idee – die Lücken füllt ihr aus der rechten Hälfte eures Canvas.</p>
+    <div class="id-adlib">
     <BildText>
       <BuchAbbildung src="/quellen/vpd/ad-lib.png" alt="Lückensatz des Buchs: Our … help(s) … who want to … by … and … – die Lücken als Symbole des Canvas; darunter das ausgefüllte Beispiel: our book help(s) business professionals who wants to improve or build a business by avoiding making stuff nobody wants and creating clear indicators to measure progress" quelle={`Ad-lib. ${VPD_KURZ}, S. 184 (PDF).`} />
-      <p class="gross" data-schritt>„Unser <strong>[Angebot]</strong> hilft <strong>[Segment]</strong>, die <strong>[Job]</strong> wollen, indem es <strong>[Pain]</strong> verringert und <strong>[Gain]</strong> ermöglicht – anders als <strong>[Alternative]</strong>.“</p>
+<div>
+        <p class="gross" data-schritt>„Unser <strong>[Idee]</strong> hilft <strong>[Segment]</strong>, die <strong>[Job]</strong> wollen (J…), indem es <strong>[Pain]</strong> [verringert] (P…) und <strong>[Gain]</strong> [ermöglicht] (G…) – anders als <strong>[Alternative]</strong>.“</p>
+        <p class="small" data-schritt><strong>Woher?</strong> Idee: eure Idee · Segment: die Zeile oben im Canvas · Job, Pain, Gain: rechte Hälfte, mit ID · Alternative: was sie heute nutzen (Markt-Linse, T3 · 1)</p>
+        <p class="small" data-schritt>Die Verben wählt ihr selbst. Die linke Hälfte des Canvas füllt ihr im nächsten Block – nur für den Spitzenreiter.</p>
+      </div>
     </BildText>
+    </div>
     <p class="breit" data-schritt><strong>Kaffeebar:</strong> „Unser <em>Bestellen im Gehen</em> hilft Pendler*innen, die auf dem Weg zum Zug Kaffee besorgen wollen (J1), indem es beim Bestellen zeigt, ob der Kaffee vor der Abfahrt fertig ist (P1), und ihn bereitstellt, wenn man an der Ausgabe ankommt (G1) – anders als der Automat.“</p>
     <div class="nur-handout">
-      <p>Osterwalder empfiehlt, mehrere Richtungen schnell als Prototypen zu skizzieren, bevor man eine ausarbeitet: als Serviettenskizze, als Lückensatz („Ad-lib“) oder als kurzen Canvas ({VPD}, S. 157–159). Der Lückensatz zwingt dazu, genau zu benennen, wie eine Idee Wert schafft. Im Buch beginnt er mit „Our … help(s) … who want to … by … and …“; die Lücken sind Symbole des Canvas, darunter klein beschriftet: „products and services“, „customer segment“, „jobs to be done“, ein eigenes Verb (etwa „reducing, avoiding“) und noch ein eigenes Verb (etwa „increasing, enabling“). Als Tipp steht dabei, am Anfang oder Ende „unlike“ mit einem „competing value proposition“ anzufügen (S. 184). Die deutsche Fassung auf der Folie ergänzt nach den beiden Verben, worauf sie sich beziehen: einen Pain und einen Gain aus eurem Profil – mit ihren IDs.</p>
-      <p>Das Buch empfiehlt, drei bis fünf Richtungen so zu skizzieren („Prototype three to five different directions by filling out the blanks in the ad-lib below.“, S. 183) und sich nicht früh festzulegen: „Don’t fall in love with first ideas— create alternatives.“ (S. 165). Für frühe Prototypen gilt ein sichtbarer Timer und höchstens 5 bis 15 Minuten (S. 161). Eure drei Ideen aus der Ideation sind genau solche Alternativen. Weil das Kundenprofil seit dem 19.11. vor der Ideation entsteht, schreibt ihr den Satz, warum eine Idee weitergeht, nur einmal: als Lückensatz gegen dieses Profil (Reihenfolge: Kursregel).</p>
+      <p>Osterwalder empfiehlt, mehrere Richtungen schnell als Prototypen zu skizzieren, bevor man eine ausarbeitet: als Serviettenskizze, als Lückensatz („Ad-lib“) oder als kurzen Canvas ({VPD}, S. 157–159). Der Lückensatz zwingt dazu, genau zu benennen, wie eine Idee Wert schafft. Im Buch beginnt er mit „Our … help(s) … who want to … by … and …“; die Lücken sind Symbole des Canvas, darunter klein beschriftet: „products and services“, „customer segment“, „jobs to be done“, ein eigenes Verb (etwa „reducing, avoiding“) und noch ein eigenes Verb (etwa „increasing, enabling“). Als Tipp steht dabei, am Anfang oder Ende „unlike“ mit einem „competing value proposition“ anzufügen (S. 184). Die Symbole unter den Lücken sind Felder des Canvas – Segment, Jobs, Pains und Gains sind der Kreis, also euer Kundenprofil; nur „Our …“ ist das Quadrat, und dort steht die Idee. Der Kurs ergänzt die IDs. Im Satz reicht das Segment, der Anlass darf wegbleiben; trifft eine Idee keinen Gain, bleibt der Halbsatz weg („G –“) – im Vergleich ist das ein ✗.</p>
+      <p>Das Buch empfiehlt, drei bis fünf Richtungen so zu skizzieren („Prototype three to five different directions by filling out the blanks in the ad-lib below.“, S. 183) und sich nicht früh festzulegen: „Don’t fall in love with first ideas— create alternatives.“ (S. 165). Für frühe Prototypen gilt ein sichtbarer Timer und höchstens 5 bis 15 Minuten (S. 161). Eure drei Ideen aus der Ideation sind genau solche Alternativen. Weil das Kundenprofil seit dem 19.11. vor der Ideation entsteht, schreibt ihr den Satz, warum eine Idee weitergeht, nur einmal: als Lückensatz gegen dieses Profil.</p>
     </div>
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
+    <h2 id="vorgehen">So geht ihr vor (59 min)</h2>
     <p class="folie-satz">Allein, Spende, allein, drei Lückensätze.</p>
     <p class="wozu"><strong>Wozu?</strong> Damit ihr drei verschiedene Ideen vergleichen könnt, statt eure erste zu verteidigen.</p>
     <MiroFrame name="T3 · 3 · Ideation" />
-    <ol class="gross dicht">
-      <li data-schritt><strong>Allein:</strong> Ziel-Chance, Frage und ein Satz zur Situation oben in eure Spalte; dann Ideen, ein Sticky pro Idee. <Timer minuten={16} /></li>
-      <li data-schritt><strong>Ideen-Spende, still:</strong> je Produkt 2 Minuten – die anderen legen Ideen-Stickies an die Frage, ohne Diskussion. <Timer minuten={6} /></li>
+    <ol class="gross dicht id-schritte">
+      <li data-schritt><strong>Allein:</strong> Ziel-Chance, Frage und ein Satz zur Situation oben in eure Spalte; dann Ideen, ein Sticky pro Idee. Eure Idee von Tag 1 darf als ein Sticky dazu – ohne Vorsprung. <Timer minuten={16} /></li>
+      <li data-schritt><strong>Ideen-Spende, still:</strong> je Produkt 2 Minuten – erst Ziel-Chance, Frage und Situation lesen, dann Ideen-Stickies an die Frage legen, ohne Diskussion. <Timer minuten={6} /></li>
       <li data-schritt><strong>Wieder allein</strong> bis 15–20 Ideen; feststecken: Analogien, Extreme, Claude. <Timer minuten={18} /></li>
       <li data-schritt><strong>Auswählen, allein:</strong> aussortieren, drei verschiedene Ideen. <Timer minuten={7} /></li>
-      <li data-schritt><strong>Lückensätze:</strong> je Idee einer, mit J-, P-, G-ID aus eurem Profil im Canvas. <Timer minuten={8} /></li>
-      <li data-schritt><strong>Festhalten und prüfen.</strong> <Timer minuten={4} /></li>
+      <li data-schritt><strong>Lückensätze:</strong> je Idee einer, ins Feld „Drei Ideen als Lückensätze“ eurer Spalte – J-, P-, G-ID aus eurem Canvas. <Timer minuten={8} /></li>
+      <li data-schritt><strong>Festhalten und prüfen:</strong> drei Sätze im Feld, „Aussortiert“ gefüllt. <Timer minuten={4} /></li>
     </ol>
-    <p class="small">Miro, eure J-, P-, G-IDs stehen im Canvas, rechte Hälfte: <MiroLink name="T3 · 4 · Canvas · Sofie">Sofie</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Joachim">Joachim</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Hewen">Hewen</MiroLink></p>
-    <p class="nur-handout">Dazu 30 Minuten Theorie mit der Kaffeebar, darin die Folie zum Lückensatz. Die Lückensätze kommen in <code>docs/IDEEN.md</code> und auf Miro in eure Spalte von T3 · 3; nach der Pause vergleicht ihr sie in T3 · 4. Torres rät, Ideen nicht nur in einer Sitzung zu sammeln (S. 114): Was euch über Nacht einfällt, kommt dazu.</p>
+    <p class="small">Miro: Die Sätze schreibt ihr in T3 · 3. Die IDs holt ihr aus eurem Canvas, rechte Hälfte: <MiroLink name="T3 · 4 · Canvas · Sofie">Sofie</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Joachim">Joachim</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Hewen">Hewen</MiroLink></p>
+    <p class="nur-handout">Dazu 30 Minuten Theorie mit der Kaffeebar, darin die Folie zum Lückensatz. Die Lückensätze kommen in eure Spalte in T3 · 3, Feld „Drei Ideen als Lückensätze“; nach der Pause kopiert ihr sie nach T3 · 4 und vergleicht sie dort. Torres rät, Ideen nicht nur in einer Sitzung zu sammeln (S. 114): Was euch über Nacht einfällt, kommt dazu. Eure Idee von Tag 1 darf als ein Sticky dazu, aber ohne Vorsprung: Verliebt euch nicht in die erste Lösung ({TORRES}, S. 28, 31), gewählt wird an der Ziel-Chance (S. 112–114), und wer vom gewünschten Ergebnis rückwärts argumentiert, prüft nichts mehr (S. 104).</p>
   </Folie>
 
   <div class="nur-handout">
@@ -225,14 +251,15 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
 Bewerte unsere Ideen nicht und wähle keine aus.</Prompt>
 
   <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/IDEEN.md"># Ideen — [Produkt]
+  <Prompt label="Vorlage · eure Spalte in T3 · 3, Feld ‚Drei Ideen als Lückensätze‘"># Ideen — [Produkt]
 
-Ziel-Chance: „[...]“ · Frage: H[n] – [Wie könnten wir …?]
+Ziel-Chance: „[...]“ · Frage: [Grundform / H1 / H2] – [Wie könnten wir …?]
 
-Profil: docs/KUNDENPROFIL.md
+Profil: T3 · 4 · Canvas · euer Name
 
 ## Drei Ideen als Lückensätze
-1. **[Titel]** – Unser [Angebot] hilft [Segment], die [Job, J…] wollen, indem es [Pain, P…] verringert und [Gain, G…] ermöglicht – anders als [Alternative]. · Beantwortet: H[n]
+1. **[Titel]** – Unser [Idee] hilft [Segment], die [Job] wollen (J…), indem es [Pain] [verringert] (P…) und [Gain] [ermöglicht] (G…) – anders als [Alternative].
+   (Trifft die Idee keinen Gain: Halbsatz weglassen, „G –“.)
 2. **[...]** – [...]
 3. **[...]** – [...]
 
@@ -249,8 +276,22 @@ Profil: docs/KUNDENPROFIL.md
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
     <p class="folie-satz">Sind eure drei Ideen wirklich verschieden – oder drei Varianten derselben?</p>
-    <p class="nur-handout">Wenn alle drei dasselbe in anderer Form sind, sucht in der Liste nach einer Idee aus einer anderen Kategorie. Der Vergleich im nächsten Block lohnt sich nur, wenn es etwas zu vergleichen gibt.</p>
+    <p class="breit" data-schritt><strong>Mit diesen drei Sätzen geht ihr in den nächsten Block:</strong> vergleichen, einen wählen, aus ihm die linke Hälfte des Canvas bauen.</p>
+    <p class="nur-handout">Wenn alle drei dasselbe in anderer Form sind, sucht in der Liste nach einer Idee anderer Art. Der Vergleich im nächsten Block lohnt sich nur, wenn es etwas zu vergleichen gibt.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} next={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} />
 </Layout>
+
+<style>
+  /* „vorgehen“ im Beamer: sechs Schritte mit Timer – volle Folienbreite statt 36em und kleinere Timer, sonst ist die Liste
+     bei 1280×720 höher als die Folie (wie kundenprofil und value-map). */
+  :global(html[data-beamer] .content .folie) > ol.id-schritte { max-width: none; }
+  :global(html[data-beamer]) .id-schritte > li { margin-bottom: .1rem; line-height: 1.4; }
+  :global(html[data-beamer]) .id-schritte :global(.timer) { font-size: 1rem; }
+  :global(html[data-beamer] .folie:has(> ol.id-schritte) > p:is(.wozu, .small)) { max-width: none; }
+  /* „ad-libs“ im Beamer: Abbildung niedriger und Zeilen über die volle Breite – mit Woher-Zeile und Verben-Zeile (Entscheidung
+     59) passt die Folie sonst nicht bei 1280×720. */
+  :global(html[data-beamer] .folie) .id-adlib :global(.buch-abbildung img) { max-height: 30vh; width: auto; max-width: 100%; }
+  :global(html[data-beamer] .folie:has(> h2#ad-libs) > p) { max-width: none; margin: .35rem 0; }
+</style>

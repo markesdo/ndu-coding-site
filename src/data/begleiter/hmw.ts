@@ -41,8 +41,8 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   coast: {
     live: [
-      'Erzählen: Irish Spring, sechs Kopien, keine besser.',
-      'Fragen: Welche Frage hat das Team gestellt – und was fehlt ihr?',
+      'Erzählen: Irish Spring, alte Frage, sechs Kopien, keine besser.',
+      'Fragen: Was fehlt der alten Frage?',
       'Aufdecken: Warum?, Kundensicht, neue Frage, Coast.',
       '„Bei euch ist der Schritt schon getan: Eure Ziel-Chance steht in Kundenworten.“',
     ],
@@ -66,10 +66,21 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   warum: {
     live: [
-      'Kurz, weil bekannt: drei Wörter, drei Rollen.',
+      'Kurz, weil bekannt: erst der Vergleich, dann drei Rollen.',
       'Fragen: Was ändert sich, wenn dort „können“ steht?',
-      '„Im Deutschen trägt der Konjunktiv das might: könnten, nicht können.“',
-      'Wenn hinten: in einem Satz, dann weiter.',
+      'Im Deutschen trägt der Konjunktiv das might – unsere Übertragung.',
+      'Wenn hinten: nur der erste Klick, dann weiter.',
+    ],
+    verstaendnis: {
+      frage: 'Was ändert sich, wenn dort „können“ steht?',
+      antwort: 'Die Frage prüft dann schon, ob es geht. Mit „könnten“ wird erst gesammelt und später geurteilt (Basadur bei Berger, S. 1).',
+      falsch: '„Könnten“ allein macht die Frage gut – eine Lösung im Kostüm bleibt eine (siehe coast).',
+    },
+    fragen: [
+      {
+        frage: 'Wer ist „wir“, wenn ich allein arbeite?',
+        antwort: 'Bei Brown das Team im Raum. Bei euch: ihr als die, die bauen, und in der Ideation die zwei, die euch Ideen spenden. Kurslesart.',
+      },
     ],
     kern: [
       {
@@ -77,7 +88,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
         quelle: `${BERGER}, S. 1`,
       },
       {
-        text: 'Tim Brown (IDEO): „The ‚how‘ part assumes there are solutions out there — it provides creative confidence“; „might“ erlaubt Ideen, die funktionieren oder nicht; „we“ heißt gemeinsam, auf den Ideen der anderen aufbauend.',
+        text: 'Tim Brown (IDEO): „The ‚how‘ part assumes there are solutions out there — it provides creative confidence“; „might“ erlaubt Ideen, die funktionieren oder nicht; „we“ heißt gemeinsam (bei Brown: das Team), auf den Ideen der anderen aufbauend.',
         quelle: `${BERGER}, S. 1`,
       },
       {
@@ -85,14 +96,16 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
         quelle: `${BERGER}, S. 2`,
       },
     ],
-    ueberleitung: 'Wie kommt ihr von eurer Chance zu so einer Frage? Torres zeigt den Schritt.',
+    ueberleitung: 'Wie kommt ihr von eurer Chance zu so einer Frage? Torres zeigt, warum die Chance in die Frage gehört.',
   },
 
   bruecke: {
     live: [
-      'Fluss von links: Wunsch, Chance, Frage, Optionen.',
+      'Reihe 1 zeigen: Lösungswunsch, ein Weg.',
       'Fragen: Wie viele Wege gibt es zu „Werbung vorspulen“?',
-      'Aufdecken: Grundform – die Chance steht wörtlich in der Frage.',
+      'Aufdecken: Frage an die Chance – drei Wege.',
+      'Kennt ihr von Tag 1 – neu ist heute die Frage.',
+      'Aufdecken: eure erste Frage – die Chance steht wörtlich darin.',
       '„Damit habt ihr eure erste Frage schon – noch bevor ihr nachdenkt.“',
     ],
     verstaendnis: {
@@ -101,7 +114,7 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: '„I wish I could fast-forward through commercials“ ist ein Lösungswunsch. Dahinter: „I don’t like commercials.“ Erst die Frage „How might we address ‚I don’t like commercials‘?“ bringt mehrere Optionen: unterhaltsamere Werbung, Vorspulen, ein Abo ohne Werbung. „An opportunity should have more than one potential solution.“',
+        text: '„I wish I could fast-forward through commercials“ ist ein Lösungswunsch. Dahinter: „I don’t like commercials.“ Erst die Frage „How might we address ‚I don’t like commercials‘?“ bringt mehrere Optionen: unterhaltsamere Werbung, Vorspulen, ein Abo ohne Werbung. „An opportunity should have more than one potential solution.“ Torres benutzt die Frage als Test für Chancen und schreibt „Maybe it’s as simple as“: „Ich mag keine Werbung“ ist Illustration, keine Ziel-Chance (kein Moment, vgl. „Opportunities are not specific“, S. 94).',
         quelle: `${TORRES}, S. 94–95`,
       },
       {
@@ -114,10 +127,11 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   bauen: {
     live: [
-      'Fluss am Beispiel durchgehen: Chance, Grundform, Varianten, Probe.',
+      'Zeile für Zeile: Grundform, Person und Moment, eine Ebene höher.',
       'Fragen: Warum will jemand wissen, ob es sich ausgeht?',
-      'Aufdecken: H1 genauer, H2 weiter, dann die Falle.',
-      '„Eine Variante weiter, eine genauer – dann habt ihr drei zum Vergleichen.“',
+      'Aufdecken: H1 mit Person und Moment, H2 eine Ebene höher.',
+      '„Eine mit Person und Moment, eine eine Ebene höher – drei zum Vergleichen.“',
+      'Das Warum kennt ihr vom Kundenprofil – die Antwort steht bei euren Jobs.',
       'Aufdecken: Falle – H2 rutscht in die Nachbar-Chance, darum H1.',
     ],
     verstaendnis: {
@@ -126,11 +140,11 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Grundform: die Ziel-Chance wörtlich in „How might we address ‚…‘?“.',
+        text: 'Grundform: die Ziel-Chance wörtlich in „How might we address ‚…‘?“. Einsetzen der Ziel-Chance: Kursformat.',
         quelle: `${TORRES}, S. 94`,
       },
       {
-        text: 'Weiter fragen: Basadur ließ eine Reihe ehrgeizigerer Fragen stellen, mit Warum-Fragen davor und dem Wechsel in die Sicht der Kundschaft. Die Variante „genauer“ (Person und Moment nennen) und die Reihenfolge der drei Schritte sind Kursformat.',
+        text: 'Weiter fragen: Basadur ließ eine Reihe ehrgeizigerer Fragen stellen, mit Warum-Fragen davor und dem Wechsel in die Sicht der Kundschaft. Die Variante „mit Person und Moment“, das Warum an der Chance statt am Vorhaben des Teams und die Reihenfolge der drei Fragen sind Kursformat.',
         quelle: `${BERGER}, S. 2; Schritte: Kursformat`,
       },
       {
@@ -154,14 +168,14 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
   'sweet-spot': {
     live: [
       'Vier Fragen still lesen lassen.',
-      'Reihum, laut: je eine Frage, die vierte nimmst du.',
+      'Je Frage an alle, kurze Pause, eine Antwort – niemanden aufrufen.',
       'Aufdecken: A Lösung drin, B zu weit, C passt, D zu eng.',
       'B gegen H2: H2 nennt Moment und Kaffee, B keins.',
       'Fragen: Wie viele Wege gibt es zur Ampel?',
       'Falle: D für gut halten, weil eine Zahl drinsteht.',
       'Wenn hinten: nur A und D laut sortieren.',
     ],
-    uebung: { dauer: '3 min', form: 'reihum laut, dann aufdecken' },
+    uebung: { dauer: '3 min', form: 'Frage an alle, je Karte eine Antwort, dann aufdecken' },
     verstaendnis: {
       frage: 'Was unterscheidet „zu eng“ von „Lösung drin“?',
       antwort: '„Zu eng“ ist ein kleines, festes Ziel – Browns Beispiel: 5 % mehr Gewinn im nächsten Quartal (Berger, S. 2). „Lösung drin“ gibt den Weg vor – es gibt nur eine Antwort (Torres, S. 94).',
@@ -193,19 +207,19 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
       schritte: [
         'Jede*r schreibt die drei Fragen als Zettel in die eigene Spalte, die Ziel-Chance darüber.',
         'Bei den Proben: die zwei Wege je Frage als kleine Zettel neben die Frage.',
-        'Die gewählte Frage markieren; sie steht auch in docs/HMW.md.',
+        'Die gewählte Frage markieren, mit einem Satz warum.',
       ],
     },
     ablauf: {
       schritte: [
-        'Allein (7 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante weiter (Warum will die Person das?) und eine genauer (Person und Moment).',
+        'Allein (7 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante mit Person und Moment (Wer, in welchem Moment?) und eine eine Ebene höher (Warum will die Person das?).',
         'Zwei Proben, allein (5 min): zu jeder Frage zwei verschiedene Wege notieren. Fällt nur einer ein, steckt die Lösung schon in der Frage (Torres S. 94: „Is there more than one way to address this …?“). Dann: zu weit oder zu eng – Sweet Spot? Kursformat statt Vorlesen zu dritt, weil jede*r ein eigenes Produkt hat.',
-        'Wählen und festhalten (3 min): eine Frage, ein Satz warum, in docs/HMW.md.',
+        'Wählen und festhalten (3 min): eine Frage, ein Satz warum, in der eigenen Spalte in T3 · 2.',
       ],
       achten: [
         'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an der Ziel-Chance.',
         'Aus Sicht der Kundschaft, nicht des Produkts.',
-        'Die weitere Variante bleibt bei derselben Chance. Rutscht sie in eine Nachbar-Chance (wie H2 der Kaffeebar), ist sie ein Hinweis, nicht die Wahl.',
+        'Die Variante „eine Ebene höher“ bleibt bei derselben Chance. Rutscht sie in eine Nachbar-Chance (wie H2 der Kaffeebar), ist sie ein Hinweis, nicht die Wahl.',
       ],
       fehler: [
         'Lösung in der Frage („… per App …“).',

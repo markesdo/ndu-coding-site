@@ -5,6 +5,7 @@ import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Fluss from '../../components/Fluss.astro';
 ---
 <Layout title="Tag 3 · Lösung & Story">
   <span class="eyebrow">Innolab · Tag 3 · Samstag, 21. November 2026 · 09:00–17:30</span>
@@ -27,14 +28,23 @@ import FooterNav from '../../components/FooterNav.astro';
     <Block time="15:15–16:00" type="uebung" title="Value Map & Fit" href="/innolab/methoden/value-map">Drei Lückensätze vergleichen, Spitzenreiter wählen, seine Value Map ordnen und den Fit prüfen.</Block>
     <Block time="16:00–16:30" type="konzept" title="Der Story-Bogen" href="/innolab/methoden/concept-story#story-bogen">Sieben Stationen, A × B = C, flach oder hoch – heute nur Theorie.</Block>
     <Block time="16:30–17:15" type="uebung" title="Puffer">Nachholen, was vom Tag offen ist: Baum, Ziel-Chance, Kundenprofil, Value Map.</Block>
-    <Block time="17:15–17:30" type="plenum" title="Abschluss" href="#abschluss">Rückblick, Entscheidungslog, Ausblick auf Tag 4.</Block>
+    <Block time="17:15–17:30" type="plenum" title="Abschluss" href="#abschluss">Rückblick, Ausblick auf Tag 4.</Block>
   </div>
 
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
   <p>Heute werden aus <strong>Chancen</strong> <strong>Lösungen</strong>. Tag 2 endete nach der Experience Map; ihre Momente sind die Äste eures Baums. Zuerst schärft ihr die Momente eurer Map nach (<a href="/innolab/tag-3/experience-map">Experience Map nachschärfen</a>). Dann geht ihr den Weg von Teresa Torres weiter, den ihr an Tag 2 begonnen habt: Baum → Ziel-Chance. Bevor ihr Ideen sucht, schreibt ihr das Kundenprofil – so beschreibt es die Menschen und nicht eure Ideen. Danach HMW und Ideation; die drei Ideen schreibt ihr als Lückensätze gegen dieses Profil. Die Value Map zeigt, welche davon heute euer Spitzenreiter auf Papier wird und was ihr Fit offen lässt. Die Concept Story – warum das jemanden interessiert – lernt ihr heute als Theorie kennen; eine eigene schreibt ihr heute noch nicht. Wer dafür zahlt (Geschäftsmodell) und an welcher Annahme die Idee hängt (Experiment-Karte), klärt ihr zu Beginn von Tag 4; dort folgen auch Story Map, Usage Story und Prototyp.</p>
+  {/* Derselbe Nachmittagspfad wie auf hmw.astro#rahmen (Entscheidung 45). */}
+  <Fluss label="Der Nachmittag: Ziel-Chance, Frage, 15 bis 20 Ideen, drei Lückensätze, Value Map und Fit" knoten={[
+      { t: 'Ziel-Chance', sub: 'was ihr lösen wollt' },
+      { t: 'Frage', sub: 'öffnet mehr als einen Weg' },
+      { t: '15–20 Ideen', sub: 'Menge vor Urteil' },
+      { t: 'Drei Lückensätze', sub: 'am Profil vergleichbar' },
+      { t: 'Value Map & Fit', sub: 'eine ausarbeiten und prüfen' },
+  ]} />
+  <p class="small muted">Die Frage öffnet, die Ziel-Chance entscheidet: Gesammelt wird zur Frage, aussortiert und gewählt an der Ziel-Chance ({'Teresa Torres, „Continuous Discovery Habits“ (2021)'}, S. 112–114; die Frage als Start ist Kursformat).</p>
   <Callout type="info" title="Heute noch ohne Claude Pro">
-    <p>Claude Pro schließt ihr erst am Morgen von Tag 4 neu ab (<a href="/setup#claude-pro">wie</a>), denn Claude Code braucht ihr zum ersten Mal an Tag 4: für das Pre-Mortem der Experiment-Karte um 9:20, danach für den Prototyp. Heute reicht Claude im Free-Plan: Den Baum prüft Claude an einem Bild aus Miro. Wo eine Seite „Prüfen lassen · Claude Code“ anbietet, nehmt ihr den Weg „Ohne Claude Code: Text in Claude einfügen“. Die Dateien in <code>docs/</code> legt ihr in VS Code an; committen und pushen geht dort über <em>Source Control</em>.</p>
+    <p>Claude Pro schließt ihr erst am Morgen von Tag 4 neu ab (<a href="/setup#claude-pro">wie</a>), denn Claude Code braucht ihr zum ersten Mal an Tag 4: für das Pre-Mortem der Experiment-Karte um 9:20, danach für den Prototyp. Heute reicht Claude im Free-Plan: Alles von heute liegt auf Miro, und Claude prüft es an einem Bild aus Miro.</p>
   </Callout>
 
   <h2 id="methoden">Die Methoden von heute</h2>
@@ -53,14 +63,18 @@ import FooterNav from '../../components/FooterNav.astro';
   <p>Bevor ihr geht:</p>
   {/* -v3: Die Häkchen hängen an der Position (Checklist.astro ohne ids). Seit 12.11.2026 mit dem Baum, ohne Geschäftsmodell
       und Experiment-Karte (-v2); seit 20.11.2026 ohne Concept Story, die an Tag 3 nur Theorie ist (-v3) – alte Häkchen
-      sollen nicht an verschobenen Punkten hängen. */}
-  <Checklist id="il-tag3-abschluss-v3" items={[
+      sollen nicht an verschobenen Punkten hängen. Seit 21.11.2026 Ziel-Chance auf Miro (T3 · 1) statt als Datei und
+      ohne Log-Zeile (-v4). Seit 21.11.2026 Kundenprofil, HMW, Ideen und Value Map auf Miro statt als Dateien im Repo,
+      ohne „Committet und gepusht“ (-v5). Seit 21.11.2026 mit dem Ideen-Vergleich in T3 · 4 (-v6). */}
+  <Checklist id="il-tag3-abschluss-v6" items={[
     'Euer Baum auf Miro (Baum · euer Name): jede Chance mit Zitat-ID, jede Karte mit einer Linie',
-    '<code>docs/ZIEL-CHANCE.md</code> (so weit wie im Raum geschafft), <code>KUNDENPROFIL.md</code>, <code>HMW.md</code>, <code>IDEEN.md</code> und <code>VALUE-MAP.md</code> im Repo',
-    'Eine Zeile pro Entscheidung von heute im Entscheidungslog der Werkstatt',
-    'Committet und gepusht',
+    'Ziel-Chance: Stern im Baum, Feld „Begründen“ auf T3 · 1 (so weit wie im Raum geschafft)',
+    'Kundenprofil im Canvas auf Miro (T3 · 4 · Canvas · euer Name), je Spalte geordnet',
+    'How-Might-We-Frage auf Miro (T3 · 2 · How Might We) und drei Ideen als Lückensätze (T3 · 3 · Ideation)',
+    'Ideen-Vergleich und alle „?“ im Feld „Ideen vergleichen und wählen“ (T3 · 4)',
+    'Value Map und Fit des Spitzenreiters im Canvas (T3 · 4 · Canvas · euer Name)',
   ]} />
-  <p><strong>Bis Tag 4:</strong> <code>docs/ZIEL-CHANCE.md</code> fertig schreiben und mit Claude prüfen (<a href="/innolab/methoden/ziel-chance#pruefen">Prüfen</a>) – im Raum reicht die Zeit dafür nicht.</p>
+  <p><strong>Bis Tag 4:</strong> das Feld „Begründen“ auf T3 · 1 fertig schreiben und mit Claude prüfen (<a href="/innolab/methoden/ziel-chance#pruefen">Prüfen</a>) – im Raum reicht die Zeit dafür nicht.</p>
   <p><a href="/innolab/tag-4">Tag 4</a> am 28. November beginnt mit dem Geschäftsmodell und der Experiment-Karte: wer zahlt, und an welcher Annahme der Spitzenreiter hängt. Dann wird aus ihm ein Plan (Story Map), ein Kernablauf (Usage Story) und ein erster Prototyp, den ihr testen könnt. Am Nachmittag spielt ihr Scrum einmal mit Lego durch.</p>
   <p><strong>Claude Pro:</strong> am Morgen des 28. November neu abschließen und gleich wieder kündigen, nicht früher (<a href="/setup#claude-pro">wie</a>). An Tag 4 braucht ihr Claude Code gleich am Vormittag.</p>
 

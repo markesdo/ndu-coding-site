@@ -1,4 +1,6 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { METHODEN } from '../components/methoden';
 import { MIRO_FRAMES, MIRO_FRAMES_OHNE_ID } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
 import { anzeige, fremdeSeite, type Zustand } from '../components/begleiter-anzeige';
@@ -495,7 +497,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(JSON.stringify(NOTIZEN[pfad]).match(/Keine übergeordnete Chance erfinden/g) ?? []).toStrictEqual([]);
   });
   // Entscheidung 15 (20.11. spät): Kein Reihum an der Kaffeebar – Baum „drei-fragen“ und „beispiel“, Ziel-Chance „bauchwahl“:
-  // Fragen an alle, still wählen und zugleich Hand heben; niemand wird aufgerufen.
+  // Fragen an alle, niemand wird aufgerufen. Entscheidung 26 (21.11.): „bauchwahl“ ganz ohne Abstimmung – welcher Ast
+  // zuerst, beantworten die vier Linsen (Torres S. 99–101).
   it('Tag 3: kein „reihum“ auf baum#drei-fragen, baum#beispiel und ziel-chance#bauchwahl, auch nicht im Begleiter', () => {
     const folie = (pfad: string, id: string) => {
       const q = quellen[pfad] ?? '';
@@ -509,7 +512,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     ];
     expect(stellen.every((s) => s.length > 50)).toBe(true);
     expect(stellen.flatMap((s) => s.match(/reihum/gi) ?? [])).toStrictEqual([]);
-    expect(folie('/innolab/methoden/ziel-chance', 'bauchwahl')).toContain('Wer will seinen Grund sagen?');
+    const bauchwahl = [folie('/innolab/methoden/ziel-chance', 'bauchwahl'), JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance']?.bauchwahl)];
+    expect(bauchwahl.flatMap((s) => s.match(/Wer will seinen Grund sagen|Hand heben/g) ?? [])).toStrictEqual([]);
+    expect(bauchwahl[0]).toContain('<p class="folie-satz">Drei Äste, drei Momente. Welcher zuerst, beantworten die vier Linsen.</p>');
   });
   // Entscheidung 16 (20.11. spät): „vorgehen“ in drei Schritten (12 + 10 + 13 = 35 min), ohne Claude-Schritt; auf der
   // Baum-Seite und im Begleiter keine Claude-/Bildschirmfoto-Prüfung mehr, kein Feld „Nur in einem Interview“, kein T2 · 2 als Anleitung.
@@ -607,13 +612,20 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   // Entscheidung 21 (20.11. spät): I3-2 fiel nur beim Anstehen und Warten. Die Halle-Chance „Geht sich ein Kaffee noch aus?“
   // trägt I2-4, I3-1, I5-2 (3 von 5), die Warten-Chance „Wann ist mein Kaffee fertig?“ I2-5, I3-2, I3-3 (2 von 5).
   it('Tag 3: Kaffeebar – die Halle-Chance trägt nirgends I3-2, die Warten-Chance schon', () => {
-    const texte = ['/innolab/methoden/baum', '/innolab/methoden/ziel-chance'].flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
+    // Entscheidung 37 (21.11.): auch die Experience Map (Tag 2) nennt die Halle-Chance mit I3-1.
+    const texte = ['/innolab/methoden/baum', '/innolab/methoden/ziel-chance', '/innolab/methoden/journey-map'].flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
+    expect(quellen['/innolab/methoden/journey-map']).toContain('„Geht sich ein Kaffee noch aus?“ (I2-4, I3-1, I5-2)');
+    // Entscheidung 39: auch die Warten-Chance auf der Experience Map wie im Baum.
+    expect(quellen['/innolab/methoden/journey-map']).toContain('„Wann ist mein Kaffee fertig?“ (I2-5, I3-2, I3-3)');
     const halle = texte.flatMap((s) => [...s.matchAll(/Geht sich ein Kaffee noch aus\?“(?:'\s*:\s*\[|\s*\()([^)\]]*)/g)].map((m) => m[1])).filter((ids) => /I\d-\d/.test(ids));
     expect(halle.length).toBeGreaterThan(2);
     expect(halle.filter((ids) => ids.includes('I3-2'))).toStrictEqual([]);
     expect(halle.filter((ids) => ids.includes('I3-1')).length).toBe(halle.length);
     expect(quellen['/innolab/methoden/baum']).toContain("'„Wann ist mein Kaffee fertig?“': ['I2-5', 'I3-2', 'I3-3'],");
-    expect(quellen['/innolab/methoden/ziel-chance']).toContain('Je drei Interviews: I2-4, I3-1, I5-2 gegen I2-2, I3-4, I4-1.');
+    // Code-Review 21.11.: beide Seiten mit IDs, damit der Gleichstand lesbar ist.
+    expect(quellen['/innolab/methoden/ziel-chance']).toContain('<td>„Geht sich …“: I2-4, I3-1, I5-2 gegen „Wenn ich anstehe …“: I2-2, I3-4, I4-1 – je 3 von 5</td>');
+    // Entscheidung 32 (21.11.): Im Kundenprofil ist die Halle-Chance P1 – mit denselben IDs wie im Baum.
+    expect(quellen['/innolab/methoden/kundenprofil']).toContain('<td>P1 Nicht wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht (I2-4, I3-1, I5-2)</td>');
     // „Sie entscheiden erst in der Halle“ belegt I5-3 („Das entscheid ich, wenn ich die Halle seh.“), nicht I5-2 („Wenn es voll ist,
     // lass ich es.“ – Beleg der Halle-Chance). Überall dieselben drei IDs.
     const halleBelege = texte.flatMap((s) => [...s.matchAll(/entscheiden erst in der Halle \((?:Belege )?([^)]*)\)|u\. a\. ([^→]*)→ Moment „Halle: entscheiden“/g)].map((m) => (m[1] ?? m[2] ?? '').trim())).filter((ids) => /I\d-\d/.test(ids));
@@ -673,5 +685,270 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folien.length).toBeGreaterThan(tag1.length);
     expect(new Set(tag1.map((f) => folienGruppe(f.pfad)))).toStrictEqual(new Set(['tag-1']));
     expect(beamer('/innolab/methoden/entscheidungslog', 'beleg-staerke').z.index).toBe(folieZu(tag1, '/innolab/methoden/entscheidungslog', 'beleg-staerke'));
+  });
+  // Entscheidungen 30 und 31 (21.11.): Tag 3 ohne Entscheidungslog und ohne docs/ZIEL-CHANCE.md – die Begründung steht im
+  // Feld „Begründen“ auf Miro T3 · 1, Schritt 4 ist nur der Stern im Baum. Die Zweiwegtür ist als Bild erzählt.
+  it('Tag 3: Ziel-Chance ohne Entscheidungslog und ohne docs/ZIEL-CHANCE.md, Begründung auf T3 · 1', () => {
+    const zc = quellen['/innolab/methoden/ziel-chance'] ?? '';
+    const texte = [zc, JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance'] ?? {}), quellen['/innolab/tag-3'] ?? '',
+      quellen['/innolab/methoden/kundenprofil'] ?? '', quellen['/innolab/methoden/hmw'] ?? ''];
+    expect(texte.every((t) => t.length > 1000)).toBe(true);
+    expect(texte.flatMap((t) => t.match(/Entscheidungslog|ZIEL-CHANCE\.md|ins Log/g) ?? [])).toStrictEqual([]);
+    expect(zc).toContain('<li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum mit dem Stern markieren. <Timer minuten={3} /></li>');
+    expect(zc).toContain('<Prompt label="Vorlage · eure Spalte in T3 · 1">');
+    expect(quellen['/innolab/tag-3']).toContain('Feld „Begründen“ auf T3 · 1');
+    const tuer = zc.slice(zc.indexOf('id="zweiwegtuer"'), zc.indexOf('id="vorgehen"'));
+    expect(tuer).toContain('id="zweiwegtuer">Einwegtür oder Zweiwegtür?</h2>');
+    expect(tuer.match(/<li data-schritt>/g) ?? []).toHaveLength(4);
+    expect(tuer.match(/Darum heute mit Uhr|schneller lernen/g) ?? []).toStrictEqual([]);
+  });
+  // Entscheidung 34 (21.11.): Kundenprofil `konkret` – drei Proben mit je einer Nachfrage. Die Kaffeebar-Zeile bleibt offen:
+  // I5-2 nennt keine Zahl, die Zahl hat nur I3-4 (eine andere Person), und „P2“ kennt auf dieser Folie noch niemand.
+  it('Tag 3: kundenprofil#konkret – Nachfrage-Spalte, Kaffeebar offen, kein P2; profil ohne „mehr als x Minuten“', () => {
+    const q = quellen['/innolab/methoden/kundenprofil'] ?? '';
+    const konkret = q.slice(q.indexOf('id="konkret"'), q.indexOf('<Folie', q.indexOf('id="konkret"')));
+    const beamer = konkret.slice(0, konkret.indexOf('<div class="nur-handout">'));
+    expect(konkret).toContain('id="konkret">Konkret, kein Spiegelbild, ein Warum weiter</h2>');
+    expect(beamer).toContain('<thead><tr><th>zuerst notiert</th><th>Nachfrage</th><th>im Profil</th></tr></thead>');
+    expect(beamer.match(/<tr data-schritt><td><strong>(Vage|Gespiegelt|Oberflächlich|Kaffeebar):<\/strong>/g) ?? []).toHaveLength(4);
+    expect(beamer).toContain('<td><strong>Kaffeebar:</strong> „Wenn es voll ist, lass ich es.“ (I5-2)</td><td>Ab wie vielen Leuten?</td><td>offen – Frage fürs nächste Interview</td>');
+    expect(beamer).toContain('<p data-schritt>Eine Zahl gibt es bei einer anderen Person: „Bei mehr als fünf Leuten lass ich es.“ (I3-4)</p>');
+    expect([konkret, JSON.stringify(NOTIZEN['/innolab/methoden/kundenprofil']?.konkret)].flatMap((t) => t.match(/zusammen ergeben sie P2|– P2\b/g) ?? [])).toStrictEqual([]);
+    expect(beamer.match(/\bP2\b/g) ?? []).toStrictEqual([]);
+    const profil = q.slice(q.indexOf('id="profil"'), q.indexOf('<div class="nur-handout">', q.indexOf('id="profil"')));
+    expect(profil).toContain('<li data-schritt><strong>Pains:</strong> schlechte Ergebnisse, Hindernisse, Risiken.</li>');
+  });
+  // Entscheidung 35 (21.11.): Kundenprofil ohne Reihum – `jane` ohne Übung (Titelfrage rhetorisch), `profil` mit Frage an alle.
+  it('Tag 3: kein „reihum“ auf der Kundenprofil-Seite und in ihren Notizen; jane ohne Übung', () => {
+    const q = quellen['/innolab/methoden/kundenprofil'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/kundenprofil'] ?? {};
+    const texte = [q, JSON.stringify(n)];
+    expect(texte.every((t) => t.length > 1000)).toBe(true);
+    expect(texte.flatMap((t) => t.match(/reihum/gi) ?? [])).toStrictEqual([]);
+    expect(n.jane?.uebung).toBeUndefined();
+    expect(n.jane?.ablauf).toBeUndefined();
+    expect(n.jane?.kern?.length).toBe(2);
+  });
+  // Entscheidungen 36 und 38 (21.11.): Kundenprofil `vorgehen` in fünf Schritten, 2 + 5 + 4 + 3 + 4 = 18 min (Titel = Timer-Summe,
+  // wie die Miro-Karte „So geht's“); Jobs aus den Snapshots, nicht aus den Momenten der Map und nicht „aus Tag 1“.
+  it('Tag 3: kundenprofil#vorgehen – fünf Schritte, Timer 18 min, Jobs aus den Snapshots', () => {
+    const q = quellen['/innolab/methoden/kundenprofil'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/kundenprofil'] ?? {};
+    expect([q, JSON.stringify(n)].flatMap((t) => t.match(/Jobs aus Tag 1/g) ?? [])).toStrictEqual([]);
+    const folie = q.slice(q.indexOf('id="vorgehen"'), q.indexOf('<Folie', q.indexOf('id="vorgehen"')));
+    expect(folie).toContain('id="vorgehen">So geht ihr vor (18 min)</h2>');
+    const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
+    const timer = [...schritte.matchAll(/<li data-schritt>.*?<Timer minuten=\{(\d+)\} \/><\/li>/g)].map((m) => Number(m[1]));
+    expect(timer).toStrictEqual([2, 5, 4, 3, 4]);
+    expect(timer.reduce((a, b) => a + b, 0)).toBe(18);
+    expect(schritte).toContain('<li data-schritt><strong>Wessen Profil?</strong>');
+    expect(schritte).toContain('<li data-schritt><strong>Jobs aus den Snapshots:</strong> Welche Aufgabe wollte die Person in ihrer Geschichte erledigen? Mit Zitat-ID. Dann einmal „Warum?“: der soziale oder emotionale Job dahinter – ohne Zitat ein „?“.');
+    expect(q.match(/aus den Momenten eurer Map|Jeder Moment ist ein Job/g) ?? []).toStrictEqual([]);
+    expect(n.vorgehen?.uebung?.dauer).toBe('18 min (2 + 5 + 4 + 3 + 4)');
+    expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(18);
+  });
+  // Entscheidung 37 (21.11.): Tag 3 ohne Dateien im Repo – die Abschluss-Checkliste zeigt auf die Miro-Frames, ohne Commit.
+  it('Tag 3: Abschluss-Checkliste ohne docs-Dateien und ohne „Committet und gepusht“', () => {
+    const q = quellen['/innolab/tag-3'] ?? '';
+    const liste = q.slice(q.indexOf('<Checklist id="il-tag3-abschluss'), q.indexOf(']} />', q.indexOf('<Checklist id="il-tag3-abschluss')));
+    expect(liste).toContain('<Checklist id="il-tag3-abschluss-v6"');
+    expect(liste.match(/\.md\b|im Repo|Committet|gepusht/g) ?? []).toStrictEqual([]);
+    expect(liste).toContain('T3 · 4 · Canvas · euer Name');
+    // Auch die Ideation (Folgeauftrag zu Entscheidung 37): kein Entscheidungslog D… mehr in den Notizen von Tag 3.
+    for (const p of ['/innolab/methoden/baum', '/innolab/methoden/ideation']) expect(JSON.stringify(NOTIZEN[p] ?? {}).match(/Entscheidungslog|\(D\d\)/g) ?? [], p).toStrictEqual([]);
+  });
+  // Entscheidung 38 (21.11.) und „kein Reihum“: Value Map ohne Kursregel-Etikett, ohne Entscheidungslog, ohne docs-Dateien,
+  // ohne Reihum; die Frage beim 1:1 ist das bewusst offene ✗ oben im Profil.
+  it('Tag 3: value-map ohne Kursregel, Entscheidungslog, docs-Dateien und Reihum', () => {
+    const q = quellen['/innolab/methoden/value-map'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    const texte = [q, JSON.stringify(n)];
+    expect(texte.every((x) => x.length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/Kursregel|Entscheidungslog|ins Log|docs\/(IDEEN|VALUE-MAP|KUNDENPROFIL)\.md|reihum|nach einem Kreuz/gi) ?? [])).toStrictEqual([]);
+    expect(q).toContain('Markus fragt bei jeder Person nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum?');
+    expect(q).toContain('<li data-schritt><strong>Festhalten:</strong> alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. <Timer minuten={4} /></li>');
+    expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(36);
+  });
+  // Entscheidung 39 (21.11.): Tag 3 liegt ganz auf Miro – keine Datei in docs/ auf den Seiten und in den Notizen von Tag 3,
+  // kein Callout zu docs/, Commit und Source Control.
+  it('Tag 3: keine docs-Dateien auf den Seiten und in den Notizen von Tag 3', () => {
+    const seiten = ['/innolab/tag-3', '/innolab/methoden/baum', '/innolab/methoden/ziel-chance', '/innolab/methoden/kundenprofil',
+      '/innolab/methoden/hmw', '/innolab/methoden/ideation', '/innolab/methoden/value-map'];
+    const texte = seiten.flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
+    expect(seiten.every((p) => (quellen[p] ?? '').length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/docs\/|(ZIEL-CHANCE|KUNDENPROFIL|HMW|IDEEN|VALUE-MAP)\.md|Source Control/g) ?? [])).toStrictEqual([]);
+  });
+  // Entscheidungen 40 und 41 (21.11.): HMW ohne Reihum; `coast` mit alter Frage im ersten Fluss und dem Warum-Satz am Schluss.
+  it('Tag 3: kein „reihum“ auf der HMW-Seite und in ihren Notizen; coast mit alter Frage', () => {
+    const q = quellen['/innolab/methoden/hmw'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/hmw'] ?? {};
+    const texte = [q, JSON.stringify(n)];
+    expect(texte.every((x) => x.length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/reihum/gi) ?? [])).toStrictEqual([]);
+    expect(n['sweet-spot']?.uebung?.form).toBe('Frage an alle, je Karte eine Antwort, dann aufdecken');
+    const coast = q.slice(q.indexOf('id="coast"'), q.indexOf('<p class="nur-handout">', q.indexOf('id="coast"')));
+    expect(coast).toContain("{ t: 'Alte Frage', sub: '„How can we make a better green-stripe bar?“' },");
+    expect(coast).not.toContain("t: 'Ergebnis'");
+    expect(coast).toContain('<p data-schritt><strong>Bei euch ist der Warum-Schritt schon getan: Eure Ziel-Chance steht in den Worten der Kundschaft.</strong></p>');
+  });
+  // Entscheidungen 42 und 43 (21.11.): `warum` vergleicht können/könnten, „sollen“ nur im Handout; `bruecke` stellt Lösungswunsch
+  // und Frage an die Chance gegeneinander, auf Deutsch; die Grundform lautet auf `bruecke`, `bauen` und in der Vorlage gleich.
+  it('Tag 3: hmw#warum und hmw#bruecke – Vergleich, deutsche Frage, Grundform gleichlautend', () => {
+    const q = quellen['/innolab/methoden/hmw'] ?? '';
+    const folie = (id: string) => { const a = q.indexOf(`id="${id}"`); return q.slice(a, q.indexOf('<div class="nur-handout">', a)); };
+    const warum = folie('warum');
+    expect(warum).toContain('<p class="folie-satz">„Wie können wir …?“ oder „Wie könnten wir …?“ – was ändert der Konjunktiv?</p>');
+    expect(warum).toContain('<li><strong>könnten</strong> – Was wäre möglich? – geprüft wird später.</li>');
+    expect(warum.match(/sollen/gi) ?? []).toStrictEqual([]);
+    const bruecke = folie('bruecke');
+    expect(bruecke).toContain("sub: '„Wie könnten wir ‚Ich mag keine Werbung‘ angehen?“'");
+    expect(bruecke.match(/How might we|commercials/g) ?? []).toStrictEqual([]);
+    expect(bruecke).toContain('<p data-schritt><strong>Eure erste Frage:</strong> „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“</p>');
+    expect(q.match(/Grundform nach Torres|feste Form/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('die Grundform „Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?“, ist Kursformat.');
+    expect(NOTIZEN['/innolab/methoden/hmw']?.warum?.ueberleitung).toBe('Wie kommt ihr von eurer Chance zu so einer Frage? Torres zeigt, warum die Chance in die Frage gehört.');
+  });
+  // Entscheidung 44 (21.11.): `bauen` als drei Fragen mit sprechenden Etiketten statt „genauer/weiter“; die Probe steht nur
+  // auf `sweet-spot`; die Grundform lautet wie auf `bruecke`.
+  it('Tag 3: hmw#bauen – Grundform, mit Person und Moment, eine Ebene höher; kein genauer/weiter', () => {
+    const q = quellen['/innolab/methoden/hmw'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/hmw'] ?? {};
+    const a = q.indexOf('id="bauen"');
+    const bauen = q.slice(a, q.indexOf('<div class="nur-handout">', a));
+    expect(bauen).toContain('<li data-schritt><strong>Grundform:</strong> „Wie könnten wir ‚Geht sich ein Kaffee noch aus?‘ angehen?“</li>');
+    expect(bauen).toContain('<li data-schritt><strong>Mit Person und Moment (H1):</strong> Wer, in welchem Moment? –');
+    // Entscheidung 64 (21.11.): „Eine Ebene höher“ statt „Ein Warum höher“; die Zeile „Warum will die Person das?“ bleibt.
+    expect(bauen).toContain('<li data-schritt><strong>Eine Ebene höher (H2):</strong> Warum will die Person das? –');
+    expect([q, JSON.stringify(n)].flatMap((x) => x.match(/Warum höher/gi) ?? [])).toStrictEqual([]);
+    expect(q).toContain('<li data-schritt><strong>Allein:</strong> die Grundform und zwei Varianten zu eurer Ziel-Chance – eine mit Person und Moment, eine eine Ebene höher (Warum will die Person das?). <Timer minuten={7} /></li>');
+    expect(bauen.match(/Probe|Sweet Spot|<Fluss/g) ?? []).toStrictEqual([]);
+    expect([q, JSON.stringify(n)].flatMap((x) => x.match(/Genauer \(H1\)|Weiter \(H2\)|eine weiter, eine genauer|H1 genauer|H2 weiter\b|Stufe weiter|Variante weiter|„genauer“/g) ?? [])).toStrictEqual([]);
+    // Vorlage wie das Beispiel: Grundform, H1, H2 – kein H3.
+    expect(q).toContain('- Grundform: Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?\n- H1 (mit Person und Moment): Wie könnten wir […]?\n- H2 (eine Ebene höher): Wie könnten wir […]?');
+    expect(q.match(/H3|H\[n\]/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('Dort fragt ihr es am Job (Osterwalder u. a., „Value Proposition Design“, S. 80), hier an der Chance');
+  });
+  // Runde 16 (21.11.): Ideation ohne Etikett „Kursregel“ – wo der Kurs von Torres abweicht, steht der Grund.
+  it('Tag 3: ideation ohne „Kursregel“ und „Regel dieses Kurses“, auch nicht im Begleiter', () => {
+    const q = quellen['/innolab/methoden/ideation'] ?? '';
+    const texte = [q, JSON.stringify(NOTIZEN['/innolab/methoden/ideation'] ?? {})];
+    expect(texte.every((x) => x.length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/Kursregel|Regel dieses Kurses/g) ?? [])).toStrictEqual([]);
+    expect(q).toContain('allein aus, weil ihr drei Produkte habt.</p>');
+  });
+  // Code-Review 21.11.: Tag 4 und 5 zeigen für Kundenprofil und Value Map auf Miro, nicht auf docs-Dateien.
+  it('Tag 4+: Vorlagen und Handouts nennen Kundenprofil und Value Map auf Miro, keine docs-Datei', () => {
+    const seiten = ['concept-story', 'experiment', 'geschaeftsmodell', 'pitch', 'story-map'].map((s) => `/innolab/methoden/${s}`);
+    expect(seiten.every((p) => (quellen[p] ?? '').length > 1000)).toBe(true);
+    expect(seiten.flatMap((p) => (quellen[p] ?? '').match(/(KUNDENPROFIL|VALUE-MAP)\.md/g) ?? [])).toStrictEqual([]);
+    expect(quellen['/innolab/methoden/experiment']).toContain('auf Miro im Feld „Ideen vergleichen und wählen“ (T3 · 4) gesammelt habt');
+  });
+  // Entscheidungen 45–47 (21.11.): Pfad HMW → Ideation sichtbar; Ideation ohne Reihum, Titel = Summe der Timer;
+  // Ziel-Chance mit „Ausschlaggebend“ / „Spricht dagegen“ statt „tragende Linse“.
+  it('Tag 3: Pfad zur Ideation, Ideation ohne Reihum mit 59 min, Ziel-Chance ohne „tragend“', () => {
+    const hmw = quellen['/innolab/methoden/hmw'] ?? '';
+    const id = quellen['/innolab/methoden/ideation'] ?? '';
+    const t3 = quellen['/innolab/tag-3'] ?? '';
+    const pfad = "{ t: 'Ziel-Chance', sub: 'was ihr lösen wollt' },";
+    expect([hmw, t3].map((x) => x.includes(pfad) && x.includes("{ t: 'Value Map & Fit', sub: 'eine ausarbeiten und prüfen' },"))).toStrictEqual([true, true]);
+    expect(hmw).toContain('<p data-schritt><strong>Mit dieser Frage geht ihr in die Ideation:</strong> Sie steht oben in eurer Spalte, ihr und die zwei anderen sammelt Ideen dazu.</p>');
+    expect(id).toContain('<strong>Die Frage öffnet, die Ziel-Chance entscheidet:</strong> Gesammelt wird zur Frage, aussortiert und gewählt an der Ziel-Chance.');
+    expect(id).toContain('erst Ziel-Chance, Frage und Situation lesen, dann Ideen-Stickies an die Frage legen');
+    expect([hmw, id].flatMap((x) => x.match(/Alle Ideen dort beantworten sie|Beantwortet:/g) ?? [])).toStrictEqual([]);
+    const ni = NOTIZEN['/innolab/methoden/ideation'] ?? {};
+    expect([id, JSON.stringify(ni)].flatMap((x) => x.match(/reihum/gi) ?? [])).toStrictEqual([]);
+    const vorgehen = id.slice(id.indexOf('id="vorgehen"'), id.indexOf('</ol>', id.indexOf('id="vorgehen"')));
+    const timer = [...vorgehen.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
+    expect(vorgehen).toContain(`So geht ihr vor (${timer} min)</h2>`);
+    expect(uebungMinuten(ni.vorgehen?.uebung?.dauer)).toBe(timer);
+    const zc = quellen['/innolab/methoden/ziel-chance'] ?? '';
+    const pl = METHODEN.find((m) => m.slug === 'ziel-chance')!.pruefliste!.map((p) => p.text).join(' ');
+    expect([zc, JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance'] ?? {}), pl].flatMap((x) => x.match(/tragend|die sie trägt|Wahl trägt/gi) ?? [])).toStrictEqual([]);
+    expect(zc).toContain('- Ausschlaggebend: [Linse – ein Satz]\n- Spricht dagegen: [Linse – ein Satz]');
+  });
+  // Entscheidungen 50–52 (21.11.): varianten mit Gegenüber und Probe, analogien als Tabelle (Problem · wer löst es · Idee),
+  // beispiel mit Link zur Kaffeebar-Spalte; ein Wort für die Unterscheidung: „Art“.
+  it('Tag 3: ideation varianten, analogien, beispiel – Probe, Tabelle, Miro-Link, „Art“', () => {
+    const q = quellen['/innolab/methoden/ideation'] ?? '';
+    const n = JSON.stringify(NOTIZEN['/innolab/methoden/ideation'] ?? {});
+    const folie = (id: string) => { const a = q.indexOf(`id="${id}"`); return q.slice(a, q.indexOf('</Folie>', a)); };
+    expect(folie('varianten')).toContain('<p class="breit" data-schritt><strong>Probe:</strong> Löst jede der drei die Ziel-Chance auf einem anderen Weg?</p>');
+    expect(folie('varianten')).toContain('<Callout type="warn" title="Eine Idee, drei Formen">');
+    const an = folie('analogien');
+    expect(an).toContain('<thead><tr><th>Problem</th><th>Wer löst so etwas schon?</th><th>Idee für uns</th></tr></thead>');
+    expect(an).toContain('<td data-schritt>Flughafen: Wartezeit an der Sicherheitskontrolle</td>');
+    expect([q, n].flatMap((x) => x.match(/Boarding-Gruppen nach Abflugzeit|passt weniger genau|Policen vergleichen|Vergleich von Policen|aus einer anderen Kategorie/g) ?? [])).toStrictEqual([]);
+    expect(an.slice(0, an.indexOf('nur-handout')).match(/Who else|18 Ideen/g) ?? []).toStrictEqual([]);
+    expect(folie('beispiel')).toContain('<MiroLink name="T3 · 3 · Ideation">T3 · 3 · Ideation, Spalte Kaffeebar</MiroLink>');
+    expect(MIRO_FRAMES['T3 · 3 · Ideation']).toBeTruthy();
+  });
+  // Entscheidung 56 (21.11.): Die Idee von Tag 1 steht auf dem Beamer – ein Sticky unter vielen, ohne Vorsprung.
+  it('Tag 3: ideation#vorgehen – Idee von Tag 1 als ein Sticky, ohne Vorsprung', () => {
+    const q = quellen['/innolab/methoden/ideation'] ?? '';
+    const a = q.indexOf('id="vorgehen"');
+    const schritte = q.slice(a, q.indexOf('</ol>', a));
+    expect(schritte).toContain('Eure Idee von Tag 1 darf als ein Sticky dazu – ohne Vorsprung.');
+    expect(NOTIZEN['/innolab/methoden/ideation']?.vorgehen?.live).toContain('Idee von Tag 1: ein Sticky unter vielen, kein Vorsprung.');
+  });
+  // Entscheidung 57 (21.11.): Fit prüfen in drei Schritten an der Kaffeebar. Reihenfolge seit Entscheidung 58: beispiel →
+  // value-map → vom-satz → produkt-wirkung → fit → fit-kaffeebar → vorgehen; drei-fits nur noch im Handout von uebertrag.
+  it('Tag 3: value-map – Folie fit-kaffeebar mit Selbstkontrolle, Reihenfolge der Folien, Schritt 3', () => {
+    const q = quellen['/innolab/methoden/value-map'] ?? '';
+    const ids = [...q.matchAll(/<h2 id="([^"]+)"/g)].map((m) => m[1]);
+    const reihe = ['beispiel', 'value-map', 'vom-satz', 'produkt-wirkung', 'fit', 'fit-kaffeebar', 'vorgehen', 'uebertrag'];
+    expect(ids).toStrictEqual([...reihe.slice(0, 7), 'vorlage', 'pruefen', 'uebertrag']);
+    const a = q.indexOf('id="fit-kaffeebar"');
+    const fk = q.slice(a, q.indexOf('<div class="nur-handout">', a));
+    expect(fk).toContain('<p class="small">Selbstkontrolle: Rechts trägt jeder Zettel genau ein Zeichen. Links hat jeder ✓ eine ID.</p>');
+    expect(fk).toContain('<tr data-schritt><td>Gegenprobe (Kurs-Beispiel) · Treuepunkte ab der zehnten Bestellung</td>');
+    expect(fk).toContain('<td>Pain Reliever · Statt anzustehen: in 20 Sekunden im Gehen bestellen</td>');
+    expect(q).toContain('<strong>Fit prüfen:</strong> links Zettel für Zettel ✓ mit ID – rechts ✓, ✗ oder ? an jeden Eintrag – von oben lesen.');
+    const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    expect(n['fit-kaffeebar']?.live.some((l) => l.startsWith('Wenn hinten:'))).toBe(true);
+    expect(n.beispiel?.ueberleitung).toBe('Spitzenreiter gewählt. Nur für ihn kommt jetzt die linke Hälfte.');
+  });
+  // Entscheidungen 58–61 (21.11.): Brücke vom Lückensatz zur Value Map, Lückensatz mit ID-Slots, korrigierte Kaffeebar-Sätze,
+  // ideation#beispiel ohne „18 Ideen“ und ohne Express-Kasse.
+  it('Tag 3: vom-satz, drei-fits im Handout, Lückensatz-Vorlage mit IDs, korrigierter Satz 3, keine „18 Ideen“', () => {
+    const vm = quellen['/innolab/methoden/value-map'] ?? '';
+    const id = quellen['/innolab/methoden/ideation'] ?? '';
+    const a = vm.indexOf('id="vom-satz"');
+    const vom = vm.slice(a, vm.indexOf('</Folie>', a));
+    expect(vom).toContain('<p class="breit" data-schritt><strong>Der Satz ist der Anfang:</strong> ein Pain, ein Gain.');
+    expect(vom).toContain('<tr data-schritt><td>… zeigt, ob der Kaffee vor der Abfahrt fertig ist (P1)</td><td>→ Pain Reliever</td>');
+    expect(vm).toContain('<p class="small vm-legende">✓ trifft · ✗ trifft nicht · ? wissen wir nicht</p>');
+    expect(vm).toContain('<h3 id="drei-fits">');
+    expect(vm.match(/<h2 id="drei-fits"/g) ?? []).toStrictEqual([]);
+    expect(vm).toContain('indem er die Frage erübrigt, ob es sich noch ausgeht (P1), und ihnen den Kaffee in die Hand gibt, bevor der Zug einfährt (G1) – anders als der Automat.');
+    expect(vm).toContain('indem sie das Raten vor der Schlange beendet (P1) – anders als der Automat.');
+    expect(vm.match(/dorthin bringt, wo sie warten|hilft …, indem/g) ?? []).toStrictEqual([]);
+    expect(NOTIZEN['/innolab/methoden/value-map']?.['drei-fits']).toBeUndefined();
+    expect(id).toContain('die <strong>[Job]</strong> wollen (J…), indem es <strong>[Pain]</strong> [verringert] (P…) und <strong>[Gain]</strong> [ermöglicht] (G…)');
+    expect(id).toContain('(„G –“)');
+    expect(id).toContain('<strong>Mit diesen drei Sätzen geht ihr in den nächsten Block:</strong>');
+    expect([id, JSON.stringify(NOTIZEN['/innolab/methoden/ideation'] ?? {})].flatMap((x) => x.match(/18 Ideen|der 18\b|aus 18|Express-Kasse wie im Supermarkt/g) ?? [])).toStrictEqual([]);
+  });
+  // Entscheidungen 62 und 63 (21.11.): produkt-wirkung mit zwei Zetteln, die der Satz nicht nennt; der Ort der Lückensätze
+  // (T3 · 3, Feld „Drei Ideen als Lückensätze“) steht auf den Folien, kopiert wird nach T3 · 4.
+  it('Tag 3: produkt-wirkung mit zwei Zetteln, Ort der Lückensätze auf ideation und value-map', () => {
+    const vm = quellen['/innolab/methoden/value-map'] ?? '';
+    const id = quellen['/innolab/methoden/ideation'] ?? '';
+    const a = vm.indexOf('id="produkt-wirkung"');
+    const pw = vm.slice(a, vm.indexOf('</Folie>', a));
+    expect(pw.match(/<li>/g) ?? []).toHaveLength(2);
+    expect(pw).toContain('<li>Statt anzustehen: in 20 Sekunden im Gehen bestellen</li>');
+    expect(pw).toContain('<strong>B:</strong> Pain Reliever (P2)');
+    expect(pw).toContain('<strong>Die Probe:</strong>');
+    expect(vm).toContain('eure drei Lückensätze aus T3 · 3 auf die Stickies kopieren');
+    expect(id).toContain('<li data-schritt><strong>Lückensätze:</strong> je Idee einer, ins Feld „Drei Ideen als Lückensätze“ eurer Spalte – J-, P-, G-ID aus eurem Canvas.');
+    expect(id).toContain('<Prompt label="Vorlage · eure Spalte in T3 · 3, Feld ‚Drei Ideen als Lückensätze‘">');
+  });
+  // Code-Review 21.11.: Abschluss-Checkliste mit dem Ideen-Vergleich in T3 · 4; Methodenkarte zeigt den zweiten Miro-Ort.
+  it('Tag 3: Checkliste mit Ideen-Vergleich (T3 · 4), Methodenkarte mit miroAuch', () => {
+    const q = quellen['/innolab/tag-3'] ?? '';
+    expect(q).toContain('<Checklist id="il-tag3-abschluss-v6"');
+    expect(q).toContain("'Ideen-Vergleich und alle „?“ im Feld „Ideen vergleichen und wählen“ (T3 · 4)',");
+    const karte = readFileSync('src/components/MethodenKarte.astro', 'utf8');
+    expect(karte).toContain('{a.miroAuch && <> · Feld „{a.miroAuch.feld}“ im Frame „{a.miroAuch.frame}“</>}');
   });
 });

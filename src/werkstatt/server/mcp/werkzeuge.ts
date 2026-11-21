@@ -8,7 +8,7 @@ import { abText } from '../../../components/aufloesung.js';
 import { wienerZeit } from '../../../components/jetzt.js';
 import { aufgedecktSchluessel, gruppeFrei } from '../../../lib/aufgedeckt.js';
 import { DEMO_HREF } from '../../../lib/nav-rolle.js';
-import { FOKUS_FRAGEN, FOKUS_STELLEN, METHODEN, NICHT_EINORDNEN, TAGE, artefakt as kursArtefakt, pruefFragen, pruefungAufMiro, pruefungInWerkstatt, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
+import { FOKUS_FRAGEN, FOKUS_STELLEN, METHODEN, NICHT_EINORDNEN, TAGE, anzahlBilder, aufzaehlen, miroErgebnisBilder, miroVorarbeitBilder, pruefFragen, pruefungAufMiro, pruefungInWerkstatt, werkstattVorarbeit, type Methode, type Pruefpunkt } from '../../../components/methoden.js';
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
@@ -375,20 +375,20 @@ function anleitungMethode(d: ReturnType<typeof methodeDaten>, m: Methode): strin
   return [anfang];
 }
 
-// Ergebnis nur auf Miro (Experience Map, Baum): artefakt_pruefen kennt es nicht. Claude prüft das eingefügte Bild wie mit dem
+// Ergebnis nur auf Miro (Experience Map, Baum und seit 21.11.2026 alles von Tag 3): artefakt_pruefen kennt es nicht. Claude prüft das eingefügte Bild wie mit dem
 // langen Prüf-Prompt (pruefPrompt, Zweig Miro): dieselbe Vorarbeit aus braucht, dieselben Regeln, Zitate nur von den Karten.
 function anleitungMiro(m: Methode): string[] {
-  // Filter wie nurAufMiro/miroListe in components/methoden.ts (dort nicht exportiert); aufzaehlen unten ebenso.
+  // Dieselben Bilder wie im Prüf-Prompt (miroErgebnisBilder/miroVorarbeitBilder in components/methoden.ts).
   const werkstatt = werkstattVorarbeit(m).map((n) => `${ARTEFAKTE[n].titel} (${MCP_WERKZEUGE.artefaktLesen} mit ${n})`);
-  const miro = [...new Set(m.braucht)]
-    .map((id) => kursArtefakt(id)!)
-    .filter((a) => a.miro !== undefined && !a.pfad && !a.werkstatt)
-    .map((a) => `${a.name} (Frame „${a.miro}“)`);
+  const miro = miroVorarbeitBilder(m).map((b) => `${aufzaehlen(b.namen)} (${b.ort})`);
+  const ergebnis = miroErgebnisBilder(m);
   return [
     `Dieses Ergebnis liegt auf Miro, nicht in der Werkstatt; ${MCP_WERKZEUGE.artefaktPruefen} kennt es nicht.`,
-    'Will die Person ihr Ergebnis prüfen lassen: Prüf das Bild, das sie einfügt, gegen diese Prüfliste; ohne Bild bitte sie darum.',
+    ergebnis.length > 1
+      ? `Will die Person ihr Ergebnis prüfen lassen: Prüf die Bilder, die sie einfügt (${aufzaehlen(ergebnis.map((b) => b.ort))}), gegen diese Prüfliste; fehlt eins, bitte sie darum.`
+      : 'Will die Person ihr Ergebnis prüfen lassen: Prüf das Bild, das sie einfügt, gegen diese Prüfliste; ohne Bild bitte sie darum.',
     ...(werkstatt.length ? [`Lies zum Abgleich aus der Werkstatt ${aufzaehlen(werkstatt)}.`] : []),
-    ...(miro.length ? [`Zum Abgleich braucht es auch ein Bild aus Miro: ${aufzaehlen(miro)}; fehlt es, bitte die Person darum.`] : []),
+    ...(miro.length ? [`Zum Abgleich braucht es auch ${anzahlBilder(miro.length)} aus Miro: ${aufzaehlen(miro)}; ${miro.length > 1 ? 'fehlt eins' : 'fehlt es'}, bitte die Person darum.`] : []),
     'Höchstens drei Befunde, die wichtigsten zuerst, je mit der ID des Prüfpunkts, einem wörtlichen Zitat von einer Karte im Bild und einer Frage, die die Person selbst weiterbringt; die Vorarbeit dient nur zum Abgleich, aus ihr zitierst du nicht. Passt alles, sag das in einem Satz.',
     NICHT_EINORDNEN,
     ...pruefFragen(m.pruefliste ?? []),
@@ -397,7 +397,6 @@ function anleitungMiro(m: Methode): string[] {
   ];
 }
 
-const aufzaehlen = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} und ${xs.at(-1)}`);
 
 // Schreibweise einer Prüfpunkt-Angabe vereinheitlichen: klein, Umlaute wie in den IDs (prüfpunkt -> pruefpunkt), alles
 // außer Buchstaben und Ziffern als ein Bindestrich (Leerzeichen, Striche, „&“, „#“, Satzzeichen am Ende), ohne

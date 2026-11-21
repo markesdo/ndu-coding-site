@@ -27,7 +27,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="warum">Eine Chance zur Zeit</h2>
     <p class="folie-satz">„Ihr seid nie nur ein Feature vom Erfolg entfernt – und werdet es nie sein.“</p>
-    {/* Dieselbe Reihe steht auf hmw.astro#rahmen, dort mit hervor={[2]}. */}
+    {/* Der Vormittag bis zur Ideation. hmw.astro#rahmen und tag-3.astro#faden zeigen seit 21.11. den Nachmittagspfad (Ziel-Chance bis Value Map & Fit). */}
     <Fluss label="Vom Baum zur Idee: Baum, Ziel-Chance, How-Might-We-Frage, Ideation" hervor={[1]} knoten={[
       { t: 'Baum', sub: 'viele Chancen, geordnet' },
       { t: 'Ziel-Chance', sub: 'eine – ein Blatt' },
@@ -36,7 +36,8 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     ]} />
     <ul class="gross">
       <li data-schritt><strong>Build Trap:</strong> Erfolg an ausgelieferten Features messen statt an ihrer Wirkung.</li>
-      <li data-schritt><strong>Eine zur Zeit:</strong> Raum, mehrere Lösungen zu vergleichen – und Wert in kleinen Schritten.</li>
+      <li data-schritt><strong>Strategie entsteht bei den Chancen:</strong> Die Frage ist nicht „welches Feature?“, sondern „welche Chance?“.</li>
+      <li data-schritt><strong>Eine Chance zur Zeit:</strong> So liefert ihr Wert in kleinen Schritten und habt Zeit, mehrere Lösungen zu vergleichen.</li>
     </ul>
     <div class="nur-handout">
       <p>Torres beginnt das Kapitel mit einer Szene: Sie steht auf der Bühne der Davies Symphony Hall in San Francisco, letzter Vortrag des Tages bei „Mind the Product“. „You are never one feature away from success…“ – der Saal jubelt. Sie wartet, bis es still ist: „…and you never will be.“ ({TORRES}, S. 96). Ihr Punkt: „Product strategy happens in the opportunity space.“ (S. 97).</p>
@@ -76,7 +77,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <Folie>
     <h2 id="bauchwahl">Welcher Ast zuerst?</h2>
-    <p class="folie-satz">Still wählen, zugleich Hand heben: Halle, Anstehen, Zug? Wer will seinen Grund sagen?</p>
+    <p class="folie-satz">Drei Äste, drei Momente. Welcher zuerst, beantworten die vier Linsen.</p>
     <Baum schmal momente knoten={KAFFEEBAR_BAUM_INTERVIEWS} label="Baum der Kaffeebar nach fünf Interviews: Outcome, darunter die drei Momente (Halle: entscheiden; Anstehen und Warten; Im Zug), darunter ihre Chancen" />
     <p class="nur-handout">Die Wahl der Kaffeebar steht auf der Folie <a href="#beispiel">„Am Beispiel“</a>.</p>
   </Folie>
@@ -89,13 +90,12 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <thead><tr><th>Linse</th><th>Frage</th><th>Beispiel bei Torres (S. 100–101)</th></tr></thead>
         <tbody>
           <tr data-schritt><th>Größe</th><td>Wie viele sind betroffen – und wie oft?</td><td>Alle, aber selten, ist etwas anderes als einige, aber ständig.</td></tr>
-          <tr data-schritt><th>Markt</th><td>Pflicht (table stakes) oder Unterscheidung? Welche Trends?</td><td>Immer mehr kündigen ihr Kabelfernsehen: Dann zählt „I want to watch live sports“.</td></tr>
+          <tr data-schritt><th>Markt</th><td>Was haben andere schon? Muss es sein, um mitzuspielen – oder hebt es euch ab? Welcher Trend spielt mit?</td><td>Immer mehr kündigen ihr Kabelfernsehen: Wer Live-Sport streamt, gewinnt diese Kundschaft.</td></tr>
           <tr data-schritt><th>Eigene Lage</th><td>Passt es zu Ziel und Werten? Was könnt ihr besonders gut?</td><td>„Google might choose to address an opportunity that Apple would never touch.“</td></tr>
           <tr data-schritt><th>Kundschaft</th><td>Wie wichtig – und wie zufrieden mit dem, was es heute gibt?</td><td>Vorrang hat, was wichtig ist und schlecht gelöst.</td></tr>
         </tbody>
       </table>
     </div>
-    <p data-schritt><strong>Eure Gründe von eben:</strong> Welche Linse war das?</p>
     <div class="nur-handout">
       <p>Torres' vier Gruppen von Kriterien ({TORRES}, S. 99–101):</p>
       <ul>
@@ -110,18 +110,18 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">Ast „Halle: entscheiden“, Blatt „Geht sich ein Kaffee noch aus?“</p>
-    <div style="overflow-x:auto">
+    <div class="zc-beispiel" style="overflow-x:auto">
       <table>
         <thead><tr><th>Linse</th><th>Vorn liegt</th><th>Warum</th></tr></thead>
         <tbody>
-          <tr data-schritt><th>Größe</th><td>unentschieden</td><td>Je drei Interviews: I2-4, I3-1, I5-2 gegen I2-2, I3-4, I4-1.</td></tr>
+          <tr data-schritt><th>Größe</th><td>unentschieden</td><td>„Geht sich …“: I2-4, I3-1, I5-2 gegen „Wenn ich anstehe …“: I2-2, I3-4, I4-1 – je 3 von 5</td></tr>
           <tr data-schritt><th>Markt</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Die Zeitnot deckt der Automat schon ab (I1-3, I4-3), das Nichtwissen niemand.</td></tr>
           <tr data-schritt><th>Eigene Lage</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Die Bar kennt ihre Wartezeit; eine kürzere Schlange bräuchte mehr Personal (unsere Annahme).</td></tr>
           <tr data-schritt><th>Kundschaft</th><td>„Geht sich ein Kaffee noch aus?“</td><td>Wichtig, und heute schätzen sie nach Augenschein oder lassen es (I2-4, I5-2).</td></tr>
         </tbody>
       </table>
     </div>
-    <p data-schritt><strong>Kein Sieger bei der Größe</strong> – Markt und eigene Lage geben den Ausschlag. Entschieden hat das Gespräch.</p>
+    <p data-schritt><strong>Kein Sieger bei der Größe</strong> – Markt und eigene Lage geben den Ausschlag.</p>
     <div class="nur-handout">
       <p>Verglichen wurden zuerst die drei Momente. „Halle: entscheiden“ gewinnt bei der Größe (dort fällt bei den meisten die Entscheidung) und bei der Kundschaft (sie entscheiden ohne zu wissen, ob es reicht, und schätzen nach Augenschein oder lassen es). Unter dem Ast stehen drei Geschwister; „Geht sich ein Kaffee noch aus?“ ist ein Blatt und wird die Ziel-Chance.</p>
       <p><strong>Zuerst der Ast.</strong></p>
@@ -137,10 +137,10 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <Folie>
     <h2 id="kein-punkteschema">Kein Punkteschema</h2>
-    <p class="folie-satz">„Don't do this. This is a messy, subjective decision, and you want to keep it that way.“</p>
+    <p class="folie-satz">„Punkte je Linse vergeben und summieren? ‚Don't do this. This is a messy, subjective decision, and you want to keep it that way.‘“</p>
     <ul class="gross">
       <li data-schritt>Vergleicht <strong>relativ</strong>, Geschwister gegen Geschwister – keine absoluten Werte.</li>
-      <li data-schritt>Kein klarer Sieger? Normal. Die Linsen <strong>füttern das Gespräch</strong>.</li>
+      <li data-schritt>Kein klarer Sieger? Normal. Die Linsen liefern <strong>Gründe</strong> – entscheiden und begründen müsst ihr selbst.</li>
       <li data-schritt>Eine Formel täuscht eine einzig richtige Antwort vor – und ihr hört auf zu denken.</li>
     </ul>
     <div class="nur-handout">
@@ -150,17 +150,18 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   </Folie>
 
   <Folie>
-    <h2 id="zweiwegtuer">Eine Tür, durch die ihr zurückkönnt</h2>
-    <p class="folie-satz">Die Ziel-Chance ist eine umkehrbare Entscheidung – wählt und lernt.</p>
+    <h2 id="zweiwegtuer">Einwegtür oder Zweiwegtür?</h2>
+    <p class="folie-satz">Entscheiden heißt, durch eine Tür zu gehen – erst dahinter seht ihr die Folgen.</p>
     <ul class="gross">
-      <li data-schritt><strong>Einwegtür:</strong> schwer umkehrbar – langsam und vorsichtig entscheiden.</li>
-      <li data-schritt><strong>Zweiwegtür:</strong> umkehrbar – schneller lernen durch Handeln als durch Nachdenken.</li>
-      <li data-schritt>Wer eine Entscheidung für <strong>umkehrbar</strong> hält, prüft sie danach kritischer.</li>
-      <li data-schritt><strong>Darum heute mit Uhr:</strong> 30 Minuten, dann steht die Wahl.</li>
+      <li data-schritt><strong>Einwegtür:</strong> Gefällt euch nicht, was dahinter liegt, gibt es kein Zurück. Also langsam und vorsichtig.</li>
+      <li data-schritt><strong>Zweiwegtür:</strong> Ihr könnt umdrehen. Also durchgehen und nachsehen, statt es euch auszumalen.</li>
+      <li data-schritt><strong>Eure Ziel-Chance ist eine Zweiwegtür:</strong> Ihr wählt, woran ihr die nächsten Tage oder Wochen arbeitet. Passt es nicht, wählt ihr neu.</li>
+      <li data-schritt>Wer die Wahl für umkehrbar hält, sieht ihre Schwächen eher.</li>
     </ul>
     <div class="nur-handout">
-      <p>Torres greift Jeff Bezos' Unterscheidung zwischen schwer und leicht umkehrbaren Entscheidungen auf (Brief an die Aktionär*innen 2015). Eine Ziel-Chance zu wählen ist trotz ihrer Bedeutung eine Zweiwegtür: Ihr verpflichtet euch nur, sie in den nächsten Tagen weiter zu erkunden. Zeigt sich, dass sie weniger wichtig ist oder die Lösungen schwerer sind als gedacht, wählt ihr eine andere. In Studien von Lottie Bullens und Kolleg*innen sahen Menschen, die eine Entscheidung für umkehrbar hielten, danach eher deren Schwächen und die Stärken der Alternativen – wer sie für endgültig hielt, nur noch das Gute an der eigenen Wahl ({TORRES}, S. 102–103).</p>
-      <p>Ihr legt euch nicht fest, die Chance zu lösen: „You are simply committing to exploring it further with your discovery work.“ (S. 103). Gegen das Aufschieben hilft eine Frist: „Give yourself an hour or two or, at most, a day or two.“ (S. 104).</p>
+      <p>Das Bild: Eine Entscheidung zu treffen heißt, durch eine Tür zu gehen. Erst auf der anderen Seite seht ihr die Folgen. Bei einer Einwegtür gibt es kein Zurück, wenn euch nicht gefällt, was ihr seht; solche Entscheidungen trefft ihr vorsichtig, mit Daten und mit Bedacht. Bei einer Zweiwegtür dreht ihr um und macht die Entscheidung rückgängig. Dort lernt ihr mehr, wenn ihr durchgeht und nachseht, als wenn ihr euch auszumalen versucht, was auf der anderen Seite liegt ({TORRES}, S. 102–103).</p>
+      <p>Torres greift damit Jeff Bezos' Unterscheidung zwischen schwer und leicht umkehrbaren Entscheidungen auf (Brief an die Aktionär*innen 2015). Eine Ziel-Chance zu wählen ist trotz ihrer Bedeutung eine Zweiwegtür: Ihr legt fest, womit ihr die nächsten Tage oder Wochen verbringt, und verpflichtet euch nur, sie weiter zu erkunden (S. 103). Zeigt sich, dass sie weniger wichtig ist oder die Lösungen schwerer sind als gedacht, wählt ihr eine andere. In Studien von Lottie Bullens und Kolleg*innen sahen Menschen, die eine Entscheidung für umkehrbar hielten, danach eher deren Schwächen und die Stärken der Alternativen – wer sie für endgültig hielt, nur noch das Gute an der eigenen Wahl und das Schlechte an den Alternativen (S. 103).</p>
+      <p>Ihr legt euch nicht fest, die Chance zu lösen: „You are simply committing to exploring it further with your discovery work.“ (S. 103). Gegen das Aufschieben hilft eine Frist: „Give yourself an hour or two or, at most, a day or two.“ (S. 104). Die 30 Minuten heute sind der Rahmen dieses Kurses, nicht Torres' Zahl. Stammen alle Chancen aus Interviews, gibt es keine falsche Wahl (S. 104).</p>
       <p>Drei Anti-Muster: die Entscheidung aufschieben, bis mehr Daten da sind (lieber zeitlich begrenzen); nur eine Linse benutzen; vom gewünschten Ergebnis rückwärts argumentieren (S. 104).</p>
     </div>
   </Folie>
@@ -173,15 +174,15 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <ol class="gross">
       <li data-schritt><strong>Ast wählen, allein:</strong> die Momente durch die vier Linsen, je ein Satz ins Feld „Vier Linsen“. <Timer minuten={8} /></li>
       <li data-schritt><strong>Bis zum Blatt:</strong> dasselbe mit den Teilchancen des gewählten Asts. <Timer minuten={4} /></li>
-      <li data-schritt><strong>Begründen, schriftlich:</strong> Wahl, tragende Linse, welche Linse dagegen spricht. <Timer minuten={15} /></li>
-      <li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum markieren, eine Zeile im Entscheidungslog. <Timer minuten={3} /></li>
+      <li data-schritt><strong>Begründen, schriftlich:</strong> Wahl, ausschlaggebende Linse, welche Linse dagegen spricht. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Festhalten:</strong> Ziel-Chance im Baum mit dem Stern markieren. <Timer minuten={3} /></li>
     </ol>
-    <p class="nur-handout">Begründen heißt: drei Sätze in <code>docs/ZIEL-CHANCE.md</code> – eure Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Währenddessen kommt Markus zu jeder und jedem für drei Minuten und fragt, welche Linse fehlt. Torres beschreibt dafür eine Debatte im Team über den eigenen Baum ({TORRES}, S. 101); weil jede*r von euch ein eigenes Produkt hat, ersetzen Schreiben und das Gespräch mit Markus die Runde zu dritt (Kursformat). Dazu etwa 12 Minuten Theorie mit der Kaffeebar; die übrigen rund 8 Minuten des Blocks sind Puffer. <code>docs/ZIEL-CHANCE.md</code> füllt ihr im Raum so weit, wie ihr kommt; den Rest und die Prüfung mit Claude bis Tag 4. Die Wahl ist zeitlich begrenzt: Torres empfiehlt, die Entscheidung zu terminieren, statt auf mehr Daten zu warten ({TORRES}, S. 104).</p>
+    <p class="nur-handout">Begründen heißt: drei Sätze ins Feld „Begründen“ in eurer Spalte von T3 · 1 auf Miro – eure Wahl, die Linse, die den Ausschlag gibt, und welche Linse dagegen spricht. Währenddessen kommt Markus zu jeder und jedem für drei Minuten und fragt, welche Linse fehlt. Torres beschreibt dafür eine Debatte im Team über den eigenen Baum ({TORRES}, S. 101); weil jede*r von euch ein eigenes Produkt hat, ersetzen Schreiben und das Gespräch mit Markus die Runde zu dritt (Kursformat). Dazu etwa 12 Minuten Theorie mit der Kaffeebar; die übrigen rund 8 Minuten des Blocks sind Puffer. Das Feld füllt ihr im Raum so weit, wie ihr kommt; den Rest und die Prüfung mit Claude bis Tag 4. Was hineingehört, zeigt die Vorlage unten. Die Wahl ist zeitlich begrenzt: Torres empfiehlt, die Entscheidung zu terminieren, statt auf mehr Daten zu warten ({TORRES}, S. 104).</p>
   </Folie>
 
   <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/ZIEL-CHANCE.md"># Ziel-Chance — [Produkt]
+  <Prompt label="Vorlage · eure Spalte in T3 · 1"># Ziel-Chance — [Produkt]
 
 Stand: [Datum]
 
@@ -189,18 +190,19 @@ Stand: [Datum]
 „[Moment]“, verglichen mit: „[...]“, „[...]“
 
 ## Ziel-Chance (ein Blatt)
-„[Chance in den Worten der Kundschaft]“ ([Zitat-IDs])
+„[Chance in den Worten der Kundschaft]“ ([Zitat-IDs]) · [X von N]
 
 ## Vier Linsen
-- Größe: [wie viele, wie oft] ([Zitat-IDs])
-- Markt: [Pflicht oder Unterscheidung, Trends]
+- Größe: [X von N, wie oft] ([Zitat-IDs])
+- Markt: [Was haben andere schon? Pflicht, um mitzuspielen, oder hebt es euch ab? Trend]
 - Eigene Lage: [Brief, Stärken]
 - Kundschaft: [wie wichtig, wie zufrieden mit heute] ([Zitat-IDs])
 
 ## Begründung
 - Wahl: [ein Satz]
-- Tragende Linse: [ein Satz]
-- Welche Linse spricht dagegen? [ein Satz]</Prompt>
+- Ausschlaggebend: [Linse – ein Satz]
+- Spricht dagegen: [Linse – ein Satz]
+- Ohne die Idee von Tag 1 – dieselbe Wahl? [ein Satz]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="ziel-chance" />
@@ -209,7 +211,7 @@ Stand: [Datum]
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
     <p class="folie-satz">Würdet ihr dieselbe Chance wählen, wenn ihr eure Idee von Tag 1 nicht kennen würdet?</p>
-    <p class="nur-handout">Torres nennt es ein Anti-Muster, vom gewünschten Ergebnis rückwärts zu argumentieren (S. 104). Wenn die Ziel-Chance genau zu eurer Lieblingsidee passt, prüft, ob die Linsen sie wirklich tragen. Mit der Ziel-Chance geht es weiter: Für sie formuliert ihr die How-Might-We-Frage.</p>
+    <p class="nur-handout">Torres nennt es ein Anti-Muster, vom gewünschten Ergebnis rückwärts zu argumentieren (S. 104). Wenn die Ziel-Chance genau zu eurer Lieblingsidee passt, prüft, ob die Linsen wirklich für sie sprechen. Schreibt eure ehrliche Antwort als einen Satz dazu ins Feld „Begründen“ auf T3 · 1. Mit der Ziel-Chance geht es weiter: Für sie formuliert ihr die How-Might-We-Frage.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/baum', t: 'Opportunity Solution Tree' }} next={{ href: '/innolab/methoden/kundenprofil', t: 'Kundenprofil' }} />
@@ -220,4 +222,10 @@ Stand: [Datum]
      etwas schmalere Knoten, damit alle drei Äste (auch „Im Zug“) ohne waagrechtes Scrollen zu sehen sind. */
   :global(html[data-beamer] .folie:has(> h2#bauchwahl) .baum-knoten) { max-width: 7.4rem; min-width: 5rem; font-size: .75rem; padding: .25rem .4rem; }
   :global(html[data-beamer] .folie:has(> h2#bauchwahl) .baum-ast) { padding-left: .25rem; padding-right: .25rem; }
+  /* „beispiel“: Die Tabelle lief im Beamer rechts aus dem Bild (21.11., Kundschaft-Zeile). Feste Spaltenbreiten und Umbruch
+     halten sie in der Folienbreite. Über die Klasse an diese Seite gebunden – „beispiel“ gibt es auf vielen Seiten. */
+  :global(html[data-beamer]) .zc-beispiel table { table-layout: fixed; width: 100%; }
+  :global(html[data-beamer]) .zc-beispiel :is(th, td) { overflow-wrap: break-word; }
+  :global(html[data-beamer]) .zc-beispiel thead th:nth-child(1) { width: 14%; }
+  :global(html[data-beamer]) .zc-beispiel thead th:nth-child(2) { width: 26%; }
 </style>

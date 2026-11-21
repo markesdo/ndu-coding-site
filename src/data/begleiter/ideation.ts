@@ -41,11 +41,11 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Frage H1 vorlesen, nichts erklären.',
       'Freie Fläche oder Papier – Kaffeebar-Spalte noch nicht zeigen.',
       'Timer 2 min: allein, ein Sticky pro Idee, durchnummeriert.',
-      'Nach 2 min: reihum nur die erste Idee vorlesen.',
+      'Nach 2 min: alle zugleich Nr. 1 in die Kaffeebar-Spalte, kein Kommentar.',
       'Falle: schon jetzt kommentieren oder werten.',
-      'Danach: Stickies aller in die Kaffeebar-Spalte legen.',
+      'Danach: die übrigen Stickies dazulegen.',
     ],
-    uebung: { dauer: '2 min + 1 min reihum', form: 'allein, dann reihum laut: nur Idee Nr. 1' },
+    uebung: { dauer: '2 min + 1 min', form: 'allein, dann alle zugleich zeigen' },
     miro: {
       frame: 'T3 · 3 · Ideation',
       schritte: [
@@ -59,7 +59,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       schritte: [
         'H1 vorlesen: „Wie könnten wir dafür sorgen, dass Pendler*innen beim Betreten der Halle wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht?“',
         'Timer 2 min, alle schreiben still, auf einer freien Fläche oder auf Papier. Die Nummer auf dem Sticky ist die Reihenfolge des Einfalls.',
-        'Reihum: Jede*r liest nur Idee Nr. 1 vor. Kein Kommentar.',
+        'Dann alle zugleich: Idee Nr. 1 in die Kaffeebar-Spalte. Kein Kommentar, niemand wird aufgerufen.',
       ],
       achten: [
         'Die Nummern sind der Punkt der Übung – ohne sie fehlt der Vergleich in der Auflösung.',
@@ -70,7 +70,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     kern: [
       {
         text: 'Die Zwei-Minuten-Runde ist eine Übung dieses Kurses, keine Methode aus dem Buch. Sie stellt den Befund nach, den Torres berichtet: erste Ideen sind selten die besten, die originellsten kommen spät.',
-        quelle: `Kursregel; Befund: ${TORRES}, S. 107`,
+        quelle: `Übung dieses Kurses; Befund: ${TORRES}, S. 107`,
       },
     ],
     ueberleitung: 'Jetzt schaut auf eure Nummern.',
@@ -119,7 +119,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
 
   brainstorming: {
     live: [
-      'Fragen: Brainstorming – bunte Zettelwand oder fensterloser Raum? Reihum ein Wort.',
+      'Fragen: Brainstorming – bunte Zettelwand oder fensterloser Raum? Frage an alle.',
       'Osborn 1953: vier Regeln, die alle kennen.',
       'Aufdecken: Gruppe gegen gleich viele Einzelne – Einzelne gewinnen.',
       'Vier Gründe einzeln aufdecken, je ein Satz.',
@@ -154,7 +154,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   // NEU
   illusion: {
     live: [
-      'Frage stehen lassen, reihum eine Vermutung.',
+      'Frage stehen lassen, an alle: Wer hat eine Vermutung?',
       'Aufdecken: In der Gruppe steckt man seltener fest.',
       '„Es fühlt sich leichter an – also halten wir es für besser.“',
       'Brücke: Den Vorteil der Gruppe wollen wir trotzdem haben.',
@@ -200,7 +200,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 112`,
       },
       {
-        text: 'Ideation ist die eine Übung, die Torres mit dem ganzen Team empfiehlt: „The more diversity in the group, the more diverse ideas you’ll generate.“ Voraussetzung: Ziel-Chance und Kontext der Kundschaft vorher teilen – hier still, oben in der Spalte (Kursregel).',
+        text: 'Ideation ist die eine Übung, die Torres mit dem ganzen Team empfiehlt: „The more diversity in the group, the more diverse ideas you’ll generate.“ Voraussetzung: Ziel-Chance und Kontext der Kundschaft vorher teilen – hier still, oben in der Spalte, weil wer spendet, den Kontext braucht (S. 112, 114).',
         quelle: `${TORRES}, S. 114`,
       },
     ],
@@ -242,7 +242,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Dürfen wir Claude gleich am Anfang fragen?',
-        antwort: 'Nein, erst nach der ersten Runde allein – sonst geben Claudes Ideen den Ton vor wie die ersten Wortmeldungen in einer Gruppe (S. 108). Danach als Quelle für analoge Produkte und extreme Nutzer*innen; Ideen von Claude werden markiert. Das ist eine Regel dieses Kurses, nicht von Torres.',
+        antwort: 'Nein, erst nach der ersten Runde allein – sonst geben Claudes Ideen den Ton vor wie die ersten Wortmeldungen in einer Gruppe (S. 108). Danach als Quelle für analoge Produkte und extreme Nutzer*innen; Ideen von Claude werden markiert. Über Claude sagt Torres das nicht; der Grund ist derselbe wie bei Gruppen.',
       },
     ],
     ueberleitung: 'Den Ausweg über analoge Produkte üben wir einmal gemeinsam.',
@@ -252,20 +252,19 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   analogien: {
     live: [
       'Torres’ Beispiel: Jobbörse schaut auf Shops, Reiseportale, Versicherungen.',
-      'Fragen: Wer sagt Menschen, ob sich etwas vor Abfahrt ausgeht? Reihum.',
+      'Je Kaffeebar-Zeile Problem vorlesen, an alle: Wer löst so etwas schon?',
+      'Kurze Pause, eine Antwort; dann Spalte 2, dann die Idee aufdecken.',
       'Antworten als Stickies in die Kaffeebar-Spalte.',
-      'Aufdecken: Flughafen, Supermarkt – zwei Ideen der Kaffeebar.',
       'Falle: nur Cafés und Bäckereien nennen – weiter weg suchen.',
-      'Express-Kasse passt weniger genau – zweite, schwächere Analogie.',
     ],
-    uebung: { dauer: '2 min', form: 'zu dritt, reihum laut; du schreibst die Stickies' },
+    uebung: { dauer: '2 min', form: 'Frage an alle, niemand wird aufgerufen; du schreibst die Stickies' },
     miro: {
       frame: 'T3 · 3 · Ideation',
       schritte: [
         'Kaffeebar-Spalte: genannte Branchen als Stickies neben die Ideen aus der Zwei-Minuten-Runde.',
         'Zu jeder Branche eine Idee für die Kaffeebar daneben.',
       ],
-      vorschlaege: ['Flughafen: Boarding-Gruppen → Bestellungen nach Abfahrtszeit aufrufen', 'Supermarkt: Express-Kasse'],
+      vorschlaege: ['Flughafen: Boarding ruft in Gruppen auf → Bestellungen nach Abfahrtszeit aufrufen', 'Flughafen: Wartezeit an der Sicherheitskontrolle → Wartezeit an der Hallentür'],
     },
     verstaendnis: {
       frage: 'Woran erkennt ihr ein brauchbares analoges Produkt?',
@@ -274,19 +273,19 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Erst die Konkurrenz, dann weiter: „What other industries have solved similar problems?“ Beispiel Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft: Wie helfen Online-Shops beim Bewerten von Produkten, Reiseportale beim Wählen eines Hotels, Versicherungen beim Vergleich von Policen?',
+        text: 'Erst die Konkurrenz, dann weiter: „What other industries have solved similar problems?“ Beispiel Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft: Wie helfen Online-Shops beim Bewerten von Produkten, Reiseportale beim Wählen eines Hotels, wie Versicherungen Policen darstellen?',
         quelle: `${TORRES}, S. 111`,
       },
       {
-        text: 'Die Frage zum Mitnehmen: „Who else has to solve a problem like this?“ – je weiter die Branche entfernt ist, desto eher findet ihr verschiedenartige Ideen.',
+        text: 'Die Frage zum Mitnehmen: „Who else has to solve a problem like this?“ – und dann nachsehen, wie sie es lösen; je weiter die Branche entfernt ist, desto eher findet ihr verschiedenartige Ideen.',
         quelle: `${TORRES}, S. 114`,
       },
       {
-        text: 'Kaffeebar: „Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen)“ und „Express-Kasse wie im Supermarkt“ stehen schon unter den 18 Ideen des Beispiels.',
+        text: 'Kaffeebar: „Bestellungen nach Abfahrtszeit aufrufen“ (Boarding) und „Wartezeit an der Hallentür“ (Sicherheitskontrolle) stehen auch auf der Folie „Am Beispiel“. Die Problem-Sätze der Zeilen sind unsere Formulierung.',
         quelle: 'ideation.astro, Folie beispiel',
       },
     ],
-    ueberleitung: 'Angenommen, es sind 18 Ideen. Wie werden daraus drei?',
+    ueberleitung: 'Angenommen, es sind viele Ideen. Wie werden daraus drei?',
   },
 
   auswahl: {
@@ -296,7 +295,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Drei Punkte je Person, frei verteilt – auch alle auf eine.',
       'Kein klarer Sieger: kurz werben, neu punkten.',
       'Falle: nach „machbar“ oder „cool“ punkten.',
-      'Bei euch: jede*r wählt die drei allein – Kursregel.',
+      'Bei euch: jede*r wählt allein – drei Produkte, drei Kundschaften.',
       '„Wir wählen drei, nicht eine. Nach der Pause wird eine davon Spitzenreiter auf Papier.“',
     ],
     verstaendnis: {
@@ -325,7 +324,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Torres punktet im Team. Warum wählt ihr allein?',
-        antwort: 'Torres: „Groups tend to evaluate ideas better than individuals because groups have a wider breadth of experience to draw on.“ (S. 113). Bei euch hat jede*r ein eigenes Produkt und kennt allein die Kundschaft dazu; darum wählt ihr allein, mit Torres’ einzigem Kriterium: Wie gut trifft die Idee die Ziel-Chance? Das ist eine Regel dieses Kurses.',
+        antwort: 'Torres: „Groups tend to evaluate ideas better than individuals because groups have a wider breadth of experience to draw on.“ (S. 113). Bei euch hat jede*r ein eigenes Produkt und kennt allein die Kundschaft dazu; darum wählt ihr allein, mit Torres’ einzigem Kriterium: Wie gut trifft die Idee die Ziel-Chance?',
       },
       {
         frage: 'Bei Torres entscheiden Tests zwischen den dreien. Warum bei uns ein Spitzenreiter?',
@@ -338,31 +337,32 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   // NEU
   varianten: {
     live: [
-      'Löwen, Tiger, Pumas erzählen.',
-      'Kaffeebar: Ampel, Anzeige, Bahn-App – eine Idee, drei Formen.',
-      '„In die Auswahl gehören drei verschiedene Arten von Idee.“',
-      'Wenn hinten: überspringen, kommt beim Übertrag.',
+      'Löwen, Tiger, Pumas erzählen: viele Tiere, alles Katzen.',
+      'Links zeigen. Fragen: Was haben diese drei gemeinsam?',
+      'Aufdecken: die drei der Kaffeebar – drei Wege zur selben Ziel-Chance.',
+      'Aufdecken: die Probe. Die legt ihr nachher an eure drei an.',
+      'Wenn hinten: Geschichte weglassen, nur Gegenüber und Probe.',
     ],
     kern: [
       {
-        text: 'Anti-Muster „Generating too many variations of the same idea“: Wer feststeckt, variiert. Beim Sammeln ist das in Ordnung, in der Auswahl der drei soll die Vielfalt so groß wie möglich sein – bewusst nach Ideen einer anderen Art suchen.',
-        quelle: `${TORRES}, S. 114`,
+        text: 'Anti-Muster „Generating too many variations of the same idea“: Wer feststeckt, variiert. Beim Sammeln ist das in Ordnung, in der Auswahl der drei soll die Vielfalt so groß wie möglich sein – bewusst nach Ideen einer anderen Art suchen. Die drei sind ein Vergleichsset: „Which of these three ideas best delivers on our target opportunity?“',
+        quelle: `${TORRES}, S. 113–114`,
       },
     ],
     geschichte: {
       text: 'Wer möglichst viele Tierarten aufzählen soll, landet schnell in einer Familie: „once we identify lions and tigers, we might add pumas, cheetahs, and snow leopards“. Viele Einträge, eine Kategorie.',
       quelle: `${TORRES}, S. 114`,
     },
-    ueberleitung: 'So sieht das bei der Kaffeebar aus.',
+    ueberleitung: 'So wurden bei der Kaffeebar aus vielen Ideen diese drei.',
   },
 
   beispiel: {
     live: [
-      '„Im Beispiel wurden es 18 Ideen – eure von vorhin kommen dazu.“',
+      '„Im Beispiel kommen eure Ideen von vorhin dazu.“',
       'Aussortiert: Becher mit Deckel, mehr Sitzplätze – gut, andere Chance.',
-      'Fragen: Welche drei Arten von Idee seht ihr?',
-      'Aufdecken: Anzeige, Bestellweg, anderer Ort.',
-      'Bei Bedarf: „Im Gehen bestellen“ ist nicht das verworfene Vorbestellen (D4).',
+      'Drei nach dem Punkten: die drei von eben.',
+      'Fragen: Welche Idee ist nur eine Form einer der drei?',
+      'Bei Bedarf: „Im Gehen bestellen“ ist nicht das verworfene Vorbestellen (Tag 1).',
     ],
     verstaendnis: {
       frage: 'Warum ist „mehr Sitzplätze“ aussortiert, obwohl es Pendler*innen helfen würde?',
@@ -370,12 +370,12 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Kaffeebar: 18 Ideen zu H1; aussortiert, was die Ziel-Chance nicht löst; drei nach dem Punkten: Wartezeit an der Hallentür (Anzeige), Im Gehen bestellen mit Abfahrtszeit (Bestellweg), Kaffeewagen am Bahnsteig (anderer Ort). Varianten der Anzeige sind zusammengefasst.',
+        text: 'Kaffeebar: Ideen zu H1; aussortiert, was die Ziel-Chance nicht löst; drei nach dem Punkten: Wartezeit an der Hallentür (Anzeige), Im Gehen bestellen mit Abfahrtszeit (Bestellweg), Kaffeewagen am Bahnsteig (anderer Ort). Varianten der Anzeige sind zusammengefasst.',
         quelle: `ideation.astro, Folie beispiel; Regel: ${TORRES}, S. 112–114`,
       },
       {
-        text: 'Kaffeebar, Entscheidungslog D4: „Vorbestellen vor der Ankunft verworfen“ – 3 von 5 entscheiden erst in der Halle. „Im Gehen bestellen“ beginnt an der Hallentür und widerspricht D4 nicht.',
-        quelle: 'Werkstatt, Beispiel Kaffeebar, Entscheidungslog D4; QR-Code an der Hallentür: value-map.astro, Folie beispiel',
+        text: 'Kaffeebar, Tag 1: Vorbestellen verworfen – 3 von 5 entscheiden erst in der Halle. „Im Gehen bestellen“ beginnt an der Hallentür und widerspricht dem nicht.',
+        quelle: 'Werkstatt, Beispiel Kaffeebar, Tag 1; QR-Code an der Hallentür: value-map.astro, Folie beispiel',
       },
     ],
     ueberleitung: 'Aus jeder der drei wird ein Satz – gegen euer Profil.',
@@ -384,10 +384,12 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   'ad-libs': {
     live: [
       'Lückensatz vorlesen, Lücken mit dem Finger zeigen.',
+      'Symbole: vier Lücken sind euer Profil – die erste ist eure Idee.',
       '„Ein Satz pro Idee – er zwingt euch zu sagen, wie sie Wert schafft.“',
       '„Job, Pain und Gain kommen aus eurem Profil vom Vormittag, mit ID.“',
       'Kaffeebar-Satz zeigen: J1, P1, G1 – anders als der Automat.',
       'Falle: am ersten Satz feilen – drei rohe Sätze sind das Ziel.',
+      'Linke Hälfte: nächster Block, nur für den Spitzenreiter.',
     ],
     verstaendnis: {
       frage: 'Woher kommen Job, Pain und Gain im Lückensatz?',
@@ -414,12 +416,13 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Timer 16 min: allein, Ideen zur eigenen Frage.',
+      'Idee von Tag 1: ein Sticky unter vielen, kein Vorsprung.',
       'Nach 16 min: Ideen-Spende still, je Produkt 2 min.',
       'Nach 22 min: wieder allein, 18 min; Auswege und Claude erlaubt.',
       '1:1 in dieser Runde, je 4 min: Sofie, Hewen, Joachim.',
       'Nach 40 min: auswählen allein, 7 min.',
       'Nach 47 min: Lückensätze gegen das Profil, 8 min.',
-      'Nach 55 min: IDEEN.md, drei Ideen als Lückensätze.',
+      'Nach 55 min: Feld „Drei Ideen als Lückensätze“ in T3 · 3 gefüllt?',
     ],
     uebung: { dauer: '59 min (16 + 6 + 18 + 7 + 8 + 4)', form: 'allein, dazwischen eine stille Ideen-Spende' },
     miro: {
@@ -436,9 +439,9 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         'Allein (16 min): Ziel-Chance, HMW-Frage und einen Satz zur Situation oben in die eigene Spalte, dann Ideen, ein Sticky pro Idee.',
         'Ideen-Spende, still (6 min): je Produkt 2 Minuten – die zwei anderen legen Ideen-Stickies an die Frage, ohne Diskussion; wem das Produkt gehört, liest nur mit. Kursformat statt Torres’ Teilen-Runde, weil jede*r ein eigenes Produkt hat.',
         'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
-        'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); allein wählen ist Kursregel.',
-        'Lückensätze (8 min): je Idee ein Satz, Job, Pain und Gain mit ID aus dem eigenen Profil vom Vormittag (VPD S. 183–184).',
-        'Festhalten (4 min): docs/IDEEN.md mit den drei Lückensätzen, „Aussortiert“ und der Liste; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
+        'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); bei euch wählt jede*r allein, weil nur ihr die eigene Kundschaft kennt.',
+        'Lückensätze (8 min): je Idee ein Satz ins Feld „Drei Ideen als Lückensätze“ der eigenen Spalte in T3 · 3, Job, Pain und Gain mit ID aus dem eigenen Profil vom Vormittag (VPD S. 183–184).',
+        'Festhalten (4 min): drei Sätze im Feld „Drei Ideen als Lückensätze“, „Aussortiert“ gefüllt, die Liste in der eigenen Spalte in T3 · 3; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
       ],
       achten: [
         'Bei der Ideen-Spende wird nicht diskutiert und nicht bewertet – nur Stickies legen.',
@@ -465,7 +468,8 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Sind eure drei wirklich verschieden – oder Löwe, Tiger, Puma?',
-      'Allein: je Idee ein Wort für ihre Art notieren.',
+      'Probe: Löst jede der drei die Ziel-Chance auf anderem Weg?',
+      'Je Idee den Weg in einem halben Satz.',
       'Bei drei Varianten: eine Idee anderer Art aus der Liste holen.',
       'Ausblick: Nach der Pause wird einer der drei Lückensätze Spitzenreiter.',
     ],
@@ -475,6 +479,6 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 114`,
       },
     ],
-    ueberleitung: 'Nach der Pause: Welcher Lückensatz trifft, was eurer Kundschaft am wichtigsten ist?',
+    ueberleitung: 'Nach der Pause: Ihr vergleicht eure drei Sätze, wählt einen – und aus ihm wird die linke Hälfte eures Canvas.',
   },
 };

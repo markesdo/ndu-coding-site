@@ -35,30 +35,52 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 93`,
       },
     ],
-    ueberleitung: 'Produkt oder Wirkung – das verwechselt fast jede*r. Probiert es.',
+    ueberleitung: 'Und woher nehmt ihr diese Zettel? Aus eurem Satz.',
   },
 
   // NEU – erst machen
+  'vom-satz': {
+    live: [
+      'Satz 2 vorlesen – der Spitzenreiter von eben.',
+      'Vor jedem Klick offen fragen: In welches Feld gehört dieser Teil?',
+      '„Der Halbsatz vor (P1) ist euer erster Pain Reliever.“',
+      'Die Idee wird ausgeschrieben: was im Schaufenster steht.',
+      '„Ein Satz, ein Pain, ein Gain – die Map ergänzt.“',
+      'Wenn hinten: nur Zeile Pain Reliever, dann letzter Klick.',
+    ],
+    verstaendnis: {
+      frage: 'Was aus eurem Lückensatz kommt nicht in die linke Hälfte?',
+      antwort: 'Segment, Job und Alternative. Segment und Job stehen rechts im Profil; die Alternative hat im Canvas kein Feld.',
+      falsch: '„Der Job wird ein Produkt“ – der Job bleibt rechts; das Produkt trifft ihn.',
+    },
+    kern: [
+      { text: 'Lückensatz: nur „Our ___“ zeigt auf das Quadrat („products and services“); die Lücken für Pain und Gain zeigen auf das Profil, je mit eigenem Verb.', quelle: `${VPD}, S. 184 (aus der Abbildung)` },
+      { text: '„Pain relievers describe how exactly your products and services alleviate specific customer pains.“ Verb und Pain im Satz sind das in Rohform – Lesart dieses Kurses. Gain Creators ebenso.', quelle: `${VPD}, S. 86, 89` },
+      { text: 'Ad-libs „Pinpoint how different alternatives create value“; der Canvas: „Flesh out possible directions“. Der Canvas entsteht für die gewählte Richtung.', quelle: `${VPD}, S. 158–159, 182` },
+    ],
+    ueberleitung: 'Zwei Zettel kommen dazu. In welches Feld gehören sie?',
+  },
+
   'produkt-wirkung': {
     live: [
-      'Vier Zettel der Kaffeebar, reihum je einer: welches Feld?',
-      'Erst alle vier beantworten lassen, dann aufdecken.',
-      'A, C: Products & Services. B: Pain Reliever P1. D: Gain Creator G1.',
+      'Allein still: welches Feld für jeden Zettel? Dann zugleich zeigen.',
+      'Erst beide beantworten lassen, dann aufdecken.',
+      'A: Products & Services. B: Pain Reliever P2.',
       'Probe: Steht es im Schaufenster – oder sagt es, was sich ändert?',
-      'Wenn hinten: nur B und A, als Paar.',
+      'Wenn hinten: nur aufdecken und die Probe sagen.',
     ],
-    uebung: { dauer: '2 min', form: 'zu dritt, reihum laut; der vierte Zettel gemeinsam' },
+    uebung: { dauer: '1 min', form: 'allein still zuordnen, dann je Zettel alle zugleich zeigen (1, 2 oder 3 Finger); niemand wird aufgerufen' },
     ablauf: {
       schritte: [
-        'Vier Zettel zeigen: A „QR-Code an der Hallentür“, B „Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist“, C „Express-Ausgabe mit drei Standardgetränken“, D „Der Kaffee steht bereit, wenn man an der Ausgabe ankommt“.',
-        'Reihum: je ein Zettel, ein Feld (Products & Services, Pain Relievers, Gain Creators), ein Halbsatz warum.',
+        'Zwei Zettel zeigen, die der Lückensatz nicht nennt: A „Express-Ausgabe mit drei Standardgetränken“, B „Statt anzustehen: in 20 Sekunden im Gehen bestellen“.',
+        'Allein still: beide Zettel einem Feld zuordnen (Products & Services, Pain Relievers, Gain Creators). Dann je Zettel alle zugleich zeigen: 1, 2 oder 3 Finger. Eine offene Frage an alle: Wer sagt in einem Halbsatz, warum? Niemanden aufrufen.',
         'Aufdecken und vergleichen.',
       ],
       achten: [
-        'Bei B und D nach der ID fragen: Welchen Pain, welchen Gain im Profil der Kaffeebar trifft der Zettel?',
+        'Bei B nach der ID fragen: Welchen Pain im Profil der Kaffeebar trifft der Zettel?',
         'Es ist in Ordnung, wenn ein Zettel Pain und Gain zugleich trifft (S. 103).',
       ],
-      aufloesung: 'A und C sind Products & Services (Schaufenster). B ist ein Pain Reliever für P1, D ein Gain Creator für G1. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
+      aufloesung: 'A ist ein Product & Service (Schaufenster). B ist ein Pain Reliever für P2. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
     },
     kern: [
       {
@@ -66,7 +88,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 105`,
       },
       {
-        text: 'Die vier Zettel stammen aus der ausgearbeiteten Value Map der Kaffeebar für „Im Gehen bestellen“.',
+        text: 'Die zwei Zettel stammen aus der ausgearbeiteten Value Map der Kaffeebar für „Im Gehen bestellen“; der Lückensatz nennt sie nicht.',
         quelle: 'value-map.astro, Folie beispiel (Handout)',
       },
     ],
@@ -75,8 +97,8 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
 
   fit: {
     live: [
-      'Abbildung: Haken und Kreuze am Profil des Buchs.',
-      'Haken: trifft einen Job, Pain oder Gain. Kreuz: bleibt offen.',
+      'Abbildung: jeder Zettel trägt ein Zeichen – links Haken, rechts Haken oder Kreuz.',
+      'Haken links: trifft etwas. Rechts: getroffen oder offen.',
       '„Kreuze sind erlaubt. Es zählt, was oben im Profil getroffen ist.“',
       'Falle: Haken zählen statt hinschauen, welche Einträge getroffen sind.',
     ],
@@ -95,6 +117,10 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 110`,
       },
       {
+        text: 'Abbildung (aus der Grafik gelesen): Haken an allen Zetteln der Value Map, auch den gelben Produkten; im Profil an jedem Zettel Haken oder rotes Kreuz. Keine Linien.',
+        quelle: `${VPD}, S. 109`,
+      },
+      {
         text: 'Prüfung Eintrag für Eintrag. „If a pain reliever or gain creator doesn’t fit anything, it may not be creating customer value.“ Und: „Don’t worry if you haven’t checked all pains/gains–you can’t satisfy them all.“',
         quelle: `${VPD}, S. 112–113`,
       },
@@ -111,19 +137,19 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   beispiel: {
     live: [
       'Drei Lückensätze vorlesen, Tabelle noch leer.',
-      'Reihum: Welche Idee trifft am meisten – und welchen Eintrag nicht?',
+      'Allein still: Welche Idee trifft am meisten? Dann zugleich zeigen.',
+      'Offene Frage an alle: Welchen Eintrag trifft sie nicht?',
       'Zeile für Zeile aufdecken, mit den Antworten aller vergleichen.',
       'Das „?“ beim Kaffeewagen: eine Annahme, kein Kreuz.',
-      'Letzte Zeile: Fit nach dem Buch – trifft J1, P1–P3, G1.',
     ],
-    uebung: { dauer: '1 min vor dem Aufdecken', form: 'zu dritt, reihum laut: eine Zahl, ein Eintrag' },
+    uebung: { dauer: '1 min vor dem Aufdecken', form: 'allein still, dann alle zugleich zeigen (1, 2 oder 3 Finger für die Idee); eine offene Frage an alle nach einem Eintrag' },
     verstaendnis: {
       frage: 'Wofür steht das „?“ beim Kaffeewagen unter P2?',
       antwort: 'Für eine Annahme: Ob es am Bahnsteig keine Schlange gibt, weiß niemand. Sie käme in die Annahmen-Map, wenn diese Idee weiterginge – kein Haken und kein Kreuz.',
     },
     kern: [
       {
-        text: 'Kaffeebar: drei Lückensätze am selben Profil. „Im Gehen bestellen“ trifft J1, P1, P2, P3 und G1; die Anzeige an der Hallentür nur J1 und P1; der Kaffeewagen J1, P1 und G1, P2 offen als „?“. Die Value Map von „Im Gehen bestellen“ ist nach dem Profil geordnet (der Pain Reliever zu P1 oben); im Fit nach dem Buch bekommen ihre drei Pain Relievers und der Gain Creator ein ✓, J2, J3, G2, G3 und P4 ein ✗, J4 ein „?“ (Kursregel).',
+        text: 'Kaffeebar: drei Lückensätze am selben Profil. „Im Gehen bestellen“ trifft J1, P1, P2, P3 und G1; die Anzeige an der Hallentür nur J1 und P1; der Kaffeewagen J1, P1 und G1, P2 offen als „?“. Die Value Map von „Im Gehen bestellen“ ist nach dem Profil geordnet (der Pain Reliever zu P1 oben).',
         quelle: 'value-map.astro, Folie beispiel (Handout)',
       },
       {
@@ -131,71 +157,80 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 105`,
       },
     ],
-    ueberleitung: 'Spitzenreiter auf Papier. Was heißt „auf Papier“?',
+    ueberleitung: 'Spitzenreiter gewählt. Nur für ihn kommt jetzt die linke Hälfte.',
   },
 
-  'drei-fits': {
+  'fit-kaffeebar': {
     live: [
-      'Abbildung von unten nach oben: Papier, Markt, Bank.',
-      '„Heute erreicht ihr Stufe 1 – mehr nicht.“',
-      '„Stufe 2 sind eure Tests ab Tag 4.“',
-      'Die Wahl ist umkehrbar: Die anderen zwei Ideen bleiben liegen.',
-      'Wenn hinten: nur Stufe 1 und der Satz zur Umkehrbarkeit.',
+      'Tabelle zeilenweise: Zettel links vorlesen, offen fragen „Was trifft er?“, dann aufdecken.',
+      'Produkt-Zeile: J1 kommt über das Produkt, nicht über einen Pain Reliever.',
+      'Gegenprobe: trifft nichts – kein Haken, streichen.',
+      'Schritt 2: Was rechts übrig ist, bekommt ✗ oder ?.',
+      'Schritt 3: von oben lesen – höchstes Kreuz bewusst? Frage im 1:1.',
+      'Wenn hinten: nur Zeile 1 der Tabelle, dann Schritt 2 und 3.',
     ],
     verstaendnis: {
-      frage: 'Was ist nach heute belegt – und was nicht?',
-      antwort: 'Belegt (durch die Interviews): Der Kundschaft sind bestimmte Jobs, Pains und Gains wichtig. Nicht belegt: dass sie sich für euer Wertversprechen interessiert. „The fit you achieve is not yet proven and exists mainly on paper.“ (S. 117)',
-      falsch: '„Die Idee mit dem besten Fit ist bestätigt“ – bestätigt ist nur das Problem, nicht die Lösung.',
+      frage: 'Woran seht ihr, dass ihr rechts fertig seid?',
+      antwort: 'Jeder Zettel trägt genau ein Zeichen: ✓, ✗ oder ?.',
+      falsch: '„Wenn alle Pain Relievers einen Haken haben“ – dann fehlt die rechte Seite.',
     },
     kern: [
       {
-        text: 'Drei Stufen: Problem-Solution Fit („On Paper“), Product-Market Fit („In the Market“), Business Model Fit („In the Bank“).',
-        quelle: `${VPD}, S. 115–118`,
+        text: '„Go through Pain Relievers and Gain Creators one by one, and check to see whether they fit a customer job, pain, or gain. Put a check mark on each one that does.“',
+        quelle: `${VPD}, S. 112`,
       },
       {
-        text: 'Problem-Solution Fit: Belege, dass der Kundschaft bestimmte Jobs, Pains und Gains wichtig sind, und ein Wertversprechen dazu – man entwirft mehrere Alternativen und sucht die mit dem besten Fit. „The fit you achieve is not yet proven and exists mainly on paper.“ Nächster Schritt: Belege für das Wertversprechen sammeln oder neu entwerfen.',
-        quelle: `${VPD}, S. 117`,
+        text: '„If a pain reliever or gain creator doesn’t fit anything, it may not be creating customer value.“ Und: Haken zeigen das Getroffene, Kreuze das Nicht-Adressierte (S. 110); bewusst verzichten heißt „which to forgo“ (S. 105). Das „?“ ist ein Zeichen dieses Kurses.',
+        quelle: `${VPD}, S. 105, 110, 113`,
       },
     ],
-    ueberleitung: 'Jetzt ihr: Spitzenreiter wählen, seine Map ordnen, den Fit prüfen.',
+    fragen: [
+      {
+        frage: 'Wann ? und wann ✗?',
+        antwort: '✗: Die Value Map sagt dazu nichts oder ihr verzichtet. ?: Ihr könnt es erst entscheiden, wenn ihr etwas herausgefunden habt – schreibt die Frage dazu.',
+      },
+    ],
+    ueberleitung: 'Jetzt ihr: Spitzenreiter wählen, seine Map aus dem Satz bauen, den Fit prüfen.',
   },
 
   vorgehen: {
     live: [
       'Wozu vorlesen: wissen, was ihr heute ausarbeitet – und was offen bleibt.',
-      'Timer 5 min: drei Lückensätze aus der Ideation vergleichen, Spitzenreiter wählen.',
-      'Nach 5 min: Value Map im Canvas-Frame, ordnen – Timer 20 min.',
+      'Timer 5 min: Lückensätze aus T3 · 3 kopieren, vergleichen, Spitzenreiter wählen.',
+      'Nach 5 min: Value Map aus dem Lückensatz, ergänzen – Timer 20 min.',
       '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
-      'Nach 25 min: Fit prüfen wie im Buch, Timer 7 min.',
-      'Nach 32 min: VALUE-MAP.md mit allen „?“, Zeile ins Log.',
+      'Nach 25 min: Fit in drei Schritten, Timer 7 min.',
+      'Nach 32 min: alle „?“ ins Feld auf T3 · 4.',
       'Wenn hinten: Value Map nur mit einem Pain Reliever, einem Gain Creator.',
     ],
-    uebung: { dauer: '36 min (5 + 20 + 7 + 4)', form: 'allein, Markus fragt je nach einem Kreuz' },
+    uebung: { dauer: '36 min (5 + 20 + 7 + 4)', form: 'allein; Markus fragt je nach einem ✗: bewusst verzichtet – und warum?' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'T3 · 4, eigene Spalte: „Ideen vergleichen und wählen (Kursregel)“ – die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils.',
+        'T3 · 4, eigene Spalte: „Ideen vergleichen und wählen“ – die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils.',
         'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map des Spitzenreiters ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
-        'Fit im Canvas-Frame: ✓ an Pain Relievers und Gain Creators, ✗ an offene Jobs, Pains und Gains, „?“ wo ihr es nicht wisst.',
+        'Fit auf den Skalen: links ✓ mit ID an jeden Zettel, der etwas trifft; rechts ✓, ✗ oder ? an jeden Eintrag, als letzte Zeile im Sticky; dann von oben lesen.',
       ],
     },
     ablauf: {
       schritte: [
-        'Vergleichen und wählen (5 min, Kursregel): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Value Map (20 min): Products & Services, Pain Relievers, Gain Creators des Spitzenreiters, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem Kreuz aus dem Vergleich. Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
-        'Fit prüfen (7 min): ✓ an jeden Pain Reliever und Gain Creator, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt; „?“ wo ihr es nicht wisst (Kursregel; VPD S. 110–113).',
-        'Festhalten (4 min): docs/VALUE-MAP.md mit Spitzenreiter, Value Map, Fit und allen „?“ der drei Ideen; eine Zeile ins Entscheidungslog: Spitzenreiter, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',
+        'Vergleichen und wählen (5 min): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
+        'Value Map (20 min): Products & Services, Pain Relievers, Gain Creators des Spitzenreiters, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum? (VPD S. 105–106, 110, 113). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Fit prüfen (7 min): links Zettel für Zettel – trifft er etwas, ✓ mit ID und ✓ am Eintrag rechts; rechts ✗ an das, was übrig ist, „?“ wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); von oben lesen: oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
+        'Festhalten (4 min): alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. Claude-Prüfung bis Tag 4.',
       ],
       achten: [
         'Gewählt wird nach den obersten Einträgen, nicht nach der Zahl der Haken.',
         'Jedes „?“ wird an Tag 4 eine Annahme – auch die der beiden anderen Ideen.',
         'Bei Pain Relievers steht eine Wirkung, kein Produkt.',
         'Der Vergleich der Lückensätze ersetzt nicht den Fit am Ende: Das Buch prüft die ausgearbeitete Value Map (S. 112).',
+        'Rechts trägt am Ende jeder Zettel ein Zeichen.',
       ],
       fehler: [
         'Die Lieblingsidee bekommt großzügig Haken, die anderen strenge Kreuze.',
         'Das Profil wird nachträglich an die Idee angepasst.',
         'Alles abgehakt, nichts offen.',
+        'Ein Pain Reliever ohne ID bekommt trotzdem einen Haken.',
       ],
     },
     kern: [
@@ -212,12 +247,17 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
       'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
+      'Aufdecken: Fit auf Papier ist kein Beweis – getestet wird ab Tag 4.',
       'Ausblick: gleich der Story-Bogen – heute als Theorie.',
     ],
     kern: [
       {
         text: 'Gute Wertversprechen konzentrieren sich auf wenige Pains, die sie extrem gut lindern; die besten adressieren, was der Kundschaft am wichtigsten ist.',
         quelle: `${VPD}, S. 86–87, 103`,
+      },
+      {
+        text: 'Drei Stufen: Problem-Solution Fit („On Paper“), Product-Market Fit („In the Market“), Business Model Fit („In the Bank“). „The fit you achieve is not yet proven and exists mainly on paper.“ Die Folie dazu steht seit 21.11. nur im Handout (Entscheidung 58).',
+        quelle: `${VPD}, S. 115–118`,
       },
     ],
     ueberleitung: 'Direkt weiter: Warum sollte das jemanden interessieren?',

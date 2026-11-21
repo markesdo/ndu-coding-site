@@ -37,24 +37,10 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
   // NEU – erst machen
   jane: {
     live: [
-      'Steckbrief zeigen, nichts dazu sagen.',
-      'Reihum, je ein Satz: „Was bietet ihr Jane an?“',
-      'Dann reihum: „Was müsstet ihr dafür noch wissen?“',
-      'Falle: die Antwort „Kontext“ vorwegnehmen.',
+      'Steckbrief zeigen, Titelfrage stellen – keine Antworten sammeln.',
+      'Gleich weiter: „Was fehlt euch, um das zu beantworten?“',
+      'Die nächste Folie zeigt es.',
     ],
-    uebung: { dauer: '2 min', form: 'zu dritt, reihum laut, zwei Runden' },
-    ablauf: {
-      schritte: [
-        'Folie zeigen: Jane Moviegoer, wie ein Kinobetreiber sie üblicherweise beschreibt.',
-        'Runde 1 reihum: ein Angebot für Jane in einem Satz.',
-        'Runde 2 reihum: eine Sache, die ihr wissen müsstet, um zu sagen, ob das Angebot trifft.',
-      ],
-      achten: [
-        'Die Angebote dürfen naheliegend sein (größere Leinwand, Snacks, Online-Tickets) – genau so beginnt der Kinobetreiber im Buch.',
-        'Fällt „mit wem geht sie?“ oder „warum geht sie?“: festhalten, das ist die nächste Folie.',
-      ],
-      aufloesung: 'Nächste Folie: Dieselbe Jane hat je nach Anlass andere Jobs, Pains und Gains – der Steckbrief sagt davon nichts.',
-    },
     kern: [
       {
         text: 'Der Besitzer einer Kinokette will neue Wertversprechen entwerfen. Er könnte bei den Merkmalen beginnen – neueste Leinwände, Bildtechnik, Snacks, Events –, aber: „those only really matter if customers care about them“.',
@@ -73,10 +59,10 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     live: [
       'Aufdecken: Mittwochnachmittag mit Kindern, Samstagabend zu zweit.',
       'Bei Bedarf: dritter Anlass im Buch – allein zur Recherche.',
-      'Mit den Fragen vergleichen, die alle eben genannt haben.',
       '„Dieselbe Person, andere Jobs – je nach Anlass.“',
       'Brücke Kaffeebar: werktags 7:15–7:45 ist ein Anlass, kein Steckbrief.',
       'Fragen: In welchem Anlass steckt euer Segment?',
+      'Aufdecken: Und bei euch? Brief „Für wen?“ – passen die drei Interviews?',
     ],
     verstaendnis: {
       frage: 'Was sagt der Steckbrief über Jane – und was das Profil mit Kontext?',
@@ -112,7 +98,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
 
   profil: {
     live: [
-      'Vorwissen nutzen: reihum je ein Feld erklären lassen.',
+      'Vorwissen nutzen: Wer erklärt ein Feld? Frage an alle.',
       'Nur ergänzen: soziale und emotionale Jobs, unterstützende Jobs.',
       '„Jobs in den Worten der Kundschaft – eure Zitate liefern sie.“',
       'Zeit: höchstens anderthalb Minuten.',
@@ -138,15 +124,15 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
   // NEU
   konkret: {
     live: [
-      'Fragen: Ab wie vielen Minuten ist Warten für euch Zeitverschwendung?',
-      'Aufdecken: „mehr als x Minuten“ statt „Zeitverschwendung“.',
-      'Gehalt: Erhöhung und Kürzung sind nur Spiegelbilder.',
-      'Besser: Hindernis und Risiko als Pains.',
-      'Kaffeebar: „voll“ (I5-2) und „mehr als fünf Leute“ (I3-4) – zwei Interviews.',
+      'Zeile 1 zeigen, fragen: Was würdet ihr die Person als Nächstes fragen?',
+      'Gehalt: Erhöhung und Kürzung sind dieselbe Aussage. Besser: Betrag, Hindernis, Risiko.',
+      'Fremdsprache: zweimal Warum – und landet beim Job aus Zeile 2.',
+      'Kaffeebar: I5 sagt „voll“. Niemand hat nachgefragt. Die Zahl hat nur I3.',
+      'Falle: die Zahl von I3 als Präzisierung von I5 verkaufen.',
     ],
     verstaendnis: {
       frage: 'Gain „schneller Kaffee“, Pain „langsamer Kaffee“ – was fehlt?',
-      antwort: 'Beides ist dieselbe Aussage, einmal umgedreht, und ohne Maß. Besser: ein Pain, der ein Hindernis oder Risiko benennt, und ein Maß, an dem die Kundschaft selbst misst (S. 58, 80).',
+      antwort: 'Beides ist dieselbe Aussage, einmal umgedreht, und ohne Maß. Besser: ein Pain, der ein Hindernis oder Risiko benennt, ein Maß, an dem die Kundschaft selbst misst, und ein eigenes Zitat für den Gain (S. 58, 80).',
     },
     kern: [
       {
@@ -158,11 +144,11 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
         quelle: `${VPD}, S. 80`,
       },
       {
-        text: '„Ask “why” several times until you really understand your customers’ jobs to be done.“ Beispiel: Warum eine Fremdsprache lernen? „Maybe because the “real” customer job to be done is to improve his CV.“ Und warum das? Um mehr zu verdienen.',
+        text: '„Ask “why” several times until you really understand your customers’ jobs to be done.“ Beispiel: Warum eine Fremdsprache lernen? „Maybe because the “real” customer job to be done is to improve his CV.“ Und warum das? Um mehr zu verdienen. VPD formuliert die Antworten mit „Maybe“ und „ask yourself“ – die Leiter ist dort eine Vermutung des Teams.',
         quelle: `${VPD}, S. 80`,
       },
       {
-        text: 'Kaffeebar: „Wenn es voll ist, lass ich es.“ (I5-2) und „Bei mehr als fünf Leuten lass ich es.“ (I3-4) sind zwei Personen. Das Maß für P2 („mehr als fünf Leute“) kommt aus I3-4, nicht aus einer präzisierten Aussage von I5.',
+        text: 'Kaffeebar: „Wenn es voll ist, lass ich es.“ (I5-2) und „Bei mehr als fünf Leuten lass ich es.“ (I3-4) sind zwei Personen. I5-2 ist Beleg für P1, nicht für P2; das Maß in P2 kommt allein aus I3-4. I2-1 nennt eine andere Zahl („Acht Leute vor mir“).',
         quelle: 'Werkstatt, Beispiel Kaffeebar, Interviews I3 und I5; kundenprofil.astro, Folie beispiel',
       },
     ],
@@ -170,6 +156,10 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       {
         frage: 'In unseren Interviews hat niemand eine Zahl genannt. Was dann?',
         antwort: 'Dann schreibt ihr den Pain so konkret, wie das Zitat es hergibt, und notiert die fehlende Zahl als Frage fürs nächste Interview. Keine Zahl erfinden.',
+      },
+      {
+        frage: 'Darf ich die Zahl aus einem anderen Interview nehmen?',
+        antwort: 'Ja, mit ihrer ID und als Aussage dieser einen Person. Für alle anderen bleibt es eine Frage.',
       },
     ],
     ueberleitung: 'Nicht alles im Profil ist gleich wichtig.',
@@ -221,29 +211,39 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Timer 7 min: Ziel-Chance und Ast als Pains, mit Zitat-IDs.',
-      'Nach 7 min: Gains aus den Snapshots, ein sozialer oder emotionaler Job.',
-      'Nach 14 min: alles auf die Skalen, ordnen, dann die Fehlerliste.',
+      'Timer 2 min: Segment und Anlass aus „Für wen?“ im Brief.',
+      'Nach 2 min: Baum – Pain, Gain oder Job? Timer 5 min.',
+      'Nach 7 min: Jobs aus den Snapshots, einmal „Warum?“, Timer 4 min.',
+      'Nach 11 min: Gains aus den Snapshots, Timer 3 min.',
+      'Nach 14 min: ordnen, oberste drei nummerieren, einen Fehler markieren.',
       'Falle: an eine Lösung denken – Ideen gibt es noch keine.',
-      'Wenn hinten: Ordnen auf die obersten drei je Spalte beschränken.',
+      'Wenn hinten: nur die obersten drei je Spalte ordnen.',
     ],
-    uebung: { dauer: '18 min (7 + 7 + 4)', form: 'allein, jede*r für das eigene Produkt' },
+    uebung: { dauer: '18 min (2 + 5 + 4 + 3 + 4)', form: 'allein, jede*r für das eigene Produkt' },
     miro: {
       frame: 'T3 · 4 · Canvas · Sofie',
       schritte: [
         'Jede*r arbeitet im eigenen Canvas-Frame „T3 · 4 · Canvas · Name“, rechte Hälfte (Links auf der Folie; der Link oben führt zu Sofie, Joachim und Hewen liegen darunter).',
-        'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und als Pains in den Kreis legen; Zitat-IDs bleiben dran.',
-        'Dann alle Stickies auf die drei Skalen rechts unten schieben, je Spalte das Wichtigste oben (VPD S. 76), dann nummerieren (J1 …, P1 …, G1 …); Segment und Anlass als Überschrift.',
+        'Oben im Canvas eine Zeile: Segment und Anlass, aus „Für wen?“ im Brief.',
+        'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und in den Kreis legen, eigener Ast zuerst; Zitat-IDs bleiben dran. Schmerz → Pain, Wunsch → Gain, Aufgabe → Job.',
+        'Jobs und Gains aus den eigenen Snapshots dazu, je mit Zitat-ID; ohne Zitat ein „?“.',
+        'Dann alle Stickies auf die drei Skalen rechts unten schieben, je Spalte das Wichtigste oben (VPD S. 76), die obersten drei nummerieren (J1, P1, G1). Schritte 1–4 sind im Frame „1 Sammeln“, Schritt 5 ist „2 Ordnen“.',
       ],
     },
     ablauf: {
       schritte: [
-        'Übernehmen (7 min): Ziel-Chance als P1, ihr Ast als weitere Pains, mit Zitat-IDs; Jobs aus Tag 1.',
-        'Ergänzen (7 min): Gains aus den Snapshots, so konkret wie die Zitate; mindestens ein sozialer oder emotionaler Job.',
-        'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; dann die sechs Fehler durchgehen.',
+        'Wessen Profil? (2 min): oben in den Canvas eine Zeile mit Segment und Anlass, aus „Für wen?“ im Brief – passen die drei Interviews dazu?',
+        'Aus dem Baum (5 min): Ziel-Chance und die anderen Chancen, mit Zitat-IDs, eigener Ast zuerst. Schmerz → Pain, Wunsch → Gain, Aufgabe → Job (Torres S. 24; VPD S. 54).',
+        'Jobs aus den Snapshots (4 min): Welche Aufgabe wollte die Person in ihrer Geschichte erledigen? Mit Zitat-ID (VPD S. 73, 255). Dann einmal „Warum?“: der soziale oder emotionale Job dahinter – ohne Zitat ein „?“ (S. 80, „Maybe“).',
+        'Gains aus den Snapshots (3 min): was sich die Person wünscht, mit eigenem Zitat – kein umgedrehter Pain.',
+        'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; die obersten drei nummerieren (J1, P1, G1), einen der sechs Fehler bei euch markieren.',
       ],
       achten: [
         'Ein Segment, ein Anlass – wer zwei hat, wählt das Segment der Ziel-Chance.',
+        'Ist die Ziel-Chance ein Wunsch: nach dem Hindernis im selben Zitat fragen – das wird der Pain, der Wunsch kommt zu den Gains (VPD S. 80). Steht kein Hindernis im Zitat, bleibt sie Gain.',
+        'Aufgabe → Job: Steht unter den Chancen ein „Ich muss …“ oder „Ich will …“, ist das ein Job, kein Pain (VPD S. 54).',
+        'Momente der Map sind keine Jobs; höchstens ein unterstützender Job unten auf der Skala (VPD S. 55).',
+        'Keine erfundene Kundin, keine Persona: Das Segment sind die Interviewten aus dem Produkt-Brief (VPD S. 72 „Select customer segment“).',
         'Kein Eintrag ohne Zitat-ID; was vermutet ist, bekommt ein „?“.',
         'Kein Eintrag beschreibt das eigene Produkt: „proceed like an anthropologist and “forget” what you are offering“ (S. 79).',
       ],

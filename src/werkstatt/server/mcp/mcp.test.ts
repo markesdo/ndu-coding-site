@@ -267,14 +267,17 @@ describe('Werkzeuge', () => {
     expect(anweisung).toMatch(/Kopier nie ein ganzes Artefakt zurück in den Chat/);
     // Miro-Ergebnisse (Experience Map, Baum) per Bild: Momente schreibt Claude nie, Befundregeln gelten auch für das Bild.
     expect(anweisung).toContain('keine Problemsätze, Annahmen, Interviewfragen, Momente, Chancen, Entscheidungen oder Karten auf Miro,');
-    expect(anweisung).toContain(`6. Fügt die Person ein Bild ihrer Experience Map oder ihres Baums von Miro ein, ruf ${MCP_WERKZEUGE.methodeErklaeren} mit journey-map bzw. baum auf`);
+    // Regel 6 gilt für jedes Ergebnis auf Miro (seit 21.11.2026 auch alles von Tag 3): mit dem Slug der Methode.
+    expect(anweisung).toContain(`6. Fügt die Person ein Bild eines Ergebnisses von Miro ein (Experience Map: journey-map, Opportunity Solution Tree: baum, Ziel-Chance wählen: ziel-chance, Kundenprofil: kundenprofil, How Might We: hmw, Ideation: ideation und Value Map & Fit: value-map), ruf ${MCP_WERKZEUGE.methodeErklaeren} mit dem Slug dieser Methode auf und prüf das Bild gegen ihre Prüfliste`);
     expect(anweisung).toContain('jeder mit der ID des Prüfpunkts, einem wörtlichen Zitat von einer Karte im Bild und einer Frage');
+    // Kundenprofil und Value Map teilen den Canvas: nachfragen, welche Prüfung gemeint ist.
+    expect(anweisung).toContain('Kundenprofil und Value Map & Fit liegen im selben Frame „T3 · 4 · Canvas · euer Name“: Ist bei einem Bild dieses Canvas unklar, welche Prüfung gemeint ist, frag nach – ist die linke Hälfte leer, ist es das Kundenprofil.');
     expect(anweisung).toContain('Fragt die Person nach einem einzelnen Prüfpunkt, prüf nur diesen am Bild und nenn jede Karte, die dagegen verstößt');
     expect(anweisung).toContain('Kannst du eine Karte nicht lesen, sag das, statt zu raten.');
     // Regel 6 verweist auf keine andere Regel per Nummer (Regel 4 nennt artefakt_pruefen mit pruefpunkt, das am Bild nicht geht).
     expect(anweisung.split('\n').find((z) => z.startsWith('6. '))).not.toMatch(/Regel \d/);
     // Ändern: Mappe in der Werkstatt, Ergebnisse auf Miro auf Miro.
-    expect(anweisung).toContain('Ergebnisse auf Miro (Experience Map, Baum) ändert sie auf Miro.');
+    expect(anweisung).toContain('Ergebnisse auf Miro (Experience Map, Opportunity Solution Tree, Ziel-Chance wählen, Kundenprofil, How Might We, Ideation und Value Map & Fit) ändert sie auf Miro.');
     expect(anweisung).toContain('Die Person hat ihr Artefakt in der Werkstatt oder auf Miro vor sich.');
     expect(anweisung).toMatch(/\n11\. Manchmal hat eine Lehrperson/);
   });
@@ -569,8 +572,24 @@ describe('Werkzeuge', () => {
     expect(await anleitung('journey-map')).not.toContain('Bild aus Miro:');
     // Werkstatt-Methoden behalten den Satz zu artefakt_pruefen unverändert.
     expect(await anleitung('annahmen')).toBe(`Die KI kommt immer erst nach der eigenen Arbeit der Person dran. Mit der Nummer oder ID eines Prüfpunkts prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt.`);
-    // Ergebnis im Repo (ZIEL-CHANCE.md): artefakt_pruefen kennt es auch nicht, also kein Verweis darauf.
-    expect(await anleitung('ziel-chance')).toBe('Die KI kommt immer erst nach der eigenen Arbeit der Person dran.');
+    // Seit 21.11.2026 (Entscheidung 39) liegt Tag 3 auf Miro: Ziel-Chance, Kundenprofil usw. werden am Bild geprüft,
+    // Vorarbeit auf Miro als weiteres Bild – nie eine Datei in docs/.
+    const miroStart = `Die KI kommt immer erst nach der eigenen Arbeit der Person dran. Dieses Ergebnis liegt auf Miro, nicht in der Werkstatt; ${MCP_WERKZEUGE.artefaktPruefen} kennt es nicht. Will die Person ihr Ergebnis prüfen lassen: Prüf das Bild, das sie einfügt, gegen diese Prüfliste; ohne Bild bitte sie darum.`;
+    for (const slug of ['ziel-chance', 'kundenprofil', 'hmw', 'ideation']) expect((await anleitung(slug)).startsWith(miroStart), slug).toBe(true);
+    // Die Value Map liegt an zwei Orten (Canvas und Ideen-Vergleich in T3 · 4): zwei Bilder; das Profil im selben Canvas nicht extra.
+    const vm = await anleitung('value-map');
+    expect(vm).toContain(`Dieses Ergebnis liegt auf Miro, nicht in der Werkstatt; ${MCP_WERKZEUGE.artefaktPruefen} kennt es nicht. Will die Person ihr Ergebnis prüfen lassen: Prüf die Bilder, die sie einfügt (Frame „T3 · 4 · Canvas · euer Name“ und Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“), gegen diese Prüfliste; fehlt eins, bitte sie darum.`);
+    expect(vm).toContain('Zum Abgleich braucht es auch ein Bild aus Miro: Drei Ideen für die Ziel-Chance, je als Lückensatz (Frame „T3 · 3 · Ideation“)');
+    expect(vm.split('T3 · 4 · Canvas · euer Name').length - 1).toBe(1);
+    for (const slug of ['ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']) {
+      const a = await anleitung(slug);
+      expect(a, slug).not.toMatch(/docs\/|\.md\b/);
+    }
+    expect(await anleitung('ziel-chance')).toContain('Zum Abgleich braucht es auch ein Bild aus Miro: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“)');
+    expect(await anleitung('kundenprofil')).toContain('Ziel-Chance mit vier Linsen (Frame „T3 · 1 · Ziel-Chance“)');
+    // Code-Review 21.11.: zwei Bilder zum Abgleich heißen auch so – „zwei Bilder“, „fehlt eins“.
+    expect(await anleitung('kundenprofil')).toContain('Zum Abgleich braucht es auch zwei Bilder aus Miro: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“) und Ziel-Chance mit vier Linsen (Frame „T3 · 1 · Ziel-Chance“); fehlt eins, bitte die Person darum.');
+    expect(await anleitung('ideation')).toContain('Zum Abgleich braucht es auch zwei Bilder aus Miro: How-Might-We-Frage zur Ziel-Chance (Frame „T3 · 2 · How Might We“) und Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet (Frame „T3 · 4 · Canvas · euer Name“); fehlt eins, bitte die Person darum.');
   });
 
   it('methode_erklaeren und Anweisung: Links mit WERKSTATT_ORIGIN statt der Anfrage-Origin', async () => {

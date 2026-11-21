@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/ziel-chance.astro (Tag 3, 10:40–11:30; bis 19.11. 10:30–11:30).
-// Kürzen, wenn hinten (in dieser Reihenfolge): bauchwahl, zweiwegtuer, warum.
+// Kürzen, wenn hinten (in dieser Reihenfolge): zweiwegtuer, warum.
 // Zeit im Block (50 min): Übung 30 min, Theorie etwa 12 min, Rest Puffer.
 // Vorwissen: „bekannt“ aus Need Finding / Market Research (vorwissen.ts).
 // Torres-Seiten = gedruckte Seiten aus quellen/torres/text.txt (Kap. 7, S. 96–104; Kap. 2, S. 30–31).
@@ -15,7 +15,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Bühne erzählen: Jubel nach dem ersten Halbsatz, dann der zweite.',
       '„Heute wählt ihr eine Chance. Nicht die beste für immer – die nächste.“',
       'Fluss zeigen: Baum, Ziel-Chance, Frage, Ideen.',
-      'Wenn hinten: nur Zitat und Fluss, die zwei Punkte weglassen.',
+      'Wenn hinten: nur Zitat und Fluss, die drei Punkte weglassen.',
     ],
     geschichte: {
       text: 'Torres steht auf der Bühne der Davies Symphony Hall in San Francisco, letzter Vortrag des Tages bei Mind the Product, danach nur noch die Party. Sie will dem Saal einen Satz mitgeben: „You are never one feature away from success…“ – der Saal jubelt. Sie ist nicht fertig, wartet, bis es still ist: „…and you never will be.“ Sie weiß, dass die Leute das hören müssen – und dass es nicht reicht, es zu sagen.',
@@ -87,44 +87,27 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 99`,
       },
     ],
-    ueberleitung: 'Probiert es an der Kaffeebar – erst aus dem Bauch.',
+    ueberleitung: 'Probiert es an der Kaffeebar: drei Äste.',
   },
 
   bauchwahl: {
     live: [
-      'Still wählen, dann alle zugleich Hand heben: Halle, Anstehen, Zug.',
-      'Offen: „Wer will seinen Grund sagen?“ Nicht diskutieren.',
-      'Mitschreiben: pro Antwort ein Stichwort zum Grund.',
-      'Falle: eine Wahl richtig nennen – die Auflösung kommt gleich.',
-      'Wenn hinten: überspringen, bei den Linsen einmal fragen.',
+      'Baum zeigen, die drei Momente vorlesen.',
+      'Nicht abstimmen lassen: Welcher Ast zuerst, beantworten gleich die vier Linsen.',
+      'Wenn hinten: Folie überspringen, Baum bei „Am Beispiel“ mündlich nennen.',
     ],
-    uebung: { dauer: '2 min', form: 'still wählen, alle zugleich Hand heben, dann eine offene Frage nach Gründen' },
-    ablauf: {
-      schritte: [
-        'Baum der Kaffeebar zeigen, die drei Momente vorlesen.',
-        'Jede*r wählt still einen Moment. Dann heben alle zugleich die Hand: Halle, Anstehen, Zug – du zählst laut mit.',
-        'Eine offene Frage: „Wer will seinen Grund sagen?“ Niemanden aufrufen, nicht diskutieren.',
-        'Pro Antwort ein Stichwort notieren (z. B. „trifft die meisten“, „den Automaten gibt es schon“). Auf der nächsten Folie ordnest du sie den Linsen zu.',
-      ],
-      achten: [
-        'Nicht werten. Wer etwas sagt, sagt den eigenen Grund – auch bei gleicher Wahl.',
-        'Drei gleiche Gründe sind auch ein Befund: Dann fehlen drei Linsen.',
-      ],
-      aufloesung: 'Keine richtige Wahl. Die Gründe sind fast immer Linsen: wie viele (Größe), was es schon gibt (Markt), was die Bar kann (eigene Lage), wie sehr es schmerzt (Kundschaft). Die Wahl der Kaffeebar kommt auf der Folie „Am Beispiel“.',
-    },
     kern: [
       {
-        text: 'Die Mini-Übung ist Kursformat. Sie bereitet Torres’ Punkt vor, dass jede Gruppe von Kriterien eine eigene Linse auf die Wirkung ist („a different lens through which to view impact“).',
-        quelle: `${TORRES}, S. 101; Mini-Übung: Kursformat`,
+        text: 'Welcher Ast zuerst? Torres vergleicht die Geschwister durch vier Gruppen von Kriterien; jede ist „a different lens through which to view impact“.',
+        quelle: `${TORRES}, S. 99–101`,
       },
     ],
-    ueberleitung: 'Eure Gründe hatten etwas gemeinsam: Jede*r hat durch eine Linse geschaut.',
+    ueberleitung: 'Vier Linsen, durch die ihr die drei Äste vergleicht.',
   },
 
   linsen: {
     live: [
       'Aufdecken: Linse für Linse, je Torres’ Beispiel dazu.',
-      'Nach der vierten: Stichworte von eben zuordnen – welche Linse fehlte?',
       '„Wie viele“ und „wie oft“ getrennt fragen.',
       'Eigene Lage für alle: Produkt-Brief und was jede*r kann.',
       'Falle: nur die Kundenlinse nutzen – alle vier.',
@@ -140,7 +123,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 99–100`,
       },
       {
-        text: 'Markt: Pflicht oder Unterscheidung – „A missing table stake could torpedo sales, while a strategic differentiator could open up new customer segments.“ Dazu Trends: Wegen der „cord-cutters“ könnte der Streaming-Dienst „I want to watch live sports“ vorziehen.',
+        text: 'Markt: Was haben andere schon? Muss es sein, um mitzuspielen – oder hebt es euch ab? „A missing table stake could torpedo sales, while a strategic differentiator could open up new customer segments.“ Dazu Trends: Wegen der „cord-cutters“ könnte der Streaming-Dienst „I want to watch live sports“ vorziehen.',
         quelle: `${TORRES}, S. 100`,
       },
       {
@@ -169,7 +152,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     live: [
       'Erst der Ast: Halle, weil dort die meisten entscheiden.',
       'Aufdecken: Zeile für Zeile, je vorher fragen: Wer liegt vorn?',
-      'Größe: unentschieden – je drei Interviews.',
+      'Größe: unentschieden – 3 von 5 gegen 3 von 5.',
       '„Kein Sieger bei der Größe. Markt und eigene Lage geben den Ausschlag.“',
       'Falle: die Tabelle als Punkteschema lesen – es sind Sätze, keine Punkte.',
     ],
@@ -195,7 +178,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     live: [
       'Zitat vorlesen, kurz stehen lassen.',
       'Fragen: Was verliert ihr, wenn ihr Punkte vergebt?',
-      '„Die Linsen füttern euer Gespräch. Sie ersetzen es nicht.“',
+      '„Die Linsen liefern Gründe. Entscheiden und begründen müsst ihr selbst.“',
     ],
     verstaendnis: {
       frage: 'Was ist nach Torres falsch daran, jede Chance pro Linse zu bepunkten und zu summieren?',
@@ -216,11 +199,12 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
 
   zweiwegtuer: {
     live: [
-      'Zwei Türen erklären: Bezos’ Stufe 1 und Stufe 2.',
-      'Fragen: Welche Tür ist eure Ziel-Chance?',
-      '„Ihr verpflichtet euch nur, sie die nächsten Tage weiter zu erkunden.“',
+      'Bild erzählen: Tür = Entscheidung, dahinter die Folgen.',
+      'Einwegtür kein Zurück, Zweiwegtür umdrehen; Herkunft Bezos.',
+      'Fragen, vor Zeile 3: Welche Tür ist eure Ziel-Chance?',
+      '„Ihr verpflichtet euch nur, sie die nächsten Tage oder Wochen weiter zu erkunden.“',
       'Bullens erzählen: Wer umkehren kann, sieht die Schwächen der Wahl.',
-      'Wenn hinten: ein Satz dazu auf der Folie „So geht ihr vor“.',
+      'Wenn hinten: überspringen, bei „So geht ihr vor“: Die Wahl ist umkehrbar.',
     ],
     verstaendnis: {
       frage: 'Warum sollt ihr die Wahl als umkehrbar sehen – auch wenn ihr sie nicht umkehren wollt?',
@@ -228,11 +212,11 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Bezos, Brief an die Aktionär*innen 2015: Stufe 1 schwer umkehrbar – langsam und vorsichtig; Stufe 2 leicht umkehrbar – schnell, ohne auf perfekte Daten zu warten. Torres’ Bild: Einweg- und Zweiwegtür. Man lernt mehr, wenn man durchgeht und schaut, als wenn man sich die andere Seite vorstellt.',
+        text: 'Bezos, Brief an die Aktionär*innen 2015: Stufe 1 schwer umkehrbar – langsam und vorsichtig; Stufe 2 leicht umkehrbar – schnell, ohne auf perfekte Daten zu warten. Bild nach Bezos (Brief an die Aktionär*innen 2015), bei Torres S. 102–103: Einweg- und Zweiwegtür. Man lernt mehr, wenn man durchgeht und schaut, als wenn man sich die andere Seite vorstellt.',
         quelle: `${TORRES}, S. 102–103`,
       },
       {
-        text: 'Die Ziel-Chance ist eine Zweiwegtür: „You are not committing to addressing that opportunity. You are simply committing to exploring it further with your discovery work.“ Lottie Bullens und Kolleg*innen (Universität Amsterdam): Bei umkehrbaren Entscheidungen sehen Menschen danach eher die Schwächen ihrer Wahl und die Stärken der Alternativen; bei endgültigen nur das Gute an der eigenen.',
+        text: 'Die Ziel-Chance ist eine Zweiwegtür: „You are not committing to addressing that opportunity. You are simply committing to exploring it further with your discovery work.“ Lottie Bullens und Kolleg*innen (Universität Amsterdam): Bei umkehrbaren Entscheidungen sehen Menschen danach eher die Schwächen ihrer Wahl und die Stärken der Alternativen; bei endgültigen nur das Gute an der eigenen und das Schlechte an den Alternativen.',
         quelle: `${TORRES}, S. 103, Fußnote 34`,
       },
       {
@@ -249,7 +233,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Nach 8 min: Teilchancen des Asts bis zum Blatt, Timer 4 min.',
       'Nach 12 min: schriftlich begründen, Timer 15 min.',
       '1:1 dabei je 3 min: Joachim, Sofie, Hewen.',
-      'Nach 27 min: Ziel-Chance im Baum markieren, Zeile ins Log.',
+      'Nach 27 min: Ziel-Chance im Baum mit dem Stern markieren.',
       'Falle: von der Lieblingsidee rückwärts begründen.',
       'Wenn hinten: Begründen kürzen, Festhalten nicht.',
     ],
@@ -266,14 +250,14 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       schritte: [
         'Ast wählen, allein (8 min): die Momente gegeneinander, pro Linse ein Satz – wer liegt vorn und warum. Größe und Kundschaft mit Zitat-IDs.',
         'Bis zum Blatt (4 min): dasselbe mit den Teilchancen des gewählten Asts. Hängt nur eine Chance darunter, ist sie das Blatt.',
-        'Begründen, schriftlich (15 min): drei Sätze in docs/ZIEL-CHANCE.md – die Wahl, die Linse, die sie trägt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
-        'Festhalten (3 min): Ziel-Chance im Baum markieren, eine Zeile ins Entscheidungslog mit Beleg.',
+        'Begründen, schriftlich (15 min): drei Sätze ins Feld „Begründen“ der eigenen Spalte auf T3 · 1 – die Wahl, die Linse, die den Ausschlag gibt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
+        'Festhalten (3 min): Ziel-Chance im Baum mit dem Stern markieren.',
       ],
       achten: [
         'Verglichen werden Geschwister – nie eine Chance allein mit „Sollen wir?“ (S. 99).',
         'Alle vier Linsen, je ein Satz; Größe und Kundschaft mit Zitat-ID.',
         'Wer lange an einem Satz hängt: grob vergleichen und weiter (S. 101).',
-        'Nur echte Belege aus der eigenen Mappe; Synthetisches trägt keine Linse.',
+        'Nur echte Belege aus der eigenen Mappe; Synthetisches ist für keine Linse ein Beleg.',
       ],
       fehler: [
         'Nur die Kundenlinse benutzen (S. 104).',
@@ -293,7 +277,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Frage vorlesen, zehn Sekunden still.',
-      'Allein: ein Satz in docs/ZIEL-CHANCE.md, ehrlich.',
+      'Allein: ein ehrlicher Satz ins Feld „Begründen“ auf T3 · 1.',
       '„Passt die Ziel-Chance genau zur Idee von Tag 1? Dann prüft die Linsen noch einmal.“',
       'Ausblick: Aus der Ziel-Chance wird jetzt eine Frage.',
     ],
