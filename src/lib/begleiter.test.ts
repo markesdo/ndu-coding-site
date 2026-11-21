@@ -816,7 +816,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(bauen).toContain('<li data-schritt><strong>Ein Warum höher (H2):</strong> Warum will die Person das? –');
     expect(bauen.match(/Probe|Sweet Spot|<Fluss/g) ?? []).toStrictEqual([]);
     expect([q, JSON.stringify(n)].flatMap((x) => x.match(/Genauer \(H1\)|Weiter \(H2\)|eine weiter, eine genauer|H1 genauer|H2 weiter\b|Stufe weiter|Variante weiter|„genauer“/g) ?? [])).toStrictEqual([]);
-    expect(q).toContain('- H1 (Grundform): Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?');
+    // Vorlage wie das Beispiel: Grundform, H1, H2 – kein H3.
+    expect(q).toContain('- Grundform: Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?\n- H1 (mit Person und Moment): Wie könnten wir […]?\n- H2 (ein Warum höher): Wie könnten wir […]?');
+    expect(q.match(/H3|H\[n\]/g) ?? []).toStrictEqual([]);
     expect(q).toContain('Dort fragt ihr es am Job (Osterwalder u. a., „Value Proposition Design“, S. 80), hier an der Chance');
   });
 });
