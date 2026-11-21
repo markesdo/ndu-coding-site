@@ -119,7 +119,7 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">Ein Segment: Pendler*innen, werktags 7:15–7:45.</p>
-    <div style="overflow-x:auto">
+    <div class="kp-beispiel" style="overflow-x:auto">
       <table>
         <thead><tr><th>Jobs (wichtigste oben)</th><th>Pains (extremste oben)</th><th>Gains (unverzichtbarste oben)</th></tr></thead>
         <tbody>
@@ -137,7 +137,7 @@ const VPD_KURZ = 'Osterwalder u. a., „Value Proposition Design“ (2014)';
     <p class="folie-satz">Aus dem Baum übernehmen, Gains ergänzen, je Spalte ordnen.</p>
     <p class="wozu"><strong>Wozu?</strong> Damit ihr eure Ideen am Nachmittag an etwas messen könnt, das nicht von ihnen abhängt.</p>
     <p class="small miro-zeile">Miro, euer Canvas: <MiroLink name="T3 · 4 · Canvas · Sofie">Sofie</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Joachim">Joachim</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Hewen">Hewen</MiroLink></p>
-    <ol class="gross">
+    <ol class="gross dicht">
       <li data-schritt>Oben in den Canvas eine Zeile: Segment und Anlass (wie bei der Kaffeebar). <strong>Übernehmen</strong> in den Kreis (Canvas, rechte Hälfte): Ziel-Chance und ihr Ast als Pains, mit Zitat-IDs; Jobs aus Tag 1. <Timer minuten={7} /></li>
       <li data-schritt><strong>Ergänzen:</strong> Gains aus den Snapshots, konkret; mindestens ein sozialer oder emotionaler Job. <Timer minuten={7} /></li>
       <li data-schritt><strong>Ordnen und prüfen:</strong> alle auf die Skalen rechts unten, jede Spalte für sich, wichtigste oben, dann nummerieren: J1 …, P1 …, G1 …; dann die sechs Fehler auf der nächsten Folie. <Timer minuten={4} /></li>
@@ -189,4 +189,7 @@ Stand: [Datum] · Grundlage: Baum auf Miro (Baum · euer Name), Ziel-Chance (Mir
   .zwei-bilder { display: grid; gap: 1.5rem; margin: 1rem 0; }
   @media (min-width: 900px) { .zwei-bilder { grid-template-columns: 1fr 1fr; } }
   .zwei-bilder > :global(.buch-abbildung) { margin: 0; max-width: none; }
+  /* „beispiel“ im Beamer: drei gleich breite Spalten, sonst quetscht der Browser die Jobs und die Tabelle wird höher als die Folie. */
+  :global(html[data-beamer]) .kp-beispiel table { table-layout: fixed; width: 100%; }
+  :global(html[data-beamer]) .kp-beispiel thead th { width: 33.33%; }
 </style>

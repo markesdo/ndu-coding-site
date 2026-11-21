@@ -110,7 +110,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">Ast „Halle: entscheiden“, Blatt „Geht sich ein Kaffee noch aus?“</p>
-    <div style="overflow-x:auto">
+    <div class="zc-beispiel" style="overflow-x:auto">
       <table>
         <thead><tr><th>Linse</th><th>Vorn liegt</th><th>Warum</th></tr></thead>
         <tbody>
@@ -223,9 +223,9 @@ Stand: [Datum]
   :global(html[data-beamer] .folie:has(> h2#bauchwahl) .baum-knoten) { max-width: 7.4rem; min-width: 5rem; font-size: .75rem; padding: .25rem .4rem; }
   :global(html[data-beamer] .folie:has(> h2#bauchwahl) .baum-ast) { padding-left: .25rem; padding-right: .25rem; }
   /* „beispiel“: Die Tabelle lief im Beamer rechts aus dem Bild (21.11., Kundschaft-Zeile). Feste Spaltenbreiten und Umbruch
-     halten sie in der Folienbreite, egal wie breit der Text in einer Zelle ist. */
-  :global(html[data-beamer] .folie:has(> h2#beispiel) table) { table-layout: fixed; width: 100%; }
-  :global(html[data-beamer] .folie:has(> h2#beispiel) :is(th, td)) { overflow-wrap: break-word; }
-  :global(html[data-beamer] .folie:has(> h2#beispiel) thead th:nth-child(1)) { width: 14%; }
-  :global(html[data-beamer] .folie:has(> h2#beispiel) thead th:nth-child(2)) { width: 26%; }
+     halten sie in der Folienbreite. Über die Klasse an diese Seite gebunden – „beispiel“ gibt es auf vielen Seiten. */
+  :global(html[data-beamer]) .zc-beispiel table { table-layout: fixed; width: 100%; }
+  :global(html[data-beamer]) .zc-beispiel :is(th, td) { overflow-wrap: break-word; }
+  :global(html[data-beamer]) .zc-beispiel thead th:nth-child(1) { width: 14%; }
+  :global(html[data-beamer]) .zc-beispiel thead th:nth-child(2) { width: 26%; }
 </style>
