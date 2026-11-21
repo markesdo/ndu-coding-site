@@ -809,18 +809,21 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   });
   // Entscheidung 44 (21.11.): `bauen` als drei Fragen mit sprechenden Etiketten statt „genauer/weiter“; die Probe steht nur
   // auf `sweet-spot`; die Grundform lautet wie auf `bruecke`.
-  it('Tag 3: hmw#bauen – Grundform, mit Person und Moment, ein Warum höher; kein genauer/weiter', () => {
+  it('Tag 3: hmw#bauen – Grundform, mit Person und Moment, eine Ebene höher; kein genauer/weiter', () => {
     const q = quellen['/innolab/methoden/hmw'] ?? '';
     const n = NOTIZEN['/innolab/methoden/hmw'] ?? {};
     const a = q.indexOf('id="bauen"');
     const bauen = q.slice(a, q.indexOf('<div class="nur-handout">', a));
     expect(bauen).toContain('<li data-schritt><strong>Grundform:</strong> „Wie könnten wir ‚Geht sich ein Kaffee noch aus?‘ angehen?“</li>');
     expect(bauen).toContain('<li data-schritt><strong>Mit Person und Moment (H1):</strong> Wer, in welchem Moment? –');
-    expect(bauen).toContain('<li data-schritt><strong>Ein Warum höher (H2):</strong> Warum will die Person das? –');
+    // Entscheidung 64 (21.11.): „Eine Ebene höher“ statt „Ein Warum höher“; die Zeile „Warum will die Person das?“ bleibt.
+    expect(bauen).toContain('<li data-schritt><strong>Eine Ebene höher (H2):</strong> Warum will die Person das? –');
+    expect([q, JSON.stringify(n)].flatMap((x) => x.match(/Warum höher/gi) ?? [])).toStrictEqual([]);
+    expect(q).toContain('<li data-schritt><strong>Allein:</strong> die Grundform und zwei Varianten zu eurer Ziel-Chance – eine mit Person und Moment, eine eine Ebene höher (Warum will die Person das?). <Timer minuten={7} /></li>');
     expect(bauen.match(/Probe|Sweet Spot|<Fluss/g) ?? []).toStrictEqual([]);
     expect([q, JSON.stringify(n)].flatMap((x) => x.match(/Genauer \(H1\)|Weiter \(H2\)|eine weiter, eine genauer|H1 genauer|H2 weiter\b|Stufe weiter|Variante weiter|„genauer“/g) ?? [])).toStrictEqual([]);
     // Vorlage wie das Beispiel: Grundform, H1, H2 – kein H3.
-    expect(q).toContain('- Grundform: Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?\n- H1 (mit Person und Moment): Wie könnten wir […]?\n- H2 (ein Warum höher): Wie könnten wir […]?');
+    expect(q).toContain('- Grundform: Wie könnten wir ‚[eure Ziel-Chance]‘ angehen?\n- H1 (mit Person und Moment): Wie könnten wir […]?\n- H2 (eine Ebene höher): Wie könnten wir […]?');
     expect(q.match(/H3|H\[n\]/g) ?? []).toStrictEqual([]);
     expect(q).toContain('Dort fragt ihr es am Job (Osterwalder u. a., „Value Proposition Design“, S. 80), hier an der Chance');
   });

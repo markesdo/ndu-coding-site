@@ -127,10 +127,10 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   bauen: {
     live: [
-      'Zeile für Zeile: Grundform, Person und Moment, ein Warum höher.',
+      'Zeile für Zeile: Grundform, Person und Moment, eine Ebene höher.',
       'Fragen: Warum will jemand wissen, ob es sich ausgeht?',
-      'Aufdecken: H1 mit Person und Moment, H2 ein Warum höher.',
-      '„Eine mit Person und Moment, eine ein Warum höher – drei zum Vergleichen.“',
+      'Aufdecken: H1 mit Person und Moment, H2 eine Ebene höher.',
+      '„Eine mit Person und Moment, eine eine Ebene höher – drei zum Vergleichen.“',
       'Das Warum kennt ihr vom Kundenprofil – die Antwort steht bei euren Jobs.',
       'Aufdecken: Falle – H2 rutscht in die Nachbar-Chance, darum H1.',
     ],
@@ -212,14 +212,14 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Allein (7 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante mit Person und Moment (Wer, in welchem Moment?) und eine ein Warum höher (Warum will die Person das?).',
+        'Allein (7 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante mit Person und Moment (Wer, in welchem Moment?) und eine eine Ebene höher (Warum will die Person das?).',
         'Zwei Proben, allein (5 min): zu jeder Frage zwei verschiedene Wege notieren. Fällt nur einer ein, steckt die Lösung schon in der Frage (Torres S. 94: „Is there more than one way to address this …?“). Dann: zu weit oder zu eng – Sweet Spot? Kursformat statt Vorlesen zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Wählen und festhalten (3 min): eine Frage, ein Satz warum, in der eigenen Spalte in T3 · 2.',
       ],
       achten: [
         'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an der Ziel-Chance.',
         'Aus Sicht der Kundschaft, nicht des Produkts.',
-        'Die Variante „ein Warum höher“ bleibt bei derselben Chance. Rutscht sie in eine Nachbar-Chance (wie H2 der Kaffeebar), ist sie ein Hinweis, nicht die Wahl.',
+        'Die Variante „eine Ebene höher“ bleibt bei derselben Chance. Rutscht sie in eine Nachbar-Chance (wie H2 der Kaffeebar), ist sie ein Hinweis, nicht die Wahl.',
       ],
       fehler: [
         'Lösung in der Frage („… per App …“).',
