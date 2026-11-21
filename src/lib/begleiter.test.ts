@@ -861,4 +861,20 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect([zc, JSON.stringify(NOTIZEN['/innolab/methoden/ziel-chance'] ?? {}), pl].flatMap((x) => x.match(/tragend|die sie trägt|Wahl trägt/gi) ?? [])).toStrictEqual([]);
     expect(zc).toContain('- Ausschlaggebend: [Linse – ein Satz]\n- Spricht dagegen: [Linse – ein Satz]');
   });
+  // Entscheidungen 50–52 (21.11.): varianten mit Gegenüber und Probe, analogien als Tabelle (Problem · wer löst es · Idee),
+  // beispiel mit Link zur Kaffeebar-Spalte; ein Wort für die Unterscheidung: „Art“.
+  it('Tag 3: ideation varianten, analogien, beispiel – Probe, Tabelle, Miro-Link, „Art“', () => {
+    const q = quellen['/innolab/methoden/ideation'] ?? '';
+    const n = JSON.stringify(NOTIZEN['/innolab/methoden/ideation'] ?? {});
+    const folie = (id: string) => { const a = q.indexOf(`id="${id}"`); return q.slice(a, q.indexOf('</Folie>', a)); };
+    expect(folie('varianten')).toContain('<p class="breit" data-schritt><strong>Probe:</strong> Löst jede der drei die Ziel-Chance auf einem anderen Weg?</p>');
+    expect(folie('varianten')).toContain('<Callout type="warn" title="Eine Idee, drei Formen">');
+    const an = folie('analogien');
+    expect(an).toContain('<thead><tr><th>Problem</th><th>Wer löst so etwas schon?</th><th>Idee für uns</th></tr></thead>');
+    expect(an).toContain('<td data-schritt>Flughafen: Wartezeit an der Sicherheitskontrolle</td>');
+    expect([q, n].flatMap((x) => x.match(/Boarding-Gruppen nach Abflugzeit|passt weniger genau|Policen vergleichen|Vergleich von Policen|aus einer anderen Kategorie/g) ?? [])).toStrictEqual([]);
+    expect(an.slice(0, an.indexOf('nur-handout')).match(/Who else|18 Ideen/g) ?? []).toStrictEqual([]);
+    expect(folie('beispiel')).toContain('<MiroLink name="T3 · 3 · Ideation">T3 · 3 · Ideation, Spalte Kaffeebar</MiroLink>');
+    expect(MIRO_FRAMES['T3 · 3 · Ideation']).toBeTruthy();
+  });
 });

@@ -11,6 +11,7 @@ import Timer from '../../../components/Timer.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
+import Callout from '../../../components/Callout.astro';
 import Baum from '../../../components/bild/Baum.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
@@ -132,14 +133,30 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
 
   <Folie>
     <h2 id="analogien">Wer löst so ein Problem schon?</h2>
-    <p class="folie-satz">„Who else has to solve a problem like this?“</p>
-    <p class="breit"><strong>Torres:</strong> Jobbörse – Recruiter*innen bewerten Kandidat*innen ← Online-Shop: Produkte bewerten · Reiseportal: Hotel wählen · Versicherung: Policen vergleichen</p>
-    <p class="breit"><strong>Kaffeebar:</strong> Wer muss Menschen noch sagen, ob sich etwas vor einer Abfahrt ausgeht?</p>
-    <ul class="gross">
-      <li data-schritt><strong>Flughafen:</strong> Boarding-Gruppen nach Abflugzeit → Bestellungen nach Abfahrtszeit aufrufen</li>
-      <li data-schritt><strong>Supermarkt:</strong> Express-Kasse – passt weniger genau, steht aber auch unter den 18 Ideen</li>
-    </ul>
-    <p class="nur-handout">Erst zur Konkurrenz schauen, dann weiter: „What other industries have solved similar problems?“ Torres' Beispiel ist eine Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft. Sie kann sich ansehen, wie Online-Shops beim Bewerten von Produkten helfen, Reiseportale beim Wählen eines Hotels und Versicherungen beim Vergleich von Policen – Branchen, die nichts miteinander zu tun haben und doch ein ähnliches Problem lösen ({TORRES}, S. 111). Je weiter weg die Branche, desto eher findet ihr Ideen einer anderen Art (S. 114). Bei der Kaffeebar kommen so zwei der 18 Ideen zustande: Aufruf nach Abfahrtszeit wie beim Boarding und die Express-Kasse aus dem Supermarkt.</p>
+    <p class="folie-satz">Ähnlich muss das Problem sein, nicht die Branche.</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Problem</th><th>Wer löst so etwas schon?</th><th>Idee für uns</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Jobbörse:</strong> Recruiter*innen bewerten Kandidat*innen</td>
+            <td>Online-Shop: Produkte bewerten · Reiseportal: Hotel wählen · Versicherung: Policen darstellen</td>
+            <td class="muted">nachsehen, wie sie es lösen</td>
+          </tr>
+          <tr>
+            <td><strong>Kaffeebar:</strong> In der Schlange hat jede*r eine andere Abfahrt</td>
+            <td data-schritt>Flughafen: Boarding ruft in Gruppen auf</td>
+            <td data-schritt><strong>Bestellungen nach Abfahrtszeit aufrufen</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Kaffeebar:</strong> Beim Betreten weiß niemand, wie lange es dauert</td>
+            <td data-schritt>Flughafen: Wartezeit an der Sicherheitskontrolle</td>
+            <td data-schritt><strong>Wartezeit an der Hallentür</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nur-handout">Erst zur Konkurrenz schauen, dann weiter: „What other industries have solved similar problems?“ Torres' Beispiel ist eine Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft. Sie kann sich ansehen, wie Online-Shops beim Bewerten von Produkten helfen, Reiseportale beim Wählen eines Hotels und wie Versicherungen verschiedene Policen darstellen – Branchen, die nichts miteinander zu tun haben und doch ein ähnliches Problem lösen ({TORRES}, S. 111). Ihre Frage zum Mitnehmen: „Who else has to solve a problem like this?“ – und dann nachsehen, wie sie es lösen („and then investigate how they solve it“, S. 114). Je weiter weg die Branche, desto eher findet ihr Ideen einer anderen Art (S. 114). Bei der Kaffeebar kommen so zwei Ideen zustande, die auch auf der Folie „Am Beispiel“ stehen: Bestellungen in Gruppen aufrufen wie beim Boarding, und die Wartezeit an der Hallentür anzeigen wie an der Sicherheitskontrolle. Die Problem-Sätze der Kaffeebar-Zeilen sind unsere Formulierung.</p>
   </Folie>
 
   <Folie>
@@ -163,16 +180,17 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
 
   <Folie>
     <h2 id="varianten">Löwen, Tiger, Pumas</h2>
-    <p class="folie-satz">Drei Varianten derselben Idee sind kein Vergleich.</p>
-    <div style="overflow-x:auto">
-      <table>
-        <tbody>
-          <tr><th>eine Idee, drei Formen</th><td>Ampel an der Hallentür · Anzeige neben der Abfahrtstafel · Wartezeit in der Bahn-App</td></tr>
-          <tr data-schritt><th>drei Arten von Idee</th><td>Anzeige · Bestellweg · anderer Ort</td></tr>
-        </tbody>
-      </table>
+    <p class="folie-satz">Wählt drei Ideen verschiedener Art – drei Varianten derselben Idee sind kein Vergleich.</p>
+    <div class="gegenueber">
+      <Callout type="warn" title="Eine Idee, drei Formen">
+        <p>Ampel an der Hallentür<br />Anzeige neben der Abfahrtstafel<br />Wartezeit in der Bahn-App</p>
+      </Callout>
+      <div data-schritt><Callout type="tip" title="Drei Ideen, drei Wege">
+        <p><strong>Wartezeit an der Hallentür</strong> – beendet das Raten vor der Schlange<br /><strong>Im Gehen bestellen</strong> – kein Anstehen, Fertig-Zeit schon beim Bestellen<br /><strong>Kaffeewagen am Bahnsteig</strong> – Kaffee dort, wo sie warten</p>
+      </Callout></div>
     </div>
-    <p class="nur-handout">Wer möglichst viele Tiere aufzählen soll, bleibt schnell in einer Familie: „once we identify lions and tigers, we might add pumas, cheetahs, and snow leopards“. Zum Sammeln ist das in Ordnung. In die Auswahl der drei gehört so viel Verschiedenheit wie möglich ({TORRES}, S. 114).</p>
+    <p class="breit" data-schritt><strong>Probe:</strong> Löst jede der drei die Ziel-Chance auf einem anderen Weg?</p>
+    <p class="nur-handout">Wer möglichst viele Tiere aufzählen soll, bleibt schnell bei den Katzen: „once we identify lions and tigers, we might add pumas, cheetahs, and snow leopards“. Zum Sammeln ist das in Ordnung, es bringt mehr Ideen. Für die Auswahl der drei gilt: „you want as much diversity as possible“ – sucht bewusst nach Ideen einer anderen Art ({TORRES}, S. 114). Der Grund: Die drei sind ein Vergleichsset – „Which of these three ideas best delivers on our target opportunity?“ (S. 113). Drei Formen derselben Idee treffen dieselben Einträge eures Profils; der Vergleich nach der Pause hätte dann nichts zu unterscheiden. Bei der Kaffeebar wären Ampel, Anzeige neben der Abfahrtstafel und Wartezeit in der Bahn-App so ein Set: dreimal dieselbe Auskunft an anderer Stelle. Die Probe: Löst jede der drei die Ziel-Chance auf einem anderen Weg?</p>
   </Folie>
 
   <Folie>
@@ -183,6 +201,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
       <li data-schritt><strong>Aussortiert:</strong> „Becher mit Deckel, der nicht verschüttet“, „mehr Sitzplätze“ – gut, aber nicht für diese Chance.</li>
       <li data-schritt><strong>Drei nach dem Punkten:</strong> Wartezeit an der Hallentür · Im Gehen bestellen, mit Abfahrtszeit · Kaffeewagen am Bahnsteig.</li>
     </ul>
+    <p class="small">Miro: <MiroLink name="T3 · 3 · Ideation">T3 · 3 · Ideation, Spalte Kaffeebar</MiroLink></p>
     <p class="nur-handout">Die drei sind absichtlich verschieden: eine Anzeige, ein Bestellweg, ein anderer Ort. Varianten derselben Idee (Ampel an der Hallentür, Anzeige neben der Abfahrtstafel, Wartezeit in der Bahn-App) sind zusammengefasst – Torres warnt davor, nur Varianten einer Idee in die Auswahl zu nehmen (S. 114). Jede der drei wird ein Lückensatz gegen das Profil der Kaffeebar (nächste Folie). Welche Spitzenreiter wird, entscheidet sich im nächsten Block: Ihr vergleicht die drei Sätze mit den obersten Einträgen des Profils, und nur der Spitzenreiter bekommt eine Value Map. Im weiteren Beispiel ist es „Im Gehen bestellen“; warum, zeigt die <a href="/innolab/methoden/value-map">Value Map</a>.</p>
   </Folie>
 
@@ -250,7 +269,7 @@ Profil: T3 · 4 · Canvas · euer Name
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
     <p class="folie-satz">Sind eure drei Ideen wirklich verschieden – oder drei Varianten derselben?</p>
-    <p class="nur-handout">Wenn alle drei dasselbe in anderer Form sind, sucht in der Liste nach einer Idee aus einer anderen Kategorie. Der Vergleich im nächsten Block lohnt sich nur, wenn es etwas zu vergleichen gibt.</p>
+    <p class="nur-handout">Wenn alle drei dasselbe in anderer Form sind, sucht in der Liste nach einer Idee anderer Art. Der Vergleich im nächsten Block lohnt sich nur, wenn es etwas zu vergleichen gibt.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/hmw', t: 'How Might We' }} next={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} />

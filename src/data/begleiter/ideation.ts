@@ -252,11 +252,10 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   analogien: {
     live: [
       'Torres’ Beispiel: Jobbörse schaut auf Shops, Reiseportale, Versicherungen.',
-      'Fragen: Wer sagt Menschen, ob sich etwas vor Abfahrt ausgeht?',
+      'Je Kaffeebar-Zeile Problem vorlesen, an alle: Wer löst so etwas schon?',
+      'Kurze Pause, eine Antwort; dann Spalte 2, dann die Idee aufdecken.',
       'Antworten als Stickies in die Kaffeebar-Spalte.',
-      'Aufdecken: Flughafen, Supermarkt – zwei Ideen der Kaffeebar.',
       'Falle: nur Cafés und Bäckereien nennen – weiter weg suchen.',
-      'Express-Kasse passt weniger genau – zweite, schwächere Analogie.',
     ],
     uebung: { dauer: '2 min', form: 'Frage an alle, niemand wird aufgerufen; du schreibst die Stickies' },
     miro: {
@@ -265,7 +264,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         'Kaffeebar-Spalte: genannte Branchen als Stickies neben die Ideen aus der Zwei-Minuten-Runde.',
         'Zu jeder Branche eine Idee für die Kaffeebar daneben.',
       ],
-      vorschlaege: ['Flughafen: Boarding-Gruppen → Bestellungen nach Abfahrtszeit aufrufen', 'Supermarkt: Express-Kasse'],
+      vorschlaege: ['Flughafen: Boarding ruft in Gruppen auf → Bestellungen nach Abfahrtszeit aufrufen', 'Flughafen: Wartezeit an der Sicherheitskontrolle → Wartezeit an der Hallentür'],
     },
     verstaendnis: {
       frage: 'Woran erkennt ihr ein brauchbares analoges Produkt?',
@@ -274,15 +273,15 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: 'Erst die Konkurrenz, dann weiter: „What other industries have solved similar problems?“ Beispiel Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft: Wie helfen Online-Shops beim Bewerten von Produkten, Reiseportale beim Wählen eines Hotels, Versicherungen beim Vergleich von Policen?',
+        text: 'Erst die Konkurrenz, dann weiter: „What other industries have solved similar problems?“ Beispiel Jobbörse, die Recruiter*innen beim Bewerten von Kandidat*innen hilft: Wie helfen Online-Shops beim Bewerten von Produkten, Reiseportale beim Wählen eines Hotels, wie Versicherungen Policen darstellen?',
         quelle: `${TORRES}, S. 111`,
       },
       {
-        text: 'Die Frage zum Mitnehmen: „Who else has to solve a problem like this?“ – je weiter die Branche entfernt ist, desto eher findet ihr verschiedenartige Ideen.',
+        text: 'Die Frage zum Mitnehmen: „Who else has to solve a problem like this?“ – und dann nachsehen, wie sie es lösen; je weiter die Branche entfernt ist, desto eher findet ihr verschiedenartige Ideen.',
         quelle: `${TORRES}, S. 114`,
       },
       {
-        text: 'Kaffeebar: „Bestellungen nach Abfahrtszeit aufrufen (wie Boarding-Gruppen)“ und „Express-Kasse wie im Supermarkt“ stehen schon unter den 18 Ideen des Beispiels.',
+        text: 'Kaffeebar: „Bestellungen nach Abfahrtszeit aufrufen“ (Boarding) und „Wartezeit an der Hallentür“ (Sicherheitskontrolle) stehen auch auf der Folie „Am Beispiel“. Die Problem-Sätze der Zeilen sind unsere Formulierung.',
         quelle: 'ideation.astro, Folie beispiel',
       },
     ],
@@ -338,30 +337,31 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   // NEU
   varianten: {
     live: [
-      'Löwen, Tiger, Pumas erzählen.',
-      'Kaffeebar: Ampel, Anzeige, Bahn-App – eine Idee, drei Formen.',
-      '„In die Auswahl gehören drei verschiedene Arten von Idee.“',
-      'Wenn hinten: überspringen, kommt beim Übertrag.',
+      'Löwen, Tiger, Pumas erzählen: viele Tiere, alles Katzen.',
+      'Links zeigen. Fragen: Was haben diese drei gemeinsam?',
+      'Aufdecken: die drei der Kaffeebar – drei Wege zur selben Ziel-Chance.',
+      'Aufdecken: die Probe. Die legt ihr nachher an eure drei an.',
+      'Wenn hinten: Geschichte weglassen, nur Gegenüber und Probe.',
     ],
     kern: [
       {
-        text: 'Anti-Muster „Generating too many variations of the same idea“: Wer feststeckt, variiert. Beim Sammeln ist das in Ordnung, in der Auswahl der drei soll die Vielfalt so groß wie möglich sein – bewusst nach Ideen einer anderen Art suchen.',
-        quelle: `${TORRES}, S. 114`,
+        text: 'Anti-Muster „Generating too many variations of the same idea“: Wer feststeckt, variiert. Beim Sammeln ist das in Ordnung, in der Auswahl der drei soll die Vielfalt so groß wie möglich sein – bewusst nach Ideen einer anderen Art suchen. Die drei sind ein Vergleichsset: „Which of these three ideas best delivers on our target opportunity?“',
+        quelle: `${TORRES}, S. 113–114`,
       },
     ],
     geschichte: {
       text: 'Wer möglichst viele Tierarten aufzählen soll, landet schnell in einer Familie: „once we identify lions and tigers, we might add pumas, cheetahs, and snow leopards“. Viele Einträge, eine Kategorie.',
       quelle: `${TORRES}, S. 114`,
     },
-    ueberleitung: 'So sieht das bei der Kaffeebar aus.',
+    ueberleitung: 'So wurden bei der Kaffeebar aus 18 Ideen diese drei.',
   },
 
   beispiel: {
     live: [
       '„Im Beispiel wurden es 18 Ideen – eure von vorhin kommen dazu.“',
       'Aussortiert: Becher mit Deckel, mehr Sitzplätze – gut, andere Chance.',
-      'Fragen: Welche drei Arten von Idee seht ihr?',
-      'Aufdecken: Anzeige, Bestellweg, anderer Ort.',
+      'Drei nach dem Punkten: die drei von eben.',
+      'Fragen: Welche der 18 ist nur eine Form einer der drei?',
       'Bei Bedarf: „Im Gehen bestellen“ ist nicht das verworfene Vorbestellen (D4).',
     ],
     verstaendnis: {
@@ -465,7 +465,8 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Sind eure drei wirklich verschieden – oder Löwe, Tiger, Puma?',
-      'Allein: je Idee ein Wort für ihre Art notieren.',
+      'Probe: Löst jede der drei die Ziel-Chance auf anderem Weg?',
+      'Je Idee den Weg in einem halben Satz.',
       'Bei drei Varianten: eine Idee anderer Art aus der Liste holen.',
       'Ausblick: Nach der Pause wird einer der drei Lückensätze Spitzenreiter.',
     ],
