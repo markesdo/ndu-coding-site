@@ -32,7 +32,7 @@ const weitere = [
   ...ergebnisBilder.slice(1).map((b) => ({ b, zweck: 'vom Ergebnis' })),
   ...(miro ? vorBilder : []).map((b) => ({ b, zweck: 'zum Abgleich' })),
 ];
-const weitereText = weitere.map((x, i) => ` Dazu ein ${ORDNUNG[i + 1]} Bild ${x.zweck}: ${x.b.ausschnitt}, ebenso fotografieren und einfügen.`).join('');
+const weitereText = weitere.map((x, i) => ` Dazu ein ${ORDNUNG[i + 1] ?? `${i + 2}.`} Bild ${x.zweck}: ${x.b.ausschnitt}, ebenso fotografieren und einfügen.`).join('');
 // Methoden mit Ergebnis in einer Datei, deren Prompt Vorarbeit von Miro als Bild nennt (Kundenprofil, Value Map ab Tag 4).
 const vorBilderOhneMiro = !werkstatt && !miro ? vorBilder : [];
 ---

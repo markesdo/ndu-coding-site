@@ -579,7 +579,8 @@ export function miroVorarbeitBilder(m: Methode): MiroBild[] {
 const bildListe = (bilder: MiroBild[]) => aufzaehlen(bilder.map((b) => `${aufzaehlen(b.namen)} (${b.ort})`));
 
 const ZAHLWORT = ['ein', 'zwei', 'drei', 'vier', 'fünf'];
-const anzahlBilder = (n: number) => (n === 1 ? 'ein Bild' : `${ZAHLWORT[n - 1] ?? n} Bilder`);
+/** „ein Bild“, „zwei Bilder“ … */
+export const anzahlBilder = (n: number) => (n === 1 ? 'ein Bild' : `${ZAHLWORT[n - 1] ?? n} Bilder`);
 
 /** Ergebnis auf Miro im Prompt: je Artefakt die Orte („… (Frame „X“ und Feld „Y“ im Frame „Z“)“). */
 function miroErgebnisSatz(m: Methode): string {
@@ -607,7 +608,8 @@ function werkstattQuelle(id: string): ArtefaktName | undefined {
 /** Werkstatt-Artefakte der Vorarbeit, die zum Abgleich gehören (für die Interview-Methode: Brief und Annahmen-Map). */
 export const werkstattVorarbeit = (m: Methode): ArtefaktName[] => [...new Set(m.braucht.map(werkstattQuelle).filter((n): n is ArtefaktName => !!n))];
 
-const aufzaehlen = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} und ${xs.at(-1)}`);
+/** „a“, „a und b“, „a, b und c“ – für Prompts, Werkstatt-Anleitung und Server-Anweisung. */
+export const aufzaehlen = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} und ${xs.at(-1)}`);
 const akkusativListe = (namen: ArtefaktName[]) => aufzaehlen(namen.map((n) => WERKSTATT_AKKUSATIV[n]));
 const ausWerkstatt = (namen: ArtefaktName[]) => `${akkusativListe(namen)} (Werkzeug ${MCP_WERKZEUGE.artefaktLesen})`;
 

@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { METHODEN } from '../components/methoden';
 import { MIRO_FRAMES, MIRO_FRAMES_OHNE_ID } from '../components/miro-frames';
@@ -750,7 +751,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   it('Tag 3: Abschluss-Checkliste ohne docs-Dateien und ohne „Committet und gepusht“', () => {
     const q = quellen['/innolab/tag-3'] ?? '';
     const liste = q.slice(q.indexOf('<Checklist id="il-tag3-abschluss'), q.indexOf(']} />', q.indexOf('<Checklist id="il-tag3-abschluss')));
-    expect(liste).toContain('<Checklist id="il-tag3-abschluss-v5"');
+    expect(liste).toContain('<Checklist id="il-tag3-abschluss-v6"');
     expect(liste.match(/\.md\b|im Repo|Committet|gepusht/g) ?? []).toStrictEqual([]);
     expect(liste).toContain('T3 · 4 · Canvas · euer Name');
     // Auch die Ideation (Folgeauftrag zu Entscheidung 37): kein Entscheidungslog D… mehr in den Notizen von Tag 3.
@@ -941,5 +942,13 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(vm).toContain('eure drei Lückensätze aus T3 · 3 auf die Stickies kopieren');
     expect(id).toContain('<li data-schritt><strong>Lückensätze:</strong> je Idee einer, ins Feld „Drei Ideen als Lückensätze“ eurer Spalte – J-, P-, G-ID aus eurem Canvas.');
     expect(id).toContain('<Prompt label="Vorlage · eure Spalte in T3 · 3, Feld ‚Drei Ideen als Lückensätze‘">');
+  });
+  // Code-Review 21.11.: Abschluss-Checkliste mit dem Ideen-Vergleich in T3 · 4; Methodenkarte zeigt den zweiten Miro-Ort.
+  it('Tag 3: Checkliste mit Ideen-Vergleich (T3 · 4), Methodenkarte mit miroAuch', () => {
+    const q = quellen['/innolab/tag-3'] ?? '';
+    expect(q).toContain('<Checklist id="il-tag3-abschluss-v6"');
+    expect(q).toContain("'Ideen-Vergleich und alle „?“ im Feld „Ideen vergleichen und wählen“ (T3 · 4)',");
+    const karte = readFileSync('src/components/MethodenKarte.astro', 'utf8');
+    expect(karte).toContain('{a.miroAuch && <> · Feld „{a.miroAuch.feld}“ im Frame „{a.miroAuch.frame}“</>}');
   });
 });
