@@ -794,7 +794,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     }
     expect(folie).toContain('<p data-schritt><strong>Vom einen zum anderen:</strong> Kaffee besorgen (J1) – warum? Um den Arbeitstag nicht gehetzt zu beginnen (J2).</p>');
     expect(q).toContain('<li data-schritt><strong>Jobs:</strong> was jemand erledigen will – in den Worten der Kundschaft.</li>');
-    expect(n['job-arten']?.verstaendnis?.frage).toBe('„Ich will pünktlich sein“ – emotionaler Job oder Gain?');
+    // Code-Review 21.11.: ein Ergebnis ohne „Ich will …“, damit die Frage nicht mit der Regel „Ich will … → Job“ kollidiert.
+    expect(n['job-arten']?.verstaendnis?.frage).toBe('„Pünktlich im Büro ankommen“ – emotionaler Job oder Gain?');
     expect(n.beispiel?.live?.[0]).toBe('J1–J3 nicht vorlesen (job-arten).');
   });
   // Entscheidungen 71–73 (21.11.): `vorgehen` Schritt 5 geht die sechs Fehler durch; Einträge ohne Zitat sind erlaubt, mit „?“;
@@ -1022,6 +1023,14 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(fit).toContain('<p class="folie-satz">Erst links, dann rechts, dann von oben lesen.</p>');
     expect([...fit.matchAll(/<tr data-schritt><td><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['1 Links, Zettel für Zettel:', '2 Rechts, was übrig ist:', '3 Von oben lesen:']);
     expect(fit).toContain('<p class="small vm-fit-fuss">✓ trifft · ✗ trifft nicht · ? wissen wir nicht.');
+    // Code-Review 21.11.: J4 ist halb getroffen (Anstehen über P2) – darum „?“; höchstes ✗ wie auf fit-kaffeebar-rechts.
+    expect(fit).toContain('<td>Kein Zettel links nennt G2; J4 nur halb (Anstehen über P2) → ?</td>');
+    expect(fit).toContain('Höchstes ✗: J2 und G2 – bewusst?');
+    expect(fit.match(/Höchstes ✗: J2 – /g) ?? []).toStrictEqual([]);
+    // Vorlage: die „?“ bleiben, wo sie stehen – keine Liste „Offene ?“.
+    expect(q).toContain('## „?“ – wo sie stehen: am Satz (T3 · 4) und am Zettel (Canvas)');
+    expect(q.match(/Offene „\?“/g) ?? []).toStrictEqual([]);
+    expect(q.match(/Leitfragen zu den drei Feldern liegen in T3 · 4/g) ?? []).toStrictEqual([]);
     const fk = folie('fit-kaffeebar');
     expect(fk).toContain('<p class="folie-satz">Schritt 1: links, Zettel für Zettel.</p>');
     expect(fk).toContain('<thead><tr><th>Feld</th><th>Zettel (links)</th><th>trifft</th><th>Zeichen</th></tr></thead>');
@@ -1082,7 +1091,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(pw).toContain('<strong>B:</strong> Pain Reliever (P2)');
     expect(pw).toContain('<strong>Die Probe:</strong>');
     // Wählen vergleicht gegen dieselben fünf Einträge wie `beispiel` und Miro (J1, P1, P2, P3, G1).
-    expect(vm).toContain('drei Lückensätze aus T3 · 3 auf die Stickies; je Satz ✓ ✗ ? zu J1, P1, P2, P3, G1;');
+    expect(vm).toContain('drei Lückensätze aus T3 · 3 auf die Stickies; je Satz ✓ ✗ ? zu den obersten Einträgen eures Profils (Kaffeebar: J1, P1, P2, P3, G1);');
     expect(vm).toContain('<thead><tr><th>Idee</th><th>J1 Kaffee besorgen</th><th>P1 ausgehen?</th><th>P2 Schlange</th><th>P3 wann fertig?</th><th>G1 vor dem Zug</th></tr></thead>');
     expect(id).toContain('<li data-schritt><strong>Lückensätze:</strong> je Idee einer, ins Feld „Drei Ideen als Lückensätze“ eurer Spalte – J-, P-, G-ID aus eurem Canvas.');
     expect(id).toContain('<Prompt label="Vorlage · eure Spalte in T3 · 3, Feld ‚Drei Ideen als Lückensätze‘">');

@@ -130,7 +130,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       'Zeit: höchstens anderthalb Minuten.',
     ],
     verstaendnis: {
-      frage: '„Ich will pünktlich sein“ – emotionaler Job oder Gain?',
+      frage: '„Pünktlich im Büro ankommen“ – emotionaler Job oder Gain?',
       antwort: 'Ein Gain: Es beschreibt ein Ergebnis, keinen Gefühlszustand. Jobs sind Aufgaben, Probleme, Bedürfnisse; Gains die konkreten Ergebnisse (S. 78). Der emotionale Job dahinter nennt den Zustand, den die Person sucht – bei der Kaffeebar „nicht gehetzt beginnen“ (J2).',
       falsch: '„Emotional, weil es um Stress geht“ – im Satz steht kein Gefühl, nur ein Ergebnis.',
     },
