@@ -25,7 +25,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   bausteine: {
     live: [
       'Kacheln zügig aufdecken, je ein Satz: tut, fühlt, belegt.',
-      '„Ein Moment: ein Name aus Sicht der Kundschaft und die Zahl der Geschichten.“',
+      '„Ein Moment: ein Name aus Sicht der Kundschaft und die Zahl der Interviews.“',
       'Torres: Knoten und Kontext (S. 56), Muster über Geschichten (S. 87).',
       'Zahl am Moment: so im Kurs; Zitate bleiben in der Zähltabelle.',
     ],
@@ -56,7 +56,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     live: [
       'Hier „Auflösung zeigen“: öffnet Folien 4 bis 9.',
       'Bilanz: tut ja, fühlt und belegt nein. 40 Sekunden.',
-      'Glatter Weg: „Wer fehlt hier? Der Automat – in drei von fünf Geschichten.“',
+      'Glatter Weg: „Wer fehlt hier? Der Automat – in drei von fünf Interviews.“',
       '„Frust“ noch nicht auflösen: kommt bei „A und B übereinander“.',
     ],
     kern: [
@@ -73,7 +73,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     live: [
       'Frust-Antwort von eben aufgreifen: anstellen, warten.',
       'Spalte 2 zuerst zeigen, dann 1 und 3.',
-      '„Drei von fünf Geschichten erzählen ihn. Auf die Karte: Name und Zahl.“',
+      '„Drei von fünf Interviews erzählen ihn. Auf die Karte: Name und Zahl.“',
       'Restzeile nur zeigen, nicht besprechen.',
     ],
     ueberleitung: 'C klingt sachlich – aber wer spricht da?',
