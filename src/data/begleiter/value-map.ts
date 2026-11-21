@@ -97,7 +97,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
 
   fit: {
     live: [
-      'Abbildung: Quadrat links – Value Map. Kreis rechts – Profil.',
+      'Abbildung: Quadrat = Value Map, jeder Zettel geprüft, auch Produkte. Kreis = Profil.',
       'Klick 1: Zettel vorlesen, offen fragen: Was trifft er? P1.',
       '„Ein Zettel, eine ID, zwei Haken – links und rechts.“',
       'Klick 2: Rest rechts – Kreuz, oder Fragezeichen mit Frage.',
@@ -114,7 +114,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 108–109`,
       },
       {
-        text: 'Haken zeigen, was Pain Relievers und Gain Creators treffen; „Xs show which jobs, pains, and gains the value proposition does not address.“',
+        text: 'Haken zeigen, was Products & Services, Pain Relievers und Gain Creators treffen: „Check marks signify that products and services relieve pains or create gains and directly address one of the customers’ jobs, pains, or gains. Xs show which jobs, pains, and gains the value proposition does not address.“',
         quelle: `${VPD}, S. 110`,
       },
       {
@@ -251,7 +251,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Der Vergleich der Lückensätze ersetzt nicht den Fit am Ende: Das Buch prüft die ausgearbeitete Value Map (S. 112).',
         'Rechts trägt am Ende jeder Zettel ein Zeichen.',
         'Der Satz des Spitzenreiters liegt als Sticky im Canvas – kein Zurückspringen nach T3 · 4.',
-        'Produkte tragen im Quadrat keine ID; die J-ID kommt beim Fit.',
+        'Produkte tragen im Quadrat keine ID; ihre ID (J, P oder G) kommt beim Fit.',
         'Kein Zettel zu jedem Pain – die Kaffeebar hat sechs Zettel, als Beispiel, nicht als Regel.',
       ],
       fehler: [
@@ -259,7 +259,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Das Profil wird nachträglich an die Idee angepasst.',
         'Alles abgehakt, nichts offen.',
         'Ein Pain Reliever ohne ID bekommt trotzdem einen Haken.',
-        'Ein Produkt bekommt eine erfundene P-ID.',
+        'Ein Produkt bekommt schon im Quadrat eine ID – oder eine P-ID für einen Pain, den es nicht direkt trifft.',
       ],
     },
     kern: [

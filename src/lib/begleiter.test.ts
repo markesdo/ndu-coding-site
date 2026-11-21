@@ -1028,6 +1028,30 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     // Produkt. Im Punkt statt in Schritt 1, weil die Tabellenspalte sonst über 1280 × 720 hinausläuft.
     expect(fit).toContain('<li><strong>Links, das Quadrat:</strong> eure Value Map. Geprüft wird jeder Zettel, auch die Produkte. ✓ heißt:');
     expect(fit.match(/Produkte nur, wenn|sie treffen Jobs/g) ?? []).toStrictEqual([]);
+    // Review #431/#432 (Nachzug, Markus: Option A): Produkte werden wie im Buch geprüft – ID dessen, was sie direkt treffen
+    // (J, P oder G; Note S. 110, Abbildung S. 109); die Streich-Regel gilt für jeden Zettel, ohne Ausnahme fürs Produkt.
+    const fitA = q.indexOf('id="fit"'), fitB = q.indexOf('id="fit-kaffeebar"');
+    const fitH = q.indexOf('<div class="nur-handout">', fitA);
+    expect(fitA).toBeGreaterThanOrEqual(0);
+    expect(fitH).toBeGreaterThan(fitA);
+    expect(fitB).toBeGreaterThan(fitH);
+    const fitHandout = q.slice(fitH, fitB);
+    expect(fitHandout).toContain('„Check marks signify that products and services relieve pains or create gains and directly address one of the customers’ jobs, pains, or gains.“ (S. 110)');
+    expect(fitHandout).toContain('Trifft ein Produkt direkt einen Job, Pain oder Gain, bekommt es dessen ID – bei der Kaffeebar J1');
+    expect(fitHandout).toContain('Haken an jedes Produkt, das einen Job, Pain oder Gain direkt trifft, und an jeden Pain Reliever und Gain Creator');
+    expect(fitHandout).toContain('Trifft ein Zettel nichts, bekommt er kein ✓');
+    expect(fitHandout.match(/bleibt es[^.]*stehen|hängt, bleibt|nichts trägt|Produkt bleibt|Produkte? bleiben? stehen|Produkt[^.]*nur die J-ID|J-ID des Jobs, den es direkt trifft/g) ?? []).toStrictEqual([]);
+    expect(fitHandout.match(/Im Text nennt das Buch nur/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('trifft eines direkt einen Job, Pain oder Gain, kommt dessen ID beim Fit dazu (S. 110).');
+    expect(q).toContain('- ✓ links → rechts: [Pain Reliever → P…; Gain Creator → G…; Produkt → J…/P…/G…]');
+    expect(q).toContain('- links ohne Treffer: [Zettel – gestrichen oder umformuliert]');
+    const nFit = NOTIZEN['/innolab/methoden/value-map']?.fit;
+    expect(nFit?.live[0]).toBe('Abbildung: Quadrat = Value Map, jeder Zettel geprüft, auch Produkte. Kreis = Profil.');
+    expect(nFit?.kern.some((k) => k.text.startsWith('Haken zeigen, was Products & Services, Pain Relievers und Gain Creators treffen: „Check marks signify that products and services'))).toBe(true);
+    const nVm = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    expect(JSON.stringify(nVm)).toContain('Produkte tragen im Quadrat keine ID; ihre ID (J, P oder G) kommt beim Fit.');
+    expect(JSON.stringify(nVm)).toContain('Ein Produkt bekommt schon im Quadrat eine ID – oder eine P-ID für einen Pain, den es nicht direkt trifft.');
+    expect(JSON.stringify(nVm).match(/die J-ID kommt beim Fit|erfundene P-ID/g) ?? []).toStrictEqual([]);
     // Code-Review 21.11.: J4 ist halb getroffen (Anstehen über P2) – darum „?“; höchstes ✗ wie auf fit-kaffeebar-rechts.
     expect(fit).toContain('<td>Kein Zettel links nennt G2; J4 nur halb (Anstehen über P2) → ?</td>');
     expect(fit).toContain('Höchstes ✗: J2 und G2 – bewusst?');
