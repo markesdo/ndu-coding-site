@@ -774,4 +774,17 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(seiten.every((p) => (quellen[p] ?? '').length > 1000)).toBe(true);
     expect(texte.flatMap((x) => x.match(/docs\/|(ZIEL-CHANCE|KUNDENPROFIL|HMW|IDEEN|VALUE-MAP)\.md|Source Control/g) ?? [])).toStrictEqual([]);
   });
+  // Entscheidungen 40 und 41 (21.11.): HMW ohne Reihum; `coast` mit alter Frage im ersten Fluss und dem Warum-Satz am Schluss.
+  it('Tag 3: kein „reihum“ auf der HMW-Seite und in ihren Notizen; coast mit alter Frage', () => {
+    const q = quellen['/innolab/methoden/hmw'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/hmw'] ?? {};
+    const texte = [q, JSON.stringify(n)];
+    expect(texte.every((x) => x.length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/reihum/gi) ?? [])).toStrictEqual([]);
+    expect(n['sweet-spot']?.uebung?.form).toBe('Frage an alle, je Karte eine Antwort, dann aufdecken');
+    const coast = q.slice(q.indexOf('id="coast"'), q.indexOf('<p class="nur-handout">', q.indexOf('id="coast"')));
+    expect(coast).toContain("{ t: 'Alte Frage', sub: '„How can we make a better green-stripe bar?“' },");
+    expect(coast).not.toContain("t: 'Ergebnis'");
+    expect(coast).toContain('<p data-schritt><strong>Bei euch ist der Warum-Schritt schon getan: Eure Ziel-Chance steht in den Worten der Kundschaft.</strong></p>');
+  });
 });

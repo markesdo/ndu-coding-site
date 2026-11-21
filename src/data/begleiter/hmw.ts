@@ -41,8 +41,8 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
 
   coast: {
     live: [
-      'Erzählen: Irish Spring, sechs Kopien, keine besser.',
-      'Fragen: Welche Frage hat das Team gestellt – und was fehlt ihr?',
+      'Erzählen: Irish Spring, alte Frage, sechs Kopien, keine besser.',
+      'Fragen: Was fehlt der alten Frage?',
       'Aufdecken: Warum?, Kundensicht, neue Frage, Coast.',
       '„Bei euch ist der Schritt schon getan: Eure Ziel-Chance steht in Kundenworten.“',
     ],
@@ -154,14 +154,14 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
   'sweet-spot': {
     live: [
       'Vier Fragen still lesen lassen.',
-      'Reihum, laut: je eine Frage, die vierte nimmst du.',
+      'Je Frage an alle, kurze Pause, eine Antwort – niemanden aufrufen.',
       'Aufdecken: A Lösung drin, B zu weit, C passt, D zu eng.',
       'B gegen H2: H2 nennt Moment und Kaffee, B keins.',
       'Fragen: Wie viele Wege gibt es zur Ampel?',
       'Falle: D für gut halten, weil eine Zahl drinsteht.',
       'Wenn hinten: nur A und D laut sortieren.',
     ],
-    uebung: { dauer: '3 min', form: 'reihum laut, dann aufdecken' },
+    uebung: { dauer: '3 min', form: 'Frage an alle, je Karte eine Antwort, dann aufdecken' },
     verstaendnis: {
       frage: 'Was unterscheidet „zu eng“ von „Lösung drin“?',
       antwort: '„Zu eng“ ist ein kleines, festes Ziel – Browns Beispiel: 5 % mehr Gewinn im nächsten Quartal (Berger, S. 2). „Lösung drin“ gibt den Weg vor – es gibt nur eine Antwort (Torres, S. 94).',
