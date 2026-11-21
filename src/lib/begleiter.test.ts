@@ -1028,11 +1028,18 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     // Produkt. Im Punkt statt in Schritt 1, weil die Tabellenspalte sonst über 1280 × 720 hinausläuft.
     expect(fit).toContain('<li><strong>Links, das Quadrat:</strong> eure Value Map. Geprüft wird jeder Zettel, auch die Produkte. ✓ heißt:');
     expect(fit.match(/Produkte nur, wenn|sie treffen Jobs/g) ?? []).toStrictEqual([]);
-    // Review #431 (Nachzug): Handout sagt, woher die Produkt-Prüfung kommt; Vorlage: Produkte nur mit J-ID; Begleiter-Live-Zeile.
-    const fitHandout = q.slice(q.indexOf('id="fit"'), q.indexOf('id="fit-kaffeebar"'));
-    expect(fitHandout).toContain('Im Text nennt das Buch nur Pain Relievers und Gain Creators; in der Abbildung auf S. 109 tragen auch die gelben Produkte Haken (aus der Abbildung gelesen).');
-    expect(q).toContain('- ✓ links → rechts: [Pain Reliever/Gain Creator → J…/P…/G…; Produkt → J…]');
-    expect(NOTIZEN['/innolab/methoden/value-map']?.fit?.live[0]).toBe('Abbildung: links Value Map, jeder Zettel geprüft, auch Produkte. Rechts Profil.');
+    // Review #431/#432 (Nachzug): Handout belegt die Produkt-Prüfung (Note S. 110, Abbildung S. 109) und sagt, wann ein Produkt
+    // bleibt; Vorlage: Pain Reliever → P, Gain Creator → G, Produkt → J; Begleiter-Live-Zeile mit Quadrat und Kreis.
+    const fitA = q.indexOf('id="fit"'), fitB = q.indexOf('id="fit-kaffeebar"');
+    expect(fitA).toBeGreaterThanOrEqual(0);
+    expect(fitB).toBeGreaterThan(fitA);
+    const fitHandout = q.slice(fitA, fitB);
+    expect(fitHandout).toContain('„Check marks signify that products and services relieve pains or create gains and directly address one of the customers’ jobs, pains, or gains.“ (S. 110)');
+    expect(fitHandout).toContain('gestrichen wird nur, was nichts trifft und nichts trägt – eine Regel dieses Kurses.');
+    expect(fitHandout.match(/Im Text nennt das Buch nur/g) ?? []).toStrictEqual([]);
+    expect(q).toContain('- ✓ links → rechts: [Pain Reliever → P…; Gain Creator → G…; Produkt → J…]');
+    expect(q).toContain('- links ohne Treffer: [Zettel – gestrichen oder umformuliert; ein Produkt, an dem ein Zettel mit ✓ hängt, bleibt]');
+    expect(NOTIZEN['/innolab/methoden/value-map']?.fit?.live[0]).toBe('Abbildung: Quadrat links, jeder Zettel geprüft, auch Produkte. Kreis rechts.');
     // Code-Review 21.11.: J4 ist halb getroffen (Anstehen über P2) – darum „?“; höchstes ✗ wie auf fit-kaffeebar-rechts.
     expect(fit).toContain('<td>Kein Zettel links nennt G2; J4 nur halb (Anstehen über P2) → ?</td>');
     expect(fit).toContain('Höchstes ✗: J2 und G2 – bewusst?');
