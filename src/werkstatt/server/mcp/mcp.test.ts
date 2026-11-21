@@ -569,8 +569,16 @@ describe('Werkzeuge', () => {
     expect(await anleitung('journey-map')).not.toContain('Bild aus Miro:');
     // Werkstatt-Methoden behalten den Satz zu artefakt_pruefen unverändert.
     expect(await anleitung('annahmen')).toBe(`Die KI kommt immer erst nach der eigenen Arbeit der Person dran. Mit der Nummer oder ID eines Prüfpunkts prüft ${MCP_WERKZEUGE.artefaktPruefen} (pruefpunkt) nur diesen Punkt.`);
-    // Ergebnis im Repo (ZIEL-CHANCE.md): artefakt_pruefen kennt es auch nicht, also kein Verweis darauf.
-    expect(await anleitung('ziel-chance')).toBe('Die KI kommt immer erst nach der eigenen Arbeit der Person dran.');
+    // Seit 21.11.2026 (Entscheidung 39) liegt Tag 3 auf Miro: Ziel-Chance, Kundenprofil usw. werden am Bild geprüft,
+    // Vorarbeit auf Miro als weiteres Bild – nie eine Datei in docs/.
+    const miroStart = `Die KI kommt immer erst nach der eigenen Arbeit der Person dran. Dieses Ergebnis liegt auf Miro, nicht in der Werkstatt; ${MCP_WERKZEUGE.artefaktPruefen} kennt es nicht. Will die Person ihr Ergebnis prüfen lassen: Prüf das Bild, das sie einfügt, gegen diese Prüfliste; ohne Bild bitte sie darum.`;
+    for (const slug of ['ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']) {
+      const a = await anleitung(slug);
+      expect(a.startsWith(miroStart), slug).toBe(true);
+      expect(a, slug).not.toMatch(/docs\/|\.md\b/);
+    }
+    expect(await anleitung('ziel-chance')).toContain('Zum Abgleich braucht es auch ein Bild aus Miro: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“)');
+    expect(await anleitung('kundenprofil')).toContain('Ziel-Chance mit vier Linsen (Frame „T3 · 1 · Ziel-Chance“)');
   });
 
   it('methode_erklaeren und Anweisung: Links mit WERKSTATT_ORIGIN statt der Anfrage-Origin', async () => {

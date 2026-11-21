@@ -419,7 +419,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       '1:1 in dieser Runde, je 4 min: Sofie, Hewen, Joachim.',
       'Nach 40 min: auswählen allein, 7 min.',
       'Nach 47 min: Lückensätze gegen das Profil, 8 min.',
-      'Nach 55 min: IDEEN.md, drei Ideen als Lückensätze.',
+      'Nach 55 min: drei Ideen als Lückensätze in T3 · 3.',
     ],
     uebung: { dauer: '59 min (16 + 6 + 18 + 7 + 8 + 4)', form: 'allein, dazwischen eine stille Ideen-Spende' },
     miro: {
@@ -438,7 +438,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
         'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); allein wählen ist Kursregel.',
         'Lückensätze (8 min): je Idee ein Satz, Job, Pain und Gain mit ID aus dem eigenen Profil vom Vormittag (VPD S. 183–184).',
-        'Festhalten (4 min): docs/IDEEN.md mit den drei Lückensätzen, „Aussortiert“ und der Liste; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
+        'Festhalten (4 min): die drei Lückensätze, „Aussortiert“ und die Liste in der eigenen Spalte in T3 · 3; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',
       ],
       achten: [
         'Bei der Ideen-Spende wird nicht diskutiert und nicht bewertet – nur Stickies legen.',

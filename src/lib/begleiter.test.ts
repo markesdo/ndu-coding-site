@@ -613,6 +613,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     // Entscheidung 37 (21.11.): auch die Experience Map (Tag 2) nennt die Halle-Chance mit I3-1.
     const texte = ['/innolab/methoden/baum', '/innolab/methoden/ziel-chance', '/innolab/methoden/journey-map'].flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
     expect(quellen['/innolab/methoden/journey-map']).toContain('„Geht sich ein Kaffee noch aus?“ (I2-4, I3-1, I5-2)');
+    // Entscheidung 39: auch die Warten-Chance auf der Experience Map wie im Baum.
+    expect(quellen['/innolab/methoden/journey-map']).toContain('„Wann ist mein Kaffee fertig?“ (I2-5, I3-2, I3-3)');
     const halle = texte.flatMap((s) => [...s.matchAll(/Geht sich ein Kaffee noch aus\?“(?:'\s*:\s*\[|\s*\()([^)\]]*)/g)].map((m) => m[1])).filter((ids) => /I\d-\d/.test(ids));
     expect(halle.length).toBeGreaterThan(2);
     expect(halle.filter((ids) => ids.includes('I3-2'))).toStrictEqual([]);
@@ -762,5 +764,14 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(q).toContain('Markus fragt bei jeder Person nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum?');
     expect(q).toContain('<li data-schritt><strong>Festhalten:</strong> alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. <Timer minuten={4} /></li>');
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(36);
+  });
+  // Entscheidung 39 (21.11.): Tag 3 liegt ganz auf Miro – keine Datei in docs/ auf den Seiten und in den Notizen von Tag 3,
+  // kein Callout zu docs/, Commit und Source Control.
+  it('Tag 3: keine docs-Dateien auf den Seiten und in den Notizen von Tag 3', () => {
+    const seiten = ['/innolab/tag-3', '/innolab/methoden/baum', '/innolab/methoden/ziel-chance', '/innolab/methoden/kundenprofil',
+      '/innolab/methoden/hmw', '/innolab/methoden/ideation', '/innolab/methoden/value-map'];
+    const texte = seiten.flatMap((p) => [quellen[p] ?? '', JSON.stringify(NOTIZEN[p] ?? {})]);
+    expect(seiten.every((p) => (quellen[p] ?? '').length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/docs\/|(ZIEL-CHANCE|KUNDENPROFIL|HMW|IDEEN|VALUE-MAP)\.md|Source Control/g) ?? [])).toStrictEqual([]);
   });
 });

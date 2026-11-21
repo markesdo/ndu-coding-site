@@ -193,14 +193,14 @@ export const NOTIZEN_HMW: Record<string, Notiz> = {
       schritte: [
         'Jede*r schreibt die drei Fragen als Zettel in die eigene Spalte, die Ziel-Chance darüber.',
         'Bei den Proben: die zwei Wege je Frage als kleine Zettel neben die Frage.',
-        'Die gewählte Frage markieren; sie steht auch in docs/HMW.md.',
+        'Die gewählte Frage markieren, mit einem Satz warum.',
       ],
     },
     ablauf: {
       schritte: [
         'Allein (7 min): Grundform mit der eigenen Ziel-Chance, dann eine Variante weiter (Warum will die Person das?) und eine genauer (Person und Moment).',
         'Zwei Proben, allein (5 min): zu jeder Frage zwei verschiedene Wege notieren. Fällt nur einer ein, steckt die Lösung schon in der Frage (Torres S. 94: „Is there more than one way to address this …?“). Dann: zu weit oder zu eng – Sweet Spot? Kursformat statt Vorlesen zu dritt, weil jede*r ein eigenes Produkt hat.',
-        'Wählen und festhalten (3 min): eine Frage, ein Satz warum, in docs/HMW.md.',
+        'Wählen und festhalten (3 min): eine Frage, ein Satz warum, in der eigenen Spalte in T3 · 2.',
       ],
       achten: [
         'Jede Frage beginnt mit „Wie könnten wir …“ und hängt an der Ziel-Chance.',
