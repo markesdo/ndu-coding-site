@@ -259,7 +259,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Das Profil wird nachträglich an die Idee angepasst.',
         'Alles abgehakt, nichts offen.',
         'Ein Pain Reliever ohne ID bekommt trotzdem einen Haken.',
-        'Ein Produkt bekommt eine erfundene P-ID.',
+        'Ein Produkt bekommt schon im Quadrat eine ID – oder eine P-ID für einen Pain, den es nicht direkt trifft.',
       ],
     },
     kern: [

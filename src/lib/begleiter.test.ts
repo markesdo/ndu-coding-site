@@ -1040,7 +1040,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(fitHandout).toContain('Trifft ein Produkt direkt einen Job, Pain oder Gain, bekommt es dessen ID – bei der Kaffeebar J1');
     expect(fitHandout).toContain('Haken an jedes Produkt, das einen Job, Pain oder Gain direkt trifft, und an jeden Pain Reliever und Gain Creator');
     expect(fitHandout).toContain('Trifft ein Zettel nichts, bekommt er kein ✓');
-    expect(fitHandout.match(/bleibt es[^.]*stehen|hängt, bleibt|nichts trägt|Produkt[^.;]*bleibt(?! offen)|Produkt[^.]*nur die J-ID|J-ID des Jobs, den es direkt trifft/g) ?? []).toStrictEqual([]);
+    expect(fitHandout.match(/bleibt es[^.]*stehen|hängt, bleibt|nichts trägt|Produkt bleibt|Produkte? bleiben? stehen|Produkt[^.]*nur die J-ID|J-ID des Jobs, den es direkt trifft/g) ?? []).toStrictEqual([]);
     expect(fitHandout.match(/Im Text nennt das Buch nur/g) ?? []).toStrictEqual([]);
     expect(q).toContain('trifft eines direkt einen Job, Pain oder Gain, kommt dessen ID beim Fit dazu (S. 110).');
     expect(q).toContain('- ✓ links → rechts: [Pain Reliever → P…; Gain Creator → G…; Produkt → J…/P…/G…]');
@@ -1048,6 +1048,10 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const nFit = NOTIZEN['/innolab/methoden/value-map']?.fit;
     expect(nFit?.live[0]).toBe('Abbildung: Quadrat = Value Map, jeder Zettel geprüft, auch Produkte. Kreis = Profil.');
     expect(nFit?.kern.some((k) => k.text.startsWith('Haken zeigen, was Products & Services, Pain Relievers und Gain Creators treffen: „Check marks signify that products and services'))).toBe(true);
+    const nVm = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    expect(JSON.stringify(nVm)).toContain('Produkte tragen im Quadrat keine ID; ihre ID (J, P oder G) kommt beim Fit.');
+    expect(JSON.stringify(nVm)).toContain('Ein Produkt bekommt schon im Quadrat eine ID – oder eine P-ID für einen Pain, den es nicht direkt trifft.');
+    expect(JSON.stringify(nVm).match(/die J-ID kommt beim Fit|erfundene P-ID/g) ?? []).toStrictEqual([]);
     // Code-Review 21.11.: J4 ist halb getroffen (Anstehen über P2) – darum „?“; höchstes ✗ wie auf fit-kaffeebar-rechts.
     expect(fit).toContain('<td>Kein Zettel links nennt G2; J4 nur halb (Anstehen über P2) → ?</td>');
     expect(fit).toContain('Höchstes ✗: J2 und G2 – bewusst?');
