@@ -41,17 +41,17 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   // NEU – erst machen
   'produkt-wirkung': {
     live: [
-      'Vier Zettel der Kaffeebar, reihum je einer: welches Feld?',
+      'Allein still: welches Feld für jeden Zettel? Dann zugleich zeigen.',
       'Erst alle vier beantworten lassen, dann aufdecken.',
       'A, C: Products & Services. B: Pain Reliever P1. D: Gain Creator G1.',
       'Probe: Steht es im Schaufenster – oder sagt es, was sich ändert?',
       'Wenn hinten: nur B und A, als Paar.',
     ],
-    uebung: { dauer: '2 min', form: 'zu dritt, reihum laut; der vierte Zettel gemeinsam' },
+    uebung: { dauer: '2 min', form: 'allein still zuordnen, dann je Zettel alle zugleich zeigen (1, 2 oder 3 Finger); niemand wird aufgerufen' },
     ablauf: {
       schritte: [
         'Vier Zettel zeigen: A „QR-Code an der Hallentür“, B „Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist“, C „Express-Ausgabe mit drei Standardgetränken“, D „Der Kaffee steht bereit, wenn man an der Ausgabe ankommt“.',
-        'Reihum: je ein Zettel, ein Feld (Products & Services, Pain Relievers, Gain Creators), ein Halbsatz warum.',
+        'Allein still: alle vier Zettel einem Feld zuordnen (Products & Services, Pain Relievers, Gain Creators). Dann je Zettel alle zugleich zeigen: 1, 2 oder 3 Finger. Eine offene Frage an alle: Wer sagt in einem Halbsatz, warum? Niemanden aufrufen.',
         'Aufdecken und vergleichen.',
       ],
       achten: [
@@ -111,19 +111,20 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   beispiel: {
     live: [
       'Drei Lückensätze vorlesen, Tabelle noch leer.',
-      'Reihum: Welche Idee trifft am meisten – und welchen Eintrag nicht?',
+      'Allein still: Welche Idee trifft am meisten? Dann zugleich zeigen.',
+      'Offene Frage an alle: Welchen Eintrag trifft sie nicht?',
       'Zeile für Zeile aufdecken, mit den Antworten aller vergleichen.',
       'Das „?“ beim Kaffeewagen: eine Annahme, kein Kreuz.',
       'Letzte Zeile: Fit nach dem Buch – trifft J1, P1–P3, G1.',
     ],
-    uebung: { dauer: '1 min vor dem Aufdecken', form: 'zu dritt, reihum laut: eine Zahl, ein Eintrag' },
+    uebung: { dauer: '1 min vor dem Aufdecken', form: 'allein still, dann alle zugleich zeigen (1, 2 oder 3 Finger für die Idee); eine offene Frage an alle nach einem Eintrag' },
     verstaendnis: {
       frage: 'Wofür steht das „?“ beim Kaffeewagen unter P2?',
       antwort: 'Für eine Annahme: Ob es am Bahnsteig keine Schlange gibt, weiß niemand. Sie käme in die Annahmen-Map, wenn diese Idee weiterginge – kein Haken und kein Kreuz.',
     },
     kern: [
       {
-        text: 'Kaffeebar: drei Lückensätze am selben Profil. „Im Gehen bestellen“ trifft J1, P1, P2, P3 und G1; die Anzeige an der Hallentür nur J1 und P1; der Kaffeewagen J1, P1 und G1, P2 offen als „?“. Die Value Map von „Im Gehen bestellen“ ist nach dem Profil geordnet (der Pain Reliever zu P1 oben); im Fit nach dem Buch bekommen ihre drei Pain Relievers und der Gain Creator ein ✓, J2, J3, G2, G3 und P4 ein ✗, J4 ein „?“ (Kursregel).',
+        text: 'Kaffeebar: drei Lückensätze am selben Profil. „Im Gehen bestellen“ trifft J1, P1, P2, P3 und G1; die Anzeige an der Hallentür nur J1 und P1; der Kaffeewagen J1, P1 und G1, P2 offen als „?“. Die Value Map von „Im Gehen bestellen“ ist nach dem Profil geordnet (der Pain Reliever zu P1 oben); im Fit nach dem Buch bekommen ihre drei Pain Relievers und der Gain Creator ein ✓, J2, J3, G2, G3 und P4 ein ✗, J4 ein „?“.',
         quelle: 'value-map.astro, Folie beispiel (Handout)',
       },
       {
@@ -167,24 +168,24 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Nach 5 min: Value Map im Canvas-Frame, ordnen – Timer 20 min.',
       '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
       'Nach 25 min: Fit prüfen wie im Buch, Timer 7 min.',
-      'Nach 32 min: VALUE-MAP.md mit allen „?“, Zeile ins Log.',
+      'Nach 32 min: alle „?“ ins Feld auf T3 · 4.',
       'Wenn hinten: Value Map nur mit einem Pain Reliever, einem Gain Creator.',
     ],
-    uebung: { dauer: '36 min (5 + 20 + 7 + 4)', form: 'allein, Markus fragt je nach einem Kreuz' },
+    uebung: { dauer: '36 min (5 + 20 + 7 + 4)', form: 'allein; Markus fragt je nach einem ✗: bewusst verzichtet – und warum?' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'T3 · 4, eigene Spalte: „Ideen vergleichen und wählen (Kursregel)“ – die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils.',
+        'T3 · 4, eigene Spalte: „Ideen vergleichen und wählen“ – die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils.',
         'Canvas-Frame „T3 · 4 · Canvas · Name“: Value Map des Spitzenreiters ins Quadrat, dann alle Stickies auf die drei Skalen links unten, Unverzichtbares oben.',
         'Fit im Canvas-Frame: ✓ an Pain Relievers und Gain Creators, ✗ an offene Jobs, Pains und Gains, „?“ wo ihr es nicht wisst.',
       ],
     },
     ablauf: {
       schritte: [
-        'Vergleichen und wählen (5 min, Kursregel): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Value Map (20 min): Products & Services, Pain Relievers, Gain Creators des Spitzenreiters, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem Kreuz aus dem Vergleich. Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
-        'Fit prüfen (7 min): ✓ an jeden Pain Reliever und Gain Creator, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt; „?“ wo ihr es nicht wisst (Kursregel; VPD S. 110–113).',
-        'Festhalten (4 min): docs/VALUE-MAP.md mit Spitzenreiter, Value Map, Fit und allen „?“ der drei Ideen; eine Zeile ins Entscheidungslog: Spitzenreiter, Fit als Beleg, „auf Papier“. Claude-Prüfung bis Tag 4.',
+        'Vergleichen und wählen (5 min): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
+        'Value Map (20 min): Products & Services, Pain Relievers, Gain Creators des Spitzenreiters, je mit P- oder G-ID; dann je Spalte ordnen, Unverzichtbares oben (VPD S. 102). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum? (VPD S. 105–106, 110, 113). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Fit prüfen (7 min): ✓ an jeden Pain Reliever und Gain Creator, der einen Job, Pain oder Gain trifft; ✗ an das, was offen bleibt; „?“ wo ihr es nicht wisst – das Buch kennt nur ✓ und ✗, jedes „?“ wird an Tag 4 eine Annahme (VPD S. 110–113).',
+        'Festhalten (4 min): alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. Claude-Prüfung bis Tag 4.',
       ],
       achten: [
         'Gewählt wird nach den obersten Einträgen, nicht nach der Zahl der Haken.',

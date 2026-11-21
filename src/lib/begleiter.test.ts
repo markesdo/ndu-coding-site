@@ -751,4 +751,16 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(liste).toContain('T3 · 4 · Canvas · euer Name');
     expect(JSON.stringify(NOTIZEN['/innolab/methoden/baum'] ?? {}).match(/Entscheidungslog/g) ?? []).toStrictEqual([]);
   });
+  // Entscheidung 38 (21.11.) und „kein Reihum“: Value Map ohne Kursregel-Etikett, ohne Entscheidungslog, ohne docs-Dateien,
+  // ohne Reihum; die Frage beim 1:1 ist das bewusst offene ✗ oben im Profil.
+  it('Tag 3: value-map ohne Kursregel, Entscheidungslog, docs-Dateien und Reihum', () => {
+    const q = quellen['/innolab/methoden/value-map'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    const texte = [q, JSON.stringify(n)];
+    expect(texte.every((x) => x.length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/Kursregel|Entscheidungslog|ins Log|docs\/(IDEEN|VALUE-MAP|KUNDENPROFIL)\.md|reihum|nach einem Kreuz/gi) ?? [])).toStrictEqual([]);
+    expect(q).toContain('Markus fragt bei jeder Person nach einem ✗ oben im Profil: Verzichtet ihr bewusst darauf – und warum?');
+    expect(q).toContain('<li data-schritt><strong>Festhalten:</strong> alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. <Timer minuten={4} /></li>');
+    expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(36);
+  });
 });
