@@ -835,17 +835,19 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(texte.every((x) => x.length > 1000)).toBe(true);
     expect(texte.flatMap((x) => x.match(/Kursregel|Entscheidungslog|ins Log|docs\/(IDEEN|VALUE-MAP|KUNDENPROFIL)\.md|reihum|nach einem Kreuz/gi) ?? [])).toStrictEqual([]);
     // Entscheidung 68 (21.11.): 1:1 ab Minute 5, die Frage zielt auf das ✗ des Spitzenreiters aus dem Vergleich der Lückensätze.
-    expect(q).toContain('Ab Minute 5 geht Markus von Canvas zu Canvas und fragt bei jeder Person: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ Gemeint ist das ✗ aus dem Vergleich der drei Lückensätze.');
-    expect(n.vorgehen?.ablauf?.schritte?.[1]).toContain('Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“');
-    expect(n.vorgehen?.uebung?.form).toBe('allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum?');
-    expect(n.vorgehen?.live).toContain('1:1 ab Minute 5: ✗ des Spitzenreiters oben – bewusst in Kauf, warum?');
+    expect(q).toContain('Ab Minute 5 geht Markus von Canvas zu Canvas und fragt bei jeder Person: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“. Gemeint ist das ✗ aus dem Vergleich der drei Lückensätze.');
+    expect(n.vorgehen?.ablauf?.schritte?.[1]).toContain('Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“');
+    expect(n.vorgehen?.uebung?.form).toBe('allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum? Ohne ✗ oben: Was bleibt oben offen?');
+    expect(n.vorgehen?.live).toContain('1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.');
+    expect(n.vorgehen?.live).toContain('Frage: ✗ des Spitzenreiters oben bewusst? Sonst: Was bleibt oben offen?');
+    expect(n.vorgehen?.live).toContain('Nach 5 min: Satz, Profil von oben, Skalen – Timer 20 min.');
     expect(texte.flatMap((x) => x.match(/Verzichtet ihr bewusst darauf|bewusst verzichtet – und warum/g) ?? [])).toStrictEqual([]);
     expect(q).toContain('<li data-schritt><strong>Festhalten:</strong> alle „?“ – aus dem Vergleich der drei Ideen und aus dem Fit – ins Feld „Ideen vergleichen und wählen“ auf T3 · 4; an Tag 4 werden sie Annahmen. <Timer minuten={4} /></li>');
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(36);
   });
   // Entscheidung 67 (21.11.): Value Map füllen – Titel = Summe der Timer (36 min), Schritt 2 nennt Felder, Reihenfolge, IDs und
   // Skalen; Produkte tragen im Quadrat keine ID, darum nirgends „jeder Zettel mit P- oder G-ID“; fit-kaffeebar mit zwei Produkt-Zeilen.
-  it('Tag 3: value-map#vorgehen – 36 min, Schritt 2 ausgeschrieben, nur grüne Zettel mit P- oder G-ID', () => {
+  it('Tag 3: value-map#vorgehen – 36 min, Schritt 2 ausgeschrieben, nur Pain Reliever und Gain Creator mit P- oder G-ID', () => {
     const q = quellen['/innolab/methoden/value-map'] ?? '';
     const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
     const a = q.indexOf('id="vorgehen"');
@@ -859,8 +861,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(schritte).toContain('<li data-schritt><strong>Euer Canvas, Quadrat links – Value Map des Spitzenreiters:</strong> aus dem Lückensatz, dann ergänzen: 1 Products & Services · 2 Pain Relievers, je Zettel eine P-ID · 3 Gain Creators, je Zettel eine G-ID. Zuletzt alles auf die Skalen, Unverzichtbares oben. <Timer minuten={20} /></li>');
     expect(folie).toContain('Produkte bekommen im Quadrat keine ID');
     expect(folie).toContain('Dazu neun Minuten Theorie mit der Kaffeebar.');
-    expect([q, JSON.stringify(n)].flatMap((x) => x.match(/jeder Zettel mit (P- oder G-)?ID|je mit P- oder G-ID|zeigt erst der Test/g) ?? [])).toStrictEqual([]);
-    expect(q).toContain('Die Value Map schreibt aus und ergänzt – jeder grüne Zettel mit <span style="white-space:nowrap">P- oder G-ID</span>.</p>');
+    expect([q, JSON.stringify(n)].flatMap((x) => x.match(/jeder (grüne )?Zettel mit (P- oder G-)?ID|je mit P- oder G-ID|zeigt erst der Test/g) ?? [])).toStrictEqual([]);
+    expect(q).toContain('Die Value Map schreibt aus und ergänzt – jeder Pain Reliever und Gain Creator mit <span style="white-space:nowrap">P- oder G-ID</span>.</p>');
     const fit = q.slice(q.indexOf('id="fit-kaffeebar"'), q.indexOf('</tbody>', q.indexOf('id="fit-kaffeebar"')));
     expect([...fit.matchAll(/<tr data-schritt><td>Products & Services · ([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><\/tr>/g)].map((m) => m.slice(1))).toStrictEqual([
       ['QR-Code an der Hallentür, Bestellung im Browser ohne App', 'J1 Kaffee besorgen', '✓'],

@@ -170,7 +170,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     live: [
       'Zeile 1 zeigen, fragen: Was würdet ihr die Person als Nächstes fragen?',
       'Gehalt: Erhöhung und Kürzung sind dieselbe Aussage. Besser: Betrag, Hindernis, Risiko.',
-      'Fremdsprache: zweimal Warum – bleibt funktional. Kaffeebar: Warum führt zu J2.',
+      'Fremdsprache: zweimal Warum – bleibt funktional.',
       'Kaffeebar: I5 sagt „voll“. Niemand hat nachgefragt. Die Zahl hat nur I3.',
       'Falle: die Zahl von I3 als Präzisierung von I5 verkaufen.',
     ],

@@ -97,9 +97,14 @@ describe('Kaffeebar-Beispiel: Fit der Value Map „Im Gehen bestellen“', () =>
   it('die Folie nennt dieselben getroffenen und offenen Einträge wie das Handout', () => {
     const folie = abschnitt('src/pages/innolab/methoden/value-map.astro', 'fit-kaffeebar');
     // Tabelle: jede Zeile mit ✓ nennt in Spalte „trifft“ den getroffenen Eintrag; Schritt 2 nennt ✗ und „?“.
-    // Zwei Zettel dürfen denselben Eintrag treffen (beide Produkte → J1, Entscheidung 67): verglichen wird die Menge.
-    const tabelle = [...new Set([...folie.matchAll(/<tr data-schritt><td>[^<]*<\/td><td>([^<]*)<\/td><td>✓<\/td><\/tr>/g)].flatMap((m) => ids(m[1])))];
-    expect(tabelle.sort()).toStrictEqual([...getroffen].sort());
+    // Nur Products & Services dürfen denselben Eintrag mehrfach treffen (beide Produkte → J1, Entscheidung 67): dort zählt die
+    // Menge. Pain Relievers und Gain Creators treffen je einen eigenen Eintrag – dort zählt jede Zeile.
+    const zeilen = [...folie.matchAll(/<tr data-schritt><td>([^<]*)<\/td><td>([^<]*)<\/td><td>✓<\/td><\/tr>/g)];
+    const produkt = (m: RegExpMatchArray) => m[1].startsWith('Products & Services · ');
+    const ausProdukten = [...new Set(zeilen.filter(produkt).flatMap((m) => ids(m[2])))];
+    const ausWirkungen = zeilen.filter((m) => !produkt(m)).flatMap((m) => ids(m[2]));
+    expect(ausProdukten).toStrictEqual(['J1']);
+    expect([...ausProdukten, ...ausWirkungen].sort()).toStrictEqual([...getroffen].sort());
     const rechts = folie.match(/<strong>2 Rechts, was übrig ist:<\/strong> ✗ ([^–]+)– <strong>\?<\/strong> ([^<]+)<\/p>/);
     expect(rechts, 'Folienzeile „2 Rechts, was übrig ist: ✗ … – ? …“ fehlt').not.toBeNull();
     expect(ids(rechts?.[1] ?? '').sort()).toStrictEqual([...kreuz].sort());
