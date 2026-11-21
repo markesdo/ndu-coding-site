@@ -484,6 +484,8 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
   .euer-baum { display: grid; gap: 1rem 1.5rem; align-items: start; }
   @media (min-width: 900px) { .euer-baum { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); } }
   .euer-baum > ol { margin: 0; }
+  /* Seit „(eine je Interview genügt)“ auf der gelben Karte: links etwas breiter, engere Lücke – die Folie passt bei 720p, der Baum bleibt in der Folie. */
+  @media (min-width: 900px) { :global(html[data-beamer]) .euer-baum { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); column-gap: .5rem; } }
   .euer-baum-bild { margin: 0; }
   .euer-baum-bild :global(.baum) { margin: 0; }
   :global(html[data-beamer]) .euer-baum-bild :global(.baum-knoten) { min-width: 3rem; max-width: 4.6rem; padding: .2rem .25rem; font-size: .55rem; line-height: 1.2; }
