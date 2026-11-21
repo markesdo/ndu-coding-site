@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { NOTIZEN_CONCEPT_STORY } from '../data/begleiter/concept-story';
 import { quellenAusGlob } from './begleiter';
@@ -17,14 +18,14 @@ describe('Tag 3: Story-Bogen (Entscheidung 66)', () => {
     expect(f).toContain('<li data-schritt><strong>Warum für euch:</strong> Ihr wisst nicht, ob eure Idee gut ist? „That’s a story.“</li>');
     expect(f).toContain('<li data-schritt><strong>Drei Fragen:</strong> Was ist die Geschichte? Wer ist die Hauptfigur? Was ist ihr Ziel?</li>');
     expect(f).toContain('<li data-schritt><strong>Danach:</strong> Am Bogen prüft ihr, was in euren Prototyp kommt.</li>');
-    expect(f).toContain('„What’s the story? Who is the hero? What is the hero’s goal?“ ({LICHAW}, Einleitung, S. xiii–xiv)');
-    expect(NOTIZEN_CONCEPT_STORY['story-bogen'].kern?.[0].quelle).toContain('Einleitung, S. xiii–xiv');
+    expect(f).toContain('„What’s the story? Who is the hero? What is the hero’s goal?“ ({LICHAW}, Introduction vor Kap. 1, S. xiii–xiv)');
+    expect(NOTIZEN_CONCEPT_STORY['story-bogen'].kern?.[0].quelle).toContain('Introduction (vor Kap. 1), S. xiii–xiv');
   });
   it('Lichaws Film ist ein Dokumentarfilm zum Jahresende im Master, kein Abschlussfilm', () => {
     const texte = [seite, JSON.stringify(NOTIZEN_CONCEPT_STORY)];
     expect(texte.every((x) => x.length > 1000)).toBe(true);
     expect(texte.flatMap((x) => x.match(/Abschlussfilm/g) ?? [])).toStrictEqual([]);
-    expect(texte.map((x) => x.includes('Dokumentarfilm zum Jahresende im Master'))).toStrictEqual([true, false]);
+    expect(texte.map((x) => x.includes('Dokumentarfilm zum Jahresende'))).toStrictEqual([true, true]);
     expect(NOTIZEN_CONCEPT_STORY['story-bogen'].geschichte?.text).toContain('im Master ihren Dokumentarfilm zum Jahresende');
   });
   it('keine Kürz- oder Überspring-Hinweise, keine Uhrzeit mitten im Block; jede Folie mit Sprechzeit', () => {
@@ -38,8 +39,16 @@ describe('Tag 3: Story-Bogen (Entscheidung 66)', () => {
       return Number(z?.match(/Sprechzeit ~(\d+) min/)?.[1] ?? NaN);
     });
     expect(minuten.every((m) => m > 0)).toBe(true);
-    // Kopfkommentar in concept-story.ts nennt diese Summe.
-    expect(minuten.reduce((a, m) => a + m, 0)).toBe(47);
+    // Der Kopfkommentar in concept-story.ts nennt genau diese Summe.
+    const kopf = readFileSync('src/data/begleiter/concept-story.ts', 'utf8').split('export const')[0];
+    expect(kopf).toContain(`rund ${minuten.reduce((a, m) => a + m, 0)} min`);
+  });
+  it('höchstens fünf live-Stichworte je Folie (typen.ts)', () => {
+    const zuViele = Object.entries(NOTIZEN_CONCEPT_STORY).filter(([, n]) => n.live.length > 5).map(([id, n]) => `${id}: ${n.live.length}`);
+    expect(zuViele).toStrictEqual([]);
+  });
+  it('mitten im Block eine Uhrprüfung: concept-story notiert die Ist-Zeit', () => {
+    expect(NOTIZEN_CONCEPT_STORY['concept-story'].live[0]).toBe('Zeit: Ist-Zeit notieren; Sprechzeit ~3 min, mit der BOOM-Karte.');
   });
   it('die sechs Folien ohne Geschichte haben jetzt eine, mit Seite; eigene Worte als Kursformulierung', () => {
     for (const id of ['hauptfigur', 'drei-storys', 'concept-story', 'hoehepunkt', 'woher', 'ein-satz']) {

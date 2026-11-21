@@ -18,8 +18,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Fragen: Wer hat im Entrepreneur Lab ein Storyboard gezeichnet?',
       '„Ihr wisst nicht, ob eure Idee gut ist? Lichaw sagt: Das ist eine Geschichte.“',
       'Drei Fragen zeigen: Hauptfigur und Ziel stehen schon im Kundenprofil.',
-      'Lichaws Film erzählen: kein Konflikt, kein Höhepunkt, ein empörter Zuschauer.',
-      'Abbildung: x ist Zeit, y ist Spannung; Cliffhanger zeigen.',
+      'Lichaws Film erzählen; dann Bogen: x Zeit, y Spannung, Cliffhanger.',
     ],
     verstaendnis: {
       frage: 'Was ist ein Cliffhanger auf dieser Kurve?',
@@ -33,7 +32,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     kern: [
       {
         text: 'Warum für euch: „Let’s say that you want to build a new product, but aren’t sure if it’s a good idea? That’s a story.“ Ebenso: „You want to figure out how your product should work? Story.“ Und vor jedem neuen Projekt drei Fragen: „What’s the story? Who is the hero? What is the hero’s goal?“',
-        quelle: `${LICHAW}, Einleitung, S. xiii–xiv`,
+        quelle: `${LICHAW}, Introduction (vor Kap. 1), S. xiii–xiv`,
       },
       {
         text: 'Bezug zu heute: Hauptfigur und Ziel stehen seit dem Vormittag im Kundenprofil (Segment, Jobs); offen ist die erste Frage. Danach prüft ihr am Bogen, was in euren Prototyp kommt (Folie „Die Story entscheidet, was ihr baut“). Nicht sagen, dass die Concept Story an Tag 4 geschrieben wird – dafür gibt es dort keinen Block.',
@@ -101,9 +100,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   stationen: {
     live: [
-      'Zeit: Sprechzeit ~4 min.',
       'Fragen: Wer kennt „Zurück in die Zukunft“?',
-      'Film entlang der Abbildung erzählen, je Station ein Satz.',
+      'Zeit: Sprechzeit ~4 min; Film an der Abbildung, je Station ein Satz.',
       '„Ihr müsst Marty nicht mögen. Ihr müsst nur verstehen, was er will.“',
       'Krise betonen: Nichts hat funktioniert, das Ziel ist weiter weg denn je.',
       'Bei Bedarf: Film unbekannt – Drachen-Zeichnung der Abbildung erzählen.',
@@ -171,8 +169,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   pinocchio: {
     live: [
-      'Zeit: Sprechzeit ~2 min.',
-      'Vier Kästen vorlesen, nichts erklären.',
+      'Zeit: Sprechzeit ~2 min; vier Kästen vorlesen, nichts erklären.',
       'Fragen: Was fehlt? Reihum, laut, je ein Satz.',
       'Noch nicht aufdecken – erst alle drei gehört.',
       '„Ohne Konflikt ist es keine Geschichte – nur Dinge, die passieren.“',
@@ -207,8 +204,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   'a-mal-b': {
     live: [
-      'Zeit: Sprechzeit ~3 min.',
-      'Abbildung: zwei Pfeile, ein Gipfel.',
+      'Zeit: Sprechzeit ~3 min; Abbildung: zwei Pfeile, ein Gipfel.',
       '„A ist die Kraft zum Ziel, B die Kraft dagegen. Zusammen ergeben sie den Gipfel.“',
       'iPhone: A zwei Geräte in einem, B kein neues Gerät kaufen.',
       'Fragen: Was ist B bei der Kaffeebar?',
@@ -240,8 +236,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   flach: {
     live: [
-      'Zeit: Sprechzeit ~3 min.',
-      'Punkte 1–3 aufdecken, dann die Frage.',
+      'Zeit: Sprechzeit ~3 min; Punkte 1–3 aufdecken, dann die Frage.',
       'Fragen: Was fehlt dieser Geschichte? Reihum, laut.',
       'Nicht auflösen – die Antwort ist die nächste Folie.',
       '„Die Geschichte hat eine Struktur. Aber sie ist nicht hoch.“',
@@ -266,8 +261,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   hoch: {
     live: [
-      'Zeit: Sprechzeit ~3 min.',
-      'Abbildung: Krise als Hürde, Höhepunkt als Glühbirne.',
+      'Zeit: Sprechzeit ~3 min; Abbildung: Krise als Hürde, Höhepunkt als Glühbirne.',
       '„2-in-1 war eine Linie. 3-in-1 war der Gipfel.“',
       'Krise vorlesen: iPod, Handys, Smartphones, Preis, Bedienung.',
       '„Niemand hatte nach drei Geräten in einem gefragt.“',
@@ -348,7 +342,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   'concept-story': {
     live: [
-      'Zeit: Sprechzeit ~3 min, mit der BOOM-Karte.',
+      'Zeit: Ist-Zeit notieren; Sprechzeit ~3 min, mit der BOOM-Karte.',
       '„Das ist die Rechnung, die jemand in Sekunden macht, wenn er von euch hört.“',
       'Abbildung von links lesen, nur bis zur Hürde.',
       'Krise = Konkurrenz: Produkt, heutiger Weg, Widerstand gegen Neues.',
@@ -381,11 +375,10 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   hoehepunkt: {
     live: [
-      'Zeit: Sprechzeit ~3 min, mit dem halben Telefongespräch.',
       '„Der Höhepunkt ist euer Wertversprechen: anders und besser als heute.“',
-      'Fallende Handlung: ein Gedanke, noch keine Handlung.',
+      'Fallende Handlung: ein Gedanke, keine Handlung – halbes Telefongespräch erzählen.',
       '„Dieser Gedanke ist eine Hypothese. Er kommt in die Annahmen-Map.“',
-      'Ende: Ziel der Person und messbares Ziel des Geschäfts.',
+      'Zeit: Sprechzeit ~3 min; Ende: Ziel der Person und des Geschäfts, messbar.',
       'Falle: fallende Handlung als „meldet sich an“ – das ist Tag 4.',
     ],
     verstaendnis: {
@@ -442,8 +435,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   beispiel: {
     live: [
-      'Zeit: Sprechzeit ~5 min.',
-      'Stationen 1–4 aufdecken; IDs zeigen: alles aus Profil und Interviews.',
+      'Zeit: Sprechzeit ~5 min; Stationen 1–4 aufdecken, IDs aus Profil und Interviews.',
       'Fragen: Was muss der Höhepunkt auflösen? Reihum, laut.',
       'Aufdecken: „Fertig 7:31. Dein Zug fährt 7:38.“',
       'Fragen: Was denkt die Pendlerin danach?',
@@ -477,9 +469,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   woher: {
     live: [
-      'Zeit: Sprechzeit ~3 min, mit FitCounter.',
       '„Ihr erfindet nichts. Fast jede Station steht schon in euren Dateien.“',
-      'Tabelle Zeile für Zeile: wo jede*r die Station schon findet.',
+      'Zeit: Sprechzeit ~3 min; FitCounter, dann Tabelle Zeile für Zeile.',
       'Betonen: Nur Station 6 ist neu – und eine Annahme.',
       'Fragen: Welche Station ist bei euch am dünnsten belegt?',
       'Falle: Krise aus dem Kopf – sie steht in den Interviews.',
@@ -527,8 +518,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       },
     ],
     geschichte: {
-      text: 'Als Steve Jobs 2007 das iPhone vorstellte, war das Gerät in seiner Hand kein fertiges iPhone, sondern „a semi-functional prototype“ – eine Requisite, die die Vision und die Story trug. Lichaw: Die Story lief durch alles, vom Design über die Präsentation bis zum Prototyp. Der Satz ist die kürzeste Form dieser Story: Wo ihr keinen Bogen zeichnen könnt, „you can speak a few words and see how people respond“.',
-      quelle: `${LICHAW}, Kap. 7, Elevator Pitch, S. 127–128; Build and Communicate, S. 129 (die Latte-Zahl dort nicht nennen)`,
+      text: 'Als Steve Jobs 2007 das iPhone vorstellte, war das Gerät in seiner Hand kein fertiges iPhone, sondern „a semi-functional prototype“ – eine Requisite, die die Vision und die Story trug. Jobs ließ seine Vision und Story durch alles laufen, vom Design über die Präsentation bis zum Prototyp. Der Satz ist die kürzeste Form dieser Story: Wo ihr keinen Bogen zeichnen könnt, „you can speak a few words and see how people respond“.',
+      quelle: `${LICHAW}, Kap. 7, Elevator Pitch, S. 127–128; Build and Communicate, S. 129 (die Latte-Zahl dort nicht nennen); Brücke zum Satz ist Kursformulierung`,
     },
     ueberleitung: 'Damit endet die Theorie. Bis 17:15 holt ihr nach, was vom Tag offen ist.',
   },
