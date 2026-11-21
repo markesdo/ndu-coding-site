@@ -25,7 +25,7 @@ const GRUPPE = 'map-anlaeufe';
 const NUR_MOMENTE = { t: KAFFEEBAR_BAUM_INTERVIEWS.t, kinder: (KAFFEEBAR_BAUM_INTERVIEWS.kinder ?? []).map((k) => ({ t: k.t })) };
 // Anlauf A (Folie „drei-anlaeufe“, klein wiederholt auf „anlauf-a“).
 const ANLAUF_A = ['In die Halle kommen', 'Schlange ansehen', 'auf die Uhr schauen', 'anstellen', 'warten', 'Kaffee nehmen', 'zum Bahnsteig', 'einsteigen'];
-// Ein Moment: tut · fühlt · belegt (erzählt in N von M Geschichten) – die Prüfzeile unter jedem Anlauf, die Bilanz der Folien 4–5.
+// Ein Moment: tut · fühlt · belegt (erzählt in N von M Interviews) – die Prüfzeile unter jedem Anlauf, die Bilanz der Folien 4–5.
 const BAUSTEINE = ['tut', 'fühlt', 'belegt'] as const;
 // Folie „zusammen“: Ablauf (oben) + Gefühl (unten) = Moment. Die Karte trägt nur Name und Zählung (+ Marke Tief/Ende, ohne
 // ID); Momente und Zählung wie auf journey-map.astro#beispiel, die Zahl aus den Skizzen (zaehlung). Die Schritte und Gefühle
@@ -48,7 +48,7 @@ const idsIn = (g: GruppeId) => SKIZZEN.flatMap((s) => s.stickies.filter((st) => 
 const gezeigt = [
   ...EINZELSTIMMEN,
   'I2-1', 'I4-2', 'I5-6', 'I2-2', 'I2-4', 'I2-5', 'I3-3', 'I4-3',
-  // nur gesprochen (Begleiter „anlauf-a“): der Automat in drei Geschichten
+  // nur gesprochen (Begleiter „anlauf-a“): der Automat in drei Interviews
   'I1-3', 'I2-3',
 ];
 const fehlt = gezeigt.filter((id) => !ZITATE.has(id));
@@ -61,10 +61,10 @@ if (markeFehlt.length) throw new Error(`tag-3/experience-map.astro: Marke Tief/E
 // Restzeile: Einzelstimmen stehen in den Skizzen, aber in keiner Gruppe.
 const einzelGruppiert = EINZELSTIMMEN.filter((id) => !SKIZZEN.some((s) => s.stickies.some((st) => st.id === id && !st.g)));
 if (einzelGruppiert.length) throw new Error(`tag-3/experience-map.astro: Einzelstimme fehlt in den Skizzen oder hat eine Gruppe: ${einzelGruppiert.join(', ')}`);
-// Texte, die Zahlen aus den Skizzen nennen: „fünf Zitate, drei Geschichten“ (anlauf-c), „Im Zug“ in einer Geschichte (zusammen),
-// der Automat in drei von fünf Geschichten (Begleiter anlauf-a).
-if (idsIn('a').length !== 5 || geschichtenIn('a') !== 3) throw new Error('tag-3/experience-map.astro: „fünf Zitate, drei Geschichten“ stimmt nicht mehr');
-if (geschichtenIn('d') !== 1) throw new Error('tag-3/experience-map.astro: „Im Zug“ steht nicht mehr in genau einer Geschichte');
+// Texte, die Zahlen aus den Skizzen nennen: „fünf Zitate, drei Interviews“ (anlauf-c), „Im Zug“ in einem Interview (zusammen),
+// der Automat in drei von fünf Interviews (Begleiter anlauf-a).
+if (idsIn('a').length !== 5 || geschichtenIn('a') !== 3) throw new Error('tag-3/experience-map.astro: „fünf Zitate, drei Interviews“ stimmt nicht mehr');
+if (geschichtenIn('d') !== 1) throw new Error('tag-3/experience-map.astro: „Im Zug“ steht nicht mehr in genau einem Interview');
 if (zaehlung('b') !== '3 von 5' || !['I1-3', 'I2-3', 'I4-3'].every((id) => idsIn('b').includes(id))) throw new Error('tag-3/experience-map.astro: Automat nicht mehr in I1-3, I2-3, I4-3 (3 von 5)');
 if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro: Notiz zu I1 hat sich geändert');
 ---
@@ -87,18 +87,18 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
 
   <Folie>
     <h2 id="bausteine">Was ein Moment braucht</h2>
-    <p class="folie-satz">Ein Moment ist ein Zeitpunkt der Geschichte, benannt aus Sicht der Kundschaft – und gezählt: Wie viele Geschichten erzählen ihn?</p>
-    <ol class="bausteine" aria-label="Ein Moment: was die Person tut, plus wie es sich anfühlt, plus belegt: erzählt in N von M Geschichten">
+    <p class="folie-satz">Ein Moment ist ein Zeitpunkt der Geschichte, benannt aus Sicht der Kundschaft – und gezählt: Wie viele Interviews erzählen ihn?</p>
+    <ol class="bausteine" aria-label="Ein Moment: was die Person tut, plus wie es sich anfühlt, plus belegt: erzählt in N von M Interviews">
       <li data-schritt><Footprints size={28} aria-hidden="true" /> <strong>tut</strong> <span>Was macht die Person dort?</span></li>
       <li data-schritt><Heart size={28} aria-hidden="true" /> <strong>fühlt</strong> <span>Wie fühlt es sich an?</span></li>
-      <li data-schritt><Quote size={28} aria-hidden="true" /> <strong>belegt</strong> <span>erzählt in N von M Geschichten</span></li>
+      <li data-schritt><Quote size={28} aria-hidden="true" /> <strong>belegt</strong> <span>erzählt in N von M Interviews</span></li>
     </ol>
     <p class="small muted">{TORRES}, S. 56, 69, 87–88; Nielsen Norman Group, „Journey Mapping 101“. N von M am Moment: Format dieses Kurses.</p>
     <div class="nur-handout">
       <p>Torres beschreibt einen Knoten als „a distinct moment in time, an action, or an event“ und hängt an jeden Schritt den Kontext: Was denkt, fühlt, tut die Person dort ({TORRES}, S. 56)? Daher kommen die ersten beiden Bausteine.</p>
-      <p>Einen Moment findet ihr nicht in einer Geschichte, sondern über viele: Torres sucht die Knoten, die „story after story“ auftauchen, näht die häufigsten zu einer Map zusammen, die alle gesammelten Geschichten abbildet, und benennt die Momente schlicht, etwa „Choosing something to watch“ ({TORRES}, S. 87). Auf die Momentkarte kommen darum nur zwei Dinge: der Name aus Sicht der Kundschaft und die Zahl der Geschichten, die ihn erzählen („N von M“). Welche Zitate dazugehören, entscheidet ihr beim Zusammenlegen und Zählen.</p>
+      <p>Einen Moment findet ihr nicht in einer Geschichte, sondern über viele: Torres sucht die Knoten, die „story after story“ auftauchen, näht die häufigsten zu einer Map zusammen, die alle gesammelten Geschichten abbildet, und benennt die Momente schlicht, etwa „Choosing something to watch“ ({TORRES}, S. 87). Auf die Momentkarte kommen darum nur zwei Dinge: der Name aus Sicht der Kundschaft und die Zahl der Interviews, die ihn erzählen („N von M“). Welche Zitate dazugehören, entscheidet ihr beim Zusammenlegen und Zählen.</p>
       <p>Die Zitate mit ihren IDs bleiben in der Zähltabelle und auf dem Snapshot: Dort gehört ein einprägsames Zitat hin (S. 69), und bei den Chancen braucht ihr die Belege wieder („have we seen it in more than one interview?“, S. 88). Dass schon der Moment eine Zahl trägt, ist das Format dieses Kurses. Die Nielsen Norman Group schreibt dazu: „A journey map is only as reliable as the evidence behind it.“ (<a href="https://www.nngroup.com/articles/journey-mapping-101/">„Journey Mapping 101“</a>)</p>
-      <p><strong>Was ist eine Geschichte?</strong> Ein konkretes Erlebnis, das die Person erzählt – was an einem bestimmten Mal tatsächlich passiert ist. Torres fragt danach mit „Tell me about the last time …“ ({TORRES}, S. 64). Eine Geschichte ist nicht dasselbe wie ein Interview: Ein Interview kann mehrere Geschichten enthalten – oder keine, wenn die Person nur Meinungen äußert oder allgemeine Fragen beantwortet („Worauf achtest du …?“). Meist trägt ein Snapshot eine Geschichte; gezählt wird, in wie vielen erzählten Geschichten ein Moment vorkommt, nicht wie viele Personen eine Frage beantwortet haben.</p>
+      <p><strong>Was wird gezählt?</strong> Interviews: N ist die Zahl der Interviews, in denen der Moment mit einem Zitat vorkommt, M die Zahl eurer Interviews; Notizen zählen nicht. Am stärksten ist ein Beleg, wenn die Person ein konkretes Mal erzählt („Tell me about the last time …“, {TORRES}, S. 64) – gezählt wird trotzdem jedes Interview, in dem es vorkommt, auch eine Antwort auf eine allgemeine Frage.</p>
     </div>
   </Folie>
 
@@ -157,7 +157,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
       </ul>
       <p class="small muted">Knoten, Pfeile, Kontext, „Don’t just map out the happy path.“: {TORRES}, S. 56. Belegt (N von M): Format dieses Kurses.</p>
       <div class="nur-handout">
-        <p>Ein Ablauf ist ein guter Anfang: Er zeigt die Reihenfolge. Torres baut die Map genau so auf – erst Knoten und Pfeile, dann an jedem Schritt der Kontext: Was denkt, fühlt, tut die Person dort ({TORRES}, S. 56)? Anlauf A bleibt beim ersten Schritt stehen. Torres warnt außerdem davor, nur den glatten Weg zu zeichnen: Auf die Map gehört auch, wo Schritte wiederholt werden, wo jemand aus Frust aufgibt und wo der Weg eine Schleife macht (S. 56). An der Kaffeebar ist das der Automat. Dass ein Moment belegt sein muss – erzählt in N von M Geschichten –, ist das Format dieses Kurses.</p>
+        <p>Ein Ablauf ist ein guter Anfang: Er zeigt die Reihenfolge. Torres baut die Map genau so auf – erst Knoten und Pfeile, dann an jedem Schritt der Kontext: Was denkt, fühlt, tut die Person dort ({TORRES}, S. 56)? Anlauf A bleibt beim ersten Schritt stehen. Torres warnt außerdem davor, nur den glatten Weg zu zeichnen: Auf die Map gehört auch, wo Schritte wiederholt werden, wo jemand aus Frust aufgibt und wo der Weg eine Schleife macht (S. 56). An der Kaffeebar ist das der Automat. Dass ein Moment belegt sein muss – erzählt in N von M Interviews –, ist das Format dieses Kurses.</p>
       </div>
     </Aufloesung>
   </Folie>
@@ -198,9 +198,9 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
         ))}
       </ol>
       <p class="rest small muted" data-schritt><span class="chip grau">Kaffee nehmen</span> <span class="chip grau">zum Bahnsteig</span> nur Einzelstimmen → bleiben im Snapshot.</p>
-      <p class="pointe z-pointe" data-schritt>Schritte und Gefühl zeigen den Zeitpunkt. Die Zahl sagt, wie viele Geschichten ihn erzählen.</p>
+      <p class="pointe z-pointe" data-schritt>Schritte und Gefühl zeigen den Zeitpunkt. Die Zahl sagt, wie viele Interviews ihn erzählen.</p>
       <div class="nur-handout">
-        <p>Die Momente, Zitate und Zählungen sind die der fertigen Kaffeebar-Map (<a href="/innolab/methoden/journey-map#beispiel">Experience Map, Beispiel</a>). Auf jeder Karte stehen nur der Name und die Zahl der Geschichten, die den Moment erzählen; welche Zitate dazugehören, steht in der Zähltabelle. „Im Zug“ steht in einer Geschichte und bleibt als erzähltes Ende. Zu „Kaffee nehmen“ und „zum Bahnsteig“ gibt es nur Einzelstimmen (I1-4, I5-5) ohne Gefühl am Schritt; sie werden kein Moment und bleiben im Snapshot. Ein Gefühl, zu dem kein Schritt gehört, ist eine Frage für das nächste Interview: Wann war das?</p>
+        <p>Die Momente, Zitate und Zählungen sind die der fertigen Kaffeebar-Map (<a href="/innolab/methoden/journey-map#beispiel">Experience Map, Beispiel</a>). Auf jeder Karte stehen nur der Name und die Zahl der Interviews, die den Moment erzählen; welche Zitate dazugehören, steht in der Zähltabelle. „Im Zug“ steht in einem Interview und bleibt als erzähltes Ende. Zu „Kaffee nehmen“ und „zum Bahnsteig“ gibt es nur Einzelstimmen (I1-4, I5-5) ohne Gefühl am Schritt; sie werden kein Moment und bleiben im Snapshot. Ein Gefühl, zu dem kein Schritt gehört, ist eine Frage für das nächste Interview: Wann war das?</p>
       </div>
     </Aufloesung>
   </Folie>
@@ -209,7 +209,7 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <h2 id="anlauf-c">Anlauf C</h2>
     <p class="folie-satz">Was zeigt Anlauf C – und was fehlt ihm?</p>
     <Aufloesung ab={ENDE_TAG_3} gruppe={GRUPPE}>
-      <p class="pointe">Ein Moment heißt, wie die Kundschaft ihn erlebt – und gezählt wird, wie viele Geschichten ihn erzählen.</p>
+      <p class="pointe">Ein Moment heißt, wie die Kundschaft ihn erlebt – und gezählt wird, wie viele Interviews ihn erzählen.</p>
       <div class="gegenueber">
         <p><CircleX size={20} aria-hidden="true" class="icon-nein" /> „Viele entscheiden sich aus Zeitmangel gegen die Kaffeebar.“</p>
         <p><CircleCheck size={20} aria-hidden="true" class="icon-ja" /> <span><strong>{MOMENTNAMEN.a}</strong> <span class="zaehl">{zaehlung('a')}</span></span></p>
@@ -220,13 +220,13 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
         <li class="beleg-meinung">„{ZITATE.get('I4-2')}“ <span class="id">I4-2</span> <em>Meinung: steht an keiner Stelle der Geschichte</em></li>
       </ul>
       <ul class="gross dicht">
-        <li data-schritt>Gezählt werden Geschichten, nicht Zitate: fünf Zitate, drei Geschichten.</li>
+        <li data-schritt>Gezählt werden Interviews, nicht Zitate: fünf Zitate, drei Interviews.</li>
         <li data-schritt>Jedes Zitat muss tragen, was auf der Karte steht.</li>
         <li data-schritt>Eure eigene Frage ist kein Beleg.</li>
       </ul>
       <p class="small muted">Muster über Geschichten: {TORRES}, S. 87. Worte der Kundschaft: S. 70 (dort für Chancen). N von M: Format dieses Kurses; die Zitate mit IDs bleiben in der Zähltabelle.</p>
       <div class="nur-handout">
-        <p>Eine Zusammenfassung in der dritten Person („Viele …“, „Die Pendler*innen …“) klingt sachlich, ist aber eure Deutung. Auf die Map kommt der Moment so, wie die Person ihn erlebt: als Tätigkeit aus ihrer Sicht, knapp benannt wie bei Torres („Deciding to watch something“, {TORRES}, S. 87), mit der Zahl der Geschichten, die ihn erzählen. Die Worte der Kundschaft verlangt Torres für Chancen (S. 70, 92). Notizen zeigt ihr gestrichelt, zählt sie aber nicht. Eine Meinung („Anstellen ist ein Glücksspiel.“) steht an keiner Stelle der Geschichte. Und was ihr im Interview gefragt habt, belegt nichts: Beleg ist, was die Person geantwortet hat.</p>
+        <p>Eine Zusammenfassung in der dritten Person („Viele …“, „Die Pendler*innen …“) klingt sachlich, ist aber eure Deutung. Auf die Map kommt der Moment so, wie die Person ihn erlebt: als Tätigkeit aus ihrer Sicht, knapp benannt wie bei Torres („Deciding to watch something“, {TORRES}, S. 87), mit der Zahl der Interviews, die ihn erzählen. Die Worte der Kundschaft verlangt Torres für Chancen (S. 70, 92). Notizen zeigt ihr gestrichelt, zählt sie aber nicht. Eine Meinung („Anstellen ist ein Glücksspiel.“) steht an keiner Stelle der Geschichte. Und was ihr im Interview gefragt habt, belegt nichts: Beleg ist, was die Person geantwortet hat.</p>
       </div>
     </Aufloesung>
   </Folie>
@@ -316,12 +316,12 @@ if (!NOTIZ_I1.includes(NOTIZ_SATZ)) throw new Error('tag-3/experience-map.astro:
     <ol class="gross dicht">
       <li><strong>Schritt 1:</strong> eure Snapshot-Skizzen, eine Zeile je Interview.</li>
       <li><strong>Zusammenlegen:</strong> derselbe Moment der Geschichte, nicht dieselben Worte – welche Zitate gehören hierher?</li>
-      <li><strong>Zählen:</strong> Geschichten mit Zitat, ‚N von M‘ (M = eure Geschichten, meist eine je Interview) – Notizen zählen nicht.</li>
+      <li><strong>Zählen:</strong> Interviews mit Zitat, ‚N von M‘ (M = eure Interviews) – Notizen zählen nicht.</li>
       <li><strong>Momente:</strong> Name aus Sicht der Kundschaft + ‚N von M‘ – derselbe Name wie die Spalte beim Zählen.</li>
       <li><strong>Map:</strong> drei bis fünf Momente, verbunden; Umweg als Pfeil, <span class="nw">‚Tief · ID‘</span>, <span class="nw">‚Ende · ID‘</span>.</li>
     </ol>
     <div class="nur-handout">
-      <p>Auf Miro hat jede*r einen eigenen Frame „T3 · 0 · So entsteht eure Map - euer Name“ mit dem eigenen Material von Tag 2. Markus geht sie mit jeder und jedem durch, je etwa fünf Minuten, an einem Moment: Welche Zitate gehören in diese Spalte, und wie heißt der Moment? Auf die Karte kommen nur der Name und ‚N von M‘. Der Weg ist bei allen derselbe, nur das Material ist ein anderes. Bei drei Geschichten ist M = 3; ein Moment ohne Zitat bekommt eine graue Karte, ‚0 von 3‘.</p>
+      <p>Auf Miro hat jede*r einen eigenen Frame „T3 · 0 · So entsteht eure Map - euer Name“ mit dem eigenen Material von Tag 2. Markus geht sie mit jeder und jedem durch, je etwa fünf Minuten, an einem Moment: Welche Zitate gehören in diese Spalte, und wie heißt der Moment? Auf die Karte kommen nur der Name und ‚N von M‘. Der Weg ist bei allen derselbe, nur das Material ist ein anderes. Bei drei Interviews ist M = 3; ein Moment ohne Zitat bekommt eine graue Karte, ‚0 von 3‘.</p>
     </div>
   </Folie>
 

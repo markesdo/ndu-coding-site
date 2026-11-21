@@ -1,6 +1,6 @@
 // Die fünf Kaffeebar-Skizzen wie auf Miro T1 · 5, Stickies in Erzählreihenfolge (Experience Map, Folien „gruppieren“
 // und „beispiel“). notiz = aus den Interview-Notizen, ohne Zitat-ID (gestrichelt, zählt nicht); g = Gruppe, aus der
-// im Raster eine Spalte wird; ohne g = grau, bleibt im Snapshot. Gezählt werden Geschichten, nicht Stickies, und nur
+// im Raster eine Spalte wird; ohne g = grau, bleibt im Snapshot. Gezählt werden Interviews, nicht Stickies, und nur
 // Stickies mit Zitat.
 export type GruppeId = 'a' | 'b' | 'c' | 'd';
 export type Sticky = { t: string; id?: string; notiz?: true; g?: GruppeId; marke?: 'tief' | 'ende' };
@@ -50,11 +50,11 @@ export const SKIZZEN: Skizze[] = [
 export const gruppeName = (g: GruppeId) => GRUPPEN.find((x) => x.g === g)?.name ?? '';
 export const buchstabe = (g: GruppeId) => g.toUpperCase();
 
-/** Geschichten je Gruppe: nur Stickies mit Zitat, je Geschichte einmal. */
+/** Interviews je Gruppe (eine Skizze je Interview): nur Stickies mit Zitat, je Skizze einmal. */
 export const geschichtenIn = (g: GruppeId, skizzen: Skizze[] = SKIZZEN) =>
   skizzen.filter((s) => s.stickies.some((st) => st.g === g && st.id)).length;
 
-/** „3 von 5“: Geschichten der Gruppe von allen Skizzen. */
+/** „3 von 5“: Interviews der Gruppe von allen Skizzen. */
 export const zaehlung = (g: GruppeId, skizzen: Skizze[] = SKIZZEN) => `${geschichtenIn(g, skizzen)} von ${skizzen.length}`;
 
 /**

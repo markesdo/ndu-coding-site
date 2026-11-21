@@ -661,9 +661,23 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(karte).toContain('{zaehlung(z.g)}');
     expect(karte.match(/<b>|class="id"|class="ids"|z\.zitat|z\.id\b/g) ?? []).toStrictEqual([]);
     expect(q.match(/Zitat-ID unter zwei Momenten|darunter alle Zitat-IDs/g) ?? []).toStrictEqual([]);
-    expect(q).toContain('<span>erzählt in N von M Geschichten</span>');
+    expect(q).toContain('<span>erzählt in N von M Interviews</span>');
     expect(q).toMatch(/<strong>Zusammenlegen:<\/strong>[^<]*welche Zitate gehören hierher\?/);
     expect(JSON.stringify(NOTIZEN[pfad]).match(/Zitat-ID unter zwei|dieser IDs/g) ?? []).toStrictEqual([]);
+  });
+  // 21.11. (Entscheidung 65): Gezählt werden Interviews, nicht Geschichten – „N von M Interviews“, auf keiner Seite und in
+  // keinem Begleiter mehr „von M Geschichten“ oder „Gezählt werden Geschichten“.
+  it('Zählung: keine Seite und kein Begleiter zählt Geschichten statt Interviews', () => {
+    const ALT = /\b(?:[A-Z]|\d+|eine[mr]?|zwei|drei|vier|fünf|sechs) von (?:[A-Z]|\d+|drei|vier|fünf|sechs) Geschichten|Gezählt werden Geschichten|M = (?:alle )?(?:eure|eigenen) Geschichten/g;
+    const texte: Record<string, string> = {
+      ...quellen,
+      begleiter: JSON.stringify(NOTIZEN),
+      'kaffeebar-skizzen.ts': readFileSync('src/data/kaffeebar-skizzen.ts', 'utf8'),
+    };
+    const funde = Object.entries(texte).flatMap(([pfad, text]) => (text.match(ALT) ?? []).map((m) => `${pfad}: ${m}`));
+    expect(funde).toStrictEqual([]);
+    expect(quellen['/innolab/tag-3/experience-map']).toContain('Gezählt werden Interviews, nicht Zitate: fünf Zitate, drei Interviews.');
+    expect(quellen['/innolab/tag-3']).toContain('erzählt in N von M Interviews');
   });
   // Tag 2 (12.11.): Eröffnung, die drei Methoden, Abschluss – der Begleiter folgt jeder Folie, und jede hat Stichworte.
   const TAG_2_SEITEN = ['/innolab/tag-2', '/innolab/methoden/synthese', '/innolab/methoden/journey-map', '/innolab/methoden/baum', '/innolab/tag-2/abschluss'];

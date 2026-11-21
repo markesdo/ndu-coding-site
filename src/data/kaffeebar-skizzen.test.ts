@@ -42,7 +42,7 @@ describe('Kaffeebar-Skizzen (Experience Map, Folien „gruppieren“ und „beis
     ]);
   });
 
-  it('Zählung: Geschichten, nicht Stickies; Notizen zählen nicht', () => {
+  it('Zählung: Interviews, nicht Stickies; Notizen zählen nicht', () => {
     expect(GRUPPEN.map(({ g }) => zaehlung(g))).toStrictEqual(['3 von 5', '3 von 5', '2 von 5', '1 von 5']);
   });
 
