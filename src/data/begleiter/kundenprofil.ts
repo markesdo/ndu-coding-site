@@ -99,7 +99,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
   profil: {
     live: [
       'Vorwissen nutzen: Wer erklärt ein Feld? Frage an alle.',
-      'Nur ergänzen: soziale und emotionale Jobs, unterstützende Jobs.',
+      'Nur ergänzen: unterstützende Jobs. Die drei Arten kommen gleich.',
       '„Jobs in den Worten der Kundschaft – eure Zitate liefern sie.“',
       'Zeit: höchstens anderthalb Minuten.',
     ],
@@ -118,7 +118,51 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
         quelle: `${VPD}, S. 57 und S. 61–62`,
       },
     ],
-    ueberleitung: 'Der häufigste Fehler dabei: zu vage – und Gains als umgedrehte Pains.',
+    ueberleitung: 'Jobs gibt es in drei Arten – zwei davon vergisst man leicht.',
+  },
+
+  'job-arten': {
+    live: [
+      'Zeile 1 zeigen. Fragen: Welche zwei Arten fehlen?',
+      'Sozial braucht ein Publikum – bei der Kaffeebar das Büro.',
+      'Zeigen: J2 und J3 kommen aus demselben Zitat (I4-5).',
+      'Falle: Gefühle als emotionale Jobs einsammeln – oft sind es Pains.',
+      'Zeit: höchstens anderthalb Minuten.',
+    ],
+    verstaendnis: {
+      frage: '„Pünktlich im Büro ankommen“ – emotionaler Job oder Gain?',
+      antwort: 'Ein Gain: Es beschreibt ein Ergebnis, keinen Gefühlszustand. Jobs sind Aufgaben, Probleme, Bedürfnisse; Gains die konkreten Ergebnisse (S. 78). Der emotionale Job dahinter nennt den Zustand, den die Person sucht – bei der Kaffeebar „nicht gehetzt beginnen“ (J2).',
+      falsch: '„Emotional, weil es um Stress geht“ – im Satz steht kein Gefühl, nur ein Ergebnis.',
+    },
+    kern: [
+      {
+        text: 'Funktional: „perform or complete a specific task or solve a specific problem“ (mow the lawn, write a report). Sozial: „how customers want to be perceived by others“ (look trendy, be perceived as competent). Personal/emotional: „seek a specific emotional state, such as feeling good or secure“ (peace of mind regarding one’s investments).',
+        quelle: `${VPD}, S. 54`,
+      },
+      {
+        text: '„Sometimes social or emotional jobs are even more important than the “visible” functional jobs.“ Funktionale sind „usually easier to identify“.',
+        quelle: `${VPD}, S. 79 und S. 66`,
+      },
+      {
+        text: 'Auch Pains sind funktional, sozial („I look bad doing this“) oder emotional („I feel bad every time I do this“). Ein gesuchter Zustand ist ein Job, ein erlittenes Gefühl ein Pain.',
+        quelle: `${VPD}, S. 57 (Abgrenzung: Zuordnung dieses Kurses)`,
+      },
+      {
+        text: 'Kaffeebar: J1 funktional (I2-4, I5-3); „Warum?“ führt zu J2 emotional (I4-5: „Ich will nicht verschwitzt und gestresst ins Büro kommen.“); dasselbe Zitat, auf das Büro hin gelesen, ergibt J3 sozial. Die Leiter im Buch (S. 80) bleibt funktional: Fremdsprache → Lebenslauf → mehr verdienen.',
+        quelle: 'kundenprofil.astro, Folie beispiel; Werkstatt, Beispiel Kaffeebar, I4-5; VPD S. 80',
+      },
+    ],
+    fragen: [
+      {
+        frage: 'Kann ein Zitat zwei Jobs tragen?',
+        antwort: 'Ja. I4-5 trägt J2 und J3: einmal, wie sich die Person fühlen will, einmal, wie sie im Büro gesehen werden will. Schreibt zwei Stickies mit derselben ID.',
+      },
+      {
+        frage: 'Wir finden keinen sozialen oder emotionalen Job mit Zitat. Was dann?',
+        antwort: 'Dann fragt ihr beim wichtigsten funktionalen Job einmal „Warum?“, schreibt eure Vermutung auf und setzt ein „?“ dazu. Das Buch schreibt an dieser Stelle selbst „Maybe“ (S. 80).',
+      },
+    ],
+    ueberleitung: 'Wie ihr von der Aufgabe zum Warum kommt, zeigt die dritte Zeile der nächsten Folie.',
   },
 
   // NEU
@@ -126,7 +170,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     live: [
       'Zeile 1 zeigen, fragen: Was würdet ihr die Person als Nächstes fragen?',
       'Gehalt: Erhöhung und Kürzung sind dieselbe Aussage. Besser: Betrag, Hindernis, Risiko.',
-      'Fremdsprache: zweimal Warum – und landet beim Job aus Zeile 2.',
+      'Fremdsprache: zweimal Warum – bleibt funktional.',
       'Kaffeebar: I5 sagt „voll“. Niemand hat nachgefragt. Die Zahl hat nur I3.',
       'Falle: die Zahl von I3 als Präzisierung von I5 verkaufen.',
     ],
@@ -186,6 +230,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
 
   beispiel: {
     live: [
+      'J1–J3 nicht vorlesen (job-arten).',
       'Fragen: Wo steht die Ziel-Chance vom Vormittag im Profil?',
       'Aufdecken: P1, mit denselben Zitat-IDs.',
       'Zeigen: P2 konkret – „mehr als fünf Leute“.',
@@ -215,7 +260,8 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       'Nach 2 min: Baum – Pain, Gain oder Job? Timer 5 min.',
       'Nach 7 min: Jobs aus den Snapshots, einmal „Warum?“, Timer 4 min.',
       'Nach 11 min: Gains aus den Snapshots, Timer 3 min.',
-      'Nach 14 min: ordnen, oberste drei nummerieren, einen Fehler markieren.',
+      'Nach 14 min: ordnen, oberste drei nummerieren, dann die sechs Fehler.',
+      'Wer in 4 min nicht durchkommt: zuerst „zu vage“, „eigenes Angebot“.',
       'Falle: an eine Lösung denken – Ideen gibt es noch keine.',
       'Wenn hinten: nur die obersten drei je Spalte ordnen.',
     ],
@@ -234,9 +280,9 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
       schritte: [
         'Wessen Profil? (2 min): oben in den Canvas eine Zeile mit Segment und Anlass, aus „Für wen?“ im Brief – passen die drei Interviews dazu?',
         'Aus dem Baum (5 min): Ziel-Chance und die anderen Chancen, mit Zitat-IDs, eigener Ast zuerst. Schmerz → Pain, Wunsch → Gain, Aufgabe → Job (Torres S. 24; VPD S. 54).',
-        'Jobs aus den Snapshots (4 min): Welche Aufgabe wollte die Person in ihrer Geschichte erledigen? Mit Zitat-ID (VPD S. 73, 255). Dann einmal „Warum?“: der soziale oder emotionale Job dahinter – ohne Zitat ein „?“ (S. 80, „Maybe“).',
-        'Gains aus den Snapshots (3 min): was sich die Person wünscht, mit eigenem Zitat – kein umgedrehter Pain.',
-        'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; die obersten drei nummerieren (J1, P1, G1), einen der sechs Fehler bei euch markieren.',
+        'Jobs aus den Snapshots (4 min): Welche Aufgabe wollte die Person in ihrer Geschichte erledigen? Mit Zitat-ID (VPD S. 73, 255) – oder ohne, dann mit „?“ als Vermutung. Dann einmal „Warum?“: der soziale oder emotionale Job dahinter – ohne Zitat ein „?“ (S. 80, „Maybe“).',
+        'Gains aus den Snapshots (3 min): was sich die Person wünscht, mit eigenem Zitat oder „?“ – kein umgedrehter Pain.',
+        'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; die obersten drei nummerieren (J1, P1, G1); dann die sechs Fehler durchgehen (nächste Folie) – was ihr findet, korrigiert ihr gleich. Wer in 4 min nicht durchkommt: zuerst „zu vage“ und „mit dem eigenen Angebot im Kopf“.',
       ],
       achten: [
         'Ein Segment, ein Anlass – wer zwei hat, wählt das Segment der Ziel-Chance.',
@@ -244,7 +290,8 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
         'Aufgabe → Job: Steht unter den Chancen ein „Ich muss …“ oder „Ich will …“, ist das ein Job, kein Pain (VPD S. 54).',
         'Momente der Map sind keine Jobs; höchstens ein unterstützender Job unten auf der Skala (VPD S. 55).',
         'Keine erfundene Kundin, keine Persona: Das Segment sind die Interviewten aus dem Produkt-Brief (VPD S. 72 „Select customer segment“).',
-        'Kein Eintrag ohne Zitat-ID; was vermutet ist, bekommt ein „?“.',
+        'Pains, die nicht im Baum stehen, dürfen dazu – mit „?“.',
+        'Ohne Zitat erlaubt, mit „?“: eine Vermutung fürs nächste Interview. Beim Ordnen stehen belegte Einträge im Zweifel über Vermutungen (VPD S. 65, 67).',
         'Kein Eintrag beschreibt das eigene Produkt: „proceed like an anthropologist and “forget” what you are offering“ (S. 79).',
       ],
       fehler: [

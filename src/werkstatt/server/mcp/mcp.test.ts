@@ -589,6 +589,8 @@ describe('Werkzeuge', () => {
     expect(await anleitung('kundenprofil')).toContain('Ziel-Chance mit vier Linsen (Frame „T3 · 1 · Ziel-Chance“)');
     // Code-Review 21.11.: zwei Bilder zum Abgleich heißen auch so – „zwei Bilder“, „fehlt eins“.
     expect(await anleitung('kundenprofil')).toContain('Zum Abgleich braucht es auch zwei Bilder aus Miro: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“) und Ziel-Chance mit vier Linsen (Frame „T3 · 1 · Ziel-Chance“); fehlt eins, bitte die Person darum.');
+    // Entscheidung 72 (21.11.): Der Tutor prüft mit derselben Regel wie die Folie – ohne Zitat erlaubt, mit „?“.
+    expect(text(await c.callTool({ name: 'methode_erklaeren', arguments: { slug: 'kundenprofil' } }))).toContain('jeder Eintrag verweist auf Zitat-IDs aus den Interviews oder trägt ein „?“ (Vermutung).');
     expect(await anleitung('ideation')).toContain('Zum Abgleich braucht es auch zwei Bilder aus Miro: How-Might-We-Frage zur Ziel-Chance (Frame „T3 · 2 · How Might We“) und Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet (Frame „T3 · 4 · Canvas · euer Name“); fehlt eins, bitte die Person darum.');
   });
 
