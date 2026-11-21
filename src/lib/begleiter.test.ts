@@ -753,7 +753,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(liste).toContain('<Checklist id="il-tag3-abschluss-v5"');
     expect(liste.match(/\.md\b|im Repo|Committet|gepusht/g) ?? []).toStrictEqual([]);
     expect(liste).toContain('T3 · 4 · Canvas · euer Name');
-    expect(JSON.stringify(NOTIZEN['/innolab/methoden/baum'] ?? {}).match(/Entscheidungslog/g) ?? []).toStrictEqual([]);
+    // Auch die Ideation (Folgeauftrag zu Entscheidung 37): kein Entscheidungslog D… mehr in den Notizen von Tag 3.
+    for (const p of ['/innolab/methoden/baum', '/innolab/methoden/ideation']) expect(JSON.stringify(NOTIZEN[p] ?? {}).match(/Entscheidungslog|\(D\d\)/g) ?? [], p).toStrictEqual([]);
   });
   // Entscheidung 38 (21.11.) und „kein Reihum“: Value Map ohne Kursregel-Etikett, ohne Entscheidungslog, ohne docs-Dateien,
   // ohne Reihum; die Frage beim 1:1 ist das bewusst offene ✗ oben im Profil.

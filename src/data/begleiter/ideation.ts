@@ -362,7 +362,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Aussortiert: Becher mit Deckel, mehr Sitzplätze – gut, andere Chance.',
       'Drei nach dem Punkten: die drei von eben.',
       'Fragen: Welche der 18 ist nur eine Form einer der drei?',
-      'Bei Bedarf: „Im Gehen bestellen“ ist nicht das verworfene Vorbestellen (D4).',
+      'Bei Bedarf: „Im Gehen bestellen“ ist nicht das verworfene Vorbestellen (Tag 1).',
     ],
     verstaendnis: {
       frage: 'Warum ist „mehr Sitzplätze“ aussortiert, obwohl es Pendler*innen helfen würde?',
@@ -374,8 +374,8 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
         quelle: `ideation.astro, Folie beispiel; Regel: ${TORRES}, S. 112–114`,
       },
       {
-        text: 'Kaffeebar, Entscheidungslog D4: „Vorbestellen vor der Ankunft verworfen“ – 3 von 5 entscheiden erst in der Halle. „Im Gehen bestellen“ beginnt an der Hallentür und widerspricht D4 nicht.',
-        quelle: 'Werkstatt, Beispiel Kaffeebar, Entscheidungslog D4; QR-Code an der Hallentür: value-map.astro, Folie beispiel',
+        text: 'Kaffeebar, Tag 1: Vorbestellen verworfen – 3 von 5 entscheiden erst in der Halle. „Im Gehen bestellen“ beginnt an der Hallentür und widerspricht dem nicht.',
+        quelle: 'Werkstatt, Beispiel Kaffeebar, Tag 1; QR-Code an der Hallentür: value-map.astro, Folie beispiel',
       },
     ],
     ueberleitung: 'Aus jeder der drei wird ein Satz – gegen euer Profil.',
