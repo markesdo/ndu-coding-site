@@ -59,10 +59,10 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     live: [
       'Aufdecken: Mittwochnachmittag mit Kindern, Samstagabend zu zweit.',
       'Bei Bedarf: dritter Anlass im Buch – allein zur Recherche.',
-      'Mit den Fragen vergleichen, die alle eben genannt haben.',
       '„Dieselbe Person, andere Jobs – je nach Anlass.“',
       'Brücke Kaffeebar: werktags 7:15–7:45 ist ein Anlass, kein Steckbrief.',
       'Fragen: In welchem Anlass steckt euer Segment?',
+      'Aufdecken: Und bei euch? Brief „Für wen?“ – passen die drei Interviews?',
     ],
     verstaendnis: {
       frage: 'Was sagt der Steckbrief über Jane – und was das Profil mit Kontext?',
@@ -211,30 +211,33 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Zuerst oben im Canvas: Segment und Anlass, eine Zeile.',
-      'Timer 7 min: Ziel-Chance und Ast als Pains, mit Zitat-IDs.',
+      'Timer 2 min: Segment und Anlass aus „Für wen?“ im Brief.',
+      'Nach 2 min: Pains aus dem Baum, Timer 5 min.',
       'Nach 7 min: Gains aus den Snapshots, ein sozialer oder emotionaler Job.',
-      'Nach 14 min: alles auf die Skalen, ordnen, dann die Fehlerliste.',
+      'Nach 14 min: ordnen, oberste drei nummerieren, einen Fehler markieren.',
       'Falle: an eine Lösung denken – Ideen gibt es noch keine.',
-      'Wenn hinten: Ordnen auf die obersten drei je Spalte beschränken.',
+      'Wenn hinten: nur die obersten drei je Spalte ordnen.',
     ],
-    uebung: { dauer: '18 min (7 + 7 + 4)', form: 'allein, jede*r für das eigene Produkt' },
+    uebung: { dauer: '18 min (2 + 5 + 7 + 4)', form: 'allein, jede*r für das eigene Produkt' },
     miro: {
       frame: 'T3 · 4 · Canvas · Sofie',
       schritte: [
         'Jede*r arbeitet im eigenen Canvas-Frame „T3 · 4 · Canvas · Name“, rechte Hälfte (Links auf der Folie; der Link oben führt zu Sofie, Joachim und Hewen liegen darunter).',
-        'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und als Pains in den Kreis legen; Zitat-IDs bleiben dran.',
-        'Dann alle Stickies auf die drei Skalen rechts unten schieben, je Spalte das Wichtigste oben (VPD S. 76), dann nummerieren (J1 …, P1 …, G1 …); Segment und Anlass als Überschrift.',
+        'Oben im Canvas eine Zeile: Segment und Anlass, aus „Für wen?“ im Brief.',
+        'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und als Pains in den Kreis legen; Zitat-IDs bleiben dran. Ein Wunsch kommt zu den Gains.',
+        'Dann alle Stickies auf die drei Skalen rechts unten schieben, je Spalte das Wichtigste oben (VPD S. 76), die obersten drei nummerieren (J1, P1, G1). Schritte 1–3 sind im Frame „1 Sammeln“, Schritt 4 ist „2 Ordnen“.',
       ],
     },
     ablauf: {
       schritte: [
-        'Übernehmen (7 min): zuerst oben in den Canvas eine Zeile mit Segment und Anlass (wie bei der Kaffeebar), dann die Ziel-Chance als P1, ihr Ast als weitere Pains, mit Zitat-IDs; Jobs aus Tag 1.',
+        'Wessen Profil? (2 min): oben in den Canvas eine Zeile mit Segment und Anlass, aus „Für wen?“ im Brief – passen die drei Interviews dazu?',
+        'Pains aus dem Baum (5 min): Ziel-Chance zuerst, dann die anderen Chancen des Baums, mit Zitat-IDs. Ist eine Chance ein Wunsch, kommt sie zu den Gains.',
         'Ergänzen (7 min): Gains aus den Snapshots, so konkret wie die Zitate; mindestens ein sozialer oder emotionaler Job.',
-        'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; dann die sechs Fehler durchgehen.',
+        'Ordnen und prüfen (4 min): alle Stickies auf die Skalen, jede Spalte für sich, Wichtigstes oben; die obersten drei nummerieren (J1, P1, G1), einen der sechs Fehler bei euch markieren.',
       ],
       achten: [
         'Ein Segment, ein Anlass – wer zwei hat, wählt das Segment der Ziel-Chance.',
+        'Ist die Ziel-Chance ein Wunsch: nach dem Hindernis im selben Zitat fragen – das wird der Pain, der Wunsch kommt zu den Gains (VPD S. 80). Steht kein Hindernis im Zitat, bleibt sie Gain.',
         'Keine erfundene Kundin, keine Persona: Das Segment sind die Interviewten aus dem Produkt-Brief (VPD S. 72 „Select customer segment“).',
         'Kein Eintrag ohne Zitat-ID; was vermutet ist, bekommt ein „?“.',
         'Kein Eintrag beschreibt das eigene Produkt: „proceed like an anthropologist and “forget” what you are offering“ (S. 79).',
