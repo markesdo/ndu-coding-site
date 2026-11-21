@@ -39,7 +39,7 @@ const MINI_BAEUME = [
   { nr: 3, eltern: '9', kinder: ['Wer spielt mit?', 'Welche Art Serie?', '…'], nummern: [9], kurz: 'Groß wird lösbar', text: '9 zerfällt in kleinere Chancen, etwa ‚Wer spielt mit?‘.', label: 'Mini-Baum: 9 oben, darunter „Wer spielt mit?“, „Welche Art Serie?“ und weitere' },
 ] as const;
 // Folie „euer-baum“: der Kaffeebar-Baum in den Farben von Miro (Moment blau, Chance gelb), jede Chance mit „X von 5“.
-// Die Zahl kommt aus den Belegen (wie im Handout von „beispiel“): Geschichten = verschiedene Interviews unter den IDs.
+// Die Zahl kommt aus den Belegen (wie im Handout von „beispiel“): gezählt werden verschiedene Interviews unter den IDs.
 const BELEGE: Record<string, string[]> = {
   '„Geht sich ein Kaffee noch aus?“': ['I2-4', 'I3-1', 'I5-2'],
   '„Wenn ich anstehe, reicht mir die Zeit nicht.“': ['I2-2', 'I3-4', 'I4-1'],
@@ -363,7 +363,7 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
         <li data-schritt><strong>Schon da:</strong> Outcome (grün), Vorlagen: Moment (blau), Chance (gelb), Nächstes Interview (grau) – und unten eure Chancen im Streifen „Ungeprüft“.</li>
         <li data-schritt><strong>Neue Karte:</strong> Vorlage anklicken, Cmd+D – die Farbe kommt mit.</li>
         <li data-schritt><strong>Verbinden:</strong> vom blauen Punkt der oberen Karte zur unteren ziehen. Jede Karte hängt an genau einer darüber.</li>
-        <li data-schritt><strong>Gelbe Karte:</strong> Satz der Kundschaft · Zitat-IDs · „X von N“ – auch „1 von 3“ kommt in den Baum.</li>
+        <li data-schritt><strong>Gelbe Karte:</strong> Satz der Kundschaft · Zitat-IDs (eine je Interview genügt) · „X von N“ – auch „1 von 3“ kommt in den Baum.</li>
       </ol>
       <figure class="euer-baum-bild">
         <Baum momente miro knoten={KAFFEEBAR_BAUM_MIRO} label="Kaffeebar-Baum: Outcome, darunter die Momente Halle: entscheiden, Anstehen und Warten, Im Zug; darunter die Chancen mit ihrer Zahl" />
@@ -484,6 +484,8 @@ if (MINI_BAEUME.some((b) => b.nummern.some((n) => n < 1 || n > 12))) throw new E
   .euer-baum { display: grid; gap: 1rem 1.5rem; align-items: start; }
   @media (min-width: 900px) { .euer-baum { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); } }
   .euer-baum > ol { margin: 0; }
+  /* Seit „(eine je Interview genügt)“ auf der gelben Karte: links etwas breiter, engere Lücke – die Folie passt bei 720p, der Baum bleibt in der Folie. */
+  @media (min-width: 900px) { :global(html[data-beamer]) .euer-baum { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); column-gap: .5rem; } }
   .euer-baum-bild { margin: 0; }
   .euer-baum-bild :global(.baum) { margin: 0; }
   :global(html[data-beamer]) .euer-baum-bild :global(.baum-knoten) { min-width: 3rem; max-width: 4.6rem; padding: .2rem .25rem; font-size: .55rem; line-height: 1.2; }
