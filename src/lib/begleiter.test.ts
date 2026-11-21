@@ -724,9 +724,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(n.jane?.ablauf).toBeUndefined();
     expect(n.jane?.kern?.length).toBe(2);
   });
-  // Entscheidung 36, Teil ohne Jobs (21.11.; Jobs-Herkunft noch offen): Kundenprofil `vorgehen` mit „Wessen Profil?“ zuerst,
-  // Timer 2 + 5 + 7 + 4 = 18 min, Titel = Timer-Summe.
-  it('Tag 3: kundenprofil#vorgehen – Wessen Profil zuerst, Timer 18 min', () => {
+  // Entscheidungen 36 und 38 (21.11.): Kundenprofil `vorgehen` in fünf Schritten, 2 + 5 + 4 + 3 + 4 = 18 min (Titel = Timer-Summe,
+  // wie die Miro-Karte „So geht's“); Jobs aus den Snapshots, nicht aus den Momenten der Map und nicht „aus Tag 1“.
+  it('Tag 3: kundenprofil#vorgehen – fünf Schritte, Timer 18 min, Jobs aus den Snapshots', () => {
     const q = quellen['/innolab/methoden/kundenprofil'] ?? '';
     const n = NOTIZEN['/innolab/methoden/kundenprofil'] ?? {};
     expect([q, JSON.stringify(n)].flatMap((t) => t.match(/Jobs aus Tag 1/g) ?? [])).toStrictEqual([]);
@@ -734,10 +734,12 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folie).toContain('id="vorgehen">So geht ihr vor (18 min)</h2>');
     const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
     const timer = [...schritte.matchAll(/<li data-schritt>.*?<Timer minuten=\{(\d+)\} \/><\/li>/g)].map((m) => Number(m[1]));
-    expect(timer).toStrictEqual([2, 5, 7, 4]);
+    expect(timer).toStrictEqual([2, 5, 4, 3, 4]);
     expect(timer.reduce((a, b) => a + b, 0)).toBe(18);
     expect(schritte).toContain('<li data-schritt><strong>Wessen Profil?</strong>');
-    expect(n.vorgehen?.uebung?.dauer).toBe('18 min (2 + 5 + 7 + 4)');
+    expect(schritte).toContain('<li data-schritt><strong>Jobs aus den Snapshots:</strong> Welche Aufgabe wollte die Person in ihrer Geschichte erledigen? Mit Zitat-ID. Dann einmal „Warum?“: der soziale oder emotionale Job dahinter – ohne Zitat ein „?“.');
+    expect(q.match(/aus den Momenten eurer Map|Jeder Moment ist ein Job/g) ?? []).toStrictEqual([]);
+    expect(n.vorgehen?.uebung?.dauer).toBe('18 min (2 + 5 + 4 + 3 + 4)');
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(18);
   });
   // Entscheidung 37 (21.11.): Tag 3 ohne Dateien im Repo – die Abschluss-Checkliste zeigt auf die Miro-Frames, ohne Commit.
