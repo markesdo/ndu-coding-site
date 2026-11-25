@@ -290,8 +290,8 @@ export function quellenAusBraucht(s: Station): Station[] {
   return nachOrt(m.braucht.map(stationVonArtefakt).filter((x): x is Station => !!x && x !== s));
 }
 
-/** Quellen einer Station: von (Stations-IDs), sonst aus braucht. In der Reihenfolge des Plans. */
-export function quellen(s: Station): Station[] {
+/** Gepflegte Quellen einer Station: von (Stations-IDs), sonst aus braucht. In der Reihenfolge des Plans. */
+export function direkteQuellen(s: Station): Station[] {
   if (!s.von) return quellenAusBraucht(s);
   return nachOrt(s.von.map((id) => {
     const x = station(id);
@@ -300,20 +300,24 @@ export function quellen(s: Station): Station[] {
   }));
 }
 
-/** Ziele: alle Stationen, die s als Quelle haben. Eine Fortsetzung gibt zusätzlich weiter, was nach ihr aus der
- *  fortgesetzten Station gebraucht wird (Value Map & Fit an Tag 4 → Concept Story, Story Map …). */
+/** Quellen im Fokus: die gepflegten, dazu jede Fortsetzung einer Quelle, die vor s liegt – wer die Value Map von Tag 3
+ *  braucht, nimmt auch, was an Tag 4 nachgeholt wurde. Daraus folgt, nicht gepflegt. */
+export function quellen(s: Station): Station[] {
+  const direkt = direkteQuellen(s);
+  const fortgesetzt = STATIONEN.filter((f) => f !== s && f.fortsetzung && direkt.some((q) => q.id === f.fortsetzung) && frueher(f, s));
+  return nachOrt([...direkt, ...fortgesetzt]);
+}
+
+/** Ziele: alle Stationen, die s als Quelle haben – die genaue Umkehrung von quellen. */
 export function ziele(s: Station): Station[] {
-  const direkt = STATIONEN.filter((x) => x !== s && quellen(x).includes(s));
-  const ursprung = s.fortsetzung ? station(s.fortsetzung) : undefined;
-  const geerbt = ursprung ? ziele(ursprung).filter((x) => x !== s && frueher(s, x)) : [];
-  return nachOrt([...direkt, ...geerbt]);
+  return nachOrt(STATIONEN.filter((x) => x !== s && quellen(x).includes(s)));
 }
 
 /** Wo von von braucht abweicht: was dazukommt, was wegfällt (Stations-IDs). Ohne von: nichts. */
 export function abweichung(s: Station): { dazu: string[]; weg: string[] } | undefined {
   if (!s.von) return undefined;
   const aus = quellenAusBraucht(s).map((x) => x.id);
-  const von = quellen(s).map((x) => x.id);
+  const von = direkteQuellen(s).map((x) => x.id);
   return { dazu: von.filter((id) => !aus.includes(id)), weg: aus.filter((id) => !von.includes(id)) };
 }
 
@@ -349,14 +353,14 @@ export const heutigerTag = (datum: string, tage: { n: number; datum?: string }[]
 // ihren Stationen, ein Ast führt zum Punkt der Station. Weil die Linie mit der obersten Schiene den Stamm ganz rechts hat,
 // kreuzt kein Stamm eine fremde Schiene, und keine Linie eine Beschriftung.
 // Abstände (NDU-74): bei 1280×720 im Beamer ist der Plan rund 920 px breit (Spalte 184 px, eine Einheit 1,84 px) und eine
-// Zeile rund 32 px hoch. Spuren 6 Einheiten auseinander (11 px), Punkt 9 Einheiten neben dem Outcome-Stamm – siehe
+// Zeile rund 32 px hoch. Spuren 6 Einheiten auseinander (11 px), Punkt 11 Einheiten neben dem Outcome-Stamm – siehe
 // BEZUG und den Test „Lesbarkeit“. Die CSS-Werte (Punkt, oberes Band) kommen aus GEO und PUNKT_REM.
 export const GEO = {
   breite: 100,
   zeile: 100,
   oben: 90, // Band für die Schienen oben (Anteil einer Zeile: 0.9)
   unten: 0, // keine Schiene unten mehr: Annahme lief dort als Rahmen um den Plan
-  punktX: 24, // Punkt der Station, von links in der Spalte
+  punktX: 26, // Punkt der Station, von links in der Spalte (so weit, dass auch der Stern keinen Stamm verdeckt)
   kanal: { annahme: 3, beleg: 9, outcome: 15 } as Record<Linie, number>,
   schiene: { outcome: 14, beleg: 46, annahme: 78 } as Record<Linie, number>,
   astAbstand: 16, // Äste am Umsteigepunkt: senkrecht so weit auseinander (Anteil einer Zeile: 0.16, rund 6 px)
@@ -364,7 +368,7 @@ export const GEO = {
 export const HOEHE = GEO.oben + ZEILEN * GEO.zeile + GEO.unten;
 
 /** Durchmesser der Punkte in rem (CSS liest sie über Variablen aus Arbeitsfluss.astro). */
-export const PUNKT_REM = { normal: 0.8, umstieg: 1, ziel: 1.1 };
+export const PUNKT_REM = { normal: 0.8, umstieg: 1, ziel: 1.1, stern: 1.3 };
 /** Bezugsgröße für die Lesbarkeit: Beamer bei 1280×720 (rem = 20 px). Gemessen 25.11.: Zeile 32,5 px, Plan 1040 px breit – 920 px ist die vorsichtige Annahme der Beratung. */
 export const BEZUG = { planBreite: 920, zeileHoehe: 32, rem: 20, strich: { beleg: 3, outcome: 5, annahme: 3 } as Record<Linie, number> };
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE, METHODEN } from './methoden';
 import {
-  BEZUG, FOKUS_Y, GEO, HOEHE, LINIEN, PUNKT_REM, abweichung, fokusPfade, fokusStammX, fokusText, frueher, quellen,
+  BEZUG, FOKUS_Y, GEO, direkteQuellen, HOEHE, LINIEN, PUNKT_REM, abweichung, fokusPfade, fokusStammX, fokusText, frueher, quellen,
   quellenAusBraucht, tourStationen, ziele, OHNE_STATION, SPALTEN, STATIONEN, ZEILEN, ergebnisse, heutigerTag, kommtAus, punktX, schieneY,
   spaltenPfade, spalteVonTag, stammX, station, stationVonArtefakt, woerter, zeileY,
 } from './arbeitsfluss';
@@ -213,9 +213,19 @@ describe('Kanten im Fokus (NDU-74)', () => {
     expect(STATIONEN.filter((s) => ziele(s).length === 0 && !s.endet && s.spalte !== 5).map((s) => s.id)).toStrictEqual([]);
   });
 
-  it('Ziele sind die Umkehrung der Quellen (plus, bei einer Fortsetzung, die späteren Ziele des Ursprungs)', () => {
-    for (const s of STATIONEN) for (const q of quellen(s)) expect(ids(ziele(q)), `${q.id} → ${s.id}`).toContain(s.id);
-    expect(ids(ziele(station('value-map-nachholen')!))).toStrictEqual(['concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'origin-story']);
+  it('Quellen und Ziele sind genaue Umkehrungen – in beiden Richtungen', () => {
+    for (const s of STATIONEN) {
+      for (const q of quellen(s)) expect(ids(ziele(q)), `${q.id} → ${s.id}`).toContain(s.id);
+      for (const z of ziele(s)) expect(ids(quellen(z)), `${s.id} → ${z.id}`).toContain(s.id);
+    }
+  });
+
+  it('eine Fortsetzung gibt weiter, was nach ihr aus dem Ursprung gebraucht wird – und steht dort als Quelle', () => {
+    const nach = ['concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'origin-story'];
+    expect(ids(ziele(station('value-map-nachholen')!))).toStrictEqual(nach);
+    for (const id of nach) expect(ids(quellen(station(id)!)), id).toContain('value-map-nachholen');
+    // Nicht davor: Offene „?“ (Tag 3) nimmt die Value Map, nicht das Nachholen an Tag 4.
+    expect(ids(quellen(station('offene-fragen')!))).toStrictEqual(['value-map']);
   });
 
   it('Drift sichtbar: wo der Plan von braucht abweicht – feste Liste', () => {
@@ -244,7 +254,7 @@ describe('Kanten im Fokus (NDU-74)', () => {
   });
 
   it('ohne von folgen die Quellen aus braucht', () => {
-    expect(ids(quellen(station('story-map')!))).toStrictEqual(ids(quellenAusBraucht(station('story-map')!)));
+    expect(ids(direkteQuellen(station('story-map')!))).toStrictEqual(ids(quellenAusBraucht(station('story-map')!)));
     expect(ids(quellen(station('prototyp-spike')!))).toStrictEqual(['annahmen', 'story-map', 'usage-story']);
   });
 
@@ -300,7 +310,8 @@ describe('Lesbarkeit bei 1280×720 (NDU-74)', () => {
     }
   });
 
-  it('kein Punkt verdeckt einen Stamm: mindestens 3 px Luft bis zum äußersten Stamm, auch beim größten Punkt', () => {
+  it('kein Punkt verdeckt einen Stamm: mindestens 3 px Luft bis zum äußersten Stamm, auch beim größten (Stern)', () => {
+    expect(Math.max(...Object.values(PUNKT_REM))).toBe(PUNKT_REM.stern);
     const aussen = spuren.at(-1)!;
     const groesster = Math.max(...Object.values(PUNKT_REM)) * BEZUG.rem;
     const luft = (GEO.punktX - GEO.kanal[aussen]) * pxX - groesster / 2 - BEZUG.strich[aussen] / 2;

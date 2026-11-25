@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import Arbeitsfluss from './Arbeitsfluss.astro';
 import Uebergang from '../Uebergang.astro';
 import quelle from './Arbeitsfluss.astro?raw';
-import { STATIONEN, quellen, station, tourStationen, ziele } from '../arbeitsfluss';
+import { PUNKT_REM, STATIONEN, quellen, station, tourStationen, ziele } from '../arbeitsfluss';
 import { rollen, stationAusAdresse, tourFokus } from '../arbeitsfluss-fokus';
 
 let container: AstroContainer;
@@ -36,6 +36,31 @@ describe('Punkte tragen die Farbe ihrer Hauptlinie', () => {
     const punkt = quelle.match(/\n {2}\.af-punkt \{([^}]*)\}/)?.[1] ?? '';
     expect(punkt).toMatch(/background: var\(--af-farbe\)/);
     expect(punkt).toMatch(/border: 3px solid var\(--af-farbe\)/);
+  });
+
+  it('Punktgrößen kommen aus PUNKT_REM (auch der Stern), keine festen Maße im CSS', async () => {
+    expect(quelle).toMatch(/\.af-station\.af-stern \.af-punkt \{ width: var\(--af-punkt-stern\); height: var\(--af-punkt-stern\);/);
+    expect(quelle).not.toMatch(/\.af-punkt[^{]*\{[^}]*width: \d/);
+    const html = await render({});
+    expect(html).toContain(`--af-punkt-stern:${PUNKT_REM.stern}rem`);
+  });
+});
+
+describe('Lucide-Icons im Punkt: Die Regeln der Komponente greifen (kein Pfeil ohne Fokus)', () => {
+  it('Pfeil und Stern tragen das Scope-Attribut der Komponente, die Regeln stehen im Scope', async () => {
+    const html = await render({});
+    const cid = html.match(/<figure[^>]*\s(data-astro-cid-[a-z0-9]+)/)?.[1];
+    expect(cid).toBeTruthy();
+    const pfeile = [...html.matchAll(/<svg\b[^>]*\baf-pfeil\b[^>]*>/g)].map((m) => m[0]);
+    expect(pfeile).toHaveLength(STATIONEN.length);
+    expect(pfeile.filter((p) => !p.includes(cid!))).toStrictEqual([]);
+    const sterne = [...html.matchAll(/<svg\b[^>]*\baf-stern-icon\b[^>]*>/g)].map((m) => m[0]);
+    expect(sterne.length).toBeGreaterThan(0);
+    expect(sterne.filter((p) => !p.includes(cid!))).toStrictEqual([]);
+    // Ohne :global – also gescopt; der Pfeil ist nur bei einem Ziel zu sehen.
+    expect(quelle).toMatch(/\n {2}\.af-pfeil \{ display: none; \}/);
+    expect(quelle).toMatch(/\.af-station\.af-ziel \.af-pfeil \{ display: block; \}/);
+    expect(quelle).toMatch(/\.af-station\.af-ziel\.af-stern \.af-pfeil \{ display: none; \}/);
   });
 });
 

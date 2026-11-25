@@ -8,6 +8,8 @@
 // Fokus (NDU-74): Eine Station zeigt, woher sie nimmt (Ring) und wohin sie gibt (Pfeil), mit einem Strich; der Rest wird
 // blass, die Fußzeile sagt es in Worten. Auslöser: Maus oder Tastatur auf der Station (Klick bleibt der Link), Prop
 // fokus (fest, ohne Skript), fokusAusAdresse (?station=…), tour (Kurstag: je Station dieses Tags ein Schritt).
+// Vorrang (arbeitsfluss-fokus.ts): ruhend Tour-Schritt vor ?station=… vor fokus; Maus/Tastatur überlagern, bis ein
+// Tour-Schritt kommt. ?station=… deckt im Beamer die Spalten bis zur Station auf.
 // Legende: Knöpfe, die eine Linie allein zeigen (data-faden).
 import { ArrowRight, FlaskConical, MapPin, MessageSquareQuote, Star, Target } from '@lucide/astro';
 import {
@@ -55,7 +57,7 @@ const fussId = (s: string) => `${id}-fuss-${s}`;
 const mischung = (l: Linie[]) => `--af-mix:conic-gradient(${l.map((x, i) => `var(--af-${x}) ${(i * 100) / l.length}% ${((i + 1) * 100) / l.length}%`).join(', ')})`;
 const planStil = [
   `--af-zeilen:${ZEILEN}`, `--af-punkt-x:${GEO.punktX}%`, `--af-punkt:${PUNKT_REM.normal}rem`, `--af-punkt-umstieg:${PUNKT_REM.umstieg}rem`,
-  `--af-punkt-ziel:${PUNKT_REM.ziel}rem`, `grid-template-rows:auto ${GEO.oben / 100}fr repeat(${ZEILEN}, 1fr)${GEO.unten ? ` ${GEO.unten / 100}fr` : ''}`,
+  `--af-punkt-ziel:${PUNKT_REM.ziel}rem`, `--af-punkt-stern:${PUNKT_REM.stern}rem`, `grid-template-rows:auto ${GEO.oben / 100}fr repeat(${ZEILEN}, 1fr)${GEO.unten ? ` ${GEO.unten / 100}fr` : ''}`,
 ].join(';');
 ---
 <figure class="af" id={id} data-faden={faden} data-fokus={fokus} data-fokus-an={fokus ? '' : undefined} data-adresse={fokusAusAdresse ? '' : undefined}
@@ -146,7 +148,7 @@ const planStil = [
 
 <script>
   import { heutigerTag, spalteVonTag } from '../arbeitsfluss-heute';
-  import { rollen, stationAusAdresse, tourFokus, type Rolle } from '../arbeitsfluss-fokus';
+  import { fokusSteuern } from '../arbeitsfluss-fokus';
   import { wienerZeit } from '../jetzt';
 
   // hier='heute': Markierung im Browser setzen – ?tag=N schlägt das Datum (zum Vorbereiten und Verlinken).
@@ -163,58 +165,8 @@ const planStil = [
     }
   }
 
-  // Fokus (NDU-74): Rollen aus arbeitsfluss-fokus.ts, Kanten und Pfade stehen schon im HTML.
-  const ROLLEN: Rolle[] = ['fokus', 'quelle', 'ziel', 'blass'];
-  for (const fig of document.querySelectorAll<HTMLElement>('.af')) {
-    const stationen = [...fig.querySelectorAll<HTMLElement>('.af-station[data-id]')];
-    const ids = stationen.map((s) => s.dataset.id!);
-    const liste = (v?: string) => (v ?? '').split(' ').filter(Boolean);
-    const zeige = (fokus: string | undefined) => {
-      const el = stationen.find((s) => s.dataset.id === fokus);
-      const r = rollen(ids, el ? fokus : undefined, { quellen: liste(el?.dataset.quellen), ziele: liste(el?.dataset.ziele) });
-      fig.toggleAttribute('data-fokus-an', !!el);
-      for (const s of stationen) for (const x of ROLLEN) s.classList.toggle(`af-${x}`, r[s.dataset.id!] === x);
-      for (const p of fig.querySelectorAll<SVGElement>('[data-fokus-pfad]')) p.classList.toggle('af-an', !!el && p.dataset.fokusPfad === fokus);
-      for (const f of fig.querySelectorAll<HTMLElement>('[data-fuss]')) f.hidden = !el || f.dataset.fuss !== fokus;
-      const legende = fig.querySelector<HTMLElement>('.af-fuss-legende');
-      if (legende) legende.hidden = !!el;
-    };
-
-    // Grundfokus: Prop fokus, sonst ?station=…, sonst die Tour. Maus und Tastatur überlagern ihn nur, solange sie dort sind.
-    let basis: string | undefined = fig.dataset.fokus || undefined;
-    let ueber: string | undefined; // Station unter der Maus
-    let fokussiert: string | undefined; // Station mit Tastaturfokus
-    const jetzt = () => ueber ?? fokussiert ?? basis;
-    if (fig.hasAttribute('data-adresse')) basis = stationAusAdresse(location.search, ids) ?? basis;
-    const marker = [...fig.querySelectorAll<HTMLElement>('[data-tour]')];
-    if (marker.length) {
-      const ausTour = () => tourFokus(marker.map((m) => ({ id: m.dataset.tour!, gezeigt: m.classList.contains('gezeigt') })));
-      // ← / → in Layout.astro setzen und nehmen .gezeigt; darauf hört die Tour (auch beim Zurückblättern).
-      // Ein Schritt geht vor: Ruht die Maus zufällig auf einer Station (etwa nach dem Blättern), zeigt → trotzdem die Tour.
-      const beobachter = new MutationObserver(() => { basis = ausTour(); ueber = undefined; zeige(jetzt()); });
-      for (const m of marker) beobachter.observe(m, { attributes: true, attributeFilter: ['class'] });
-      basis = ausTour() ?? basis;
-    }
-    zeige(jetzt());
-
-    for (const s of stationen) {
-      s.addEventListener('mouseenter', () => { ueber = s.dataset.id; zeige(jetzt()); });
-      s.addEventListener('mouseleave', () => { if (ueber === s.dataset.id) ueber = undefined; zeige(jetzt()); });
-      s.addEventListener('focus', () => { fokussiert = s.dataset.id; zeige(jetzt()); });
-      s.addEventListener('blur', () => { if (fokussiert === s.dataset.id) fokussiert = undefined; zeige(jetzt()); });
-    }
-
-    // Legende: eine Linie allein zeigen; derselbe Knopf noch einmal zeigt wieder alle.
-    const knoepfe = [...fig.querySelectorAll<HTMLButtonElement>('[data-faden-knopf]')];
-    for (const k of knoepfe) {
-      k.addEventListener('click', () => {
-        const l = k.dataset.fadenKnopf!;
-        if (fig.dataset.faden === l) delete fig.dataset.faden;
-        else fig.dataset.faden = l;
-        for (const x of knoepfe) x.setAttribute('aria-pressed', String(fig.dataset.faden === x.dataset.fadenKnopf));
-      });
-    }
-  }
+  // Fokus (NDU-74): Maus, Tastatur, ?station=…, Tour und Legende – Logik in arbeitsfluss-fokus.ts (dort getestet).
+  for (const fig of document.querySelectorAll<HTMLElement>('.af')) fokusSteuern(fig, location.search);
 </script>
 
 <style>
@@ -301,7 +253,7 @@ const planStil = [
   /* Umsteigepunkt: größer, je Linie ein Ausschnitt in ihrer Farbe, Rand in Textfarbe. */
   .af-station.af-umstieg .af-punkt { width: var(--af-punkt-umstieg); height: var(--af-punkt-umstieg); background: var(--af-mix); border: 2px solid var(--fg); }
   .af-endet .af-name { color: var(--muted); font-weight: 500; }
-  .af-station.af-stern .af-punkt { width: 1.5rem; height: 1.5rem; background: var(--yellow-soft); border: 2px solid var(--yellow); color: var(--yellow-ink); }
+  .af-station.af-stern .af-punkt { width: var(--af-punkt-stern); height: var(--af-punkt-stern); background: var(--yellow-soft); border: 2px solid var(--yellow); color: var(--yellow-ink); }
   .af-station.af-stern .af-punkt :global(.af-stern-icon) { fill: currentColor; }
   .af-station.af-stern .af-name { font-weight: 700; }
   .af-station.af-diese .af-name { background: var(--accent-soft); box-shadow: 0 0 0 .2rem var(--accent-soft); border-radius: 3px; }
@@ -325,7 +277,12 @@ const planStil = [
     width: var(--af-punkt-ziel); height: var(--af-punkt-ziel); background: var(--fg); border: 2px solid var(--fg); color: var(--bg-2);
   }
   .af-station.af-ziel .af-pfeil { display: block; }
-  .af-station.af-ziel .af-stern-icon { display: none; }
+  /* Der Stern hat Vorrang: Als Ziel behält er Farbe und Stern, bekommt nur den Ring (kein Pfeil). */
+  .af-station.af-ziel.af-stern .af-punkt {
+    width: var(--af-punkt-stern); height: var(--af-punkt-stern); background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink);
+    box-shadow: 0 0 0 2px var(--bg-2), 0 0 0 4.5px var(--fg);
+  }
+  .af-station.af-ziel.af-stern .af-pfeil { display: none; }
   .af-station.af-fokus .af-name { background: var(--accent-soft); box-shadow: 0 0 0 .12rem var(--accent-soft); border-radius: 3px; }
   .af-station.af-fokus .af-punkt { box-shadow: 0 0 0 2px var(--bg-2), 0 0 0 5px var(--accent); }
 
