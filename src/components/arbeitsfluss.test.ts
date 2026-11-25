@@ -23,6 +23,34 @@ describe('Stationen des Arbeitsflusses', () => {
     expect(STATIONEN.filter((s) => texte(s).some((t) => /Lego/i.test(t))).map((s) => s.id)).toStrictEqual([]);
   });
 
+  it('Stationen stehen je Tag in der Reihenfolge des Ablaufs, Zeilen ohne Lücke', () => {
+    const tag4 = STATIONEN.filter((s) => s.spalte === 4).sort((a, b) => a.zeile - b.zeile).map((s) => s.id);
+    expect(tag4).toStrictEqual([
+      'value-map-nachholen', 'concept-story', 'geschaeftsmodell', 'experiment', 'story-map',
+      'usage-story', 'prototyp-spike', 'baum-loesungen', 'scrum', 'origin-story',
+    ]);
+    const tag2 = STATIONEN.filter((s) => s.spalte === 2).sort((a, b) => a.zeile - b.zeile).map((s) => s.id);
+    expect(tag2).toStrictEqual(['synthese', 'belege', 'journey-map']);
+    for (const sp of SPALTEN) {
+      const z = STATIONEN.filter((s) => s.spalte === sp.n).map((s) => s.zeile);
+      expect(z, sp.tag).toStrictEqual(z.map((_, i) => i + 1));
+    }
+  });
+
+  it('der Baum wächst an Tag 4 bis zu den Tests: Outcome und Annahme laufen hindurch', () => {
+    const b = station('baum-loesungen')!;
+    expect(b.spalte).toBe(4);
+    expect([...b.linien].sort()).toStrictEqual(['annahme', 'outcome']);
+    expect(b.zeile).toBeGreaterThan(station('prototyp-spike')!.zeile);
+    expect(kommtAus(b)).toStrictEqual(['Baum mit Chancen', 'Ziel-Chance', 'Drei Lückensätze', 'Karte E1', 'Karte E2']);
+  });
+
+  it('Value Map & Fit an Tag 4 ist eine Fortsetzung der Station von Tag 3, kein neues Ergebnis', () => {
+    const v = station('value-map-nachholen')!;
+    expect([v.spalte, v.zeile, v.fortsetzung, ergebnisse(v)]).toStrictEqual([4, 1, 'value-map', []]);
+    expect(station(v.fortsetzung!)?.spalte).toBe(3);
+  });
+
   it('die Concept Story steht an Tag 4', () => {
     expect(station('concept-story')?.spalte).toBe(4);
   });
@@ -112,8 +140,8 @@ describe('Kurstag und Spalte', () => {
 
 describe('Geometrie', () => {
   it('Stamm reicht von der Schiene bis zur fernsten Station der Linie in der Spalte', () => {
-    // Tag 1, Annahme: Zeilen 7 und 8, Schiene unten → Stamm endet an der oberen (Zeile 7).
-    expect(spaltenPfade(1, 'annahme').stamm).toBe(`M${stammX(1, 'annahme')} ${schieneY('annahme')}V${zeileY(7)}`);
+    // Tag 1, Annahme: Zeilen 3 und 4, Schiene unten → Stamm endet an der oberen (Zeile 3).
+    expect(spaltenPfade(1, 'annahme').stamm).toBe(`M${stammX(1, 'annahme')} ${schieneY('annahme')}V${zeileY(3)}`);
     // Tag 3, Beleg: Zeilen 1–6, Schiene oben → bis Zeile 6.
     expect(spaltenPfade(3, 'beleg').stamm).toBe(`M${stammX(3, 'beleg')} ${schieneY('beleg')}V${zeileY(6)}`);
   });
@@ -126,7 +154,12 @@ describe('Geometrie', () => {
 
   it('ein Ast je Station der Linie, vom Stamm zum Punkt', () => {
     const { aeste } = spaltenPfade(2, 'beleg');
-    expect(aeste).toStrictEqual([2, 3].map((z) => `M${stammX(2, 'beleg')} ${zeileY(z)}H${punktX(2)}`));
+    expect(aeste).toStrictEqual([1, 3].map((z) => `M${stammX(2, 'beleg')} ${zeileY(z)}H${punktX(2)}`));
+  });
+
+  it('Höhe und Zeilen sind endliche Zahlen (sonst wären die Pfade „NaN“)', () => {
+    expect(Number.isFinite(HOEHE) && Number.isFinite(zeileY(1))).toBe(true);
+    expect(spaltenPfade(4, 'outcome').stamm).not.toMatch(/NaN/);
   });
 
   it('Schienen liegen außerhalb der Stationszeilen', () => {

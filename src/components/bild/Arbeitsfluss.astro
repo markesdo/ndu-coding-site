@@ -38,7 +38,7 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
           <li class={`af-leg af-leg-${l}`}>
             <svg class="af-muster" viewBox="0 0 36 10" aria-hidden="true"><path class={`af-l af-l-${l}`} d="M0 5H36" />{l === 'outcome' && <path class="af-innen" d="M0 5H36" />}</svg>
             <Icon size={16} aria-hidden="true" class="af-leg-icon" />
-            <span><strong>{LINIE[l].name}</strong> – {LINIE[l].text}</span>
+            <span><strong>{LINIE[l].name}</strong><span class="af-leg-text"> – {LINIE[l].text}</span></span>
           </li>
         );
       })}
@@ -70,9 +70,9 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
             const Tag = href ? 'a' : 'span';
             return (
               <Tag href={href} data-spalte={sp.n}
-                class:list={['af-station', klassen(sp.n), ...s.linien.map((l) => `af-auf-${l}`), { 'af-endet': !!s.endet, 'af-umstieg': s.linien.length > 1, 'af-stern': s.stern, 'af-diese': s === hierStation }]}
+                class:list={['af-station', klassen(sp.n), ...s.linien.map((l) => `af-auf-${l}`), { 'af-endet': !!s.endet, 'af-fortsetzung': !!s.fortsetzung, 'af-umstieg': s.linien.length > 1, 'af-stern': s.stern, 'af-diese': s === hierStation }]}
                 style={`grid-column:${sp.n};grid-row:${s.zeile + 2}`}
-                title={s.endet ? `${s.kurz} – ${s.endet}` : s.kurz}>
+                title={s.endet ? `${s.kurz} – ${s.endet}` : s.fortsetzung ? `${s.kurz} – Fortsetzung von ${station(s.fortsetzung)?.kurz}` : s.kurz}>
                 <span class="af-punkt" aria-hidden="true">{s.stern && <Star size={12} />}</span>
                 <span class="af-name">{s.kurz}{s.stern && <span class="visually-hidden"> (Was bauen wir?)</span>}</span>
               </Tag>
@@ -88,7 +88,7 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
       <p class="af-weiter">→ {hierStation.gebrauchtIn}</p>
     </div>
   )}
-  <figcaption class="af-fuss">Hohle Punkte enden oder werden ersetzt. <Star size={14} aria-hidden="true" class="af-fuss-stern" /> Der Stern ist die Antwort auf „Was bauen wir?“.</figcaption>
+  <figcaption class="af-fuss">Hohle Punkte enden oder werden ersetzt; gepunktete setzen eine frühere Station fort.<Star size={14} aria-hidden="true" class="af-fuss-stern" /> Der Stern ist die Antwort auf „Was bauen wir?“.</figcaption>
 </figure>
 
 <script>
@@ -113,7 +113,7 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
 <style>
   .af {
     --af-beleg: var(--blue); --af-outcome: var(--accent); --af-annahme: var(--purple);
-    --af-h: 36rem; --af-schrift: .85rem;
+    --af-h: 40rem; --af-schrift: .85rem;
     margin: 1.25rem 0; max-width: none;
   }
   .af-legende { list-style: none; margin: 0 0 .6rem; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem 1.4rem; font-size: .9rem; }
@@ -161,7 +161,7 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
   .af-station {
     position: relative; z-index: 1; display: flex; align-items: center; min-width: 0;
     padding: 0 .3rem 0 calc(15% + .75rem); color: var(--fg); text-decoration: none;
-    font-size: var(--af-schrift); line-height: 1.15; font-weight: 600;
+    font-size: var(--af-schrift); line-height: 1.1; font-weight: 600;
   }
   a.af-station:hover .af-name { text-decoration: underline; }
   .af-name { overflow-wrap: break-word; }
@@ -176,6 +176,9 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
   .af-auf-outcome .af-punkt { border-color: var(--af-outcome); }
   /* Ergebnis mit Wirkung: Punkt gefüllt; endet es hier oder wird ersetzt: hohl. Umsteigepunkt: größer, dunkler Ring. */
   .af-station:not(.af-endet) .af-punkt { background: var(--fg); }
+  /* Fortsetzung einer Station von einem früheren Tag: gepunkteter Ring (ein Umsteigepunkt behält sein Aussehen). */
+  .af-station.af-fortsetzung .af-punkt { background: var(--bg-2); border-style: dotted; }
+  .af-fortsetzung:not(.af-umstieg) .af-name { font-weight: 500; font-style: italic; }
   /* Umsteigepunkt: größer, gefüllt, mit hellem Kern – nicht zu verwechseln mit dem hohlen Punkt „endet“. */
   .af-station.af-umstieg .af-punkt { width: 1.1rem; height: 1.1rem; border-color: var(--fg); background: radial-gradient(circle, var(--bg-2) 0 28%, var(--fg) 30%); }
   .af-endet .af-name { color: var(--muted); font-weight: 500; }
@@ -200,11 +203,11 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
   .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   /* Beamer: Höhe so, dass Titel, Kernsatz, Legende, Plan und Fußzeile in 1280×720 passen (rem wächst mit der Höhe). */
-  :global(html[data-beamer]) .af { --af-h: 21.5rem; --af-schrift: .75rem; margin: .5rem 0 0; }
-  /* Legende in drei Spalten nebeneinander: zwei Zeilen statt drei. */
-  :global(html[data-beamer]) .af-legende { font-size: .72rem; line-height: 1.25; margin-bottom: .4rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 1rem; }
-  :global(html[data-beamer]) .af-leg { align-items: flex-start; }
-  :global(html[data-beamer]) .af-muster { margin-top: .25rem; }
+  :global(html[data-beamer]) .af { --af-h: 22.8rem; --af-schrift: .75rem; margin: .5rem 0 0; }
+  /* Am Beamer nur Strich, Icon und Name in einer Zeile – die Erklärung sagt Markus, im Handout steht sie. Der Platz geht
+     an die zehn Zeilen von Tag 4. */
+  :global(html[data-beamer]) .af-legende { font-size: .8rem; margin-bottom: .35rem; gap: 0 1.6rem; }
+  :global(html[data-beamer]) .af-leg-text { display: none; }
   :global(html[data-beamer]) .af-plan { min-width: 0; }
   :global(html[data-beamer]) .af-kopf { padding: .3rem .5rem .25rem; }
   :global(html[data-beamer]) .af-tag { font-size: .75rem; }

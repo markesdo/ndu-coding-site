@@ -5,7 +5,7 @@ import Folie from '../../components/Folie.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Arbeitsfluss from '../../components/bild/Arbeitsfluss.astro';
 import { FlaskConical, MessageSquareQuote, Star, Target } from '@lucide/astro';
-import { LINIE, SPALTEN, STATIONEN, stationHref } from '../../components/arbeitsfluss';
+import { LINIE, SPALTEN, STATIONEN, station, stationHref } from '../../components/arbeitsfluss';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
@@ -112,7 +112,7 @@ const nachSpalte = SPALTEN.map((sp) => ({ sp, stationen: STATIONEN.filter((s) =>
 
   <div class="nur-handout">
     <h2 id="stationen">Alle Stationen</h2>
-    <p>Je Station ein Satz und wo ihr Ergebnis wieder gebraucht wird. Hohle Punkte im Plan enden oder werden ersetzt.</p>
+    <p>Je Station ein Satz und wo ihr Ergebnis wieder gebraucht wird, je Tag in der Reihenfolge des Ablaufs. Hohle Punkte im Plan enden oder werden ersetzt; gepunktete setzen eine frühere Station fort.</p>
     {nachSpalte.map(({ sp, stationen }) => (
       <>
         <h3 id={`stationen-${sp.n}`}>{sp.tag} · {sp.titel}</h3>
@@ -124,7 +124,7 @@ const nachSpalte = SPALTEN.map((sp) => ({ sp, stationen: STATIONEN.filter((s) =>
                 const href = stationHref(s);
                 return (
                   <tr>
-                    <th scope="row">{href ? <a href={href}>{s.kurz}</a> : s.kurz}{s.stern && <> <Star size={14} aria-hidden="true" class="stern-klein" /></>}{s.endet && <span class="muted"> ({s.endet})</span>}</th>
+                    <th scope="row">{href ? <a href={href}>{s.kurz}</a> : s.kurz}{s.stern && <> <Star size={14} aria-hidden="true" class="stern-klein" /></>}{s.endet && <span class="muted"> ({s.endet})</span>}{s.fortsetzung && <span class="muted"> (Fortsetzung: {station(s.fortsetzung)?.kurz}, {SPALTEN.find((x) => x.n === station(s.fortsetzung!)?.spalte)?.tag})</span>}</th>
                     <td>{s.satz}{s.zusatz && <> <em>{s.zusatz}</em></>}</td>
                     <td>{s.gebrauchtIn}</td>
                     <td>{s.linien.map((l) => LINIE[l].name).join(', ')}</td>
