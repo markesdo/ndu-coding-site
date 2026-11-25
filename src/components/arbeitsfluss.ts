@@ -349,7 +349,7 @@ export const heutigerTag = (datum: string, tage: { n: number; datum?: string }[]
 // ihren Stationen, ein Ast führt zum Punkt der Station. Weil die Linie mit der obersten Schiene den Stamm ganz rechts hat,
 // kreuzt kein Stamm eine fremde Schiene, und keine Linie eine Beschriftung.
 // Abstände (NDU-74): bei 1280×720 im Beamer ist der Plan rund 920 px breit (Spalte 184 px, eine Einheit 1,84 px) und eine
-// Zeile rund 38 px hoch. Spuren 6 Einheiten auseinander (11 px), Punkt 9 Einheiten neben dem Outcome-Stamm – siehe
+// Zeile rund 32 px hoch. Spuren 6 Einheiten auseinander (11 px), Punkt 9 Einheiten neben dem Outcome-Stamm – siehe
 // BEZUG und den Test „Lesbarkeit“. Die CSS-Werte (Punkt, oberes Band) kommen aus GEO und PUNKT_REM.
 export const GEO = {
   breite: 100,
@@ -358,15 +358,15 @@ export const GEO = {
   unten: 0, // keine Schiene unten mehr: Annahme lief dort als Rahmen um den Plan
   punktX: 24, // Punkt der Station, von links in der Spalte
   kanal: { annahme: 3, beleg: 9, outcome: 15 } as Record<Linie, number>,
-  schiene: { outcome: 15, beleg: 45, annahme: 75 } as Record<Linie, number>,
+  schiene: { outcome: 14, beleg: 46, annahme: 78 } as Record<Linie, number>,
   astAbstand: 16, // Äste am Umsteigepunkt: senkrecht so weit auseinander (Anteil einer Zeile: 0.16, rund 6 px)
 };
 export const HOEHE = GEO.oben + ZEILEN * GEO.zeile + GEO.unten;
 
 /** Durchmesser der Punkte in rem (CSS liest sie über Variablen aus Arbeitsfluss.astro). */
 export const PUNKT_REM = { normal: 0.8, umstieg: 1, ziel: 1.1 };
-/** Bezugsgröße für die Lesbarkeit: Beamer bei 1280×720 (rem = 20 px), gemessen. */
-export const BEZUG = { planBreite: 920, zeileHoehe: 38, rem: 20, strich: { beleg: 3, outcome: 5, annahme: 3 } as Record<Linie, number> };
+/** Bezugsgröße für die Lesbarkeit: Beamer bei 1280×720 (rem = 20 px). Gemessen 25.11.: Zeile 32,5 px, Plan 1040 px breit – 920 px ist die vorsichtige Annahme der Beratung. */
+export const BEZUG = { planBreite: 920, zeileHoehe: 32, rem: 20, strich: { beleg: 3, outcome: 5, annahme: 3 } as Record<Linie, number> };
 
 /** y der Schiene einer Linie (alle oben). */
 export const schieneY = (l: Linie): number => GEO.schiene[l];
