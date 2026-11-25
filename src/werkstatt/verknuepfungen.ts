@@ -1,7 +1,7 @@
 // Verknüpfungen der Mappe prüfen (deterministisch, ohne KI): unbekannte IDs, fehlende Belege, verwaiste Interviews,
 // riskanteste Annahme ohne Beleg trotz Interviews.
 // Grundlage für das MCP-Werkzeug verknuepfungen_pruefen und später für die Lehrende-Ansicht (Spec §3.4, §3.7).
-import { entscheidungsIds, ersetztDurch, getanHatEigeneQuelle, getanMitNotiz, getanQuellePruefer } from './belege.js';
+import { entscheidungsIds, getanHatEigeneQuelle, getanQuellePruefer } from './belege.js';
 import { AKTIVE_ARTEFAKTE, ARTEFAKTE, BELEGSTUFE_TEXT, STILLGELEGT, interviewGefuellt, type Annahmen, type ArtefaktName, type Brief, type Entscheidungen, type Interviews, type Leitfaden } from './schemas/index.js';
 
 // Je Artefakt: die Daten, null = noch nicht gespeichert, 'unlesbar' = Datei passt nicht zum Schema.
@@ -52,9 +52,12 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     unlesbar: AKTIVE_ARTEFAKTE.filter((n) => m[n] === 'unlesbar'),
   };
   const befund = (b: Befund) => ergebnis.befunde.push(b);
+  // Das stillgelegte Entscheidungslog (NDU-70): gespeicherte Zeilen lösen D-IDs weiter auf; eine unlesbare alte Datei
+  // zählt wie keine – sie darf keine Prüfung abschalten, und gemeldet wird sie nirgends mehr.
+  const log = m.entscheidungen === 'unlesbar' ? null : m.entscheidungen;
 
   const bekannt = new Set<string>();
-  if (da(m.entscheidungen)) m.entscheidungen.entscheidungen.forEach((e) => bekannt.add(e.id));
+  if (da(log)) log.entscheidungen.forEach((e) => bekannt.add(e.id));
   if (da(m.annahmen)) m.annahmen.annahmen.forEach((a) => bekannt.add(a.id));
   if (da(m.leitfaden)) m.leitfaden.fragen.forEach((f) => bekannt.add(f.id));
   if (da(m.interviews)) m.interviews.interviews.forEach((iv) => { bekannt.add(iv.id); iv.zitate.forEach((z) => bekannt.add(z.id)); });
@@ -64,10 +67,10 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     if (bekannt.has(id)) return null;
     const quelle = QUELLE[id[0]];
     if (!quelle) return `${id} gehört zu einem späteren Kurstag; in der Mappe gibt es das noch nicht.`;
+    // Ein stillgelegtes Artefakt (Entscheidungslog) soll niemand mehr anlegen oder öffnen: nie auf es verweisen.
+    if (STILLGELEGT.includes(quelle)) return `In der Mappe gibt es ${id} nicht.`;
     if (m[quelle] === 'unlesbar') return null;
     const titel = ARTEFAKTE[quelle].titel;
-    // Ein stillgelegtes Artefakt (Entscheidungslog) soll niemand mehr anlegen: nicht „noch nicht gespeichert“ sagen.
-    if (m[quelle] === null && STILLGELEGT.includes(quelle)) return `In der Mappe gibt es ${id} nicht.`;
     if (m[quelle] === null) return `„${titel}“ ist noch nicht gespeichert, ${id} gibt es darum noch nicht.`;
     const interview = id.split('-')[0];
     if (quelle === 'interviews' && id.includes('-') && bekannt.has(interview)) return `${interview} hat kein Zitat ${id}.`;
@@ -102,9 +105,8 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
   // Zeilen. Seine IDs und Beleg-Notizen zählen oben und unten weiter, damit Verweise darauf nicht als unbekannt gelten.
 
   if (da(m.annahmen)) {
-    const hatQuelle = da(m.entscheidungen) ? getanQuellePruefer(m.entscheidungen) : getanHatEigeneQuelle;
-    const nachId = new Map(da(m.entscheidungen) ? m.entscheidungen.entscheidungen.map((e) => [e.id, e] as const) : []);
-    const ersetztVon = da(m.entscheidungen) ? ersetztDurch(m.entscheidungen.entscheidungen) : new Map<string, string>();
+    // Eine alte Log-Zeile, die selbst „getan“ mit Quelle ist, trägt weiter; erwähnt wird das Log in keinem Befund.
+    const hatQuelle = da(log) ? getanQuellePruefer(log) : getanHatEigeneQuelle;
     for (const a of m.annahmen.annahmen) {
       belegeVon('annahmen', a.id, a.belegIds);
       textVon('annahmen', a.id, `${a.text}\n${a.belegNotiz ?? ''}`);
@@ -114,15 +116,12 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
         befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „${BELEGSTUFE_TEXT[a.beleg]}“, nennt aber kein Interview oder Zitat als Beleg.` });
       }
       // „getan“ heißt beobachtet, gemessen, bezahlt: Regel in belege.ts. Ohne Quelle fragt man nach (Begleiter Annahmen-Map:
-      // „getan, aber ohne Quelle – nachfragen“). Still nur, wenn es nichts zu prüfen gibt: Entscheidungslog unlesbar, oder
-      // jede genannte D-ID ist unbekannt (dafür steht schon der Befund zur unbekannten ID). Sonst zählen die aufgelösten.
+      // „getan, aber ohne Quelle – nachfragen“). Still nur, wenn jede genannte D-ID unbekannt ist (dafür steht schon der
+      // Befund zur unbekannten ID). Sonst zählen die aufgelösten.
       const dIds = entscheidungsIds(a);
-      const dNichtPruefbar = dIds.length > 0 && (m.entscheidungen === 'unlesbar' || dIds.every((id) => warumUnbekannt(id) !== null));
+      const dNichtPruefbar = dIds.length > 0 && dIds.every((id) => warumUnbekannt(id) !== null);
       if (!hatQuelle(a) && !dNichtPruefbar) {
-        // Würde eine genannte Entscheidung tragen, ist aber ersetzt: auf die neue Zeile zeigen.
-        const ersetzte = dIds.filter((id) => { const e = nachId.get(id); return e !== undefined && getanMitNotiz(e) && ersetztVon.has(id); });
-        const zusatz = ersetzte.map((id) => ` ${id} ist ersetzt – nennt die neue Zeile (${ersetztVon.get(id)}).`).join('');
-        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?${zusatz}` });
+        befund({ art: 'fehlender-beleg', artefakt: 'annahmen', ort: a.id, text: `${a.id} hat die Belegstufe „getan“, nennt aber keine Quelle (Beleg-Notiz). Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?` });
       }
     }
     // Die riskanteste Annahme hat gar keinen Beleg (Stufe „noch keiner“, keine auflösbare ID, keine Notiz), obwohl schon
@@ -142,15 +141,11 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     m.interviews.interviews.forEach((iv) => iv.chancen.forEach((c, j) => {
       if (c.belege.length === 0) befund({ art: 'fehlender-beleg', artefakt: 'interviews', ort: `${iv.id} · Chance ${j + 1}`, text: `${iv.id} · Chance ${j + 1} hat kein Zitat als Beleg.` });
     }));
-    // Verwaist: weder ein Beleg noch der Text im Entscheidungslog oder in der Annahmen-Map nennt das Interview oder eines
-    // seiner Zitate.
-    // Ist eine der beiden Dateien unlesbar, lässt sich das nicht sagen; fehlen beide, gibt es noch nichts zu belegen.
-    const belegQuellen = [m.entscheidungen, m.annahmen];
-    if (!belegQuellen.includes('unlesbar') && belegQuellen.some(da)) {
-      const genannt = new Set<string>([
-        ...(da(m.entscheidungen) ? m.entscheidungen.entscheidungen.flatMap((e) => [...e.belegIds, ...idsImText(`${e.entscheidung}\n${e.grund}`)]) : []),
-        ...(da(m.annahmen) ? m.annahmen.annahmen.flatMap((a) => [...a.belegIds, ...idsImText(a.text)]) : []),
-      ]);
+    // Verwaist: weder ein Beleg noch der Text in der Annahmen-Map nennt das Interview oder eines seiner Zitate. Nur die
+    // Annahmen-Map zählt (das Entscheidungslog ist stillgelegt, NDU-70); ist sie nicht gespeichert oder unlesbar, gibt es
+    // nichts zu sagen.
+    if (da(m.annahmen)) {
+      const genannt = new Set<string>(m.annahmen.annahmen.flatMap((a) => [...a.belegIds, ...idsImText(a.text)]));
       for (const iv of m.interviews.interviews) {
         if (genannt.has(iv.id) || iv.zitate.some((z) => genannt.has(z.id))) continue;
         befund({ art: 'verwaist', artefakt: 'interviews', ort: iv.id, id: iv.id, text: `${iv.id} wird in der Annahmen-Map nicht als Beleg genannt.` });

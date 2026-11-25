@@ -293,6 +293,8 @@ describe('Werkzeuge', () => {
     expect(anweisung.match(/Entscheidungslog|D2/g) ?? []).toStrictEqual([]);
     const { tools } = await c.listTools();
     expect(JSON.stringify(tools).match(/Entscheidungslog|entscheidungslog|"entscheidungen"/g) ?? []).toStrictEqual([]);
+    // Auch keine Hinweise auf Log-Zeilen (D4) oder Entscheidungen als Beleg in der Beschreibung von verknuepfungen_pruefen.
+    expect(JSON.stringify(tools).match(/D4|über eine Entscheidung|selbst „getan“/g) ?? []).toStrictEqual([]);
     for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
       const r = await c.callTool({ name, arguments: { artefakt: 'entscheidungen' } });
       expect(r.isError, name).toBe(true);
@@ -850,9 +852,11 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     expect(r.structuredContent).toStrictEqual({
       befunde: [
         ...['A2', 'A4'].map((id) => ({
-          art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
+          art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle (Beleg-Notiz). Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
         })),
         { art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was hast du dazu gehört?' },
+        // Die Interviews nennt nur das stillgelegte Log – die Annahmen-Map keines (NDU-70).
+        ...['I1', 'I2', 'I3', 'I4', 'I5'].map((id) => ({ art: 'verwaist', artefakt: 'interviews', ort: id, id, text: `${id} wird in der Annahmen-Map nicht als Beleg genannt.` })),
       ],
       geprueft: ['annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],

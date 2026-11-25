@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ARTEFAKTE, METHODEN, artefakt } from '../components/methoden';
-import { ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN } from './schemas/index.js';
+import { AKTIVE_ARTEFAKTE, ARTEFAKTE as WERKSTATT_ARTEFAKTE, ARTEFAKT_NAMEN, STILLGELEGT } from './schemas/index.js';
 import { EDITOREN } from './ui/editoren/index.js';
 import { EDITOR_ANKER, LEITFADEN_LINK } from './ui/mappe-hilfen.js';
 import { MCP_WERKZEUGE } from './vertrag.js';
@@ -30,7 +30,7 @@ describe('Werkstatt auf den Methodenseiten', () => {
   });
 
   it('jede Werkstatt-Methode hat auf ihrer Seite <Bearbeiten artefakt=…> für ihr Artefakt, nach „So geht ihr vor“', () => {
-    for (const m of werkstattMethoden) {
+    for (const m of werkstattMethoden.filter((x) => !x.stillgelegt)) {
       const quelle = seite(`methoden/${m.slug}`);
       for (const id of m.ergibt) {
         const name = artefakt(id)!.werkstatt!;
@@ -136,7 +136,7 @@ describe('Claude verbinden', () => {
 
 describe('Mappe verlinkt direkt zum Editor', () => {
   it('der Anker jedes Artefakts ist die letzte Überschrift vor seinem „Bearbeiten“', () => {
-    for (const name of ARTEFAKT_NAMEN) {
+    for (const name of AKTIVE_ARTEFAKTE) {
       const seite = seiten[`../pages/innolab/methoden/${WERKSTATT_ARTEFAKTE[name].slug}.astro`];
       const knopf = seite.indexOf(`<Bearbeiten artefakt="${name}"`);
       expect(knopf, name).toBeGreaterThan(-1);
@@ -144,6 +144,19 @@ describe('Mappe verlinkt direkt zum Editor', () => {
       expect(davor, name).toBe(EDITOR_ANKER[name]);
       expect(seite.split(`id="${EDITOR_ANKER[name]}"`).length - 1, `${name}: Anker eindeutig`).toBe(1);
     }
+  });
+});
+
+// NDU-70: Die Seite des stillgelegten Entscheidungslogs ist nur noch zum Lesen da – kein Editor, keine Claude-Prüfung (der
+// Connector kennt das Log nicht mehr); die Anker #werkstatt und #pruefen bleiben als Ziele alter Links.
+describe('Stillgelegte Artefakte: Seite nur zum Lesen', () => {
+  it('kein <Bearbeiten> und kein <ClaudePruefung> für das Entscheidungslog, auf keiner Seite', () => {
+    expect(STILLGELEGT).toStrictEqual(['entscheidungen']);
+    for (const [pfad, quelle] of Object.entries(seiten)) {
+      expect(quelle.match(/<Bearbeiten artefakt="entscheidungen"|<ClaudePruefung slug="entscheidungslog"/g) ?? [], pfad).toStrictEqual([]);
+    }
+    const log = seite('methoden/entscheidungslog');
+    for (const id of ['werkstatt', 'pruefen', 'vorgehen']) expect(log, id).toContain(`<h2 id="${id}">`);
   });
 });
 

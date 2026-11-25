@@ -41,7 +41,8 @@ async function aufbau(opts: { lesen?: (fake: Speicher) => Speicher['lesen']; wer
 const SOFIE_ZAHLEN = {
   kuerzel: 'sofie',
   briefFelder: 6,
-  entscheidungen: entscheidungenBeispiel.entscheidungen.length,
+  // Das gespeicherte Entscheidungslog wird seit NDU-70 nicht mehr gelesen.
+  entscheidungen: 0,
   annahmen: annahmenBeispiel.annahmen.length,
   fragen: leitfadenBeispiel.fragen.length,
   unlesbar: [],
@@ -88,6 +89,20 @@ describe('GET /api/werkstatt/zahlen', () => {
     const t = await aufbau({ lesen: (fake) => async (repo, name) => { if (name === 'leitfaden') throw new DateiUnlesbar('mappe/leitfaden.json'); return fake.lesen(repo, name); } });
     const sofie = (await (await t.holen(MARKUS)).json()).personen[0];
     expect(sofie).toStrictEqual({ ...SOFIE_ZAHLEN, fragen: 0, unlesbar: ['leitfaden'] });
+  });
+
+  // NDU-70: Das stillgelegte Entscheidungslog wird nicht gelesen – weder „nicht lesbar“ noch ein GitHub-Fehler darauf
+  // betrifft die Person.
+  it('Entscheidungslog stillgelegt: kaputt oder GitHub-Fehler darauf ändert nichts an der Zeile der Person', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    for (const fehlerArt of ['unlesbar', 'github'] as const) {
+      const t = await aufbau({ lesen: (fake) => async (repo, name) => {
+        if (name === 'entscheidungen') throw fehlerArt === 'unlesbar' ? new DateiUnlesbar('mappe/entscheidungen.json') : new Error('GitHub weg');
+        return fake.lesen(repo, name);
+      } });
+      const sofie = (await (await t.holen(MARKUS)).json()).personen[0];
+      expect(sofie, fehlerArt).toStrictEqual(SOFIE_ZAHLEN);
+    }
   });
 
   it('Repo gehört laut werkstatt.json jemand anderem: nicht mitzählen, fehler', async () => {
