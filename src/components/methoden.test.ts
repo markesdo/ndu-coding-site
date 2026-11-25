@@ -285,9 +285,9 @@ describe('methoden', () => {
     // Entscheidung 39 (21.11.2026): Tag 3 liegt ganz auf Miro – das Kundenprofil wird an einem Bild seines Canvas-Frames
     // geprüft; Baum und Ziel-Chance (T3 · 1) kommen als Bilder dazu, keine Datei in docs/.
     const kp = pruefPrompt(METHODEN.find((m) => m.slug === 'kundenprofil')!);
-    expect(kp).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Kundenprofil \(Jobs, Pains, Gains\), je Spalte geordnet \(Frame „T3 · 4 · Canvas · euer Name“\)\. Prüf es gegen diese Prüfliste \(Kundenprofil\):\n/);
+    expect(kp).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Kundenprofil \(Jobs, Pains, Gains\), je Spalte geordnet \(Frame „T3 · 4 · Canvas · Produkt n“\)\. Prüf es gegen diese Prüfliste \(Kundenprofil\):\n/);
     // Der Baum liegt nur auf Miro (seit 11.11.2026): Claude bekommt ihn als Bild, nicht als Datei.
-    expect(kp).toContain('\nZum Abgleich füge ich auch zwei Bilder aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“) und Ziel-Chance mit vier Linsen (Frame „T3 · 1 · Ziel-Chance“).\n');
+    expect(kp).toContain('\nZum Abgleich füge ich auch zwei Bilder aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · Produkt n“) und Ziel-Chance mit vier Linsen (Frame „T3 · 1 · Ziel-Chance“).\n');
     expect(kp).toContain('\nZum Abgleich lies außerdem meine Interviews und Snapshots (Werkzeug artefakt_lesen).\n');
     expect(kp).not.toMatch(/docs\//);
     // Vorarbeit aus der Werkstatt: über den Connector, nicht als Datei (Tag 2 passt ihre Seite mit ihrer Phase an).
@@ -331,7 +331,7 @@ describe('methoden', () => {
     // Vorarbeit nur auf Miro als Bild (seit 21.11.2026 auch Kundenprofil und Value Map), Werkstatt-Vorarbeit über den Connector.
     const smp = pruefPrompt(sm, undefined, 'einfuegen');
     // Kundenprofil und Value Map teilen den Canvas: ein Bild; der Ideen-Vergleich der Value Map ist ein eigenes.
-    expect(smp).toContain('\nZum Abgleich füge ich auch drei Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · euer Name“), Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“) und Experience Map mit Momenten (Äste des Baums) (Frame „T2 · 1 · Experience Map“).\n');
+    expect(smp).toContain('\nZum Abgleich füge ich auch drei Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · Produkt n“), Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“) und Experience Map mit Momenten (Äste des Baums) (Frame „T2 · 1 · Experience Map“).\n');
     expect(smp).toContain('\nZum Abgleich lies außerdem meinen Produkt-Brief und meine Annahmen-Map (Werkzeug artefakt_lesen).\n');
     // Entscheidung 39: Kein Prüf-Prompt nennt eine Tag-3-Datei – die Ergebnisse von Tag 3 liegen auf Miro.
     for (const m of METHODEN.filter((x) => x.pruefliste)) {
@@ -346,17 +346,17 @@ describe('methoden', () => {
   // der Ideen-Vergleich der Value Map (Prüfpunkte -vergleich, -wahl, -fragezeichen) ist ein eigenes Bild aus T3 · 4.
   it('Miro-Bilder: Value Map mit Canvas und Feld in T3 · 4, Vorarbeit ohne den eigenen Frame, kein Frame doppelt', () => {
     const vm = METHODEN.find((m) => m.slug === 'value-map')!;
-    expect(miroErgebnisBilder(vm).map((b) => b.ort)).toStrictEqual(['Frame „T3 · 4 · Canvas · euer Name“', 'Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“']);
+    expect(miroErgebnisBilder(vm).map((b) => b.ort)).toStrictEqual(['Frame „T3 · 4 · Canvas · Produkt n“', 'Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“']);
     expect(miroVorarbeitBilder(vm).map((b) => b.ort)).toStrictEqual(['Frame „T3 · 3 · Ideation“']);
     const kp = METHODEN.find((m) => m.slug === 'kundenprofil')!;
-    expect(miroErgebnisBilder(kp).map((b) => b.ausschnitt)).toStrictEqual(['euren Frame „T3 · 4 · Canvas · euer Name“']);
-    expect(miroVorarbeitBilder(kp).map((b) => b.ausschnitt)).toStrictEqual(['euren Frame „Baum · euer Name“', 'eure Spalte im Frame „T3 · 1 · Ziel-Chance“']);
+    expect(miroErgebnisBilder(kp).map((b) => b.ausschnitt)).toStrictEqual(['euren Frame „T3 · 4 · Canvas · Produkt n“']);
+    expect(miroVorarbeitBilder(kp).map((b) => b.ausschnitt)).toStrictEqual(['euren Frame „Baum · Produkt n“', 'eure Spalte im Frame „T3 · 1 · Ziel-Chance“']);
     // Ideation braucht HMW und Kundenprofil: zwei Bilder zum Abgleich, keins davon ist der eigene Frame T3 · 3.
     const id = METHODEN.find((m) => m.slug === 'ideation')!;
     expect(miroErgebnisBilder(id).map((b) => b.ausschnitt)).toStrictEqual(['eure Spalte im Frame „T3 · 3 · Ideation“']);
-    expect(miroVorarbeitBilder(id).map((b) => b.ausschnitt)).toStrictEqual(['eure Spalte im Frame „T3 · 2 · How Might We“', 'euren Frame „T3 · 4 · Canvas · euer Name“']);
+    expect(miroVorarbeitBilder(id).map((b) => b.ausschnitt)).toStrictEqual(['eure Spalte im Frame „T3 · 2 · How Might We“', 'euren Frame „T3 · 4 · Canvas · Produkt n“']);
     const p = pruefPrompt(vm);
-    expect(p).toMatch(/^Unter diese Nachricht füge ich zwei Bilder meines Ergebnisses aus Miro ein: Spitzenreiter mit Value Map und Fit \(Frame „T3 · 4 · Canvas · euer Name“ und Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“\)\. Prüf es/);
+    expect(p).toMatch(/^Unter diese Nachricht füge ich zwei Bilder meines Ergebnisses aus Miro ein: Spitzenreiter mit Value Map und Fit \(Frame „T3 · 4 · Canvas · Produkt n“ und Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“\)\. Prüf es/);
     expect(p).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Drei Ideen für die Ziel-Chance, je als Lückensatz (Frame „T3 · 3 · Ideation“).\n');
     for (const m of METHODEN.filter((x) => x.pruefliste)) {
       for (const weg of ['standard', 'einfuegen'] as const) {
@@ -410,7 +410,7 @@ describe('methoden', () => {
     expect(METHODEN.filter((m) => pruefungAufMiro(m)).map((m) => m.slug)).toStrictEqual(['journey-map', 'baum', 'ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']);
     const zc = pruefPrompt(METHODEN.find((m) => m.slug === 'ziel-chance')!);
     expect(zc).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Ziel-Chance mit vier Linsen \(Frame „T3 · 1 · Ziel-Chance“\)\. Prüf es gegen diese Prüfliste \(Ziel-Chance wählen\):\n/);
-    expect(zc).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · euer Name“).\n');
+    expect(zc).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · Produkt n“).\n');
     expect(miroBildAusschnitt(ARTEFAKTE.find((a) => a.id === 'ziel')!)).toBe('eure Spalte im Frame „T3 · 1 · Ziel-Chance“');
     for (const s of ['ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']) {
       expect(pruefPrompt(METHODEN.find((m) => m.slug === s)!), s).not.toMatch(/^Lies |docs\/|ändere keine Datei/m);
@@ -420,7 +420,7 @@ describe('methoden', () => {
     expect(jm).toContain('\nZum Abgleich lies außerdem meinen Produkt-Brief und meine Interviews und Snapshots (Werkzeug artefakt_lesen).\n');
     expect(jm).not.toContain('Bild aus Miro ein: ');
     const baum = pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!);
-    expect(baum).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Opportunity Solution Tree \(Chancen unter den Momenten\) \(Frame „Baum · euer Name“\)\./);
+    expect(baum).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Opportunity Solution Tree \(Chancen unter den Momenten\) \(Frame „Baum · Produkt n“\)\./);
     expect(baum).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Experience Map mit Momenten (Äste des Baums) (Frame „T2 · 1 · Experience Map“).\n');
     for (const p of [jm, baum]) expect(p).not.toMatch(/^Lies |docs\/|ändere keine Datei/m);
     expect(() => pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, undefined, 'einfuegen')).toThrow(/keinen Weg zum Einfügen/);
@@ -495,7 +495,7 @@ describe('methoden', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
     expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
     // Kundenprofil und Value Map liegen seit 21.11.2026 auf Miro: als Bild.
-    expect(pi).toContain('\nZum Abgleich füge ich auch zwei Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · euer Name“) und Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“).\n');
+    expect(pi).toContain('\nZum Abgleich füge ich auch zwei Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · Produkt n“) und Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“).\n');
     // Die Prüfliste verlangt alle vier Raster-Felder mit Beleg aus Kundenprofil oder Value Map, ein Sicherheits-Wort wie in
     // den Lernkarten (E1, E2) und die Outcome-Zahlen – darum liest Claude Profil, Value Map, Experimente und Tests mit.
     const pitch = METHODEN.find((m) => m.slug === 'pitch')!;

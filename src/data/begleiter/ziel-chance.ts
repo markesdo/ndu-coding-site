@@ -242,7 +242,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       frame: 'T3 · 1 · Ziel-Chance',
       schritte: [
         'Jede*r schreibt in der eigenen Spalte von T3 · 1: je Linse ein Satz ins Feld „Vier Linsen“, mit Zitat-ID bei Größe und Kundschaft.',
-        'Im eigenen Baum („Baum · Name“) nur der Stern: die Ziel-Chance markieren (ein Blatt).',
+        'Im eigenen Baum („Baum · Produkt n“) nur der Stern: die Ziel-Chance markieren (ein Blatt).',
         'Beim Begründen: Markus geht zum Baum, an dem er gerade fragt; die anderen schreiben weiter.',
       ],
     },

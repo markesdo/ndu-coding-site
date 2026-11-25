@@ -290,7 +290,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Vorab (1 min): Werkstatt im Zeigen-Modus teilen („Snapshots zeigen ↗“ auf der Folie). Alle wählen den Snapshot, der am stärksten für oder gegen die riskanteste Annahme spricht, und merken die ID. Ist die riskanteste noch offen, gilt die vorgemerkte.',
+        'Vorab (1 min): Werkstatt im Zeigen-Modus teilen („Snapshots zeigen ↗“ auf der Folie). Alle wählen den Snapshot, der am stärksten für oder gegen die riskanteste Annahme spricht, und merken die ID.',
         '0–2 Zeigen (Frage 1): Timer starten, ID hören, Chip (I1 … In) anklicken. Wer zeigt: ID, Zitat, eine Chance. Steht im Snapshot noch keine Chance, sagt die Person eine mündlich.',
         '2–4 Besprechen: K öffnet den Kontext, Reiter Annahmen; das Panel bleibt offen, sonst ist nach dem Neu-Laden nichts als „neu“ markiert. Frage 2 stellen die anderen zuerst; Frage 3 nur kurz, wer gezeigt hat, zuerst (Reiter Leitfaden). Frage 4 entfällt.',
         '4–5 Schreiben: ein Eintrag in der Annahmen-Map bei der riskantesten Annahme – Feld „Beleg-IDs“ die Zitat-ID (I2-4, nicht nur I2), Feld „Beleg (Notiz …)“ „stützt“ oder „spricht dagegen“. Kurz vor Minute 5 „Speichern!“ ansagen, dann einmal Neu laden. Zeigt nichts „neu“: „nach dem Kurs nachtragen“ sagen und weitergehen, nicht suchen.',
@@ -346,7 +346,6 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Links öffnen den Editor direkt; in jedem Editor speichern.',
       'Nur synthetisch: geänderte Leitfaden-Frage prüfen, nie synthetisches Zitat als Beleg.',
       'Riskanteste ist vorgemerkt (aus der Forschungsfrage) – passt sie noch?',
-      'Fragen: Zwischen zwei Annahmen unsicher – welche ist riskanter?',
       'Geändert heißt: neue Annahme oder Brief ändern – den alten Satz nicht umschreiben.',
       'Brief nur bei neuer Zielgruppe oder neuem Problem.',
       'Falle: Gegenbeleg nur besprochen, nicht in der Annahmen-Map.',

@@ -606,7 +606,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(NOTIZEN[pfad]?.vorgehen?.live[0]).toBe('Kurz an jeden Baum: grüne Karte – Produkt-Outcome, zählbar, trägt Frage 3?');
     expect(JSON.stringify(NOTIZEN[pfad]?.vorgehen?.ablauf?.achten)).toContain('Produkt-Outcome, nicht Geschäftszahl; zählbar; lässt sich Frage 3');
     expect(NOTIZEN[pfad]?.vorgehen?.live.length).toBeLessThanOrEqual(5);
-    // NDU-73: keine Reihenfolge der Personen im Live-Stichwort (Namen prüft kein-name.test.ts).
+    // NDU-73: keine Reihenfolge der Personen im Live-Stichwort. Namen prüft kein-name.test.ts, sofern die lokale
+    // Namensliste vorhanden ist (siehe PR #438).
     expect(NOTIZEN[pfad]?.vorgehen?.live.join(' ').match(/Produkt \d\s*(?:→|,)\s*\d/g) ?? []).toStrictEqual([]);
   });
   // Entscheidung 21 (20.11. spät): I3-2 fiel nur beim Anstehen und Warten. Die Halle-Chance „Geht sich ein Kaffee noch aus?“
@@ -827,7 +828,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const liste = q.slice(q.indexOf('<Checklist id="il-tag3-abschluss'), q.indexOf(']} />', q.indexOf('<Checklist id="il-tag3-abschluss')));
     expect(liste).toContain('<Checklist id="il-tag3-abschluss-v6"');
     expect(liste.match(/\.md\b|im Repo|Committet|gepusht/g) ?? []).toStrictEqual([]);
-    expect(liste).toContain('T3 · 4 · Canvas · euer Name');
+    expect(liste).toContain('T3 · 4 · Canvas · Produkt n');
     // Auch die Ideation (Folgeauftrag zu Entscheidung 37): kein Entscheidungslog D… mehr in den Notizen von Tag 3.
     for (const p of ['/innolab/methoden/baum', '/innolab/methoden/ideation']) expect(JSON.stringify(NOTIZEN[p] ?? {}).match(/Entscheidungslog|\(D\d\)/g) ?? [], p).toStrictEqual([]);
   });

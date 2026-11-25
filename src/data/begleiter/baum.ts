@@ -331,7 +331,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
         '„Alle zu mir holen“ auf Baum · Beispiel Kaffeebar; die Folie mit dem Kaffeebar-Baum daneben.',
         'Ebenen von oben zeigen: Outcome grün, Momente blau, Chancen gelb; Lösungen und Tests kommen später.',
         'Vorführen: Karte mit Cmd+D duplizieren, vom blauen Punkt der oberen Karte zur unteren ziehen, Karte verschieben – die Linie geht mit.',
-        'Jede*r öffnet „Baum · eigener Name“: Outcome (grün) und Vorlagen blau, gelb, grau stehen schon.',
+        'Jede*r öffnet „Baum · Produkt n“: Outcome (grün) und Vorlagen blau, gelb, grau stehen schon.',
         'Vor dem Kurs testen: Ein Klick (statt Ziehen) auf den blauen Punkt legt in Miro meist eine verbundene Kopie in derselben Farbe an – unter einem blauen Moment entstünde eine blaue Karte.',
       ],
     },
@@ -360,7 +360,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
-        'Jede*r arbeitet im eigenen Frame „Baum · Name“, direkt unter der eigenen Map von T3 · 0 (Links auf der Folie); die Anleitung steht neben dem Baum.',
+        'Jede*r arbeitet im eigenen Frame „Baum · Produkt n“, direkt unter der eigenen Map von T3 · 0 (Links auf der Folie); die Anleitung steht neben dem Baum.',
         'Momente aus dem eigenen Frame T3 · 0 als blaue Reihe unter den Outcome, darunter gelbe Chancen mit Zitat-IDs und „X von N“; „(ergänzt)“ ohne beides.',
         'Jede Karte hängt mit einer Linie an genau einer Karte darüber; was nur eine Person gesagt hat und den Outcome treibt, bleibt im Baum, markiert mit „1 von N“.',
         'Selbst prüfen: jede*r im eigenen Frame, die Checkliste der Folie Anti-Muster daneben; Markus geht von Baum zu Baum.',
@@ -369,7 +369,7 @@ export const NOTIZEN_BAUM: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Ansage 9:25: „Eure Chancen aus den Snapshots liegen als gelbe Karten unten in eurem Baum – so, wie sie in der Werkstatt stehen. Geprüft sind sie nicht.“ – „Zwei Karten sagen dasselbe? Zusammenlegen, beide IDs auf eine Karte, dann zählen.“ – „Ein Moment ohne Karte? Schaut in die Zitate darunter. Ein Zitat ist noch keine Chance – fragt: Was braucht die Person hier?“',
-        'Inventar allein (12 min): zuerst die Momente aus dem eigenen Frame T3 · 0 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Name“: Lösung → Bedürfnis dahinter neu prüfen; in wie vielen Interviews gehört → „X von N“; treibt den Outcome nicht → bleibt auf dem Snapshot; sonst gelbe Karte unter ihren Moment, mit Zitat-IDs (eine je Interview genügt) und „X von N“ – auch „1 von N“.',
+        'Inventar allein (12 min): zuerst die Momente aus dem eigenen Frame T3 · 0 als blaue Karten unter den Outcome (Cmd+D), dann jede Chance aus den eigenen Snapshots durch die drei Fragen, in „Baum · Produkt n“: Lösung → Bedürfnis dahinter neu prüfen; in wie vielen Interviews gehört → „X von N“; treibt den Outcome nicht → bleibt auf dem Snapshot; sonst gelbe Karte unter ihren Moment, mit Zitat-IDs (eine je Interview genügt) und „X von N“ – auch „1 von N“.',
         'Struktur allein (10 min): Ast für Ast gruppieren, übergeordnete Chancen nur über Geschwistern ergänzen (Rezept: Folie firmensicht) und mit „(ergänzt)“ beschriften, ohne ID und Zahl, Dubletten zusammenlegen, jede Karte per Linie an genau eine Karte darüber; fehlen Geschwister, Zettel „Nächstes Interview: …“ neben die Karte. Markus beginnt jetzt die Runde an den Bäumen (je etwa fünf Minuten).',
         'Selbst prüfen allein (13 min, Timer auf der Folie oder der Checkliste): den eigenen Baum Karte für Karte mit den sechs Anti-Mustern durchgehen; je Fund entscheiden: ändern, Zettel „Nächstes Interview: …“ oder lassen, mit Grund. Markus beendet seine Runde (je etwa fünf Minuten, Produkt 1 → 2 → 3), zeigt auf eine Karte und fragt, ohne umzuschreiben. Torres lässt das Team den eigenen Baum befragen (S. 92); allein prüfen und die fünf Minuten sind Kursformat, weil jede*r ein eigenes Produkt hat.',
       ],

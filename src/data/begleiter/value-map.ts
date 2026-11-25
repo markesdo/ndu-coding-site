@@ -235,7 +235,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
         'Wählen – T3 · 4, eigene Spalte, Feld „Ideen vergleichen und wählen“: die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils; jedes ? mit Frage bleibt am Satz.',
-        'Füllen – Canvas-Frame „T3 · 4 · Canvas · Name“: den Sticky mit dem Satz des Spitzenreiters links neben das Quadrat kopieren, dann die Value Map ins Quadrat (die drei Platzhalter überschreiben).',
+        'Füllen – Canvas-Frame „T3 · 4 · Canvas · Produkt n“: den Sticky mit dem Satz des Spitzenreiters links neben das Quadrat kopieren, dann die Value Map ins Quadrat (die drei Platzhalter überschreiben).',
         'Ordnen – alle Zettel auf die drei Skalen links unten, Unverzichtbares oben.',
         'Fit prüfen – auf den Skalen: Links, Zettel für Zettel: ID, ✓ auf Zettel und Eintrag; Rechts, was übrig ist: ✗ oder ? mit Frage, als letzte Zeile im Sticky; Von oben lesen.',
       ],
@@ -247,7 +247,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Ordnen (4 min): alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (VPD S. 102).',
         'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID dazu, ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
         'Festhalten und prüfen (2 min): rechts ein Zeichen je Zettel, links jeder ✓ mit ID, jedes ? mit Frage. Die ? bleiben, wo sie stehen – am Satz in T3 · 4, am Zettel im Canvas; an der Experiment-Karte werden sie Annahmen. Claude-Prüfung nach dem Kurstag.',
-        'Euer Baum – Lösungen (2 min): die drei Ideen als Lösungen unter den Stern an der Ziel-Chance („Baum · Name“), den Spitzenreiter markieren (Torres, Continuous Discovery Habits, S. 25–27).',
+        'Euer Baum – Lösungen (2 min): die drei Ideen als Lösungen unter den Stern an der Ziel-Chance („Baum · Produkt n“), den Spitzenreiter markieren (Torres, Continuous Discovery Habits, S. 25–27).',
       ],
       achten: [
         'Gewählt wird nach den obersten Einträgen, nicht nach der Zahl der Haken.',
