@@ -1161,6 +1161,14 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     for (const k of ['Kaffeebar', 'Produkt 1', 'Produkt 2', 'Produkt 3']) expect(handout, k).toContain(`<MiroLink name="T3 · 4 · Anleitung Value Map · ${k}">`);
     expect(n.vorgehen?.ablauf?.schritte?.[1]).toContain('Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe)');
     expect(JSON.stringify(n).match(/2 \+ 9\b/g) ?? []).toStrictEqual([]);
+    expect(JSON.stringify(n).match(/Canvas:\S/g) ?? []).toStrictEqual([]);
+    // Review #443: Produkte bekommen beim Fit die ID dessen, was sie direkt treffen (S. 110) – kein „Ein Produkt lindert nichts“;
+    // die Gegenprobe schaut ins Profil rechts (die Skalen links sind vor dem Ordnen leer); Wirkungs-Zettel heißen hellgrün wie auf Miro.
+    expect(folie('ps-finden')).toContain('<li data-schritt><strong>Ohne ID im Quadrat</strong> – die ID kommt erst beim Fit, wenn es direkt etwas trifft.</li>');
+    expect(folie('vm-fehler')).toContain('<td>Steht seine ID im Profil rechts?</td>');
+    const neuTexte = [...neu.map((id) => folie(id)), ...neu.map((id) => JSON.stringify(n[id] ?? {}))];
+    expect(neuTexte.flatMap((x) => x.match(/lindert nichts|auf euren Skalen|auf den Skalen|(?<![Hh]ell)grün|(?<!Hell)Grün/g) ?? [])).toStrictEqual([]);
+    expect(n['pr-finden']?.live).toContain('„Zu einem Pain keinen Zettel zu haben ist erlaubt – das wird beim Fit ein ✗.“');
   });
   // Entscheidungen 58–61 (21.11.): Brücke vom Lückensatz zur Value Map, Lückensatz mit ID-Slots, korrigierte Kaffeebar-Sätze,
   // ideation#beispiel ohne „18 Ideen“ und ohne Express-Kasse.

@@ -102,21 +102,21 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Nachschlage-Folie: an Tag 4 nur zeigen, wenn jemand fragt.',
       'Schaufenster-Frage: Was gibt es bei euch zu sehen?',
-      'Gelb, ohne ID – das „wie“ steht auf dem grünen Zettel.',
+      'Gelb, ohne ID im Quadrat – die ID kommt erst beim Fit.',
       'Kaffeebar: QR-Code mit Browser-Bestellung, Express-Ausgabe.',
     ],
     kern: [
       { text: 'Products & Services: „all the items your customers can see in your shop window“; sie schaffen nur im Verhältnis zu einem Segment Wert. Vier Arten: physisch, immateriell, digital, finanziell.', quelle: `${VPD}, S. 83–84` },
       { text: 'Erster Schritt der Übung: „List products and services“. Fehler: alle eigenen Produkte statt nur die für dieses Segment.', quelle: `${VPD}, S. 99, 105` },
     ],
-    ueberleitung: 'Jetzt das Grüne: je Pain von oben.',
+    ueberleitung: 'Jetzt das Hellgrüne: je Pain von oben.',
   },
 
   'pr-finden': {
     live: [
       'Nachschlage-Folie: Pains von oben, P1 zuerst.',
       'Fragen: Spart euer Angebot Zeit, Geld, Aufwand – nimmt es ein Risiko?',
-      '„Kein Zettel zu einem Pain ist erlaubt – das wird beim Fit ein ✗.“',
+      '„Zu einem Pain keinen Zettel zu haben ist erlaubt – das wird beim Fit ein ✗.“',
       'Kaffeebar: P2 → in 20 Sekunden im Gehen bestellen; P4 kein Zettel.',
     ],
     kern: [
@@ -143,8 +143,8 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   'vm-fehler': {
     live: [
       'Nachschlage-Folie: vier Fehler aus dem Buch, je eine Gegenprobe.',
-      'Fragen: Gelber Zettel ohne grünen? Produkt im grünen Feld?',
-      'Fragen: Jede ID auf den Skalen? Kein Zettel oben – bewusst?',
+      'Fragen: Gelber Zettel ohne hellgrünen? Produkt im hellgrünen Feld?',
+      'Fragen: Jede ID im Profil rechts? Kein Zettel oben – bewusst?',
       'Treuepunkte: Kurs-Beispiel, trifft nichts.',
     ],
     kern: [
@@ -300,7 +300,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Wählen (3 min): wer zu Hause gewählt hat, bestätigt nur – mit der Frage: Was davon ist die Website, die ihr baut, und trifft sie allein noch P1? (Der Kurs baut eine Website; der Spitzenreiter darf hybrid sein, die Website ist der Teil, den ihr prototypt.) Sonst jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas:den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit P- oder G-ID, kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID (VPD S. 99–101, 105). Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit P- oder G-ID, kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID (VPD S. 99–101, 105). Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Ordnen (4 min): alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (VPD S. 102).',
         'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID dazu, ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
         'Festhalten und prüfen (2 min): rechts ein Zeichen je Zettel, links jeder ✓ mit ID, jedes ? mit Frage. Die ? bleiben, wo sie stehen – am Satz in T3 · 4, am Zettel im Canvas; an der Experiment-Karte werden sie Annahmen. Claude-Prüfung nach dem Kurstag.',
