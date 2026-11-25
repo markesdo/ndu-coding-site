@@ -970,7 +970,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const seiten = ['concept-story', 'experiment', 'geschaeftsmodell', 'pitch', 'story-map'].map((s) => `/innolab/methoden/${s}`);
     expect(seiten.every((p) => (quellen[p] ?? '').length > 1000)).toBe(true);
     expect(seiten.flatMap((p) => (quellen[p] ?? '').match(/(KUNDENPROFIL|VALUE-MAP)\.md/g) ?? [])).toStrictEqual([]);
-    expect(quellen['/innolab/methoden/experiment']).toContain('Erste Kandidaten für Annahmen sind die „?“ von Tag 3 auf Miro: am Satz im Feld „Ideen vergleichen und wählen“ (T3 · 4), aus dem Ideen-Vergleich aller drei Ideen, und am Zettel in eurem Canvas, aus dem Fit.');
+    expect(quellen['/innolab/methoden/experiment']).toContain('Erste Kandidaten für Annahmen sind die „?“ aus Value Map und Fit (heute Morgen) auf Miro: am Satz im Feld „Ideen vergleichen und wählen“ (T3 · 4), aus dem Ideen-Vergleich aller drei Ideen, und am Zettel in eurem Canvas, aus dem Fit.');
   });
   // Entscheidungen 45–47 (21.11.): Pfad HMW → Ideation sichtbar; Ideation ohne Reihum, Titel = Summe der Timer;
   // Ziel-Chance mit „Ausschlaggebend“ / „Spricht dagegen“ statt „tragende Linse“.

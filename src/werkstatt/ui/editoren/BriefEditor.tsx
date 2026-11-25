@@ -4,7 +4,7 @@ import { rendern } from '../../render/index.js';
 import EditorHuelle from '../EditorHuelle.js';
 import Liste from '../felder/Liste.js';
 import Textfeld from '../felder/Textfeld.js';
-import { briefKarten, produktSatzSetzen } from './brief-hilfen.js';
+import { briefKarten, produktSatzSetzen, PRODUKTSATZ_HILFE } from './brief-hilfen.js';
 import './editoren.css';
 
 // Nur lesend; auch der Leser der Lehrenden-Ansicht zeigt sie (vorschauen.tsx).
@@ -39,7 +39,7 @@ export default function BriefEditor() {
           <Textfeld label="1. Für wen?" mehrzeilig wert={d.fuerWen} onChange={(fuerWen) => setze({ ...d, fuerWen })} fehler={fehler('fuerWen')} hilfe="Eine konkrete Person in einer konkreten Situation." />
           <Textfeld label="2. Welches Problem?" mehrzeilig wert={d.problem} onChange={(problem) => setze({ ...d, problem })} fehler={fehler('problem')} hilfe="Was ist heute mühsam, langsam oder frustrierend? Formuliere es ohne Lösung." />
           <Textfeld label="Heute gelöst durch" mehrzeilig zeilen={2} wert={d.heuteGeloestDurch} onChange={(heuteGeloestDurch) => setze({ ...d, heuteGeloestDurch })} fehler={fehler('heuteGeloestDurch')} hilfe="Was die Person jetzt tut, auch „gar nicht“." />
-          <Textfeld label="3. Produkt in einem Satz" wert={d.produktSatz ?? ''} onChange={(w) => setze(produktSatzSetzen(d, w))} fehler={fehler('produktSatz')} hilfe="Lass das Feld heute leer. Es steht nach Tag 3 fest." />
+          <Textfeld label="3. Produkt in einem Satz" wert={d.produktSatz ?? ''} onChange={(w) => setze(produktSatzSetzen(d, w))} fehler={fehler('produktSatz')} hilfe={PRODUKTSATZ_HILFE} />
           <Liste<string>
             label="4. Was macht es NICHT?"
             einzahl="Eintrag"
