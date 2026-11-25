@@ -116,16 +116,16 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
   'eure-map': {
     live: [
       'Timer 15 min: je Person ca. 5 min auf T3 · 0.',
-      'Reihenfolge Sofie → Joachim → Hewen.',
+      'Reihenfolge Produkt 1 → 2 → 3.',
       'Je Frame eine Spalte, beim Zusammenlegen: „Welche Zitate gehören hierher?“',
       'Dann Schritt 4: „Wie heißt der Moment? Derselbe Name wie die Spalte.“',
       'Zeigen und fragen, nichts umschreiben; die Person entscheidet.',
     ],
     uebung: { dauer: '15 min (3 × 5)', form: 'Markus geht jeden Frame T3 · 0 durch' },
     miro: {
-      frame: 'T3 · 0 · So entsteht eure Map - Sofie',
+      frame: 'T3 · 0 · So entsteht eure Map - Produkt 1',
       schritte: [
-        'Ein Frame je Person, über dem eigenen Baum; der Link oben führt zu Sofie, Joachim und Hewen liegen rechts daneben.',
+        'Ein Frame je Person, über dem eigenen Baum (Produkt 1, 2, 3 = Spalten auf dem Board von links); der Link oben führt zu Produkt 1, Produkt 2 und 3 liegen rechts daneben.',
         'Je Frame eine Spalte: „Welche Zitate gehören hierher?“, dann die Momentkarte: Name wie die Spalte und „N von M“.',
         '„Alle zu mir holen“ auf den Frame, der dran ist.',
       ],

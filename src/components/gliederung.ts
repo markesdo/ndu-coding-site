@@ -2,6 +2,7 @@
 // Daraus entstehen beim Bauen das Inhaltsverzeichnis und die Beschriftung der „Wo bin ich“-Leiste.
 
 import { textAusHtml as ohneTags } from './abschnitt';
+import { ohneAbgeschaltet } from './abgeschaltet';
 
 export interface Eintrag {
   id: string;
@@ -22,7 +23,8 @@ function kurz(text: string): { titel: string; dauer?: string } {
   return { titel: ohneKlammer.split(' – ')[0].trim(), dauer };
 }
 
-export function gliederung(quelle: string): Abschnitt[] {
+export function gliederung(roh: string): Abschnitt[] {
+  const quelle = ohneAbgeschaltet(roh);
   const abschnitte: Abschnitt[] = [];
   const re = /<(h2|h3)\b([^>]*)>([\s\S]*?)<\/\1>/g;
   let m: RegExpExecArray | null;

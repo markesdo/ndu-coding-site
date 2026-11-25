@@ -12,7 +12,7 @@ import { freiSeitSetzen, fassungFrei, fassungOeffnen, fassungVersiegeln, zeilenS
 const D1 = '2026-11-11T10:00:00.000Z';
 const D2 = '2026-11-12T09:00:00.000Z';
 const KEY = { kid: 'k1', key: new Uint8Array(32).fill(7) };
-const ORT = { repo: '2026-sofie', artefakt: 'annahmen' as const, zeilenId: 'A2' };
+const ORT = { repo: '2026-mara', artefakt: 'annahmen' as const, zeilenId: 'A2' };
 const STAND = `sha256:${'a'.repeat(64)}`;
 const SIEGEL = `f1.k1.${'A'.repeat(60)}`;
 
@@ -133,13 +133,13 @@ describe('Wann die Fassung offen ist', () => {
 
   it('Antwort der Person → offen (und freiSeit im selben Commit); freiSeit bleibt offen, auch wenn die Zeile zurückgeändert wird', async () => {
     const f = await lage(A2);
-    const g = antworten(f, { antwortAuf: 'FB1', text: 'Ich habe nachgezählt.', autor: 'sofie', datum: D2 });
+    const g = antworten(f, { antwortAuf: 'FB1', text: 'Ich habe nachgezählt.', autor: 'mara', datum: D2 });
     expect(g.eintraege[0].freiSeit).toBe(D2);
     const ohneVermerk = { ...g, eintraege: [{ ...g.eintraege[0], freiSeit: undefined }, g.eintraege[1]] };
     expect(fassungFrei(ohneVermerk.eintraege[0], ohneVermerk.eintraege, await zeilenStand(A2))).toBe(true);
     expect(fassungFrei(g.eintraege[0], g.eintraege, await zeilenStand(A2))).toBe(true);
     // Eine Antwort auf ein anderes Feedback öffnet sie nicht.
-    const h = antworten(feedbackSchreiben(f, { artefakt: 'annahmen', text: 'Allgemein', autor: 'm', datum: D1 }), { antwortAuf: 'FB2', text: 'ok', autor: 'sofie', datum: D2 });
+    const h = antworten(feedbackSchreiben(f, { artefakt: 'annahmen', text: 'Allgemein', autor: 'm', datum: D1 }), { antwortAuf: 'FB2', text: 'ok', autor: 'mara', datum: D2 });
     expect(h.eintraege[0].freiSeit).toBeUndefined();
     expect(fassungFrei(h.eintraege[0], h.eintraege, await zeilenStand(A2))).toBe(false);
   });

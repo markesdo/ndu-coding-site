@@ -420,8 +420,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(uebungMinuten(n['drei-anlaeufe']?.uebung?.dauer)).toBe(2);
     expect(quellen[pfad]).toContain('<Timer minuten={2} />');
     expect(uebungMinuten(n['eure-map']?.uebung?.dauer)).toBe(15);
-    expect(n['eure-map']?.miro?.frame).toBe('T3 · 0 · So entsteht eure Map - Sofie');
-    for (const name of ['Sofie', 'Joachim', 'Hewen']) expect(quellen[pfad]).toContain(`<MiroLink name="T3 · 0 · So entsteht eure Map - ${name}">${name}</MiroLink>`);
+    expect(n['eure-map']?.miro?.frame).toBe('T3 · 0 · So entsteht eure Map - Produkt 1');
+    for (const nr of [1, 2, 3]) expect(quellen[pfad]).toContain(`<MiroLink name="T3 · 0 · So entsteht eure Map - Produkt ${nr}">Produkt ${nr}</MiroLink>`);
     const summe = Object.values(n).reduce((a, x) => a + (uebungMinuten(x.uebung?.dauer) ?? 0), 0);
     // 2 (drei Anläufe, still) + 15 (Durchgang); die offene Frage und die übrigen Kaffeebar-Folien brauchen gut 6 min.
     expect(summe).toBeLessThanOrEqual(25 - 6);
@@ -477,7 +477,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(beispiel).toContain('Nein: Der Moment ‚Halle‘ fasst sie schon zusammen – eine Ebene dazwischen wäre doppelt.');
     expect(beispiel).toContain('<strong>Einmal gehört, treibt den Outcome:</strong> in den Baum mit ‚1 von 5‘ (mitbestellen). <strong>Treibt ihn nicht:</strong> bleibt im Snapshot (erster Schluck, gehetzt im Büro).');
     expect(JSON.stringify(NOTIZEN[pfad]?.beispiel).match(/reihum/gi) ?? []).toStrictEqual([]);
-    expect(quellen['/innolab/tag-3/experience-map']).toContain('Miro, T3 · 0: <MiroLink name="T3 · 0 · So entsteht eure Map - Kaffeebar">Beispiel: Kaffeebar</MiroLink> · <MiroLink name="T3 · 0 · So entsteht eure Map - Sofie">');
+    expect(quellen['/innolab/tag-3/experience-map']).toContain('Miro, T3 · 0: <MiroLink name="T3 · 0 · So entsteht eure Map - Kaffeebar">Beispiel: Kaffeebar</MiroLink> · <MiroLink name="T3 · 0 · So entsteht eure Map - Produkt 1">');
   });
   // Entscheidung 14 (20.11. spät): firmensicht bleibt Anti-Muster 1 und bekommt ein Rezept für die eigene übergeordnete
   // Chance; „(ergänzt)“ überall in dieser Form, ohne ID und Zählung; auf „Liste oder Baum?“ gestrichelt, nicht grau.
@@ -606,7 +606,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(NOTIZEN[pfad]?.vorgehen?.live[0]).toBe('Kurz an jeden Baum: grüne Karte – Produkt-Outcome, zählbar, trägt Frage 3?');
     expect(JSON.stringify(NOTIZEN[pfad]?.vorgehen?.ablauf?.achten)).toContain('Produkt-Outcome, nicht Geschäftszahl; zählbar; lässt sich Frage 3');
     expect(NOTIZEN[pfad]?.vorgehen?.live.length).toBeLessThanOrEqual(5);
-    expect(NOTIZEN[pfad]?.vorgehen?.live.join(' ').match(/Sofie|Joachim|Hewen/g) ?? []).toStrictEqual([]);
+    // NDU-73: keine Reihenfolge der Personen im Live-Stichwort. Namen prüft kein-name.test.ts, sofern die lokale
+    // Namensliste vorhanden ist (siehe PR #438).
+    expect(NOTIZEN[pfad]?.vorgehen?.live.join(' ').match(/Produkt \d\s*(?:→|,)\s*\d/g) ?? []).toStrictEqual([]);
   });
   // Entscheidung 21 (20.11. spät): I3-2 fiel nur beim Anstehen und Warten. Die Halle-Chance „Geht sich ein Kaffee noch aus?“
   // trägt I2-4, I3-1, I5-2 (3 von 5), die Warten-Chance „Wann ist mein Kaffee fertig?“ I2-5, I3-2, I3-3 (2 von 5).
@@ -826,7 +828,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const liste = q.slice(q.indexOf('<Checklist id="il-tag3-abschluss'), q.indexOf(']} />', q.indexOf('<Checklist id="il-tag3-abschluss')));
     expect(liste).toContain('<Checklist id="il-tag3-abschluss-v6"');
     expect(liste.match(/\.md\b|im Repo|Committet|gepusht/g) ?? []).toStrictEqual([]);
-    expect(liste).toContain('T3 · 4 · Canvas · euer Name');
+    expect(liste).toContain('T3 · 4 · Canvas · Produkt n');
     // Auch die Ideation (Folgeauftrag zu Entscheidung 37): kein Entscheidungslog D… mehr in den Notizen von Tag 3.
     for (const p of ['/innolab/methoden/baum', '/innolab/methoden/ideation']) expect(JSON.stringify(NOTIZEN[p] ?? {}).match(/Entscheidungslog|\(D\d\)/g) ?? [], p).toStrictEqual([]);
   });
@@ -840,9 +842,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(texte.flatMap((x) => x.match(/Kursregel|Entscheidungslog|ins Log|docs\/(IDEEN|VALUE-MAP|KUNDENPROFIL)\.md|reihum|nach einem Kreuz/gi) ?? [])).toStrictEqual([]);
     // Entscheidung 68 (21.11.): 1:1 ab Minute 5, die Frage zielt auf das ✗ des Spitzenreiters aus dem Vergleich der Lückensätze.
     expect(q).toContain('Ab Minute 5 geht Markus von Canvas zu Canvas und fragt bei jeder Person: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“. Gemeint ist das ✗ aus dem Vergleich der drei Lückensätze.');
-    expect(n.vorgehen?.ablauf?.schritte?.[1]).toContain('Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“');
+    expect(n.vorgehen?.ablauf?.schritte?.[1]).toContain('Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“');
     expect(n.vorgehen?.uebung?.form).toBe('allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum? Ohne ✗ oben: Was bleibt oben offen?');
-    expect(n.vorgehen?.live).toContain('1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.');
+    expect(n.vorgehen?.live).toContain('1:1 ab Minute 5, je 3 min: Produkt 3, 2, 1.');
     expect(n.vorgehen?.live).toContain('Frage: ✗ des Spitzenreiters oben bewusst? Sonst: Was bleibt oben offen?');
     expect(texte.flatMap((x) => x.match(/Verzichtet ihr bewusst darauf|bewusst verzichtet – und warum/g) ?? [])).toStrictEqual([]);
     expect(uebungMinuten(n.vorgehen?.uebung?.dauer)).toBe(30);

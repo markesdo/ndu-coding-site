@@ -15,8 +15,8 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Fragen: Wer kennt Customer Journey aus dem Entrepreneur Lab?',
       'Wenn bekannt: nur den Unterschied betonen – Momente werden Äste.',
       '„Die Map ist euer Bild der Kundschaft: Sie führt durch Interviews und ordnet den Baum.“',
-      'Hewen: Outcome bestätigen lassen – Outcome, kein Output (Torres S. 47).',
-      'Fragen: Joachim – „Was tun die Menschen danach anders?“',
+      'Outcome bestätigen lassen – Outcome, kein Output (Torres S. 47).',
+      'Fragen: „Was tun die Menschen danach anders?“',
       'Fragen: Was auf eurer Map von Tag 1 war nur vermutet?',
     ],
     verstaendnis: {

@@ -1,6 +1,7 @@
 // Präsentator-Begleiter: Folienliste des Tages aus den Seitenquellen (<Folie> mit <h2 id>) und Zuordnung einer
 // Beamer-Position (pfad, anker aus /api/position) zur Folie. Ohne DOM, damit testbar; die Seite ist pages/innolab/begleiter.astro.
 import { textAusHtml, ueberschriftAusHtml } from '../components/abschnitt';
+import { ohneAbgeschaltet } from '../components/abgeschaltet';
 import type { Notiz } from '../data/begleiter/typen';
 import { VORWISSEN, type VorwissenGrad } from '../data/begleiter/vorwissen';
 
@@ -54,7 +55,8 @@ const UEBERSCHRIFT = /<(h2|h3)\b([^>]*)>([\s\S]*?)<\/\1>/g;
  * h2/h3 außerhalb jeder Folie, die nach ihr und vor der nächsten Folie stehen (z. B. #werkstatt, #pruefen). Anker vor
  * der ersten Folie (z. B. #ablauf) gehören zur ersten Folie.
  */
-export function folienAus(pfad: string, quelle: string): Folie[] {
+export function folienAus(pfad: string, roh: string): Folie[] {
+  const quelle = ohneAbgeschaltet(roh);
   const bloecke = [...quelle.matchAll(/<Folie\b[^>]*>[\s\S]*?<\/Folie>/g)].map((m) => ({ von: m.index!, bis: m.index! + m[0].length }));
   const anker = [...quelle.matchAll(UEBERSCHRIFT)].flatMap((m) => {
     const id = m[2].match(/\bid="([^"]+)"/)?.[1];
