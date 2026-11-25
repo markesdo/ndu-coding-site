@@ -19,6 +19,10 @@ describe('Stationen des Arbeitsflusses', () => {
     expect(STATIONEN.filter((s) => texte(s).some((t) => /Entscheidungslog/i.test(t))).map((s) => s.id)).toStrictEqual([]);
   });
 
+  it('kein Lego4Scrum (dieses Kursjahr stillgelegt): keine Station, kein Text', () => {
+    expect(STATIONEN.filter((s) => texte(s).some((t) => /Lego/i.test(t))).map((s) => s.id)).toStrictEqual([]);
+  });
+
   it('die Concept Story steht an Tag 4', () => {
     expect(station('concept-story')?.spalte).toBe(4);
   });

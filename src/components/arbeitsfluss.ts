@@ -152,9 +152,11 @@ export const STATIONEN: Station[] = [
     gebrauchtIn: 'Usage Story · Bildschirme des Spikes · Issues an Tag 5',
   },
   {
-    id: 'scrum', methode: 'scrum', kurz: 'Scrum mit Lego', linien: ['outcome'], spalte: 4, zeile: 2, ergebnis: [],
-    kommtAus: ['Outcome-Satz (wird Produktziel)'], jetzt: 'Scrum einmal durchspielen',
-    satz: 'Ihr spielt drei Sprints durch, bevor es um eure Produkte geht.',
+    // Lego4Scrum ist dieses Kursjahr stillgelegt (Markus, 25.11.): Die Station ist nur der Input Agil & Scrum.
+    id: 'scrum', methode: 'scrum', kurz: 'Agil und Scrum', linien: ['outcome'], spalte: 4, zeile: 2, ergebnis: [],
+    href: '/innolab/methoden/scrum#agil',
+    kommtAus: ['Outcome-Satz (wird Produktziel)'], jetzt: 'Wasserfall, Manifest, Scrum nach dem Guide',
+    satz: 'Ihr seht an der Kaffeebar, wie Scrum ein Produkt in Sprints liefert – und wo der Kurs vom Scrum Guide abweicht.',
     gebrauchtIn: 'Team und Definition of Done (Tag 5) · Sprint',
   },
   {
