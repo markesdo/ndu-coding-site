@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -30,6 +31,7 @@ const DREI_PLAETZE = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: '„Geht sich ein Kaff
   <h1>Ideation</h1>
   <p class="lead">15 bis 20 Ideen für eine Ziel-Chance, erst allein, dann geteilt, dann wieder allein – und am Ende drei, nicht eine, jede als Lückensatz gegen euer Kundenprofil vom Vormittag.</p>
   <Orientierung seite="innolab/methoden/ideation" leiste={false} />
+  <Uebergang station="ideation" />
   <MethodenKarte slug="ideation" />
 
   <Folie>

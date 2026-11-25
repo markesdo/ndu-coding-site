@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
@@ -42,6 +43,7 @@ const probe = `Wir proben mein Interview. Lies meinen Produkt-Brief aus der Werk
   <h1>Jobs to be Done & Mom Test</h1>
   <p class="lead">Interviews, die herausfinden, was Menschen wirklich tun – statt höflich zu bestätigen, was ihr hören wollt.</p>
   <Orientierung seite="innolab/methoden/interview" leiste={false} />
+  <Uebergang station="interview" />
   <MethodenKarte slug="interview" />
 
   <Folie>

@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import Prompt from '../../../components/Prompt.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Timer from '../../../components/Timer.astro';
@@ -19,6 +20,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
   <h1>Concept Story</h1>
   <p class="lead">Euer Produkt als Geschichte mit Krise und Höhepunkt: warum jemand in wenigen Sekunden versteht, dass es besser ist als das, was er heute tut.</p>
   <Orientierung seite="innolab/methoden/concept-story" leiste={false} />
+  <Uebergang station="concept-story" />
   <MethodenKarte slug="concept-story" />
 
   <Folie>

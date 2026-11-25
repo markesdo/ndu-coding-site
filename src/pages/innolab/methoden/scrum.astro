@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
@@ -34,6 +35,7 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
   <h1>Scrum im Team</h1>
   <p class="lead">Wie Produktteams in Unternehmen arbeiten – und wie ihr zu dritt drei Produkte im selben Takt baut.</p>
   <Orientierung seite="innolab/methoden/scrum" leiste={false} />
+  <Uebergang station="scrum" />
   <MethodenKarte slug="scrum" />
 
   <Folie>

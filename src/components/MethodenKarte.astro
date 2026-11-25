@@ -1,8 +1,8 @@
 ---
 // Steckbrief einer Innolab-Methode: Frage, worauf sie aufbaut, was sie ergibt und wo das lebt (Daten: methoden.ts).
 // Auf der Toolbox-Seite für jede Methode, später als Kopf der Methodenseite. Verlinkt wird nur, wo es die Seite schon gibt.
-import { Bot, Clock, Inbox, PackageCheck } from '@lucide/astro';
-import { METHODEN, ORTE, artefakt, erzeugtVon } from './methoden';
+import { ArrowRightFromLine, Bot, Clock, Inbox, PackageCheck } from '@lucide/astro';
+import { METHODEN, ORTE, artefakt, erzeugtVon, gebrauchtIn } from './methoden';
 import { pfadOhneSchraegstrich } from './abschnitt';
 
 // ohneTag: auf Seiten, die schon nach Tagen gegliedert sind (Toolbox), wäre die Tag-Marke doppelt.
@@ -15,6 +15,8 @@ const href = (s: string) => (`../pages/innolab/methoden/${s}.astro` in seiten ? 
 // Auf der eigenen Methodenseite verlinkt der Titel nicht auf sich selbst.
 const hier = pfadOhneSchraegstrich(Astro.url.pathname);
 const eigene = href(m.slug) === hier ? undefined : href(m.slug);
+// Vorwärts: wer das Ergebnis weiterverwendet (Umkehrung von braucht).
+const weiter = gebrauchtIn(m);
 ---
 <article class="card methode" id={m.slug}>
   <header>
@@ -44,6 +46,14 @@ const eigene = href(m.slug) === hier ? undefined : href(m.slug);
           return <li>{a.name} <span class="muted">· {a.lebtIn.map((o) => ORTE[o]).join(' + ')}{a.pfad && <> · <code>{a.pfad}</code></>}{a.miro && !a.pfad && <> · Frame „{a.miro}“</>}{a.miroAuch && <> · Feld „{a.miroAuch.feld}“ im Frame „{a.miroAuch.frame}“</>}</span></li>;
         })}
       </ul>
+    </dd>
+    <dt><ArrowRightFromLine size={14} aria-hidden="true" /> Wird gebraucht in</dt>
+    <dd>
+      {m.stillgelegt ? 'Dieses Kursjahr nicht genutzt' : weiter.length === 0 ? 'Endpunkt des Kurses' : (
+        <ul>
+          {weiter.map((x) => <li><a href={href(x.slug) ?? `/innolab/methoden#${x.slug}`}>{x.name}</a> <span class="muted">· Tag {x.tag}</span></li>)}
+        </ul>
+      )}
     </dd>
     <dt><Bot size={14} aria-hidden="true" /> Claude</dt>
     <dd>{m.ki}</dd>

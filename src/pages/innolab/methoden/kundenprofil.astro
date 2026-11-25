@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -23,6 +24,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <h1>Kundenprofil</h1>
   <p class="lead">Die rechte Hälfte des Value Proposition Canvas: was eure Kundschaft erledigen will, was sie daran hindert und was sie sich wünscht – gefüllt aus eurem Baum, nicht aus dem Bauch.</p>
   <Orientierung seite="innolab/methoden/kundenprofil" leiste={false} />
+  <Uebergang station="kundenprofil" />
   <MethodenKarte slug="kundenprofil" />
 
   <Folie>
