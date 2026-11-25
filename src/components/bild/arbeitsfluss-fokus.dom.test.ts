@@ -20,9 +20,12 @@ afterAll(async () => {
   await fenster.happyDOM.close();
 });
 const Event = fenster.Event;
+const rein = (el: HTMLElement, pointerType = 'mouse') => el.dispatchEvent(new fenster.PointerEvent('pointerenter', { pointerType }) as unknown as globalThis.Event);
+const raus = (el: HTMLElement, pointerType = 'mouse') => el.dispatchEvent(new fenster.PointerEvent('pointerleave', { pointerType }) as unknown as globalThis.Event);
 
-async function figur(props: Record<string, unknown>, suche = '') {
+async function figur(props: Record<string, unknown>, suche = '', beamer = false) {
   const document = fenster.document;
+  document.documentElement.toggleAttribute('data-beamer', beamer);
   document.body.innerHTML = await container.renderToString(Arbeitsfluss, { props });
   const fig = document.querySelector('.af') as unknown as HTMLElement;
   fokusSteuern(fig, suche);
@@ -39,14 +42,14 @@ describe('Maus und Tastatur', () => {
   it('Maus auf einer Station: Fokus mit Quellen und Zielen; Maus weg: kein Fokus', async () => {
     const { fig, station, fokus, fuss } = await figur({ id: 'p' });
     expect(fokus()).toBeUndefined();
-    station('kundenprofil').dispatchEvent(new Event('mouseenter'));
+    rein(station('kundenprofil'));
     expect(fokus()).toBe('kundenprofil');
     expect(station('problem-rahmen').classList.contains('af-quelle')).toBe(true);
     expect(station('story-map').classList.contains('af-ziel')).toBe(true);
     expect(station('interview').classList.contains('af-blass')).toBe(true);
     expect(fuss()).toStrictEqual(['kundenprofil']);
     expect(fig.hasAttribute('data-fokus-an')).toBe(true);
-    station('kundenprofil').dispatchEvent(new Event('mouseleave'));
+    raus(station('kundenprofil'));
     expect(fokus()).toBeUndefined();
     expect(fuss()).toStrictEqual([]);
   });
@@ -55,9 +58,9 @@ describe('Maus und Tastatur', () => {
     const { station, fokus } = await figur({});
     station('hmw').dispatchEvent(new Event('focus'));
     expect(fokus()).toBe('hmw');
-    station('scrum').dispatchEvent(new Event('mouseenter'));
+    rein(station('scrum'));
     expect(fokus()).toBe('scrum');
-    station('scrum').dispatchEvent(new Event('mouseleave'));
+    raus(station('scrum'));
     expect(fokus()).toBe('hmw');
     station('hmw').dispatchEvent(new Event('blur'));
     expect(fokus()).toBeUndefined();
@@ -69,7 +72,7 @@ describe('Tour: der Schritt geht vor Maus und Tastatur', () => {
     const { station, fokus, marker } = await figur({ hier: 4, bis: 4, tour: 4, legende: false });
     expect(marker).toHaveLength(10);
     station('hmw').dispatchEvent(new Event('focus'));
-    station('scrum').dispatchEvent(new Event('mouseenter'));
+    rein(station('scrum'));
     expect(fokus()).toBe('scrum');
     marker[0].classList.add('gezeigt');
     await gleich();
@@ -78,9 +81,9 @@ describe('Tour: der Schritt geht vor Maus und Tastatur', () => {
     await gleich();
     expect(fokus()).toBe('concept-story');
     // Danach gilt wieder die letzte Handlung: Maus auf eine Station.
-    station('origin-story').dispatchEvent(new Event('mouseenter'));
+    rein(station('origin-story'));
     expect(fokus()).toBe('origin-story');
-    station('origin-story').dispatchEvent(new Event('mouseleave'));
+    raus(station('origin-story'));
     expect(fokus()).toBe('concept-story');
     marker[1].classList.remove('gezeigt');
     await gleich();
@@ -117,5 +120,92 @@ describe('?station=… aus der Adresse', () => {
     expect(grundFokus({ prop: 'c' })).toBe('c');
     const { fokus } = await figur({ fokus: 'hmw', fokusAusAdresse: true }, '?station=scrum');
     expect(fokus()).toBe('scrum');
+  });
+});
+
+describe('Zugedeckte Spalten (Beamer, aufdecken)', () => {
+  const glieder = (fig: HTMLElement, id: string) =>
+    [...fig.querySelectorAll<HTMLElement>(`[data-fuss="${id}"] .af-fuss-teil:last-child .af-glied`)].filter((g) => !g.hidden).map((g) => g.textContent);
+  const leer = (fig: HTMLElement, id: string) => !fig.querySelector<HTMLElement>(`[data-fuss="${id}"] .af-fuss-teil:last-child .af-glied-leer`)!.hidden;
+
+  it('Ziele in zugedeckten Spalten: nicht hervorgehoben, nicht in der Fußzeile – bis die Spalte aufgedeckt ist', async () => {
+    const { fig, station, fokus } = await figur({ aufdecken: 3 }, '', true);
+    rein(station('kundenprofil'));
+    expect(fokus()).toBe('kundenprofil');
+    expect(station('ideation').classList.contains('af-ziel')).toBe(true);
+    expect(station('story-map').classList.contains('af-ziel')).toBe(false);
+    expect(glieder(fig, 'kundenprofil')).toStrictEqual(['Drei Lückensätze', 'Spitzenreiter, Value Map, Fit']);
+    fig.querySelector<HTMLElement>('.af-spalte[data-spalte="4"]')!.classList.add('gezeigt');
+    await gleich();
+    expect(station('story-map').classList.contains('af-ziel')).toBe(true);
+    expect(glieder(fig, 'kundenprofil')).toContain('Story Map: Slice 1');
+  });
+
+  it('bleibt kein Ziel sichtbar, steht der Ersatztext da', async () => {
+    const { fig, station } = await figur({ aufdecken: 3 }, '', true);
+    rein(station('offene-fragen'));
+    expect(glieder(fig, 'offene-fragen')).toStrictEqual([]);
+    expect(leer(fig, 'offene-fragen')).toBe(true);
+  });
+
+  it('außerhalb des Beamers ist nichts zugedeckt', async () => {
+    const { fig, station } = await figur({ aufdecken: 3 }, '', false);
+    rein(station('offene-fragen'));
+    expect(glieder(fig, 'offene-fragen')).toStrictEqual(['Annahmen der Idee, Karte E1']);
+    expect(station('experiment').classList.contains('af-ziel')).toBe(true);
+  });
+
+  it('?station: Aufdecken meldet sich beim Schrittzähler; per ← zugedeckt, fällt der Adress-Fokus weg', async () => {
+    let gemeldet = 0;
+    const zaehler = () => { gemeldet++; };
+    fenster.document.addEventListener('aufloesung-offen', zaehler);
+    const { fig, fokus } = await figur({ aufdecken: 3, fokusAusAdresse: true }, '?station=story-map', true);
+    fenster.document.removeEventListener('aufloesung-offen', zaehler);
+    expect(gemeldet).toBe(1);
+    expect(fokus()).toBe('story-map');
+    const sp4 = fig.querySelector<HTMLElement>('.af-spalte[data-spalte="4"]')!;
+    sp4.classList.remove('gezeigt');
+    await gleich();
+    expect(fokus()).toBeUndefined();
+    sp4.classList.add('gezeigt');
+    await gleich();
+    expect(fokus()).toBeUndefined();
+  });
+
+  it('?station auf einer offenen Spalte meldet nichts', async () => {
+    let gemeldet = 0;
+    const zaehler = () => { gemeldet++; };
+    fenster.document.addEventListener('aufloesung-offen', zaehler);
+    await figur({ aufdecken: 3, fokusAusAdresse: true }, '?station=kundenprofil', true);
+    fenster.document.removeEventListener('aufloesung-offen', zaehler);
+    expect(gemeldet).toBe(0);
+  });
+});
+
+describe('Fokus loslassen und Touch', () => {
+  it('Escape löscht den Adress-Fokus, die Legende kommt zurück', async () => {
+    const { fig, fokus } = await figur({ fokusAusAdresse: true }, '?station=story-map');
+    expect(fokus()).toBe('story-map');
+    fenster.document.dispatchEvent(new fenster.KeyboardEvent('keydown', { key: 'Escape' }) as unknown as globalThis.Event);
+    expect(fokus()).toBeUndefined();
+    expect(fig.querySelector<HTMLElement>('.af-fuss-legende')!.hidden).toBe(false);
+  });
+
+  it('Klick ins Leere des Plans löscht den Fokus; Klick auf eine Station nicht', async () => {
+    const { fig, station, fokus } = await figur({ fokusAusAdresse: true }, '?station=story-map');
+    station('story-map').querySelector<HTMLElement>('.af-name')!.dispatchEvent(new Event('click', { bubbles: true }));
+    expect(fokus()).toBe('story-map');
+    fig.querySelector<HTMLElement>('.af-grund')!.dispatchEvent(new Event('click', { bubbles: true }));
+    expect(fokus()).toBeUndefined();
+  });
+
+  it('Tippen (Touch) schwebt nicht: kein Fokus über pointerenter', async () => {
+    const { station, fokus } = await figur({});
+    rein(station('kundenprofil'), 'touch');
+    expect(fokus()).toBeUndefined();
+    rein(station('kundenprofil'), 'mouse');
+    expect(fokus()).toBe('kundenprofil');
+    raus(station('kundenprofil'), 'touch');
+    expect(fokus()).toBe('kundenprofil');
   });
 });

@@ -275,7 +275,7 @@ describe('Kanten im Fokus (NDU-74)', () => {
 });
 
 describe('Fokus-Pfade (NDU-74)', () => {
-  it('Story Map: ein Pfad je beteiligter Spalte, Schiene im oberen Band, Stamm auf der mittleren Spur, kein NaN', () => {
+  it('Story Map: ein Pfad je beteiligter Spalte, Schiene im oberen Band, Stamm auf der Fokus-Spur, kein NaN', () => {
     const s = station('story-map')!;
     const p = fokusPfade(s);
     const spalten = [...new Set([s, ...quellen(s), ...ziele(s)].map((x) => x.spalte))].sort();
@@ -322,5 +322,14 @@ describe('Lesbarkeit bei 1280×720 (NDU-74)', () => {
     const ys = LINIEN.map(schieneY).sort((a, b) => a - b);
     for (let i = 1; i < ys.length; i++) expect((ys[i] - ys[i - 1]) * pxY).toBeGreaterThanOrEqual(10);
     expect(GEO.astAbstand * pxY).toBeGreaterThanOrEqual(5);
+  });
+
+  it('der Fokus hat eine eigene Spur: mindestens 5 px neben jeder Schiene und jedem Stamm', () => {
+    for (const l of LINIEN) {
+      expect(Math.abs(FOKUS_Y - schieneY(l)) * pxY, `Schiene ${l}`).toBeGreaterThanOrEqual(5);
+      expect(Math.abs(fokusStammX(1) - stammX(1, l)) * pxX, `Stamm ${l}`).toBeGreaterThanOrEqual(5);
+    }
+    expect(FOKUS_Y).toBeGreaterThan(0);
+    expect(FOKUS_Y).toBeLessThan(GEO.oben);
   });
 });

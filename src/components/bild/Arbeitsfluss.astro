@@ -9,7 +9,8 @@
 // blass, die Fußzeile sagt es in Worten. Auslöser: Maus oder Tastatur auf der Station (Klick bleibt der Link), Prop
 // fokus (fest, ohne Skript), fokusAusAdresse (?station=…), tour (Kurstag: je Station dieses Tags ein Schritt).
 // Vorrang (arbeitsfluss-fokus.ts): ruhend Tour-Schritt vor ?station=… vor fokus; Maus/Tastatur überlagern, bis ein
-// Tour-Schritt kommt. ?station=… deckt im Beamer die Spalten bis zur Station auf.
+// Tour-Schritt kommt; Escape oder Klick ins Leere lassen los. ?station=… deckt im Beamer die Spalten bis zur Station auf;
+// Zugedecktes bleibt aus Hervorhebung und Fußzeile. tastatur={false}: weitere Pläne einer Seite ohne Tab-Halt.
 // Legende: Knöpfe, die eine Linie allein zeigen (data-faden).
 import { ArrowRight, FlaskConical, MapPin, MessageSquareQuote, Star, Target } from '@lucide/astro';
 import {
@@ -19,7 +20,7 @@ import {
 import { rollen } from '../arbeitsfluss-fokus';
 import { TAGE } from '../methoden';
 
-const { id = 'arbeitsfluss', hier, bis, faden, aufdecken, legende = true, fokus, tour, fokusAusAdresse = false } = Astro.props as {
+const { id = 'arbeitsfluss', hier, bis, faden, aufdecken, legende = true, fokus, tour, fokusAusAdresse = false, tastatur = true } = Astro.props as {
   id?: string;
   hier?: number | string;
   bis?: number;
@@ -32,6 +33,8 @@ const { id = 'arbeitsfluss', hier, bis, faden, aufdecken, legende = true, fokus,
   tour?: number;
   /** ?station=… in der Adresse setzt den Fokus (Link „Arbeitsfluss“ im Übergangsstreifen). */
   fokusAusAdresse?: boolean;
+  /** false: Stationen nicht per Tab erreichbar (weitere Pläne derselben Seite – einer reicht für die Tastatur). */
+  tastatur?: boolean;
 };
 
 const heute = hier === 'heute';
@@ -108,7 +111,8 @@ const planStil = [
             const Tag = href ? 'a' : 'span';
             const r = rolle[s.id];
             return (
-              <Tag href={href} tabindex={href ? undefined : 0} data-spalte={sp.n} data-id={s.id}
+              <Tag href={href} tabindex={!tastatur ? -1 : href ? undefined : 0} role={href ? undefined : 'button'} aria-label={href ? undefined : s.kurz}
+                data-spalte={sp.n} data-id={s.id}
                 data-quellen={KANTEN.get(s.id)!.quellen.join(' ')} data-ziele={KANTEN.get(s.id)!.ziele.join(' ')} aria-describedby={fussId(s.id)}
                 class:list={['af-station', klassen(sp.n), `af-haupt-${s.linien[0]}`, ...s.linien.map((l) => `af-auf-${l}`), r && `af-${r}`, { 'af-endet': !!s.endet, 'af-fortsetzung': !!s.fortsetzung, 'af-umstieg': s.linien.length > 1, 'af-stern': s.stern, 'af-diese': s === hierStation }]}
                 style={`grid-column:${sp.n};grid-row:${s.zeile + 2}${s.linien.length > 1 ? `;${mischung(s.linien)}` : ''}`}
@@ -134,12 +138,17 @@ const planStil = [
       <span class="af-fuss-tipp">Fahrt mit der Maus über eine Station: Ring = kommt daher, Pfeil = geht dorthin. </span>Hohle Punkte enden oder werden ersetzt; gepunktete setzen eine frühere Station fort.<Star size={14} aria-hidden="true" class="af-fuss-stern" /> Der Stern ist die Antwort auf „Was bauen wir?“.
     </span>
     {STATIONEN.map((s) => {
+      // Je Station ein Glied mit Spalte: Im Beamer blendet das Skript Glieder aus noch zugedeckten Spalten aus
+      // (arbeitsfluss-fokus.ts); bleibt keines, steht der Ersatztext da.
       const t = fokusText(s);
+      const teil = (kopf: string, l: typeof STATIONEN, leer: string) => (
+        <span class="af-fuss-teil"><span class="af-fuss-kopf">{kopf}</span> {l.map((x) => <span class="af-glied" data-spalte={x.spalte}>{x.kurz}</span>)}<span class="af-glied-leer" hidden={l.length ? true : undefined}>{leer}</span></span>
+      );
       return (
         <span class="af-fuss-fokus" id={fussId(s.id)} data-fuss={s.id} hidden={s.id === fokus ? undefined : true}>
-          <strong>{s.kurz}</strong> <span class="af-fuss-teil"><span class="af-fuss-kopf">Kommt aus</span> {t.aus}</span>
+          <strong>{s.kurz}</strong> {teil('Kommt aus', quellen(s), t.aus)}
           <ArrowRight size={14} aria-hidden="true" class="af-fuss-pfeil" /><span class="visually-hidden">;</span>
-          <span class="af-fuss-teil"><span class="af-fuss-kopf">Geht nach</span> {t.nach}</span>
+          {teil('Geht nach', ziele(s), ziele(s).length ? 'später im Kurs' : t.nach)}
         </span>
       );
     })}
@@ -271,6 +280,8 @@ const planStil = [
   .af[data-fokus-an] .af-g { opacity: .15; }
   .af[data-fokus-an] .af-station.af-blass { opacity: .3; }
   .af[data-fokus-an] .af-station:is(.af-quelle, .af-ziel, .af-fokus) { opacity: 1; }
+  /* Die Zukunft bleibt auch im Fokus gedämpft. */
+  .af[data-fokus-an] .af-station.af-spaeter:is(.af-quelle, .af-ziel, .af-fokus) { opacity: .6; }
   .af-pfeil { display: none; }
   .af-station.af-quelle .af-punkt { box-shadow: 0 0 0 2px var(--bg-2), 0 0 0 4.5px var(--fg); }
   .af-station.af-ziel .af-punkt {
@@ -297,6 +308,9 @@ const planStil = [
   .af-fuss-legende, .af-fuss-fokus { display: inline; }
   .af-fuss-legende[hidden], .af-fuss-fokus[hidden] { display: none; }
   .af-fuss-fokus { color: var(--fg); }
+  .af-glied[hidden], .af-glied-leer[hidden] { display: none; }
+  /* Trenner nur zwischen sichtbaren Gliedern (ein ausgeblendetes zählt nicht). */
+  .af-glied:not([hidden]) ~ .af-glied:not([hidden])::before { content: " · "; }
   .af-fuss-kopf { font-family: var(--mono); font-size: .8em; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 0 .2em 0 .5em; }
   .af-fuss-pfeil { vertical-align: -2px; margin-left: .4em; }
   .af-fuss-stern { color: var(--yellow); fill: currentColor; vertical-align: -2px; margin: 0 .2em; }

@@ -397,9 +397,9 @@ export function spaltenPfade(sp: Spalte, l: Linie, stationen: Station[] = STATIO
   };
 }
 
-/** Schiene des Fokus: mitten im oberen Band. Stamm des Fokus: auf der mittleren Spur (Beleg). */
-export const FOKUS_Y = GEO.oben / 2;
-export const fokusStammX = (sp: number): number => stammX(sp, 'beleg');
+/** Eigene Spur des Fokus: Schiene zwischen Outcome und Beleg, Stamm zwischen Annahme und Beleg – nie genau auf einer Linie. */
+export const FOKUS_Y = (GEO.schiene.outcome + GEO.schiene.beleg) / 2;
+export const fokusStammX = (sp: number): number => (sp - 1) * GEO.breite + (GEO.kanal.annahme + GEO.kanal.beleg) / 2;
 
 /** Pfad des Fokus einer Station je Spalte: eine Schiene von der vorigen beteiligten Spalte, ein Stamm bis zur fernsten
  *  beteiligten Station, ein Ast je Station (Quellen, die Station selbst, Ziele). Ein Pfad je Spalte, damit er mit der

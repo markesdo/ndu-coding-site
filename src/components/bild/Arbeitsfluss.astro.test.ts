@@ -5,6 +5,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import Arbeitsfluss from './Arbeitsfluss.astro';
 import Uebergang from '../Uebergang.astro';
 import quelle from './Arbeitsfluss.astro?raw';
+import SEITE_ARBEITSFLUSS from '../../pages/innolab/arbeitsfluss.astro?raw';
 import { PUNKT_REM, STATIONEN, quellen, station, tourStationen, ziele } from '../arbeitsfluss';
 import { rollen, stationAusAdresse, tourFokus } from '../arbeitsfluss-fokus';
 
@@ -61,6 +62,32 @@ describe('Lucide-Icons im Punkt: Die Regeln der Komponente greifen (kein Pfeil o
     expect(quelle).toMatch(/\n {2}\.af-pfeil \{ display: none; \}/);
     expect(quelle).toMatch(/\.af-station\.af-ziel \.af-pfeil \{ display: block; \}/);
     expect(quelle).toMatch(/\.af-station\.af-ziel\.af-stern \.af-pfeil \{ display: none; \}/);
+  });
+});
+
+describe('Zukunft und Tastatur', () => {
+  it('im Fokus bleibt die Zukunft gedämpft (Quelle, Ziel oder Fokus in einer späteren Spalte)', () => {
+    expect(quelle).toMatch(/\.af\[data-fokus-an\] \.af-station\.af-spaeter:is\(\.af-quelle, \.af-ziel, \.af-fokus\) \{ opacity: \.6; \}/);
+    // Die Regel steht nach der, die Beteiligte auf 1 setzt – sonst gewönne diese.
+    expect(quelle.indexOf('.af-spaeter:is(.af-quelle, .af-ziel, .af-fokus)')).toBeGreaterThan(quelle.indexOf('.af-station:is(.af-quelle, .af-ziel, .af-fokus) { opacity: 1; }'));
+  });
+
+  it('tastatur={false}: keine Station per Tab erreichbar; sonst jede (Links ohne tabindex)', async () => {
+    const tags = (html: string) => [...html.matchAll(/<(?:a|span)\b[^>]*\bdata-id="[^"]+"[^>]*>/g)].map((m) => m[0]);
+    const aus = await render({ tastatur: false });
+    expect(tags(aus)).toHaveLength(STATIONEN.length);
+    expect(tags(aus).filter((t) => !/tabindex="-1"/.test(t))).toStrictEqual([]);
+    const an = await render({});
+    expect(tags(an).filter((t) => /tabindex/.test(t))).toStrictEqual([]);
+    // Jede Station ist ein Link (sonst bräuchte sie role und aria-label, siehe Arbeitsfluss.astro).
+    expect(tags(an).filter((t) => !t.startsWith('<a '))).toStrictEqual([]);
+  });
+
+  it('auf der Seite Arbeitsfluss ist nur der erste Plan per Tab erreichbar', () => {
+    const q = SEITE_ARBEITSFLUSS;
+    const aufrufe = [...q.matchAll(/<Arbeitsfluss\b([^>]*?)\/>/g)].map((m) => m[1]);
+    expect(aufrufe.length).toBeGreaterThan(1);
+    expect(aufrufe.map((a) => /\btastatur=\{false\}/.test(a))).toStrictEqual(aufrufe.map((_, i) => i > 0));
   });
 });
 
