@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -70,10 +70,15 @@ const hash = (w: string) => createHash('sha256').update(w).digest('hex');
 const vornamenHash = (array: string) => hash([...array.matchAll(/'([^']+)'/g)].map((m) => m[1]).sort().join(','));
 
 // Alle Dateien des Repos: getrackte und neue, noch nicht ignorierte (damit ein Name vor dem Commit auffällt); docs/ nicht
-// (Planungsnotizen, bekannte Grenze). Ohne Git schlägt das fehl, statt still nichts zu prüfen.
-function repoDateien(): string[] {
-  const roh = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd: WURZEL, encoding: 'utf8' });
-  return [...new Set(roh.split('\0').filter(Boolean))].filter((p) => !p.startsWith('docs/') && existsSync(join(WURZEL, p)));
+// (Planungsnotizen, bekannte Grenze). Ohne Git schlägt das fehl, statt still nichts zu prüfen. Nur reguläre Dateien: Ein
+// ungetrackter Symlink auf ein Verzeichnis (etwa node_modules → Haupt-Checkout in einem Worktree) ließe readFileSync
+// mit EISDIR scheitern.
+function repoDateien(wurzel: string = WURZEL): string[] {
+  const roh = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd: wurzel, encoding: 'utf8' });
+  return [...new Set(roh.split('\0').filter(Boolean))].filter((p) => {
+    if (p.startsWith('docs/')) return false;
+    try { return statSync(join(wurzel, p)).isFile(); } catch { return false; }
+  });
 }
 
 // Wörter aus Buchstaben, zusätzlich an camelCase-Grenzen getrennt („mapeName“, „HTMLParser“ → „HTML“, „Parser“);
@@ -130,6 +135,26 @@ describe('keine Namen von Studierenden im öffentlichen Repo', () => {
       // Leer oder nur Trenner: wie nicht gesetzt, die Dateien gelten.
       expect(namenLaden('', checkout, gitDir).namen).toStrictEqual(['lokal']);
       expect(namenLaden(' , ,', checkout, gitDir).namen).toStrictEqual(['lokal']);
+    } finally {
+      rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+
+  it('repoDateien liest nur reguläre Dateien: ein ungetrackter Symlink auf ein Verzeichnis bleibt draußen', () => {
+    const tmp = mkdtempSync(join(tmpdir(), 'namen-waechter-repo-'));
+    try {
+      execFileSync('git', ['init', '-q'], { cwd: tmp });
+      writeFileSync(join(tmp, 'a.txt'), 'a\n');
+      mkdirSync(join(tmp, 'docs'));
+      writeFileSync(join(tmp, 'docs', 'notiz.md'), 'n\n');
+      const ziel = mkdtempSync(join(tmpdir(), 'namen-waechter-ziel-'));
+      try {
+        symlinkSync(ziel, join(tmp, 'verzeichnis-link'));
+        symlinkSync(join(tmp, 'a.txt'), join(tmp, 'datei-link'));
+        expect(repoDateien(tmp).sort()).toStrictEqual(['a.txt', 'datei-link']);
+      } finally {
+        rmSync(ziel, { recursive: true, force: true });
+      }
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }
