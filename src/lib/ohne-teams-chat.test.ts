@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { NOTIZEN } from '../data/begleiter';
 
 // Tag 2 (online, 12.11.) läuft ohne Teams-Chat: Die Seiten sind auf den eigenen Geräten offen, die Aufgaben stehen auf
-// den Folien, Antwortrunden gehen reihum laut. Weder Folien noch Begleiter schicken jemanden in einen Chat.
+// den Folien, Antwortrunden gehen laut. Weder Folien noch Begleiter schicken jemanden in einen Chat.
 const quelle = (pfad: string) => readFileSync(new URL(pfad, import.meta.url), 'utf8');
 const SEITEN = ['/innolab/tag-2', '/innolab/methoden/synthese', '/innolab/methoden/journey-map', '/innolab/methoden/baum', '/innolab/tag-2/abschluss'];
 const DATEIEN = [

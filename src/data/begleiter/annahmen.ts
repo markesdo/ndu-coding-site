@@ -345,7 +345,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
 
   uebertrag: {
     live: [
-      'Reihum: jede*r nennt die eigene riskanteste Annahme in einem Satz.',
+      'Jede*r nennt laut die eigene riskanteste Annahme in einem Satz.',
       '„Nehmt die Annahme, ohne die alles andere egal wird und die ein Interview überhaupt klären kann.“',
       'Bei Lösungs-Annahme fragen, welche Annahme über Kundschaft darunterliegt.',
       '„Diese Annahme wird gleich die Forschungsfrage eures Leitfadens – gefragt wird aber nach dem letzten konkreten Mal.“',

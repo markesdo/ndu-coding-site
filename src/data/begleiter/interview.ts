@@ -64,20 +64,20 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
   'mom-test': {
     live: [
       'Aufgabe zeigen, Timer 5 min starten, nichts zur Methode sagen.',
-      'Reihum: rechts antwortet, höflich und ehrlich. Du hörst zu.',
+      'Fragen an die Person rechts, Antwort höflich und ehrlich.',
       'Notieren: leere Jas bei „Würdest du …?“ – Beispiele für die Auflösung.',
       '„Welche Antwort hat euch etwas Neues verraten?“',
       'Auflösung aufdecken öffnet nur diese Übung, auch bei allen.',
       'Kochbuch-App erzählen (Geschichte): „Das klingt toll“, niemand kauft.',
     ],
     ueberleitung: 'Jetzt legt ihr eure drei Fragen auf zwei Achsen und seht, wo sie liegen.',
-    uebung: { dauer: '5 min + 5 min', form: 'allein, eine Frage pro Sticky; dann reihum: jede*r fragt die Person rechts, die als jemand aus der Zielgruppe antwortet' },
+    uebung: { dauer: '5 min + 5 min', form: 'allein, eine Frage pro Sticky; dann fragt jede*r die Person rechts, die als jemand aus der Zielgruppe antwortet' },
     miro: {
       frame: 'T1 · 4 · Interviewleitfaden',
       schritte: [
         '„Alle zu mir holen“ auf T1 · 4. Die Kaffeebar-Spalte hat drei Felder: „Meine drei Fragen“, „Umgeschrieben nach der Auflösung“ und „Gelernt im Live-Interview“. Jetzt bleiben alle drei leer, sonst verrät die Kaffeebar die Auflösung. Gefüllt wird sie erst auf der Folie „Eure Fragen umschreiben“.',
         'Jede*r schreibt in der eigenen Spalte „Produkt von: …“ ins Feld „Meine drei Fragen“: drei gelbe Stickies, eine Frage pro Sticky.',
-        'Nach dem Timer reihum: Wer fragt, sagt in einem Satz, wer die Zielgruppe ist; die Person rechts antwortet höflich und ehrlich. Du hörst zu und sammelst Antworten für die Auflösung.',
+        'Nach dem Timer: Wer fragt, sagt in einem Satz, wer die Zielgruppe ist; die Person rechts antwortet höflich und ehrlich. Du hörst zu und sammelst Antworten für die Auflösung.',
       ],
     },
     kern: [
@@ -115,7 +115,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Aufgabe zeigen, Timer 5 min starten. Nichts zur Methode sagen.',
-        'Reihum: Wer fragt, nennt in einem Satz die Zielgruppe; die Person rechts antwortet höflich und ehrlich. Du hörst zu und achtest darauf: Hypothetisch bringt ein höfliches Ja, allgemein bleibt allgemein, „letztes Mal“ bringt eine konkrete Geschichte.',
+        'Wer fragt, nennt in einem Satz die Zielgruppe; die Person rechts antwortet höflich und ehrlich. Du hörst zu und achtest darauf: Hypothetisch bringt ein höfliches Ja, allgemein bleibt allgemein, „letztes Mal“ bringt eine konkrete Geschichte.',
         'Fragen: Welche Antwort hat euch etwas Neues verraten? Meist ist es die einzige Frage nach einem echten Ereignis.',
         'Auflösung aufdecken, die drei Regeln mit dem Kochbuch-Beispiel verbinden.',
       ],
@@ -204,17 +204,17 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
       'Treue-App-Geschichte erzählen: „Klar, wurde ja Zeit!“, ein Nörgler, kein Kunde.',
       'Timer 5 min: jede*r schreibt die eigenen drei Fragen um.',
       'Falle: Lösung steckt noch drin oder Zukunft nur ins Präsens gesetzt.',
-      'Danach reihum: umgeschriebene Frage an rechts. Du hörst, ob Geschichten kommen.',
+      'Danach: umgeschriebene Frage an die Person rechts. Du hörst, ob Geschichten kommen.',
     ],
     ueberleitung: 'Und wenn die Antworten kommen: Welche davon zählt überhaupt?',
-    uebung: { dauer: '5 min + 5 min', form: 'allein die eigenen drei Fragen umschreiben, dann reihum der Person rechts noch einmal stellen' },
+    uebung: { dauer: '5 min + 5 min', form: 'allein die eigenen drei Fragen umschreiben, dann der Person rechts noch einmal stellen' },
     miro: {
       frame: 'T1 · 4 · Interviewleitfaden',
       schritte: [
         'Erst jetzt, nach der Auflösung, füllst du die Kaffeebar-Spalte live: „Statt“-Fragen ins Feld „Meine drei Fragen“, „Besser“-Fragen in derselben Reihenfolge ins Feld „Umgeschrieben nach der Auflösung“ (Paare unten).',
         'Das dritte Feld „Gelernt im Live-Interview“ bleibt leer, bis die Live-Interviews gelaufen sind.',
         'Jede*r kopiert die eigenen Stickies (Cmd+D bzw. Strg+D) ins Feld „Umgeschrieben nach der Auflösung“ und schreibt sie dort um; das Original bleibt stehen.',
-        'Nach dem Timer „Alle zu mir holen“; reihum stellt jede*r eine umgeschriebene Frage noch einmal der Person rechts, die wieder als jemand aus der Zielgruppe antwortet.',
+        'Nach dem Timer „Alle zu mir holen“; jede*r stellt eine umgeschriebene Frage noch einmal der Person rechts, die wieder als jemand aus der Zielgruppe antwortet.',
       ],
       vorschlaege: [
         'Würdest du Kaffee vorbestellen, wenn es eine App gäbe? → Erzähl mir vom letzten Morgen, an dem du am Bahnhof Kaffee wolltest.',
@@ -264,7 +264,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
         'Die vier Zeilen schrittweise aufdecken und zu jeder kurz die Antwort der Pendlerin durchspielen.',
         'Die drei Warnsignale aus dem Handout nennen.',
         'Timer 5 min: Jede*r schreibt die Fragen um, die in der Runde ein „Ja, total!“ bekommen haben.',
-        'Reihum stellt jede*r eine umgeschriebene Frage noch einmal der Person rechts. Du hörst zu, ob jetzt eine Geschichte kommt, und greifst ein Beispiel auf.',
+        'Jede*r stellt eine umgeschriebene Frage noch einmal der Person rechts. Du hörst zu, ob jetzt eine Geschichte kommt, und greifst ein Beispiel auf.',
       ],
       achten: [
         'Umgeschriebene Fragen, die die Lösung noch enthalten („Erzähl vom letzten Mal, als du per App bestellt hast“), sind nur scheinbar besser.',
@@ -596,7 +596,7 @@ export const NOTIZEN_INTERVIEW: Record<string, Notiz> = {
 
   'uebertrag': {
     live: [
-      'Reihum: jede*r sagt die eigene Situation in einem Satz.',
+      'Jede*r sagt laut die eigene Situation in einem Satz.',
       '„So konkret wie ‚7:30 am Bahnhof‘, nicht ‚morgens unterwegs‘.“',
       'Mehrere Situationen? Die nehmen, die zur riskantesten Annahme passt.',
       '„Diese Situation wird die erste Kernfrage in eurem Leitfaden.“',

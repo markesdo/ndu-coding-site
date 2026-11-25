@@ -23,7 +23,8 @@ const MARKUS = { githubId: 1000, login: 'markus', kohorte: '2026', rolle: 'lehre
 const ANDERE = { githubId: 2000, login: 'andere', kohorte: 'test', rolle: 'lehrende' } as const;
 const SOFIE = { githubId: 1001, login: 'sofie-x', kohorte: '2026', rolle: 'studierende' } as const;
 const AUTOR = { name: 'sofie-x', email: 'x@example.invalid' };
-const NAMEN: ArtefaktName[] = ['brief', 'entscheidungen', 'annahmen', 'leitfaden', 'interviews'];
+// Spalten dieses Kursjahrs: ohne das stillgelegte Entscheidungslog (NDU-70).
+const NAMEN: ArtefaktName[] = ['brief', 'annahmen', 'leitfaden', 'interviews'];
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -162,7 +163,6 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
     expect(a.kurstag).toStrictEqual({ tag: 2, titel: 'Kunde & Erlebnis', lage: 'naechster' });
     expect(a.spalten).toStrictEqual([
       { name: 'brief', faelligZuTag: 2, hausaufgabe: false },
-      { name: 'entscheidungen', faelligZuTag: faelligZuTag('entscheidungen'), hausaufgabe: false },
       { name: 'annahmen', faelligZuTag: faelligZuTag('annahmen'), hausaufgabe: false },
       { name: 'leitfaden', faelligZuTag: faelligZuTag('leitfaden'), hausaufgabe: false },
       { name: 'interviews', faelligZuTag: 2, hausaufgabe: true },
@@ -180,7 +180,6 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
         artefakte: [
           // Der Brief vom 21.10. (Wien) zählt nicht, der um 00:30 am 22.10. (Wien, UTC noch 21.10.) schon.
           vorhanden('brief', 1, '2026-10-21T22:30:00.000Z'),
-          offen('entscheidungen'),
           vorhanden('annahmen', 2, '2026-10-23T10:00:00.000Z'),
           offen('leitfaden'),
           vorhanden('interviews', 1, '2026-10-23T11:00:00.000Z'),
@@ -302,7 +301,7 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
     // Eine kaputte Mappe bricht nie die ganze Antwort ab.
     expect(r.status).toBe(200);
     const a = await r.json();
-    const [brief, , annahmen, , interviews] = SOFIE_(a).artefakte;
+    const [brief, annahmen, , interviews] = SOFIE_(a).artefakte;
     expect(brief).toStrictEqual({ name: 'brief', stand: 'unlesbar', umfang: null, fehlt: [], leer: false, faelligZuTag: 2, faellig: true, commits: 1, mehr: false, zuletzt: '2026-10-21T22:30:00.000Z', feedback: OHNE_FEEDBACK });
     expect(interviews).toMatchObject({ name: 'interviews', stand: 'unlesbar', umfang: null, commits: 2 });
     expect(annahmen).toMatchObject({ stand: 'vorhanden' });

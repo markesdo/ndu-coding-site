@@ -1,8 +1,8 @@
 // Verknüpfungen der Mappe prüfen (deterministisch, ohne KI): unbekannte IDs, fehlende Belege, verwaiste Interviews,
 // riskanteste Annahme ohne Beleg trotz Interviews.
 // Grundlage für das MCP-Werkzeug verknuepfungen_pruefen und später für die Lehrende-Ansicht (Spec §3.4, §3.7).
-import { entscheidungsIds, entscheidungTraegtGetan, ersetztDurch, getanHatEigeneQuelle, getanMitNotiz, getanQuellePruefer } from './belege.js';
-import { ARTEFAKT_NAMEN, ARTEFAKTE, BELEGSTUFE_TEXT, interviewGefuellt, type Annahmen, type ArtefaktName, type Brief, type Entscheidungen, type Interviews, type Leitfaden } from './schemas/index.js';
+import { entscheidungsIds, ersetztDurch, getanHatEigeneQuelle, getanMitNotiz, getanQuellePruefer } from './belege.js';
+import { AKTIVE_ARTEFAKTE, ARTEFAKTE, BELEGSTUFE_TEXT, STILLGELEGT, interviewGefuellt, type Annahmen, type ArtefaktName, type Brief, type Entscheidungen, type Interviews, type Leitfaden } from './schemas/index.js';
 
 // Je Artefakt: die Daten, null = noch nicht gespeichert, 'unlesbar' = Datei passt nicht zum Schema.
 type Eintrag<T> = T | null | 'unlesbar';
@@ -46,9 +46,10 @@ const da = <T>(e: Eintrag<T>): e is T => e !== null && e !== 'unlesbar';
 export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
   const ergebnis: Verknuepfungen = {
     befunde: [],
-    geprueft: ARTEFAKT_NAMEN.filter((n) => da(m[n])),
-    fehlen: ARTEFAKT_NAMEN.filter((n) => m[n] === null),
-    unlesbar: ARTEFAKT_NAMEN.filter((n) => m[n] === 'unlesbar'),
+    // Stillgelegte Artefakte (Entscheidungslog, NDU-70) werden nicht erwartet: weder geprüft noch als fehlend gemeldet.
+    geprueft: AKTIVE_ARTEFAKTE.filter((n) => da(m[n])),
+    fehlen: AKTIVE_ARTEFAKTE.filter((n) => m[n] === null),
+    unlesbar: AKTIVE_ARTEFAKTE.filter((n) => m[n] === 'unlesbar'),
   };
   const befund = (b: Befund) => ergebnis.befunde.push(b);
 
@@ -65,6 +66,8 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     if (!quelle) return `${id} gehört zu einem späteren Kurstag; in der Mappe gibt es das noch nicht.`;
     if (m[quelle] === 'unlesbar') return null;
     const titel = ARTEFAKTE[quelle].titel;
+    // Ein stillgelegtes Artefakt (Entscheidungslog) soll niemand mehr anlegen: nicht „noch nicht gespeichert“ sagen.
+    if (m[quelle] === null && STILLGELEGT.includes(quelle)) return `In der Mappe gibt es ${id} nicht.`;
     if (m[quelle] === null) return `„${titel}“ ist noch nicht gespeichert, ${id} gibt es darum noch nicht.`;
     const interview = id.split('-')[0];
     if (quelle === 'interviews' && id.includes('-') && bekannt.has(interview)) return `${interview} hat kein Zitat ${id}.`;
@@ -95,21 +98,8 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
     for (const [feld, t] of felder) if (t) textVon('brief', `Brief · ${feld}`, t);
   }
 
-  if (da(m.entscheidungen)) {
-    // Ersetzte Zeilen sind Geschichte: ihre Verweise werden geprüft, ein fehlender Beleg nicht mehr angemahnt.
-    const ersetzt = ersetztDurch(m.entscheidungen.entscheidungen);
-    for (const e of m.entscheidungen.entscheidungen) {
-      belegeVon('entscheidungen', e.id, e.belegIds);
-      textVon('entscheidungen', e.id, `${e.entscheidung}\n${e.grund}\n${e.belegNotiz ?? ''}`);
-      if (e.beleg !== 'keiner' && e.belegIds.length === 0 && !e.belegNotiz && !ersetzt.has(e.id)) {
-        befund({ art: 'fehlender-beleg', artefakt: 'entscheidungen', ort: e.id, text: `${e.id} hat die Belegstufe „${BELEGSTUFE_TEXT[e.beleg]}“, nennt aber weder eine ID noch eine Notiz zum Beleg.` });
-      } else if (e.beleg === 'getan' && !ersetzt.has(e.id) && !entscheidungTraegtGetan(e, ersetzt)) {
-        // „getan“ braucht eine Quelle für Verhalten (Beleg-Notiz); IDs allein, etwa Interviews, belegen höchstens „erzählt“.
-        // Gespeicherte Zeilen sind fest (server/routen/mappe.ts), darum: ersetzen statt ändern.
-        befund({ art: 'fehlender-beleg', artefakt: 'entscheidungen', ort: e.id, text: `${e.id} ist „getan“, nennt aber keine Quelle (Beleg-Notiz). Gespeicherte Entscheidungen bleiben, wie sie sind: Ersetzt ${e.id} durch eine neue Zeile mit Quelle oder mit der passenden Stufe (Interviews belegen höchstens „erzählt“).` });
-      }
-    }
-  }
+  // Das Entscheidungslog selbst prüfen wir nicht mehr (in diesem Kursjahr stillgelegt, NDU-70): keine Befunde zu seinen
+  // Zeilen. Seine IDs und Beleg-Notizen zählen oben und unten weiter, damit Verweise darauf nicht als unbekannt gelten.
 
   if (da(m.annahmen)) {
     const hatQuelle = da(m.entscheidungen) ? getanQuellePruefer(m.entscheidungen) : getanHatEigeneQuelle;
@@ -163,7 +153,7 @@ export function verknuepfungenPruefen(m: MappeDaten): Verknuepfungen {
       ]);
       for (const iv of m.interviews.interviews) {
         if (genannt.has(iv.id) || iv.zitate.some((z) => genannt.has(z.id))) continue;
-        befund({ art: 'verwaist', artefakt: 'interviews', ort: iv.id, id: iv.id, text: `${iv.id} wird weder im Entscheidungslog noch in der Annahmen-Map als Beleg genannt.` });
+        befund({ art: 'verwaist', artefakt: 'interviews', ort: iv.id, id: iv.id, text: `${iv.id} wird in der Annahmen-Map nicht als Beleg genannt.` });
       }
     }
   }

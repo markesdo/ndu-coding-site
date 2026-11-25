@@ -24,7 +24,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       schritte: [
         'T1 · 5 kurz auf dem Beamer zeigen: Hier landen eure Snapshots als Karten, eine pro Interview, jede mit ihrer ID. Die Studierenden legen sie nicht selbst an; du überträgst sie vor Tag 2 aus der Werkstatt.',
         'Links die fertige Kaffeebar-Karte von I2 als Muster: So sieht eine übertragene Karte aus.',
-        'Was aufs Board kommt: nur der Snapshot, mit Pseudonym und Bild statt Foto, ohne Namen, Arbeitgeber oder Rohnotizen. Die Karten sind Kopien, Korrekturen nur in der Werkstatt. Was die Interviews an Brief oder Annahmen-Map ändern, gehört als Zeile ins Entscheidungslog der Werkstatt, nicht aufs Board.',
+        'Was aufs Board kommt: nur der Snapshot, mit Pseudonym und Bild statt Foto, ohne Namen, Arbeitgeber oder Rohnotizen. Die Karten sind Kopien, Korrekturen nur in der Werkstatt. Was die Interviews an Brief oder Annahmen-Map ändern, ändern sie dort in der Werkstatt, nicht auf dem Board.',
       ],
     },
     kern: [
@@ -72,7 +72,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
       },
       {
         frage: 'Wohin mit den Notizen?',
-        antwort: 'In den Interview-Editor der Werkstatt, unten auf der Abschluss-Seite: pro Interview Pseudonym (I1 bis I5), Notizen, Zitate mit IDs wie I2-3 und den Snapshot-Text. Aufnahme und Rohnotizen mit Namen bleiben bei dir. Nur dort eintragen, nicht zusätzlich auf Miro: Die Snapshots kommen vor Tag 2 als Karten in T1 · 5, das übernehme ich. Die Skizze der Geschichte kommt auf Papier und an Tag 2 mit, und was sich dadurch an Brief oder Annahmen-Map ändert, als Zeile ins Entscheidungslog, belegt mit den Zitat-IDs.',
+        antwort: 'In den Interview-Editor der Werkstatt, unten auf der Abschluss-Seite: pro Interview Pseudonym (I1 bis I5), Notizen, Zitate mit IDs wie I2-3 und den Snapshot-Text. Aufnahme und Rohnotizen mit Namen bleiben bei dir. Nur dort eintragen, nicht zusätzlich auf Miro: Die Snapshots kommen vor Tag 2 als Karten in T1 · 5, das übernehme ich. Die Skizze der Geschichte kommt auf Papier und an Tag 2 mit, und was sich dadurch an Brief oder Annahmen-Map ändert, änderst du dort, belegt mit den Zitat-IDs.',
       },
       {
         frage: 'Muss ich aufnehmen?',
@@ -85,17 +85,17 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
         'Vor dem Gespräch die Einwilligung einholen (Aufnahme, Speichern, KI-Auswertung der pseudonymisierten Notizen).',
         'Mit dem Leitfaden von heute fragen: eine Geschichte über das letzte Mal, nicht über Meinungen oder die Zukunft.',
         'Gleich danach, am selben Tag, Notizen, Zitate und Snapshot in den Interview-Editor der Werkstatt eintragen, mit Pseudonym und ohne Foto, und die Geschichte auf Papier skizzieren.',
-        'Jede Änderung an Brief oder Annahmen-Map als eine Zeile ins Entscheidungslog der Werkstatt schreiben und Claude prüfen lassen.',
+        'Was sich an Brief oder Annahmen-Map ändert, dort in der Werkstatt ändern, mit Zitat-IDs belegen und Claude prüfen lassen.',
       ],
       achten: [
-        'Hat jede*r eine konkrete Idee, wo die fünf Personen herkommen? Frag reihum nach den ersten zwei Namen oder Orten.',
+        'Hat jede*r eine konkrete Idee, wo die fünf Personen herkommen? Frag alle nach den ersten zwei Namen oder Orten.',
         'Ist allen klar, was Rohnotizen und was Notizen sind? Rohnotizen und Aufnahmen kommen nie ins App-Repo.',
-        'Ist allen klar, dass ins Entscheidungslog nur Änderungen an Brief oder Annahmen-Map gehören, nicht ein Protokoll jedes Gesprächs?',
+        'Ist allen klar, dass sich Brief oder Annahmen-Map nur ändern, wenn ein Interview etwas zeigt – kein Protokoll jedes Gesprächs?',
       ],
       fehler: [
         'Die Idee vorstellen und fragen, ob sie gefällt. Das ist genau das Kochbuch-Gespräch.',
         'Alle fünf Interviews am letzten Abend führen und erst danach die Snapshots schreiben.',
-        'Klarnamen oder Arbeitgeber in den Interviews oder im Entscheidungslog der Werkstatt.',
+        'Klarnamen oder Arbeitgeber in den Interviews oder anderswo in der Werkstatt.',
         'Die Einwilligung nur für die Aufnahme einholen und die KI-Auswertung vergessen.',
       ],
     },
@@ -221,7 +221,7 @@ export const NOTIZEN_ABSCHLUSS: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Was, wenn die Interviews zeigen, dass meine riskanteste Annahme falsch ist?',
-        antwort: 'Das ist das beste Ergebnis, das ihr haben könnt. Die alte Zeile im Entscheidungslog bleibt stehen, darunter kommt die neue Zeile mit dem Beleg. Das Werkstatt-Beispiel zeigt so etwas: D4 verwirft „Vorbestellen vor der Ankunft“, weil I2-4, I3-1 und I5-3 sagen, dass sie erst in der Halle entscheiden.',
+        antwort: 'Das ist das beste Ergebnis, das ihr haben könnt. Die alte Annahme bleibt stehen, mit dem Gegenbeleg; was ihr jetzt glaubt, wird eine neue Annahme. Das Werkstatt-Beispiel zeigt so etwas: Die Kaffeebar verwirft „Vorbestellen vor der Ankunft“, weil I2-4, I3-1 und I5-3 sagen, dass sie erst in der Halle entscheiden.',
       },
       {
         frage: 'Muss ich den Problem-Rahmen jetzt schon ändern?',

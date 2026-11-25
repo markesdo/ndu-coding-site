@@ -11,7 +11,6 @@ export type Folie = { pfad: string; id: string; titel: string; satz: string | nu
 export const TAG_1_SEITEN: string[] = [
   '/innolab/tag-1',
   '/innolab/methoden/problem-rahmen',
-  '/innolab/methoden/entscheidungslog',
   '/innolab/methoden/annahmen',
   '/innolab/methoden/interview',
   '/innolab/tag-1/abschluss',
@@ -21,7 +20,6 @@ export const TAG_1_SEITEN: string[] = [
 const SEITEN_NAMEN: Record<string, string> = {
   '/innolab/tag-1': 'Tag 1 · Rahmen & Verstehen',
   '/innolab/methoden/problem-rahmen': 'Problem-Rahmen & Produkt-Brief',
-  '/innolab/methoden/entscheidungslog': 'Entscheidungslog',
   '/innolab/methoden/annahmen': 'Annahmen-Map',
   '/innolab/methoden/interview': 'Jobs to be Done & Mom Test',
   '/innolab/tag-1/abschluss': 'Tag 1 · Abschluss',

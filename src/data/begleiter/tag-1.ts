@@ -190,7 +190,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Alle Gewohnheiten im Buch sind für das ganze Trio gedacht; Rollen dürfen keine Ausrede sein, Problem- und Lösungsraum künstlich zu trennen. Der Baum macht das Verständnis der Kundschaft explizit, sodass man es nach einem Fehlschlag schnell überarbeiten kann.', quelle: `${TORRES}, S. 33` },
     ],
     fragen: [
-      { frage: 'Ist ein gescheiterter Test dann Zeitverschwendung?', antwort: 'Nur, wenn ihr nichts daraus ableitet. Er sagt euch, welche Annahme über die Kundschaft falsch war – das gehört in den Baum und ins Entscheidungslog.' },
+      { frage: 'Ist ein gescheiterter Test dann Zeitverschwendung?', antwort: 'Nur, wenn ihr nichts daraus ableitet. Er sagt euch, welche Annahme über die Kundschaft falsch war – das gehört in den Baum und in die Annahmen-Map.' },
     ],
   },
 
@@ -307,12 +307,12 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
     live: [
       'Alle zu mir holen auf T1 · 1, Kaffeebar-Map links zeigen.',
       'Falle: Klickpfad durch die eigene App statt heutiges Erleben.',
-      'Nach dem Timer reihum zeigen: nachfragen, nicht verteidigen.',
+      'Nach dem Timer zeigt jede*r: nachfragen, nicht verteidigen.',
       '„Jede Verbindung mit Fragezeichen nehmt ihr nach der Mittagspause mit in die Annahmen-Map.“',
       'Bei Protest gegen Alleinzeichnen: Antrags-Trio von Torres erzählen.',
     ],
     ueberleitung: 'Damit habt ihr gezeichnet, was Menschen heute tun – jetzt: Woran messt ihr, ob sie es nach eurem Produkt anders tun?',
-    uebung: { dauer: '10 min', form: 'allein, ohne zu reden; danach reihum zeigen' },
+    uebung: { dauer: '10 min', form: 'allein, ohne zu reden; danach zeigt jede*r' },
     miro: {
       frame: 'T1 · 1 · Experience Map',
       schritte: [
@@ -327,7 +327,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       schritte: [
         'Rahmen kurz setzen: Jede*r zeichnet für das eigene Produkt, wie die Zielgruppe das Problem heute löst.',
         'Timer 10 min; Miro-Frame T1 · 1, eigene Spalte neben der Kaffeebar.',
-        'Reihum: jede*r zeigt die Map, die anderen beiden fragen nach, ohne zu bewerten.',
+        'Jede*r zeigt die Map, die anderen beiden fragen nach, ohne zu bewerten.',
         'Die „?“ markieren lassen – sie wandern nachmittags in die Annahmen-Map.',
       ],
       achten: [
@@ -347,7 +347,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
       { text: 'Erst allein, um Gruppendenken zu vermeiden: In Gruppen strengen sich manche weniger an, manche halten sich zurück, und Gruppen bleiben oft auf dem Niveau des schwächsten Mitglieds. Das fühlt sich ineffizient an, ist aber der einfachste Weg zu mehreren Perspektiven.', quelle: `${TORRES}, S. 53` },
       { text: 'Visuell, nicht verbal: Zeichnen externalisiert Denken und macht Lücken sichtbar. Kästchen, Pfeile, Strichmännchen genügen; es geht nicht um Kunst.', quelle: `${TORRES}, S. 53–54` },
       { text: 'Nicht das Produkt zeichnen, sondern das Erleben der Kundschaft: wo sie hängen bleiben, was schiefgeht, wie sie umsteuern, wo sie aufgeben.', quelle: `${TORRES}, S. 54` },
-      { text: 'Perspektiven teilen: reihum zeigen, nachfragen, auf Unterschiede achten, neugierig sein; die eigene Zeichnung nicht verteidigen. Danach zu einer gemeinsamen Map zusammenführen, statt die „beste“ auszuwählen. Anti-Muster: endlose Debatten (lieber zeichnen), Wörter statt Bilder, Map als Wahrheit, Map nicht weiterentwickeln.', quelle: `${TORRES}, S. 55–57` },
+      { text: 'Perspektiven teilen: zeigen, nachfragen, auf Unterschiede achten, neugierig sein; die eigene Zeichnung nicht verteidigen. Danach zu einer gemeinsamen Map zusammenführen, statt die „beste“ auszuwählen. Anti-Muster: endlose Debatten (lieber zeichnen), Wörter statt Bilder, Map als Wahrheit, Map nicht weiterentwickeln.', quelle: `${TORRES}, S. 55–57` },
     ],
     geschichte: {
       text: 'Torres coachte ein neues Produkt-Trio mit dem Outcome, mehr Antragsabschlüsse zu erreichen – viele Kund*innen brachen einen langen Antrag ab. Alle drei hatten eigene Vermutungen. Statt im Raum zu diskutieren, zeichnete jede*r zuerst allein; das war unbequem, weil dem Designer Kontext fehlte, die Person aus der Entwicklung kaum Kundenkontakt hatte und die Produktmanagement-Person nur Ahnungen ohne Daten. Beim Vergleich zeigte sich: Das Produktmanagement kannte die bekannten Beschwerden aus Callcenter und Tickets; der Designer, neu im Unternehmen, sah den Prozess von außen und fing Verwirrung und Unsicherheit der Kundschaft ein; die Entwicklung bildete den Ablauf genau ab und zeigte, wie ein falsch ausgefüllter früher Schritt später alles entgleisen lässt. Zusammengeführt ergab das eine reichere Map als jede einzelne – mit Vermutungen, offenen Fragen und dem, was sie in den nächsten Interviews prüfen mussten.',
@@ -556,7 +556,7 @@ export const NOTIZEN_TAG_1: Record<string, Notiz> = {
   'methoden': {
     live: [
       'Zeit: 11:00 Pause, 11:10 Problem-Rahmen.',
-      '„Bis Tag 2 fünf echte Interviews; Snapshot mit Pseudonym in die Werkstatt, Skizze auf Papier, Entscheidungslog nachziehen.“',
+      '„Bis Tag 2 fünf echte Interviews; Snapshot in die Werkstatt, Skizze auf Papier, Annahmen-Map nachziehen.“',
       'Fragen offen? In den Parkplatz unter „Start hier“.',
       'Toolbox zeigen, falls jemand fragt, welche Methode welches Artefakt liefert.',
     ],

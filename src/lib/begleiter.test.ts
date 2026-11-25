@@ -207,9 +207,9 @@ describe('Seitennamen', () => {
 
 describe('Folien von Tag 1 (echte Seiten)', () => {
   const folien = tagFolien(quellen);
-  it('alle Seiten des Tages in der Tagesreihenfolge, 63 Folien', () => {
+  it('alle Seiten des Tages in der Tagesreihenfolge, 55 Folien (ohne Entscheidungslog, NDU-70)', () => {
     expect([...new Set(folien.map((f) => f.pfad))]).toStrictEqual(TAG_1_SEITEN);
-    expect(folien).toHaveLength(63);
+    expect(folien).toHaveLength(55);
     expect(folien[0].pfad).toBe('/innolab/tag-1');
     expect(folien.at(-1)!.pfad).toBe('/innolab/tag-1/abschluss');
   });
@@ -236,7 +236,7 @@ describe('Folien von Tag 1 (echte Seiten)', () => {
     expect(plan.every((p) => p !== null)).toBe(true);
     expect(plan[0]!.block).toBe('Kick-off');
     expect(plan.at(-1)!.block).toBe('Hausaufgabe & Abschluss');
-    expect(plan.find((_, i) => folien[i].pfad === '/innolab/methoden/entscheidungslog')!.block).toBe('Entscheidungslog');
+    expect(plan.find((_, i) => folien[i].pfad === '/innolab/methoden/annahmen')!.block).toBe('Annahmen-Map');
     expect(kurstagAus(quellen['/innolab/tag-1'])).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
   // Übungen, die ihren Block füllen oder länger sind als Block minus Folien: Soll-Fenster = volle Timer-Dauer, und
@@ -245,7 +245,6 @@ describe('Folien von Tag 1 (echte Seiten)', () => {
   const echterPlan = folienPlan(folien, bloeckeAus(quellen['/innolab/tag-1']), (i) => minutenJe[i]);
   it.each([
     ['/innolab/methoden/problem-rahmen', 'vorgehen', 60, 670],
-    ['/innolab/methoden/entscheidungslog', 'vorgehen', 5, 730],
     ['/innolab/methoden/annahmen', 'vorgehen', 45, 795],
     ['/innolab/methoden/interview', 'vorgehen', 90, 885],
   ])('%s#%s: Übung behält %i min ab Blockbeginn, tempo nie hinten, solange der Timer läuft', (pfad, id, min, von) => {
@@ -704,7 +703,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folien.slice(0, tag1.length)).toStrictEqual(tag1);
     expect(folien.length).toBeGreaterThan(tag1.length);
     expect(new Set(tag1.map((f) => folienGruppe(f.pfad)))).toStrictEqual(new Set(['tag-1']));
-    expect(beamer('/innolab/methoden/entscheidungslog', 'beleg-staerke').z.index).toBe(folieZu(tag1, '/innolab/methoden/entscheidungslog', 'beleg-staerke'));
+    // Das Entscheidungslog gehört seit NDU-70 nicht mehr zu Tag 1 und hat keine Notizen mehr.
+    expect(tag1.filter((f) => f.pfad === '/innolab/methoden/entscheidungslog')).toStrictEqual([]);
+    expect(Object.keys(NOTIZEN)).not.toContain('/innolab/methoden/entscheidungslog');
   });
   // Entscheidungen 30 und 31 (21.11.): Tag 3 ohne Entscheidungslog und ohne docs/ZIEL-CHANCE.md – die Begründung steht im
   // Feld „Begründen“ auf Miro T3 · 1, Schritt 4 ist nur der Stern im Baum. Die Zweiwegtür ist als Bild erzählt.

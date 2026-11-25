@@ -14,7 +14,7 @@ import { tagInWien } from '../../../lib/kurswahl.js';
 import { KOHORTEN, kohorte as kohorteNachId, werkstattArtefakte, type Kohorte } from '../../kohorten/index.js';
 import { FASSUNG_ORTE, FeedbackAbgelehnt, fassungErlaubt, fassungTextPruefen, fassungZeilenText, feedbackSchreiben, feedbackZaehlen, zeilenAuswahl, zeilePasst, type Feedback } from '../../feedback.js';
 import { bezugBestimmen, verlaufZaehlen } from '../../lehrende.js';
-import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName } from '../../schemas/index.js';
+import { AKTIVE_ARTEFAKTE, ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName } from '../../schemas/index.js';
 import { artefaktStand, faelligBis, faelligZuTag, kurstagBestimmen } from '../../tag-stand.js';
 import { verknuepfungenPruefen, type MappeDaten } from '../../verknuepfungen.js';
 import type { FeedbackAntwort, LehrendenAnsicht, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../../vertrag.js';
@@ -147,7 +147,9 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     const b = Number.isNaN(gewaehlt) ? undefined : bezugBestimmen(k.termine, heute, gewaehlt);
     if (!b) return fehler(c, 422, 'ungueltig', TAG_UNGUELTIG);
 
-    const namen = werkstattArtefakte(k);
+    // Spalten nur für die Artefakte dieses Kursjahrs (ohne das stillgelegte Entscheidungslog, NDU-70); der Leser darunter
+    // öffnet gespeicherte Daten weiter.
+    const namen = werkstattArtefakte(k).filter((n) => AKTIVE_ARTEFAKTE.includes(n));
     // Alphabetisch nach Kürzel: feste Reihenfolge, nie nach Stand umsortiert.
     const studierende = [...(abh.umgebung.zugang[k.id]?.studierende ?? [])].sort(nachKuerzel);
     const kt = kurstagBestimmen(k.termine, heute);

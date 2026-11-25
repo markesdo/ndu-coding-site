@@ -1,4 +1,4 @@
-// Antwortrunde: Studierende schicken einen Satz über die Seite (api/antworten.ts; Rückfall: reihum laut). Bis zum Aufdecken
+// Antwortrunde: Studierende schicken einen Satz über die Seite (api/antworten.ts; Rückfall: laut sagen). Bis zum Aufdecken
 // zeigt die Seite nur, welche Rollen geantwortet haben; die Texte gibt der Server erst heraus, wenn die Auflösung der Runde
 // für alle offen ist – dieselbe Kennung wie <Aufloesung gruppe=…> (lib/aufgedeckt.ts), also ein Klick des Präsentators für
 // Buch und Sätze. Speicher: ein fester Platz pro Runde, Kurstag und Rolle (je drei; „rueckblick“ hat neutrale Plätze statt Rollen) – wer abschickt, überschreibt

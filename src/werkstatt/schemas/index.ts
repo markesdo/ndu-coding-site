@@ -9,7 +9,7 @@ import { interviewsLeer, interviewsSchema, type Interviews } from './interviews.
 import type { Feldfehler } from './gemeinsam.js';
 
 export type { ArtefaktName } from './namen.js';
-export { ARTEFAKT_NAMEN } from './namen.js';
+export { AKTIVE_ARTEFAKTE, ARTEFAKT_NAMEN, STILLGELEGT } from './namen.js';
 export { BELEG_NOTIZ_MAX, BELEGSTUFEN, belegNotizSetzen, belegNotizZaehler, BELEGSTUFE_TEXT, type Belegstufe, type Feldfehler } from './gemeinsam.js';
 export type { Brief } from './brief.js';
 export { type Entscheidungen, type Entscheidung } from './entscheidungen.js';
