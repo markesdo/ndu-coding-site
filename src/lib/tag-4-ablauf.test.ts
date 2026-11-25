@@ -43,9 +43,9 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     const timer = [...ex.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
     expect(timer).toBe(18);
     expect(ex).toContain(`So geht ihr vor (${timer} min)</h2>`);
-    // Kaffeebar: drei Ideen unter der Ziel-Chance, der Spitzenreiter mit Stern, darunter A5 mit E1.
+    // Kaffeebar: drei Ideen unter der Ziel-Chance, der Spitzenreiter markiert, darunter A5 mit E1.
     const loesungen = KAFFEEBAR_BAUM_TAG_4.kinder![0].kinder!;
-    expect(loesungen.map((k) => k.t)).toStrictEqual(['Wartezeit-Anzeige an der Tür', '★ Im Gehen bestellen', 'Kaffeewagen am Bahnsteig']);
+    expect(loesungen.map((k) => k.t)).toStrictEqual(['Wartezeit-Anzeige an der Tür', 'Spitzenreiter: Im Gehen bestellen', 'Kaffeewagen am Bahnsteig']);
     expect(loesungen.filter((k) => k.kinder?.length).map((k) => k.kinder!.map((t) => t.t))).toStrictEqual([['A5 → E1: Aufsteller an der Hallentür, ab 10 von 30']]);
   });
 

@@ -858,7 +858,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const a = q.indexOf('id="vorgehen"');
     const folie = q.slice(a, q.indexOf('</Folie>', a));
     expect(folie).toContain('id="vorgehen">So geht ihr vor (30 min)</h2>');
-    expect(folie).toContain('<p class="folie-satz">Einmal T3 · 4, dann euer Canvas, zum Schluss der Baum: wählen, füllen, ordnen, prüfen.</p>');
+    expect(folie).toContain('<p class="folie-satz">Einmal T3 · 4, dann euer Canvas, zum Schluss der Baum.</p>');
     const schritte = folie.slice(folie.indexOf('<ol'), folie.indexOf('</ol>'));
     const timer = [...schritte.matchAll(/<li data-schritt>.*?<Timer minuten=\{(\d+)\} \/><\/li>/g)].map((m) => Number(m[1]));
     expect(timer).toStrictEqual([3, 11, 4, 8, 2, 2]);
