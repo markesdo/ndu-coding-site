@@ -63,4 +63,19 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(texte.every((x) => x.length > 1000)).toBe(true);
     expect(texte.flatMap((x) => x.match(/um 9:20|Abschluss, 17:10|ab 15:50|14:45–15:40|15:50–17:10/g) ?? [])).toStrictEqual([]);
   });
+
+  // Kursregel (Markus 12.11.): drei Produkte – keine Runden aufs eigene Produkt, sondern allein und 1:1 mit Markus.
+  it('Story Map und Geschäftsmodell: keine Runde zu dritt aufs eigene Produkt, stattdessen allein und 1:1', () => {
+    const sm = folie('/innolab/methoden/story-map', 'vorgehen');
+    const gm = folie('/innolab/methoden/geschaeftsmodell', 'vorgehen');
+    expect([sm, gm].flatMap((x) => x.match(/zu dritt|die anderen beiden (gehen|ergänzen)|die anderen fragen/gi) ?? [])).toStrictEqual([]);
+    expect(seite('/innolab/methoden/geschaeftsmodell')).not.toContain('zu dritt sechs Karten');
+    expect(sm).toContain('<li data-schritt><strong>Was ist, wenn …? Allein,</strong> Markus fragt im 1:1 nach. <Timer minuten={7} /></li>');
+    expect(sm).toContain('<li data-schritt><strong>Slice 1 durchgehen, allein:</strong> mit „und dann“. <Timer minuten={7} /></li>');
+    expect(gm).toContain('<li data-schritt><strong>Eine wählen, allein:</strong> die Idee, die am meisten verändert; Markus fragt im 1:1 nach – keine Killerphrasen. <Timer minuten={5} /></li>');
+  });
+
+  it('Tag-2-Abschluss nennt den Anfang von Tag 4 richtig: Arbeitsfluss, Value Map nachholen, dann Concept Story', () => {
+    expect(seite('/innolab/tag-2/abschluss')).toContain('Tag 4 beginnt mit dem Arbeitsfluss und dem Nachholen von Value Map und Fit; dann schreibt ihr eure Concept Story.');
+  });
 });
