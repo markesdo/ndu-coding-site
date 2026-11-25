@@ -45,16 +45,16 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'annahmen', name: 'Annahmen-Map', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/annahmen.json', werkstatt: 'annahmen' },
   { id: 'synthese', name: 'Interviews mit Snapshots (pseudonymisiert)', lebtIn: ['miro', 'werkstatt'], pfad: 'mappe/interviews.json', werkstatt: 'interviews', hausaufgabe: { bisTag: 2, anzahl: 5 } },
   // Tag 3 liegt seit 21.11.2026 ganz auf Miro (Entscheidung 39): Profil und Value Map im eigenen Canvas-Frame, HMW und Ideen je in der eigenen Spalte.
-  { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · euer Name' },
+  { id: 'profil', name: 'Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · Produkt n' },
   // Seit 11.11.2026 nur auf Miro, ohne Datei im Repo (Entscheidung Markus): Map in T2 · 1, jeder Baum im eigenen Frame.
   { id: 'journey', name: 'Experience Map mit Momenten (Äste des Baums)', lebtIn: ['miro'], miro: 'T2 · 1 · Experience Map', miroSpalte: true },
-  { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro'], miro: 'Baum · euer Name' },
+  { id: 'baum', name: 'Opportunity Solution Tree (Chancen unter den Momenten)', lebtIn: ['miro'], miro: 'Baum · Produkt n' },
   // Seit 21.11.2026 nur auf Miro (Entscheidungen 31, 39): je Person eine Spalte in T3 · 1, Begründung im Feld „Begründen“.
   { id: 'ziel', name: 'Ziel-Chance mit vier Linsen', lebtIn: ['miro'], miro: 'T3 · 1 · Ziel-Chance', miroSpalte: true },
   { id: 'chancen', name: 'How-Might-We-Frage zur Ziel-Chance', lebtIn: ['miro'], miro: 'T3 · 2 · How Might We', miroSpalte: true },
   { id: 'ideen', name: 'Drei Ideen für die Ziel-Chance, je als Lückensatz', lebtIn: ['miro'], miro: 'T3 · 3 · Ideation', miroSpalte: true },
   // Value Map und Fit im Canvas; der Ideen-Vergleich mit den „?“ im gemeinsamen Frame T3 · 4 (Prüfpunkte value-map-fit-vergleich, -wahl, -fragezeichen).
-  { id: 'valuemap', name: 'Spitzenreiter mit Value Map und Fit', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · euer Name', miroAuch: { frame: 'T3 · 4 · Kundenprofil & Value Map', feld: 'Ideen vergleichen und wählen' } },
+  { id: 'valuemap', name: 'Spitzenreiter mit Value Map und Fit', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · Produkt n', miroAuch: { frame: 'T3 · 4 · Kundenprofil & Value Map', feld: 'Ideen vergleichen und wählen' } },
   { id: 'concept', name: 'Concept Story', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
   { id: 'experimente', name: 'Experiment-Karten', lebtIn: ['repo'], pfad: 'docs/EXPERIMENTE.md' },
   { id: 'origin', name: 'Origin Story als Landingpage-Text', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
@@ -585,7 +585,7 @@ export function miroVorarbeitBilder(m: Methode): MiroBild[] {
   return miroBilder(m.braucht).filter((b) => !schon.has(b.schluessel));
 }
 
-/** „Kundenprofil … und Spitzenreiter … (Frame „T3 · 4 · Canvas · euer Name“)“ – je Bild die Namen und der Ort. */
+/** „Kundenprofil … und Spitzenreiter … (Frame „T3 · 4 · Canvas · Produkt n“)“ – je Bild die Namen und der Ort. */
 const bildListe = (bilder: MiroBild[]) => aufzaehlen(bilder.map((b) => `${aufzaehlen(b.namen)} (${b.ort})`));
 
 const ZAHLWORT = ['ein', 'zwei', 'drei', 'vier', 'fünf'];

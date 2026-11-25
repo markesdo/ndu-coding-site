@@ -100,24 +100,24 @@ describe('Hilfen', () => {
 
   const a = (stand: LehrendenArtefakt['stand'], umfang: string | null, leer = false) => ({ name: 'interviews', stand, umfang, leer }) as LehrendenArtefakt;
   const P: LehrendenMappe[] = [
-    { kuerzel: 'sofie', zustand: 'bereit', artefakte: [a('vorhanden', '3 von 5 Snapshots')] } as LehrendenMappe,
+    { kuerzel: 'mara', zustand: 'bereit', artefakte: [a('vorhanden', '3 von 5 Snapshots')] } as LehrendenMappe,
     { kuerzel: 'otto', zustand: 'keine-mappe' },
-    { kuerzel: 'joachim', zustand: 'bereit', artefakte: [a('offen', null)] } as LehrendenMappe,
-    { kuerzel: 'hewen', zustand: 'bereit', artefakte: [a('vorhanden', '6 Snapshots (5 verlangt)')] } as LehrendenMappe,
+    { kuerzel: 'timo', zustand: 'bereit', artefakte: [a('offen', null)] } as LehrendenMappe,
+    { kuerzel: 'yuki', zustand: 'bereit', artefakte: [a('vorhanden', '6 Snapshots (5 verlangt)')] } as LehrendenMappe,
   ];
 
   it('←/→ ohne Zeigen: Nachbarperson wie bisher', () => {
-    expect(tastenZiel('ArrowRight', { zeigen: false, personen: P, person: 'sofie', nr: 0, anzahl: 3 })).toStrictEqual({ art: 'person', person: 'joachim' });
-    expect(tastenZiel('ArrowLeft', { zeigen: false, personen: P, person: 'sofie', nr: 0, anzahl: 3 })).toBeNull();
-    expect(tastenZiel('Enter', { zeigen: false, personen: P, person: 'sofie', nr: 0, anzahl: 3 })).toBeNull();
+    expect(tastenZiel('ArrowRight', { zeigen: false, personen: P, person: 'mara', nr: 0, anzahl: 3 })).toStrictEqual({ art: 'person', person: 'timo' });
+    expect(tastenZiel('ArrowLeft', { zeigen: false, personen: P, person: 'mara', nr: 0, anzahl: 3 })).toBeNull();
+    expect(tastenZiel('Enter', { zeigen: false, personen: P, person: 'mara', nr: 0, anzahl: 3 })).toBeNull();
   });
 
   it('←/→ im Zeigen-Modus: nur Snapshots, nie eine andere Person', () => {
-    expect(tastenZiel('ArrowRight', { zeigen: true, personen: P, person: 'sofie', nr: 0, anzahl: 3 })).toStrictEqual({ art: 'snapshot', nr: 1 });
-    expect(tastenZiel('ArrowLeft', { zeigen: true, personen: P, person: 'sofie', nr: 0, anzahl: 3 })).toStrictEqual({ art: 'snapshot', nr: 2 });
-    expect(tastenZiel('ArrowRight', { zeigen: true, personen: P, person: 'sofie', nr: 2, anzahl: 3 })).toStrictEqual({ art: 'snapshot', nr: 0 });
+    expect(tastenZiel('ArrowRight', { zeigen: true, personen: P, person: 'mara', nr: 0, anzahl: 3 })).toStrictEqual({ art: 'snapshot', nr: 1 });
+    expect(tastenZiel('ArrowLeft', { zeigen: true, personen: P, person: 'mara', nr: 0, anzahl: 3 })).toStrictEqual({ art: 'snapshot', nr: 2 });
+    expect(tastenZiel('ArrowRight', { zeigen: true, personen: P, person: 'mara', nr: 2, anzahl: 3 })).toStrictEqual({ art: 'snapshot', nr: 0 });
     // Ohne Snapshots passiert nichts – auch kein Personenwechsel.
-    expect(tastenZiel('ArrowRight', { zeigen: true, personen: P, person: 'sofie', nr: 0, anzahl: 0 })).toBeNull();
+    expect(tastenZiel('ArrowRight', { zeigen: true, personen: P, person: 'mara', nr: 0, anzahl: 0 })).toBeNull();
   });
 
   it('Neu laden: Stelle nach Interview-ID, nicht nach Nummer', () => {
@@ -169,17 +169,17 @@ describe('Hilfen', () => {
     // An den echten Umfang aus tag-stand gebunden: Ändert sich dessen Wortlaut, fällt das hier auf.
     expect(snapshotZahl(artefaktStand('interviews', KAFFEEBAR as never).umfang)).toBe(zeigbareInterviews(KAFFEEBAR).length);
     // Start über den Folien-Link (?zeigen=1 ohne Person): erste Person mit Snapshots, sonst die erste bereite.
-    expect(zeigenStartPerson([P[2], P[0]])).toBe('sofie');
-    expect(zeigenStartPerson([P[1], P[2]])).toBe('joachim');
+    expect(zeigenStartPerson([P[2], P[0]])).toBe('mara');
+    expect(zeigenStartPerson([P[1], P[2]])).toBe('timo');
     expect(zeigenStartPerson([P[1]])).toBeNull();
-    expect(zeigenPersonen(P)).toStrictEqual([{ kuerzel: 'sofie', anzahl: 3 }, { kuerzel: 'joachim', anzahl: 0 }, { kuerzel: 'hewen', anzahl: 6 }]);
+    expect(zeigenPersonen(P)).toStrictEqual([{ kuerzel: 'mara', anzahl: 3 }, { kuerzel: 'timo', anzahl: 0 }, { kuerzel: 'yuki', anzahl: 6 }]);
   });
 });
 
 describe('Zeigen', () => {
   const props = (x: Partial<ZeigenProps> = {}): ZeigenProps => ({
-    personen: [{ kuerzel: 'sofie', anzahl: 5 }, { kuerzel: 'joachim', anzahl: 0 }, { kuerzel: 'hewen', anzahl: 2 }],
-    person: 'sofie', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null, stand: Date.UTC(2026, 10, 12, 13, 5), jetzt: Date.UTC(2026, 10, 12, 13, 6), meldung: '',
+    personen: [{ kuerzel: 'mara', anzahl: 5 }, { kuerzel: 'timo', anzahl: 0 }, { kuerzel: 'yuki', anzahl: 2 }],
+    person: 'mara', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null, stand: Date.UTC(2026, 10, 12, 13, 5), jetzt: Date.UTC(2026, 10, 12, 13, 6), meldung: '',
     kontext: KONTEXT_LEER, kontextOffen: false, kontextReiter: 'annahmen', kontextUmschalten: () => {}, reiterWaehlen: () => {},
     frage: 0, fragenOffen: true, frageWaehlen: () => {}, fragenUmschalten: () => {},
     personWaehlen: () => {}, nrWaehlen: () => {}, blaettern: () => {}, neuLaden: () => {}, beenden: () => {}, ...x,
@@ -188,8 +188,8 @@ describe('Zeigen', () => {
 
   it('Kopf: Personen mit Zahl, 0 gesperrt; „Snapshot n von m“; Neu laden; Zeigen beenden', () => {
     const h = renderToStaticMarkup(<Zeigen {...props()} />);
-    expect(knoepfe(h).slice(0, 3)).toStrictEqual([['sofie (5)', false], ['joachim (0)', true], ['hewen (2)', false]]);
-    expect(h).toMatch(/aria-current="true"[^>]*>sofie \(5\)/);
+    expect(knoepfe(h).slice(0, 3)).toStrictEqual([['mara (5)', false], ['timo (0)', true], ['yuki (2)', false]]);
+    expect(h).toMatch(/aria-current="true"[^>]*>mara \(5\)/);
     expect(h).toContain('<span class="zg-zaehler" aria-live="polite" aria-atomic="true">Snapshot 2 von 5</span>');
     expect(text(h)).toContain('Stand 14:05');
     expect(knoepfe(h).map((k) => k[0])).toEqual(expect.arrayContaining(['Neu laden', 'Zeigen beenden']));
@@ -201,9 +201,9 @@ describe('Zeigen', () => {
   const artefakt: LehrendenArtefakt = { name: 'interviews', stand: 'vorhanden', umfang: '5 von 5 Snapshots', fehlt: ['FEHLT-MARKE'], leer: false, faelligZuTag: 2, faellig: true, commits: 1, mehr: false, zuletzt: null, feedback: null };
   const lesen: LeserInhaltProps = {
     ansicht: { kohorte: 'k', bezug: null, personen: [] } as never,
-    p: { kuerzel: 'sofie', zustand: 'bereit', repo: 'x/sofie', repoUrl: 'https://github.com/x/sofie', artefakte: [artefakt], luecken: [{ artefakt: 'interviews', text: 'LUECKE-MARKE' }] } as never,
+    p: { kuerzel: 'mara', zustand: 'bereit', repo: 'x/mara', repoUrl: 'https://github.com/x/mara', artefakte: [artefakt], luecken: [{ artefakt: 'interviews', text: 'LUECKE-MARKE' }] } as never,
     a: artefakt,
-    inhalt: { schluessel: 'k/sofie/interviews', zustand: 'bereit', inhalt: { name: 'interviews', stand: 'vorhanden', daten: KAFFEEBAR, roh: null, feedback: [] } },
+    inhalt: { schluessel: 'k/mara/interviews', zustand: 'bereit', inhalt: { name: 'interviews', stand: 'vorhanden', daten: KAFFEEBAR, roh: null, feedback: [] } },
     wechseln: () => {}, schliessen: () => {}, feedbackGeschrieben: () => {}, zeigenStarten: () => {},
   };
 
@@ -211,7 +211,7 @@ describe('Zeigen', () => {
     const h = renderToStaticMarkup(<LeserKoerper zeigen={null} lesen={lesen} />);
     expect(h).toContain('LUECKE-MARKE');
     expect(h).toContain('FEHLT-MARKE');
-    expect(h).toContain('href="https://github.com/x/sofie"');
+    expect(h).toContain('href="https://github.com/x/mara"');
     expect(h).toMatch(/class="fb/);
   });
 

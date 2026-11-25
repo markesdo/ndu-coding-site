@@ -12,7 +12,7 @@ const lehrende = (f: Feedback, artefakt: 'annahmen' | 'brief' | 'interviews' = '
 describe('feedback@1: Schema', () => {
   it('fehlende Datei ist leer; leere Datei und volle Datei sind gültig', () => {
     expect(feedbackParsen(null)).toStrictEqual({ ok: true, daten: { schema: 'feedback@1', eintraege: [] } });
-    const f = antworten(lehrende(feedbackLeer(), 'annahmen', 'A2'), { antwortAuf: 'FB1', text: 'Aus der Kassa.', autor: 'sofie', datum: D2 });
+    const f = antworten(lehrende(feedbackLeer(), 'annahmen', 'A2'), { antwortAuf: 'FB1', text: 'Aus der Kassa.', autor: 'mara', datum: D2 });
     const p = feedbackParsen(JSON.parse(feedbackJson(f)));
     expect(p).toStrictEqual({ ok: true, daten: f });
     expect(feedbackJson(f).endsWith('}\n')).toBe(true);
@@ -77,11 +77,11 @@ describe('Änderungen', () => {
   });
 
   it('antworten: nur auf Feedback der Lehrenden, erbt Artefakt und Zeile; kurz', () => {
-    const f = antworten(lehrende(feedbackLeer(), 'interviews', 'I2-4'), { antwortAuf: 'FB1', text: 'Mach ich.', autor: 'sofie', datum: D2 });
-    expect(f.eintraege[1]).toStrictEqual({ id: 'FB2', artefakt: 'interviews', zeilenId: 'I2-4', von: 'studierende', autor: 'sofie', text: 'Mach ich.', datum: D2, antwortAuf: 'FB1' });
-    expect(() => antworten(f, { antwortAuf: 'FB2', text: 'x', autor: 'sofie', datum: D2 })).toThrow(FeedbackAbgelehnt);
-    expect(() => antworten(f, { antwortAuf: 'FB9', text: 'x', autor: 'sofie', datum: D2 })).toThrow(FeedbackAbgelehnt);
-    expect(() => antworten(f, { antwortAuf: 'FB1', text: 'x'.repeat(ANTWORT_MAX + 1), autor: 'sofie', datum: D2 })).toThrow(FeedbackAbgelehnt);
+    const f = antworten(lehrende(feedbackLeer(), 'interviews', 'I2-4'), { antwortAuf: 'FB1', text: 'Mach ich.', autor: 'mara', datum: D2 });
+    expect(f.eintraege[1]).toStrictEqual({ id: 'FB2', artefakt: 'interviews', zeilenId: 'I2-4', von: 'studierende', autor: 'mara', text: 'Mach ich.', datum: D2, antwortAuf: 'FB1' });
+    expect(() => antworten(f, { antwortAuf: 'FB2', text: 'x', autor: 'mara', datum: D2 })).toThrow(FeedbackAbgelehnt);
+    expect(() => antworten(f, { antwortAuf: 'FB9', text: 'x', autor: 'mara', datum: D2 })).toThrow(FeedbackAbgelehnt);
+    expect(() => antworten(f, { antwortAuf: 'FB1', text: 'x'.repeat(ANTWORT_MAX + 1), autor: 'mara', datum: D2 })).toThrow(FeedbackAbgelehnt);
     expect(feedbackParsen(f).ok).toBe(true);
   });
 
@@ -131,7 +131,7 @@ describe('Kriterium am Feedback', () => {
   "schema": "feedback@1",
   "eintraege": [
     { "id": "FB1", "artefakt": "annahmen", "zeilenId": "A2", "von": "lehrende", "autor": "markus", "text": "Woher stammt die Zahl?", "datum": "${D1}", "gesehen": true, "erledigt": true },
-    { "id": "FB2", "artefakt": "annahmen", "zeilenId": "A2", "von": "studierende", "autor": "sofie", "text": "Aus der Kassa.", "datum": "${D2}", "antwortAuf": "FB1" },
+    { "id": "FB2", "artefakt": "annahmen", "zeilenId": "A2", "von": "studierende", "autor": "mara", "text": "Aus der Kassa.", "datum": "${D2}", "antwortAuf": "FB1" },
     { "id": "FB3", "artefakt": "brief", "von": "lehrende", "autor": "markus", "text": "Klarer Rahmen.", "datum": "${D2}" }
   ]
 }`);
@@ -163,7 +163,7 @@ describe('Kriterium am Feedback', () => {
   });
 
   it('Antworten erben kein Kriterium; im Schema gibt es das Kriterium nur am Feedback der Lehrenden', () => {
-    const f = antworten(mit(feedbackLeer(), 'annahmen', 'A3', 'art-der-annahme'), { antwortAuf: 'FB1', text: 'Stimmt.', autor: 'sofie', datum: D2 });
+    const f = antworten(mit(feedbackLeer(), 'annahmen', 'A3', 'art-der-annahme'), { antwortAuf: 'FB1', text: 'Stimmt.', autor: 'mara', datum: D2 });
     expect(f.eintraege[1]).not.toHaveProperty('kriterium');
     const antwortMitKriterium = structuredClone(f);
     (antwortMitKriterium.eintraege[1] as { kriterium?: string }).kriterium = 'art-der-annahme';

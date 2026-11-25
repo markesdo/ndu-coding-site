@@ -3,7 +3,7 @@ import { COOKIE_WERKSTATT, sitzungErstellen, sitzungLesen, type Sitzung } from '
 
 const SECRET = 'a'.repeat(40);
 const JETZT = 1_800_000_000;
-const sitzung: Sitzung = { githubId: 1001, login: 'sofie-x', kohorte: 'test', rolle: 'studierende', exp: JETZT + 1000 };
+const sitzung: Sitzung = { githubId: 1001, login: 'mara-x', kohorte: 'test', rolle: 'studierende', exp: JETZT + 1000 };
 
 describe('Sitzung', () => {
   it('Cookie heißt ndu_werkstatt', () => expect(COOKIE_WERKSTATT).toBe('ndu_werkstatt'));
