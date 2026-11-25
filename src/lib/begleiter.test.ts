@@ -1050,11 +1050,11 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   });
   // Entscheidungen 57, 75 und 76 (21.11.): Fit prüfen in drei Schritten. `fit` = das Verfahren mit je einem Zettel, `fit-kaffeebar`
   // = Schritt 1 (links), `fit-kaffeebar-rechts` = Schritt 2 und 3. Reihenfolge: beispiel → value-map → vom-satz → produkt-wirkung →
-  // fit → fit-kaffeebar → fit-kaffeebar-rechts → vorgehen; drei-fits nur noch im Handout von uebertrag.
+  // (seit 25.11. die vier Nachschlage-Folien ps-finden → pr-finden → gc-finden → vm-fehler) → fit → fit-kaffeebar → fit-kaffeebar-rechts → vorgehen; drei-fits nur noch im Handout von uebertrag.
   it('Tag 3: value-map – Fit in drei Folien, Reihenfolge, Schrittnamen gleich, J4 im Miro-Wortlaut', () => {
     const q = quellen['/innolab/methoden/value-map'] ?? '';
     const ids = [...q.matchAll(/<h2 id="([^"]+)"/g)].map((m) => m[1]);
-    expect(ids).toStrictEqual(['beispiel', 'value-map', 'vom-satz', 'produkt-wirkung', 'fit', 'fit-kaffeebar', 'fit-kaffeebar-rechts', 'vorgehen', 'vorlage', 'pruefen', 'uebertrag']);
+    expect(ids).toStrictEqual(['beispiel', 'value-map', 'vom-satz', 'produkt-wirkung', 'ps-finden', 'pr-finden', 'gc-finden', 'vm-fehler', 'fit', 'fit-kaffeebar', 'fit-kaffeebar-rechts', 'vorgehen', 'vorlage', 'pruefen', 'uebertrag']);
     const folie = (id: string) => { const a = q.indexOf(`id="${id}"`); return q.slice(a, q.indexOf('<div class="nur-handout">', a)); };
     const fit = folie('fit');
     expect(fit).toContain('<p class="folie-satz">Erst links, dann rechts, dann von oben lesen.</p>');
@@ -1123,6 +1123,44 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(q).toContain('<li data-schritt><strong>Gelb:</strong> was ihr anbietet – was im Schaufenster läge.</li>');
     expect(q).toContain('„existing value proposition“ (S. 99)');
     expect(n.beispiel?.ueberleitung).toBe('Spitzenreiter gewählt. Nur für ihn kommt jetzt die linke Hälfte.');
+  });
+  // 25.11.2026 (tag4-vorbereitung/valuemap-anleitung.md, Teil C): vier Nachschlage-Folien zwischen produkt-wirkung und fit –
+  // wie man Products & Services, Pain Relievers und Gain Creators findet, dazu die vier Fehler aus dem Buch mit Gegenprobe.
+  // `vorgehen` Schritt 2 verweist auf die Anleitung links neben dem Canvas; Handout und Begleiter nennen 2 + 2 + 4 + 2 + 1.
+  it('Tag 3/4: value-map – vier Nachschlage-Folien zum Finden, Verweis in vorgehen, Richtwert 2 + 2 + 4 + 2 + 1', () => {
+    const q = quellen['/innolab/methoden/value-map'] ?? '';
+    const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    const folie = (id: string) => { const a = q.indexOf(`id="${id}"`); return q.slice(a, q.indexOf('</Folie>', a)); };
+    const neu = ['ps-finden', 'pr-finden', 'gc-finden', 'vm-fehler'];
+    for (const id of neu) {
+      const f = folie(id);
+      expect(f, id).toContain('<p class="folie-satz">');
+      const schritte = f.match(/data-schritt/g) ?? [];
+      expect(schritte.length, id).toBeGreaterThan(0);
+      expect(schritte.length, id).toBeLessThanOrEqual(5);
+      expect(f, id).toContain('data-schritt><strong>Kaffeebar:</strong>');
+      expect(f, id).toMatch(/<p class="nur-handout">[^]*\{VPD\}, S\. \d/);
+      expect(n[id]?.live.length ?? 0, id).toBeGreaterThanOrEqual(3);
+      expect(n[id]?.live.length ?? 0, id).toBeLessThanOrEqual(5);
+    }
+    expect(folie('ps-finden')).toContain('Diese und die nächsten drei Folien sind zum Nachschlagen: An Tag 4 laufen sie nicht als eigener Block');
+    expect(folie('pr-finden')).toContain('„how exactly your products and services alleviate specific customer pains“ ({VPD}, S. 86)');
+    expect(folie('gc-finden')).toContain('„It is okay if either of them addresses pains and gains at the same time.“ (S. 103)');
+    expect(folie('vm-fehler').match(/<tr data-schritt>/g) ?? []).toHaveLength(4);
+    // Kaffeebar-Einträge im Wortlaut des Profils (kundenprofil#beispiel).
+    expect(quellen['/innolab/methoden/kundenprofil']).toContain('P2 Bei mehr als fünf Leuten in der Schlange reicht die Zeit nicht');
+    expect(folie('pr-finden')).toContain('P2 „Bei mehr als fünf Leuten in der Schlange reicht die Zeit nicht“');
+    const a = q.indexOf('id="vorgehen"');
+    const vorgehen = q.slice(a, q.indexOf('</Folie>', a));
+    const schritte = vorgehen.slice(vorgehen.indexOf('<ol'), vorgehen.indexOf('</ol>'));
+    const fuellen = schritte.slice(schritte.indexOf('Euer Canvas, Quadrat'), schritte.indexOf('Skalen links'));
+    expect(fuellen).toContain('Gain Creators mit G-ID. <strong>Schritt für Schritt: Anleitung links neben eurem Canvas.</strong> <em class="vm-bsp">');
+    const handout = vorgehen.slice(vorgehen.indexOf('<p class="nur-handout">'));
+    for (const id of neu) expect(handout, id).toContain(`<a href="#${id}">`);
+    expect(handout).toContain('zwei Minuten für die drei Zettel aus dem Satz, zwei für Products &amp; Services, vier für Pain Relievers, zwei für Gain Creators, eine für die Gegenprobe.');
+    for (const k of ['Kaffeebar', 'Produkt 1', 'Produkt 2', 'Produkt 3']) expect(handout, k).toContain(`<MiroLink name="T3 · 4 · Anleitung Value Map · ${k}">`);
+    expect(n.vorgehen?.ablauf?.schritte?.[1]).toContain('Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe)');
+    expect(JSON.stringify(n).match(/2 \+ 9\b/g) ?? []).toStrictEqual([]);
   });
   // Entscheidungen 58–61 (21.11.): Brücke vom Lückensatz zur Value Map, Lückensatz mit ID-Slots, korrigierte Kaffeebar-Sätze,
   // ideation#beispiel ohne „18 Ideen“ und ohne Express-Kasse.
