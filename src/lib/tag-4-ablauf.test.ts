@@ -77,5 +77,9 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
 
   it('Tag-2-Abschluss nennt den Anfang von Tag 4 richtig: Arbeitsfluss, Value Map nachholen, dann Concept Story', () => {
     expect(seite('/innolab/tag-2/abschluss')).toContain('Tag 4 beginnt mit dem Arbeitsfluss und dem Nachholen von Value Map und Fit; dann schreibt ihr eure Concept Story.');
+    // Tag 3 #faden: ohne Bezug „dort“, der Tag ist genannt (Code-Review #436).
+    expect(seite('/innolab/tag-3')).toContain('(Experiment-Karte); an Tag 4 folgen auch Story Map, Usage Story und Prototyp.');
+    expect(seite('/innolab/tag-3')).not.toContain('dort folgen auch');
+    expect(seite('/innolab/methoden/experiment')).not.toContain('die „?“ von Tag 3 auf Miro');
   });
 });
