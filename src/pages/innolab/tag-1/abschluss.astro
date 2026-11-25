@@ -15,15 +15,15 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
 <Layout title="Tag 1 · Abschluss">
   <span class="eyebrow">Innolab · Tag 1 · Abschluss</span>
   <h1>Tag 1 · Abschluss</h1>
-  <p class="lead">Was bis Tag 2 passiert: fünf echte Interviews, jedes am selben Tag einmal in die Werkstatt eingetragen, mit Snapshot und Zitat-IDs; was die Interviews an Brief oder Annahmen-Map ändern, kommt als Zeile ins Entscheidungslog.</p>
+  <p class="lead">Was bis Tag 2 passiert: fünf echte Interviews, jedes am selben Tag einmal in die Werkstatt eingetragen, mit Snapshot und Zitat-IDs; was die Interviews an Brief oder Annahmen-Map ändern, ändert ihr dort und belegt es mit den Zitat-IDs.</p>
 
   <Folie>
     <h2 id="hausaufgabe">Hausaufgabe bis Tag 2</h2>
     <p class="folie-satz">Fünf echte Interviews mit eurer Zielgruppe.</p>
-    <Fluss label="Hausaufgabe: Interview, Eintrag in der Werkstatt, Zeile im Entscheidungslog" knoten={[
+    <Fluss label="Hausaufgabe: Interview, Eintrag in der Werkstatt, Änderung an Brief oder Annahmen-Map" knoten={[
       { t: '5 Interviews', sub: 'je 20–30 min, Aufnahme nur mit Einwilligung', icon: Mic },
       { t: 'Werkstatt', sub: 'Notizen, Zitate und Snapshot, pro Interview ein Pseudonym (I1 bis I5); Rohnotizen bleiben bei euch', icon: ScrollText },
-      { t: 'Was sich ändert', sub: 'je eine Zeile im Entscheidungslog, wenn ihr am Brief oder an der Annahmen-Map etwas ändert', icon: ClipboardList },
+      { t: 'Was sich ändert', sub: 'Brief oder Annahmen-Map dort ändern, wo es steht, belegt mit Zitat-IDs', icon: ClipboardList },
     ]} />
     <p>Nicht mit dem Team und möglichst nicht mit engen Freund*innen – die sind zu nett. Vor jedem Gespräch den <a href="/innolab/werkstatt/interview-datenschutz">Datenschutzhinweis</a> zeigen.</p>
     <div class="nur-handout"><Checklist id="il-tag1-hausaufgabe" items={[
@@ -32,8 +32,8 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
       'Notizen pro Interview mit Pseudonym (I1 bis I5), ohne Namen, Arbeitgeber oder Erkennbares. Rohnotizen und Aufnahmen bleiben bei euch, nie im App-Repo.',
       'Gleich nach jedem Interview, am selben Tag: Zitate (zuerst, so entstehen die IDs), Notizen und Snapshot-Text in den Interview-Editor der Werkstatt eintragen (I1 bis I5), mit Pseudonym und ohne Foto. Nur dort, nicht zusätzlich auf Miro.',
       'Die Geschichte gleich danach auf Papier skizzieren, Knoten und Pfeile, und die Skizzen an Tag 2 mitbringen',
-      'Eine Zeile im Entscheidungslog pro Änderung an Brief oder Annahmen-Map, in der Werkstatt gespeichert und mit ihren Zitat-IDs belegt, zum Beispiel I2-3 (<a href="/innolab/mappe">Meine Mappe</a>); eine Überraschung, die nichts ändert, steht im Snapshot',
-      'Claude mit der Werkstatt verbunden (<a href="/innolab/werkstatt/claude">Claude verbinden</a>) und das Entscheidungslog prüfen lassen',
+      'Was die Interviews an Brief oder Annahmen-Map ändern, dort in der Werkstatt geändert; in der Annahmen-Map mit den Zitat-IDs belegt, zum Beispiel I2-3 (<a href="/innolab/mappe">Meine Mappe</a>); eine Überraschung, die nichts ändert, steht im Snapshot',
+      'Claude mit der Werkstatt verbunden (<a href="/innolab/werkstatt/claude">Claude verbinden</a>) und die Annahmen-Map prüfen lassen',
     ]} /></div>
     <div class="nur-handout">
       <Callout type="info" title="Nur drei geschafft?">
@@ -58,7 +58,7 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
     <div class="nur-handout">
       <p>Teresa Torres empfiehlt, nach jedem Interview sofort zu verdichten, statt fünf Gespräche am Stück auszuwerten („Continuous Discovery Habits“, S. 67–70). Nach ein paar Interviews verschwimmen die Geschichten; der Snapshot hält fest, was dieses eine Gespräch gezeigt hat. Bild und Zitat sind Schlüssel für die Erinnerung, die Kurzinfos sagen, welche Art Kund*in das war, und unten steht, was ihr gelernt habt.</p>
       <p>Wünscht sich jemand eine Funktion („Ich will per App vorbestellen“), fragt nach: „Was würde dir das bringen?“ Die Antwort („Ich will den Zug nicht verpassen“) ist die Chance – sie lässt mehr Lösungen zu als der Wunsch (S. 69). Notiert auch, was nur eine Person sagt: Oft taucht es später bei anderen wieder auf. An Tag 2 bringt ihr eure Skizzen mit; aus den Chancen der fünf Snapshots wächst euer Baum.</p>
-      <p>Ihr tragt jedes Interview nur einmal ein, in der Werkstatt. Markus legt eure Snapshots vor Tag 2 als Karten aufs Team-Board (Frame T1 · 5), jede mit ihrer ID, damit ihr sie gemeinsam besprecht – deshalb nur mit Pseudonym, ohne Foto, Namen oder Arbeitgeber. Die Karten sind Kopien: Korrekturen macht ihr in der Werkstatt, nicht auf Miro. Die Skizze der Geschichte zeichnet ihr gleich nach dem Gespräch auf Papier, aus Knoten und Verbindungen (Torres, S. 70); an Tag 2 fügt ihr die Skizzen zur Experience Map zusammen (S. 86–87). <strong>Rohnotizen</strong> (Aufnahme, Mitschrift mit Namen) bleiben bei euch. <strong>Notizen</strong> sind die pseudonymisierte Fassung; sie kommen mit den Zitaten und dem Snapshot-Text in die Werkstatt. Jedes Zitat bekommt dort eine ID wie I2-3, auf die ihr im Entscheidungslog und in der Annahmen-Map als Beleg verweist. Steht in einem Feld etwas, das nach einem Namen oder einer Telefonnummer aussieht, weist der Editor darauf hin.</p>
+      <p>Ihr tragt jedes Interview nur einmal ein, in der Werkstatt. Markus legt eure Snapshots vor Tag 2 als Karten aufs Team-Board (Frame T1 · 5), jede mit ihrer ID, damit ihr sie gemeinsam besprecht – deshalb nur mit Pseudonym, ohne Foto, Namen oder Arbeitgeber. Die Karten sind Kopien: Korrekturen macht ihr in der Werkstatt, nicht auf Miro. Die Skizze der Geschichte zeichnet ihr gleich nach dem Gespräch auf Papier, aus Knoten und Verbindungen (Torres, S. 70); an Tag 2 fügt ihr die Skizzen zur Experience Map zusammen (S. 86–87). <strong>Rohnotizen</strong> (Aufnahme, Mitschrift mit Namen) bleiben bei euch. <strong>Notizen</strong> sind die pseudonymisierte Fassung; sie kommen mit den Zitaten und dem Snapshot-Text in die Werkstatt. Jedes Zitat bekommt dort eine ID wie I2-3, auf die ihr in der Annahmen-Map als Beleg verweist. Steht in einem Feld etwas, das nach einem Namen oder einer Telefonnummer aussieht, weist der Editor darauf hin.</p>
     </div>
     <Bearbeiten artefakt="interviews" />
   </Folie>
@@ -74,7 +74,7 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
       { t: 'Interviews', sub: 'fünf bis Tag 2, je ein Snapshot', icon: Mic },
     ]} />
     <div class="nur-handout">
-      <p>In eurer Mappe liegen jetzt Produkt-Brief, Entscheidungslog, Annahmen-Map und Leitfaden; auf dem Team-Board die Frames T1 · 1 bis T1 · 4. Jedes Artefakt baut auf dem vorigen auf: Der Outcome begrenzt den Problem-Rahmen, aus dem Rahmen kommen die Annahmen, die riskanteste wird zur Forschungsfrage des Leitfadens.</p>
+      <p>In eurer Mappe liegen jetzt Produkt-Brief, Annahmen-Map und Leitfaden; auf dem Team-Board die Frames T1 · 1 bis T1 · 4. Jedes Artefakt baut auf dem vorigen auf: Der Outcome begrenzt den Problem-Rahmen, aus dem Rahmen kommen die Annahmen, die riskanteste wird zur Forschungsfrage des Leitfadens.</p>
       <p>An Tag 2 dreht sich die Richtung: Bisher habt ihr aufgeschrieben, was ihr glaubt. Mit den Snapshots kommt dazu, was eure Interviewpartner*innen tatsächlich erlebt haben – daraus baut ihr den Baum.</p>
     </div>
   </Folie>
@@ -83,7 +83,7 @@ import { ClipboardList, Crosshair, Grid2x2, ListChecks, Mic, ScrollText, Target 
     <h2 id="zahlen">Was ihr heute geschafft habt</h2>
     <p class="folie-satz">Alles, was jetzt in euren Mappen steht.</p>
     <WerkstattZahlen />
-    <p class="nur-handout">Gezählt wird nur, was in der Werkstatt gespeichert ist: Felder im Produkt-Brief, Annahmen, Fragen im Leitfaden und Zeilen im Entscheidungslog.</p>
+    <p class="nur-handout">Gezählt wird nur, was in der Werkstatt gespeichert ist: Felder im Produkt-Brief, Annahmen und Fragen im Leitfaden.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden/interview', t: 'Jobs to be Done & Mom Test' }} next={{ href: '/innolab/tag-2', t: 'Tag 2 · Kunde & Erlebnis' }} />

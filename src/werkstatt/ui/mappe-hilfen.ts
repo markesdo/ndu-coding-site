@@ -2,7 +2,7 @@
 import { MOM_TEST_GRUPPE, NACH_MOM_TEST } from '../../components/innolab-zeiten.js';
 import { AUFGEDECKT_MS, abfrageAbstand, gruppeFrei } from '../../lib/aufgedeckt.js';
 import { ANSICHT_DEMO, ANSICHT_PARAM, DEMO_HREF, MAPPE_DEMO, MAPPE_LEHRENDE, MAPPE_PFAD, MAPPE_STUDIERENDE, navMappeSetzen } from '../../lib/nav-rolle.js';
-import { ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../schemas/index.js';
+import { AKTIVE_ARTEFAKTE, ARTEFAKTE, type ArtefaktName } from '../schemas/index.js';
 import { ROUTEN, type Ich, type MappeStand } from '../vertrag.js';
 import { mitBearbeiten } from './bearbeiten-link.js';
 
@@ -68,7 +68,7 @@ export async function ichMitMenue(holen: () => Promise<Ich | null>, dok: Pick<Do
 /** Überschrift und Lead von /innolab/mappe für Studierende: der statische Text der Seite (mappe.astro liest ihn hier). */
 export const STUDIERENDEN_SEITE = {
   titel: MAPPE_STUDIERENDE,
-  lead: 'Brief, Entscheidungslog, Annahmen-Map und Leitfaden auf einen Blick: was schon gespeichert ist, was noch offen ist.',
+  lead: 'Brief, Annahmen-Map, Leitfaden und Interviews auf einen Blick: was schon gespeichert ist, was noch offen ist.',
 } as const;
 
 /** Überschrift und Lead von /innolab/mappe für Lehrende; Studierende behalten den statischen Text der Seite. */
@@ -143,9 +143,10 @@ export interface MappeZeile {
 }
 
 
-/** Alle Artefakte der Mappe in fester Reihenfolge; was in der Antwort fehlt, gilt als offen. */
+/** Die Artefakte dieses Kursjahrs in fester Reihenfolge (ohne STILLGELEGT, etwa das Entscheidungslog); was in der
+ *  Antwort fehlt, gilt als offen. */
 export function mappeZeilen(stand: MappeStand): MappeZeile[] {
-  return ARTEFAKT_NAMEN.map((name) => ({
+  return AKTIVE_ARTEFAKTE.map((name) => ({
     name,
     titel: ARTEFAKTE[name].titel,
     href: `/innolab/methoden/${ARTEFAKTE[name].slug}#${EDITOR_ANKER[name]}`,

@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 09:20–09:50; bis 12.11. für Tag 3 geplant) – vorerst nur die Folien aus Thomke und die,
+// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, seit 25.11. 10:50–11:20; bis 12.11. für Tag 3 geplant) – vorerst nur die Folien aus Thomke und die,
 // die sich dafür geändert haben. Der Begleiter zeigt bisher nur Tag 1; die Notizen stehen bereit, der Test prüft die ids.
 // Thomke: gedruckte Seiten aus quellen/thomke/text.txt (=====PAGE n=====).
 const THOMKE = 'Stefan H. Thomke, The Scientific Mindset';
@@ -10,17 +10,17 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   'sagen-tun': {
     live: [
       'Nur die drei Fakten vorlesen, die Studie nicht bewerten.',
-      'Timer 1 min, dann reihum je ein Satz, nicht diskutieren.',
+      'Timer 1 min, dann je ein Satz laut, nicht diskutieren.',
       'Falle: die Pointe andeuten („Menschen sagen ja oft …“).',
       'Rückfragen zu Intuit nur sachlich: Lohnabrechnung für kleine Firmen.',
     ],
-    uebung: { dauer: '1 min', form: 'allein, dann reihum je ein Satz' },
+    uebung: { dauer: '1 min', form: 'allein, dann je ein Satz laut' },
     ueberleitung: 'Jetzt seht ihr, was Intuit getan hat – vergleicht mit euren Sätzen.',
     ablauf: {
       schritte: [
         'Folie zeigen, die drei Punkte vorlesen.',
         'Timer 1 min: Jede*r schreibt einen Satz – was folgt aus „0 von 20“, und was tut ihr als Nächstes?',
-        'Reihum vorlesen lassen, nicht kommentieren; dann zur nächsten Folie.',
+        'Sätze laut sagen lassen, nicht kommentieren; dann zur nächsten Folie.',
       ],
       achten: [
         'Die Pointe nicht vorwegnehmen: kein „aber Menschen sagen ja oft …“ vor der Auflösung.',
@@ -134,7 +134,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     live: [
       'Netflix in drei Schritten erzählen, Fluss links nach rechts.',
       '„Ihr dürft gegen einen Beleg entscheiden – aber nicht so tun, als gäbe es ihn nicht.“',
-      'Im Log: Beleg mit Stufe und ID, im Grund das Warum.',
+      'Auf der Lernkarte: der Beleg dagegen und das Warum.',
       'Abgrenzung: dagegen entscheiden ja, Ergebnis umdeuten nein.',
     ],
     verstaendnis: {
@@ -160,7 +160,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Wann ist es legitim, gegen den Beleg zu entscheiden?',
-        antwort: 'Wenn es einen Grund gibt, den der Test nicht misst – bei Netflix Vertrag und Beziehung, bei Thomkes Beispiel S. 87 Kundentreue statt Umsatz. Der Grund steht im Log, der Beleg bleibt sichtbar.',
+        antwort: 'Wenn es einen Grund gibt, den der Test nicht misst – bei Netflix Vertrag und Beziehung, bei Thomkes Beispiel S. 87 Kundentreue statt Umsatz. Der Grund steht auf der Lernkarte, der Beleg bleibt sichtbar.',
       },
       {
         frage: 'Muss so eine Zeile anders aussehen als die anderen?',
@@ -184,7 +184,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Und wenn an Tag 5 doch etwas anderes sinnvoll ist?',
-        antwort: 'Dann entscheidet ihr offen dagegen: neue Zeile im Entscheidungslog mit dem Beleg und dem Grund (Folie „Gegen den Beleg entscheiden“). Die Zeile auf der Karte bleibt stehen.',
+        antwort: 'Dann entscheidet ihr offen dagegen: Auf der Lernkarte stehen der Beleg und der Grund (Folie „Gegen den Beleg entscheiden“). Die Zeile „Wir entscheiden vorher“ auf der Karte bleibt stehen.',
       },
     ],
   },
@@ -192,7 +192,8 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Neu bei Schritt 4: Entscheidung vorab gehört auf jede Karte.',
-      'Nach 15 min: Steht bei allen neben der Schwelle die Zeile?',
+      'Nach 13 min: Steht bei allen neben der Schwelle die Zeile?',
+      'Nach 16 min: Annahme und E1 in den Baum – Timer 2 min.',
     ],
     kern: [
       {

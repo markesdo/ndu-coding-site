@@ -243,7 +243,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Skizzen liegen als Kopie in jeder Spalte – gleich gruppieren.',
       'Timer 12 min: zusammenschieben, benennen, zählen, verbinden; Tag-1-Map zum Vergleich.',
       'Fragen: Fehlt eine Skizze? Fotoskizze selbst kopieren.',
-      'Nach 12 min: reihum Spalte auf T2 · 1 zeigen, nicht verteidigen.',
+      'Nach 12 min: jede*r zeigt die Spalte auf T2 · 1, nicht verteidigen.',
       'Nach 22 min: drei bis fünf Momente, Marken übertragen.',
       'Je Moment ein Zitat mit Gefühl, Gefühlswort fett.',
       'Marke = Wort + Zitat-ID, keine Emojis; Smileys auf Papier ok.',
@@ -262,7 +262,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Allein (12 min): Die Skizzen liegen als Kopie in der eigenen Spalte auf T2 · 1 (Markus kopiert sie in der Pause aus T1 · 5, Stickies und Pfeile; eine Foto-Skizze kopiert, wer sie gemacht hat). Gleiches zusammenschieben und benennen, zählen (Interviews, nicht Stickies; Zahl auf den Namen-Sticky, etwa ‚3 von 5‘), zur Map verbinden, Marken (stärkster Moment, Ende) mitnehmen; die Map von Tag 1 (T1 · 1) zum Vergleich. Fehlt eine Skizze, zuerst zeichnen: Zettel und Pfeile aus den Werkstatt-Notizen, höchstens drei Geschichten.',
-        'Zu dritt (10 min): Reihum die eigene Spalte auf T2 · 1 zeigen – alle schauen auf dem Board mit; die anderen fragen nach.',
+        'Zu dritt (10 min): Jede*r zeigt die eigene Spalte auf T2 · 1 – alle schauen auf dem Board mit; die anderen fragen nach.',
         'Momente festlegen (8 min), in der eigenen Spalte auf T2 · 1, jede*r für das eigene Produkt: Knoten prüfen, Überschneidendes zusammenlegen (Torres S. 56, 86–87); drei bis fünf, in den Worten der Kundschaft. Jeder Moment mit einem Zitat mit ID, möglichst einem, in dem die Person Gefühl zeigt, das Gefühlswort fett; erzählt niemand ein Gefühl: „Gefühl: nicht erzählt“ (Frage fürs nächste Interview). Das Gefühl bleibt am Moment, kein eigener Knoten, keine Chance (Torres S. 56, 95; fett statt Smiley ist Kursregel). Dann die Marken übertragen, jede mit ihrer Zitat-ID an den Moment, in dem sie liegt: „Tief · I3-3“, „Ende · I3-5“; mehrere Geschichten im selben Moment: mehrere IDs. Drei bis fünf ist ein Richtwert des Kurses (Torres S. 87: vier Momente).',
         'Prüfen (5 min, eigene Folie): Prüfliste allein, dann Claude mit einem Bild der eigenen Spalte aus Miro; eine Datei gibt es nicht. Schritte unter „Prüfen“ im Handout.',
       ],
@@ -285,7 +285,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
     live: [
       'Folie zeigen, wenn die 5 Minuten starten; Prüfliste zuerst.',
       'Prüfen 5 min: Prüfliste, Prompt einfügen, dann Foto, Cmd+V, senden.',
-      '„Claude fragt, ihr entscheidet – ändern auf Miro oder Zeile ins Log.“',
+      '„Claude fragt, ihr entscheidet – ändern auf Miro oder bewusst lassen.“',
     ],
     ablauf: {
       schritte: [
@@ -304,7 +304,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
       'Ein Befund reicht; der Rest ist Hausaufgabe bis Tag 3.',
       'Befund ist Vermutung: am Zitat prüfen, ob er stimmt.',
       'Nachfragen nur nach Belegen, nie nach Formulierungen.',
-      'Lassen ist erlaubt – mit Zeile im Log.',
+      'Lassen ist erlaubt – mit einem Satz, warum.',
     ],
     ueberleitung: 'Zum Schluss des Blocks: eine Frage an eure Map.',
   },
@@ -312,7 +312,7 @@ export const NOTIZEN_JOURNEY_MAP: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Fragen: Was steht jetzt auf eurer Map, das an Tag 1 fehlte?',
-      'Reihum: ein neuer Knoten, euer Befund und eure Entscheidung – je ein Satz.',
+      'Jede*r laut: neuer Knoten, Befund, Entscheidung – je ein Satz.',
       'Wenn nichts: Geschichten nachgezeichnet oder alte Map abgehakt?',
       'Ist-Zeit notieren.',
     ],

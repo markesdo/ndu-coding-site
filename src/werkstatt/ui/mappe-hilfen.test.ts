@@ -1,5 +1,4 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ARTEFAKT_NAMEN } from '../schemas/index.js';
 import { MAPPE_LEHRENDE, MAPPE_STUDIERENDE, NAV_MAPPE } from '../../lib/nav-rolle.js';
 import { ROUTEN, type MappeStand } from '../vertrag.js';
 import { sichererPfad } from '../../lib/kurszugang.js';
@@ -80,10 +79,11 @@ describe('leitfadenAbstand', () => {
 });
 
 describe('mappeZeilen', () => {
-  it('listet alle Artefakte der Mappe in fester Reihenfolge mit Titel, Methodenseite und Stand', () => {
-    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }] };
+  it('listet die Artefakte dieses Kursjahrs in fester Reihenfolge mit Titel, Methodenseite und Stand', () => {
+    // Das Entscheidungslog ist stillgelegt (NDU-70): keine Zeile, auch wenn es im Repo gespeichert ist.
+    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }, { name: 'entscheidungen', vorhanden: true }] };
     const z = mappeZeilen(stand);
-    expect(z.map((x) => x.name)).toStrictEqual([...ARTEFAKT_NAMEN]);
+    expect(z.map((x) => x.name)).toStrictEqual(['brief', 'annahmen', 'leitfaden', 'interviews']);
     expect(z.find((x) => x.name === 'annahmen')).toStrictEqual({ name: 'annahmen', titel: 'Annahmen-Map', href: '/innolab/methoden/annahmen#werkstatt', vorhanden: true });
     // Fehlt ein Artefakt in der Antwort, gilt es als offen.
     expect(z.filter((x) => x.vorhanden).map((x) => x.name)).toStrictEqual(['annahmen']);

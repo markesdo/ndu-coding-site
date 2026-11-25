@@ -14,20 +14,21 @@ import BildText from '../../components/bild/BildText.astro';
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 ---
 <Layout title="Tag 5 · Backlog & Sprint">
-  <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00</span>
+  <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00 · online in Teams</span>
   <h1>Tag 5 · Backlog & Sprint</h1>
   <p class="lead">Ihr entscheidet nach euren Tests, stellt euch als Team für drei Produkte auf, baut Backlogs, die jede*r im Team abarbeiten kann, und plant euren Sprint. Am Nachmittag wird gebaut.</p>
+  <p>Heute seid ihr online in einer Teams-Besprechung; den Link findet ihr in Teams.</p>
   <Orientierung seite="innolab/tag-5" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-12-12">
     <Block time="09:00–09:25" type="plenum" title="Test-Debrief" href="#debrief">Lernkarten E1 und E2: was der Beleg getan hat, dann die Entscheidung.</Block>
-    <Block time="09:25–10:05" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Produktziele, Rollen, Linear; „fertig“ aus dem Lego und mit Mess-Ereignis.</Block>
+    <Block time="09:25–10:05" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Produktziele, Rollen, Linear; „fertig“ aus eurem Spike und mit Mess-Ereignis.</Block>
     <Block time="10:05–10:15" type="pause" title="Pause" />
-    <Block time="10:15–11:15" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, Reihenfolge nach Outcome und Risiko; reihum erzählen, nach Linear.</Block>
-    <Block time="11:15–12:00" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Zwei Fragen der Confirmation; Story-Workshop reihum: Normalfall, Was-wenn, Demo.</Block>
+    <Block time="10:15–11:15" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, Reihenfolge nach Outcome und Risiko; jede*r erzählt, die anderen fragen, dann nach Linear.</Block>
+    <Block time="11:15–12:00" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Zwei Fragen der Confirmation; Story-Workshop je Product Owner: Normalfall, Was-wenn, Demo.</Block>
     <Block time="12:00–13:00" type="pause" title="Mittagspause" />
-    <Block time="13:00–13:30" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Wer baut, schätzt; Plan-Check mit Claude, Geteiltes zeigen reihum.</Block>
+    <Block time="13:00–13:30" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Wer baut, schätzt; Plan-Check mit Claude, Geteiltes zeigen, die anderen prüfen.</Block>
     <Block time="13:30–14:10" type="uebung" title="Sprint-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, wer baut was – und eine Karte, die alles ändert.</Block>
     <Block time="14:10–14:20" type="pause" title="Pause" />
     <Block time="14:20–15:35" type="uebung" title="Bauen" href="#bauen">Das Mess-Issue zuerst, Branding, die ersten Issues.</Block>
@@ -52,7 +53,7 @@ const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas
     <div class="nur-handout">
       <p>Bland trennt zwei Dinge, die man leicht vermischt: was der Beleg mit der Annahme gemacht hat, und was ihr deshalb tut. Die Schleife auf S. 63 kennt vier Befunde – „Evidence Supports Hypothesis“: „Test next critical hypothesis“ oder „Same hypothesis, next experiment, higher fidelity“; „Evidence Refutes Hypothesis“: „Kill“, „Pivot“; „Unclear Insight“: „Continue testing“; „New Insight“: „Kill“, „Pivot“, „Persevere“ ({BLAND}, S. 63). Die drei Entscheidungen definiert er so: Weitermachen ist „the decision to continue testing an idea based on evidence and insights. You persevere by further testing the same hypothesis with a stronger experiment, or by moving on to your next important hypothesis.“ Umschwenken ist „the decision to make a significant change to one or more elements of your ideas, value proposition, or business model“. Verwerfen ist „the decision to kill an idea based on evidence and insights“ (S. 61). Wer „weitermachen“ sagt, ohne den Befund zu nennen, lässt offen, ob die Annahme bestätigt ist oder nur noch nicht widerlegt.</p>
       <p><strong>Verlässlichkeit.</strong> Die Lernkarte hat neben der Beobachtung ein Feld „Data Reliability“ mit drei Stufen (S. 55); wir schreiben dafür schwach, mittel oder stark – und warum. Maßstab sind Blands vier Fragen (Meinung oder Tatsache, sagen oder tun, Labor oder echt, kleiner oder großer Einsatz, S. 52) und die Zahl der Datenpunkte (S. 56). Wer nur Interviews oder Befragungen hat, ist „Not Really Confident“ (S. 57). Ein Usability-Test mit fünf Personen zeigt, was sie tun – aber im Test; ein Eintrag am Aufsteller ist eine echte Situation – aber ein kleiner Einsatz. Beides ist bestenfalls mittel.</p>
-      <p><strong>Was ihr mitbringt.</strong> Die Lernkarten E1 (<code>docs/EXPERIMENTE.md</code>) und E2 (<code>docs/TESTS.md</code>) habt ihr zu Hause gefüllt. Fehlen dort noch zwei Zeilen, ergänzt sie vor 9:00: „Verlässlichkeit: schwach / mittel / stark – weil …“ unter der Beobachtung, und „Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: …“ statt der bloßen Entscheidung. Das Auswerten selbst war eure Arbeit zu Hause – bei Bland das „Weekly Learning“: „Have a conversation to interpret the evidence and turn it into action“ (S. 76). Hier ist das „Monthly Stakeholder Review“ im Kleinen: eine Zusammenfassung – „It’s important not to overwhelm the attendees with detailed breakdowns of every experiment“ – und eure Empfehlung: „Make your recommendation to Stakeholders on whether you should pivot, persevere, or kill the new business idea“ (S. 80). Bei Bland empfiehlt das Team, und ist das Gremium ein Geldgeber, entscheidet es in der Sitzung (S. 81); bei uns entscheidet die Product Ownerin selbst – eine Abweichung des Kurses: Ihr empfehlt, die anderen beiden und Markus fragen je einmal nach, dann bestätigt oder ändert ihr die Zeile im Entscheidungslog.</p>
+      <p><strong>Was ihr mitbringt.</strong> Die Lernkarten E1 (<code>docs/EXPERIMENTE.md</code>) und E2 (<code>docs/TESTS.md</code>) habt ihr zu Hause gefüllt. Fehlen dort noch zwei Zeilen, ergänzt sie vor 9:00: „Verlässlichkeit: schwach / mittel / stark – weil …“ unter der Beobachtung, und „Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: …“ statt der bloßen Entscheidung. Das Auswerten selbst war eure Arbeit zu Hause – bei Bland das „Weekly Learning“: „Have a conversation to interpret the evidence and turn it into action“ (S. 76). Hier ist das „Monthly Stakeholder Review“ im Kleinen: eine Zusammenfassung – „It’s important not to overwhelm the attendees with detailed breakdowns of every experiment“ – und eure Empfehlung: „Make your recommendation to Stakeholders on whether you should pivot, persevere, or kill the new business idea“ (S. 80). Bei Bland empfiehlt das Team, und ist das Gremium ein Geldgeber, entscheidet es in der Sitzung (S. 81); bei uns entscheidet die Product Ownerin selbst – eine Abweichung des Kurses: Ihr empfehlt, die anderen beiden und Markus fragen je einmal nach, dann bestätigt oder ändert ihr die Zeile „Beleg: … → darum: …“ auf eurer Lernkarte.</p>
       <Prompt label="Beispiel · Lernkarten der Kaffeebar">Lernkarte E1 · A5
 Wir glaubten, dass Pendler*innen, die beim Betreten der Halle die Schlange sehen, am Aufsteller bestellen, statt zum Automaten zu gehen.
 Wir haben beobachtet: 8 von 30 trugen einen Zug ein, 22 gingen zum Automaten (Schwelle: 10 von 30).
@@ -65,7 +66,7 @@ Wir glaubten, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen k�
 Wir haben beobachtet: 4 von 5 erreichten den Höhepunkt ohne Hilfe (U1); alle fünf hingen beim Eintippen des Zugs (U2).
 Verlässlichkeit: mittel – sie haben es getan, aber im Test.
 Daraus lernen wir: Bedienbar ja – die Uhrzeit ist die Hürde.
-Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (Entscheidungslog, U2).</Prompt>
+Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
       <p>E2 und U1–U3 stehen auf der Seite <a href="/innolab/methoden/prototyp-spike#beispiel">Prototyp-Spike</a>; die Zahl bei E1 ist ausgedacht wie die Testbefunde dort. Nach der Karte ist E1 nicht bestanden: 8 sind weniger als 10. Widerlegt ist A5 damit nicht eindeutig – der Aufsteller stand an der Tür, nicht dort, wo die Schlange beginnt. Darum „unklar“. Die Schwelle bleibt, wo sie war: Wer sie jetzt senkt, damit E1 besteht, macht genau den Fehler, vor dem die <a href="/innolab/methoden/experiment#karte-e1">Experiment-Karte</a> warnt. Wären es 2 von 30 gewesen, hieße der Befund „widerlegt“ – dann käme die nächste Folie.</p>
       <p><strong>Rückfrage an die Kaffeebar:</strong> Hättet ihr den Ort des Aufstellers auch hinterfragt, wenn 12 von 30 eingetragen hätten? „we tend to happily accept ‚good‘ results that confirm our beliefs because they feel right. But we challenge and thoroughly investigate ‚bad‘ results that go against our assumptions“ (Stefan H. Thomke, „The Scientific Mindset“, 2027, S. 14). Vergleicht die Lernkarte mit der Zeile „Wir entscheiden vorher“ auf der <a href="/innolab/methoden/experiment#karte-e1">Karte E1</a>.</p>
     </div>
@@ -88,19 +89,20 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (Entscheidungs
 
   <Folie>
     <h2 id="debrief-ablauf">So läuft der Debrief (25 min)</h2>
-    <p class="folie-satz">Reihum sechs Minuten je Product Ownerin, dann steht die Zeile im Log.</p>
+    <p class="folie-satz">Sechs Minuten je Product Ownerin, dann steht die Entscheidung auf der Lernkarte und im Baum.</p>
     <ol class="gross">
-      <li data-schritt><strong>Rahmen:</strong> die beiden Folien davor. <Timer minuten={3} /></li>
-      <li data-schritt><strong>Reihum, je Person:</strong> E1, E2, Empfehlung, drei Rückfragen. <Timer minuten={6} /></li>
-      <li data-schritt><strong>Festhalten, allein:</strong> Zeile im Entscheidungslog, Stichwort für die Story Map. <Timer minuten={4} /></li>
+      <li data-schritt><strong>Rahmen:</strong> die beiden Folien davor. <Timer minuten={2} /></li>
+      <li data-schritt><strong>Je Product Ownerin:</strong> E1, E2, Empfehlung, drei Rückfragen. <Timer minuten={6} /></li>
+      <li data-schritt><strong>Festhalten, allein:</strong> Zeile „Beleg: … → darum: …“ auf der Lernkarte, Stichwort für die Story Map. <Timer minuten={3} /></li>
+      <li data-schritt><strong>Euer Baum:</strong> E1 und E2 mit ✓, ✗, „unklar“ oder „neue Einsicht“ markieren – bleiben, zur Geschwister-Idee wechseln oder verwerfen. <Timer minuten={2} /></li>
     </ol>
     <div class="nur-handout">
-      <p>Zu 2, dreimal hintereinander: Lernkarte E1 mit Verlässlichkeit und Befund (2 Minuten) – Lernkarte E2 (1) – eure Empfehlung: Welche der drei Ideen stützt der Beleg jetzt, und was ändert sich an der Story Map? (1) – je eine Rückfrage der anderen beiden und von Markus (2). E1 fragt, ob der Spitzenreiter seine riskanteste Annahme überstanden hat; E2, wie viele den Höhepunkt ohne Hilfe erreicht haben und welcher Befund euch überrascht hat. Zu 3: Die Entscheidung steht als Zeile im Entscheidungslog in der Werkstatt, mit Befund und Befund-IDs als Beleg („Beleg: unklar – E1 8 von 30; weiter testen“). Was sich an der Story Map ändert, notiert ihr als Stichwort für den Backlog-Block um 10:15.</p>
+      <p>Zu 2, dreimal hintereinander: Lernkarte E1 mit Verlässlichkeit und Befund (2 Minuten) – Lernkarte E2 (1) – eure Empfehlung: Welche der drei Ideen stützt der Beleg jetzt, und was ändert sich an der Story Map? (1) – je eine Rückfrage der anderen beiden und von Markus (2). E1 fragt, ob der Spitzenreiter seine riskanteste Annahme überstanden hat; E2, wie viele den Höhepunkt ohne Hilfe erreicht haben und welcher Befund euch überrascht hat. Zu 3: Die Entscheidung steht auf der Lernkarte in <code>docs/EXPERIMENTE.md</code> bzw. <code>docs/TESTS.md</code>, mit Befund und Befund-IDs als Beleg („Beleg: unklar → darum: weiter testen“, mit U-IDs bei E2). Was sich an der Story Map ändert, notiert ihr als Stichwort für den Backlog-Block um 10:15. Zu 4: In eurem Baum auf Miro („Baum · euer Name“) hängen seit Tag 4 unter der Ziel-Chance die drei Ideen und unter dem Spitzenreiter E1 und E2. Markiert jeden Test wie den Befund auf der Lernkarte: ✓ (gestützt), ✗ (widerlegt), „unklar“ oder „neue Einsicht“. Dann entscheidet ihr wie auf der Lernkarte: beim Spitzenreiter bleiben (weitermachen), zur Geschwister-Idee wechseln – einer anderen Lösung unter derselben Chance, das Umschwenken auf die Lösung von der Folie davor – oder die Idee verwerfen. Die Entscheidung steht damit im Baum und auf der Lernkarte. Unter einer Chance mehrere Lösungen, darunter ihre Tests: So zeichnet Teresa Torres den Baum („Continuous Discovery Habits“, 2021, S. 25–27).</p>
     </div>
   </Folie>
 
   <h2 id="faden">Vom Entdecken zum Liefern</h2>
-  <p>Bis Tag 4 habt ihr herausgefunden, <em>was</em> ihr bauen solltet, und Scrum mit Lego durchgespielt. Heute stellt ihr euch als Team auf, und ab heute geht es darum, es <em>gemeinsam</em> zu liefern – so, wie Produktteams in Unternehmen arbeiten. Das Entdecken hört dabei nicht auf: Euer Sprint endet an Tag 6 mit einem Review, in dem ihr wieder lernt.</p>
+  <p>Bis Tag 4 habt ihr herausgefunden, <em>was</em> ihr bauen solltet, und Scrum kennengelernt. Heute stellt ihr euch als Team auf, und ab heute geht es darum, es <em>gemeinsam</em> zu liefern – so, wie Produktteams in Unternehmen arbeiten. Das Entdecken hört dabei nicht auf: Euer Sprint endet an Tag 6 mit einem Review, in dem ihr wieder lernt.</p>
   <p>Wie die Ergebnisse aller Kurstage zusammenhängen, zeigt der <a href="/innolab/arbeitsfluss?tag=5">Arbeitsfluss</a>.</p>
   <Callout type="tip" title="Drei Produkte, ein Takt">
     <p>Jede*r ist Product Owner des eigenen Produkts und Developer in allen dreien – drei Scrum-Teams mit denselben drei Personen. Ihr baut also auch Issues, die ihr nicht geschrieben habt. Deshalb müssen eure Issues und Kriterien ohne Rückfrage verständlich sein – das ist der Test für heute.</p>
@@ -117,20 +119,20 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (Entscheidungs
   </ul>
 
   <h2 id="stoerfall">Sprint-Planning mit Störfall</h2>
-  <p>Ihr plant euren Sprint wie auf der Methodenseite (<a href="/innolab/methoden/sprint#planning">Sprint Planning</a>), zehn Minuten pro Produkt. Danach, mit dem ersten Entwurf auf dem Tisch, zieht jede*r Product Owner eine Störfall-Karte. Solche Karten gibt es in jedem echten Projekt:</p>
+  <p>Ihr plant euren Sprint wie auf der Methodenseite (<a href="/innolab/methoden/sprint#planning">Sprint Planning</a>), zehn Minuten pro Produkt. Danach, mit dem ersten Entwurf in Linear, zieht jede*r Product Owner eine Störfall-Karte. Solche Karten gibt es in jedem echten Projekt:</p>
   <ul>
-    <li>Ein Stakeholder will eine Funktion, die ihr im Entscheidungslog ausgeschlossen habt.</li>
+    <li>Ein Stakeholder will eine Funktion, die ihr im Produkt-Brief unter „Was macht es NICHT?“ ausgeschlossen habt.</li>
     <li>Eine Person aus dem Team fällt für die Hälfte des Sprints aus.</li>
     <li>Vor dem ersten Speichern von Daten muss ein Datenschutzhinweis stehen – ab sofort.</li>
     <li>Ein Testbefund aus dem Debrief heute Morgen stellt euer Sprint-Ziel in Frage.</li>
   </ul>
-  <p>Als Product Owner entscheidet ihr: annehmen und etwas anderes dafür herausnehmen, eine kleinere Variante, oder begründet ablehnen. Was nicht geht: alles zusätzlich machen. Die Entscheidung steht mit Begründung im Entscheidungslog, das Sprint-Ziel bleibt ein Satz. Für die drei Karten zusammen habt ihr zehn Minuten; erst danach bekommen die Issues das Label <code>Sprint</code>.</p>
+  <p>Als Product Owner entscheidet ihr: annehmen und etwas anderes dafür herausnehmen, eine kleinere Variante, oder begründet ablehnen. Was nicht geht: alles zusätzlich machen. Die Entscheidung steht mit Begründung in <code>docs/SPRINTS.md</code> beim Sprint-Ziel; das Sprint-Ziel selbst bleibt ein Satz. Für die drei Karten zusammen habt ihr zehn Minuten; erst danach bekommen die Issues das Label <code>Sprint</code>.</p>
   <Callout type="info" title="Wofür die Störung gut ist">
-    <p>Beim Lego hat Markus die Störungen nach Krivitsky eingebaut: eine mehrdeutige Anforderung, kein Wort zur Integration, einen Product Owner auf Geschäftsreise (Krivitsky, S. 41; <a href="/innolab/methoden/scrum#nachbesprechung">Scrum im Team</a>). Die Karten heute sind ein Zusatz des Kurses, und sie kommen im Planning – dort, wo ein Product Owner sie abfangen kann. Im Sprint selbst gilt: keine Änderungen, die das Sprint-Ziel gefährden (Scrum Guide, S. 7). Genau das ist eure Rolle: Nein sagen können, mit einem Grund.</p>
+    <p>Störungen mit Absicht einzubauen, stammt von Alexey Krivitsky: Er nennt es „Design for Failure“; Misserfolge seien „große Katalysatoren des Lernens“ (Krivitsky, „lego4scrum“, deutsche Ausgabe 2023, S. 41, 95). Die Karten heute sind ein Zusatz des Kurses, und sie kommen im Planning – dort, wo ein Product Owner sie abfangen kann. Im Sprint selbst gilt: keine Änderungen, die das Sprint-Ziel gefährden (Scrum Guide, S. 7). Genau das ist eure Rolle: Nein sagen können, mit einem Grund.</p>
   </Callout>
 
   <h2 id="bauen">Bauen</h2>
-  <p>Euer Sprint läuft vom Planning heute bis zu Review und Retro an Tag 6 am 19. Dezember – eine Woche, davon heute Nachmittag gemeinsam im Raum. Jede*r baut Issues aus allen drei Produkten, so wie im Planning verteilt. Der Takt ist der aus dem Coding-Kurs – Issue holen, bauen lassen, Belege prüfen, Pull Request –, mit den Team-Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>.</p>
+  <p>Euer Sprint läuft vom Planning heute bis zu Review und Retro an Tag 6 am 19. Dezember – eine Woche, davon heute Nachmittag gemeinsam online. Jede*r baut Issues aus allen drei Produkten, so wie im Planning verteilt. Der Takt ist der aus dem Coding-Kurs – Issue holen, bauen lassen, Belege prüfen, Pull Request –, mit den Team-Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>.</p>
   <Callout type="tip" title="Das Mess-Issue zuerst">
     <p>Baut das Issue, das das Mess-Ereignis einführt, als eines der ersten. Jedes Issue danach prüft ihr gleich mit: Kommt das Ereignis nach dem Merge noch an?</p>
   </Callout>
@@ -147,16 +149,16 @@ Jede Richtung bekommt:
 – denselben wichtigsten Screen unserer App im neuen Look, auf dem Handy
 
 Stell die drei nebeneinander und sag zu jeder in einem Satz, zu wem sie passt und was sie riskiert. Wenn ich eine gewählt habe, bau unser Design-System danach um – mit Farben nach Zweck, allen Zuständen jeder Komponente und sichtbarem Tastatur-Fokus.</Prompt>
-  <p class="small">Zeigt die drei Richtungen eurem Team, bevor ihr wählt – die anderen bauen eure Issues mit. Die Wahl kommt als Zeile ins Entscheidungslog der Werkstatt.</p>
+  <p class="small">Zeigt die drei Richtungen eurem Team, bevor ihr wählt – die anderen bauen eure Issues mit. Die Wahl und ein Satz, warum, kommen ins erste Issue mit Oberfläche.</p>
 
   <h2 id="abschluss">Abschluss & bis Tag 6</h2>
   {/* -v2: Häkchen je Position; seit 12.11.2026 mit docs/TEAM.md, ohne docs/PITCH.md. */}
   <Checklist id="il-tag5-sprint-v2" items={[
-    'Was ihr nach den Tests geändert habt, im Entscheidungslog',
+    'Was ihr nach den Tests ändert, auf den Lernkarten (Zeile „Beleg: … → darum: …“)',
     '<code>docs/TEAM.md</code> in allen drei Repos, mit Produktzielen, Rollen, Sprint, Abweichungen vom Scrum Guide und Definition of Done samt Mess-Ereignis',
     'Linear: Label <code>Sprint</code> an den gewählten Issues',
     '<code>docs/SPRINTS.md</code> mit Sprint-Ziel und Auswahl',
-    'Störfall-Entscheidung im Entscheidungslog',
+    'Störfall-Entscheidung mit Begründung in <code>docs/SPRINTS.md</code>',
     'Daily an jedem Arbeitstag als Kommentar in Linear – unsere Abweichung vom Guide, wie in <code>docs/TEAM.md</code>',
     'Jedes Issue nach der Definition of Done; Pull Requests der anderen geprüft',
     'Zwei Testpersonen für Tag 6 verabredet – per Videoanruf zwischen 14:00 und 14:45, denn Tag 6 ist online',

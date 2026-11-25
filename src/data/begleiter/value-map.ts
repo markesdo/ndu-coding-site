@@ -1,6 +1,8 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/value-map.astro (Tag 3, 15:15–16:00; seit 19.11. nach der Ideation, die Lückensätze kommen von dort). Kein Vorwissen eingetragen.
+// Tag 4 (28.11., 09:10–09:40, NDU-66): nur die Übung (vorgehen) wird nachgeholt, gekürzt auf 30 min, mit der Website-Frage beim Wählen
+// und den drei Ideen als Lösungen im Baum zum Schluss; die Theorie lief an Tag 3.
 // VPD-Seiten = Seitenzahlen der PDF-Ausgabe, wie in quellen/vpd/text.txt (nicht die der gedruckten Ausgabe).
 const VPD = 'Osterwalder u. a., Value Proposition Design';
 
@@ -217,16 +219,18 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Wozu vorlesen: wissen, was ihr heute ausarbeitet – und was offen bleibt.',
-      'Timer 5 min: wählen in T3 · 4, Spitzenreiter-Sticky ausfüllen.',
-      'Nach 5 min: Satz-Sticky mitnehmen, Quadrat füllen – Timer 15 min.',
+      'Timer 3 min: wählen oder bestätigen.',
+      'Fragen: Was davon ist die Website – trifft sie allein noch P1?',
+      'Nach 3 min: Satz-Sticky mitnehmen, Quadrat füllen – Timer 11 min.',
       '1:1 ab Minute 5, je 3 min: Hewen, Joachim, Sofie.',
       'Frage: ✗ des Spitzenreiters oben bewusst? Sonst: Was bleibt oben offen?',
-      'Nach 20 min: ordnen auf den Skalen – Timer 5 min.',
-      'Nach 25 min: Fit in drei Schritten – Timer 9 min.',
-      'Nach 34 min: festhalten und prüfen – jedes ? mit Frage?',
+      'Nach 14 min: ordnen auf den Skalen – Timer 4 min.',
+      'Nach 18 min: Fit in drei Schritten – Timer 8 min.',
+      'Nach 26 min: festhalten und prüfen – jedes ? mit Frage?',
+      'Nach 28 min: drei Ideen unter den Stern im Baum.',
       'Wenn hinten: Value Map nur mit einem Pain Reliever, einem Gain Creator.',
     ],
-    uebung: { dauer: '36 min (5 + 15 + 5 + 9 + 2)', form: 'allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum? Ohne ✗ oben: Was bleibt oben offen?' },
+    uebung: { dauer: '30 min (3 + 11 + 4 + 8 + 2 + 2)', form: 'allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum? Ohne ✗ oben: Was bleibt oben offen?' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
@@ -238,11 +242,12 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Wählen (5 min): jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Füllen (15 min), Richtwert 3 + 12: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit P- oder G-ID, kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID (VPD S. 99–101, 105). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
-        'Ordnen (5 min): alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (VPD S. 102).',
-        'Fit prüfen (9 min): Links, Zettel für Zettel – trifft er etwas, ID dazu, ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
-        'Festhalten und prüfen (2 min): rechts ein Zeichen je Zettel, links jeder ✓ mit ID, jedes ? mit Frage. Die ? bleiben, wo sie stehen – am Satz in T3 · 4, am Zettel im Canvas; an Tag 4 werden sie Annahmen. Claude-Prüfung bis Tag 4.',
+        'Wählen (3 min): wer zu Hause gewählt hat, bestätigt nur – mit der Frage: Was davon ist die Website, die ihr baut, und trifft sie allein noch P1? (Der Kurs baut eine Website; der Spitzenreiter darf hybrid sein, die Website ist der Teil, den ihr prototypt.) Sonst jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
+        'Füllen (11 min), Richtwert 2 + 9: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit P- oder G-ID, kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID (VPD S. 99–101, 105). Markus geht ab Minute 5 zu jeder Person (Hewen, Joachim, Sofie, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Ordnen (4 min): alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (VPD S. 102).',
+        'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID dazu, ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
+        'Festhalten und prüfen (2 min): rechts ein Zeichen je Zettel, links jeder ✓ mit ID, jedes ? mit Frage. Die ? bleiben, wo sie stehen – am Satz in T3 · 4, am Zettel im Canvas; an der Experiment-Karte werden sie Annahmen. Claude-Prüfung nach dem Kurstag.',
+        'Euer Baum – Lösungen (2 min): die drei Ideen als Lösungen unter den Stern an der Ziel-Chance („Baum · Name“), den Spitzenreiter markieren (Torres, Continuous Discovery Habits, S. 25–27).',
       ],
       achten: [
         'Gewählt wird nach den obersten Einträgen, nicht nach der Zahl der Haken.',
@@ -277,7 +282,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
       'Aufdecken: Fit auf Papier ist kein Beweis – getestet wird ab Tag 4.',
-      'Ausblick: gleich der Story-Bogen – heute als Theorie.',
+      'Ausblick: gleich der Story-Bogen – und eure Concept Story.',
     ],
     kern: [
       {

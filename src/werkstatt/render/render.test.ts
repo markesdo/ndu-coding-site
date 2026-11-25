@@ -45,7 +45,7 @@ describe('Brief', () => {
     for (const h of ['## 1. Für wen?', '## 2. Welches Problem?', '## 4. Was macht es NICHT?', '## 6. Woran merken wir, dass es funktioniert?', '## 7. Offene Fragen']) {
       expect(s).toContain(h);
     }
-    expect(s).toContain('## 3. Was ist das Produkt in einem Satz?\nOffen – steht nach Tag 3 fest.');
+    expect(s).toContain('## 3. Was ist das Produkt in einem Satz?\nOffen – steht nach Tag 4 fest.');
     expect(s).toContain('Heute gelöst durch: Automat');
     expect(s).toContain('Wir glauben: Pendler\\*innen bekommen morgens Kaffee');
     expect(s).toContain('Wir merken es: Wenn mehr Pendler\\*innen morgens mit Kaffee');
@@ -105,7 +105,9 @@ describe('Annahmen', () => {
     expect(s).toContain('Riskanteste Annahme: A1');
   });
   it('Art und Beleg ausgeschrieben, Datum österreichisch', () => {
-    expect(s).toContain('| wünschenswert | hoch | noch keiner |');
+    // A1 der Kaffeebar trägt die Gegenbelege aus den Interviews (NDU-70: vorher nur im Entscheidungslog).
+    expect(s).toContain('| wünschenswert | hoch | gesagt (I2-4, I3-1, I5-3; spricht dagegen) |');
+    expect(s).toContain('| bedienbar | mittel | noch keiner |');
     expect(s).toContain('| **A2** | Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann. | machbar | hoch | getan |');
     expect(s).toContain('Stand: 22.10.2026');
   });
@@ -267,7 +269,7 @@ describe('Leere Pflichtfelder', () => {
     const leer = rendern('brief', { ...laden('brief'), fuerWen: '', problem: '  ', heuteGeloestDurch: '', produktSatz: '   ', outcome: { wirGlauben: '', wirMerkenEs: '' } });
     expect(leer).toContain('## 1. Für wen?\nNoch nichts eingetragen.');
     expect(leer).toContain('## 2. Welches Problem?\nNoch nichts eingetragen.\n\nHeute gelöst durch: Noch nichts eingetragen.');
-    expect(leer).toContain('Satz?\nOffen – steht nach Tag 3 fest.');
+    expect(leer).toContain('Satz?\nOffen – steht nach Tag 4 fest.');
     expect(leer).toContain('Wir glauben: Noch nichts eingetragen.');
     const l = rendern('leitfaden', { ...laden('leitfaden'), ziel: '', wen: '', einstieg: '', abschluss: ' ' });
     expect(l).toContain('Ziel: Noch nichts eingetragen.');
@@ -292,10 +294,17 @@ describe('README', () => {
     expect(s).toContain('# Projektmappe');
     expect(s).toContain('**Kohorte:** Innolab 26/27');
     expect(s).toContain('| Produkt-Brief | [mappe/brief.md](mappe/brief.md) |');
-    expect(s).toContain('| Entscheidungslog | noch offen |');
+    expect(s).toContain('| Interviewleitfaden | noch offen |');
     expect(s).toContain('| Annahmen-Map | [mappe/annahmen.md](mappe/annahmen.md) |');
-    expect(s).not.toContain('mappe/entscheidungen.md');
+    // Das stillgelegte Entscheidungslog (NDU-70) steht ohne Datei gar nicht drin – nie als „noch offen“.
+    expect(s).not.toContain('Entscheidungslog');
     expect(s).toMatchSnapshot();
+  });
+
+  it('stillgelegtes Entscheidungslog: steht nur drin, wenn die Datei schon existiert, dann mit Link', () => {
+    const s = readmeRendern(k, [{ name: 'brief', vorhanden: false }, { name: 'entscheidungen', vorhanden: true }]);
+    expect(s).toContain('| Entscheidungslog | [mappe/entscheidungen.md](mappe/entscheidungen.md) |');
+    expect(s).toContain('| Produkt-Brief | noch offen |');
   });
 });
 

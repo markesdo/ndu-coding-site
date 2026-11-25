@@ -54,16 +54,6 @@ export const TAG_1: TagKarte = {
         'Schritt 5: Claude-Prüfung in die Hausaufgabe, im Raum nur die Prüfliste (vorgehen).',
       ],
     },
-    'Entscheidungslog': {
-      lernziel: 'Nach dem Block können alle sagen, wozu das Log da ist (Grund und Lernweg bis zum Pitch), eine Produktentscheidung als Zeile eintragen und ehrlich angeben, wie stark der Beleg ist, auch wenn er „noch keiner“ lautet.',
-      streichen: [
-        'Warum-Frage ohne Timer stellen, nur zwei Antworten hören (warum).',
-        'Nur den Satz sagen, Fluss nicht erklären (nutzen).',
-        'Folie zur Beleg-Stärke weglassen, kommt in der Annahmen-Map wieder (beleg-staerke).',
-        'Nur D1 → D3 erzählen, D4 weglassen (beispiel).',
-        'Nicht reihum: die Frage einmal stellen, Antworten in die Annahmen-Map mitnehmen (uebertrag).',
-      ],
-    },
     'Annahmen-Map': {
       lernziel: 'Nach dem Block können alle die Annahmen hinter ihrem Produkt-Brief als „Wir glauben, dass …“-Sätze aus allen vier Arten aufschreiben, nach Wichtigkeit und Beleg einordnen und die riskanteste als Forschungsfrage benennen.',
       streichen: [
@@ -85,7 +75,7 @@ export const TAG_1: TagKarte = {
       streichen: [
         'Schritt 2 (Prüfliste und Claude) kürzen oder streichen; die Live-Runden starten spätestens 15:30 (vorgehen).',
         'Claude-Probe 15 → 5 min (vorgehen, Schritt 3).',
-        'Nur eine Runde im Plenum statt reihum (uebertrag).',
+        'Nur eine Runde im Plenum (uebertrag).',
       ],
     },
     'Hausaufgabe & Abschluss': {

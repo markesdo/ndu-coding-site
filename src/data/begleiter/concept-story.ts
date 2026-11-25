@@ -2,6 +2,10 @@ import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/concept-story.astro (Tag 3, 16:00–16:30 Story-Bogen; seit 20.11.2026
 // nur Theorie – die Übung entfällt, 16:30–17:15 ist Puffer für die Übungen des Tages).
+// Tag 4 (28.11., 09:40–10:20, NDU-66, Entscheidung Markus 25.11.): Die Concept Story wird mit den Studierenden geschrieben.
+// 10 min Theorie als Wiederholung an den Folien stationen, a-mal-b, flach und hoch, dann 30 min Übung (vorgehen): sieben
+// Stationen, Flach-Probe, festhalten – allein, Markus 1:1, keine Erzählrunde zu den eigenen Produkten. Die Sprechzeiten
+// unten gelten für Tag 3.
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
 // selbst kommt an Tag 4 (usage-story.astro), heute geht es um den Bogen dahinter.
 // Zeit (Entscheidung 66, 21.11.): Die Sprechzeiten in den live-Stichworten ergeben zusammen rund 47 min, also deutlich
@@ -35,7 +39,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Introduction (vor Kap. 1), S. xiii–xiv`,
       },
       {
-        text: 'Bezug zu heute: Hauptfigur und Ziel stehen seit dem Vormittag im Kundenprofil (Segment, Jobs); offen ist die erste Frage. Danach prüft ihr am Bogen, was in euren Prototyp kommt (Folie „Die Story entscheidet, was ihr baut“). Nicht sagen, dass die Concept Story an Tag 4 geschrieben wird – dafür gibt es dort keinen Block.',
+        text: 'Bezug zu heute: Hauptfigur und Ziel stehen seit dem Vormittag im Kundenprofil (Segment, Jobs); offen ist die erste Frage. Danach prüft ihr am Bogen, was in euren Prototyp kommt (Folie „Die Story entscheidet, was ihr baut“). Geschrieben wird die Concept Story an Tag 4 (Folie „So geht ihr vor“).',
         quelle: 'Kursformulierung; vgl. Lichaw, Kap. 3, Supporting the Story, S. 33',
       },
       {
@@ -64,11 +68,11 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     live: [
       'Zeit: Sprechzeit ~3 min.',
       'Bild zeigen, nichts sagen.',
-      'Fragen: Welches Produkt? Woran erkennt ihr das? Reihum, laut.',
+      'Fragen: Welches Produkt? Woran erkennt ihr das? Antworten laut.',
       'Nachfragen, bis die Geschichte da ist: wer, warum lachen, warum Video?',
       '„Euer Gehirn sucht in allem, was es sieht, eine Geschichte – mit Struktur.“',
     ],
-    uebung: { dauer: '2 min', form: 'reihum laut, je ein Satz; dann aufdecken' },
+    uebung: { dauer: '2 min', form: 'Antworten laut, je ein Satz; dann aufdecken' },
     verstaendnis: {
       frage: 'Woher wisst ihr, dass es FaceTime ist?',
       antwort: 'Aus der Geschichte, die ihr ergänzt: ältere Menschen, vielleicht Großeltern; sie lachen über die Enkel, die weit weg wohnen; hinfliegen geht nicht regelmäßig; also anrufen, mit Video. Nichts davon steht im Bild.',
@@ -87,7 +91,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Bild zeigen, Frage stellen: Welches Produkt? Woran erkennt ihr das?',
-        'Reihum laut, je ein Satz. Nachfragen, bis Figur, Ziel und Problem genannt sind.',
+        'Antworten laut, je ein Satz. Nachfragen, bis Figur, Ziel und Problem genannt sind.',
         'Aufdecken: FaceTime, dann der Satz zum Gehirn.',
       ],
       achten: [
@@ -170,12 +174,12 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   pinocchio: {
     live: [
       'Zeit: Sprechzeit ~2 min; vier Kästen vorlesen, nichts erklären.',
-      'Fragen: Was fehlt? Reihum, laut, je ein Satz.',
+      'Fragen: Was fehlt? Antworten laut, je ein Satz.',
       'Noch nicht aufdecken – erst alle drei gehört.',
       '„Ohne Konflikt ist es keine Geschichte – nur Dinge, die passieren.“',
       'Falle: „Es ist zu kurz“ – auch lang bliebe es flach.',
     ],
-    uebung: { dauer: '1 min', form: 'reihum laut, je ein Satz; dann aufdecken' },
+    uebung: { dauer: '1 min', form: 'Antworten laut, je ein Satz; dann aufdecken' },
     verstaendnis: {
       frage: 'Figur und Ziel sind da. Warum ist es trotzdem keine Geschichte?',
       antwort: 'Es wirkt keine Kraft gegen die Figur. Ohne Konflikt ist es eine Folge von Ereignissen („a series of events—stuff happening“).',
@@ -194,7 +198,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Folie zeigen, die vier Kästen vorlesen.',
-        'Reihum laut: Was fehlt? Nicht werten.',
+        'Antworten laut: Was fehlt? Nicht werten.',
         'Aufdecken: Figur und Ziel sind da – nichts steht dazwischen. Dann der zweite Punkt.',
       ],
       aufloesung: 'Es fehlt der Konflikt: eine Kraft, die gegen Figur und Ziel wirkt. Lichaw: „Stories wouldn’t be stories without conflict.“ (Kap. 8, Conflict Is Key)',
@@ -237,12 +241,12 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   flach: {
     live: [
       'Zeit: Sprechzeit ~3 min; Punkte 1–3 aufdecken, dann die Frage.',
-      'Fragen: Was fehlt dieser Geschichte? Reihum, laut.',
+      'Fragen: Was fehlt dieser Geschichte? Antworten laut.',
       'Nicht auflösen – die Antwort ist die nächste Folie.',
       '„Die Geschichte hat eine Struktur. Aber sie ist nicht hoch.“',
       'Gestrichelte Linie zeigen: so hoch könnte der Bogen sein.',
     ],
-    uebung: { dauer: '1 min', form: 'reihum laut; Auflösung auf der nächsten Folie' },
+    uebung: { dauer: '1 min', form: 'Antworten laut; Auflösung auf der nächsten Folie' },
     kern: [
       {
         text: '„Six months before the iPhone 1 announcement, Apple filed a patent for a different kind of device“ – im Grunde ein iPod, der telefoniert. Als Geschichte: „I love my iPod; I love my mobile phone.“ – „I don’t love carrying two devices, and I wish I could have my iPod and phone all in one.“ – „iPhone to the rescue!“ – „I now have a way to have my iPod and phone in one device.“',
@@ -318,7 +322,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   'drei-storys': {
     live: [
       '„Verstehen, sehen, erleben – drei Storys auf demselben Bogen.“',
-      'Heute nur Concept; Origin und Usage, mit Storyboard, an Tag 4.',
+      'Concept zuerst; Origin und Usage, mit Storyboard, an Tag 4.',
       'Exposition betonen: einmal schreiben, dreimal verwenden.',
       'Lichaws Pinterest-Mail erzählen: unscheinbar, und doch ihre Origin Story.',
       'Zeit: Sprechzeit ~2 min, mit der Pinterest-Geschichte.',
@@ -410,7 +414,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   slack: {
     live: [
       'Stationen 1–4 aufdecken, zügig.',
-      'Fragen: Was muss der Höhepunkt jetzt auflösen? Reihum, laut.',
+      'Fragen: Was muss der Höhepunkt jetzt auflösen? Antworten laut.',
       'Aufdecken: alles an einem Ort – und überall.',
       '„Leichter als E-Mail wäre die Linie gewesen.“',
       'Zeit: Sprechzeit ~4 min.',
@@ -436,7 +440,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   beispiel: {
     live: [
       'Zeit: Sprechzeit ~5 min; Stationen 1–4 aufdecken, IDs aus Profil und Interviews.',
-      'Fragen: Was muss der Höhepunkt auflösen? Reihum, laut.',
+      'Fragen: Was muss der Höhepunkt auflösen? Antworten laut.',
       'Aufdecken: „Fertig 7:31. Dein Zug fährt 7:38.“',
       'Fragen: Was denkt die Pendlerin danach?',
       'Flach-Probe zeigen: Wartezeit-Anzeige an der Tür – eine Linie.',
@@ -455,8 +459,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Stationen 1–4 aufdecken.',
-        'Reihum laut: Was muss der Höhepunkt auflösen? Dann Station 5 aufdecken.',
-        'Reihum laut: Was denkt die Pendlerin danach? Dann 6 und 7.',
+        'Antworten laut: Was muss der Höhepunkt auflösen? Dann Station 5 aufdecken.',
+        'Antworten laut: Was denkt die Pendlerin danach? Dann 6 und 7.',
         'Flach-Probe aufdecken und die Linie neben die Story stellen.',
       ],
       achten: [
@@ -508,8 +512,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Muster zeigen, Kaffeebar-Satz vorlesen.',
       '„Der Satz ist die Story in klein: Figur, Problem, Produkt, Krise, Höhepunkt.“',
       'Falle: mit dem Satz anfangen – erst die sieben Stationen.',
-      '„Heute bleibt es Theorie – eine eigene Story schreibt ihr heute nicht.“',
-      'Zeit: Sprechzeit ~2 min; danach Puffer bis 17:15.',
+      'Der Satz kommt beim Festhalten in Abschnitt 3 des Produkt-Briefs.',
+      'Zeit: Sprechzeit ~2 min; an Tag 4 danach die Übung.',
     ],
     kern: [
       {
@@ -521,6 +525,41 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       text: 'Als Steve Jobs 2007 das iPhone vorstellte, war das Gerät in seiner Hand kein fertiges iPhone, sondern „a semi-functional prototype“ – eine Requisite, die die Vision und die Story trug. Jobs ließ seine Vision und Story durch alles laufen, vom Design über die Präsentation bis zum Prototyp. Der Satz ist die kürzeste Form dieser Story: Wo ihr keinen Bogen zeichnen könnt, „you can speak a few words and see how people respond“.',
       quelle: `${LICHAW}, Kap. 7, Elevator Pitch, S. 127–128; Build and Communicate, S. 129 (die Latte-Zahl dort nicht nennen); Brücke zum Satz ist Kursformulierung`,
     },
-    ueberleitung: 'Damit endet die Theorie. Bis 17:15 holt ihr nach, was vom Tag offen ist.',
+    ueberleitung: 'Jetzt eure Story: 30 Minuten, drei Schritte.',
+  },
+
+  vorgehen: {
+    live: [
+      'Zeit: Tag 4, 09:50–10:20; Wozu vorlesen.',
+      'Timer 20 min: sieben Stationen allein, still, mit IDs.',
+      '1:1 ab Minute 5: einfache Lösung – was hat die Story mehr?',
+      'Nach 20 min: Flach-Probe, eine Zeile – Timer 5 min.',
+      'Nach 25 min: committen, Satz in den Brief, Station 6 als Annahme.',
+    ],
+    uebung: { dauer: '30 min (20 + 5 + 5)', form: 'allein schreiben; Markus geht 1:1 von Person zu Person, keine Erzählrunde' },
+    ablauf: {
+      schritte: [
+        'Schritt 1 (20 min, allein): Vorlage aus dem Handout nach docs/STORYS.md, sieben Stationen mit je ein, zwei Sätzen und IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person.',
+        'Schritt 2 (5 min): die einfache Lösung als eine Zeile darunter – Problem, Produkt, Ende.',
+        'Schritt 3 (5 min): Story committen, Satz in Abschnitt 3 des Produkt-Briefs, fallende Handlung in die Annahmen-Map.',
+      ],
+      achten: [
+        'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',
+        'Krise nennt mindestens eine heutige Alternative mit Zitat-ID und einen inneren Widerstand.',
+        'Station 6 ist ein Gedanke, keine Handlung.',
+      ],
+      fehler: [
+        'Die Story beginnt mit dem Produkt statt mit der Person.',
+        'Der Höhepunkt ist „schneller“ oder „leichter“ – dann fehlt die Krise.',
+        'Die Krise ist erfunden statt aus den Interviews.',
+      ],
+    },
+    kern: [
+      {
+        text: 'Die Probe: die einfache neben die großartige Lösung stellen. „A concept without a conflict and a resulting climax is a flat story—literally just a line.“ „Leicht zu bedienen“ trägt nur, wenn Schwierigkeit das Problem ist.',
+        quelle: `${LICHAW}, Kap. 3, What Is a Concept Story?; Climax/Resolution; Mapping a Concept Story`,
+      },
+    ],
+    ueberleitung: 'Nach der Pause: wer dafür zahlt – das Geschäftsmodell.',
   },
 };

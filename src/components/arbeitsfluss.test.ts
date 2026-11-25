@@ -51,6 +51,16 @@ describe('Stationen des Arbeitsflusses', () => {
     expect(station(v.fortsetzung!)?.spalte).toBe(3);
   });
 
+  it('stillgelegte Methoden (Entscheidungslog) haben keine Station', () => {
+    expect(OHNE_STATION).toContain('entscheidungslog');
+    expect(STATIONEN.filter((s) => s.methode && OHNE_STATION.includes(s.methode)).map((s) => s.id)).toStrictEqual([]);
+  });
+
+  it('Spalte und Kurstag der Methode stimmen überein (Tag 5–7 in Spalte 5)', () => {
+    const ab = STATIONEN.filter((s) => s.methode).filter((s) => spalteVonTag(METHODEN.find((m) => m.slug === s.methode)!.tag) !== s.spalte);
+    expect(ab.map((s) => s.id)).toStrictEqual([]);
+  });
+
   it('die Concept Story steht an Tag 4', () => {
     expect(station('concept-story')?.spalte).toBe(4);
   });

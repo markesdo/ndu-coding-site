@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import beispiel from '../../beispiele/brief.json';
 import { ARTEFAKTE, artefaktParsen, type Brief } from '../../schemas/index.js';
-import { briefKarten, produktSatzSetzen, PRODUKTSATZ_OFFEN } from './brief-hilfen.js';
+import { readFileSync } from 'node:fs';
+import { briefKarten, produktSatzSetzen, PRODUKTSATZ_HILFE, PRODUKTSATZ_OFFEN } from './brief-hilfen.js';
+import { briefRendern } from '../../render/brief.js';
 
 const leer = ARTEFAKTE.brief.leer('2026-10-22');
 const kaffeebar = beispiel as Brief;
@@ -16,13 +18,23 @@ describe('briefKarten', () => {
     ]);
   });
 
-  it('zeigt „Offen – steht nach Tag 3 fest.“, solange das Produkt in einem Satz leer ist', () => {
+  it('zeigt „Offen – steht nach Tag 4 fest.“, solange das Produkt in einem Satz leer ist', () => {
     const drei = briefKarten(leer)[2];
     expect(drei.absaetze).toStrictEqual([]);
     expect(drei.leerText).toBe(PRODUKTSATZ_OFFEN);
-    expect(PRODUKTSATZ_OFFEN).toBe('Offen – steht nach Tag 3 fest.');
+    expect(PRODUKTSATZ_OFFEN).toBe('Offen – steht nach Tag 4 fest.');
     // nur Leerzeichen zählt als leer
     expect(briefKarten({ ...leer, produktSatz: '   ' })[2].absaetze).toStrictEqual([]);
+  });
+
+  // NDU-66: Vorschau, Hilfe im Editor und Markdown nennen denselben Tag, an dem Abschnitt 3 feststeht (Tag 4).
+  it('Hilfe im Editor, Vorschau und Markdown nennen denselben Tag für Abschnitt 3', () => {
+    const tag = (s: string) => s.match(/nach Tag (\d)/)?.[1];
+    expect(PRODUKTSATZ_HILFE).toBe('Lass das Feld heute leer. Es steht nach Tag 4 fest.');
+    expect([tag(PRODUKTSATZ_HILFE), tag(PRODUKTSATZ_OFFEN), tag(briefRendern(leer))]).toStrictEqual(['4', '4', '4']);
+    const editor = readFileSync(new URL('./BriefEditor.tsx', import.meta.url), 'utf8');
+    expect(editor).toContain('hilfe={PRODUKTSATZ_HILFE}');
+    expect(editor).not.toMatch(/nach Tag \d/);
   });
 
   it('zeigt den Satz, sobald er da ist', () => {

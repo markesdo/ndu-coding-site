@@ -130,7 +130,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       schritte: [
         'Folie zeigen, die Geschichte vorlesen.',
         'Rollen wählen die Studierenden selbst: Wer eine zuerst laut nennt, hat sie (nur den Namen: Produktmanagement, Design, Entwicklung). Studierende öffnen die Folie auf ihrem eigenen Gerät, wählen dort ihre Rolle. Timer 1 min: Jede*r tippt einen Satz – was ist aus der eigenen Rolle das Wichtigste? Noch nicht abschicken.',
-        'Auf dein Zeichen schicken alle gleichzeitig ab; der Beamer zeigt „2 von 3 haben geantwortet“. Bis zum Aufdecken kann jede*r noch ändern. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r den Satz reihum laut. Dann zur nächsten Folie.',
+        'Auf dein Zeichen schicken alle gleichzeitig ab; der Beamer zeigt „2 von 3 haben geantwortet“. Bis zum Aufdecken kann jede*r noch ändern. Steht auf der Seite „Antwort bitte laut sagen.“ (Server weg), sagt jede*r den Satz laut. Dann zur nächsten Folie.',
       ],
       achten: [
         'Gleichzeitig abschicken, sonst schreiben die anderen den ersten Satz ab.',
@@ -156,8 +156,8 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Rolle (über die Seite geschickt; fehlt einer, reihum laut), dann die drei aus dem Buch. Vorlesen, ohne zu werten.',
-        'Jede*r vergleicht den eigenen Satz mit dem der eigenen Rolle, dann den Schritt „Jede Sicht ist berechtigt. Darum gleich reihum“ aufdecken – Überleitung zur Besprechung der Snapshots: Die anderen hören, was ihr überhört.',
+        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst um 23:59, Ende des Tages). Sie zeigt zuerst „Eure Sätze“ nach Rolle (über die Seite geschickt; fehlt einer, laut), dann die drei aus dem Buch. Vorlesen, ohne zu werten.',
+        'Jede*r vergleicht den eigenen Satz mit dem der eigenen Rolle, dann den Schritt „Jede Sicht ist berechtigt. Darum gleich zu dritt“ aufdecken – Überleitung zur Besprechung der Snapshots: Die anderen hören, was ihr überhört.',
       ],
       aufloesung: 'Produktmanagement hört „Unter ‚Beliebt‘ nur Serien“ (Sorge ums Angebot), Design „Wir fanden nicht heraus, wie man nach einem Titel sucht“ (Bedienung), Entwicklung „Fast nur Kinderfilme“ (technischer Weg, verschiedene Nutzer*innen zu erkennen). Jede Sicht ist berechtigt; je unterschiedlicher das Team, desto mehr holt es aus einem Interview.',
     },
@@ -205,7 +205,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Widerlegt I2 die Annahme A1?',
-      antwort: 'Nein, I2 ist ein erster Gegenbeleg – er kommt bei A1 in die Annahmen-Map, mit „spricht dagegen“ in der Beleg-Notiz. Nach links rückt eine Annahme nur mit Belegen dafür (Torres S. 129); eine Zeile im Entscheidungslog kommt erst, wenn ihr deshalb etwas ändert (bei der Kaffeebar D4 nach allen fünf).',
+      antwort: 'Nein, I2 ist ein erster Gegenbeleg – er kommt bei A1 in die Annahmen-Map, mit „spricht dagegen“ in der Beleg-Notiz. Nach links rückt eine Annahme nur mit Belegen dafür (Torres S. 129); entschieden wird erst, wenn ihr deshalb etwas ändert (bei der Kaffeebar nach allen fünf: Vorbestellen verworfen).',
       falsch: '„Ja, A1 ist falsch“ – ein Interview ist ein Beleg, kein Beweis.',
     },
     ablauf: {
@@ -247,7 +247,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     live: [
       'Immer zeigen: bis 14:50 Interviews eintragen, Skizze ins Feld auf T1 · 5.',
       'Timer 25 min starten (oder bis 14:50).',
-      'Zuerst reihum: Wie viele Interviews habt ihr dabei – Notizen, Aufnahme?',
+      'Zuerst an alle: Wie viele Interviews habt ihr dabei – Notizen, Aufnahme?',
       'Mindestens zwei bis 14:50; die übrigen echten Interviews bis Tag 3.',
       'Keine Notizen? Fallback-Datei: Pseudonym „Synthetisch 1“ usw. – nie Beleg.',
       'Synthetisch: Einwilligung trotzdem anhaken, sonst speichert die Werkstatt nicht.',
@@ -265,7 +265,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       schritte: [
         'Immer zeigen, für alle, gleich nach dem Snapshot von I2 (snapshot-i2): Wer noch keine Interviews hat, trägt mindestens zwei ein; alle legen zu jedem Interview die Skizze ins Feld „Geschichte als Skizze“ ihrer Karte auf T1 · 5. Karte n = n-tes Interview nach ID (höchstens fünf; überzählige Karten gehen auf die Vorlage zurück), darum ein Sticky mit der ID zur Skizze und nur Interviews skizzieren, die in der Werkstatt stehen. Foto nur ohne Namen, Arbeitgeber oder Erkennbares, sonst nachzeichnen. Nur Stickies, Pfeile oder ein Bild: Eine Form oder ein Textfeld in der Spalte lässt das Skript die ganze Spalte auslassen (spalte_pruefen). Der Übertrag in der Pause füllt nur die Textfelder und lässt die Skizzen stehen. Zeitplan und Ansagen der Runden ab 14:50: Begleiter vorgehen.',
         'Der Link „Interviews ↗“ öffnet /innolab/mappe?bearbeiten=interviews in einem neuen Tab: Nach dem Laden der Mappe geht der Editor der Interviews von selbst auf. Wer nicht angemeldet ist, meldet sich an und landet danach im Editor.',
-        '12.11.2026: Bis 13:10 hatte niemand Interviews in der Werkstatt. Darum zuerst die Abfrage reihum; Ziel bis 14:50 sind mindestens zwei Interviews pro Person, die übrigen echten Interviews (bis fünf) bis Tag 3. Wer keine Notizen dabei hat, nimmt die eigene Fallback-Datei (Kursordner fallback-interviews/, je Person eine mit drei synthetischen Interviews und Hinweisen; vor 14:00 weitergeben): Pseudonym „Synthetisch 1“ bis „Synthetisch 3“, Kurzinfos beginnen mit „SYNTHETISCH –“, Einwilligung trotzdem anhaken. Sie dienen zum Üben, zählen nie als Beleg und werden bis Tag 3 durch echte Interviews ersetzt. Die Karten auf T1 · 5 bleiben bis zur Pause leer; Markus überträgt die Werkstatt-Texte um 15:15, das Sticky mit der ID verbindet die Skizze mit dem Interview.',
+        '12.11.2026: Bis 13:10 hatte niemand Interviews in der Werkstatt. Darum zuerst die Abfrage an alle; Ziel bis 14:50 sind mindestens zwei Interviews pro Person, die übrigen echten Interviews (bis fünf) bis Tag 3. Wer keine Notizen dabei hat, nimmt die eigene Fallback-Datei (Kursordner fallback-interviews/, je Person eine mit drei synthetischen Interviews und Hinweisen; vor 14:00 weitergeben): Pseudonym „Synthetisch 1“ bis „Synthetisch 3“, Kurzinfos beginnen mit „SYNTHETISCH –“, Einwilligung trotzdem anhaken. Sie dienen zum Üben, zählen nie als Beleg und werden bis Tag 3 durch echte Interviews ersetzt. Die Karten auf T1 · 5 bleiben bis zur Pause leer; Markus überträgt die Werkstatt-Texte um 15:15, das Sticky mit der ID verbindet die Skizze mit dem Interview.',
       ],
     },
     ueberleitung: 'Euren Snapshot habt ihr allein geschrieben. Was hätten die anderen in derselben Geschichte gehört?',
@@ -281,7 +281,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Nach 5 min: „Wechsel. [Name], welche ID?“ Timer neu starten.',
       'Falle: wer zeigt, verteidigt – bei Frage 2 erst zuhören lassen.',
     ],
-    uebung: { dauer: '16 min (1 wählen + 3 × 5)', form: 'zu dritt reihum: eine Person zeigt, zwei fragen nach' },
+    uebung: { dauer: '16 min (1 wählen + 3 × 5)', form: 'zu dritt: jede*r zeigt einmal, die anderen zwei fragen nach' },
     miro: {
       frame: 'T1 · 5 · Interview-Snapshots (aus der Werkstatt)',
       schritte: [
@@ -340,34 +340,23 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
   festhalten: {
     live: [
       'Timer 3 min starten, alle arbeiten allein in der Werkstatt.',
-      'Heute nur Schritt 2 und 3: eine Zeile ins Log, speichern.',
+      'Heute nur Schritt 2 und 3: riskanteste Annahme prüfen, entscheiden, speichern.',
       '„Schritt 1, eure Notizen übertragen, macht ihr bis Tag 3.“',
-      'Vorführen (ca. 1 min): Demo-Log, D5 „behalten“ live schreiben.',
-      '„Drei Arten: verworfen (D4), geändert (D3), bewusst behalten (D5).“',
+      '„Drei Arten: verworfen, geändert, bewusst behalten.“',
       'Links öffnen den Editor direkt; in jedem Editor speichern.',
       'Nur synthetisch: geänderte Leitfaden-Frage prüfen, nie synthetisches Zitat als Beleg.',
       'Riskanteste ist vorgemerkt (aus der Forschungsfrage) – passt sie noch?',
       'Hewen: A1 oder A2?',
-      '„Eine Zeile reicht.“',
-      'Zweite Zeile nur bei neuer Zielgruppe oder neuem Problem.',
-      'Falle: Gegenbeleg nur ins Log statt in die Annahmen-Map.',
-      'Falle: synthetisches Zitat als Beleg oder im Grund – zählt nie.',
+      'Geändert heißt: neue Annahme oder Brief ändern – den alten Satz nicht umschreiben.',
+      'Brief nur bei neuer Zielgruppe oder neuem Problem.',
+      'Falle: Gegenbeleg nur besprochen, nicht in der Annahmen-Map.',
+      'Falle: synthetisches Zitat als Beleg – zählt nie.',
     ],
-    uebung: { dauer: '3 min (plus ca. 1 min Vorführen)', form: 'allein, jede*r im eigenen Log' },
-    ablauf: {
-      schritte: [
-        'Vorführen: eine Log-Zeile (ca. 1 min), vor dem Timer. Zuerst zeigen, was im Log der Demo-Mappe schon steht: D4 verworfen – „Vorbestellen vor der Ankunft verworfen“, Grund „3 von 5 sagen, sie entscheiden erst in der Halle“, Beleg gesagt (I2-4, I3-1, I5-3). D3 geändert – „Zielgruppe: Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin“, ersetzt D1, Beleg gesagt (I1–I5).',
-        'Dann live die dritte Art, bewusst behalten: /innolab/mappe?ansicht=demo&bearbeiten=entscheidungen öffnet den Log-Editor deiner Demo-Mappe direkt. „Neue Entscheidung“ → neue Zeile D5, Datum steht schon auf heute. Entscheidung (D5): „A3 bewusst behalten: Bestellen im Gehen bleibt als Annahme“. Grund (D5): „Kein Interview sagt etwas dazu; wir prüfen es mit einem Test, nicht mit Interviews.“ Beleg (D5): „noch keiner“ (voreingestellt), Beleg-IDs leer lassen. Speichern.',
-        'Warum A3: „Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können“ (bedienbar, mittel, Beleg noch keiner) – kein Zitat der Kaffeebar berührt das Bestellen im Gehen; „behalten“ ist darum ehrlich.',
-      ],
-      achten: [
-        'Das Log hängt nur an: Gespeichert bleibt D5 in der Demo-Mappe stehen und lässt sich nicht mehr löschen (nur ersetzen). Vorher genau so eintippen; D5 bleibt dann als Beispiel für „behalten“. Steht schon eine D5 im Demo-Log, heißt die neue Zeile anders – dann die ID im Satz anpassen.',
-      ],
-    },
+    uebung: { dauer: '3 min', form: 'allein, jede*r in der eigenen Mappe' },
     verstaendnis: {
       frage: 'I2 widerspricht eurer riskantesten Annahme. Wohin damit?',
-      antwort: 'In die Annahmen-Map als Beleg (I2-4). Ins Log kommt eine Zeile erst, wenn ihr deshalb etwas entscheidet – verworfen, geändert oder bewusst behalten.',
-      falsch: '„Eine Zeile ‚A1 hat Gegenbeleg‘ ins Log“ – das ist ein Stand, er gehört in die Map; das Log hält fest, was ihr darum tut.',
+      antwort: 'In die Annahmen-Map als Beleg (I2-4). Entschieden wird erst, wenn ihr deshalb etwas tut – verworfen, geändert oder bewusst behalten.',
+      falsch: '„A1 umschreiben, bis sie passt“ – der Satz bleibt stehen; was ihr jetzt glaubt, wird eine neue Annahme.',
     },
     kern: [
       {
@@ -375,27 +364,27 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
         quelle: `${MOMTEST}, S. 103, 110`,
       },
       {
-        text: 'Bland, Learning Card: „We believed that …“, „We observed …“, „From that we learned that …“, „Therefore, we will …“ – die Zeile im Log ist das „Therefore“. Gelerntes hat ein Ablaufdatum, darum wird es in Handlung übersetzt: aufgeben, ändern oder weiter testen.',
+        text: 'Bland, Learning Card: „We believed that …“, „We observed …“, „From that we learned that …“, „Therefore, we will …“ – eure Entscheidung ist das „Therefore“. Gelerntes hat ein Ablaufdatum, darum wird es in Handlung übersetzt: aufgeben, ändern oder weiter testen.',
         quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 55, 62',
       },
       {
-        text: 'Kaffeebar nach den Interviews: D3 „Zielgruppe: Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin“ ersetzt D1 (Beleg gesagt, I1–I5); D4 „Vorbestellen vor der Ankunft verworfen“ (gesagt, I2-4, I3-1, I5-3; bei I1 nur in der Notiz).',
-        quelle: 'Werkstatt, Beispiel Kaffeebar, entscheidungen.json',
+        text: 'Kaffeebar nach den Interviews: Zielgruppe im Brief geschärft zu „Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin“ (gesagt, I1–I5); „Vorbestellen vor der Ankunft“ verworfen (gesagt, I2-4, I3-1, I5-3; bei I1 nur in der Notiz).',
+        quelle: 'Werkstatt, Beispiel Kaffeebar',
       },
     ],
     fragen: [
       {
         frage: 'Und wenn sich nichts geändert hat?',
-        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: eine Zeile, dass Zielgruppe und Problem bleiben, mit den IDs echter Interviews als Beleg. Wer nur synthetische Interviews hat, behält ebenfalls bewusst, aber mit Beleg „noch keiner“ und dem nächsten Schritt im Grund: in echten Interviews prüfen. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
+        antwort: 'Dann ist „bewusst behalten“ die Entscheidung: Zielgruppe und Problem bleiben, belegt mit den IDs echter Interviews. Wer nur synthetische Interviews hat, behält ebenfalls bewusst, aber mit Beleg „noch keiner“ und dem nächsten Schritt: in echten Interviews prüfen. Oder ihr fragt euch, ob die Interviews zu nett waren (Übertrag).',
       },
     ],
-    ueberleitung: 'Dann reihum: jede*r liest die eigene Zeile vor.',
+    ueberleitung: 'Dann sagt jede*r die eigene Entscheidung laut.',
   },
 
   uebertrag: {
     live: [
-      'Reihum: jede*r liest die eigene Zeile vor – Entscheidung, Grund, Beleg-Stufe.',
-      '„Beleg: noch keiner“ gilt – im Grund steht dann: in echten Interviews prüfen.',
+      'Jede*r sagt die eigene Entscheidung laut – Annahme, Grund, Beleg-Stufe.',
+      '„Beleg: noch keiner“ gilt – nächster Schritt dann: in echten Interviews prüfen.',
       'Echte Interviews ohne Beleg: zu nett oder nach der Idee gefragt?',
       'Pause: Claude – ‚Übertrag die Snapshots und kopier die Skizzen‘.',
       'Ist-Zeit notieren.',

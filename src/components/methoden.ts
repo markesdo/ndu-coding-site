@@ -90,7 +90,7 @@ export interface Methode {
   slug: string;
   name: string;
   /** Kurstag, an dem die Methode eingeführt wird (1–6; an Tag 6 nur noch der Pitch, nach dem Sprint; Tag 7 ist die
-   *  Präsentation – dort kommt nichts Neues dazu). Ausnahme „scrum“: Agil und Lego4Scrum an Tag 4, Teamaufstellung und
+   *  Präsentation – dort kommt nichts Neues dazu). Ausnahme „scrum“: Agil und Scrum an Tag 4 (Lego4Scrum seit 25.11.2026 stillgelegt), Teamaufstellung und
    *  Definition of Done (Artefakt team) zu Beginn von Tag 5. */
   tag: number;
   /** Minuten für Input, Übung und Festhalten zusammen. */
@@ -116,6 +116,9 @@ export interface Methode {
    *  aufdeckt, spätestens ab ab (lib/aufgedeckt.ts gruppeFrei). Der Connector hält sich daran (methode_erklaeren,
    *  artefakt_pruefen); auf der Methodenseite steht die Prüfliste dafür selbst in <Aufloesung>. */
   prueflisteNach?: { gruppe: string; ab: string };
+  /** In diesem Kursjahr nicht genutzt (Entscheidungslog seit 21.11.2026, NDU-70): nicht in der Toolbox und auf keiner
+   *  Tagesseite, methode_erklaeren kennt sie nicht. Die Methodenseite bleibt für alte Links, mit Hinweis. */
+  stillgelegt?: true;
 }
 
 /** In Kursreihenfolge – die Prüfung „braucht nur Früheres“ verlässt sich darauf. */
@@ -134,7 +137,7 @@ export const METHODEN: Methode[] = [
     ],
   },
   {
-    slug: 'entscheidungslog', name: 'Entscheidungslog', tag: 1, dauer: 5, prueflisteStand: 2,
+    slug: 'entscheidungslog', name: 'Entscheidungslog', tag: 1, dauer: 5, prueflisteStand: 2, stillgelegt: true,
     frage: 'Was haben wir geglaubt, wie geprüft, was gelernt – und was haben wir darum geändert?',
     braucht: ['brief'], ergibt: ['entscheidungen'],
     ki: 'Prüft am Ende jedes Tages, welche Entscheidung ohne Beleg dasteht.',
@@ -306,7 +309,8 @@ export const METHODEN: Methode[] = [
     quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 347–348 (PDF)',
   },
   {
-    slug: 'concept-story', name: 'Concept Story', tag: 3, dauer: 30,
+    // Seit 25.11.2026 (NDU-66): an Tag 3 nur Theorie, geschrieben an Tag 4 (09:40–10:20: 10 min Theorie, 30 min Übung).
+    slug: 'concept-story', name: 'Concept Story', tag: 4, dauer: 40,
     frage: 'Warum versteht jemand in Sekunden, dass euer Produkt besser ist als das, was er heute tut?',
     braucht: ['annahmen', 'synthese', 'profil', 'ideen', 'valuemap'], ergibt: ['concept'],
     pruefliste: [
@@ -354,7 +358,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
-    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 105,
+    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 75,
     frage: 'Was tun Menschen mit eurem Produkt, von Anfang bis Ende – und was baut ihr zuerst, um welchen Outcome zu erreichen?',
     braucht: ['brief', 'profil', 'valuemap', 'journey', 'annahmen'], ergibt: ['storymap'],
     pruefliste: [
@@ -388,7 +392,7 @@ export const METHODEN: Methode[] = [
   {
     slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 4, dauer: 90, prueflisteStand: 2,
     frage: 'Erreichen fünf Menschen mit dem Prototyp den Höhepunkt, ohne dass ihr helft?',
-    braucht: ['usage', 'storymap', 'annahmen', 'entscheidungen'], ergibt: ['spike'],
+    braucht: ['usage', 'storymap', 'annahmen'], ergibt: ['spike'],
     pruefliste: [
       { id: 'prototyp-spike-skizzen', text: 'Papierskizzen für jeden Bildschirm der Usage Story liegen als Foto in docs/TESTS.md; der Höhepunkt ist ein eigener Bildschirm.' },
       { id: 'prototyp-spike-branch', text: 'Der Prototyp liegt in einem eigenen Branch, trägt „Prototyp – nicht echt“ und hat Abnahmekriterien und eine Zeitbox – er wird nicht gemergt.' },
@@ -396,13 +400,14 @@ export const METHODEN: Methode[] = [
       { id: 'prototyp-spike-aufgabe', text: 'Die Aufgabe beschreibt Situation und Ziel, keine Bedienschritte und keine Begriffe aus der Oberfläche.' },
       { id: 'prototyp-spike-trockenlauf', text: 'Ein Trockenlauf mit den anderen beiden ist gelaufen; die Testpersonen danach haben den Pain und kennen das Produkt nicht.' },
       { id: 'prototyp-spike-protokoll', text: 'Pro Testperson steht fest: Höhepunkt ohne Hilfe erreicht, Zeit, wo gehangen, Reaktion am Höhepunkt.' },
-      { id: 'prototyp-spike-lernkarte', text: 'Nach den Tests: Lernkarte mit Verlässlichkeit und Befund (gestützt, widerlegt, unklar oder neue Einsicht), und was ihr deshalb ändert, als Zeile im Entscheidungslog mit U-IDs.' },
+      { id: 'prototyp-spike-lernkarte', text: 'Nach den Tests: Lernkarte mit Verlässlichkeit und Befund (gestützt, widerlegt, unklar oder neue Einsicht), und was ihr deshalb ändert, in der Zeile „Beleg: … → darum: …“ mit U-IDs.' },
     ],
     ki: 'Baut den Wegwerf-Prototyp – erst nach der Papierskizze und innerhalb der Abnahmekriterien.',
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
   },
   {
-    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 175, prueflisteStand: 2,
+    // Seit 25.11.2026 (NDU-72) ohne Lego4Scrum: Agil & Scrum an Tag 4 (30), Teamaufstellung und DoD an Tag 5 (40).
+    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 70, prueflisteStand: 2,
     frage: 'Wie arbeiten wir als drei Scrum-Teams mit denselben drei Personen an drei Produkten?',
     braucht: ['brief'], ergibt: ['team'],
     pruefliste: [
@@ -412,21 +417,20 @@ export const METHODEN: Methode[] = [
       { id: 'scrum-dod', text: 'Die Definition of Done ist eine Liste von Punkten, die sich im Browser, auf GitHub oder in Supabase prüfen lassen, und gilt für alle drei Produkte.' },
       { id: 'scrum-dod-messung', text: 'In der Definition of Done steht das Ereignis, das die Outcome-Metrik des Produkt-Briefs misst, mit seinen Feldern – ohne Name und E-Mail.' },
       { id: 'scrum-abweichungen', text: 'Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, ein einziger Sprint von einer Woche, schriftliches Daily.' },
-      { id: 'scrum-lego', text: 'Unter „Aus Lego4Scrum“ steht je Person eine Sache, die das Team im echten Sprint anders macht.' },
     ],
-    ki: 'Keine Rolle – Scrum lernt ihr im Spiel und im Team.',
+    ki: 'Keine Rolle – Scrum lernt ihr an der Kaffeebar und im Team.',
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Manifesto for Agile Software Development (2001); Alexey Krivitsky, lego4scrum (2023); Ron Jeffries, The Nature of Software Development (2015)',
   },
   {
     slug: 'backlog', name: 'Backlog aus Issues', tag: 5, dauer: 60, prueflisteStand: 2,
     frage: 'Welche Issues ergeben sich aus dem ersten Slice – und in welcher Reihenfolge?',
-    braucht: ['storymap', 'usage', 'spike', 'experimente', 'team', 'entscheidungen'], ergibt: ['issues'],
+    braucht: ['storymap', 'usage', 'spike', 'experimente', 'team'], ergibt: ['issues'],
     pruefliste: [
       { id: 'backlog-herkunft', text: 'Jedes Issue kommt aus Slice 1 der Story Map, aus einem Testbefund oder aus der Definition of Done und nennt seine Quelle (Slice 1, U-Kennung oder DoD).' },
       { id: 'backlog-titel-ziel', text: 'Jedes Issue hat einen kurzen Titel als Verb-Satz und ein Ziel, das sagt, wer danach was kann und warum.' },
       { id: 'backlog-senkrecht', text: 'Jedes Issue ist ein senkrechter Schnitt: Danach kann jemand etwas, das vorher nicht ging – kein Issue heißt „Datenbank“ oder „Oberfläche“.' },
       { id: 'backlog-nicht-im-umfang', text: 'Unter Nicht im Umfang steht, was ihr bewusst weggelassen habt; offene Fragen stehen unter „Fragen aus dem Gespräch“, nicht als stille Annahmen.' },
-      { id: 'backlog-reihenfolge', text: 'Die Reihenfolge ist begründet: zuerst, was Slice 1 bis zum Höhepunkt der Usage Story braucht, dann das Riskanteste; wo ihr vom Bauchgefühl abweicht, steht eine Zeile im Entscheidungslog.' },
+      { id: 'backlog-reihenfolge', text: 'Die Reihenfolge ist begründet: zuerst, was Slice 1 bis zum Höhepunkt der Usage Story braucht, dann das Riskanteste; wo ihr vom Bauchgefühl abweicht, steht der Grund im Issue, das ihr vorzieht.' },
       { id: 'backlog-erzaehlt', text: 'Jedes Issue haben die beiden anderen erzählt bekommen; ihre Fragen und eure Antworten stehen im Issue.' },
     ],
     ki: 'Prüft INVEST und ob die Reihenfolge Outcome und Risiko folgt – schlägt keine Issues vor und ändert keins.',
@@ -478,18 +482,18 @@ export const METHODEN: Methode[] = [
   {
     slug: 'pitch', name: 'Pitch', tag: 6, dauer: 45, prueflisteStand: 2,
     frage: 'Überzeugt das Produkt – mit Belegen und einem sichtbaren Unterschied zu dem, was es heute gibt?',
-    braucht: ['brief', 'profil', 'valuemap', 'concept', 'experimente', 'origin', 'geschaeftsmodell', 'usage', 'spike', 'inkrement', 'sprintlog', 'entscheidungen'], ergibt: ['pitch'],
+    braucht: ['brief', 'profil', 'valuemap', 'concept', 'experimente', 'origin', 'geschaeftsmodell', 'usage', 'spike', 'inkrement', 'sprintlog'], ergibt: ['pitch'],
     pruefliste: [
       { id: 'pitch-einstieg', text: 'Der Einstieg ist die Concept Story: Die Nutzer*innen und ihr Problem kommen vor dem Produkt, und die Geschichte hört vor dem Höhepunkt auf.' },
       { id: 'pitch-demo', text: 'Die Demo folgt der Usage Story bis zum Höhepunkt, live am Handy auf der Produktions-URL; ihr führt sie vor, und ein Video liegt als Plan B bereit.' },
       { id: 'pitch-belege', text: 'Jede Behauptung über Nutzer*innen hat einen Beleg mit ID, eine Zahl mit der Zahl der Personen dahinter und ein Wort dazu, wie sicher sie ist – nicht sicherer als in der Lernkarte.' },
-      { id: 'pitch-gescheitert', text: 'Mindestens eine Annahme, die nicht gehalten hat, kommt vor – mit der Entscheidung, die dazu im Entscheidungslog steht.' },
+      { id: 'pitch-gescheitert', text: 'Mindestens eine Annahme, die nicht gehalten hat, kommt vor – mit der Entscheidung, die dazu auf der Lernkarte steht (Zeile „Beleg: … → darum: …“).' },
       { id: 'pitch-outcome', text: 'Die Zahlen der Outcome-Metrik stehen da, mit der Zahl der Personen dahinter, auch wenn sie klein ist.' },
       { id: 'pitch-position', text: 'Der Teil Position nennt gegenüber den heutigen Alternativen, was wegfällt, weniger wird, mehr wird und neu ist – alle vier, jede Zeile mit Beleg: einer ID aus dem Kundenprofil oder einem Verweis auf die Value Map.' },
       { id: 'pitch-pitch-satz', text: 'Der Pitch-Satz aus Abschnitt 3 des Produkt-Briefs steht da und verspricht nichts, was die Demo nicht zeigt.' },
       { id: 'pitch-geschaeftsmodell', text: 'Es steht da, wer zahlt und wofür, an welcher Annahme das Modell hängt – benannt, nicht gerechnet –, und was ihr als Nächstes prüft und warum.' },
     ],
-    ki: 'Spielt eine skeptische Investorin; prüft jede Behauptung gegen Lernkarten und Entscheidungslog und verlangt keine Preis- oder Kostenrechnung.',
+    ki: 'Spielt eine skeptische Investorin; prüft jede Behauptung gegen Lernkarten und Testbefunde und verlangt keine Preis- oder Kostenrechnung.',
     quelle: 'Donna Lichaw, The User’s Journey (2016), Kap. 2, 7; W. Chan Kim & Renée Mauborgne, Blue Ocean Strategy (2005), S. 25–43, 82–93; Marty Cagan, Inspired (2018), S. 151–153, 189–190, 281–282; David J. Bland & Alexander Osterwalder, Testing Business Ideas (2019), S. 52, 56–57, 81; Stefan H. Thomke, The Scientific Mindset (2027), S. 111, 170',
   },
 ];
@@ -499,14 +503,15 @@ export const METHODEN: Methode[] = [
  *  online) Präsentation. Dazwischen arbeitet ihr zu Hause; gebaut wird bis Tag 6.
  *  Stand 12.11.2026 (Entscheidung Markus): Tag 2 endete nach der Experience Map; Tag 3 beginnt mit „Experience Map nachschärfen“ (tag-3/experience-map), dann der Baum; Geschäftsmodell
  *  und Experiment-Karte eröffnen Tag 4, Teamaufstellung und Definition of Done folgen an Tag 5 nach dem Debrief, der Pitch
- *  an Tag 6; Tag 7 liegt am 16.01.2027.
+ *  an Tag 6; Tag 7 liegt am 16.01.2027. Seit 25.11.2026 (NDU-66) beginnt Tag 4 mit dem Nachholen von Value Map und Fit
+ *  und der Concept Story; Geschäftsmodell und Experiment-Karte folgen nach der ersten Pause.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). Ohne datum: Termin folgt
  *  – dann keine Jetzt-Markierung auf der Tagesseite. */
 export const TAGE: { n: number; datum?: string; titel: string; text: string }[] = [
   { n: 1, datum: '2026-10-22', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
   { n: 2, datum: '2026-11-12', titel: 'Kunde & Erlebnis', text: 'Snapshots besprechen, Experience Map.' },
-  { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Opportunity Solution Tree, Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, Concept Story.' },
-  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Geschäftsmodell und Experiment-Karte; Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Scrum und Lego4Scrum.' },
+  { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Opportunity Solution Tree, Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, der Story-Bogen als Theorie.' },
+  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Value Map nachholen, Concept Story; Geschäftsmodell und Experiment-Karte; Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Agil und Scrum.' },
   { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Team und Definition of Done, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning mit Störfall – dann wird gebaut.' },
   { n: 6, datum: '2026-12-19', titel: 'Bauen & Review', text: 'Fertig bauen, Usability-Tests über Kreuz, Sprint-Review und Retro: Der Prototyp steht. Danach der Pitch mit Probe.' },
   { n: 7, datum: '2027-01-16', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
@@ -517,8 +522,8 @@ export const artefakt = (id: string): Artefakt | undefined => ARTEFAKTE.find((a)
 /** Die Methode, die ein Artefakt erzeugt. */
 export const erzeugtVon = (id: string): Methode | undefined => METHODEN.find((m) => m.ergibt.includes(id));
 
-/** Methoden eines Kurstags, in Kursreihenfolge. */
-export const methodenVonTag = (tag: number): Methode[] => METHODEN.filter((m) => m.tag === tag);
+/** Methoden eines Kurstags, in Kursreihenfolge – ohne stillgelegte (Toolbox, tag_stand „Methoden an Tag …“). */
+export const methodenVonTag = (tag: number): Methode[] => METHODEN.filter((m) => m.tag === tag && !m.stillgelegt);
 
 /** Umkehrung von braucht: die Methoden, die ein Ergebnis dieser Methode weiterverwenden („Wird gebraucht in“), in
  *  Kursreihenfolge. Nichts davon wird gepflegt – es folgt aus braucht. */
@@ -636,15 +641,15 @@ export const NACHFRAGE_BELEGE = 'Nachfragen nur nach Belegen, eine pro Befund: �
  *  Belegen steht nur beim Prüfen auf Miro (Experience Map, Baum): Bei artefakt_pruefen zitiert Claude die Vorarbeit
  *  zum Abgleich nie (Server-Anweisung, Regel 5) – dort würde die Nachfrage dagegen laufen. */
 export function danachEntscheiden(m: Methode, pfad?: string): string[] {
-  const log = '<a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>';
-  const lassen = `Stimmt er nicht oder ist es bewusst so: lassen und eine Zeile ins ${log} – was ihr lasst und warum, mit Beleg oder „noch keiner“.`;
+  // Kein Entscheidungslog mehr (seit 21.11.2026 für diesen Kurs stillgelegt, Entscheidung 30, NDU-70): Was ihr lasst,
+  // begründet ihr selbst, in einem Satz.
+  const lassen = 'Stimmt er nicht oder ist es bewusst so: lassen – und in einem Satz sagen können, warum.';
   if (pruefungAufMiro(m, pfad)) {
-    // Ergebnisse auf Miro: kein Entscheidungslog (seit 21.11.2026 für diesen Kurs stillgelegt, Entscheidung 30).
     return [
       'Gibt Claude Befunde: im Kurs einen wählen, den wichtigsten. Die Frage selbst in einem Satz beantworten.',
       'Ein Befund ist eine Vermutung, kein Urteil: Prüft an euren Zitaten, ob er stimmt.',
       `${NACHFRAGE_BELEGE} Den neuen Text schreibt ihr selbst – Claude formuliert nichts.`,
-      'Stimmt er: selbst auf Miro ändern. Stimmt er nicht oder ist es bewusst so: lassen – und in einem Satz sagen können, warum.',
+      `Stimmt er: selbst auf Miro ändern. ${lassen}`,
       `Die übrigen Befunde bis Tag ${m.tag + 1}; nach dem Ändern höchstens einmal neu prüfen lassen.`,
       '„Passt alles“: weiter.',
     ];

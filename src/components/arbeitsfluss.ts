@@ -4,7 +4,7 @@
 // „Kommt aus“ im Übergangsstreifen folgt aus braucht (methoden.ts), außer wo eine Station es selbst sagt.
 // Ohne Astro, damit testbar (arbeitsfluss.test.ts); gezeichnet in bild/Arbeitsfluss.astro, Streifen in Uebergang.astro.
 //
-// Kursentscheidungen (Markus, 25.11.2026): Die Concept Story wird an Tag 4 geschrieben (Station in Spalte 4). Der
+// Kursentscheidungen (Markus, 25.11.2026): Die Concept Story wird an Tag 4 geschrieben (methoden.ts: tag 4). Der
 // Entscheidungslog ist stillgelegt und hat keine Station; die Entscheidung nach einem Test steht auf der Lernkarte.
 // Der Map-Entwurf von Tag 1 (T1 · 1) hat keine Methode in methoden.ts: Station „Vermutung“, ersetzt durch die Experience Map.
 import { METHODEN, TAGE, type Methode } from './methoden';
@@ -37,7 +37,7 @@ export interface Station {
   kurz: string;
   /** Erste Linie = Hauptlinie; mehrere = Umsteigepunkt: die Linien verzweigen zu dieser Station. */
   linien: Linie[];
-  /** Kurstag-Spalte – darf vom tag der Methode abweichen (Concept Story: Tag 4). */
+  /** Kurstag-Spalte – darf vom tag der Methode abweichen (Tag 5–7 in einer Spalte; Fortsetzungen). */
   spalte: Spalte;
   /** Rasterzeile in der Spalte – berechnet: Reihenfolge im Tagesablauf (Reihenfolge in STATIONEN). */
   zeile: number;
@@ -238,8 +238,8 @@ export const STATIONEN: Station[] = ROH.map((s) => ({ ...s, zeile: ROH.filter((x
 /** So viele Zeilen hat der Plan: die längste Spalte. */
 export const ZEILEN = Math.max(...STATIONEN.map((s) => s.zeile));
 
-/** Stillgelegte Methoden ohne Station (Entscheidung 30, NDU-70). */
-export const OHNE_STATION = ['entscheidungslog'];
+/** Stillgelegte Methoden (methoden.ts, stillgelegt: true – etwa der Entscheidungslog, NDU-70) haben keine Station. */
+export const OHNE_STATION: string[] = METHODEN.filter((m) => m.stillgelegt).map((m) => m.slug);
 
 export const station = (id: string): Station | undefined => STATIONEN.find((s) => s.id === id);
 export const methodeVon = (s: Station): Methode | undefined => (s.methode ? METHODEN.find((m) => m.slug === s.methode) : undefined);

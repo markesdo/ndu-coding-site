@@ -23,7 +23,8 @@ const MARKUS = { githubId: 1000, login: 'markus', kohorte: '2026', rolle: 'lehre
 const ANDERE = { githubId: 2000, login: 'andere', kohorte: 'test', rolle: 'lehrende' } as const;
 const SOFIE = { githubId: 1001, login: 'sofie-x', kohorte: '2026', rolle: 'studierende' } as const;
 const AUTOR = { name: 'sofie-x', email: 'x@example.invalid' };
-const NAMEN: ArtefaktName[] = ['brief', 'entscheidungen', 'annahmen', 'leitfaden', 'interviews'];
+// Spalten dieses Kursjahrs: ohne das stillgelegte Entscheidungslog (NDU-70).
+const NAMEN: ArtefaktName[] = ['brief', 'annahmen', 'leitfaden', 'interviews'];
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -162,7 +163,6 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
     expect(a.kurstag).toStrictEqual({ tag: 2, titel: 'Kunde & Erlebnis', lage: 'naechster' });
     expect(a.spalten).toStrictEqual([
       { name: 'brief', faelligZuTag: 2, hausaufgabe: false },
-      { name: 'entscheidungen', faelligZuTag: faelligZuTag('entscheidungen'), hausaufgabe: false },
       { name: 'annahmen', faelligZuTag: faelligZuTag('annahmen'), hausaufgabe: false },
       { name: 'leitfaden', faelligZuTag: faelligZuTag('leitfaden'), hausaufgabe: false },
       { name: 'interviews', faelligZuTag: 2, hausaufgabe: true },
@@ -180,7 +180,6 @@ describe('GET /api/werkstatt/lehrende – Inhalt', () => {
         artefakte: [
           // Der Brief vom 21.10. (Wien) zählt nicht, der um 00:30 am 22.10. (Wien, UTC noch 21.10.) schon.
           vorhanden('brief', 1, '2026-10-21T22:30:00.000Z'),
-          offen('entscheidungen'),
           vorhanden('annahmen', 2, '2026-10-23T10:00:00.000Z'),
           offen('leitfaden'),
           vorhanden('interviews', 1, '2026-10-23T11:00:00.000Z'),
@@ -254,6 +253,15 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
     expect(a.personen[1]).toMatchObject({ kuerzel: 'lea', zustand: 'bereit' });
   });
 
+  // NDU-70: Das stillgelegte Log nur nach bestem Bemühen – ein Fehler genau darauf setzt die Person nicht auf „fehler“.
+  it('GitHub scheitert nur beim stillgelegten Entscheidungslog: Mappe bleibt „bereit“', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = await aufbau({ speicher: (fake) => ({ lesen: async (repo, name) => { if (name === 'entscheidungen') throw new Error('GitHub weg'); return fake.lesen(repo, name); } }) });
+    const a = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
+    expect(a.personen[2]).toMatchObject({ kuerzel: 'sofie', zustand: 'bereit' });
+    expect(SOFIE_(a).artefakte.map((x: { name: string }) => x.name)).toStrictEqual(NAMEN);
+  });
+
   it('GitHub scheitert beim Verlauf: dort fehler, die anderen kommen', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const t = await aufbau({ speicher: (fake) => ({ verlauf: async (repo, name) => { if (repo === '2026-lea') throw new Error('GitHub weg'); return fake.verlauf(repo, name); } }) });
@@ -302,7 +310,7 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
     // Eine kaputte Mappe bricht nie die ganze Antwort ab.
     expect(r.status).toBe(200);
     const a = await r.json();
-    const [brief, , annahmen, , interviews] = SOFIE_(a).artefakte;
+    const [brief, annahmen, , interviews] = SOFIE_(a).artefakte;
     expect(brief).toStrictEqual({ name: 'brief', stand: 'unlesbar', umfang: null, fehlt: [], leer: false, faelligZuTag: 2, faellig: true, commits: 1, mehr: false, zuletzt: '2026-10-21T22:30:00.000Z', feedback: OHNE_FEEDBACK });
     expect(interviews).toMatchObject({ name: 'interviews', stand: 'unlesbar', umfang: null, commits: 2 });
     expect(annahmen).toMatchObject({ stand: 'vorhanden' });

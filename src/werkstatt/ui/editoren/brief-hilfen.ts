@@ -1,7 +1,10 @@
 // Reine Hilfen des Brief-Editors: die Karten der Vorschau. Die Reihenfolge 1–7 ist die der Vorlage auf „Problem-Rahmen“.
 import type { Brief } from '../../schemas/index.js';
 
-export const PRODUKTSATZ_OFFEN = 'Offen – steht nach Tag 3 fest.';
+// Abschnitt 3 kommt aus der Concept Story (seit 25.11.2026 an Tag 4, NDU-66). Vorschau, Hilfe im Editor und Markdown
+// (render/brief.ts) nennen denselben Tag – brief-editor.test.ts hält sie gleich.
+export const PRODUKTSATZ_OFFEN = 'Offen – steht nach Tag 4 fest.';
+export const PRODUKTSATZ_HILFE = 'Lass das Feld heute leer. Es steht nach Tag 4 fest.';
 export const MVP_HINWEIS = 'Kommt aus der Story Map (Tag 4).';
 
 export interface BriefKarte {
@@ -11,7 +14,7 @@ export interface BriefKarte {
   absaetze: string[];
   /** Aufzählung statt Absätzen. */
   punkte?: string[];
-  /** Platzhalter, solange nichts da ist (zum Beispiel „Offen – steht nach Tag 3 fest.“). */
+  /** Platzhalter, solange nichts da ist (zum Beispiel „Offen – steht nach Tag 4 fest.“). */
   leerText?: string;
 }
 

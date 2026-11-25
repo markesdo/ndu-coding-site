@@ -42,10 +42,19 @@ describe('methoden', () => {
     });
   });
 
-  it('jedes Artefakt außer dem Pitch wird später weiterverwendet – keine toten Enden', () => {
-    for (const id of artefaktIds.filter((x) => x !== 'pitch')) {
+  it('jedes Artefakt außer dem Pitch wird später weiterverwendet – keine toten Enden (stillgelegte ausgenommen)', () => {
+    for (const id of artefaktIds.filter((x) => x !== 'pitch' && !erzeugtVon(x)?.stillgelegt)) {
       expect(METHODEN.some((m) => m.braucht.includes(id)), id).toBe(true);
     }
+  });
+
+  // NDU-70: Das Entscheidungslog ist in diesem Kursjahr stillgelegt – keine Methode baut darauf auf, und es steht in
+  // keiner Liste der Methoden eines Tages (Toolbox, tag_stand). Die Methode selbst bleibt für die Seite und alte Links.
+  it('stillgelegt ist nur das Entscheidungslog; niemand braucht es, kein Tag listet es', () => {
+    expect(METHODEN.filter((m) => m.stillgelegt).map((m) => m.slug)).toStrictEqual(['entscheidungslog']);
+    expect(METHODEN.filter((m) => m.braucht.includes('entscheidungen')).map((m) => m.slug)).toStrictEqual([]);
+    expect(methodenVonTag(1).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'annahmen', 'interview']);
+    for (const t of TAGE) expect(methodenVonTag(t.n).filter((m) => m.stillgelegt), `Tag ${t.n}`).toStrictEqual([]);
   });
 
   it('Kurstage laufen aufsteigend von 1 bis 6 – an Tag 6 kommt nur noch der Pitch dazu, Tag 7 ist die Präsentation –, Orte sind bekannt', () => {
@@ -182,7 +191,8 @@ describe('methoden', () => {
     ];
     // Ein Sprint statt zwei: kein „gestriges Wetter“ aus Sprint 1 und keine kurze Retro von Sprint 2 mehr.
     // 19.11.2026: Ulwick nur noch Theorie (keine Rechnung); der Lückensatz gehört seitdem zur Ideation (ideation-drei).
-    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz', 'ziel-chance-ulwick', 'value-map-lueckensatz'];
+    // 25.11.2026 (NDU-72): Lego4Scrum dieses Kursjahr stillgelegt.
+    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz', 'ziel-chance-ulwick', 'value-map-lueckensatz', 'scrum-lego'];
     const jetzt = METHODEN.flatMap((m) => m.pruefliste ?? []).map((p) => p.id);
     for (const id of jetzt) expect(VERGEBEN, `${id}: neue ID in VERGEBEN eintragen`).toContain(id);
     for (const id of VERGEBEN) {
@@ -383,11 +393,11 @@ describe('methoden', () => {
     }
     // Nur ein Teil (pfad): Datei, also auch keine Nachfrage.
     expect(text(methode('baum'), 'docs/X.md')).not.toContain(NACHFRAGE_BELEGE);
-    // Ergebnisse auf Miro (alles von Tag 3): kein Entscheidungslog (für diesen Kurs stillgelegt, Entscheidung 30); die übrigen
-    // Fassungen behalten den Weg ins Log.
+    // Kein Entscheidungslog mehr (für diesen Kurs stillgelegt, Entscheidung 30, NDU-70): Wer einen Befund nicht übernimmt,
+    // begründet es in einem Satz – in Werkstatt, Repo und auf Miro.
     for (const m of METHODEN.filter((x) => x.pruefliste)) {
-      if (pruefungAufMiro(m)) expect(text(m), m.slug).not.toMatch(/Entscheidungslog/);
-      else expect(text(m), m.slug).toContain('<a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>');
+      expect(text(m), m.slug).not.toMatch(/Entscheidungslog|ins Log/);
+      expect(text(m), m.slug).toContain('Stimmt er nicht oder ist es bewusst so: lassen – und in einem Satz sagen können, warum.');
     }
     for (const s of ['ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']) {
       expect(text(methode(s)), s).toContain('Stimmt er: selbst auf Miro ändern. Stimmt er nicht oder ist es bewusst so: lassen – und in einem Satz sagen können, warum.');
@@ -483,7 +493,7 @@ describe('methoden', () => {
 
   it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
-    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog \(Werkzeug artefakt_lesen\)\. /);
+    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
     // Kundenprofil und Value Map liegen seit 21.11.2026 auf Miro: als Bild.
     expect(pi).toContain('\nZum Abgleich füge ich auch zwei Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · euer Name“) und Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“).\n');
     // Die Prüfliste verlangt alle vier Raster-Felder mit Beleg aus Kundenprofil oder Value Map, ein Sicherheits-Wort wie in
@@ -496,7 +506,7 @@ describe('methoden', () => {
     expect(liste).toMatch(/Zahlen der Outcome-Metrik/);
     // vorarbeitLesen (daraus baut die Pitch-Seite den Prompt der Investorin) liefert dieselbe Liste wie der Prüf-Prompt.
     expect(pi).toContain(`Zum Abgleich lies auch ${vorarbeitLesen(pitch, ['docs/PITCH.md']).join(' und ')}. `);
-    expect(pitch.braucht).toEqual(expect.arrayContaining(['profil', 'valuemap', 'experimente', 'spike', 'entscheidungen', 'brief']));
+    expect(pitch.braucht).toEqual(expect.arrayContaining(['profil', 'valuemap', 'experimente', 'spike', 'brief']));
   });
 
   it('jede Tagesseite trägt das Datum aus TAGE als data-kurstag – sonst springt die Jetzt-Markierung am falschen Tag', () => {
@@ -549,8 +559,9 @@ describe('methoden', () => {
     // Je Kurstag: Start, die Stationen in Kursreihenfolge, zuletzt das Ziel, an dem die Kette den Tag verlässt oder zur Tagesseite zurückkehrt.
     const ketten: string[][] = [
       ['/innolab/tag-2', m('synthese'), m('journey-map'), '/innolab/tag-2/abschluss', '/innolab/tag-3'],
-      ['/innolab/tag-3', '/innolab/tag-3/experience-map', m('baum'), m('ziel-chance'), m('kundenprofil'), m('hmw'), m('ideation'), m('value-map'), m('concept-story'), '/innolab/tag-3#abschluss'],
-      ['/innolab/tag-4', m('geschaeftsmodell'), m('experiment'), m('story-map'), m('usage-story'), m('prototyp-spike'), m('scrum')],
+      ['/innolab/tag-3', '/innolab/tag-3/experience-map', m('baum'), m('ziel-chance'), m('kundenprofil'), m('hmw'), m('ideation'), m('value-map'), m('concept-story')],
+      // Seit 25.11.2026 (NDU-66): Tag 4 beginnt mit dem Nachholen von Value Map & Fit und der Concept Story.
+      ['/innolab/tag-4', m('value-map#vorgehen'), m('concept-story'), m('geschaeftsmodell'), m('experiment'), m('story-map'), m('usage-story'), m('prototyp-spike'), m('scrum')],
       ['/innolab/tag-5', m('scrum#team'), m('backlog'), m('akzeptanzkriterien'), m('schneiden'), m('sprint'), '/innolab/tag-5#stoerfall'],
       ['/innolab/tag-6', '/innolab/tag-7', '/innolab'],
       [m('pitch'), '/innolab/tag-6#pitch-probe'],
@@ -563,7 +574,7 @@ describe('methoden', () => {
     for (const [hier, davor] of [
       [m('journey-map'), m('synthese')], ['/innolab/tag-2/abschluss', m('journey-map')],
       ['/innolab/tag-3/experience-map', '/innolab/tag-3'], [m('baum'), '/innolab/tag-3/experience-map'], [m('ziel-chance'), m('baum')], [m('concept-story'), m('value-map')],
-      [m('geschaeftsmodell'), '/innolab/tag-4'], [m('experiment'), m('geschaeftsmodell')], [m('story-map'), m('experiment')],
+      [m('geschaeftsmodell'), m('concept-story')], [m('experiment'), m('geschaeftsmodell')], [m('story-map'), m('experiment')],
       [m('scrum'), '/innolab/tag-5'], [m('backlog'), m('scrum#team')], [m('sprint'), m('schneiden')],
       [m('pitch'), '/innolab/tag-6'],
     ]) expect(ohneAnker(ziel(hier, 'prev')), `Zurück von ${hier}`).toBe(davor);
@@ -588,8 +599,20 @@ describe('methoden', () => {
     // Experiment-Karte: 30 Minuten zu Beginn von Tag 4, die Origin Story (10 Minuten Input) im Abschluss desselben Tags.
     expect(minuten(4, 'experiment')).toBe(30);
     expect(minuten(3, 'experiment')).toBe(0);
-    // Scrum: Agil und Lego an Tag 4, Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
-    expect(minuten(4, 'scrum')).toBe(55 + 80);
+    // Concept Story seit 25.11.2026 (NDU-66) an Tag 4: 10 min Theorie, 30 min Schreiben; an Tag 3 stand nur der Story-Bogen.
+    const cs = METHODEN.find((x) => x.slug === 'concept-story')!;
+    expect(cs.tag).toBe(4);
+    expect(minuten(4, 'concept-story')).toBe(cs.dauer);
+    expect(cs.dauer).toBe(10 + 30);
+    expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/concept-story'))).toMatchObject({ von: 9 * 60 + 40, bis: 10 * 60 + 20 });
+    // Value Map & Fit an Tag 4 nachgeholt (30 min), die Methode bleibt an Tag 3.
+    expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/value-map'))).toMatchObject({ von: 9 * 60 + 10, bis: 9 * 60 + 40 });
+    // Story Map 75 statt 105 min.
+    expect(minuten(4, 'story-map')).toBe(METHODEN.find((x) => x.slug === 'story-map')!.dauer);
+    expect(minuten(4, 'story-map')).toBe(75);
+    // Scrum: Agil an Tag 4 (Lego4Scrum seit 25.11.2026 stillgelegt, NDU-72), Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
+    expect(minuten(4, 'scrum')).toBe(30);
+    expect(bloecke(4).some((x) => x.href.includes('#lego'))).toBe(false);
     expect(bloecke(5).find((x) => x.href === '/innolab/methoden/scrum#team')).toMatchObject({ von: 9 * 60 + 25, bis: 10 * 60 + 5 });
     expect(minuten(4, 'scrum') + minuten(5, 'scrum')).toBe(METHODEN.find((x) => x.slug === 'scrum')!.dauer);
   });

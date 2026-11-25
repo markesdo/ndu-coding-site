@@ -12,7 +12,7 @@ import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import BildText from '../../components/bild/BildText.astro';
 import Video from '../../components/Video.astro';
 import MiroFrame from '../../components/MiroFrame.astro';
-import { ArrowRight, Banknote, Bus, CheckCheck, Clock, Coffee, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Gavel, Hammer, Heart, ListPlus, MessagesSquare, Music, Target, TrainFront, TrendingUp } from '@lucide/astro';
+import { ArrowRight, Banknote, Bus, CheckCheck, Clock, Coffee, Crosshair, Crown, ExternalLink, FileText, Footprints, Grid2x2, Gavel, Hammer, Heart, MessagesSquare, Music, Target, TrainFront, TrendingUp } from '@lucide/astro';
 import MiroLink from '../../components/MiroLink.astro';
 import { TEAM_BOARD } from '../../lib/team-board';
 import FooterNav from '../../components/FooterNav.astro';
@@ -36,8 +36,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <Block time="10:20–11:00" type="konzept" title="Outcome statt Output" href="#outcome">Outcome, Output, MVP – und wie Design Thinking schiefgeht.</Block>
     <Block time="11:00–11:10" type="pause" title="Pause" />
     <Block time="11:10–12:10" type="uebung" title="Problem-Rahmen & Produkt-Brief" href="/innolab/methoden/problem-rahmen">Für wen, welches Problem, woran ihr es merkt.</Block>
-    <Block time="12:10–12:15" type="uebung" title="Entscheidungslog" href="/innolab/methoden/entscheidungslog">Die ersten Zeilen, mit Beleg oder „noch keiner“.</Block>
-    <Block time="12:15–13:15" type="pause" title="Mittagspause" />
+    <Block time="12:10–13:15" type="pause" title="Mittagspause" />
     <Block time="13:15–14:00" type="uebung" title="Annahmen-Map" href="/innolab/methoden/annahmen">Was ihr nur annehmt – die riskanteste Annahme wird zur Forschungsfrage.</Block>
     <Block time="14:00–14:30" type="konzept" title="Jobs to be Done & Mom Test" href="/innolab/methoden/interview#jtbd">Was Menschen wirklich erledigen wollen, und wie man danach fragt.</Block>
     <Block time="14:30–14:45" type="pause" title="Pause" />
@@ -414,11 +413,10 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <p class="folie-satz">Am Abend habt ihr Brief, Leitfaden und eure riskanteste Annahme.</p>
     <Fluss label="Die Methoden von Tag 1 und was dabei entsteht" knoten={[
       { t: 'Problem-Rahmen', sub: '<a href="/innolab/methoden/problem-rahmen">Brief</a>', icon: FileText },
-      { t: 'Entscheidungslog', sub: '<a href="/innolab/methoden/entscheidungslog">erste Zeilen</a>', icon: ListPlus },
       { t: 'Annahmen-Map', sub: '<a href="/innolab/methoden/annahmen">riskanteste Annahme</a>', icon: Grid2x2 },
       { t: 'Jobs to be Done & Mom Test', sub: '<a href="/innolab/methoden/interview">Leitfaden</a>', icon: MessagesSquare },
     ]} />
-    <p class="nur-handout">Die Hausaufgabe bis Tag 2 – fünf Interviews, Notizen, Entscheidungslog – steht auf der Seite <a href="/innolab/tag-1/abschluss">Abschluss & Hausaufgabe</a>.</p>
+    <p class="nur-handout">Die Hausaufgabe bis Tag 2 – fünf Interviews, Notizen, Snapshots – steht auf der Seite <a href="/innolab/tag-1/abschluss">Abschluss & Hausaufgabe</a>.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/methoden', t: 'Toolbox' }} next={{ href: '/innolab/methoden/problem-rahmen', t: 'Problem-Rahmen & Produkt-Brief' }} />

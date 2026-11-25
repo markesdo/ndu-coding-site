@@ -10,7 +10,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Theorie knapp halten: Die Übung braucht die volle Stunde.',
       'Mittlere Frage betonen: Outcome wird Wurzel des Opportunity Solution Tree.',
       '„Alles im Brief ist heute eine Annahme. Abschnitt 3, das Produkt in einem Satz, bleibt offen.“',
-      'Coding-Kurs-Produkt: übertragen, Abschnitte 1, 2, 4, 6 schärfen, Änderungen ins Entscheidungslog.',
+      'Coding-Kurs-Produkt: übertragen, Abschnitte 1, 2, 4, 6 schärfen, Offenes unter „Offene Fragen“.',
     ],
     ueberleitung: 'Beim Problem passiert euch am ehesten der häufigste Fehler – so verbreitet, dass er eine eigene Folie bekommt.',
     kern: [
@@ -38,7 +38,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
       {
         frage: 'Wir haben schon ein Produkt aus dem Coding-Kurs – fangen wir neu an?',
-        antwort: 'Nein. Übertragen, Abschnitte 1, 2, 4 und 6 schärfen, jede Änderung als Zeile ins Entscheidungslog.',
+        antwort: 'Nein. Übertragen und die Abschnitte 1, 2, 4 und 6 schärfen; was offen bleibt, kommt unter „Offene Fragen“ in den Brief.',
       },
       {
         frage: 'Wie konkret muss „für wen“ sein?',
@@ -247,7 +247,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Nach 50 min: erst Prüfliste selbst, dann Claude.',
     ],
     ueberleitung: 'Und wenn Claudes Befunde da sind: Was macht ihr dann damit?',
-    uebung: { dauer: '60 min (15 + 10 + 15 + 10 + 10)', form: 'allein, dann zu dritt reihum, dann jede*r für sich in der Werkstatt' },
+    uebung: { dauer: '60 min (15 + 10 + 15 + 10 + 10)', form: 'allein, dann zu dritt, dann jede*r für sich in der Werkstatt' },
     miro: {
       frame: 'T1 · 2 · Problem-Rahmen & Produkt-Brief',
       schritte: [
@@ -263,7 +263,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       schritte: [
         'Allein, 15 min: je ein Sticky für Für wen?, Welches Problem?, Wie heute gelöst?, Was macht es nicht (drei Dinge)?',
         'Outcome, 10 min: „Wir glauben, dass … Wir merken es, wenn …“ – beobachtbares Verhalten, keine Funktion, keine Zielzahl.',
-        'Dreierrunde, 15 min: reihum vorlesen; die anderen fragen nur „Woran würdest du das merken?“, „Ist das schon eine Lösung?“, „Gibt es ein besseres Problem – wer hat es nicht, und warum?“',
+        'Dreierrunde, 15 min: jede*r liest vor; die anderen fragen nur „Woran würdest du das merken?“, „Ist das schon eine Lösung?“, „Gibt es ein besseres Problem – wer hat es nicht, und warum?“',
         'Festhalten, 10 min: jede*r speichert den eigenen Brief in der Werkstatt („Bearbeiten“ im Handout), Abschnitt 3 offen, 5 leer.',
         'Prüfen, 10 min: Prüfliste im Handout selbst durchgehen, dann Claude: den Prompt aus „Prüfen lassen“ kopieren und in claude.ai einfügen. Mit Connector liest Claude den Brief selbst. Ohne Connector reicht „Für Claude kopieren“ im Editor mit Häkchen bei „Prüf-Prompt mitkopieren“: Prompt und Brief in einem Stück.',
       ],
@@ -310,7 +310,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
       {
         frage: 'Was, wenn mir in der Runde jemand eine bessere Rahmung vorschlägt?',
-        antwort: 'Übernehmen ist erlaubt, wenn sie dich überzeugt – und es gehört als Zeile ins Entscheidungslog, mit dem Grund.',
+        antwort: 'Übernehmen ist erlaubt, wenn sie dich überzeugt – und du kannst in einem Satz sagen, warum.',
       },
     ],
   },
@@ -319,14 +319,14 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
     live: [
       'Vor dem Prüfen zeigen, nicht erst danach.',
       '„Claude schreibt nichts um. Den neuen Text schreibt ihr – Claude findet, ihr entscheidet.“',
-      'Kaffeebar-Beispiel: ändern oder lassen plus Zeile im Entscheidungslog.',
+      'Kaffeebar-Beispiel: ändern oder lassen, Offenes unter „Offene Fragen“.',
       'Falle: im Chat weiterschreiben lassen und die Fassung von Claude übernehmen.',
       '„Passt alles“: weiter. Höchstens einmal neu prüfen, sonst Schleife.',
     ],
     ueberleitung: 'Zum Abschluss die Frage, die ihr euch für euer eigenes Produkt stellt.',
     kern: [
       {
-        text: 'Der Prüf-Prompt verlangt: Stelle zitieren, höchstens drei Befunde, die wichtigsten zuerst; nichts umschreiben, keinen Text formulieren, nichts für die Studierenden einordnen, zu jedem Befund eine Frage; passt alles, ein Satz. Was zurückkommt, ist also nie eine neue Fassung – die Entscheidung bleibt bei den Studierenden. Was sie lassen, kommt mit Grund ins Entscheidungslog, damit das Weglassen eine Entscheidung ist und kein Übersehen.',
+        text: 'Der Prüf-Prompt verlangt: Stelle zitieren, höchstens drei Befunde, die wichtigsten zuerst; nichts umschreiben, keinen Text formulieren, nichts für die Studierenden einordnen, zu jedem Befund eine Frage; passt alles, ein Satz. Was zurückkommt, ist also nie eine neue Fassung – die Entscheidung bleibt bei den Studierenden. Was sie lassen, begründen sie in einem Satz, damit das Weglassen eine Entscheidung ist und kein Übersehen.',
         quelle: 'Kurs: methoden.ts, pruefPrompt (REGELN_ANFANG, REGELN_CHAT); ClaudePruefung.astro („Claude findet, ihr entscheidet“)',
       },
     ],
@@ -337,7 +337,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       },
       {
         frage: 'Und wenn ich Claudes Befund für falsch halte?',
-        antwort: 'Dann lasst ihr den Text und schreibt eine Zeile ins Entscheidungslog: was ihr lasst und warum, mit Beleg oder „noch keiner“.',
+        antwort: 'Dann lasst ihr den Text und könnt in einem Satz sagen, warum; was offen bleibt, kommt unter „Offene Fragen“ in den Brief.',
       },
     ],
   },
@@ -349,7 +349,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
       'Kaffeebar-Beispiel für Abschnitt 7: Entscheiden Pendler*innen schon vor dem Bahnhof?',
       '„Euer Rahmen ist durch euer Wissen begrenzt – darum bald raus zur Kundschaft, in die Interviews.“',
     ],
-    ueberleitung: 'Was ihr heute festlegt und später ändert, braucht ein Gedächtnis – dafür kommt jetzt das Entscheidungslog.',
+    ueberleitung: 'Hinter jedem Brief stehen Annahmen – die macht ihr jetzt sichtbar.',
     kern: [
       {
         text: 'Reframing ist durch das Wissen der Leute im Raum begrenzt. Darum nicht zu lange am Schreibtisch rahmen, sondern bald raus zur Kundschaft – Denken und Testen zusammen bringen die Ergebnisse.',
@@ -363,7 +363,7 @@ export const NOTIZEN_PROBLEM_RAHMEN: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Was, wenn wir merken, dass unser Problem gar nicht existiert?',
-        antwort: 'Dann habt ihr früh und billig etwas gelernt. Der Rahmen ist eine Annahme; ändert sich etwas, kommt es als neue Zeile ins Entscheidungslog, die alte bleibt stehen.',
+        antwort: 'Dann habt ihr früh und billig etwas gelernt. Der Rahmen ist eine Annahme; ändert sich etwas, ändert ihr den Brief, belegt mit dem, was ihr gehört habt.',
       },
     ],
   },
