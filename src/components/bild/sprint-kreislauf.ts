@@ -105,8 +105,11 @@ export const RING_ENDE = 265;
 export const END_SPITZE = 30;
 export const RETRO = { mitte: 180, halb: 45 };
 export const INKREMENT_WINKEL = -15;
-/** Textbogen rechts (im Uhrzeigersinn, liest von oben nach unten), frei von der Daily-Schleife. */
-export const BAUEN_BOGEN = { von: 22, bis: -82 };
+/**
+ * Textbogen rechts, frei von der Daily-Schleife: gegen den Uhrzeigersinn, also von unten nach oben – unten steht die
+ * Schrift aufrecht, oben um 90° gedreht wie „Retrospektive“ links. Im Uhrzeigersinn stünde sie unten kopfüber.
+ */
+export const BAUEN_BOGEN = { von: -82, bis: 22, gegen: true };
 
 export function punkt(grad: number, r = R, m = MITTE): { x: number; y: number } {
   const a = (grad * Math.PI) / 180;
@@ -127,6 +130,16 @@ export function bogen(a1: number, a2: number, r = R, m = MITTE, gegen = true): s
   const p1 = punkt(a1, r, m), p2 = punkt(a2, r, m);
   const spanne = Math.abs(a2 - a1);
   return `M${p1.x} ${p1.y}A${r} ${r} 0 ${spanne > 180 ? 1 : 0} ${gegen ? 0 : 1} ${p2.x} ${p2.y}`;
+}
+
+/**
+ * Richtung „oben“ der Buchstaben auf einem Textbogen bei grad (Bildschirmkoordinaten, y nach unten). gegen = Laufrichtung
+ * des Textpfads. y nahe 1 heißt: die Buchstaben stehen kopfüber.
+ */
+export function schriftOben(grad: number, gegen: boolean): { x: number; y: number } {
+  const a = (grad * Math.PI) / 180;
+  const d = gegen ? { x: -Math.sin(a), y: -Math.cos(a) } : { x: Math.sin(a), y: Math.cos(a) };
+  return { x: +d.y.toFixed(3), y: +(-d.x).toFixed(3) };
 }
 
 /** Der Ring ohne Planning-Balken: rechts hoch, oben nach links, links hinunter bis RING_ENDE. */

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  ARTEFAKTE, BALKEN_Y, B_BREITE, B_HOEHE, BAUEN, DAILY, DAILY_HINWEIS, EVENTS, LINKS, OBEN_Y, R, RECHTS, RING_B, ROLLEN, SCHRITTE,
+  ARTEFAKTE, BAUEN_BOGEN, BALKEN_Y, RETRO, schriftOben, B_BREITE, B_HOEHE, BAUEN, DAILY, DAILY_HINWEIS, EVENTS, LINKS, OBEN_Y, R, RECHTS, RING_B, ROLLEN, SCHRITTE,
   TEILE, TEILNAHME, VERANTWORTLICHKEITEN, balkenStart, beschreibung, bogen, dailyMitte, endSpitze, pruefeAufdecken,
   pruefeHervor, punkt, ringPfad, RING_ENDE, tangente, wer,
 } from './sprint-kreislauf';
@@ -127,6 +127,19 @@ describe('Sprint-Kreislauf: Geometrie', () => {
     expect(d.y).toBeLessThan(RECHTS.y - R / 2);
     expect(d.y - DAILY.r - DAILY.b / 2).toBeGreaterThan(0);
     expect(d.x + DAILY.r + DAILY.b / 2).toBeLessThan(B_BREITE);
+  });
+
+  it('keine Ringschrift steht kopfüber: „Developers bauen“ rechts liest von unten nach oben, „Retrospektive“ links ebenso', () => {
+    const schlimmste = (von: number, bis: number, gegen: boolean) => {
+      let max = -1;
+      for (let i = 0; i <= 20; i++) max = Math.max(max, schriftOben(von + ((bis - von) * i) / 20, gegen).y);
+      return max;
+    };
+    expect(schriftOben(-90, true).y).toBe(-1);
+    expect(schlimmste(BAUEN_BOGEN.von, BAUEN_BOGEN.bis, BAUEN_BOGEN.gegen)).toBeLessThan(0.75);
+    expect(schlimmste(RETRO.mitte + RETRO.halb, RETRO.mitte - RETRO.halb, false)).toBeLessThan(0.75);
+    // Gegenprobe: derselbe Bogen im Uhrzeigersinn stünde unten kopfüber.
+    expect(schlimmste(BAUEN_BOGEN.bis, BAUEN_BOGEN.von, false)).toBeGreaterThan(0.9);
   });
 
   it('Textpfade laufen im Uhrzeigersinn (sweep 1); rechts steht „Developers bauen“ statt „Implementation“', () => {

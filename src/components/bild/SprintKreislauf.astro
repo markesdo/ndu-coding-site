@@ -90,7 +90,7 @@ const titelId = pfad('titel'), descId = pfad('desc');
         <path id={pfad('t-review')} d={`M${LINKS.x} ${OBEN_Y}H${RECHTS.x}`} />
         <path id={pfad('t-planning')} d={`M${balkenX} ${BALKEN_Y}H${RECHTS.x}`} />
         <path id={pfad('t-retro')} d={bogen(RETRO.mitte + RETRO.halb, RETRO.mitte - RETRO.halb, R, LINKS, false)} />
-        <path id={pfad('t-bauen')} d={bogen(BAUEN_BOGEN.von, BAUEN_BOGEN.bis, R, RECHTS, false)} />
+        <path id={pfad('t-bauen')} d={bogen(BAUEN_BOGEN.von, BAUEN_BOGEN.bis, R, RECHTS, BAUEN_BOGEN.gegen)} />
         <path id={pfad('t-daily')} d={bogen(150, 30, DAILY.r, dm, false)} />
       </defs>
 
