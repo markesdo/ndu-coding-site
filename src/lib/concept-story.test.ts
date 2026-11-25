@@ -32,7 +32,8 @@ describe('Tag 3: Story-Bogen (Entscheidung 66)', () => {
     const notizen = Object.entries(NOTIZEN_CONCEPT_STORY);
     expect(notizen.flatMap(([id, n]) => n.live.filter((s) => /Wenn hinten|überspringen|streichen|16:30/.test(s)).map((s) => `${id}: ${s}`))).toStrictEqual([]);
     expect(JSON.stringify(NOTIZEN_CONCEPT_STORY)).not.toMatch(/Bei Bedarf, als zweites Beispiel/);
-    const ids = [...seite.matchAll(/<h2 id="([^"]+)">/g)].map((m) => m[1]).filter((id) => id !== 'vorlage');
+    // Ohne die Übung von Tag 4 (vorgehen) und das Handout (vorlage, pruefen): die Folien des Story-Bogens von Tag 3.
+    const ids = [...seite.matchAll(/<h2 id="([^"]+)">/g)].map((m) => m[1]).filter((id) => !['vorlage', 'vorgehen', 'pruefen'].includes(id));
     expect(ids).toHaveLength(16);
     const minuten = ids.map((id) => {
       const z = NOTIZEN_CONCEPT_STORY[id]?.live.find((s) => s.startsWith('Zeit:') && s.includes('Sprechzeit ~'));
@@ -60,5 +61,25 @@ describe('Tag 3: Story-Bogen (Entscheidung 66)', () => {
     expect(NOTIZEN_CONCEPT_STORY.hoehepunkt.geschichte?.text).toContain('„Humans, it turns out, need closure.');
     expect(NOTIZEN_CONCEPT_STORY.woher.geschichte?.quelle).toContain('fiktionalisiert (S. 38)');
     expect(NOTIZEN_CONCEPT_STORY.slack.geschichte).toBeUndefined();
+  });
+});
+
+// NDU-66 (Entscheidung Markus 25.11.2026): Die Concept Story wird an Tag 4 geschrieben – 10 min Theorie, 30 min Übung.
+describe('Tag 4: Concept Story schreiben (NDU-66)', () => {
+  it('die Übung steht wieder auf der Seite: drei Schritte, Titel = Summe der Timer = 30 min, Vorlage und Prüfen', () => {
+    const f = folie('vorgehen');
+    const timer = [...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]));
+    expect(timer).toStrictEqual([20, 5, 5]);
+    expect(f).toContain('<h2 id="vorgehen">So geht ihr vor (30 min)</h2>');
+    expect([...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Sieben Stationen, allein:', 'Flach-Probe:', 'Festhalten:']);
+    expect(f).toContain('<code>docs/STORYS.md</code>');
+    expect(seite).toContain('<ClaudePruefung slug="concept-story" />');
+    expect(seite).toContain('<span class="eyebrow">Innolab · Tag 4 · Methode</span>');
+    expect(NOTIZEN_CONCEPT_STORY.vorgehen?.uebung?.dauer).toBe('30 min (20 + 5 + 5)');
+  });
+  it('kein „nur Theorie“ mehr für Tag 4, keine Erzählrunde zu den eigenen Produkten', () => {
+    const texte = [seite, JSON.stringify(NOTIZEN_CONCEPT_STORY)];
+    expect(texte.flatMap((x) => x.match(/schreibt ihr an diesem Tag nicht|eine eigene Story schreibt ihr heute nicht|dafür gibt es dort keinen Block|Erzählen, reihum/g) ?? [])).toStrictEqual([]);
+    expect(folie('vorgehen')).toContain('Eine Runde, in der ihr einander eure Storys erzählt, gibt es nicht');
   });
 });

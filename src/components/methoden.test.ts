@@ -558,8 +558,9 @@ describe('methoden', () => {
     // Je Kurstag: Start, die Stationen in Kursreihenfolge, zuletzt das Ziel, an dem die Kette den Tag verlässt oder zur Tagesseite zurückkehrt.
     const ketten: string[][] = [
       ['/innolab/tag-2', m('synthese'), m('journey-map'), '/innolab/tag-2/abschluss', '/innolab/tag-3'],
-      ['/innolab/tag-3', '/innolab/tag-3/experience-map', m('baum'), m('ziel-chance'), m('kundenprofil'), m('hmw'), m('ideation'), m('value-map'), m('concept-story'), '/innolab/tag-3#abschluss'],
-      ['/innolab/tag-4', m('geschaeftsmodell'), m('experiment'), m('story-map'), m('usage-story'), m('prototyp-spike'), m('scrum')],
+      ['/innolab/tag-3', '/innolab/tag-3/experience-map', m('baum'), m('ziel-chance'), m('kundenprofil'), m('hmw'), m('ideation'), m('value-map'), m('concept-story')],
+      // Seit 25.11.2026 (NDU-66): Tag 4 beginnt mit dem Nachholen von Value Map & Fit und der Concept Story.
+      ['/innolab/tag-4', m('value-map#vorgehen'), m('concept-story'), m('geschaeftsmodell'), m('experiment'), m('story-map'), m('usage-story'), m('prototyp-spike'), m('scrum')],
       ['/innolab/tag-5', m('scrum#team'), m('backlog'), m('akzeptanzkriterien'), m('schneiden'), m('sprint'), '/innolab/tag-5#stoerfall'],
       ['/innolab/tag-6', '/innolab/tag-7', '/innolab'],
       [m('pitch'), '/innolab/tag-6#pitch-probe'],
@@ -572,7 +573,7 @@ describe('methoden', () => {
     for (const [hier, davor] of [
       [m('journey-map'), m('synthese')], ['/innolab/tag-2/abschluss', m('journey-map')],
       ['/innolab/tag-3/experience-map', '/innolab/tag-3'], [m('baum'), '/innolab/tag-3/experience-map'], [m('ziel-chance'), m('baum')], [m('concept-story'), m('value-map')],
-      [m('geschaeftsmodell'), '/innolab/tag-4'], [m('experiment'), m('geschaeftsmodell')], [m('story-map'), m('experiment')],
+      [m('geschaeftsmodell'), m('concept-story')], [m('experiment'), m('geschaeftsmodell')], [m('story-map'), m('experiment')],
       [m('scrum'), '/innolab/tag-5'], [m('backlog'), m('scrum#team')], [m('sprint'), m('schneiden')],
       [m('pitch'), '/innolab/tag-6'],
     ]) expect(ohneAnker(ziel(hier, 'prev')), `Zurück von ${hier}`).toBe(davor);
@@ -597,8 +598,19 @@ describe('methoden', () => {
     // Experiment-Karte: 30 Minuten zu Beginn von Tag 4, die Origin Story (10 Minuten Input) im Abschluss desselben Tags.
     expect(minuten(4, 'experiment')).toBe(30);
     expect(minuten(3, 'experiment')).toBe(0);
+    // Concept Story seit 25.11.2026 (NDU-66) an Tag 4: 10 min Theorie, 30 min Schreiben; an Tag 3 stand nur der Story-Bogen.
+    const cs = METHODEN.find((x) => x.slug === 'concept-story')!;
+    expect(cs.tag).toBe(4);
+    expect(minuten(4, 'concept-story')).toBe(cs.dauer);
+    expect(cs.dauer).toBe(10 + 30);
+    expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/concept-story'))).toMatchObject({ von: 9 * 60 + 40, bis: 10 * 60 + 20 });
+    // Value Map & Fit an Tag 4 nachgeholt (30 min), die Methode bleibt an Tag 3.
+    expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/value-map'))).toMatchObject({ von: 9 * 60 + 10, bis: 9 * 60 + 40 });
+    // Story Map 75 statt 105 min.
+    expect(minuten(4, 'story-map')).toBe(METHODEN.find((x) => x.slug === 'story-map')!.dauer);
+    expect(minuten(4, 'story-map')).toBe(75);
     // Scrum: Agil und Lego an Tag 4, Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
-    expect(minuten(4, 'scrum')).toBe(55 + 80);
+    expect(minuten(4, 'scrum')).toBe(30 + 60);
     expect(bloecke(5).find((x) => x.href === '/innolab/methoden/scrum#team')).toMatchObject({ von: 9 * 60 + 25, bis: 10 * 60 + 5 });
     expect(minuten(4, 'scrum') + minuten(5, 'scrum')).toBe(METHODEN.find((x) => x.slug === 'scrum')!.dauer);
   });

@@ -32,3 +32,14 @@ export const KAFFEEBAR_BAUM_INTERVIEWS: Knoten = { t: 'Mehr Pendler*innen steige
   ] },
   { t: MOMENTNAMEN.d },
 ] };
+
+// Der Baum der Kaffeebar ab Tag 4 (tag-4.astro #faden): unter der Ziel-Chance die drei Ideen aus der Ideation als Lösungen,
+// der Spitzenreiter aus der Value Map markiert, darunter die riskanteste Annahme mit ihrem Test E1 (experiment.astro).
+// Nach Torres hängen unter jeder Lösung die Annahmen-Tests, die zeigen, ob sie trägt (S. 25–27, wie auf tag-1.astro #faden).
+export const KAFFEEBAR_BAUM_TAG_4: Knoten = { t: KAFFEEBAR_BAUM.t, kinder: [
+  { t: '„Geht sich ein Kaffee noch aus?“', kinder: [
+    { t: 'Wartezeit-Anzeige an der Tür' },
+    { t: 'Spitzenreiter: Im Gehen bestellen', kinder: [{ t: 'A5 → E1: Aufsteller an der Hallentür, ab 10 von 30' }] },
+    { t: 'Kaffeewagen am Bahnsteig' },
+  ] },
+] };

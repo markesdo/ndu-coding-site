@@ -3,6 +3,8 @@ import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Prompt from '../../../components/Prompt.astro';
+import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Timer from '../../../components/Timer.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
@@ -13,7 +15,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey: Storymapping Products Tha
 const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
 ---
 <Layout title="Concept Story">
-  <span class="eyebrow">Innolab · Tag 3 · Methode</span>
+  <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Concept Story</h1>
   <p class="lead">Euer Produkt als Geschichte mit Krise und Höhepunkt: warum jemand in wenigen Sekunden versteht, dass es besser ist als das, was er heute tut.</p>
   <Orientierung seite="innolab/methoden/concept-story" leiste={false} />
@@ -163,7 +165,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
       <li data-schritt><strong>Nicht nur Pitch:</strong> Die Story sagt, was das Produkt können muss.</li>
       <li data-schritt><strong>Für euch:</strong> Was eine Concept Story nicht stützt, gehört nicht in den Prototyp.</li>
     </ul>
-    <p class="nur-handout">Die Concept Story ist kein Werbetext. Beim ersten iPhone bestimmte sie die Anforderungen: Das Gerät kam mit aufwendiger Animation, aber ohne Kopieren und Einfügen. Der Touchscreen musste sich leicht bedienen lassen, sonst wäre der Höhepunkt („works like magic“) nicht eingelöst worden; dafür brauchte es die Animation. „Animation supported the story. Cut-and-paste did not.“ Lichaws Schluss: „concept stories don’t just help you figure out how to talk about a product, but how to build the product“ ({LICHAW}, Kap. 3, Supporting the Story). Als Faustregel: „Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out“ (Kap. 8, Stories Are Character-Driven). Übertrag des Kurses: Wenn ihr mit der Story Map den ersten Slice schneidet, ist eine geschriebene Concept Story dafür der Maßstab.</p>
+    <p class="nur-handout">Die Concept Story ist kein Werbetext. Beim ersten iPhone bestimmte sie die Anforderungen: Das Gerät kam mit aufwendiger Animation, aber ohne Kopieren und Einfügen. Der Touchscreen musste sich leicht bedienen lassen, sonst wäre der Höhepunkt („works like magic“) nicht eingelöst worden; dafür brauchte es die Animation. „Animation supported the story. Cut-and-paste did not.“ Lichaws Schluss: „concept stories don’t just help you figure out how to talk about a product, but how to build the product“ ({LICHAW}, Kap. 3, Supporting the Story). Als Faustregel: „Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out“ (Kap. 8, Stories Are Character-Driven). Übertrag des Kurses: Wenn ihr mit der Story Map den ersten Slice schneidet, ist eure Concept Story dafür der Maßstab.</p>
   </Folie>
 
   <Folie>
@@ -285,9 +287,26 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <p class="nur-handout">Lichaws Elevator Pitch (nach dem Format aus <em>Gamestorming</em>): „For [target customer] who has [customer need], [product name] is a [market category] that [one key benefit]. Unlike [competition], the product [unique differentiator].“ Er bildet die Concept Story ab: Zielkunde = Hauptfigur, Bedürfnis = Auslöser, Name, Art und Nutzen = steigende Handlung, Konkurrenz = Krise, Unterschied = Höhepunkt ({LICHAW}, Kap. 7). Wenn ihr eure Concept Story schreibt, gehört dieser Satz in Abschnitt 3 eures Produkt-Briefs; der Lückensatz aus der Ideation bleibt euer Arbeitsmittel.</p>
   </Folie>
 
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
+    <p class="folie-satz">Stationen, Flach-Probe, festhalten – jede*r allein, still.</p>
+    <p class="wozu"><strong>Wozu?</strong> Damit jemand in Sekunden versteht, warum euer Spitzenreiter besser ist als das, was er heute tut.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Sieben Stationen, allein:</strong> Vorlage in <code>docs/STORYS.md</code>; je ein, zwei Sätze, jede Behauptung mit J-, P-, G- oder Zitat-ID. Station 6 ist ein Gedanke in „…“. <Timer minuten={20} /></li>
+      <li data-schritt><strong>Flach-Probe:</strong> eine Zeile darunter – Problem → Produkt → Ende. Was hat eure Story mehr? <Timer minuten={5} /></li>
+      <li data-schritt><strong>Festhalten:</strong> Story committen, Satz in Abschnitt 3 des Produkt-Briefs, Station 6 in die Annahmen-Map. <Timer minuten={5} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p>Davor zehn Minuten Theorie: Die Folien von Tag 3 noch einmal, kurz – <a href="#stationen">sieben Stationen</a>, <a href="#a-mal-b">A × B = C</a>, <a href="#flach">flach</a> oder <a href="#hoch">hoch</a>. Bei der Frage „Was fehlt dieser Geschichte?“ überlegt jede*r still, dann antwortet ihr zugleich, laut.</p>
+      <p>Zu Schritt 1: Lichaws Fragen je Station und wo die Antworten bei euch schon stehen, zeigt die Tabelle oben (<a href="#woher">Woher kommt jede Station?</a>; {LICHAW}, Kap. 3, Mapping a Concept Story). Ihr schreibt allein, jede*r am eigenen Produkt. Ab Minute 5 geht Markus von Person zu Person und fragt: „Was ist eure einfache Lösung – und was hat eure Story ihr gegenüber mehr?“ Eine Runde, in der ihr einander eure Storys erzählt, gibt es nicht: Jede*r von euch hat ein eigenes Produkt. Lichaws Probe beim Erzählen ist das Lächeln am Höhepunkt (Kap. 6, Use the Smile Test); die macht ihr, wenn ihr die Story jemandem aus eurer Zielgruppe erzählt.</p>
+      <p>Zu Schritt 2: Wenn ihr gegenüber der Linie nur „schneller“ oder „leichter“ habt, fehlt die Krise: Welche Alternative nutzen eure Interviewten heute, und warum würden sie bei ihr bleiben? Erst wenn ihr das beantworten könnt, hat der Höhepunkt etwas aufzulösen – Lichaws Slack-Beispiel oben zeigt die Linie daneben.</p>
+      <p>Zu Schritt 3: <code>docs/STORYS.md</code>, Abschnitt „Concept Story“; der Satz in Abschnitt 3 eures Produkt-Briefs in der Werkstatt; die fallende Handlung als Annahme in die Annahmen-Map – an der Experiment-Karte nach dem Geschäftsmodell wählt ihr die riskanteste.</p>
+    </div>
+  </Folie>
+
   <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
-  <p>An Tag 3 ist die Concept Story Theorie; eine eigene schreibt ihr an diesem Tag nicht. Die Vorlage zeigt, wie eine geschriebene Concept Story aussieht.</p>
+  <p>Kopiert die Vorlage nach <code>docs/STORYS.md</code> und füllt sie Station für Station.</p>
   <Prompt label="Vorlage · docs/STORYS.md"># Storys — [Produkt]
 
 Stand: [Datum] · Profil und Value Map: Miro, T3 · 4 · Canvas · euer Name
@@ -304,11 +323,14 @@ Stand: [Datum] · Profil und Value Map: Miro, T3 · 4 · Canvas · euer Name
 Einfache Lösung (zur Probe): [Problem] → [Produkt] → [Ende]. Was hat die Story mehr?
 
 Ein Satz: Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Anders als [Alternative]: [Unterschied].</Prompt>
+
+  <h2 id="pruefen">Prüfen</h2>
+  <ClaudePruefung slug="concept-story" />
   </div>
 
   <p class="small muted">Nach {LICHAW}, Kap. 1–4, 6–8.</p>
 
-  <FooterNav prev={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} next={{ href: '/innolab/tag-3#abschluss', t: 'Tag 3 · Abschluss' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} next={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell-Karten' }} />
 </Layout>
 
 <style>

@@ -309,7 +309,8 @@ export const METHODEN: Methode[] = [
     quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 347–348 (PDF)',
   },
   {
-    slug: 'concept-story', name: 'Concept Story', tag: 3, dauer: 30,
+    // Seit 25.11.2026 (NDU-66): an Tag 3 nur Theorie, geschrieben an Tag 4 (09:40–10:20: 10 min Theorie, 30 min Übung).
+    slug: 'concept-story', name: 'Concept Story', tag: 4, dauer: 40,
     frage: 'Warum versteht jemand in Sekunden, dass euer Produkt besser ist als das, was er heute tut?',
     braucht: ['annahmen', 'synthese', 'profil', 'ideen', 'valuemap'], ergibt: ['concept'],
     pruefliste: [
@@ -357,7 +358,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
-    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 105,
+    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 75,
     frage: 'Was tun Menschen mit eurem Produkt, von Anfang bis Ende – und was baut ihr zuerst, um welchen Outcome zu erreichen?',
     braucht: ['brief', 'profil', 'valuemap', 'journey', 'annahmen'], ergibt: ['storymap'],
     pruefliste: [
@@ -405,7 +406,7 @@ export const METHODEN: Methode[] = [
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
   },
   {
-    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 175, prueflisteStand: 2,
+    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 130, prueflisteStand: 2,
     frage: 'Wie arbeiten wir als drei Scrum-Teams mit denselben drei Personen an drei Produkten?',
     braucht: ['brief'], ergibt: ['team'],
     pruefliste: [
@@ -502,14 +503,15 @@ export const METHODEN: Methode[] = [
  *  online) Präsentation. Dazwischen arbeitet ihr zu Hause; gebaut wird bis Tag 6.
  *  Stand 12.11.2026 (Entscheidung Markus): Tag 2 endete nach der Experience Map; Tag 3 beginnt mit „Experience Map nachschärfen“ (tag-3/experience-map), dann der Baum; Geschäftsmodell
  *  und Experiment-Karte eröffnen Tag 4, Teamaufstellung und Definition of Done folgen an Tag 5 nach dem Debrief, der Pitch
- *  an Tag 6; Tag 7 liegt am 16.01.2027.
+ *  an Tag 6; Tag 7 liegt am 16.01.2027. Seit 25.11.2026 (NDU-66) beginnt Tag 4 mit dem Nachholen von Value Map und Fit
+ *  und der Concept Story; Geschäftsmodell und Experiment-Karte folgen nach der ersten Pause.
  *  datum steht auch als data-kurstag auf der Tagesseite (methoden.test.ts prüft das). Ohne datum: Termin folgt
  *  – dann keine Jetzt-Markierung auf der Tagesseite. */
 export const TAGE: { n: number; datum?: string; titel: string; text: string }[] = [
   { n: 1, datum: '2026-10-22', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
   { n: 2, datum: '2026-11-12', titel: 'Kunde & Erlebnis', text: 'Snapshots besprechen, Experience Map.' },
-  { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Opportunity Solution Tree, Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, Concept Story.' },
-  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Geschäftsmodell und Experiment-Karte; Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Scrum und Lego4Scrum.' },
+  { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Opportunity Solution Tree, Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, der Story-Bogen als Theorie.' },
+  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Value Map nachholen, Concept Story; Geschäftsmodell und Experiment-Karte; Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Scrum und Lego4Scrum.' },
   { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Team und Definition of Done, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning mit Störfall – dann wird gebaut.' },
   { n: 6, datum: '2026-12-19', titel: 'Bauen & Review', text: 'Fertig bauen, Usability-Tests über Kreuz, Sprint-Review und Retro: Der Prototyp steht. Danach der Pitch mit Probe.' },
   { n: 7, datum: '2027-01-16', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },

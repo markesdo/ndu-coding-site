@@ -45,7 +45,7 @@ describe('Brief', () => {
     for (const h of ['## 1. Für wen?', '## 2. Welches Problem?', '## 4. Was macht es NICHT?', '## 6. Woran merken wir, dass es funktioniert?', '## 7. Offene Fragen']) {
       expect(s).toContain(h);
     }
-    expect(s).toContain('## 3. Was ist das Produkt in einem Satz?\nOffen – steht nach Tag 3 fest.');
+    expect(s).toContain('## 3. Was ist das Produkt in einem Satz?\nOffen – steht nach Tag 4 fest.');
     expect(s).toContain('Heute gelöst durch: Automat');
     expect(s).toContain('Wir glauben: Pendler\\*innen bekommen morgens Kaffee');
     expect(s).toContain('Wir merken es: Wenn mehr Pendler\\*innen morgens mit Kaffee');
@@ -269,7 +269,7 @@ describe('Leere Pflichtfelder', () => {
     const leer = rendern('brief', { ...laden('brief'), fuerWen: '', problem: '  ', heuteGeloestDurch: '', produktSatz: '   ', outcome: { wirGlauben: '', wirMerkenEs: '' } });
     expect(leer).toContain('## 1. Für wen?\nNoch nichts eingetragen.');
     expect(leer).toContain('## 2. Welches Problem?\nNoch nichts eingetragen.\n\nHeute gelöst durch: Noch nichts eingetragen.');
-    expect(leer).toContain('Satz?\nOffen – steht nach Tag 3 fest.');
+    expect(leer).toContain('Satz?\nOffen – steht nach Tag 4 fest.');
     expect(leer).toContain('Wir glauben: Noch nichts eingetragen.');
     const l = rendern('leitfaden', { ...laden('leitfaden'), ziel: '', wen: '', einstieg: '', abschluss: ' ' });
     expect(l).toContain('Ziel: Noch nichts eingetragen.');
