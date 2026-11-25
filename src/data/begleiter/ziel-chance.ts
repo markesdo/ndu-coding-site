@@ -232,7 +232,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       'Timer 8 min: Momente durch vier Linsen, je ein Satz.',
       'Nach 8 min: Teilchancen des Asts bis zum Blatt, Timer 4 min.',
       'Nach 12 min: schriftlich begründen, Timer 15 min.',
-      '1:1 dabei je 3 min: Joachim, Sofie, Hewen.',
+      '1:1 dabei je 3 min: Produkt 2, 1, 3.',
       'Nach 27 min: Ziel-Chance im Baum mit dem Stern markieren.',
       'Falle: von der Lieblingsidee rückwärts begründen.',
       'Wenn hinten: Begründen kürzen, Festhalten nicht.',
@@ -250,7 +250,7 @@ export const NOTIZEN_ZIEL_CHANCE: Record<string, Notiz> = {
       schritte: [
         'Ast wählen, allein (8 min): die Momente gegeneinander, pro Linse ein Satz – wer liegt vorn und warum. Größe und Kundschaft mit Zitat-IDs.',
         'Bis zum Blatt (4 min): dasselbe mit den Teilchancen des gewählten Asts. Hängt nur eine Chance darunter, ist sie das Blatt.',
-        'Begründen, schriftlich (15 min): drei Sätze ins Feld „Begründen“ der eigenen Spalte auf T3 · 1 – die Wahl, die Linse, die den Ausschlag gibt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Joachim, Sofie, Hewen) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
+        'Begründen, schriftlich (15 min): drei Sätze ins Feld „Begründen“ der eigenen Spalte auf T3 · 1 – die Wahl, die Linse, die den Ausschlag gibt, und welche Linse dagegen spricht. Markus kommt je drei Minuten zu jeder Person (Produkt 2, 1, 3) und fragt: Welche Linse fehlt? Torres’ „healthy debate“ (S. 101) führt ein Team über den eigenen Baum; bei drei Produkten ersetzt das Schreiben plus Markus die Runde (Kursformat).',
         'Festhalten (3 min): Ziel-Chance im Baum mit dem Stern markieren.',
       ],
       achten: [

@@ -237,7 +237,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ],
     ablauf: {
       schritte: [
-        '12.11.2026: Je ein Feedback der Lehrenden am Interviewleitfaden (Sofie, Joachim, Hewen; Commit „Feedback von markesdo: Interviewleitfaden“). Aufbau: Was gut ist, Fürs nächste Mal, eine Frage zur riskantesten Annahme.',
+        '12.11.2026: Je ein Feedback der Lehrenden am Interviewleitfaden (alle drei; Commit „Feedback von markesdo: Interviewleitfaden“). Aufbau: Was gut ist, Fürs nächste Mal, eine Frage zur riskantesten Annahme.',
         'In der Lehrendenansicht steht pro Feedback „noch nicht geöffnet“ oder „geöffnet“ – so siehst du, wer es gelesen hat.',
       ],
     },
@@ -273,7 +273,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Vorab: alle wählen einen Snapshot zur riskantesten Annahme. Reihenfolge Sofie, Joachim, Hewen.',
+      'Vorab: alle wählen einen Snapshot zur riskantesten Annahme. Reihenfolge Produkt 1–3.',
       'Start: Timer 5 min, Chip anklicken. „[Name] zeigt: ID, Zitat, eine Chance.“',
       'Nach 2 min: K drücken, offen lassen. „Frage 2 – die anderen zuerst.“',
       'Nach 4 min: „Schreiben: Zitat-ID zur riskantesten Annahme, stützt oder dagegen.“',
@@ -290,7 +290,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Vorab (1 min): Werkstatt im Zeigen-Modus teilen („Snapshots zeigen ↗“ auf der Folie). Alle wählen den Snapshot, der am stärksten für oder gegen die riskanteste Annahme spricht, und merken die ID. Hewen nimmt A2, falls die riskanteste noch offen ist.',
+        'Vorab (1 min): Werkstatt im Zeigen-Modus teilen („Snapshots zeigen ↗“ auf der Folie). Alle wählen den Snapshot, der am stärksten für oder gegen die riskanteste Annahme spricht, und merken die ID.',
         '0–2 Zeigen (Frage 1): Timer starten, ID hören, Chip (I1 … In) anklicken. Wer zeigt: ID, Zitat, eine Chance. Steht im Snapshot noch keine Chance, sagt die Person eine mündlich.',
         '2–4 Besprechen: K öffnet den Kontext, Reiter Annahmen; das Panel bleibt offen, sonst ist nach dem Neu-Laden nichts als „neu“ markiert. Frage 2 stellen die anderen zuerst; Frage 3 nur kurz, wer gezeigt hat, zuerst (Reiter Leitfaden). Frage 4 entfällt.',
         '4–5 Schreiben: ein Eintrag in der Annahmen-Map bei der riskantesten Annahme – Feld „Beleg-IDs“ die Zitat-ID (I2-4, nicht nur I2), Feld „Beleg (Notiz …)“ „stützt“ oder „spricht dagegen“. Kurz vor Minute 5 „Speichern!“ ansagen, dann einmal Neu laden. Zeigt nichts „neu“: „nach dem Kurs nachtragen“ sagen und weitergehen, nicht suchen.',
@@ -331,7 +331,7 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
     ],
     ablauf: {
       schritte: [
-        '12.11.2026: Je ein zweites Feedback der Lehrenden an „Interviews und Snapshots“ (Sofie, Joachim, Hewen; Commit „Feedback von markesdo: Interviews und Snapshots“). Aufbau: Was gut ist, Fürs nächste Mal, eine Frage mit Zitat-ID.',
+        '12.11.2026: Je ein zweites Feedback der Lehrenden an „Interviews und Snapshots“ (alle drei; Commit „Feedback von markesdo: Interviews und Snapshots“). Aufbau: Was gut ist, Fürs nächste Mal, eine Frage mit Zitat-ID.',
         'In der Lehrendenansicht steht je Feedback „noch nicht geöffnet“ oder „geöffnet“.',
       ],
     },
@@ -346,7 +346,6 @@ export const NOTIZEN_SYNTHESE: Record<string, Notiz> = {
       'Links öffnen den Editor direkt; in jedem Editor speichern.',
       'Nur synthetisch: geänderte Leitfaden-Frage prüfen, nie synthetisches Zitat als Beleg.',
       'Riskanteste ist vorgemerkt (aus der Forschungsfrage) – passt sie noch?',
-      'Hewen: A1 oder A2?',
       'Geändert heißt: neue Annahme oder Brief ändern – den alten Satz nicht umschreiben.',
       'Brief nur bei neuer Zielgruppe oder neuem Problem.',
       'Falle: Gegenbeleg nur besprochen, nicht in der Annahmen-Map.',
