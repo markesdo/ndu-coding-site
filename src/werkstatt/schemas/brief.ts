@@ -7,7 +7,7 @@ export const briefSchema = z.object({
   fuerWen: text('Für wen'),
   problem: text('Problem'),
   heuteGeloestDurch: text('Heute gelöst durch'),
-  // Bleibt bis Tag 3 offen.
+  // Bleibt bis Tag 4 offen (Satz aus der Concept Story).
   produktSatz: text('Produkt in einem Satz').optional(),
   // Drei Einträge werden erwartet; das ist ein Prüflisten-Hinweis, kein Schemafehler.
   nicht: z.array(text('Was es nicht macht'), { error: '„Was es nicht macht“ muss eine Liste sein.' }),

@@ -2,6 +2,10 @@ import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/concept-story.astro (Tag 3, 16:00–16:30 Story-Bogen; seit 20.11.2026
 // nur Theorie – die Übung entfällt, 16:30–17:15 ist Puffer für die Übungen des Tages).
+// Tag 4 (28.11., 09:40–10:20, NDU-66, Entscheidung Markus 25.11.): Die Concept Story wird mit den Studierenden geschrieben.
+// 10 min Theorie als Wiederholung an den Folien stationen, a-mal-b, flach und hoch, dann 30 min Übung (vorgehen): sieben
+// Stationen, Flach-Probe, festhalten – allein, Markus 1:1, keine Erzählrunde zu den eigenen Produkten. Die Sprechzeiten
+// unten gelten für Tag 3.
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
 // selbst kommt an Tag 4 (usage-story.astro), heute geht es um den Bogen dahinter.
 // Zeit (Entscheidung 66, 21.11.): Die Sprechzeiten in den live-Stichworten ergeben zusammen rund 47 min, also deutlich
@@ -35,7 +39,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Introduction (vor Kap. 1), S. xiii–xiv`,
       },
       {
-        text: 'Bezug zu heute: Hauptfigur und Ziel stehen seit dem Vormittag im Kundenprofil (Segment, Jobs); offen ist die erste Frage. Danach prüft ihr am Bogen, was in euren Prototyp kommt (Folie „Die Story entscheidet, was ihr baut“). Nicht sagen, dass die Concept Story an Tag 4 geschrieben wird – dafür gibt es dort keinen Block.',
+        text: 'Bezug zu heute: Hauptfigur und Ziel stehen seit dem Vormittag im Kundenprofil (Segment, Jobs); offen ist die erste Frage. Danach prüft ihr am Bogen, was in euren Prototyp kommt (Folie „Die Story entscheidet, was ihr baut“). Geschrieben wird die Concept Story an Tag 4 (Folie „So geht ihr vor“).',
         quelle: 'Kursformulierung; vgl. Lichaw, Kap. 3, Supporting the Story, S. 33',
       },
       {
@@ -318,7 +322,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   'drei-storys': {
     live: [
       '„Verstehen, sehen, erleben – drei Storys auf demselben Bogen.“',
-      'Heute nur Concept; Origin und Usage, mit Storyboard, an Tag 4.',
+      'Concept zuerst; Origin und Usage, mit Storyboard, an Tag 4.',
       'Exposition betonen: einmal schreiben, dreimal verwenden.',
       'Lichaws Pinterest-Mail erzählen: unscheinbar, und doch ihre Origin Story.',
       'Zeit: Sprechzeit ~2 min, mit der Pinterest-Geschichte.',
@@ -508,8 +512,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Muster zeigen, Kaffeebar-Satz vorlesen.',
       '„Der Satz ist die Story in klein: Figur, Problem, Produkt, Krise, Höhepunkt.“',
       'Falle: mit dem Satz anfangen – erst die sieben Stationen.',
-      '„Heute bleibt es Theorie – eine eigene Story schreibt ihr heute nicht.“',
-      'Zeit: Sprechzeit ~2 min; danach Puffer bis 17:15.',
+      'Der Satz kommt beim Festhalten in Abschnitt 3 des Produkt-Briefs.',
+      'Zeit: Sprechzeit ~2 min; an Tag 4 danach die Übung.',
     ],
     kern: [
       {
@@ -521,6 +525,41 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       text: 'Als Steve Jobs 2007 das iPhone vorstellte, war das Gerät in seiner Hand kein fertiges iPhone, sondern „a semi-functional prototype“ – eine Requisite, die die Vision und die Story trug. Jobs ließ seine Vision und Story durch alles laufen, vom Design über die Präsentation bis zum Prototyp. Der Satz ist die kürzeste Form dieser Story: Wo ihr keinen Bogen zeichnen könnt, „you can speak a few words and see how people respond“.',
       quelle: `${LICHAW}, Kap. 7, Elevator Pitch, S. 127–128; Build and Communicate, S. 129 (die Latte-Zahl dort nicht nennen); Brücke zum Satz ist Kursformulierung`,
     },
-    ueberleitung: 'Damit endet die Theorie. Bis 17:15 holt ihr nach, was vom Tag offen ist.',
+    ueberleitung: 'Jetzt eure Story: 30 Minuten, drei Schritte.',
+  },
+
+  vorgehen: {
+    live: [
+      'Zeit: Tag 4, 09:50–10:20; Wozu vorlesen.',
+      'Timer 20 min: sieben Stationen allein, still, mit IDs.',
+      '1:1 ab Minute 5: einfache Lösung – was hat die Story mehr?',
+      'Nach 20 min: Flach-Probe, eine Zeile – Timer 5 min.',
+      'Nach 25 min: committen, Satz in den Brief, Station 6 als Annahme.',
+    ],
+    uebung: { dauer: '30 min (20 + 5 + 5)', form: 'allein schreiben; Markus geht 1:1 von Person zu Person, keine Erzählrunde' },
+    ablauf: {
+      schritte: [
+        'Schritt 1 (20 min, allein): Vorlage aus dem Handout nach docs/STORYS.md, sieben Stationen mit je ein, zwei Sätzen und IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person.',
+        'Schritt 2 (5 min): die einfache Lösung als eine Zeile darunter – Problem, Produkt, Ende.',
+        'Schritt 3 (5 min): Story committen, Satz in Abschnitt 3 des Produkt-Briefs, fallende Handlung in die Annahmen-Map.',
+      ],
+      achten: [
+        'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',
+        'Krise nennt mindestens eine heutige Alternative mit Zitat-ID und einen inneren Widerstand.',
+        'Station 6 ist ein Gedanke, keine Handlung.',
+      ],
+      fehler: [
+        'Die Story beginnt mit dem Produkt statt mit der Person.',
+        'Der Höhepunkt ist „schneller“ oder „leichter“ – dann fehlt die Krise.',
+        'Die Krise ist erfunden statt aus den Interviews.',
+      ],
+    },
+    kern: [
+      {
+        text: 'Die Probe: die einfache neben die großartige Lösung stellen. „A concept without a conflict and a resulting climax is a flat story—literally just a line.“ „Leicht zu bedienen“ trägt nur, wenn Schwierigkeit das Problem ist.',
+        quelle: `${LICHAW}, Kap. 3, What Is a Concept Story?; Climax/Resolution; Mapping a Concept Story`,
+      },
+    ],
+    ueberleitung: 'Nach der Pause: wer dafür zahlt – das Geschäftsmodell.',
   },
 };

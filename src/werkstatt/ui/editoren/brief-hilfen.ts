@@ -1,7 +1,7 @@
 // Reine Hilfen des Brief-Editors: die Karten der Vorschau. Die Reihenfolge 1–7 ist die der Vorlage auf „Problem-Rahmen“.
 import type { Brief } from '../../schemas/index.js';
 
-export const PRODUKTSATZ_OFFEN = 'Offen – steht nach Tag 3 fest.';
+export const PRODUKTSATZ_OFFEN = 'Offen – steht nach Tag 4 fest.';
 export const MVP_HINWEIS = 'Kommt aus der Story Map (Tag 4).';
 
 export interface BriefKarte {
@@ -11,7 +11,7 @@ export interface BriefKarte {
   absaetze: string[];
   /** Aufzählung statt Absätzen. */
   punkte?: string[];
-  /** Platzhalter, solange nichts da ist (zum Beispiel „Offen – steht nach Tag 3 fest.“). */
+  /** Platzhalter, solange nichts da ist (zum Beispiel „Offen – steht nach Tag 4 fest.“). */
   leerText?: string;
 }
 

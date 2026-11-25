@@ -16,11 +16,11 @@ describe('briefKarten', () => {
     ]);
   });
 
-  it('zeigt „Offen – steht nach Tag 3 fest.“, solange das Produkt in einem Satz leer ist', () => {
+  it('zeigt „Offen – steht nach Tag 4 fest.“, solange das Produkt in einem Satz leer ist', () => {
     const drei = briefKarten(leer)[2];
     expect(drei.absaetze).toStrictEqual([]);
     expect(drei.leerText).toBe(PRODUKTSATZ_OFFEN);
-    expect(PRODUKTSATZ_OFFEN).toBe('Offen – steht nach Tag 3 fest.');
+    expect(PRODUKTSATZ_OFFEN).toBe('Offen – steht nach Tag 4 fest.');
     // nur Leerzeichen zählt als leer
     expect(briefKarten({ ...leer, produktSatz: '   ' })[2].absaetze).toStrictEqual([]);
   });

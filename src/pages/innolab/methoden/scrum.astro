@@ -20,10 +20,11 @@ const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)'
 const KRIVITSKY = 'Alexey Krivitsky, „lego4scrum“, deutsche Ausgabe (2023)';
 const MANIFEST = 'Manifesto for Agile Software Development (2001), agilemanifesto.org';
 
-// Lego4Scrum 15:50–17:10 laut tag-4.astro: Review 1 endet nach Minute 43 (16:33), die Nachbesprechung beginnt nach Minute 75 (17:05).
-const AB_LEGO = '2026-11-28T15:50';
-const NACH_REVIEW_1 = '2026-11-28T16:33';
-const NACH_LEGO = '2026-11-28T17:05';
+// Lego4Scrum seit 25.11.2026 16:15–17:15 laut tag-4.astro (60 statt 80 min, NDU-66): Review 1 endet nach Minute 43 (16:58),
+// die Nachbesprechung beginnt fünf Minuten vor Schluss (17:10).
+const AB_LEGO = '2026-11-28T16:15';
+const NACH_REVIEW_1 = '2026-11-28T16:58';
+const NACH_LEGO = '2026-11-28T17:10';
 ---
 <Layout title="Scrum im Team">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
@@ -206,7 +207,7 @@ const NACH_LEGO = '2026-11-28T17:05';
     <ul class="gross">
       <li data-schritt><strong>Produktziel:</strong> der Outcome-Satz aus eurem Produkt-Brief, laut vorgelesen.</li>
       <li data-schritt><strong>Ein Stakeholder:</strong> wer sollte im Review sitzen, außer Markus und Louis?</li>
-      <li data-schritt><strong>Die anderen beiden</strong> fragen je einmal nach. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Die anderen beiden</strong> fragen je einmal nach. <Timer minuten={4} /></li>
     </ul>
     <p class="nur-handout">Das Produktziel ist die Verpflichtung des Product Backlogs ({GUIDE}, S. 10–11). Euer Outcome aus Tag 1 hat genau diese Form: ein künftiger Zustand, an dem sich der Backlog ausrichtet. Wer keinen Stakeholder außerhalb des Teams findet, hat für das Review an Tag 6 niemanden, der das Inkrement mit frischen Augen sieht.</p>
   </Folie>
@@ -251,7 +252,7 @@ const NACH_LEGO = '2026-11-28T17:05';
       <li data-schritt><strong>Danach:</strong> Wie fühlt sich das an? Fragt nach.</li>
     </ul>
     <div class="nur-handout">
-      <Aufloesung ab={AB_LEGO} hinweis="Die Vision erzählt Markus zu Beginn des Spiels; hier steht sie ab 15:50." knopf="Vision zeigen">
+      <Aufloesung ab={AB_LEGO} hinweis="Die Vision erzählt Markus zu Beginn des Spiels; hier steht sie ab 16:15." knopf="Vision zeigen">
         <p><strong>Vision: Bahnhofsviertel Gleis 1</strong></p>
         <p>Wir bauen das Viertel rund um einen kleinen Bahnhof, an dem jeden Morgen tausende Menschen umsteigen. Bisher ist er nur ein Durchgang. Wir wollen einen Ort daraus machen, an dem man gern ein paar Minuten bleibt, ohne je den Zug zu verpassen.</p>
         <ul>
@@ -387,14 +388,14 @@ const NACH_LEGO = '2026-11-28T17:05';
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (175 min)</h2>
+    <h2 id="vorgehen">So geht ihr vor (130 min)</h2>
     <p class="folie-satz">Theorie mit der Kaffeebar und Lego an Tag 4, euer Team an Tag 5.</p>
     <ol class="gross">
-      <li data-schritt><strong>Agil &amp; Scrum (Tag 4, 14:45–15:40):</strong> acht Folien, die Kaffeebar in Scrum-Begriffen, euer Produktziel in einem Satz.</li>
-      <li data-schritt><strong>Lego4Scrum (Tag 4, 15:50–17:10):</strong> Vision, Produkt an der Wand, drei Sprints, Nachbesprechung.</li>
+      <li data-schritt><strong>Agil &amp; Scrum (Tag 4, 15:45–16:15):</strong> acht Folien, die Kaffeebar in Scrum-Begriffen, euer Produktziel in einem Satz.</li>
+      <li data-schritt><strong>Lego4Scrum (Tag 4, 16:15–17:15):</strong> Vision, Produkt an der Wand, drei Sprints, Nachbesprechung.</li>
       <li data-schritt><strong>Teamaufstellung &amp; Definition of Done (Tag 5, 09:25–10:05):</strong> <code>docs/TEAM.md</code> in jedem der drei Repos.</li>
     </ol>
-    <p class="nur-handout">Agil &amp; Scrum: 35 Minuten Theorie, 15 Minuten Kaffeebar gemeinsam, 5 Minuten Produktziele. Lego4Scrum: 80 Minuten, Ablauf und Kürzungen oben unter <a href="#lego">Warum Lego</a>. Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
+    <p class="nur-handout">Agil &amp; Scrum: 18 Minuten Theorie, 8 Minuten Kaffeebar gemeinsam, 4 Minuten Produktziele. Lego4Scrum: 60 Minuten; der Ablauf oben unter <a href="#lego">Warum Lego</a> ist für 80 Minuten geplant, Markus kürzt die Sprints. Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
   </Folie>
 
   <div class="nur-handout">

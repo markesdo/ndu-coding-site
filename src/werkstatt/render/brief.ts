@@ -16,7 +16,7 @@ ${mehrzeilig(d.problem)}
 Heute gelöst durch: ${mehrzeilig(d.heuteGeloestDurch)}
 
 ## 3. Was ist das Produkt in einem Satz?
-${d.produktSatz !== undefined && d.produktSatz.trim() !== '' ? mehrzeilig(d.produktSatz) : 'Offen – steht nach Tag 3 fest.'}
+${d.produktSatz !== undefined && d.produktSatz.trim() !== '' ? mehrzeilig(d.produktSatz) : 'Offen – steht nach Tag 4 fest.'}
 
 ## 4. Was macht es NICHT?
 ${nicht}
