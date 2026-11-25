@@ -152,7 +152,7 @@ describe('Sprint-Kreislauf: Geometrie', () => {
 describe('Sprint-Kreislauf: am Beamer nur Namen', () => {
   const komponente = Object.entries(quellen).find(([k]) => k.endsWith('SprintKreislauf.astro'))![1];
   it('die Unterzeilen der Events stehen nur im Handout (nur-handout) und im <title>, nicht als Text im Bild', () => {
-    expect(komponente).toMatch(/<figcaption class="[^"]*\bnur-handout\b/);
+    expect(komponente).toMatch(/<dl class="[^"]*\bnur-handout\b/);
     expect(komponente).not.toMatch(/ev\.\w+\.sub\}<\/text/);
     expect(komponente).not.toMatch(/class="sk-sub"/);
   });

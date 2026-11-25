@@ -7,6 +7,7 @@
 //   die übrigen werden blass – so läuft dasselbe Bild auf mehreren Folien mit. Abzeichen gehören zu ihrem Event.
 // aufdecken: so viele Gruppen sofort (0–6), die übrigen je Gruppe per → (data-schritt, wie die übrigen Folien).
 // takt: ersetzt „höchstens ein Monat“ unter „Sprint“, z. B. „ein Sprint, 12.–19.12.“.
+// quelle: Quellen- und Lizenzzeile unter dem Bild (auch am Beamer); das Bild wird dafür etwas niedriger.
 import { BadgeCheck, Flag, Goal, ListChecks, ListOrdered, Package } from '@lucide/astro';
 import Abzeichen from './SprintAbzeichen.astro';
 import SprintKarte from './SprintKarte.astro';
@@ -17,11 +18,12 @@ import {
   pruefeHervor, punkt, ringPfad, spitze, tangente, wer, type Rolle, type Teil,
 } from './sprint-kreislauf';
 
-const { id = 'sprint-kreislauf', hervor, aufdecken, takt } = Astro.props as {
+const { id = 'sprint-kreislauf', hervor, aufdecken, takt, quelle } = Astro.props as {
   id?: string;
   hervor?: Teil | Teil[];
   aufdecken?: number;
   takt?: string;
+  quelle?: string;
 };
 const an = pruefeHervor(hervor);
 pruefeAufdecken(aufdecken);
@@ -80,7 +82,7 @@ const satz = (t: string) => (/[.?!]$/.test(t) ? t : `${t}.`);
 const pfad = (name: string) => `${id}-${name}`;
 const titelId = pfad('titel'), descId = pfad('desc');
 ---
-<figure class="sk" id={id} data-hervor={an.length ? '' : undefined}>
+<figure class:list={['sk', { 'sk-mit-quelle': !!quelle }]} id={id} data-hervor={an.length ? '' : undefined}>
   <div class="sk-rahmen">
     <svg viewBox={`0 0 ${B_BREITE} ${B_HOEHE}`} role="img" aria-labelledby={titelId} aria-describedby={descId}>
       <title id={titelId}>Scrum auf einem Bild: der Sprint-Kreislauf</title>
@@ -167,8 +169,9 @@ const titelId = pfad('titel'), descId = pfad('desc');
       </g>
     </svg>
   </div>
-  <figcaption class="sk-erklaerung nur-handout">
-    <dl>
+  <figcaption>
+    {quelle && <p class="sk-quelle small muted">{quelle}</p>}
+    <dl class="sk-erklaerung nur-handout">
       {EVENTS.map((e) => (
         <div>
           <dt>{e.name}</dt>
@@ -247,13 +250,16 @@ const titelId = pfad('titel'), descId = pfad('desc');
   .sk-an :global(.sk-abz-icon) { color: var(--accent-ink); }
 
   /* Im Handout: die Unterzeilen der Events und wer dabei ist, unter dem Bild. */
-  .sk-erklaerung dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .5rem 1.2rem; margin: .75rem 0 0; font-size: .9rem; }
+  .sk-quelle { margin: .35rem 0 0; }
+  .sk-erklaerung { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .5rem 1.2rem; margin: .75rem 0 0; font-size: .9rem; }
   .sk-erklaerung dt { font-weight: 700; }
   .sk-erklaerung dd { margin: 0; color: var(--muted); }
 
   /* Beamer: so hoch, dass Titel, Kernsatz und Bild in 1280×720 passen. */
   :global(html[data-beamer]) .sk { margin: .25rem 0 0; }
   :global(html[data-beamer]) .sk svg { min-width: 0; max-height: calc(100vh - var(--topbar-h, 48px) - 9.8rem); }
+  :global(html[data-beamer]) .sk-mit-quelle svg { max-height: calc(100vh - var(--topbar-h, 48px) - 11.4rem); }
+  :global(html[data-beamer]) .sk-quelle { margin-top: .15rem; font-size: .7rem; }
 
   @media print {
     .sk-rahmen { overflow: visible; }
