@@ -13,7 +13,7 @@ describe('produktionsAbhaengigkeiten.speicher', () => {
     const abh = produktionsAbhaengigkeiten({});
     const s = abh.speicher;
     expect(abh.speicher).toBe(s);
-    const fehler = await s.lesen('2026-sofie', 'brief').catch((e: unknown) => e);
+    const fehler = await s.lesen('2026-mara', 'brief').catch((e: unknown) => e);
     expect(fehler).toBeInstanceOf(ApiAusnahme);
     expect((fehler as ApiAusnahme).status).toBe(503);
     expect(f).not.toHaveBeenCalled();

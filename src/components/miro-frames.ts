@@ -3,12 +3,15 @@
 // Der Name steht genau so im Frame-Titel auf dem Board und in <MiroFrame name="…"> bzw. <MiroLink name="…">; ein Test
 // prüft, dass jeder Name aus den Seiten hier steht und jeder Eintrag hier auf einer Seite benutzt wird (sonst raus). Neuer Frame auf dem Board → ID hier eintragen (Miro: Frame anklicken, „Copy link“,
 // die Zahl hinter moveToWidget=).
+// Ausnahme Frames je Person (Baum, T3 · 0, Canvas): Auf dem Board tragen sie den Namen der Person, hier und auf den Seiten
+// „Produkt 1/2/3“ in der Reihenfolge der Spalten auf dem Board (von links). Das Repo ist öffentlich, Namen von
+// Studierenden stehen nicht im Code (kein-name.test.ts). Die ID verbindet beides; der Titel auf dem Board bleibt.
 export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'Start hier · So arbeitet ihr auf diesem Board': '3458764687728125024',
   'Baum · Beispiel Kaffeebar': '3458764690142652321',
-  'Baum · Sofie · sofie': '3458764690142652322',
-  'Baum · Joachim · joachim': '3458764690142652323',
-  'Baum · Hewen · chen': '3458764690142652324',
+  'Baum · Produkt 1': '3458764690142652322',
+  'Baum · Produkt 2': '3458764690142652323',
+  'Baum · Produkt 3': '3458764690142652324',
   'T1 · 1 · Experience Map': '3458764687728125026',
   'T1 · 2 · Problem-Rahmen & Produkt-Brief': '3458764687406008349',
   'T1 · 3 · Annahmen-Map': '3458764687406008351',
@@ -18,17 +21,17 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   // Ein Frame je Person (seit 20.11.2026); der gemeinsame Frame „T3 · 0 · So entsteht eure Map“ ist vom Board gelöscht.
   // Beispiel Kaffeebar (seit 20.11.2026 spät): derselbe Weg am Material der Kaffeebar, Momentnamen wie MOMENTNAMEN.
   'T3 · 0 · So entsteht eure Map - Kaffeebar': '3458764691140169696',
-  'T3 · 0 · So entsteht eure Map - Sofie': '3458764691108606799',
-  'T3 · 0 · So entsteht eure Map - Joachim': '3458764691110920808',
-  'T3 · 0 · So entsteht eure Map - Hewen': '3458764691111287267',
+  'T3 · 0 · So entsteht eure Map - Produkt 1': '3458764691108606799',
+  'T3 · 0 · So entsteht eure Map - Produkt 2': '3458764691110920808',
+  'T3 · 0 · So entsteht eure Map - Produkt 3': '3458764691111287267',
   'T3 · 1 · Ziel-Chance': '3458764687841534117',
   'T3 · 2 · How Might We': '3458764687841534441',
   'T3 · 3 · Ideation': '3458764687841681125',
   'T3 · 4 · Kundenprofil & Value Map': '3458764687841769171',
   // Canvas je Person: vormittags Kundenprofil (rechte Hälfte, Kreis), nachmittags Value Map (linke Hälfte, Quadrat).
-  'T3 · 4 · Canvas · Sofie': '3458764691039197393',
-  'T3 · 4 · Canvas · Joachim': '3458764691039197394',
-  'T3 · 4 · Canvas · Hewen': '3458764691039197395',
+  'T3 · 4 · Canvas · Produkt 1': '3458764691039197393',
+  'T3 · 4 · Canvas · Produkt 2': '3458764691039197394',
+  'T3 · 4 · Canvas · Produkt 3': '3458764691039197395',
   // Bis 19.11.2026 „T3 · 5 · Annahmen der Idee“; genutzt wird der Frame an Tag 4 (experiment.astro), darum T4 · 0.
   'T4 · 0 · Annahmen der Idee': '3458764687894872786',
   'T4 · 1 · Story Map': '3458764687894872787',

@@ -13,7 +13,7 @@ export function fakeApiEinschalten(szenario: string): void {
     if (!url.pathname.startsWith('/api/werkstatt/')) return echtesFetch(eingabe, optionen);
     if (url.pathname.endsWith('/auth/ich')) {
       if (szenario === 'abgemeldet') return json(401, { fehler: 'Nicht angemeldet.', code: 'nicht-angemeldet' });
-      return json(200, { githubId: 900001, login: 'sofie-test', kohorte: 'test', rolle: 'studierende', repo: szenario === 'einrichten' ? null : 'test/mappe-sofie' });
+      return json(200, { githubId: 900001, login: 'mara-test', kohorte: 'test', rolle: 'studierende', repo: szenario === 'einrichten' ? null : 'test/mappe-mara' });
     }
     if (optionen?.method === 'PUT') {
       (window as unknown as { __puts: number }).__puts = ((window as unknown as { __puts?: number }).__puts ?? 0) + 1;

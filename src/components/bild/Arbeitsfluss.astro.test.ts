@@ -1,4 +1,4 @@
-// Arbeitsfluss.astro gerendert (Container-API, vitest.astro.config.ts): Punkte, Fokus, Tour und die Schritte auf den
+// Arbeitsfluss.astro gerendert (Container-API, vitest.config.ts): Punkte, Fokus, Tour und die Schritte auf den
 // Seiten, die den Plan einbinden (NDU-74).
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { beforeAll, describe, expect, it } from 'vitest';

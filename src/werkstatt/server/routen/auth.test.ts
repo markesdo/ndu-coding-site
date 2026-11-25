@@ -11,7 +11,7 @@ import type { GithubIdentitaet, Speicher, Umgebung } from '../typen';
 const BASIS = 'http://localhost:4321';
 
 function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number; login: string }; anlegenWirft?: boolean; lesezugriff?: Speicher['lesezugriff']; werkstattJson?: Speicher['werkstattJson']; jetzt?: () => number } = {}) {
-  const umgebung = { ...lokaleUmgebung(), zugang: opts.zugang ?? { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] } } };
+  const umgebung = { ...lokaleUmgebung(), zugang: opts.zugang ?? { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'mara' }, { githubId: 1002, kuerzel: 'jonas' }] } } };
   const basis = fakeSpeicher();
   const anlegen = vi.fn(async (...a: Parameters<Speicher['anlegen']>) => {
     if (opts.anlegenWirft) throw new Error('GitHub kaputt');
@@ -19,7 +19,7 @@ function aufbau(opts: { zugang?: Umgebung['zugang']; person?: { githubId: number
   });
   const lesezugriff = vi.fn(opts.lesezugriff ?? basis.lesezugriff);
   const speicher: Speicher = { ...basis, anlegen, lesezugriff, ...(opts.werkstattJson ? { werkstattJson: opts.werkstattJson } : {}) };
-  const person = opts.person ?? { githubId: 1001, login: 'sofie-x' };
+  const person = opts.person ?? { githubId: 1001, login: 'mara-x' };
   const github: GithubIdentitaet = {
     loginUrl: (state, uri) => `https://github.test/auth?state=${state}&redirect_uri=${encodeURIComponent(uri)}`,
     codeEinloesen: async () => person,
@@ -138,7 +138,7 @@ describe('auth/callback', () => {
     const r = await callback(app, state, stateCookie);
     const s = await sitzungLesen(wert(r, COOKIE_WERKSTATT), umgebung.sessionSecret, 1_800_000_000);
     expect(s).toMatchObject({ githubId: 1001, login: 'neuer-name' });
-    expect(anlegen).toHaveBeenCalledWith(expect.objectContaining({ kuerzel: 'sofie', kohorte: 'test' }), 1001);
+    expect(anlegen).toHaveBeenCalledWith(expect.objectContaining({ kuerzel: 'mara', kohorte: 'test' }), 1001);
   });
 
   it('Lehrende: Cookie mit rolle lehrende, anlegen nicht aufgerufen', async () => {
@@ -163,7 +163,7 @@ describe('auth/callback', () => {
     const t = aufbau();
     const { state, stateCookie } = await login(t.app);
     await callback(t.app, state, stateCookie);
-    expect(t.lesezugriff).toHaveBeenCalledWith('test-sofie', 1001);
+    expect(t.lesezugriff).toHaveBeenCalledWith('test-mara', 1001);
     const l = aufbau({ person: { githubId: 1000, login: 'lehrer' } });
     const z = await login(l.app);
     await callback(l.app, z.state, z.stateCookie);
@@ -338,7 +338,7 @@ describe('auth/ich und abmelden', () => {
   it('Studierende: Ich mit repo', async () => {
     const { app, cookie } = await angemeldet({ githubId: 1001, login: 'neuer-name' });
     const r = await app.request(`${BASIS}/api/werkstatt/auth/ich`, { headers: { Cookie: cookie } });
-    expect(await r.json()).toStrictEqual({ githubId: 1001, login: 'neuer-name', kohorte: 'test', rolle: 'studierende', repo: 'test-sofie' });
+    expect(await r.json()).toStrictEqual({ githubId: 1001, login: 'neuer-name', kohorte: 'test', rolle: 'studierende', repo: 'test-mara' });
   });
 
   it('fremde werkstatt.json (andere githubId oder Kohorte): repo null', async () => {
@@ -420,10 +420,10 @@ describe('githubIdentitaet (Fake-fetch)', () => {
     const f = (async (url: string, init?: RequestInit) => {
       aufrufe.push({ url, init });
       if (url === 'https://github.com/login/oauth/access_token') return Response.json({ access_token: 'tok' });
-      return Response.json({ id: 1001, login: 'sofie-x', email: 'geheim' });
+      return Response.json({ id: 1001, login: 'mara-x', email: 'geheim' });
     }) as unknown as typeof fetch;
     const r = await githubIdentitaet(env, f).codeEinloesen('code1', 'https://x.test/cb');
-    expect(r).toStrictEqual({ githubId: 1001, login: 'sofie-x' });
+    expect(r).toStrictEqual({ githubId: 1001, login: 'mara-x' });
     expect(aufrufe.map((a) => a.url)).toStrictEqual(['https://github.com/login/oauth/access_token', 'https://api.github.com/user']);
     expect((aufrufe[0].init!.headers as Record<string, string>).Accept).toBe('application/json');
     expect(JSON.parse(aufrufe[0].init!.body as string)).toStrictEqual({ client_id: 'cid', client_secret: 'geheim', code: 'code1', redirect_uri: 'https://x.test/cb' });

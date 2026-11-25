@@ -4,7 +4,8 @@ import Orientierung from '../../components/Orientierung.astro';
 import Folie from '../../components/Folie.astro';
 import FooterNav from '../../components/FooterNav.astro';
 import Arbeitsfluss from '../../components/bild/Arbeitsfluss.astro';
-import { FlaskConical, MessageSquareQuote, Star, Target } from '@lucide/astro';
+import WasBauenWir from '../../components/bild/WasBauenWir.astro';
+import { MessageSquareQuote, Star } from '@lucide/astro';
 import { LINIE, SPALTEN, STATIONEN, station, stationHref } from '../../components/arbeitsfluss';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
@@ -111,13 +112,7 @@ const nachSpalte = SPALTEN.map((sp) => ({ sp, stationen: STATIONEN.filter((s) =>
   <Folie>
     <h2 id="was-bauen-wir">Was bauen wir?</h2>
     <p class="folie-satz">Slice 1 – und was die Tests davon übrig lassen.</p>
-    <div class="drei-zum-stern">
-      <div class="zulauf zulauf-beleg" data-schritt><MessageSquareQuote size={22} aria-hidden="true" /><strong>{LINIE.beleg.name}</strong> liefert den Inhalt: der Weg bis zum Höhepunkt.</div>
-      <div class="zulauf zulauf-outcome" data-schritt><Target size={22} aria-hidden="true" /><strong>{LINIE.outcome.name}</strong> liefert das Maß: was Menschen danach anders tun.</div>
-      <div class="zulauf zulauf-annahme" data-schritt><FlaskConical size={22} aria-hidden="true" /><strong>{LINIE.annahme.name}</strong> liefert das Lernziel: was dieser Slice zeigen muss.</div>
-      <div class="stern" data-schritt><Star size={30} aria-hidden="true" /><strong>Slice 1</strong></div>
-    </div>
-    <p class="gross stern-satz" data-schritt><strong>Heute Mittag steht euer Slice 1. In zwei Wochen wisst ihr, ob er hält.</strong></p>
+    <WasBauenWir>An Tag 4 entsteht euer Slice 1. Zwei Wochen später zeigen eure Tests, ob er hält.</WasBauenWir>
     <p class="nur-handout">Patton nennt das kleinste Release, das seine Outcomes erreicht, das MVP (Kap. 2); der erste Slice ist dafür da, einmal von Anfang bis Ende zu laufen und zu lernen. An Tag 5 werden aus Slice 1, den Lernkarten eurer Tests und der Definition of Done die Issues. Bei der Kaffeebar: sechs Issues, davon eines aus einem Testbefund und eines für die Messung (<a href="/innolab/methoden/backlog#beispiel">Backlog</a>).</p>
   </Folie>
 
@@ -163,25 +158,14 @@ const nachSpalte = SPALTEN.map((sp) => ({ sp, stationen: STATIONEN.filter((s) =>
   .kette-annahme li { border-left-color: var(--purple); border-left-style: dashed; }
   .kette-schluss { display: flex; gap: .5rem; align-items: center; font-weight: 600; }
   .kette-schluss :global(svg) { color: var(--blue); flex: none; }
-  .drei-zum-stern { display: grid; grid-template-columns: 1fr auto; grid-template-rows: repeat(3, auto); gap: .6rem 1.5rem; align-items: center; margin: 1rem 0; }
-  .zulauf { grid-column: 1; display: flex; gap: .6rem; align-items: center; padding: .6rem .9rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: 1.05rem; }
-  .zulauf-beleg { border-left: 4px solid var(--blue); } .zulauf-beleg :global(svg) { color: var(--blue); flex: none; }
-  .zulauf-outcome { border-left: 4px solid var(--accent); } .zulauf-outcome :global(svg) { color: var(--accent); flex: none; }
-  .zulauf-annahme { border-left: 4px dashed var(--purple); } .zulauf-annahme :global(svg) { color: var(--purple); flex: none; }
-  .stern { grid-column: 2; grid-row: 1 / 4; display: flex; flex-direction: column; align-items: center; gap: .35rem; padding: 1rem 1.4rem; border: 2px solid var(--yellow); border-radius: 50%; aspect-ratio: 1; justify-content: center; background: var(--yellow-soft); color: var(--yellow-ink); }
-  .stern :global(svg) { fill: currentColor; }
-  .stern-satz { margin-top: .5rem; }
   .stern-klein { color: var(--yellow); fill: currentColor; vertical-align: -2px; }
   .stationen th[scope="row"] { font-family: var(--font); font-size: .95rem; text-transform: none; letter-spacing: 0; color: var(--fg); white-space: normal; min-width: 10rem; }
   .stationen td { font-size: .95rem; vertical-align: top; }
   @media (max-width: 760px) {
     .kette { grid-template-columns: 1fr 1fr; }
-    .drei-zum-stern { grid-template-columns: 1fr; }
-    .stern { grid-column: 1; grid-row: auto; aspect-ratio: auto; border-radius: var(--radius); flex-direction: row; }
   }
   :global(html[data-beamer]) .kette li { font-size: .9rem; }
   :global(html[data-beamer]) .kette-zeilen li { font-size: 1rem; }
-  :global(html[data-beamer]) .zulauf { font-size: 1.1rem; }
   @media print {
     @page { size: A3 landscape; }
   }
