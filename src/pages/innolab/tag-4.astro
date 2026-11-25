@@ -5,7 +5,9 @@ import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Folie from '../../components/Folie.astro';
 import Arbeitsfluss from '../../components/bild/Arbeitsfluss.astro';
+import WasBauenWir from '../../components/bild/WasBauenWir.astro';
 import Baum from '../../components/bild/Baum.astro';
 import { KAFFEEBAR_BAUM_TAG_4 } from '../../components/innolab-beispiel';
 
@@ -26,7 +28,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-28">
-    <Block time="09:00–09:10" type="plenum" title="Arbeitsfluss – ihr seid hier" href="/innolab/arbeitsfluss?tag=4">Was ihr von Tag 1 bis 3 mitbringt und was heute daraus wird.</Block>
+    <Block time="09:00–09:10" type="plenum" title="Arbeitsfluss – ihr seid hier" href="#arbeitsfluss">Was ihr von Tag 1 bis 3 mitbringt und was heute daraus wird.</Block>
     <Block time="09:10–09:40" type="uebung" title="Value Map & Fit (Nachholen von Tag 3)" href="/innolab/methoden/value-map#vorgehen">Wählen – wer zu Hause gewählt hat, bestätigt nur: Was davon ist die Website, die ihr baut – und trifft sie allein noch P1? Dann füllen, ordnen, Fit, festhalten; zum Schluss die drei Ideen als Lösungen in euren Baum.</Block>
     <Block time="09:40–10:20" type="uebung" title="Story-Bogen + Concept Story" href="/innolab/methoden/concept-story#story-bogen">10 min Theorie: sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben: sieben Stationen in <code>docs/STORYS.md</code>, Flach-Probe, festhalten.</Block>
     <Block time="10:20–10:30" type="pause" title="Pause" />
@@ -42,11 +44,24 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie jemand den Wert zum ersten Mal sieht; E1 laufen lassen, fünf Usability-Tests.</Block>
   </div>
 
+  {/* 9:00: Im Beamer kommen nach dem Ablauf diese zwei Folien (dieselben wie auf /innolab/arbeitsfluss), dann → zur Value Map. */}
+  <Folie>
+    <h2 id="arbeitsfluss">Arbeitsfluss – ihr seid hier</h2>
+    <p class="folie-satz">Was ihr von Tag 1 bis 3 mitbringt und was heute daraus wird.</p>
+    <Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />
+    <p class="small">Die drei Fäden an der Kaffeebar und alle Stationen mit einem Satz: <a href="/innolab/arbeitsfluss?tag=4#beleg">Fäden im Detail</a></p>
+  </Folie>
+
+  <Folie>
+    <h2 id="was-bauen-wir">Was bauen wir?</h2>
+    <p class="folie-satz">Slice 1 – und was die Tests davon übrig lassen.</p>
+    <WasBauenWir />
+  </Folie>
+
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
   <p>Heute werden aus der <strong>Lösung</strong> <strong>Experimente</strong>. Zuerst holt ihr nach, was von Tag 3 offen ist: Value Map und Fit eures Spitzenreiters. Dann schreibt ihr eure Concept Story – warum jemand in Sekunden versteht, dass euer Spitzenreiter besser ist als das, was er heute tut; die Theorie dazu kennt ihr von Tag 3. Das Geschäftsmodell zeigt, wer dafür zahlt; die Experiment-Karte, an welcher Annahme er hängt – daraus wird E1. Die Story Map zeigt, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das nach dem Kurstag mit echten Menschen, und E1 läuft daneben. Am Nachmittag beginnt der Schritt vom Entdecken zum Liefern: Ihr lernt Scrum kennen, so wie Produktteams in Unternehmen arbeiten. Als Team für eure drei Produkte stellt ihr euch zu Beginn von Tag 5 auf. Das Entdecken hört dabei nicht auf: Euer Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
-  <Arbeitsfluss id="af-tag-4" hier={4} bis={4} />
-  <p class="small">Die drei Fäden an der Kaffeebar und alle Stationen mit einem Satz: <a href="/innolab/arbeitsfluss?tag=4">Arbeitsfluss</a> – um 9:00 als Folien.</p>
+  <p class="small">Den Plan mit „Ihr seid hier“ zeigt die Folie <a href="#arbeitsfluss">Arbeitsfluss</a> oben, um 9:00 im Beamer gleich nach dem Ablauf.</p>
   <p><strong>Der Baum wächst heute um Lösungen und Tests.</strong> Euer Baum auf Miro („Baum · euer Name“) endet bisher bei der Ziel-Chance mit Stern. Nach der Value Map hängt ihr eure drei Ideen als Lösungen darunter und markiert den Spitzenreiter; nach der Experiment-Karte kommen unter ihn die riskanteste Annahme und E1, nach dem Spike E2. Je etwa zwei Minuten. So steht der Baum, wie Teresa Torres ihn zeichnet: Outcome, Chancen, mehrere Lösungen unter einer Chance und darunter die Annahmen-Tests, die zeigen, ob eine Lösung trägt ({TORRES}, S. 25–27).</p>
   <Baum knoten={KAFFEEBAR_BAUM_TAG_4} label="Baum der Kaffeebar ab Tag 4: Outcome, darunter die Ziel-Chance „Geht sich ein Kaffee noch aus?“, darunter drei Lösungen – Wartezeit-Anzeige, Im Gehen bestellen als Spitzenreiter, Kaffeewagen am Bahnsteig –, unter dem Spitzenreiter A5 mit dem Test E1" />
   <Callout type="info" title="Wenn die Story Map länger dauert">

@@ -1,0 +1,30 @@
+---
+// „Was bauen wir?“: Die drei Linien des Arbeitsflusses laufen in Slice 1 zusammen. Inhalt der gleichnamigen Folie auf
+// /innolab/arbeitsfluss und auf Tag 4 (9:00); Überschrift und Folien-Satz bleiben in der Seite (Begleiter, folien-seiten.test.ts).
+// Jedes Element ist ein Schritt (data-schritt): im Beamer per → nacheinander.
+import { FlaskConical, MessageSquareQuote, Star, Target } from '@lucide/astro';
+import { LINIE } from '../arbeitsfluss';
+---
+<div class="drei-zum-stern">
+  <div class="zulauf zulauf-beleg" data-schritt><MessageSquareQuote size={22} aria-hidden="true" /><strong>{LINIE.beleg.name}</strong> liefert den Inhalt: der Weg bis zum Höhepunkt.</div>
+  <div class="zulauf zulauf-outcome" data-schritt><Target size={22} aria-hidden="true" /><strong>{LINIE.outcome.name}</strong> liefert das Maß: was Menschen danach anders tun.</div>
+  <div class="zulauf zulauf-annahme" data-schritt><FlaskConical size={22} aria-hidden="true" /><strong>{LINIE.annahme.name}</strong> liefert das Lernziel: was dieser Slice zeigen muss.</div>
+  <div class="stern" data-schritt><Star size={30} aria-hidden="true" /><strong>Slice 1</strong></div>
+</div>
+<p class="gross stern-satz" data-schritt><strong>Heute Mittag steht euer Slice 1. In zwei Wochen wisst ihr, ob er hält.</strong></p>
+
+<style>
+  .drei-zum-stern { display: grid; grid-template-columns: 1fr auto; grid-template-rows: repeat(3, auto); gap: .6rem 1.5rem; align-items: center; margin: 1rem 0; }
+  .zulauf { grid-column: 1; display: flex; gap: .6rem; align-items: center; padding: .6rem .9rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); font-size: 1.05rem; }
+  .zulauf-beleg { border-left: 4px solid var(--blue); } .zulauf-beleg :global(svg) { color: var(--blue); flex: none; }
+  .zulauf-outcome { border-left: 4px solid var(--accent); } .zulauf-outcome :global(svg) { color: var(--accent); flex: none; }
+  .zulauf-annahme { border-left: 4px dashed var(--purple); } .zulauf-annahme :global(svg) { color: var(--purple); flex: none; }
+  .stern { grid-column: 2; grid-row: 1 / 4; display: flex; flex-direction: column; align-items: center; gap: .35rem; padding: 1rem 1.4rem; border: 2px solid var(--yellow); border-radius: 50%; aspect-ratio: 1; justify-content: center; background: var(--yellow-soft); color: var(--yellow-ink); }
+  .stern :global(svg) { fill: currentColor; }
+  .stern-satz { margin-top: .5rem; }
+  @media (max-width: 760px) {
+    .drei-zum-stern { grid-template-columns: 1fr; }
+    .stern { grid-column: 1; grid-row: auto; aspect-ratio: auto; border-radius: var(--radius); flex-direction: row; }
+  }
+  :global(html[data-beamer]) .zulauf { font-size: 1.1rem; }
+</style>

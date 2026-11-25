@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bloeckeAus, hhmm, quellenAusGlob } from './begleiter';
+import { bloeckeAus, folienAus, hhmm, quellenAusGlob } from './begleiter';
 import { KAFFEEBAR_BAUM_TAG_4 } from '../components/innolab-beispiel';
 
 // Dieselbe Glob-Form wie in pages/innolab/begleiter.astro.
@@ -16,7 +16,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
   it('die Blöcke in Reihenfolge, mit Zeiten und Zielen', () => {
     const b = bloeckeAus(seite('/innolab/tag-4')).map((x) => `${hhmm(x.von)}–${hhmm(x.bis)} ${x.titel} ${x.href ?? ''}`.trim());
     expect(b).toStrictEqual([
-      '09:00–09:10 Arbeitsfluss – ihr seid hier /innolab/arbeitsfluss?tag=4',
+      '09:00–09:10 Arbeitsfluss – ihr seid hier #arbeitsfluss',
       '09:10–09:40 Value Map & Fit (Nachholen von Tag 3) /innolab/methoden/value-map#vorgehen',
       '09:40–10:20 Story-Bogen + Concept Story /innolab/methoden/concept-story#story-bogen',
       '10:20–10:30 Pause',
@@ -81,5 +81,19 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(seite('/innolab/tag-3')).toContain('(Experiment-Karte); an Tag 4 folgen auch Story Map, Usage Story und Prototyp.');
     expect(seite('/innolab/tag-3')).not.toContain('dort folgen auch');
     expect(seite('/innolab/methoden/experiment')).not.toContain('die „?“ von Tag 3 auf Miro');
+  });
+
+  // NDU-71: Um 9:00 blättert Markus im Beamer per → vom Ablauf direkt in den Arbeitsfluss, ohne Seitenwechsel.
+  it('Beamer: nach dem Ablauf kommen die Folien Arbeitsfluss (Tag 4 hier, Tag 4 und 5–7 per →) und „Was bauen wir?“', () => {
+    const q = seite('/innolab/tag-4');
+    expect(folienAus('/innolab/tag-4', q).map((f) => f.id)).toStrictEqual(['arbeitsfluss', 'was-bauen-wir']);
+    // Die erste Folie steht direkt hinter dem Ablauf, nicht erst nach #faden.
+    const ablauf = q.indexOf('<h2 id="ablauf">');
+    expect(ablauf).toBeGreaterThan(0);
+    expect(q.slice(ablauf, q.indexOf('<Folie>')).match(/<h2 id="[^"]+"/g)).toStrictEqual(['<h2 id="ablauf"']);
+    expect(folie('/innolab/tag-4', 'arbeitsfluss')).toContain('<Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />');
+    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('<WasBauenWir />');
+    // Im Handout nicht doppelt: der Plan nur in der Folie.
+    expect(q.match(/<Arbeitsfluss\b/g)).toHaveLength(1);
   });
 });
