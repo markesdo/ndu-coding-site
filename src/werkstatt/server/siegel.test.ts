@@ -8,9 +8,10 @@ import { entsiegeln, siegeln } from './siegel';
 
 const K = [{ kid: 'k1', key: new Uint8Array(32).fill(7) }];
 const UMSCHLAG_ALT = 'v1.k1.AvZYdizyZVPSH_rL3DdLAg3eAr_JWnPd1veD4jFgoo_fAHCyw_gHhtAWX19rhud3M9AbG1Yz70CKe5xPjlpvpMKUjPVAUHcf_pd0a8iiXZU04OYJtgerqeve0Jkw-g';
-// FASSUNG_ALT am 25.11.2026 (NDU-73) für den erfundenen Repo-Namen neu versiegelt, mit dem Verfahren aus b4753b6 (der
-// Nachbau öffnete zuerst den bisherigen Vektor); der bisherige band ein echtes Kürzel ins AAD.
-const FASSUNG_ALT = 'f1.k1.bv4juW3uonzlvXs4Asmid0XEx1CGavwlPITvGyoWpNu9eLWhkHASS7c3pRhPJT4vNMbTgw7IffQ';
+// FASSUNG_ALT am 25.11.2026 (NDU-73) für den erfundenen Repo-Namen neu versiegelt, mit fassungVersiegeln aus dem Stand
+// b4753b6 selbst (git archive b4753b6, dort ausgeführt; derselbe Code öffnete vorher den bisherigen Vektor). Der bisherige
+// band ein echtes Kürzel ins AAD.
+const FASSUNG_ALT = 'f1.k1.nXplG7RJsAXtSjM9h2UPDNrsl19m4R1kuQ7snnTTWoRmh-eJttOh5GTcBEaHmrkgckWZOQ_TqDQ';
 const ORT = { repo: '2026-mara', artefakt: 'annahmen' as const, zeilenId: 'A2' };
 const enc = new TextEncoder();
 
