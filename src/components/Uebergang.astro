@@ -1,7 +1,8 @@
 ---
 // Übergangsstreifen einer Station des Arbeitsflusses: Kommt aus → Jetzt → Geht nach (Daten: arbeitsfluss.ts).
 // Steht im Kopf der Methodenseite – am Blockanfang ist er das Erste, was der Beamer zeigt. „Kommt aus“ folgt aus braucht
-// (methoden.ts), außer wo die Station es selbst sagt; „Geht nach“ ist der Satz „→ gebraucht in“ der Station.
+// (methoden.ts), außer wo die Station es selbst sagt; „Geht nach“ ist der Satz „→ gebraucht in“ der Station. Der Link
+// „Arbeitsfluss“ öffnet den Plan mit dieser Station im Fokus (?station=…, NDU-74).
 import { ArrowRight, Route } from '@lucide/astro';
 import { kommtAus, methodeVon, station } from './arbeitsfluss';
 
@@ -28,7 +29,7 @@ const jetzt = s.jetzt ?? methodeVon(s)?.frage ?? s.satz;
       <span class="ue-text">{s.gebrauchtIn}</span>
     </li>
   </ol>
-  <figcaption class="ue-link"><a href={`/innolab/arbeitsfluss?tag=${s.spalte}`}><Route size={14} aria-hidden="true" /> Arbeitsfluss</a></figcaption>
+  <figcaption class="ue-link"><a href={`/innolab/arbeitsfluss?tag=${s.spalte}&station=${s.id}#plan`}><Route size={14} aria-hidden="true" /> Arbeitsfluss</a></figcaption>
 </figure>
 
 <style>
