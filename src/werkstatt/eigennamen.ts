@@ -16,7 +16,7 @@ const VORNAMEN = [
   'Jakob', 'Johann', 'Johanna', 'Johannes', 'Jonas', 'Josef', 'Julia', 'Julian', 'Karl', 'Katharina', 'Klara', 'Laura',
   'Lea', 'Lena', 'Leon', 'Leonie', 'Lisa', 'Lukas', 'Magdalena', 'Manuel', 'Maria', 'Marie', 'Markus', 'Martin',
   'Martina', 'Matthias', 'Max', 'Maximilian', 'Mia', 'Michael', 'Monika', 'Moritz', 'Nina', 'Niklas', 'Noah', 'Patrick',
-  'Paul', 'Peter', 'Petra', 'Philipp', 'Sabine', 'Sandra', 'Sarah', 'Sebastian', 'Simon', 'Sofie', 'Sophia', 'Sophie',
+  'Paul', 'Peter', 'Petra', 'Philipp', 'Sabine', 'Sandra', 'Sarah', 'Sebastian', 'Simon', 'Sophia', 'Sophie',
   'Stefan', 'Stefanie', 'Theresa', 'Thomas', 'Tobias', 'Valentina', 'Wolfgang',
 ];
 
