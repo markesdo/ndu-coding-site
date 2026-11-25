@@ -1,0 +1,194 @@
+---
+// Scrum auf einem Bild: der Sprint-Kreislauf (Daten und Geometrie: ./sprint-kreislauf.ts). Eigene Zeichnung nach der
+// Idee „Kreis mit Daily-Schleife“ (Sprint-Kreislauf und Artefakte-Fluss im Deck 25/26), Begriffe nach Scrum Guide 2020.
+// hervor: ein Teil oder mehrere (product-backlog, planning, sprint-backlog, sprint, daily, inkrement, review, retro),
+//   die übrigen werden blass – so läuft dasselbe Bild auf mehreren Folien mit.
+// aufdecken: so viele Gruppen sofort (0–6), die übrigen je Gruppe per → (data-schritt, wie die übrigen Folien).
+// takt: ersetzt „höchstens ein Monat“ unter „Sprint“, z. B. „ein Sprint, 12.–19.12.“.
+// team: die drei Verantwortlichkeiten als Zeile unten (eigene Grafik folgt), standardmäßig an.
+import { BadgeCheck, Eye, Flag, Goal, ListChecks, ListOrdered, MessagesSquare, Package, RefreshCw, Target } from '@lucide/astro';
+import SprintKarte from './SprintKarte.astro';
+import {
+  ARTEFAKTE, B_BREITE, B_HOEHE, DAILY_R, EVENTS, LINIE_Y, MITTE, PFEILE_RING, PLANNING_X, R, RING_ENDE, SPRINT,
+  VERANTWORTLICHKEITEN, WINKEL, beschreibung, dailyMitte, pruefeAufdecken, pruefeHervor, punkt, ringPfad, ringSpitze,
+  SCHRITTE, spitze, type Teil,
+} from './sprint-kreislauf';
+
+const { id = 'sprint-kreislauf', hervor, aufdecken, takt, team = true } = Astro.props as {
+  id?: string;
+  hervor?: Teil | Teil[];
+  aufdecken?: number;
+  takt?: string;
+  team?: boolean;
+};
+const an = pruefeHervor(hervor);
+pruefeAufdecken(aufdecken);
+
+const ev = Object.fromEntries(EVENTS.map((e) => [e.id, e]));
+const art = Object.fromEntries(ARTEFAKTE.map((a) => [a.id, a]));
+/** Attribute eines Teils (für hervor). */
+const g = (teil: Teil) => ({ 'data-teil': teil, class: an.includes(teil) ? 'sk-an' : undefined });
+/** Attribute einer Aufdeck-Gruppe (SCHRITTE[i]); eine Gruppe ist ein Schritt am Beamer, auch wenn sie zwei Teile hat. */
+const s = (i: number) => ({ 'data-gruppe': SCHRITTE[i].join(' '), 'data-schritt': aufdecken !== undefined && i >= aufdecken ? '' : undefined });
+
+const ICON_EVENT = { planning: Target, daily: MessagesSquare, review: Eye, retro: RefreshCw } as const;
+const ICON_ART = { 'product-backlog': ListOrdered, 'sprint-backlog': ListChecks, inkrement: Package } as const;
+const ICON_VERPFL = { 'product-backlog': Flag, 'sprint-backlog': Goal, inkrement: BadgeCheck } as const;
+
+// Artefakt-Karten: oben Icon und Name, unten die Verpflichtung. x/y = linke obere Ecke.
+const KARTE = { b: 232, oben: 56, unten: 60 };
+const karten = [
+  { teil: 'product-backlog' as const, x: 30, y: LINIE_Y - KARTE.oben / 2, ...KARTE },
+  { teil: 'sprint-backlog' as const, x: MITTE.x - 101, y: MITTE.y - 30, b: 202, oben: 46, unten: 52 },
+  { teil: 'inkrement' as const, x: 752, y: punkt(WINKEL.inkrement).y - KARTE.oben / 2, ...KARTE },
+].map((k) => ({ ...k, name: art[k.teil].name, verpflichtung: art[k.teil].verpflichtung, Icon: ICON_ART[k.teil], IconVerpfl: ICON_VERPFL[k.teil] }));
+
+const pReview = punkt(WINKEL.review);
+const pRetro = punkt(WINKEL.retro);
+const pDaily = punkt(WINKEL.daily);
+const pInk = punkt(WINKEL.inkrement);
+const dm = dailyMitte();
+const ringUnten = punkt(-90);
+const ende = punkt(RING_ENDE);
+// Daily-Schleife: fast ganzer Kreis, offen an der Stelle, wo sie den Ring berührt; Pfeilspitze oben.
+const sA = (WINKEL.daily + 180 + 28) * Math.PI / 180;
+const sE = (WINKEL.daily + 180 - 28) * Math.PI / 180;
+const schleife = `M${(dm.x + DAILY_R * Math.cos(sA)).toFixed(1)} ${(dm.y - DAILY_R * Math.sin(sA)).toFixed(1)}A${DAILY_R} ${DAILY_R} 0 1 0 ${(dm.x + DAILY_R * Math.cos(sE)).toFixed(1)} ${(dm.y - DAILY_R * Math.sin(sE)).toFixed(1)}`;
+const schleifeSpitze = (() => {
+  const a = (WINKEL.daily + 90) * Math.PI / 180; // oben auf der Schleife, Laufrichtung gegen den Uhrzeigersinn
+  const x = dm.x + DAILY_R * Math.cos(a), y = dm.y - DAILY_R * Math.sin(a);
+  return spitze(x, y, -Math.sin(a), -Math.cos(a), 11);
+})();
+const titelId = `${id}-titel`, descId = `${id}-desc`;
+---
+<figure class="sk" id={id} data-hervor={an.length ? '' : undefined}>
+  <div class="sk-rahmen">
+    <svg viewBox={`0 0 ${B_BREITE} ${B_HOEHE}`} role="img" aria-labelledby={titelId} aria-describedby={descId}>
+      <title id={titelId}>Scrum auf einem Bild: der Sprint-Kreislauf</title>
+      <desc id={descId}>{beschreibung(takt)}</desc>
+
+      {/* 1 · Product Backlog mit Produktziel */}
+      <g {...s(0)}><g {...g('product-backlog')}>
+        <SprintKarte {...karten[0]} />
+      </g></g>
+
+      {/* 2 · Sprint Planning auf der Grundlinie, Sprint Backlog mit Sprint-Ziel in der Mitte des Rings */}
+      <g {...s(1)}><g {...g('planning')}>
+        <line class="sk-linie" x1={karten[0].x + KARTE.b} y1={LINIE_Y} x2={PLANNING_X - 26} y2={LINIE_Y} />
+        <polygon class="sk-spitze" points={spitze(PLANNING_X - 30, LINIE_Y, 1, 0)} />
+        <circle class="sk-marke" cx={PLANNING_X} cy={LINIE_Y} r="24" />
+        <ICON_EVENT.planning class="sk-icon" x={PLANNING_X - 12} y={LINIE_Y - 12} size={24} aria-hidden="true" />
+        <text class="sk-name" x={PLANNING_X} y={LINIE_Y + 50} text-anchor="middle">{ev.planning.name}</text>
+        <text class="sk-sub" x={PLANNING_X} y={LINIE_Y + 73} text-anchor="middle">{ev.planning.sub}</text>
+      </g>
+      <g {...g('sprint-backlog')}>
+        <SprintKarte {...karten[1]} />
+      </g></g>
+
+      {/* 3 · der Sprint als offener Ring, mit Daily-Schleife */}
+      <g {...s(2)}><g {...g('sprint')}>
+        <line class="sk-linie" x1={PLANNING_X + 24} y1={LINIE_Y} x2={ringUnten.x} y2={ringUnten.y} />
+        <path class="sk-ring" d={ringPfad()} />
+        {PFEILE_RING.map((w) => <polygon class="sk-spitze" points={ringSpitze(w)} />)}
+        <polygon class="sk-spitze" points={(() => {
+          const a = RING_ENDE * Math.PI / 180;
+          return spitze(ende.x, ende.y, -Math.sin(a), -Math.cos(a), 15);
+        })()} />
+        <text class="sk-hinweis" x={ende.x - 14} y={ende.y + 14} text-anchor="end">nächster Sprint</text>
+        <text class="sk-sprint" x={MITTE.x} y={MITTE.y - 64} text-anchor="middle">{SPRINT.name}</text>
+        <text class="sk-sub" x={MITTE.x} y={MITTE.y - 40} text-anchor="middle">{takt ?? SPRINT.sub}</text>
+      </g>
+      <g {...g('daily')}>
+        <path class="sk-schleife" d={schleife} />
+        <polygon class="sk-spitze sk-spitze-klein" points={schleifeSpitze} />
+        <text class="sk-24" x={dm.x + 8} y={dm.y + 6} text-anchor="middle">24 h</text>
+        <circle class="sk-marke" cx={pDaily.x} cy={pDaily.y} r="24" />
+        <ICON_EVENT.daily class="sk-icon" x={pDaily.x - 12} y={pDaily.y - 12} size={24} aria-hidden="true" />
+        <text class="sk-name" x={dm.x + DAILY_R + 14} y={dm.y - 4}>{ev.daily.name}</text>
+        <text class="sk-sub" x={dm.x + DAILY_R + 14} y={dm.y + 19}>{ev.daily.sub}</text>
+      </g></g>
+
+      {/* 4 · Inkrement mit Definition of Done */}
+      <g {...s(3)}><g {...g('inkrement')}>
+        <line class="sk-linie" x1={pInk.x} y1={pInk.y} x2={karten[2].x - 18} y2={pInk.y} />
+        <polygon class="sk-spitze" points={spitze(karten[2].x - 14, pInk.y, 1, 0)} />
+        <SprintKarte {...karten[2]} />
+      </g></g>
+
+      {/* 5 · Sprint Review, 6 · Retrospektive */}
+      <g {...s(4)}><g {...g('review')}>
+        <circle class="sk-marke" cx={pReview.x} cy={pReview.y} r="24" />
+        <ICON_EVENT.review class="sk-icon" x={pReview.x - 12} y={pReview.y - 12} size={24} aria-hidden="true" />
+        <text class="sk-name" x={pReview.x} y={pReview.y - 57} text-anchor="middle">{ev.review.name}</text>
+        <text class="sk-sub" x={pReview.x} y={pReview.y - 34} text-anchor="middle">{ev.review.sub}</text>
+      </g></g>
+      <g {...s(5)}><g {...g('retro')}>
+        <circle class="sk-marke" cx={pRetro.x} cy={pRetro.y} r="24" />
+        <ICON_EVENT.retro class="sk-icon" x={pRetro.x - 12} y={pRetro.y - 12} size={24} aria-hidden="true" />
+        <text class="sk-name" x={pRetro.x - 36} y={pRetro.y - 4} text-anchor="end">{ev.retro.name}</text>
+        <text class="sk-sub" x={pRetro.x - 36} y={pRetro.y + 19} text-anchor="end">{ev.retro.sub}</text>
+      </g></g>
+
+      {team && (
+        <text class="sk-team" x={B_BREITE / 2} y={B_HOEHE - 12} text-anchor="middle">
+          <tspan class="sk-team-titel">Scrum Team:</tspan> {VERANTWORTLICHKEITEN.join(' · ')}
+        </text>
+      )}
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .sk { margin: 1.25rem 0; container: sk / inline-size; }
+  /* Am Handy scrollt das Bild in sich, die Seite nicht. */
+  .sk-rahmen { overflow-x: auto; }
+  .sk svg { display: block; width: 100%; min-width: 40rem; height: auto; overflow: visible; font-family: var(--font); }
+
+  .sk-linie, .sk-ring, .sk-schleife { fill: none; stroke: var(--sk-strich); stroke-linecap: round; }
+  .sk { --sk-strich: color-mix(in srgb, var(--fg) 62%, var(--bg)); }
+  .sk-linie { stroke-width: 8; }
+  .sk-ring { stroke-width: 8; }
+  .sk-schleife { stroke-width: 5; }
+  .sk-spitze { fill: var(--sk-strich); }
+
+  .sk-marke { fill: var(--bg); stroke: var(--fg); stroke-width: 3; }
+  .sk-icon { color: var(--fg); }
+  .sk-name { fill: var(--fg); font-size: 21px; font-weight: 700; }
+  .sk-sub { fill: var(--muted); font-size: 17px; }
+  .sk-sprint { fill: var(--fg); font-family: var(--mono); font-size: 26px; font-weight: 700; letter-spacing: .02em; }
+  .sk-24 { fill: var(--muted); font-family: var(--mono); font-size: 16px; font-weight: 700; }
+  .sk-hinweis { fill: var(--muted); font-size: 16px; font-style: italic; }
+  .sk-team { fill: var(--muted); font-size: 17px; }
+  .sk-team-titel { font-weight: 700; }
+
+  /* Artefakt-Karten (SprintKarte.astro): oben Name, unten die Verpflichtung. */
+  .sk :global(.sk-karte-grund) { fill: var(--bg-2); stroke: var(--border); stroke-width: 2; }
+  .sk :global(.sk-karte-verpfl) { fill: var(--yellow-soft); }
+  .sk :global(.sk-karte-trenner) { stroke: color-mix(in srgb, var(--fg) 35%, var(--bg)); stroke-width: 1.5; }
+  .sk :global(.sk-karte-rand) { fill: none; stroke: color-mix(in srgb, var(--fg) 35%, var(--bg)); stroke-width: 2; }
+  .sk :global(.sk-karte-name) { fill: var(--fg); font-size: 21px; font-weight: 700; }
+  .sk :global(.sk-karte-label) { fill: var(--yellow-ink); font-size: 16px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; }
+  .sk :global(.sk-karte-wert) { fill: var(--fg); font-size: 19px; font-weight: 700; }
+  .sk :global(.sk-karte-icon) { color: var(--fg); }
+  .sk :global(.sk-karte-icon-verpfl) { color: var(--yellow-ink); }
+
+  /* Hervorhebung: das Gemeinte in der Akzentfarbe, alles andere blass. */
+  .sk[data-hervor] [data-teil]:not(.sk-an) { opacity: .28; }
+  .sk-an .sk-marke { fill: var(--accent); stroke: var(--accent); }
+  .sk-an .sk-icon { color: var(--on-accent); }
+  .sk-an .sk-name, .sk-an .sk-sprint { fill: var(--accent-ink); }
+  .sk-an .sk-linie, .sk-an .sk-ring, .sk-an .sk-schleife { stroke: var(--accent); }
+  .sk-an .sk-spitze { fill: var(--accent); }
+  .sk-an :global(.sk-karte-rand) { stroke: var(--accent); stroke-width: 4; }
+  .sk-an :global(.sk-karte-name) { fill: var(--accent-ink); }
+
+  /* Beamer: so hoch, dass Titel, Kernsatz und Bild in 1280×720 passen. */
+  :global(html[data-beamer]) .sk { margin: .25rem 0 0; }
+  :global(html[data-beamer]) .sk svg { min-width: 0; max-height: calc(100vh - var(--topbar-h, 48px) - 9.8rem); }
+
+  @media print {
+    .sk-rahmen { overflow: visible; }
+    .sk svg { min-width: 0; }
+    .sk, .sk * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
