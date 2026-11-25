@@ -105,7 +105,9 @@ describe('Annahmen', () => {
     expect(s).toContain('Riskanteste Annahme: A1');
   });
   it('Art und Beleg ausgeschrieben, Datum österreichisch', () => {
-    expect(s).toContain('| wünschenswert | hoch | noch keiner |');
+    // A1 der Kaffeebar trägt die Gegenbelege aus den Interviews (NDU-70: vorher nur im Entscheidungslog).
+    expect(s).toContain('| wünschenswert | hoch | gesagt (I2-4, I3-1, I5-3; spricht dagegen) |');
+    expect(s).toContain('| bedienbar | mittel | noch keiner |');
     expect(s).toContain('| **A2** | Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann. | machbar | hoch | getan |');
     expect(s).toContain('Stand: 22.10.2026');
   });
@@ -292,10 +294,17 @@ describe('README', () => {
     expect(s).toContain('# Projektmappe');
     expect(s).toContain('**Kohorte:** Innolab 26/27');
     expect(s).toContain('| Produkt-Brief | [mappe/brief.md](mappe/brief.md) |');
-    expect(s).toContain('| Entscheidungslog | noch offen |');
+    expect(s).toContain('| Interviewleitfaden | noch offen |');
     expect(s).toContain('| Annahmen-Map | [mappe/annahmen.md](mappe/annahmen.md) |');
-    expect(s).not.toContain('mappe/entscheidungen.md');
+    // Das stillgelegte Entscheidungslog (NDU-70) steht ohne Datei gar nicht drin – nie als „noch offen“.
+    expect(s).not.toContain('Entscheidungslog');
     expect(s).toMatchSnapshot();
+  });
+
+  it('stillgelegtes Entscheidungslog: steht nur drin, wenn die Datei schon existiert, dann mit Link', () => {
+    const s = readmeRendern(k, [{ name: 'brief', vorhanden: false }, { name: 'entscheidungen', vorhanden: true }]);
+    expect(s).toContain('| Entscheidungslog | [mappe/entscheidungen.md](mappe/entscheidungen.md) |');
+    expect(s).toContain('| Produkt-Brief | noch offen |');
   });
 });
 

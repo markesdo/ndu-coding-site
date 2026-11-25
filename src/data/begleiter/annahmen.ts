@@ -213,7 +213,7 @@ export const NOTIZEN_ANNAHMEN: Record<string, Notiz> = {
     ueberleitung: 'Jetzt baut ihr eure eigene Map – so geht ihr vor.',
     kern: [
       {
-        text: 'Kaffeebar-Map (annahmen.json): A1 wünschenswert, wichtig hoch, Beleg keiner – die riskanteste. A2 machbar (40 Bestellungen in 30 min), hoch, Beleg „getan“. A3 bedienbar (bestellen in 20 s im Gehen), mittel, keiner. A4 wirtschaftlich (rechnet sich ohne weitere Kraft), niedrig, „getan“.',
+        text: 'Kaffeebar-Map (annahmen.json): A1 wünschenswert, wichtig hoch, an Tag 1 Beleg keiner – die riskanteste (seit den Interviews: gesagt, I2-4, I3-1, I5-3, spricht dagegen). A2 machbar (40 Bestellungen in 30 min), hoch, Beleg „getan“. A3 bedienbar (bestellen in 20 s im Gehen), mittel, keiner. A4 wirtschaftlich (rechnet sich ohne weitere Kraft), niedrig, „getan“.',
         quelle: 'Kurs-Beispieldaten src/werkstatt/beispiele/annahmen.json',
       },
       {

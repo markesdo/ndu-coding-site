@@ -293,6 +293,8 @@ describe('Werkzeuge', () => {
     expect(anweisung.match(/Entscheidungslog|D2/g) ?? []).toStrictEqual([]);
     const { tools } = await c.listTools();
     expect(JSON.stringify(tools).match(/Entscheidungslog|entscheidungslog|"entscheidungen"/g) ?? []).toStrictEqual([]);
+    // Auch keine Hinweise auf Log-Zeilen (D4) oder Entscheidungen als Beleg in der Beschreibung von verknuepfungen_pruefen.
+    expect(JSON.stringify(tools).match(/D4|über eine Entscheidung|selbst „getan“/g) ?? []).toStrictEqual([]);
     for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
       const r = await c.callTool({ name, arguments: { artefakt: 'entscheidungen' } });
       expect(r.isError, name).toBe(true);
@@ -845,14 +847,13 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBeFalsy();
     // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
-    // Lücken: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle; A1, die riskanteste, hat trotz fünf Interviews
-    // noch keinen Beleg (neue Befundart, muss durchs Ausgabeschema).
+    // Lücken: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle. Verwaist ist nichts: A1 nennt I2-4, I3-1 und I5-3,
+    // die gespeicherte alte Zeile D3 nennt I1–I5 (lesbare Log-Zeilen zählen weiter; geprüft wird das Log nicht, NDU-70).
     expect(r.structuredContent).toStrictEqual({
       befunde: [
         ...['A2', 'A4'].map((id) => ({
-          art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
+          art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle (Beleg-Notiz). Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
         })),
-        { art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was hast du dazu gehört?' },
       ],
       geprueft: ['annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],
@@ -861,10 +862,26 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
       anleitung: `Ändern kann die Person nur selbst in der Werkstatt: ${BASIS}/innolab/mappe`,
     });
     expect(text(r)).toContain('## Fehlende Belege (2)');
-    expect(text(r)).toContain('## Riskanteste Annahme ohne Beleg (1)');
+    expect(text(r)).not.toContain('## Verwaiste Elemente');
     expect(text(r)).not.toContain('## Unbekannte IDs');
     expect(text(r)).toContain('Ändern kann die Person nur selbst');
     expect(text(r)).toContain(`${BASIS}/innolab/mappe`);
+  });
+
+  it('verknuepfungen_pruefen: riskanteste Annahme ohne Beleg kommt durchs Ausgabeschema (A1 ohne Gegenbelege)', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const offen = mitText(TEXT_A);
+    Object.assign(offen.annahmen[0], { beleg: 'keiner', belegIds: [] });
+    delete (offen.annahmen[0] as { belegNotiz?: string }).belegNotiz;
+    const { basisSha } = await h.speicher.lesen('test-sofie', 'annahmen');
+    await h.speicher.speichern('test-sofie', 'annahmen', { 'mappe/annahmen.json': `${JSON.stringify(offen, null, 2)}\n` }, basisSha, AUTOR, 'A1 offen');
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
+    expect(r.isError).toBeFalsy();
+    const befunde = (r.structuredContent as { befunde: { art: string; ort: string }[] }).befunde;
+    expect(befunde.filter((x) => x.art === 'riskanteste-ohne-beleg').map((x) => x.ort)).toStrictEqual(['A1']);
+    expect(text(r)).toContain('## Riskanteste Annahme ohne Beleg (1)');
   });
 
   it('verknuepfungen_pruefen: unbekanntes Zitat I2-9 im stillgelegten Entscheidungslog wird nicht mehr gemeldet (NDU-70)', async () => {
@@ -890,6 +907,23 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     expect((r.structuredContent as { unlesbar: string[] }).unlesbar).toStrictEqual(['interviews']);
     expect(text(r)).toMatch(/Nicht lesbar.*Interviews und Snapshots/);
     expect(new Set(lesen.mock.calls.map((a) => a[0]))).toStrictEqual(new Set(['test-sofie']));
+  });
+
+  // NDU-70: Das stillgelegte Log nur nach bestem Bemühen – ein GitHub-Fehler genau darauf bricht das Werkzeug nicht ab und
+  // wird nirgends gemeldet; D-IDs gelten dann als nicht prüfbar.
+  it('verknuepfungen_pruefen: GitHub-Ausfall nur beim stillgelegten Entscheidungslog -> Ergebnis wie sonst, nichts gemeldet', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const echt = h.speicher.lesen.bind(h.speicher);
+    vi.spyOn(h.speicher, 'lesen').mockImplementation((repo, name) => (name === 'entscheidungen' ? Promise.reject(new GithubAusnahme(502)) : echt(repo, name)));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
+    expect(r.isError).toBeFalsy();
+    const sc = r.structuredContent as { geprueft: string[]; unlesbar: string[]; befunde: { art: string }[] };
+    expect(sc.geprueft).toStrictEqual(['annahmen', 'interviews']);
+    expect(sc.unlesbar).toStrictEqual([]);
+    expect(text(r)).not.toMatch(/GitHub|Entscheidungslog/);
   });
 
   it('verknuepfungen_pruefen: GitHub-Ausfall -> allgemeiner Satz, kein Teilergebnis', async () => {

@@ -96,15 +96,29 @@ describe('Lehrende hinterlegen eine mögliche Fassung', () => {
     expect((await t.schreiben(MARKUS, { artefakt: 'brief', zeilenId: 'outcome', text: 'Was ändert sich?', fassung: 'Wir merken es, wenn [Verhalten] …' })).status).toBe(200);
   });
 
-  it('verbotene Stellen → 422 mit Satz, nichts geschrieben: Entscheidung, Interview, Zitat, Brief-Abschnitt, ganzes Artefakt', async () => {
+  it('verbotene Stellen → 422 mit Satz, nichts geschrieben: Interview, Zitat, Brief-Abschnitt, ganzes Artefakt', async () => {
     const t = await aufbau();
     await t.fake.speichern('2026-sofie', 'entscheidungen', { 'mappe/entscheidungen.json': json((await import('../../beispiele/entscheidungen.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'E');
     await t.fake.speichern('2026-sofie', 'interviews', { 'mappe/interviews.json': json((await import('../../beispiele/interviews.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'I');
     const vorher = t.fake.commits('2026-sofie').length;
-    for (const [artefakt, zeilenId] of [['entscheidungen', 'D1'], ['interviews', 'I1'], ['interviews', 'I1-1'], ['brief', 'fuerWen'], ['brief', undefined], ['annahmen', undefined]] as const) {
+    for (const [artefakt, zeilenId] of [['interviews', 'I1'], ['interviews', 'I1-1'], ['brief', 'fuerWen'], ['brief', undefined], ['annahmen', undefined]] as const) {
       const r = await t.schreiben(MARKUS, { artefakt, ...(zeilenId ? { zeilenId } : {}), text: 'Frage?', fassung: FASSUNG });
       expect(r.status, `${artefakt} ${zeilenId}`).toBe(422);
       expect((await r.json()).fehler).toBe('Eine mögliche Fassung geht nur an Outcome oder Problem im Brief, an einer Annahme oder an einer Leitfaden-Frage.');
+    }
+    expect(t.fake.commits('2026-sofie')).toHaveLength(vorher);
+    expect(await t.datei()).toBeNull();
+  });
+
+  // NDU-70: Das Entscheidungslog ist stillgelegt – kein Feedback darauf, auch keins ohne Fassung; nichts wird geschrieben.
+  it('Feedback auf das stillgelegte Entscheidungslog → 400 mit Satz, nichts geschrieben', async () => {
+    const t = await aufbau();
+    await t.fake.speichern('2026-sofie', 'entscheidungen', { 'mappe/entscheidungen.json': json((await import('../../beispiele/entscheidungen.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'E');
+    const vorher = t.fake.commits('2026-sofie').length;
+    for (const anfrage of [{ artefakt: 'entscheidungen', zeilenId: 'D1', text: 'Frage?' }, { artefakt: 'entscheidungen', text: 'Frage?', fassung: FASSUNG }]) {
+      const r = await t.schreiben(MARKUS, anfrage);
+      expect(r.status).toBe(400);
+      expect((await r.json()).fehler).toBe('Das Entscheidungslog wird in diesem Kursjahr nicht genutzt; dazu gibt es kein Feedback.');
     }
     expect(t.fake.commits('2026-sofie')).toHaveLength(vorher);
     expect(await t.datei()).toBeNull();

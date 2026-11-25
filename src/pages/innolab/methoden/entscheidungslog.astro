@@ -2,9 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
-import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
-import Bearbeiten from '../../../components/Bearbeiten.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
@@ -151,22 +149,20 @@ const MOMTEST = 'Rob Fitzpatrick, „The Mom Test“ (2013)';
   </div>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (5 min)</h2>
-    <p class="folie-satz">Heute zwei bis drei Zeilen, danach jeden Kurstag fünf Minuten.</p>
+    <h2 id="vorgehen">So lief es (5 min)</h2>
+    <p class="folie-satz">So lief es bis zum 21. November 2026 – dieses Kursjahr schreibt ihr keine Zeilen mehr.</p>
     <ol class="gross">
-      <li data-schritt><strong>Zeilen schreiben</strong> und speichern – „Bearbeiten“ unter <a href="#werkstatt">In der Werkstatt speichern</a>: Datum — Entscheidung — Grund — Beleg. Aus eurem Problem-Rahmen: Zielgruppe, was das Produkt nicht macht, der Outcome. <Timer minuten={5} /></li>
-      <li data-schritt><strong>Prüfen</strong> als Hausaufgabe: erst die Prüfliste selbst, dann Claude – beides unter <a href="#pruefen">Prüfen</a>.</li>
-      <li data-schritt><strong>Ab jetzt am Ende jedes Kurstags:</strong> Was habt ihr entschieden oder verworfen? Je eine Zeile, dann prüft Claude, was ohne Beleg dasteht.</li>
+      <li><strong>Eine Zeile:</strong> Datum — Entscheidung — Grund — Beleg. Aus dem Problem-Rahmen etwa: Zielgruppe, was das Produkt nicht macht, der Outcome.</li>
+      <li><strong>Am Ende jedes Kurstags:</strong> Was habt ihr entschieden oder verworfen? Je eine Zeile.</li>
     </ol>
   </Folie>
 
   <div class="nur-handout">
-  <h2 id="werkstatt">In der Werkstatt speichern</h2>
-  <p>Jede*r führt das eigene Log in der Werkstatt. Jede Zeile bekommt eine ID (D1, D2, …), ein Datum, die Entscheidung, den Grund und den Beleg: wie stark er ist und, wo es ihn gibt, die IDs dazu (I3, I3-2). Liegt der Beleg außerhalb eurer Mappe, etwa in Kassendaten, tragt ihr dazu optional eine kurze Notiz ein. Gespeicherte Zeilen lassen sich nicht mehr ändern oder löschen. Stimmt eine nicht mehr, ersetzt ihr sie: Die neue Zeile zeigt auf die alte, die alte bekommt „ersetzt am …“.</p>
-  <Bearbeiten artefakt="entscheidungen" />
+  <h2 id="werkstatt">In der Werkstatt</h2>
+  <p>Die Werkstatt zeigt das Log dieses Kursjahr nicht mehr, und es gibt keinen Editor dafür. Zeilen, die ihr schon gespeichert habt, bleiben in eurem Mappe-Repo; ihre IDs (D1, D2, …) gelten in der Annahmen-Map weiter.</p>
 
   <h2 id="pruefen">Prüfen</h2>
-  <ClaudePruefung slug="entscheidungslog" />
+  <p>Eine Prüfung mit Claude gibt es für das Log nicht mehr – der Connector kennt es dieses Kursjahr nicht.</p>
   </div>
 
   <Folie>
