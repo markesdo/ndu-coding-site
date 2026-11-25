@@ -125,7 +125,7 @@ export const NOTIZEN_TAG_3_EXPERIENCE_MAP: Record<string, Notiz> = {
     miro: {
       frame: 'T3 · 0 · So entsteht eure Map - Produkt 1',
       schritte: [
-        'Ein Frame je Person, über dem eigenen Baum; der Link oben führt zu Produkt 1, Produkt 2 und 3 liegen rechts daneben.',
+        'Ein Frame je Person, über dem eigenen Baum (Produkt 1, 2, 3 = Spalten auf dem Board von links); der Link oben führt zu Produkt 1, Produkt 2 und 3 liegen rechts daneben.',
         'Je Frame eine Spalte: „Welche Zitate gehören hierher?“, dann die Momentkarte: Name wie die Spalte und „N von M“.',
         '„Alle zu mir holen“ auf den Frame, der dran ist.',
       ],

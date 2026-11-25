@@ -269,7 +269,7 @@ export const NOTIZEN_KUNDENPROFIL: Record<string, Notiz> = {
     miro: {
       frame: 'T3 · 4 · Canvas · Produkt 1',
       schritte: [
-        'Jede*r arbeitet im eigenen Canvas-Frame „T3 · 4 · Canvas · Name“, rechte Hälfte (Links auf der Folie; der Link oben führt zu Produkt 1, Produkt 2 und 3 liegen darunter).',
+        'Jede*r arbeitet im eigenen Canvas-Frame „T3 · 4 · Canvas · Produkt n“ (n = eigene Spalte auf dem Board von links), rechte Hälfte (Links auf der Folie; der Link oben führt zu Produkt 1, Produkt 2 und 3 liegen darunter).',
         'Oben im Canvas eine Zeile: Segment und Anlass, aus „Für wen?“ im Brief.',
         'Gelbe Chancen aus dem eigenen Baum duplizieren (Cmd+D) und in den Kreis legen, eigener Ast zuerst; Zitat-IDs bleiben dran. Schmerz → Pain, Wunsch → Gain, Aufgabe → Job.',
         'Jobs und Gains aus den eigenen Snapshots dazu, je mit Zitat-ID; ohne Zitat ein „?“.',

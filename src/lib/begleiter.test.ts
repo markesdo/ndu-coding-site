@@ -606,6 +606,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(NOTIZEN[pfad]?.vorgehen?.live[0]).toBe('Kurz an jeden Baum: grüne Karte – Produkt-Outcome, zählbar, trägt Frage 3?');
     expect(JSON.stringify(NOTIZEN[pfad]?.vorgehen?.ablauf?.achten)).toContain('Produkt-Outcome, nicht Geschäftszahl; zählbar; lässt sich Frage 3');
     expect(NOTIZEN[pfad]?.vorgehen?.live.length).toBeLessThanOrEqual(5);
+    // NDU-73: keine Reihenfolge der Personen im Live-Stichwort (Namen prüft kein-name.test.ts).
+    expect(NOTIZEN[pfad]?.vorgehen?.live.join(' ').match(/Produkt \d\s*(?:→|,)\s*\d/g) ?? []).toStrictEqual([]);
   });
   // Entscheidung 21 (20.11. spät): I3-2 fiel nur beim Anstehen und Warten. Die Halle-Chance „Geht sich ein Kaffee noch aus?“
   // trägt I2-4, I3-1, I5-2 (3 von 5), die Warten-Chance „Wann ist mein Kaffee fertig?“ I2-5, I3-2, I3-3 (2 von 5).
