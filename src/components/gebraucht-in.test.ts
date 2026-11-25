@@ -15,10 +15,17 @@ describe('gebrauchtIn (Umkehrung von braucht)', () => {
     expect(slugs('pitch')).toStrictEqual([]);
   });
 
-  it('ist für jedes Paar genau die Umkehrung von braucht', () => {
+  it('zeigt nie auf eine stillgelegte Methode (Problem-Rahmen nicht auf den Entscheidungslog)', () => {
+    expect(METHODEN.some((x) => x.stillgelegt)).toBe(true);
+    const aufStillgelegt = METHODEN.flatMap((q) => gebrauchtIn(q).filter((x) => x.stillgelegt).map((x) => `${q.slug} → ${x.slug}`));
+    expect(aufStillgelegt).toStrictEqual([]);
+    expect(slugs('problem-rahmen')).not.toContain('entscheidungslog');
+  });
+
+  it('ist für jedes Paar mit aktiver Methode genau die Umkehrung von braucht', () => {
     for (const q of METHODEN) {
       for (const x of METHODEN) {
-        const nutzt = x !== q && x.braucht.some((id) => q.ergibt.includes(id));
+        const nutzt = x !== q && !x.stillgelegt && x.braucht.some((id) => q.ergibt.includes(id));
         expect(gebrauchtIn(q).includes(x), `${q.slug} → ${x.slug}`).toBe(nutzt);
       }
     }

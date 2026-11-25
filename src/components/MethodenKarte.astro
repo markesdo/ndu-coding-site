@@ -49,7 +49,7 @@ const weiter = gebrauchtIn(m);
     </dd>
     <dt><ArrowRightFromLine size={14} aria-hidden="true" /> Wird gebraucht in</dt>
     <dd>
-      {weiter.length === 0 ? 'Endpunkt des Kurses' : (
+      {m.stillgelegt ? 'Dieses Kursjahr nicht genutzt' : weiter.length === 0 ? 'Endpunkt des Kurses' : (
         <ul>
           {weiter.map((x) => <li><a href={href(x.slug) ?? `/innolab/methoden#${x.slug}`}>{x.name}</a> <span class="muted">· Tag {x.tag}</span></li>)}
         </ul>
