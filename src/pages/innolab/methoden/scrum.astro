@@ -21,10 +21,14 @@ const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)'
 const KRIVITSKY = 'Alexey Krivitsky, „lego4scrum“, deutsche Ausgabe (2023)';
 const MANIFEST = 'Manifesto for Agile Software Development (2001), agilemanifesto.org';
 
-// Lego4Scrum ist seit 25.11.2026 für dieses Kursjahr stillgelegt (NDU-72: ab Tag 4 online). Die Folien bleiben für das
-// nächste Kursjahr. Damit die Auflösungen dieses Jahr nicht von selbst aufspringen, liegt ihr Zeitpunkt hinter dem Kursende
-// (Tag 7, 16.01.2027); der Präsentator kann sie weiter per Knopf zeigen. Nächstes Jahr: Zeiten aus tag-4.astro setzen
-// (zuletzt geplant: Beginn, Review 1 nach Minute 43, Nachbesprechung fünf Minuten vor Schluss).
+// Lego4Scrum ist dieses Kursjahr gestrichen (Entscheidung Markus 25.11.2026, NDU-72: ab Tag 4 online). Die Folien von
+// „Lego4Scrum: warum Lego“ bis „Was ihr mitnehmt“ bleiben im Quelltext für das nächste Kursjahr, werden aber nicht
+// gerendert – weder als Folie noch im Handout, im Inhaltsverzeichnis (gliederung) oder im Begleiter (folienAus); beide
+// lassen Blöcke {NAME && (<>…</>)} mit const NAME = false weg (ohneAbgeschaltet). Für das nächste Kursjahr:
+// LEGO4SCRUM_AKTIV auf true setzen und AB_LEGO / NACH_REVIEW_1 / NACH_LEGO auf die Zeiten aus tag-4.astro setzen
+// (zuletzt geplant: Beginn, Review 1 nach Minute 43, Nachbesprechung fünf Minuten vor Schluss). Bis dahin liegen sie
+// hinter dem Kursende (Tag 7, 16.01.2027), damit die Auflösungen nie von selbst aufspringen.
+const LEGO4SCRUM_AKTIV = false;
 const LEGO_NICHT_DIESES_JAHR = '2027-12-31T23:59';
 const AB_LEGO = LEGO_NICHT_DIESES_JAHR;
 const NACH_REVIEW_1 = LEGO_NICHT_DIESES_JAHR;
@@ -217,10 +221,7 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
     <p class="nur-handout">Das Produktziel ist die Verpflichtung des Product Backlogs ({GUIDE}, S. 10–11). Euer Outcome aus Tag 1 hat genau diese Form: ein künftiger Zustand, an dem sich der Backlog ausrichtet. Wer keinen Stakeholder außerhalb des Teams findet, hat für das Review an Tag 6 niemanden, der das Inkrement mit frischen Augen sieht.</p>
   </Folie>
 
-  <Callout type="info" title="Lego4Scrum: dieses Kursjahr nicht genutzt">
-    <p>Ab Tag 4 ist der Kurs online, darum spielt ihr Lego4Scrum in diesem Kursjahr nicht. Die Folien bis „Was ihr mitnehmt“ bleiben für das nächste Kursjahr stehen; an Tag 4 geht es nach „Euer Produkt in einem Satz“ weiter mit dem Prototyp.</p>
-  </Callout>
-
+  {LEGO4SCRUM_AKTIV && (<>
   <Folie>
     <h2 id="lego">Lego4Scrum: warum Lego</h2>
     <p class="folie-satz">Scrum lernt man, indem man es lebt – 80 Minuten mit Lego.</p>
@@ -354,6 +355,7 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
       </div>
     </Aufloesung>
   </Folie>
+  </>)}
 
   <Callout type="info" title="Ab hier: Tag 5">
     <p>Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief (09:25–10:05). An Tag 4 geht es von hier weiter mit <a href="/innolab/tag-4#ablauf">Prototyp weiterbauen / Puffer</a>; um 17:15 folgt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.</p>
@@ -403,7 +405,7 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
       <li data-schritt><strong>Agil &amp; Scrum (Tag 4, 15:45–16:15):</strong> acht Folien, die Kaffeebar in Scrum-Begriffen, euer Produktziel in einem Satz.</li>
       <li data-schritt><strong>Teamaufstellung &amp; Definition of Done (Tag 5, 09:25–10:05):</strong> <code>docs/TEAM.md</code> in jedem der drei Repos.</li>
     </ol>
-    <p class="nur-handout">Agil &amp; Scrum: 18 Minuten Theorie, 8 Minuten Kaffeebar gemeinsam, 4 Minuten Produktziele. Lego4Scrum ist dieses Kursjahr nicht dabei (<a href="#lego">Warum Lego</a> bleibt für das nächste). Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
+    <p class="nur-handout">Agil &amp; Scrum: 18 Minuten Theorie, 8 Minuten Kaffeebar gemeinsam, 4 Minuten Produktziele. Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
   </Folie>
 
   <div class="nur-handout">

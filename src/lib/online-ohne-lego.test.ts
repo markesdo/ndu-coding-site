@@ -58,13 +58,16 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
     expect(t4).toContain('(Lego4Scrum ist dieses Kursjahr nicht dabei)');
   });
 
-  it('die Lego-Folien bleiben, mit Hinweis „dieses Kursjahr nicht genutzt“ direkt davor', () => {
+  it('die Lego-Folien bleiben im Quelltext, abgeschaltet mit LEGO4SCRUM_AKTIV = false; kein Hinweis-Callout mehr', () => {
     const s = seite(m('scrum'));
-    const hinweis = s.indexOf('<Callout type="info" title="Lego4Scrum: dieses Kursjahr nicht genutzt">');
-    expect(hinweis).toBeGreaterThan(0);
-    expect(s.indexOf('<h2 id="lego">')).toBeGreaterThan(hinweis);
-    expect(s.slice(hinweis, s.indexOf('<h2 id="lego">'))).not.toContain('<Folie>\n    <h2');
-    for (const id of ['lego', 'vision', 'produkt-board', 'lego-sprint', 'review-1', 'nachbesprechung']) expect(s, id).toContain(`<h2 id="${id}">`);
+    expect(s).toMatch(/^const LEGO4SCRUM_AKTIV = false;$/m);
+    expect(s).not.toContain('Lego4Scrum: dieses Kursjahr nicht genutzt');
+    const von = s.indexOf('{LEGO4SCRUM_AKTIV && (<>');
+    expect(von).toBeGreaterThan(0);
+    const block = s.slice(von, s.indexOf('</>)}', von));
+    for (const id of ['lego', 'vision', 'produkt-board', 'lego-sprint', 'review-1', 'nachbesprechung']) expect(block, id).toContain(`<h2 id="${id}">`);
+    // Außerhalb des Blocks verweist nichts auf seine Anker (sonst ein toter Link, solange er abgeschaltet ist).
+    expect(s.replace(block, '').match(/href="#(lego|vision|produkt-board|lego-sprint|review-1|nachbesprechung)"/g) ?? []).toStrictEqual([]);
   });
 
   it('Prüfliste und Vorlage ohne Lego; Dauer der Methode = Agil an Tag 4 + Team an Tag 5', () => {
