@@ -57,38 +57,55 @@ export function pruefeAufdecken(aufdecken: number | undefined): void {
   }
 }
 
-// ——— Geometrie im viewBox 0 0 1000 B_HOEHE ———
-// Der Sprint ist ein offener Ring (gegen den Uhrzeigersinn, wie im Vorbild): Er beginnt unten, wo die Linie vom
-// Product Backlog einläuft, und endet links unten mit einer Pfeilspitze zurück aufs Sprint Planning – der nächste
-// Sprint beginnt gleich nach dem vorigen. Winkel in Grad, mathematisch (0° = rechts, 90° = oben).
+// ——— Geometrie im viewBox 0 0 B_BREITE B_HOEHE ———
+// Der Sprint ist ein dicker, offener Ring (gegen den Uhrzeigersinn, wie im Vorbild): Das Sprint Planning ist der
+// Balken, der unten einläuft; der Ring endet links unten mit einer großen Pfeilspitze zurück aufs Planning – der
+// nächste Sprint beginnt gleich nach dem vorigen. Event-Namen stehen auf dem Ring. Winkel in Grad, mathematisch
+// (0° = rechts, 90° = oben).
 
 export const B_BREITE = 1000;
-export const B_HOEHE = 500;
-export const MITTE = { x: 500, y: 222 };
-export const R = 135;
-/** Grundlinie: Product Backlog → Sprint Planning → unten in den Ring. */
-export const LINIE_Y = MITTE.y + R;
-export const RING_ENDE = 226;
-export const WINKEL: Record<'daily' | 'inkrement' | 'review' | 'retro', number> = { daily: -22, inkrement: 25, review: 90, retro: 160 };
-/** Pfeilspitzen auf dem Ring, jeweils zwischen zwei Stationen. */
-export const PFEILE_RING = [-58, 2, 58, 126];
-export const PLANNING_X = 420;
+export const B_HOEHE = 520;
+export const MITTE = { x: 540, y: 238 };
+export const R = 150;
+/** Stärke des Rings und des Planning-Balkens. */
+export const RING_B = 34;
+/** Unterkante des Rings = Höhe des Planning-Balkens. */
+export const BALKEN_Y = MITTE.y + R;
+export const RING_ENDE = 205;
+/** Wo die Namen auf dem Ring stehen (Mitte, halbe Breite des Bogens) und wo das Inkrement abgeht. */
+export const BOGEN: Record<'review' | 'retro', { mitte: number; halb: number }> = { review: { mitte: 90, halb: 30 }, retro: { mitte: 162, halb: 30 } };
+export const INKREMENT_WINKEL = -12;
+/** Kleine Winkelpfeile auf dem Ring, zwischen den Namen. */
+export const WINKELPFEILE = [-52, 14, 126];
 
-export function punkt(grad: number, r = R): { x: number; y: number } {
+export function punkt(grad: number, r = R, m = MITTE): { x: number; y: number } {
   const a = (grad * Math.PI) / 180;
-  return { x: +(MITTE.x + r * Math.cos(a)).toFixed(1), y: +(MITTE.y - r * Math.sin(a)).toFixed(1) };
+  return { x: +(m.x + r * Math.cos(a)).toFixed(1), y: +(m.y - r * Math.sin(a)).toFixed(1) };
 }
 
-/** Ring von unten (-90°) gegen den Uhrzeigersinn bis RING_ENDE, als SVG-Pfad. */
+/** Laufrichtung gegen den Uhrzeigersinn bei grad (Bildschirmkoordinaten). */
+export function tangente(grad: number): { x: number; y: number } {
+  const a = (grad * Math.PI) / 180;
+  return { x: -Math.sin(a), y: -Math.cos(a) };
+}
+
+/**
+ * Bogen von a1 nach a2 (Grad). gegen = true: gegen den Uhrzeigersinn (Laufrichtung des Sprints), sonst im
+ * Uhrzeigersinn (so laufen Textpfade, damit Schrift oben von links nach rechts und links von unten nach oben liest).
+ */
+export function bogen(a1: number, a2: number, r = R, m = MITTE, gegen = true): string {
+  const p1 = punkt(a1, r, m), p2 = punkt(a2, r, m);
+  const spanne = Math.abs(a2 - a1);
+  return `M${p1.x} ${p1.y}A${r} ${r} 0 ${spanne > 180 ? 1 : 0} ${gegen ? 0 : 1} ${p2.x} ${p2.y}`;
+}
+
+/** Ring von unten (-90°) gegen den Uhrzeigersinn bis RING_ENDE (zwei Bögen, je ≤ 180°). */
 export function ringPfad(): string {
-  const start = punkt(-90);
-  const mitte = punkt(90);
   const ende = punkt(RING_ENDE);
-  // Zwei Bögen (je ≤ 180°), sweep 0 = gegen den Uhrzeigersinn auf dem Bildschirm.
-  return `M${start.x} ${start.y}A${R} ${R} 0 0 0 ${mitte.x} ${mitte.y}A${R} ${R} 0 0 0 ${ende.x} ${ende.y}`;
+  return `${bogen(-90, 90)}A${R} ${R} 0 0 0 ${ende.x} ${ende.y}`;
 }
 
-/** Dreieck als Pfeilspitze an einem Punkt, ausgerichtet in Richtung (dx, dy). */
+/** Dreieck als Pfeilspitze: Spitze gr vor (x, y), Basis 0,6·gr dahinter, Breite 1,6·gr, ausgerichtet nach (dx, dy). */
 export function spitze(x: number, y: number, dx: number, dy: number, gr = 13): string {
   const l = Math.hypot(dx, dy);
   const ux = dx / l, uy = dy / l;
@@ -96,17 +113,29 @@ export function spitze(x: number, y: number, dx: number, dy: number, gr = 13): s
   return `${p(gr, 0)} ${p(-gr * 0.6, gr * 0.8)} ${p(-gr * 0.6, -gr * 0.8)}`;
 }
 
-/** Pfeilspitze auf dem Ring bei grad, in Laufrichtung (gegen den Uhrzeigersinn). */
-export function ringSpitze(grad: number): string {
-  const { x, y } = punkt(grad);
-  const a = (grad * Math.PI) / 180;
-  return spitze(x, y, -Math.sin(a), -Math.cos(a));
+/** Große Pfeilspitze am Ringende; ihre Basis sitzt genau am Ende des Rings. */
+export function endSpitze(gr = 38): string {
+  const e = punkt(RING_ENDE), t = tangente(RING_ENDE);
+  return spitze(e.x + t.x * gr * 0.6, e.y + t.y * gr * 0.6, t.x, t.y, gr);
 }
 
-/** Daily-Schleife: kleiner Kreis außen am Ring, berührt ihn bei WINKEL.daily. */
-export const DAILY_R = 44;
+/** Winkelpfeil (Chevron) auf dem Ring bei grad, in Laufrichtung. */
+export function winkelpfeil(grad: number, gr = 8): string {
+  const p = punkt(grad), t = tangente(grad);
+  const a = (grad * Math.PI) / 180, n = { x: Math.cos(a), y: -Math.sin(a) };
+  const f = (u: number, v: number) => `${(p.x + t.x * u + n.x * v).toFixed(1)},${(p.y + t.y * u + n.y * v).toFixed(1)}`;
+  return `${f(-gr * 0.6, gr)} ${f(gr * 0.6, 0)} ${f(-gr * 0.6, -gr)}`;
+}
+
+/** Daily-Schleife: eigener kleiner Ring außen oben rechts, wie im Vorbild. */
+export const DAILY = { winkel: 38, abstand: R + 62, r: 58, b: 28 };
 export function dailyMitte(): { x: number; y: number } {
-  return punkt(WINKEL.daily, R + DAILY_R);
+  return punkt(DAILY.winkel, DAILY.abstand);
+}
+/** Winkel (um die Schleifenmitte), an dem die Schleife den großen Ring berührt. */
+export function dailyBeruehrung(): number {
+  const d = dailyMitte();
+  return (Math.atan2(-(MITTE.y - d.y), MITTE.x - d.x) * 180) / Math.PI + 360;
 }
 
 /** Alt-Text des Bildes, aus denselben Daten wie die Beschriftung. */

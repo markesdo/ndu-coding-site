@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  ARTEFAKTE, EVENTS, SCHRITTE, TEILE, VERANTWORTLICHKEITEN, beschreibung, pruefeAufdecken, pruefeHervor, punkt, ringPfad,
-  ringSpitze, RING_ENDE,
+  ARTEFAKTE, BALKEN_Y, B_HOEHE, DAILY, EVENTS, MITTE, R, RING_B, SCHRITTE, TEILE, VERANTWORTLICHKEITEN, beschreibung, bogen,
+  dailyMitte, endSpitze, pruefeAufdecken, pruefeHervor, punkt, ringPfad, RING_ENDE, tangente,
 } from './sprint-kreislauf';
 
 const quellen = import.meta.glob(['./SprintKreislauf.astro', './SprintKarte.astro', './sprint-kreislauf.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
@@ -69,16 +69,46 @@ describe('Sprint-Kreislauf: Eingaben', () => {
 });
 
 describe('Sprint-Kreislauf: Geometrie', () => {
-  it('der Ring beginnt unten und endet bei RING_ENDE', () => {
+  it('der Ring beginnt unten auf Höhe des Planning-Balkens und endet bei RING_ENDE', () => {
     const start = punkt(-90), ende = punkt(RING_ENDE);
+    expect(start.y).toBe(BALKEN_Y);
     expect(ringPfad().startsWith(`M${start.x} ${start.y}`)).toBe(true);
     expect(ringPfad().endsWith(`${ende.x} ${ende.y}`)).toBe(true);
   });
 
-  it('Pfeilspitzen laufen gegen den Uhrzeigersinn: rechts nach oben, oben nach links', () => {
-    const spitzeVon = (grad: number) => ringSpitze(grad).split(' ')[0].split(',').map(Number);
-    const rechts = punkt(0), oben = punkt(90);
-    expect(spitzeVon(0)[1]).toBeLessThan(rechts.y);
-    expect(spitzeVon(90)[0]).toBeLessThan(oben.x);
+  it('Laufrichtung gegen den Uhrzeigersinn: rechts nach oben, oben nach links, unten nach rechts', () => {
+    expect(tangente(0).y).toBeLessThan(0);
+    expect(tangente(90).x).toBeLessThan(0);
+    expect(tangente(-90).x).toBeGreaterThan(0);
+  });
+
+  it('die große Pfeilspitze am Ringende zeigt nach unten auf den Planning-Balken und bleibt darüber', () => {
+    const [spitzeX, spitzeY] = endSpitze().split(' ')[0].split(',').map(Number);
+    const ende = punkt(RING_ENDE);
+    expect(spitzeY).toBeGreaterThan(ende.y);
+    expect(spitzeX).toBeGreaterThan(ende.x);
+    expect(spitzeY).toBeLessThan(BALKEN_Y - RING_B / 2);
+  });
+
+  it('der Ring nimmt etwa 60 % der Bildhöhe ein; die Daily-Schleife liegt außen oben rechts und im Bild', () => {
+    expect((2 * R + RING_B) / B_HOEHE).toBeGreaterThan(0.55);
+    const d = dailyMitte();
+    expect(d.x).toBeGreaterThan(MITTE.x + R);
+    expect(d.y).toBeLessThan(MITTE.y - R / 2);
+    expect(d.y - DAILY.r - DAILY.b / 2).toBeGreaterThan(0);
+  });
+
+  it('Textpfade laufen im Uhrzeigersinn (sweep 1), der Ring gegen ihn (sweep 0)', () => {
+    expect(bogen(120, 60, R, MITTE, false)).toMatch(/A150 150 0 0 1 /);
+    expect(ringPfad()).toMatch(/^M\S+ \S+A150 150 0 0 0 /);
+  });
+});
+
+describe('Sprint-Kreislauf: am Beamer nur Namen', () => {
+  const komponente = Object.entries(quellen).find(([k]) => k.endsWith('SprintKreislauf.astro'))![1];
+  it('die Unterzeilen der Events stehen nur im Handout (nur-handout) und im <title>, nicht als Text im Bild', () => {
+    expect(komponente).toMatch(/<figcaption class="[^"]*\bnur-handout\b/);
+    expect(komponente).not.toMatch(/ev\.\w+\.sub\}<\/text/);
+    expect(komponente).not.toMatch(/class="sk-sub"/);
   });
 });

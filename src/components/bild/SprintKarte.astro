@@ -1,18 +1,16 @@
 ---
 // Eine Artefakt-Karte im Sprint-Kreislauf (nur innerhalb des <svg> von SprintKreislauf.astro; Aussehen dort):
-// oben Icon und Name, unten die Verpflichtung. x/y = linke obere Ecke im viewBox.
-const { x, y, b, oben, unten, name, verpflichtung, Icon, IconVerpfl } = Astro.props as {
-  x: number; y: number; b: number; oben: number; unten: number;
+// oben Icon und Name, darunter kompakt die Verpflichtung als gelbe Zeile. x/y = linke obere Ecke im viewBox.
+const { x, y, b, oben = 46, unten = 38, name, verpflichtung, Icon, IconVerpfl } = Astro.props as {
+  x: number; y: number; b: number; oben?: number; unten?: number;
   name: string; verpflichtung: string; Icon: any; IconVerpfl: any;
 };
 const h = oben + unten;
 ---
 <rect class="sk-karte-grund" x={x} y={y} width={b} height={h} rx="8" />
 <path class="sk-karte-verpfl" d={`M${x} ${y + oben}H${x + b}V${y + h - 8}a8 8 0 0 1 -8 8H${x + 8}a8 8 0 0 1 -8 -8Z`} />
-<line class="sk-karte-trenner" x1={x} y1={y + oben} x2={x + b} y2={y + oben} stroke-dasharray="4 4" />
 <rect class="sk-karte-rand" x={x} y={y} width={b} height={h} rx="8" />
-<Icon class="sk-karte-icon" x={x + 14} y={y + oben / 2 - 12} size={24} aria-hidden="true" />
-<text class="sk-karte-name" x={x + 48} y={y + oben / 2 + 7}>{name}</text>
-<text class="sk-karte-label" x={x + 14} y={y + oben + 22}>Verpflichtung</text>
-<IconVerpfl class="sk-karte-icon-verpfl" x={x + 14} y={y + oben + 30} size={20} aria-hidden="true" />
-<text class="sk-karte-wert" x={x + 40} y={y + oben + 47}>{verpflichtung}</text>
+<Icon class="sk-karte-icon" x={x + 12} y={y + oben / 2 - 13} size={26} aria-hidden="true" />
+<text class="sk-karte-name" x={x + 46} y={y + oben / 2 + 8}>{name}</text>
+<IconVerpfl class="sk-karte-icon-verpfl" x={x + 14} y={y + oben + unten / 2 - 11} size={22} aria-hidden="true" />
+<text class="sk-karte-wert" x={x + 44} y={y + oben + unten / 2 + 7}>{verpflichtung}</text>
