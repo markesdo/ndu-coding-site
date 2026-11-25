@@ -1,17 +1,22 @@
 ---
 // „Was bauen wir?“: Die drei Linien des Arbeitsflusses laufen in Slice 1 zusammen. Inhalt der gleichnamigen Folie auf
 // /innolab/arbeitsfluss und auf Tag 4 (9:00); Überschrift und Folien-Satz bleiben in der Seite (Begleiter, folien-seiten.test.ts).
-// Jedes Element ist ein Schritt (data-schritt): im Beamer per → nacheinander.
+// Der Schlusssatz kommt aus dem Slot, damit er zur Seite passt (Tag 4: „Heute Mittag …“, Arbeitsfluss: tagneutral).
+// schritte: jedes Element als Schritt (data-schritt), im Beamer per → nacheinander. Auf Tag 4 aus: Dort ist sie die
+// letzte Folie, und von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar ihre Schritte auf.
 import { FlaskConical, MessageSquareQuote, Star, Target } from '@lucide/astro';
 import { LINIE } from '../arbeitsfluss';
+
+const { schritte = true } = Astro.props as { schritte?: boolean };
+const s = schritte ? '' : undefined;
 ---
 <div class="drei-zum-stern">
-  <div class="zulauf zulauf-beleg" data-schritt><MessageSquareQuote size={22} aria-hidden="true" /><strong>{LINIE.beleg.name}</strong> liefert den Inhalt: der Weg bis zum Höhepunkt.</div>
-  <div class="zulauf zulauf-outcome" data-schritt><Target size={22} aria-hidden="true" /><strong>{LINIE.outcome.name}</strong> liefert das Maß: was Menschen danach anders tun.</div>
-  <div class="zulauf zulauf-annahme" data-schritt><FlaskConical size={22} aria-hidden="true" /><strong>{LINIE.annahme.name}</strong> liefert das Lernziel: was dieser Slice zeigen muss.</div>
-  <div class="stern" data-schritt><Star size={30} aria-hidden="true" /><strong>Slice 1</strong></div>
+  <div class="zulauf zulauf-beleg" data-schritt={s}><MessageSquareQuote size={22} aria-hidden="true" /><strong>{LINIE.beleg.name}</strong> liefert den Inhalt: der Weg bis zum Höhepunkt.</div>
+  <div class="zulauf zulauf-outcome" data-schritt={s}><Target size={22} aria-hidden="true" /><strong>{LINIE.outcome.name}</strong> liefert das Maß: was Menschen danach anders tun.</div>
+  <div class="zulauf zulauf-annahme" data-schritt={s}><FlaskConical size={22} aria-hidden="true" /><strong>{LINIE.annahme.name}</strong> liefert das Lernziel: was dieser Slice zeigen muss.</div>
+  <div class="stern" data-schritt={s}><Star size={30} aria-hidden="true" /><strong>Slice 1</strong></div>
 </div>
-<p class="gross stern-satz" data-schritt><strong>Heute Mittag steht euer Slice 1. In zwei Wochen wisst ihr, ob er hält.</strong></p>
+{Astro.slots.has('default') && <p class="gross stern-satz" data-schritt={s}><strong><slot /></strong></p>}
 
 <style>
   .drei-zum-stern { display: grid; grid-template-columns: 1fr auto; grid-template-rows: repeat(3, auto); gap: .6rem 1.5rem; align-items: center; margin: 1rem 0; }
