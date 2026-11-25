@@ -1,17 +1,20 @@
 ---
 // Scrum auf einem Bild: der Sprint-Kreislauf (Daten und Geometrie: ./sprint-kreislauf.ts). Eigene Zeichnung nach der
-// Idee „dicker Ring mit Daily-Schleife“ (Sprint-Kreislauf und Artefakte-Fluss im Deck 25/26), Begriffe nach Scrum
-// Guide 2020. Am Beamer nur Namen; die Unterzeilen der Events stehen im Handout unter dem Bild und als <title>.
+// Idee „dicker Ring mit Daily-Schleife und Figuren je Event“ (Sprint-Kreislauf und Artefakte-Fluss im Deck 25/26),
+// Begriffe nach Scrum Guide 2020. Am Beamer nur Namen und Rollen-Abzeichen; die Unterzeilen der Events stehen im
+// Handout unter dem Bild und als <title>.
 // hervor: ein Teil oder mehrere (product-backlog, planning, sprint-backlog, sprint, daily, inkrement, review, retro),
-//   die übrigen werden blass – so läuft dasselbe Bild auf mehreren Folien mit.
+//   die übrigen werden blass – so läuft dasselbe Bild auf mehreren Folien mit. Abzeichen gehören zu ihrem Event.
 // aufdecken: so viele Gruppen sofort (0–6), die übrigen je Gruppe per → (data-schritt, wie die übrigen Folien).
 // takt: ersetzt „höchstens ein Monat“ unter „Sprint“, z. B. „ein Sprint, 12.–19.12.“.
-import { BadgeCheck, Eye, Flag, Goal, ListChecks, ListOrdered, MessagesSquare, Package, RefreshCw, Target } from '@lucide/astro';
+import { BadgeCheck, Flag, Goal, ListChecks, ListOrdered, Package } from '@lucide/astro';
+import Abzeichen from './SprintAbzeichen.astro';
 import SprintKarte from './SprintKarte.astro';
 import {
-  ARTEFAKTE, BALKEN_Y, BOGEN, B_BREITE, B_HOEHE, DAILY, EVENTS, INKREMENT_WINKEL, MITTE, R, RING_B, SCHRITTE, SPRINT,
-  WINKELPFEILE, beschreibung, bogen, dailyBeruehrung, dailyMitte, endSpitze, pruefeAufdecken, pruefeHervor, punkt,
-  ringPfad, spitze, tangente, winkelpfeil, type Teil,
+  ABZEICHEN_ABSTAND, ABZEICHEN_H, ARTEFAKTE, BALKEN_Y, BAUEN, BAUEN_BOGEN, B_BREITE, B_HOEHE, DAILY, DAILY_HINWEIS,
+  EVENTS, INKREMENT_WINKEL, LINKS, MITTE, OBEN_Y, R, RECHTS, RETRO, RING_B, ROLLEN, SCHRITTE, SPRINT, TEILNAHME,
+  abzeichenBreite, balkenStart, beschreibung, bogen, dailyBeruehrung, dailyMitte, endSpitze, pruefeAufdecken,
+  pruefeHervor, punkt, ringPfad, spitze, tangente, wer, type Rolle, type Teil,
 } from './sprint-kreislauf';
 
 const { id = 'sprint-kreislauf', hervor, aufdecken, takt } = Astro.props as {
@@ -30,19 +33,20 @@ const g = (teil: Teil) => ({ 'data-teil': teil, class: an.includes(teil) ? 'sk-a
 /** Attribute einer Aufdeck-Gruppe (SCHRITTE[i]); eine Gruppe ist ein Schritt am Beamer, auch wenn sie zwei Teile hat. */
 const s = (i: number) => ({ 'data-gruppe': SCHRITTE[i].join(' '), 'data-schritt': aufdecken !== undefined && i >= aufdecken ? '' : undefined });
 
-const ICON = 48;
 const ICON_ART = { 'product-backlog': ListOrdered, 'sprint-backlog': ListChecks, inkrement: Package } as const;
 const ICON_VERPFL = { 'product-backlog': Flag, 'sprint-backlog': Goal, inkrement: BadgeCheck } as const;
 const karte = (teil: 'product-backlog' | 'sprint-backlog' | 'inkrement', x: number, y: number, b: number) =>
   ({ x, y, b, name: art[teil].name, verpflichtung: art[teil].verpflichtung, Icon: ICON_ART[teil], IconVerpfl: ICON_VERPFL[teil] });
 
-// Product Backlog links, sein Name auf Höhe des Planning-Balkens; Sprint Backlog unter dem Balken am Eingang;
-// Inkrement rechts am Ausgang.
-const pb = karte('product-backlog', 10, BALKEN_Y - 23, 240);
-const sb = karte('sprint-backlog', 292, BALKEN_Y + 42, 226);
-const ausgang = punkt(INKREMENT_WINKEL, R + RING_B / 2);
-const ink = karte('inkrement', 752, ausgang.y - 23, 236);
-const planningMitte = (pb.x + pb.b + MITTE.x) / 2 + 8;
+// Unter dem Planning-Balken: links das Product Backlog (Pfeil hinauf in den Balken), rechts das Sprint Backlog
+// (Pfeil hinunter). Inkrement rechts am Ausgang.
+const balkenX = balkenStart();
+const pb = karte('product-backlog', 150, BALKEN_Y + 46, 232);
+const sb = karte('sprint-backlog', 520, BALKEN_Y + 46, 226);
+const zulaufX = balkenX + 28;
+const ablaufX = sb.x + 40;
+const ausgang = punkt(INKREMENT_WINKEL, R + RING_B / 2, RECHTS);
+const ink = karte('inkrement', 772, ausgang.y - 23, 224);
 
 const dm = dailyMitte();
 const ber = dailyBeruehrung();
@@ -52,9 +56,28 @@ const schleifeSpitze = (() => {
   return spitze(p.x + t.x * gr * 0.6, p.y + t.y * gr * 0.6, t.x, t.y, gr);
 })();
 
+/** Abzeichen einer Rollenliste, waagrecht ab (x, y) oder senkrecht gestapelt; Stakeholder abgesetzt. */
+const reihe = (rollen: Rolle[], x: number, y: number, senkrecht = false) => {
+  let pos = 0;
+  return rollen.map((r, i) => {
+    const extra = !ROLLEN[r].team && i > 0 ? 14 : 0;
+    const b = abzeichenBreite(r);
+    const el = senkrecht ? { r, x, y: y + pos, b } : { r, x: x + pos + extra, y, b };
+    pos += (senkrecht ? ABZEICHEN_H : b + extra) + ABZEICHEN_ABSTAND;
+    return el;
+  });
+};
+const breite = (rollen: Rolle[]) => rollen.reduce((n, r, i) => n + abzeichenBreite(r) + (i ? ABZEICHEN_ABSTAND : 0) + (!ROLLEN[r].team && i ? 14 : 0), 0);
+const abzeichen = {
+  planning: reihe(TEILNAHME.planning, (balkenX + RECHTS.x) / 2 - breite(TEILNAHME.planning) / 2, BALKEN_Y - RING_B / 2 - 12 - ABZEICHEN_H),
+  review: reihe(TEILNAHME.review, MITTE.x - 20 - breite(TEILNAHME.review) / 2, OBEN_Y - RING_B / 2 - 12 - ABZEICHEN_H),
+  retro: reihe(TEILNAHME.retro, LINKS.x - R - RING_B / 2 - 14 - abzeichenBreite('dev'), MITTE.y - (3 * ABZEICHEN_H + 2 * ABZEICHEN_ABSTAND) / 2, true),
+  daily: reihe(TEILNAHME.daily, dm.x + DAILY.r + DAILY.b / 2 + 10, dm.y - ABZEICHEN_H / 2),
+};
+
+/** Satzende nur, wenn noch keins da ist („Wie werden wir besser?“ bleibt ohne Punkt). */
+const satz = (t: string) => (/[.?!]$/.test(t) ? t : `${t}.`);
 const pfad = (name: string) => `${id}-${name}`;
-const review = punkt(90, R + RING_B / 2 + 34);
-const retro = punkt(BOGEN.retro.mitte, R + RING_B / 2 + 40);
 const titelId = pfad('titel'), descId = pfad('desc');
 ---
 <figure class="sk" id={id} data-hervor={an.length ? '' : undefined}>
@@ -63,67 +86,78 @@ const titelId = pfad('titel'), descId = pfad('desc');
       <title id={titelId}>Scrum auf einem Bild: der Sprint-Kreislauf</title>
       <desc id={descId}>{beschreibung(takt)}</desc>
       <defs>
-        {/* Textpfade im Uhrzeigersinn: oben liest die Schrift von links nach rechts, links von unten nach oben. */}
-        <path id={pfad('t-review')} d={bogen(BOGEN.review.mitte + BOGEN.review.halb, BOGEN.review.mitte - BOGEN.review.halb, R, MITTE, false)} />
-        <path id={pfad('t-retro')} d={bogen(BOGEN.retro.mitte + BOGEN.retro.halb, BOGEN.retro.mitte - BOGEN.retro.halb, R, MITTE, false)} />
+        {/* Textpfade: oben und unten gerade, links im Uhrzeigersinn (liest von unten nach oben), rechts ebenso (liest von oben nach unten). */}
+        <path id={pfad('t-review')} d={`M${LINKS.x} ${OBEN_Y}H${RECHTS.x}`} />
+        <path id={pfad('t-planning')} d={`M${balkenX} ${BALKEN_Y}H${RECHTS.x}`} />
+        <path id={pfad('t-retro')} d={bogen(RETRO.mitte + RETRO.halb, RETRO.mitte - RETRO.halb, R, LINKS, false)} />
+        <path id={pfad('t-bauen')} d={bogen(BAUEN_BOGEN.von, BAUEN_BOGEN.bis, R, RECHTS, false)} />
         <path id={pfad('t-daily')} d={bogen(150, 30, DAILY.r, dm, false)} />
       </defs>
+
+      {/* Legende der Rollen, oben links */}
+      <g class="sk-rollen-legende">
+        {(['po', 'sm', 'dev'] as Rolle[]).map((r, i) => (
+          <text x="12" y={34 + i * 26}><tspan class="sk-legende-kurz">{ROLLEN[r].kurz}</tspan> {ROLLEN[r].name}</text>
+        ))}
+      </g>
 
       {/* 1 · Product Backlog mit Produktziel */}
       <g {...s(0)}><g {...g('product-backlog')}>
         <SprintKarte {...pb} />
       </g></g>
 
-      {/* 2 · Sprint Planning als Balken in den Ring, Sprint Backlog mit Sprint-Ziel am Eingang */}
+      {/* 2 · Sprint Planning als Balken unten, Product Backlog läuft hinein, Sprint Backlog kommt heraus */}
       <g {...s(1)}><g {...g('planning')}>
-        <title>{ev.planning.name}: {ev.planning.sub}</title>
-        <line class="sk-band" x1={pb.x + pb.b} y1={BALKEN_Y} x2={MITTE.x + 1} y2={BALKEN_Y} />
-        <text class="sk-auf-band" x={planningMitte} y={BALKEN_Y} text-anchor="middle">{ev.planning.name}</text>
-        <Target class="sk-icon" x={pb.x + pb.b + 12} y={BALKEN_Y - RING_B / 2 - ICON - 6} size={ICON} aria-hidden="true" />
+        <title>{ev.planning.name}: {ev.planning.sub} – {wer('planning')}</title>
+        <polyline class="sk-verbinder" points={`${pb.x + pb.b},${pb.y + 23} ${zulaufX},${pb.y + 23} ${zulaufX},${BALKEN_Y + RING_B / 2 + 12}`} />
+        <polygon class="sk-verbinder-spitze" points={spitze(zulaufX, BALKEN_Y + RING_B / 2 + 12, 0, -1, 9)} />
+        <line class="sk-band" x1={balkenX} y1={BALKEN_Y} x2={RECHTS.x + 1} y2={BALKEN_Y} />
+        <text class="sk-auf-band sk-auf-planning"><textPath href={`#${pfad('t-planning')}`} startOffset="50%" text-anchor="middle">{ev.planning.name}</textPath></text>
+        <Abzeichen liste={abzeichen.planning} />
       </g>
       <g {...g('sprint-backlog')}>
-        <line class="sk-verbinder" x1={sb.x + sb.b / 2} y1={BALKEN_Y + RING_B / 2} x2={sb.x + sb.b / 2} y2={sb.y - 12} />
-        <polygon class="sk-verbinder-spitze" points={spitze(sb.x + sb.b / 2, sb.y - 12, 0, 1, 9)} />
+        <line class="sk-verbinder" x1={ablaufX} y1={BALKEN_Y + RING_B / 2} x2={ablaufX} y2={sb.y - 12} />
+        <polygon class="sk-verbinder-spitze" points={spitze(ablaufX, sb.y - 12, 0, 1, 9)} />
         <SprintKarte {...sb} />
       </g></g>
 
-      {/* 3 · der Sprint als dicker, offener Ring, mit Daily-Schleife außen oben rechts */}
+      {/* 3 · der Sprint als dickes, offenes Stadion, mit Daily-Schleife außen oben rechts */}
       <g {...s(2)}><g {...g('sprint')}>
         <title>{SPRINT.name}: {takt ?? SPRINT.sub}</title>
         <path class="sk-band" d={ringPfad()} />
         <polygon class="sk-band-spitze" points={endSpitze()} />
-        {WINKELPFEILE.map((w) => <polyline class="sk-winkel" points={winkelpfeil(w)} />)}
-        <text class="sk-sprint" x={MITTE.x} y={MITTE.y + 4} text-anchor="middle">{SPRINT.name}</text>
-        <text class="sk-sprint-sub" x={MITTE.x} y={MITTE.y + 34} text-anchor="middle">{takt ?? SPRINT.sub}</text>
+        <text class="sk-auf-band sk-auf-klein"><textPath href={`#${pfad('t-bauen')}`} startOffset="50%" text-anchor="middle">{BAUEN}</textPath></text>
+        <text class="sk-sprint" x={MITTE.x} y={MITTE.y - 14} text-anchor="middle">{SPRINT.name}</text>
+        <text class="sk-sprint-sub" x={MITTE.x} y={MITTE.y + 16} text-anchor="middle">{takt ?? SPRINT.sub}</text>
       </g>
       <g {...g('daily')}>
-        <title>{ev.daily.name}: {ev.daily.sub}</title>
+        <title>{ev.daily.name}: {ev.daily.sub} – {wer('daily')}</title>
         <path class="sk-band sk-band-daily" d={schleife} />
         <polygon class="sk-band-spitze" points={schleifeSpitze} />
         <text class="sk-auf-band sk-auf-daily"><textPath href={`#${pfad('t-daily')}`} startOffset="50%" text-anchor="middle">{ev.daily.name}</textPath></text>
-        <text class="sk-24" x={dm.x} y={dm.y + 12} text-anchor="middle">24 h</text>
-        <MessagesSquare class="sk-icon" x={dm.x + DAILY.r + DAILY.b / 2 + 10} y={dm.y - ICON / 2} size={ICON} aria-hidden="true" />
+        <text class="sk-24" x={dm.x} y={dm.y + 8} text-anchor="middle">24 h</text>
+        <Abzeichen liste={abzeichen.daily} />
       </g></g>
 
       {/* 4 · Inkrement mit Definition of Done am Ausgang */}
       <g {...s(3)}><g {...g('inkrement')}>
-        <line class="sk-pfeil" x1={ausgang.x - 4} y1={ausgang.y} x2={ink.x - 22} y2={ausgang.y} />
-        <polygon class="sk-pfeil-spitze" points={spitze(ink.x - 22, ausgang.y, 1, 0, 18)} />
+        <line class="sk-pfeil" x1={ausgang.x - 4} y1={ausgang.y} x2={ink.x - 14} y2={ausgang.y} />
+        <polygon class="sk-pfeil-spitze" points={spitze(ink.x - 16, ausgang.y, 1, 0, 14)} />
         <SprintKarte {...ink} />
       </g></g>
 
-      {/* 5 · Sprint Review oben, 6 · Retrospektive links – Name auf dem Ring, Icon außen */}
+      {/* 5 · Sprint Review oben, 6 · Retrospektive links – Name auf dem Ring, Rollen außen */}
       <g {...s(4)}><g {...g('review')}>
-        <title>{ev.review.name}: {ev.review.sub}</title>
-        <path class="sk-band" d={bogen(BOGEN.review.mitte - BOGEN.review.halb - 2, BOGEN.review.mitte + BOGEN.review.halb + 2)} />
+        <title>{ev.review.name}: {ev.review.sub} – {wer('review')}</title>
+        <line class="sk-band" x1={LINKS.x} y1={OBEN_Y} x2={RECHTS.x} y2={OBEN_Y} />
         <text class="sk-auf-band"><textPath href={`#${pfad('t-review')}`} startOffset="50%" text-anchor="middle">{ev.review.name}</textPath></text>
-        <Eye class="sk-icon" x={review.x - ICON / 2} y={review.y - ICON / 2} size={ICON} aria-hidden="true" />
+        <Abzeichen liste={abzeichen.review} />
       </g></g>
       <g {...s(5)}><g {...g('retro')}>
-        <title>{ev.retro.name}: {ev.retro.sub}</title>
-        <path class="sk-band" d={bogen(BOGEN.retro.mitte - BOGEN.retro.halb - 2, BOGEN.retro.mitte + BOGEN.retro.halb + 2)} />
+        <title>{ev.retro.name}: {ev.retro.sub} – {wer('retro')}</title>
+        <path class="sk-band" d={bogen(RETRO.mitte - RETRO.halb, RETRO.mitte + RETRO.halb, R, LINKS)} />
         <text class="sk-auf-band"><textPath href={`#${pfad('t-retro')}`} startOffset="50%" text-anchor="middle">{ev.retro.name}</textPath></text>
-        <RefreshCw class="sk-icon" x={retro.x - ICON / 2} y={retro.y - ICON / 2} size={ICON} aria-hidden="true" />
+        <Abzeichen liste={abzeichen.retro} />
       </g></g>
 
       {/* Legende: gelb = Verpflichtung */}
@@ -135,8 +169,13 @@ const titelId = pfad('titel'), descId = pfad('desc');
   </div>
   <figcaption class="sk-erklaerung nur-handout">
     <dl>
-      {EVENTS.map((e) => <div><dt>{e.name}</dt><dd>{e.sub}</dd></div>)}
-      <div><dt>{SPRINT.name}</dt><dd>{takt ?? SPRINT.sub}; der nächste beginnt gleich nach dem vorigen</dd></div>
+      {EVENTS.map((e) => (
+        <div>
+          <dt>{e.name}</dt>
+          <dd>{satz(e.sub)} Dabei: {wer(e.id as keyof typeof TEILNAHME)}.{e.id === 'daily' && <> {DAILY_HINWEIS}</>}</dd>
+        </div>
+      ))}
+      <div><dt>{SPRINT.name}</dt><dd>{takt ?? SPRINT.sub}; der nächste beginnt gleich nach dem vorigen.</dd></div>
     </dl>
   </figcaption>
 </figure>
@@ -147,33 +186,49 @@ const titelId = pfad('titel'), descId = pfad('desc');
   .sk-rahmen { overflow-x: auto; }
   .sk svg { display: block; width: 100%; min-width: 40rem; height: auto; overflow: visible; font-family: var(--font); }
 
-  /* Farben über eigene Variablen: Beim Verblassen (hervor) bekommt jeder Teil flache, hellere Farben statt opacity –
-     so dunkeln Stellen, an denen sich zwei Teile überlappen (Balken und Ring), nicht nach. */
-  .sk { --sk-akzent: var(--accent); --sk-auf: var(--on-accent); --sk-fg: var(--fg); --sk-gelb: var(--yellow-soft); --sk-gelb-ink: var(--yellow-ink); }
+  /* Ringfarbe: hellere Abstufung des Site-Akzents (Bildmarke mit etwas Akzent), Schrift darauf dunkel. Beim Verblassen
+     (hervor) flache, hellere Farben statt opacity – so dunkeln Überlappungen nicht nach; die Schrift auf dem blassen Ring
+     nimmt dann --fg (hell: dunkel, dunkel: hell), damit der Kontrast in beiden Themen über 4,5:1 bleibt. */
+  .sk {
+    --sk-ring: color-mix(in srgb, var(--marke) 70%, var(--accent));
+    --sk-blass: 45%;
+    --sk-akzent: var(--sk-ring); --sk-auf: #16161a; --sk-fg: var(--fg);
+    --sk-gelb: var(--yellow-soft); --sk-gelb-ink: var(--yellow-ink);
+  }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme="light"])) .sk { --sk-blass: 35%; } }
+  :global(:root[data-theme="dark"]) .sk { --sk-blass: 35%; }
   .sk[data-hervor] [data-teil]:not(.sk-an) {
-    --sk-akzent: color-mix(in srgb, var(--accent) 45%, var(--bg));
+    --sk-akzent: color-mix(in srgb, var(--sk-ring) var(--sk-blass), var(--bg));
+    --sk-auf: var(--fg);
     --sk-fg: color-mix(in srgb, var(--fg) 45%, var(--bg));
     --sk-gelb: color-mix(in srgb, var(--yellow-soft) 45%, var(--bg));
     --sk-gelb-ink: color-mix(in srgb, var(--yellow-ink) 45%, var(--bg));
   }
 
-  /* Der Ring und alles, was zum Kreislauf gehört: dick, in der Akzentfarbe, Schrift darauf in --on-accent. */
   .sk-band { fill: none; stroke: var(--sk-akzent); stroke-width: 34; stroke-linecap: butt; }
   .sk-band-daily { stroke-width: 28; }
   .sk-band-spitze { fill: var(--sk-akzent); }
-  .sk-winkel { fill: none; stroke: var(--sk-auf); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
   .sk-auf-band { fill: var(--sk-auf); font-size: 21px; font-weight: 700; letter-spacing: .01em; dominant-baseline: central; }
+  .sk-auf-klein { font-size: 17px; font-weight: 600; }
   .sk-auf-daily { font-size: 18px; }
+  /* Der Planning-Balken ist kurz: etwas kleiner, damit links Luft zur Pfeilspitze bleibt. */
+  .sk-auf-planning { font-size: 19px; }
   .sk-pfeil { stroke: var(--sk-akzent); stroke-width: 12; }
   .sk-pfeil-spitze { fill: var(--sk-akzent); }
-  .sk-verbinder { stroke: var(--sk-fg); stroke-width: 4; }
+  .sk-verbinder { fill: none; stroke: var(--sk-fg); stroke-width: 4; stroke-linejoin: round; }
   .sk-verbinder-spitze { fill: var(--sk-fg); }
 
-  .sk-icon { color: var(--sk-fg); }
   .sk-sprint { fill: var(--sk-fg); font-family: var(--mono); font-size: 36px; font-weight: 700; }
   .sk-sprint-sub { fill: var(--sk-fg); font-size: 19px; }
   .sk-24 { fill: var(--sk-fg); font-family: var(--mono); font-size: 22px; font-weight: 700; }
-  .sk-legende-text { fill: var(--sk-fg); font-size: 17px; }
+  .sk-legende-text, .sk-rollen-legende text { fill: var(--fg); font-size: 17px; }
+  .sk-legende-kurz { font-weight: 700; }
+
+  /* Rollen-Abzeichen (SprintAbzeichen.astro). */
+  .sk :global(.sk-abz-grund) { fill: var(--bg); stroke: var(--sk-fg); stroke-width: 2; }
+  .sk :global(.sk-abz-extern .sk-abz-grund) { fill: var(--bg-2); stroke-dasharray: 5 3; }
+  .sk :global(.sk-abz-icon) { color: var(--sk-fg); }
+  .sk :global(.sk-abz-text) { fill: var(--sk-fg); font-size: 17px; font-weight: 700; }
 
   /* Artefakt-Karten (SprintKarte.astro). */
   .sk :global(.sk-karte-grund) { fill: var(--bg); }
@@ -185,12 +240,14 @@ const titelId = pfad('titel'), descId = pfad('desc');
   .sk :global(.sk-karte-icon-verpfl) { color: var(--sk-gelb-ink); }
   .sk-legende-feld { stroke: var(--sk-gelb-ink); stroke-width: 1.5; }
 
-  /* Hervorhebung: Icons und Kartenrand in der Akzentfarbe. */
-  .sk-an .sk-icon, .sk-an :global(.sk-karte-icon) { color: var(--accent-ink); }
+  /* Hervorhebung: Kartenrand und Abzeichen in der Akzentfarbe. */
+  .sk-an :global(.sk-karte-icon) { color: var(--accent-ink); }
   .sk-an :global(.sk-karte-rand) { stroke: var(--accent); stroke-width: 5; }
+  .sk-an :global(.sk-abz-grund) { stroke: var(--accent); stroke-width: 3.5; }
+  .sk-an :global(.sk-abz-icon) { color: var(--accent-ink); }
 
-  /* Im Handout: die Unterzeilen der Events unter dem Bild. */
-  .sk-erklaerung dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .4rem 1.2rem; margin: .75rem 0 0; font-size: .9rem; }
+  /* Im Handout: die Unterzeilen der Events und wer dabei ist, unter dem Bild. */
+  .sk-erklaerung dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .5rem 1.2rem; margin: .75rem 0 0; font-size: .9rem; }
   .sk-erklaerung dt { font-weight: 700; }
   .sk-erklaerung dd { margin: 0; color: var(--muted); }
 

@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
-  ARTEFAKTE, BALKEN_Y, B_HOEHE, DAILY, EVENTS, MITTE, R, RING_B, SCHRITTE, TEILE, VERANTWORTLICHKEITEN, beschreibung, bogen,
-  dailyMitte, endSpitze, pruefeAufdecken, pruefeHervor, punkt, ringPfad, RING_ENDE, tangente,
+  ARTEFAKTE, BALKEN_Y, B_BREITE, B_HOEHE, BAUEN, DAILY, DAILY_HINWEIS, EVENTS, LINKS, OBEN_Y, R, RECHTS, RING_B, ROLLEN, SCHRITTE,
+  TEILE, TEILNAHME, VERANTWORTLICHKEITEN, balkenStart, beschreibung, bogen, dailyMitte, endSpitze, pruefeAufdecken,
+  pruefeHervor, punkt, ringPfad, RING_ENDE, tangente, wer,
 } from './sprint-kreislauf';
 
-const quellen = import.meta.glob(['./SprintKreislauf.astro', './SprintKarte.astro', './sprint-kreislauf.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const quellen = import.meta.glob(['./SprintKreislauf.astro', './SprintKarte.astro', './SprintAbzeichen.astro', './sprint-kreislauf.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 const scrum = Object.values(import.meta.glob('../../pages/innolab/methoden/scrum.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>)[0];
 
 describe('Sprint-Kreislauf: Begriffe nach Scrum Guide 2020', () => {
@@ -22,13 +23,15 @@ describe('Sprint-Kreislauf: Begriffe nach Scrum Guide 2020', () => {
   });
 
   it('kein Begriff aus Grafiken vor 2020 (Development Team, Demo, Meeting, Rolle, Product Increment)', () => {
-    expect(Object.keys(quellen)).toHaveLength(3);
+    expect(Object.keys(quellen)).toHaveLength(4);
     // Kommentare dürfen das Vorbild nennen; geprüft wird, was gezeichnet oder vorgelesen wird.
     const ohneKommentare = Object.values(quellen).join('\n').replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
-    for (const alt of [/Development Team/i, /\bDemo\b/i, /Meeting/i, /\bRollen?\b/, /Product Increment/i]) {
+    for (const alt of [/Development Team/i, /\bDemo\b/i, /Meeting/i, /Product Increment/i]) {
       expect(ohneKommentare, String(alt)).not.toMatch(alt);
     }
-    expect(beschreibung()).not.toMatch(/Development Team|Demo|Meeting/i);
+    // „Rolle“ heißt im Code der Typ der Abzeichen; gezeigt oder vorgelesen wird das Wort nicht (Guide 2020: accountabilities).
+    const gezeigt = [beschreibung(), DAILY_HINWEIS, BAUEN, ...Object.values(ROLLEN).flatMap((r) => [r.kurz, r.name]), ...EVENTS.flatMap((e) => [e.name, e.sub])].join(' ');
+    expect(gezeigt).not.toMatch(/Development Team|Demo|Meeting|\bRollen?\b|Implementation/i);
   });
 
   it('schreibt Events, Artefakte und Verpflichtungen so wie die Methodenseite Scrum', () => {
@@ -68,11 +71,37 @@ describe('Sprint-Kreislauf: Eingaben', () => {
   });
 });
 
+describe('Sprint-Kreislauf: wer an welchem Event teilnimmt (Scrum Guide 2020)', () => {
+  it('Planning und Retrospektive: das Scrum Team; Daily: die Developers; Review: Scrum Team und Stakeholder', () => {
+    expect(TEILNAHME).toStrictEqual({
+      planning: ['po', 'sm', 'dev'],
+      daily: ['dev'],
+      review: ['po', 'sm', 'dev', 'stakeholder'],
+      retro: ['po', 'sm', 'dev'],
+    });
+    expect(Object.keys(TEILNAHME).sort()).toStrictEqual(EVENTS.map((e) => e.id).sort());
+  });
+
+  it('Kürzel und Namen: PO, SM, Dev = Developers; Stakeholder gehören nicht zum Scrum Team', () => {
+    expect(Object.values(ROLLEN).map((r) => [r.kurz, r.name, r.team])).toStrictEqual([
+      ['PO', 'Product Owner', true], ['SM', 'Scrum Master', true], ['Dev', 'Developers', true], ['Stakeholder', 'Stakeholder', false],
+    ]);
+    expect(Object.values(ROLLEN).filter((r) => r.team).map((r) => r.name)).toStrictEqual(VERANTWORTLICHKEITEN);
+  });
+
+  it('Text für Handout und Alt-Text; der Daily-Hinweis zitiert den Guide wie scrum.astro', () => {
+    expect(wer('daily')).toBe('Developers');
+    expect(wer('review')).toBe('Product Owner, Scrum Master, Developers und Stakeholder');
+    expect(beschreibung()).toContain('dabei: Developers)');
+    expect(scrum).toContain('they participate as Developers');
+    expect(DAILY_HINWEIS).toContain('they participate as Developers');
+  });
+});
+
 describe('Sprint-Kreislauf: Geometrie', () => {
-  it('der Ring beginnt unten auf Höhe des Planning-Balkens und endet bei RING_ENDE', () => {
-    const start = punkt(-90), ende = punkt(RING_ENDE);
-    expect(start.y).toBe(BALKEN_Y);
-    expect(ringPfad().startsWith(`M${start.x} ${start.y}`)).toBe(true);
+  it('der Ring beginnt rechts unten auf Höhe des Planning-Balkens und endet links bei RING_ENDE', () => {
+    const ende = punkt(RING_ENDE, R, LINKS);
+    expect(ringPfad().startsWith(`M${RECHTS.x} ${BALKEN_Y}`)).toBe(true);
     expect(ringPfad().endsWith(`${ende.x} ${ende.y}`)).toBe(true);
   });
 
@@ -82,25 +111,28 @@ describe('Sprint-Kreislauf: Geometrie', () => {
     expect(tangente(-90).x).toBeGreaterThan(0);
   });
 
-  it('die große Pfeilspitze am Ringende zeigt nach unten auf den Planning-Balken und bleibt darüber', () => {
+  it('die Pfeilspitze am Ringende zeigt flach nach rechts auf den Anfang des Planning-Balkens', () => {
     const [spitzeX, spitzeY] = endSpitze().split(' ')[0].split(',').map(Number);
-    const ende = punkt(RING_ENDE);
-    expect(spitzeY).toBeGreaterThan(ende.y);
-    expect(spitzeX).toBeGreaterThan(ende.x);
-    expect(spitzeY).toBeLessThan(BALKEN_Y - RING_B / 2);
+    const t = tangente(RING_ENDE);
+    expect(Math.abs(Math.atan2(t.y, t.x) * 180 / Math.PI)).toBeLessThan(10);
+    expect(Math.abs(spitzeY - BALKEN_Y)).toBeLessThan(RING_B / 2);
+    expect(balkenStart() - spitzeX).toBeGreaterThan(0);
+    expect(balkenStart() - spitzeX).toBeLessThan(12);
   });
 
   it('der Ring nimmt etwa 60 % der Bildhöhe ein; die Daily-Schleife liegt außen oben rechts und im Bild', () => {
-    expect((2 * R + RING_B) / B_HOEHE).toBeGreaterThan(0.55);
+    expect((BALKEN_Y - OBEN_Y + RING_B) / B_HOEHE).toBeGreaterThan(0.55);
     const d = dailyMitte();
-    expect(d.x).toBeGreaterThan(MITTE.x + R);
-    expect(d.y).toBeLessThan(MITTE.y - R / 2);
+    expect(d.x).toBeGreaterThan(RECHTS.x + R / 2);
+    expect(d.y).toBeLessThan(RECHTS.y - R / 2);
     expect(d.y - DAILY.r - DAILY.b / 2).toBeGreaterThan(0);
+    expect(d.x + DAILY.r + DAILY.b / 2).toBeLessThan(B_BREITE);
   });
 
-  it('Textpfade laufen im Uhrzeigersinn (sweep 1), der Ring gegen ihn (sweep 0)', () => {
-    expect(bogen(120, 60, R, MITTE, false)).toMatch(/A150 150 0 0 1 /);
-    expect(ringPfad()).toMatch(/^M\S+ \S+A150 150 0 0 0 /);
+  it('Textpfade laufen im Uhrzeigersinn (sweep 1); rechts steht „Developers bauen“ statt „Implementation“', () => {
+    expect(bogen(225, 135, R, LINKS, false)).toMatch(/A140 140 0 0 1 /);
+    expect(ringPfad()).toMatch(/A140 140 0 0 0 /);
+    expect(BAUEN).toBe('Developers bauen');
   });
 });
 

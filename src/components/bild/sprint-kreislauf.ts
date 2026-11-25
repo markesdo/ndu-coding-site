@@ -25,6 +25,30 @@ export const ARTEFAKTE: Artefakt[] = [
 export const SPRINT = { name: 'Sprint', sub: 'höchstens ein Monat' };
 export const VERANTWORTLICHKEITEN = ['Product Owner', 'Scrum Master', 'Developers'];
 
+export type Rolle = 'po' | 'sm' | 'dev' | 'stakeholder';
+/** Abzeichen je Rolle: Kürzel im Bild, Name in der Legende. Stakeholder gehören nicht zum Scrum Team (abgesetzt). */
+export const ROLLEN: Record<Rolle, { kurz: string; name: string; team: boolean }> = {
+  po: { kurz: 'PO', name: 'Product Owner', team: true },
+  sm: { kurz: 'SM', name: 'Scrum Master', team: true },
+  dev: { kurz: 'Dev', name: 'Developers', team: true },
+  stakeholder: { kurz: 'Stakeholder', name: 'Stakeholder', team: false },
+};
+/**
+ * Wer an welchem Event teilnimmt (Scrum Guide 2020): Planning „The whole Scrum Team“ (S. 8); Daily „a 15-minute event
+ * for the Developers“ (S. 9); Review: das Scrum Team mit „key stakeholders“ (S. 9); Retrospektive: das Scrum Team (S. 10).
+ */
+export const TEILNAHME: Record<'planning' | 'daily' | 'review' | 'retro', Rolle[]> = {
+  planning: ['po', 'sm', 'dev'],
+  daily: ['dev'],
+  review: ['po', 'sm', 'dev', 'stakeholder'],
+  retro: ['po', 'sm', 'dev'],
+};
+/** Nur im Handout: wann Product Owner oder Scrum Master beim Daily dabei sind (Wortlaut wie auf scrum.astro, S. 9). */
+export const DAILY_HINWEIS = 'Product Owner oder Scrum Master nehmen teil, wenn sie selbst an Einträgen des Sprint Backlogs arbeiten – „they participate as Developers“.';
+/** Rechte Ringseite (statt „Implementation“ im Vorbild); das Inkrement geht gleich daneben ab. Guide S. 5: Developers
+ * „are committed to creating any aspect of a usable Increment each Sprint“. */
+export const BAUEN = 'Developers bauen';
+
 /**
  * Aufdeck-Gruppen in der Reihenfolge, in der sie am Beamer per → erscheinen (und im Quelltext stehen müssen):
  * erst das Backlog, dann der Weg einmal durch den Sprint, zuletzt das Ergebnis.
@@ -58,25 +82,31 @@ export function pruefeAufdecken(aufdecken: number | undefined): void {
 }
 
 // ——— Geometrie im viewBox 0 0 B_BREITE B_HOEHE ———
-// Der Sprint ist ein dicker, offener Ring (gegen den Uhrzeigersinn, wie im Vorbild): Das Sprint Planning ist der
-// Balken, der unten einläuft; der Ring endet links unten mit einer großen Pfeilspitze zurück aufs Planning – der
-// nächste Sprint beginnt gleich nach dem vorigen. Event-Namen stehen auf dem Ring. Winkel in Grad, mathematisch
-// (0° = rechts, 90° = oben).
+// Der Sprint ist ein dickes, offenes Stadion (zwei Halbkreise, oben und unten gerade), gegen den Uhrzeigersinn wie im
+// Vorbild: Unten ist die Gerade das Sprint Planning; von dort geht es rechts hoch (Developers bauen), oben nach links
+// (Sprint Review), links hinunter (Retrospektive), und die große Pfeilspitze am Ende zeigt flach von links auf den
+// Planning-Balken – der nächste Sprint beginnt gleich nach dem vorigen. Winkel in Grad, mathematisch (0° = rechts,
+// 90° = oben), jeweils um die Mitte des rechten oder linken Halbkreises.
 
 export const B_BREITE = 1000;
 export const B_HOEHE = 520;
-export const MITTE = { x: 540, y: 238 };
-export const R = 150;
+export const MITTE = { x: 500, y: 228 };
+export const R = 140;
+/** Länge der Geraden oben und unten. */
+export const GERADE = 200;
+export const RECHTS = { x: MITTE.x + GERADE / 2, y: MITTE.y };
+export const LINKS = { x: MITTE.x - GERADE / 2, y: MITTE.y };
 /** Stärke des Rings und des Planning-Balkens. */
 export const RING_B = 34;
-/** Unterkante des Rings = Höhe des Planning-Balkens. */
 export const BALKEN_Y = MITTE.y + R;
-export const RING_ENDE = 205;
-/** Wo die Namen auf dem Ring stehen (Mitte, halbe Breite des Bogens) und wo das Inkrement abgeht. */
-export const BOGEN: Record<'review' | 'retro', { mitte: number; halb: number }> = { review: { mitte: 90, halb: 30 }, retro: { mitte: 162, halb: 30 } };
-export const INKREMENT_WINKEL = -12;
-/** Kleine Winkelpfeile auf dem Ring, zwischen den Namen. */
-export const WINKELPFEILE = [-52, 14, 126];
+export const OBEN_Y = MITTE.y - R;
+/** Ende des Rings auf dem linken Halbkreis, kurz vor der Unterkante: Die Pfeilspitze liegt fast waagrecht. */
+export const RING_ENDE = 265;
+export const END_SPITZE = 30;
+export const RETRO = { mitte: 180, halb: 45 };
+export const INKREMENT_WINKEL = -15;
+/** Textbogen rechts (im Uhrzeigersinn, liest von oben nach unten), frei von der Daily-Schleife. */
+export const BAUEN_BOGEN = { von: 22, bis: -82 };
 
 export function punkt(grad: number, r = R, m = MITTE): { x: number; y: number } {
   const a = (grad * Math.PI) / 180;
@@ -91,7 +121,7 @@ export function tangente(grad: number): { x: number; y: number } {
 
 /**
  * Bogen von a1 nach a2 (Grad). gegen = true: gegen den Uhrzeigersinn (Laufrichtung des Sprints), sonst im
- * Uhrzeigersinn (so laufen Textpfade, damit Schrift oben von links nach rechts und links von unten nach oben liest).
+ * Uhrzeigersinn (so laufen Textpfade, damit Schrift links von unten nach oben und rechts von oben nach unten liest).
  */
 export function bogen(a1: number, a2: number, r = R, m = MITTE, gegen = true): string {
   const p1 = punkt(a1, r, m), p2 = punkt(a2, r, m);
@@ -99,10 +129,10 @@ export function bogen(a1: number, a2: number, r = R, m = MITTE, gegen = true): s
   return `M${p1.x} ${p1.y}A${r} ${r} 0 ${spanne > 180 ? 1 : 0} ${gegen ? 0 : 1} ${p2.x} ${p2.y}`;
 }
 
-/** Ring von unten (-90°) gegen den Uhrzeigersinn bis RING_ENDE (zwei Bögen, je ≤ 180°). */
+/** Der Ring ohne Planning-Balken: rechts hoch, oben nach links, links hinunter bis RING_ENDE. */
 export function ringPfad(): string {
-  const ende = punkt(RING_ENDE);
-  return `${bogen(-90, 90)}A${R} ${R} 0 0 0 ${ende.x} ${ende.y}`;
+  const ende = punkt(RING_ENDE, R, LINKS);
+  return `M${RECHTS.x} ${BALKEN_Y}A${R} ${R} 0 0 0 ${RECHTS.x} ${OBEN_Y}H${LINKS.x}A${R} ${R} 0 0 0 ${ende.x} ${ende.y}`;
 }
 
 /** Dreieck als Pfeilspitze: Spitze gr vor (x, y), Basis 0,6·gr dahinter, Breite 1,6·gr, ausgerichtet nach (dx, dy). */
@@ -114,28 +144,39 @@ export function spitze(x: number, y: number, dx: number, dy: number, gr = 13): s
 }
 
 /** Große Pfeilspitze am Ringende; ihre Basis sitzt genau am Ende des Rings. */
-export function endSpitze(gr = 38): string {
-  const e = punkt(RING_ENDE), t = tangente(RING_ENDE);
+export function endSpitze(gr = END_SPITZE): string {
+  const e = punkt(RING_ENDE, R, LINKS), t = tangente(RING_ENDE);
   return spitze(e.x + t.x * gr * 0.6, e.y + t.y * gr * 0.6, t.x, t.y, gr);
 }
 
-/** Winkelpfeil (Chevron) auf dem Ring bei grad, in Laufrichtung. */
-export function winkelpfeil(grad: number, gr = 8): string {
-  const p = punkt(grad), t = tangente(grad);
-  const a = (grad * Math.PI) / 180, n = { x: Math.cos(a), y: -Math.sin(a) };
-  const f = (u: number, v: number) => `${(p.x + t.x * u + n.x * v).toFixed(1)},${(p.y + t.y * u + n.y * v).toFixed(1)}`;
-  return `${f(-gr * 0.6, gr)} ${f(gr * 0.6, 0)} ${f(-gr * 0.6, -gr)}`;
+/** Der Planning-Balken beginnt knapp hinter der Spitze des Ringendes und läuft bis zum rechten Halbkreis. */
+export function balkenStart(): number {
+  const [x] = endSpitze().split(' ')[0].split(',').map(Number);
+  return Math.round(x + 6);
 }
 
 /** Daily-Schleife: eigener kleiner Ring außen oben rechts, wie im Vorbild. */
-export const DAILY = { winkel: 38, abstand: R + 62, r: 58, b: 28 };
+export const DAILY = { winkel: 40, abstand: R + 62, r: 58, b: 28 };
 export function dailyMitte(): { x: number; y: number } {
-  return punkt(DAILY.winkel, DAILY.abstand);
+  return punkt(DAILY.winkel, DAILY.abstand, RECHTS);
 }
 /** Winkel (um die Schleifenmitte), an dem die Schleife den großen Ring berührt. */
 export function dailyBeruehrung(): number {
   const d = dailyMitte();
-  return (Math.atan2(-(MITTE.y - d.y), MITTE.x - d.x) * 180) / Math.PI + 360;
+  return (Math.atan2(-(RECHTS.y - d.y), RECHTS.x - d.x) * 180) / Math.PI + 360;
+}
+
+/** Breite eines Rollen-Abzeichens (Icon + Kürzel). */
+export function abzeichenBreite(rolle: Rolle): number {
+  return { po: 66, sm: 66, dev: 74, stakeholder: 156 }[rolle];
+}
+export const ABZEICHEN_H = 30;
+export const ABZEICHEN_ABSTAND = 6;
+
+/** Teilnehmende eines Events als Text, z. B. „Product Owner, Scrum Master und Developers“. */
+export function wer(event: keyof typeof TEILNAHME): string {
+  const namen = TEILNAHME[event].map((r) => ROLLEN[r].name);
+  return namen.length === 1 ? namen[0] : `${namen.slice(0, -1).join(', ')} und ${namen.at(-1)}`;
 }
 
 /** Alt-Text des Bildes, aus denselben Daten wie die Beschriftung. */
@@ -143,9 +184,9 @@ export function beschreibung(takt?: string): string {
   const [pb, sb, ink] = ARTEFAKTE;
   const [planning, daily, review, retro] = EVENTS;
   return [
-    `Der Sprint-Kreislauf nach dem Scrum Guide 2020. Links das ${pb.name} mit seiner Verpflichtung, dem ${pb.verpflichtung}.`,
-    `Daraus wählt das ${planning.name} (${planning.sub}) die Arbeit für den ${SPRINT.name} (${takt ?? SPRINT.sub}): das ${sb.name} mit dem ${sb.verpflichtung}.`,
-    `Im Sprint als Kreis: täglich das ${daily.name}, eine kleine Schleife alle 24 Stunden; daraus entsteht das ${ink.name}, verpflichtet auf die ${ink.verpflichtung}.`,
-    `Dann das ${review.name}, eine ${review.sub}, und die ${retro.name}; danach beginnt der nächste Sprint mit dem nächsten Planning.`,
+    `Der Sprint-Kreislauf nach dem Scrum Guide 2020. Links unten das ${pb.name} mit seiner Verpflichtung, dem ${pb.verpflichtung}.`,
+    `Daraus wählt das ${planning.name} (${planning.sub}; dabei: ${wer('planning')}) die Arbeit für den ${SPRINT.name} (${takt ?? SPRINT.sub}): das ${sb.name} mit dem ${sb.verpflichtung}.`,
+    `Im Sprint als Ring: täglich das ${daily.name} (dabei: ${wer('daily')}), eine kleine Schleife alle 24 Stunden; die ${BAUEN} das ${ink.name}, verpflichtet auf die ${ink.verpflichtung}.`,
+    `Dann das ${review.name}, eine ${review.sub} (dabei: ${wer('review')}), und die ${retro.name} (dabei: ${wer('retro')}); danach beginnt der nächste Sprint mit dem nächsten Planning.`,
   ].join(' ');
 }
