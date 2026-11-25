@@ -8,8 +8,9 @@
       "text": "Wir glauben, dass Pendler*innen schon vor der Ankunft am Bahnhof entscheiden, ob sie Kaffee holen.",
       "art": "wuenschenswert",
       "wichtig": "hoch",
-      "beleg": "keiner",
-      "belegIds": []
+      "beleg": "gesagt",
+      "belegIds": ["I2-4", "I3-1", "I5-3"],
+      "belegNotiz": "spricht dagegen"
     },
     {
       "id": "A2",

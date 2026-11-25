@@ -47,7 +47,7 @@ const texte = eingabeTexte(r);
   )}
   <p class="small muted ar-status" data-ar-status aria-live="polite"></p>
   {ansicht === 'eingabe' && <button type="button" class="ar-leeren small" data-ar-leeren data-nur-praesentator>Runde leeren</button>}
-  <p class="small ar-rueckfall" data-ar-rueckfall hidden>{ansicht === 'eingabe' ? texte.rueckfall : 'Sagt eure Sätze laut, reihum.'}</p>
+  <p class="small ar-rueckfall" data-ar-rueckfall hidden>{ansicht === 'eingabe' ? texte.rueckfall : 'Sagt eure Sätze laut.'}</p>
 </div>
 <script>
   import {
@@ -189,7 +189,7 @@ const texte = eingabeTexte(r);
         li.append(b, g.texte.map((t) => `„${t}“`).join(' · '));
         return li;
       }));
-      status.textContent = gruppen.length ? '' : 'Noch keine Sätze auf der Seite – sagt sie reihum laut.';
+      status.textContent = gruppen.length ? '' : 'Noch keine Sätze auf der Seite – sagt sie laut.';
     };
     const a = abfrage(runde);
     const block: Block = { el: box, sichtbar: false, zeigen, fehler: () => { rueckfall.hidden = false; } };

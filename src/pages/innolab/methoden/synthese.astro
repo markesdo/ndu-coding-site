@@ -16,7 +16,6 @@ import Bearbeiten from '../../../components/Bearbeiten.astro';
 import { CircleCheck, CirclePause, CircleX, Clock, FileStack, FileText, Library, Mic, StickyNote } from '@lucide/astro';
 import { RUNDEN } from '../../../lib/antworten';
 import KAFFEEBAR_INTERVIEWS from '../../../werkstatt/beispiele/interviews.json';
-import KAFFEEBAR_ENTSCHEIDUNGEN from '../../../werkstatt/beispiele/entscheidungen.json';
 import { bearbeitenHref } from '../../../werkstatt/ui/bearbeiten-link';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
@@ -32,12 +31,8 @@ const EDITOR = {
   interviews: bearbeitenHref('interviews'),
   leitfaden: bearbeitenHref('leitfaden'),
   annahmen: bearbeitenHref('annahmen'),
-  entscheidungen: bearbeitenHref('entscheidungen'),
+  brief: bearbeitenHref('brief'),
 };
-// Beispielzeile auf „festhalten“: D4 wörtlich aus dem Beispiel der Werkstatt.
-const D4 = KAFFEEBAR_ENTSCHEIDUNGEN.entscheidungen.find((d) => d.id === 'D4');
-if (!D4) throw new Error('synthese.astro: Entscheidung D4 fehlt in werkstatt/beispiele/entscheidungen.json');
-const D4_SATZ = `${D4.entscheidung}, weil ${D4.grund}; Beleg: ${D4.beleg} (${D4.belegIds.join(', ')}).`;
 ---
 <Layout title="Interview-Synthese">
   <span class="eyebrow">Innolab · Tag 2 · Methode</span>
@@ -183,7 +178,7 @@ const D4_SATZ = `${D4.entscheidung}, weil ${D4.grund}; Beleg: ${D4.beleg} (${D4.
         <li><strong>Design:</strong> „Wie sucht man einen bestimmten Titel?“ – will die Bedienung verbessern.</li>
         <li><strong>Entwicklung:</strong> „Fast nur Kinderfilme“ – sucht einen technischen Weg, Nutzer*innen zu unterscheiden.</li>
       </ul>
-      <p data-schritt><strong>Jede Sicht ist berechtigt.</strong> <strong>Darum gleich reihum:</strong> Die anderen hören in euren Snapshots, was ihr überhört.</p>
+      <p data-schritt><strong>Jede Sicht ist berechtigt.</strong> <strong>Darum gleich zu dritt:</strong> Die anderen hören in euren Snapshots, was ihr überhört.</p>
       <p class="small muted">{TORRES}, S. 74–75.</p>
       <div class="nur-handout">
         <p>Teresa Torres erzählt dieselbe Geschichte eines Netflix-Kunden aus drei Blickwinkeln: Produktmanagerin, Designer und Entwicklerin halten jeweils etwas anderes für wichtig, weil sie anderes Vorwissen mitbringen. Jede Sicht ist berechtigt, und jede kann zu einer Verbesserung führen. Je unterschiedlicher das Team, desto mehr holt es aus jedem Interview heraus. Darum interviewt bei ihr das ganze Team, statt eine Person zur „Stimme der Kundin“ zu machen ({TORRES}, S. 74–75).</p>
@@ -204,7 +199,7 @@ const D4_SATZ = `${D4.entscheidung}, weil ${D4.grund}; Beleg: ${D4.beleg} (${D4.
     </ol>
     <div class="nur-handout">
       <p>Nach Rob Fitzpatrick: Nach jedem Gespräch geht das Team die Notizen gemeinsam durch und passt seine Überzeugungen und seine drei großen Fragen an. Ziel ist, dass das Gelernte aufgeschrieben und in allen Köpfen ist. Besprochen werden die wichtigsten Zitate und Aussagen, Probleme im Gespräch und die Meta-Ebene: welche Fragen funktioniert haben, welche nicht, welche Signale oder Fragen gefehlt haben. Der Schritt klingt so einfach, dass man ihn gern überspringt – tut es nicht ({MOMTEST}, S. 103).</p>
-      <p>Bei euch heißt „Überzeugungen anpassen“: Belege in der Annahmen-Map nachtragen, und wo eine Entscheidung fällt, eine Zeile im Entscheidungslog. Die „drei großen Fragen“ sind die Forschungsfragen in eurem Leitfaden.</p>
+      <p>Bei euch heißt „Überzeugungen anpassen“: Belege in der Annahmen-Map nachtragen, und wo sich etwas ändert, die Annahme oder den Brief ändern. Die „drei großen Fragen“ sind die Forschungsfragen in eurem Leitfaden.</p>
       <p>Im Zeigen-Modus öffnet Markus mit K den Kontext: eure Annahmen-Map und euren Leitfaden neben dem Snapshot. Frage 3 beantwortet zuerst, wer interviewt hat – nur ihr wisst, welche Frage welches Zitat gebracht hat; die anderen fragen nach. Frage 4 führen die anderen: Sie lesen in ‚Alle Zitate‘ und ‚Notizen‘, wo ihr hättet nachfragen können. Synthetische Zitate besprecht ihr, als Beleg tragt ihr sie nie ein.</p>
     </div>
   </Folie>
@@ -222,12 +217,12 @@ const D4_SATZ = `${D4.entscheidung}, weil ${D4.grund}; Beleg: ${D4.beleg} (${D4.
       <li data-schritt><strong>Gespräch:</strong> F1 „Erzähl mir vom letzten Morgen …“ brachte die Geschichte; beim Automaten (I2-3) nicht nachgefragt.<span class="bsp ort">→ Leitfaden: F1 bleibt</span></li>
       <li data-schritt><strong>Überhört:</strong> Warum der Automat? Notlösung oder gut genug?<span class="bsp ort">→ Leitfaden, Nachfragen: „Warum der Automat?“</span><span data-schritt class="ort-schritt" aria-hidden="true"></span></li>
     </ul>
-    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis. Den Gegenbeleg I2-4 tragt ihr bei A1 in der Annahmen-Map ein und schreibt in die Beleg-Notiz „spricht dagegen“ – die Belegstufe sagt nur, wie stark der Beleg ist, nicht in welche Richtung. Nach links rückt eine Annahme nur, wenn die Belege dafür sprechen (Torres, S. 129); spricht er dagegen, bleibt A1 riskant, bis ihr entscheidet. Den Satz der Annahme lasst ihr stehen; was ihr jetzt glaubt, wird eine neue Annahme. Ins Entscheidungslog kommt erst eine Zeile, wenn ihr deshalb etwas ändert – bei der Kaffeebar nach allen fünf Interviews: D4, Vorbestellen vor der Ankunft verworfen. Jede Antwort hat ihren Ort: Gesagtes steht im Snapshot, der Gegenbeleg I2-4 bei A1 in der Annahmen-Map, die Nachfrage im Leitfaden; ins Log kommt erst eine Zeile, wenn ihr entscheidet.</p>
+    <p class="nur-handout">Ein Snapshot ist ein Beleg, kein Beweis. Den Gegenbeleg I2-4 tragt ihr bei A1 in der Annahmen-Map ein und schreibt in die Beleg-Notiz „spricht dagegen“ – die Belegstufe sagt nur, wie stark der Beleg ist, nicht in welche Richtung. Nach links rückt eine Annahme nur, wenn die Belege dafür sprechen (Torres, S. 129); spricht er dagegen, bleibt A1 riskant, bis ihr entscheidet. Den Satz der Annahme lasst ihr stehen; was ihr jetzt glaubt, wird eine neue Annahme. Entschieden wird erst, wenn ihr deshalb etwas ändert – bei der Kaffeebar nach allen fünf Interviews: Vorbestellen vor der Ankunft verworfen. Jede Antwort hat ihren Ort: Gesagtes steht im Snapshot, der Gegenbeleg I2-4 bei A1 in der Annahmen-Map, die Nachfrage im Leitfaden.</p>
   </Folie>
 
   <Folie>
     <h2 id="vorgehen">So läuft eine Runde</h2>
-    <p class="folie-satz kompakt">Ab 14:50 3 × 5 Minuten, reihum: eine Person zeigt, zwei fragen nach. Die Zeit wird angesagt. <Timer minuten={5} /></p>
+    <p class="folie-satz kompakt">Ab 14:50 3 × 5 Minuten: Jede*r zeigt einmal, die anderen zwei fragen nach. Die Zeit wird angesagt. <Timer minuten={5} /></p>
     <MiroFrame name="T1 · 5 · Interview-Snapshots (aus der Werkstatt)" />
     <div class="table-scroll folien-tabelle">
       <table class="runde">
@@ -302,7 +297,7 @@ const D4_SATZ = `${D4.entscheidung}, weil ${D4.grund}; Beleg: ${D4.beleg} (${D4.
 
   <Folie>
     <h2 id="festhalten">Festhalten: alle für sich</h2>
-    <p class="folie-satz kompakt">Heute nur Schritt 2 und 3: eine Zeile ins Log, speichern. Schritt 1 bis Tag 3. <Timer minuten={3} /></p>
+    <p class="folie-satz kompakt">Heute nur Schritt 2 und 3: prüfen und entscheiden, speichern. Schritt 1 bis Tag 3. <Timer minuten={3} /></p>
     <div class="table-scroll folien-tabelle">
       <table class="festhalten">
         <caption class="sr-only">Festhalten in drei Schritten: was ihr wohin tragt</caption>
@@ -330,28 +325,26 @@ const D4_SATZ = `${D4.entscheidung}, weil ${D4.grund}; Beleg: ${D4.beleg} (${D4.
           </tr>
           <tr>
             <th scope="row">3 Entscheiden</th>
-            <td>Eine Zeile: verworfen, geändert oder bewusst behalten – mit Grund</td>
-            <td><a href={EDITOR.entscheidungen} target="_blank" rel="noopener">Log ↗</a></td>
+            <td>Verworfen, geändert oder bewusst behalten – ändern, wo es steht</td>
+            <td><a href={EDITOR.annahmen} target="_blank" rel="noopener">Annahmen-Map ↗</a> · <a href={EDITOR.brief} target="_blank" rel="noopener">Brief ↗</a></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="small muted beispiel-zeile">Beispiel Kaffeebar {D4.id}: „{D4_SATZ}“ · <a class="ganz" href="/innolab/methoden/entscheidungslog#wann" target="_blank" rel="noopener">Wann eine Zeile? ↗</a></p>
-    <p class="small fuss">Nur synthetische Interviews: Beleg bleibt ‚noch keiner‘ – im Log ‚behalten‘, in echten Interviews prüfen.</p>
+    <p class="small fuss">Nur synthetische Interviews: Beleg bleibt ‚noch keiner‘ – Annahme behalten, in echten Interviews prüfen.</p>
     <div class="nur-handout">
-      <p>In der Runde habt ihr genau einen Eintrag gemacht: Zitat-ID und Notiz in der Annahmen-Map. Heute, in drei Minuten, prüft jede*r die riskanteste Annahme und schreibt eine Zeile ins Log (Schritt 2 und 3), dann speichern. Schritt 1 erledigt ihr nach dem Kurs, vor Tag 3: Ihr übertragt den Rest aus den eigenen Notizen – die neue Chance oder Einsicht in den Snapshot (Interviews); was bei Frage 3 herauskam und was euch an Überhörtem aufgefallen ist, als geänderte Frage oder Nachfrage in den Leitfaden; dann den Beleg aus eurer Runde in der Annahmen-Map prüfen – steht er drin, stimmt die Belegstufe, steht „stützt“ oder „spricht dagegen“ in der Notiz? Hat Frage 2 noch eine andere Annahme berührt, tragt ihr den Beleg dort ebenfalls nach. Das gilt nur für echte Interviews. Mit nur synthetischen Interviews prüft ihr stattdessen die Frage, die ihr in der Runde im Leitfaden geändert habt, und tragt nie ein synthetisches Zitat als Beleg ein.</p>
-      <p>Schritt 2: Im Editor der Annahmen-Map steht unter „Riskanteste Annahme“, welche Annahme ihr vorgemerkt habt – aus eurer Forschungsfrage. Prüft, ob sie nach den Interviews noch die riskanteste ist. Schritt 3: eine Zeile im Log zu dieser Annahme. Eine zweite Zeile nur, wenn die Interviews Zielgruppe oder Problem im Brief geändert haben – bei der Kaffeebar wurde aus „Pendler*innen nach Wien“ „Pendler*innen mit festem Morgenzug, egal wohin“: D3 ersetzt D1, Beleg „gesagt (I1–I5)“.</p>
+      <p>In der Runde habt ihr genau einen Eintrag gemacht: Zitat-ID und Notiz in der Annahmen-Map. Heute, in drei Minuten, prüft jede*r die riskanteste Annahme und entscheidet (Schritt 2 und 3), dann speichern. Schritt 1 erledigt ihr nach dem Kurs, vor Tag 3: Ihr übertragt den Rest aus den eigenen Notizen – die neue Chance oder Einsicht in den Snapshot (Interviews); was bei Frage 3 herauskam und was euch an Überhörtem aufgefallen ist, als geänderte Frage oder Nachfrage in den Leitfaden; dann den Beleg aus eurer Runde in der Annahmen-Map prüfen – steht er drin, stimmt die Belegstufe, steht „stützt“ oder „spricht dagegen“ in der Notiz? Hat Frage 2 noch eine andere Annahme berührt, tragt ihr den Beleg dort ebenfalls nach. Das gilt nur für echte Interviews. Mit nur synthetischen Interviews prüft ihr stattdessen die Frage, die ihr in der Runde im Leitfaden geändert habt, und tragt nie ein synthetisches Zitat als Beleg ein.</p>
+      <p>Schritt 2: Im Editor der Annahmen-Map steht unter „Riskanteste Annahme“, welche Annahme ihr vorgemerkt habt – aus eurer Forschungsfrage. Prüft, ob sie nach den Interviews noch die riskanteste ist. Schritt 3: Entscheidet zu dieser Annahme. Was ihr jetzt glaubt, wird eine neue Annahme; haben die Interviews Zielgruppe oder Problem geändert, ändert ihr den Brief – bei der Kaffeebar wurde aus „Pendler*innen nach Wien“ „Pendler*innen mit festem Morgenzug, egal wohin“, Beleg „gesagt (I1–I5)“.</p>
       <p>Jeder Link in der Tabelle öffnet den Editor in eurer Werkstatt direkt. Klickt in jedem Editor auf Speichern, bevor ihr ihn schließt – die Werkstatt speichert nicht von selbst.</p>
-      <p>David J. Bland nennt diesen Schritt „Decide“: Was ihr gelernt habt, hat ein Ablaufdatum, also übersetzt ihr es in Handlung – aufgeben, ändern oder weiter testen ({BLAND}, S. 61–62); auf der Learning Card ist das „Therefore, we will …“ (S. 55). Im Log heißen die drei Wege verworfen, geändert und behalten. Wer weiter testet, behält die Annahme bewusst und schreibt den nächsten Schritt in den Grund.</p>
-      <p>Satzanfang (Kursregel): „Ich habe … gewählt / verworfen / geändert / behalten, weil …; Beleg: Stufe (ID).“ Wann eine Zeile dazukommt, ist ebenfalls eine Regel des Kurses: <a href="/innolab/methoden/entscheidungslog#wann">Entscheidungslog</a>.</p>
-      <p>Synthetische Interviews zählen nicht als Beleg, auch nicht im Grund. Ehrlich sieht die Zeile dann etwa so aus, mit eurer eigenen Annahme: „Riskanteste Annahme A1 bewusst behalten, weil das Produkt daran hängt und noch kein echtes Interview dafür oder dagegen spricht; nächster Schritt: in echten Interviews prüfen; Beleg: noch keiner.“</p>
+      <p>David J. Bland nennt diesen Schritt „Decide“: Was ihr gelernt habt, hat ein Ablaufdatum, also übersetzt ihr es in Handlung – aufgeben, ändern oder weiter testen ({BLAND}, S. 61–62); auf der Learning Card ist das „Therefore, we will …“ (S. 55). Bei euch heißen die drei Wege verworfen, geändert und behalten. Wer weiter testet, behält die Annahme bewusst und weiß, was als Nächstes zu prüfen ist.</p>
+      <p>Synthetische Interviews zählen nicht als Beleg, auch nicht im Grund. Ehrlich heißt das dann etwa, mit eurer eigenen Annahme: A1 bleibt die riskanteste Annahme, weil das Produkt daran hängt und noch kein echtes Interview dafür oder dagegen spricht; nächster Schritt: in echten Interviews prüfen; Beleg: noch keiner.</p>
       <p>Wer fertig ist: Claude „Prüf meine Verknüpfungen“ (<a href="#pruefen">Prüfen</a>).</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-    <p class="folie-satz">Lest eure Zeile vor: Entscheidung, Grund, Beleg-Stufe. Reihum, je ein Satz.</p>
+    <p class="folie-satz">Eure Entscheidung in einem Satz, laut: Annahme, Grund, Beleg-Stufe.</p>
     <p class="nur-handout">„Beleg: noch keiner“ ist eine gültige Antwort – sie sagt, was ihr als Nächstes prüfen müsst. Haben eure echten Interviews nichts für oder gegen die Annahme ergeben: Waren sie zu nett, oder habt ihr nach eurer Idee gefragt statt nach vergangenem Verhalten? Als Nächstes zeichnet ihr aus den Geschichten eurer Snapshots die Experience Map neu – ihre Momente werden die Äste eures Baums.</p>
     <p class="small muted">In der Pause: Markus überträgt eure Snapshots <span class="ganz">(T1 · 5)</span> und legt eure Skizzen als Kopie in eure Spalte auf <span class="ganz">T2 · 1 – danach Experience Map.</span></p>
   </Folie>

@@ -4,7 +4,7 @@
 // die anderen kommen trotzdem.
 import { Hono } from 'hono';
 import { BRIEF_FELDER, UNLESBAR, zaehlen } from '../../statistik.js';
-import { ARTEFAKT_NAMEN, type ArtefaktName } from '../../schemas/index.js';
+import { AKTIVE_ARTEFAKTE, ARTEFAKT_NAMEN, type ArtefaktName } from '../../schemas/index.js';
 import type { PersonZahlen, Zahlen } from '../../vertrag.js';
 import { repoName } from '../../zugang.js';
 import { fehler, json } from '../antwort.js';
@@ -13,6 +13,8 @@ import { DateiUnlesbar } from '../speicher-fehler.js';
 import type { Abhaengigkeiten } from '../typen.js';
 
 const NUR_LEHRENDE = 'Die Zahlen der ganzen Gruppe sieht nur Markus.';
+// Alle Artefakte als „gibt es nicht“; gelesen werden nur die aktiven.
+const LEER = Object.fromEntries(ARTEFAKT_NAMEN.map((n) => [n, null])) as Record<ArtefaktName, unknown | null>;
 
 export function zahlenRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
   const r = new Hono<SitzungEnv>();
@@ -27,14 +29,16 @@ export function zahlenRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     try {
       const [wj, ...gelesen] = await Promise.all([
         abh.speicher.werkstattJson(repo),
-        ...ARTEFAKT_NAMEN.map(async (n) => [n, await lesen(repo, n)] as const),
+        // Nur die Artefakte dieses Kursjahrs: Das stillgelegte Entscheidungslog (NDU-70) wird weder gelesen noch gezählt –
+        // weder „nicht lesbar“ noch ein GitHub-Fehler auf dieser Datei darf die Person betreffen.
+        ...AKTIVE_ARTEFAKTE.map(async (n) => [n, await lesen(repo, n)] as const),
       ]);
       // Noch keine Mappe: Nullen. Gehört das Repo jemand anderem (wie eigenesRepo in mappe.ts): nicht mitzählen.
       if (wj && (wj.githubId !== s.githubId || wj.kohorte !== kohorte)) throw new Error('werkstatt.json passt nicht zur Zugangsliste');
-      return zaehlen(kuerzel, Object.fromEntries(gelesen as (readonly [ArtefaktName, unknown])[]) as Record<ArtefaktName, unknown | null>);
+      return zaehlen(kuerzel, { ...LEER, ...Object.fromEntries(gelesen as (readonly [ArtefaktName, unknown])[]) } as Record<ArtefaktName, unknown | null>);
     } catch (e) {
       console.error('werkstatt: Zahlen – Mappe nicht lesbar –', e instanceof Error ? `${e.name}: ${e.message}` : 'Fehler');
-      return { ...zaehlen(kuerzel, { brief: null, entscheidungen: null, annahmen: null, leitfaden: null, interviews: null }), fehler: true };
+      return { ...zaehlen(kuerzel, LEER), fehler: true };
     }
   }
 

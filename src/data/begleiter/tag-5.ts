@@ -8,7 +8,7 @@ export const NOTIZEN_TAG_5: Record<string, Notiz> = {
       'Erst Befund, dann Handlung – beides in der Lernkarte suchen lassen.',
       'Karte E1 daneben: Was stand vorher unter „Wir entscheiden vorher“?',
       'Fragen: Ort des Aufstellers auch bei 12 von 30 hinterfragt?',
-      'Weicht die Handlung ab: offen ins Log, mit Grund.',
+      'Weicht die Handlung ab: offen auf die Lernkarte, mit Grund.',
     ],
     verstaendnis: {
       frage: 'Die Kaffeebar liegt mit 8 von 30 knapp unter der Schwelle und will den Aufsteller an die Schlange stellen. Was ist daran heikel?',
@@ -28,7 +28,7 @@ export const NOTIZEN_TAG_5: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Ist es dann falsch, den Aufsteller zu verschieben?',
-        antwort: 'Nicht unbedingt – aber es ist eine neue Entscheidung, die vom Plan abweicht. Sie gehört mit Grund ins Entscheidungslog, und der neue Test braucht seine eigene Zeile „Wir entscheiden vorher“.',
+        antwort: 'Nicht unbedingt – aber es ist eine neue Entscheidung, die vom Plan abweicht. Sie gehört mit Grund auf die Lernkarte (Zeile „Beleg: … → darum: …“), und der neue Test braucht seine eigene Zeile „Wir entscheiden vorher“.',
       },
     ],
   },

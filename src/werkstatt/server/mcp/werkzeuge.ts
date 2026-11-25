@@ -12,7 +12,7 @@ import { FOKUS_FRAGEN, FOKUS_STELLEN, METHODEN, NICHT_EINORDNEN, TAGE, anzahlBil
 import { kohorte, werkstattArtefakte } from '../../kohorten/index.js';
 import { datumAt } from '../../render/format.js';
 import { rendern } from '../../render/index.js';
-import { ARTEFAKT_NAMEN, ARTEFAKTE, artefaktParsen, type ArtefaktName } from '../../schemas/index.js';
+import { AKTIVE_ARTEFAKTE, ARTEFAKTE, artefaktParsen, type ArtefaktName } from '../../schemas/index.js';
 import { BEFUND_ARTEN, verknuepfungenPruefen, verknuepfungenText, type MappeDaten } from '../../verknuepfungen.js';
 import { STAENDE, TAG_LAGEN, artefaktStand, entstehtAn, faelligBis, inArbeitAn, kurstagBestimmen, type ArtefaktStand, type Kurstag } from '../../tag-stand.js';
 import { MCP_WERKZEUGE, type MappeStand } from '../../vertrag.js';
@@ -43,10 +43,13 @@ class Hinweis extends Error {}
 // --- statische Teile der Werkzeuge ---
 
 const LESEN = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false } as const;
-const ARTEFAKT_ENUM = z.enum(ARTEFAKT_NAMEN as [ArtefaktName, ...ArtefaktName[]]);
-const ARTEFAKT_LISTE = ARTEFAKT_NAMEN.map((n) => `${n} (${ARTEFAKTE[n].titel})`).join(', ');
+// Nur die Artefakte dieses Kursjahrs: das stillgelegte Entscheidungslog (NDU-70) nennen und erwarten die Werkzeuge nicht.
+const ARTEFAKT_ENUM = z.enum(AKTIVE_ARTEFAKTE as [ArtefaktName, ...ArtefaktName[]]);
+const ARTEFAKT_LISTE = AKTIVE_ARTEFAKTE.map((n) => `${n} (${ARTEFAKTE[n].titel})`).join(', ');
 const ARTEFAKT_EINGABE = { artefakt: ARTEFAKT_ENUM.describe(`Welches Artefakt: ${ARTEFAKT_LISTE}.`) };
-const SLUGS = METHODEN.map((m) => m.slug);
+// Ohne stillgelegte Methoden (Entscheidungslog): methode_erklaeren kennt sie nicht mehr.
+const AKTIVE_METHODEN = METHODEN.filter((m) => !m.stillgelegt);
+const SLUGS = AKTIVE_METHODEN.map((m) => m.slug);
 const PRUEFPUNKT = z.object({ nr: z.number().describe('Position in der Prüfliste; pruefpunkt nimmt sie wie die ID an.'), id: z.string(), text: z.string() });
 type PruefpunktAusgabe = z.infer<typeof PRUEFPUNKT>;
 // Was Claude von einem Prüfpunkt sieht: Position, ID und Text, ohne die alte Positions-ID. pruefpunkt nimmt Nummer und ID an.
@@ -63,7 +66,7 @@ const VORARBEIT_ZWECK = 'Nur zum Abgleich, nicht prüfen und nicht daraus zitier
 const UEBERSICHT = {
   title: 'Mappe: Übersicht',
   description:
-    `Zeigt, welche Artefakte (${ARTEFAKT_NAMEN.map((n) => ARTEFAKTE[n].titel).join(', ')}) in der eigenen Werkstatt-Mappe der angemeldeten Person schon gespeichert sind. Ohne Argumente: die Mappe ergibt sich aus der Anmeldung. Nur lesen.`,
+    `Zeigt, welche Artefakte (${AKTIVE_ARTEFAKTE.map((n) => ARTEFAKTE[n].titel).join(', ')}) in der eigenen Werkstatt-Mappe der angemeldeten Person schon gespeichert sind. Ohne Argumente: die Mappe ergibt sich aus der Anmeldung. Nur lesen.`,
   inputSchema: {},
   outputSchema: {
     kohorte: z.string(),
@@ -98,7 +101,7 @@ const LESEN_WERKZEUG = {
 
 const METHODE = {
   title: 'Methode erklären',
-  description: `Erklärt eine Methode des Innolabs: welche Frage sie beantwortet, ihre Prüfliste (häufige Fehler als prüfbare Sätze), wofür die KI dabei da ist, die Quelle und den Link zur Methodenseite. Die Methoden der Mappe: ${ARTEFAKT_NAMEN.map((n) => `${ARTEFAKTE[n].slug} (${ARTEFAKTE[n].titel})`).join(', ')}. Nur lesen.`,
+  description: `Erklärt eine Methode des Innolabs: welche Frage sie beantwortet, ihre Prüfliste (häufige Fehler als prüfbare Sätze), wofür die KI dabei da ist, die Quelle und den Link zur Methodenseite. Die Methoden der Mappe: ${AKTIVE_ARTEFAKTE.map((n) => `${ARTEFAKTE[n].slug} (${ARTEFAKTE[n].titel})`).join(', ')}. Nur lesen.`,
   inputSchema: { slug: z.string().describe(`Slug der Methode, eine von: ${SLUGS.join(', ')}.`) },
   annotations: LESEN,
 };
@@ -145,13 +148,13 @@ const PRUEFEN = {
 
 const VERKNUEPFUNGEN = {
   title: 'Verknüpfungen prüfen',
-  description: `Prüft ohne KI, ob die Verweise der eigenen Werkstatt-Mappe zusammenpassen, über Produkt-Brief, Entscheidungslog, Annahmen-Map und Interviews: unbekannte IDs (z. B. ein Beleg I2-3, den es in den Interviews nicht gibt, oder D4, A3 im Text), fehlende Belege (Belegstufe „gesagt“, „erzählt“ oder „getan“ ohne Beleg; Annahmen mit „gesagt“ oder „erzählt“ ohne Interview oder Zitat; „getan“ ohne Beleg-Notiz, bei Annahmen auch nicht über eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat – ein Interview-Zitat belegt höchstens „erzählt“; Chance ohne Zitat), verwaiste Interviews (von keinem Beleg genannt) und die riskanteste Annahme ohne jeden Beleg, obwohl schon Interviews gespeichert sind. Ohne Argumente. Das Ergebnis ist eine Liste von Befunden; geh sie mit der Person durch, frag nach, wo der Beleg liegt, und formuliere keinen Artefakttext. Ändern kann die Person nur selbst in der Werkstatt. Nur lesen.`,
+  description: `Prüft ohne KI, ob die Verweise der eigenen Werkstatt-Mappe zusammenpassen, über Produkt-Brief, Annahmen-Map und Interviews: unbekannte IDs (z. B. ein Beleg I2-3, den es in den Interviews nicht gibt, oder A3 im Text), fehlende Belege (Belegstufe „gesagt“, „erzählt“ oder „getan“ ohne Beleg; Annahmen mit „gesagt“ oder „erzählt“ ohne Interview oder Zitat; „getan“ ohne Beleg-Notiz – ein Interview-Zitat belegt höchstens „erzählt“; Chance ohne Zitat), verwaiste Interviews (von keinem Beleg in der Annahmen-Map genannt) und die riskanteste Annahme ohne jeden Beleg, obwohl schon Interviews gespeichert sind. Ohne Argumente. Das Ergebnis ist eine Liste von Befunden; geh sie mit der Person durch, frag nach, wo der Beleg liegt, und formuliere keinen Artefakttext. Ändern kann die Person nur selbst in der Werkstatt. Nur lesen.`,
   inputSchema: {},
   outputSchema: {
     befunde: z.array(z.object({
       art: z.enum(BEFUND_ARTEN),
       artefakt: ARTEFAKT_ENUM,
-      ort: z.string().describe('ID der Zeile (D4) oder Feld (Brief · Offene Frage 2, I2 · Chance 1).'),
+      ort: z.string().describe('ID der Zeile (A3) oder Feld (Brief · Offene Frage 2, I2 · Chance 1).'),
       id: z.string().optional().describe('Die unbekannte ID, das verwaiste Interview bzw. die riskanteste Annahme ohne Beleg.'),
       text: z.string(),
     })),
@@ -517,7 +520,9 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
     sicher(k, async () => {
       const repo = await eigeneMappe(k);
       const stand: MappeStand = { kohorte: k.claims.kohorte, repo, lesezugriff: 'unbekannt', artefakte: await k.abh.speicher.uebersicht(repo) };
-      const artefakte = stand.artefakte.map((a) => ({ name: a.name, titel: ARTEFAKTE[a.name].titel, vorhanden: a.vorhanden }));
+      const artefakte = stand.artefakte
+        .filter((a) => AKTIVE_ARTEFAKTE.includes(a.name))
+        .map((a) => ({ name: a.name, titel: ARTEFAKTE[a.name].titel, vorhanden: a.vorhanden }));
       const demo = k.claims.rolle === 'lehrende';
       const zeilen = artefakte.map((a) => `- ${a.titel} (${a.name}): ${a.vorhanden ? 'gespeichert' : 'noch leer'}`);
       const saetze = [
@@ -546,7 +551,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
 
   server.registerTool(MCP_WERKZEUGE.methodeErklaeren, METHODE, ({ slug }) =>
     sicher(k, async () => {
-      const m = METHODEN.find((x) => x.slug === slug);
+      const m = AKTIVE_METHODEN.find((x) => x.slug === slug);
       if (!m) throw new Hinweis(`Diese Methode gibt es nicht. Mögliche Slugs: ${SLUGS.join(', ')}.`);
       if (!(await prueflisteFrei(k, m))) {
         const { pruefliste: _zu, ...d } = methodeDaten(k, m);
@@ -563,7 +568,7 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const gewaehlt = tagLesen(tag);
       const kh = kohorte(k.claims.kohorte);
       if (!kh) throw new Hinweis('Deine Kohorte kennt die Werkstatt nicht (mehr). Frag Markus.');
-      const vorhanden = werkstattArtefakte(kh);
+      const vorhanden = werkstattArtefakte(kh).filter((n) => AKTIVE_ARTEFAKTE.includes(n));
       const heute = wienerZeit(new Date(k.abh.jetzt())).datum;
       const kt = kurstagBestimmen(kh.termine, heute, gewaehlt);
       const faelligNamen = faelligBis(kt.tag, vorhanden);
@@ -673,7 +678,9 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const repo = await eigeneMappe(k);
       const [brief, entscheidungen, leitfaden, annahmen, interviews] = await Promise.all([
         artefaktLaden(k, repo, 'brief'),
-        artefaktLaden(k, repo, 'entscheidungen'),
+        // Das stillgelegte Log nur nach bestem Bemühen (NDU-70): Jeder Fehler darauf (GitHub, Rate-Limit) zählt als „nicht
+        // prüfbar“ ('unlesbar') – D-IDs bleiben dann ohne Befund, das Werkzeug läuft weiter.
+        artefaktLaden(k, repo, 'entscheidungen').catch((e: unknown) => { fehlerLoggen('werkstatt-mcp entscheidungen:', e); return 'unlesbar' as const; }),
         artefaktLaden(k, repo, 'leitfaden'),
         artefaktLaden(k, repo, 'annahmen'),
         artefaktLaden(k, repo, 'interviews'),

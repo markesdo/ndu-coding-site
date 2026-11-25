@@ -29,7 +29,7 @@ import { feedbackAendern } from '../feedback';
 import { kriterium } from '../../kriterien';
 import { fassungVersiegeln } from '../fassung';
 import { FASSUNG_HINWEIS } from './feedback';
-import { ARTEFAKTE, ARTEFAKT_NAMEN } from '../../schemas';
+import { AKTIVE_ARTEFAKTE, ARTEFAKTE } from '../../schemas';
 
 const BASIS = 'http://localhost:4321';
 const MCP = `${BASIS}/api/werkstatt/mcp`;
@@ -282,6 +282,30 @@ describe('Werkzeuge', () => {
     expect(anweisung).toMatch(/\n11\. Manchmal hat eine Lehrperson/);
   });
 
+  // NDU-70: Das Entscheidungslog ist in diesem Kursjahr stillgelegt. Kein Werkzeug nennt oder erwartet es; gespeicherte
+  // Daten bleiben im Repo, lassen sich über den Connector aber nicht mehr anfordern.
+  it('Entscheidungslog stillgelegt: weder in Anweisung noch Beschreibungen, artefakt_lesen/-pruefen und methode_erklaeren lehnen es ab', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'entscheidungen', entscheidungenBeispiel);
+    const c = await client(h, await accessToken(h));
+    const anweisung = c.getInstructions() ?? '';
+    expect(anweisung).toContain('an ihrer eigenen Mappe: Produkt-Brief, Annahmen-Map, Interviewleitfaden und Interviews mit Snapshots.');
+    expect(anweisung.match(/Entscheidungslog|D2/g) ?? []).toStrictEqual([]);
+    const { tools } = await c.listTools();
+    expect(JSON.stringify(tools).match(/Entscheidungslog|entscheidungslog|"entscheidungen"/g) ?? []).toStrictEqual([]);
+    // Auch keine Hinweise auf Log-Zeilen (D4) oder Entscheidungen als Beleg in der Beschreibung von verknuepfungen_pruefen.
+    expect(JSON.stringify(tools).match(/D4|über eine Entscheidung|selbst „getan“/g) ?? []).toStrictEqual([]);
+    for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
+      const r = await c.callTool({ name, arguments: { artefakt: 'entscheidungen' } });
+      expect(r.isError, name).toBe(true);
+      expect(JSON.stringify(r), name).not.toContain(entscheidungenBeispiel.entscheidungen[3]!.grund);
+    }
+    const m = await c.callTool({ name: MCP_WERKZEUGE.methodeErklaeren, arguments: { slug: 'entscheidungslog' } });
+    expect(m.isError).toBe(true);
+    expect(text(m)).toMatch(/^Diese Methode gibt es nicht\. Mögliche Slugs: problem-rahmen, annahmen, /);
+    expect(text(m)).not.toContain('entscheidungslog');
+  });
+
   it('tools/list: genau die Namen aus MCP_WERKZEUGE, alle readOnlyHint, deutsche Beschreibung', async () => {
     const h = await aufbau();
     const c = await client(h, await accessToken(h));
@@ -365,7 +389,6 @@ describe('Werkzeuge', () => {
       lesezugriff: 'unbekannt',
       artefakte: [
         { name: 'brief', titel: 'Produkt-Brief', vorhanden: false },
-        { name: 'entscheidungen', titel: 'Entscheidungslog', vorhanden: false },
         { name: 'annahmen', titel: 'Annahmen-Map', vorhanden: true },
         { name: 'leitfaden', titel: 'Interviewleitfaden', vorhanden: false },
         { name: 'interviews', titel: 'Interviews und Snapshots', vorhanden: false },
@@ -420,9 +443,9 @@ describe('Werkzeuge', () => {
 
   it('artefakt_lesen: ungültige Datei im Repo -> verständlicher Hinweis statt Absturz', async () => {
     const h = await aufbau();
-    await h.speicher.speichern('test-sofie', 'entscheidungen', { 'mappe/entscheidungen.json': '{"schema":"entscheidungen@1"}\n' }, null, AUTOR, 'kaputt');
+    await h.speicher.speichern('test-sofie', 'leitfaden', { 'mappe/leitfaden.json': '{"schema":"leitfaden@1"}\n' }, null, AUTOR, 'kaputt');
     const c = await client(h, await accessToken(h));
-    const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'entscheidungen' } });
+    const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'leitfaden' } });
     expect(r.isError).toBe(true);
     expect(text(r)).toContain('/innolab/mappe');
   });
@@ -651,12 +674,12 @@ describe('Runde R22', () => {
   it('kaputtes JSON im Repo -> derselbe Hinweis wie bei falschem Format; echter GitHub-Ausfall bleibt allgemein', async () => {
     const h = await aufbau();
     await h.speicher.speichern('test-sofie', 'brief', { 'mappe/brief.json': '{ kaputt' }, null, AUTOR, 'kaputt');
-    await h.speicher.speichern('test-sofie', 'entscheidungen', { 'mappe/entscheidungen.json': '{"schema":"entscheidungen@1"}\n' }, null, AUTOR, 'falsch');
+    await h.speicher.speichern('test-sofie', 'leitfaden', { 'mappe/leitfaden.json': '{"schema":"leitfaden@1"}\n' }, null, AUTOR, 'falsch');
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const c = await client(h, await accessToken(h));
     for (const name of ['artefakt_lesen', 'artefakt_pruefen']) {
       const kaputt = await c.callTool({ name, arguments: { artefakt: 'brief' } });
-      const falsch = await c.callTool({ name, arguments: { artefakt: 'entscheidungen' } });
+      const falsch = await c.callTool({ name, arguments: { artefakt: 'leitfaden' } });
       for (const r of [kaputt, falsch]) {
         expect(r.isError, name).toBe(true);
         expect(text(r), name).toMatch(/passt nicht zum Format/);
@@ -816,7 +839,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     expect(JSON.stringify(r)).not.toContain(interviewsBeispiel.interviews[1].notizen.slice(0, 20));
   });
 
-  it('verknuepfungen_pruefen: Beleg-IDs aus Entscheidungslog und Annahmen-Map werden gegen die Interviews aufgelöst', async () => {
+  it('verknuepfungen_pruefen: Beleg-IDs der Annahmen-Map werden gegen die Interviews aufgelöst; das gespeicherte Entscheidungslog wird nicht geprüft (NDU-70)', async () => {
     const h = await aufbau();
     await speichernJson(h, 'test-sofie', 'entscheidungen', entscheidungenBeispiel);
     await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
@@ -824,29 +847,44 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBeFalsy();
     // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
-    // Lücken: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle; A1, die riskanteste, hat trotz fünf Interviews
-    // noch keinen Beleg (neue Befundart, muss durchs Ausgabeschema).
+    // Lücken: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle. Verwaist ist nichts: A1 nennt I2-4, I3-1 und I5-3,
+    // die gespeicherte alte Zeile D3 nennt I1–I5 (lesbare Log-Zeilen zählen weiter; geprüft wird das Log nicht, NDU-70).
     expect(r.structuredContent).toStrictEqual({
       befunde: [
         ...['A2', 'A4'].map((id) => ({
-          art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle: weder eine Beleg-Notiz noch eine Entscheidung, die selbst „getan“ ist und eine Beleg-Notiz hat. Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
+          art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle (Beleg-Notiz). Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
         })),
-        { art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was hast du dazu gehört?' },
       ],
-      geprueft: ['entscheidungen', 'annahmen', 'interviews'],
+      geprueft: ['annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],
       unlesbar: [],
       werkstatt: `${BASIS}/innolab/mappe`,
       anleitung: `Ändern kann die Person nur selbst in der Werkstatt: ${BASIS}/innolab/mappe`,
     });
     expect(text(r)).toContain('## Fehlende Belege (2)');
-    expect(text(r)).toContain('## Riskanteste Annahme ohne Beleg (1)');
+    expect(text(r)).not.toContain('## Verwaiste Elemente');
     expect(text(r)).not.toContain('## Unbekannte IDs');
     expect(text(r)).toContain('Ändern kann die Person nur selbst');
     expect(text(r)).toContain(`${BASIS}/innolab/mappe`);
   });
 
-  it('verknuepfungen_pruefen: unbekanntes Zitat I2-9 im Entscheidungslog wird gemeldet', async () => {
+  it('verknuepfungen_pruefen: riskanteste Annahme ohne Beleg kommt durchs Ausgabeschema (A1 ohne Gegenbelege)', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const offen = mitText(TEXT_A);
+    Object.assign(offen.annahmen[0], { beleg: 'keiner', belegIds: [] });
+    delete (offen.annahmen[0] as { belegNotiz?: string }).belegNotiz;
+    const { basisSha } = await h.speicher.lesen('test-sofie', 'annahmen');
+    await h.speicher.speichern('test-sofie', 'annahmen', { 'mappe/annahmen.json': `${JSON.stringify(offen, null, 2)}\n` }, basisSha, AUTOR, 'A1 offen');
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
+    expect(r.isError).toBeFalsy();
+    const befunde = (r.structuredContent as { befunde: { art: string; ort: string }[] }).befunde;
+    expect(befunde.filter((x) => x.art === 'riskanteste-ohne-beleg').map((x) => x.ort)).toStrictEqual(['A1']);
+    expect(text(r)).toContain('## Riskanteste Annahme ohne Beleg (1)');
+  });
+
+  it('verknuepfungen_pruefen: unbekanntes Zitat I2-9 im stillgelegten Entscheidungslog wird nicht mehr gemeldet (NDU-70)', async () => {
     const h = await aufbau();
     const e = structuredClone(entscheidungenBeispiel);
     e.entscheidungen[3].belegIds = ['I2-4', 'I2-9'];
@@ -855,10 +893,8 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     const befunde = (r.structuredContent as { befunde: { art: string; id?: string }[] }).befunde;
-    expect(befunde.filter((b) => b.art === 'unbekannte-id')).toStrictEqual([
-      { art: 'unbekannte-id', artefakt: 'entscheidungen', ort: 'D4', id: 'I2-9', text: 'D4 nennt I2-9 als Beleg. I2 hat kein Zitat I2-9.' },
-    ]);
-    expect(text(r)).toContain('## Unbekannte IDs (1)');
+    expect(befunde.filter((b) => b.art === 'unbekannte-id')).toStrictEqual([]);
+    expect(text(r)).not.toContain('I2-9');
   });
 
   it('verknuepfungen_pruefen: unlesbare Datei wird gelistet statt das ganze Werkzeug abzubrechen; liest nur die eigene Mappe', async () => {
@@ -871,6 +907,23 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     expect((r.structuredContent as { unlesbar: string[] }).unlesbar).toStrictEqual(['interviews']);
     expect(text(r)).toMatch(/Nicht lesbar.*Interviews und Snapshots/);
     expect(new Set(lesen.mock.calls.map((a) => a[0]))).toStrictEqual(new Set(['test-sofie']));
+  });
+
+  // NDU-70: Das stillgelegte Log nur nach bestem Bemühen – ein GitHub-Fehler genau darauf bricht das Werkzeug nicht ab und
+  // wird nirgends gemeldet; D-IDs gelten dann als nicht prüfbar.
+  it('verknuepfungen_pruefen: GitHub-Ausfall nur beim stillgelegten Entscheidungslog -> Ergebnis wie sonst, nichts gemeldet', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const echt = h.speicher.lesen.bind(h.speicher);
+    vi.spyOn(h.speicher, 'lesen').mockImplementation((repo, name) => (name === 'entscheidungen' ? Promise.reject(new GithubAusnahme(502)) : echt(repo, name)));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
+    expect(r.isError).toBeFalsy();
+    const sc = r.structuredContent as { geprueft: string[]; unlesbar: string[]; befunde: { art: string }[] };
+    expect(sc.geprueft).toStrictEqual(['annahmen', 'interviews']);
+    expect(sc.unlesbar).toStrictEqual([]);
+    expect(text(r)).not.toMatch(/GitHub|Entscheidungslog/);
   });
 
   it('verknuepfungen_pruefen: GitHub-Ausfall -> allgemeiner Satz, kein Teilergebnis', async () => {
@@ -1158,7 +1211,6 @@ describe('tag_stand', () => {
     expect(s).toMatchObject({ tag: 2, lage: 'gewaehlt', datum: null });
     expect(s.faellig.map((f) => [f.artefakt, f.stand])).toStrictEqual([
       ['brief', 'leer'],
-      ['entscheidungen', 'leer'],
       ['annahmen', 'ausgefuellt'],
       ['leitfaden', 'leer'],
       ['interviews', 'leer'],
@@ -1190,7 +1242,9 @@ describe('tag_stand', () => {
     await alleSpeichern(h, 'test-jonas', { entscheidungen: entscheidungenBeispiel, leitfaden: leitfadenBeispiel, annahmen: annahmenBeispiel, interviews: interviewsBeispiel });
     const c = await client(h, await accessToken(h, 1002));
     const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
-    expect(sc(r).faellig.map((f) => f.stand)).toStrictEqual(['ausgefuellt', 'ausgefuellt', 'ausgefuellt', 'ausgefuellt', 'ausgefuellt']);
+    // Das gespeicherte Entscheidungslog zählt nicht mehr (NDU-70).
+    expect(sc(r).faellig.map((f) => f.artefakt)).toStrictEqual(['brief', 'annahmen', 'leitfaden', 'interviews']);
+    expect(sc(r).faellig.map((f) => f.stand)).toStrictEqual(['ausgefuellt', 'ausgefuellt', 'ausgefuellt', 'ausgefuellt']);
     expect(sc(r).faellig.flatMap((f) => f.fehlt)).toStrictEqual([]);
   });
 
@@ -1202,7 +1256,9 @@ describe('tag_stand', () => {
       expect(r.isError, JSON.stringify(args)).toBeFalsy();
       expect(sc(r)).toMatchObject({ tag: 1, lage: 'naechster', datum: null, ohneTermin: [] });
       expect(sc(r).faellig).toStrictEqual([]);
-      expect(sc(r).inArbeit).toHaveLength(5);
+      expect(sc(r).inArbeit).toHaveLength(4);
+      // Tag 1 ohne die stillgelegte Methode Entscheidungslog (NDU-70).
+      expect(sc(r).entsteht.map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'annahmen', 'interview']);
       expect(text(r)).toContain('Termin noch offen');
     }
   });
@@ -1574,7 +1630,7 @@ describe('Feedback der Lehrenden im Connector', () => {
       [MCP_WERKZEUGE.mappeUebersicht, {}],
       [MCP_WERKZEUGE.verknuepfungenPruefen, {}],
       [MCP_WERKZEUGE.tagStand, {}],
-      ...ARTEFAKT_NAMEN.flatMap((artefakt): [string, Record<string, unknown>][] => [
+      ...AKTIVE_ARTEFAKTE.flatMap((artefakt): [string, Record<string, unknown>][] => [
         [MCP_WERKZEUGE.artefaktLesen, { artefakt }],
         [MCP_WERKZEUGE.artefaktPruefen, { artefakt }],
         [MCP_WERKZEUGE.methodeErklaeren, { slug: ARTEFAKTE[artefakt].slug }],
@@ -1710,7 +1766,7 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
       [MCP_WERKZEUGE.mappeUebersicht, {}],
       [MCP_WERKZEUGE.verknuepfungenPruefen, {}],
       [MCP_WERKZEUGE.tagStand, {}],
-      ...ARTEFAKT_NAMEN.flatMap((artefakt): [string, Record<string, unknown>][] => [
+      ...AKTIVE_ARTEFAKTE.flatMap((artefakt): [string, Record<string, unknown>][] => [
         [MCP_WERKZEUGE.artefaktLesen, { artefakt }],
         [MCP_WERKZEUGE.artefaktPruefen, { artefakt }],
       ]),
@@ -1737,7 +1793,7 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
       [MCP_WERKZEUGE.verknuepfungenPruefen, {}],
       [MCP_WERKZEUGE.tagStand, {}],
       [MCP_WERKZEUGE.artefaktPruefen, { artefakt: 'annahmen', pruefpunkt: '2' }],
-      ...ARTEFAKT_NAMEN.flatMap((artefakt): [string, Record<string, unknown>][] => [
+      ...AKTIVE_ARTEFAKTE.flatMap((artefakt): [string, Record<string, unknown>][] => [
         [MCP_WERKZEUGE.artefaktLesen, { artefakt }],
         [MCP_WERKZEUGE.artefaktPruefen, { artefakt }],
         [MCP_WERKZEUGE.methodeErklaeren, { slug: ARTEFAKTE[artefakt].slug }],
@@ -1783,7 +1839,7 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
   it('Größe: volle Beispiel-Mappe mit Feedback, das größte Ergebnis bleibt klein (Claude Code kürzt ab 25 000 Token)', async () => {
     const { c } = await volleMappe();
     const groessen: Record<string, number> = {};
-    for (const artefakt of ARTEFAKT_NAMEN) {
+    for (const artefakt of AKTIVE_ARTEFAKTE) {
       for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
         const r = await c.callTool({ name, arguments: { artefakt } });
         groessen[`${name}(${artefakt})`] = JSON.stringify(r.structuredContent).length;

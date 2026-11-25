@@ -11,10 +11,10 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
     live: [
       'Pro-Abos vermutlich aus: Free-Plan, nur ein eigener Connector.',
       'Alle klicken den Probe-Link auf der Folie und schicken ab.',
-      'Reihum laut: Liest Claude eure Mappe? Sonst Connector prüfen.',
+      'Antworten laut: Liest Claude eure Mappe? Sonst Connector prüfen.',
       'Wer hängt: Ausweg „Für Claude kopieren“, weiter.',
     ],
-    uebung: { dauer: '2 min', form: 'alle gleichzeitig, Antworten reihum laut' },
+    uebung: { dauer: '2 min', form: 'alle gleichzeitig, Antworten laut' },
     kern: [
       {
         text: '„Free users are limited to one custom connector.“ In claude.ai: „+“ unten links am Eingabefeld, dann „Connectors“, dort je Gespräch an- oder ausschalten. Bilder hochladen geht auch im Free-Plan, das Nutzungslimit ist enger; Claude Code braucht ein bezahltes Abo.',
@@ -54,8 +54,8 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 
   'rueckblick-outcome': {
     live: [
-      'Online: Antworten heute reihum laut, ohne Chat.',
-      'Frage stellen, reihum laut, je ein Satz, dann aufdecken.',
+      'Online: Antworten heute laut, ohne Chat.',
+      'Frage stellen, Antworten laut, je ein Satz, dann aufdecken.',
       '„Gemessen wird, was Menschen anders tun – nicht, was ihr baut.“',
       'Heute: In den Baum kommt nur, was den Outcome bewegt.',
     ],
@@ -75,19 +75,18 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 
   'rueckblick-rahmen': {
     live: [
-      'Frage stellen: Zielgruppe reihum laut, je ein Satz, ohne Lösung.',
-      'Aufdecken: Kaffeebar-Brief, „fester Morgenzug“ seit D3.',
+      'Frage stellen: Zielgruppe laut, je ein Satz, ohne Lösung.',
+      'Aufdecken: Kaffeebar-Brief, „fester Morgenzug“ seit den Interviews.',
       'Falle: Lösung im Problem („brauchen eine App“).',
-      'Entscheidungslog nur zeigen, nicht erklären – kommt in der Synthese.',
     ],
     verstaendnis: {
       frage: 'Warum steht beim Kaffeebar-Brief jetzt „fester Morgenzug“ statt „nach Wien“?',
-      antwort: 'Die fünf Interviews haben gezeigt, dass der feste Zug zählt, nicht das Ziel; das Log hält es fest: D3 ersetzt D1, Beleg gesagt (I1–I5).',
+      antwort: 'Die fünf Interviews haben gezeigt, dass der feste Zug zählt, nicht das Ziel; Beleg gesagt (I1–I5).',
     },
     kern: [
       {
         text: 'Kaffeebar-Brief, Stand 05.11.: Für wen „Pendler*innen, die werktags zwischen 7:15 und 7:45 auf ihren festen Morgenzug warten“; Problem „Die Schlange ist morgens länger als die Zeit bis zur Abfahrt …“; nicht: Lieferung an den Bahnsteig, Mittagsgeschäft, andere Bahnhöfe. Kursbeispiel, keine Buchquelle.',
-        quelle: 'Werkstatt, Beispiel Kaffeebar, brief.json und entscheidungen.json (D1, D3)',
+        quelle: 'Werkstatt, Beispiel Kaffeebar, brief.json',
       },
     ],
     ueberleitung: 'Alles im Brief ist eine Annahme – welche testet ihr zuerst?',
@@ -95,7 +94,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
 
   'rueckblick-annahmen': {
     live: [
-      'Frage stellen: reihum laut, je eine Annahme mit Grund.',
+      'Frage stellen: Antworten laut, je eine Annahme mit Grund.',
       'Aufdecken: oben rechts – sehr wichtig, kein Beleg.',
       '„Eure Interviews waren der erste Test eurer riskantesten Annahme.“',
       'Heute: Zitat-IDs als Beleg in die Annahmen-Map.',
@@ -116,7 +115,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
   'rueckblick-mom-test': {
     live: [
       'Bekannt aus Need Finding: nur diese eine Frage, nicht erklären.',
-      'Reihum laut, je ein Satz, dann aufdecken.',
+      'Antworten laut, je ein Satz, dann aufdecken.',
       'Heute: als Beleg zählt Erzähltes, nicht Gemeintes.',
     ],
     kern: [
@@ -134,23 +133,24 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
   'log-heute': {
     live: [
       'Ist-Zeit notieren.',
-      'Fragen: Was hat sich durch eure Interviews geändert? Je eine Zeile vorlesen.',
-      'D3 vorlesen: die alte Zeile D1 bleibt, nur „ersetzt am“.',
+      'Fragen: Was haben eure Interviews geändert? Je eine Änderung zeigen.',
+      'Die anderen fragen je einmal nach dem Beleg.',
+      'Kaffeebar: „Für wen?“ von „nach Wien“ zu „fester Morgenzug“ (I1–I5).',
       'Zeit: drei Minuten, nicht diskutieren – Rückfragen nach Tag 3.',
-      'Falle: Zeile ohne Beleg-Stufe oder ohne ID.',
+      'Falle: Änderung ohne Zitat-ID als Beleg.',
     ],
     verstaendnis: {
-      frage: 'Warum korrigiert die Kaffeebar D1 nicht einfach?',
-      antwort: 'Weil dann niemand mehr sieht, dass die Zielgruppe geraten war und erst die Interviews sie geschärft haben – genau das zeigt der Pitch an Tag 7. In der Werkstatt lassen sich gespeicherte Zeilen auch nicht ändern, nur ersetzen.',
-      falsch: '„Damit das Log vollständig ist“ – es geht nicht um Vollständigkeit, sondern um den sichtbaren Lernweg.',
+      frage: 'Wo steht, warum die Kaffeebar ihre Zielgruppe geändert hat?',
+      antwort: 'Im Brief steht die neue Zielgruppe, der Beleg in der Annahmen-Map: die Zitate I1–I5. Am Pitch an Tag 7 zeigt genau dieser Lernweg, dass die Zielgruppe geraten war, bis die Interviews sie geschärft haben.',
+      falsch: '„Im Kopf, wir wissen es ja“ – ohne Zitat-ID kann niemand nachlesen, wer das gesagt hat.',
     },
     kern: [
       {
-        text: 'Kaffeebar: D3 „Zielgruppe: Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin“, Grund „Alle 5 haben einen festen Zug zwischen 7:20 und 7:50; das Ziel ist verschieden (Wien, Uni) …“, Beleg gesagt (I1–I5), ersetzt D1 („Pendler*innen nach Wien“, Beleg noch keiner).',
-        quelle: 'Werkstatt, Beispiel Kaffeebar, entscheidungen.json',
+        text: 'Kaffeebar: „Für wen?“ am 22.10. „Pendler*innen nach Wien“ (ohne Beleg), seit 05.11. „Pendler*innen mit festem Morgenzug, 7:15–7:45, egal wohin“ – alle fünf haben einen festen Zug zwischen 7:20 und 7:50, das Ziel ist verschieden (Wien, Uni); Beleg gesagt (I1–I5).',
+        quelle: 'Werkstatt, Beispiel Kaffeebar',
       },
       {
-        text: 'Bland, Learning Card: Der letzte Schritt „Therefore, we will …“ ist die Entscheidung; Pivot heißt, ein Element der Idee deutlich zu ändern, frühere Evidenz kann dann irrelevant werden. D3 ersetzt D1 ist ein kleiner Pivot beim Kundensegment.',
+        text: 'Bland, Learning Card: Der letzte Schritt „Therefore, we will …“ ist die Entscheidung; Pivot heißt, ein Element der Idee deutlich zu ändern, frühere Evidenz kann dann irrelevant werden. Die neue Zielgruppe ist ein kleiner Pivot beim Kundensegment.',
         quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 55, 61',
       },
     ],
@@ -200,7 +200,7 @@ export const NOTIZEN_TAG_2_ABSCHLUSS: Record<string, Notiz> = {
     live: [
       'Checkliste Punkt für Punkt, jede*r hakt selbst ab.',
       'Fragen: Welche Annahme von Tag 1 steht jetzt anders da?',
-      'Entscheidungslog: eine Zeile pro Entscheidung, auch „noch keiner“ als Beleg.',
+      'Belege in der Annahmen-Map: auch „noch keiner“ ist eine Antwort.',
       '„Tag 3 beginnt mit euren Momenten, dann Baum und Ziel-Chance.“',
       'Erinnern: Claude Pro erst am 28. November neu abschließen.',
     ],

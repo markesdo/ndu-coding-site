@@ -42,10 +42,19 @@ describe('methoden', () => {
     });
   });
 
-  it('jedes Artefakt außer dem Pitch wird später weiterverwendet – keine toten Enden', () => {
-    for (const id of artefaktIds.filter((x) => x !== 'pitch')) {
+  it('jedes Artefakt außer dem Pitch wird später weiterverwendet – keine toten Enden (stillgelegte ausgenommen)', () => {
+    for (const id of artefaktIds.filter((x) => x !== 'pitch' && !erzeugtVon(x)?.stillgelegt)) {
       expect(METHODEN.some((m) => m.braucht.includes(id)), id).toBe(true);
     }
+  });
+
+  // NDU-70: Das Entscheidungslog ist in diesem Kursjahr stillgelegt – keine Methode baut darauf auf, und es steht in
+  // keiner Liste der Methoden eines Tages (Toolbox, tag_stand). Die Methode selbst bleibt für die Seite und alte Links.
+  it('stillgelegt ist nur das Entscheidungslog; niemand braucht es, kein Tag listet es', () => {
+    expect(METHODEN.filter((m) => m.stillgelegt).map((m) => m.slug)).toStrictEqual(['entscheidungslog']);
+    expect(METHODEN.filter((m) => m.braucht.includes('entscheidungen')).map((m) => m.slug)).toStrictEqual([]);
+    expect(methodenVonTag(1).map((m) => m.slug)).toStrictEqual(['problem-rahmen', 'annahmen', 'interview']);
+    for (const t of TAGE) expect(methodenVonTag(t.n).filter((m) => m.stillgelegt), `Tag ${t.n}`).toStrictEqual([]);
   });
 
   it('Kurstage laufen aufsteigend von 1 bis 6 – an Tag 6 kommt nur noch der Pitch dazu, Tag 7 ist die Präsentation –, Orte sind bekannt', () => {
@@ -383,11 +392,11 @@ describe('methoden', () => {
     }
     // Nur ein Teil (pfad): Datei, also auch keine Nachfrage.
     expect(text(methode('baum'), 'docs/X.md')).not.toContain(NACHFRAGE_BELEGE);
-    // Ergebnisse auf Miro (alles von Tag 3): kein Entscheidungslog (für diesen Kurs stillgelegt, Entscheidung 30); die übrigen
-    // Fassungen behalten den Weg ins Log.
+    // Kein Entscheidungslog mehr (für diesen Kurs stillgelegt, Entscheidung 30, NDU-70): Wer einen Befund nicht übernimmt,
+    // begründet es in einem Satz – in Werkstatt, Repo und auf Miro.
     for (const m of METHODEN.filter((x) => x.pruefliste)) {
-      if (pruefungAufMiro(m)) expect(text(m), m.slug).not.toMatch(/Entscheidungslog/);
-      else expect(text(m), m.slug).toContain('<a href="/innolab/methoden/entscheidungslog">Entscheidungslog</a>');
+      expect(text(m), m.slug).not.toMatch(/Entscheidungslog|ins Log/);
+      expect(text(m), m.slug).toContain('Stimmt er nicht oder ist es bewusst so: lassen – und in einem Satz sagen können, warum.');
     }
     for (const s of ['ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']) {
       expect(text(methode(s)), s).toContain('Stimmt er: selbst auf Miro ändern. Stimmt er nicht oder ist es bewusst so: lassen – und in einem Satz sagen können, warum.');
@@ -483,7 +492,7 @@ describe('methoden', () => {
 
   it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
-    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief und mein Entscheidungslog \(Werkzeug artefakt_lesen\)\. /);
+    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
     // Kundenprofil und Value Map liegen seit 21.11.2026 auf Miro: als Bild.
     expect(pi).toContain('\nZum Abgleich füge ich auch zwei Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · euer Name“) und Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“).\n');
     // Die Prüfliste verlangt alle vier Raster-Felder mit Beleg aus Kundenprofil oder Value Map, ein Sicherheits-Wort wie in
@@ -496,7 +505,7 @@ describe('methoden', () => {
     expect(liste).toMatch(/Zahlen der Outcome-Metrik/);
     // vorarbeitLesen (daraus baut die Pitch-Seite den Prompt der Investorin) liefert dieselbe Liste wie der Prüf-Prompt.
     expect(pi).toContain(`Zum Abgleich lies auch ${vorarbeitLesen(pitch, ['docs/PITCH.md']).join(' und ')}. `);
-    expect(pitch.braucht).toEqual(expect.arrayContaining(['profil', 'valuemap', 'experimente', 'spike', 'entscheidungen', 'brief']));
+    expect(pitch.braucht).toEqual(expect.arrayContaining(['profil', 'valuemap', 'experimente', 'spike', 'brief']));
   });
 
   it('jede Tagesseite trägt das Datum aus TAGE als data-kurstag – sonst springt die Jetzt-Markierung am falschen Tag', () => {

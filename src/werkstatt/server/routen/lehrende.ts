@@ -14,7 +14,7 @@ import { tagInWien } from '../../../lib/kurswahl.js';
 import { KOHORTEN, kohorte as kohorteNachId, werkstattArtefakte, type Kohorte } from '../../kohorten/index.js';
 import { FASSUNG_ORTE, FeedbackAbgelehnt, fassungErlaubt, fassungTextPruefen, fassungZeilenText, feedbackSchreiben, feedbackZaehlen, zeilenAuswahl, zeilePasst, type Feedback } from '../../feedback.js';
 import { bezugBestimmen, verlaufZaehlen } from '../../lehrende.js';
-import { ARTEFAKTE, ARTEFAKT_NAMEN, artefaktParsen, istObjekt, type ArtefaktName } from '../../schemas/index.js';
+import { AKTIVE_ARTEFAKTE, ARTEFAKTE, ARTEFAKT_NAMEN, STILLGELEGT, artefaktParsen, istObjekt, type ArtefaktName } from '../../schemas/index.js';
 import { artefaktStand, faelligBis, faelligZuTag, kurstagBestimmen } from '../../tag-stand.js';
 import { verknuepfungenPruefen, type MappeDaten } from '../../verknuepfungen.js';
 import type { FeedbackAntwort, LehrendenAnsicht, LehrendenArtefakt, LehrendenInhalt, LehrendenMappe } from '../../vertrag.js';
@@ -42,6 +42,7 @@ const NICHT_LESBAR = 'Diese Mappe lässt sich gerade nicht lesen. Später neu la
 const ZUORDNUNG = 'Das Repo passt nicht zur Zugangsliste. Zugangsliste prüfen.';
 const KEINE_MAPPE = 'Diese Person hat sich noch nicht angemeldet.';
 const UNVOLLSTAENDIG = 'Die Anfrage ist unvollständig.';
+const STILLGELEGT_SATZ = 'Das Entscheidungslog wird in diesem Kursjahr nicht genutzt; dazu gibt es kein Feedback.';
 const FASSUNG_UNLESBAR = 'Das Artefakt passt gerade nicht zum Format der Werkstatt (vielleicht direkt auf GitHub geändert). Eine mögliche Fassung geht erst wieder, wenn es lesbar ist.';
 
 const nachKuerzel = <T extends { kuerzel: string }>(x: T, y: T) => (x.kuerzel < y.kuerzel ? -1 : x.kuerzel > y.kuerzel ? 1 : 0);
@@ -120,7 +121,9 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
       if (!repo) return { kuerzel, zustand: 'keine-mappe' };
       // Alle fünf Artefakte wie verknuepfungen_pruefen im Connector; Verlauf nur für die Spalten der Kohorte.
       const [daten, verlaeufe, fb] = await Promise.all([
-        Promise.all(ARTEFAKT_NAMEN.map(async (n) => [n, (await laden(repo, n)).daten] as const)),
+        // Das stillgelegte Entscheidungslog nur nach bestem Bemühen (NDU-70): Jeder Fehler darauf zählt als „nicht prüfbar“
+        // ('unlesbar'; es löst nur noch D-IDs auf und wird nicht angezeigt) und setzt die Person nie auf „fehler“.
+        Promise.all(ARTEFAKT_NAMEN.map(async (n) => [n, STILLGELEGT.includes(n) ? await laden(repo, n).then((x) => x.daten, () => 'unlesbar' as const) : (await laden(repo, n)).daten] as const)),
         Promise.all(namen.map((n) => abh.speicher.verlauf(repo, n))),
         feedbackOderNull(repo),
       ]);
@@ -147,7 +150,9 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     const b = Number.isNaN(gewaehlt) ? undefined : bezugBestimmen(k.termine, heute, gewaehlt);
     if (!b) return fehler(c, 422, 'ungueltig', TAG_UNGUELTIG);
 
-    const namen = werkstattArtefakte(k);
+    // Spalten nur für die Artefakte dieses Kursjahrs (ohne das stillgelegte Entscheidungslog, NDU-70). Ohne Spalte gibt
+    // es in der Oberfläche keinen Weg mehr zum Log; die Daten bleiben im Repo.
+    const namen = werkstattArtefakte(k).filter((n) => AKTIVE_ARTEFAKTE.includes(n));
     // Alphabetisch nach Kürzel: feste Reihenfolge, nie nach Stand umsortiert.
     const studierende = [...(abh.umgebung.zugang[k.id]?.studierende ?? [])].sort(nachKuerzel);
     const kt = kurstagBestimmen(k.termine, heute);
@@ -224,6 +229,8 @@ export function lehrendeRouten(abh: Abhaengigkeiten): Hono<SitzungEnv> {
     // Kaputtes JSON oder kein Objekt: gleich ablehnen, vor jedem Lesen auf GitHub.
     if (!istObjekt(anfrage)) return fehler(c, 422, 'ungueltig', UNVOLLSTAENDIG);
     const a = anfrage;
+    // Kein Feedback auf stillgelegte Artefakte (Entscheidungslog, NDU-70): Niemand sähe es.
+    if (typeof a.artefakt === 'string' && (STILLGELEGT as readonly string[]).includes(a.artefakt)) return fehler(c, 400, 'ungueltig', STILLGELEGT_SATZ);
     const ziel = await personUndRepo(c, typeof a.artefakt === 'string' ? a.artefakt : '');
     if (ziel instanceof Response) return ziel;
     const { repo, n } = ziel;
