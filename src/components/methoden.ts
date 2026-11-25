@@ -90,7 +90,7 @@ export interface Methode {
   slug: string;
   name: string;
   /** Kurstag, an dem die Methode eingeführt wird (1–6; an Tag 6 nur noch der Pitch, nach dem Sprint; Tag 7 ist die
-   *  Präsentation – dort kommt nichts Neues dazu). Ausnahme „scrum“: Agil und Lego4Scrum an Tag 4, Teamaufstellung und
+   *  Präsentation – dort kommt nichts Neues dazu). Ausnahme „scrum“: Agil und Scrum an Tag 4 (Lego4Scrum seit 25.11.2026 stillgelegt), Teamaufstellung und
    *  Definition of Done (Artefakt team) zu Beginn von Tag 5. */
   tag: number;
   /** Minuten für Input, Übung und Festhalten zusammen. */
@@ -406,7 +406,8 @@ export const METHODEN: Methode[] = [
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
   },
   {
-    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 130, prueflisteStand: 2,
+    // Seit 25.11.2026 (NDU-72) ohne Lego4Scrum: Agil & Scrum an Tag 4 (30), Teamaufstellung und DoD an Tag 5 (40).
+    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 70, prueflisteStand: 2,
     frage: 'Wie arbeiten wir als drei Scrum-Teams mit denselben drei Personen an drei Produkten?',
     braucht: ['brief'], ergibt: ['team'],
     pruefliste: [
@@ -416,9 +417,8 @@ export const METHODEN: Methode[] = [
       { id: 'scrum-dod', text: 'Die Definition of Done ist eine Liste von Punkten, die sich im Browser, auf GitHub oder in Supabase prüfen lassen, und gilt für alle drei Produkte.' },
       { id: 'scrum-dod-messung', text: 'In der Definition of Done steht das Ereignis, das die Outcome-Metrik des Produkt-Briefs misst, mit seinen Feldern – ohne Name und E-Mail.' },
       { id: 'scrum-abweichungen', text: 'Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, ein einziger Sprint von einer Woche, schriftliches Daily.' },
-      { id: 'scrum-lego', text: 'Unter „Aus Lego4Scrum“ steht je Person eine Sache, die das Team im echten Sprint anders macht.' },
     ],
-    ki: 'Keine Rolle – Scrum lernt ihr im Spiel und im Team.',
+    ki: 'Keine Rolle – Scrum lernt ihr an der Kaffeebar und im Team.',
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Manifesto for Agile Software Development (2001); Alexey Krivitsky, lego4scrum (2023); Ron Jeffries, The Nature of Software Development (2015)',
   },
   {
@@ -511,7 +511,7 @@ export const TAGE: { n: number; datum?: string; titel: string; text: string }[] 
   { n: 1, datum: '2026-10-22', titel: 'Rahmen & Verstehen', text: 'Problem und Outcome festlegen, Interviews vorbereiten, Annahmen sichtbar machen.' },
   { n: 2, datum: '2026-11-12', titel: 'Kunde & Erlebnis', text: 'Snapshots besprechen, Experience Map.' },
   { n: 3, datum: '2026-11-21', titel: 'Lösung & Story', text: 'Opportunity Solution Tree, Ziel-Chance, How Might We, Ideation; Kundenprofil und Value Map, der Story-Bogen als Theorie.' },
-  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Value Map nachholen, Concept Story; Geschäftsmodell und Experiment-Karte; Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Scrum und Lego4Scrum.' },
+  { n: 4, datum: '2026-11-28', titel: 'Prototyp & Scrum', text: 'Value Map nachholen, Concept Story; Geschäftsmodell und Experiment-Karte; Story Map, Usage Story, erster Prototyp; drei Produkte, ein Takt: Agil und Scrum.' },
   { n: 5, datum: '2026-12-12', titel: 'Backlog & Sprint', text: 'Test-Debrief, Team und Definition of Done, Backlog, Akzeptanzkriterien, Schneiden, Sprint-Planning mit Störfall – dann wird gebaut.' },
   { n: 6, datum: '2026-12-19', titel: 'Bauen & Review', text: 'Fertig bauen, Usability-Tests über Kreuz, Sprint-Review und Retro: Der Prototyp steht. Danach der Pitch mit Probe.' },
   { n: 7, datum: '2027-01-16', titel: 'Präsentation', text: 'Präsentation an Stakeholder: Pitch, Live-Demo und Belege.' },
