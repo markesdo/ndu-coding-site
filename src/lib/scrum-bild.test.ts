@@ -12,7 +12,9 @@ describe('Scrum-Seite: Folie „Scrum auf einem Bild“', () => {
     expect(html).toContain('Scrum auf einem Bild</h2>');
     expect(html).not.toContain('Scrum in vier Schritten');
 
-    const folie = html.slice(html.indexOf('id="scrum"'), html.indexOf('id="verantwortlichkeiten"'));
+    // Nicht nach id="scrum" suchen: so heißt auch die Methodenkarte oben auf der Seite.
+    const folie = html.slice(html.indexOf('<h2 id="scrum"'), html.indexOf('<h2 id="verantwortlichkeiten"'));
+    expect(folie.length).toBeGreaterThan(0);
     expect(folie).toContain('id="sk-scrum"');
     expect(folie).toMatch(/role="img"/);
     // aufdecken={1}: Product Backlog sofort, die fünf übrigen Gruppen je ein Schritt.

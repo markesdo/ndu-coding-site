@@ -212,7 +212,7 @@ const titelId = pfad('titel'), descId = pfad('desc');
   .sk-band-daily { stroke-width: 28; }
   .sk-band-spitze { fill: var(--sk-akzent); }
   .sk-auf-band { fill: var(--sk-auf); font-size: 21px; font-weight: 700; letter-spacing: .01em; dominant-baseline: central; }
-  .sk-auf-klein { font-size: 17px; font-weight: 600; }
+  .sk-auf-klein { font-size: 18px; font-weight: 600; }
   .sk-auf-daily { font-size: 18px; }
   /* Der Planning-Balken ist kurz: etwas kleiner, damit links Luft zur Pfeilspitze bleibt. */
   .sk-auf-planning { font-size: 19px; }
@@ -224,14 +224,14 @@ const titelId = pfad('titel'), descId = pfad('desc');
   .sk-sprint { fill: var(--sk-fg); font-family: var(--mono); font-size: 36px; font-weight: 700; }
   .sk-sprint-sub { fill: var(--sk-fg); font-size: 19px; }
   .sk-24 { fill: var(--sk-fg); font-family: var(--mono); font-size: 22px; font-weight: 700; }
-  .sk-legende-text, .sk-rollen-legende text { fill: var(--fg); font-size: 17px; }
+  .sk-legende-text, .sk-rollen-legende text { fill: var(--fg); font-size: 18px; }
   .sk-legende-kurz { font-weight: 700; }
 
   /* Rollen-Abzeichen (SprintAbzeichen.astro). */
   .sk :global(.sk-abz-grund) { fill: var(--bg); stroke: var(--sk-fg); stroke-width: 2; }
   .sk :global(.sk-abz-extern .sk-abz-grund) { fill: var(--bg-2); stroke-dasharray: 5 3; }
   .sk :global(.sk-abz-icon) { color: var(--sk-fg); }
-  .sk :global(.sk-abz-text) { fill: var(--sk-fg); font-size: 17px; font-weight: 700; }
+  .sk :global(.sk-abz-text) { fill: var(--sk-fg); font-size: 18px; font-weight: 700; }
 
   /* Artefakt-Karten (SprintKarte.astro). */
   .sk :global(.sk-karte-grund) { fill: var(--bg); }
@@ -258,8 +258,8 @@ const titelId = pfad('titel'), descId = pfad('desc');
   /* Beamer: so hoch, dass Titel, Kernsatz und Bild in 1280×720 passen. */
   :global(html[data-beamer]) .sk { margin: .25rem 0 0; }
   :global(html[data-beamer]) .sk svg { min-width: 0; max-height: calc(100vh - var(--topbar-h, 48px) - 9.8rem); }
-  :global(html[data-beamer]) .sk-mit-quelle svg { max-height: calc(100vh - var(--topbar-h, 48px) - 11.4rem); }
-  :global(html[data-beamer]) .sk-quelle { margin-top: .15rem; font-size: .7rem; }
+  :global(html[data-beamer]) .sk-mit-quelle svg { max-height: calc(100vh - var(--topbar-h, 48px) - 10.95rem); }
+  :global(html[data-beamer]) .sk-quelle { margin-top: .15rem; font-size: .7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   @media print {
     .sk-rahmen { overflow: visible; }
