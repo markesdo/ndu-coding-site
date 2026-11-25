@@ -419,7 +419,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       'Idee von Tag 1: ein Sticky unter vielen, kein Vorsprung.',
       'Nach 16 min: Ideen-Spende still, je Produkt 2 min.',
       'Nach 22 min: wieder allein, 18 min; Auswege und Claude erlaubt.',
-      '1:1 in dieser Runde, je 4 min: Sofie, Hewen, Joachim.',
+      '1:1 in dieser Runde, je 4 min: Produkt 1, 3, 2.',
       'Nach 40 min: auswählen allein, 7 min.',
       'Nach 47 min: Lückensätze gegen das Profil, 8 min.',
       'Nach 55 min: Feld „Drei Ideen als Lückensätze“ in T3 · 3 gefüllt?',
@@ -438,7 +438,7 @@ export const NOTIZEN_IDEATION: Record<string, Notiz> = {
       schritte: [
         'Allein (16 min): Ziel-Chance, HMW-Frage und einen Satz zur Situation oben in die eigene Spalte, dann Ideen, ein Sticky pro Idee.',
         'Ideen-Spende, still (6 min): je Produkt 2 Minuten – die zwei anderen legen Ideen-Stickies an die Frage, ohne Diskussion; wem das Produkt gehört, liest nur mit. Kursformat statt Torres’ Teilen-Runde, weil jede*r ein eigenes Produkt hat.',
-        'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Sofie, Hewen, Joachim).',
+        'Wieder allein (18 min), bis 15 bis 20 Ideen stehen: angeregt von den gespendeten Ideen. Wer feststeckt: analoge Produkte, extreme Nutzer*innen, Zauberstab, dann Claude. Markus geht je 4 Minuten zu jeder Person (Produkt 1, 3, 2).',
         'Auswählen allein (7 min): aussortieren, was die Ziel-Chance nicht löst; drei Ideen verschiedener Art. Torres punktet im Team (S. 113); bei euch wählt jede*r allein, weil nur ihr die eigene Kundschaft kennt.',
         'Lückensätze (8 min): je Idee ein Satz ins Feld „Drei Ideen als Lückensätze“ der eigenen Spalte in T3 · 3, Job, Pain und Gain mit ID aus dem eigenen Profil vom Vormittag (VPD S. 183–184).',
         'Festhalten (4 min): drei Sätze im Feld „Drei Ideen als Lückensätze“, „Aussortiert“ gefüllt, die Liste in der eigenen Spalte in T3 · 3; Claude-Prüfung bis Tag 4, wenn die Zeit fehlt.',

@@ -16,12 +16,12 @@ import { kopierText, vorarbeitAusAntwort, vorarbeitNamen } from '../../ui/kopier
 
 const BASIS = 'http://localhost:4321';
 const ZUGANG = {
-  '2026': { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] },
+  '2026': { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'mara' }, { githubId: 1002, kuerzel: 'jonas' }] },
   test: { lehrende: [2000], studierende: [{ githubId: 2001, kuerzel: 'tom' }] },
 };
 const MARKUS = { githubId: 1000, login: 'markus', kohorte: '2026', rolle: 'lehrende' } as const;
 const ANDERE = { githubId: 2000, login: 'andere', kohorte: 'test', rolle: 'lehrende' } as const;
-const SOFIE = { githubId: 1001, login: 'sofie-x', kohorte: '2026', rolle: 'studierende' } as const;
+const MARA = { githubId: 1001, login: 'mara-x', kohorte: '2026', rolle: 'studierende' } as const;
 const JETZT = Date.parse('2026-11-11T09:00:00Z');
 const SPAETER = Date.parse('2026-11-12T08:00:00Z');
 const FASSUNG = 'Wir glauben, dass die Bar morgens [Zahl aus deinen Interviews] Bestellungen in 30 Minuten schafft.';
@@ -33,9 +33,9 @@ async function aufbau(opts: { speicher?: (fake: Speicher) => Partial<Speicher> }
   const uhr = { ms: JETZT };
   const umgebung = { ...lokaleUmgebung(), zugang: ZUGANG };
   const fake = fakeSpeicher({ jetzt: () => uhr.ms });
-  await fake.anlegen({ kohorte: '2026', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
+  await fake.anlegen({ kohorte: '2026', rolle: 'studierende', kuerzel: 'mara' }, 1001);
   await fake.anlegen({ kohorte: '2026', rolle: 'studierende', kuerzel: 'jonas' }, 1002);
-  await fake.speichern('2026-sofie', 'annahmen', { 'mappe/annahmen.json': json(annahmenBeispiel) }, null, { name: 'sofie-x', email: 'x@example.invalid' }, 'Annahmen');
+  await fake.speichern('2026-mara', 'annahmen', { 'mappe/annahmen.json': json(annahmenBeispiel) }, null, { name: 'mara-x', email: 'x@example.invalid' }, 'Annahmen');
   const speicher: Speicher = { ...fake, ...(opts.speicher?.(fake) ?? {}) };
   const app = appErstellen(lokaleAbhaengigkeiten({ umgebung, speicher, jetzt: () => uhr.ms }));
   async function anfrage(methode: string, pfad: string, s: Omit<Sitzung, 'exp'>, body?: unknown) {
@@ -44,25 +44,25 @@ async function aufbau(opts: { speicher?: (fake: Speicher) => Partial<Speicher> }
     if (body !== undefined) headers['Content-Type'] = 'application/json';
     return app.request(`${BASIS}${pfad}`, { method: methode, headers, body: body === undefined ? undefined : JSON.stringify(body) });
   }
-  const schreiben = (s: Omit<Sitzung, 'exp'>, body: unknown, person = 'sofie', kohorte = '2026') =>
+  const schreiben = (s: Omit<Sitzung, 'exp'>, body: unknown, person = 'mara', kohorte = '2026') =>
     anfrage('POST', `/api/werkstatt/lehrende/feedback?kohorte=${kohorte}&person=${person}`, s, body);
-  const aendern = (body: unknown) => anfrage('POST', '/api/werkstatt/mappe/feedback', SOFIE, body);
+  const aendern = (body: unknown) => anfrage('POST', '/api/werkstatt/mappe/feedback', MARA, body);
   // Rohtext der Antwort: So fällt jede Stelle auf, an der der Text der Fassung stünde.
   const lesenRoh = async () => {
-    const r = await anfrage('GET', '/api/werkstatt/mappe/feedback', SOFIE);
+    const r = await anfrage('GET', '/api/werkstatt/mappe/feedback', MARA);
     expect(r.status).toBe(200);
     return r.text();
   };
   const lesen = async () => JSON.parse(await lesenRoh()).eintraege;
-  const leser = async (artefakt = 'annahmen') => (await anfrage('GET', `/api/werkstatt/lehrende/artefakt?kohorte=2026&person=sofie&artefakt=${artefakt}`, MARKUS)).json();
+  const leser = async (artefakt = 'annahmen') => (await anfrage('GET', `/api/werkstatt/lehrende/artefakt?kohorte=2026&person=mara&artefakt=${artefakt}`, MARKUS)).json();
   // Die Person ändert ihre Annahme über den Editor (dieselbe Route wie im Browser).
   async function annahmeAendern(id: string, text: string) {
-    const alt = await fake.lesen('2026-sofie', 'annahmen');
+    const alt = await fake.lesen('2026-mara', 'annahmen');
     const daten = { ...annahmenBeispiel, annahmen: annahmenBeispiel.annahmen.map((a) => (a.id === id ? { ...a, text } : a)) };
-    const r = await anfrage('PUT', '/api/werkstatt/mappe/annahmen', SOFIE, { daten, basisSha: alt.basisSha });
+    const r = await anfrage('PUT', '/api/werkstatt/mappe/annahmen', MARA, { daten, basisSha: alt.basisSha });
     expect(r.status).toBe(200);
   }
-  return { fake, uhr, anfrage, schreiben, aendern, lesen, lesenRoh, leser, annahmeAendern, datei: () => fake.feedbackLesen('2026-sofie') };
+  return { fake, uhr, anfrage, schreiben, aendern, lesen, lesenRoh, leser, annahmeAendern, datei: () => fake.feedbackLesen('2026-mara') };
 }
 
 const MIT_FASSUNG = { artefakt: 'annahmen', zeilenId: 'A2', text: 'Woher stammt die 40?', fassung: FASSUNG };
@@ -77,7 +77,7 @@ describe('Lehrende hinterlegen eine mögliche Fassung', () => {
     const datei = (await t.datei()) as { eintraege: Record<string, unknown>[] };
     expect(datei.eintraege[0].fassung).toMatch(/^f1\.lokal\.[A-Za-z0-9_-]+$/);
     expect(datei.eintraege[0].zeilenStand).toMatch(/^sha256:[0-9a-f]{64}$/);
-    const c = t.fake.commits('2026-sofie').at(-1)!;
+    const c = t.fake.commits('2026-mara').at(-1)!;
     expect(c.nachricht).toBe('Feedback von markus: Annahmen-Map (A2) mit möglicher Fassung');
     for (const inhalt of [...Object.values(c.dateien), c.nachricht]) {
       expect(inhalt).not.toContain('Zahl aus deinen Interviews');
@@ -89,7 +89,7 @@ describe('Lehrende hinterlegen eine mögliche Fassung', () => {
   it('Brief Outcome und Problem, Leitfaden-Frage: erlaubt (Brief auch, wenn er noch nicht gespeichert ist)', async () => {
     const t = await aufbau();
     expect((await t.schreiben(MARKUS, { artefakt: 'brief', zeilenId: 'problem', text: 'Wessen Problem?', fassung: '[Wer] verliert morgens [wie viel Zeit] beim Warten auf Kaffee.' })).status).toBe(200);
-    await t.fake.speichern('2026-sofie', 'brief', { 'mappe/brief.json': json(briefBeispiel) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
+    await t.fake.speichern('2026-mara', 'brief', { 'mappe/brief.json': json(briefBeispiel) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
     // Eine offene je Artefakt: erst erledigt, dann die nächste.
     await t.aendern({ aktion: 'antworten', antwortAuf: 'FB1', text: 'Meins.' });
     expect((await t.aendern({ aktion: 'erledigt', id: 'FB1', erledigt: true })).status).toBe(200);
@@ -98,29 +98,29 @@ describe('Lehrende hinterlegen eine mögliche Fassung', () => {
 
   it('verbotene Stellen → 422 mit Satz, nichts geschrieben: Interview, Zitat, Brief-Abschnitt, ganzes Artefakt', async () => {
     const t = await aufbau();
-    await t.fake.speichern('2026-sofie', 'entscheidungen', { 'mappe/entscheidungen.json': json((await import('../../beispiele/entscheidungen.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'E');
-    await t.fake.speichern('2026-sofie', 'interviews', { 'mappe/interviews.json': json((await import('../../beispiele/interviews.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'I');
-    const vorher = t.fake.commits('2026-sofie').length;
+    await t.fake.speichern('2026-mara', 'entscheidungen', { 'mappe/entscheidungen.json': json((await import('../../beispiele/entscheidungen.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'E');
+    await t.fake.speichern('2026-mara', 'interviews', { 'mappe/interviews.json': json((await import('../../beispiele/interviews.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'I');
+    const vorher = t.fake.commits('2026-mara').length;
     for (const [artefakt, zeilenId] of [['interviews', 'I1'], ['interviews', 'I1-1'], ['brief', 'fuerWen'], ['brief', undefined], ['annahmen', undefined]] as const) {
       const r = await t.schreiben(MARKUS, { artefakt, ...(zeilenId ? { zeilenId } : {}), text: 'Frage?', fassung: FASSUNG });
       expect(r.status, `${artefakt} ${zeilenId}`).toBe(422);
       expect((await r.json()).fehler).toBe('Eine mögliche Fassung geht nur an Outcome oder Problem im Brief, an einer Annahme oder an einer Leitfaden-Frage.');
     }
-    expect(t.fake.commits('2026-sofie')).toHaveLength(vorher);
+    expect(t.fake.commits('2026-mara')).toHaveLength(vorher);
     expect(await t.datei()).toBeNull();
   });
 
   // NDU-70: Das Entscheidungslog ist stillgelegt – kein Feedback darauf, auch keins ohne Fassung; nichts wird geschrieben.
   it('Feedback auf das stillgelegte Entscheidungslog → 400 mit Satz, nichts geschrieben', async () => {
     const t = await aufbau();
-    await t.fake.speichern('2026-sofie', 'entscheidungen', { 'mappe/entscheidungen.json': json((await import('../../beispiele/entscheidungen.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'E');
-    const vorher = t.fake.commits('2026-sofie').length;
+    await t.fake.speichern('2026-mara', 'entscheidungen', { 'mappe/entscheidungen.json': json((await import('../../beispiele/entscheidungen.json')).default) }, null, { name: 's', email: 's@example.invalid' }, 'E');
+    const vorher = t.fake.commits('2026-mara').length;
     for (const anfrage of [{ artefakt: 'entscheidungen', zeilenId: 'D1', text: 'Frage?' }, { artefakt: 'entscheidungen', text: 'Frage?', fassung: FASSUNG }]) {
       const r = await t.schreiben(MARKUS, anfrage);
       expect(r.status).toBe(400);
       expect((await r.json()).fehler).toBe('Das Entscheidungslog wird in diesem Kursjahr nicht genutzt; dazu gibt es kein Feedback.');
     }
-    expect(t.fake.commits('2026-sofie')).toHaveLength(vorher);
+    expect(t.fake.commits('2026-mara')).toHaveLength(vorher);
     expect(await t.datei()).toBeNull();
   });
 
@@ -142,7 +142,7 @@ describe('Lehrende hinterlegen eine mögliche Fassung', () => {
   it('Lehrende einer anderen Kohorte → 403; Studierende → 403; nichts geschrieben', async () => {
     const t = await aufbau();
     expect((await t.schreiben(ANDERE, MIT_FASSUNG)).status).toBe(403);
-    expect((await t.schreiben(SOFIE, MIT_FASSUNG)).status).toBe(403);
+    expect((await t.schreiben(MARA, MIT_FASSUNG)).status).toBe(403);
     expect(await t.datei()).toBeNull();
   });
 });
@@ -164,7 +164,7 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     expect((await t.lesen())[0].fassung).toStrictEqual({ zu: true });
     expect((await t.leser()).feedback[0].fassung.zu).toBe(true);
     // Kein Commit für freiSeit, solange sie zu ist.
-    expect(t.fake.commits('2026-sofie').map((c) => c.nachricht).filter((n) => n.includes('mögliche Fassung zu'))).toStrictEqual([]);
+    expect(t.fake.commits('2026-mara').map((c) => c.nachricht).filter((n) => n.includes('mögliche Fassung zu'))).toStrictEqual([]);
   });
 
   it('Zeile geändert → frei schon beim Speichern (freiSeit im Commit nach dem Speichern), Lesen ohne weiteren Commit', async () => {
@@ -172,27 +172,27 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     await t.schreiben(MARKUS, MIT_FASSUNG);
     await t.annahmeAendern('A2', 'Wir glauben, dass die Bar morgens 25 Bestellungen in 30 Minuten schafft.');
     const seit = new Date(JETZT).toISOString();
-    const vermerkt = t.fake.commits('2026-sofie').filter((c) => c.nachricht === 'Feedback: mögliche Fassung zu FB1 frei');
+    const vermerkt = t.fake.commits('2026-mara').filter((c) => c.nachricht === 'Feedback: mögliche Fassung zu FB1 frei');
     expect(vermerkt).toHaveLength(1);
-    expect(vermerkt[0].autor.name).toBe('sofie-x');
+    expect(vermerkt[0].autor.name).toBe('mara-x');
     expect(JSON.stringify(vermerkt[0].dateien)).not.toContain('Zahl aus deinen Interviews');
     t.uhr.ms = SPAETER;
     // Lehrende sehen es gleich, ohne dass die Person ihr Feedback geöffnet hat.
     expect((await t.leser()).feedback[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: seit });
-    const vorher = t.fake.commits('2026-sofie').length;
+    const vorher = t.fake.commits('2026-mara').length;
     expect((await t.lesen())[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: seit });
-    expect(t.fake.commits('2026-sofie')).toHaveLength(vorher);
+    expect(t.fake.commits('2026-mara')).toHaveLength(vorher);
     // Zurückgeändert bleibt sie frei; ein zweites Speichern vermerkt nichts mehr.
     await t.annahmeAendern('A2', annahmenBeispiel.annahmen[1].text);
     expect((await t.lesen())[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: seit });
-    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(1);
+    expect(t.fake.commits('2026-mara').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(1);
   });
 
   it('Speichern einer anderen Zeile vermerkt nichts', async () => {
     const t = await aufbau();
     await t.schreiben(MARKUS, MIT_FASSUNG);
     await t.annahmeAendern('A3', 'Wir glauben, dass Pendler*innen in 10 Sekunden bestellen.');
-    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(0);
+    expect(t.fake.commits('2026-mara').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(0);
     expect((await t.datei() as { eintraege: Record<string, unknown>[] }).eintraege[0]).not.toHaveProperty('freiSeit');
   });
 
@@ -207,7 +207,7 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     t.uhr.ms = SPAETER;
     const seit = new Date(SPAETER).toISOString();
     expect((await t.lesen())[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: seit });
-    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht === 'Feedback: mögliche Fassung zu FB1 frei')).toHaveLength(1);
+    expect(t.fake.commits('2026-mara').filter((c) => c.nachricht === 'Feedback: mögliche Fassung zu FB1 frei')).toHaveLength(1);
     expect((await t.datei() as { eintraege: Record<string, unknown>[] }).eintraege[0].freiSeit).toBe(seit);
   });
 
@@ -219,7 +219,7 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     expect(r.status).toBe(200);
     const eintraege = (await r.json()).eintraege;
     expect(eintraege[0].fassung).toStrictEqual({ zu: false, text: FASSUNG, freiSeit: new Date(SPAETER).toISOString() });
-    expect(t.fake.commits('2026-sofie').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(0);
+    expect(t.fake.commits('2026-mara').filter((c) => c.nachricht.includes('mögliche Fassung zu'))).toHaveLength(0);
   });
 
   it('Lesen liest das Artefakt nur, solange eine Fassung weder frei vermerkt noch beantwortet ist', async () => {
@@ -230,9 +230,9 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     await t.lesen();
     expect(gelesen).toStrictEqual(['annahmen']);
     // Antwort ohne freiSeit (etwa eine Datei von vorher): offen durch die Antwort, kein Lesen nötig.
-    await t.fake.feedbackAendern('2026-sofie', (roh) => {
+    await t.fake.feedbackAendern('2026-mara', (roh) => {
       const f = roh as { schema: string; eintraege: Record<string, unknown>[] };
-      return JSON.stringify({ ...f, eintraege: [...f.eintraege, { id: 'FB2', artefakt: 'annahmen', zeilenId: 'A2', von: 'studierende', autor: 'sofie', text: 'ok', datum: new Date(JETZT).toISOString(), antwortAuf: 'FB1' }] });
+      return JSON.stringify({ ...f, eintraege: [...f.eintraege, { id: 'FB2', artefakt: 'annahmen', zeilenId: 'A2', von: 'studierende', autor: 'mara', text: 'ok', datum: new Date(JETZT).toISOString(), antwortAuf: 'FB1' }] });
     }, { name: 'x', email: 'x@example.invalid' }, 'Antwort von außen');
     gelesen.length = 0;
     expect((await t.lesen())[0].fassung.zu).toBe(false);
@@ -240,7 +240,7 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
   });
 
   it('Artefakt gerade nicht lesbar → bleibt zu (lieber zu als zu früh), Feedback kommt trotzdem', async () => {
-    const t = await aufbau({ speicher: (fake) => ({ lesen: async (repo, name) => (name === 'annahmen' && repo === '2026-sofie' && geschrieben ? Promise.reject(new Error('GitHub weg')) : fake.lesen(repo, name)) }) });
+    const t = await aufbau({ speicher: (fake) => ({ lesen: async (repo, name) => (name === 'annahmen' && repo === '2026-mara' && geschrieben ? Promise.reject(new Error('GitHub weg')) : fake.lesen(repo, name)) }) });
     let geschrieben = false;
     await t.schreiben(MARKUS, MIT_FASSUNG);
     geschrieben = true;
@@ -270,7 +270,7 @@ describe('Die Person sieht die Fassung erst nach eigener Überarbeitung', () => 
     const antwort = ((await t.datei()) as { eintraege: Record<string, unknown>[] }).eintraege[1];
     expect(Object.keys(antwort).sort()).toStrictEqual(['antwortAuf', 'artefakt', 'autor', 'datum', 'id', 'text', 'von', 'zeilenId']);
     // Studierende schreiben nie über die Route der Lehrenden.
-    expect((await t.schreiben(SOFIE, { ...MIT_FASSUNG, zeilenId: 'A3' })).status).toBe(403);
+    expect((await t.schreiben(MARA, { ...MIT_FASSUNG, zeilenId: 'A3' })).status).toBe(403);
   });
 });
 
@@ -325,9 +325,9 @@ describe('Befunde aus dem Review (#317)', () => {
 
   it('Artefakt passt nicht zum Format der Werkstatt: Fassung → 422 mit Satz, nicht 502', async () => {
     const t = await aufbau();
-    await t.fake.speichern('2026-sofie', 'brief', { 'mappe/brief.json': json({ schema: 'brief@1', kaputt: true }) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
+    await t.fake.speichern('2026-mara', 'brief', { 'mappe/brief.json': json({ schema: 'brief@1', kaputt: true }) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
     for (const [artefakt, zeilenId] of [['brief', 'problem'], ['annahmen', 'A2']] as const) {
-      if (artefakt === 'annahmen') await t.fake.speichern('2026-sofie', 'annahmen', { 'mappe/annahmen.json': json({ schema: 'annahmen@1', annahmen: 'kaputt' }) }, (await t.fake.lesen('2026-sofie', 'annahmen')).basisSha, { name: 's', email: 's@example.invalid' }, 'A');
+      if (artefakt === 'annahmen') await t.fake.speichern('2026-mara', 'annahmen', { 'mappe/annahmen.json': json({ schema: 'annahmen@1', annahmen: 'kaputt' }) }, (await t.fake.lesen('2026-mara', 'annahmen')).basisSha, { name: 's', email: 's@example.invalid' }, 'A');
       const r = await t.schreiben(MARKUS, { artefakt, zeilenId, text: 'Frage?', fassung: FASSUNG });
       expect(r.status, artefakt).toBe(422);
       expect((await r.json()).fehler).toBe('Das Artefakt passt gerade nicht zum Format der Werkstatt (vielleicht direkt auf GitHub geändert). Eine mögliche Fassung geht erst wieder, wenn es lesbar ist.');
@@ -340,7 +340,7 @@ describe('Befunde aus dem Review (#317)', () => {
 describe('Kopierter Text für Claude enthält die Fassung nie', () => {
   it('freie Fassung: in der API der Person ja, im kopierten Text (mit und ohne Prüf-Prompt, jedes Artefakt) nie', async () => {
     const t = await aufbau();
-    await t.fake.speichern('2026-sofie', 'brief', { 'mappe/brief.json': json(briefBeispiel) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
+    await t.fake.speichern('2026-mara', 'brief', { 'mappe/brief.json': json(briefBeispiel) }, null, { name: 's', email: 's@example.invalid' }, 'Brief');
     await t.schreiben(MARKUS, MIT_FASSUNG);
     await t.schreiben(MARKUS, { artefakt: 'brief', zeilenId: 'problem', text: 'Wessen Problem?', fassung: 'Pendelnde verlieren morgens [Minuten aus deinen Beobachtungen].' });
     await t.aendern({ aktion: 'antworten', antwortAuf: 'FB1', text: 'Geschätzt.' });
@@ -351,7 +351,7 @@ describe('Kopierter Text für Claude enthält die Fassung nie', () => {
     expect(api).toContain('Minuten aus deinen Beobachtungen');
     // Wie der Editor: gespeicherte Daten über die API, Markdown, Vorarbeit, Prompt.
     const stand: Partial<Record<ArtefaktName, unknown>> = {};
-    for (const n of ARTEFAKT_NAMEN) stand[n] = (await (await t.anfrage('GET', `/api/werkstatt/mappe/${n}`, SOFIE)).json()).daten;
+    for (const n of ARTEFAKT_NAMEN) stand[n] = (await (await t.anfrage('GET', `/api/werkstatt/mappe/${n}`, MARA)).json()).daten;
     const texte: string[] = [];
     for (const name of ARTEFAKT_NAMEN) {
       const vorarbeit = Object.fromEntries(vorarbeitNamen(name).map((n) => [n, vorarbeitAusAntwort(n, stand[n])]));

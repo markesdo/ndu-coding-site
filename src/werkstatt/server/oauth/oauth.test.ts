@@ -29,12 +29,12 @@ function aufbau(opts: { origin?: string; wieBei?: Aufbau } = {}) {
   const umgebung = {
     // wieBei: dieselben Schlüssel und Secrets wie ein anderer Aufbau (z. B. Preview neben Prod).
     ...(opts.wieBei?.abh.umgebung ?? lokaleUmgebung()),
-    zugang: { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }] } },
+    zugang: { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'mara' }] } },
     origin: opts.origin ?? null,
   };
   const github: GithubIdentitaet = {
     loginUrl: (state, uri) => `https://github.test/auth?state=${state}&redirect_uri=${encodeURIComponent(uri)}`,
-    codeEinloesen: async () => ({ githubId: 1001, login: 'sofie-x' }),
+    codeEinloesen: async () => ({ githubId: 1001, login: 'mara-x' }),
   };
   const abh = lokaleAbhaengigkeiten({ umgebung, github, jetzt: () => uhr.ms, cache: mapCache(() => uhr.ms) });
   const app = appErstellen(abh);

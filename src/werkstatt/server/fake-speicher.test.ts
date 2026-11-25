@@ -3,8 +3,8 @@ import { fakeSpeicher } from './fake-speicher';
 import type { Mitgliedschaft } from '../zugang';
 import { kohorteTest } from '../kohorten/test';
 
-const sofie: Mitgliedschaft = { kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' };
-const autor = { name: 'sofie', email: '8+sofie@users.noreply.github.com' };
+const mara: Mitgliedschaft = { kohorte: 'test', rolle: 'studierende', kuerzel: 'mara' };
+const autor = { name: 'mara', email: '8+mara@users.noreply.github.com' };
 
 function dateien(name: string, daten: unknown): Record<string, string> {
   return { [`mappe/${name}.json`]: JSON.stringify(daten), [`mappe/${name}.md`]: `# ${name}`, 'README.md': '# Mappe' };
@@ -12,7 +12,7 @@ function dateien(name: string, daten: unknown): Record<string, string> {
 
 async function mitRepo() {
   const s = fakeSpeicher();
-  const { repo } = await s.anlegen(sofie, 8);
+  const { repo } = await s.anlegen(mara, 8);
   return { s, repo };
 }
 
@@ -21,7 +21,7 @@ describe('fakeSpeicher', () => {
 
   it('anlegen: Repo-Name aus der Mitgliedschaft, werkstatt.json mit Kohorte, GitHub-ID und Schema-Versionen der Kohorte', async () => {
     const { s, repo } = await mitRepo();
-    expect(repo).toBe('test-sofie');
+    expect(repo).toBe('test-mara');
     expect(await s.werkstattJson(repo)).toStrictEqual({ kohorte: 'test', githubId: 8, schemaVersionen: [...kohorteTest.artefakte] });
     expect(await s.werkstattJson('test-niemand')).toBeNull();
   });
@@ -41,7 +41,7 @@ describe('fakeSpeicher', () => {
     const { s, repo } = await mitRepo();
     const erst = await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'Brief: neu');
     if (!('basisSha' in erst)) throw new Error('erster Commit erwartet');
-    expect(await s.anlegen(sofie, 8)).toEqual({ repo });
+    expect(await s.anlegen(mara, 8)).toEqual({ repo });
     expect(s.commits(repo)).toHaveLength(1);
     const gelesen = await s.lesen(repo, 'brief');
     expect(gelesen.daten).toEqual({ a: 1 });
@@ -51,7 +51,7 @@ describe('fakeSpeicher', () => {
   it('anlegen für ein Repo, das einer anderen Person gehört, wirft', async () => {
     const { s } = await mitRepo();
     // Wie githubSpeicher: 403 nicht-freigeschaltet.
-    await expect(s.anlegen(sofie, 9)).rejects.toMatchObject({ status: 403, code: 'nicht-freigeschaltet' });
+    await expect(s.anlegen(mara, 9)).rejects.toMatchObject({ status: 403, code: 'nicht-freigeschaltet' });
   });
 
   it('lesen ohne Datei: daten und basisSha null', async () => {
@@ -143,7 +143,7 @@ describe('fakeSpeicher', () => {
   it('verlauf: Zeitpunkte der Commits dieses Artefakts aus der Uhr, neueste zuerst; volle Seite = vielleicht mehr', async () => {
     const uhr = { ms: Date.parse('2026-10-22T08:00:00Z') };
     const s = fakeSpeicher({ jetzt: () => uhr.ms });
-    const { repo } = await s.anlegen(sofie, 8);
+    const { repo } = await s.anlegen(mara, 8);
     expect(await s.verlauf(repo, 'brief')).toStrictEqual({ zeitpunkte: [], vollstaendig: true });
     expect(await s.verlauf('test-niemand', 'brief')).toStrictEqual({ zeitpunkte: [], vollstaendig: true });
     await s.speichern(repo, 'brief', dateien('brief', { a: 1 }), null, autor, 'x');

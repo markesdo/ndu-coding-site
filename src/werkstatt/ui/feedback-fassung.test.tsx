@@ -13,7 +13,7 @@ const mit = (fassung: FassungSicht): FeedbackSichtEintrag[] => [{ id: 'FB1', art
 const person = (fassung: FassungSicht) => renderToStaticMarkup(<ul><Faden faden={faeden(mit(fassung), 'annahmen')[0]} neu={false} aendern={async () => true} /></ul>);
 // Knöpfe am Faden: [Beschriftung, gesperrt].
 const knoepfe = (html: string) => [...html.matchAll(/<button([^>]*)>(.*?)<\/button>/g)].map((m) => [m[2].replace(/<[^>]+>/g, '').trim(), m[1].includes('disabled')]);
-const lehrende = (fassung: FassungSicht) => renderToStaticMarkup(<LehrendenFeedback kohorte="2026" person="sofie" name="annahmen" daten={null} eintraege={mit(fassung)} geschrieben={() => {}} />);
+const lehrende = (fassung: FassungSicht) => renderToStaticMarkup(<LehrendenFeedback kohorte="2026" person="mara" name="annahmen" daten={null} eintraege={mit(fassung)} geschrieben={() => {}} />);
 
 describe('Studierende', () => {
   it('zu: nur der Satz, kein Kasten', () => {

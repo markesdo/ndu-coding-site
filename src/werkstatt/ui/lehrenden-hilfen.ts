@@ -74,7 +74,7 @@ export function zelle(a: LehrendenArtefakt, bezug: Bezug): Zelle {
   return { art: 'vorhanden', wort: 'vorhanden', umfang: a.umfang, geaendert };
 }
 
-/** Vorlesetext des Zellen-Knopfs: „sofie, Interviews: fällig, offen“; mit Feedback (zellenFeedback) „…, Feedback 1 offen“. */
+/** Vorlesetext des Zellen-Knopfs: „mara, Interviews: fällig, offen“; mit Feedback (zellenFeedback) „…, Feedback 1 offen“. */
 export function zellenLabel(kuerzel: string, name: ArtefaktName, z: Zelle, feedback: string | null = null): string {
   const teile = [z.wort, z.umfang, z.geaendert, feedback && `Feedback ${feedback}`].filter((x): x is string => !!x);
   return `${kuerzel}, ${titel(name)}: ${teile.join(', ')}`;

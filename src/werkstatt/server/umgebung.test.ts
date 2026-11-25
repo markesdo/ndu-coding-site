@@ -10,7 +10,7 @@ const VOLL = {
   GITHUB_APP_CLIENT_SECRET: 'client-secret-wert',
   WERKSTATT_SESSION_SECRET: 'x'.repeat(32),
   MCP_TOKEN_KEYS: `neu:${schluessel(1)},alt:${schluessel(2)}`,
-  WERKSTATT_ZUGANG: JSON.stringify({ test: { lehrende: [7], studierende: [{ githubId: 8, kuerzel: 'sofie' }] } }),
+  WERKSTATT_ZUGANG: JSON.stringify({ test: { lehrende: [7], studierende: [{ githubId: 8, kuerzel: 'mara' }] } }),
 };
 
 describe('umgebungLesen', () => {
@@ -31,7 +31,7 @@ describe('umgebungLesen', () => {
     expect(u.tokenKeys[0].key).toBeInstanceOf(Uint8Array);
     expect(u.tokenKeys[0].key.length).toBe(32);
     expect(u.tokenKeys[1].key[0]).toBe(2);
-    expect(u.zugang.test.studierende[0].kuerzel).toBe('sofie');
+    expect(u.zugang.test.studierende[0].kuerzel).toBe('mara');
     expect(u.origin).toBeNull();
     expect(u.lokal).toBe(false);
   });

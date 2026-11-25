@@ -34,7 +34,7 @@ export const NOTIZEN_TAG_2: Record<string, Notiz> = {
     miro: {
       frame: 'Baum · Beispiel Kaffeebar',
       schritte: [
-        'Kurz zeigen: Rechts neben Start hier stehen die Bäume, einer pro Produkt („Baum · Name“).',
+        'Kurz zeigen: Rechts neben Start hier stehen die Bäume, einer pro Produkt („Baum · Produkt n“).',
         'Heute wachsen dort Momente und Chancen; die Anleitung steht auf Miro neben dem Baum.',
       ],
     },

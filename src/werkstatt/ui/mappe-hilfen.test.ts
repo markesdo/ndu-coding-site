@@ -81,7 +81,7 @@ describe('leitfadenAbstand', () => {
 describe('mappeZeilen', () => {
   it('listet die Artefakte dieses Kursjahrs in fester Reihenfolge mit Titel, Methodenseite und Stand', () => {
     // Das Entscheidungslog ist stillgelegt (NDU-70): keine Zeile, auch wenn es im Repo gespeichert ist.
-    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }, { name: 'entscheidungen', vorhanden: true }] };
+    const stand: MappeStand = { kohorte: '2026', repo: '2026-mara', lesezugriff: 'aktiv', artefakte: [{ name: 'annahmen', vorhanden: true }, { name: 'brief', vorhanden: false }, { name: 'entscheidungen', vorhanden: true }] };
     const z = mappeZeilen(stand);
     expect(z.map((x) => x.name)).toStrictEqual(['brief', 'annahmen', 'leitfaden', 'interviews']);
     expect(z.find((x) => x.name === 'annahmen')).toStrictEqual({ name: 'annahmen', titel: 'Annahmen-Map', href: '/innolab/methoden/annahmen#werkstatt', vorhanden: true });
@@ -94,7 +94,7 @@ describe('api.mappe', () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it('liest den Stand der Mappe', async () => {
-    const stand: MappeStand = { kohorte: '2026', repo: '2026-sofie', lesezugriff: 'aktiv', artefakte: [] };
+    const stand: MappeStand = { kohorte: '2026', repo: '2026-mara', lesezugriff: 'aktiv', artefakte: [] };
     const f = vi.fn(async () => new Response(JSON.stringify(stand), { status: 200 }));
     vi.stubGlobal('fetch', f);
     await expect(api.mappe()).resolves.toStrictEqual(stand);
@@ -110,16 +110,16 @@ describe('api.mappe', () => {
 });
 
 describe('repoHinweis', () => {
-  const stand = (lesezugriff: MappeStand['lesezugriff'], repo = '2026-sofie') => ({ repo, lesezugriff });
+  const stand = (lesezugriff: MappeStand['lesezugriff'], repo = '2026-mara') => ({ repo, lesezugriff });
 
   it('aktiv: Link auf das Repo', () => {
-    expect(repoHinweis(stand('aktiv'), 'ndu-innolab')).toStrictEqual({ art: 'aktiv', href: 'https://github.com/ndu-innolab/2026-sofie' });
+    expect(repoHinweis(stand('aktiv'), 'ndu-innolab')).toStrictEqual({ art: 'aktiv', href: 'https://github.com/ndu-innolab/2026-mara' });
   });
 
   it('eingeladen: Link nur auf die Einladung, nie auf das Repo', () => {
     expect(repoHinweis(stand('eingeladen'), 'ndu-innolab')).toStrictEqual({
       art: 'eingeladen',
-      href: 'https://github.com/ndu-innolab/2026-sofie/invitations',
+      href: 'https://github.com/ndu-innolab/2026-mara/invitations',
     });
   });
 
@@ -204,7 +204,7 @@ describe('Seitentexte für Lehrende', () => {
 
 // Verdrahtung in MappeUebersicht.laden: jede Antwort von /auth/ich zieht den Menüeintrag zur Mappe nach.
 describe('ichMitMenue', () => {
-  const ICH = { githubId: 1001, login: 'sofie', kohorte: '2026', repo: 'ndu-innolab/2026-sofie' };
+  const ICH = { githubId: 1001, login: 'mara', kohorte: '2026', repo: 'ndu-innolab/2026-mara' };
   function menue(start: string) {
     const link = { textContent: start, hasAttribute: () => false, setAttribute: () => {} };
     return { link, dok: { querySelectorAll: (s: string) => (s === `[${NAV_MAPPE}]` ? [link] : []) } as unknown as Document };

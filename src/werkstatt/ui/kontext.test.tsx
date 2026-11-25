@@ -29,7 +29,7 @@ const teil = <T,>(daten: T | null, vorher?: T | null) => ({ laedt: false, fehler
 const kontext = (x: Partial<Kontext> = {}): Kontext => ({ annahmen: teil(AN), leitfaden: teil(LF), ...x });
 
 const props = (x: Partial<ZeigenProps> = {}): ZeigenProps => ({
-  personen: [{ kuerzel: 'sofie', anzahl: 5 }], person: 'sofie', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null,
+  personen: [{ kuerzel: 'mara', anzahl: 5 }], person: 'mara', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null,
   stand: Date.UTC(2026, 10, 12, 13, 5), jetzt: Date.UTC(2026, 10, 12, 13, 6), meldung: '',
   kontext: kontext(), kontextOffen: true, kontextReiter: 'annahmen', kontextUmschalten: () => {}, reiterWaehlen: () => {},
   frage: 0, fragenOffen: true, frageWaehlen: () => {}, fragenUmschalten: () => {},
@@ -245,9 +245,9 @@ describe('Kontext im Leser der Lehrenden: nie Feedback, Lücken oder roher Text'
   };
   const lesen: LeserInhaltProps = {
     ansicht: { kohorte: 'k', bezug: null, personen: [] } as never,
-    p: { kuerzel: 'sofie', zustand: 'bereit', repo: 'x/sofie', repoUrl: 'https://github.com/x/sofie', artefakte: [artefakt], luecken: [{ artefakt: 'annahmen', text: 'LUECKE-MARKE' }] } as never,
+    p: { kuerzel: 'mara', zustand: 'bereit', repo: 'x/mara', repoUrl: 'https://github.com/x/mara', artefakte: [artefakt], luecken: [{ artefakt: 'annahmen', text: 'LUECKE-MARKE' }] } as never,
     a: artefakt,
-    inhalt: { schluessel: 'k/sofie/interviews', zustand: 'bereit', inhalt: { name: 'interviews', stand: 'vorhanden', daten: KAFFEEBAR, roh: null, feedback: fb } },
+    inhalt: { schluessel: 'k/mara/interviews', zustand: 'bereit', inhalt: { name: 'interviews', stand: 'vorhanden', daten: KAFFEEBAR, roh: null, feedback: fb } },
     wechseln: () => {}, schliessen: () => {}, feedbackGeschrieben: () => {}, zeigenStarten: () => {},
   };
 

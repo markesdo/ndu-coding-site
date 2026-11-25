@@ -20,9 +20,9 @@ afterEach(() => vi.restoreAllMocks());
 // 21.10.2026, 22:30 UTC = 22.10.2026, 00:30 in Wien (Sommerzeit): Datum nach UTC wäre falsch.
 const JETZT = Date.UTC(2026, 9, 21, 22, 30);
 const HEUTE_WIEN = '2026-10-22';
-const ZUGANG = { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'sofie' }, { githubId: 1002, kuerzel: 'jonas' }] } };
-const REPO = 'test-sofie';
-const SOFIE = { githubId: 1001, login: 'sofie-x', kohorte: 'test', rolle: 'studierende' } as const;
+const ZUGANG = { test: { lehrende: [1000], studierende: [{ githubId: 1001, kuerzel: 'mara' }, { githubId: 1002, kuerzel: 'jonas' }] } };
+const REPO = 'test-mara';
+const MARA = { githubId: 1001, login: 'mara-x', kohorte: 'test', rolle: 'studierende' } as const;
 
 function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: (fake: FakeSpeicher) => Speicher['speichern']; lesen?: Speicher['lesen'] } = {}) {
   const umgebung = { ...lokaleUmgebung(), zugang: ZUGANG };
@@ -32,7 +32,7 @@ function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: (fake: FakeSp
   const speicher: Speicher = { ...fake, anlegen, uebersicht, speichern: opts.speichern ? opts.speichern(fake) : fake.speichern, lesen: opts.lesen ?? fake.lesen };
   const app = appErstellen(lokaleAbhaengigkeiten({ umgebung, speicher, jetzt: () => JETZT }));
 
-  async function cookie(s: Omit<Sitzung, 'exp'> = SOFIE): Promise<string> {
+  async function cookie(s: Omit<Sitzung, 'exp'> = MARA): Promise<string> {
     const wert = await sitzungErstellen({ ...s, exp: Math.floor(JETZT / 1000) + 3600 }, umgebung.sessionSecret);
     return `${COOKIE_WERKSTATT}=${wert}`;
   }
@@ -52,7 +52,7 @@ function aufbau(opts: { anlegen?: Speicher['anlegen']; speichern?: (fake: FakeSp
 
 async function mitMappe(opts: Parameters<typeof aufbau>[0] = {}) {
   const t = aufbau(opts);
-  await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
+  await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'mara' }, 1001);
   return t;
 }
 
@@ -150,7 +150,7 @@ describe('GET /api/werkstatt/mappe', () => {
     const r = await t.holen('');
     expect(r.status).toBe(200);
     expect(t.anlegen).toHaveBeenCalledTimes(1);
-    expect(t.anlegen).toHaveBeenCalledWith({ kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
+    expect(t.anlegen).toHaveBeenCalledWith({ kohorte: 'test', rolle: 'studierende', kuerzel: 'mara' }, 1001);
     expect((await r.json()).repo).toBe(REPO);
     expect(await t.fake.werkstattJson(REPO)).toMatchObject({ kohorte: 'test', githubId: 1001 });
   });
@@ -166,7 +166,7 @@ describe('GET /api/werkstatt/mappe', () => {
   it('Repo mit fremder werkstatt.json → 403 nicht-freigeschaltet, auch für Artefakte', async () => {
     const t = aufbau();
     // Repo gleichen Namens, aber für eine andere GitHub-ID angelegt.
-    await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' }, 1002);
+    await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'mara' }, 1002);
     const r = await t.holen('');
     expect(r.status).toBe(403);
     expect(await r.json()).toMatchObject({ code: 'nicht-freigeschaltet' });
@@ -177,8 +177,8 @@ describe('GET /api/werkstatt/mappe', () => {
 
   it('werkstatt.json mit passender ID, aber anderer Kohorte → 403 auf allen Routen, kein Commit', async () => {
     const t = aufbau();
-    await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'sofie' }, 1001);
-    // Der Fake schreibt immer die eigene Kohorte; ein test-sofie mit fremder Kohorte in werkstatt.json wird nachgestellt.
+    await t.fake.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel: 'mara' }, 1001);
+    // Der Fake schreibt immer die eigene Kohorte; ein test-mara mit fremder Kohorte in werkstatt.json wird nachgestellt.
     const fremd = { ...t.fake, werkstattJson: async (repo: string) => (repo === REPO ? { kohorte: 'andere', githubId: 1001 } : null) };
     const lesezugriff = vi.fn(t.fake.lesezugriff);
     fremd.lesezugriff = lesezugriff;
@@ -459,7 +459,7 @@ describe('PUT /api/werkstatt/mappe/:artefakt', () => {
     // README nach dem Speichern: der Brief ist vorhanden, die anderen noch offen.
     expect(c.dateien['README.md']).toContain('| Produkt-Brief | [mappe/brief.md](mappe/brief.md) |');
     expect(c.dateien['README.md']).toContain('| Annahmen-Map | noch offen |');
-    expect(c.autor).toStrictEqual({ name: 'sofie-x', email: '1001+sofie-x@users.noreply.github.com' });
+    expect(c.autor).toStrictEqual({ name: 'mara-x', email: '1001+mara-x@users.noreply.github.com' });
     expect(c.nachricht).toBe('Produkt-Brief: gespeichert über die Werkstatt');
 
     // Lesen danach liefert genau diesen Stand.

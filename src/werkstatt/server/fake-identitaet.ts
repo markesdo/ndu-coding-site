@@ -14,7 +14,7 @@ export interface Testperson {
 
 // Erfundene IDs, keine echten Konten. Kohorte: test.
 export const TESTPERSONEN: readonly Testperson[] = [
-  { githubId: 900001, login: 'sofie-test', rolle: 'studierende', kuerzel: 'sofie' },
+  { githubId: 900001, login: 'mara-test', rolle: 'studierende', kuerzel: 'mara' },
   { githubId: 900002, login: 'jonas-test', rolle: 'studierende', kuerzel: 'jonas' },
   { githubId: 900000, login: 'lehrende-test', rolle: 'lehrende', kuerzel: null },
   { githubId: 900099, login: 'fremd-test', rolle: null, kuerzel: null },

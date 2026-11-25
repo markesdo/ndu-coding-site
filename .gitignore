@@ -6,3 +6,6 @@ dist/
 .env*
 !.env.example
 .vercel
+
+# Namensliste für src/kein-name.test.ts – nie ins Repo (öffentlich)
+.namen-waechter.local
