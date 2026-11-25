@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
@@ -33,6 +34,7 @@ const redTeam = `Lies meinen Produkt-Brief und meine Annahmen-Map aus der Werkst
   <h1>Annahmen-Map</h1>
   <p class="lead">Was muss alles stimmen, damit euer Produkt funktioniert – und welche dieser Annahmen kann euch am schnellsten das Genick brechen?</p>
   <Orientierung seite="innolab/methoden/annahmen" leiste={false} />
+  <Uebergang station="annahmen" />
   <MethodenKarte slug="annahmen" />
 
   <Folie>

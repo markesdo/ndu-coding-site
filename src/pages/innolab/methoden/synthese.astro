@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
@@ -44,6 +45,7 @@ const D4_SATZ = `${D4.entscheidung}, weil ${D4.grund}; Beleg: ${D4.beleg} (${D4.
   <h1>Interview-Synthese</h1>
   <p class="lead">Synthese heißt: ein Snapshot nach jedem Interview. Wo er noch fehlt, holt ihr ihn heute nach. Dann teilt ihr sie im Team, damit das Gelernte in allen Köpfen ist und nicht nur in einem.</p>
   <Orientierung seite="innolab/methoden/synthese" leiste={false} />
+  <Uebergang station="synthese" />
   <MethodenKarte slug="synthese" />
 
   <Folie>

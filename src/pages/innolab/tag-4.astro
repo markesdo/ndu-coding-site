@@ -5,6 +5,8 @@ import Block from '../../components/Block.astro';
 import Callout from '../../components/Callout.astro';
 import Checklist from '../../components/Checklist.astro';
 import FooterNav from '../../components/FooterNav.astro';
+import Folie from '../../components/Folie.astro';
+import Arbeitsfluss from '../../components/bild/Arbeitsfluss.astro';
 ---
 <Layout title="Tag 4 · Prototyp & Scrum">
   <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:30</span>
@@ -33,6 +35,12 @@ import FooterNav from '../../components/FooterNav.astro';
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
   <p>Heute werden aus der <strong>Lösung</strong> <strong>Experimente</strong>. Das Geschäftsmodell zeigt, wer für euren Spitzenreiter zahlt; die Experiment-Karte, an welcher Annahme er hängt – daraus wird E1. Die Story Map zeigt, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das nach dem Kurstag mit echten Menschen, und E1 läuft daneben. Am Nachmittag beginnt der Schritt vom Entdecken zum Liefern: Ihr lernt Scrum kennen, so wie Produktteams in Unternehmen arbeiten, und spielt es mit Lego durch. Als Team für eure drei Produkte stellt ihr euch zu Beginn von Tag 5 auf. Das Entdecken hört dabei nicht auf: Euer Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
+  <Folie>
+    <h2 id="arbeitsfluss">Der Arbeitsfluss</h2>
+    <p class="folie-satz">Jeder Schritt nimmt etwas mit und gibt etwas weiter.</p>
+    <Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />
+    <p class="nur-handout">Die drei Fäden an der Kaffeebar und alle Stationen mit einem Satz: <a href="/innolab/arbeitsfluss?tag=4">Arbeitsfluss</a>.</p>
+  </Folie>
   <Callout type="info" title="Wenn die Story Map länger dauert">
     <p>Wer bei der Story Map hinterherhängt, kürzt bei der Usage Story auf die Stationen 4 und 5: Krise und Höhepunkt reichen für den Prototyp.</p>
   </Callout>

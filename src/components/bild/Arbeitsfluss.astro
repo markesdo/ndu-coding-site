@@ -1,0 +1,222 @@
+---
+// Der Arbeitsfluss als Linienplan (Daten und Geometrie: ../arbeitsfluss.ts). Spalten sind Kurstage, Stationen sind
+// Ergebnisse, drei Linien laufen durch. Die Linien zeichnet ein Inline-SVG je Spalte über demselben CSS-Raster.
+// hier: Kurstag (1–7), Station (ID) oder 'heute' (im Browser: ?tag=N, sonst der letzte Kurstag bis heute, Wien).
+// bis: Kurstag, nach dem die Spalten blass werden (Zukunft). Bei hier='heute' derselbe Tag.
+// faden: eine Linie hervorheben, die anderen blass. aufdecken: so viele Spalten sofort, die übrigen je Spalte per →
+// (data-schritt, wie die übrigen Folien). Im Druck A3 quer: siehe /innolab/arbeitsfluss.
+import { FlaskConical, MapPin, MessageSquareQuote, Star, Target } from '@lucide/astro';
+import {
+  HOEHE, LINIE, LINIEN, SPALTEN, STATIONEN, ZEILEN, spaltenPfade, spalteVonTag, station, stationHref, type Linie,
+} from '../arbeitsfluss';
+import { TAGE } from '../methoden';
+
+const { id = 'arbeitsfluss', hier, bis, faden, aufdecken, legende = true } = Astro.props as {
+  id?: string;
+  hier?: number | string;
+  bis?: number;
+  faden?: Linie;
+  aufdecken?: number;
+  legende?: boolean;
+};
+
+const heute = hier === 'heute';
+const hierStation = typeof hier === 'string' && !heute ? station(hier) : undefined;
+if (typeof hier === 'string' && !heute && !hierStation) throw new Error(`Arbeitsfluss: Station „${hier}“ unbekannt`);
+const hierSpalte = typeof hier === 'number' ? spalteVonTag(hier) : hierStation?.spalte;
+const bisSpalte = bis !== undefined ? spalteVonTag(bis) : undefined;
+
+const ICON = { beleg: MessageSquareQuote, outcome: Target, annahme: FlaskConical };
+const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bisSpalte !== undefined && n > bisSpalte });
+---
+<figure class="af" id={id} data-faden={faden} data-heute={heute ? JSON.stringify(TAGE.map((t) => ({ n: t.n, datum: t.datum }))) : undefined} aria-label="Arbeitsfluss als Linienplan: Spalten sind Kurstage, Stationen sind Ergebnisse; drei Linien: Beleg, Outcome, Annahme">
+  {legende && (
+    <ul class="af-legende">
+      {LINIEN.map((l) => {
+        const Icon = ICON[l];
+        return (
+          <li class={`af-leg af-leg-${l}`}>
+            <svg class="af-muster" viewBox="0 0 36 10" aria-hidden="true"><path class={`af-l af-l-${l}`} d="M0 5H36" />{l === 'outcome' && <path class="af-innen" d="M0 5H36" />}</svg>
+            <Icon size={16} aria-hidden="true" class="af-leg-icon" />
+            <span><strong>{LINIE[l].name}</strong> – {LINIE[l].text}</span>
+          </li>
+        );
+      })}
+    </ul>
+  )}
+  <div class="af-scroll">
+    <div class="af-plan" style={`--af-zeilen:${ZEILEN}`}>
+      {SPALTEN.map((sp) => (
+        <div class:list={['af-spalte', klassen(sp.n)]} data-spalte={sp.n} data-schritt={aufdecken !== undefined && sp.n > aufdecken ? '' : undefined}>
+          <div class:list={['af-kopf', klassen(sp.n)]} data-spalte={sp.n} style={`grid-column:${sp.n}`}>
+            <span class="af-tag">{sp.tag}</span> <span class="af-titel">{sp.titel}</span>
+            <span class="af-hier-marke"><MapPin size={14} aria-hidden="true" /> Ihr seid hier</span>
+          </div>
+          <div class:list={['af-grund', klassen(sp.n)]} data-spalte={sp.n} style={`grid-column:${sp.n}`} aria-hidden="true" />
+          <svg class:list={['af-linien', klassen(sp.n)]} data-spalte={sp.n} viewBox={`0 0 ${SPALTEN.length * 100} ${HOEHE}`} preserveAspectRatio="none" aria-hidden="true">
+            {LINIEN.map((l) => {
+              const p = spaltenPfade(sp.n, l);
+              const d = [p.schiene, p.stamm, ...p.aeste].filter(Boolean).join('');
+              return d ? (
+                <g class={`af-g af-g-${l}`}>
+                  <path class={`af-l af-l-${l}`} d={d} />
+                  {l === 'outcome' && <path class="af-innen" d={d} />}
+                </g>
+              ) : null;
+            })}
+          </svg>
+          {STATIONEN.filter((s) => s.spalte === sp.n).map((s) => {
+            const href = stationHref(s);
+            const Tag = href ? 'a' : 'span';
+            return (
+              <Tag href={href} data-spalte={sp.n}
+                class:list={['af-station', klassen(sp.n), ...s.linien.map((l) => `af-auf-${l}`), { 'af-endet': !!s.endet, 'af-umstieg': s.linien.length > 1, 'af-stern': s.stern, 'af-diese': s === hierStation }]}
+                style={`grid-column:${sp.n};grid-row:${s.zeile + 2}`}
+                title={s.endet ? `${s.kurz} – ${s.endet}` : s.kurz}>
+                <span class="af-punkt" aria-hidden="true">{s.stern && <Star size={12} />}</span>
+                <span class="af-name">{s.kurz}{s.stern && <span class="visually-hidden"> (Was bauen wir?)</span>}</span>
+              </Tag>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  </div>
+  {hierStation && (
+    <div class="af-detail">
+      <p><strong>{hierStation.kurz}.</strong> {hierStation.satz}{hierStation.zusatz && <> {hierStation.zusatz}</>}</p>
+      <p class="af-weiter">→ {hierStation.gebrauchtIn}</p>
+    </div>
+  )}
+  <figcaption class="af-fuss">Hohle Punkte enden oder werden ersetzt. <Star size={14} aria-hidden="true" class="af-fuss-stern" /> Der Stern ist die Antwort auf „Was bauen wir?“.</figcaption>
+</figure>
+
+<script>
+  import { heutigerTag, spalteVonTag } from '../arbeitsfluss-heute';
+  import { wienerZeit } from '../jetzt';
+
+  // hier='heute': Markierung im Browser setzen – ?tag=N schlägt das Datum (zum Vorbereiten und Verlinken).
+  for (const fig of document.querySelectorAll<HTMLElement>('.af[data-heute]')) {
+    const param = Number(new URLSearchParams(location.search).get('tag'));
+    const tage = JSON.parse(fig.dataset.heute || '[]') as { n: number; datum?: string }[];
+    const tag = spalteVonTag(param) ? param : heutigerTag(wienerZeit(new Date()).datum, tage);
+    const sp = tag === undefined ? undefined : spalteVonTag(tag);
+    if (sp === undefined) continue;
+    for (const el of fig.querySelectorAll<HTMLElement | SVGElement>('[data-spalte]')) {
+      const n = Number(el.dataset.spalte);
+      el.classList.toggle('af-hier', n === sp);
+      el.classList.toggle('af-spaeter', n > sp);
+    }
+  }
+</script>
+
+<style>
+  .af {
+    --af-beleg: var(--blue); --af-outcome: var(--accent); --af-annahme: var(--purple);
+    --af-h: 36rem; --af-schrift: .85rem;
+    margin: 1.25rem 0; max-width: none;
+  }
+  .af-legende { list-style: none; margin: 0 0 .6rem; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem 1.4rem; font-size: .9rem; }
+  .af-leg { display: inline-flex; align-items: center; gap: .4rem; }
+  .af-muster { width: 2.2rem; height: .7rem; flex: none; }
+  .af-leg-icon { flex: none; }
+  .af-leg-beleg .af-leg-icon { color: var(--af-beleg); }
+  .af-leg-outcome .af-leg-icon { color: var(--af-outcome); }
+  .af-leg-annahme .af-leg-icon { color: var(--af-annahme); }
+
+  /* Breiter als die Spalte am Handy: der Plan scrollt in sich, die Seite nicht. */
+  .af-scroll { overflow-x: auto; }
+  .af-plan {
+    position: relative; display: grid; min-width: 46rem; height: var(--af-h);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: auto .4fr repeat(var(--af-zeilen), 1fr) .3fr;
+    border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2);
+  }
+  /* Jede Spalte ist eine Gruppe (für data-schritt), legt aber kein eigenes Kästchen ins Raster. */
+  .af-spalte { display: contents; }
+  .af-kopf {
+    grid-row: 1; padding: .45rem .55rem .35rem; border-bottom: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .4rem; line-height: 1.25;
+  }
+  .af-tag { font-family: var(--mono); font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
+  .af-titel { font-size: .85rem; color: var(--muted); }
+  .af-hier-marke {
+    display: none; align-items: center; gap: .2rem; font-size: .75rem; font-weight: 700; color: var(--on-accent);
+    background: var(--accent); border-radius: 999px; padding: .05rem .45rem; margin-left: auto;
+  }
+  .af-kopf.af-hier .af-hier-marke { display: inline-flex; }
+  .af-kopf.af-hier { background: color-mix(in srgb, var(--accent) 14%, var(--bg-2)); }
+  .af-grund { grid-row: 2 / -1; }
+  .af-grund.af-hier { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+  .af-grund + .af-grund, .af-spalte + .af-spalte .af-grund { border-left: 1px dashed var(--border); }
+
+  .af-linien { grid-column: 1 / -1; grid-row: 2 / -1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .af-l { fill: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+  .af-l-beleg { stroke: var(--af-beleg); stroke-width: 3; }
+  .af-l-outcome { stroke: var(--af-outcome); stroke-width: 6; }
+  .af-l-annahme { stroke: var(--af-annahme); stroke-width: 3; stroke-dasharray: 7 5; stroke-linecap: butt; }
+  /* Outcome doppelt: breiter Strich, innen in der Grundfarbe ausgespart. */
+  .af-innen { fill: none; vector-effect: non-scaling-stroke; stroke: var(--bg-2); stroke-width: 2; }
+
+  .af-station {
+    position: relative; z-index: 1; display: flex; align-items: center; min-width: 0;
+    padding: 0 .3rem 0 calc(15% + .75rem); color: var(--fg); text-decoration: none;
+    font-size: var(--af-schrift); line-height: 1.15; font-weight: 600;
+  }
+  a.af-station:hover .af-name { text-decoration: underline; }
+  .af-name { overflow-wrap: break-word; }
+  .af-punkt {
+    position: absolute; left: 15%; top: 50%; transform: translate(-50%, -50%);
+    width: .8rem; height: .8rem; border-radius: 50%; box-sizing: border-box;
+    background: var(--bg-2); border: 3px solid var(--fg);
+    display: grid; place-items: center;
+  }
+  .af-auf-beleg .af-punkt { border-color: var(--af-beleg); }
+  .af-auf-annahme .af-punkt { border-color: var(--af-annahme); }
+  .af-auf-outcome .af-punkt { border-color: var(--af-outcome); }
+  /* Ergebnis mit Wirkung: Punkt gefüllt; endet es hier oder wird ersetzt: hohl. Umsteigepunkt: größer, dunkler Ring. */
+  .af-station:not(.af-endet) .af-punkt { background: var(--fg); }
+  /* Umsteigepunkt: größer, gefüllt, mit hellem Kern – nicht zu verwechseln mit dem hohlen Punkt „endet“. */
+  .af-station.af-umstieg .af-punkt { width: 1.1rem; height: 1.1rem; border-color: var(--fg); background: radial-gradient(circle, var(--bg-2) 0 28%, var(--fg) 30%); }
+  .af-endet .af-name { color: var(--muted); font-weight: 500; }
+  .af-station.af-stern .af-punkt { width: 1.5rem; height: 1.5rem; background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); }
+  .af-station.af-stern .af-punkt :global(svg) { fill: currentColor; }
+  .af-station.af-stern .af-name { font-weight: 700; }
+  .af-station.af-diese .af-name { background: var(--accent-soft); box-shadow: 0 0 0 .2rem var(--accent-soft); border-radius: 3px; }
+
+  /* Zukunft blass; Faden: andere Linien und Stationen ohne diese Linie blass. */
+  .af-spaeter:is(.af-kopf, .af-station, .af-linien) { opacity: .35; }
+  .af[data-faden] .af-g { opacity: .15; }
+  .af[data-faden="beleg"] .af-g-beleg, .af[data-faden="outcome"] .af-g-outcome, .af[data-faden="annahme"] .af-g-annahme { opacity: 1; }
+  .af[data-faden="beleg"] .af-station:not(.af-auf-beleg),
+  .af[data-faden="outcome"] .af-station:not(.af-auf-outcome),
+  .af[data-faden="annahme"] .af-station:not(.af-auf-annahme) { opacity: .3; }
+
+  .af-detail { margin: .6rem 0 0; font-size: 1rem; max-width: 52em; }
+  .af-detail p { margin: 0 0 .2rem; }
+  .af-weiter { color: var(--muted); }
+  .af-fuss { margin-top: .45rem; font-size: .85rem; color: var(--muted); display: flex; align-items: center; gap: .3rem; flex-wrap: wrap; }
+  .af-fuss-stern { color: var(--yellow); fill: currentColor; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Beamer: Höhe so, dass Titel, Kernsatz, Legende, Plan und Fußzeile in 1280×720 passen (rem wächst mit der Höhe). */
+  :global(html[data-beamer]) .af { --af-h: 21.5rem; --af-schrift: .75rem; margin: .5rem 0 0; }
+  /* Legende in drei Spalten nebeneinander: zwei Zeilen statt drei. */
+  :global(html[data-beamer]) .af-legende { font-size: .72rem; line-height: 1.25; margin-bottom: .4rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 1rem; }
+  :global(html[data-beamer]) .af-leg { align-items: flex-start; }
+  :global(html[data-beamer]) .af-muster { margin-top: .25rem; }
+  :global(html[data-beamer]) .af-plan { min-width: 0; }
+  :global(html[data-beamer]) .af-kopf { padding: .3rem .5rem .25rem; }
+  :global(html[data-beamer]) .af-tag { font-size: .75rem; }
+  :global(html[data-beamer]) .af-titel, :global(html[data-beamer]) .af-hier-marke { font-size: .72rem; }
+  :global(html[data-beamer]) .af-fuss { font-size: .72rem; margin-top: .3rem; }
+  :global(html[data-beamer]) .af-detail { font-size: .9rem; }
+  :global(html[data-beamer] .content) .af a.af-station { text-decoration: none; }
+
+  @media print {
+    .af-scroll { overflow: visible; }
+    .af-plan { min-width: 0; height: 175mm; break-inside: avoid; }
+    .af, .af * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .af [data-schritt] { visibility: visible !important; }
+  }
+</style>

@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Bearbeiten from '../../../components/Bearbeiten.astro';
 import Callout from '../../../components/Callout.astro';
@@ -26,6 +27,7 @@ const loesungsraum = { t: KAFFEEBAR_BAUM.t, kinder: [{ t: chance.t, kinder: chan
   <h1>Problem-Rahmen & Produkt-Brief</h1>
   <p class="lead">Für wen arbeitet ihr, was läuft heute schief – und woran merkt ihr, dass es besser geworden ist?</p>
   <Orientierung seite="innolab/methoden/problem-rahmen" leiste={false} />
+  <Uebergang station="problem-rahmen" />
   <MethodenKarte slug="problem-rahmen" />
 
   <Folie>

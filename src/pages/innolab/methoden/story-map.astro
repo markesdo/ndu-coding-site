@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -20,6 +21,7 @@ const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annah
   <h1>Story Map</h1>
   <p class="lead">Was Menschen mit eurem Produkt tun, als Geschichte von links nach rechts – und quer geschnitten nach dem, was sie danach anders tun und was ihr dabei lernen wollt.</p>
   <Orientierung seite="innolab/methoden/story-map" leiste={false} />
+  <Uebergang station="story-map" />
   <MethodenKarte slug="story-map" />
 
   <Folie>

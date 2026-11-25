@@ -1,0 +1,52 @@
+---
+// Übergangsstreifen einer Station des Arbeitsflusses: Kommt aus → Jetzt → Geht nach (Daten: arbeitsfluss.ts).
+// Steht im Kopf der Methodenseite – am Blockanfang ist er das Erste, was der Beamer zeigt. „Kommt aus“ folgt aus braucht
+// (methoden.ts), außer wo die Station es selbst sagt; „Geht nach“ ist der Satz „→ gebraucht in“ der Station.
+import { ArrowRight, Route } from '@lucide/astro';
+import { kommtAus, methodeVon, station } from './arbeitsfluss';
+
+const { station: id } = Astro.props as { station: string };
+const s = station(id);
+if (!s) throw new Error(`Uebergang: Station „${id}“ unbekannt`);
+const jetzt = s.jetzt ?? methodeVon(s)?.frage ?? s.satz;
+---
+<figure class="uebergang" aria-label={`Übergang: kommt aus ${kommtAus(s).join(', ')}; jetzt ${s.kurz}; geht nach ${s.gebrauchtIn}`}>
+  <ol>
+    <li class="ue-kasten">
+      <span class="ue-kopf">Kommt aus</span>
+      <span class="ue-text">{kommtAus(s).join(' · ')}</span>
+    </li>
+    <li class="ue-pfeil" aria-hidden="true"><ArrowRight size={18} /></li>
+    <li class="ue-kasten ue-jetzt">
+      <span class="ue-kopf">Jetzt</span>
+      <strong class="ue-text">{s.kurz}</strong>
+      <span class="ue-sub">{jetzt}</span>
+    </li>
+    <li class="ue-pfeil" aria-hidden="true"><ArrowRight size={18} /></li>
+    <li class="ue-kasten">
+      <span class="ue-kopf">Geht nach</span>
+      <span class="ue-text">{s.gebrauchtIn}</span>
+    </li>
+  </ol>
+  <figcaption class="ue-link"><a href={`/innolab/arbeitsfluss?tag=${s.spalte}`}><Route size={14} aria-hidden="true" /> Arbeitsfluss</a></figcaption>
+</figure>
+
+<style>
+  .uebergang { margin: 1rem 0 1.25rem; container: uebergang / inline-size; }
+  .uebergang ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr auto 1.15fr auto 1fr; align-items: stretch; gap: .4rem; }
+  .uebergang li { margin: 0; }
+  .ue-kasten { display: flex; flex-direction: column; gap: .15rem; padding: .5rem .7rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); min-width: 0; }
+  .ue-jetzt { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg-2)); }
+  .ue-kopf { font-family: var(--mono); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .ue-text { font-size: .9rem; line-height: 1.35; }
+  .ue-sub { font-size: .85rem; line-height: 1.35; color: var(--muted); }
+  .ue-pfeil { display: grid; place-items: center; color: var(--muted); }
+  .ue-link { margin-top: .3rem; font-size: .8rem; text-align: right; }
+  .ue-link a { display: inline-flex; align-items: center; gap: .25rem; }
+  @container uebergang (max-width: 620px) {
+    .uebergang ol { grid-template-columns: 1fr; }
+    .ue-pfeil { transform: rotate(90deg); }
+  }
+  :global(html[data-beamer]) .ue-kopf { font-size: .7rem; }
+  :global(html[data-beamer]) .ue-text, :global(html[data-beamer]) .ue-sub { font-size: .8rem; }
+</style>

@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -38,6 +39,7 @@ const KARTEN = [
   <h1>Geschäftsmodell-Karten</h1>
   <p class="lead">Problem-Solution Fit habt ihr seit der Value Map auf Papier. Jetzt die dritte Art von Fit, ebenfalls auf Papier: Wer zahlt wofür, was kostet es – und welche Annahme steckt dahinter?</p>
   <Orientierung seite="innolab/methoden/geschaeftsmodell" leiste={false} />
+  <Uebergang station="geschaeftsmodell" />
   <MethodenKarte slug="geschaeftsmodell" />
 
   <Folie>

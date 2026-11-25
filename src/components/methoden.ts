@@ -520,6 +520,11 @@ export const erzeugtVon = (id: string): Methode | undefined => METHODEN.find((m)
 /** Methoden eines Kurstags, in Kursreihenfolge. */
 export const methodenVonTag = (tag: number): Methode[] => METHODEN.filter((m) => m.tag === tag);
 
+/** Umkehrung von braucht: die Methoden, die ein Ergebnis dieser Methode weiterverwenden („Wird gebraucht in“), in
+ *  Kursreihenfolge. Nichts davon wird gepflegt – es folgt aus braucht. */
+export const gebrauchtIn = (m: Methode): Methode[] =>
+  METHODEN.filter((x) => x !== m && x.braucht.some((id) => m.ergibt.includes(id)));
+
 /** So findet Claude ein Artefakt: als Datei im Repo oder über den Linear-MCP – Team und Projekt stehen in docs/BACKLOG.md,
  *  die Regeln für Linear in docs/LINEAR.md des Projekts. Was nur in der Werkstatt liegt, liest Claude über den Connector. */
 export const LINEAR_QUELLE = 'die Issues über den Linear-MCP (Team und Projekt aus der Zeile „Issues: Linear ·“ in docs/BACKLOG.md)';

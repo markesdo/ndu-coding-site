@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
+import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -22,6 +23,7 @@ const WW = 'Thomas Wedell-Wedellsborg, „Are You Solving the Right Problems?“
   <h1>How Might We</h1>
   <p class="lead">Aus der Ziel-Chance wird eine Frage, auf die es viele Antworten gibt – die Brücke zur Ideation.</p>
   <Orientierung seite="innolab/methoden/hmw" leiste={false} />
+  <Uebergang station="hmw" />
   <MethodenKarte slug="hmw" />
 
   <Folie>
