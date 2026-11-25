@@ -847,14 +847,13 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBeFalsy();
     // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
-    // Lücken: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle. A1 nennt I2-4, I3-1 und I5-3 (Gegenbelege); I1 und
-    // I4 nennt keine Annahme – verwaist (das stillgelegte Log zählt nicht mehr, NDU-70).
+    // Lücken: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle. Verwaist ist nichts: A1 nennt I2-4, I3-1 und I5-3,
+    // die gespeicherte alte Zeile D3 nennt I1–I5 (lesbare Log-Zeilen zählen weiter; geprüft wird das Log nicht, NDU-70).
     expect(r.structuredContent).toStrictEqual({
       befunde: [
         ...['A2', 'A4'].map((id) => ({
           art: 'fehlender-beleg', artefakt: 'annahmen', ort: id, text: `${id} hat die Belegstufe „getan“, nennt aber keine Quelle (Beleg-Notiz). Ein Interview-Zitat belegt höchstens „erzählt“. Wo liegt das beobachtete Verhalten?`,
         })),
-        ...['I1', 'I4'].map((id) => ({ art: 'verwaist', artefakt: 'interviews', ort: id, id, text: `${id} wird in der Annahmen-Map nicht als Beleg genannt.` })),
       ],
       geprueft: ['annahmen', 'interviews'],
       fehlen: ['brief', 'leitfaden'],
@@ -863,7 +862,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
       anleitung: `Ändern kann die Person nur selbst in der Werkstatt: ${BASIS}/innolab/mappe`,
     });
     expect(text(r)).toContain('## Fehlende Belege (2)');
-    expect(text(r)).toContain('## Verwaiste Elemente (2)');
+    expect(text(r)).not.toContain('## Verwaiste Elemente');
     expect(text(r)).not.toContain('## Unbekannte IDs');
     expect(text(r)).toContain('Ändern kann die Person nur selbst');
     expect(text(r)).toContain(`${BASIS}/innolab/mappe`);
@@ -908,6 +907,23 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     expect((r.structuredContent as { unlesbar: string[] }).unlesbar).toStrictEqual(['interviews']);
     expect(text(r)).toMatch(/Nicht lesbar.*Interviews und Snapshots/);
     expect(new Set(lesen.mock.calls.map((a) => a[0]))).toStrictEqual(new Set(['test-sofie']));
+  });
+
+  // NDU-70: Das stillgelegte Log nur nach bestem Bemühen – ein GitHub-Fehler genau darauf bricht das Werkzeug nicht ab und
+  // wird nirgends gemeldet; D-IDs gelten dann als nicht prüfbar.
+  it('verknuepfungen_pruefen: GitHub-Ausfall nur beim stillgelegten Entscheidungslog -> Ergebnis wie sonst, nichts gemeldet', async () => {
+    const h = await aufbau();
+    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    const echt = h.speicher.lesen.bind(h.speicher);
+    vi.spyOn(h.speicher, 'lesen').mockImplementation((repo, name) => (name === 'entscheidungen' ? Promise.reject(new GithubAusnahme(502)) : echt(repo, name)));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const c = await client(h, await accessToken(h));
+    const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
+    expect(r.isError).toBeFalsy();
+    const sc = r.structuredContent as { geprueft: string[]; unlesbar: string[]; befunde: { art: string }[] };
+    expect(sc.geprueft).toStrictEqual(['annahmen', 'interviews']);
+    expect(sc.unlesbar).toStrictEqual([]);
+    expect(text(r)).not.toMatch(/GitHub|Entscheidungslog/);
   });
 
   it('verknuepfungen_pruefen: GitHub-Ausfall -> allgemeiner Satz, kein Teilergebnis', async () => {

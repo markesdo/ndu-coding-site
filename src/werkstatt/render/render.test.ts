@@ -294,10 +294,17 @@ describe('README', () => {
     expect(s).toContain('# Projektmappe');
     expect(s).toContain('**Kohorte:** Innolab 26/27');
     expect(s).toContain('| Produkt-Brief | [mappe/brief.md](mappe/brief.md) |');
-    expect(s).toContain('| Entscheidungslog | noch offen |');
+    expect(s).toContain('| Interviewleitfaden | noch offen |');
     expect(s).toContain('| Annahmen-Map | [mappe/annahmen.md](mappe/annahmen.md) |');
-    expect(s).not.toContain('mappe/entscheidungen.md');
+    // Das stillgelegte Entscheidungslog (NDU-70) steht ohne Datei gar nicht drin – nie als „noch offen“.
+    expect(s).not.toContain('Entscheidungslog');
     expect(s).toMatchSnapshot();
+  });
+
+  it('stillgelegtes Entscheidungslog: steht nur drin, wenn die Datei schon existiert, dann mit Link', () => {
+    const s = readmeRendern(k, [{ name: 'brief', vorhanden: false }, { name: 'entscheidungen', vorhanden: true }]);
+    expect(s).toContain('| Entscheidungslog | [mappe/entscheidungen.md](mappe/entscheidungen.md) |');
+    expect(s).toContain('| Produkt-Brief | noch offen |');
   });
 });
 

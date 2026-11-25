@@ -253,6 +253,15 @@ describe('GET /api/werkstatt/lehrende – Fehler je Person', () => {
     expect(a.personen[1]).toMatchObject({ kuerzel: 'lea', zustand: 'bereit' });
   });
 
+  // NDU-70: Das stillgelegte Log nur nach bestem Bemühen – ein Fehler genau darauf setzt die Person nicht auf „fehler“.
+  it('GitHub scheitert nur beim stillgelegten Entscheidungslog: Mappe bleibt „bereit“', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const t = await aufbau({ speicher: (fake) => ({ lesen: async (repo, name) => { if (name === 'entscheidungen') throw new Error('GitHub weg'); return fake.lesen(repo, name); } }) });
+    const a = await (await t.holen('/api/werkstatt/lehrende', MARKUS)).json();
+    expect(a.personen[2]).toMatchObject({ kuerzel: 'sofie', zustand: 'bereit' });
+    expect(SOFIE_(a).artefakte.map((x: { name: string }) => x.name)).toStrictEqual(NAMEN);
+  });
+
   it('GitHub scheitert beim Verlauf: dort fehler, die anderen kommen', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const t = await aufbau({ speicher: (fake) => ({ verlauf: async (repo, name) => { if (repo === '2026-lea') throw new Error('GitHub weg'); return fake.verlauf(repo, name); } }) });

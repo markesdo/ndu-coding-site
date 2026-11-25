@@ -678,7 +678,9 @@ export function werkzeugeRegistrieren(server: McpServer, k: WerkzeugKontext): vo
       const repo = await eigeneMappe(k);
       const [brief, entscheidungen, leitfaden, annahmen, interviews] = await Promise.all([
         artefaktLaden(k, repo, 'brief'),
-        artefaktLaden(k, repo, 'entscheidungen'),
+        // Das stillgelegte Log nur nach bestem Bemühen (NDU-70): Jeder Fehler darauf (GitHub, Rate-Limit) zählt als „nicht
+        // prüfbar“ ('unlesbar') – D-IDs bleiben dann ohne Befund, das Werkzeug läuft weiter.
+        artefaktLaden(k, repo, 'entscheidungen').catch((e: unknown) => { fehlerLoggen('werkstatt-mcp entscheidungen:', e); return 'unlesbar' as const; }),
         artefaktLaden(k, repo, 'leitfaden'),
         artefaktLaden(k, repo, 'annahmen'),
         artefaktLaden(k, repo, 'interviews'),

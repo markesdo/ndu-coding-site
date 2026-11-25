@@ -42,10 +42,11 @@ const GETAN_OHNE_QUELLE = ['A2', 'A4'].map((id) => ({
 const A1_RISKANTESTE = {
   art: 'riskanteste-ohne-beleg', artefakt: 'annahmen', ort: 'A1', id: 'A1', text: 'A1 ist deine riskanteste Annahme und hat noch keinen Beleg, obwohl 5 Interviews gespeichert sind. Was hast du dazu gehört?',
 };
-// Die Annahmen-Map der Kaffeebar nennt kein Interview; seit NDU-70 zählt das stillgelegte Log nicht mehr als Beleg.
+// Verwaist ist ein Interview, das weder die Annahmen-Map noch eine lesbare alte Log-Zeile nennt. Bei der Kaffeebar nennt
+// D3 alle fünf – ohne Log (oder ohne D3) würden sie verwaisen.
 const verwaist = (ids: string[]) => ids.map((id) => ({ art: 'verwaist', artefakt: 'interviews', ort: id, id, text: `${id} wird in der Annahmen-Map nicht als Beleg genannt.` }));
 const ALLE_VERWAIST = verwaist(['I1', 'I2', 'I3', 'I4', 'I5']);
-const KAFFEEBAR_BEFUNDE = [...GETAN_OHNE_QUELLE, A1_RISKANTESTE, ...ALLE_VERWAIST];
+const KAFFEEBAR_BEFUNDE = [...GETAN_OHNE_QUELLE, A1_RISKANTESTE];
 // Für Tests, die nur die Annahmen betreffen: ohne die Verwaist-Befunde.
 const KERN_BEFUNDE = [...GETAN_OHNE_QUELLE, A1_RISKANTESTE];
 const ohneVerwaist = (m: MappeDaten) => verknuepfungenPruefen(m).befunde.filter((b) => b.art !== 'verwaist');
@@ -53,9 +54,9 @@ const ohneVerwaist = (m: MappeDaten) => verknuepfungenPruefen(m).befunde.filter(
 describe('verknuepfungenPruefen', () => {
   // Das Beispiel selbst: A1 trägt die Gegenbelege I2-4, I3-1, I5-3 („spricht dagegen“, wie auf Synthese- und Pitch-Seite).
   // Verwaist bleiben I1 (die Entscheidung in der Halle steht dort nur in der Notiz) und I4 – keiner Annahme zugeordnet.
-  it('Beispiel Kaffeebar: A1 mit Gegenbelegen, nur I1 und I4 verwaist, A2/A4 „getan“ ohne Quelle', () => {
+  it('Beispiel Kaffeebar: A1 mit Gegenbelegen, A2/A4 „getan“ ohne Quelle; kein Interview verwaist (D3 nennt I1–I5)', () => {
     expect(verknuepfungenPruefen(kaffeebar())).toStrictEqual({
-      befunde: [...GETAN_OHNE_QUELLE, ...verwaist(['I1', 'I4'])],
+      befunde: GETAN_OHNE_QUELLE,
       geprueft: ['brief', 'annahmen', 'leitfaden', 'interviews'],
       fehlen: [],
       unlesbar: [],
@@ -182,12 +183,13 @@ describe('verknuepfungenPruefen', () => {
     }
     // D3 mit Notiz, aber nicht „getan“: trägt nicht.
     expect(fall((d) => { d[D3]!.belegNotiz = 'Strichliste Oktober'; })).toHaveLength(1);
-    // Ersetzte Entscheidung (D1 wird von D3 ersetzt) ist Geschichte, auch mit „getan“ und Notiz. Der Befund verweist nicht
-    // mehr auf das stillgelegte Log (keine „neue Zeile“, NDU-70).
+    // Ersetzte Entscheidung (D1 wird von D3 ersetzt) ist Geschichte, auch mit „getan“ und Notiz. Der Befund zeigt auf die
+    // Ersatzzeile, ohne das Wort Entscheidungslog (NDU-70).
     const m = kaffeebarA1Offen();
     m.annahmen.annahmen[1].belegIds = ['D1'];
     Object.assign(m.entscheidungen.entscheidungen[0]!, { beleg: 'getan', belegNotiz: 'Kassendaten August' });
-    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.ort === 'A2')).toStrictEqual(GETAN_OHNE_QUELLE.filter((b) => b.ort === 'A2'));
+    const [a2] = GETAN_OHNE_QUELLE.filter((b) => b.ort === 'A2');
+    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.ort === 'A2')).toStrictEqual([{ ...a2, text: `${a2!.text} D1 ist ersetzt – nennt die neue Zeile (D3).` }]);
   });
 
   it('IDs in einer Beleg-Notiz werden aufgelöst wie im Text: unbekannte melden, bekannte still', () => {
@@ -210,7 +212,7 @@ describe('verknuepfungenPruefen', () => {
     expect(verknuepfungenPruefen(nurUnbekannt).befunde.filter((b) => b.ort === 'A2').map((b) => b.art)).toStrictEqual(['unbekannte-id']);
   });
 
-  it('Annahme „getan“ mit D-ID: Entscheidungslog fehlt oder unlesbar → gleich, nur der Befund zur unbekannten ID, ohne Verweis aufs Log (stillgelegt)', () => {
+  it('Annahme „getan“ mit D-ID: Log fehlt → nur der Befund zur unbekannten ID, ohne Verweis aufs Log; Log unlesbar → nicht prüfbar, still', () => {
     const fehlt = kaffeebarA1Offen();
     fehlt.annahmen.annahmen[1].belegIds = ['D2'];
     const v = verknuepfungenPruefen({ ...fehlt, entscheidungen: null });
@@ -219,12 +221,13 @@ describe('verknuepfungenPruefen', () => {
       { art: 'unbekannte-id', artefakt: 'annahmen', ort: 'A2', id: 'D2', text: 'A2 nennt D2 als Beleg. In der Mappe gibt es D2 nicht.' },
     ]);
     expect(v.befunde.filter((b) => b.art === 'fehlender-beleg')).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort === 'A4'));
-    // Eine unlesbare alte Datei wird nirgends gemeldet und zählt wie keine.
+    // Eine unlesbare alte Datei wird nirgends gemeldet; ihre D-IDs lassen sich nicht prüfen – kein Befund zu A2.
     const unlesbar = kaffeebarA1Offen();
     unlesbar.annahmen.annahmen[1].belegIds = ['D2'];
     const u = verknuepfungenPruefen({ ...unlesbar, entscheidungen: 'unlesbar' });
     expect(u.unlesbar).toStrictEqual([]);
-    expect(u.befunde).toStrictEqual(v.befunde);
+    expect(u.befunde.filter((b) => b.ort === 'A2')).toStrictEqual([]);
+    expect(u.befunde.filter((b) => b.art !== 'verwaist')).toStrictEqual(KAFFEEBAR_BEFUNDE.filter((b) => b.ort !== 'A2'));
   });
 
   it('Annahme „getan“ mit Beleg-Notiz (Quelle außerhalb der Mappe) ist still, ohne Notiz bleibt der Befund', () => {
@@ -315,10 +318,10 @@ describe('verknuepfungenPruefen', () => {
       expect(riskanteste(gemischt)).toStrictEqual([]);
     });
 
-    it('D-ID bei unlesbarem stillgelegtem Entscheidungslog zählt nicht als Beleg – wie ein fehlendes Log (NDU-70)', () => {
+    it('D-ID bei unlesbarem Entscheidungslog lässt sich nicht prüfen und zählt im Zweifel als Beleg; ohne Log nicht', () => {
       const m = kaffeebarA1Offen();
       m.annahmen.annahmen[0].belegIds = ['D1'];
-      expect(riskanteste({ ...m, entscheidungen: 'unlesbar' })).toStrictEqual([A1_RISKANTESTE]);
+      expect(riskanteste({ ...m, entscheidungen: 'unlesbar' })).toStrictEqual([]);
       expect(riskanteste({ ...m, entscheidungen: null })).toStrictEqual([A1_RISKANTESTE]);
     });
 
@@ -362,7 +365,7 @@ describe('verknuepfungenPruefen', () => {
   it('verwaist: Interview, das kein Beleg der Annahmen-Map nennt; ein Zitat-Verweis zählt für das Interview', () => {
     const m = kaffeebarA1Offen();
     m.annahmen.annahmen[0].belegIds = ['I2-4', 'I3'];
-    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.art === 'verwaist')).toStrictEqual(verwaist(['I1', 'I4', 'I5']));
+    expect(verknuepfungenPruefen({ ...m, entscheidungen: null }).befunde.filter((b) => b.art === 'verwaist')).toStrictEqual(verwaist(['I1', 'I4', 'I5']));
   });
 
   it('verwaist: auch eine Nennung im Text einer Annahme zählt', () => {
@@ -372,11 +375,15 @@ describe('verknuepfungenPruefen', () => {
     expect(verknuepfungenPruefen(m).befunde.filter((b) => b.art === 'verwaist')).toStrictEqual([]);
   });
 
-  it('verwaist: Nennungen im stillgelegten Entscheidungslog zählen nicht mehr (NDU-70)', () => {
-    // Die Kaffeebar nennt I1–I5 nur im Log (D3, D4) und zusätzlich jetzt im Grund von D1 – trotzdem alle verwaist.
+  it('verwaist: Nennungen in einem lesbaren alten Entscheidungslog zählen weiter, als Beleg und im Text', () => {
+    // D3 nennt I1 bis I5; ohne D3 nennt nur noch D4 die Interviews I2, I3, I5 über Zitate.
     const m = kaffeebarA1Offen();
+    m.entscheidungen.entscheidungen[2].belegIds = [];
+    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.art === 'verwaist')).toStrictEqual(verwaist(['I1', 'I4']));
     m.entscheidungen.entscheidungen[0].grund = 'So hat es I1 erzählt.';
-    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.art === 'verwaist')).toStrictEqual(ALLE_VERWAIST);
+    expect(verknuepfungenPruefen(m).befunde.filter((b) => b.art === 'verwaist')).toStrictEqual(verwaist(['I4']));
+    // Ohne lesbares Log nennt die Annahmen-Map (A1 offen) keines.
+    expect(verknuepfungenPruefen({ ...m, entscheidungen: null }).befunde.filter((b) => b.art === 'verwaist')).toStrictEqual(ALLE_VERWAIST);
   });
 
   it('verwaist: nur die Annahmen-Map entscheidet – fehlt sie oder ist sie unlesbar, still; ein unlesbares Log schaltet nichts ab', () => {
