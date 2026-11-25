@@ -14,15 +14,16 @@ import BildText from '../../components/bild/BildText.astro';
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 ---
 <Layout title="Tag 5 · Backlog & Sprint">
-  <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00</span>
+  <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00 · online in Teams</span>
   <h1>Tag 5 · Backlog & Sprint</h1>
   <p class="lead">Ihr entscheidet nach euren Tests, stellt euch als Team für drei Produkte auf, baut Backlogs, die jede*r im Team abarbeiten kann, und plant euren Sprint. Am Nachmittag wird gebaut.</p>
+  <p>Heute seid ihr online in einer Teams-Besprechung; den Link findet ihr in Teams.</p>
   <Orientierung seite="innolab/tag-5" />
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-12-12">
     <Block time="09:00–09:25" type="plenum" title="Test-Debrief" href="#debrief">Lernkarten E1 und E2: was der Beleg getan hat, dann die Entscheidung.</Block>
-    <Block time="09:25–10:05" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Produktziele, Rollen, Linear; „fertig“ aus dem Lego und mit Mess-Ereignis.</Block>
+    <Block time="09:25–10:05" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Produktziele, Rollen, Linear; „fertig“ aus eurem Spike und mit Mess-Ereignis.</Block>
     <Block time="10:05–10:15" type="pause" title="Pause" />
     <Block time="10:15–11:15" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, Reihenfolge nach Outcome und Risiko; jede*r erzählt, die anderen fragen, dann nach Linear.</Block>
     <Block time="11:15–12:00" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Zwei Fragen der Confirmation; Story-Workshop je Product Owner: Normalfall, Was-wenn, Demo.</Block>
@@ -90,17 +91,18 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
     <h2 id="debrief-ablauf">So läuft der Debrief (25 min)</h2>
     <p class="folie-satz">Sechs Minuten je Product Ownerin, dann steht die Entscheidung auf der Lernkarte.</p>
     <ol class="gross">
-      <li data-schritt><strong>Rahmen:</strong> die beiden Folien davor. <Timer minuten={3} /></li>
+      <li data-schritt><strong>Rahmen:</strong> die beiden Folien davor. <Timer minuten={2} /></li>
       <li data-schritt><strong>Je Product Ownerin:</strong> E1, E2, Empfehlung, drei Rückfragen. <Timer minuten={6} /></li>
-      <li data-schritt><strong>Festhalten, allein:</strong> Zeile „Beleg: … → darum: …“ auf der Lernkarte, Stichwort für die Story Map. <Timer minuten={4} /></li>
+      <li data-schritt><strong>Festhalten, allein:</strong> Zeile „Beleg: … → darum: …“ auf der Lernkarte, Stichwort für die Story Map. <Timer minuten={3} /></li>
+      <li data-schritt><strong>Euer Baum:</strong> E1 und E2 mit ✓, ✗ oder „unklar“ markieren – beim Spitzenreiter bleiben oder zur Geschwister-Idee wechseln. <Timer minuten={2} /></li>
     </ol>
     <div class="nur-handout">
-      <p>Zu 2, dreimal hintereinander: Lernkarte E1 mit Verlässlichkeit und Befund (2 Minuten) – Lernkarte E2 (1) – eure Empfehlung: Welche der drei Ideen stützt der Beleg jetzt, und was ändert sich an der Story Map? (1) – je eine Rückfrage der anderen beiden und von Markus (2). E1 fragt, ob der Spitzenreiter seine riskanteste Annahme überstanden hat; E2, wie viele den Höhepunkt ohne Hilfe erreicht haben und welcher Befund euch überrascht hat. Zu 3: Die Entscheidung steht auf der Lernkarte in <code>docs/EXPERIMENTE.md</code> bzw. <code>docs/TESTS.md</code>, mit Befund und Befund-IDs als Beleg („Beleg: unklar → darum: weiter testen“, mit U-IDs bei E2). Was sich an der Story Map ändert, notiert ihr als Stichwort für den Backlog-Block um 10:15.</p>
+      <p>Zu 2, dreimal hintereinander: Lernkarte E1 mit Verlässlichkeit und Befund (2 Minuten) – Lernkarte E2 (1) – eure Empfehlung: Welche der drei Ideen stützt der Beleg jetzt, und was ändert sich an der Story Map? (1) – je eine Rückfrage der anderen beiden und von Markus (2). E1 fragt, ob der Spitzenreiter seine riskanteste Annahme überstanden hat; E2, wie viele den Höhepunkt ohne Hilfe erreicht haben und welcher Befund euch überrascht hat. Zu 3: Die Entscheidung steht auf der Lernkarte in <code>docs/EXPERIMENTE.md</code> bzw. <code>docs/TESTS.md</code>, mit Befund und Befund-IDs als Beleg („Beleg: unklar → darum: weiter testen“, mit U-IDs bei E2). Was sich an der Story Map ändert, notiert ihr als Stichwort für den Backlog-Block um 10:15. Zu 4: In eurem Baum auf Miro („Baum · euer Name“) hängen seit Tag 4 unter der Ziel-Chance die drei Ideen und unter dem Spitzenreiter E1 und E2. Markiert jeden Test mit ✓ (gestützt), ✗ (widerlegt) oder „unklar“ und entscheidet: beim Spitzenreiter bleiben oder zur Geschwister-Idee wechseln, einer anderen Lösung unter derselben Chance – das Umschwenken auf die Lösung von der Folie davor. Die Entscheidung steht damit im Baum und auf der Lernkarte. Unter einer Chance mehrere Lösungen, darunter ihre Tests: So zeichnet Teresa Torres den Baum („Continuous Discovery Habits“, 2021, S. 25–27).</p>
     </div>
   </Folie>
 
   <h2 id="faden">Vom Entdecken zum Liefern</h2>
-  <p>Bis Tag 4 habt ihr herausgefunden, <em>was</em> ihr bauen solltet, und Scrum mit Lego durchgespielt. Heute stellt ihr euch als Team auf, und ab heute geht es darum, es <em>gemeinsam</em> zu liefern – so, wie Produktteams in Unternehmen arbeiten. Das Entdecken hört dabei nicht auf: Euer Sprint endet an Tag 6 mit einem Review, in dem ihr wieder lernt.</p>
+  <p>Bis Tag 4 habt ihr herausgefunden, <em>was</em> ihr bauen solltet, und Scrum kennengelernt. Heute stellt ihr euch als Team auf, und ab heute geht es darum, es <em>gemeinsam</em> zu liefern – so, wie Produktteams in Unternehmen arbeiten. Das Entdecken hört dabei nicht auf: Euer Sprint endet an Tag 6 mit einem Review, in dem ihr wieder lernt.</p>
   <Callout type="tip" title="Drei Produkte, ein Takt">
     <p>Jede*r ist Product Owner des eigenen Produkts und Developer in allen dreien – drei Scrum-Teams mit denselben drei Personen. Ihr baut also auch Issues, die ihr nicht geschrieben habt. Deshalb müssen eure Issues und Kriterien ohne Rückfrage verständlich sein – das ist der Test für heute.</p>
   </Callout>
@@ -116,7 +118,7 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
   </ul>
 
   <h2 id="stoerfall">Sprint-Planning mit Störfall</h2>
-  <p>Ihr plant euren Sprint wie auf der Methodenseite (<a href="/innolab/methoden/sprint#planning">Sprint Planning</a>), zehn Minuten pro Produkt. Danach, mit dem ersten Entwurf auf dem Tisch, zieht jede*r Product Owner eine Störfall-Karte. Solche Karten gibt es in jedem echten Projekt:</p>
+  <p>Ihr plant euren Sprint wie auf der Methodenseite (<a href="/innolab/methoden/sprint#planning">Sprint Planning</a>), zehn Minuten pro Produkt. Danach, mit dem ersten Entwurf in Linear, zieht jede*r Product Owner eine Störfall-Karte. Solche Karten gibt es in jedem echten Projekt:</p>
   <ul>
     <li>Ein Stakeholder will eine Funktion, die ihr im Produkt-Brief unter „Was macht es NICHT?“ ausgeschlossen habt.</li>
     <li>Eine Person aus dem Team fällt für die Hälfte des Sprints aus.</li>
@@ -125,11 +127,11 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
   </ul>
   <p>Als Product Owner entscheidet ihr: annehmen und etwas anderes dafür herausnehmen, eine kleinere Variante, oder begründet ablehnen. Was nicht geht: alles zusätzlich machen. Die Entscheidung steht mit Begründung in <code>docs/SPRINTS.md</code> beim Sprint-Ziel; das Sprint-Ziel selbst bleibt ein Satz. Für die drei Karten zusammen habt ihr zehn Minuten; erst danach bekommen die Issues das Label <code>Sprint</code>.</p>
   <Callout type="info" title="Wofür die Störung gut ist">
-    <p>Beim Lego hat Markus die Störungen nach Krivitsky eingebaut: eine mehrdeutige Anforderung, kein Wort zur Integration, einen Product Owner auf Geschäftsreise (Krivitsky, S. 41; <a href="/innolab/methoden/scrum#nachbesprechung">Scrum im Team</a>). Die Karten heute sind ein Zusatz des Kurses, und sie kommen im Planning – dort, wo ein Product Owner sie abfangen kann. Im Sprint selbst gilt: keine Änderungen, die das Sprint-Ziel gefährden (Scrum Guide, S. 7). Genau das ist eure Rolle: Nein sagen können, mit einem Grund.</p>
+    <p>Störungen mit Absicht einzubauen, stammt von Alexey Krivitsky: Er nennt es „Design for Failure“; Misserfolge seien „große Katalysatoren des Lernens“ (Krivitsky, „lego4scrum“, deutsche Ausgabe 2023, S. 41, 95). Die Karten heute sind ein Zusatz des Kurses, und sie kommen im Planning – dort, wo ein Product Owner sie abfangen kann. Im Sprint selbst gilt: keine Änderungen, die das Sprint-Ziel gefährden (Scrum Guide, S. 7). Genau das ist eure Rolle: Nein sagen können, mit einem Grund.</p>
   </Callout>
 
   <h2 id="bauen">Bauen</h2>
-  <p>Euer Sprint läuft vom Planning heute bis zu Review und Retro an Tag 6 am 19. Dezember – eine Woche, davon heute Nachmittag gemeinsam im Raum. Jede*r baut Issues aus allen drei Produkten, so wie im Planning verteilt. Der Takt ist der aus dem Coding-Kurs – Issue holen, bauen lassen, Belege prüfen, Pull Request –, mit den Team-Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>.</p>
+  <p>Euer Sprint läuft vom Planning heute bis zu Review und Retro an Tag 6 am 19. Dezember – eine Woche, davon heute Nachmittag gemeinsam online. Jede*r baut Issues aus allen drei Produkten, so wie im Planning verteilt. Der Takt ist der aus dem Coding-Kurs – Issue holen, bauen lassen, Belege prüfen, Pull Request –, mit den Team-Regeln aus <a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>.</p>
   <Callout type="tip" title="Das Mess-Issue zuerst">
     <p>Baut das Issue, das das Mess-Ereignis einführt, als eines der ersten. Jedes Issue danach prüft ihr gleich mit: Kommt das Ereignis nach dem Merge noch an?</p>
   </Callout>

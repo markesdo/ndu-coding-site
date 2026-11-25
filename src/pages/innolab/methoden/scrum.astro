@@ -20,8 +20,8 @@ const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)'
 const KRIVITSKY = 'Alexey Krivitsky, „lego4scrum“, deutsche Ausgabe (2023)';
 const MANIFEST = 'Manifesto for Agile Software Development (2001), agilemanifesto.org';
 
-// Lego4Scrum seit 25.11.2026 16:15–17:15 laut tag-4.astro (60 statt 80 min, NDU-66): Review 1 endet nach Minute 43 (16:58),
-// die Nachbesprechung beginnt fünf Minuten vor Schluss (17:10).
+// Lego4Scrum ist seit 25.11.2026 für dieses Kursjahr stillgelegt (NDU-72: ab Tag 4 online). Die Folien bleiben für das
+// nächste Kursjahr; die Zeiten unten sind die zuletzt geplanten (16:15–17:15, Review 1 nach Minute 43, Nachbesprechung 17:10).
 const AB_LEGO = '2026-11-28T16:15';
 const NACH_REVIEW_1 = '2026-11-28T16:58';
 const NACH_LEGO = '2026-11-28T17:10';
@@ -29,7 +29,7 @@ const NACH_LEGO = '2026-11-28T17:10';
 <Layout title="Scrum im Team">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
   <h1>Scrum im Team</h1>
-  <p class="lead">Wie Produktteams in Unternehmen arbeiten, einmal mit Lego durchgespielt – und wie ihr zu dritt drei Produkte im selben Takt baut.</p>
+  <p class="lead">Wie Produktteams in Unternehmen arbeiten – und wie ihr zu dritt drei Produkte im selben Takt baut.</p>
   <Orientierung seite="innolab/methoden/scrum" leiste={false} />
   <MethodenKarte slug="scrum" />
 
@@ -212,6 +212,10 @@ const NACH_LEGO = '2026-11-28T17:10';
     <p class="nur-handout">Das Produktziel ist die Verpflichtung des Product Backlogs ({GUIDE}, S. 10–11). Euer Outcome aus Tag 1 hat genau diese Form: ein künftiger Zustand, an dem sich der Backlog ausrichtet. Wer keinen Stakeholder außerhalb des Teams findet, hat für das Review an Tag 6 niemanden, der das Inkrement mit frischen Augen sieht.</p>
   </Folie>
 
+  <Callout type="info" title="Lego4Scrum: dieses Kursjahr nicht genutzt">
+    <p>Ab Tag 4 ist der Kurs online, darum spielt ihr Lego4Scrum in diesem Kursjahr nicht. Die Folien bis „Was ihr mitnehmt“ bleiben für das nächste Kursjahr stehen; an Tag 4 geht es nach „Euer Produkt in einem Satz“ weiter mit dem Prototyp.</p>
+  </Callout>
+
   <Folie>
     <h2 id="lego">Lego4Scrum: warum Lego</h2>
     <p class="folie-satz">Scrum lernt man, indem man es lebt – 80 Minuten mit Lego.</p>
@@ -347,7 +351,7 @@ const NACH_LEGO = '2026-11-28T17:10';
   </Folie>
 
   <Callout type="info" title="Ab hier: Tag 5">
-    <p>Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief (09:25–10:05). Bringt eure Zettel aus der Lego-Nachbesprechung mit. An Tag 4 geht es von hier weiter zum <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.</p>
+    <p>Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief (09:25–10:05). An Tag 4 geht es von hier weiter zum <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.</p>
   </Callout>
 
   <Folie>
@@ -355,13 +359,13 @@ const NACH_LEGO = '2026-11-28T17:10';
     <p class="folie-satz">Je Produkt ein Product Owner und ein Produktziel – alle drei sind überall Developers.</p>
     <MiroFrame name="T4 · 2 · Teamaufstellung & DoD" />
     <ol class="gross">
-      <li data-schritt><strong>Aus dem Lego an Tag 4:</strong> Was hätte euch im ersten Review gerettet? Drei Stichworte an die Tafel. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Aus eurem Spike an Tag 4:</strong> Was hätte gefehlt, wenn er echt gewesen wäre? Drei Stichworte auf Miro. <Timer minuten={5} /></li>
       <li data-schritt><strong>Je Produkt:</strong> Product Owner, Produktziel, Linear-Projekt; Scrum Master für den Sprint; die Abweichungen. <Timer minuten={10} /></li>
       <li data-schritt><strong>Definition of Done,</strong> eine für alle drei Produkte. <Timer minuten={15} /></li>
       <li data-schritt><strong>Mess-Ereignis je Produkt</strong> als Mess-Issue in Stichworten; Collaborator einladen. <Timer minuten={10} /></li>
     </ol>
     <div class="nur-handout">
-      <p>Zu 1: Die Stichworte werden Zeilen der Definition of Done – sie kommen aus eurer eigenen Erfahrung, nicht aus einer Vorlage ({KRIVITSKY}, S. 46, 96). Zu 2: Jede*r ist Product Owner des eigenen Produkts und entscheidet dort über Produktziel, Backlog und Reihenfolge ({GUIDE}, S. 5–6). Alle drei sind Developers in allen drei Produkten: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente. Den Scrum Master für den Sprint lost ihr. Linear: ein Team, ein Projekt pro Produkt, ein Label für den Sprint (<code>Sprint</code>); eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>). Die Abweichungen vom Guide übernehmt ihr als eigenen Abschnitt in <code>docs/TEAM.md</code>. Zu 3 und 4: siehe nächste Folie. Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein (<a href="/innolab/methoden/sprint#spec">Sprint</a>).</p>
+      <p>Zu 1: Die Stichworte werden Zeilen der Definition of Done – sie kommen aus eurer eigenen Erfahrung mit dem Spike, nicht aus einer Vorlage. Die Idee stammt von Krivitsky, der die Definition of Done erst schreiben lässt, nachdem Teams ohne sie gescheitert sind: „Ich möchte, dass die Teams scheitern und verstehen, warum sie in jedem Projekt eine gute DoD brauchen“ ({KRIVITSKY}, S. 46). Zu 2: Jede*r ist Product Owner des eigenen Produkts und entscheidet dort über Produktziel, Backlog und Reihenfolge ({GUIDE}, S. 5–6). Alle drei sind Developers in allen drei Produkten: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente. Den Scrum Master für den Sprint lost ihr. Linear: ein Team, ein Projekt pro Produkt, ein Label für den Sprint (<code>Sprint</code>); eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>). Die Abweichungen vom Guide übernehmt ihr als eigenen Abschnitt in <code>docs/TEAM.md</code>. Zu 3 und 4: siehe nächste Folie. Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein (<a href="/innolab/methoden/sprint#spec">Sprint</a>).</p>
       <p>Der Sprint: vom Planning heute (Tag 5, 12. Dezember) bis zu Review und Retro an Tag 6 (19. Dezember). Am 16. Jänner präsentiert ihr euer Produkt den Stakeholdern.</p>
     </div>
   </Folie>
@@ -388,14 +392,13 @@ const NACH_LEGO = '2026-11-28T17:10';
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (130 min)</h2>
-    <p class="folie-satz">Theorie mit der Kaffeebar und Lego an Tag 4, euer Team an Tag 5.</p>
+    <h2 id="vorgehen">So geht ihr vor (70 min)</h2>
+    <p class="folie-satz">Theorie mit der Kaffeebar an Tag 4, euer Team an Tag 5.</p>
     <ol class="gross">
       <li data-schritt><strong>Agil &amp; Scrum (Tag 4, 15:45–16:15):</strong> acht Folien, die Kaffeebar in Scrum-Begriffen, euer Produktziel in einem Satz.</li>
-      <li data-schritt><strong>Lego4Scrum (Tag 4, 16:15–17:15):</strong> Vision, Produkt an der Wand, drei Sprints, Nachbesprechung.</li>
       <li data-schritt><strong>Teamaufstellung &amp; Definition of Done (Tag 5, 09:25–10:05):</strong> <code>docs/TEAM.md</code> in jedem der drei Repos.</li>
     </ol>
-    <p class="nur-handout">Agil &amp; Scrum: 18 Minuten Theorie, 8 Minuten Kaffeebar gemeinsam, 4 Minuten Produktziele. Lego4Scrum: 60 Minuten; der Ablauf oben unter <a href="#lego">Warum Lego</a> ist für 80 Minuten geplant, Markus kürzt die Sprints. Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
+    <p class="nur-handout">Agil &amp; Scrum: 18 Minuten Theorie, 8 Minuten Kaffeebar gemeinsam, 4 Minuten Produktziele. Lego4Scrum ist dieses Kursjahr nicht dabei (<a href="#lego">Warum Lego</a> bleibt für das nächste). Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
   </Folie>
 
   <div class="nur-handout">
@@ -420,15 +423,12 @@ Developers: alle drei in allen drei Produkten · Scrum Master: [Name]
 - Pull Request von einer anderen Person aus dem Team geprüft
 - Auf Vercel live
 - Das Ereignis [Name] kommt nach dem Merge an: Felder [...]; gespeichert wird kein Name und keine E-Mail
-- [aus dem Lego: ...]
+- [aus eurem Spike: ...]
 
 ## Abweichungen vom Scrum Guide (und warum)
 - Drei Produkte, drei Sprint-Ziele, ein Takt: [...]
 - Ein einziger Sprint von einer Woche: [...]
-- Daily zwischen Kurstagen schriftlich: [...]
-
-## Aus Lego4Scrum
-- [Name]: [eine Sache, die wir im echten Sprint anders machen]</Prompt>
+- Daily zwischen Kurstagen schriftlich: [...]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="scrum" />
