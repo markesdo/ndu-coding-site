@@ -21,10 +21,13 @@ const KRIVITSKY = 'Alexey Krivitsky, „lego4scrum“, deutsche Ausgabe (2023)';
 const MANIFEST = 'Manifesto for Agile Software Development (2001), agilemanifesto.org';
 
 // Lego4Scrum ist seit 25.11.2026 für dieses Kursjahr stillgelegt (NDU-72: ab Tag 4 online). Die Folien bleiben für das
-// nächste Kursjahr; die Zeiten unten sind die zuletzt geplanten (16:15–17:15, Review 1 nach Minute 43, Nachbesprechung 17:10).
-const AB_LEGO = '2026-11-28T16:15';
-const NACH_REVIEW_1 = '2026-11-28T16:58';
-const NACH_LEGO = '2026-11-28T17:10';
+// nächste Kursjahr. Damit die Auflösungen dieses Jahr nicht von selbst aufspringen, liegt ihr Zeitpunkt hinter dem Kursende
+// (Tag 7, 16.01.2027); der Präsentator kann sie weiter per Knopf zeigen. Nächstes Jahr: Zeiten aus tag-4.astro setzen
+// (zuletzt geplant: Beginn, Review 1 nach Minute 43, Nachbesprechung fünf Minuten vor Schluss).
+const LEGO_NICHT_DIESES_JAHR = '2027-12-31T23:59';
+const AB_LEGO = LEGO_NICHT_DIESES_JAHR;
+const NACH_REVIEW_1 = LEGO_NICHT_DIESES_JAHR;
+const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
 ---
 <Layout title="Scrum im Team">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
@@ -256,7 +259,7 @@ const NACH_LEGO = '2026-11-28T17:10';
       <li data-schritt><strong>Danach:</strong> Wie fühlt sich das an? Fragt nach.</li>
     </ul>
     <div class="nur-handout">
-      <Aufloesung ab={AB_LEGO} hinweis="Die Vision erzählt Markus zu Beginn des Spiels; hier steht sie ab 16:15." knopf="Vision zeigen">
+      <Aufloesung ab={AB_LEGO} hinweis="Die Vision erzählt Markus zu Beginn des Spiels – Lego4Scrum ist dieses Kursjahr nicht dabei." knopf="Vision zeigen">
         <p><strong>Vision: Bahnhofsviertel Gleis 1</strong></p>
         <p>Wir bauen das Viertel rund um einen kleinen Bahnhof, an dem jeden Morgen tausende Menschen umsteigen. Bisher ist er nur ein Durchgang. Wir wollen einen Ort daraus machen, an dem man gern ein paar Minuten bleibt, ohne je den Zug zu verpassen.</p>
         <ul>
@@ -351,7 +354,7 @@ const NACH_LEGO = '2026-11-28T17:10';
   </Folie>
 
   <Callout type="info" title="Ab hier: Tag 5">
-    <p>Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief (09:25–10:05). An Tag 4 geht es von hier weiter zum <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.</p>
+    <p>Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief (09:25–10:05). An Tag 4 geht es von hier weiter mit <a href="/innolab/tag-4#ablauf">Prototyp weiterbauen / Puffer</a>; um 17:15 folgt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.</p>
   </Callout>
 
   <Folie>
