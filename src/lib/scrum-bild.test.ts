@@ -16,7 +16,7 @@ describe('Scrum-Seite: Folie „Scrum auf einem Bild“', () => {
     expect(folie).toContain('id="sk-scrum"');
     expect(folie).toMatch(/role="img"/);
     // aufdecken={1}: Product Backlog sofort, die fünf übrigen Gruppen je ein Schritt.
-    expect(folie.match(/data-gruppe="[^"]+" data-schritt/g)).toHaveLength(5);
+    expect(folie.match(/data-gruppe="[^"]+" data-schritt/g) ?? []).toHaveLength(5);
     const quelle = folie.match(/<p class="sk-quelle[^"]*"[^>]*>([^<]+)<\/p>/)?.[1] ?? '';
     expect(quelle).toMatch(/Schwaber &(amp;)? Jeff Sutherland/);
     expect(quelle).toMatch(/Scrum Guide“ \(2020\)/);
