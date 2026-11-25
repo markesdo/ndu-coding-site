@@ -234,6 +234,8 @@ describe('Annahmen', () => {
   });
   it('belegNotiz ist optional: alte Dateien ohne das Feld bleiben gültig, ohne dass es dazukommt', () => {
     const a = klon(annahmen);
+    // Das Beispiel hat seit NDU-70 eine Notiz bei A1; eine alte Datei hat keine.
+    for (const z of a.annahmen as Record<string, unknown>[]) delete z.belegNotiz;
     expect(a.annahmen.some((z: Record<string, unknown>) => 'belegNotiz' in z)).toBe(false);
     const r = artefaktParsen('annahmen', a);
     expect('fehler' in r ? r.fehler : []).toStrictEqual([]);

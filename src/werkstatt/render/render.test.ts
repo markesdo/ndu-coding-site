@@ -105,7 +105,9 @@ describe('Annahmen', () => {
     expect(s).toContain('Riskanteste Annahme: A1');
   });
   it('Art und Beleg ausgeschrieben, Datum österreichisch', () => {
-    expect(s).toContain('| wünschenswert | hoch | noch keiner |');
+    // A1 der Kaffeebar trägt die Gegenbelege aus den Interviews (NDU-70: vorher nur im Entscheidungslog).
+    expect(s).toContain('| wünschenswert | hoch | gesagt (I2-4, I3-1, I5-3; spricht dagegen) |');
+    expect(s).toContain('| bedienbar | mittel | noch keiner |');
     expect(s).toContain('| **A2** | Wir glauben, dass die Bar morgens 40 Bestellungen in 30 Minuten zubereiten kann. | machbar | hoch | getan |');
     expect(s).toContain('Stand: 22.10.2026');
   });
