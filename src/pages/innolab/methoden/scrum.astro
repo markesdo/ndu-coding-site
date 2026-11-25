@@ -13,6 +13,7 @@ import Fluss from '../../../components/Fluss.astro';
 import Aufloesung from '../../../components/Aufloesung.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
+import SprintKreislauf from '../../../components/bild/SprintKreislauf.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import { Eye, MessagesSquare, RefreshCw, Target } from '@lucide/astro';
 
@@ -86,15 +87,11 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
   </Folie>
 
   <Folie>
-    <h2 id="scrum">Scrum in vier Schritten</h2>
+    <h2 id="scrum">Scrum auf einem Bild</h2>
     <p class="folie-satz">Eine Person ordnet, das Team baut ein Inkrement, alle prüfen und passen an – wiederholen.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Der Zyklus:</strong> Product Backlog → Inkrement im Sprint → prüfen mit Stakeholdern → nächster Sprint.</li>
-      <li data-schritt><strong>Absichtlich unvollständig:</strong> Regeln für die Zusammenarbeit, keine Anleitung.</li>
-      <li data-schritt><strong>Aus Erfahrung lernen:</strong> Transparenz, Überprüfung, Anpassung.</li>
-      <li data-schritt><strong>Fünf Werte:</strong> Commitment, Fokus, Offenheit, Respekt, Mut.</li>
-    </ul>
+    <SprintKreislauf id="sk-scrum" aufdecken={1} quelle={`Eigene Zeichnung nach ${GUIDE}, übersetzt. Lizenz wie der Guide: CC BY-SA 4.0.`} />
     <div class="nur-handout">
+      <p><strong>Der Zyklus:</strong> Product Backlog → Inkrement im Sprint → prüfen mit Stakeholdern → nächster Sprint. <strong>Absichtlich unvollständig:</strong> Regeln für die Zusammenarbeit, keine Anleitung. <strong>Aus Erfahrung lernen:</strong> Transparenz, Überprüfung, Anpassung. <strong>Fünf Werte:</strong> Commitment, Fokus, Offenheit, Respekt, Mut.</p>
       <p>„Scrum is a lightweight framework that helps people, teams and organizations generate value through adaptive solutions for complex problems.“ Die vier Schritte: Ein Product Owner ordnet die Arbeit in ein Product Backlog; das Scrum Team macht daraus im Sprint ein Inkrement; Team und Stakeholder „inspect the results and adjust for the next Sprint“; wiederholen ({GUIDE}, S. 3).</p>
       <p>„The Scrum framework is purposefully incomplete, only defining the parts required to implement Scrum theory.“ Und: „Rather than provide people with detailed instructions, the rules of Scrum guide their relationships and interactions“ (S. 3). Scrum beruht auf Empirismus und Lean Thinking; die drei Säulen sind Transparenz, Überprüfung und Anpassung. „Inspection without adaptation is considered pointless“ (S. 3–4). Die Werte: „Commitment, Focus, Openness, Respect, and Courage“ (S. 4). Der Scrum Guide steht unter CC BY-SA 4.0.</p>
     </div>

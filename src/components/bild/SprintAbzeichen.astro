@@ -1,0 +1,19 @@
+---
+// Rollen-Abzeichen an einem Event im Sprint-Kreislauf (nur innerhalb des <svg> von SprintKreislauf.astro; Aussehen
+// dort): Personen-Icon und Kürzel (PO, SM, Dev). Stakeholder gehören nicht zum Scrum Team: gestrichelt, anderes Icon.
+import { User, UserRound } from '@lucide/astro';
+import { ABZEICHEN_H, ROLLEN, type Rolle } from './sprint-kreislauf';
+
+const { liste } = Astro.props as { liste: { r: Rolle; x: number; y: number; b: number }[] };
+---
+{liste.map(({ r, x, y, b }) => {
+  const Icon = ROLLEN[r].team ? User : UserRound;
+  return (
+    <g class:list={['sk-abz', { 'sk-abz-extern': !ROLLEN[r].team }]} data-rolle={r}>
+      <title>{ROLLEN[r].name}</title>
+      <rect class="sk-abz-grund" x={x} y={y} width={b} height={ABZEICHEN_H} rx={ABZEICHEN_H / 2} />
+      <Icon class="sk-abz-icon" x={x + 9} y={y + ABZEICHEN_H / 2 - 10} size={20} aria-hidden="true" />
+      <text class="sk-abz-text" x={x + 33} y={y + ABZEICHEN_H / 2 + 6}>{ROLLEN[r].kurz}</text>
+    </g>
+  );
+})}
