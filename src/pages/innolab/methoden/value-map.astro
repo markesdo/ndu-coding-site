@@ -327,7 +327,9 @@ Die anderen beiden bleiben offen: [Idee], [Idee]
   /* „vorgehen“ im Beamer: fünf Schritte mit Timer und Kaffeebar-Beispiel (Entscheidung 76): volle Folienbreite statt 36em,
      kleinere Timer – sonst ist die Liste bei 1280×720 höher als die Folie. */
   :global(html[data-beamer] .content .folie) > ol.vm-schritte { max-width: none; }
-  :global(html[data-beamer]) .vm-schritte > li { margin-bottom: .1rem; line-height: 1.4; }
+  /* Seit dem Verweis auf die Miro-Anleitung in Schritt 2 (25.11.) eine Zeile mehr: Zeilenhöhe 1.3, kein Abstand zwischen den
+     Schritten – sonst 716 statt 673 px bei 1280×720 (schon vorher 686). */
+  :global(html[data-beamer] .content ol.gross.dicht.vm-schritte) > li { margin-bottom: 0; line-height: 1.3; }
   :global(html[data-beamer]) .vm-schritte :global(.timer) { font-size: 1rem; }
   :global(html[data-beamer]) .vm-bsp { color: var(--muted); }
   /* Fünf Schritte: flachere Timer-Knöpfe, Legende über die volle Breite. */
@@ -364,6 +366,8 @@ Die anderen beiden bleiben offen: [Idee], [Idee]
   /* „vm-fehler“ im Beamer: Fehler und Gegenprobe als kompakte Tabelle, erste Spalte 42 %. */
   :global(html[data-beamer]) .vm-fehler table { font-size: .9rem; table-layout: fixed; width: 100%; }
   :global(html[data-beamer]) .vm-fehler thead th:nth-child(1) { width: 42%; }
+  /* Die vier Nachschlage-Folien: Kaffeebar-Zeile über die volle Breite, keine Silbentrennung in den Zetteln („Bestel-lung“). */
+  :global(html[data-beamer] .folie:is(:has(> h2#ps-finden), :has(> h2#pr-finden), :has(> h2#gc-finden), :has(> h2#vm-fehler)) > p.breit) { max-width: none; hyphens: manual; }
   /* „beispiel“: die Legende direkt unter der Tabelle, ohne eigenen Abstand. */
   :global(html[data-beamer]) .vm-legende { margin: -.9rem 0 .4rem; }
 </style>
