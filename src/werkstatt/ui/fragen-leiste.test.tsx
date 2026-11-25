@@ -13,7 +13,7 @@ import Zeigen, { type ZeigenProps } from './Zeigen';
 const IVS = KAFFEEBAR.interviews as Interview[];
 const text = (h: string) => h.replace(/<[^>]+>/g, '').replace(/&quot;/g, '"');
 const props = (x: Partial<ZeigenProps> = {}): ZeigenProps => ({
-  personen: [{ kuerzel: 'sofie', anzahl: 5 }], person: 'sofie', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null,
+  personen: [{ kuerzel: 'mara', anzahl: 5 }], person: 'mara', interviews: IVS, vorher: null, nr: 1, laedt: false, fehler: null,
   stand: Date.UTC(2026, 10, 12, 13, 5), jetzt: Date.UTC(2026, 10, 12, 13, 6), meldung: '',
   kontext: KONTEXT_LEER, kontextOffen: false, kontextReiter: 'annahmen', kontextUmschalten: () => {}, reiterWaehlen: () => {},
   frage: 0, fragenOffen: true, frageWaehlen: () => {}, fragenUmschalten: () => {},
@@ -96,7 +96,7 @@ describe('Fragen-Leiste im Zeigen-Modus', () => {
 
   it('nur fester Kursinhalt: keine Daten aus der Mappe, keine Zahlen außer „Frage n/4“', () => {
     const t = text(leiste(zeigen({ frage: 1, kontextOffen: true }))!);
-    expect(t.replace(/\s+/g, ' ')).not.toMatch(/sofie|I\d|A\d|Snapshot \d|Stand/);
+    expect(t.replace(/\s+/g, ' ')).not.toMatch(/mara|I\d|A\d|Snapshot \d|Stand/);
   });
 
   it('F aus: keine Frage auf dem Bildschirm, nur der Knopf zum Einblenden', () => {
@@ -137,9 +137,9 @@ describe('Fragen-Leiste im Zeigen-Modus', () => {
   it('außerhalb von Zeigen keine Leiste: Leser ohne Zeigen und Demo zu', () => {
     const lesen = {
       ansicht: { kohorte: 'k', bezug: null, personen: [] } as never,
-      p: { kuerzel: 'sofie', zustand: 'bereit', repo: 'x/sofie', repoUrl: 'https://github.com/x/sofie', artefakte: [], luecken: [] } as never,
+      p: { kuerzel: 'mara', zustand: 'bereit', repo: 'x/mara', repoUrl: 'https://github.com/x/mara', artefakte: [], luecken: [] } as never,
       a: { name: 'interviews', stand: 'vorhanden', umfang: '', fehlt: [], leer: false, faelligZuTag: 2, faellig: true, commits: 1, mehr: false, zuletzt: null, feedback: null } as never,
-      inhalt: { schluessel: 'k/sofie/interviews', zustand: 'bereit', inhalt: { name: 'interviews', stand: 'vorhanden', daten: KAFFEEBAR, roh: null, feedback: [] } } as never,
+      inhalt: { schluessel: 'k/mara/interviews', zustand: 'bereit', inhalt: { name: 'interviews', stand: 'vorhanden', daten: KAFFEEBAR, roh: null, feedback: [] } } as never,
       wechseln: () => {}, schliessen: () => {}, feedbackGeschrieben: () => {}, zeigenStarten: () => {},
     };
     for (const h of [renderToStaticMarkup(<LeserKoerper zeigen={null} lesen={lesen} />), renderToStaticMarkup(<DemoZeigen person="Demo-Mappe" />)]) {

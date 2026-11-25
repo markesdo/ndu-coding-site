@@ -67,8 +67,8 @@ describe('zugangLesen', () => {
     });
     expect(() => zugangLesen(roh)).not.toThrow();
   });
-  it('"Sofie" (Großbuchstabe) wirft', () => {
-    const roh = JSON.stringify({ '2026': { lehrende: [], studierende: [{ githubId: 1, kuerzel: 'Sofie' }] } });
+  it('"Mara" (Großbuchstabe) wirft', () => {
+    const roh = JSON.stringify({ '2026': { lehrende: [], studierende: [{ githubId: 1, kuerzel: 'Mara' }] } });
     expect(() => zugangLesen(roh)).toThrow('WERKSTATT_ZUGANG ungültig');
   });
   it('Kürzel mit Pfadzeichen oder zu kurz/lang wirft', () => {

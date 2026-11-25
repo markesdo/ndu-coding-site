@@ -14,7 +14,7 @@ const eintraege = (artefakt: ArtefaktName, zeilenId: string | undefined, krit: s
   feedbackSchreiben(feedbackLeer(), { artefakt, zeilenId, kriterium: krit, text: 'Was tun Menschen danach anders?', autor: 'markus', datum: D }).eintraege as unknown as FeedbackEintrag[];
 
 const lehrende = (name: ArtefaktName, e: FeedbackEintrag[] = []) =>
-  renderToStaticMarkup(<LehrendenFeedback kohorte="2026" person="sofie" name={name} daten={null} eintraege={e} geschrieben={() => {}} />);
+  renderToStaticMarkup(<LehrendenFeedback kohorte="2026" person="mara" name={name} daten={null} eintraege={e} geschrieben={() => {}} />);
 // Optionen der Auswahl „Kriterium“ (ohne „Ohne Kriterium“).
 const optionen = (html: string) => {
   const auswahl = /<label[^>]*>Kriterium \(optional\)<\/label><select[^>]*>(.*?)<\/select>/.exec(html);

@@ -39,10 +39,10 @@ const FORM = { 'Content-Type': 'application/x-www-form-urlencoded' };
 const START = 1_800_000_000_000;
 const AUTOR = { name: 'Test', email: 'test@example.invalid' };
 
-// Zwei Studierende (A = 1001 sofie, B = 1002 jonas) und eine Lehrende (1000) in der Kohorte test.
+// Zwei Studierende (A = 1001 mara, B = 1002 jonas) und eine Lehrende (1000) in der Kohorte test.
 // Beide Mappen sind angelegt und tragen eine Annahmen-Map mit erkennbar verschiedenem Text.
 // Ohne Markdown-Zeichen: So steht der Satz im Markdown wörtlich, und die Negativ-Prüfungen auf text() greifen.
-const TEXT_A = 'Wir glauben, dass Sofies Pendlerinnen vorbestellen wollen.';
+const TEXT_A = 'Wir glauben, dass Maras Pendlerinnen vorbestellen wollen.';
 const TEXT_B = 'Wir glauben, dass Jonas’ Studierende nie vorbestellen.';
 
 function mitText(text: string) {
@@ -59,7 +59,7 @@ async function aufbau(opts: { cache?: Cache; origin?: string } = {}) {
       test: {
         lehrende: [1000],
         studierende: [
-          { githubId: 1001, kuerzel: 'sofie' },
+          { githubId: 1001, kuerzel: 'mara' },
           { githubId: 1002, kuerzel: 'jonas' },
         ],
       },
@@ -68,7 +68,7 @@ async function aufbau(opts: { cache?: Cache; origin?: string } = {}) {
   };
   const speicher = fakeSpeicher();
   for (const [githubId, kuerzel, text] of [
-    [1001, 'sofie', TEXT_A],
+    [1001, 'mara', TEXT_A],
     [1002, 'jonas', TEXT_B],
   ] as const) {
     const { repo } = await speicher.anlegen({ kohorte: 'test', rolle: 'studierende', kuerzel }, githubId);
@@ -286,7 +286,7 @@ describe('Werkzeuge', () => {
   // Daten bleiben im Repo, lassen sich über den Connector aber nicht mehr anfordern.
   it('Entscheidungslog stillgelegt: weder in Anweisung noch Beschreibungen, artefakt_lesen/-pruefen und methode_erklaeren lehnen es ab', async () => {
     const h = await aufbau();
-    await speichernJson(h, 'test-sofie', 'entscheidungen', entscheidungenBeispiel);
+    await speichernJson(h, 'test-mara', 'entscheidungen', entscheidungenBeispiel);
     const c = await client(h, await accessToken(h));
     const anweisung = c.getInstructions() ?? '';
     expect(anweisung).toContain('an ihrer eigenen Mappe: Produkt-Brief, Annahmen-Map, Interviewleitfaden und Interviews mit Snapshots.');
@@ -385,7 +385,7 @@ describe('Werkzeuge', () => {
     const stand = await c.callTool({ name: 'mappe_uebersicht', arguments: { repo: 'test-jonas', githubId: 1002 } });
     expect(stand.structuredContent).toStrictEqual({
       kohorte: 'test',
-      repo: 'test-sofie',
+      repo: 'test-mara',
       lesezugriff: 'unbekannt',
       artefakte: [
         { name: 'brief', titel: 'Produkt-Brief', vorhanden: false },
@@ -409,7 +409,7 @@ describe('Werkzeuge', () => {
 
     const repos = [...lesen.mock.calls.map((a) => a[0]), ...uebersicht.mock.calls.map((a) => a[0])];
     expect(repos.length).toBeGreaterThan(0);
-    expect(new Set(repos)).toStrictEqual(new Set(['test-sofie']));
+    expect(new Set(repos)).toStrictEqual(new Set(['test-mara']));
   });
 
   it('Token von B liest Bs Mappe (Gegenprobe)', async () => {
@@ -443,7 +443,7 @@ describe('Werkzeuge', () => {
 
   it('artefakt_lesen: ungültige Datei im Repo -> verständlicher Hinweis statt Absturz', async () => {
     const h = await aufbau();
-    await h.speicher.speichern('test-sofie', 'leitfaden', { 'mappe/leitfaden.json': '{"schema":"leitfaden@1"}\n' }, null, AUTOR, 'kaputt');
+    await h.speicher.speichern('test-mara', 'leitfaden', { 'mappe/leitfaden.json': '{"schema":"leitfaden@1"}\n' }, null, AUTOR, 'kaputt');
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'leitfaden' } });
     expect(r.isError).toBe(true);
@@ -475,13 +475,13 @@ describe('Werkzeuge', () => {
     for (const args of [{}, { artefakt: '' }, { artefakt: null }]) {
       const r = await c.callTool({ name: 'mappe_uebersicht', arguments: args });
       expect(r.isError, JSON.stringify(args)).toBeFalsy();
-      expect((r.structuredContent as { repo: string }).repo).toBe('test-sofie');
+      expect((r.structuredContent as { repo: string }).repo).toBe('test-mara');
     }
   });
 
   it('interner Fehler im Speicher: keine Einzelheiten an den Client', async () => {
     const h = await aufbau();
-    vi.spyOn(h.speicher, 'lesen').mockRejectedValue(new Error('GET /repos/ndu-innolab/test-sofie geheim'));
+    vi.spyOn(h.speicher, 'lesen').mockRejectedValue(new Error('GET /repos/ndu-innolab/test-mara geheim'));
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: 'artefakt_lesen', arguments: { artefakt: 'annahmen' } });
@@ -673,8 +673,8 @@ describe('Runde R22', () => {
 
   it('kaputtes JSON im Repo -> derselbe Hinweis wie bei falschem Format; echter GitHub-Ausfall bleibt allgemein', async () => {
     const h = await aufbau();
-    await h.speicher.speichern('test-sofie', 'brief', { 'mappe/brief.json': '{ kaputt' }, null, AUTOR, 'kaputt');
-    await h.speicher.speichern('test-sofie', 'leitfaden', { 'mappe/leitfaden.json': '{"schema":"leitfaden@1"}\n' }, null, AUTOR, 'falsch');
+    await h.speicher.speichern('test-mara', 'brief', { 'mappe/brief.json': '{ kaputt' }, null, AUTOR, 'kaputt');
+    await h.speicher.speichern('test-mara', 'leitfaden', { 'mappe/leitfaden.json': '{"schema":"leitfaden@1"}\n' }, null, AUTOR, 'falsch');
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const c = await client(h, await accessToken(h));
     for (const name of ['artefakt_lesen', 'artefakt_pruefen']) {
@@ -795,7 +795,7 @@ const speichernJson = (h: Aufbau, repo: string, name: 'entscheidungen' | 'interv
 describe('Interviews und Verknüpfungen (Phase 1b)', () => {
   it('artefakt_pruefen(interviews): Belegstufe erfragen bei synthese-beleg-nachgetragen, ohne und mit Fokus – nur dort', async () => {
     const h = await aufbau();
-    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    await speichernJson(h, 'test-mara', 'interviews', interviewsBeispiel);
     const c = await client(h, await accessToken(h));
     const frage = 'Bei synthese-beleg-nachgetragen: Nenn Zitate, die bei keiner Annahme als Beleg stehen, aber das Thema einer Annahme berühren (Annahme nur per ID), und frag, ob und wofür oder wogegen sie sprechen. Frag bei jedem Zitat, zu dem du eine Rückfrage stellst, ob es eine konkrete Begebenheit erzählt oder eine allgemeine Aussage ist – welche Belegstufe passt?';
     const anleitung = async (pruefpunkt?: string) => {
@@ -817,7 +817,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const mitName = structuredClone(interviewsBeispiel) as typeof interviewsBeispiel & { interviews: Record<string, unknown>[] };
     // Jemand trägt direkt auf GitHub einen Klarnamen ein: das Schema kennt das Feld nicht, es wird verworfen.
     mitName.interviews[1].name = 'Maria Klarname';
-    await speichernJson(h, 'test-sofie', 'interviews', mitName);
+    await speichernJson(h, 'test-mara', 'interviews', mitName);
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'interviews' } });
     expect(r.isError).toBeFalsy();
@@ -830,7 +830,7 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const h = await aufbau();
     const ohne = structuredClone(interviewsBeispiel);
     ohne.interviews[0].pseudonym = '';
-    await speichernJson(h, 'test-sofie', 'interviews', ohne);
+    await speichernJson(h, 'test-mara', 'interviews', ohne);
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'interviews' } });
     expect(r.isError).toBe(true);
@@ -841,12 +841,12 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
 
   it('verknuepfungen_pruefen: Beleg-IDs der Annahmen-Map werden gegen die Interviews aufgelöst; das gespeicherte Entscheidungslog wird nicht geprüft (NDU-70)', async () => {
     const h = await aufbau();
-    await speichernJson(h, 'test-sofie', 'entscheidungen', entscheidungenBeispiel);
-    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    await speichernJson(h, 'test-mara', 'entscheidungen', entscheidungenBeispiel);
+    await speichernJson(h, 'test-mara', 'interviews', interviewsBeispiel);
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBeFalsy();
-    // Sofies Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
+    // Maras Annahmen-Map ist die Kaffeebar mit eigenem Text in A1. Den Brief hat nur Jonas.
     // Lücken: A2 und A4 der Kaffeebar stehen auf „getan“ ohne Quelle. Verwaist ist nichts: A1 nennt I2-4, I3-1 und I5-3,
     // die gespeicherte alte Zeile D3 nennt I1–I5 (lesbare Log-Zeilen zählen weiter; geprüft wird das Log nicht, NDU-70).
     expect(r.structuredContent).toStrictEqual({
@@ -870,12 +870,12 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
 
   it('verknuepfungen_pruefen: riskanteste Annahme ohne Beleg kommt durchs Ausgabeschema (A1 ohne Gegenbelege)', async () => {
     const h = await aufbau();
-    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    await speichernJson(h, 'test-mara', 'interviews', interviewsBeispiel);
     const offen = mitText(TEXT_A);
     Object.assign(offen.annahmen[0], { beleg: 'keiner', belegIds: [] });
     delete (offen.annahmen[0] as { belegNotiz?: string }).belegNotiz;
-    const { basisSha } = await h.speicher.lesen('test-sofie', 'annahmen');
-    await h.speicher.speichern('test-sofie', 'annahmen', { 'mappe/annahmen.json': `${JSON.stringify(offen, null, 2)}\n` }, basisSha, AUTOR, 'A1 offen');
+    const { basisSha } = await h.speicher.lesen('test-mara', 'annahmen');
+    await h.speicher.speichern('test-mara', 'annahmen', { 'mappe/annahmen.json': `${JSON.stringify(offen, null, 2)}\n` }, basisSha, AUTOR, 'A1 offen');
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     expect(r.isError).toBeFalsy();
@@ -888,8 +888,8 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
     const h = await aufbau();
     const e = structuredClone(entscheidungenBeispiel);
     e.entscheidungen[3].belegIds = ['I2-4', 'I2-9'];
-    await speichernJson(h, 'test-sofie', 'entscheidungen', e);
-    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    await speichernJson(h, 'test-mara', 'entscheidungen', e);
+    await speichernJson(h, 'test-mara', 'interviews', interviewsBeispiel);
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: {} });
     const befunde = (r.structuredContent as { befunde: { art: string; id?: string }[] }).befunde;
@@ -899,21 +899,21 @@ describe('Interviews und Verknüpfungen (Phase 1b)', () => {
 
   it('verknuepfungen_pruefen: unlesbare Datei wird gelistet statt das ganze Werkzeug abzubrechen; liest nur die eigene Mappe', async () => {
     const h = await aufbau();
-    await h.speicher.speichern('test-sofie', 'interviews', { 'mappe/interviews.json': '{ kaputt' }, null, AUTOR, 'kaputt');
+    await h.speicher.speichern('test-mara', 'interviews', { 'mappe/interviews.json': '{ kaputt' }, null, AUTOR, 'kaputt');
     const lesen = vi.spyOn(h.speicher, 'lesen');
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.verknuepfungenPruefen, arguments: { repo: 'test-jonas' } });
     expect(r.isError).toBeFalsy();
     expect((r.structuredContent as { unlesbar: string[] }).unlesbar).toStrictEqual(['interviews']);
     expect(text(r)).toMatch(/Nicht lesbar.*Interviews und Snapshots/);
-    expect(new Set(lesen.mock.calls.map((a) => a[0]))).toStrictEqual(new Set(['test-sofie']));
+    expect(new Set(lesen.mock.calls.map((a) => a[0]))).toStrictEqual(new Set(['test-mara']));
   });
 
   // NDU-70: Das stillgelegte Log nur nach bestem Bemühen – ein GitHub-Fehler genau darauf bricht das Werkzeug nicht ab und
   // wird nirgends gemeldet; D-IDs gelten dann als nicht prüfbar.
   it('verknuepfungen_pruefen: GitHub-Ausfall nur beim stillgelegten Entscheidungslog -> Ergebnis wie sonst, nichts gemeldet', async () => {
     const h = await aufbau();
-    await speichernJson(h, 'test-sofie', 'interviews', interviewsBeispiel);
+    await speichernJson(h, 'test-mara', 'interviews', interviewsBeispiel);
     const echt = h.speicher.lesen.bind(h.speicher);
     vi.spyOn(h.speicher, 'lesen').mockImplementation((repo, name) => (name === 'entscheidungen' ? Promise.reject(new GithubAusnahme(502)) : echt(repo, name)));
     vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -998,8 +998,8 @@ describe('artefakt_pruefen: Vorarbeit und Prüfpunkt im Fokus', () => {
 
   it('fehlende Vorarbeit -> klarer Hinweis im Text, vorhanden: false, Anleitung sagt es weiter', async () => {
     const h = await aufbau();
-    // Sofie hat eine Annahmen-Map, aber keinen Brief.
-    await h.speicher.speichern('test-sofie', 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
+    // Mara hat eine Annahmen-Map, aber keinen Brief.
+    await h.speicher.speichern('test-mara', 'leitfaden', { 'mappe/leitfaden.json': LEITFADEN }, null, AUTOR, 'Leitfaden');
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: 'artefakt_pruefen', arguments: { artefakt: 'leitfaden' } });
     expect(r.isError).toBeFalsy();
@@ -1228,7 +1228,7 @@ describe('tag_stand', () => {
     const iv = structuredClone(interviewsBeispiel);
     iv.interviews = iv.interviews.slice(0, 2);
     iv.interviews[1].chancen = [];
-    await alleSpeichern(h, 'test-sofie', { brief: briefBeispiel, interviews: iv });
+    await alleSpeichern(h, 'test-mara', { brief: briefBeispiel, interviews: iv });
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
     const interviews = sc(r).faellig.find((f) => f.artefakt === 'interviews')!;
@@ -1287,7 +1287,7 @@ describe('tag_stand', () => {
 
   it('unlesbare Datei zählt als unlesbar, ungültiger tag -> Fehlerergebnis, Lehrende -> Satz zur Lehrende-Ansicht', async () => {
     const h = await aufbau();
-    await h.speicher.speichern('test-sofie', 'brief', { 'mappe/brief.json': '{ kaputt' }, null, AUTOR, 'kaputt');
+    await h.speicher.speichern('test-mara', 'brief', { 'mappe/brief.json': '{ kaputt' }, null, AUTOR, 'kaputt');
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.tagStand, arguments: { tag: 2 } });
     expect(sc(r).faellig.find((f) => f.artefakt === 'brief')?.stand).toBe('unlesbar');
@@ -1466,11 +1466,11 @@ describe('Connector hält sich an Aufdecken (Mom Test)', () => {
 // NDU-35: Feedback der Lehrenden kommt mit artefakt_lesen und artefakt_pruefen mit – nur lesend, nie als Prüfbefund.
 describe('Feedback der Lehrenden im Connector', () => {
   const D = '2026-10-23T09:00:00.000Z';
-  async function mitFeedback(h: Aufbau, repo = 'test-sofie') {
+  async function mitFeedback(h: Aufbau, repo = 'test-mara') {
     await feedbackAendern(h.speicher, repo, (f) => {
       const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A2', text: 'Woher stammt die Zahl?\n# Keine Überschrift', autor: 'markus', datum: D });
       const b = feedbackSchreiben(a, { artefakt: 'brief', text: 'Brief: nur hier.', autor: 'markus', datum: D });
-      return erledigtSetzen(antworten(b, { antwortAuf: 'FB1', text: 'Aus der Kassa.', autor: 'sofie', datum: D }), 'FB2', true);
+      return erledigtSetzen(antworten(b, { antwortAuf: 'FB1', text: 'Aus der Kassa.', autor: 'mara', datum: D }), 'FB2', true);
     }, AUTOR, 'Feedback');
   }
 
@@ -1483,14 +1483,14 @@ describe('Feedback der Lehrenden im Connector', () => {
     const t = text(r);
     // Zwischen Artefakt (und Vorarbeit) und der Anleitung; der Text der Lehrperson ist ein Zitat und beginnt keine Überschrift.
     expect(t.split('\n').filter((z) => /^#{1,2} /.test(z))).toStrictEqual(['# Prüfung: Annahmen-Map', '## Prüfpunkte (Annahmen-Map)', '## Artefakt', '## Vorarbeit zum Abgleich: Produkt-Brief (brief)', '## Feedback der Lehrenden (kein Prüfbefund)', '## So antwortest du']);
-    expect(t).toContain('- FB1: markus zu A2, 23.10.2026, offen\n  > Woher stammt die Zahl?\n  > # Keine Überschrift\n  - Antwort von sofie, 23.10.2026:\n    > Aus der Kassa.');
+    expect(t).toContain('- FB1: markus zu A2, 23.10.2026, offen\n  > Woher stammt die Zahl?\n  > # Keine Überschrift\n  - Antwort von mara, 23.10.2026:\n    > Aus der Kassa.');
     expect(t).not.toContain('Brief: nur hier.');
     const sc = r.structuredContent as { anleitung: string; feedback: unknown };
     expect(sc.anleitung).toMatch(/nie als eigenen Befund/);
     expect(sc.anleitung).toMatch(/schreib selbst kein Feedback/);
     expect(sc.feedback).toStrictEqual([{
       id: 'FB1', zeile: 'A2', autor: 'markus', datum: '23.10.2026', text: 'Woher stammt die Zahl?\n# Keine Überschrift', erledigt: false,
-      antworten: [{ autor: 'sofie', datum: '23.10.2026', text: 'Aus der Kassa.' }],
+      antworten: [{ autor: 'mara', datum: '23.10.2026', text: 'Aus der Kassa.' }],
     }]);
   });
 
@@ -1499,7 +1499,7 @@ describe('Feedback der Lehrenden im Connector', () => {
     await mitFeedback(h);
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'brief' } });
-    // Sofie hat keinen Brief, aber Feedback dazu: Hinweis „noch nicht ausgefüllt“ und das Feedback, erledigt.
+    // Mara hat keinen Brief, aber Feedback dazu: Hinweis „noch nicht ausgefüllt“ und das Feedback, erledigt.
     expect(text(r)).toContain('noch nicht ausgefüllt');
     expect(text(r)).toContain('- FB2: markus zum ganzen Artefakt, 23.10.2026, erledigt\n  > Brief: nur hier.');
     expect(r.structuredContent).toMatchObject({ vorhanden: false, feedback: [{ id: 'FB2', erledigt: true, text: 'Brief: nur hier.' }] });
@@ -1509,7 +1509,7 @@ describe('Feedback der Lehrenden im Connector', () => {
     expect(text(a).startsWith(sc.markdown)).toBe(true);
     expect(sc.feedback).toStrictEqual([{
       id: 'FB1', zeile: 'A2', autor: 'markus', datum: '23.10.2026', text: 'Woher stammt die Zahl?\n# Keine Überschrift', erledigt: false,
-      antworten: [{ autor: 'sofie', datum: '23.10.2026', text: 'Aus der Kassa.' }],
+      antworten: [{ autor: 'mara', datum: '23.10.2026', text: 'Aus der Kassa.' }],
     }]);
     expect(sc.anleitung).toMatch(/nie als eigenen Befund/);
   });
@@ -1540,7 +1540,7 @@ describe('Feedback der Lehrenden im Connector', () => {
     expect((r.structuredContent as { anleitung: string }).anleitung).not.toMatch(/Feedback/);
   });
 
-  it('nur das eigene: Feedback in Jonas’ Mappe erreicht Sofies Token nicht', async () => {
+  it('nur das eigene: Feedback in Jonas’ Mappe erreicht Maras Token nicht', async () => {
     const h = await aufbau();
     await mitFeedback(h, 'test-jonas');
     const c = await client(h, await accessToken(h, 1001));
@@ -1553,13 +1553,13 @@ describe('Feedback der Lehrenden im Connector', () => {
   it('nur lesend: Lesen schreibt nichts (auch nicht „gesehen“); es gibt kein Werkzeug zum Schreiben', async () => {
     const h = await aufbau();
     await mitFeedback(h);
-    const vorher = await h.speicher.feedbackLesen('test-sofie');
-    const commits = h.speicher.commits('test-sofie').length;
+    const vorher = await h.speicher.feedbackLesen('test-mara');
+    const commits = h.speicher.commits('test-mara').length;
     const c = await client(h, await accessToken(h));
     await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
     await c.callTool({ name: MCP_WERKZEUGE.artefaktLesen, arguments: { artefakt: 'annahmen' } });
-    expect(h.speicher.commits('test-sofie')).toHaveLength(commits);
-    expect(await h.speicher.feedbackLesen('test-sofie')).toStrictEqual(vorher);
+    expect(h.speicher.commits('test-mara')).toHaveLength(commits);
+    expect(await h.speicher.feedbackLesen('test-mara')).toStrictEqual(vorher);
     const { tools } = await c.listTools();
     expect(tools.some((t) => /feedback/i.test(t.name))).toBe(false);
   });
@@ -1567,7 +1567,7 @@ describe('Feedback der Lehrenden im Connector', () => {
   it('unlesbares Feedback: das Werkzeug läuft, ein Satz statt des Feedbacks', async () => {
     const h = await aufbau();
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    await h.speicher.feedbackAendern('test-sofie', () => '{kaputt', AUTOR, 'x');
+    await h.speicher.feedbackAendern('test-mara', () => '{kaputt', AUTOR, 'x');
     const c = await client(h, await accessToken(h));
     const r = await c.callTool({ name: MCP_WERKZEUGE.artefaktPruefen, arguments: { artefakt: 'annahmen' } });
     expect(r.isError).toBeFalsy();
@@ -1578,7 +1578,7 @@ describe('Feedback der Lehrenden im Connector', () => {
   // NDU-41: Kriterium am Feedback – Claude bekommt nur den Namen, nie das Kaffeebar-Paar (keine Fassung zum Übernehmen).
   it('Kriterium: Name in Text und structuredContent, das Kaffeebar-Paar nie; ohne Kriterium kein Schlüssel', async () => {
     const h = await aufbau();
-    await feedbackAendern(h.speicher, 'test-sofie', (f) => {
+    await feedbackAendern(h.speicher, 'test-mara', (f) => {
       const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A3', kriterium: 'art-der-annahme', text: 'Welche Art ist das?', autor: 'markus', datum: D });
       const b = feedbackSchreiben(a, { artefakt: 'annahmen', text: 'Ohne Kriterium.', autor: 'markus', datum: D });
       // Ein Kriterium, das der Katalog nicht (mehr) kennt: Die Datei bleibt lesbar, Claude bekommt keinen Namen.
@@ -1609,14 +1609,14 @@ describe('Feedback der Lehrenden im Connector', () => {
   const FASSUNG_ZU = 'Wir glauben, dass [Gruppe aus deinen Interviews] morgens lieber vorbestellen.';
   const FASSUNG_OFFEN = 'Pendelnde verlieren morgens [Minuten aus deinen Beobachtungen] beim Anstehen.';
   async function mitFassungen(h: Aufbau) {
-    const ort = (artefakt: 'annahmen' | 'brief', zeilenId: string) => ({ repo: 'test-sofie', artefakt, zeilenId });
+    const ort = (artefakt: 'annahmen' | 'brief', zeilenId: string) => ({ repo: 'test-mara', artefakt, zeilenId });
     const zu = await fassungVersiegeln(FASSUNG_ZU, ort('annahmen', 'A1'), h.abh.umgebung.tokenKeys);
     const offen = await fassungVersiegeln(FASSUNG_OFFEN, ort('brief', 'problem'), h.abh.umgebung.tokenKeys);
-    await feedbackAendern(h.speicher, 'test-sofie', (f) => {
+    await feedbackAendern(h.speicher, 'test-mara', (f) => {
       // A1 unverändert seit dem Schreiben: zu. Problem im Brief: Antwort der Person, also frei.
       const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A1', text: 'Wer genau?', autor: 'markus', datum: D, fassung: { siegel: zu, zeilenStand: `sha256:${'0'.repeat(64)}` } });
       const b = feedbackSchreiben(a, { artefakt: 'brief', zeilenId: 'problem', text: 'Wessen Problem?', autor: 'markus', datum: D, fassung: { siegel: offen, zeilenStand: `sha256:${'1'.repeat(64)}` } });
-      return antworten(b, { antwortAuf: 'FB2', text: 'Meins.', autor: 'sofie', datum: D });
+      return antworten(b, { antwortAuf: 'FB2', text: 'Meins.', autor: 'mara', datum: D });
     }, AUTOR, 'Feedback');
     return [FASSUNG_ZU, FASSUNG_OFFEN, zu, offen, 'Gruppe aus deinen Interviews', 'lieber vorbestellen', 'Minuten aus deinen Beobachtungen', 'beim Anstehen', 'f1.', 'sha256:', 'freiSeit', 'zeilenStand'];
   }
@@ -1624,7 +1624,7 @@ describe('Feedback der Lehrenden im Connector', () => {
   it('mögliche Fassung: kein Werkzeug liefert sie (alle Werkzeuge, alle Artefakte, Text und structuredContent), auch frei nicht', async () => {
     const h = await aufbau();
     const verboten = await mitFassungen(h);
-    expect((await h.speicher.feedbackLesen('test-sofie') as { eintraege: { freiSeit?: string }[] }).eintraege[1].freiSeit).toBe(D);
+    expect((await h.speicher.feedbackLesen('test-mara') as { eintraege: { freiSeit?: string }[] }).eintraege[1].freiSeit).toBe(D);
     const c = await client(h, await accessToken(h));
     const aufrufe: [string, Record<string, unknown>][] = [
       [MCP_WERKZEUGE.mappeUebersicht, {}],
@@ -1697,17 +1697,17 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
   const FASSUNG = 'Pendelnde verlieren morgens [Minuten aus deinen Beobachtungen] beim Anstehen.';
   const FRAGE_F1 = leitfadenBeispiel.fragen[0].text;
 
-  // Sofies volle Mappe mit Feedback: Kriterium und Antwort an A2, eine versiegelte Fassung am Problem des Briefs.
+  // Maras volle Mappe mit Feedback: Kriterium und Antwort an A2, eine versiegelte Fassung am Problem des Briefs.
   async function volleMappe() {
     const h = await aufbau();
     for (const [name, daten] of [['brief', briefBeispiel], ['entscheidungen', entscheidungenBeispiel], ['leitfaden', leitfadenBeispiel], ['interviews', interviewsBeispiel]] as const) {
-      await h.speicher.speichern('test-sofie', name, { [`mappe/${name}.json`]: `${JSON.stringify(daten, null, 2)}\n` }, null, AUTOR, name);
+      await h.speicher.speichern('test-mara', name, { [`mappe/${name}.json`]: `${JSON.stringify(daten, null, 2)}\n` }, null, AUTOR, name);
     }
-    const siegel = await fassungVersiegeln(FASSUNG, { repo: 'test-sofie', artefakt: 'brief', zeilenId: 'problem' }, h.abh.umgebung.tokenKeys);
-    await feedbackAendern(h.speicher, 'test-sofie', (f) => {
+    const siegel = await fassungVersiegeln(FASSUNG, { repo: 'test-mara', artefakt: 'brief', zeilenId: 'problem' }, h.abh.umgebung.tokenKeys);
+    await feedbackAendern(h.speicher, 'test-mara', (f) => {
       const a = feedbackSchreiben(f, { artefakt: 'annahmen', zeilenId: 'A2', kriterium: 'art-der-annahme', text: 'Woher stammt die Zahl?', autor: 'markus', datum: D });
       const b = feedbackSchreiben(a, { artefakt: 'brief', zeilenId: 'problem', text: 'Wessen Problem?', autor: 'markus', datum: D, fassung: { siegel, zeilenStand: `sha256:${'0'.repeat(64)}` } });
-      return antworten(b, { antwortAuf: 'FB1', text: 'Aus der Kassa.', autor: 'sofie', datum: D });
+      return antworten(b, { antwortAuf: 'FB1', text: 'Aus der Kassa.', autor: 'mara', datum: D });
     }, AUTOR, 'Feedback');
     return { h, c: await client(h, await accessToken(h)), siegel };
   }
@@ -1750,7 +1750,7 @@ describe('Was das Modell sieht: Text und structuredContent tragen dasselbe (NDU-
   it('Feedback unlesbar: der Satz steht auch im structuredContent', async () => {
     const h = await aufbau();
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    await h.speicher.feedbackAendern('test-sofie', () => '{kaputt', AUTOR, 'x');
+    await h.speicher.feedbackAendern('test-mara', () => '{kaputt', AUTOR, 'x');
     const c = await client(h, await accessToken(h));
     for (const name of [MCP_WERKZEUGE.artefaktLesen, MCP_WERKZEUGE.artefaktPruefen]) {
       const r = await c.callTool({ name, arguments: { artefakt: 'annahmen' } });

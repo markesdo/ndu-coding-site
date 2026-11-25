@@ -71,11 +71,11 @@ describe('Routing', () => {
   it('mit gültiger Sitzung liefert /api/werkstatt/mappe einen MappeStand (Router wirklich eingehängt)', async () => {
     const abh = lokaleAbhaengigkeiten();
     const mit = appErstellen(abh);
-    const wert = await sitzungErstellen({ githubId: 900001, login: 'sofie-test', kohorte: 'test', rolle: 'studierende', exp: Math.floor(Date.now() / 1000) + 600 }, abh.umgebung.sessionSecret);
+    const wert = await sitzungErstellen({ githubId: 900001, login: 'mara-test', kohorte: 'test', rolle: 'studierende', exp: Math.floor(Date.now() / 1000) + 600 }, abh.umgebung.sessionSecret);
     const r = await mit.request(`${BASIS}/api/werkstatt/mappe`, { headers: { Cookie: `${COOKIE_WERKSTATT}=${wert}` } });
     expect(r.status).toBe(200);
     const stand = await r.json();
-    expect(stand).toMatchObject({ kohorte: 'test', repo: 'test-sofie' });
+    expect(stand).toMatchObject({ kohorte: 'test', repo: 'test-mara' });
     expect(stand.artefakte.map((a: { name: string }) => a.name)).toStrictEqual(['brief', 'entscheidungen', 'annahmen', 'leitfaden', 'interviews']);
   });
 

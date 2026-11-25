@@ -152,7 +152,7 @@ describe('Stand des Servers für das Formular', () => {
   });
 });
 
-const ICH = { githubId: 1001, login: 'sofie', kohorte: '2026', rolle: 'studierende' as const, repo: 'ndu-innolab/2026-sofie' };
+const ICH = { githubId: 1001, login: 'mara', kohorte: '2026', rolle: 'studierende' as const, repo: 'ndu-innolab/2026-mara' };
 function apiFehler(status: number, code: string, message: string) {
   return Object.assign(new Error(message), { status, code });
 }
