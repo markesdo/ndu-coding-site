@@ -92,7 +92,8 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
   // NDU-71: Um 9:00 blättert Markus im Beamer per → vom Ablauf direkt in den Arbeitsfluss, ohne Seitenwechsel.
   it('Beamer: nach dem Ablauf kommen die Folien Arbeitsfluss (Tag 4 hier, Tag 4 und 5–7 per →) und „Was bauen wir?“', () => {
     const q = seite('/innolab/tag-4');
-    expect(folienAus('/innolab/tag-4', q).map((f) => f.id)).toStrictEqual(['arbeitsfluss', 'was-bauen-wir']);
+    // Dahinter die drei Folien des Abschlusses (17:15, tag-4-ende.test.ts); „Was bauen wir?“ führt per → zur Value Map.
+    expect(folienAus('/innolab/tag-4', q).map((f) => f.id)).toStrictEqual(['arbeitsfluss', 'was-bauen-wir', 'abschluss', 'hausaufgabe', 'ende-tag-4']);
     // Die erste Folie steht direkt hinter dem Ablauf, nicht erst nach #faden.
     const ablauf = q.indexOf('<h2 id="ablauf">');
     expect(ablauf).toBeGreaterThan(0);

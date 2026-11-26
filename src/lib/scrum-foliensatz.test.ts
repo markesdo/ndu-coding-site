@@ -137,7 +137,7 @@ describe('Scrum-Seite: „Euer Produkt in einem Satz“ abgeschaltet', () => {
     expect(html).not.toContain('Euer Produkt in einem Satz</h2>');
     const ids = [...html.matchAll(/<h2[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
     expect(ids).not.toContain('produktziel');
-    expect(ids.slice(ids.indexOf('beispiel'), ids.indexOf('beispiel') + 3)).toStrictEqual(['beispiel', 'planen', 'team']);
+    expect(ids.slice(ids.indexOf('beispiel'), ids.indexOf('beispiel') + 3)).toStrictEqual(['beispiel', 'planen', 'weiter-tag-4']);
     expect(gliederung(QUELLE_SCRUM).map((a) => a.id)).not.toContain('produktziel');
     expect(folienAus('/innolab/methoden/scrum', QUELLE_SCRUM).flatMap((f) => [f.id, ...f.unterIds])).not.toContain('produktziel');
     // Außerhalb des Blocks verweist nichts auf den Anker.

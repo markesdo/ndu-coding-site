@@ -93,7 +93,13 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
 
   it('Ab hier: Tag 5 – an Tag 4 geht es nach Scrum mit „Prototyp weiterbauen / Puffer“ weiter, Origin Story um 17:15', () => {
     const s = seite(m('scrum'));
-    const ab = s.slice(s.indexOf('<Callout type="info" title="Ab hier: Tag 5">'), s.indexOf('</Callout>', s.indexOf('title="Ab hier: Tag 5"')));
+    // Seit 26.11.2026 eine Folie (Audit Tag 4): → führt von hier in den Abschluss von Tag 4.
+    const von = s.indexOf('<Folie weiter="/innolab/tag-4#abschluss">');
+    expect(von).toBeGreaterThan(0);
+    const ab = s.slice(von, s.indexOf('</Folie>', von));
+    expect(ab).toContain('<h2 id="weiter-tag-4">Ab hier: Tag 5</h2>');
+    expect(ab).toContain('<p class="folie-satz">Teamaufstellung und Definition of Done folgen an Tag 5.</p>');
+    expect(ab).toContain('<p>Heute: weiter am Prototyp bis 17:15, dann Origin Story und Hausaufgabe.</p>');
     expect(ab).toContain('An Tag 4 geht es von hier weiter mit <a href="/innolab/tag-4#ablauf">Prototyp weiterbauen / Puffer</a>; um 17:15 folgt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.');
   });
 
