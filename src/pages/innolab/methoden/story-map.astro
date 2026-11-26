@@ -281,4 +281,6 @@ Lernen: Wir lernen, ob [...] (A…)
 <style>
   .map th, .map td { font-size: .85rem; vertical-align: top; }
   :global(html[data-beamer]) .map th, :global(html[data-beamer]) .map td { font-size: .9rem; padding-top: .3rem; padding-bottom: .3rem; }
+  /* Folie „varianten“: Satz, zwei Schritte und das breite Bild passen bei 1280 × 720 nur mit etwas kleinerem Bild. */
+  :global(html[data-beamer] .folie:has(> h2#varianten) .buch-abbildung img) { max-height: calc(100vh - 23.75rem); }
 </style>

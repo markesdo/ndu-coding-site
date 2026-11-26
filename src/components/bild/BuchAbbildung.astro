@@ -1,4 +1,9 @@
 ---
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { publicDir } from 'astro:config/server';
+import { bildMass } from '../../lib/bildmass';
 // Abbildung aus einer Kursquelle (Buch, Artikel) mit Quellenangabe. Die Bilder liegen in public/quellen/ und damit hinter
 // dem Kurspasswort (middleware.ts gibt nur /_astro/* frei) – deshalb als <img src> und nicht über astro:assets importiert.
 // hochkant: schmale, hohe Abbildung (z. B. ein senkrechter Stapel) – nicht über ihre Breite hinaus vergrößern.
@@ -6,12 +11,19 @@
 const marke = Astro.slots.has('marke');
 const { src, alt, quelle, breit = false, schmal = false, hochkant = false } = Astro.props as { src: string; alt: string; quelle: string; breit?: boolean; schmal?: boolean; hochkant?: boolean };
 if (!src.startsWith('/quellen/')) throw new Error(`BuchAbbildung: Bilder gehören nach public/quellen/ (hinter dem Passwort), war ${src}`);
+// Maße aus der Datei: So reserviert der Browser den Platz schon vor dem (lazy) Laden, und eine Folie wächst nicht nachträglich.
+// Pfad ohne ?query und #anker, Prozent-Kodierung aufgelöst, relativ zum public-Ordner des Projekts (nicht zum Arbeitsverzeichnis).
+const oeffentlich = typeof publicDir === 'string' ? publicDir : fileURLToPath(publicDir);
+const datei = join(oeffentlich, decodeURIComponent(src.split(/[?#]/)[0]));
+const mass = bildMass(readFileSync(datei));
+if (!mass) throw new Error(`BuchAbbildung: Maße von ${src} nicht lesbar (nur PNG und JPEG)`);
+const { breite: width, hoehe: height } = mass;
 ---
 <figure class:list={['buch-abbildung', { breit, schmal, hochkant }]}>
   {marke ? (
-    <div class="bild-rahmen"><img src={src} alt={alt} loading="lazy" decoding="async" /><slot name="marke" /></div>
+    <div class="bild-rahmen"><img src={src} alt={alt} width={width} height={height} style={`contain-intrinsic-size: ${width}px ${height}px`} loading="lazy" decoding="async" /><slot name="marke" /></div>
   ) : (
-    <img src={src} alt={alt} loading="lazy" decoding="async" />
+    <img src={src} alt={alt} width={width} height={height} style={`contain-intrinsic-size: ${width}px ${height}px`} loading="lazy" decoding="async" />
   )}
   <figcaption class="small muted">{quelle}</figcaption>
 </figure>
@@ -28,4 +40,8 @@ if (!src.startsWith('/quellen/')) throw new Error(`BuchAbbildung: Bilder gehöre
   .bild-rahmen { position: relative; width: fit-content; max-width: 100%; }
   /* Im Beamer passt die Abbildung samt Überschrift auf den Bildschirm (1280×720). */
   :global(html[data-beamer]) .buch-abbildung img { max-height: calc(100vh - 17rem); width: auto; max-width: 100%; }
+  /* Im Beamer ist die Breite auto (Seiten setzen eigene max-height): Ein noch nicht (lazy) geladenes Bild hätte damit keine
+     Breite, und die Folie wüchse erst beim Laden über den Bildschirm. contain: size mit den Maßen der Datei
+     (contain-intrinsic-size am <img>) gibt ihm vor und nach dem Laden dieselbe Größe. */
+  :global(html[data-beamer]) .buch-abbildung img { contain: size; }
 </style>
