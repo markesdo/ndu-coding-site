@@ -11,14 +11,22 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
   worum: {
     live: [
       'Anknüpfen: Usage Story, Stationen 2 bis 6 – daraus werden Bildschirme.',
-      '„Ein Spike ist Code zum Lernen, nicht zum Behalten.“',
+      'Papier-Skizzen: ein Blatt pro Bildschirm, von Hand; Pfeile, wohin jeder Knopf führt.',
       'Kursregel: Papier vor Claude – sonst wird Claudes Vorstellung getestet.',
       'Abnahmekriterien = drei Sätze; Zeitbox = 40 min, dann Schluss.',
     ],
+    verstaendnis: {
+      frage: 'Wozu zeichnet ihr erst auf Papier, wenn Claude Code den Prototyp ohnehin baut?',
+      antwort: 'Damit ihr jeden Bildschirm selbst entscheidet: was draufsteht und welcher Knopf wohin führt. Claude Code baut nach dem Foto der Blätter. Ohne Papier testet ihr Claudes Vorstellung von eurem Produkt.',
+    },
     kern: [
       {
         text: 'Extreme Programming Spike: „Define your acceptance criteria. Define your time box for the spike.“ – „not ideal for scaling the solution, as it is typically thrown away and re-created afterwards.“',
         quelle: `${BLAND}, S. 306–307`,
+      },
+      {
+        text: 'Paper Prototype: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction.“ – „ideal for rapidly testing the concept of your product quickly with customers.“',
+        quelle: `${BLAND}, S. 182`,
       },
     ],
     ueberleitung: 'Was zeigt so ein Prototyp – und was zeigt er nicht?',
@@ -45,19 +53,42 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 52`,
       },
     ],
-    ueberleitung: 'Wen testet ihr, und wie viele? Fünf reichen.',
+    ueberleitung: 'Wie läuft so ein Usability-Test – und mit wem?',
+  },
+
+  'usability-test': {
+    live: [
+      'Eine Testperson, eine Aufgabe, der Prototyp – alle schauen nur zu.',
+      'Falle: Meinungsfragen („Gefällt dir das?“) – gemessen wird, was sie tut.',
+      'Ergebnis sind Bedienprobleme; ob sie es will, zeigt E1.',
+    ],
+    verstaendnis: {
+      frage: 'Eine Testperson sagt am Ende: „Coole App, würde ich nutzen.“ Was davon notiert ihr?',
+      antwort: 'Als Beleg nichts – das ist eine Meinung. Notiert wird, was sie getan hat: Ziel erreicht oder nicht, wo sie gehangen hat, wie lange es dauerte, wie sie am Höhepunkt reagiert hat.',
+    },
+    ueberleitung: 'Wie viele Testpersonen braucht ihr? Fünf – und warum gerade fünf, zeigt die Kurve.',
   },
 
   fuenf: {
     live: [
-      'Kurve: Nach fünf Personen kommt kaum Neues.',
-      '„Fünf finden rund 85 % der Bedienprobleme.“',
-      'Dreimal fünf statt einmal fünfzehn: jetzt, dann an Tag 6.',
+      'Kurve von links: eine Person findet rund 31 % der Bedienprobleme.',
+      'Jede weitere wiederholt vieles – darum flacht die Kurve ab.',
+      '„Nach fünf habt ihr rund 85 % der Bedienprobleme gesehen.“',
+      'Dreimal fünf: testen, beheben, wieder testen – Tag 5, dann Tag 6.',
+      'Falle: 85 % aller Probleme – gemeint sind nur Bedienprobleme.',
     ],
+    verstaendnis: {
+      frage: 'Warum nicht gleich fünfzehn Testpersonen auf einmal?',
+      antwort: 'Ab der sechsten seht ihr fast nur Wiederholungen. Besser: fünf testen, die Probleme beheben, dann wieder fünf – die zweite Runde zeigt, ob das Beheben gewirkt hat und was dahinter auftaucht.',
+    },
     kern: [
       {
         text: '„After the fifth user, you are wasting your time by observing the same findings repeatedly but not learning much new.“ Statt 15 auf einmal: „Spend this budget on 3 studies with 5 users each!“',
         quelle: 'Jakob Nielsen, „Why You Only Need to Test with 5 Users“, NN/g 2000, https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/',
+      },
+      {
+        text: '„where N is the total number of usability problems in the design and L is the proportion of usability problems discovered while testing a single user. The typical value of L is 31%, averaged across a large number of projects we studied.“ – „As you add more and more users, you learn less and less because you will keep seeing the same things again and again.“',
+        quelle: 'Jakob Nielsen, „Why You Only Need to Test with 5 Users“, NN/g 2000 (abgerufen 26.11.2026)',
       },
     ],
     ueberleitung: 'Und wie läuft ein einzelner Test?',
@@ -66,8 +97,9 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
   'test-ablauf': {
     live: [
       'Zwei Aufgaben vergleichen: Situation und Ziel gegen Bedienschritte.',
-      '„Laut denken lassen – und ihr schweigt.“',
-      'Zu zweit: eine*r führt, eine*r schreibt mit.',
+      'Laut denken vormachen: sagen, was man sieht, sucht, vorhat.',
+      'Stockt sie: nur „Was würdest du jetzt tun?“ – nicht helfen.',
+      'Zu zweit: eine*r führt, eine*r notiert im Frame; daraus U1, U2 …',
     ],
     verstaendnis: {
       frage: 'Ist „Scanne den Code und tippe auf Bestellen“ eine gute Testaufgabe?',
@@ -119,7 +151,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
 
   beispiel: {
     live: [
-      'Fünf Papierbildschirme; der Höhepunkt hat einen eigenen.',
+      'Fünf Blätter zeigen: eines pro Bildschirm; Blatt 3 ist der Höhepunkt.',
       'Abnahmekriterien: drei Tipps, läuft am Handy, „Prototyp – nicht echt“.',
       'Nicht drin: Login, Zahlung, Datenbank.',
     ],
@@ -153,7 +185,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     uebung: { dauer: '55 min (10 + 5 + 40)', form: 'allein' },
     ablauf: {
       schritte: [
-        'Papier, allein: vier bis sechs Skizzen, eine je Bildschirm der Usage Story, der Höhepunkt eigener Bildschirm; Foto in den Frame „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“ (10 min).',
+        'Papier, allein: vier bis sechs Blätter, eines pro Bildschirm der Usage Story, von Hand; der Höhepunkt ein eigenes Blatt; Pfeile, wohin jeder Knopf führt; Foto in den Frame „T4 · 5 · Prototyp · Produkt n“ (10 min).',
         'Abnahmekriterien und Zeitbox im selben Frame: was der Prototyp zeigen muss, bis wann, was er nicht hat (5 min).',
         'Bauen in Claude Code mit Opus (/model opus): Prompt „Spike · Claude Code“ aus dem Handout plus drei Screenshots – Usage Story, Story Map mit Slice 1, Frame mit Skizzen und Abnahmekriterien; Claude Code legt den Branch spike/[name] an; bei null aufhören (40 min).',
         'Am Handy ansehen als Vercel-Vorschau; der Spike bleibt im Branch.',
