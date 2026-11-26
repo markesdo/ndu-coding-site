@@ -369,16 +369,17 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const z = anzeige(folgt, { art: 'position', index: folieZu(folien, pfad, anker) });
     return { z, karte: fremdeSeite(z, pfad, karten) };
   };
-  it('Beamer auf experiment#sagen-tun: diese Folie mit ihren live-Stichworten, keine Karte', () => {
-    const { z, karte } = beamer('/innolab/methoden/experiment', 'sagen-tun');
+  it('Beamer auf experiment#ergebnis-gilt: diese Folie mit ihren live-Stichworten, keine Karte', () => {
+    const { z, karte } = beamer('/innolab/methoden/experiment', 'ergebnis-gilt');
     expect(karte).toBeNull();
     expect(z.meldung).toBe('ok');
     const f = folien[z.index];
-    expect(`${f.pfad}#${f.id}`).toBe('/innolab/methoden/experiment#sagen-tun');
-    expect(NOTIZEN[f.pfad][f.id].live).toStrictEqual(NOTIZEN['/innolab/methoden/experiment']['sagen-tun'].live);
+    expect(`${f.pfad}#${f.id}`).toBe('/innolab/methoden/experiment#ergebnis-gilt');
+    expect(NOTIZEN[f.pfad][f.id].live).toStrictEqual(NOTIZEN['/innolab/methoden/experiment']['ergebnis-gilt'].live);
   });
   it('folgt Folie für Folie, auch auf Folien der Seite ohne eigene Notiz', () => {
-    const a = beamer('/innolab/methoden/experiment', 'vorher-entscheiden').z.index;
+    // Seit 26.11.2026 steht „Gegen den Beleg“ direkt nach der Lernkarte, die sie voraussetzt.
+    const a = beamer('/innolab/methoden/experiment', 'lernkarte').z.index;
     expect(beamer('/innolab/methoden/experiment', 'gegen-den-beleg').z.index).toBe(a + 1);
     // Die Origin Story steht seit dem 26.11.2026 im Abschluss von Tag 4, nicht mehr auf der Experiment-Seite.
     expect(folien[beamer('/innolab/methoden/experiment', 'lernkarte').z.index].id).toBe('lernkarte');

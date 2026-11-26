@@ -215,7 +215,7 @@ describe('Handout ohne Beamer-Sätze', () => {
 describe('Origin Story: Vorlage verlinkt', () => {
   it('tag-4#abschluss verlinkt experiment#vorlage-origin-story, und dort steht die Überschrift mit dieser id', () => {
     expect(folie('/innolab/tag-4', 'abschluss')).toContain('href="/innolab/methoden/experiment#vorlage-origin-story"');
-    expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">Vorlage · Origin Story in docs/STORYS.md</h3>');
+    expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">So sieht die Origin Story auf Miro aus</h3>');
   });
 });
 

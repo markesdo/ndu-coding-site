@@ -13,10 +13,6 @@ export const NACH_TOAST = '2026-10-22T16:45';
  *  Mappe (mappe-hilfen.ts) gibt den Leitfaden frei, sobald Markus sie aufdeckt. Die früheren Übungen haben eigene Gruppen. Global, nicht an die Seite gebunden (components/aufloesung.ts aufloesungKennung). */
 export const MOM_TEST_GRUPPE = 'mom-test';
 
-/** Rückfall für die Intuit-Auflösung an Tag 4 (Experiment-Karte, Folie „sagen-tun“): Ende des Kurstags. Aufgedeckt wird
- *  per Klick des Präsentators wie beim Toast; eine Uhrzeit mitten am Tag öffnete sie bei Verspätung vor der Übung. */
-export const NACH_INTUIT = '2026-11-28T17:30';
-
 /** Ende von Tag 2 (12.11.) als später Rückfall für die Antwortrunden des Tages: bewusst Mitternacht statt Kursende 18:00,
  *  damit eine Verspätung die Eingabe nicht mitten in der Übung schließt und die Auflösung nicht vorzeitig öffnet. */
 export const ENDE_TAG_2 = '2026-11-12T23:59';

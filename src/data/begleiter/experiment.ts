@@ -1,8 +1,11 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 10:50–11:00 Claude Pro gemeinsam, 11:00–11:30
-// Experiment-Karte mit 12 min Theorie und Beispiel, 18 min Übung). Jede Folie hat eine Notiz (begleiter-tag-4.test.ts).
-// Die Origin Story steht seit 26.11. im Abschluss von Tag 4 (tag-4#abschluss), nicht mehr hier.
+// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 10:50–11:00 Claude Pro und Claude Code gemeinsam,
+// zwei Folien; 11:00–11:30 Experiment-Karte mit Theorie und Beispiel, 18 min Übung). Jede Folie hat eine Notiz
+// (begleiter-tag-4.test.ts). Die Origin Story steht seit 26.11. im Abschluss von Tag 4 (tag-4#abschluss), nicht mehr hier.
+// Seit 26.11. ohne die Intuit-Folien (Geschichte im Handout von #karte); neu: claude-code-opus, schritte-der-idee,
+// ergebnis-gilt, test-arten, beispiel-map; gegen-den-beleg steht nach der Lernkarte. Seit dem Nachtrag 26.11. abends
+// keine docs-Dateien: Karte E1 und Lernkarten auf Miro, Annahmen in der Werkstatt, Claude immer mit Opus.
 // Thomke: gedruckte Seiten aus quellen/thomke/text.txt (=====PAGE n=====); Torres: PDF-Seiten wie in
 // quellen/torres/text.txt; Bland: gedruckte Seiten.
 const THOMKE = 'Stefan H. Thomke, The Scientific Mindset';
@@ -10,16 +13,78 @@ const BLAND = 'David J. Bland & Alexander Osterwalder, Testing Business Ideas';
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 
 export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
+  'claude-pro-jetzt': {
+    live: [
+      'Timer 10 min starten, sobald alle die Folie sehen.',
+      'Wer Pro oder Max hat: gleich zu Schritt 3.',
+      'Falle: Erstattung statt Kündigung – beendet Pro sofort.',
+      'Nach 4 min: Läuft bei allen Claude Code?',
+    ],
+    uebung: { dauer: '10 min', form: 'alle zugleich, jede*r am eigenen Laptop' },
+    ablauf: {
+      schritte: [
+        'Pro neu abschließen (Monthly, 21,60 €) und gleich kündigen; wer Pro oder Max hat, überspringt beides.',
+        'Claude Code im Repo starten und mit demselben Konto anmelden.',
+        'Weiterblättern, sobald die Ersten angemeldet sind: Opus und Test.',
+      ],
+    },
+    ueberleitung: 'Claude Code läuft – jetzt noch Opus wählen und kurz testen.',
+  },
+
+  'claude-code-opus': {
+    live: [
+      '„In Claude Code einmal /model opus – überall im Kurs nehmt ihr Opus.“',
+      'Test: Screenshot vom eigenen Concept-Story-Frame einfügen, ein Satz.',
+      'Nach 8 min: Steht bei allen „Claude Pro“ im Startbild?',
+      'Wer hängt: 11:00 trotzdem Theorie, Hilfe vor 11:30.',
+    ],
+    ablauf: {
+      schritte: [
+        '/model opus in Claude Code; in der Claude-App Opus im Modellmenü.',
+        'Screenshot des Frames „T4 · 0 · Concept Story · Produkt n“ einfügen (Ctrl+V), Prompt „Sag mir in einem Satz …“.',
+      ],
+      achten: [
+        'Keine Versionsnummer nennen – nur „Opus“.',
+        'Bild kommt nicht an: die Screenshot-Datei ins Terminal ziehen.',
+      ],
+    },
+    ueberleitung: 'Claude Code läuft – jetzt die Annahmen eures Spitzenreiters.',
+  },
+
   'annahmen-der-idee': {
     live: [
-      'Zeit: 12 min Theorie und Beispiel bis zur Übung.',
-      '„Ideen zu testen dauert Wochen – Annahmen gehen in Tagen.“',
-      'Abbildung: Torres’ kleine Story Map, drei Beteiligte, Schritte über die Zeit.',
+      'Zeit: Theorie und Beispiel bis zur Übung, dann 18 min allein.',
+      '„Euer Spitzenreiter steht auf Papier – an welcher Annahme hängt er?“',
+      'Zwei Fallen: Bestätigung suchen, sich in Investiertes verlieben.',
+      'Ergebnis um 11:30 nennen: Karte E1.',
+    ],
+    verstaendnis: {
+      frage: 'Warum testet ihr eine Annahme statt der ganzen Idee?',
+      antwort: 'Eine ganze Idee testen heißt sie bauen – das dauert Wochen. Eine Annahme lässt sich in ein, zwei Tagen prüfen (Torres S. 138, 144).',
+    },
+    kern: [
+      {
+        text: 'Zwei Fallen: Bestätigungsneigung und „escalation of commitment“ – je mehr investiert, desto mehr hängt man an der Idee. Darum Annahmen testen statt ganzer Ideen.',
+        quelle: `${TORRES}, S. 116–117`,
+      },
+      {
+        text: '„Our first test was designed to be completed in a day or two. This test will take up to two weeks“ – „Design your tests to be completed in a day or two, or a week, at most.“',
+        quelle: `${TORRES}, S. 138, 144`,
+      },
+    ],
+    ueberleitung: 'Woher kommen die Annahmen? Aus den Schritten eurer Idee.',
+  },
+
+  'schritte-der-idee': {
+    live: [
+      'Abbildung: Torres’ kleine Story Map – drei Beteiligte, sechs Schritte.',
       'Fünf Arten: wünschenswert, bedienbar, machbar, wirtschaftlich, ethisch.',
+      'Pre-Mortem vorlesen: gescheitert, nicht „könnte scheitern“.',
+      'Bezug: Pre-Mortem kennen alle von Tag 1, als Joker.',
     ],
     verstaendnis: {
       frage: 'Woher kommen die Annahmen, bevor ihr sie mappt?',
-      antwort: 'Aus den Schritten, als gäbe es die Lösung schon: Wo ihr annehmt, dass jemand etwas tut, steckt eine Annahme. Dazu die Pre-Mortem-Frage und die wirtschaftliche Annahme aus dem Geschäftsmodell.',
+      antwort: 'Aus den Schritten, als gäbe es die Lösung schon: Wo ihr annehmt, dass jemand etwas tut, steckt eine Annahme. Dazu das Pre-Mortem und die wirtschaftliche Annahme aus dem Geschäftsmodell.',
       falsch: '„Aus der Value Map“ – dort stehen erste Kandidaten („?“), aber die Schritte decken die meisten auf.',
     },
     kern: [
@@ -28,12 +93,23 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 119, 124`,
       },
       {
-        text: 'Viability assumptions: „Should we build it?“ – eine der Arten neben Wünschbarkeit, Bedienbarkeit, Machbarkeit und Ethik.',
-        quelle: `${TORRES}, S. 118`,
+        text: 'Beteiligte im Beispiel: „our key players might be the sports consumer (i.e., our subscriber), our streaming platform, and any number of local TV channel partners.“',
+        quelle: `${TORRES}, S. 121`,
+      },
+      {
+        text: 'Pre-Mortem: „Imagine it’s six months in the future; your product or initiative launched, and it was a complete failure. What went wrong?“ Entscheidend: als sicheres Scheitern formuliert.',
+        quelle: `${TORRES}, S. 125`,
       },
       {
         text: 'Formulierung: „always phrase your assumptions such that you need them to be true: ‚Customers will remember their passwords.‘“',
         quelle: `${TORRES}, S. 131`,
+      },
+    ],
+    zusatz: [
+      {
+        titel: 'Pre-Mortem nach Gary Klein',
+        text: 'Das Team nimmt an, das Projekt sei bereits gescheitert, und sucht die Gründe, statt nur zu fragen, was schiefgehen könnte. Torres zitiert die Methode und die Forschung zu „prospective hindsight“.',
+        quelle: 'Gary Klein, „Performing a Project Premortem“, Harvard Business Review, Sept. 2007: https://hbr.org/2007/09/performing-a-project-premortem; vgl. Torres S. 125',
       },
     ],
     ueberleitung: 'Torres macht das für drei Ideen – wir für eine. Warum?',
@@ -61,12 +137,12 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   map: {
     live: [
-      '„Die Map kennt ihr von Tag 1 – jetzt für die Idee.“',
+      '„Die Map kennt ihr von Tag 1 – jetzt mit dem Spitzenreiter von 9:05.“',
+      'Vier Felder wie auf Miro: „Zuerst testen“ oben rechts.',
       'Höchstens zehn Minuten: relativ zueinander, nicht genau.',
-      'Oben rechts: zwei, drei Annahmen, an denen alles hängt.',
-      'Reihenfolge nach Bland: erst wünschenswert, dann machbar, dann wirtschaftlich.',
+      'Wege nennen: Miro sortieren, Werkstatt festhalten, Karte E1 auf Miro.',
     ],
-    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Annahmen der Idee auf die Map: Beleg nach rechts, Wichtigkeit nach oben.'] },
+    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Annahmen der Idee auf die Map: wichtig nach oben, wenig Beleg nach rechts.'] },
     kern: [
       {
         text: '„this exercise does not need to be precise. You are mapping assumptions relative to each other.“ Getestet werden die Annahmen oben rechts – „the assumptions that Bland calls your ‚leap of faith‘ assumptions“.',
@@ -76,90 +152,26 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Wichtig heißt: Ist die Hypothese falsch, „your business idea will fail and all other hypotheses become irrelevant.“',
         quelle: `${BLAND}, S. 38`,
       },
-    ],
-    ueberleitung: 'Bevor ihr eine Karte schreibt: ein Fall, in dem eine Studie fast eine gute Idee getötet hätte.',
-  },
-  'sagen-tun': {
-    live: [
-      'Nur die drei Fakten vorlesen, die Studie nicht bewerten.',
-      'Timer 1 min, dann je ein Satz laut, nicht diskutieren.',
-      'Falle: die Pointe andeuten („Menschen sagen ja oft …“).',
-      'Rückfragen zu Intuit nur sachlich: Lohnabrechnung für kleine Firmen.',
-    ],
-    uebung: { dauer: '1 min', form: 'allein, dann je ein Satz laut' },
-    ueberleitung: 'Jetzt seht ihr, was Intuit getan hat – vergleicht mit euren Sätzen.',
-    ablauf: {
-      schritte: [
-        'Folie zeigen, die drei Punkte vorlesen.',
-        'Timer 1 min: Jede*r schreibt einen Satz – was folgt aus „0 von 20“, und was tut ihr als Nächstes?',
-        'Sätze laut sagen lassen, nicht kommentieren; dann zur nächsten Folie.',
-      ],
-      achten: [
-        'Die Pointe nicht vorwegnehmen: kein „aber Menschen sagen ja oft …“ vor der Auflösung.',
-        'Wer „trotzdem testen“ schreibt: nachfragen, mit welchem Test – fragen oder beobachten?',
-      ],
-      fehler: [
-        '„Idee verwerfen“ ist kein Fehler der Studierenden, sondern genau der Schluss, den die nächste Folie herausfordert – nicht belächeln.',
-      ],
-    },
-  },
-
-  'sagen-tun-aufloesung': {
-    live: [
-      'Auflösung per Knopf – öffnet bei allen.',
-      '„In der Studie wollte es keine*r – auf der Webseite klickten 58 %.“',
-      'Fragen: Wer von euch hätte die Idee abgelegt?',
-      'Brücke: Intuits Knopf ist ein Test wie E1 der Kaffeebar.',
-    ],
-    verstaendnis: {
-      frage: 'Warum lag die Usability-Studie daneben und der Knopf auf der Webseite nicht?',
-      antwort: 'In der Studie sagten Menschen, was sie vorziehen würden; am Knopf taten sie es, in ihrer echten Lage vor dem Zahltag. Thomke: Verhalten zu testen war nützlicher, als dem zu trauen, was sie sagen.',
-      falsch: '„Weil 20 Personen zu wenige sind“ – Thomke begründet es nicht mit der Zahl, sondern mit sagen gegen tun.',
-    },
-    ueberleitung: 'Darum misst eure Karte eine Handlung, keine Meinung – so sieht sie aus.',
-    ablauf: {
-      schritte: [
-        'Auflösung per Knopf auf dem Beamer öffnen (öffnet bei allen; sonst erst 17:30, Ende des Kurstags).',
-        'Gesagt gegen getan zeigen, dann Gebaut und Philips aufdecken.',
-        'Die eigenen Sätze mit der Auflösung vergleichen lassen: Wer hätte die Idee abgelegt, wer hätte wie getestet?',
-      ],
-      aufloesung: 'Gesagt: 0 von 20 interessiert (Usability-Studie). Getan: 58 % der neuen Nutzer*innen klicken „Pay employees first“, obwohl es die Funktion noch nicht gibt. Gebaut: Conversion +14 %, Millionen Zusatzumsatz. Philips: Fokusgruppe wählt Gelb, als Dank nehmen die meisten Schwarz.',
-    },
-    kern: [
       {
-        text: 'Intuit: Ein Entwickler sah, dass etwa 50 % der Interessierten das Produkt für kleine Firmen 20 Minuten vor dem Zahltag ausprobierten; alle Anbieter brauchten Stunden bis Tage, um neue Kundschaft freizuschalten. Usability-Studie: „none of the twenty participants was interested in a fast payroll solution.“ Statt die Idee abzulegen, änderte Intuit die Webseite binnen 24 Stunden: „Pay employees first“ oder „Do set-up first“; wer den ersten Knopf klickte, las, die Funktion sei noch nicht fertig. „58 percent of new users picked ‚Pay employees first.‘“ Gebaut hob sie die Conversion um 14 % und brachte Millionen Zusatzumsatz.',
-        quelle: `${THOMKE}, S. 72`,
-      },
-      {
-        text: '„The team also learned that testing customers’ actual behavior was more useful than trusting what they say they would prefer.“ Thomke nennt das die „saying-doing gap“. Philips: In einer Fokusgruppe wählten die meisten Jugendlichen Gelb für einen Ghettoblaster; als Dank bekamen sie einen echten, in Gelb oder Schwarz – die meisten nahmen Schwarz.',
-        quelle: `${THOMKE}, S. 72`,
-      },
-      {
-        text: 'Solche Tests nennt Thomke informell: Prototyp-Versuche „may not follow strict protocols but are still useful as qualitative evidence. (The results of such experiments can become hypotheses that are tested more rigorously.)“',
-        quelle: `${THOMKE}, S. 84`,
-      },
-      {
-        text: 'Bland ordnet dasselbe als Achse der Belegstärke: „What people say in an interview or survey is not necessarily what they do in real life or will do in the future.“ Die Tabelle steht auf der Annahmen-Map von Tag 1.',
-        quelle: `${BLAND}, S. 52`,
+        text: 'Reihenfolge nach Bland: erst wünschenswert, dann machbar, dann wirtschaftlich.',
+        quelle: `${BLAND}, S. 34–35, 39`,
       },
     ],
     fragen: [
       {
-        frage: 'Ist ein Knopf ohne Funktion nicht Täuschung?',
-        antwort: 'Die Seite sagt es sofort: Bei Intuit kam die Meldung, die Funktion sei noch nicht fertig; bei E1 steht „Bestellen geht noch nicht“ auf der Seite, und wer einträgt, erfährt, wann es losgeht. Thomke zitiert die Regel von LinkedIn: keine Tests, die absichtlich eine schlechte Erfahrung liefern, Stimmungen verändern sollen oder Einstellungen übergehen (S. 133).',
-      },
-      {
-        frage: 'Waren 20 Personen in der Studie nicht einfach zu wenig?',
-        antwort: 'Thomke begründet den Unterschied nicht mit der Zahl, sondern damit, dass die Studie fragte und der Knopf beobachtete (S. 72).',
+        frage: 'Warum heißt das Feld oben links „Beleg prüfen, darauf bauen“?',
+        antwort: 'Dort stehen wichtige Annahmen mit Beleg. Ihr baut auf ihnen auf, schaut aber nach, ob der Beleg wirklich trägt (Feldnamen wie im Miro-Frame).',
       },
     ],
+    ueberleitung: 'Für die Annahme oben rechts schreibt ihr eine Karte. So sieht sie aus.',
   },
 
   karte: {
     live: [
       'Test Card zeigen: vier Zeilen von oben nach unten.',
-      '„Wir messen eine Handlung, keine Meinung.“',
-      'Schwelle als x von y: „16 of the 20 parents“, nicht 70 %.',
+      'Schwelle als x von y: „16 of the 20 parents“, nicht 80 %.',
+      '„Gemessen wird, was Menschen tun – nicht, was sie sagen.“',
+      'Bei Bedarf: Intuit erzählen – 0 von 20 gesagt, 58 % geklickt.',
       'Falle: Schwelle erst nach dem Test festlegen.',
     ],
     verstaendnis: {
@@ -175,43 +187,81 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: '„Instead of saying, ‚Some people choose sports,‘ we want to say, ‚At least 3 out of 10 people choose sports.‘ We want to define both how many people we’ll test with and how many people need to exhibit the behavior“.',
         quelle: `${TORRES}, S. 136`,
       },
+      {
+        text: 'Intuit (Handout): Usability-Studie „none of the twenty participants was interested in a fast payroll solution“; auf der Webseite wählten „58 percent of new users“ den Knopf „Pay employees first“, bevor es die Funktion gab. Gebaut: Conversion +14 %. „testing customers’ actual behavior was more useful than trusting what they say they would prefer.“',
+        quelle: `${THOMKE}, S. 72`,
+      },
+      {
+        text: 'Bland ordnet dasselbe als Achse der Belegstärke: „What people say in an interview or survey is not necessarily what they do in real life or will do in the future.“',
+        quelle: `${BLAND}, S. 52`,
+      },
     ],
-    ueberleitung: 'Und was tut ihr, wenn die Zahl kommt? Das legt ihr auch vorher fest.',
+    fragen: [
+      {
+        frage: 'Ist ein Knopf ohne Funktion nicht Täuschung?',
+        antwort: 'Die Seite sagt es sofort: Bei Intuit kam die Meldung, die Funktion sei noch nicht fertig; bei E1 steht „Bestellen geht noch nicht“ auf der Seite, und wer einträgt, erfährt, wann es losgeht. Thomke zitiert die Regel von LinkedIn: keine Tests, die absichtlich eine schlechte Erfahrung liefern, Stimmungen verändern sollen oder Einstellungen übergehen (S. 133).',
+      },
+    ],
+    ueberleitung: 'Und was, wenn das Ergebnis nicht passt? Ein Fall, in dem es trotzdem galt.',
+  },
+
+  'ergebnis-gilt': {
+    live: [
+      'Kohl’s erzählen: viele begeistert, erst ein Test, Umsatz sinkt, gestoppt.',
+      '„Gute Ergebnisse glaubt man sofort – schlechte prüft man, bis sie passen.“',
+      'Falle: behaupten, Kohl’s habe vorab eine Matrix gehabt.',
+      'Brücke: Darum steht die Handlung vorher auf der Karte.',
+    ],
+    verstaendnis: {
+      frage: 'Was hätte bei Kohl’s ohne vereinbarten Test passieren können?',
+      antwort: 'Die Begeisterung hätte entschieden: Wer Möbel wollte, hätte einen schlechten Umsatz mit anderen Gründen erklärt. Thomke: Tests braucht es gerade für Vorschläge von Menschen mit „organizational clout“ (S. 87).',
+      falsch: '„Der Test hat bewiesen, dass Möbel schlecht sind“ – er hat gezeigt, dass der Umsatz insgesamt sank; entscheidend ist, dass das Ergebnis galt.',
+    },
+    kern: [
+      {
+        text: 'Kohl’s: „many executives were tremendously enthusiastic … Nevertheless, the company first agreed to test sales at seventy stores over six months—and the data showed a net decrease in revenue.“ „the initiative was nevertheless scrapped.“',
+        quelle: `${THOMKE}, S. 86–87`,
+      },
+      {
+        text: '„we tend to happily accept ‚good‘ results that confirm our beliefs because they feel right. But we challenge and thoroughly investigate ‚bad‘ results that go against our assumptions.“',
+        quelle: `${THOMKE}, S. 14`,
+      },
+      {
+        text: '„When results align with our beliefs, we accept them without hesitation; when they don’t, we probe them relentlessly. The remedy is to implement the changes that experiments validate (although there are always exceptions).“',
+        quelle: `${THOMKE}, S. 126`,
+      },
+    ],
+    ueberleitung: 'Wie schreibt ihr vorher auf, was ihr dann tut? Mit drei Bändern.',
   },
 
   'vorher-entscheiden': {
     live: [
-      'Erst Folien-Satz vorlesen, dann die drei Bänder einzeln aufdecken.',
-      '„Schreibt neben die Schwelle, was ihr bei jedem Ergebnis tut – bevor ihr zählt.“',
-      'Kohl’s erzählen: Führung begeistert, Test zeigt Verlust, trotzdem gestoppt.',
+      'Setup-Zeile vorlesen: E1, Schwelle 10 von 30.',
+      'Bänder aufdecken: erst ab 10, dann unter 5, zuletzt 5–9.',
+      'Kursregel: Grenze darunter etwa die halbe Schwelle.',
       'Falle: „knapp darunter“ erst nach dem Test festlegen.',
     ],
     verstaendnis: {
       frage: 'E1 der Kaffeebar ergibt 8 von 30, die Schwelle war 10. Wer entscheidet jetzt, was passiert?',
-      antwort: 'Die Karte: Die Zeile „Wir entscheiden vorher“ sagt für 5–9 schon, was folgt: wiederholen. Niemand muss nach dem Ergebnis neu verhandeln.',
+      antwort: 'Die Karte: 8 liegt im Band 5–9, die Zeile „Wir entscheiden vorher“ sagt schon, was folgt: wiederholen, eine Sache ändern. Niemand muss nach dem Ergebnis neu verhandeln.',
       falsch: '„Wir schauen uns die Zahl an und überlegen dann“ – genau dann prüft man schlechte Ergebnisse so lange, bis sie passen (Thomke S. 14).',
     },
-    ueberleitung: 'Und wenn ihr trotzdem anders entscheiden wollt? Das geht – aber offen.',
     kern: [
       {
-        text: 'Erste von vier Regeln: „(1) commit to abide by results; (2) ensure proposed experiments are feasible; (3) make test results trustworthy; and (4) keep things simple.“',
-        quelle: `${THOMKE}, S. 85`,
-      },
-      {
-        text: '„Before conducting any test, stakeholders must agree on how they’ll proceed once the results are in. … they must be willing to walk away from a project if a hypothesis is not supported. One way to encourage this discipline is to prepare a decision matrix that links possible outcomes to predetermined actions before any data comes in.“ Dasselbe in den Tipps am Ende von Kap. 4 („Define specific changes you will make based on the results“, S. 103) und Kap. 5 (S. 116).',
+        text: '„Before conducting any test, stakeholders must agree on how they’ll proceed once the results are in. … One way to encourage this discipline is to prepare a decision matrix that links possible outcomes to predetermined actions before any data comes in.“ Dasselbe in den Tipps („Define specific changes you will make based on the results“, S. 103) und S. 116.',
         quelle: `${THOMKE}, S. 86`,
       },
       {
-        text: 'Kohl’s: Viele in der Führung waren begeistert von Möbeln im Sortiment und erwarteten viel Zusatzumsatz. Test in 70 Läden über sechs Monate: Umsatz insgesamt gesunken, weil die übrigen Waren weniger Fläche hatten; Kohl’s verlor sogar Kundschaft. „the initiative was nevertheless scrapped.“',
-        quelle: `${THOMKE}, S. 86–87`,
-      },
-      {
-        text: 'Warum vorher: „we tend to happily accept ‚good‘ results that confirm our beliefs because they feel right. But we challenge and thoroughly investigate ‚bad‘ results that go against our assumptions.“ Beispiel: Ein Nutzer hielt ein Testwerkzeug für fehlerhaft, weil sein Ergebnis seiner Annahme widersprach – „fix the software and repeat the test until it agreed with his experience!“',
-        quelle: `${THOMKE}, S. 14`,
-      },
-      {
-        text: 'Die drei Bänder sind eine Form des Kurses. Die Befunde und was jeweils folgt, kommen von Bland: gestützt → nächste Hypothese oder derselbe Test stärker; widerlegt → verwerfen oder umschwenken; unklar → weiter testen.',
+        text: 'Befunde und Handlungen: gestützt → nächste Hypothese oder derselbe Test stärker; widerlegt → verwerfen oder umschwenken; unklar → weiter testen; neue Einsicht → alles drei möglich.',
         quelle: `${BLAND}, S. 63`,
+      },
+      {
+        text: 'Kursregeln: drei Bänder als Form für die Entscheidungsmatrix; „knapp darunter“ = unklar, „deutlich darunter“ = widerlegt; Grenze etwa die halbe Schwelle. Die Quellen geben dafür keine Zahl.',
+        quelle: 'Kurs (Entscheidung Markus 26.11.2026)',
+      },
+      {
+        text: 'Warum drei Bänder: Die Zahlen sind „a subjective decision“ – sie sollen Risiko senken, nicht beweisen. 9 von 30 ist nicht das Gegenteil von 10 von 30.',
+        quelle: `${TORRES}, S. 137`,
       },
     ],
     fragen: [
@@ -221,56 +271,21 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Woher wissen wir, wo „knapp darunter“ endet?',
-        antwort: 'Ihr legt es fest, wie die Schwelle: eine Zahl, vor dem Test. Bei der Kaffeebar ist es 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
+        antwort: 'Kursregel: etwa bei der halben Schwelle, vor dem Test als Zahl festgelegt. Bei der Kaffeebar 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
+      },
+      {
+        frage: 'Und eine neue Einsicht?',
+        antwort: 'Lässt sich nicht vorab planen; sie steht nach dem Test auf der Lernkarte (Bland S. 63).',
       },
     ],
-  },
-
-  'gegen-den-beleg': {
-    live: [
-      'Netflix in drei Schritten erzählen, Fluss links nach rechts.',
-      '„Ihr dürft gegen einen Beleg entscheiden – aber nicht so tun, als gäbe es ihn nicht.“',
-      'Auf der Lernkarte: der Beleg dagegen und das Warum.',
-      'Abgrenzung: dagegen entscheiden ja, Ergebnis umdeuten nein.',
-    ],
-    verstaendnis: {
-      frage: 'Was hat Netflix gewonnen, obwohl die Entscheidung gegen die Daten ging?',
-      antwort: 'Transparenz: Weil der Test da war, konnte niemand behaupten, Fonda bleibe im Bild, weil die Kundschaft es wolle. Der Grund war offen ein anderer – der Vertrag und die Beziehung zu Fonda.',
-      falsch: '„Nichts, der Test war umsonst“ – ohne ihn hätte man die Entscheidung mit erfundenen Kundenwünschen begründen können.',
-    },
-    ueberleitung: 'Welcher Test liefert euch so einen Beleg? Dazu jetzt.',
-    kern: [
-      {
-        text: 'Netflix: Tests zeigten, dass eine Werbung nur mit Lily Tomlin („Grace and Frankie“) mehr Klicks brachte als Werbung mit Tomlin und Jane Fonda. Das Content-Team fürchtete, Fonda vor den Kopf zu stoßen und womöglich ihren Vertrag zu verletzen. Nach heftigen Debatten – Belege gegen „strategic considerations“ – nahm Netflix Bilder mit beiden, „even though customer data didn’t support the decision. However, the experimental evidence made the decision more transparent. Nobody could argue that Fonda should remain in the promotion because customers preferred it.“',
-        quelle: `${THOMKE}, S. 127`,
-      },
-      {
-        text: '„Of course, there might be good reasons for rolling out an initiative even when the anticipated benefits are not supported by the data.“ Aber: Steht eine Initiative schon fest, soll man sie nicht Experiment nennen, sondern „a rollout, commitment, or implementation“; Lackmustest ist, ob sie sich leicht umkehren lässt.',
-        quelle: `${THOMKE}, S. 87`,
-      },
-      {
-        text: 'Thomke rahmt das als Ausnahme von „Data Overrides Opinions“: Die Ergebnisse sollen sich gegen starke Meinungen durchsetzen, „no matter whose opinions they are“; „Nothing stalls experiments faster than a so-called HiPPO—highest-paid person’s opinion.“',
-        quelle: `${THOMKE}, S. 126`,
-      },
-    ],
-    fragen: [
-      {
-        frage: 'Wann ist es legitim, gegen den Beleg zu entscheiden?',
-        antwort: 'Wenn es einen Grund gibt, den der Test nicht misst – bei Netflix Vertrag und Beziehung, bei Thomkes Beispiel S. 87 Kundentreue statt Umsatz. Der Grund steht auf der Lernkarte, der Beleg bleibt sichtbar.',
-      },
-      {
-        frage: 'Muss so eine Zeile anders aussehen als die anderen?',
-        antwort: 'Nein, dieselben vier Spalten: Entscheidung, Grund, Beleg. Nur steht beim Beleg einer, der dagegen spricht, und der Grund erklärt, warum ihr trotzdem so entscheidet.',
-      },
-    ],
+    ueberleitung: 'Welcher Test liefert euch so ein Ergebnis? Vier Faustregeln.',
   },
 
   'welcher-test': {
     live: [
       'Blands vier Faustregeln, eine pro Klick.',
       '„Ein Test simuliert einen Moment – und ihr schaut, was Menschen tun.“',
-      'Tabelle im Handout: Landing Page, Klick-Prototyp, Concierge, Wizard of Oz, Mock Sale.',
-      'Fragen: Welcher davon passt zu eurer obersten Annahme?',
+      'Fragen: Was ist bei euch schnell und billig?',
     ],
     kern: [
       {
@@ -286,28 +301,60 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 138`,
       },
     ],
-    ueberleitung: 'Alles zusammen an der Kaffeebar: Schritte, Annahmen, Map.',
+    ueberleitung: 'Welche Tests gibt es? Vier zur Auswahl.',
+  },
+
+  'test-arten': {
+    live: [
+      'Eine Zeile pro Klick, von schwach nach sehr stark.',
+      'Concierge erklären: Wert von Hand liefern – darum E1 ab 10.',
+      'Fragen: Welcher passt zu eurer Annahme oben rechts?',
+      'Kein Ort, keine Besucher: simulierter Moment.',
+    ],
+    kern: [
+      {
+        text: 'Simple Landing Page: eher schwach, eine E-Mail gibt man leicht her (S. 260–263). Concierge: stark (S. 248–251). Mock Sale: Zahlungsdaten, sehr stark (S. 288–291).',
+        quelle: `${BLAND}`,
+      },
+      {
+        text: 'Billige Formen für eine Woche, u. a. ein simulierter Moment mit einem Mock-up. Die Stärke „schwach bis mittel“ ist eine Einordnung des Kurses.',
+        quelle: `${TORRES}, S. 135, 142–144`,
+      },
+    ],
+    ueberleitung: 'Alles zusammen an der Kaffeebar: erst die Schritte.',
   },
 
   beispiel: {
     live: [
       'Fünf Schritte, als gäbe es „Im Gehen bestellen“ schon.',
+      'Pro Zeile: Schritt, Annahme, Art.',
       'A5 ohne Beleg – I2-3 spricht sogar dagegen.',
-      'Oben rechts A5, A7, A4: zuerst A5, wünschenswert vor allem.',
-      'A8 teilen alle drei Ideen – kommt trotzdem nach A5.',
+      'A4 kommt aus dem Geschäftsmodell von 10:30.',
+    ],
+    kern: [
+      {
+        text: 'Annahmen und Belege der Kaffeebar (A2–A8, I2-3 u. a.) stehen im Handout der Folie; A3 an Schritt 2 und A4 an Schritt 5 sind Setzungen der Kaffeebar.',
+        quelle: 'experiment.astro, Folie beispiel (Handout)',
+      },
+    ],
+    ueberleitung: 'Und welche davon zuerst? Die Map der Kaffeebar.',
+  },
+
+  'beispiel-map': {
+    live: [
+      'Oben rechts zeigen: A5, A7, A4.',
+      'A8 teilen alle drei Ideen – teils belegt, darum Mitte.',
+      'Ausnahme benennen: A5 vor der gemeinsamen A8.',
+      '„Bestellt niemand, sind Datenschutz und Wirtschaftlichkeit egal.“',
     ],
     verstaendnis: {
       frage: 'Warum testet die Kaffeebar A5 vor A8, obwohl gemeinsame Annahmen zuerst kommen sollen?',
-      antwort: 'A8 ist teils belegt (I2-2, I4-2, I2-5) und steht darum oben in der Mitte; A5 hat gar keinen Beleg. Eine bewusste Ausnahme von der Regel.',
+      antwort: 'A8 ist teils belegt (I2-1, I3-3 erzählt; I2-2, I4-2, I2-5 gesagt) und steht darum oben in der Mitte; A5 hat gar keinen Beleg und ist wünschenswert. Eine bewusste Ausnahme von der Regel.',
     },
     kern: [
       {
         text: 'Reihenfolge der Tests: zuerst Wünschbarkeit, dann Machbarkeit, dann Wirtschaftlichkeit – bestellt niemand, sind Datenschutz und Wirtschaftlichkeit egal.',
         quelle: `${BLAND}, S. 34–35`,
-      },
-      {
-        text: 'Annahmen und Belege der Kaffeebar (A2–A8, I2-3 u. a.) stehen im Handout der Folie.',
-        quelle: 'experiment.astro, Folie beispiel (Handout)',
       },
     ],
     ueberleitung: 'Für A5 die Karte E1.',
@@ -315,41 +362,34 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   'karte-e1': {
     live: [
-      'Neue Zeile zeigen: „Wir entscheiden vorher“, drei Bänder mit Zahlen.',
+      'Zeile „Wir entscheiden vorher“ zeigen – die Bänder von eben.',
       '„Unter 5 schwenkt ihr um – das steht hier, bevor der erste Pendler vorbeikommt.“',
       'Bezug: unter 5 → Wartezeit-Anzeige aus der Zeile „Falls E1 scheitert“.',
+      'Kursregel: drei Zeilen sind Zusätze des Kurses zu Blands Karte.',
     ],
     kern: [
       {
-        text: 'Die Zeile verbindet jedes mögliche Ergebnis mit einer Handlung, bevor gezählt wird: „a decision matrix that links possible outcomes to predetermined actions before any data comes in.“ Ab 10 der Concierge (der stärkere Test aus dem Handout), 5–9 denselben Test wiederholen, unter 5 umschwenken auf die Wartezeit-Anzeige (A6). Die Grenze 5 ist eine Setzung der Kaffeebar.',
+        text: 'Die Zeile verbindet jedes mögliche Ergebnis mit einer Handlung, bevor gezählt wird: „a decision matrix that links possible outcomes to predetermined actions before any data comes in.“ Ab 10 der Concierge, 5–9 denselben Test wiederholen und eine Sache ändern, unter 5 umschwenken auf die Wartezeit-Anzeige (A6). Die Grenze 5 ist eine Setzung der Kaffeebar.',
         quelle: `${THOMKE}, S. 86`,
       },
     ],
     fragen: [
       {
         frage: 'Und wenn an Tag 5 doch etwas anderes sinnvoll ist?',
-        antwort: 'Dann entscheidet ihr offen dagegen: Auf der Lernkarte stehen der Beleg und der Grund (Folie „Gegen den Beleg entscheiden“). Die Zeile „Wir entscheiden vorher“ auf der Karte bleibt stehen.',
+        antwort: 'Dann entscheidet ihr offen dagegen: Auf der Lernkarte stehen der Beleg und der Grund (Folie „Gegen den Beleg entscheiden“ nach der Lernkarte). Die Zeile „Wir entscheiden vorher“ auf der Karte bleibt stehen.',
       },
     ],
-  },
-
-  'claude-pro-jetzt': {
-    live: [
-      'Timer 10 min starten, sobald alle die Folie sehen.',
-      'Nach 5 min: Steht bei allen „Claude Pro“ im Startbild?',
-      'Falle: Erstattung statt Kündigung – beendet Pro sofort.',
-      'Wer hängt: 11:00 trotzdem Theorie, Hilfe vor 11:30.',
-    ],
-    uebung: { dauer: '10 min', form: 'alle zugleich, jede*r am eigenen Laptop' },
-    ueberleitung: 'Claude Code läuft – jetzt die Annahmen eurer Idee.',
+    ueberleitung: 'Jetzt ihr: Schritte, Annahmen, Map, Karte – 18 Minuten, allein.',
   },
 
   vorgehen: {
     live: [
-      'Neu bei Schritt 4: Entscheidung vorab gehört auf jede Karte.',
-      'Nach 13 min: Steht bei allen neben der Schwelle die Zeile?',
+      'Anleitung-Frame links neben „T4 · 0“ zeigen.',
+      'Nach 11 min: Stehen die Annahmen in der Werkstatt?',
+      'Nach 13 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
       'Nach 16 min: Annahme und E1 in den Baum – Timer 2 min.',
     ],
+    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.'] },
     kern: [
       {
         text: 'Prüfpunkt experiment-schwelle: Die Schwelle steht als „x von y“ fest, bevor der Test läuft – und mit ihr, was ihr bei welchem Ergebnis tut. Grundlage: Thomkes Entscheidungsmatrix vor den Daten.',
@@ -362,9 +402,9 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   lernkarte: {
     live: [
       'Learning Card zeigen: geglaubt, beobachtet, gelernt, darum.',
+      'Hausaufgabe nennen: nach dem Test füllen, an Tag 5 vorlesen.',
       'Erst der Beleg (gestützt, widerlegt, unklar, neu), dann die Handlung.',
       'Verlässlichkeit dazuschreiben: schwach, mittel oder stark – und warum.',
-      'Wird an Tag 5 im Debrief vorgelesen.',
     ],
     verstaendnis: {
       frage: 'E1 ist widerlegt, ihr schwenkt auf die Wartezeit-Anzeige um. Was müsst ihr mit euren alten Belegen tun?',
@@ -379,6 +419,53 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: '„A pivot often means that some of your earlier evidence may be irrelevant to your new trajectory. It usually requires retesting elements of your business model that you’ve already tested.“',
         quelle: `${BLAND}, S. 61`,
       },
+      {
+        text: 'Neue Zeile der Vorlage: „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ – macht die Ausnahme prüfbar.',
+        quelle: 'Kurs (Entscheidung Markus 26.11.2026)',
+      },
+    ],
+    ueberleitung: 'Und wenn ihr nach dem Test anders entscheiden wollt, als die Karte sagt? Das geht – aber offen.',
+  },
+
+  'gegen-den-beleg': {
+    live: [
+      'Netflix in drei Schritten erzählen, Fluss links nach rechts.',
+      'Regel, Ausnahme, Nie – einzeln aufdecken.',
+      '„Ihr dürft gegen einen Beleg entscheiden – aber nicht so tun, als gäbe es ihn nicht.“',
+      'Bezug: die Zeile „Weicht ab …? Grund“ auf der Lernkarte.',
+    ],
+    verstaendnis: {
+      frage: 'Was hat der Test Netflix gebracht, obwohl die Entscheidung gegen die Daten ging?',
+      antwort: 'Offenheit: Weil der Test da war, konnte niemand behaupten, Fonda bleibe im Bild, weil die Kundschaft es wolle. Der Grund war offen ein anderer – die Sorge um Fonda und womöglich ihren Vertrag.',
+      falsch: '„Nichts, der Test war umsonst“ – ohne ihn hätte man die Entscheidung mit erfundenen Kundenwünschen begründen können.',
+    },
+    kern: [
+      {
+        text: 'Netflix: Tests zeigten, dass eine Werbung nur mit Lily Tomlin („Grace and Frankie“) mehr Klicks brachte als Werbung mit Tomlin und Jane Fonda. Das Content-Team fürchtete, Fonda vor den Kopf zu stoßen und womöglich ihren Vertrag zu verletzen. Nach heftigen Debatten – Belege gegen „strategic considerations“ – nahm Netflix Bilder mit beiden, „even though customer data didn’t support the decision. However, the experimental evidence made the decision more transparent. Nobody could argue that Fonda should remain in the promotion because customers preferred it.“',
+        quelle: `${THOMKE}, S. 127`,
+      },
+      {
+        text: 'Regel und Ausnahme: „The remedy is to implement the changes that experiments validate (although there are always exceptions)“ (S. 126); die Ausnahme ist „a conscious choice to overrule the data“ (S. 127).',
+        quelle: `${THOMKE}, S. 126–127`,
+      },
+      {
+        text: '„Of course, there might be good reasons for rolling out an initiative even when the anticipated benefits are not supported by the data.“ Aber: „if the proposed initiative is a done deal, why go through the time and expense of conducting a test?“ – dann „a rollout, commitment, or implementation“.',
+        quelle: `${THOMKE}, S. 87`,
+      },
+      {
+        text: 'Umdeuten ist bei Thomke „cherry-picking data that supports a preferred point of view“.',
+        quelle: `${THOMKE}, S. 86`,
+      },
+    ],
+    fragen: [
+      {
+        frage: 'Wann ist es legitim, gegen den Beleg zu entscheiden?',
+        antwort: 'Ausnahmsweise, wenn es einen Grund gibt, den der Test nicht misst – bei Netflix die Sorge um Fonda und ihren Vertrag. Der Grund steht auf der Lernkarte, der Beleg bleibt sichtbar.',
+      },
+      {
+        frage: 'Muss so eine Zeile anders aussehen als die anderen?',
+        antwort: 'Nein: „Beleg: … → darum: …“ nennt den Beleg, der dagegen spricht; darunter „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ (Kursregel).',
+      },
     ],
     ueberleitung: 'Zum Schluss: Wo steht euer Aufsteller?',
   },
@@ -387,7 +474,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     live: [
       'Folien-Satz vorlesen: Wo kommt eure Zielgruppe ohnehin vorbei?',
       'Kein echter Ort: E1 als simulierter Moment, zehn Menschen, Bild am Handy.',
-      'Schwelle für diese Form vorher neu schreiben, z. B. 4 von 10.',
+      'Schwelle und Bänder dafür vorher neu schreiben, z. B. 4 von 10.',
     ],
     kern: [
       {
@@ -395,6 +482,6 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 135, 142–144`,
       },
     ],
-    ueberleitung: 'Weiter mit der Story Map: der Plan, nach Outcome geschnitten.',
+    ueberleitung: 'Weiter mit der Story Map: Aus dem Spitzenreiter wird Slice 1.',
   },
 };
