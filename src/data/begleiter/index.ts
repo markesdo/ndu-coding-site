@@ -16,6 +16,7 @@ import { NOTIZEN_IDEATION } from './ideation';
 import { NOTIZEN_KUNDENPROFIL } from './kundenprofil';
 import { NOTIZEN_VALUE_MAP } from './value-map';
 import { NOTIZEN_CONCEPT_STORY } from './concept-story';
+import { NOTIZEN_GESCHAEFTSMODELL } from './geschaeftsmodell';
 import { NOTIZEN_EXPERIMENT } from './experiment';
 import { NOTIZEN_USAGE_STORY } from './usage-story';
 import { NOTIZEN_PROTOTYP_SPIKE } from './prototyp-spike';
@@ -44,6 +45,7 @@ export const NOTIZEN: Record<string, Record<string, Notiz>> = {
   '/innolab/methoden/ideation': NOTIZEN_IDEATION,
   '/innolab/methoden/value-map': NOTIZEN_VALUE_MAP,
   '/innolab/methoden/concept-story': NOTIZEN_CONCEPT_STORY,
+  '/innolab/methoden/geschaeftsmodell': NOTIZEN_GESCHAEFTSMODELL,
   '/innolab/methoden/experiment': NOTIZEN_EXPERIMENT,
   // Tag 4 nach der Story Map (13:35–16:25); scrum enthält auch die Tag-5-Folien team bis uebertrag.
   '/innolab/methoden/usage-story': NOTIZEN_USAGE_STORY,

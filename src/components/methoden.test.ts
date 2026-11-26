@@ -192,7 +192,8 @@ describe('methoden', () => {
     // Ein Sprint statt zwei: kein „gestriges Wetter“ aus Sprint 1 und keine kurze Retro von Sprint 2 mehr.
     // 19.11.2026: Ulwick nur noch Theorie (keine Rechnung); der Lückensatz gehört seitdem zur Ideation (ideation-drei).
     // 25.11.2026 (NDU-72): Lego4Scrum dieses Kursjahr stillgelegt.
-    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz', 'ziel-chance-ulwick', 'value-map-lueckensatz', 'scrum-lego'];
+    // 26.11.2026: Geschäftsmodell ohne Musterkarten-Runde (Karten nur noch zum Nachschlagen).
+    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz', 'ziel-chance-ulwick', 'value-map-lueckensatz', 'scrum-lego', 'geschaeftsmodell-muster'];
     const jetzt = METHODEN.flatMap((m) => m.pruefliste ?? []).map((p) => p.id);
     for (const id of jetzt) expect(VERGEBEN, `${id}: neue ID in VERGEBEN eintragen`).toContain(id);
     for (const id of VERGEBEN) {
