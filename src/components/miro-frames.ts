@@ -43,11 +43,15 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 0 · Anleitung Annahmen der Idee': '3458764691725321671',
   // Concept Story auf Miro (seit 26.11.2026): sieben Stationen auf dem Bogen und das Feld „Flach-Probe (Kursregel)“, ein Frame
   // je Person; das ausgefüllte Beispiel der Kaffeebar daneben. Seit dem Nachtrag 26.11. abends bleibt sie auf Miro (keine Datei).
+  // Anleitungen auf Miro (seit 27.11.2026), je ein Frame links neben der Übung; verlinkt von deren „So geht ihr vor“.
+  'T4 · 0 · Anleitung Concept Story': '3458764691728596735',
   'T4 · 0 · Concept Story · Kaffeebar': '3458764691724565870',
   'T4 · 0 · Concept Story · Produkt 1': '3458764691724622640',
   'T4 · 0 · Concept Story · Produkt 2': '3458764691724622641',
   'T4 · 0 · Concept Story · Produkt 3': '3458764691724622642',
   'T4 · 1 · Story Map': '3458764687894872787',
+  'T4 · 1 · Anleitung Story Map': '3458764691728716904',
+  'T4 · 1 · Anleitung Warm-up · euer Morgen': '3458764691728620654',
   // Warm-up „euer Morgen“ (seit 26.11.2026): ein Frame je Person, sechs Anleitungskarten und eine Arbeitsfläche; Farben gelb Task,
   // grün Aktivität, blau Detail/Variante (anders als „T4 · 1 · Story Map“: dort Aktivitäten hellblau, Tasks hellgelb).
   'T4 · 1 · Warm-up · euer Morgen · Produkt 1': '3458764691725906138',
@@ -56,15 +60,19 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 2 · Teamaufstellung & DoD': '3458764687968670113',
   // Frames je Produkt für die Arbeit ohne docs-Dateien (seit 26.11.2026 nachts), je mit dem ausgefüllten Beispiel der Kaffeebar.
   // Das Geschäftsmodell heißt auf dem Board „T4 · 7“ (T4 · 2 ist die Teamaufstellung), obwohl es um 10:40 drankommt.
+  'T4 · 4 · Anleitung Usage Story': '3458764691728596797',
   'T4 · 4 · Usage Story · Kaffeebar': '3458764691726734311',
   'T4 · 4 · Usage Story · Produkt 1': '3458764691726734312',
   'T4 · 4 · Usage Story · Produkt 2': '3458764691726734313',
   'T4 · 4 · Usage Story · Produkt 3': '3458764691726734314',
   // Felder: 1 Papier-Skizzen · 2 Abnahmekriterien · 3 Zeitbox · 4 Prototyp · 5 Karte E2 · 6 Tests · Befunde (falls getestet).
+  'T4 · 5 · Anleitung Prototyp': '3458764691728716089',
   'T4 · 5 · Prototyp · Kaffeebar': '3458764691726853493',
   'T4 · 5 · Prototyp · Produkt 1': '3458764691726853494',
   'T4 · 5 · Prototyp · Produkt 2': '3458764691726853495',
   'T4 · 5 · Prototyp · Produkt 3': '3458764691726853496',
+  'T4 · 6 · Anleitung Origin Story': '3458764691728490247',
+  'T4 · 6 · Anleitung Lernkarten': '3458764691728384747',
   'T4 · 6 · Origin Story · Kaffeebar': '3458764691726786504',
   'T4 · 6 · Origin Story · Produkt 1': '3458764691726786505',
   'T4 · 6 · Origin Story · Produkt 2': '3458764691726786506',
@@ -73,6 +81,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 6 · Lernkarten · Produkt 1': '3458764691726588596',
   'T4 · 6 · Lernkarten · Produkt 2': '3458764691726588597',
   'T4 · 6 · Lernkarten · Produkt 3': '3458764691726588598',
+  'T4 · 7 · Anleitung Geschäftsmodell': '3458764691728490336',
   'T4 · 7 · Geschäftsmodell · Kaffeebar': '3458764691726674865',
   'T4 · 7 · Geschäftsmodell · Produkt 1': '3458764691726674866',
   'T4 · 7 · Geschäftsmodell · Produkt 2': '3458764691726674867',

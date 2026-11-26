@@ -206,9 +206,9 @@ describe('Hilfen des Tests', () => {
 
 // Review 2 #448: Was nur zur Uhrzeit am Beamer stimmt, steht nicht im Handout (dort lesen es alle auch an Tag 5).
 describe('Handout ohne Beamer-Sätze', () => {
-  it('„Jetzt, 17:15“, der Tag-5-Satz und die Hausaufgaben-Schritte nur im Beamer; das Handout behält Hinweis und Checkliste', () => {
+  it('„Jetzt: Origin Story“, der Tag-5-Satz und die Hausaufgaben-Schritte nur im Beamer; das Handout behält Hinweis und Checkliste', () => {
     const weiter = folie('/innolab/methoden/scrum', 'weiter-tag-4');
-    expect(weiter).toMatch(/<p class="nur-beamer">Jetzt, 17:15: Origin Story und Hausaufgabe/);
+    expect(weiter).toMatch(/<p class="nur-beamer">Jetzt: Origin Story und Hausaufgabe/);
     expect(weiter).toMatch(/<p class="nur-handout">Teamaufstellung und Definition of Done folgen an <a href="\/innolab\/tag-5">Tag 5<\/a>/);
     // „folgen an Tag 5“ steht genau einmal außerhalb von .nur-beamer.
     const ohneBeamer = weiter.replace(/<p class="[^"]*\bnur-beamer\b[^"]*">[\s\S]*?<\/p>/g, '');
@@ -223,7 +223,7 @@ describe('Handout ohne Beamer-Sätze', () => {
 describe('Origin Story: Vorlage verlinkt', () => {
   // Seit 26.11. abends: keine docs-Vorlage mehr – die Origin Story steht auf Miro im eigenen Frame.
   it('tag-4#abschluss nennt den Miro-Frame der Origin Story statt einer docs-Vorlage', () => {
-    expect(folie('/innolab/tag-4', 'abschluss')).toContain('Ihr schreibt sie auf Miro, in eurem Frame „T4 · 6 · Origin Story · Produkt n“: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink>');
+    expect(folie('/innolab/tag-4', 'abschluss')).toContain('in eurem Frame „T4 · 6 · Origin Story · Produkt n“: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink>');
     expect(folie('/innolab/tag-4', 'abschluss')).not.toContain('vorlage-origin-story');
     // Auf der Experiment-Seite zeigt der Abschnitt mit dieser id, wie der Miro-Frame aussieht.
     expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">So sieht die Origin Story auf Miro aus</h3>');

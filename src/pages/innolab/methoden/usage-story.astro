@@ -29,17 +29,18 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <h2 id="drei-storys">Noch eine Story? Drei Storys, ein Bogen</h2>
     <p class="folie-satz">Slice 1 steht. Jetzt: Wie fühlt sich der Weg durch ihn an – und wo ist der Höhepunkt, den euer Prototyp zeigen muss?</p>
     <Fluss label="Drei Storys auf demselben Bogen, nach Lichaw: Concept, Origin, Usage" hervor={[2]} knoten={[
-      { t: 'Concept Story', sub: 'Höhepunkt: sie <em>versteht</em> den Wert<br>heute Morgen', icon: Lightbulb },
-      { t: 'Origin Story', sub: 'Höhepunkt: sie <em>sieht</em> den Wert<br>um 17:15', icon: Eye },
-      { t: 'Usage Story', sub: 'Höhepunkt: sie <em>erlebt</em> den Wert<br>jetzt', icon: Hand },
+      { t: 'Concept Story', sub: 'Am Höhepunkt <em>versteht</em> die Person den Wert eures Produkts<br>→ Satz im Produkt-Brief · heute Morgen', icon: Lightbulb },
+      { t: 'Origin Story', sub: 'Am Höhepunkt <em>sieht</em> die Person den Wert eures Produkts<br>→ Text für Aufsteller oder Landingpage, Test E1 · am Ende des Tages', icon: Eye },
+      { t: 'Usage Story', sub: 'Am Höhepunkt <em>erlebt</em> die Person den Wert eures Produkts<br>→ Ablauf für euren Prototyp · jetzt', icon: Hand },
     ]} />
     <ul class="gross">
+      <li data-schritt><strong>Wert:</strong> was euer Produkt für diese Person besser macht als das, was sie heute tut.</li>
       <li data-schritt><strong>Usage Story:</strong> eine Nutzung, Schritt für Schritt.</li>
       <li data-schritt><strong>Welche?</strong> Die Kernaufgabe – der Weg, den Menschen immer wieder gehen: bei euch der Weg durch Slice 1.</li>
     </ul>
     <div class="nur-handout">
-      <p>Lichaw unterscheidet die drei Storys an ihrem Höhepunkt: „In a concept story, the climax occurs when your customer <em>understands</em> the value of a product; in an origin story, it happens when the user <em>sees</em> the value of a product. (As you’ll see in the next chapter, the climax of a usage story is where the user <em>experiences</em> the value of a product.)“ ({LICHAW}, Kap. 4, Climax/Resolution, S. 50). Die Concept Story habt ihr heute Morgen geschrieben; die Origin Story folgt im Abschluss um 17:15.</p>
-      <p>Welcher Ablauf? Lichaw empfiehlt, mit Kernaufgaben zu beginnen: „Core tasks are interactions that you want and expect users to perform over and over again“ (Kap. 5). Bei euch ist das der Weg durch Slice 1 eurer Story Map.</p>
+      <p>Lichaw unterscheidet die drei Storys an ihrem Höhepunkt: „In a concept story, the climax occurs when your customer <em>understands</em> the value of a product; in an origin story, it happens when the user <em>sees</em> the value of a product. (As you’ll see in the next chapter, the climax of a usage story is where the user <em>experiences</em> the value of a product.)“ ({LICHAW}, Kap. 4, Climax/Resolution, S. 50). Die Concept Story habt ihr heute Morgen geschrieben; die Origin Story folgt am Ende des Tages, im Abschluss. Dass ihr die Usage Story vor der Origin Story schreibt, ist Kurslogik: Der Prototyp braucht sie zuerst.</p>
+      <p>Welcher Ablauf? Lichaw empfiehlt, mit Kernaufgaben zu beginnen: „Core tasks are interactions that you want and expect users to perform over and over again“ (Kap. 5, Micro-Stories: Core Tasks, S. 86). Bei euch ist das der Weg durch Slice 1 eurer Story Map.</p>
     </div>
   </Folie>
 
@@ -52,7 +53,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
         <li data-schritt><strong>1 Exposition, 2 Auslöser:</strong> wer, was sie will – was den Ablauf startet.</li>
         <li data-schritt><strong>3 Steigende Handlung</strong> („Steps“): Schritte, jeder relevanter als der vorige.</li>
         <li data-schritt><strong>4 Krise</strong> („Impediments“): Hürden – Anmeldung, Bezahlen, Zweifel, Bedienung.</li>
-        <li data-schritt><strong>5 Höhepunkt:</strong> sie <em>erlebt</em> den Wert – nicht nur, dass, sondern wie.</li>
+        <li data-schritt><strong>5 Höhepunkt:</strong> die Person <em>erlebt</em> den Wert eures Produkts – nicht nur, dass, sondern wie.</li>
         <li data-schritt><strong>6 Fallende Handlung, 7 Ende</strong> („Then what?“): ein, zwei Schritte, dann Schluss.</li>
       </ul>
     </BildText>
@@ -107,7 +108,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <p class="wozu"><strong>Wozu?</strong> Damit ihr wisst, welchen Bildschirm euer Prototyp unbedingt zeigen muss.</p>
     <ol class="gross">
       <li data-schritt><strong>Kernaufgabe wählen:</strong> der Weg durch Slice 1, den Menschen immer wieder gehen. <Timer minuten={2} /></li>
-      <li data-schritt><strong>Sieben Stationen, allein,</strong> auf Miro in eurem Frame „T4 · 4 · Usage Story · Produkt n“: Person aus den Interviews, Uhrzeit, Ort. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Sieben Stationen, allein,</strong> auf Miro in eurem Frame „T4 · 4 · Usage Story · Produkt n“: Person aus den Interviews, Uhrzeit, Ort. <Timer minuten={10} /> <span class="links"><MiroLink name="T4 · 4 · Usage Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 3">3</MiroLink> · Beispiel <MiroLink name="T4 · 4 · Usage Story · Kaffeebar">Kaffeebar</MiroLink> · <MiroLink name="T4 · 4 · Anleitung Usage Story">Anleitung</MiroLink></span></li>
       <li data-schritt><strong>Boom-Probe, allein:</strong> Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens zwei Schritte? Markus liest im 1:1 die Stationen 4 bis 7. <Timer minuten={4} /></li>
       <li data-schritt><strong>Festhalten</strong> im selben Frame: Höhepunkt markieren, Belege mit ID (I…, P…). <Timer minuten={2} /></li>
     </ol>

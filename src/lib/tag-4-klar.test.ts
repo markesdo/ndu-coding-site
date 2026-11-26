@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { bloeckeAus, quellenAusGlob } from './begleiter';
 import { NOTIZEN } from '../data/begleiter';
 import { MIRO_FRAMES } from '../components/miro-frames';
+import { bearbeitenHref } from '../werkstatt/ui/bearbeiten-link';
 
 // Durchsicht Tag 4 (26.11.2026, Consult Abschnitt 5): Jede Folie der Tagesseite im Beamer allein verständlich.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
@@ -19,7 +20,7 @@ const T4 = '/innolab/tag-4';
 describe('Tag 4: „Was bauen wir?“ konkret', () => {
   it('Satz definiert Slice 1; die drei Zuläufe sagen, woher und was daraus wird', () => {
     const f = folie(T4, 'was-bauen-wir');
-    expect(f).toContain('<p class="folie-satz">Bis 16:25 einen klickbaren Prototyp von Slice 1 – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.</p>');
+    expect(f).toContain('<p class="folie-satz">Bis zum Nachmittag einen klickbaren Prototyp von Slice 1 – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.</p>');
     expect(f).not.toContain('die Tests davon');
     expect(f).toContain('beleg="liefert den Inhalt: den Weg eurer Person – aus Interviews und Experience Map."');
     expect(f).toContain('outcome="liefert das Maß: was Menschen danach anders tun – aus eurem Brief."');
@@ -38,7 +39,7 @@ describe('Tag 4: „Was bauen wir?“ konkret', () => {
 
 describe('Tag 4: Origin Story im Beamer', () => {
   it('#abschluss: was dabei herauskommt, und „sie“ wie in den Stationen', () => {
-    expect(folie(T4, 'abschluss')).toContain('<p class="folie-satz">Wie jemand euren Wert zum ersten Mal sieht – und was sie dann tut. Ergebnis: der Text für euren Test E1.</p>');
+    expect(folie(T4, 'abschluss')).toContain('<p class="folie-satz">Wie eine Person den Wert eures Produkts zum ersten Mal sieht – und was sie dann tut. Ergebnis: der Text für euren Test E1.</p>');
   });
 
   it('#origin-beispiel folgt auf #abschluss; der Aufstellertext steht im Beamer, nicht mehr im Handout des Abschlusses', () => {
@@ -73,7 +74,7 @@ describe('Tag 4: Ablauf-Texte und Namen (Durchsicht 26.11.)', () => {
     return a < 0 ? '' : q.slice(q.indexOf('>', a) + 1, q.indexOf('</Block>', a));
   };
   it('Concept Story: Theorie = alle Folien, dann 30 min auf Miro im eigenen Frame', () => {
-    expect(text('Story-Bogen + Concept Story')).toBe('Theorie, alle Folien (etwa 20 min): sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben, allein, auf Miro in „T4 · 0 · Concept Story · Produkt n“: sieben Stationen, Flach-Probe, festhalten.');
+    expect(text('Story-Bogen + Concept Story')).toBe('Theorie, alle Folien (etwa 20 min): sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben, allein, auf Miro in „T4 · 0 · Concept Story · Produkt n“: sieben Stationen mit Flach-Probe als Check, festhalten.');
   });
   it('Geschäftsmodell: Titel wie die Seite, Text mit Linie und Annahme', () => {
     expect(bloecke.map((b) => b.titel)).toContain('Geschäftsmodell');
@@ -157,7 +158,7 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
     const alle = SEITEN_MIT_FRAMES.map(seite).join('\n');
     expect(alle).not.toMatch(/TODO Miro-ID/);
     for (const f of ['T4 · 7 · Geschäftsmodell', 'T4 · 4 · Usage Story', 'T4 · 5 · Prototyp', 'T4 · 6 · Origin Story', 'T4 · 6 · Lernkarten']) {
-      for (const n of [1, 2, 3]) expect(alle, `${f} · Produkt ${n}`).toContain(`<MiroLink name="${f} · Produkt ${n}">Produkt ${n}</MiroLink>`);
+      for (const n of [1, 2, 3]) expect(alle, `${f} · Produkt ${n}`).toMatch(new RegExp(`<MiroLink name="${f} · Produkt ${n}">(Produkt )?${n}</MiroLink>`));
     }
   });
 });
@@ -181,6 +182,46 @@ describe('Tag 5 liest Tag 4 von Miro', () => {
     expect(t5).toContain('<strong>Je Product Ownerin:</strong> E1, E2 (falls getestet), Empfehlung');
     expect(t5).toContain('E2 und U1–U3 stehen auf der Seite <a href="/innolab/methoden/prototyp-spike#beispiel-befunde">');
     expect(seite('/innolab/methoden/prototyp-spike')).toContain('<h2 id="beispiel-befunde">');
+  });
+});
+
+// Dozent 27.11.2026: Jede „So geht ihr vor“-/Schritt-Folie verlinkt, was die Studierenden brauchen – im Beamer und auf der
+// Seite (die Seite ist ihr Handout): die eigenen Miro-Frames je Produkt, die Anleitung auf Miro und die Werkstatt, wo ein
+// Schritt dort schreibt.
+describe('So geht ihr vor: Frames, Anleitung und Werkstatt verlinkt', () => {
+  const M = (s: string) => `/innolab/methoden/${s}`;
+  const PS = ['vorgehen', 'schritt-papier', 'schritt-kriterien', 'schritt-zeitbox', 'schritt-ansehen', 'schritt-karte', 'schritt-trockenlauf'];
+  const FOLIEN: { p: string; id: string; produkt: string[]; frames: string[] }[] = [
+    { p: M('value-map'), id: 'vorgehen', produkt: ['T3 · 4 · Canvas', 'T3 · 4 · Anleitung Value Map'], frames: ['T3 · 4 · Anleitung Value Map · Kaffeebar'] },
+    { p: M('value-map'), id: 'vorgehen-fit', produkt: ['T3 · 4 · Canvas', 'Baum'], frames: [] },
+    { p: M('concept-story'), id: 'vorgehen', produkt: ['T4 · 0 · Concept Story'], frames: ['T4 · 0 · Concept Story · Kaffeebar', 'T4 · 0 · Anleitung Concept Story'] },
+    { p: M('geschaeftsmodell'), id: 'vorgehen', produkt: ['T4 · 7 · Geschäftsmodell'], frames: ['T4 · 7 · Geschäftsmodell · Kaffeebar', 'T4 · 7 · Anleitung Geschäftsmodell'] },
+    { p: M('experiment'), id: 'vorgehen', produkt: ['Baum'], frames: ['T4 · 0 · Annahmen der Idee', 'T4 · 0 · Anleitung Annahmen der Idee'] },
+    { p: M('story-map'), id: 'warmup', produkt: ['T4 · 1 · Warm-up · euer Morgen'], frames: ['T4 · 1 · Anleitung Warm-up · euer Morgen'] },
+    { p: M('story-map'), id: 'vorgehen', produkt: [], frames: ['T4 · 1 · Story Map', 'T4 · 1 · Anleitung Story Map'] },
+    { p: M('usage-story'), id: 'vorgehen', produkt: ['T4 · 4 · Usage Story'], frames: ['T4 · 4 · Usage Story · Kaffeebar', 'T4 · 4 · Anleitung Usage Story'] },
+    ...PS.map((id) => ({ p: M('prototyp-spike'), id, produkt: ['T4 · 5 · Prototyp'], frames: id === 'vorgehen' ? ['T4 · 5 · Prototyp · Kaffeebar', 'T4 · 5 · Anleitung Prototyp'] : [] })),
+    { p: T4, id: 'hausaufgabe', produkt: ['T4 · 6 · Origin Story', 'T4 · 6 · Lernkarten', 'T4 · 5 · Prototyp'], frames: ['T4 · 6 · Anleitung Origin Story', 'T4 · 6 · Anleitung Lernkarten'] },
+  ];
+  const ohne = (f: string, klasse: string) => f
+    .replace(new RegExp(`<div class="${klasse}">[\\s\\S]*$`), '')
+    .replace(new RegExp(`<(p|ol|ul) class="[^"]*\\b${klasse}\\b[^"]*">[\\s\\S]*?</\\1>`, 'g'), '');
+  const verlinkt = (q: string, name: string) => q.includes(`<MiroLink name="${name}">`) || q.includes(`<MiroFrame name="${name}" />`);
+  for (const { p, id, produkt, frames } of FOLIEN) {
+    it(`${p}#${id}`, () => {
+      const f = folie(p, id);
+      expect(f.length, `${p}#${id}`).toBeGreaterThan(200);
+      // Was im Beamer steht (ohne Handout) und was auf der Seite steht (ohne nur-beamer): beides verlinkt.
+      for (const [ansicht, q] of [['Beamer', ohne(f, 'nur-handout')], ['Seite', ohne(f, 'nur-beamer')]] as const) {
+        for (const pre of produkt) for (const n of [1, 2, 3]) expect(verlinkt(q, `${pre} · Produkt ${n}`), `${ansicht}: ${pre} · Produkt ${n}`).toBe(true);
+        for (const name of frames) expect(verlinkt(q, name), `${ansicht}: ${name}`).toBe(true);
+        if (/Annahmen-Map|Produkt-Brief|Werkstatt/.test(q.replace(/<[^>]+>/g, ''))) expect(q, `${ansicht}: Werkstatt-Link`).toMatch(/href="\/innolab\/mappe\?bearbeiten=(annahmen|brief)"/);
+      }
+    });
+  }
+  it('die Werkstatt-Links sind die Direktlinks der Mappe (bearbeitenHref)', () => {
+    expect(bearbeitenHref('annahmen')).toBe('/innolab/mappe?bearbeiten=annahmen');
+    expect(bearbeitenHref('brief')).toBe('/innolab/mappe?bearbeiten=brief');
   });
 });
 

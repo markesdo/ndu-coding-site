@@ -4,7 +4,7 @@ import type { Notiz } from './typen';
 // Tag 3 (21.11.): Story-Bogen nur als Theorie. Tag 4 (28.11., NDU-66): Die Theorie läuft als eigener Teil vor der Übung,
 // alle 16 Folien von story-bogen bis drei-storys, in dieser Reihenfolge (Fable-Durchsicht 26.11.: concept-story vor flach,
 // hoehepunkt darin aufgegangen, flach – hoch – hoch-lehre – baut-mit als iPhone-Strang, drei-storys als Ausblick am Ende).
-// Danach 30 min Übung (vorgehen): sieben Stationen auf Miro in „T4 · 0 · Concept Story · Produkt n“, Flach-Probe,
+// Danach 30 min Übung (vorgehen): sieben Stationen auf Miro in „T4 · 0 · Concept Story · Produkt n“ mit der Flach-Probe als Check (seit 27.11.),
 // festhalten – allein, Markus 1:1, keine Erzählrunde. Die Story bleibt auf Miro – keine Datei (Entscheidung 26.11. abends).
 // Zeit: Die Sprechzeiten in den live-Stichworten ergeben zusammen rund 22 min; die Uhrzeiten des Blocks stehen in tag-4.astro.
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
@@ -536,8 +536,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   'drei-storys': {
     live: [
-      '„Verstehen, sehen, erleben – drei Storys auf demselben Bogen.“',
-      'Concept jetzt; Usage nach der Mittagspause, Origin zum Abschluss.',
+      'Zeilen aufdecken: Frage, Höhepunkt, Kaffeebar, was daraus wird.',
+      'Wert vorlesen: besser als das, was die Person heute tut.',
       'Exposition betonen: einmal schreiben, dreimal verwenden.',
       'Bei Bedarf: Lichaws Pinterest-Mail erzählen.',
       'Zeit: Sprechzeit ~1 min.',
@@ -549,38 +549,41 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     kern: [
       {
         text: '„In a concept story, the climax occurs when your customer understands the value of a product; in an origin story, it happens when the user sees the value of a product.“ Bei der Usage Story erlebt die Person den Wert.',
-        quelle: `${LICHAW}, Kap. 4, How Origin Stories Work, Climax/Resolution`,
+        quelle: `${LICHAW}, Kap. 4, How Origin Stories Work, Climax/Resolution, S. 50`,
       },
       {
         text: '„The material in the exposition is the same in all three stories: origin, concept, and usage.“',
-        quelle: `${LICHAW}, Kap. 4, How Origin Stories Work, Exposition`,
+        quelle: `${LICHAW}, Kap. 4, How Origin Stories Work, Note „You’re Not Seeing Double (or Triple)“, S. 48`,
+      },
+      {
+        text: 'Usage Story vor Origin Story ist Kurslogik: Der Prototyp braucht sie zuerst; die Origin Story ist der Text für E1 am Ende des Tages.',
+        quelle: 'Kursregel',
       },
     ],
-    ueberleitung: 'Jetzt eure Story: 30 Minuten auf Miro, drei Schritte.',
+    ueberleitung: 'Jetzt eure Story: 30 Minuten auf Miro, zwei Schritte.',
   },
 
   vorgehen: {
     live: [
       'Zeit: 30 min Übung nach der Theorie; Wozu vorlesen.',
-      'Timer 20 min: Stickies unter den sieben Stationen füllen, allein, mit IDs.',
+      'Timer 25 min: sieben Stationen füllen, allein, mit IDs.',
       '1:1 ab Minute 5: einfache Lösung – was hat die Story mehr?',
-      'Nach 20 min: Feld „Flach-Probe“ unten links füllen – Timer 5 min.',
+      'Fertig, wenn Krise und Höhepunkt stehen – sonst eine Linie.',
       'Nach 25 min: Satz in den Brief, Station 6 als Annahme.',
     ],
-    uebung: { dauer: '30 min (20 + 5 + 5)', form: 'allein auf Miro schreiben; Markus geht 1:1 von Person zu Person, keine Erzählrunde' },
+    uebung: { dauer: '30 min (25 + 5)', form: 'allein auf Miro schreiben; Markus geht 1:1 von Person zu Person, keine Erzählrunde' },
     miro: {
       frame: 'T4 · 0 · Concept Story · Produkt 1',
       schritte: [
         'Frame wie hier für Produkt 1, ebenso Produkt 2 und 3 (MiroLinks auf der Folie). Jede*r arbeitet im eigenen Frame „T4 · 0 · Concept Story · Produkt n“; das Kaffeebar-Beispiel hängt daneben.',
         'Unter jeder Station („1 Exposition“ bis „7 Ende“) ein Sticky mit Leitfrage – durch die eigene Antwort mit IDs ersetzen; Station 6 als Gedanke in „…“.',
-        'Flach-Probe als eine Zeile in das leere Sticky im Feld „Flach-Probe (Kursregel)“ unten links.',
+        'Feld „Flach-Probe (Kursregel)“ unten links: freiwillig, als Hilfe für den Check in Schritt 1.',
       ],
     },
     ablauf: {
       schritte: [
-        'Schritt 1 (20 min, allein): die Stickies unter den sieben Stationen in „T4 · 0 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person.',
-        'Schritt 2 (5 min, Kursregel – Flach-Probe): die einfache Lösung als eine Zeile ins Feld „Flach-Probe (Kursregel)“ unten links – Problem, Produkt, Ende.',
-        'Schritt 3 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map. Die Story bleibt auf Miro; geprüft wird mit Text oder Screenshot des Frames in Claude (Opus).',
+        'Schritt 1 (25 min, allein): die Stickies unter den sieben Stationen in „T4 · 0 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person. Fertig, wenn Krise und Höhepunkt stehen – sonst ist die Story eine Linie (Flach-Probe, Kursregel).',
+        'Schritt 2 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map – beides auf der Folie verlinkt. Die Story bleibt auf Miro; geprüft wird mit einem Screenshot des Frames in Claude (Opus).',
       ],
       achten: [
         'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',

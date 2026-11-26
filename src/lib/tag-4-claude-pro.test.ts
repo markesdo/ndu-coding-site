@@ -65,8 +65,8 @@ describe('Tag 4: Claude Pro gemeinsam um 11:00 (Markus 26.11.2026)', () => {
 
   it('die Folien nennen den richtigen Grund: Claude Code ab der Story Map (11:50), dann zum Bauen im Spike', () => {
     const f = folie(EX, 'claude-pro-jetzt') + folie(EX, 'claude-code-opus');
-    expect(f).toContain('Claude Code braucht ihr heute zum ersten Mal in der <a href="/innolab/methoden/story-map#pruefen">Story Map</a> ab 11:50');
-    expect(f).toContain('Markus hilft vor 11:50');
+    expect(f).toContain('Claude Code braucht ihr heute zum ersten Mal in der <a href="/innolab/methoden/story-map#pruefen">Story Map</a>, für den Prompt „Annahmen hinter Slice 1“; danach zum Bauen im Prototyp-Spike nach der Mittagspause');
+    expect(f).toContain('Markus hilft vor der Story Map');
     expect(f).not.toMatch(/bis zum Spike um 14:05|erst für das Pre-Mortem|Claude Code ab hier/);
     // Wer schon Pro oder Max hat, sieht es auf der Folie selbst, nicht nur im Handout – mit den Schritten, die bleiben.
     const sichtbar = f.slice(0, f.indexOf('<div class="nur-handout">'));

@@ -104,7 +104,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
 
   it('Farblegende auf der Übersicht: dieselben Farben wie auf den Frames', () => {
     const s = sichtbar(folie('vorgehen'));
-    for (const t of ['Grün: Aktivität', 'Gelb: Task', 'Blau: Details, Varianten', 'Rot: geht schief', 'Grau: System', 'Pink: Outcome', 'Cyan: „Wir lernen, ob“', 'Violett: wer handelt', '* kein Software-Schritt', 'Sprechblase: offene Frage → Annahmen-Map']) expect(s, t).toContain(t);
+    for (const t of ['Grün: Aktivität', 'Gelb: Task', 'Blau: Details, Varianten', 'Rot: geht schief', 'Grau: System', 'Pink: Outcome', 'Cyan: „Wir lernen, ob“', 'Violett: wer handelt', '* kein Software-Schritt', 'Sprechblase: offene Frage → <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a>']) expect(s, t).toContain(t);
   });
 
   it('alles auf Miro: keine docs-Datei; Claude Code mit Opus liest einen Screenshot und die Annahmen-Map der Werkstatt', () => {

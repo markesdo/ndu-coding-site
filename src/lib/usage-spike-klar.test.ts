@@ -26,10 +26,24 @@ describe('Usage Story: drei Storys vorn, sieben Stationen, Boom-Probe allein', (
   });
   it('drei-storys: Concept, Origin, Usage mit versteht / sieht / erlebt; Lichaw mit Seite', () => {
     const f = folie(US, 'drei-storys');
-    expect(f).toContain("{ t: 'Concept Story', sub: 'Höhepunkt: sie <em>versteht</em> den Wert<br>heute Morgen', icon: Lightbulb }");
-    expect(f).toContain("{ t: 'Origin Story', sub: 'Höhepunkt: sie <em>sieht</em> den Wert<br>um 17:15', icon: Eye }");
-    expect(f).toContain("{ t: 'Usage Story', sub: 'Höhepunkt: sie <em>erlebt</em> den Wert<br>jetzt', icon: Hand }");
+    // Consult 27.11.: wer am Höhepunkt was tut, was daraus wird und wann – relativ, ohne Uhrzeit; „Wert“ als erster Punkt.
+    expect(f).toContain("{ t: 'Concept Story', sub: 'Am Höhepunkt <em>versteht</em> die Person den Wert eures Produkts<br>→ Satz im Produkt-Brief · heute Morgen', icon: Lightbulb }");
+    expect(f).toContain("{ t: 'Origin Story', sub: 'Am Höhepunkt <em>sieht</em> die Person den Wert eures Produkts<br>→ Text für Aufsteller oder Landingpage, Test E1 · am Ende des Tages', icon: Eye }");
+    expect(f).toContain("{ t: 'Usage Story', sub: 'Am Höhepunkt <em>erlebt</em> die Person den Wert eures Produkts<br>→ Ablauf für euren Prototyp · jetzt', icon: Hand }");
+    expect(f).toContain('<li data-schritt><strong>Wert:</strong> was euer Produkt für diese Person besser macht als das, was sie heute tut.</li>');
+    expect(f).toContain('(Kap. 5, Micro-Stories: Core Tasks, S. 86)');
     expect(f).toContain('({LICHAW}, Kap. 4, Climax/Resolution, S. 50)');
+  });
+  it('concept-story#drei-storys: Tabelle mit vier Zeilen, Wert und Exposition darunter', () => {
+    const c = quellen['/innolab/methoden/concept-story'] ?? '';
+    const f = c.slice(c.indexOf('<h2 id="drei-storys">'), c.indexOf('</Folie>', c.indexOf('<h2 id="drei-storys">')));
+    expect(f).toContain('<p class="folie-satz">Dieselbe Person, dasselbe Produkt, drei Momente: verstehen, sehen, erleben.</p>');
+    expect([...f.matchAll(/<tr data-schritt><th>([^<]+)<\/th>/g)].map((m) => m[1])).toStrictEqual(['Frage', 'Am Höhepunkt', 'Kaffeebar', 'Daraus wird']);
+    expect(f).toContain('<th>Concept Story<span>jetzt</span></th><th>Origin Story<span>am Ende des Tages, im Abschluss</span></th><th>Usage Story<span>nach der Mittagspause</span></th>');
+    expect(f).toContain('<strong>Wert:</strong> was euer Produkt für diese Person besser macht als das, was sie heute tut.');
+    expect(f).toContain('<strong>Kurslogik:</strong>');
+    for (const s of ['S. 24', 'S. 28', 'S. 45', 'S. 48', 'S. 50', 'S. 70', 'S. 73']) expect(f, s).toContain(s);
+    expect(f.replace(/<[^>]+>/g, '')).not.toMatch(/\bihn\b/);
   });
   it('usage-story: alle sieben Stationen im Beamer, englische Wörter der Abbildung zugeordnet', () => {
     const b = beamer(folie(US, 'usage-story'));
@@ -173,7 +187,7 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
   });
   it('Schritt 4: Fenster von 11:00, Opus mit Ausweich-Zeile, Bilder, Vorlesen vor dem Bauen; Sichern mit Link', () => {
     const b = beamer(folie(PS, 'schritt-bauen'));
-    expect(b).toContain('<strong>Claude Code öffnen:</strong> dasselbe Fenster wie um 11:00 – euer Repo, Terminal, <code>claude</code>. Dann <code>/model opus</code>.');
+    expect(b).toContain('<strong>Claude Code öffnen:</strong> dasselbe Fenster wie beim Einrichten am Vormittag – euer Repo, Terminal, <code>claude</code>. Dann <code>/model opus</code>.');
     expect(b).toContain('Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen.');
     expect(folie(PS, 'schritt-bauen')).toContain('Eine Datei öffnet oder schreibt ihr nicht');
     expect(beamer(folie(PS, 'schritt-ansehen'))).toContain('<strong>Fünf Minuten vor Schluss:</strong> Prompt „Spike sichern“ – Claude gibt euch den Link fürs Handy.');

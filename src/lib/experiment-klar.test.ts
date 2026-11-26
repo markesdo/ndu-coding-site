@@ -58,7 +58,7 @@ describe('Annahmen-Map wie der Miro-Frame', () => {
   it('#map: Titel, die vier Feldnamen des Frames, Achsen, Spitzenreiter von 9:05, Wege Miro – Werkstatt – Repo', () => {
     const m = sichtbar('map');
     expect(m).toContain('<h2 id="map">Annahmen-Map: Welche testen wir zuerst?</h2>');
-    expect(m).toContain('eures Spitzenreiters, den ihr um 9:05 bestätigt habt');
+    expect(m).toContain('eures Spitzenreiters, den ihr heute Morgen in der Value Map bestätigt habt');
     expect(m).toContain('Nach oben: wichtiger. Nach rechts: weniger Beleg.');
     expect(m).toContain('Sortieren auf Miro – festhalten in der Werkstatt (ID, Art, Wichtigkeit, Beleg) – die Karte E1 auf Miro, im selben Frame.');
     // Feldnamen kommen aus MAP_FELDER, in dieser Reihenfolge (oben links, oben rechts, unten links, unten rechts).
@@ -75,7 +75,7 @@ describe('Annahmen-Map wie der Miro-Frame', () => {
     expect(v).not.toMatch(/Map:<\/strong> Beleg nach rechts/);
     const orte = [...v.matchAll(/<li data-schritt><strong>[^<]*?, (auf Miro|[^<:]+):<\/strong>/g)].map((x) => x[1]);
     expect(orte).toStrictEqual(['auf Miro', 'auf Miro', 'auf Miro', 'auf Miro', 'auf Miro']);
-    expect(v).toContain('in der Werkstatt festhalten: ID, Art, Wichtigkeit, Beleg.');
+    expect(v).toContain('in der <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map der Werkstatt</a> festhalten: ID, Art, Wichtigkeit, Beleg.');
     expect(v).toContain('<strong>Karte E1, auf Miro:</strong> im Feld „Karte E1 für die oberste rechts“');
     expect(v).toContain('<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">');
     expect(MIRO_FRAMES['T4 · 0 · Anleitung Annahmen der Idee']).toBe('3458764691725321671');

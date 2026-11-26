@@ -209,7 +209,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   'ergebnis-gilt': {
     live: [
       'Kohl’s erzählen: viele begeistert, erst ein Test, Umsatz sinkt, gestoppt.',
-      '„Gute Ergebnisse glaubt man sofort – schlechte prüft man, bis sie passen.“',
+      '„Gute Ergebnisse glaubt man sofort – schlechte prüft man so lange nach, bis sie zur eigenen Erwartung passen.“',
       'Falle: behaupten, Kohl’s habe vorab eine Matrix gehabt.',
       'Brücke: Darum steht die Handlung vorher auf der Karte.',
     ],
@@ -245,7 +245,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     verstaendnis: {
       frage: 'E1 der Kaffeebar ergibt 8 von 30, die Schwelle war 10. Wer entscheidet jetzt, was passiert?',
       antwort: 'Die Karte: 8 liegt im Band 5–9, die Zeile „Wir entscheiden vorher“ sagt schon, was folgt: wiederholen, eine Sache ändern. Niemand muss nach dem Ergebnis neu verhandeln.',
-      falsch: '„Wir schauen uns die Zahl an und überlegen dann“ – genau dann prüft man schlechte Ergebnisse so lange, bis sie passen (Thomke S. 14).',
+      falsch: '„Wir schauen uns die Zahl an und überlegen dann“ – genau dann prüft man schlechte Ergebnisse so lange nach, bis sie zur eigenen Erwartung passen (Thomke S. 14).',
     },
     kern: [
       {

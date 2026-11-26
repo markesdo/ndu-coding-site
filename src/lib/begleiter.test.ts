@@ -913,9 +913,9 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const frage = 'Was davon ist die Website, die ihr baut – und trifft sie allein noch P1?';
     expect(schritt1).toContain(frage);
     expect(quellen['/innolab/tag-4']).toContain(frage);
-    expect(schritte).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
-    expect(schritte).toContain('<li data-schritt><strong>Euer Canvas – füllen:</strong> den Satz des Spitzenreiters mitnehmen, dann nach der Anleitung links neben eurem Canvas. <Timer minuten={11} /></li>');
-    for (const k of ['1', '2', '3']) expect(eins, k).toContain(`<MiroLink name="T3 · 4 · Canvas · Produkt ${k}">Produkt ${k}</MiroLink>`);
+    expect(schritte).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>) und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
+    expect(schritte).toMatch(/<li data-schritt><strong>Euer Canvas – füllen:<\/strong> den Satz des Spitzenreiters mitnehmen, dann nach der Anleitung links neben eurem Canvas\. <span class="links">.*?<\/span> <Timer minuten=\{11\} \/><\/li>/);
+    for (const k of ["1", "2", "3"]) expect(eins, k).toMatch(new RegExp(`<MiroLink name="T3 · 4 · Canvas · Produkt ${k}">(Produkt )?${k}<\/MiroLink>`));
     expect(schritte).toContain('<li data-schritt><strong>Festhalten und prüfen:</strong> rechts ein Zeichen je Zettel · links jeder ✓ mit (→&nbsp;…) · jedes ? mit Frage. <Timer minuten={2} /></li>');
     expect(zwei).toContain('<p class="small vm-legende-vorgehen">✓ trifft · ✗ trifft nicht · ? wissen wir nicht – beim Vergleich am Satz, beim Fit am Zettel.</p>');
     // Auf der Folie nur das Beispiel zu Fit prüfen; das zum Füllen steht seit 26.11. im Handout.
@@ -1198,7 +1198,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const vorgehen = q.slice(a, q.indexOf('</Folie>', a));
     const schritte = vorgehen.slice(vorgehen.indexOf('<ol'), vorgehen.indexOf('</ol>'));
     // Seit 26.11.: Schritt 2 verweist nur noch auf die Anleitung; der Website-Check steht im Handout.
-    expect(schritte).toContain('<strong>Euer Canvas – füllen:</strong> den Satz des Spitzenreiters mitnehmen, dann nach der Anleitung links neben eurem Canvas.');
+    expect(schritte).toContain('<strong>Euer Canvas – füllen:</strong> den Satz des Spitzenreiters mitnehmen, dann nach der Anleitung links neben eurem Canvas. <span class="links">Canvas <MiroLink name="T3 · 4 · Canvas · Produkt 1">');
     expect(vorgehen).toContain('Zum Schluss wiederholt ihr die Website-Frage als Check: Welcher gelbe Zettel ist die Website, und trifft sie allein noch P1?');
     expect(vorgehen).toContain("auf den Karten „So geht's · Kundenprofil, Value Map, Fit“");
     const handout = vorgehen.slice(vorgehen.indexOf('<p class="nur-handout">'));

@@ -67,18 +67,21 @@ describe('Story-Bogen (Entscheidung 66; seit 26.11. Theorie an Tag 4)', () => {
 
 // NDU-66 (Entscheidung Markus 25.11.2026): Die Concept Story wird an Tag 4 geschrieben – 10 min Theorie, 30 min Übung.
 describe('Tag 4: Concept Story schreiben (NDU-66)', () => {
-  it('die Übung steht wieder auf der Seite: drei Schritte, Titel = Summe der Timer = 30 min, Vorlage und Prüfen', () => {
+  // Seit 27.11.2026 (Dozent): zwei Schritte – die Flach-Probe ist der Check am Ende von Schritt 1, kein eigener Schritt.
+  it('die Übung steht wieder auf der Seite: zwei Schritte, Titel = Summe der Timer = 30 min, Vorlage und Prüfen', () => {
     const f = folie('vorgehen');
     const timer = [...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]));
-    expect(timer).toStrictEqual([20, 5, 5]);
+    expect(timer).toStrictEqual([25, 5]);
     expect(f).toContain('<h2 id="vorgehen">So geht ihr vor (30 min)</h2>');
-    expect([...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Sieben Stationen, allein:', 'Kursregel – Flach-Probe:', 'Festhalten:']);
+    expect([...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Sieben Stationen, allein:', 'Festhalten:']);
+    expect(f).toContain('<span class="fertig-wenn"><strong>Fertig, wenn:</strong> Krise und Höhepunkt stehen – sonst ist eure Story eine Linie (Flach-Probe, Kursregel).</span>');
+    expect(f).toContain('<li data-schritt><strong>Festhalten:</strong> den Satz in Abschnitt 3 eures <a href="/innolab/mappe?bearbeiten=brief">Produkt-Briefs</a>, Station 6 als Annahme in die <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a> (beides in der Werkstatt).');
     // Seit 26.11. abends: keine docs-Dateien für Studierende – die Story bleibt auf Miro.
     expect(f).toContain('Die Story bleibt auf Miro in eurem Frame – eine Datei schreibt ihr nicht.');
     expect(f).not.toContain('docs/');
     expect(seite).toContain('<ClaudePruefung slug="concept-story" />');
     expect(seite).toContain('<span class="eyebrow">Innolab · Tag 4 · Methode</span>');
-    expect(NOTIZEN_CONCEPT_STORY.vorgehen?.uebung?.dauer).toBe('30 min (20 + 5 + 5)');
+    expect(NOTIZEN_CONCEPT_STORY.vorgehen?.uebung?.dauer).toBe('30 min (25 + 5)');
   });
   it('kein „nur Theorie“ mehr für Tag 4, keine Erzählrunde zu den eigenen Produkten', () => {
     const texte = [seite, JSON.stringify(NOTIZEN_CONCEPT_STORY)];
@@ -131,7 +134,8 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
 
   it('Kursregel-Etiketten: Flach-Probe in beispiel und vorgehen, Zeilen 6 und 7 in woher', () => {
     expect(folie('beispiel')).toContain('<p data-schritt><strong>Kursregel – Flach-Probe:</strong>');
-    expect(lis('vorgehen')[1]).toBe('Kursregel – Flach-Probe:');
+    expect(lis('vorgehen')).not.toContain('Kursregel – Flach-Probe:');
+    expect(folie('vorgehen')).toContain('(Flach-Probe, Kursregel)');
     const zeilen = folie('woher').split('<tr data-schritt>').slice(1);
     expect(zeilen.map((z) => z.includes('(Kursregel)'))).toStrictEqual([false, false, false, false, false, true, true]);
     expect(folie('woher')).toContain('Kap. 8, Goals Are Measurable, S. 135');
@@ -141,12 +145,15 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     const f = folie('vorgehen');
     // Die Übungsfolie zeigt prominent die eigenen Frames; das Kaffeebar-Beispiel hängt an #beispiel.
     expect(f).not.toContain('<MiroFrame');
-    expect(f).toContain('<p class="gross">Miro, euer Frame: <MiroLink name="T4 · 0 · Concept Story · Produkt 1">');
-    for (const n of [1, 2, 3]) expect(f).toContain(`<MiroLink name="T4 · 0 · Concept Story · Produkt ${n}">Produkt ${n}</MiroLink>`);
+    // Seit 27.11.: die Frames im Schritt selbst, mit Beispiel und Anleitung.
+    const schritt1 = f.slice(f.indexOf('<strong>Sieben Stationen, allein:</strong>'), f.indexOf('</li>', f.indexOf('<strong>Sieben Stationen, allein:</strong>')));
+    for (const n of [1, 2, 3]) expect(schritt1).toMatch(new RegExp(`<MiroLink name="T4 · 0 · Concept Story · Produkt ${n}">(Produkt )?${n}</MiroLink>`));
+    expect(schritt1).toContain('<MiroLink name="T4 · 0 · Concept Story · Kaffeebar">Kaffeebar</MiroLink>');
+    expect(schritt1).toContain('<MiroLink name="T4 · 0 · Anleitung Concept Story">Anleitung</MiroLink>');
     expect(folie('beispiel')).toContain('<MiroFrame name="T4 · 0 · Concept Story · Kaffeebar" />');
     // Wortlaut wie auf dem Frame: Stationen „1 Exposition“ … „7 Ende“, Feld „Flach-Probe (Kursregel)“.
-    expect(f).toContain('in die Stickies unter „1 Exposition“ bis „7 Ende“');
-    expect(f).toContain('ins Feld „Flach-Probe“ unten links');
+    expect(f).toContain('unter „1 Exposition“ bis „7 Ende“');
+    expect(f).toContain('Das Feld „Flach-Probe“ unten links im Frame könnt ihr dafür nutzen; es ist freiwillig.');
     expect(f).not.toContain('Vorlage in <code>docs/STORYS.md</code>');
     expect(seite).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(seite).not.toContain('<Prompt label="Vorlage · docs/STORYS.md">');

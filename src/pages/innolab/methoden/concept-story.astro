@@ -301,31 +301,42 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
 
   <Folie>
     <h2 id="drei-storys">Ausblick: drei Storys, ein Bogen</h2>
-    <p class="folie-satz">Verstehen, sehen, erleben.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Concept Story:</strong> wie jemand den Wert <em>versteht</em> – die schreibt ihr jetzt.</li>
-      <li data-schritt><strong>Origin Story:</strong> wie jemand ihn zum ersten Mal <em>sieht</em> – zum <a href="/innolab/tag-4#abschluss">Abschluss des Tages</a>.</li>
-      <li data-schritt><strong>Usage Story:</strong> wie jemand ihn Schritt für Schritt <em>erlebt</em> – <a href="/innolab/methoden/usage-story">nach der Mittagspause</a>.</li>
-      <li data-schritt><strong>Exposition</strong> ist in allen dreien gleich.</li>
-    </ul>
-    <p class="nur-handout">„In a concept story, the climax occurs when your customer understands the value of a product; in an origin story, it happens when the user sees the value … the climax of a usage story is where the user experiences the value“ ({LICHAW}, Kap. 4). Und: „The material in the exposition is the same in all three stories“ (Kap. 4, How Origin Stories Work, Exposition) – ihr schreibt die Exposition einmal.</p>
+    <p class="folie-satz">Dieselbe Person, dasselbe Produkt, drei Momente: verstehen, sehen, erleben.</p>
+    {/* Consult 27.11.2026: als Tabelle, eine Zeile je Aufdecken; Zeiten relativ (keine Uhrzeiten auf Folien, Dozent 27.11.). */}
+    <div style="overflow-x:auto">
+      <table class="drei">
+        <thead><tr><th></th><th>Concept Story<span>jetzt</span></th><th>Origin Story<span>am Ende des Tages, im Abschluss</span></th><th>Usage Story<span>nach der Mittagspause</span></th></tr></thead>
+        <tbody>
+          <tr data-schritt><th>Frage</th><td>Warum ist euer Produkt besser als das, was die Person heute tut?</td><td>Wie wird die Person zum ersten Mal Kundin?</td><td>Wie nutzt die Person euer Produkt, Schritt für Schritt?</td></tr>
+          <tr data-schritt><th>Am Höhepunkt</th><td>… <em>versteht</em> die Person den Wert</td><td>… <em>sieht</em> die Person den Wert</td><td>… <em>erlebt</em> die Person den Wert</td></tr>
+          <tr data-schritt><th>Kaffeebar</th><td>Die Pendlerin denkt: „Gewissheit statt Glücksspiel.“</td><td>Die Pendlerin liest am Aufsteller an der Hallentür: „Wir sagen dir sofort, ob dein Kaffee vor der Abfahrt fertig ist.“</td><td>Die Pendlerin hat im Gehen bestellt und liest: „Fertig 7:31. Dein Zug fährt 7:38.“</td></tr>
+          <tr data-schritt><th>Daraus wird</th><td>der Satz im Produkt-Brief</td><td>der Text für Aufsteller oder Landingpage – Test E1</td><td>der Ablauf für euren Prototyp</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="drei-zeile" data-schritt><strong>Wert:</strong> was euer Produkt für diese Person besser macht als das, was sie heute tut.</p>
+    <p class="drei-zeile" data-schritt><strong>Die Exposition</strong> ist in allen drei Storys gleich – ihr schreibt sie einmal.</p>
+    <div class="nur-handout">
+      <p><strong>Concept Story:</strong> „Think of them as the mental calculation that someone makes when they first hear about your product“ ({LICHAW}, Kap. 3, How Concept Stories Work, S. 24). Was die Person dabei versteht, ist der Wert: „Implicit in the value proposition is that it’s not only different, but also better than the alternative ways your customer has to solve this problem“ (Kap. 3, Climax/Resolution, S. 28) – daher die Zeile „Wert“ auf der Folie.</p>
+      <p><strong>Origin Story:</strong> „An origin story is the story of how someone becomes your customer for the first time—it’s how that person goes from hearing about your product to actually using it“ (Kap. 4, What Is an Origin Story?, S. 45). <strong>Usage Story:</strong> „the story of someone using your product or service—step by step“ (Kap. 5, What Is a Usage Story?, S. 70); am Höhepunkt zählt „not just that the problem is solved, but how it is solved“ (Kap. 5, Climax/Resolution, S. 73).</p>
+      <p><strong>Der Höhepunkt unterscheidet die drei:</strong> „In a concept story, the climax occurs when your customer understands the value of a product; in an origin story, it happens when the user sees the value of a product. (As you’ll see in the next chapter, the climax of a usage story is where the user experiences the value of a product.)“ (Kap. 4, Climax/Resolution, S. 50). <strong>Die Exposition bleibt:</strong> „The material in the exposition is the same in all three stories: origin, concept, and usage“ (Kap. 4, Note „You’re Not Seeing Double (or Triple)“, S. 48).</p>
+      <p><strong>Kurslogik:</strong> Bei Lichaw kommt die Origin Story vor der Usage Story – erst wird jemand Kundin, dann nutzt sie das Produkt. Im Kurs schreibt ihr die Usage Story vor der Origin Story, weil der Prototyp sie zuerst braucht; die Origin Story ist der Text für Test E1 und kommt am Ende des Tages.</p>
+    </div>
   </Folie>
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
-    <p class="folie-satz">Stationen, Flach-Probe, festhalten – allein, still.</p>
+    <p class="folie-satz">Sieben Stationen, dann festhalten – allein, still.</p>
     <p class="wozu"><strong>Wozu?</strong> Damit jemand in Sekunden versteht, warum euer Spitzenreiter besser ist als das, was er heute tut.</p>
     <ol class="gross">
-      <li data-schritt><strong>Sieben Stationen, allein:</strong> auf Miro in eurem Frame, in die Stickies unter „1 Exposition“ bis „7 Ende“, jede Behauptung mit J-, P-, G- oder Zitat-ID. Station 6 ist ein Gedanke in „…“. <Timer minuten={20} /></li>
-      <li data-schritt><strong>Kursregel – Flach-Probe:</strong> ins Feld „Flach-Probe“ unten links – Problem → Produkt → Ende. Was hat eure Story mehr? <Timer minuten={5} /></li>
-      <li data-schritt><strong>Festhalten:</strong> Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), Station 6 in die Annahmen-Map. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Sieben Stationen, allein:</strong> auf Miro in eurem Frame – <MiroLink name="T4 · 0 · Concept Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 3">3</MiroLink> · Beispiel <MiroLink name="T4 · 0 · Concept Story · Kaffeebar">Kaffeebar</MiroLink> · <MiroLink name="T4 · 0 · Anleitung Concept Story">Anleitung</MiroLink> –, unter „1 Exposition“ bis „7 Ende“, jede Behauptung mit ID; Station 6 ist ein Gedanke in „…“. <Timer minuten={25} /><br /><span class="fertig-wenn"><strong>Fertig, wenn:</strong> Krise und Höhepunkt stehen – sonst ist eure Story eine Linie (Flach-Probe, Kursregel).</span></li>
+      <li data-schritt><strong>Festhalten:</strong> den Satz in Abschnitt 3 eures <a href="/innolab/mappe?bearbeiten=brief">Produkt-Briefs</a>, Station 6 als Annahme in die <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a> (beides in der Werkstatt). <Timer minuten={5} /></li>
     </ol>
-    <p class="gross">Miro, euer Frame: <MiroLink name="T4 · 0 · Concept Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 3">Produkt 3</MiroLink></p>
     <div class="nur-handout">
       <p>Davor die Theorie: alle Folien von <a href="#story-bogen">„Geschichten haben eine Form“</a> bis <a href="#drei-storys">„Ausblick: drei Storys, ein Bogen“</a>. Bei der Frage „Was fehlt dieser Geschichte?“ (<a href="#flach">flach</a>) überlegt jede*r still, dann antwortet ihr zugleich, laut; die Auflösung zeigen <a href="#hoch">„Dieselbe Figur, jetzt mit Bogen“</a> und <a href="#hoch-lehre">„Krise und Höhepunkt geben Höhe“</a>.</p>
       <p>Zu Schritt 1: Ihr arbeitet in eurem Frame „T4 · 0 · Concept Story · Produkt n“ (Produkt 1 bis 3 = eure Spalten von links); daneben hängt das ausgefüllte Beispiel der Kaffeebar. Auf dem Bogen stehen die sieben Stationen, unter jeder ein Sticky mit einer Leitfrage – die Frage ersetzt ihr durch eure Antwort. Unten rechts steht die Erinnerung an die IDs. Lichaws Fragen je Station und wo die Antworten bei euch schon stehen, zeigt die Tabelle oben (<a href="#woher">Woher kommt jede Station?</a>; {LICHAW}, Kap. 3, Mapping a Concept Story). Ihr schreibt allein, jede*r am eigenen Produkt. Ab Minute 5 spricht Markus nacheinander mit jeder Person, online in einem eigenen Breakout-Raum, und fragt: „Was ist eure einfache Lösung – und was hat eure Story ihr gegenüber mehr?“ Eine Runde, in der ihr einander eure Storys erzählt, gibt es nicht: Jede*r von euch hat ein eigenes Produkt. Lichaws Probe beim Erzählen ist das Lächeln am Höhepunkt (Kap. 6, Use the Smile Test); die macht ihr, wenn ihr die Story jemandem aus eurer Zielgruppe erzählt.</p>
-      <p>Zu Schritt 2 (Kursregel): Wenn ihr gegenüber der Linie nur „schneller“ oder „leichter“ habt, fehlt die Krise: Welche Alternative nutzen eure Interviewten heute, und warum würden sie bei ihr bleiben? Erst wenn ihr das beantworten könnt, hat der Höhepunkt etwas aufzulösen – Lichaws Slack-Beispiel oben zeigt die Linie daneben.</p>
-      <p>Zu Schritt 3: der Satz in Abschnitt 3 eures Produkt-Briefs in der Werkstatt; die fallende Handlung als Annahme in die Annahmen-Map – an der Experiment-Karte nach dem Geschäftsmodell wählt ihr die riskanteste. Die Story bleibt auf Miro in eurem Frame – eine Datei schreibt ihr nicht.</p>
+      <p>Zur Flach-Probe in Schritt 1 (Kursregel): Vergleicht eure Story mit der einfachen Lösung – Problem → Produkt → Ende. Das Feld „Flach-Probe“ unten links im Frame könnt ihr dafür nutzen; es ist freiwillig. Wenn ihr gegenüber der Linie nur „schneller“ oder „leichter“ habt, fehlt die Krise: Welche Alternative nutzen eure Interviewten heute, und warum würden sie bei ihr bleiben? Erst wenn ihr das beantworten könnt, hat der Höhepunkt etwas aufzulösen – Lichaws Slack-Beispiel oben zeigt die Linie daneben.</p>
+      <p>Zu Schritt 2: der Satz in Abschnitt 3 eures <a href="/innolab/mappe?bearbeiten=brief">Produkt-Briefs</a> in der Werkstatt; die fallende Handlung als Annahme in die <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a> – an der Experiment-Karte nach dem Geschäftsmodell wählt ihr die riskanteste. Die Story bleibt auf Miro in eurem Frame – eine Datei schreibt ihr nicht.</p>
     </div>
   </Folie>
 
@@ -341,7 +352,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <li><strong>Fallende Handlung (gedacht):</strong> ein Gedanke in „…“ – er wird Annahme A… in der Werkstatt.</li>
     <li><strong>Ende:</strong> Ziel der Person (G…) und ein Ziel des Geschäfts, gemessen an …</li>
   </ol>
-  <p>Unten links das Feld „Flach-Probe“: Problem → Produkt → Ende – und was eure Story mehr hat. Der Satz daraus („Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Anders als [Alternative]: [Unterschied].“) kommt in Abschnitt 3 des Produkt-Briefs in der Werkstatt.</p>
+  <p>Unten links das Feld „Flach-Probe“ (freiwillig): Problem → Produkt → Ende – und was eure Story mehr hat. Der Satz daraus („Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Anders als [Alternative]: [Unterschied].“) kommt in Abschnitt 3 des Produkt-Briefs in der Werkstatt.</p>
 
   <h2 id="pruefen">Prüfen</h2>
   <p>Eure Story liegt nur auf Miro, in eurem Frame „T4 · 0 · Concept Story · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>
@@ -354,6 +365,15 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
 </Layout>
 
 <style>
+  /* #drei-storys: drei Spalten, eine Zeile je Aufdecken; Zeitpunkt klein unter dem Namen der Story. */
+  .drei th, .drei td { vertical-align: top; }
+  .drei thead th span { display: block; font-weight: 400; font-size: .8em; color: var(--muted); }
+  .drei tbody th { white-space: nowrap; }
+  :global(html[data-beamer]) .drei th, :global(html[data-beamer]) .drei td { font-size: .95rem; padding-top: .3rem; padding-bottom: .3rem; }
+  :global(html[data-beamer]) .drei-zeile { font-size: 1rem; margin: .3rem 0; }
+  /* #vorgehen: „Fertig, wenn“ unter Schritt 1 als eigene, etwas kleinere Zeile (Flach-Probe als Check, Entscheidung 27.11.). */
+  .fertig-wenn { display: inline-block; margin-top: .25rem; font-size: .85em; color: var(--muted); }
+  .fertig-wenn strong { color: var(--fg); }
   /* woher: sieben Zeilen plus Kopf passen nur mit engeren Zeilen auf eine Beamer-Folie (1280×720). */
   :global(html[data-beamer]) .woher :is(th, td) { padding-block: .3rem; }
   .woher th[scope="row"] { white-space: nowrap; }

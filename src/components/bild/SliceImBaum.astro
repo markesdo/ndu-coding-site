@@ -16,7 +16,7 @@ const spitze = chance.kinder!.find((k) => k.t.startsWith('Spitzenreiter: '));
 if (!spitze?.kinder?.[0]) throw new Error('SliceImBaum: Spitzenreiter mit Test fehlt in KAFFEEBAR_BAUM_TAG_4');
 const test = spitze.kinder[0].t;
 ---
-<figure class="slice-baum" aria-label={`Links der Pfad im Baum der Kaffeebar: Outcome „${KAFFEEBAR_BAUM_TAG_4.t}“, Ziel-Chance ${chance.t}, ${spitze.t}, ${test}. Rechts, was davon bei Slice 1 auf der Story Map steht: wer danach was anders tut, derselbe Satz wie im Brief; der Weg eurer Person bis zum Höhepunkt, mit Zitaten; Slice 1 als konkreter Spitzenreiter; „Wir lernen, ob …“ – die riskanteste Annahme, ab 11:10.`}>
+<figure class="slice-baum" aria-label={`Links der Pfad im Baum der Kaffeebar: Outcome „${KAFFEEBAR_BAUM_TAG_4.t}“, Ziel-Chance ${chance.t}, ${spitze.t}, ${test}. Rechts, was davon bei Slice 1 auf der Story Map steht: wer danach was anders tut, derselbe Satz wie im Brief; der Weg eurer Person bis zum Höhepunkt, mit Zitaten; Slice 1 als konkreter Spitzenreiter; „Wir lernen, ob …“ – die riskanteste Annahme, heute Vormittag an der Experiment-Karte.`}>
   <div class="kopf">Baum auf Miro</div><div></div><div class="kopf">Story Map · Slice 1</div>
 
   <div class="knoten k-outcome"><small><Target size={16} aria-hidden="true" />{LINIE.outcome.name} · Wurzel</small>{KAFFEEBAR_BAUM_TAG_4.t}</div>
@@ -33,7 +33,7 @@ const test = spitze.kinder[0].t;
 
   <div class="knoten k-annahme"><small><FlaskConical size={16} aria-hidden="true" />{LINIE.annahme.name} · Test</small>{test}</div>
   <div class="steg"></div>
-  <div class="feld f-annahme">„Wir lernen, ob …“ – die riskanteste Annahme (ab 11:10)</div>
+  <div class="feld f-annahme">„Wir lernen, ob …“ – die riskanteste Annahme (gleich an der Experiment-Karte)</div>
 </figure>
 
 <style>

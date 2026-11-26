@@ -42,9 +42,9 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
   it('der Baum wächst um Lösungen (Value Map) und Tests (Experiment-Karte), je 2 min im Block', () => {
     expect(seite('/innolab/tag-4')).toContain('<strong>Der Baum wächst heute um Lösungen und Tests.</strong>');
     // Je ein eigener Schritt (data-schritt) in der Vorgehen-Folie.
-    expect(folie('/innolab/methoden/value-map', 'vorgehen-fit')).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
+    expect(folie('/innolab/methoden/value-map', 'vorgehen-fit')).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>) und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
     const ex = folie('/innolab/methoden/experiment', 'vorgehen');
-    expect(ex).toContain('<li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter. <Timer minuten={2} /></li>');
+    expect(ex).toContain('<li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>). <Timer minuten={2} /></li>');
     // E2 kommt erst nach dem Spike – nicht auf der Folie um 11:50, nur im Handout.
     expect(ex.slice(0, ex.indexOf('<div class="nur-handout">'))).not.toContain('E2');
     expect(ex).toContain('nach dem Prototyp-Spike kommt E2 dazu');
@@ -106,6 +106,22 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(notizen.flatMap((p) => (JSON.stringify(NOTIZEN[p] ?? {}).match(alt) ?? []).map((m) => `${p}: ${m}`))).toStrictEqual([]);
   });
 
+  // Dozent 27.11.2026: Auf den Folien stehen keine Uhrzeiten im Fließtext („um 9:05“, „bis 15:35“) – nur relativ („heute
+  // Morgen“, „gleich“, „nach der Mittagspause“). Uhrzeiten bleiben im Ablauf, in Begleiter-Notizen und in Hinweisen zum Termin.
+  // Ausnahme: das Beispiel der Kaffeebar für die Zeitbox („bis 16:00“), ein Wert, den die Studierenden selbst eintragen.
+  it('keine Uhrzeit im Fließtext der Tag-4-Folien', () => {
+    const pfade = ['/innolab/tag-4', ...['value-map', 'concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike'].map((x) => `/innolab/methoden/${x}`)];
+    const funde = pfade.flatMap((p) => {
+      const q = seite(p).replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+      const folien = q.match(/<Folie\b[\s\S]*?<\/Folie>/g) ?? [];
+      expect(folien.length, p).toBeGreaterThan(3);
+      return folien.flatMap((f) => (f.replace('Zeitbox: bis 16:00', '').match(/\b(9|1[0-7]):[0-5]\d\b/g) ?? []).map((z) => `${p}: ${z}`));
+    });
+    const weiter = folie('/innolab/methoden/scrum', 'weiter-tag-4').replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+    expect(weiter.length).toBeGreaterThan(100);
+    expect([...funde, ...(weiter.match(/\b(9|1[0-7]):[0-5]\d\b/g) ?? [])]).toStrictEqual([]);
+  });
+
   // Kursregel (Markus 12.11.): drei Produkte – keine Runden aufs eigene Produkt, sondern allein und 1:1 mit Markus.
   it('Story Map und Geschäftsmodell: keine Runde zu dritt aufs eigene Produkt, stattdessen allein und 1:1', () => {
     const sm = folie('/innolab/methoden/story-map', 'vorgehen');
@@ -138,7 +154,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(folie('/innolab/tag-4', 'arbeitsfluss')).toContain('<Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />');
     // Letzte Folie ohne Schritte: Von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar ihre Schritte auf.
     expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('schritte={false}');
-    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, um 16:25 als Prototyp. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>');
+    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, am Nachmittag als Prototyp. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>');
     // „Heute Mittag“ nur auf Tag 4; der Arbeitsfluss ist tagneutral.
     expect(folie('/innolab/arbeitsfluss', 'was-bauen-wir')).toContain('<WasBauenWir>An Tag 4 entsteht euer Slice 1.');
     expect(seite('/innolab/arbeitsfluss')).not.toContain('Heute Mittag');
