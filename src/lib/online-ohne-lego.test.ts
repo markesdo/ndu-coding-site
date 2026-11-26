@@ -34,7 +34,7 @@ describe('Ab Tag 4 online (NDU-72)', () => {
     expect(texte.flatMap((x) => x.match(raum) ?? [])).toStrictEqual([]);
   });
 
-  it('vor Tag 4: Claude Code vorher installieren (anmelden um 10:50) – auf Tag 4 vor dem Ablauf und in der Tag-3-Hausaufgabe', () => {
+  it('vor Tag 4: Claude Code vorher installieren (anmelden um 11:00) – auf Tag 4 vor dem Ablauf und in der Tag-3-Hausaufgabe', () => {
     const t4 = seite('/innolab/tag-4');
     const hinweis = t4.indexOf('<Callout type="warn" title="Vor Tag 4: Claude Code installieren">');
     expect(hinweis).toBeGreaterThan(0);
@@ -49,11 +49,11 @@ describe('Ab Tag 4 online (NDU-72)', () => {
 });
 
 describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
-  it('kein Lego-Block an Tag 4; Agil & Scrum, dann Prototyp weiterbauen / Puffer, dann Origin Story', () => {
+  it('kein Lego-Block an Tag 4; Agil & Scrum bis 17:15, dann Origin Story (Prototyp weiterbauen ist seit 27.11. freiwillige Hausaufgabe)', () => {
     const t4 = seite('/innolab/tag-4');
     expect(t4).not.toMatch(/<Block[^>]*title="Lego4Scrum"/);
-    expect(t4).toContain('<Block time="15:45–16:25" type="konzept" title="Agil & Scrum"');
-    expect(t4).toContain('<Block time="16:25–17:15" type="uebung" title="Prototyp weiterbauen / Puffer">');
+    expect(t4).toContain('<Block time="16:35–17:15" type="konzept" title="Agil & Scrum"');
+    expect(t4).not.toContain('title="Prototyp weiterbauen / Puffer"');
     expect(t4).toContain('<Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe"');
     expect(t4).toContain('(Lego4Scrum ist dieses Kursjahr nicht dabei)');
   });
@@ -91,18 +91,18 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
     expect(timer.reduce((a, x) => a + x, 0) + 2 * 6).toBe(25);
   });
 
-  it('Ab hier: Tag 5 – an Tag 4 geht es nach Scrum mit „Prototyp weiterbauen / Puffer“ weiter, Origin Story um 17:15', () => {
+  it('Ab hier: Tag 5 – an Tag 4 geht es nach Scrum um 17:15 direkt in die Origin Story', () => {
     const s = seite(m('scrum'));
     // Seit 26.11.2026 eine Folie (Audit Tag 4): → führt von hier in den Abschluss von Tag 4.
     const von = s.indexOf('<Folie weiter="/innolab/tag-4#abschluss" weiterTitel="Abschluss Tag 4">');
     expect(von).toBeGreaterThan(0);
     const ab = s.slice(von, s.indexOf('</Folie>', von));
     // Review 3 #448: Titel für Tag 4, nicht „Ab hier: Tag 5“.
-    expect(ab).toContain('<h2 id="weiter-tag-4">Weiter heute: Prototyp bis 17:15</h2>');
-    // Satz und Uhrzeit nur im Beamer (Review 2 #448): im Handout läse sich „Heute … bis 17:15“ an Tag 5 falsch.
+    expect(ab).toContain('<h2 id="weiter-tag-4">Weiter heute: Origin Story und Hausaufgabe</h2>');
+    // Satz und Uhrzeit nur im Beamer (Review 2 #448): im Handout läse sich „Jetzt, 17:15“ an Tag 5 falsch.
     expect(ab).toContain('<p class="folie-satz nur-beamer">Teamaufstellung und Definition of Done folgen an Tag 5.</p>');
-    expect(ab).toContain('<p class="nur-beamer">Heute: weiter am Prototyp bis 17:15, dann Origin Story und Hausaufgabe.</p>');
-    expect(ab).toContain('An Tag 4 geht es von hier weiter mit <a href="/innolab/tag-4#ablauf">Prototyp weiterbauen / Puffer</a>; um 17:15 folgt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.');
+    expect(ab).toContain('<p class="nur-beamer">Jetzt, 17:15: Origin Story und Hausaufgabe. Den Prototyp baut ihr zu Hause weiter, wenn ihr wollt.</p>');
+    expect(ab).toContain('An Tag 4 folgt um 17:15 der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>; den Prototyp weiterzubauen ist freiwillige Hausaufgabe (<a href="/innolab/tag-4#hausaufgabe">Hausaufgabe</a>).');
   });
 
   it('die Lego-Auflösungen springen dieses Kursjahr nicht von selbst auf: Zeitpunkt nach dem letzten Kurstag', () => {

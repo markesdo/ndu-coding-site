@@ -53,24 +53,25 @@ describe('Foliensatz: eine Adresse, 20 Folien', () => {
   });
 });
 
-describe('Tag 4: Agil & Scrum 15:45–16:25 mit Foliensatz', () => {
-  it('der Block dauert 40 Minuten, der Puffer schließt lückenlos an und endet 17:15', () => {
+describe('Tag 4: Agil & Scrum 16:35–17:15 mit Foliensatz', () => {
+  // Seit 27.11.2026 ohne Puffer: Der Block endet 17:15, direkt danach Origin Story & Hausaufgabe.
+  it('der Block dauert 40 Minuten, endet 17:15, und der Abschluss schließt lückenlos an', () => {
     const b = bloeckeAus(QUELLE_T4);
     const i = b.findIndex((x) => x.titel === 'Agil & Scrum');
-    expect(b[i]).toMatchObject({ von: 15 * 60 + 45, bis: 16 * 60 + 25, href: '/innolab/methoden/scrum#foliensatz' });
-    expect(b[i + 1]).toMatchObject({ titel: 'Prototyp weiterbauen / Puffer', von: b[i].bis, bis: 17 * 60 + 15 });
+    expect(b[i]).toMatchObject({ von: 16 * 60 + 35, bis: 17 * 60 + 15, href: '/innolab/methoden/scrum#foliensatz' });
+    expect(b[i + 1]).toMatchObject({ titel: 'Origin Story & Hausaufgabe', von: b[i].bis, bis: 17 * 60 + 30 });
     // Die Aufteilung im Handout von „So geht ihr vor“ ergibt genau die Länge des Blocks.
     const satz = QUELLE_SCRUM.match(/<p class="nur-handout">Agil &amp; Scrum: ([^]*?)\. „Euer Produkt/)?.[1] ?? '';
     const summe = [...satz.matchAll(/(\d+) Minuten/g)].reduce((a, m) => a + Number(m[1]), 0);
     expect(summe).toBe(b[i].bis - b[i].von);
-    expect(QUELLE_SCRUM).toContain('<strong>Agil &amp; Scrum (Tag 4, 15:45–16:25):</strong>');
+    expect(QUELLE_SCRUM).toContain('<strong>Agil &amp; Scrum (Tag 4, 16:35–17:15):</strong>');
   });
 
   it('gerendert: der Ablauf von Tag 4 verlinkt den Foliensatz im Block Agil & Scrum (Beamer und Handout)', async () => {
     const html = await (await AstroContainer.create()).renderToString(Tag4);
-    const a = html.indexOf('data-zeit="15:45–16:25"');
+    const a = html.indexOf('data-zeit="16:35–17:15"');
     expect(a).toBeGreaterThan(0);
-    const block = html.slice(a, html.indexOf('data-zeit="16:25–17:15"', a));
+    const block = html.slice(a, html.indexOf('data-zeit="17:15–17:30"', a));
     expect(block).toContain(href);
     expect(block).toContain('Kaffeebar auf der Scrum-Karte');
   }, 60_000);

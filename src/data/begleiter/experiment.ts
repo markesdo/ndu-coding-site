@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 10:50–11:00 Claude Pro und Claude Code gemeinsam,
-// zwei Folien; 11:00–11:30 Experiment-Karte mit Theorie und Beispiel, 18 min Übung). Jede Folie hat eine Notiz
+// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 11:00–11:10 Claude Pro und Claude Code gemeinsam,
+// zwei Folien; 11:10–11:50 Experiment-Karte mit Theorie und Beispiel, 18 min Übung). Jede Folie hat eine Notiz
 // (begleiter-tag-4.test.ts). Die Origin Story steht seit 26.11. im Abschluss von Tag 4 (tag-4#abschluss), nicht mehr hier.
 // Seit 26.11. ohne die Intuit-Folien (Geschichte im Handout von #karte); neu: claude-code-opus, schritte-der-idee,
 // ergebnis-gilt, test-arten, beispiel-map; gegen-den-beleg steht nach der Lernkarte. Seit dem Nachtrag 26.11. abends
@@ -36,7 +36,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       '„In Claude Code einmal /model opus – überall im Kurs nehmt ihr Opus.“',
       'Test: Screenshot vom eigenen Concept-Story-Frame einfügen, ein Satz.',
       'Nach 8 min: Steht bei allen „Claude Pro“ im Startbild?',
-      'Wer hängt: 11:00 trotzdem Theorie, Hilfe vor 11:30.',
+      'Wer hängt: 11:10 trotzdem Theorie, Hilfe vor 11:50.',
     ],
     ablauf: {
       schritte: [
@@ -57,7 +57,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Zeit: Theorie und Beispiel bis zur Übung, dann 18 min allein.',
       '„Euer Spitzenreiter steht auf Papier – an welcher Annahme hängt er?“',
       'Zwei Fallen: Bestätigung suchen, sich in Investiertes verlieben.',
-      'Ergebnis um 11:30 nennen: Karte E1.',
+      'Ergebnis um 11:50 nennen: Karte E1.',
     ],
     verstaendnis: {
       frage: 'Warum testet ihr eine Annahme statt der ganzen Idee?',
@@ -330,7 +330,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Fünf Schritte, als gäbe es „Im Gehen bestellen“ schon.',
       'Pro Zeile: Schritt, Annahme, Art.',
       'A5 ohne Beleg – I2-3 spricht sogar dagegen.',
-      'A4 kommt aus dem Geschäftsmodell von 10:30.',
+      'A4 kommt aus dem Geschäftsmodell von 10:40.',
     ],
     kern: [
       {

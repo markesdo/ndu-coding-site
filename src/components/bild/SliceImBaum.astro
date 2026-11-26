@@ -4,7 +4,7 @@
 // drei Linien wie in WasBauenWir.astro (LINIE); Slice 1 gelb mit Stern. Slice 1 ist kein Knoten im Baum (Torres kennt
 // unter der Lösung nur die Annahmen-Tests): Er steht in der rechten Spalte, neben dem Spitzenreiter.
 // Rechts nur Begriffe, die um 9:35 schon bekannt sind (Durchsicht 26.11.): kein „Lern-Sticky“, kein „links neben Slice 1“ –
-// das Layout der Story Map kommt erst ab 11:30.
+// das Layout der Story Map kommt erst ab 11:50.
 // Ohne Schritte: Die Folie ist die letzte des Morgens vor #faden, → von #faden, #methoden oder #abschluss aus deckte sonst erst
 // unsichtbar ihre Schritte auf (wie WasBauenWir schritte={false}).
 import { FlaskConical, Lightbulb, MessageSquareQuote, Star, Target } from '@lucide/astro';
@@ -16,7 +16,7 @@ const spitze = chance.kinder!.find((k) => k.t.startsWith('Spitzenreiter: '));
 if (!spitze?.kinder?.[0]) throw new Error('SliceImBaum: Spitzenreiter mit Test fehlt in KAFFEEBAR_BAUM_TAG_4');
 const test = spitze.kinder[0].t;
 ---
-<figure class="slice-baum" aria-label={`Links der Pfad im Baum der Kaffeebar: Outcome „${KAFFEEBAR_BAUM_TAG_4.t}“, Ziel-Chance ${chance.t}, ${spitze.t}, ${test}. Rechts, was davon bei Slice 1 auf der Story Map steht: wer danach was anders tut, derselbe Satz wie im Brief; der Weg eurer Person bis zum Höhepunkt, mit Zitaten; Slice 1 als konkreter Spitzenreiter; „Wir lernen, ob …“ – die riskanteste Annahme, ab 11:00.`}>
+<figure class="slice-baum" aria-label={`Links der Pfad im Baum der Kaffeebar: Outcome „${KAFFEEBAR_BAUM_TAG_4.t}“, Ziel-Chance ${chance.t}, ${spitze.t}, ${test}. Rechts, was davon bei Slice 1 auf der Story Map steht: wer danach was anders tut, derselbe Satz wie im Brief; der Weg eurer Person bis zum Höhepunkt, mit Zitaten; Slice 1 als konkreter Spitzenreiter; „Wir lernen, ob …“ – die riskanteste Annahme, ab 11:10.`}>
   <div class="kopf">Baum auf Miro</div><div></div><div class="kopf">Story Map · Slice 1</div>
 
   <div class="knoten k-outcome"><small><Target size={16} aria-hidden="true" />{LINIE.outcome.name} · Wurzel</small>{KAFFEEBAR_BAUM_TAG_4.t}</div>
@@ -33,7 +33,7 @@ const test = spitze.kinder[0].t;
 
   <div class="knoten k-annahme"><small><FlaskConical size={16} aria-hidden="true" />{LINIE.annahme.name} · Test</small>{test}</div>
   <div class="steg"></div>
-  <div class="feld f-annahme">„Wir lernen, ob …“ – die riskanteste Annahme (ab 11:00)</div>
+  <div class="feld f-annahme">„Wir lernen, ob …“ – die riskanteste Annahme (ab 11:10)</div>
 </figure>
 
 <style>

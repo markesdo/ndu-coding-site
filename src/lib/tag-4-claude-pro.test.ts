@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { bloeckeAus, quellenAusGlob } from './begleiter';
 
-// Entscheidung Markus 26.11.2026: Claude Pro schließen alle an Tag 4 gemeinsam ab, um 10:50 als eigener Block direkt vor der
+// Entscheidung Markus 26.11.2026: Claude Pro schließen alle an Tag 4 gemeinsam ab, um 11:00 als eigener Block direkt vor der
 // Experiment-Karte, wo Claude Code zum ersten Mal gebraucht wird – nicht „vor 9:00“ allein.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 const seite = (p: string) => quellen[p] ?? '';
@@ -19,9 +19,9 @@ const koerper = (p: string) => {
   return q.slice(q.indexOf('---', 3) + 3).replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
 };
 
-describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
+describe('Tag 4: Claude Pro gemeinsam um 11:00 (Markus 26.11.2026)', () => {
   // Seit 26.11. abends zwei Folien (claude-pro-jetzt, claude-code-opus), damit jede bei 1280 × 720 passt.
-  it('Folie „claude-pro-jetzt“ ist die erste Folie der Experiment-Seite; nach „claude-code-opus“ folgt die Theorie (eigener Block 10:50–11:00)', () => {
+  it('Folie „claude-pro-jetzt“ ist die erste Folie der Experiment-Seite; nach „claude-code-opus“ folgt die Theorie (eigener Block 11:00–11:10)', () => {
     const q = seite(EX);
     const pro = q.indexOf('<h2 id="claude-pro-jetzt">Jetzt: Claude Pro abschließen und Claude Code starten</h2>');
     expect(pro).toBeGreaterThan(0);
@@ -35,10 +35,10 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(q.slice(opus, theorie).match(/<Folie>/g) ?? []).toHaveLength(1);
   });
 
-  it('der Pro-Block (10:50) liegt vor der ersten Nutzung von Claude Code an Tag 4: Story Map ab 11:30, dann Prototyp-Spike', () => {
+  it('der Pro-Block (11:00) liegt vor der ersten Nutzung von Claude Code an Tag 4: Story Map ab 11:50, dann Prototyp-Spike', () => {
     const b = bloeckeAus(seite('/innolab/tag-4'));
     const pro = b.find((x) => x.href === '/innolab/methoden/experiment#claude-pro-jetzt');
-    expect(pro).toMatchObject({ von: 10 * 60 + 50, bis: 11 * 60 });
+    expect(pro).toMatchObject({ von: 11 * 60, bis: 11 * 60 + 10 });
     // Davor nennt kein Block des Ablaufs Claude Code, und keine Übung davor (Value Map, Concept Story, Geschäftsmodell) braucht es.
     const ablauf = seite('/innolab/tag-4').match(/<Block time="[^"]+"[\s\S]*?(?:\/>|<\/Block>)/g) ?? [];
     expect(ablauf).toHaveLength(b.length);
@@ -63,10 +63,10 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(k.indexOf('Claude Code')).toBeGreaterThan(folieAn);
   });
 
-  it('die Folien nennen den richtigen Grund: Claude Code ab der Story Map (11:30), dann zum Bauen im Spike', () => {
+  it('die Folien nennen den richtigen Grund: Claude Code ab der Story Map (11:50), dann zum Bauen im Spike', () => {
     const f = folie(EX, 'claude-pro-jetzt') + folie(EX, 'claude-code-opus');
-    expect(f).toContain('Claude Code braucht ihr heute zum ersten Mal in der <a href="/innolab/methoden/story-map#pruefen">Story Map</a> ab 11:30');
-    expect(f).toContain('Markus hilft vor 11:30');
+    expect(f).toContain('Claude Code braucht ihr heute zum ersten Mal in der <a href="/innolab/methoden/story-map#pruefen">Story Map</a> ab 11:50');
+    expect(f).toContain('Markus hilft vor 11:50');
     expect(f).not.toMatch(/bis zum Spike um 14:05|erst für das Pre-Mortem|Claude Code ab hier/);
     // Wer schon Pro oder Max hat, sieht es auf der Folie selbst, nicht nur im Handout – mit den Schritten, die bleiben.
     const sichtbar = f.slice(0, f.indexOf('<div class="nur-handout">'));
@@ -98,24 +98,24 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     for (const a of ['claude-pro', 'claude-code-browser', 'lokal-schnellweg', 'lokal-starten']) expect(s, a).toMatch(new RegExp(`<h[2-4] id="${a}">`));
   });
 
-  it('Tag 4: kein „vor 9:00 Claude Pro“ mehr; Hinweis „um 10:50 gemeinsam“ vor dem Ablauf, der 10:50-Block nennt es', () => {
+  it('Tag 4: kein „vor 9:00 Claude Pro“ mehr; Hinweis „um 11:00 gemeinsam“ vor dem Ablauf, der 11:00-Block nennt es', () => {
     const t4 = seite('/innolab/tag-4');
     expect(t4).not.toContain('title="Vor 9:00: Claude Pro neu abschließen"');
     expect(t4.match(/heute Morgen|am Morgen vor 9:00/g) ?? []).toStrictEqual([]);
-    const hinweis = t4.indexOf('<Callout type="info" title="Claude Pro: um 10:50 gemeinsam, nicht vorher">');
+    const hinweis = t4.indexOf('<Callout type="info" title="Claude Pro: um 11:00 gemeinsam, nicht vorher">');
     expect(hinweis).toBeGreaterThan(0);
     expect(hinweis).toBeLessThan(t4.indexOf('<h2 id="ablauf">'));
     expect(t4.slice(hinweis, t4.indexOf('</Callout>', hinweis))).toContain('href="/innolab/methoden/experiment#claude-pro-jetzt"');
-    // Eigener Block 10:50–11:00 auf die Folie, danach die Experiment-Karte 11:00–11:30 ohne Verweis auf den Puffer.
-    expect(t4).toContain('<Block time="10:50–11:00" type="plenum" title="Claude Pro und Claude Code, gemeinsam" href="/innolab/methoden/experiment#claude-pro-jetzt">');
-    expect(t4).toContain('<Block time="11:00–11:30" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment#annahmen-der-idee">Schritte der Idee,');
+    // Eigener Block 11:00–11:10 auf die Folie, danach die Experiment-Karte 11:10–11:50 ohne Verweis auf den Puffer.
+    expect(t4).toContain('<Block time="11:00–11:10" type="plenum" title="Claude Pro und Claude Code, gemeinsam" href="/innolab/methoden/experiment#claude-pro-jetzt">');
+    expect(t4).toContain('<Block time="11:10–11:50" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment#annahmen-der-idee">Schritte der Idee,');
     expect(t4).not.toMatch(/Was davon offen bleibt|im Puffer ab 16:25 nach/);
-    // Installieren vorher bleibt, Anmelden erst um 10:50.
+    // Installieren vorher bleibt, Anmelden erst um 11:00.
     const von = t4.indexOf('title="Vor Tag 4: Claude Code installieren">');
     expect(von).toBeGreaterThan(0);
     const vorher = t4.slice(von, hinweis);
     expect(vorher).toContain('href="/setup#lokal-schnellweg"');
-    expect(vorher).toContain('das machen wir gemeinsam um 10:50');
+    expect(vorher).toContain('das machen wir gemeinsam um 11:00');
   });
 
   it('Setup, Tag-2-Abschluss, Tag 3 und Tag 4 schicken niemanden mehr „am Morgen“ von Tag 4 zum Abschluss', () => {
@@ -126,7 +126,7 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     // Listengrenzen (sonst reicht der Block „Claude Pro“ bis ins „euer Morgen“ der Story Map); die Concept Story schreibt ihr weiterhin am Morgen von Tag 4.
     const saetze = texte.flatMap((x) => x.split(/(?<=\D[.!?])\s+|<\/?(?:Block|p|li|Callout)\b[^>]*>/)).filter((satz) => /Pro\b/.test(satz) && /Morgen|vor 9:00/.test(satz));
     expect(saetze).toStrictEqual([]);
-    expect(s).toContain('schließen wir Pro gemeinsam neu ab, um 10:50 in der Besprechung');
+    expect(s).toContain('schließen wir Pro gemeinsam neu ab, um 11:00 in der Besprechung');
   });
 
   // Nachtrag 26.11. abends: Claude und Claude Code immer mit Opus; im Innolab keine Dateien in VS Code, nur Terminal und claude.
@@ -139,7 +139,7 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(seite('/innolab/methoden/experiment')).toContain(zeile);
     expect(s.match(/Opus \d|opus-\d/gi) ?? []).toStrictEqual([]);
     expect(s).toContain('Dateien schreibt ihr im Innolab nicht: VS Code mit eurem Repo öffnen, Terminal, <code>claude</code> (<a href="#lokal-starten">wie</a>)');
-    // Der 10:50-Block verlässt sich darauf: Repo öffnen, Terminal, claude.
+    // Der 11:00-Block verlässt sich darauf: Repo öffnen, Terminal, claude.
     expect(s).toContain('<h4 id="lokal-starten">VS Code, Claude und App starten</h4>');
     expect(s).toContain('<Prompt label="Terminal in VS Code">claude</Prompt>');
   });

@@ -171,9 +171,9 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect(beamer(folie(PS, 'schritt-zeitbox'))).toContain('<strong>Wo:</strong> Feld „3 · Zeitbox“');
     expect(seite(PS)).toContain('\n3 · Zeitbox\nZeitbox: bis [Uhrzeit] (40 Minuten)\nZuerst gebaut: [Höhepunkt-Bildschirm]\nBei null fehlt noch: [...]\n');
   });
-  it('Schritt 4: Fenster von 10:50, Opus mit Ausweich-Zeile, Bilder, Vorlesen vor dem Bauen; Sichern mit Link', () => {
+  it('Schritt 4: Fenster von 11:00, Opus mit Ausweich-Zeile, Bilder, Vorlesen vor dem Bauen; Sichern mit Link', () => {
     const b = beamer(folie(PS, 'schritt-bauen'));
-    expect(b).toContain('<strong>Claude Code öffnen:</strong> dasselbe Fenster wie um 10:50 – euer Repo, Terminal, <code>claude</code>. Dann <code>/model opus</code>.');
+    expect(b).toContain('<strong>Claude Code öffnen:</strong> dasselbe Fenster wie um 11:00 – euer Repo, Terminal, <code>claude</code>. Dann <code>/model opus</code>.');
     expect(b).toContain('Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen.');
     expect(folie(PS, 'schritt-bauen')).toContain('Eine Datei öffnet oder schreibt ihr nicht');
     expect(beamer(folie(PS, 'schritt-ansehen'))).toContain('<strong>Fünf Minuten vor Schluss:</strong> Prompt „Spike sichern“ – Claude gibt euch den Link fürs Handy.');

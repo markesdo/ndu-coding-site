@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { bloeckeAus, folienAus, hhmm, quellenAusGlob } from './begleiter';
 import { KAFFEEBAR_BAUM_TAG_4 } from '../components/innolab-beispiel';
+import { NOTIZEN } from '../data/begleiter';
 
 // Dieselbe Glob-Form wie in pages/innolab/begleiter.astro.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
@@ -20,20 +21,20 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
       '09:00–09:05 Arbeitsfluss – ihr seid hier #arbeitsfluss',
       '09:05–09:35 Value Map & Fit (Nachholen von Tag 3) /innolab/methoden/value-map#vorgehen',
       '09:35–09:40 Was bauen wir? #was-bauen-wir',
-      '09:40–10:20 Story-Bogen + Concept Story /innolab/methoden/concept-story#story-bogen',
-      '10:20–10:30 Pause',
+      // Seit 27.11.2026 (Tag-4-PR): die überarbeiteten Blöcke brauchen mehr Zeit; der Puffer am Nachmittag fällt weg.
+      '09:40–10:30 Story-Bogen + Concept Story /innolab/methoden/concept-story#story-bogen',
+      '10:30–10:40 Pause',
       // Seit 26.11.2026 (Durchsicht): „Geschäftsmodell“ wie der Titel der Seite, nicht mehr „Geschäftsmodell-Karten“.
-      '10:30–10:50 Geschäftsmodell /innolab/methoden/geschaeftsmodell',
+      '10:40–11:00 Geschäftsmodell /innolab/methoden/geschaeftsmodell',
       // Seit 26.11.2026 (Markus, Option a): Claude Pro gemeinsam als eigener Block, Story Map dafür 65 statt 75 min.
-      '10:50–11:00 Claude Pro und Claude Code, gemeinsam /innolab/methoden/experiment#claude-pro-jetzt',
-      '11:00–11:30 Experiment-Karte /innolab/methoden/experiment#annahmen-der-idee',
-      '11:30–12:35 Story Map /innolab/methoden/story-map',
-      '12:35–13:35 Mittagspause',
-      '13:35–14:05 Usage Story /innolab/methoden/usage-story',
-      '14:05–15:35 Prototyp-Spike /innolab/methoden/prototyp-spike',
-      '15:35–15:45 Pause',
-      '15:45–16:25 Agil & Scrum /innolab/methoden/scrum#foliensatz',
-      '16:25–17:15 Prototyp weiterbauen / Puffer',
+      '11:00–11:10 Claude Pro und Claude Code, gemeinsam /innolab/methoden/experiment#claude-pro-jetzt',
+      '11:10–11:50 Experiment-Karte /innolab/methoden/experiment#annahmen-der-idee',
+      '11:50–13:15 Story Map /innolab/methoden/story-map',
+      '13:15–14:15 Mittagspause',
+      '14:15–14:45 Usage Story /innolab/methoden/usage-story',
+      '14:45–16:25 Prototyp-Spike /innolab/methoden/prototyp-spike',
+      '16:25–16:35 Pause',
+      '16:35–17:15 Agil & Scrum /innolab/methoden/scrum#foliensatz',
       '17:15–17:30 Origin Story & Hausaufgabe #abschluss',
     ]);
   });
@@ -44,7 +45,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(folie('/innolab/methoden/value-map', 'vorgehen-fit')).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
     const ex = folie('/innolab/methoden/experiment', 'vorgehen');
     expect(ex).toContain('<li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter. <Timer minuten={2} /></li>');
-    // E2 kommt erst nach dem Spike – nicht auf der Folie um 11:30, nur im Handout.
+    // E2 kommt erst nach dem Spike – nicht auf der Folie um 11:50, nur im Handout.
     expect(ex.slice(0, ex.indexOf('<div class="nur-handout">'))).not.toContain('E2');
     expect(ex).toContain('nach dem Prototyp-Spike kommt E2 dazu');
     // 18 min Übung plus 12 min Theorie füllen den 30-Minuten-Block; der Titel ist die Summe der Timer.
@@ -60,7 +61,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
   // Seit 26.11.2026 abends (Markus): Die Übung ist auf elf Schritt-Folien verteilt, je mit eigener Uhr; „vorgehen“ ist die
   // Übersicht ohne Timer. Das Warm-up macht jede*r selbst in sechs Schritten (28 statt 6 min) – der Block im Ablauf von
   // tag-4.astro (65 min) wächst im Tag-4-PR; hier nur Übung + davor als Summe der Seite.
-  it('Story Map: Timer der Übung 42 auf den Schritt-Folien, davor 45 (28 + 8 + 9); Agil & Scrum 40 min', () => {
+  it('Story Map: Timer der Übung 42 auf den Schritt-Folien, davor 43 (26 + 8 + 9), Block im Ablauf 85; Agil & Scrum 40 min', () => {
     const q = seite('/innolab/methoden/story-map');
     const schritte = [...q.matchAll(/<h2 id="(schritt-[a-z-]+)">/g)].map((m) => m[1]);
     expect(schritte).toHaveLength(11);
@@ -70,7 +71,18 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(sm).toContain(`So geht ihr vor (${timer} min)</h2>`);
     expect(sm).not.toContain('<Timer');
     const davor = sm.match(/Davor, zusammen (\d+) Minuten: Warm-up (\d+) .*?Theorie (\d+), Kaffeebar gemeinsam (\d+)\./);
-    expect(davor?.slice(1).map(Number)).toStrictEqual([45, 28, 8, 9]);
+    // Seit 27.11.2026 (Tag-4-PR): 43 = Warm-up 26 (zwei Minuten weniger Erklärung) + Theorie 8 + Kaffeebar 9.
+    expect(davor?.slice(1).map(Number)).toStrictEqual([43, 26, 8, 9]);
+    const [, summe, warmup, theorie, kaffeebar] = davor!.map(Number);
+    expect(warmup + theorie + kaffeebar).toBe(summe);
+    // Das Warm-up hat seine eigenen Uhren auf den Folien vor der Theorie; die Erklärung ist der Rest der 26 Minuten.
+    const vorTheorie = q.slice(q.indexOf('<h2 id="warmup">'), q.indexOf('<h2 id="begriffe">'));
+    const warmupUhren = [...vorTheorie.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
+    expect(warmupUhren).toBe(21);
+    expect(warmup - warmupUhren).toBe(5);
+    // Wieder da (seit 27.11.2026): Der Block im Ablauf von Tag 4 ist genau „davor“ plus die Uhren der Übung.
+    const block = bloeckeAus(seite('/innolab/tag-4')).find((x) => x.href === '/innolab/methoden/story-map')!;
+    expect(block.bis - block.von).toBe(summe + timer);
     expect(seite('/innolab/methoden/scrum')).toContain('Agil &amp; Scrum: 27 Minuten Theorie aus dem Foliensatz (20 Folien), 2 Minuten „Wo wir abweichen“, 7 Minuten Kaffeebar auf der Scrum-Karte (4 sortieren, 3 Auflösung), 4 Minuten Gleis-1-Express und Übergang.');
   });
 
@@ -78,6 +90,20 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     const texte = ['/innolab/tag-3', '/innolab/tag-4', '/innolab/methoden/experiment', '/innolab/methoden/scrum'].map(seite);
     expect(texte.every((x) => x.length > 1000)).toBe(true);
     expect(texte.flatMap((x) => x.match(/um 9:20|Abschluss, 17:10|ab 15:50|14:45–15:40|15:50–17:10/g) ?? [])).toStrictEqual([]);
+  });
+
+  // Seit 27.11.2026: Die Zeiten vor dem Tag-4-PR stehen nirgends mehr auf den Seiten des Tages, ihren Begleiter-Notizen und
+  // den Seiten, die auf Tag 4 vorausweisen (Claude Pro 10:50, Story Map 11:30, Spike 14:05, Prototyp bis 15:35, Puffer 16:25).
+  it('keine Zeiten von vor dem 27.11. (10:50, 11:30, 13:35, 14:05, 15:35, 15:45, Puffer 16:25)', () => {
+    const pfade = ['/innolab/tag-2/abschluss', '/innolab/tag-3', '/innolab/tag-4', ...['experiment', 'story-map', 'usage-story', 'prototyp-spike', 'scrum', 'concept-story', 'geschaeftsmodell', 'value-map'].map((x) => `/innolab/methoden/${x}`)];
+    const texte = pfade.map((p) => ({ p, q: seite(p) }));
+    for (const { p, q } of texte) expect(q.length, p).toBeGreaterThan(1000);
+    const alt = /\b(10:50|11:30|12:35|13:35|14:05|15:35|15:45)\b|ab 16:25|Puffer ab|16:25–17:15/g;
+    // tag-3 hat eigene Blöcke um 11:30 (Kundenprofil): nur die Hinweise auf Tag 4 zählen.
+    const ohneTag3Ablauf = (p: string, q: string) => (p === '/innolab/tag-3' ? q.replace(/<Block [^>]*>/g, '') : q);
+    expect(texte.flatMap(({ p, q }) => (ohneTag3Ablauf(p, q).match(alt) ?? []).map((m) => `${p}: ${m}`))).toStrictEqual([]);
+    const notizen = ['/innolab/tag-4', ...['experiment', 'story-map', 'usage-story', 'prototyp-spike', 'scrum'].map((x) => `/innolab/methoden/${x}`)];
+    expect(notizen.flatMap((p) => (JSON.stringify(NOTIZEN[p] ?? {}).match(alt) ?? []).map((m) => `${p}: ${m}`))).toStrictEqual([]);
   });
 
   // Kursregel (Markus 12.11.): drei Produkte – keine Runden aufs eigene Produkt, sondern allein und 1:1 mit Markus.
@@ -112,7 +138,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(folie('/innolab/tag-4', 'arbeitsfluss')).toContain('<Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />');
     // Letzte Folie ohne Schritte: Von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar ihre Schritte auf.
     expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('schritte={false}');
-    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, um 15:35 als Prototyp. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>');
+    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, um 16:25 als Prototyp. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>');
     // „Heute Mittag“ nur auf Tag 4; der Arbeitsfluss ist tagneutral.
     expect(folie('/innolab/arbeitsfluss', 'was-bauen-wir')).toContain('<WasBauenWir>An Tag 4 entsteht euer Slice 1.');
     expect(seite('/innolab/arbeitsfluss')).not.toContain('Heute Mittag');

@@ -1,8 +1,8 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/prototyp-spike.astro (Tag 4, 28.11., 14:05–15:35: 15 min Theorie und
-// Beispiel, 75 min Übung als Rezept: Übersicht plus sieben Schritt-Folien, Timer 10 + 3 + 2 + 40 + 10 + 10; Rest im Puffer
-// 16:25–17:15). Bland = gedruckte
+// Begleiter-Notizen zu src/pages/innolab/methoden/prototyp-spike.astro (Tag 4, 28.11., 14:45–16:25: rund 22 min Theorie und
+// Beispiel, 75 min Übung als Rezept: Übersicht plus sieben Schritt-Folien, Timer 10 + 3 + 2 + 40 + 10 + 10; was offen
+// bleibt, freiwillig zu Hause). Bland = gedruckte
 // Seiten (PDF-Seite − 16); Torres = PDF-Seiten wie in quellen/torres/text.txt; Nielsen = NN/g-Artikel, wörtlich geprüft
 // am 26.11.2026.
 const BLAND = 'David J. Bland & Alexander Osterwalder, Testing Business Ideas';
@@ -236,7 +236,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
   'schritt-bauen': {
     live: [
       'Timer 40 min starten; dieselbe Uhr steht auf der nächsten Folie.',
-      'Fenster von 10:50, dann /model opus; kein Opus: /model, Standard.',
+      'Fenster von 11:00, dann /model opus; kein Opus: /model, Standard.',
       'Bilder mit ctrl + V: Usage Story, Slice 1, Kriterien, Skizzen.',
       'Claude zählt erst die Bildschirme auf – dann „Ja, los.“',
     ],
@@ -262,7 +262,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     ablauf: {
       achten: [
         'Dreht sich Claude zweimal am selben Fehler: hingehen, nicht weiter probieren lassen.',
-        'Scheitern Push oder Vorschau um 15:10: weiter mit der Adresse auf dem Mac, Link im Puffer ab 16:25.',
+        'Scheitern Push oder Vorschau um 15:55: weiter mit der Adresse auf dem Mac, Link zu Hause.',
       ],
     },
     ueberleitung: 'Bevor jemand testet: Karte E2.',

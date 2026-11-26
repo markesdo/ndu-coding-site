@@ -5,7 +5,7 @@ import { station } from '../components/arbeitsfluss';
 import { bloeckeAus, folienAus, quellenAusGlob } from './begleiter';
 
 // Audit 26.11.2026 (Tag 4 im Beamer, Punkte E und F): Tag 4 hatte kein Ende. Nach scrum#planen lief → in die Tag-5-Folien
-// (#team, #dod …) und weiter nach /methoden/backlog; die Origin Story (17:15) kam schon um 11:30 nach experiment#vorgehen.
+// (#team, #dod …) und weiter nach /methoden/backlog; die Origin Story (17:15) kam schon um 11:30 (heute 11:50) nach experiment#vorgehen.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 const seite = (p: string) => ohneAbgeschaltet(quellen[p] ?? '');
 const folie = (p: string, id: string) => {
@@ -94,7 +94,7 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
     expect(weg.some((w) => w.startsWith('/innolab/methoden/backlog'))).toBe(false);
   });
 
-  it('die Origin Story kommt einmal, im Abschluss – nicht um 11:30 auf der Experiment-Seite', () => {
+  it('die Origin Story kommt einmal, im Abschluss – nicht um 11:50 auf der Experiment-Seite', () => {
     const origin = weg.filter((w) => folie(w.split('#')[0], w.split('#')[1]).includes('/quellen/lichaw/origin-story.jpg'));
     expect(origin).toStrictEqual(['/innolab/tag-4#abschluss']);
     expect(folienAus('/innolab/methoden/experiment', seite('/innolab/methoden/experiment')).map((f) => f.id)).not.toContain('origin-story');
@@ -206,9 +206,9 @@ describe('Hilfen des Tests', () => {
 
 // Review 2 #448: Was nur zur Uhrzeit am Beamer stimmt, steht nicht im Handout (dort lesen es alle auch an Tag 5).
 describe('Handout ohne Beamer-Sätze', () => {
-  it('„Heute … bis 17:15“, der Tag-5-Satz und die Hausaufgaben-Schritte nur im Beamer; das Handout behält Hinweis und Checkliste', () => {
+  it('„Jetzt, 17:15“, der Tag-5-Satz und die Hausaufgaben-Schritte nur im Beamer; das Handout behält Hinweis und Checkliste', () => {
     const weiter = folie('/innolab/methoden/scrum', 'weiter-tag-4');
-    expect(weiter).toMatch(/<p class="nur-beamer">Heute: weiter am Prototyp bis 17:15/);
+    expect(weiter).toMatch(/<p class="nur-beamer">Jetzt, 17:15: Origin Story und Hausaufgabe/);
     expect(weiter).toMatch(/<p class="nur-handout">Teamaufstellung und Definition of Done folgen an <a href="\/innolab\/tag-5">Tag 5<\/a>/);
     // „folgen an Tag 5“ steht genau einmal außerhalb von .nur-beamer.
     const ohneBeamer = weiter.replace(/<p class="[^"]*\bnur-beamer\b[^"]*">[\s\S]*?<\/p>/g, '');
@@ -257,7 +257,7 @@ describe('Tag 4: Folie „Slice 1 im Baum“', () => {
     const bild = roh.replace(/^---[\s\S]*?\n---/, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '');
     expect(bild).toContain('<figure class="slice-baum"');
     for (const w of ['LINIE.outcome.name', 'LINIE.beleg.name', 'LINIE.annahme.name', 'Ziel-Chance', 'Spitzenreiter', '<strong>Slice 1</strong>', '„Wir lernen, ob …“ – die riskanteste Annahme']) expect(bild, w).toContain(w);
-    // Durchsicht 26.11.: rechts nur Begriffe, die um 9:35 bekannt sind – das Layout der Story Map kommt erst ab 11:30.
+    // Durchsicht 26.11.: rechts nur Begriffe, die um 9:35 bekannt sind – das Layout der Story Map kommt erst ab 11:50.
     expect(bild.match(/Lern-Sticky|links neben Slice 1/g) ?? []).toStrictEqual([]);
     expect(bild).not.toMatch(/\bdata-schritt\b/);
   });

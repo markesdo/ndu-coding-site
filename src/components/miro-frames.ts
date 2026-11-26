@@ -55,7 +55,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 1 · Warm-up · euer Morgen · Produkt 3': '3458764691725906821',
   'T4 · 2 · Teamaufstellung & DoD': '3458764687968670113',
   // Frames je Produkt für die Arbeit ohne docs-Dateien (seit 26.11.2026 nachts), je mit dem ausgefüllten Beispiel der Kaffeebar.
-  // Das Geschäftsmodell heißt auf dem Board „T4 · 7“ (T4 · 2 ist die Teamaufstellung), obwohl es um 10:30 drankommt.
+  // Das Geschäftsmodell heißt auf dem Board „T4 · 7“ (T4 · 2 ist die Teamaufstellung), obwohl es um 10:40 drankommt.
   'T4 · 4 · Usage Story · Kaffeebar': '3458764691726734311',
   'T4 · 4 · Usage Story · Produkt 1': '3458764691726734312',
   'T4 · 4 · Usage Story · Produkt 2': '3458764691726734313',

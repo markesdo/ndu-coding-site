@@ -318,8 +318,8 @@ export const METHODEN: Methode[] = [
     quelle: 'Osterwalder, Pigneur, Bernarda, Smith, „Value Proposition Design“ (2014), S. 44–118, 347–348 (PDF)',
   },
   {
-    // Seit 25.11.2026 (NDU-66): an Tag 3 nur Theorie, geschrieben an Tag 4 (09:40–10:20: 10 min Theorie, 30 min Übung).
-    slug: 'concept-story', name: 'Concept Story', tag: 4, dauer: 40,
+    // Seit 25.11.2026 (NDU-66): an Tag 3 nur Theorie, geschrieben an Tag 4 (seit 27.11. 09:40–10:30: 20 min Theorie, 30 min Übung).
+    slug: 'concept-story', name: 'Concept Story', tag: 4, dauer: 50,
     frage: 'Warum versteht jemand in Sekunden, dass euer Produkt besser ist als das, was er heute tut?',
     braucht: ['annahmen', 'synthese', 'profil', 'ideen', 'valuemap'], ergibt: ['concept'],
     pruefliste: [
@@ -349,7 +349,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 27–28, 115–118 (PDF); Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128; Bland & Osterwalder, Testing Business Ideas, S. 34–35, 39',
   },
   {
-    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 4, dauer: 40, prueflisteStand: 2,
+    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 4, dauer: 50, prueflisteStand: 2,
     frage: 'An welcher Annahme hängt der Spitzenreiter – und wie prüfen wir sie diese Woche?',
     braucht: ['annahmen', 'ideen', 'valuemap', 'concept', 'geschaeftsmodell'], ergibt: ['experimente', 'origin'],
     pruefliste: [
@@ -366,7 +366,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
-    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 65,
+    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 85,
     frage: 'Was tun Menschen mit eurem Produkt, von Anfang bis Ende – und was baut ihr zuerst, um welchen Outcome zu erreichen?',
     braucht: ['brief', 'profil', 'valuemap', 'journey', 'annahmen'], ergibt: ['storymap'],
     pruefliste: [
@@ -398,7 +398,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2, 5–8',
   },
   {
-    slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 4, dauer: 90, prueflisteStand: 2,
+    slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 4, dauer: 100, prueflisteStand: 2,
     frage: 'Erreichen fünf Menschen mit dem Prototyp den Höhepunkt, ohne dass ihr helft?',
     braucht: ['usage', 'storymap', 'annahmen'], ergibt: ['spike'],
     pruefliste: [

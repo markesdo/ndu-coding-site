@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/story-map.astro (Tag 4, 28.11.2026, ab 11:30): Warm-up „euer Morgen“
+// Begleiter-Notizen zu src/pages/innolab/methoden/story-map.astro (Tag 4, 28.11.2026, 11:50–13:15): Warm-up „euer Morgen“
 // in sechs Schritten (alle selbst, je ein Frame „T4 · 1 · Warm-up · euer Morgen · Produkt n“), Begriffe, Theorie,
 // Kaffeebar, dann die Übung in elf Schritten auf „T4 · 1 · Story Map“ (42 min). Patton = EPUB, zitiert nach Kapitel
 // und Abschnitt. Markus zeigt das Warm-up an seinem eigenen Morgen auf seinem eigenen Miro-Board (Link nicht im Repo).

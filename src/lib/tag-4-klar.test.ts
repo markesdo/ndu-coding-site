@@ -19,7 +19,7 @@ const T4 = '/innolab/tag-4';
 describe('Tag 4: „Was bauen wir?“ konkret', () => {
   it('Satz definiert Slice 1; die drei Zuläufe sagen, woher und was daraus wird', () => {
     const f = folie(T4, 'was-bauen-wir');
-    expect(f).toContain('<p class="folie-satz">Bis 15:35 einen klickbaren Prototyp von Slice 1 – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.</p>');
+    expect(f).toContain('<p class="folie-satz">Bis 16:25 einen klickbaren Prototyp von Slice 1 – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.</p>');
     expect(f).not.toContain('die Tests davon');
     expect(f).toContain('beleg="liefert den Inhalt: den Weg eurer Person – aus Interviews und Experience Map."');
     expect(f).toContain('outcome="liefert das Maß: was Menschen danach anders tun – aus eurem Brief."');
@@ -80,7 +80,7 @@ describe('Tag 4: Ablauf-Texte und Namen (Durchsicht 26.11.)', () => {
     expect(text('Geschäftsmodell')).toBe('Wer, Was, Wie, Wert; die Linie vom Outcome zum Geld; die wirtschaftliche Annahme für die Map.');
   });
   // Seit 26.11. abends: kein Übertrag in docs/STORYS.md; der Testprompt liest einen Screenshot des Frames, mit Opus.
-  it('10:50: Claude Pro und Claude Code mit Opus, Testprompt mit Screenshot des Concept-Story-Frames', () => {
+  it('11:00: Claude Pro und Claude Code mit Opus, Testprompt mit Screenshot des Concept-Story-Frames', () => {
     const t = text('Claude Pro und Claude Code, gemeinsam');
     expect(t).toContain('mit Opus (<code>/model opus</code>)');
     expect(t).toContain('Screenshot eures Concept-Story-Frames einfügen – „Sag mir in einem Satz, worum es in meiner Concept Story geht.“');

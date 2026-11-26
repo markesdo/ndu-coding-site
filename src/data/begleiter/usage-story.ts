@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/usage-story.astro (Tag 4, 28.11., 13:35–14:05: 12 min Theorie und
+// Begleiter-Notizen zu src/pages/innolab/methoden/usage-story.astro (Tag 4, 28.11., 14:15–14:45: 12 min Theorie und
 // Beispiel auf vier Folien – seit 26.11. mit „Drei Storys“ vorn –, 18 min Übung). Vorwissen „unsicher“ (Entrepreneur Lab: „kinda, not really?“): kurz nachfragen.
 // Lichaw = EPUB, zitiert nach Kapitel und Abschnitt.
 const LICHAW = 'Donna Lichaw, The User’s Journey (2016)';

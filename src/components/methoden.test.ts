@@ -586,7 +586,7 @@ describe('methoden', () => {
       [m('pitch'), '/innolab/tag-6'],
     ]) expect(ohneAnker(ziel(hier, 'prev')), `Zurück von ${hier}`).toBe(davor);
     // Scrum steht an zwei Tagen: Der FooterNav am Seitenende gehört zu Tag 5; an Tag 4 führt der Hinweis vor #team zum Abschluss.
-    expect(seite(m('scrum'))).toMatch(/Weiter heute: Prototyp bis 17:15[\s\S]*?href="\/innolab\/tag-4#abschluss"[\s\S]*?<h2 id="team">/);
+    expect(seite(m('scrum'))).toMatch(/Weiter heute: Origin Story und Hausaufgabe[\s\S]*?href="\/innolab\/tag-4#abschluss"[\s\S]*?<h2 id="team">/);
   });
 
   it('jede Methode ab Tag 2 steht im Ablauf ihres Kurstags mit so vielen Minuten, wie sie dauert', () => {
@@ -603,23 +603,30 @@ describe('methoden', () => {
       expect(minuten(neu, slug), slug).toBe(m.dauer);
       expect(minuten(alt, slug), slug).toBe(0);
     }
-    // Experiment-Karte: 30 Minuten an Tag 4, die Origin Story (10 Minuten Input) im Abschluss desselben Tags. Seit 26.11.2026
-    // davor ein eigener Block (10 min) für Claude Pro, dessen Folie auf der Experiment-Seite steht; er zählt hier mit.
-    expect(bloecke(4).find((x) => x.titel === 'Experiment-Karte')).toMatchObject({ von: 11 * 60, bis: 11 * 60 + 30 });
-    expect(bloecke(4).find((x) => x.href === '/innolab/methoden/experiment#claude-pro-jetzt')).toMatchObject({ von: 10 * 60 + 50, bis: 11 * 60 });
-    expect(minuten(4, 'experiment')).toBe(30 + 10);
+    // Experiment-Karte: 40 Minuten an Tag 4 (seit 27.11.2026; 30 bis dahin), die Origin Story (10 Minuten Input) im Abschluss
+    // desselben Tags. Seit 26.11.2026 davor ein eigener Block (10 min) für Claude Pro, dessen Folie auf der Experiment-Seite
+    // steht; er zählt hier mit, die Origin Story (Abschluss auf der Tagesseite) auch in dauer.
+    expect(bloecke(4).find((x) => x.titel === 'Experiment-Karte')).toMatchObject({ von: 11 * 60 + 10, bis: 11 * 60 + 50 });
+    expect(bloecke(4).find((x) => x.href === '/innolab/methoden/experiment#claude-pro-jetzt')).toMatchObject({ von: 11 * 60, bis: 11 * 60 + 10 });
+    expect(minuten(4, 'experiment')).toBe(40 + 10);
+    expect(METHODEN.find((x) => x.slug === 'experiment')!.dauer).toBe(minuten(4, 'experiment'));
     expect(minuten(3, 'experiment')).toBe(0);
-    // Concept Story seit 25.11.2026 (NDU-66) an Tag 4: 10 min Theorie, 30 min Schreiben; an Tag 3 stand nur der Story-Bogen.
+    // Concept Story seit 25.11.2026 (NDU-66) an Tag 4: seit 27.11.2026 20 min Theorie (alle Folien), 30 min Schreiben; an Tag 3
+    // stand nur der Story-Bogen.
     const cs = METHODEN.find((x) => x.slug === 'concept-story')!;
     expect(cs.tag).toBe(4);
     expect(minuten(4, 'concept-story')).toBe(cs.dauer);
-    expect(cs.dauer).toBe(10 + 30);
-    expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/concept-story'))).toMatchObject({ von: 9 * 60 + 40, bis: 10 * 60 + 20 });
+    expect(cs.dauer).toBe(20 + 30);
+    expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/concept-story'))).toMatchObject({ von: 9 * 60 + 40, bis: 10 * 60 + 30 });
     // Value Map & Fit an Tag 4 nachgeholt (30 min), die Methode bleibt an Tag 3.
     expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/value-map'))).toMatchObject({ von: 9 * 60 + 5, bis: 9 * 60 + 35 });
-    // Story Map 65 min (75 bis 26.11.2026, davor 105).
+    // Story Map 85 min seit 27.11.2026 (65 bis dahin, 75 bis 26.11., davor 105); tag-4-ablauf.test.ts bindet sie an die Timer.
     expect(minuten(4, 'story-map')).toBe(METHODEN.find((x) => x.slug === 'story-map')!.dauer);
-    expect(minuten(4, 'story-map')).toBe(65);
+    expect(minuten(4, 'story-map')).toBe(85);
+    // Prototyp-Spike 100 min seit 27.11.2026 (90 bis dahin); Usage Story bleibt 30.
+    expect(minuten(4, 'prototyp-spike')).toBe(METHODEN.find((x) => x.slug === 'prototyp-spike')!.dauer);
+    expect(minuten(4, 'prototyp-spike')).toBe(100);
+    expect(minuten(4, 'usage-story')).toBe(30);
     // Scrum: Agil an Tag 4 (Lego4Scrum seit 25.11.2026 stillgelegt, NDU-72), Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
     expect(minuten(4, 'scrum')).toBe(40);
     expect(bloecke(4).some((x) => x.href.includes('#lego'))).toBe(false);
