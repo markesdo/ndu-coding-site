@@ -40,7 +40,9 @@ const { knoten, label, weil, weilText = 'weil …' } = Astro.props as {
   .linie-pfeil.weil { color: var(--accent); min-width: 4.5rem; }
   .linie-pfeil.weil .linie-spitze { font-size: 2rem; font-weight: 700; }
   .linie-weil { font-weight: 700; font-size: .95rem; white-space: nowrap; }
-  :global(html[data-beamer]) .linie-kasten strong { font-size: 1.15rem; }
+  :global(html[data-beamer]) .linie { margin: 1rem 0; }
+  :global(html[data-beamer]) .linie-kasten { padding: .55rem .6rem; }
+  :global(html[data-beamer]) .linie-kasten strong { font-size: 1.05rem; }
   :global(html[data-beamer]) .linie-art { font-size: .9rem; }
   :global(html[data-beamer]) .linie-weil { font-size: 1.15rem; }
   @container linie (max-width: 640px) {
