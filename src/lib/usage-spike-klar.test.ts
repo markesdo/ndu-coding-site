@@ -96,12 +96,25 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect(b).toContain('<strong>Eine Testperson</strong> findet im Schnitt rund 31 % der Bedienprobleme.');
     expect(b).toContain('<strong>Jede weitere</strong> zeigt vieles, was ihr schon gesehen habt – darum flacht die Kurve ab.');
     expect(b).toContain('<strong>Nach fünf</strong> habt ihr rund 85 % der Bedienprobleme gesehen; danach fast nur Wiederholungen.');
-    expect(b).toContain('<strong>Dreimal fünf statt einmal fünfzehn:</strong> testen, beheben, wieder testen – fünf bis Tag 5, fünf an Tag 6.');
+    expect(b).toContain('<strong>Wenn ihr bis Tag 5 testet:</strong> Fünf sind ideal – schon zwei, drei finden die Hälfte bis zwei Drittel.');
     expect(b).not.toContain('N(1 − (1 − L)ⁿ)');
     expect(f).toContain('„where N is the total number of usability problems in the design and L is the proportion of usability problems discovered while testing a single user. The typical value of L is 31%, averaged across a large number of projects we studied.“');
     expect(f).toContain('„After the first study with five participants has found 85% of the usability problems, you will want to fix these problems in a redesign.“');
     // „Testperson“, nicht „User“ – außer in englischen Zitaten.
     expect(b.replace(/„[^“]*“/g, '').match(/\bUser\b/g) ?? []).toStrictEqual([]);
+  });
+  // Entscheidung des Dozenten (26.11. abends): Die fünf Tests sind freiwillig bis Tag 5; im Kurs ist der Trockenlauf der
+  // eine Test des Prototyps. Befunde und Lernkarte E2 – falls getestet – im Frame „T4 · 5 · Prototyp · Produkt n“.
+  it('Tests mit der Zielgruppe freiwillig: Beamer sagt heute Trockenlauf, bis Tag 5 freiwillig', () => {
+    expect(beamer(folie(PS, 'usability-test'))).toContain('<strong>Heute</strong> testet ihr einmal: im Trockenlauf untereinander. <strong>Bis Tag 5, freiwillig:</strong> mit Menschen, die den Pain haben.');
+    expect(beamer(folie(PS, 'worum'))).toContain("{ t: 'Testen', sub: 'heute ein Trockenlauf; bis Tag 5 freiwillig mehr', icon: Users }");
+    expect(beamer(folie(PS, 'uebertrag'))).toContain('<strong>Bis Tag 5, freiwillig:</strong> Tests mit Menschen, die den Pain haben – fünf sind ideal.');
+    const s = seite(PS);
+    expect(s).toContain('\nLernkarte E2 – falls ihr testet\n');
+    expect(s).not.toContain('T4 · 6 · Lernkarten');
+    // Keine Folie und keine Notiz macht die fünf Tests zur Pflicht.
+    const texte = [s, JSON.stringify(NOTIZEN_PROTOTYP_SPIKE)];
+    expect(texte.flatMap((x) => x.match(/Bis Tag 5: fünf Tests|Fünf Tests', sub|alle fünf haben/g) ?? [])).toStrictEqual([]);
   });
   it('test-ablauf: gute und schlechte Aufgabe, laut denken erklärt, wer was wo notiert', () => {
     const t = beamer(folie(PS, 'test-ablauf'));

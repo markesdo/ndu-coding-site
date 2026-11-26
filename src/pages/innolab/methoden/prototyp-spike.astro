@@ -28,11 +28,11 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="worum">Vom Höhepunkt zum Prototyp</h2>
     <p class="folie-satz">Ein Spike ist Code zum Lernen, nicht zum Behalten.</p>
-    <Fluss label="Von der Usage Story über Papier-Skizzen und Spike zu fünf Tests" hervor={[2]} knoten={[
+    <Fluss label="Von der Usage Story über Papier-Skizzen und Spike zum Testen" hervor={[2]} knoten={[
       { t: 'Usage Story', sub: 'Stationen 2 bis 6', icon: BookOpen },
       { t: 'Papier-Skizzen', sub: 'ein Blatt pro Bildschirm, von Hand', icon: PenLine },
       { t: 'Spike', sub: 'Claude Code baut ihn, in einem eigenen Branch', icon: Code },
-      { t: 'Fünf Tests', sub: 'bis Tag 5 – dann wird er weggeworfen', icon: Users },
+      { t: 'Testen', sub: 'heute ein Trockenlauf; bis Tag 5 freiwillig mehr', icon: Users },
     ]} />
     <ul class="gross dicht">
       <li data-schritt><strong>Papier-Skizzen:</strong> Jeden Bildschirm eures Ablaufs von Hand auf ein Blatt – was steht drauf, welcher Knopf führt wohin. Foto in euren Miro-Frame; Claude Code baut genau das.</li>
@@ -71,6 +71,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <li data-schritt><strong>Eine Aufgabe:</strong> eine Situation und ein Ziel – sie versucht es und sagt laut, was sie denkt.</li>
       <li data-schritt><strong>Ihr beobachtet:</strong> Kommt sie ans Ziel? Wo hängt sie? Keine Meinungsfragen wie „Gefällt dir das?“</li>
       <li data-schritt><strong>Ergebnis: Bedienprobleme</strong> – nicht, ob sie es haben will. Das prüft E1.</li>
+      <li data-schritt><strong>Heute</strong> testet ihr einmal: im Trockenlauf untereinander. <strong>Bis Tag 5, freiwillig:</strong> mit Menschen, die den Pain haben.</li>
     </ul>
     <div class="nur-handout">
       <p>Gemessen wird, was die Testperson tut, nicht, was sie meint. Darum gibt es keine Fragen wie „Gefällt dir das?“ oder „Würdest du das nutzen?“: Was Menschen sagen, ist nicht unbedingt, was sie tun ({BLAND}, S. 52). Nielsens Kurzform: „Recruit representative users. Give them representative tasks to perform. Shut up and let the users do the talking“ („Thinking Aloud: The #1 Usability Tool“, NN/g 2012). Ein Bedienproblem ist eine Stelle, an der die Testperson nicht weiterkommt, falsch abbiegt oder zögert. Ob sie das Produkt überhaupt will, zeigt dieser Test nicht – das zeigt euer E1.</p>
@@ -86,13 +87,13 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
         <li data-schritt><strong>Eine Testperson</strong> findet im Schnitt rund 31 % der Bedienprobleme.</li>
         <li data-schritt><strong>Jede weitere</strong> zeigt vieles, was ihr schon gesehen habt – darum flacht die Kurve ab.</li>
         <li data-schritt><strong>Nach fünf</strong> habt ihr rund 85 % der Bedienprobleme gesehen; danach fast nur Wiederholungen.</li>
-        <li data-schritt><strong>Dreimal fünf statt einmal fünfzehn:</strong> testen, beheben, wieder testen – fünf bis Tag 5, fünf an Tag 6.</li>
+        <li data-schritt><strong>Wenn ihr bis Tag 5 testet:</strong> Fünf sind ideal – schon zwei, drei finden die Hälfte bis zwei Drittel.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
       <p>Jakob Nielsen, „Why You Only Need to Test with 5 Users“ (NN/g, 18. März 2000): „When you test the second user, you will discover that this person does some of the same things as the first user“; „The third user will do many things that you already observed with the first user or with the second user“; „As you add more and more users, you learn less and less because you will keep seeing the same things again and again.“ Und: „After the fifth user, you are wasting your time by observing the same findings repeatedly but not learning much new.“</p>
       <p>Die Kurve folgt Nielsens Formel N(1 − (1 − L)ⁿ): „where N is the total number of usability problems in the design and L is the proportion of usability problems discovered while testing a single user. The typical value of L is 31%, averaged across a large number of projects we studied.“ Mit n = 5 ergibt die Formel 84,4 %, Nielsen schreibt rund 85 % – das steht auch im Bild: „After the first study with five participants has found 85% of the usability problems, you will want to fix these problems in a redesign.“ Gemeint sind Bedienprobleme (usability problems), nicht alle Probleme eines Produkts.</p>
-      <p>Warum dreimal fünf: Nach dem Beheben braucht es neue Tests, ob die Änderung wirkt und was sie verdeckt hatte – „Spend this budget on 3 studies with 5 users each!“ Bei euch: fünf Tests bis Tag 5, wieder fünf an Tag 6 über Kreuz. Nielsens Einschränkung: Mehr Testpersonen braucht, wer „several highly distinct groups of users“ hat. Wortlaut am 26.11.2026 auf nngroup.com abgerufen.</p>
+      <p>Die Tests mit Menschen, die den Pain haben, sind bei euch freiwillig bis Tag 5 (Kursregel); im Kurs testet ihr den Prototyp einmal im Trockenlauf. Wer testet: Fünf sind nach Nielsen ideal; mit zwei Testpersonen ergibt seine Formel rund 52 %, mit drei rund 67 % der Bedienprobleme – „zero users give zero insights“. Dass die ersten Testpersonen die schwersten Probleme finden, sagt Nielsen in diesem Artikel nicht. Warum Nielsen lieber dreimal fünf testet als einmal fünfzehn: Nach dem Beheben braucht es neue Tests, ob die Änderung wirkt und was sie verdeckt hatte – „Spend this budget on 3 studies with 5 users each!“ An Tag 6 testet ihr ohnehin wieder, über Kreuz. Nielsens Einschränkung: Mehr Testpersonen braucht, wer „several highly distinct groups of users“ hat. Wortlaut am 26.11.2026 auf nngroup.com abgerufen.</p>
     </div>
   </Folie>
 
@@ -187,7 +188,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       <li data-schritt><strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Ihr notiert nur: Aufgabe verständlich? Höhepunkt erreicht?</li>
     </ol>
     <div class="nur-handout">
-      <p>Zu 1: Karte E2 und Testaufgabe stehen in eurem Frame „T4 · 5 · Prototyp · Produkt n“, neben Skizzen und Abnahmekriterien; dort kommen später auch die Befunde (U1 …) hin. Zu 2: Drei Runden à gut drei Minuten – A testet den Prototyp von B, C schreibt mit; dann B den von C, A schreibt; dann C den von A, B schreibt. Ergebnis: Ist die Aufgabe verständlich, ist der Höhepunkt da? Online teilt, wessen Prototyp getestet wird, den Bildschirm; die Testperson sagt laut, was sie tun will, und wem der Prototyp gehört, klickt – mehr nicht. Das ist eine Online-Form dieses Kurses. Der Trockenlauf zählt nicht als Testperson ({BLAND}, S. 183).</p>
+      <p>Zu 1: Karte E2 und Testaufgabe stehen in eurem Frame „T4 · 5 · Prototyp · Produkt n“, neben Skizzen und Abnahmekriterien; dort kommen später auch die Befunde (U1 …) hin. Zu 2: Drei Runden à gut drei Minuten – A testet den Prototyp von B, C schreibt mit; dann B den von C, A schreibt; dann C den von A, B schreibt. Ergebnis: Ist die Aufgabe verständlich, ist der Höhepunkt da? Online teilt, wessen Prototyp getestet wird, den Bildschirm; die Testperson sagt laut, was sie tun will, und wem der Prototyp gehört, klickt – mehr nicht. Das ist eine Online-Form dieses Kurses. Der Trockenlauf ist heute euer Test des Prototyps; für die Schwelle von E2 zählen nur Testpersonen mit dem Pain – die testet ihr freiwillig bis Tag 5 ({BLAND}, S. 183).</p>
       <p>Der Trockenlauf ist keine Runde über Kreuz, in der ihr die Arbeit der anderen beurteilt: Die Testperson erfüllt eine Aufgabe und denkt laut, besprochen wird nichts. Bland verlangt genau das vor dem ersten echten Test: „Test it internally to make sure the flow works“ (S. 183).</p>
     </div>
   </Folie>
@@ -200,7 +201,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
   </Callout>
 
   <h2 id="vorlage">So sieht euer Frame aus</h2>
-  <p>Im Frame „T4 · 5 · Prototyp · Produkt n“ stehen Skizzen, Abnahmekriterien, Karte E2, die Tests und die Befunde. Die Lernkarte E2 schreibt ihr nach den Tests in euren Frame „T4 · 6 · Lernkarten · Produkt n“.</p>
+  <p>Im Frame „T4 · 5 · Prototyp · Produkt n“ stehen Skizzen, Abnahmekriterien, Karte E2 und der Trockenlauf. Testet ihr bis Tag 5 mit Menschen, die den Pain haben (freiwillig), kommen die Tests, die Befunde und die Lernkarte E2 in denselben Frame.</p>
   <Prompt label="Miro · T4 · 5 · Prototyp · Produkt n">Prototyp: Branch spike/[name] · Vorschau: [Link] · Papier-Skizzen: [Foto]
 Abnahmekriterien: [...] · Zeitbox: bis [Uhrzeit] · Nicht enthalten: [...]
 
@@ -219,7 +220,7 @@ Je Testperson (0 = Trockenlauf, dann 1 bis 5): Pain vorhanden? · Höhepunkt ohn
 
 Befunde: U1 · [Befund] · [n von 5] · Folge: [was ihr deshalb ändert]
 
-Lernkarte E2 (Frame „T4 · 6 · Lernkarten · Produkt n“)
+Lernkarte E2 – falls ihr testet
 Wir glaubten, dass [...].
 Wir haben beobachtet: [x von 5, Zeiten, U-IDs]
 Verlässlichkeit: schwach / mittel / stark – weil [...]
@@ -235,9 +236,9 @@ Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
 
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-    <p class="folie-satz">Welchen Befund werden alle fünf haben – euer U2?</p>
+    <p class="folie-satz">Welcher Befund zeigt sich bei allen – euer U2?</p>
     <p class="nur-beamer">Ihr findet ihn nur, wenn ihr beim Test schweigt.</p>
-    <p class="nur-beamer"><strong>Bis Tag 5:</strong> fünf Tests mit Menschen, die den Pain haben. <strong>Nach der Pause:</strong> Agil und Scrum.</p>
+    <p class="nur-beamer"><strong>Bis Tag 5, freiwillig:</strong> Tests mit Menschen, die den Pain haben – fünf sind ideal. <strong>Nach der Pause:</strong> Agil und Scrum.</p>
     <p class="nur-handout">Ihr findet ihn nur, wenn ihr beim Test den Mund haltet. Und er sagt euch, wie ihr zurechtkommt – ob jemand euer Produkt will, sagt euch E1.</p>
   </Folie>
 

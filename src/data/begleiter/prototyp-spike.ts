@@ -61,6 +61,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Eine Testperson, eine Aufgabe, der Prototyp – alle schauen nur zu.',
       'Falle: Meinungsfragen („Gefällt dir das?“) – gemessen wird, was sie tut.',
       'Ergebnis sind Bedienprobleme; ob sie es will, zeigt E1.',
+      'Heute nur der Trockenlauf; Tests mit Zielgruppe freiwillig bis Tag 5.',
     ],
     verstaendnis: {
       frage: 'Eine Testperson sagt am Ende: „Coole App, würde ich nutzen.“ Was davon notiert ihr?',
@@ -74,7 +75,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Kurve von links: eine Person findet rund 31 % der Bedienprobleme.',
       'Jede weitere wiederholt vieles – darum flacht die Kurve ab.',
       '„Nach fünf habt ihr rund 85 % der Bedienprobleme gesehen.“',
-      'Dreimal fünf: testen, beheben, wieder testen – Tag 5, dann Tag 6.',
+      'Wenn getestet wird: fünf ideal; zwei, drei finden schon gut die Hälfte.',
       'Falle: 85 % aller Probleme – gemeint sind nur Bedienprobleme.',
     ],
     verstaendnis: {
@@ -218,7 +219,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: '„Test it internally to make sure the flow works.“ Der Trockenlauf zählt darum nicht als Testperson.',
+        text: '„Test it internally to make sure the flow works.“ Der Trockenlauf ist heute der Test des Prototyps; für die Schwelle von E2 zählt er nicht (Testpersonen mit dem Pain, freiwillig bis Tag 5).',
         quelle: `${BLAND}, S. 183`,
       },
       {
@@ -231,9 +232,9 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
 
   uebertrag: {
     live: [
-      'Folien-Satz vorlesen: Welchen Befund werden alle fünf haben?',
+      'Folien-Satz vorlesen: Welcher Befund zeigt sich bei allen?',
       '„Ihr findet ihn nur, wenn ihr beim Test schweigt.“',
-      'Bis Tag 5: fünf Tests mit Menschen, die den Pain haben.',
+      'Bis Tag 5 freiwillig: Tests mit Menschen mit dem Pain; fünf ideal.',
       'Bedienbar sagt E2 – ob jemand es will, sagt E1.',
     ],
     ueberleitung: 'Nach der Pause: Agil und Scrum – wie ihr ab Tag 5 im Takt baut.',
