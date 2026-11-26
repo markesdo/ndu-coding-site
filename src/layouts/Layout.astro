@@ -266,8 +266,8 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
         const gezeigt = schritte.filter((s) => s.classList.contains('gezeigt'));
         if (vor) {
           const knopf = folie.querySelector<HTMLButtonElement>('[data-aufloesung-zeigen]');
-          // Nächster Halt unter dem Bildschirm: die Folie selbst (davor), die nächste (darunter), sonst das Seitenende.
-          const ziel = lage === 'vor' ? folie : lage === 'unter' ? folien[i + 1] : undefined;
+          // Nächster Halt: die Folie selbst (davor), sonst die nächste; nach der letzten das Seitenende.
+          const ziel = lage === 'vor' ? folie : folien[i + 1];
           const seitenRest = document.documentElement.scrollHeight - scrollY - innerHeight;
           const tun = folieWeiter({
             lage, zielUnterhalb: !!ziel && ziel.getBoundingClientRect().top > innerHeight + 4, seiteRestUnten: seitenRest > 4,
@@ -277,7 +277,7 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
           });
           if (tun === 'hierhin') springe(folie);
           else if (tun === 'runter') {
-            const rest = ziel ? ziel.getBoundingClientRect().top - innerHeight : lage === 'auf' ? rand.bottom - innerHeight : seitenRest;
+            const rest = lage === 'auf' && rand.bottom > innerHeight + 4 ? rand.bottom - innerHeight : ziel ? ziel.getBoundingClientRect().top - innerHeight : seitenRest;
             scrollBy({ top: runterUm({ fensterHoehe: innerHeight, kopfleiste: oben, rest }), behavior: 'instant' as ScrollBehavior });
           }
           else if (tun === 'schritt') schritte.find((s) => !s.classList.contains('gezeigt'))?.classList.add('gezeigt');

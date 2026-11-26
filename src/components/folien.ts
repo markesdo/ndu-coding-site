@@ -9,7 +9,7 @@
 // - 'unter': sie liegt ganz über dem Bildschirm – man liest Handout-Text nach ihr (etwa #faden auf Tag 4).
 // Regel für 'vor' und 'unter': → handelt nie für eine Folie, die man nicht sieht (keine Schritte, kein data-weiter). Es
 // geht zur nächsten Folie, sobald deren Oberkante im Bildschirm liegt; sonst einen Bildschirm weiter, damit kein Text
-// übersprungen wird. Nach der letzten Folie bis zum Seitenende, dann gilt das Ende der letzten Folie. ← springt von
+// übersprungen wird. Dasselbe am Ende einer Folie, wenn zwischen ihr und der nächsten sichtbarer Text steht. Nach der letzten Folie bis zum Seitenende, dann gilt das Ende der letzten Folie. ← springt von
 // 'unter' auf diese Folie selbst (nicht auf die davor).
 
 export type Weiter = 'hierhin' | 'runter' | 'schritt' | 'aufloesung' | 'folie' | 'sprung' | 'ende' | 'seite';
@@ -19,7 +19,8 @@ export type Lage = 'vor' | 'auf' | 'unter';
 export function weiter(z: {
   /** Fehlt: 'auf'. */
   lage?: Lage;
-  /** 'vor': Oberkante dieser Folie, 'unter': Oberkante der nächsten liegt noch unter dem Bildschirm. */
+  /** Oberkante des nächsten Halts liegt noch unter dem Bildschirm – 'vor': diese Folie; 'auf' und 'unter': die nächste
+   *  (bei 'auf' heißt das: zwischen den beiden steht sichtbarer Text, etwa ein Hinweis). */
   zielUnterhalb?: boolean;
   /** Unter dem Bildschirm kommt noch Seite (zählt für 'unter' ohne nächste Folie). */
   seiteRestUnten?: boolean;
@@ -45,6 +46,7 @@ export function weiter(z: {
   if (z.restUnten) return 'runter';
   if (z.ende) return 'ende';
   if (z.sprung) return 'sprung';
+  if (z.naechsteFolie && z.zielUnterhalb) return 'runter';
   return z.naechsteFolie ? 'folie' : 'seite';
 }
 

@@ -29,6 +29,12 @@ describe('weiter (→ im Beamer)', () => {
     expect(weiter(folie)).toBe('folie');
   });
 
+  // Audit 26.11.: Auf scrum sprang → von #planen auf #team und übersprang den Hinweis dazwischen.
+  it('steht zwischen dieser und der nächsten Folie sichtbarer Text, erst einen Bildschirm weiter', () => {
+    expect(weiter({ ...folie, zielUnterhalb: true })).toBe('runter');
+    expect(weiter({ ...folie, zielUnterhalb: true, sprung: true })).toBe('sprung');
+  });
+
   it('nach der letzten Folie die nächste Seite', () => {
     expect(weiter({ ...folie, naechsteFolie: false })).toBe('seite');
   });
