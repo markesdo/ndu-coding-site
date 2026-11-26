@@ -1,0 +1,34 @@
+import { describe, expect, it } from 'vitest';
+import { NOTIZEN } from '../data/begleiter';
+import { folienAus, quellenAusGlob } from './begleiter';
+
+// Tag 4 (28.11.2026): Jede Folie der Methodenseiten, die der Begleiter an Tag 4 zeigt, hat eine Notiz mit mindestens
+// einem live-Stichwort, und jede Notiz zeigt auf eine Folie dieser Seite (keine Reste gestrichener Folien, z. B. der
+// Origin Story, die seit 26.11. im Abschluss von Tag 4 steht). Abgeschaltete Folien (Lego4Scrum, „Euer Produkt in
+// einem Satz“) zählt folienAus nicht mit. scrum enthält auch die Tag-5-Folien team, dod, vorgehen, uebertrag.
+const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
+
+const SEITEN: Record<string, number> = {
+  '/innolab/methoden/experiment': 15,
+  '/innolab/methoden/usage-story': 5,
+  '/innolab/methoden/prototyp-spike': 6,
+  '/innolab/methoden/scrum': 16,
+};
+
+describe('Begleiter Tag 4: Notizen decken die Folien', () => {
+  for (const [pfad, anzahl] of Object.entries(SEITEN)) {
+    const folien = folienAus(pfad, quellen[pfad] ?? '');
+    it(`${pfad}: ${anzahl} Folien, jede mit live-Stichwort`, () => {
+      expect(folien).toHaveLength(anzahl);
+      expect(folien.filter((f) => !NOTIZEN[pfad]?.[f.id]?.live?.some((s) => s.trim() !== '')).map((f) => f.id)).toStrictEqual([]);
+    });
+    it(`${pfad}: jede Notiz zeigt auf eine Folie der Seite`, () => {
+      const ids = new Set(folien.map((f) => f.id));
+      expect(Object.keys(NOTIZEN[pfad] ?? {}).filter((id) => !ids.has(id))).toStrictEqual([]);
+    });
+  }
+  it('scrum: abgeschaltete Folien (Lego4Scrum, Produktsatz) haben keine Notiz', () => {
+    const n = NOTIZEN['/innolab/methoden/scrum'];
+    expect(['produktziel', 'lego', 'vision', 'produkt-board', 'lego-sprint', 'review-1', 'nachbesprechung'].filter((id) => id in n)).toStrictEqual([]);
+  });
+});
