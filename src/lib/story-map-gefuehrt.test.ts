@@ -123,7 +123,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(sichtbar(folie('schritt-loecher'))).toContain('<strong>Prüft:</strong> Wo springt eure Geschichte zwischen zwei Stickies – und was ist, wenn …?');
     expect(handout(folie('sechs-schritte'))).toContain('Übungsschritt 10 und 11 – Durchgehen und Festhalten');
     const pruefen = seite.slice(seite.indexOf('<h2 id="pruefen">'), seite.indexOf('<ClaudePruefung'));
-    expect(pruefen).toContain('Nehmt unten den Weg „Ohne Claude Code“ und fügt statt Text einen Screenshot eures Bereichs im Frame „T4 · 1 · Story Map“ ein');
+    expect(pruefen).toContain('in eurer Spalte im Frame „T4 · 1 · Story Map“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.');
     const n = NOTIZEN['/innolab/methoden/story-map'];
     expect(n['schritt-durchgehen'].ueberleitung).toBe('Zum Schluss: fertig auf Miro – und Claude nach Annahmen fragen.');
     expect(n['schritt-tasks'].live).toContain('Fragen: Hat jeder Pain vom Rand einen Task, der ihn löst?');

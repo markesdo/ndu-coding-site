@@ -326,14 +326,16 @@ describe('methoden', () => {
     expect(pruefPrompt(METHODEN.find((m) => m.slug === 'baum')!, 'docs/X.md', 'einfuegen')).toMatch(/: docs\/X\.md\. Prüf es/);
     // Nur ein Teil (pfad): eine Datei, kein Miro – auch wenn das ganze Ergebnis auf Miro liegt.
     expect(einfuegenHinweis(METHODEN.find((m) => m.slug === 'baum')!, 'docs/X.md')).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
-    // Story Map liegt auf Miro und im Repo: einfügen als Datei oder Text aus Miro.
+    // Story Map liegt seit dem Nachtrag 26.11.2026 nur auf Miro (eigene Spalte in T4 · 1): kein Einfügen als Text, sondern ein
+    // Bild; Vorarbeit nur auf Miro als weitere Bilder, Werkstatt-Vorarbeit über den Connector.
     const sm = METHODEN.find((m) => m.slug === 'story-map')!;
-    expect(einfuegenHinweis(sm)).toBe('Prompt in ein Gespräch mit Claude einfügen, darunter den Inhalt der Datei aus eurem Repo oder den Text aus Miro – und jeden weiteren Text, den der Prompt zum Abgleich nennt.');
-    // Vorarbeit nur auf Miro als Bild (seit 21.11.2026 auch Kundenprofil und Value Map), Werkstatt-Vorarbeit über den Connector.
-    const smp = pruefPrompt(sm, undefined, 'einfuegen');
+    expect(einfuegenMoeglich(sm)).toBe(false);
+    const smp = pruefPrompt(sm);
+    expect(smp).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Story Map mit Slice 1 \(Frame „T4 · 1 · Story Map“\)\. Prüf es/);
     // Kundenprofil und Value Map teilen den Canvas: ein Bild; der Ideen-Vergleich der Value Map ist ein eigenes.
     expect(smp).toContain('\nZum Abgleich füge ich auch drei Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · Produkt n“), Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“) und Experience Map mit Momenten (Äste des Baums) (Frame „T2 · 1 · Experience Map“).\n');
     expect(smp).toContain('\nZum Abgleich lies außerdem meinen Produkt-Brief und meine Annahmen-Map (Werkzeug artefakt_lesen).\n');
+    expect(miroErgebnisBilder(sm).map((b) => b.ausschnitt)).toStrictEqual(['eure Spalte im Frame „T4 · 1 · Story Map“']);
     // Entscheidung 39: Kein Prüf-Prompt nennt eine Tag-3-Datei – die Ergebnisse von Tag 3 liegen auf Miro.
     for (const m of METHODEN.filter((x) => x.pruefliste)) {
       for (const weg of ['standard', 'einfuegen'] as const) {
@@ -408,7 +410,16 @@ describe('methoden', () => {
   // Seit 11.11.2026 liegen Experience Map und Baum nur auf Miro, ohne Datei im Repo: Claude prüft ein Bild des Frames.
   it('Experience Map, Baum und Tag 3: Prüfung an einem Bild aus Miro, nie über eine Datei', () => {
     // Seit 21.11.2026 (Entscheidung 39) auch alle Ergebnisse von Tag 3.
-    expect(METHODEN.filter((m) => pruefungAufMiro(m)).map((m) => m.slug)).toStrictEqual(['journey-map', 'baum', 'ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']);
+    // Seit dem Nachtrag 26.11.2026 abends auch alles von Tag 4 bis auf Scrum (keine docs-Dateien mehr für Studierende).
+    expect(METHODEN.filter((m) => pruefungAufMiro(m)).map((m) => m.slug)).toStrictEqual([
+      'journey-map', 'baum', 'ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map',
+      'concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike',
+    ]);
+    for (const s of ['concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike']) {
+      const m = METHODEN.find((x) => x.slug === s)!;
+      expect(pruefPrompt(m), s).not.toMatch(/^Lies |docs\/|ändere keine Datei/m);
+      expect(einfuegenMoeglich(m), s).toBe(false);
+    }
     const zc = pruefPrompt(METHODEN.find((m) => m.slug === 'ziel-chance')!);
     expect(zc).toMatch(/^Unter diese Nachricht füge ich ein Bild meines Ergebnisses aus Miro ein: Ziel-Chance mit vier Linsen \(Frame „T3 · 1 · Ziel-Chance“\)\. Prüf es gegen diese Prüfliste \(Ziel-Chance wählen\):\n/);
     expect(zc).toContain('\nZum Abgleich füge ich auch ein Bild aus Miro ein: Opportunity Solution Tree (Chancen unter den Momenten) (Frame „Baum · Produkt n“).\n');
@@ -435,22 +446,16 @@ describe('methoden', () => {
   });
 
   it('Einfügen: jede Datei einmal, nichts aus Linear; ohne Ergebnis ein Fehler beim Bauen', () => {
-    // Der Pitch braucht Concept, Origin und Usage Story (alle docs/STORYS.md).
+    // Der Pitch braucht Concept, Origin und Usage Story – seit dem Nachtrag 26.11.2026 als Bilder ihrer Frames, nicht als Datei.
     const pitch = METHODEN.find((m) => m.slug === 'pitch')!;
     const p = pruefPrompt(pitch, undefined, 'einfuegen');
-    expect(p.split('docs/STORYS.md')).toHaveLength(2);
-    // Alle Storys der Datei unter einem Namen, die Datei einmal.
-    const storys = pitch.braucht.map((id) => ARTEFAKTE.find((a) => a.id === id)!).filter((a) => a.pfad === 'docs/STORYS.md').map((a) => a.name);
-    expect(storys.length).toBeGreaterThan(1);
-    expect(p).toContain(`${storys.slice(0, -1).join(', ')} und ${storys.at(-1)} (docs/STORYS.md)`);
-    // Vorarbeit in derselben Datei wie das Ergebnis steht beim Ergebnis (Usage und Concept Story in docs/STORYS.md).
-    const us = pruefPrompt(METHODEN.find((m) => m.slug === 'usage-story')!, undefined, 'einfuegen');
-    expect(us).toMatch(/: Usage Story des Kernablaufs und Concept Story \(docs\/STORYS\.md\)\. Prüf es/);
-    expect(us.split('docs/STORYS.md')).toHaveLength(2);
-    // Zwei Dateien im Ergebnis (Experiment-Karten und Origin Story): Plural, mit Semikolon getrennt – die Namen enthalten selbst „und“.
+    expect(p).toMatch(/^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Datei\): Pitch mit Demo und Belegen \(docs\/PITCH\.md\)\. Prüf es/);
+    expect(p).not.toMatch(/docs\/(STORYS|EXPERIMENTE|GESCHAEFTSMODELL|STORY-MAP|TESTS)\.md/);
+    expect(p).toContain('Concept Story (Frame „T4 · 0 · Concept Story · Produkt n“), Experiment-Karte E1 (Frame „T4 · 0 · Annahmen der Idee“), Origin Story als Text für Aufsteller oder Landingpage (Frame „T4 · 6 · Origin Story · Produkt n“)');
+    // Zwei Ergebnisse an zwei Orten (Karte E1 in der eigenen Spalte, Origin Story im eigenen Frame): zwei Bilder.
     const ex = METHODEN.find((m) => m.slug === 'experiment')!;
-    expect(pruefPrompt(ex, undefined, 'einfuegen')).toMatch(/^Unter diese Nachricht füge ich mein Ergebnis ein \(Inhalt der Dateien\): Experiment-Karten \(docs\/EXPERIMENTE\.md\); Origin Story als Landingpage-Text und Concept Story \(docs\/STORYS\.md\)\. Prüf es/);
-    expect(einfuegenHinweis(ex)).toContain('darunter den Inhalt der Dateien aus eurem Repo – ');
+    expect(pruefPrompt(ex)).toMatch(/^Unter diese Nachricht füge ich zwei Bilder meines Ergebnisses aus Miro ein: Experiment-Karte E1 \(Frame „T4 · 0 · Annahmen der Idee“\) und Origin Story als Text für Aufsteller oder Landingpage \(Frame „T4 · 6 · Origin Story · Produkt n“\)\. Prüf es/);
+    expect(miroErgebnisBilder(ex).map((b) => b.ausschnitt)).toStrictEqual(['eure Spalte im Frame „T4 · 0 · Annahmen der Idee“', 'euren Frame „T4 · 6 · Origin Story · Produkt n“']);
     // Vorarbeit in Linear: ausdrücklich zum Kopieren.
     const sprint = pruefPrompt(METHODEN.find((m) => m.slug === 'sprint')!, undefined, 'einfuegen');
     expect(sprint).toContain('\nAus Linear kopiere ich zum Abgleich Issues geschnitten und quer gelesen dazu (Kennung, Titel und Text jedes Issues).\n');
@@ -494,9 +499,10 @@ describe('methoden', () => {
 
   it('der Pitch wird an docs/PITCH.md geprüft, gegen alle Quellen seiner Belege, jede Datei einmal', () => {
     const pi = pruefPrompt(METHODEN.find((m) => m.slug === 'pitch')!);
-    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/STORYS\.md, docs\/EXPERIMENTE\.md, docs\/GESCHAEFTSMODELL\.md, docs\/TESTS\.md, docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
+    // Seit dem Nachtrag 26.11.2026 liegen die Ergebnisse von Tag 4 auf Miro: Datei bleibt nur das Sprint-Protokoll.
+    expect(pi).toMatch(/^Lies docs\/PITCH\.md\. Zum Abgleich lies auch docs\/SPRINTS\.md und aus der Werkstatt meinen Produkt-Brief \(Werkzeug artefakt_lesen\)\. /);
     // Kundenprofil und Value Map liegen seit 21.11.2026 auf Miro: als Bild.
-    expect(pi).toContain('\nZum Abgleich füge ich auch zwei Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · Produkt n“) und Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“).\n');
+    expect(pi).toContain('\nZum Abgleich füge ich auch acht Bilder aus Miro ein: Kundenprofil (Jobs, Pains, Gains), je Spalte geordnet und Spitzenreiter mit Value Map und Fit (Frame „T3 · 4 · Canvas · Produkt n“), Spitzenreiter mit Value Map und Fit (Feld „Ideen vergleichen und wählen“ im Frame „T3 · 4 · Kundenprofil & Value Map“), Concept Story (Frame „T4 · 0 · Concept Story · Produkt n“), ');
     // Die Prüfliste verlangt alle vier Raster-Felder mit Beleg aus Kundenprofil oder Value Map, ein Sicherheits-Wort wie in
     // den Lernkarten (E1, E2) und die Outcome-Zahlen – darum liest Claude Profil, Value Map, Experimente und Tests mit.
     const pitch = METHODEN.find((m) => m.slug === 'pitch')!;

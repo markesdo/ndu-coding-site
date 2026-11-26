@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { NOTIZEN_USAGE_STORY } from '../data/begleiter/usage-story';
 import { NOTIZEN_PROTOTYP_SPIKE } from '../data/begleiter/prototyp-spike';
@@ -219,8 +220,10 @@ describe('Usage Story und Prototyp-Spike: Miro statt Repo-Dateien, Opus', () => 
   });
   it('Opus, ohne Versionsnummer: Spike-Schritt und beide Prüfungen', () => {
     expect(seite(PS).match(/\/model opus/g)?.length).toBeGreaterThanOrEqual(3);
-    expect(seite(US)).toContain('<p>Mit Opus – in Claude Code <code>/model opus</code>.');
-    expect(seite(PS)).toContain('<p>Mit Opus – in Claude Code <code>/model opus</code>.');
+    // Prüfen an einem Bild in claude.ai (ClaudePruefung, Weg Miro): Opus im Modellmenü, steht in „So geht’s“.
+    expect(seite(US)).toContain('<p>Eure Usage Story liegt nur auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>');
+    expect(seite(PS)).toContain('in eurem Frame „T4 · 5 · Prototyp · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>');
+    expect(readFileSync(new URL('../components/ClaudePruefung.astro', import.meta.url), 'utf8')).toContain('Im Modellmenü Opus wählen – meldet Claude ein Limit oder gibt es Opus nicht, das vorgeschlagene Standardmodell.');
     expect([seite(US), seite(PS)].flatMap((x) => x.match(/Opus \d|opus-\d/gi) ?? [])).toStrictEqual([]);
   });
   // Seit 27.11.2026 haben die Frames IDs: beide Seiten verlinken sie je Produkt (wie concept-story#vorgehen) und das Beispiel.

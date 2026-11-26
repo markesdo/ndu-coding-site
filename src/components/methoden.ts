@@ -55,14 +55,17 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'ideen', name: 'Drei Ideen für die Ziel-Chance, je als Lückensatz', lebtIn: ['miro'], miro: 'T3 · 3 · Ideation', miroSpalte: true },
   // Value Map und Fit im Canvas; der Ideen-Vergleich mit den „?“ im gemeinsamen Frame T3 · 4 (Prüfpunkte value-map-fit-vergleich, -wahl, -fragezeichen).
   { id: 'valuemap', name: 'Spitzenreiter mit Value Map und Fit', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · Produkt n', miroAuch: { frame: 'T3 · 4 · Kundenprofil & Value Map', feld: 'Ideen vergleichen und wählen' } },
-  // Seit 26.11.2026 zuerst auf Miro (T4 · 0 · Concept Story · Produkt n), um 10:50 übertragen in docs/STORYS.md; geprüft wird die Datei.
-  { id: 'concept', name: 'Concept Story', lebtIn: ['miro', 'repo'], pfad: 'docs/STORYS.md' },
-  { id: 'experimente', name: 'Experiment-Karten', lebtIn: ['repo'], pfad: 'docs/EXPERIMENTE.md' },
-  { id: 'origin', name: 'Origin Story als Landingpage-Text', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
-  { id: 'geschaeftsmodell', name: 'Geschäftsmodell', lebtIn: ['repo'], pfad: 'docs/GESCHAEFTSMODELL.md' },
-  { id: 'storymap', name: 'Story Map mit Slices', lebtIn: ['miro', 'repo'], pfad: 'docs/STORY-MAP.md' },
-  { id: 'usage', name: 'Usage Story des Kernablaufs', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
-  { id: 'spike', name: 'Prototyp-Spike und Testbefunde', lebtIn: ['repo'], pfad: 'docs/TESTS.md' },
+  // Tag 4 liegt seit dem Nachtrag 26.11.2026 abends ganz auf Miro (keine docs-Dateien mehr für Studierende): je Produkt ein
+  // Frame; Karte E1 und Story Map in der eigenen Spalte eines gemeinsamen Frames. Geprüft wird an einem Bild (pruefungAufMiro).
+  // Die Lernkarten (T4 · 6 · Lernkarten · Produkt n) entstehen erst nach dem Test, zu Hause – kein eigenes Bild im Prüf-Prompt.
+  { id: 'concept', name: 'Concept Story', lebtIn: ['miro'], miro: 'T4 · 0 · Concept Story · Produkt n' },
+  { id: 'experimente', name: 'Experiment-Karte E1', lebtIn: ['miro'], miro: 'T4 · 0 · Annahmen der Idee', miroSpalte: true },
+  { id: 'origin', name: 'Origin Story als Text für Aufsteller oder Landingpage', lebtIn: ['miro'], miro: 'T4 · 6 · Origin Story · Produkt n' },
+  { id: 'geschaeftsmodell', name: 'Geschäftsmodell', lebtIn: ['miro'], miro: 'T4 · 7 · Geschäftsmodell · Produkt n' },
+  { id: 'storymap', name: 'Story Map mit Slice 1', lebtIn: ['miro'], miro: 'T4 · 1 · Story Map', miroSpalte: true },
+  { id: 'usage', name: 'Usage Story des Kernablaufs', lebtIn: ['miro'], miro: 'T4 · 4 · Usage Story · Produkt n' },
+  // Der Spike selbst liegt in seinem Branch (Claude Code legt ihn an); Skizzen, Kriterien, Karte E2 und Befunde im Frame.
+  { id: 'spike', name: 'Prototyp-Spike und Testbefunde', lebtIn: ['miro'], miro: 'T4 · 5 · Prototyp · Produkt n' },
   { id: 'team', name: 'Team-Vereinbarung mit Definition of Done', lebtIn: ['repo'], pfad: 'docs/TEAM.md' },
   { id: 'issues', name: 'Backlog aus Issues', lebtIn: ['linear'] },
   { id: 'kriterien', name: 'Akzeptanzkriterien', lebtIn: ['linear'] },
@@ -359,7 +362,7 @@ export const METHODEN: Methode[] = [
       { id: 'experiment-origin', text: 'An Tag 4: Die Origin Story führt zu genau einer Handlung, und diese Handlung ist die Messgröße der Karte.' },
       { id: 'experiment-lernkarte', text: 'Nach dem Test: Die Lernkarte nennt die Verlässlichkeit mit Grund und den Befund (gestützt, widerlegt, unklar oder neue Einsicht), bevor sie sagt, was ihr deshalb tut.' },
     ],
-    ki: 'Pre-Mortem: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
+    ki: 'Gegenprobe zu E1: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
@@ -399,8 +402,8 @@ export const METHODEN: Methode[] = [
     frage: 'Erreichen fünf Menschen mit dem Prototyp den Höhepunkt, ohne dass ihr helft?',
     braucht: ['usage', 'storymap', 'annahmen'], ergibt: ['spike'],
     pruefliste: [
-      { id: 'prototyp-spike-skizzen', text: 'Papierskizzen für jeden Bildschirm der Usage Story liegen als Foto in docs/TESTS.md; der Höhepunkt ist ein eigener Bildschirm.' },
-      { id: 'prototyp-spike-branch', text: 'Der Prototyp liegt in einem eigenen Branch, trägt „Prototyp – nicht echt“ und hat Abnahmekriterien und eine Zeitbox – er wird nicht gemergt.' },
+      { id: 'prototyp-spike-skizzen', text: 'Papierskizzen für jeden Bildschirm der Usage Story liegen als Foto im Feld „1 · Papier-Skizzen“; der Höhepunkt ist ein eigenes Blatt mit Stern.' },
+      { id: 'prototyp-spike-branch', text: 'Im Feld „4 · Prototyp“ stehen der eigene Branch (spike/…) und der Link; der Prototyp trägt „Prototyp – nicht echt“, Abnahmekriterien und Zeitbox stehen in den Feldern 2 und 3 – er wird nicht gemergt.' },
       { id: 'prototyp-spike-karte', text: 'Die Karte E2 nennt die Annahme (ID, Art) und die Schwelle „x von 5“, bevor jemand testet.' },
       { id: 'prototyp-spike-aufgabe', text: 'Die Aufgabe beschreibt Situation und Ziel, keine Bedienschritte und keine Begriffe aus der Oberfläche.' },
       { id: 'prototyp-spike-trockenlauf', text: 'Ein Trockenlauf mit den anderen beiden ist gelaufen; die Testpersonen danach haben den Pain und kennen das Produkt nicht.' },
@@ -594,7 +597,7 @@ export function miroVorarbeitBilder(m: Methode): MiroBild[] {
 /** „Kundenprofil … und Spitzenreiter … (Frame „T3 · 4 · Canvas · Produkt n“)“ – je Bild die Namen und der Ort. */
 const bildListe = (bilder: MiroBild[]) => aufzaehlen(bilder.map((b) => `${aufzaehlen(b.namen)} (${b.ort})`));
 
-const ZAHLWORT = ['ein', 'zwei', 'drei', 'vier', 'fünf'];
+const ZAHLWORT = ['ein', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun'];
 /** „ein Bild“, „zwei Bilder“ … */
 export const anzahlBilder = (n: number) => (n === 1 ? 'ein Bild' : `${ZAHLWORT[n - 1] ?? n} Bilder`);
 
