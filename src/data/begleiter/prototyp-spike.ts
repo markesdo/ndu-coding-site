@@ -1,7 +1,8 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/prototyp-spike.astro (Tag 4, 28.11., 14:05–15:35: 15 min Theorie und
-// Beispiel auf sieben Folien, 75 min Übung auf zwei Folien (55 + 20); Rest im Puffer 16:25–17:15). Bland = gedruckte
+// Beispiel, 75 min Übung als Rezept: Übersicht plus sieben Schritt-Folien, Timer 10 + 3 + 2 + 40 + 10 + 10; Rest im Puffer
+// 16:25–17:15). Bland = gedruckte
 // Seiten (PDF-Seite − 16); Torres = PDF-Seiten wie in quellen/torres/text.txt; Nielsen = NN/g-Artikel, wörtlich geprüft
 // am 26.11.2026.
 const BLAND = 'David J. Bland & Alexander Osterwalder, Testing Business Ideas';
@@ -172,51 +173,119 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 140`,
       },
     ],
-    ueberleitung: 'Jetzt ihr: 75 Minuten – erst bauen, dann Karte und Trockenlauf.',
+    ueberleitung: 'Jetzt ihr: 75 Minuten, sechs Schritte.',
   },
 
   vorgehen: {
     live: [
-      'Timer je Schritt: 10 + 5 + 40 min, dann zweite Folie.',
-      'Falle: direkt bauen lassen, ohne Papierskizze.',
-      'Claude Code mit Opus (/model opus); Eingabe: Screenshots, keine Dateien.',
-      'Timer bei null: aufhören; zuerst den Höhepunkt-Bildschirm.',
-      'Spike bleibt im Branch; Vercel-Vorschau fürs Handy.',
+      'Sechs Schritte zeigen: Dauer und Ort je Schritt.',
+      'Wo: Frame „T4 · 5 · Prototyp · Produkt n“, Felder 1 bis 6.',
+      'Schritte 1–5 allein, nur Trockenlauf zu dritt.',
+      'Tests mit Zielgruppe freiwillig bis Tag 5.',
     ],
-    uebung: { dauer: '55 min (10 + 5 + 40)', form: 'allein' },
-    ablauf: {
-      schritte: [
-        'Papier, allein: vier bis sechs Blätter, eines pro Bildschirm der Usage Story, von Hand; der Höhepunkt ein eigenes Blatt; Pfeile, wohin jeder Knopf führt; Foto in den Frame „T4 · 5 · Prototyp · Produkt n“ (10 min).',
-        'Abnahmekriterien und Zeitbox im selben Frame: was der Prototyp zeigen muss, bis wann, was er nicht hat (5 min).',
-        'Bauen in Claude Code mit Opus (/model opus): Prompt „Spike · Claude Code“ aus dem Handout plus drei Screenshots – Usage Story, Story Map mit Slice 1, Frame mit Skizzen und Abnahmekriterien; Claude Code legt den Branch spike/[name] an; bei null aufhören (40 min).',
-        'Am Handy ansehen als Vercel-Vorschau; der Spike bleibt im Branch.',
-      ],
-      achten: [
-        'Nur Oberfläche: Daten im Speicher, kein Login, keine Bezahlung, keine Datenbank.',
-        'Was in 40 Minuten fehlt, steht im Frame; weiter im Puffer ab 16:25.',
-      ],
-    },
-    ueberleitung: 'Bevor jemand testet: Karte E2 – und ein Trockenlauf untereinander.',
+    ueberleitung: 'Schritt 1: ein Blatt je Bildschirm.',
   },
 
-  'vorgehen-test': {
+  'schritt-papier': {
     live: [
-      'Timer je Schritt: 10 + 10 min.',
-      'Karte E2 mit „Wir entscheiden vorher“ – vor dem Trockenlauf.',
-      'Trockenlauf online: Testperson denkt laut, wem er gehört, klickt.',
-      'Kursregel – keine Kritik: kein Feedback danach, nur notieren.',
+      'Timer 10 min: ein Blatt je Bildschirm, Stationen 2 bis 6.',
+      'Höhepunkt = eigenes Blatt mit Stern und wörtlichem Satz.',
+      'Pfeil an jedem Knopf zur Nummer des nächsten Blatts.',
+      'Falle: direkt bauen lassen, ohne Papier – Kursregel.',
     ],
-    uebung: { dauer: '20 min (10 + 10)', form: 'allein; Trockenlauf in drei Runden, keine Kritik' },
+    uebung: { dauer: '10 min', form: 'allein, Papier und Stift; Foto je Blatt in Feld 1' },
+    ueberleitung: 'Woran seht ihr, dass der Prototyp fertig genug ist? Drei Sätze.',
+  },
+
+  'schritt-kriterien': {
+    live: [
+      'Timer 3 min: „zeigt … / läuft … / hat nicht …“.',
+      'Prüfbar: jede Zeile später am Handy mit Ja oder Nein.',
+      'Format in drei Sätzen ist Kursregel; Bland verlangt Kriterien vorab.',
+    ],
+    uebung: { dauer: '3 min', form: 'allein, Feld 2 auf Miro' },
+    kern: [
+      {
+        text: '„If we build what we agree to, what will we check to see that we’re done? The answer to this question is usually a short list of things to check. This list is often called acceptance criteria, or story tests.“',
+        quelle: 'Jeff Patton, User Story Mapping, Kap. 6, 3. Confirmation',
+      },
+      {
+        text: '„Define your acceptance criteria.“ – „Determine if the acceptance criteria were successfully met.“',
+        quelle: `${BLAND}, S. 307`,
+      },
+    ],
+    ueberleitung: 'Und wann hört ihr auf? Die Zeitbox.',
+  },
+
+  'schritt-zeitbox': {
+    live: [
+      'Timer 2 min: jetzt plus 40 Minuten eintragen.',
+      'Zuerst der Höhepunkt-Bildschirm, dann der Weg dorthin.',
+      'Bei null aufhören; Fehlendes ins Feld 3.',
+    ],
+    uebung: { dauer: '2 min', form: 'allein, Feld 3 auf Miro' },
+    kern: [
+      {
+        text: '„Before performing a spike, clearly define the acceptance criteria and time box so that everyone is clear on the goal before getting started. These can turn into never-ending research projects if left unchecked.“ – „It is aggressively time boxed for a reason“.',
+        quelle: `${BLAND}, S. 308`,
+      },
+    ],
+    ueberleitung: 'Jetzt baut Claude Code – nach euren Bildern.',
+  },
+
+  'schritt-bauen': {
+    live: [
+      'Timer 40 min starten; läuft über die nächste Folie weiter.',
+      'Fenster von 10:50, dann /model opus; kein Opus: /model, Standard.',
+      'Bilder mit ctrl + V: Usage Story, Slice 1, Kriterien, Skizzen.',
+      'Claude zählt erst die Bildschirme auf – dann „Ja, los.“',
+    ],
+    uebung: { dauer: '40 min (Schritt 4, zwei Folien)', form: 'allein, Claude Code im eigenen Repo' },
     ablauf: {
-      schritte: [
-        'Karte E2 und Testaufgabe auf Miro im selben Frame, mit der Zeile „Wir entscheiden vorher“ (10 min).',
-        'Trockenlauf in drei Runden: A testet B, C schreibt; B testet C, A schreibt; C testet A, B schreibt – je gut drei Minuten (10 min).',
-      ],
       achten: [
-        'Wem der Prototyp gehört, teilt den Bildschirm und klickt; die Testperson sagt nur, was sie tun will.',
-        'Kein Feedback danach: notiert wird nur, ob die Aufgabe verständlich und der Höhepunkt erreicht ist.',
+        'Niemand öffnet oder schreibt eine Datei; VS Code ist nur der Rahmen ums Claude-Terminal.',
+        'Story Map nur mit Backbone und Slice 1 abfotografieren; Skizzen-Fotos zusätzlich direkt einfügen.',
+        'Nur Oberfläche, Route /spike, die bestehende App bleibt unverändert.',
       ],
     },
+    ueberleitung: 'Ansehen, nachbessern, sichern – der Timer läuft weiter.',
+  },
+
+  'schritt-ansehen': {
+    live: [
+      'Weg bis zum Höhepunkt selbst klicken, Fenster schmal.',
+      'Ein Satz je Fehler, mit dem Namen des Blatts.',
+      'Fünf Minuten vor Schluss: Prompt „Spike sichern“ – Link fürs Handy.',
+      'Bei null aufhören, drei Kriterien in Feld 4 ankreuzen.',
+      'Bei Bedarf: Vercel-Anmeldung aus (Deployment Protection).',
+    ],
+    ablauf: {
+      achten: [
+        'Dreht sich Claude zweimal am selben Fehler: hingehen, nicht weiter probieren lassen.',
+        'Scheitern Push oder Vorschau um 15:10: weiter mit der Adresse auf dem Mac, Link im Puffer ab 16:25.',
+      ],
+    },
+    ueberleitung: 'Bevor jemand testet: Karte E2.',
+  },
+
+  'schritt-karte': {
+    live: [
+      'Timer 10 min: Annahme, Aufgabe, Schwelle, „Wir entscheiden vorher“.',
+      'Probe: Aufgabe laut lesen – kein Wort von den Knöpfen.',
+      'Karte heute, auch wenn die Tests freiwillig sind.',
+    ],
+    uebung: { dauer: '10 min', form: 'allein, Feld 5 auf Miro' },
+    ueberleitung: 'Und jetzt der eine Test heute: der Trockenlauf.',
+  },
+
+  'schritt-trockenlauf': {
+    live: [
+      'Timer 10 min, drei Runden à gut drei Minuten nach Tabelle.',
+      'Wem er gehört: teilt, liest vor, klickt nur Angesagtes.',
+      'Dritte Person notiert in Zeile 0 des fremden Frames.',
+      'Kursregel – keine Kritik: kein Feedback, nächste Runde.',
+    ],
+    uebung: { dauer: '10 min', form: 'zu dritt in Teams, drei Runden; keine Kritik' },
     kern: [
       {
         text: '„Test it internally to make sure the flow works.“ Der Trockenlauf ist heute der Test des Prototyps; für die Schwelle von E2 zählt er nicht (Testpersonen mit dem Pain, freiwillig bis Tag 5).',
@@ -224,7 +293,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       },
       {
         text: 'Online-Form des Trockenlaufs (Bildschirm teilen, die Testperson sagt an, wem der Prototyp gehört, klickt) und „keine Kritik“ sind Kursregeln: Die Testperson erfüllt eine Aufgabe, beurteilt wird nichts.',
-        quelle: 'Kurs: prototyp-spike.astro, Folie vorgehen-test (Handout)',
+        quelle: 'Kurs: prototyp-spike.astro, Folie schritt-trockenlauf (Handout)',
       },
     ],
     ueberleitung: 'Zum Schluss noch eine Frage an eure Tests.',
