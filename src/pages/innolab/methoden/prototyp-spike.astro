@@ -242,7 +242,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       <li data-schritt><strong>Claude nennt zuerst die Bildschirme.</strong> Stimmt die Liste mit euren Blättern: „Ja, los.“</li>
     </ol>
     <p class="beispiel-box">Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen.</p>
-    <p class="wo-fertig"><span><strong>Wo:</strong> Claude Code, in eurem Repo</span><span><strong>Fertig, wenn:</strong> Claude eure Bildschirme samt Höhepunkt richtig aufzählt</span> <Timer minuten={40} /> <span class="wo-fertig-hinweis">läuft bis Schritt 4 zu Ende ist</span></p>
+    <p class="wo-fertig"><span><strong>Wo:</strong> Claude Code, in eurem Repo</span><span><strong>Fertig, wenn:</strong> Claude eure Bildschirme samt Höhepunkt richtig aufzählt</span> <Timer minuten={40} gruppe="spike-bauen" /> <span class="wo-fertig-hinweis">läuft auf der nächsten Folie weiter</span></p>
     <div class="nur-handout">
       <p><strong>Öffnen:</strong> dasselbe Fenster wie um 10:50 – VS Code → File → Open Recent → euer Repo → Terminal → New Terminal → <code>claude</code>. Oben in der Mitte von VS Code steht der Name eures Produkts. Eine Datei öffnet oder schreibt ihr nicht; VS Code ist nur der Rahmen um das Claude-Terminal. <strong>Opus:</strong> <code>/model opus</code> eintippen, Enter. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> eintippen und das vorgeschlagene Standardmodell wählen. <strong>Bilder:</strong> auf Miro so weit hineinzoomen, dass ihr die Stickys lesen könnt; am Mac <code>cmd</code> + <code>ctrl</code> + <code>shift</code> + <code>4</code>, Bereich aufziehen, im Claude-Terminal <code>ctrl</code> + <code>V</code> (wirklich <code>ctrl</code>, nicht <code>cmd</code>) – es erscheint <code>[Image #1]</code>. Von der Story Map nur Backbone und Slice 1. Die Skizzen-Fotos zusätzlich direkt hineinziehen: Im Screenshot des Frames sind sie zu klein. <strong>Den Branch legt Claude Code an;</strong> ihr müsst nicht wissen, wie. Fragt Claude, ob es etwas ausführen darf, was zum Prompt passt: Ja.</p>
     </div>
@@ -258,7 +258,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       <li data-schritt><strong>Bei null:</strong> aufhören. Drei Kriterien ankreuzen, Fehlendes in Feld 3.</li>
     </ol>
     <p class="beispiel-box"><strong>Kaffeebar:</strong> „Der Knopf ‚Weiter‘ auf dem Bildschirm Zug führt nicht zu ‚Fertig 7:31‘ – bitte so ändern, sonst nichts.“</p>
-    <p class="wo-fertig"><span><strong>Wo:</strong> Browser und Claude Code; Link und Kreuze in Feld „4 · Prototyp“</span><span><strong>Fertig, wenn:</strong> ihr bis zum Höhepunkt kommt – oder der Timer bei null steht</span> <span class="wo-fertig-hinweis">Timer läuft weiter</span></p>
+    <p class="wo-fertig"><span><strong>Wo:</strong> Browser und Claude Code; Link und Kreuze in Feld „4 · Prototyp“</span><span><strong>Fertig, wenn:</strong> ihr bis zum Höhepunkt kommt – oder der Timer bei null steht</span> <Timer minuten={40} gruppe="spike-bauen" /> <span class="wo-fertig-hinweis">Rest der 40 min · bei 5:00: Spike sichern</span></p>
     <div class="nur-handout">
       <p><strong>Ansehen:</strong> Claude nennt eine Adresse wie <code>http://localhost:3000/spike</code>; <code>cmd</code> + Klick öffnet sie. Schmal wie ein Handy: Fenster zusammenschieben oder die Geräte-Ansicht in Chrome. <strong>Nachbessern:</strong> Sagt, was ihr seht und was ihr erwartet, mit den Wörtern von euren Blättern. Mehr Beispiele: „Auf dem Bildschirm Getränk fehlt der Knopf ‚Weiter‘ aus Skizze 1 – bitte ergänzen, sonst nichts ändern.“ · „Am Handy ragt der Satz am Höhepunkt über den Rand, siehe Bild – bitte beheben.“ · „Der Bildschirm Abholnummer fehlt. Bau ihn wie auf Skizze 4.“ Ein Bildschirmfoto dazu hilft. Nicht verschönern lassen: Farben und Schrift sind für den Test egal. Dreht sich Claude zweimal am selben Fehler im Kreis: Markus rufen, nicht weiter probieren.</p>
       <p><strong>Sichern, fünf Minuten vor Schluss:</strong> Prompt „Spike sichern“ unten. Den Link tragt ihr in Feld 4 ein und öffnet ihn am Handy. Verlangt das Handy eine Anmeldung bei Vercel: auf vercel.com euer Projekt → Settings → Deployment Protection → Vercel Authentication aus → Save (wie an Coding-Tag 3). Ohne das können Testpersonen den Link nicht öffnen. Für den Trockenlauf reicht die Adresse auf eurem Mac. <strong>Stoppen:</strong> Bei null beginnt ihr keine Änderung mehr. In Feld 4 kreuzt ihr an, welche der drei Abnahmekriterien erfüllt sind; was fehlt, steht in Feld 3 bei „Bei null fehlt noch“. Weiter geht es im Puffer ab 16:25. Der Spike wird nicht in <code>main</code> gemergt; an Tag 5 schreibt ihr aus dem, was ihr gelernt habt, Issues.</p>
@@ -305,7 +305,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
   </Folie>
 
   <div class="nur-handout">
-  <p>Claude Code mit Opus: <code>/model opus</code>. Unter den Prompt fügt ihr eure Bilder ein.</p>
+  <p>Claude Code mit Opus: <code>/model opus</code>. Fügt eure Bilder unter dem Prompt ein (<code>ctrl</code> + <code>V</code>). Schickt den Prompt erst, wenn die Bilder darunter eingefügt sind.</p>
   <Prompt label="Spike · Claude Code">Leg einen neuen Branch spike/[vorname] an und arbeite nur dort. Bau einen klickbaren Wegwerf-Prototyp für genau den Ablauf meiner Usage Story, Stationen 2 bis 6.
 
 Unter dieser Nachricht stehen Bilder aus Miro: meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien mit Zeitbox und Fotos meiner Papier-Skizzen, ein Blatt je Bildschirm. Die Pfeile auf den Skizzen zeigen, wohin ein Knopf führt; das Blatt mit dem Stern ist der Höhepunkt.
@@ -320,9 +320,8 @@ Beim Bauen:
 - Oben auf jedem Bildschirm steht „Prototyp – nicht echt“.
 - Der Prototyp liegt unter der Adresse /spike; die bestehende App änderst du nicht.
 
-Starte die Seite lokal und gib mir die Adresse. Ich habe 40 Minuten. main, Issues und Backlog fasst du nicht an; du mergst nichts.
-[Bilder einfügen]</Prompt>
-  <Prompt label="Spike sichern · Claude Code">Committe den Stand auf dem Branch spike/[vorname] und push ihn zu GitHub. Merge nichts nach main und öffne keinen Pull Request. Gib mir dann die Vorschau-Adresse, die Vercel für diesen Branch baut, mit /spike am Ende. Prüf, ob sie ohne Vercel-Anmeldung aufgeht. Wenn nicht, sag mir in zwei Sätzen, wo ich das umstelle – stell selbst nichts um.</Prompt>
+Starte die Seite lokal und gib mir die Adresse. Ich habe 40 Minuten. main, Issues und Backlog fasst du nicht an; du mergst nichts.</Prompt>
+  <Prompt label="Spike sichern · Claude Code">Committe den Stand auf dem aktuellen Spike-Branch und push ihn zu GitHub. Merge nichts nach main und öffne keinen Pull Request. Gib mir dann die Vorschau-Adresse, die Vercel für diesen Branch baut, mit /spike am Ende. Prüf, ob sie ohne Vercel-Anmeldung aufgeht. Wenn nicht, sag mir in zwei Sätzen, wo ich das umstelle – stell selbst nichts um.</Prompt>
   <Callout type="warn" title="Der Spike bleibt im Branch">
     <p>Der Spike wird nicht in <code>main</code> gemergt. An Tag 5 schreibt ihr aus dem, was ihr gelernt habt, saubere Issues – und Claude baut sie richtig. Den Link fürs Handy baut Vercel aus dem Branch, sobald Claude ihn mit „Spike sichern“ zu GitHub gepusht hat.</p>
   </Callout>

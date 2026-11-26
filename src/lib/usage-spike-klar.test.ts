@@ -149,11 +149,13 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
   // Rezept (Consult „Spike als Schritt-Folien“, 26.11.): Übersicht und sieben Schritt-Folien, Timer 10/3/2/40/10/10,
   // jede mit „Wo“ und „Fertig, wenn“.
   it('vorgehen: Übersicht mit sechs Schritten, dann sieben Schritt-Folien mit Wo, Fertig-wenn und Timer 10/3/2/40/10/10', () => {
-    const timer = (f: string) => [...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]));
+    const timer = (f: string) => [...f.matchAll(/<Timer minuten=\{(\d+)\}(?: gruppe="([^"]+)")? \/>/g)].map((m) => (m[2] ? `${m[1]} ${m[2]}` : Number(m[1])));
     const schritte = ['schritt-papier', 'schritt-kriterien', 'schritt-zeitbox', 'schritt-bauen', 'schritt-ansehen', 'schritt-karte', 'schritt-trockenlauf'];
     expect(folie(PS, 'vorgehen')).toContain('<h2 id="vorgehen">So geht ihr vor (75 min)</h2>');
     expect(timer(folie(PS, 'vorgehen'))).toStrictEqual([]);
-    expect(schritte.flatMap((id) => timer(folie(PS, id)))).toStrictEqual([10, 3, 2, 40, 10, 10]);
+    // Schritt 4 erstreckt sich über zwei Folien: eine Uhr (gruppe), auf beiden sichtbar – zusammen 10 + 3 + 2 + 40 + 10 + 10.
+    expect(schritte.flatMap((id) => timer(folie(PS, id)))).toStrictEqual([10, 3, 2, '40 spike-bauen', '40 spike-bauen', 10, 10]);
+    expect(beamer(folie(PS, 'schritt-ansehen'))).toContain('<span class="wo-fertig-hinweis">Rest der 40 min · bei 5:00: Spike sichern</span>');
     for (const id of schritte) {
       const b = beamer(folie(PS, id));
       expect(b, id).toMatch(/<p class="wo-fertig"><span><strong>Wo:<\/strong> [^<]+/);
@@ -190,7 +192,9 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect(s).toContain('Unter dieser Nachricht stehen Bilder aus Miro: meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien mit Zeitbox und Fotos meiner Papier-Skizzen, ein Blatt je Bildschirm.');
     expect(s).toContain('Bevor du baust: Zähl mir in höchstens sechs Zeilen auf, welche Bildschirme du baust');
     expect(s).toContain('- Der Prototyp liegt unter der Adresse /spike; die bestehende App änderst du nicht.');
-    expect(s).toContain('<Prompt label="Spike sichern · Claude Code">Committe den Stand auf dem Branch spike/[vorname] und push ihn zu GitHub. Merge nichts nach main und öffne keinen Pull Request. Gib mir dann die Vorschau-Adresse, die Vercel für diesen Branch baut, mit /spike am Ende.');
+    expect(s).not.toContain('[Bilder einfügen]');
+    expect(s).toContain('Schickt den Prompt erst, wenn die Bilder darunter eingefügt sind.');
+    expect(s).toContain('<Prompt label="Spike sichern · Claude Code">Committe den Stand auf dem aktuellen Spike-Branch und push ihn zu GitHub. Merge nichts nach main und öffne keinen Pull Request. Gib mir dann die Vorschau-Adresse, die Vercel für diesen Branch baut, mit /spike am Ende.');
     expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(s).toContain('<Prompt label="Miro · T4 · 5 · Prototyp · Produkt n">');
   });

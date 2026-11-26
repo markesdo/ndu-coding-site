@@ -157,7 +157,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Abnahmekriterien: drei Tipps, läuft am Handy, „Prototyp – nicht echt“.',
       'Nicht drin: Login, Zahlung, Datenbank.',
     ],
-    ueberleitung: 'Fünf Tests später: was dabei herauskommt.',
+    ueberleitung: 'Angenommen, die Kaffeebar testet mit fünf Menschen: Das käme dabei heraus.',
   },
 
   'beispiel-befunde': {
@@ -235,7 +235,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
 
   'schritt-bauen': {
     live: [
-      'Timer 40 min starten; läuft über die nächste Folie weiter.',
+      'Timer 40 min starten; dieselbe Uhr steht auf der nächsten Folie.',
       'Fenster von 10:50, dann /model opus; kein Opus: /model, Standard.',
       'Bilder mit ctrl + V: Usage Story, Slice 1, Kriterien, Skizzen.',
       'Claude zählt erst die Bildschirme auf – dann „Ja, los.“',
