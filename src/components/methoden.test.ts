@@ -611,7 +611,7 @@ describe('methoden', () => {
     expect(minuten(4, 'story-map')).toBe(METHODEN.find((x) => x.slug === 'story-map')!.dauer);
     expect(minuten(4, 'story-map')).toBe(75);
     // Scrum: Agil an Tag 4 (Lego4Scrum seit 25.11.2026 stillgelegt, NDU-72), Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
-    expect(minuten(4, 'scrum')).toBe(30);
+    expect(minuten(4, 'scrum')).toBe(40);
     expect(bloecke(4).some((x) => x.href.includes('#lego'))).toBe(false);
     expect(bloecke(5).find((x) => x.href === '/innolab/methoden/scrum#team')).toMatchObject({ von: 9 * 60 + 25, bis: 10 * 60 + 5 });
     expect(minuten(4, 'scrum') + minuten(5, 'scrum')).toBe(METHODEN.find((x) => x.slug === 'scrum')!.dauer);

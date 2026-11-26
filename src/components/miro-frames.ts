@@ -41,6 +41,12 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 0 · Annahmen der Idee': '3458764687894872786',
   'T4 · 1 · Story Map': '3458764687894872787',
   'T4 · 2 · Teamaufstellung & DoD': '3458764687968670113',
+  // Übung „Kaffeebar auf der Scrum-Karte“ (seit 26.11.2026): ein Frame je Person; die Lösung ist auf dem Board bis zur
+  // Auflösung versteckt und wird nur von der Folie „Am Beispiel“ verlinkt, nicht von der Übung.
+  'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 1': '3458764691686327549',
+  'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 2': '3458764691686327550',
+  'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 3': '3458764691686327551',
+  'T4 · 3 · Scrum · Kaffeebar · Lösung': '3458764691686327552',
   'T5 · 1 · Backlog-Reihenfolge': '3458764687968819129',
   'T5 · 2 · Wertkurve & ERRC': '3458764687968975610',
 };

@@ -13,15 +13,16 @@ const QUELLE = readFileSync(new URL('../pages/innolab/methoden/scrum.astro', imp
 const LEGO_IDS = ['lego', 'vision', 'produkt-board', 'lego-sprint', 'review-1', 'nachbesprechung'];
 
 describe('Scrum-Seite ohne Lego4Scrum (NDU-72)', () => {
-  it('gerendert: kein Lego-Text, die Folge geht von „Euer Produkt in einem Satz“ zu „Ab hier: Tag 5“', async () => {
+  it('gerendert: kein Lego-Text, die Folge geht von „Planen ohne Schätzen“ zu „Ab hier: Tag 5“', async () => {
     const html = await (await AstroContainer.create()).renderToString(Scrum);
     for (const text of ['mit Lego', 'Lego4Scrum: warum Lego', 'Ein Sprint mit Lego', 'Lego4Scrum', 'Das erste Review', 'Was ihr mitnehmt']) {
       expect(html, text).not.toContain(text);
     }
     const ids = [...html.matchAll(/<h2[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
     for (const id of LEGO_IDS) expect(ids, id).not.toContain(id);
-    expect(ids.slice(ids.indexOf('produktziel'), ids.indexOf('produktziel') + 2)).toStrictEqual(['produktziel', 'team']);
-    expect(html.indexOf('Ab hier: Tag 5')).toBeGreaterThan(html.indexOf('Euer Produkt in einem Satz'));
+    expect(ids.indexOf('planen')).toBeGreaterThan(0);
+    expect(ids.slice(ids.indexOf('planen'), ids.indexOf('planen') + 2)).toStrictEqual(['planen', 'team']);
+    expect(html.indexOf('Ab hier: Tag 5')).toBeGreaterThan(html.indexOf('Planen ohne Schätzen</h2>'));
   }, 60_000);
 
   it('Inhaltsverzeichnis (gliederung) und Begleiter (folienAus) ohne die Lego-Anker', () => {
@@ -32,7 +33,7 @@ describe('Scrum-Seite ohne Lego4Scrum (NDU-72)', () => {
       expect(toc, id).not.toContain(id);
       expect(alleFolienIds, id).not.toContain(id);
     }
-    expect(toc.slice(toc.indexOf('produktziel'), toc.indexOf('produktziel') + 2)).toStrictEqual(['produktziel', 'team']);
+    expect(toc.slice(toc.indexOf('planen'), toc.indexOf('planen') + 2)).toStrictEqual(['planen', 'team']);
     expect(folien.map((f) => f.titel).join(' | ')).not.toMatch(/Lego/);
   });
 });

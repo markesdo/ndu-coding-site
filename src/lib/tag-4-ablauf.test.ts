@@ -27,8 +27,8 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
       '13:35–14:05 Usage Story /innolab/methoden/usage-story',
       '14:05–15:35 Prototyp-Spike /innolab/methoden/prototyp-spike',
       '15:35–15:45 Pause',
-      '15:45–16:15 Agil & Scrum /innolab/methoden/scrum#agil',
-      '16:15–17:15 Prototyp weiterbauen / Puffer',
+      '15:45–16:25 Agil & Scrum /innolab/methoden/scrum#foliensatz',
+      '16:25–17:15 Prototyp weiterbauen / Puffer',
       '17:15–17:30 Origin Story & Hausaufgabe #abschluss',
     ]);
   });
@@ -49,13 +49,13 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(loesungen.filter((k) => k.kinder?.length).map((k) => k.kinder!.map((t) => t.t))).toStrictEqual([['A5 → E1: Aufsteller an der Hallentür, ab 10 von 30']]);
   });
 
-  it('Story Map 75 min: Timer der Übung 47, davor 28; Agil & Scrum 30 min', () => {
+  it('Story Map 75 min: Timer der Übung 47, davor 28; Agil & Scrum 40 min', () => {
     const sm = folie('/innolab/methoden/story-map', 'vorgehen');
     const timer = [...sm.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
     expect(timer).toBe(47);
     expect(sm).toContain(`So geht ihr vor (${timer} min)</h2>`);
     expect(sm).toContain('Davor, zusammen 28 Minuten: Warm-up 8');
-    expect(seite('/innolab/methoden/scrum')).toContain('Agil &amp; Scrum: 18 Minuten Theorie, 8 Minuten Kaffeebar gemeinsam, 4 Minuten Produktziele.');
+    expect(seite('/innolab/methoden/scrum')).toContain('Agil &amp; Scrum: 27 Minuten Theorie aus dem Foliensatz (20 Folien), 2 Minuten „Wo wir abweichen“, 7 Minuten Kaffeebar auf der Scrum-Karte (4 sortieren, 3 Auflösung), 4 Minuten Gleis-1-Express und Übergang.');
   });
 
   it('keine alten Tag-4-Zeiten mehr (Pre-Mortem 9:20, Origin Story 17:10, Lego 15:50)', () => {
