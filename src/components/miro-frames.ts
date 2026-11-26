@@ -46,6 +46,11 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 0 · Concept Story · Produkt 2': '3458764691724622641',
   'T4 · 0 · Concept Story · Produkt 3': '3458764691724622642',
   'T4 · 1 · Story Map': '3458764687894872787',
+  // Warm-up „euer Morgen“ (seit 26.11.2026): ein Frame je Person, sechs Anleitungskarten und eine Arbeitsfläche; Farben gelb Task,
+  // grün Aktivität, blau Detail/Variante (anders als „T4 · 1 · Story Map“: dort Aktivitäten hellblau, Tasks hellgelb).
+  'T4 · 1 · Warm-up · euer Morgen · Produkt 1': '3458764691725906138',
+  'T4 · 1 · Warm-up · euer Morgen · Produkt 2': '3458764691725906820',
+  'T4 · 1 · Warm-up · euer Morgen · Produkt 3': '3458764691725906821',
   'T4 · 2 · Teamaufstellung & DoD': '3458764687968670113',
   // Übung „Kaffeebar auf der Scrum-Karte“ (seit 26.11.2026): ein Frame je Person; die Lösung ist auf dem Board bis zur
   // Auflösung versteckt und wird nur von der Folie „Am Beispiel“ verlinkt, nicht von der Übung.

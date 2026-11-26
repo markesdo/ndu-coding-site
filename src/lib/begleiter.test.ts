@@ -384,12 +384,21 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folien[beamer('/innolab/methoden/experiment', 'lernkarte').z.index].id).toBe('lernkarte');
     expect(folien[beamer('/innolab/tag-5', 'debrief').z.index].id).toBe('debrief');
   });
-  it('Seite ohne Notizen (story-map): weiter die Karte, die letzte Folie bleibt stehen', () => {
-    expect(NOTIZEN['/innolab/methoden/story-map']).toBeUndefined();
-    const { z, karte } = beamer('/innolab/methoden/story-map', '');
+  // Seit 26.11.2026 hat story-map Notizen (begleiter/story-map.ts); als Seite ohne Notizen dient jetzt backlog.
+  it('Seite ohne Notizen (backlog): weiter die Karte, die letzte Folie bleibt stehen', () => {
+    expect(NOTIZEN['/innolab/methoden/backlog']).toBeUndefined();
+    const { z, karte } = beamer('/innolab/methoden/backlog', '');
     expect(z.meldung).toBe('nicht-tag-1');
     expect(z.index).toBe(0);
-    expect(karte).toBe('/innolab/methoden/story-map');
+    expect(karte).toBe('/innolab/methoden/backlog');
+  });
+  it('Beamer auf story-map#zielebenen: diese Folie mit ihren Stichworten, keine Karte', () => {
+    const { z, karte } = beamer('/innolab/methoden/story-map', 'zielebenen');
+    expect(karte).toBeNull();
+    expect(z.meldung).toBe('ok');
+    const f = folien[z.index];
+    expect(`${f.pfad}#${f.id}`).toBe('/innolab/methoden/story-map#zielebenen');
+    expect(beamer('/innolab/methoden/story-map', 'begriffe').z.index).toBe(z.index + 1);
   });
   // Tag 3, 10:30–12:00: Ziel-Chance und How Might We – jede Folie hat Stichworte, der Beamer auf einer neuen Folie zeigt sie.
   it('Tag 3: jede Folie von ziel-chance und hmw hat eine Notiz mit mindestens einem live-Stichwort', () => {
