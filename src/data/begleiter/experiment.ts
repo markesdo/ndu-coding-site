@@ -189,6 +189,17 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     ],
   },
 
+  'claude-pro-jetzt': {
+    live: [
+      'Timer 10 min starten, sobald alle die Folie sehen.',
+      'Nach 5 min: Steht bei allen „Claude Pro“ im Startbild?',
+      'Falle: Erstattung statt Kündigung – beendet Pro sofort.',
+      'Wenn hinten: Vorgehen beginnen, Claude Code erst fürs Pre-Mortem.',
+    ],
+    uebung: { dauer: '10 min', form: 'alle zugleich, jede*r am eigenen Laptop' },
+    ueberleitung: 'Claude Code läuft – jetzt die Annahmen eurer Idee.',
+  },
+
   vorgehen: {
     live: [
       'Neu bei Schritt 4: Entscheidung vorab gehört auf jede Karte.',
