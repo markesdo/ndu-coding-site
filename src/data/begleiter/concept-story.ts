@@ -550,7 +550,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Zeit: 30 min, direkt nach der Theorie; Wozu vorlesen.',
+      'Zeit: 30 min Übung nach der Theorie; Wozu vorlesen.',
       'Timer 20 min: Stickies unter den sieben Stationen füllen, allein, mit IDs.',
       '1:1 ab Minute 5: einfache Lösung – was hat die Story mehr?',
       'Nach 20 min: Feld „Flach-Probe“ unten links füllen – Timer 5 min.',
@@ -558,9 +558,9 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     ],
     uebung: { dauer: '30 min (20 + 5 + 5)', form: 'allein auf Miro schreiben; Markus geht 1:1 von Person zu Person, keine Erzählrunde' },
     miro: {
-      frame: 'T4 · 0 · Concept Story · Kaffeebar',
+      frame: 'T4 · 0 · Concept Story · Produkt 1',
       schritte: [
-        'Jede*r arbeitet im eigenen Frame „T4 · 0 · Concept Story · Produkt n“; das Kaffeebar-Beispiel hängt daneben.',
+        'Frame wie hier für Produkt 1, ebenso Produkt 2 und 3 (MiroLinks auf der Folie). Jede*r arbeitet im eigenen Frame „T4 · 0 · Concept Story · Produkt n“; das Kaffeebar-Beispiel hängt daneben.',
         'Unter jeder Station („1 Exposition“ bis „7 Ende“) ein Sticky mit Leitfrage – durch die eigene Antwort mit IDs ersetzen; Station 6 als Gedanke in „…“.',
         'Flach-Probe als eine Zeile in das leere Sticky im Feld „Flach-Probe (Kursregel)“ unten links.',
       ],
@@ -569,7 +569,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       schritte: [
         'Schritt 1 (20 min, allein): die Stickies unter den sieben Stationen in „T4 · 0 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person.',
         'Schritt 2 (5 min, Kursregel – Flach-Probe): die einfache Lösung als eine Zeile ins Feld „Flach-Probe (Kursregel)“ unten links – Problem, Produkt, Ende.',
-        'Schritt 3 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map. docs/STORYS.md kommt um 10:50 (Übertrag von Miro).',
+        'Schritt 3 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map. docs/STORYS.md kommt bei Claude Code um 10:50 (erster Schritt, Übertrag von Miro).',
       ],
       achten: [
         'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',

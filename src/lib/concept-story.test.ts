@@ -51,7 +51,7 @@ describe('Story-Bogen (Entscheidung 66; seit 26.11. Theorie an Tag 4)', () => {
   it('mitten im Block eine Uhrprüfung: concept-story notiert die Ist-Zeit', () => {
     expect(NOTIZEN_CONCEPT_STORY['concept-story'].live[0]).toBe('Zeit: Ist-Zeit notieren; Sprechzeit ~2 min, mit der BOOM-Karte.');
   });
-  it('die sechs Folien ohne Geschichte haben jetzt eine, mit Seite; eigene Worte als Kursformulierung', () => {
+  it('Folien, die früher keine Geschichte hatten, haben jetzt eine, mit Seite; eigene Worte als Kursformulierung', () => {
     for (const id of ['hauptfigur', 'drei-storys', 'concept-story', 'woher', 'ein-satz']) {
       const g = NOTIZEN_CONCEPT_STORY[id]?.geschichte;
       expect(g?.quelle, id).toMatch(/S\. \d+/);
@@ -73,7 +73,7 @@ describe('Tag 4: Concept Story schreiben (NDU-66)', () => {
     expect(timer).toStrictEqual([20, 5, 5]);
     expect(f).toContain('<h2 id="vorgehen">So geht ihr vor (30 min)</h2>');
     expect([...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Sieben Stationen, allein:', 'Kursregel – Flach-Probe:', 'Festhalten:']);
-    expect(f).toContain('<code>docs/STORYS.md</code> kommt die Story erst um 10:50');
+    expect(f).toContain('<code>docs/STORYS.md</code> kommt die Story erst im Block um 10:50 (erster Schritt)');
     expect(seite).toContain('<ClaudePruefung slug="concept-story" />');
     expect(seite).toContain('<span class="eyebrow">Innolab · Tag 4 · Methode</span>');
     expect(NOTIZEN_CONCEPT_STORY.vorgehen?.uebung?.dauer).toBe('30 min (20 + 5 + 5)');
@@ -137,14 +137,17 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
 
   it('Übung auf Miro: Frames der Kaffeebar und je Produkt, docs/STORYS.md erst beim Übertrag', () => {
     const f = folie('vorgehen');
-    expect(f).toContain('<MiroFrame name="T4 · 0 · Concept Story · Kaffeebar" />');
+    // Die Übungsfolie zeigt prominent die eigenen Frames; das Kaffeebar-Beispiel hängt an #beispiel.
+    expect(f).not.toContain('<MiroFrame');
+    expect(f).toContain('<p class="gross">Miro, euer Frame: <MiroLink name="T4 · 0 · Concept Story · Produkt 1">');
     for (const n of [1, 2, 3]) expect(f).toContain(`<MiroLink name="T4 · 0 · Concept Story · Produkt ${n}">Produkt ${n}</MiroLink>`);
     expect(folie('beispiel')).toContain('<MiroFrame name="T4 · 0 · Concept Story · Kaffeebar" />');
     // Wortlaut wie auf dem Frame: Stationen „1 Exposition“ … „7 Ende“, Feld „Flach-Probe (Kursregel)“.
     expect(f).toContain('in die Stickies unter „1 Exposition“ bis „7 Ende“');
     expect(f).toContain('ins Feld „Flach-Probe“ unten links');
     expect(f).not.toContain('Vorlage in <code>docs/STORYS.md</code>');
-    expect(seite).toContain('Das Format für die Übertragung um 10:50');
-    expect(NOTIZEN_CONCEPT_STORY.vorgehen.miro?.frame).toBe('T4 · 0 · Concept Story · Kaffeebar');
+    expect(seite).toContain('Das Format für die Übertragung bei Claude Code um 10:50 (erster Schritt)');
+    expect(seite).toContain('Nehmt dann den Weg „Ohne Claude Code: Text in Claude einfügen“ und fügt den Text aus eurem Frame ein.');
+    expect(NOTIZEN_CONCEPT_STORY.vorgehen.miro?.frame).toBe('T4 · 0 · Concept Story · Produkt 1');
   });
 });
