@@ -287,7 +287,7 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
           else if (tun === 'ende') endeZeigen(folie);
           return tun !== 'seite';
         }
-        const tun = folieZurueck({ gezeigteSchritte: gezeigt.length, vorherigeFolie: i > 0, kopfDarueber: scrollY > 0, lage });
+        const tun = folieZurueck({ gezeigteSchritte: gezeigt.length, vorherigeFolie: i > 0, kopfDarueber: scrollY > 0, lage, verschoben: rand.top < oben - 4 });
         if (tun === 'schritt') gezeigt.at(-1)?.classList.remove('gezeigt');
         else if (tun === 'hierhin') springe(folie);
         else if (tun === 'folie') springe(folien[i - 1]);

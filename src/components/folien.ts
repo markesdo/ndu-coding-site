@@ -93,10 +93,12 @@ export function tasteSteuertFolien(z: {
 }
 const KEIN_TEXT = new Set(['checkbox', 'button', 'submit', 'reset', 'image', 'file', 'color', 'hidden']);
 
-/** Rückwärts verdeckt nur Schritte wieder; eine gezeigte Auflösung bleibt offen. Unter der Folie (lage 'unter'): zurück
- *  auf sie selbst – nicht auf die davor, sonst fehlte sie beim Zurückblättern. Im Seitenkopf ('vor') zählen ihre Schritte nicht. */
-export function zurueck(z: { gezeigteSchritte: number; vorherigeFolie: boolean; kopfDarueber?: boolean; lage?: Lage }): Zurueck {
-  if (z.lage === 'unter') return 'hierhin';
+/** Rückwärts verdeckt nur Schritte wieder; eine gezeigte Auflösung bleibt offen. Unter der Folie (lage 'unter') oder
+ *  mit ihrer Oberkante über der Kopfleiste (verschoben: etwa am Seitenende, wo die letzte Folie nur noch halb zu sehen ist):
+ *  zurück auf sie selbst – nicht auf die davor, sonst fehlte sie beim Zurückblättern. Im Seitenkopf ('vor') zählen ihre
+ *  Schritte nicht. */
+export function zurueck(z: { gezeigteSchritte: number; vorherigeFolie: boolean; kopfDarueber?: boolean; lage?: Lage; verschoben?: boolean }): Zurueck {
+  if (z.lage === 'unter' || (z.lage !== 'vor' && z.verschoben)) return 'hierhin';
   if (z.lage !== 'vor' && z.gezeigteSchritte > 0) return 'schritt';
   if (z.lage !== 'vor' && z.vorherigeFolie) return 'folie';
   return z.kopfDarueber ? 'anfang' : 'seite';

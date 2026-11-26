@@ -109,6 +109,12 @@ describe('zurueck (← im Beamer)', () => {
     expect(zurueck({ gezeigteSchritte: 2, vorherigeFolie: true, kopfDarueber: true, lage: 'unter' })).toBe('hierhin');
   });
 
+  // Am Seitenende von tag-4 ist „Ende Tag 4“ nur noch halb zu sehen (Oberkante −239 px): ← richtet sie erst wieder aus.
+  it('steht die Folie verschoben (Oberkante über der Kopfleiste), zurück auf sie selbst', () => {
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'auf', verschoben: true })).toBe('hierhin');
+    expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: true, kopfDarueber: true, lage: 'auf', verschoben: true })).toBe('hierhin');
+  });
+
   it('im Seitenkopf vor der ersten Folie zählen deren Schritte nicht: an den Seitenanfang', () => {
     expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: false, kopfDarueber: true, lage: 'vor' })).toBe('anfang');
   });
