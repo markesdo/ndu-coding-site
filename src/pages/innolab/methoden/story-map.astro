@@ -218,6 +218,27 @@ const ANNAHMEN_SLICE = `Lies docs/STORY-MAP.md und aus der Werkstatt meine Annah
   </Folie>
 
   <Folie>
+    <h2 id="sechs-schritte">Pattons sechs Schritte, bei uns</h2>
+    <p class="folie-satz">Die Übung gleich folgt Patton – bis auf Schritt 6.</p>
+    <table class="sechs">
+      <thead><tr><th>Patton</th><th>Bei uns</th></tr></thead>
+      <tbody>
+        <tr data-schritt><th>1. Frame the problem</th><td>Schritt 1: Rahmen – für wen, Outcome, Idee</td></tr>
+        <tr data-schritt><th>2. Map the big picture</th><td>Schritt 1: Tasks bis zum Ende, Aktivitäten darüber; die Jetzt-Map ist eure <a href="/innolab/methoden/journey-map">Experience Map</a></td></tr>
+        <tr data-schritt><th>3. Explore</th><td>Schritt 2 und 3: die vier Fragen, „Was ist, wenn …?“</td></tr>
+        <tr data-schritt><th>4. Slice out a release strategy</th><td>Schritt 4: links an Slice 1 der Outcome</td></tr>
+        <tr data-schritt><th>5. Slice out a learning strategy</th><td>Schritt 4, im selben Slice: „Wir lernen, ob …“</td></tr>
+        <tr data-schritt><th>6. Slice out a development strategy</th><td>Tag 5: <a href="/innolab/methoden/backlog#reihenfolge">Reihenfolge</a> und <a href="/innolab/methoden/schneiden">Schneiden</a></td></tr>
+      </tbody>
+    </table>
+    <div class="nur-handout">
+      <p>„I can boil down the last four chapters into just six steps“ – „the following six-step process works well for me“ ({PATTON}, Kap. 5, Six Simple Steps to Story Mapping). Zu 1: „Who is it for, and why are we building it?“ – das beantwortet euer Rahmen-Sticky. Zu 2: „Focus on breadth, not depth. Go a mile wide and an inch deep (or a kilometer wide and a centimeter deep, for my friends in the rest of the world).“ Und: „If you don’t have a clear solution in mind, or even if you think you do, try mapping the world as it is today, including pains and joys your users have.“ Diese Jetzt-Map habt ihr an Tag 2 gebaut, die <a href="/innolab/methoden/journey-map">Experience Map</a>; heute entsteht die Später-Map. Zu 3: „Go deep and talk about other types of users and people, how else they might do things, and the kinds of things that can (and likely will) go wrong“ – die zweite Gruppe über dem Backbone, die vier Fragen und „Was ist, wenn …?“.</p>
+      <p>Zu 4: „Remember: there’s always too much to build. Focus on what you’re trying to achieve for your business, and on the people your product will serve.“ Zu 5: Auch eine minimale Lösung ist „a hypothesis until you prove otherwise. Use the map and discussion to help you find your biggest risks.“ Patton schneidet dafür eigene, noch kleinere Slices: „Slice the map into even smaller minimum viable product experiments that you can place in front of a subset of your users to learn what’s really valuable to them.“ Im Kurs legt ihr Schritt 4 und 5 in Slice 1 zusammen – das ist eine Vereinfachung des Kurses, nicht Pattons Vorgehen: Ihr habt eine Übung und baut einen Slice. Dass beides an einen Slice passt, zeigt Eric von Liquidnet, der links an jeden Slice „a few words about what they want to learn in this release“ schreibt (Kap. 3, Build to Learn; Folie „Der erste Slice“).</p>
+      <p>Zu 6: „Now slice your minimum viable solution into the parts you’d like to build earlier and later. Focus on building things early that help you learn to spot technical issues and development risks sooner“ (Kap. 5). Das tut ihr an Tag 5: Slice 1 wird zu Issues, geordnet nach Outcome und Risiko (<a href="/innolab/methoden/backlog#reihenfolge">Backlog, Reihenfolge</a>), und was zu groß ist, wird geteilt (<a href="/innolab/methoden/schneiden">Schneiden statt Schätzen</a>). Schritt 5 und 6 der Übung – Slice 1 durchgehen und festhalten – sind bei Patton keine eigenen Schritte; mit „und dann“ prüft ihr, ob euer Slice den Outcome erreicht.</p>
+    </div>
+  </Folie>
+
+  <Folie>
     <h2 id="vorgehen">So geht ihr vor (42 min)</h2>
     <p class="folie-satz">Erzählen, erkunden, fragen lassen, schneiden, durchgehen.</p>
     <MiroFrame name="T4 · 1 · Story Map" />
@@ -280,6 +301,10 @@ Lernen: Wir lernen, ob [...] (A…)
 
 <style>
   .map th, .map td { font-size: .85rem; vertical-align: top; }
+  .sechs th, .sechs td { vertical-align: top; }
+  /* Folie „sechs-schritte“: sechs Zeilen passen bei 1280 × 720 nur einzeilig in Pattons Spalte und mit knapperen Zeilen. */
+  :global(html[data-beamer]) .sechs tbody th { white-space: nowrap; }
+  :global(html[data-beamer]) .sechs th, :global(html[data-beamer]) .sechs td { padding-top: .35rem; padding-bottom: .35rem; }
   :global(html[data-beamer]) .map th, :global(html[data-beamer]) .map td { font-size: .9rem; padding-top: .3rem; padding-bottom: .3rem; }
   /* Folie „varianten“: Satz, zwei Schritte und das breite Bild passen bei 1280 × 720 nur mit etwas kleinerem Bild. */
   :global(html[data-beamer] .folie:has(> h2#varianten) .buch-abbildung img) { max-height: calc(100vh - 23.75rem); }
