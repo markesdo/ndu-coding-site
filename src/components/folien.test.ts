@@ -129,6 +129,12 @@ describe('zurueck (← im Beamer)', () => {
     expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: true, kopfDarueber: true, lage: 'auf', verschoben: true })).toBe('hierhin');
   });
 
+  // Review 3 #447: Stand Folie 1 ein paar px unter der Kopfleiste ('vor'), ignorierte ← ihre gezeigten Schritte.
+  it('beginnt Folie 1 schon im Bildschirm, verdeckt ← erst ihre gezeigten Schritte', () => {
+    expect(zurueck({ gezeigteSchritte: 2, vorherigeFolie: false, kopfDarueber: true, lage: 'vor', folieImBild: true })).toBe('schritt');
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, kopfDarueber: true, lage: 'vor', folieImBild: true })).toBe('anfang');
+  });
+
   it('im Seitenkopf vor der ersten Folie zählen deren Schritte nicht: an den Seitenanfang', () => {
     expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: false, kopfDarueber: true, lage: 'vor' })).toBe('anfang');
   });
