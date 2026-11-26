@@ -1,12 +1,84 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, seit 26.11. 11:00–11:30, davor 10:50–11:00 Claude Pro gemeinsam; bis 12.11. für Tag 3 geplant) – vorerst nur die Folien aus Thomke und die,
-// die sich dafür geändert haben. Der Begleiter zeigt bisher nur Tag 1; die Notizen stehen bereit, der Test prüft die ids.
-// Thomke: gedruckte Seiten aus quellen/thomke/text.txt (=====PAGE n=====).
+// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 10:50–11:00 Claude Pro gemeinsam, 11:00–11:30
+// Experiment-Karte mit 12 min Theorie und Beispiel, 18 min Übung). Jede Folie hat eine Notiz (begleiter-tag-4.test.ts).
+// Die Origin Story steht seit 26.11. im Abschluss von Tag 4 (tag-4#abschluss), nicht mehr hier.
+// Thomke: gedruckte Seiten aus quellen/thomke/text.txt (=====PAGE n=====); Torres: PDF-Seiten wie in
+// quellen/torres/text.txt; Bland: gedruckte Seiten.
 const THOMKE = 'Stefan H. Thomke, The Scientific Mindset';
 const BLAND = 'David J. Bland & Alexander Osterwalder, Testing Business Ideas';
+const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 
 export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
+  'annahmen-der-idee': {
+    live: [
+      'Zeit: 12 min Theorie und Beispiel bis zur Übung.',
+      '„Ideen zu testen dauert Wochen – Annahmen gehen in Tagen.“',
+      'Abbildung: Torres’ kleine Story Map, drei Beteiligte, Schritte über die Zeit.',
+      'Fünf Arten: wünschenswert, bedienbar, machbar, wirtschaftlich, ethisch.',
+    ],
+    verstaendnis: {
+      frage: 'Woher kommen die Annahmen, bevor ihr sie mappt?',
+      antwort: 'Aus den Schritten, als gäbe es die Lösung schon: Wo ihr annehmt, dass jemand etwas tut, steckt eine Annahme. Dazu die Pre-Mortem-Frage und die wirtschaftliche Annahme aus dem Geschäftsmodell.',
+      falsch: '„Aus der Value Map“ – dort stehen erste Kandidaten („?“), aber die Schritte decken die meisten auf.',
+    },
+    kern: [
+      {
+        text: '„Start by assuming the solution already exists.“ – „From a simple 5-step story map, we generated 20 assumptions.“',
+        quelle: `${TORRES}, S. 119, 124`,
+      },
+      {
+        text: 'Viability assumptions: „Should we build it?“ – eine der Arten neben Wünschbarkeit, Bedienbarkeit, Machbarkeit und Ethik.',
+        quelle: `${TORRES}, S. 118`,
+      },
+      {
+        text: 'Formulierung: „always phrase your assumptions such that you need them to be true: ‚Customers will remember their passwords.‘“',
+        quelle: `${TORRES}, S. 131`,
+      },
+    ],
+    ueberleitung: 'Torres macht das für drei Ideen – wir für eine. Warum?',
+  },
+
+  spitzenreiter: {
+    live: [
+      'Torres testet alle drei Ideen parallel – wir den Spitzenreiter.',
+      'Kursregel: Abweichung von Torres, weil drei Personen, eine Idee für heute.',
+      'Gemeinsame Annahmen zuerst: Scheitern sie, fallen alle drei.',
+      'Unter die Karte: je eine Zeile für die anderen Ideen.',
+    ],
+    kern: [
+      {
+        text: '„You’ll want to story map, generate assumptions, and assumption map for each of your three ideas.“ – „If we test only one idea at a time, confirmation bias will rear its ugly head.“ – „we are looking for a clear front runner.“',
+        quelle: `${TORRES}, S. 130, 134`,
+      },
+      {
+        text: '„It’s common for ideas to share assumptions. It’s one of the reasons why assumption testing is faster than idea testing.“',
+        quelle: `${TORRES}, S. 136`,
+      },
+    ],
+    ueberleitung: 'Mit welcher Annahme fangt ihr an? Das zeigt die Map.',
+  },
+
+  map: {
+    live: [
+      'Die Map kennt ihr von Tag 1 – jetzt für die Idee.',
+      'Höchstens zehn Minuten: relativ zueinander, nicht genau.',
+      'Oben rechts: zwei, drei Annahmen, auf die ihr alles setzt.',
+      'Reihenfolge nach Bland: erst wünschenswert, dann machbar, dann wirtschaftlich.',
+    ],
+    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Annahmen der Idee auf die Map: Beleg nach rechts, Wichtigkeit nach oben.'] },
+    kern: [
+      {
+        text: '„this exercise does not need to be precise. You are mapping assumptions relative to each other.“ Getestet werden die Annahmen oben rechts – „the assumptions that Bland calls your ‚leap of faith‘ assumptions“.',
+        quelle: `${TORRES}, S. 130`,
+      },
+      {
+        text: 'Wichtig heißt: Ist die Hypothese falsch, „your business idea will fail and all other hypotheses become irrelevant.“',
+        quelle: `${BLAND}, S. 38`,
+      },
+    ],
+    ueberleitung: 'Bevor ihr eine Karte schreibt: ein Fall, in dem eine Studie fast eine gute Idee getötet hätte.',
+  },
   'sagen-tun': {
     live: [
       'Nur die drei Fakten vorlesen, die Studie nicht bewerten.',
@@ -81,6 +153,30 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Thomke begründet den Unterschied nicht mit der Zahl, sondern damit, dass die Studie fragte und der Knopf beobachtete (S. 72).',
       },
     ],
+  },
+
+  karte: {
+    live: [
+      'Test Card zeigen: vier Zeilen von oben nach unten.',
+      '„Wir messen eine Handlung, keine Meinung.“',
+      'Schwelle als x von y: „16 of the 20 parents“, nicht 70 %.',
+      'Falle: Schwelle erst nach dem Test festlegen.',
+    ],
+    verstaendnis: {
+      frage: 'Warum „mindestens 3 von 10“ statt „30 %“?',
+      antwort: 'Weil die Karte so festlegt, mit wie vielen Menschen ihr testet und wie viele das Verhalten zeigen müssen (Torres S. 136). Ein Prozentsatz verschweigt die Zahl der Getesteten.',
+    },
+    kern: [
+      {
+        text: 'Vier Teile: Hypothese, Test, Messgröße, Kriterium; Beispiel auf der Karte: „16 of the 20 parents“.',
+        quelle: `${BLAND}, S. 44–46`,
+      },
+      {
+        text: '„Instead of saying, ‚Some people choose sports,‘ we want to say, ‚At least 3 out of 10 people choose sports.‘ We want to define both how many people we’ll test with and how many people need to exhibit the behavior“.',
+        quelle: `${TORRES}, S. 136`,
+      },
+    ],
+    ueberleitung: 'Und was tut ihr, wenn die Zahl kommt? Das legt ihr auch vorher fest.',
   },
 
   'vorher-entscheiden': {
@@ -169,6 +265,54 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     ],
   },
 
+  'welcher-test': {
+    live: [
+      'Blands vier Faustregeln, eine pro Klick.',
+      '„Ein Test simuliert einen Moment – und ihr schaut, was Menschen tun.“',
+      'Tabelle im Handout: Landing Page, Klick-Prototyp, Concierge, Wizard of Oz, Mock Sale.',
+      'Fragen: Welcher davon passt zu eurer obersten Annahme?',
+    ],
+    kern: [
+      {
+        text: '„Go cheap and fast at the beginning.“ – „Increase the strength of evidence with multiple experiments for the same hypothesis.“ – „Always pick the experiment that produces the strongest evidence given your constraints.“ – „Reduce uncertainty as much as you can before you build anything.“',
+        quelle: `${BLAND}, S. 93`,
+      },
+      {
+        text: '„A strong assumption test simulates an experience, giving your participant the opportunity to behave either in accordance with your assumption or not.“',
+        quelle: `${TORRES}, S. 135`,
+      },
+      {
+        text: '„With assumption testing, most of our learning comes from failed tests.“',
+        quelle: `${TORRES}, S. 138`,
+      },
+    ],
+    ueberleitung: 'Alles zusammen an der Kaffeebar: Schritte, Annahmen, Map.',
+  },
+
+  beispiel: {
+    live: [
+      'Fünf Schritte, als gäbe es „Im Gehen bestellen“ schon.',
+      'A5 ohne Beleg – I2-3 spricht sogar dagegen.',
+      'Oben rechts A5, A7, A4: zuerst A5, wünschenswert vor allem.',
+      'A8 teilen alle drei Ideen – kommt trotzdem nach A5.',
+    ],
+    verstaendnis: {
+      frage: 'Warum testet die Kaffeebar A5 vor A8, obwohl gemeinsame Annahmen zuerst kommen sollen?',
+      antwort: 'A8 ist teils belegt (I2-2, I4-2, I2-5) und steht darum oben in der Mitte; A5 hat gar keinen Beleg. Eine bewusste Ausnahme von der Regel.',
+    },
+    kern: [
+      {
+        text: 'Reihenfolge der Tests: zuerst Wünschbarkeit, dann Machbarkeit, dann Wirtschaftlichkeit – bestellt niemand, sind Datenschutz und Wirtschaftlichkeit egal.',
+        quelle: `${BLAND}, S. 34–35`,
+      },
+      {
+        text: 'Annahmen und Belege der Kaffeebar (A2–A8, I2-3 u. a.) stehen im Handout der Folie.',
+        quelle: 'experiment.astro, Folie beispiel (Handout)',
+      },
+    ],
+    ueberleitung: 'Für A5 die Karte E1.',
+  },
+
   'karte-e1': {
     live: [
       'Neue Zeile zeigen: „Wir entscheiden vorher“, drei Bänder mit Zahlen.',
@@ -212,5 +356,45 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `Kurs: methoden.ts, Prüfliste „experiment“; ${THOMKE}, S. 86`,
       },
     ],
+    ueberleitung: 'Und wenn E1 gelaufen ist? Dann schreibt ihr die Lernkarte.',
+  },
+
+  lernkarte: {
+    live: [
+      'Learning Card zeigen: geglaubt, beobachtet, gelernt, darum.',
+      'Erst der Beleg (gestützt, widerlegt, unklar, neu), dann die Handlung.',
+      'Verlässlichkeit dazuschreiben: schwach, mittel oder stark – und warum.',
+      'Wird an Tag 5 im Debrief vorgelesen.',
+    ],
+    verstaendnis: {
+      frage: 'E1 ist widerlegt, ihr schwenkt auf die Wartezeit-Anzeige um. Was müsst ihr mit euren alten Belegen tun?',
+      antwort: 'Prüfen, was weiter gilt und was neu zu testen ist: Ein Pivot macht frühere Belege oft irrelevant (Bland S. 61) – darum die Zeile „gilt weiter / neu zu testen“.',
+    },
+    kern: [
+      {
+        text: 'Entscheiden in zwei Schritten: Befund – „Evidence Supports Hypothesis“, „Evidence Refutes Hypothesis“, „Unclear Insight“ oder „New Insight“ (S. 63) –, dann Handlung: weitermachen, umschwenken oder verwerfen (S. 61).',
+        quelle: `${BLAND}, S. 61, 63`,
+      },
+      {
+        text: '„A pivot often means that some of your earlier evidence may be irrelevant to your new trajectory. It usually requires retesting elements of your business model that you’ve already tested.“',
+        quelle: `${BLAND}, S. 61`,
+      },
+    ],
+    ueberleitung: 'Zum Schluss: Wo steht euer Aufsteller?',
+  },
+
+  uebertrag: {
+    live: [
+      'Folien-Satz vorlesen: Wo kommt eure Zielgruppe ohnehin vorbei?',
+      'Kein echter Ort: E1 als simulierter Moment, zehn Menschen, Bild am Handy.',
+      'Schwelle für diese Form vorher neu schreiben, z. B. 4 von 10.',
+    ],
+    kern: [
+      {
+        text: '„A strong assumption test simulates an experience“; billige Formen für eine Woche sind u. a. ein simulierter Moment mit einem Mock-up.',
+        quelle: `${TORRES}, S. 135, 142–144`,
+      },
+    ],
+    ueberleitung: 'Weiter mit der Story Map: der Plan, nach Outcome geschnitten.',
   },
 };
