@@ -21,8 +21,10 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
       '09:40–10:20 Story-Bogen + Concept Story /innolab/methoden/concept-story#story-bogen',
       '10:20–10:30 Pause',
       '10:30–10:50 Geschäftsmodell-Karten /innolab/methoden/geschaeftsmodell',
-      '10:50–11:20 Experiment-Karte /innolab/methoden/experiment',
-      '11:20–12:35 Story Map /innolab/methoden/story-map',
+      // Seit 26.11.2026 (Markus, Option a): Claude Pro gemeinsam als eigener Block, Story Map dafür 65 statt 75 min.
+      '10:50–11:00 Claude Pro und Claude Code, gemeinsam /innolab/methoden/experiment#claude-pro-jetzt',
+      '11:00–11:30 Experiment-Karte /innolab/methoden/experiment#annahmen-der-idee',
+      '11:30–12:35 Story Map /innolab/methoden/story-map',
       '12:35–13:35 Mittagspause',
       '13:35–14:05 Usage Story /innolab/methoden/usage-story',
       '14:05–15:35 Prototyp-Spike /innolab/methoden/prototyp-spike',
@@ -49,12 +51,16 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(loesungen.filter((k) => k.kinder?.length).map((k) => k.kinder!.map((t) => t.t))).toStrictEqual([['A5 → E1: Aufsteller an der Hallentür, ab 10 von 30']]);
   });
 
-  it('Story Map 75 min: Timer der Übung 47, davor 28; Agil & Scrum 40 min', () => {
+  it('Story Map 65 min (seit 26.11.): Timer der Übung 42, davor 23 (6 + 8 + 9); Agil & Scrum 40 min', () => {
     const sm = folie('/innolab/methoden/story-map', 'vorgehen');
     const timer = [...sm.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
-    expect(timer).toBe(47);
+    expect(timer).toBe(42);
     expect(sm).toContain(`So geht ihr vor (${timer} min)</h2>`);
-    expect(sm).toContain('Davor, zusammen 28 Minuten: Warm-up 8');
+    const davor = sm.match(/Davor, zusammen (\d+) Minuten: Warm-up (\d+) .*?Theorie (\d+), Kaffeebar gemeinsam (\d+)\./);
+    expect(davor?.slice(1).map(Number)).toStrictEqual([23, 6, 8, 9]);
+    // Block im Ablauf = Übung + davor.
+    const block = bloeckeAus(seite('/innolab/tag-4')).find((x) => x.titel === 'Story Map')!;
+    expect(block.bis - block.von).toBe(timer + 23);
     expect(seite('/innolab/methoden/scrum')).toContain('Agil &amp; Scrum: 27 Minuten Theorie aus dem Foliensatz (20 Folien), 2 Minuten „Wo wir abweichen“, 7 Minuten Kaffeebar auf der Scrum-Karte (4 sortieren, 3 Auflösung), 4 Minuten Gleis-1-Express und Übergang.');
   });
 
@@ -70,8 +76,8 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     const gm = folie('/innolab/methoden/geschaeftsmodell', 'vorgehen');
     expect([sm, gm].flatMap((x) => x.match(/zu dritt|die anderen beiden (gehen|ergänzen)|die anderen fragen/gi) ?? [])).toStrictEqual([]);
     expect(seite('/innolab/methoden/geschaeftsmodell')).not.toContain('zu dritt sechs Karten');
-    expect(sm).toContain('<li data-schritt><strong>Was ist, wenn …? Allein,</strong> Markus fragt im 1:1 nach. <Timer minuten={7} /></li>');
-    expect(sm).toContain('<li data-schritt><strong>Slice 1 durchgehen, allein:</strong> mit „und dann“. <Timer minuten={7} /></li>');
+    expect(sm).toContain('<li data-schritt><strong>Was ist, wenn …? Allein,</strong> Markus fragt im 1:1 nach. <Timer minuten={6} /></li>');
+    expect(sm).toContain('<li data-schritt><strong>Slice 1 durchgehen, allein:</strong> mit „und dann“. <Timer minuten={6} /></li>');
     expect(gm).toContain('<li data-schritt><strong>Eine wählen, allein:</strong> die Idee, die am meisten verändert; Markus fragt im 1:1 nach – keine Killerphrasen. <Timer minuten={5} /></li>');
   });
 

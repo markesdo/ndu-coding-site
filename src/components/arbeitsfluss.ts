@@ -155,8 +155,8 @@ const ROH: Omit<Station, 'zeile'>[] = [
     satz: 'Jedes „?“ im Ideen-Vergleich und im Fit ist eine offene Frage.',
     gebrauchtIn: 'Annahmen der Idee (Tag 4)',
   },
-  // Tag 4 (Ablauf ab 25.11.: 9:10 Value Map & Fit nachholen, 9:40 Concept Story, 10:30 Geschäftsmodell, 10:50 Experiment-
-  // Karte, 11:20 Story Map, 13:35 Usage Story, 14:05 Prototyp-Spike, 15:45 Agil & Scrum, 17:15 Origin Story). Der Baum
+  // Tag 4 (Ablauf ab 25.11., seit 26.11. mit Claude Pro gemeinsam um 10:50: 9:10 Value Map & Fit nachholen, 9:40 Concept
+  // Story, 10:30 Geschäftsmodell, 10:50 Claude Pro, 11:00 Experiment-Karte, 11:30 Story Map, 13:35 Usage Story, 14:05 Prototyp-Spike, 15:45 Agil & Scrum, 17:15 Origin Story). Der Baum
   // wächst über den Tag mit (Ideen, Annahme, E1, E2) und steht nach dem Spike.
   {
     id: 'value-map-nachholen', fortsetzung: 'value-map', kurz: 'Value Map & Fit (Nachholen)', linien: ['beleg'], spalte: 4, ergebnis: [],

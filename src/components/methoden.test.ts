@@ -596,8 +596,11 @@ describe('methoden', () => {
       expect(minuten(neu, slug), slug).toBe(m.dauer);
       expect(minuten(alt, slug), slug).toBe(0);
     }
-    // Experiment-Karte: 30 Minuten zu Beginn von Tag 4, die Origin Story (10 Minuten Input) im Abschluss desselben Tags.
-    expect(minuten(4, 'experiment')).toBe(30);
+    // Experiment-Karte: 30 Minuten an Tag 4, die Origin Story (10 Minuten Input) im Abschluss desselben Tags. Seit 26.11.2026
+    // davor ein eigener Block (10 min) für Claude Pro, dessen Folie auf der Experiment-Seite steht; er zählt hier mit.
+    expect(bloecke(4).find((x) => x.titel === 'Experiment-Karte')).toMatchObject({ von: 11 * 60, bis: 11 * 60 + 30 });
+    expect(bloecke(4).find((x) => x.href === '/innolab/methoden/experiment#claude-pro-jetzt')).toMatchObject({ von: 10 * 60 + 50, bis: 11 * 60 });
+    expect(minuten(4, 'experiment')).toBe(30 + 10);
     expect(minuten(3, 'experiment')).toBe(0);
     // Concept Story seit 25.11.2026 (NDU-66) an Tag 4: 10 min Theorie, 30 min Schreiben; an Tag 3 stand nur der Story-Bogen.
     const cs = METHODEN.find((x) => x.slug === 'concept-story')!;
@@ -607,9 +610,9 @@ describe('methoden', () => {
     expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/concept-story'))).toMatchObject({ von: 9 * 60 + 40, bis: 10 * 60 + 20 });
     // Value Map & Fit an Tag 4 nachgeholt (30 min), die Methode bleibt an Tag 3.
     expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/value-map'))).toMatchObject({ von: 9 * 60 + 10, bis: 9 * 60 + 40 });
-    // Story Map 75 statt 105 min.
+    // Story Map 65 min (75 bis 26.11.2026, davor 105).
     expect(minuten(4, 'story-map')).toBe(METHODEN.find((x) => x.slug === 'story-map')!.dauer);
-    expect(minuten(4, 'story-map')).toBe(75);
+    expect(minuten(4, 'story-map')).toBe(65);
     // Scrum: Agil an Tag 4 (Lego4Scrum seit 25.11.2026 stillgelegt, NDU-72), Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
     expect(minuten(4, 'scrum')).toBe(40);
     expect(bloecke(4).some((x) => x.href.includes('#lego'))).toBe(false);
