@@ -158,7 +158,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Abbildung: Quadrat = Value Map, jeder Zettel geprüft, auch Produkte. Kreis = Profil.',
       'Klick 1: Zettel vorlesen. Was trifft er? P1 – also (→ P1).',
-      '„Ein Zettel, eine ID, zwei Haken – links und rechts.“',
+      '„Ein Zettel, sein Pfeil, zwei Haken – links und rechts.“',
       'Klick 2: Rest rechts – Kreuz, oder Fragezeichen mit Frage.',
       'Klick 3: von oben lesen. Nicht Haken zählen.',
     ],
@@ -321,7 +321,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Die Lieblingsidee bekommt großzügig Haken, die anderen strenge Kreuze.',
         'Das Profil wird nachträglich an die Idee angepasst.',
         'Alles abgehakt, nichts offen.',
-        'Ein Pain Reliever ohne ID (kein Pfeil auf J, P oder G) bekommt trotzdem einen Haken.',
+        'Ein Pain Reliever ohne jede ID – weder (→ P1) noch (P1) – bekommt trotzdem einen Haken.',
         'Ein Produkt bekommt schon im Quadrat eine ID – oder ein (→ P…) für einen Pain, den es nicht direkt trifft.',
       ],
     },

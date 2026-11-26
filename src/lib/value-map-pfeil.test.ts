@@ -52,7 +52,10 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
   });
 
   it('nach dem Pfeil ein &nbsp; auf der Seite – außer in der Vorlage (Prompt zum Kopieren)', () => {
-    const vorlage = vmRoh.slice(vmRoh.indexOf('<Prompt label="Vorlage'), vmRoh.indexOf('</Prompt>', vmRoh.indexOf('<Prompt label="Vorlage')));
+    const start = vmRoh.indexOf('<Prompt label="Vorlage');
+    expect(start).toBeGreaterThanOrEqual(0);
+    const vorlage = vmRoh.slice(start, vmRoh.indexOf('</Prompt>', start));
+    expect(vorlage).toContain('## Value Map des Spitzenreiters');
     const ohneVorlage = vmRoh.replace(vorlage, '');
     expect(ohneVorlage.match(/\(→ [JPG]|→ [JPG](?:\d|…)/g) ?? []).toStrictEqual([]);
     expect(ohneVorlage.match(/→&nbsp;[JPG]/g)?.length).toBeGreaterThan(20);
@@ -91,7 +94,8 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
 
   it('Begleiter: Zettel links mit Pfeil, keine P-/G-ID-Formel', () => {
     const n = JSON.stringify(NOTIZEN['/innolab/methoden/value-map'] ?? {});
-    expect(n.replace(/Halbsatz vor \([PG][^)]*\)/g, '').match(OHNE_PFEIL) ?? []).toStrictEqual([]);
+    // Ausgenommen: „Halbsatz vor (P…)“ (Lückensatz) und die Fehlerliste, die beide Formen nennt („weder (→ P1) noch (P1)“).
+    expect(n.replace(/Halbsatz vor \([PG][^)]*\)/g, '').replace('weder (→ P1) noch (P1)', '').match(OHNE_PFEIL) ?? []).toStrictEqual([]);
     expect(n.match(/P-ID|G-ID|P- oder G-ID/g) ?? []).toStrictEqual([]);
     expect(n).toContain('ein Zettel je Wirkung (VPD S. 100–101) mit (→ P…) oder (→ G…), auch (→ J…)');
     expect(n).toContain('A: Products & Services. B: Pain Reliever (→ P2).');
@@ -160,13 +164,14 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
     const nj = JSON.stringify(n);
     // 1: Die Fehlerliste meint einen Zettel ohne jede ID – (→ J1), (→ G2) und das alte „(P1)“ sind keine Fehler.
-    expect(n.vorgehen?.ablauf?.fehler).toContain('Ein Pain Reliever ohne ID (kein Pfeil auf J, P oder G) bekommt trotzdem einen Haken.');
+    expect(n.vorgehen?.ablauf?.fehler).toContain('Ein Pain Reliever ohne jede ID – weder (→ P1) noch (P1) – bekommt trotzdem einen Haken.');
     expect(nj).not.toContain('ohne (→ P…) bekommt');
     // 2: Wo kein Zettel trifft: ✗ – oder ? mit Frage (wie J4 der Kaffeebar).
     expect(folie('gc-finden')).toContain('bekommt der Gain beim Fit rechts ein ✗ – oder ? mit Frage, wenn offen.</li>');
     expect([vm, nj].flatMap((x) => x.match(/rechts ein ✗(?! – oder)|rechts ✗(?! – oder)/g) ?? [])).toStrictEqual([]);
     // 3: Festhalten – links jeder ✓ mit Pfeil.
-    expect([vm, nj].flatMap((x) => x.match(/jeder ✓ mit ID|jeder ✓ eine ID\./g) ?? [])).toStrictEqual([]);
+    expect([vm, nj].flatMap((x) => x.match(/✓ mit ID(?! mit Pfeil)|✓ eine ID(?! mit Pfeil)/g) ?? [])).toStrictEqual([]);
+    expect(folie('vorgehen')).toContain('er selbst ein ✓ mit (→ …);');
     expect(folie('vorgehen')).toContain('rechts ein Zeichen je Zettel · links jeder ✓ mit (→ …) · jedes ? mit Frage.');
     expect(n.vorgehen?.ablauf?.schritte?.[4]).toContain('links jeder ✓ mit (→ …)');
     // 4: Ein Pfeil steht nur noch vor einer ID („zielt auf“) – nicht für „wird zu“ oder „führt zu“.
@@ -178,6 +183,12 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(fremdePfeile(pl)).toStrictEqual([]);
     expect(vm).toContain('- ✓ links trifft rechts: [');
     // 5: Die Erklärung steht sichtbar auf vom-satz, wo die Pfeil-Form zuerst live erscheint.
-    expect(folie('vom-satz')).toContain(`<p class="small vm-pfeil">${PFEIL_SATZ}</p>`);
+    expect(folie('vom-satz')).toContain(`<p class="small vm-pfeil" data-schritt>${PFEIL_SATZ}</p>`);
+    // Runde 4: Der Satz kommt nach der letzten Tabellenzeile, nicht beim Öffnen; der Begleiter spricht vom Pfeil, nicht von „eine ID“.
+    expect(folie('vom-satz').indexOf('vm-pfeil')).toBeGreaterThan(folie('vom-satz').lastIndexOf('<tr data-schritt>'));
+    expect(n.fit?.live).toContain('„Ein Zettel, sein Pfeil, zwei Haken – links und rechts.“');
+    expect(nj).not.toContain('eine ID, zwei Haken');
+    // S. 93: Pain oder Gain; S. 112: Job, Pain oder Gain beim Fit.
+    expect(folie('pr-finden')).toContain('Jeder Pain Reliever trifft mindestens einen Pain oder Gain (S. 93), und beim Fit prüft das Buch jeden Pain Reliever und Gain Creator darauf, ob er einen Job, Pain oder Gain trifft (S. 112).');
   });
 });
