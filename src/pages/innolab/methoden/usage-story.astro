@@ -4,8 +4,8 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Karte from '../../../components/bild/Karte.astro';
 import MiroLink from '../../../components/MiroLink.astro';
-import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
@@ -123,7 +123,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
   <h2 id="vorlage">So sieht euer Frame aus</h2>
   <p>Euer Frame auf Miro: <MiroLink name="T4 · 4 · Usage Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 3">Produkt 3</MiroLink>; das ausgefüllte Beispiel: <MiroLink name="T4 · 4 · Usage Story · Kaffeebar">Kaffeebar</MiroLink>.</p>
   <p>Im Frame „T4 · 4 · Usage Story · Produkt n“ steht der Bogen mit sieben Stationen; unter jeder Station ein Sticky. Was auf die Stickys kommt:</p>
-  <Prompt label="Miro · T4 · 4 · Usage Story · Produkt n">Titel: Usage Story · [Kernaufgabe aus Slice 1]
+  <Karte label="Miro · T4 · 4 · Usage Story · Produkt n" text={`Titel: Usage Story · [Kernaufgabe aus Slice 1]
 Person: [Pseudonym aus den Interviews] (I…) · [Uhrzeit, Ort]
 1. Exposition: wie in der Concept Story – will [Ziel] (J…), Hindernis [Pain] (P…)
 2. Auslöser: [Ereignis oder Aufforderung] am Moment „[...]“ der Experience Map (Zitat-IDs)
@@ -132,7 +132,7 @@ Person: [Pseudonym aus den Interviews] (I…) · [Uhrzeit, Ort]
 5. Höhepunkt: [der Bildschirm oder Moment] – erlebt, weil [wie]
 6. Fallende Handlung: [ein, zwei Schritte]
 7. Ende: [wo die Person steht] · nächste Episode: [...]
-Smile: Im Test erwarten wir das Lächeln bei Station 5 → Testaufgabe auf Karte E2 (Frame „T4 · 5 · Prototyp · Produkt n“)</Prompt>
+Smile: Im Test erwarten wir das Lächeln bei Station 5 → Testaufgabe auf Karte E2 (Frame „T4 · 5 · Prototyp · Produkt n“)`} />
 
   <h2 id="pruefen">Prüfen</h2>
   <p>Eure Usage Story liegt nur auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>
@@ -155,4 +155,9 @@ Smile: Im Test erwarten wir das Lächeln bei Station 5 → Testaufgabe auf Karte
 <style>
   /* Folie „usage-story“: Bild und alle sieben Stationen passen bei 1280 × 720 nur mit etwas weniger Abstand über dem Bild. */
   :global(html[data-beamer] .folie:has(> h2#usage-story) .bild-text) { margin-top: .5rem; }
+  :global(html[data-beamer] .folie:has(> h2#usage-story) .buch-abbildung img) { max-height: calc(100vh - 21rem); }
+  :global(html[data-beamer] .folie:has(> h2#usage-story) li) { margin-bottom: .2rem; }
+  /* #drei-storys: drei Kästen mit Ergebnis je Story, darunter drei Punkte – bei 1280 × 720 nur etwas kleiner. */
+  :global(html[data-beamer] .folie:has(> h2#drei-storys) .fluss-text) { font-size: .85rem; }
+  :global(html[data-beamer] .folie:has(> h2#drei-storys) ul.gross > li) { font-size: 1rem; margin-bottom: .2rem; }
 </style>

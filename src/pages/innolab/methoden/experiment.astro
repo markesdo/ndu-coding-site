@@ -4,6 +4,8 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Karte from '../../../components/bild/Karte.astro';
+import AnnahmenMap from '../../../components/bild/AnnahmenMap.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
@@ -26,14 +28,7 @@ const THOMKE = 'Stefan H. Thomke, „The Scientific Mindset“ (2027)';
 const GEGENPROBE = `Im Bild: meine Karte E1 vom Miro-Frame „T4 · 0 · Annahmen der Idee“. Lies aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Stell dir vor, E1 ist gelaufen und hat uns in die Irre geführt. Nenn drei Gründe, warum das passiert sein könnte (zum Beispiel falsches Publikum, eine Schwelle, die zu leicht ist, ein Test, der die ganze Idee statt der Annahme prüft), und je einen kleineren oder genaueren Test. Ändere nichts.`;
 const PRE_MORTEM_FRAGE = 'Stellt euch vor: Es ist ein halbes Jahr später, euer Spitzenreiter ist komplett gescheitert. Was ist schiefgegangen?';
 
-// Annahmen-Map wie im Miro-Frame „T4 · 0 · Annahmen der Idee“: vier Felder mit deren Namen; nach oben wichtiger, nach
-// rechts weniger Beleg. Kaffeebar: Lage der Annahmen wie im Handout von #beispiel (x, y in % von links bzw. oben).
-const MAP_FELDER = [
-  { name: 'Beleg prüfen, darauf bauen', klasse: 'ol' },
-  { name: 'Zuerst testen', klasse: 'or' },
-  { name: 'Abhaken', klasse: 'ul' },
-  { name: 'Später prüfen', klasse: 'ur' },
-];
+// Lage der Annahmen der Kaffeebar auf der Map (#beispiel-map), wie im Handout von #beispiel (x, y in % von links bzw. oben).
 const KAFFEEBAR_ANNAHMEN = [
   { id: 'A5', x: 88, y: 12, hervor: true },
   { id: 'A7', x: 72, y: 24 },
@@ -150,12 +145,7 @@ const KAFFEEBAR_ANNAHMEN = [
     <p class="folie-satz">Die Map kennt ihr von Tag 1 – jetzt mit den Annahmen eures Spitzenreiters, den ihr heute Morgen in der Value Map bestätigt habt.</p>
     <MiroFrame name="T4 · 0 · Annahmen der Idee" />
     <BildText>
-      <figure class="annahmen-map" aria-label="Annahmen-Map wie im Miro-Frame: vier Felder. Oben links „Beleg prüfen, darauf bauen“, oben rechts „Zuerst testen“, unten links „Abhaken“, unten rechts „Später prüfen“. Nach oben wichtiger, nach rechts weniger Beleg.">
-        <div class="am-flaeche">
-          {MAP_FELDER.map((f) => <span class:list={['am-feld', f.klasse]}>{f.name}</span>)}
-        </div>
-        <figcaption>Nach oben: wichtiger. Nach rechts: weniger Beleg.</figcaption>
-      </figure>
+      <AnnahmenMap label="Annahmen-Map wie im Miro-Frame: vier Felder. Oben links „Beleg prüfen, darauf bauen“, oben rechts „Zuerst testen“, unten links „Abhaken“, unten rechts „Später prüfen“. Nach oben wichtiger, nach rechts weniger Beleg." />
       <ul>
         <li data-schritt><strong>Wichtig (senkrecht):</strong> Fällt die Idee um, wenn es falsch ist? Dann nach oben.</li>
         <li data-schritt><strong>Beleg (waagrecht):</strong> viel Beleg links, keiner rechts.</li>
@@ -226,7 +216,7 @@ const KAFFEEBAR_ANNAHMEN = [
       </div>
     </figure>
     <ol class="baender" aria-label="Drei Ergebnisse, je mit der Handlung, die vor dem Test feststeht – aufgedeckt erst ab 10, dann unter 5, zuletzt 5 bis 9">
-      <li class="band-ueber" data-schritt><b>ab 10 von 30</b><span>Schwelle erreicht · gestützt</span><span class="tun">→ stärkerer Test oder nächste Annahme</span><span class="e1">E1: Concierge (stärkerer Test)</span></li>
+      <li class="band-ueber" data-schritt><b>ab 10 von 30</b><span>Schwelle erreicht · gestützt</span><span class="tun">→ stärkerer Test oder nächste Annahme</span><span class="e1">E1: Concierge (von Hand, ohne Software)</span></li>
       <li class="band-unter" data-schritt><b>unter 5 von 30</b><span>deutlich darunter · widerlegt</span><span class="tun">→ umschwenken (Idee ändern) oder verwerfen</span><span class="e1">E1: Wartezeit-Anzeige</span></li>
       <li class="band-mitte" data-schritt><b>5–9 von 30</b><span>knapp darunter · unklar</span><span class="tun">→ weiter testen</span><span class="e1">E1: wiederholen, eine Sache ändern</span></li>
     </ol>
@@ -269,6 +259,7 @@ const KAFFEEBAR_ANNAHMEN = [
     </table>
     <p class="small muted">Nach {BLAND}, S. 248–251, 260–263, 288–291; simulierter Moment nach {TORRES}, S. 135, 142–144.</p>
     <div class="nur-handout">
+      <p><strong>Concierge:</strong> „Creating a customer experience and delivering value manually, with people instead of using technology. Unlike Wizard of Oz, the people involved are obvious to the customer.“ ({BLAND}, Concierge, S. 248). Wizard of Oz liefert den Wert ebenfalls von Hand, aber „without making the human steps visible to the end customer“ (S. 251). Kaffeebar: ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar – echter Wert, noch ohne Software.</p>
       <p>Torres’ drei billige Formen für eine Woche: ein simulierter Moment mit einem Mock-up, eine Ein-Frage-Umfrage zu einem konkreten vergangenen Fall, Daten, die ihr schon habt ({TORRES}, S. 142–144). Die Stärke des simulierten Moments ist eine Einordnung des Kurses: Die Person tut etwas, aber nicht in ihrer echten Lage.</p>
       <div style="overflow-x:auto">
         <table>
@@ -287,8 +278,30 @@ const KAFFEEBAR_ANNAHMEN = [
   </Folie>
 
   <Folie>
+    <h2 id="annahmen-finden">So findet ihr die Annahmen: fünf Fragen an jeden Schritt</h2>
+    <p class="folie-satz">Geht jeden Schritt eures Spitzenreiters durch und stellt dieselben fünf Fragen.</p>
+    <table class="fuenf-fragen">
+      <thead><tr><th>Frage an den Schritt</th><th>Art</th></tr></thead>
+      <tbody>
+        <tr data-schritt><td>Wollen sie das hier wirklich tun?</td><td>wünschenswert</td></tr>
+        <tr data-schritt><td>Können sie das – schnell, ohne Hilfe?</td><td>bedienbar</td></tr>
+        <tr data-schritt><td>Können wir das liefern oder bauen?</td><td>machbar</td></tr>
+        <tr data-schritt><td>Rechnet es sich?</td><td>wirtschaftlich</td></tr>
+        <tr data-schritt><td>Kann es jemandem schaden?</td><td>ethisch</td></tr>
+      </tbody>
+    </table>
+    <p class="fuenf-bsp" data-schritt><strong>Kaffeebar, Schritt 1</strong> „Halle betreten, Schlange und Aufsteller sehen“ – <em>Wollen sie?</em></p>
+    <p class="fuenf-bsp" data-schritt>→ <strong>A5:</strong> Wer die Schlange sieht, bestellt am Aufsteller statt am Automaten. <span class="muted">(wünschenswert)</span></p>
+    <p data-schritt><strong>Dazu die Pre-Mortem-Frage:</strong> Es ist gescheitert – woran lag es?</p>
+    <div class="nur-handout">
+      <p>Torres nennt fünf Arten von Annahmen, je mit ihrer Frage: „Desirability assumptions: Does anyone want it?“ – „Viability assumptions: Should we build it?“ – „Feasibility assumptions: Can we build it?“ – „Usability assumptions: Is it usable?“ – „Ethical assumptions: Is there any potential harm in building this idea?“ ({TORRES}, S. 118). Die deutschen Fragen auf der Folie sind die Kursfassung, auf einen einzelnen Schritt zugeschnitten: Statt „will das jemand?“ fragt ihr „wollen sie das <em>hier</em> tun?“.</p>
+      <p>Jede Antwort, bei der ihr „hoffentlich“ denkt, ist eine Annahme: als Satz „Wir glauben, dass …“, mit Art. Bei der Kaffeebar ergibt die erste Frage an Schritt 1 die Annahme A5 – sie wird später die riskanteste. Die übrigen Annahmen der Kaffeebar zeigt die nächste Folie. Danach die Pre-Mortem-Frage von vorhin: „{PRE_MORTEM_FRAGE}“ – sie findet Annahmen, die beim Gehen durch die Schritte fehlen.</p>
+    </div>
+  </Folie>
+
+  <Folie>
     <h2 id="beispiel">Am Beispiel: „Im Gehen bestellen“ in fünf Schritten</h2>
-    <p class="folie-satz">Der Spitzenreiter, als gäbe es ihn schon – was muss stimmen?</p>
+    <p class="folie-satz">Die fünf Fragen an jedem Schritt – das kommt heraus:</p>
     <table class="beispiel-schritte">
       <thead><tr><th>Schritt</th><th>Annahme</th><th>Art</th></tr></thead>
       <tbody>
@@ -308,13 +321,7 @@ const KAFFEEBAR_ANNAHMEN = [
     <h2 id="beispiel-map">Die Map der Kaffeebar: A5 zuerst</h2>
     <p class="folie-satz">Oben rechts: wichtig und ohne Beleg.</p>
     <BildText>
-      <figure class="annahmen-map" aria-label="Annahmen-Map der Kaffeebar. Zuerst testen, oben rechts: A5, A7, A4. Oben in der Mitte: A6 und A8. Rechts in der Mitte: A3. Links: A2.">
-        <div class="am-flaeche">
-          {MAP_FELDER.map((f) => <span class:list={['am-feld', f.klasse]}>{f.name}</span>)}
-          {KAFFEEBAR_ANNAHMEN.map((a) => <span class:list={['am-chip', { hervor: a.hervor }]} style={`left: ${a.x}%; top: ${a.y}%`}>{a.id}</span>)}
-        </div>
-        <figcaption>Nach oben: wichtiger. Nach rechts: weniger Beleg.</figcaption>
-      </figure>
+      <AnnahmenMap label="Annahmen-Map der Kaffeebar. Zuerst testen, oben rechts: A5, A7, A4. Oben in der Mitte: A6 und A8. Rechts in der Mitte: A3. Links: A2." marken={KAFFEEBAR_ANNAHMEN} />
       <ul>
         <li data-schritt><strong>Oben rechts:</strong> A5, A7, A4.</li>
         <li data-schritt><strong>A8 gilt für alle drei Ideen</strong> – ist aber teils belegt (I2-1, I3-3), darum oben in der Mitte.</li>
@@ -329,16 +336,17 @@ const KAFFEEBAR_ANNAHMEN = [
   <Folie>
     <h2 id="karte-e1">Die Karte E1</h2>
     <p class="folie-satz">Ein Aufsteller, drei Morgen, eine Schwelle als x von y.</p>
-    <Prompt label="Beispiel · Experiment-Karte E1">E1 · A5 (wünschenswert) · läuft bis: drei Werktage vor Tag 5
+    <Karte label="Beispiel · Experiment-Karte E1" text={`E1 · A5 (wünschenswert) · läuft bis: drei Werktage vor Tag 5
 Wir glauben, dass Pendler*innen, die beim Betreten der Halle die Schlange sehen, am Aufsteller bestellen, statt zum Automaten zu gehen.
 Um das zu prüfen, stellen wir an drei Morgen (7:15–7:45) einen Aufsteller mit QR-Code an die Hallentür. Die Seite verspricht „Im Gehen bestellen – bald“ und bittet, den eigenen Zug einzutragen. Bestellen geht noch nicht; das steht auf der Seite.
 Wir messen: wer bei Schlange zum Automaten geht (Strichliste), wer am Aufsteller einen Zug einträgt.
 Wir haben recht, wenn von den ersten 30, die bei Schlange zum Automaten gehen oder einen Zug eintragen, mindestens 10 eintragen.
 Wir entscheiden vorher: ab 10 → Concierge · 5–9 → wiederholen, eine Sache ändern · unter 5 → Wartezeit-Anzeige
 Danach: Wer eingetragen hat, erfährt, wann es losgeht.
-Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt es keine Schlange“)</Prompt>
+Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt es keine Schlange“)`} />
+    <p class="concierge-zeile"><strong>Concierge:</strong> ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar – echter Wert, noch ohne Software.</p>
     <p class="small muted kursform">Kursregel: Zeilen 2–5 nach Blands Test Card, die letzten drei vom Kurs.</p>
-    <p class="nur-handout">Gezählt wird beides, weil A5 eine Wahl behauptet: Aufsteller statt Automat. Wer nur Scans zählt, misst, wer sich ohnehin für den Aufsteller interessiert – nicht, wer sich gegen den Automaten entscheidet. Die Strichliste braucht eine Person neben dem Automaten; Torres warnt vor zu wenigen Kriterien und vor Tests, die nicht die Annahme prüfen ({TORRES}, S. 133, 144–145). Ein Eintrag ist ein kleiner Einsatz und darum ein mittlerer Beleg ({BLAND}, S. 52). Besteht E1, wäre der stärkere nächste Test ein Concierge: drei Morgen lang per Nachricht vorbestellen, von Hand zubereitet. Bland nennt so eine Folge für Dienstleistungen: vom Interview über die Landingpage bis zum Concierge (S. 99). Und wer getestet wird, erfährt danach, was dahintersteckt: „Are you experimenting with your customers or on them?“ (S. 86). Die Zeile „Wir entscheiden vorher“ verbindet jedes Ergebnis mit einer Handlung, bevor gezählt wird ({THOMKE}, S. 86): Ab 10 folgt der Concierge, unter 5 das Umschwenken auf die Wartezeit-Anzeige aus der Zeile darunter, dazwischen derselbe Test noch einmal, mit genau einer Änderung – etwa dem Ort des Aufstellers. Die Grenze bei 5 ist eine Setzung der Kaffeebar, wie die Schwelle selbst; nach der Kursregel liegt sie bei etwa der halben Schwelle. Die erste Zeile (ID, Annahme, Art, Laufzeit) ist der Kopf der Karte, die nächsten vier folgen Blands Test Card ({BLAND}, S. 46).</p>
+    <p class="nur-handout">Gezählt wird beides, weil A5 eine Wahl behauptet: Aufsteller statt Automat. Wer nur Scans zählt, misst, wer sich ohnehin für den Aufsteller interessiert – nicht, wer sich gegen den Automaten entscheidet. Die Strichliste braucht eine Person neben dem Automaten; Torres warnt vor zu wenigen Kriterien und vor Tests, die nicht die Annahme prüfen ({TORRES}, S. 133, 144–145). Ein Eintrag ist ein kleiner Einsatz und darum ein mittlerer Beleg ({BLAND}, S. 52). Besteht E1, wäre der stärkere nächste Test ein Concierge: drei Morgen lang per Nachricht vorbestellen, von Hand zubereitet. Bland: „Creating a customer experience and delivering value manually, with people instead of using technology. Unlike Wizard of Oz, the people involved are obvious to the customer.“ ({BLAND}, Concierge, S. 248); Zahlungen dabei sind „strong evidence, even if you are manually delivering value“ (S. 250). Bland nennt so eine Folge für Dienstleistungen: vom Interview über die Landingpage bis zum Concierge (S. 99). Und wer getestet wird, erfährt danach, was dahintersteckt: „Are you experimenting with your customers or on them?“ (S. 86). Die Zeile „Wir entscheiden vorher“ verbindet jedes Ergebnis mit einer Handlung, bevor gezählt wird ({THOMKE}, S. 86): Ab 10 folgt der Concierge, unter 5 das Umschwenken auf die Wartezeit-Anzeige aus der Zeile darunter, dazwischen derselbe Test noch einmal, mit genau einer Änderung – etwa dem Ort des Aufstellers. Die Grenze bei 5 ist eine Setzung der Kaffeebar, wie die Schwelle selbst; nach der Kursregel liegt sie bei etwa der halben Schwelle. Die erste Zeile (ID, Annahme, Art, Laufzeit) ist der Kopf der Karte, die nächsten vier folgen Blands Test Card ({BLAND}, S. 46).</p>
   </Folie>
 
   <Folie>
@@ -348,7 +356,7 @@ Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt 
     <MiroFrame name="T4 · 0 · Annahmen der Idee" />
     <ol class="gross dicht">
       <li data-schritt><strong>Schritte, auf Miro:</strong> vier bis sechs, als gäbe es euren Spitzenreiter schon – in eurer Spalte im Frame oben rechts (<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>). <Timer minuten={3} /></li>
-      <li data-schritt><strong>Annahmen, auf Miro:</strong> je Schritt mindestens zwei, mit Art; dazu das Pre-Mortem. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei Annahmen, mit Art; dazu das Pre-Mortem. <Timer minuten={5} /></li>
       <li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts; in der <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map der Werkstatt</a> festhalten: ID, Art, Wichtigkeit, Beleg. <Timer minuten={3} /></li>
       <li data-schritt><strong>Karte E1, auf Miro:</strong> im Feld „Karte E1 für die oberste rechts“, mit Schwelle und „Wir entscheiden vorher“. <Timer minuten={5} /></li>
       <li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>). <Timer minuten={2} /></li>
@@ -363,23 +371,23 @@ Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt 
   <div class="nur-handout">
   <h2 id="vorlage">So sieht die Karte auf Miro aus</h2>
   <p>Die Karte E1 steht im Frame „T4 · 0 · Annahmen der Idee“, im Feld „Karte E1 für die oberste rechts“; die Annahmen mit ID, Art, Wichtigkeit und Beleg stehen in der Werkstatt, in eurer Annahmen-Map. Ins Feld schreibt ihr diese Zeilen:</p>
-  <Prompt label="Feld „Karte E1 für die oberste rechts“ · Miro, T4 · 0 · Annahmen der Idee">E1 · A[n] ([Art]) · läuft bis [Datum] · wer: [Name]
+  <Karte label="Feld „Karte E1 für die oberste rechts“ · Miro, T4 · 0 · Annahmen der Idee" text={`E1 · A[n] ([Art]) · läuft bis [Datum] · wer: [Name]
 Wir glauben, dass [...].
 Um das zu prüfen, [wer, wo, was].
 Wir messen [Handlung].
 Wir haben recht, wenn [x von y].
 Wir entscheiden vorher: ab [x] → [...] · [von] bis [bis] → [...] · unter [...] → [...]
 Danach erfahren die Testpersonen: [...] · Wir sammeln: [...]
-Falls E1 scheitert: Idee 2 [...] hängt an „[...]“ · Idee 3 [...] hängt an „[...]“</Prompt>
+Falls E1 scheitert: Idee 2 [...] hängt an „[...]“ · Idee 3 [...] hängt an „[...]“`} />
   <p>Die Lernkarte schreibt ihr nach dem Test auf Miro, in euren Frame „T4 · 6 · Lernkarten · Produkt n“ (<MiroLink name="T4 · 6 · Lernkarten · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 3">Produkt 3</MiroLink>; Beispiel: <MiroLink name="T4 · 6 · Lernkarten · Kaffeebar">Kaffeebar</MiroLink>):</p>
-  <Prompt label="Lernkarte E1 · Miro, T4 · 6 · Lernkarten · Produkt n">Lernkarte E1 · A[n]
+  <Karte label="Lernkarte E1 · Miro, T4 · 6 · Lernkarten · Produkt n" text={`Lernkarte E1 · A[n]
 Wir glaubten, dass [...].
 Wir haben beobachtet: [x von y, Zitate]
 Verlässlichkeit: schwach / mittel / stark – weil [...]
 Daraus lernen wir: [...]
 Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: [...]
 Weicht ab von „Wir entscheiden vorher“? Grund: …
-Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
+Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]`} />
 
   <h2 id="pruefen">Prüfen</h2>
   <p>Karte E1 und Origin Story liegen nur auf Miro: die Karte in eurer Spalte im Frame „T4 · 0 · Annahmen der Idee“, die Origin Story in „T4 · 6 · Origin Story · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>
@@ -395,7 +403,7 @@ Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
   <p>Die Origin Story kommt am Ende von Tag 4, im <a href="/innolab/tag-4#abschluss">Abschluss am Ende des Tages</a>; dort stehen die Theorie nach Lichaw und das Beispiel der Kaffeebar.</p>
   <h3 id="vorlage-origin-story">So sieht die Origin Story auf Miro aus</h3>
   <p>Die Origin Story schreibt ihr auf Miro, in euren Frame „T4 · 6 · Origin Story · Produkt n“ (<MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">Produkt 3</MiroLink>) – Station für Station wie die Concept Story:</p>
-  <Prompt label="Origin Story · Miro, T4 · 6 · Origin Story · Produkt n">Origin Story · [Kanal: Aushang / Landingpage / Nachricht]
+  <Karte label="Origin Story · Miro, T4 · 6 · Origin Story · Produkt n" text={`Origin Story · [Kanal: Aushang / Landingpage / Nachricht]
 1. Exposition: wie Concept Story
 2. Auslöser: wie Concept Story
 3. Steigende Handlung: wo sie davon hört ([Kanal]) – warum passt der Kanal zum Pain?
@@ -403,22 +411,49 @@ Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
 5. Höhepunkt: was sie auf [Aufsteller / Landingpage] sieht – in ihren Worten (Zitat-IDs)
 6. Fallende Handlung: die eine Handlung = Messgröße von E1: [...]
 7. Ende: ihr Ziel [...] · Geschäftsziel, messbar: [...]
-Text (Überschrift · Wertversprechen aus der Value Map · Handlung · Antwort auf die Hürde): [...]</Prompt>
+Text (Überschrift · Wertversprechen aus der Value Map · Handlung · Antwort auf die Hürde): [...]`} />
   </div>
 
   <Folie>
     <h2 id="lernkarte">Nach dem Test: die Lernkarte</h2>
-    <p class="folie-satz">Nach dem Test, als Hausaufgabe: geglaubt, beobachtet, gelernt – und darum entschieden. An Tag 5 lest ihr sie vor.</p>
+    <p class="folie-satz">Nach E1, zu Hause: was ihr geglaubt, beobachtet und gelernt habt – und was ihr darum tut. An Tag 5 lest ihr sie vor.</p>
+    <Fluss label="Von der Karte E1 zur Lernkarte: heute die Karte, am Ende des Tages die Origin Story, bis Tag 5 der Test, danach die Lernkarte, an Tag 5 vorlesen" hervor={[3]} knoten={[
+      { t: 'Heute', sub: 'Karte E1 – vorher entscheiden' },
+      { t: 'Am Ende des Tages', sub: 'Origin Story → Text für den Aufsteller' },
+      { t: 'Bis Tag 5', sub: 'E1 laufen lassen – Zielgruppe am echten Ort oder simuliert mit zehn' },
+      { t: 'Danach', sub: 'Lernkarte E1 auf Miro' },
+      { t: 'Tag 5', sub: 'vorlesen' },
+    ]} />
+    <p class="small" data-schritt>Miro, Lernkarten: <MiroLink name="T4 · 6 · Lernkarten · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 3">3</MiroLink> · Beispiel <MiroLink name="T4 · 6 · Lernkarten · Kaffeebar">Kaffeebar</MiroLink> · <MiroLink name="T4 · 6 · Anleitung Lernkarten">Anleitung</MiroLink></p>
+    <p data-schritt><strong>E1 prüft, ob sie es wollen.</strong> Die Usability-Tests mit dem Prototyp (E2) sind freiwillig – wer testet, schreibt dafür eine eigene Lernkarte, im selben Frame.</p>
+    <div class="nur-handout">
+      <p>Wer testet: Menschen aus eurer Zielgruppe, in der Situation, um die es geht – bei der Kaffeebar Pendler*innen morgens in der Halle. Geht das bis Tag 5 nicht, ein simulierter Moment mit zehn Menschen aus der Zielgruppe (<a href="#test-arten">Vier Tests zur Auswahl</a>). Die Lernkarte füllt ihr, sobald E1 gelaufen ist; die Hausaufgabe steht auf <a href="/innolab/tag-4#hausaufgabe">Tag 4</a>.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="lernkarte-zeilen">Was auf der Lernkarte steht</h2>
+    <p class="folie-satz">Erst der Beleg, dann die Handlung – mit dem Band, das ihr vorher festgelegt habt.</p>
     <BildText>
-      <BuchAbbildung src="/quellen/bland/learning-card.jpg" alt="Blaue Learning Card „Concierge“: We believed that millennial parents prefer curated science projects; We observed overall feedback was positive, but time and cost exceeded our target price point; From that we learned that we have to bring time and cost down; Therefore, we will explore wholesale suppliers" quelle={`Learning Card. ${BLAND}, S. 55.`} hochkant />
-      <ul>
-        <li data-schritt><strong>Wir glaubten, dass …</strong> – die Zeile von der Karte.</li>
-        <li data-schritt><strong>Wir haben beobachtet …</strong> – x von y, Zitate, und wie verlässlich.</li>
-        <li data-schritt><strong>Daraus lernen wir …</strong> – was das für die Annahme heißt.</li>
-        <li data-schritt><strong>Beleg, dann Handlung:</strong> gestützt, widerlegt, unklar oder neue Einsicht – darum weitermachen, umschwenken oder verwerfen.</li>
-      </ul>
+      <BuchAbbildung src="/quellen/bland/learning-card.jpg" alt="Blaue Learning Card „Concierge“: We believed that millennial parents prefer curated science projects; We observed overall feedback was positive, but time and cost exceeded our target price point; From that we learned that we have to bring time and cost down; Therefore, we will explore wholesale suppliers" quelle={`Learning Card. ${BLAND}, S. 55.`} hochkant schmal />
+      <Karte label="Lernkarte E1 · so füllt ihr sie" text={`Lernkarte E1 · A[n]
+Wir glaubten, dass [die Zeile von der Karte].
+Wir haben beobachtet: [x von y, Zitate – und wie verlässlich]
+Daraus lernen wir: [was das für die Annahme heißt]
+Darum entscheiden wir: [Beleg gestützt, widerlegt, unklar oder neu → das Band, das ihr vorher festgelegt habt]
+Weicht ab von „Wir entscheiden vorher“? Grund: [...]`} />
     </BildText>
-    <p class="nur-handout">Die Lernkarte schließt jede Experiment-Karte ab ({BLAND}, S. 55). Ihr füllt sie zu Hause, sobald E1 gelaufen ist, auf Miro in eurem Frame „T4 · 6 · Lernkarten · Produkt n“ (<MiroLink name="T4 · 6 · Anleitung Lernkarten">Anleitung</MiroLink>; <a href="#vorlage">so sieht sie aus</a>). Unter der Beobachtung hat sie ein Feld „Data Reliability“ mit drei Stufen; wir schreiben dafür schwach, mittel oder stark – und warum (S. 55). Entschieden wird in zwei Schritten: erst, was der Beleg mit der Annahme gemacht hat – „Evidence Supports Hypothesis“, „Evidence Refutes Hypothesis“, „Unclear Insight“ oder „New Insight“ (S. 63) –, dann, was ihr deshalb tut: weitermachen – mit einem stärkeren Test oder der nächsten Annahme –, umschwenken oder verwerfen (S. 61). In der Regel steht die Handlung schon auf der Karte, in der Zeile „Wir entscheiden vorher“; weicht ihr davon ab, steht der Grund in der Zeile „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ (Kursregel, nächste Folie). Wer umschwenkt, prüft die Belege: „A pivot often means that some of your earlier evidence may be irrelevant to your new trajectory. It usually requires retesting elements of your business model that you’ve already tested“ (S. 61) – darum die Zeile, was weiter gilt und was neu zu testen ist. Scheitert E1, steht unter eurer Karte, mit welcher Idee ihr weitermacht. Die Entscheidung steht in der Zeile „Beleg: … → darum: …“; an Tag 5 lest ihr die Lernkarten zu Beginn vor (<a href="/innolab/tag-5#debrief">Test-Debrief</a>).</p>
+    <div class="nur-handout">
+      <p>Die Lernkarte schließt jede Experiment-Karte ab ({BLAND}, S. 55). Ihr füllt sie zu Hause, sobald E1 gelaufen ist, auf Miro in eurem Frame „T4 · 6 · Lernkarten · Produkt n“ (<MiroLink name="T4 · 6 · Anleitung Lernkarten">Anleitung</MiroLink>; <a href="#vorlage">so sieht sie aus</a>). Unter der Beobachtung hat sie ein Feld „Data Reliability“ mit drei Stufen; wir schreiben dafür schwach, mittel oder stark – und warum (S. 55). Entschieden wird in zwei Schritten: erst, was der Beleg mit der Annahme gemacht hat – „Evidence Supports Hypothesis“, „Evidence Refutes Hypothesis“, „Unclear Insight“ oder „New Insight“ (S. 63) –, dann, was ihr deshalb tut: weitermachen – mit einem stärkeren Test oder der nächsten Annahme –, umschwenken oder verwerfen (S. 61). In der Regel steht die Handlung schon auf der Karte, in der Zeile „Wir entscheiden vorher“; weicht ihr davon ab, steht der Grund in der Zeile „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ (Kursregel, nächste Folie). Wer umschwenkt, prüft die Belege: „A pivot often means that some of your earlier evidence may be irrelevant to your new trajectory. It usually requires retesting elements of your business model that you’ve already tested“ (S. 61) – darum die Zeile, was weiter gilt und was neu zu testen ist. Scheitert E1, steht unter eurer Karte, mit welcher Idee ihr weitermacht. Die Entscheidung steht in der Zeile „Beleg: … → darum: …“; an Tag 5 lest ihr die Lernkarten zu Beginn vor (<a href="/innolab/tag-5#debrief">Test-Debrief</a>).</p>
+      <p>Am Beispiel der Kaffeebar, wie es an Tag 5 vorgelesen wird (<a href="/innolab/tag-5#debrief">Test-Debrief</a>):</p>
+      <Karte label="Beispiel · Lernkarte E1 der Kaffeebar" text={`Lernkarte E1 · A5
+Wir glaubten, dass Pendler*innen, die beim Betreten der Halle die Schlange sehen, am Aufsteller bestellen, statt zum Automaten zu gehen.
+Wir haben beobachtet: 8 von 30 trugen einen Zug ein, 22 gingen zum Automaten (Schwelle: 10 von 30).
+Verlässlichkeit: mittel – echte Situation, aber ein kleiner Einsatz.
+Daraus lernen wir: Es gibt sie, aber weniger als gedacht; offen ist, ob es am Aufsteller an der Tür liegt oder an der Idee.
+Beleg: unklar → darum: weiter testen – derselbe Test, eine Sache geändert: Aufsteller an der Schlange statt an der Tür; Schwelle bleibt 10 von 30. Spitzenreiter bleibt.
+Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wiederholen, eine Sache ändern.`} />
+    </div>
   </Folie>
 
   <Folie>
@@ -455,6 +490,22 @@ Text (Überschrift · Wertversprechen aus der Value Map · Handlung · Antwort a
 </Layout>
 
 <style>
+  /* #annahmen-finden: Frage → Art, darunter die Kaffeebar Schritt für Schritt. */
+  .fuenf-fragen td:last-child { white-space: nowrap; color: var(--muted); }
+  :global(html[data-beamer]) .fuenf-fragen td { padding-top: .25rem; padding-bottom: .25rem; }
+  .fuenf-bsp { margin: .3rem 0; }
+  /* #karte-e1, #vorher-entscheiden: was „Concierge“ heißt, als eine Zeile unter der Karte. */
+  .concierge-zeile { font-size: .95rem; margin: .4rem 0; }
+  :global(html[data-beamer] .folie:has(> h2#lernkarte) .fluss-text) { font-size: .9rem; }
+  :global(html[data-beamer] .folie:has(> h2#vorher-entscheiden) > p) { margin-top: .3rem; margin-bottom: .3rem; }
+  :global(html[data-beamer] .folie:has(> h2#vorher-entscheiden) > p.small) { font-size: .8rem; }
+  :global(html[data-beamer]) .concierge-zeile { font-size: .85rem; margin: .2rem 0; }
+  /* Bei 1280 × 720: Karte E1 mit Concierge-Zeile, die fünf Fragen, die Map mit Achsen und „So geht ihr vor“ mit Links passen nur etwas dichter. */
+  :global(html[data-beamer] .folie:has(> h2#karte-e1) .prompt pre) { font-size: .8rem; }
+  :global(html[data-beamer]) .fuenf-fragen td, :global(html[data-beamer]) .fuenf-fragen th { font-size: .95rem; padding-top: .15rem; padding-bottom: .15rem; }
+  :global(html[data-beamer]) .fuenf-bsp { margin: .15rem 0; font-size: .95rem; }
+  :global(html[data-beamer] .annahmen-map .am-flaeche) { aspect-ratio: 2 / 1; }
+  :global(html[data-beamer] .folie:has(> h2#vorgehen) ol.gross > li) { font-size: .95rem; line-height: 1.35; margin-bottom: .25rem; }
   .schon-pro { margin: .25rem 0 .5rem; }
   .fluss-titel { margin: .5rem 0 -.75rem; }
   /* Fluss-Folien (ergebnis-gilt, gegen-den-beleg): etwas weniger Rand, damit Fluss und drei Zeilen bei 1280 × 720 passen. */
@@ -464,15 +515,6 @@ Text (Überschrift · Wertversprechen aus der Value Map · Handlung · Antwort a
   .setup-zeile { margin: .5rem 0; font-style: italic; }
   .anleitung-zeile { margin: .5rem 0 0; }
 
-  /* Folien „map“ und „beispiel-map“: Annahmen-Map wie im Miro-Frame, vier Felder, Achsen als Unterschrift. */
-  .annahmen-map { margin: 0; }
-  .am-flaeche { position: relative; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; aspect-ratio: 16 / 10; border: 2px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .am-feld { display: flex; align-items: flex-start; padding: .45rem .6rem; font-size: .95rem; font-weight: 600; color: var(--muted); border: 1px dashed var(--border); }
-  .am-feld.or { color: var(--fg); background: color-mix(in srgb, var(--accent) 14%, transparent); }
-  .am-feld.ur, .am-feld.ol { justify-content: flex-start; }
-  .am-chip { position: absolute; transform: translate(-50%, -50%); padding: .1rem .45rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-2, var(--bg)); font-weight: 700; font-size: .95rem; }
-  .am-chip.hervor { border-color: var(--accent); background: var(--accent); color: var(--bg); }
-  .annahmen-map figcaption { margin-top: .4rem; font-size: .95rem; color: var(--muted); }
 
   /* Folie „vorher-entscheiden“: Skala 0–30 in 30 gleichen Teilen (Bänder 5/5/20), Marken bei 5/30 und 10/30, darunter drei Bänder (Aufdecken: ab 10, unter 5, 5–9). */
   .skala { margin: .5rem 0 0; }

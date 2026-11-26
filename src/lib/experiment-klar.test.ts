@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { ACHSE_X, ACHSE_Y, FELDER } from '../components/bild/annahmen-map';
 import { NOTIZEN } from '../data/begleiter';
 import { MIRO_FRAMES } from '../components/miro-frames';
 import * as ZEITEN from '../components/innolab-zeiten';
@@ -21,10 +22,10 @@ const folie = (id: string) => {
 const sichtbar = (id: string) => folie(id).replace(/<div class="nur-handout">[\s\S]*?<\/div>\s*(?=<\/?[A-Za-z]|$)/g, '').replace(/<p class="nur-handout">[\s\S]*?<\/p>/g, '');
 
 describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
-  it('18 Folien in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
+  it('20 Folien (seit 27.11. mit annahmen-finden und lernkarte-zeilen) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
     expect(folienAus(EX, seite(EX)).map((f) => f.id)).toStrictEqual([
       'claude-pro-jetzt', 'claude-code-opus', 'annahmen-der-idee', 'schritte-der-idee', 'spitzenreiter', 'map', 'karte', 'ergebnis-gilt',
-      'vorher-entscheiden', 'welcher-test', 'test-arten', 'beispiel', 'beispiel-map', 'karte-e1', 'vorgehen', 'lernkarte',
+      'vorher-entscheiden', 'welcher-test', 'test-arten', 'annahmen-finden', 'beispiel', 'beispiel-map', 'karte-e1', 'vorgehen', 'lernkarte', 'lernkarte-zeilen',
       'gegen-den-beleg', 'uebertrag',
     ]);
     expect(seite(EX)).not.toMatch(/id="sagen-tun|NACH_INTUIT|<Aufloesung/);
@@ -36,7 +37,8 @@ describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
     expect(Object.keys(n).sort()).toStrictEqual(folienAus(EX, seite(EX)).map((f) => f.id).sort());
     expect(n.karte.ueberleitung).toContain('Ergebnis nicht passt');
     expect(n['vorher-entscheiden'].ueberleitung).toContain('Vier Faustregeln');
-    expect(n.lernkarte.ueberleitung).toContain('aber offen');
+    expect(n['lernkarte-zeilen'].ueberleitung).toContain('aber offen');
+    expect(n.lernkarte.ueberleitung).toBe('Was auf der Lernkarte steht – vier Zeilen und eine für Abweichungen.');
     expect(n['gegen-den-beleg'].ueberleitung).toContain('Aufsteller');
     expect(JSON.stringify(n['gegen-den-beleg'])).not.toContain('gewonnen');
   });
@@ -55,14 +57,19 @@ describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
 });
 
 describe('Annahmen-Map wie der Miro-Frame', () => {
-  it('#map: Titel, die vier Feldnamen des Frames, Achsen, Spitzenreiter von 9:05, Wege Miro – Werkstatt – Repo', () => {
+  it('#map: Titel, die vier Feldnamen des Frames, Achsen, Spitzenreiter von heute Morgen, Wege Miro – Werkstatt – Repo', () => {
     const m = sichtbar('map');
     expect(m).toContain('<h2 id="map">Annahmen-Map: Welche testen wir zuerst?</h2>');
     expect(m).toContain('eures Spitzenreiters, den ihr heute Morgen in der Value Map bestätigt habt');
-    expect(m).toContain('Nach oben: wichtiger. Nach rechts: weniger Beleg.');
+    // Seit 27.11.: echte Achsen wie bei Torres statt der Unterschrift; dieselbe Komponente auf #map und #beispiel-map.
+    expect(m).not.toContain('Nach oben: wichtiger. Nach rechts: weniger Beleg.');
+    expect(m).toContain('<AnnahmenMap label=');
+    expect(sichtbar('beispiel-map')).toContain('<AnnahmenMap label="Annahmen-Map der Kaffeebar.');
+    expect(ACHSE_Y).toStrictEqual({ titel: 'Wichtigkeit: fällt die Idee um, wenn es falsch ist?', oben: 'wichtig', unten: 'weniger wichtig' });
+    expect(ACHSE_X).toStrictEqual({ titel: 'Beleg: was wissen wir schon?', links: 'viel Beleg', rechts: 'kein Beleg' });
     expect(m).toContain('Sortieren auf Miro – festhalten in der Werkstatt (ID, Art, Wichtigkeit, Beleg) – die Karte E1 auf Miro, im selben Frame.');
-    // Feldnamen kommen aus MAP_FELDER, in dieser Reihenfolge (oben links, oben rechts, unten links, unten rechts).
-    const felder = [...seite(EX).matchAll(/\{ name: '([^']+)', klasse: '(ol|or|ul|ur)' \}/g)].map((x) => `${x[2]}:${x[1]}`);
+    // Feldnamen in dieser Reihenfolge (oben links, oben rechts, unten links, unten rechts), wie im Frame.
+    const felder = FELDER.map((x) => `${x.klasse}:${x.name}`);
     expect(felder).toStrictEqual(['ol:Beleg prüfen, darauf bauen', 'or:Zuerst testen', 'ul:Abhaken', 'ur:Später prüfen']);
     // Torres’ englische Abbildung nur noch im Handout.
     expect(m).not.toContain('leap-of-faith.jpg');
@@ -109,7 +116,9 @@ describe('Pre-Mortem und Gegenprobe', () => {
   it('keine docs-Dateien mehr für Studierende (Nachtrag 26.11. abends)', () => {
     expect(seite(EX)).not.toMatch(/docs\/[A-Z-]+\.md/);
     expect(seite(EX)).toContain('<h2 id="vorlage">So sieht die Karte auf Miro aus</h2>');
-    expect(seite(EX)).toContain('<Prompt label="Lernkarte E1 · Miro, T4 · 6 · Lernkarten · Produkt n">');
+    expect(seite(EX)).toContain('<Karte label="Lernkarte E1 · Miro, T4 · 6 · Lernkarten · Produkt n" text={`Lernkarte E1 · A[n]');
+    // Seit 27.11.: Karten als Karte (kein Kopieren-Knopf), nicht als Prompt.
+    expect(seite(EX)).not.toMatch(/<Prompt label="(Beispiel · Experiment-Karte E1|Feld „Karte E1|Lernkarte E1|Origin Story · Miro)/);
     expect(seite('/innolab/tag-5')).not.toContain('docs/EXPERIMENTE.md');
   });
 });

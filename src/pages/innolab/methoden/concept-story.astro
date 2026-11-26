@@ -307,9 +307,9 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
       <table class="drei">
         <thead><tr><th></th><th>Concept Story<span>jetzt</span></th><th>Origin Story<span>am Ende des Tages, im Abschluss</span></th><th>Usage Story<span>nach der Mittagspause</span></th></tr></thead>
         <tbody>
-          <tr data-schritt><th>Frage</th><td>Warum ist euer Produkt besser als das, was die Person heute tut?</td><td>Wie wird die Person zum ersten Mal Kundin?</td><td>Wie nutzt die Person euer Produkt, Schritt für Schritt?</td></tr>
+          <tr data-schritt><th>Frage</th><td>Warum ist es besser als das, was die Person heute tut?</td><td>Wie wird die Person zum ersten Mal Kundin?</td><td>Wie nutzt die Person es, Schritt für Schritt?</td></tr>
           <tr data-schritt><th>Am Höhepunkt</th><td>… <em>versteht</em> die Person den Wert</td><td>… <em>sieht</em> die Person den Wert</td><td>… <em>erlebt</em> die Person den Wert</td></tr>
-          <tr data-schritt><th>Kaffeebar</th><td>Die Pendlerin denkt: „Gewissheit statt Glücksspiel.“</td><td>Die Pendlerin liest am Aufsteller an der Hallentür: „Wir sagen dir sofort, ob dein Kaffee vor der Abfahrt fertig ist.“</td><td>Die Pendlerin hat im Gehen bestellt und liest: „Fertig 7:31. Dein Zug fährt 7:38.“</td></tr>
+          <tr data-schritt><th>Kaffeebar</th><td>Die Pendlerin denkt: „Gewissheit statt Glücksspiel.“</td><td>Die Pendlerin liest am Aufsteller: „Wir sagen dir sofort, ob dein Kaffee vor der Abfahrt fertig ist.“</td><td>Die Pendlerin hat im Gehen bestellt und liest: „Fertig 7:31. Dein Zug fährt 7:38.“</td></tr>
           <tr data-schritt><th>Daraus wird</th><td>der Satz im Produkt-Brief</td><td>der Text für Aufsteller oder Landingpage – Test E1</td><td>der Ablauf für euren Prototyp</td></tr>
         </tbody>
       </table>
@@ -369,7 +369,8 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
   .drei th, .drei td { vertical-align: top; }
   .drei thead th span { display: block; font-weight: 400; font-size: .8em; color: var(--muted); }
   .drei tbody th { white-space: nowrap; }
-  :global(html[data-beamer]) .drei th, :global(html[data-beamer]) .drei td { font-size: .95rem; padding-top: .3rem; padding-bottom: .3rem; }
+  :global(html[data-beamer]) .drei th, :global(html[data-beamer]) .drei td { font-size: .85rem; line-height: 1.3; padding-top: .2rem; padding-bottom: .2rem; }
+  :global(html[data-beamer] .folie:has(> h2#drei-storys) .folie-satz) { margin-bottom: .4rem; }
   :global(html[data-beamer]) .drei-zeile { font-size: 1rem; margin: .3rem 0; }
   /* #vorgehen: „Fertig, wenn“ unter Schritt 1 als eigene, etwas kleinere Zeile (Flach-Probe als Check, Entscheidung 27.11.). */
   .fertig-wenn { display: inline-block; margin-top: .25rem; font-size: .85em; color: var(--muted); }

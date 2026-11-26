@@ -378,8 +378,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(NOTIZEN[f.pfad][f.id].live).toStrictEqual(NOTIZEN['/innolab/methoden/experiment']['ergebnis-gilt'].live);
   });
   it('folgt Folie für Folie auf den echten Seiten', () => {
-    // Seit 26.11.2026 steht „Gegen den Beleg“ direkt nach der Lernkarte, die sie voraussetzt.
-    const a = beamer('/innolab/methoden/experiment', 'lernkarte').z.index;
+    // Seit 26.11.2026 steht „Gegen den Beleg“ direkt nach der Lernkarte (seit 27.11. zwei Folien), die sie voraussetzt.
+    const a = beamer('/innolab/methoden/experiment', 'lernkarte-zeilen').z.index;
     expect(beamer('/innolab/methoden/experiment', 'gegen-den-beleg').z.index).toBe(a + 1);
     // Die Origin Story steht seit dem 26.11.2026 im Abschluss von Tag 4, nicht mehr auf der Experiment-Seite.
     expect(folien[beamer('/innolab/methoden/experiment', 'lernkarte').z.index].id).toBe('lernkarte');

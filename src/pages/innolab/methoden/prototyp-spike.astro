@@ -4,6 +4,7 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Karte from '../../../components/bild/Karte.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
@@ -119,13 +120,13 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="karte-e2">Auch dieser Test hat eine Karte</h2>
     <p class="folie-satz">Annahme, Messgröße, Schwelle, Entscheidung – bevor die erste Person testet.</p>
-    <Prompt label="Beispiel · Experiment-Karte E2">E2 · A3 (bedienbar) · läuft bis Tag 5
+    <Karte label="Beispiel · Experiment-Karte E2" text={`E2 · A3 (bedienbar) · läuft bis Tag 5
 Wir glauben, dass Pendler*innen im Gehen ohne Hilfe bis zur Fertig-Zeit bestellen können.
 Um das zu prüfen, geben wir fünf Pendler*innen den Klick-Prototyp am Handy mit der Aufgabe:
   „Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“
 Wir messen: Höhepunkt „Fertig 7:31“ ohne Hilfe erreicht (ja/nein), Zeit bis dahin (Richtwert aus A3: 20 Sekunden), wo sie hängen, was sie beim Höhepunkt sagen oder zeigen.
 Wir haben recht, wenn 4 von 5 den Höhepunkt ohne Hilfe erreichen.
-Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen</Prompt>
+Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen`} />
     <div class="nur-handout">
       <p>Die Zeit notiert ihr; 20 Sekunden sind der Richtwert aus A3, nicht die Schwelle. Die Zeile „Wir entscheiden vorher“ steht hier wie auf Karte E1 (<a href="/innolab/methoden/experiment#vorher-entscheiden">Vorher entscheiden</a>); die drei Bänder für E2 sind eine Setzung der Kaffeebar. Testpersonen sind Menschen mit dem Pain, nicht die bequemsten: „make sure that your participants experience the need, pain point, or desire … Remember to recruit for variation“ ({TORRES}, S. 145). Was ihr beim Höhepunkt beobachtet, ist Lichaws Smile Test: Lächelt die Person dort, wo eure Usage Story den Höhepunkt hat? Die Reaktion notiert ihr neben „Höhepunkt erreicht“; für die Schwelle zählt nur, ob sie ohne Hilfe dort ankommt.</p>
     </div>
@@ -328,51 +329,44 @@ Starte die Seite lokal und gib mir die Adresse. Ich habe 40 Minuten. main, Issue
   <h2 id="vorlage">So sieht euer Frame aus</h2>
   <p>Das Beispiel der Kaffeebar auf Miro: <MiroLink name="T4 · 5 · Prototyp · Kaffeebar">Kaffeebar</MiroLink>.</p>
   <p>Im Frame „T4 · 5 · Prototyp · Produkt n“ stehen sechs nummerierte Felder, so wie die Schritte: oben 1 bis 4, darunter 5 und 6, dazu die Befunde. Testet ihr bis Tag 5 mit Menschen, die den Pain haben (freiwillig), kommen die Tests, die Befunde und die Lernkarte E2 in denselben Frame.</p>
-  <Prompt label="Miro · T4 · 5 · Prototyp · Produkt n">1 · Papier-Skizzen
+  <Karte label="Miro · T4 · 5 · Prototyp · Produkt n" text={`1 · Papier-Skizzen
 Ein Foto je Blatt. Ein Blatt = ein Bildschirm (Stationen 2 bis 6 eurer Usage Story). Höhepunkt = eigenes Blatt mit Stern. Pfeil an jedem Knopf: zu welchem Blatt führt er?
-Blatt 1 · [Name des Bildschirms] · Station [n] … Blatt 6 · …
-
-2 · Abnahmekriterien
+Blatt 1 · [Name des Bildschirms] · Station [n] … Blatt 6 · …`} />
+  <Karte text={`2 · Abnahmekriterien
 Der Prototyp zeigt [den Weg von … bis zum Höhepunkt „…“ – in … Tipps].
 Er läuft [am Handy im Browser; oben steht „Prototyp – nicht echt“].
-Er hat nicht: [Login · Zahlung · Datenbank · …].
-
-3 · Zeitbox
+Er hat nicht: [Login · Zahlung · Datenbank · …].`} />
+  <Karte text={`3 · Zeitbox
 Zeitbox: bis [Uhrzeit] (40 Minuten)
 Zuerst gebaut: [Höhepunkt-Bildschirm]
-Bei null fehlt noch: [...]
-
-4 · Prototyp
+Bei null fehlt noch: [...]`} />
+  <Karte text={`4 · Prototyp
 Branch: spike/[vorname]
 Link fürs Handy: [Vorschau-Adresse …/spike]
-Abnahme – zeigt: ja / nein · läuft: ja / nein · hat nicht: ja / nein
-
-5 · Karte E2 · A[n] (bedienbar) · läuft bis Tag 5
+Abnahme – zeigt: ja / nein · läuft: ja / nein · hat nicht: ja / nein`} />
+  <Karte text={`5 · Karte E2 · A[n] (bedienbar) · läuft bis Tag 5
 Wir glauben, dass [...].
 Um das zu prüfen, geben wir fünf [Zielgruppe] den Prototyp am Handy mit der Aufgabe:
   „[Situation, Ziel – ohne Bedienschritte]“
 Wir messen: Höhepunkt ohne Hilfe erreicht · Zeit bis dahin · wo gehangen · Reaktion am Höhepunkt.
 Wir haben recht, wenn [x] von 5 den Höhepunkt ohne Hilfe erreichen.
-Wir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [...]
-
-6 · Tests
+Wir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [...]`} />
+  <Karte text={`6 · Tests
 Testperson · Pain vorhanden? · Höhepunkt ohne Hilfe? · Zeit · wo gehangen · Reaktion am Höhepunkt · Zitat
 0 · Trockenlauf (heute): Aufgabe verständlich? ja / nein · Höhepunkt erreicht? ja / nein · wo gehangen: [...]
 1 bis 5: freiwillig bis Tag 5
 Ablauf je Test (15–20 min): Einwilligung (Notizen, KI) · „Wir testen den Prototyp, nicht dich; sag, was dir durch den Kopf geht“ ·
-  Aufgabe vorlesen · schweigen, höchstens „Was würdest du jetzt tun?“ · danach: „Was hat dich überrascht?“
-
-Befunde – falls ihr testet
-U1 · [Befund] · [n von 5] · Folge: [was ihr deshalb ändert]
-
-Lernkarte E2 – falls ihr testet
+  Aufgabe vorlesen · schweigen, höchstens „Was würdest du jetzt tun?“ · danach: „Was hat dich überrascht?“`} />
+  <Karte text={`Befunde – falls ihr testet
+U1 · [Befund] · [n von 5] · Folge: [was ihr deshalb ändert]`} />
+  <Karte text={`Lernkarte E2 – falls ihr testet
 Wir glaubten, dass [...].
 Wir haben beobachtet: [x von 5, Zeiten, U-IDs]
 Verlässlichkeit: schwach / mittel / stark – weil [...]
 Daraus lernen wir: [...]
 Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: [...]
 Weicht ab von „Wir entscheiden vorher“? Grund: [...]
-Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
+Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]`} />
 
   <h2 id="pruefen">Prüfen</h2>
   <p>Skizzen, Kriterien, Karte E2 und Befunde liegen nur auf Miro, in eurem Frame „T4 · 5 · Prototyp · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>

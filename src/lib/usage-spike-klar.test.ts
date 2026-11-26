@@ -126,7 +126,7 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect(beamer(folie(PS, 'worum'))).toContain("{ t: 'Testen', sub: 'heute ein Trockenlauf; bis Tag 5 freiwillig mehr', icon: Users }");
     expect(beamer(folie(PS, 'uebertrag'))).toContain('<strong>Bis Tag 5, freiwillig:</strong> Tests mit Menschen, die den Pain haben – fünf sind ideal.');
     const s = seite(PS);
-    expect(s).toContain('\nLernkarte E2 – falls ihr testet\n');
+    expect(s).toContain('<Karte text={`Lernkarte E2 – falls ihr testet\n');
     expect(s).not.toContain('T4 · 6 · Lernkarten');
     // Keine Folie und keine Notiz macht die fünf Tests zur Pflicht.
     const texte = [s, JSON.stringify(NOTIZEN_PROTOTYP_SPIKE)];
@@ -150,9 +150,9 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect(f).toContain('Wir glauben, dass Pendler*innen im Gehen ohne Hilfe bis zur Fertig-Zeit bestellen können.');
     expect(f).not.toContain('innerhalb von 20 Sekunden');
     expect(f).toContain('Zeit bis dahin (Richtwert aus A3: 20 Sekunden)');
-    expect(f).toContain('Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen</Prompt>');
+    expect(f).toContain('Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen`} />');
     const s = seite(PS);
-    expect(s).toContain('Wir haben recht, wenn [x] von 5 den Höhepunkt ohne Hilfe erreichen.\nWir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [...]\n');
+    expect(s).toContain('Wir haben recht, wenn [x] von 5 den Höhepunkt ohne Hilfe erreichen.\nWir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [...]`} />');
     expect(s).toContain('Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: [...]\nWeicht ab von „Wir entscheiden vorher“? Grund: [...]\n');
   });
   it('beispiel-befunde: U1–U3 mit Zahl und Folge im Beamer, U2 wandert in Slice 1', () => {
@@ -183,7 +183,7 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect([...k.matchAll(/<li data-schritt><strong>(„[^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['„Der Prototyp zeigt …“', '„Er läuft …“', '„Er hat nicht …“']);
     expect(k).toContain('<strong>Wo:</strong> Feld „2 · Abnahmekriterien“');
     expect(beamer(folie(PS, 'schritt-zeitbox'))).toContain('<strong>Wo:</strong> Feld „3 · Zeitbox“');
-    expect(seite(PS)).toContain('\n3 · Zeitbox\nZeitbox: bis [Uhrzeit] (40 Minuten)\nZuerst gebaut: [Höhepunkt-Bildschirm]\nBei null fehlt noch: [...]\n');
+    expect(seite(PS)).toContain('<Karte text={`3 · Zeitbox\nZeitbox: bis [Uhrzeit] (40 Minuten)\nZuerst gebaut: [Höhepunkt-Bildschirm]\nBei null fehlt noch: [...]`} />');
   });
   it('Schritt 4: Fenster von 11:00, Opus mit Ausweich-Zeile, Bilder, Vorlesen vor dem Bauen; Sichern mit Link', () => {
     const b = beamer(folie(PS, 'schritt-bauen'));
@@ -211,7 +211,7 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect(s).toContain('Schickt den Prompt erst, wenn die Bilder darunter eingefügt sind.');
     expect(s).toContain('<Prompt label="Spike sichern · Claude Code">Committe den Stand auf dem aktuellen Spike-Branch und push ihn zu GitHub. Merge nichts nach main und öffne keinen Pull Request. Gib mir dann die Vorschau-Adresse, die Vercel für diesen Branch baut, mit /spike am Ende.');
     expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
-    expect(s).toContain('<Prompt label="Miro · T4 · 5 · Prototyp · Produkt n">');
+    expect(s).toContain('<Karte label="Miro · T4 · 5 · Prototyp · Produkt n" text={`1 · Papier-Skizzen');
   });
   it('höchstens fünf live-Stichworte je Folie, auf beiden Seiten', () => {
     const zuViele = [...Object.entries(NOTIZEN_USAGE_STORY), ...Object.entries(NOTIZEN_PROTOTYP_SPIKE)].filter(([, n]) => n.live.length > 5).map(([id]) => id);
@@ -230,7 +230,7 @@ describe('Usage Story und Prototyp-Spike: Miro statt Repo-Dateien, Opus', () => 
   it('Usage Story: Frame „T4 · 4 · Usage Story · Produkt n“ mit Aufbau statt Datei-Vorlage', () => {
     const s = seite(US);
     expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
-    expect(s).toContain('<Prompt label="Miro · T4 · 4 · Usage Story · Produkt n">');
+    expect(s).toContain('<Karte label="Miro · T4 · 4 · Usage Story · Produkt n" text={`Titel: Usage Story');
   });
   it('Opus, ohne Versionsnummer: Spike-Schritt und beide Prüfungen', () => {
     expect(seite(PS).match(/\/model opus/g)?.length).toBeGreaterThanOrEqual(3);

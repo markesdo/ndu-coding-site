@@ -308,21 +308,72 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   'test-arten': {
     live: [
       'Eine Zeile pro Klick, von schwach nach sehr stark.',
-      'Concierge erklären: Wert von Hand liefern – darum E1 ab 10.',
+      'Concierge: Wert von Hand, die Person sieht die Menschen dahinter.',
       'Fragen: Welcher passt zu eurer Annahme oben rechts?',
       'Kein Ort, keine Besucher: simulierter Moment.',
     ],
     kern: [
       {
-        text: 'Simple Landing Page: eher schwach, eine E-Mail gibt man leicht her (S. 260–263). Concierge: stark (S. 248–251). Mock Sale: Zahlungsdaten, sehr stark (S. 288–291).',
-        quelle: `${BLAND}`,
+        text: 'Simulierter Moment – Aufbau: ein Bild oder Mock-up am Handy, das genau den Moment zeigt, um den es geht. Testpersonen: Menschen aus der Zielgruppe, in der beschriebenen Situation; Torres: „A strong assumption test simulates an experience, giving your participant the opportunity to behave either in accordance with your assumption or not.“',
+        quelle: `${TORRES}, S. 135`,
       },
       {
-        text: 'Billige Formen für eine Woche, u. a. ein simulierter Moment mit einem Mock-up. Die Stärke „schwach bis mittel“ ist eine Einordnung des Kurses.',
-        quelle: `${TORRES}, S. 135, 142–144`,
+        text: 'Simulierter Moment – gemessen: ob die Person die Handlung wählt oder nicht. Kaffeebar: zehn Pendler*innen in der Halle sehen am Handy den Bestellbildschirm – wer tippt auf „Bestellen“? Achtung: gestellt, nicht die echte Lage; schwach bis mittel ist Kurseinordnung. Billige Formen für eine Woche: S. 142–144.',
+        quelle: `${TORRES}, S. 142–144; Kaffeebar und Einordnung: Kurs`,
+      },
+      {
+        text: 'Landingpage / Aufsteller – Aufbau: „A simple, digital web page that clearly illustrates your Value Proposition with a call to action.“ Das Angebot steht da, das Produkt noch nicht, und die Seite sagt das (Kursregel). Testpersonen: wer vorbeikommt – Bland rechnet mit „about 100 unique visitors a day“; beim Aufsteller die Menschen in der Halle.',
+        quelle: `${BLAND}, Simple Landing Page, S. 260, 262`,
+      },
+      {
+        text: 'Landingpage – gemessen: Aufrufe, Eintragungen, Klicks; „Email is a rather weak strength of evidence, in that everyone has email and they give it out freely if even mildly interested.“ Kaffeebar: E1, der Aufsteller an der Hallentür, gezählt gegen die Strichliste am Automaten.',
+        quelle: `${BLAND}, S. 261–262`,
+      },
+      {
+        text: 'Concierge – Aufbau: „Creating a customer experience and delivering value manually, with people instead of using technology. Unlike Wizard of Oz, the people involved are obvious to the customer.“ Wizard of Oz liefert ebenfalls von Hand, aber „without making the human steps visible to the end customer“.',
+        quelle: `${BLAND}, Concierge, S. 248; S. 251`,
+      },
+      {
+        text: 'Concierge – Testpersonen: wenige echte Kund*innen, die bestellen; gemessen: Zufriedenheit, Käufe, Durchlaufzeit; „Payments are strong evidence, even if you are manually delivering value.“ Kaffeebar: ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an. Achtung: kostet vor allem Zeit – „The biggest requirement for a concierge test is time.“',
+        quelle: `${BLAND}, S. 250`,
+      },
+      {
+        text: 'Mock Sale – Aufbau: „Presenting a sale for your product without processing any payment information.“ Online: nach dem Klick auf den Preis ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Gemessen: Kaufklicks, E-Mails, eingegebene Zahlungsdaten – „Purchase clicks are relatively strong“, „Payment info submissions are very strong evidence.“',
+        quelle: `${BLAND}, Mock Sale, S. 288–290`,
+      },
+      {
+        text: 'Mock Sale – Achtung: Bland lässt im Laden „intercept and explain that the product is not yet available“ und die Kundschaft „with a gift card for the inconvenience“ entschädigen; online kommt der Hinweis sofort nach dem Klick. Zahlungsdaten nicht speichern ist Kursregel. Kaffeebar: Knopf „Vorbestellen für 2,90 €“, danach „Gibt es noch nicht – wir sagen dir Bescheid“.',
+        quelle: `${BLAND}, S. 289; Kaffeebar und Speicherregel: Kurs`,
       },
     ],
+    verstaendnis: {
+      frage: 'Warum ist Mock Sale stärker als Landingpage?',
+      antwort: 'Zahlungsdaten kosten mehr als eine E-Mail: „Email is a rather weak strength of evidence, in that everyone has email and they give it out freely if even mildly interested“ (S. 262); „Payment info submissions are very strong evidence“ (S. 290).',
+      falsch: '„Weil mehr Leute klicken“ – es klicken eher weniger; dafür kostet der Klick mehr.',
+    },
     ueberleitung: 'Alles zusammen an der Kaffeebar: erst die Schritte.',
+  },
+
+  'annahmen-finden': {
+    live: [
+      'Fünf Fragen nacheinander aufdecken, je mit Art.',
+      'Kaffeebar Schritt 1 laut durchgehen: Wollen sie?',
+      'Antwort mit „hoffentlich“ → Annahme, hier A5.',
+      'Pre-Mortem-Frage von vorhin dazu.',
+      'Zeit: Sprechzeit ~2 min.',
+    ],
+    verstaendnis: {
+      frage: 'Woran merkt ihr, dass eine Antwort eine Annahme ist?',
+      antwort: 'Wenn ihr „hoffentlich“ denkt oder keinen Beleg nennen könnt: Dann kommt sie als „Wir glauben, dass …“ mit Art auf Miro.',
+      falsch: '„Wenn sie falsch klingt“ – auch was plausibel klingt, ist ohne Beleg eine Annahme.',
+    },
+    kern: [
+      {
+        text: '„Desirability assumptions: Does anyone want it?“ – „Viability assumptions: Should we build it?“ – „Feasibility assumptions: Can we build it?“ – „Usability assumptions: Is it usable?“ – „Ethical assumptions: Is there any potential harm in building this idea?“ Die deutschen Fragen an den einzelnen Schritt sind Kursformulierung.',
+        quelle: `${TORRES}, S. 118; Kursformulierung`,
+      },
+    ],
+    ueberleitung: 'Die fünf Fragen an jedem Schritt der Kaffeebar – das kommt heraus.',
   },
 
   beispiel: {
@@ -330,7 +381,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Fünf Schritte, als gäbe es „Im Gehen bestellen“ schon.',
       'Pro Zeile: Schritt, Annahme, Art.',
       'A5 ohne Beleg – I2-3 spricht sogar dagegen.',
-      'A4 kommt aus dem Geschäftsmodell von 10:40.',
+      'A4 kommt aus dem Geschäftsmodell vorhin.',
     ],
     kern: [
       {
@@ -366,8 +417,13 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Zeile „Wir entscheiden vorher“ zeigen – die Bänder von eben.',
       '„Unter 5 schwenkt ihr um – das steht hier, bevor der erste Pendler vorbeikommt.“',
       'Bezug: unter 5 → Wartezeit-Anzeige aus der Zeile „Falls E1 scheitert“.',
-      'Kursregel: drei Zeilen sind Zusätze des Kurses zu Blands Karte.',
+      'Concierge erklären: Bestellungen von Hand an der Hallentür.',
     ],
+    verstaendnis: {
+      frage: 'Was ist ein Concierge-Test?',
+      antwort: 'Ihr liefert den Wert von Hand statt mit Software, und die Kundschaft sieht die Menschen dahinter: „Creating a customer experience and delivering value manually, with people instead of using technology. Unlike Wizard of Oz, the people involved are obvious to the customer.“ (Bland, S. 248). Kaffeebar: ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an.',
+      falsch: '„Ein Test mit einem Prototyp“ – geliefert wird echter Wert, nur ohne Software.',
+    },
     kern: [
       {
         text: 'Die Zeile verbindet jedes mögliche Ergebnis mit einer Handlung, bevor gezählt wird: „a decision matrix that links possible outcomes to predetermined actions before any data comes in.“ Ab 10 der Concierge, 5–9 denselben Test wiederholen und eine Sache ändern, unter 5 umschwenken auf die Wartezeit-Anzeige (A6). Die Grenze 5 ist eine Setzung der Kaffeebar.',
@@ -402,10 +458,27 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   lernkarte: {
     live: [
+      'Zeitstrahl von links: Karte heute, Origin Story am Ende des Tages.',
+      'Bis Tag 5: E1 mit Menschen aus der Zielgruppe am echten Ort.',
+      'Kein Ort? Simulierter Moment mit zehn aus der Zielgruppe.',
+      'Danach Lernkarte E1 auf Miro, an Tag 5 vorlesen.',
+      'E2 nur, wer testet – eigene Lernkarte im selben Frame.',
+    ],
+    fragen: [
+      {
+        frage: 'Wer sind die Testpersonen für E1, und wann?',
+        antwort: 'Menschen aus der Zielgruppe in der Situation, um die es geht (Kaffeebar: Pendler*innen morgens in der Halle), zwischen heute und drei Werktagen vor Tag 5. Geht kein echter Ort: ein simulierter Moment mit zehn Menschen aus der Zielgruppe.',
+      },
+    ],
+    ueberleitung: 'Was auf der Lernkarte steht – vier Zeilen und eine für Abweichungen.',
+  },
+
+  'lernkarte-zeilen': {
+    live: [
       'Learning Card zeigen: geglaubt, beobachtet, gelernt, darum.',
-      'Hausaufgabe nennen: nach dem Test füllen, an Tag 5 vorlesen.',
       'Erst der Beleg (gestützt, widerlegt, unklar, neu), dann die Handlung.',
       'Verlässlichkeit dazuschreiben: schwach, mittel oder stark – und warum.',
+      'Darum: das Band, das auf der Karte E1 vorher steht.',
     ],
     verstaendnis: {
       frage: 'E1 ist widerlegt, ihr schwenkt auf die Wartezeit-Anzeige um. Was müsst ihr mit euren alten Belegen tun?',
