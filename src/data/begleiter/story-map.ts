@@ -263,6 +263,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Timer 6 min: gelbe Verb-Sätze, erst bis zum Ende.',
       'Falle: „klickt“, „ist auf Seite“ – fragen: wozu?',
       'Falle: „und“ auf dem Sticky – zwei Stickies.',
+      'Fragen: Hat jeder Pain vom Rand einen Task, der ihn löst?',
     ],
     uebung: { dauer: '6 min', form: 'allein' },
     ueberleitung: 'Über die Tasks kommen die Aktivitäten.',
@@ -337,7 +338,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Fragen: An welchem Sticky passiert der Outcome?',
     ],
     uebung: { dauer: '5 min', form: 'allein' },
-    ueberleitung: 'Zum Schluss ins Repo – und Claude nach Annahmen fragen.',
+    ueberleitung: 'Zum Schluss: fertig auf Miro – und Claude nach Annahmen fragen.',
   },
 
   'schritt-festhalten': {

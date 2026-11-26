@@ -117,6 +117,19 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(seite).toContain('<h2 id="vorlage">So sieht euer Bereich im Frame aus</h2>');
   });
 
+  // Code-Review #457: jede Prüffrage prüft ihren eigenen Schritt; Verweise auf Schrittnummern stimmen; Prüfen ohne Repo.
+  it('Review #457: eigene Prüffragen, richtige Schrittnummern, Prüfen mit Screenshot', () => {
+    expect(seite).not.toContain('Prüft in Schritt');
+    expect(sichtbar(folie('schritt-loecher'))).toContain('<strong>Prüft:</strong> Wo springt eure Geschichte zwischen zwei Stickies – und was ist, wenn …?');
+    expect(handout(folie('sechs-schritte'))).toContain('Übungsschritt 10 und 11 – Durchgehen und Festhalten');
+    const pruefen = seite.slice(seite.indexOf('<h2 id="pruefen">'), seite.indexOf('<ClaudePruefung'));
+    expect(pruefen).toContain('Nehmt unten den Weg „Ohne Claude Code“ und fügt statt Text einen Screenshot eures Bereichs im Frame „T4 · 1 · Story Map“ ein');
+    const n = NOTIZEN['/innolab/methoden/story-map'];
+    expect(n['schritt-durchgehen'].ueberleitung).toBe('Zum Schluss: fertig auf Miro – und Claude nach Annahmen fragen.');
+    expect(n['schritt-tasks'].live).toContain('Fragen: Hat jeder Pain vom Rand einen Task, der ihn löst?');
+    expect(JSON.stringify(n)).not.toMatch(/ins Repo|docs\//);
+  });
+
   it('Begleiter: Warm-up-Notiz erinnert ans Teilen des eigenen Boards, ohne Link', () => {
     const n = NOTIZEN['/innolab/methoden/story-map'];
     expect(n.warmup.live).toContain('Eigenes Board „Euer Morgen“ teilen (Link aus deinen Lesezeichen).');
