@@ -360,7 +360,12 @@ export const METHODEN: Methode[] = [
       { id: 'experiment-schnellster', text: 'Es ist der schnellste Test dieser Woche, der den stärksten Beleg liefert, den ihr euch leisten könnt.' },
       { id: 'experiment-danach', text: 'Es steht da, was die Testpersonen danach erfahren; die riskanteste Annahme der anderen beiden Ideen steht je als Zeile darunter.' },
       { id: 'experiment-origin', text: 'An Tag 4: Die Origin Story führt zu genau einer Handlung, und diese Handlung ist die Messgröße der Karte.' },
-      { id: 'experiment-lernkarte', text: 'Nach dem Test: Die Lernkarte nennt die Verlässlichkeit mit Grund und den Befund (gestützt, widerlegt, unklar oder neue Einsicht), bevor sie sagt, was ihr deshalb tut.' },
+      // Seit 27.11.2026 läuft E1 nicht (Entscheidung des Dozenten): Eine Lernkarte gibt es nur, wenn jemand E2 testet.
+      {
+        id: 'experiment-lernkarte',
+        text: 'Nur wenn ihr E2 mit dem Prototyp getestet habt (E1 läuft in diesem Kurs nicht – sonst überspringen): Die Lernkarte nennt die Verlässlichkeit mit Grund und den Befund (gestützt, widerlegt, unklar oder neue Einsicht), bevor sie sagt, was ihr deshalb tut.',
+        frage: 'Ist keine Lernkarte im Bild, überspring diesen Punkt ohne Befund – E1 läuft in diesem Kurs nicht.',
+      },
     ],
     ki: 'Gegenprobe zu E1: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
@@ -403,7 +408,12 @@ export const METHODEN: Methode[] = [
     braucht: ['usage', 'storymap', 'annahmen'], ergibt: ['spike'],
     pruefliste: [
       { id: 'prototyp-spike-skizzen', text: 'Papierskizzen für jeden Bildschirm der Usage Story liegen als Foto im Feld „1 · Papier-Skizzen“; der Höhepunkt ist ein eigenes Blatt mit Stern.' },
-      { id: 'prototyp-spike-branch', text: 'Im Feld „4 · Prototyp“ stehen der eigene Branch (spike/…) und der Link; der Prototyp trägt „Prototyp – nicht echt“, Abnahmekriterien und Zeitbox stehen in den Feldern 2 und 3 – er wird nicht gemergt.' },
+      {
+        id: 'prototyp-spike-branch',
+        text: 'Im Feld „4 · Prototyp“ stehen der eigene Branch (spike/…), der Link fürs Handy und die drei Abnahme-Kreuze; Abnahmekriterien und Zeitbox stehen in den Feldern 2 und 3 – der Spike wird nicht gemergt.',
+        // Code-Review #458: „Prototyp – nicht echt“ steht nur im Prototyp selbst, nicht im Bild des Frames.
+        frage: 'Ob oben „Prototyp – nicht echt“ steht, zeigt nur der Link, nicht das Bild – frag danach, statt es zu prüfen.',
+      },
       { id: 'prototyp-spike-karte', text: 'Die Karte E2 nennt die Annahme (ID, Art) und die Schwelle „x von 5“, bevor jemand testet.' },
       { id: 'prototyp-spike-aufgabe', text: 'Die Aufgabe beschreibt Situation und Ziel, keine Bedienschritte und keine Begriffe aus der Oberfläche.' },
       { id: 'prototyp-spike-trockenlauf', text: 'Ein Trockenlauf mit den anderen beiden ist gelaufen; die Testpersonen danach haben den Pain und kennen das Produkt nicht.' },
