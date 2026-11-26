@@ -27,7 +27,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
       '13:35–14:05 Usage Story /innolab/methoden/usage-story',
       '14:05–15:35 Prototyp-Spike /innolab/methoden/prototyp-spike',
       '15:35–15:45 Pause',
-      '15:45–16:25 Agil & Scrum /innolab/methoden/scrum#abweichungen',
+      '15:45–16:25 Agil & Scrum /innolab/methoden/scrum#foliensatz',
       '16:25–17:15 Prototyp weiterbauen / Puffer',
       '17:15–17:30 Origin Story & Hausaufgabe #abschluss',
     ]);

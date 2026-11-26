@@ -411,7 +411,8 @@ export const METHODEN: Methode[] = [
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
   },
   {
-    // Seit 25.11.2026 (NDU-72) ohne Lego4Scrum: Agil & Scrum an Tag 4 (30), Teamaufstellung und DoD an Tag 5 (40).
+    // Seit 25.11.2026 (NDU-72) ohne Lego4Scrum; seit 26.11.2026 Variante B (Foliensatz plus Kaffeebar-Übung): Agil & Scrum an
+    // Tag 4 (40), Teamaufstellung und DoD an Tag 5 (40).
     slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 80, prueflisteStand: 2,
     frage: 'Wie arbeiten wir als drei Scrum-Teams mit denselben drei Personen an drei Produkten?',
     braucht: ['brief'], ergibt: ['team'],

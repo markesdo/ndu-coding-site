@@ -19,9 +19,14 @@ const dateien = (d: string): string[] => readdirSync(d).flatMap((n) => {
 const QUELLE_T4 = readFileSync(new URL('../pages/innolab/tag-4.astro', import.meta.url), 'utf8');
 const QUELLE_SCRUM = readFileSync(new URL('../pages/innolab/methoden/scrum.astro', import.meta.url), 'utf8');
 const href = `href="${FOLIENSATZ_URL.replace(/&/g, '&amp;')}"`;
+// Von der Überschrift bis zur nächsten <h2>. Beide Grenzen müssen da sein, sonst fiele der Ausschnitt still auf die
+// ganze restliche Seite zurück (slice mit -1) und die Prüfungen darauf wären wertlos.
 const ausschnitt = (html: string, id: string) => {
   const a = html.indexOf(`<h2 id="${id}"`);
-  return a < 0 ? '' : html.slice(a, html.indexOf('<h2 ', a + 1));
+  const b = html.indexOf('<h2 ', a + 1);
+  expect(a, `<h2 id="${id}">`).toBeGreaterThan(0);
+  expect(b, `nächste <h2> nach #${id}`).toBeGreaterThan(a);
+  return html.slice(a, b);
 };
 
 describe('Foliensatz: eine Adresse, 20 Folien', () => {
@@ -48,7 +53,7 @@ describe('Tag 4: Agil & Scrum 15:45–16:25 mit Foliensatz', () => {
   it('der Block dauert 40 Minuten, der Puffer schließt lückenlos an und endet 17:15', () => {
     const b = bloeckeAus(QUELLE_T4);
     const i = b.findIndex((x) => x.titel === 'Agil & Scrum');
-    expect(b[i]).toMatchObject({ von: 15 * 60 + 45, bis: 16 * 60 + 25, href: '/innolab/methoden/scrum#abweichungen' });
+    expect(b[i]).toMatchObject({ von: 15 * 60 + 45, bis: 16 * 60 + 25, href: '/innolab/methoden/scrum#foliensatz' });
     expect(b[i + 1]).toMatchObject({ titel: 'Prototyp weiterbauen / Puffer', von: b[i].bis, bis: 17 * 60 + 15 });
     // Die Aufteilung im Handout von „So geht ihr vor“ ergibt genau die Länge des Blocks.
     const satz = QUELLE_SCRUM.match(/<p class="nur-handout">Agil &amp; Scrum: ([^]*?)\. „Euer Produkt/)?.[1] ?? '';
@@ -73,7 +78,11 @@ describe('Scrum-Seite: Zeiger auf den Foliensatz und Übung vor dem Beispiel', (
     const ids = [...html.matchAll(/<h2[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.slice(ids.indexOf('foliensatz'), ids.indexOf('foliensatz') + 2)).toStrictEqual(['foliensatz', 'agil']);
     const folie = ausschnitt(html, 'foliensatz');
-    const beamer = folie.slice(0, folie.indexOf('nur-handout'));
+    // Ohne Handout-Teil wäre „beamer“ die ganze Folie – dann bewiese der Test nicht, dass der Link auf dem Beamer steht.
+    const handout = folie.indexOf('nur-handout');
+    expect(handout).toBeGreaterThan(0);
+    const beamer = folie.slice(0, handout);
+    expect(beamer).not.toContain('Nachlese');
     expect(beamer).toContain(href);
     expect(beamer).toContain(`Folien ${AGIL_SCRUM_FOLIEN}.`);
     // Auch „So geht ihr vor“ nennt den Foliensatz.
