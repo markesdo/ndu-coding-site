@@ -16,7 +16,24 @@ const jpeg = (b: number, h: number) => new Uint8Array([
   0xff, 0xc0, 0x00, 0x0b, 0x08, h >> 8, h & 255, b >> 8, b & 255, 0x01, 0x01, 0x11, 0x00,
 ]);
 
+// JPEG mit EXIF (big-endian „MM“), IFD0 mit genau einem Eintrag Orientation = o, dann SOF0.
+const jpegExif = (b: number, h: number, o: number) => {
+  const exif = [0x45, 0x78, 0x69, 0x66, 0, 0, 0x4d, 0x4d, 0, 0x2a, 0, 0, 0, 8, 0, 1, 0x01, 0x12, 0, 3, 0, 0, 0, 1, 0, o, 0, 0, 0, 0, 0, 0];
+  const laenge = exif.length + 2;
+  return new Uint8Array([
+    0xff, 0xd8, 0xff, 0xe1, laenge >> 8, laenge & 255, ...exif,
+    0xff, 0xc0, 0x00, 0x0b, 0x08, h >> 8, h & 255, b >> 8, b & 255, 0x01, 0x01, 0x11, 0x00,
+  ]);
+};
+
 describe('bildMass (width/height für BuchAbbildung)', () => {
+  it('EXIF-Drehung 5–8 tauscht Breite und Höhe (der Browser zeigt das Bild gedreht), 1–4 nicht', () => {
+    expect(bildMass(jpegExif(1000, 394, 6))).toStrictEqual({ breite: 394, hoehe: 1000 });
+    expect(bildMass(jpegExif(1000, 394, 8))).toStrictEqual({ breite: 394, hoehe: 1000 });
+    expect(bildMass(jpegExif(1000, 394, 1))).toStrictEqual({ breite: 1000, hoehe: 394 });
+    expect(bildMass(jpegExif(1000, 394, 3))).toStrictEqual({ breite: 1000, hoehe: 394 });
+  });
+
   it('liest Breite und Höhe aus PNG und JPEG – bei JPEG nach übersprungenen Segmenten', () => {
     expect(bildMass(png(1000, 394))).toStrictEqual({ breite: 1000, hoehe: 394 });
     expect(bildMass(jpeg(1000, 394))).toStrictEqual({ breite: 1000, hoehe: 394 });
