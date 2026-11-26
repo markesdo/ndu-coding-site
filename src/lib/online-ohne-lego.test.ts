@@ -97,7 +97,8 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
     const von = s.indexOf('<Folie weiter="/innolab/tag-4#abschluss" weiterTitel="Abschluss Tag 4">');
     expect(von).toBeGreaterThan(0);
     const ab = s.slice(von, s.indexOf('</Folie>', von));
-    expect(ab).toContain('<h2 id="weiter-tag-4">Ab hier: Tag 5</h2>');
+    // Review 3 #448: Titel für Tag 4, nicht „Ab hier: Tag 5“.
+    expect(ab).toContain('<h2 id="weiter-tag-4">Weiter heute: Prototyp bis 17:15</h2>');
     // Satz und Uhrzeit nur im Beamer (Review 2 #448): im Handout läse sich „Heute … bis 17:15“ an Tag 5 falsch.
     expect(ab).toContain('<p class="folie-satz nur-beamer">Teamaufstellung und Definition of Done folgen an Tag 5.</p>');
     expect(ab).toContain('<p class="nur-beamer">Heute: weiter am Prototyp bis 17:15, dann Origin Story und Hausaufgabe.</p>');

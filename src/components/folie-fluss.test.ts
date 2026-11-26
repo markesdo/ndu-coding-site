@@ -55,6 +55,14 @@ describe('kein Einrasten beim Blättern', () => {
   });
 });
 
+describe('nur im Beamer', () => {
+  // Review 2 #448: Sätze zur Uhrzeit auf einer Folie („Heute: … bis 17:15“) lesen sich im Handout an Tag 5 falsch.
+  it('.nur-beamer fehlt außerhalb des Beamers; im Beamer bleibt display unberührt', () => {
+    expect(BEAMER_CSS).toContain('html:not([data-beamer]) .nur-beamer { display: none; }');
+    expect(BEAMER_CSS).not.toMatch(/html\[data-beamer\] \.nur-beamer/);
+  });
+});
+
 describe('Beamer ohne weiches Scrollen', () => {
   // global.css: html { scroll-behavior: smooth } – im Beamer flog value-map#vorgehen 1,5 s über elf Folien.
   it('beamer.css schaltet scroll-behavior im Beamer ab', () => {

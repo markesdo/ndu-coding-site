@@ -579,7 +579,7 @@ describe('methoden', () => {
       [m('pitch'), '/innolab/tag-6'],
     ]) expect(ohneAnker(ziel(hier, 'prev')), `Zurück von ${hier}`).toBe(davor);
     // Scrum steht an zwei Tagen: Der FooterNav am Seitenende gehört zu Tag 5; an Tag 4 führt der Hinweis vor #team zum Abschluss.
-    expect(seite(m('scrum'))).toMatch(/Ab hier: Tag 5[\s\S]*?href="\/innolab\/tag-4#abschluss"[\s\S]*?<h2 id="team">/);
+    expect(seite(m('scrum'))).toMatch(/Weiter heute: Prototyp bis 17:15[\s\S]*?href="\/innolab\/tag-4#abschluss"[\s\S]*?<h2 id="team">/);
   });
 
   it('jede Methode ab Tag 2 steht im Ablauf ihres Kurstags mit so vielen Minuten, wie sie dauert', () => {

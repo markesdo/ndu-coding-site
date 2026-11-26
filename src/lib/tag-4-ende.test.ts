@@ -192,3 +192,11 @@ describe('Handout ohne Beamer-Sätze', () => {
     expect(folie('/innolab/tag-4', 'hausaufgabe')).toContain('<ol class="gross dicht nur-beamer">');
   });
 });
+
+// Review 3 #448: Der Handout-Link führt auf die Vorlage selbst, nicht nur auf die Seite.
+describe('Origin Story: Vorlage verlinkt', () => {
+  it('tag-4#abschluss verlinkt experiment#vorlage-origin-story, und dort steht die Überschrift mit dieser id', () => {
+    expect(folie('/innolab/tag-4', 'abschluss')).toContain('href="/innolab/methoden/experiment#vorlage-origin-story"');
+    expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">Vorlage · Origin Story in docs/STORYS.md</h3>');
+  });
+});
