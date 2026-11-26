@@ -128,4 +128,19 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(saetze).toStrictEqual([]);
     expect(s).toContain('schließen wir Pro gemeinsam neu ab, um 10:50 in der Besprechung');
   });
+
+  // Nachtrag 26.11. abends: Claude und Claude Code immer mit Opus; im Innolab keine Dateien in VS Code, nur Terminal und claude.
+  it('Setup: Opus mit /model opus und derselben Ausweichzeile wie auf experiment#claude-code-opus, ohne Versionsnummer', () => {
+    const s = setup();
+    const zeile = 'Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.';
+    expect(s.split(zeile)).toHaveLength(3);
+    for (const id of ['claude-code-opus', 'lokal-opus']) expect(s).toContain(`<p id="${id}"><strong>Modell: Opus.</strong>`);
+    expect(s.match(/<Prompt label="Claude Code">\/model opus<\/Prompt>/g)).toHaveLength(2);
+    expect(seite('/innolab/methoden/experiment')).toContain(zeile);
+    expect(s.match(/Opus \d|opus-\d/gi) ?? []).toStrictEqual([]);
+    expect(s).toContain('Dateien schreibt ihr im Innolab nicht: VS Code mit eurem Repo öffnen, Terminal, <code>claude</code> (<a href="#lokal-starten">wie</a>)');
+    // Der 10:50-Block verlässt sich darauf: Repo öffnen, Terminal, claude.
+    expect(s).toContain('<h4 id="lokal-starten">VS Code, Claude und App starten</h4>');
+    expect(s).toContain('<Prompt label="Terminal in VS Code">claude</Prompt>');
+  });
 });

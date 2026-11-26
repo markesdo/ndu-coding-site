@@ -98,7 +98,7 @@ import { bild } from '../components/anleitung-bilder';
       <li><strong>Gleich nach dem Bezahlen kündigen:</strong> unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Pro verlängert sich sonst jeden Monat von selbst.</li>
       <li><strong>Ihr verliert nichts:</strong> Pro läuft bis zum Ende des bezahlten Monats weiter – über alle drei Kurstage und die Zwischenwoche.</li>
       <li><strong>Nur kündigen, keine Erstattung anfordern:</strong> Eine Erstattung beendet Pro sofort, und Claude Code meldet sich ab.</li>
-      <li><strong>Innolab (28.11.–28.12.):</strong> An Innolab-Tag 4 (28. November) schließen wir Pro gemeinsam neu ab, um 10:50 in der Besprechung – nicht vorher allein. Mit demselben Konto – Chats und Einstellungen bleiben – und wieder gleich kündigen (<a href="/innolab/methoden/experiment#claude-pro-jetzt">Folie</a>). Claude Code braucht ihr im Innolab zum ersten Mal an Tag 4, ab der Story Map; der Monat reicht dann über Tag 5 und den Bautag am 19. Dezember bis etwa 28. Dezember. Auch ihn erstattet die NDU, Rechnung aus der E-Mail aufheben. Wer danach weiterbauen will, zahlt Pro selbst.</li>
+      <li><strong>Innolab (28.11.–28.12.):</strong> An Innolab-Tag 4 (28. November) schließen wir Pro gemeinsam neu ab, um 10:50 in der Besprechung – nicht vorher allein. Mit demselben Konto – Chats und Einstellungen bleiben – und wieder gleich kündigen (<a href="/innolab/methoden/experiment#claude-pro-jetzt">Folie</a>). Claude Code braucht ihr im Innolab zum ersten Mal an Tag 4, ab der Story Map, vor allem zum Bauen des Prototyps – Dateien schreibt ihr im Innolab nicht: VS Code mit eurem Repo öffnen, Terminal, <code>claude</code> (<a href="#lokal-starten">wie</a>), Opus wählen (<a href="#lokal-opus">wie</a>); der Monat reicht dann über Tag 5 und den Bautag am 19. Dezember bis etwa 28. Dezember. Auch ihn erstattet die NDU, Rechnung aus der E-Mail aufheben. Wer danach weiterbauen will, zahlt Pro selbst.</li>
     </ul>
   </Callout>
 
@@ -144,6 +144,9 @@ import { bild } from '../components/anleitung-bilder';
     { img: bild('setup/claude-10-trust'), alt: 'Frage „Is this a project you created or one you trust?“ mit der Liste der vorab erlaubten Befehle, vorausgewählt ist „No, exit“', text: '<strong>Achtung, hier nicht einfach Enter drücken:</strong> Vorausgewählt ist <em>No, exit</em> – das beendet Claude. Erst mit <kbd>↓</kbd> auf <em>Yes, I trust this folder</em> gehen, dann <kbd>Enter</kbd>. Darüber listet Claude die Befehle, die das Kurs-Template vorab erlaubt (etwa <code>npm run lint</code> oder <code>git status</code>) – das ist so gewollt.', marks: [{ x: 336, y: 718, w: 175, h: 15 }] },
     { img: bild('setup/claude-11-bereit'), alt: 'Claude Code ist bereit, unten die Eingabezeile', text: 'Claude Code ist bereit (1). Bei euch steht dort „Claude Pro“. Unten ist die Eingabezeile (2) – hier schreibt ihr eure Aufträge, auf Deutsch und in ganzen Sätzen. Die Anmeldung gilt für diesen Codespace; ihr macht sie nur einmal.', marks: [{ x: 333, y: 553, w: 240, h: 44, n: 1 }, { x: 331, y: 691, w: 1150, h: 20, n: 2 }] },
   ]} />
+  <p id="claude-code-opus"><strong>Modell: Opus.</strong> Im Kurs arbeitet ihr mit Opus. In Claude Code einmal eintippen:</p>
+  <Prompt label="Claude Code">/model opus</Prompt>
+  <p class="small">Mit <code>/model</code> seht ihr, welches Modell läuft. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter. In der Claude-App und auf claude.ai wählt ihr Opus im Modellmenü am Eingabefeld.</p>
 
   <h2 id="app">6 · App starten und ansehen</h2>
   <Prompt label="Erster Prompt in Claude Code">Starte die App und sag mir in einfachen Worten, wie ich sie im Browser öffne.</Prompt>
@@ -387,6 +390,9 @@ claude plugin install figma@claude-plugins-official</Prompt>
   ]} />
   </div>
   <p data-nur="windows" class="small">Farbschema wählen, <em>Claude account with subscription</em>, im Browser anmelden – wie in <a href="#claude-code">Schritt 5</a>, nur öffnet sich der Browser direkt. Bleibt bei diesem Terminal in VS Code: Es nutzt die GitHub-Anmeldung vom Klonen.</p>
+  <p id="lokal-opus"><strong>Modell: Opus.</strong> Im Kurs arbeitet ihr mit Opus. In Claude Code einmal eintippen:</p>
+  <Prompt label="Claude Code">/model opus</Prompt>
+  <p class="small">Mit <code>/model</code> seht ihr, welches Modell läuft. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter. In der Claude-App und auf claude.ai wählt ihr Opus im Modellmenü am Eingabefeld.</p>
   <p><strong>App starten.</strong> Ein <strong>zweites</strong> Terminal öffnen – wieder <em>Terminal → New Terminal</em>; Claude läuft im ersten weiter –, dann:</p>
   <Prompt label="Zweites Terminal in VS Code">npm run dev</Prompt>
   <div data-nur="mac">
