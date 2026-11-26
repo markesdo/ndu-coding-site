@@ -13,6 +13,8 @@ import SliceImBaum from '../../components/bild/SliceImBaum.astro';
 import BildText from '../../components/bild/BildText.astro';
 import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import Prompt from '../../components/Prompt.astro';
+import MiroFrame from '../../components/MiroFrame.astro';
+import MiroLink from '../../components/MiroLink.astro';
 import { KAFFEEBAR_BAUM_TAG_4 } from '../../components/innolab-beispiel';
 import { FOLIENSATZ_URL } from '../../lib/foliensatz';
 
@@ -130,8 +132,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
       </ul>
     </BildText>
     <div class="nur-handout">
-      {/* TODO Miro-ID: „T4 · 6 · Origin Story · Produkt n“ (Fable baut den Frame; Name kann sich ändern) – dann als MiroLink. */}
-      <p>Im Abschluss gibt es zehn Minuten Input zur Origin Story – sie ist der Text für euren Aufsteller oder eure Landingpage und führt zur Handlung, die E1 misst. Ihr schreibt sie auf Miro, in eurem Frame „T4 · 6 · Origin Story · Produkt n“.</p>
+      <p>Im Abschluss gibt es zehn Minuten Input zur Origin Story – sie ist der Text für euren Aufsteller oder eure Landingpage und führt zur Handlung, die E1 misst. Ihr schreibt sie auf Miro, in eurem Frame „T4 · 6 · Origin Story · Produkt n“: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">Produkt 3</MiroLink>.</p>
       <p>„An origin story is the story of how someone becomes your customer for the first time“; sie ist die Brücke zwischen Concept Story und Usage Story ({LICHAW}, Kap. 4). Die Krise kennt vier Formen: Konkurrenz, andere Lösungen (selbst machen, analog), Widerstand gegen Neues, Sorgen um Sicherheit. Der Höhepunkt liegt dort, wo jemand den Wert sieht – Startseite, Landingpage, Laden, Telefon. Danach kommt genau eine Handlung, und am Ende steht, wie ihr sie messt: „you call your main character to action and determine how to measure that action“. Die Handlung soll das Ziel der Person benennen: „start training“ statt „sign up“ (Kap. 4, FitCounter).</p>
       <p>Wie das für die Kaffeebar aussieht, zeigt die nächste Folie.</p>
     </div>
@@ -141,6 +142,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
       Studierende hier schreiben. Der Aufstellertext ist Beispiel, kein Prompt zum Übernehmen – darum ohne Kopieren. */}
   <Folie>
     <h2 id="origin-beispiel">Am Beispiel: der Aufsteller der Kaffeebar</h2>
+    <MiroFrame name="T4 · 6 · Origin Story · Kaffeebar" />
     <p class="folie-satz">Erst der Pain, dann das Produkt, dann die Antwort auf die Hürde.</p>
     <Prompt label="Beispiel · Origin Story als Aufstellertext" kopieren={false}>Zug in 8 Minuten, Schlange bis zur Tür?
 Bestell im Gehen. Scan den Code, gib deine Abfahrtszeit ein –
@@ -162,7 +164,6 @@ Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
     {/* Die Schritte nur im Beamer; im Handout steht die Checkliste, aus der sie stammen. Reihenfolge (Markus, 26.11. abends):
         Origin Story → Aufsteller/Landingpage → E1 → Lernkarte E1; Usability-Tests optional; am Ende das Aufräumen. */}
     <ol class="gross dicht nur-beamer">
-      {/* TODO Miro-ID: Origin-Story-, Lernkarten- und Prototyp-Frames „T4 · 5/6 · … · Produkt n“ – dann als MiroLink. */}
       <li data-schritt><strong>Origin Story</strong> als Text für Aufsteller oder Landingpage, auf Miro in „T4 · 6 · Origin Story · Produkt n“.</li>
       <li data-schritt><strong>Daraus der Aufsteller oder die Landingpage</strong> für E1.</li>
       <li data-schritt><strong>E1 laufen lassen</strong> bis drei Werktage vor Tag 5 – an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe.</li>
@@ -172,6 +173,7 @@ Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
       <li data-schritt><strong>Linear einrichten,</strong> die anderen beiden als Collaborator ins Repo; der Spike bleibt in seinem Branch.</li>
     </ol>
     <div class="nur-handout">
+      <p>Eure Frames auf Miro – Origin Story: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">Produkt 3</MiroLink>; Lernkarten: <MiroLink name="T4 · 6 · Lernkarten · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 3">Produkt 3</MiroLink>; Prototyp: <MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">Produkt 3</MiroLink>.</p>
       <p>Zum Abhaken:</p>
     {/* -v6: Häkchen je Position; seit 12.11.2026 mit Geschäftsmodell und Karte E1, ohne docs/TEAM.md (-v2); seit 25.11.2026
         mit Value Map, Concept Story und Baum (-v3) und ohne Lego-Zettel (-v4, NDU-72); seit 26.11.2026 abends ohne docs/*.md
@@ -186,7 +188,7 @@ Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
       'Value Map und Fit des Spitzenreiters im Canvas auf Miro (T3 · 4 · Canvas · Produkt n), jedes „?“ mit Frage',
       'Concept Story auf Miro in „T4 · 0 · Concept Story · Produkt n“ (sieben Stationen und Flach-Probe); der Satz daraus in Abschnitt 3 des Produkt-Briefs in der Werkstatt, die fallende Handlung als Annahme in der Annahmen-Map',
       'Euer Baum auf Miro: drei Ideen als Lösungen unter der Ziel-Chance, der Spitzenreiter markiert, darunter die riskanteste Annahme mit E1 (und E2, wenn ihr testet)',
-      'Geschäftsmodell auf Miro in „T4 · 2 · Geschäftsmodell · Produkt n“, Karte E1 im Frame „T4 · 0 · Annahmen der Idee“; die neuen Annahmen der Idee in der Annahmen-Map der Werkstatt',
+      'Geschäftsmodell auf Miro in „T4 · 7 · Geschäftsmodell · Produkt n“, Karte E1 im Frame „T4 · 0 · Annahmen der Idee“; die neuen Annahmen der Idee in der Annahmen-Map der Werkstatt',
       'Story Map mit Slice 1 auf Miro in „T4 · 1 · Story Map“, die Usage Story in „T4 · 4 · Usage Story · Produkt n“',
       'Linear eingerichtet: ein Team, ein Projekt pro Produkt (<a href="/innolab/methoden/scrum#team">wie</a>); Rollen und Definition of Done folgen an Tag 5',
       'Die anderen beiden als Collaborator in eurem GitHub-Repo',

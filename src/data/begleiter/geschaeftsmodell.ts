@@ -175,7 +175,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
     ueberleitung: 'Zum Schluss eine Frage, die ihr mitnehmt.',
     ablauf: {
       schritte: [
-        'Schritt 1 (4 min): auf Miro in „T4 · 2 · Geschäftsmodell · Produkt n“ (Name folgt); Wer? und Was? nur verweisen, Wie? und Wert? neu, Kosten als Posten.',
+        'Schritt 1 (4 min): auf Miro in „T4 · 7 · Geschäftsmodell · Produkt n“; Wer? und Was? nur verweisen, Wie? und Wert? neu, Kosten als Posten.',
         'Schritt 2 (2 min): Linie „[Outcome] führt zu [Impact], weil …“ aus dem eigenen Problem-Rahmen.',
         'Schritt 3 (2 min): Annahme „Wir glauben, dass …“ – Ertrag über den Kosten.',
         'Schritt 4 (2 min): Annahme in die Annahmen-Map der Werkstatt, Art „wirtschaftlich“, Wichtigkeit, Beleg.',

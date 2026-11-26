@@ -223,13 +223,14 @@ describe('Usage Story und Prototyp-Spike: Miro statt Repo-Dateien, Opus', () => 
     expect(seite(PS)).toContain('<p>Mit Opus – in Claude Code <code>/model opus</code>.');
     expect([seite(US), seite(PS)].flatMap((x) => x.match(/Opus \d|opus-\d/gi) ?? [])).toStrictEqual([]);
   });
-  // TODO Miro-IDs: Die Frames je Produkt haben noch keine IDs; die Seiten nennen sie als Text. Sobald sie in miro-frames.ts
-  // stehen, schlägt dieser Test an: dann auf beiden Seiten <MiroLink> wie in concept-story#vorgehen.
-  it('neue Frames: als Text, bis ihre IDs in miro-frames.ts stehen', () => {
-    for (const [pfad, frame] of [[US, 'T4 · 4 · Usage Story · Produkt'], [PS, 'T4 · 5 · Prototyp · Produkt']] as const) {
-      const bekannt = Object.keys(MIRO_FRAMES).some((n) => n.startsWith(frame));
-      expect(bekannt, `${frame} ist jetzt in miro-frames.ts – auf ${pfad} als <MiroLink> verlinken`).toBe(false);
-      expect(seite(pfad)).toContain(`${frame} n`);
+  // Seit 27.11.2026 haben die Frames IDs: beide Seiten verlinken sie je Produkt (wie concept-story#vorgehen) und das Beispiel.
+  it('neue Frames: je Produkt als <MiroLink>, dazu das Beispiel der Kaffeebar', () => {
+    for (const [pfad, frame] of [[US, 'T4 · 4 · Usage Story'], [PS, 'T4 · 5 · Prototyp']] as const) {
+      for (const n of ['Produkt 1', 'Produkt 2', 'Produkt 3', 'Kaffeebar']) {
+        expect(Object.keys(MIRO_FRAMES), `${frame} · ${n}`).toContain(`${frame} · ${n}`);
+        expect(seite(pfad), `${pfad}: ${frame} · ${n}`).toContain(`<MiroLink name="${frame} · ${n}">${n}</MiroLink>`);
+      }
+      expect(seite(pfad)).not.toContain('TODO Miro-IDs');
     }
   });
 });

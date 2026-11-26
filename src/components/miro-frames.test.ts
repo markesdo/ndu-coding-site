@@ -20,6 +20,13 @@ describe('MIRO_FRAMES', () => {
     for (const { p, tag } of aufrufe) expect(tag, p).toMatch(/^<MiroFrame name="[^"]+" \/>$|^<MiroLink name="[^"]+">$/);
   });
 
+  // Ein Link ohne Import fällt erst beim Bauen auf (ReferenceError beim Vorrendern) – hier schon im Test.
+  it('jede Seite mit <MiroFrame>/<MiroLink> importiert die Komponente', () => {
+    for (const { p, text } of quellen) {
+      for (const k of ['MiroFrame', 'MiroLink']) if (text.includes(`<${k} `)) expect(text, `${p}: ${k}`).toMatch(new RegExp(`^import ${k} from '[./]+/components/${k}\\.astro';$`, 'm'));
+    }
+  });
+
   it('jeder Frame-Name aus den Seiten steht in der Karte – ein Tippfehler fällt hier auf', () => {
     for (const { p, tag } of aufrufe) {
       const name = /name="([^"]+)"/.exec(tag)![1];

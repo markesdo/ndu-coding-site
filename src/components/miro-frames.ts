@@ -42,7 +42,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   // Anleitung links neben T4 · 0 (seit 26.11.2026), verlinkt von experiment.astro#vorgehen.
   'T4 · 0 · Anleitung Annahmen der Idee': '3458764691725321671',
   // Concept Story auf Miro (seit 26.11.2026): sieben Stationen auf dem Bogen und das Feld „Flach-Probe (Kursregel)“, ein Frame
-  // je Person; das ausgefüllte Beispiel der Kaffeebar daneben. Um 10:50 übertragen in docs/STORYS.md.
+  // je Person; das ausgefüllte Beispiel der Kaffeebar daneben. Seit dem Nachtrag 26.11. abends bleibt sie auf Miro (keine Datei).
   'T4 · 0 · Concept Story · Kaffeebar': '3458764691724565870',
   'T4 · 0 · Concept Story · Produkt 1': '3458764691724622640',
   'T4 · 0 · Concept Story · Produkt 2': '3458764691724622641',
@@ -54,6 +54,29 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 1 · Warm-up · euer Morgen · Produkt 2': '3458764691725906820',
   'T4 · 1 · Warm-up · euer Morgen · Produkt 3': '3458764691725906821',
   'T4 · 2 · Teamaufstellung & DoD': '3458764687968670113',
+  // Frames je Produkt für die Arbeit ohne docs-Dateien (seit 26.11.2026 nachts), je mit dem ausgefüllten Beispiel der Kaffeebar.
+  // Das Geschäftsmodell heißt auf dem Board „T4 · 7“ (T4 · 2 ist die Teamaufstellung), obwohl es um 10:30 drankommt.
+  'T4 · 4 · Usage Story · Kaffeebar': '3458764691726734311',
+  'T4 · 4 · Usage Story · Produkt 1': '3458764691726734312',
+  'T4 · 4 · Usage Story · Produkt 2': '3458764691726734313',
+  'T4 · 4 · Usage Story · Produkt 3': '3458764691726734314',
+  // Felder: 1 Papier-Skizzen · 2 Abnahmekriterien · 3 Zeitbox · 4 Prototyp · 5 Karte E2 · 6 Tests · Befunde (falls getestet).
+  'T4 · 5 · Prototyp · Kaffeebar': '3458764691726853493',
+  'T4 · 5 · Prototyp · Produkt 1': '3458764691726853494',
+  'T4 · 5 · Prototyp · Produkt 2': '3458764691726853495',
+  'T4 · 5 · Prototyp · Produkt 3': '3458764691726853496',
+  'T4 · 6 · Origin Story · Kaffeebar': '3458764691726786504',
+  'T4 · 6 · Origin Story · Produkt 1': '3458764691726786505',
+  'T4 · 6 · Origin Story · Produkt 2': '3458764691726786506',
+  'T4 · 6 · Origin Story · Produkt 3': '3458764691726786507',
+  'T4 · 6 · Lernkarten · Kaffeebar': '3458764691726588595',
+  'T4 · 6 · Lernkarten · Produkt 1': '3458764691726588596',
+  'T4 · 6 · Lernkarten · Produkt 2': '3458764691726588597',
+  'T4 · 6 · Lernkarten · Produkt 3': '3458764691726588598',
+  'T4 · 7 · Geschäftsmodell · Kaffeebar': '3458764691726674865',
+  'T4 · 7 · Geschäftsmodell · Produkt 1': '3458764691726674866',
+  'T4 · 7 · Geschäftsmodell · Produkt 2': '3458764691726674867',
+  'T4 · 7 · Geschäftsmodell · Produkt 3': '3458764691726674868',
   // Übung „Kaffeebar auf der Scrum-Karte“ (seit 26.11.2026): ein Frame je Person; die Lösung ist auf dem Board bis zur
   // Auflösung versteckt und wird nur von der Folie „Am Beispiel“ verlinkt, nicht von der Übung.
   'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 1': '3458764691686327549',

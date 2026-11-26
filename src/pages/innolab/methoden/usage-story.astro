@@ -4,6 +4,7 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import MiroLink from '../../../components/MiroLink.astro';
 import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
@@ -113,14 +114,13 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <div class="nur-handout">
       <p>Dazu zwölf Minuten Theorie und Beispiel. Lichaws Fragen je Station ({LICHAW}, Kap. 5, Mapping the Usage Story): <em>Exposition</em> – Wer? Welche Ziele? Was steht im Weg? <em>Auslöser</em> – Was startet genau diesen Ablauf? <em>Steigende Handlung</em> – Erste Aktion? Nächste? <em>Krise</em> – Was könnte im Weg stehen? <em>Höhepunkt</em> – „What value do you want the user to experience during this flow? What will make all of her conflict, crisis, and work … worthwhile?“ <em>Fallende Handlung</em> – Wie schließt ihr die Episode möglichst schnell ab? <em>Ende</em> – Wo steht die Person, und ist das der Anfang der nächsten Story?</p>
       <p>Zur Boom-Probe: Ihr lest eure Stationen 4 bis 7 allein gegen drei Fragen – Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens ein, zwei Schritte? Wo würde jemand lächeln? Markus liest sie im 1:1 und fragt nach. Eine Runde über Kreuz gibt es nicht: Jede*r von euch hat ein eigenes Produkt. Wer hinterherhängt, füllt nur Krise und Höhepunkt – die braucht der Prototyp. Eine zweite Probe allein ist die <a href="#pruefen">Prüfung mit Claude</a> unten, mit Opus (in Claude Code <code>/model opus</code>): Sie fragt unter anderem, ob der Höhepunkt ein konkreter Bildschirm ist und ob danach höchstens ein, zwei Schritte kommen.</p>
-      <p>Ihr schreibt direkt auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“ (Produkt 1 bis 3; Aufbau unten). Eine Datei im Repo gibt es dafür nicht: Den Spike baut Claude Code nach einem Screenshot dieses Frames. Er baut genau die Stationen 2 bis 6.</p>
+      <p>Ihr schreibt direkt auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“ (<MiroLink name="T4 · 4 · Usage Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 3">Produkt 3</MiroLink>; Aufbau unten). Eine Datei im Repo gibt es dafür nicht: Den Spike baut Claude Code nach einem Screenshot dieses Frames. Er baut genau die Stationen 2 bis 6.</p>
     </div>
   </Folie>
 
   <div class="nur-handout">
-  {/* TODO Miro-IDs: Sobald „T4 · 4 · Usage Story · Produkt 1–3“ in miro-frames.ts stehen, hier und in #vorgehen als
-      MiroLink verlinken – usage-spike-klar.test.ts schlägt dann an. */}
   <h2 id="vorlage">So sieht euer Frame aus</h2>
+  <p>Euer Frame auf Miro: <MiroLink name="T4 · 4 · Usage Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 3">Produkt 3</MiroLink>; das ausgefüllte Beispiel: <MiroLink name="T4 · 4 · Usage Story · Kaffeebar">Kaffeebar</MiroLink>.</p>
   <p>Im Frame „T4 · 4 · Usage Story · Produkt n“ steht der Bogen mit sieben Stationen; unter jeder Station ein Sticky. Was auf die Stickys kommt:</p>
   <Prompt label="Miro · T4 · 4 · Usage Story · Produkt n">Titel: Usage Story · [Kernaufgabe aus Slice 1]
 Person: [Pseudonym aus den Interviews] (I…) · [Uhrzeit, Ort]

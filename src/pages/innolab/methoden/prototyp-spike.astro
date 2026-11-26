@@ -4,6 +4,7 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import MiroLink from '../../../components/MiroLink.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -162,8 +163,6 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
     <p class="nur-handout">Die Befunde sind ausgedacht – an der Form erkennt ihr, wie eure aussehen sollten. U2 schiebt „Zug aus der Liste“ von Slice 2 in Slice 1: Das steht in der Spalte „Folge“ und auf der Lernkarte, Beleg U2. Torres beschreibt genau das: Fällt eine Annahme, entwickelt man die Idee so weiter, dass sie nicht mehr davon abhängt ({TORRES}, S. 140). Die Folge von U3 ist eine Setzung der Kaffeebar.</p>
   </Folie>
 
-  {/* TODO Miro-IDs: Sobald „T4 · 5 · Prototyp · Produkt 1–3“ in miro-frames.ts stehen, hier als MiroLink
-      verlinken – usage-spike-klar.test.ts schlägt dann an. */}
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (75 min)</h2>
     <p class="folie-satz">Sechs Schritte, einer nach dem anderen – jeder hat ein Feld auf Miro.</p>
@@ -175,7 +174,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       { t: '5 Karte E2', sub: '10 min<br>Miro' },
       { t: '6 Trockenlauf', sub: '10 min<br>zu dritt, Teams' },
     ]} />
-    <p class="gross"><strong>Wo:</strong> euer Frame „T4 · 5 · Prototyp · Produkt n“ – die Felder 1 bis 6 heißen wie die Schritte.</p>
+    <p class="gross"><strong>Wo:</strong> euer Frame „T4 · 5 · Prototyp · Produkt n“ – <MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">Produkt 3</MiroLink>. Die Felder 1 bis 6 heißen wie die Schritte.</p>
     <p class="gross"><strong>Bis Tag 5, freiwillig:</strong> Tests mit Menschen, die den Pain haben.</p>
     <div class="nur-handout">
       <p>Dazu 15 Minuten Theorie und Beispiel. Die Schritte 1 bis 5 macht jede*r allein für das eigene Produkt; nur der Trockenlauf läuft zu dritt. Geschrieben wird nur auf Miro, in eurem Frame „T4 · 5 · Prototyp · Produkt n“ (Produkt 1 bis 3). Claude Code baut nach Bildern eurer Frames; eine Datei im Repo schreibt ihr nicht. Den Aufbau des Frames zeigt „So sieht euer Frame aus“ weiter unten.</p>
@@ -327,6 +326,7 @@ Starte die Seite lokal und gib mir die Adresse. Ich habe 40 Minuten. main, Issue
   </Callout>
 
   <h2 id="vorlage">So sieht euer Frame aus</h2>
+  <p>Das Beispiel der Kaffeebar auf Miro: <MiroLink name="T4 · 5 · Prototyp · Kaffeebar">Kaffeebar</MiroLink>.</p>
   <p>Im Frame „T4 · 5 · Prototyp · Produkt n“ stehen sechs nummerierte Felder, so wie die Schritte: oben 1 bis 4, darunter 5 und 6, dazu die Befunde. Testet ihr bis Tag 5 mit Menschen, die den Pain haben (freiwillig), kommen die Tests, die Befunde und die Lernkarte E2 in denselben Frame.</p>
   <Prompt label="Miro · T4 · 5 · Prototyp · Produkt n">1 · Papier-Skizzen
 Ein Foto je Blatt. Ein Blatt = ein Bildschirm (Stationen 2 bis 6 eurer Usage Story). Höhepunkt = eigenes Blatt mit Stern. Pfeil an jedem Knopf: zu welchem Blatt führt er?

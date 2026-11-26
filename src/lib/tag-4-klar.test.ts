@@ -106,15 +106,11 @@ describe('Begleiter: Notizen zur Tagesseite Tag 4', () => {
   });
 });
 
-const SEITEN_MIT_FRAMES = [T4, '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell'];
-/** Frames, die Fable noch baut (Stand 26.11. abends); Namen genau wie auf den Seiten. */
-const OFFEN = [
-  'T4 · 2 · Geschäftsmodell · Produkt n',
-  'T4 · 4 · Usage Story · Produkt n',
-  'T4 · 5 · Prototyp · Produkt n',
-  'T4 · 6 · Origin Story · Produkt n',
-  'T4 · 6 · Lernkarten · Produkt n',
-];
+// Alle Seiten, die Tag-4-Frames nennen (Tag 4, seine Methoden, Tag 5). Seit 27.11.2026 haben alle Frames eine ID: OFFEN ist
+// leer, und jeder genannte Name muss in miro-frames.ts stehen (bei „Produkt n“: mit Produkt 1).
+const SEITEN_MIT_FRAMES = [T4, '/innolab/tag-5', ...['concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike', 'scrum'].map((s) => `/innolab/methoden/${s}`)];
+/** Frames, deren ID noch fehlt; Namen genau wie auf den Seiten. Kommt ein neuer Frame ohne ID dazu: hier eintragen. */
+const OFFEN: string[] = [];
 // NACHTRAG 26.11. abends: Studierende schreiben keine docs/*.md mehr – alles auf Miro oder in der Werkstatt.
 describe('Tag 4 ohne docs-Dateien für Studierende', () => {
   it('Tagesseite, Concept Story und Geschäftsmodell nennen außerhalb von Kommentaren keine docs-Datei', () => {
@@ -129,15 +125,15 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
   it('Hausaufgabe: Checkliste -v6 nennt Miro-Frames, der Spike bleibt in seinem Branch', () => {
     const f = folie(T4, 'hausaufgabe');
     expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v6" items={[');
-    for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 2 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Produkt n“', 'Der Spike liegt in seinem eigenen Branch auf GitHub']) expect(f, w).toContain(w);
+    for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 7 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Produkt n“', 'Der Spike liegt in seinem eigenen Branch auf GitHub']) expect(f, w).toContain(w);
   });
 
   // Jeder Frame-Name „T4 · …“ auf diesen Seiten steht in miro-frames.ts (bei „Produkt n“: mit Produkt 1) – oder in OFFEN, solange
-  // Fable den Frame noch baut. Kommt die ID, wandert der Name nach miro-frames.ts und fliegt hier raus. Auf der Seite steht dann
-  // ein MiroLink statt des Kommentars „TODO Miro-ID“.
+  // der Frame noch keine ID hat. Kommt die ID, wandert der Name nach miro-frames.ts und fliegt aus OFFEN.
   it('jeder genannte T4-Frame ist bekannt (MIRO_FRAMES) oder steht ausdrücklich in OFFEN', () => {
+    for (const p of SEITEN_MIT_FRAMES) expect(seite(p).length, p).toBeGreaterThan(1000);
     const { offen, unbekannt, gesehen } = frameCheck(SEITEN_MIT_FRAMES.map(seite));
-    expect(gesehen.length).toBeGreaterThan(5);
+    expect(gesehen.length).toBeGreaterThan(30);
     expect(unbekannt).toStrictEqual([]);
     // OFFEN ohne Reste: Jeder offene Name wird noch genannt und hat noch keine ID.
     expect(OFFEN.filter((n) => !offen.includes(n))).toStrictEqual([]);
@@ -147,21 +143,34 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
   it('der Wächter erkennt einen Frame, der weder bekannt noch offen ist, und einen ohne Anführungszeichen', () => {
     expect(frameCheck(['auf Miro in „T4 · 9 · Erfunden · Produkt n“.']).unbekannt).toStrictEqual(['T4 · 9 · Erfunden · Produkt n']);
     expect(frameCheck(['auf Miro (T4 · 6 · Origin Story).']).unbekannt).toStrictEqual(['ohne „…“: T4 · 6 · Origin Story).']);
+    expect(frameCheck(['<Prompt label="Miro · T4 · 4 · Usage Story · Produkt n">', '<MiroLink name="T4 · 0 · Annahmen der Idee">T4 · 0 · Annahmen der Idee</MiroLink>']).unbekannt).toStrictEqual([]);
+    expect(frameCheck(['<Prompt label="Miro · T4 · 4 · Usage Storys · Produkt n">']).unbekannt).toStrictEqual(['T4 · 4 · Usage Storys · Produkt n']);
     expect(frameCheck(['<MiroLink name="T4 · 0 · Concept Story · Produkt 1">', '„T4 · 6 · Origin Story · Produkt n“']).unbekannt).toStrictEqual([]);
+    // Der alte Name des Geschäftsmodells (T4 · 2 ist die Teamaufstellung) und der lange Prototyp-Name sind unbekannt.
+    expect(frameCheck(['„T4 · 2 · Geschäftsmodell · Produkt n“', '„T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“']).unbekannt)
+      .toStrictEqual(['T4 · 2 · Geschäftsmodell · Produkt n', 'T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n']);
   });
 
-  it.todo(`Miro-IDs fehlen noch: ${OFFEN.join('; ')}`);
+  it('wo die Seiten Produkt-Frames nennen, verlinken sie alle drei Produkte (keine TODO-Marken mehr)', () => {
+    const alle = SEITEN_MIT_FRAMES.map(seite).join('\n');
+    expect(alle).not.toMatch(/TODO Miro-ID/);
+    for (const f of ['T4 · 7 · Geschäftsmodell', 'T4 · 4 · Usage Story', 'T4 · 5 · Prototyp', 'T4 · 6 · Origin Story', 'T4 · 6 · Lernkarten']) {
+      for (const n of [1, 2, 3]) expect(alle, `${f} · Produkt ${n}`).toContain(`<MiroLink name="${f} · Produkt ${n}">Produkt ${n}</MiroLink>`);
+    }
+  });
 });
 
-/** Frame-Namen aus Quelltexten (ohne Kommentare): in „…“ oder als name="…". Jedes andere „T4 · “ gilt als unbekannt. */
+/** Frame-Namen aus Quelltexten (ohne Kommentare): in „…“, als name="…", als Text eines MiroLink (>…</MiroLink>) oder am Ende
+ *  eines Prompt-Labels (label="Miro · …"). Jedes andere „T4 · “ gilt als unbekannt. */
 function frameCheck(quellen: string[]) {
   const gesehen: string[] = [];
   const unbekannt: string[] = [];
   for (const roh of quellen) {
     const q = roh.replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/^\s*\/\/.*$/gm, '');
-    const namen = [...q.matchAll(/„(T4 · [^“]+)“|name="(T4 · [^"]+)"/g)].map((m) => m[1] ?? m[2]);
+    const muster = /„(T4 · [^“]+)“|name="(T4 · [^"]+)"|>(T4 · [^<]+)<\/MiroLink>|label="[^"]*?(T4 · [^"]+)"/g;
+    const namen = [...q.matchAll(muster)].map((m) => m[1] ?? m[2] ?? m[3] ?? m[4]);
     gesehen.push(...namen);
-    const rest = q.replace(/„T4 · [^“]+“|name="T4 · [^"]+"/g, '');
+    const rest = q.replace(muster, '');
     unbekannt.push(...(rest.match(/T4 · [^<,;]{0,40}/g) ?? []).map((t) => `ohne „…“: ${t.trim()}`));
   }
   const bekannt = (n: string) => Object.hasOwn(MIRO_FRAMES, n) || Object.hasOwn(MIRO_FRAMES, n.replace(/Produkt n$/, 'Produkt 1'));
