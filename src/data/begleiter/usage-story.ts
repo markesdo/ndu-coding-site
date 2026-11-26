@@ -109,7 +109,7 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Timer je Schritt: 2 + 10 + 4 + 2 min.',
-      'Person aus den eigenen Interviews, mit Uhrzeit und Ort.',
+      'Auf Miro, Frame „T4 · 4 · Usage Story · Produkt n“ – keine Datei.',
       'Boom-Probe allein: jede*r liest die eigenen Stationen 4–7.',
       '1:1 in Schritt 3, je gut 1 min: Produkt 1, 2, 3.',
       'Wenn hinten: nur Krise und Höhepunkt – die braucht der Prototyp.',
@@ -118,14 +118,14 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Kernaufgabe wählen: der Weg durch Slice 1, den Menschen immer wieder gehen (2 min).',
-        'Sieben Stationen allein, mit Person aus den Interviews, Uhrzeit, Ort (10 min).',
+        'Sieben Stationen allein auf Miro im Frame „T4 · 4 · Usage Story · Produkt n“, mit Person aus den Interviews, Uhrzeit, Ort (10 min).',
         'Boom-Probe allein: die eigenen Stationen 4 bis 7 lesen – ist der Höhepunkt ein konkreter Bildschirm oder Moment, kommen danach höchstens ein, zwei Schritte, wo würde jemand lächeln? Markus geht zu jeder Person (Produkt 1, 2, 3, je gut eine Minute), liest die Stationen 4 bis 7 und fragt nach (4 min).',
-        'Festhalten in docs/STORYS.md (2 min).',
+        'Festhalten im selben Frame: Höhepunkt markieren, Belege mit ID; nach diesem Frame baut der Spike (2 min).',
       ],
       achten: [
         'Höhepunkt als Bildschirm oder Moment, nicht als „Problem gelöst“.',
         'Der Prototyp-Spike baut genau die Stationen 2 bis 6 – sie müssen konkret sein.',
-        'Keine Runde über Kreuz: Jede*r hat ein eigenes Produkt; zweite Probe allein ist die Claude-Prüfung im Handout.',
+        'Keine Runde über Kreuz: Jede*r hat ein eigenes Produkt; zweite Probe allein ist die Claude-Prüfung im Handout, mit Opus (/model opus).',
       ],
     },
     kern: [

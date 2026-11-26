@@ -136,17 +136,19 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
     <p class="nur-handout">Die Befunde sind ausgedacht – an der Form erkennt ihr, wie eure aussehen sollten. U2 schiebt „Zug aus der Liste“ von Slice 2 in Slice 1: Das steht in der Spalte „Folge“ und auf der Lernkarte, Beleg U2. Torres beschreibt genau das: Fällt eine Annahme, entwickelt man die Idee so weiter, dass sie nicht mehr davon abhängt ({TORRES}, S. 140). Die Folge von U3 ist eine Setzung der Kaffeebar.</p>
   </Folie>
 
+  {/* TODO Miro-IDs: Sobald „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt 1–3“ in miro-frames.ts stehen, hier als MiroLink
+      verlinken – usage-spike-klar.test.ts schlägt dann an. */}
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (75 min) – 1: bauen</h2>
-    <p class="folie-satz">Papier, Kriterien, dann Claude Code.</p>
+    <p class="folie-satz">Papier, Kriterien, dann Claude Code – mit Opus.</p>
     <ol class="gross">
-      <li data-schritt><strong>Papier, allein:</strong> eine Skizze je Bildschirm der Usage Story, der Höhepunkt als eigener; Foto. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Abnahmekriterien und Zeitbox</strong> in <code>docs/TESTS.md</code>: was er zeigen muss, bis wann, was er nicht hat. <Timer minuten={5} /></li>
-      <li data-schritt><strong>Bauen:</strong> Prompt „Spike · Claude Code“ aus dem Handout, mit eurem Foto. Reicht die Zeit nicht: zuerst der Höhepunkt-Bildschirm. Ist der Timer bei null, hört ihr auf. <Timer minuten={40} /></li>
+      <li data-schritt><strong>Papier, allein:</strong> eine Skizze je Bildschirm der Usage Story, der Höhepunkt als eigener; Foto in euren Frame „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Abnahmekriterien und Zeitbox</strong> im selben Frame: was er zeigen muss, bis wann, was er nicht hat. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Bauen mit Opus</strong> (<code>/model opus</code>): Prompt „Spike · Claude Code“ aus dem Handout, dazu Screenshots eurer Frames. Zuerst der Höhepunkt-Bildschirm; bei null hört ihr auf. <Timer minuten={40} /></li>
       <li data-schritt><strong>Am Handy ansehen:</strong> als Vercel-Vorschau. Der Spike bleibt im Branch.</li>
     </ol>
     <div class="nur-handout">
-      <p>Dazu 15 Minuten Theorie und Beispiel. Zu 1: vier bis sechs Bildschirme; der Höhepunkt ist ein eigener. Zu 2: drei Sätze – was der Prototyp zeigen muss, bis wann, was er nicht hat (Login, Zahlung, Datenbank). Zu 3: Der Prompt steht unten; was in 40 Minuten fehlt, steht in <code>docs/TESTS.md</code>. Zu 4: Für Tests am Handy deployt ihr den Branch als Vercel-Vorschau.</p>
+      <p>Dazu 15 Minuten Theorie und Beispiel. Zu 1: vier bis sechs Bildschirme; der Höhepunkt ist ein eigener. Das Foto der Skizzen legt ihr in euren Frame „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“ (Produkt 1 bis 3). Zu 2: drei Sätze im selben Frame – was der Prototyp zeigen muss, bis wann, was er nicht hat (Login, Zahlung, Datenbank). Zu 3: Claude Code mit Opus (<code>/model opus</code>). Der Prompt steht unten; darunter fügt ihr drei Screenshots ein: eure Usage Story („T4 · 4 · Usage Story · Produkt n“), die Story Map mit Slice 1 („T4 · 1 · Story Map“) und den Frame mit Skizzen und Abnahmekriterien. Eine Datei im Repo schreibt ihr nicht; den Branch legt Claude Code an. Reicht die Zeit nicht, baut zuerst den Höhepunkt-Bildschirm; was in 40 Minuten fehlt, notiert ihr im Frame. Zu 4: Für Tests am Handy lasst ihr Claude Code den Branch als Vercel-Vorschau bereitstellen.</p>
     </div>
   </Folie>
 
@@ -154,30 +156,30 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
     <h2 id="vorgehen-test">So geht ihr vor – 2: Karte und Trockenlauf</h2>
     <p class="folie-satz">Ein Testlauf, keine Kritik.</p>
     <ol class="gross">
-      <li data-schritt><strong>Karte E2 und Aufgabe</strong> in <code>docs/TESTS.md</code>, mit „Wir entscheiden vorher“. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Karte E2 und Aufgabe</strong> auf Miro im selben Frame, mit „Wir entscheiden vorher“. <Timer minuten={10} /></li>
       <li data-schritt><strong>Trockenlauf, drei Runden:</strong> A testet den Prototyp von B, C schreibt mit – dann wechseln. <Timer minuten={10} /></li>
       <li data-schritt><strong>Online:</strong> Wem der Prototyp gehört, teilt den Bildschirm und klickt. Die Testperson sagt nur laut, was sie tun will.</li>
       <li data-schritt><strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Ihr notiert nur: Aufgabe verständlich? Höhepunkt erreicht?</li>
     </ol>
     <div class="nur-handout">
-      <p>Zu 2: Drei Runden à gut drei Minuten – A testet den Prototyp von B, C schreibt mit; dann B den von C, A schreibt; dann C den von A, B schreibt. Ergebnis: Ist die Aufgabe verständlich, ist der Höhepunkt da? Online teilt, wessen Prototyp getestet wird, den Bildschirm; die Testperson sagt laut, was sie tun will, und wem der Prototyp gehört, klickt – mehr nicht. Das ist eine Online-Form dieses Kurses. Der Trockenlauf zählt nicht als Testperson ({BLAND}, S. 183).</p>
+      <p>Zu 1: Karte E2 und Testaufgabe stehen in eurem Frame „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“, neben Skizzen und Abnahmekriterien; dort kommen später auch die Befunde (U1 …) hin. Zu 2: Drei Runden à gut drei Minuten – A testet den Prototyp von B, C schreibt mit; dann B den von C, A schreibt; dann C den von A, B schreibt. Ergebnis: Ist die Aufgabe verständlich, ist der Höhepunkt da? Online teilt, wessen Prototyp getestet wird, den Bildschirm; die Testperson sagt laut, was sie tun will, und wem der Prototyp gehört, klickt – mehr nicht. Das ist eine Online-Form dieses Kurses. Der Trockenlauf zählt nicht als Testperson ({BLAND}, S. 183).</p>
       <p>Der Trockenlauf ist keine Runde über Kreuz, in der ihr die Arbeit der anderen beurteilt: Die Testperson erfüllt eine Aufgabe und denkt laut, besprochen wird nichts. Bland verlangt genau das vor dem ersten echten Test: „Test it internally to make sure the flow works“ (S. 183).</p>
     </div>
   </Folie>
 
   <div class="nur-handout">
-  <Prompt label="Spike · Claude Code">Leg einen neuen Branch spike/[name] an. Bau darin einen klickbaren Wegwerf-Prototyp für genau diesen Ablauf aus docs/STORYS.md, Abschnitt Usage Story. Halte dich an meine Skizzen im angehängten Foto und an die Abnahmekriterien in docs/TESTS.md; wenn die Zeit nicht reicht, zuerst den Höhepunkt-Bildschirm. Nur Oberfläche: Daten im Speicher, keine Datenbank, kein Login, keine Bezahlung. Der Höhepunkt der Usage Story muss als eigener Bildschirm sichtbar sein. Schreib oben in die Startseite „Prototyp – nicht echt“. Zeig mir die Seite lokal; Issues und Backlog fasst du nicht an.</Prompt>
+  <p>Claude Code mit Opus: <code>/model opus</code>. Unter den Prompt fügt ihr drei Screenshots ein.</p>
+  <Prompt label="Spike · Claude Code">Leg einen neuen Branch spike/[name] an. Bau darin einen klickbaren Wegwerf-Prototyp für genau den Ablauf meiner Usage Story. Unter diese Nachricht füge ich drei Screenshots aus Miro ein: meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1 und meine Papier-Skizzen mit den Abnahmekriterien. Halte dich an die Skizzen und die Abnahmekriterien; wenn die Zeit nicht reicht, zuerst den Höhepunkt-Bildschirm. Nur Oberfläche: Daten im Speicher, keine Datenbank, kein Login, keine Bezahlung. Der Höhepunkt der Usage Story muss als eigener Bildschirm sichtbar sein. Schreib oben in die Startseite „Prototyp – nicht echt“. Zeig mir die Seite lokal; Issues und Backlog fasst du nicht an.</Prompt>
   <Callout type="warn" title="Der Spike bleibt im Branch">
-    <p>Der Spike wird nicht in <code>main</code> gemergt. An Tag 5 schreibt ihr aus dem, was ihr gelernt habt, saubere Issues – und Claude baut sie richtig. Für Tests am Handy deployt ihr ihn als Vercel-Vorschau.</p>
+    <p>Der Spike wird nicht in <code>main</code> gemergt. An Tag 5 schreibt ihr aus dem, was ihr gelernt habt, saubere Issues – und Claude baut sie richtig. Für Tests am Handy stellt Claude Code ihn als Vercel-Vorschau bereit.</p>
   </Callout>
 
-  <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/TESTS.md"># Tests — [Produkt]
-
-Prototyp: Branch spike/[name] · Vorschau: [Link] · Papierskizzen: [Foto]
+  <h2 id="vorlage">So sieht euer Frame aus</h2>
+  <p>Im Frame „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“ stehen Skizzen, Abnahmekriterien, Karte E2, die Tests und die Befunde. Die Lernkarte E2 schreibt ihr nach den Tests in euren Frame „T4 · 6 · Lernkarten · Produkt n“.</p>
+  <Prompt label="Miro · T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n">Prototyp: Branch spike/[name] · Vorschau: [Link] · Papier-Skizzen: [Foto]
 Abnahmekriterien: [...] · Zeitbox: bis [Uhrzeit] · Nicht enthalten: [...]
 
-## E2 · A[n] (bedienbar) · läuft bis Tag 5
+Karte E2 · A[n] (bedienbar) · läuft bis Tag 5
 Wir glauben, dass [...].
 Um das zu prüfen, geben wir fünf [Zielgruppe] den Prototyp am Handy mit der Aufgabe:
   „[Situation, Ziel – ohne Bedienschritte]“
@@ -188,17 +190,11 @@ Wir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [
 Ablauf je Test (15–20 min): Einwilligung (Notizen, KI) · „Wir testen den Prototyp, nicht dich; sag, was dir durch den Kopf geht“ ·
   Aufgabe vorlesen · schweigen, höchstens „Was würdest du jetzt tun?“ · danach: „Was hat dich überrascht?“
 
-| Testperson | Pain vorhanden? | Höhepunkt ohne Hilfe? | Zeit | Wo gehangen | Reaktion am Höhepunkt | Zitat |
-|---|---|---|---|---|---|---|
-| 0 (Trockenlauf) | – | | | | | |
-| 1 | | | | | | |
+Je Testperson (0 = Trockenlauf, dann 1 bis 5): Pain vorhanden? · Höhepunkt ohne Hilfe? · Zeit · wo gehangen · Reaktion am Höhepunkt · Zitat
 
-## Befunde
-| ID | Befund | Wie oft | Folge |
-|----|--------|---------|-------|
-| U1 | [...] | [n von 5] | [was ihr deshalb ändert] |
+Befunde: U1 · [Befund] · [n von 5] · Folge: [was ihr deshalb ändert]
 
-### Lernkarte E2
+Lernkarte E2 (Frame „T4 · 6 · Lernkarten · Produkt n“)
 Wir glaubten, dass [...].
 Wir haben beobachtet: [x von 5, Zeiten, U-IDs]
 Verlässlichkeit: schwach / mittel / stark – weil [...]
@@ -208,6 +204,7 @@ Weicht ab von „Wir entscheiden vorher“? Grund: [...]
 Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
+  <p>Mit Opus – in Claude Code <code>/model opus</code>. Statt Dateien fügt ihr Screenshots eurer Frames ein.</p>
   <ClaudePruefung slug="prototyp-spike" />
   </div>
 
@@ -234,6 +231,7 @@ Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
   .paar .frage { font-size: 1.3rem; font-weight: 600; color: var(--fg); }
   :global(html[data-beamer]) .paar > div { font-size: 1.1rem; }
   .befunde th, .befunde td { vertical-align: top; }
+  .befunde td:nth-child(3) { white-space: nowrap; }
   @media (max-width: 700px) {
     .paar { grid-template-columns: 1fr; }
   }

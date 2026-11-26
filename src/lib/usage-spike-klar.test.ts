@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { NOTIZEN_USAGE_STORY } from '../data/begleiter/usage-story';
 import { NOTIZEN_PROTOTYP_SPIKE } from '../data/begleiter/prototyp-spike';
 import { folienAus, quellenAusGlob } from './begleiter';
+import { MIRO_FRAMES } from '../components/miro-frames';
 
 // Durchsicht Tag 4 (26.11.2026): Usage Story und Prototyp-Spike im Beamer allein verständlich – Folien geteilt, Begriffe
 // vor dem Gebrauch, Kursregeln gekennzeichnet, keine Runde, in der jemand die Produktarbeit der anderen liest.
@@ -52,7 +53,8 @@ describe('Usage Story: drei Storys vorn, sieben Stationen, Boom-Probe allein', (
     const f = folie(US, 'vorgehen');
     expect(f).toContain('<p class="wozu"><strong>Wozu?</strong> Damit ihr wisst, welchen Bildschirm euer Prototyp unbedingt zeigen muss.</p>');
     expect(f).toContain('<strong>Boom-Probe, allein:</strong> Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens zwei Schritte? Markus liest im 1:1 die Stationen 4 bis 7. <Timer minuten={4} />');
-    expect(f).toContain('<strong>Festhalten</strong> in <code>docs/STORYS.md</code>, Abschnitt „Usage Story“. <Timer minuten={2} />');
+    expect(f).toContain('<strong>Sieben Stationen, allein,</strong> auf Miro in eurem Frame „T4 · 4 · Usage Story · Produkt n“: Person aus den Interviews, Uhrzeit, Ort. <Timer minuten={10} />');
+    expect(f).toContain('<strong>Festhalten</strong> im selben Frame: Höhepunkt markieren, Belege mit ID (I…, P…). <Timer minuten={2} />');
     expect([...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([2, 10, 4, 2]);
     expect(f).toContain('Eine Runde über Kreuz gibt es nicht');
     expect(f.match(/A die von B|Boom-Probe, über Kreuz/g) ?? []).toStrictEqual([]);
@@ -106,7 +108,9 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     const timer = (f: string) => [...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]));
     expect([timer(a), timer(b)]).toStrictEqual([[10, 5, 40], [10, 10]]);
     expect(a).toContain('<h2 id="vorgehen">So geht ihr vor (75 min) – 1: bauen</h2>');
-    expect(a).toContain('Prompt „Spike · Claude Code“ aus dem Handout');
+    expect(a).toContain('<strong>Bauen mit Opus</strong> (<code>/model opus</code>): Prompt „Spike · Claude Code“ aus dem Handout, dazu Screenshots eurer Frames.');
+    expect(a).toContain('Foto in euren Frame „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“');
+    expect(b).toContain('<strong>Karte E2 und Aufgabe</strong> auf Miro im selben Frame, mit „Wir entscheiden vorher“.');
     expect(a).toContain('<strong>Am Handy ansehen:</strong> als Vercel-Vorschau.');
     expect(a).not.toContain('Stopp bei null');
     expect(b).toContain('<p class="folie-satz">Ein Testlauf, keine Kritik.</p>');
@@ -117,8 +121,44 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
   it('uebertrag: Übergabe an Scrum im Beamer', () => {
     expect(beamer(folie(PS, 'uebertrag'))).toContain('<strong>Nach der Pause:</strong> Agil und Scrum.');
   });
+  it('Spike-Prompt: Screenshots der Miro-Frames, keine Dateien; Branch legt Claude Code an', () => {
+    const s = seite(PS);
+    expect(s).toContain('Unter diese Nachricht füge ich drei Screenshots aus Miro ein: meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1 und meine Papier-Skizzen mit den Abnahmekriterien.');
+    expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
+    expect(s).toContain('<Prompt label="Miro · T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n">');
+  });
   it('höchstens fünf live-Stichworte je Folie, auf beiden Seiten', () => {
     const zuViele = [...Object.entries(NOTIZEN_USAGE_STORY), ...Object.entries(NOTIZEN_PROTOTYP_SPIKE)].filter(([, n]) => n.live.length > 5).map(([id]) => id);
     expect(zuViele).toStrictEqual([]);
+  });
+});
+
+// NACHTRAG 26.11. (abends): Studierende schreiben keine docs/*.md mehr – Usage Story, Karte E2, Abnahmekriterien und Befunde
+// stehen auf Miro; Claude und Claude Code immer mit Opus.
+describe('Usage Story und Prototyp-Spike: Miro statt Repo-Dateien, Opus', () => {
+  it('keine docs/-Datei auf den Seiten und in den Notizen', () => {
+    const texte = [seite(US), seite(PS), JSON.stringify(NOTIZEN_USAGE_STORY), JSON.stringify(NOTIZEN_PROTOTYP_SPIKE)];
+    expect(texte.every((x) => x.length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/docs\/[A-Z-]+\.md/g) ?? [])).toStrictEqual([]);
+  });
+  it('Usage Story: Frame „T4 · 4 · Usage Story · Produkt n“ mit Aufbau statt Datei-Vorlage', () => {
+    const s = seite(US);
+    expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
+    expect(s).toContain('<Prompt label="Miro · T4 · 4 · Usage Story · Produkt n">');
+  });
+  it('Opus, ohne Versionsnummer: Spike-Schritt und beide Prüfungen', () => {
+    expect(seite(PS).match(/\/model opus/g)?.length).toBeGreaterThanOrEqual(3);
+    expect(seite(US)).toContain('<p>Mit Opus – in Claude Code <code>/model opus</code>.');
+    expect(seite(PS)).toContain('<p>Mit Opus – in Claude Code <code>/model opus</code>.');
+    expect([seite(US), seite(PS)].flatMap((x) => x.match(/Opus \d|opus-\d/gi) ?? [])).toStrictEqual([]);
+  });
+  // TODO Miro-IDs: Die Frames je Produkt haben noch keine IDs; die Seiten nennen sie als Text. Sobald sie in miro-frames.ts
+  // stehen, schlägt dieser Test an: dann auf beiden Seiten <MiroLink> wie in concept-story#vorgehen.
+  it('neue Frames: als Text, bis ihre IDs in miro-frames.ts stehen', () => {
+    for (const [pfad, frame] of [[US, 'T4 · 4 · Usage Story · Produkt'], [PS, 'T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt']] as const) {
+      const bekannt = Object.keys(MIRO_FRAMES).some((n) => n.startsWith(frame));
+      expect(bekannt, `${frame} ist jetzt in miro-frames.ts – auf ${pfad} als <MiroLink> verlinken`).toBe(false);
+      expect(seite(pfad)).toContain(`${frame} n`);
+    }
   });
 });

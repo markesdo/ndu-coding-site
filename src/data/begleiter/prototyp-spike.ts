@@ -146,20 +146,21 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     live: [
       'Timer je Schritt: 10 + 5 + 40 min, dann zweite Folie.',
       'Falle: direkt bauen lassen, ohne Papierskizze.',
+      'Claude Code mit Opus (/model opus); Eingabe: Screenshots, keine Dateien.',
       'Timer bei null: aufhören; zuerst den Höhepunkt-Bildschirm.',
       'Spike bleibt im Branch; Vercel-Vorschau fürs Handy.',
     ],
     uebung: { dauer: '55 min (10 + 5 + 40)', form: 'allein' },
     ablauf: {
       schritte: [
-        'Papier, allein: vier bis sechs Skizzen, eine je Bildschirm der Usage Story, der Höhepunkt eigener Bildschirm; Foto (10 min).',
-        'Abnahmekriterien und Zeitbox in docs/TESTS.md: was der Prototyp zeigen muss, bis wann, was er nicht hat (5 min).',
-        'Bauen mit dem Prompt „Spike · Claude Code“ aus dem Handout: Branch spike/[name], Foto anhängen; bei null aufhören (40 min).',
+        'Papier, allein: vier bis sechs Skizzen, eine je Bildschirm der Usage Story, der Höhepunkt eigener Bildschirm; Foto in den Frame „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“ (10 min).',
+        'Abnahmekriterien und Zeitbox im selben Frame: was der Prototyp zeigen muss, bis wann, was er nicht hat (5 min).',
+        'Bauen in Claude Code mit Opus (/model opus): Prompt „Spike · Claude Code“ aus dem Handout plus drei Screenshots – Usage Story, Story Map mit Slice 1, Frame mit Skizzen und Abnahmekriterien; Claude Code legt den Branch spike/[name] an; bei null aufhören (40 min).',
         'Am Handy ansehen als Vercel-Vorschau; der Spike bleibt im Branch.',
       ],
       achten: [
         'Nur Oberfläche: Daten im Speicher, kein Login, keine Bezahlung, keine Datenbank.',
-        'Was in 40 Minuten fehlt, steht in docs/TESTS.md; weiter im Puffer ab 16:25.',
+        'Was in 40 Minuten fehlt, steht im Frame; weiter im Puffer ab 16:25.',
       ],
     },
     ueberleitung: 'Bevor jemand testet: Karte E2 – und ein Trockenlauf untereinander.',
@@ -175,7 +176,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     uebung: { dauer: '20 min (10 + 10)', form: 'allein; Trockenlauf in drei Runden, keine Kritik' },
     ablauf: {
       schritte: [
-        'Karte E2 und Testaufgabe in docs/TESTS.md, mit der Zeile „Wir entscheiden vorher“ (10 min).',
+        'Karte E2 und Testaufgabe auf Miro im selben Frame, mit der Zeile „Wir entscheiden vorher“ (10 min).',
         'Trockenlauf in drei Runden: A testet B, C schreibt; B testet C, A schreibt; C testet A, B schreibt – je gut drei Minuten (10 min).',
       ],
       achten: [

@@ -48,7 +48,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <BildText>
       <BuchAbbildung src="/quellen/lichaw/usage-story.jpg" alt="Oranger Bogen: Current State als Foto, Problem, Trigger or CTA mit erschrockenem Gesicht, Steps als Treppenpfeil, Impediment(s) als Hürde, Problem solved, Experience value or delight als Glühbirne am Gipfel, Then what? als Pfeil nach unten, Goal(s) met mit lächelndem Gesicht" quelle={`Die Usage Story. ${LICHAW_KURZ}, Abb. 5.2.`} />
       <ul>
-        <li data-schritt><strong>1 Exposition, 2 Auslöser:</strong> wer, was sie will – und was genau diesen Ablauf startet.</li>
+        <li data-schritt><strong>1 Exposition, 2 Auslöser:</strong> wer, was sie will – was den Ablauf startet.</li>
         <li data-schritt><strong>3 Steigende Handlung</strong> („Steps“): Schritte, jeder relevanter als der vorige.</li>
         <li data-schritt><strong>4 Krise</strong> („Impediments“): Hürden – Anmeldung, Bezahlen, Zweifel, Bedienung.</li>
         <li data-schritt><strong>5 Höhepunkt:</strong> sie <em>erlebt</em> den Wert – nicht nur, dass, sondern wie.</li>
@@ -106,20 +106,23 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
     <p class="wozu"><strong>Wozu?</strong> Damit ihr wisst, welchen Bildschirm euer Prototyp unbedingt zeigen muss.</p>
     <ol class="gross">
       <li data-schritt><strong>Kernaufgabe wählen:</strong> der Weg durch Slice 1, den Menschen immer wieder gehen. <Timer minuten={2} /></li>
-      <li data-schritt><strong>Sieben Stationen, allein:</strong> Person aus den Interviews, Uhrzeit, Ort. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Sieben Stationen, allein,</strong> auf Miro in eurem Frame „T4 · 4 · Usage Story · Produkt n“: Person aus den Interviews, Uhrzeit, Ort. <Timer minuten={10} /></li>
       <li data-schritt><strong>Boom-Probe, allein:</strong> Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens zwei Schritte? Markus liest im 1:1 die Stationen 4 bis 7. <Timer minuten={4} /></li>
-      <li data-schritt><strong>Festhalten</strong> in <code>docs/STORYS.md</code>, Abschnitt „Usage Story“. <Timer minuten={2} /></li>
+      <li data-schritt><strong>Festhalten</strong> im selben Frame: Höhepunkt markieren, Belege mit ID (I…, P…). <Timer minuten={2} /></li>
     </ol>
     <div class="nur-handout">
       <p>Dazu zwölf Minuten Theorie und Beispiel. Lichaws Fragen je Station ({LICHAW}, Kap. 5, Mapping the Usage Story): <em>Exposition</em> – Wer? Welche Ziele? Was steht im Weg? <em>Auslöser</em> – Was startet genau diesen Ablauf? <em>Steigende Handlung</em> – Erste Aktion? Nächste? <em>Krise</em> – Was könnte im Weg stehen? <em>Höhepunkt</em> – „What value do you want the user to experience during this flow? What will make all of her conflict, crisis, and work … worthwhile?“ <em>Fallende Handlung</em> – Wie schließt ihr die Episode möglichst schnell ab? <em>Ende</em> – Wo steht die Person, und ist das der Anfang der nächsten Story?</p>
-      <p>Zur Boom-Probe: Ihr lest eure Stationen 4 bis 7 allein gegen drei Fragen – Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens ein, zwei Schritte? Wo würde jemand lächeln? Markus liest sie im 1:1 und fragt nach. Eine Runde über Kreuz gibt es nicht: Jede*r von euch hat ein eigenes Produkt. Wer hinterherhängt, füllt nur Krise und Höhepunkt – die braucht der Prototyp. Eine zweite Probe allein ist die <a href="#pruefen">Prüfung mit Claude</a> unten: Sie fragt unter anderem, ob der Höhepunkt ein konkreter Bildschirm ist und ob danach höchstens ein, zwei Schritte kommen.</p>
-      <p>Festhalten in <code>docs/STORYS.md</code>, Abschnitt „Usage Story“ (Vorlage unten). Der Prototyp-Spike baut genau die Stationen 2 bis 6.</p>
+      <p>Zur Boom-Probe: Ihr lest eure Stationen 4 bis 7 allein gegen drei Fragen – Ist der Höhepunkt ein konkreter Bildschirm oder Moment? Kommen danach höchstens ein, zwei Schritte? Wo würde jemand lächeln? Markus liest sie im 1:1 und fragt nach. Eine Runde über Kreuz gibt es nicht: Jede*r von euch hat ein eigenes Produkt. Wer hinterherhängt, füllt nur Krise und Höhepunkt – die braucht der Prototyp. Eine zweite Probe allein ist die <a href="#pruefen">Prüfung mit Claude</a> unten, mit Opus (in Claude Code <code>/model opus</code>): Sie fragt unter anderem, ob der Höhepunkt ein konkreter Bildschirm ist und ob danach höchstens ein, zwei Schritte kommen.</p>
+      <p>Ihr schreibt direkt auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“ (Produkt 1 bis 3; Aufbau unten). Eine Datei im Repo gibt es dafür nicht: Den Spike baut Claude Code nach einem Screenshot dieses Frames. Er baut genau die Stationen 2 bis 6.</p>
     </div>
   </Folie>
 
   <div class="nur-handout">
-  <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/STORYS.md, Abschnitt Usage Story">## Usage Story · [Kernaufgabe aus Slice 1]
+  {/* TODO Miro-IDs: Sobald „T4 · 4 · Usage Story · Produkt 1–3“ in miro-frames.ts stehen, hier und in #vorgehen als
+      MiroLink verlinken – usage-spike-klar.test.ts schlägt dann an. */}
+  <h2 id="vorlage">So sieht euer Frame aus</h2>
+  <p>Im Frame „T4 · 4 · Usage Story · Produkt n“ steht der Bogen mit sieben Stationen; unter jeder Station ein Sticky. Was auf die Stickys kommt:</p>
+  <Prompt label="Miro · T4 · 4 · Usage Story · Produkt n">Titel: Usage Story · [Kernaufgabe aus Slice 1]
 Person: [Pseudonym aus den Interviews] (I…) · [Uhrzeit, Ort]
 1. Exposition: wie in der Concept Story – will [Ziel] (J…), Hindernis [Pain] (P…)
 2. Auslöser: [Ereignis oder Aufforderung] am Moment „[...]“ der Experience Map (Zitat-IDs)
@@ -128,9 +131,10 @@ Person: [Pseudonym aus den Interviews] (I…) · [Uhrzeit, Ort]
 5. Höhepunkt: [der Bildschirm oder Moment] – erlebt, weil [wie]
 6. Fallende Handlung: [ein, zwei Schritte]
 7. Ende: [wo die Person steht] · nächste Episode: [...]
-Smile: Im Test erwarten wir das Lächeln bei Station 5 → Testaufgabe in docs/TESTS.md</Prompt>
+Smile: Im Test erwarten wir das Lächeln bei Station 5 → Testaufgabe auf Karte E2 (Frame „T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“)</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
+  <p>Mit Opus – in Claude Code <code>/model opus</code>. Statt einer Datei fügt ihr einen Screenshot eures Frames „T4 · 4 · Usage Story · Produkt n“ ein.</p>
   <ClaudePruefung slug="usage-story" />
   </div>
 
@@ -146,3 +150,8 @@ Smile: Im Test erwarten wir das Lächeln bei Station 5 → Testaufgabe in docs/T
 
   <FooterNav prev={{ href: '/innolab/methoden/story-map', t: 'Story Map' }} next={{ href: '/innolab/methoden/prototyp-spike', t: 'Prototyp-Spike & Usability-Test' }} />
 </Layout>
+
+<style>
+  /* Folie „usage-story“: Bild und alle sieben Stationen passen bei 1280 × 720 nur mit etwas weniger Abstand über dem Bild. */
+  :global(html[data-beamer] .folie:has(> h2#usage-story) .bild-text) { margin-top: .5rem; }
+</style>
