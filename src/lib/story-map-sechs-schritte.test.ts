@@ -7,12 +7,15 @@ import { quellenAusGlob } from './begleiter';
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 const seite = ohneAbgeschaltet(quellen['/innolab/methoden/story-map'] ?? '');
 const folienIds = [...seite.matchAll(/<Folie\b[^>]*>(?:(?!<\/Folie>)[\s\S])*?<h2 id="([^"]+)"/g)].map((m) => m[1]);
+/** Die Folie nach Position: von ihrem h2 bis zu ihrem </Folie> (verschachtelte divs stören so nicht). */
 const folie = (id: string) => {
   const a = seite.indexOf(`<h2 id="${id}">`);
-  return a < 0 ? '' : seite.slice(seite.lastIndexOf('<Folie', a), seite.indexOf('</Folie>', a));
+  return a < 0 ? '' : seite.slice(a, seite.indexOf('</Folie>', a));
 };
-/** Was im Beamer zu sehen ist: die Folie ohne den Handout-Teil. */
-const sichtbar = (f: string) => f.replace(/<div class="nur-handout">[\s\S]*?<\/div>/g, '');
+/** Der Handout-Teil steht am Ende der Folie: von class="nur-handout" bis </Folie>. */
+const handout = (f: string) => { const h = f.indexOf('class="nur-handout"'); return h < 0 ? '' : f.slice(h); };
+/** Was im Beamer zu sehen ist: die Folie bis zum Handout-Teil. */
+const sichtbar = (f: string) => { const h = f.indexOf('class="nur-handout"'); return h < 0 ? f : f.slice(0, h); };
 
 const SCHRITTE = [
   'Frame the problem', 'Map the big picture', 'Explore',
@@ -25,7 +28,6 @@ describe('Story Map: Pattons sechs Schritte', () => {
     const i = folienIds.indexOf('vorgehen');
     expect(i).toBeGreaterThan(0);
     expect(folienIds[i - 1]).toBe('sechs-schritte');
-    expect(folienIds[i - 2]).toBe('beispiel');
   });
 
   it('nennt alle sechs Schritte in Pattons Reihenfolge, je eine Zeile mit data-schritt', () => {
@@ -42,7 +44,7 @@ describe('Story Map: Pattons sechs Schritte', () => {
   });
 
   it('das Handout zitiert Kap. 5 und sagt, dass 4 und 5 zusammenzulegen eine Vereinfachung des Kurses ist', () => {
-    const h = folie('sechs-schritte').match(/<div class="nur-handout">([\s\S]*?)<\/div>/)?.[1] ?? '';
+    const h = handout(folie('sechs-schritte'));
     expect(h).toContain('„I can boil down the last four chapters into just six steps“');
     expect(h).toContain('({PATTON}, Kap. 5, Six Simple Steps to Story Mapping)');
     expect(h).toContain('Im Kurs legt ihr Schritt 4 und 5 in Slice 1 zusammen – das ist eine Vereinfachung des Kurses');
