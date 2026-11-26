@@ -609,7 +609,7 @@ describe('methoden', () => {
     expect(cs.dauer).toBe(10 + 30);
     expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/concept-story'))).toMatchObject({ von: 9 * 60 + 40, bis: 10 * 60 + 20 });
     // Value Map & Fit an Tag 4 nachgeholt (30 min), die Methode bleibt an Tag 3.
-    expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/value-map'))).toMatchObject({ von: 9 * 60 + 10, bis: 9 * 60 + 40 });
+    expect(bloecke(4).find((x) => x.href.startsWith('/innolab/methoden/value-map'))).toMatchObject({ von: 9 * 60 + 5, bis: 9 * 60 + 35 });
     // Story Map 65 min (75 bis 26.11.2026, davor 105).
     expect(minuten(4, 'story-map')).toBe(METHODEN.find((x) => x.slug === 'story-map')!.dauer);
     expect(minuten(4, 'story-map')).toBe(65);

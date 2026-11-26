@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/value-map.astro (Tag 3, 15:15–16:00; seit 19.11. nach der Ideation, die Lückensätze kommen von dort). Kein Vorwissen eingetragen.
-// Tag 4 (28.11., 09:10–09:40, NDU-66): nur die Übung (vorgehen) wird nachgeholt, gekürzt auf 30 min, mit der Website-Frage beim Wählen
+// Tag 4 (28.11., 09:05–09:35, NDU-66; seit 26.11. danach „Was bauen wir?“ auf tag-4): nur die Übung (vorgehen) wird nachgeholt, gekürzt auf 30 min, mit der Website-Frage beim Wählen
 // und den drei Ideen als Lösungen im Baum zum Schluss; die Theorie lief an Tag 3.
 // VPD-Seiten = Seitenzahlen der PDF-Ausgabe, wie in quellen/vpd/text.txt (nicht die der gedruckten Ausgabe).
 const VPD = 'Osterwalder u. a., Value Proposition Design';

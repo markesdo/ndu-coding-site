@@ -16,8 +16,10 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
   it('die Blöcke in Reihenfolge, mit Zeiten und Zielen', () => {
     const b = bloeckeAus(seite('/innolab/tag-4')).map((x) => `${hhmm(x.von)}–${hhmm(x.bis)} ${x.titel} ${x.href ?? ''}`.trim());
     expect(b).toStrictEqual([
-      '09:00–09:10 Arbeitsfluss – ihr seid hier #arbeitsfluss',
-      '09:10–09:40 Value Map & Fit (Nachholen von Tag 3) /innolab/methoden/value-map#vorgehen',
+      // Seit 26.11.2026 (Markus): Value Map vor „Was bauen wir?“ – erst dort ist der Spitzenreiter bestätigt, den „Slice 1 im Baum“ zeigt.
+      '09:00–09:05 Arbeitsfluss – ihr seid hier #arbeitsfluss',
+      '09:05–09:35 Value Map & Fit (Nachholen von Tag 3) /innolab/methoden/value-map#vorgehen',
+      '09:35–09:40 Was bauen wir? #was-bauen-wir',
       '09:40–10:20 Story-Bogen + Concept Story /innolab/methoden/concept-story#story-bogen',
       '10:20–10:30 Pause',
       '10:30–10:50 Geschäftsmodell-Karten /innolab/methoden/geschaeftsmodell',
@@ -92,12 +94,12 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
   // NDU-71: Um 9:00 blättert Markus im Beamer per → vom Ablauf direkt in den Arbeitsfluss, ohne Seitenwechsel.
   it('Beamer: nach dem Ablauf kommen die Folien Arbeitsfluss (Tag 4 hier, Tag 4 und 5–7 per →) und „Was bauen wir?“', () => {
     const q = seite('/innolab/tag-4');
-    // Dahinter die drei Folien des Abschlusses (17:15, tag-4-ende.test.ts); „Was bauen wir?“ führt per → zur Value Map.
-    expect(folienAus('/innolab/tag-4', q).map((f) => f.id)).toStrictEqual(['arbeitsfluss', 'was-bauen-wir', 'abschluss', 'hausaufgabe', 'ende-tag-4']);
+    // Dahinter die drei Folien des Abschlusses (17:15, tag-4-ende.test.ts). → vom Arbeitsfluss zur Value Map, von dort zurück zu „Was bauen wir?“.
+    expect(folienAus('/innolab/tag-4', q).map((f) => f.id)).toStrictEqual(['arbeitsfluss', 'was-bauen-wir', 'slice-im-baum', 'abschluss', 'hausaufgabe', 'ende-tag-4']);
     // Die erste Folie steht direkt hinter dem Ablauf, nicht erst nach #faden.
     const ablauf = q.indexOf('<h2 id="ablauf">');
     expect(ablauf).toBeGreaterThan(0);
-    expect(q.slice(ablauf, q.indexOf('<Folie>')).match(/<h2 id="[^"]+"/g)).toStrictEqual(['<h2 id="ablauf"']);
+    expect(q.slice(ablauf, q.search(/<Folie\b/)).match(/<h2 id="[^"]+"/g)).toStrictEqual(['<h2 id="ablauf"']);
     expect(folie('/innolab/tag-4', 'arbeitsfluss')).toContain('<Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />');
     // Letzte Folie ohne Schritte: Von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar ihre Schritte auf.
     expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('<WasBauenWir schritte={false}>Heute Mittag steht euer Slice 1. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>');

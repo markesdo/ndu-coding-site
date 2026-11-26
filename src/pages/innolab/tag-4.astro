@@ -9,6 +9,7 @@ import Folie from '../../components/Folie.astro';
 import Arbeitsfluss from '../../components/bild/Arbeitsfluss.astro';
 import WasBauenWir from '../../components/bild/WasBauenWir.astro';
 import Baum from '../../components/bild/Baum.astro';
+import SliceImBaum from '../../components/bild/SliceImBaum.astro';
 import BildText from '../../components/bild/BildText.astro';
 import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import Prompt from '../../components/Prompt.astro';
@@ -22,7 +23,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 <Layout title="Tag 4 · Prototyp & Scrum">
   <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:30 · online in Teams</span>
   <h1>Tag 4 · Prototyp & Scrum</h1>
-  <p class="lead">Der Tag beginnt mit dem, was von Tag 3 offen ist: Value Map und Fit, dann schreibt ihr eure Concept Story. Danach das Geschäftsmodell und die Karte, die die riskanteste Annahme eures Spitzenreiters testet. Dann wird aus ihm ein geschnittener Plan, ein Kernablauf mit Höhepunkt und ein Prototyp, den ihr testen könnt. Am Nachmittag lernt ihr Scrum kennen und baut am Prototyp weiter.</p>
+  <p class="lead">Der Tag beginnt mit dem, was von Tag 3 offen ist: Value Map und Fit. Dann zeigen wir, was ihr heute baut – Slice 1 – und wo er in eurem Baum hängt; danach schreibt ihr eure Concept Story. Danach das Geschäftsmodell und die Karte, die die riskanteste Annahme eures Spitzenreiters testet. Dann wird aus ihm ein geschnittener Plan, ein Kernablauf mit Höhepunkt und ein Prototyp, den ihr testen könnt. Am Nachmittag lernt ihr Scrum kennen und baut am Prototyp weiter.</p>
   <p>Heute seid ihr online in einer Teams-Besprechung; den Link findet ihr in Teams. Miro, Werkstatt und Claude Code nutzt ihr auf eurem Laptop.</p>
   <Orientierung seite="innolab/tag-4" />
   <Callout type="warn" title="Vor Tag 4: Claude Code installieren">
@@ -34,8 +35,9 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-11-28">
-    <Block time="09:00–09:10" type="plenum" title="Arbeitsfluss – ihr seid hier" href="#arbeitsfluss">Was ihr von Tag 1 bis 3 mitbringt und was heute daraus wird.</Block>
-    <Block time="09:10–09:40" type="uebung" title="Value Map & Fit (Nachholen von Tag 3)" href="/innolab/methoden/value-map#vorgehen">Wählen – wer zu Hause gewählt hat, bestätigt nur: Was davon ist die Website, die ihr baut – und trifft sie allein noch P1? Dann füllen (zum Schluss als Check: Welcher gelbe Zettel ist die Website?), ordnen, Fit, festhalten; zum Schluss die drei Ideen als Lösungen in euren Baum.</Block>
+    <Block time="09:00–09:05" type="plenum" title="Arbeitsfluss – ihr seid hier" href="#arbeitsfluss">Was ihr von Tag 1 bis 3 mitbringt und was heute daraus wird.</Block>
+    <Block time="09:05–09:35" type="uebung" title="Value Map & Fit (Nachholen von Tag 3)" href="/innolab/methoden/value-map#vorgehen">Wählen – wer zu Hause gewählt hat, bestätigt nur: Was davon ist die Website, die ihr baut – und trifft sie allein noch P1? Dann füllen (zum Schluss als Check: Welcher gelbe Zettel ist die Website?), ordnen, Fit, festhalten; zum Schluss die drei Ideen als Lösungen in euren Baum, der Spitzenreiter markiert.</Block>
+    <Block time="09:35–09:40" type="plenum" title="Was bauen wir?" href="#was-bauen-wir">Slice 1 und der Baum: Was ihr heute baut, hängt am Spitzenreiter, den ihr gerade markiert habt.</Block>
     <Block time="09:40–10:20" type="uebung" title="Story-Bogen + Concept Story" href="/innolab/methoden/concept-story#story-bogen">10 min Theorie: sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben: sieben Stationen in <code>docs/STORYS.md</code>, Flach-Probe, festhalten.</Block>
     <Block time="10:20–10:30" type="pause" title="Pause" />
     <Block time="10:30–10:50" type="uebung" title="Geschäftsmodell-Karten" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; eine Runde Muster; die wirtschaftliche Annahme.</Block>
@@ -51,19 +53,36 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     <Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie jemand den Wert zum ersten Mal sieht; E1 laufen lassen, fünf Usability-Tests.</Block>
   </div>
 
-  {/* 9:00: Im Beamer kommen nach dem Ablauf diese zwei Folien (dieselben wie auf /innolab/arbeitsfluss), dann → zur Value Map. */}
-  <Folie>
+  {/* 9:00: Im Beamer kommt nach dem Ablauf der Arbeitsfluss (dieselbe Folie wie auf /innolab/arbeitsfluss), dann → zur Value Map
+      (9:05). Erst dort wird der Spitzenreiter bestätigt; darum kommen „Was bauen wir?“ und „Slice 1 im Baum“ danach, um 9:35:
+      → von value-map#uebertrag führt hierher zurück. */}
+  <Folie weiter="/innolab/methoden/value-map#vorgehen" weiterTitel="Value Map & Fit (Nachholen)">
     <h2 id="arbeitsfluss">Arbeitsfluss – ihr seid hier</h2>
     <p class="folie-satz">Was ihr mitbringt und was heute daraus wird.</p>
     <Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />
     <p class="nur-handout small">Die drei Fäden an der Kaffeebar und alle Stationen mit einem Satz: <a href="/innolab/arbeitsfluss?tag=4#beleg">Fäden im Detail</a>.</p>
   </Folie>
 
-  {/* → am Ende führt zur Value Map (9:10); die Folien des Abschlusses weiter unten kommen erst um 17:15, über scrum#weiter-tag-4. */}
-  <Folie weiter="/innolab/methoden/value-map#vorgehen" weiterTitel="Value Map & Fit (Nachholen)">
+  {/* 9:35, nach der Value Map: ← führt zurück zu ihrer letzten Folie, nicht zum Arbeitsfluss von 9:00. */}
+  <Folie zurueck="/innolab/methoden/value-map#uebertrag">
     <h2 id="was-bauen-wir">Was bauen wir?</h2>
     <p class="folie-satz">Slice 1 – und was die Tests davon übrig lassen.</p>
     <WasBauenWir schritte={false}>Heute Mittag steht euer Slice 1. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>
+  </Folie>
+
+  {/* Letzte Folie des Morgens: → am Ende führt zur Concept Story (9:40); die Folien des Abschlusses weiter unten kommen erst
+      um 17:15, über scrum#weiter-tag-4. Darum ohne data-schritt (SliceImBaum.astro). */}
+  <Folie weiter="/innolab/methoden/concept-story#story-bogen" weiterTitel="Story-Bogen + Concept Story">
+    <h2 id="slice-im-baum">Slice 1 im Baum</h2>
+    <p class="folie-satz">Slice 1 hängt nicht im Baum – er macht den Spitzenreiter konkret und nimmt seine drei Linien aus dem Baum.</p>
+    <SliceImBaum />
+    <p class="nur-beamer">Nach den Tests an Tag 5: Hält die Annahme, bleibt der Slice. Fällt sie, geht ihr zurück in den Baum.</p>
+    <div class="nur-handout">
+      <p>Slice 1 ist kein Knoten im Baum. Unter einer Lösung hängen bei Teresa Torres nur die Annahmen-Tests ({TORRES}, S. 26–27). Slice 1 liegt auf eurem Story-Map-Frame und verbindet beides: Er macht den Spitzenreiter so konkret, dass ihr seine Annahmen seht. Genau dafür nutzt Torres die Story Map: „Story mapping forces you to get specific about how an idea will work and what you expect your end-users will do. While many teams use story mapping to align around product requirements, it’s also a great technique for helping us to surface underlying assumptions“ (S. 119). Danach geht man die Map Schritt für Schritt durch – „you can use your story map to uncover hidden assumptions“ (S. 122); in ihrem Beispiel: „From a simple 5-step story map, we generated 20 assumptions“ (S. 124).</p>
+      <p>Die drei Linien kommen aus dem Baum. <strong>Outcome</strong> ist seine Wurzel, derselbe Satz wie im Produkt-Brief. Auf der Story Map steht er im Rahmen über der Map, und links neben Slice 1 steht als Ziel-Outcome, wer danach was anders tut. <strong>Beleg</strong> sind die Chancen: aus den Momenten der Experience Map, belegt mit Zitat-IDs. Slice 1 folgt dem Pfad zur Ziel-Chance mit Stern. <strong>Annahme</strong> sind die Tests unter der Lösung: Das Lern-Sticky „Wir lernen, ob … (A5)“ trägt dieselben IDs wie die Knoten im Baum, und E1 testet A5.</p>
+      <p>An der Kaffeebar steht im Rahmen „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“, links neben Slice 1 „Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt“ (<a href="/innolab/methoden/story-map#beispiel">Story Map</a>). Die Barista bekommt dort eine eigene Reihe – ohne sie kommt kein Kaffee an –, und im Lern-Sticky steht neben A5 auch A2: Schafft die Bar 40 Bestellungen in 30 Minuten? Im Baum hängt nur die riskanteste Annahme, A5 mit E1.</p>
+      <p>Nach den Tests markiert ihr an Tag 5 E1 und E2 im Baum (<a href="/innolab/tag-5#debrief">Test-Debrief</a>). Stützen sie die Annahmen, bleibt Slice 1, und an Tag 5 werden daraus die ersten Issues. Was ein Test widerlegt, fliegt aus dem Slice. Trägt der Spitzenreiter nicht mehr, geht ihr zurück in den Baum: zu einer der anderen beiden Lösungen unter der Ziel-Chance oder zu einer anderen Chance.</p>
+    </div>
   </Folie>
 
   <hr />
