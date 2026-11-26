@@ -122,7 +122,8 @@ export function zurueck(z: {
   if (z.gezeigteSchritte > 0) return 'schritt';
   if (z.sprung) return 'sprung';
   if (z.vorherigeFolie) return z.zwischenOben ? 'hoch' : 'folie';
-  return z.kopfDarueber ? 'anfang' : 'seite';
+  // Erste Folie, darüber ein Seitenkopf länger als ein Bildschirm: wie → bildschirmweise, nicht auf einmal an den Anfang.
+  return z.kopfDarueber ? (z.weitWeg ? 'hoch' : 'anfang') : 'seite';
 }
 
 /** Ziel des Knopfs „Weiter: …“ in der Kopfleiste: wo → diese Seite verlässt. Von der aktuellen Folie an die erste mit

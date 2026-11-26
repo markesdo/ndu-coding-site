@@ -138,6 +138,9 @@ describe('zurueck (← im Beamer)', () => {
     expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, kopfDarueber: true, lage: 'vor', weitWeg: true })).toBe('hoch');
     expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'unter', weitWeg: true })).toBe('hoch');
     expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'auf', weitWeg: true })).toBe('folie');
+    // Review 2: auf scrum sprang ← von der ersten Folie (y 981) auf einmal an den Seitenanfang.
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, kopfDarueber: true, lage: 'auf', weitWeg: true })).toBe('hoch');
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, kopfDarueber: true, lage: 'auf' })).toBe('anfang');
   });
 
   // Review 2 #447: → hielt am Text zwischen zwei Folien an, ← übersprang ihn.
