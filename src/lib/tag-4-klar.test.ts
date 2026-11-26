@@ -162,6 +162,28 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
   });
 });
 
+// Tag 5 liest, was an Tag 4 entstand, von Miro: Story Map und Befunde als Bilder, nicht aus docs-Dateien. Usability-Tests bis
+// Tag 5 sind freiwillig – E2 und Befunde nur „falls getestet“.
+describe('Tag 5 liest Tag 4 von Miro', () => {
+  const T5 = ['/innolab/tag-5', ...['backlog', 'schneiden', 'sprint', 'akzeptanzkriterien'].map((x) => `/innolab/methoden/${x}`)];
+  it('keine Tag-4-Datei (Story Map, Tests, Experimente, Storys, Geschäftsmodell) auf Tag 5 und seinen Methoden', () => {
+    for (const p of T5) {
+      expect(seite(p).length, p).toBeGreaterThan(1000);
+      // Ausnahme: sprint#review nennt docs/TESTS.md für die Tests an Tag 6 (wie tag-6.astro) – eigene Entscheidung für Tag 6.
+      const q = p.endsWith('/sprint') ? seite(p).replace('(U-IDs in <code>docs/TESTS.md</code>)', '') : seite(p);
+      expect(q.match(/docs\/(STORY-MAP|TESTS|EXPERIMENTE|STORYS|GESCHAEFTSMODELL)\.md/g) ?? [], p).toStrictEqual([]);
+    }
+  });
+  it('Prompts bekommen Bilder der Frames; E2 und Befunde sind freiwillig; U1–U3 verlinkt auf die Befunde', () => {
+    expect(seite('/innolab/methoden/backlog')).toContain('Unter dieser Nachricht stehen Bilder aus Miro: meine Spalte im Frame „T4 · 1 · Story Map“ mit Slice 1 und, falls ich getestet habe, die Befunde aus meinem Frame „T4 · 5 · Prototyp · Produkt n“.');
+    expect(seite('/innolab/methoden/schneiden')).toContain('Unter dieser Nachricht steht ein Bild meiner Story Map von Miro (meine Spalte im Frame „T4 · 1 · Story Map“, Slice 1).');
+    const t5 = seite('/innolab/tag-5');
+    expect(t5).toContain('<strong>Je Product Ownerin:</strong> E1, E2 (falls getestet), Empfehlung');
+    expect(t5).toContain('E2 und U1–U3 stehen auf der Seite <a href="/innolab/methoden/prototyp-spike#beispiel-befunde">');
+    expect(seite('/innolab/methoden/prototyp-spike')).toContain('<h2 id="beispiel-befunde">');
+  });
+});
+
 /** Frame-Namen aus Quelltexten (ohne Kommentare): in „…“, als name="…", als Text eines MiroLink (>…</MiroLink>) oder am Ende
  *  eines Prompt-Labels (label="Miro · …"). Jedes andere „T4 · “ gilt als unbekannt. */
 function frameCheck(quellen: string[]) {
