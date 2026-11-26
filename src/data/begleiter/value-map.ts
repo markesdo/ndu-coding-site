@@ -67,7 +67,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     live: [
       'Allein still: welches Feld für jeden Zettel? Dann zugleich zeigen.',
       'Erst beide beantworten lassen, dann aufdecken.',
-      'A: Products & Services. B: Pain Reliever P2.',
+      'A: Products & Services. B: Pain Reliever (→ P2).',
       'Probe: Steht es im Schaufenster – oder sagt es, was sich ändert?',
       'Wenn hinten: nur aufdecken und die Probe sagen.',
     ],
@@ -82,7 +82,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Bei B nach der ID fragen: Welchen Pain im Profil der Kaffeebar trifft der Zettel?',
         'Es ist in Ordnung, wenn ein Zettel Pain und Gain zugleich trifft (S. 103).',
       ],
-      aufloesung: 'A ist ein Product & Service (Schaufenster). B ist ein Pain Reliever für P2. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
+      aufloesung: 'A ist ein Product & Service (Schaufenster). B ist ein Pain Reliever für P2, geschrieben (→ P2): Der Pfeil sagt „lindert P2“, nicht „ist P2“. Einer der vier häufigen Fehler im Buch: „Add products and services to the pain reliever and gain creator fields.“ (S. 105)',
     },
     kern: [
       {
@@ -114,10 +114,10 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
 
   'pr-finden': {
     live: [
-      'Nachschlage-Folie: Pains von oben, P1 zuerst.',
+      'Nachschlage-Folie: Pains von oben, P1 zuerst – Vorgehen des Kurses.',
       'Fragen: Spart euer Angebot Zeit, Geld, Aufwand – nimmt es ein Risiko?',
-      '„Zu einem Pain keinen Zettel zu haben ist erlaubt – das wird beim Fit ein ✗.“',
-      'Kaffeebar: P2 → in 20 Sekunden im Gehen bestellen; P4 kein Zettel.',
+      '„Kein Zettel ist erlaubt. Trifft auch kein anderer den Pain: rechts ✗ – oder ? mit Frage.“',
+      'Kaffeebar: zu P2 „in 20 Sekunden im Gehen bestellen“; P4 kein Zettel.',
     ],
     kern: [
       { text: 'Pain Relievers: „how exactly your products and services alleviate specific customer pains“; neun Leitfragen (Zeit, Geld, Aufwand; Frust; schwache Lösungen; Hindernisse; Gesichtsverlust; Risiken; Sorgen; Fehler; Einstiegshürden).', quelle: `${VPD}, S. 86–87` },
@@ -128,9 +128,9 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
 
   'gc-finden': {
     live: [
-      'Nachschlage-Folie: Gains von oben, G1 zuerst.',
+      'Nachschlage-Folie: Gains von oben, G1 zuerst – Vorgehen des Kurses.',
       'Alle vier Arten: erforderlich, erwartet, gewünscht, unerwartet.',
-      'Kaffeebar: G1 → Kaffee steht bereit; G2, G3 kein Zettel.',
+      'Kaffeebar: zu G1 „Kaffee steht bereit“; G2, G3 kein Zettel.',
       'Überschneidung erlaubt: ein Zettel darf Pain und Gain treffen.',
     ],
     kern: [
@@ -157,8 +157,8 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   fit: {
     live: [
       'Abbildung: Quadrat = Value Map, jeder Zettel geprüft, auch Produkte. Kreis = Profil.',
-      'Klick 1: Zettel vorlesen, offen fragen: Was trifft er? P1.',
-      '„Ein Zettel, eine ID, zwei Haken – links und rechts.“',
+      'Klick 1: Zettel vorlesen. Was trifft er? P1 – also (→ P1).',
+      '„Ein Zettel, sein Pfeil, zwei Haken – links und rechts.“',
       'Klick 2: Rest rechts – Kreuz, oder Fragezeichen mit Frage.',
       'Klick 3: von oben lesen. Nicht Haken zählen.',
     ],
@@ -248,7 +248,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   'fit-kaffeebar-rechts': {
     live: [
       'Zeile 1: Diese fünf haben ihren Haken schon aus Schritt 1.',
-      'Je Eintrag offen fragen: Trägt links ein Zettel diese ID?',
+      'Je Eintrag offen fragen: Zeigt links ein Pfeil auf diese ID?',
       'J4: Anstehen entfällt, Bezahlen offen – Fragezeichen mit Frage.',
       'Schritt 3: von oben lesen – höchstes Kreuz bewusst? Frage im 1:1.',
       'Wenn hinten: nur G2 und J4, dann Schritt 3.',
@@ -279,6 +279,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Timer 3 min: wählen oder bestätigen.',
       'Fragen: Was davon ist die Website – trifft sie allein noch P1?',
       'Nach 3 min: Satz-Sticky mitnehmen, Quadrat füllen – Timer 11 min.',
+      'Check beim Füllen: Welcher gelbe Zettel ist die Website?',
       '1:1 ab Minute 5, je 3 min: Produkt 3, 2, 1.',
       'Frage: ✗ des Spitzenreiters oben bewusst? Sonst: Was bleibt oben offen?',
       'Nach 14 min: ordnen auf den Skalen – Timer 4 min.',
@@ -294,16 +295,16 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Wählen – T3 · 4, eigene Spalte, Feld „Ideen vergleichen und wählen“: die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils; jedes ? mit Frage bleibt am Satz.',
         'Füllen – Canvas-Frame „T3 · 4 · Canvas · Produkt n“: den Sticky mit dem Satz des Spitzenreiters links neben das Quadrat kopieren, dann die Value Map ins Quadrat (die drei Platzhalter überschreiben).',
         'Ordnen – alle Zettel auf die drei Skalen links unten, Unverzichtbares oben.',
-        'Fit prüfen – auf den Skalen: Links, Zettel für Zettel: ID, ✓ auf Zettel und Eintrag; Rechts, was übrig ist: ✗ oder ? mit Frage, als letzte Zeile im Sticky; Von oben lesen.',
+        'Fit prüfen – auf den Skalen: Links, Zettel für Zettel: ID mit Pfeil, ✓ auf Zettel und Eintrag; Rechts, was übrig ist: ✗ oder ? mit Frage, als letzte Zeile im Sticky; Von oben lesen.',
       ],
     },
     ablauf: {
       schritte: [
         'Wählen (3 min): wer zu Hause gewählt hat, bestätigt nur – mit der Frage: Was davon ist die Website, die ihr baut, und trifft sie allein noch P1? (Der Kurs baut eine Website; der Spitzenreiter darf hybrid sein, die Website ist der Teil, den ihr prototypt.) Sonst jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit P- oder G-ID, kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID (VPD S. 99–101, 105). Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – die Idee wird zu Products & Services (ersetzt durch die Produkte, in die ihr sie zerlegt), der Halbsatz vor (P…) zum Pain Reliever, der Halbsatz vor (G…) zum Gain Creator; b) Profil von oben: ein Zettel je Wirkung (VPD S. 100–101) mit (→ P…) oder (→ G…), auch (→ J…), kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID. IDs, „Profil von oben“ und „Produkte ohne ID“ sind Regeln dieses Kurses. Check: Welcher gelbe Zettel ist die Website – trifft sie allein noch P1? Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Ordnen (4 min): alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (VPD S. 102).',
-        'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID dazu, ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
-        'Festhalten und prüfen (2 min): rechts ein Zeichen je Zettel, links jeder ✓ mit ID, jedes ? mit Frage. Die ? bleiben, wo sie stehen – am Satz in T3 · 4, am Zettel im Canvas; an der Experiment-Karte werden sie Annahmen. Claude-Prüfung nach dem Kurstag.',
+        'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID mit Pfeil dazu, etwa (→ P1), ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
+        'Festhalten und prüfen (2 min): rechts ein Zeichen je Zettel, links jeder ✓ mit (→ …), jedes ? mit Frage. Die ? bleiben, wo sie stehen – am Satz in T3 · 4, am Zettel im Canvas; an der Experiment-Karte werden sie Annahmen. Claude-Prüfung nach dem Kurstag.',
         'Euer Baum – Lösungen (2 min): die drei Ideen als Lösungen unter den Stern an der Ziel-Chance („Baum · Produkt n“), den Spitzenreiter markieren (Torres, Continuous Discovery Habits, S. 25–27).',
       ],
       achten: [
@@ -313,15 +314,15 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         'Der Vergleich der Lückensätze ersetzt nicht den Fit am Ende: Das Buch prüft die ausgearbeitete Value Map (S. 112).',
         'Rechts trägt am Ende jeder Zettel ein Zeichen.',
         'Der Satz des Spitzenreiters liegt als Sticky im Canvas – kein Zurückspringen nach T3 · 4.',
-        'Produkte tragen im Quadrat keine ID; ihre ID (J, P oder G) kommt beim Fit.',
+        'Produkte tragen im Quadrat keine ID; ihre ID (→ J…, → P… oder → G…) kommt beim Fit.',
         'Kein Zettel zu jedem Pain – die Kaffeebar hat sechs Zettel, als Beispiel, nicht als Regel.',
       ],
       fehler: [
         'Die Lieblingsidee bekommt großzügig Haken, die anderen strenge Kreuze.',
         'Das Profil wird nachträglich an die Idee angepasst.',
         'Alles abgehakt, nichts offen.',
-        'Ein Pain Reliever ohne ID bekommt trotzdem einen Haken.',
-        'Ein Produkt bekommt schon im Quadrat eine ID – oder eine P-ID für einen Pain, den es nicht direkt trifft.',
+        'Ein Pain Reliever ohne jede ID – weder (→ P1) noch (P1) – bekommt trotzdem einen Haken.',
+        'Ein Produkt bekommt schon im Quadrat eine ID – oder ein (→ P…) für einen Pain, den es nicht direkt trifft.',
       ],
     },
     kern: [
