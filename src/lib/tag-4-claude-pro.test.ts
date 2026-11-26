@@ -57,9 +57,9 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(f).toContain('<div class="nur-handout">');
   });
 
-  it('die Anker der Setup-Seite, auf die die Folie zeigt, gibt es', () => {
+  it('die Anker der Setup-Seite, auf die die Folie zeigt, sind Überschriften (nicht nur ids von Schritte)', () => {
     const s = setup();
-    for (const a of ['claude-pro', 'claude-code-browser', 'lokal-schnellweg', 'lokal-starten']) expect(s, a).toContain(`id="${a}"`);
+    for (const a of ['claude-pro', 'claude-code-browser', 'lokal-schnellweg', 'lokal-starten']) expect(s, a).toMatch(new RegExp(`<h[2-4] id="${a}">`));
   });
 
   it('Tag 4: kein „vor 9:00 Claude Pro“ mehr; Hinweis „um 10:50 gemeinsam“ vor dem Ablauf, der 10:50-Block nennt es', () => {
