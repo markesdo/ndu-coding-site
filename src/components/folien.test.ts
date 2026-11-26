@@ -50,6 +50,12 @@ describe('weiter (→ im Beamer)', () => {
     expect(weiter({ ...folie, ende: true, verschoben: true })).toBe('hierhin');
   });
 
+  // Review 2 #447: Eine ende-Folie, höher als der Bildschirm, lief runter → oben ausrichten → runter … ohne Ende.
+  it('data-ende auf einer zu hohen Folie: ist ihre Unterkante zu sehen, gilt das Ende – kein neues Ausrichten', () => {
+    expect(weiter({ ...folie, ende: true, verschoben: true, zuHoch: true })).toBe('ende');
+    expect(weiter({ ...folie, ende: true, verschoben: true, zuHoch: true, restUnten: true })).toBe('runter');
+  });
+
   it('data-ende: am Ende der Folie nichts mehr, auch wenn danach noch Folien oder Seiten kämen', () => {
     expect(weiter({ ...folie, ende: true })).toBe('ende');
     expect(weiter({ ...folie, naechsteFolie: false, ende: true })).toBe('ende');
@@ -132,6 +138,13 @@ describe('zurueck (← im Beamer)', () => {
     expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, kopfDarueber: true, lage: 'vor', weitWeg: true })).toBe('hoch');
     expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'unter', weitWeg: true })).toBe('hoch');
     expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'auf', weitWeg: true })).toBe('folie');
+  });
+
+  // Review 2 #447: → hielt am Text zwischen zwei Folien an, ← übersprang ihn.
+  it('steht zwischen der vorigen Folie und dieser sichtbarer Text, erst hoch (dorthin, wo → anhielt)', () => {
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'auf', zwischenOben: true })).toBe('hoch');
+    expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: true, kopfDarueber: true, lage: 'auf', zwischenOben: true })).toBe('schritt');
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'auf' })).toBe('folie');
   });
 
   it('data-zurueck: am Anfang der Folie dorthin statt zur Folie davor – erst nach verdeckten Schritten', () => {

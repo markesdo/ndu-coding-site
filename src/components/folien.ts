@@ -38,6 +38,9 @@ export function weiter(z: {
   ende?: boolean;
   /** Ihre Oberkante liegt über der Kopfleiste (etwa am Seitenende nur halb zu sehen). */
   verschoben?: boolean;
+  /** Die Folie ist höher als der Bildschirm: Dann zählt verschoben nicht – ihr Ende ist erreicht, wenn die Unterkante
+   *  zu sehen ist (sonst richtete → sie wieder oben aus, runter, oben … ohne Ende). */
+  zuHoch?: boolean;
 }): Weiter {
   const lage = z.lage ?? 'auf';
   const amEnde = (): Weiter => (z.ende ? 'ende' : z.sprung ? 'sprung' : 'seite');
@@ -51,7 +54,7 @@ export function weiter(z: {
   if (z.versteckteSchritte > 0) return 'schritt';
   if (z.offeneAufloesung) return 'aufloesung';
   if (z.restUnten) return 'runter';
-  if (z.ende) return z.verschoben ? 'hierhin' : 'ende';
+  if (z.ende) return z.verschoben && !z.zuHoch ? 'hierhin' : 'ende';
   if (z.sprung) return 'sprung';
   if (z.naechsteFolie && z.zielUnterhalb) return 'runter';
   return z.naechsteFolie ? 'folie' : 'seite';
@@ -108,6 +111,8 @@ export function zurueck(z: {
   gezeigteSchritte: number; vorherigeFolie: boolean; kopfDarueber?: boolean; lage?: Lage; verschoben?: boolean;
   /** Der vorige Halt ('unter': Unterkante der Folie, 'vor': Seitenanfang) liegt mehr als einen Bildschirm über dem Bildschirm. */
   weitWeg?: boolean;
+  /** Zwischen der vorigen Folie und dieser steht sichtbarer Text – → hielt dort an, also auch ← (hoch). */
+  zwischenOben?: boolean;
   /** Folie mit data-zurueck. */
   sprung?: boolean;
 }): Zurueck {
@@ -116,7 +121,7 @@ export function zurueck(z: {
   if (z.verschoben) return 'hierhin';
   if (z.gezeigteSchritte > 0) return 'schritt';
   if (z.sprung) return 'sprung';
-  if (z.vorherigeFolie) return 'folie';
+  if (z.vorherigeFolie) return z.zwischenOben ? 'hoch' : 'folie';
   return z.kopfDarueber ? 'anfang' : 'seite';
 }
 

@@ -184,8 +184,11 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
       const weiterKnopf = () => {
         if (!weiter) return;
         const folien = [...document.querySelectorAll<HTMLElement>('[data-folie]')];
-        const i = aktuelleFolie(folien.map((f) => f.getBoundingClientRect().top), topbar?.getBoundingClientRect().height ?? 0);
-        const aus = seitenAusgang(folien.map((f) => ({ weiter: f.dataset.weiter, ende: f.hasAttribute('data-ende') })), i);
+        const oben = topbar?.getBoundingClientRect().height ?? 0;
+        const i = aktuelleFolie(folien.map((f) => f.getBoundingClientRect().top), oben);
+        // Unter einer Folie (Handout-Text danach) führt → zur nächsten, nicht ans Ende dieser: ab der nächsten zählen.
+        const unter = i >= 0 && i + 1 < folien.length && lageZurFolie(folien[i].getBoundingClientRect(), oben) === 'unter';
+        const aus = seitenAusgang(folien.map((f) => ({ weiter: f.dataset.weiter, ende: f.hasAttribute('data-ende') })), unter ? i + 1 : i);
         const [href, titel] = aus.art === 'weiter'
           ? [aus.ziel, folien.find((f) => f.dataset.weiter === aus.ziel)?.dataset.weiterTitel ?? '']
           : [nextHref, nextTitel ?? ''];
@@ -264,9 +267,10 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
       const springeNach = (ziel: string) => {
         const url = new URL(ziel, location.href);
         const gleich = ohneSchraegstrich(url.pathname) === ohneSchraegstrich(location.pathname);
-        const el = gleich && url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null;
+        let el: HTMLElement | null = null;
+        try { el = gleich && url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null; } catch {}
         if (!el) { location.href = url.href; return; }
-        history.pushState(null, '', url.hash);
+        history.pushState(null, '', url.search + url.hash);
         springe(el.closest<HTMLElement>('[data-folie]') ?? el);
       };
       // data-ende: → tut nichts, der Hinweis „Ende“ unten rechts (beamer.css) leuchtet kurz auf.
@@ -311,6 +315,7 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
             restUnten: rand.bottom > innerHeight + 4,
             versteckteSchritte: schritte.length - gezeigt.length, offeneAufloesung: !!knopf, naechsteFolie: i < folien.length - 1,
             sprung: !!folie.dataset.weiter, ende: folie.hasAttribute('data-ende'), verschoben: rand.top < oben - 4,
+            zuHoch: rand.height > innerHeight - oben + 4,
           });
           if (tun === 'hierhin') springe(folie);
           else if (tun === 'runter') {
@@ -326,14 +331,17 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
         }
         // Wie weit zurück bis zum vorigen Halt: unter der Folie bis zu ihrer Unterkante, im Seitenkopf bis zum Anfang.
         const bisHalt = lage === 'unter' ? oben - rand.bottom : scrollY;
+        // Sichtbarer Text zwischen der vorigen Folie und dieser (→ hielt dort an): ← zeigt ihn auch.
+        const zwischen = i > 0 ? rand.top - folien[i - 1].getBoundingClientRect().bottom : 0;
         const bildschirm = runterUm({ fensterHoehe: innerHeight, kopfleiste: oben, rest: Infinity });
         const tun = folieZurueck({
           gezeigteSchritte: gezeigt.length, vorherigeFolie: i > 0, kopfDarueber: scrollY > 0, lage, verschoben: rand.top < oben - 4,
-          weitWeg: bisHalt > bildschirm + 4, sprung: !!folie.dataset.zurueck,
+          weitWeg: bisHalt > bildschirm + 4, sprung: !!folie.dataset.zurueck, zwischenOben: zwischen > 4,
         });
         if (tun === 'schritt') gezeigt.at(-1)?.classList.remove('gezeigt');
         else if (tun === 'hierhin') springe(folie);
-        else if (tun === 'hoch') scrollBy({ top: -bildschirm, behavior: 'instant' as ScrollBehavior });
+        // Auf der Folie (Text davor): dorthin, wo → angehalten hat – ihre Oberkante am unteren Rand; sonst einen Bildschirm.
+        else if (tun === 'hoch') scrollBy({ top: lage === 'auf' ? rand.top - innerHeight : -bildschirm, behavior: 'instant' as ScrollBehavior });
         else if (tun === 'sprung') springeNach(folie.dataset.zurueck!);
         else if (tun === 'folie') springe(folien[i - 1]);
         else if (tun === 'anfang') scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });

@@ -20,6 +20,8 @@ export function bildMass(b: Uint8Array): Mass | undefined {
       if (b[i] !== 0xff) return undefined;
       const marker = b[i + 1];
       if (marker === 0xff) { i += 1; continue; }
+      // Marker ohne Länge: TEM (01) und RST0–7 (D0–D7).
+      if (marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) { i += 2; continue; }
       const laenge = v.getUint16(i + 2);
       if (marker === 0xe1) gedreht ||= exifGedreht(v, i + 4, laenge - 2);
       if (marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc) {
