@@ -10,14 +10,14 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
   worum: {
     live: [
       '„Ein Spike ist Code zum Lernen, nicht zum Behalten.“',
-      'Kursregel: Papier vor Claude – sonst testet ihr Claudes Vorstellung.',
+      'Kursregel: Papier vor Claude – sonst wird Claudes Vorstellung getestet.',
       'Spike wie im Extreme Programming: Abnahmekriterien, Zeitbox, wegwerfen.',
       'Falle: Er belegt Bedienbarkeit, nicht ob jemand es will (E1).',
     ],
     verstaendnis: {
       frage: 'Was zeigt euch der Klick-Prototyp – und was nicht?',
       antwort: 'Ob Menschen in einer Testsituation mit dem Ablauf zurechtkommen: Aufgabe geschafft, Zeit, wo gehangen. Nicht, ob sie es im echten Leben wollen – das prüft E1.',
-      falsch: '„Ob das Produkt ankommt“ – dafür ist der Prototyp laut Bland kein Ersatz für echte Nutzung.',
+      falsch: '„Ob das Produkt ankommt“ – ob jemand es will, zeigt E1. Und laut Bland ersetzt der Klick-Prototyp auch keinen richtigen Usability-Test mit Kund*innen (S. 236).',
     },
     kern: [
       {

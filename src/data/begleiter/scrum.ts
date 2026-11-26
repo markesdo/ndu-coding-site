@@ -19,7 +19,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
       'Foliensatz öffnen, Teil Agile & Scrum: nur die 20 angegebenen Folien.',
       'Zeit: 27 min Foliensatz, dann hier weiter.',
       'Wo Foliensatz und Guide verschieden klingen, gilt der Guide.',
-      'Danach direkt zu „Wo wir abweichen“ springen – Link auf der Folie.',
+      'Danach über den Link auf der Folie zu „Wo wir abweichen“.',
     ],
     kern: [
       {
@@ -121,7 +121,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
     live: [
       NACHLESE,
       '„Done“ oder „not done“ – nichts dazwischen.',
-      'Unsere Definition of Done mit Messung schreibt ihr an Tag 5.',
+      '„Unsere Definition of Done mit Messung schreibt ihr an Tag 5.“',
     ],
     kern: [
       {
@@ -242,7 +242,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
     live: [
       'Teamaufstellung und Definition of Done kommen an Tag 5.',
       '„Jetzt weiter am Prototyp bis 17:15: Höhepunkt, Karte E2, Trockenlauf.“',
-      'Pfeil weiter führt in den Abschluss Tag 4, nicht Tag 5.',
+      'Pfeil → Abschluss Tag 4; das Panel zeigt die nächste Folie der Seite.',
     ],
     ueberleitung: 'Um 17:15: Origin Story und Hausaufgabe im Abschluss.',
   },
@@ -292,7 +292,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Überblick: Theorie war Tag 4, heute euer Team.',
+      'Überblick: Theorie war Tag 4, heute das eigene Team.',
       'docs/TEAM.md in allen drei Repos gleich.',
       'Abweichungen vom Guide als eigener Abschnitt übernehmen.',
     ],

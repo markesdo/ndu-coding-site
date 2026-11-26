@@ -12,7 +12,7 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
       'Abbildung von links: Auslöser, Schritte, Hürde, Glühbirne am Gipfel.',
       '„Jeder Schritt wird relevanter als der vorige – nicht gut oder schlecht.“',
       'Höhepunkt: nicht dass, sondern wie das Problem gelöst wird.',
-      'Kernaufgabe = der Weg durch Slice 1 eurer Story Map.',
+      'Kernaufgabe = der Weg durch Slice 1 der Story Map.',
     ],
     verstaendnis: {
       frage: 'Was unterscheidet die Usage Story von der Concept Story?',
@@ -74,7 +74,7 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Woran merkt ihr im Test, dass der Höhepunkt wirkt?',
-      antwort: 'Die Person lächelt oder sagt „Ah, ich versteh’s“ bei Station 5 – Lichaws Smile Test; der Spike-Test zählt das als „Höhepunkt erreicht“.',
+      antwort: 'Zwei Beobachtungen auf Karte E2: „Höhepunkt erreicht“ heißt, die Person kommt ohne Hilfe zum Höhepunkt-Bildschirm (ja/nein). Daneben notiert ihr ihre Reaktion dort – lächelt sie oder sagt „Ah, ich versteh’s“ bei Station 5, ist das Lichaws Smile Test.',
       falsch: '„Wenn sie die Bestellung abschickt“ – das ist ein Schritt der steigenden Handlung, nicht der erlebte Wert.',
     },
     kern: [
@@ -93,7 +93,7 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Timer je Schritt: 2 + 10 + 4 + 2 min.',
-      'Person aus euren Interviews, mit Uhrzeit und Ort.',
+      'Person aus den eigenen Interviews, mit Uhrzeit und Ort.',
       'Boom-Probe: nur Stationen 4–7 lesen – konkret, danach Schluss?',
       'Wenn hinten: nur Krise und Höhepunkt – die braucht der Prototyp.',
       'Festhalten in docs/STORYS.md, Abschnitt „Usage Story“.',

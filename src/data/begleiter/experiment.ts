@@ -61,9 +61,9 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   map: {
     live: [
-      'Die Map kennt ihr von Tag 1 – jetzt für die Idee.',
+      '„Die Map kennt ihr von Tag 1 – jetzt für die Idee.“',
       'Höchstens zehn Minuten: relativ zueinander, nicht genau.',
-      'Oben rechts: zwei, drei Annahmen, auf die ihr alles setzt.',
+      'Oben rechts: zwei, drei Annahmen, an denen alles hängt.',
       'Reihenfolge nach Bland: erst wünschenswert, dann machbar, dann wirtschaftlich.',
     ],
     miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Annahmen der Idee auf die Map: Beleg nach rechts, Wichtigkeit nach oben.'] },
