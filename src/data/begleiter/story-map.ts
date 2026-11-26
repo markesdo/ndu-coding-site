@@ -233,14 +233,14 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Keine Runde über die Maps der anderen.',
     ],
     uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein, 1:1 mit Markus' },
-    miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Rot geht schief, Grau System, Orange/Pink Outcome, Violett wer handelt, * kein Software-Schritt.'] },
+    miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
     ueberleitung: 'Schritt 1: der Rahmen.',
   },
 
   'schritt-rahmen': {
     live: [
-      'Timer 3 min: Kopfzeile – für wen, Outcome aus dem Brief, Idee.',
-      'Violette Stickies: Hauptperson und wer noch handeln muss.',
+      'Timer 3 min: Kopfzeile „Für | Outcome (Brief) | Idee (Value Map)“.',
+      'Violett „Wer handelt“: die Hauptperson, links vor dem Backbone.',
       'Fragen: Mensch, Verhalten, Idee – oder nur ein Produktname?',
     ],
     uebung: { dauer: '3 min', form: 'allein' },
@@ -280,7 +280,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-reihen': {
     live: [
-      'Timer 2 min: zweite Person in eigene Reihe, violettes Sticky links.',
+      'Timer 2 min: violett „Wer noch“, ihre Tasks in die eigene Reihe.',
       'System grau, aktiv, nur wenn die Person wartet oder etwas sieht.',
       'Fragen: Wessen Reihe ist leer, obwohl ohne sie nichts ankommt?',
     ],
@@ -310,9 +310,9 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-outcome': {
     live: [
-      'Timer 2 min: Outcome-Sticky orange oder pink, links an Slice 1.',
+      'Timer 2 min: pinkes Outcome-Sticky links an den Tasks.',
       '„[Wer] tut [was] statt [was bisher].“',
-      'Darunter „Wir lernen, ob … (A…)“ mit Annahmen-ID.',
+      'Darunter cyan „Wir lernen, ob … (A_)“ mit Annahmen-ID.',
       'Falle: „können“, „wird informiert“, „Umsatz“.',
     ],
     uebung: { dauer: '2 min', form: 'allein' },

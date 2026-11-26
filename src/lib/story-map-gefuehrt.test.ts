@@ -88,7 +88,10 @@ describe('Story Map: geführt Schritt für Schritt', () => {
   it('Übung: die Regeln aus der Auswertung der Maps 25/26 stehen an ihrem Schritt', () => {
     expect(sichtbar(folie('schritt-tasks'))).toContain('<strong>Anfang und Ende:</strong> beim Anlass im Alltag der Person');
     expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('Anbahnung · Information · Registrierung · Onboarding · Kernnutzen');
-    expect(sichtbar(folie('schritt-reihen'))).toContain('<strong>System:</strong> eigene graue Reihe');
+    expect(sichtbar(folie('schritt-reihen'))).toContain('<strong>Graue Reihe „System“:</strong> nur, worauf die Person wartet oder was sie sieht');
+    expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('das letzte Feld heißt „… danach“');
+    expect(sichtbar(folie('schritt-durchgehen'))).toContain('„Outcome erreicht? ja / nein, es fehlt: …“');
+    expect(seite).not.toMatch(/reihum/i);
     expect(sichtbar(folie('schritt-erkunden'))).toContain('<strong>Mindestens ein rotes Sticky pro Aktivität.</strong>');
     expect(sichtbar(folie('schritt-outcome'))).toContain('„Outcome: [Wer] tut [was] statt [was bisher].“');
     const schneiden = sichtbar(folie('schritt-schneiden'));
@@ -101,7 +104,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
 
   it('Farblegende auf der Übersicht: dieselben Farben wie auf den Frames', () => {
     const s = sichtbar(folie('vorgehen'));
-    for (const t of ['Grün: Aktivität', 'Gelb: Task', 'Blau: Details, Varianten', 'Rot: geht schief', 'Grau: System', 'Orange/Pink: Outcome', 'Violett: wer handelt', '* kein Software-Schritt']) expect(s, t).toContain(t);
+    for (const t of ['Grün: Aktivität', 'Gelb: Task', 'Blau: Details, Varianten', 'Rot: geht schief', 'Grau: System', 'Pink: Outcome', 'Cyan: „Wir lernen, ob“', 'Violett: wer handelt', '* kein Software-Schritt', 'Sprechblase: offene Frage → Annahmen-Map']) expect(s, t).toContain(t);
   });
 
   it('alles auf Miro: keine docs-Datei; Claude Code mit Opus liest einen Screenshot und die Annahmen-Map der Werkstatt', () => {
