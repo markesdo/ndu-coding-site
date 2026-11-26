@@ -225,6 +225,8 @@ describe('Origin Story: Vorlage verlinkt', () => {
   it('tag-4#abschluss nennt den Miro-Frame der Origin Story statt einer docs-Vorlage', () => {
     expect(folie('/innolab/tag-4', 'abschluss')).toContain('Ihr schreibt sie auf Miro, in eurem Frame „T4 · 6 · Origin Story · Produkt n“.');
     expect(folie('/innolab/tag-4', 'abschluss')).not.toContain('vorlage-origin-story');
+    // Auf der Experiment-Seite zeigt der Abschnitt mit dieser id, wie der Miro-Frame aussieht.
+    expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">So sieht die Origin Story auf Miro aus</h3>');
   });
 });
 

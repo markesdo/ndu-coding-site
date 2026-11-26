@@ -11,7 +11,7 @@ const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro',
 const SEITEN: Record<string, number> = {
   // Tagesseite: 9:00 Arbeitsfluss, 9:35 Was bauen wir? und Slice 1 im Baum, 17:15 Abschluss mit Beispiel, Hausaufgabe, Ende.
   '/innolab/tag-4': 7,
-  '/innolab/methoden/experiment': 15,
+  '/innolab/methoden/experiment': 18,
   '/innolab/methoden/usage-story': 5,
   '/innolab/methoden/prototyp-spike': 6,
   '/innolab/methoden/scrum': 16,

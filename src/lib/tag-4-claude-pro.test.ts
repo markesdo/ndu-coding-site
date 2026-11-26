@@ -13,14 +13,15 @@ const folie = (p: string, id: string) => {
 };
 const setup = () => readFileSync(new URL('../pages/setup.astro', import.meta.url), 'utf8');
 const EX = '/innolab/methoden/experiment';
-// Seitenkörper ohne Frontmatter (dort steht der Pre-Mortem-Prompt als Konstante) und ohne Kommentare.
+// Seitenkörper ohne Frontmatter (dort steht der Prompt „Gegenprobe zu E1“ als Konstante) und ohne Kommentare.
 const koerper = (p: string) => {
   const q = seite(p);
   return q.slice(q.indexOf('---', 3) + 3).replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
 };
 
 describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
-  it('Folie „claude-pro-jetzt“ ist die erste Folie der Experiment-Seite, direkt vor der Theorie (eigener Block 10:50–11:00)', () => {
+  // Seit 26.11. abends zwei Folien (claude-pro-jetzt, claude-code-opus), damit jede bei 1280 × 720 passt.
+  it('Folie „claude-pro-jetzt“ ist die erste Folie der Experiment-Seite; nach „claude-code-opus“ folgt die Theorie (eigener Block 10:50–11:00)', () => {
     const q = seite(EX);
     const pro = q.indexOf('<h2 id="claude-pro-jetzt">Jetzt: Claude Pro abschließen und Claude Code starten</h2>');
     expect(pro).toBeGreaterThan(0);
@@ -28,7 +29,10 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(q.slice(0, pro).match(/<Folie>/g) ?? []).toHaveLength(1);
     const theorie = q.indexOf('<h2 id="annahmen-der-idee">');
     expect(theorie).toBeGreaterThan(pro);
-    expect(q.slice(pro, theorie).match(/<Folie>/g) ?? []).toHaveLength(1);
+    expect(q.slice(pro, theorie).match(/<Folie>/g) ?? []).toHaveLength(2);
+    const opus = q.indexOf('<h2 id="claude-code-opus">');
+    expect(opus).toBeGreaterThan(pro);
+    expect(q.slice(opus, theorie).match(/<Folie>/g) ?? []).toHaveLength(1);
   });
 
   it('der Pro-Block (10:50) liegt vor der ersten Nutzung von Claude Code an Tag 4: Story Map ab 11:30, dann Prototyp-Spike', () => {
@@ -59,24 +63,28 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(k.indexOf('Claude Code')).toBeGreaterThan(folieAn);
   });
 
-  it('die Folie nennt den richtigen Grund: Claude Code ab der Story Map (11:30), das Pre-Mortem erst am Ende des Tages', () => {
-    const f = folie(EX, 'claude-pro-jetzt');
+  it('die Folien nennen den richtigen Grund: Claude Code ab der Story Map (11:30), dann zum Bauen im Spike', () => {
+    const f = folie(EX, 'claude-pro-jetzt') + folie(EX, 'claude-code-opus');
     expect(f).toContain('Claude Code braucht ihr heute zum ersten Mal in der <a href="/innolab/methoden/story-map#pruefen">Story Map</a> ab 11:30');
     expect(f).toContain('Markus hilft vor 11:30');
     expect(f).not.toMatch(/bis zum Spike um 14:05|erst für das Pre-Mortem|Claude Code ab hier/);
-    // Wer schon Pro oder Max hat, sieht es auf der Folie selbst, nicht nur im Handout.
+    // Wer schon Pro oder Max hat, sieht es auf der Folie selbst, nicht nur im Handout – mit den Schritten, die bleiben.
     const sichtbar = f.slice(0, f.indexOf('<div class="nur-handout">'));
-    expect(sichtbar).toContain('Wer Pro oder Max hat: nichts abschließen, nichts kündigen.');
+    expect(sichtbar).toContain('<strong>Ihr habt schon Pro oder Max?</strong> Dann nichts abschließen, nichts kündigen: nur Schritt 3 bis 5.');
   });
 
-  it('Schritte der Folie: abschließen, kündigen, starten, Test, wer hängt – mit Setup-Links und 10-Minuten-Timer', () => {
-    const f = folie(EX, 'claude-pro-jetzt');
-    const schritte = [...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1]);
-    expect(schritte).toStrictEqual(['Claude Pro neu abschließen,', 'Gleich wieder kündigen:', 'Claude Code starten:', 'Kurzer Test:', 'Wer hängt,']);
+  it('Schritte der beiden Folien: abschließen, kündigen, starten | Opus, Test, wer hängt – mit Setup-Links und 10-Minuten-Timer', () => {
+    const pro = folie(EX, 'claude-pro-jetzt');
+    const opus = folie(EX, 'claude-code-opus');
+    const f = pro + opus;
+    const schritte = (x: string) => [...x.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1]);
+    expect(schritte(pro)).toStrictEqual(['Claude Pro neu abschließen,', 'Gleich wieder kündigen:', 'Claude Code starten:']);
+    expect(schritte(opus)).toStrictEqual(['Modell auf Opus stellen:', 'Kurzer Test:', 'Wer hängt,']);
+    expect(opus).toContain('<ol class="gross" start="4">');
     expect([...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => m[1])).toStrictEqual(['10']);
     for (const a of ['claude-pro', 'claude-code-browser', 'lokal-schnellweg', 'lokal-starten']) expect(f, a).toContain(`href="/setup#${a}"`);
     // Auf der sichtbaren Folie (vor dem Handout) stehen die Links bei den Schritten Abschließen und Anmelden.
-    const sichtbar = f.slice(0, f.indexOf('<div class="nur-handout">'));
+    const sichtbar = pro.slice(0, pro.indexOf('<div class="nur-handout">'));
     expect([...sichtbar.matchAll(/href="\/setup#([a-z-]+)"/g)].map((m) => m[1])).toStrictEqual(['claude-pro', 'claude-code-browser']);
     expect(f).toContain('21,60 €');
     expect(f).toContain('bis etwa 28. Dezember');
